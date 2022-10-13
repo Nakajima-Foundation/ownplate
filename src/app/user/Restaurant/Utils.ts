@@ -375,3 +375,46 @@ export const useCategoryParams = (ctx: any, isInMo: string) => {
     showSubCategory,
   };
 };
+
+export const loadStockData = (db: any, shopInfo: any) => {
+  const orderPublics = ref({});
+  const pickupPublics = ref({});
+  const pickupStocks = ref({});
+
+  const restaurantId = shopInfo.restaurantId;
+
+  const path = `/restaurants/${restaurantId}/order/data/subCategory`;
+  // TODO: detacher
+  onSnapshot(collection(db, path), (ret: any) => {
+    const tmp: { [key: string]: any } = {};
+    ret.docs.map((a: any) => {
+      tmp[a.id] = a.data().data;
+    });
+    orderPublics.value = tmp;
+  });
+
+  const pathStock = `/restaurants/${restaurantId}/pickup/stock/subCategory`;
+  onSnapshot(collection(db, pathStock), (ret: any) => {
+    const tmp: { [key: string]: any } = {};
+    ret.docs.map((a: any) => {
+      tmp[a.id] = a.data().data;
+    });
+    pickupStocks.value = tmp;
+  });
+  const pathData = `/restaurants/${restaurantId}/pickup/data/subCategory`;
+  onSnapshot(collection(db, pathData), (ret: any) => {
+    const tmp: { [key: string]: any } = {};
+    ret.docs.map((a: any) => {
+      tmp[a.id] = a.data().data;
+    });
+    pickupPublics.value = tmp;
+  });
+
+  // console.log(shopInfo.enableMoPickup);
+  // console.log(shopInfo.restaurantId);
+  return {
+    orderPublics,
+    pickupPublics,
+    pickupStocks,
+  };
+};

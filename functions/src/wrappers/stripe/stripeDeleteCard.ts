@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
-import * as StripeCustomer from "../..//stripe/customer";
+import { deleteCard } from "../../functions/stripe/deleteCard";
 import { allowInvalidAppCheckToken } from "../firebase";
 
 const db = admin.firestore();
@@ -9,13 +9,12 @@ const db = admin.firestore();
 export default functions
   .runWith({
     memory: "1GB" as "1GB",
+    maxInstances: 10,
     allowInvalidAppCheckToken,
   })
   .https.onCall(async (data, context) => {
     if (context.app == undefined) {
-      throw new functions.https.HttpsError(
-        'failed-precondition',
-        'The function must be called from an App Check verified app.')
+      throw new functions.https.HttpsError("failed-precondition", "The function must be called from an App Check verified app.");
     }
-    return await StripeCustomer.deleteCard(db, data, context);
+    return await deleteCard(db, data, context);
   });

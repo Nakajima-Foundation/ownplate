@@ -1,10 +1,10 @@
 <template>
   <a
     @click="toggleFunction()"
-    class="inline-flex items-center rounded-full p-1 bg-green-600 bg-opacity-10"
+    class="inline-flex items-center rounded-full bg-green-600 bg-opacity-10 p-1"
   >
     <div
-      class="inline-flex items-center rounded-full h-9 px-4"
+      class="inline-flex h-9 items-center rounded-full px-4"
       :class="toggleState ? 'bg-green-600' : ''"
     >
       <div
@@ -15,7 +15,7 @@
       </div>
     </div>
     <div
-      class="inline-flex items-center rounded-full h-9 px-4"
+      class="inline-flex h-9 items-center rounded-full px-4"
       :class="toggleState ? '' : 'bg-green-600'"
     >
       <div

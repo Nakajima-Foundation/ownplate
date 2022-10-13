@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions";
 import * as utils from "../../lib/utils";
 import { order_status } from "../../common/constant";
-import { createCustomer } from "../../stripe/customer";
+import { createCustomer } from "../stripe/customer";
 
 import { orderCreatedData, menuItem } from "../../lib/types";
 import { validateOrderCreated } from "../../lib/validator";
@@ -154,7 +154,7 @@ export const createNewOrderData = async (restaurantRef, orderRef, orderData, mul
 };
 
 export const orderCreated = async (db, data: orderCreatedData, context) => {
-  const customerUid = utils.validate_auth(context);
+  const customerUid = utils.validate_customer_auth(context);
 
   const { restaurantId, orderId } = data;
   utils.required_params({ restaurantId, orderId });

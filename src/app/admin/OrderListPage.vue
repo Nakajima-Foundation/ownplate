@@ -6,7 +6,7 @@
     <div v-else>
       <!-- Header -->
       <AdminHeader
-        class="mt-6 mx-6 lg:flex lg:items-center"
+        class="mx-6 mt-6 lg:flex lg:items-center"
         :shopInfo="shopInfo"
         backLink="/admin/restaurants/"
         :showSuspend="true"
@@ -60,7 +60,7 @@
       <div class="mx-6 mt-6">
         <router-link :to="`/admin/restaurants/${restaurantId()}/history`"
           ><div
-            class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
           >
             <div class="text-sm font-bold text-op-teal">
               {{ $t("admin.order.history") }}

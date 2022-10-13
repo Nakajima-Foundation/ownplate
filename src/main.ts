@@ -36,6 +36,7 @@ import { GAPIKey } from "@/config/project";
 // import "buefy/dist/buefy.css";
 import "@/assets/css/tailwind.css";
 // '@import "./src/assets/scss/main.scss"' in vue.config.js
+import "@/assets/css/main.css";
 
 // components
 Vue.component(VueQrcode.name, VueQrcode);

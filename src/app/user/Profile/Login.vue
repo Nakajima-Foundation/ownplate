@@ -3,10 +3,10 @@
     <!-- Sign In as a User -->
     <div class="mt-6 text-center">
       <a
-        class="inline-flex justify-center items-center h-16 px-6 rounded-full border-2 border-op-teal"
+        class="inline-flex h-16 items-center justify-center rounded-full border-2 border-op-teal px-6"
         @click.prevent="handleSignIn"
       >
-        <i class="material-icons text-2xl text-op-teal mr-2">local_mall</i>
+        <i class="material-icons mr-2 text-2xl text-op-teal">local_mall</i>
         <div class="text-lg font-bold text-op-teal" v-if="!isInMo">
           <!-- omochikaeri -->
           {{ $t("profile.signIn") }}
@@ -22,9 +22,9 @@
     <div class="mt-6 text-center" v-if="!isInMo">
       <router-link to="/admin/user/signin">
         <div
-          class="inline-flex justify-center items-center h-16 px-6 rounded-full border-2 border-op-teal"
+          class="inline-flex h-16 items-center justify-center rounded-full border-2 border-op-teal px-6"
         >
-          <i class="material-icons text-2xl text-op-teal mr-2">store</i>
+          <i class="material-icons mr-2 text-2xl text-op-teal">store</i>
           <div class="text-lg font-bold text-op-teal">
             {{ $t("profile.signInRestaurant") }}
           </div>
@@ -34,7 +34,7 @@
 
     <!-- Phone Login-->
     <b-modal :active.sync="loginVisible" :width="488" scroll="keep">
-      <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
+      <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
         <phone-login v-on:dismissed="handleDismissed" />
       </div>
     </b-modal>

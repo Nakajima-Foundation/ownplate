@@ -2,14 +2,14 @@
   <div>
     <!-- Demo -->
     <div
-      class="text-center mt-8 text-2xl font-bold text-black opacity-40 lg:text-3xl"
+      class="mt-8 text-center text-2xl font-bold text-black opacity-40 lg:text-3xl"
     >
       {{ $t("lp.demoVideo") }}
     </div>
 
     <!-- Demo Videos -->
-    <div class="bg-white mt-6 mx-6 rounded-2xl p-6 lg:flex lg:space-x-6">
-      <div class="text-center mt-4 lg:mt-0 lg:flex-shrink-0">
+    <div class="mx-6 mt-6 rounded-2xl bg-white p-6 lg:flex lg:space-x-6">
+      <div class="mt-4 text-center lg:mt-0 lg:flex-shrink-0">
         <div>
           <iframe
             width="300"
@@ -18,16 +18,16 @@
             frameborder="0"
             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
-            class="rounded-lg w-64 touchable inline-block"
+            class="inline-block w-64 cursor-pointer rounded-lg"
           ></iframe>
         </div>
-        <div class="inline-flex items-center mt-2">
+        <div class="mt-2 inline-flex items-center">
           <span class="ml-1 text-base font-bold text-op-teal">{{
             $t("lp.orderFlow")
           }}</span>
         </div>
       </div>
-      <div class="text-center mt-4 lg:mt-0 lg:flex-shrink-0">
+      <div class="mt-4 text-center lg:mt-0 lg:flex-shrink-0">
         <div>
           <iframe
             width="300"
@@ -36,16 +36,16 @@
             frameborder="0"
             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
-            class="rounded-lg w-64 touchable inline-block"
+            class="inline-block w-64 cursor-pointer rounded-lg"
           ></iframe>
         </div>
-        <div class="inline-flex items-center mt-2">
+        <div class="mt-2 inline-flex items-center">
           <span class="ml-1 text-base font-bold text-op-teal">{{
             $t("lp.flyerCreation")
           }}</span>
         </div>
       </div>
-      <div class="text-center mt-4 lg:mt-0 lg:flex-shrink-0">
+      <div class="mt-4 text-center lg:mt-0 lg:flex-shrink-0">
         <div>
           <iframe
             width="300"
@@ -54,10 +54,10 @@
             frameborder="0"
             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
-            class="rounded-lg w-64 touchable inline-block"
+            class="inline-block w-64 cursor-pointer rounded-lg"
           ></iframe>
         </div>
-        <div class="inline-flex items-center mt-2">
+        <div class="mt-2 inline-flex items-center">
           <span class="ml-1 text-base font-bold text-op-teal">{{
             $t("lp.cardPayment")
           }}</span>

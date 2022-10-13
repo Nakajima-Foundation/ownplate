@@ -11,12 +11,11 @@ export default functions
   .runWith({
     memory: "1GB" as "1GB",
     allowInvalidAppCheckToken,
+    maxInstances: 50,
   })
   .https.onCall(async (data, context) => {
     if (context.app == undefined) {
-      throw new functions.https.HttpsError(
-        'failed-precondition',
-        'The function must be called from an App Check verified app.')
+      throw new functions.https.HttpsError("failed-precondition", "The function must be called from an App Check verified app.");
     }
     await orderCreated(db, data, context);
   });

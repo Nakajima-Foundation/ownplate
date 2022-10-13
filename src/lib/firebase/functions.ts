@@ -13,40 +13,41 @@ export const smaregiAuth = httpsCallable(functionsJP, "smaregiAuth");
 export const lineVerifyFriend = httpsCallable(functionsJP, "lineVerifyFriend");
 
 export const subAccountDeleteChild = httpsCallable(
-  functions,
+  functionsJP,
   "subAccountDeleteChild"
 );
 
-export const subAccountInvite = httpsCallable(functions, "subAccountInvite");
-
-export const lineValidate = httpsCallable(functions, "lineValidate");
-
-export const lineAuthenticate = httpsCallable(functions, "lineAuthenticate");
-
-export const lineSetCustomClaim = httpsCallable(
-  functions,
-  "lineSetCustomClaim"
-);
-
-export const traceProcess = httpsCallable(functions, "traceProcess");
+export const subAccountInvite = httpsCallable(functionsJP, "subAccountInvite");
 
 export const subAccountInvitationAccept = httpsCallable(
-  functions,
+  functionsJP,
   "subAccountInvitationAccept"
 );
 
 export const subAccountInvitationDeny = httpsCallable(
-  functions,
+  functionsJP,
   "subAccountInvitationDeny"
 );
 
-export const superDispatch = httpsCallable(functions, "superDispatch");
+export const lineValidate = httpsCallable(functionsJP, "lineValidate");
 
-export const superTwilio = httpsCallable(functions, "superTwilio");
+// export const lineAuthenticate = httpsCallable(functions, "lineAuthenticate");
+
+// export const lineSetCustomClaim = httpsCallable(
+//   functions,
+//   "lineSetCustomClaim"
+// );
+
+// export const traceProcess = httpsCallable(functions, "traceProcess");
+
+
+export const superDispatch = httpsCallable(functionsJP, "superDispatch");
+
+export const superTwilio = httpsCallable(functionsJP, "superTwilio");
 
 export const stripeDeleteCard = httpsCallable(functions, "stripeDeleteCard");
 
-export const accountDelete = httpsCallable(functions, "accountDelete");
+export const accountDelete = httpsCallable(functionsJP, "accountDelete");
 
 export const orderUpdate = httpsCallable(functionsJP, "orderUpdateJp");
 
@@ -54,7 +55,7 @@ export const orderChange = httpsCallable(functionsJP, "orderChangeJp");
 
 export const orderPlace = httpsCallable(functionsJP, "orderPlaceJp");
 
-export const wasOrderCreated = httpsCallable(functionsJP, "wasOrderCreatedJp");
+export const orderCreated = httpsCallable(functionsJP, "orderCreatedJp");
 
 export const liffAuthenticate = httpsCallable(functionsJP, "liffAuthenticate");
 

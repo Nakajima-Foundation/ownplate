@@ -3,15 +3,15 @@
 
   <div v-else>
     <!-- Header -->
-    <div class="mt-6 mx-6 lg:flex lg:items-center">
+    <div class="mx-6 mt-6 lg:flex lg:items-center">
       <!-- Back and Preview -->
       <div class="flex space-x-4">
         <back-button url="/admin/restaurants/" />
       </div>
 
       <!-- Title -->
-      <div class="mt-4 lg:mt-0 lg:flex-1 lg:flex lg:items-center lg:mx-4">
-        <span class="text-base font-bold text-xl">
+      <div class="mt-4 lg:mx-4 lg:mt-0 lg:flex lg:flex-1 lg:items-center">
+        <span class="text-base text-xl font-bold">
           {{ $t("admin.smaregi.index") }}
         </span>
       </div>
@@ -22,7 +22,7 @@
         <a :href="authUrl">連携する</a>
       </div>
       <div v-if="enable === true">
-        <span class="text-base font-bold text-xl">
+        <span class="text-base text-xl font-bold">
           {{ $t("admin.smaregi.smaregiShopList") }}
         </span>
         <div v-if="isEdit">
@@ -32,7 +32,7 @@
               v-model="selectedRestaurant[k]"
               :class="
                 selectedRestaurant[k] && duplicateElement[selectedRestaurant[k]]
-                  ? 'border-red-700 border-2 border-solid'
+                  ? 'border-2 border-solid border-red-700'
                   : ''
               "
             >
@@ -166,9 +166,7 @@ export default {
 
       try {
         this.isLoading = true;
-        const { data } = await smaregiStoreList({
-          client_id: smaregi.clientId,
-        });
+        const { data } = await smaregiStoreList({});
         this.shopList = data.res;
         // console.log("smaregiStoreList", data);
       } finally {

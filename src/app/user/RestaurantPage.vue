@@ -8,14 +8,14 @@
       <!-- category modal -->
       <div
         v-if="isOpenGroupCategory"
-        class="fixed z-20 top-0 bg-white w-full h-full"
+        class="fixed top-0 z-20 h-full w-full bg-white"
       >
-        <div class="flex justify-between h-12 py-2 pl-6 pr-4">
+        <div class="flex h-12 justify-between py-2 pl-6 pr-4">
           <span class="text-xl font-bold text-black text-opacity-30">
             {{ $t("shopInfo.productCategory") }}
           </span>
           <a @click="closeGroupCategory">
-            <i class="material-icons mt-1 text-black opacity-30 text-2xl"
+            <i class="material-icons mt-1 text-2xl text-black opacity-30"
               >close</i
             >
           </a>
@@ -35,7 +35,7 @@
         <RestaurantPreview :isPreview="isPreview" />
 
         <!-- Body -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12 lg:mx-6">
+        <div class="grid grid-cols-1 lg:mx-6 lg:grid-cols-2 lg:gap-x-12">
           <!-- Left -->
           <div>
             <!-- Cover Image -->
@@ -51,7 +51,7 @@
             <div class="mx-6 lg:mx-0">
               <!-- Restaurant Profile Photo and Name -->
               <div class="mt-4">
-                <shop-header :shopInfo="shopInfo"></shop-header>
+                <ShopHeader :shopInfo="shopInfo"></ShopHeader>
               </div>
 
               <!-- Restaurant Descriptions -->
@@ -63,7 +63,7 @@
               </div>
 
               <!-- Share and Favorite -->
-              <div class="mt-4 flex justify-center items-center space-x-4">
+              <div class="mt-4 flex items-center justify-center space-x-4">
                 <!-- Share Popup -->
                 <div>
                   <share-popup :shopInfo="shopInfo" :mode="mode"></share-popup>
@@ -81,6 +81,8 @@
                   {{
                     shopInfo.isEC
                       ? $t("shopInfo.ecShopDetails")
+                      : isInMo
+                      ? $t("mobileOrder.storeDetails")
                       : $t("shopInfo.restaurantDetails")
                   }}
                 </div>
@@ -91,6 +93,7 @@
                     :paymentInfo="paymentInfo"
                     :isDelivery="isDelivery"
                     :mode="mode"
+                    :isPickup="isPickup"
                     @noAvailableTime="noAvailableTime = $event"
                   ></shop-info>
                 </div>
@@ -101,7 +104,7 @@
           <!-- Right -->
           <div>
             <div class="mx-6 mt-2 lg:mx-0" v-if="shopInfo.enableDelivery">
-              <div class="bg-white rounded-lg shadow">
+              <div class="rounded-lg bg-white shadow">
                 <!-- delivery toggle-->
                 <Delivery
                   :shopInfo="shopInfo"
@@ -115,13 +118,11 @@
             <!-- titles for omochikaeri -->
             <Titles :titleLists="titleLists" v-if="titleLists.length > 0" />
 
-            <div v-if="false">
-              <div v-if="showSubCategory">
-                <!-- Mo Pickup Toggle -->
-                <div class="mx-6 mt-2 lg:mx-0" v-if="shopInfo.enableMoPickup">
-                  <div class="bg-white rounded-lg shadow">
-                    <MoPickUp :shopInfo="shopInfo" v-model="howtoreceive" />
-                  </div>
+            <div v-if="showSubCategory && moPickup">
+              <!-- Mo Pickup Toggle -->
+              <div class="mx-6 mt-2 lg:mx-0" v-if="shopInfo.enableMoPickup">
+                <div class="rounded-lg bg-white shadow">
+                  <MoPickUp :shopInfo="shopInfo" v-model="howtoreceive" />
                 </div>
               </div>
             </div>
@@ -129,7 +130,7 @@
             <!-- category for mo -->
             <a id="subCategoryTop" />
             <div v-if="showSubCategory">
-              <div class="mx-6 lg:mx-0 inline-flex">
+              <div class="mx-6 inline-flex lg:mx-0">
                 <SubCategoryList
                   :subCategoryData="subCategoryData"
                   :categoryBathPath="categoryBathPath"
@@ -146,7 +147,7 @@
               </div>
               <div v-if="showCategory">
                 <!-- Category view -->
-                <div class="mt-6 grid grid-col-1 space-y-2">
+                <div class="grid-col-1 mt-6 grid space-y-2">
                   <div class="text-xl font-bold text-black text-opacity-30">
                     {{ $t("shopInfo.productCategory") }}
                   </div>
@@ -154,47 +155,86 @@
                 </div>
               </div>
               <div v-else>
-                <!-- Menu Items -->
-                <div class="grid grid-col-1 space-y-2" :key="subCategoryKey">
-                  <template v-for="(item, key) in itemLists">
-                    <div v-if="item._dataType === 'title'" :key="key">
-                      <div
-                        class="text-xl font-bold text-black text-opacity-30 inline-flex justify-center items-center"
-                        :class="key === 0 ? '' : 'mt-6'"
-                        :id="item.id"
-                        @click="openCategory"
-                      >
-                        <i class="material-icons mr-2">menu_book</i>
-                        <span>
-                          {{ item.name }}
-                        </span>
+                <template v-if="!isInMo">
+                  <!-- Menu Items for omochikaeri -->
+                  <div class="grid-col-1 grid space-y-2" :key="subCategoryKey">
+                    <template v-for="(item, key) in itemLists">
+                      <div v-if="item._dataType === 'title'" :key="key">
+                        <div
+                          class="inline-flex items-center justify-center text-xl font-bold text-black text-opacity-30"
+                          :class="key === 0 ? '' : 'mt-6'"
+                          :id="item.id"
+                          @click="openCategory"
+                        >
+                          <i class="material-icons mr-2">menu_book</i>
+                          <span>
+                            {{ item.name }}
+                          </span>
+                        </div>
                       </div>
-                    </div>
 
-                    <div
-                      v-if="item._dataType === 'menu'"
-                      :key="[subCategoryKey, item.id].join('_')"
-                    >
-                      <Menu
-                        :key="[subCategoryKey, 'item', item.id].join('_')"
-                        :item="item"
-                        :menuPickupData="menuPickupData[item.id] || {}"
-                        :quantities="orders[item.id] || [0]"
-                        :selectedOptions="selectedOptions[item.id]"
-                        :initialOpenMenuFlag="
-                          (orders[item.id] || []).length > 0
+                      <div
+                        v-if="item._dataType === 'menu'"
+                        :key="[subCategoryKey, item.id].join('_')"
+                      >
+                        <Menu
+                          :key="[subCategoryKey, 'item', item.id].join('_')"
+                          :item="item"
+                          :menuPickupData="menuPickupData[item.id] || {}"
+                          :quantities="orders[item.id] || [0]"
+                          :selectedOptions="selectedOptions[item.id]"
+                          :initialOpenMenuFlag="
+                            (orders[item.id] || []).length > 0
+                          "
+                          :shopInfo="shopInfo"
+                          :menuLinkBathPath="menuLinkBathPath"
+                          :isOpen="menuId === item.id"
+                          :prices="prices[item.id] || []"
+                          :mode="mode"
+                          :moSoldOut="false"
+                          @didOrderdChange="didOrderdChange($event)"
+                        ></Menu>
+                      </div>
+                    </template>
+                  </div>
+                </template>
+                <template v-else>
+                  <!-- Menu Items for Mo -->
+                  <div
+                    class="mt-3 grid grid-cols-3 gap-2"
+                    :key="subCategoryKey"
+                  >
+                    <template v-for="(item, key) in itemLists">
+                      <div
+                        v-if="
+                          item._dataType === 'menu' &&
+                          (!moPickup || (isPublucDataSet[item.id] || {}).isPublic)
                         "
-                        :shopInfo="shopInfo"
-                        :menuLinkBathPath="menuLinkBathPath"
-                        :isOpen="menuId === item.id"
-                        :prices="prices[item.id] || []"
-                        :mode="mode"
-                        :moSoldOut="false"
-                        @didOrderdChange="didOrderdChange($event)"
-                      ></Menu>
-                    </div>
-                  </template>
-                </div>
+                        :key="[subCategoryKey, item.id].join('_')"
+                      >
+                        <MenuMo
+                          :key="[subCategoryKey, 'item', item.id].join('_')"
+                          :item="item"
+                          :menuPickupData="menuPickupData[item.id] || {}"
+                          :quantities="orders[item.id] || [0]"
+                          :selectedOptions="selectedOptions[item.id]"
+                          :initialOpenMenuFlag="
+                            (orders[item.id] || []).length > 0
+                          "
+                          :shopInfo="shopInfo"
+                          :menuLinkBathPath="menuLinkBathPath"
+                          :isOpen="menuId === item.id"
+                          :prices="prices[item.id] || []"
+                          :mode="mode"
+                          :moSoldOut="
+                           moPickup && ((moSoldOutDataSet[item.id] || {}).isStock === false)
+                          "
+                          @didOrderdChange="didOrderdChange($event)"
+                        ></MenuMo>
+                      </div>
+                    </template>
+                  </div>
+                </template>
               </div>
             </div>
           </div>
@@ -203,7 +243,7 @@
 
       <!-- Phone Login-->
       <b-modal :active.sync="loginVisible" :width="488" scroll="keep">
-        <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
+        <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
           <phone-login v-on:dismissed="handleDismissed" />
         </div>
       </b-modal>
@@ -219,7 +259,7 @@
       />
 
       <!-- for disable all UI -->
-      <div v-if="isCheckingOut" class="fixed top-0 left-0 w-full h-full"></div>
+      <div v-if="isCheckingOut" class="fixed top-0 left-0 h-full w-full"></div>
       <!-- Cart Button -->
       <CartButton
         ref="cartButton"
@@ -243,13 +283,13 @@
     <!-- Image Popup-->
     <b-modal :active.sync="categoryPopup" :width="488" scroll="keep">
       <div class="px-2 text-center" @click.stop="closeCategory()">
-        <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
+        <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
           <template v-for="(title, key) in titleLists">
             <a
               :href="`#${title.id}`"
-              class="inline-flex justify-center items-center h-9 rounded-full bg-black bg-opacity-5 mx-1 mt-2"
+              class="mx-1 mt-2 inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5"
             >
-              <div class="text-sm font-bold text-op-teal mx-2">
+              <div class="mx-2 text-sm font-bold text-op-teal">
                 {{ title.name }}
               </div>
             </a>
@@ -271,6 +311,7 @@ import {
 } from "@vue/composition-api";
 
 import Menu from "@/app/user/Restaurant/Menu.vue";
+import MenuMo from "@/app/user/Restaurant/MenuMo.vue";
 import PhoneLogin from "@/app/auth/PhoneLogin.vue";
 import ShopHeader from "@/app/user/Restaurant/ShopHeader.vue";
 import SharePopup from "@/app/user/Restaurant/SharePopup.vue";
@@ -303,11 +344,11 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 
-import { wasOrderCreated } from "@/lib/firebase/functions";
+import { orderCreated } from "@/lib/firebase/functions";
 
 import { order_status } from "@/config/constant";
 
-import { ownPlateConfig, moTitle } from "@/config/project";
+import { ownPlateConfig, moTitle, moPickup } from "@/config/project";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import {
@@ -322,7 +363,6 @@ import {
   useIsInMo,
   useToggle,
   scrollToElementById,
-  forcedError,
 } from "@/utils/utils";
 
 import { imageUtils } from "@/utils/RestaurantUtils";
@@ -333,6 +373,7 @@ import {
   useSubcategory,
   useMenu,
   useCategoryParams,
+  loadStockData,
 } from "./Restaurant/Utils";
 
 export default defineComponent({
@@ -340,6 +381,7 @@ export default defineComponent({
 
   components: {
     Menu,
+    MenuMo,
     PhoneLogin,
     ShopHeader,
     SharePopup,
@@ -396,7 +438,9 @@ export default defineComponent({
           ? document.title
           : [
               this.shopInfo?.restaurantName || "",
-              (this.isInMo ? moTitle : ownPlateConfig.restaurantPageTitle || this.defaultTitle),
+              this.isInMo
+                ? moTitle
+                : ownPlateConfig.restaurantPageTitle || this.defaultTitle,
             ].join(" / "),
     };
   },
@@ -453,6 +497,9 @@ export default defineComponent({
     const isDelivery = computed(() => {
       return howtoreceive.value === "delivery";
     });
+    const isPickup = computed(() => {
+      return howtoreceive.value === "pickup";
+    });
 
     const coverImage = computed(() => {
       return (
@@ -473,9 +520,32 @@ export default defineComponent({
       props.shopInfo,
       {},
       menuObj,
-      ctx
+      ctx,
+      isInMo.value,
+      isPickup,
     );
-    console.log(menuPickupData, availableDays);
+
+    // for Mo
+    const { orderPublics, pickupPublics, pickupStocks } = loadStockData(
+      db,
+      props.shopInfo
+    );
+
+    const isPublucDataSet = computed(() => {
+      if (isPickup.value) {
+        return pickupPublics.value[subCategory.value] || {};
+      } else {
+        return orderPublics.value[subCategory.value] || {};
+      }
+    });
+    const moSoldOutDataSet = computed(() => {
+      if (isPickup.value) {
+        console.log(pickupStocks.value[subCategory.value]);
+        return pickupStocks.value[subCategory.value] || {};
+      }
+      return {};
+    });
+    // end of for Mo
 
     onMounted(() => {
       // Check if we came here as the result of "Edit Items"
@@ -622,6 +692,7 @@ export default defineComponent({
         ownerUid: props.shopInfo.uid,
         isDelivery:
           (props.shopInfo.enableDelivery && isDelivery.value) || false, // true, // for test
+        isPickup: (props.shopInfo.enableMoPickup && isPickup.value) || false,
         isLiff: ctx.root.isLiffUser,
         phoneNumber: user.value.phoneNumber,
         name: name,
@@ -632,9 +703,6 @@ export default defineComponent({
       // console.log(order_data);
       isCheckingOut.value = true;
       try {
-        if (forcedError("checkout", ctx)) {
-          throw Error("forced Error");
-        }
         const res = await addDoc(
           collection(db, `restaurants/${restaurantId.value}/orders`),
           order_data
@@ -652,7 +720,7 @@ export default defineComponent({
             howtoreceive: howtoreceive.value,
           },
         });
-        await wasOrderCreated({
+        await orderCreated({
           restaurantId: restaurantId.value,
           orderId: res.id,
         });
@@ -864,7 +932,12 @@ export default defineComponent({
       menuPickupData,
 
       isInMo,
+      isPickup,
+        
+      isPublucDataSet,
+      moSoldOutDataSet,
 
+      moPickup,
     };
   },
 });

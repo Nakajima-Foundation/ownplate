@@ -13,8 +13,15 @@ describe("validator function", () => {
       timezone: "Asia/Tokyo",
       // lng?: string;
       //timeEstimated?: admin.firestore.Timestamp;
-    }
+    };
     const res = validator.validateOrderUpadte(data);
     res.result.should.equal(true);
+  });
+
+  it("validator function", async function () {
+    const url = "http://localhost:3000/callback/line";
+    // const url = "http://example.com/callback/line";
+    const res = validator.validateUrl(url);
+    console.log(res)
   });
 });

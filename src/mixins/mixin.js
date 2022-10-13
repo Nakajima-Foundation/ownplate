@@ -21,12 +21,6 @@ const mixin = {
         restaurant.restProfilePhoto
       );
     },
-    shareUrl() {
-      return (
-        location.protocol + "//" + location.host + "/r/" + this.restaurantId()
-      );
-      // return "https://omochikaeri.com/r/" + this.restaurantId();
-    },
     num2time(num) {
       if (num === 0 || num === 60 * 24) {
         return this.$t("shopInfo.midnight");
@@ -51,10 +45,6 @@ const mixin = {
       }
       return this.$tc("shopInfo.am", 0, { formatedTime });
     },
-    forcedError(key) {
-      const debug = this.$route.query.error;
-      return debug === key ? "---forced-error---" : "";
-    },
     moment(value) {
       return moment(value);
     },
@@ -65,17 +55,6 @@ const mixin = {
       } else {
         console.log("order: call play");
       }
-    },
-    convOrderStateForText(orderState, orderInfo) {
-      if (orderInfo?.isEC) {
-        if (orderState === "ready_to_pickup") {
-          return "ready_to_shipping";
-        }
-        if (orderState === "transaction_complete") {
-          return "shipping_complete";
-        }
-      }
-      return orderState;
     },
     itemOptionCheckbox2options(itemOptionCheckbox) {
       // HACK: Dealing with a special case (probalby a bug in the menu editor)
@@ -121,14 +100,14 @@ const mixin = {
     userLiffId() {
       return this.$store.getters.liffId;
     },
-    isAnonymous() {
+    isAnonymous() { // TODO
       return this.$store.getters.isAnonymous;
     },
-    isLineUser() {
+    isLineUser() { // TODO
       const claims = this.$store.state.claims;
       return !!claims?.line;
     },
-    isLineEnabled() {
+    isLineEnabled() { // TODO
       return !!ownPlateConfig.line;
     },
     isLocaleJapan() {
@@ -137,23 +116,6 @@ const mixin = {
       // return this.$i18n.locale === "ja";
       // TODO: why not ja ?
       return this.$i18n.locale !== "en" && this.$i18n.locale !== "fr";
-    },
-    // for user agent detect
-    isIOS() {
-      return this.isOldIOS || this.isNewIOS;
-    },
-    isOldIOS() {
-      return /iP(hone|(o|a)d)/.test(navigator.userAgent);
-    },
-    isNewIOS() {
-      return this.isSafari && typeof document.ontouchstart !== "undefined";
-    },
-    isSafari() {
-      return /Safari/.test(navigator.userAgent);
-    },
-    isAndroid() {
-      // not implemented
-      return null;
     },
     inLiff() {
       // BY path
@@ -165,16 +127,14 @@ const mixin = {
     liff_base_path() {
       return `/liff/${this.liffIndexId}`;
     },
-    isInLine() {
+    isInLine() { // TODO
       // By UA
       return /Line/.test(navigator.userAgent);
     },
     isInLIFF() {
       return /LIFF/.test(navigator.userAgent);
     },
-    isInFacebook() {},
-    isInTwitter() {},
-    isDev() {
+    isDev() { // TODO 
       return firebaseConfig.projectId === "ownplate-dev";
     },
     featureHeroMobile() {
@@ -187,7 +147,7 @@ const mixin = {
         this.isLocaleJapan ? "ja" : "en"
       ];
     },
-    gmapKey() {
+    gmapKey() { // TODO
       return GAPIKey;
     },
   },

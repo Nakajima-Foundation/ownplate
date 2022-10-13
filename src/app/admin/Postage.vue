@@ -5,13 +5,13 @@
       <not-found />
     </template>
     <div v-else-if="notFound === false">
-      <div class="mt-4 mx-6">
+      <div class="mx-6 mt-4">
         <div class="mt-4">
-          <div class="text-sm font-bold pb-2">
+          <div class="pb-2 text-sm font-bold">
             {{ $t("editEC.postageList") }}
           </div>
 
-          <div class="bg-black bg-opacity-5 rounded-lg p-4">
+          <div class="rounded-lg bg-black bg-opacity-5 p-4">
             <div
               v-for="(state, key) in regionalSetting.AddressStates"
               class="flex"
@@ -26,11 +26,11 @@
         </div>
 
         <div class="mt-4">
-          <div class="text-sm font-bold pb-2">
+          <div class="pb-2 text-sm font-bold">
             {{ $t("editEC.freeThreshold") }}
           </div>
-          <div class="bg-black bg-opacity-5 rounded-lg p-4">
-            <div class="flex mb-2">
+          <div class="rounded-lg bg-black bg-opacity-5 p-4">
+            <div class="mb-2 flex">
               <b-checkbox v-model="enableFree" class="flex-item" />
               <span class="flex-item mt-auto mb-auto inline-block">
                 {{ $t("editEC.setPostageFreeThreshold") }}
@@ -48,10 +48,10 @@
         <div class="mt-4 text-center">
           <b-button @click="savePostage" class="b-reset-tw">
             <div
-              class="h-12 rounded-full bg-op-teal inline-flex justify-center items-center px-6 shadow"
+              class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
               style="min-width: 8rem"
             >
-              <span class="text-white text-base font-bold">{{
+              <span class="text-base font-bold text-white">{{
                 $t("editCommon.save")
               }}</span>
             </div>

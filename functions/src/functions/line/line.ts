@@ -1,10 +1,17 @@
 import * as functions from "firebase-functions";
-import * as utils from "../lib/utils";
-import * as netutils from "../lib/netutils";
+import * as utils from "../../lib/utils";
+import * as netutils from "../../lib/netutils";
 import * as admin from "firebase-admin";
+import { ownPlateConfig } from "../../common/project";
+
+import { lineValidateData } from "../../lib/types";
+import { validateLineValidate } from "../../lib/validator";
 
 const LINE_MESSAGE_TOKEN = (functions.config() && functions.config().line && functions.config().line.message_token) || process.env.LINE_MESSAGE_TOKEN;
 
+const client_id = ownPlateConfig.line.LOGIN_CHANNEL_ID;
+
+/*
 export const setCustomClaim = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
   const isLine = uid.slice(0, 5) === "line:";
@@ -20,11 +27,12 @@ export const setCustomClaim = async (db: admin.firestore.Firestore, data: any, c
     throw utils.process_error(error);
   }
 };
+*/
 
-export const verifyFriend = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
-  const uid = utils.validate_auth(context);
-  const isLine = uid.slice(0, 5) === "line:";
-  const uidLine = isLine ? uid.slice(5) : context.auth?.token?.line?.slice(5);
+export const verifyFriend = async (db: admin.firestore.Firestore, context: functions.https.CallableContext) => {
+  const customerUid = utils.validate_customer_auth(context);
+  const isLine = customerUid.slice(0, 5) === "line:";
+  const uidLine = isLine ? customerUid.slice(5) : context.auth?.token?.line?.slice(5);
   try {
     const profile = await netutils.request(`https://api.line.me/v2/bot/profile/${uidLine}`, {
       headers: {
@@ -41,6 +49,7 @@ export const verifyFriend = async (db: admin.firestore.Firestore, data: any, con
   }
 };
 
+/*
 // eslint-disable-next-line
 export const authenticate = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
   // eslint-disable-line
@@ -94,13 +103,20 @@ export const authenticate = async (db: admin.firestore.Firestore, data: any, con
     throw utils.process_error(error);
   }
 };
+*/
 
-export const validate = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
+export const validate = async (db: admin.firestore.Firestore, data: lineValidateData, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
 
-  const { code, redirect_uri, client_id } = data;
-  utils.required_params({ code, redirect_uri, client_id });
+  const { code, redirect_uri } = data;
+  utils.required_params({ code, redirect_uri });
 
+  const validateResult = validateLineValidate(data);
+  if (!validateResult.result) {
+    console.error("validate", validateResult.errors);
+    throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+  }
+  
   const LINE_SECRET_KEY = functions.config().line.secret;
 
   try {

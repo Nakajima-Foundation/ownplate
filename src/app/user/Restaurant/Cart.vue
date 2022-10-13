@@ -1,11 +1,11 @@
 <template>
-  <div class="w-full fixed h-screen top-0 bg-black bg-opacity-50">
-    <div class="w-full h-1/5" @click="closeCart"></div>
-    <div class="w-full h-4/5 bg-white fixed z-10 overflow-x-scroll pb-32">
-      <div class="flex justify-center mt-6 mb-4 font-bold text-black">
+  <div class="fixed top-0 h-screen w-full bg-black bg-opacity-50">
+    <div class="h-1/5 w-full" @click="closeCart"></div>
+    <div class="fixed z-10 h-4/5 w-full overflow-x-scroll bg-white pb-32">
+      <div class="mt-6 mb-4 flex justify-center font-bold text-black">
         {{ shopInfo.restaurantName }}
       </div>
-      <div class="grid justify-items-auto grid-cols-1 lg:grid-cols-2">
+      <div class="justify-items-auto grid grid-cols-1 lg:grid-cols-2">
         <template v-for="(counters, itemId) in orders">
           <div v-for="(counter, key) in counters" :key="`${itemId}-${key}`">
             <CartItem

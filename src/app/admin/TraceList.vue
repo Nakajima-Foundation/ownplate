@@ -1,7 +1,12 @@
 <template>
-  <section class="section" style="background-color: #fffafa">
-    <div class="t-h6 text-black text-opacity-40 m-b-8">{{ $t("trace.list") }}</div>
-    <div class="m-t-16">
+  <section
+    class="mx-auto max-w-full px-6 pb-12 pt-4"
+    style="background-color: #fffafa"
+  >
+    <div class="mb-2 text-xl font-bold text-black text-opacity-40">
+      {{ $t("trace.list") }}
+    </div>
+    <div class="mt-4">
       <div v-for="record in records" :key="record.id">
         <span>{{ record.timeCreated.toLocaleString() }}</span>
         <span>{{ $t("trace." + record.event) }}</span>

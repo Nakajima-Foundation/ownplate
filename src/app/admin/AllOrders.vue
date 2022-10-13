@@ -5,14 +5,14 @@
     </template>
     <div v-else>
       <!-- Header -->
-      <div class="mt-6 mx-6 lg:flex lg:items-center">
+      <div class="mx-6 mt-6 lg:flex lg:items-center">
         <!-- Back and Preview -->
         <div class="flex space-x-4">
           <back-button url="/admin/restaurants/" />
         </div>
 
         <!-- Title -->
-        <div class="mt-4 lg:mt-0 lg:flex-1 lg:flex lg:items-center lg:mx-4">
+        <div class="mt-4 lg:mx-4 lg:mt-0 lg:flex lg:flex-1 lg:items-center">
           <span class="text-base font-bold">
             {{ $t("order.allOrders") }}
           </span>
@@ -34,7 +34,7 @@
 
       <!-- Orders -->
       <div
-        class="mx-6 mt-6 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
+        class="mx-6 mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
       >
         <ordered-info
           v-for="order in filteredOrders"
@@ -50,7 +50,7 @@
       <div class="mx-6 mt-6 text-center">
         <b-button @click="nextLoad" class="b-reset-tw">
           <div
-            class="inline-flex justify-center items-center w-48 h-9 px-4 rounded-full bg-black bg-opacity-5"
+            class="inline-flex h-9 w-48 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
           >
             <div class="text-sm font-bold text-op-teal">
               {{ $t("admin.order.more") }}
@@ -69,11 +69,11 @@
         >
           <b-button class="b-reset-tw">
             <div
-              class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
             >
-              <i class="material-icons text-lg text-op-teal mr-2">save_alt</i>
+              <i class="material-icons mr-2 text-lg text-op-teal">save_alt</i>
               <div class="text-sm font-bold text-op-teal">
-                {{ $t("admin.report.download-csv") }}
+                {{ $t("admin.report.download-csv-all") }}
               </div>
             </div>
           </b-button>
@@ -88,12 +88,24 @@ import { defineComponent, ref, computed } from "@vue/composition-api";
 
 import moment from "moment-timezone";
 
-import { db } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  doc,
+  getDoc,
+  getDocs,
+  collectionGroup,
+  query,
+  where,
+  limit,
+  startAfter,
+  orderBy,
+} from "firebase/firestore";
+
 import { order_status, order_status_keys } from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
 import { revenueCSVHeader, revenueMoCSVHeader } from "@/utils/reportUtils";
 import { order2ReportData } from "@/models/orderInfo";
-import { arrayOrNumSum, useAdminUids, notFoundResponse } from "@/utils/utils";
+import { arrayOrNumSum, useAdminUids, notFoundResponse, orderTypeKey } from "@/utils/utils";
 
 import DownloadCsv from "@/components/DownloadCSV.vue";
 import OrderedInfo from "@/app/admin/Order/OrderedInfo.vue";
@@ -166,7 +178,6 @@ export default defineComponent({
     });
     const fileName = "all_orders_of_all_restaurants";
     const fields = computed(() => {
-      console.log(props.isInMo);
       return props.isInMo ? revenueMoCSVHeader : revenueCSVHeader;
     });
 
@@ -180,6 +191,7 @@ export default defineComponent({
           date: time ? moment(time).format("YYYY/MM/DD") : "",
           restaurantId: order.restaurant.restaurantId, // mo
           shopId: order.restaurant.shopId, // mo
+          type: ctx.root.$t("order." + orderTypeKey(order, props.isInMo)),
           restaurantName: order.restaurant.restaurantName,
           orderStatus: ctx.root.$t(
             "order.status." + order_status_keys[order.status]
@@ -205,28 +217,33 @@ export default defineComponent({
     const loadData = async () => {
       if (!isLoading) {
         isLoading = true;
-        let query = db
-          .collectionGroup("orders")
-          .where("ownerUid", "==", uid.value)
-          .orderBy("timePlaced", "desc")
-          .limit(100);
+        const queryConditions = [
+          where("ownerUid", "==", uid.value),
+          orderBy("timePlaced", "desc"),
+          limit(100)
+        ];
         if (last) {
-          query = query.startAfter(last);
+          queryConditions.push(startAfter(last));
         }
-        const snapshot = await query.get();
+        const snapshot = await getDocs(
+          query(
+            collectionGroup(db, "orders"),
+            ...queryConditions,
+          )
+        );
         const serviceTaxRate = 0.1;
         if (!snapshot.empty) {
           last = snapshot.docs[snapshot.docs.length - 1];
           let i = 0;
           for (; i < snapshot.docs.length; i++) {
-            const doc = snapshot.docs[i];
-            const order = order2ReportData(doc.data(), serviceTaxRate);
-            order.restaurantId = doc.ref.path.split("/")[1];
-            order.id = doc.id;
+            const orderDoc = snapshot.docs[i];
+            const order = order2ReportData(orderDoc.data(), serviceTaxRate, props.isInMo);
+            order.restaurantId = orderDoc.ref.path.split("/")[1];
+            order.id = orderDoc.id;
             if (!restaurants[order.restaurantId]) {
-              const snapshot = await db
-                .doc(`restaurants/${order.restaurantId}`)
-                .get();
+              const snapshot = await getDoc(
+                doc(db, `restaurants/${order.restaurantId}`)
+              );
               restaurants[order.restaurantId] = snapshot.data();
             }
             order.restaurant = restaurants[order.restaurantId];
@@ -270,6 +287,7 @@ export default defineComponent({
       nextLoad,
       tableData,
 
+      orderSelected,
       notFound: false,
     };
   },

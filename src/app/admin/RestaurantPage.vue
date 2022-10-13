@@ -8,17 +8,17 @@
     <!-- Never show before load restaurant data -->
     <div v-else>
       <!-- Header -->
-      <div class="mt-6 mx-6 lg:flex lg:items-center">
+      <div class="mx-6 mt-6 lg:flex lg:items-center">
         <div class="flex-1"></div>
 
         <!-- Notifications -->
-        <div class="mt-4 lg:mt-0 flex-shrink-0 text-right">
+        <div class="mt-4 flex-shrink-0 text-right lg:mt-0">
           <notification-index :shopInfo="shopInfo" />
         </div>
       </div>
 
       <!-- Save and Cancel -->
-      <div class="flex justify-center space-x-4 mt-6">
+      <div class="mt-6 flex justify-center space-x-4">
         <!-- Cancel Button -->
         <b-button
           class="b-reset-tw"
@@ -26,9 +26,9 @@
           :to="`/admin/restaurants/`"
         >
           <div
-            class="h-12 rounded-full bg-black bg-opacity-5 inline-flex items-center px-6"
+            class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
           >
-            <span class="text-black text-opacity-60 text-base font-bold">{{
+            <span class="text-base font-bold text-black text-opacity-60">{{
               $t("button.cancel")
             }}</span>
           </div>
@@ -41,10 +41,10 @@
           class="b-reset-tw"
         >
           <div
-            class="h-12 rounded-full bg-op-teal inline-flex justify-center items-center px-6 shadow"
+            class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
             style="min-width: 8rem"
           >
-            <span class="text-white text-base font-bold">{{
+            <span class="text-base font-bold text-white">{{
               $t(
                 submitting
                   ? "editCommon.saving"
@@ -58,7 +58,7 @@
       </div>
 
       <!-- Publish Status -->
-      <div class="bg-black bg-opacity-5 mx-6 rounded-lg p-4 mt-6 text-center">
+      <div class="mx-6 mt-6 rounded-lg bg-black bg-opacity-5 p-4 text-center">
         <b-checkbox
           v-model="shopInfo.publicFlag"
           :disabled="hasError"
@@ -86,14 +86,14 @@
       </div>
 
       <!-- Settings 1 -->
-      <div class="mt-6 mx-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
+      <div class="mx-6 mt-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
         <!-- Left -->
         <div>
           <!-- Restaurant Name -->
           <div>
             <text-form
               v-model="shopInfo.restaurantName"
-              titleKey="shopInfo.name"
+              :titleKey="isInMo ? 'mobileOrder.shopInfoName' : 'shopInfo.name'"
               placeholder="editRestaurant.enterRestaurantName"
               :error="errors['restaurantName']"
               :maxlength="50"
@@ -192,8 +192,8 @@
             <div class="text-center">
               <a
                 @click="updateAndUpdateMap"
-                class="h-12 rounded-full bg-op-teal inline-flex items-center px-6 shadow"
-                ><div class="text-white text-base font-bold">
+                class="inline-flex h-12 items-center rounded-full bg-op-teal px-6 shadow"
+                ><div class="text-base font-bold text-white">
                   {{ $t("editRestaurant.searchMap") }}
                 </div></a
               >
@@ -213,8 +213,8 @@
             </div>
             <div v-else>住所を入力して検索してください</div>
 
-            <div class="text-center text-sm font-bold text-red-700 mt-2">
-              {{ $t("editRestaurant.updateMapDescription") }}
+            <div class="mt-2 text-center text-sm font-bold text-red-700">
+              {{ $t(isInMo ? "mobileOrder.updateMapDescription" : "editRestaurant.updateMapDescription") }}
             </div>
 
             <div class="mt-4">
@@ -240,7 +240,7 @@
         <div class="mt-6 lg:mt-0">
           <!-- Phone -->
           <div>
-            <div class="text-sm font-bold pb-2">
+            <div class="pb-2 text-sm font-bold">
               {{ $t("shopInfo.phonenumber") }}
               <span class="text-red-700">*</span>
             </div>
@@ -255,14 +255,14 @@
 
           <!-- Profile Photo -->
           <div>
-            <div class="text-sm font-bold pb-2">
+            <div class="pb-2 text-sm font-bold">
               {{ $t("editRestaurant.profilePhoto") }}
               <span class="text-red-700">*</span>
             </div>
             <div
               class="flex"
               :class="{
-                'p-2 rounded border border-red-700':
+                'rounded border border-red-700 p-2':
                   errors['restProfilePhoto'].length !== 0,
               }"
             >
@@ -275,7 +275,7 @@
                     style="width: 128px; height: 128px"
                   />
                 </div>
-                <div class="text-center text-xs mt-1">
+                <div class="mt-1 text-center text-xs">
                   {{ $t("editCommon.current") }}
                 </div>
               </div>
@@ -300,28 +300,28 @@
                   @file-type-mismatch="handleProfileImageRemove"
                   @image-remove="handleProfileImageRemove"
                 ></croppa>
-                <div class="text-center text-xs mt-1 w-32">
+                <div class="mt-1 w-32 text-center text-xs">
                   {{ $t("editCommon.new") }}
                 </div>
               </div>
             </div>
 
             <!-- Description -->
-            <div class="text-sm text-black text-opacity-60 pt-2">
+            <div class="pt-2 text-sm text-black text-opacity-60">
               {{ $t("editCommon.clickAndUploadDetail") }}
             </div>
           </div>
 
           <!-- Cover Photo -->
           <div class="mt-4">
-            <div class="text-sm font-bold pb-2">
+            <div class="pb-2 text-sm font-bold">
               {{ $t("editRestaurant.coverPhoto") }}
               <span class="text-red-700">*</span>
             </div>
             <div
               class="flex"
               :class="{
-                'p-2 rounded border border-red-700':
+                'rounded border border-red-700 p-2':
                   errors['restCoverPhoto'].length !== 0,
               }"
             >
@@ -334,7 +334,7 @@
                     style="width: 272px; height: 128px"
                   />
                 </div>
-                <div class="text-center text-xs mt-1" style="width: 272px">
+                <div class="mt-1 text-center text-xs" style="width: 272px">
                   {{ $t("editCommon.current") }}
                 </div>
               </div>
@@ -359,13 +359,13 @@
                   @file-type-mismatch="handleCoverImageRemove"
                   @image-remove="handleCoverImageRemove"
                 ></croppa>
-                <div class="text-center text-xs mt-1" style="width: 272px">
+                <div class="mt-1 text-center text-xs" style="width: 272px">
                   {{ $t("editCommon.new") }}
                 </div>
               </div>
             </div>
             <!-- Description -->
-            <div class="text-sm text-black text-opacity-60 pt-2">
+            <div class="pt-2 text-sm text-black text-opacity-60">
               {{ $t("editCommon.clickAndUploadDetail") }}
             </div>
           </div>
@@ -374,7 +374,7 @@
 
       <!-- Settings 2 -->
       <div
-        class="mt-6 mx-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12 border-t-2 border-solid border-black border-opacity-10 pt-6"
+        class="mx-6 mt-6 grid grid-cols-1 border-t-2 border-solid border-black border-opacity-10 pt-6 lg:grid-cols-2 lg:gap-x-12"
       >
         <!-- Left -->
         <div>
@@ -393,10 +393,10 @@
           <!-- Enable Pre Line -->
           <div class="mb-4">
             <a id="preline" />
-            <div class="text-sm font-bold pb-2">
+            <div class="pb-2 text-sm font-bold">
               {{ $t("editRestaurant.enablePrelineTitle") }}
             </div>
-            <div class="bg-black bg-opacity-5 rounded-lg p-4">
+            <div class="rounded-lg bg-black bg-opacity-5 p-4">
               <b-checkbox v-model="shopInfo.enablePreline">
                 <div class="text-sm font-bold">
                   {{ $t("editRestaurant.enablePrelineDescription") }}
@@ -468,13 +468,25 @@
             />
           </div>
 
+          <!-- UberEats URL -->
+          <div>
+            <text-form
+              v-model="shopInfo.uberEatsUrl"
+              :error="errors['uberEatsUrl']"
+              titleKey="shopInfo.uberEatsUrl"
+              placeholder="editRestaurant.enterUberEatsUrl"
+              :maxlength="100"
+              :required="false"
+            />
+          </div>
+
           <!-- Tax -->
           <div>
             <!-- Tax Input Required -->
             <div v-if="requireTaxInput">
               <div class="flex">
                 <div>
-                  <div class="text-sm font-bold pb-2">
+                  <div class="pb-2 text-sm font-bold">
                     {{ $t("editRestaurant.foodTax") }}
                   </div>
                   <b-field
@@ -495,7 +507,7 @@
                 </div>
 
                 <div class="ml-4">
-                  <div class="text-sm font-bold pb-2">
+                  <div class="pb-2 text-sm font-bold">
                     {{ $t("editRestaurant.alcoholTax") }}
                   </div>
                   <b-field
@@ -522,11 +534,11 @@
             <!-- Tax Input Not Required -->
             <div v-if="!requireTaxInput">
               <div>
-                <div class="text-sm font-bold pb-2">
+                <div class="pb-2 text-sm font-bold">
                   {{ $t("editRestaurant.tax") }}
                 </div>
                 <div
-                  class="bg-black bg-opacity-5 rounded-lg p-4 grid grid-cols-1 space-y-2"
+                  class="grid grid-cols-1 space-y-2 rounded-lg bg-black bg-opacity-5 p-4"
                 >
                   <div v-for="taxItem in taxRates" class="text-base">
                     {{ $t("editMenu." + taxRateKeys[taxItem]) }}
@@ -538,10 +550,10 @@
 
             <!-- Tax Display -->
             <div v-if="requireTaxPriceDisplay" class="mt-4">
-              <div class="text-sm font-bold pb-2">
+              <div class="pb-2 text-sm font-bold">
                 {{ $t("editRestaurant.taxPriceDisplay") }}
               </div>
-              <div class="bg-black bg-opacity-5 rounded-lg p-4">
+              <div class="rounded-lg bg-black bg-opacity-5 p-4">
                 <div>
                   <b-checkbox v-model="shopInfo.inclusiveTax">
                     <div class="font-bold">
@@ -552,7 +564,7 @@
                 <div class="mt-2">
                   <div
                     v-if="region === 'JP'"
-                    class="text-xs font-bold text-red-700 mb-1"
+                    class="mb-1 text-xs font-bold text-red-700"
                   >
                     {{ $t("editRestaurant.taxPriceDisplayJp") }}
                   </div>
@@ -570,11 +582,11 @@
 
           <!-- Time to Pickup -->
           <div class="mt-4">
-            <div class="text-sm font-bold pb-2">
-              {{ $t("editRestaurant.timeToPickup") }}
+            <div class="pb-2 text-sm font-bold">
+              {{ $t(isInMo ? "mobileOrder.timeToPickup" : "editRestaurant.timeToPickup") }}
             </div>
 
-            <div class="bg-black bg-opacity-5 rounded-lg p-4">
+            <div class="rounded-lg bg-black bg-opacity-5 p-4">
               <!-- Preparation Time -->
               <div>
                 <div class="mb-1">
@@ -639,21 +651,82 @@
             </div>
           </div>
 
+          <!-- Time to Mo Pickup -->
+          <template v-if="moPickup">
+            <div class="mt-4" v-if="isInMo">
+              <div class="pb-2 text-sm font-bold">
+                {{ $t("mobileOrder.timeToMoPickup") }}
+              </div>
+              
+              <div class="rounded-lg bg-black bg-opacity-5 p-4">
+                <!-- Preparation Time -->
+                <div>
+                  <div class="mb-1">
+                    {{ $t("editRestaurant.preparationTime") }}
+                  </div>
+                  
+                  <div class="ml-2">
+                    {{shopInfo.moPickUpMinimumCookTime}}
+                    {{ $t("editRestaurant.minutes") }}
+                  </div>
+              </div>
+                
+                <!-- The Day Before -->
+                <div class="mt-2">
+                  <div class="mb-1">
+                    {{ $t("editRestaurant.reservationTheDayBefore") }}
+                  </div>
+                  {{shopInfo.moPickUpDaysInAdvance}}
+                  {{ $t("mobileOrder.reservationTheDaysBefore") }}
+                </div>
+              </div>
+            </div>
+          </template>
+
+          <!-- mo Hours -->
+          <div class="mt-4 lg:mt-0" v-if="isInMo && moPickup">
+            <div class="pb-2 text-sm font-bold">
+              {{ $t("mobileOrder.pickupHours") }} <span class="text-red-700">*</span>
+            </div>
+
+            <div class="mt-2 grid grid-cols-1 space-y-2 rounded-lg bg-black bg-opacity-5 p-4">
+              <div
+                v-for="(day, index) in days"
+                :key="index"
+              >
+                <!-- Enable/Disable Day and Copy Previous Day -->
+                <div class="flex items-center">
+                  <div class="flex-1">
+                    <div class="text-base font-bold">
+                      {{ $t("week.short." + day) }} {{shopInfo.moBusinessDay[index] ? "営業" : "休業"}}
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Main Hours -->
+                <div class="mt-2">
+                  {{ num2time(shopInfo.moOpenTimes[index][0].start) }} - {{ num2time(shopInfo.moOpenTimes[index][0].end) }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          
           <!-- Delivery Config -->
           <template v-if="true">
             <div v-if="region === 'JP'" class="mt-4">
               <a id="deliveryConfig" />
-              <div class="text-sm font-bold pb-2">
+              <div class="pb-2 text-sm font-bold">
                 {{ $t("editRestaurant.deliveryConfigTitle") }}
               </div>
-              <div class="bg-black bg-opacity-5 rounded-lg p-4">
-                <div class="text-xl pt-2">
+              <div class="rounded-lg bg-black bg-opacity-5 p-4">
+                <div class="pt-2 text-xl">
                   <router-link
                     :to="`/admin/restaurants/${restaurantId()}/delivery`"
                     >{{ $t("editRestaurant.deliveryConfigLink") }}</router-link
                   >
                 </div>
-                <div class="text-xs pt-2">
+                <div class="pt-2 text-xs">
                   {{ $t("editRestaurant.deliveryDescription") }}
                 </div>
               </div>
@@ -661,16 +734,16 @@
 
             <!-- TODO: Printer Config -->
             <div v-if="false" class="mt-4">
-              <div class="text-sm font-bold pb-2">
+              <div class="pb-2 text-sm font-bold">
                 {{ $t("editRestaurant.printerConfigTitle") }}
               </div>
-              <div class="bg-black bg-opacity-5 rounded-lg p-4">
+              <div class="rounded-lg bg-black bg-opacity-5 p-4">
                 <b-checkbox v-model="shopInfo.enablePrinter">
                   <div class="text-sm font-bold">
                     {{ $t("editRestaurant.elablePrinter") }}
                   </div>
                 </b-checkbox>
-                <div class="text-xs pt-2">
+                <div class="pt-2 text-xs">
                   {{ $t("editRestaurant.printerDescription") }}
                 </div>
               </div>
@@ -680,16 +753,16 @@
           <!-- Email Notification -->
           <div v-if="region === 'JP'" class="mt-4">
             <a id="emailNotification" />
-            <div class="text-sm font-bold pb-2">
+            <div class="pb-2 text-sm font-bold">
               {{ $t("editRestaurant.emailNotificationTitle") }}
             </div>
-            <div class="bg-black bg-opacity-5 rounded-lg p-4">
+            <div class="rounded-lg bg-black bg-opacity-5 p-4">
               <b-checkbox v-model="shopInfo.emailNotification">
                 <div class="text-sm font-bold">
                   {{ $t("editRestaurant.emailNotificationDescription") }}
                 </div>
               </b-checkbox>
-              <div class="text-xs pt-2">
+              <div class="pt-2 text-xs">
                 {{ $t("editRestaurant.emailNotificationNotice") }}
               </div>
             </div>
@@ -698,16 +771,16 @@
           <!-- Phone Call -->
           <div v-if="region === 'JP'" class="mt-4">
             <a id="phoneCall" />
-            <div class="text-sm font-bold pb-2">
+            <div class="pb-2 text-sm font-bold">
               {{ $t("editRestaurant.phoneCall") }}
             </div>
-            <div class="bg-black bg-opacity-5 rounded-lg p-4">
+            <div class="rounded-lg bg-black bg-opacity-5 p-4">
               <b-checkbox v-model="shopInfo.phoneCall">
                 <div class="text-sm font-bold">
                   {{ $t("editRestaurant.phoneCallDescription") }}
                 </div>
               </b-checkbox>
-              <div class="text-xs pt-2">
+              <div class="pt-2 text-xs">
                 {{ $t("editRestaurant.phoneCallNotice") }}
               </div>
             </div>
@@ -715,16 +788,16 @@
 
           <!-- Order Memo from Takeout Customer -->
           <div class="mt-4">
-            <div class="text-sm font-bold pb-2">
+            <div class="pb-2 text-sm font-bold">
               {{ $t("editRestaurant.acceptUserMessage") }}
             </div>
-            <div class="bg-black bg-opacity-5 rounded-lg p-4">
+            <div class="rounded-lg bg-black bg-opacity-5 p-4">
               <b-checkbox v-model="shopInfo.acceptUserMessage">
                 <div class="text-sm font-bold">
                   {{ $t("editRestaurant.acceptUserMessageDescription") }}
                 </div>
               </b-checkbox>
-              <div class="text-xs pt-2">
+              <div class="pt-2 text-xs">
                 {{ $t("editRestaurant.acceptUserMessageNotice") }}
               </div>
             </div>
@@ -735,18 +808,18 @@
         <div>
           <!-- Hours -->
           <div class="mt-4 lg:mt-0">
-            <div class="text-sm font-bold pb-2">
+            <div class="pb-2 text-sm font-bold">
               {{ $t("shopInfo.hours") }} <span class="text-red-700">*</span>
             </div>
             <div class="text-sm font-bold text-red-700">
               {{ $t("editRestaurant.businessHourDescription") }}
             </div>
 
-            <div class="grid grid-cols-1 space-y-2 mt-2">
+            <div class="mt-2 grid grid-cols-1 space-y-2">
               <div
                 v-for="(day, index) in days"
                 :key="index"
-                class="bg-black bg-opacity-5 rounded-lg p-4"
+                class="rounded-lg bg-black bg-opacity-5 p-4"
               >
                 <!-- Enable/Disable Day and Copy Previous Day -->
                 <div class="flex items-center">
@@ -761,9 +834,9 @@
                   <div>
                     <a
                       @click="copyPreviousDay(index)"
-                      class="inline-flex justify-center items-center"
+                      class="inline-flex items-center justify-center"
                     >
-                      <i class="material-icons text-lg text-op-teal mr-2">
+                      <i class="material-icons mr-2 text-lg text-op-teal">
                         content_copy
                       </i>
                       <div class="text-sm font-bold text-op-teal">
@@ -794,7 +867,7 @@
 
                 <!-- Another Hours -->
                 <div class="mt-2">
-                  <div class="text-xs mb-1">
+                  <div class="mb-1 text-xs">
                     {{ $t("editRestaurant.businessHourOption") }}
                   </div>
                   <hours-input
@@ -813,12 +886,12 @@
 
           <!-- Temporary Closure -->
           <div class="mt-4">
-            <div class="text-sm font-bold pb-2">
+            <div class="pb-2 text-sm font-bold">
               {{ $t("shopInfo.temporaryClosure") }}
             </div>
 
-            <div class="bg-black bg-opacity-5 rounded-lg p-4 pb-2">
-              <div class="text-sm font-bold text-black text-opacity-40 mb-2">
+            <div class="rounded-lg bg-black bg-opacity-5 p-4 pb-2">
+              <div class="mb-2 text-sm font-bold text-black text-opacity-40">
                 {{ $t("shopInfo.temporaryClosureDescription") }}
               </div>
 
@@ -837,9 +910,9 @@
 
                 <b-button @click="addNewTemporaryClosure" class="b-reset-tw">
                   <div
-                    class="inline-flex justify-center items-center h-9 bg-black bg-opacity-5 px-4 rounded-r"
+                    class="inline-flex h-9 items-center justify-center rounded-r bg-black bg-opacity-5 px-4"
                   >
-                    <i class="material-icons text-lg text-op-teal mr-2">add</i>
+                    <i class="material-icons mr-2 text-lg text-op-teal">add</i>
                     <div class="text-sm font-bold text-op-teal">
                       {{ $t("shopInfo.temporaryClosureAdd") }}
                     </div>
@@ -848,11 +921,11 @@
               </b-field>
 
               <!-- Saved Closure Days -->
-              <div class="grid grid-cols-1 space-y-2 mb-2">
+              <div class="mb-2 grid grid-cols-1 space-y-2">
                 <template v-for="(day, key) in shopInfo.temporaryClosure || []">
                   <template v-if="day.getTime() > now.getTime()">
                     <div
-                      class="flex items-center bg-white bg-opacity-50 rounded px-2"
+                      class="flex items-center rounded bg-white bg-opacity-50 px-2"
                     >
                       <div class="flex-1 p-2">
                         {{ moment(day).format("YYYY/MM/DD") }}
@@ -867,7 +940,7 @@
                         <a
                           @click="deleteTemporaryClosure(key)"
                           class="inline-flex p-2"
-                          ><i class="material-icons text-red-700 text-lg"
+                          ><i class="material-icons text-lg text-red-700"
                             >delete</i
                           ></a
                         >
@@ -882,7 +955,7 @@
       </div>
 
       <!-- Publish Status -->
-      <div class="bg-black bg-opacity-5 mx-6 rounded-lg p-4 mt-6 text-center">
+      <div class="mx-6 mt-6 rounded-lg bg-black bg-opacity-5 p-4 text-center">
         <b-checkbox
           v-model="shopInfo.publicFlag"
           :disabled="hasError"
@@ -905,7 +978,7 @@
       </div>
 
       <!-- Save and Cancel -->
-      <div class="flex justify-center space-x-4 mt-6">
+      <div class="mt-6 flex justify-center space-x-4">
         <!-- Cancel Button -->
         <b-button
           class="b-reset-tw"
@@ -913,9 +986,9 @@
           :to="`/admin/restaurants/`"
         >
           <div
-            class="h-12 rounded-full bg-black bg-opacity-5 inline-flex items-center px-6"
+            class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
           >
-            <span class="text-black text-opacity-60 text-base font-bold">{{
+            <span class="text-base font-bold text-black text-opacity-60">{{
               $t("button.cancel")
             }}</span>
           </div>
@@ -928,10 +1001,10 @@
           class="b-reset-tw"
         >
           <div
-            class="h-12 rounded-full bg-op-teal inline-flex justify-center items-center px-6 shadow"
+            class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
             style="min-width: 8rem"
           >
-            <span class="text-white text-base font-bold">{{
+            <span class="text-base font-bold text-white">{{
               $t(
                 submitting
                   ? "editCommon.saving"
@@ -945,18 +1018,18 @@
       </div>
 
       <!-- Copy -->
-      <div class="text-center mt-6">
+      <div class="mt-6 text-center">
         <b-button
           @click="confirmCopy"
           :disabled="submitting"
           class="b-reset-tw"
         >
           <div
-            class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
           >
-            <i class="material-icons text-lg text-op-teal mr-2"> queue </i>
+            <i class="material-icons mr-2 text-lg text-op-teal"> queue </i>
             <span class="text-sm font-bold text-op-teal">{{
-              $t(submitting ? "editCommon.saving" : "editCommon.copy")
+              $t(submitting ? "editCommon.saving" : (isInMo ? "mobileOrder.copy" : "editCommon.copy"))
             }}</span>
           </div>
         </b-button>
@@ -980,7 +1053,7 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, updateDoc, getDoc } from "firebase/firestore";
 
 import { google_geocode } from "@/lib/google/api";
-import { ownPlateConfig } from "@/config/project";
+import { ownPlateConfig, moPickup } from "@/config/project";
 
 import BackButton from "@/components/BackButton.vue";
 import NotFound from "@/components/NotFound.vue";
@@ -1274,7 +1347,7 @@ export default defineComponent({
     };
     const confirmCopy = async () => {
       ctx.root.$store.commit("setAlert", {
-        code: "editCommon.copyAlert",
+        code: props.isInMo ? "mobileOrder.copyAlert" : "editCommon.copyAlert",
         callback: async () => {
           copyRestaurantFunc();
         },
@@ -1395,6 +1468,8 @@ export default defineComponent({
       updateAndUpdateMap,
 
       disableSave,
+
+      moPickup,
     };
   },
 });

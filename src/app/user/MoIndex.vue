@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex justify-center sm:max-w-7xl mt-6 mx-0 sm:mx-6 xl:mx-auto">
+    <div class="mx-0 mt-6 flex justify-center sm:mx-6 sm:max-w-7xl xl:mx-auto">
       <img
         :src="moBaseUrl + '/images/assets/mo_hero_mobile.png'"
         class="sm:hidden"
@@ -12,56 +12,56 @@
     </div>
 
     <div
-      class="sm:max-w-7xl sm:text-xl font-bold text-center text-black mt-6 mx-10 xl:mx-auto"
+      class="mx-10 mt-6 text-center font-bold text-black sm:max-w-7xl sm:text-xl xl:mx-auto"
     >
       {{ $t("lp.moTagline") }}
     </div>
 
     <div
-      class="flex justify-center sm:max-w-7xl mt-6 mb-10 mx-6 xl:mx-auto space-x-4"
+      class="mx-6 mt-6 mb-10 flex justify-center space-x-4 sm:max-w-7xl xl:mx-auto"
     >
-      <div class="w-full bg-white rounded-lg shadow-none px-4 pb-4 text-center">
-        <div class="w-32 h-20 mx-auto mb-4">
+      <div class="w-full rounded-lg bg-white px-4 pb-4 text-center shadow-none">
+        <div class="mx-auto mb-4 h-20 w-32">
           <img :src="moBaseUrl + '/images/assets/mo_icon_shipping.png'" />
         </div>
-        <div class="text-sm sm:text-base text-black">
+        <div class="text-sm text-black sm:text-base">
           {{ $t("lp.moDescription1") }}
         </div>
       </div>
-      <div class="w-full bg-white rounded-lg shadow-none px-4 pb-4 text-center">
-        <div class="w-32 h-20 mx-auto mb-4">
+      <div class="w-full rounded-lg bg-white px-4 pb-4 text-center shadow-none">
+        <div class="mx-auto mb-4 h-20 w-32">
           <img :src="moBaseUrl + '/images/assets/mo_icon_store.png'" />
         </div>
-        <div class="text-sm sm:text-base text-black">
+        <div class="text-sm text-black sm:text-base">
           {{ $t("lp.moDescription2") }}
         </div>
       </div>
     </div>
 
-    <div class="text-xl font-bold text-black text-opacity-40 mt-6 mx-6">
+    <div class="mx-6 mt-6 text-xl font-bold text-black text-opacity-40">
       {{ $t("find.shopList") }}
     </div>
     <!-- Restaurants -->
     <template v-for="state in allArea">
       <div v-if="restaurantsObj[state]">
         <div
-          class="text-base font-bold text-black text-opacity-40 mt-6 mx-6 mb-2"
+          class="mx-6 mt-6 mb-2 text-base font-bold text-black text-opacity-40"
         >
           {{ state }}
         </div>
         <div
-          class="mt-2 mx-6 grid items-center grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
+          class="mx-6 mt-2 grid grid-cols-1 items-center gap-2 lg:grid-cols-3 xl:grid-cols-4"
         >
           <div v-for="restaurant in restaurantsObj[state]">
             <router-link :to="`${moBasePath}/r/${restaurant.id}`">
               <div class="flex items-center">
-                <div class="w-12 h-12 rounded-full bg-black bg-opacity-10 mr-4">
+                <div class="mr-4 h-12 w-12 rounded-full bg-black bg-opacity-10">
                   <img
                     :src="resizedProfileImage(restaurant, '600')"
-                    class="w-12 h-12 rounded-full object-cover"
+                    class="h-12 w-12 rounded-full object-cover"
                   />
                 </div>
-                <div class="flex-1 text-base font-bold pr-2">
+                <div class="flex-1 pr-2 text-base font-bold">
                   {{ restaurant.restaurantName }}
                 </div>
               </div>
@@ -93,16 +93,17 @@ import { restaurant2AreaObj, sortRestaurantObj } from "@/utils/RestaurantUtils";
 import { defaultHeader } from "@/config/header";
 import { moBaseUrl, moTitle } from "@/config/project";
 
-import {
-  useIsInMo,
-} from "@/utils/utils";
+import { useIsInMo } from "@/utils/utils";
 
 export default defineComponent({
   name: "RestaurantIndex",
   metaInfo() {
     console.log(this.$t("find.shopList"), this.isInMo);
     return {
-      title: (this.isInMo ? [moTitle, this.$t("find.shopList")] : [defaultHeader.title, "Restaurant Index"]).join(" / "),
+      title: (this.isInMo
+        ? [moTitle, this.$t("find.shopList")]
+        : [defaultHeader.title, "Restaurant Index"]
+      ).join(" / "),
     };
   },
   props: {

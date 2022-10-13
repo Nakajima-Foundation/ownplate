@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper" @click="enableSound()">
+  <div class="flex min-h-screen flex-col" @click="enableSound()">
     <!-- Notification Banner -->
     <NotificationBanner />
 
@@ -10,11 +10,11 @@
     <SideMenuWrapper ref="sideMenu" />
 
     <!-- Main -->
-    <div class="main">
-      <div class="contents">
+    <div class="flex-1">
+      <div>
         <div
           v-if="underConstruction"
-          class="bg-yellow-200 text-center p-2 font-bold text-red-500"
+          class="bg-yellow-200 p-2 text-center font-bold text-red-500"
         >
           {{ $t("underConstruction") }}
         </div>

@@ -8,7 +8,7 @@
     <div v-else>
       <!-- Header -->
       <AdminHeader
-        class="mt-6 mx-6 lg:flex lg:items-center"
+        class="mx-6 mt-6 lg:flex lg:items-center"
         :shopInfo="shopInfo"
         :backLink="`/admin/restaurants/${shopInfo.restaurantId}/orders`"
         :showSuspend="false"
@@ -17,18 +17,18 @@
       />
 
       <!-- Title -->
-      <div class="mt-6 mx-6 text-xl font-bold text-black text-opacity-30">
+      <div class="mx-6 mt-6 text-xl font-bold text-black text-opacity-30">
         {{ $t("admin.order.suspendSettings") }}
       </div>
 
       <!-- Date -->
-      <div class="mt-4 mx-6 text-sm font-bold text-black text-opacity-60">
+      <div class="mx-6 mt-4 text-sm font-bold text-black text-opacity-60">
         {{ $t("admin.order.suspendNewOrders") }}
         <span v-if="date">: {{ $d(date.date, "short") }}</span>
       </div>
 
       <!-- Suspend and Unsuspend  -->
-      <div class="mt-6 mx-6">
+      <div class="mx-6 mt-6">
         <div v-if="!suspendUntil">
           <b-button
             v-for="time in availableTimes"
@@ -37,9 +37,9 @@
             class="b-reset-tw mr-4 mb-4"
           >
             <div
-              class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
             >
-              <i class="material-icons text-lg text-op-teal mr-2">alarm_off</i>
+              <i class="material-icons mr-2 text-lg text-op-teal">alarm_off</i>
               <div class="text-sm font-bold text-op-teal">
                 {{ $t("admin.order.suspendUntil", { display: time.display }) }}
               </div>
@@ -54,9 +54,9 @@
                 @click="handleSuspend(day, 24 * 60)"
               >
                 <div
-                  class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5 mr-4 mb-4"
+                  class="mr-4 mb-4 inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
                 >
-                  <i class="material-icons text-lg text-op-teal mr-2"
+                  <i class="material-icons mr-2 text-lg text-op-teal"
                     >alarm_off</i
                   >
                   <div class="text-sm font-bold text-op-teal">
@@ -72,11 +72,11 @@
         </div>
 
         <div v-else>
-          <div class="mt-4 p-4 bg-red-700 bg-opacity-10 rounded-lg text-center">
+          <div class="mt-4 rounded-lg bg-red-700 bg-opacity-10 p-4 text-center">
             <div class="text-base font-bold text-red-700">
               {{ $t("admin.order.suspending") }}
             </div>
-            <div class="text-sm font-bold text-red-700 mt-2">
+            <div class="mt-2 text-sm font-bold text-red-700">
               {{ $t("admin.order.unsuspendAt") }} {{ suspendUntil }}
             </div>
           </div>
@@ -84,9 +84,9 @@
           <div class="mt-4">
             <b-button class="b-reset-tw" @click="handleRemove">
               <div
-                class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+                class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
               >
-                <i class="material-icons text-lg text-op-teal mr-2">alarm_on</i>
+                <i class="material-icons mr-2 text-lg text-op-teal">alarm_on</i>
                 <div class="text-sm font-bold text-op-teal">
                   {{ $t("admin.order.unsuspend") }}
                 </div>
@@ -160,14 +160,13 @@ export default defineComponent({
     ) {
       return notFoundResponse;
     }
-    const { availableDays } = usePickupTime(props.shopInfo, {}, {}, ctx);
+    const { availableDays } = usePickupTime(props.shopInfo, {}, {}, ctx, props.isInMo, null);
 
     const availableTimes = computed(() => {
       // Note: availableDays will change if we change shopInfo.suspendUntil.
       // This logic works because we use availableDays when suspendUntil is not set or too old.
       if (availableDays.value.length > 0) {
         date.value = availableDays.value[0];
-        console.log(date.value.date);
         const times = date.value.times;
         return times.slice(1, 13); // first twelve time slots (except first) regardless of the time
       } else {
@@ -181,7 +180,6 @@ export default defineComponent({
         if (time < new Date()) {
           return false;
         }
-        console.log(time);
         return ctx.root.$d(time, "long");
       }
       return false;
@@ -195,7 +193,6 @@ export default defineComponent({
         tmpDate.setDate(tmpDate.getDate() + day);
       }
       const ts = firebase.firestore.Timestamp.fromDate(tmpDate);
-      console.log(ts, tmpDate);
       ctx.root.$store.commit("setLoading", true);
       await db.doc(`restaurants/${ctx.root.restaurantId()}`).update({
         suspendUntil: ts,

@@ -1,6 +1,6 @@
 import * as functions from "firebase-functions";
 import * as crypto from "crypto";
-import * as utils from "../lib/utils";
+import * as utils from "../../lib/utils";
 
 export const stripe = utils.get_stripe();
 

@@ -1,6 +1,6 @@
 <template>
-  <div class="mx-6 mt-6 lg:max-w-2xl lg:mx-auto">
-    <div class="bg-white rounded-lg shadow mt-6 p-6">
+  <div class="mx-6 mt-6 lg:mx-auto lg:max-w-2xl">
+    <div class="mt-6 rounded-lg bg-white p-6 shadow">
       <form @submit.prevent="handleNext">
         <!-- Title -->
         <div class="text-xl font-bold text-black text-opacity-30">
@@ -31,7 +31,7 @@
         <div class="mt-2 text-center">
           <b-button @click="handleCancel" class="b-reset-tw mr-4 mb-2">
             <div
-              class="inline-flex justify-center items-center h-12 w-32 rounded-full bg-black bg-opacity-5"
+              class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black bg-opacity-5"
             >
               <div class="text-base font-bold text-black text-opacity-60">
                 {{ $t("button.cancel") }}
@@ -45,7 +45,7 @@
             class="b-reset-tw"
           >
             <div
-              class="inline-flex justify-center items-center h-12 w-32 rounded-full bg-op-teal shadow"
+              class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-op-teal shadow"
             >
               <div class="text-base font-bold text-white">
                 {{ $t("button.next") }}

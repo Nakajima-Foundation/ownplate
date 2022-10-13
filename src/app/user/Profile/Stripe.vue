@@ -5,14 +5,14 @@
       {{ $t("profile.stripeInfo") }}
     </div>
 
-    <div class="text-base font-bold mt-2">
+    <div class="mt-2 text-base font-bold">
       {{ cardDescription }}
     </div>
 
     <div v-if="storedCard" class="mt-2">
       <b-button @click="handleDeleteCard" class="b-reset-tw">
-        <div class="inline-flex justify-center items-center">
-          <i class="material-icons text-lg text-red-700 mr-2">delete</i>
+        <div class="inline-flex items-center justify-center">
+          <i class="material-icons mr-2 text-lg text-red-700">delete</i>
           <div class="text-sm font-bold text-red-700">
             {{ $t("profile.deleteCard") }}
           </div>

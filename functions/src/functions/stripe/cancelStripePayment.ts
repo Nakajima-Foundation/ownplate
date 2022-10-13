@@ -1,26 +1,38 @@
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 
-import * as utils from "../lib/utils";
-import { sendMessageToCustomer } from "../functions/notify";
-import { Context } from "../models/TestType";
+import * as utils from "../../lib/utils";
+import { sendMessageToCustomer } from "../notify";
+import { Context } from "../../models/TestType";
 
 import { getStripeAccount, getStripeOrderRecord, getHash } from "./intent";
+import { validateCancelPayment } from "../../lib/validator";
+import { orderCancelPaymentData } from "../../lib/types";
 
 const stripe = utils.get_stripe();
 
 // This function is called by admin to cancel an exsting order
-export const cancelStripePayment = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext | Context) => {
-  const uid = utils.validate_admin_auth(context);
-
+export const cancelStripePayment = async (db: admin.firestore.Firestore, data: orderCancelPaymentData, context: functions.https.CallableContext | Context) => {
+  const ownerUid = utils.validate_owner_admin_auth(context);
+  const uid = utils.validate_auth(context);
+  
   const { restaurantId, orderId, lng } = data;
   utils.required_params({ restaurantId, orderId }); // lng is optional
 
+  const validateResult = validateCancelPayment(data);
+  if (!validateResult.result) {
+    console.error("cancelStripePayment", validateResult.errors);
+    throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+  }
   const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
   const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`);
   const restaurant = await utils.get_restaurant(db, restaurantId);
   const restaurantOwnerUid = restaurant["uid"];
-
+  if (restaurantOwnerUid !== ownerUid) {
+    console.error("cancelStripePayment: invalid operator:", uid);
+    throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+  };
+  
   const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
 
   try {
@@ -63,7 +75,7 @@ export const cancelStripePayment = async (db: admin.firestore.Firestore, data: a
     });
     // sendSMS is always true
     if (result.order.sendSMS) {
-      await sendMessageToCustomer(db, lng, "msg_stripe_payment_canceled", restaurant.restaurantName, result.order, restaurantId, orderId, {}, true);
+      await sendMessageToCustomer(db, lng || "", "msg_stripe_payment_canceled", restaurant.restaurantName, result.order, restaurantId, orderId, {}, true);
     }
     return { success: true, payment: "stripe" };
   } catch (error) {

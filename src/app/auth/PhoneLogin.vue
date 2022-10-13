@@ -51,7 +51,7 @@
             </b-field>
           </div>
           <div v-if="!isLocaleJapan">
-            <div class="text-xs mt-2">
+            <div class="mt-2 text-xs">
               For foreign customers:<br />
               For mobile phones contracted in countries other than Japan, please
               add the country code to the phone number like +1(555)555-111. You
@@ -60,7 +60,7 @@
           </div>
         </div>
       </div>
-      <div v-if="relogin" class="mt-4 text-xl font-bold text-center">
+      <div v-if="relogin" class="mt-4 text-center text-xl font-bold">
         {{ $t("profile.reSendSMSforDeleteAccount") }}
       </div>
       <!-- Submit Buttons -->
@@ -71,20 +71,21 @@
           class="b-reset-tw"
         >
           <div
-            class="inline-flex justify-center items-center h-12 w-32 rounded-full bg-black bg-opacity-5"
+            class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black bg-opacity-5"
           >
             <div class="text-base font-bold">{{ $t("button.cancel") }}</div>
           </div>
         </b-button>
 
         <b-button
+          id="button-send-tel"
           :loading="isLoading"
           @click="handleSubmit"
           :disabled="!readyToSendSMS"
           class="b-reset-tw ml-4"
         >
           <div
-            class="inline-flex justify-center items-center h-12 w-32 rounded-full bg-op-teal shadow"
+            class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-op-teal shadow"
           >
             <div class="text-base font-bold text-white">
               {{ $t("sms.send") }}
@@ -147,20 +148,21 @@
       <div class="mt-4 text-center">
         <b-button @click="$emit('dismissed', false)" class="b-reset-tw">
           <div
-            class="inline-flex justify-center items-center h-12 w-32 rounded-full bg-black bg-opacity-5"
+            class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black bg-opacity-5"
           >
             <div class="text-base font-bold">{{ $t("button.cancel") }}</div>
           </div>
         </b-button>
 
         <b-button
+          id="button-send-code"
           :loading="isLoading"
           @click="handleCode"
           :disabled="!readyToSendVerificationCode"
           class="b-reset-tw ml-4"
         >
           <div
-            class="inline-flex justify-center items-center h-12 w-32 rounded-full bg-op-teal shadow"
+            class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-op-teal shadow"
           >
             <div class="text-base font-bold text-white">
               {{ $t("sms.sendVerificationCode") }}

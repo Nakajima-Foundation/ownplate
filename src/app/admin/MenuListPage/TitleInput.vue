@@ -2,7 +2,7 @@
   <div class="lg:flex">
     <div class="lg:flex-1">
       <!-- Title Card -->
-      <div class="bg-black bg-opacity-5 rounded-lg p-4">
+      <div class="rounded-lg bg-black bg-opacity-5 p-4">
         <b-field>
           <b-input
             ref="textInput"
@@ -24,14 +24,14 @@
           class="b-reset-tw"
         >
           <div
-            class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
           >
             <i class="material-icons text-lg text-op-teal">arrow_upward</i>
           </div>
         </b-button>
         <b-button v-else disabled class="b-reset-tw">
           <div
-            class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
           >
             <i class="material-icons text-lg text-op-teal">arrow_upward</i>
           </div>
@@ -44,14 +44,14 @@
           class="b-reset-tw"
         >
           <div
-            class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
           >
             <i class="material-icons text-lg text-op-teal">arrow_downward</i>
           </div>
         </b-button>
         <b-button v-else disabled class="b-reset-tw">
           <div
-            class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
           >
             <i class="material-icons text-lg text-op-teal">arrow_downward</i>
           </div>
@@ -60,7 +60,7 @@
         <!-- Duplicate -->
         <b-button @click="forkItem" class="b-reset-tw">
           <div
-            class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
           >
             <i class="material-icons text-lg text-op-teal">queue</i>
           </div>
@@ -69,7 +69,7 @@
         <!-- Delete -->
         <b-button disabled class="b-reset-tw">
           <div
-            class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
           >
             <i class="material-icons text-lg text-red-700">delete</i>
           </div>

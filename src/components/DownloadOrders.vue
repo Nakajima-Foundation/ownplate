@@ -3,15 +3,15 @@
     :data="tableData"
     :fields="fields"
     :fieldNames="fieldNames"
-    :fileName="$t('order.history')"
+    :fileName="fileName"
   >
     <b-button class="b-reset-tw">
       <div
-        class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+        class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
       >
-        <i class="material-icons text-lg text-op-teal mr-2">save_alt</i>
+        <i class="material-icons mr-2 text-lg text-op-teal">save_alt</i>
         <div class="text-sm font-bold text-op-teal">
-          {{ $t("admin.report.download-csv") }}
+          {{ $t("admin.report.download-csv-history") }}
         </div>
       </div>
     </b-button>
@@ -19,17 +19,13 @@
 </template>
 
 <script>
-import {
-  defineComponent,
-  computed,
-} from "@vue/composition-api";
+import { defineComponent, computed } from "@vue/composition-api";
 import DownloadCsv from "@/components/DownloadCSV.vue";
 import moment from "moment";
 import { nameOfOrder } from "@/utils/strings";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import { order_status } from "@/config/constant";
-import { arrayOrNumSum } from "@/utils/utils";
-import { revenueCSVHeader, revenueMoCSVHeader } from "@/utils/reportUtils";
+import { arrayOrNumSum, orderTypeKey } from "@/utils/utils";
 
 export default defineComponent({
   components: {
@@ -40,10 +36,15 @@ export default defineComponent({
       type: Array,
       required: true,
     },
+    isInMo: {
+      type: Boolean,
+      required: true,
+    },
   },
   setup(props, ctx) {
     const fields = [
       "datePlaced",
+      "type",
       "dateEstimated",
       "dateConfirmed",
       "statusName",
@@ -70,6 +71,7 @@ export default defineComponent({
         }, "unexpected");
         return {
           datePlaced: moment(order.timePlaced).format("YYYY/MM/DD HH:mm"),
+          type: ctx.root.$t("order." + orderTypeKey(order, props.isInMo)),
           dateEstimated:
             order.timeEstimated &&
             moment(order.timeEstimated).format("YYYY/MM/DD HH:mm"),
@@ -87,7 +89,9 @@ export default defineComponent({
         };
       });
     });
+    const fileName = ctx.root.restaurantId() + "_orderhistory_detail.csv";
     return {
+      fileName,
       fields,
       fieldNames,
       tableData,

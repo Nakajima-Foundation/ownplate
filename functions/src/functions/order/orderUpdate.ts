@@ -11,7 +11,7 @@ import { validateOrderUpadte } from "../../lib/validator";
 
 // This function is called by admins (restaurant operators) to update the status of order
 export const update = async (db: admin.firestore.Firestore, data: orderUpdateData, context: functions.https.CallableContext) => {
-  const ownerUid = utils.validate_admin_auth(context);
+  const ownerUid = utils.validate_owner_admin_auth(context);
   const { restaurantId, orderId, status, lng, timezone, timeEstimated } = data;
   utils.required_params({ restaurantId, orderId, status, timezone }); // lng, timeEstimated is optional
 

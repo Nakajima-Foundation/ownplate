@@ -1,4 +1,5 @@
-const reportHeadersTop = ["name", "restaurantName", "statusName", "userName"];
+const reportHeadersTop = ["name", "restaurantName", "type", "statusName", "userName"];
+const reportHeadersTopMo = ["name", "storeName", "type", "statusName", "userName"];
 const reportHeadersTime = [
   "datePlaced",
   "dateAccepted",
@@ -22,7 +23,7 @@ export const reportHeaders = [
   "memo",
 ];
 export const reportHeadersForMo = [
-  ...reportHeadersTop,
+  ...reportHeadersTopMo,
   // "phoneNumber",
   "restaurantId",
   "shopId",
@@ -79,6 +80,7 @@ export const reportHeadersWithAddress = [
 
 export const revenueCSVHeader = [
   "date",
+  "type",
   "restaurantName",
   "orderStatus",
   "foodRevenue",
@@ -95,8 +97,10 @@ export const revenueCSVHeader = [
   "payment",
 ];
 
+// for csv
 export const revenueMoCSVHeader = [
   "date",
+  "type",
   "restaurantId",
   "shopId",
   "restaurantName",
@@ -108,4 +112,19 @@ export const revenueMoCSVHeader = [
   "total",
   "name",
   "payment",
+];
+
+// for table
+export const revenueTableHeader = [
+  "date",
+  "foodRevenue",
+  "foodTax",
+  "alcoholRevenue",
+  "salesTax",
+  "productSubTotal",
+  "tipShort",
+  "serviceTax",
+  "shippingCost",
+  "total",
+  "name",
 ];

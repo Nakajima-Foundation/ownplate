@@ -37,13 +37,13 @@ export const useMenuAndTitle = (
   const setCache = (cache: any) => {
     menuCache.value = cache;
   };
-
+  const isLoading = ref(true);
+  
   const loadMenu = () => {
     detacheMenu();
     if (isInMo && !category.value && !subCategory.value) {
       return;
     }
-
     const cacheKey =
       category.value && subCategory.value
         ? [category.value, subCategory.value].join("_")
@@ -52,6 +52,8 @@ export const useMenuAndTitle = (
       menus.value = menuCache.value[cacheKey];
       return;
     }
+    isLoading.value = true;
+    
     const menuQuery =
       category.value && subCategory.value
         ? query(
@@ -68,11 +70,10 @@ export const useMenuAndTitle = (
       query(menuQuery),
       (results) => {
         menus.value = (results.empty ? [] : results.docs).map(doc2data("menu"));
+        isLoading.value = false;
       },
 
       (e) => {
-        console.log(`restaurants/${menuRestaurantId.value}/menus`);
-        console.log(category.value, subCategory.value);
         console.log(e);
       }
     );
@@ -110,5 +111,6 @@ export const useMenuAndTitle = (
     itemsObj,
     numberOfMenus,
     loadMenu,
+    isLoading,
   };
 };

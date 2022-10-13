@@ -1,17 +1,17 @@
 <template>
   <!-- For Food Lovers -->
-  <div class="bg-white rounded-lg p-6 mt-4 lg:mt-0">
+  <div class="mt-4 rounded-lg bg-white p-6 lg:mt-0">
     <i class="material-icons text-7xl opacity-60">local_mall</i>
-    <div class="text-black opacity-60 text-sm font-bold">
+    <div class="text-sm font-bold text-black opacity-60">
       {{ $t("lp.forCustomer") }}
     </div>
     <!-- Go to Restaurants List -->
     <div class="mt-4">
       <router-link to="/r">
         <div
-          class="h-12 rounded-full bg-op-teal inline-flex items-center px-8 shadow"
+          class="inline-flex h-12 items-center rounded-full bg-op-teal px-8 shadow hover:bg-opacity-30"
         >
-          <span class="text-white text-base font-bold">
+          <span class="text-base font-bold text-white">
             {{ $t("lp.searchRestaurant") }}</span
           >
         </div>
@@ -24,17 +24,17 @@
         <div class="inline-flex items-center space-x-4">
           <router-link
             to="/r/area/12"
-            class="inline-flex items-center h-10 bg-op-yellow rounded-full bg-opacity-20 px-4 hover:bg-opacity-30"
+            class="inline-flex h-10 items-center rounded-full bg-ownplate-yellow px-4 hover:bg-opacity-30"
           >
-            <span class="text-white text-sm font-bold">{{
+            <span class="text-sm font-bold text-white">{{
               $t("lp.tokyo")
             }}</span>
           </router-link>
           <router-link
             to="/r/area/26"
-            class="inline-flex items-center h-10 bg-op-yellow rounded-full bg-opacity-20 px-4 hover:bg-opacity-30"
+            class="inline-flex h-10 items-center rounded-full bg-ownplate-yellow px-4 hover:bg-opacity-30"
           >
-            <span class="text-white text-sm font-bold">{{
+            <span class="text-sm font-bold text-white">{{
               $t("lp.osaka")
             }}</span>
           </router-link>

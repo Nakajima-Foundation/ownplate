@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="t-h6 text-black text-opacity-40 align-center m-t-24">
+    <div class="mt-6 text-center text-xl font-bold text-black text-opacity-40">
       {{ $t("admin.smaregi.authenticating") }}
     </div>
     <b-loading :is-full-page="false" :active="isValidating"></b-loading>
@@ -36,7 +36,6 @@ export default {
         this.isValidating = true;
         const { data } = await smaregiAuth({
           code: this.code,
-          client_id: smaregi.clientId,
         });
         console.log("smaregiAuth", data);
         if (data.result) {

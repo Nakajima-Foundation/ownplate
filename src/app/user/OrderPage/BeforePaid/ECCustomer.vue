@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- zip -->
-    <div class="text-sm font-bold pb-2">
+    <div class="pb-2 text-sm font-bold">
       {{ $t("order.ec.zip") }}
       <span class="text-red-700">*</span>
     </div>
@@ -17,7 +17,7 @@
         />
       </b-field>
     </div>
-    <div v-if="ecErrors['zip'].length > 0" class="mb-2 text-red-700 font-bold">
+    <div v-if="ecErrors['zip'].length > 0" class="mb-2 font-bold text-red-700">
       <div v-for="(error, key) in ecErrors['zip']">
         {{ $t(error) }}
       </div>
@@ -27,7 +27,7 @@
     <div class="mb-2">
       <button @click="getAddress()" class="">
         <div
-          class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-op-teal"
+          class="inline-flex h-9 items-center justify-center rounded-full bg-op-teal px-4"
         >
           <div class="text-sm font-bold text-white">
             {{ $t("order.ec.searchAddressFromZip") }}
@@ -38,11 +38,11 @@
     <div
       v-for="(address, key) in addressList"
       :key="key"
-      class="font-bold flex mb-2"
+      class="mb-2 flex font-bold"
     >
       <button @click="updateAddress(address)" class="flex-item mr-2">
         <div
-          class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-op-teal"
+          class="inline-flex h-9 items-center justify-center rounded-full bg-op-teal px-4"
         >
           <div class="text-sm font-bold text-white">
             {{ $t("order.ec.select") }}
@@ -55,7 +55,7 @@
     </div>
 
     <!-- prefecture -->
-    <div class="text-sm font-bold pb-2">
+    <div class="pb-2 text-sm font-bold">
       {{ $t("shopInfo.prefecture") }}
       <span class="text-red-700">*</span>
     </div>
@@ -78,7 +78,7 @@
     </b-field>
 
     <!-- address -->
-    <div class="text-sm font-bold pb-2">
+    <div class="pb-2 text-sm font-bold">
       {{ $t("order.ec.address") }}
       <span class="text-red-700">*{{ $t("order.ec.addressNotice") }}</span>
     </div>
@@ -97,7 +97,7 @@
     </div>
     <div
       v-if="ecErrors['address'].length > 0"
-      class="mb-2 text-red-700 font-bold"
+      class="mb-2 font-bold text-red-700"
     >
       <div v-for="(error, key) in ecErrors['address']">
         {{ $t(error) }}
@@ -105,7 +105,7 @@
     </div>
 
     <!-- name -->
-    <div class="text-sm font-bold pb-2">
+    <div class="pb-2 text-sm font-bold">
       {{ $t("order.ec.name") }}
       <span class="text-red-700">*</span>
     </div>
@@ -120,14 +120,14 @@
         />
       </b-field>
     </div>
-    <div v-if="ecErrors['name'].length > 0" class="mb-2 text-red-700 font-bold">
+    <div v-if="ecErrors['name'].length > 0" class="mb-2 font-bold text-red-700">
       <div v-for="(error, key) in ecErrors['name']">
         {{ $t(error) }}
       </div>
     </div>
     <!-- email -->
     <template v-if="shopInfo.isEC">
-      <div class="text-sm font-bold pb-2">
+      <div class="pb-2 text-sm font-bold">
         {{ $t("order.ec.email") }}
         <span class="text-red-700">*</span>
       </div>
@@ -146,7 +146,7 @@
       </div>
       <div
         v-if="ecErrors['email'].length > 0"
-        class="mb-2 text-red-700 font-bold"
+        class="mb-2 font-bold text-red-700"
       >
         <div v-for="(error, key) in ecErrors['email']">
           {{ $t(error) }}

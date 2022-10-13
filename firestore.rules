@@ -138,6 +138,9 @@ service cloud.firestore {
             && request.resource.data.email == request.auth.token.email;
         }
       }
+      match /private/notification {
+        allow read: if request.auth.token.parentUid  == userId
+      }
       match /children/{childId} {
         allow read, write: if request.auth.uid == userId;
         allow read: if request.auth.uid == childId;
@@ -307,6 +310,16 @@ service cloud.firestore {
         }
         match /log/{datestr}/phoneLog/{orderId} {
           allow read: if isSuper(request);
+        }
+
+        match /pickup/stock/subCategory/{subCategory} {
+          allow read: if true;
+        }
+        match /pickup/data/subCategory/{subCategory} {
+          allow read: if true;
+        }
+        match /order/data/subCategory/{subCategory} {
+          allow read: if true;
         }
     }
 

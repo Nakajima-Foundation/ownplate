@@ -9,7 +9,7 @@
         :hashtags="hashtag"
       >
         <a
-          class="inline-flex justify-center items-center"
+          class="inline-flex items-center justify-center"
           style="color: #3b5998"
         >
           <i class="fab fa-facebook mr-2"></i>
@@ -27,7 +27,7 @@
         :hashtags="hashtag"
       >
         <a
-          class="inline-flex justify-center items-center"
+          class="inline-flex items-center justify-center"
           style="color: #00acee"
         >
           <i class="fab fa-twitter mr-2"></i>

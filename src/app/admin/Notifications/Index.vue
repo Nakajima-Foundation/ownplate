@@ -2,7 +2,7 @@
   <div>
     <!-- Notification Settings Button -->
     <notification-setting-button
-      :notificationData="notificationData || defaultNotificationData"
+      :notificationData="notificationData"
       @openNotificationSettings="openNotificationSettings"
     />
 
@@ -10,20 +10,22 @@
     <notification-settings
       :shopInfo="shopInfo"
       :notificationData="notificationData"
-      :NotificationSettingsPopup="NotificationSettingsPopup"
+      :notificationSettingsPopup="notificationSettingsPopup"
       @close="closeNotificationSettings"
-      v-if="notificationData"
+      v-if="notificationData && loaded"
     />
   </div>
 </template>
 
 <script>
-import { db, firestore } from "@/plugins/firebase";
+import { defineComponent, ref } from "@vue/composition-api";
+import { db } from "@/lib/firebase/firebase9";
+import { doc, getDoc, serverTimestamp } from "firebase/firestore";
 
 import NotificationSettings from "./NotificationSettings";
 import NotificationSettingButton from "./NotificationSettingButton";
 
-export default {
+export default defineComponent({
   props: {
     shopInfo: {
       type: Object,
@@ -34,42 +36,52 @@ export default {
     NotificationSettings,
     NotificationSettingButton,
   },
-  data() {
+  setup(_, ctx) {
+    const notificationSettingsPopup = ref(false);
+    const defaultNotificationData = {
+      soundOn: null,
+      infinityNotification: null,
+      uid: ctx.root.$store.getters.uidAdmin,
+      createdAt: serverTimestamp(),
+    };
+    const notificationData = ref(defaultNotificationData);
+    const loaded = ref(false);
+    (async () => {
+      try {
+        const notification = await getDoc(
+          doc(
+            db,
+            `restaurants/${ctx.root.restaurantId()}/private/notifications`
+          )
+        );
+        notificationData.value = notification.exists
+          ? Object.assign(defaultNotificationData, notification.data())
+          : defaultNotificationData;
+        loaded.value = true;
+      } catch (error) {
+        if (error.code === "permission-denied") {
+          // We can ignore this type of error here
+          console.warn("Ignoring", error.code);
+        } else {
+          throw error;
+        }
+      }
+    })();
+    const openNotificationSettings = () => {
+      notificationSettingsPopup.value = true;
+    };
+    const closeNotificationSettings = () => {
+      notificationSettingsPopup.value = false;
+    };
     return {
-      NotificationSettingsPopup: false,
-      notificationData: null,
-      defaultNotificationData: {
-        soundOn: null,
-        infinityNotification: null,
-        uid: this.$store.getters.uidAdmin,
-        createdAt: firestore.FieldValue.serverTimestamp(),
-      },
+      notificationData,
+      notificationSettingsPopup,
+
+      openNotificationSettings,
+      closeNotificationSettings,
+
+      loaded,
     };
   },
-  async created() {
-    try {
-      const notification = await db
-        .doc(`restaurants/${this.restaurantId()}/private/notifications`)
-        .get();
-      this.notificationData = notification.exists
-        ? Object.assign(this.defaultNotificationData, notification.data())
-        : this.defaultNotificationData;
-    } catch (error) {
-      if (error.code === "permission-denied") {
-        // We can ignore this type of error here
-        console.warn("Ignoring", error.code);
-      } else {
-        throw error;
-      }
-    }
-  },
-  methods: {
-    openNotificationSettings() {
-      this.NotificationSettingsPopup = true;
-    },
-    closeNotificationSettings() {
-      this.NotificationSettingsPopup = false;
-    },
-  },
-};
+});
 </script>

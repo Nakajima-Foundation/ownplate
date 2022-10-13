@@ -2,10 +2,10 @@
   <div v-if="showAddLine && enableLine" class="mt-6 text-center">
     <b-button @click="handleLineAuth" class="b-reset-tw">
       <div
-        class="inline-flex justify-center items-center h-12 px-6 rounded-full"
+        class="inline-flex h-12 items-center justify-center rounded-full px-6"
         style="background: #18b900"
       >
-        <i class="fab fa-line text-2xl text-white mr-2" />
+        <i class="fab fa-line mr-2 text-2xl text-white" />
         <div class="text-base font-bold text-white">
           {{ $t("line.notifyMe") }}
         </div>

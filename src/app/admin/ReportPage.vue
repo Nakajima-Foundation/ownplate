@@ -5,7 +5,7 @@
     </div>
     <div v-else>
       <!-- Header -->
-      <div class="mt-6 mx-6 lg:flex lg:items-center">
+      <div class="mx-6 mt-6 lg:flex lg:items-center">
         <!-- Back and Preview -->
         <div class="flex space-x-4">
           <div class="flex-shrink-0">
@@ -19,12 +19,12 @@
         </div>
 
         <!-- Photo and Name -->
-        <div class="mt-4 lg:mt-0 lg:flex-1 lg:flex lg:items-center lg:mx-4">
+        <div class="mt-4 lg:mx-4 lg:mt-0 lg:flex lg:flex-1 lg:items-center">
           <div class="flex items-center">
-            <div class="flex-shrink-0 rounded-full bg-black bg-opacity-10 mr-4">
+            <div class="mr-4 flex-shrink-0 rounded-full bg-black bg-opacity-10">
               <img
                 :src="resizedProfileImage(shopInfo, '600')"
-                class="w-9 h-9 rounded-full object-cover"
+                class="h-9 w-9 rounded-full object-cover"
               />
             </div>
             <div class="text-base font-bold">
@@ -49,14 +49,14 @@
 
       <!-- Table -->
       <div class="mx-6 mt-6">
-        <table class="w-full bg-white rounded-lg shadow">
+        <table class="w-full rounded-lg bg-white shadow">
           <!-- Table Header -->
           <tr>
             <th
               class="p-2 text-xs font-bold"
               v-for="(field, k) in revenueTableHeader"
             >
-              <div class="text-right">{{ $t(field) }}</div>
+              <div class="text-right">{{ $t("order." + field) }}</div>
             </th>
           </tr>
 
@@ -159,13 +159,13 @@
           :data="tableData"
           :fields="fields"
           :fieldNames="fieldNames"
-          :fileName="fileName"
+          :fileName="fileNameSummary"
         >
           <b-button class="b-reset-tw">
             <div
-              class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
             >
-              <i class="material-icons text-lg text-op-teal mr-2">save_alt</i>
+              <i class="material-icons mr-2 text-lg text-op-teal">save_alt</i>
               <div class="text-sm font-bold text-op-teal">
                 {{ $t("admin.report.download-csv") }}
               </div>
@@ -179,10 +179,11 @@
         <report-details
           :orders="orders"
           :shopInfo="shopInfo"
-          :fileName="fileName"
+          :fileName="fileNameDetail"
           :isInMo="isInMo"
           :categoryDataObj="categoryDataObj"
           :allSubCategoryDataObj="allSubCategoryDataObj"
+          buttonTitle="admin.report.download-csv-monthly-details"
         />
       </div>
     </div>
@@ -209,13 +210,14 @@ import NotFound from "@/components/NotFound.vue";
 import { ownPlateConfig } from "@/config/project";
 import { nameOfOrder } from "@/utils/strings";
 import { midNightOfMonth } from "@/utils/dateUtils";
-import { revenueCSVHeader, revenueMoCSVHeader } from "@/utils/reportUtils";
+import { revenueCSVHeader, revenueMoCSVHeader, revenueTableHeader } from "@/utils/reportUtils";
 import { order_status_keys } from "@/config/constant";
 import {
   useAdminUids,
   doc2data,
   arrayOrNumSum,
   notFoundResponse,
+  orderTypeKey,
 } from "@/utils/utils";
 
 import { order2ReportData } from "@/models/orderInfo";
@@ -253,10 +255,10 @@ export default defineComponent({
     return {
       title: this.shopInfo.restaurantName
         ? [
-            "Admin Report",
-            this.shopInfo.restaurantName,
-            this.defaultTitle,
-          ].join(" / ")
+          "Admin Report",
+          this.shopInfo.restaurantName,
+          this.defaultTitle,
+        ].join(" / ")
         : this.defaultTitle,
     };
   },
@@ -279,22 +281,22 @@ export default defineComponent({
     });
     const monthIndex = ref(0);
     let detacher = null;
-
+    
     const { ownerUid, uid } = useAdminUids(ctx);
     if (!checkShopOwner(props.shopInfo, uid.value)) {
       return notFoundResponse;
     }
-
+    
     const fields = computed(() => {
       return props.isInMo ? revenueMoCSVHeader : revenueCSVHeader;
     });
-
+    
     const fieldNames = computed(() => {
       return fields.value.map((field) => {
         return ctx.root.$t(`order.${field}`);
       });
     });
-
+    
     const { loadCategory, categoryDataObj } = useCategory(props.moPrefix);
     const { allSubCategoryDataObj, loadAllSubcategory } = useAllSubcategory(
       props.moPrefix
@@ -303,26 +305,14 @@ export default defineComponent({
       loadCategory();
       loadAllSubcategory();
     }
-
-    const revenueTableHeader = [
-      "order.date",
-      "order.foodRevenue",
-      "order.foodTax",
-      "order.alcoholRevenue",
-      "order.salesTax",
-      "order.productSubTotal",
-      "order.tipShort",
-      "order.serviceTax",
-      "order.shippingCost",
-      "order.total",
-      "order.name",
-    ];
+    
     const tableData = computed(() => {
       return orders.value.map((order) => {
         return {
           date: moment(order.timeConfirmed).format("YYYY/MM/DD"),
           restaurantId: props.shopInfo.restaurantId, // mo
           shopId: props.shopInfo.shopId, // mo
+          type: ctx.root.$t("order." + orderTypeKey(order, props.isInMo)),
           restaurantName: props.shopInfo.restaurantName,
           orderStatus: ctx.root.$t(
             "order.status." + order_status_keys[order.status]
@@ -350,25 +340,36 @@ export default defineComponent({
         return { index, date };
       });
     });
-    const fileName = computed(() => {
+    const fileNameSummary = computed(() => {
       return [
         moment(lastSeveralMonths.value[monthIndex.value].date).format(
           "YYYY-MM"
         ),
         "revenue",
         props.shopInfo.restaurantId,
+        "summary",
       ].join("-");
     });
-
+    const fileNameDetail = computed(() => {
+      return [
+        moment(lastSeveralMonths.value[monthIndex.value].date).format(
+          "YYYY-MM"
+        ),
+        "revenue",
+        props.shopInfo.restaurantId,
+        "detail",
+      ].join("-");
+    });
+    
     const updateQuery = () => {
       detacher && detacher();
       let query = db
-        .collection(`restaurants/${props.shopInfo.restaurantId}/orders`)
-        .where(
-          "timeConfirmed",
-          ">=",
-          lastSeveralMonths.value[monthIndex.value].date
-        );
+          .collection(`restaurants/${props.shopInfo.restaurantId}/orders`)
+          .where(
+            "timeConfirmed",
+            ">=",
+            lastSeveralMonths.value[monthIndex.value].date
+          );
       if (monthIndex.value > 0) {
         query = query.where(
           "timeConfirmed",
@@ -380,7 +381,7 @@ export default defineComponent({
         const serviceTaxRate = props.shopInfo.alcoholTax / 100;
         orders.value = snapshot.docs
           .map(doc2data("order"))
-          .map((order) => order2ReportData(order, serviceTaxRate));
+          .map((order) => order2ReportData(order, serviceTaxRate, props.isInMo));
         total.value = orders.value.reduce(
           (total, order) => {
             const accounting = order.accounting;
@@ -418,7 +419,7 @@ export default defineComponent({
       const value = encodeURIComponent(order.description || nameOfOrder(order));
       return `${ownPlateConfig.stripe.search}?query=${value}`;
     };
-
+    
     updateQuery();
 
     onUnmounted(() => {
@@ -439,8 +440,8 @@ export default defineComponent({
       tableData,
       fields,
       fieldNames,
-      fileName,
-
+      fileNameSummary,
+      fileNameDetail,
       orderUrl,
       nameOfOrder,
       searchUrl,

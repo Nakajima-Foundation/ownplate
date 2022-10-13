@@ -1,17 +1,17 @@
 <template>
   <div>
-    <div class="mt-6 mx-6">
+    <div class="mx-6 mt-6">
       <back-button :url="basePath + '/u/profile/'" />
     </div>
 
-    <div class="mx-6 mt-6 lg:max-w-2xl lg:mx-auto">
+    <div class="mx-6 mt-6 lg:mx-auto lg:max-w-2xl">
       <!-- Title -->
       <div class="text-xl font-bold text-black text-opacity-30">
         {{ $t("profile.address") }}
       </div>
 
       <!-- Card -->
-      <div class="bg-white rounded-lg shadow mt-2 p-6">
+      <div class="mt-2 rounded-lg bg-white p-6 shadow">
         <div class="text-sm font-bold">
           {{ $t("order.ec.zip") }}
         </div>
@@ -35,7 +35,7 @@
         <div class="text-center">
           <b-button @click="resetAddress" class="b-reset-tw">
             <div
-              class="inline-flex justify-center items-center h-16 px-6 rounded-full bg-op-teal shadow"
+              class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal px-6 shadow"
               style="min-width: 288px"
             >
               <div class="text-xl font-bold text-white">
@@ -44,7 +44,7 @@
             </div>
           </b-button>
         </div>
-        <div class="text-center mt-2 font-bold">
+        <div class="mt-2 text-center font-bold">
           * {{ $t("profile.resetAddressMessage") }}
         </div>
         <div class="text-center font-bold">
@@ -57,7 +57,8 @@
 
 <script>
 import { defineComponent, computed, ref } from "@vue/composition-api";
-import { db } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import { getDoc, doc, setDoc } from "firebase/firestore";
 import { useBasePath } from "@/utils/utils";
 
 import BackButton from "@/components/BackButton.vue";
@@ -82,14 +83,13 @@ export default defineComponent({
     }
 
     if (docPath.value) {
-      db.doc(docPath.value)
-        .get()
+      getDoc(doc(db, docPath.value))
         .then((doc) => {
           customerInfo.value = doc.data();
         });
     }
     const resetAddress = async () => {
-      await db.doc(docPath.value).set({});
+      await setDoc(doc(db, docPath.value), {});
       customerInfo.value = {};
     };
 

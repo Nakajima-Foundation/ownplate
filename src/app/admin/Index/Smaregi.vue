@@ -1,17 +1,17 @@
 <template>
   <!-- Smaregi -->
   <div class="mt-6">
-    <div class="text-xl font-bold text-black text-opacity-40 mb-2">
+    <div class="mb-2 text-xl font-bold text-black text-opacity-40">
       {{ $t("admin.thirdPartyService.title") }}
     </div>
 
-    <div class="bg-white shadow rounded-lg p-4">
-      <div class="text-center mt-2">
+    <div class="rounded-lg bg-white p-4 shadow">
+      <div class="mt-2 text-center">
         <router-link
           to="/admin/smaregi/index"
-          class="h-12 rounded-full inline-flex items-center px-6 border-2 border-op-teal"
+          class="inline-flex h-12 items-center rounded-full border-2 border-op-teal px-6"
         >
-          <span class="text-op-teal text-base font-bold">{{
+          <span class="text-base font-bold text-op-teal">{{
             $t("admin.thirdPartyService.openSmaregi")
           }}</span>
         </router-link>
@@ -21,7 +21,7 @@
         <a
           href="https://docs.omochikaeri.com/manuals/smaregi.pdf"
           target="_blank"
-          class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+          class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
         >
           <span class="text-sm font-bold text-op-teal">
             {{ $t("admin.thirdPartyService.smaregiManualLink") }}</span
@@ -33,7 +33,7 @@
         <a
           href="https://apps.smaregi.jp/apps/762"
           target="_blank"
-          class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+          class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
         >
           <span class="text-sm font-bold text-op-teal">
             {{ $t("admin.thirdPartyService.smaregiAppMarket") }}

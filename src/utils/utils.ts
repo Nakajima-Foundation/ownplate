@@ -46,14 +46,16 @@ export const getRestaurantId = (root: any) => {
   return root.$route.params.restaurantId;
 };
 
-/* 
-    resizedProfileImage(restaurant, size) {
-      return (
-        (restaurant.images?.profile?.resizedImages || {})[size] ||
-        restaurant.restProfilePhoto
-      );
-    },
-*/
+export const resizedProfileImage = (
+  restaurant: RestaurantInfoData,
+  size: string
+) => {
+  return (
+    (restaurant.images?.profile?.resizedImages || {})[size] ||
+    restaurant.restProfilePhoto
+  );
+};
+
 export const arrayChunk = <T>(arr: T[], size = 1) => {
   const array = [...arr];
   return array.reduce((current: T[][], value: T, index: number) => {
@@ -150,11 +152,6 @@ export const cleanObject = (obj: { [key: string]: any }) => {
     }
     return tmp;
   }, {});
-};
-
-export const forcedError = (key: string, ctx: any) => {
-  const debug = ctx.root.$route.query.error;
-  return debug === key ? "---forced-error---" : "";
 };
 
 /*
@@ -282,6 +279,20 @@ const displayOption = (option, shopInfo, item) => {
 };
 
 */
+
+export const priceWithTax = (shopInfo: RestaurantInfoData, menu: MenuData) => {
+  return Math.round(
+    (() => {
+      if (shopInfo.inclusiveTax) {
+        return menu.price;
+      }
+      if (menu.tax === "alcohol") {
+        return (1 + shopInfo.alcoholTax * 0.01) * menu.price;
+      }
+      return (1 + shopInfo.foodTax * 0.01) * menu.price;
+    })()
+  );
+};
 
 export const getPartner = (shopOwner: ShopOwnerData) => {
   return ((shopOwner || {}).partners || []).map((p: string) => {
@@ -638,10 +649,14 @@ export const useAdminUids = (ctx: any) => {
       ? ctx.root.$store.getters.parentId
       : ctx.root.$store.getters.uidAdmin;
   });
+  const emailVerified = computed(() => {
+    return ctx.root.$store.state.user?.emailVerified
+  });
   return {
     isOwner,
     uid,
     ownerUid,
+    emailVerified,
   };
 };
 
@@ -709,8 +724,27 @@ export const notFoundResponse = {
 };
 
 export const smallImageErrorHandler = (e: any) => {
-  e.target.src = '/images/noimage_small.png';
+  e.target.src = "/images/noimage_small.png";
 };
 export const imageErrorHandler = (e: any) => {
-  e.target.src = '/images/noimage.png';
+  e.target.src = "/images/noimage.png";
 };
+
+export const orderType = (order: OrderInfoData, isInMo: boolean) => {
+  if (order.isEC) {
+    return "EC";
+  }
+  if (order.isDelivery) {
+    return "Delivery";
+  }
+  if (order.isPickup) {
+    return "Pickup";
+  }
+  if (isInMo) {
+    return "PreOrder";
+  }
+  return "Takeout";
+};
+export const orderTypeKey = (order: OrderInfoData, isInMo: boolean) => {
+  return "orderType" + orderType(order, isInMo);
+}

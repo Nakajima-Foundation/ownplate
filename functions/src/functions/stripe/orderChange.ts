@@ -2,23 +2,26 @@ import Stripe from "stripe";
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 
-import { order_status } from "../common/constant";
-import * as utils from "../lib/utils";
-import { orderAccounting, getGroupRestautantRef, createNewOrderData } from "../functions/order/orderCreated";
-import { sendMessageToCustomer } from "../functions/notify";
-import { costCal } from "../common/commonUtils";
-import { Context } from "../models/TestType";
+import { order_status } from "../../common/constant";
+import * as utils from "../../lib/utils";
+import { orderAccounting, getGroupRestautantRef, createNewOrderData } from "../order/orderCreated";
+import { sendMessageToCustomer } from "../notify";
+import { costCal } from "../../common/commonUtils";
+import { Context } from "../../models/TestType";
 import { getStripeAccount, getStripeOrderRecord, getPaymentMethodData, getHash } from "./intent";
+
+import { orderChangeData, newOrderData } from "../../lib/types";
+import { validateOrderChange } from "../../lib/validator";
 
 const multiple = utils.getStripeRegion().multiple; // 100 for USD, 1 for JPY
 const stripe = utils.get_stripe();
 
-const getUpdateOrder = (newOrder, order, options, rawOptions) => {
+const getUpdateOrder = (newOrders: newOrderData[], order, options, rawOptions) => {
   const updateOrderData = {};
   const updateOptions = {};
   const updateRawOptions = {};
 
-  newOrder.forEach((data) => {
+  newOrders.forEach((data) => {
     const { menuId, index } = data;
     if (!utils.isEmpty(order[menuId]) && !utils.isEmpty(order[menuId][index])) {
       if (utils.isEmpty(updateOrderData[menuId])) {
@@ -40,10 +43,16 @@ const getUpdateOrder = (newOrder, order, options, rawOptions) => {
   };
 };
 
-export const orderChange = async (db: any, data: any, context: functions.https.CallableContext | Context) => {
-  const ownerUid = utils.validate_admin_auth(context);
+export const orderChange = async (db: admin.firestore.Firestore, data: orderChangeData, context: functions.https.CallableContext | Context) => {
+  const ownerUid = utils.validate_owner_admin_auth(context);
   const { restaurantId, orderId, newOrder, timezone, lng } = data;
-  utils.required_params({ restaurantId, orderId, newOrder, timezone }); // lng, timeEstimated is optional
+  utils.required_params({ restaurantId, orderId, newOrder, timezone }); // lng is optional
+
+  const validateResult = validateOrderChange(data);
+  if (!validateResult.result) {
+    console.error("createIntent", validateResult.errors);
+    throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+  }
 
   const restaurantRef = db.doc(`restaurants/${restaurantId}`);
   const restaurantData = (await restaurantRef.get()).data() || {};
@@ -160,7 +169,7 @@ export const orderChange = async (db: any, data: any, context: functions.https.C
       });
     }
     if (order.sendSMS) {
-      await sendMessageToCustomer(db, lng, "msg_order_updated", restaurantData.restaurantName, order, restaurantId, orderId, {}, true);
+      await sendMessageToCustomer(db, lng || "", "msg_order_updated", restaurantData.restaurantName, order, restaurantId, orderId, {}, true);
     }
     return {};
   } catch (error) {

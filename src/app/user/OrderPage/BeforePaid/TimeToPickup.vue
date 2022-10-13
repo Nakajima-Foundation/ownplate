@@ -2,7 +2,7 @@
   <div>
     <!-- Date Picker -->
     <div v-if="availableDays.length > 0">
-      <div class="bg-white rounded-lg shadow p-4">
+      <div class="rounded-lg bg-white p-4 shadow">
         <b-select v-model="dayIndex">
           <option
             v-for="(day, index) in availableDays"
@@ -26,7 +26,7 @@
     </div>
 
     <!-- Not Available -->
-    <div v-else class="bg-red-700 bg-opacity-10 p-4 rounded-lg">
+    <div v-else class="rounded-lg bg-red-700 bg-opacity-10 p-4">
       <div class="text-base font-bold text-red-700">
         {{ $t("order.notAvailable") }}
       </div>
@@ -44,7 +44,7 @@ import {
 } from "@vue/composition-api";
 
 import firebase from "firebase/compat/app";
-import { isNull } from "@/utils/utils";
+import { isNull, useIsInMo } from "@/utils/utils";
 import { usePickupTime } from "@/utils/pickup";
 
 export default defineComponent({
@@ -67,6 +67,10 @@ export default defineComponent({
     const dayIndex = ref(0);
     const time = ref(0);
 
+    const isInMo = useIsInMo(ctx.root);
+    const isPickup = computed(() => {
+      return props.orderInfo.isPickup;
+    });
     const exceptData = computed(() => {
       return (Object.values(props.orderInfo.menuItems) || []).reduce(
         (tmp, menu) => {
@@ -93,7 +97,9 @@ export default defineComponent({
       props.shopInfo,
       exceptData,
       {},
-      ctx
+      ctx,
+      isInMo.value,
+      isPickup,
     );
 
     const days = computed(() => {

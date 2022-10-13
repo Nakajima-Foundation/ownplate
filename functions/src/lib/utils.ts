@@ -28,14 +28,28 @@ export const validate_auth = (context: functions.https.CallableContext | Context
   return context.auth.uid;
 };
 
+export const validate_customer_auth = (context: functions.https.CallableContext | Context) => {
+  if (!context.auth || !context.auth.token?.phone_number) {
+    throw new functions.https.HttpsError("failed-precondition", "The function must be called while authenticated.");
+  }
+  return context.auth.uid;
+};
+
 export const validate_admin_auth = (context: functions.https.CallableContext | Context) => {
-  if (!context.auth) {
+  if (!context.auth || !context.auth?.token?.email) {
+    throw new functions.https.HttpsError("failed-precondition", "The function must be called while authenticated.");
+  }
+  return context.auth.uid;
+};
+
+export const validate_owner_admin_auth = (context: functions.https.CallableContext | Context) => {
+  if (!context.auth || !context.auth?.token?.email) {
     throw new functions.https.HttpsError("failed-precondition", "The function must be called while authenticated.");
   }
   return context.auth?.token?.parentUid || context.auth.uid;
 };
 export const validate_parent_admin_auth = (context: functions.https.CallableContext | Context) => {
-  if (!context.auth) {
+  if (!context.auth || !context.auth?.token?.email) {
     throw new functions.https.HttpsError("failed-precondition", "The function must be called while authenticated.");
   }
   if (context.auth?.token?.parentUid) {

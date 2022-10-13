@@ -3,12 +3,12 @@
     <template v-for="(subcategory, key) in subCategoryData">
       <router-link
         :to="`${categoryBathPath}/${subcategory.id}`"
-        class="inline-flex justify-center items-center h-9 rounded-full bg-black bg-opacity-5 mx-1 mt-2"
+        class="mx-1 mt-2 inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5"
       >
-        <div class="text-sm font-bold text-op-teal mr-2">
+        <div class="mr-2 text-sm font-bold text-op-teal">
           <i
             style="font-size: 1rem"
-            class="material-icons ml-2 text-op-teal text-sm inline-flex text-center"
+            class="material-icons ml-2 inline-flex text-center text-sm text-op-teal"
             v-if="subCategoryId === subcategory.id"
             >check</i
           >

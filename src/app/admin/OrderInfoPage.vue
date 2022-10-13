@@ -7,7 +7,7 @@
     <template v-else>
       <!-- Header -->
       <AdminHeader
-        class="mt-6 mx-6 lg:flex lg:items-center"
+        class="mx-6 mt-6 lg:flex lg:items-center"
         :shopInfo="shopInfo"
         :backLink="parentUrl"
         :showSuspend="true"
@@ -18,20 +18,20 @@
       <!-- Body -->
       <div
         v-if="orderInfo.status === order_status.transaction_hide"
-        class="mt-6 mx-6"
+        class="mx-6 mt-6"
       >
-        <div class="bg-white rounded-lg shadow p-4">
+        <div class="rounded-lg bg-white p-4 shadow">
           <div>{{ $t("order.status.transaction_hide") }}</div>
         </div>
       </div>
 
-      <div v-else class="mt-6 mx-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
+      <div v-else class="mx-6 mt-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
         <!-- Left -->
         <div>
-          <div class="bg-white shadow rounded-lg p-4">
+          <div class="rounded-lg bg-white p-4 shadow">
             <!-- Order ID, Total, Payment, and Tips -->
             <div class="text-center">
-              <div class="inline-flex justify-center items-center">
+              <div class="inline-flex items-center justify-center">
                 <div class="text-4xl">
                   {{ orderName }}
                 </div>
@@ -46,7 +46,7 @@
                       <div>{{ $n(orderInfo.totalCharge, "currency") }}</div>
                       <div
                         :class="
-                          'text-xs font-bold stripe_' + orderInfo.payment.stripe
+                          'stripe_ text-xs font-bold' + orderInfo.payment.stripe
                         "
                       >
                         {{
@@ -75,9 +75,9 @@
             </div>
 
             <!-- Notice Delivery -->
-            <div v-if="orderInfo.isDelivery" class="text-center mt-2">
+            <div v-if="orderInfo.isDelivery" class="mt-2 text-center">
               <div
-                class="text-base font-bold text-red-700 bg-red-700 bg-opacity-10 rounded-lg p-4 inline-flex"
+                class="inline-flex rounded-lg bg-red-700 bg-opacity-10 p-4 text-base font-bold text-red-700"
               >
                 {{ $t("admin.order.deliveryOrder") }}
               </div>
@@ -86,7 +86,7 @@
             <!-- Note for Payment Completion -->
             <div
               v-if="paymentIsNotCompleted"
-              class="mt-4 bg-yellow-500 bg-opacity-10 rounded-lg p-4 text-sm font-bold text-yellow-500"
+              class="mt-4 rounded-lg bg-yellow-500 bg-opacity-10 p-4 text-sm font-bold text-yellow-500"
             >
               {{ $t("admin.order.paymentIsNotCompleted") }}
             </div>
@@ -102,9 +102,9 @@
                 @click="openCancel()"
               >
                 <div
-                  class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+                  class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
                 >
-                  <i class="material-icons text-lg mr-2 text-red-700">delete</i>
+                  <i class="material-icons mr-2 text-lg text-red-700">delete</i>
                   <div class="text-sm font-bold text-red-700">
                     {{ $t("admin.order.cancelButton") }}
                   </div>
@@ -113,7 +113,7 @@
 
               <b-button v-if="cancelStatus" class="b-reset-tw">
                 <div
-                  class="inline-flex justify-center items-center rounded-full h-16 w-64 bg-red-700 bg-opacity-10 text-red-700"
+                  class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-red-700 bg-opacity-10 text-red-700"
                 >
                   <div>
                     <div class="text-base font-extrabold">
@@ -129,7 +129,7 @@
 
             <!-- Cancel Popup-->
             <b-modal :active.sync="cancelPopup" :width="488" scroll="keep">
-              <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
+              <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
                 <!-- Title -->
                 <div class="text-xl font-bold text-black text-opacity-40">
                   {{ $t("admin.order.cancelTitle") }}
@@ -145,14 +145,14 @@
                   <div>
                     <a
                       :href="nationalPhoneURI"
-                      class="inline-flex justify-center items-center h-12 px-6 rounded-full border-2 border-op-teal"
+                      class="inline-flex h-12 items-center justify-center rounded-full border-2 border-op-teal px-6"
                     >
                       <div class="text-base font-bold text-op-teal">
                         {{ nationalPhoneNumber }}
                       </div>
                     </a>
                   </div>
-                  <div class="font-bold mt-2" v-if="!isInMo">
+                  <div class="mt-2 font-bold" v-if="!isInMo">
                     {{ orderInfo.name }}
                   </div>
                 </div>
@@ -165,7 +165,7 @@
                     class="b-reset-tw"
                   >
                     <div
-                      class="inline-flex justify-center items-center h-12 px-6 rounded-full bg-red-700"
+                      class="inline-flex h-12 items-center justify-center rounded-full bg-red-700 px-6"
                     >
                       <div class="text-base font-bold text-white">
                         {{ $t("admin.order.delete") }}
@@ -181,7 +181,7 @@
                 <div class="mt-6 text-center">
                   <a
                     @click="closeCancel()"
-                    class="inline-flex justify-center items-center h-12 rounded-full px-6 bg-black bg-opacity-5"
+                    class="inline-flex h-12 items-center justify-center rounded-full bg-black bg-opacity-5 px-6"
                     style="min-width: 8rem"
                   >
                     <div class="text-base font-bold text-black text-opacity-60">
@@ -197,14 +197,14 @@
               <div class="text-xs font-bold">
                 {{ $t("order.timeRequested") }}
               </div>
-              <div class="text-base mt-1">
+              <div class="mt-1 text-base">
                 {{ timeRequested }}
               </div>
               <div v-if="timeEstimated" class="mt-2">
                 <div class="text-xs font-bold">
                   {{ $t("order.timeToPickup") }}
                 </div>
-                <div class="text-base mt-1">
+                <div class="mt-1 text-base">
                   {{ timeEstimated }}
                 </div>
               </div>
@@ -227,7 +227,7 @@
             </div>
           </div>
 
-          <div class="bg-white shadow rounded-lg p-4 mt-2">
+          <div class="mt-2 rounded-lg bg-white p-4 shadow">
             <!-- Phone Number -->
             <div class="mt-2 text-center">
               <div class="text-xs font-bold" v-if="orderInfo.phoneNumber">
@@ -236,12 +236,12 @@
               <!--Line icon -->
               <div class="text-xs font-bold" v-if="orderInfo.isLiff">
                 <i
-                  class="fab fa-line text-lg mr-2"
+                  class="fab fa-line mr-2 text-lg"
                   style="color: #4ec263"
                   v-if="orderInfo.isLiff"
                 />LINE ({{ orderInfo.uid.slice(5, 15) }})
               </div>
-              <div class="text-base mt-1">
+              <div class="mt-1 text-base">
                 <div v-if="orderInfo.phoneNumber">
                   <a :href="nationalPhoneURI" class="text-base font-bold">{{
                     nationalPhoneNumber
@@ -258,7 +258,7 @@
               <div>
                 <div
                   v-if="isWarningOrder"
-                  class="bg-red-700 bg-opacity-10 rounded-lg p-4 text-center inline-flex"
+                  class="inline-flex rounded-lg bg-red-700 bg-opacity-10 p-4 text-center"
                 >
                   <div class="text-base font-bold text-red-700">
                     {{ $t("order.continuousOrder") }}<br />
@@ -304,9 +304,9 @@
                 "
               >
                 <div
-                  class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+                  class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
                 >
-                  <i class="material-icons text-lg text-op-teal mr-2">face</i>
+                  <i class="material-icons mr-2 text-lg text-op-teal">face</i>
                   <span class="text-sm font-bold text-op-teal">{{
                     $t("order.customerOrderHistory")
                   }}</span>
@@ -316,13 +316,13 @@
           </div>
           <!-- Print -->
           <div
-            class="bg-white shadow rounded-lg p-4 mt-2 text-center"
+            class="mt-2 rounded-lg bg-white p-4 text-center shadow"
             v-if="isDev"
           >
             <div>
               <b-button @click="print()" class="b-reset-tw">
                 <div
-                  class="inline-flex justify-center items-center rounded-full h-16 w-64 light"
+                  class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-black bg-opacity-5"
                 >
                   Print
                 </div>
@@ -331,7 +331,7 @@
             <div class="mt-2">
               <b-button @click="download()" class="b-reset-tw">
                 <div
-                  class="inline-flex justify-center items-center rounded-full h-16 w-64 light"
+                  class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-black bg-opacity-5"
                 >
                   Download
                 </div>
@@ -339,7 +339,7 @@
             </div>
           </div>
 
-          <div class="bg-white shadow rounded-lg p-4 mt-2">
+          <div class="mt-2 rounded-lg bg-white p-4 shadow">
             <!-- Order Status -->
             <div>
               <div
@@ -354,7 +354,7 @@
                   class="b-reset-tw"
                 >
                   <div
-                    class="inline-flex justify-center items-center rounded-full h-16 w-64"
+                    class="inline-flex h-16 w-64 items-center justify-center rounded-full"
                     :class="classOf(orderState)"
                   >
                     <div>
@@ -383,9 +383,9 @@
                 class="b-reset-tw"
               >
                 <div
-                  class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+                  class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
                 >
-                  <i class="material-icons text-lg mr-2 text-red-700"
+                  <i class="material-icons mr-2 text-lg text-red-700"
                     >credit_card</i
                   >
                   <div class="text-sm font-bold text-red-700">
@@ -401,7 +401,7 @@
               :width="488"
               scroll="keep"
             >
-              <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
+              <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
                 <!-- Title -->
                 <div class="text-xl font-bold text-black text-opacity-40">
                   {{ $t("admin.order.paymentCancelTitle") }}
@@ -417,14 +417,14 @@
                   <div>
                     <a
                       :href="nationalPhoneURI"
-                      class="inline-flex justify-center items-center h-12 px-6 rounded-full border-2 border-op-teal"
+                      class="inline-flex h-12 items-center justify-center rounded-full border-2 border-op-teal px-6"
                     >
                       <div class="text-base font-bold text-op-teal">
                         {{ nationalPhoneNumber }}
                       </div>
                     </a>
                   </div>
-                  <div class="font-bold mt-2">
+                  <div class="mt-2 font-bold">
                     {{ orderInfo.name }}
                   </div>
                 </div>
@@ -437,7 +437,7 @@
                     class="b-reset-tw"
                   >
                     <div
-                      class="inline-flex justify-center items-center h-12 px-6 rounded-full bg-red-700"
+                      class="inline-flex h-12 items-center justify-center rounded-full bg-red-700 px-6"
                     >
                       <div class="text-base font-bold text-white">
                         {{ $t("admin.order.paymentCancel") }}
@@ -453,7 +453,7 @@
                 <div class="mt-6 text-center">
                   <a
                     @click="closePaymentCancel()"
-                    class="inline-flex justify-center items-center h-12 rounded-full px-6 bg-black bg-opacity-5"
+                    class="inline-flex h-12 items-center justify-center rounded-full bg-black bg-opacity-5 px-6"
                     style="min-width: 8rem"
                   >
                     <div class="text-base font-bold text-black text-opacity-60">
@@ -470,7 +470,7 @@
         <div class="mt-4 lg:mt-0">
           <div class="grid grid-cols-1 space-y-4">
             <!-- Message from customer -->
-            <div v-if="hasMemo" class="bg-white rounded-lg p-4 shadow">
+            <div v-if="hasMemo" class="rounded-lg bg-white p-4 shadow">
               <div class="text-xs font-bold text-black text-opacity-60">
                 {{ $t("admin.order.messageFromCustomer") }}
               </div>
@@ -490,7 +490,7 @@
             ></order-info>
             <div v-if="editedAvailableOrders.length > 1">
               <div
-                class="bg-white rounded-lg shadow p-4 text-center"
+                class="rounded-lg bg-white p-4 text-center shadow"
                 v-if="orderInfo.orderUpdatedAt"
               >
                 <div>{{ $t("admin.order.changeOrderDetail") }}</div>
@@ -499,14 +499,14 @@
               </div>
 
               <div
-                class="bg-white rounded-lg shadow p-4 text-center"
+                class="rounded-lg bg-white p-4 text-center shadow"
                 v-if="availableOrderChange"
               >
                 <div>{{ $t("admin.order.changeOrderDetail") }}</div>
                 <div class="mt-4">
                   <b-button @click="toggleIsOrderChange" class="b-reset-tw">
                     <div
-                      class="inline-flex justify-center items-center h-12 px-6 rounded-full bg-red-700"
+                      class="inline-flex h-12 items-center justify-center rounded-full bg-red-700 px-6"
                     >
                       <div class="text-base font-bold text-white">
                         {{
@@ -527,7 +527,7 @@
                     v-if="isOrderChange"
                   >
                     <div
-                      class="inline-flex justify-center items-center h-12 px-6 rounded-full bg-red-700"
+                      class="inline-flex h-12 items-center justify-center rounded-full bg-red-700 px-6"
                     >
                       <div class="text-base font-bold text-white">
                         {{ $t("admin.order.confirmOrderChange") }}
@@ -606,9 +606,9 @@ import {
   doc2data,
   useAdminUids,
   useRestaurantId,
-  forcedError,
   notFoundResponse,
   stripeRegion,
+  convOrderStateForText,
 } from "@/utils/utils";
 
 import {
@@ -1029,6 +1029,7 @@ export default defineComponent({
     });
     const availableOrderChange = computed(() => {
       return (
+        !props.isInMo &&
         orderInfo.value &&
         orderInfo.value.status === order_status.order_placed &&
         isNull(orderInfo.value.orderUpdatedAt)
@@ -1072,7 +1073,7 @@ export default defineComponent({
         ctx.root.$store.commit("setLoading", true);
         const params = {
           timezone,
-          restaurantId: restaurantId.value + forcedError("confirm", ctx),
+          restaurantId: restaurantId.value,
           orderId: orderId.value,
         };
         if (timeOffset.value > 0) {
@@ -1110,7 +1111,7 @@ export default defineComponent({
       try {
         ctx.root.$store.commit("setLoading", true);
         const params = {
-          restaurantId: restaurantId.value + forcedError("update", ctx),
+          restaurantId: restaurantId.value,
           orderId: orderId.value,
           status: newStatus,
           timezone,
@@ -1147,7 +1148,7 @@ export default defineComponent({
       try {
         updating.value = "order_canceled";
         const { data } = await stripeCancelIntent({
-          restaurantId: restaurantId.value + forcedError("cancel", ctx),
+          restaurantId: restaurantId.value,
           orderId: orderId.value,
         });
         sendRedunded();
@@ -1172,7 +1173,7 @@ export default defineComponent({
             changing.value = true;
             ctx.root.$store.commit("setLoading", true);
             const params = {
-              restaurantId: restaurantId.value + forcedError("update", ctx),
+              restaurantId: restaurantId.value,
               orderId: orderId.value,
               newOrder: edited_available_order_info.value,
               timezone,
@@ -1201,7 +1202,7 @@ export default defineComponent({
       try {
         updating.value = "payment_canceled";
         const { data } = await stripePaymentCancelIntent({
-          restaurantId: restaurantId.value + forcedError("cancel", ctx),
+          restaurantId: restaurantId.value,
           orderId: orderId.value,
         });
         console.log("paymentCancel", data);
@@ -1220,7 +1221,7 @@ export default defineComponent({
       if (order_status[statusKey] == orderInfo.value.status) {
         return statusKey;
       }
-      return "light";
+      return "bg-black bg-opacity-5";
     };
     const openCancel = () => {
       cancelPopup.value = true;
@@ -1302,6 +1303,8 @@ export default defineComponent({
       closeCancel,
       openPaymentCancel,
       closePaymentCancel,
+
+      convOrderStateForText,
     };
   },
 });

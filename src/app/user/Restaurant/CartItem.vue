@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex justify-between gap-3 mt-1 mx-6">
+    <div class="mx-6 mt-1 flex justify-between gap-3">
       <div>
         <div class="font-bold text-black">
           {{ item.itemName }}
@@ -27,16 +27,16 @@
         </div>
       </div>
       <div
-        class="w-12 h-12 lg:w-24 lg:h-24 bg-white border-gray-100 rounded-lg shadow-none"
+        class="h-12 w-12 rounded-lg border-gray-100 bg-white shadow-none lg:h-24 lg:w-24"
       >
         <img
           :src="image"
-          class="w-12 h-12 lg:w-24 lg:h-24 rounded object-cover"
+          class="h-12 w-12 rounded object-cover lg:h-24 lg:w-24"
           @error="smallImageErrorHandler"
         />
       </div>
     </div>
-    <div class="flex justify-between mt-2 mx-6">
+    <div class="mx-6 mt-2 flex justify-between">
       <div class="mt-2 text-black">
         <Price
           :shopInfo="{ inclusiveTax: true }"
@@ -46,30 +46,34 @@
       <div class="flex justify-end">
         <span
           @click="decrease()"
-          class="inline-flex justify-center items-center h-9 w-16 rounded-full bg-red-700 bg-opacity-10"
+          class="inline-flex h-9 w-16 items-center justify-center rounded-full bg-red-700 bg-opacity-10"
         >
           <i class="material-icons text-lg text-red-700">remove</i>
         </span>
         <div
-          class="mx-5 mt-0.5 flex-1 text-center font-bold text-xl text-op-teal"
+          class="mx-5 mt-0.5 flex-1 text-center text-xl font-bold text-op-teal"
         >
           {{ quantity }}
         </div>
         <span
           @click="increase()"
-          class="inline-flex justify-center items-center h-9 w-16 rounded-full bg-op-teal bg-opacity-10"
+          class="inline-flex h-9 w-16 items-center justify-center rounded-full bg-op-teal bg-opacity-10"
         >
           <i class="material-icons text-lg text-op-teal">add</i>
         </span>
       </div>
     </div>
-    <hr class="border border-solid border-black border-opacity-5 mx-6 my-3" />
+    <hr class="mx-6 my-3 border border-solid border-black border-opacity-5" />
   </div>
 </template>
 
 <script>
 import { defineComponent, computed } from "@vue/composition-api";
-import { itemOptionCheckbox2options, getPriceWithTax, smallImageErrorHandler } from "@/utils/utils";
+import {
+  itemOptionCheckbox2options,
+  getPriceWithTax,
+  smallImageErrorHandler,
+} from "@/utils/utils";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import Price from "@/components/Price";

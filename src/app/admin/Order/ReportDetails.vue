@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="!hideTable" class="pb-6">
-      <table class="w-full bg-white rounded-lg shadow">
+      <table class="w-full rounded-lg bg-white shadow">
         <tr>
           <th
             v-for="(field, index) in fields"
@@ -32,11 +32,11 @@
     >
       <b-button class="b-reset-tw">
         <div
-          class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+          class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
         >
-          <i class="material-icons text-lg text-op-teal mr-2">save_alt</i>
+          <i class="material-icons mr-2 text-lg text-op-teal">save_alt</i>
           <div class="text-sm font-bold text-op-teal">
-            {{ $t("admin.report.download-csv-details") }}
+            {{ $t(buttonTitle) }}
           </div>
         </div>
       </b-button>
@@ -98,6 +98,10 @@ export default defineComponent({
     },
     allSubCategoryDataObj: {
       type: Object,
+      required: true,
+    },
+    buttonTitle: {
+      type: String,
       required: true,
     },
   },
@@ -193,6 +197,11 @@ export default defineComponent({
                 orderId: order.id,
                 name: nameOfOrder(order),
                 restaurantName: props.shopInfo.restaurantName,
+                type: writeonFirstLine(
+                  index,
+                  key,
+                  ctx.root.$t("order.orderType" + order.type)
+                ),
                 uid: order.uid, // mo
                 restaurantId: props.shopInfo.restaurantId, // mo
                 shopId: props.shopInfo.shopId, // mo
@@ -236,7 +245,9 @@ export default defineComponent({
                 userName: writeonFirstLine(
                   index,
                   key,
-                  props.isInMo ? "-" : (order.name || ctx.root.$t("order.unspecified"))
+                  props.isInMo
+                    ? "-"
+                    : order.name || ctx.root.$t("order.unspecified")
                 ),
                 "ec.name": writeonFirstLine(
                   index,

@@ -1,5 +1,5 @@
 <template>
-  <section class="section">
+  <section class="mx-auto max-w-full px-6 pb-12 pt-4">
     <div v-if="$store.getters.isSuperAdmin">
       <h2>Admin Page</h2>
       <router-link to="/s/orders" class="text-sm font-bold text-op-teal"

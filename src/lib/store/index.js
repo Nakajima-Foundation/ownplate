@@ -21,6 +21,7 @@ export const state = () => ({
   soundFile: "",
   isWindowActive: false, // active status of browser window
   dialog: null, // for DialogBox
+  // dialog: {alert: {}, error: {}}, // for DialogBox
   isLoading: false, // for full-page loading animation
   isFirefoxPBM: undefined, // true, false, null
 });

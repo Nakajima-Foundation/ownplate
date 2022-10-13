@@ -1,12 +1,13 @@
 import express from "express";
+import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import * as fs from "fs";
-import { ownPlateConfig } from "../common/project";
+import { ownPlateConfig } from "../../common/project";
 
 import * as Sentry from "@sentry/node";
 
-import * as utils from "../lib/utils";
-import * as stripeLog from "../lib/stripeLog";
+import * as utils from "../../lib/utils";
+import * as stripeLog from "../../lib/stripeLog";
 
 import * as apis from "./apis";
 import * as apis2 from "./apis2";
@@ -14,6 +15,8 @@ import * as apis2 from "./apis2";
 import * as smaregi from "./smaregiApi";
 
 import * as xmlbuilder from "xmlbuilder";
+
+import { validateFirebaseId } from "../../lib/validator";
 
 import moment from "moment";
 
@@ -114,9 +117,6 @@ const getMenuData = async (restaurantName, menuId) => {
     exists: false,
   };
 };
-const isId = (id: string) => {
-  return /^[a-zA-Z0-9]+$/.test(id);
-};
 const ogpPage = async (req: any, res: any) => {
   const { restaurantName, menuId } = req.params;
   const template_data = fs.readFileSync("./templates/index.html", {
@@ -129,10 +129,10 @@ const ogpPage = async (req: any, res: any) => {
   res.setHeader("X-Permitted-Cross-Domain-Policies", "none");
   res.setHeader("Referrer-Policy", "no-referrer");
   try {
-    if (!isId(restaurantName)) {
+    if (!validateFirebaseId(restaurantName)) {
       return res.status(404).send(template_data);
     }
-    if (menuId && !isId(menuId)) {
+    if (menuId && !validateFirebaseId(menuId)) {
       return res.status(404).send(template_data);
     }
     const restaurant = await db.doc(`restaurants/${restaurantName}`).get();
@@ -230,7 +230,7 @@ const ownerPage = async (req: any, res: any) => {
   res.setHeader("X-Permitted-Cross-Domain-Policies", "none");
   res.setHeader("Referrer-Policy", "no-referrer");
   try {
-    if (!isId(ownerId)) {
+    if (!validateFirebaseId(ownerId)) {
       return res.status(404).send(template_data);
     }
     const ownerData = await getOwnerData(ownerId);
@@ -335,12 +335,42 @@ export const stripe_parser = async (req, res) => {
   }
 };
 
+export const alogger = async (req, res, next) => {
+  const message = "access " + req.path;
+  const { path, method, originalUrl, params, query, headers } = req;
+
+  const ip = headers["fastly-client-ip"];
+  const mobile = headers["sec-ch-ua-mobile"];
+  const platform = headers["sec-ch-ua-platform"];
+  const ua = headers["user-agent"];
+  const country = headers["x-country-code"];
+  const host = headers["x-forwarded-host"];
+
+  const log = {
+    path,
+    method,
+    originalUrl,
+    params,
+    query,
+    ip,
+    mobile,
+    platform,
+    ua,
+    country,
+    host,
+  };
+  functions.logger.log(message, log);
+  next();
+};
+
 router.post("/stripe/callback", logger, stripe_parser);
 
 app.use(express.json());
-app.use("/1.0", router);
-app.use("/api/1.0/", apis.apiRouter);
-app.use("/api/2.0/", apis2.apiRouter);
+app.use(alogger);
+
+app.use("/1.0", router); // for stripe
+// app.use("/api/1.0/", apis.apiRouter);
+// app.use("/api/2.0/", apis2.apiRouter);
 
 app.use("/smaregi/1.0", smaregi.smaregiRouter);
 

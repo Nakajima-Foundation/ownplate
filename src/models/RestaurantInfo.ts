@@ -23,6 +23,7 @@ export interface RestaurantInfoData {
 
   lineUrl: string;
   instagramUrl: string;
+  uberEatsUrl: string;
   orderNotice: string;
   orderThanks: string;
   phoneCall: boolean;
@@ -41,6 +42,10 @@ export interface RestaurantInfoData {
   pickUpMinimumCookTime: number;
   pickUpDaysInAdvance: number;
 
+  moPickUpMinimumCookTime: number;
+  moPickUpDaysInAdvance: number;
+
+  
   deliveryMinimumCookTime: number;
   suspendUntil: any;
 

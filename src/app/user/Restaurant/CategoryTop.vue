@@ -14,15 +14,15 @@
       >
         <div @click="closeCategory">
           <div
-            class="mb-2 w-full bg-white border-gray-100 rounded-lg shadow-none"
+            class="mb-2 w-full rounded-lg border-gray-100 bg-white shadow-none"
           >
             <img
               :src="moBaseUrl + '/images/category/' + cat.id + '.jpg'"
               @error="smallImageErrorHandler"
-              class="inline-block align-middle rounded-lg"
+              class="inline-block rounded-lg align-middle"
             />
           </div>
-          <div class="mb-2 w-full text-xs leading-tight font-bold text-op-teal">
+          <div class="mb-2 w-full text-xs font-bold leading-tight text-op-teal">
             {{ cat.name }}
           </div>
         </div>
