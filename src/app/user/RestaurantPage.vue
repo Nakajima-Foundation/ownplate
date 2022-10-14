@@ -588,8 +588,9 @@ export default defineComponent({
     });
 
     watch(howtoreceive, (value) => {
-      console.log(value);
-      console.log(orders);
+      if (isInMo.value) {
+        orders.value = {};
+      }
     });
     
     const { loadTitle, titles, titleLists } = useTitles(restaurantId);
