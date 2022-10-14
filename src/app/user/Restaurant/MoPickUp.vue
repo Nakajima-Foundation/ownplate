@@ -1,31 +1,35 @@
 <template>
+  <div>
   <div class="p-4">
     <div class="text-ms font-bold">
       {{ $t("shopInfo.howToReceive") }}
     </div>
     <div>
-      <b-radio
-        name="howtoreceive"
-        :value="value === 'takeout' ? 'takeout' : ''"
-        :native-value="value"
-        @input="input('takeout')"
+      <div
+        class="rounded-lg bg-opacity-50"
+        :class="value === 'takeout' ? 'bg-blue-600' : 'bg-blue-200' "
+        @click="input('takeout')"
       >
         {{ $t("mobileOrder.shopInfo.takeout") }}
-      </b-radio>
-      <b-radio
-        name="howtoreceive"
-        :value="value === 'pickup' ? 'pickup' : ''"
-        :native-value="value"
-        @input="input('pickup')"
+      </div>
+      <div
+        class="rounded-lg bg-opacity-50"
+        :class="value === 'takeout' ? 'bg-blue-200' : 'bg-blue-600' "
+        @click="input('pickup')"
       >
         {{ $t("mobileOrder.shopInfo.pickup") }}
-      </b-radio>
+      </div>
     </div>
+  </div>
+  <b-modal
+    :active.sync="popup"
+    >
+  </b-modal>
   </div>
 </template>
 
 <script>
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent, ref } from "@vue/composition-api";
 export default defineComponent({
   props: {
     shopInfo: {
@@ -38,11 +42,22 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
+    const popup = ref(false);
+
     const input = (value) => {
-      ctx.emit('input', value);
+      if (props.value !== value) {
+        ctx.root.$store.commit("setAlert", {
+          title: "mobileOrder.title",
+          code: "mobileOrder.code",
+          callback: async () => {
+          ctx.emit('input', value);
+          }
+        });
+      }
     };
     return {
       input,
+      popup,
     };
   },
 });
