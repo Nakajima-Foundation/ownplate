@@ -98,7 +98,6 @@ import { useIsInMo } from "@/utils/utils";
 export default defineComponent({
   name: "RestaurantIndex",
   metaInfo() {
-    console.log(this.$t("find.shopList"), this.isInMo);
     return {
       title: (this.isInMo
         ? [moTitle, this.$t("find.shopList")]
@@ -142,7 +141,6 @@ export default defineComponent({
             ? 1
             : -1;
         });
-        // console.log(sorted.map(a => a.zip));
         ret[key] = sorted;
         return ret;
       }, {});
