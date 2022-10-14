@@ -540,7 +540,6 @@ export default defineComponent({
     });
     const moSoldOutDataSet = computed(() => {
       if (isPickup.value) {
-        console.log(pickupStocks.value[subCategory.value]);
         return pickupStocks.value[subCategory.value] || {};
       }
       return {};
