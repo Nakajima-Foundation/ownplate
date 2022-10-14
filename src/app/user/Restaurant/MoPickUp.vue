@@ -8,7 +8,7 @@
         name="howtoreceive"
         :value="value === 'takeout' ? 'takeout' : ''"
         :native-value="value"
-        @input="$emit('input', 'takeout')"
+        @input="input('takeout')"
       >
         {{ $t("mobileOrder.shopInfo.takeout") }}
       </b-radio>
@@ -16,7 +16,7 @@
         name="howtoreceive"
         :value="value === 'pickup' ? 'pickup' : ''"
         :native-value="value"
-        @input="$emit('input', 'pickup')"
+        @input="input('pickup')"
       >
         {{ $t("mobileOrder.shopInfo.pickup") }}
       </b-radio>
@@ -36,6 +36,14 @@ export default defineComponent({
       type: String,
       required: true,
     },
+  },
+  setup(props, ctx) {
+    const input = (value) => {
+      ctx.emit('input', value);
+    };
+    return {
+      input,
+    };
   },
 });
 </script>
