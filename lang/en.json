@@ -25,7 +25,9 @@
     "name": "Online ordering service",
     "shopInfo": {
       "takeout": "Online order",
-      "pickup": "Takeaway now"
+      "pickup": "Takeaway now",
+      "takeoutDesctiption": "Click here to place an order",
+      "pickupDesctiption": "Click here to put an item on hold"
     }
   },
   "profile": {

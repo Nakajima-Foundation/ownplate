@@ -120,8 +120,14 @@
 
             <div v-if="showSubCategory && moPickup">
               <!-- Mo Pickup Toggle -->
-              <div class="mx-6 mt-2 lg:mx-0" v-if="shopInfo.enableMoPickup">
-                <div class="rounded-lg bg-white shadow">
+              <div
+                class="mx-6 mt-4 mb-2 lg:mx-0"
+                v-if="shopInfo.enableMoPickup"
+              >
+                <div class="mb-2 text-xl font-bold text-black text-opacity-30">
+                  {{ $t("shopInfo.howToReceive") }}
+                </div>
+                <div>
                   <MoPickUp :shopInfo="shopInfo" v-model="howtoreceive" :orders="orders" />
                 </div>
               </div>
@@ -208,7 +214,8 @@
                       <div
                         v-if="
                           item._dataType === 'menu' &&
-                          (!moPickup || (isPublucDataSet[item.id] || {}).isPublic)
+                          (!moPickup ||
+                            (isPublucDataSet[item.id] || {}).isPublic)
                         "
                         :key="[subCategoryKey, item.id].join('_')"
                       >
@@ -227,7 +234,8 @@
                           :prices="prices[item.id] || []"
                           :mode="mode"
                           :moSoldOut="
-                           moPickup && ((moSoldOutDataSet[item.id] || {}).isStock === false)
+                            moPickup &&
+                            (moSoldOutDataSet[item.id] || {}).isStock === false
                           "
                           @didOrderdChange="didOrderdChange($event)"
                         ></MenuMo>
@@ -522,7 +530,7 @@ export default defineComponent({
       menuObj,
       ctx,
       isInMo.value,
-      isPickup,
+      isPickup
     );
 
     // for Mo
@@ -939,7 +947,7 @@ export default defineComponent({
 
       isInMo,
       isPickup,
-        
+
       isPublucDataSet,
       moSoldOutDataSet,
 
