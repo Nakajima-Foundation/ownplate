@@ -6,14 +6,14 @@
     </div>
     <div>
       <div
-        class="rounded-lg bg-opacity-50"
+        class="rounded-lg bg-opacity-50 cursor-pointer"
         :class="value === 'takeout' ? 'bg-blue-600' : 'bg-blue-200' "
         @click="input('takeout')"
       >
         {{ $t("mobileOrder.shopInfo.takeout") }}
       </div>
       <div
-        class="rounded-lg bg-opacity-50"
+        class="rounded-lg bg-opacity-50 cursor-pointer"
         :class="value === 'takeout' ? 'bg-blue-200' : 'bg-blue-600' "
         @click="input('pickup')"
       >
