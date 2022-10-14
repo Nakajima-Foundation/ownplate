@@ -108,7 +108,7 @@
       <div
         v-if="
           regionTip.choices.length > 0 &&
-          (isTipEditable || tip > 0) &&
+          (isTipEditable || previewTip) &&
           enableTip
         "
         class="mt-4 border-t-2 border-solid border-black border-opacity-10 pt-4"
@@ -119,7 +119,7 @@
           </div>
           <div class="text-right">
             <div class="text-base">
-              {{ $n(tip, "currency") }}
+              {{ $n(previewTip, "currency") }}
             </div>
           </div>
         </div>
@@ -262,6 +262,13 @@ export default {
     isTipEditable() {
       return this.orderInfo.status === order_status.validation_ok;
     },
+
+    previewTip() { // both edittable tip or orderinfo tip
+      if (this.isTipEditable) {
+        return this.tip;
+      }
+      return this.orderInfo.tip;
+    },
     previewTotal() {
       return this.editable || this.isTipEditable
         ? this.orderInfo.total +
@@ -278,7 +285,6 @@ export default {
         return this.groupData.enableTip;
       }
       return true;
-      // return !this.shopInfo.isEC;
     },
     maxTip() {
       return this.calcTip(this.regionTip.max);
