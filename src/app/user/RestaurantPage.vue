@@ -122,7 +122,7 @@
               <!-- Mo Pickup Toggle -->
               <div class="mx-6 mt-2 lg:mx-0" v-if="shopInfo.enableMoPickup">
                 <div class="rounded-lg bg-white shadow">
-                  <MoPickUp :shopInfo="shopInfo" v-model="howtoreceive" />
+                  <MoPickUp :shopInfo="shopInfo" v-model="howtoreceive" :orders="orders" />
                 </div>
               </div>
             </div>
@@ -587,6 +587,11 @@ export default defineComponent({
       }
     });
 
+    watch(howtoreceive, (value) => {
+      console.log(value);
+      console.log(orders);
+    });
+    
     const { loadTitle, titles, titleLists } = useTitles(restaurantId);
 
     const { loadCategory, categoryData } = useCategory(props.moPrefix);

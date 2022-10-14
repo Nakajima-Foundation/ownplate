@@ -36,6 +36,10 @@ export default defineComponent({
       type: Object,
       required: true,
     },
+    orders: {
+      type: Object,
+      required: true,
+    },
     value: {
       type: String,
       required: true,
@@ -46,13 +50,17 @@ export default defineComponent({
 
     const input = (value) => {
       if (props.value !== value) {
-        ctx.root.$store.commit("setAlert", {
-          title: "mobileOrder.title",
-          code: "mobileOrder.code",
-          callback: async () => {
+        if (Object.values(props.orders).length === 0) {
           ctx.emit('input', value);
-          }
-        });
+        } else {
+          ctx.root.$store.commit("setAlert", {
+            title: "mobileOrder.title",
+            code: "mobileOrder.code",
+            callback: async () => {
+              ctx.emit('input', value);
+            }
+          });
+        }
       }
     };
     return {
