@@ -42,7 +42,9 @@
     "name": "ネット注文サービス",
     "shopInfo": {
       "takeout": "予約注文",
-      "pickup": "ピックアップ"
+      "pickup": "ピックアップ",
+      "takeoutDesctiption": "お取り寄せ注文はこちら",
+      "pickupDesctiption": "本日の受け取りはこちら"
     }
   },
   "profile": {

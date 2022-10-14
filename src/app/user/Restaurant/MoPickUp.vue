@@ -1,30 +1,42 @@
 <template>
   <div>
-  <div class="p-4">
-    <div class="text-ms font-bold">
-      {{ $t("shopInfo.howToReceive") }}
-    </div>
-    <div>
+    <div class="grid grid-cols-2 gap-2">
       <div
-        class="rounded-lg bg-opacity-50"
-        :class="value === 'takeout' ? 'bg-blue-600' : 'bg-blue-200 cursor-pointer' "
+        class="h-full w-full rounded-lg bg-white p-3 shadow"
+        :class="
+          value === 'takeout'
+            ? 'border-2 border-op-teal text-op-teal'
+            : 'cursor-pointer text-black text-opacity-40'
+        "
         @click="input('takeout')"
       >
-        {{ $t("mobileOrder.shopInfo.takeout") }}
+        <i class="material-icons w-full text-center"> shopping_cart </i>
+        <div class="-mt-0.5 text-center text-lg font-bold">
+          {{ $t("mobileOrder.shopInfo.takeout") }}
+        </div>
+        <div class="mt-0.5 px-4 text-center text-xs font-bold">
+          {{ $t("mobileOrder.shopInfo.takeoutDesctiption") }}
+        </div>
       </div>
       <div
-        class="rounded-lg bg-opacity-50 "
-        :class="value === 'pickup' ? 'bg-blue-600' : 'bg-blue-200 cursor-pointer'"
+        class="h-full w-full rounded-lg bg-white p-3 shadow"
+        :class="
+          value === 'pickup'
+            ? 'border-2 border-op-teal text-op-teal'
+            : 'cursor-pointer text-black text-opacity-40'
+        "
         @click="input('pickup')"
       >
-        {{ $t("mobileOrder.shopInfo.pickup") }}
+        <i class="material-icons w-full text-center"> local_mall </i>
+        <div class="-mt-0.5 text-center text-lg font-bold tracking-tighter">
+          {{ $t("mobileOrder.shopInfo.pickup") }}
+        </div>
+        <div class="mt-0.5 px-4 text-center text-xs font-bold">
+          {{ $t("mobileOrder.shopInfo.pickupDesctiption") }}
+        </div>
       </div>
     </div>
-  </div>
-  <b-modal
-    :active.sync="popup"
-    >
-  </b-modal>
+    <b-modal :active.sync="popup"> </b-modal>
   </div>
 </template>
 
