@@ -115,7 +115,8 @@
               :message="hasError ? $t(errors[0]) : ''"
             >
               <b-input
-                type="tel"
+                inputmode="numeric" pattern="[0-9]*"
+                autocomplete="one-time-code"
                 v-model="verificationCode"
                 v-on:input="validateVerificationCode"
                 maxlength="6"
