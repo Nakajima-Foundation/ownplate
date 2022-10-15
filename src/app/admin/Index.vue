@@ -57,7 +57,9 @@
       <div>
         <div class="pb-2">
           <span class="mb-2 text-xl font-bold text-black text-opacity-40">
-            {{ $t(isInMo ? "mobileOrder.restaurantLists" : "admin.restaurant") }}
+            {{
+              $t(isInMo ? "mobileOrder.restaurantLists" : "admin.restaurant")
+            }}
           </span>
         </div>
 
@@ -81,7 +83,11 @@
                   >
                     <i class="material-icons mr-2 text-lg text-op-teal">add</i>
                     <span class="text-sm font-bold text-op-teal">{{
-                      $t(isInMo ? "mobileOrder.addNewRestaurant" : "admin.addNewRestaurant")
+                      $t(
+                        isInMo
+                          ? "mobileOrder.addNewRestaurant"
+                          : "admin.addNewRestaurant"
+                      )
                     }}</span>
                   </div>
                 </b-button>
@@ -98,7 +104,11 @@
                   class="rounded-lg bg-black bg-opacity-5 px-4 py-3 text-center"
                 >
                   <span class="text-sm font-bold">{{
-                    $t(isInMo ? "mobileOrder.viewAllOrders" : "admin.viewAllOrders")
+                    $t(
+                      isInMo
+                        ? "mobileOrder.viewAllOrders"
+                        : "admin.viewAllOrders"
+                    )
                   }}</span>
                 </div>
               </router-link>

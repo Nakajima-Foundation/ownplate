@@ -8,12 +8,16 @@
 </template>
 
 <script>
-import {
-  defineComponent,
-  ref,
-} from "@vue/composition-api";
+import { defineComponent, ref } from "@vue/composition-api";
 import { db } from "@/plugins/firebase";
-import { stripeRegion, doc2data, array2obj, useNationalPhoneNumber, shareUrl, useBasePath } from "@/utils/utils";
+import {
+  stripeRegion,
+  doc2data,
+  array2obj,
+  useNationalPhoneNumber,
+  shareUrl,
+  useBasePath,
+} from "@/utils/utils";
 import * as pdf from "@/lib/pdf/pdf";
 import * as pdf2 from "@/lib/pdf/pdf2";
 
@@ -39,9 +43,7 @@ export default defineComponent({
       );
     })();
 
-    const { nationalPhoneNumber } = useNationalPhoneNumber(
-      props.shopInfo
-    );
+    const { nationalPhoneNumber } = useNationalPhoneNumber(props.shopInfo);
     const download = () => {
       const basePath = useBasePath(ctx.root);
       pdf.menuDownload(
@@ -80,7 +82,7 @@ export default defineComponent({
       testPrint,
       testDownload,
       download4,
-    }
+    };
   },
 });
 </script>

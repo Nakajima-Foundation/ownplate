@@ -63,14 +63,14 @@ export default defineComponent({
     const input = (value) => {
       if (props.value !== value) {
         if (Object.values(props.orders).length === 0) {
-          ctx.emit('input', value);
+          ctx.emit("input", value);
         } else {
           ctx.root.$store.commit("setAlert", {
             title: "mobileOrder.title",
             code: "mobileOrder.code",
             callback: async () => {
-              ctx.emit('input', value);
-            }
+              ctx.emit("input", value);
+            },
           });
         }
       }

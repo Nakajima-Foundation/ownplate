@@ -99,7 +99,7 @@ export default defineComponent({
       {},
       ctx,
       isInMo.value,
-      isPickup,
+      isPickup
     );
 
     const days = computed(() => {

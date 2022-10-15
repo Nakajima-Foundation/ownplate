@@ -51,7 +51,7 @@ export class OrderInfo {}
 export const order2ReportData = (
   order: OrderInfoData,
   serviceTaxRate: number,
-  isInMo: boolean,
+  isInMo: boolean
 ) => {
   const multiple = stripeRegion.multiple;
   order.timeConfirmed = order?.timeConfirmed?.toDate();

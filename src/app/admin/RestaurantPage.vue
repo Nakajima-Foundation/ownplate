@@ -214,7 +214,13 @@
             <div v-else>住所を入力して検索してください</div>
 
             <div class="mt-2 text-center text-sm font-bold text-red-700">
-              {{ $t(isInMo ? "mobileOrder.updateMapDescription" : "editRestaurant.updateMapDescription") }}
+              {{
+                $t(
+                  isInMo
+                    ? "mobileOrder.updateMapDescription"
+                    : "editRestaurant.updateMapDescription"
+                )
+              }}
             </div>
 
             <div class="mt-4">
@@ -583,7 +589,13 @@
           <!-- Time to Pickup -->
           <div class="mt-4">
             <div class="pb-2 text-sm font-bold">
-              {{ $t(isInMo ? "mobileOrder.timeToPickup" : "editRestaurant.timeToPickup") }}
+              {{
+                $t(
+                  isInMo
+                    ? "mobileOrder.timeToPickup"
+                    : "editRestaurant.timeToPickup"
+                )
+              }}
             </div>
 
             <div class="rounded-lg bg-black bg-opacity-5 p-4">
@@ -657,26 +669,26 @@
               <div class="pb-2 text-sm font-bold">
                 {{ $t("mobileOrder.timeToMoPickup") }}
               </div>
-              
+
               <div class="rounded-lg bg-black bg-opacity-5 p-4">
                 <!-- Preparation Time -->
                 <div>
                   <div class="mb-1">
                     {{ $t("editRestaurant.preparationTime") }}
                   </div>
-                  
+
                   <div class="ml-2">
-                    {{shopInfo.moPickUpMinimumCookTime}}
+                    {{ shopInfo.moPickUpMinimumCookTime }}
                     {{ $t("editRestaurant.minutes") }}
                   </div>
-              </div>
-                
+                </div>
+
                 <!-- The Day Before -->
                 <div class="mt-2">
                   <div class="mb-1">
                     {{ $t("editRestaurant.reservationTheDayBefore") }}
                   </div>
-                  {{shopInfo.moPickUpDaysInAdvance}}
+                  {{ shopInfo.moPickUpDaysInAdvance }}
                   {{ $t("mobileOrder.reservationTheDaysBefore") }}
                 </div>
               </div>
@@ -686,32 +698,33 @@
           <!-- mo Hours -->
           <div class="mt-4 lg:mt-0" v-if="isInMo && moPickup">
             <div class="pb-2 text-sm font-bold">
-              {{ $t("mobileOrder.pickupHours") }} <span class="text-red-700">*</span>
+              {{ $t("mobileOrder.pickupHours") }}
+              <span class="text-red-700">*</span>
             </div>
 
-            <div class="mt-2 grid grid-cols-1 space-y-2 rounded-lg bg-black bg-opacity-5 p-4">
-              <div
-                v-for="(day, index) in days"
-                :key="index"
-              >
+            <div
+              class="mt-2 grid grid-cols-1 space-y-2 rounded-lg bg-black bg-opacity-5 p-4"
+            >
+              <div v-for="(day, index) in days" :key="index">
                 <!-- Enable/Disable Day and Copy Previous Day -->
                 <div class="flex items-center">
                   <div class="flex-1">
                     <div class="text-base font-bold">
-                      {{ $t("week.short." + day) }} {{shopInfo.moBusinessDay[index] ? "営業" : "休業"}}
+                      {{ $t("week.short." + day) }}
+                      {{ shopInfo.moBusinessDay[index] ? "営業" : "休業" }}
                     </div>
                   </div>
                 </div>
 
                 <!-- Main Hours -->
                 <div class="mt-2">
-                  {{ num2time(shopInfo.moOpenTimes[index][0].start) }} - {{ num2time(shopInfo.moOpenTimes[index][0].end) }}
+                  {{ num2time(shopInfo.moOpenTimes[index][0].start) }} -
+                  {{ num2time(shopInfo.moOpenTimes[index][0].end) }}
                 </div>
               </div>
             </div>
           </div>
 
-          
           <!-- Delivery Config -->
           <template v-if="true">
             <div v-if="region === 'JP'" class="mt-4">
@@ -1029,7 +1042,13 @@
           >
             <i class="material-icons mr-2 text-lg text-op-teal"> queue </i>
             <span class="text-sm font-bold text-op-teal">{{
-              $t(submitting ? "editCommon.saving" : (isInMo ? "mobileOrder.copy" : "editCommon.copy"))
+              $t(
+                submitting
+                  ? "editCommon.saving"
+                  : isInMo
+                  ? "mobileOrder.copy"
+                  : "editCommon.copy"
+              )
             }}</span>
           </div>
         </b-button>

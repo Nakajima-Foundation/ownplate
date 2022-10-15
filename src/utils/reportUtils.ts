@@ -1,5 +1,17 @@
-const reportHeadersTop = ["name", "restaurantName", "type", "statusName", "userName"];
-const reportHeadersTopMo = ["name", "storeName", "type", "statusName", "userName"];
+const reportHeadersTop = [
+  "name",
+  "restaurantName",
+  "type",
+  "statusName",
+  "userName",
+];
+const reportHeadersTopMo = [
+  "name",
+  "storeName",
+  "type",
+  "statusName",
+  "userName",
+];
 const reportHeadersTime = [
   "datePlaced",
   "dateAccepted",

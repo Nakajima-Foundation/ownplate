@@ -263,7 +263,8 @@ export default {
       return this.orderInfo.status === order_status.validation_ok;
     },
 
-    previewTip() { // both edittable tip or orderinfo tip
+    previewTip() {
+      // both edittable tip or orderinfo tip
       if (this.isTipEditable) {
         return this.tip;
       }

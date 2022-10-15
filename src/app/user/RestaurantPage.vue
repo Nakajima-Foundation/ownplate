@@ -128,7 +128,11 @@
                   {{ $t("shopInfo.howToReceive") }}
                 </div>
                 <div>
-                  <MoPickUp :shopInfo="shopInfo" v-model="howtoreceive" :orders="orders" />
+                  <MoPickUp
+                    :shopInfo="shopInfo"
+                    v-model="howtoreceive"
+                    :orders="orders"
+                  />
                 </div>
               </div>
             </div>
@@ -599,7 +603,7 @@ export default defineComponent({
         orders.value = {};
       }
     });
-    
+
     const { loadTitle, titles, titleLists } = useTitles(restaurantId);
 
     const { loadCategory, categoryData } = useCategory(props.moPrefix);
