@@ -63,7 +63,8 @@ import TransactionsActContents from "@/app/user/TransactionsAct/Contents.vue";
 import OrderPageBefore from "@/app/user/OrderPage/BeforePaid.vue";
 import OrderPageAfter from "@/app/user/OrderPage/AfterPaid.vue";
 
-import { db } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import { onSnapshot, doc, deleteDoc } from "firebase/firestore";
 
 import { order_status, order_status_keys } from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
@@ -148,7 +149,6 @@ export default defineComponent({
       return orderInfo.value.status === order_status.error;
     });
     const just_validated = computed(() => {
-      console.log(orderInfo.value.status === order_status.validation_ok);
       return orderInfo.value.status === order_status.validation_ok;
     });
     const paid = computed(() => {
@@ -159,29 +159,28 @@ export default defineComponent({
     });
 
     const loadUserData = () => {
-      const order_detacher = db
-        .doc(`restaurants/${ctx.root.restaurantId()}/orders/${orderId}`)
-        .onSnapshot(
-          async (order) => {
-            const order_data = order.exists ? order.data() : {};
-            orderInfo.value = order_data;
-            menuObj.value = orderInfo.value.menuItems || {};
-            if (just_validated.value) {
-              analyticsUtil.sendViewCart(
-                orderInfo.value,
-                orderId,
-                orderItems.value.map((or) => {
-                  return { ...or.item, id: or.id, quantity: or.count };
-                }),
-                props.shopInfo,
-                ctx.root.restaurantId()
-              );
-            }
-          },
-          (error) => {
-            menuNotFound.value = true;
+      const order_detacher = onSnapshot(
+        doc(db, `restaurants/${ctx.root.restaurantId()}/orders/${orderId}`),
+        async (order) => {
+          const order_data = order.exists() ? order.data() : {};
+          orderInfo.value = order_data;
+          menuObj.value = orderInfo.value.menuItems || {};
+          if (just_validated.value) {
+            analyticsUtil.sendViewCart(
+              orderInfo.value,
+              orderId,
+              orderItems.value.map((or) => {
+                return { ...or.item, id: or.id, quantity: or.count };
+              }),
+              props.shopInfo,
+              ctx.root.restaurantId()
+            );
           }
-        );
+        },
+        (error) => {
+          menuNotFound.value = true;
+        }
+      );
       detacher.push(order_detacher);
     };
 
@@ -203,9 +202,9 @@ export default defineComponent({
     };
     const deleteOrderInfo = async () => {
       try {
-        await db
-          .doc(`restaurants/${ctx.root.restaurantId()}/orders/${orderId}`)
-          .delete();
+        await deleteDoc(
+          doc(db, `restaurants/${ctx.root.restaurantId()}/orders/${orderId}`)
+        );
         console.log("suceeded");
       } catch (error) {
         console.log("failed");
@@ -245,6 +244,7 @@ export default defineComponent({
       loginVisible,
 
       loadUserData,
+      deleteOrderInfo,
     };
   },
   watch: {
