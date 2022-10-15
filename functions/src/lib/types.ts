@@ -137,8 +137,7 @@ export interface smaregiAuthData {
   code: string;
 }
 
-export interface smaregiStoreListData {
-}
+export interface smaregiStoreListData {}
 export interface smaregiProductListData {
   store_id: string;
 }

@@ -29,8 +29,7 @@ export const liffAuthenticate = async (db: admin.firestore.Firestore, data: liff
     console.error("validate", validateResult.errors);
     throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
   }
-  
-  
+
   try {
     const liffConfig = await getLiffConfig(db, liffIndexId);
 

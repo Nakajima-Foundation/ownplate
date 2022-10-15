@@ -92,10 +92,7 @@ export const confirm = async (db: admin.firestore.Firestore, data: confirmIntent
     const orderData = result.order;
 
     const params = {
-      time: moment(orderData.timeEstimated.toDate())
-        .tz(utils.timezone)
-        .locale("ja")
-        .format("LLL"),
+      time: moment(orderData.timeEstimated.toDate()).tz(utils.timezone).locale("ja").format("LLL"),
     };
 
     const msgKey = orderData.isEC ? "msg_ec_order_accepted" : "msg_order_accepted";

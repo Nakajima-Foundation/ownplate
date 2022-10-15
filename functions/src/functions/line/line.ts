@@ -31,7 +31,6 @@ export const verifyFriend = async (db: admin.firestore.Firestore, context: funct
   }
 };
 
-
 export const validate = async (db: admin.firestore.Firestore, data: lineValidateData, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
 
@@ -43,7 +42,7 @@ export const validate = async (db: admin.firestore.Firestore, data: lineValidate
     console.error("validate", validateResult.errors);
     throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
   }
-  
+
   const LINE_SECRET_KEY = functions.config().line.secret;
 
   try {

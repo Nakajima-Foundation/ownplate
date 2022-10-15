@@ -22,6 +22,6 @@ describe("validator function", () => {
     const url = "http://localhost:3000/callback/line";
     // const url = "http://example.com/callback/line";
     const res = validator.validateUrl(url);
-    console.log(res)
+    console.log(res);
   });
 });

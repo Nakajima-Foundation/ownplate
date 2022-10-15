@@ -30,13 +30,7 @@ const getMgsKey = (status: number, isEC: boolean, timeEstimated?: admin.firestor
   return null;
 };
 
-const getPaymentIntent = async (
-  db: admin.firestore.Firestore,
-  restaurantOwnerUid: string,
-  order: any,
-  transaction: any,
-  stripeRef: any,
-) => {
+const getPaymentIntent = async (db: admin.firestore.Firestore, restaurantOwnerUid: string, order: any, transaction: any, stripeRef: any) => {
   const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
   // just for stripe payment
   if (order.payment.stripe !== "pending") {
@@ -44,13 +38,13 @@ const getPaymentIntent = async (
   }
   const stripeRecord = await getStripeOrderRecord(transaction, stripeRef);
   const paymentIntentId = stripeRecord.paymentIntent.id;
-  
+
   const idempotencyKey = getHash([order.id, paymentIntentId].join("-"));
   return await stripe.paymentIntents.confirm(paymentIntentId, {
     idempotencyKey,
     stripeAccount,
   });
-}
+};
 
 // This function is called by admins (restaurant operators) to update the status of order
 export const update = async (db: admin.firestore.Firestore, data: orderUpdateData, context: functions.https.CallableContext) => {
@@ -87,28 +81,28 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
         throw new functions.https.HttpsError("failed-precondition", "It is not possible to change state from the current state.", order.status);
       }
       const paymentIntent = isStripeProcess ? await getPaymentIntent(db, restaurantOwnerUid, order, transaction, stripeRef) : {};
-      
+
       // for backward compatibility
       if (
         (order.status === order_status.ready_to_pickup || order.status === order_status.order_accepted) &&
-          order.payment &&
-          order.payment.stripe &&
-          order.payment.stripe === "pending"
+        order.payment &&
+        order.payment.stripe &&
+        order.payment.stripe === "pending"
       ) {
         throw new functions.https.HttpsError("permission-denied", "Paid order can not be change like this", status);
       }
-      
+
       // everything are ok
       const updateTimeKey = timeEventMapping[order_status_keys[status]];
       const updateData: updateDataOnorderUpdate = {
         status,
         updatedAt: admin.firestore.Timestamp.now(),
         [updateTimeKey]: admin.firestore.Timestamp.now(),
-      }
+      };
       if (isStripeProcess) {
         updateData.payment = {
           stripe: "confirmed",
-         };
+        };
       }
       if (status === order_status.order_accepted) {
         updateData.timeEstimated = timeEstimated ? new admin.firestore.Timestamp(timeEstimated.seconds, timeEstimated.nanoseconds) : order.timePlaced;
@@ -117,12 +111,12 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
       }
       await transaction.update(orderRef, updateData);
       if (isStripeProcess) {
-        await transaction.set(stripeRef, {  paymentIntent }, { merge: true });
+        await transaction.set(stripeRef, { paymentIntent }, { merge: true });
       }
       return { success: true, order };
     });
     const orderData = result.order;
-    const msgKey = getMgsKey(status, orderData.isEC, orderData && orderData.timeEstimated)
+    const msgKey = getMgsKey(status, orderData.isEC, orderData && orderData.timeEstimated);
     // sendSMS is always true
     if (orderData.sendSMS && msgKey) {
       const params = {};

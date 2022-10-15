@@ -81,7 +81,7 @@ export const create = async (db: admin.firestore.Firestore, data: orderPlacedDat
             metadata: { uid: customerUid, restaurantId, orderId },
             payment_method_data,
           } as Stripe.PaymentIntentCreateParams;
-          
+
           const idempotencyKey = getHash([orderRef.path, payment_method_data.card.token].join("-"));
           const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
           return await stripe.paymentIntents.create(request, {

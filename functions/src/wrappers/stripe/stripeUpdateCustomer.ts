@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
-import { updateCustomer }  from "../../functions/stripe/customer";
+import { updateCustomer } from "../../functions/stripe/customer";
 import { allowInvalidAppCheckToken } from "../firebase";
 
 const db = admin.firestore();

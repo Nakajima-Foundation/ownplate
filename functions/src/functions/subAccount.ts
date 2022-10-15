@@ -3,8 +3,8 @@ import * as firebase from "firebase-admin";
 import * as functions from "firebase-functions";
 // import * as admin from 'firebase-admin';
 import * as utils from "../lib/utils";
-import { subAccountInvitate, subAccountInvitationAcceptDeny, subAccountDeleteChildData} from "../lib/types";
-         
+import { subAccountInvitate, subAccountInvitationAcceptDeny, subAccountDeleteChildData } from "../lib/types";
+
 import isEmail from "validator/lib/isEmail";
 import { validateFirebaseId } from "../lib/validator";
 
@@ -179,9 +179,9 @@ export const deleteChild = async (db, data: subAccountDeleteChildData, context: 
   const adminUid = utils.validate_parent_admin_auth(context);
   const { childUid } = data;
   if (!validateFirebaseId(childUid)) {
-      throw new functions.https.HttpsError("invalid-argument", "invalid args.");
+    throw new functions.https.HttpsError("invalid-argument", "invalid args.");
   }
-  
+
   try {
     await db.runTransaction(async (tr) => {
       const childRef = db.doc(`admins/${adminUid}/children/${childUid}`);

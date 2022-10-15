@@ -83,7 +83,7 @@ export const isString = (value: string, option: any = {}) => {
 };
 
 export const validateUrl = (url: string) => {
-  return isURL(url, {require_tld: false});
+  return isURL(url, { require_tld: false });
 };
 export const validateFirebaseId = (id: string) => {
   return /^[a-zA-Z0-9]+$/.test(id);
@@ -369,7 +369,6 @@ export const validatePing = (data: pingData) => {
   };
   return validateData(data, validator);
 };
-
 
 export const validateLineValidate = (data: lineValidateData) => {
   const validator = {

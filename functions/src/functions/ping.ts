@@ -52,8 +52,7 @@ export const ping = async (db: admin.firestore.Firestore, data: pingData, contex
     console.error("ping", validateResult.errors);
     throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
   }
-  
-  
+
   operationLog(context, {
     restaurantId: restaurantId || "index",
     operationType: operationType || "unknown",
