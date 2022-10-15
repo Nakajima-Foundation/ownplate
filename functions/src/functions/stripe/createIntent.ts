@@ -17,6 +17,7 @@ const stripe = utils.get_stripe();
 
 // This function is called by user to create a "payment intent" (to start the payment transaction)
 export const create = async (db: admin.firestore.Firestore, data: orderPlacedData, context: functions.https.CallableContext) => {
+  const enableStripe = true;
   const customerUid = utils.validate_customer_auth(context);
 
   const { restaurantId, orderId, tip, timeToPickup, memo, customerInfo } = data; // orderPlace
@@ -42,9 +43,6 @@ export const create = async (db: admin.firestore.Firestore, data: orderPlacedDat
     const customerRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/customer/data`);
 
     const result = await db.runTransaction(async (transaction) => {
-      const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
-      const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`);
-
       const order = await getOrderData(transaction, orderRef);
       if (!order) {
         throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
@@ -69,25 +67,30 @@ export const create = async (db: admin.firestore.Firestore, data: orderPlacedDat
 
       const totalCharge = order.total + roundedTip + (shippingCost || 0) + (order.deliveryFee || 0);
       const totalChargeWithTipAndMultipled = totalCharge * multiple; // for US stripe price
-
-      // We expect that there is a customer Id associated with a token
-      const payment_method_data = await getPaymentMethodData(db, restaurantOwnerUid, customerUid);
       const orderNumber = utils.nameOfOrder(order.number);
-      const description = `#${orderNumber} ${restaurantData.restaurantName} ${restaurantData.phoneNumber}`;
-      const request = {
-        setup_future_usage: "off_session",
-        amount: totalChargeWithTipAndMultipled,
-        description: `${description} ${orderId}`,
-        currency: utils.stripeRegion.currency,
-        metadata: { uid: customerUid, restaurantId, orderId },
-        payment_method_data,
-      } as Stripe.PaymentIntentCreateParams;
-
-      const idempotencyKey = getHash([orderRef.path, payment_method_data.card.token].join("-"));
-      const paymentIntent = await stripe.paymentIntents.create(request, {
-        idempotencyKey,
-        stripeAccount,
-      });
+      const paymentIntent = await (async () => {
+        if (enableStripe) {
+          // We expect that there is a customer Id associated with a token
+          const payment_method_data = await getPaymentMethodData(db, restaurantOwnerUid, customerUid);
+          const description = `#${orderNumber} ${restaurantData.restaurantName} ${restaurantData.phoneNumber}`;
+          const request = {
+            setup_future_usage: "off_session",
+            amount: totalChargeWithTipAndMultipled,
+            description: `${description} ${orderId}`,
+            currency: utils.stripeRegion.currency,
+            metadata: { uid: customerUid, restaurantId, orderId },
+            payment_method_data,
+          } as Stripe.PaymentIntentCreateParams;
+          
+          const idempotencyKey = getHash([orderRef.path, payment_method_data.card.token].join("-"));
+          const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
+          return await stripe.paymentIntents.create(request, {
+            idempotencyKey,
+            stripeAccount,
+          });
+        }
+        return {};
+      })();
       // start write transaction
       await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, restaurantOwnerUid, timePlaced, now, true);
       if (hasCustomer) {
@@ -115,22 +118,29 @@ export const create = async (db: admin.firestore.Firestore, data: orderPlacedDat
         orderPlacedAt: now,
         timePlaced,
         timePickupForQuery: timePlaced,
-        description,
         memo: memo || "",
         isEC: restaurantData.isEC || false,
-        // customerInfo: customerInfo || {},
-        payment: {
-          stripe: "pending",
-        },
       };
-      transaction.set(orderRef, updateData, { merge: true });
-      transaction.set(
-        stripeRef,
-        {
-          paymentIntent,
-        },
-        { merge: true }
-      );
+      if (enableStripe) {
+        const update = {
+          ...updateData,
+          description: `#${orderNumber} ${restaurantData.restaurantName} ${restaurantData.phoneNumber}`,
+          payment: {
+            stripe: "pending",
+          },
+        };
+        await transaction.set(orderRef, update, { merge: true });
+        const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`);
+        await transaction.set(
+          stripeRef,
+          {
+            paymentIntent,
+          },
+          { merge: true }
+        );
+      } else {
+        await transaction.update(orderRef, updateData);
+      }
       Object.assign(order, updateData);
       return { success: true, order };
     });

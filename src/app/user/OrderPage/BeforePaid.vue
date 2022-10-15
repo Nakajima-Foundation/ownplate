@@ -358,7 +358,7 @@ import { orderPlace } from "@/lib/firebase/functions";
 
 import { order_status } from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
-import { stripeCreateIntent, stripeReceipt } from "@/lib/stripe/stripe";
+import { stripeReceipt } from "@/lib/stripe/stripe";
 
 import { costCal } from "@/utils/commonUtils";
 
@@ -569,12 +569,12 @@ export default {
       this.isPaying = true;
       try {
         await this.$refs.stripe.createToken();
-        const { data } = await stripeCreateIntent({
+        const { data } = await orderPlace({
           timeToPickup,
           restaurantId: this.restaurantId(),
           orderId: this.orderId,
-          description: "", // no longer used TOTO DELETE
           tip: this.tip || 0,
+          payStripe: true,
           memo: this.memo || "",
           customerInfo: this.$refs.ecCustomerRef
             ? this.$refs.ecCustomerRef.customerInfo || {}
@@ -632,6 +632,7 @@ export default {
           orderId: this.orderId,
           sendSMS: this.sendSMS,
           tip: this.tip || 0,
+          payStripe: false,
           memo: this.memo || "",
           customerInfo: this.$refs.ecCustomerRef
             ? this.$refs.ecCustomerRef.customerInfo || {}

@@ -18,6 +18,7 @@ export interface orderPlacedData {
   tip: number;
   timeToPickup: admin.firestore.Timestamp;
   memo: string;
+  payStripe: boolean;
   customerInfo: customerInfoData;
 }
 

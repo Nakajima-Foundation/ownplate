@@ -1,3 +1,4 @@
+import Stripe from "stripe";
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import moment from "moment-timezone";
@@ -8,8 +9,11 @@ import { notifyNewOrderToRestaurant } from "../notify";
 import { costCal } from "../../common/commonUtils";
 import { Context } from "../../models/TestType";
 
+import { getStripeAccount, getPaymentMethodData, getHash } from "../stripe/intent";
 import { orderPlacedData } from "../../lib/types";
 import { validateOrderPlaced, validateCustomer } from "../../lib/validator";
+
+const stripe = utils.get_stripe();
 
 export const getOrderData = async (transaction: any, orderRef: any) => {
   const orderDoc = await transaction.get(orderRef);
@@ -102,10 +106,10 @@ const multiple = utils.stripeRegion.multiple; // 100 for USD, 1 for JPY
 
 // This function is called by users to place orders without paying
 // export const place = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
-export const place = async (db, data: orderPlacedData, context: functions.https.CallableContext | Context) => {
+export const place = async (db, data: orderPlacedData, context: functions.https.CallableContext | Context) => { 
   const customerUid = utils.validate_customer_auth(context);
 
-  const { restaurantId, orderId, tip, timeToPickup, memo, customerInfo } = data;
+  const { restaurantId, orderId, tip, timeToPickup, memo, customerInfo, payStripe } = data;
   utils.required_params({ restaurantId, orderId }); // tip is optinoal
 
   const validateResult = validateOrderPlaced(data);
@@ -113,6 +117,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
     console.error("orderPlace", validateResult.errors);
     throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
   }
+  const enableStripe = !!payStripe;
 
   const _tip = Number(tip) || 0;
   const roundedTip = Math.round(_tip * multiple) / multiple;
@@ -128,9 +133,6 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
     const customerRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/customer/data`);
 
     const result = await db.runTransaction(async (transaction) => {
-
-
-
       const order = await getOrderData(transaction, orderRef);
       if (!order) {
         throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
@@ -154,26 +156,31 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
       }
 
       const totalCharge = order.total + roundedTip + (shippingCost || 0) + (order.deliveryFee || 0);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+      const totalChargeWithTipAndMultipled = totalCharge * multiple; // for US stripe price
+      const orderNumber = utils.nameOfOrder(order.number);
+      const paymentIntent = await (async () => {
+        if (enableStripe) {
+          // We expect that there is a customer Id associated with a token
+          const payment_method_data = await getPaymentMethodData(db, restaurantOwnerUid, customerUid);
+          const description = `#${orderNumber} ${restaurantData.restaurantName} ${restaurantData.phoneNumber}`;
+          const request = {
+            setup_future_usage: "off_session",
+            amount: totalChargeWithTipAndMultipled,
+            description: `${description} ${orderId}`,
+            currency: utils.stripeRegion.currency,
+            metadata: { uid: customerUid, restaurantId, orderId },
+            payment_method_data,
+          } as Stripe.PaymentIntentCreateParams;
+          
+          const idempotencyKey = getHash([orderRef.path, payment_method_data.card.token].join("-"));
+          const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
+          return await stripe.paymentIntents.create(request, {
+            idempotencyKey,
+            stripeAccount,
+          });
+        }
+        return {};
+      })();
       // transaction for stock orderTotal
       await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, restaurantOwnerUid, timePlaced, now, true);
       if (hasCustomer) {
@@ -191,7 +198,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
         });
       }
       // customerUid
-      await transaction.update(orderRef, {
+      const updateData = {
         status: order_status.order_placed,
         totalCharge,
         tip: roundedTip,
@@ -201,10 +208,29 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
         orderPlacedAt: now,
         timePlaced,
         timePickupForQuery: timePlaced,
-
         memo: memo || "",
         isEC: restaurantData.isEC || false,
-      });
+      };
+      if (enableStripe) {
+        const update = {
+          ...updateData,
+          description: `#${orderNumber} ${restaurantData.restaurantName} ${restaurantData.phoneNumber}`,
+          payment: {
+            stripe: "pending",
+          },
+        };
+        await transaction.set(orderRef, update, { merge: true });
+        const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`);
+        await transaction.set(
+          stripeRef,
+          {
+            paymentIntent,
+          },
+          { merge: true }
+        );
+      } else {
+        await transaction.update(orderRef, updateData);
+      }
       Object.assign(order, { totalCharge, tip, shippingCost });
       return { success: true, order };
     });
