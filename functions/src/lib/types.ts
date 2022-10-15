@@ -39,6 +39,10 @@ export interface updateDataOnorderUpdate {
 
   timeEstimated?: admin.firestore.Timestamp;
   timePickupForQuery?: admin.firestore.Timestamp;
+
+  payment?: {
+    stripe: string;
+  };
 }
 
 export interface menuItem {

@@ -161,7 +161,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
       const totalCharge = order.total + roundedTip + (shippingCost || 0) + (order.deliveryFee || 0);
       const totalChargeWithTipAndMultipled = totalCharge * multiple; // for US stripe price
       const orderNumber = utils.nameOfOrder(order.number);
-      const paymentIntent = await (async () => {
+      const paymentIntent = (await (async () => {
         if (enableStripe) {
           // We expect that there is a customer Id associated with a token
           const payment_method_data = await getPaymentMethodData(db, restaurantOwnerUid, customerUid);
@@ -183,7 +183,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
           });
         }
         return {};
-      })();
+      })());
       // transaction for stock orderTotal
       await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, restaurantOwnerUid, timePlaced, now, true);
       if (hasCustomer) {

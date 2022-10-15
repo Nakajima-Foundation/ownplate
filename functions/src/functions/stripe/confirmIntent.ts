@@ -7,7 +7,7 @@ import { sendMessageToCustomer } from "../notify";
 
 import { stripe, getStripeAccount, getStripeOrderRecord, getHash } from "./intent";
 import { validateConfirmIntent } from "../../lib/validator";
-import { confirmIntentData } from "../../lib/types";
+import { confirmIntentData, updateDataOnorderUpdate } from "../../lib/types";
 
 import moment from "moment-timezone";
 
@@ -42,10 +42,7 @@ export const confirm = async (db: admin.firestore.Firestore, data: confirmIntent
       }
       order.id = orderId;
 
-      if (
-        order.status !== order_status.order_placed // from 2021-07-17
-      ) {
-        // obsolete but backward compability
+      if (order.status !== order_status.order_placed) {
         throw new functions.https.HttpsError("failed-precondition", "This order is not ready yet.");
       }
       if (!order.payment || order.payment.stripe !== "pending") {
@@ -53,6 +50,7 @@ export const confirm = async (db: admin.firestore.Firestore, data: confirmIntent
       }
 
       const nextStatus = next_transitions[order.status];
+      // just stripe
       const stripeRecord = await getStripeOrderRecord(transaction, stripeRef);
       const paymentIntentId = stripeRecord.paymentIntent.id;
 
@@ -61,23 +59,25 @@ export const confirm = async (db: admin.firestore.Firestore, data: confirmIntent
         idempotencyKey,
         stripeAccount,
       });
+      // just end of stripe
 
+      // everything are ok
       const updateTimeKey = timeEventMapping[order_status_keys[nextStatus]];
-      const updateData = {
+      const updateData: updateDataOnorderUpdate = {
         status: nextStatus,
         updatedAt: admin.firestore.Timestamp.now(),
         [updateTimeKey]: admin.firestore.Timestamp.now(),
         payment: {
           stripe: "confirmed",
         },
-      } as any;
+      };
       if (nextStatus === order_status.order_accepted) {
         updateData.timeEstimated = timeEstimated ? new admin.firestore.Timestamp(timeEstimated.seconds, timeEstimated.nanoseconds) : order.timePlaced;
         updateData.timePickupForQuery = updateData.timeEstimated;
         order.timeEstimated = updateData.timeEstimated;
       }
-      transaction.set(orderRef, updateData, { merge: true });
-      transaction.set(
+      await transaction.set(orderRef, updateData, { merge: true });
+      await transaction.set(
         stripeRef,
         {
           paymentIntent,

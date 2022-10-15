@@ -584,7 +584,6 @@ import {
 import { nameOfOrder, formatOption } from "@/utils/strings";
 import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
 import {
-  stripeConfirmIntent,
   stripeCancelIntent,
   stripePaymentCancelIntent,
 } from "@/lib/stripe/stripe";
@@ -619,8 +618,6 @@ import {
   arrayChunk,
   array2obj,
 } from "@/utils/utils";
-
-const timezone = moment.tz.guess();
 
 export default defineComponent({
   components: {
@@ -1067,32 +1064,6 @@ export default defineComponent({
       const date = new Date(time + timeOffset.value * 60000);
       return Timestamp.fromDate(date);
     };
-    const handleStripe = async () => {
-      //console.log("handleComplete with Stripe", orderId);
-      try {
-        ctx.root.$store.commit("setLoading", true);
-        const params = {
-          timezone,
-          restaurantId: restaurantId.value,
-          orderId: orderId.value,
-        };
-        if (timeOffset.value > 0) {
-          params.timeEstimated = getEestimateTime();
-        }
-        const { data } = await stripeConfirmIntent(params);
-        ctx.root.$router.push(parentUrl.value);
-      } catch (error) {
-        console.error(error.message, error.details);
-        ctx.root.$store.commit("setErrorMessage", {
-          code: "stripe.confirm",
-          error,
-          message2: "errorPage.code.stripe.confirm2",
-        });
-      } finally {
-        ctx.root.$store.commit("setLoading", false);
-        updating.value = "";
-      }
-    };
     const handleChangeStatus = async (statusKey) => {
       const newStatus = order_status[statusKey];
       if (newStatus === orderInfo.value.status) {
@@ -1100,21 +1071,12 @@ export default defineComponent({
         return;
       }
       updating.value = statusKey;
-      if (
-        (newStatus === order_status.ready_to_pickup ||
-          newStatus === order_status.order_accepted) &&
-        paymentIsNotCompleted.value
-      ) {
-        handleStripe();
-        return;
-      }
       try {
         ctx.root.$store.commit("setLoading", true);
         const params = {
           restaurantId: restaurantId.value,
           orderId: orderId.value,
           status: newStatus,
-          timezone,
         };
         if (timeOffset.value > 0) {
           params.timeEstimated = getEestimateTime();
@@ -1176,7 +1138,6 @@ export default defineComponent({
               restaurantId: restaurantId.value,
               orderId: orderId.value,
               newOrder: edited_available_order_info.value,
-              timezone,
             };
 
             const { data } = await orderChange(params);
@@ -1292,7 +1253,6 @@ export default defineComponent({
       isValidTransition,
       download,
       print,
-      handleStripe,
       handleChangeStatus,
       handleCancel,
       handleOrderChange,

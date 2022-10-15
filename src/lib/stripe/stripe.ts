@@ -10,10 +10,6 @@ export const getStripeInstance = () => {
   return Stripe(stripeAPIToken);
 };
 
-export const stripeConfirmIntent = httpsCallable(
-  functions,
-  "stripeConfirmIntent"
-);
 export const stripeCancelIntent = httpsCallable(
   functions,
   "stripeCancelIntent"
