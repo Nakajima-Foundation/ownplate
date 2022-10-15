@@ -235,7 +235,7 @@ export const validateOrderPlaced = (data: orderPlacedData) => {
     },
     timeToPickup: {
       type: "timestamp",
-      required: false,
+      required: true,
     },
     // memo: {
   };

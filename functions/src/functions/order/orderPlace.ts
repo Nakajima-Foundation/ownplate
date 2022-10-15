@@ -125,8 +125,9 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
   if (roundedTip < 0) {
     throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
   }
-
-  const timePlaced = (timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds)) || admin.firestore.FieldValue.serverTimestamp();
+  // In isEC, timeToPickup is now. else time to pick
+  const timePlaced = new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds);
+  
   try {
     const restaurantData = await utils.get_restaurant(db, restaurantId);
     const restaurantOwnerUid = restaurantData["uid"];
@@ -135,7 +136,12 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
     if ((restaurantData.groupId || restaurantData.isEC) && roundedTip > 0) {
       throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
     }
-
+    if (!restaurantData.isEC) {
+      if (timePlaced.toDate() < now.toDate()) {
+        throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+      }
+    }
+    
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
     const customerRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/customer/data`);
 
