@@ -430,12 +430,6 @@ export default {
   created() {
     this.setPostage();
   },
-  beforeRouteLeave(to, from, next) {
-    if (to.name === "r-restaurantId") {
-      this.deleteOrderInfo();
-    }
-    next();
-  },
   computed: {
     showPayment() {
       return this.stripeAccount;
@@ -448,9 +442,6 @@ export default {
     },
     inStorePayment() {
       return this.paymentInfo.inStore;
-    },
-    orderName() {
-      return nameOfOrder(this.orderInfo);
     },
     hasCustomerInfo() {
       return this.orderInfo.status > order_status.validation_ok;
