@@ -63,7 +63,9 @@ export const sitemap_response = async (req, res) => {
 
     const urlset = xmlbuilder.create("urlset").att("xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9");
 
-    const docs = (await db.collection("restaurants").where("publicFlag", "==", true).where("deletedFlag", "==", false).orderBy("updatedAt", "desc").get()).docs;
+    const docs = (await db.collection("restaurants").where("publicFlag", "==", true).where("deletedFlag", "==", false).orderBy("updatedAt", "desc").get()).docs.filter((doc) => {
+      return !(doc.data().groupId);
+    });
     await Promise.all(
       docs.map(async (doc) => {
         const url = urlset.ele("url");
