@@ -133,9 +133,11 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
     const restaurantOwnerUid = restaurantData["uid"];
     const postage = restaurantData.isEC ? await utils.get_restaurant_postage(db, restaurantId) : {};
 
+    // check tip
     if ((restaurantData.groupId || restaurantData.isEC) && roundedTip > 0) {
       throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
     }
+    // checko time
     if (!restaurantData.isEC) {
       if (timePlaced.toDate() < now.toDate()) {
         throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
