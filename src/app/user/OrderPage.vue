@@ -144,7 +144,7 @@ export default {
     }
   },
   beforeRouteLeave(to, from, next) {
-    if (to.name === "r-restaurantId") {
+    if (this.just_validated) {
       this.deleteOrderInfo();
     }
     next();
@@ -152,9 +152,6 @@ export default {
   computed: {
     statusKey() {
       return this.orderInfo ? order_status_keys[this.orderInfo.status] : null;
-    },
-    orderName() {
-      return nameOfOrder(this.orderInfo);
     },
     orderError() {
       return this.orderInfo.status === order_status.error;
@@ -193,21 +190,7 @@ export default {
           async (order) => {
             const order_data = order.exists ? order.data() : {};
             this.orderInfo = order_data;
-            // console.log("*** O", this.orderInfo);
-            if (this.orderInfo.menuItems) {
-              this.menuObj = this.orderInfo.menuItems;
-            } else {
-              // Backward compatibility
-              if (!this.menuObj) {
-                const menu = await db
-                  .collection(`restaurants/${this.restaurantId()}/menus`)
-                  .get();
-                if (!menu.empty) {
-                  const menus = menu.docs.map(doc2data("menu"));
-                  this.menuObj = array2obj(menus);
-                }
-              }
-            }
+            this.menuObj = this.orderInfo.menuItems || {};
             if (this.just_validated) {
               analyticsUtil.sendViewCart(
                 this.orderInfo,
