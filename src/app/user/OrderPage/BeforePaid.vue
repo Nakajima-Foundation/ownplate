@@ -213,7 +213,7 @@
                     userMessageError ||
                     stripeSmallPayment
                   "
-                  @click="handlePayment"
+                  @click="handlePayment(true)"
                   class="b-reset-tw"
                 >
                   <div
@@ -282,7 +282,7 @@
                   :disabled="
                     notAvailable || notSubmitAddress || userMessageError
                   "
-                  @click="handleNoPayment"
+                  @click="handlePayment(false)"
                   class="b-reset-tw"
                 >
                   <div
@@ -522,7 +522,6 @@ export default {
       this.notAvailable = flag;
     },
     handleTipChange(tip) {
-      //console.log("handleTipChange", tip);
       this.tip = tip;
     },
     handleCardStateChange(state) {
@@ -550,64 +549,7 @@ export default {
         updatedAt: firestore.FieldValue.serverTimestamp(),
       };
     },
-    async handlePayment() {
-      if (this.userMessageError) {
-        return;
-      }
-      if (this.requireAddress) {
-        if (this.$refs.ecCustomerRef.hasEcError) {
-          return;
-        }
-        if (this.$refs.ecCustomerRef.isSaveAddress) {
-          await this.$refs.ecCustomerRef.saveAddress();
-        }
-      }
-      const timeToPickup = this.shopInfo.isEC
-        ? firebase.firestore.Timestamp.now()
-        : this.$refs.time.timeToPickup();
-
-      this.isPaying = true;
-      try {
-        await this.$refs.stripe.createToken();
-        const { data } = await orderPlace({
-          timeToPickup,
-          restaurantId: this.restaurantId(),
-          orderId: this.orderId,
-          tip: this.tip || 0,
-          payStripe: true,
-          memo: this.memo || "",
-          customerInfo: this.$refs.ecCustomerRef
-            ? this.$refs.ecCustomerRef.customerInfo || {}
-            : {},
-        });
-        if (this.isLiffUser) {
-          await this.saveLiffCustomer();
-        }
-        this.sendPurchase();
-        this.$store.commit("resetCart", this.restaurantId());
-        console.log("createIntent", data);
-        window.scrollTo(0, 0);
-      } catch (error) {
-        console.error(error.message, error.details);
-        let error_code = "stripe.intent";
-        if (
-          error.details &&
-          error.details.code === "card_declined" &&
-          error.details.decline_code === "card_not_supported" &&
-          !this.stripeJCB
-        ) {
-          console.log("JCB");
-          error_code = "stripe.NoJCB";
-        }
-        this.$store.commit("setErrorMessage", {
-          code: error_code,
-          error,
-        });
-      } finally {
-        this.isPaying = false;
-      }
-    },
-    async handleNoPayment() {
+    async handlePayment(payStripe) {
       if (this.userMessageError) {
         return;
       }
@@ -619,19 +561,22 @@ export default {
           await this.$refs.ecCustomerRef.saveAddress();
         }
       }
-
       const timeToPickup = this.shopInfo.isEC
         ? firebase.firestore.Timestamp.now()
         : this.$refs.time.timeToPickup();
       try {
-        this.isPlacing = true;
+        if (payStripe) {
+          this.isPaying = true;
+          await this.$refs.stripe.createToken();
+        } else {
+          this.isPlacing = true;
+        }
         const { data } = await orderPlace({
-          restaurantId: this.restaurantId(),
           timeToPickup,
+          restaurantId: this.restaurantId(),
           orderId: this.orderId,
-          sendSMS: this.sendSMS,
           tip: this.tip || 0,
-          payStripe: false,
+          payStripe,
           memo: this.memo || "",
           customerInfo: this.$refs.ecCustomerRef
             ? this.$refs.ecCustomerRef.customerInfo || {}
@@ -640,7 +585,6 @@ export default {
         if (this.isLiffUser) {
           await this.saveLiffCustomer();
         }
-        // console.log("place", data);
         this.sendPurchase();
         this.$store.commit("resetCart", this.restaurantId());
         window.scrollTo(0, 0);
@@ -653,6 +597,7 @@ export default {
         });
       } finally {
         this.isPlacing = false;
+        this.isPaying = false;
       }
     },
     openTransactionsAct() {
