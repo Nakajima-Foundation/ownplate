@@ -122,7 +122,10 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
   const _tip = Number(tip) || 0;
   const roundedTip = Math.round(_tip * multiple) / multiple;
   const now = admin.firestore.Timestamp.now();
-
+  if (roundedTip < 0) {
+    throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+  }
+  
   const timePlaced = (timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds)) || admin.firestore.FieldValue.serverTimestamp();
   try {
     const restaurantData = await utils.get_restaurant(db, restaurantId);
@@ -236,7 +239,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
     });
     await notifyNewOrderToRestaurant(db, restaurantId, result.order, restaurantData.restaurantName);
 
-    return result;
+    return { result: true };
   } catch (error) {
     throw utils.process_error(error);
   }

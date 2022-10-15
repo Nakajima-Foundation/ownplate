@@ -218,7 +218,7 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
 
     await createCustomer(db, customerUid, context.auth.token.phone_number);
 
-    return orderRef.update(
+    await orderRef.update(
       utils.filterData({
         order: newOrderData,
         menuItems: newItems, // Clone of ordered menu items (simplified)
@@ -243,6 +243,7 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
         groupId: restaurantData.groupId,
       })
     );
+    return { result: true };
   } catch (e) {
     console.error("[orderCreated] unknown ", e);
     return orderRef.update("status", order_status.error);

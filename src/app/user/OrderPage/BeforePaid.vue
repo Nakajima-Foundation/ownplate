@@ -588,7 +588,6 @@ export default {
         console.log("createIntent", data);
         window.scrollTo(0, 0);
       } catch (error) {
-        // alert(JSON.stringify(error));
         console.error(error.message, error.details);
         let error_code = "stripe.intent";
         if (

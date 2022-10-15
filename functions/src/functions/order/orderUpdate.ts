@@ -99,7 +99,7 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
       }
       await sendMessageToCustomer(db, msgKey, restaurant.restaurantName, orderData, restaurantId, orderId, params);
     }
-    return result;
+    return { result: true };
   } catch (error) {
     throw utils.process_error(error);
   }

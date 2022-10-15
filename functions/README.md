@@ -2,8 +2,7 @@
 - cart 
   - wasOrderCreatedJp (orderCreated)
 - order
-  - stripeCreateIntent  (pay)
-  - orderPlaceJp (not pay)
+  - orderPlaceJp
   ( set sendSMS = true)
 
 # by shop
