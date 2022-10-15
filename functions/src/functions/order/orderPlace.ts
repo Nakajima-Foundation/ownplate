@@ -132,6 +132,10 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
     const restaurantOwnerUid = restaurantData["uid"];
     const postage = restaurantData.isEC ? await utils.get_restaurant_postage(db, restaurantId) : {};
 
+    if ((restaurantData.groupId || restaurantData.isEC) && roundedTip > 0) {
+      throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+    }
+    
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
     const customerRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/customer/data`);
 
