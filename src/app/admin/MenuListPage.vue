@@ -22,6 +22,7 @@
             {{ $t("shopInfo.productCategory") }}
           </div>
           <CategoryList :categoryData="categoryData" />
+          <DownloadCSV v-if="isInMo && isOwner" />
         </div>
       </template>
       <template v-else>
@@ -195,7 +196,7 @@ import PhotoName from "@/app/admin/MenuListPage/PhotoName.vue";
 import DownloadButton from "@/app/admin/MenuListPage/DownloadButton.vue";
 import CategoryList from "@/app/admin/MenuListPage/CategoryList.vue";
 import CategoryButton from "@/app/admin/MenuListPage/CategoryButton.vue";
-
+import DownloadCSV from "@/app/admin/MenuListPage/DownloadCSV.vue";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 
 import { useMenuAndTitle } from "@/app/admin/MenuListPage/Utils";
@@ -234,6 +235,7 @@ export default defineComponent({
     SubCategoryList,
     CategoryList,
     CategoryButton,
+    DownloadCSV,
   },
   props: {
     shopInfo: {

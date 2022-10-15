@@ -306,10 +306,6 @@ export const customRoutes: CustomRoute[] = [
             path: "line",
             component: "admin/ManageLine.vue",
           },
-          //          {
-          //            path: "traces",
-          //            component: "admin/TraceList.vue",
-          //          },
           {
             path: "qrcode",
             component: "admin/QRCodePage.vue",
