@@ -201,8 +201,16 @@ export default {
   },
   async created() {
     console.log(process.env.VUE_APP_CIRCLE_SHA1);
-    if (!this.isInLIFF) {
-      if (this.isInLine) {
+    const isInLine = () => {
+      // TODO
+      return /Line/.test(navigator.userAgent);
+    };
+    const isInLIFF = () => {
+      return /LIFF/.test(navigator.userAgent);
+    };
+
+    if (!isInLIFF) {
+      if (isInLine) {
         if (/\?/.test(window.location.href)) {
           window.location.href =
             window.location.href + "&openExternalBrowser=1";

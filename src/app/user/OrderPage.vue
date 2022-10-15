@@ -47,6 +47,12 @@
 </template>
 
 <script>
+import {
+  defineComponent,
+  ref,
+  computed,
+  onUnmounted,
+} from "@vue/composition-api";
 import firebase from "firebase/compat/app";
 
 import NotFound from "@/components/NotFound.vue";
@@ -64,9 +70,14 @@ import { nameOfOrder } from "@/utils/strings";
 
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
-import { getOrderItems, doc2data, array2obj } from "@/utils/utils";
+import {
+  getOrderItems,
+  doc2data,
+  array2obj,
+  useLiffBasePath,
+} from "@/utils/utils";
 
-export default {
+export default defineComponent({
   name: "Order",
   metaInfo() {
     return {
@@ -120,56 +131,122 @@ export default {
       required: false,
     },
   },
-  data() {
+  setup(props, ctx) {
+    const loginVisible = ref(false);
+    const orderInfo = ref({});
+    const menuObj = ref(null);
+    const detacher = [];
+    const menuNotFound = ref(null);
+
+    const liffBasePath = useLiffBasePath(ctx.root);
+
+    const orderId = ctx.root.$route.params.orderId;
+    const statusKey = computed(() => {
+      return orderInfo.value ? order_status_keys[orderInfo.value.status] : null;
+    });
+    const orderError = computed(() => {
+      return orderInfo.value.status === order_status.error;
+    });
+    const just_validated = computed(() => {
+      console.log(orderInfo.value.status === order_status.validation_ok);
+      return orderInfo.value.status === order_status.validation_ok;
+    });
+    const paid = computed(() => {
+      return orderInfo.value.status >= order_status.order_placed;
+    });
+    const orderItems = computed(() => {
+      return getOrderItems(orderInfo.value, menuObj.value);
+    });
+
+    const loadUserData = () => {
+      const order_detacher = db
+        .doc(`restaurants/${ctx.root.restaurantId()}/orders/${orderId}`)
+        .onSnapshot(
+          async (order) => {
+            const order_data = order.exists ? order.data() : {};
+            orderInfo.value = order_data;
+            menuObj.value = orderInfo.value.menuItems || {};
+            if (just_validated.value) {
+              analyticsUtil.sendViewCart(
+                orderInfo.value,
+                orderId,
+                orderItems.value.map((or) => {
+                  return { ...or.item, id: or.id, quantity: or.count };
+                }),
+                props.shopInfo,
+                ctx.root.restaurantId()
+              );
+            }
+          },
+          (error) => {
+            menuNotFound.value = true;
+          }
+        );
+      detacher.push(order_detacher);
+    };
+
+    const handleOpenMenu = () => {
+      if (ctx.root.inLiff) {
+        ctx.root.$router.push(liffBasePath + "/r/" + ctx.root.restaurantId());
+      } else if (props.mode === "mo") {
+        ctx.root.$router.push(
+          `/${props.moPrefix}/r/${ctx.root.restaurantId()}`
+        );
+      } else {
+        ctx.root.$router.push(`/r/${ctx.root.restaurantId()}`);
+      }
+    };
+    const handleDismissed = (params) => {
+      console.log("handleDismissed", params);
+      // The user has dismissed the login dialog (including the successful login)
+      loginVisible.value = false;
+    };
+    const deleteOrderInfo = async () => {
+      try {
+        await db
+          .doc(`restaurants/${ctx.root.restaurantId()}/orders/${orderId}`)
+          .delete();
+        console.log("suceeded");
+      } catch (error) {
+        console.log("failed");
+      }
+    };
+    const openTransactionsAct = () => {
+      ctx.refs.contents.openTransactionsAct();
+    };
+
+    if (ctx.root.isUser || ctx.root.isLiffUser) {
+      loadUserData();
+    } else if (!ctx.root.isUser) {
+      loginVisible.value = true;
+    }
+
+    onUnmounted(() => {
+      if (detacher) {
+        detacher.map((detacher) => {
+          detacher();
+        });
+      }
+    });
+
     return {
-      loginVisible: false,
-      orderInfo: {},
-      menuNotFound: null,
-      menuObj: null,
-      detacher: [],
+      menuNotFound,
+      orderError,
+      just_validated,
+      paid,
+
+      orderInfo,
+      orderItems,
+
+      handleOpenMenu,
+      handleDismissed,
+
+      openTransactionsAct,
+      loginVisible,
+
+      loadUserData,
     };
   },
-  created() {
-    if (this.isUser || this.isLiffUser) {
-      this.loadUserData();
-    } else if (!this.isUser) {
-      this.loginVisible = true;
-    }
-  },
-  destroyed() {
-    if (this.detacher) {
-      this.detacher.map((detacher) => {
-        detacher();
-      });
-    }
-  },
-  beforeRouteLeave(to, from, next) {
-    if (this.just_validated) {
-      this.deleteOrderInfo();
-    }
-    next();
-  },
-  computed: {
-    statusKey() {
-      return this.orderInfo ? order_status_keys[this.orderInfo.status] : null;
-    },
-    orderError() {
-      return this.orderInfo.status === order_status.error;
-    },
-    just_validated() {
-      return this.orderInfo.status === order_status.validation_ok;
-    },
-    paid() {
-      return this.orderInfo.status >= order_status.order_placed;
-    },
-    orderItems() {
-      return getOrderItems(this.orderInfo, this.menuObj);
-    },
-    orderId() {
-      return this.$route.params.orderId;
-    },
-  },
-  // end of computed
   watch: {
     isUser() {
       if (this.isUser) {
@@ -182,61 +259,11 @@ export default {
       }
     },
   },
-  methods: {
-    loadUserData() {
-      const order_detacher = db
-        .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
-        .onSnapshot(
-          async (order) => {
-            const order_data = order.exists ? order.data() : {};
-            this.orderInfo = order_data;
-            this.menuObj = this.orderInfo.menuItems || {};
-            if (this.just_validated) {
-              analyticsUtil.sendViewCart(
-                this.orderInfo,
-                this.orderId,
-                this.orderItems.map((or) => {
-                  return { ...or.item, id: or.id, quantity: or.count };
-                }),
-                this.shopInfo,
-                this.restaurantId()
-              );
-            }
-          },
-          (error) => {
-            this.menuNotFound = true;
-          }
-        );
-      this.detacher = [order_detacher];
-    },
-
-    handleOpenMenu() {
-      if (this.inLiff) {
-        this.$router.push(this.liff_base_path + "/r/" + this.restaurantId());
-      } else if (this.mode === "mo") {
-        this.$router.push(`/${this.moPrefix}/r/${this.restaurantId()}`);
-      } else {
-        this.$router.push(`/r/${this.restaurantId()}`);
-      }
-    },
-    handleDismissed(params) {
-      console.log("handleDismissed", params);
-      // The user has dismissed the login dialog (including the successful login)
-      this.loginVisible = false;
-    },
-    async deleteOrderInfo() {
-      try {
-        await db
-          .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
-          .delete();
-        console.log("suceeded");
-      } catch (error) {
-        console.log("failed");
-      }
-    },
-    openTransactionsAct() {
-      this.$refs.contents.openTransactionsAct();
-    },
+  beforeRouteLeave(to, from, next) {
+    if (this.just_validated) {
+      this.deleteOrderInfo();
+    }
+    next();
   },
-};
+});
 </script>

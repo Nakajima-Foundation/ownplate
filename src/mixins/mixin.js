@@ -127,17 +127,6 @@ const mixin = {
     liffIndexId() {
       return this.$route.params.liffIndexId;
     },
-    liff_base_path() {
-      return `/liff/${this.liffIndexId}`;
-    },
-    isInLine() {
-      // TODO
-      // By UA
-      return /Line/.test(navigator.userAgent);
-    },
-    isInLIFF() {
-      return /LIFF/.test(navigator.userAgent);
-    },
     isDev() {
       // TODO
       return firebaseConfig.projectId === "ownplate-dev";

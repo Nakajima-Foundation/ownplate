@@ -223,7 +223,7 @@ export default defineComponent({
 
     const base_path = computed(() => {
       // /liff/hoge or ''
-      return inLiff.value ? liff_base_path.value : "";
+      return inLiff.value ? liffBasePath.value : "";
     });
     const historyPage = computed(() => {
       return base_path.value + "/u/history";
