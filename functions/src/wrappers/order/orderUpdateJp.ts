@@ -12,6 +12,7 @@ export default functions
     memory: "1GB" as "1GB",
     allowInvalidAppCheckToken,
     maxInstances: 50,
+    secrets: ["MO_AWS_KEY", "MO_AWS_SECRET"],
   })
   .https.onCall(async (data, context) => {
     if (context.app == undefined) {

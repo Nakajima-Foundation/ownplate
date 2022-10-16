@@ -57,7 +57,7 @@ export const sendMessageToCustomer = async (
 
   // Not JP
   if (!isEnabled) {
-    return await sms.pushSMS(aws_key, aws_secret, "OwnPlate", getMessage(url), orderData.phoneNumber);
+    return await sms.pushSMS(aws_key, aws_secret, "OwnPlate", getMessage(url), orderData.phoneNumber, false);
   }
   // for JP Mobile Order
   if (orderData.groupId && !/11111111$/.test(orderData.phoneNumber)) {
@@ -82,7 +82,7 @@ export const sendMessageToCustomer = async (
       console.log(e);
     }
 
-    return await sms.pushSMS(aws_key, aws_secret, "Mobile Order", getMoMessage(), orderData.phoneNumber);
+    return await sms.pushSMS(process.env.MO_AWS_KEY, process.env.MO_AWS_SECRET, "Mobile Order", getMoMessage(), orderData.phoneNumber, true);
   }
   // for JP
   const { lineId, liffIndexId, liffId } = (await line.getLineId(db, orderData.uid)) as any;
@@ -101,7 +101,7 @@ export const sendMessageToCustomer = async (
   }
   // force SMS ( for cancel and change order)
   if (forceSMS && orderData.phoneNumber) {
-    await sms.pushSMS(aws_key, aws_secret, "omochikaeri", getMessage(url), orderData.phoneNumber);
+    await sms.pushSMS(aws_key, aws_secret, "omochikaeri", getMessage(url), orderData.phoneNumber, false);
   }
 };
 
