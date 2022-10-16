@@ -17,8 +17,8 @@ import * as ses from "./ses";
 
 const LINE_MESSAGE_TOKEN = (functions.config() && functions.config().line && functions.config().line.message_token) || process.env.LINE_MESSAGE_TOKEN;
 
-const aws_key = (functions.config() && functions.config().aws && functions.config().aws.id) || process.env.AWS_ID;
-const aws_secret = (functions.config() && functions.config().aws && functions.config().aws.secret) || process.env.AWS_SECRET;
+const aws_key = process.env.AWS_ID;
+const aws_secret = process.env.AWS_SECRET;
 
 export const isEnabled = !!ownPlateConfig.line;
 
