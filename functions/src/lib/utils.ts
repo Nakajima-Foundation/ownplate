@@ -6,11 +6,10 @@ import * as Sentry from "@sentry/node";
 import { Context } from "../models/TestType";
 import * as admin from "firebase-admin";
 
-const locale = functions.config().locale;
-const region = (locale && locale.region) || "US";
+const region = "JP"; // config
 export const stripeRegion = stripe_regions[region];
 
-export const timezone = (functions.config() && functions.config().order && functions.config().order.timezone) || "Asia/Tokyo";
+export const timezone = "Asia/Tokyo"; // config
 
 export const validate_auth = (context: functions.https.CallableContext | Context) => {
   if (!context.auth) {
