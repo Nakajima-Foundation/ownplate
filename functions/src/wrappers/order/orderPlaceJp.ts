@@ -12,6 +12,7 @@ export default functions
     memory: "1GB" as "1GB",
     allowInvalidAppCheckToken,
     maxInstances: 50,
+    secrets: ["AWS_SES_USER", "AWS_SES_PASS"],
   })
   .https.onCall(async (data, context) => {
     if (context.app == undefined) {
