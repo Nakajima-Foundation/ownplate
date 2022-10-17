@@ -6,7 +6,7 @@
         {{ shopInfo.restaurantName }}
       </div>
       <!--ToDo ピックアップの場合、21:00-23:59(or 0:00?)の時間帯に以下のメッセージを表示させる-->
-      <div v-if="faulse" class="mx-6 mb-3 text-xs font-bold text-red-700">
+      <div v-if="false" class="mx-6 mb-3 text-xs font-bold text-red-700">
         {{ $t("mobileOrder.shopInfo.pickupNote") }}
       </div>
       <div class="justify-items-auto grid grid-cols-1 lg:grid-cols-2">
