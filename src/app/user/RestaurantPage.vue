@@ -219,7 +219,7 @@
                         v-if="
                           item._dataType === 'menu' &&
                           (!moPickup ||
-                            (isPublucDataSet[item.id] || {}).isPublic)
+                            (isPublucDataSet[item.id] || {}).isPublic || true)
                         "
                         :key="[subCategoryKey, item.id].join('_')"
                       >
