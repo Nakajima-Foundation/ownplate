@@ -27,7 +27,8 @@
       "takeout": "Online order",
       "pickup": "Takeaway now",
       "takeoutDesctiption": "Cliquez ici pour passer une commande",
-      "pickupDesctiption": "Cliquez ici pour mettre un article en attente"
+      "pickupDesctiption": "Cliquez ici pour mettre un article en attente",
+      "pickupNote": "Les commandes à emporter ne peuvent pas être acceptées de 21h00 à 23h59. Veuillez passer votre commande après un certain temps."
     }
   },
   "profile": {

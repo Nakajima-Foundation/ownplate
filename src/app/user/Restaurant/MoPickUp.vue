@@ -36,6 +36,14 @@
         </div>
       </div>
     </div>
+    <!--ToDo 21:00-23:59(or 0:00?)の時間帯に以下のメッセージを表示させる-->
+    <div
+      v-if="faulse"
+      class="mt-4 h-full w-full rounded-lg bg-red-700 bg-opacity-10 p-3 text-xs font-bold text-red-700"
+      :class="value === 'pickup' ? 'visible' : 'hidden'"
+    >
+      {{ $t("mobileOrder.shopInfo.pickupNote") }}
+    </div>
     <b-modal :active.sync="popup"> </b-modal>
   </div>
 </template>
