@@ -23,6 +23,7 @@
     "storeDetails": "Store Details",
     "adminQRCode": "Confirmation QR Code",
     "name": "Online ordering service",
+    "methodChangeAlert": "Changer le mode de réception ? Les articles de votre panier seront réinitialisés.",
     "shopInfo": {
       "takeout": "Online order",
       "pickup": "Takeaway now",

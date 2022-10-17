@@ -23,6 +23,7 @@
     "storeDetails": "Store Details",
     "adminQRCode": "Confirmation QR Code",
     "name": "Online ordering service",
+    "methodChangeAlert": "Change the receiving method? Items in your cart will be reset.",
     "shopInfo": {
       "takeout": "Online order",
       "pickup": "Takeaway now",

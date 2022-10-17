@@ -44,7 +44,7 @@
     >
       {{ $t("mobileOrder.shopInfo.pickupNote") }}
     </div>
-    <b-modal :active.sync="popup"> </b-modal>
+    <b-modal :active.sync="popup"></b-modal>
   </div>
 </template>
 
@@ -74,8 +74,7 @@ export default defineComponent({
           ctx.emit("input", value);
         } else {
           ctx.root.$store.commit("setAlert", {
-            title: "mobileOrder.title",
-            code: "mobileOrder.code",
+            code: "mobileOrder.methodChangeAlert",
             callback: async () => {
               ctx.emit("input", value);
             },
