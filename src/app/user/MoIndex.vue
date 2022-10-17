@@ -35,6 +35,9 @@
         <div class="text-sm text-black sm:text-base">
           {{ $t("lp.moDescription2") }}
         </div>
+        <div class="mt-1 text-xs text-black text-opacity-60 sm:text-sm">
+          {{ $t("lp.moDescription3") }}
+        </div>
       </div>
     </div>
 

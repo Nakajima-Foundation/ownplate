@@ -40,11 +40,13 @@
     "userRestaurantsTitle": "お客様向け店舗一覧について",
     "userRestaurantsBody": "登録した店舗は自動でお客様向け店舗一覧には表示されません。「掲載を申請する」ボタンより申請後、運営の審査を経てお客様向け店舗一覧に掲載されます。",
     "name": "ネット注文サービス",
+    "methodChangeAlert": "受け取り方法を変更します。カート内のアイテムはリセットされますが、よろしいでしょうか？",
     "shopInfo": {
       "takeout": "予約注文",
       "pickup": "ピックアップ",
       "takeoutDesctiption": "お取り寄せ注文はこちら",
-      "pickupDesctiption": "本日の受け取りはこちら"
+      "pickupDesctiption": "本日の受け取りはこちら",
+      "pickupNote": "21:00〜23:59は、ピックアップのご注文をお受けできません。時間をおいてご注文ください。"
     }
   },
   "profile": {
@@ -481,7 +483,8 @@
     "searchRestaurant": "テイクアウトのお店を探す",
     "moTagline": "ネット注文サービスは、PC・スマホから簡単に購入が可能な、ファミリーマート公式のお取り置きサービスです。",
     "moDescription1": "通常は取り扱いのない商品もお取り寄せいたします。",
-    "moDescription2": "ご注文日から最短3日後の店頭受取が可能です。"
+    "moDescription2": "ご注文当日*または3日後の店頭受取が可能です。​",
+    "moDescription3": "*ピックアップ対応店舗​​"
   },
   "order": {
     "allOrders": "全ての注文",

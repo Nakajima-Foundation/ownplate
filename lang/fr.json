@@ -23,11 +23,13 @@
     "storeDetails": "Store Details",
     "adminQRCode": "Confirmation QR Code",
     "name": "Online ordering service",
+    "methodChangeAlert": "Changer le mode de réception ? Les articles de votre panier seront réinitialisés.",
     "shopInfo": {
       "takeout": "Online order",
       "pickup": "Takeaway now",
       "takeoutDesctiption": "Cliquez ici pour passer une commande",
-      "pickupDesctiption": "Cliquez ici pour mettre un article en attente"
+      "pickupDesctiption": "Cliquez ici pour mettre un article en attente",
+      "pickupNote": "Les commandes à emporter ne peuvent pas être acceptées de 21h00 à 23h59. Veuillez passer votre commande après un certain temps."
     }
   },
   "profile": {
@@ -440,7 +442,8 @@
     "searchRestaurant": "Rechercher un restaurant",
     "moTagline": "Le service officiel de mise de côté de FamilyMart qui vous permet d'effectuer facilement des achats depuis votre PC ou votre smartphone.",
     "moDescription1": "Vous pouvez commander des produits que nous ne vendons pas normalement.",
-    "moDescription2": "L'enlèvement en magasin est possible dès 3 jours après la date de la commande."
+    "moDescription2": "L'enlèvement en magasin est possible le jour même de la commande* ou 3 jours plus tard.",
+    "moDescription3": "*Seulement dans certains magasins​​"
   },
   "order": {
     "allOrders": "Toutes les commandes",
