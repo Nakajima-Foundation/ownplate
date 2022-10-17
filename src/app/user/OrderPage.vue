@@ -24,6 +24,7 @@
         :deliveryData="deliveryData"
         :mode="mode"
         :groupData="groupData"
+        :disabledPickupTime="disabledPickupTime"
         @handleOpenMenu="handleOpenMenu"
         @openTransactionsAct="openTransactionsAct"
       />
@@ -183,7 +184,17 @@ export default defineComponent({
       );
       detacher.push(order_detacher);
     };
-
+ 
+    const store = ctx.root.$store;
+    const disabledPickupTime = computed(() => {
+      // TODO 21
+      if (orderInfo.value?.isPickup && store.state.date.getHours() >= 21) {
+        return true;
+      }
+      return false;
+    });
+   
+    
     const handleOpenMenu = () => {
       if (ctx.root.inLiff) {
         ctx.root.$router.push(liffBasePath + "/r/" + ctx.root.restaurantId());
@@ -245,6 +256,8 @@ export default defineComponent({
 
       loadUserData,
       deleteOrderInfo,
+
+      disabledPickupTime,
     };
   },
   watch: {

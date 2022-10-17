@@ -205,7 +205,7 @@
 
               <!--ToDo ピックアップの場合、21:00-23:59(or 0:00?)の時間帯に以下のメッセージを表示させる-->
               <div
-                v-if="faulse"
+                v-if="disabledPickupTime"
                 class="mx-6 mt-6 text-xs font-bold text-red-700"
               >
                 {{ $t("mobileOrder.shopInfo.pickupNote") }}
@@ -419,6 +419,10 @@ export default {
     groupData: {
       type: Object,
       required: false,
+    },
+    disabledPickupTime: {
+      type: Boolean,
+      required: true,
     },
   },
   data() {

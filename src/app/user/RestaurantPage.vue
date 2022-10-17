@@ -515,9 +515,9 @@ export default defineComponent({
       return howtoreceive.value === "pickup";
     });
     const disabledPickupTime = computed(() => {
-      // TODO 18
-      console.log(store.state.date.getHours() >= 18);
-      if (isPickup.value && store.state.date.getHours() >= 18) {
+      // TODO 21
+      console.log(store.state.date.getHours() >= 21);
+      if (isPickup.value && store.state.date.getHours() >= 21) {
         return true;
       }
       return false;
