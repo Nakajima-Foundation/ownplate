@@ -132,6 +132,7 @@
                     :shopInfo="shopInfo"
                     v-model="howtoreceive"
                     :orders="orders"
+                    :disabledPickupTime="disabledPickupTime"
                   />
                 </div>
               </div>
@@ -512,7 +513,15 @@ export default defineComponent({
     const isPickup = computed(() => {
       return howtoreceive.value === "pickup";
     });
-
+    const disabledPickupTime = computed(() => {
+      // TODO 18
+      console.log(store.state.date.getHours() >= 18);
+      if (isPickup.value && store.state.date.getHours() >= 18) {
+        return true;
+      }
+      return false;
+    });
+    
     const coverImage = computed(() => {
       return (
         (props.shopInfo?.images?.cover?.resizedImages || {})["1200"] ||
@@ -955,6 +964,7 @@ export default defineComponent({
       moSoldOutDataSet,
 
       moPickup,
+      disabledPickupTime,
     };
   },
 });
