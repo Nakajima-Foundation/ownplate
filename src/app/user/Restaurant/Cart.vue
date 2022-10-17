@@ -5,8 +5,7 @@
       <div class="mt-6 mb-4 flex justify-center font-bold text-black">
         {{ shopInfo.restaurantName }}
       </div>
-      <!--ToDo ピックアップの場合、21:00-23:59(or 0:00?)の時間帯に以下のメッセージを表示させる-->
-      <div v-if="false" class="mx-6 mb-3 text-xs font-bold text-red-700">
+      <div v-if="disabledPickupTime" class="mx-6 mb-3 text-xs font-bold text-red-700">
         {{ $t("mobileOrder.shopInfo.pickupNote") }}
       </div>
       <div class="justify-items-auto grid grid-cols-1 lg:grid-cols-2">
@@ -58,6 +57,10 @@ export default defineComponent({
     },
     selectedOptions: {
       type: Object,
+      required: true,
+    },
+    disabledPickupTime: {
+      type: Boolean,
       required: true,
     },
   },

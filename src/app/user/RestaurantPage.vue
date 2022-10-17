@@ -268,6 +268,7 @@
         :menuObj="menuObj"
         :prices="prices"
         :shopInfo="shopInfo"
+        :disabledPickupTime="disabledPickupTime"
         @didOrderdChange="didOrderdChange"
       />
 
