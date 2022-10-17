@@ -38,6 +38,8 @@ export interface RestaurantInfoData {
   inclusiveTax: boolean;
   openTimes: { [key: string]: any[] };
   businessDay: { [key: string]: any[] };
+  moOpenTimes: { [key: string]: any[] };
+  moBusinessDay: { [key: string]: any[] };
 
   pickUpMinimumCookTime: number;
   pickUpDaysInAdvance: number;

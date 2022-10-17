@@ -21,10 +21,22 @@ export const usePickupTime = (
       return moment(day.seconds ? day.toDate() : day).format("YYYY-MM-DD");
     });
   });
+  const shopInfoBusinessDay = computed(() => {
+    if (isInMo && isMoPickup && isMoPickup.value) {
+      return shopInfo.moBusinessDay;
+    } 
+    return shopInfo.businessDay;
+  });
+  const shopInfoOpenTimes = computed(() => {
+    if (isInMo && isMoPickup && isMoPickup.value) {
+      return shopInfo.moOpenTimes
+    }
+    return shopInfo.openTimes
+  });
   const businessDays = computed(() => {
     return [7, 1, 2, 3, 4, 5, 6].map((day) => {
       return (
-        shopInfo.businessDay[day] &&
+        shopInfoBusinessDay.value[day] &&
         !((exceptData.value || {}).exceptDay || {})[day]
       );
     });
@@ -33,7 +45,7 @@ export const usePickupTime = (
     return [7, 1, 2, 3, 4, 5, 6].reduce(
       (tmp: { [key: number]: boolean }, day) => {
         tmp[day] =
-          shopInfo.businessDay[day] &&
+          shopInfoBusinessDay.value[day] &&
           !((exceptData.value || {}).exceptDay || {})[day];
         return tmp;
       },
@@ -52,7 +64,7 @@ export const usePickupTime = (
   };
   const openSlots = computed(() => {
     return [7, 1, 2, 3, 4, 5, 6].map((day) => {
-      return shopInfo.openTimes[day].reduce((ret, value) => {
+      return shopInfoOpenTimes.value[day].reduce((ret, value) => {
         for (
           let time = value.start;
           time < value.end;
@@ -85,7 +97,7 @@ export const usePickupTime = (
   });
 
   const getAvailableDays = (minimumTime: number) => {
-    if (!shopInfo.businessDay) {
+    if (!shopInfoBusinessDay.value) {
       return []; // it means shopInfo is empty (not yet loaded)
     }
 
@@ -125,13 +137,16 @@ export const usePickupTime = (
       });
   };
 
+  // public
   const availableDays = computed(() => {
     return getAvailableDays(minimumCookTime.value);
   });
+  // public
   const deliveryAvailableDays = computed(() => {
     return getAvailableDays(minimumDeliveryTime.value);
   });
 
+  // public
   const menuPickupData = computed(() => {
     return Object.keys(menuObj.value || {}).reduce(
       (tmp: { [key: string]: any }, key) => {

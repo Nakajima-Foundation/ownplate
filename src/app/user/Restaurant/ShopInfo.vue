@@ -175,8 +175,8 @@
               >
                 <div class="w-16">{{ $t("week.short." + day) }}</div>
                 <div class="flex-1">
-                  <template v-if="shopInfo.businessDay[key]">
-                    <template v-for="data in shopInfo.openTimes[key]">
+                  <template v-if="businessDay[key]">
+                    <template v-for="data in openTimes[key]">
                       <template v-if="validDate(data)">
                         {{ num2time(data.start) }} - {{ num2time(data.end) }}
                         <br />
@@ -338,11 +338,27 @@ export default defineComponent({
       return "";
     });
 
+    const isPickup = computed(() => {
+      return props.isPickup;
+    });
+    const businessDay = computed(() => {
+      if (isInMo.value && isPickup.value) {
+        return props.shopInfo.moBusinessDay;
+      }
+      return props.shopInfo.businessDay;
+    });
+    const openTimes = computed(() => {
+      if (isInMo.value && isPickup.value) {
+        return props.shopInfo.moOpenTimes;
+      }
+      return props.shopInfo.openTimes;
+    });
+    
     const isOpen = computed(() => {
       return Object.keys(daysOfWeek).reduce((tmp, day) => {
-        if (weekday === Number(day) && props.shopInfo.businessDay[day]) {
+        if (weekday === Number(day) && businessDay.value[day]) {
           // get now and compaire
-          const res = props.shopInfo.openTimes[day].reduce((tmp, time) => {
+          const res = openTimes.value[day].reduce((tmp, time) => {
             const now = today.getHours() * 60 + today.getMinutes();
             const ret = now >= time.start && now <= time.end;
             tmp = tmp || ret;
@@ -390,9 +406,6 @@ export default defineComponent({
       return props.paymentInfo.inStore;
     });
 
-    const isPickup = computed(() => {
-      return props.isPickup;
-    });
     const { deliveryAvailableDays, availableDays, temporaryClosure } =
       usePickupTime(props.shopInfo, {}, {}, ctx, isInMo.value, isPickup);
 
@@ -459,6 +472,11 @@ export default defineComponent({
 
       //
       temporaryClosure,
+
+      // for mo
+      businessDay,
+      openTimes,
+
     };
   },
 });
