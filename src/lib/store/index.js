@@ -140,12 +140,6 @@ export const mutations = {
   setErrorMessage(state, params) {
     state.dialog = { error: params };
   },
-  setFirefoxPBM(state, flag) {
-    if (flag === true) {
-      console.warn("Firefox Private Browsing Mode detected");
-    }
-    state.isFirefoxPBM = flag;
-  },
 };
 
 export const actions = {};

@@ -146,17 +146,6 @@ export default {
     },
   },
   beforeCreate() {
-    if (indexedDB) {
-      var idb = indexedDB.open("inPrivate");
-      idb.onsuccess = () => {
-        this.$store.commit("setFirefoxPBM", false);
-      };
-      idb.onerror = () => {
-        this.$store.commit("setFirefoxPBM", true);
-      };
-    } else {
-      this.$store.commit("setFirefoxPBM", null);
-    }
     this.$store.commit("setServerConfig", { region: ownPlateConfig.region });
     this.unregisterAuthObserver = onAuthStateChanged(auth, async (user) => {
       if (user) {
@@ -202,7 +191,6 @@ export default {
   async created() {
     console.log(process.env.VUE_APP_CIRCLE_SHA1);
     const isInLine = () => {
-      // TODO
       return /Line/.test(navigator.userAgent);
     };
     const isInLIFF = () => {
