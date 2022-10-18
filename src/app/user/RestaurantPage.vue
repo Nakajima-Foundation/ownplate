@@ -324,6 +324,8 @@ import {
   onUnmounted,
 } from "@vue/composition-api";
 
+import moment from "moment-timezone";
+
 import Menu from "@/app/user/Restaurant/Menu.vue";
 import MenuMo from "@/app/user/Restaurant/MenuMo.vue";
 import PhoneLogin from "@/app/auth/PhoneLogin.vue";
@@ -515,10 +517,10 @@ export default defineComponent({
       return howtoreceive.value === "pickup";
     });
     const disabledPickupTime = computed(() => {
-      // TODO 21
-      console.log(store.state.date.getHours() >= 21);
-      if (isPickup.value && store.state.date.getHours() >= 21) {
-        return true;
+      if (isPickup.value) {
+        const now = Number(moment(store.state.date).format("hhmm"))
+        const last = Number(props.shopInfo.moLastPickupTime || "2100");
+        return (now >= last);
       }
       return false;
     });

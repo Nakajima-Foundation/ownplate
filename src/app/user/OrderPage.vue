@@ -187,9 +187,10 @@ export default defineComponent({
  
     const store = ctx.root.$store;
     const disabledPickupTime = computed(() => {
-      // TODO 21
-      if (orderInfo.value?.isPickup && store.state.date.getHours() >= 21) {
-        return true;
+      if (orderInfo.value?.isPickup) {
+        const now = Number(moment(store.state.date).format("hhmm"))
+        const last = Number(props.shopInfo.moLastPickupTime || "2100");
+        return (now >= last);
       }
       return false;
     });
