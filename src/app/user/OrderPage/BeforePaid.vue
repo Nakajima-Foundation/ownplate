@@ -207,7 +207,7 @@
                 v-if="disabledPickupTime"
                 class="mx-6 mt-6 text-xs font-bold text-red-700"
               >
-                {{ $t("mobileOrder.shopInfo.pickupNote") }}
+                {{ $tc("mobileOrder.shopInfo.pickupNote", 1, { lastOrder }) }}
               </div>
 
               <div class="mt-6 text-center">
@@ -218,6 +218,7 @@
                     notAvailable ||
                     notSubmitAddress ||
                     userMessageError ||
+                    disabledPickupTime ||
                     stripeSmallPayment
                   "
                   @click="handlePayment(true)"
@@ -287,8 +288,8 @@
                 <b-button
                   :loading="isPlacing"
                   :disabled="
-                    notAvailable || notSubmitAddress || userMessageError
-                  "
+                    notAvailable || notSubmitAddress || userMessageError || disabledPickupTime
+                    "
                   @click="handlePayment(false)"
                   class="b-reset-tw"
                 >
@@ -422,6 +423,10 @@ export default {
     disabledPickupTime: {
       type: Boolean,
       required: true,
+    },
+    lastOrder: {
+      type: String,
+      required: false,
     },
   },
   data() {

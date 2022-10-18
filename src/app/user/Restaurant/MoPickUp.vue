@@ -40,7 +40,7 @@
       v-if="disabledPickupTime"
       class="mt-4 h-full w-full rounded-lg bg-red-700 bg-opacity-10 p-3 text-xs font-bold text-red-700"
     >
-      {{ $t("mobileOrder.shopInfo.pickupNote") }}
+      {{ $tc("mobileOrder.shopInfo.pickupNote", 1, { lastOrder }) }}
     </div>
     <b-modal :active.sync="popup"></b-modal>
   </div>
@@ -65,6 +65,10 @@ export default defineComponent({
     disabledPickupTime: {
       type: Boolean,
       required: true,
+    },
+    lastOrder: {
+      type: String,
+      required: false,
     },
   },
   setup(props, ctx) {

@@ -29,7 +29,7 @@
       "pickup": "Takeaway now",
       "takeoutDesctiption": "Click here to place an order",
       "pickupDesctiption": "Click here to put an item on hold",
-      "pickupNote": "Takeaway orders cannot be accepted from 9:00 PM to 11:59 PM. Please place an order after a while."
+      "pickupNote": "Takeaway orders cannot be accepted from {lastOrder} to 23:59. Please place an order after a while."
     }
   },
   "profile": {

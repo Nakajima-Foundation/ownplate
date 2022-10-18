@@ -25,6 +25,7 @@
         :mode="mode"
         :groupData="groupData"
         :disabledPickupTime="disabledPickupTime"
+        :lastOrder="lastOrder"
         @handleOpenMenu="handleOpenMenu"
         @openTransactionsAct="openTransactionsAct"
       />
@@ -55,6 +56,7 @@ import {
   onUnmounted,
 } from "@vue/composition-api";
 import firebase from "firebase/compat/app";
+import moment from "moment-timezone";
 
 import NotFound from "@/components/NotFound.vue";
 import RequireLogin from "@/components/RequireLogin.vue";
@@ -194,6 +196,15 @@ export default defineComponent({
       }
       return false;
     });
+    const lastOrder = computed(() => {
+      if (props.shopInfo.moLastPickupTime) {
+        return [
+          (props.shopInfo.moLastPickupTime||"").split("").slice(0,2).join(""),
+          (props.shopInfo.moLastPickupTime||"").split("").slice(2,4).join("")
+        ].join(":");
+      };
+      return "21:00";
+    });
    
     
     const handleOpenMenu = () => {
@@ -259,6 +270,7 @@ export default defineComponent({
       deleteOrderInfo,
 
       disabledPickupTime,
+      lastOrder,
     };
   },
   watch: {

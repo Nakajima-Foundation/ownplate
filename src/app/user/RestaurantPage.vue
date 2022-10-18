@@ -133,6 +133,7 @@
                     v-model="howtoreceive"
                     :orders="orders"
                     :disabledPickupTime="disabledPickupTime"
+                    :lastOrder="lastOrder"
                   />
                 </div>
               </div>
@@ -269,6 +270,7 @@
         :prices="prices"
         :shopInfo="shopInfo"
         :disabledPickupTime="disabledPickupTime"
+        :lastOrder="lastOrder"
         @didOrderdChange="didOrderdChange"
       />
 
@@ -286,6 +288,7 @@
         :noAvailableTime="noAvailableTime"
         :isDelivery="isDelivery"
         :totalPrice="totalPrice"
+        :disabledPickupTime="disabledPickupTime"
       />
     </template>
     <!-- Image Popup-->
@@ -520,9 +523,18 @@ export default defineComponent({
       if (isPickup.value) {
         const now = Number(moment(store.state.date).format("hhmm"))
         const last = Number(props.shopInfo.moLastPickupTime || "2100");
-        return (now >= last);
+        return (now >= last) || true;
       }
       return false;
+    });
+    const lastOrder = computed(() => {
+      if (props.shopInfo.moLastPickupTime) {
+        return [
+          (props.shopInfo.moLastPickupTime||"").split("").slice(0,2).join(""),
+          (props.shopInfo.moLastPickupTime||"").split("").slice(2,4).join("")
+        ].join(":");
+      };
+      return "21:00";
     });
     
     const coverImage = computed(() => {
@@ -968,6 +980,7 @@ export default defineComponent({
 
       moPickup,
       disabledPickupTime,
+      lastOrder,
     };
   },
 });

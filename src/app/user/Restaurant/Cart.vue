@@ -6,7 +6,7 @@
         {{ shopInfo.restaurantName }}
       </div>
       <div v-if="disabledPickupTime" class="mx-6 mb-3 text-xs font-bold text-red-700">
-        {{ $t("mobileOrder.shopInfo.pickupNote") }}
+        {{ $tc("mobileOrder.shopInfo.pickupNote", 1, { lastOrder }) }}
       </div>
       <div class="justify-items-auto grid grid-cols-1 lg:grid-cols-2">
         <template v-for="(counters, itemId) in orders">
@@ -62,6 +62,10 @@ export default defineComponent({
     disabledPickupTime: {
       type: Boolean,
       required: true,
+    },
+    lastOrder: {
+      type: String,
+      required: false,
     },
   },
   setup(props, ctx) {
