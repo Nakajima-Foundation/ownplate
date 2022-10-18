@@ -110,6 +110,10 @@ const mopath = mo_prefixes
             path: prePath + "/privacy",
             component: "common/Privacy.vue",
           },
+          {
+            path: prePath + "/faq",
+            component: "common/FAQMo.vue",
+          },
         ],
       },
     ];
