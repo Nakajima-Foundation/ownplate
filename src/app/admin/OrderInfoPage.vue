@@ -73,8 +73,7 @@
                 </div>
               </div>
             </div>
-            <!--ToDo ピックアップ注文の場合にラベルを表示させる-->
-            <div v-if="false">
+            <div v-if="orderInfo.isPickup">
               <div
                 class="mt-4 inline-flex h-9 w-full justify-center rounded-lg bg-green-600 bg-opacity-10 px-4 py-1 font-bold text-green-600"
               >
