@@ -816,6 +816,7 @@
       "more": "En savoir plus",
       "all": "View All",
       "deliveryOrder": "Delivery order",
+      "pickupOrder": "Pickup order",
       "messageFromCustomer": "Message from the customer",
       "changeOrderDetail": "Change order details",
       "alreadyChanged": "already changed",
