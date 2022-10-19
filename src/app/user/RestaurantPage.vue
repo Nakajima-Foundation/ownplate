@@ -221,7 +221,7 @@
                         v-if="
                           item._dataType === 'menu' &&
                           (!moPickup ||
-                            (isPublucDataSet[item.id] || {}).isPublic || true)
+                            (isPublucDataSet[item.id] || {}).isPublic)
                         "
                         :key="[subCategoryKey, item.id].join('_')"
                       >
@@ -523,7 +523,7 @@ export default defineComponent({
       if (isPickup.value) {
         const now = Number(moment(store.state.date).format("hhmm"))
         const last = Number(props.shopInfo.moLastPickupTime || "2100");
-        return (now >= last) || true;
+        return (now >= last);
       }
       return false;
     });
@@ -562,7 +562,7 @@ export default defineComponent({
     );
 
     // for Mo
-    const { orderPublics, pickupPublics, pickupStocks } = loadStockData(
+    const { preOrderPublics, pickupPublics, pickupStocks } = loadStockData(
       db,
       props.shopInfo
     );
@@ -571,7 +571,7 @@ export default defineComponent({
       if (isPickup.value) {
         return pickupPublics.value[subCategory.value] || {};
       } else {
-        return orderPublics.value[subCategory.value] || {};
+        return preOrderPublics.value[subCategory.value] || {};
       }
     });
     const moSoldOutDataSet = computed(() => {

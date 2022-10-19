@@ -377,20 +377,20 @@ export const useCategoryParams = (ctx: any, isInMo: string) => {
 };
 
 export const loadStockData = (db: any, shopInfo: any) => {
-  const orderPublics = ref({});
+  const preOrderPublics = ref({});
   const pickupPublics = ref({});
   const pickupStocks = ref({});
 
   const restaurantId = shopInfo.restaurantId;
 
-  const path = `/restaurants/${restaurantId}/order/data/subCategory`;
+  const path = `/restaurants/${restaurantId}/preOrder/data/subCategory`;
   // TODO: detacher
   onSnapshot(collection(db, path), (ret: any) => {
     const tmp: { [key: string]: any } = {};
     ret.docs.map((a: any) => {
       tmp[a.id] = a.data().data;
     });
-    orderPublics.value = tmp;
+    preOrderPublics.value = tmp;
   });
 
   const pathStock = `/restaurants/${restaurantId}/pickup/stock/subCategory`;
@@ -413,7 +413,7 @@ export const loadStockData = (db: any, shopInfo: any) => {
   // console.log(shopInfo.enableMoPickup);
   // console.log(shopInfo.restaurantId);
   return {
-    orderPublics,
+    preOrderPublics,
     pickupPublics,
     pickupStocks,
   };
