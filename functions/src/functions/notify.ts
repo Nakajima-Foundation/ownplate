@@ -193,7 +193,7 @@ const notifyRestaurantToLineUser = async (url: string, message: string, lineUser
   return results;
 };
 
-export const notifyRestaurant = async (db: any, messageId: string, restaurantId: string, order: any, restaurantName: string) => {
+export const notifyRestaurant = async (db: admin.firestore.Firestore, messageId: string, restaurantId: string, order: any, restaurantName: string) => {
   const lng = utils.stripeRegion.langs[0];
   const datestr = moment().format("YYYY-MM-DD");
   const restaurant = (await db.doc(`/restaurants/${restaurantId}`).get()).data();
