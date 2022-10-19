@@ -3,7 +3,7 @@ import * as functions from "firebase-functions";
 import * as utils from "../../lib/utils";
 
 // func
-export const deleteCard = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
+export const deleteCard = async (db: admin.firestore.Firestore, context: functions.https.CallableContext) => {
   const customerUid = utils.validate_customer_auth(context);
 
   try {

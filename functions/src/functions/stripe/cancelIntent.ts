@@ -14,7 +14,7 @@ import { orderCancelData } from "../../lib/types";
 const stripe = utils.get_stripe();
 
 // This function is called by user or admin to cancel an exsting order (before accepted by admin)
-export const cancel = async (db: any, data: orderCancelData, context: functions.https.CallableContext | Context) => {
+export const cancel = async (db: admin.firestore.Firestore, data: orderCancelData, context: functions.https.CallableContext | Context) => {
   const isAdmin = utils.is_admin_auth(context);
 
   const uid = isAdmin ? utils.validate_owner_admin_auth(context) : utils.validate_customer_auth(context);
@@ -39,10 +39,10 @@ export const cancel = async (db: any, data: orderCancelData, context: functions.
     const result = await db.runTransaction(async (transaction) => {
       const orderDoc = await transaction.get(orderRef);
       const order = orderDoc.data();
-      order.id = orderDoc.id;
       if (!order) {
         throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
       }
+      order.id = orderDoc.id;
       if (isAdmin) {
         // Admin can cancel it before confirmed
         if (uid !== restaurantOwnerUid || order.status >= order_status.ready_to_pickup) {

@@ -141,3 +141,14 @@ export interface smaregiStoreListData {}
 export interface smaregiProductListData {
   store_id: string;
 }
+
+export interface superTwilioCallData {
+  restaurantId: string;
+}
+
+export interface dispatchData {
+  cmd: string;
+  uid: string;
+  key: string;
+  value: boolean;
+}

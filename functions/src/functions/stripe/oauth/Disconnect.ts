@@ -3,7 +3,7 @@ import * as functions from "firebase-functions";
 import * as utils from "../../../lib/utils";
 import { ownPlateConfig } from "../../../common/project";
 
-export const disconnect = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
+export const disconnect = async (db: admin.firestore.Firestore, context: functions.https.CallableContext) => {
   const uid = utils.validate_admin_auth(context);
   const stripe = utils.get_stripe();
 

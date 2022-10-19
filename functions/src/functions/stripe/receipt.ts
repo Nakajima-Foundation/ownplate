@@ -1,3 +1,4 @@
+import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 
 import { getStripeAccount } from "./intent";
@@ -11,7 +12,7 @@ import { stripeReceiptData } from "../../lib/types";
 
 const stripe = utils.get_stripe();
 
-export const receipt = async (db: any, data: stripeReceiptData, context: functions.https.CallableContext | Context) => {
+export const receipt = async (db: admin.firestore.Firestore, data: stripeReceiptData, context: functions.https.CallableContext | Context) => {
   const customerUid = utils.validate_customer_auth(context);
   const validateResult = validateStripeReceipt(data);
   if (!validateResult.result) {
@@ -23,7 +24,7 @@ export const receipt = async (db: any, data: stripeReceiptData, context: functio
 
   const orderData = (await db.doc(`restaurants/${restaurantId}/orders/${orderId}`).get()).data();
   // check data and owner and status
-  if (orderData === null || orderData.uid !== customerUid) {
+  if (orderData === null || orderData === undefined || orderData.uid !== customerUid) {
     console.log("order is not exit or no match uid.");
     throw new functions.https.HttpsError("failed-precondition", "This order is invalid.");
   }

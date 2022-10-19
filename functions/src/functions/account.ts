@@ -3,7 +3,7 @@ import * as admin from "firebase-admin";
 import * as utils from "../lib/utils";
 import { deleteCustomer } from "./stripe/customer";
 
-export const deleteAccount = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
+export const deleteAccount = async (db: admin.firestore.Firestore, context: functions.https.CallableContext) => {
   const customerUid = utils.validate_customer_auth(context);
 
   try {

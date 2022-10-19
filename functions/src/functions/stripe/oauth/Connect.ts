@@ -3,7 +3,7 @@ import * as functions from "firebase-functions";
 import * as utils from "../../../lib/utils";
 import { validatorStripeOAuthConnect } from "../../../lib/validator";
 
-export const connect = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
+export const connect = async (db: admin.firestore.Firestore, data: { code: string }, context: functions.https.CallableContext) => {
   const uid = utils.validate_admin_auth(context);
   const stripe = utils.get_stripe();
 
