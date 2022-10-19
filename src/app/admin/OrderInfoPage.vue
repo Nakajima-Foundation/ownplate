@@ -73,6 +73,17 @@
                 </div>
               </div>
             </div>
+            <!--ToDo ピックアップ注文の場合にラベルを表示させる-->
+            <div v-if="false">
+              <div
+                class="mt-4 inline-flex h-9 w-full justify-center rounded-lg bg-green-600 bg-opacity-10 px-4 py-1 font-bold text-green-600"
+              >
+                <i class="material-icons"> local_mall </i>
+                <span class="ml-1 mt-1 text-sm">
+                  {{ $t("admin.order.pickupOrder") }}</span
+                >
+              </div>
+            </div>
 
             <!-- Notice Delivery -->
             <div v-if="orderInfo.isDelivery" class="mt-2 text-center">

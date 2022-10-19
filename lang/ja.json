@@ -889,6 +889,7 @@
       "more": "更に表示",
       "all": "全て表示",
       "deliveryOrder": "宅配の注文です",
+      "pickupOrder": "ピックアップの注文です",
       "messageFromCustomer": "お客様からのメッセージ",
       "changeOrderDetail": "注文内容の変更",
       "alreadyChanged": "変更済み",
