@@ -521,22 +521,28 @@ export default defineComponent({
     });
     const disabledPickupTime = computed(() => {
       if (isPickup.value) {
-        const now = Number(moment(store.state.date).format("hhmm"))
+        const now = Number(moment(store.state.date).format("hhmm"));
         const last = Number(props.shopInfo.moLastPickupTime || "2100");
-        return (now >= last);
+        return now >= last;
       }
       return false;
     });
     const lastOrder = computed(() => {
       if (props.shopInfo.moLastPickupTime) {
         return [
-          (props.shopInfo.moLastPickupTime||"").split("").slice(0,2).join(""),
-          (props.shopInfo.moLastPickupTime||"").split("").slice(2,4).join("")
+          (props.shopInfo.moLastPickupTime || "")
+            .split("")
+            .slice(0, 2)
+            .join(""),
+          (props.shopInfo.moLastPickupTime || "")
+            .split("")
+            .slice(2, 4)
+            .join(""),
         ].join(":");
-      };
+      }
       return "21:00";
     });
-    
+
     const coverImage = computed(() => {
       return (
         (props.shopInfo?.images?.cover?.resizedImages || {})["1200"] ||

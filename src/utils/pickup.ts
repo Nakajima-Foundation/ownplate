@@ -24,14 +24,14 @@ export const usePickupTime = (
   const shopInfoBusinessDay = computed(() => {
     if (isInMo && isMoPickup && isMoPickup.value) {
       return shopInfo.moBusinessDay;
-    } 
+    }
     return shopInfo.businessDay;
   });
   const shopInfoOpenTimes = computed(() => {
     if (isInMo && isMoPickup && isMoPickup.value) {
-      return shopInfo.moOpenTimes
+      return shopInfo.moOpenTimes;
     }
-    return shopInfo.openTimes
+    return shopInfo.openTimes;
   });
   const businessDays = computed(() => {
     return [7, 1, 2, 3, 4, 5, 6].map((day) => {

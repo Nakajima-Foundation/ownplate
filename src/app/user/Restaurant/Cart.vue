@@ -5,7 +5,10 @@
       <div class="mt-6 mb-4 flex justify-center font-bold text-black">
         {{ shopInfo.restaurantName }}
       </div>
-      <div v-if="disabledPickupTime" class="mx-6 mb-3 text-xs font-bold text-red-700">
+      <div
+        v-if="disabledPickupTime"
+        class="mx-6 mb-3 text-xs font-bold text-red-700"
+      >
         {{ $tc("mobileOrder.shopInfo.pickupNote", 1, { lastOrder }) }}
       </div>
       <div class="justify-items-auto grid grid-cols-1 lg:grid-cols-2">

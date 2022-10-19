@@ -353,7 +353,7 @@ export default defineComponent({
       }
       return props.shopInfo.openTimes;
     });
-    
+
     const isOpen = computed(() => {
       return Object.keys(daysOfWeek).reduce((tmp, day) => {
         if (weekday === Number(day) && businessDay.value[day]) {
@@ -476,7 +476,6 @@ export default defineComponent({
       // for mo
       businessDay,
       openTimes,
-
     };
   },
 });

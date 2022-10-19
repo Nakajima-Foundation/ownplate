@@ -288,8 +288,11 @@
                 <b-button
                   :loading="isPlacing"
                   :disabled="
-                    notAvailable || notSubmitAddress || userMessageError || disabledPickupTime
-                    "
+                    notAvailable ||
+                    notSubmitAddress ||
+                    userMessageError ||
+                    disabledPickupTime
+                  "
                   @click="handlePayment(false)"
                   class="b-reset-tw"
                 >

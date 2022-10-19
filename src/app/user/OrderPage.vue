@@ -186,27 +186,32 @@ export default defineComponent({
       );
       detacher.push(order_detacher);
     };
- 
+
     const store = ctx.root.$store;
     const disabledPickupTime = computed(() => {
       if (orderInfo.value?.isPickup) {
-        const now = Number(moment(store.state.date).format("hhmm"))
+        const now = Number(moment(store.state.date).format("hhmm"));
         const last = Number(props.shopInfo.moLastPickupTime || "2100");
-        return (now >= last);
+        return now >= last;
       }
       return false;
     });
     const lastOrder = computed(() => {
       if (props.shopInfo.moLastPickupTime) {
         return [
-          (props.shopInfo.moLastPickupTime||"").split("").slice(0,2).join(""),
-          (props.shopInfo.moLastPickupTime||"").split("").slice(2,4).join("")
+          (props.shopInfo.moLastPickupTime || "")
+            .split("")
+            .slice(0, 2)
+            .join(""),
+          (props.shopInfo.moLastPickupTime || "")
+            .split("")
+            .slice(2, 4)
+            .join(""),
         ].join(":");
-      };
+      }
       return "21:00";
     });
-   
-    
+
     const handleOpenMenu = () => {
       if (ctx.root.inLiff) {
         ctx.root.$router.push(liffBasePath + "/r/" + ctx.root.restaurantId());

@@ -3,11 +3,15 @@
     v-if="0 != totalQuantities"
     :loading="isCheckingOut"
     :disabled="
-      isCheckingOut || noPaymentMethod || noAvailableTime || cantDelivery || (isShowCart && disabledPickupTime)
+      isCheckingOut ||
+      noPaymentMethod ||
+      noAvailableTime ||
+      cantDelivery ||
+      (isShowCart && disabledPickupTime)
     "
     @click="handleCheckOut"
     class="b-reset-tw fixed left-1/2 bottom-3 z-10 ml-[-9rem] w-[18rem] sm:bottom-8"
-    >
+  >
     <div
       class="inline-flex w-72 items-center justify-center rounded-full bg-op-teal shadow-lg"
       :class="shopInfo.enableDelivery ? 'pt-2 pb-2' : 'h-20'"
