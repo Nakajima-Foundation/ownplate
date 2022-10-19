@@ -123,7 +123,7 @@ export const sendMessageDirect = async (lineId: string, message: string, token: 
   );
 };
 
-export const getLiffPrivateConfig = async (db: any, liffIndexId: string) => {
+export const getLiffPrivateConfig = async (db: admin.firestore.Firestore, liffIndexId: string) => {
   const liffPrivateConfig = (await db.doc(`/liff/${liffIndexId}/liffPrivate/data`).get()).data();
   if (!liffPrivateConfig) {
     console.log("getLineId: no liffPrivateConfig");

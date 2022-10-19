@@ -1,5 +1,5 @@
+import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
-import * as firebase from "firebase-admin";
 import * as utils from "../lib/utils";
 import moment from "moment-timezone";
 
@@ -24,10 +24,10 @@ export const isEnabled = !!ownPlateConfig.line;
 
 // for customer
 export const sendMessageToCustomer = async (
-  db: firebase.firestore.Firestore,
+  db: admin.firestore.Firestore,
   msgKey: string,
   restaurantName: string,
-  orderData: firebase.firestore.DocumentData,
+  orderData: admin.firestore.DocumentData,
   restaurantId: string,
   orderId: string,
   params: object = {},
@@ -76,7 +76,7 @@ export const sendMessageToCustomer = async (
         uid: orderData.uid,
         month: monthstr,
         last4: orderData.phoneNumber.slice(-4),
-        createdAt: process.env.NODE_ENV !== "test" ? firebase.firestore.Timestamp.now() : Date.now(),
+        createdAt: process.env.NODE_ENV !== "test" ? admin.firestore.Timestamp.now() : Date.now(),
       });
     } catch (e) {
       console.log(e);
@@ -180,11 +180,11 @@ export const createNotifyRestaurantMailMessage = async (messageId: string, resta
   return replacedTemp;
 };
 
-const notifyRestaurantToLineUser = async (url: string, message: string, lineUsers: any[]) => {
+const notifyRestaurantToLineUser = async (url: string, message: string, lineUsers: admin.firestore.DocumentSnapshot[]) => {
   const results = await Promise.all(
     lineUsers.map(async (doc) => {
       const lineUser = doc.data();
-      if (lineUser.notify) {
+      if (lineUser && lineUser.notify) {
         await line.sendMessageDirect(doc.id, `${message} ${url}?openExternalBrowser=1`, LINE_MESSAGE_TOKEN);
       }
       return lineUser;
@@ -219,12 +219,12 @@ export const notifyRestaurant = async (db: any, messageId: string, restaurantId:
       orderId,
       messageId,
       results,
-      updatedAt: process.env.NODE_ENV !== "test" ? firebase.firestore.Timestamp.now() : Date.now(),
+      updatedAt: process.env.NODE_ENV !== "test" ? admin.firestore.Timestamp.now() : Date.now(),
     });
   }
 
   if (restaurant.emailNotification) {
-    const adminUser = process.env.NODE_ENV === "test" ? { email: process.env.TESTMAIL } : await firebase.auth().getUser(restaurant.uid);
+    const adminUser = process.env.NODE_ENV === "test" ? { email: process.env.TESTMAIL } : await admin.auth().getUser(restaurant.uid);
     console.log(adminUser.email);
     if (adminUser.email) {
       await ses.sendMail(adminUser.email, mailTitle, mailMessage);
@@ -236,7 +236,7 @@ export const notifyRestaurant = async (db: any, messageId: string, restaurantId:
     lineMessage,
     sound: true,
     path: `/admin/restaurants/${restaurantId}`,
-    updatedAt: process.env.NODE_ENV !== "test" ? firebase.firestore.Timestamp.now() : Date.now(),
+    updatedAt: process.env.NODE_ENV !== "test" ? admin.firestore.Timestamp.now() : Date.now(),
     url,
   });
 
@@ -249,16 +249,16 @@ export const notifyRestaurant = async (db: any, messageId: string, restaurantId:
         date: datestr,
         orderId,
         phoneNumber: restaurant.phoneNumber,
-        updatedAt: process.env.NODE_ENV !== "test" ? firebase.firestore.Timestamp.now() : Date.now(),
+        updatedAt: process.env.NODE_ENV !== "test" ? admin.firestore.Timestamp.now() : Date.now(),
       });
     }
   }
 };
 
-export const notifyNewOrderToRestaurant = async (db: firebase.firestore.Firestore, restaurantId: string, order: any, restaurantName: string) => {
+export const notifyNewOrderToRestaurant = async (db: admin.firestore.Firestore, restaurantId: string, order: any, restaurantName: string) => {
   return notifyRestaurant(db, "msg_order_placed", restaurantId, order, restaurantName);
 };
 
-export const notifyCanceledOrderToRestaurant = async (db: firebase.firestore.Firestore, restaurantId: string, order: any, restaurantName: string) => {
+export const notifyCanceledOrderToRestaurant = async (db: admin.firestore.Firestore, restaurantId: string, order: any, restaurantName: string) => {
   return notifyRestaurant(db, "msg_order_canceled_by_user", restaurantId, order, restaurantName);
 };

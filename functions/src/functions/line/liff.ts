@@ -1,7 +1,7 @@
+import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 import * as utils from "../../lib/utils";
 import * as netutils from "../../lib/netutils";
-import * as admin from "firebase-admin";
 import * as crypto from "crypto";
 
 import { liffAuthenticateData } from "../../lib/types";
@@ -9,7 +9,7 @@ import { validateLiffAuthenticate } from "../../lib/validator";
 
 const LIFF_SALT = (functions.config() && functions.config().line && functions.config().line.liff_salt) || process.env.LIFF_SALT;
 
-const getLiffConfig = async (db: any, liffIndexId: string) => {
+const getLiffConfig = async (db: admin.firestore.Firestore, liffIndexId: string) => {
   const liffConfig = (await db.doc(`/liff/${liffIndexId}`).get()).data();
   if (!liffConfig) {
     throw new functions.https.HttpsError("invalid-argument", "Verification failed.");
