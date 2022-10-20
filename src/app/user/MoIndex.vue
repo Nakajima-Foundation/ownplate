@@ -64,8 +64,16 @@
                     class="h-12 w-12 rounded-full object-cover"
                   />
                 </div>
-                <div class="flex-1 pr-2 text-base font-bold">
-                  {{ restaurant.restaurantName }}
+                <div>
+                  <div class="flex-1 pr-2 text-base font-bold">
+                    {{ restaurant.restaurantName }}
+                  </div>
+                  <div
+                    v-if="false"
+                    class="w-28 rounded-md bg-green-600 bg-opacity-10 py-0.5 text-center text-xs font-bold text-green-600"
+                  >
+                    {{ $t("mobileOrder.pickupLabel") }}
+                  </div>
                 </div>
               </div>
             </router-link>
