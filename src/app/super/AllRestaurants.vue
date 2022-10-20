@@ -12,6 +12,9 @@
         <td>メニュー数</td>
         <td></td>
         <td>電話通知</td>
+        <td>宅配</td>
+        <td>P</td>
+        <td>G</td>
       </tr>
       <tr v-for="restaurant in restaurants" :key="restaurant.id">
         <td style="width: 50%">
@@ -50,6 +53,15 @@
         </td>
         <td>
           {{ !!restaurant.phoneCall ? "o" : "-" }}
+        </td>
+        <td>
+          {{ !!restaurant.enableDelivery ? "o" : "-" }}
+        </td>
+        <td>
+          {{ !!restaurant.enableMoPickup ? "o" : "-" }}
+        </td>
+        <td>
+          {{ restaurant.groupId }}
         </td>
       </tr>
     </table>

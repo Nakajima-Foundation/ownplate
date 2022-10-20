@@ -1,5 +1,4 @@
 import Vue from "vue";
-import { db } from "@/plugins/firebase";
 import { firebaseConfig, ownPlateConfig } from "@/config/project";
 import { regionalSettings } from "@/config/constant";
 import moment from "moment";
@@ -55,22 +54,6 @@ const mixin = {
       } else {
         console.log("order: call play");
       }
-    },
-    itemOptionCheckbox2options(itemOptionCheckbox) {
-      // HACK: Dealing with a special case (probalby a bug in the menu editor)
-      if (
-        itemOptionCheckbox &&
-        itemOptionCheckbox.length === 1 &&
-        !itemOptionCheckbox[0]
-      ) {
-        console.log("Special case: itemOptionCheckbox===['']");
-        return [];
-      }
-      return (itemOptionCheckbox || []).map((option) => {
-        return option.split(",").map((choice) => {
-          return choice.trim();
-        });
-      });
     },
     displayOption(option, shopInfo, item) {
       return formatOption(option, (price) => {
