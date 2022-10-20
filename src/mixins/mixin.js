@@ -7,7 +7,6 @@ import { defaultHeader } from "@/config/header";
 import { formatOption } from "@/utils/strings";
 
 import { arraySum, roundPrice, taxRate } from "@/utils/utils";
-import { GAPIKey } from "@/config/project";
 
 const mixin = {
   methods: {
@@ -123,10 +122,6 @@ const mixin = {
       return this.regionalSetting.FeatureHeroTablet[
         this.isLocaleJapan ? "ja" : "en"
       ];
-    },
-    gmapKey() {
-      // TODO
-      return GAPIKey;
     },
   },
 };

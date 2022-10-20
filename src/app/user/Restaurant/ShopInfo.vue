@@ -5,7 +5,7 @@
       <div>
         <a target="_blank" :href="mapQuery">
           <img
-            :src="`https://maps.googleapis.com/maps/api/staticmap?center=${shopInfo.location.lat},${shopInfo.location.lng}&zoom=16&size=800x${mapWidth}&scale=2&maptype=roadmap&markers=color:red%7Clabel:G%7C${shopInfo.location.lat},${shopInfo.location.lng}&key=${gmapKey}`"
+            :src="`https://maps.googleapis.com/maps/api/staticmap?center=${shopInfo.location.lat},${shopInfo.location.lng}&zoom=16&size=800x${mapWidth}&scale=2&maptype=roadmap&markers=color:red%7Clabel:G%7C${shopInfo.location.lat},${shopInfo.location.lng}&key=${GAPIKey}`"
             class="w-full object-cover lg:rounded-lg"
           />
         </a>
@@ -250,7 +250,7 @@ import moment from "moment";
 
 import { daysOfWeek } from "@/config/constant";
 import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
-import { ownPlateConfig } from "@/config/project";
+import { ownPlateConfig, GAPIKey } from "@/config/project";
 import { usePickupTime } from "@/utils/pickup";
 import {
   stripeRegion,
@@ -466,6 +466,7 @@ export default defineComponent({
       inStorePayment,
       minimumAvailableTime,
       mapQuery,
+      GAPIKey,
       // methods
       toggleMoreInfo,
       validDate,
