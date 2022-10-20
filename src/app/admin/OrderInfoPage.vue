@@ -618,6 +618,7 @@ import {
   notFoundResponse,
   stripeRegion,
   convOrderStateForText,
+  isDev,
 } from "@/utils/utils";
 
 import {
@@ -1257,6 +1258,8 @@ export default defineComponent({
       hasMemo,
       cancelStatus,
 
+      isDev,
+      
       // methods
       updateEnable,
       toggleIsOrderChange,

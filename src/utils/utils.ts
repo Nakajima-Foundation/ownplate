@@ -19,7 +19,7 @@ import {
   stripe_regions,
   soundFiles,
 } from "@/config/constant";
-import { ownPlateConfig, mo_prefixes } from "@/config/project";
+import { firebaseConfig, ownPlateConfig, mo_prefixes } from "@/config/project";
 
 import { defaultHeader } from "@/config/header";
 
@@ -748,3 +748,6 @@ export const orderType = (order: OrderInfoData, isInMo: boolean) => {
 export const orderTypeKey = (order: OrderInfoData, isInMo: boolean) => {
   return "orderType" + orderType(order, isInMo);
 };
+
+export const isDev = firebaseConfig.projectId === "ownplate-dev";
+

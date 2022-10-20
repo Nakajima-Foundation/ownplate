@@ -109,10 +109,6 @@ const mixin = {
     liffIndexId() {
       return this.$route.params.liffIndexId;
     },
-    isDev() {
-      // TODO
-      return firebaseConfig.projectId === "ownplate-dev";
-    },
     featureHeroMobile() {
       return this.regionalSetting.FeatureHeroMobile[
         this.isLocaleJapan ? "ja" : "en"
