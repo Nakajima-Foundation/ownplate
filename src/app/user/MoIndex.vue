@@ -68,9 +68,8 @@
                   <div class="flex-1 pr-2 text-base font-bold">
                     {{ restaurant.restaurantName }}
                   </div>
-                  <!--ToDo ピックアップ対応店舗のみラベルを表示させる-->
                   <div
-                    v-if="false"
+                    v-if="restaurant.enableMoPickup"
                     class="w-28 rounded-md bg-green-600 bg-opacity-10 py-0.5 text-center text-xs font-bold text-green-600"
                   >
                     {{ $t("mobileOrder.pickupLabel") }}
