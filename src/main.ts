@@ -5,7 +5,6 @@ import store from "@/lib/store/index";
 
 // plugins
 import mixin from "@/mixins/mixin";
-import userPermission from "@/mixins/userPermissionMixin";
 import i18n from "@/plugins/vue-i18n";
 
 // library
@@ -51,7 +50,6 @@ Vue.prototype.$GMaps = {
 
 // mixin
 Vue.mixin(mixin);
-Vue.mixin(userPermission);
 
 Vue.use(VueCompositionAPI);
 Vue.use(SocialSharing);

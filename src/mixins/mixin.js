@@ -6,7 +6,7 @@ import moment from "moment";
 import { defaultHeader } from "@/config/header";
 import { formatOption } from "@/utils/strings";
 
-import { arraySum, roundPrice, taxRate } from "@/utils/utils";
+import { roundPrice, taxRate } from "@/utils/utils";
 
 const mixin = {
   methods: {
@@ -118,6 +118,15 @@ const mixin = {
       return this.regionalSetting.FeatureHeroTablet[
         this.isLocaleJapan ? "ja" : "en"
       ];
+    },
+    isUser() {
+      return !!this.$store.getters.uidUser;
+    },
+    isNotSuperAdmin() {
+      return this.$store.getters.isNotSuperAdmin;
+    },
+    isNotOperator() {
+      return this.$store.getters.isNotOperator;
     },
   },
 };

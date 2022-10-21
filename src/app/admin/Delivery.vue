@@ -229,6 +229,11 @@ export default {
     };
   },
   computed: {
+    ownerUid() {
+      return this.$store.getters.isSubAccount
+        ? this.$store.getters.parentId
+        : this.$store.getters.uidAdmin;
+    },
     uid() {
       return this.$store.getters.uidAdmin;
     },
@@ -287,6 +292,21 @@ export default {
     this.mapLoaded();
   },
   methods: {
+    checkAdminPermission() {
+      if (!this.$store.getters.uidAdmin) {
+        const redirectUrl = encodeURIComponent(this.$route.path);
+        if (redirectUrl) {
+          this.$router.replace("/admin/user/signin?to=" + redirectUrl);
+        } else {
+          this.$router.replace("/admin/user/signin");
+        }
+        return false;
+      }
+      return true;
+    },
+    checkShopAccount(shopInfo) {
+      return shopInfo.uid === this.ownerUid;
+    },
     async saveDeliveryArea() {
       await db.doc(`restaurants/${this.restaurantId()}`).update({
         enableDelivery: this.enableDelivery,
