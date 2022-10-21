@@ -118,7 +118,7 @@
             <!-- titles for omochikaeri -->
             <Titles :titleLists="titleLists" v-if="titleLists.length > 0" />
 
-            <div v-if="showSubCategory && moPickup">
+            <div v-if="moPickup">
               <!-- Mo Pickup Toggle -->
               <div class="mx-6 mt-3 mb-2 lg:mx-0">
                 <div>
