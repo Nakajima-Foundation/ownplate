@@ -384,8 +384,7 @@ export const loadStockData = (db: any, shopInfo: any) => {
   const restaurantId = shopInfo.restaurantId;
 
   const path = `/restaurants/${restaurantId}/preOrder/data/subCategory`;
-  // TODO: detacher
-  onSnapshot(collection(db, path), (ret: any) => {
+  const preOrderDetacher = onSnapshot(collection(db, path), (ret: any) => {
     const tmp: { [key: string]: any } = {};
     ret.docs.map((a: any) => {
       tmp[a.id] = a.data().data;
@@ -394,15 +393,16 @@ export const loadStockData = (db: any, shopInfo: any) => {
   });
 
   const pathStock = `/restaurants/${restaurantId}/pickup/stock/subCategory`;
-  onSnapshot(collection(db, pathStock), (ret: any) => {
+  const pickupStockDetacher = onSnapshot(collection(db, pathStock), (ret: any) => {
     const tmp: { [key: string]: any } = {};
     ret.docs.map((a: any) => {
       tmp[a.id] = a.data().data;
     });
     pickupStocks.value = tmp;
   });
+
   const pathData = `/restaurants/${restaurantId}/pickup/data/subCategory`;
-  onSnapshot(collection(db, pathData), (ret: any) => {
+  const pickupDetacher = onSnapshot(collection(db, pathData), (ret: any) => {
     const tmp: { [key: string]: any } = {};
     ret.docs.map((a: any) => {
       tmp[a.id] = a.data().data;
@@ -412,6 +412,12 @@ export const loadStockData = (db: any, shopInfo: any) => {
 
   // console.log(shopInfo.enableMoPickup);
   // console.log(shopInfo.restaurantId);
+  onUnmounted(() => {
+    preOrderDetacher();
+    pickupStockDetacher();
+    pickupDetacher();
+  });
+  
   return {
     preOrderPublics,
     pickupPublics,
