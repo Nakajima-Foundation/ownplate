@@ -200,6 +200,7 @@ import DownloadCSV from "@/app/admin/MenuListPage/DownloadCSV.vue";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 
 import { useMenuAndTitle } from "@/app/admin/MenuListPage/Utils";
+import { loadStockData } from "@/app/user/Restaurant/Utils";
 
 import { ownPlateConfig } from "@/config/project";
 
