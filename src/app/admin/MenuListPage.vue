@@ -127,6 +127,11 @@
                 (!publicFilter || itemsObj[menuList].publicFlag)
               "
             >
+              <!--
+                  pre{{ preOrderAvaiable[menuList] }}
+                  pick{{ pickupAvaiable[menuList] }}
+                  stock{{ pickupStockData[menuList] }}
+                  -->
               <Menu
                 :menuitem="itemsObj[menuList]"
                 :position="
@@ -373,6 +378,22 @@ export default defineComponent({
     });
     loadMenu();
 
+    // mo 
+    const { preOrderPublics, pickupPublics, pickupStocks } = loadStockData(
+      db,
+      props.shopInfo
+    );
+
+    const preOrderAvaiable = computed(() => {
+      return (preOrderPublics.value || {} )[category.value] || {};
+    });
+    const pickupAvaiable = computed(() => {
+      return (pickupPublics.value || {} )[category.value] || {};
+    });
+    const pickupStockData = computed(() => {
+      return (pickupStocks.value || {} )[category.value] || {};
+    });
+    
     watch(isLoading, (value) => {
       if (!props.isInMo) {
         if (!value) {
@@ -616,6 +637,13 @@ export default defineComponent({
       showSubCategory,
       categoryBathPath,
       subCategory,
+
+      // mo
+      preOrderAvaiable,
+      pickupAvaiable,
+      pickupStockData,
+
+      
     };
   },
 });

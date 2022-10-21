@@ -383,40 +383,40 @@ export const loadStockData = (db: any, shopInfo: any) => {
 
   const restaurantId = shopInfo.restaurantId;
 
-  const path = `/restaurants/${restaurantId}/preOrder/data/subCategory`;
-  const preOrderDetacher = onSnapshot(collection(db, path), (ret: any) => {
-    const tmp: { [key: string]: any } = {};
-    ret.docs.map((a: any) => {
-      tmp[a.id] = a.data().data;
+  if (shopInfo.groupId) {
+    const path = `/restaurants/${restaurantId}/preOrder/data/subCategory`;
+    const preOrderDetacher = onSnapshot(collection(db, path), (ret: any) => {
+      const tmp: { [key: string]: any } = {};
+      ret.docs.map((a: any) => {
+        tmp[a.id] = a.data().data;
+      });
+      preOrderPublics.value = tmp;
     });
-    preOrderPublics.value = tmp;
-  });
-
-  const pathStock = `/restaurants/${restaurantId}/pickup/stock/subCategory`;
-  const pickupStockDetacher = onSnapshot(collection(db, pathStock), (ret: any) => {
-    const tmp: { [key: string]: any } = {};
-    ret.docs.map((a: any) => {
-      tmp[a.id] = a.data().data;
+    
+    const pathStock = `/restaurants/${restaurantId}/pickup/stock/subCategory`;
+    const pickupStockDetacher = onSnapshot(collection(db, pathStock), (ret: any) => {
+      const tmp: { [key: string]: any } = {};
+      ret.docs.map((a: any) => {
+        tmp[a.id] = a.data().data;
+      });
+      pickupStocks.value = tmp;
     });
-    pickupStocks.value = tmp;
-  });
-
-  const pathData = `/restaurants/${restaurantId}/pickup/data/subCategory`;
-  const pickupDetacher = onSnapshot(collection(db, pathData), (ret: any) => {
-    const tmp: { [key: string]: any } = {};
-    ret.docs.map((a: any) => {
-      tmp[a.id] = a.data().data;
+    
+    const pathData = `/restaurants/${restaurantId}/pickup/data/subCategory`;
+    const pickupDetacher = onSnapshot(collection(db, pathData), (ret: any) => {
+      const tmp: { [key: string]: any } = {};
+      ret.docs.map((a: any) => {
+        tmp[a.id] = a.data().data;
+      });
+      pickupPublics.value = tmp;
     });
-    pickupPublics.value = tmp;
-  });
-
-  // console.log(shopInfo.enableMoPickup);
-  // console.log(shopInfo.restaurantId);
-  onUnmounted(() => {
-    preOrderDetacher();
-    pickupStockDetacher();
-    pickupDetacher();
-  });
+    
+    onUnmounted(() => {
+      preOrderDetacher();
+      pickupStockDetacher();
+      pickupDetacher();
+    });
+  }
   
   return {
     preOrderPublics,
