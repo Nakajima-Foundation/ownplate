@@ -19,6 +19,7 @@
         </div>
       </div>
       <div
+        v-if="shopInfo.enableMoPickup"
         class="h-full w-full rounded-lg bg-white p-3 shadow"
         :class="
           value === 'pickup'
@@ -26,6 +27,18 @@
             : 'cursor-pointer text-black text-opacity-40'
         "
         @click="input('pickup')"
+      >
+        <i class="material-icons w-full text-center"> local_mall </i>
+        <div class="-mt-0.5 text-center text-lg font-bold tracking-tighter">
+          {{ $t("mobileOrder.shopInfo.pickup") }}
+        </div>
+        <div class="mt-0.5 px-4 text-center text-xs font-bold">
+          {{ $t("mobileOrder.shopInfo.pickupDesctiption") }}
+        </div>
+      </div>
+      <div
+        v-else
+        class="h-full w-full rounded-lg bg-black bg-opacity-5 p-3 text-black text-opacity-30"
       >
         <i class="material-icons w-full text-center"> local_mall </i>
         <div class="-mt-0.5 text-center text-lg font-bold tracking-tighter">

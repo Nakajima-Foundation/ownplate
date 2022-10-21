@@ -120,13 +120,7 @@
 
             <div v-if="showSubCategory && moPickup">
               <!-- Mo Pickup Toggle -->
-              <div
-                class="mx-6 mt-4 mb-2 lg:mx-0"
-                v-if="shopInfo.enableMoPickup"
-              >
-                <div class="mb-2 text-xl font-bold text-black text-opacity-30">
-                  {{ $t("shopInfo.howToReceive") }}
-                </div>
+              <div class="mx-6 mt-3 mb-2 lg:mx-0">
                 <div>
                   <MoPickUp
                     :shopInfo="shopInfo"
