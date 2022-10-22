@@ -12,6 +12,7 @@ export default functions
     memory: "1GB" as "1GB",
     enforceAppCheck,
     maxInstances: 50,
+    secrets: ["STRIPE_SECRET"],
   })
   .https.onCall(async (data, context) => {
     if (context.app == undefined) {

@@ -4,7 +4,7 @@ import * as utils from "../../lib/utils";
 import { validateStripeUpdateCustomer } from "../../lib/validator";
 import { stripeUpdateCustomerData } from "../../lib/types";
 
-// called byt order/orderCreated
+// called by order/orderCreated
 export const createCustomer = async (db: admin.firestore.Firestore, uid: string, phoneNumber: string) => {
   const stripe = utils.get_stripe();
   await db.runTransaction(async (tr) => {

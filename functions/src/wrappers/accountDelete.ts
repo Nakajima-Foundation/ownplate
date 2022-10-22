@@ -9,8 +9,10 @@ const db = admin.firestore();
 export default functions
   .region("asia-northeast1")
   .runWith({
-    maxInstances: 10,
+    memory: "1GB" as "1GB",
+    maxInstances: 5,
     enforceAppCheck,
+    secrets: ["STRIPE_SECRET"],
   })
   .https.onCall(async (data, context) => {
     if (context.app == undefined) {

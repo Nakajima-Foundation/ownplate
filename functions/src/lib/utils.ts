@@ -55,14 +55,15 @@ export const is_admin_auth = (context: functions.https.CallableContext | Context
 };
 
 export const getStripeWebhookSecretKey = () => {
-  return (functions.config() && functions.config().stripe && functions.config().stripe.whsecret_key) || process.env.WH_STRIPE_SECRET;
-};
-export const getStripeSecretKey = () => {
-  return (functions.config() && functions.config().stripe && functions.config().stripe.secret_key) || process.env.STRIPE_SECRET;
+  const SECRET = process.env.STRIPE_WH_SECRET;
+  if (!SECRET) {
+    throw new functions.https.HttpsError("invalid-argument", "The functions requires STRIPE_WH_SECRET.");
+  }
+  return SECRET;
 };
 
 export const get_stripe = () => {
-  const STRIPE_SECRET_KEY = getStripeSecretKey();
+  const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET;
   if (!STRIPE_SECRET_KEY) {
     throw new functions.https.HttpsError("invalid-argument", "The functions requires STRIPE_SECRET_KEY.");
   }
