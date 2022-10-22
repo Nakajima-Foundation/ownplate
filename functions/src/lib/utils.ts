@@ -65,7 +65,8 @@ export const getStripeWebhookSecretKey = () => {
 export const get_stripe = () => {
   const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET || "";
   if (!STRIPE_SECRET_KEY) {
-    throw new functions.https.HttpsError("invalid-argument", "The functions requires STRIPE_SECRET_KEY.");
+    console.log("no key");
+    // throw new functions.https.HttpsError("invalid-argument", "The functions requires STRIPE_SECRET_KEY.");
   }
   return new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2020-03-02" });
 };
