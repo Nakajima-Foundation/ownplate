@@ -2,7 +2,7 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
 import { cancel } from "../../functions/stripe/cancelIntent";
-import { enforceAppCheck } from "../firebase";
+import { enforceAppCheck, secretKeys } from "../firebase";
 
 const db = admin.firestore();
 
@@ -11,7 +11,7 @@ export default functions
     memory: "1GB" as "1GB",
     maxInstances: 50,
     enforceAppCheck,
-    secrets: ["MO_AWS_KEY", "MO_AWS_SECRET", "AWS_ID", "AWS_SECRET", "AWS_SES_USER", "AWS_SES_PASS", "STRIPE_SECRET"],
+    secrets: secretKeys,
   })
   .https.onCall(async (data, context) => {
     if (context.app == undefined) {

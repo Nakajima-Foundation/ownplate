@@ -2,7 +2,7 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
 import * as Account from "../functions/account";
-import { enforceAppCheck } from "./firebase";
+import { enforceAppCheck, secretKeys } from "./firebase";
 
 const db = admin.firestore();
 
@@ -12,7 +12,7 @@ export default functions
     memory: "1GB" as "1GB",
     maxInstances: 5,
     enforceAppCheck,
-    secrets: ["STRIPE_SECRET"],
+    secrets: secretKeys,
   })
   .https.onCall(async (data, context) => {
     if (context.app == undefined) {
