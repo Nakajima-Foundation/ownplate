@@ -11,8 +11,6 @@ import { getStripeAccount, getStripeOrderRecord, getHash } from "./intent";
 import { validateCancel } from "../../lib/validator";
 import { orderCancelData } from "../../lib/types";
 
-const stripe = utils.get_stripe();
-
 // This function is called by user or admin to cancel an exsting order (before accepted by admin)
 export const cancel = async (db: admin.firestore.Firestore, data: orderCancelData, context: functions.https.CallableContext | Context) => {
   const isAdmin = utils.is_admin_auth(context);
@@ -82,6 +80,7 @@ export const cancel = async (db: admin.firestore.Firestore, data: orderCancelDat
       const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
 
       const idempotencyKey = getHash([order.id, paymentIntentId].join("-"));
+      const stripe = utils.get_stripe();
       const paymentIntent = await stripe.paymentIntents.cancel(paymentIntentId, {
         idempotencyKey: `${idempotencyKey}-cancel`,
         stripeAccount,

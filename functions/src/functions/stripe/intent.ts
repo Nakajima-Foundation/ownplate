@@ -3,8 +3,6 @@ import * as functions from "firebase-functions";
 import * as crypto from "crypto";
 import * as utils from "../../lib/utils";
 
-export const stripe = utils.get_stripe();
-
 export const getCustomerStripeInfo = async (db: admin.firestore.Firestore, customerUid: string) => {
   const refStripe = db.doc(`/users/${customerUid}/system/stripe`);
   const stripeInfo = (await refStripe.get()).data();
@@ -35,6 +33,7 @@ export const getPaymentMethodData = async (db: admin.firestore.Firestore, restau
   const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
 
   const stripeInfo = await getCustomerStripeInfo(db, customerUid);
+  const stripe = utils.get_stripe();
   const token = await stripe.tokens.create(
     {
       customer: stripeInfo.customerId,

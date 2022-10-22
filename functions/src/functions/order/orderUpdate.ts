@@ -6,7 +6,7 @@ import * as utils from "../../lib/utils";
 import { order_status, next_transitions, order_status_keys, timeEventMapping } from "../../common/constant";
 import { sendMessageToCustomer } from "../notify";
 
-import { stripe, getStripeAccount, getStripeOrderRecord, getHash } from "../stripe/intent";
+import { getStripeAccount, getStripeOrderRecord, getHash } from "../stripe/intent";
 import { orderUpdateData, updateDataOnorderUpdate } from "../../lib/types";
 import { validateOrderUpadte } from "../../lib/validator";
 
@@ -31,6 +31,7 @@ const getMgsKey = (status: number, isEC: boolean, timeEstimated?: admin.firestor
 };
 
 const getPaymentIntent = async (db: admin.firestore.Firestore, restaurantOwnerUid: string, order: any, transaction: any, stripeRef: any) => {
+  const stripe = utils.get_stripe();
   const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
   // just for stripe payment
   if (order.payment.stripe !== "pending") {

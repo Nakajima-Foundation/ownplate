@@ -13,7 +13,6 @@ import { getStripeAccount, getPaymentMethodData, getHash } from "../stripe/inten
 import { orderPlacedData } from "../../lib/types";
 import { validateOrderPlaced, validateCustomer } from "../../lib/validator";
 
-const stripe = utils.get_stripe();
 
 export const getOrderData = async (transaction: any, orderRef: any) => {
   const orderDoc = await transaction.get(orderRef);
@@ -188,6 +187,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
 
           const idempotencyKey = getHash([orderRef.path, payment_method_data.card.token].join("-"));
           const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
+          const stripe = utils.get_stripe();
           return await stripe.paymentIntents.create(request, {
             idempotencyKey,
             stripeAccount,

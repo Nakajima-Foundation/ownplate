@@ -14,7 +14,6 @@ import { orderChangeData, newOrderData } from "../../lib/types";
 import { validateOrderChange } from "../../lib/validator";
 
 const multiple = utils.stripeRegion.multiple; // 100 for USD, 1 for JPY
-const stripe = utils.get_stripe();
 
 const getUpdateOrder = (newOrders: newOrderData[], order, options, rawOptions) => {
   const updateOrderData = {};
@@ -151,6 +150,7 @@ export const orderChange = async (db: admin.firestore.Firestore, data: orderChan
         } as Stripe.PaymentIntentCreateParams;
         const hash = getHash(JSON.stringify(newOrderData));
 
+        const stripe = utils.get_stripe();
         const paymentIntent = await stripe.paymentIntents.create(request, {
           idempotencyKey: orderRef.path + hash,
           stripeAccount,

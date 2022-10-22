@@ -5,7 +5,7 @@ import { order_status, next_transitions, order_status_keys, timeEventMapping } f
 import * as utils from "../../lib/utils";
 import { sendMessageToCustomer } from "../notify";
 
-import { stripe, getStripeAccount, getStripeOrderRecord, getHash } from "./intent";
+import { getStripeAccount, getStripeOrderRecord, getHash } from "./intent";
 import { validateConfirmIntent } from "../../lib/validator";
 import { confirmIntentData, updateDataOnorderUpdate } from "../../lib/types";
 
@@ -55,6 +55,7 @@ export const confirm = async (db: admin.firestore.Firestore, data: confirmIntent
       const paymentIntentId = stripeRecord.paymentIntent.id;
 
       const idempotencyKey = getHash([order.id, paymentIntentId].join("-"));
+      const stripe = utils.get_stripe();
       const paymentIntent = await stripe.paymentIntents.confirm(paymentIntentId, {
         idempotencyKey,
         stripeAccount,

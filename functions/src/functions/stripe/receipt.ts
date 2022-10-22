@@ -10,9 +10,9 @@ import { Context } from "../../models/TestType";
 import { validateStripeReceipt } from "../../lib/validator";
 import { stripeReceiptData } from "../../lib/types";
 
-const stripe = utils.get_stripe();
-
 export const receipt = async (db: admin.firestore.Firestore, data: stripeReceiptData, context: functions.https.CallableContext | Context) => {
+  const stripe = utils.get_stripe();
+
   const customerUid = utils.validate_customer_auth(context);
   const validateResult = validateStripeReceipt(data);
   if (!validateResult.result) {

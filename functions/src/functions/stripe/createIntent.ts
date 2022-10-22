@@ -13,7 +13,6 @@ import { validateOrderPlaced, validateCustomer } from "../../lib/validator";
 import { orderPlacedData } from "../../lib/types";
 
 const multiple = utils.stripeRegion.multiple; // 100 for USD, 1 for JPY
-const stripe = utils.get_stripe();
 
 // This function is called by user to create a "payment intent" (to start the payment transaction)
 export const create = async (db: admin.firestore.Firestore, data: orderPlacedData, context: functions.https.CallableContext) => {
@@ -84,6 +83,7 @@ export const create = async (db: admin.firestore.Firestore, data: orderPlacedDat
 
           const idempotencyKey = getHash([orderRef.path, payment_method_data.card.token].join("-"));
           const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
+          const stripe = utils.get_stripe();
           return await stripe.paymentIntents.create(request, {
             idempotencyKey,
             stripeAccount,
