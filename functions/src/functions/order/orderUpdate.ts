@@ -109,7 +109,7 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
         updateData.timePickupForQuery = updateData.timeEstimated;
         order.timeEstimated = updateData.timeEstimated;
       }
-      await transaction.update(orderRef, updateData);
+      await transaction.update(orderRef, updateData as { [x: string]: any; });
       if (isStripeProcess) {
         await transaction.set(stripeRef, { paymentIntent }, { merge: true });
       }

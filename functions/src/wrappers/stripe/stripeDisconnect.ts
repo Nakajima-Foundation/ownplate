@@ -2,7 +2,7 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
 import { disconnect } from "../../functions/stripe/oauth/Disconnect";
-import { allowInvalidAppCheckToken } from "../firebase";
+import { enforceAppCheck } from "../firebase";
 
 const db = admin.firestore();
 
@@ -10,7 +10,7 @@ export default functions
   .runWith({
     memory: "1GB" as "1GB",
     maxInstances: 10,
-    allowInvalidAppCheckToken,
+    enforceAppCheck,
   })
   .https.onCall(async (data, context) => {
     if (context.app == undefined) {

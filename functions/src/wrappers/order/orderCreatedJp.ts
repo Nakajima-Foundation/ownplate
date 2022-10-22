@@ -2,7 +2,7 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
 import { orderCreated } from "../../functions/order/orderCreated";
-import { allowInvalidAppCheckToken } from "../firebase";
+import { enforceAppCheck } from "../firebase";
 
 const db = admin.firestore();
 
@@ -10,7 +10,7 @@ export default functions
   .region("asia-northeast1")
   .runWith({
     memory: "1GB" as "1GB",
-    allowInvalidAppCheckToken,
+    enforceAppCheck,
     maxInstances: 50,
   })
   .https.onCall(async (data, context) => {

@@ -2,7 +2,7 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
 import { cancelStripePayment } from "../../functions/stripe/cancelStripePayment";
-import { allowInvalidAppCheckToken } from "../firebase";
+import { enforceAppCheck } from "../firebase";
 
 const db = admin.firestore();
 
@@ -10,7 +10,7 @@ export default functions
   .runWith({
     memory: "1GB" as "1GB",
     maxInstances: 50,
-    allowInvalidAppCheckToken,
+    enforceAppCheck,
     secrets: ["MO_AWS_KEY", "MO_AWS_SECRET", "AWS_ID", "AWS_SECRET"],
   })
   .https.onCall(async (data, context) => {

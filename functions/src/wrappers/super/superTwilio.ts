@@ -2,7 +2,7 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
 import * as Super from "../../functions/super/super";
-import { allowInvalidAppCheckToken } from "../firebase";
+import { enforceAppCheck } from "../firebase";
 
 const db = admin.firestore();
 
@@ -10,7 +10,7 @@ export default functions
   .region("asia-northeast1")
   .runWith({
     maxInstances: 5,
-    allowInvalidAppCheckToken,
+    enforceAppCheck,
   })
   .https.onCall(async (data, context) => {
     if (context.app == undefined) {
