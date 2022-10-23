@@ -1357,6 +1357,7 @@ export default defineComponent({
         ctx.root.$router.push({
           path: `/admin/restaurants/${id}`,
         });
+        location.reload();
       } catch (error) {
         ctx.root.$store.commit("setErrorMessage", {
           code: "restaurant.save",
