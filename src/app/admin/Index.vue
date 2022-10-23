@@ -498,6 +498,7 @@ export default defineComponent({
 
           ctx.root.$router.push(`/admin/restaurants/${newDoc.id}`);
         } catch (error) {
+          ctx.root.$store.commit("setErrorMessage", {});
           console.log(error);
         } finally {
           isCreating.value = false;
