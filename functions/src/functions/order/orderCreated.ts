@@ -194,6 +194,23 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
       console.log("invalid order:" + String(orderId));
       throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
     }
+
+    // validate
+    const ownerUid = restaurantData.uid;
+    const {
+      isDelivery,
+      isPickup,
+      isLiff, 
+    } = orderData;
+    if (isDelivery && !restaurantData.enableDelivery) {
+      throw new functions.https.HttpsError("invalid-argument", "Invalid delivery order.");
+    }
+    if (isPickup && !restaurantData.enableMoPickup) {
+      throw new functions.https.HttpsError("invalid-argument", "Invalid delivery order.");
+    }
+    if (isLiff && !restaurantData.supportLiff) {
+      throw new functions.https.HttpsError("invalid-argument", "Invalid delivery order.");
+    }
     const multiple = utils.stripeRegion.multiple; //100 for USD, 1 for JPY
 
     const { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total } = await createNewOrderData(menuRestaurantRef, orderRef, orderData, multiple);
@@ -218,8 +235,36 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
 
     await createCustomer(db, customerUid, context.auth.token.phone_number);
 
-    await orderRef.update(
+
+    // just copy original data.
+    const {
+      options,
+      rawOptions,
+      uid,
+      phoneNumber,
+      name,
+      updatedAt,
+      timeCreated,
+    } = orderData;
+
+    await orderRef.set(
       utils.filterData({
+        // copy and validate
+        isDelivery,
+        isPickup,
+        isLiff, 
+
+        // just copy
+        options,
+        rawOptions,
+        uid,
+        phoneNumber,
+        name,
+        updatedAt,
+        timeCreated,
+        // end of copy
+        
+        ownerUid,
         order: newOrderData,
         menuItems: newItems, // Clone of ordered menu items (simplified)
         prices: newPrices,

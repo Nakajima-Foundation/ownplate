@@ -36,7 +36,7 @@ export interface RestaurantInfoData {
   enableDelivery: boolean;
   enableMoPickup: boolean; // set by sys
   groupId: string; // set by sys 
-  supportLiff: string;
+  supportLiff: boolean;
   
   countryCode: string;
   acceptUserMessage: boolean;

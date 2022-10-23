@@ -1,4 +1,3 @@
-import * as functions from "firebase-functions";
 import * as nodemailer from "nodemailer";
 
 const aws_key = process.env.AWS_SES_USER;

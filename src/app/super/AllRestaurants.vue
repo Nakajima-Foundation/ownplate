@@ -61,7 +61,13 @@
           {{ !!restaurant.enableMoPickup ? "o" : "-" }}
         </td>
         <td>
+          {{ !!restaurant.isEC ? "o" : "-" }}
+        </td>
+        <td>
           {{ restaurant.groupId }}
+        </td>
+        <td>
+          {{ restaurant.supportLiff }}
         </td>
       </tr>
     </table>

@@ -1,5 +1,4 @@
 import * as admin from "firebase-admin";
-import * as functions from "firebase-functions";
 import * as utils from "../lib/utils";
 import moment from "moment-timezone";
 
@@ -15,7 +14,7 @@ import * as sms from "./sms";
 import * as twilio from "./twilio";
 import * as ses from "./ses";
 
-const LINE_MESSAGE_TOKEN = process.env.LINE_MESSAGE_TOKEN;
+const LINE_MESSAGE_TOKEN = process.env.LINE_MESSAGE_TOKEN || "";
 
 const aws_key = process.env.AWS_ID;
 const aws_secret = process.env.AWS_SECRET;

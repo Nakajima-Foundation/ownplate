@@ -3,8 +3,6 @@ import { twiml_neworder } from "../common/constant";
 
 import { parsePhoneNumber, formatNational, intenationalFormat } from "../common/phoneutil";
 
-import * as functions from "firebase-functions";
-
 const sid = process.env.TWILIO_SID;
 const token = process.env.TWILIO_TOKEN;
 const phone_from = process.env.TWILIO_PHONE;
