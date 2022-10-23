@@ -3,7 +3,7 @@
     <div v-if="mode == 'resetPassword'">
       <reset-password />
     </div>
-    <div v-if="mode == 'verifyEmail'">
+    <div v-else-if="mode == 'verifyEmail'">
       <verify-email />
     </div>
     <div v-else>not found</div>
