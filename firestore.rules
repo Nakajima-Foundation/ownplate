@@ -59,10 +59,6 @@ service cloud.firestore {
     function isRestaurantGroupSubAccount(restaurantId, request) {
       return hasGroupIdInAuth(request) && hasGroup(request.auth.token.groupId, restaurantId);
     }
-    // for old group
-//    function isGroupOwnerForRestaurant(resource, request) {
-//      return isGroupOwner(resource.data.uid, request);
-//    }
     function isGroupOwnerForOrder(resource, request) {
       return isGroupOwner(resource.data.ownerUid, request);
     }
@@ -71,6 +67,13 @@ service cloud.firestore {
     }
     function isUndefined(data, field) {
       return !data.keys().hasAll([field]);
+    }
+    
+    // restaurantInfo
+    function isUndefinedRestaurantParams(request) {
+      return isUndefined(request.resource.data, 'isEC') &&
+             isUndefined(request.resource.data, 'enableMoPickup') &&
+             isUndefined(request.resource.data, 'groupId')
     }
 
     match /users/{userId} {
@@ -217,7 +220,8 @@ service cloud.firestore {
         allow read: if isSuper(request);
         
         allow create: if isAdmin(request)
-                        && request.resource.data.uid == request.auth.uid;
+                        && request.resource.data.uid == request.auth.uid
+                        && isUndefinedRestaurantParams(request);
         allow update: if isAdmin(request) && isOwner(resource, request);
         allow update: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request);
         allow update: if isSuper(request);
@@ -303,11 +307,6 @@ service cloud.firestore {
           allow read: if isRestaurantOwner(restaurantId, request);
           allow write: if uid == request.auth.uid && isNewOwner(request);
         }
-        match /trace/{traceId} {
-          allow create: if isRestaurantOwner(restaurantId, request)
-                          && request.resource.data.restaurantId == restaurantId
-                          && request.resource.data.uid == request.auth.uid;
-        }
         match /log/{datestr}/phoneLog/{orderId} {
           allow read: if isSuper(request);
         }
@@ -361,13 +360,6 @@ service cloud.firestore {
       }
     }
 
-    match /hash/{hashId}{
-      match /records/{eventId} {
-        allow write: if hashing.sha256(request.auth.token.line).toHexString().lower() == hashId
-                      && request.resource.data.uid == hashId;
-        allow read: if hashing.sha256(request.auth.token.line).toHexString().lower() == hashId;
-      }
-    }
     match /link/{linkId}{
       allow read: if true;
       allow write: if false;
@@ -384,9 +376,6 @@ service cloud.firestore {
                         && isRestaurantOwner(resource.data.restaurantId, request);
         allow read: if isAdmin(request)
                         && isRestaurantSubAccount(resource.data.restaurantId, request);
-    }
-    match /{path=**}/records/{eventId} {
-        allow read: if isRestaurantOwner(resource.data.restaurantId, request);
     }
     match /{path=**}/phoneLog/{orderId} {
         allow read: if isSuper(request);
