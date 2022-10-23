@@ -15,7 +15,7 @@ import * as sms from "./sms";
 import * as twilio from "./twilio";
 import * as ses from "./ses";
 
-const LINE_MESSAGE_TOKEN = (functions.config() && functions.config().line && functions.config().line.message_token) || process.env.LINE_MESSAGE_TOKEN;
+const LINE_MESSAGE_TOKEN = process.env.LINE_MESSAGE_TOKEN;
 
 const aws_key = process.env.AWS_ID;
 const aws_secret = process.env.AWS_SECRET;

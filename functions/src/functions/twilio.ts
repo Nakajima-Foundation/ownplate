@@ -5,9 +5,9 @@ import { parsePhoneNumber, formatNational, intenationalFormat } from "../common/
 
 import * as functions from "firebase-functions";
 
-const sid = (functions.config() && functions.config().twilio && functions.config().twilio.sid) || process.env.TWILIO_SID;
-const token = (functions.config() && functions.config().twilio && functions.config().twilio.token) || process.env.TWILIO_TOKEN;
-const from = (functions.config() && functions.config().twilio && functions.config().twilio.phone) || process.env.TWILIO_PHONE;
+const sid = process.env.TWILIO_SID;
+const token = process.env.TWILIO_TOKEN;
+const phone_from = process.env.TWILIO_PHONE;
 
 export const parsedNumber = (restaurant) => {
   const countryCode = restaurant.countryCode;
@@ -36,7 +36,7 @@ export const nationalPhoneNumber = (restaurant) => {
 
 export const phoneCall = async (restaurant) => {
   const to = intenationalPhoneNumber(restaurant);
-  if (!sid || !token || !from) {
+  if (!sid || !token || !phone_from) {
     console.log("PhoneCall: no setting");
     return;
   }
@@ -49,7 +49,7 @@ export const phoneCall = async (restaurant) => {
       twiml: twiml_neworder,
       to,
       timeout: 100,
-      from,
+      from: phone_from,
     });
     console.log("PhoneCall: Success");
     console.log(call.sid);

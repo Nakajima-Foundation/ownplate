@@ -7,7 +7,7 @@ import { ownPlateConfig } from "../../common/project";
 import { lineValidateData } from "../../lib/types";
 import { validateLineValidate } from "../../lib/validator";
 
-const LINE_MESSAGE_TOKEN = (functions.config() && functions.config().line && functions.config().line.message_token) || process.env.LINE_MESSAGE_TOKEN;
+const LINE_MESSAGE_TOKEN = process.env.LINE_MESSAGE_TOKEN;
 
 const client_id = ownPlateConfig.line.LOGIN_CHANNEL_ID;
 
@@ -43,7 +43,7 @@ export const validate = async (db: admin.firestore.Firestore, data: lineValidate
     throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
   }
 
-  const LINE_SECRET_KEY = functions.config().line.secret;
+  const LINE_SECRET_KEY = process.env.LINE_SECRET_KEY;
 
   try {
     // We validate the OAuth token (code) given to the redirected page.

@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import { verifyFriend } from "../../functions/line/line";
-import { enforceAppCheck } from "../firebase";
+import { enforceAppCheck, secretKeys } from "../firebase";
 
 const db = admin.firestore();
 
@@ -11,6 +11,7 @@ export default functions
     memory: "1GB" as "1GB",
     maxInstances: 50,
     enforceAppCheck,
+    secrets: secretKeys,
   })
   .https.onCall(async (data, context) => {
     if (context.app == undefined) {

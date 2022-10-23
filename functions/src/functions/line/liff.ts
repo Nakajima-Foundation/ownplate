@@ -7,7 +7,7 @@ import * as crypto from "crypto";
 import { liffAuthenticateData } from "../../lib/types";
 import { validateLiffAuthenticate } from "../../lib/validator";
 
-const LIFF_SALT = (functions.config() && functions.config().line && functions.config().line.liff_salt) || process.env.LIFF_SALT;
+const LIFF_SALT = process.env.LIFF_SALT;
 
 const getLiffConfig = async (db: admin.firestore.Firestore, liffIndexId: string) => {
   const liffConfig = (await db.doc(`/liff/${liffIndexId}`).get()).data();
