@@ -76,7 +76,7 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
         throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
       }
       order.id = orderId;
-      const isStripeProcess = order.status === order_status.order_placed && order.payment;
+      const isStripeProcess = order.status === order_status.order_placed && order.payment && order.payment.stripe !== "canceled";
       const nextStatus = next_transitions[order.status];
       if (!nextStatus || nextStatus !== status) {
         throw new functions.https.HttpsError("failed-precondition", "It is not possible to change state from the current state.", order.status);
