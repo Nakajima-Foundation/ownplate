@@ -3,7 +3,6 @@
     <!-- Back Button (Edit Order) -->
     <div class="mx-6 mt-6">
       <o-button
-        :loading="isDeleting"
         @click="handleOpenMenu"
         class="b-reset-tw"
       >
@@ -212,7 +211,6 @@
 
               <div class="mt-6 text-center">
                 <o-button
-                  :loading="isPaying"
                   :disabled="
                     !cardState.complete ||
                     notAvailable ||
@@ -227,7 +225,8 @@
                   <div
                     class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal px-6 shadow"
                     style="min-width: 288px"
-                  >
+                    >
+                    <ButtonLoading v-if="isPaying" />
                     <div class="text-xl font-bold text-white">
                       {{
                         mode === "mo"
@@ -300,6 +299,7 @@
                     class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal px-6 shadow"
                     style="min-width: 288px"
                   >
+                    <ButtonLoading v-if="isPlacing" />
                     <div class="text-xl font-bold text-white">
                       {{
                         mode === "mo"
@@ -364,6 +364,8 @@ import BeforePaidAlert from "@/app/user/OrderPage/BeforePaid/BeforePaidAlert.vue
 import SpecifiedCommercialTransactions from "@/app/user/OrderPage/BeforePaid/SpecifiedCommercialTransactions.vue";
 import OrderPageMap from "@/app/user/OrderPage/BeforePaid/Map.vue";
 
+import ButtonLoading from "@/components/Button/Loading.vue"
+
 import { db, firestore } from "@/plugins/firebase";
 import { orderPlace } from "@/lib/firebase/functions";
 
@@ -384,6 +386,8 @@ export default {
     OrderInfo,
     UserCustomerInfo,
     CustomerInfo,
+
+    ButtonLoading,
 
     // before paid
     StripeCard,
@@ -438,7 +442,6 @@ export default {
       isPaying: false,
       cardState: {},
 
-      isDeleting: false,
       isPlacing: false,
       tip: 0,
       sendSMS: true,
@@ -539,13 +542,11 @@ export default {
     },
     async deleteOrderInfo() {
       try {
-        this.isDeleting = true;
         await db
           .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
           .delete();
         console.log("suceeded");
       } catch (error) {
-        this.isDeleting = false;
         console.log("failed");
       }
     },

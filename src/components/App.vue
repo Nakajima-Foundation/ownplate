@@ -29,7 +29,7 @@
     <o-loading
       v-if="isLoading"
       iconSize="large"
-      :full-page="isFullPage"
+      :full-page="true"
       :active="true"
       :can-cancel="false"
       >

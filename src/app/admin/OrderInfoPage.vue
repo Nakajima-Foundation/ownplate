@@ -170,13 +170,14 @@
                 <!-- Cancel -->
                 <div class="mt-4 text-center">
                   <o-button
-                    :loading="updating === 'order_canceled'"
+                    :disabled="updating === 'order_canceled'"
                     @click="handleCancel"
                     class="b-reset-tw"
                   >
                     <div
                       class="inline-flex h-12 items-center justify-center rounded-full bg-red-700 px-6"
                     >
+                      <ButtonLoading v-if="updating === 'order_canceled'" />
                       <div class="text-base font-bold text-white">
                         {{ $t("admin.order.delete") }}
                       </div>
@@ -358,15 +359,15 @@
                 class="mt-4 text-center"
               >
                 <o-button
-                  :loading="updating === orderState"
-                  :disabled="!isValidTransition(orderState)"
+                  :disabled="!isValidTransition(orderState) || updating === orderState"
                   @click="handleChangeStatus(orderState)"
                   class="b-reset-tw"
                 >
                   <div
                     class="inline-flex h-16 w-64 items-center justify-center rounded-full"
                     :class="classOf(orderState)"
-                  >
+                    >
+                    <ButtonLoading v-if="updating === orderState" />
                     <div>
                       <div class="text-base font-extrabold">
                         {{
@@ -531,14 +532,14 @@
                 <div class="mt-4">
                   <o-button
                     @click="handleOrderChange"
-                    :loading="changing"
-                    :disabled="!availableChangeButton"
+                    :disabled="!availableChangeButton || changing"
                     class="b-reset-tw"
                     v-if="isOrderChange"
                   >
                     <div
                       class="inline-flex h-12 items-center justify-center rounded-full bg-red-700 px-6"
                     >
+                      <ButtonLoading v-if="changing" />
                       <div class="text-base font-bold text-white">
                         {{ $t("admin.order.confirmOrderChange") }}
                       </div>
@@ -606,6 +607,8 @@ import OrderInfo from "@/app/user/OrderPage/OrderInfo.vue";
 import CustomerInfo from "@/components/CustomerInfo.vue";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 
+import ButtonLoading from "@/components/Button/Loading.vue"
+
 import { costCal } from "@/utils/commonUtils";
 import { downloadOrderPdf, printOrder, data2UrlSchema } from "@/lib/pdf/pdf2";
 import * as analyticsUtil from "@/lib/firebase/analytics";
@@ -636,6 +639,7 @@ export default defineComponent({
     AdminHeader,
     CustomerInfo,
     NotFound,
+    ButtonLoading,
   },
   props: {
     shopInfo: {
@@ -1162,7 +1166,7 @@ export default defineComponent({
               error,
             });
           } finally {
-            ctx.root.$store.commit("setLoading", false);
+            ctx.root.$store.commit("setLoagding", false);
             changing.value = false;
           }
         },

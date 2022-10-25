@@ -65,33 +65,22 @@
       </div>
       <!-- Submit Buttons -->
       <div class="mt-4 text-center">
-        <o-button
+        <ButtonCancel
           id="signInButton"
-          @click="$emit('dismissed', false)"
-          class="b-reset-tw"
+          @cancel="$emit('dismissed', false)"
         >
-          <div
-            class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black bg-opacity-5"
-          >
-            <div class="text-base font-bold">{{ $t("button.cancel") }}</div>
-          </div>
-        </o-button>
+          {{ $t("button.cancel") }}
+        </ButtonCancel>
 
-        <o-button
+        <ButtonSubmit 
           id="button-send-tel"
-          :loading="isLoading"
-          @click="handleSubmit"
+          @submit="handleSubmit"
           :disabled="!readyToSendSMS"
-          class="b-reset-tw ml-4"
-        >
-          <div
-            class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-op-teal shadow"
+          class="ml-4"
+          :isLoading="isLoading"
           >
-            <div class="text-base font-bold text-white">
-              {{ $t("sms.send") }}
-            </div>
-          </div>
-        </o-button>
+          {{ $t("sms.send") }}
+        </ButtonSubmit>
       </div>
 
       <!-- Terms of Use & Privacy Policy -->
@@ -148,29 +137,22 @@
 
       <!-- Submit Buttons -->
       <div class="mt-4 text-center">
-        <o-button @click="$emit('dismissed', false)" class="b-reset-tw">
-          <div
-            class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black bg-opacity-5"
-          >
-            <div class="text-base font-bold">{{ $t("button.cancel") }}</div>
-          </div>
-        </o-button>
-
-        <o-button
-          id="button-send-code"
-          :loading="isLoading"
-          @click="handleCode"
-          :disabled="!readyToSendVerificationCode"
-          class="b-reset-tw ml-4"
+        <ButtonCancel
+          @cancel="$emit('dismissed', false)"
         >
-          <div
-            class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-op-teal shadow"
+          {{ $t("button.cancel") }}
+        </ButtonCancel>
+
+
+        <ButtonSubmit 
+          id="button-send-code"
+          @submit="handleCode"
+          :disabled="!readyToSendVerificationCode"
+          class="ml-4"
+          :isLoading="isLoading"
           >
-            <div class="text-base font-bold text-white">
-              {{ $t("sms.sendVerificationCode") }}
-            </div>
-          </div>
-        </o-button>
+          {{ $t("sms.sendVerificationCode") }}
+        </ButtonSubmit>
       </div>
     </form>
   </div>
@@ -206,10 +188,14 @@ import moment from "moment";
 import * as Sentry from "@sentry/vue";
 
 import TermsAndPolicy from "@/app/auth/TermsAndPolicy.vue";
+import ButtonSubmit from "@/components/Button/Submit.vue"
+import ButtonCancel from "@/components/Button/Cancel.vue"
 
 export default defineComponent({
   components: {
     TermsAndPolicy,
+    ButtonSubmit,
+    ButtonCancel,
   },
   props: {
     relogin: {
