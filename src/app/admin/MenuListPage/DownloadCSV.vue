@@ -56,7 +56,7 @@ export default defineComponent({
     };
     loadData();
 
-    const fileName = "menu.csv";
+    const fileName = "menu";
     const fields = [
       "productName",
       "productPriceWithTax",
