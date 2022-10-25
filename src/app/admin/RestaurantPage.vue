@@ -696,7 +696,7 @@
           </template>
 
           <!-- mo Hours -->
-          <div class="mt-4 lg:mt-0" v-if="isInMo && moPickup">
+          <div class="mt-4 lg:mt-0" v-if="isInMo && moPickup && shopInfo.moBusinessDay">
             <div class="pb-2 text-sm font-bold">
               {{ $t("mobileOrder.pickupHours") }}
               <span class="text-red-700">*</span>
@@ -711,7 +711,7 @@
                   <div class="flex-1">
                     <div class="text-base font-bold">
                       {{ $t("week.short." + day) }}
-                      {{ shopInfo.moBusinessDay[index] ? "営業" : "休業" }}
+                      {{ (shopInfo.moBusinessDay|| shopInfo.businessDay)[index] ? "営業" : "休業" }}
                     </div>
                   </div>
                 </div>
