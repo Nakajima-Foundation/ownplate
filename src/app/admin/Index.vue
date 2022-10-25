@@ -73,9 +73,8 @@
               </div>
 
               <div class="mt-4 text-center">
-                <b-button
+                <o-button
                   @click="handleNew"
-                  :loading="isCreating"
                   class="b-reset-tw"
                 >
                   <div
@@ -90,7 +89,7 @@
                       )
                     }}</span>
                   </div>
-                </b-button>
+                </o-button>
               </div>
             </div>
           </div>
@@ -152,9 +151,8 @@
 
             <!-- Add Restaurant -->
             <div v-if="existsRestaurant && isOwner" class="mt-4 text-center">
-              <b-button
+              <o-button
                 @click="handleNew"
-                :loading="isCreating"
                 class="b-reset-tw"
               >
                 <div
@@ -165,7 +163,7 @@
                     $t("admin.addNewRestaurant")
                   }}</span>
                 </div>
-              </b-button>
+              </o-button>
             </div>
           </div>
         </div>
@@ -292,7 +290,6 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const readyToDisplay = ref(false);
-    const isCreating = ref(false);
     const restaurantItems = ref(null);
     const orderDetachers = ref([]);
     const restaurant_detacher = ref(null);
@@ -480,7 +477,6 @@ export default defineComponent({
       console.log("handleNew");
       if (isOwner.value) {
         try {
-          isCreating.value = true;
           const newDoc = doc(collection(db, "restaurants"));
           // update Lists
           restaurantLists.value.push(newDoc.id);
@@ -500,8 +496,6 @@ export default defineComponent({
         } catch (error) {
           ctx.root.$store.commit("setErrorMessage", {});
           console.log(error);
-        } finally {
-          isCreating.value = false;
         }
       }
     };
@@ -576,7 +570,6 @@ export default defineComponent({
     return {
       // ref
       readyToDisplay,
-      isCreating,
       restaurantItems,
       unsetWarning,
       lines,

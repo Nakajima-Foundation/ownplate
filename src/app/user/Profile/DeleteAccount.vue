@@ -2,32 +2,32 @@
   <div>
     <!-- Delete Account -->
     <div class="mt-4 text-center">
-      <b-button @click="handleDeleteAccount" class="b-reset-tw">
+      <o-button @click="handleDeleteAccount" class="b-reset-tw">
         <div class="inline-flex items-center justify-center">
           <i class="material-icons mr-2 text-lg text-red-700">delete</i>
           <div class="text-sm font-bold text-red-700">
             {{ $t("profile.deleteAccount") }}
           </div>
         </div>
-      </b-button>
+      </o-button>
     </div>
 
     <!-- Phone Login-->
-    <b-modal :active.sync="reLoginVisible" :width="488" scroll="keep">
+    <o-modal :active.sync="reLoginVisible" :width="488" scroll="keep">
       <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
         <phone-login
           v-on:dismissed="continueDelete"
           :relogin="user.phoneNumber"
         />
       </div>
-    </b-modal>
+    </o-modal>
 
     <!-- Loading -->
-    <b-loading
+    <o-loading
       :is-full-page="false"
       :active="isDeletingAccount"
       :can-cancel="true"
-    ></b-loading>
+    ></o-loading>
   </div>
 </template>
 

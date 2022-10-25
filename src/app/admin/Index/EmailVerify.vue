@@ -4,13 +4,13 @@
       {{ $t("admin.needEmailVerification") }}
     </div>
     <div class="mb-2 text-center">
-      <b-button @click="send" class="b-reset-tw" disable="sent">
+      <o-button @click="send" class="b-reset-tw" disable="sent">
         <div
           class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 font-bold text-red-600"
         >
           {{ $t("admin.sendVerificationCode") }}
         </div>
-      </b-button>
+      </o-button>
     </div>
     <div class="text-center text-red-700" v-if="sent">
       {{ $t("admin.verificationCodeSent") }}

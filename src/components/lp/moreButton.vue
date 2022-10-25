@@ -4,7 +4,7 @@
     <!-- Center Column -->
     <div class="column">
       <div class="text-center">
-        <b-button
+        <o-button
           class="b-reset-tw h-9 rounded-full bg-black bg-opacity-5"
           tag="router-link"
           to=""
@@ -14,7 +14,7 @@
               $t("lp.moreDetails")
             }}</span>
           </span>
-        </b-button>
+        </o-button>
       </div>
     </div>
     <div class="column is-narrow w-6"></div>

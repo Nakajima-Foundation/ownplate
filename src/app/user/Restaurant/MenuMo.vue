@@ -62,7 +62,7 @@
     </div>
 
     <!-- Image Popup-->
-    <b-modal
+    <o-modal
       :active.sync="imagePopup"
       :width="488"
       scroll="keep"
@@ -144,7 +144,7 @@
           </div>
         </div>
       </div>
-    </b-modal>
+    </o-modal>
   </div>
 </template>
 

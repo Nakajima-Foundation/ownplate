@@ -26,7 +26,7 @@
 
         <!-- Date -->
         <div class="ml-6 mt-6 sm:ml-4">
-          <b-select v-model="dayIndex">
+          <o-select v-model="dayIndex">
             <option
               v-for="day in lastSeveralDays"
               :value="day.index"
@@ -38,7 +38,7 @@
                 $t("date.today")
               }}</span>
             </option>
-          </b-select>
+          </o-select>
         </div>
       </div>
 

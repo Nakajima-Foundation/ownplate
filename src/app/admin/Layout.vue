@@ -30,9 +30,9 @@
       <NotificationWatcher :notificationConfig="notificationConfig" />
       <SoundConfigWatcher :notificationConfig="notificationConfig" />
       <NewOrderWatcher :notificationConfig="notificationConfig" />
-      <b-modal :active.sync="isOpen" :width="488">
+      <o-modal :active.sync="isOpen" :width="488">
         <PartnersContact :id="(partner[0] || {}).id" />
-      </b-modal>
+      </o-modal>
     </div>
   </div>
 </template>

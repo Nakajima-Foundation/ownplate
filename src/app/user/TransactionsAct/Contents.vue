@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Transactions Act Popup-->
-    <b-modal :active.sync="transactionsActPopup" :width="488" scroll="keep">
+    <o-modal :active.sync="transactionsActPopup" :width="488" scroll="keep">
       <div class="omx-2 my-16 rounded-lg bg-white p-6 shadow-lg">
         <!-- Title -->
         <div class="text-xl font-bold text-black text-opacity-40">
@@ -261,7 +261,7 @@
           </a>
         </div>
       </div>
-    </b-modal>
+    </o-modal>
   </div>
 </template>
 <script>

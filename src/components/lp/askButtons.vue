@@ -3,7 +3,7 @@
     <div class="column is-narrow w-6"></div>
     <div class="column">
       <div class="text-center">
-        <b-button
+        <o-button
           class="b-reset-tw h-9 rounded-full bg-black bg-opacity-5"
           tag="router-link"
           to=""
@@ -11,8 +11,8 @@
           <span class="pl-4 pr-4">
             <span class="font-bold text-op-teal">お申し込み </span>
           </span>
-        </b-button>
-        <b-button
+        </o-button>
+        <o-button
           class="b-reset-tw h-9 rounded-full bg-black bg-opacity-5"
           tag="router-link"
           to=""
@@ -20,7 +20,7 @@
           <span class="pl-4 pr-4">
             <span class="font-bold text-op-teal">お問い合わせ </span>
           </span>
-        </b-button>
+        </o-button>
       </div>
     </div>
     <div class="column is-narrow w-6"></div>

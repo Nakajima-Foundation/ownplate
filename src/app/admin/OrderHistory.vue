@@ -20,7 +20,7 @@
           <div class="text-sm font-bold text-black text-opacity-30">
             {{ $t("order.statusTitle") }}
           </div>
-          <b-select v-model="orderState">
+          <o-select v-model="orderState">
             <option
               v-for="status in orderStatus"
               :value="status.index"
@@ -32,14 +32,14 @@
                   : $t("order.status.all")
               }}
             </option>
-          </b-select>
+          </o-select>
         </div>
         <!-- sort -->
         <div class="mx-6 mt-2 grid grid-cols-1 gap-2 sm:mt-6">
           <div class="text-sm font-bold text-black text-opacity-30">
             {{ $t("order.sortOrder") }}
           </div>
-          <b-select v-model="sortOrder">
+          <o-select v-model="sortOrder">
             <option
               v-for="status in orderSorts"
               :value="status.index"
@@ -47,7 +47,7 @@
             >
               {{ $t("order.sort." + status.key) }}
             </option>
-          </b-select>
+          </o-select>
         </div>
       </div>
 
@@ -67,7 +67,7 @@
 
       <!-- More -->
       <div class="mx-6 mt-6 text-center" v-if="last !== undefined">
-        <b-button :disabled="last === null" @click="next" class="b-reset-tw">
+        <o-button :disabled="last === null" @click="next" class="b-reset-tw">
           <div
             class="inline-flex h-9 w-48 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
           >
@@ -75,12 +75,12 @@
               {{ $t("admin.order.more") }}
             </div>
           </div>
-        </b-button>
+        </o-button>
       </div>
 
       <!-- More -->
       <div class="mx-6 mt-6 text-center" v-if="last !== undefined">
-        <b-button :disabled="last === null" @click="all" class="b-reset-tw">
+        <o-button :disabled="last === null" @click="all" class="b-reset-tw">
           <div
             class="inline-flex h-9 w-48 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
           >
@@ -88,7 +88,7 @@
               {{ $t("admin.order.all") }}
             </div>
           </div>
-        </b-button>
+        </o-button>
       </div>
 
       <div v-if="isOwner">

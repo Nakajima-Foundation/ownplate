@@ -32,7 +32,7 @@
 
       <!-- Cancel Button -->
       <div class="mt-8 mb-5 text-center">
-        <b-button
+        <o-button
           v-if="just_paid"
           @click="handleCancelPayment"
           class="b-reset-tw"
@@ -45,7 +45,7 @@
               {{ $t("order.cancelOrder") }}
             </div>
           </div>
-        </b-button>
+        </o-button>
       </div>
     </div>
 
@@ -148,7 +148,7 @@
 
         <!-- View Menu Page Button -->
         <div v-if="paid" class="mt-6 text-center">
-          <b-button class="b-reset-tw" @click="handleOpenMenu">
+          <o-button class="b-reset-tw" @click="handleOpenMenu">
             <div
               class="inline-flex h-12 items-center justify-center rounded-full border-2 border-op-teal px-6"
             >
@@ -156,7 +156,7 @@
                 {{ $t("order.menu") }}
               </div>
             </div>
-          </b-button>
+          </o-button>
         </div>
       </div>
 

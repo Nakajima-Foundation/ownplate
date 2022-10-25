@@ -8,7 +8,12 @@ import mixin from "@/mixins/mixin";
 import i18n from "@/plugins/vue-i18n";
 
 // library
-import Buefy from "buefy";
+// import Buefy from "buefy";
+import Oruga from '@oruga-ui/oruga';
+// import '@oruga-ui/oruga/dist/oruga.css';
+import { bulmaConfig } from '@oruga-ui/theme-bulma'
+// import '@oruga-ui/theme-bulma/dist/bulma.css'
+
 import Croppa from "vue-croppa";
 import SocialSharing from "vue-social-sharing";
 import VueClipboard from "vue-clipboard2";
@@ -56,7 +61,9 @@ Vue.use(SocialSharing);
 Vue.use(Croppa);
 Vue.use(VueClipboard);
 Vue.use(VueMeta, {});
-Vue.use(Buefy);
+// Vue.use(Buefy);
+Vue.use(Oruga, bulmaConfig);
+
 
 if (process.env.NODE_ENV !== "development") {
   if (sentryDsn) {

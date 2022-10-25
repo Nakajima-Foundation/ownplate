@@ -1,5 +1,5 @@
 <template>
-  <b-modal :active.sync="isVisible" :width="488">
+  <o-modal :active.sync="isVisible" :width="488">
     <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
       <!-- Items List -->
       <div>
@@ -12,23 +12,23 @@
             <span class="text-sm font-bold">{{ category }}</span>
           </div>
           <div>
-            <b-button class="b-reset-tw" @click="handleDelete(index)">
+            <o-button class="b-reset-tw" @click="handleDelete(index)">
               <div class="inline-flex h-9 items-center justify-center px-4">
                 <i class="material-icons text-lg text-red-700">delete</i>
               </div>
-            </b-button>
+            </o-button>
           </div>
         </div>
       </div>
 
       <!-- Add Item -->
       <div class="flex">
-        <b-input
+        <o-input
           class="mr-2 flex-1"
           :placeholder="$t('editMenu.newCategory')"
           v-model="newEntry"
         />
-        <b-button
+        <o-button
           :disabled="!isValidEntry"
           class="b-reset-tw"
           @click="handleAdd"
@@ -41,10 +41,10 @@
               {{ $t("editMenu.newCategoryAdd") }}
             </div>
           </div>
-        </b-button>
+        </o-button>
       </div>
     </div>
-  </b-modal>
+  </o-modal>
 </template>
 
 <script>

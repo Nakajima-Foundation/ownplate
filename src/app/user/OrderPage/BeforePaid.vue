@@ -2,8 +2,7 @@
   <div>
     <!-- Back Button (Edit Order) -->
     <div class="mx-6 mt-6">
-      <b-button
-        :loading="isDeleting"
+      <o-button
         @click="handleOpenMenu"
         class="b-reset-tw"
       >
@@ -15,7 +14,7 @@
             {{ $t("button.back") }}
           </div>
         </div>
-      </b-button>
+      </o-button>
     </div>
 
     <!-- Restaurant Profile Photo and Name -->
@@ -168,12 +167,12 @@
               </div>
 
               <div class="mt-2 rounded-lg bg-white p-4 shadow">
-                <b-input
+                <o-input
                   v-model="memo"
                   type="textarea"
                   :placeholder="$t('order.enterMessage')"
                   class="w-full"
-                ></b-input>
+                ></o-input>
                 <div :class="userMessageError ? 'font-bold text-red-700' : ''">
                   {{ $t("validationError.memo.length") }}
                 </div>
@@ -211,8 +210,7 @@
               </div>
 
               <div class="mt-6 text-center">
-                <b-button
-                  :loading="isPaying"
+                <o-button
                   :disabled="
                     !cardState.complete ||
                     notAvailable ||
@@ -227,7 +225,8 @@
                   <div
                     class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal px-6 shadow"
                     style="min-width: 288px"
-                  >
+                    >
+                    <ButtonLoading v-if="isPaying" />
                     <div class="text-xl font-bold text-white">
                       {{
                         mode === "mo"
@@ -237,7 +236,7 @@
                       <!-- {{ $n(orderInfo.total + tip, "currency") }} -->
                     </div>
                   </div>
-                </b-button>
+                </o-button>
                 <div
                   v-if="mode !== 'mo' && stripeSmallPayment"
                   class="mt-2 text-sm font-bold text-red-700"
@@ -285,7 +284,7 @@
               </div>
 
               <div class="mt-4">
-                <b-button
+                <o-button
                   :loading="isPlacing"
                   :disabled="
                     notAvailable ||
@@ -300,6 +299,7 @@
                     class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal px-6 shadow"
                     style="min-width: 288px"
                   >
+                    <ButtonLoading v-if="isPlacing" />
                     <div class="text-xl font-bold text-white">
                       {{
                         mode === "mo"
@@ -308,7 +308,7 @@
                       }}
                     </div>
                   </div>
-                </b-button>
+                </o-button>
               </div>
               <div v-if="mode !== 'mo'">
                 <div class="mt-2 text-sm font-bold text-black text-opacity-60">
@@ -332,11 +332,11 @@
             <!-- Send SMS Checkbox -->
             <div v-if="!isLineEnabled" class="mt-6">
               <div class="rounded-lg bg-black bg-opacity-5 p-4">
-                <b-checkbox v-model="sendSMS">
+                <o-checkbox v-model="sendSMS">
                   <div class="text-sm font-bold">
                     {{ $t("order.sendSMS") }}
                   </div>
-                </b-checkbox>
+                </o-checkbox>
               </div>
             </div>
           </div>
@@ -364,6 +364,8 @@ import BeforePaidAlert from "@/app/user/OrderPage/BeforePaid/BeforePaidAlert.vue
 import SpecifiedCommercialTransactions from "@/app/user/OrderPage/BeforePaid/SpecifiedCommercialTransactions.vue";
 import OrderPageMap from "@/app/user/OrderPage/BeforePaid/Map.vue";
 
+import ButtonLoading from "@/components/Button/Loading.vue"
+
 import { db, firestore } from "@/plugins/firebase";
 import { orderPlace } from "@/lib/firebase/functions";
 
@@ -384,6 +386,8 @@ export default {
     OrderInfo,
     UserCustomerInfo,
     CustomerInfo,
+
+    ButtonLoading,
 
     // before paid
     StripeCard,
@@ -438,7 +442,6 @@ export default {
       isPaying: false,
       cardState: {},
 
-      isDeleting: false,
       isPlacing: false,
       tip: 0,
       sendSMS: true,
@@ -539,13 +542,11 @@ export default {
     },
     async deleteOrderInfo() {
       try {
-        this.isDeleting = true;
         await db
           .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
           .delete();
         console.log("suceeded");
       } catch (error) {
-        this.isDeleting = false;
         console.log("failed");
       }
     },
