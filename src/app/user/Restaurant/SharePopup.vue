@@ -38,7 +38,14 @@
                 </div>
               </div>
             </span>
-
+            <div>
+              <span class=" font-bold text-red-700 text-sm" v-if="copied">
+                {{ $t("shopInfo.UrlCopied") }}
+              </span>
+              <span class=" font-bold text-red-700 text-sm" v-if="copyError">
+                {{ $t("shopInfo.UrlCopyFailed") }}
+              </span>
+            </div>
             <div class="text-sm text-black text-opacity-30">
               {{ url }}
             </div>
@@ -100,7 +107,9 @@ export default defineComponent({
 
     const basePath = useBasePath(ctx.root);
     const url = shareUrl(ctx.root, basePath.value) + (props.suffix || "");
-
+    const copied = ref(false);
+    const copyError = ref(false);
+    
     const openShare = () => {
       sharePopup.value = true;
     };
@@ -112,9 +121,18 @@ export default defineComponent({
       // TODO: check no-nuxt branch
       try {
         await ctx.root.$copyText(text);
-        ctx.root.$buefy.toast.open(ctx.root.$i18n.tc("shopInfo.UrlCopied"));
+        copied.value = true;
+        setTimeout(() => {
+          copied.value = false;
+        }, 2000);
+        // ctx.root.$buefy.toast.open(ctx.root.$i18n.tc("shopInfo.UrlCopied"));
       } catch (e) {
-        ctx.root.$buefy.toast.open(ctx.root.$i18n.tc("shopInfo.UrlCopyFailed"));
+        copyError.value = true;
+        setTimeout(() => {
+          copyError.value = false;
+        }, 2000);
+        console.log(e);
+        //ctx.root.$buefy.toast.open(ctx.root.$i18n.tc("shopInfo.UrlCopyFailed"));
       }
     };
 
@@ -125,6 +143,9 @@ export default defineComponent({
       url,
 
       copyClipboard,
+
+      copied,
+      copyError,
     };
   },
 });
