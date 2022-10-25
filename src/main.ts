@@ -12,7 +12,7 @@ import i18n from "@/plugins/vue-i18n";
 import Oruga from '@oruga-ui/oruga';
 // import '@oruga-ui/oruga/dist/oruga.css';
 import { bulmaConfig } from '@oruga-ui/theme-bulma'
-import '@oruga-ui/theme-bulma/dist/bulma.css'
+// import '@oruga-ui/theme-bulma/dist/bulma.css'
 
 import Croppa from "vue-croppa";
 import SocialSharing from "vue-social-sharing";

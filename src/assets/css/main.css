@@ -131,3 +131,6 @@ canvas {
 .stripe_canceled {
   @apply text-red-700;
 }
+.animation-content {
+    z-index: 100;
+}
