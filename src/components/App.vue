@@ -28,10 +28,15 @@
     <!-- Loading -->
     <o-loading
       v-if="isLoading"
-      :is-full-page="true"
+      iconSize="large"
+      :full-page="isFullPage"
       :active="true"
       :can-cancel="false"
-    ></o-loading>
+      >
+      <o-icon pack="fas" icon="circle-notch" customSize="fa-4x" spin
+              class="opacity-30"
+              ></o-icon>
+    </o-loading>
 
     <Footer />
 
