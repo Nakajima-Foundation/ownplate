@@ -67,9 +67,6 @@ const mixin = {
     regionalSetting() {
       return regionalSettings[ownPlateConfig.region || "US"];
     },
-    user() {
-      return this.$store.state.user;
-    },
     isAdmin() {
       return !!this.$store.getters.uidAdmin;
     },
