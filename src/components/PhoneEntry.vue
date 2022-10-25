@@ -1,7 +1,7 @@
 <template>
   <div style="margin-bottom: 1rem">
-    <b-field v-if="countries.length > 1">
-      <b-select v-model="countryCode">
+    <o-field v-if="countries.length > 1">
+      <o-select v-model="countryCode">
         <option
           v-for="country in countries"
           :value="country.code"
@@ -9,20 +9,20 @@
         >
           {{ $t(country.name) }}
         </option>
-      </b-select>
-    </b-field>
-    <b-field
+      </o-select>
+    </o-field>
+    <o-field
       :type="hasError ? 'is-danger' : 'is-success'"
       :message="hasError ? $t(errors[0]) : notice"
       :label="label"
     >
-      <b-input
+      <o-input
         type="text"
         v-model="phoneNumber"
         v-on:input="validatePhoneNumber"
         :placeholder="placeholder"
       />
-    </b-field>
+    </o-field>
   </div>
 </template>
 

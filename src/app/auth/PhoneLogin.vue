@@ -15,8 +15,8 @@
           </div>
 
           <div class="mt-2">
-            <b-field>
-              <b-select v-model="countryCode">
+            <o-field>
+              <o-select v-model="countryCode">
                 <option
                   v-for="country in countries"
                   :value="country.code"
@@ -24,8 +24,8 @@
                 >
                   {{ $t(country.name) }}
                 </option>
-              </b-select>
-            </b-field>
+              </o-select>
+            </o-field>
           </div>
         </div>
 
@@ -36,11 +36,11 @@
           </div>
 
           <div class="mt-2">
-            <b-field
+            <o-field
               :type="hasError ? 'is-danger' : 'is-success'"
               :message="hasError ? $t(errors[0]) : $t('sms.notice')"
             >
-              <b-input
+              <o-input
                 type="tel"
                 autocomplete="tel"
                 v-model="phoneNumber"
@@ -48,7 +48,7 @@
                 maxlength="20"
                 :placeholder="$t('sms.pleasetype')"
               />
-            </b-field>
+            </o-field>
           </div>
           <div v-if="!isLocaleJapan">
             <div class="mt-2 text-xs">
@@ -65,7 +65,7 @@
       </div>
       <!-- Submit Buttons -->
       <div class="mt-4 text-center">
-        <b-button
+        <o-button
           id="signInButton"
           @click="$emit('dismissed', false)"
           class="b-reset-tw"
@@ -75,9 +75,9 @@
           >
             <div class="text-base font-bold">{{ $t("button.cancel") }}</div>
           </div>
-        </b-button>
+        </o-button>
 
-        <b-button
+        <o-button
           id="button-send-tel"
           :loading="isLoading"
           @click="handleSubmit"
@@ -91,7 +91,7 @@
               {{ $t("sms.send") }}
             </div>
           </div>
-        </b-button>
+        </o-button>
       </div>
 
       <!-- Terms of Use & Privacy Policy -->
@@ -110,11 +110,11 @@
           </div>
 
           <div class="mt-2">
-            <b-field
+            <o-field
               :type="hasError ? 'is-danger' : 'is-success'"
               :message="hasError ? $t(errors[0]) : ''"
             >
-              <b-input
+              <o-input
                 inputmode="numeric"
                 pattern="[0-9]*"
                 autocomplete="one-time-code"
@@ -123,7 +123,7 @@
                 maxlength="6"
                 :placeholder="$t('sms.typeVerificationCode')"
               />
-            </b-field>
+            </o-field>
           </div>
         </div>
 
@@ -134,29 +134,29 @@
           </div>
 
           <div class="mt-2">
-            <b-field>
-              <b-input
+            <o-field>
+              <o-input
                 type="text"
                 v-model="name"
                 maxlength="32"
                 :placeholder="$t('sms.typeUserName')"
               />
-            </b-field>
+            </o-field>
           </div>
         </div>
       </div>
 
       <!-- Submit Buttons -->
       <div class="mt-4 text-center">
-        <b-button @click="$emit('dismissed', false)" class="b-reset-tw">
+        <o-button @click="$emit('dismissed', false)" class="b-reset-tw">
           <div
             class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black bg-opacity-5"
           >
             <div class="text-base font-bold">{{ $t("button.cancel") }}</div>
           </div>
-        </b-button>
+        </o-button>
 
-        <b-button
+        <o-button
           id="button-send-code"
           :loading="isLoading"
           @click="handleCode"
@@ -170,7 +170,7 @@
               {{ $t("sms.sendVerificationCode") }}
             </div>
           </div>
-        </b-button>
+        </o-button>
       </div>
     </form>
   </div>

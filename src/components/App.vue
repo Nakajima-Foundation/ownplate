@@ -26,12 +26,12 @@
     </div>
 
     <!-- Loading -->
-    <b-loading
+    <o-loading
       v-if="isLoading"
       :is-full-page="true"
       :active="true"
       :can-cancel="false"
-    ></b-loading>
+    ></o-loading>
 
     <Footer />
 

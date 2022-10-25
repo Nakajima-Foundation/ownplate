@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="mt-4 text-center">
-      <b-button
+      <o-button
         @click="addTitle()"
         :disabled="submitting"
         class="b-reset-tw mx-2 mb-2"
@@ -14,9 +14,9 @@
             $t("button.addTitle")
           }}</span>
         </div>
-      </b-button>
+      </o-button>
 
-      <b-button
+      <o-button
         @click="addMenu()"
         :disabled="submitting"
         class="b-reset-tw mx-2 mb-2"
@@ -29,7 +29,7 @@
             {{ $t("button.addItem") }}</span
           >
         </div>
-      </b-button>
+      </o-button>
     </div>
   </div>
 </template>

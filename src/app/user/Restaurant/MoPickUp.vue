@@ -55,7 +55,7 @@
     >
       {{ $tc("mobileOrder.shopInfo.pickupNote", 1, { lastOrder }) }}
     </div>
-    <b-modal :active.sync="popup"></b-modal>
+    <o-modal :active.sync="popup"></o-modal>
   </div>
 </template>
 

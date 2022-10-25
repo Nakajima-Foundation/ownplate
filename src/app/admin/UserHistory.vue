@@ -85,7 +85,7 @@
 
       <!-- More -->
       <div class="mx-6 mt-6 text-center" v-if="last !== undefined">
-        <b-button :disabled="last === null" @click="next" class="b-reset-tw">
+        <o-button :disabled="last === null" @click="next" class="b-reset-tw">
           <div
             class="inline-flex h-9 w-48 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
           >
@@ -93,7 +93,7 @@
               {{ $t("admin.order.more") }}
             </div>
           </div>
-        </b-button>
+        </o-button>
       </div>
     </div>
   </div>

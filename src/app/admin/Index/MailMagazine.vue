@@ -11,9 +11,9 @@
       </div>
 
       <div class="mt-4 text-center">
-        <b-checkbox v-model="opt_out">
+        <o-checkbox v-model="opt_out">
           {{ $t("admin.mail.magazine.optout") }}
-        </b-checkbox>
+        </o-checkbox>
       </div>
     </div>
   </div>

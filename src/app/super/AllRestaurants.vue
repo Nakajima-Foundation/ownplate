@@ -72,17 +72,17 @@
       </tr>
     </table>
     <hr />
-    <b-button class="mt-2 h-9 rounded-full" @click="nextLoad">
+    <o-button class="mt-2 h-9 rounded-full" @click="nextLoad">
       <span class="pl-4 pr-4">
         <span class="font-bold text-op-teal"> Next </span>
       </span>
-    </b-button>
+    </o-button>
 
-    <b-button class="mt-2 ml-4 h-9 rounded-full" @click="allLoad">
+    <o-button class="mt-2 ml-4 h-9 rounded-full" @click="allLoad">
       <span class="pl-4 pr-4">
         <span class="font-bold text-op-teal"> All </span>
       </span>
-    </b-button>
+    </o-button>
 
     <download-csv
       :data="tableData"
@@ -90,12 +90,12 @@
       :fieldNames="fieldNames"
       :fileName="fileName"
     >
-      <b-button class="mt-2 ml-4 h-9 rounded-full">
+      <o-button class="mt-2 ml-4 h-9 rounded-full">
         <span class="pl-4 pr-4">
           <i class="material-icons mr-2 !text-2xl text-op-teal">save_alt</i>
           <span class="font-bold text-op-teal"> Download </span>
         </span>
-      </b-button>
+      </o-button>
     </download-csv>
   </section>
 </template>

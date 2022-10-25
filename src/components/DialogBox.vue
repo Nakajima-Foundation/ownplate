@@ -1,6 +1,6 @@
 <template>
   <div v-if="dialog">
-    <b-modal :active.sync="isVisible" :width="488">
+    <o-modal :active.sync="isVisible" :width="488">
       <div
         class="op-dialog mt-6 mb-6 ml-2 mr-2 rounded-lg bg-white pt-6 pl-6 pr-6 pb-6 shadow-lg"
       >
@@ -59,7 +59,7 @@
           </div>
         </div>
       </div>
-    </b-modal>
+    </o-modal>
   </div>
 </template>
 

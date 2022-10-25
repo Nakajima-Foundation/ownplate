@@ -21,17 +21,17 @@
           </div>
 
           <div class="mt-1">
-            <b-field
+            <o-field
               :type="errors.email ? 'is-danger' : 'is-success'"
               :message="errors.email && $t(errors.email[0])"
             >
-              <b-input
+              <o-input
                 v-model="email"
                 type="email"
                 :placeholder="$t('admin.emailPlaceHolder')"
                 maxlength="256"
               />
-            </b-field>
+            </o-field>
           </div>
         </div>
 
@@ -42,14 +42,14 @@
           </div>
 
           <div class="mt-1">
-            <b-field>
-              <b-input
+            <o-field>
+              <o-input
                 v-model="name"
                 type="text"
                 :placeholder="$t('admin.enterName')"
                 maxlength="100"
               />
-            </b-field>
+            </o-field>
           </div>
         </div>
 
@@ -60,18 +60,18 @@
           </div>
 
           <div class="mt-1">
-            <b-field
+            <o-field
               :type="errors.password ? 'is-danger' : 'is-success'"
               :message="errors.password && $t(errors.password[0])"
             >
-              <b-input
+              <o-input
                 v-model="password"
                 type="password"
                 :placeholder="$t('admin.passwordPlaceHolder')"
                 maxlength="30"
                 password-reveal
               />
-            </b-field>
+            </o-field>
           </div>
         </div>
 
@@ -82,24 +82,24 @@
           </div>
 
           <div class="mt-1">
-            <b-field
+            <o-field
               :type="errors.confirm ? 'is-danger' : 'is-success'"
               :message="errors.confirm && $t(errors.confirm[0])"
             >
-              <b-input
+              <o-input
                 v-model="confirmPassword"
                 type="password"
                 :placeholder="$t('admin.confirmPasswordPlaceHolder')"
                 maxlength="30"
                 password-reveal
               />
-            </b-field>
+            </o-field>
           </div>
         </div>
 
         <!-- Submit Button -->
         <div class="mt-2 text-center">
-          <b-button @click="handleCancel" class="b-reset-tw mr-4 mb-2">
+          <o-button @click="handleCancel" class="b-reset-tw mr-4 mb-2">
             <div
               class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black bg-opacity-5"
             >
@@ -107,9 +107,9 @@
                 {{ $t("button.cancel") }}
               </div>
             </div>
-          </b-button>
+          </o-button>
 
-          <b-button
+          <o-button
             :disabled="Object.keys(errors).length > 0"
             @click="onSignup"
             class="b-reset-tw"
@@ -121,7 +121,7 @@
                 {{ $t("button.next") }}
               </div>
             </div>
-          </b-button>
+          </o-button>
         </div>
 
         <!-- Terms of Use & Privacy Policy -->

@@ -24,7 +24,7 @@
       </div>
     </div>
     <!-- Language Popup-->
-    <b-modal :active.sync="langPopup" :width="488" scroll="keep">
+    <o-modal :active.sync="langPopup" :width="488" scroll="keep">
       <div class="my-6 mx-2 rounded-lg bg-white p-6 shadow-lg">
         <div class="text-xl font-bold text-black text-opacity-40">
           {{ $t("menu.selectLanguage") }}
@@ -55,7 +55,7 @@
           >
         </div>
       </div>
-    </b-modal>
+    </o-modal>
   </div>
 </template>
 

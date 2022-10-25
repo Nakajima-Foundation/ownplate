@@ -8,7 +8,7 @@
           <back-button :url="backUrl" />
 
           <h2>All Orders</h2>
-          <b-select v-model="orderState" class="mt-6">
+          <o-select v-model="orderState" class="mt-6">
             <option
               v-for="status in orderStatus"
               :value="status.index"
@@ -16,19 +16,19 @@
             >
               {{ status.key ? $t("order.status." + status.key) : "----" }}
             </option>
-          </b-select>
+          </o-select>
           <!-- button -->
           <div>
             <div class="mt-6 inline-flex">
               <div class="flex">
-                <b-select v-model="monthValue">
+                <o-select v-model="monthValue">
                   <option v-for="(month, k) in months" :value="month" :key="k">
                     {{ month }}
                   </option>
-                </b-select>
+                </o-select>
               </div>
               <div class="flex">
-                <b-button @click="LoadTillMonth">Load</b-button>
+                <o-button @click="LoadTillMonth">Load</o-button>
                 {{ isLoading ? "Loading..." : "" }}
               </div>
             </div>
@@ -51,8 +51,8 @@
             </div>
           </div>
           <div>
-            <b-button @click="nextLoad" class="mt-4 rounded-full"
-              >more</b-button
+            <o-button @click="nextLoad" class="mt-4 rounded-full"
+              >more</o-button
             >
           </div>
 
@@ -62,7 +62,7 @@
             :fieldNames="fieldNames"
             :fileName="fileName"
           >
-            <b-button class="mt-4 h-9 rounded-full">
+            <o-button class="mt-4 h-9 rounded-full">
               <span class="pl-4 pr-4">
                 <i class="material-icons mr-2 !text-2xl text-op-teal"
                   >save_alt</i
@@ -71,7 +71,7 @@
                   $t("admin.report.download-csv-all")
                 }}</span>
               </span>
-            </b-button>
+            </o-button>
           </download-csv>
         </div>
       </div>

@@ -2,8 +2,8 @@
   <section class="mx-auto max-w-full px-6 pb-12 pt-4">
     <back-button url="/s" />
     <h2>Profiles</h2>
-    <b-input v-model="prefix" placeholder="email prefix"></b-input>
-    <b-button @click="handleSearch">Search</b-button>
+    <o-input v-model="prefix" placeholder="email prefix"></o-input>
+    <o-button @click="handleSearch">Search</o-button>
     <table>
       <tr v-for="profile in profiles" :key="profile.uid">
         <td>{{ profile.email }}</td>

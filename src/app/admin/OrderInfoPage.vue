@@ -103,7 +103,7 @@
 
             <!-- Cancel Button -->
             <div class="mt-6 text-center">
-              <b-button
+              <o-button
                 class="b-reset-tw"
                 v-if="
                   isValidTransition('order_canceled') &&
@@ -119,9 +119,9 @@
                     {{ $t("admin.order.cancelButton") }}
                   </div>
                 </div>
-              </b-button>
+              </o-button>
 
-              <b-button v-if="cancelStatus" class="b-reset-tw">
+              <o-button v-if="cancelStatus" class="b-reset-tw">
                 <div
                   class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-red-700 bg-opacity-10 text-red-700"
                 >
@@ -134,11 +134,11 @@
                     </div>
                   </div>
                 </div>
-              </b-button>
+              </o-button>
             </div>
 
             <!-- Cancel Popup-->
-            <b-modal :active.sync="cancelPopup" :width="488" scroll="keep">
+            <o-modal :active.sync="cancelPopup" :width="488" scroll="keep">
               <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
                 <!-- Title -->
                 <div class="text-xl font-bold text-black text-opacity-40">
@@ -169,7 +169,7 @@
 
                 <!-- Cancel -->
                 <div class="mt-4 text-center">
-                  <b-button
+                  <o-button
                     :loading="updating === 'order_canceled'"
                     @click="handleCancel"
                     class="b-reset-tw"
@@ -181,7 +181,7 @@
                         {{ $t("admin.order.delete") }}
                       </div>
                     </div>
-                  </b-button>
+                  </o-button>
                   <div class="mt-2 text-sm font-bold text-red-700">
                     {{ $t("admin.order.deleteConfirm") }}
                   </div>
@@ -200,7 +200,7 @@
                   </a>
                 </div>
               </div>
-            </b-modal>
+            </o-modal>
 
             <!-- Pickup Time -->
             <div class="mt-2 text-center">
@@ -225,7 +225,7 @@
               <div class="text-xs font-bold">
                 {{ $t("order.timeToPickup") }}
               </div>
-              <b-select class="mt-2" v-model="timeOffset">
+              <o-select class="mt-2" v-model="timeOffset">
                 <option
                   v-for="time in estimatedTimes"
                   :value="time.offset"
@@ -233,7 +233,7 @@
                 >
                   {{ time.display }}
                 </option>
-              </b-select>
+              </o-select>
             </div>
           </div>
 
@@ -330,22 +330,22 @@
             v-if="isDev"
           >
             <div>
-              <b-button @click="print()" class="b-reset-tw">
+              <o-button @click="print()" class="b-reset-tw">
                 <div
                   class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-black bg-opacity-5"
                 >
                   Print
                 </div>
-              </b-button>
+              </o-button>
             </div>
             <div class="mt-2">
-              <b-button @click="download()" class="b-reset-tw">
+              <o-button @click="download()" class="b-reset-tw">
                 <div
                   class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-black bg-opacity-5"
                 >
                   Download
                 </div>
-              </b-button>
+              </o-button>
             </div>
           </div>
 
@@ -357,7 +357,7 @@
                 :key="orderState"
                 class="mt-4 text-center"
               >
-                <b-button
+                <o-button
                   :loading="updating === orderState"
                   :disabled="!isValidTransition(orderState)"
                   @click="handleChangeStatus(orderState)"
@@ -381,13 +381,13 @@
                       </div>
                     </div>
                   </div>
-                </b-button>
+                </o-button>
               </div>
             </div>
 
             <!-- Payment Cancel Button -->
             <div class="mt-6 text-center">
-              <b-button
+              <o-button
                 v-if="paymentIsNotCompleted"
                 @click="openPaymentCancel"
                 class="b-reset-tw"
@@ -402,11 +402,11 @@
                     {{ $t("admin.order.paymentCancelButton") }}
                   </div>
                 </div>
-              </b-button>
+              </o-button>
             </div>
 
             <!-- Payment Cancel Popup-->
-            <b-modal
+            <o-modal
               :active.sync="paymentCancelPopup"
               :width="488"
               scroll="keep"
@@ -441,7 +441,7 @@
 
                 <!-- Cancel -->
                 <div class="mt-4 text-center">
-                  <b-button
+                  <o-button
                     :loading="updating === 'payment_canceled'"
                     @click="handlePaymentCancel"
                     class="b-reset-tw"
@@ -453,7 +453,7 @@
                         {{ $t("admin.order.paymentCancel") }}
                       </div>
                     </div>
-                  </b-button>
+                  </o-button>
                   <div class="mt-2 text-sm font-bold text-red-700">
                     {{ $t("admin.order.paymentCancelConfirm") }}
                   </div>
@@ -472,7 +472,7 @@
                   </a>
                 </div>
               </div>
-            </b-modal>
+            </o-modal>
           </div>
         </div>
 
@@ -514,7 +514,7 @@
               >
                 <div>{{ $t("admin.order.changeOrderDetail") }}</div>
                 <div class="mt-4">
-                  <b-button @click="toggleIsOrderChange" class="b-reset-tw">
+                  <o-button @click="toggleIsOrderChange" class="b-reset-tw">
                     <div
                       class="inline-flex h-12 items-center justify-center rounded-full bg-red-700 px-6"
                     >
@@ -526,10 +526,10 @@
                         }}
                       </div>
                     </div>
-                  </b-button>
+                  </o-button>
                 </div>
                 <div class="mt-4">
-                  <b-button
+                  <o-button
                     @click="handleOrderChange"
                     :loading="changing"
                     :disabled="!availableChangeButton"
@@ -543,7 +543,7 @@
                         {{ $t("admin.order.confirmOrderChange") }}
                       </div>
                     </div>
-                  </b-button>
+                  </o-button>
                 </div>
               </div>
             </div>

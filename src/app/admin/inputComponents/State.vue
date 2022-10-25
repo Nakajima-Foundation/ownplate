@@ -4,27 +4,27 @@
       {{ $t(this.state_key) }}
       <span class="text-red-700">*</span>
     </div>
-    <b-field
+    <o-field
       :type="errors['state'].length > 0 ? 'is-danger' : 'is-success'"
       v-if="Array.isArray(states)"
     >
-      <b-select :value="value" placeholder="select" @input="input">
+      <o-select :value="value" placeholder="select" @input="input">
         <option v-for="stateItem in states" :key="stateItem">
           {{ stateItem }}
         </option>
-      </b-select>
-    </b-field>
-    <b-field
+      </o-select>
+    </o-field>
+    <o-field
       :type="errors['state'].length > 0 ? 'is-danger' : 'is-success'"
       v-else
     >
-      <b-input
+      <o-input
         :value="value"
         type="text"
         :placeholder="$t('editRestaurant.enterCity')"
         maxlength="15"
-      ></b-input>
-    </b-field>
+      ></o-input>
+    </o-field>
   </div>
 </template>
 

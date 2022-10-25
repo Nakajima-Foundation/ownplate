@@ -21,7 +21,7 @@
 
       <!-- Order Status -->
       <div class="mx-6 mt-6">
-        <b-select v-model="orderState">
+        <o-select v-model="orderState">
           <option
             v-for="status in orderStatus"
             :value="status.index"
@@ -29,7 +29,7 @@
           >
             {{ status.key ? $t("order.status." + status.key) : "----" }}
           </option>
-        </b-select>
+        </o-select>
       </div>
 
       <!-- Orders -->
@@ -48,7 +48,7 @@
 
       <!-- More -->
       <div class="mx-6 mt-6 text-center">
-        <b-button @click="nextLoad" class="b-reset-tw">
+        <o-button @click="nextLoad" class="b-reset-tw">
           <div
             class="inline-flex h-9 w-48 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
           >
@@ -56,7 +56,7 @@
               {{ $t("admin.order.more") }}
             </div>
           </div>
-        </b-button>
+        </o-button>
       </div>
 
       <!-- Download -->
@@ -67,7 +67,7 @@
           :fieldNames="fieldNames"
           :fileName="fileName"
         >
-          <b-button class="b-reset-tw">
+          <o-button class="b-reset-tw">
             <div
               class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
             >
@@ -76,7 +76,7 @@
                 {{ $t("admin.report.download-csv-all") }}
               </div>
             </div>
-          </b-button>
+          </o-button>
         </download-csv>
       </div>
     </div>

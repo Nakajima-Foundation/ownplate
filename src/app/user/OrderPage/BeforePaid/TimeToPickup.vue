@@ -3,7 +3,7 @@
     <!-- Date Picker -->
     <div v-if="availableDays.length > 0">
       <div class="rounded-lg bg-white p-4 shadow">
-        <b-select v-model="dayIndex">
+        <o-select v-model="dayIndex">
           <option
             v-for="(day, index) in availableDays"
             :value="index"
@@ -12,8 +12,8 @@
             {{ $d(day.date, "short") }}
             <span v-if="day.offset === 0">{{ $t("date.today") }}</span>
           </option>
-        </b-select>
-        <b-select v-model="time" class="mt-2">
+        </o-select>
+        <o-select v-model="time" class="mt-2">
           <option
             v-for="(time, index) in availableDays[dayIndex].times"
             :value="time.time"
@@ -21,7 +21,7 @@
           >
             {{ time.display }}
           </option>
-        </b-select>
+        </o-select>
       </div>
     </div>
 
