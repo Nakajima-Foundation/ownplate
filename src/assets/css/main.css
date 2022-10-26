@@ -133,4 +133,6 @@ canvas {
 }
 .animation-content {
     z-index: 100;
+    max-height: 90%;
+    overflow: scroll;
 }
