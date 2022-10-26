@@ -179,6 +179,7 @@ export default {
         setUserProperties(analytics, { role: "anonymous" });
         console.log("authStateChanged: null");
         this.$store.commit("setUser", null);
+        this.$store.commit("setCustomClaims", null);
         if (this.isInMo) {
           window.dataLayer.push({
             uid: null,
