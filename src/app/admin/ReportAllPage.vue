@@ -35,7 +35,18 @@
             class="w-3/8 rounded-md border-0 bg-warmgray-900 bg-opacity-5 focus:ring-2 focus:ring-rose-600 focus:ring-opacity-20"
             />
         </div>
-      
+
+        <div class="mt-4">
+          <o-select v-model="formValue.queryKey">
+            <option
+              v-for="status in queryKeys"
+              :value="status"
+              :key="status"
+              >
+            {{ $t("mobileOrder.reportKeys." + status) }}
+            </option>
+          </o-select>
+        </div>
       </div>
 
       <!-- Table -->
@@ -253,6 +264,7 @@ export default defineComponent({
     const formValue = reactive({
       date1: moment().subtract(10, "days").format("YYYY-MM-DD"),
       date2: moment().format("YYYY-MM-DD"),
+      queryKey: "orderPlacedAt", 
     });
     
     const total = ref({
@@ -364,7 +376,7 @@ export default defineComponent({
         }, {});
       })
     
-    const sortKeys = [
+    const queryKeys = [
       "orderPlacedAt",
       "orderAcceptedAt",
       "timeConfirmed",
@@ -393,6 +405,7 @@ export default defineComponent({
     });
 
     const updateQuery = async () => {
+      const key = formValue.queryKey;
       const query = db
           .collectionGroup('orders')
           .where("ownerUid", "==", uid.value)
@@ -484,6 +497,7 @@ export default defineComponent({
       restaurants,
 
       formValue,
+      queryKeys,
     };
   },
 });

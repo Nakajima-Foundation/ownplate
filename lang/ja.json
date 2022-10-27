@@ -40,6 +40,19 @@
     "userRestaurantsTitle": "お客様向け店舗一覧について",
     "userRestaurantsBody": "登録した店舗は自動でお客様向け店舗一覧には表示されません。「掲載を申請する」ボタンより申請後、運営の審査を経てお客様向け店舗一覧に掲載されます。",
     "name": "ネット注文サービス",
+    "methodChangeAlert": "注文方法を変更します。カート内のアイテムはリセットされますが、よろしいでしょうか？",
+    "pickupLabel": "ピックアップ対応",
+    "admin": {
+      "takeout": "予約注文",
+      "pickup": "ピックアップ",
+      "pickupStock": "ピックアップ在庫"
+    },
+    "reportKeys": {
+      "orderPlacedAt": "注文時刻",
+      "orderAcceptedAt": "注文受付時刻",
+      "timeConfirmed": "準備完了時刻",
+      "transactionCompletedAt": "受渡完了時刻"
+    },
     "shopInfo": {
       "takeout": "予約注文",
       "pickup": "ピックアップ"
