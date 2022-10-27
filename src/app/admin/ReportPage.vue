@@ -293,6 +293,9 @@ export default defineComponent({
     
     const fieldNames = computed(() => {
       return fields.value.map((field) => {
+        if (props.isInMo && field === 'restaurantName') {
+          return ctx.root.$t("order.storeName");
+        }
         return ctx.root.$t(`order.${field}`);
       });
     });
