@@ -16,16 +16,26 @@
       </div>
 
       <!-- Date -->
-      <div class="mx-6 mt-6">
-        <o-select v-model="monthIndex">
-          <option
-            v-for="day in lastSeveralMonths"
-            :value="day.index"
-            :key="day.index"
-          >
-            {{ moment(day.date).format("YYYY-MM") }}
-          </option>
-        </o-select>
+      <div class="mx-6 mt-6 w-48">
+        期間
+        <div>
+          <o-input
+            v-model="formValue.date1"
+            type="date"
+            placeholder="年月日"
+            class="w-3/8 rounded-md border-0 bg-warmgray-900 bg-opacity-5 focus:ring-2 focus:ring-rose-600 focus:ring-opacity-20"
+            />
+        </div>
+        〜
+        <div>
+          <o-input
+            v-model="formValue.date2"
+            type="date"
+            placeholder="年月日"
+            class="w-3/8 rounded-md border-0 bg-warmgray-900 bg-opacity-5 focus:ring-2 focus:ring-rose-600 focus:ring-opacity-20"
+            />
+        </div>
+      
       </div>
 
       <!-- Table -->
@@ -171,11 +181,12 @@ import { db, firestore } from "@/plugins/firebase";
 import {
   defineComponent,
   ref,
+  reactive,
   computed,
   watch,
   onUnmounted,
 } from "@vue/composition-api";
-import moment from "moment";
+import moment from "moment-timezone";
 
 import BackButton from "@/components/BackButton.vue";
 import DownloadCsv from "@/components/DownloadCSV.vue";
@@ -238,6 +249,12 @@ export default defineComponent({
   setup(props, ctx) {
     const orders = ref([]);
     const restaurants = ref({});
+
+    const formValue = reactive({
+      date1: moment().subtract(10, "days").format("YYYY-MM-DD"),
+      date2: moment().format("YYYY-MM-DD"),
+    });
+    
     const total = ref({
       food: {
         revenue: 0,
@@ -347,40 +364,57 @@ export default defineComponent({
         }, {});
       })
     
+    const sortKeys = [
+      "orderPlacedAt",
+      "orderAcceptedAt",
+      "timeConfirmed",
+      "transactionCompletedAt",
+    ];
     // 注文、受付、準備完了、受け渡し完了
-    // "timePlaced", 注文時刻	  1 
+    // "orderPlacedAt", 注文時刻	  1 
     // "orderAcceptedAt", 注文受付時刻 2  
     // "timeConfirmed", 	準備完了時刻 3
     // "transactionCompletedAt", 	受渡完了時刻 4
     // const key = "timeConfirmed";
           
-    const key = "timePlaced";
+    const key = "orderPlacedAt";
+
+    const momentMin = computed(() => {
+      const min = formValue.date1 > formValue.date2 ? formValue.date2 : formValue.date1
+      return moment(min + "T00:00:00+09:00").tz(
+        "Asia/Tokyo"
+      );
+    });
+    const momentMax = computed(() => {
+      const max = formValue.date1 > formValue.date2 ? formValue.date1 : formValue.date2
+      return moment(max + "T23:59:50+09:00").tz(
+        "Asia/Tokyo"
+      );
+    });
 
     const updateQuery = async () => {
-      let query = db
+      const query = db
           .collectionGroup('orders')
           .where("ownerUid", "==", uid.value)
           .where(
             key,
             ">=",
-            lastSeveralMonths.value[monthIndex.value].date
-          );
-      if (monthIndex.value > 0) {
-        query = query.where(
-          key,
-          "<",
-          lastSeveralMonths.value[monthIndex.value - 1].date
-        );
-      }
-      const snapshot = await query.orderBy(key).get();
+            momentMin.value.toDate(),
+          )
+          .where(
+            key,
+            "<",
+            momentMax.value.toDate(),
+          )
 
-      // const serviceTaxRate = props.shopInfo.alcoholTax / 100;
+      const snapshot = await query.orderBy(key).get();
       const serviceTaxRate = 0.1;
 
       orders.value = snapshot.docs
         .map(order => {
           const restaurantId = order.ref.parent.parent.id;
           const data = doc2data("order")(order);
+          console.log(data.timePlaced.toDate());
           return {
             ...data,
             restaurantId,
@@ -425,7 +459,7 @@ export default defineComponent({
       detacher && detacher();
     });
 
-    watch(monthIndex, () => {
+    watch(formValue, () => {
       updateQuery();
     });
     return {
@@ -448,6 +482,8 @@ export default defineComponent({
 
       notFound: false,
       restaurants,
+
+      formValue,
     };
   },
 });
