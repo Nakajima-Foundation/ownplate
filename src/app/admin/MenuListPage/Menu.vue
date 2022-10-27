@@ -48,7 +48,6 @@
               />
             </div>
           </div>
-
           <div class="p-4">
             <div class="text-xl font-bold text-black text-opacity-80">
               {{ menuitem.itemName }}
@@ -60,10 +59,25 @@
             <!-- # Remove the description part to make the list length shorter -->
             <!-- <div class="mt-2 text-sm text-black text-opacity-60">
             {{ menuitem.itemDescription }}
-          </div> -->
+           </div> -->
           </div>
         </a>
 
+        <div v-if="isInMo" class="mx-2 pb-2">
+          <div class="rounded bg-green-600 bg-opacity-5 p-2 text-xs">
+            <span :class="preOrderAvaiable['isPublic'] ? 'text-green-600 font-bold' : 'text-gray-500 text-opacity-60' ">
+              {{ $t("mobileOrder.admin.takeout") }}
+            </span> / 
+            <span :class="pickupAvaiable['isPublic'] ? 'text-green-600 font-bold' : 'text-gray-500 text-opacity-60' ">
+              {{ $t("mobileOrder.admin.pickup") }}
+            </span> /
+            <span :class="pickupStockData['isStock'] ? 'text-green-600 font-bold' : 'text-gray-500 text-opacity-60' ">
+              {{ $t("mobileOrder.admin.pickupStock") }}
+            </span>
+          </div> 
+        </div>
+            
+        
         <!-- Owner Memo -->
         <div v-if="menuitem.itemMemo" class="mx-2 pb-2">
           <div class="rounded bg-black bg-opacity-5 p-2 text-xs">
@@ -164,11 +178,24 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    // mo
     isInMo: {
       type: Boolean,
       required: true,
     },
     groupData: {
+      type: Object,
+      required: false,
+    },
+    preOrderAvaiable: {
+      type: Object,
+      required: false,
+    },
+    pickupAvaiable: {
+      type: Object,
+      required: false,
+    },
+    pickupStockData: {
       type: Object,
       required: false,
     },

@@ -42,6 +42,11 @@
     "name": "ネット注文サービス",
     "methodChangeAlert": "注文方法を変更します。カート内のアイテムはリセットされますが、よろしいでしょうか？",
     "pickupLabel": "ピックアップ対応",
+    "admin": {
+      "takeout": "予約注文",
+      "pickup": "ピックアップ",
+      "pickupStock": "ピックアップ在庫"
+    },
     "shopInfo": {
       "takeout": "予約注文",
       "pickup": "ピックアップ",

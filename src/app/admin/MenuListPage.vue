@@ -127,11 +127,8 @@
                 (!publicFilter || itemsObj[menuList].publicFlag)
               "
             >
-              <!--
-                  pre{{ preOrderAvaiable[menuList] }}
-                  pick{{ pickupAvaiable[menuList] }}
-                  stock{{ pickupStockData[menuList] }}
-                  -->
+
+
               <Menu
                 :menuitem="itemsObj[menuList]"
                 :position="
@@ -144,6 +141,11 @@
                 @positionDown="positionDown($event)"
                 @forkItem="forkMenuItem($event)"
                 @deleteItem="deleteItem($event)"
+                
+                :preOrderAvaiable="preOrderAvaiable[menuList] || {}"
+                :pickupAvaiable="pickupAvaiable[menuList] || {}"
+                :pickupStockData="pickupStockData[menuList] || {}"
+                
               />
             </div>
           </div>
@@ -385,13 +387,13 @@ export default defineComponent({
     );
 
     const preOrderAvaiable = computed(() => {
-      return (preOrderPublics.value || {} )[category.value] || {};
+      return (preOrderPublics.value || {} )[subCategory.value] || {};
     });
     const pickupAvaiable = computed(() => {
-      return (pickupPublics.value || {} )[category.value] || {};
+      return (pickupPublics.value || {} )[subCategory.value] || {};
     });
     const pickupStockData = computed(() => {
-      return (pickupStocks.value || {} )[category.value] || {};
+      return (pickupStocks.value || {} )[subCategory.value] || {};
     });
     
     watch(isLoading, (value) => {

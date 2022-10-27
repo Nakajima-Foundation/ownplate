@@ -2,7 +2,7 @@
   <div>
     <!-- Transactions Act Popup-->
     <o-modal :active.sync="transactionsActPopup" :width="488" scroll="keep">
-      <div class="omx-2 my-16 rounded-lg bg-white p-6 shadow-lg">
+      <div class="omx-2 rounded-lg bg-white p-6 shadow-lg">
         <!-- Title -->
         <div class="text-xl font-bold text-black text-opacity-40">
           {{ $t("transactionsAct.title") }}
