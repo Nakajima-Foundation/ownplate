@@ -146,6 +146,8 @@
             <td class="p-2">
               <div class="text-right">{{ total.service.tax }}</div>
             </td>
+            <td></td>
+            <td></td>
             <td class="p-2">
               <div class="text-right">{{ total.totalCharge }}</div>
             </td>
