@@ -167,7 +167,7 @@ export default defineComponent({
                 id: `${order.id}/${menuId}`,
                 orderId: order.id,
                 name: nameOfOrder(order),
-                restaurantName: shopInfo.restaurantName,
+                storeName: shopInfo.restaurantName,
                 type: writeonFirstLine(
                   index,
                   key,

@@ -137,7 +137,7 @@
           "order": "ASCENDING"
         },
         {
-          "fieldPath": "timePlaced",
+          "fieldPath": "orderPlacedAt",
           "order": "ASCENDING"
         }
       ]
