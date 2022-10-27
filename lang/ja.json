@@ -47,6 +47,12 @@
       "pickup": "ピックアップ",
       "pickupStock": "ピックアップ在庫"
     },
+    "reportKeys": {
+      "orderPlacedAt": "注文時刻",
+      "orderAcceptedAt": "注文受付時刻",
+      "timeConfirmed": "準備完了時刻",
+      "transactionCompletedAt": "受渡完了時刻"
+    },
     "shopInfo": {
       "takeout": "予約注文",
       "pickup": "ピックアップ",
