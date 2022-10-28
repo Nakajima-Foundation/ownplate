@@ -3,6 +3,7 @@ import * as utils from "../../lib/utils";
 import * as netutils from "../../lib/netutils";
 import * as admin from "firebase-admin";
 import { ownPlateConfig } from "../../common/project";
+import { enableNotification } from "../nofiticationConfig";
 
 import { lineValidateData } from "../../lib/types";
 import { validateLineValidate } from "../../lib/validator";
@@ -104,6 +105,9 @@ export const validate = async (db: admin.firestore.Firestore, data: lineValidate
 };
 
 export const sendMessageDirect = async (lineId: string, message: string, token: string) => {
+  if (!enableNotification) {
+    return ;
+  }
   if (!token) {
     console.log("no line message token");
     return;

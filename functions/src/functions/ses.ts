@@ -1,9 +1,13 @@
 import * as nodemailer from "nodemailer";
+import { enableNotification } from "./nofiticationConfig";
 
 const aws_key = process.env.AWS_SES_USER;
 const aws_secret = process.env.AWS_SES_PASS;
 
 export const sendMail = async (to, title, body) => {
+  if (!enableNotification) {
+    return ;
+  }
   const mailOptions = {
     from: "おもちかえり.com <info@omochikaeri.com>",
     to,

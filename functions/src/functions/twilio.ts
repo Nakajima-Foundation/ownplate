@@ -2,6 +2,7 @@ import twilio from "twilio";
 import { twiml_neworder } from "../common/constant";
 
 import { parsePhoneNumber, formatNational, intenationalFormat } from "../common/phoneutil";
+import { enableNotification } from "./nofiticationConfig";
 
 const sid = process.env.TWILIO_SID;
 const token = process.env.TWILIO_TOKEN;
@@ -33,6 +34,9 @@ export const nationalPhoneNumber = (restaurant) => {
 };
 
 export const phoneCall = async (restaurant) => {
+  if (!enableNotification) {
+    return ;
+  }
   const to = intenationalPhoneNumber(restaurant);
   if (!sid || !token || !phone_from) {
     console.log("PhoneCall: no setting");
