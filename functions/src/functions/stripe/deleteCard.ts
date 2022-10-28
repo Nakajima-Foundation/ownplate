@@ -30,7 +30,7 @@ export const deleteCard = async (db: admin.firestore.Firestore, context: functio
     const refStripeReadOnly = db.doc(`/users/${customerUid}/readonly/stripe`);
     await refStripeReadOnly.delete();
 
-    return { return: true, cardId };
+    return { result: true };
   } catch (error) {
     throw utils.process_error(error);
   }

@@ -119,7 +119,7 @@ export const cancel = async (db: admin.firestore.Firestore, data: orderCancelDat
     if (!isAdmin) {
       await notifyCanceledOrderToRestaurant(db, restaurantId, result.order, restaurant.restaurantName);
     }
-    return result;
+    return { result: true };
   } catch (error) {
     throw utils.process_error(error);
   }

@@ -246,7 +246,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
         await transaction.update(orderRef, updateData);
       }
       Object.assign(order, { totalCharge, tip, shippingCost });
-      return { success: true, order };
+      return { success: true };
     });
     await notifyNewOrderToRestaurant(db, restaurantId, result.order, restaurantData.restaurantName);
 

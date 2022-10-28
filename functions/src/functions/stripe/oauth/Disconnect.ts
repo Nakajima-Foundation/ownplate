@@ -27,13 +27,13 @@ export const disconnect = async (db: admin.firestore.Firestore, context: functio
     });
 
     await db.doc(`/admins/${uid}/system/stripe`).delete();
-
-    const response = await stripe.oauth.deauthorize({
+    
+    await stripe.oauth.deauthorize({
       client_id,
       stripe_user_id,
     });
 
-    return { result: response };
+    return { result: true };
   } catch (error) {
     throw utils.process_error(error);
   }

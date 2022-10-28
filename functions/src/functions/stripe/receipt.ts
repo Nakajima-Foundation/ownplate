@@ -51,7 +51,7 @@ export const receipt = async (db: admin.firestore.Firestore, data: stripeReceipt
         receipt_url: paymentIntent.charges.data[0].receipt_url,
       };
     }
-    return {};
+    return { result: true };
   } catch (e) {
     console.log(e);
     throw new functions.https.HttpsError("failed-precondition", "unknow error.");

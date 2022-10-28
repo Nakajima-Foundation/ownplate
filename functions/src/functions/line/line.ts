@@ -57,7 +57,7 @@ export const validate = async (db: admin.firestore.Firestore, data: lineValidate
       client_secret: LINE_SECRET_KEY,
     });
     if (!access.id_token || !access.access_token) {
-      throw new functions.https.HttpsError("invalid-argument", "Validation failed.", { params: access });
+      throw new functions.https.HttpsError("invalid-argument", "Validation failed.");
     }
 
     // We verify this code.
@@ -67,7 +67,7 @@ export const validate = async (db: admin.firestore.Firestore, data: lineValidate
       client_id,
     });
     if (!verified.sub) {
-      throw new functions.https.HttpsError("invalid-argument", "Verification failed.", { params: verified });
+      throw new functions.https.HttpsError("invalid-argument", "Verification failed.");
     }
 
     // We get user's profile

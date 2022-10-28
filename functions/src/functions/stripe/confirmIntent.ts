@@ -99,7 +99,7 @@ export const confirm = async (db: admin.firestore.Firestore, data: confirmIntent
     const msgKey = orderData.isEC ? "msg_ec_order_accepted" : "msg_order_accepted";
     await sendMessageToCustomer(db, msgKey, restaurantData.restaurantName, orderData, restaurantId, orderId, params);
 
-    return result;
+    return { result: true };
   } catch (error) {
     throw utils.process_error(error);
   }

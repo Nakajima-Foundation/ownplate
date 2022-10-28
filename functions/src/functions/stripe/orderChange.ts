@@ -171,7 +171,7 @@ export const orderChange = async (db: admin.firestore.Firestore, data: orderChan
     if (order.sendSMS) {
       await sendMessageToCustomer(db, "msg_order_updated", restaurantData.restaurantName, order, restaurantId, orderId, {}, true);
     }
-    return {};
+    return { result: true };
   } catch (error) {
     throw utils.process_error(error);
   }

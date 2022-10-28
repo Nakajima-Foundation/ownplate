@@ -76,7 +76,7 @@ export const cancelStripePayment = async (db: admin.firestore.Firestore, data: o
     if (result.order.sendSMS) {
       await sendMessageToCustomer(db, "msg_stripe_payment_canceled", restaurant.restaurantName, result.order, restaurantId, orderId, {}, true);
     }
-    return { success: true, payment: "stripe" };
+    return { result: true };
   } catch (error) {
     throw utils.process_error(error);
   }

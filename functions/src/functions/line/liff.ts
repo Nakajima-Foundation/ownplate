@@ -39,7 +39,7 @@ export const liffAuthenticate = async (db: admin.firestore.Firestore, data: liff
       client_id: liffConfig.clientId,
     });
     if (!verified.sub) {
-      throw new functions.https.HttpsError("invalid-argument", "Verification failed.", { params: verified });
+      throw new functions.https.HttpsError("invalid-argument", "Verification failed.");
     }
 
     const lineUid = verified.sub;

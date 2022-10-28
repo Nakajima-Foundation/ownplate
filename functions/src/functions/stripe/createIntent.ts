@@ -142,11 +142,11 @@ export const create = async (db: admin.firestore.Firestore, data: orderPlacedDat
         await transaction.update(orderRef, updateData);
       }
       Object.assign(order, updateData);
-      return { success: true, order };
+      return { order };
     });
     await notifyNewOrderToRestaurant(db, restaurantId, result.order, restaurantData.restaurantName);
 
-    return result;
+    return { result: true };
   } catch (error) {
     throw utils.process_error(error);
   }
