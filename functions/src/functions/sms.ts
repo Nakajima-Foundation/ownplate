@@ -1,5 +1,5 @@
 import * as AWS from "aws-sdk";
-import { enableNotification } from "./nofiticationConfig";
+import { enableNotification } from "./notificationConfig";
 
 export const pushSMS = async (aws_key, aws_secret, subject, message, phone_number, isMo) => {
   if (!enableNotification) {

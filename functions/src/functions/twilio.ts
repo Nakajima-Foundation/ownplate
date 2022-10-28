@@ -2,7 +2,7 @@ import twilio from "twilio";
 import { twiml_neworder } from "../common/constant";
 
 import { parsePhoneNumber, formatNational, intenationalFormat } from "../common/phoneutil";
-import { enableNotification } from "./nofiticationConfig";
+import { enableNotification } from "./notificationConfig";
 
 const sid = process.env.TWILIO_SID;
 const token = process.env.TWILIO_TOKEN;

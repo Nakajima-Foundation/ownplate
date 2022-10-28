@@ -1,5 +1,5 @@
 import * as nodemailer from "nodemailer";
-import { enableNotification } from "./nofiticationConfig";
+import { enableNotification } from "./notificationConfig";
 
 const aws_key = process.env.AWS_SES_USER;
 const aws_secret = process.env.AWS_SES_PASS;
