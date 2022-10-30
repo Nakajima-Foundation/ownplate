@@ -18,16 +18,14 @@
       <!-- Date -->
       <div class="mx-6 mt-6 w-48">
         期間
-        <div>
+        <div class="flex">
           <o-input
             v-model="formValue.date1"
             type="date"
             placeholder="年月日"
             class="w-3/8 rounded-md border-0 bg-warmgray-900 bg-opacity-5 focus:ring-2 focus:ring-rose-600 focus:ring-opacity-20"
             />
-        </div>
         〜
-        <div>
           <o-input
             v-model="formValue.date2"
             type="date"
@@ -36,7 +34,7 @@
             />
         </div>
 
-        <div class="mt-4">
+        <div class="mt-4 flex">
           <o-select v-model="formValue.queryKey">
             <option
               v-for="status in queryKeys"
@@ -46,9 +44,16 @@
             {{ $t("mobileOrder.reportKeys." + status) }}
             </option>
           </o-select>
+        
+          <o-button @click="load" class=" ml-4">
+            <div>
+              load
+            </div>
+          </o-button>
         </div>
       </div>
 
+      
       <!-- Table -->
       <div class="mx-6 mt-6">
         <table class="w-full rounded-lg bg-white shadow">
@@ -158,7 +163,7 @@
           :fieldNames="fieldNames"
           :fileName="fileNameSummary"
         >
-          <o-button class="b-reset-tw">
+          <button class="b-reset-tw">
             <div
               class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
             >
@@ -167,7 +172,7 @@
                 {{ $t("admin.report.download-csv") }}
               </div>
             </div>
-          </o-button>
+          </button>
         </download-csv>
       </div>
 
@@ -472,9 +477,12 @@ export default defineComponent({
       detacher && detacher();
     });
 
-    watch(formValue, () => {
+    //watch(formValue, () => {
+    //updateQuery();
+    // });
+    const load = () => {
       updateQuery();
-    });
+    };
     return {
       orders,
       total,
@@ -498,6 +506,7 @@ export default defineComponent({
 
       formValue,
       queryKeys,
+      load,
     };
   },
 });
