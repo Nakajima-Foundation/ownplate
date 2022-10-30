@@ -515,7 +515,7 @@ export default defineComponent({
     });
     const disabledPickupTime = computed(() => {
       if (isPickup.value) {
-        const now = Number(moment(store.state.date).format("hhmm"));
+        const now = Number(moment(store.state.date).tz("Asia/Tokyo").format("HHmm"));
         const last = Number(props.shopInfo.moLastPickupTime || "2100");
         return now >= last;
       }
