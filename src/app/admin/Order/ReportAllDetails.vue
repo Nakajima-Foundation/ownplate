@@ -246,11 +246,6 @@ export default defineComponent({
                   order?.customerInfo?.email
                 ),
                 shippingCost: writeonFirstLine(index, key, order?.shippingCost),
-                isDelivery: writeonFirstLine(
-                  index,
-                  key,
-                  order?.isDelivery ? "1" : ""
-                ),
                 count: orderItems[key],
                 options: opt.filter((a) => String(a) !== "").join("/"),
                 memo: writeonFirstLine(index, key, order.memo),

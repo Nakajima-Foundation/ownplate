@@ -84,7 +84,6 @@ export const reportHeadersWithAddress = [
   "total",
   "shippingCost",
   "payment",
-  "isDelivery",
   "memo",
 ];
 
