@@ -1166,7 +1166,7 @@ export default defineComponent({
               error,
             });
           } finally {
-            ctx.root.$store.commit("setLoagding", false);
+            ctx.root.$store.commit("setLoading", false);
             changing.value = false;
           }
         },
