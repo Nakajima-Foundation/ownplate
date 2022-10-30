@@ -1,4 +1,4 @@
-export const enforceAppCheck = true;
+export const enforceAppCheck = false;
 
 export const secretKeys = [
   "MO_AWS_KEY",
