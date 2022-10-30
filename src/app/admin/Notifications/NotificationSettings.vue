@@ -134,7 +134,9 @@
           </div>
 
           <!-- LINE Connection -->
-          <div class="mt-4">
+          <div class="mt-4"
+               @click="closeNotificationSettings()"
+               >
             <router-link
               v-if="isLineEnabled"
               class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
