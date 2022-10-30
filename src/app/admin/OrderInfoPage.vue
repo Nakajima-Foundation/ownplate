@@ -1176,6 +1176,7 @@ export default defineComponent({
       console.log("handlePaymentCancel");
 
       try {
+        ctx.root.$store.commit("setLoading", true);
         updating.value = "payment_canceled";
         const { data } = await stripePaymentCancelIntent({
           restaurantId: restaurantId.value,
@@ -1191,6 +1192,7 @@ export default defineComponent({
         });
       } finally {
         updating.value = "";
+        ctx.root.$store.commit("setLoading", false);
       }
     };
     const classOf = (statusKey) => {
