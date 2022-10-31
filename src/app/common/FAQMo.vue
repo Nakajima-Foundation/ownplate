@@ -7,12 +7,20 @@
         ネット注文サービスのご利用について
       </div>
       <div v-for="(faq, k) in faqList" :key="k">
-        <div class="mt-4 text-sm font-bold text-op-teal">・ {{ faq.q }}</div>
+        <div class="mt-4 text-sm font-bold text-op-teal">
+          <a :href="`#faq_`+ k">
+            ・ {{ faq.q }}
+          </a>
+        </div>
       </div>
 
       <div class="mt-6 rounded-lg bg-white px-4 pt-1 pb-4 shadow">
         <div v-for="(faq, k) in faqList" :key="k" class="mb-5">
-          <div class="mt-4 mb-2 font-bold">{{ faq.q }}</div>
+          <div class="mt-4 mb-2 font-bold">
+            <a :name="`faq_` + k">
+              {{ faq.q }}
+            </a>
+          </div>
           <div v-for="(answer, j) in faq.answers" :key="j" class="mt-2 text-sm">
             {{ answer }}
           </div>
