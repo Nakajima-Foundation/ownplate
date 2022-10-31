@@ -8,6 +8,7 @@
       </div>
       <div v-for="(faq, k) in faqList" :key="k">
         <div class="mt-4 text-sm font-bold text-op-teal">
+          <a :name="`index_` + k"></a>
           <a :href="`#faq_`+ k">
             ・ {{ faq.q }}
           </a>
@@ -19,6 +20,9 @@
           <div class="mt-4 mb-2 font-bold">
             <a :name="`faq_` + k">
               {{ faq.q }}
+            </a>
+            <a :href="`#index_`+ k">
+              ↑
             </a>
           </div>
           <div v-for="(answer, j) in faq.answers" :key="j" class="mt-2 text-sm">
