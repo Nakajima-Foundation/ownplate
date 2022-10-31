@@ -72,11 +72,15 @@ service cloud.firestore {
     // restaurantInfo
     function isUndefinedRestaurantParams(request) {
       return isUndefined(request.resource.data, 'isEC') &&
+             isUndefined(request.resource.data, 'onTheList') &&
+             isUndefined(request.resource.data, 'inMoIndex') &&
              isUndefined(request.resource.data, 'enableMoPickup') &&
              isUndefined(request.resource.data, 'groupId');
     }
     function notUpdateRestaurantParams(resource, request) {
       return (isUndefined(request.resource.data, 'isEC')  || request.resource.data.isEC == resource.data.isEC) &&
+             (isUndefined(request.resource.data, 'onTheList')  || request.resource.data.onTheList == resource.data.onTheList) &&      
+             (isUndefined(request.resource.data, 'inMoIndex')  || request.resource.data.inMoIndex == resource.data.inMoIndex) &&      
              (isUndefined(request.resource.data, 'enableMoPickup') || request.resource.data.enableMoPickup == resource.data.enableMoPickup) &&
              (isUndefined(request.resource.data, 'groupId') || request.resource.data.groupId == resource.data.groupId) ;
     }
