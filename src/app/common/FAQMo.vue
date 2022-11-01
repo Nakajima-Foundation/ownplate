@@ -1,6 +1,17 @@
 <template>
   <div>
-    <!-- Back -->
+    <!-- Back To Top Button-->
+    <div
+      class="visible fixed right-4 bottom-4 z-10 inline-flex h-16 w-16 cursor-pointer flex-col items-center justify-center rounded-full border-2 border-op-teal bg-teal-50 pb-2 shadow-lg sm:invisible"
+    >
+      <i class="material-icons -mb-1 text-2xl text-op-teal">
+        keyboard_arrow_up
+      </i>
+      <div class="text-xs font-bold text-op-teal">
+        {{ $t("button.backToTop") }}
+      </div>
+    </div>
+
     <div class="mx-6 mt-6 lg:mx-auto lg:max-w-2xl">
       <!-- Title -->
       <div class="mt-6 text-xl font-bold text-black text-opacity-30">
@@ -9,9 +20,7 @@
       <div v-for="(faq, k) in faqList" :key="k">
         <div class="mt-4 text-sm font-bold text-op-teal">
           <a :name="`index_` + k"></a>
-          <a :href="`#faq_`+ k">
-            ・ {{ faq.q }}
-          </a>
+          <a :href="`#faq_` + k"> ・ {{ faq.q }} </a>
         </div>
       </div>
 
@@ -21,9 +30,7 @@
             <a :name="`faq_` + k">
               {{ faq.q }}
             </a>
-            <a :href="`#index_`+ k">
-              ↑
-            </a>
+            <a :href="`#index_` + k"> ↑ </a>
           </div>
           <div v-for="(answer, j) in faq.answers" :key="j" class="mt-2 text-sm">
             {{ answer }}
