@@ -1,21 +1,23 @@
 <template>
   <div>
     <!-- Back To Top Button-->
-    <div
-      class="visible fixed right-4 bottom-4 z-10 inline-flex h-16 w-16 cursor-pointer flex-col items-center justify-center rounded-full border-2 border-op-teal bg-teal-50 pb-2 shadow-lg sm:invisible"
-    >
-      <i class="material-icons -mb-1 text-2xl text-op-teal">
-        keyboard_arrow_up
+    <a href="#top" v-if="showCursor">
+      <div
+        class="visible fixed right-4 bottom-4 z-10 inline-flex h-16 w-16 cursor-pointer flex-col items-center justify-center rounded-full border-2 border-op-teal bg-teal-50 pb-2 shadow-lg sm:invisible"
+        >
+        <i class="material-icons -mb-1 text-2xl text-op-teal">
+          keyboard_arrow_up
       </i>
-      <div class="text-xs font-bold text-op-teal">
-        {{ $t("button.backToTop") }}
+        <div class="text-xs font-bold text-op-teal">
+          {{ $t("button.backToTop") }}
+        </div>
       </div>
-    </div>
+    </a>
 
     <div class="mx-6 mt-6 lg:mx-auto lg:max-w-2xl">
       <!-- Title -->
       <div class="mt-6 text-xl font-bold text-black text-opacity-30">
-        ネット注文サービスのご利用について
+        <a name="top">ネット注文サービスのご利用について</a>
       </div>
       <div v-for="(faq, k) in faqList" :key="k">
         <div class="mt-4 text-sm font-bold text-op-teal">
@@ -24,7 +26,7 @@
         </div>
       </div>
 
-      <div class="mt-6 rounded-lg bg-white px-4 pt-1 pb-4 shadow">
+      <div class="mt-6 rounded-lg bg-white px-4 pt-1 pb-4 shadow" ref="faq_box">
         <div v-for="(faq, k) in faqList" :key="k" class="mb-5">
           <div class="mt-4 mb-2 font-bold">
             <a :name="`faq_` + k">
@@ -51,10 +53,16 @@
 </template>
 
 <script>
-import { defineComponent } from "@vue/composition-api";
+import {
+  onMounted,
+  onUnmounted,
+  defineComponent,
+  ref,
+  computed,
+} from "@vue/composition-api";
 
 export default defineComponent({
-  setup() {
+  setup(_, ctx) {
     const faqList = [
       {
         q: "ご利用の流れについて",
@@ -121,8 +129,35 @@ export default defineComponent({
         ],
       },
     ];
+
+    const listener = () => {
+      try {
+        currentY.value = window.scrollY;
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    onMounted(() => {
+      window.addEventListener("scroll", listener);
+    });
+    onUnmounted(() => {
+      window.removeEventListener("scroll", listener);
+    });
+        
+    const currentY = ref(0);
+    const showCursor = computed(() => {
+      if (ctx.refs.faq_box) {
+        const box = ctx.refs.faq_box.getBoundingClientRect();
+        const top = window.pageYOffset + box.top;
+        return top < currentY.value;
+      }
+      console.log(currentY.value); // don't touch this line
+      return false;
+    });
+
     return {
       faqList,
+      showCursor,
     };
   },
 });
