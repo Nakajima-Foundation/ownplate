@@ -212,7 +212,11 @@ import NotFound from "@/components/NotFound.vue";
 import { ownPlateConfig } from "@/config/project";
 import { nameOfOrder } from "@/utils/strings";
 import { midNightOfMonth } from "@/utils/dateUtils";
-import { revenueCSVHeader, revenueMoCSVHeader, revenueTableHeader } from "@/utils/reportUtils";
+import {
+  revenueCSVHeader,
+  revenueMoCSVHeader,
+  revenueTableHeader,
+} from "@/utils/reportUtils";
 import { order_status_keys } from "@/config/constant";
 import {
   useAdminUids,
@@ -257,10 +261,10 @@ export default defineComponent({
     return {
       title: this.shopInfo.restaurantName
         ? [
-          "Admin Report",
-          this.shopInfo.restaurantName,
-          this.defaultTitle,
-        ].join(" / ")
+            "Admin Report",
+            this.shopInfo.restaurantName,
+            this.defaultTitle,
+          ].join(" / ")
         : this.defaultTitle,
     };
   },
@@ -283,25 +287,25 @@ export default defineComponent({
     });
     const monthIndex = ref(0);
     let detacher = null;
-    
+
     const { ownerUid, uid } = useAdminUids(ctx);
     if (!checkShopOwner(props.shopInfo, uid.value)) {
       return notFoundResponse;
     }
-    
+
     const fields = computed(() => {
       return props.isInMo ? revenueMoCSVHeader : revenueCSVHeader;
     });
-    
+
     const fieldNames = computed(() => {
       return fields.value.map((field) => {
-        if (props.isInMo && field === 'restaurantName') {
+        if (props.isInMo && field === "restaurantName") {
           return ctx.root.$t("order.storeName");
         }
         return ctx.root.$t(`order.${field}`);
       });
     });
-    
+
     const { loadCategory, categoryDataObj } = useCategory(props.moPrefix);
     const { allSubCategoryDataObj, loadAllSubcategory } = useAllSubcategory(
       props.moPrefix
@@ -310,7 +314,7 @@ export default defineComponent({
       loadCategory();
       loadAllSubcategory();
     }
-    
+
     const tableData = computed(() => {
       return orders.value.map((order) => {
         return {
@@ -365,16 +369,16 @@ export default defineComponent({
         "detail",
       ].join("-");
     });
-    
+
     const updateQuery = () => {
       detacher && detacher();
       let query = db
-          .collection(`restaurants/${props.shopInfo.restaurantId}/orders`)
-          .where(
-            "timeConfirmed",
-            ">=",
-            lastSeveralMonths.value[monthIndex.value].date
-          );
+        .collection(`restaurants/${props.shopInfo.restaurantId}/orders`)
+        .where(
+          "timeConfirmed",
+          ">=",
+          lastSeveralMonths.value[monthIndex.value].date
+        );
       if (monthIndex.value > 0) {
         query = query.where(
           "timeConfirmed",
@@ -386,7 +390,9 @@ export default defineComponent({
         const serviceTaxRate = props.shopInfo.alcoholTax / 100;
         orders.value = snapshot.docs
           .map(doc2data("order"))
-          .map((order) => order2ReportData(order, serviceTaxRate, props.isInMo));
+          .map((order) =>
+            order2ReportData(order, serviceTaxRate, props.isInMo)
+          );
         total.value = orders.value.reduce(
           (total, order) => {
             const accounting = order.accounting;
@@ -424,7 +430,7 @@ export default defineComponent({
       const value = encodeURIComponent(order.description || nameOfOrder(order));
       return `${ownPlateConfig.stripe.search}?query=${value}`;
     };
-    
+
     updateQuery();
 
     onUnmounted(() => {

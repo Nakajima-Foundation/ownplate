@@ -821,7 +821,9 @@ export default defineComponent({
         );
         ctx.root.$store.commit("setAlert", {
           title: shop.restaurantName,
-          code:  props.isInMo ? "mobileOrder.copyMenuAlert" : "editCommon.copyMenuAlert",
+          code: props.isInMo
+            ? "mobileOrder.copyMenuAlert"
+            : "editCommon.copyMenuAlert",
           callback: async () => {
             const newItem = newItemData();
             newItem.publicFlag = false;

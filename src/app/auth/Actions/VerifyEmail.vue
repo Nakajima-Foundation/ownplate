@@ -2,7 +2,6 @@
   <div></div>
 </template>
 
-
 <script lang="ts">
 import { defineComponent } from "@vue/composition-api";
 import { auth } from "@/lib/firebase/firebase9";
@@ -12,7 +11,10 @@ export default defineComponent({
   setup(_, ctx) {
     (async () => {
       try {
-        const res = await applyActionCode(auth, ctx.root.$route.query.oobCode as string);
+        const res = await applyActionCode(
+          auth,
+          ctx.root.$route.query.oobCode as string
+        );
       } catch (e) {
         console.log(e);
         console.log("error");
@@ -22,4 +24,3 @@ export default defineComponent({
   },
 });
 </script>
-

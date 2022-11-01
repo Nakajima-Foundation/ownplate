@@ -72,8 +72,7 @@
         </div>
 
         <!-- Right Column -->
-        <div class="column">
-        </div>
+        <div class="column"></div>
         <!-- Right Gap -->
         <div class="column is-narrow w-6"></div>
       </div>

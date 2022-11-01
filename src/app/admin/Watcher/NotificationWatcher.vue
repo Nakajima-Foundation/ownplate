@@ -5,9 +5,7 @@ import { defineComponent, ref, onUnmounted } from "@vue/composition-api";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, onSnapshot } from "firebase/firestore";
 
-import {
-  useAdminUids,
-} from "@/utils/utils";
+import { useAdminUids } from "@/utils/utils";
 
 export default defineComponent({
   props: {

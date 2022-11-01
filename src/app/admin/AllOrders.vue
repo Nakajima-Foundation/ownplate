@@ -105,7 +105,12 @@ import { order_status, order_status_keys } from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
 import { revenueCSVHeader, revenueMoCSVHeader } from "@/utils/reportUtils";
 import { order2ReportData } from "@/models/orderInfo";
-import { arrayOrNumSum, useAdminUids, notFoundResponse, orderTypeKey } from "@/utils/utils";
+import {
+  arrayOrNumSum,
+  useAdminUids,
+  notFoundResponse,
+  orderTypeKey,
+} from "@/utils/utils";
 
 import DownloadCsv from "@/components/DownloadCSV.vue";
 import OrderedInfo from "@/app/admin/Order/OrderedInfo.vue";
@@ -220,16 +225,13 @@ export default defineComponent({
         const queryConditions = [
           where("ownerUid", "==", uid.value),
           orderBy("timePlaced", "desc"),
-          limit(100)
+          limit(100),
         ];
         if (last) {
           queryConditions.push(startAfter(last));
         }
         const snapshot = await getDocs(
-          query(
-            collectionGroup(db, "orders"),
-            ...queryConditions,
-          )
+          query(collectionGroup(db, "orders"), ...queryConditions)
         );
         const serviceTaxRate = 0.1;
         if (!snapshot.empty) {
@@ -237,7 +239,11 @@ export default defineComponent({
           let i = 0;
           for (; i < snapshot.docs.length; i++) {
             const orderDoc = snapshot.docs[i];
-            const order = order2ReportData(orderDoc.data(), serviceTaxRate, props.isInMo);
+            const order = order2ReportData(
+              orderDoc.data(),
+              serviceTaxRate,
+              props.isInMo
+            );
             order.restaurantId = orderDoc.ref.path.split("/")[1];
             order.id = orderDoc.id;
             if (!restaurants[order.restaurantId]) {

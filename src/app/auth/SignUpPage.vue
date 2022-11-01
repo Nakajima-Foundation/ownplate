@@ -161,7 +161,10 @@ import { db, firestore } from "@/plugins/firebase";
 import { partners } from "@/config/constant";
 
 import { auth } from "@/lib/firebase/firebase9";
-import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
 
 export default {
   name: "Signup",

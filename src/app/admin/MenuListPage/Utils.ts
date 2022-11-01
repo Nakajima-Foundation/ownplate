@@ -38,7 +38,7 @@ export const useMenuAndTitle = (
     menuCache.value = cache;
   };
   const isLoading = ref(true);
-  
+
   const loadMenu = () => {
     detacheMenu();
     if (isInMo && !category.value && !subCategory.value) {
@@ -53,7 +53,7 @@ export const useMenuAndTitle = (
       return;
     }
     isLoading.value = true;
-    
+
     const menuQuery =
       category.value && subCategory.value
         ? query(
