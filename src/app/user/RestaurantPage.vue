@@ -901,6 +901,8 @@ export default defineComponent({
         document.body.style.position = "";
       }
     });
+
+
     const filteredTitleLists = computed(() => {
       const menuLists = props.shopInfo.menuLists || [];
       const itemsObj = array2obj(titles.value);
