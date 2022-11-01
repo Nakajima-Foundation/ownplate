@@ -719,7 +719,8 @@
     "downloadMenu": "チラシをダウンロード",
     "cancel": "キャンセル",
     "next": "次へ",
-    "category": "カテゴリ"
+    "category": "カテゴリ",
+    "backToTop": "トップへ"
   },
   "sms": {
     "signin": "本人確認",
