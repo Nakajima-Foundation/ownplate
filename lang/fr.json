@@ -92,6 +92,7 @@
     "termsRestaurant": "CGU pour le restaurant",
     "termsUser": "CGU pour l'utilisateur",
     "privacy": "Politique de Confidentialité",
+    "faq": "FAQ",
     "updated": "Dernière Mise à jour",
     "selectLanguage": "Selectioner la langue",
     "yes": "Oui",
@@ -644,7 +645,8 @@
     "downloadMenu": "Télécharger le menu",
     "cancel": "Annuler",
     "next": "Suivant",
-    "category": "Catégorie"
+    "category": "Catégorie",
+    "backToTop": "Top"
   },
   "sms": {
     "signin": "Se connecter avec un numéro de téléphone",

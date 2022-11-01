@@ -117,6 +117,7 @@
     "termsRestaurant": "利用規約",
     "termsUser": "利用規約",
     "privacy": "プライバシーポリシー",
+    "faq": "ネット注文サービスのご利用について",
     "updated": "最終更新日",
     "selectLanguage": "表示言語選択",
     "yes": "はい",
@@ -718,7 +719,8 @@
     "downloadMenu": "チラシをダウンロード",
     "cancel": "キャンセル",
     "next": "次へ",
-    "category": "カテゴリ"
+    "category": "カテゴリ",
+    "backToTop": "トップへ"
   },
   "sms": {
     "signin": "本人確認",
