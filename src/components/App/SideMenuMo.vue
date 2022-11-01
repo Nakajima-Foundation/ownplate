@@ -70,8 +70,20 @@
       </router-link>
     </div>
 
-    <!-- Links for Terms and Policy -->
-    <div>
+    <!-- Links for FAQ, Terms and Policy -->
+    <div class="mt-4">
+      <!-- FAQ -->
+      <div class="mt-2 text-center">
+        <router-link :to="base_path + '/faq'">
+          <div
+            class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
+            @click="handleClose()"
+          >
+            {{ $t("menu.faq") }}
+          </div>
+        </router-link>
+      </div>
+
       <!-- Terms -->
       <div class="mt-2 text-center">
         <router-link :to="base_path + '/terms'">
