@@ -644,7 +644,8 @@
     "downloadMenu": "Download menu",
     "cancel": "Cancel",
     "next": "Next",
-    "category": "Category"
+    "category": "Category",
+    "backToTop": "Top"
   },
   "sms": {
     "signin": "Phone Number Sign In",
