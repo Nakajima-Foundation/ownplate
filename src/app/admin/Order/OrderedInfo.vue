@@ -167,10 +167,7 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc } from "firebase/firestore";
 
 import { order_status, order_status_keys } from "@/config/constant";
-import {
-  arrayOrNumSum,
-  convOrderStateForText
-} from "@/utils/utils";
+import { arrayOrNumSum, convOrderStateForText } from "@/utils/utils";
 
 export default defineComponent({
   props: {
@@ -190,11 +187,11 @@ export default defineComponent({
   setup(props, ctx) {
     const restaurant = ref(null);
     if (props.order.restaurantId) {
-      getDoc(
-        doc(db, `restaurants/${props.order.restaurantId}`)
-      ).then((snapshot) => {
-        restaurant.value = snapshot.data();
-      });
+      getDoc(doc(db, `restaurants/${props.order.restaurantId}`)).then(
+        (snapshot) => {
+          restaurant.value = snapshot.data();
+        }
+      );
     }
 
     const statusKey = computed(() => {

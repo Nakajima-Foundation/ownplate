@@ -83,10 +83,9 @@ export default defineComponent({
     }
 
     if (docPath.value) {
-      getDoc(doc(db, docPath.value))
-        .then((doc) => {
-          customerInfo.value = doc.data();
-        });
+      getDoc(doc(db, docPath.value)).then((doc) => {
+        customerInfo.value = doc.data();
+      });
     }
     const resetAddress = async () => {
       await setDoc(doc(db, docPath.value), {});

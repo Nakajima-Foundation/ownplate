@@ -13,7 +13,7 @@ export const usePickupTime = (
   menuObj: Ref<{ [key: string]: MenuData }>,
   ctx: any,
   isInMo: boolean,
-  isMoPickup: null | ComputedRef<boolean>,
+  isMoPickup: null | ComputedRef<boolean>
 ) => {
   // public
   const temporaryClosure = computed(() => {
@@ -67,17 +67,20 @@ export const usePickupTime = (
     });
   });
   const minimumCookTime = computed(() => {
-    return isMoPickup && isMoPickup.value ?
-      shopInfo.moPickUpMinimumCookTime : shopInfo.pickUpMinimumCookTime || 25;
+    return isMoPickup && isMoPickup.value
+      ? shopInfo.moPickUpMinimumCookTime
+      : shopInfo.pickUpMinimumCookTime || 25;
   });
   const minimumDeliveryTime = computed(() => {
     return shopInfo.deliveryMinimumCookTime || 25;
   });
   const daysInAdvance = computed(() => {
-    const tmp = isMoPickup && isMoPickup.value ?
-      shopInfo.moPickUpDaysInAdvance :
-      (isNull(shopInfo.pickUpDaysInAdvance)
-        ? 3 : shopInfo.pickUpDaysInAdvance);
+    const tmp =
+      isMoPickup && isMoPickup.value
+        ? shopInfo.moPickUpDaysInAdvance
+        : isNull(shopInfo.pickUpDaysInAdvance)
+        ? 3
+        : shopInfo.pickUpDaysInAdvance;
     return tmp + 1;
   });
 

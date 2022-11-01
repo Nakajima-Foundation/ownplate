@@ -350,12 +350,8 @@ export default defineComponent({
       restaurant_detacher();
     });
 
-    const { menuObj, itemsObj, numberOfMenus, loadMenu, isLoading } = useMenuAndTitle(
-      menuRestaurantId,
-      props.isInMo,
-      category,
-      subCategory,
-    );
+    const { menuObj, itemsObj, numberOfMenus, loadMenu, isLoading } =
+      useMenuAndTitle(menuRestaurantId, props.isInMo, category, subCategory);
 
     const menuLists = computed(() => {
       return props.isInMo
@@ -376,16 +372,20 @@ export default defineComponent({
 
     watch(isLoading, (value) => {
       if (!props.isInMo) {
-        if (!value) { // finish load
-          if (numberOfMenus.value > 0 && (numberOfMenus.value !== props.shopInfo?.numberOfMenus)) {
+        if (!value) {
+          // finish load
+          if (
+            numberOfMenus.value > 0 &&
+            numberOfMenus.value !== props.shopInfo?.numberOfMenus
+          ) {
             updateDoc(doc(db, `restaurants/${restaurantId.value}`), {
-               numberOfMenus: numberOfMenus.value,
+              numberOfMenus: numberOfMenus.value,
             });
           }
         }
       }
     });
-    
+
     const { toggle: publicFilter, switchToggle: publicFilterToggle } =
       useAdminConfigToggle("menuPublicFilter", uid.value, false);
 

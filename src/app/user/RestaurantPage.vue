@@ -208,7 +208,8 @@
                       <div
                         v-if="
                           item._dataType === 'menu' &&
-                          (!moPickup || (isPublucDataSet[item.id] || {}).isPublic)
+                          (!moPickup ||
+                            (isPublucDataSet[item.id] || {}).isPublic)
                         "
                         :key="[subCategoryKey, item.id].join('_')"
                       >
@@ -227,7 +228,8 @@
                           :prices="prices[item.id] || []"
                           :mode="mode"
                           :moSoldOut="
-                           moPickup && ((moSoldOutDataSet[item.id] || {}).isStock === false)
+                            moPickup &&
+                            (moSoldOutDataSet[item.id] || {}).isStock === false
                           "
                           @didOrderdChange="didOrderdChange($event)"
                         ></MenuMo>
@@ -522,7 +524,7 @@ export default defineComponent({
       menuObj,
       ctx,
       isInMo.value,
-      isPickup,
+      isPickup
     );
 
     // for Mo
@@ -933,7 +935,7 @@ export default defineComponent({
 
       isInMo,
       isPickup,
-        
+
       isPublucDataSet,
       moSoldOutDataSet,
 

@@ -40,7 +40,6 @@ export const lineValidate = httpsCallable(functionsJP, "lineValidate");
 
 // export const traceProcess = httpsCallable(functions, "traceProcess");
 
-
 export const superDispatch = httpsCallable(functionsJP, "superDispatch");
 
 export const superTwilio = httpsCallable(functionsJP, "superTwilio");

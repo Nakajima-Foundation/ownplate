@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Item Card -->
-    <div class="rounded-lg bg-white shadow" :id="`${item.id}`" >
+    <div class="rounded-lg bg-white shadow" :id="`${item.id}`">
       <div class="flow-root cursor-pointer">
         <!-- Image -->
         <div v-if="smallimage" class="pb-2">

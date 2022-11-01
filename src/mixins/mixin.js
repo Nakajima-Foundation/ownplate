@@ -100,14 +100,17 @@ const mixin = {
     userLiffId() {
       return this.$store.getters.liffId;
     },
-    isAnonymous() { // TODO
+    isAnonymous() {
+      // TODO
       return this.$store.getters.isAnonymous;
     },
-    isLineUser() { // TODO
+    isLineUser() {
+      // TODO
       const claims = this.$store.state.claims;
       return !!claims?.line;
     },
-    isLineEnabled() { // TODO
+    isLineEnabled() {
+      // TODO
       return !!ownPlateConfig.line;
     },
     isLocaleJapan() {
@@ -127,14 +130,16 @@ const mixin = {
     liff_base_path() {
       return `/liff/${this.liffIndexId}`;
     },
-    isInLine() { // TODO
+    isInLine() {
+      // TODO
       // By UA
       return /Line/.test(navigator.userAgent);
     },
     isInLIFF() {
       return /LIFF/.test(navigator.userAgent);
     },
-    isDev() { // TODO 
+    isDev() {
+      // TODO
       return firebaseConfig.projectId === "ownplate-dev";
     },
     featureHeroMobile() {
@@ -147,7 +152,8 @@ const mixin = {
         this.isLocaleJapan ? "ja" : "en"
       ];
     },
-    gmapKey() { // TODO
+    gmapKey() {
+      // TODO
       return GAPIKey;
     },
   },

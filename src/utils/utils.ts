@@ -650,7 +650,7 @@ export const useAdminUids = (ctx: any) => {
       : ctx.root.$store.getters.uidAdmin;
   });
   const emailVerified = computed(() => {
-    return ctx.root.$store.state.user?.emailVerified
+    return ctx.root.$store.state.user?.emailVerified;
   });
   return {
     isOwner,
@@ -747,4 +747,4 @@ export const orderType = (order: OrderInfoData, isInMo: boolean) => {
 };
 export const orderTypeKey = (order: OrderInfoData, isInMo: boolean) => {
   return "orderType" + orderType(order, isInMo);
-}
+};

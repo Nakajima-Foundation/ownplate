@@ -94,10 +94,7 @@
       <div v-if="isOwner">
         <!-- Download Orders -->
         <div class="mx-6 mt-6 text-center">
-          <download-orders
-            :orders="filteredOrders"
-            :isInMo="isInMo"
-            />
+          <download-orders :orders="filteredOrders" :isInMo="isInMo" />
         </div>
 
         <!-- Download Report -->

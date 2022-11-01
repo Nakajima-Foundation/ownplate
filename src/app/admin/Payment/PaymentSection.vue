@@ -150,7 +150,7 @@ export default {
           inStore: false,
         });
       }
-      this.$emit("updateUnsetWarning", this.unsetWarning);  
+      this.$emit("updateUnsetWarning", this.unsetWarning);
     });
   },
   destroyed() {
