@@ -137,6 +137,7 @@ export default defineComponent({
         query(
           collection(db, "restaurants"),
           where("publicFlag", "==", true),
+          where("inMoIndex", "==", true),
           where("deletedFlag", "==", false),
           where("groupId", "==", props.moPrefix)
         ),
