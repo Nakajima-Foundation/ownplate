@@ -4,10 +4,10 @@
     <a href="#top" v-if="showCursor">
       <div
         class="visible fixed right-4 bottom-4 z-10 inline-flex h-16 w-16 cursor-pointer flex-col items-center justify-center rounded-full border-2 border-op-teal bg-teal-50 pb-2 shadow-lg sm:invisible"
-        >
+      >
         <i class="material-icons -mb-1 text-2xl text-op-teal">
           keyboard_arrow_up
-      </i>
+        </i>
         <div class="text-xs font-bold text-op-teal">
           {{ $t("button.backToTop") }}
         </div>
@@ -26,22 +26,26 @@
         </div>
       </div>
 
-      <div class="mt-6 rounded-lg bg-white px-4 pt-1 pb-4 shadow" ref="faq_box">
-        <div v-for="(faq, k) in faqList" :key="k" class="mb-5">
+      <div class="mt-6 rounded-lg bg-white px-4 py-2 shadow" ref="faq_box">
+        <div v-for="(faq, k) in faqList" :key="k" class="mb-6">
           <div class="mt-4 mb-2 font-bold">
             <a :name="`faq_` + k">
               {{ faq.q }}
             </a>
             <a :href="`#index_` + k"> ↑ </a>
           </div>
-          <div v-for="(answer, j) in faq.answers" :key="j" class="mt-2 text-sm">
+          <div
+            v-for="(answer, j) in faq.answers"
+            :key="j"
+            class="mt-3 text-sm leading-relaxed"
+          >
             {{ answer }}
           </div>
           <div class="mt-3">
             <div
               v-for="(note, i) in faq.notes"
               :key="i"
-              class="mt-1 text-xs text-black text-opacity-50"
+              class="mt-1 text-xs leading-relaxed text-black text-opacity-50"
             >
               {{ note }}
             </div>
@@ -68,13 +72,15 @@ export default defineComponent({
         q: "ご利用の流れについて",
         answers: [
           "店舗一覧から受け取り店舗を選択後、商品を選択し「お会計」のボタンを押します。本人確認のために携帯電話のSMS（ショートメッセージサービス）を利用した認証が必要となります。",
+          "携帯電話を入力いただき、送信を押していただくとSMS（ショートメッセージサービス）にて「確認コード」が送信されます。",
           "確認コードをサイト内にて入力いただくことで受け渡し希望時刻の選択やお支払方法が選択でき、注文が完了します。",
         ],
       },
       {
         q: "受け渡し希望時刻について",
         answers: [
-          "3日後よりご指定が可能です。また、店舗での受け渡し時間帯は午前10時から午後10時まで30分単位でご指定いただけます。",
+          "3日後よりご指定が可能です。",
+          "また、店舗での受け渡し時間帯は午前10時から午後10時まで30分単位でご指定いただけます。",
         ],
       },
       {
@@ -92,7 +98,8 @@ export default defineComponent({
         q: "お支払い方法について",
         answers: [
           "「事前決済（クレッジットカード）でのお支払い」もしくは「受取時に店舗でのお支払い」",
-          "事前クレジットカード払いで支払う際に、カード決済の処理が正しく完了しなかった場合は、商品受取時に店舗でのお支払いに変更させていただきます。その際には「決済処理が正しく完了できなかったため、カード決済を取り消しました。代金は受け取り時に店舗でお支払いください。」というSMS(ショートメッセージサービス）が配信されます。",
+          "事前クレジットカード払いで支払う際に、カード決済の処理が正しく完了しなかった場合は、商品受取時に店舗でのお支払いに変更させていただきます。",
+          "その際には「決済処理が正しく完了できなかったため、カード決済を取り消しました。代金は受け取り時に店舗でお支払いください。」というSMS(ショートメッセージサービス）が配信されます。",
         ],
         notes: [
           "※CVC(セキュリティーコード)とは？",
@@ -103,7 +110,10 @@ export default defineComponent({
       {
         q: "ご注文商品のお受け取りについて",
         answers: [
-          "お客様が指定した受け取り店舗、指定の日時に合わせてご注文商品の受け渡し準備をします。ご来店時に、事前に配信された携帯電話のSMS（ショートメッセージサービス）通知画面をご提示ください。また、SMS（ショートメッセージサービス）の画面を提示できない場合はスタッフより、注文番号と電話番号の下４桁を伺わせていただきます。ご来店前にご用意いただきますようお願い致します。また、店舗までの交通費など移動に関わる費用などは、ご負担下さい。",
+          "お客様が指定した受け取り店舗、指定の日時に合わせてご注文商品の受け渡し準備をします。",
+          "ご来店時に、事前に配信された携帯電話のSMS（ショートメッセージサービス）通知画面をご提示ください。また、SMS（ショートメッセージサービス）の画面を提示できない場合はスタッフより、注文番号と電話番号の下４桁を伺わせていただきます。",
+          "ご来店前にご用意いただきますようお願い致します。",
+          "また、店舗までの交通費など移動に関わる費用などは、ご負担下さい。",
         ],
       },
       {
@@ -143,7 +153,7 @@ export default defineComponent({
     onUnmounted(() => {
       window.removeEventListener("scroll", listener);
     });
-        
+
     const currentY = ref(0);
     const showCursor = computed(() => {
       if (ctx.refs.faq_box) {
