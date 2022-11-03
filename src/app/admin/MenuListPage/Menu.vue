@@ -71,6 +71,9 @@
             <span :class="pickupAvaiable['isPublic'] ? 'text-green-600 font-bold' : 'text-gray-500 text-opacity-60' ">
               {{ $t("mobileOrder.admin.pickup") }}
             </span> /
+            <span :class="pickupAvaiable['forcePickupStock'] ? 'text-green-600 font-bold' : 'text-gray-500 text-opacity-60' ">
+              {{ $t("mobileOrder.admin.forcePickupStock") }}
+            </span> /
             <span :class="pickupStockData['isStock'] ? 'text-green-600 font-bold' : 'text-gray-500 text-opacity-60' ">
               {{ $t("mobileOrder.admin.pickupStock") }}
             </span>
