@@ -197,7 +197,6 @@
                           :isOpen="menuId === item.id"
                           :prices="prices[item.id] || []"
                           :mode="mode"
-                          :moSoldOut="false"
                           @didOrderdChange="didOrderdChange($event)"
                         ></Menu>
                       </div>
@@ -233,12 +232,10 @@
                           :isOpen="menuId === item.id"
                           :prices="prices[item.id] || []"
                           :mode="mode"
-                          :moSoldOut="
-                            moPickup &&
-                            (moSoldOutDataSet[item.id] || {}).isStock === false
-                          "
+                          :isPickup="moPickup"
+                          :moSoldOutData="(moSoldOutDataSet[item.id] || {})"
                           @didOrderdChange="didOrderdChange($event)"
-                        ></MenuMo>
+                          ></MenuMo>
                       </div>
                     </template>
                   </div>

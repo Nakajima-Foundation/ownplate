@@ -225,9 +225,13 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    moSoldOut: {
+    isPickup: {
       type: Boolean,
-      required: false,
+      required: true,
+    },
+    moSoldOutData: {
+      type: Object,
+      required: true,
     },
   },
   emits: ["didOrderdChange"],
@@ -242,7 +246,8 @@ export default defineComponent({
     const basePath = useBasePath(ctx.root);
 
     const isSoldOut = computed(() => {
-      return !!props.item.soldOut || !!props.moSoldOut;
+      const moStock = !props.isPickup || props.moSoldOutData.forcePickupStock || props.moSoldOutData.isStock
+      return !!props.item.soldOut || !moStock;
     });
     const totalQuantity = computed(() => {
       return arraySum(props.quantities);

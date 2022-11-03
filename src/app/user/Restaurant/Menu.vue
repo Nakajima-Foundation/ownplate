@@ -333,10 +333,6 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    moSoldOut: {
-      type: Boolean,
-      required: false,
-    },
   },
   emits: ["didOrderdChange"],
   setup(props, ctx) {
@@ -350,7 +346,7 @@ export default defineComponent({
     const basePath = useBasePath(ctx.root);
 
     const isSoldOut = computed(() => {
-      return !!props.item.soldOut || !!props.moSoldOut;
+      return !!props.item.soldOut;
     });
     const totalQuantity = computed(() => {
       return arraySum(props.quantities);
@@ -431,12 +427,11 @@ export default defineComponent({
     const openImage = () => {
       scrollToElementById(props.item.id);
       imagePopup.value = true;
-      if (props.mode !== "mo") {
-        const current = ctx.root.$router.history.current.path;
-        const to = basePath.value + "/r/" + restaurantId + (urlSuffix || "");
-        if (current !== to) {
-          ctx.root.$router.replace(to);
-        }
+
+      const current = ctx.root.$router.history.current.path;
+      const to = basePath.value + "/r/" + restaurantId + (urlSuffix || "");
+      if (current !== to) {
+        ctx.root.$router.replace(to);
       }
       analyticsUtil.sendViewItem(props.item, props.shopInfo, restaurantId);
     };
@@ -450,9 +445,7 @@ export default defineComponent({
       setTimeout(() => {
         scrollToElementById(props.item.id);
       }, 30);
-      if (props.mode !== "mo") {
-        ctx.root.$router.replace(basePath.value + "/r/" + restaurantId);
-      }
+      ctx.root.$router.replace(basePath.value + "/r/" + restaurantId);
     };
     const setQuantities = (key, newValue) => {
       const newQuantities = [...props.quantities];
