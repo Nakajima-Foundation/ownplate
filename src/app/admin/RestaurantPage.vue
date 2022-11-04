@@ -711,15 +711,17 @@
                   <div class="flex-1">
                     <div class="text-base font-bold">
                       {{ $t("week.short." + day) }}
-                      {{ (shopInfo.moBusinessDay|| shopInfo.businessDay)[index] ? "営業" : "休業" }}
+                      {{ (shopInfo.moBusinessDay)[index] ? "営業" : "休業" }}
                     </div>
                   </div>
                 </div>
 
                 <!-- Main Hours -->
                 <div class="mt-2">
-                  {{ num2time(shopInfo.moOpenTimes[index][0].start) }} -
-                  {{ num2time(shopInfo.moOpenTimes[index][0].end) }}
+                  <span :class="(shopInfo.moBusinessDay)[index] ? '' : 'text-red-600 font-bold'">
+                    {{ num2time(shopInfo.moOpenTimes[index][0].start) }} -
+                    {{ num2time(shopInfo.moOpenTimes[index][0].end) }}
+                  </span>
                 </div>
               </div>
             </div>
