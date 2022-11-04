@@ -70,20 +70,21 @@
       </router-link>
     </div>
 
-    <!-- Links for FAQ, Terms and Policy -->
-    <div class="mt-4">
-      <!-- FAQ -->
-      <div class="mt-2 text-center">
-        <router-link :to="base_path + '/faq'">
-          <div
-            class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
-            @click="handleClose()"
-          >
-            {{ $t("menu.faq") }}
-          </div>
-        </router-link>
-      </div>
+    <!-- FAQ -->
+    <div class="mt-2 text-center">
+      <router-link :to="base_path + '/faq'">
+        <div
+          class="inline-flex h-12 w-56 items-center justify-center rounded-full bg-op-teal font-bold text-white"
+          @click="handleClose()"
+        >
+          <i class="material-icons mr-2">quiz</i>
+          <span>{{ $t("menu.faq") }}</span>
+        </div>
+      </router-link>
+    </div>
 
+    <!-- Links for Terms and Policy -->
+    <div class="mt-4">
       <!-- Terms -->
       <div class="mt-2 text-center">
         <router-link :to="base_path + '/terms'">
