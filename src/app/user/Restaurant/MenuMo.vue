@@ -246,7 +246,7 @@ export default defineComponent({
     const basePath = useBasePath(ctx.root);
 
     const isSoldOut = computed(() => {
-      const moStock = !props.isPickup || props.moSoldOutData.forcePickupStock || props.moSoldOutData.isStock
+      const moStock = !props.isPickup || !!props.moSoldOutData.forcePickupStock || !!props.moSoldOutData.isStock
       return !!props.item.soldOut || !moStock;
     });
     const totalQuantity = computed(() => {

@@ -232,7 +232,7 @@
                           :isOpen="menuId === item.id"
                           :prices="prices[item.id] || []"
                           :mode="mode"
-                          :isPickup="moPickup"
+                          :isPickup="isPickup"
                           :moSoldOutData="(moSoldOutDataSet[item.id] || {})"
                           @didOrderdChange="didOrderdChange($event)"
                           ></MenuMo>
