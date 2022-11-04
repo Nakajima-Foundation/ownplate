@@ -58,9 +58,9 @@ import {
   limit,
 } from "firebase/firestore";
 
-import OrderedInfo from "@/app/admin/Order/OrderedInfo";
-import PhoneLogin from "@/app/auth/PhoneLogin";
-import BackButton from "@/components/BackButton";
+import OrderedInfo from "@/app/admin/Order/OrderedInfo.vue";
+import PhoneLogin from "@/app/auth/PhoneLogin.vue";
+import BackButton from "@/components/BackButton.vue";
 
 import { defaultHeader } from "@/config/header";
 import { useBasePath, useTopPath, useIsInMo, getMoPrefix } from "@/utils/utils";

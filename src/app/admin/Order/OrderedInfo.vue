@@ -2,7 +2,7 @@
   <div>
     <!-- For Admin -->
     <div
-      v-if="!restaurant"
+      v-if="!order.restaurantId"
       @click="$emit('selected', order)"
       class="cursor-pointer rounded-lg bg-white shadow"
     >
@@ -91,7 +91,7 @@
 
     <!-- For User -->
     <div
-      v-if="restaurant"
+      v-if="order.restaurantId"
       @click="$emit('selected', order)"
       class="cursor-pointer rounded-lg bg-white shadow"
     >
