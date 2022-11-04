@@ -17,7 +17,7 @@
     <div class="mx-6 mt-6 lg:mx-auto lg:max-w-2xl">
       <!-- Title -->
       <div class="mt-6 text-xl font-bold text-black text-opacity-30">
-        <a name="top">ネット注文サービスのご利用について</a>
+        <a name="top">ご利用について</a>
       </div>
       <div v-for="(faq, k) in faqList" :key="k">
         <div class="mt-4 text-sm font-bold text-op-teal">
@@ -32,7 +32,6 @@
             <a :name="`faq_` + k">
               {{ faq.q }}
             </a>
-            <a :href="`#index_` + k"> ↑ </a>
           </div>
           <div
             v-for="(answer, j) in faq.answers"
@@ -45,7 +44,7 @@
             <div
               v-for="(note, i) in faq.notes"
               :key="i"
-              class="mt-1 text-xs leading-relaxed text-black text-opacity-50"
+              class="mt-3 text-xs leading-relaxed text-black text-opacity-50"
             >
               {{ note }}
             </div>
@@ -85,9 +84,11 @@ export default defineComponent({
       },
       {
         q: "販売価格/店舗で開催のキャンペーンについて",
-        answers: ["販売されている価格はネット注文サービスの価格となります。"],
+        answers: [
+          "販売されている価格はネット注文サービスの価格となり、店頭価格と異なる場合がございます。",
+        ],
         notes: [
-          "※「ご注文時にクレッジットカードでお支払い」にて注文をされている場合は店舗で実施しているキャンペーンは対象外となります。",
+          "※「事前決済（クレジットカード）でのお支払い」にてご注文されている場合は、店舗で実施しているキャンペーン等の対象外となります。",
         ],
       },
       {
@@ -97,11 +98,11 @@ export default defineComponent({
       {
         q: "お支払い方法について",
         answers: [
-          "「事前決済（クレッジットカード）でのお支払い」もしくは「受取時に店舗でのお支払い」",
-          "事前クレジットカード払いで支払う際に、カード決済の処理が正しく完了しなかった場合は、商品受取時に店舗でのお支払いに変更させていただきます。",
-          "その際には「決済処理が正しく完了できなかったため、カード決済を取り消しました。代金は受け取り時に店舗でお支払いください。」というSMS(ショートメッセージサービス）が配信されます。",
+          "「事前決済（クレジットカード）でのお支払い」もしくは「受取時に店舗でのお支払い」",
         ],
         notes: [
+          "※「事前決済（クレジットカード）でのお支払い」でのご注文に関して、カード決済の処理が正しく完了しなかった場合は、「受取時に店舗でのお支払い」に変更させていただきます。",
+          "その際には「決済処理が正しく完了できなかったためカード決済を取り消しました。代金は受け取り時に店舗でお支払いください。」というSMS(ショートメッセージサービス）が配信されます。",
           "※CVC(セキュリティーコード)とは？",
           "Visa, MasterCard, JCB, Diners Club, DISCOVER：カードのうら面の右端3ケタ",
           "American Express：カードのおもて面の4ケタ",
