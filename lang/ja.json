@@ -45,8 +45,8 @@
     "admin": {
       "takeout": "予約注文",
       "pickup": "ピックアップ",
-      "forcePickupStock": "ピックアップ常時在庫",
-      "pickupStock": "ピックアップ在庫"
+      "forcePickupStock": "常時在庫",
+      "pickupStock": "在庫"
     },
     "reportKeys": {
       "orderPlacedAt": "注文時刻",

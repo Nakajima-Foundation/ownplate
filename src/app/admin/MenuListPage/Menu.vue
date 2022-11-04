@@ -66,17 +66,25 @@
         <div v-if="isInMo" class="mx-2 pb-2">
           <div class="rounded bg-green-600 bg-opacity-5 p-2 text-xs">
             <span :class="preOrderAvaiable['isPublic'] ? 'text-green-600 font-bold' : 'text-gray-500 text-opacity-60' ">
-              {{ $t("mobileOrder.admin.takeout") }}
+              <o-checkbox v-model="preOrderAvaiable['isPublic']"
+                          @input="updatePreOrder"
+                          >
+                {{ $t("mobileOrder.admin.takeout") }}
+              </o-checkbox>
             </span> / 
             <span :class="pickupAvaiable['isPublic'] ? 'text-green-600 font-bold' : 'text-gray-500 text-opacity-60' ">
-              {{ $t("mobileOrder.admin.pickup") }}
-            </span> /
-            <span :class="pickupAvaiable['forcePickupStock'] ? 'text-green-600 font-bold' : 'text-gray-500 text-opacity-60' ">
+              <o-checkbox v-model="pickupAvaiable['isPublic']"
+                          @input="updatePickup"
+                          >
+                {{ $t("mobileOrder.admin.pickup") }}
+              </o-checkbox>
+            </span>
+            (<span :class="pickupAvaiable['forcePickupStock'] ? 'text-green-600 font-bold' : 'text-gray-500 text-opacity-60' ">
               {{ $t("mobileOrder.admin.forcePickupStock") }}
-            </span> /
+            </span> :
             <span :class="pickupStockData['isStock'] ? 'text-green-600 font-bold' : 'text-gray-500 text-opacity-60' ">
               {{ $t("mobileOrder.admin.pickupStock") }}
-            </span>
+            </span>)
           </div> 
         </div>
             
@@ -251,6 +259,14 @@ export default defineComponent({
         },
       });
     };
+
+    const updatePickup = () => {
+      console.log(props.pickupAvaiable['isPublic']);
+    };
+    const updatePreOrder = () => {
+      console.log(props.preOrderAvaiable['isPublic']);
+    };
+    
     return {
       isOwner,
 
@@ -266,6 +282,9 @@ export default defineComponent({
       deleteItem,
 
       smallImageErrorHandler,
+
+      updatePickup,
+      updatePreOrder,
     };
   },
 });
