@@ -67,7 +67,7 @@ export const usePickupTime = (
       return shopInfoOpenTimes.value[day].reduce((ret, value) => {
         for (
           let time = value.start;
-          time < value.end;
+          time <= value.end;
           time += timeInterval.value
         ) {
           if (!withinExceptTime(time)) {
