@@ -79,7 +79,7 @@
                 {{ $t("mobileOrder.admin.pickup") }}
               </o-checkbox>
             </span>
-            (<span :class="pickupAvaiable['forcePickupStock'] ? 'text-green-600 font-bold' : 'text-gray-500 text-opacity-60' ">
+            (<span :class="pickupStockData['forcePickupStock'] ? 'text-green-600 font-bold' : 'text-gray-500 text-opacity-60' ">
               {{ $t("mobileOrder.admin.forcePickupStock") }}
             </span> :
             <span :class="pickupStockData['isStock'] ? 'text-green-600 font-bold' : 'text-gray-500 text-opacity-60' ">
