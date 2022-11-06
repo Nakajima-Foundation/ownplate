@@ -17,7 +17,7 @@ jobs:
       - run: cp src/config/default/ownplate-dev.ts src/config/project.ts
       - run: npm run build
       - run: cd functions && npm install # && npm run coverage
-      - run: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --project=staging
+#      - run: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --project=staging
       - run: SLACKURL=$SLACKURL sh ./utils/buildbot.sh
 workflows:
     version: 2.1
