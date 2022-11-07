@@ -9,6 +9,7 @@ import { firebaseConfig } from "@/config/project";
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
-
-export const db = firebase.firestore();
+const _db = firebase.firestore();
+_db.settings({ experimentalForceLongPolling: true })
+export const db = _db;
 export const firestore = firebase.firestore;
