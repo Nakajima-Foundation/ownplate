@@ -114,6 +114,21 @@
               </router-link>
             </div>
 
+            <!-- All Report -->
+            <div v-if="isOwner && isInMo" class="mb-2">
+              <router-link to="/admin/report">
+                <div
+                  class="rounded-lg bg-black bg-opacity-5 px-4 py-3 text-center"
+                >
+                  <span class="text-sm font-bold">{{
+                    $t(
+                    "mobileOrder.viewAllReport"
+                    )
+                  }}</span>
+                </div>
+              </router-link>
+            </div>
+
             <div class="grid grid-cols-1 space-y-2">
               <div
                 v-for="(restaurantId, index) in restaurantLists"
