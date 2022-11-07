@@ -98,7 +98,7 @@
           <div v-if="existsRestaurant">
             <!-- All Orders -->
             <div v-if="isOwner && restaurantLists.length > 1" class="mb-2">
-              <router-link :to="'/admin/orders/'">
+              <router-link to="/admin/orders">
                 <div
                   class="rounded-lg bg-black bg-opacity-5 px-4 py-3 text-center"
                 >

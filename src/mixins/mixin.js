@@ -15,8 +15,8 @@ const mixin = {
     },
     resizedProfileImage(restaurant, size) {
       return (
-        (restaurant.images?.profile?.resizedImages || {})[size] ||
-        restaurant.restProfilePhoto
+        (restaurant?.images?.profile?.resizedImages || {})[size] ||
+        restaurant?.restProfilePhoto
       );
     },
     num2time(num) {

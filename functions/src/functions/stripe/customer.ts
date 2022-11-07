@@ -70,7 +70,7 @@ export const updateCustomer = async (db: admin.firestore.Firestore, data: stripe
       exp_month: token.card?.exp_month,
       exp_year: token.card?.exp_year,
     };
-    console.log("***token", token);
+    // console.log("***token", token);
     await db.runTransaction(async (tr) => {
       const stripeInfo = (await tr.get(refStripeSystem)).data();
       if (!stripeInfo) {
