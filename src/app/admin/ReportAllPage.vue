@@ -62,7 +62,7 @@
           <!-- Table Body -->
           <tr v-for="order in orders" :key="order.id" class="text-sm">
             <td class="p-2">
-              <div class="text-right">{{ $d(order.timeConfirmed) }}</div>
+              <div class="text-right">{{ $d(order.date) }}</div>
             </td>
             <td class="p-2">
               <div class="text-right">
@@ -307,8 +307,9 @@ export default defineComponent({
     const tableData = computed(() => {
       return orders.value.map((order) => {
         const shopInfo = restaurants.value[order.restaurantId] || {};
+        const date = order[formValue.queryKey]?.toDate ? order[formValue.queryKey]?.toDate() : order[formValue.queryKey];
         return {
-          date: moment(order.timeConfirmed).format("YYYY/MM/DD"),
+          date: moment(date).format("YYYY/MM/DD"),
           restaurantId: order.restaurantId, // mo
           shopId: shopInfo.shopId, // mo
           type: ctx.root.$t("order." + orderTypeKey(order, props.isInMo)),
@@ -410,11 +411,12 @@ export default defineComponent({
         .map((order) => {
           const restaurantId = order.ref.parent.parent.id;
           const data = doc2data("order")(order);
-          console.log(data.timePlaced.toDate());
+          const date = data[formValue.queryKey]?.toDate();
           return {
             ...data,
             restaurantId,
-          };
+            date,
+          }
         })
         .map((order) => {
           return order2ReportData(order, serviceTaxRate, props.isInMo);
