@@ -324,12 +324,24 @@ service cloud.firestore {
 
         match /pickup/stock/subCategory/{subCategory} {
           allow read: if true;
+          allow write: if isAdmin(request)
+                          && isRestaurantOwner(restaurantId, request);
+          allow write: if isAdmin(request)
+                          && isRestaurantSubAccount(restaurantId, request);
         }
         match /pickup/data/subCategory/{subCategory} {
           allow read: if true;
+          allow write: if isAdmin(request)
+                          && isRestaurantOwner(restaurantId, request);
+          allow write: if isAdmin(request)
+                          && isRestaurantSubAccount(restaurantId, request);
         }
-        match /order/data/subCategory/{subCategory} {
+        match /preOrder/data/subCategory/{subCategory} {
           allow read: if true;
+          allow write: if isAdmin(request)
+                          && isRestaurantOwner(restaurantId, request);
+          allow write: if isAdmin(request)
+                          && isRestaurantSubAccount(restaurantId, request);
         }
     }
 

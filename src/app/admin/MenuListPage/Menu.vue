@@ -83,7 +83,12 @@
               {{ $t("mobileOrder.admin.forcePickupStock") }}
             </span> :
             <span :class="pickupStockData['isStock'] ? 'text-green-600 font-bold' : 'text-gray-500 text-opacity-60' ">
-              {{ $t("mobileOrder.admin.pickupStock") }}
+              <o-checkbox v-model="pickupStockData['isStock']"
+                          @input="updatePickupStock"
+                          :disabled="pickupStockData['forcePickupStock']"
+                          >
+                {{ $t("mobileOrder.admin.pickupStock") }}
+              </o-checkbox>
             </span>)
           </div> 
         </div>
@@ -210,6 +215,10 @@ export default defineComponent({
       type: Object,
       required: false,
     },
+    subCategoryId: {
+      type: String,
+      required: false,
+    },
   },
   emit: ["toEditMode", "positionUp", "positionDown", "forkItem", "deleteItem"],
   setup(props, ctx) {
@@ -260,11 +269,30 @@ export default defineComponent({
       });
     };
 
-    const updatePickup = () => {
-      console.log(props.pickupAvaiable['isPublic']);
+    const updatePickup = async () => {
+      const path = `restaurants/${ctx.root.restaurantId()}/pickup/data/subCategory/${
+        props.subCategoryId
+      }`;
+      const data = (await db.doc(path).get()).data();
+      data.data[props.menuitem.id].isPublic = props.pickupAvaiable['isPublic'];
+      await db.doc(path).set(data);
     };
-    const updatePreOrder = () => {
-      console.log(props.preOrderAvaiable['isPublic']);
+    const updatePreOrder = async () => {
+      const path = `restaurants/${ctx.root.restaurantId()}/preOrder/data/subCategory/${
+        props.subCategoryId
+      }`;
+      const data = (await db.doc(path).get()).data();
+      data.data[props.menuitem.id].isPublic = props.preOrderAvaiable['isPublic'];
+      await db.doc(path).set(data);
+
+    };
+    const updatePickupStock = async () => {
+      const path = `restaurants/${ctx.root.restaurantId()}/pickup/stock/subCategory/${
+        props.subCategoryId
+      }`;
+      const data = (await db.doc(path).get()).data();
+      data.data[props.menuitem.id].isStock = props.pickupStockData['isStock'];
+      await db.doc(path).set(data);
     };
     
     return {
@@ -285,6 +313,7 @@ export default defineComponent({
 
       updatePickup,
       updatePreOrder,
+      updatePickupStock,
     };
   },
 });

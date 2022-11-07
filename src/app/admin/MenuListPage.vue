@@ -145,6 +145,7 @@
                 :preOrderAvaiable="preOrderAvaiable[menuList] || {}"
                 :pickupAvaiable="pickupAvaiable[menuList] || {}"
                 :pickupStockData="pickupStockData[menuList] || {}"
+                :subCategoryId="subCategory"
                 
               />
             </div>
