@@ -55,6 +55,12 @@
           </div>
         </div>
 
+        <div v-if="isInMo && selectedSubCategoryData">
+          <div class="mx-6 mt-2 lg:mx-auto lg:max-w-2xl">
+            Pickup: {{ selectedSubCategoryData["thresholdMoPickup"] }} /
+            Stock: {{ selectedSubCategoryData["thresholdSearchStock"] }}
+          </div>
+        </div>
         <!-- No Menu or Too Many Menu-->
         <div
           v-if="(!existsMenu || menuCounter > 5) && isOwner && !isInMo"
@@ -307,6 +313,12 @@ export default defineComponent({
     );
     const selectedCategory = computed(() => {
       return categoryDataObj.value[category.value] || {};
+    });
+    const selectedSubCategoryData = computed(() => {
+      //      return subCategoryData.value
+      return subCategoryData.value.find((a) => {
+        return a.id === subCategory.value
+      });
     });
     watch(category, () => {
       if (category.value) {
@@ -635,7 +647,8 @@ export default defineComponent({
       categoryData,
       subCategoryData,
       selectedCategory,
-
+      selectedSubCategoryData,
+      
       showCategory,
       showSubCategory,
       categoryBathPath,
