@@ -696,14 +696,13 @@
           </template>
 
           <!-- mo Hours -->
-          <div class="mt-4 lg:mt-0" v-if="isInMo && moPickup && shopInfo.moBusinessDay">
+          <div class="mt-4" v-if="isInMo && moPickup && shopInfo.moBusinessDay">
             <div class="pb-2 text-sm font-bold">
               {{ $t("mobileOrder.pickupHours") }}
-              <span class="text-red-700">*</span>
             </div>
 
             <div
-              class="mt-2 grid grid-cols-1 space-y-2 rounded-lg bg-black bg-opacity-5 p-4"
+              class="grid grid-cols-1 space-y-2 rounded-lg bg-black bg-opacity-5 p-4"
             >
               <div v-for="(day, index) in days" :key="index">
                 <!-- Enable/Disable Day and Copy Previous Day -->
@@ -711,14 +710,20 @@
                   <div class="flex-1">
                     <div class="text-base font-bold">
                       {{ $t("week.short." + day) }}
-                      {{ (shopInfo.moBusinessDay)[index] ? "営業" : "休業" }}
+                      {{ shopInfo.moBusinessDay[index] ? "営業" : "休業" }}
                     </div>
                   </div>
                 </div>
 
                 <!-- Main Hours -->
                 <div class="mt-2">
-                  <span :class="(shopInfo.moBusinessDay)[index] ? '' : 'text-red-600 font-bold'">
+                  <span
+                    :class="
+                      shopInfo.moBusinessDay[index]
+                        ? ''
+                        : 'font-bold text-red-600'
+                    "
+                  >
                     {{ num2time(shopInfo.moOpenTimes[index][0].start) }} -
                     {{ num2time(shopInfo.moOpenTimes[index][0].end) }}
                   </span>
