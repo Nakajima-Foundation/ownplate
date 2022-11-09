@@ -512,7 +512,7 @@ export default defineComponent({
       return howtoreceive.value === "pickup";
     });
     const forceDisabledPickupTime = computed(() => {
-      return true;
+      return false;
     });
     
     const disabledPickupTime = computed(() => {
