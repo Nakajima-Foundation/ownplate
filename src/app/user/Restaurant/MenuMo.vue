@@ -246,8 +246,12 @@ export default defineComponent({
     const basePath = useBasePath(ctx.root);
 
     const isSoldOut = computed(() => {
-      const moStock = !props.isPickup || !!props.moSoldOutData.forcePickupStock || !!props.moSoldOutData.isStock
-      return !!props.item.soldOut || !moStock;
+      // preOrder always stock
+      if (isInMo.value && !props.isPickup) {
+        return false;
+      }
+      const moPickupStock = !props.isPickup || !!props.moSoldOutData.forcePickupStock || !!props.moSoldOutData.isStock
+      return !!props.item.soldOut || !moPickupStock;
     });
     const totalQuantity = computed(() => {
       return arraySum(props.quantities);
