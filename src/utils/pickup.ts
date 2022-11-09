@@ -1,7 +1,7 @@
 import { computed, Ref, ComputedRef } from "@vue/composition-api";
 import { midNight } from "@/utils/dateUtils";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
-import { num2time, isNull } from "@/utils/utils";
+import { num2time, num2simpleTime, num2simpleFormatedTime, isNull } from "@/utils/utils";
 import moment from "moment";
 import { MenuData } from "@/models/menu";
 
@@ -129,8 +129,22 @@ export const usePickupTime = (
             return time.time >= Math.round(delta / 60000);
           });
         }
-
-        return { offset, date, times };
+        // const lastTime
+        const lastTime = times.length > 0 ? times[times.length - 1] : {};
+        const min = minimumCookTime.value
+        const lastOrder = (() => {
+          if (lastTime.time) {
+            const time = lastTime.time - Math.round(min / 10 ) * 10;
+            return {
+              time,
+              display: num2simpleFormatedTime(time),
+              timeStr: num2simpleTime(time),
+            }
+          } 
+          return {};
+        })();
+        
+        return { offset, date, times, lastOrder };
       })
       .filter((day) => {
         return day.times.length > 0;

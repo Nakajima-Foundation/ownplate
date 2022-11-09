@@ -513,25 +513,13 @@ export default defineComponent({
     const disabledPickupTime = computed(() => {
       if (isPickup.value) {
         const now = Number(moment(store.state.date).tz("Asia/Tokyo").format("HHmm"));
-        const last = Number(props.shopInfo.moLastPickupTime || "2100");
+        const last = Number(availableDays.value[0]?.lastOrder?.timeStr || 0);
         return now >= last;
       }
       return false;
     });
     const lastOrder = computed(() => {
-      if (props.shopInfo.moLastPickupTime) {
-        return [
-          (props.shopInfo.moLastPickupTime || "")
-            .split("")
-            .slice(0, 2)
-            .join(""),
-          (props.shopInfo.moLastPickupTime || "")
-            .split("")
-            .slice(2, 4)
-            .join(""),
-        ].join(":");
-      }
-      return "21:00";
+      return availableDays.value[0]?.lastOrder?.display || ""
     });
 
     const coverImage = computed(() => {
