@@ -127,6 +127,7 @@
                     v-model="howtoreceive"
                     :orders="orders"
                     :disabledPickupTime="disabledPickupTime"
+                    :noAvailableTime="noAvailableTime"
                     :lastOrder="lastOrder"
                   />
                 </div>
