@@ -511,8 +511,15 @@ export default defineComponent({
     const isPickup = computed(() => {
       return howtoreceive.value === "pickup";
     });
+    const forceDisabledPickupTime = computed(() => {
+      return true;
+    });
+    
     const disabledPickupTime = computed(() => {
       if (isPickup.value) {
+        if (forceDisabledPickupTime.value) {
+          return true;
+        }
         const now = Number(moment(store.state.date).tz("Asia/Tokyo").format("HHmm"));
         const last = Number(availableDays.value[0]?.lastOrder?.timeStr || 0);
         return now >= last;
