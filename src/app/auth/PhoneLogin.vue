@@ -37,7 +37,7 @@
 
           <div class="mt-2">
             <o-field
-              :type="hasError ? 'is-danger' : 'is-success'"
+              :variant="hasError ? 'danger' : 'success'"
               :message="hasError ? $t(errors[0]) : $t('sms.notice')"
             >
               <o-input
@@ -100,7 +100,7 @@
 
           <div class="mt-2">
             <o-field
-              :type="hasError ? 'is-danger' : 'is-success'"
+              :variant="hasError ? 'danger' : 'success'"
               :message="hasError ? $t(errors[0]) : ''"
             >
               <o-input

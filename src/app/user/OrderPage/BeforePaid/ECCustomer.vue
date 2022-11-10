@@ -6,7 +6,7 @@
       <span class="text-red-700">*</span>
     </div>
     <div>
-      <o-field :type="ecErrors['zip'].length > 0 ? 'is-danger' : 'is-success'">
+      <o-field :variant="ecErrors['zip'].length > 0 ? 'danger' : 'success'">
         <o-input
           class="w-full"
           type="text"
@@ -60,7 +60,7 @@
       <span class="text-red-700">*</span>
     </div>
     <o-field
-      :type="ecErrors['prefectureId'].length > 0 ? 'is-danger' : 'is-success'"
+      :variant="ecErrors['prefectureId'].length > 0 ? 'danger' : 'success'"
     >
       <o-select
         v-model="customerInfo.prefectureId"
@@ -84,7 +84,7 @@
     </div>
     <div>
       <o-field
-        :type="ecErrors['address'].length > 0 ? 'is-danger' : 'is-success'"
+        :variant="ecErrors['address'].length > 0 ? 'danger' : 'success'"
       >
         <o-input
           class="w-full"
@@ -110,7 +110,7 @@
       <span class="text-red-700">*</span>
     </div>
     <div>
-      <o-field :type="ecErrors['name'].length > 0 ? 'is-danger' : 'is-success'">
+      <o-field :variant="ecErrors['name'].length > 0 ? 'danger' : 'success'">
         <o-input
           class="w-full"
           type="text"
@@ -133,7 +133,7 @@
       </div>
       <div>
         <o-field
-          :type="ecErrors['email'].length > 0 ? 'is-danger' : 'is-success'"
+          :variant="ecErrors['email'].length > 0 ? 'danger' : 'success'"
         >
           <o-input
             class="w-full"

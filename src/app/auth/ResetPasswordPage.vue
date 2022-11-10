@@ -15,7 +15,7 @@
 
           <div class="mt-1">
             <o-field
-              :type="errors.email ? 'is-danger' : 'is-success'"
+              :variant="errors.email ? 'danger' : 'success'"
               :message="errors.email && $t(errors.email[0])"
             >
               <o-input

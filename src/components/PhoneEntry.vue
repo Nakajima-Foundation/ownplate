@@ -12,7 +12,7 @@
       </o-select>
     </o-field>
     <o-field
-      :type="hasError ? 'is-danger' : 'is-success'"
+      :variant="hasError ? 'danger' : 'success'"
       :message="hasError ? $t(errors[0]) : notice"
       :label="label"
     >

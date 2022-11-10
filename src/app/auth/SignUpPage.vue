@@ -22,7 +22,7 @@
 
           <div class="mt-1">
             <o-field
-              :type="errors.email ? 'is-danger' : 'is-success'"
+              :variant="errors.email ? 'danger' : 'success'"
               :message="errors.email && $t(errors.email[0])"
             >
               <o-input
@@ -61,7 +61,7 @@
 
           <div class="mt-1">
             <o-field
-              :type="errors.password ? 'is-danger' : 'is-success'"
+              :variant="errors.password ? 'danger' : 'success'"
               :message="errors.password && $t(errors.password[0])"
             >
               <o-input
@@ -83,7 +83,7 @@
 
           <div class="mt-1">
             <o-field
-              :type="errors.confirm ? 'is-danger' : 'is-success'"
+              :variant="errors.confirm ? 'danger' : 'success'"
               :message="errors.confirm && $t(errors.confirm[0])"
             >
               <o-input
