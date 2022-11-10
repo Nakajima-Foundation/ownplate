@@ -22,7 +22,7 @@
             {{ $t("shopInfo.productCategory") }}
           </div>
           <CategoryList :categoryData="categoryData" />
-          <DownloadCSV v-if="isInMo && isOwner" />
+          <DownloadCSV :restaurantid="menuRestaurantId" v-if="isInMo && isOwner" />
         </div>
       </template>
       <template v-else>
@@ -658,7 +658,7 @@ export default defineComponent({
       preOrderAvaiable,
       pickupAvaiable,
       pickupStockData,
-
+      menuRestaurantId,
       
     };
   },

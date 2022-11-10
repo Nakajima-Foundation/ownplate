@@ -69,6 +69,10 @@
         <td>
           {{ restaurant.supportLiff }}
         </td>
+        <td>
+          <DownloadMenu :restaurantid="restaurant.id" />
+        </td>
+     
       </tr>
     </table>
     <hr />
@@ -109,8 +113,9 @@ import superMixin from "@/mixins/SuperMixin";
 
 import { doc2data } from "@/utils/utils";
 
-import DownloadCsv from "@/components/DownloadCSV.vue";
 import BackButton from "@/components/BackButton.vue";
+import DownloadCsv from "@/components/DownloadCSV.vue";
+// import DownloadMenu from "@/app/admin/MenuListPage/DownloadCSV.vue";
 
 export default {
   mixins: [superMixin],
@@ -122,6 +127,7 @@ export default {
   components: {
     BackButton,
     DownloadCsv,
+//    DownloadMenu,
   },
   data() {
     return {

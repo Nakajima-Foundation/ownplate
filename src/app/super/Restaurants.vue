@@ -21,8 +21,9 @@
 import { db } from "@/plugins/firebase";
 import { superTwilio } from "@/lib/firebase/functions";
 
-import BackButton from "@/components/BackButton";
 import superMixin from "@/mixins/SuperMixin";
+
+import BackButton from "@/components/BackButton.vue";
 
 export default {
   mixins: [superMixin],

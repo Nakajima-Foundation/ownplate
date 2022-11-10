@@ -23,19 +23,20 @@ export default defineComponent({
   components: {
     DownloadCsv,
   },
+  props: {
+    restaurantid: {
+      type: String,
+      required: true,
+    },
+  },
   setup(props, ctx) {
-    const menuRestaurantId = props.isInMo
-      ? props.groupMasterRestaurant.restaurantId
-      : ctx.root.$route.params.restaurantId;
-
     const tableData = ref([]);
     const loadData = async () => {
       const collectionData = await getDocs(
-        collection(db, `restaurants/${menuRestaurantId}/menus`)
+        collection(db, `restaurants/${props.restaurantid}/menus`)
       );
       collectionData.docs.map((doc) => {
         const menu = doc.data();
-        console.log(menu);
         const data = {
           productName: menu.itemName,
           productPriceWithTax: menu.price,
