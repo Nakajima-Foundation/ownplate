@@ -6,8 +6,8 @@
 
 <script>
 import { defineComponent, ref, computed } from "@vue/composition-api";
+import { data2csv } from "@/utils/csv";
 
-const regexEscape = /[,\t\n\r]/g;
 
 export default defineComponent({
   props: {
@@ -34,36 +34,9 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
-    const escapeCVS = (value) => {
-      if (typeof value === "string") {
-        return value.replace(regexEscape, " ");
-      }
-      return value;
-    };
 
     const content = computed(() => {
-      const header = (props.fieldNames || props.fields).join(",");
-      const rows = props.data
-        .map((item) => {
-          return props.fields.map((field) => escapeCVS(item[field])).join(",");
-        })
-        .join("\n");
-      const footers = props.formulas
-        ? (() => {
-            const formulas = props.fields.map((field, index) => {
-              if (index === 0) {
-                return ctx.root.$t("order.total");
-              }
-              const formula = props.formulas[field];
-              const col = String.fromCharCode(0x41 + index); // Handles only A-Z
-              return formula
-                ? `=${formula}(${col}2:${col}${props.data.length + 1})`
-                : "";
-            });
-            return `\n${formulas.join(",")}`;
-          })()
-        : "";
-      return `\ufeff${header}\n${rows}${footers}`;
+      return data2csv(props, ctx)
     });
 
     const handleDownload = () => {
