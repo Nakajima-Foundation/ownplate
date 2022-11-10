@@ -5,7 +5,7 @@
       <span class="text-red-700">*</span>
     </div>
     <o-field
-      :type="errors['state'].length > 0 ? 'is-danger' : 'is-success'"
+      :variant="errors['state'].length > 0 ? 'danger' : 'success'"
       v-if="Array.isArray(states)"
     >
       <o-select :value="value" placeholder="select" @input="input">
@@ -15,7 +15,7 @@
       </o-select>
     </o-field>
     <o-field
-      :type="errors['state'].length > 0 ? 'is-danger' : 'is-success'"
+      :variant="errors['state'].length > 0 ? 'danger' : 'success'"
       v-else
     >
       <o-input

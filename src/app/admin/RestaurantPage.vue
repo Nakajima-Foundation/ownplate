@@ -62,7 +62,7 @@
         <o-checkbox
           v-model="shopInfo.publicFlag"
           :disabled="hasError"
-          :type="!shopInfo.publicFlag ? 'is-danger' : ''"
+          :variant="!shopInfo.publicFlag ? 'danger' : ''"
         >
           <div class="font-bold">{{ $t("shopInfo.public") }}</div>
         </o-checkbox>
@@ -497,8 +497,8 @@
                   </div>
                   <o-field
                     class="inline-flex items-center"
-                    :type="
-                      errors['foodTax'].length > 0 ? 'is-danger' : 'is-success'
+                   :variant="
+                      errors['foodTax'].length > 0 ? 'danger' : 'success'
                     "
                   >
                     <o-input
@@ -518,10 +518,10 @@
                   </div>
                   <o-field
                     class="inline-flex items-center"
-                    :type="
+                    :variant="
                       errors['alcoholTax'].length > 0
-                        ? 'is-danger'
-                        : 'is-success'
+                        ? 'danger'
+                        : 'success'
                     "
                   >
                     <o-input
@@ -607,10 +607,10 @@
 
                 <o-field
                   class="flex items-center"
-                  :type="
+                  :variant="
                     errors['pickUpMinimumCookTime'].length > 0
-                      ? 'is-danger'
-                      : 'is-success'
+                      ? 'danger'
+                      : 'success'
                   "
                 >
                   <o-input
@@ -643,10 +643,10 @@
                 </div>
                 <o-field
                   class="flex items-center"
-                  :type="
+                  :variant="
                     errors['pickUpDaysInAdvance'].length > 0
-                      ? 'is-danger'
-                      : 'is-success'
+                      ? 'danger'
+                      : 'success'
                   "
                 >
                   <o-select v-model.number="shopInfo.pickUpDaysInAdvance">
@@ -876,10 +876,10 @@
                 <div class="mt-2">
                   <hours-input
                     v-model="shopInfo.openTimes[index][0]"
-                    :type="
+                    :variant="
                       errors['time'][index][0].length > 0
-                        ? 'is-danger'
-                        : 'is-success'
+                        ? 'danger'
+                        : 'success'
                     "
                     :disabled="!shopInfo.businessDay[index]"
                   ></hours-input>
@@ -892,10 +892,10 @@
                   </div>
                   <hours-input
                     v-model="shopInfo.openTimes[index][1]"
-                    :type="
+                    :variant="
                       errors['time'][index][1].length > 0
-                        ? 'is-danger'
-                        : 'is-success'
+                        ? 'danger'
+                        : 'success'
                     "
                     :disabled="!shopInfo.businessDay[index]"
                   ></hours-input>
@@ -979,7 +979,7 @@
         <o-checkbox
           v-model="shopInfo.publicFlag"
           :disabled="hasError"
-          :type="!shopInfo.publicFlag ? 'is-danger' : ''"
+          :variant="!shopInfo.publicFlag ? 'danger' : ''"
         >
           <div class="font-bold">{{ $t("shopInfo.public") }}</div>
         </o-checkbox>

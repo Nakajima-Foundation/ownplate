@@ -56,7 +56,7 @@
         <o-checkbox
           v-model="menuInfo.publicFlag"
           :disabled="hasError"
-          :type="!menuInfo.publicFlag ? 'is-danger' : ''"
+          :variant="!menuInfo.publicFlag ? 'danger' : ''"
         >
           <div class="font-bold">{{ $t("shopInfo.public") }}</div>
         </o-checkbox>
@@ -90,7 +90,7 @@
               <span class="text-red-700">*</span>
             </div>
             <o-field
-              :type="errors['itemName'].length > 0 ? 'is-danger' : 'is-success'"
+              :variant="errors['itemName'].length > 0 ? 'danger' : 'success'"
             >
               <o-input
                 v-model="menuInfo.itemName"
@@ -118,7 +118,7 @@
             </div>
             <div>
               <o-field
-                :type="errors['price'].length > 0 ? 'is-danger' : 'is-success'"
+                :variant="errors['price'].length > 0 ? 'danger' : 'success'"
               >
                 <o-input
                   v-model="menuInfo.price"
@@ -146,7 +146,7 @@
             </div>
             <div>
               <o-field
-                :type="errors['tax'].length > 0 ? 'is-danger' : 'is-success'"
+                :variant="errors['tax'].length > 0 ? 'danger' : 'success'"
               >
                 <o-select v-model="menuInfo.tax" placeholder="select">
                   <option
@@ -198,10 +198,10 @@
             </div>
             <div>
               <o-field
-                :type="
+                :variant="
                   errors['itemDescription'].length > 0
-                    ? 'is-danger'
-                    : 'is-success'
+                    ? 'danger'
+                    : 'success'
                 "
               >
                 <o-input
@@ -219,7 +219,7 @@
               {{ $t("editMenu.itemMemo") }}
             </div>
             <div>
-              <o-field type="is-success">
+              <o-field variant="success">
                 <o-input
                   v-model="menuInfo.itemMemo"
                   type="textarea"
@@ -385,7 +385,7 @@
             <div class="mt-2">
               <hours-input
                 v-model="menuInfo.exceptHour"
-                :type="'is-success'"
+                variant="success"
                 :disabled="false"
               ></hours-input>
             </div>
@@ -496,7 +496,7 @@
         <o-checkbox
           v-model="menuInfo.publicFlag"
           :disabled="hasError"
-          :type="!menuInfo.publicFlag ? 'is-danger' : ''"
+          :variant="!menuInfo.publicFlag ? 'danger' : ''"
         >
           <div class="font-bold">{{ $t("shopInfo.public") }}</div>
         </o-checkbox>

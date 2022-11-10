@@ -4,7 +4,7 @@
       {{ $t(titleKey) }}
       <span class="text-red-700" v-if="required === true">*</span>
     </div>
-    <o-field :type="error.length > 0 ? 'is-danger' : 'is-success'">
+    <o-field :variant="error.length > 0 ? 'danger' : 'success'">
       <o-input
         :value="value"
         :type="type"

@@ -1,7 +1,7 @@
 <template>
   <div class="flex items-center">
     <div>
-      <o-field :type="type">
+      <o-field :variant="variant">
         <o-select
           v-model="value.start"
           :disabled="disabled"
@@ -19,7 +19,7 @@
     </div>
     <div class="px-2">-</div>
     <div>
-      <o-field :type="type">
+      <o-field :variant="variant">
         <o-select v-model="value.end" :disabled="disabled" @input="updateValue">
           <option
             v-for="(timeItem, index) of timeList"
@@ -42,7 +42,7 @@ export default {
       type: Boolean,
       required: true,
     },
-    type: {
+    variant: {
       type: String,
       required: true,
     },
