@@ -642,6 +642,16 @@ export default defineComponent({
 
     const itemLists = computed(() => {
       if (isInMo.value) {
+        if (isPickup.value) {
+          return menus.value.sort((a, b) => {
+            const aSoldOutData = moSoldOutDataSet.value[a.id] || {}
+            const aIsStock = !a.soldOut && (!!aSoldOutData.forcePickupStock || !!aSoldOutData.isStock);
+
+            // const bSoldOutData = moSoldOutDataSet.value[b.id] || {}
+            // const bIsStock = !b.soldOut && (!!bSoldOutData.forcePickupStock || !!bSoldOutData.isStock);
+            return aIsStock ? -1 : 1;
+          });;
+        }
         return menus.value;
       } else {
         const menuLists = props.shopInfo.menuLists || [];
