@@ -208,6 +208,7 @@
     "setupMap": "Restaurant location",
     "setLocation": "Définir l'emplacement",
     "searchMap": "Set the location from the address",
+    "enterAddress": "Veuillez entrer une adresse pour la recherche",
     "updateMap": "Mettre à jour la carte",
     "businessHourDescription": "Vérifiez le jour ouvrable de la semaine et définissez les heures d'ouverture. Si vous devez fractionner vos heures d'ouverture, comme une pause, veuillez saisir cette dernière heure dans le formulaire Autres heures.",
     "businessHourOption": "Autres heures. (facultatif)",
