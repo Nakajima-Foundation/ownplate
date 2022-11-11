@@ -50,7 +50,7 @@
         </div>
 
         <!-- Password -->
-        <div>
+        <div class="mt-2">
           <div class="text-sm font-bold">
             {{ $t("admin.password") }}
           </div>
@@ -180,7 +180,8 @@ export default defineComponent({
         .catch((error) => {
           console.log("onSignin failed", error.code, error.message);
           const errorCode = "admin.error.code." + error.code;
-          if (error.code === "auth/wrong-password") {
+          if (error.code === "auth/wrong-password" ||
+              error.code === "auth/internal-error") {
             errors.value = { password: [errorCode] };
           } else {
             errors.value = { email: [errorCode] };
