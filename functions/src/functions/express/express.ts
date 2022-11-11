@@ -124,7 +124,7 @@ const ogpPage = async (req: any, res: any) => {
   const template_data = fs.readFileSync("./templates/index.html", {
     encoding: "utf8",
   });
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  // res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("X-Frame-Options", "deny");
   res.setHeader("X-Content-Type-Options", "nosniff");
   res.setHeader("X-XSS-Protection", "1; mode=block");
@@ -225,7 +225,7 @@ const ownerPage = async (req: any, res: any) => {
   const template_data = fs.readFileSync("./templates/index.html", {
     encoding: "utf8",
   });
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  // res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("X-Frame-Options", "deny");
   res.setHeader("X-Content-Type-Options", "nosniff");
   res.setHeader("X-XSS-Protection", "1; mode=block");
