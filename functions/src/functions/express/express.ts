@@ -125,7 +125,7 @@ const ogpPage = async (req: any, res: any) => {
     encoding: "utf8",
   });
   // res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Content-Security-Policy", "frame-ancestors 'none'"},
+  res.setHeader("Content-Security-Policy", "frame-ancestors 'none'"),
   res.setHeader("X-Frame-Options", "deny");
   res.setHeader("X-Content-Type-Options", "nosniff");
   res.setHeader("X-XSS-Protection", "1; mode=block");
@@ -227,7 +227,7 @@ const ownerPage = async (req: any, res: any) => {
     encoding: "utf8",
   });
   // res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Content-Security-Policy", "frame-ancestors 'none'"},
+  res.setHeader("Content-Security-Policy", "frame-ancestors 'none'"),
   res.setHeader("X-Frame-Options", "deny");
   res.setHeader("X-Content-Type-Options", "nosniff");
   res.setHeader("X-XSS-Protection", "1; mode=block");
