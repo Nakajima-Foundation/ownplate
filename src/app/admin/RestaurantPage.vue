@@ -101,7 +101,7 @@
           </div>
 
           <!-- Owner Name -->
-          <div>
+          <div class="mt-4">
             <text-form
               v-model="shopInfo.ownerName"
               titleKey="shopInfo.ownerName"
@@ -116,7 +116,7 @@
             <!-- Japan Format -->
             <template v-if="region === 'JP'">
               <!-- Zip and State -->
-              <div class="flex">
+              <div class="mt-4 flex">
                 <div class="flex-1">
                   <text-form
                     :error="errors['zip']"
@@ -131,43 +131,51 @@
                 </div>
               </div>
               <!-- City -->
-              <text-form
-                :error="errors['city']"
-                v-model="shopInfo.city"
-                titleKey="shopInfo.city"
-                placeholder="editRestaurant.enterCity"
-                :maxlength="15"
-              />
+              <div class="mt-4">
+                <text-form
+                  :error="errors['city']"
+                  v-model="shopInfo.city"
+                  titleKey="shopInfo.city"
+                  placeholder="editRestaurant.enterCity"
+                  :maxlength="15"
+                />
+              </div>
               <!-- Street -->
-              <text-form
-                :error="errors['streetAddress']"
-                v-model="shopInfo.streetAddress"
-                titleKey="shopInfo.streetAddress"
-                placeholder="editRestaurant.enterStreetAddress"
-                :maxlength="30"
-              />
+              <div class="mt-4">
+                <text-form
+                  :error="errors['streetAddress']"
+                  v-model="shopInfo.streetAddress"
+                  titleKey="shopInfo.streetAddress"
+                  placeholder="editRestaurant.enterStreetAddress"
+                  :maxlength="30"
+                />
+              </div>
             </template>
 
             <!-- Other -->
             <template v-else>
               <!-- Street -->
-              <text-form
-                :error="errors['streetAddress']"
-                v-model="shopInfo.streetAddress"
-                titleKey="shopInfo.streetAddress"
-                placeholder="editRestaurant.enterStreetAddress"
-                :maxlength="30"
-              />
+              <div class="mt-4">
+                <text-form
+                  :error="errors['streetAddress']"
+                  v-model="shopInfo.streetAddress"
+                  titleKey="shopInfo.streetAddress"
+                  placeholder="editRestaurant.enterStreetAddress"
+                  :maxlength="30"
+                />
+              </div>
               <!-- City -->
-              <text-form
-                :error="errors['city']"
-                v-model="shopInfo.city"
-                titleKey="shopInfo.city"
-                placeholder="editRestaurant.enterCity"
-                :maxlength="15"
-              />
+              <div class="mt-4">
+                <text-form
+                  :error="errors['city']"
+                  v-model="shopInfo.city"
+                  titleKey="shopInfo.city"
+                  placeholder="editRestaurant.enterCity"
+                  :maxlength="15"
+                />
+              </div>
               <!-- State and Zip -->
-              <div class="flex">
+              <div class="mt-4 flex">
                 <div class="pr-4">
                   <state :errors="errors" v-model="shopInfo.state" />
                 </div>
@@ -186,7 +194,7 @@
 
           <!-- Map -->
           <div>
-            <div class="text-center">
+            <div class="mt-4 pb-1 text-sm font-bold">
               {{ $t("editRestaurant.setupMap") }}
             </div>
             <div class="text-center">
@@ -211,7 +219,9 @@
                 </o-select>
               </div>
             </div>
-            <div v-else>住所を入力して検索してください</div>
+            <div v-else class="mt-3 text-center text-sm">
+              住所を入力して検索してください
+            </div>
 
             <div class="mt-2 text-center text-sm font-bold text-red-700">
               {{
@@ -332,7 +342,7 @@
               }"
             >
               <!-- Current Photo -->
-              <div v-if="restCoverPhoto" class="pb-2">
+              <div v-if="restCoverPhoto">
                 <div>
                   <img
                     class="rounded object-cover"
@@ -397,7 +407,7 @@
           </div>
 
           <!-- Enable Pre Line -->
-          <div class="mb-4">
+          <div class="mt-4 mb-4">
             <a id="preline" />
             <div class="pb-2 text-sm font-bold">
               {{ $t("editRestaurant.enablePrelineTitle") }}
@@ -412,7 +422,7 @@
           </div>
 
           <!-- Description -->
-          <div>
+          <div class="mt-4">
             <text-form
               v-model="shopInfo.introduction"
               type="textarea"
@@ -425,7 +435,7 @@
           </div>
 
           <!-- Order Notice -->
-          <div>
+          <div class="mt-4">
             <text-form
               v-model="shopInfo.orderNotice"
               type="textarea"
@@ -438,7 +448,7 @@
           </div>
 
           <!-- Thank you Message -->
-          <div>
+          <div class="mt-4">
             <text-form
               v-model="shopInfo.orderThanks"
               type="textarea"
@@ -451,7 +461,7 @@
           </div>
 
           <!-- LINE URL -->
-          <div>
+          <div class="mt-4">
             <text-form
               v-model="shopInfo.lineUrl"
               :error="errors['lineUrl']"
@@ -463,7 +473,7 @@
           </div>
 
           <!-- Instagram URL -->
-          <div>
+          <div class="mt-4">
             <text-form
               v-model="shopInfo.instagramUrl"
               :error="errors['instagramUrl']"
@@ -475,7 +485,7 @@
           </div>
 
           <!-- UberEats URL -->
-          <div>
+          <div class="mt-4">
             <text-form
               v-model="shopInfo.uberEatsUrl"
               :error="errors['uberEatsUrl']"
@@ -490,14 +500,14 @@
           <div>
             <!-- Tax Input Required -->
             <div v-if="requireTaxInput">
-              <div class="flex">
+              <div class="mt-4 flex">
                 <div>
                   <div class="pb-2 text-sm font-bold">
                     {{ $t("editRestaurant.foodTax") }}
                   </div>
                   <o-field
                     class="inline-flex items-center"
-                   :variant="
+                    :variant="
                       errors['foodTax'].length > 0 ? 'danger' : 'success'
                     "
                   >
@@ -519,9 +529,7 @@
                   <o-field
                     class="inline-flex items-center"
                     :variant="
-                      errors['alcoholTax'].length > 0
-                        ? 'danger'
-                        : 'success'
+                      errors['alcoholTax'].length > 0 ? 'danger' : 'success'
                     "
                   >
                     <o-input
@@ -539,7 +547,7 @@
 
             <!-- Tax Input Not Required -->
             <div v-if="!requireTaxInput">
-              <div>
+              <div class="mt-4">
                 <div class="pb-2 text-sm font-bold">
                   {{ $t("editRestaurant.tax") }}
                 </div>
@@ -570,7 +578,7 @@
                 <div class="mt-2">
                   <div
                     v-if="region === 'JP'"
-                    class="mb-1 text-xs font-bold text-red-700"
+                    class="mb-2 text-xs font-bold text-red-700"
                   >
                     {{ $t("editRestaurant.taxPriceDisplayJp") }}
                   </div>
@@ -740,7 +748,7 @@
                 {{ $t("editRestaurant.deliveryConfigTitle") }}
               </div>
               <div class="rounded-lg bg-black bg-opacity-5 p-4">
-                <div class="pt-2 text-xl">
+                <div class="text-lg font-bold text-op-teal">
                   <router-link
                     :to="`/admin/restaurants/${restaurantId()}/delivery`"
                     >{{ $t("editRestaurant.deliveryConfigLink") }}</router-link
@@ -877,9 +885,7 @@
                   <hours-input
                     v-model="shopInfo.openTimes[index][0]"
                     :variant="
-                      errors['time'][index][0].length > 0
-                        ? 'danger'
-                        : 'success'
+                      errors['time'][index][0].length > 0 ? 'danger' : 'success'
                     "
                     :disabled="!shopInfo.businessDay[index]"
                   ></hours-input>
@@ -893,9 +899,7 @@
                   <hours-input
                     v-model="shopInfo.openTimes[index][1]"
                     :variant="
-                      errors['time'][index][1].length > 0
-                        ? 'danger'
-                        : 'success'
+                      errors['time'][index][1].length > 0 ? 'danger' : 'success'
                     "
                     :disabled="!shopInfo.businessDay[index]"
                   ></hours-input>
