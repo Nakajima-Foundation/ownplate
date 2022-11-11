@@ -55,7 +55,7 @@ export const orderChange = async (db: admin.firestore.Firestore, data: orderChan
   }
 
   if (utils.is_subAccount(context)) {
-    await validate_sub_account_request(db, uid, ownerUid, restaurantId);
+    await utils.validate_sub_account_request(db, uid, ownerUid, restaurantId);
   }
   const restaurantRef = db.doc(`restaurants/${restaurantId}`);
   const restaurantData = (await restaurantRef.get()).data() || {};
