@@ -50,6 +50,7 @@ const getPaymentIntent = async (db: admin.firestore.Firestore, restaurantOwnerUi
 // This function is called by admins (restaurant operators) to update the status of order
 export const update = async (db: admin.firestore.Firestore, data: orderUpdateData, context: functions.https.CallableContext) => {
   const ownerUid = utils.validate_owner_admin_auth(context);
+  const uid = utils.validate_auth(context);
   const { restaurantId, orderId, status, timeEstimated } = data;
   utils.required_params({ restaurantId, orderId, status });
 
@@ -57,6 +58,9 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
   if (!validateResult.result) {
     console.error("orderUpdate", validateResult.errors);
     throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+  }
+  if (utils.is_subAccount(context)) {
+    await utils.validate_sub_account_request(db, uid, ownerUid, restaurantId);
   }
 
   try {

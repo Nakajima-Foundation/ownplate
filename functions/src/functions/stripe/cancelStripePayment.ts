@@ -22,6 +22,10 @@ export const cancelStripePayment = async (db: admin.firestore.Firestore, data: o
     console.error("cancelStripePayment", validateResult.errors);
     throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
   }
+  if (utils.is_subAccount(context)) {
+    await utils.validate_sub_account_request(db, uid, ownerUid, restaurantId);
+  }
+
   const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
   const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`);
   const restaurant = await utils.get_restaurant(db, restaurantId);

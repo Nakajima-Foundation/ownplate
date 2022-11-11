@@ -26,6 +26,11 @@ export const cancel = async (db: admin.firestore.Firestore, data: orderCancelDat
     throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
   }
 
+  if (utils.is_subAccount(context)) {
+    const adminUid = utils.validate_auth(context);
+    await utils.validate_sub_account_request(db, adminUid, uid, restaurantId);
+  }
+  
   const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
   const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`);
   const restaurant = await utils.get_restaurant(db, restaurantId);
