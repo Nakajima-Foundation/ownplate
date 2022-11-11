@@ -220,7 +220,7 @@
               </div>
             </div>
             <div v-else class="mt-3 text-center text-sm">
-              住所を入力して検索してください
+              {{ $t("editRestaurant.enterAddress") }}
             </div>
 
             <div class="mt-2 text-center text-sm font-bold text-red-700">

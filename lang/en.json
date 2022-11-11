@@ -208,6 +208,7 @@
     "setupMap": "Restaurant location",
     "setLocation": "Set location",
     "searchMap": "Set the location from the address",
+    "enterAddress": "Please enter an address to search",
     "updateMap": "Update Map",
     "businessHourDescription": "Check the business day of the week and set the business hours. If you need to split your business hours, such as a break, please enter the latter time in the Another Hours form.",
     "businessHourOption": "Another Hours (optional)",
