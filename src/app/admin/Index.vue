@@ -127,7 +127,10 @@
                 </div>
               </router-link>
             </div>
-
+            <div v-if="isOwner && isInMo" class="mb-2">
+              <ExportProd :restaurantLists="restaurantLists" :restaurantItems="restaurantItems" />
+            </div>
+            
             <div class="grid grid-cols-1 space-y-2">
               <div
                 v-for="(restaurantId, index) in restaurantLists"
@@ -254,6 +257,7 @@ import Smaregi from "@/app/admin/Index/Smaregi.vue";
 import Footer from "@/app/admin/Index/Footer.vue";
 import Partners from "@/app/admin/Index/Partners.vue";
 import SubAccount from "@/app/admin/Index/SubAccount.vue";
+import ExportProd from "@/app/admin/Index/ExportProd.vue";
 
 import { ping } from "@/lib/firebase/functions";
 
@@ -283,6 +287,7 @@ export default defineComponent({
     Note,
     Footer,
     ToggleSwitch,
+    ExportProd,
   },
   props: {
     groupMasterRestaurant: {
