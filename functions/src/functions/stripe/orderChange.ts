@@ -44,6 +44,7 @@ const getUpdateOrder = (newOrders: newOrderData[], order, options, rawOptions) =
 
 export const orderChange = async (db: admin.firestore.Firestore, data: orderChangeData, context: functions.https.CallableContext | Context) => {
   const ownerUid = utils.validate_owner_admin_auth(context);
+  const uid = utils.validate_auth(context);
   const { restaurantId, orderId, newOrder } = data;
   utils.required_params({ restaurantId, orderId, newOrder });
 
@@ -53,6 +54,9 @@ export const orderChange = async (db: admin.firestore.Firestore, data: orderChan
     throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
   }
 
+  if (utils.is_subAccount(context)) {
+    await validate_sub_account_request(db, uid, ownerUid, restaurantId);
+  }
   const restaurantRef = db.doc(`restaurants/${restaurantId}`);
   const restaurantData = (await restaurantRef.get()).data() || {};
   if (restaurantData.uid !== ownerUid) {

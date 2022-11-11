@@ -53,6 +53,16 @@ export const is_admin_auth = (context: functions.https.CallableContext | Context
   }
   return !!context.auth?.token?.email;
 };
+export const is_subAccount = (context: functions.https.CallableContext | Context) => {
+  return !!context.auth?.token?.parentUid;
+};
+export const validate_sub_account_request = async (db: admin.firestore.Firestore, uid: string, ownerUid: string, restaurantId: string) => {
+  const rList = ((await db.doc(`admins/${ownerUid}/children/${uid}`).get()).data()||{}).restaurantLists || [];
+  if (!rList.includes(restaurantId)) {
+    throw new functions.https.HttpsError("permission-denied", "The user does not have an authority to perform this operation.");
+  }
+  return true;
+}
 
 export const getStripeWebhookSecretKey = () => {
   const SECRET = process.env.STRIPE_WH_SECRET;
