@@ -863,7 +863,6 @@ export default defineComponent({
       }
     });
 
-
     const filteredTitleLists = computed(() => {
       const menuLists = props.shopInfo.menuLists || [];
       const itemsObj = array2obj(titles.value);

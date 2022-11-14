@@ -307,7 +307,9 @@ export default defineComponent({
     const tableData = computed(() => {
       return orders.value.map((order) => {
         const shopInfo = restaurants.value[order.restaurantId] || {};
-        const date = order[formValue.queryKey]?.toDate ? order[formValue.queryKey]?.toDate() : order[formValue.queryKey];
+        const date = order[formValue.queryKey]?.toDate
+          ? order[formValue.queryKey]?.toDate()
+          : order[formValue.queryKey];
         return {
           date: moment(date).format("YYYY/MM/DD"),
           restaurantId: order.restaurantId, // mo
@@ -416,7 +418,7 @@ export default defineComponent({
             ...data,
             restaurantId,
             date,
-          }
+          };
         })
         .map((order) => {
           return order2ReportData(order, serviceTaxRate, props.isInMo);

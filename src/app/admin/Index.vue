@@ -121,9 +121,7 @@
                   class="rounded-lg bg-black bg-opacity-5 px-4 py-3 text-center"
                 >
                   <span class="text-sm font-bold">{{
-                    $t(
-                    "mobileOrder.viewAllReport"
-                    )
+                    $t("mobileOrder.viewAllReport")
                   }}</span>
                 </div>
               </router-link>
