@@ -22,7 +22,10 @@
             {{ $t("shopInfo.productCategory") }}
           </div>
           <CategoryList :categoryData="categoryData" />
-          <DownloadCSV :restaurantid="menuRestaurantId" v-if="isInMo && isOwner" />
+          <DownloadCSV
+            :restaurantid="menuRestaurantId"
+            v-if="isInMo && isOwner"
+          />
         </div>
       </template>
       <template v-else>
@@ -57,8 +60,19 @@
 
         <div v-if="isInMo && selectedSubCategoryData">
           <div class="mx-6 mt-2 lg:mx-auto lg:max-w-2xl">
-            Pickup: {{ selectedSubCategoryData["thresholdMoPickup"] }} /
-            Stock: {{ selectedSubCategoryData["thresholdSearchStock"] }}
+            <div class="mt-4 text-xs font-bold text-black text-opacity-50">
+              {{ $t("mobileOrder.admin.threshold") }}
+            </div>
+            <div class="mt-0.5 text-base font-bold">
+              <span class="text-xs text-black text-opacity-50">{{
+                $t("mobileOrder.admin.thresholdPickup")
+              }}</span>
+              {{ selectedSubCategoryData["thresholdMoPickup"] }}
+              <span class="text-xs text-black text-opacity-50"
+                >/ {{ $t("mobileOrder.admin.thresholdSearchStock") }}</span
+              >
+              {{ selectedSubCategoryData["thresholdSearchStock"] }}
+            </div>
           </div>
         </div>
         <!-- No Menu or Too Many Menu-->
@@ -133,8 +147,6 @@
                 (!publicFilter || itemsObj[menuList].publicFlag)
               "
             >
-
-
               <Menu
                 :menuitem="itemsObj[menuList]"
                 :position="
@@ -147,12 +159,10 @@
                 @positionDown="positionDown($event)"
                 @forkItem="forkMenuItem($event)"
                 @deleteItem="deleteItem($event)"
-                
                 :preOrderAvaiable="preOrderAvaiable[menuList] || {}"
                 :pickupAvaiable="pickupAvaiable[menuList] || {}"
                 :pickupStockData="pickupStockData[menuList] || {}"
                 :subCategoryId="subCategory"
-                
               />
             </div>
           </div>
@@ -317,7 +327,7 @@ export default defineComponent({
     const selectedSubCategoryData = computed(() => {
       //      return subCategoryData.value
       return subCategoryData.value.find((a) => {
-        return a.id === subCategory.value
+        return a.id === subCategory.value;
       });
     });
     watch(category, () => {
@@ -393,22 +403,22 @@ export default defineComponent({
     });
     loadMenu();
 
-    // mo 
+    // mo
     const { preOrderPublics, pickupPublics, pickupStocks } = loadStockData(
       db,
       props.shopInfo
     );
 
     const preOrderAvaiable = computed(() => {
-      return (preOrderPublics.value || {} )[subCategory.value] || {};
+      return (preOrderPublics.value || {})[subCategory.value] || {};
     });
     const pickupAvaiable = computed(() => {
-      return (pickupPublics.value || {} )[subCategory.value] || {};
+      return (pickupPublics.value || {})[subCategory.value] || {};
     });
     const pickupStockData = computed(() => {
-      return (pickupStocks.value || {} )[subCategory.value] || {};
+      return (pickupStocks.value || {})[subCategory.value] || {};
     });
-    
+
     watch(isLoading, (value) => {
       if (!props.isInMo) {
         if (!value) {
@@ -648,7 +658,7 @@ export default defineComponent({
       subCategoryData,
       selectedCategory,
       selectedSubCategoryData,
-      
+
       showCategory,
       showSubCategory,
       categoryBathPath,
@@ -659,7 +669,6 @@ export default defineComponent({
       pickupAvaiable,
       pickupStockData,
       menuRestaurantId,
-      
     };
   },
 });
