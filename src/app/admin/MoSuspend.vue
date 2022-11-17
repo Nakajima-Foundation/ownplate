@@ -2,44 +2,25 @@
   <div>
     <!-- ToDo 受付休止(全ての注文)は以下表示 -->
     <div
-      v-if="isSuspendAllOrder"
-      class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-red-700 bg-opacity-5 px-4"
+      v-if="isSuspendAllOrder || isSuspendPickup"
       @click="toggleMoSuspendOnModal"
     >
-      <i class="material-icons mr-2 text-lg text-red-700"
-        >remove_shopping_cart</i
-      >
-      <div class="text-sm font-bold text-red-700">
-        {{ $t("mobileOrder.admin.suspending") }}
-      </div>
+      <MoSuspendButton :positive="false" :class="isSuspendPickup ? 'pr-3' : ''">
+        {{
+          $t(
+            isSuspendAllOrder
+              ? "mobileOrder.admin.suspending"
+              : "mobileOrder.admin.suspendingPickup"
+          )
+        }}
+      </MoSuspendButton>
     </div>
-
-    <!-- ToDo ピックアップ休止は以下表示 -->
-    <div
-      v-else-if="isSuspendPickup"
-      class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-red-700 bg-opacity-5 px-4 pr-3"
-      @click="toggleMoSuspendOnModal"
-    >
-      <i class="material-icons mr-2 text-lg text-red-700"
-        >remove_shopping_cart</i
-      >
-      <div class="text-xs font-bold tracking-tight text-red-700 sm:text-sm">
-        {{ $t("mobileOrder.admin.suspendingPickup") }}
-      </div>
-    </div>
-
-    <div
-      v-else
-      class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
-      @click="toggleMoSuspendOffModal"
-    >
-      <i class="material-icons mr-2 text-lg text-op-teal"
-        >remove_shopping_cart</i
-      >
-      <div class="text-sm font-bold text-op-teal">
+    <div v-else @click="toggleMoSuspendOffModal">
+      <MoSuspendButton :positive="true">
         {{ $t("mobileOrder.admin.suspendSettings") }}
-      </div>
+      </MoSuspendButton>
     </div>
+
     <o-modal :active.sync="isOpenMoSuspendOffModal" :width="488">
       <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
         <div class="text-xl font-bold text-black text-opacity-40">
@@ -86,16 +67,14 @@
     <o-modal :active.sync="isOpenMoSuspendOnModal" :width="488">
       <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
         <!-- ToDo全ての注文受付を再開する場合は以下確認メッセージを表示-->
-        <div
-          class="font-bold text-black text-opacity-60"
-          v-if="isSuspendAllOrder"
-        >
-          {{ $t("mobileOrder.admin.restoreConfirm") }}
-        </div>
-
-        <!-- ToDoピックアップ注文受付を再開する場合は以下確認メッセージを表示-->
-        <div class="font-bold text-black text-opacity-60" v-else>
-          {{ $t("mobileOrder.admin.restorePickupConfirm") }}
+        <div class="font-bold text-black text-opacity-60">
+          {{
+            $t(
+              isSuspendAllOrder
+                ? "mobileOrder.admin.restoreConfirm"
+                : "mobileOrder.admin.restorePickupConfirm"
+            )
+          }}
         </div>
 
         <div class="mt-10 flex items-center justify-center space-x-4">
@@ -127,8 +106,12 @@
 import { defineComponent, computed, ref } from "@vue/composition-api";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, updateDoc } from "firebase/firestore";
+import MoSuspendButton from "./MoSuspendButton.vue";
 
 export default defineComponent({
+  components: {
+    MoSuspendButton,
+  },
   props: {
     isSuspendAllOrder: {
       type: Boolean,
