@@ -5,7 +5,7 @@
       v-if="isSuspendAllOrder"
       class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-red-700 bg-opacity-5 px-4"
       @click="toggleMoSuspendOnModal"
-      >
+    >
       <i class="material-icons mr-2 text-lg text-red-700"
         >remove_shopping_cart</i
       >
@@ -52,18 +52,10 @@
           class="mx-4 mt-8 flex flex-col space-y-6 text-sm font-bold text-black text-opacity-60"
         >
           <!-- ToDo以下2つのオプションがラジオボタンで選択できるようにする-->
-          <o-radio
-            v-model="suspendSelect"
-            :native-value="1"
-            :key="1"
-            >
+          <o-radio v-model="suspendSelect" :native-value="1" :key="1">
             <div>{{ $t("mobileOrder.admin.suspendAll") }}</div>
           </o-radio>
-          <o-radio
-            v-model="suspendSelect"
-            :native-value="2"
-            :key="2"
-            >
+          <o-radio v-model="suspendSelect" :native-value="2" :key="2">
             <div>{{ $t("mobileOrder.admin.suspendPickup") }}</div>
           </o-radio>
         </div>
@@ -71,7 +63,7 @@
         <div class="mt-10 flex items-center justify-center space-x-4">
           <!-- ToDoキャンセルボタンでダイアログを閉じる-->
           <div
-            class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black bg-opacity-5 cursor-pointer"
+            class="inline-flex h-12 w-32 cursor-pointer items-center justify-center rounded-full bg-black bg-opacity-5"
             @click="toggleMoSuspendOffModal"
           >
             <span class="text-base font-bold text-black text-opacity-60">
@@ -80,7 +72,7 @@
           </div>
           <!-- ToDo休止ボタンで休止する-->
           <div
-            class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-op-teal shadow cursor-pointer"
+            class="inline-flex h-12 w-32 cursor-pointer items-center justify-center rounded-full bg-op-teal shadow"
             @click="updateSuspend"
           >
             <span class="text-base font-bold text-white">
@@ -94,34 +86,33 @@
     <o-modal :active.sync="isOpenMoSuspendOnModal" :width="488">
       <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
         <!-- ToDo全ての注文受付を再開する場合は以下確認メッセージを表示-->
-        <div class="font-bold text-black text-opacity-60"
-             v-if="isSuspendAllOrder" 
-             >
+        <div
+          class="font-bold text-black text-opacity-60"
+          v-if="isSuspendAllOrder"
+        >
           {{ $t("mobileOrder.admin.restoreConfirm") }}
         </div>
 
         <!-- ToDoピックアップ注文受付を再開する場合は以下確認メッセージを表示-->
-        <div class="font-bold text-black text-opacity-60"
-             v-else
-             >
+        <div class="font-bold text-black text-opacity-60" v-else>
           {{ $t("mobileOrder.admin.restorePickupConfirm") }}
         </div>
 
         <div class="mt-10 flex items-center justify-center space-x-4">
           <!-- ToDoキャンセルボタンでダイアログを閉じる-->
           <div
-            class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black bg-opacity-5 cursor-pointer"
+            class="inline-flex h-12 w-32 cursor-pointer items-center justify-center rounded-full bg-black bg-opacity-5"
             @click="toggleMoSuspendOnModal"
-            >
+          >
             <span class="text-base font-bold text-black text-opacity-60">
               {{ $t("mobileOrder.admin.cancel") }}
             </span>
           </div>
           <!-- ToDo再開ボタンで休止する-->
           <div
-            class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-op-teal shadow cursor-pointer"
+            class="inline-flex h-12 w-32 cursor-pointer items-center justify-center rounded-full bg-op-teal shadow"
             @click="resetSuspend"
-            >
+          >
             <span class="text-base font-bold text-white">
               {{ $t("mobileOrder.admin.Restore") }}
             </span>
@@ -164,7 +155,7 @@ export default defineComponent({
     const resetSuspend = () => {
       ctx.emit("resetSuspend");
       toggleMoSuspendOnModal();
-    }
+    };
     const updateSuspend = () => {
       if (Number(suspendSelect.value) === 1) {
         ctx.emit("setAllOrderSuspend");

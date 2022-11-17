@@ -1,13 +1,13 @@
 <template>
-<div>
-  <MoSuspend
-    :isSuspendAllOrder="shopInfo.isSuspendAllOrder"
-    :isSuspendPickup="shopInfo.isSuspendPickup"
-    @resetSuspend="resetSuspend"
-    @setAllOrderSuspend="setAllOrderSuspend"
-    @setPickupSuspend="setPickupSuspend"
+  <div>
+    <MoSuspend
+      :isSuspendAllOrder="shopInfo.isSuspendAllOrder"
+      :isSuspendPickup="shopInfo.isSuspendPickup"
+      @resetSuspend="resetSuspend"
+      @setAllOrderSuspend="setAllOrderSuspend"
+      @setPickupSuspend="setPickupSuspend"
     />
-</div>
+  </div>
 </template>
 
 <script>
@@ -18,8 +18,8 @@ import { doc, updateDoc } from "firebase/firestore";
 import MoSuspend from "./MoSuspend.vue";
 
 export default defineComponent({
-  components:{
-    MoSuspend
+  components: {
+    MoSuspend,
   },
   props: {
     shopInfo: {
@@ -29,26 +29,21 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const resetSuspend = () => {
-      updateDoc(
-        doc(db, `restaurants/${ctx.root.restaurantId()}`),
-        {
-          isSuspendAllOrder: false,
-          isSuspendPickup: false,
-        }
-      );
-    }
+      updateDoc(doc(db, `restaurants/${ctx.root.restaurantId()}`), {
+        isSuspendAllOrder: false,
+        isSuspendPickup: false,
+      });
+    };
     const setAllOrderSuspend = () => {
-      updateDoc(
-        doc(db, `restaurants/${ctx.root.restaurantId()}`),
-        {isSuspendAllOrder: true}
-      );
-    }
+      updateDoc(doc(db, `restaurants/${ctx.root.restaurantId()}`), {
+        isSuspendAllOrder: true,
+      });
+    };
     const setPickupSuspend = () => {
-      updateDoc(
-        doc(db, `restaurants/${ctx.root.restaurantId()}`),
-        {isSuspendPickup: true}
-      );
-    }
+      updateDoc(doc(db, `restaurants/${ctx.root.restaurantId()}`), {
+        isSuspendPickup: true,
+      });
+    };
 
     return {
       resetSuspend,
