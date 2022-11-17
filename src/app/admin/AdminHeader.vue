@@ -58,7 +58,7 @@
       </template>
       <template v-else>
         <!-- for mo suspend -->
-        <AdminHeaderSuspend />
+        <AdminHeaderSuspend :shopInfo="shopInfo" />
       </template>
       <!-- Notifications -->
       <div class="ml-2">
