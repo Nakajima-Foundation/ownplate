@@ -1,18 +1,18 @@
 <template>
-<div>
-  <router-view
-    v-if="shopInfo.restaurantId"
-    :shopInfo="shopInfo"
-    :paymentInfo="paymentInfo"
-    :deliveryData="deliveryData"
-    :mode="mode"
-    :moPrefix="moPrefix"
-    :moSuspend="moSuspend"
-    :notFound="notFound"
-    :groupData="groupData"
-  />
-  <NotFound v-else-if="notFound" />
-</div>
+  <div>
+    <router-view
+      v-if="shopInfo.restaurantId"
+      :shopInfo="shopInfo"
+      :paymentInfo="paymentInfo"
+      :deliveryData="deliveryData"
+      :mode="mode"
+      :moPrefix="moPrefix"
+      :moSuspend="moSuspend"
+      :notFound="notFound"
+      :groupData="groupData"
+    />
+    <NotFound v-else-if="notFound" />
+  </div>
 </template>
 
 <script>
@@ -96,12 +96,16 @@ export default defineComponent({
     );
 
     const moSuspend = computed(() => {
-      return !!(shopInfo.value?.isSuspendAllOrder || props.groupData?.isSuspendAllOrder);
+      return !!(
+        shopInfo.value?.isSuspendAllOrder || props.groupData?.isSuspendAllOrder
+      );
     });
     const moPickupSuspend = computed(() => {
-      return !!(shopInfo.value?.isSuspendPickup || props.groupData?.isSuspendPickup);
+      return !!(
+        shopInfo.value?.isSuspendPickup || props.groupData?.isSuspendPickup
+      );
     });
-    
+
     onUnmounted(() => {
       if (restaurant_detacher) {
         restaurant_detacher();

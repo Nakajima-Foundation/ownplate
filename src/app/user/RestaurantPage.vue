@@ -281,6 +281,7 @@
         :isDelivery="isDelivery"
         :totalPrice="totalPrice"
         :disabledPickupTime="disabledPickupTime"
+        :moSuspend="moSuspend"
       />
     </template>
     <!-- Image Popup-->
