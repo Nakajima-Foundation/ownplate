@@ -11,14 +11,14 @@
         {{ $t("admin.order.notification") }}
       </div>
 
-      <div class="mr-2 font-bold text-red-700">{{ orderCounter }}</div>
+      <div class="mr-1 font-bold text-red-700">{{ orderCounter }}</div>
 
       <div
         v-if="notificationData.soundOn"
         class="mt-1 inline-flex items-center justify-center space-x-1"
       >
         <div>
-          <i class="material-icons text-lg text-green-600">volume_up</i>
+          <i class="material-icons -mr-1 text-lg text-green-600">volume_up</i>
         </div>
         <div>
           <div v-if="notificationData.infinityNotification">
