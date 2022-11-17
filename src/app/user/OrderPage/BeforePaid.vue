@@ -2,10 +2,7 @@
   <div>
     <!-- Back Button (Edit Order) -->
     <div class="mx-6 mt-6">
-      <o-button
-        @click="handleOpenMenu"
-        class="b-reset-tw"
-      >
+      <o-button @click="handleOpenMenu" class="b-reset-tw">
         <div
           class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
         >
@@ -225,7 +222,7 @@
                   <div
                     class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal px-6 shadow"
                     style="min-width: 288px"
-                    >
+                  >
                     <ButtonLoading v-if="isPaying" />
                     <div class="text-xl font-bold text-white">
                       {{
@@ -364,7 +361,7 @@ import BeforePaidAlert from "@/app/user/OrderPage/BeforePaid/BeforePaidAlert.vue
 import SpecifiedCommercialTransactions from "@/app/user/OrderPage/BeforePaid/SpecifiedCommercialTransactions.vue";
 import OrderPageMap from "@/app/user/OrderPage/BeforePaid/Map.vue";
 
-import ButtonLoading from "@/components/Button/Loading.vue"
+import ButtonLoading from "@/components/Button/Loading.vue";
 
 import { db, firestore } from "@/plugins/firebase";
 import { orderPlace } from "@/lib/firebase/functions";

@@ -19,7 +19,7 @@ import { getAuth } from "firebase/auth";
 import { getFunctions } from "firebase/functions";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
-import { FirestoreSettings, initializeFirestore } from 'firebase/firestore';
+import { FirestoreSettings, initializeFirestore } from "firebase/firestore";
 
 // export const db = getFirestore();
 const theSettings: FirestoreSettings = {

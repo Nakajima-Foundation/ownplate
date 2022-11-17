@@ -106,13 +106,13 @@ export const array2obj = <T>(array: T[]) => {
 };
 
 export const num2simpleTime = (num: number) => {
-  return  [
+  return [
     String(Math.floor(num / 60)).padStart(2, "0"),
     String(num % 60).padStart(2, "0"),
   ].join("");
 };
 export const num2simpleFormatedTime = (num: number) => {
-  return  [
+  return [
     String(Math.floor(num / 60)).padStart(2, "0"),
     ":",
     String(num % 60).padStart(2, "0"),
@@ -132,7 +132,7 @@ export const num2time = (num: number, root: any) => {
   if (num >= 60 * offsetTime) {
     num = num - 60 * 12;
   }
-  const formatedTime = num2simpleFormatedTime(num)
+  const formatedTime = num2simpleFormatedTime(num);
 
   if (isPm) {
     return root.$tc("shopInfo.pm", 1, { formatedTime });
@@ -760,4 +760,3 @@ export const orderTypeKey = (order: OrderInfoData, isInMo: boolean) => {
 };
 
 export const isDev = firebaseConfig.projectId === "ownplate-dev";
-

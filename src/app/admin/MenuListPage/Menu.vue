@@ -65,35 +65,63 @@
 
         <div v-if="isInMo" class="mx-2 pb-2">
           <div class="rounded bg-green-600 bg-opacity-5 p-2 text-xs">
-            <span :class="preOrderAvaiable['isPublic'] ? 'text-green-600 font-bold' : 'text-gray-500 text-opacity-60' ">
-              <o-checkbox v-model="preOrderAvaiable['isPublic']"
-                          @input="updatePreOrder"
-                          >
+            <span
+              :class="
+                preOrderAvaiable['isPublic']
+                  ? 'font-bold text-green-600'
+                  : 'text-gray-500 text-opacity-60'
+              "
+            >
+              <o-checkbox
+                v-model="preOrderAvaiable['isPublic']"
+                @input="updatePreOrder"
+              >
                 {{ $t("mobileOrder.admin.takeout") }}
               </o-checkbox>
-            </span> / 
-            <span :class="pickupAvaiable['isPublic'] ? 'text-green-600 font-bold' : 'text-gray-500 text-opacity-60' ">
-              <o-checkbox v-model="pickupAvaiable['isPublic']"
-                          @input="updatePickup"
-                          >
+            </span>
+            /
+            <span
+              :class="
+                pickupAvaiable['isPublic']
+                  ? 'font-bold text-green-600'
+                  : 'text-gray-500 text-opacity-60'
+              "
+            >
+              <o-checkbox
+                v-model="pickupAvaiable['isPublic']"
+                @input="updatePickup"
+              >
                 {{ $t("mobileOrder.admin.pickup") }}
               </o-checkbox>
             </span>
-            (<span :class="pickupStockData['forcePickupStock'] ? 'text-green-600 font-bold' : 'text-gray-500 text-opacity-60' ">
+            (<span
+              :class="
+                pickupStockData['forcePickupStock']
+                  ? 'font-bold text-green-600'
+                  : 'text-gray-500 text-opacity-60'
+              "
+            >
               {{ $t("mobileOrder.admin.forcePickupStock") }}
-            </span> :
-            <span :class="pickupStockData['isStock'] ? 'text-green-600 font-bold' : 'text-gray-500 text-opacity-60' ">
-              <o-checkbox v-model="pickupStockData['isStock']"
-                          @input="updatePickupStock"
-                          :disabled="pickupStockData['forcePickupStock']"
-                          >
+            </span>
+            :
+            <span
+              :class="
+                pickupStockData['isStock']
+                  ? 'font-bold text-green-600'
+                  : 'text-gray-500 text-opacity-60'
+              "
+            >
+              <o-checkbox
+                v-model="pickupStockData['isStock']"
+                @input="updatePickupStock"
+                :disabled="pickupStockData['forcePickupStock']"
+              >
                 {{ $t("mobileOrder.admin.pickupStock") }}
-              </o-checkbox>
-            </span>)
-          </div> 
+              </o-checkbox> </span
+            >)
+          </div>
         </div>
-            
-        
+
         <!-- Owner Memo -->
         <div v-if="menuitem.itemMemo" class="mx-2 pb-2">
           <div class="rounded bg-black bg-opacity-5 p-2 text-xs">
@@ -274,7 +302,7 @@ export default defineComponent({
         props.subCategoryId
       }`;
       const data = (await db.doc(path).get()).data();
-      data.data[props.menuitem.id].isPublic = props.pickupAvaiable['isPublic'];
+      data.data[props.menuitem.id].isPublic = props.pickupAvaiable["isPublic"];
       await db.doc(path).set(data);
     };
     const updatePreOrder = async () => {
@@ -282,19 +310,19 @@ export default defineComponent({
         props.subCategoryId
       }`;
       const data = (await db.doc(path).get()).data();
-      data.data[props.menuitem.id].isPublic = props.preOrderAvaiable['isPublic'];
+      data.data[props.menuitem.id].isPublic =
+        props.preOrderAvaiable["isPublic"];
       await db.doc(path).set(data);
-
     };
     const updatePickupStock = async () => {
       const path = `restaurants/${ctx.root.restaurantId()}/pickup/stock/subCategory/${
         props.subCategoryId
       }`;
       const data = (await db.doc(path).get()).data();
-      data.data[props.menuitem.id].isStock = props.pickupStockData['isStock'];
+      data.data[props.menuitem.id].isStock = props.pickupStockData["isStock"];
       await db.doc(path).set(data);
     };
-    
+
     return {
       isOwner,
 

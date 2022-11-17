@@ -234,9 +234,9 @@
                           :prices="prices[item.id] || []"
                           :mode="mode"
                           :isPickup="isPickup"
-                          :moSoldOutData="(moSoldOutDataSet[item.id] || {})"
+                          :moSoldOutData="moSoldOutDataSet[item.id] || {}"
                           @didOrderdChange="didOrderdChange($event)"
-                          ></MenuMo>
+                        ></MenuMo>
                       </div>
                     </template>
                   </div>
@@ -514,20 +514,22 @@ export default defineComponent({
     const forceDisabledPickupTime = computed(() => {
       return false;
     });
-    
+
     const disabledPickupTime = computed(() => {
       if (isPickup.value) {
         if (forceDisabledPickupTime.value) {
           return true;
         }
-        const now = Number(moment(store.state.date).tz("Asia/Tokyo").format("HHmm"));
+        const now = Number(
+          moment(store.state.date).tz("Asia/Tokyo").format("HHmm")
+        );
         const last = Number(availableDays.value[0]?.lastOrder?.timeStr || 0);
         return now >= last;
       }
       return false;
     });
     const lastOrder = computed(() => {
-      return availableDays.value[0]?.lastOrder?.display || ""
+      return availableDays.value[0]?.lastOrder?.display || "";
     });
 
     const coverImage = computed(() => {
@@ -644,13 +646,15 @@ export default defineComponent({
       if (isInMo.value) {
         if (isPickup.value) {
           return menus.value.sort((a, b) => {
-            const aSoldOutData = moSoldOutDataSet.value[a.id] || {}
-            const aIsStock = !a.soldOut && (!!aSoldOutData.forcePickupStock || !!aSoldOutData.isStock);
+            const aSoldOutData = moSoldOutDataSet.value[a.id] || {};
+            const aIsStock =
+              !a.soldOut &&
+              (!!aSoldOutData.forcePickupStock || !!aSoldOutData.isStock);
 
             // const bSoldOutData = moSoldOutDataSet.value[b.id] || {}
             // const bIsStock = !b.soldOut && (!!bSoldOutData.forcePickupStock || !!bSoldOutData.isStock);
             return aIsStock ? -1 : 1;
-          });;
+          });
         }
         return menus.value;
       } else {
@@ -904,7 +908,6 @@ export default defineComponent({
         document.body.style.position = "";
       }
     });
-
 
     const filteredTitleLists = computed(() => {
       const menuLists = props.shopInfo.menuLists || [];

@@ -392,16 +392,19 @@ export const loadStockData = (db: any, shopInfo: any) => {
       });
       preOrderPublics.value = tmp;
     });
-    
+
     const pathStock = `/restaurants/${restaurantId}/pickup/stock/subCategory`;
-    const pickupStockDetacher = onSnapshot(collection(db, pathStock), (ret: any) => {
-      const tmp: { [key: string]: any } = {};
-      ret.docs.map((a: any) => {
-        tmp[a.id] = a.data().data;
-      });
-      pickupStocks.value = tmp;
-    });
-    
+    const pickupStockDetacher = onSnapshot(
+      collection(db, pathStock),
+      (ret: any) => {
+        const tmp: { [key: string]: any } = {};
+        ret.docs.map((a: any) => {
+          tmp[a.id] = a.data().data;
+        });
+        pickupStocks.value = tmp;
+      }
+    );
+
     const pathData = `/restaurants/${restaurantId}/pickup/data/subCategory`;
     const pickupDetacher = onSnapshot(collection(db, pathData), (ret: any) => {
       const tmp: { [key: string]: any } = {};
@@ -410,14 +413,14 @@ export const loadStockData = (db: any, shopInfo: any) => {
       });
       pickupPublics.value = tmp;
     });
-    
+
     onUnmounted(() => {
       preOrderDetacher();
       pickupStockDetacher();
       pickupDetacher();
     });
   }
-  
+
   return {
     preOrderPublics,
     pickupPublics,

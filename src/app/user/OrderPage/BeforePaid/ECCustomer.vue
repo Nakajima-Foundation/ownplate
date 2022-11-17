@@ -83,9 +83,7 @@
       <span class="text-red-700">*{{ $t("order.ec.addressNotice") }}</span>
     </div>
     <div>
-      <o-field
-        :variant="ecErrors['address'].length > 0 ? 'danger' : 'success'"
-      >
+      <o-field :variant="ecErrors['address'].length > 0 ? 'danger' : 'success'">
         <o-input
           class="w-full"
           type="text"
@@ -132,9 +130,7 @@
         <span class="text-red-700">*</span>
       </div>
       <div>
-        <o-field
-          :variant="ecErrors['email'].length > 0 ? 'danger' : 'success'"
-        >
+        <o-field :variant="ecErrors['email'].length > 0 ? 'danger' : 'success'">
           <o-input
             class="w-full"
             type="text"

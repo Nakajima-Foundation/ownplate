@@ -35,9 +35,9 @@ export interface RestaurantInfoData {
   isEC: boolean; // set by system
   enableDelivery: boolean;
   enableMoPickup: boolean; // set by sys
-  groupId: string; // set by sys 
+  groupId: string; // set by sys
   supportLiff: boolean;
-  
+
   countryCode: string;
   acceptUserMessage: boolean;
   foodTax: number;

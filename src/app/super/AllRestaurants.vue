@@ -72,7 +72,6 @@
         <td>
           <DownloadMenu :restaurantid="restaurant.id" />
         </td>
-     
       </tr>
     </table>
     <hr />
@@ -127,7 +126,7 @@ export default {
   components: {
     BackButton,
     DownloadCsv,
-//    DownloadMenu,
+    //    DownloadMenu,
   },
   data() {
     return {

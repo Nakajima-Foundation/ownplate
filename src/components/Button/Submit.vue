@@ -1,12 +1,8 @@
 <template>
-  <o-button
-    @click="handleSubmit"
-    :disabled="disabled"
-    class="b-reset-tw"
-    >
+  <o-button @click="handleSubmit" :disabled="disabled" class="b-reset-tw">
     <div
       class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-op-teal shadow"
-      >
+    >
       <ButtonLoading v-if="isLoading" />
       <div class="text-base font-bold text-white">
         <slot />
@@ -16,10 +12,8 @@
 </template>
 
 <script>
-import {
-  defineComponent,
-} from "@vue/composition-api";
-import ButtonLoading from "@/components/Button/Loading.vue"
+import { defineComponent } from "@vue/composition-api";
+import ButtonLoading from "@/components/Button/Loading.vue";
 
 export default defineComponent({
   components: {
@@ -39,11 +33,10 @@ export default defineComponent({
   setup(props, ctx) {
     const handleSubmit = () => {
       ctx.emit("submit");
-    }
-    return {
-      handleSubmit
     };
-  }
+    return {
+      handleSubmit,
+    };
+  },
 });
-
 </script>

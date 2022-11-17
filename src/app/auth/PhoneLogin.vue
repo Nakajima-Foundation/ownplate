@@ -65,20 +65,17 @@
       </div>
       <!-- Submit Buttons -->
       <div class="mt-4 text-center">
-        <ButtonCancel
-          id="signInButton"
-          @cancel="$emit('dismissed', false)"
-        >
+        <ButtonCancel id="signInButton" @cancel="$emit('dismissed', false)">
           {{ $t("button.cancel") }}
         </ButtonCancel>
 
-        <ButtonSubmit 
+        <ButtonSubmit
           id="button-send-tel"
           @submit="handleSubmit"
           :disabled="!readyToSendSMS"
           class="ml-4"
           :isLoading="isLoading"
-          >
+        >
           {{ $t("sms.send") }}
         </ButtonSubmit>
       </div>
@@ -137,20 +134,17 @@
 
       <!-- Submit Buttons -->
       <div class="mt-4 text-center">
-        <ButtonCancel
-          @cancel="$emit('dismissed', false)"
-        >
+        <ButtonCancel @cancel="$emit('dismissed', false)">
           {{ $t("button.cancel") }}
         </ButtonCancel>
 
-
-        <ButtonSubmit 
+        <ButtonSubmit
           id="button-send-code"
           @submit="handleCode"
           :disabled="!readyToSendVerificationCode"
           class="ml-4"
           :isLoading="isLoading"
-          >
+        >
           {{ $t("sms.sendVerificationCode") }}
         </ButtonSubmit>
       </div>
@@ -188,8 +182,8 @@ import moment from "moment";
 import * as Sentry from "@sentry/vue";
 
 import TermsAndPolicy from "@/app/auth/TermsAndPolicy.vue";
-import ButtonSubmit from "@/components/Button/Submit.vue"
-import ButtonCancel from "@/components/Button/Cancel.vue"
+import ButtonSubmit from "@/components/Button/Submit.vue";
+import ButtonCancel from "@/components/Button/Cancel.vue";
 
 export default defineComponent({
   components: {

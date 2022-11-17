@@ -32,10 +32,14 @@
       :full-page="true"
       :active="true"
       :can-cancel="false"
-      >
-      <o-icon pack="fas" icon="circle-notch" customSize="fa-4x" spin
-              class="opacity-30"
-              ></o-icon>
+    >
+      <o-icon
+        pack="fas"
+        icon="circle-notch"
+        customSize="fa-4x"
+        spin
+        class="opacity-30"
+      ></o-icon>
     </o-loading>
 
     <Footer />

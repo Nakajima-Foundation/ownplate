@@ -8,7 +8,6 @@
 import { defineComponent, ref, computed } from "@vue/composition-api";
 import { data2csv } from "@/utils/csv";
 
-
 export default defineComponent({
   props: {
     fileName: {
@@ -34,9 +33,8 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
-
     const content = computed(() => {
-      return data2csv(props, ctx)
+      return data2csv(props, ctx);
     });
 
     const handleDownload = () => {

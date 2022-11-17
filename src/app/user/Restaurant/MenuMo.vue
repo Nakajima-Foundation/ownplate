@@ -250,7 +250,10 @@ export default defineComponent({
       if (isInMo.value && !props.isPickup) {
         return false;
       }
-      const moPickupStock = !props.isPickup || !!props.moSoldOutData.forcePickupStock || !!props.moSoldOutData.isStock
+      const moPickupStock =
+        !props.isPickup ||
+        !!props.moSoldOutData.forcePickupStock ||
+        !!props.moSoldOutData.isStock;
       return !!props.item.soldOut || !moPickupStock;
     });
     const totalQuantity = computed(() => {

@@ -199,9 +199,7 @@
             <div>
               <o-field
                 :variant="
-                  errors['itemDescription'].length > 0
-                    ? 'danger'
-                    : 'success'
+                  errors['itemDescription'].length > 0 ? 'danger' : 'success'
                 "
               >
                 <o-input

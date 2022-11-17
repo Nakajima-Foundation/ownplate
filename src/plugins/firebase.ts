@@ -10,6 +10,6 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 const _db = firebase.firestore();
-_db.settings({ experimentalForceLongPolling: true })
+_db.settings({ experimentalForceLongPolling: true });
 export const db = _db;
 export const firestore = firebase.firestore;

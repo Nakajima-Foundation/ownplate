@@ -12,7 +12,6 @@
             <back-button url="/admin/restaurants/" />
           </div>
         </div>
-
       </div>
 
       <!-- Date -->
@@ -23,37 +22,30 @@
             v-model="formValue.date1"
             type="date"
             placeholder="年月日"
-            class="w-3/8 rounded-md border-0 bg-warmgray-900 bg-opacity-5 focus:ring-2 focus:ring-rose-600 focus:ring-opacity-20"
-            />
-        〜
+            class="w-3/8 bg-warmgray-900 rounded-md border-0 bg-opacity-5 focus:ring-2 focus:ring-rose-600 focus:ring-opacity-20"
+          />
+          〜
           <o-input
             v-model="formValue.date2"
             type="date"
             placeholder="年月日"
-            class="w-3/8 rounded-md border-0 bg-warmgray-900 bg-opacity-5 focus:ring-2 focus:ring-rose-600 focus:ring-opacity-20"
-            />
+            class="w-3/8 bg-warmgray-900 rounded-md border-0 bg-opacity-5 focus:ring-2 focus:ring-rose-600 focus:ring-opacity-20"
+          />
         </div>
 
         <div class="mt-4 flex">
           <o-select v-model="formValue.queryKey">
-            <option
-              v-for="status in queryKeys"
-              :value="status"
-              :key="status"
-              >
-            {{ $t("mobileOrder.reportKeys." + status) }}
+            <option v-for="status in queryKeys" :value="status" :key="status">
+              {{ $t("mobileOrder.reportKeys." + status) }}
             </option>
           </o-select>
-        
-          <o-button @click="load" class=" ml-4">
-            <div>
-              load
-            </div>
+
+          <o-button @click="load" class="ml-4">
+            <div>load</div>
           </o-button>
         </div>
       </div>
 
-      
       <!-- Table -->
       <div class="mx-6 mt-6">
         <table class="w-full rounded-lg bg-white shadow">
@@ -116,10 +108,8 @@
             </td>
             <td class="p-2">
               <div class="text-right">
-                {{
-                nameOfOrder(order)
-                }}
-                </div>
+                {{ nameOfOrder(order) }}
+              </div>
             </td>
           </tr>
 
@@ -256,10 +246,7 @@ export default defineComponent({
   },
   metaInfo() {
     return {
-      title: [
-        "Admin Report",
-        this.defaultTitle,
-      ].join(" / ")
+      title: ["Admin Report", this.defaultTitle].join(" / "),
     };
   },
   setup(props, ctx) {
@@ -269,9 +256,9 @@ export default defineComponent({
     const formValue = reactive({
       date1: moment().subtract(10, "days").format("YYYY-MM-DD"),
       date2: moment().format("YYYY-MM-DD"),
-      queryKey: "orderPlacedAt", 
+      queryKey: "orderPlacedAt",
     });
-    
+
     const total = ref({
       food: {
         revenue: 0,
@@ -301,7 +288,7 @@ export default defineComponent({
 
     const fieldNames = computed(() => {
       return fields.value.map((field) => {
-        if (props.isInMo && field === 'restaurantName') {
+        if (props.isInMo && field === "restaurantName") {
           return ctx.root.$t("order.storeName");
         }
         return ctx.root.$t(`order.${field}`);
@@ -320,7 +307,9 @@ export default defineComponent({
     const tableData = computed(() => {
       return orders.value.map((order) => {
         const shopInfo = restaurants.value[order.restaurantId] || {};
-        const date = order[formValue.queryKey]?.toDate ? order[formValue.queryKey]?.toDate() : order[formValue.queryKey];
+        const date = order[formValue.queryKey]?.toDate
+          ? order[formValue.queryKey]?.toDate()
+          : order[formValue.queryKey];
         return {
           date: moment(date).format("YYYY/MM/DD"),
           restaurantId: order.restaurantId, // mo
@@ -372,16 +361,17 @@ export default defineComponent({
       ].join("-");
     });
 
-    
     db.collection("restaurants")
       .where("uid", "==", ownerUid.value)
-      .where("deletedFlag", "==", false).get().then((collect) => {
+      .where("deletedFlag", "==", false)
+      .get()
+      .then((collect) => {
         restaurants.value = collect.docs.reduce((tmp, rest) => {
           tmp[rest.id] = rest.data();
           return tmp;
         }, {});
-      })
-    
+      });
+
     const queryKeys = [
       "orderPlacedAt",
       "orderAcceptedAt",
@@ -389,48 +379,38 @@ export default defineComponent({
       "transactionCompletedAt",
     ];
     // 注文、受付、準備完了、受け渡し完了
-    // "orderPlacedAt", 注文時刻	  1 
-    // "orderAcceptedAt", 注文受付時刻 2  
+    // "orderPlacedAt", 注文時刻	  1
+    // "orderAcceptedAt", 注文受付時刻 2
     // "timeConfirmed", 	準備完了時刻 3
     // "transactionCompletedAt", 	受渡完了時刻 4
     // const key = "timeConfirmed";
-          
+
     const key = "orderPlacedAt";
 
     const momentMin = computed(() => {
-      const min = formValue.date1 > formValue.date2 ? formValue.date2 : formValue.date1
-      return moment(min + "T00:00:00+09:00").tz(
-        "Asia/Tokyo"
-      );
+      const min =
+        formValue.date1 > formValue.date2 ? formValue.date2 : formValue.date1;
+      return moment(min + "T00:00:00+09:00").tz("Asia/Tokyo");
     });
     const momentMax = computed(() => {
-      const max = formValue.date1 > formValue.date2 ? formValue.date1 : formValue.date2
-      return moment(max + "T23:59:50+09:00").tz(
-        "Asia/Tokyo"
-      );
+      const max =
+        formValue.date1 > formValue.date2 ? formValue.date1 : formValue.date2;
+      return moment(max + "T23:59:50+09:00").tz("Asia/Tokyo");
     });
 
     const updateQuery = async () => {
       const key = formValue.queryKey;
       const query = db
-          .collectionGroup('orders')
-          .where("ownerUid", "==", uid.value)
-          .where(
-            key,
-            ">=",
-            momentMin.value.toDate(),
-          )
-          .where(
-            key,
-            "<",
-            momentMax.value.toDate(),
-          )
+        .collectionGroup("orders")
+        .where("ownerUid", "==", uid.value)
+        .where(key, ">=", momentMin.value.toDate())
+        .where(key, "<", momentMax.value.toDate());
 
       const snapshot = await query.orderBy(key).get();
       const serviceTaxRate = 0.1;
 
       orders.value = snapshot.docs
-        .map(order => {
+        .map((order) => {
           const restaurantId = order.ref.parent.parent.id;
           const data = doc2data("order")(order);
           const date = data[formValue.queryKey]?.toDate();
@@ -438,10 +418,10 @@ export default defineComponent({
             ...data,
             restaurantId,
             date,
-          }
+          };
         })
         .map((order) => {
-          return order2ReportData(order, serviceTaxRate, props.isInMo)
+          return order2ReportData(order, serviceTaxRate, props.isInMo);
         });
       total.value = orders.value.reduce(
         (total, order) => {

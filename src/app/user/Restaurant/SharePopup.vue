@@ -39,10 +39,10 @@
               </div>
             </span>
             <div>
-              <span class=" font-bold text-red-700 text-sm" v-if="copied">
+              <span class="text-sm font-bold text-red-700" v-if="copied">
                 {{ $t("shopInfo.UrlCopied") }}
               </span>
-              <span class=" font-bold text-red-700 text-sm" v-if="copyError">
+              <span class="text-sm font-bold text-red-700" v-if="copyError">
                 {{ $t("shopInfo.UrlCopyFailed") }}
               </span>
             </div>
@@ -109,7 +109,7 @@ export default defineComponent({
     const url = shareUrl(ctx.root, basePath.value) + (props.suffix || "");
     const copied = ref(false);
     const copyError = ref(false);
-    
+
     const openShare = () => {
       sharePopup.value = true;
     };

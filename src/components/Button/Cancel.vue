@@ -1,12 +1,8 @@
 <template>
-  <o-button
-    @click="handleCancel"
-    :disabled="disabled"
-    class="b-reset-tw"
-    >
+  <o-button @click="handleCancel" :disabled="disabled" class="b-reset-tw">
     <div
       class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black bg-opacity-5"
-      >
+    >
       <div class="text-base font-bold">
         <slot />
       </div>
@@ -15,9 +11,7 @@
 </template>
 
 <script>
-import {
-  defineComponent,
-} from "@vue/composition-api";
+import { defineComponent } from "@vue/composition-api";
 
 export default defineComponent({
   props: {
@@ -30,11 +24,10 @@ export default defineComponent({
   setup(props, ctx) {
     const handleCancel = () => {
       ctx.emit("cancel");
-    }
-    return {
-      handleCancel
     };
-  }
+    return {
+      handleCancel,
+    };
+  },
 });
-
 </script>

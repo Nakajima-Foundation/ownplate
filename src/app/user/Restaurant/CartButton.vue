@@ -14,7 +14,7 @@
     <div
       class="inline-flex w-72 items-center justify-center rounded-full bg-op-teal shadow-lg"
       :class="shopInfo.enableDelivery ? 'pt-2 pb-2' : 'h-20'"
-      >
+    >
       <ButtonLoading v-if="isCheckingOut" />
       <template v-if="noPaymentMethod">
         <div class="text-base font-bold text-white">
@@ -137,7 +137,7 @@ import { defineComponent, computed, ref, watch } from "@vue/composition-api";
 import { arraySum, useIsInMo } from "@/utils/utils";
 
 import Price from "@/components/Price.vue";
-import ButtonLoading from "@/components/Button/Loading.vue"
+import ButtonLoading from "@/components/Button/Loading.vue";
 
 export default defineComponent({
   components: {

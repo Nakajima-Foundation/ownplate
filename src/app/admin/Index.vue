@@ -73,10 +73,7 @@
               </div>
 
               <div class="mt-4 text-center">
-                <o-button
-                  @click="handleNew"
-                  class="b-reset-tw"
-                >
+                <o-button @click="handleNew" class="b-reset-tw">
                   <div
                     class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
                   >
@@ -120,17 +117,18 @@
                   class="rounded-lg bg-black bg-opacity-5 px-4 py-3 text-center"
                 >
                   <span class="text-sm font-bold">{{
-                    $t(
-                    "mobileOrder.viewAllReport"
-                    )
+                    $t("mobileOrder.viewAllReport")
                   }}</span>
                 </div>
               </router-link>
             </div>
             <div v-if="isOwner && isInMo" class="mb-2">
-              <ExportProd :restaurantLists="restaurantLists" :restaurantItems="restaurantItems" />
+              <ExportProd
+                :restaurantLists="restaurantLists"
+                :restaurantItems="restaurantItems"
+              />
             </div>
-            
+
             <div class="grid grid-cols-1 space-y-2">
               <div
                 v-for="(restaurantId, index) in restaurantLists"
@@ -169,10 +167,7 @@
 
             <!-- Add Restaurant -->
             <div v-if="existsRestaurant && isOwner" class="mt-4 text-center">
-              <o-button
-                @click="handleNew"
-                class="b-reset-tw"
-              >
+              <o-button @click="handleNew" class="b-reset-tw">
                 <div
                   class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
                 >
