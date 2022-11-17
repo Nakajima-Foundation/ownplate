@@ -132,13 +132,11 @@
             <div v-if="isOwner && isInMo" class="mb-2">
               <div
                 class="rounded-lg bg-black bg-opacity-5 px-4 py-3 text-center"
-                >
-                <span class="text-sm font-bold">{{
-                  $t( "suspend")
-                  }}</span>
+              >
+                <span class="text-sm font-bold">{{ $t("suspend") }}</span>
               </div>
             </div>
-            
+
             <div class="grid grid-cols-1 space-y-2">
               <div
                 v-for="(restaurantId, index) in restaurantLists"
