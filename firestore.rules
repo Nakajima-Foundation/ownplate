@@ -185,6 +185,10 @@ service cloud.firestore {
           allow read: if true;
         }      
       }      
+      match /groupConfig/suspend {
+        allow read: if true;
+        allow write: if request.auth.token.groupId == groupId
+      }
     }
 
     // Rules for collection group
