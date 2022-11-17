@@ -51,7 +51,18 @@
       "pickupStock": "在庫",
       "threshold": "閾値（閾値以上: 在庫あり、閾値未満: 在庫なし）",
       "thresholdPickup": "ピックアップ",
-      "thresholdSearchStock": "在庫検索"
+      "thresholdSearchStock": "在庫検索",
+      "suspendSettings": "受付休止設定",
+      "suspending": "サービス休止中",
+      "suspendingPickup": "ピックアップ休止中",
+      "suspendConfirm": "以下の注文方法による受付を休止します。",
+      "restoreConfirm": "全ての注文の受付休止を解除してサービスを再開します。",
+      "restorePickupConfirm": "ピックアップ注文の受付休止を解除して再開します。",
+      "suspendAll": "全ての注文(予約注文、ピックアップ)",
+      "suspendPickup": "ピックアップ注文のみ",
+      "suspend": "休止",
+      "Restore": "再開",
+      "cancel": "キャンセル"
     },
     "reportKeys": {
       "orderPlacedAt": "注文時刻",
