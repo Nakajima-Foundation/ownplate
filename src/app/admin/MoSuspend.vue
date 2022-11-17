@@ -5,7 +5,11 @@
       v-if="isSuspendAllOrder || isSuspendPickup"
       @click="toggleMoSuspendOnModal"
     >
-      <MoSuspendButton :positive="false" :class="isSuspendPickup ? 'pr-3' : ''">
+      <MoSuspendButton
+        v-if="!isAllShop"
+        :positive="false"
+        :class="isSuspendPickup ? 'pr-3' : ''"
+      >
         {{
           $t(
             isSuspendAllOrder
@@ -14,11 +18,29 @@
           )
         }}
       </MoSuspendButton>
+      <div
+        v-else
+        class="rounded-lg bg-black bg-opacity-5 px-4 py-3 text-center"
+      >
+        {{
+          $t(
+            isSuspendAllOrder
+              ? "mobileOrder.admin.suspending"
+              : "mobileOrder.admin.suspendingPickup"
+          )
+        }}
+      </div>
     </div>
     <div v-else @click="toggleMoSuspendOffModal">
-      <MoSuspendButton :positive="true">
+      <MoSuspendButton v-if="!isAllShop" :positive="true">
         {{ $t("mobileOrder.admin.suspendSettings") }}
       </MoSuspendButton>
+      <div
+        v-else
+        class="rounded-lg bg-black bg-opacity-5 px-4 py-3 text-center"
+      >
+        {{ $t("mobileOrder.admin.suspendSettings") }}
+      </div>
     </div>
 
     <o-modal :active.sync="isOpenMoSuspendOffModal" :width="488">
@@ -118,6 +140,10 @@ export default defineComponent({
       required: true,
     },
     isSuspendPickup: {
+      type: Boolean,
+      required: true,
+    },
+    isAllShop: {
       type: Boolean,
       required: true,
     },

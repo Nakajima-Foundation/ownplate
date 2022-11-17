@@ -130,11 +130,7 @@
             </div>
 
             <div v-if="isOwner && isInMo" class="mb-2">
-              <div
-                class="rounded-lg bg-black bg-opacity-5 px-4 py-3 text-center"
-              >
-                <span class="text-sm font-bold">{{ $t("suspend") }}</span>
-              </div>
+              <IndexSuspend />
             </div>
 
             <div class="grid grid-cols-1 space-y-2">
@@ -261,6 +257,7 @@ import Footer from "@/app/admin/Index/Footer.vue";
 import Partners from "@/app/admin/Index/Partners.vue";
 import SubAccount from "@/app/admin/Index/SubAccount.vue";
 import ExportProd from "@/app/admin/Index/ExportProd.vue";
+import IndexSuspend from "@/app/admin/IndexSuspend.vue";
 
 import { ping } from "@/lib/firebase/functions";
 
@@ -291,9 +288,14 @@ export default defineComponent({
     Footer,
     ToggleSwitch,
     ExportProd,
+    IndexSuspend,
   },
   props: {
     groupMasterRestaurant: {
+      type: Object,
+      required: false,
+    },
+    groupData: {
       type: Object,
       required: false,
     },

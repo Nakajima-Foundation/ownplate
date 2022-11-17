@@ -1,9 +1,9 @@
 <template>
   <div>
     <MoSuspend
-      :isSuspendAllOrder="shopInfo.isSuspendAllOrder || false"
-      :isSuspendPickup="shopInfo.isSuspendPickup || false"
-      :isAllShop="false"
+      :isSuspendAllOrder="groupData.isSuspendAllOrder || false"
+      :isSuspendPickup="groupData.isSuspendPickup || false"
+      :isAllShop="true"
       @resetSuspend="resetSuspend"
       @setAllOrderSuspend="setAllOrderSuspend"
       @setPickupSuspend="setPickupSuspend"
@@ -14,7 +14,7 @@
 <script>
 import { defineComponent, computed, ref } from "@vue/composition-api";
 import { db } from "@/lib/firebase/firebase9";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, onSnapshot, setDoc } from "firebase/firestore";
 
 import MoSuspend from "./MoSuspend.vue";
 
@@ -22,31 +22,38 @@ export default defineComponent({
   components: {
     MoSuspend,
   },
-  props: {
-    shopInfo: {
-      type: Object,
-      required: true,
-    },
-  },
   setup(props, ctx) {
+    const groupData = ref({});
+    const groupPath = computed(() => {
+      const groupId = ctx.root.$store.getters.grpupId;
+      return `groups/${groupId}/groupConfig/suspend`;
+    });
+
+    onSnapshot(doc(db, groupPath.value), (a) => {
+      groupData.value = a.data() || {};
+    });
+
     const resetSuspend = () => {
-      updateDoc(doc(db, `restaurants/${ctx.root.restaurantId()}`), {
+      setDoc(doc(db, groupPath.value), {
         isSuspendAllOrder: false,
         isSuspendPickup: false,
       });
     };
     const setAllOrderSuspend = () => {
-      updateDoc(doc(db, `restaurants/${ctx.root.restaurantId()}`), {
+      setDoc(doc(db, groupPath.value), {
         isSuspendAllOrder: true,
+        isSuspendPickup: false,
       });
     };
     const setPickupSuspend = () => {
-      updateDoc(doc(db, `restaurants/${ctx.root.restaurantId()}`), {
+      setDoc(doc(db, groupPath.value), {
+        isSuspendAllOrder: false,
         isSuspendPickup: true,
       });
     };
 
     return {
+      groupData,
       resetSuspend,
       setAllOrderSuspend,
       setPickupSuspend,
