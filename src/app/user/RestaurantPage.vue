@@ -440,6 +440,14 @@ export default defineComponent({
       type: Object,
       required: false,
     },
+    moSuspend: {
+      type: Boolean,
+      required: false,
+    },
+    moPickupSuspend: {
+      type: Boolean,
+      required: false,
+    },
   },
   metaInfo() {
     // TODO: add area to header
