@@ -18,14 +18,14 @@
       <div class="mx-6 mt-6 w-48">
         期間
         <div class="flex">
-          <o-input
+          <b-input
             v-model="formValue.date1"
             type="date"
             placeholder="年月日"
             class="w-3/8 bg-warmgray-900 rounded-md border-0 bg-opacity-5 focus:ring-2 focus:ring-rose-600 focus:ring-opacity-20"
           />
           〜
-          <o-input
+          <b-input
             v-model="formValue.date2"
             type="date"
             placeholder="年月日"
@@ -34,15 +34,15 @@
         </div>
 
         <div class="mt-4 flex">
-          <o-select v-model="formValue.queryKey">
+          <b-select v-model="formValue.queryKey">
             <option v-for="status in queryKeys" :value="status" :key="status">
               {{ $t("mobileOrder.reportKeys." + status) }}
             </option>
-          </o-select>
+          </b-select>
 
-          <o-button @click="load" class="ml-4">
+          <b-button @click="load" class="ml-4">
             <div>load</div>
-          </o-button>
+          </b-button>
         </div>
       </div>
 
