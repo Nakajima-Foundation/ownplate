@@ -109,7 +109,7 @@
           "order": "ASCENDING"
         },
         {
-          "fieldPath": "transactionCompletedAt",
+          "fieldPath": "orderPlacedAt",
           "order": "ASCENDING"
         }
       ]
@@ -137,8 +137,8 @@
           "order": "ASCENDING"
         },
         {
-          "fieldPath": "orderPlacedAt",
-          "order": "ASCENDING"
+          "fieldPath": "timePlaced",
+          "order": "DESCENDING"
         }
       ]
     },
@@ -151,8 +151,8 @@
           "order": "ASCENDING"
         },
         {
-          "fieldPath": "timePlaced",
-          "order": "DESCENDING"
+          "fieldPath": "transactionCompletedAt",
+          "order": "ASCENDING"
         }
       ]
     },
@@ -541,6 +541,28 @@
     {
       "collectionGroup": "public",
       "fieldPath": "stripeAccount",
+      "indexes": [
+        {
+          "order": "ASCENDING",
+          "queryScope": "COLLECTION"
+        },
+        {
+          "order": "DESCENDING",
+          "queryScope": "COLLECTION"
+        },
+        {
+          "arrayConfig": "CONTAINS",
+          "queryScope": "COLLECTION"
+        },
+        {
+          "order": "ASCENDING",
+          "queryScope": "COLLECTION_GROUP"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "restaurants",
+      "fieldPath": "groupId",
       "indexes": [
         {
           "order": "ASCENDING",
