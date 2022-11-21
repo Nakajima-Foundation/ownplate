@@ -20,15 +20,18 @@
       </MoSuspendButton>
       <div
         v-else
-        class="rounded-lg bg-black bg-opacity-5 px-4 py-3 text-center"
+        class="flex h-14 items-center justify-center rounded-full bg-red-700 bg-opacity-5 px-4 text-red-700"
       >
-        {{
-          $t(
-            isSuspendAllOrder
-              ? "mobileOrder.admin.suspending"
-              : "mobileOrder.admin.suspendingPickup"
-          )
-        }}
+        <i class="material-icons mr-2 text-lg">remove_shopping_cart</i>
+        <span class="text-sm font-bold">
+          {{
+            $t(
+              isSuspendAllOrder
+                ? "mobileOrder.admin.suspending"
+                : "mobileOrder.admin.suspendingPickup"
+            )
+          }}{{ $t("mobileOrder.admin.suspendAllStore") }}</span
+        >
       </div>
     </div>
     <div v-else @click="toggleMoSuspendOffModal">
@@ -37,9 +40,13 @@
       </MoSuspendButton>
       <div
         v-else
-        class="rounded-lg bg-black bg-opacity-5 px-4 py-3 text-center"
+        class="flex h-14 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 text-red-700"
       >
-        {{ $t("mobileOrder.admin.suspendSettings") }}
+        <i class="material-icons mr-2 text-lg">remove_shopping_cart</i>
+        <span class="text-sm font-bold">
+          {{ $t("mobileOrder.admin.suspendSettings") }}
+          {{ $t("mobileOrder.admin.suspendAllStore") }}</span
+        >
       </div>
     </div>
 
