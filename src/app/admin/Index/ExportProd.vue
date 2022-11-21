@@ -1,11 +1,12 @@
 <template>
   <div
-    class="rounded-lg bg-black bg-opacity-5 px-4 py-3 text-center"
+    class="flex h-14 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 text-op-teal"
     @click="download"
   >
-    <span class="text-sm font-bold"
-      >{{ $t("mobileOrder.downloadProductsList") }}
-    </span>
+    <i class="material-icons mr-2 text-lg">save_alt</i>
+    <div class="text-sm font-bold leading-tight">
+      {{ $t("mobileOrder.downloadProductsList") }}
+    </div>
   </div>
 </template>
 

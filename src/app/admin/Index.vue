@@ -97,9 +97,9 @@
             <div v-if="isOwner && restaurantLists.length > 1" class="mb-2">
               <router-link to="/admin/orders">
                 <div
-                  class="rounded-lg bg-black bg-opacity-5 px-4 py-3 text-center"
+                  class="flex h-14 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 text-op-teal"
                 >
-                  <span class="text-sm font-bold">{{
+                  <span class="text-base font-bold">{{
                     $t(
                       isInMo
                         ? "mobileOrder.viewAllOrders"
@@ -110,63 +110,65 @@
               </router-link>
             </div>
 
-            <!-- All Report -->
-            <div v-if="isOwner && isInMo" class="mb-2">
-              <router-link to="/admin/report">
-                <div
-                  class="rounded-lg bg-black bg-opacity-5 px-4 py-3 text-center"
-                >
-                  <span class="text-sm font-bold">{{
-                    $t("mobileOrder.viewAllReport")
-                  }}</span>
-                </div>
-              </router-link>
-            </div>
-            <div v-if="isOwner && isInMo" class="mb-2">
-              <ExportProd
-                :restaurantLists="restaurantLists"
-                :restaurantItems="restaurantItems"
-              />
+            <div class="grid grid-cols-2 space-x-2">
+              <!-- All Report -->
+              <div v-if="isOwner && isInMo" class="mb-2">
+                <router-link to="/admin/report">
+                  <div
+                    class="flex h-14 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 text-op-teal"
+                  >
+                    <i class="material-icons mr-2 text-lg">description</i>
+                    <div class="text-sm font-bold">
+                      {{ $t("mobileOrder.viewAllReport") }}
+                    </div>
+                  </div>
+                </router-link>
+              </div>
+
+              <div v-if="isOwner && isInMo" class="mb-2">
+                <ExportProd
+                  :restaurantLists="restaurantLists"
+                  :restaurantItems="restaurantItems"
+                />
+              </div>
             </div>
 
             <div v-if="isOwner && isInMo" class="mb-2">
               <IndexSuspend />
             </div>
 
-            <div class="grid grid-cols-1 space-y-2">
-              <div
-                v-for="(restaurantId, index) in restaurantLists"
-                :key="restaurantId"
-              >
-                <restaurant
-                  v-if="restaurantItems[restaurantId]"
-                  :simpleMode="simpleMode"
-                  :shopInfo="restaurantItems[restaurantId]"
-                  :restaurantid="restaurantId"
-                  :numberOfMenus="
-                    (!groupMasterRestaurant.empty
-                      ? groupMasterRestaurant
-                      : restaurantItems[restaurantId]
-                    ).numberOfMenus || 0
-                  "
-                  :numberOfOrders="numberOfOrderObj[restaurantId] || 0"
-                  :lineEnable="lines[restaurantId] || false"
-                  :shopOwner="shopOwner"
-                  :position="
-                    index == 0
-                      ? 'first'
-                      : restaurantLists.length - 1 === index
-                      ? 'last'
-                      : ''
-                  "
-                  @positionUp="positionUp($event)"
-                  @positionDown="positionDown($event)"
-                  @deleteFromRestaurantLists="deleteFromRestaurantLists($event)"
-                  :isOwner="isOwner"
-                  :moPrefix="moPrefix"
-                  :isInMo="isInMo"
-                />
-              </div>
+            <div
+              v-for="(restaurantId, index) in restaurantLists"
+              :key="restaurantId"
+            >
+              <restaurant
+                v-if="restaurantItems[restaurantId]"
+                :simpleMode="simpleMode"
+                :shopInfo="restaurantItems[restaurantId]"
+                :restaurantid="restaurantId"
+                :numberOfMenus="
+                  (!groupMasterRestaurant.empty
+                    ? groupMasterRestaurant
+                    : restaurantItems[restaurantId]
+                  ).numberOfMenus || 0
+                "
+                :numberOfOrders="numberOfOrderObj[restaurantId] || 0"
+                :lineEnable="lines[restaurantId] || false"
+                :shopOwner="shopOwner"
+                :position="
+                  index == 0
+                    ? 'first'
+                    : restaurantLists.length - 1 === index
+                    ? 'last'
+                    : ''
+                "
+                @positionUp="positionUp($event)"
+                @positionDown="positionDown($event)"
+                @deleteFromRestaurantLists="deleteFromRestaurantLists($event)"
+                :isOwner="isOwner"
+                :moPrefix="moPrefix"
+                :isInMo="isInMo"
+              />
             </div>
 
             <!-- Add Restaurant -->

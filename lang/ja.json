@@ -53,6 +53,7 @@
       "thresholdPickup": "ピックアップ",
       "thresholdSearchStock": "在庫検索",
       "suspendSettings": "受付休止設定",
+      "suspendAllStore": "（全店舗）",
       "suspending": "サービス休止中",
       "suspendingPickup": "ピックアップ休止中",
       "suspendConfirm": "以下の注文方法による受付を休止します。",
