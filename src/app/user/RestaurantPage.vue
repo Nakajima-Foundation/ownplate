@@ -119,6 +119,13 @@
             <Titles :titleLists="titleLists" v-if="titleLists.length > 0" />
 
             <div v-if="moPickup && isInMo">
+              <!-- Mo Pickup Suspend -->
+
+              <div
+                class=" rounded-lg mx-6 mt-3 mb-2 lg:mx-0 bg-red-700 bg-opacity-10 p-3 font-bold text-red-700" v-if="moPickupSuspend">
+                {{ $t("mobileOrder.suspendPickupMessage")}}
+              </div>
+              
               <!-- Mo Pickup Toggle -->
               <div class="mx-6 mt-3 mb-2 lg:mx-0">
                 <div>
