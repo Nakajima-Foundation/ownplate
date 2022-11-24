@@ -20,6 +20,7 @@
     "smallPayment2": "you cannot use \"Pay Now\".",
     "smallPayment3": "Please use \"Pay Layter\"",
     "orderPlacedAlert": "Your order is not confirmed until it is Accepted",
+    "suspendPickupMessage": "This service is currently closed for pickup orders. Please wait for a while until it resumes.",
     "storeDetails": "Store Details",
     "adminQRCode": "Confirmation QR Code",
     "name": "Online ordering service",
