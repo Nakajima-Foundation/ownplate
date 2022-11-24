@@ -7,7 +7,8 @@
         noPaymentMethod ||
         noAvailableTime ||
         cantDelivery ||
-        (isShowCart && disabledPickupTime)
+        (isShowCart && disabledPickupTime) ||
+        moSuspend
       "
       @click="handleCheckOut"
       class="b-reset-tw fixed left-1/2 bottom-3 z-10 ml-[-9rem] w-[18rem] sm:bottom-8"
@@ -20,6 +21,11 @@
         <template v-if="noPaymentMethod">
           <div class="text-base font-bold text-white">
             {{ $t("shopInfo.noPaymentMethod") }}
+          </div>
+        </template>
+        <template v-if="moSuspend">
+          <div class="text-base font-bold text-white">
+            {{ $t("mobileOrder.suspendCartButton") }}
           </div>
         </template>
 

@@ -21,6 +21,7 @@
     "smallPayment3": "「受取時に店舗でお支払い」をご利用ください。",
     "orderPlacedAlert": "※「受付済み」になるまで、ご注文は確定していません",
     "suspendPickupMessage": "現在ピックアップ注文の受付を休止しています。再開までしばらくお待ちください。",
+    "suspendCartButton": "受付休止中",
     "storeDetails": "店舗情報",
     "adminQRCode": "店舗確認用QRCode",
     "viewAllOrders": "店舗の注文をまとめて確認",
