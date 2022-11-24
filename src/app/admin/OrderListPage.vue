@@ -208,6 +208,7 @@ export default defineComponent({
         return new Date(t.getTime() + offset * 3600 * 1000);
       };
       const queryConditions = (() => {
+        /*
         if (queryIsPlacedDate.value && props.isInMo) {
           // console.log(timeConv(lastSeveralDays.value[dayIndex.value].date, -15))
           // console.log(timeConv(lastSeveralDays.value[dayIndex.value].date, 9))
@@ -224,6 +225,7 @@ export default defineComponent({
             ),
           ];
         }
+        */
         const q = [
           where(queryKey, ">=", lastSeveralDays.value[dayIndex.value].date),
         ];
