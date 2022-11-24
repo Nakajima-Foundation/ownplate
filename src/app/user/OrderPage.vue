@@ -26,6 +26,7 @@
         :groupData="groupData"
         :disabledPickupTime="disabledPickupTime"
         :lastOrder="lastOrder"
+        :moSuspend="moSuspend"
         @handleOpenMenu="handleOpenMenu"
         @openTransactionsAct="openTransactionsAct"
       />
@@ -132,6 +133,10 @@ export default defineComponent({
     },
     groupData: {
       type: Object,
+      required: false,
+    },
+    moSuspend: {
+      type: Boolean,
       required: false,
     },
   },

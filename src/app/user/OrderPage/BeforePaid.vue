@@ -214,7 +214,8 @@
                     notSubmitAddress ||
                     userMessageError ||
                     disabledPickupTime ||
-                    stripeSmallPayment
+                    stripeSmallPayment ||
+                    moSuspend
                   "
                   @click="handlePayment(true)"
                   class="b-reset-tw"
@@ -224,7 +225,10 @@
                     style="min-width: 288px"
                   >
                     <ButtonLoading v-if="isPaying" />
-                    <div class="text-xl font-bold text-white">
+                    <div class="text-xl font-bold text-white" v-if="moSuspend">
+                      {{ $t("mobileOrder.suspendCartButton") }}
+                    </div>
+                    <div class="text-xl font-bold text-white" v-else>
                       {{
                         mode === "mo"
                           ? $t("order.placeOrderMo")
@@ -279,7 +283,7 @@
               <div class="text-sm font-bold text-black text-opacity-60">
                 {{ $t("order.or") }}
               </div>
-
+              
               <div class="mt-4">
                 <o-button
                   :loading="isPlacing"
@@ -287,7 +291,8 @@
                     notAvailable ||
                     notSubmitAddress ||
                     userMessageError ||
-                    disabledPickupTime
+                    disabledPickupTime ||
+                    moSuspend
                   "
                   @click="handlePayment(false)"
                   class="b-reset-tw"
@@ -297,7 +302,10 @@
                     style="min-width: 288px"
                   >
                     <ButtonLoading v-if="isPlacing" />
-                    <div class="text-xl font-bold text-white">
+                    <div class="text-xl font-bold text-white" v-if="moSuspend">
+                      {{ $t("mobileOrder.suspendCartButton") }}
+                    </div>
+                    <div class="text-xl font-bold text-white" v-else >
                       {{
                         mode === "mo"
                           ? $t("order.placeOrderNoPaymentMo")
@@ -430,6 +438,10 @@ export default {
     },
     lastOrder: {
       type: String,
+      required: false,
+    },
+    moSuspend: {
+      type: Boolean,
       required: false,
     },
   },
