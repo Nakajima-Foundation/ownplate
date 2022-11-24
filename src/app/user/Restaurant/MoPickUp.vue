@@ -19,7 +19,7 @@
         </div>
       </div>
       <div
-        v-if="shopInfo.enableMoPickup"
+        v-if="shopInfo.enableMoPickup && !moPickupSuspend"
         class="h-full w-full rounded-lg bg-white p-3 shadow"
         :class="
           value === 'pickup'
@@ -85,6 +85,10 @@ export default defineComponent({
     },
     lastOrder: {
       type: String,
+      required: false,
+    },
+    moPickupSuspend: {
+      type: Boolean,
       required: false,
     },
   },

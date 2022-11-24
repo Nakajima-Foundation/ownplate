@@ -129,6 +129,7 @@
                     :disabledPickupTime="disabledPickupTime"
                     :noAvailableTime="noAvailableTime"
                     :lastOrder="lastOrder"
+                    :moPickupSuspend="moPickupSuspend"
                   />
                 </div>
               </div>
@@ -520,6 +521,16 @@ export default defineComponent({
     const isPickup = computed(() => {
       return howtoreceive.value === "pickup";
     });
+    // force reset
+    const moPickupSuspend = computed(() => {
+      return props.moPickupSuspend;
+    });
+    watch(moPickupSuspend, (v) => {
+      if (v) {
+        howtoreceive.value = "takeout";
+      };
+    });
+    
     const forceDisabledPickupTime = computed(() => {
       return false;
     });
