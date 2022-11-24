@@ -8,6 +8,7 @@
       :mode="mode"
       :moPrefix="moPrefix"
       :moSuspend="moSuspend"
+      :moPickupSuspend="moPickupSuspend"
       :notFound="notFound"
       :groupData="groupData"
     />
@@ -95,15 +96,26 @@ export default defineComponent({
       }
     );
 
+    const groupSuspend = ref({});
+    if (props.groupData?.groupId) {
+      onSnapshot(
+        doc(db, `groups/${props.groupData?.groupId}/groupConfig/suspend`),
+        (snapshot) => {
+          console.log(snapshot.data());
+          groupSuspend.value = snapshot.data() || {};
+        }
+      );
+    }
+    
     const moSuspend = computed(() => {
       return !!(
-        shopInfo.value?.isSuspendAllOrder || props.groupData?.isSuspendAllOrder
+        shopInfo.value?.isSuspendAllOrder || groupSuspend.value.isSuspendAllOrder
       );
     });
     const moPickupSuspend = computed(() => {
       return !!(
-        shopInfo.value?.isSuspendPickup || props.groupData?.isSuspendPickup
-      );
+        shopInfo.value?.isSuspendPickup || groupSuspend.value.isSuspendPickup
+      ) && !moSuspend.value;
     });
 
     onUnmounted(() => {
