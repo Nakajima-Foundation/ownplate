@@ -660,12 +660,20 @@ export default defineComponent({
               !a.soldOut &&
               (!!aSoldOutData.forcePickupStock || !!aSoldOutData.isStock);
 
-            // const bSoldOutData = moSoldOutDataSet.value[b.id] || {}
-            // const bIsStock = !b.soldOut && (!!bSoldOutData.forcePickupStock || !!bSoldOutData.isStock);
+            const bSoldOutData = moSoldOutDataSet.value[b.id] || {}
+            const bIsStock = !b.soldOut && (!!bSoldOutData.forcePickupStock || !!bSoldOutData.isStock);
+
+            if (aIsStock === bIsStock) {
+              return a.itemName > b.itemName ? 1 : -1;
+            }
+            
             return aIsStock ? -1 : 1;
           });
+        } else {
+          return menus.value.sort((a, b) => {
+            return a.itemName > b.itemName ? 1 : -1;
+          });
         }
-        return menus.value;
       } else {
         const menuLists = props.shopInfo.menuLists || [];
         const itemsObj = array2obj(menus.value.concat(titles.value));
