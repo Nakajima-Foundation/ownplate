@@ -38,7 +38,7 @@ export default defineComponent({
       );
       collectionData.docs.map((doc) => {
         const menu = doc.data();
-        console.log() ;
+        console.log();
         const data = {
           productName: menu.itemName,
           productPriceWithTax: menu.price,
@@ -53,7 +53,9 @@ export default defineComponent({
           noPublish: !menu.publicFlag ? 1 : 0,
           outofstock: menu.soldOut ? 1 : 0,
           delete: menu.deletedFlag ? 1 : 0,
-          updateDate: menu.csvImportedAt ? moment(menu.csvImportedAt.toDate()).format()  : "",
+          updateDate: menu.csvImportedAt
+            ? moment(menu.csvImportedAt.toDate()).format()
+            : "",
         };
         tableData.value.push(data);
       });

@@ -283,7 +283,7 @@
               <div class="text-sm font-bold text-black text-opacity-60">
                 {{ $t("order.or") }}
               </div>
-              
+
               <div class="mt-4">
                 <o-button
                   :loading="isPlacing"
@@ -305,7 +305,7 @@
                     <div class="text-xl font-bold text-white" v-if="moSuspend">
                       {{ $t("mobileOrder.suspendCartButton") }}
                     </div>
-                    <div class="text-xl font-bold text-white" v-else >
+                    <div class="text-xl font-bold text-white" v-else>
                       {{
                         mode === "mo"
                           ? $t("order.placeOrderNoPaymentMo")

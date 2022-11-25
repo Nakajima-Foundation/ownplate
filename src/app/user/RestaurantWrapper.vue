@@ -106,16 +106,19 @@ export default defineComponent({
         }
       );
     }
-    
+
     const moSuspend = computed(() => {
       return !!(
-        shopInfo.value?.isSuspendAllOrder || groupSuspend.value.isSuspendAllOrder
+        shopInfo.value?.isSuspendAllOrder ||
+        groupSuspend.value.isSuspendAllOrder
       );
     });
     const moPickupSuspend = computed(() => {
-      return !!(
-        shopInfo.value?.isSuspendPickup || groupSuspend.value.isSuspendPickup
-      ) && !moSuspend.value;
+      return (
+        !!(
+          shopInfo.value?.isSuspendPickup || groupSuspend.value.isSuspendPickup
+        ) && !moSuspend.value
+      );
     });
 
     onUnmounted(() => {

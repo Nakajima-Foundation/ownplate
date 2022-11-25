@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex h-14 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 text-op-teal cursor-pointer"
+    class="flex h-14 cursor-pointer items-center justify-center rounded-full bg-black bg-opacity-5 px-4 text-op-teal"
     @click="download"
   >
     <i class="material-icons mr-2 text-lg">save_alt</i>
@@ -78,20 +78,32 @@ export default defineComponent({
           const d = data.data[menuId];
           if (type === "pickup") {
             csvData[shopId][menuId]["productPickup"] = d["isPublic"];
-            csvData[shopId][menuId]["productPickupUpdateDate"] = d["isPublicCSVImportedAt"] ? moment(d["isPublicCSVImportedAt"].toDate()).format() : "";
+            csvData[shopId][menuId]["productPickupUpdateDate"] = d[
+              "isPublicCSVImportedAt"
+            ]
+              ? moment(d["isPublicCSVImportedAt"].toDate()).format()
+              : "";
           }
           if (type === "preOrder") {
             csvData[shopId][menuId]["productPreorder"] = d["isPublic"];
-            csvData[shopId][menuId]["productPreorderUpdateDate"] = d["isPublicCSVImportedAt"] ? moment(d["isPublicCSVImportedAt"].toDate()).format() : "";
+            csvData[shopId][menuId]["productPreorderUpdateDate"] = d[
+              "isPublicCSVImportedAt"
+            ]
+              ? moment(d["isPublicCSVImportedAt"].toDate()).format()
+              : "";
           }
           if (type === "pickupStock") {
             csvData[shopId][menuId]["forcePickupStock"] = d["forcePickupStock"];
-            csvData[shopId][menuId]["forcePickupStockUpdateDate"] = d["forcePickupStockCSVImportedAt"] ? moment(d["forcePickupStockCSVImportedAt"].toDate()).format() : "";
+            csvData[shopId][menuId]["forcePickupStockUpdateDate"] = d[
+              "forcePickupStockCSVImportedAt"
+            ]
+              ? moment(d["forcePickupStockCSVImportedAt"].toDate()).format()
+              : "";
           }
         });
       };
 
-//      for await (const restaurantId of props.restaurantLists) {
+      //      for await (const restaurantId of props.restaurantLists) {
       for await (const restaurantId of ["Nc51IWDVuidWOpvcnjqd"]) {
         const restaurant = props.restaurantItems[restaurantId] || {};
         const shopId = restaurant.shopId || restaurantId;

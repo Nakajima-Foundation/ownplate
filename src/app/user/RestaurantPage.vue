@@ -122,10 +122,12 @@
               <!-- Mo Pickup Suspend -->
 
               <div
-                class=" rounded-lg mx-6 mt-3 mb-2 lg:mx-0 bg-red-700 bg-opacity-10 p-3 font-bold text-red-700" v-if="moPickupSuspend">
-                {{ $t("mobileOrder.suspendPickupMessage")}}
+                class="mx-6 mt-3 mb-2 rounded-lg bg-red-700 bg-opacity-10 p-3 font-bold text-red-700 lg:mx-0"
+                v-if="moPickupSuspend"
+              >
+                {{ $t("mobileOrder.suspendPickupMessage") }}
               </div>
-              
+
               <!-- Mo Pickup Toggle -->
               <div class="mx-6 mt-3 mb-2 lg:mx-0">
                 <div>
@@ -535,9 +537,9 @@ export default defineComponent({
     watch(moPickupSuspend, (v) => {
       if (v) {
         howtoreceive.value = "takeout";
-      };
+      }
     });
-    
+
     const forceDisabledPickupTime = computed(() => {
       return false;
     });
@@ -678,13 +680,15 @@ export default defineComponent({
               !a.soldOut &&
               (!!aSoldOutData.forcePickupStock || !!aSoldOutData.isStock);
 
-            const bSoldOutData = moSoldOutDataSet.value[b.id] || {}
-            const bIsStock = !b.soldOut && (!!bSoldOutData.forcePickupStock || !!bSoldOutData.isStock);
+            const bSoldOutData = moSoldOutDataSet.value[b.id] || {};
+            const bIsStock =
+              !b.soldOut &&
+              (!!bSoldOutData.forcePickupStock || !!bSoldOutData.isStock);
 
             if (aIsStock === bIsStock) {
               return a.itemName > b.itemName ? 1 : -1;
             }
-            
+
             return aIsStock ? -1 : 1;
           });
         } else {

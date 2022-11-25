@@ -718,7 +718,13 @@
                   <div class="flex-1">
                     <div class="text-base font-bold">
                       {{ $t("week.short." + day) }}
-                      {{ $t(shopInfo.moBusinessDay[index] ? "admin.open" : "admin.closed") }}
+                      {{
+                        $t(
+                          shopInfo.moBusinessDay[index]
+                            ? "admin.open"
+                            : "admin.closed"
+                        )
+                      }}
                     </div>
                   </div>
                 </div>
