@@ -13,6 +13,7 @@
 </template>
 <script>
 import { defineComponent, computed, ref } from "@vue/composition-api";
+import moment from "moment";
 
 import { db } from "@/lib/firebase/firebase9";
 import { collection, getDocs } from "firebase/firestore";
@@ -37,6 +38,7 @@ export default defineComponent({
       );
       collectionData.docs.map((doc) => {
         const menu = doc.data();
+        console.log() ;
         const data = {
           productName: menu.itemName,
           productPriceWithTax: menu.price,
@@ -51,6 +53,7 @@ export default defineComponent({
           noPublish: !menu.publicFlag ? 1 : 0,
           outofstock: menu.soldOut ? 1 : 0,
           delete: menu.deletedFlag ? 1 : 0,
+          updateDate: menu.csvImportedAt ? moment(menu.csvImportedAt.toDate()).format()  : "",
         };
         tableData.value.push(data);
       });
@@ -72,6 +75,7 @@ export default defineComponent({
       "noPublish",
       "outofstock",
       "delete",
+      "updateDate",
     ];
 
     return {
