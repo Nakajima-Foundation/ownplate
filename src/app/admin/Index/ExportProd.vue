@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex h-14 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 text-op-teal"
+    class="flex h-14 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 text-op-teal cursor-pointer"
     @click="download"
   >
     <i class="material-icons mr-2 text-lg">save_alt</i>
@@ -16,6 +16,7 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, getDocs, collection } from "firebase/firestore";
 
 import { data2csv } from "@/utils/csv";
+import moment from "moment";
 
 export default defineComponent({
   props: {
@@ -62,6 +63,7 @@ export default defineComponent({
       };
       const parseData = (a, restaurantId, shopId, type) => {
         const data = a.data();
+        // console.log(data);
         Object.keys(data.data).forEach((menuId) => {
           if (!csvData[shopId][menuId]) {
             csvData[shopId][menuId] = {
@@ -76,17 +78,21 @@ export default defineComponent({
           const d = data.data[menuId];
           if (type === "pickup") {
             csvData[shopId][menuId]["productPickup"] = d["isPublic"];
+            csvData[shopId][menuId]["productPickupUpdateDate"] = d["isPublicCSVImportedAt"] ? moment(d["isPublicCSVImportedAt"].toDate()).format() : "";
           }
           if (type === "preOrder") {
             csvData[shopId][menuId]["productPreorder"] = d["isPublic"];
+            csvData[shopId][menuId]["productPreorderUpdateDate"] = d["isPublicCSVImportedAt"] ? moment(d["isPublicCSVImportedAt"].toDate()).format() : "";
           }
           if (type === "pickupStock") {
             csvData[shopId][menuId]["forcePickupStock"] = d["forcePickupStock"];
+            csvData[shopId][menuId]["forcePickupStockUpdateDate"] = d["forcePickupStockCSVImportedAt"] ? moment(d["forcePickupStockCSVImportedAt"].toDate()).format() : "";
           }
         });
       };
 
-      for await (const restaurantId of props.restaurantLists) {
+//      for await (const restaurantId of props.restaurantLists) {
+      for await (const restaurantId of ["Nc51IWDVuidWOpvcnjqd"]) {
         const restaurant = props.restaurantItems[restaurantId] || {};
         const shopId = restaurant.shopId || restaurantId;
         csvData[shopId] = {};
@@ -129,8 +135,12 @@ export default defineComponent({
           const {
             productId,
             productPreorder,
+            productPreorderUpdateDate,
             productPickup,
+            productPickupUpdateDate,
             forcePickupStock,
+            forcePickupStockUpdateDate,
+            forcePickupStockData,
             productSearchStock,
             isStockSearchStock,
             restaurantId,
@@ -139,8 +149,11 @@ export default defineComponent({
           tableData.push({
             productId,
             productPreorder: productPreorder ? "1" : "0",
+            productPreorderUpdateDate,
             productPickup: productPickup ? "1" : "0",
+            productPickupUpdateDate,
             forcePickupStock: forcePickupStock ? "1" : "0",
+            forcePickupStockUpdateDate,
             productSearchStock: productSearchStock ? "1" : "0",
             isStockSearchStock: isStockSearchStock ? "1" : "0",
             shopId,
@@ -153,8 +166,11 @@ export default defineComponent({
       const fields = [
         "productId",
         "productPreorder",
+        "productPreorderUpdateDate",
         "productPickup",
+        "productPickupUpdateDate",
         "forcePickupStock",
+        "forcePickupStockUpdateDate",
         "productSearchStock",
         "isStockSearchStock",
         "shopId",
@@ -164,8 +180,11 @@ export default defineComponent({
       const fieldNames = [
         "productId",
         "productPreorder",
+        "productPreorderUpdateDate",
         "productPickup",
+        "productPickupUpdateDate",
         "forcePickupStock",
+        "forcePickupStockUpdateDate",
         "productSearchStock",
         "isStockSearchStock",
         "shopId",
