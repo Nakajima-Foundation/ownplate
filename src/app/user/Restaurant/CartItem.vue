@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="mx-6 mt-1 flex justify-between gap-3">
-      <div>
+    <div class="mx-6 mt-1 flex justify-between">
+      <div class="w-4/5">
         <div class="font-bold text-black">
           {{ item.itemName }}
         </div>
@@ -31,7 +31,7 @@
       >
         <img
           :src="image"
-          class="h-12 w-12 rounded object-cover lg:h-24 lg:w-24"
+          class="h-full w-full rounded object-cover lg:h-full lg:w-full"
           @error="smallImageErrorHandler"
         />
       </div>
