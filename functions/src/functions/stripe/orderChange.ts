@@ -88,7 +88,7 @@ export const orderChange = async (db: admin.firestore.Firestore, data: orderChan
       order: updateOrderData,
       rawOptions: updateRawOptions,
     };
-    const { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total } = await createNewOrderData(menuRestaurantRef, orderRef, baseData, multiple);
+    const { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total } = await createNewOrderData(menuRestaurantRef, orderRef, baseData, multiple, restaurantData);
 
     const accountingResult = orderAccounting(restaurantData, food_sub_total, alcohol_sub_total, multiple);
     // was created new order data
