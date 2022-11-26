@@ -162,7 +162,10 @@ export const getMenuObj = async (refRestaurant, menuIds) => {
       chunk(menuIds, 10).map(async (menuIdsChunk) => {
         const menusCollections = await refRestaurant.collection("menus").where(admin.firestore.FieldPath.documentId(), "in", menuIdsChunk).get();
         menusCollections.forEach((m) => {
-          menuObj[m.id] = m.data();
+          const data = m.data();
+          if (data.publicFlag && !data.deletedFlag) {
+            menuObj[m.id] = data;
+          }
         });
         return;
       })
@@ -196,3 +199,14 @@ export const filterData = (data: { [key: string]: any }) => {
 export const isEmpty = (value: any) => {
   return value === null || value === undefined || value === "";
 };
+
+
+// forMo
+/*
+export const getPreorderData
+    const path = `/restaurants/${restaurantId}/preOrder/data/subCategory`;
+
+export const getPickupData
+    const pathStock = `/restaurants/${restaurantId}/pickup/stock/subCategory`;
+    const pathData = `/restaurants/${restaurantId}/pickup/data/subCategory`;
+*/
