@@ -73,7 +73,7 @@ export const orderAccounting = (restaurantData, food_sub_total, alcohol_sub_tota
 };
 
 // restaurantData is for mo.
-export const createNewOrderData = async (restaurantRef, orderRef, orderData, multiple, restaurantData) => {
+export const createNewOrderData = async (restaurantRef, orderRef, orderData, multiple, restaurantData, moRestaurantRef) => {
   const menuIds = Object.keys(orderData.order);
   const menuObj = await utils.getMenuObj(restaurantRef, menuIds);
 
@@ -94,22 +94,38 @@ export const createNewOrderData = async (restaurantRef, orderRef, orderData, mul
     console.error("[createNewOrderData] menuError");
     return orderRef.update("status", order_status.error);
   }
+  // for mo
+  const subCategoryIds = utils.convSubCateIds(menuObj);
+  const isInMo = !!restaurantData.groupId;
+  const isPickup = !!orderData.isPickup;
+  const moData = isInMo ? await utils.getMoDataObj(moRestaurantRef, subCategoryIds, isPickup ? 'pickup/data' : 'preOrder/data') : {};
+  const moStock = isInMo && isPickup ? await utils.getMoDataObj(moRestaurantRef, subCategoryIds, 'pickup/stock') : {};
+  // console.log(subCategoryIds, moData, moStock);
+  // 
   menuIds.map((menuId) => {
     const menu = menuObj[menuId];
 
     // for mo
     if (restaurantData.groupId) {
+      if (!(moData[menuId] || {}).isPublic) {
+        return;
+      }
       if (restaurantData.isPickup) {
         if (menu.soldOut) {
           return;
         }
+        const s = moStock[menuId] || {};
+        if (!s.forcePickupStock && !s.isStock) {
+          return ;
+        }
       }
+      // for mo
     }  else {
       if (menu.soldOut) {
         return;
       }
     }
-
+    
     const prices: number[] = [];
     const newOrder: number[] = [];
 
@@ -224,7 +240,7 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
     }
     const multiple = utils.stripeRegion.multiple; //100 for USD, 1 for JPY
 
-    const { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total } = await createNewOrderData(menuRestaurantRef, orderRef, orderData, multiple, restaurantData);
+    const { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total } = await createNewOrderData(menuRestaurantRef, orderRef, orderData, multiple, restaurantData, restaurantRef);
 
     // Atomically increment the orderCount of the restaurant
     let orderCount = 0;

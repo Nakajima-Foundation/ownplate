@@ -202,11 +202,38 @@ export const isEmpty = (value: any) => {
 
 
 // forMo
-/*
-export const getPreorderData
-    const path = `/restaurants/${restaurantId}/preOrder/data/subCategory`;
+export const convSubCateIds = (menuObj: { [key: string]: any }) => {
+  const ret = {};
+  Object.values(menuObj).map((menu) => {
+    if (menu.subCategory) {
+      ret[menu.subCategory] = true;
+    }
+  });
+  return Object.keys(ret);
+};
+export const getMoDataObj = async (refRestaurant, subCategoryIds, target) => {
+  const db = refRestaurant.firestore;
+  const restaurantId = refRestaurant.id;
+  // preOrder
+  const path = `/restaurants/${restaurantId}/${target}/subCategory`;
+  // console.log(path);
+  const retObj = {};
+  await Promise.all(
+    chunk(subCategoryIds, 10).map(async (subCategoryIdsChunk) => {
+      const subCateCollections = await db.collection(path).where(admin.firestore.FieldPath.documentId(), "in", subCategoryIdsChunk).get();
+      subCateCollections.forEach((m) => {
+        const data = (m.data() || {}).data || {};
+        Object.keys(data).map(id => {
+          retObj[id] = data[id];
+        });
+      });
+    })
+  );
+  return retObj;
+}
 
-export const getPickupData
-    const pathStock = `/restaurants/${restaurantId}/pickup/stock/subCategory`;
-    const pathData = `/restaurants/${restaurantId}/pickup/data/subCategory`;
-*/
+export const getMoStockObj = () => {
+  // const pathStock = `/restaurants/${restaurantId}/pickup/stock/subCategory`;
+  // const pathData = `/restaurants/${restaurantId}/pickup/data/subCategory`;
+  return {};
+};
