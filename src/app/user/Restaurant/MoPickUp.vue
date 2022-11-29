@@ -50,7 +50,7 @@
       </div>
     </div>
     <div
-      v-if="disabledPickupTime && !noAvailableTime"
+      v-if="disabledPickupTime"
       class="mt-4 h-full w-full rounded-lg bg-red-700 bg-opacity-10 p-3 text-xs font-bold text-red-700"
     >
       {{ $tc("mobileOrder.shopInfo.pickupNote", 1, { lastOrder }) }}

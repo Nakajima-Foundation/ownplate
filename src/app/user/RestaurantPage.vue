@@ -544,23 +544,6 @@ export default defineComponent({
       return false;
     });
 
-    const disabledPickupTime = computed(() => {
-      if (isPickup.value) {
-        if (forceDisabledPickupTime.value) {
-          return true;
-        }
-        const now = Number(
-          moment(store.state.date).tz("Asia/Tokyo").format("HHmm")
-        );
-        const last = Number(availableDays.value[0]?.lastOrder?.timeStr || 0);
-        return now >= last;
-      }
-      return false;
-    });
-    const lastOrder = computed(() => {
-      return availableDays.value[0]?.lastOrder?.display || "";
-    });
-
     const coverImage = computed(() => {
       return (
         (props.shopInfo?.images?.cover?.resizedImages || {})["1200"] ||
@@ -576,7 +559,7 @@ export default defineComponent({
       props.groupData
     );
 
-    const { menuPickupData, availableDays } = usePickupTime(
+    const { menuPickupData, availableDays, todaysLast } = usePickupTime(
       props.shopInfo,
       {},
       menuObj,
@@ -584,6 +567,24 @@ export default defineComponent({
       isInMo.value,
       isPickup
     );
+    const lastOrder = computed(() => {
+      return (todaysLast.value || {}).display
+    });
+    
+    const disabledPickupTime = computed(() => {
+      if (isPickup.value) {
+        if (forceDisabledPickupTime.value) {
+          return true;
+        }
+        const now = Number(
+          moment(store.state.date).tz("Asia/Tokyo").format("HHmm")
+        );
+        const last = Number((todaysLast.value || {}).time || 0);
+        return now >= last;
+      }
+      return false;
+    });
+
 
     // for Mo
     const { preOrderPublics, pickupPublics, pickupStocks } = loadStockData(

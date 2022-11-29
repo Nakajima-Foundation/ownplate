@@ -101,6 +101,26 @@ export const usePickupTime = (
     return tmp + 1;
   });
 
+  const todaysLast = computed(() => {
+    return getTodaysLast();
+  });
+  const getTodaysLast = () => {
+    const now = ctx.root.$store.state.date;
+    console.log(ctx.root.$store.state.date); // never delete this line;
+    const today = now.getDay();
+    const openSlot = openSlots.value[(today) % 7];
+    if (openSlot) {
+      const { time } = openSlot[openSlot.length - 1];
+      return {
+        time,
+        display: num2simpleFormatedTime(time),
+        timeStr: num2simpleTime(time),
+      };
+
+    }
+    return null;
+  };
+  
   const getAvailableDays = (minimumTime: number) => {
     if (!shopInfoBusinessDay.value) {
       return []; // it means shopInfo is empty (not yet loaded)
@@ -204,5 +224,6 @@ export const usePickupTime = (
     availableDays,
     temporaryClosure,
     menuPickupData,
+    todaysLast,
   };
 };
