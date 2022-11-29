@@ -84,10 +84,9 @@
             {{ description }}
           </template>
           <template v-else>
-            <div v-if="openMenuFlag" class="whitespace-pre-line">
+            <div class="whitespace-pre-line">
               {{ description }}
             </div>
-            <template v-else> {{ descriptionOneLine }}... </template>
           </template>
         </div>
 
