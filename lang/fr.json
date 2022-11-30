@@ -26,7 +26,7 @@
     "adminQRCode": "Confirmation QR Code",
     "name": "Online ordering service",
     "methodChangeAlert": "Changer de méthode de commande ? Les articles de votre panier seront réinitialisés.",
-    "pickupLabel": "Takeaway",
+    "pickupLabel": "Takeaway Today",
     "admin": {
       "takeout": "Pre order",
       "pickup": "Takeaway",
@@ -452,7 +452,7 @@
     "searchRestaurant": "Rechercher un restaurant",
     "moTagline": "Le service officiel de mise de côté de FamilyMart qui vous permet d'effectuer facilement des achats depuis votre PC ou votre smartphone.",
     "moDescription1": "Vous pouvez commander des produits que nous ne vendons pas normalement.",
-    "moDescription2": "L'enlèvement en magasin est possible le jour même de la commande* ou 3 jours plus tard.",
+    "moDescription2": "Vous pouvez récupérer votre commande au magasin dans une heure au plus tôt.",
     "moDescription3": "*Seulement dans certains magasins​​"
   },
   "order": {

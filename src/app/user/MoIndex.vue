@@ -20,7 +20,7 @@
     <div
       class="mx-6 mt-6 mb-10 flex justify-center space-x-4 sm:max-w-7xl xl:mx-auto"
     >
-      <div class="w-full rounded-lg bg-white px-4 pb-4 text-center shadow-none">
+      <div class="w-full rounded-lg bg-white px-4 pb-4 text-left shadow-none">
         <div class="mx-auto mb-4 h-20 w-32">
           <img :src="moBaseUrl + '/images/assets/mo_icon_shipping.png'" />
         </div>
@@ -28,14 +28,14 @@
           {{ $t("lp.moDescription1") }}
         </div>
       </div>
-      <div class="w-full rounded-lg bg-white px-4 pb-4 text-center shadow-none">
+      <div class="w-full rounded-lg bg-white px-4 pb-4 text-left shadow-none">
         <div class="mx-auto mb-4 h-20 w-32">
           <img :src="moBaseUrl + '/images/assets/mo_icon_store.png'" />
         </div>
         <div class="text-sm text-black sm:text-base">
           {{ $t("lp.moDescription2") }}
         </div>
-        <div class="mt-1 text-xs text-black text-opacity-60 sm:text-sm">
+        <div class="mt-0.5 text-xs text-black text-opacity-60 sm:text-sm">
           {{ $t("lp.moDescription3") }}
         </div>
       </div>

@@ -45,7 +45,7 @@
     "userRestaurantsBody": "登録した店舗は自動でお客様向け店舗一覧には表示されません。「掲載を申請する」ボタンより申請後、運営の審査を経てお客様向け店舗一覧に掲載されます。",
     "name": "ネット注文サービス",
     "methodChangeAlert": "注文方法を変更します。カート内のアイテムはリセットされますが、よろしいでしょうか？",
-    "pickupLabel": "ピックアップ対応",
+    "pickupLabel": "本日受け取り可能",
     "admin": {
       "takeout": "予約注文",
       "pickup": "ピックアップ",
@@ -74,10 +74,10 @@
       "transactionCompletedAt": "受渡完了時刻"
     },
     "shopInfo": {
-      "takeout": "予約注文",
-      "pickup": "ピックアップ",
-      "takeoutDesctiption": "お取り寄せ注文はこちら",
-      "pickupDesctiption": "本日の受け取りはこちら",
+      "takeout": "お取り寄せする",
+      "pickup": "本日受け取る",
+      "takeoutDesctiption": "お店に無いものも最短3日後受け取り",
+      "pickupDesctiption": "最短1時間後に店舗で受け取り",
       "pickupNote": "{lastOrder}〜23:59は、ピックアップのご注文をお受けできません。時間をおいてご注文ください。"
     }
   },
@@ -515,10 +515,10 @@
     "izakaya": "居酒屋",
     "patisserie": "パティスリー",
     "searchRestaurant": "テイクアウトのお店を探す",
-    "moTagline": "ネット注文サービスは、PC・スマホから簡単に購入が可能な、ファミリーマート公式のお取り置きサービスです。",
-    "moDescription1": "店舗に在庫がない商品もお取り寄せ注文が可能です。",
-    "moDescription2": "ご注文当日*または3日後の店頭受取が可能です。​",
-    "moDescription3": "*ピックアップ対応店舗​​"
+    "moTagline": "ネット注文サービスは、PC・スマホから簡単に購入が可能な、ファミリーマート公式店舗受け取りサービスです。",
+    "moDescription1": "お店に無いものも最短3日後受け取り可能です。",
+    "moDescription2": "最短1時間後に店舗で受け取り可能です。​",
+    "moDescription3": "*対応店舗のみ​​​"
   },
   "order": {
     "allOrders": "全ての注文",

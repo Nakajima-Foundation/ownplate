@@ -14,7 +14,7 @@
         <div class="-mt-0.5 text-center text-lg font-bold">
           {{ $t("mobileOrder.shopInfo.takeout") }}
         </div>
-        <div class="mt-0.5 px-4 text-center text-xs font-bold">
+        <div class="mt-0.5 px-3 text-center text-xs font-bold">
           {{ $t("mobileOrder.shopInfo.takeoutDesctiption") }}
         </div>
       </div>
@@ -32,7 +32,7 @@
         <div class="-mt-0.5 text-center text-lg font-bold tracking-tighter">
           {{ $t("mobileOrder.shopInfo.pickup") }}
         </div>
-        <div class="mt-0.5 px-4 text-center text-xs font-bold">
+        <div class="mt-0.5 px-3 text-center text-xs font-bold">
           {{ $t("mobileOrder.shopInfo.pickupDesctiption") }}
         </div>
       </div>
@@ -44,7 +44,7 @@
         <div class="-mt-0.5 text-center text-lg font-bold tracking-tighter">
           {{ $t("mobileOrder.shopInfo.pickup") }}
         </div>
-        <div class="mt-0.5 px-4 text-center text-xs font-bold">
+        <div class="mt-0.5 px-3 text-center text-xs font-bold">
           {{ $t("mobileOrder.shopInfo.pickupDesctiption") }}
         </div>
       </div>
