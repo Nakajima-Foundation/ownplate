@@ -326,7 +326,7 @@ import {
   ref,
   watch,
   computed,
-  onMounted,
+  onBeforeMount,
   onUnmounted,
 } from "@vue/composition-api";
 
@@ -600,7 +600,9 @@ export default defineComponent({
     });
     // end of for Mo
 
-    onMounted(() => {
+    // changed from onMount
+    // avoid to reset cart when pickup or other not takeout 
+    onBeforeMount(() => {
       // Check if we came here as the result of "Edit Items"
       if (store.state.carts[restaurantId.value]) {
         const cart = store.state.carts[restaurantId.value] || {};
