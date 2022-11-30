@@ -572,7 +572,7 @@ export default defineComponent({
         const now = Number(
           moment(store.state.date).tz("Asia/Tokyo").format("HHmm")
         );
-        const last = Number((todaysLast.value || {}).time || 0);
+        const last = Number((todaysLast.value || {}).timeStr || 0);
         return now >= last;
       }
       return false;
