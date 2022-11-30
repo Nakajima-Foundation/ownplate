@@ -566,8 +566,9 @@ export default defineComponent({
     const lastOrder = computed(() => {
       return (todaysLast.value || {}).lastOrderDisplay;
     });
-    
+
     const disabledPickupTime = computed(() => {
+      return true;
       if (isPickup.value) {
         const now = Number(
           moment(store.state.date).tz("Asia/Tokyo").format("HHmm")
@@ -577,7 +578,6 @@ export default defineComponent({
       }
       return false;
     });
-
 
     // for Mo
     const { preOrderPublics, pickupPublics, pickupStocks } = loadStockData(
@@ -601,7 +601,7 @@ export default defineComponent({
     // end of for Mo
 
     // changed from onMount
-    // avoid to reset cart when pickup or other not takeout 
+    // avoid to reset cart when pickup or other not takeout
     onBeforeMount(() => {
       // Check if we came here as the result of "Edit Items"
       if (store.state.carts[restaurantId.value]) {

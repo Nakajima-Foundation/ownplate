@@ -117,14 +117,14 @@ export default defineComponent({
         return now >= last;
       }
       return false;
-    })
+    });
 
     ctx.emit("updateDisabledPickupTime", disabledPickupTime.value);
     watch(disabledPickupTime, (v) => {
       ctx.emit("updateDisabledPickupTime", v);
     });
     //
-    
+
     const days = computed(() => {
       return props.isDelivery
         ? deliveryAvailableDays.value
@@ -167,7 +167,7 @@ export default defineComponent({
       // called by parent
       timeToPickup,
       lastOrder,
-      
+
       availableDays: days,
 
       dayIndex,
