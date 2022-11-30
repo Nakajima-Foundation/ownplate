@@ -144,6 +144,7 @@
                 :isDelivery="orderInfo.isDelivery || false"
                 ref="time"
                 @notAvailable="handleNotAvailable"
+                @updateDisabledPickupTime="updateDisabledPickupTime"
               />
             </div>
           </div>
@@ -201,9 +202,9 @@
 
               <div
                 v-if="disabledPickupTime"
-                class="mx-6 mt-6 text-xs font-bold text-red-700"
+                class="mt-4 h-full w-full rounded-lg bg-red-700 bg-opacity-10 p-3 text-xs font-bold text-red-700"
               >
-                {{ $tc("mobileOrder.shopInfo.pickupNote", 1, { lastOrder }) }}
+                {{ $tc("mobileOrder.shopInfo.pickupNote", 1, { lastOrder: $refs.time && $refs.time.lastOrder }) }}
               </div>
 
               <div class="mt-6 text-center">
@@ -432,14 +433,6 @@ export default {
       type: Object,
       required: false,
     },
-    disabledPickupTime: {
-      type: Boolean,
-      required: true,
-    },
-    lastOrder: {
-      type: String,
-      required: false,
-    },
     moSuspend: {
       type: Boolean,
       required: false,
@@ -456,6 +449,7 @@ export default {
       sendSMS: true,
       postageInfo: {},
       memo: "",
+      disabledPickupTime: false,
     };
   },
   created() {
@@ -534,6 +528,9 @@ export default {
         this.shopInfo,
         this.restaurantId()
       );
+    },
+    updateDisabledPickupTime(value) {
+      this.disabledPickupTime = value
     },
 
     handleOpenMenu() {

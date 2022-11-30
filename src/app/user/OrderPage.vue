@@ -24,7 +24,6 @@
         :deliveryData="deliveryData"
         :mode="mode"
         :groupData="groupData"
-        :disabledPickupTime="disabledPickupTime"
         :lastOrder="lastOrder"
         :moSuspend="moSuspend"
         @handleOpenMenu="handleOpenMenu"

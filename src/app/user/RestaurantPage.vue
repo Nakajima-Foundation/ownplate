@@ -540,10 +540,6 @@ export default defineComponent({
       }
     });
 
-    const forceDisabledPickupTime = computed(() => {
-      return false;
-    });
-
     const coverImage = computed(() => {
       return (
         (props.shopInfo?.images?.cover?.resizedImages || {})["1200"] ||
@@ -573,9 +569,6 @@ export default defineComponent({
     
     const disabledPickupTime = computed(() => {
       if (isPickup.value) {
-        if (forceDisabledPickupTime.value) {
-          return true;
-        }
         const now = Number(
           moment(store.state.date).tz("Asia/Tokyo").format("HHmm")
         );

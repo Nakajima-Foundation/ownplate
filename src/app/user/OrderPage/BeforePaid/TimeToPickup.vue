@@ -24,7 +24,6 @@
         </o-select>
       </div>
     </div>
-
     <!-- Not Available -->
     <div v-else class="rounded-lg bg-red-700 bg-opacity-10 p-4">
       <div class="text-base font-bold text-red-700">
@@ -43,6 +42,7 @@ import {
   watch,
 } from "@vue/composition-api";
 
+import moment from "moment-timezone";
 import firebase from "firebase/compat/app";
 import { isNull, useIsInMo } from "@/utils/utils";
 import { usePickupTime } from "@/utils/pickup";
@@ -62,8 +62,10 @@ export default defineComponent({
       required: false,
     },
   },
-  emits: ["notAvailable"],
+  emits: ["notAvailable", "updateDisabledPickupTime"],
   setup(props, ctx) {
+    const store = ctx.root.$store;
+
     const dayIndex = ref(0);
     const time = ref(0);
 
@@ -93,7 +95,7 @@ export default defineComponent({
       );
     });
 
-    const { deliveryAvailableDays, availableDays } = usePickupTime(
+    const { deliveryAvailableDays, availableDays, todaysLast } = usePickupTime(
       props.shopInfo,
       exceptData,
       {},
@@ -101,7 +103,28 @@ export default defineComponent({
       isInMo.value,
       isPickup
     );
+    // for mo
+    const lastOrder = computed(() => {
+      return (todaysLast.value || {}).display
+    });
 
+    const disabledPickupTime = computed(() => {
+      if (isPickup.value) {
+        const now = Number(
+          moment(store.state.date).tz("Asia/Tokyo").format("HHmm")
+        );
+        const last = Number((todaysLast.value || {}).time || 0);
+        return now >= last;
+      }
+      return false;
+    })
+
+    ctx.emit("updateDisabledPickupTime", disabledPickupTime.value);
+    watch(disabledPickupTime, (v) => {
+      ctx.emit("updateDisabledPickupTime", v);
+    });
+    //
+    
     const days = computed(() => {
       return props.isDelivery
         ? deliveryAvailableDays.value
@@ -110,7 +133,7 @@ export default defineComponent({
 
     onMounted(() => {
       if (days.value.length > 0) {
-        time.value = days.value[0].times[0].time;
+        time.value = days.value[0]?.times[0]?.time;
       } else {
         ctx.emit("notAvailable", true);
       }
@@ -122,11 +145,11 @@ export default defineComponent({
           return time.value == t.time;
         })
       ) {
-        time.value = days.value[dayIndex.value].times[0].time;
+        time.value = days.value[dayIndex.value]?.times[0]?.time;
       }
     });
     watch(dayIndex, (newValue) => {
-      time.value = days.value[newValue].times[0].time;
+      time.value = days.value[newValue]?.times[0]?.time;
     });
     watch(time, () => {
       console.log("time changed");
@@ -143,7 +166,8 @@ export default defineComponent({
     return {
       // called by parent
       timeToPickup,
-
+      lastOrder,
+      
       availableDays: days,
 
       dayIndex,
