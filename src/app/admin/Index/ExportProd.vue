@@ -103,8 +103,8 @@ export default defineComponent({
         });
       };
 
-      //      for await (const restaurantId of props.restaurantLists) {
-      for await (const restaurantId of ["Nc51IWDVuidWOpvcnjqd"]) {
+      for await (const restaurantId of props.restaurantLists) {
+      // for await (const restaurantId of ["Nc51IWDVuidWOpvcnjqd"]) {
         const restaurant = props.restaurantItems[restaurantId] || {};
         const shopId = restaurant.shopId || restaurantId;
         csvData[shopId] = {};
