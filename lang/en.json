@@ -26,7 +26,7 @@
     "adminQRCode": "Confirmation QR Code",
     "name": "Online ordering service",
     "methodChangeAlert": "Change the ordering method? Items in your cart will be reset.",
-    "pickupLabel": "Takeaway",
+    "pickupLabel": "Takeaway Today",
     "admin": {
       "takeout": "Pre order",
       "pickup": "Takeaway",
@@ -458,7 +458,7 @@
     "searchRestaurant": "Search for restaurant",
     "moTagline": "FamilyMart's official layaway service that allows you to easily make purchases from your PC or smartphone.",
     "moDescription1": "You can order products that we do not normally carry.",
-    "moDescription2": "In-store pickup is available on the same day of order* or 3 days later.",
+    "moDescription2": "You can pick up your order at the store in an hour at the earliest.",
     "moDescription3": "*Only at certain stores​​"
   },
   "order": {
