@@ -105,7 +105,7 @@ export default defineComponent({
     );
     // for mo
     const lastOrder = computed(() => {
-      return (todaysLast.value || {}).display
+      return (todaysLast.value || {}).lastOrderDisplay;
     });
 
     const disabledPickupTime = computed(() => {

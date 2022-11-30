@@ -564,7 +564,7 @@ export default defineComponent({
       isPickup
     );
     const lastOrder = computed(() => {
-      return (todaysLast.value || {}).display
+      return (todaysLast.value || {}).lastOrderDisplay;
     });
     
     const disabledPickupTime = computed(() => {
