@@ -568,7 +568,6 @@ export default defineComponent({
     });
 
     const disabledPickupTime = computed(() => {
-      return true;
       if (isPickup.value) {
         const now = Number(
           moment(store.state.date).tz("Asia/Tokyo").format("HHmm")
