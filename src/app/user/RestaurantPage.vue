@@ -572,8 +572,8 @@ export default defineComponent({
         const now = Number(
           moment(store.state.date).tz("Asia/Tokyo").format("HHmm")
         );
-        const last = Number((todaysLast.value || {}).timeStr || 0);
-        return now >= last;
+        const last = Number((todaysLast.value || {}).lastOrderStr || 0);
+        return now > last;
       }
       return false;
     });

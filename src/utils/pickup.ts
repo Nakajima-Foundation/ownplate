@@ -111,13 +111,14 @@ export const usePickupTime = (
     const openSlot = openSlots.value[today % 7];
     if (openSlot) {
       const { time } = openSlot[openSlot.length - 1];
-      const lastOrder = time - shopInfo.moPickUpMinimumCookTime - 1;
+      const lastOrder = time - shopInfo.moPickUpMinimumCookTime;
       return {
         time,
         display: num2simpleFormatedTime(time),
         timeStr: num2simpleTime(time),
         lastOrder,
         lastOrderDisplay: num2simpleFormatedTime(lastOrder),
+        lastOrderStr: num2simpleTime(lastOrder),
       };
     }
     return null;
