@@ -534,6 +534,7 @@ export default defineComponent({
     const isInMo = useIsInMo(ctx.root);
 
     const defaultHowToReceive = (() => {
+      // for 333
       const rId = ctx.root.$route.params.restaurantId;
       if (store.state.carts[rId]) {
         const cart = store.state.carts[rId] || {};
