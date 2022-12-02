@@ -527,7 +527,7 @@ export default defineComponent({
     const cartItems = ref({});
     const selectedOptions = ref({});
 
-    const howtoreceive = ref("takeout");
+    const howtoreceive = ref(props.shopInfo.enableMoPickup ? "pickup" : "takeout");
     const store = ctx.root.$store;
 
     const multiple = store.getters.stripeRegion.multiple;
