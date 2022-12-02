@@ -527,12 +527,26 @@ export default defineComponent({
     const cartItems = ref({});
     const selectedOptions = ref({});
 
-    const howtoreceive = ref(props.shopInfo.enableMoPickup ? "pickup" : "takeout");
     const store = ctx.root.$store;
 
     const multiple = store.getters.stripeRegion.multiple;
 
     const isInMo = useIsInMo(ctx.root);
+
+    const defaultHowToReceive = (() => {
+      const rId = ctx.root.$route.params.restaurantId;
+      if (store.state.carts[rId]) {
+        const cart = store.state.carts[rId] || {};
+        if (cart.howtoreceive) {
+          return cart.howtoreceive;
+        }
+      }
+      if (props.shopInfo.enableMoPickup) {
+        return "pickup";
+      }
+      return "takeout";
+    })();
+    const howtoreceive = ref(defaultHowToReceive);
 
     const {
       category,
