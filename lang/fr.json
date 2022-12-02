@@ -37,7 +37,8 @@
       "pickup": "Takeaway now",
       "takeoutDesctiption": "Cliquez ici pour passer une commande",
       "pickupDesctiption": "Cliquez ici pour mettre un article en attente",
-      "pickupNote": "Les commandes à emporter ne peuvent pas être acceptées de {lastOrder} à 23:59. Veuillez passer votre commande après un certain temps."
+      "pickupNote": "Les commandes à emporter ne peuvent pas être acceptées de {lastOrder} à 23:59. Veuillez passer votre commande après un certain temps.",
+      "showOnlyInStock": "Show only in stock"
     }
   },
   "profile": {
