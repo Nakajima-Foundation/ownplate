@@ -117,7 +117,15 @@
 
             <!-- titles for omochikaeri -->
             <Titles :titleLists="titleLists" v-if="titleLists.length > 0" />
-
+            <div v-if="moSuspend && isInMo">
+              <div
+                class="mx-6 mt-3 mb-2 rounded-lg bg-red-700 bg-opacity-10 p-3 font-bold text-red-700 lg:mx-0"
+              >
+                {{ $t("mobileOrder.suspendMessage") }}
+              </div>
+              
+            </div>
+            
             <div v-if="moPickup && isInMo">
               <!-- Mo Pickup Suspend -->
 
