@@ -164,28 +164,11 @@
               </div>
             </div>
 
-            <!--在庫ありのみ表示 Toggle-->
-            <div v-if="false">
+            <!-- stock filter Toggle-->
+            <div v-if="showSubCategory && isPickup">
               <div class="mx-6 mt-4 lg:mx-0">
-                <!--State:Off-->
                 <label class="relative inline-flex cursor-pointer items-center">
-                  <input type="checkbox" value="" class="peer sr-only" />
-                  <div
-                    class="peer h-8 w-14 rounded-full bg-black bg-opacity-20 after:absolute after:top-1 after:left-[4px] after:h-6 after:w-6 after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-op-teal peer-checked:after:translate-x-full"
-                  ></div>
-                  <span
-                    class="ml-3 text-sm font-bold text-black text-opacity-60"
-                    >{{ $t("mobileOrder.shopInfo.showOnlyInStock") }}</span
-                  >
-                </label>
-                <!--State:On-->
-                <label class="relative inline-flex cursor-pointer items-center">
-                  <input
-                    type="checkbox"
-                    value=""
-                    class="peer sr-only"
-                    checked
-                  />
+                  <input type="checkbox" v-model="isFilterStock" class="peer sr-only" />
                   <div
                     class="peer h-8 w-14 rounded-full bg-black bg-opacity-20 after:absolute after:top-1 after:left-[4px] after:h-6 after:w-6 after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-op-teal peer-checked:after:translate-x-full"
                   ></div>
@@ -548,7 +531,8 @@ export default defineComponent({
       return "takeout";
     })();
     const howtoreceive = ref(defaultHowToReceive);
-
+    const isFilterStock = ref(false);
+    
     const {
       category,
       subCategory,
@@ -725,7 +709,20 @@ export default defineComponent({
     const itemLists = computed(() => {
       if (isInMo.value) {
         if (isPickup.value) {
-          return menus.value.sort((a, b) => {
+          return menus.value.filter((menu) => {
+            if (isFilterStock.value) {
+              const soldOutData = moSoldOutDataSet.value[menu.id] || {};
+              const isStock =
+                    !menu.soldOut &&
+                (!!soldOutData.forcePickupStock || !!soldOutData.isStock);
+              return isStock;
+            }
+            return true;
+          }).sort((a, b) => {
+            return a.itemName > b.itemName ? 1 : -1;
+          });
+          /*
+            .sort((a, b) => {
             const aSoldOutData = moSoldOutDataSet.value[a.id] || {};
             const aIsStock =
               !a.soldOut &&
@@ -741,7 +738,8 @@ export default defineComponent({
             }
 
             return aIsStock ? -1 : 1;
-          });
+            });
+          */
         } else {
           return menus.value.sort((a, b) => {
             return a.itemName > b.itemName ? 1 : -1;
@@ -1079,6 +1077,8 @@ export default defineComponent({
       moPickup,
       disabledPickupTime,
       lastOrder,
+
+      isFilterStock,
     };
   },
 });
