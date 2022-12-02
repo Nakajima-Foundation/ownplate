@@ -78,7 +78,7 @@
       "pickup": "本日受け取る",
       "takeoutDesctiption": "お店に無いものも最短3日後受け取り",
       "pickupDesctiption": "最短1時間後に店舗で受け取り",
-      "pickupNote": "{lastOrder}〜23:59は、ピックアップのご注文をお受けできません。時間をおいてご注文ください。"
+      "pickupNote": "ただいまの時間は「本日受け取り」をご利用できません。ご注文可能な時間帯は、00:00から{lastOrder}までとなります。"
     }
   },
   "profile": {
