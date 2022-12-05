@@ -32,30 +32,26 @@
         </div>
 
         <!-- Add / Sold Out Button -->
-        <div class="mx-1 mb-2 flex items-center justify-end sm:mx-2">
-          <div
-            class="mx-auto mt-0.5 text-center font-bold text-op-teal sm:text-xl"
-            v-if="quantities[0] > 0"
-          >
-            {{ quantities[0] }}
-          </div>
+        <div class="mx-1 mb-1 sm:mx-2 sm:mb-2">
           <div
             v-if="isSoldOut"
-            class="mx-1 mt-2 inline-flex h-7 w-full items-center justify-center rounded-sm bg-black bg-opacity-5"
+            class="mx-1 flex h-9 items-center text-xs font-bold leading-none text-black text-opacity-40 sm:text-sm"
           >
-            <div
-              class="text-xs font-bold tracking-tight text-black text-opacity-50"
-            >
-              {{ $t("sitemenu.soldOut") }}
-            </div>
+            {{ $t("mobileOrder.soldOut") }}
           </div>
-          <div
-            v-else
-            @click.stop="pushQuantities(0)"
-            class="inline-flex h-9 w-14 items-center justify-center rounded-full bg-op-teal bg-opacity-10"
-            :data-cart-product="item.id"
-          >
-            <i class="material-icons text-lg text-op-teal">add</i>
+          <div v-else class="flex justify-between">
+            <div
+              class="mx-1 flex h-9 items-center text-xs font-bold leading-none text-black sm:text-sm"
+            >
+              {{ $t("mobileOrder.inStock") }}
+            </div>
+            <div
+              @click.stop="pushQuantities(0)"
+              class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-op-teal bg-opacity-10"
+              :data-cart-product="item.id"
+            >
+              <i class="material-icons text-lg text-op-teal">add</i>
+            </div>
           </div>
         </div>
       </div>
@@ -90,35 +86,35 @@
           </template>
         </div>
 
-        <div class="mt-3 text-left font-bold text-black">
-          <Price :shopInfo="shopInfo" :menu="item" />
-        </div>
-
-        <div>
-          <div class="mt-3 flex">
-            <div
-              v-if="prices[0] > 0"
-              class="flex-1 text-right text-xs text-black"
-            >
-              {{ $t("sitemenu.subTotal")
-              }}<Price
-                :shopInfo="shopInfo"
-                :menu="{ price: prices[0], tax: item.tax }"
-              />
-            </div>
+        <div class="mt-3 flex justify-between">
+          <div class="text-left font-bold text-black">
+            <Price :shopInfo="shopInfo" :menu="item" />
+          </div>
+          <div v-if="isSoldOut" class="font-bold text-black text-opacity-40">
+            {{ $t("mobileOrder.soldOut") }}
+          </div>
+          <div v-else class="font-bold text-black">
+            {{ $t("mobileOrder.inStock") }}
           </div>
         </div>
 
-        <div
-          v-if="isSoldOut"
-          class="inline-flex h-9 w-full items-center justify-center rounded-sm bg-black bg-opacity-5"
-        >
-          <div class="text-sm font-bold text-black text-opacity-50">
-            {{ $t("sitemenu.soldOut") }}
+        <div class="mt-4 flex">
+          <div
+            v-if="prices[0] > 0"
+            class="flex-1 text-right text-xs text-black"
+          >
+            {{ $t("sitemenu.subTotal")
+            }}<Price
+              :shopInfo="shopInfo"
+              :menu="{ price: prices[0], tax: item.tax }"
+            />
           </div>
         </div>
 
-        <div v-else class="mt-2 flex items-center">
+        <!--カート増減ボタンのエリアに在庫なしの場合に表示するものがないので以下の1行は不要になるのですが、このv-ifを無くしてしまった場合のその下のv-elseの書き替えができなかったので、そのままにしました-->
+        <div v-if="isSoldOut" class="-mb-3"></div>
+
+        <div v-else class="mt-1 flex items-center">
           <div>
             <a
               @click="pullQuantities(0)"

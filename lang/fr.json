@@ -27,6 +27,8 @@
     "name": "Online ordering service",
     "methodChangeAlert": "Changer de méthode de commande ? Les articles de votre panier seront réinitialisés.",
     "pickupLabel": "Takeaway Today",
+    "soldOut": "Sold out",
+    "inStock": "In stock",
     "admin": {
       "takeout": "Pre order",
       "pickup": "Takeaway",
