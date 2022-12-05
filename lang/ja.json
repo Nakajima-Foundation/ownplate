@@ -47,6 +47,8 @@
     "name": "ネット注文サービス",
     "methodChangeAlert": "注文方法を変更します。カート内のアイテムはリセットされますが、よろしいでしょうか？",
     "pickupLabel": "本日受け取り可能",
+    "soldOut": "在庫なし",
+    "inStock": "在庫あり",
     "admin": {
       "takeout": "予約注文",
       "pickup": "ピックアップ",
