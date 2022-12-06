@@ -39,9 +39,10 @@
           >
             {{ $t("mobileOrder.soldOut") }}
           </div>
-          <div v-else class="flex justify-between">
+          <div v-else class="flex justify-end">
             <div
-              class="mx-1 flex h-9 items-center text-xs font-bold leading-none text-black sm:text-sm"
+              v-if="isPickup"
+              class="ml-1 mr-auto flex h-9 items-center text-xs font-bold leading-none text-black sm:text-sm"
             >
               {{ $t("mobileOrder.inStock") }}
             </div>
@@ -90,11 +91,13 @@
           <div class="text-left font-bold text-black">
             <Price :shopInfo="shopInfo" :menu="item" />
           </div>
-          <div v-if="isSoldOut" class="font-bold text-black text-opacity-40">
-            {{ $t("mobileOrder.soldOut") }}
-          </div>
-          <div v-else class="font-bold text-black">
-            {{ $t("mobileOrder.inStock") }}
+          <div v-if="isPickup">
+            <div v-if="isSoldOut" class="font-bold text-black text-opacity-40">
+              {{ $t("mobileOrder.soldOut") }}
+            </div>
+            <div v-else class="font-bold text-black">
+              {{ $t("mobileOrder.inStock") }}
+            </div>
           </div>
         </div>
 
@@ -111,7 +114,6 @@
           </div>
         </div>
 
-        <!--カート増減ボタンのエリアに在庫なしの場合に表示するものがないので以下の1行は不要になるのですが、このv-ifを無くしてしまった場合のその下のv-elseの書き替えができなかったので、そのままにしました-->
         <div v-if="isSoldOut" class="-mb-3"></div>
 
         <div v-else class="mt-1 flex items-center">
