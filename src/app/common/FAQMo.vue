@@ -47,13 +47,8 @@
           >
             {{ type1 }}
           </div>
-          <ul
-            class="mt-3 ml-4 list-outside list-disc text-sm leading-relaxed"
-          >
-            <li
-              v-for="(answer1, h) in faq.answers1"
-              :key="'answer_' + h"
-              >
+          <ul class="mt-3 ml-4 list-outside list-disc text-sm leading-relaxed">
+            <li v-for="(answer1, h) in faq.answers1" :key="'answer_' + h">
               {{ answer1 }}
             </li>
           </ul>
@@ -64,13 +59,8 @@
           >
             {{ type2 }}
           </div>
-          <ul
-            class="mt-3 ml-4 list-outside list-disc text-sm leading-relaxed"
-          >
-            <li
-              v-for="(answer2, f) in faq.answers2"
-              :key="'answer2_' + f"
-              >
+          <ul class="mt-3 ml-4 list-outside list-disc text-sm leading-relaxed">
+            <li v-for="(answer2, f) in faq.answers2" :key="'answer2_' + f">
               {{ answer2 }}
             </li>
           </ul>
