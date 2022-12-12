@@ -42,7 +42,7 @@ export default defineComponent({
         const res = await sendEmailVerification(auth.currentUser);
         console.log(res);
         sent.value = true;
-      } catch(e) {
+      } catch (e) {
         isError.value = true;
       } finally {
         isLoading.value = false;
@@ -52,7 +52,7 @@ export default defineComponent({
       sent,
       isError,
       isLoading,
-      
+
       send,
     };
   },

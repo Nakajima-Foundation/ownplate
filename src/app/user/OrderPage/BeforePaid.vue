@@ -221,7 +221,8 @@
                     disabledPickupTime ||
                     stripeSmallPayment ||
                     moSuspend ||
-                    isPaying || isPlacing
+                    isPaying ||
+                    isPlacing
                   "
                   @click="handlePayment(true)"
                   class="b-reset-tw"

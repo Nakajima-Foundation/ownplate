@@ -117,8 +117,10 @@ export default defineComponent({
       return (
         !!(
           shopInfo.value?.isSuspendPickup || groupSuspend.value.isSuspendPickup
-        ) && !moSuspend.value
-      ) && shopInfo.value.enableMoPickup;
+        ) &&
+        !moSuspend.value &&
+        shopInfo.value.enableMoPickup
+      );
     });
 
     onUnmounted(() => {
