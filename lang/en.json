@@ -774,6 +774,7 @@
     "needEmailVerification": "You need email verification",
     "sendVerificationCode": "Send verification code",
     "verificationCodeSent": "We sent email",
+    "verificationCodeError": "Failed. Try again later.",
     "viewAllOrders": "View All Orders from All Restaurants",
     "viewPage": "View Page",
     "viewOrders": "View Orders",

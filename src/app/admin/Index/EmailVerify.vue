@@ -4,7 +4,7 @@
       {{ $t("admin.needEmailVerification") }}
     </div>
     <div class="mb-2 text-center">
-      <o-button @click="send" class="b-reset-tw" disable="sent">
+      <o-button @click="send" class="b-reset-tw" :disabled="sent || isLoading">
         <div
           class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 font-bold text-red-600"
         >
@@ -14,6 +14,9 @@
     </div>
     <div class="text-center text-red-700" v-if="sent">
       {{ $t("admin.verificationCodeSent") }}
+    </div>
+    <div class="text-center text-red-700" v-if="isError">
+      {{ $t("admin.verificationCodeError") }}
     </div>
   </div>
 </template>
@@ -28,14 +31,28 @@ export default defineComponent({
     const user = useUser(ctx);
 
     const sent = ref(false);
+    const isError = ref(false);
+    const isLoading = ref(false);
+
     const send = async () => {
       console.log(auth.currentUser);
-      const res = await sendEmailVerification(auth.currentUser);
-      console.log(res);
-      sent.value = true;
+      try {
+        isLoading.value = true;
+        isError.value = false;
+        const res = await sendEmailVerification(auth.currentUser);
+        console.log(res);
+        sent.value = true;
+      } catch(e) {
+        isError.value = true;
+      } finally {
+        isLoading.value = false;
+      }
     };
     return {
       sent,
+      isError,
+      isLoading,
+      
       send,
     };
   },

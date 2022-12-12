@@ -859,6 +859,7 @@
     "needEmailVerification": "メールアドレスの確認が終わっていません。 ",
     "sendVerificationCode": "確認メール再送信",
     "verificationCodeSent": "送信しました",
+    "verificationCodeError": "送信できませんでした。しばらくして再度試してください",
     "viewAllOrders": "全飲食店の注文をまとめて確認",
     "viewPage": "ページを確認",
     "viewOrders": "注文を確認",
