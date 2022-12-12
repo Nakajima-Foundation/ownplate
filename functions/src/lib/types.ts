@@ -5,7 +5,7 @@ export interface orderCreatedData {
   orderId: string;
 }
 
-export interface CustomerInfoData {
+export interface customerInfoData {
   zip: string;
   prefectureId: number;
   address: string;
@@ -16,19 +16,16 @@ export interface orderPlacedData {
   restaurantId: string;
   orderId: string;
   tip: number;
-  sendSMS: boolean;
   timeToPickup: admin.firestore.Timestamp;
-  lng: string;
   memo: string;
-  customerInfo: CustomerInfoData;
+  payStripe: boolean;
+  customerInfo: customerInfoData;
 }
 
 export interface orderUpdateData {
   restaurantId: string;
   orderId: string;
   status: number;
-  timezone: string;
-  lng?: string;
   timeEstimated?: admin.firestore.Timestamp;
 }
 
@@ -42,6 +39,10 @@ export interface updateDataOnorderUpdate {
 
   timeEstimated?: admin.firestore.Timestamp;
   timePickupForQuery?: admin.firestore.Timestamp;
+
+  payment?: {
+    stripe: string;
+  };
 }
 
 export interface menuItem {
@@ -58,4 +59,96 @@ export interface menuItem {
   exceptHour: object;
   productId: string;
   tax: number;
+}
+
+export interface confirmIntentData {
+  restaurantId: string;
+  orderId: string;
+  timeEstimated?: admin.firestore.Timestamp;
+}
+
+export interface orderCancelData {
+  restaurantId: string;
+  orderId: string;
+}
+
+export interface newOrderData {
+  menuId: string;
+  index: number;
+}
+
+export interface orderChangeData {
+  restaurantId: string;
+  orderId: string;
+  newOrder: newOrderData[];
+}
+
+export interface orderCancelPaymentData {
+  restaurantId: string;
+  orderId: string;
+}
+
+export interface stripeOAuthConnectData {
+  code: string;
+}
+export interface stripeOAuthVerifyData {
+  account_id: string;
+}
+
+export interface stripeReceiptData {
+  restaurantId: string;
+  orderId: string;
+}
+
+export interface stripeUpdateCustomerData {
+  tokenId: string;
+  reuse: string; // ??
+}
+
+export interface lineValidateData {
+  code: string;
+  redirect_uri: string;
+}
+export interface liffAuthenticateData {
+  token: string;
+  liffIndexId: string;
+}
+
+export interface pingData {
+  restaurantId: string;
+  operationType: string;
+  pathName: string;
+}
+
+export interface subAccountInvitate {
+  email: string;
+  name: string;
+}
+
+export interface subAccountInvitationAcceptDeny {
+  messageId: string;
+}
+
+export interface subAccountDeleteChildData {
+  childUid: string;
+}
+
+export interface smaregiAuthData {
+  code: string;
+}
+
+export interface smaregiStoreListData {}
+export interface smaregiProductListData {
+  store_id: string;
+}
+
+export interface superTwilioCallData {
+  restaurantId: string;
+}
+
+export interface dispatchData {
+  cmd: string;
+  uid: string;
+  key: string;
+  value: boolean;
 }

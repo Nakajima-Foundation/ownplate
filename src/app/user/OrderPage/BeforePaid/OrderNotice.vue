@@ -7,7 +7,7 @@
         {{ $t("order.orderNotice") }}
       </div>
 
-      <div class="bg-white rounded-lg shadow p-4 mt-2">
+      <div class="mt-2 rounded-lg bg-white p-4 shadow">
         <div class="flex">
           <div class="mr-2">
             <i class="material-icons text-2xl text-red-700">error</i>

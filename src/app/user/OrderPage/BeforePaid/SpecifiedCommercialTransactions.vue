@@ -3,13 +3,13 @@
     <div class="text-xl font-bold text-black text-opacity-30">
       {{ $t("order.paymentAndCancellation") }}
     </div>
-    <div class="bg-white rounded-lg shadow p-4 mt-2">
+    <div class="mt-2 rounded-lg bg-white p-4 shadow">
       <div>
         <div class="text-sm font-bold text-black text-opacity-30">
           {{ $t("transactionsAct.phone") }}
         </div>
 
-        <div class="text-sm mt-1">
+        <div class="mt-1 text-sm">
           {{ shopInfo.phoneNumber }}
         </div>
       </div>
@@ -20,7 +20,7 @@
             {{ $t("transactionsAct.cancellation") }}
           </div>
 
-          <ul class="list-disc list-outside ml-5 text-sm mt-1">
+          <ul class="ml-5 mt-1 list-outside list-disc text-sm">
             <li>{{ $t("transactionsAct.cancellationDescription1") }}</li>
             <li>{{ $t("transactionsAct.cancellationDescription4") }}</li>
             <li>
@@ -40,7 +40,7 @@
             {{ $t("transactionsAct.cancellationMo") }}
           </div>
 
-          <ul class="list-disc list-outside ml-5 text-sm mt-1">
+          <ul class="ml-5 mt-1 list-outside list-disc text-sm">
             <li>{{ $t("transactionsAct.cancellationDescription1Mo") }}</li>
             <li>{{ $t("transactionsAct.cancellationDescription2Mo") }}</li>
             <li>{{ $t("transactionsAct.cancellationDescription4Mo") }}</li>
@@ -54,7 +54,7 @@
           <div class="text-sm font-bold text-black text-opacity-30">
             {{ $t("transactionsAct.payment") }}
           </div>
-          <ul class="list-disc list-outside ml-5 text-sm mt-1">
+          <ul class="ml-5 mt-1 list-outside list-disc text-sm">
             <li>{{ $t("transactionsAct.paymentDescriptionCardNote") }}</li>
           </ul>
         </div>
@@ -64,7 +64,7 @@
           <div class="text-sm font-bold text-black text-opacity-30">
             {{ $t("transactionsAct.paymentNoteMo") }}
           </div>
-          <ul class="list-disc list-outside ml-5 text-sm mt-1">
+          <ul class="ml-5 mt-1 list-outside list-disc text-sm">
             <li>
               {{ $t("transactionsAct.cancellationDescription5Mo") }}
               <a

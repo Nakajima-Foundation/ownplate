@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Restaurant Profile Photo and Name -->
-    <div class="mt-4 afterPaid">
+    <div class="afterPaid mt-4">
       <shop-header :shopInfo="shopInfo"></shop-header>
     </div>
 
@@ -13,7 +13,7 @@
     <LineButton :groupData="groupData" />
 
     <!-- Order Summary -->
-    <div class="mt-6 mx-6 pt-6 pb-1 px-2 bg-white rounded-lg shadow">
+    <div class="mx-6 mt-6 rounded-lg bg-white px-2 pt-6 pb-1 shadow">
       <!-- Order Status -->
       <OrderStatus :orderInfo="orderInfo" :orderName="orderName" />
 
@@ -32,27 +32,27 @@
 
       <!-- Cancel Button -->
       <div class="mt-8 mb-5 text-center">
-        <b-button
+        <o-button
           v-if="just_paid"
           @click="handleCancelPayment"
           class="b-reset-tw"
         >
-          <div class="inline-flex justify-center items-center">
-            <i class="material-icons text-lg mr-2 text-red-700"
+          <div class="inline-flex items-center justify-center">
+            <i class="material-icons mr-2 text-lg text-red-700"
               >highlight_off</i
             >
             <div class="text-base font-bold text-red-700">
               {{ $t("order.cancelOrder") }}
             </div>
           </div>
-        </b-button>
+        </o-button>
       </div>
     </div>
 
     <!-- Canceled Message -->
     <div
       v-if="canceled"
-      class="mt-6 mx-6 bg-red-700 bg-opacity-10 rounded-lg p-4 text-center"
+      class="mx-6 mt-6 rounded-lg bg-red-700 bg-opacity-10 p-4 text-center"
     >
       <span class="text-base font-bold text-red-700">{{
         $t("order.cancelOrderComplete")
@@ -85,7 +85,7 @@
     </div>
 
     <!-- Order Body -->
-    <div class="mt-6 mx-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
+    <div class="mx-6 mt-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
       <!-- Left -->
       <div>
         <!-- Title -->
@@ -123,7 +123,7 @@
 
         <!-- Your Message to the Restaurant -->
         <template v-if="paid && hasMemo">
-          <div class="bg-white rounded-lg p-4 shadow mt-4">
+          <div class="mt-4 rounded-lg bg-white p-4 shadow">
             <div class="text-xs font-bold text-black text-opacity-60">
               {{ $t("order.orderMessage") }}
             </div>
@@ -134,7 +134,7 @@
         <!-- Canceled Message -->
         <div
           v-if="canceled"
-          class="mt-6 bg-red-700 bg-opacity-10 rounded-lg p-4 text-center"
+          class="mt-6 rounded-lg bg-red-700 bg-opacity-10 p-4 text-center"
         >
           <span class="text-base font-bold text-red-700">{{
             $t("order.cancelOrderComplete")
@@ -148,15 +148,15 @@
 
         <!-- View Menu Page Button -->
         <div v-if="paid" class="mt-6 text-center">
-          <b-button class="b-reset-tw" @click="handleOpenMenu">
+          <o-button class="b-reset-tw" @click="handleOpenMenu">
             <div
-              class="inline-flex justify-center items-center h-12 px-6 rounded-full border-2 border-op-teal"
+              class="inline-flex h-12 items-center justify-center rounded-full border-2 border-op-teal px-6"
             >
               <div class="text-base font-bold text-op-teal">
                 {{ $t("order.menu") }}
               </div>
             </div>
-          </b-button>
+          </o-button>
         </div>
       </div>
 
@@ -184,6 +184,7 @@
                 :shopInfo="shopInfo"
                 :isDelivery="orderInfo.isDelivery"
                 :mode="mode"
+                :isPickup="isPickup"
                 :paymentInfo="paymentInfo"
               />
             </div>
@@ -201,7 +202,7 @@
               }}
             </div>
 
-            <div class="bg-white rounded-lg shadow p-4 mt-2 text-center">
+            <div class="mt-2 rounded-lg bg-white p-4 text-center shadow">
               <qrcode
                 :value="urlAdminOrderPage"
                 :options="{ width: 160 }"
@@ -234,7 +235,6 @@ import OrderStatus from "@/app/user/OrderPage/AfterPaid/OrderStatus.vue";
 import Receipt from "@/app/user/OrderPage/AfterPaid/Receipt.vue";
 import Pickup from "@/app/user/OrderPage/AfterPaid/Pickup.vue";
 
-import { db } from "@/plugins/firebase";
 import { orderPlace } from "@/lib/firebase/functions";
 
 import { order_status } from "@/config/constant";
@@ -308,7 +308,7 @@ export default {
         this.shopInfo,
         this.restaurantId()
       );
-      console.log(data);
+      // console.log(data);
       dataLayer.push({ ecommerce: null }); // Clear the previous ecommerce object.
       dataLayer.push({
         event: "purchase",
@@ -363,6 +363,9 @@ export default {
     hasMemo() {
       return this.orderInfo && !isEmpty(this.orderInfo.memo);
     },
+    isPickup() {
+      return this.orderInfo && this.orderInfo.isPickup;
+    },
   },
   // end of computed
   methods: {
@@ -384,14 +387,14 @@ export default {
           try {
             this.$store.commit("setLoading", true);
             const { data } = await stripeCancelIntent({
-              restaurantId: this.restaurantId() + this.forcedError("cancel"),
+              restaurantId: this.restaurantId(),
               orderId: this.orderId,
             });
             this.sendRedunded();
-            console.log("cancel", data);
+            // console.log("cancel", data);
           } catch (error) {
             // BUGBUG: Implement the error handling code here
-            console.error(error.message, error.details);
+            // console.error(error.message, error.details);
             this.$store.commit("setErrorMessage", {
               code: "order.cancel",
               error,

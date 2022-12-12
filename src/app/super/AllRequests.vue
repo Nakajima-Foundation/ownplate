@@ -1,5 +1,5 @@
 <template>
-  <section class="section">
+  <section class="mx-auto max-w-full px-6 pb-12 pt-4">
     <back-button url="/s" />
     <h2>All Requests</h2>
     <table>
@@ -41,8 +41,8 @@
               !restaurantsObj[request.id].onTheList
             "
           >
-            <b-button @click="enableList(restaurantsObj[request.id].id)"
-              >Enable</b-button
+            <o-button @click="enableList(restaurantsObj[request.id].id)"
+              >Enable</o-button
             >
           </span>
           <span v-else> On the list </span>

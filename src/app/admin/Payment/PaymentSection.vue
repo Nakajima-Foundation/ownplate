@@ -1,16 +1,16 @@
 <template>
   <div>
-    <div class="text-xl font-bold text-black text-opacity-40 mb-2">
+    <div class="mb-2 text-xl font-bold text-black text-opacity-40">
       {{ $t("admin.payment") }}
     </div>
 
     <div
-      class="bg-white shadow rounded-lg p-4"
-      :class="unsetWarning ? 'border-red-700 border-2 border-solid' : ''"
+      class="rounded-lg bg-white p-4 shadow"
+      :class="unsetWarning ? 'border-2 border-solid border-red-700' : ''"
     >
       <!-- Online Payment -->
       <div>
-        <div class="text-base font-bold text-black text-opacity-60 pb-2">
+        <div class="pb-2 text-base font-bold text-black text-opacity-60">
           {{ $t("admin.payments.onlinePayment") }}
         </div>
         <div class="text-base text-black text-opacity-60">
@@ -19,15 +19,15 @@
 
         <!-- Stripe Not Connected -->
         <div v-if="!hasStripe">
-          <div class="text-sm font-bold text-red-700 text-center mt-2">
+          <div class="mt-2 text-center text-sm font-bold text-red-700">
             {{ $t("admin.payments.statusNotConnected") }}
           </div>
 
-          <div class="text-center mt-2">
+          <div class="mt-2 text-center">
             <a
               @click="handleLinkStripe"
-              class="h-12 rounded-full bg-op-teal inline-flex items-center px-8 shadow"
-              ><span class="text-white text-base font-bold">{{
+              class="inline-flex h-12 items-center rounded-full bg-op-teal px-8 shadow"
+              ><span class="text-base font-bold text-white">{{
                 $t("admin.payments.connectStripe")
               }}</span></a
             >
@@ -36,27 +36,27 @@
 
         <!-- Stripe Connected -->
         <div v-if="hasStripe">
-          <div class="text-sm font-bold text-green-600 text-center mt-2">
+          <div class="mt-2 text-center text-sm font-bold text-green-600">
             {{ $t("admin.payments.statusConnected") }}
           </div>
 
-          <div class="text-center mt-2">
+          <div class="mt-2 text-center">
             <a
               :href="dashboard"
               target="stripe"
-              class="h-12 rounded-full inline-flex items-center px-6 border-2 border-op-teal"
-              ><span class="text-op-teal text-base font-bold">{{
+              class="inline-flex h-12 items-center rounded-full border-2 border-op-teal px-6"
+              ><span class="text-base font-bold text-op-teal">{{
                 $t("admin.payments.openDashboard")
               }}</span></a
             >
           </div>
 
-          <div class="text-center mt-6">
+          <div class="mt-6 text-center">
             <a
               @click="handlePaymentAccountDisconnect"
-              class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
             >
-              <i class="material-icons text-lg text-red-700 mr-2">link_off</i>
+              <i class="material-icons mr-2 text-lg text-red-700">link_off</i>
               <span class="text-sm font-bold text-red-700">{{
                 $t("admin.payments.disconnectStripe")
               }}</span>
@@ -67,24 +67,24 @@
 
       <!-- On-site Payment -->
       <div
-        class="border-t-2 border-solid border-black border-opacity-10 pt-4 mt-4"
+        class="mt-4 border-t-2 border-solid border-black border-opacity-10 pt-4"
       >
-        <div class="text-base font-bold text-black text-opacity-60 pb-2">
+        <div class="pb-2 text-base font-bold text-black text-opacity-60">
           {{ $t("admin.payments.onsitePayment") }}
         </div>
         <div class="text-base text-black text-opacity-60">
           {{ $t("admin.payments.pleaseCheck") }}
         </div>
-        <div class="bg-black bg-opacity-5 rounded-lg p-4 mt-2">
+        <div class="mt-2 rounded-lg bg-black bg-opacity-5 p-4">
           <span class="text-sm text-red-700">{{
             $t("admin.payments.onsitePaymentNote")
           }}</span>
         </div>
 
-        <div class="text-center mt-4">
-          <b-checkbox v-model="inStorePayment">
+        <div class="mt-4 text-center">
+          <o-checkbox v-model="inStorePayment">
             {{ $t("admin.payments.enableOnsitePayment") }}
-          </b-checkbox>
+          </o-checkbox>
         </div>
       </div>
     </div>
@@ -112,7 +112,7 @@ export default {
     if (code) {
       const state = this.$route.query.state;
       const cookies = Cookie.parse(document.cookie);
-      console.log("mounted", code, state, cookies.stripe_state);
+      //console.log("mounted", code, state, cookies.stripe_state);
       if (state === cookies?.stripe_state) {
         this.$store.commit("setLoading", true);
         try {
@@ -150,6 +150,7 @@ export default {
           inStore: false,
         });
       }
+      this.$emit("updateUnsetWarning", this.unsetWarning);
     });
   },
   destroyed() {

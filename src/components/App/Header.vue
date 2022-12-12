@@ -1,11 +1,11 @@
 <template>
-  <div class="flex items-center h-12 bg-white">
+  <div class="flex h-12 items-center bg-white">
     <div class="w-12">
       <a
         @click="handleOpen()"
-        class="w-12 h-12 inline-flex justify-center items-center"
+        class="inline-flex h-12 w-12 items-center justify-center"
       >
-        <i class="material-icons text-black opacity-50 text-2xl">menu</i>
+        <i class="material-icons text-2xl text-black opacity-50">menu</i>
       </a>
     </div>
     <div class="flex-1 text-center">

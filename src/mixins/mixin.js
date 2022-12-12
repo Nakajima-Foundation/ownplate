@@ -1,5 +1,4 @@
 import Vue from "vue";
-import { db } from "@/plugins/firebase";
 import { firebaseConfig, ownPlateConfig } from "@/config/project";
 import { regionalSettings } from "@/config/constant";
 import moment from "moment";
@@ -7,8 +6,7 @@ import moment from "moment";
 import { defaultHeader } from "@/config/header";
 import { formatOption } from "@/utils/strings";
 
-import { arraySum, roundPrice, taxRate } from "@/utils/utils";
-import { GAPIKey } from "@/config/project";
+import { roundPrice, taxRate } from "@/utils/utils";
 
 const mixin = {
   methods: {
@@ -17,15 +15,9 @@ const mixin = {
     },
     resizedProfileImage(restaurant, size) {
       return (
-        (restaurant.images?.profile?.resizedImages || {})[size] ||
-        restaurant.restProfilePhoto
+        (restaurant?.images?.profile?.resizedImages || {})[size] ||
+        restaurant?.restProfilePhoto
       );
-    },
-    shareUrl() {
-      return (
-        location.protocol + "//" + location.host + "/r/" + this.restaurantId()
-      );
-      // return "https://omochikaeri.com/r/" + this.restaurantId();
     },
     num2time(num) {
       if (num === 0 || num === 60 * 24) {
@@ -51,10 +43,6 @@ const mixin = {
       }
       return this.$tc("shopInfo.am", 0, { formatedTime });
     },
-    forcedError(key) {
-      const debug = this.$route.query.error;
-      return debug === key ? "---forced-error---" : "";
-    },
     moment(value) {
       return moment(value);
     },
@@ -65,33 +53,6 @@ const mixin = {
       } else {
         console.log("order: call play");
       }
-    },
-    convOrderStateForText(orderState, orderInfo) {
-      if (orderInfo?.isEC) {
-        if (orderState === "ready_to_pickup") {
-          return "ready_to_shipping";
-        }
-        if (orderState === "transaction_complete") {
-          return "shipping_complete";
-        }
-      }
-      return orderState;
-    },
-    itemOptionCheckbox2options(itemOptionCheckbox) {
-      // HACK: Dealing with a special case (probalby a bug in the menu editor)
-      if (
-        itemOptionCheckbox &&
-        itemOptionCheckbox.length === 1 &&
-        !itemOptionCheckbox[0]
-      ) {
-        console.log("Special case: itemOptionCheckbox===['']");
-        return [];
-      }
-      return (itemOptionCheckbox || []).map((option) => {
-        return option.split(",").map((choice) => {
-          return choice.trim();
-        });
-      });
     },
     displayOption(option, shopInfo, item) {
       return formatOption(option, (price) => {
@@ -122,13 +83,16 @@ const mixin = {
       return this.$store.getters.liffId;
     },
     isAnonymous() {
+      // TODO
       return this.$store.getters.isAnonymous;
     },
     isLineUser() {
+      // TODO
       const claims = this.$store.state.claims;
       return !!claims?.line;
     },
     isLineEnabled() {
+      // TODO
       return !!ownPlateConfig.line;
     },
     isLocaleJapan() {
@@ -138,44 +102,12 @@ const mixin = {
       // TODO: why not ja ?
       return this.$i18n.locale !== "en" && this.$i18n.locale !== "fr";
     },
-    // for user agent detect
-    isIOS() {
-      return this.isOldIOS || this.isNewIOS;
-    },
-    isOldIOS() {
-      return /iP(hone|(o|a)d)/.test(navigator.userAgent);
-    },
-    isNewIOS() {
-      return this.isSafari && typeof document.ontouchstart !== "undefined";
-    },
-    isSafari() {
-      return /Safari/.test(navigator.userAgent);
-    },
-    isAndroid() {
-      // not implemented
-      return null;
-    },
     inLiff() {
       // BY path
       return !!this.$route.params.liffIndexId;
     },
     liffIndexId() {
       return this.$route.params.liffIndexId;
-    },
-    liff_base_path() {
-      return `/liff/${this.liffIndexId}`;
-    },
-    isInLine() {
-      // By UA
-      return /Line/.test(navigator.userAgent);
-    },
-    isInLIFF() {
-      return /LIFF/.test(navigator.userAgent);
-    },
-    isInFacebook() {},
-    isInTwitter() {},
-    isDev() {
-      return firebaseConfig.projectId === "ownplate-dev";
     },
     featureHeroMobile() {
       return this.regionalSetting.FeatureHeroMobile[
@@ -187,8 +119,14 @@ const mixin = {
         this.isLocaleJapan ? "ja" : "en"
       ];
     },
-    gmapKey() {
-      return GAPIKey;
+    isUser() {
+      return !!this.$store.getters.uidUser;
+    },
+    isNotSuperAdmin() {
+      return this.$store.getters.isNotSuperAdmin;
+    },
+    isNotOperator() {
+      return this.$store.getters.isNotOperator;
     },
   },
 };

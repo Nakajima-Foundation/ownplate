@@ -2,20 +2,20 @@
   <div>
     <div v-if="partners.length > 0" class="mt-2 mb-1">
       <div v-for="(partner, k) in partners" :key="k" class="flex">
-        <div class="flex-1 ml-4">
+        <div class="ml-4 flex-1">
           <img :src="`/partners/${partner.logo}`" class="w-12" />
           <span class="font-bold">
             {{ partner.name }}
           </span>
         </div>
-        <div class="text-right font-bold mr-4" v-if="partner.ask">
+        <div class="mr-4 text-right font-bold" v-if="partner.ask">
           <a href="#" @click="openContact()">サポート問い合わせ</a>
         </div>
       </div>
     </div>
-    <b-modal :active.sync="isOpen" :width="488">
+    <o-modal :active.sync="isOpen" :width="488">
       <PartnersContact :id="(partners[0] || {}).id" />
-    </b-modal>
+    </o-modal>
   </div>
 </template>
 <script lang="ts">

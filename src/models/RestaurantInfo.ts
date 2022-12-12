@@ -23,13 +23,21 @@ export interface RestaurantInfoData {
 
   lineUrl: string;
   instagramUrl: string;
+  uberEatsUrl: string;
   orderNotice: string;
   orderThanks: string;
+
   phoneCall: boolean;
   enablePreline: boolean;
   emailNotification: boolean;
-  enablePrinter: boolean;
-  enableDeliver: boolean;
+  enablePrinter: boolean; // for debug
+
+  isEC: boolean; // set by system
+  enableDelivery: boolean;
+  enableMoPickup: boolean; // set by sys
+  groupId: string; // set by sys
+  supportLiff: boolean;
+
   countryCode: string;
   acceptUserMessage: boolean;
   foodTax: number;
@@ -38,8 +46,14 @@ export interface RestaurantInfoData {
   openTimes: { [key: string]: any[] };
   businessDay: { [key: string]: any[] };
 
+  moOpenTimes: { [key: string]: any[] };
+  moBusinessDay: { [key: string]: any[] };
+
   pickUpMinimumCookTime: number;
   pickUpDaysInAdvance: number;
+
+  moPickUpMinimumCookTime: number;
+  moPickUpDaysInAdvance: number;
 
   deliveryMinimumCookTime: number;
   suspendUntil: any;

@@ -6,7 +6,7 @@
     <div v-else>
       <!-- Header -->
       <AdminHeader
-        class="mt-6 mx-6 lg:flex lg:items-center"
+        class="mx-6 mt-6 lg:flex lg:items-center"
         :shopInfo="shopInfo"
         backLink="/admin/restaurants/"
         :showSuspend="true"
@@ -26,7 +26,7 @@
 
         <!-- Date -->
         <div class="ml-6 mt-6 sm:ml-4">
-          <b-select v-model="dayIndex">
+          <o-select v-model="dayIndex">
             <option
               v-for="day in lastSeveralDays"
               :value="day.index"
@@ -38,7 +38,7 @@
                 $t("date.today")
               }}</span>
             </option>
-          </b-select>
+          </o-select>
         </div>
       </div>
 
@@ -60,7 +60,7 @@
       <div class="mx-6 mt-6">
         <router-link :to="`/admin/restaurants/${restaurantId()}/history`"
           ><div
-            class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
           >
             <div class="text-sm font-bold text-op-teal">
               {{ $t("admin.order.history") }}
@@ -208,6 +208,7 @@ export default defineComponent({
         return new Date(t.getTime() + offset * 3600 * 1000);
       };
       const queryConditions = (() => {
+        /*
         if (queryIsPlacedDate.value && props.isInMo) {
           // console.log(timeConv(lastSeveralDays.value[dayIndex.value].date, -15))
           // console.log(timeConv(lastSeveralDays.value[dayIndex.value].date, 9))
@@ -224,6 +225,7 @@ export default defineComponent({
             ),
           ];
         }
+        */
         const q = [
           where(queryKey, ">=", lastSeveralDays.value[dayIndex.value].date),
         ];

@@ -1,0 +1,138 @@
+html {
+  background-color: #f4f4f5;
+}
+
+body {
+  font-family: sans-serif !important;
+  background: #f7f8fb;
+}
+
+div,
+span {
+  word-break: break-word;
+}
+
+.columns.is-gapless:not(:last-child) {
+  margin-bottom: 0;
+}
+
+.columns,
+.column {
+  margin: 0;
+  padding: 0;
+}
+
+.box:not(:last-child),
+.content:not(:last-child),
+.notification:not(:last-child),
+.progress:not(:last-child),
+.table:not(:last-child),
+.table-container:not(:last-child),
+.title:not(:last-child),
+.subtitle:not(:last-child),
+.block:not(:last-child),
+.highlight:not(:last-child),
+.breadcrumb:not(:last-child),
+.level:not(:last-child),
+.list:not(:last-child),
+.message:not(:last-child),
+.tabs:not(:last-child) {
+  margin-bottom: 0;
+}
+
+/* Overwrites for Tailwind CSS */
+img,
+svg,
+canvas {
+  display: inline-block;
+}
+
+/* Keep this class for Tailwind CSS */
+.button.b-reset-tw {
+  padding: 0;
+  background-color: initial;
+  border: 0;
+  height: initial;
+}
+
+/* OwnPlate Dialog for b-model */
+.modal-background {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.modal .animation-content {
+  margin: 0;
+}
+
+/* OwnPlate Side Bar */
+.b-sidebar .sidebar-background {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.b-sidebar .sidebar-content.is-light {
+  background: #ffffff;
+}
+.b-sidebar .sidebar-content {
+  background: #ffffff;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
+  width: 288px;
+}
+
+
+.validation_ok,
+.validation_ok:hover {
+  @apply bg-pink-500 bg-opacity-10 text-pink-500;
+}
+
+.order_placed,
+.order_placed:hover {
+  @apply bg-yellow-500 bg-opacity-10 text-yellow-500;
+}
+
+.order_accepted,
+.order_accepted:hover {
+  @apply bg-blue-500 bg-opacity-10 text-blue-500;
+}
+
+.cooking_completed,
+.cooking_completed:hover {
+  @apply bg-green-600 bg-opacity-10 text-green-600;
+}
+
+.ready_to_pickup,
+.ready_to_pickup:hover {
+  @apply bg-green-600 bg-opacity-10 text-green-600;
+}
+
+.transaction_complete,
+.transaction_complete:hover {
+  @apply bg-purple-600 bg-opacity-10 text-purple-600;
+}
+
+.transaction_hide,
+.transaction_hide:hover {
+  @apply bg-purple-600 bg-opacity-10 text-purple-600;
+}
+
+.order_canceled,
+.order_canceled:hover {
+  @apply bg-red-700 bg-opacity-10 text-red-700;
+}
+
+.order_refunded,
+.order_refunded:hover {
+  @apply bg-pink-500 bg-opacity-10 text-pink-500;
+}
+
+.stripe_pending {
+  @apply text-yellow-500;
+}
+.stripe_confirmed {
+  @apply text-green-600;
+}
+.stripe_canceled {
+  @apply text-red-700;
+}
+.animation-content {
+    z-index: 100;
+    max-height: 90%;
+    overflow: scroll;
+}

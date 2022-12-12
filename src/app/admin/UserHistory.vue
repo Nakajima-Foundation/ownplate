@@ -5,7 +5,7 @@
     </template>
     <div v-else>
       <!-- Header -->
-      <div class="mt-6 mx-6 lg:flex lg:items-center">
+      <div class="mx-6 mt-6 lg:flex lg:items-center">
         <!-- Back and Preview -->
         <div class="flex space-x-4">
           <div class="flex-shrink-0">
@@ -21,12 +21,12 @@
         </div>
 
         <!-- Photo and Name -->
-        <div class="mt-4 lg:mt-0 lg:flex-1 lg:flex lg:items-center lg:mx-4">
+        <div class="mt-4 lg:mx-4 lg:mt-0 lg:flex lg:flex-1 lg:items-center">
           <div class="flex items-center">
-            <div class="flex-shrink-0 rounded-full bg-black bg-opacity-10 mr-4">
+            <div class="mr-4 flex-shrink-0 rounded-full bg-black bg-opacity-10">
               <img
                 :src="resizedProfileImage(shopInfo, '600')"
-                class="w-9 h-9 rounded-full object-cover"
+                class="h-9 w-9 rounded-full object-cover"
               />
             </div>
             <div class="text-base font-bold">
@@ -36,7 +36,7 @@
         </div>
 
         <!-- Notifications -->
-        <div class="mt-4 lg:mt-0 flex-shrink-0">
+        <div class="mt-4 flex-shrink-0 lg:mt-0">
           <notification-index :shopInfo="shopInfo" />
         </div>
       </div>
@@ -45,7 +45,7 @@
         <div class="text-xs font-bold">
           {{ $t("sms.phonenumber") }}
         </div>
-        <div class="text-base mt-1">
+        <div class="mt-1 text-base">
           <div>
             <a :href="nationalPhoneURI" class="text-base font-bold">{{
               nationalPhoneNumber
@@ -85,15 +85,15 @@
 
       <!-- More -->
       <div class="mx-6 mt-6 text-center" v-if="last !== undefined">
-        <b-button :disabled="last === null" @click="next" class="b-reset-tw">
+        <o-button :disabled="last === null" @click="next" class="b-reset-tw">
           <div
-            class="inline-flex justify-center items-center w-48 h-9 px-4 rounded-full bg-black bg-opacity-5"
+            class="inline-flex h-9 w-48 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
           >
             <div class="text-sm font-bold text-op-teal">
               {{ $t("admin.order.more") }}
             </div>
           </div>
-        </b-button>
+        </o-button>
       </div>
     </div>
   </div>

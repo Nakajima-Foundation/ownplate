@@ -1,15 +1,19 @@
 <template>
-  <router-view
-    v-if="shopInfo.restaurantId"
-    :shopInfo="shopInfo"
-    :paymentInfo="paymentInfo"
-    :deliveryData="deliveryData"
-    :mode="mode"
-    :moPrefix="moPrefix"
-    :notFound="notFound"
-    :groupData="groupData"
-  />
-  <NotFound v-else-if="notFound" />
+  <div>
+    <router-view
+      v-if="shopInfo.restaurantId"
+      :shopInfo="shopInfo"
+      :paymentInfo="paymentInfo"
+      :deliveryData="deliveryData"
+      :mode="mode"
+      :moPrefix="moPrefix"
+      :moSuspend="moSuspend"
+      :moPickupSuspend="moPickupSuspend"
+      :notFound="notFound"
+      :groupData="groupData"
+    />
+    <NotFound v-else-if="notFound" />
+  </div>
 </template>
 
 <script>
@@ -53,8 +57,7 @@ export default defineComponent({
     const restaurant_detacher = onSnapshot(
       doc(db, `restaurants/${restaurantId.value}`),
       async (restaurant) => {
-        const restaurant_data = restaurant.data();
-        shopInfo.value = restaurant_data || {};
+        shopInfo.value = restaurant.data() || {};
         const exist_and_public =
           restaurant.exists() &&
           !shopInfo.value.deletedFlag &&
@@ -74,7 +77,7 @@ export default defineComponent({
         })();
 
         if (!notFound.value) {
-          const uid = restaurant_data.uid;
+          const uid = shopInfo.value.uid;
           getDoc(doc(db, `/admins/${uid}/public/payment`)).then((snapshot) => {
             paymentInfo.value = snapshot.data() || {};
           });
@@ -92,17 +95,44 @@ export default defineComponent({
         console.log("no restaurant");
       }
     );
-    const detachers = [restaurant_detacher];
+
+    const groupSuspend = ref({});
+    if (props.groupData?.groupId) {
+      onSnapshot(
+        doc(db, `groups/${props.groupData?.groupId}/groupConfig/suspend`),
+        (snapshot) => {
+          console.log(snapshot.data());
+          groupSuspend.value = snapshot.data() || {};
+        }
+      );
+    }
+
+    const moSuspend = computed(() => {
+      return !!(
+        shopInfo.value?.isSuspendAllOrder ||
+        groupSuspend.value.isSuspendAllOrder
+      );
+    });
+    const moPickupSuspend = computed(() => {
+      return (
+        !!(
+          shopInfo.value?.isSuspendPickup || groupSuspend.value.isSuspendPickup
+        ) && !moSuspend.value
+      );
+    });
+
     onUnmounted(() => {
-      if (detachers) {
-        detachers.map((detacher) => {
-          detacher();
-        });
+      if (restaurant_detacher) {
+        restaurant_detacher();
       }
     });
     return {
       mode,
       moPrefix,
+
+      moSuspend,
+      moPickupSuspend,
+
       shopInfo,
       paymentInfo,
       deliveryData,

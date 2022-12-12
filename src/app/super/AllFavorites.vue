@@ -1,10 +1,10 @@
 <template>
-  <div class="mt-6 mx-6">
+  <div class="mx-6 mt-6">
     <div>
       <div v-for="(review, key) in reviews">
         <img
           :src="resizedProfileImage(review, '600')"
-          class="w-12 h-12 rounded-full object-cover"
+          class="h-12 w-12 rounded-full object-cover"
         />
         <router-link :to="`/r/${review.restaurantId}`">
           {{ review.restaurantName }}
@@ -14,7 +14,7 @@
       </div>
     </div>
     <div v-if="last">
-      <b-button @click="nextLoad">more</b-button>
+      <o-button @click="nextLoad">more</o-button>
     </div>
   </div>
 </template>

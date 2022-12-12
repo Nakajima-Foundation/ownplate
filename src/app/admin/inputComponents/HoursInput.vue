@@ -1,8 +1,8 @@
 <template>
   <div class="flex items-center">
     <div>
-      <b-field :type="type">
-        <b-select
+      <o-field :variant="variant">
+        <o-select
           v-model="value.start"
           :disabled="disabled"
           @input="updateValue"
@@ -14,13 +14,13 @@
           >
             {{ timeItem }}
           </option>
-        </b-select>
-      </b-field>
+        </o-select>
+      </o-field>
     </div>
     <div class="px-2">-</div>
     <div>
-      <b-field :type="type">
-        <b-select v-model="value.end" :disabled="disabled" @input="updateValue">
+      <o-field :variant="variant">
+        <o-select v-model="value.end" :disabled="disabled" @input="updateValue">
           <option
             v-for="(timeItem, index) of timeList"
             :key="timeItem"
@@ -28,8 +28,8 @@
           >
             {{ timeItem }}
           </option>
-        </b-select>
-      </b-field>
+        </o-select>
+      </o-field>
     </div>
   </div>
 </template>
@@ -42,7 +42,7 @@ export default {
       type: Boolean,
       required: true,
     },
-    type: {
+    variant: {
       type: String,
       required: true,
     },

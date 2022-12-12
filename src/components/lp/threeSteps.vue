@@ -3,7 +3,7 @@
     <div class="column is-narrow w-6"></div>
     <!-- Center Column -->
     <div class="column">
-      <div class="align-center">
+      <div class="text-center">
         <h2>{{ $t("lp.easy3Steps") }}</h2>
       </div>
     </div>

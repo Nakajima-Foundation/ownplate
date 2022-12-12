@@ -1,18 +1,18 @@
 <template>
   <div>
-    <div class="text-sm font-bold pb-2">
+    <div class="pb-2 text-sm font-bold">
       {{ $t(titleKey) }}
       <span class="text-red-700" v-if="required === true">*</span>
     </div>
-    <b-field :type="error.length > 0 ? 'is-danger' : 'is-success'">
-      <b-input
+    <o-field :variant="error.length > 0 ? 'danger' : 'success'">
+      <o-input
         :value="value"
         :type="type"
         :placeholder="$t(placeholder)"
         @input="input"
         :maxlength="maxlength"
-      ></b-input>
-    </b-field>
+      ></o-input>
+    </o-field>
   </div>
 </template>
 

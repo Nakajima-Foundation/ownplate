@@ -1,5 +1,5 @@
 <template>
-  <section class="section">
+  <section class="mx-auto max-w-full px-6 pb-12 pt-4">
     <back-button url="/s" />
     <h2>All Admins</h2>
     <table>
@@ -34,17 +34,17 @@
         <td style="padding-right: 8px" v-else>{{ payment(admin).stripe }}</td>
         <td style="padding-right: 8px">
           {{ capabilities(admin).jcb_payments }}
-          <b-button v-if="showActivate(admin)" @click="activate(admin)"
-            >Activate</b-button
+          <o-button v-if="showActivate(admin)" @click="activate(admin)"
+            >Activate</o-button
           >
         </td>
       </tr>
     </table>
     <div>
-      <b-button @click="updateQuery">
+      <o-button @click="updateQuery">
         <span v-if="last">Next</span>
         <span v-else>Top</span>
-      </b-button>
+      </o-button>
     </div>
   </section>
 </template>

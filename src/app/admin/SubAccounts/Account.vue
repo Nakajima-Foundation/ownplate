@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Header -->
-    <div class="mt-6 mx-6 lg:flex lg:items-center">
+    <div class="mx-6 mt-6 lg:flex lg:items-center">
       <!-- Back and Preview -->
       <div class="flex space-x-4">
         <back-button url="/admin/subaccounts/" />
@@ -14,10 +14,10 @@
         <span class="text-base font-bold">
           {{ $t("admin.subAccounts.name") }}
         </span>
-        <b-input
+        <o-input
           v-model="name"
           :placeholder="$t('admin.subAccounts.enterName')"
-        ></b-input>
+        ></o-input>
 
         <span class="text-base font-bold">
           {{ $t("admin.subAccounts.email") }} </span
@@ -30,20 +30,20 @@
           )
         }}<br />
       </div>
-      <div class="bg-white shadow rounded-lg p-4 mt-2">
+      <div class="mt-2 rounded-lg bg-white p-4 shadow">
         <span class="font-bold">{{
           $t("admin.subAccounts.selectRestaurant")
         }}</span>
         <div v-for="(restaurant, k) in restaurants" :key="k">
-          <b-checkbox v-model="restaurantListObj[restaurant.id]">{{
+          <o-checkbox v-model="restaurantListObj[restaurant.id]">{{
             restaurant.restaurantName
-          }}</b-checkbox>
+          }}</o-checkbox>
         </div>
       </div>
       <div class="mt-2">
-        <b-button @click="saveList">
+        <o-button @click="saveList">
           {{ $t("editCommon.save") }}
-        </b-button>
+        </o-button>
       </div>
     </div>
   </div>

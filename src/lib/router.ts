@@ -110,6 +110,10 @@ const mopath = mo_prefixes
             path: prePath + "/privacy",
             component: "common/Privacy.vue",
           },
+          {
+            path: prePath + "/faq",
+            component: "common/FAQMo.vue",
+          },
         ],
       },
     ];
@@ -307,10 +311,6 @@ export const customRoutes: CustomRoute[] = [
             component: "admin/ManageLine.vue",
           },
           {
-            path: "traces",
-            component: "admin/TraceList.vue",
-          },
-          {
             path: "qrcode",
             component: "admin/QRCodePage.vue",
           },
@@ -329,6 +329,10 @@ export const customRoutes: CustomRoute[] = [
         name: "admin-orders-allorders",
         path: "orders",
         component: "admin/AllOrders.vue",
+      },
+      {
+        path: "report",
+        component: "admin/ReportAllPage.vue",
       },
       {
         name: "admin-subaccounts-accounts",
@@ -451,18 +455,6 @@ export const customRoutes: CustomRoute[] = [
   {
     path: "/callback/line",
     component: "auth/LineCallback.vue",
-  },
-  {
-    path: "/callback/track",
-    component: "auth/TrackCallback.vue",
-  },
-  {
-    path: "/t/:traceId",
-    component: "trace/Record.vue",
-  },
-  {
-    path: "/t",
-    component: "trace/Record.vue",
   },
   {
     path: "/l/:urlKey",

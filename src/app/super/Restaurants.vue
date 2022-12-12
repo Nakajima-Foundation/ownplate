@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section class="section">
+    <section class="mx-auto max-w-full px-6 pb-12 pt-4">
       <back-button :url="backUrl" />
     </section>
     <div v-if="restaurantData === null">loading</div>
@@ -21,8 +21,9 @@
 import { db } from "@/plugins/firebase";
 import { superTwilio } from "@/lib/firebase/functions";
 
-import BackButton from "@/components/BackButton";
 import superMixin from "@/mixins/SuperMixin";
+
+import BackButton from "@/components/BackButton.vue";
 
 export default {
   mixins: [superMixin],

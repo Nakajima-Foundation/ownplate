@@ -14,19 +14,16 @@ if (!admin.apps.length) {
 
 exportIfNeeded("api", "api", exports);
 
-exportIfNeeded("superDispatch", "superDispatch", exports);
-exportIfNeeded("superTwilio", "superTwilio", exports);
+exportIfNeeded("superDispatch", "super/superDispatch", exports);
+exportIfNeeded("superTwilio", "super/superTwilio", exports);
 
 exportIfNeeded("accountDelete", "accountDelete", exports);
 
-exportIfNeeded("lineVerifyFriend", "line/lineVerifyFriend", exports);
-exportIfNeeded("lineValidate", "lineValidate", exports);
-exportIfNeeded("lineAuthenticate", "lineAuthenticate", exports);
-exportIfNeeded("lineSetCustomClaim", "line/lineSetCustomClaim", exports);
-exportIfNeeded("liffAuthenticate", "liffAuthenticate", exports); // jp
-exportIfNeeded("traceProcess", "traceProcess", exports);
+exportIfNeeded("lineVerifyFriend", "line/lineVerifyFriend", exports); // by user profile
+exportIfNeeded("lineValidate", "line/lineValidate", exports); // callback, user and admin
 
-exportIfNeeded("wasOrderCreatedJp", "order/orderCreatedJp", exports); // jp
+exportIfNeeded("liffAuthenticate", "line/liffAuthenticate", exports); // liff jp
+
 exportIfNeeded("orderCreatedJp", "order/orderCreatedJp", exports); // jp
 exportIfNeeded("orderUpdateJp", "order/orderUpdateJp", exports);
 exportIfNeeded("orderPlaceJp", "order/orderPlaceJp", exports);
@@ -37,10 +34,10 @@ exportIfNeeded("stripeConnect", "stripe/stripeConnect", exports);
 exportIfNeeded("stripeDisconnect", "stripe/stripeDisconnect", exports);
 exportIfNeeded("stripeVerify", "stripe/stripeVerify", exports);
 
-exportIfNeeded("stripeCreateIntent", "stripe/stripeCreateIntent", exports);
-exportIfNeeded("stripeConfirmIntent", "stripe/stripeConfirmIntent", exports);
-exportIfNeeded("stripeCancelIntent", "stripe/stripeCancelIntent", exports);
+exportIfNeeded("stripeCreateIntent", "stripe/stripeCreateIntent", exports); // TODO REMOVE
+exportIfNeeded("stripeConfirmIntent", "stripe/stripeConfirmIntent", exports); // TODO REMOVE
 
+exportIfNeeded("stripeCancelIntent", "stripe/stripeCancelIntent", exports);
 exportIfNeeded("stripePaymentCancelIntent", "stripe/stripePaymentCancelIntent", exports);
 
 exportIfNeeded("stripeUpdateCustomer", "stripe/stripeUpdateCustomer", exports);

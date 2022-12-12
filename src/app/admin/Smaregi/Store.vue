@@ -3,22 +3,22 @@
 
   <div v-else>
     <!-- Header -->
-    <div class="mt-6 mx-6 lg:flex lg:items-center">
+    <div class="mx-6 mt-6 lg:flex lg:items-center">
       <!-- Back and Preview -->
       <div class="flex space-x-4">
         <back-button url="/admin/smaregi/index" />
       </div>
 
       <!-- Title -->
-      <div class="mt-4 lg:mt-0 lg:flex-1 lg:flex lg:items-center lg:mx-4">
-        <span class="text-base font-bold text-xl">
+      <div class="mt-4 lg:mx-4 lg:mt-0 lg:flex lg:flex-1 lg:items-center">
+        <span class="text-base text-xl font-bold">
           {{ $t("admin.smaregi.index") }}
         </span>
       </div>
     </div>
 
     <div class="mx-6 mt-6">
-      <span class="text-base font-bold text-xl">
+      <span class="text-base text-xl font-bold">
         {{ storeData.storeName }}
       </span>
       <div v-if="isEdit">
@@ -31,24 +31,24 @@
           {{ product.price }}円 / 在庫数
           {{ (stockObj[product.productId] || {}).amount || 0 }} <br />
           おもちかえり:
-          <b-select
+          <o-select
             v-model="selectedMenu[key]"
             :class="
               selectedMenu[key] && duplicateElement[selectedMenu[key]]
-                ? 'border-red-700 border-2 border-solid'
+                ? 'border-2 border-solid border-red-700'
                 : ''
             "
           >
             <option v-for="menu in menus" :value="menu.id" :key="menu.id">
               {{ menu.itemName }} / {{ menu.price }} 円
             </option>
-          </b-select>
+          </o-select>
         </div>
         <div v-if="isDuplicateError" class="text-red-700">
           * メニューの指定が重複しています
         </div>
-        <b-button @click="saveMenus" :disabled="isDuplicateError"
-          >保存</b-button
+        <o-button @click="saveMenus" :disabled="isDuplicateError"
+          >保存</o-button
         >
       </div>
       <div v-else>
@@ -68,7 +68,7 @@
               {{ menuObj[selectedMenu[key]].price }}円</span
             >
           </div>
-          <b-button @click="isEdit = true">編集</b-button>
+          <o-button @click="isEdit = true">編集</o-button>
         </div>
       </div>
     </div>
@@ -146,7 +146,6 @@ export default {
     });
 
     const { data } = await smaregiProductList({
-      client_id: smaregi.clientId,
       store_id: this.storeId,
     });
     this.productList = data.res;

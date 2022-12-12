@@ -2,17 +2,17 @@
   <div>
     <!-- Item Card -->
     <div
-      class="bg-white rounded-lg shadow"
+      class="rounded-lg bg-white shadow"
       :class="totalQuantity > 0 ? 'border-2 border-op-teal' : ''"
     >
       <div @click="toggleMenuFlag()" class="flow-root cursor-pointer">
-        <div class="p-4 float-right">
+        <div class="float-right p-4">
           <!-- Image -->
           <div v-if="smallimage" class="pb-2">
             <img
               @click.stop="openImage()"
               :src="smallimage"
-              class="w-24 h-24 rounded object-cover"
+              class="h-24 w-24 rounded object-cover"
               @error="smallImageErrorHandler"
             />
           </div>
@@ -21,7 +21,7 @@
           <div>
             <div
               v-if="isSoldOut"
-              class="inline-flex justify-center items-center h-9 rounded-full w-24 bg-red-700 bg-opacity-10"
+              class="inline-flex h-9 w-24 items-center justify-center rounded-full bg-red-700 bg-opacity-10"
             >
               <div class="text-sm font-bold text-red-700">
                 {{ $t("sitemenu.soldOut") }}
@@ -30,7 +30,7 @@
             <div
               v-else
               @click.stop="pushQuantities(0)"
-              class="inline-flex justify-center items-center h-9 rounded-full w-24 bg-op-teal bg-opacity-10 cardAdd"
+              class="cardAdd inline-flex h-9 w-24 items-center justify-center rounded-full bg-op-teal bg-opacity-10"
               :data-cart-product="item.id"
             >
               <div class="text-sm font-bold text-op-teal">
@@ -70,7 +70,7 @@
         </div>
       </div>
       <div class="p-4" v-if="menuPickupData.hasExceptData">
-        <div class="bg-black bg-opacity-5 rounded-lg p-4">
+        <div class="rounded-lg bg-black bg-opacity-5 p-4">
           <div v-if="menuPickupData.hasExceptDay">
             &#8251;
             <span
@@ -97,10 +97,10 @@
       <!-- Item Order Details -->
       <div
         v-if="openMenuFlag"
-        class="border-t-2 border-solid border-black border-opacity-10 mt-0 mx-4 pb-4"
+        class="mx-4 mt-0 border-t-2 border-solid border-black border-opacity-10 pb-4"
       >
         <!-- Share Button -->
-        <div class="text-center mt-2">
+        <div class="mt-2 text-center">
           <share-popup
             :shopInfo="shopInfo"
             :mode="mode"
@@ -115,21 +115,21 @@
             <div class="text-xs">
               {{ $t("sitemenu.options") }}
             </div>
-            <div class="grid grid-cols-1 space-y-2 mt-2">
+            <div class="mt-2 grid grid-cols-1 space-y-2">
               <div
                 v-for="(option, index) in options"
                 :key="index"
-                class="bg-black bg-opacity-5 rounded-lg p-4"
+                class="rounded-lg bg-black bg-opacity-5 p-4"
               >
                 <div v-if="option.length === 1" class="field">
-                  <b-checkbox v-model="selectedOptions[quantityKey][index]"
+                  <o-checkbox v-model="selectedOptions[quantityKey][index]"
                     ><div class="text-sm font-bold">
                       {{ displayOption(option[0], shopInfo, item) }}
-                    </div></b-checkbox
+                    </div></o-checkbox
                   >
                 </div>
                 <div v-else class="field">
-                  <b-radio
+                  <o-radio
                     v-for="(choice, index2) in option"
                     v-model="selectedOptions[quantityKey][index]"
                     :name="`${item.id}_${quantityKey}_${index}`"
@@ -137,7 +137,7 @@
                     :key="`${quantityKey}_${index2}`"
                     ><div class="text-sm font-bold">
                       {{ displayOption(choice, shopInfo, item) }}
-                    </div></b-radio
+                    </div></o-radio
                   >
                 </div>
               </div>
@@ -148,7 +148,7 @@
           <div class="mt-4">
             <div v-if="isSoldOut">
               <div
-                class="flex justify-center items-center h-9 rounded-full bg-red-700 bg-opacity-10"
+                class="flex h-9 items-center justify-center rounded-full bg-red-700 bg-opacity-10"
               >
                 <div class="text-sm font-bold text-red-700">
                   {{ $t("sitemenu.soldOut") }}
@@ -180,7 +180,7 @@
                 <div>
                   <a
                     @click="pullQuantities(quantityKey)"
-                    class="inline-flex justify-center items-center h-9 w-24 rounded-full bg-red-700 bg-opacity-10 removeCart"
+                    class="removeCart inline-flex h-9 w-24 items-center justify-center rounded-full bg-red-700 bg-opacity-10"
                     :disabled="quantities[quantityKey] === 0"
                     :data-cart-product="item.id"
                   >
@@ -193,7 +193,7 @@
                 <div>
                   <a
                     @click="pushQuantities(quantityKey)"
-                    class="inline-flex justify-center items-center h-9 w-24 rounded-full bg-op-teal bg-opacity-10 cardAdd"
+                    class="cardAdd inline-flex h-9 w-24 items-center justify-center rounded-full bg-op-teal bg-opacity-10"
                     :data-cart-product="item.id"
                   >
                     <i class="material-icons text-lg text-op-teal">add</i>
@@ -204,7 +204,7 @@
           </div>
 
           <div
-            class="border-t-2 border-solid border-black border-opacity-10 mt-4 pb-4"
+            class="mt-4 border-t-2 border-solid border-black border-opacity-10 pb-4"
             v-if="showMoreOption"
           ></div>
         </template>
@@ -220,9 +220,9 @@
             <div class="text-center">
               <a
                 @click="pushItem"
-                class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+                class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
               >
-                <i class="material-icons text-lg text-op-teal mr-2">add</i>
+                <i class="material-icons mr-2 text-lg text-op-teal">add</i>
                 <span class="text-sm font-bold text-op-teal">{{
                   $t("sitemenu.addDifferentOptionsItem")
                 }}</span>
@@ -234,24 +234,26 @@
     </div>
 
     <!-- Image Popup-->
-    <b-modal
+    <o-modal
       :active.sync="imagePopup"
       :width="488"
       scroll="keep"
       :on-cancel="closeImage"
     >
       <div class="px-2 text-center" @click.stop="closeImage()">
-        <img :src="image" class="rounded-lg shadow-lg"
-             @error="imageErrorHandler"
-             />
-        <div class="text-left text-white text-base font-bold mt-4">
+        <img
+          :src="image"
+          class="rounded-lg shadow-lg"
+          @error="imageErrorHandler"
+        />
+        <div class="mt-4 text-left text-base font-bold text-white">
           {{ title }}
         </div>
-        <div class="text-left text-white text-sm font-bold">
+        <div class="text-left text-sm font-bold text-white">
           <Price :shopInfo="shopInfo" :menu="item" />
         </div>
       </div>
-    </b-modal>
+    </o-modal>
   </div>
 </template>
 
@@ -264,8 +266,8 @@ import {
   onMounted,
 } from "@vue/composition-api";
 
-import Price from "@/components/Price";
-import SharePopup from "@/app/user/Restaurant/SharePopup";
+import Price from "@/components/Price.vue";
+import SharePopup from "@/app/user/Restaurant/SharePopup.vue";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 import { daysOfWeek } from "@/config/constant";
 
@@ -331,10 +333,6 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    moSoldOut: {
-      type: Boolean,
-      required: false,
-    },
   },
   emits: ["didOrderdChange"],
   setup(props, ctx) {
@@ -348,7 +346,7 @@ export default defineComponent({
     const basePath = useBasePath(ctx.root);
 
     const isSoldOut = computed(() => {
-      return !!props.item.soldOut || !!props.moSoldOut;
+      return !!props.item.soldOut;
     });
     const totalQuantity = computed(() => {
       return arraySum(props.quantities);
@@ -429,12 +427,11 @@ export default defineComponent({
     const openImage = () => {
       scrollToElementById(props.item.id);
       imagePopup.value = true;
-      if (props.mode !== "mo") {
-        const current = ctx.root.$router.history.current.path;
-        const to = basePath.value + "/r/" + restaurantId + (urlSuffix || "");
-        if (current !== to) {
-          ctx.root.$router.replace(to);
-        }
+
+      const current = ctx.root.$router.history.current.path;
+      const to = basePath.value + "/r/" + restaurantId + (urlSuffix || "");
+      if (current !== to) {
+        ctx.root.$router.replace(to);
       }
       analyticsUtil.sendViewItem(props.item, props.shopInfo, restaurantId);
     };
@@ -448,9 +445,7 @@ export default defineComponent({
       setTimeout(() => {
         scrollToElementById(props.item.id);
       }, 30);
-      if (props.mode !== "mo") {
-        ctx.root.$router.replace(basePath.value + "/r/" + restaurantId);
-      }
+      ctx.root.$router.replace(basePath.value + "/r/" + restaurantId);
     };
     const setQuantities = (key, newValue) => {
       const newQuantities = [...props.quantities];

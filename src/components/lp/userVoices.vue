@@ -2,14 +2,14 @@
   <div>
     <!-- User Voices Title -->
     <div
-      class="text-center mt-8 text-2xl font-bold text-black opacity-40 lg:text-3xl"
+      class="mt-8 text-center text-2xl font-bold text-black opacity-40 lg:text-3xl"
     >
       {{ $t("lp.customerVoice1") }}
       <br />{{ $t("lp.customerVoice2") }}
     </div>
 
     <!-- User Voices Hero -->
-    <div class="bg-white mt-6 mx-6 rounded-2xl p-6 lg:flex lg:space-x-6">
+    <div class="mx-6 mt-6 rounded-2xl bg-white p-6 lg:flex lg:space-x-6">
       <!-- User Face -->
       <div class="text-center lg:flex-shrink-0">
         <img src="/LP-UserVoice-Face-1.jpg" class="rounded-full" />
@@ -26,12 +26,12 @@
           >とよろこばれています。<span class="highlight">お心づけ</span
           >を入力頂けるお客様が多いのもうれしいですね。</span
         >
-        <div class="text-sm font-bold opacity-50 mt-4">
+        <div class="mt-4 text-sm font-bold opacity-50">
           新潟県 『サンドしないサンド＜かつ＞ 板谷様
         </div>
       </div>
       <!-- User Video -->
-      <div class="text-center mt-4 lg:mt-0 lg:flex-shrink-0">
+      <div class="mt-4 text-center lg:mt-0 lg:flex-shrink-0">
         <a
           href="https://www.youtube.com/watch?v=4VUGm2v6B7E"
           target="_blank"
@@ -40,11 +40,11 @@
           <div>
             <img
               src="/LP-UserVoice-Video-1.jpg"
-              class="rounded-lg w-64 touchable"
+              class="w-64 cursor-pointer rounded-lg"
             />
           </div>
-          <div class="inline-flex items-center mt-2">
-            <i class="material-icons text-op-teal text-2xl"
+          <div class="mt-2 inline-flex items-center">
+            <i class="material-icons text-2xl text-op-teal"
               >play_circle_filled</i
             >
             <span class="ml-1 text-base font-bold text-op-teal">{{
@@ -56,8 +56,8 @@
     </div>
 
     <!-- User Voices -->
-    <div class="mt-2 mx-6 grid grid-cols-1 gap-2 lg:grid-cols-3">
-      <div class="bg-white rounded-2xl px-6 pt-2 pb-5">
+    <div class="mx-6 mt-2 grid grid-cols-1 gap-2 lg:grid-cols-3">
+      <div class="rounded-2xl bg-white px-6 pt-2 pb-5">
         <i class="material-icons text-3xl opacity-50">format_quote</i>
         <span class="text-sm opacity-90">
           <span class="highlight">営業時間外</span
@@ -67,7 +67,7 @@
           >。夜中に次の日の注文が入っていたのは驚きです。</span
         >
       </div>
-      <div class="bg-white rounded-2xl px-6 pt-2 pb-5">
+      <div class="rounded-2xl bg-white px-6 pt-2 pb-5">
         <i class="material-icons text-3xl opacity-50">format_quote</i>
         <span class="text-sm opacity-90">
           電話注文ではどうしても注文の聞き間違えがあり、お客さんにもご迷惑をかけていたのですが、オンラインになってから<span
@@ -76,7 +76,7 @@
           >、安心して調理に専念できます。</span
         >
       </div>
-      <div class="bg-white rounded-2xl px-6 pt-2 pb-5">
+      <div class="rounded-2xl bg-white px-6 pt-2 pb-5">
         <i class="material-icons text-3xl opacity-50">format_quote</i>
         <span class="text-sm opacity-90">
           注文が入った時に<span class="highlight">LINE</span>や<span
@@ -85,7 +85,7 @@
           >で知らせてくれるので、見落としがなくなりました！</span
         >
       </div>
-      <div class="bg-white rounded-2xl px-6 pt-2 pb-5">
+      <div class="rounded-2xl bg-white px-6 pt-2 pb-5">
         <i class="material-icons text-3xl opacity-50">format_quote</i>
         <span class="text-sm opacity-90">
           <span class="highlight">オンラインで手軽に決済</span
@@ -95,7 +95,7 @@
           >になりました。</span
         >
       </div>
-      <div class="bg-white rounded-2xl px-6 pt-2 pb-5">
+      <div class="rounded-2xl bg-white px-6 pt-2 pb-5">
         <i class="material-icons text-3xl opacity-50">format_quote</i>
         <span class="text-sm opacity-90">
           お客様の<span class="highlight">購入履歴もエクセルで確認</span
@@ -104,7 +104,7 @@
           >ができるようになりました。</span
         >
       </div>
-      <div class="bg-white rounded-2xl px-6 pt-2 pb-5">
+      <div class="rounded-2xl bg-white px-6 pt-2 pb-5">
         <i class="material-icons text-3xl opacity-50">format_quote</i>
         <span class="text-sm opacity-90">
           毎月の売上がエクセルで確認できて、記帳が楽になりました。<span
@@ -117,16 +117,16 @@
 
     <!-- Screenshots -->
     <div class="mx-6 mt-4 text-center">
-      <img src="/LP-Screenshots.png" class="rounded-2xl max-h-80 m-auto" />
+      <img src="/LP-Screenshots.png" class="m-auto max-h-80 rounded-2xl" />
     </div>
 
     <!-- More -->
-    <div class="text-center mt-4">
+    <div class="mt-4 text-center">
       <a href="/l/tips" target="_blank">
         <div
-          class="h-16 rounded-full bg-op-yellow inline-flex items-center px-8 shadow"
+          class="inline-flex h-16 items-center rounded-full bg-ownplate-yellow px-8 shadow hover:bg-opacity-30"
         >
-          <span class="text-black opacity-60 text-xl font-bold">{{
+          <span class="text-xl font-bold text-black opacity-60">{{
             $t("lp.moreDetails")
           }}</span>
         </div>

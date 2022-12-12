@@ -1,13 +1,13 @@
 <template>
   <div>
     <ownplate-service-image />
-    <div class="max-w-screen-xl mx-auto">
+    <div class="mx-auto max-w-screen-xl">
       <div class="mx-6 mt-6 text-center lg:grid lg:grid-cols-3 lg:gap-4">
         <!-- For Food Lovers -->
         <div class="mb-4 lg:mb-0">
           <entrance-buttons-food-lovers />
         </div>
-        <div class="bg-white rounded-lg lg:col-span-2">
+        <div class="rounded-lg bg-white lg:col-span-2">
           <!-- Order History -->
           <div class="pt-6 pb-6">
             <history-button />
@@ -30,8 +30,8 @@
       <!-- <askButtons /> -->
       <!-- <news /> -->
       <news />
-      <snslink />
     </div>
+    <snslink />
   </div>
 </template>
 <script>

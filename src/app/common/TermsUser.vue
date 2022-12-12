@@ -1,7 +1,7 @@
 <template>
-  <div class="text-base mx-auto max-w-screen-md px-6">
+  <div class="mx-auto max-w-screen-md px-6 text-base">
     <!-- Title -->
-    <div class="text-xl font-bold text-black text-opacity-40 mt-12">
+    <div class="mt-12 text-xl font-bold text-black text-opacity-40">
       おもちかえり.com サービス利用規約（ユーザー）
     </div>
 
@@ -389,16 +389,15 @@
         </p>
       </section>
 
-      <div class="text-right text-black text-opacity-40 mt-6">以上</div>
+      <div class="mt-6 text-right text-black text-opacity-40">以上</div>
 
-      <div class="text-black text-opacity-40 mt-6">
+      <div class="mt-6 text-black text-opacity-40">
         一般社団法人シンギュラリティ・ソサエティ
       </div>
-      <div class="text-black text-opacity-40 mt-1">2022年7月12日</div>
-      <div class="text-black text-opacity-40 mt-1">最終改定</div>
+      <div class="mt-1 text-black text-opacity-40">2022年7月12日</div>
+      <div class="mt-1 text-black text-opacity-40">最終改定</div>
 
-      <div class="text-black text-opacity-40 mt-6">SS：有本/武藤</div>
-
+      <div class="mt-6 text-black text-opacity-40">SS：有本/武藤</div>
     </div>
   </div>
 </template>
@@ -422,13 +421,13 @@ section {
   @apply text-sm text-black text-opacity-60;
 }
 h6 {
-  @apply text-base font-bold text-black text-opacity-40 mt-6;
+  @apply mt-6 text-base font-bold text-black text-opacity-40;
 }
 p {
   @apply mt-4;
 }
 ol {
-  @apply mt-4 list-decimal list-outside pl-6;
+  @apply mt-4 list-outside list-decimal pl-6;
 }
 li {
   @apply mt-2;

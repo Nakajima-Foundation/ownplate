@@ -1,34 +1,14 @@
 <template>
   <div>
-    <!-- Order Header Area -->
-    <div class="columns is-gapless">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-6"></div>
-      <!-- Center Column -->
-      <div class="column">
-        <div class="m-l-24 m-r-24">
-          <!-- Nav Bar -->
-          <div class="level">
-            <!-- Back Button and Restaurant Profile -->
-            <div class="level-left flex-1">
-              <!-- Back Button -->
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Right Gap -->
-      <div class="column is-narrow w-6"></div>
-    </div>
     <!-- Order Body Area -->
     <div class="columns is-gapless">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-6"></div>
       <!-- Center Column -->
       <div class="column">
-        <div class="m-l-24 m-r-16 m-t-24">
+        <div class="ml-6 mr-4 mt-6">
           <back-button :url="backUrl" />
+
           <h2>All Orders</h2>
-          <b-select v-model="orderState" class="m-t-24">
+          <o-select v-model="orderState" class="mt-6">
             <option
               v-for="status in orderStatus"
               :value="status.index"
@@ -36,19 +16,19 @@
             >
               {{ status.key ? $t("order.status." + status.key) : "----" }}
             </option>
-          </b-select>
+          </o-select>
           <!-- button -->
           <div>
-            <div class="inline-flex m-t-24">
+            <div class="mt-6 inline-flex">
               <div class="flex">
-                <b-select v-model="monthValue">
+                <o-select v-model="monthValue">
                   <option v-for="(month, k) in months" :value="month" :key="k">
                     {{ month }}
                   </option>
-                </b-select>
+                </o-select>
               </div>
               <div class="flex">
-                <b-button @click="LoadTillMonth">Load</b-button>
+                <o-button @click="LoadTillMonth">Load</o-button>
                 {{ isLoading ? "Loading..." : "" }}
               </div>
             </div>
@@ -63,6 +43,7 @@
                 :isSuperView="true"
                 @selected="orderSelected($event)"
                 :order="order"
+                :isInMo="false"
               />
               <router-link :to="`/s/restaurants/${order.restaurantId}`">
                 {{ order.restaurant.restaurantName }}
@@ -70,8 +51,8 @@
             </div>
           </div>
           <div>
-            <b-button @click="nextLoad" class="rounded-full m-t-16"
-              >more</b-button
+            <o-button @click="nextLoad" class="mt-4 rounded-full"
+              >more</o-button
             >
           </div>
 
@@ -81,14 +62,16 @@
             :fieldNames="fieldNames"
             :fileName="fileName"
           >
-            <b-button class="h-9 rounded-full m-t-16">
-              <span class="p-l-16 p-r-16">
-                <i class="material-icons c-primary s-18 m-r-8">save_alt</i>
-                <span class="c-primary t-button">{{
-                  $t("admin.report.download-csv")
+            <o-button class="mt-4 h-9 rounded-full">
+              <span class="pl-4 pr-4">
+                <i class="material-icons mr-2 !text-2xl text-op-teal"
+                  >save_alt</i
+                >
+                <span class="font-bold text-op-teal">{{
+                  $t("admin.report.download-csv-all")
                 }}</span>
               </span>
-            </b-button>
+            </o-button>
           </download-csv>
         </div>
       </div>

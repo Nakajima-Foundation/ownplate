@@ -14,13 +14,7 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from "@vue/composition-api";
 import { db } from "@/lib/firebase/firebase9";
-import {
-  doc,
-  getDoc,
-  onSnapshot,
-  query,
-  DocumentData,
-} from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 
 export default defineComponent({
   setup(_, ctx) {
@@ -34,7 +28,7 @@ export default defineComponent({
       return !!moPrefix.value;
     });
     if (moPrefix.value) {
-      getDoc(doc(db, `/groups/${moPrefix.value}`)).then((a) => {
+      onSnapshot(doc(db, `/groups/${moPrefix.value}`), (a) => {
         if (a.exists()) {
           groupData.value = a.data();
           if (groupData.value) {

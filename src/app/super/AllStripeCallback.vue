@@ -1,10 +1,10 @@
 <template>
-  <section class="section">
+  <section class="mx-auto max-w-full px-6 pb-12 pt-4">
     <back-button url="/s" />
     <h2>All Callbacks</h2>
     <div v-for="log in logs" :key="log.id">
       <router-link :to="`/s/callbacks/${log.uid}/${log.id}`">
-        {{ moment(log.created.toDate()).format("YYYY-MM-DD hh:mm") }}/{{
+        {{ moment(log.created.toDate()).format("YYYY-MM-DD HH:mm") }}/{{
           log.uid || log.data.uid
         }}/{{ stripeActionStrings[log.action] }}
       </router-link>

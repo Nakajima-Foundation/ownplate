@@ -1,6 +1,6 @@
 <template>
-  <div class="mx-6 mt-6 lg:max-w-2xl lg:mx-auto">
-    <div class="bg-white rounded-lg shadow mt-6 p-6">
+  <div class="mx-6 mt-6 lg:mx-auto lg:max-w-2xl">
+    <div class="mt-6 rounded-lg bg-white p-6 shadow">
       <template v-if="isExpired === null"> </template>
       <template v-else-if="isExpired">
         <div class="mt-6 text-center">
@@ -9,9 +9,9 @@
           </div>
           <router-link to="/admin/user/reset">
             <div
-              class="inline-flex justify-center items-center h-16 px-6 rounded-full border-2 border-op-teal"
+              class="inline-flex h-16 items-center justify-center rounded-full border-2 border-op-teal px-6"
             >
-              <i class="material-icons text-2xl text-op-teal mr-2">store</i>
+              <i class="material-icons mr-2 text-2xl text-op-teal">store</i>
               <div class="text-lg font-bold text-op-teal">
                 {{ $t("admin.reSend") }}
               </div>
@@ -24,9 +24,9 @@
         <div class="mt-6 text-center">
           <router-link to="/admin/user/signin">
             <div
-              class="inline-flex justify-center items-center h-16 px-6 rounded-full border-2 border-op-teal"
+              class="inline-flex h-16 items-center justify-center rounded-full border-2 border-op-teal px-6"
             >
-              <i class="material-icons text-2xl text-op-teal mr-2">store</i>
+              <i class="material-icons mr-2 text-2xl text-op-teal">store</i>
               <div class="text-lg font-bold text-op-teal">
                 {{ $t("admin.goToSignIn") }}
               </div>
@@ -42,18 +42,18 @@
           </div>
 
           <div class="mt-1">
-            <b-field
-              :type="errors.password ? 'is-danger' : 'is-success'"
+            <o-field
+              :variant="errors.password ? 'danger' : 'success'"
               :message="errors.password && $t(errors.password[0])"
             >
-              <b-input
+              <o-input
                 v-model="password"
                 type="password"
                 :placeholder="$t('admin.passwordPlaceHolder')"
                 maxlength="30"
                 password-reveal
               />
-            </b-field>
+            </o-field>
           </div>
 
           <!-- Confirm Password -->
@@ -63,36 +63,36 @@
             </div>
 
             <div class="mt-1">
-              <b-field
-                :type="errors.confirm ? 'is-danger' : 'is-success'"
+              <o-field
+                :variant="errors.confirm ? 'danger' : 'success'"
                 :message="errors.confirm && $t(errors.confirm[0])"
               >
-                <b-input
+                <o-input
                   v-model="confirmPassword"
                   type="password"
                   :placeholder="$t('admin.confirmPasswordPlaceHolder')"
                   maxlength="30"
                   password-reveal
                 />
-              </b-field>
+              </o-field>
             </div>
           </div>
 
           <!-- Submit Button -->
           <div class="mt-2 text-center">
-            <b-button
+            <o-button
               :disabled="Object.keys(errors).length > 0 || submitting"
               @click="resetPassword"
               class="b-reset-tw"
             >
               <div
-                class="inline-flex justify-center items-center h-12 w-32 rounded-full bg-op-teal shadow"
+                class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-op-teal shadow"
               >
                 <div class="text-base font-bold text-white">
                   {{ $t("button.next") }}
                 </div>
               </div>
-            </b-button>
+            </o-button>
           </div>
         </div>
       </template>
@@ -139,7 +139,7 @@ export default defineComponent({
       try {
         const res = await confirmPasswordReset(auth, code, password.value);
         isSuccess.value = true;
-      } catch (e) {
+      } catch (e: any) {
         error.value = e.code;
       }
       submitting.value = true;

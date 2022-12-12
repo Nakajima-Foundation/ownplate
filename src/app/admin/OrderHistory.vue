@@ -6,7 +6,7 @@
     <div v-else>
       <!-- Header -->
       <AdminHeader
-        class="mt-6 mx-6 lg:flex lg:items-center"
+        class="mx-6 mt-6 lg:flex lg:items-center"
         :shopInfo="shopInfo"
         :backLink="'/admin/restaurants/'"
         :showSuspend="true"
@@ -20,7 +20,7 @@
           <div class="text-sm font-bold text-black text-opacity-30">
             {{ $t("order.statusTitle") }}
           </div>
-          <b-select v-model="orderState">
+          <o-select v-model="orderState">
             <option
               v-for="status in orderStatus"
               :value="status.index"
@@ -32,14 +32,14 @@
                   : $t("order.status.all")
               }}
             </option>
-          </b-select>
+          </o-select>
         </div>
         <!-- sort -->
         <div class="mx-6 mt-2 grid grid-cols-1 gap-2 sm:mt-6">
           <div class="text-sm font-bold text-black text-opacity-30">
             {{ $t("order.sortOrder") }}
           </div>
-          <b-select v-model="sortOrder">
+          <o-select v-model="sortOrder">
             <option
               v-for="status in orderSorts"
               :value="status.index"
@@ -47,7 +47,7 @@
             >
               {{ $t("order.sort." + status.key) }}
             </option>
-          </b-select>
+          </o-select>
         </div>
       </div>
 
@@ -67,34 +67,34 @@
 
       <!-- More -->
       <div class="mx-6 mt-6 text-center" v-if="last !== undefined">
-        <b-button :disabled="last === null" @click="next" class="b-reset-tw">
+        <o-button :disabled="last === null" @click="next" class="b-reset-tw">
           <div
-            class="inline-flex justify-center items-center w-48 h-9 px-4 rounded-full bg-black bg-opacity-5"
+            class="inline-flex h-9 w-48 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
           >
             <div class="text-sm font-bold text-op-teal">
               {{ $t("admin.order.more") }}
             </div>
           </div>
-        </b-button>
+        </o-button>
       </div>
 
       <!-- More -->
       <div class="mx-6 mt-6 text-center" v-if="last !== undefined">
-        <b-button :disabled="last === null" @click="all" class="b-reset-tw">
+        <o-button :disabled="last === null" @click="all" class="b-reset-tw">
           <div
-            class="inline-flex justify-center items-center w-48 h-9 px-4 rounded-full bg-black bg-opacity-5"
+            class="inline-flex h-9 w-48 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
           >
             <div class="text-sm font-bold text-op-teal">
               {{ $t("admin.order.all") }}
             </div>
           </div>
-        </b-button>
+        </o-button>
       </div>
 
       <div v-if="isOwner">
         <!-- Download Orders -->
         <div class="mx-6 mt-6 text-center">
-          <download-orders :orders="filteredOrders" />
+          <download-orders :orders="filteredOrders" :isInMo="isInMo" />
         </div>
 
         <!-- Download Report -->
@@ -108,6 +108,7 @@
             :isInMo="isInMo"
             :categoryDataObj="categoryDataObj"
             :allSubCategoryDataObj="allSubCategoryDataObj"
+            buttonTitle="admin.report.download-csv-history-details"
           />
         </div>
       </div>
@@ -133,6 +134,7 @@ import {
   useAdminUids,
   doc2data,
   notFoundResponse,
+  orderType,
 } from "@/utils/utils";
 import { checkShopAccount } from "@/utils/userPermission";
 
@@ -206,7 +208,7 @@ export default defineComponent({
       return notFoundResponse;
     }
 
-    const fileName = ctx.root.$t("order.history");
+    const fileName = props.shopInfo.restaurantId + "_orderhistory_summary.csv";
 
     const { loadCategory, categoryDataObj } = useCategory(props.moPrefix);
     const { allSubCategoryDataObj, loadAllSubcategory } = useAllSubcategory(
@@ -260,6 +262,7 @@ export default defineComponent({
         if (order.timeConfirmed) {
           order.timeConfirmed = order.timeConfirmed.toDate();
         }
+        order.type = orderType(order, props.isInMo);
         orders.value.push(order);
       });
     };

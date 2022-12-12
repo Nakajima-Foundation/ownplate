@@ -2,19 +2,19 @@
   <div class="lg:flex">
     <div class="lg:flex-1">
       <!-- Item Card -->
-      <div class="bg-white rounded-lg shadow">
+      <div class="rounded-lg bg-white shadow">
         <!-- Published Status and Sold Out Checkbox -->
         <div class="flex items-center">
-          <div class="flex-1 mx-2 mt-2">
+          <div class="mx-2 mt-2 flex-1">
             <div
               v-if="menuitem.publicFlag"
-              class="p-2 rounded bg-opacity-10 bg-green-600"
+              class="rounded bg-green-600 bg-opacity-10 p-2"
             >
               <div class="text-xs font-bold text-green-600">
                 {{ $t("admin.itemPublished") }}
               </div>
             </div>
-            <div v-else class="p-2 rounded bg-opacity-10 bg-red-700">
+            <div v-else class="rounded bg-red-700 bg-opacity-10 p-2">
               <div class="text-xs font-bold text-red-700">
                 {{ $t("admin.itemNotPublished") }}
               </div>
@@ -22,7 +22,7 @@
           </div>
 
           <div class="mr-4 pt-4">
-            <b-checkbox
+            <o-checkbox
               :value="soldOut"
               @input="soldOutToggle"
               :disabled="disabledEdit"
@@ -33,40 +33,98 @@
               <div v-else class="text-sm font-bold text-black text-opacity-30">
                 {{ $t("admin.itemSoldOut") }}
               </div>
-            </b-checkbox>
+            </o-checkbox>
           </div>
         </div>
 
         <!-- Item Details -->
         <a class="flow-root" @click="linkEdit">
-          <div class="p-4 float-right">
+          <div class="float-right p-4">
             <div v-if="image">
               <img
                 :src="image"
-                class="w-24 h-24 rounded object-cover"
+                class="h-24 w-24 rounded object-cover"
                 @error="smallImageErrorHandler"
               />
             </div>
           </div>
-
           <div class="p-4">
             <div class="text-xl font-bold text-black text-opacity-80">
               {{ menuitem.itemName }}
             </div>
-            <div class="text-base text-black text-opacity-80 mt-2">
+            <div class="mt-2 text-base text-black text-opacity-80">
               <Price :shopInfo="shopInfo" :menu="menuitem" />
             </div>
 
             <!-- # Remove the description part to make the list length shorter -->
             <!-- <div class="mt-2 text-sm text-black text-opacity-60">
             {{ menuitem.itemDescription }}
-          </div> -->
+           </div> -->
           </div>
         </a>
 
+        <div v-if="isInMo" class="mx-2 pb-2">
+          <div class="rounded bg-green-600 bg-opacity-5 p-2 text-xs">
+            <span
+              :class="
+                preOrderAvaiable['isPublic']
+                  ? 'font-bold text-green-600'
+                  : 'text-gray-500 text-opacity-60'
+              "
+            >
+              <o-checkbox
+                v-model="preOrderAvaiable['isPublic']"
+                @input="updatePreOrder"
+              >
+                {{ $t("mobileOrder.admin.takeout") }}
+              </o-checkbox>
+            </span>
+            /
+            <span
+              :class="
+                pickupAvaiable['isPublic']
+                  ? 'font-bold text-green-600'
+                  : 'text-gray-500 text-opacity-60'
+              "
+            >
+              <o-checkbox
+                v-model="pickupAvaiable['isPublic']"
+                @input="updatePickup"
+              >
+                {{ $t("mobileOrder.admin.pickup") }}
+              </o-checkbox>
+            </span>
+            (<span
+              :class="
+                pickupStockData['forcePickupStock']
+                  ? 'font-bold text-green-600'
+                  : 'text-gray-500 text-opacity-60'
+              "
+            >
+              {{ $t("mobileOrder.admin.forcePickupStock") }}
+            </span>
+            :
+            <span
+              :class="
+                pickupStockData['isStock']
+                  ? 'font-bold text-green-600'
+                  : 'text-gray-500 text-opacity-60'
+              "
+            >
+              <o-checkbox
+                v-model="pickupStockData['isStock']"
+                @input="updatePickupStock"
+                :disabled="pickupStockData['forcePickupStock']"
+              >
+                {{ $t("mobileOrder.admin.pickupStock") }}
+              </o-checkbox> </span
+            >)
+          </div>
+        </div>
+
         <!-- Owner Memo -->
         <div v-if="menuitem.itemMemo" class="mx-2 pb-2">
-          <div class="p-2 rounded bg-black bg-opacity-5 text-xs">
+          <div class="rounded bg-black bg-opacity-5 p-2 text-xs">
             {{ menuitem.itemMemo.split("\n")[0] }}
           </div>
         </div>
@@ -80,62 +138,62 @@
       <!-- Card Actions -->
       <div class="inline-flex space-x-2">
         <!-- Up -->
-        <b-button
+        <o-button
           v-if="position !== 'first'"
           @click="positionUp"
           class="b-reset-tw"
         >
           <div
-            class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
           >
             <i class="material-icons text-lg text-op-teal">arrow_upward</i>
           </div>
-        </b-button>
-        <b-button v-else disabled class="b-reset-tw">
+        </o-button>
+        <o-button v-else disabled class="b-reset-tw">
           <div
-            class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
           >
             <i class="material-icons text-lg text-op-teal">arrow_upward</i>
           </div>
-        </b-button>
+        </o-button>
 
         <!-- Down -->
-        <b-button
+        <o-button
           v-if="position !== 'last'"
           @click="positionDown"
           class="b-reset-tw"
         >
           <div
-            class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
           >
             <i class="material-icons text-lg text-op-teal">arrow_downward</i>
           </div>
-        </b-button>
-        <b-button v-else disabled class="b-reset-tw">
+        </o-button>
+        <o-button v-else disabled class="b-reset-tw">
           <div
-            class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
           >
             <i class="material-icons text-lg text-op-teal">arrow_downward</i>
           </div>
-        </b-button>
+        </o-button>
 
         <!-- Duplicate -->
-        <b-button @click="forkItem" class="b-reset-tw">
+        <o-button @click="forkItem" class="b-reset-tw">
           <div
-            class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
           >
             <i class="material-icons text-lg text-op-teal">queue</i>
           </div>
-        </b-button>
+        </o-button>
 
         <!-- Delete -->
-        <b-button @click="deleteItem" class="b-reset-tw">
+        <o-button @click="deleteItem" class="b-reset-tw">
           <div
-            class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
           >
             <i class="material-icons text-lg text-red-700">delete</i>
           </div>
-        </b-button>
+        </o-button>
       </div>
     </div>
   </div>
@@ -164,12 +222,29 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    // mo
     isInMo: {
       type: Boolean,
       required: true,
     },
     groupData: {
       type: Object,
+      required: false,
+    },
+    preOrderAvaiable: {
+      type: Object,
+      required: false,
+    },
+    pickupAvaiable: {
+      type: Object,
+      required: false,
+    },
+    pickupStockData: {
+      type: Object,
+      required: false,
+    },
+    subCategoryId: {
+      type: String,
       required: false,
     },
   },
@@ -221,6 +296,33 @@ export default defineComponent({
         },
       });
     };
+
+    const updatePickup = async () => {
+      const path = `restaurants/${ctx.root.restaurantId()}/pickup/data/subCategory/${
+        props.subCategoryId
+      }`;
+      const data = (await db.doc(path).get()).data();
+      data.data[props.menuitem.id].isPublic = props.pickupAvaiable["isPublic"];
+      await db.doc(path).set(data);
+    };
+    const updatePreOrder = async () => {
+      const path = `restaurants/${ctx.root.restaurantId()}/preOrder/data/subCategory/${
+        props.subCategoryId
+      }`;
+      const data = (await db.doc(path).get()).data();
+      data.data[props.menuitem.id].isPublic =
+        props.preOrderAvaiable["isPublic"];
+      await db.doc(path).set(data);
+    };
+    const updatePickupStock = async () => {
+      const path = `restaurants/${ctx.root.restaurantId()}/pickup/stock/subCategory/${
+        props.subCategoryId
+      }`;
+      const data = (await db.doc(path).get()).data();
+      data.data[props.menuitem.id].isStock = props.pickupStockData["isStock"];
+      await db.doc(path).set(data);
+    };
+
     return {
       isOwner,
 
@@ -236,6 +338,10 @@ export default defineComponent({
       deleteItem,
 
       smallImageErrorHandler,
+
+      updatePickup,
+      updatePreOrder,
+      updatePickupStock,
     };
   },
 });

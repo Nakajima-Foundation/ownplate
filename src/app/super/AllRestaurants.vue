@@ -1,5 +1,5 @@
 <template>
-  <section class="section">
+  <section class="mx-auto max-w-full px-6 pb-12 pt-4">
     <back-button :url="backUrl" />
     <h2>All Restaurants</h2>
     <table>
@@ -12,6 +12,9 @@
         <td>メニュー数</td>
         <td></td>
         <td>電話通知</td>
+        <td>宅配</td>
+        <td>P</td>
+        <td>G</td>
       </tr>
       <tr v-for="restaurant in restaurants" :key="restaurant.id">
         <td style="width: 50%">
@@ -51,20 +54,38 @@
         <td>
           {{ !!restaurant.phoneCall ? "o" : "-" }}
         </td>
+        <td>
+          {{ !!restaurant.enableDelivery ? "o" : "-" }}
+        </td>
+        <td>
+          {{ !!restaurant.enableMoPickup ? "o" : "-" }}
+        </td>
+        <td>
+          {{ !!restaurant.isEC ? "o" : "-" }}
+        </td>
+        <td>
+          {{ restaurant.groupId }}
+        </td>
+        <td>
+          {{ restaurant.supportLiff }}
+        </td>
+        <td>
+          <DownloadMenu :restaurantid="restaurant.id" />
+        </td>
       </tr>
     </table>
     <hr />
-    <b-button class="h-9 rounded-full mt-2" @click="nextLoad">
-      <span class="p-l-16 p-r-16">
-        <span class="c-primary t-button"> Next </span>
+    <o-button class="mt-2 h-9 rounded-full" @click="nextLoad">
+      <span class="pl-4 pr-4">
+        <span class="font-bold text-op-teal"> Next </span>
       </span>
-    </b-button>
+    </o-button>
 
-    <b-button class="h-9 rounded-full mt-2 ml-4" @click="allLoad">
-      <span class="p-l-16 p-r-16">
-        <span class="c-primary t-button"> All </span>
+    <o-button class="mt-2 ml-4 h-9 rounded-full" @click="allLoad">
+      <span class="pl-4 pr-4">
+        <span class="font-bold text-op-teal"> All </span>
       </span>
-    </b-button>
+    </o-button>
 
     <download-csv
       :data="tableData"
@@ -72,12 +93,12 @@
       :fieldNames="fieldNames"
       :fileName="fileName"
     >
-      <b-button class="h-9 rounded-full mt-2 ml-4">
-        <span class="p-l-16 p-r-16">
-          <i class="material-icons c-primary s-18 m-r-8">save_alt</i>
-          <span class="c-primary t-button"> Download </span>
+      <o-button class="mt-2 ml-4 h-9 rounded-full">
+        <span class="pl-4 pr-4">
+          <i class="material-icons mr-2 !text-2xl text-op-teal">save_alt</i>
+          <span class="font-bold text-op-teal"> Download </span>
         </span>
-      </b-button>
+      </o-button>
     </download-csv>
   </section>
 </template>
@@ -91,8 +112,9 @@ import superMixin from "@/mixins/SuperMixin";
 
 import { doc2data } from "@/utils/utils";
 
-import DownloadCsv from "@/components/DownloadCSV.vue";
 import BackButton from "@/components/BackButton.vue";
+import DownloadCsv from "@/components/DownloadCSV.vue";
+// import DownloadMenu from "@/app/admin/MenuListPage/DownloadCSV.vue";
 
 export default {
   mixins: [superMixin],
@@ -104,6 +126,7 @@ export default {
   components: {
     BackButton,
     DownloadCsv,
+    //    DownloadMenu,
   },
   data() {
     return {

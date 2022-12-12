@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="bg-white shadow rounded-lg p-4">
+    <div class="rounded-lg bg-white p-4 shadow">
       <!-- Restaurant Name -->
-      <div class="text-lg font-bold inline-flex justify-center items-center">
+      <div class="inline-flex items-center justify-center text-lg font-bold">
         <span>{{
           shopInfo.restaurantName || $t("editRestaurant.noRestaurant")
         }}</span>
@@ -15,10 +15,10 @@
       </div>
 
       <!-- Restaurant Photo and Details -->
-      <div class="flex justify-center items-center space-x-4 mt-4">
+      <div class="mt-4 flex items-center justify-center space-x-4">
         <div class="flex-shrink-0">
           <img
-            class="w-20 h-20 rounded-full object-cover"
+            class="h-20 w-20 rounded-full object-cover"
             :src="
               resizedProfileImage(shopInfo, '600') ||
               '/OwnPlate-Favicon-Default.png'
@@ -30,9 +30,9 @@
           <div>
             <router-link :to="previewLink">
               <div
-                class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+                class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
               >
-                <i class="material-icons text-lg text-op-teal mr-2">launch</i>
+                <i class="material-icons mr-2 text-lg text-op-teal">launch</i>
                 <span class="text-sm font-bold text-op-teal">{{
                   $t("admin.viewPage")
                 }}</span>
@@ -42,9 +42,9 @@
           <div class="mt-2" v-if="isOwner">
             <router-link :to="'/admin/restaurants/' + restaurantid">
               <div
-                class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+                class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
               >
-                <i class="material-icons text-lg text-op-teal mr-2">edit</i>
+                <i class="material-icons mr-2 text-lg text-op-teal">edit</i>
                 <span class="text-sm font-bold text-op-teal">{{
                   $t("admin.editAbout")
                 }}</span>
@@ -58,7 +58,7 @@
       <div class="mt-4" v-if="!shopInfo.publicFlag">
         <router-link :to="'/admin/restaurants/' + restaurantid">
           <div
-            class="bg-red-700 bg-opacity-10 rounded-md text-sm font-bold text-red-700 px-4 py-2"
+            class="rounded-md bg-red-700 bg-opacity-10 px-4 py-2 text-sm font-bold text-red-700"
           >
             {{ $t("admin.privateMode") }}: {{ $t("admin.pleaseChangePublic") }}
           </div>
@@ -75,13 +75,13 @@
           "
         >
           <div
-            class="h-16 rounded-full inline-flex justify-center items-center px-8 shadow w-full"
+            class="inline-flex h-16 w-full items-center justify-center rounded-full px-8 shadow"
             :class="numberOfOrders > 0 ? 'bg-yellow-500' : 'bg-op-teal'"
           >
             <span class="text-lg font-bold text-white">
               {{ $tc("admin.viewOrders") }}</span
             ><span
-              class="text-sm font-bold text-white bg-white bg-opacity-20 px-3 py-2 rounded-full ml-4"
+              class="ml-4 rounded-full bg-white bg-opacity-20 px-3 py-2 text-sm font-bold text-white"
               >{{
                 $tc("admin.incompleteOrders", numberOfOrders, {
                   count: numberOfOrders,
@@ -93,23 +93,23 @@
       </div>
 
       <!-- Edit Menu -->
-      <div class="mt-4 text-center px-4">
+      <div class="mt-4 px-4 text-center">
         <!-- Menu Not Existing -->
         <div v-if="numberOfMenus == 0">
           <router-link :to="'/admin/restaurants/' + restaurantid + '/menus'">
             <div
-              class="h-12 rounded-full inline-flex justify-center items-center px-6 border-2 border-solid border-red-700 w-full"
+              class="inline-flex h-12 w-full items-center justify-center rounded-full border-2 border-solid border-red-700 px-6"
             >
-              <span class="text-red-700 text-base font-bold">
+              <span class="text-base font-bold text-red-700">
                 {{ $t("admin.editMenuItems") }}</span
               >
               <span
-                class="text-base font-bold text-red-700 bg-red-700 bg-opacity-10 px-2 rounded-full ml-2"
+                class="ml-2 rounded-full bg-red-700 bg-opacity-10 px-2 text-base font-bold text-red-700"
                 >{{ numberOfMenus }}</span
               >
             </div>
           </router-link>
-          <div class="text-sm font-bold text-red-700 mt-2">
+          <div class="mt-2 text-sm font-bold text-red-700">
             {{ $t("admin.pleaseAddMenu") }}
           </div>
         </div>
@@ -118,13 +118,13 @@
         <div v-else>
           <router-link :to="'/admin/restaurants/' + restaurantid + '/menus'">
             <div
-              class="h-12 rounded-full inline-flex justify-center items-center px-6 border-2 border-solid border-op-teal w-full"
+              class="inline-flex h-12 w-full items-center justify-center rounded-full border-2 border-solid border-op-teal px-6"
             >
-              <span class="text-op-teal text-base font-bold">
+              <span class="text-base font-bold text-op-teal">
                 {{ $t("admin.editMenuItems") }}</span
               >
               <span
-                class="text-base font-bold bg-black bg-opacity-5 px-2 rounded-full ml-2"
+                class="ml-2 rounded-full bg-black bg-opacity-5 px-2 text-base font-bold"
                 >{{ numberOfMenus }}</span
               >
             </div>
@@ -134,7 +134,7 @@
 
       <!-- Notifications Settings -->
       <div
-        class="text-center bg-black bg-opacity-5 rounded-lg pt-3 pb-2 mt-4 flex justify-evenly"
+        class="mt-4 flex justify-evenly rounded-lg bg-black bg-opacity-5 pt-3 pb-2 text-center"
         v-if="isOwner && !simpleMode"
       >
         <router-link
@@ -191,15 +191,15 @@
 
       <!-- QR Code and Monthly Report -->
       <div
-        class="flex justify-center items-center space-x-4 mt-4"
+        class="mt-4 flex items-center justify-center space-x-4"
         v-if="!simpleMode"
       >
         <div>
           <router-link :to="`/admin/restaurants/${restaurantid}/qrcode`">
             <div
-              class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
             >
-              <i class="material-icons text-lg text-op-teal mr-2">qr_code_2 </i>
+              <i class="material-icons mr-2 text-lg text-op-teal">qr_code_2 </i>
               <span class="text-sm font-bold text-op-teal">{{
                 $t("admin.qrcode.title")
               }}</span>
@@ -210,9 +210,9 @@
         <div v-if="isOwner">
           <router-link :to="`/admin/restaurants/${restaurantid}/report`">
             <div
-              class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
             >
-              <i class="material-icons text-lg text-op-teal mr-2"
+              <i class="material-icons mr-2 text-lg text-op-teal"
                 >description</i
               >
               <span class="text-sm font-bold text-op-teal">{{
@@ -226,10 +226,16 @@
       <!-- Directory Request -->
       <div v-if="isOwner && !simpleMode">
         <!-- On Directory -->
-        <div v-if="shopInfo.onTheList" class="text-center mt-4">
+        <div v-if="shopInfo.onTheList" class="mt-4 text-center">
           <div>
             <span class="text-sm font-bold text-black text-opacity-40"
-              >{{ $t("admin.directory.status") }}:</span
+              >{{
+                $t(
+                  isInMo
+                    ? "mobileOrder.directoryStatus"
+                    : "admin.directory.status"
+                )
+              }}:</span
             >
             <span class="text-sm font-bold text-green-600">{{
               $t("admin.directory.listed")
@@ -238,7 +244,7 @@
           <div class="mt-2">
             <a
               @click="deleteFromList"
-              class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
             >
               <span class="text-sm font-bold text-op-teal">{{
                 $t("admin.directory.unlist")
@@ -248,7 +254,7 @@
         </div>
 
         <!-- Requested -->
-        <div v-else-if="requestState == 1" class="text-center mt-4">
+        <div v-else-if="requestState == 1" class="mt-4 text-center">
           <div>
             <span class="text-sm font-bold text-black text-opacity-40"
               >{{ $t("admin.directory.status") }}:</span
@@ -260,7 +266,7 @@
           <div class="mt-2">
             <a
               @click="requestDelete"
-              class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
             >
               <span class="text-sm font-bold text-red-700">{{
                 $t("admin.directory.cancelRequest")
@@ -270,7 +276,7 @@
         </div>
 
         <!-- Off Directory -->
-        <div v-else class="text-center mt-4">
+        <div v-else class="mt-4 text-center">
           <div>
             <span class="text-sm font-bold text-black text-opacity-40"
               >{{ $t("admin.directory.status") }}:</span
@@ -282,7 +288,7 @@
           <div class="mt-2">
             <a
               @click="requestList"
-              class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
             >
               <span class="text-sm font-bold text-op-teal">
                 {{ $t("admin.directory.requestList") }}</span
@@ -295,52 +301,52 @@
 
     <!-- Sort and Delete -->
     <div
-      class="flex justify-end space-x-2 mt-2 pb-2"
+      class="mt-2 flex justify-end space-x-2 pb-2"
       v-if="isOwner && !simpleMode"
     >
       <!-- Up -->
       <div>
         <template v-if="position !== 'first'">
-          <b-button @click="positionUp" class="b-reset-tw">
+          <o-button @click="positionUp" class="b-reset-tw">
             <div
-              class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
             >
               <i class="material-icons text-lg text-op-teal">arrow_upward</i>
             </div>
-          </b-button>
+          </o-button>
         </template>
 
         <template v-else>
-          <b-button disabled class="b-reset-tw">
+          <o-button disabled class="b-reset-tw">
             <div
-              class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
             >
               <i class="material-icons text-lg text-op-teal">arrow_upward</i>
             </div>
-          </b-button>
+          </o-button>
         </template>
       </div>
 
       <!-- Down -->
       <div>
         <template v-if="position !== 'last'">
-          <b-button @click="positionDown" class="b-reset-tw">
+          <o-button @click="positionDown" class="b-reset-tw">
             <div
-              class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
             >
               <i class="material-icons text-lg text-op-teal">arrow_downward</i>
             </div>
-          </b-button>
+          </o-button>
         </template>
 
         <template v-else>
-          <b-button disabled class="b-reset-tw">
+          <o-button disabled class="b-reset-tw">
             <div
-              class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
             >
               <i class="material-icons text-lg text-op-teal">arrow_downward</i>
             </div>
-          </b-button>
+          </o-button>
         </template>
       </div>
 
@@ -348,7 +354,7 @@
       <div>
         <button @click="deleteRestaurant" class="b-reset-tw">
           <div
-            class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
           >
             <i class="material-icons text-lg text-red-700">delete</i>
           </div>
@@ -452,7 +458,9 @@ export default defineComponent({
     const deleteRestaurant = () => {
       ctx.root.$store.commit("setAlert", {
         title: props.shopInfo.restaurantName,
-        code: "editRestaurant.reallyDelete",
+        code: props.isInMo
+          ? "mobileOrder.reallyDelete"
+          : "editRestaurant.reallyDelete",
         callback: async () => {
           ctx.emit("deleteFromRestaurantLists", props.restaurantid);
 

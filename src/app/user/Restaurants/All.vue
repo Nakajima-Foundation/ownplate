@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div class="mt-6 mx-6">
+    <div class="mx-6 mt-6">
       <router-link :to="'/r'">
         <div
-          class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+          class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
         >
-          <i class="material-icons text-lg text-op-teal mr-2">list</i>
+          <i class="material-icons mr-2 text-lg text-op-teal">list</i>
           <span class="text-sm font-bold text-op-teal">{{
             $t("find.areaTop")
           }}</span>
@@ -13,7 +13,7 @@
       </router-link>
     </div>
 
-    <div class="text-xl font-bold text-black text-opacity-40 mt-6 mx-6">
+    <div class="mx-6 mt-6 text-xl font-bold text-black text-opacity-40">
       {{ $t("find.areaAll") }}
     </div>
 
@@ -21,23 +21,23 @@
     <template v-for="state in allArea">
       <div v-if="restaurantsObj[state]">
         <div
-          class="text-base font-bold text-black text-opacity-40 mt-6 mx-6 mb-2"
+          class="mx-6 mt-6 mb-2 text-base font-bold text-black text-opacity-40"
         >
           {{ state }}
         </div>
         <div
-          class="mt-2 mx-6 grid items-center grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
+          class="mx-6 mt-2 grid grid-cols-1 items-center gap-2 lg:grid-cols-3 xl:grid-cols-4"
         >
           <div v-for="restaurant in restaurantsObj[state]">
             <router-link :to="`/r/${restaurant.id}`">
               <div class="flex items-center">
-                <div class="w-12 h-12 rounded-full bg-black bg-opacity-10 mr-4">
+                <div class="mr-4 h-12 w-12 rounded-full bg-black bg-opacity-10">
                   <img
                     :src="resizedProfileImage(restaurant, '600')"
-                    class="w-12 h-12 rounded-full object-cover"
+                    class="h-12 w-12 rounded-full object-cover"
                   />
                 </div>
-                <div class="flex-1 text-base font-bold pr-2">
+                <div class="flex-1 pr-2 text-base font-bold">
                   {{ restaurant.restaurantName }}
                   <i
                     class="material-icons align-middle"
@@ -56,40 +56,43 @@
 </template>
 
 <script>
-import { db } from "@/plugins/firebase";
+import { defineComponent, ref } from "@vue/composition-api";
+
+import { db } from "@/lib/firebase/firebase9";
+import { getDocs, collection, where, limit, query } from "firebase/firestore";
+
 import { RestaurantHeader } from "@/config/header";
 import { JPPrefecture, USStates } from "@/config/constant";
 import { restaurant2AreaObj, sortRestaurantObj } from "@/utils/RestaurantUtils";
 
-export default {
-  components: {},
-  data() {
-    return {
-      restaurantsObj: [],
-    };
-  },
-  computed: {
-    allArea() {
-      return JPPrefecture.concat(USStates);
-    },
-  },
+export default defineComponent({
   metaInfo() {
     return RestaurantHeader;
   },
-  async created() {
-    try {
-      const res = await db
-        .collection("restaurants")
-        .where("publicFlag", "==", true)
-        .where("deletedFlag", "==", false)
-        .where("onTheList", "==", true)
-        .get();
-      const restaurants = res.docs || [];
-      this.restaurantsObj = restaurant2AreaObj(restaurants);
-      sortRestaurantObj(this.restaurantsObj);
-    } catch (error) {
-      console.log(error);
-    }
+  setup() {
+    const allArea = JPPrefecture;
+
+    const restaurantsObj = ref([]);
+    getDocs(
+      query(
+        collection(db, "restaurants"),
+        where("publicFlag", "==", true),
+        where("deletedFlag", "==", false),
+        where("onTheList", "==", true)
+      )
+    )
+      .then((res) => {
+        const restaurants = res.docs || [];
+        restaurantsObj.value = restaurant2AreaObj(restaurants);
+        sortRestaurantObj(restaurantsObj.value);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    return {
+      restaurantsObj,
+      allArea,
+    };
   },
-};
+});
 </script>

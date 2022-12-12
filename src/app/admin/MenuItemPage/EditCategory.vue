@@ -1,50 +1,50 @@
 <template>
-  <b-modal :active.sync="isVisible" :width="488">
-    <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
+  <o-modal :active.sync="isVisible" :width="488">
+    <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
       <!-- Items List -->
       <div>
         <div
           v-for="(category, index) in categories"
           :key="category"
-          class="flex items-center bg-black bg-opacity-5 rounded mb-2"
+          class="mb-2 flex items-center rounded bg-black bg-opacity-5"
         >
           <div class="flex-1 px-4 py-2">
             <span class="text-sm font-bold">{{ category }}</span>
           </div>
           <div>
-            <b-button class="b-reset-tw" @click="handleDelete(index)">
-              <div class="inline-flex justify-center items-center h-9 px-4">
+            <o-button class="b-reset-tw" @click="handleDelete(index)">
+              <div class="inline-flex h-9 items-center justify-center px-4">
                 <i class="material-icons text-lg text-red-700">delete</i>
               </div>
-            </b-button>
+            </o-button>
           </div>
         </div>
       </div>
 
       <!-- Add Item -->
       <div class="flex">
-        <b-input
-          class="flex-1 mr-2"
+        <o-input
+          class="mr-2 flex-1"
           :placeholder="$t('editMenu.newCategory')"
           v-model="newEntry"
         />
-        <b-button
+        <o-button
           :disabled="!isValidEntry"
           class="b-reset-tw"
           @click="handleAdd"
         >
           <div
-            class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
           >
-            <i class="material-icons text-lg text-op-teal mr-2">add</i>
+            <i class="material-icons mr-2 text-lg text-op-teal">add</i>
             <div class="text-sm font-bold text-op-teal">
               {{ $t("editMenu.newCategoryAdd") }}
             </div>
           </div>
-        </b-button>
+        </o-button>
       </div>
     </div>
-  </b-modal>
+  </o-modal>
 </template>
 
 <script>
