@@ -220,7 +220,8 @@
                     userMessageError ||
                     disabledPickupTime ||
                     stripeSmallPayment ||
-                    moSuspend
+                    moSuspend ||
+                    isPaying || isPlacing
                   "
                   @click="handlePayment(true)"
                   class="b-reset-tw"
@@ -297,7 +298,9 @@
                     notSubmitAddress ||
                     userMessageError ||
                     disabledPickupTime ||
-                    moSuspend
+                    moSuspend ||
+                    isPaying ||
+                    isPlacing
                   "
                   @click="handlePayment(false)"
                   class="b-reset-tw"
