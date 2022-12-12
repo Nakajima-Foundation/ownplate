@@ -761,6 +761,10 @@
       "smaregiAppMarket": "Go to Smaregi App Market",
       "smaregiManualLink": "How to use Smaregi"
     },
+    "needEmailVerification": "You need email verification",
+    "sendVerificationCode": "Send verification code",
+    "verificationCodeSent": "We sent email",
+    "verificationCodeError": "Failed. Try again later.",
     "viewAllOrders": "Voir toutes les commandes de tous les restaurants",
     "viewPage": "Voir page",
     "viewOrders": "Voir les commandes",
