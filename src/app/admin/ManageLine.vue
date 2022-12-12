@@ -7,7 +7,7 @@
     <div v-else>
       <!-- Header -->
       <AdminHeader
-        class="mt-6 mx-6 lg:flex lg:items-center"
+        class="mx-6 mt-6 lg:flex lg:items-center"
         :shopInfo="shopInfo"
         :backLink="`/admin/restaurants/${shopInfo.id}/orders`"
         :showSuspend="false"
@@ -16,7 +16,7 @@
       />
 
       <!-- Body -->
-      <div class="mt-6 mx-6 grid-col-1 space-y-4 lg:max-w-2xl lg:mx-auto">
+      <div class="grid-col-1 mx-6 mt-6 space-y-4 lg:mx-auto lg:max-w-2xl">
         <!-- Title -->
         <div
           v-if="lineUsers.length > 0"
@@ -34,7 +34,7 @@
           >
             <!-- User Name -->
             <div
-              class="flex-1 bg-white rounded-lg shadow p-4 cursor-pointer"
+              class="flex-1 cursor-pointer rounded-lg bg-white p-4 shadow"
               @click="handleToggle(lineUser)"
               :class="
                 lineUser.notify
@@ -44,7 +44,7 @@
             >
               <!-- Checkbox UI -->
               <div class="flex items-center">
-                <i class="material-icons text-2xl mr-2">{{
+                <i class="material-icons mr-2 text-2xl">{{
                   lineUser.notify ? "check_box" : "check_box_outline_blank"
                 }}</i>
                 <div class="text-base font-bold">
@@ -56,7 +56,7 @@
             <!-- Delete -->
             <div>
               <a
-                class="ml-4 inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+                class="ml-4 inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
                 @click.stop="handleDelete(lineUser.id)"
               >
                 <i class="material-icons text-lg text-red-700">delete</i>
@@ -67,22 +67,22 @@
 
         <!-- Add LINE User -->
         <div class="mt-6 text-center">
-          <b-button @click="handleLineAuth" class="b-reset-tw">
+          <o-button @click="handleLineAuth" class="b-reset-tw">
             <div
-              class="inline-flex justify-center items-center h-12 px-6 rounded-full"
+              class="inline-flex h-12 items-center justify-center rounded-full px-6"
               style="background: #18b900"
             >
-              <i class="fab fa-line text-2xl text-white mr-2" />
+              <i class="fab fa-line mr-2 text-2xl text-white" />
               <div class="text-base font-bold text-white">
                 {{ $t("admin.order.lineAdd") }}
               </div>
             </div>
-          </b-button>
+          </o-button>
         </div>
 
         <!-- Note for Safari Private Browsing Mode -->
-        <div class="mt-6 bg-black bg-opacity-5 rounded-lg p-4">
-          <span class="text-xs c-text-black-medium">
+        <div class="mt-6 rounded-lg bg-black bg-opacity-5 p-4">
+          <span class="text-xs text-black opacity-60">
             {{ $t("admin.order.lineSafariPrivate") }}
           </span>
         </div>

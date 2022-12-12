@@ -66,7 +66,7 @@ const i18n = new VueI18n({
   dateTimeFormats: {
     en: dateTimeFormats,
     ja: dateTimeFormats,
-  },
+  } as any,
 });
 
 export default i18n;

@@ -20,12 +20,27 @@
     "smallPayment2": "you cannot use \"Pay Now\".",
     "smallPayment3": "Please use \"Pay Layter\"",
     "orderPlacedAlert": "Votre commande n'est pas confirmée tant qu'elle n'est pas Accepter",
+    "suspendPickupMessage": "This service is currently closed for pickup orders. Please wait for a while until it resumes.",
+    "suspendCartButton": "Currently closed",
     "storeDetails": "Store Details",
     "adminQRCode": "Confirmation QR Code",
     "name": "Online ordering service",
+    "methodChangeAlert": "Changer de méthode de commande ? Les articles de votre panier seront réinitialisés.",
+    "pickupLabel": "Takeaway Today",
+    "soldOut": "Sold out",
+    "inStock": "In stock",
+    "admin": {
+      "takeout": "Pre order",
+      "pickup": "Takeaway",
+      "pickupStock": "Stock of takeaway"
+    },
     "shopInfo": {
       "takeout": "Online order",
-      "pickup": "Takeaway now"
+      "pickup": "Takeaway now",
+      "takeoutDesctiption": "Cliquez ici pour passer une commande",
+      "pickupDesctiption": "Cliquez ici pour mettre un article en attente",
+      "pickupNote": "Les commandes à emporter ne peuvent pas être acceptées de {lastOrder} à 23:59. Veuillez passer votre commande après un certain temps.",
+      "showOnlyInStock": "Show only in stock"
     }
   },
   "profile": {
@@ -82,6 +97,7 @@
     "termsRestaurant": "CGU pour le restaurant",
     "termsUser": "CGU pour l'utilisateur",
     "privacy": "Politique de Confidentialité",
+    "faq": "FAQ",
     "updated": "Dernière Mise à jour",
     "selectLanguage": "Selectioner la langue",
     "yes": "Oui",
@@ -140,6 +156,7 @@
     "enterWebsite": "Enter lien du site Web",
     "enterLineUrl": "Enter LINE Official Account URL",
     "enterInstagramUrl": "Enter Instagram URL",
+    "enterUberEatsUrl": "Enter UberEats URL",
     "enterIntroduction": "Entrez une présentation de la boutique",
     "enterOrderNotice": "Entrez les notifications de commande",
     "enterOrderThanks": "Entrez le message de remerciement de la commande",
@@ -196,6 +213,7 @@
     "setupMap": "Restaurant location",
     "setLocation": "Définir l'emplacement",
     "searchMap": "Set the location from the address",
+    "enterAddress": "Veuillez entrer une adresse pour la recherche",
     "updateMap": "Mettre à jour la carte",
     "businessHourDescription": "Vérifiez le jour ouvrable de la semaine et définissez les heures d'ouverture. Si vous devez fractionner vos heures d'ouverture, comme une pause, veuillez saisir cette dernière heure dans le formulaire Autres heures.",
     "businessHourOption": "Autres heures. (facultatif)",
@@ -327,6 +345,7 @@
     "website": "Site web",
     "lineUrl": "LINE Official Account URL",
     "instagramUrl": "Instagram URL",
+    "uberEatsUrl": "Uber Eats URL",
     "hours": "Heures",
     "midnight": "12:00 minuit",
     "noon": "12:00 midi",
@@ -436,7 +455,8 @@
     "searchRestaurant": "Rechercher un restaurant",
     "moTagline": "Le service officiel de mise de côté de FamilyMart qui vous permet d'effectuer facilement des achats depuis votre PC ou votre smartphone.",
     "moDescription1": "Vous pouvez commander des produits que nous ne vendons pas normalement.",
-    "moDescription2": "L'enlèvement en magasin est possible dès 3 jours après la date de la commande."
+    "moDescription2": "Vous pouvez récupérer votre commande au magasin dans une heure au plus tôt.",
+    "moDescription3": "*Seulement dans certains magasins​​"
   },
   "order": {
     "allOrders": "Toutes les commandes",
@@ -449,6 +469,12 @@
     "foodRevenue": "food revenue",
     "alcoholRevenue": "alcohol revenue",
     "date": "date",
+    "type": "type",
+    "orderTypeEC": "EC",
+    "orderTypeDelivery": "delivery",
+    "orderTypePickup": "pickup",
+    "orderTypePreOrder": "pre order",
+    "orderTypeTakeout": "takeaway",
     "tipShort": "Pourboire",
     "serviceTax": "tip tax",
     "name": "order name",
@@ -625,7 +651,8 @@
     "downloadMenu": "Télécharger le menu",
     "cancel": "Annuler",
     "next": "Suivant",
-    "category": "Catégorie"
+    "category": "Catégorie",
+    "backToTop": "Top"
   },
   "sms": {
     "signin": "Se connecter avec un numéro de téléphone",
@@ -655,6 +682,7 @@
     },
     "invalidPhoneNumber": "Numéro de téléphone invalide",
     "invalidValidationCode": "Code de verification invalide",
+    "auth/too-many-requests": "Too many requests",
     "auth/invalid-phone-number": "Numéro de téléphone invalide",
     "auth/invalid-verification-code": "Le code de vérification par SMS utilisé pour créer les informations d'identification d'authentification du téléphone n'est pas valide. Veuillez renvoyer le code de vérification par SMS et assurez-vous d'utiliser le code de vérification fourni par l'utilisateur.",
     "auth/missing-verification-code": "SMS確認コードが入力されていません",
@@ -802,6 +830,7 @@
       "more": "En savoir plus",
       "all": "View All",
       "deliveryOrder": "Delivery order",
+      "pickupOrder": "Pickup order",
       "messageFromCustomer": "Message from the customer",
       "changeOrderDetail": "Change order details",
       "alreadyChanged": "already changed",
@@ -828,7 +857,11 @@
     "report": {
       "title": "Rapport mensuel",
       "download-csv": "Télécharger le fichier Excel (Gains)",
-      "download-csv-details": "Télécharger le fichier Excel (Détails)"
+      "download-csv-details": "Télécharger le fichier Excel (Détails)",
+      "download-all-csv": "Download Excel File (Earnings)",
+      "download-csv-history": "Download Excel File (History Earnings)",
+      "download-csv-history-details": "Download Excel File (History Details)",
+      "download-csv-monthly-details": "Download Excel File (Monthly Details)"
     },
     "error": {
       "memoLength": "Please enter your message within 500 characters.",

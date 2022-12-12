@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper" @click="enableSound()">
+  <div class="flex min-h-screen flex-col" @click="enableSound()">
     <!-- Notification Banner -->
     <NotificationBanner />
 
@@ -10,11 +10,11 @@
     <SideMenuWrapper ref="sideMenu" />
 
     <!-- Main -->
-    <div class="main">
-      <div class="contents">
+    <div class="flex-1">
+      <div>
         <div
           v-if="underConstruction"
-          class="bg-yellow-200 text-center p-2 font-bold text-red-500"
+          class="bg-yellow-200 p-2 text-center font-bold text-red-500"
         >
           {{ $t("underConstruction") }}
         </div>
@@ -26,12 +26,21 @@
     </div>
 
     <!-- Loading -->
-    <b-loading
+    <o-loading
       v-if="isLoading"
-      :is-full-page="true"
+      iconSize="large"
+      :full-page="true"
       :active="true"
       :can-cancel="false"
-    ></b-loading>
+    >
+      <o-icon
+        pack="fas"
+        icon="circle-notch"
+        customSize="fa-4x"
+        spin
+        class="opacity-30"
+      ></o-icon>
+    </o-loading>
 
     <Footer />
 
@@ -146,17 +155,6 @@ export default {
     },
   },
   beforeCreate() {
-    if (indexedDB) {
-      var idb = indexedDB.open("inPrivate");
-      idb.onsuccess = () => {
-        this.$store.commit("setFirefoxPBM", false);
-      };
-      idb.onerror = () => {
-        this.$store.commit("setFirefoxPBM", true);
-      };
-    } else {
-      this.$store.commit("setFirefoxPBM", null);
-    }
     this.$store.commit("setServerConfig", { region: ownPlateConfig.region });
     this.unregisterAuthObserver = onAuthStateChanged(auth, async (user) => {
       if (user) {
@@ -185,6 +183,7 @@ export default {
         setUserProperties(analytics, { role: "anonymous" });
         console.log("authStateChanged: null");
         this.$store.commit("setUser", null);
+        this.$store.commit("setCustomClaims", null);
         if (this.isInMo) {
           window.dataLayer.push({
             uid: null,
@@ -201,8 +200,15 @@ export default {
   },
   async created() {
     console.log(process.env.VUE_APP_CIRCLE_SHA1);
-    if (!this.isInLIFF) {
-      if (this.isInLine) {
+    const isInLine = () => {
+      return /Line/.test(navigator.userAgent);
+    };
+    const isInLIFF = () => {
+      return /LIFF/.test(navigator.userAgent);
+    };
+
+    if (!isInLIFF) {
+      if (isInLine) {
         if (/\?/.test(window.location.href)) {
           window.location.href =
             window.location.href + "&openExternalBrowser=1";

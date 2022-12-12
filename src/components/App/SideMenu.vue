@@ -1,5 +1,5 @@
 <template>
-  <b-sidebar
+  <o-sidebar
     type="is-light"
     :fullheight="fullheight"
     :fullwidth="fullwidth"
@@ -8,17 +8,17 @@
     :open.sync="open"
   >
     <!-- Logo / Home -->
-    <div class="text-center mt-6 mb-4">
+    <div class="mt-6 mb-4 text-center">
       <router-link :to="home_path">
-        <img class="w-48 m-auto" :src="`/${logo2}`" @click="handleClose()" />
+        <img class="m-auto w-48" :src="`/${logo2}`" @click="handleClose()" />
       </router-link>
     </div>
 
     <!-- Profile -->
-    <div class="text-center mt-2">
+    <div class="mt-2 text-center">
       <router-link :to="base_path + '/u/profile'">
         <div
-          class="inline-flex justify-center items-center rounded-full h-12 w-56 bg-op-teal text-white font-bold"
+          class="inline-flex h-12 w-56 items-center justify-center rounded-full bg-op-teal font-bold text-white"
           @click="handleClose()"
         >
           <i class="material-icons mr-2">person</i>
@@ -28,10 +28,10 @@
     </div>
 
     <!-- Order History -->
-    <div class="text-center mt-2" v-if="isCustomer || inLiff">
+    <div class="mt-2 text-center" v-if="isCustomer || inLiff">
       <router-link :to="historyPage">
         <div
-          class="inline-flex justify-center items-center rounded-full h-12 w-56 bg-op-teal text-white font-bold"
+          class="inline-flex h-12 w-56 items-center justify-center rounded-full bg-op-teal font-bold text-white"
           @click="handleClose()"
         >
           <i class="material-icons mr-2">history</i>
@@ -41,10 +41,10 @@
     </div>
 
     <!-- Favorites -->
-    <div class="text-center mt-2" v-if="isCustomer && !inLiff">
+    <div class="mt-2 text-center" v-if="isCustomer && !inLiff">
       <router-link to="/r/favorites">
         <div
-          class="inline-flex justify-center items-center rounded-full h-12 w-56 bg-op-teal text-white font-bold"
+          class="inline-flex h-12 w-56 items-center justify-center rounded-full bg-op-teal font-bold text-white"
           @click="handleClose()"
         >
           <i class="material-icons mr-2">favorite</i>
@@ -54,10 +54,10 @@
     </div>
 
     <!-- Find Restaurants -->
-    <div class="text-center mt-2" v-if="(isCustomer || isAnonymous) && !inLiff">
+    <div class="mt-2 text-center" v-if="(isCustomer || isAnonymous) && !inLiff">
       <router-link to="/r">
         <div
-          class="inline-flex justify-center items-center rounded-full h-12 w-56 bg-op-teal text-white font-bold"
+          class="inline-flex h-12 w-56 items-center justify-center rounded-full bg-op-teal font-bold text-white"
           @click="handleClose()"
         >
           <i class="material-icons mr-2">restaurant</i>
@@ -67,10 +67,10 @@
     </div>
 
     <!-- Admin Top -->
-    <div class="text-center mt-2" v-if="isAdmin">
+    <div class="mt-2 text-center" v-if="isAdmin">
       <router-link to="/admin/restaurants">
         <div
-          class="inline-flex justify-center items-center rounded-full h-12 w-56 bg-op-teal text-white font-bold"
+          class="inline-flex h-12 w-56 items-center justify-center rounded-full bg-op-teal font-bold text-white"
           @click="handleClose()"
         >
           <i class="material-icons mr-2">home</i>
@@ -81,16 +81,16 @@
 
     <!-- Links for Admin -->
     <div v-if="!isCustomer && !inLiff">
-      <div class="text-center font-bold opacity-70 mt-6 mb-4">
+      <div class="mt-6 mb-4 text-center font-bold opacity-70">
         {{ $t("menu.forRestaurantOwner") }}
       </div>
 
       <!-- Manual -->
-      <div class="text-center mt-2">
+      <div class="mt-2 text-center">
         <a
           href="https://docs.omochikaeri.com/manuals/manual.pdf"
           target="_blank"
-          class="inline-flex justify-center items-center text-sm font-bold text-op-teal"
+          class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
           @click="handleClose()"
         >
           {{ $t("menu.manualLink") }}
@@ -98,11 +98,11 @@
       </div>
 
       <!-- Delivery Manual -->
-      <div class="text-center mt-2">
+      <div class="mt-2 text-center">
         <a
           href="https://docs.omochikaeri.com/manuals/delivery.pdf"
           target="_blank"
-          class="inline-flex justify-center items-center text-sm font-bold text-op-teal"
+          class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
           @click="handleClose()"
         >
           {{ $t("menu.deliveryManualLink") }}
@@ -110,11 +110,11 @@
       </div>
 
       <!-- Tips -->
-      <div class="text-center mt-2">
+      <div class="mt-2 text-center">
         <a
           href="https://docs.omochikaeri.com/manuals/tips.pdf"
           target="_blank"
-          class="inline-flex justify-center items-center text-sm font-bold text-op-teal"
+          class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
           @click="handleClose()"
         >
           {{ $t("menu.tipsLink") }}
@@ -122,11 +122,11 @@
       </div>
 
       <!-- Smaregi -->
-      <div class="text-center mt-2">
+      <div class="mt-2 text-center">
         <a
           href="https://docs.omochikaeri.com/manuals/smaregi.pdf"
           target="_blank"
-          class="inline-flex justify-center items-center text-sm font-bold text-op-teal"
+          class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
           @click="handleClose()"
         >
           {{ $t("admin.thirdPartyService.smaregiManual") }}
@@ -134,10 +134,10 @@
       </div>
 
       <!-- Terms -->
-      <div class="text-center mt-2">
+      <div class="mt-2 text-center">
         <router-link to="/terms/admin">
           <div
-            class="inline-flex justify-center items-center text-sm font-bold text-op-teal"
+            class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
             @click="handleClose()"
           >
             {{ $t("menu.termsRestaurant") }}
@@ -148,15 +148,15 @@
 
     <!-- Links for Customer -->
     <div v-if="!isAdmin">
-      <div class="text-center font-bold opacity-70 mt-6 mb-4">
+      <div class="mt-6 mb-4 text-center font-bold opacity-70">
         {{ $t("menu.forCustomer") }}
       </div>
 
       <!-- Terms -->
-      <div class="text-center mt-2">
+      <div class="mt-2 text-center">
         <router-link :to="base_path + '/terms/user'">
           <div
-            class="inline-flex justify-center items-center text-sm font-bold text-op-teal"
+            class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
             @click="handleClose()"
           >
             {{ $t("menu.termsUser") }}
@@ -167,15 +167,15 @@
 
     <!-- Links for All -->
     <div>
-      <div class="text-center font-bold opacity-70 mt-6 mb-4">
+      <div class="mt-6 mb-4 text-center font-bold opacity-70">
         {{ $t("menu.forAllUser") }}
       </div>
 
       <!-- Privacy -->
-      <div class="text-center mt-2">
+      <div class="mt-2 text-center">
         <router-link :to="base_path + '/privacy'">
           <div
-            class="inline-flex justify-center items-center text-sm font-bold text-op-teal"
+            class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
             @click="handleClose()"
           >
             {{ $t("menu.privacy") }}
@@ -183,7 +183,7 @@
         </router-link>
       </div>
     </div>
-  </b-sidebar>
+  </o-sidebar>
 </template>
 
 <script>
@@ -223,7 +223,7 @@ export default defineComponent({
 
     const base_path = computed(() => {
       // /liff/hoge or ''
-      return inLiff.value ? liff_base_path.value : "";
+      return inLiff.value ? liffBasePath.value : "";
     });
     const historyPage = computed(() => {
       return base_path.value + "/u/history";

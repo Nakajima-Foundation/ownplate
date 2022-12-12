@@ -19,8 +19,14 @@ import { getAuth } from "firebase/auth";
 import { getFunctions } from "firebase/functions";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
+import { FirestoreSettings, initializeFirestore } from "firebase/firestore";
 
-export const db = getFirestore();
+// export const db = getFirestore();
+const theSettings: FirestoreSettings = {
+  experimentalForceLongPolling: true,
+};
+export const db = initializeFirestore(firebaseApp, theSettings);
+
 export const auth = getAuth();
 export const functions = getFunctions(firebaseApp, "us-central1");
 export const functionsJP = getFunctions(firebaseApp, "asia-northeast1");

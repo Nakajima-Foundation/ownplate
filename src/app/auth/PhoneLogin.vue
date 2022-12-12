@@ -15,8 +15,8 @@
           </div>
 
           <div class="mt-2">
-            <b-field>
-              <b-select v-model="countryCode">
+            <o-field>
+              <o-select v-model="countryCode">
                 <option
                   v-for="country in countries"
                   :value="country.code"
@@ -24,8 +24,8 @@
                 >
                   {{ $t(country.name) }}
                 </option>
-              </b-select>
-            </b-field>
+              </o-select>
+            </o-field>
           </div>
         </div>
 
@@ -36,11 +36,11 @@
           </div>
 
           <div class="mt-2">
-            <b-field
-              :type="hasError ? 'is-danger' : 'is-success'"
+            <o-field
+              :variant="hasError ? 'danger' : 'success'"
               :message="hasError ? $t(errors[0]) : $t('sms.notice')"
             >
-              <b-input
+              <o-input
                 type="tel"
                 autocomplete="tel"
                 v-model="phoneNumber"
@@ -48,10 +48,10 @@
                 maxlength="20"
                 :placeholder="$t('sms.pleasetype')"
               />
-            </b-field>
+            </o-field>
           </div>
           <div v-if="!isLocaleJapan">
-            <div class="text-xs mt-2">
+            <div class="mt-2 text-xs">
               For foreign customers:<br />
               For mobile phones contracted in countries other than Japan, please
               add the country code to the phone number like +1(555)555-111. You
@@ -60,37 +60,24 @@
           </div>
         </div>
       </div>
-      <div v-if="relogin" class="mt-4 text-xl font-bold text-center">
+      <div v-if="relogin" class="mt-4 text-center text-xl font-bold">
         {{ $t("profile.reSendSMSforDeleteAccount") }}
       </div>
       <!-- Submit Buttons -->
       <div class="mt-4 text-center">
-        <b-button
-          id="signInButton"
-          @click="$emit('dismissed', false)"
-          class="b-reset-tw"
-        >
-          <div
-            class="inline-flex justify-center items-center h-12 w-32 rounded-full bg-black bg-opacity-5"
-          >
-            <div class="text-base font-bold">{{ $t("button.cancel") }}</div>
-          </div>
-        </b-button>
+        <ButtonCancel id="signInButton" @cancel="$emit('dismissed', false)">
+          {{ $t("button.cancel") }}
+        </ButtonCancel>
 
-        <b-button
-          :loading="isLoading"
-          @click="handleSubmit"
+        <ButtonSubmit
+          id="button-send-tel"
+          @submit="handleSubmit"
           :disabled="!readyToSendSMS"
-          class="b-reset-tw ml-4"
+          class="ml-4"
+          :isLoading="isLoading"
         >
-          <div
-            class="inline-flex justify-center items-center h-12 w-32 rounded-full bg-op-teal shadow"
-          >
-            <div class="text-base font-bold text-white">
-              {{ $t("sms.send") }}
-            </div>
-          </div>
-        </b-button>
+          {{ $t("sms.send") }}
+        </ButtonSubmit>
       </div>
 
       <!-- Terms of Use & Privacy Policy -->
@@ -109,18 +96,20 @@
           </div>
 
           <div class="mt-2">
-            <b-field
-              :type="hasError ? 'is-danger' : 'is-success'"
+            <o-field
+              :variant="hasError ? 'danger' : 'success'"
               :message="hasError ? $t(errors[0]) : ''"
             >
-              <b-input
-                type="tel"
+              <o-input
+                inputmode="numeric"
+                pattern="[0-9]*"
+                autocomplete="one-time-code"
                 v-model="verificationCode"
                 v-on:input="validateVerificationCode"
                 maxlength="6"
                 :placeholder="$t('sms.typeVerificationCode')"
               />
-            </b-field>
+            </o-field>
           </div>
         </div>
 
@@ -131,42 +120,33 @@
           </div>
 
           <div class="mt-2">
-            <b-field>
-              <b-input
+            <o-field>
+              <o-input
                 type="text"
                 v-model="name"
                 maxlength="32"
                 :placeholder="$t('sms.typeUserName')"
               />
-            </b-field>
+            </o-field>
           </div>
         </div>
       </div>
 
       <!-- Submit Buttons -->
       <div class="mt-4 text-center">
-        <b-button @click="$emit('dismissed', false)" class="b-reset-tw">
-          <div
-            class="inline-flex justify-center items-center h-12 w-32 rounded-full bg-black bg-opacity-5"
-          >
-            <div class="text-base font-bold">{{ $t("button.cancel") }}</div>
-          </div>
-        </b-button>
+        <ButtonCancel @cancel="$emit('dismissed', false)">
+          {{ $t("button.cancel") }}
+        </ButtonCancel>
 
-        <b-button
-          :loading="isLoading"
-          @click="handleCode"
+        <ButtonSubmit
+          id="button-send-code"
+          @submit="handleCode"
           :disabled="!readyToSendVerificationCode"
-          class="b-reset-tw ml-4"
+          class="ml-4"
+          :isLoading="isLoading"
         >
-          <div
-            class="inline-flex justify-center items-center h-12 w-32 rounded-full bg-op-teal shadow"
-          >
-            <div class="text-base font-bold text-white">
-              {{ $t("sms.sendVerificationCode") }}
-            </div>
-          </div>
-        </b-button>
+          {{ $t("sms.sendVerificationCode") }}
+        </ButtonSubmit>
       </div>
     </form>
   </div>
@@ -202,10 +182,14 @@ import moment from "moment";
 import * as Sentry from "@sentry/vue";
 
 import TermsAndPolicy from "@/app/auth/TermsAndPolicy.vue";
+import ButtonSubmit from "@/components/Button/Submit.vue";
+import ButtonCancel from "@/components/Button/Cancel.vue";
 
 export default defineComponent({
   components: {
     TermsAndPolicy,
+    ButtonSubmit,
+    ButtonCancel,
   },
   props: {
     relogin: {

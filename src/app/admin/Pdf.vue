@@ -8,12 +8,20 @@
 </template>
 
 <script>
+import { defineComponent, ref } from "@vue/composition-api";
 import { db } from "@/plugins/firebase";
-import { stripeRegion, doc2data, array2obj } from "@/utils/utils";
+import {
+  stripeRegion,
+  doc2data,
+  array2obj,
+  useNationalPhoneNumber,
+  shareUrl,
+  useBasePath,
+} from "@/utils/utils";
 import * as pdf from "@/lib/pdf/pdf";
 import * as pdf2 from "@/lib/pdf/pdf2";
 
-export default {
+export default defineComponent({
   name: "pdf",
   props: {
     shopInfo: {
@@ -21,61 +29,40 @@ export default {
       required: true,
     },
   },
-  data() {
-    return {
-      menuObj: null,
-    };
-  },
-  async created() {
-    const restaurantRef = db.doc(`restaurants/${this.restaurantId()}`);
-    this.menuObj = array2obj(
-      (
-        await restaurantRef
-          .collection("menus")
-          .where("deletedFlag", "==", false)
-          .get()
-      ).docs.map(doc2data(""))
-    );
-  },
-  computed: {
-    // TODO: create method and move to utils. merge ShopInfo.vue
-    // TODO: merge shopInfo and shopInfo
-    parsedNumber() {
-      const countryCode =
-        this.shopInfo.countryCode || stripeRegion.countries[0].code;
-      try {
-        return parsePhoneNumber(countryCode + this.shopInfo.phoneNumber);
-      } catch (error) {
-        return null;
-      }
-    },
-    nationalPhoneNumber() {
-      const number = this.parsedNumber;
-      if (number) {
-        return formatNational(number);
-      }
-      return this.shopInfo.phoneNumber;
-    },
-  },
-  methods: {
-    download() {
-      pdf.menuDownload(
-        this.shopInfo,
-        this.menuObj,
-        this.nationalPhoneNumber,
-        this.shareUrl()
+  setup(props, ctx) {
+    const menuObj = ref(null);
+    const restaurantRef = db.doc(`restaurants/${ctx.root.restaurantId()}`);
+    (async () => {
+      menuObj.value = array2obj(
+        (
+          await restaurantRef
+            .collection("menus")
+            .where("deletedFlag", "==", false)
+            .get()
+        ).docs.map(doc2data(""))
       );
-    },
-    async testPrint() {
+    })();
+
+    const { nationalPhoneNumber } = useNationalPhoneNumber(props.shopInfo);
+    const download = () => {
+      const basePath = useBasePath(ctx.root);
+      pdf.menuDownload(
+        props.shopInfo,
+        menuObj.value,
+        nationalPhoneNumber.value,
+        shareUrl(ctx.root, basePath.value)
+      );
+    };
+    const testPrint = async () => {
       const data = await pdf2.orderPrintData();
       const passprnt_uri = pdf2.data2UrlSchema(data, "2");
       location.href = passprnt_uri;
-    },
-    async testDownload() {
+    };
+    const testDownload = async () => {
       const data = await pdf2.orderPdfDownload();
       console.log(data);
-    },
-    async download4() {
+    };
+    const download4 = async () => {
       const data = await pdf2.testDownload();
       console.log(data);
 
@@ -89,8 +76,13 @@ export default {
       // var target = document.getElementById("print");
       // target.href = passprnt_uri;
       console.log(passprnt_uri);
-    },
-    async download5() {},
+    };
+    return {
+      download,
+      testPrint,
+      testDownload,
+      download4,
+    };
   },
-};
+});
 </script>

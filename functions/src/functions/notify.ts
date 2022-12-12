@@ -1,5 +1,4 @@
-import * as functions from "firebase-functions";
-import * as firebase from "firebase-admin";
+import * as admin from "firebase-admin";
 import * as utils from "../lib/utils";
 import moment from "moment-timezone";
 
@@ -10,25 +9,24 @@ import { resources, resources_mo } from "./resources";
 
 import { ownPlateConfig } from "../common/project";
 
-import * as line from "./line";
+import * as line from "./line/line";
 import * as sms from "./sms";
 import * as twilio from "./twilio";
 import * as ses from "./ses";
 
-const LINE_MESSAGE_TOKEN = (functions.config() && functions.config().line && functions.config().line.message_token) || process.env.LINE_MESSAGE_TOKEN;
+const LINE_MESSAGE_TOKEN = process.env.LINE_MESSAGE_TOKEN || "";
 
-const aws_key = (functions.config() && functions.config().aws && functions.config().aws.id) || process.env.AWS_ID;
-const aws_secret = (functions.config() && functions.config().aws && functions.config().aws.secret) || process.env.AWS_SECRET;
+const aws_key = process.env.AWS_ID;
+const aws_secret = process.env.AWS_SECRET;
 
 export const isEnabled = !!ownPlateConfig.line;
 
 // for customer
 export const sendMessageToCustomer = async (
-  db: firebase.firestore.Firestore,
-  lng: string,
+  db: admin.firestore.Firestore,
   msgKey: string,
   restaurantName: string,
-  orderData: firebase.firestore.DocumentData,
+  orderData: admin.firestore.DocumentData,
   restaurantId: string,
   orderId: string,
   params: object = {},
@@ -37,7 +35,7 @@ export const sendMessageToCustomer = async (
   const orderNumber = utils.nameOfOrder(orderData.number);
 
   const t = await i18next.init({
-    lng: lng || utils.getStripeRegion().langs[0],
+    lng: utils.stripeRegion.langs[0],
     resources: orderData.groupId ? resources_mo : resources,
   });
   const getMessage = (_url: string) => {
@@ -58,7 +56,7 @@ export const sendMessageToCustomer = async (
 
   // Not JP
   if (!isEnabled) {
-    return await sms.pushSMS(aws_key, aws_secret, "OwnPlate", getMessage(url), orderData.phoneNumber);
+    return await sms.pushSMS(aws_key, aws_secret, "OwnPlate", getMessage(url), orderData.phoneNumber, false);
   }
   // for JP Mobile Order
   if (orderData.groupId && !/11111111$/.test(orderData.phoneNumber)) {
@@ -77,13 +75,13 @@ export const sendMessageToCustomer = async (
         uid: orderData.uid,
         month: monthstr,
         last4: orderData.phoneNumber.slice(-4),
-        createdAt: process.env.NODE_ENV !== "test" ? firebase.firestore.Timestamp.now() : Date.now(),
+        createdAt: process.env.NODE_ENV !== "test" ? admin.firestore.Timestamp.now() : Date.now(),
       });
     } catch (e) {
       console.log(e);
     }
 
-    return await sms.pushSMS(aws_key, aws_secret, "Mobile Order", getMoMessage(), orderData.phoneNumber);
+    return await sms.pushSMS(process.env.MO_AWS_KEY, process.env.MO_AWS_SECRET, "Mobile Order", getMoMessage(), orderData.phoneNumber, true);
   }
   // for JP
   const { lineId, liffIndexId, liffId } = (await line.getLineId(db, orderData.uid)) as any;
@@ -102,14 +100,14 @@ export const sendMessageToCustomer = async (
   }
   // force SMS ( for cancel and change order)
   if (forceSMS && orderData.phoneNumber) {
-    await sms.pushSMS(aws_key, aws_secret, "omochikaeri", getMessage(url), orderData.phoneNumber);
+    await sms.pushSMS(aws_key, aws_secret, "omochikaeri", getMessage(url), orderData.phoneNumber, false);
   }
 };
 
 // for restaurant
 const createNotifyRestaurantLineMessage = async (messageId: string, restaurantName: string, orderNumber: number, lng: string) => {
   const t = await i18next.init({
-    lng: lng || utils.getStripeRegion().langs[0],
+    lng: lng || utils.stripeRegion.langs[0],
     resources,
   });
   const orderName = utils.nameOfOrder(orderNumber);
@@ -119,7 +117,7 @@ const createNotifyRestaurantLineMessage = async (messageId: string, restaurantNa
 
 const createNotifyRestaurantMailTitle = async (messageId: string, restaurantName: string, orderNumber: number, lng: string) => {
   const t = await i18next.init({
-    lng: lng || utils.getStripeRegion().langs[0],
+    lng: lng || utils.stripeRegion.langs[0],
     resources,
   });
   const orderName = utils.nameOfOrder(orderNumber);
@@ -128,12 +126,12 @@ const createNotifyRestaurantMailTitle = async (messageId: string, restaurantName
 };
 
 export const createNotifyRestaurantMailMessage = async (messageId: string, restaurantName: string, order: any, orderNumber: number, _lng: string, url: string) => {
-  const lng = _lng || utils.getStripeRegion().langs[0];
+  const lng = _lng || utils.stripeRegion.langs[0];
   const path = `./mail_templates/${messageId}/${lng}.html`;
   const template_data = fs.readFileSync(path, { encoding: "utf8" });
 
   const t = await i18next.init({
-    lng: lng || utils.getStripeRegion().langs[0],
+    lng,
     resources,
   });
 
@@ -181,11 +179,11 @@ export const createNotifyRestaurantMailMessage = async (messageId: string, resta
   return replacedTemp;
 };
 
-const notifyRestaurantToLineUser = async (url: string, message: string, lineUsers: any[]) => {
+const notifyRestaurantToLineUser = async (url: string, message: string, lineUsers: admin.firestore.DocumentSnapshot[]) => {
   const results = await Promise.all(
     lineUsers.map(async (doc) => {
       const lineUser = doc.data();
-      if (lineUser.notify) {
+      if (lineUser && lineUser.notify) {
         await line.sendMessageDirect(doc.id, `${message} ${url}?openExternalBrowser=1`, LINE_MESSAGE_TOKEN);
       }
       return lineUser;
@@ -194,7 +192,8 @@ const notifyRestaurantToLineUser = async (url: string, message: string, lineUser
   return results;
 };
 
-export const notifyRestaurant = async (db: any, messageId: string, restaurantId: string, order: any, restaurantName: string, lng: string) => {
+export const notifyRestaurant = async (db: admin.firestore.Firestore, messageId: string, restaurantId: string, order: any, restaurantName: string) => {
+  const lng = utils.stripeRegion.langs[0];
   const datestr = moment().format("YYYY-MM-DD");
   const restaurant = (await db.doc(`/restaurants/${restaurantId}`).get()).data();
   if (!restaurant) {
@@ -219,12 +218,12 @@ export const notifyRestaurant = async (db: any, messageId: string, restaurantId:
       orderId,
       messageId,
       results,
-      updatedAt: process.env.NODE_ENV !== "test" ? firebase.firestore.Timestamp.now() : Date.now(),
+      updatedAt: process.env.NODE_ENV !== "test" ? admin.firestore.Timestamp.now() : Date.now(),
     });
   }
 
   if (restaurant.emailNotification) {
-    const adminUser = process.env.NODE_ENV === "test" ? { email: process.env.TESTMAIL } : await firebase.auth().getUser(restaurant.uid);
+    const adminUser = process.env.NODE_ENV === "test" ? { email: process.env.TESTMAIL } : await admin.auth().getUser(restaurant.uid);
     console.log(adminUser.email);
     if (adminUser.email) {
       await ses.sendMail(adminUser.email, mailTitle, mailMessage);
@@ -236,7 +235,7 @@ export const notifyRestaurant = async (db: any, messageId: string, restaurantId:
     lineMessage,
     sound: true,
     path: `/admin/restaurants/${restaurantId}`,
-    updatedAt: process.env.NODE_ENV !== "test" ? firebase.firestore.Timestamp.now() : Date.now(),
+    updatedAt: process.env.NODE_ENV !== "test" ? admin.firestore.Timestamp.now() : Date.now(),
     url,
   });
 
@@ -249,16 +248,16 @@ export const notifyRestaurant = async (db: any, messageId: string, restaurantId:
         date: datestr,
         orderId,
         phoneNumber: restaurant.phoneNumber,
-        updatedAt: process.env.NODE_ENV !== "test" ? firebase.firestore.Timestamp.now() : Date.now(),
+        updatedAt: process.env.NODE_ENV !== "test" ? admin.firestore.Timestamp.now() : Date.now(),
       });
     }
   }
 };
 
-export const notifyNewOrderToRestaurant = async (db: firebase.firestore.Firestore, restaurantId: string, order: any, restaurantName: string, lng: string) => {
-  return notifyRestaurant(db, "msg_order_placed", restaurantId, order, restaurantName, lng);
+export const notifyNewOrderToRestaurant = async (db: admin.firestore.Firestore, restaurantId: string, order: any, restaurantName: string) => {
+  return notifyRestaurant(db, "msg_order_placed", restaurantId, order, restaurantName);
 };
 
-export const notifyCanceledOrderToRestaurant = async (db: firebase.firestore.Firestore, restaurantId: string, order: any, restaurantName: string, lng: string) => {
-  return notifyRestaurant(db, "msg_order_canceled_by_user", restaurantId, order, restaurantName, lng);
+export const notifyCanceledOrderToRestaurant = async (db: admin.firestore.Firestore, restaurantId: string, order: any, restaurantName: string) => {
+  return notifyRestaurant(db, "msg_order_canceled_by_user", restaurantId, order, restaurantName);
 };

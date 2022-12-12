@@ -1,30 +1,30 @@
 <template>
   <div>
-    <div class="text-sm font-bold pb-2">
+    <div class="pb-2 text-sm font-bold">
       {{ $t(this.state_key) }}
       <span class="text-red-700">*</span>
     </div>
-    <b-field
-      :type="errors['state'].length > 0 ? 'is-danger' : 'is-success'"
+    <o-field
+      :variant="errors['state'].length > 0 ? 'danger' : 'success'"
       v-if="Array.isArray(states)"
     >
-      <b-select :value="value" placeholder="select" @input="input">
+      <o-select :value="value" placeholder="select" @input="input">
         <option v-for="stateItem in states" :key="stateItem">
           {{ stateItem }}
         </option>
-      </b-select>
-    </b-field>
-    <b-field
-      :type="errors['state'].length > 0 ? 'is-danger' : 'is-success'"
+      </o-select>
+    </o-field>
+    <o-field
+      :variant="errors['state'].length > 0 ? 'danger' : 'success'"
       v-else
     >
-      <b-input
+      <o-input
         :value="value"
         type="text"
         :placeholder="$t('editRestaurant.enterCity')"
         maxlength="15"
-      ></b-input>
-    </b-field>
+      ></o-input>
+    </o-field>
   </div>
 </template>
 

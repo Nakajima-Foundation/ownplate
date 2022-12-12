@@ -1,25 +1,23 @@
-# by user
+# by customer
 - cart 
   - wasOrderCreatedJp (orderCreated)
 - order
-  - stripeCreateIntent  (pay)
-  - orderPlaceJp (not pay)
+  - orderPlaceJp (ses)
   ( set sendSMS = true)
 
 # by shop
 - accept
-  - stripeConfirmIntent (pay) (message)
-  - orderUpdateJp (not pay) (message)
+  - orderUpdateJp  (sms) (message)
 - ready  
-  - orderUpdateJp (both) (message, megKey is msg_cooking_completed / never send if the estimate time is more than one day ahead)
+  - orderUpdateJp (message, megKey is msg_cooking_completed / never send if the estimate time is more than one day ahead)
 - completed  
-  - orderUpdateJp (both)
+  - orderUpdateJp 
 - change
-  - orderChangeJp (both) (sms)
+  - orderChangeJp  (sms)
 - cancel credit payment
   - stripePaymentCancelIntent(pay) (sms)
 
-# by user and customer
+# by customer and shop
 - cancel
-  - stripeCancelIntent( both pay and not pay, both accept(by user, shop) and ready(by shop) ) (sms)
+  - stripeCancelIntent( both pay and not pay, both accept(by customer, shop) and ready(by shop) ) (sms) (ses)
 

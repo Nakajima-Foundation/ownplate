@@ -1,5 +1,5 @@
 <template>
-  <section class="section">
+  <section class="mx-auto max-w-full px-6 pb-12 pt-4">
     <back-button url="/s" />
 
     <div v-for="(admin, k) in admins">

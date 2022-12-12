@@ -7,7 +7,7 @@
     <div v-else-if="notFound === false">
       <!-- Header -->
       <AdminHeader
-        class="mt-6 mx-6 lg:flex lg:items-center"
+        class="mx-6 mt-6 lg:flex lg:items-center"
         :shopInfo="shopInfo"
         backLink="/admin/restaurants/"
         :showSuspend="false"
@@ -17,16 +17,20 @@
 
       <template v-if="showCategory">
         <!-- Category view -->
-        <div class="mt-6 mx-6 grid grid-col-1 space-y-2">
+        <div class="grid-col-1 mx-6 mt-6 grid space-y-2">
           <div class="text-xl font-bold text-black text-opacity-30">
             {{ $t("shopInfo.productCategory") }}
           </div>
           <CategoryList :categoryData="categoryData" />
+          <DownloadCSV
+            :restaurantid="menuRestaurantId"
+            v-if="isInMo && isOwner"
+          />
         </div>
       </template>
       <template v-else>
         <!-- Toggle to View All or Public Only -->
-        <div class="mt-6 mx-6 lg:text-center">
+        <div class="mx-6 mt-6 lg:text-center">
           <ToggleSwitch
             :toggleState="!publicFilter"
             @toggleFunction="publicFilterToggle()"
@@ -45,7 +49,7 @@
 
         <!-- category for mo -->
         <div v-if="showSubCategory">
-          <div class="mx-6 mt-2 lg:max-w-2xl lg:mx-auto">
+          <div class="mx-6 mt-2 lg:mx-auto lg:max-w-2xl">
             <SubCategoryList
               :subCategoryData="subCategoryData"
               :categoryBathPath="categoryBathPath"
@@ -54,10 +58,27 @@
           </div>
         </div>
 
+        <div v-if="isInMo && selectedSubCategoryData">
+          <div class="mx-6 mt-2 lg:mx-auto lg:max-w-2xl">
+            <div class="mt-4 text-xs font-bold text-black text-opacity-50">
+              {{ $t("mobileOrder.admin.threshold") }}
+            </div>
+            <div class="mt-0.5 text-base font-bold">
+              <span class="text-xs text-black text-opacity-50">{{
+                $t("mobileOrder.admin.thresholdPickup")
+              }}</span>
+              {{ selectedSubCategoryData["thresholdMoPickup"] }}
+              <span class="text-xs text-black text-opacity-50"
+                >/ {{ $t("mobileOrder.admin.thresholdSearchStock") }}</span
+              >
+              {{ selectedSubCategoryData["thresholdSearchStock"] }}
+            </div>
+          </div>
+        </div>
         <!-- No Menu or Too Many Menu-->
         <div
           v-if="(!existsMenu || menuCounter > 5) && isOwner && !isInMo"
-          class="mt-6 mx-6 border-2 border-op-teal rounded-lg p-4 pb-2 lg:max-w-2xl lg:mx-auto"
+          class="mx-6 mt-6 rounded-lg border-2 border-op-teal p-4 pb-2 lg:mx-auto lg:max-w-2xl"
         >
           <div class="text-center text-sm font-bold text-op-teal">
             {{ $t("editMenu.pleaseAddItem") }}
@@ -73,7 +94,7 @@
         <!-- Category Titles / Menu Items -->
         <div
           v-if="existsMenu"
-          class="mt-6 mx-6 grid-col-1 space-y-4 lg:max-w-2xl lg:mx-auto"
+          class="grid-col-1 mx-6 mt-6 space-y-4 lg:mx-auto lg:max-w-2xl"
         >
           <div v-for="(menuList, index) in menuLists" :key="menuList">
             <!-- Category Title -->
@@ -138,6 +159,10 @@
                 @positionDown="positionDown($event)"
                 @forkItem="forkMenuItem($event)"
                 @deleteItem="deleteItem($event)"
+                :preOrderAvaiable="preOrderAvaiable[menuList] || {}"
+                :pickupAvaiable="pickupAvaiable[menuList] || {}"
+                :pickupStockData="pickupStockData[menuList] || {}"
+                :subCategoryId="subCategory"
               />
             </div>
           </div>
@@ -145,7 +170,7 @@
 
         <!-- Add Group Title, Menu Item, and Download Menu -->
         <div
-          class="mt-6 mx-6 border-2 border-op-teal rounded-lg p-4 pb-2 lg:max-w-2xl lg:mx-auto"
+          class="mx-6 mt-6 rounded-lg border-2 border-op-teal p-4 pb-2 lg:mx-auto lg:max-w-2xl"
           v-if="isOwner"
         >
           <AddButton
@@ -155,7 +180,7 @@
             v-if="!isInMo"
           />
 
-          <div class="text-center mt-2" v-if="menuCounter > 0">
+          <div class="mt-2 text-center" v-if="menuCounter > 0">
             <DownloadButton :shopInfo="shopInfo" :menuObj="menuObj" />
           </div>
         </div>
@@ -176,14 +201,11 @@ import { db } from "@/lib/firebase/firebase9";
 import {
   doc,
   collection,
-  query,
-  where,
   addDoc,
   updateDoc,
   onSnapshot,
   serverTimestamp,
 } from "firebase/firestore";
-import firebase from "firebase/compat/app";
 
 import NotFound from "@/components/NotFound.vue";
 import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
@@ -198,10 +220,11 @@ import PhotoName from "@/app/admin/MenuListPage/PhotoName.vue";
 import DownloadButton from "@/app/admin/MenuListPage/DownloadButton.vue";
 import CategoryList from "@/app/admin/MenuListPage/CategoryList.vue";
 import CategoryButton from "@/app/admin/MenuListPage/CategoryButton.vue";
-
+import DownloadCSV from "@/app/admin/MenuListPage/DownloadCSV.vue";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 
 import { useMenuAndTitle } from "@/app/admin/MenuListPage/Utils";
+import { loadStockData } from "@/app/user/Restaurant/Utils";
 
 import { ownPlateConfig } from "@/config/project";
 
@@ -237,6 +260,7 @@ export default defineComponent({
     SubCategoryList,
     CategoryList,
     CategoryButton,
+    DownloadCSV,
   },
   props: {
     shopInfo: {
@@ -300,6 +324,12 @@ export default defineComponent({
     const selectedCategory = computed(() => {
       return categoryDataObj.value[category.value] || {};
     });
+    const selectedSubCategoryData = computed(() => {
+      //      return subCategoryData.value
+      return subCategoryData.value.find((a) => {
+        return a.id === subCategory.value;
+      });
+    });
     watch(category, () => {
       if (category.value) {
         loadSubcategory();
@@ -353,12 +383,8 @@ export default defineComponent({
       restaurant_detacher();
     });
 
-    const { menuObj, itemsObj, numberOfMenus, loadMenu } = useMenuAndTitle(
-      menuRestaurantId,
-      props.isInMo,
-      category,
-      subCategory
-    );
+    const { menuObj, itemsObj, numberOfMenus, loadMenu, isLoading } =
+      useMenuAndTitle(menuRestaurantId, props.isInMo, category, subCategory);
 
     const menuLists = computed(() => {
       return props.isInMo
@@ -376,6 +402,38 @@ export default defineComponent({
       loadMenu();
     });
     loadMenu();
+
+    // mo
+    const { preOrderPublics, pickupPublics, pickupStocks } = loadStockData(
+      db,
+      props.shopInfo
+    );
+
+    const preOrderAvaiable = computed(() => {
+      return (preOrderPublics.value || {})[subCategory.value] || {};
+    });
+    const pickupAvaiable = computed(() => {
+      return (pickupPublics.value || {})[subCategory.value] || {};
+    });
+    const pickupStockData = computed(() => {
+      return (pickupStocks.value || {})[subCategory.value] || {};
+    });
+
+    watch(isLoading, (value) => {
+      if (!props.isInMo) {
+        if (!value) {
+          // finish load
+          if (
+            numberOfMenus.value > 0 &&
+            numberOfMenus.value !== props.shopInfo?.numberOfMenus
+          ) {
+            updateDoc(doc(db, `restaurants/${restaurantId.value}`), {
+              numberOfMenus: numberOfMenus.value,
+            });
+          }
+        }
+      }
+    });
 
     const { toggle: publicFilter, switchToggle: publicFilterToggle } =
       useAdminConfigToggle("menuPublicFilter", uid.value, false);
@@ -599,11 +657,18 @@ export default defineComponent({
       categoryData,
       subCategoryData,
       selectedCategory,
+      selectedSubCategoryData,
 
       showCategory,
       showSubCategory,
       categoryBathPath,
       subCategory,
+
+      // mo
+      preOrderAvaiable,
+      pickupAvaiable,
+      pickupStockData,
+      menuRestaurantId,
     };
   },
 });

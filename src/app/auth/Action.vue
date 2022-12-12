@@ -3,6 +3,9 @@
     <div v-if="mode == 'resetPassword'">
       <reset-password />
     </div>
+    <div v-else-if="mode == 'verifyEmail'">
+      <verify-email />
+    </div>
     <div v-else>not found</div>
   </div>
 </template>
@@ -11,11 +14,13 @@
 import { defineComponent, computed } from "@vue/composition-api";
 
 import ResetPassword from "./Actions/ResetPassword.vue";
+import VerifyEmail from "./Actions/VerifyEmail.vue";
 
 export default defineComponent({
   name: "AccountAction",
   components: {
     ResetPassword,
+    VerifyEmail,
   },
   setup(_, ctx) {
     const mode = computed(() => {

@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-2 mx-6 h-3/5">
+  <div class="mx-6 mt-2 h-3/5">
     <GMap
       ref="gMap"
       :center="{ lat: center_lat, lng: center_lng }"
@@ -20,7 +20,7 @@
               {{ restaurant.restaurantName }}<br />
               <img
                 :src="resizedProfileImage(restaurant, '600')"
-                class="w-12 h-12 rounded-full object-cover"
+                class="h-12 w-12 rounded-full object-cover"
               />
             </router-link>
           </div>

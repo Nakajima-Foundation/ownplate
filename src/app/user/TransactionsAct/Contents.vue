@@ -1,8 +1,8 @@
 <template>
   <div>
     <!-- Transactions Act Popup-->
-    <b-modal :active.sync="transactionsActPopup" :width="488" scroll="keep">
-      <div class="omx-2 my-16 p-6 bg-white shadow-lg rounded-lg">
+    <o-modal :active.sync="transactionsActPopup" :width="488" scroll="keep">
+      <div class="omx-2 rounded-lg bg-white p-6 shadow-lg">
         <!-- Title -->
         <div class="text-xl font-bold text-black text-opacity-40">
           {{ $t("transactionsAct.title") }}
@@ -16,7 +16,7 @@
               {{ $t("transactionsAct.sellerName") }}
             </div>
 
-            <div class="text-base mt-1">
+            <div class="mt-1 text-base">
               {{ shopInfo.restaurantName }}
             </div>
           </div>
@@ -27,7 +27,7 @@
               {{ $t("transactionsAct.representative") }}
             </div>
 
-            <div class="text-base mt-1">
+            <div class="mt-1 text-base">
               {{ shopInfo.ownerName || "---" }}
             </div>
           </div>
@@ -38,7 +38,7 @@
               {{ $t("transactionsAct.address") }}
             </div>
 
-            <div class="text-base mt-1">
+            <div class="mt-1 text-base">
               {{ shopInfo.state }} {{ shopInfo.city }}
               {{ shopInfo.streetAddress }}
             </div>
@@ -50,7 +50,7 @@
               {{ $t("transactionsAct.hours") }}
             </div>
 
-            <div class="text-base mt-1">
+            <div class="mt-1 text-base">
               <template v-for="(day, key) in days">
                 <div class="flex px-2 py-1 text-sm">
                   <div class="w-16">{{ $t("week.short." + day) }}</div>
@@ -76,7 +76,7 @@
               {{ $t("transactionsAct.phone") }}
             </div>
 
-            <div class="text-base mt-1">
+            <div class="mt-1 text-base">
               {{ nationalPhoneNumber }}
             </div>
           </div>
@@ -87,7 +87,7 @@
               {{ $t("transactionsAct.price") }}
             </div>
 
-            <div class="text-base mt-1">
+            <div class="mt-1 text-base">
               {{ $t("transactionsAct.priceDescription") }}
             </div>
           </div>
@@ -98,20 +98,20 @@
               {{ $t("transactionsAct.otherFees") }}
             </div>
 
-            <div class="text-sm font-bold text-black text-opacity-30 mt-2">
+            <div class="mt-2 text-sm font-bold text-black text-opacity-30">
               {{ $t("transactionsAct.takeoutTitle") }}
             </div>
 
-            <div class="text-base mt-1">
+            <div class="mt-1 text-base">
               {{ $t("transactionsAct.otherFeesDescription") }}
             </div>
 
             <template v-if="shopInfo.enableDelivery">
-              <div class="text-sm font-bold text-black text-opacity-30 mt-2">
+              <div class="mt-2 text-sm font-bold text-black text-opacity-30">
                 {{ $t("transactionsAct.deliveryTitle") }}
               </div>
 
-              <div class="text-base mt-1">
+              <div class="mt-1 text-base">
                 {{ $t("transactionsAct.otherFeesDescriptionDelivery") }}
               </div>
             </template>
@@ -123,7 +123,7 @@
               <div class="text-sm font-bold text-black text-opacity-30">
                 {{ $t("transactionsAct.payment") }}
               </div>
-              <ul class="list-disc list-outside ml-5 mt-1">
+              <ul class="ml-5 mt-1 list-outside list-disc">
                 <li v-if="showPayment">
                   {{ $t("transactionsAct.paymentDescriptionCard") }}
                 </li>
@@ -138,7 +138,7 @@
               <div class="text-sm font-bold text-black text-opacity-30">
                 {{ $t("transactionsAct.paymentMo") }}
               </div>
-              <ul class="list-disc list-outside ml-5 mt-1">
+              <ul class="ml-5 mt-1 list-outside list-disc">
                 <li v-if="showPayment">
                   {{ $t("transactionsAct.paymentDescriptionCardMo") }}
                 </li>
@@ -157,7 +157,7 @@
                 {{ $t("transactionsAct.delivery") }}
               </div>
 
-              <div class="text-base mt-1">
+              <div class="mt-1 text-base">
                 {{ $t("transactionsAct.deliveryDescription") }}
               </div>
             </div>
@@ -168,7 +168,7 @@
                 {{ $t("transactionsAct.deliveryMo") }}
               </div>
 
-              <div class="text-base mt-1">
+              <div class="mt-1 text-base">
                 {{ $t("transactionsAct.deliveryDescriptionMo") }}
               </div>
             </div>
@@ -181,16 +181,16 @@
               <div class="text-sm font-bold text-black text-opacity-30">
                 {{ $t("transactionsAct.cancellation") }}
               </div>
-              <ul class="list-disc list-outside ml-5 mt-1">
+              <ul class="ml-5 mt-1 list-outside list-disc">
                 <li>{{ $t("transactionsAct.cancellationDescription1") }}</li>
                 <li v-if="!isInMo">
                   {{ $t("transactionsAct.cancellationDescription4") }}
                 </li>
                 <li>
                   {{ $t("transactionsAct.cancellationDescription2") }}
-                  <ul class="list-none list-outside mb-2">
+                  <ul class="mb-2 list-outside list-none">
                     <div
-                      class="text-sm font-bold text-black text-opacity-30 mt-2"
+                      class="mt-2 text-sm font-bold text-black text-opacity-30"
                     >
                       {{ $t("transactionsAct.takeoutTitle") }}
                     </div>
@@ -201,7 +201,7 @@
                     </li>
                     <div
                       v-if="shopInfo.enableDelivery"
-                      class="text-sm font-bold text-black text-opacity-30 mt-2"
+                      class="mt-2 text-sm font-bold text-black text-opacity-30"
                     >
                       {{ $t("transactionsAct.deliveryTitle") }}
                     </div>
@@ -234,7 +234,7 @@
               <div class="text-sm font-bold text-black text-opacity-30">
                 {{ $t("transactionsAct.cancellationMo") }}
               </div>
-              <ul class="list-disc list-outside ml-5 mt-1">
+              <ul class="ml-5 mt-1 list-outside list-disc">
                 <li>{{ $t("transactionsAct.cancellationDescription1Mo") }}</li>
                 <li>
                   {{ $t("transactionsAct.cancellationDescription2Mo") }}
@@ -252,7 +252,7 @@
         <div class="mt-6 text-center">
           <a
             @click="closeTransactionsAct()"
-            class="inline-flex justify-center items-center h-12 rounded-full px-6 bg-black bg-opacity-5"
+            class="inline-flex h-12 items-center justify-center rounded-full bg-black bg-opacity-5 px-6"
             style="min-width: 8rem"
           >
             <div class="text-base font-bold text-black text-opacity-60">
@@ -261,7 +261,7 @@
           </a>
         </div>
       </div>
-    </b-modal>
+    </o-modal>
   </div>
 </template>
 <script>

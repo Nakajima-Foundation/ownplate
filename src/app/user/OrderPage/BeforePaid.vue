@@ -1,30 +1,26 @@
 <template>
   <div>
     <!-- Back Button (Edit Order) -->
-    <div class="mt-6 mx-6">
-      <b-button
-        :loading="isDeleting"
-        @click="handleOpenMenu"
-        class="b-reset-tw"
-      >
+    <div class="mx-6 mt-6">
+      <o-button @click="handleOpenMenu" class="b-reset-tw">
         <div
-          class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+          class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
         >
-          <i class="material-icons text-lg text-op-teal mr-2">arrow_back</i>
+          <i class="material-icons mr-2 text-lg text-op-teal">arrow_back</i>
           <div class="text-sm font-bold text-op-teal">
             {{ $t("button.back") }}
           </div>
         </div>
-      </b-button>
+      </o-button>
     </div>
 
     <!-- Restaurant Profile Photo and Name -->
-    <div class="mt-4 beforePaid">
+    <div class="beforePaid mt-4">
       <shop-header :shopInfo="shopInfo"></shop-header>
     </div>
 
     <!-- Before Paid -->
-    <div class="mt-4 mx-6">
+    <div class="mx-6 mt-4">
       <BeforePaidAlert :orderInfo="orderInfo" :shopInfo="shopInfo" />
     </div>
     <!-- end of Before Paid -->
@@ -38,7 +34,7 @@
     </div>
 
     <!-- Order Body -->
-    <div class="mt-6 mx-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
+    <div class="mx-6 mt-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
       <!-- Left -->
       <div>
         <!-- Title -->
@@ -91,7 +87,7 @@
           <!-- For EC and Delivery -->
           <div
             v-if="shopInfo.isEC || orderInfo.isDelivery"
-            class="bg-white rounded-lg shadow p-4 mb-4 mt-2"
+            class="mb-4 mt-2 rounded-lg bg-white p-4 shadow"
           >
             <ECCustomer
               ref="ecCustomerRef"
@@ -110,7 +106,7 @@
                 $refs.ecCustomerRef &&
                 $refs.ecCustomerRef.ecErrors['location'].length > 0
               "
-              class="text-red-700 font-bold"
+              class="font-bold text-red-700"
             >
               <div
                 v-for="(error, key) in $refs.ecCustomerRef.ecErrors['location']"
@@ -148,6 +144,7 @@
                 :isDelivery="orderInfo.isDelivery || false"
                 ref="time"
                 @notAvailable="handleNotAvailable"
+                @updateDisabledPickupTime="updateDisabledPickupTime"
               />
             </div>
           </div>
@@ -160,21 +157,21 @@
             <div
               class="mt-6"
               :class="
-                userMessageError ? 'p-2 rounded border-4 border-red-700' : ''
+                userMessageError ? 'rounded border-4 border-red-700 p-2' : ''
               "
             >
               <div class="text-xl font-bold text-black text-opacity-30">
                 {{ $t("order.orderMessage") }}
               </div>
 
-              <div class="bg-white rounded-lg shadow p-4 mt-2">
-                <b-input
+              <div class="mt-2 rounded-lg bg-white p-4 shadow">
+                <o-input
                   v-model="memo"
                   type="textarea"
                   :placeholder="$t('order.enterMessage')"
                   class="w-full"
-                ></b-input>
-                <div :class="userMessageError ? 'text-red-700 font-bold' : ''">
+                ></o-input>
+                <div :class="userMessageError ? 'font-bold text-red-700' : ''">
                   {{ $t("validationError.memo.length") }}
                 </div>
               </div>
@@ -203,24 +200,40 @@
                 :stripeJCB="stripeJCB"
               ></stripe-card>
 
+              <div
+                v-if="disabledPickupTime"
+                class="mt-4 h-full w-full rounded-lg bg-red-700 bg-opacity-10 p-3 text-xs font-bold text-red-700"
+              >
+                {{
+                  $tc("mobileOrder.shopInfo.pickupNote", 1, {
+                    lastOrder: $refs.time && $refs.time.lastOrder,
+                  })
+                }}
+              </div>
+
               <div class="mt-6 text-center">
-                <b-button
-                  :loading="isPaying"
+                <o-button
                   :disabled="
                     !cardState.complete ||
                     notAvailable ||
                     notSubmitAddress ||
                     userMessageError ||
-                    stripeSmallPayment
+                    disabledPickupTime ||
+                    stripeSmallPayment ||
+                    moSuspend
                   "
-                  @click="handlePayment"
+                  @click="handlePayment(true)"
                   class="b-reset-tw"
                 >
                   <div
-                    class="inline-flex justify-center items-center h-16 px-6 rounded-full bg-op-teal shadow"
+                    class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal px-6 shadow"
                     style="min-width: 288px"
                   >
-                    <div class="text-xl font-bold text-white">
+                    <ButtonLoading v-if="isPaying" />
+                    <div class="text-xl font-bold text-white" v-if="moSuspend">
+                      {{ $t("mobileOrder.suspendCartButton") }}
+                    </div>
+                    <div class="text-xl font-bold text-white" v-else>
                       {{
                         mode === "mo"
                           ? $t("order.placeOrderMo")
@@ -229,10 +242,10 @@
                       <!-- {{ $n(orderInfo.total + tip, "currency") }} -->
                     </div>
                   </div>
-                </b-button>
+                </o-button>
                 <div
                   v-if="mode !== 'mo' && stripeSmallPayment"
-                  class="text-sm font-bold text-red-700 mt-2"
+                  class="mt-2 text-sm font-bold text-red-700"
                 >
                   {{ $t("errorPage.code.smallPayment") }}
                 </div>
@@ -240,7 +253,7 @@
               <div v-if="mode === 'mo'" class="text-center">
                 <div
                   v-if="stripeSmallPayment"
-                  class="text-sm font-bold text-red-700 mt-2"
+                  class="mt-2 text-sm font-bold text-red-700"
                 >
                   <div>
                     {{ $t("mobileOrder.smallPayment1") }}
@@ -263,7 +276,7 @@
 
             <!-- Pay at Restaurant -->
             <div v-else class="mt-2">
-              <div class="bg-black bg-opacity-5 rounded-lg p-4">
+              <div class="rounded-lg bg-black bg-opacity-5 p-4">
                 <div class="text-sm">
                   {{ $t("order.pleasePayAtRestaurant") }}
                 </div>
@@ -277,19 +290,27 @@
               </div>
 
               <div class="mt-4">
-                <b-button
+                <o-button
                   :loading="isPlacing"
                   :disabled="
-                    notAvailable || notSubmitAddress || userMessageError
+                    notAvailable ||
+                    notSubmitAddress ||
+                    userMessageError ||
+                    disabledPickupTime ||
+                    moSuspend
                   "
-                  @click="handleNoPayment"
+                  @click="handlePayment(false)"
                   class="b-reset-tw"
                 >
                   <div
-                    class="inline-flex justify-center items-center h-16 px-6 rounded-full bg-op-teal shadow"
+                    class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal px-6 shadow"
                     style="min-width: 288px"
                   >
-                    <div class="text-xl font-bold text-white">
+                    <ButtonLoading v-if="isPlacing" />
+                    <div class="text-xl font-bold text-white" v-if="moSuspend">
+                      {{ $t("mobileOrder.suspendCartButton") }}
+                    </div>
+                    <div class="text-xl font-bold text-white" v-else>
                       {{
                         mode === "mo"
                           ? $t("order.placeOrderNoPaymentMo")
@@ -297,7 +318,7 @@
                       }}
                     </div>
                   </div>
-                </b-button>
+                </o-button>
               </div>
               <div v-if="mode !== 'mo'">
                 <div class="mt-2 text-sm font-bold text-black text-opacity-60">
@@ -313,19 +334,19 @@
                 $refs.ecCustomerRef &&
                 $refs.ecCustomerRef.hasEcError
               "
-              class="text-center text-red-700 font-bold mt-2"
+              class="mt-2 text-center font-bold text-red-700"
             >
               {{ $t("order.alertReqireAddress") }}
             </div>
 
             <!-- Send SMS Checkbox -->
             <div v-if="!isLineEnabled" class="mt-6">
-              <div class="bg-black bg-opacity-5 rounded-lg p-4">
-                <b-checkbox v-model="sendSMS">
+              <div class="rounded-lg bg-black bg-opacity-5 p-4">
+                <o-checkbox v-model="sendSMS">
                   <div class="text-sm font-bold">
                     {{ $t("order.sendSMS") }}
                   </div>
-                </b-checkbox>
+                </o-checkbox>
               </div>
             </div>
           </div>
@@ -353,12 +374,14 @@ import BeforePaidAlert from "@/app/user/OrderPage/BeforePaid/BeforePaidAlert.vue
 import SpecifiedCommercialTransactions from "@/app/user/OrderPage/BeforePaid/SpecifiedCommercialTransactions.vue";
 import OrderPageMap from "@/app/user/OrderPage/BeforePaid/Map.vue";
 
+import ButtonLoading from "@/components/Button/Loading.vue";
+
 import { db, firestore } from "@/plugins/firebase";
 import { orderPlace } from "@/lib/firebase/functions";
 
 import { order_status } from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
-import { stripeCreateIntent, stripeReceipt } from "@/lib/stripe/stripe";
+import { stripeReceipt } from "@/lib/stripe/stripe";
 
 import { costCal } from "@/utils/commonUtils";
 
@@ -373,6 +396,8 @@ export default {
     OrderInfo,
     UserCustomerInfo,
     CustomerInfo,
+
+    ButtonLoading,
 
     // before paid
     StripeCard,
@@ -412,6 +437,10 @@ export default {
       type: Object,
       required: false,
     },
+    moSuspend: {
+      type: Boolean,
+      required: false,
+    },
   },
   data() {
     return {
@@ -419,22 +448,16 @@ export default {
       isPaying: false,
       cardState: {},
 
-      isDeleting: false,
       isPlacing: false,
       tip: 0,
       sendSMS: true,
       postageInfo: {},
       memo: "",
+      disabledPickupTime: false,
     };
   },
   created() {
     this.setPostage();
-  },
-  beforeRouteLeave(to, from, next) {
-    if (to.name === "r-restaurantId") {
-      this.deleteOrderInfo();
-    }
-    next();
   },
   computed: {
     showPayment() {
@@ -448,9 +471,6 @@ export default {
     },
     inStorePayment() {
       return this.paymentInfo.inStore;
-    },
-    orderName() {
-      return nameOfOrder(this.orderInfo);
     },
     hasCustomerInfo() {
       return this.orderInfo.status > order_status.validation_ok;
@@ -513,6 +533,9 @@ export default {
         this.restaurantId()
       );
     },
+    updateDisabledPickupTime(value) {
+      this.disabledPickupTime = value;
+    },
 
     handleOpenMenu() {
       this.$emit("handleOpenMenu");
@@ -522,7 +545,6 @@ export default {
       this.notAvailable = flag;
     },
     handleTipChange(tip) {
-      //console.log("handleTipChange", tip);
       this.tip = tip;
     },
     handleCardStateChange(state) {
@@ -530,13 +552,11 @@ export default {
     },
     async deleteOrderInfo() {
       try {
-        this.isDeleting = true;
         await db
           .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
           .delete();
         console.log("suceeded");
       } catch (error) {
-        this.isDeleting = false;
         console.log("failed");
       }
     },
@@ -550,66 +570,7 @@ export default {
         updatedAt: firestore.FieldValue.serverTimestamp(),
       };
     },
-    async handlePayment() {
-      if (this.userMessageError) {
-        return;
-      }
-      if (this.requireAddress) {
-        if (this.$refs.ecCustomerRef.hasEcError) {
-          return;
-        }
-        if (this.$refs.ecCustomerRef.isSaveAddress) {
-          await this.$refs.ecCustomerRef.saveAddress();
-        }
-      }
-      const timeToPickup = this.shopInfo.isEC
-        ? firebase.firestore.Timestamp.now()
-        : this.$refs.time.timeToPickup();
-
-      this.isPaying = true;
-      try {
-        await this.$refs.stripe.createToken();
-        const { data } = await stripeCreateIntent({
-          timeToPickup,
-          restaurantId: this.restaurantId() + this.forcedError("intent"),
-          orderId: this.orderId,
-          description: `${this.orderName} ${this.shopInfo.restaurantName} ${this.shopInfo.phoneNumber}`,
-          sendSMS: this.sendSMS,
-          tip: this.tip || 0,
-          memo: this.memo || "",
-          customerInfo: this.$refs.ecCustomerRef
-            ? this.$refs.ecCustomerRef.customerInfo || {}
-            : {},
-        });
-        if (this.isLiffUser) {
-          await this.saveLiffCustomer();
-        }
-        this.sendPurchase();
-        this.$store.commit("resetCart", this.restaurantId());
-        console.log("createIntent", data);
-        window.scrollTo(0, 0);
-      } catch (error) {
-        // alert(JSON.stringify(error));
-        console.error(error.message, error.details);
-        let error_code = "stripe.intent";
-        if (
-          error.details &&
-          error.details.code === "card_declined" &&
-          error.details.decline_code === "card_not_supported" &&
-          !this.stripeJCB
-        ) {
-          console.log("JCB");
-          error_code = "stripe.NoJCB";
-        }
-        this.$store.commit("setErrorMessage", {
-          code: error_code,
-          error,
-        });
-      } finally {
-        this.isPaying = false;
-      }
-    },
-    async handleNoPayment() {
+    async handlePayment(payStripe) {
       if (this.userMessageError) {
         return;
       }
@@ -621,18 +582,22 @@ export default {
           await this.$refs.ecCustomerRef.saveAddress();
         }
       }
-
       const timeToPickup = this.shopInfo.isEC
         ? firebase.firestore.Timestamp.now()
         : this.$refs.time.timeToPickup();
       try {
-        this.isPlacing = true;
+        if (payStripe) {
+          this.isPaying = true;
+          await this.$refs.stripe.createToken();
+        } else {
+          this.isPlacing = true;
+        }
         const { data } = await orderPlace({
-          restaurantId: this.restaurantId() + this.forcedError("place"),
           timeToPickup,
+          restaurantId: this.restaurantId(),
           orderId: this.orderId,
-          sendSMS: this.sendSMS,
           tip: this.tip || 0,
+          payStripe,
           memo: this.memo || "",
           customerInfo: this.$refs.ecCustomerRef
             ? this.$refs.ecCustomerRef.customerInfo || {}
@@ -641,7 +606,6 @@ export default {
         if (this.isLiffUser) {
           await this.saveLiffCustomer();
         }
-        // console.log("place", data);
         this.sendPurchase();
         this.$store.commit("resetCart", this.restaurantId());
         window.scrollTo(0, 0);
@@ -654,6 +618,7 @@ export default {
         });
       } finally {
         this.isPlacing = false;
+        this.isPaying = false;
       }
     },
     openTransactionsAct() {

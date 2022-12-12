@@ -9,7 +9,9 @@ import {
   onUnmounted,
 } from "@vue/composition-api";
 
-import { db, firestore } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import { collection, onSnapshot, where, query } from "firebase/firestore";
+
 import { midNight } from "@/utils/dateUtils";
 import { order_status } from "@/config/constant";
 
@@ -47,25 +49,26 @@ export default defineComponent({
       if (order_detacher) {
         order_detacher();
       }
-      order_detacher = db
-        .collection(`restaurants/${restaurantId}/orders`)
-        .where("timePlaced", ">=", today.value)
-        // .where("timePlaced", "<", this.tommorow)
-        .where("status", "==", order_status.order_placed)
-        .onSnapshot(
-          (result) => {
-            orders.value = result.docs.map(doc2data("order"));
-            ctx.root.$store.commit("setOrders", orders.value);
-          },
-          (error) => {
-            if (error.code === "permission-denied") {
-              // We can ignore this type of error here
-              console.warn("Ignoring", error.code);
-            } else {
-              throw error;
-            }
+      order_detacher = onSnapshot(
+        query(
+          collection(db, `restaurants/${restaurantId}/orders`),
+          where("timePlaced", ">=", today.value),
+          // .where("timePlaced", "<", this.tommorow)
+          where("status", "==", order_status.order_placed)
+        ),
+        (result) => {
+          orders.value = result.docs.map(doc2data("order"));
+          ctx.root.$store.commit("setOrders", orders.value);
+        },
+        (error) => {
+          if (error.code === "permission-denied") {
+            // We can ignore this type of error here
+            console.warn("Ignoring", error.code);
+          } else {
+            throw error;
           }
-        );
+        }
+      );
     };
 
     dateWasUpdated();
@@ -77,7 +80,11 @@ export default defineComponent({
           " order=" +
           hasNewOrder.value
       );
-      if (props.notificationConfig.infinityNotification && hasNewOrder.value) {
+      if (
+        props.notificationConfig.soundOn &&
+        props.notificationConfig.infinityNotification &&
+        hasNewOrder.value
+      ) {
         ctx.root.soundPlay("NewOrderWatcher: play");
       }
     };

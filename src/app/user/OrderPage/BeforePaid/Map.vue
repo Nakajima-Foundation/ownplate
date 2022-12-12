@@ -3,7 +3,7 @@
     <div>
       <button @click="conv">
         <div
-          class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-op-teal"
+          class="inline-flex h-9 items-center justify-center rounded-full bg-op-teal px-4"
         >
           <div class="text-sm font-bold text-white">
             {{ $t("delivery.setTheAddressInTheDeliveryLocation") }}
@@ -11,10 +11,10 @@
         </div>
       </button>
     </div>
-    <div class="text-sm mt-1">
+    <div class="mt-1 text-sm">
       {{ $t("delivery.setTheAddressInTheDeliveryLocationDescription") }}
     </div>
-    <div class="text-xm font-bold text-black text-opacity-30 mt-2">
+    <div class="text-xm mt-2 font-bold text-black text-opacity-30">
       {{ $t("delivery.setDeliveryLocation") }}
     </div>
     <GMap
@@ -34,10 +34,10 @@
     </div>
 
     <div v-if="deliveryInfo.enableAreaText">
-      <div class="text-xm font-bold text-black text-opacity-30 mt-2">
+      <div class="text-xm mt-2 font-bold text-black text-opacity-30">
         {{ $t("delivery.aboutDeliveryArea") }}
       </div>
-      <pre class="p-0 mt-2 mb-2 bg-transparent">{{
+      <pre class="mt-2 mb-2 bg-transparent p-0">{{
         deliveryInfo.areaText
       }}</pre>
     </div>

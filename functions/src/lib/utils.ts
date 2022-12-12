@@ -1,25 +1,15 @@
 import * as functions from "firebase-functions";
-import { stripe_regions, regionalSettings } from "../common/constant";
+import { stripe_regions } from "../common/constant";
 import Stripe from "stripe";
 import * as Sentry from "@sentry/node";
 
 import { Context } from "../models/TestType";
 import * as admin from "firebase-admin";
 
-export const getRegion = () => {
-  const locale = functions.config().locale;
-  return (locale && locale.region) || "US";
-};
+const region = "JP"; // config
+export const stripeRegion = stripe_regions[region];
 
-export const getStripeRegion = () => {
-  const region = getRegion();
-  return stripe_regions[region] || stripe_regions["US"];
-};
-
-export const getRegionalSetting = () => {
-  const region = getRegion();
-  return regionalSettings[region] || regionalSettings["US"];
-};
+export const timezone = "Asia/Tokyo"; // config
 
 export const validate_auth = (context: functions.https.CallableContext | Context) => {
   if (!context.auth) {
@@ -28,14 +18,28 @@ export const validate_auth = (context: functions.https.CallableContext | Context
   return context.auth.uid;
 };
 
+export const validate_customer_auth = (context: functions.https.CallableContext | Context) => {
+  if (!context.auth || !context.auth.token?.phone_number) {
+    throw new functions.https.HttpsError("failed-precondition", "The function must be called while authenticated.");
+  }
+  return context.auth.uid;
+};
+
 export const validate_admin_auth = (context: functions.https.CallableContext | Context) => {
-  if (!context.auth) {
+  if (!context.auth || !context.auth?.token?.email) {
+    throw new functions.https.HttpsError("failed-precondition", "The function must be called while authenticated.");
+  }
+  return context.auth.uid;
+};
+
+export const validate_owner_admin_auth = (context: functions.https.CallableContext | Context) => {
+  if (!context.auth || !context.auth?.token?.email) {
     throw new functions.https.HttpsError("failed-precondition", "The function must be called while authenticated.");
   }
   return context.auth?.token?.parentUid || context.auth.uid;
 };
 export const validate_parent_admin_auth = (context: functions.https.CallableContext | Context) => {
-  if (!context.auth) {
+  if (!context.auth || !context.auth?.token?.email) {
     throw new functions.https.HttpsError("failed-precondition", "The function must be called while authenticated.");
   }
   if (context.auth?.token?.parentUid) {
@@ -49,16 +53,27 @@ export const is_admin_auth = (context: functions.https.CallableContext | Context
   }
   return !!context.auth?.token?.email;
 };
+export const is_subAccount = (context: functions.https.CallableContext | Context) => {
+  return !!context.auth?.token?.parentUid;
+};
+export const validate_sub_account_request = async (db: admin.firestore.Firestore, uid: string, ownerUid: string, restaurantId: string) => {
+  const rList = ((await db.doc(`admins/${ownerUid}/children/${uid}`).get()).data()||{}).restaurantLists || [];
+  if (!rList.includes(restaurantId)) {
+    throw new functions.https.HttpsError("permission-denied", "The user does not have an authority to perform this operation.");
+  }
+  return true;
+}
 
 export const getStripeWebhookSecretKey = () => {
-  return (functions.config() && functions.config().stripe && functions.config().stripe.whsecret_key) || process.env.WH_STRIPE_SECRET;
-};
-export const getStripeSecretKey = () => {
-  return (functions.config() && functions.config().stripe && functions.config().stripe.secret_key) || process.env.STRIPE_SECRET;
+  const SECRET = process.env.STRIPE_WH_SECRET;
+  if (!SECRET) {
+    throw new functions.https.HttpsError("invalid-argument", "The functions requires STRIPE_WH_SECRET.");
+  }
+  return SECRET;
 };
 
 export const get_stripe = () => {
-  const STRIPE_SECRET_KEY = getStripeSecretKey();
+  const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET;
   if (!STRIPE_SECRET_KEY) {
     throw new functions.https.HttpsError("invalid-argument", "The functions requires STRIPE_SECRET_KEY.");
   }
@@ -111,7 +126,8 @@ export const process_error = (error: any) => {
   if (error instanceof functions.https.HttpsError) {
     return error;
   }
-  return new functions.https.HttpsError("internal", error.message);
+  // return new functions.https.HttpsError("internal", error.message);
+  return new functions.https.HttpsError("internal", "error");
 };
 
 // const regex = /\((\+|\-)[0-9\.]+\)/
@@ -146,7 +162,10 @@ export const getMenuObj = async (refRestaurant, menuIds) => {
       chunk(menuIds, 10).map(async (menuIdsChunk) => {
         const menusCollections = await refRestaurant.collection("menus").where(admin.firestore.FieldPath.documentId(), "in", menuIdsChunk).get();
         menusCollections.forEach((m) => {
-          menuObj[m.id] = m.data();
+          const data = m.data();
+          if (data.publicFlag && !data.deletedFlag) {
+            menuObj[m.id] = data;
+          }
         });
         return;
       })
@@ -179,4 +198,42 @@ export const filterData = (data: { [key: string]: any }) => {
 
 export const isEmpty = (value: any) => {
   return value === null || value === undefined || value === "";
+};
+
+
+// forMo
+export const convSubCateIds = (menuObj: { [key: string]: any }) => {
+  const ret = {};
+  Object.values(menuObj).map((menu) => {
+    if (menu.subCategory) {
+      ret[menu.subCategory] = true;
+    }
+  });
+  return Object.keys(ret);
+};
+export const getMoDataObj = async (refRestaurant, subCategoryIds, target) => {
+  const db = refRestaurant.firestore;
+  const restaurantId = refRestaurant.id;
+  // preOrder
+  const path = `/restaurants/${restaurantId}/${target}/subCategory`;
+  // console.log(path);
+  const retObj = {};
+  await Promise.all(
+    chunk(subCategoryIds, 10).map(async (subCategoryIdsChunk) => {
+      const subCateCollections = await db.collection(path).where(admin.firestore.FieldPath.documentId(), "in", subCategoryIdsChunk).get();
+      subCateCollections.forEach((m) => {
+        const data = (m.data() || {}).data || {};
+        Object.keys(data).map(id => {
+          retObj[id] = data[id];
+        });
+      });
+    })
+  );
+  return retObj;
+}
+
+export const getMoStockObj = () => {
+  // const pathStock = `/restaurants/${restaurantId}/pickup/stock/subCategory`;
+  // const pathData = `/restaurants/${restaurantId}/pickup/data/subCategory`;
+  return {};
 };

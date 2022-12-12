@@ -1,8 +1,8 @@
 <template>
   <div
-    class="mt-6 mx-2 bg-black bg-opacity-5 rounded-lg pt-4 pb-4 px-1 text-center font-bold"
+    class="mx-2 mt-6 rounded-lg bg-black bg-opacity-5 px-1 pt-4 pb-4 text-center font-bold"
   >
-    <div class="mb-1 text-sm text-center font-bold text-black text-opacity-50">
+    <div class="mb-1 text-center text-sm font-bold text-black text-opacity-50">
       {{ $t("order.onlinePaymentStatus") }}
     </div>
     <div :class="'stripe_' + orderInfo.payment.stripe">

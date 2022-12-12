@@ -21,6 +21,7 @@ export const state = () => ({
   soundFile: "",
   isWindowActive: false, // active status of browser window
   dialog: null, // for DialogBox
+  // dialog: {alert: {}, error: {}}, // for DialogBox
   isLoading: false, // for full-page loading animation
   isFirefoxPBM: undefined, // true, false, null
 });
@@ -138,12 +139,6 @@ export const mutations = {
   },
   setErrorMessage(state, params) {
     state.dialog = { error: params };
-  },
-  setFirefoxPBM(state, flag) {
-    if (flag === true) {
-      console.warn("Firefox Private Browsing Mode detected");
-    }
-    state.isFirefoxPBM = flag;
   },
 };
 

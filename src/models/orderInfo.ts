@@ -1,6 +1,6 @@
 import { MenuImages } from "./menu";
 import { ownPlateConfig } from "@/config/project";
-import { stripeRegion } from "@/utils/utils";
+import { stripeRegion, orderType } from "@/utils/utils";
 
 export interface OrderMenuItemData {
   category1: string;
@@ -34,10 +34,14 @@ export interface OrderInfoData {
       tax: number;
     };
   };
+  isDelivery: boolean;
+  isEC: boolean;
+  isPickup: boolean;
   tip: number;
   menuItems: { [key: string]: OrderMenuItemData };
   order: { [key: string]: [number] };
   options: { [key: string]: [string] };
+  type: string;
 }
 
 export interface OrderItem {}
@@ -46,7 +50,8 @@ export class OrderInfo {}
 
 export const order2ReportData = (
   order: OrderInfoData,
-  serviceTaxRate: number
+  serviceTaxRate: number,
+  isInMo: boolean
 ) => {
   const multiple = stripeRegion.multiple;
   order.timeConfirmed = order?.timeConfirmed?.toDate();
@@ -78,5 +83,6 @@ export const order2ReportData = (
       tax: 0,
     };
   }
+  order.type = orderType(order, isInMo);
   return order;
 };

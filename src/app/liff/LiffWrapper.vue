@@ -11,8 +11,8 @@
     <div v-else-if="loading">loading...</div>
     <div v-else>
       <modal v-if="openModal">
-        <div class="w-96 h-48 relative flex items-center">
-          <div class="flex flex-1 w-full justify-center">
+        <div class="relative flex h-48 w-96 items-center">
+          <div class="flex w-full flex-1 justify-center">
             <a :href="friendUrl">
               {{ $t("line.registerAsAFriend") }}
             </a>

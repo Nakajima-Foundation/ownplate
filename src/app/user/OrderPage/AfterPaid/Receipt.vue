@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-lg shadow p-4 mt-4">
+  <div class="mt-4 rounded-lg bg-white p-4 shadow">
     <!-- Details -->
     <div class="mt-2 text-xl font-bold text-black">
       {{ $t("order.receipt.receipt") }}

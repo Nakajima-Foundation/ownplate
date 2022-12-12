@@ -1,19 +1,19 @@
 <template>
-  <div class="bg-white rounded-lg shadow">
+  <div class="rounded-lg bg-white shadow">
     <!-- Location -->
     <div v-if="hasLocation">
       <div>
         <a target="_blank" :href="mapQuery">
           <img
-            :src="`https://maps.googleapis.com/maps/api/staticmap?center=${shopInfo.location.lat},${shopInfo.location.lng}&zoom=16&size=800x${mapWidth}&scale=2&maptype=roadmap&markers=color:red%7Clabel:G%7C${shopInfo.location.lat},${shopInfo.location.lng}&key=${gmapKey}`"
+            :src="`https://maps.googleapis.com/maps/api/staticmap?center=${shopInfo.location.lat},${shopInfo.location.lng}&zoom=16&size=800x${mapWidth}&scale=2&maptype=roadmap&markers=color:red%7Clabel:G%7C${shopInfo.location.lat},${shopInfo.location.lng}&key=${GAPIKey}`"
             class="w-full object-cover lg:rounded-lg"
           />
         </a>
       </div>
-      <div class="mt-4 mx-4 pb-2">
+      <div class="mx-4 mt-4 pb-2">
         <a target="_blank" :href="mapQuery">
-          <a class="inline-flex justify-center items-center">
-            <i class="material-icons text-lg text-op-teal mr-2">place</i>
+          <a class="inline-flex items-center justify-center">
+            <i class="material-icons mr-2 text-lg text-op-teal">place</i>
             <div class="text-sm font-bold text-op-teal">
               <div v-if="region === 'JP'">
                 〒{{ shopInfo.zip }} {{ shopInfo.state }}
@@ -36,8 +36,8 @@
       <div>
         <template v-if="phoneUrl">
           <a :href="phoneUrl">
-            <div class="inline-flex justify-center items-center">
-              <i class="material-icons text-lg text-op-teal mr-2">phone</i>
+            <div class="inline-flex items-center justify-center">
+              <i class="material-icons mr-2 text-lg text-op-teal">phone</i>
               <div class="text-sm font-bold text-op-teal">
                 {{ nationalPhoneNumber }}
               </div>
@@ -45,8 +45,8 @@
           </a>
         </template>
         <template v-else>
-          <div class="inline-flex justify-center items-center">
-            <i class="material-icons text-lg mr-2">phone</i>
+          <div class="inline-flex items-center justify-center">
+            <i class="material-icons mr-2 text-lg">phone</i>
             <div class="text-sm font-bold">{{ nationalPhoneNumber }}</div>
           </div>
         </template>
@@ -54,7 +54,7 @@
 
       <!-- Minimum Available Time -->
       <div
-        class="mt-2 px-4 py-2 rounded-lg bg-blue-500 bg-opacity-10"
+        class="mt-2 rounded-lg bg-blue-500 bg-opacity-10 px-4 py-2"
         v-if="!shopInfo.isEC"
       >
         <div class="text-sm font-bold">
@@ -76,7 +76,7 @@
       <div class="mt-4 text-center">
         <a
           @click="toggleMoreInfo()"
-          class="inline-flex justify-center items-center h-9 w-32 rounded-full bg-black bg-opacity-5"
+          class="inline-flex h-9 w-32 items-center justify-center rounded-full bg-black bg-opacity-5"
         >
           <div class="text-sm font-bold text-op-teal">
             <template v-if="moreInfo">{{ $t("shopInfo.viewLess") }}</template>
@@ -92,9 +92,10 @@
           <a
             target="_blank"
             :href="shopInfo.url"
-            class="inline-flex justify-center items-center"
+            class="inline-flex items-center justify-center"
+            rel="noopener noreferrer"
           >
-            <i class="material-icons text-lg text-op-teal mr-2">language</i>
+            <i class="material-icons mr-2 text-lg text-op-teal">language</i>
             <div class="text-sm font-bold text-op-teal">
               {{ shopInfo.url }}
             </div>
@@ -106,9 +107,10 @@
           <a
             target="_blank"
             :href="shopInfo.lineUrl"
-            class="inline-flex justify-center items-center"
+            class="inline-flex items-center justify-center"
+            rel="noopener noreferrer"
           >
-            <i class="fab fa-line text-lg mr-2" style="color: #4ec263"></i>
+            <i class="fab fa-line mr-2 text-lg" style="color: #4ec263"></i>
             <div class="text-sm font-bold" style="color: #4ec263">
               {{ shopInfo.lineUrl }}
             </div>
@@ -120,11 +122,27 @@
           <a
             target="_blank"
             :href="shopInfo.instagramUrl"
-            class="inline-flex justify-center items-center"
+            class="inline-flex items-center justify-center"
+            rel="noopener noreferrer"
           >
-            <i class="fab fa-instagram text-lg mr-2" style="color: #dd2a7b"></i>
+            <i class="fab fa-instagram mr-2 text-lg" style="color: #dd2a7b"></i>
             <div class="text-sm font-bold" style="color: #dd2a7b">
               {{ shopInfo.instagramUrl }}
+            </div>
+          </a>
+        </div>
+
+        <!-- Restaurant Uber Eats -->
+        <div v-if="hasUberEatsUrl" class="mt-2">
+          <a
+            target="_blank"
+            :href="shopInfo.uberEatsUrl"
+            class="inline-flex items-center justify-center"
+            rel="noopener noreferrer"
+          >
+            <i class="fab fa-uber mr-2 text-lg" style="color: #06c167"></i>
+            <div class="text-sm font-bold" style="color: #06c167">
+              {{ shopInfo.uberEatsUrl }}
             </div>
           </a>
         </div>
@@ -146,7 +164,7 @@
           <div class="mt-1">
             <template v-for="(day, key) in days">
               <div
-                class="flex px-2 py-1 rounded text-sm"
+                class="flex rounded px-2 py-1 text-sm"
                 :class="
                   weekday == key % 7
                     ? isTodayTemporaryClosure
@@ -157,8 +175,8 @@
               >
                 <div class="w-16">{{ $t("week.short." + day) }}</div>
                 <div class="flex-1">
-                  <template v-if="shopInfo.businessDay[key]">
-                    <template v-for="data in shopInfo.openTimes[key]">
+                  <template v-if="businessDay[key]">
+                    <template v-for="data in openTimes[key]">
                       <template v-if="validDate(data)">
                         {{ num2time(data.start) }} - {{ num2time(data.end) }}
                         <br />
@@ -228,16 +246,16 @@
 
 <script>
 import { defineComponent, computed, ref } from "@vue/composition-api";
-import { db } from "@/plugins/firebase";
 import moment from "moment";
 
 import { daysOfWeek } from "@/config/constant";
 import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
-import { ownPlateConfig } from "@/config/project";
+import { ownPlateConfig, GAPIKey } from "@/config/project";
 import { usePickupTime } from "@/utils/pickup";
 import {
   stripeRegion,
   isNull,
+  useIsInMo,
   useNationalPhoneNumber,
   validUrl,
   validLocation,
@@ -267,6 +285,10 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    isPickup: {
+      type: Boolean,
+      required: false,
+    },
   },
   emits: ["noAvailableTime"],
   setup(props, ctx) {
@@ -274,6 +296,8 @@ export default defineComponent({
     const moreInfo = ref(false);
     const weekday = d.getDay();
     const today = d;
+
+    const isInMo = useIsInMo(ctx.root);
 
     const mapWidth = computed(() => {
       // two rows
@@ -314,11 +338,27 @@ export default defineComponent({
       return "";
     });
 
+    const isPickup = computed(() => {
+      return props.isPickup;
+    });
+    const businessDay = computed(() => {
+      if (isInMo.value && isPickup.value) {
+        return props.shopInfo.moBusinessDay;
+      }
+      return props.shopInfo.businessDay;
+    });
+    const openTimes = computed(() => {
+      if (isInMo.value && isPickup.value) {
+        return props.shopInfo.moOpenTimes;
+      }
+      return props.shopInfo.openTimes;
+    });
+
     const isOpen = computed(() => {
       return Object.keys(daysOfWeek).reduce((tmp, day) => {
-        if (weekday === Number(day) && props.shopInfo.businessDay[day]) {
+        if (weekday === Number(day) && businessDay.value[day]) {
           // get now and compaire
-          const res = props.shopInfo.openTimes[day].reduce((tmp, time) => {
+          const res = openTimes.value[day].reduce((tmp, time) => {
             const now = today.getHours() * 60 + today.getMinutes();
             const ret = now >= time.start && now <= time.end;
             tmp = tmp || ret;
@@ -351,6 +391,9 @@ export default defineComponent({
         props.shopInfo.instagramUrl && validUrl(props.shopInfo.instagramUrl)
       );
     });
+    const hasUberEatsUrl = computed(() => {
+      return props.shopInfo.uberEatsUrl && validUrl(props.shopInfo.uberEatsUrl);
+    });
     const region = ownPlateConfig.region;
 
     const stripeAccount = computed(() => {
@@ -364,7 +407,7 @@ export default defineComponent({
     });
 
     const { deliveryAvailableDays, availableDays, temporaryClosure } =
-      usePickupTime(props.shopInfo, {}, {}, ctx);
+      usePickupTime(props.shopInfo, {}, {}, ctx, isInMo.value, isPickup);
 
     const minimumAvailableTime = computed(() => {
       const days = props.isDelivery
@@ -416,18 +459,24 @@ export default defineComponent({
       hasUrl,
       hasLineUrl,
       hasInstagramUrl,
+      hasUberEatsUrl,
       region,
       showPayment,
       stripeAccount,
       inStorePayment,
       minimumAvailableTime,
       mapQuery,
+      GAPIKey,
       // methods
       toggleMoreInfo,
       validDate,
 
       //
       temporaryClosure,
+
+      // for mo
+      businessDay,
+      openTimes,
     };
   },
 });

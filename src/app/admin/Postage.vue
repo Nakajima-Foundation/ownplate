@@ -5,38 +5,38 @@
       <not-found />
     </template>
     <div v-else-if="notFound === false">
-      <div class="mt-4 mx-6">
+      <div class="mx-6 mt-4">
         <div class="mt-4">
-          <div class="text-sm font-bold pb-2">
+          <div class="pb-2 text-sm font-bold">
             {{ $t("editEC.postageList") }}
           </div>
 
-          <div class="bg-black bg-opacity-5 rounded-lg p-4">
+          <div class="rounded-lg bg-black bg-opacity-5 p-4">
             <div
               v-for="(state, key) in regionalSetting.AddressStates"
               class="flex"
             >
               <span class="w-2/12">{{ state }}</span>
-              <b-input class="w-4/12" v-model="postage[key]" />
-              <b-button @click="copy(key)" v-if="key !== 0">
+              <o-input class="w-4/12" v-model="postage[key]" />
+              <o-button @click="copy(key)" v-if="key !== 0">
                 {{ $t("editEC.copy") }}
-              </b-button>
+              </o-button>
             </div>
           </div>
         </div>
 
         <div class="mt-4">
-          <div class="text-sm font-bold pb-2">
+          <div class="pb-2 text-sm font-bold">
             {{ $t("editEC.freeThreshold") }}
           </div>
-          <div class="bg-black bg-opacity-5 rounded-lg p-4">
-            <div class="flex mb-2">
-              <b-checkbox v-model="enableFree" class="flex-item" />
+          <div class="rounded-lg bg-black bg-opacity-5 p-4">
+            <div class="mb-2 flex">
+              <o-checkbox v-model="enableFree" class="flex-item" />
               <span class="flex-item mt-auto mb-auto inline-block">
                 {{ $t("editEC.setPostageFreeThreshold") }}
               </span>
             </div>
-            <b-input
+            <o-input
               class="w-4/12"
               v-model="freeThreshold"
               :disabled="!enableFree"
@@ -46,16 +46,16 @@
 
         <!-- Save Button -->
         <div class="mt-4 text-center">
-          <b-button @click="savePostage" class="b-reset-tw">
+          <o-button @click="savePostage" class="b-reset-tw">
             <div
-              class="h-12 rounded-full bg-op-teal inline-flex justify-center items-center px-6 shadow"
+              class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
               style="min-width: 8rem"
             >
-              <span class="text-white text-base font-bold">{{
+              <span class="text-base font-bold text-white">{{
                 $t("editCommon.save")
               }}</span>
             </div>
-          </b-button>
+          </o-button>
         </div>
       </div>
     </div>

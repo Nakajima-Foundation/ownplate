@@ -8,12 +8,12 @@
       }}</router-link
       ><br />
       {{ $t("admin.messages.childInvitationMessage3") }}<br />
-      <b-button @click="childInvitationAccept">{{
+      <o-button @click="childInvitationAccept">{{
         $t("admin.messages.accept")
-      }}</b-button>
-      <b-button @click="childInvitationDeny">{{
+      }}</o-button>
+      <o-button @click="childInvitationDeny">{{
         $t("admin.messages.deny")
-      }}</b-button>
+      }}</o-button>
     </div>
   </div>
 </template>

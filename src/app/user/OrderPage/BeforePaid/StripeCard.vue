@@ -4,18 +4,18 @@
       {{ $t("order.no_jcb") }}
     </div>
 
-    <div v-if="storedCard" class="bg-white rounded-lg shadow p-4 mt-2">
-      <b-checkbox v-model="useStoredCard">
+    <div v-if="storedCard" class="mt-2 rounded-lg bg-white p-4 shadow">
+      <o-checkbox v-model="useStoredCard">
         <div class="text-base">
           <span>{{ storedCard.brand }}</span>
           <span>**** **** **** {{ storedCard.last4 }}</span>
         </div>
-      </b-checkbox>
+      </o-checkbox>
     </div>
 
     <div v-show="!useStoredCard">
       <!-- Enter New Card -->
-      <div class="bg-white rounded-lg shadow p-4 mt-2">
+      <div class="mt-2 rounded-lg bg-white p-4 shadow">
         <div id="card-element"></div>
       </div>
 
@@ -23,8 +23,8 @@
       <div class="mt-1">
         <!-- CVC Button -->
         <div class="text-right">
-          <a class="inline-flex justify-center items-center" @click="openCVC()">
-            <i class="material-icons text-lg text-op-teal mr-1">help_outline</i>
+          <a class="inline-flex items-center justify-center" @click="openCVC()">
+            <i class="material-icons mr-1 text-lg text-op-teal">help_outline</i>
             <span class="text-sm font-bold text-op-teal">{{
               $t("order.whatsCVC")
             }}</span>
@@ -32,8 +32,8 @@
         </div>
 
         <!-- CVC Popup-->
-        <b-modal :active.sync="CVCPopup" :width="488" scroll="keep">
-          <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
+        <o-modal :active.sync="CVCPopup" :width="488" scroll="keep">
+          <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
             <!-- Title -->
             <div class="text-xl font-bold text-black text-opacity-40">
               {{ $t("order.whatsCVC") }}
@@ -41,13 +41,13 @@
 
             <!-- 3 Digits -->
             <div
-              class="bg-black bg-opacity-5 rounded-lg m-t-24 p-4 mt-6 text-center"
+              class="mt-6 mt-6 rounded-lg bg-black bg-opacity-5 p-4 text-center"
             >
               <div class="text-xl font-bold">
                 Visa, MasterCard, JCB, Diners Club, DISCOVER
               </div>
 
-              <div class="mt-2 text-base font-bold text-center text-blue-500">
+              <div class="mt-2 text-center text-base font-bold text-blue-500">
                 {{ $t("order.3digitsCVC") }}
               </div>
 
@@ -62,11 +62,11 @@
 
             <!-- 4 Digits -->
             <div
-              class="bg-black bg-opacity-5 rounded-lg m-t-24 p-4 mt-6 text-center"
+              class="mt-6 mt-6 rounded-lg bg-black bg-opacity-5 p-4 text-center"
             >
               <div class="text-xl font-bold">American Express</div>
 
-              <div class="mt-2 text-base font-bold text-center text-blue-500">
+              <div class="mt-2 text-center text-base font-bold text-blue-500">
                 {{ $t("order.4digitsCVC") }}
               </div>
 
@@ -79,7 +79,7 @@
             <div class="mt-6 text-center">
               <a
                 @click="closeCVC()"
-                class="inline-flex justify-center items-center h-12 rounded-full px-6 bg-black bg-opacity-5"
+                class="inline-flex h-12 items-center justify-center rounded-full bg-black bg-opacity-5 px-6"
                 style="min-width: 8rem"
               >
                 <div class="text-base font-bold text-black text-opacity-60">
@@ -88,15 +88,15 @@
               </a>
             </div>
           </div>
-        </b-modal>
+        </o-modal>
       </div>
 
       <!-- Save Card Info for Reuse -->
       <div class="mt-2 text-center">
-        <b-checkbox v-model="reuse"
+        <o-checkbox v-model="reuse"
           ><div class="text-sm font-bold">
             {{ $t("order.reuseCard") }}
-          </div></b-checkbox
+          </div></o-checkbox
         >
       </div>
     </div>
@@ -145,13 +145,12 @@ export default {
     async createToken() {
       if (!this.useStoredCard) {
         const { token } = await this.stripe.createToken(this.cardElement);
-        const tokenId = token.id + this.forcedError("token");
-        //console.log("***toke", token, token.card.last4);
+        const tokenId = token.id;
         const { data } = await stripeUpdateCustomer({
           tokenId,
           reuse: this.reuse,
         });
-        console.log("stripeUpdateCustomer", data, tokenId);
+        // console.log("stripeUpdateCustomer", data, tokenId);
       }
     },
     configureStripe() {

@@ -1,17 +1,19 @@
 <template>
   <div>
     <!-- Back -->
-    <div class="mt-6 mx-6">
+    <div class="mx-6 mt-6">
       <back-button :url="basePath + '/u/profile/'" />
     </div>
 
     <!-- Title -->
-    <div class="mt-6 mx-6 text-xl font-bold text-black text-opacity-30">
+    <div class="mx-6 mt-6 text-xl font-bold text-black text-opacity-30">
       {{ $t("order.history") }}
     </div>
 
     <!-- Orders -->
-    <div class="mx-6 mt-6 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div
+      class="mx-6 mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+    >
       <div v-if="loading" />
       <template v-else-if="orders.length > 0">
         <ordered-info
@@ -20,6 +22,7 @@
           @selected="orderSelected($event)"
           :order="order"
           :isSuperView="true"
+          :isInMo="isInMo"
         />
       </template>
       <div v-else>
@@ -29,11 +32,11 @@
       </div>
     </div>
     <!-- Phone Login-->
-    <b-modal :active.sync="loginVisible" :width="488" scroll="keep">
-      <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
+    <o-modal :active.sync="loginVisible" :width="488" scroll="keep">
+      <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
         <phone-login v-on:dismissed="handleDismissed" />
       </div>
-    </b-modal>
+    </o-modal>
   </div>
 </template>
 
@@ -55,9 +58,9 @@ import {
   limit,
 } from "firebase/firestore";
 
-import OrderedInfo from "@/app/admin/Order/OrderedInfo";
-import PhoneLogin from "@/app/auth/PhoneLogin";
-import BackButton from "@/components/BackButton";
+import OrderedInfo from "@/app/admin/Order/OrderedInfo.vue";
+import PhoneLogin from "@/app/auth/PhoneLogin.vue";
+import BackButton from "@/components/BackButton.vue";
 
 import { defaultHeader } from "@/config/header";
 import { useBasePath, useTopPath, useIsInMo, getMoPrefix } from "@/utils/utils";
@@ -177,6 +180,8 @@ export default defineComponent({
       basePath,
 
       loading,
+
+      isInMo,
     };
   },
 });

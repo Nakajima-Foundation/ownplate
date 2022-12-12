@@ -108,3 +108,13 @@ VUE_APP_CIRCLE_SHA1=123123 yarn run start
 ```
 
 # 10. Access your local-server
+
+# 11. App Check debug token の登録
+
+Open developer console.
+
+The following tokens must be registered.  Tokens must be registered for each browser.
+
+![image](https://user-images.githubusercontent.com/39753696/191877866-68ad651b-c361-4d84-99f5-cadaf370229b.png)
+
+

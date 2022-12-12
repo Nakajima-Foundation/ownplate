@@ -1,15 +1,15 @@
 <template>
-  <section class="section">
+  <section class="mx-auto max-w-full px-6 pb-12 pt-4">
     <back-button url="/s/admins" />
     <h1>Admin</h1>
     <div>
-      <b-checkbox v-model="admin.opt_out">Opt out</b-checkbox>
+      <o-checkbox v-model="admin.opt_out">Opt out</o-checkbox>
     </div>
     {{ admin.name }}, {{ adminPrivate.email }}
     <h1>Custome Claims</h1>
     <div>
-      <b-checkbox v-model="isAdmin" disabled>Admin</b-checkbox>
-      <b-checkbox v-model="isOperator">Operator</b-checkbox>
+      <o-checkbox v-model="isAdmin" disabled>Admin</o-checkbox>
+      <o-checkbox v-model="isOperator">Operator</o-checkbox>
     </div>
     <h1>Restaurants</h1>
     <div v-for="restaurant in restaurants" :key="restaurant.id">

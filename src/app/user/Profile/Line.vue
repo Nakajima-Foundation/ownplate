@@ -1,14 +1,14 @@
 <template>
   <div>
     <!-- LINE -->
-    <div class="mt-6 p-4 rounded-lg bg-black bg-opacity-5">
+    <div class="mt-6 rounded-lg bg-black bg-opacity-5 p-4">
       <!-- LINE Status -->
       <div class="text-center">
         <div class="text-sm font-bold text-black text-opacity-30">
           {{ $t("profile.lineConnection") }}
         </div>
 
-        <div class="text-base font-bold mt-2">
+        <div class="mt-2 text-base font-bold">
           {{ lineConnection }}
         </div>
       </div>
@@ -23,7 +23,7 @@
             {{ $t("profile.lineFriend") }}
           </div>
 
-          <div class="text-base font-bold mt-2">
+          <div class="mt-2 text-base font-bold">
             {{ lineFriend }}
           </div>
         </div>
@@ -31,17 +31,17 @@
         <!-- Not Friend -->
         <div v-if="isFriend === false" class="mt-4 text-center">
           <!-- external Friend link -->
-          <b-button tag="a" :href="friendLink" class="b-reset-tw">
+          <o-button tag="a" :href="friendLink" class="b-reset-tw">
             <div
-              class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
               style="background: #18b900"
             >
-              <i class="fab fa-line text-white text-2xl mr-2" />
+              <i class="fab fa-line mr-2 text-2xl text-white" />
               <div class="text-sm font-bold text-white">
                 {{ $t("profile.friendLink") }}
               </div>
             </div>
-          </b-button>
+          </o-button>
         </div>
       </div>
 
@@ -51,21 +51,21 @@
         <div v-if="isLineEnabled" class="mt-4 text-center">
           <div
             v-if="isLineUser && underConstruction"
-            class="text-base font-bold mb-2"
+            class="mb-2 text-base font-bold"
           >
             再設定 for Dev
           </div>
-          <b-button @click="handleLineAuth" class="b-reset-tw">
+          <o-button @click="handleLineAuth" class="b-reset-tw">
             <div
-              class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
               style="background: #18b900"
             >
-              <i class="fab fa-line text-white text-2xl mr-2" />
+              <i class="fab fa-line mr-2 text-2xl text-white" />
               <div class="text-sm font-bold text-white">
                 {{ $t("line.notifyMe") }}
               </div>
             </div>
-          </b-button>
+          </o-button>
         </div>
       </div>
     </div>

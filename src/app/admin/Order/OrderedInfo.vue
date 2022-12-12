@@ -2,14 +2,14 @@
   <div>
     <!-- For Admin -->
     <div
-      v-if="!restaurant"
+      v-if="!order.restaurantId"
       @click="$emit('selected', order)"
-      class="bg-white rounded-lg shadow cursor-pointer"
+      class="cursor-pointer rounded-lg bg-white shadow"
     >
       <!-- Order Status -->
       <div class="p-2">
         <div
-          class="text-xs font-bold rounded p-1 text-center"
+          class="rounded p-1 text-center text-xs font-bold"
           :class="statusKey"
         >
           {{ $t("order.status." + convOrderStateForText(statusKey, order)) }}
@@ -27,7 +27,7 @@
           </div>
         </div>
 
-        <div class="text-xs text-right">
+        <div class="text-right text-xs">
           {{ timestamp || "0:00pm" }}
         </div>
       </div>
@@ -41,7 +41,7 @@
         <div class="flex-1 text-right text-base">
           <div v-if="order.name && !isInMo">
             <i
-              class="fab fa-line text-lg mr-2"
+              class="fab fa-line mr-2 text-lg"
               style="color: #4ec263"
               v-if="order.isLiff"
             />
@@ -54,7 +54,7 @@
 
           <div v-else>
             <i
-              class="fab fa-line text-lg mr-2"
+              class="fab fa-line mr-2 text-lg"
               style="color: #4ec263"
               v-if="order.isLiff"
             />
@@ -65,17 +65,21 @@
 
       <!-- Order Count, Total, and Tip -->
       <div class="flex items-center p-2">
-        <div class="text-sm mr-2">
+        <div class="mr-2 text-sm">
           {{ $tc("sitemenu.orderCounter", totalCount, { count: totalCount }) }}
         </div>
 
-        <div class="text-sm mr-2">
+        <div class="mr-2 text-sm">
           {{ $n(order.totalCharge, "currency") }}
         </div>
 
-        <div class="text-sm mr-2" v-if="order.isDelivery">
+        <div class="mr-2 text-sm" v-if="order.isDelivery">
           <i class="material-icons"> delivery_dining </i>
         </div>
+        <div class="mr-2 text-sm text-green-600" v-if="order.isPickup">
+          <i class="material-icons"> local_mall </i>
+        </div>
+
         <div
           v-if="order.tip"
           class="flex-1 text-right text-xs font-bold text-blue-500"
@@ -89,12 +93,12 @@
     <div
       v-if="restaurant"
       @click="$emit('selected', order)"
-      class="bg-white rounded-lg shadow cursor-pointer"
+      class="cursor-pointer rounded-lg bg-white shadow"
     >
       <!-- Order Status -->
       <div class="p-2">
         <div
-          class="text-xs font-bold rounded p-1 text-center"
+          class="rounded p-1 text-center text-xs font-bold"
           :class="statusKey"
         >
           {{ $t("order.status." + convOrderStateForText(statusKey, order)) }}
@@ -112,7 +116,7 @@
           </div>
         </div>
 
-        <div class="text-xs text-right">
+        <div class="text-right text-xs">
           {{ timestamp || "0:00pm" }}
           <!-- # ToDo: Want to show not only time but also date for the user -->
         </div>
@@ -123,7 +127,7 @@
         <div class="mr-2">
           <img
             :src="resizedProfileImage(restaurant, '600')"
-            class="w-12 h-12 rounded-full object-cover"
+            class="h-12 w-12 rounded-full object-cover"
           />
         </div>
         <div class="flex-1">
@@ -132,7 +136,7 @@
           </div>
 
           <div class="flex items-center">
-            <div class="text-sm mr-2">
+            <div class="mr-2 text-sm">
               {{
                 $tc("sitemenu.orderCounter", totalCount, {
                   count: totalCount,
@@ -140,10 +144,10 @@
               }}
             </div>
 
-            <div class="text-sm mr-2">
+            <div class="mr-2 text-sm">
               {{ $n(order.totalCharge, "currency") }}
             </div>
-            <div class="text-sm mr-2" v-if="order.isDelivery">
+            <div class="mr-2 text-sm" v-if="order.isDelivery">
               <i class="material-icons"> delivery_dining </i>
             </div>
 
@@ -162,9 +166,12 @@ import { defineComponent, ref, computed } from "@vue/composition-api";
 
 import { nameOfOrder } from "@/utils/strings";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
-import { db } from "@/plugins/firebase";
+
+import { db } from "@/lib/firebase/firebase9";
+import { doc, getDoc } from "firebase/firestore";
+
 import { order_status, order_status_keys } from "@/config/constant";
-import { arrayOrNumSum } from "@/utils/utils";
+import { arrayOrNumSum, convOrderStateForText } from "@/utils/utils";
 
 export default defineComponent({
   props: {
@@ -184,11 +191,11 @@ export default defineComponent({
   setup(props, ctx) {
     const restaurant = ref(null);
     if (props.order.restaurantId) {
-      db.doc(`restaurants/${props.order.restaurantId}`)
-        .get()
-        .then((snapshot) => {
+      getDoc(doc(db, `restaurants/${props.order.restaurantId}`)).then(
+        (snapshot) => {
           restaurant.value = snapshot.data();
-        });
+        }
+      );
     }
 
     const statusKey = computed(() => {
@@ -240,6 +247,8 @@ export default defineComponent({
       orderName,
       totalCount,
       paymentIsNotCompleted,
+
+      convOrderStateForText,
     };
   },
 });

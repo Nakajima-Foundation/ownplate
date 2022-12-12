@@ -4,22 +4,22 @@
       {{ $t("shopInfo.howToReceive") }}
     </div>
     <div>
-      <b-radio
+      <o-radio
         name="howtoreceive"
         :value="value === 'takeout' ? 'takeout' : ''"
         :native-value="value"
         @input="$emit('input', 'takeout')"
       >
         {{ $t("shopInfo.takeout") }}
-      </b-radio>
-      <b-radio
+      </o-radio>
+      <o-radio
         name="howtoreceive"
         :value="value === 'delivery' ? 'delivery' : ''"
         :native-value="value"
         @input="$emit('input', 'delivery')"
       >
         {{ $t("shopInfo.delivery") }}
-      </b-radio>
+      </o-radio>
     </div>
     <div>
       <div v-if="deliveryData.enableDeliveryThreshold">
@@ -46,7 +46,7 @@
     </div>
     <div
       v-if="value === 'delivery'"
-      class="mt-2 px-4 py-2 rounded-lg bg-blue-500 bg-opacity-10"
+      class="mt-2 rounded-lg bg-blue-500 bg-opacity-10 px-4 py-2"
     >
       {{ $t("shopInfo.deliveryArea") }}
       <div v-if="deliveryData.enableAreaMap">

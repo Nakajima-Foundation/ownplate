@@ -1,7 +1,7 @@
 <template>
   <div>
     <ownplate-service-image />
-    <div class="max-w-screen-xl mx-auto">
+    <div class="mx-auto max-w-screen-xl">
       <entrance-buttons />
       <demo />
       <userVoices />
@@ -16,8 +16,8 @@
       <!-- <askButtons /> -->
       <!-- <news /> -->
       <news />
-      <snslink />
     </div>
+    <snslink />
   </div>
 </template>
 <script>

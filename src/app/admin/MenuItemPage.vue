@@ -6,39 +6,39 @@
     </template>
     <template v-else>
       <!-- Header -->
-      <div class="mt-6 mx-6 lg:flex lg:items-center">
+      <div class="mx-6 mt-6 lg:flex lg:items-center">
         <div class="flex-1"></div>
 
         <!-- Notifications -->
-        <div class="mt-4 lg:mt-0 flex-shrink-0 text-right">
+        <div class="mt-4 flex-shrink-0 text-right lg:mt-0">
           <notification-index :shopInfo="shopInfo" />
         </div>
       </div>
 
       <!-- Save and Cancel -->
-      <div class="flex justify-center space-x-4 mt-6">
+      <div class="mt-6 flex justify-center space-x-4">
         <!-- Cancel Button -->
-        <b-button
+        <o-button
           class="b-reset-tw"
           tag="router-link"
           :to="`/admin/restaurants/${this.restaurantId()}/menus`"
         >
           <div
-            class="h-12 rounded-full bg-black bg-opacity-5 inline-flex items-center px-6"
+            class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
           >
-            <span class="text-black text-opacity-60 text-base font-bold">{{
+            <span class="text-base font-bold text-black text-opacity-60">{{
               $t("button.cancel")
             }}</span>
           </div>
-        </b-button>
+        </o-button>
 
         <!-- Save Button -->
-        <b-button @click="submitItem" :disabled="submitting" class="b-reset-tw">
+        <o-button @click="submitItem" :disabled="submitting" class="b-reset-tw">
           <div
-            class="h-12 rounded-full bg-op-teal inline-flex justify-center items-center px-6 shadow"
+            class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
             style="min-width: 8rem"
           >
-            <span class="text-white text-base font-bold">{{
+            <span class="text-base font-bold text-white">{{
               $t(
                 submitting
                   ? "editCommon.saving"
@@ -48,25 +48,25 @@
               )
             }}</span>
           </div>
-        </b-button>
+        </o-button>
       </div>
 
       <!-- Publish Status -->
-      <div class="bg-black bg-opacity-5 mx-6 rounded-lg p-4 mt-6 text-center">
-        <b-checkbox
+      <div class="mx-6 mt-6 rounded-lg bg-black bg-opacity-5 p-4 text-center">
+        <o-checkbox
           v-model="menuInfo.publicFlag"
           :disabled="hasError"
-          :type="!menuInfo.publicFlag ? 'is-danger' : ''"
+          :variant="!menuInfo.publicFlag ? 'danger' : ''"
         >
           <div class="font-bold">{{ $t("shopInfo.public") }}</div>
-        </b-checkbox>
+        </o-checkbox>
 
         <div class="text-sm font-bold">
-          <div v-if="hasError" class="text-red-700 mt-1">
+          <div v-if="hasError" class="mt-1 text-red-700">
             {{ $t("editRestaurant.draftWarning") }}
           </div>
           <div
-            class="text-red-700 mt-1"
+            class="mt-1 text-red-700"
             v-if="!menuInfo.publicFlag && !hasError"
           >
             {{ $t("editMenu.saveAsDraft") }}
@@ -80,47 +80,47 @@
       </div>
 
       <!-- Settings -->
-      <div class="mt-6 mx-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
+      <div class="mx-6 mt-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
         <!-- Left -->
         <div>
           <!-- Item Name -->
           <div>
-            <div class="text-sm font-bold pb-2">
+            <div class="pb-2 text-sm font-bold">
               {{ $t("editMenu.itemName") }}
               <span class="text-red-700">*</span>
             </div>
-            <b-field
-              :type="errors['itemName'].length > 0 ? 'is-danger' : 'is-success'"
+            <o-field
+              :variant="errors['itemName'].length > 0 ? 'danger' : 'success'"
             >
-              <b-input
+              <o-input
                 v-model="menuInfo.itemName"
                 :placeholder="$t('editMenu.enterItemName')"
-              ></b-input>
-            </b-field>
+              ></o-input>
+            </o-field>
           </div>
 
           <!-- Item Name -->
           <div class="mt-6">
-            <div class="text-sm font-bold pb-2">
+            <div class="pb-2 text-sm font-bold">
               {{ $t("editMenu.itemAliasesName") }}
             </div>
-            <b-input
+            <o-input
               v-model="menuInfo.itemAliasesName"
               :placeholder="$t('editMenu.enterItemAliasesName')"
-            ></b-input>
+            ></o-input>
           </div>
 
           <!-- Item Price -->
           <div class="mt-6">
-            <div class="text-sm font-bold pb-2">
+            <div class="pb-2 text-sm font-bold">
               {{ $t("editMenu.price") }}
               <span class="text-red-700">*</span>
             </div>
             <div>
-              <b-field
-                :type="errors['price'].length > 0 ? 'is-danger' : 'is-success'"
+              <o-field
+                :variant="errors['price'].length > 0 ? 'danger' : 'success'"
               >
-                <b-input
+                <o-input
                   v-model="menuInfo.price"
                   type="number"
                   :step="priceStep"
@@ -128,27 +128,27 @@
                   :max="maxPrice"
                   min="0.00"
                   expanded
-                ></b-input>
+                ></o-input>
                 <div>
                   <span class="button is-static">
                     {{ $t("currency." + currencyKey) }}
                   </span>
                 </div>
-              </b-field>
+              </o-field>
             </div>
           </div>
 
           <!-- Item Tax -->
           <div class="mt-6">
-            <div class="text-sm font-bold pb-2">
+            <div class="pb-2 text-sm font-bold">
               {{ $t("editMenu.tax") }}
               <span class="text-red-700">*</span>
             </div>
             <div>
-              <b-field
-                :type="errors['tax'].length > 0 ? 'is-danger' : 'is-success'"
+              <o-field
+                :variant="errors['tax'].length > 0 ? 'danger' : 'success'"
               >
-                <b-select v-model="menuInfo.tax" placeholder="select">
+                <o-select v-model="menuInfo.tax" placeholder="select">
                   <option
                     v-for="taxItem in taxRates"
                     :value="taxItem"
@@ -157,15 +157,15 @@
                     {{ shopInfo && (shopInfo[taxItem + "Tax"] || 0) + "%" }}
                     - {{ $t("editMenu." + taxRateKeys[taxItem]) }}
                   </option>
-                </b-select>
-              </b-field>
+                </o-select>
+              </o-field>
             </div>
           </div>
 
           <!-- Price Example -->
           <div
             v-if="requireTaxPriceDisplay"
-            class="mt-6 bg-black bg-opacity-5 rounded-lg p-4"
+            class="mt-6 rounded-lg bg-black bg-opacity-5 p-4"
           >
             <div class="inline text-sm font-bold">
               {{ $t("editMenu.displayPrice") }}:
@@ -177,55 +177,53 @@
 
           <!-- Allergens -->
           <div class="mt-6">
-            <div class="text-sm font-bold pb-2">
+            <div class="pb-2 text-sm font-bold">
               {{ $t("allergens.title") }}
             </div>
             <div>
-              <b-checkbox
+              <o-checkbox
                 v-for="allergen in allergens"
                 v-model="menuInfo.allergens[allergen]"
                 :key="allergen"
                 class="mb-2"
-                >{{ $t(`allergens.${allergen}`) }}</b-checkbox
+                >{{ $t(`allergens.${allergen}`) }}</o-checkbox
               >
             </div>
           </div>
 
           <!-- Item Description -->
           <div class="mt-6">
-            <div class="text-sm font-bold pb-2">
+            <div class="pb-2 text-sm font-bold">
               {{ $t("editMenu.itemDescription") }}
             </div>
             <div>
-              <b-field
-                :type="
-                  errors['itemDescription'].length > 0
-                    ? 'is-danger'
-                    : 'is-success'
+              <o-field
+                :variant="
+                  errors['itemDescription'].length > 0 ? 'danger' : 'success'
                 "
               >
-                <b-input
+                <o-input
                   v-model="menuInfo.itemDescription"
                   type="textarea"
                   :placeholder="$t('editMenu.enterItemDescription')"
-                ></b-input>
-              </b-field>
+                ></o-input>
+              </o-field>
             </div>
           </div>
 
           <!-- Item Memo -->
           <div class="mt-6">
-            <div class="text-sm font-bold pb-2">
+            <div class="pb-2 text-sm font-bold">
               {{ $t("editMenu.itemMemo") }}
             </div>
             <div>
-              <b-field type="is-success">
-                <b-input
+              <o-field variant="success">
+                <o-input
                   v-model="menuInfo.itemMemo"
                   type="textarea"
                   :placeholder="$t('editMenu.enterItemMemo')"
-                ></b-input>
-              </b-field>
+                ></o-input>
+              </o-field>
             </div>
           </div>
         </div>
@@ -234,7 +232,7 @@
         <div class="mt-6 lg:mt-0">
           <!-- Item Photo -->
           <div>
-            <div class="text-sm font-bold pb-2">
+            <div class="pb-2 text-sm font-bold">
               {{ $t("editMenu.itemPhoto") }}
             </div>
             <div class="flex">
@@ -246,9 +244,9 @@
                     :src="itemPhoto"
                     style="width: 128px; height: 128px"
                     @error="smallImageErrorHandler"
-                    />
+                  />
                 </div>
-                <div class="text-center text-xs mt-1">
+                <div class="mt-1 text-center text-xs">
                   {{ $t("editCommon.current") }}
                 </div>
               </div>
@@ -271,50 +269,50 @@
                   :show-remove-button="true"
                   @file-choose="handleMenuImage"
                 ></croppa>
-                <div class="text-center text-xs mt-1 w-32">
+                <div class="mt-1 w-32 text-center text-xs">
                   {{ $t("editCommon.new") }}
                 </div>
               </div>
             </div>
 
             <!-- Description -->
-            <div class="text-sm text-black text-opacity-60 pt-2">
+            <div class="pt-2 text-sm text-black text-opacity-60">
               {{ $t("editCommon.clickAndUploadDetail") }}
             </div>
           </div>
 
           <!-- Item Options -->
           <div class="mt-6">
-            <div class="text-sm font-bold pb-2">
+            <div class="pb-2 text-sm font-bold">
               {{ $t("editMenu.itemOptions") }}
             </div>
 
-            <div class="text-sm pb-2">
+            <div class="pb-2 text-sm">
               {{ $t("editMenu.itemOptionsNote") }}
             </div>
 
             <!-- Option Settings -->
             <div class="grid-col-1 space-y-4">
               <div v-for="(option, key) in menuInfo.itemOptionCheckbox">
-                <div :key="key" class="flex mb-2">
-                  <b-input
+                <div :key="key" class="mb-2 flex">
+                  <o-input
                     v-model="menuInfo.itemOptionCheckbox[key]"
                     :placeholder="$t('editMenu.enterItemOption')"
-                    class="flex-1 mr-2"
+                    class="mr-2 flex-1"
                   />
-                  <b-button class="b-reset-tw" @click="deleteOption(key)">
+                  <o-button class="b-reset-tw" @click="deleteOption(key)">
                     <div
-                      class="inline-flex justify-center items-center rounded-full h-9 px-4 bg-red-700 bg-opacity-10"
+                      class="inline-flex h-9 items-center justify-center rounded-full bg-red-700 bg-opacity-10 px-4"
                     >
                       <i class="material-icons text-lg text-red-700">delete</i>
                     </div>
-                  </b-button>
+                  </o-button>
                 </div>
 
                 <!-- Option Preview -->
-                <div class="bg-black bg-opacity-5 rounded-lg p-4">
+                <div class="rounded-lg bg-black bg-opacity-5 p-4">
                   <div
-                    class="flex mb-2 text-xs font-bold text-black text-opacity-30"
+                    class="mb-2 flex text-xs font-bold text-black text-opacity-30"
                   >
                     <div class="flex-1">
                       {{ $t("editMenu.optionsPreview") }}
@@ -324,14 +322,14 @@
 
                   <div v-for="(opt, k) in itemOptions[key]" class="flex">
                     <div class="flex-1">
-                      <b-checkbox v-if="itemOptions[key].length == 1" disabled>
+                      <o-checkbox v-if="itemOptions[key].length == 1" disabled>
                         <div
                           class="text-sm font-bold text-black text-opacity-60"
                         >
                           {{ displayOption(opt, shopInfo, menuInfo) }}
                         </div>
-                      </b-checkbox>
-                      <b-radio
+                      </o-checkbox>
+                      <o-radio
                         v-else
                         v-model="dummyCheckbox[key]"
                         :native-value="k"
@@ -342,7 +340,7 @@
                         >
                           {{ displayOption(opt, shopInfo, menuInfo) }}
                         </div>
-                      </b-radio>
+                      </o-radio>
                     </div>
                     <div class="text-sm font-bold text-black text-opacity-60">
                       {{ displayOptionPrice(opt) }}
@@ -354,30 +352,30 @@
 
             <!-- Add Option -->
             <div class="mt-4">
-              <b-button class="b-reset-tw" @click="addOption">
+              <o-button class="b-reset-tw" @click="addOption">
                 <div
-                  class="inline-flex justify-center items-center rounded-full h-9 px-4 bg-black bg-opacity-5"
+                  class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
                 >
-                  <i class="material-icons text-lg text-op-teal mr-2">add</i>
+                  <i class="material-icons mr-2 text-lg text-op-teal">add</i>
                   <div class="text-sm font-bold text-op-teal">
                     {{ $t("editMenu.itemAddOption") }}
                   </div>
                 </div>
-              </b-button>
+              </o-button>
             </div>
           </div>
 
           <div class="mt-6">
-            <div class="text-sm font-bold pb-2">
+            <div class="pb-2 text-sm font-bold">
               {{ $t("editMenu.exclusionDate") }}
             </div>
             <span v-for="(day, index) in daysOfWeek" :key="index">
-              <b-checkbox v-model="menuInfo.exceptDay[index]">
+              <o-checkbox v-model="menuInfo.exceptDay[index]">
                 <span class="text-base font-bold">
                   {{ $t("week.short." + day) }}
                   <span v-if="index !== '7'">/</span>
                 </span>
-              </b-checkbox>
+              </o-checkbox>
             </span>
             <div class="mt-2 text-sm font-bold">
               {{ $t("editMenu.exclusionTime") }}
@@ -385,7 +383,7 @@
             <div class="mt-2">
               <hours-input
                 v-model="menuInfo.exceptHour"
-                :type="'is-success'"
+                variant="success"
                 :disabled="false"
               ></hours-input>
             </div>
@@ -393,40 +391,40 @@
 
           <!-- CSV Categories -->
           <div class="mt-6">
-            <div class="text-sm font-bold pb-2">
+            <div class="pb-2 text-sm font-bold">
               {{ $t("editMenu.csvCategories") }}
             </div>
 
-            <div class="text-sm pb-2">
+            <div class="pb-2 text-sm">
               {{ $t("editMenu.csvCategoriesNote") }}
             </div>
 
             <div
-              class="bg-black bg-opacity-5 rounded-lg p-4 grid-cols-1 space-y-4"
+              class="grid-cols-1 space-y-4 rounded-lg bg-black bg-opacity-5 p-4"
             >
               <!-- Category 1 -->
               <div>
-                <div class="flex items-center mb-2">
+                <div class="mb-2 flex items-center">
                   <div
                     class="flex-1 text-sm font-bold text-black text-opacity-60"
                   >
                     {{ $t("editMenu.category1") }}
                   </div>
                   <div>
-                    <b-button
+                    <o-button
                       class="b-reset-tw"
                       @click="editCategory('category1')"
                     >
-                      <div class="inline-flex justify-center items-center">
+                      <div class="inline-flex items-center justify-center">
                         <div class="text-sm font-bold text-op-teal">
                           {{ $t("editMenu.editCategory1") }}
                         </div>
                       </div>
-                    </b-button>
+                    </o-button>
                   </div>
                 </div>
 
-                <b-select
+                <o-select
                   v-if="categories1.length > 0"
                   v-model="menuInfo.category1"
                   expanded
@@ -438,32 +436,32 @@
                   >
                     {{ category }}
                   </option>
-                </b-select>
+                </o-select>
               </div>
 
               <!-- Category 2 -->
               <div>
-                <div class="flex items-center mb-2">
+                <div class="mb-2 flex items-center">
                   <div
                     class="flex-1 text-sm font-bold text-black text-opacity-60"
                   >
                     {{ $t("editMenu.category2") }}
                   </div>
                   <div>
-                    <b-button
+                    <o-button
                       class="b-reset-tw"
                       @click="editCategory('category2')"
                     >
-                      <div class="inline-flex justify-center items-center">
+                      <div class="inline-flex items-center justify-center">
                         <div class="text-sm font-bold text-op-teal">
                           {{ $t("editMenu.editCategory2") }}
                         </div>
                       </div>
-                    </b-button>
+                    </o-button>
                   </div>
                 </div>
 
-                <b-select
+                <o-select
                   v-if="categories2.length > 0"
                   v-model="menuInfo.category2"
                   expanded
@@ -475,7 +473,7 @@
                   >
                     {{ category }}
                   </option>
-                </b-select>
+                </o-select>
               </div>
 
               <!-- Category Edit Popup -->
@@ -492,14 +490,14 @@
       </div>
 
       <!-- Publish Status -->
-      <div class="bg-black bg-opacity-5 mx-6 rounded-lg p-4 mt-6 text-center">
-        <b-checkbox
+      <div class="mx-6 mt-6 rounded-lg bg-black bg-opacity-5 p-4 text-center">
+        <o-checkbox
           v-model="menuInfo.publicFlag"
           :disabled="hasError"
-          :type="!menuInfo.publicFlag ? 'is-danger' : ''"
+          :variant="!menuInfo.publicFlag ? 'danger' : ''"
         >
           <div class="font-bold">{{ $t("shopInfo.public") }}</div>
-        </b-checkbox>
+        </o-checkbox>
 
         <div class="mt-1 text-sm font-bold">
           <div v-if="hasError" class="text-red-700">
@@ -512,29 +510,29 @@
       </div>
 
       <!-- Save and Cancel -->
-      <div class="flex justify-center space-x-4 mt-6">
+      <div class="mt-6 flex justify-center space-x-4">
         <!-- Cancel Button -->
-        <b-button
+        <o-button
           class="b-reset-tw"
           tag="router-link"
           :to="`/admin/restaurants/${this.restaurantId()}/menus`"
         >
           <div
-            class="h-12 rounded-full bg-black bg-opacity-5 inline-flex items-center px-6"
+            class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
           >
-            <span class="text-black text-opacity-60 text-base font-bold">{{
+            <span class="text-base font-bold text-black text-opacity-60">{{
               $t("button.cancel")
             }}</span>
           </div>
-        </b-button>
+        </o-button>
 
         <!-- Save Button -->
-        <b-button @click="submitItem" :disabled="submitting" class="b-reset-tw">
+        <o-button @click="submitItem" :disabled="submitting" class="b-reset-tw">
           <div
-            class="h-12 rounded-full bg-op-teal inline-flex justify-center items-center px-6 shadow"
+            class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
             style="min-width: 8rem"
           >
-            <span class="text-white text-base font-bold">{{
+            <span class="text-base font-bold text-white">{{
               $t(
                 submitting
                   ? "editCommon.saving"
@@ -544,26 +542,26 @@
               )
             }}</span>
           </div>
-        </b-button>
+        </o-button>
       </div>
 
       <!-- Copy -->
-      <div class="text-center mt-6 mx-6 lg:max-w-sm lg:mx-auto">
+      <div class="mx-6 mt-6 text-center lg:mx-auto lg:max-w-sm">
         <div>
-          <b-button @click="copyItem" :disabled="submitting" class="b-reset-tw">
+          <o-button @click="copyItem" :disabled="submitting" class="b-reset-tw">
             <div
-              class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
             >
-              <i class="material-icons text-lg text-op-teal mr-2"> queue </i>
+              <i class="material-icons mr-2 text-lg text-op-teal"> queue </i>
               <span class="text-sm font-bold text-op-teal">{{
-                $t("editCommon.copyMenu")
+                $t(isInMo ? "mobileOrder.copyMenu" : "editCommon.copyMenu")
               }}</span>
             </div>
-          </b-button>
+          </o-button>
         </div>
 
         <div class="mt-4">
-          <b-select v-model="copyRestaurantId" expanded>
+          <o-select v-model="copyRestaurantId" expanded>
             <option
               v-for="restaurant in restaurants"
               :key="restaurant.id"
@@ -571,7 +569,7 @@
             >
               {{ restaurant.restaurantName }}
             </option>
-          </b-select>
+          </o-select>
         </div>
       </div>
     </template>
@@ -689,7 +687,7 @@ export default defineComponent({
     const restaurants = ref([]);
     const copyRestaurantId = ref(null);
 
-    const { isOwner, uid, ownerUid } = useAdminUids(ctx);
+    const { uid } = useAdminUids(ctx);
 
     // allow sub Account
     if (!checkShopOwner(props.shopInfo, uid.value)) {
@@ -821,7 +819,9 @@ export default defineComponent({
         );
         ctx.root.$store.commit("setAlert", {
           title: shop.restaurantName,
-          code: "editCommon.copyMenuAlert",
+          code: props.isInMo
+            ? "mobileOrder.copyMenuAlert"
+            : "editCommon.copyMenuAlert",
           callback: async () => {
             const newItem = newItemData();
             newItem.publicFlag = false;

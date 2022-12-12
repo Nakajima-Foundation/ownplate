@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions";
 import * as utils from "../../lib/utils";
 import { order_status } from "../../common/constant";
-import { createCustomer } from "../../stripe/customer";
+import { createCustomer } from "../stripe/customer";
 
 import { orderCreatedData, menuItem } from "../../lib/types";
 import { validateOrderCreated } from "../../lib/validator";
@@ -72,7 +72,8 @@ export const orderAccounting = (restaurantData, food_sub_total, alcohol_sub_tota
   }
 };
 
-export const createNewOrderData = async (restaurantRef, orderRef, orderData, multiple) => {
+// restaurantData is for mo.
+export const createNewOrderData = async (restaurantRef, orderRef, orderData, multiple, restaurantData, moRestaurantRef) => {
   const menuIds = Object.keys(orderData.order);
   const menuObj = await utils.getMenuObj(restaurantRef, menuIds);
 
@@ -93,12 +94,38 @@ export const createNewOrderData = async (restaurantRef, orderRef, orderData, mul
     console.error("[createNewOrderData] menuError");
     return orderRef.update("status", order_status.error);
   }
+  // for mo
+  const subCategoryIds = utils.convSubCateIds(menuObj);
+  const isInMo = !!restaurantData.groupId;
+  const isPickup = !!orderData.isPickup;
+  const moData = isInMo ? await utils.getMoDataObj(moRestaurantRef, subCategoryIds, isPickup ? 'pickup/data' : 'preOrder/data') : {};
+  const moStock = isInMo && isPickup ? await utils.getMoDataObj(moRestaurantRef, subCategoryIds, 'pickup/stock') : {};
+  // console.log(subCategoryIds, moData, moStock);
+  // 
   menuIds.map((menuId) => {
     const menu = menuObj[menuId];
-    if (menu.soldOut) {
-      return;
-    }
 
+    // for mo
+    if (restaurantData.groupId) {
+      if (!(moData[menuId] || {}).isPublic) {
+        return;
+      }
+      if (restaurantData.isPickup) {
+        if (menu.soldOut) {
+          return;
+        }
+        const s = moStock[menuId] || {};
+        if (!s.forcePickupStock && !s.isStock) {
+          return ;
+        }
+      }
+      // for mo
+    }  else {
+      if (menu.soldOut) {
+        return;
+      }
+    }
+    
     const prices: number[] = [];
     const newOrder: number[] = [];
 
@@ -154,7 +181,7 @@ export const createNewOrderData = async (restaurantRef, orderRef, orderData, mul
 };
 
 export const orderCreated = async (db, data: orderCreatedData, context) => {
-  const customerUid = utils.validate_auth(context);
+  const customerUid = utils.validate_customer_auth(context);
 
   const { restaurantId, orderId } = data;
   utils.required_params({ restaurantId, orderId });
@@ -194,9 +221,26 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
       console.log("invalid order:" + String(orderId));
       throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
     }
-    const multiple = utils.getStripeRegion().multiple; //100 for USD, 1 for JPY
 
-    const { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total } = await createNewOrderData(menuRestaurantRef, orderRef, orderData, multiple);
+    // validate
+    const ownerUid = restaurantData.uid;
+    const {
+      isDelivery,
+      isPickup,
+      isLiff, 
+    } = orderData;
+    if (isDelivery && !restaurantData.enableDelivery) {
+      throw new functions.https.HttpsError("invalid-argument", "Invalid delivery order.");
+    }
+    if (isPickup && !restaurantData.enableMoPickup) {
+      throw new functions.https.HttpsError("invalid-argument", "Invalid delivery order.");
+    }
+    if (isLiff && !restaurantData.supportLiff) {
+      throw new functions.https.HttpsError("invalid-argument", "Invalid delivery order.");
+    }
+    const multiple = utils.stripeRegion.multiple; //100 for USD, 1 for JPY
+
+    const { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total } = await createNewOrderData(menuRestaurantRef, orderRef, orderData, multiple, restaurantData, restaurantRef);
 
     // Atomically increment the orderCount of the restaurant
     let orderCount = 0;
@@ -218,8 +262,36 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
 
     await createCustomer(db, customerUid, context.auth.token.phone_number);
 
-    return orderRef.update(
+
+    // just copy original data.
+    const {
+      options,
+      rawOptions,
+      uid,
+      phoneNumber,
+      name,
+      updatedAt,
+      timeCreated,
+    } = orderData;
+
+    await orderRef.set(
       utils.filterData({
+        // copy and validate
+        isDelivery,
+        isPickup,
+        isLiff, 
+
+        // just copy
+        options,
+        rawOptions,
+        uid,
+        phoneNumber,
+        name,
+        updatedAt,
+        timeCreated,
+        // end of copy
+        
+        ownerUid,
         order: newOrderData,
         menuItems: newItems, // Clone of ordered menu items (simplified)
         prices: newPrices,
@@ -243,6 +315,7 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
         groupId: restaurantData.groupId,
       })
     );
+    return { result: true };
   } catch (e) {
     console.error("[orderCreated] unknown ", e);
     return orderRef.update("status", order_status.error);

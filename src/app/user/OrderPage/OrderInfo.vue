@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-lg shadow p-4">
+  <div class="rounded-lg bg-white p-4 shadow">
     <!-- Order Items -->
     <div class="grid grid-cols-1 space-y-4">
       <template v-for="(orderItem, key) in orderItems">
@@ -17,7 +17,7 @@
     <!-- Totals -->
     <div
       v-if="verified"
-      class="border-t-2 border-solid border-black border-opacity-10 mt-4 pt-4"
+      class="mt-4 border-t-2 border-solid border-black border-opacity-10 pt-4"
     >
       <!-- Sub Total -->
       <div class="flex">
@@ -34,7 +34,7 @@
       </div>
 
       <!-- Tax -->
-      <div class="flex mt-2">
+      <div class="mt-2 flex">
         <div class="flex-1">
           <div class="text-base">
             {{
@@ -54,7 +54,7 @@
       <!-- Postage for EC -->
       <div
         v-if="shopInfo.isEC"
-        class="border-t-2 border-solid border-black border-opacity-10 mt-4 pt-4"
+        class="mt-4 border-t-2 border-solid border-black border-opacity-10 pt-4"
       >
         <div class="flex">
           <div class="flex-1">
@@ -74,7 +74,7 @@
       <!-- Postage for delivery -->
       <div
         v-if="orderInfo.isDelivery"
-        class="border-t-2 border-solid border-black border-opacity-10 mt-4 pt-4"
+        class="mt-4 border-t-2 border-solid border-black border-opacity-10 pt-4"
       >
         <div class="flex">
           <div class="flex-1">
@@ -91,7 +91,7 @@
       </div>
 
       <!-- Total -->
-      <div v-if="false && regionTip.choices.length > 0" class="flex mt-2">
+      <div v-if="false && regionTip.choices.length > 0" class="mt-2 flex">
         <div class="flex-1">
           <div class="text-base">
             {{ $t("order.total") }}
@@ -108,10 +108,10 @@
       <div
         v-if="
           regionTip.choices.length > 0 &&
-          (isTipEditable || tip > 0) &&
+          (isTipEditable || previewTip) &&
           enableTip
         "
-        class="border-t-2 border-solid border-black border-opacity-10 mt-4 pt-4"
+        class="mt-4 border-t-2 border-solid border-black border-opacity-10 pt-4"
       >
         <div class="flex">
           <div class="flex-1">
@@ -119,7 +119,7 @@
           </div>
           <div class="text-right">
             <div class="text-base">
-              {{ $n(tip, "currency") }}
+              {{ $n(previewTip, "currency") }}
             </div>
           </div>
         </div>
@@ -129,7 +129,7 @@
       <div v-if="regionTip.choices.length > 0 && enableTip" class="mt-2">
         <div v-if="isTipEditable">
           <div>
-            <b-input
+            <o-input
               class="w-full"
               type="number"
               :placeholder="$t('order.maxTip', { max: regionTip.max })"
@@ -142,13 +142,13 @@
           </div>
 
           <div class="mt-2">
-            <b-button
+            <o-button
               v-for="ratio in regionTip.choices"
               class="b-reset-tw mr-2 mb-2"
               @click="updateTip(ratio)"
               :key="ratio"
               ><div
-                class="inline-flex justify-center items-center h-9 rounded-full w-16"
+                class="inline-flex h-9 w-16 items-center justify-center rounded-full"
                 :class="
                   isSameAmount(ratio) ? 'bg-op-teal' : 'bg-black bg-opacity-5'
                 "
@@ -159,7 +159,7 @@
                 >
                   {{ ratio + "%" }}
                 </div>
-              </div></b-button
+              </div></o-button
             >
           </div>
         </div>
@@ -167,7 +167,7 @@
 
       <!-- Total Charge -->
       <div
-        class="border-t-2 border-solid border-black border-opacity-10 mt-4 pt-4"
+        class="mt-4 border-t-2 border-solid border-black border-opacity-10 pt-4"
       >
         <div class="flex">
           <div class="flex-1">
@@ -177,9 +177,7 @@
           </div>
           <div class="text-right">
             <div class="text-xl font-bold text-green-600">
-              {{
-                $n(previewTotal, "currency")
-              }}
+              {{ $n(previewTotal, "currency") }}
             </div>
           </div>
         </div>
@@ -264,12 +262,20 @@ export default {
     isTipEditable() {
       return this.orderInfo.status === order_status.validation_ok;
     },
+
+    previewTip() {
+      // both edittable tip or orderinfo tip
+      if (this.isTipEditable) {
+        return this.tip;
+      }
+      return this.orderInfo.tip;
+    },
     previewTotal() {
-      return (this.editable || this.isTipEditable) ?
-        this.orderInfo.total +
-        Number(this.tip) +
-        Number(this.actualShippingCost) +
-        Number(this.orderInfo.deliveryFee || 0)
+      return this.editable || this.isTipEditable
+        ? this.orderInfo.total +
+            Number(this.tip) +
+            Number(this.actualShippingCost) +
+            Number(this.orderInfo.deliveryFee || 0)
         : this.orderInfo.totalCharge;
     },
     enableTip() {
@@ -280,7 +286,6 @@ export default {
         return this.groupData.enableTip;
       }
       return true;
-      // return !this.shopInfo.isEC;
     },
     maxTip() {
       return this.calcTip(this.regionTip.max);

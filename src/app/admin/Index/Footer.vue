@@ -8,9 +8,9 @@
           target="_blank"
         >
           <div
-            class="inline-flex justify-center items-center rounded-full h-9 bg-white bg-opacity-80 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-white bg-opacity-80 px-4"
           >
-            <i class="material-icons text-lg text-op-teal mr-2">help_outline</i>
+            <i class="material-icons mr-2 text-lg text-op-teal">help_outline</i>
             <span class="text-sm font-bold text-op-teal">{{
               $t("admin.userManual")
             }}</span>
@@ -21,9 +21,9 @@
       <div class="inline-block px-1 pb-2" v-if="isJapan">
         <a href="https://docs.omochikaeri.com/manuals/tips.pdf" target="_blank">
           <div
-            class="inline-flex justify-center items-center rounded-full h-9 bg-white bg-opacity-80 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-white bg-opacity-80 px-4"
           >
-            <i class="material-icons text-lg text-op-teal mr-2">help_outline</i>
+            <i class="material-icons mr-2 text-lg text-op-teal">help_outline</i>
             <span class="text-sm font-bold text-op-teal">{{
               $t("menu.tipsLink")
             }}</span>
@@ -38,9 +38,9 @@
           target="_blank"
         >
           <div
-            class="inline-flex justify-center items-center rounded-full h-9 bg-white bg-opacity-80 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-white bg-opacity-80 px-4"
           >
-            <i class="material-icons text-lg text-op-teal mr-2">mail_outline</i>
+            <i class="material-icons mr-2 text-lg text-op-teal">mail_outline</i>
             <span class="text-sm font-bold text-op-teal">{{
               $t("admin.suportPage")
             }}</span>
@@ -49,7 +49,7 @@
       </div>
     </div>
     <div
-      class="text-center inline-flex justify-center items-center w-full m-auto"
+      class="m-auto inline-flex w-full items-center justify-center text-center"
     >
       <!-- Facebook User Group -->
       <div class="inline-block px-1 pb-2" v-if="false">
@@ -58,9 +58,9 @@
           target="_blank"
         >
           <div
-            class="inline-flex justify-center items-center rounded-full h-9 bg-white bg-opacity-80 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-white bg-opacity-80 px-4"
           >
-            <i class="fab fa-facebook text-lg text-op-teal mr-2"></i>
+            <i class="fab fa-facebook mr-2 text-lg text-op-teal"></i>
             <span class="text-sm font-bold text-op-teal">{{
               $t("admin.facebookUserGroup")
             }}</span>
@@ -72,9 +72,9 @@
       <div class="inline-block px-1 pb-2" v-if="isJapan">
         <a href="https://twitter.com/omochikaericom" target="_blank">
           <div
-            class="inline-flex justify-center items-center rounded-full h-9 bg-white bg-opacity-80 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-white bg-opacity-80 px-4"
           >
-            <i class="fab fa-twitter text-lg text-op-teal mr-2"></i>
+            <i class="fab fa-twitter mr-2 text-lg text-op-teal"></i>
             <span class="text-sm font-bold text-op-teal"> Twitter </span>
           </div>
         </a>
@@ -84,9 +84,9 @@
       <div class="inline-block px-1 pb-2" v-if="isJapan">
         <a href="https://note.com/singsoc/m/m19dd935e84e4" target="_blank">
           <div
-            class="inline-flex justify-center items-center rounded-full h-9 bg-white bg-opacity-80 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-white bg-opacity-80 px-4"
           >
-            <i class="material-icons text-lg text-op-teal mr-2">mail_outline</i>
+            <i class="material-icons mr-2 text-lg text-op-teal">mail_outline</i>
             <span class="text-sm font-bold text-op-teal"> Note </span>
           </div>
         </a>

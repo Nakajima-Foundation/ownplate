@@ -20,12 +20,27 @@
     "smallPayment2": "you cannot use \"Pay Now\".",
     "smallPayment3": "Please use \"Pay Layter\"",
     "orderPlacedAlert": "Your order is not confirmed until it is Accepted",
+    "suspendPickupMessage": "The service is currently suspended. Please wait for a while until it resumes.",
+    "suspendCartButton": "Currently closed",
     "storeDetails": "Store Details",
     "adminQRCode": "Confirmation QR Code",
     "name": "Online ordering service",
+    "methodChangeAlert": "Change the ordering method? Items in your cart will be reset.",
+    "pickupLabel": "Takeaway Today",
+    "soldOut": "Sold out",
+    "inStock": "In stock",
+    "admin": {
+      "takeout": "Pre order",
+      "pickup": "Takeaway",
+      "pickupStock": "Stock of takeaway"
+    },
     "shopInfo": {
       "takeout": "Online order",
-      "pickup": "Takeaway now"
+      "pickup": "Takeaway now",
+      "takeoutDesctiption": "Click here to place an order",
+      "pickupDesctiption": "Click here to put an item on hold",
+      "pickupNote": "Takeaway orders cannot be accepted from {lastOrder} to 23:59. Please place an order after a while.",
+      "showOnlyInStock": "Show only in stock"
     }
   },
   "profile": {
@@ -82,6 +97,7 @@
     "termsRestaurant": "Terms for Restaurant",
     "termsUser": "Terms for User",
     "privacy": "Privacy Policy",
+    "faq": "FAQ",
     "updated": "Last Updated",
     "selectLanguage": "Select language",
     "yes": "Yes",
@@ -140,6 +156,7 @@
     "enterWebsite": "Enter Website URL",
     "enterLineUrl": "Enter LINE Official Account URL",
     "enterInstagramUrl": "Enter Instagram URL",
+    "enterUberEatsUrl": "Enter UberEats URL",
     "enterIntroduction": "Enter shop introduction",
     "enterOrderNotice": "Enter order notifications",
     "enterOrderThanks": "Enter order thanks message",
@@ -196,6 +213,7 @@
     "setupMap": "Restaurant location",
     "setLocation": "Set location",
     "searchMap": "Set the location from the address",
+    "enterAddress": "Please enter an address to search",
     "updateMap": "Update Map",
     "businessHourDescription": "Check the business day of the week and set the business hours. If you need to split your business hours, such as a break, please enter the latter time in the Another Hours form.",
     "businessHourOption": "Another Hours (optional)",
@@ -333,6 +351,7 @@
     "website": "Website",
     "lineUrl": "LINE Official Account URL",
     "instagramUrl": "Instagram URL",
+    "uberEatsUrl": "Uber Eats URL",
     "hours": "Hours",
     "midnight": "12:00 midnight",
     "noon": "12:00 noon",
@@ -442,7 +461,8 @@
     "searchRestaurant": "Search for restaurant",
     "moTagline": "FamilyMart's official layaway service that allows you to easily make purchases from your PC or smartphone.",
     "moDescription1": "You can order products that we do not normally carry.",
-    "moDescription2": "In-store pickup is available as soon as 3 days after the order date."
+    "moDescription2": "You can pick up your order at the store in an hour at the earliest.",
+    "moDescription3": "*Only at certain stores​​"
   },
   "order": {
     "allOrders": "All Orders",
@@ -455,6 +475,12 @@
     "foodRevenue": "food revenue",
     "alcoholRevenue": "alcohol revenue",
     "date": "date",
+    "type": "type",
+    "orderTypeEC": "EC",
+    "orderTypeDelivery": "delivery",
+    "orderTypePickup": "pickup",
+    "orderTypePreOrder": "pre order",
+    "orderTypeTakeout": "takeaway",
     "tipShort": "tip",
     "serviceTax": "tip tax",
     "name": "order name",
@@ -635,7 +661,8 @@
     "downloadMenu": "Download menu",
     "cancel": "Cancel",
     "next": "Next",
-    "category": "Category"
+    "category": "Category",
+    "backToTop": "Top"
   },
   "sms": {
     "signin": "Phone Number Sign In",
@@ -665,6 +692,7 @@
     },
     "invalidPhoneNumber": "Invalid Phone Number",
     "invalidValidationCode": "Invalid Validation Code",
+    "auth/too-many-requests": "Too many requests",
     "auth/invalid-phone-number": "Invalid Phone Number",
     "auth/invalid-verification-code": "The SMS verification code used to create the phone auth credential is invalid. Please resend the verification code sms and be sure use the verification code provided by the user.",
     "auth/missing-verification-code": "SMS verification code is missing.",
@@ -743,6 +771,9 @@
       "smaregiAppMarket": "Go to Smaregi App Market",
       "smaregiManualLink": "How to use Smaregi"
     },
+    "needEmailVerification": "You need email verification",
+    "sendVerificationCode": "Send verification code",
+    "verificationCodeSent": "We sent email",
     "viewAllOrders": "View All Orders from All Restaurants",
     "viewPage": "View Page",
     "viewOrders": "View Orders",
@@ -813,6 +844,7 @@
       "more": "View More",
       "all": "View All",
       "deliveryOrder": "Delivery order",
+      "pickupOrder": "Pickup order",
       "messageFromCustomer": "Message from the customer",
       "changeOrderDetail": "Change order details",
       "alreadyChanged": "already changed",
@@ -838,8 +870,12 @@
     },
     "report": {
       "title": "Reports",
-      "download-csv": "Download Excel File (Earnings)",
-      "download-csv-details": "Download Excel File (Details)"
+      "download-csv": "Download Excel File (Monthly Earnings)",
+      "download-csv-details": "Download Excel File (Details)",
+      "download-all-csv": "Download Excel File (Earnings)",
+      "download-csv-history": "Download Excel File (History Earnings)",
+      "download-csv-history-details": "Download Excel File (History Details)",
+      "download-csv-monthly-details": "Download Excel File (Monthly Details)"
     },
     "error": {
       "memoLength": "Please enter your message within 500 characters.",

@@ -16,18 +16,34 @@ export const generateResizeImage = async (db, object) => {
     })
   );
 
-  if (Object.keys(resizedImages).length > 0) {
+  const hasError = Object.values(resizedImages).some(a => !a);
+  if (hasError) {
     await db.doc(firestorePath).set(
       {
         images: {
           [imageId]: {
-            original: filePath,
-            resizedImages,
+            // original: "",
           },
         },
       },
       { merge: true }
     );
+    await imageUtil.removeFile(object)
+    // await object.bucket.file(filePath).delete();
+  }  else {
+    if (Object.keys(resizedImages).length > 0) {
+      await db.doc(firestorePath).set(
+        {
+          images: {
+            [imageId]: {
+              original: filePath,
+              resizedImages,
+          },
+          },
+        },
+        { merge: true }
+      );
+    }
   }
   return true;
 };

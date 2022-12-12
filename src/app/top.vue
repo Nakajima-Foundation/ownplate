@@ -6,13 +6,15 @@
       <div class="column is-narrow w-6"></div>
       <!-- Center Column -->
       <div class="column">
-        <div class="m-l-24 m-r-24 m-t-24">
-          <div class="bg-form rounded-lg p-l-24 p-r-24 p-t-24 p-b-24">
+        <div class="ml-6 mr-6 mt-6">
+          <div class="rounded-lg bg-black bg-opacity-5 pl-6 pr-6 pt-6 pb-6">
             <!-- Go to Super Admin Page -->
-            <div class="align-center">
+            <div class="text-center">
               <router-link to="/s">
-                <div class="op-button-small primary" style="min-width: 256px">
-                  <span class="c-onprimary">Super Admin Page</span>
+                <div
+                  class="inline-flex h-12 min-h-[36px] min-w-[256px] cursor-pointer items-center justify-center rounded-full bg-op-teal px-6 text-base font-bold shadow-lg"
+                >
+                  <span class="text-white">Super Admin Page</span>
                 </div>
               </router-link>
             </div>
@@ -29,13 +31,15 @@
       <div class="column is-narrow w-6"></div>
       <!-- Center Column -->
       <div class="column">
-        <div class="m-l-24 m-r-24 m-t-24">
-          <div class="bg-form rounded-lg p-l-24 p-r-24 p-t-24 p-b-24">
+        <div class="ml-6 mr-6 mt-6">
+          <div class="rounded-lg bg-black bg-opacity-5 pl-6 pr-6 pt-6 pb-6">
             <!-- Go to Super Admin Page -->
-            <div class="align-center">
+            <div class="text-center">
               <router-link to="/op">
-                <div class="op-button-small primary" style="min-width: 256px">
-                  <span class="c-onprimary">Operator Page</span>
+                <div
+                  class="inline-flex h-12 min-h-[36px] min-w-[256px] cursor-pointer items-center justify-center rounded-full bg-op-teal px-6 text-base font-bold shadow-lg"
+                >
+                  <span class="text-white">Operator Page</span>
                 </div>
               </router-link>
             </div>
@@ -46,14 +50,9 @@
       <div class="column is-narrow w-6"></div>
     </div>
 
-    <template v-if="isJapan">
-      <lp-customer v-if="isCustomer" />
-      <lp-admin v-else-if="isAdmin" />
-      <lp v-else="isAdmin" />
-    </template>
-    <template v-else>
-      <home />
-    </template>
+    <lp-customer v-if="isCustomer" />
+    <lp-admin v-else-if="isAdmin" />
+    <lp v-else="isAdmin" />
   </div>
 </template>
 
@@ -63,7 +62,6 @@ import { defineComponent } from "@vue/composition-api";
 import Lp from "@/app/home/Lp.vue";
 import LpAdmin from "@/app/home/LpAdmin.vue";
 import LpCustomer from "@/app/home/LpCustomer.vue";
-import home from "@/app/home/home.vue";
 
 import { defaultTitle, isJapan } from "@/utils/utils";
 
@@ -78,7 +76,6 @@ export default defineComponent({
     Lp,
     LpAdmin,
     LpCustomer,
-    home,
   },
   setup() {
     return { isJapan };

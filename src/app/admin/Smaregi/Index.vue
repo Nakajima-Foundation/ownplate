@@ -3,15 +3,15 @@
 
   <div v-else>
     <!-- Header -->
-    <div class="mt-6 mx-6 lg:flex lg:items-center">
+    <div class="mx-6 mt-6 lg:flex lg:items-center">
       <!-- Back and Preview -->
       <div class="flex space-x-4">
         <back-button url="/admin/restaurants/" />
       </div>
 
       <!-- Title -->
-      <div class="mt-4 lg:mt-0 lg:flex-1 lg:flex lg:items-center lg:mx-4">
-        <span class="text-base font-bold text-xl">
+      <div class="mt-4 lg:mx-4 lg:mt-0 lg:flex lg:flex-1 lg:items-center">
+        <span class="text-base text-xl font-bold">
           {{ $t("admin.smaregi.index") }}
         </span>
       </div>
@@ -22,17 +22,17 @@
         <a :href="authUrl">連携する</a>
       </div>
       <div v-if="enable === true">
-        <span class="text-base font-bold text-xl">
+        <span class="text-base text-xl font-bold">
           {{ $t("admin.smaregi.smaregiShopList") }}
         </span>
         <div v-if="isEdit">
           <div v-for="(shop, k) in shopList" :key="k" class="border-2">
             {{ shop.storeName }}
-            <b-select
+            <o-select
               v-model="selectedRestaurant[k]"
               :class="
                 selectedRestaurant[k] && duplicateElement[selectedRestaurant[k]]
-                  ? 'border-red-700 border-2 border-solid'
+                  ? 'border-2 border-solid border-red-700'
                   : ''
               "
             >
@@ -43,10 +43,10 @@
               >
                 {{ restaurant.restaurantName }}
               </option>
-            </b-select>
+            </o-select>
 
             在庫切れしきい値:
-            <b-select v-model="outOfStockData[k]">
+            <o-select v-model="outOfStockData[k]">
               <option
                 v-for="threshold in outOfStockThresholds"
                 :value="threshold.value"
@@ -54,10 +54,10 @@
               >
                 {{ threshold.name }}
               </option>
-            </b-select>
+            </o-select>
 
             在庫復活しきい値:
-            <b-select v-model="inStockData[k]">
+            <o-select v-model="inStockData[k]">
               <option
                 v-for="threshold in inStockThresholds"
                 :value="threshold.value"
@@ -65,11 +65,11 @@
               >
                 {{ threshold.name }}
               </option>
-            </b-select>
+            </o-select>
           </div>
           <div v-if="isDuplicateError">*お店の指定が重複しています</div>
-          <b-button @click="saveShops" :disabled="isDuplicateError"
-            >保存</b-button
+          <o-button @click="saveShops" :disabled="isDuplicateError"
+            >保存</o-button
           >
         </div>
 
@@ -87,7 +87,7 @@
             在庫復活しきい値: {{ showStockThreshold((inStockData || {})[k]) }}
           </div>
           <div class="mt-4">
-            <b-button @click="isEdit = true">編集</b-button>
+            <o-button @click="isEdit = true">編集</o-button>
           </div>
         </div>
       </div>
@@ -166,9 +166,7 @@ export default {
 
       try {
         this.isLoading = true;
-        const { data } = await smaregiStoreList({
-          client_id: smaregi.clientId,
-        });
+        const { data } = await smaregiStoreList({});
         this.shopList = data.res;
         // console.log("smaregiStoreList", data);
       } finally {

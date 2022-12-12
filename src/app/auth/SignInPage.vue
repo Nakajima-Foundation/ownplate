@@ -1,10 +1,10 @@
 <template>
-  <div class="mx-6 mt-6 lg:max-w-2xl lg:mx-auto">
+  <div class="mx-6 mt-6 lg:mx-auto lg:max-w-2xl">
     <!-- Note for the First User -->
-    <div class="bg-green-600 bg-opacity-10 p-6 rounded-lg">
+    <div class="rounded-lg bg-green-600 bg-opacity-10 p-6">
       <div class="flex">
         <div>
-          <i class="material-icons text-4xl text-green-600 flex-shrink-0 mr-4"
+          <i class="material-icons mr-4 flex-shrink-0 text-4xl text-green-600"
             >info</i
           >
         </div>
@@ -23,7 +23,7 @@
     </div>
 
     <!-- Sign In Card -->
-    <div class="bg-white rounded-lg shadow mt-6 p-6">
+    <div class="mt-6 rounded-lg bg-white p-6 shadow">
       <form @submit.prevent="onSignin">
         <div class="text-xl font-bold text-black text-opacity-30">
           {{ $t("admin.pleaseSignIn") }}
@@ -36,69 +36,69 @@
           </div>
 
           <div class="mt-1">
-            <b-field
-              :type="errors.email ? 'is-danger' : 'is-success'"
+            <o-field
+              :variant="errors.email ? 'danger' : 'success'"
               :message="errors.email && $t(errors.email[0])"
             >
-              <b-input
+              <o-input
                 v-model="email"
                 :placeholder="$t('admin.emailPlaceHolder')"
                 maxlength="256"
               />
-            </b-field>
+            </o-field>
           </div>
         </div>
 
         <!-- Password -->
-        <div>
+        <div class="mt-2">
           <div class="text-sm font-bold">
             {{ $t("admin.password") }}
           </div>
 
           <div class="mt-1">
-            <b-field
-              :type="errors.password ? 'is-danger' : 'is-success'"
+            <o-field
+              :variant="errors.password ? 'danger' : 'success'"
               :message="errors.password && $t(errors.password[0])"
             >
-              <b-input
+              <o-input
                 v-model="password"
                 type="password"
                 :placeholder="$t('admin.passwordPlaceHolder')"
                 maxlength="30"
                 password-reveal
               />
-            </b-field>
+            </o-field>
           </div>
         </div>
 
         <!-- Submit Button -->
         <div class="mt-2 text-center">
-          <b-button @click="handleCancel" class="b-reset-tw mr-4 mb-2">
+          <o-button @click="handleCancel" class="b-reset-tw mr-4 mb-2">
             <div
-              class="inline-flex justify-center items-center h-12 w-32 rounded-full bg-black bg-opacity-5"
+              class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black bg-opacity-5"
             >
               <div class="text-base font-bold text-black text-opacity-60">
                 {{ $t("button.cancel") }}
               </div>
             </div>
-          </b-button>
+          </o-button>
 
-          <b-button @click="onSignin" class="b-reset-tw">
+          <o-button @click="onSignin" class="b-reset-tw">
             <div
-              class="inline-flex justify-center items-center h-12 w-32 rounded-full bg-op-teal shadow"
+              class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-op-teal shadow"
             >
               <div class="text-base font-bold text-white">
                 {{ $t("button.next") }}
               </div>
             </div>
-          </b-button>
+          </o-button>
         </div>
 
         <!-- Sign Up as a New User -->
         <div class="mt-6 text-center">
           <router-link to="/admin/user/signup">
-            <div class="inline-flex justify-center items-center">
-              <i class="material-icons text-lg text-op-teal mr-2"
+            <div class="inline-flex items-center justify-center">
+              <i class="material-icons mr-2 text-lg text-op-teal"
                 >person_add_alt_1</i
               >
               <div class="text-sm font-bold text-op-teal">
@@ -111,8 +111,8 @@
         <!-- Forgot Password -->
         <div class="mt-6 text-center">
           <router-link to="/admin/user/reset">
-            <div class="inline-flex justify-center items-center">
-              <i class="material-icons text-lg text-op-teal mr-2">help</i>
+            <div class="inline-flex items-center justify-center">
+              <i class="material-icons mr-2 text-lg text-op-teal">help</i>
               <span class="text-sm font-bold text-op-teal">{{
                 $t("admin.forgotPassword")
               }}</span>
@@ -180,7 +180,10 @@ export default defineComponent({
         .catch((error) => {
           console.log("onSignin failed", error.code, error.message);
           const errorCode = "admin.error.code." + error.code;
-          if (error.code === "auth/wrong-password") {
+          if (
+            error.code === "auth/wrong-password" ||
+            error.code === "auth/internal-error"
+          ) {
             errors.value = { password: [errorCode] };
           } else {
             errors.value = { email: [errorCode] };

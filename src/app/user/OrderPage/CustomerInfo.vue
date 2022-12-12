@@ -6,7 +6,7 @@
     <div class="text-xs font-bold text-black text-opacity-40">
       {{ $t("sms.phonenumber") }}
     </div>
-    <div class="text-base mt-1">
+    <div class="mt-1 text-base">
       <div>
         <a :href="nationalPhoneURI" class="text-base font-bold">{{
           nationalPhoneNumber
