@@ -24,6 +24,7 @@ export const state = () => ({
   // dialog: {alert: {}, error: {}}, // for DialogBox
   isLoading: false, // for full-page loading animation
   isFirefoxPBM: undefined, // true, false, null
+  openTime: new Date(),
 });
 
 export const getters = {
@@ -140,6 +141,9 @@ export const mutations = {
   setErrorMessage(state, params) {
     state.dialog = { error: params };
   },
+  resetOpenTime(state) {
+    state.openTime = new Date();
+  }
 };
 
 export const actions = {};
