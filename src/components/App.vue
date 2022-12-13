@@ -219,13 +219,13 @@ export default {
 
     this.timerId = window.setInterval(() => {
       const diff = (new Date() - this.$store.state.openTime) / 1000;
-      if (diff > 60 * 10) { // seconds
+      if (diff > 60 * 10) { // seconds. todo set 20 * 3600
         this.$store.commit("resetOpenTime");
         location.reload();
       }
       console.log(diff);
       this.$store.commit("updateDate");
-    }, 60 * 1000);
+    }, 1 * 1000); // todo set 60
 
     this.pingAnalytics();
   },
