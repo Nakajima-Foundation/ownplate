@@ -1,21 +1,31 @@
 <template>
-  <div class="mx-6 mt-6 rounded-lg bg-red-700 bg-opacity-10 p-4">
-    <div class="mb-2 text-center text-red-700">
+  <div class="mx-6 mt-6 rounded-lg bg-red-700 bg-opacity-10 p-6">
+    <div class="mb-3 text-center text-lg font-bold text-red-700">
       {{ $t("admin.needEmailVerification") }}
     </div>
-    <div class="mb-2 text-center">
+    <ul
+      class="container mx-auto mb-4 list-outside list-disc pl-4 text-sm text-red-700 sm:w-4/5 2xl:w-3/4"
+    >
+      <li>
+        {{ $t("admin.noteEmailVerification1") }}
+      </li>
+      <li>
+        {{ $t("admin.noteEmailVerification2") }}
+      </li>
+    </ul>
+    <div class="text-center">
       <o-button @click="send" class="b-reset-tw" :disabled="sent || isLoading">
         <div
-          class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 font-bold text-red-600"
+          class="inline-flex h-9 items-center justify-center rounded-full border border-red-700 bg-white px-6 font-bold text-red-700"
         >
           {{ $t("admin.sendVerificationCode") }}
         </div>
       </o-button>
     </div>
-    <div class="text-center text-red-700" v-if="sent">
+    <div class="mt-3 text-center text-sm font-bold text-red-700" v-if="sent">
       {{ $t("admin.verificationCodeSent") }}
     </div>
-    <div class="text-center text-red-700" v-if="isError">
+    <div class="mt-3 text-center text-sm font-bold text-red-700" v-if="isError">
       {{ $t("admin.verificationCodeError") }}
     </div>
   </div>
