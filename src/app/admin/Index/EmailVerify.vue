@@ -22,10 +22,10 @@
         </div>
       </o-button>
     </div>
-    <div class="text-center text-red-700" v-if="sent">
+    <div class="mt-3 text-center text-sm font-bold text-red-700" v-if="sent">
       {{ $t("admin.verificationCodeSent") }}
     </div>
-    <div class="text-center text-red-700" v-if="isError">
+    <div class="mt-3 text-center text-sm font-bold text-red-700" v-if="isError">
       {{ $t("admin.verificationCodeError") }}
     </div>
   </div>
