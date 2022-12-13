@@ -771,7 +771,9 @@
       "smaregiAppMarket": "Go to Smaregi App Market",
       "smaregiManualLink": "How to use Smaregi"
     },
-    "needEmailVerification": "You need email verification",
+    "needEmailVerification": "Please complete the verification of your e-mail address.",
+    "noteEmailVerification1": "Please check the email sent from noreply@ownplate-dev.firebaseapp.com and click on the URL in the email to complete the verification process.",
+    "noteEmailVerification2": "If you have not yet received the verification email, please check your spam folder or filter settings and resend a verification code.",
     "sendVerificationCode": "Send verification code",
     "verificationCodeSent": "We sent email",
     "verificationCodeError": "Failed. Try again later.",
