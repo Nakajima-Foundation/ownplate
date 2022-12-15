@@ -15,7 +15,7 @@ export const pushSMS = async (aws_key, aws_secret, subject, message, phone_numbe
       },
       "AWS.SNS.SMS.SenderID": {
         DataType: "String",
-        StringValue: isMo ? "mobileorder" : "omochikaeri",
+        StringValue: isMo ? "familymart" : "omochikaeri",
       },
     },
     Subject: subject,
