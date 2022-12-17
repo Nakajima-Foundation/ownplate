@@ -77,7 +77,7 @@
       },
       {
         "source": "/sitemap.xml",
-        "Function": "apiJP",
+        "function": "apiJP",
         "region": "asia-northeast1"
       },
       {
