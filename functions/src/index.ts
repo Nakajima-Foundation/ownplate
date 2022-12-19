@@ -13,6 +13,7 @@ if (!admin.apps.length) {
 }
 
 exportIfNeeded("api", "api", exports);
+exportIfNeeded("apiJP", "apiJP", exports);
 
 exportIfNeeded("superDispatch", "super/superDispatch", exports);
 exportIfNeeded("superTwilio", "super/superTwilio", exports);
@@ -33,9 +34,6 @@ exportIfNeeded("orderChangeJp", "stripe/orderChangeJp", exports);
 exportIfNeeded("stripeConnect", "stripe/stripeConnect", exports);
 exportIfNeeded("stripeDisconnect", "stripe/stripeDisconnect", exports);
 exportIfNeeded("stripeVerify", "stripe/stripeVerify", exports);
-
-exportIfNeeded("stripeCreateIntent", "stripe/stripeCreateIntent", exports); // TODO REMOVE
-exportIfNeeded("stripeConfirmIntent", "stripe/stripeConfirmIntent", exports); // TODO REMOVE
 
 exportIfNeeded("stripeCancelIntent", "stripe/stripeCancelIntent", exports);
 exportIfNeeded("stripePaymentCancelIntent", "stripe/stripePaymentCancelIntent", exports);
