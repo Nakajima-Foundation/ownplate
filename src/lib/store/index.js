@@ -143,7 +143,7 @@ export const mutations = {
   },
   resetOpenTime(state) {
     state.openTime = new Date();
-  }
+  },
 };
 
 export const actions = {};

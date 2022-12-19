@@ -5,9 +5,9 @@
     </div>
     <ul
       class="container mx-auto mb-4 list-outside list-disc pl-4 text-sm text-red-700 sm:w-4/5 2xl:w-3/4"
-      >
+    >
       <li>
-        {{ $t("admin.noteEmailVerification1", {email: fromEmail}) }}
+        {{ $t("admin.noteEmailVerification1", { email: fromEmail }) }}
       </li>
       <li>
         {{ $t("admin.noteEmailVerification2") }}
@@ -35,7 +35,7 @@ import { defineComponent, ref } from "@vue/composition-api";
 import { auth } from "@/lib/firebase/firebase9";
 import { sendEmailVerification } from "firebase/auth";
 import { useUser } from "@/utils/utils";
-import { fromEmail }  from "@/config/project";
+import { fromEmail } from "@/config/project";
 
 export default defineComponent({
   setup(_, ctx) {
