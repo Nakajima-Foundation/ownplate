@@ -224,9 +224,8 @@ export default {
         this.$store.commit("resetOpenTime");
         location.reload();
       }
-      console.log(diff);
       this.$store.commit("updateDate");
-    }, 1 * 1000); // todo set 60
+    }, 60 * 1000); // todo set 60
 
     this.pingAnalytics();
   },
