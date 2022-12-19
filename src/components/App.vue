@@ -121,13 +121,10 @@ export default {
         this.$route.path === `/r/${this.restaurantId()}` ||
         this.$route.path === "/"
       ) {
-        console.log("isReadyToRender: quick render activated");
+        // console.log("isReadyToRender: quick render activated");
         return true; // We are opening the restaurant page
       }
       return false;
-    },
-    uid() {
-      return this.$store.getters.uid;
     },
     isInMo() {
       return mo_prefixes.some((prefix) => {
@@ -163,10 +160,10 @@ export default {
           .then((result) => {
             this.$store.commit("setUser", user);
             this.$store.commit("setCustomClaims", result.claims);
-            console.log(!!user.email ? "admin" : "customer");
+            // console.log(!!user.email ? "admin" : "customer");
           })
           .catch((error) => {
-            console.error("getIdTokenResult", error);
+            // console.error("getIdTokenResult", error);
             Sentry.captureException(error);
           });
         setUserProperties(analytics, {
@@ -181,7 +178,7 @@ export default {
         }
       } else {
         setUserProperties(analytics, { role: "anonymous" });
-        console.log("authStateChanged: null");
+        // console.log("authStateChanged: null");
         this.$store.commit("setUser", null);
         this.$store.commit("setCustomClaims", null);
         if (this.isInMo) {
@@ -221,8 +218,14 @@ export default {
     }
 
     this.timerId = window.setInterval(() => {
+      const diff = (new Date() - this.$store.state.openTime) / 1000;
+      if (diff > 60 * 10) {
+        // seconds. todo set 20 * 3600
+        this.$store.commit("resetOpenTime");
+        location.reload();
+      }
       this.$store.commit("updateDate");
-    }, 60 * 1000);
+    }, 60 * 1000); // todo set 60
 
     this.pingAnalytics();
   },

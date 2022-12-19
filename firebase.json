@@ -37,39 +37,48 @@
     "rewrites": [
       {
         "source": "/r/*",
-        "function": "api"
+        "function": "apiJP",
+        "region": "asia-northeast1"
       },
       {
         "source": "/r/*/menus/*",
-        "function": "api"
+        "function": "apiJP",
+        "region": "asia-northeast1"
       },
       {
         "source": "/r/*/order/*",
-        "function": "api"
+        "function": "apiJP",
+        "region": "asia-northeast1"
       },
       {
         "source": "/o/*",
-        "function": "api"
+        "function": "apiJP",
+        "region": "asia-northeast1"
       },
       {
         "source": "/1.0/**",
-        "function": "api"
+        "function": "apiJP",
+        "region": "asia-northeast1"
       },
       {
         "source": "/api/1.0/**",
-        "function": "api"
+        "function": "apiJP",
+        "region": "asia-northeast1"
       },
       {
         "source": "/api/2.0/**",
-        "function": "api"
+        "function": "apiJP",
+        "region": "asia-northeast1"
       },
       {
         "source": "/smaregi/1.0/**",
-        "function": "api"
+        "function": "apiJP",
+        "region": "asia-northeast1"
       },
       {
         "source": "/sitemap.xml",
-        "function": "api"
+        "function": "apiJP",
+        "region": "asia-northeast1"
       },
       {
         "source": "/m/**",
