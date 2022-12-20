@@ -6,7 +6,7 @@
     </div>
 
     <div class="rounded-lg bg-white p-4 shadow">
-      <div class="mt-2 text-center">
+      <div class="text-center">
         <router-link
           to="/admin/smaregi/index"
           class="inline-flex h-12 items-center rounded-full border-2 border-op-teal px-6"
