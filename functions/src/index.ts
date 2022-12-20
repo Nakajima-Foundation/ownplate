@@ -12,7 +12,7 @@ if (!admin.apps.length) {
   admin.initializeApp();
 }
 
-exportIfNeeded("api", "api", exports);
+// exportIfNeeded("api", "api", exports);
 exportIfNeeded("apiJP", "apiJP", exports);
 
 exportIfNeeded("superDispatch", "super/superDispatch", exports);
