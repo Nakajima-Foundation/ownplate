@@ -10,7 +10,7 @@
         {{ $t("admin.mail.magazine.body") }}
       </div>
 
-      <div class="mt-4 text-center">
+      <div class="mt-4 text-center font-bold text-black text-opacity-60">
         <o-checkbox v-model="opt_out">
           {{ $t("admin.mail.magazine.optout") }}
         </o-checkbox>
