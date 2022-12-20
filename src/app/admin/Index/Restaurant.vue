@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="rounded-lg bg-white p-4 shadow">
+    <div class="mb-2 rounded-lg bg-white p-4 shadow">
       <!-- Restaurant Name -->
       <div class="inline-flex items-center justify-center text-lg font-bold">
         <span>{{
