@@ -19,7 +19,7 @@
 
         <!-- Stripe Not Connected -->
         <div v-if="!hasStripe">
-          <div class="mt-2 text-center text-sm font-bold text-red-700">
+          <div class="mt-3 text-center text-sm font-bold text-red-700">
             {{ $t("admin.payments.statusNotConnected") }}
           </div>
 
@@ -36,7 +36,7 @@
 
         <!-- Stripe Connected -->
         <div v-if="hasStripe">
-          <div class="mt-2 text-center text-sm font-bold text-green-600">
+          <div class="mt-3 text-center text-sm font-bold text-green-600">
             {{ $t("admin.payments.statusConnected") }}
           </div>
 
@@ -51,7 +51,7 @@
             >
           </div>
 
-          <div class="mt-6 text-center">
+          <div class="mt-4 text-center">
             <a
               @click="handlePaymentAccountDisconnect"
               class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
@@ -75,13 +75,13 @@
         <div class="text-base text-black text-opacity-60">
           {{ $t("admin.payments.pleaseCheck") }}
         </div>
-        <div class="mt-2 rounded-lg bg-black bg-opacity-5 p-4">
-          <span class="text-sm text-red-700">{{
+        <div class="mt-2 rounded-lg bg-red-700 bg-opacity-5 px-4 py-2">
+          <span class="text-sm leading-none text-red-700">{{
             $t("admin.payments.onsitePaymentNote")
           }}</span>
         </div>
 
-        <div class="mt-4 text-center">
+        <div class="mt-5 text-center font-bold text-black text-opacity-60">
           <o-checkbox v-model="inStorePayment">
             {{ $t("admin.payments.enableOnsitePayment") }}
           </o-checkbox>

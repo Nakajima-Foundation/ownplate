@@ -5,10 +5,10 @@
     </div>
 
     <div class="rounded-lg bg-white p-4 shadow">
-      <div class="mt-2 text-center">
+      <div class="text-base text-black text-opacity-60">
         {{ $t("admin.subAccounts.description") }}
       </div>
-      <div class="mt-2 text-center">
+      <div class="mt-4 text-center">
         <router-link
           to="/admin/subaccounts"
           target="stripe"
