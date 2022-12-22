@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div class="grid grid-cols-2 gap-2">
+    <div class="grid grid-cols-2 gap-2"
+         :id="value === 'takeout' ? 'isTakeout' : 'isPickup'"
+         >
       <div
         class="h-full w-full rounded-lg bg-white p-3 shadow"
         :class="
