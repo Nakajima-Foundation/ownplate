@@ -161,6 +161,7 @@
                   :subCategoryData="subCategoryData"
                   :categoryBathPath="categoryBathPath"
                   :subCategoryId="subCategory"
+                  :howtoreceive="howtoreceive"
                 />
               </div>
             </div>
@@ -683,11 +684,29 @@ export default defineComponent({
     watch(category, () => {
       if (category.value) {
         loadSubcategory();
+        updateMoUrl();
       }
     });
 
+    const updateMoUrl = () => {
+      const {
+        category,
+        subCategory,
+        restaurantId,
+      } =  ctx.root.$route.params;
+      if (howtoreceive.value && subCategory) {
+        
+        const newPath = `/${props.moPrefix}/r/${restaurantId}/cat/${category}/${subCategory}/${howtoreceive.value}`;
+        if (newPath !== ctx.root.$route.path) {
+          ctx.root.$router.replace({
+            path: newPath,
+          });
+        }
+      };
+    }
     watch(howtoreceive, (value) => {
       if (isInMo.value) {
+        updateMoUrl();
         orders.value = {};
       }
     });
@@ -705,6 +724,7 @@ export default defineComponent({
       loadCategory();
       if (category.value) {
         loadSubcategory();
+        updateMoUrl();
       }
     }
     if (!isInMo.value) {
