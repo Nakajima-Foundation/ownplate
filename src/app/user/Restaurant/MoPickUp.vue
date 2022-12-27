@@ -3,23 +3,7 @@
     <div class="grid grid-cols-2 gap-2"
          :id="value === 'takeout' ? 'isTakeout' : 'isPickup'"
          >
-      <div
-        class="h-full w-full rounded-lg bg-white p-3 shadow"
-        :class="
-          value === 'takeout'
-            ? 'border-2 border-op-teal text-op-teal'
-            : 'cursor-pointer text-black text-opacity-40'
-        "
-        @click="input('takeout')"
-      >
-        <i class="material-icons w-full text-center"> shopping_cart </i>
-        <div class="-mt-0.5 text-center text-lg font-bold">
-          {{ $t("mobileOrder.shopInfo.takeout") }}
-        </div>
-        <div class="mt-0.5 px-3 text-center text-xs font-bold">
-          {{ $t("mobileOrder.shopInfo.takeoutDesctiption") }}
-        </div>
-      </div>
+      <!-- pickup -->
       <div
         v-if="shopInfo.enableMoPickup && !moPickupSuspend"
         class="h-full w-full rounded-lg bg-white p-3 shadow"
@@ -48,6 +32,24 @@
         </div>
         <div class="mt-0.5 px-3 text-center text-xs font-bold">
           {{ $t("mobileOrder.shopInfo.pickupDesctiption") }}
+        </div>
+      </div>
+      <!-- takeout -->
+      <div
+        class="h-full w-full rounded-lg bg-white p-3 shadow"
+        :class="
+          value === 'takeout'
+            ? 'border-2 border-op-teal text-op-teal'
+            : 'cursor-pointer text-black text-opacity-40'
+        "
+        @click="input('takeout')"
+      >
+        <i class="material-icons w-full text-center"> shopping_cart </i>
+        <div class="-mt-0.5 text-center text-lg font-bold">
+          {{ $t("mobileOrder.shopInfo.takeout") }}
+        </div>
+        <div class="mt-0.5 px-3 text-center text-xs font-bold">
+          {{ $t("mobileOrder.shopInfo.takeoutDesctiption") }}
         </div>
       </div>
     </div>
