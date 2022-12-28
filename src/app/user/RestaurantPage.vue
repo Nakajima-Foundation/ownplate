@@ -43,7 +43,7 @@
           />
         </div>
       </div>
-      
+
       <!-- Restaurant Page -->
       <div>
         <!-- For Owner Preview Only -->
@@ -67,6 +67,13 @@
               <!-- Restaurant Profile Photo and Name -->
               <div class="mt-4">
                 <ShopHeader :shopInfo="shopInfo"></ShopHeader>
+                <div v-if="false">
+                  <div
+                    class="my-2 rounded-lg bg-red-700 bg-opacity-10 p-3 text-center text-sm font-bold text-red-700"
+                  >
+                    {{ $t("mobileOrder.shopInfo.closeNote") }}
+                  </div>
+                </div>
               </div>
 
               <!-- Restaurant Descriptions -->
@@ -205,9 +212,7 @@
             <div class="mx-6 mt-3 lg:mx-0">
               <!-- Category Icon -->
               <div v-if="isShowCategoryIcon">
-                <CategoryIcon
-                  :howtoreceive="howtoreceive"
-                  />
+                <CategoryIcon :howtoreceive="howtoreceive" />
               </div>
               <div v-if="showCategory">
                 <!-- Category view -->
@@ -215,9 +220,10 @@
                   <div class="text-xl font-bold text-black text-opacity-30">
                     {{ $t("shopInfo.productCategory") }}
                   </div>
-                  <CategoryTop :categoryData="categoryData"
-                               :howtoreceive="howtoreceive"
-                               />
+                  <CategoryTop
+                    :categoryData="categoryData"
+                    :howtoreceive="howtoreceive"
+                  />
                 </div>
               </div>
               <div v-else>
@@ -351,7 +357,7 @@
     </o-modal>
     <!-- Image Popup ??-->
     <o-modal :active.sync="categoryPopup" :width="488" scroll="keep">
-      <div class="px-2 text-center" >
+      <div class="px-2 text-center">
         <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
           <template v-for="(title, key) in titleLists">
             <a
@@ -710,21 +716,16 @@ export default defineComponent({
     });
 
     const updateMoUrl = () => {
-      const {
-        category,
-        subCategory,
-        restaurantId,
-      } =  ctx.root.$route.params;
+      const { category, subCategory, restaurantId } = ctx.root.$route.params;
       if (howtoreceive.value && subCategory) {
-        
         const newPath = `/${props.moPrefix}/r/${restaurantId}/cat/${category}/${subCategory}/${howtoreceive.value}`;
         if (newPath !== ctx.root.$route.path) {
           ctx.root.$router.replace({
             path: newPath,
           });
         }
-      };
-    }
+      }
+    };
     watch(howtoreceive, (value) => {
       if (isInMo.value) {
         updateMoUrl();
@@ -1005,7 +1006,7 @@ export default defineComponent({
     const isOpenGroupSubCategory = computed(() => {
       return ctx.root.$route.params.list === "category";
     });
-    
+
     const cartButton = ref();
     const isShowCart = computed(() => {
       return cartButton.value?.isShowCart;
@@ -1016,7 +1017,10 @@ export default defineComponent({
 
     const isShowCategoryIcon = computed(() => {
       return (
-        showSubCategory.value && !isOpenGroupCategory.value && !isOpenGroupSubCategory.value && !isShowCart.value
+        showSubCategory.value &&
+        !isOpenGroupCategory.value &&
+        !isOpenGroupSubCategory.value &&
+        !isShowCart.value
       );
     });
 
@@ -1121,7 +1125,7 @@ export default defineComponent({
 
       isOpenGroupCategory,
       isOpenGroupSubCategory,
-      
+
       ...imageUtils(),
 
       isShowCart,
