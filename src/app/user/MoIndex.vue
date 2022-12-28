@@ -67,6 +67,9 @@
                 <div>
                   <div class="flex-1 pr-2 text-base font-bold">
                     {{ restaurant.restaurantName }}
+                    <span v-if="false" class="text-xs font-bold">{{
+                      $t("mobileOrder.closeLabel")
+                    }}</span>
                   </div>
                   <div
                     v-if="restaurant.enableMoPickup"

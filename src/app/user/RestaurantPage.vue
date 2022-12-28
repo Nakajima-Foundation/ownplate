@@ -52,6 +52,13 @@
               <!-- Restaurant Profile Photo and Name -->
               <div class="mt-4">
                 <ShopHeader :shopInfo="shopInfo"></ShopHeader>
+                <div v-if="false">
+                  <div
+                    class="my-2 rounded-lg bg-red-700 bg-opacity-10 p-3 text-center text-sm font-bold text-red-700"
+                  >
+                    {{ $t("mobileOrder.shopInfo.closeNote") }}
+                  </div>
+                </div>
               </div>
 
               <!-- Restaurant Descriptions -->
@@ -1066,6 +1073,7 @@ export default defineComponent({
       openGroupCategory,
       closeGroupCategory,
       isOpenGroupCategory,
+      isOpenGroupSubCategory,
 
       ...imageUtils(),
 
