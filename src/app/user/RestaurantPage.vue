@@ -52,11 +52,11 @@
               <!-- Restaurant Profile Photo and Name -->
               <div class="mt-4">
                 <ShopHeader :shopInfo="shopInfo"></ShopHeader>
-                <div v-if="false">
+                <div v-if="shopInfo.moCloseDate">
                   <div
                     class="my-2 rounded-lg bg-red-700 bg-opacity-10 p-3 text-center text-sm font-bold text-red-700"
-                  >
-                    {{ $t("mobileOrder.shopInfo.closeNote") }}
+                    >
+                    {{ $tc("mobileOrder.shopInfo.closeNote", 0, {date: moment(shopInfo.moCloseDate.toDate()).format('M/D'), time: moment(shopInfo.moCloseDate.toDate()).format('HH:mm') }) }}
                   </div>
                 </div>
               </div>

@@ -67,8 +67,8 @@
                 <div>
                   <div class="flex-1 pr-2 text-base font-bold">
                     {{ restaurant.restaurantName }}
-                    <span v-if="false" class="text-xs font-bold">{{
-                      $t("mobileOrder.closeLabel")
+                    <span v-if="restaurant.moCloseDate" class="text-xs font-bold">{{
+                      $tc("mobileOrder.closeLabel", 0, {date: moment(restaurant.moCloseDate.toDate()).format('M/D') })
                     }}</span>
                   </div>
                   <div

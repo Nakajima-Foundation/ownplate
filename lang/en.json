@@ -29,7 +29,7 @@
     "pickupLabel": "Takeaway Today",
     "soldOut": "Sold out",
     "inStock": "In stock",
-    "closeLabel": "(*Orders will be closed on 1/9)",
+    "closeLabel": "(*Orders will be closed on {date})",
     "admin": {
       "takeout": "Pre order",
       "pickup": "Takeaway",
@@ -42,7 +42,7 @@
       "pickupDesctiption": "Click here to put an item on hold",
       "pickupNote": "Takeaway orders cannot be accepted from {lastOrder} to 23:59. Please place an order after a while.",
       "showOnlyInStock": "Show only in stock",
-      "closeNote": "*Orders at this store will be closed at 4:00 pm on January 9."
+      "closeNote": "*Orders at this store will be closed at {time} on {date}."
     }
   },
   "profile": {

@@ -49,7 +49,7 @@
     "pickupLabel": "本日受け取り可能",
     "soldOut": "在庫なし",
     "inStock": "在庫あり",
-    "closeLabel": "（※1/9にて注文受付終了）",
+    "closeLabel": "（※{date}にて注文受付終了）",
     "admin": {
       "takeout": "予約注文",
       "pickup": "ピックアップ",
@@ -84,7 +84,7 @@
       "pickupDesctiption": "最短1時間後に店舗で受け取り",
       "pickupNote": "ただいまの時間は「本日受け取り」をご利用できません。ご注文可能な時間帯は、00:00から{lastOrder}までとなります。",
       "showOnlyInStock": "在庫ありのみ表示",
-      "closeNote": "※この店舗での注文受付は、1/9の16:00にて終了いたします"
+      "closeNote": "※この店舗での注文受付は、{date}の{time}にて終了いたします"
     }
   },
   "profile": {
