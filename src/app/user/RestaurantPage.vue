@@ -19,6 +19,7 @@
           <CategoryModal
             class="mb-20"
             :categoryData="categoryData"
+            :howtoreceive="howtoreceive"
           />
         </div>
       </div>
@@ -38,6 +39,7 @@
             class="mb-20"
             :categoryData="categoryData"
             :subCategoryData="subCategoryData"
+            :howtoreceive="howtoreceive"
           />
         </div>
       </div>
@@ -203,7 +205,9 @@
             <div class="mx-6 mt-3 lg:mx-0">
               <!-- Category Icon -->
               <div v-if="isShowCategoryIcon">
-                <CategoryIcon />
+                <CategoryIcon
+                  :howtoreceive="howtoreceive"
+                  />
               </div>
               <div v-if="showCategory">
                 <!-- Category view -->
@@ -211,7 +215,9 @@
                   <div class="text-xl font-bold text-black text-opacity-30">
                     {{ $t("shopInfo.productCategory") }}
                   </div>
-                  <CategoryTop :categoryData="categoryData" />
+                  <CategoryTop :categoryData="categoryData"
+                               :howtoreceive="howtoreceive"
+                               />
                 </div>
               </div>
               <div v-else>
@@ -343,9 +349,9 @@
         <img :src="coverImage" class="rounded-lg shadow-lg" />
       </div>
     </o-modal>
-    <!-- Image Popup-->
+    <!-- Image Popup ??-->
     <o-modal :active.sync="categoryPopup" :width="488" scroll="keep">
-      <div class="px-2 text-center" @click.stop="closeCategory()">
+      <div class="px-2 text-center" >
         <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
           <template v-for="(title, key) in titleLists">
             <a

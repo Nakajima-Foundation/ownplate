@@ -4,7 +4,8 @@
        basePath +
        '/r/' +
        restaurantId() +
-       '/categories'
+       '/categories/' +
+       howtoreceive
        "
   >
   <div
@@ -23,6 +24,12 @@ import { defineComponent } from "@vue/composition-api";
 import { useBasePath } from "@/utils/utils";
 
 export default defineComponent({
+  props: {
+    howtoreceive: {
+      type: String,
+      required: true,
+    },
+  },
   setup(props, ctx) {
     const basePath = useBasePath(ctx.root);
     return {

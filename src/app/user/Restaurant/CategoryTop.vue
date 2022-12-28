@@ -7,7 +7,9 @@
           '/r/' +
           restaurantId() +
           '/category/' +
-          cat.id
+          cat.id +
+          '/' +
+          howtoreceive
         "
       >
         <div

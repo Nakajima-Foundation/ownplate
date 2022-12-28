@@ -10,6 +10,10 @@ export default (name: string) => {
         type: Array,
         required: true,
       },
+      howtoreceive: {
+        type: String,
+        required: true,
+      },
     },
     setup(props, ctx) {
       const basePath = useBasePath(ctx.root);

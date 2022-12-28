@@ -9,10 +9,12 @@
           '/r/' +
           restaurantId() +
           '/category/' +
-          cat.id 
+          cat.id +
+          '/' +
+          howtoreceive
         "
       >
-        <div @click="closeCategory">
+        <div>
           <div class="flex items-center">
             <div
               class="mt-2 mr-2 h-10 w-10 rounded-lg border-gray-100 bg-white shadow-none"
