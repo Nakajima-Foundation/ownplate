@@ -1073,7 +1073,6 @@ export default defineComponent({
       openGroupCategory,
       closeGroupCategory,
       isOpenGroupCategory,
-      isOpenGroupSubCategory,
 
       ...imageUtils(),
 
