@@ -11,17 +11,12 @@ export default (name: string) => {
         required: true,
       },
     },
-    emits: ["closeGroupCategory"],
     setup(props, ctx) {
       const basePath = useBasePath(ctx.root);
 
-      const closeCategory = () => {
-        ctx.emit("closeGroupCategory");
-      };
       return {
         basePath,
         moBaseUrl,
-        closeCategory,
         smallImageErrorHandler,
       };
     },

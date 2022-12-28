@@ -2,13 +2,13 @@
   <div
     class="grid grid-cols-2 items-center gap-3 lg:grid-cols-3 xl:grid-cols-4"
   >
-    <div v-for="(cat, k) in categoryData" :key="k">
+    <div v-for="(cat, k) in subCategoryData" :key="k">
       <router-link
         :to="
           basePath +
           '/r/' +
           restaurantId() +
-          '/category/' +
+          '/cat/' + category + '/' +
           cat.id 
         "
       >
@@ -36,6 +36,33 @@
 </template>
 
 <script>
-import category from "./category";
-export default category("CategoryModal");
+import { defineComponent, computed } from "@vue/composition-api";
+import { useBasePath, smallImageErrorHandler } from "@/utils/utils";
+import { moBaseUrl } from "@/config/project";
+
+export default defineComponent({
+  name,
+  props: {
+    categoryData: {
+      type: Array,
+      required: true,
+    },
+    subCategoryData: {
+      type: Array,
+      required: false,
+    },
+  },
+  setup(props, ctx) {
+    const basePath = useBasePath(ctx.root);
+    const category = ctx.root.$route.params.category;
+    
+    return {
+      basePath,
+      moBaseUrl,
+      smallImageErrorHandler,
+      category,
+    };
+  },
+});
+
 </script>

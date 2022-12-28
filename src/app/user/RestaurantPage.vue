@@ -14,21 +14,34 @@
           <span class="text-xl font-bold text-black text-opacity-30">
             {{ $t("shopInfo.productCategory") }}
           </span>
-          <a @click="closeGroupCategory">
-            <i class="material-icons mt-1 text-2xl text-black opacity-30"
-              >close</i
-            >
-          </a>
         </div>
         <div class="mx-4 h-[calc(100%-3rem)] overflow-x-scroll">
           <CategoryModal
             class="mb-20"
             :categoryData="categoryData"
-            @closeGroupCategory="closeGroupCategory"
           />
         </div>
       </div>
 
+      <!-- category modal -->
+      <div
+        v-if="isOpenGroupSubCategory"
+        class="fixed top-0 z-20 h-full w-full bg-white"
+      >
+        <div class="flex h-12 justify-between py-2 pl-6 pr-4">
+          <span class="text-xl font-bold text-black text-opacity-30">
+            {{ $t("shopInfo.productSubCategory") }}
+          </span>
+        </div>
+        <div class="mx-4 h-[calc(100%-3rem)] overflow-x-scroll">
+          <SubCategoryModal
+            class="mb-20"
+            :categoryData="categoryData"
+            :subCategoryData="subCategoryData"
+          />
+        </div>
+      </div>
+      
       <!-- Restaurant Page -->
       <div>
         <!-- For Owner Preview Only -->
@@ -190,7 +203,7 @@
             <div class="mx-6 mt-3 lg:mx-0">
               <!-- Category Icon -->
               <div v-if="isShowCategoryIcon">
-                <CategoryIcon @openGroupCategory="openGroupCategory" />
+                <CategoryIcon />
               </div>
               <div v-if="showCategory">
                 <!-- Category view -->
@@ -376,6 +389,7 @@ import CartButton from "@/app/user/Restaurant/CartButton.vue";
 import Cart from "@/app/user/Restaurant/Cart.vue";
 import Delivery from "@/app/user/Restaurant/Delivery.vue";
 import CategoryModal from "@/app/user/Restaurant/CategoryModal.vue";
+import SubCategoryModal from "@/app/user/Restaurant/SubCategoryModal.vue";
 import CategoryTop from "@/app/user/Restaurant/CategoryTop.vue";
 import CategoryIcon from "@/app/user/Restaurant/CategoryIcon.vue";
 import Titles from "@/app/user/Restaurant/Titles.vue";
@@ -445,6 +459,7 @@ export default defineComponent({
     Cart,
     Delivery,
     CategoryModal,
+    SubCategoryModal,
     CategoryTop,
     CategoryIcon,
     Titles,
@@ -978,12 +993,13 @@ export default defineComponent({
         : "";
     });
 
-    const {
-      value: isOpenGroupCategory,
-      toggleOn: openGroupCategory,
-      toggleOff: closeGroupCategory,
-    } = useToggle(false);
-
+    const isOpenGroupCategory = computed(() => {
+      return ctx.root.$route.params.list === "categories";
+    });
+    const isOpenGroupSubCategory = computed(() => {
+      return ctx.root.$route.params.list === "category";
+    });
+    
     const cartButton = ref();
     const isShowCart = computed(() => {
       return cartButton.value?.isShowCart;
@@ -994,7 +1010,7 @@ export default defineComponent({
 
     const isShowCategoryIcon = computed(() => {
       return (
-        showSubCategory.value && !isOpenGroupCategory.value && !isShowCart.value
+        showSubCategory.value && !isOpenGroupCategory.value && !isOpenGroupSubCategory.value && !isShowCart.value
       );
     });
 
@@ -1010,6 +1026,7 @@ export default defineComponent({
         document.body.style.position = "";
       }
     });
+    //
     watch(isOpenGroupCategory, (value) => {
       if (value) {
         document.body.style.position = "fixed";
@@ -1020,6 +1037,19 @@ export default defineComponent({
     });
     onUnmounted(() => {
       if (isOpenGroupCategory.value) {
+        document.body.style.position = "";
+      }
+    });
+    watch(isOpenGroupSubCategory, (value) => {
+      if (value) {
+        document.body.style.position = "fixed";
+      } else {
+        document.body.style.position = "";
+        scrollToElementById("subCategoryTop");
+      }
+    });
+    onUnmounted(() => {
+      if (isOpenGroupSubCategory.value) {
         document.body.style.position = "";
       }
     });
@@ -1083,10 +1113,9 @@ export default defineComponent({
 
       subCategory,
 
-      openGroupCategory,
-      closeGroupCategory,
       isOpenGroupCategory,
-
+      isOpenGroupSubCategory,
+      
       ...imageUtils(),
 
       isShowCart,
