@@ -237,17 +237,19 @@ export const useMenu = (
   };
   const loadMenu = async (callback?: () => void) => {
     detacheMenu();
-    if (isInMo.value && !category.value && !subCategory.value) {
+    // if (isInMo.value && !category.value && !subCategory.value) {
+    if (isInMo.value && (!category.value || !subCategory.value)) {
       return;
     }
-    const hasSubCategory = category.value && subCategory.value;
+    // const hasSubCategory = category.value && subCategory.value;
     if (menuCache.value[allMenuObjKey.value]) {
       allMenuObj.value[allMenuObjKey.value] =
         menuCache.value[allMenuObjKey.value];
       return;
     }
 
-    if (hasSubCategory) {
+    // if (hasSubCategory) {
+    if (isInMo.value) {
       allMenuObj.value[allMenuObjKey.value] = [];
       const cacheBase: DocumentData[] = [];
 
