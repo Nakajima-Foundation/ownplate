@@ -10,6 +10,7 @@
         {{ $t("button.category") }}
       </div>
     </div>
+    <!-- {{selectedCategory.name}} -->
   </router-link>
 </template>
 
@@ -21,6 +22,10 @@ export default defineComponent({
   props: {
     howtoreceive: {
       type: String,
+      required: true,
+    },
+    selectedCategory: {
+      type: Object,
       required: true,
     },
   },
