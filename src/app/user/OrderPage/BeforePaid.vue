@@ -226,7 +226,7 @@
                   "
                   @click="handlePayment(true)"
                   class="b-reset-tw"
-                  :class="orderInfo.isPickup ? 'pickup' : 'takeout' "
+                  :class="orderInfo.isPickup ? 'pickup' : 'takeout'"
                 >
                   <div
                     class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal px-6 shadow"
@@ -306,7 +306,7 @@
                   "
                   @click="handlePayment(false)"
                   class="b-reset-tw"
-                  :class="orderInfo.isPickup ? 'pickup' : 'takeout' "
+                  :class="orderInfo.isPickup ? 'pickup' : 'takeout'"
                 >
                   <div
                     class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal px-6 shadow"

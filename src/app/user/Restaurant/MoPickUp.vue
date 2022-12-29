@@ -1,8 +1,9 @@
 <template>
   <div>
-    <div class="grid grid-cols-2 gap-2"
-         :id="value === 'takeout' ? 'isTakeout' : 'isPickup'"
-         >
+    <div
+      class="grid grid-cols-2 gap-2"
+      :id="value === 'takeout' ? 'isTakeout' : 'isPickup'"
+    >
       <!-- pickup -->
       <div
         v-if="shopInfo.enableMoPickup && !moPickupSuspend"

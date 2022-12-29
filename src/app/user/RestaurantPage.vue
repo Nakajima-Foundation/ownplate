@@ -29,17 +29,12 @@
         v-if="isOpenGroupSubCategory"
         class="fixed top-0 z-20 h-full w-full bg-white"
       >
-        <div class="flex h-12 justify-between py-2 pl-6 pr-4">
-          <span class="text-xl font-bold text-black text-opacity-30">
-            {{ $t("shopInfo.productSubCategory") }}
-          </span>
-        </div>
         <div class="mx-4 h-[calc(100%-3rem)] overflow-x-scroll">
           <SubCategoryModal
             class="mb-20"
-            :categoryData="categoryData"
             :subCategoryData="subCategoryData"
             :howtoreceive="howtoreceive"
+            :selectedCategory="selectedCategory"
           />
         </div>
       </div>
@@ -70,8 +65,17 @@
                 <div v-if="shopInfo.moCloseDate">
                   <div
                     class="my-2 rounded-lg bg-red-700 bg-opacity-10 p-3 text-center text-sm font-bold text-red-700"
-                    >
-                    {{ $tc("mobileOrder.shopInfo.closeNote", 0, {date: moment(shopInfo.moCloseDate.toDate()).format('M/D'), time: moment(shopInfo.moCloseDate.toDate()).format('HH:mm') }) }}
+                  >
+                    {{
+                      $tc("mobileOrder.shopInfo.closeNote", 0, {
+                        date: moment(shopInfo.moCloseDate.toDate()).format(
+                          "M/D"
+                        ),
+                        time: moment(shopInfo.moCloseDate.toDate()).format(
+                          "HH:mm"
+                        ),
+                      })
+                    }}
                   </div>
                 </div>
               </div>
@@ -742,6 +746,17 @@ export default defineComponent({
       category
     );
 
+    const selectedCategory = computed(() => {
+      if (category.value && categoryData.value) {
+        return (
+          categoryData.value.find((cat) => {
+            return cat.id === category.value;
+          }) || {}
+        );
+      }
+      return {};
+    });
+
     if (isInMo.value) {
       loadCategory();
       if (category.value) {
@@ -1099,7 +1114,7 @@ export default defineComponent({
 
       isPreview,
 
-      hasCategory,
+      selectedCategory,
 
       didOrderdChange,
 
