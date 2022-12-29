@@ -39,7 +39,7 @@
           <!-- Left -->
           <div>
             <!-- Cover Image -->
-            <div class="lg:mt-6">
+            <div class="lg:mt-6" v-if="!shopInfo.moCloseDate">
               <img
                 @click.stop="openImage()"
                 :src="coverImage"
