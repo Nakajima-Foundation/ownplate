@@ -6,10 +6,9 @@
           basePath +
           '/r/' +
           restaurantId() +
-          '/category/' +
-          cat.id +
-          '/' +
-          howtoreceive
+          (cat.subCategoryCounter > 1
+            ? `/category/${cat.id}/${howtoreceive}`
+            : `/cat/${cat.id}/${cat.subCategory}/${howtoreceive}`)
         "
       >
         <div

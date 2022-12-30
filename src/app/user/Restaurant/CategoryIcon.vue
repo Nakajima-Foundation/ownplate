@@ -1,6 +1,13 @@
 <template>
   <router-link
-    :to="basePath + '/r/' + restaurantId() + '/categories/' + howtoreceive"
+    :to="
+      basePath +
+      '/r/' +
+      restaurantId() +
+      (selectedCategory.subCategoryCounter > 1
+        ? `/category/${selectedCategory.id}/${howtoreceive}`
+        : `/categories/${howtoreceive}`)
+    "
   >
     <div
       class="fixed left-4 bottom-24 z-10 inline-flex h-20 w-20 cursor-pointer flex-col items-center justify-center rounded-full border-2 border-op-teal bg-teal-50 pb-1.5 shadow-lg sm:bottom-28"

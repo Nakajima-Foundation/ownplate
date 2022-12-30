@@ -216,7 +216,10 @@
             <div class="mx-6 mt-3 lg:mx-0">
               <!-- Category Icon -->
               <div v-if="isShowCategoryIcon">
-                <CategoryIcon :howtoreceive="howtoreceive" :selectedCategory="selectedCategory" />
+                <CategoryIcon
+                  :howtoreceive="howtoreceive"
+                  :selectedCategory="selectedCategory"
+                />
               </div>
               <div v-if="showCategory">
                 <!-- Category view -->
