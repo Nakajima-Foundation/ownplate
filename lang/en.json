@@ -179,8 +179,10 @@
     "required": "Required",
     "timeToPickup": "Time to pickup",
     "preparationTime": "Takeaway preparation time",
+    "preparationTimeDescription": "Shortest time from order to takeaway",
     "deliveryPreparationTime": "Delivery preparation time",
     "reservationTheDayBefore": "Reservation the day before",
+    "reservationTheDayBeforeDescription": "When do you accept orders",
     "reservationTheDaysBefore": {
       "zero": "Only on the day",
       "one": "From 1 day in advance",

@@ -179,8 +179,10 @@
     "required": "Requis",
     "timeToPickup": "Temps de ramassage",
     "preparationTime": "Temps de préparation du plat emporter",
+    "preparationTimeDescription": "Shortest time from order to takeaway",
     "deliveryPreparationTime": "Delivery preparation time",
     "reservationTheDayBefore": "Réservation la veille",
+    "reservationTheDayBeforeDescription": "When do you accept orders",
     "reservationTheDaysBefore": {
       "zero": "Seulement le jour",
       "one": "A partir de 1 jour à l'avance",

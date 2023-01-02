@@ -584,10 +584,14 @@
                   </div>
                   <div>
                     {{ $tc("tax.taxExample", $n(1000, "currency"))
-                    }}<Price
-                      :shopInfo="shopInfo"
+                    }}
+                  </div>
+                  <div>
+                    <b><Price
+                         :shopInfo="shopInfo"
                       :menu="{ price: 1000, tax: 'food' }"
-                    />
+                         />
+                      </b>
                   </div>
                 </div>
               </div>
@@ -610,7 +614,8 @@
               <!-- Preparation Time -->
               <div>
                 <div class="mb-1">
-                  {{ $t("editRestaurant.preparationTime") }}
+                  <b>{{ $t("editRestaurant.preparationTime") }}</b>
+                  <span class="text-xs">({{ $t("editRestaurant.preparationTimeDescription") }})</span>
                 </div>
 
                 <o-field
@@ -628,11 +633,11 @@
                     class="w-24"
                   />
                   <div class="ml-2">
-                    {{ $t("editRestaurant.minutes") }} -
-                    {{ $t("editRestaurant.withinFiveDays") }}
+                    {{ $t("editRestaurant.minutes") }} 
+                    <span class="text-xs">({{ $t("editRestaurant.withinFiveDays") }})</span>
                   </div>
                 </o-field>
-
+                
                 <div class="mt-2">
                   <o-radio
                     v-for="choice in minimumCookTimeChoices"
@@ -647,7 +652,8 @@
               <!-- The Day Before -->
               <div class="mt-2">
                 <div class="mb-1">
-                  {{ $t("editRestaurant.reservationTheDayBefore") }}
+                  <b>{{ $t("editRestaurant.reservationTheDayBefore") }}</b>
+                  <span class="text-xs"> ({{ $t("editRestaurant.reservationTheDayBeforeDescription") }})</span>
                 </div>
                 <o-field
                   class="flex items-center"
