@@ -55,7 +55,7 @@ import { defineComponent, ref } from "@vue/composition-api";
 import { db } from "@/lib/firebase/firebase9";
 import { getDocs, collection, where, limit, query } from "firebase/firestore";
 
-import { defaultHeader } from "../../../config/header";
+import { defaultHeader } from "@/config/header";
 import Map from "@/components/Map";
 
 import { regionalSetting } from "@/utils/utils";
