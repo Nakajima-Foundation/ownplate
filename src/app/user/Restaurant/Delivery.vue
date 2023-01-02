@@ -25,20 +25,20 @@
       <div v-if="deliveryData.enableDeliveryThreshold">
         {{
           $tc("shopInfo.deliveryThresholdNotice", 0, {
-            price: deliveryData.deliveryThreshold,
+            price: $n(deliveryData.deliveryThreshold, "currency"),
           })
         }}
       </div>
       <div v-if="deliveryData.deliveryFee > 0">
         {{
           $tc("shopInfo.deliveryFeeInfo", 0, {
-            price: deliveryData.deliveryFee,
+            price: $n(deliveryData.deliveryFee, "currency"),
           })
         }}
         <span v-if="deliveryData.enableDeliveryFree">
           {{
             $tc("shopInfo.deliveryFeeThresholdInfo", 0, {
-              price: deliveryData.deliveryFreeThreshold,
+              price: $n(deliveryData.deliveryFreeThreshold, "currency"),
             })
           }}
         </span>
