@@ -677,6 +677,26 @@
             </div>
           </div>
 
+          <!-- Payment methods -->
+          <div class="mt-4">
+            <div class="pb-2 text-sm font-bold">
+              {{ $t("editRestaurant.paymentMethods") 
+              }}
+            </div>
+
+            <div class="rounded-lg bg-black bg-opacity-5 p-4">
+              <!-- Preparation Time -->
+              <div v-for="(paymentMethod, k) in paymentMethods" :key="k" >
+              <o-checkbox v-model="shopInfo.paymentMethods[paymentMethod.key]">
+                <div class="text-sm font-bold">
+                  {{ $t("editRestaurant.paymentMethodChoices." + paymentMethod.key ) }}
+                </div>
+              </o-checkbox>
+                
+              </div>
+            </div>
+          </div>
+
           <!-- Time to Mo Pickup -->
           <template v-if="moPickup">
             <div class="mt-4" v-if="isInMo">
@@ -1130,6 +1150,7 @@ import {
   daysOfWeek,
   reservationTheDayBefore,
   minimumCookTimeChoices,
+  paymentMethods,
 } from "@/config/constant";
 
 export default defineComponent({
@@ -1506,6 +1527,8 @@ export default defineComponent({
       setDefaultLocation,
       gmapClick,
 
+      paymentMethods,
+      
       confirmCopy,
       saveRestaurant,
       updateAndUpdateMap,

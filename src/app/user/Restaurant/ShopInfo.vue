@@ -220,6 +220,20 @@
             </div>
           </div>
         </div>
+          
+        <!-- Payment Methods -->
+        <div class="mt-2" v-if="inStorePayment && hasPaymentMethods">
+          <div class="text-sm font-bold">
+            {{ $t("shopInfo.paymentMethods") }}
+          </div>
+          <div class="mt-1 ml-1">
+            <ul>
+              <li v-for="(paymentMethod, k) in paymentMethods" :key="k">
+                {{ $t("editRestaurant.paymentMethodChoices." + paymentMethod) }}
+              </li>
+            </ul>
+          </div>
+        </div>
 
         <!-- Temporary Closure -->
         <div v-if="temporaryClosure.length > 0" class="mt-2">
@@ -406,6 +420,15 @@ export default defineComponent({
       return props.paymentInfo.inStore;
     });
 
+    const paymentMethods = computed(() => {
+      return Object.keys(props.shopInfo.paymentMethods || {}).filter((key) => {
+        return !!(props.shopInfo.paymentMethods[key])
+      }) || [];
+    });
+    const hasPaymentMethods = computed(() => {
+      return paymentMethods.value.length > 0;
+    });
+    
     const { deliveryAvailableDays, availableDays, temporaryClosure } =
       usePickupTime(props.shopInfo, {}, {}, ctx, isInMo.value, isPickup);
 
@@ -464,6 +487,8 @@ export default defineComponent({
       showPayment,
       stripeAccount,
       inStorePayment,
+      paymentMethods,
+      hasPaymentMethods,
       minimumAvailableTime,
       mapQuery,
       GAPIKey,

@@ -284,6 +284,22 @@ export const minimumCookTimeChoices = [
   { messageKey: "editRestaurant.minimumCookTime.sixDays", value: 60 * 24 * 6 },
 ];
 
+export const paymentMethods = [
+  { key: "cache" },
+  { key: "suica" },
+  { key: "creditCard" },
+  { key: "paypay" },
+  { key: "dpay" },
+  { key: "rpay" },
+  { key: "id" },
+  { key: "quick" },
+  { key: "line" },
+  { key: "merpay" },
+  { key: "aupay" },
+  { key: "alipay" },
+  { key: "unipay" },
+];
+
 export const regionalSettings = {
   US: {
     CurrencyKey: "USD",

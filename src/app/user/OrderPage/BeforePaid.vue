@@ -330,6 +330,18 @@
                 <div class="mt-2 text-sm font-bold text-black text-opacity-60">
                   {{ $t("order.placeOrderNoPaymentNote") }}
                 </div>
+
+                <div v-if="hasPaymentMethods">
+                  <div class="text-sm text-left mt-4">
+                    {{ $t("shopInfo.paymentMethods") }}: 
+                  </div>
+                  <div class="ml-2 text-xs text-left">
+                    <div v-for="(paymentMethod, k) in paymentMethods" :key="k">
+                      {{ $t("editRestaurant.paymentMethodChoices." + paymentMethod) }}
+                    </div>
+                  </div>
+                </div>
+                
               </div>
             </div>
 
@@ -502,6 +514,15 @@ export default {
     },
     userMessageError() {
       return this.shopInfo.acceptUserMessage && this.memo.length > 500;
+    },
+    
+    paymentMethods() {
+      return Object.keys(this.shopInfo.paymentMethods || {}).filter((key) => {
+        return !!(this.shopInfo.paymentMethods[key])
+      }) || [];
+    },
+    hasPaymentMethods() {
+      return this.paymentMethods.length > 0;
     },
   },
   // end of computed
