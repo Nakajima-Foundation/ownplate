@@ -290,7 +290,6 @@
     "acceptUserMessage": "メッセージを受付",
     "acceptUserMessageDescription": "お客様からのメッセージを受付ける",
     "acceptUserMessageNotice": "注文確認画面で、お客様が一言メッセージを入力可能にします。注文時の注意書きの後にメッセージ欄が表示されるので、「注文時の注意書き」にメッセージに書く内容を記載してください。(例: お得な割引の連絡をするのでメールアドレスを入力してください. / 誕生月の場合はお知らせください。プレゼントを用意します。)",
-
     "lineNotification": "LINE通知",
     "city": "市町村",
     "zip": "郵便番号",
@@ -359,6 +358,7 @@
     "shopList": "店舗一覧",
     "areas": {
       "hokkaido": "北海道",
+      "tohoku": "東北地方",
       "kanto": "関東地方",
       "chubu": "中部地方",
       "hokuriku": "北陸地方",
@@ -520,7 +520,7 @@
     "osaka": "大阪",
     "izakaya": "居酒屋",
     "patisserie": "パティスリー",
-    "searchRestaurant": "テイクアウトのお店を探す",
+    "searchRestaurant": "全国のお店を探す",
     "moTagline": "ネット注文サービスは、PC・スマホから簡単に購入が可能な、ファミリーマート公式店舗受け取りサービスです。",
     "moDescription1": "お店に無いものも最短3日後受け取り可能です。",
     "moDescription2": "最短1時間後に店舗で受け取り可能です。​",
