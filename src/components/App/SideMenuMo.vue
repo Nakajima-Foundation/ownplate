@@ -1,6 +1,5 @@
 <template>
   <o-sidebar
-    type="is-light"
     :fullheight="fullheight"
     :fullwidth="fullwidth"
     :overlay="overlay"
