@@ -38,8 +38,8 @@
     "shopInfo": {
       "takeout": "Online order",
       "pickup": "Takeaway now",
-      "takeoutDesctiption": "Cliquez ici pour passer une commande",
-      "pickupDesctiption": "Cliquez ici pour mettre un article en attente",
+      "takeoutDescription": "Cliquez ici pour passer une commande",
+      "pickupDescription": "Cliquez ici pour mettre un article en attente",
       "pickupNote": "Les commandes à emporter ne peuvent pas être acceptées de {lastOrder} à 23:59. Veuillez passer votre commande après un certain temps.",
       "showOnlyInStock": "Show only in stock",
       "closeNote": "*Orders at this store will be closed at {time} on {date}."
@@ -396,8 +396,8 @@
     "buttonDeliveryFee": "Delivery fee: {price}",
     "takeout": "Takeaway",
     "delivery": "Delivery",
-    "takeoutDesctiption": "Pick up at shop",
-    "deliveryDesctiption": "Delivery to home or work",
+    "takeoutDescription": "Pick up at shop",
+    "deliveryDescription": "Delivery to home or work",
     "viewMore": "Voir plus",
     "viewLess": "Proche",
     "productCategory": "Catégories de produits"

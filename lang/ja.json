@@ -80,8 +80,8 @@
     "shopInfo": {
       "takeout": "お取り寄せする",
       "pickup": "本日受け取る",
-      "takeoutDesctiption": "お店に無いものも最短3日後受け取り",
-      "pickupDesctiption": "最短1時間後に店舗で受け取り",
+      "takeoutDescription": "お店に無いものも最短3日後受け取り",
+      "pickupDescription": "最短1時間後に店舗で受け取り",
       "pickupNote": "ただいまの時間は「本日受け取り」をご利用できません。ご注文可能な時間帯は、00:00から{lastOrder}までとなります。",
       "showOnlyInStock": "在庫ありのみ表示",
       "closeNote": "※この店舗での注文受付は、{date}の{time}にて終了いたします"
@@ -447,8 +447,8 @@
     "buttonDeliveryFee": "配達料:{price}",
     "takeout": "テイクアウト",
     "delivery": "デリバリー",
-    "takeoutDesctiption": "お店で受け取り",
-    "deliveryDesctiption": "ご自宅/職場で受け取り",
+    "takeoutDescription": "お店で受け取り",
+    "deliveryDescription": "ご自宅/職場で受け取り",
     "viewMore": "もっと見る",
     "viewLess": "閉じる",
     "productCategory": "商品カテゴリ一覧"

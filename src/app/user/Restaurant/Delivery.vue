@@ -22,7 +22,7 @@
           {{ $t("shopInfo.takeout") }}
         </div>
         <div class="mt-0.5 px-3 text-center text-xs font-bold">
-          {{ $t("shopInfo.takeoutDesctiption") }}
+          {{ $t("shopInfo.takeoutDescription") }}
         </div>
       </div>
       <!-- delivery -->
@@ -40,7 +40,7 @@
           {{ $t("shopInfo.delivery") }}
         </div>
         <div class="mt-0.5 px-3 text-center text-xs font-bold">
-          {{ $t("shopInfo.deliveryDesctiption") }}
+          {{ $t("shopInfo.deliveryDescription") }}
         </div>
       </div>
 
