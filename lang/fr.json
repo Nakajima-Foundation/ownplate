@@ -396,6 +396,8 @@
     "buttonDeliveryFee": "Delivery fee: {price}",
     "takeout": "Takeaway",
     "delivery": "Delivery",
+    "takeoutDesctiption": "Pick up at shop",
+    "deliveryDesctiption": "Delivery to home or work",
     "viewMore": "Voir plus",
     "viewLess": "Proche",
     "productCategory": "Catégories de produits"

@@ -447,6 +447,8 @@
     "buttonDeliveryFee": "配達料:{price}",
     "takeout": "テイクアウト",
     "delivery": "デリバリー",
+    "takeoutDesctiption": "お店で受け取り",
+    "deliveryDesctiption": "ご自宅/職場で受け取り",
     "viewMore": "もっと見る",
     "viewLess": "閉じる",
     "productCategory": "商品カテゴリ一覧"
