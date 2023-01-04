@@ -10,14 +10,20 @@
     "
   >
     <div
-      class="fixed left-4 bottom-24 z-10 inline-flex h-20 w-20 cursor-pointer flex-col items-center justify-center rounded-full border-2 border-op-teal bg-teal-50 pb-1.5 shadow-lg sm:bottom-28"
+      class="fixed bottom-24 left-4 right-4 z-10 mx-auto mb-2 inline-flex h-12 max-w-lg cursor-pointer items-center rounded-full bg-white p-2 shadow-lg sm:bottom-28"
     >
-      <i class="material-icons mb-0.5 text-2xl text-op-teal">tune</i>
-      <div class="text-xs font-bold text-op-teal">
-        {{ $t("button.category") }}
+      <div
+        class="inline-flex w-28 items-center justify-center rounded-full bg-op-teal bg-opacity-10 p-1"
+      >
+        <i class="material-icons ml-0.5 text-2xl text-op-teal">tune</i>
+        <div class="ml-0.5 text-xs font-bold text-op-teal">
+          {{ $t("button.category") }}
+        </div>
+      </div>
+      <div class="ml-2 text-sm font-bold line-clamp-1">
+        {{ selectedCategory.name }}
       </div>
     </div>
-    <!-- {{selectedCategory.name}} -->
   </router-link>
 </template>
 

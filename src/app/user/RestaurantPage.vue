@@ -10,7 +10,7 @@
         v-if="isOpenGroupCategory"
         class="fixed top-0 z-20 h-full w-full bg-white"
       >
-        <div class="flex h-12 justify-between py-2 pl-6 pr-4">
+        <div class="m-4">
           <span class="text-xl font-bold text-black text-opacity-30">
             {{ $t("shopInfo.productCategory") }}
           </span>
@@ -179,27 +179,15 @@
               </div>
             </div>
 
-            <!-- category for mo -->
-            <a id="subCategoryTop" />
-            <div v-if="showSubCategory">
-              <div class="mx-6 inline-flex lg:mx-0">
-                <SubCategoryList
-                  :subCategoryData="subCategoryData"
-                  :categoryBathPath="categoryBathPath"
-                  :subCategoryId="subCategory"
-                  :howtoreceive="howtoreceive"
-                />
-              </div>
-            </div>
-
             <!-- stock filter Toggle-->
             <div>
               <div v-if="showSubCategory && isPickup">
-                <div class="mx-6 mt-4 grid grid-cols-2 gap-2">
+                <div class="mx-6 mt-4 grid grid-cols-2 gap-2 lg:mx-0">
                   <!-- 在庫なし含む -->
                   <div
                     class="shado-none h-full w-full rounded-lg border-2 bg-white p-2 text-op-teal"
-                    :class="!isFilterStock
+                    :class="
+                      !isFilterStock
                         ? 'border-op-teal'
                         : 'cursor-pointer border-black border-opacity-10'
                     "
@@ -215,7 +203,8 @@
                   <!-- 在庫ありのみ -->
                   <div
                     class="h-full w-full rounded-lg border-2 bg-white p-2 text-op-teal shadow-none"
-                    :class="isFilterStock
+                    :class="
+                      isFilterStock
                         ? 'border-op-teal '
                         : 'cursor-pointer border-black border-opacity-10'
                     "
