@@ -1,19 +1,21 @@
 <template>
-  <div>
-    <div class="flex h-12 justify-between py-2 pl-6 pr-4">
-      <span class="text-xl font-bold text-black text-opacity-30">
-        <router-link
-          :to="
-            basePath + '/r/' + restaurantId() + '/categories/' + howtoreceive
-          "
-        >
+  <div class="m-4">
+    <router-link
+      :to="basePath + '/r/' + restaurantId() + '/categories/' + howtoreceive"
+    >
+      <div
+        class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+      >
+        <i class="material-icons text-op-teal">list</i>
+        <span class="ml-1 text-sm font-bold text-op-teal">
           {{ $t("shopInfo.productCategory") }}
-        </router-link>
-      </span>
-    </div>
-    <div class="mx-6">
+        </span>
+      </div></router-link
+    >
+    <div class="mt-6 font-bold text-black text-opacity-30">
       {{ selectedCategory.name }}
     </div>
+
     <div class="mt-2 items-center">
       <div v-for="(cat, k) in subCategoryData" :key="k">
         <router-link
@@ -29,14 +31,14 @@
             howtoreceive
           "
         >
-          <div>
-            <div class="flex items-center">
-              <div
-                class="ml-8 mt-2 flex-1 text-xs font-bold leading-tight text-op-teal"
-              >
-                {{ cat.name }}
-              </div>
-            </div>
+          <div
+            class="mt-2 inline-flex items-center p-2 text-sm font-bold text-op-teal"
+          >
+            <!--ToDo 現在選択されているサブカテゴリにチェックアイコンを表示させる-->
+            <i v-if="false" style="font-size: 1rem" class="material-icons mr-1"
+              >check_circle</i
+            >
+            <div>{{ cat.name }}</div>
           </div>
         </router-link>
       </div>
