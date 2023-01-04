@@ -44,12 +44,17 @@ const getUserPagesWithCat = (prefix: string) => {
         },
         {
           name: "r-restaurant-Cats_" + prefix,
-          path: ":list(categories)/:state(takeout|pickup)?",
+          path: ":list(categories)/:state(takeout|pickup)",
           component: "user/Blank.vue",
         },
         {
           name: "r-restaurant-SubCats_" + prefix,
-          path: ":list(category)/:category/:state?",
+          path: ":list(category)/:category/:state(takeout|pickup)",
+          component: "user/Blank.vue",
+        },
+        {
+          name: "r-restaurant-SubCats2_" + prefix,
+          path: ":list(category)/:category/:selectedSubCategory/:state(takeout|pickup)",
           component: "user/Blank.vue",
         },
         {

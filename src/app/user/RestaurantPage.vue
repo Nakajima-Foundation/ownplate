@@ -225,6 +225,7 @@
                 <CategoryIcon
                   :howtoreceive="howtoreceive"
                   :selectedCategory="selectedCategory"
+                  :subCategory="subCategory"
                 />
               </div>
               <div v-if="showCategory">

@@ -34,8 +34,7 @@
           <div
             class="mt-2 inline-flex items-center p-2 text-sm font-bold text-op-teal"
           >
-            <!--ToDo 現在選択されているサブカテゴリにチェックアイコンを表示させる-->
-            <i v-if="false" style="font-size: 1rem" class="material-icons mr-1"
+            <i v-if="selectedSubCategory == cat.id" style="font-size: 1rem" class="material-icons mr-1"
               >check_circle</i
             >
             <div>{{ cat.name }}</div>
@@ -69,13 +68,13 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const basePath = useBasePath(ctx.root);
-    const category = ctx.root.$route.params.category;
-
+    const { category, selectedSubCategory } = ctx.root.$route.params;
     return {
       basePath,
       moBaseUrl,
       smallImageErrorHandler,
       category,
+      selectedSubCategory,
     };
   },
 });

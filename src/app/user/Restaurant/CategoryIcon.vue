@@ -5,7 +5,7 @@
       '/r/' +
       restaurantId() +
       (selectedCategory.subCategoryCounter > 1
-        ? `/category/${selectedCategory.id}/${howtoreceive}`
+        ? `/category/${selectedCategory.id}/${subCategory}/${howtoreceive}`
         : `/categories/${howtoreceive}`)
     "
   >
@@ -39,6 +39,10 @@ export default defineComponent({
     },
     selectedCategory: {
       type: Object,
+      required: true,
+    },
+    subCategory: {
+      type: String,
       required: true,
     },
   },
