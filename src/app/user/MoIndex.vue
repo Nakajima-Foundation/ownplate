@@ -44,7 +44,7 @@
     </div>
 
     <!--Campaign 202301-->
-    <div v-if="false">
+    <div>
       <div class="mx-6 rounded-lg bg-white p-6 text-center">
         <div class="text-2xl font-bold text-op-teal sm:text-3xl">
           {{ $t("mobileOrder.campaign.topTitle") }}
