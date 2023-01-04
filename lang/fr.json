@@ -213,7 +213,7 @@
     "minutes": "minutes",
     "withinfive": "Dans les 5 heures",
     "withinaday": "Dans les 24 heures",
-    "withinFiveDays": "Within 5 days",
+    "withinFiveDays": "Within 6 days",
     "paymentMethodChoices": {
       "cache": "Cache",
       "suica": "Suica/Pasmo",

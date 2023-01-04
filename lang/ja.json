@@ -286,7 +286,7 @@
     "minutes": "分",
     "withinfive": "5時間以内",
     "withinaday": "24時間以内",
-    "withinFiveDays": "５日以内の時間を指定してください",
+    "withinFiveDays": "6日以内の時間を指定してください",
     "paymentMethodChoices": {
       "cache": "現金",
       "suica": "交通系電子マネー(Suicaなど)",

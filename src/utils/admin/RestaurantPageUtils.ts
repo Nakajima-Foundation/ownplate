@@ -168,7 +168,7 @@ export const shopInfoValidator = (
       "validationError." + name + ".notNumbery"
     );
   } else {
-    if (shopInfo["pickUpMinimumCookTime"] > 24 * 60 * 6) {
+    if (shopInfo["pickUpMinimumCookTime"] > 24 * 60 * 7) {
       (err["pickUpMinimumCookTime"] as string[]).push(
         "validationError." + name + ".tooMuch"
       );
