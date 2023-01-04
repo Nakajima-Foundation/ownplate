@@ -192,6 +192,7 @@
               </div>
             </div>
 
+            <!--ToDo 新しいボタンの実装完了後、以下古いボタンを削除-->
             <!-- stock filter Toggle-->
             <div v-if="showSubCategory && isPickup">
               <div class="mx-6 mt-4 lg:mx-0">
@@ -209,6 +210,43 @@
                     >{{ $t("mobileOrder.shopInfo.showOnlyInStock") }}</span
                   >
                 </label>
+              </div>
+            </div>
+
+            <!--ToDo 在庫あり/なし表示ボタン-->
+            <div v-if="false">
+              <div v-if="showSubCategory && isPickup">
+                <div class="mx-6 mt-4 grid grid-cols-2 gap-2">
+                  <!-- 在庫なし含む -->
+                  <div
+                    class="shado-none h-full w-full rounded-lg border-2 bg-white p-2 text-op-teal"
+                    :class="
+                      value === ''
+                        ? 'border-op-teal'
+                        : 'cursor-pointer border-black border-opacity-10'
+                    "
+                  >
+                    <div
+                      class="-mt-0.5 text-center text-lg font-bold tracking-tighter"
+                    >
+                      {{ $t("mobileOrder.shopInfo.showAll") }}
+                    </div>
+                  </div>
+
+                  <!-- 在庫ありのみ -->
+                  <div
+                    class="h-full w-full rounded-lg border-2 bg-white p-2 text-op-teal shadow-none"
+                    :class="
+                      value === ''
+                        ? 'border-op-teal '
+                        : 'cursor-pointer border-black border-opacity-10'
+                    "
+                  >
+                    <div class="-mt-0.5 text-center text-lg font-bold">
+                      {{ $t("mobileOrder.shopInfo.showOnlyInStock") }}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
