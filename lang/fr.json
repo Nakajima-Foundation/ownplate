@@ -223,10 +223,12 @@
       "dpay": "d pay",
       "id": "iD",
       "quick": "QUICPay",
+      "applepay": "Apple Pay",
       "line": "LINE Pay",
       "merpay": "Merpay",
       "aupay": "au PAY",
       "alipay": "Alipay",
+      "wechatpay": "WeChat Pay",
       "unipay": "UnionPay"
     },
     "profilePhoto": "Photo de Profil du Restaurant",

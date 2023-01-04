@@ -293,10 +293,12 @@ export const paymentMethods = [
   { key: "rpay" },
   { key: "id" },
   { key: "quick" },
+  { key: "applepay" },
   { key: "line" },
   { key: "merpay" },
   { key: "aupay" },
   { key: "alipay" },
+  { key: "wechatpay" },
   { key: "unipay" },
 ];
 

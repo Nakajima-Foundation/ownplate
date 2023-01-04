@@ -296,10 +296,12 @@
       "dpay": "d払い",
       "id": "iD(電子マネー)",
       "quick": "QUICPay",
+      "applepay": "Apple Pay",
       "line": "LINE Pay",
       "merpay": "メルペイ",
       "aupay": "au PAY",
       "alipay": "Alipay(支付宝)",
+      "wechatpay": "WeChat Pay",
       "unipay": "「銀聯（UnionPay / ユニオンペイ）」"
     },
     "profilePhoto": "プロフィール画像",
