@@ -55,11 +55,12 @@
         <div class="mt-2 text-black sm:text-lg">
           {{ $t("mobileOrder.campaign.topDescription2") }}
 
-          <!--ToDo キャンペーンページへ遷移-->
-          <a class="font-bold text-op-teal underline">{{
-            $t("mobileOrder.campaign.topLink")
-          }}</a>
-          {{ $t("mobileOrder.campaign.topDescription3") }}
+          <router-link :to="moBasePath + '/campaign/202301'">
+            <span class="font-bold text-op-teal underline">{{
+              $t("mobileOrder.campaign.topLink")
+              }}</span>
+            {{ $t("mobileOrder.campaign.topDescription3") }}
+          </router-link>
         </div>
       </div>
     </div>
