@@ -192,27 +192,6 @@
               </div>
             </div>
 
-            <!--ToDo 新しいボタンの実装完了後、以下古いボタンを削除-->
-            <!-- stock filter Toggle-->
-            <div v-if="showSubCategory && isPickup">
-              <div class="mx-6 mt-4 lg:mx-0">
-                <label class="relative inline-flex cursor-pointer items-center">
-                  <input
-                    type="checkbox"
-                    v-model="isFilterStock"
-                    class="peer sr-only"
-                  />
-                  <div
-                    class="peer h-8 w-14 rounded-full bg-black bg-opacity-20 after:absolute after:top-1 after:left-[4px] after:h-6 after:w-6 after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-op-teal peer-checked:after:translate-x-full"
-                  ></div>
-                  <span
-                    class="ml-3 text-sm font-bold text-black text-opacity-60"
-                    >{{ $t("mobileOrder.shopInfo.showOnlyInStock") }}</span
-                  >
-                </label>
-              </div>
-            </div>
-
             <!-- stock filter Toggle-->
             <div>
               <div v-if="showSubCategory && isPickup">
