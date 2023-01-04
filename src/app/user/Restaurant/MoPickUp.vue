@@ -7,11 +7,11 @@
       <!-- pickup -->
       <div
         v-if="shopInfo.enableMoPickup && !moPickupSuspend"
-        class="h-full w-full rounded-lg bg-white p-3 shadow"
+        class="shado-none h-full w-full rounded-lg border-2 bg-white p-3 text-op-teal"
         :class="
           value === 'pickup'
-            ? 'border-2 border-op-teal text-op-teal'
-            : 'cursor-pointer text-black text-opacity-40'
+            ? 'border-op-teal'
+            : 'cursor-pointer border-black border-opacity-10'
         "
         @click="input('pickup')"
       >
@@ -37,11 +37,11 @@
       </div>
       <!-- takeout -->
       <div
-        class="h-full w-full rounded-lg bg-white p-3 shadow"
+        class="h-full w-full rounded-lg border-2 bg-white p-3 text-op-teal shadow-none"
         :class="
           value === 'takeout'
-            ? 'border-2 border-op-teal text-op-teal'
-            : 'cursor-pointer text-black text-opacity-40'
+            ? 'border-op-teal '
+            : 'cursor-pointer border-black border-opacity-10'
         "
         @click="input('takeout')"
       >

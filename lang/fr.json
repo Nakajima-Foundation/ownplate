@@ -41,6 +41,7 @@
       "takeoutDescription": "Cliquez ici pour passer une commande",
       "pickupDescription": "Cliquez ici pour mettre un article en attente",
       "pickupNote": "Les commandes à emporter ne peuvent pas être acceptées de {lastOrder} à 23:59. Veuillez passer votre commande après un certain temps.",
+      "showAll": "Show all",
       "showOnlyInStock": "Show only in stock",
       "closeNote": "*Orders at this store will be closed at {time} on {date}."
     }

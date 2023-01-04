@@ -41,6 +41,7 @@
       "takeoutDescription": "Click here to place an order",
       "pickupDescription": "Click here to put an item on hold",
       "pickupNote": "Takeaway orders cannot be accepted from {lastOrder} to 23:59. Please place an order after a while.",
+      "showAll": "Show all",
       "showOnlyInStock": "Show only in stock",
       "closeNote": "*Orders at this store will be closed at {time} on {date}."
     }
