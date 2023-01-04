@@ -18,10 +18,10 @@
     </div>
 
     <div
-      class="mx-6 mt-6 mb-10 flex justify-center space-x-4 sm:max-w-7xl xl:mx-auto"
+      class="mx-6 mt-6 mb-6 flex justify-center space-x-4 sm:max-w-7xl xl:mx-auto"
     >
       <!-- pickup -->
-      <div class="w-full rounded-lg bg-white px-4 pb-4 text-left shadow-none">
+      <div class="w-full rounded-lg bg-white px-4 pb-4 text-center shadow-none">
         <div class="mx-auto mb-4 h-20 w-32">
           <img :src="moBaseUrl + '/images/assets/mo_icon_store.png'" />
         </div>
@@ -33,7 +33,7 @@
         </div>
       </div>
       <!-- takeout -->
-      <div class="w-full rounded-lg bg-white px-4 pb-4 text-left shadow-none">
+      <div class="w-full rounded-lg bg-white px-4 pb-4 text-center shadow-none">
         <div class="mx-auto mb-4 h-20 w-32">
           <img :src="moBaseUrl + '/images/assets/mo_icon_shipping.png'" />
         </div>
@@ -43,7 +43,28 @@
       </div>
     </div>
 
-    <div class="mx-6 mt-6 text-xl font-bold text-black text-opacity-40">
+    <!--Campaign 202301-->
+    <div v-if="false">
+      <div class="mx-6 rounded-lg bg-white p-6 text-center">
+        <div class="text-2xl font-bold text-op-teal sm:text-3xl">
+          {{ $t("mobileOrder.campaign.topTitle") }}
+        </div>
+        <div class="mt-4 text-black sm:text-lg">
+          {{ $t("mobileOrder.campaign.topDescription1") }}
+        </div>
+        <div class="mt-2 text-black sm:text-lg">
+          {{ $t("mobileOrder.campaign.topDescription2") }}
+
+          <!--ToDo キャンペーンページへ遷移-->
+          <a class="font-bold text-op-teal underline">{{
+            $t("mobileOrder.campaign.topLink")
+          }}</a>
+          {{ $t("mobileOrder.campaign.topDescription3") }}
+        </div>
+      </div>
+    </div>
+
+    <div class="mx-6 mt-8 text-xl font-bold text-black text-opacity-40">
       {{ $t("find.shopList") }}
     </div>
     <!-- Restaurants -->
