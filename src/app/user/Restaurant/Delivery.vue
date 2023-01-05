@@ -4,9 +4,7 @@
       {{ $t("shopInfo.howToReceive") }}
     </div>
 
-    <div
-      class="grid grid-cols-2 gap-2 mt2"
-    >
+    <div class="mt2 grid grid-cols-2 gap-2">
       <!-- takeout -->
       <div
         class="h-full w-full rounded-lg bg-white p-3 shadow"
@@ -43,7 +41,6 @@
           {{ $t("shopInfo.deliveryDescription") }}
         </div>
       </div>
-
     </div>
 
     <div class="mt-2">

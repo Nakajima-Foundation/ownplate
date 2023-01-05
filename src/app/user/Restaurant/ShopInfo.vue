@@ -220,7 +220,7 @@
             </div>
           </div>
         </div>
-          
+
         <!-- Payment Methods -->
         <div class="mt-2" v-if="inStorePayment && hasPaymentMethods">
           <div class="text-sm font-bold">
@@ -421,14 +421,16 @@ export default defineComponent({
     });
 
     const paymentMethods = computed(() => {
-      return Object.keys(props.shopInfo.paymentMethods || {}).filter((key) => {
-        return !!(props.shopInfo.paymentMethods[key])
-      }) || [];
+      return (
+        Object.keys(props.shopInfo.paymentMethods || {}).filter((key) => {
+          return !!props.shopInfo.paymentMethods[key];
+        }) || []
+      );
     });
     const hasPaymentMethods = computed(() => {
       return paymentMethods.value.length > 0;
     });
-    
+
     const { deliveryAvailableDays, availableDays, temporaryClosure } =
       usePickupTime(props.shopInfo, {}, {}, ctx, isInMo.value, isPickup);
 

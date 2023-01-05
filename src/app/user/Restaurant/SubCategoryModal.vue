@@ -34,7 +34,10 @@
           <div
             class="mt-2 inline-flex items-center p-2 text-sm font-bold text-op-teal"
           >
-            <i v-if="selectedSubCategory == cat.id" style="font-size: 1rem" class="material-icons mr-1"
+            <i
+              v-if="selectedSubCategory == cat.id"
+              style="font-size: 1rem"
+              class="material-icons mr-1"
               >check_circle</i
             >
             <div>{{ cat.name }}</div>

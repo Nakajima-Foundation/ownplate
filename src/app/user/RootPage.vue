@@ -109,8 +109,10 @@ export default defineComponent({
         },
         {
           name: "tohoku",
-          items: [{ name: "宮城県", id: 3 },
-                  { name: "秋田県", id: 4 }],
+          items: [
+            { name: "宮城県", id: 3 },
+            { name: "秋田県", id: 4 },
+          ],
         },
         {
           name: "kanto",

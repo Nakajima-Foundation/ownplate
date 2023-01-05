@@ -287,7 +287,7 @@
                 <template v-else>
                   <!-- Menu Items for Mo -->
                   <div
-                    class="mt-3 grid grid-cols-3 gap-2 min-h-screen"
+                    class="mt-3 grid min-h-screen grid-cols-3 gap-2"
                     :key="subCategoryKey"
                   >
                     <template v-for="(item, key) in itemLists">
@@ -1069,7 +1069,7 @@ export default defineComponent({
         }, 200);
       }
     });
-    
+
     watch(isShowCart, (value) => {
       if (value) {
         document.body.style.position = "fixed";

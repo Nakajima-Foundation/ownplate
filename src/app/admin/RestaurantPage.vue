@@ -583,15 +583,15 @@
                     {{ $t("editRestaurant.taxPriceDisplayJp") }}
                   </div>
                   <div>
-                    {{ $tc("tax.taxExample", $n(1000, "currency"))
-                    }}
+                    {{ $tc("tax.taxExample", $n(1000, "currency")) }}
                   </div>
                   <div>
-                    <b><Price
-                         :shopInfo="shopInfo"
-                      :menu="{ price: 1000, tax: 'food' }"
-                         />
-                      </b>
+                    <b
+                      ><Price
+                        :shopInfo="shopInfo"
+                        :menu="{ price: 1000, tax: 'food' }"
+                      />
+                    </b>
                   </div>
                 </div>
               </div>
@@ -615,7 +615,11 @@
               <div>
                 <div class="mb-1">
                   <b>{{ $t("editRestaurant.preparationTime") }}</b>
-                  <span class="text-xs">({{ $t("editRestaurant.preparationTimeDescription") }})</span>
+                  <span class="text-xs"
+                    >({{
+                      $t("editRestaurant.preparationTimeDescription")
+                    }})</span
+                  >
                 </div>
 
                 <o-field
@@ -633,11 +637,13 @@
                     class="w-24"
                   />
                   <div class="ml-2">
-                    {{ $t("editRestaurant.minutes") }} 
-                    <span class="text-xs">({{ $t("editRestaurant.withinFiveDays") }})</span>
+                    {{ $t("editRestaurant.minutes") }}
+                    <span class="text-xs"
+                      >({{ $t("editRestaurant.withinFiveDays") }})</span
+                    >
                   </div>
                 </o-field>
-                
+
                 <div class="mt-2">
                   <o-radio
                     v-for="choice in minimumCookTimeChoices"
@@ -653,7 +659,11 @@
               <div class="mt-2">
                 <div class="mb-1">
                   <b>{{ $t("editRestaurant.reservationTheDayBefore") }}</b>
-                  <span class="text-xs"> ({{ $t("editRestaurant.reservationTheDayBeforeDescription") }})</span>
+                  <span class="text-xs">
+                    ({{
+                      $t("editRestaurant.reservationTheDayBeforeDescription")
+                    }})</span
+                  >
                 </div>
                 <o-field
                   class="flex items-center"
@@ -680,19 +690,24 @@
           <!-- Payment methods -->
           <div class="mt-4">
             <div class="pb-2 text-sm font-bold">
-              {{ $t("editRestaurant.paymentMethods") 
-              }}
+              {{ $t("editRestaurant.paymentMethods") }}
             </div>
 
             <div class="rounded-lg bg-black bg-opacity-5 p-4">
               <!-- Preparation Time -->
-              <div v-for="(paymentMethod, k) in paymentMethods" :key="k" >
-              <o-checkbox v-model="shopInfo.paymentMethods[paymentMethod.key]">
-                <div class="text-sm font-bold">
-                  {{ $t("editRestaurant.paymentMethodChoices." + paymentMethod.key ) }}
-                </div>
-              </o-checkbox>
-                
+              <div v-for="(paymentMethod, k) in paymentMethods" :key="k">
+                <o-checkbox
+                  v-model="shopInfo.paymentMethods[paymentMethod.key]"
+                >
+                  <div class="text-sm font-bold">
+                    {{
+                      $t(
+                        "editRestaurant.paymentMethodChoices." +
+                          paymentMethod.key
+                      )
+                    }}
+                  </div>
+                </o-checkbox>
               </div>
             </div>
           </div>
@@ -1528,7 +1543,7 @@ export default defineComponent({
       gmapClick,
 
       paymentMethods,
-      
+
       confirmCopy,
       saveRestaurant,
       updateAndUpdateMap,

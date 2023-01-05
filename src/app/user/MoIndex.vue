@@ -58,7 +58,7 @@
           <router-link :to="moBasePath + '/campaign/202301'">
             <span class="font-bold text-op-teal underline">{{
               $t("mobileOrder.campaign.topLink")
-              }}</span>
+            }}</span>
             {{ $t("mobileOrder.campaign.topDescription3") }}
           </router-link>
         </div>

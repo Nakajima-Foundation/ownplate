@@ -53,7 +53,7 @@ export interface RestaurantInfoData {
   pickUpDaysInAdvance: number;
 
   paymentMethods: { [key: string]: boolean };
-  
+
   moPickUpMinimumCookTime: number;
   moPickUpDaysInAdvance: number;
 
