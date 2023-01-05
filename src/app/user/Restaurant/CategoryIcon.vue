@@ -21,7 +21,7 @@
         </div>
       </div>
       <div class="ml-2 text-sm font-bold line-clamp-1">
-        {{ selectedCategory.name }}
+        {{ selectedSubCategory.name }}
       </div>
     </div>
   </router-link>
@@ -38,6 +38,10 @@ export default defineComponent({
       required: true,
     },
     selectedCategory: {
+      type: Object,
+      required: true,
+    },
+    selectedSubCategory: {
       type: Object,
       required: true,
     },

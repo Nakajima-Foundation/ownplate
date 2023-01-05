@@ -225,6 +225,7 @@
                 <CategoryIcon
                   :howtoreceive="howtoreceive"
                   :selectedCategory="selectedCategory"
+                  :selectedSubCategory="selectedSubCategory"
                   :subCategory="subCategory"
                 />
               </div>
@@ -767,6 +768,17 @@ export default defineComponent({
       return {};
     });
 
+    const selectedSubCategory = computed(() => {
+      if (subCategory.value && subCategoryData.value) {
+        return (
+          subCategoryData.value.find((cat) => {
+            return cat.id === subCategory.value;
+          }) || {}
+        );
+      }
+      return {};
+    });
+
     if (isInMo.value) {
       loadCategory();
       if (category.value) {
@@ -1125,6 +1137,7 @@ export default defineComponent({
       isPreview,
 
       selectedCategory,
+      selectedSubCategory,
 
       didOrderdChange,
 
