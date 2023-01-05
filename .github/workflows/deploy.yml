@@ -48,3 +48,7 @@ jobs:
           args: deploy --project=staging
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+      - name: slack
+        run: sh ./utils/buildbot.sh
+        env:
+          SLACKURL: ${{ secrets.SLACKURL }}
