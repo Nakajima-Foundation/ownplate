@@ -41,7 +41,7 @@ jobs:
       - name: functions npm install, build
         working-directory: ./functions
         run: |
-          npm install --arch=x64 --platform=linuxmusl
+          npm install --arch=x64 --platform=linux
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
