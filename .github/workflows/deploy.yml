@@ -32,9 +32,13 @@ jobs:
       - run: cp configs/.firebaserc ./
       - run: cp src/config/default/ownplate-dev.ts src/config/project.ts
       - run: npm install
-      - run: npm run build
+      - name: npm build
+        run: npm run build
+        env:
+          VUE_APP_MO_DATA_BASE_URL: '${{ secrets.VUE_APP_MO_DATA_BASE_URL }}'
+          VUE_APP_GTM_ID: '${{ secrets.VUE_APP_GTM_ID }}'
       - run: cp dist/index.html functions/templates/index.html
-      - name: npm install, build
+      - name: functions npm install, build
         working-directory: ./functions
         run: |
           npm install --arch=x64 --platform=linuxmusl
