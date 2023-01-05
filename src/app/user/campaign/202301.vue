@@ -79,3 +79,19 @@
     </div>
   </div>
 </template>
+
+<script>
+import {
+  defineComponent,
+  onMounted,
+} from "@vue/composition-api";
+
+export default defineComponent({
+  setup() {
+    onMounted(() => {
+      window.scrollTo(0, 0);
+    });
+    return {};
+  },
+});
+</script>
