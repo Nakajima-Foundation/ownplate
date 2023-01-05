@@ -164,7 +164,7 @@
               </div>
 
               <!-- Mo Pickup Toggle -->
-              <div class="mx-6 mt-3 mb-2 lg:mx-0">
+              <div class="mx-6 mt-3 mb-2 lg:mx-0" id="mo_top">
                 <div>
                   <MoPickUp
                     :shopInfo="shopInfo"
@@ -287,7 +287,7 @@
                 <template v-else>
                   <!-- Menu Items for Mo -->
                   <div
-                    class="mt-3 grid grid-cols-3 gap-2"
+                    class="mt-3 grid grid-cols-3 gap-2 min-h-screen"
                     :key="subCategoryKey"
                   >
                     <template v-for="(item, key) in itemLists">
@@ -395,6 +395,7 @@ import {
   defineComponent,
   ref,
   watch,
+  watchEffect,
   computed,
   onBeforeMount,
   onUnmounted,
@@ -1054,13 +1055,21 @@ export default defineComponent({
 
     const isShowCategoryIcon = computed(() => {
       return (
-        showSubCategory.value &&
+        !!showSubCategory.value &&
         !isOpenGroupCategory.value &&
         !isOpenGroupSubCategory.value &&
         !isShowCart.value
       );
     });
 
+    watchEffect(() => {
+      if (isShowCategoryIcon.value) {
+        setTimeout(() => {
+          scrollToElementById("mo_top");
+        }, 200);
+      }
+    });
+    
     watch(isShowCart, (value) => {
       if (value) {
         document.body.style.position = "fixed";
