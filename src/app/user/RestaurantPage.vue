@@ -287,7 +287,7 @@
                 <template v-else>
                   <!-- Menu Items for Mo -->
                   <div
-                    class="mt-3 grid min-h-screen grid-cols-3 gap-2"
+                    class="mt-3 grid min-h-screen grid-cols-3 content-start gap-2"
                     :key="subCategoryKey"
                   >
                     <template v-for="(item, key) in itemLists">
