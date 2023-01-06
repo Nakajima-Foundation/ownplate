@@ -109,7 +109,7 @@ export const usePickupTime = (
     console.log(ctx.root.$store.state.date); // never delete this line;
     const today = now.getDay();
     const openSlot = openSlots.value[today % 7];
-    if (openSlot) {
+    if (openSlot && openSlot.length > 0) {
       const { time } = openSlot[openSlot.length - 1];
       const lastOrder = time - shopInfo.moPickUpMinimumCookTime;
       return {
