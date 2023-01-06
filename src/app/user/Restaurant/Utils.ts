@@ -248,15 +248,17 @@ export const useMenu = (
       return;
     }
 
+    const key = allMenuObjKey.value;
+    const path = menuPath.value;
     // if (hasSubCategory) {
     if (isInMo.value) {
-      allMenuObj.value[allMenuObjKey.value] = [];
+      allMenuObj.value[key] = [];
       const cacheBase: DocumentData[] = [];
 
-      if (loading[allMenuObjKey.value]) {
+      if (loading[key]) {
         return;
       }
-      loading[allMenuObjKey.value] = true;
+      loading[key] = true;
 
       const limitVal = 20;
       const loop = async (
@@ -266,7 +268,7 @@ export const useMenu = (
       ) => {
         // console.log("loop: ", subCategory);
         const tmpQuery = query(
-          collection(db, menuPath.value),
+          collection(db, path),
           where("deletedFlag", "==", false),
           where("publicFlag", "==", true),
           where("category", "==", category),
@@ -289,11 +291,11 @@ export const useMenu = (
               return m;
             });
           const newVal = { ...allMenuObj.value };
-          newVal[allMenuObjKey.value] = cacheBase;
+          newVal[key] = cacheBase;
           allMenuObj.value = newVal;
 
           const newMenuCache = { ...menuCache.value };
-          newMenuCache[allMenuObjKey.value] = cacheBase;
+          newMenuCache[key] = cacheBase;
           menuCache.value = newMenuCache;
         }
         return menu.docs.length == limitVal ? menu.docs[limitVal - 1] : null;
@@ -321,12 +323,12 @@ export const useMenu = (
               return data.validatedFlag === undefined || data.validatedFlag;
             })
             .map(doc2data("menu"));
-          allMenuObj.value = { [allMenuObjKey.value]: ret };
+          allMenuObj.value = { [key]: ret };
           if (callback) {
             callback();
           }
         } else {
-          allMenuObj.value[allMenuObjKey.value] = [];
+          allMenuObj.value[key] = [];
         }
       });
     }
