@@ -209,7 +209,7 @@
     "copyMenuAlert": "上記飲食店にこの商品を非公開で複製します。",
     "current": "変更前",
     "clickAndUpload": "ここをクリック",
-    "clickAndUploadDetail": "グレー部分をクリックもしくは画像をドラッグ＆ドロップしてアップロード(JPEG形式)"
+    "clickAndUploadDetail": "グレー部分をクリックしてアップロード(JPEG形式)"
   },
   "currency": {
     "USD": "ドル",
