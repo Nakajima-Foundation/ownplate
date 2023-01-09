@@ -336,10 +336,10 @@
                     {{ $t("shopInfo.paymentMethods") }}:
                   </div>
                   <div class="ml-2 text-left text-xs">
-                    <div v-for="(paymentMethod, k) in paymentMethods" :key="k">
+                    <div v-for="(paymentMethod, k) in paymentMethods" v-if="shopInfo.paymentMethods[paymentMethod.key]">
                       {{
                         $t(
-                          "editRestaurant.paymentMethodChoices." + paymentMethod
+                          "editRestaurant.paymentMethodChoices." + paymentMethod.key
                         )
                       }}
                     </div>
@@ -400,7 +400,7 @@ import ButtonLoading from "@/components/Button/Loading.vue";
 import { db, firestore } from "@/plugins/firebase";
 import { orderPlace } from "@/lib/firebase/functions";
 
-import { order_status } from "@/config/constant";
+import { order_status, paymentMethods } from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
 import { stripeReceipt } from "@/lib/stripe/stripe";
 
@@ -519,12 +519,15 @@ export default {
       return this.shopInfo.acceptUserMessage && this.memo.length > 500;
     },
 
-    paymentMethods() {
+    shopPaymentMethods() {
       return (
         Object.keys(this.shopInfo.paymentMethods || {}).filter((key) => {
           return !!this.shopInfo.paymentMethods[key];
         }) || []
       );
+    },
+    paymentMethods() {
+      return paymentMethods;
     },
     hasPaymentMethods() {
       return this.paymentMethods.length > 0;
