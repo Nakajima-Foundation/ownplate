@@ -42,12 +42,12 @@ jobs:
         working-directory: ./functions
         run: |
           npm install --arch=x64 --platform=linux
-      - name: Deploy to Firebase
-        uses: w9jds/firebase-action@master
-        with:
-          args: deploy --project=staging
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+#      - name: Deploy to Firebase
+#        uses: w9jds/firebase-action@master
+#        with:
+#          args: deploy --project=staging
+#        env:
+#          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
       - name: slack
         run: sh ./utils/buildbot.sh
         env:
