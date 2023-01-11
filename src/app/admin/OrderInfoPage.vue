@@ -1069,10 +1069,10 @@ export default defineComponent({
       return possibleTransitions.value[newStatusValue];
     };
     const download = () => {
-      downloadOrderPdf(orderInfo.value, orderItems.value);
+      downloadOrderPdf(props.shopInfo, orderInfo.value, orderItems.value);
     };
     const print = async () => {
-      const data = await printOrder(orderInfo.value, orderItems.value);
+      const data = await printOrder(props.shopInfo, orderInfo.value, orderItems.value);
       const passprnt_uri = data2UrlSchema(data, "2");
       location.href = passprnt_uri;
     };
