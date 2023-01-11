@@ -45,14 +45,24 @@
 
     <!--Campaign 202301-->
     <div>
-      <div class="mx-6 rounded-lg bg-white p-6 text-center">
-        <div class="text-2xl font-bold text-op-teal sm:text-3xl">
-          {{ $t("mobileOrder.campaign.topTitle") }}
+      <div
+        class="mx-6 rounded-lg bg-white p-6 text-center sm:max-w-7xl xl:mx-auto"
+      >
+        <div class="mx-0 flex justify-center">
+          <img
+            :src="moBaseUrl + '/images/assets/campaign_202301_mobile.png'"
+            class="sm:hidden"
+          />
+          <img
+            :src="moBaseUrl + '/images/assets/campaign_202301_tablet.png'"
+            class="hidden sm:block"
+          />
         </div>
-        <div class="mt-4 text-black sm:text-lg">
+
+        <div class="mt-10 text-black">
           {{ $t("mobileOrder.campaign.topDescription1") }}
         </div>
-        <div class="mt-2 text-black sm:text-lg">
+        <div class="mt-2 text-black">
           {{ $t("mobileOrder.campaign.topDescription2") }}
 
           <router-link :to="moBasePath + '/campaign/202301'">
