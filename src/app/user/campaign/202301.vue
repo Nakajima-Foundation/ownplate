@@ -103,13 +103,16 @@
 
 <script>
 import { defineComponent, onMounted } from "@vue/composition-api";
+import { moBaseUrl } from "@/config/project";
 
 export default defineComponent({
   setup() {
     onMounted(() => {
       window.scrollTo(0, 0);
     });
-    return {};
+    return {
+      moBaseUrl
+    };
   },
 });
 </script>
