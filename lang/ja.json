@@ -321,9 +321,9 @@
     "copySunDay": "日曜をコピー",
     "draftDescription": "下書きとして保存されます(お客様からお店のページは見えません)",
     "publishDescription": "保存して公開",
-    "draftWarning": "赤枠のエラーを修正すると公開可能になります",
+    "draftWarning": "必須項目(*)を正しく入力すると公開が選択可能になります",
     "updateMapDescription": "飲食店名や住所を元に地図を更新",
-    "noRestaurant": "飲食店名が未指定です",
+    "noRestaurant": "飲食店名が未設定です。「店情報の変更」で、店舗情報を入力してください。",
     "noStreetAddress": "住所が未入力です",
     "reallyDelete": "本当にこの飲食店を削除しますか？削除すると、お店/メニューの情報が全て消えます",
     "reallyOnListDelete": "本当に掲載を取り消しますか？",
@@ -856,7 +856,7 @@
     "notes": {
       "title": "ご注意",
       "userRestaurantsTitle": "お客様向け飲食店一覧について",
-      "userRestaurantsBody": "登録した飲食店は自動でお客様向け飲食店一覧には表示されません。「掲載を申請する」ボタンより申請後、運営の審査を経てお客様向け飲食店一覧に掲載されます。",
+      "userRestaurantsBody": "登録した飲食店は自動でお客様向け飲食店一覧には表示されません。店舗、メニュー情報、支払い方法を設定、店舗を公開した後に「掲載を申請する」ボタンで申請してください。運営の審査を経てお客様向け飲食店一覧に掲載されます。",
       "notificationSoundTitle": "通知音について",
       "notificationSoundBody": "注文に関する通知音は注文一覧ページを表示中に再生されます(このページでは再生されません)。複数の店舗の通知音を同時に再生したい場合はそれぞれの注文一覧ページを表示できる環境を用意してください。パソコンでは別ウィンドウ、タブレットでは別端末が必要になります。"
     },
@@ -888,11 +888,11 @@
     "addNewRestaurant": "飲食店を追加",
     "noPaymentAccount": "お支払いのアカウントが登録されていません",
     "payments": {
-      "unsetWarning": "注文を受け付けるにはお支払い方法の設定が必要です。",
+      "unsetWarning": "注文を受け付けるにはお支払い方法の設定が必要です。このページの下部の「お支払い方法」の設定をしてください。",
       "onlinePayment": "オンライン支払い",
       "statusNotConnected": "Stripeアカウント未接続",
       "statusConnected": "Stripeアカウント接続済み",
-      "pleaseConnect": "オンラインで支払いを受け取るには、Stripeアカウントとの接続が必要です。",
+      "pleaseConnect": "オンラインでクレジットカード支払いを有効にするには、決済サービスのStripeとの接続が必要です。",
       "connectStripe": "Stripeアカウントと接続",
       "disconnectStripe": "Stripeアカウントとの接続を解除",
       "reallyDisconnectStripe": "本当にStripeアカウントとの接続を解除してもよろしいですか？",
@@ -933,7 +933,7 @@
     "itemNotPublished": "非公開中",
     "editAbout": "店情報の変更",
     "privateMode": "非公開中",
-    "pleaseChangePublic": "店情報を入力後、公開に変更してください。",
+    "pleaseChangePublic": "店情報を入力後、公開に変更してください。現在は、お客様からお店のページは見えません",
     "directory": {
       "status": "お客様向け飲食店一覧への掲載状況",
       "notListed": "未掲載",

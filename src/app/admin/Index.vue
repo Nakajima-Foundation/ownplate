@@ -67,7 +67,7 @@
           <!-- No Restaurant -->
           <div v-if="existsRestaurant === null"></div>
           <div v-else-if="!existsRestaurant">
-            <div class="rounded-lg border-2 border-solid border-op-teal p-6">
+            <div class="rounded-lg border-2 border-solid border-red-700 bg-white p-6">
               <div class="text-center text-base font-bold text-op-teal">
                 {{ $t("admin.addYourRestaurant") }}
               </div>
