@@ -14,7 +14,7 @@
       </div>
 
       <!-- Lead -->
-      <div class="mt-10 text-base font-bold leading-relaxed">
+      <div class="mt-4 text-base font-bold leading-relaxed">
         {{ $t("mobileOrder.campaign.lead") }}
       </div>
       <div class="mt-3 text-xs">
@@ -111,7 +111,7 @@ export default defineComponent({
       window.scrollTo(0, 0);
     });
     return {
-      moBaseUrl
+      moBaseUrl,
     };
   },
 });
