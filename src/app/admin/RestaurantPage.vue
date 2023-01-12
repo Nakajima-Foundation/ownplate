@@ -97,6 +97,7 @@
               placeholder="editRestaurant.enterRestaurantName"
               :error="errors['restaurantName']"
               :maxlength="50"
+
             />
           </div>
 
