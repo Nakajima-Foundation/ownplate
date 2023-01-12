@@ -48,7 +48,7 @@
       <div
         class="mx-6 rounded-lg bg-white p-6 text-center sm:max-w-7xl xl:mx-auto"
       >
-        <div class="mx-0 flex justify-center">
+        <div class="mx-0 flex justify-center sm:max-w-4xl md:mx-auto">
           <img
             :src="moBaseUrl + '/images/assets/campaign_202301_mobile.png'"
             class="sm:hidden"
@@ -59,7 +59,7 @@
           />
         </div>
 
-        <div class="mt-10 text-black">
+        <div class="mt-5 text-black sm:mt-8">
           {{ $t("mobileOrder.campaign.topDescription1") }}
         </div>
         <div class="mt-2 text-black">
