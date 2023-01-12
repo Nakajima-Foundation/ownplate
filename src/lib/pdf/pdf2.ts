@@ -254,7 +254,7 @@ export const printOrderData = (
   // オーダー内容
   orderItems.forEach((orderItem: OrderItemData) => {
     content.push({
-      text: [orderItem.item.itemName, " x " + String(orderItem.count)].join(""),
+      text: ["・", orderItem.item.itemName, " x " + String(orderItem.count)].join(""),
       margin: [convMm2pt(0.5), convMm2pt(0.3)],
     });
     console.log(orderItem);
@@ -293,8 +293,16 @@ export const printOrderData = (
     margin: [2, 2],
     alignment: "right",
   });
-  // デリバリー or テイクアウト
 
+  const hasStripe = !!(orderInfo?.payment?.stripe);
+  content.push({
+    text: "支払方法: " + (hasStripe ? "カード決済" : "現地払い"),
+    fontSize: 6,
+    margin: [2, 1],
+  });
+  
+
+  
   const docDefinition = {
     pageSize,
     pageMargins,
