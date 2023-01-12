@@ -156,6 +156,11 @@ export const customRoutes: CustomRoute[] = [
     component: "user/News.vue",
   },
   {
+    name: "faq",
+    path: "/faq",
+    component: "user/FAQ.vue",
+  },
+  {
     name: "RestaurantsAll",
     path: "/r/area/all",
     component: "user/Restaurants/All.vue",
@@ -384,6 +389,11 @@ export const customRoutes: CustomRoute[] = [
     name: "admin-news-list",
     path: "/admin/news",
     component: "admin/News/List.vue",
+  },
+  {
+    name: "admin-faq",
+    path: "/admin/faq",
+    component: "admin/FAQ.vue",
   },
   {
     name: "admin-news-article",
