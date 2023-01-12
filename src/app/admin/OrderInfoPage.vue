@@ -325,20 +325,12 @@
               </router-link>
             </div>
           </div>
-          <!-- Print -->
+
+          <!-- Print for debug-->
           <div
             class="mt-2 rounded-lg bg-white p-4 text-center shadow"
             v-if="isDev"
           >
-            <div>
-              <o-button @click="print()" class="b-reset-tw">
-                <div
-                  class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-black bg-opacity-5"
-                >
-                  Print
-                </div>
-              </o-button>
-            </div>
             <div class="mt-2">
               <o-button @click="download()" class="b-reset-tw">
                 <div
@@ -350,6 +342,22 @@
             </div>
           </div>
 
+          <!-- Print for debug-->
+          <div
+            class="mt-2 rounded-lg bg-white p-4 text-center shadow"
+            v-if="orderInfo.status !== order_status.order_placed && shopInfo.enablePrinter"
+          >
+            <div>
+              <o-button @click="print()" class="b-reset-tw">
+                <div
+                  class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-black bg-opacity-5"
+                >
+                  {{ $t("order.print") }}
+                </div>
+              </o-button>
+            </div>
+          </div>
+          
           <div class="mt-2 rounded-lg bg-white p-4 shadow">
             <!-- Order Status -->
             <div>

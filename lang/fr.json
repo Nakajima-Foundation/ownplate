@@ -514,6 +514,7 @@
     "total": "Total",
     "yourPayment": "Votre Payment",
     "details": "Details",
+    "print": "Print",
     "thisIsDeliveryOrder": "This is a delivery order",
     "thisIsTakeoutOrder": "This is a takeaway order",
     "alertReqireAddress": "The input is not completed. Please check.",
