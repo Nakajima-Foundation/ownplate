@@ -33,19 +33,19 @@
       </div>
       <ul class="list-decimal">
         <ol>1.お支払い方法を選択してください。
-          <a href="#paymentSection" v-if="unsetPaymentWarning">支払い方法の設定はこちら。</a>
+          <a href="#paymentSection" v-if="unsetPaymentWarning" class="underline">支払い方法の設定はこちら。</a>
           <img src="@/assets/images/sumi-1.svg" class="w-6" v-else />
         </ol>
         <ol>2.飲食店を追加して、店舗の情報を入力してください。
-          <a href="#addRestaurant" v-if="!existsRestaurant">飲食店の追加はこちら。</a>
+          <a href="#addRestaurant" v-if="!existsRestaurant" class="underline">飲食店の追加はこちら。</a>
           <img src="@/assets/images/sumi-1.svg" class="w-6" v-else />
         </ol>
         <ol>3.メニューを２つ以上登録してください。
-          <a href="#addMenu" v-if="!existMenu">メニュー追加はこちら。</a>
+          <a href="#addMenu" v-if="!existMenu" class="underline">メニュー追加はこちらの「メニュー」から。</a>
           <img src="@/assets/images/sumi-1.svg" class="w-6" v-else />
         </ol>
         <ol>4.店舗を「公開」にしてください。
-          <a href="#addMenu" v-if="!existPublicRestaurant">公開はこちら。</a>
+          <a href="#addMenu" v-if="!existPublicRestaurant" class="underline">公開への設定変更は「店情報の変更」から。</a>
           <img src="@/assets/images/sumi-1.svg" class="w-6" v-else />
 
         </ol>
