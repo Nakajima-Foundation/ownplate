@@ -1056,6 +1056,16 @@
       "message1": "Vous devez être connecté pour voir votre commande"
     }
   },
+  "dialogTips": {
+    "paymentMethods": {
+      "title": "Payment Methods",
+      "body": "This function provides information on payment methods available at the store for customers who have selected 'On Site Payment'"
+    },
+    "phonenumber": {
+      "title": "Phone Number",
+      "body": "Displayed as a phone number for customers on the restaurant's page, and also notified by calling this number if phone notifications are turned on"
+    }
+  },
   "validationError": {
     "zip": {
       "empty": "Please enter your zip code",
