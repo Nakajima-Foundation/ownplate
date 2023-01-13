@@ -8,6 +8,19 @@
       class="rounded-lg bg-white p-4 shadow"
       :class="unsetWarning ? 'border-2 border-solid border-red-700' : ''"
     >
+      <!-- Warning Payment -->
+      <div
+        v-if="unsetWarning"
+        class="mb-6 border-b-2 border-solid border-black border-opacity-10 pb-4"
+        >
+        <div class="mt-2 rounded-lg bg-red-700 bg-opacity-5 px-4 py-2">
+          <span class="text-sm leading-none text-red-700 font-bold">
+            {{  $t("admin.payments.required") }} 
+          </span>
+        </div>
+
+      </div>
+      
       <!-- Online Payment -->
       <div>
         <div class="pb-2 text-base font-bold text-black text-opacity-60">
@@ -87,6 +100,7 @@
           </o-checkbox>
         </div>
       </div>
+
     </div>
   </div>
 </template>
