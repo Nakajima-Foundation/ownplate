@@ -97,7 +97,6 @@
               placeholder="editRestaurant.enterRestaurantName"
               :error="errors['restaurantName']"
               :maxlength="50"
-
             />
           </div>
 
@@ -194,8 +193,11 @@
           </div>
 
           <!-- Map -->
-          <div>
-            <div class="mt-4 pb-1 text-sm font-bold">
+          <div
+            class="mt-4"
+            :class="!(shopInfo.location && shopInfo.location.lat) || !maplocation ? 'border-red-700 border-2':''"
+            >
+            <div class="mt-2 p-2 text-sm font-bold">
               {{ $t("editRestaurant.setupMap") }}
             </div>
             <div class="text-center">
@@ -234,7 +236,9 @@
               }}
             </div>
 
-            <div class="mt-4">
+            <div class="mt-4 border-red-700"
+
+                 >
               <GMap
                 ref="gMap"
                 :center="{ lat: 44.933076, lng: 15.629058 }"
@@ -242,7 +246,7 @@
                 :zoom="18"
                 style="
                   width: 100%;
-                  height: 240px;
+                  height: 280px;
                   position: relative;
                   overflow: hidden;
                 "
@@ -1516,6 +1520,8 @@ export default defineComponent({
       days: daysOfWeek,
 
       // ref
+      maplocation,
+      
       notFound,
       submitting,
       newTemporaryClosure,
