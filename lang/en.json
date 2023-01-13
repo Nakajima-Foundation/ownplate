@@ -818,6 +818,8 @@
     "pleaseChangePublic": "Please change to public mode after entered restaurant details.",
     "directory": {
       "status": "Restaurant Directory",
+      "requestWarning": "Please apply after setting up payment and opening the restaurant to the public.",
+      "requestingWarning": "Please set up your payment settings and store listing if you have not already done so.",
       "notListed": "Not Listed",
       "requestList": "Request to be Listed",
       "waiting": "Waiting for Approval",

@@ -273,6 +273,11 @@
               }}</span>
             </a>
           </div>
+          <div class="mt-2">
+            <span class="text-sm">
+              {{ $t("admin.directory.requestingWarning") }}
+            </span>
+          </div>
         </div>
 
         <!-- Off Directory -->
@@ -294,6 +299,11 @@
                 {{ $t("admin.directory.requestList") }}</span
               >
             </a>
+          </div>
+          <div class="mt-2">
+            <span class="text-sm">
+              {{ $t("admin.directory.requestWarning") }}
+            </span>
           </div>
         </div>
       </div>
