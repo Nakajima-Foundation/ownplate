@@ -257,8 +257,11 @@
         <div class="mt-6 lg:mt-0">
           <!-- Phone -->
           <div>
-            <div class="pb-2 text-sm font-bold">
+            <div class="pb-2 text-sm font-bold" @click="openTips('phonenumber')">
               {{ $t("shopInfo.phonenumber") }}
+              <i class="material-icons">
+                <span class="text-sm">help</span>
+              </i>
               <span class="text-red-700">*</span>
             </div>
             <div>
