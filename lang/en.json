@@ -771,6 +771,7 @@
     "noPaymentAccount": "No Payment account",
     "payments": {
       "unsetWarning": "You will need to set up a payment method in order to accept orders.",
+      "required": "Either 'Online Payment' or 'On-site Payment' must be set up.",
       "onlinePayment": "Online Payment",
       "statusNotConnected": "Not Connected",
       "statusConnected": "Connected",

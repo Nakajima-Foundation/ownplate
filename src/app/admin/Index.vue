@@ -283,7 +283,7 @@ import { midNight } from "@/utils/dateUtils";
 import ToggleSwitch from "@/components/ToggleSwitch.vue";
 
 import Restaurant from "@/app/admin/Index/Restaurant.vue";
-import PaymentSection from "@/app/admin/Payment/PaymentSection.vue";
+import PaymentSection from "@/app/admin/Index/PaymentSection.vue";
 import MessageCard from "./Messages/MessageCard.vue";
 
 import EmailVerify from "@/app/admin/Index/EmailVerify.vue";
