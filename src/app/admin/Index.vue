@@ -13,7 +13,7 @@
 
     <!-- Unset Warning -->
     <div
-      v-if="unsetPaymentWarning && isOwner"
+      v-if="false"
       class="mx-6 mt-6 rounded-lg bg-red-700 bg-opacity-10 p-4"
     >
       <span class="text-sm text-red-700">{{
