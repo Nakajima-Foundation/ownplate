@@ -648,7 +648,9 @@ export default defineComponent({
       });
     });
     const showFiveSteps = computed(() => {
-      console.log(existMenu.value);
+      if (restaurantItems.value === null) {
+        return false;
+      }
       return unsetPaymentWarning.value ||
         !existsRestaurant.value ||
         !existMenu.value ||
