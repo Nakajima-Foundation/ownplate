@@ -694,8 +694,11 @@
 
           <!-- Payment methods -->
           <div class="mt-4">
-            <div class="pb-2 text-sm font-bold">
+            <div class="pb-2 text-sm font-bold" @click="openTips('paymentMethods')">
               {{ $t("editRestaurant.paymentMethods") }}
+              <i class="material-icons">
+                <span class="text-sm">help</span>
+              </i>
             </div>
 
             <div class="rounded-lg bg-black bg-opacity-5 p-4">
@@ -1505,6 +1508,13 @@ export default defineComponent({
     const disableSave = computed(() => {
       return hasError.value && props.shopInfo.publicFlag;
     });
+
+    const openTips = (key) => {
+      ctx.root.$store.commit("setTips", {
+        key,
+      });
+    };
+
     return {
       maxDate,
       now,
@@ -1548,7 +1558,8 @@ export default defineComponent({
       gmapClick,
 
       paymentMethods,
-
+      openTips,
+      
       confirmCopy,
       saveRestaurant,
       updateAndUpdateMap,

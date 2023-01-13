@@ -5,7 +5,7 @@
         class="op-dialog mt-6 mb-6 ml-2 mr-2 rounded-lg bg-white pt-6 pl-6 pr-6 pb-6 shadow-lg"
         >
         <div v-if="tips && tips.key">
-          {{ tips.key }}
+          <DialogTips :tipsKey="tips.key" @close="close" />
         </div>
         <div v-else>
           <div class="text-center">
@@ -70,8 +70,12 @@
 
 <script>
 import * as Sentry from "@sentry/vue";
+import DialogTips from "./DialogTips.vue";
 
 export default {
+  components: {
+    DialogTips
+  },
   props: {
     dialog: {
       type: Object,
