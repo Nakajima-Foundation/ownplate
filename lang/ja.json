@@ -936,6 +936,8 @@
     "pleaseChangePublic": "店情報を入力後、公開に変更してください。現在は、お客様からお店のページは見えません",
     "directory": {
       "status": "お客様向け飲食店一覧への掲載状況",
+      "requestWarning": "お支払い設定、店舗公開後に申請をお願いします",
+      "requestingWarning": "お支払い設定、店舗公開がまだの場合は設定をお願いします",
       "notListed": "未掲載",
       "requestList": "掲載を申請する",
       "waiting": "申請中",

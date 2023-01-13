@@ -808,6 +808,8 @@
     "pleaseChangePublic": "Veuillez passer en mode public après avoir saisi les coordonnées du restaurant.",
     "directory": {
       "status": "Annuaire des restaurants",
+      "requestWarning": "Please apply after setting up payment and opening the restaurant to the public.",
+      "requestingWarning": "Please set up your payment settings and store listing if you have not already done so.",
       "notListed": "Non listé",
       "requestList": "Demande d'inscription",
       "waiting": "En attente d'approbation",
