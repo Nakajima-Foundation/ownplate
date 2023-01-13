@@ -44,7 +44,7 @@
           <a href="#addMenu" v-if="!existMenu">メニュー追加はこちら。</a>
           <img src="@/assets/images/sumi-1.svg" class="w-6" v-else />
         </ol>
-        <ol>4.店舗を「公開」にしてください
+        <ol>4.店舗を「公開」にしてください。
           <a href="#addMenu" v-if="!existPublicRestaurant">公開はこちら。</a>
           <img src="@/assets/images/sumi-1.svg" class="w-6" v-else />
 
