@@ -635,7 +635,7 @@ export default defineComponent({
 
     const existMenu = computed(() => {
       if (!props.groupMasterRestaurant.empty) {
-        return props.groupMasterRestaurant.groupMasterRestaurant > 1
+        return props.groupMasterRestaurant.numberOfMenus > 1;
       } else {
         return Object.values(restaurantItems.value||[]).find(r => {
           return ((r||{}).numberOfMenus > 1)
