@@ -2,7 +2,6 @@
   <div>
     <div class="mt-4 text-center">
       <div class="text-xl font-bold text-black opacity-60">
-        
         {{ $t("dialogTips." + tipsKey + ".title") }}
       </div>
     </div>
