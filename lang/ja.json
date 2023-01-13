@@ -889,6 +889,7 @@
     "noPaymentAccount": "お支払いのアカウントが登録されていません",
     "payments": {
       "unsetWarning": "注文を受け付けるにはお支払い方法の設定が必要です。このページの下部の「お支払い方法」の設定をしてください。",
+      "required": "「オンライン支払い」か「受け取り払い」のどちらか一方は必ず設定をしてください。",
       "onlinePayment": "オンライン支払い",
       "statusNotConnected": "Stripeアカウント未接続",
       "statusConnected": "Stripeアカウント接続済み",
