@@ -171,7 +171,7 @@ const ogpPage = async (req: any, res: any) => {
     const regexTitle = /<title.*title>/;
 
     const url = menuData.exists
-      ? `https://${ownPlateConfig.hostName}/r/${restaurantName}/menus/${escapeHtml(menuId)}`
+      ? `https://${ownPlateConfig.hostName}/r/${escapeHtml(restaurantName)}/menus/${escapeHtml(menuId)}`
       : `https://${ownPlateConfig.hostName}/r/${escapeHtml(restaurantName)}`;
 
     const metas = [
@@ -184,12 +184,12 @@ const ogpPage = async (req: any, res: any) => {
       `<meta property="og:type" content="website" />`,
       `<meta property="og:url" content="${url}" />`,
       `<meta property="og:description" content="${escapeHtml(description)}" />`,
-      `<meta property="og:image" content="${image}" />`,
+      `<meta property="og:image" content="${escapeHtml(image)}" />`,
       `<meta name="twitter:card" content="summary_large_image" />`,
       `<meta name="twitter:site" content="@omochikaericom" />`,
       `<meta name="twitter:creator" content="@omochikaericom" />`,
-      `<meta name="twitter:description" content="${description}" />`,
-      `<meta name="twitter:image" content="${image}" />`,
+      `<meta name="twitter:description" content="${escapeHtml(description)}" />`,
+      `<meta name="twitter:image" content="${escapeHtml(image)}" />`,
     ];
     if (ownerData.hidePrivacy) {
       metas.push(`<meta name="robots" content="noindex" />`);
@@ -247,7 +247,7 @@ const ownerPage = async (req: any, res: any) => {
     const image = (ownerData?.images?.cover?.resizedImages || {})["600"];
     const description = ownerData.description;
     const regexTitle = /<title.*title>/;
-    const url = `https://${ownPlateConfig.hostName}/o/${ownerId}`;
+    const url = `https://${ownPlateConfig.hostName}/o/${escapeHtml(ownerId)}`;
 
     const metas = [
       `<title>${escapeHtml(title)}</title>`,
@@ -259,12 +259,12 @@ const ownerPage = async (req: any, res: any) => {
       `<meta property="og:type" content="website" />`,
       `<meta property="og:url" content="${url}" />`,
       `<meta property="og:description" content="${escapeHtml(description)}" />`,
-      `<meta property="og:image" content="${image}" />`,
+      `<meta property="og:image" content="${escapeHtml(image)}" />`,
       `<meta name="twitter:card" content="summary_large_image" />`,
       `<meta name="twitter:site" content="@omochikaericom" />`,
       `<meta name="twitter:creator" content="@omochikaericom" />`,
-      `<meta name="twitter:description" content="${description}" />`,
-      `<meta name="twitter:image" content="${image}" />`,
+      `<meta name="twitter:description" content="${escapeHtml(description)}" />`,
+      `<meta name="twitter:image" content="${escapeHtml(image)}" />`,
     ];
     res.set("Cache-Control", "public, max-age=300, s-maxage=600");
 
