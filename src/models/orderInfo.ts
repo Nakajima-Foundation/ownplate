@@ -44,7 +44,7 @@ export interface OrderInfoData {
   menuItems: { [key: string]: OrderMenuItemData };
   order: { [key: string]: [number] };
   options: { [key: string]: [string] };
-  payment?: {[key: string]: string}
+  payment?: { [key: string]: string };
   type: string;
 }
 

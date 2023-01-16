@@ -217,35 +217,36 @@ export const printOrderData = (
     table: {
       widths: ["*"],
       body: [
-        [{
-          border: [false, false, false, false],
-          text: "おもちかえり.com " + nameOfOrder(orderInfo),
-          fontSize: 10,
-          fillColor: "#eeeeee",
-        }]
-      ]
-    }
+        [
+          {
+            border: [false, false, false, false],
+            text: "おもちかえり.com " + nameOfOrder(orderInfo),
+            fontSize: 10,
+            fillColor: "#eeeeee",
+          },
+        ],
+      ],
+    },
   });
   content.push({
     text: "受渡方法: " + (orderInfo.isDelivery ? "デリバリー" : "テイクアウト"),
     fontSize: 6,
     margin: [2, 1],
   });
-  
+
   // 日付
   if (orderInfo.timeEstimated) {
     content.push({
       fontSize: 6,
       text:
-      "受渡時間: " +
+        "受渡時間: " +
         moment(orderInfo.timeEstimated.toDate()).format("YYYY/MM/DD HH:mm"),
       margin: [2, 0],
     });
   }
   // 名前
   content.push({
-    text:
-    (orderInfo.name || "--") + "さん",
+    text: (orderInfo.name || "--") + "さん",
     fontSize: 10,
     alignment: "center",
     margin: [2, 1],
@@ -254,7 +255,11 @@ export const printOrderData = (
   // オーダー内容
   orderItems.forEach((orderItem: OrderItemData) => {
     content.push({
-      text: ["・", orderItem.item.itemName, " x " + String(orderItem.count)].join(""),
+      text: [
+        "・",
+        orderItem.item.itemName,
+        " x " + String(orderItem.count),
+      ].join(""),
       margin: [convMm2pt(0.5), convMm2pt(0.3)],
     });
     console.log(orderItem);
@@ -273,7 +278,10 @@ export const printOrderData = (
   content.push({
     text: [
       "小計: " + priceString(orderInfo.sub_total),
-      "消費税" + (orderInfo.inclusiveTax ? "(内税)" : "(外税)") + ": " + priceString(orderInfo.tax),
+      "消費税" +
+        (orderInfo.inclusiveTax ? "(内税)" : "(外税)") +
+        ": " +
+        priceString(orderInfo.tax),
     ].join("\n"),
     margin: [2, 0],
     alignment: "right",
@@ -287,22 +295,19 @@ export const printOrderData = (
   }
   // 合計金額
   content.push({
-    text:
-    "合計" + priceString(orderInfo.totalCharge),
+    text: "合計" + priceString(orderInfo.totalCharge),
     fontSize: 12,
     margin: [2, 2],
     alignment: "right",
   });
 
-  const hasStripe = !!(orderInfo?.payment?.stripe);
+  const hasStripe = !!orderInfo?.payment?.stripe;
   content.push({
     text: "支払方法: " + (hasStripe ? "カード決済" : "現地払い"),
     fontSize: 6,
     margin: [2, 1],
   });
-  
 
-  
   const docDefinition = {
     pageSize,
     pageMargins,

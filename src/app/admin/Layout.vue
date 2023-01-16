@@ -138,7 +138,7 @@ export default defineComponent({
           }
         }
 
-        const copy =  JSON.parse(JSON.stringify(defaultShopInfo));
+        const copy = JSON.parse(JSON.stringify(defaultShopInfo));
         const loadShopInfo = Object.assign(
           {},
           copy,

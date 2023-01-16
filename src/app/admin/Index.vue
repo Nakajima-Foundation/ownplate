@@ -12,10 +12,7 @@
     <News />
 
     <!-- Unset Warning -->
-    <div
-      v-if="false"
-      class="mx-6 mt-6 rounded-lg bg-red-700 bg-opacity-10 p-4"
-    >
+    <div v-if="false" class="mx-6 mt-6 rounded-lg bg-red-700 bg-opacity-10 p-4">
       <span class="text-sm text-red-700">{{
         $t("admin.payments.unsetWarning")
       }}</span>
@@ -27,34 +24,45 @@
       class="mx-6 mt-6 rounded-lg bg-red-700 bg-opacity-10 p-4"
     >
       <div>
-        <span class="text-sm text-red-700 font-bold">
+        <span class="text-sm font-bold text-red-700">
           店舗を公開するまでの５ステップ
         </span>
       </div>
       <ul class="list-decimal">
-        <ol>1.お支払い方法を選択してください。
-          <a href="#paymentSection" v-if="unsetPaymentWarning" class="underline">支払い方法の設定はこちら。</a>
+        <ol>
+          1.お支払い方法を選択してください。
+          <a href="#paymentSection" v-if="unsetPaymentWarning" class="underline"
+            >支払い方法の設定はこちら。</a
+          >
           <img src="@/assets/images/sumi-1.svg" class="w-6" v-else />
         </ol>
-        <ol>2.飲食店を追加して、店舗の情報を入力してください。
-          <a href="#addRestaurant" v-if="!existsRestaurant" class="underline">飲食店の追加はこちら。</a>
+        <ol>
+          2.飲食店を追加して、店舗の情報を入力してください。
+          <a href="#addRestaurant" v-if="!existsRestaurant" class="underline"
+            >飲食店の追加はこちら。</a
+          >
           <img src="@/assets/images/sumi-1.svg" class="w-6" v-else />
         </ol>
-        <ol>3.メニューを２つ以上登録してください。
-          <a href="#addMenu" v-if="!existMenu" class="underline">メニュー追加はこちらの「メニュー」から。</a>
+        <ol>
+          3.メニューを２つ以上登録してください。
+          <a href="#addMenu" v-if="!existMenu" class="underline"
+            >メニュー追加はこちらの「メニュー」から。</a
+          >
           <img src="@/assets/images/sumi-1.svg" class="w-6" v-else />
         </ol>
-        <ol>4.店舗を「公開」にしてください。
-          <a href="#addMenu" v-if="!existPublicRestaurant" class="underline">公開への設定変更は「店情報の変更」から。</a>
+        <ol>
+          4.店舗を「公開」にしてください。
+          <a href="#addMenu" v-if="!existPublicRestaurant" class="underline"
+            >公開への設定変更は「店情報の変更」から。</a
+          >
           <img src="@/assets/images/sumi-1.svg" class="w-6" v-else />
-
         </ol>
-        <ol>5.リストの掲載の申請をしてください。(オプション)</ol>
+        <ol>
+          5.リストの掲載の申請をしてください。(オプション)
+        </ol>
       </ul>
-      
     </div>
 
-    
     <!-- Messages -->
     <div
       class="mx-6 mt-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12"
@@ -101,7 +109,9 @@
           <!-- No Restaurant -->
           <div v-if="existsRestaurant === null"></div>
           <div v-else-if="!existsRestaurant">
-            <div class="rounded-lg border-2 border-solid border-red-700 bg-white p-6">
+            <div
+              class="rounded-lg border-2 border-solid border-red-700 bg-white p-6"
+            >
               <a name="addRestaurant" />
               <div class="text-center text-base font-bold text-op-teal">
                 {{ $t("admin.addYourRestaurant") }}
@@ -632,32 +642,32 @@ export default defineComponent({
       return false;
     });
 
-
     const existMenu = computed(() => {
       if (!props.groupMasterRestaurant.empty) {
         return props.groupMasterRestaurant.numberOfMenus > 1;
       } else {
-        return Object.values(restaurantItems.value||[]).find(r => {
-          return ((r||{}).numberOfMenus > 1)
+        return Object.values(restaurantItems.value || []).find((r) => {
+          return (r || {}).numberOfMenus > 1;
         });
       }
     });
     const existPublicRestaurant = computed(() => {
-      return Object.values(restaurantItems.value||[]).find(r => {
-        return ((r||{}).publicFlag)
+      return Object.values(restaurantItems.value || []).find((r) => {
+        return (r || {}).publicFlag;
       });
     });
     const showFiveSteps = computed(() => {
       if (restaurantItems.value === null) {
         return false;
       }
-      return unsetPaymentWarning.value ||
+      return (
+        unsetPaymentWarning.value ||
         !existsRestaurant.value ||
         !existMenu.value ||
-        !existPublicRestaurant.value;
-      
+        !existPublicRestaurant.value
+      );
     });
-    
+
     return {
       // ref
       readyToDisplay,

@@ -195,8 +195,12 @@
           <!-- Map -->
           <div
             class="mt-4"
-            :class="!(shopInfo.location && shopInfo.location.lat) || !maplocation ? 'border-red-700 border-2':''"
-            >
+            :class="
+              !(shopInfo.location && shopInfo.location.lat) || !maplocation
+                ? 'border-2 border-red-700'
+                : ''
+            "
+          >
             <div class="mt-2 p-2 text-sm font-bold">
               {{ $t("editRestaurant.setupMap") }}
             </div>
@@ -236,9 +240,7 @@
               }}
             </div>
 
-            <div class="mt-4 border-red-700"
-
-                 >
+            <div class="mt-4 border-red-700">
               <GMap
                 ref="gMap"
                 :center="{ lat: 44.933076, lng: 15.629058 }"
@@ -261,7 +263,10 @@
         <div class="mt-6 lg:mt-0">
           <!-- Phone -->
           <div>
-            <div class="pb-2 text-sm font-bold" @click="openTips('phonenumber')">
+            <div
+              class="pb-2 text-sm font-bold"
+              @click="openTips('phonenumber')"
+            >
               {{ $t("shopInfo.phonenumber") }}
               <i class="material-icons">
                 <span class="text-sm">help</span>
@@ -697,7 +702,10 @@
 
           <!-- Payment methods -->
           <div class="mt-4">
-            <div class="pb-2 text-sm font-bold" @click="openTips('paymentMethods')">
+            <div
+              class="pb-2 text-sm font-bold"
+              @click="openTips('paymentMethods')"
+            >
               {{ $t("editRestaurant.paymentMethods") }}
               <i class="material-icons">
                 <span class="text-sm">help</span>
@@ -809,7 +817,7 @@
                 <router-link
                   :to="`/admin/restaurants/${restaurantId()}/delivery`"
                   >{{ $t("editRestaurant.deliveryConfigLink") }}</router-link
-                                                                  >
+                >
               </div>
               <div class="pt-2 text-xs">
                 {{ $t("editRestaurant.deliveryDescription") }}
@@ -1534,7 +1542,7 @@ export default defineComponent({
 
       // ref
       maplocation,
-      
+
       notFound,
       submitting,
       newTemporaryClosure,
@@ -1562,7 +1570,7 @@ export default defineComponent({
 
       paymentMethods,
       openTips,
-      
+
       confirmCopy,
       saveRestaurant,
       updateAndUpdateMap,

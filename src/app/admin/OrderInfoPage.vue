@@ -345,7 +345,10 @@
           <!-- Print for debug-->
           <div
             class="mt-2 rounded-lg bg-white p-4 text-center shadow"
-            v-if="orderInfo.status !== order_status.order_placed && shopInfo.enablePrinter"
+            v-if="
+              orderInfo.status !== order_status.order_placed &&
+              shopInfo.enablePrinter
+            "
           >
             <div>
               <o-button @click="print()" class="b-reset-tw">
@@ -357,7 +360,7 @@
               </o-button>
             </div>
           </div>
-          
+
           <div class="mt-2 rounded-lg bg-white p-4 shadow">
             <!-- Order Status -->
             <div>
@@ -1080,7 +1083,11 @@ export default defineComponent({
       downloadOrderPdf(props.shopInfo, orderInfo.value, orderItems.value);
     };
     const print = async () => {
-      const data = await printOrder(props.shopInfo, orderInfo.value, orderItems.value);
+      const data = await printOrder(
+        props.shopInfo,
+        orderInfo.value,
+        orderItems.value
+      );
       const passprnt_uri = data2UrlSchema(data, "2");
       location.href = passprnt_uri;
     };

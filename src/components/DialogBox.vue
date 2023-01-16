@@ -3,7 +3,7 @@
     <o-modal :active.sync="isVisible" :width="488">
       <div
         class="op-dialog mt-6 mb-6 ml-2 mr-2 rounded-lg bg-white pt-6 pl-6 pr-6 pb-6 shadow-lg"
-        >
+      >
         <div v-if="tips && tips.key">
           <DialogTips :tipsKey="tips.key" @close="close" />
         </div>
@@ -27,12 +27,12 @@
               <div
                 class="inline-flex h-12 min-h-[36px] min-w-[128px] cursor-pointer items-center justify-center rounded-full bg-black bg-opacity-5 px-6 text-base font-bold text-black opacity-60"
                 @click="close"
-                >
+              >
                 {{ $t("menu.close") }}
               </div>
             </div>
           </div>
-          
+
           <!-- Alert Message -->
           <div v-if="alert">
             <!-- Message -->
@@ -51,13 +51,13 @@
               <div
                 class="mr-4 inline-flex h-12 min-h-[36px] min-w-[128px] cursor-pointer items-center justify-center rounded-full bg-black bg-opacity-5 px-6 text-base font-bold text-black opacity-60"
                 @click="close"
-                >
+              >
                 {{ $t("menu.no") }}
               </div>
               <div
                 class="inline-flex h-12 min-h-[36px] min-w-[128px] cursor-pointer items-center justify-center rounded-full bg-red-700 px-6 text-base font-bold text-white"
                 @click="handleYes"
-                >
+              >
                 {{ $t("menu.yes") }}
               </div>
             </div>
@@ -74,7 +74,7 @@ import DialogTips from "./DialogTips.vue";
 
 export default {
   components: {
-    DialogTips
+    DialogTips,
   },
   props: {
     dialog: {

@@ -228,8 +228,13 @@
           </div>
           <div class="mt-1 ml-1">
             <ul>
-              <li v-for="(paymentMethod, k) in paymentMethods" v-if="shopInfo.paymentMethods[paymentMethod.key]">
-                {{ $t("editRestaurant.paymentMethodChoices." + paymentMethod.key) }}
+              <li
+                v-for="(paymentMethod, k) in paymentMethods"
+                v-if="shopInfo.paymentMethods[paymentMethod.key]"
+              >
+                {{
+                  $t("editRestaurant.paymentMethodChoices." + paymentMethod.key)
+                }}
               </li>
             </ul>
           </div>
@@ -493,7 +498,7 @@ export default defineComponent({
       shopPaymentMethods,
       hasPaymentMethods,
       paymentMethods,
-        
+
       minimumAvailableTime,
       mapQuery,
       GAPIKey,

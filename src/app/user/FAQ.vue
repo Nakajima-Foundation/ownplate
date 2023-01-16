@@ -14,7 +14,7 @@
 
       <div class="mt-6 rounded-lg bg-white px-4 py-2 shadow" ref="faq_box">
         <div v-for="(faq, k) in faqList" :key="'base_' + k" class="mb-6">
-          <div class="my-1 font-bold inline-flex">
+          <div class="my-1 inline-flex font-bold">
             <a :href="`#index_` + k">
               <i class="material-icons text-lg text-op-teal">arrow_upward</i>
             </a>
@@ -82,9 +82,7 @@ export default defineComponent({
     const faqList = [
       {
         q: "ご利用の流れについて",
-        answers: [
-          "ほげほげ",
-        ],
+        answers: ["ほげほげ"],
       },
     ];
 
