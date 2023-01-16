@@ -43,8 +43,23 @@ const getUserPagesWithCat = (prefix: string) => {
           component: "user/Blank.vue",
         },
         {
+          name: "r-restaurant-Cats_" + prefix,
+          path: ":list(categories)/:state(takeout|pickup)",
+          component: "user/Blank.vue",
+        },
+        {
+          name: "r-restaurant-SubCats_" + prefix,
+          path: ":list(category)/:category/:state(takeout|pickup)",
+          component: "user/Blank.vue",
+        },
+        {
+          name: "r-restaurant-SubCats2_" + prefix,
+          path: ":list(category)/:category/:selectedSubCategory/:state(takeout|pickup)",
+          component: "user/Blank.vue",
+        },
+        {
           name: "r-restaurant-Cat_" + prefix,
-          path: "cat/:category/:subCategory",
+          path: "cat/:category/:subCategory/:state(takeout|pickup)?",
           component: "user/Blank.vue",
         },
         {
@@ -84,6 +99,10 @@ const mopath = mo_prefixes
           {
             path: prePath + "/outage",
             component: "user/Outage.vue",
+          },
+          {
+            path: prePath + "/campaign/202301",
+            component: "user/campaign/202301.vue",
           },
           {
             path: prePath + "/r/favorites",
@@ -135,6 +154,11 @@ export const customRoutes: CustomRoute[] = [
     name: "news",
     path: "/news",
     component: "user/News.vue",
+  },
+  {
+    name: "faq",
+    path: "/faq",
+    component: "user/FAQ.vue",
   },
   {
     name: "RestaurantsAll",
@@ -365,6 +389,11 @@ export const customRoutes: CustomRoute[] = [
     name: "admin-news-list",
     path: "/admin/news",
     component: "admin/News/List.vue",
+  },
+  {
+    name: "admin-faq",
+    path: "/admin/faq",
+    component: "admin/FAQ.vue",
   },
   {
     name: "admin-news-article",

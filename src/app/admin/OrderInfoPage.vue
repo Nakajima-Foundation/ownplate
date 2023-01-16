@@ -325,26 +325,37 @@
               </router-link>
             </div>
           </div>
-          <!-- Print -->
+
+          <!-- Print for debug-->
           <div
             class="mt-2 rounded-lg bg-white p-4 text-center shadow"
             v-if="isDev"
           >
-            <div>
-              <o-button @click="print()" class="b-reset-tw">
-                <div
-                  class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-black bg-opacity-5"
-                >
-                  Print
-                </div>
-              </o-button>
-            </div>
             <div class="mt-2">
               <o-button @click="download()" class="b-reset-tw">
                 <div
                   class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-black bg-opacity-5"
                 >
                   Download
+                </div>
+              </o-button>
+            </div>
+          </div>
+
+          <!-- Print for debug-->
+          <div
+            class="mt-2 rounded-lg bg-white p-4 text-center shadow"
+            v-if="
+              orderInfo.status !== order_status.order_placed &&
+              shopInfo.enablePrinter
+            "
+          >
+            <div>
+              <o-button @click="print()" class="b-reset-tw">
+                <div
+                  class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-black bg-opacity-5"
+                >
+                  {{ $t("order.print") }}
                 </div>
               </o-button>
             </div>
@@ -1069,10 +1080,14 @@ export default defineComponent({
       return possibleTransitions.value[newStatusValue];
     };
     const download = () => {
-      downloadOrderPdf(orderInfo.value, orderItems.value);
+      downloadOrderPdf(props.shopInfo, orderInfo.value, orderItems.value);
     };
     const print = async () => {
-      const data = await printOrder(orderInfo.value, orderItems.value);
+      const data = await printOrder(
+        props.shopInfo,
+        orderInfo.value,
+        orderItems.value
+      );
       const passprnt_uri = data2UrlSchema(data, "2");
       location.href = passprnt_uri;
     };

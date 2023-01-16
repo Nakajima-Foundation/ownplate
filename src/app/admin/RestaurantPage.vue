@@ -193,8 +193,15 @@
           </div>
 
           <!-- Map -->
-          <div>
-            <div class="mt-4 pb-1 text-sm font-bold">
+          <div
+            class="mt-4"
+            :class="
+              !(shopInfo.location && shopInfo.location.lat) || !maplocation
+                ? 'border-2 border-red-700'
+                : ''
+            "
+          >
+            <div class="mt-2 p-2 text-sm font-bold">
               {{ $t("editRestaurant.setupMap") }}
             </div>
             <div class="text-center">
@@ -233,7 +240,7 @@
               }}
             </div>
 
-            <div class="mt-4">
+            <div class="mt-4 border-red-700">
               <GMap
                 ref="gMap"
                 :center="{ lat: 44.933076, lng: 15.629058 }"
@@ -241,7 +248,7 @@
                 :zoom="18"
                 style="
                   width: 100%;
-                  height: 240px;
+                  height: 280px;
                   position: relative;
                   overflow: hidden;
                 "
@@ -256,8 +263,14 @@
         <div class="mt-6 lg:mt-0">
           <!-- Phone -->
           <div>
-            <div class="pb-2 text-sm font-bold">
+            <div
+              class="pb-2 text-sm font-bold"
+              @click="openTips('phonenumber')"
+            >
               {{ $t("shopInfo.phonenumber") }}
+              <i class="material-icons">
+                <span class="text-sm">help</span>
+              </i>
               <span class="text-red-700">*</span>
             </div>
             <div>
@@ -583,11 +596,15 @@
                     {{ $t("editRestaurant.taxPriceDisplayJp") }}
                   </div>
                   <div>
-                    {{ $tc("tax.taxExample", $n(1000, "currency"))
-                    }}<Price
-                      :shopInfo="shopInfo"
-                      :menu="{ price: 1000, tax: 'food' }"
-                    />
+                    {{ $tc("tax.taxExample", $n(1000, "currency")) }}
+                  </div>
+                  <div>
+                    <b
+                      ><Price
+                        :shopInfo="shopInfo"
+                        :menu="{ price: 1000, tax: 'food' }"
+                      />
+                    </b>
                   </div>
                 </div>
               </div>
@@ -610,7 +627,12 @@
               <!-- Preparation Time -->
               <div>
                 <div class="mb-1">
-                  {{ $t("editRestaurant.preparationTime") }}
+                  <b>{{ $t("editRestaurant.preparationTime") }}</b>
+                  <span class="text-xs"
+                    >({{
+                      $t("editRestaurant.preparationTimeDescription")
+                    }})</span
+                  >
                 </div>
 
                 <o-field
@@ -628,8 +650,10 @@
                     class="w-24"
                   />
                   <div class="ml-2">
-                    {{ $t("editRestaurant.minutes") }} -
-                    {{ $t("editRestaurant.withinFiveDays") }}
+                    {{ $t("editRestaurant.minutes") }}
+                    <span class="text-xs"
+                      >({{ $t("editRestaurant.withinFiveDays") }})</span
+                    >
                   </div>
                 </o-field>
 
@@ -647,7 +671,12 @@
               <!-- The Day Before -->
               <div class="mt-2">
                 <div class="mb-1">
-                  {{ $t("editRestaurant.reservationTheDayBefore") }}
+                  <b>{{ $t("editRestaurant.reservationTheDayBefore") }}</b>
+                  <span class="text-xs">
+                    ({{
+                      $t("editRestaurant.reservationTheDayBeforeDescription")
+                    }})</span
+                  >
                 </div>
                 <o-field
                   class="flex items-center"
@@ -667,6 +696,37 @@
                     </option>
                   </o-select>
                 </o-field>
+              </div>
+            </div>
+          </div>
+
+          <!-- Payment methods -->
+          <div class="mt-4">
+            <div
+              class="pb-2 text-sm font-bold"
+              @click="openTips('paymentMethods')"
+            >
+              {{ $t("editRestaurant.paymentMethods") }}
+              <i class="material-icons">
+                <span class="text-sm">help</span>
+              </i>
+            </div>
+
+            <div class="rounded-lg bg-black bg-opacity-5 p-4">
+              <!-- Preparation Time -->
+              <div v-for="(paymentMethod, k) in paymentMethods" :key="k">
+                <o-checkbox
+                  v-model="shopInfo.paymentMethods[paymentMethod.key]"
+                >
+                  <div class="text-sm font-bold">
+                    {{
+                      $t(
+                        "editRestaurant.paymentMethodChoices." +
+                          paymentMethod.key
+                      )
+                    }}
+                  </div>
+                </o-checkbox>
               </div>
             </div>
           </div>
@@ -747,42 +807,40 @@
           </div>
 
           <!-- Delivery Config -->
-          <template v-if="true">
-            <div v-if="region === 'JP'" class="mt-4">
-              <a id="deliveryConfig" />
-              <div class="pb-2 text-sm font-bold">
-                {{ $t("editRestaurant.deliveryConfigTitle") }}
+          <div v-if="region === 'JP'" class="mt-4">
+            <a id="deliveryConfig" />
+            <div class="pb-2 text-sm font-bold">
+              {{ $t("editRestaurant.deliveryConfigTitle") }}
+            </div>
+            <div class="rounded-lg bg-black bg-opacity-5 p-4">
+              <div class="text-lg font-bold text-op-teal">
+                <router-link
+                  :to="`/admin/restaurants/${restaurantId()}/delivery`"
+                  >{{ $t("editRestaurant.deliveryConfigLink") }}</router-link
+                >
               </div>
-              <div class="rounded-lg bg-black bg-opacity-5 p-4">
-                <div class="text-lg font-bold text-op-teal">
-                  <router-link
-                    :to="`/admin/restaurants/${restaurantId()}/delivery`"
-                    >{{ $t("editRestaurant.deliveryConfigLink") }}</router-link
-                  >
-                </div>
-                <div class="pt-2 text-xs">
-                  {{ $t("editRestaurant.deliveryDescription") }}
-                </div>
+              <div class="pt-2 text-xs">
+                {{ $t("editRestaurant.deliveryDescription") }}
               </div>
             </div>
+          </div>
 
-            <!-- TODO: Printer Config -->
-            <div v-if="false" class="mt-4">
-              <div class="pb-2 text-sm font-bold">
-                {{ $t("editRestaurant.printerConfigTitle") }}
-              </div>
-              <div class="rounded-lg bg-black bg-opacity-5 p-4">
-                <o-checkbox v-model="shopInfo.enablePrinter">
-                  <div class="text-sm font-bold">
-                    {{ $t("editRestaurant.elablePrinter") }}
-                  </div>
-                </o-checkbox>
-                <div class="pt-2 text-xs">
-                  {{ $t("editRestaurant.printerDescription") }}
+          <!-- TODO: Printer Config -->
+          <div class="mt-4">
+            <div class="pb-2 text-sm font-bold">
+              {{ $t("editRestaurant.printerConfigTitle") }}
+            </div>
+            <div class="rounded-lg bg-black bg-opacity-5 p-4">
+              <o-checkbox v-model="shopInfo.enablePrinter">
+                <div class="text-sm font-bold">
+                  {{ $t("editRestaurant.elablePrinter") }}
                 </div>
+              </o-checkbox>
+              <div class="pt-2 text-xs">
+                {{ $t("editRestaurant.printerDescription") }}
               </div>
             </div>
-          </template>
+          </div>
 
           <!-- Email Notification -->
           <div v-if="region === 'JP'" class="mt-4">
@@ -1124,6 +1182,7 @@ import {
   daysOfWeek,
   reservationTheDayBefore,
   minimumCookTimeChoices,
+  paymentMethods,
 } from "@/config/constant";
 
 export default defineComponent({
@@ -1460,6 +1519,13 @@ export default defineComponent({
     const disableSave = computed(() => {
       return hasError.value && props.shopInfo.publicFlag;
     });
+
+    const openTips = (key) => {
+      ctx.root.$store.commit("setTips", {
+        key,
+      });
+    };
+
     return {
       maxDate,
       now,
@@ -1475,6 +1541,8 @@ export default defineComponent({
       days: daysOfWeek,
 
       // ref
+      maplocation,
+
       notFound,
       submitting,
       newTemporaryClosure,
@@ -1499,6 +1567,9 @@ export default defineComponent({
 
       setDefaultLocation,
       gmapClick,
+
+      paymentMethods,
+      openTips,
 
       confirmCopy,
       saveRestaurant,

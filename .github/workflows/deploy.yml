@@ -1,0 +1,54 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Node.js CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
+      - run: npm install --save-dev firebase-tools
+      - run: cp configs/.firebaserc ./
+      - run: cp src/config/default/ownplate-dev.ts src/config/project.ts
+      - run: npm install
+      - name: npm build
+        run: npm run build
+        env:
+          VUE_APP_MO_DATA_BASE_URL: '${{ secrets.VUE_APP_MO_DATA_BASE_URL }}'
+          VUE_APP_GTM_ID: '${{ secrets.VUE_APP_GTM_ID }}'
+      - run: cp dist/index.html functions/templates/index.html
+      - name: functions npm install, build
+        working-directory: ./functions
+        run: |
+          npm install --arch=x64 --platform=linux
+#      - name: Deploy to Firebase
+#        uses: w9jds/firebase-action@master
+#        with:
+#          args: deploy --project=staging
+#        env:
+#          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+      - name: slack
+        run: sh ./utils/buildbot.sh
+        env:
+          SLACKURL: ${{ secrets.SLACKURL }}

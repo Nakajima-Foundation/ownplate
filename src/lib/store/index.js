@@ -141,6 +141,9 @@ export const mutations = {
   setErrorMessage(state, params) {
     state.dialog = { error: params };
   },
+  setTips(state, params) {
+    state.dialog = { tips: params };
+  },
   resetOpenTime(state) {
     state.openTime = new Date();
   },

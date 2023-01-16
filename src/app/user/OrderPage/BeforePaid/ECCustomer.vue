@@ -24,7 +24,7 @@
     </div>
 
     <!-- conv zip to address -->
-    <div class="mb-2">
+    <div class="mb-2 mt-2">
       <button @click="getAddress()" class="">
         <div
           class="inline-flex h-9 items-center justify-center rounded-full bg-op-teal px-4"
@@ -150,7 +150,7 @@
       </div>
     </template>
 
-    <div>
+    <div class="mt-2">
       <o-checkbox v-model="isSaveAddress">
         <div class="text-sm font-bold">
           {{ $t("order.saveAddress") }}

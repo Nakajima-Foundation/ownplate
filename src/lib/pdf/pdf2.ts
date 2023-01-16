@@ -6,7 +6,7 @@ import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import { convChar } from "@/lib/pdf/pdf";
 
 import { OrderInfoData } from "@/models/orderInfo";
-
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
 const fontHost = location.protocol + "//" + location.host + "/fonts/";
 
 const pdfFont = {
@@ -193,42 +193,80 @@ export const testDownload = () => {
   return pdfDoc;
 };
 
+const priceString = (price: number) => {
+  return "¥" + Number(price).toLocaleString() + "";
+};
+
 export const printOrderData = (
+  restaurantInfo: RestaurantInfoData,
   orderInfo: OrderInfoData,
   orderItems: OrderItemData[]
 ) => {
   const content = [];
-  console.log(orderInfo, orderItems);
-  // 番号, 合計金額, 名前
+  console.log(orderInfo, orderItems, restaurantInfo);
+  // 店名
   content.push({
-    text:
-      nameOfOrder(orderInfo) +
-      "   " +
-      Number(orderInfo.totalCharge).toLocaleString() +
-      "円   " +
-      orderInfo.name,
+    text: restaurantInfo.restaurantName,
     fontSize: 12,
     margin: [2, 0],
   });
-  // 日付
+
+  // おもちかえり.com 番号
   content.push({
-    text:
-      "受渡: " +
-      moment(orderInfo.timeEstimated.toDate()).format("YYYY/MM/DD HH:mm"),
-    margin: [2, 0],
+    width: convMm2pt(54),
+    table: {
+      widths: ["*"],
+      body: [
+        [
+          {
+            border: [false, false, false, false],
+            text: "おもちかえり.com " + nameOfOrder(orderInfo),
+            fontSize: 10,
+            fillColor: "#eeeeee",
+          },
+        ],
+      ],
+    },
+  });
+  content.push({
+    text: "受渡方法: " + (orderInfo.isDelivery ? "デリバリー" : "テイクアウト"),
+    fontSize: 6,
+    margin: [2, 1],
+  });
+
+  // 日付
+  if (orderInfo.timeEstimated) {
+    content.push({
+      fontSize: 6,
+      text:
+        "受渡時間: " +
+        moment(orderInfo.timeEstimated.toDate()).format("YYYY/MM/DD HH:mm"),
+      margin: [2, 0],
+    });
+  }
+  // 名前
+  content.push({
+    text: (orderInfo.name || "--") + "さん",
+    fontSize: 10,
+    alignment: "center",
+    margin: [2, 1],
   });
 
   // オーダー内容
   orderItems.forEach((orderItem: OrderItemData) => {
-    console.log(orderItem);
     content.push({
-      text: [orderItem.item.itemName, " x " + String(orderItem.count)].join(""),
+      text: [
+        "・",
+        orderItem.item.itemName,
+        " x " + String(orderItem.count),
+      ].join(""),
       margin: [convMm2pt(0.5), convMm2pt(0.3)],
     });
+    console.log(orderItem);
     const option = displayOption(orderItem.options || []);
     if (option !== "") {
       content.push({
-        text: "opt: " + option,
+        text: "\u200B\topt: " + option,
         margin: [convMm2pt(0.5), convMm2pt(0.3)],
         fontSize: 6,
       });
@@ -236,7 +274,40 @@ export const printOrderData = (
     console.log(orderItem);
   });
   // 決済
-  // デリバリー or テイクアウト
+  // 小計
+  content.push({
+    text: [
+      "小計: " + priceString(orderInfo.sub_total),
+      "消費税" +
+        (orderInfo.inclusiveTax ? "(内税)" : "(外税)") +
+        ": " +
+        priceString(orderInfo.tax),
+    ].join("\n"),
+    margin: [2, 0],
+    alignment: "right",
+  });
+  if (orderInfo.isDelivery) {
+    content.push({
+      text: "配送料: " + priceString(orderInfo.deliveryFee || 0),
+      margin: [2, 0],
+      alignment: "right",
+    });
+  }
+  // 合計金額
+  content.push({
+    text: "合計" + priceString(orderInfo.totalCharge),
+    fontSize: 12,
+    margin: [2, 2],
+    alignment: "right",
+  });
+
+  const hasStripe = !!orderInfo?.payment?.stripe;
+  content.push({
+    text: "支払方法: " + (hasStripe ? "カード決済" : "現地払い"),
+    fontSize: 6,
+    margin: [2, 1],
+  });
+
   const docDefinition = {
     pageSize,
     pageMargins,
@@ -249,18 +320,20 @@ export const printOrderData = (
   return pdfDoc;
 };
 export const printOrder = (
+  restaurantInfo: RestaurantInfoData,
   orderInfo: OrderInfoData,
   orderItems: OrderItemData[]
 ) => {
-  const pdfDoc = printOrderData(orderInfo, orderItems);
+  const pdfDoc = printOrderData(restaurantInfo, orderInfo, orderItems);
   // @ts-ignore
   return pdfDoc.getBase64();
 };
 export const downloadOrderPdf = (
+  restaurantInfo: RestaurantInfoData,
   orderInfo: OrderInfoData,
   orderItems: OrderItemData[]
 ) => {
-  const pdfDoc = printOrderData(orderInfo, orderItems);
+  const pdfDoc = printOrderData(restaurantInfo, orderInfo, orderItems);
   pdfDoc.download();
 };
 

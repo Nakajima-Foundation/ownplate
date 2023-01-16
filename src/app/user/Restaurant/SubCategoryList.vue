@@ -2,7 +2,7 @@
   <div>
     <template v-for="(subcategory, key) in subCategoryData">
       <router-link
-        :to="`${categoryBathPath}/${subcategory.id}`"
+        :to="`${categoryBathPath}/${subcategory.id}/${howtoreceive}`"
         class="mx-1 mt-2 inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5"
       >
         <div class="mr-2 text-sm font-bold text-op-teal">
@@ -34,6 +34,10 @@ export default defineComponent({
       required: true,
     },
     subCategoryId: {
+      type: String,
+      required: true,
+    },
+    howtoreceive: {
       type: String,
       required: true,
     },

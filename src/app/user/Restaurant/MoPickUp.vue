@@ -1,30 +1,17 @@
 <template>
   <div>
-    <div class="grid grid-cols-2 gap-2">
-      <div
-        class="h-full w-full rounded-lg bg-white p-3 shadow"
-        :class="
-          value === 'takeout'
-            ? 'border-2 border-op-teal text-op-teal'
-            : 'cursor-pointer text-black text-opacity-40'
-        "
-        @click="input('takeout')"
-      >
-        <i class="material-icons w-full text-center"> shopping_cart </i>
-        <div class="-mt-0.5 text-center text-lg font-bold">
-          {{ $t("mobileOrder.shopInfo.takeout") }}
-        </div>
-        <div class="mt-0.5 px-3 text-center text-xs font-bold">
-          {{ $t("mobileOrder.shopInfo.takeoutDesctiption") }}
-        </div>
-      </div>
+    <div
+      class="grid grid-cols-2 gap-2"
+      :id="value === 'takeout' ? 'isTakeout' : 'isPickup'"
+    >
+      <!-- pickup -->
       <div
         v-if="shopInfo.enableMoPickup && !moPickupSuspend"
-        class="h-full w-full rounded-lg bg-white p-3 shadow"
+        class="shado-none h-full w-full rounded-lg border-2 bg-white p-3 text-op-teal"
         :class="
           value === 'pickup'
-            ? 'border-2 border-op-teal text-op-teal'
-            : 'cursor-pointer text-black text-opacity-40'
+            ? 'border-op-teal'
+            : 'cursor-pointer border-black border-opacity-10'
         "
         @click="input('pickup')"
       >
@@ -33,7 +20,7 @@
           {{ $t("mobileOrder.shopInfo.pickup") }}
         </div>
         <div class="mt-0.5 px-3 text-center text-xs font-bold">
-          {{ $t("mobileOrder.shopInfo.pickupDesctiption") }}
+          {{ $t("mobileOrder.shopInfo.pickupDescription") }}
         </div>
       </div>
       <div
@@ -45,7 +32,25 @@
           {{ $t("mobileOrder.shopInfo.pickup") }}
         </div>
         <div class="mt-0.5 px-3 text-center text-xs font-bold">
-          {{ $t("mobileOrder.shopInfo.pickupDesctiption") }}
+          {{ $t("mobileOrder.shopInfo.pickupDescription") }}
+        </div>
+      </div>
+      <!-- takeout -->
+      <div
+        class="h-full w-full rounded-lg border-2 bg-white p-3 text-op-teal shadow-none"
+        :class="
+          value === 'takeout'
+            ? 'border-op-teal '
+            : 'cursor-pointer border-black border-opacity-10'
+        "
+        @click="input('takeout')"
+      >
+        <i class="material-icons w-full text-center"> shopping_cart </i>
+        <div class="-mt-0.5 text-center text-lg font-bold">
+          {{ $t("mobileOrder.shopInfo.takeout") }}
+        </div>
+        <div class="mt-0.5 px-3 text-center text-xs font-bold">
+          {{ $t("mobileOrder.shopInfo.takeoutDescription") }}
         </div>
       </div>
     </div>

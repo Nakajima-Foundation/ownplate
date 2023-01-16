@@ -50,6 +50,7 @@ export const getEditShopInfo = (shopInfo: RestaurantInfoData) => {
     orderThanks: shopInfo.orderThanks,
     pickUpMinimumCookTime: shopInfo.pickUpMinimumCookTime,
     pickUpDaysInAdvance: shopInfo.pickUpDaysInAdvance,
+    paymentMethods: shopInfo.paymentMethods || {},
     foodTax: Number(shopInfo.foodTax),
     alcoholTax: Number(shopInfo.alcoholTax),
     openTimes: Object.keys(shopInfo.openTimes).reduce(
@@ -126,6 +127,7 @@ export const defaultShopInfo = {
   images: {},
   publicFlag: false,
   temporaryClosure: [],
+  paymentMethods: {},
 };
 
 type ShopInfoBussinessTimeError = { [key: string]: string[][] };
@@ -166,7 +168,7 @@ export const shopInfoValidator = (
       "validationError." + name + ".notNumbery"
     );
   } else {
-    if (shopInfo["pickUpMinimumCookTime"] > 24 * 60 * 6) {
+    if (shopInfo["pickUpMinimumCookTime"] > 24 * 60 * 7) {
       (err["pickUpMinimumCookTime"] as string[]).push(
         "validationError." + name + ".tooMuch"
       );
