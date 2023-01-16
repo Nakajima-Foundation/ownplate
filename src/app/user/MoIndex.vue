@@ -18,17 +18,10 @@
     </div>
 
     <div
-      class="mx-6 mt-6 mb-10 flex justify-center space-x-4 sm:max-w-7xl xl:mx-auto"
+      class="mx-6 mt-6 mb-6 flex justify-center space-x-4 sm:max-w-7xl xl:mx-auto"
     >
-      <div class="w-full rounded-lg bg-white px-4 pb-4 text-left shadow-none">
-        <div class="mx-auto mb-4 h-20 w-32">
-          <img :src="moBaseUrl + '/images/assets/mo_icon_shipping.png'" />
-        </div>
-        <div class="text-sm text-black sm:text-base">
-          {{ $t("lp.moDescription1") }}
-        </div>
-      </div>
-      <div class="w-full rounded-lg bg-white px-4 pb-4 text-left shadow-none">
+      <!-- pickup -->
+      <div class="w-full rounded-lg bg-white px-4 pb-4 text-center shadow-none">
         <div class="mx-auto mb-4 h-20 w-32">
           <img :src="moBaseUrl + '/images/assets/mo_icon_store.png'" />
         </div>
@@ -39,9 +32,50 @@
           {{ $t("lp.moDescription3") }}
         </div>
       </div>
+      <!-- takeout -->
+      <div class="w-full rounded-lg bg-white px-4 pb-4 text-center shadow-none">
+        <div class="mx-auto mb-4 h-20 w-32">
+          <img :src="moBaseUrl + '/images/assets/mo_icon_shipping.png'" />
+        </div>
+        <div class="text-sm text-black sm:text-base">
+          {{ $t("lp.moDescription1") }}
+        </div>
+      </div>
     </div>
 
-    <div class="mx-6 mt-6 text-xl font-bold text-black text-opacity-40">
+    <!--Campaign 202301-->
+    <div>
+      <div
+        class="mx-6 rounded-lg bg-white p-6 text-center sm:max-w-7xl xl:mx-auto"
+      >
+        <div class="mx-0 flex justify-center sm:max-w-4xl md:mx-auto">
+          <img
+            :src="moBaseUrl + '/images/assets/campaign_202301_mobile.png'"
+            class="sm:hidden"
+          />
+          <img
+            :src="moBaseUrl + '/images/assets/campaign_202301_tablet.png'"
+            class="hidden sm:block"
+          />
+        </div>
+
+        <div class="mt-5 text-black sm:mt-8">
+          {{ $t("mobileOrder.campaign.topDescription1") }}
+        </div>
+        <div class="mt-2 text-black">
+          {{ $t("mobileOrder.campaign.topDescription2") }}
+
+          <router-link :to="moBasePath + '/campaign/202301'">
+            <span class="font-bold text-op-teal underline">{{
+              $t("mobileOrder.campaign.topLink")
+            }}</span>
+            {{ $t("mobileOrder.campaign.topDescription3") }}
+          </router-link>
+        </div>
+      </div>
+    </div>
+
+    <div class="mx-6 mt-8 text-xl font-bold text-black text-opacity-40">
       {{ $t("find.shopList") }}
     </div>
     <!-- Restaurants -->
@@ -67,6 +101,17 @@
                 <div>
                   <div class="flex-1 pr-2 text-base font-bold">
                     {{ restaurant.restaurantName }}
+                    <span
+                      v-if="restaurant.moCloseDate"
+                      class="text-xs font-bold"
+                      >{{
+                        $tc("mobileOrder.closeLabel", 0, {
+                          date: moment(restaurant.moCloseDate.toDate()).format(
+                            "M/D"
+                          ),
+                        })
+                      }}</span
+                    >
                   </div>
                   <div
                     v-if="restaurant.enableMoPickup"

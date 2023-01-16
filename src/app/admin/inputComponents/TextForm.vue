@@ -1,7 +1,8 @@
 <template>
   <div>
     <div class="pb-2 text-sm font-bold">
-      {{ $t(titleKey) }}
+      <span @click="open(tipsKey)" v-if="tipsKey">{{ $t(titleKey) }}</span>
+      <span v-else>{{ $t(titleKey) }}</span>
       <span class="text-red-700" v-if="required === true">*</span>
     </div>
     <o-field :variant="error.length > 0 ? 'danger' : 'success'">
@@ -34,6 +35,10 @@ export default {
       type: String,
       required: true,
     },
+    tipsKey: {
+      type: String,
+      required: false,
+    },
     placeholder: {
       type: String,
       required: false,
@@ -54,6 +59,11 @@ export default {
   methods: {
     input(e) {
       this.$emit("input", e);
+    },
+    open(key) {
+      this.$store.commit("setTips", {
+        key,
+      });
     },
   },
 };

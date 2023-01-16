@@ -221,8 +221,27 @@
           </div>
         </div>
 
+        <!-- Payment Methods -->
+        <div class="mt-2" v-if="inStorePayment && hasPaymentMethods">
+          <div class="text-sm font-bold">
+            {{ $t("shopInfo.paymentMethods") }}
+          </div>
+          <div class="mt-1 ml-1">
+            <ul>
+              <li
+                v-for="(paymentMethod, k) in paymentMethods"
+                v-if="shopInfo.paymentMethods[paymentMethod.key]"
+              >
+                {{
+                  $t("editRestaurant.paymentMethodChoices." + paymentMethod.key)
+                }}
+              </li>
+            </ul>
+          </div>
+        </div>
+
         <!-- Temporary Closure -->
-        <div v-if="temporaryClosure.length > 0" class="mt-2">
+        <div v-if="dispTemporaryClosure.length > 0" class="mt-2">
           <div class="text-sm font-bold">
             {{ $t("shopInfo.temporaryClosure") }}
           </div>
@@ -248,7 +267,7 @@
 import { defineComponent, computed, ref } from "@vue/composition-api";
 import moment from "moment";
 
-import { daysOfWeek } from "@/config/constant";
+import { daysOfWeek, paymentMethods } from "@/config/constant";
 import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
 import { ownPlateConfig, GAPIKey } from "@/config/project";
 import { usePickupTime } from "@/utils/pickup";
@@ -406,6 +425,17 @@ export default defineComponent({
       return props.paymentInfo.inStore;
     });
 
+    const shopPaymentMethods = computed(() => {
+      return (
+        Object.keys(props.shopInfo.paymentMethods || {}).filter((key) => {
+          return !!props.shopInfo.paymentMethods[key];
+        }) || []
+      );
+    });
+    const hasPaymentMethods = computed(() => {
+      return shopPaymentMethods.value.length > 0;
+    });
+
     const { deliveryAvailableDays, availableDays, temporaryClosure } =
       usePickupTime(props.shopInfo, {}, {}, ctx, isInMo.value, isPickup);
 
@@ -464,6 +494,11 @@ export default defineComponent({
       showPayment,
       stripeAccount,
       inStorePayment,
+
+      shopPaymentMethods,
+      hasPaymentMethods,
+      paymentMethods,
+
       minimumAvailableTime,
       mapQuery,
       GAPIKey,

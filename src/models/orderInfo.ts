@@ -15,6 +15,9 @@ export interface OrderInfoData {
   number: string;
   totalCharge: number;
   total: number;
+  sub_total: number;
+  inclusiveTax: boolean;
+  deliveryFee: number;
   tax: number;
   // options: {[key: string]: [[key: string]: string]}
   timeEstimated: any; // TODO firestore timestamp
@@ -41,6 +44,7 @@ export interface OrderInfoData {
   menuItems: { [key: string]: OrderMenuItemData };
   order: { [key: string]: [number] };
   options: { [key: string]: [string] };
+  payment?: { [key: string]: string };
   type: string;
 }
 

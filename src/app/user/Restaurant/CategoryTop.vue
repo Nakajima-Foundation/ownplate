@@ -6,25 +6,22 @@
           basePath +
           '/r/' +
           restaurantId() +
-          '/cat/' +
-          cat.id +
-          '/' +
-          cat.subCategory
+          (cat.subCategoryCounter > 1
+            ? `/category/${cat.id}/${howtoreceive}`
+            : `/cat/${cat.id}/${cat.subCategory}/${howtoreceive}`)
         "
       >
-        <div @click="closeCategory">
-          <div
-            class="mb-2 w-full rounded-lg border-gray-100 bg-white shadow-none"
-          >
-            <img
-              :src="moBaseUrl + '/images/category/' + cat.id + '.jpg'"
-              @error="smallImageErrorHandler"
-              class="inline-block rounded-lg align-middle"
-            />
-          </div>
-          <div class="mb-2 w-full text-xs font-bold leading-tight text-op-teal">
-            {{ cat.name }}
-          </div>
+        <div
+          class="mb-2 w-full rounded-lg border-gray-100 bg-white shadow-none"
+        >
+          <img
+            :src="moBaseUrl + '/images/category/' + cat.id + '.jpg'"
+            @error="smallImageErrorHandler"
+            class="inline-block rounded-lg align-middle"
+          />
+        </div>
+        <div class="mb-2 w-full text-xs font-bold leading-tight text-op-teal">
+          {{ cat.name }}
         </div>
       </router-link>
     </div>

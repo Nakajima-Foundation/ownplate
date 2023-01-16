@@ -226,6 +226,7 @@
                   "
                   @click="handlePayment(true)"
                   class="b-reset-tw"
+                  :class="orderInfo.isPickup ? 'pickup' : 'takeout'"
                 >
                   <div
                     class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal px-6 shadow"
@@ -305,6 +306,7 @@
                   "
                   @click="handlePayment(false)"
                   class="b-reset-tw"
+                  :class="orderInfo.isPickup ? 'pickup' : 'takeout'"
                 >
                   <div
                     class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal px-6 shadow"
@@ -327,6 +329,25 @@
               <div v-if="mode !== 'mo'">
                 <div class="mt-2 text-sm font-bold text-black text-opacity-60">
                   {{ $t("order.placeOrderNoPaymentNote") }}
+                </div>
+
+                <div v-if="hasPaymentMethods">
+                  <div class="mt-4 text-left text-sm">
+                    {{ $t("shopInfo.paymentMethods") }}:
+                  </div>
+                  <div class="ml-2 text-left text-xs">
+                    <div
+                      v-for="(paymentMethod, k) in paymentMethods"
+                      v-if="shopInfo.paymentMethods[paymentMethod.key]"
+                    >
+                      {{
+                        $t(
+                          "editRestaurant.paymentMethodChoices." +
+                            paymentMethod.key
+                        )
+                      }}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -383,7 +404,7 @@ import ButtonLoading from "@/components/Button/Loading.vue";
 import { db, firestore } from "@/plugins/firebase";
 import { orderPlace } from "@/lib/firebase/functions";
 
-import { order_status } from "@/config/constant";
+import { order_status, paymentMethods } from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
 import { stripeReceipt } from "@/lib/stripe/stripe";
 
@@ -500,6 +521,20 @@ export default {
     },
     userMessageError() {
       return this.shopInfo.acceptUserMessage && this.memo.length > 500;
+    },
+
+    shopPaymentMethods() {
+      return (
+        Object.keys(this.shopInfo.paymentMethods || {}).filter((key) => {
+          return !!this.shopInfo.paymentMethods[key];
+        }) || []
+      );
+    },
+    paymentMethods() {
+      return paymentMethods;
+    },
+    hasPaymentMethods() {
+      return this.paymentMethods.length > 0;
     },
   },
   // end of computed

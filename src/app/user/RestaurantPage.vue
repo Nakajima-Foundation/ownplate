@@ -10,21 +10,31 @@
         v-if="isOpenGroupCategory"
         class="fixed top-0 z-20 h-full w-full bg-white"
       >
-        <div class="flex h-12 justify-between py-2 pl-6 pr-4">
+        <div class="m-4">
           <span class="text-xl font-bold text-black text-opacity-30">
             {{ $t("shopInfo.productCategory") }}
           </span>
-          <a @click="closeGroupCategory">
-            <i class="material-icons mt-1 text-2xl text-black opacity-30"
-              >close</i
-            >
-          </a>
         </div>
         <div class="mx-4 h-[calc(100%-3rem)] overflow-x-scroll">
           <CategoryModal
             class="mb-20"
             :categoryData="categoryData"
-            @closeGroupCategory="closeGroupCategory"
+            :howtoreceive="howtoreceive"
+          />
+        </div>
+      </div>
+
+      <!-- category modal -->
+      <div
+        v-if="isOpenGroupSubCategory"
+        class="fixed top-0 z-20 h-full w-full bg-white"
+      >
+        <div class="mx-4 h-[calc(100%-3rem)] overflow-x-scroll">
+          <SubCategoryModal
+            class="mb-20"
+            :subCategoryData="subCategoryData"
+            :howtoreceive="howtoreceive"
+            :selectedCategory="selectedCategory"
           />
         </div>
       </div>
@@ -39,7 +49,7 @@
           <!-- Left -->
           <div>
             <!-- Cover Image -->
-            <div class="lg:mt-6">
+            <div class="lg:mt-6" v-if="!shopInfo.moCloseDate">
               <img
                 @click.stop="openImage()"
                 :src="coverImage"
@@ -52,6 +62,22 @@
               <!-- Restaurant Profile Photo and Name -->
               <div class="mt-4">
                 <ShopHeader :shopInfo="shopInfo"></ShopHeader>
+                <div v-if="shopInfo.moCloseDate">
+                  <div
+                    class="my-2 rounded-lg bg-red-700 bg-opacity-10 p-3 text-center text-sm font-bold text-red-700"
+                  >
+                    {{
+                      $tc("mobileOrder.shopInfo.closeNote", 0, {
+                        date: moment(shopInfo.moCloseDate.toDate()).format(
+                          "M/D"
+                        ),
+                        time: moment(shopInfo.moCloseDate.toDate()).format(
+                          "HH:mm"
+                        ),
+                      })
+                    }}
+                  </div>
+                </div>
               </div>
 
               <!-- Restaurant Descriptions -->
@@ -138,7 +164,7 @@
               </div>
 
               <!-- Mo Pickup Toggle -->
-              <div class="mx-6 mt-3 mb-2 lg:mx-0">
+              <div class="mx-6 mt-3 mb-2 lg:mx-0" id="mo_top">
                 <div>
                   <MoPickUp
                     :shopInfo="shopInfo"
@@ -153,35 +179,42 @@
               </div>
             </div>
 
-            <!-- category for mo -->
-            <a id="subCategoryTop" />
-            <div v-if="showSubCategory">
-              <div class="mx-6 inline-flex lg:mx-0">
-                <SubCategoryList
-                  :subCategoryData="subCategoryData"
-                  :categoryBathPath="categoryBathPath"
-                  :subCategoryId="subCategory"
-                />
-              </div>
-            </div>
-
             <!-- stock filter Toggle-->
-            <div v-if="showSubCategory && isPickup">
-              <div class="mx-6 mt-4 lg:mx-0">
-                <label class="relative inline-flex cursor-pointer items-center">
-                  <input
-                    type="checkbox"
-                    v-model="isFilterStock"
-                    class="peer sr-only"
-                  />
+            <div>
+              <div v-if="showSubCategory && isPickup">
+                <div class="mx-6 mt-4 grid grid-cols-2 gap-2 lg:mx-0">
+                  <!-- 在庫なし含む -->
                   <div
-                    class="peer h-8 w-14 rounded-full bg-black bg-opacity-20 after:absolute after:top-1 after:left-[4px] after:h-6 after:w-6 after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-op-teal peer-checked:after:translate-x-full"
-                  ></div>
-                  <span
-                    class="ml-3 text-sm font-bold text-black text-opacity-60"
-                    >{{ $t("mobileOrder.shopInfo.showOnlyInStock") }}</span
+                    class="shado-none h-full w-full rounded-lg border-2 bg-white p-2 text-op-teal"
+                    :class="
+                      !isFilterStock
+                        ? 'border-op-teal'
+                        : 'cursor-pointer border-black border-opacity-10'
+                    "
+                    @click="isFilterStock = !isFilterStock"
                   >
-                </label>
+                    <div
+                      class="-mt-0.5 text-center text-lg font-bold tracking-tighter"
+                    >
+                      {{ $t("mobileOrder.shopInfo.showAll") }}
+                    </div>
+                  </div>
+
+                  <!-- 在庫ありのみ -->
+                  <div
+                    class="h-full w-full rounded-lg border-2 bg-white p-2 text-op-teal shadow-none"
+                    :class="
+                      isFilterStock
+                        ? 'border-op-teal '
+                        : 'cursor-pointer border-black border-opacity-10'
+                    "
+                    @click="isFilterStock = !isFilterStock"
+                  >
+                    <div class="-mt-0.5 text-center text-lg font-bold">
+                      {{ $t("mobileOrder.shopInfo.showOnlyInStock") }}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -189,7 +222,12 @@
             <div class="mx-6 mt-3 lg:mx-0">
               <!-- Category Icon -->
               <div v-if="isShowCategoryIcon">
-                <CategoryIcon @openGroupCategory="openGroupCategory" />
+                <CategoryIcon
+                  :howtoreceive="howtoreceive"
+                  :selectedCategory="selectedCategory"
+                  :selectedSubCategory="selectedSubCategory"
+                  :subCategory="subCategory"
+                />
               </div>
               <div v-if="showCategory">
                 <!-- Category view -->
@@ -197,7 +235,10 @@
                   <div class="text-xl font-bold text-black text-opacity-30">
                     {{ $t("shopInfo.productCategory") }}
                   </div>
-                  <CategoryTop :categoryData="categoryData" />
+                  <CategoryTop
+                    :categoryData="categoryData"
+                    :howtoreceive="howtoreceive"
+                  />
                 </div>
               </div>
               <div v-else>
@@ -246,7 +287,7 @@
                 <template v-else>
                   <!-- Menu Items for Mo -->
                   <div
-                    class="mt-3 grid grid-cols-3 gap-2"
+                    class="mt-3 grid min-h-screen grid-cols-3 content-start gap-2"
                     :key="subCategoryKey"
                   >
                     <template v-for="(item, key) in itemLists">
@@ -329,9 +370,9 @@
         <img :src="coverImage" class="rounded-lg shadow-lg" />
       </div>
     </o-modal>
-    <!-- Image Popup-->
+    <!-- Image Popup ??-->
     <o-modal :active.sync="categoryPopup" :width="488" scroll="keep">
-      <div class="px-2 text-center" @click.stop="closeCategory()">
+      <div class="px-2 text-center">
         <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
           <template v-for="(title, key) in titleLists">
             <a
@@ -354,6 +395,7 @@ import {
   defineComponent,
   ref,
   watch,
+  watchEffect,
   computed,
   onBeforeMount,
   onUnmounted,
@@ -375,6 +417,7 @@ import CartButton from "@/app/user/Restaurant/CartButton.vue";
 import Cart from "@/app/user/Restaurant/Cart.vue";
 import Delivery from "@/app/user/Restaurant/Delivery.vue";
 import CategoryModal from "@/app/user/Restaurant/CategoryModal.vue";
+import SubCategoryModal from "@/app/user/Restaurant/SubCategoryModal.vue";
 import CategoryTop from "@/app/user/Restaurant/CategoryTop.vue";
 import CategoryIcon from "@/app/user/Restaurant/CategoryIcon.vue";
 import Titles from "@/app/user/Restaurant/Titles.vue";
@@ -444,6 +487,7 @@ export default defineComponent({
     Cart,
     Delivery,
     CategoryModal,
+    SubCategoryModal,
     CategoryTop,
     CategoryIcon,
     Titles,
@@ -683,11 +727,24 @@ export default defineComponent({
     watch(category, () => {
       if (category.value) {
         loadSubcategory();
+        updateMoUrl();
       }
     });
 
+    const updateMoUrl = () => {
+      const { category, subCategory, restaurantId } = ctx.root.$route.params;
+      if (howtoreceive.value && subCategory) {
+        const newPath = `/${props.moPrefix}/r/${restaurantId}/cat/${category}/${subCategory}/${howtoreceive.value}`;
+        if (newPath !== ctx.root.$route.path) {
+          ctx.root.$router.replace({
+            path: newPath,
+          });
+        }
+      }
+    };
     watch(howtoreceive, (value) => {
       if (isInMo.value) {
+        updateMoUrl();
         orders.value = {};
       }
     });
@@ -701,10 +758,33 @@ export default defineComponent({
       category
     );
 
+    const selectedCategory = computed(() => {
+      if (category.value && categoryData.value) {
+        return (
+          categoryData.value.find((cat) => {
+            return cat.id === category.value;
+          }) || {}
+        );
+      }
+      return {};
+    });
+
+    const selectedSubCategory = computed(() => {
+      if (subCategory.value && subCategoryData.value) {
+        return (
+          subCategoryData.value.find((cat) => {
+            return cat.id === subCategory.value;
+          }) || {}
+        );
+      }
+      return {};
+    });
+
     if (isInMo.value) {
       loadCategory();
       if (category.value) {
         loadSubcategory();
+        updateMoUrl();
       }
     }
     if (!isInMo.value) {
@@ -958,11 +1038,12 @@ export default defineComponent({
         : "";
     });
 
-    const {
-      value: isOpenGroupCategory,
-      toggleOn: openGroupCategory,
-      toggleOff: closeGroupCategory,
-    } = useToggle(false);
+    const isOpenGroupCategory = computed(() => {
+      return ctx.root.$route.params.list === "categories";
+    });
+    const isOpenGroupSubCategory = computed(() => {
+      return ctx.root.$route.params.list === "category";
+    });
 
     const cartButton = ref();
     const isShowCart = computed(() => {
@@ -974,8 +1055,19 @@ export default defineComponent({
 
     const isShowCategoryIcon = computed(() => {
       return (
-        showSubCategory.value && !isOpenGroupCategory.value && !isShowCart.value
+        !!showSubCategory.value &&
+        !isOpenGroupCategory.value &&
+        !isOpenGroupSubCategory.value &&
+        !isShowCart.value
       );
+    });
+
+    watchEffect(() => {
+      if (isShowCategoryIcon.value) {
+        setTimeout(() => {
+          scrollToElementById("mo_top");
+        }, 200);
+      }
     });
 
     watch(isShowCart, (value) => {
@@ -990,6 +1082,7 @@ export default defineComponent({
         document.body.style.position = "";
       }
     });
+    //
     watch(isOpenGroupCategory, (value) => {
       if (value) {
         document.body.style.position = "fixed";
@@ -1000,6 +1093,19 @@ export default defineComponent({
     });
     onUnmounted(() => {
       if (isOpenGroupCategory.value) {
+        document.body.style.position = "";
+      }
+    });
+    watch(isOpenGroupSubCategory, (value) => {
+      if (value) {
+        document.body.style.position = "fixed";
+      } else {
+        document.body.style.position = "";
+        scrollToElementById("subCategoryTop");
+      }
+    });
+    onUnmounted(() => {
+      if (isOpenGroupSubCategory.value) {
         document.body.style.position = "";
       }
     });
@@ -1039,7 +1145,8 @@ export default defineComponent({
 
       isPreview,
 
-      hasCategory,
+      selectedCategory,
+      selectedSubCategory,
 
       didOrderdChange,
 
@@ -1063,9 +1170,8 @@ export default defineComponent({
 
       subCategory,
 
-      openGroupCategory,
-      closeGroupCategory,
       isOpenGroupCategory,
+      isOpenGroupSubCategory,
 
       ...imageUtils(),
 

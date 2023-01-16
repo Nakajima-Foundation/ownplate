@@ -138,9 +138,10 @@ export default defineComponent({
           }
         }
 
+        const copy = JSON.parse(JSON.stringify(defaultShopInfo));
         const loadShopInfo = Object.assign(
           {},
-          defaultShopInfo,
+          copy,
           restaurant_data,
           defaultTax
         );

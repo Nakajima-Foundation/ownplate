@@ -1,1 +1,1 @@
-export const enableNotification = true;
+export const enableNotification = false;

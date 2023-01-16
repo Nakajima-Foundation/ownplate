@@ -108,6 +108,13 @@ export default defineComponent({
           items: [{ name: "北海道", id: 0 }],
         },
         {
+          name: "tohoku",
+          items: [
+            { name: "宮城県", id: 3 },
+            { name: "秋田県", id: 4 },
+          ],
+        },
+        {
           name: "kanto",
           items: [
             { name: "東京都", id: 12 },
@@ -125,6 +132,8 @@ export default defineComponent({
             { name: "愛知県", id: 22 },
             { name: "静岡県", id: 21 },
             { name: "山梨県", id: 18 },
+            { name: "長野県", id: 19 },
+            { name: "岐阜県", id: 20 },
           ],
         },
         {
@@ -151,6 +160,7 @@ export default defineComponent({
           name: "chugoku",
           items: [
             { name: "広島県", id: 33 },
+            { name: "山口県", id: 34 },
             { name: "徳島県", id: 35 },
             { name: "愛媛県", id: 37 },
           ],

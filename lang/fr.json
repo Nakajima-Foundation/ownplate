@@ -29,6 +29,7 @@
     "pickupLabel": "Takeaway Today",
     "soldOut": "Sold out",
     "inStock": "In stock",
+    "closeLabel": "(*Orders will be closed on {date})",
     "admin": {
       "takeout": "Pre order",
       "pickup": "Takeaway",
@@ -37,10 +38,12 @@
     "shopInfo": {
       "takeout": "Online order",
       "pickup": "Takeaway now",
-      "takeoutDesctiption": "Cliquez ici pour passer une commande",
-      "pickupDesctiption": "Cliquez ici pour mettre un article en attente",
+      "takeoutDescription": "Cliquez ici pour passer une commande",
+      "pickupDescription": "Cliquez ici pour mettre un article en attente",
       "pickupNote": "Les commandes à emporter ne peuvent pas être acceptées de {lastOrder} à 23:59. Veuillez passer votre commande après un certain temps.",
-      "showOnlyInStock": "Show only in stock"
+      "showAll": "Show all",
+      "showOnlyInStock": "Show only in stock",
+      "closeNote": "*Orders at this store will be closed at {time} on {date}."
     }
   },
   "profile": {
@@ -175,10 +178,13 @@
     "taxExcluded": "Taxe Exclue",
     "about": "A Propos",
     "required": "Requis",
+    "paymentMethods": "Payment methods",
     "timeToPickup": "Temps de ramassage",
     "preparationTime": "Temps de préparation du plat emporter",
+    "preparationTimeDescription": "Shortest time from order to takeaway",
     "deliveryPreparationTime": "Delivery preparation time",
     "reservationTheDayBefore": "Réservation la veille",
+    "reservationTheDayBeforeDescription": "When do you accept orders",
     "reservationTheDaysBefore": {
       "zero": "Seulement le jour",
       "one": "A partir de 1 jour à l'avance",
@@ -207,7 +213,24 @@
     "minutes": "minutes",
     "withinfive": "Dans les 5 heures",
     "withinaday": "Dans les 24 heures",
-    "withinFiveDays": "Within 5 days",
+    "withinFiveDays": "Within 6 days",
+    "paymentMethodChoices": {
+      "cache": "Cache",
+      "suica": "Suica/Pasmo",
+      "creditCard": "Credit Card",
+      "paypay": "PayPay",
+      "rpay": "Rakuten Pay",
+      "dpay": "d pay",
+      "id": "iD",
+      "quick": "QUICPay",
+      "applepay": "Apple Pay",
+      "line": "LINE Pay",
+      "merpay": "Merpay",
+      "aupay": "au PAY",
+      "alipay": "Alipay",
+      "wechatpay": "WeChat Pay",
+      "unipay": "UnionPay"
+    },
     "profilePhoto": "Photo de Profil du Restaurant",
     "coverPhoto": "Photo de Couverture du Restaurant",
     "setupMap": "Restaurant location",
@@ -362,19 +385,22 @@
     "onlinePayment": "Payment en Ligne",
     "onsitePayment": "Paiement à la Livraison",
     "noPaymentMethod": "Commande en ligne indisponible",
+    "paymentMethods": "Payment methods",
     "minimumAvailableTime": "Temps disponible minimum",
     "noAvailableTime": "Aucun de temps de commande",
-    "deliveryThresholdNotice": "Delivery is possible from orders totaling {price} yen or more.",
+    "deliveryThresholdNotice": "Delivery is possible from orders totaling {price} or more.",
     "deliveryArea": "Delivery area",
     "deliveryAreaInfo": "Details will be displayed on the next order page.",
-    "deliveryFeeInfo": "The delivery fee will be {price} yen.",
-    "deliveryFeeThresholdInfo": "Free shipping for {price} yen and above",
+    "deliveryFeeInfo": "The delivery fee will be {price}.",
+    "deliveryFeeThresholdInfo": "Free shipping for {price} and above",
     "deliveryAreaRadius": "Approximately within {radius} m from the restaurant",
     "buttonDeliveryFeeThreshold": "Can be delivered for {price} JPY or more",
-    "buttonDeliveryFeeDiff": "And {price} yen",
-    "buttonDeliveryFee": "Delivery fee: {price} Yen",
+    "buttonDeliveryFeeDiff": "And {price}",
+    "buttonDeliveryFee": "Delivery fee: {price}",
     "takeout": "Takeaway",
     "delivery": "Delivery",
+    "takeoutDescription": "Pick up at shop",
+    "deliveryDescription": "Delivery to home or work",
     "viewMore": "Voir plus",
     "viewLess": "Proche",
     "productCategory": "Catégories de produits"
@@ -488,6 +514,7 @@
     "total": "Total",
     "yourPayment": "Votre Payment",
     "details": "Details",
+    "print": "Print",
     "thisIsDeliveryOrder": "This is a delivery order",
     "thisIsTakeoutOrder": "This is a takeaway order",
     "alertReqireAddress": "The input is not completed. Please check.",
@@ -781,6 +808,8 @@
     "pleaseChangePublic": "Veuillez passer en mode public après avoir saisi les coordonnées du restaurant.",
     "directory": {
       "status": "Annuaire des restaurants",
+      "requestWarning": "Please apply after setting up payment and opening the restaurant to the public.",
+      "requestingWarning": "Please set up your payment settings and store listing if you have not already done so.",
       "notListed": "Non listé",
       "requestList": "Demande d'inscription",
       "waiting": "En attente d'approbation",
@@ -1025,6 +1054,16 @@
     },
     "requireLogin": {
       "message1": "Vous devez être connecté pour voir votre commande"
+    }
+  },
+  "dialogTips": {
+    "paymentMethods": {
+      "title": "Payment Methods",
+      "body": "This function provides information on payment methods available at the store for customers who have selected 'On Site Payment'"
+    },
+    "phonenumber": {
+      "title": "Phone Number",
+      "body": "Displayed as a phone number for customers on the restaurant's page, and also notified by calling this number if phone notifications are turned on"
     }
   },
   "validationError": {

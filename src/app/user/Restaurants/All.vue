@@ -62,7 +62,7 @@ import { db } from "@/lib/firebase/firebase9";
 import { getDocs, collection, where, limit, query } from "firebase/firestore";
 
 import { RestaurantHeader } from "@/config/header";
-import { JPPrefecture, USStates } from "@/config/constant";
+import { JPPrefecture } from "@/config/constant";
 import { restaurant2AreaObj, sortRestaurantObj } from "@/utils/RestaurantUtils";
 
 export default defineComponent({
