@@ -716,7 +716,7 @@
               <!-- Preparation Time -->
               <div v-for="(paymentMethod, k) in paymentMethods" :key="k">
                 <o-checkbox
-                  v-model="shopInfo.paymentMethods[paymentMethod.key]"
+                  v-model="(shopInfo.paymentMethods||{})[paymentMethod.key]"
                 >
                   <div class="text-sm font-bold">
                     {{

@@ -338,7 +338,7 @@
                   <div class="ml-2 text-left text-xs">
                     <div
                       v-for="(paymentMethod, k) in paymentMethods"
-                      v-if="shopInfo.paymentMethods[paymentMethod.key]"
+                      v-if="(shopInfo.paymentMethods||{})[paymentMethod.key]"
                     >
                       {{
                         $t(
