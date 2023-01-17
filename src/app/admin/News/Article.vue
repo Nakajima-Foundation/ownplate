@@ -70,12 +70,20 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
+
+/deep/ .article-list li {
+  list-style: inside;
+}
+
+/deep/ .article-list > ul > li ul li {
+  margin-left: 20px;
+}
+
 /*
 /deep/ .article-list h2 {
   @apply text-xl font-bold text-black text-opacity-30 mb-8;
 }
-
 /deep/ .article-list ul {
   @apply list-outside list-disc pl-6;
 }
@@ -95,5 +103,5 @@ export default {
 /deep/ .article-list > ul > li ul li {
   @apply text-base font-normal text-black mt-4;
 }
-  */
+*/
 </style>
