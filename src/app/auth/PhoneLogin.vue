@@ -316,9 +316,11 @@ export default defineComponent({
         verificationCode.value = "";
         ctx.emit("dismissed", true);
       } catch (error) {
-        console.log(JSON.stringify(error));
-        console.log("error", error.code);
-        Sentry.captureException(error);
+        // console.log(JSON.stringify(error));
+        // console.log("error", error.code);
+        if (!["auth/code-expired", "auth/invalid-verification-code"].includes(error.code)) {
+          Sentry.captureException(error);
+        }
         errors.value = ["sms." + error.code];
       } finally {
         isLoading.value = false;
