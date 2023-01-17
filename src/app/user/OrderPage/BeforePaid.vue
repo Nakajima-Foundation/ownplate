@@ -534,7 +534,7 @@ export default {
       return paymentMethods;
     },
     hasPaymentMethods() {
-      return this.paymentMethods.length > 0;
+      return this.shopPaymentMethods.length > 0;
     },
   },
   // end of computed
