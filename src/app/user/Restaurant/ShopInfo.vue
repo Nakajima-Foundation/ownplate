@@ -230,7 +230,7 @@
             <ul>
               <li
                 v-for="(paymentMethod, k) in paymentMethods"
-                v-if="shopInfo.paymentMethods[paymentMethod.key]"
+                v-if="(shopInfo.paymentMethods || {})[paymentMethod.key]"
               >
                 {{
                   $t("editRestaurant.paymentMethodChoices." + paymentMethod.key)
@@ -428,7 +428,7 @@ export default defineComponent({
     const shopPaymentMethods = computed(() => {
       return (
         Object.keys(props.shopInfo.paymentMethods || {}).filter((key) => {
-          return !!props.shopInfo.paymentMethods[key];
+          return !!(props.shopInfo.paymentMethods || {})[key];
         }) || []
       );
     });
