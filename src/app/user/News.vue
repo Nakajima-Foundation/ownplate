@@ -55,7 +55,25 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
+/deep/ .article-list h2 {
+  font-weight: bold;  
+}
+/deep/ .article-list ul {
+  list-style: none;
+  margin-top: 8px;
+  margin-bottom: 12px;
+  font-weight: bold;  
+}
+
+/deep/ .article-list > ul > li ul li {
+  list-style: outside;
+  margin-left: 36px;
+  margin-bottom: 4px;
+  font-weight: normal;
+  color: #333333;
+}
+
 /*
   /deep/ .article-list h2 {
   @apply text-xl font-bold text-black text-opacity-30 mb-8;
