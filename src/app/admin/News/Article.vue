@@ -39,7 +39,10 @@
           {{ news.date.replace(/\-/g, ".") }}
         </div>
 
-        <div class="article-list mt-6" v-html="md.render(news.markdown)" />
+        <div
+          class="article-list mt-6 text-base font-bold text-black text-opacity-30"
+          v-html="md.render(news.markdown)"
+        />
       </div>
     </template>
   </div>
@@ -71,13 +74,18 @@ export default {
 </script>
 
 <style lang="css" scoped>
-
-/deep/ .article-list li {
-  list-style: inside;
+/deep/ .article-list ul {
+  list-style: none;
+  margin-top: 8px;
+  margin-bottom: 12px;
 }
 
 /deep/ .article-list > ul > li ul li {
-  margin-left: 20px;
+  list-style: outside;
+  margin-left: 36px;
+  margin-bottom: 4px;
+  font-weight: normal;
+  color: #333333;
 }
 
 /*
