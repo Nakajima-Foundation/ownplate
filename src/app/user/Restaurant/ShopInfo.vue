@@ -175,7 +175,7 @@
               >
                 <div class="w-16">{{ $t("week.short." + day) }}</div>
                 <div class="flex-1">
-                  <template v-if="businessDay[key]">
+                  <template v-if="(businessDay)[key]">
                     <template v-for="data in openTimes[key]">
                       <template v-if="validDate(data)">
                         {{ num2time(data.start) }} - {{ num2time(data.end) }}
@@ -362,9 +362,9 @@ export default defineComponent({
     });
     const businessDay = computed(() => {
       if (isInMo.value && isPickup.value) {
-        return props.shopInfo.moBusinessDay;
+        return props.shopInfo.moBusinessDay || {};
       }
-      return props.shopInfo.businessDay;
+      return props.shopInfo.businessDay || {};
     });
     const openTimes = computed(() => {
       if (isInMo.value && isPickup.value) {
