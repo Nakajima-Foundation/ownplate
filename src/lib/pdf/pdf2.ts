@@ -299,6 +299,13 @@ export const printOrderData = (
     margin: [2, 0],
     alignment: "right",
   });
+  if (orderInfo.tip) {
+    content.push({
+      text: "心づけ(税込): " + priceString(orderInfo.tip || 0),
+      margin: [2, 0],
+      alignment: "right",
+    });
+  }
   if (orderInfo.isDelivery) {
     content.push({
       text: "配送料: " + priceString(orderInfo.deliveryFee || 0),
