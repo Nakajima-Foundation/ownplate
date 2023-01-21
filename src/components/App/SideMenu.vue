@@ -200,7 +200,7 @@ export default defineComponent({
 
     const isAdmin = useIsAdmin(ctx);
     const inLiff = useIsInLiff();
-    const liffBasePath = useLiffBasePath(ctx.root);
+    const liffBasePath = useLiffBasePath();
 
     const home_path = computed(() => {
       // /liff/hoge or /admin/restaurants or /r

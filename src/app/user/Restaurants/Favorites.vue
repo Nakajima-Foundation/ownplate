@@ -94,9 +94,9 @@ export default defineComponent({
     const likes = ref(null);
 
     const isInMo = useIsInMo();
-    const moPrefix = useMoPrefix(ctx.root);
+    const moPrefix = useMoPrefix();
 
-    const mode = routeMode(ctx.root);
+    const mode = routeMode();
 
     const path = computed(() => {
       if (isInMo.value) {

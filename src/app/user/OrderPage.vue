@@ -146,7 +146,7 @@ export default defineComponent({
     const detacher = [];
     const menuNotFound = ref(null);
 
-    const liffBasePath = useLiffBasePath(ctx.root);
+    const liffBasePath = useLiffBasePath();
 
     const orderId = ctx.root.$route.params.orderId;
     const statusKey = computed(() => {

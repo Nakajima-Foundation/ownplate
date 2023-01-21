@@ -44,7 +44,7 @@ export default defineComponent({
       return ctx.root.$route.params.restaurantId;
     });
     const isInMo = useIsInMo();
-    const moPrefix = useMoPrefix(ctx.root);
+    const moPrefix = useMoPrefix();
 
     const path = computed(() => {
       if (isInMo.value) {

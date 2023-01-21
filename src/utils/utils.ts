@@ -370,29 +370,27 @@ export const getMoPrefix = () => {
     );
   });
 };
-export const useMoPrefix = (root: any) => {
+export const useMoPrefix = () => {
   return computed(() => {
     return getMoPrefix();
   });
 };
+export const useLiffIndexId = () => {
+  const route = useRoute();
 
-// TODO
-export const useLiffIndexId = (root: any) => {
   return computed(() => {
-    return root.$route.params.liffIndexId;
+    return route.params.liffIndexId;
   });
 };
 
-// TODO
-export const useLiffBasePath = (root: any) => {
-  const liffIndexId = useLiffIndexId(root);
+export const useLiffBasePath = () => {
+  const liffIndexId = useLiffIndexId();
   return computed(() => {
     return `/liff/${liffIndexId.value}`;
   });
 };
 
-// TODO
-export const routeMode = (root: any) => {
+export const routeMode = () => {
   const isInLiff = useIsInLiff();
   const isInMo = useIsInMo();
 
@@ -411,9 +409,9 @@ export const routeMode = (root: any) => {
 // "" or "/mo" or "/liff/hoge"
 export const useBasePath = (root: any) => {
   const isInLiff = useIsInLiff();
-  const liffBasePath = useLiffBasePath(root);
+  const liffBasePath = useLiffBasePath();
   const isInMo = useIsInMo();
-  const moPrefix = useMoPrefix(root);
+  const moPrefix = useMoPrefix();
 
   return computed(() => {
     if (isInMo.value) {
@@ -430,9 +428,9 @@ export const useBasePath = (root: any) => {
 // "/" or "/mo", or "/liff/hoge"
 export const useTopPath = (root: any) => {
   const inLiff = useIsInLiff();
-  const liffBasePath = useLiffBasePath(root);
+  const liffBasePath = useLiffBasePath();
   const isInMo = useIsInMo();
-  const moPrefix = useMoPrefix(root);
+  const moPrefix = useMoPrefix();
 
   return computed(() => {
     if (isInMo.value) {

@@ -42,7 +42,7 @@ export default defineComponent({
     NotFound,
   },
   setup(props, ctx) {
-    const mode = routeMode(ctx.root);
+    const mode = routeMode();
     const moPrefix = getMoPrefix();
 
     const shopInfo = ref({});

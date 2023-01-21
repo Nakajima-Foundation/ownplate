@@ -129,9 +129,9 @@ export default defineComponent({
 
     const isAdmin = useIsAdmin(ctx);
     const inLiff = useIsInLiff();
-    const liffBasePath = useLiffBasePath(ctx.root);
+    const liffBasePath = useLiffBasePath();
 
-    const mo_prefix = useMoPrefix(ctx.root);
+    const mo_prefix = useMoPrefix();
 
     const home_path = computed(() => {
       return "/" + mo_prefix.value;

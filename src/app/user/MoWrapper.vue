@@ -32,7 +32,7 @@ export default defineComponent({
     Outage,
   },
   setup(_, ctx) {
-    const moPrefix = useMoPrefix(ctx.root);
+    const moPrefix = useMoPrefix();
     const moBasePath = computed(() => {
       return "/" + moPrefix.value;
     });
