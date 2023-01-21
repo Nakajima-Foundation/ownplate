@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "@vue/composition-api";
+import { defineComponent, ref } from "vue";
 import CustomerInfo from "@/components/CustomerInfo.vue";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase/firebase9";

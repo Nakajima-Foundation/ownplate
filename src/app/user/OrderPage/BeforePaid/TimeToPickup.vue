@@ -40,7 +40,7 @@ import {
   ref,
   onMounted,
   watch,
-} from "@vue/composition-api";
+} from "vue";
 
 import moment from "moment-timezone";
 import firebase from "firebase/compat/app";

@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "@vue/composition-api";
+import { defineComponent, ref } from "vue";
 
 import { useIsInMo } from "@/utils/utils";
 

@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "@vue/composition-api";
+import { defineComponent, computed } from "vue";
 
 import ResetPassword from "./Actions/ResetPassword.vue";
 import VerifyEmail from "./Actions/VerifyEmail.vue";

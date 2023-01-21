@@ -7,7 +7,7 @@ import {
   computed,
   ref,
   onUnmounted,
-} from "@vue/composition-api";
+} from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
 import { collection, onSnapshot, where, query } from "firebase/firestore";

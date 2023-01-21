@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "@vue/composition-api";
+import { defineComponent, ref } from "vue";
 import { db } from "@/plugins/firebase";
 import {
   stripeRegion,

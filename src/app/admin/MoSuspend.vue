@@ -132,7 +132,7 @@
 </template>
 
 <script>
-import { defineComponent, computed, ref } from "@vue/composition-api";
+import { defineComponent, computed, ref } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, updateDoc } from "firebase/firestore";
 import MoSuspendButton from "./MoSuspendButton.vue";

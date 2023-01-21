@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent } from "vue";
 import { auth } from "@/lib/firebase/firebase9";
 import { applyActionCode } from "firebase/auth";
 

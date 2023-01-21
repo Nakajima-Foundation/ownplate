@@ -21,7 +21,7 @@ import VueQrcode from "@chenfengyuan/vue-qrcode";
 import * as Sentry from "@sentry/vue";
 import { BrowserTracing } from "@sentry/tracing";
 
-import VueCompositionAPI from "@vue/composition-api";
+// import VueCompositionAPI from "vue";
 
 // components
 import App from "@/components/App.vue";
@@ -51,7 +51,7 @@ Vue.prototype.$GMaps = {
 // mixin
 Vue.mixin(mixin);
 
-Vue.use(VueCompositionAPI);
+// Vue.use(VueCompositionAPI);
 Vue.use(SocialSharing);
 Vue.use(Croppa);
 Vue.use(VueClipboard);

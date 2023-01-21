@@ -23,7 +23,7 @@
 // import firebase from "firebase/compat/app";
 import { DocumentData } from "firebase/firestore";
 
-import { defineComponent, ref, computed, watch } from "@vue/composition-api";
+import { defineComponent, ref, computed, watch } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc, updateDoc } from "firebase/firestore";

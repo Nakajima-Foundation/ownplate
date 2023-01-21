@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { defineComponent, computed } from "@vue/composition-api";
+import { defineComponent, computed } from "vue";
 import { previewLink } from "@/utils/utils";
 
 export default defineComponent({

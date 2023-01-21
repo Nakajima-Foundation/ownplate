@@ -47,7 +47,7 @@ import {
   computed,
   onUnmounted,
   watch,
-} from "@vue/composition-api";
+} from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import {
   collectionGroup,

@@ -29,7 +29,7 @@ import {
   computed,
   watch,
   onUnmounted,
-} from "@vue/composition-api";
+} from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc, query, onSnapshot } from "firebase/firestore";
 import { stripeDeleteCard } from "@/lib/firebase/functions";

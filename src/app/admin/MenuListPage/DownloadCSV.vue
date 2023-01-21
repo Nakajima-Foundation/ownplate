@@ -12,7 +12,7 @@
   </div>
 </template>
 <script>
-import { defineComponent, computed, ref } from "@vue/composition-api";
+import { defineComponent, computed, ref } from "vue";
 import moment from "moment";
 
 import { db } from "@/lib/firebase/firebase9";

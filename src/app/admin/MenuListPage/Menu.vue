@@ -200,7 +200,7 @@
 </template>
 
 <script>
-import { defineComponent, computed } from "@vue/composition-api";
+import { defineComponent, computed } from "vue";
 import { db } from "@/plugins/firebase";
 import Price from "@/components/Price";
 import { useAdminUids, smallImageErrorHandler } from "@/utils/utils";

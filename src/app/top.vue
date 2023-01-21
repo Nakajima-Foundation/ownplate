@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent } from "vue";
 
 import Lp from "@/app/home/Lp.vue";
 import LpAdmin from "@/app/home/LpAdmin.vue";

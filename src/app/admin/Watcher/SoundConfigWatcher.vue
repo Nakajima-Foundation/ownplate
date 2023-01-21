@@ -1,7 +1,7 @@
 <template></template>
 
 <script lang="ts">
-import { defineComponent, watch } from "@vue/composition-api";
+import { defineComponent, watch } from "vue";
 
 import { soundFiles } from "@/config/constant";
 import { getSoundIndex } from "@/utils/utils";

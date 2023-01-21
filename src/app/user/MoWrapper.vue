@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed } from "@vue/composition-api";
+import { defineComponent, ref, computed } from "vue";
 
 import NotFound from "@/components/NotFound.vue";
 import Outage from "@/app/user/Outage.vue";

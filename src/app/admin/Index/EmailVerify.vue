@@ -31,7 +31,7 @@
   </div>
 </template>
 <script>
-import { defineComponent, ref } from "@vue/composition-api";
+import { defineComponent, ref } from "vue";
 import { auth } from "@/lib/firebase/firebase9";
 import { sendEmailVerification } from "firebase/auth";
 import { useUser } from "@/utils/utils";

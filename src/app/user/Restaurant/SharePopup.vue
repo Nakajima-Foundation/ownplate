@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "@vue/composition-api";
+import { defineComponent, ref } from "vue";
 
 import SharingButtons from "@/app/user/Common/SharingButtons.vue";
 import { shareUrl, useBasePath } from "@/utils/utils";

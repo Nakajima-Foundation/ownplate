@@ -1,4 +1,4 @@
-import { ref, computed } from "@vue/composition-api";
+import { ref, computed } from "vue";
 import firebase from "firebase/app";
 import { db } from "@/lib/firebase/firebase9";
 import {

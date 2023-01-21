@@ -19,7 +19,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, computed } from "@vue/composition-api";
+import { defineComponent, ref, computed } from "vue";
 import PartnersContact from "../Partners/Contact.vue";
 import { getPartner } from "@/utils/utils";
 import { ShopOwnerData } from "@/models/ShopOwner";

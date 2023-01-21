@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent } from "vue";
 import ButtonLoading from "@/components/Button/Loading.vue";
 
 export default defineComponent({

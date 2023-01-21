@@ -112,7 +112,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed } from "@vue/composition-api";
+import { defineComponent, ref, computed } from "vue";
 import { moBaseUrl } from "@/config/project";
 
 import {

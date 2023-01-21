@@ -54,7 +54,7 @@ import {
   ref,
   computed,
   onUnmounted,
-} from "@vue/composition-api";
+} from "vue";
 import firebase from "firebase/compat/app";
 import moment from "moment-timezone";
 

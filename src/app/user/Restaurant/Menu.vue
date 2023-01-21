@@ -264,7 +264,7 @@ import {
   watch,
   computed,
   onMounted,
-} from "@vue/composition-api";
+} from "vue";
 
 import Price from "@/components/Price.vue";
 import SharePopup from "@/app/user/Restaurant/SharePopup.vue";

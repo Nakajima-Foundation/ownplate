@@ -51,7 +51,7 @@ import {
   computed,
   watch,
   onUnmounted,
-} from "@vue/composition-api";
+} from "vue";
 import { db } from "@/plugins/firebase";
 import DownloadCsv from "@/components/DownloadCSV";
 import moment from "moment";

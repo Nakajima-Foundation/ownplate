@@ -399,7 +399,7 @@ import {
   computed,
   onBeforeMount,
   onUnmounted,
-} from "@vue/composition-api";
+} from "vue";
 
 import moment from "moment-timezone";
 

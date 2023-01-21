@@ -1,4 +1,4 @@
-import { defineComponent, computed } from "@vue/composition-api";
+import { defineComponent, computed } from "vue";
 import { useBasePath, smallImageErrorHandler } from "@/utils/utils";
 import { moBaseUrl } from "@/config/project";
 

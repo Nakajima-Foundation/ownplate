@@ -583,7 +583,7 @@ import {
   computed,
   onUnmounted,
   reactive,
-} from "@vue/composition-api";
+} from "vue";
 import { db } from "@/plugins/firebase";
 import firebase from "firebase/compat/app";
 

@@ -92,7 +92,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, onUnmounted } from "@vue/composition-api";
+import { defineComponent, ref, onUnmounted } from "vue";
 import { db } from "@/plugins/firebase";
 
 import { lineAuthURL, lineVerify } from "@/lib/line/line";

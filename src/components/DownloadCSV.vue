@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed } from "@vue/composition-api";
+import { defineComponent, ref, computed } from "vue";
 import { data2csv } from "@/utils/csv";
 
 export default defineComponent({

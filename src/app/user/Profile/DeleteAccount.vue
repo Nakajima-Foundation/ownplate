@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, watch } from "@vue/composition-api";
+import { defineComponent, ref, computed, watch } from "vue";
 import PhoneLogin from "@/app/auth/PhoneLogin";
 import { getAuth, deleteUser } from "firebase/auth";
 

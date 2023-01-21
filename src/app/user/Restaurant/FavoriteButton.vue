@@ -24,7 +24,7 @@ import {
   ref,
   computed,
   onUnmounted,
-} from "@vue/composition-api";
+} from "vue";
 
 import { db, firestore } from "@/plugins/firebase";
 import { useIsInMo, useMoPrefix } from "@/utils/utils";

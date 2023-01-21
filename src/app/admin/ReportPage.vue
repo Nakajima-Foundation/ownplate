@@ -200,7 +200,7 @@ import {
   computed,
   watch,
   onUnmounted,
-} from "@vue/composition-api";
+} from "vue";
 import moment from "moment";
 
 import BackButton from "@/components/BackButton.vue";

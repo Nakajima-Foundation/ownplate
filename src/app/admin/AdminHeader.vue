@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import { defineComponent, computed, ref } from "@vue/composition-api";
+import { defineComponent, computed, ref } from "vue";
 import BackButton from "@/components/BackButton.vue";
 import NotificationIndex from "./Notifications/Index.vue";
 import PreviewLink from "@/app/admin/common/PreviewLink.vue";

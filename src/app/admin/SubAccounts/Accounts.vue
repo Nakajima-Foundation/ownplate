@@ -120,7 +120,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, onUnmounted, watch } from "@vue/composition-api";
+import { defineComponent, ref, onUnmounted, watch } from "vue";
 
 import { db } from "@/plugins/firebase";
 import {

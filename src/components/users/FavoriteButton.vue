@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent } from "vue";
 import { useBasePath } from "@/utils/utils";
 import { useIsInMo } from "@/utils/utils";
 

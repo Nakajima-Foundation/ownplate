@@ -1,4 +1,4 @@
-import { ref, onUnmounted } from "@vue/composition-api";
+import { ref, onUnmounted } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, collection, onSnapshot, setDoc } from "firebase/firestore";
 

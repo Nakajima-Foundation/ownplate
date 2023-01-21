@@ -140,7 +140,7 @@
   </div>
 </template>
 <script>
-import { defineComponent, computed, ref, watch } from "@vue/composition-api";
+import { defineComponent, computed, ref, watch } from "vue";
 
 import { arraySum, useIsInMo } from "@/utils/utils";
 

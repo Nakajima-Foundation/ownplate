@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed } from "@vue/composition-api";
+import { defineComponent, ref, computed } from "vue";
 
 import * as pdf from "@/lib/pdf/pdf";
 import { usePhoneNumber, shareUrl, useBasePath } from "@/utils/utils";

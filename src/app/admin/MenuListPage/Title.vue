@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import { defineComponent, computed } from "@vue/composition-api";
+import { defineComponent, computed } from "vue";
 import { useAdminUids } from "@/utils/utils";
 
 export default defineComponent({

@@ -125,7 +125,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, watch } from "@vue/composition-api";
+import { defineComponent, ref, watch } from "vue";
 import { auth } from "@/lib/firebase/firebase9";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useUser } from "@/utils/utils";

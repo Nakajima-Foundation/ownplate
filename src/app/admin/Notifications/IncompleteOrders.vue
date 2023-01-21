@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { defineComponent, computed } from "@vue/composition-api";
+import { defineComponent, computed } from "vue";
 
 import { isNull } from "@/utils/utils";
 import { midNight } from "@/utils/dateUtils";

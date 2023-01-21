@@ -117,7 +117,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed } from "@vue/composition-api";
+import { defineComponent, ref, computed } from "vue";
 
 import { db } from "@/plugins/firebase";
 import { order_status, order_status_for_form } from "@/config/constant";

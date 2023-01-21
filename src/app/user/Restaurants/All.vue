@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "@vue/composition-api";
+import { defineComponent, ref } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
 import { getDocs, collection, where, limit, query } from "firebase/firestore";

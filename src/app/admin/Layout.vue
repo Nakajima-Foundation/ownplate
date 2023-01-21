@@ -44,7 +44,7 @@ import {
   computed,
   watch,
   onUnmounted,
-} from "@vue/composition-api";
+} from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, onSnapshot, getDoc, DocumentData } from "firebase/firestore";
 

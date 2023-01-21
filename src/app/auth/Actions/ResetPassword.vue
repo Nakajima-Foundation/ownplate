@@ -100,7 +100,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, computed } from "@vue/composition-api";
+import { defineComponent, ref, computed } from "vue";
 
 import { auth } from "@/lib/firebase/firebase9";
 import { verifyPasswordResetCode, confirmPasswordReset } from "firebase/auth";

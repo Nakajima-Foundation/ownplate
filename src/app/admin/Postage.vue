@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "@vue/composition-api";
+import { defineComponent, ref } from "vue";
 import { db, firestore } from "@/plugins/firebase";
 import { useAdminUids, notFoundResponse, getRestaurantId } from "@/utils/utils";
 import { checkShopAccount } from "@/utils/userPermission";

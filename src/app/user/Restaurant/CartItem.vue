@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import { defineComponent, computed } from "@vue/composition-api";
+import { defineComponent, computed } from "vue";
 import {
   itemOptionCheckbox2options,
   getPriceWithTax,

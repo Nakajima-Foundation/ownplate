@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent } from "vue";
 import { smallImageErrorHandler } from "@/utils/utils";
 import { moBaseUrl } from "@/config/project";
 

@@ -4,7 +4,7 @@
   </div>
 </template>
 <script>
-import { defineComponent, ref, computed, watch } from "@vue/composition-api";
+import { defineComponent, ref, computed, watch } from "vue";
 
 export default defineComponent({
   setup(props, ctx) {

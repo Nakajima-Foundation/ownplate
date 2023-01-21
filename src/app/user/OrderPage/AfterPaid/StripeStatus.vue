@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { defineComponent, computed } from "@vue/composition-api";
+import { defineComponent, computed } from "vue";
 import { order_status } from "@/config/constant";
 
 export default defineComponent({

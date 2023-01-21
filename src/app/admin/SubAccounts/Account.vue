@@ -56,7 +56,7 @@ import {
   onUnmounted,
   watch,
   computed,
-} from "@vue/composition-api";
+} from "vue";
 
 import BackButton from "@/components/BackButton.vue";
 import { db } from "@/plugins/firebase";

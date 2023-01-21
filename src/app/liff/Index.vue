@@ -36,7 +36,7 @@
 import firebase from "firebase/compat/app";
 import { DocumentData } from "firebase/firestore";
 
-import { defineComponent, ref } from "@vue/composition-api";
+import { defineComponent, ref } from "vue";
 
 import { db } from "@/plugins/firebase";
 

@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent } from "vue";
 
 import TransactionsActContents from "@/app/user/TransactionsAct/Contents.vue";
 

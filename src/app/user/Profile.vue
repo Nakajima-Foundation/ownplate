@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import { defineComponent, computed } from "@vue/composition-api";
+import { defineComponent, computed } from "vue";
 
 import { auth } from "@/lib/firebase/firebase9";
 import { signOut } from "firebase/auth";

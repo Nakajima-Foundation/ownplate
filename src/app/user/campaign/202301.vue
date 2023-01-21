@@ -102,7 +102,7 @@
 </template>
 
 <script>
-import { defineComponent, onMounted } from "@vue/composition-api";
+import { defineComponent, onMounted } from "vue";
 import { moBaseUrl } from "@/config/project";
 
 export default defineComponent({

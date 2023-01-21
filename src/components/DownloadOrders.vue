@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { defineComponent, computed } from "@vue/composition-api";
+import { defineComponent, computed } from "vue";
 import DownloadCsv from "@/components/DownloadCSV.vue";
 import moment from "moment";
 import { nameOfOrder } from "@/utils/strings";

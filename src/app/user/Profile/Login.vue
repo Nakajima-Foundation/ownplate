@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, watch } from "@vue/composition-api";
+import { defineComponent, ref, computed, watch } from "vue";
 import PhoneLogin from "@/app/auth/PhoneLogin";
 
 import { useIsInMo } from "@/utils/utils";

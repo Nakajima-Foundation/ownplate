@@ -159,7 +159,7 @@ import {
   watch,
   computed,
   onMounted,
-} from "@vue/composition-api";
+} from "vue";
 
 import { db, auth } from "@/lib/firebase/firebase9";
 import {

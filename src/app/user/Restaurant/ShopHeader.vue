@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { defineComponent, computed } from "@vue/composition-api";
+import { defineComponent, computed } from "vue";
 
 import { resizedProfileImage } from "@/utils/utils";
 

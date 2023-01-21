@@ -191,7 +191,7 @@ import {
   computed,
   watch,
   onUnmounted,
-} from "@vue/composition-api";
+} from "vue";
 import moment from "moment-timezone";
 
 import BackButton from "@/components/BackButton.vue";

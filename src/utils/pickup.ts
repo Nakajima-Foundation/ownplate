@@ -1,4 +1,4 @@
-import { computed, Ref, ComputedRef } from "@vue/composition-api";
+import { computed, Ref, ComputedRef } from "vue";
 import { midNight } from "@/utils/dateUtils";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import {

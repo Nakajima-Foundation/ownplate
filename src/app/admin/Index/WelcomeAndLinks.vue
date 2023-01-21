@@ -61,7 +61,7 @@
   </div>
 </template>
 <script>
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent } from "vue";
 import { isJapan } from "@/utils/utils";
 export default defineComponent({
   setup() {
