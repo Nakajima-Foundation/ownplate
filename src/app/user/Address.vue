@@ -68,7 +68,7 @@ export default defineComponent({
     BackButton,
   },
   setup(_, ctx) {
-    const basePath = useBasePath(ctx.root);
+    const basePath = useBasePath();
     const customerInfo = ref({});
 
     const docPath = computed(() => {

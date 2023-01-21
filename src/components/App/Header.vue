@@ -44,7 +44,7 @@ export default defineComponent({
 
     const isInMo = useIsInMo();
 
-    const topPath = useTopPath(ctx.root);
+    const topPath = useTopPath();
 
     const restaurantId = useRestaurantId();
 

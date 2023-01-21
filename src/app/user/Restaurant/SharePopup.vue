@@ -105,7 +105,7 @@ export default defineComponent({
   setup(props, ctx) {
     const sharePopup = ref(false);
 
-    const basePath = useBasePath(ctx.root);
+    const basePath = useBasePath();
     const url = shareUrl(ctx.root, basePath.value) + (props.suffix || "");
     const copied = ref(false);
     const copyError = ref(false);

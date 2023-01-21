@@ -43,7 +43,7 @@ export default defineComponent({
     const downloadMenu = async () => {
       try {
         downloadSubmitting.value = true;
-        const basePath = useBasePath(ctx.root);
+        const basePath = useBasePath();
         const dl = await pdf.menuDownload(
           props.shopInfo,
           props.menuObj,

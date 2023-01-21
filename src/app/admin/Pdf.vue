@@ -45,7 +45,7 @@ export default defineComponent({
 
     const { nationalPhoneNumber } = useNationalPhoneNumber(props.shopInfo);
     const download = () => {
-      const basePath = useBasePath(ctx.root);
+      const basePath = useBasePath();
       pdf.menuDownload(
         props.shopInfo,
         menuObj.value,

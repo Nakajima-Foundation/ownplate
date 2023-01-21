@@ -15,8 +15,8 @@ export default (name: string) => {
         required: true,
       },
     },
-    setup(props, ctx) {
-      const basePath = useBasePath(ctx.root);
+    setup() {
+      const basePath = useBasePath();
 
       return {
         basePath,

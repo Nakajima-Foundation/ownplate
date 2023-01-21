@@ -20,7 +20,7 @@ import { useBasePath } from "@/utils/utils";
 
 export default defineComponent({
   setup(_, ctx) {
-    const basePath = useBasePath(ctx.root);
+    const basePath = useBasePath();
     return {
       basePath,
     };

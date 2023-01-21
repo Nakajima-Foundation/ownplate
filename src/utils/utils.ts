@@ -405,9 +405,8 @@ export const routeMode = () => {
   });
 };
 
-// TODO
 // "" or "/mo" or "/liff/hoge"
-export const useBasePath = (root: any) => {
+export const useBasePath = () => {
   const isInLiff = useIsInLiff();
   const liffBasePath = useLiffBasePath();
   const isInMo = useIsInMo();
@@ -424,9 +423,8 @@ export const useBasePath = (root: any) => {
   });
 };
 
-// TODO
 // "/" or "/mo", or "/liff/hoge"
-export const useTopPath = (root: any) => {
+export const useTopPath = () => {
   const inLiff = useIsInLiff();
   const liffBasePath = useLiffBasePath();
   const isInMo = useIsInMo();

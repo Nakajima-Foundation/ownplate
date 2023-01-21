@@ -90,7 +90,7 @@ export default defineComponent({
     return Object.assign(RestaurantHeader, { title });
   },
   setup(props, ctx) {
-    const basePath = useBasePath(ctx.root);
+    const basePath = useBasePath();
     const likes = ref(null);
 
     const isInMo = useIsInMo();

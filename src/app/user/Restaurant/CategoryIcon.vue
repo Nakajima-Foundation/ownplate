@@ -51,7 +51,7 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
-    const basePath = useBasePath(ctx.root);
+    const basePath = useBasePath();
     return {
       basePath,
     };

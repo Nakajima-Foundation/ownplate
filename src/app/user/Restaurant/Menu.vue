@@ -343,7 +343,7 @@ export default defineComponent({
       (isInMo.value ? props.menuLinkBathPath : "") + "/menus/" + props.item.id;
     const restaurantId = ctx.root.$route.params.restaurantId;
 
-    const basePath = useBasePath(ctx.root);
+    const basePath = useBasePath();
 
     const isSoldOut = computed(() => {
       return !!props.item.soldOut;

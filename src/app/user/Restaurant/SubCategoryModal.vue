@@ -70,7 +70,7 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
-    const basePath = useBasePath(ctx.root);
+    const basePath = useBasePath();
     const { category, selectedSubCategory } = ctx.root.$route.params;
     return {
       basePath,

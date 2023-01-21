@@ -79,8 +79,8 @@ export default defineComponent({
   setup(props, ctx) {
     const orders = ref([]);
 
-    const basePath = useBasePath(ctx.root);
-    const topPath = useTopPath(ctx.root);
+    const basePath = useBasePath();
+    const topPath = useTopPath();
 
     const isInMo = useIsInMo();
     const moPrefix = getMoPrefix();
