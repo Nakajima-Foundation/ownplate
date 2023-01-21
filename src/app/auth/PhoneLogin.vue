@@ -210,7 +210,7 @@ export default defineComponent({
 
     let recaptchaVerifier = null;
 
-    const isInMo = useIsInMo(ctx.root);
+    const isInMo = useIsInMo();
 
     onMounted(() => {
       recaptchaVerifier = new RecaptchaVerifier(

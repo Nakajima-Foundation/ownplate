@@ -51,7 +51,7 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
-    const isInMo = useIsInMo(ctx.root);
+    const isInMo = useIsInMo();
     const orderStatusKey = computed(() => {
       return Object.keys(order_status).reduce((result, key) => {
         return order_status[key] === props.orderInfo.status ? key : result;

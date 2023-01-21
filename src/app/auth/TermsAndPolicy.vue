@@ -33,18 +33,18 @@ import { useIsInMo, getMoPrefix } from "@/utils/utils";
 
 export default defineComponent({
   setup(_, ctx) {
-    const isInMo = useIsInMo(ctx.root);
+    const isInMo = useIsInMo();
 
     const termsPath = computed(() => {
       if (isInMo.value) {
-        return "/" + getMoPrefix(ctx.root) + "/terms";
+        return "/" + getMoPrefix() + "/terms";
       } else {
         return "/terms/user";
       }
     });
     const policyPath = computed(() => {
       if (isInMo.value) {
-        return "/" + getMoPrefix(ctx.root) + "/privacy";
+        return "/" + getMoPrefix() + "/privacy";
       } else {
         return "/privacy";
       }

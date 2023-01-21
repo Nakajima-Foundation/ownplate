@@ -43,7 +43,7 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const mode = routeMode(ctx.root);
-    const moPrefix = getMoPrefix(ctx.root);
+    const moPrefix = getMoPrefix();
 
     const shopInfo = ref({});
     const paymentInfo = ref({});

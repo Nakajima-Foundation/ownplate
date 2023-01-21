@@ -338,7 +338,7 @@ export default defineComponent({
   setup(props, ctx) {
     const openMenuFlag = ref(props.initialOpenMenuFlag);
     const imagePopup = ref(false);
-    const isInMo = useIsInMo(ctx.root);
+    const isInMo = useIsInMo();
     const urlSuffix =
       (isInMo.value ? props.menuLinkBathPath : "") + "/menus/" + props.item.id;
     const restaurantId = ctx.root.$route.params.restaurantId;

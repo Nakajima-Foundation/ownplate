@@ -52,7 +52,7 @@ export default defineComponent({
     PhoneLogin,
   },
   setup(_, ctx) {
-    const isInMo = useIsInMo(ctx.root);
+    const isInMo = useIsInMo();
 
     const loginVisible = ref(isInMo.value);
 

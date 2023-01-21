@@ -284,7 +284,7 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
-    const isInMo = useIsInMo(ctx.root);
+    const isInMo = useIsInMo();
 
     const restaurantsId = props.shopInfo.restaurantId;
     const days = daysOfWeek;

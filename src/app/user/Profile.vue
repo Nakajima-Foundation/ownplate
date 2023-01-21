@@ -97,7 +97,7 @@ export default defineComponent({
     };
   },
   setup(props, ctx) {
-    const isInMo = useIsInMo(ctx.root);
+    const isInMo = useIsInMo();
 
     const claims = computed(() => {
       return ctx.root.$store.state.claims;

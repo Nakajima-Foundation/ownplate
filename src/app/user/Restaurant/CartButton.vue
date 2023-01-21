@@ -201,7 +201,7 @@ export default defineComponent({
   emits: ["handleCheckOut", "showCart"],
 
   setup(props, ctx) {
-    const isInMo = useIsInMo(ctx.root);
+    const isInMo = useIsInMo();
     const isShowCart = ref(false);
 
     const totalQuantities = computed(() => {

@@ -69,7 +69,7 @@ export default defineComponent({
     const dayIndex = ref(0);
     const time = ref(0);
 
-    const isInMo = useIsInMo(ctx.root);
+    const isInMo = useIsInMo();
     const isPickup = computed(() => {
       return props.orderInfo.isPickup;
     });

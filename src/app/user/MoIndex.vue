@@ -172,7 +172,7 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
-    const isInMo = useIsInMo(ctx.root);
+    const isInMo = useIsInMo();
 
     const restaurantsObj = ref({});
     const restaurants = ref([]);

@@ -14,7 +14,7 @@ import { useIsInMo } from "@/utils/utils";
 
 export default defineComponent({
   setup(_, ctx) {
-    const isInMo = useIsInMo(ctx.root);
+    const isInMo = useIsInMo();
     return {
       isInMo,
     };

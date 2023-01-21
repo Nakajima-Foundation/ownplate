@@ -27,6 +27,9 @@ import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import isURL from "validator/lib/isURL";
 import isLatLong from "validator/lib/isLatLong";
 
+import { useRoute, useRouter } from "vue-router";
+import { useStore } from "vuex";
+
 export const isNull = <T>(value: T) => {
   return value === null || value === undefined;
 };
@@ -35,6 +38,7 @@ export const isEmpty = <T>(value: T) => {
   return value === null || value === undefined || String(value) === "";
 };
 
+// TODO
 // from mixin
 export const useRestaurantId = (root: any) => {
   return computed(() => {
@@ -42,6 +46,7 @@ export const useRestaurantId = (root: any) => {
   });
 };
 
+// TODO
 export const getRestaurantId = (root: any) => {
   return root.$route.params.restaurantId;
 };
@@ -81,6 +86,7 @@ export const previewLink = (props: any) => {
   });
 };
 
+// TODO
 export const shareUrl = (root: any, prefix: string) => {
   const restaurantId = root.$route.params.restaurantId;
 
@@ -332,42 +338,52 @@ const optionPrice = (option: string) => {
   }
   return 0;
 };
-export const useIsInMo = (root: any) => {
+export const useIsInMo = () => {
+  const route = useRoute();
+
   return computed(() => {
-    if (location.pathname !== root.$route.path) {
+    if (location.pathname !== route.path) {
       return null;
     }
     return mo_prefixes.some((prefix) => {
       return (
-        (root.$route.fullPath || "").startsWith(`/${prefix}/`) ||
-        (root.$route.fullPath || "") === `/${prefix}`
+        (route.fullPath || "").startsWith(`/${prefix}/`) ||
+        (route.fullPath || "") === `/${prefix}`
       );
     });
   });
 };
-export const useIsInLiff = (root: any) => {
+export const useIsInLiff = () => {
+  const route = useRoute();
+
   return computed(() => {
-    return (root.$route.fullPath || "").startsWith(`/liff/`);
+    return (route.fullPath || "").startsWith(`/liff/`);
   });
 };
-export const getMoPrefix = (root: any) => {
+export const getMoPrefix = () => {
+  const route = useRoute();
+
   return mo_prefixes.find((prefix) => {
     return (
-      (root.$route.fullPath || "").startsWith(`/${prefix}/`) ||
-      (root.$route.fullPath || "") === `/${prefix}`
+      (route.fullPath || "").startsWith(`/${prefix}/`) ||
+      (route.fullPath || "") === `/${prefix}`
     );
   });
 };
 export const useMoPrefix = (root: any) => {
   return computed(() => {
-    return getMoPrefix(root);
+    return getMoPrefix();
   });
 };
+
+// TODO
 export const useLiffIndexId = (root: any) => {
   return computed(() => {
     return root.$route.params.liffIndexId;
   });
 };
+
+// TODO
 export const useLiffBasePath = (root: any) => {
   const liffIndexId = useLiffIndexId(root);
   return computed(() => {
@@ -375,9 +391,10 @@ export const useLiffBasePath = (root: any) => {
   });
 };
 
+// TODO
 export const routeMode = (root: any) => {
-  const isInLiff = useIsInLiff(root);
-  const isInMo = useIsInMo(root);
+  const isInLiff = useIsInLiff();
+  const isInMo = useIsInMo();
 
   return computed(() => {
     if (isInMo.value) {
@@ -390,11 +407,12 @@ export const routeMode = (root: any) => {
   });
 };
 
+// TODO
 // "" or "/mo" or "/liff/hoge"
 export const useBasePath = (root: any) => {
-  const isInLiff = useIsInLiff(root);
+  const isInLiff = useIsInLiff();
   const liffBasePath = useLiffBasePath(root);
-  const isInMo = useIsInMo(root);
+  const isInMo = useIsInMo();
   const moPrefix = useMoPrefix(root);
 
   return computed(() => {
@@ -407,11 +425,13 @@ export const useBasePath = (root: any) => {
     return "";
   });
 };
+
+// TODO
 // "/" or "/mo", or "/liff/hoge"
 export const useTopPath = (root: any) => {
-  const inLiff = useIsInLiff(root);
+  const inLiff = useIsInLiff();
   const liffBasePath = useLiffBasePath(root);
-  const isInMo = useIsInMo(root);
+  const isInMo = useIsInMo();
   const moPrefix = useMoPrefix(root);
 
   return computed(() => {
@@ -606,6 +626,7 @@ export const useIsLineUser = (ctx: any) => {
   });
 };
 
+// TODO
 export const useInLiff = (ctx: any) => {
   return computed(() => {
     // BY path

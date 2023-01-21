@@ -316,7 +316,7 @@ export default defineComponent({
     const weekday = d.getDay();
     const today = d;
 
-    const isInMo = useIsInMo(ctx.root);
+    const isInMo = useIsInMo();
 
     const mapWidth = computed(() => {
       // two rows

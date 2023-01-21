@@ -42,7 +42,7 @@ export default defineComponent({
       },
     };
 
-    const isInMo = useIsInMo(ctx.root);
+    const isInMo = useIsInMo();
 
     const topPath = useTopPath(ctx.root);
 

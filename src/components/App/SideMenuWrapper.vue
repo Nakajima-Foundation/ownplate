@@ -21,7 +21,7 @@ export default defineComponent({
   setup(_, ctx) {
     const sideMenu = ref();
 
-    const isInMo = useIsInMo(ctx.root);
+    const isInMo = useIsInMo();
 
     const handleOpen = () => {
       sideMenu.value.handleOpen();

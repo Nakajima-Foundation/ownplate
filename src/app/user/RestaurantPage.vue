@@ -563,7 +563,7 @@ export default defineComponent({
 
     const multiple = store.getters.stripeRegion.multiple;
 
-    const isInMo = useIsInMo(ctx.root);
+    const isInMo = useIsInMo();
 
     const defaultHowToReceive = (() => {
       // for 333

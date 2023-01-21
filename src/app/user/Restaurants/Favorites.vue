@@ -93,7 +93,7 @@ export default defineComponent({
     const basePath = useBasePath(ctx.root);
     const likes = ref(null);
 
-    const isInMo = useIsInMo(ctx.root);
+    const isInMo = useIsInMo();
     const moPrefix = useMoPrefix(ctx.root);
 
     const mode = routeMode(ctx.root);

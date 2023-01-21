@@ -82,8 +82,8 @@ export default defineComponent({
     const basePath = useBasePath(ctx.root);
     const topPath = useTopPath(ctx.root);
 
-    const isInMo = useIsInMo(ctx.root);
-    const moPrefix = getMoPrefix(ctx.root);
+    const isInMo = useIsInMo();
+    const moPrefix = getMoPrefix();
 
     const uid = computed(() => {
       return ctx.root.$store.getters.uidUser || ctx.root.$store.getters.uidLiff;

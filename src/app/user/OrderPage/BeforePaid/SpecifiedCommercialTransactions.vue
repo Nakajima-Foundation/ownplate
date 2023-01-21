@@ -93,7 +93,7 @@ export default defineComponent({
   },
   emits: ["openTransactionsAct"],
   setup(_, ctx) {
-    const isInMo = useIsInMo(ctx.root);
+    const isInMo = useIsInMo();
     const openTransactionsAct = () => {
       ctx.emit("openTransactionsAct");
     };
