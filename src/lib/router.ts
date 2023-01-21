@@ -1,7 +1,4 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
-import { RouteConfig } from "vue-router";
-Vue.use(VueRouter);
+import { createRouter, createWebHistory } from "vue-router";
 
 import { mo_prefixes } from "@/config/project";
 
@@ -495,7 +492,8 @@ export const customRoutes: CustomRoute[] = [
   },
 ];
 
-const loadComponent = (data: CustomRoute): RouteConfig => {
+//const loadComponent = (data: CustomRoute): RouteConfig => {
+const loadComponent = (data: CustomRoute): any  => {
   const component = () => import("@/app/" + data.component);
   //
   if (data.children) {
@@ -517,9 +515,9 @@ const loadComponent = (data: CustomRoute): RouteConfig => {
 
 const routes = customRoutes.map(loadComponent);
 
-const router = new VueRouter({
-  mode: "history",
-  base: "/",
+const router = createRouter({
+  history: createWebHistory(process.env.BASE_URL),
+  // base: "/",
   routes,
 });
 

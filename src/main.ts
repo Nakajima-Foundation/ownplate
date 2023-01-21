@@ -1,4 +1,6 @@
 // core
+import { createApp } from "vue";
+
 import Vue from "vue";
 import router from "@/lib/router";
 import store from "@/lib/store/index";
@@ -8,14 +10,14 @@ import mixin from "@/mixins/mixin";
 import i18n from "@/plugins/vue-i18n";
 
 // library
-import Oruga from "@oruga-ui/oruga";
+import Oruga from "@oruga-ui/oruga-next";
 import { bulmaConfig } from "@oruga-ui/theme-bulma";
 
 import Croppa from "vue-croppa";
-import SocialSharing from "vue-social-sharing";
+// import SocialSharing from "vue-social-sharing";
 import VueClipboard from "vue-clipboard2";
 import VueMeta from "vue-meta";
-import VueQrcode from "@chenfengyuan/vue-qrcode";
+// import VueQrcode from "@chenfengyuan/vue-qrcode";
 
 // sentry
 import * as Sentry from "@sentry/vue";
@@ -37,31 +39,36 @@ import { GAPIKey } from "@/config/project";
 import "@/assets/css/tailwind.css";
 import "@/assets/css/main.css";
 
-// components
-Vue.component(VueQrcode.name, VueQrcode);
-Vue.component("GMap", GMap);
-Vue.component("GMapInfoWindow", GMapInfoWindow);
-Vue.component("GMapMarker", GMapMarker);
 
-Vue.prototype.$GMaps = {
+const app = createApp(App);
+
+// components
+// app.component(VueQrcode.name, VueQrcode);
+app.component("GMap", GMap);
+app.component("GMapInfoWindow", GMapInfoWindow);
+app.component("GMapMarker", GMapMarker);
+
+/*
+app.prototype.$GMaps = {
   apiKey: GAPIKey,
   loaded: false,
 };
+*/
 
 // mixin
-Vue.mixin(mixin);
+app.mixin(mixin);
 
 // Vue.use(VueCompositionAPI);
-Vue.use(SocialSharing);
-Vue.use(Croppa);
-Vue.use(VueClipboard);
-Vue.use(VueMeta, {});
-Vue.use(Oruga, bulmaConfig);
+// app.use(SocialSharing);
+app.use(Croppa);
+app.use(VueClipboard);
+// app.use(VueMeta, {});
+app.use(Oruga, bulmaConfig);
 
 if (process.env.NODE_ENV !== "development") {
   if (sentryDsn) {
     Sentry.init({
-      Vue,
+      app,
       dsn: sentryDsn,
       integrations: [
         new BrowserTracing({
@@ -77,9 +84,14 @@ if (process.env.NODE_ENV !== "development") {
   }
 }
 
+
+app.mount("#app");
+
+/*
 const app = new Vue({
   router,
   store,
   render: (h) => h(App),
   i18n,
 }).$mount("#app");
+*/

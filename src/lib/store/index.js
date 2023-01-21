@@ -1,9 +1,7 @@
-import Vue from "vue";
-import Vuex from "vuex";
+import { createStore } from "vuex";
+
 import { stripe_regions } from "@/config/constant";
 import moment from "moment";
-
-Vue.use(Vuex);
 
 export const strict = false;
 
@@ -151,7 +149,7 @@ export const mutations = {
 
 export const actions = {};
 
-export default new Vuex.Store({
+export default createStore({
   state,
   getters,
   actions,
