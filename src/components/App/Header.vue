@@ -46,7 +46,7 @@ export default defineComponent({
 
     const topPath = useTopPath(ctx.root);
 
-    const restaurantId = useRestaurantId(ctx.root);
+    const restaurantId = useRestaurantId();
 
     const logoClass = computed(() => {
       if (restaurantId.value && specialLogo[restaurantId.value]) {

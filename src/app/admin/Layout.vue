@@ -91,7 +91,7 @@ export default defineComponent({
     },
   },
   setup(_, ctx) {
-    const restaurantId = useRestaurantId(ctx.root);
+    const restaurantId = useRestaurantId();
     const { uid, ownerUid } = useAdminUids(ctx);
 
     const notificationConfig = ref({

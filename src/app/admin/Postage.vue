@@ -91,7 +91,7 @@ export default defineComponent({
       return notFoundResponse;
     }
 
-    const restaurantId = getRestaurantId(ctx.root);
+    const restaurantId = getRestaurantId();
 
     db.doc(`restaurants/${restaurantId}/ec/postage`)
       .get()

@@ -92,7 +92,7 @@ export default defineComponent({
     const isLiffUser = useIsLiffUser(ctx);
     const liffIndexId = useLiffIndexId();
 
-    const inLiff = useInLiff(ctx);
+    const inLiff = useInLiff();
     const isFriend = ref(undefined);
     const liffConfig = ref(null);
 

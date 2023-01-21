@@ -38,17 +38,17 @@ export const isEmpty = <T>(value: T) => {
   return value === null || value === undefined || String(value) === "";
 };
 
-// TODO
 // from mixin
-export const useRestaurantId = (root: any) => {
+export const useRestaurantId = () => {
+  const route = useRoute();
   return computed(() => {
-    return root.$route.params.restaurantId;
+    return route.params.restaurantId;
   });
 };
 
-// TODO
-export const getRestaurantId = (root: any) => {
-  return root.$route.params.restaurantId;
+export const getRestaurantId = () => {
+  const route = useRoute();
+  return route.params.restaurantId;
 };
 
 export const resizedProfileImage = (
@@ -86,9 +86,9 @@ export const previewLink = (props: any) => {
   });
 };
 
-// TODO
-export const shareUrl = (root: any, prefix: string) => {
-  const restaurantId = root.$route.params.restaurantId;
+export const shareUrl = (prefix: string) => {
+  const route = useRoute();
+  const restaurantId = route.params.restaurantId;
 
   return (
     location.protocol + "//" + location.host + prefix + "/r/" + restaurantId
@@ -624,11 +624,11 @@ export const useIsLineUser = (ctx: any) => {
   });
 };
 
-// TODO
-export const useInLiff = (ctx: any) => {
+export const useInLiff = () => {
+  const route = useRoute();
   return computed(() => {
     // BY path
-    return !!ctx.root.$route.params.liffIndexId;
+    return !!route.params.liffIndexId;
   });
 };
 

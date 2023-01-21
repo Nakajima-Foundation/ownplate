@@ -133,7 +133,7 @@ export default defineComponent({
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
       return notFoundResponse;
     }
-    const restaurantId = getRestaurantId(ctx.root);
+    const restaurantId = getRestaurantId();
 
     const lineId = ctx.root.$route.query.userId;
     const displayName = ctx.root.$route.query.displayName;

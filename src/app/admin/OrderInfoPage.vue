@@ -732,7 +732,7 @@ export default defineComponent({
         deliveryData.value = snapshot.data() || {};
       });
     }
-    const restaurantId = useRestaurantId(ctx.root);
+    const restaurantId = useRestaurantId();
     const orderId = computed(() => {
       return ctx.root.$route.params.orderId;
     });
