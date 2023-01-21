@@ -2,10 +2,9 @@
   <div class="rounded-lg bg-white p-4 shadow">
     <!-- Order Items -->
     <div class="grid grid-cols-1 space-y-4">
-      <template v-for="(orderItem, key) in orderItems">
+      <template v-for="(orderItem, key) in orderItems" :key="orderItem.key">
         <order-item
           :orderItem="orderItem"
-          :key="orderItem.key"
           :editable="editable"
           :available="(editedAvailableOrders || {})[key]"
           @input="updateAvailable"
