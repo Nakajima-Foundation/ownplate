@@ -86,8 +86,8 @@ export default defineComponent({
     const langPopup = ref(false);
 
     const user = useUser(ctx);
-    const isAdmin = useIsAdmin(ctx);
-    const uid = useUid(ctx);
+    const isAdmin = useIsAdmin();
+    const uid = useUid();
 
     const profile_path = computed(() => {
       const path_prefix = isAdmin.value ? "admins" : "users";

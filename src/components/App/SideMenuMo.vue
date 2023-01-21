@@ -124,10 +124,10 @@ import {
 } from "@/utils/utils";
 
 export default defineComponent({
-  setup(_, ctx) {
+  setup() {
     const open = ref(false);
 
-    const isAdmin = useIsAdmin(ctx);
+    const isAdmin = useIsAdmin();
     const inLiff = useIsInLiff();
     const liffBasePath = useLiffBasePath();
 

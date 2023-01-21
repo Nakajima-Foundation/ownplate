@@ -598,14 +598,16 @@ export const getPostOption = (
   );
 };
 
-export const useIsAdmin = (ctx: any) => {
+export const useIsAdmin = () => {
+  const store = useStore();
   return computed(() => {
-    return !!ctx.root.$store.getters.uidAdmin;
+    return !!store.getters.uidAdmin;
   });
 };
-export const useUid = (ctx: any) => {
+export const useUid = () => {
+  const store = useStore();
   const uid = computed(() => {
-    return ctx.root.$store.getters.uid;
+    return store.getters.uid;
   });
   return uid;
 };
