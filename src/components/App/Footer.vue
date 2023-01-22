@@ -78,6 +78,7 @@ import FooterPoweredBy from "@/components/App/FooterPoweredBy.vue";
 
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   components: {
@@ -86,6 +87,7 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const route = useRoute();
+    const { locale } = useI18n({ useScope: 'global' });
     
     const language = ref(regionalSetting.defaultLanguage);
     const languages = regionalSetting.languages;
@@ -102,7 +104,7 @@ export default defineComponent({
 
     const setLang = (lang) => {
       language.value = lang;
-      // ctx.root.$i18n.locale = lang; TODO for Vue3
+      locale.value = lang;
       auth.languageCode = lang;
     };
     const saveLang = (lang) => {
