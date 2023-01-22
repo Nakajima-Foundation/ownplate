@@ -14,7 +14,7 @@ import Oruga from "@oruga-ui/oruga-next";
 import { bulmaConfig } from "@oruga-ui/theme-bulma";
 
 import Croppa from "vue-croppa";
-// import SocialSharing from "vue-social-sharing";
+import VueSocialSharing from "vue-social-sharing";
 import VueMeta from "vue-meta";
 // import VueQrcode from "@chenfengyuan/vue-qrcode";
 import VueQrcode from '@chenfengyuan/vue-qrcode';
@@ -61,7 +61,7 @@ app.prototype.$GMaps = {
 app.mixin(mixin);
 
 // Vue.use(VueCompositionAPI);
-// app.use(SocialSharing);
+app.use(VueSocialSharing);
 app.use(Croppa);
 // app.use(VueMeta, {});
 app.use(Oruga, bulmaConfig);
