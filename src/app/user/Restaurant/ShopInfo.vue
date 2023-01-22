@@ -228,14 +228,15 @@
           </div>
           <div class="mt-1 ml-1">
             <ul>
-              <li
-                v-for="(paymentMethod, k) in paymentMethods"
-                v-if="(shopInfo.paymentMethods || {})[paymentMethod.key]"
-              >
-                {{
+              <template v-for="(paymentMethod, k) in paymentMethods" :key="k">
+                <li
+                  v-if="(shopInfo.paymentMethods || {})[paymentMethod.key]"
+                  >
+                  {{
                   $t("editRestaurant.paymentMethodChoices." + paymentMethod.key)
-                }}
-              </li>
+                  }}
+                </li>
+              </template>
             </ul>
           </div>
         </div>
