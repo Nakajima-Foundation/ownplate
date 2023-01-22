@@ -338,14 +338,15 @@
                   <div class="ml-2 text-left text-xs">
                     <div
                       v-for="(paymentMethod, k) in paymentMethods"
-                      v-if="(shopInfo.paymentMethods||{})[paymentMethod.key]"
                     >
+                      <div v-if="(shopInfo.paymentMethods||{})[paymentMethod.key]">
                       {{
                         $t(
                           "editRestaurant.paymentMethodChoices." +
                             paymentMethod.key
                         )
                       }}
+                    </div>
                     </div>
                   </div>
                 </div>

@@ -27,7 +27,7 @@ import {
 } from "vue";
 
 import { db, firestore } from "@/plugins/firebase";
-import { useIsInMo, useMoPrefix, useRestaurantId, useIsUser } from "@/utils/utils";
+import { useIsInMo, useMoPrefix, useRestaurantId, useUserData } from "@/utils/utils";
 
 export default defineComponent({
   components: {},
@@ -37,20 +37,20 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props, ctx) {
+  setup(props) {
     const review = ref({});
     let detacher = null;
     const restaurantId = useRestaurantId();
 
     const isInMo = useIsInMo();
     const moPrefix = useMoPrefix();
-    const isUser = useIsUser();
+    const { isUser, uid } = useUserData();
 
     const path = computed(() => {
       if (isInMo.value) {
-        return `users/${ctx.root.user.uid}/groups/${moPrefix.value}/reviews/${restaurantId.value}`;
+        return `users/${uid.value}/groups/${moPrefix.value}/reviews/${restaurantId.value}`;
       } else {
-        return `users/${ctx.root.user.uid}/reviews/${restaurantId.value}`;
+        return `users/${uid.value}/reviews/${restaurantId.value}`;
       }
     });
 

@@ -100,7 +100,7 @@ export default defineComponent({
     },
     value: {
       type: String,
-      required: true,
+      required: false,
     },
   },
 });

@@ -66,7 +66,7 @@
       <!-- Order Count, Total, and Tip -->
       <div class="flex items-center p-2">
         <div class="mr-2 text-sm">
-          {{ $tc("sitemenu.orderCounter", totalCount, { count: totalCount }) }}
+          {{ $t("sitemenu.orderCounter", { count: totalCount }, totalCount) }}
         </div>
 
         <div class="mr-2 text-sm">
@@ -138,9 +138,9 @@
           <div class="flex items-center">
             <div class="mr-2 text-sm">
               {{
-                $tc("sitemenu.orderCounter", totalCount, {
+                $t("sitemenu.orderCounter", {
                   count: totalCount,
-                })
+                }, totalCount)
               }}
             </div>
 
@@ -172,6 +172,7 @@ import { doc, getDoc } from "firebase/firestore";
 
 import { order_status, order_status_keys } from "@/config/constant";
 import { arrayOrNumSum, convOrderStateForText } from "@/utils/utils";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   props: {
@@ -189,6 +190,8 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
+    const { d } = useI18n({ useScope: 'global' });
+    
     const restaurant = ref(null);
     if (props.order.restaurantId) {
       getDoc(doc(db, `restaurants/${props.order.restaurantId}`)).then(
@@ -207,9 +210,9 @@ export default defineComponent({
     const timestamp = computed(() => {
       const time = props.order.timeEstimated || props.order.timePlaced;
       if (props.isSuperView) {
-        return ctx.root.$d(time, "long");
+        return d(time, "long");
       } else {
-        return ctx.root.$d(time, "time");
+        return d(time, "time");
       }
     });
     const phoneNumber = computed(() => {

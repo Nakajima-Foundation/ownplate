@@ -118,7 +118,7 @@
           </div>
           <div class="text-right">
             <div class="text-base">
-              {{ $n(previewTip, "currency") }}
+              {{ $n(previewTip || 0, "currency") }}
             </div>
           </div>
         </div>

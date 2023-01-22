@@ -80,6 +80,7 @@ import {
   array2obj,
   useLiffBasePath,
   getRestaurantId,
+  useUserData,
 } from "@/utils/utils";
 
 import { useStore } from "vuex";
@@ -148,6 +149,12 @@ export default defineComponent({
     const route = useRoute();
     const router = useRouter();
 
+    const {
+      isUser,
+      isLiffUser,
+      inLiff,
+    } = useUserData();
+
     const loginVisible = ref(false);
     const orderInfo = ref({});
     const menuObj = ref(null);
@@ -172,10 +179,10 @@ export default defineComponent({
     const orderItems = computed(() => {
       return getOrderItems(orderInfo.value, menuObj.value);
     });
-
+    const restaurantId = getRestaurantId();
     const loadUserData = () => {
       const order_detacher = onSnapshot(
-        doc(db, `restaurants/${getRestaurantId()}/orders/${orderId}`),
+        doc(db, `restaurants/${restaurantId}/orders/${orderId}`),
         async (order) => {
           const order_data = order.exists() ? order.data() : {};
           orderInfo.value = order_data;
@@ -188,7 +195,7 @@ export default defineComponent({
                 return { ...or.item, id: or.id, quantity: or.count };
               }),
               props.shopInfo,
-              getRestaurantId()
+              restaurantId
             );
           }
         },
@@ -224,14 +231,14 @@ export default defineComponent({
     });
 
     const handleOpenMenu = () => {
-      if (ctx.root.inLiff) {
-        router.push(liffBasePath + "/r/" + getRestaurantId());
+      if (inLiff.value) {
+        router.push(liffBasePath + "/r/" + restaurantId);
       } else if (props.mode === "mo") {
         router.push(
-          `/${props.moPrefix}/r/${getRestaurantId()}`
+          `/${props.moPrefix}/r/${restaurantId}`
         );
       } else {
-        router.push(`/r/${getRestaurantId()}`);
+        router.push(`/r/${restaurantId}`);
       }
     };
     const handleDismissed = (params) => {
@@ -242,7 +249,7 @@ export default defineComponent({
     const deleteOrderInfo = async () => {
       try {
         await deleteDoc(
-          doc(db, `restaurants/${getRestaurantId()}/orders/${orderId}`)
+          doc(db, `restaurants/${restaurantId}/orders/${orderId}`)
         );
         console.log("suceeded");
       } catch (error) {
@@ -252,10 +259,9 @@ export default defineComponent({
     const openTransactionsAct = () => {
       ctx.refs.contents.openTransactionsAct();
     };
-
-    if (ctx.root.isUser || ctx.root.isLiffUser) {
+    if (isUser.value || isLiffUser.value) {
       loadUserData();
-    } else if (!ctx.root.isUser) {
+    } else if (!isUser.value) {
       loginVisible.value = true;
     }
 

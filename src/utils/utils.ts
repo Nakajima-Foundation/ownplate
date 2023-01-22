@@ -601,6 +601,45 @@ export const getPostOption = (
   );
 };
 
+export const useUserData = () => {
+  const store = useStore();
+  const route = useRoute();
+
+  const isAdmin = computed(() => {
+    return !!store.getters.uidAdmin;
+  });
+  const uid = computed(() => {
+    return store.getters.uid;
+  });
+  const isUser = computed(() => {
+    return !!store.getters.uidUser;
+  });
+
+  const isLiffUser = computed(() => {
+    return !!store.getters.uidLiff;
+  });
+  const isLineUser = computed(() => {
+    const claims = store.state.claims;
+    return !!claims?.line;
+  });
+  const inLiff = computed(() => {
+    return !!route.params.liffIndexId;
+  });
+  const user = computed(() => {
+    return store.state.user;
+  });
+
+  return {
+    user,
+    uid,
+    isAdmin,
+    isUser,
+    isLiffUser,
+    isLineUser,
+    inLiff,
+  };
+};
+
 export const useIsAdmin = () => {
   const store = useStore();
   return computed(() => {

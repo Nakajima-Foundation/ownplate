@@ -1,7 +1,7 @@
 <template>
   <span>
     <span>
-      {{ $t("tax.price", $n(price, "currency")) }}
+      {{ $t("tax.price", {count: $n(price, "currency")}, 0) }}
       <span class="text-xs">{{ $t("tax.include") }}</span>
       <br />
     </span>

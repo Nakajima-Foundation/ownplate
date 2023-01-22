@@ -50,18 +50,18 @@
                   class="inline-flex items-center justify-center text-base font-bold text-white"
                 >
                   {{
-                    $tc("shopInfo.buttonDeliveryFeeThreshold", 0, {
+                    $t("shopInfo.buttonDeliveryFeeThreshold", {
                       price: $n(deliveryData.deliveryThreshold, "currency"),
-                    })
+                    }, 0)
                   }}
                 </div>
                 <div
                   class="inline-flex items-center justify-center text-base font-bold text-white"
                 >
                   {{
-                    $tc("shopInfo.buttonDeliveryFeeDiff", 0, {
+                    $t("shopInfo.buttonDeliveryFeeDiff", {
                       price: $n(diffDeliveryThreshold, "currency"),
-                    })
+                    }, 0)
                   }}
                 </div>
               </template>
@@ -72,18 +72,18 @@
                   class="inline-flex items-center justify-center text-base font-bold text-white"
                 >
                   {{
-                    $tc("shopInfo.deliveryFeeThresholdInfo", 0, {
+                    $t("shopInfo.deliveryFeeThresholdInfo", {
                       price: $n(deliveryData.deliveryFreeThreshold, "currency"),
-                    })
+                    }, 0)
                   }}
                 </div>
                 <div
                   class="inline-flex items-center justify-center text-base font-bold text-white"
                 >
                   {{
-                    $tc("shopInfo.buttonDeliveryFeeDiff", 0, {
+                    $t("shopInfo.buttonDeliveryFeeDiff", {
                       price: $n(diffDeliveryFreeThreshold, "currency"),
-                    })
+                    }, 0)
                   }}
                 </div>
               </template>
@@ -93,17 +93,17 @@
               >
                 <div class="mr-2">
                   {{
-                    $tc("shopInfo.buttonDeliveryFee", 0, {
+                    $t("shopInfo.buttonDeliveryFee", {
                       price: $n(
                         isDeliveryFree ? 0 : deliveryData.deliveryFee,
                         "currency"
                       ),
-                    })
+                    }, 0)
                   }}
                   <span
                     class="text-xs"
                     v-if="!isDeliveryFree && deliveryData.deliveryFee > 0"
-                    >{{ $tc("tax.include") }}</span
+                    >{{ $t("tax.include") }}</span
                   >
                 </div>
               </div>
@@ -114,9 +114,9 @@
             >
               <div class="mr-2">
                 {{
-                  $tc("sitemenu.orderCounter", totalQuantities, {
+                  $t("sitemenu.orderCounter", {
                     count: totalQuantities,
-                  })
+                  }, totalQuantities)
                 }}
               </div>
               <div class="">
