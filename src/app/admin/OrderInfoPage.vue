@@ -635,6 +635,7 @@ import {
   stripeRegion,
   convOrderStateForText,
   isDev,
+  getRestaurantId,
 } from "@/utils/utils";
 
 import {
@@ -726,7 +727,7 @@ export default defineComponent({
       return notFoundResponse;
     }
     if (props.shopInfo.isEC) {
-      getDoc(doc(db, `restaurants/${ctx.root.restaurantId()}/ec/postage`)).then(
+      getDoc(doc(db, `restaurants/${getRestaurantId()}/ec/postage`)).then(
         (snapshot) => {
           postageInfo.value = snapshot.data() || {};
         }
@@ -734,7 +735,7 @@ export default defineComponent({
     }
     if (props.shopInfo.enableDelivery) {
       getDoc(
-        doc(db, `restaurants/${ctx.root.restaurantId()}/delivery/area`)
+        doc(db, `restaurants/${getRestaurantId()}/delivery/area`)
       ).then((snapshot) => {
         deliveryData.value = snapshot.data() || {};
       });
@@ -745,7 +746,7 @@ export default defineComponent({
     });
 
     const order_detacher = onSnapshot(
-      doc(db, `restaurants/${ctx.root.restaurantId()}/orders/${orderId.value}`),
+      doc(db, `restaurants/${getRestaurantId()}/orders/${orderId.value}`),
       async (order) => {
         if (!order.exists()) {
           notFound.value = true;
@@ -757,7 +758,7 @@ export default defineComponent({
           const tmpCustomer = await getDoc(
             doc(
               db,
-              `restaurants/${ctx.root.restaurantId()}/orders/${
+              `restaurants/${getRestaurantId()}/orders/${
                 orderId.value
               }/customer/data`
             )
@@ -784,7 +785,7 @@ export default defineComponent({
       getDoc(
         doc(
           db,
-          `restaurants/${ctx.root.restaurantId()}/userLog/${
+          `restaurants/${getRestaurantId()}/userLog/${
             orderInfo.value.uid
           }`
         )
@@ -795,7 +796,7 @@ export default defineComponent({
       });
       const menuRestaurantId = props.groupData
         ? props.groupData.restaurantId
-        : ctx.root.restaurantId();
+        : getRestaurantId();
       const menuIds = Object.keys(orderInfo.value.menuItems);
       arrayChunk(menuIds, 10).map(async (arr) => {
         getDocs(

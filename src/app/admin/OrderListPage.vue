@@ -103,6 +103,7 @@ import {
   isNull,
   useAdminUids,
   notFoundResponse,
+  getRestaurantId,
 } from "@/utils/utils";
 import { checkShopAccount } from "@/utils/userPermission";
 import { useAdminConfigToggle } from "@/utils/admin/Toggle";
@@ -198,7 +199,7 @@ export default defineComponent({
         router.push({
           path:
             "/admin/restaurants/" +
-            ctx.root.restaurantId() +
+            getRestaurantId() +
             "/orders?day=" +
             day,
         });
@@ -244,7 +245,7 @@ export default defineComponent({
       })();
       order_detacher = onSnapshot(
         query(
-          collection(db, `restaurants/${ctx.root.restaurantId()}/orders`),
+          collection(db, `restaurants/${getRestaurantId()}/orders`),
           ...queryConditions
         ),
         (result) => {

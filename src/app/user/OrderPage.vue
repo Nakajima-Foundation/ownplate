@@ -79,6 +79,7 @@ import {
   doc2data,
   array2obj,
   useLiffBasePath,
+  getRestaurantId,
 } from "@/utils/utils";
 
 import { useStore } from "vuex";
@@ -174,7 +175,7 @@ export default defineComponent({
 
     const loadUserData = () => {
       const order_detacher = onSnapshot(
-        doc(db, `restaurants/${ctx.root.restaurantId()}/orders/${orderId}`),
+        doc(db, `restaurants/${getRestaurantId()}/orders/${orderId}`),
         async (order) => {
           const order_data = order.exists() ? order.data() : {};
           orderInfo.value = order_data;
@@ -187,7 +188,7 @@ export default defineComponent({
                 return { ...or.item, id: or.id, quantity: or.count };
               }),
               props.shopInfo,
-              ctx.root.restaurantId()
+              getRestaurantId()
             );
           }
         },
@@ -224,13 +225,13 @@ export default defineComponent({
 
     const handleOpenMenu = () => {
       if (ctx.root.inLiff) {
-        router.push(liffBasePath + "/r/" + ctx.root.restaurantId());
+        router.push(liffBasePath + "/r/" + getRestaurantId());
       } else if (props.mode === "mo") {
         router.push(
-          `/${props.moPrefix}/r/${ctx.root.restaurantId()}`
+          `/${props.moPrefix}/r/${getRestaurantId()}`
         );
       } else {
-        router.push(`/r/${ctx.root.restaurantId()}`);
+        router.push(`/r/${getRestaurantId()}`);
       }
     };
     const handleDismissed = (params) => {
@@ -241,7 +242,7 @@ export default defineComponent({
     const deleteOrderInfo = async () => {
       try {
         await deleteDoc(
-          doc(db, `restaurants/${ctx.root.restaurantId()}/orders/${orderId}`)
+          doc(db, `restaurants/${getRestaurantId()}/orders/${orderId}`)
         );
         console.log("suceeded");
       } catch (error) {

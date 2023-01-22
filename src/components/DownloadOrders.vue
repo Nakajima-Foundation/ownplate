@@ -25,7 +25,7 @@ import moment from "moment";
 import { nameOfOrder } from "@/utils/strings";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import { order_status } from "@/config/constant";
-import { arrayOrNumSum, orderTypeKey } from "@/utils/utils";
+import { arrayOrNumSum, orderTypeKey, getRestaurantId } from "@/utils/utils";
 
 export default defineComponent({
   components: {
@@ -89,7 +89,7 @@ export default defineComponent({
         };
       });
     });
-    const fileName = ctx.root.restaurantId() + "_orderhistory_detail.csv";
+    const fileName = getRestaurantId() + "_orderhistory_detail.csv";
     return {
       fileName,
       fields,

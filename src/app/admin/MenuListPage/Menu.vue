@@ -203,7 +203,7 @@
 import { defineComponent, computed } from "vue";
 import { db } from "@/plugins/firebase";
 import Price from "@/components/Price";
-import { useAdminUids, smallImageErrorHandler } from "@/utils/utils";
+import { useAdminUids, smallImageErrorHandler, getRestaurantId } from "@/utils/utils";
 
 import { useStore } from "vuex";
 
@@ -265,7 +265,7 @@ export default defineComponent({
       return !!props.menuitem.soldOut; // = !soldOut;
     });
     const soldOutToggle = (e) => {
-      const path = `restaurants/${ctx.root.restaurantId()}/menus/${
+      const path = `restaurants/${getRestaurantId()}/menus/${
         props.menuitem.id
       }`;
       db.doc(path).update("soldOut", e);
@@ -273,13 +273,13 @@ export default defineComponent({
     const disabledEdit = computed(() => {
       return (
         props.isInMo &&
-        props.groupData?.restaurantId !== ctx.root.restaurantId()
+        props.groupData?.restaurantId !== getRestaurantId()
       );
     });
     const linkEdit = () => {
       if (isOwner.value && !disabledEdit.value) {
         router.push({
-          path: `/admin/restaurants/${ctx.root.restaurantId()}/menus/${
+          path: `/admin/restaurants/${getRestaurantId()}/menus/${
             props.menuitem.id
           }`,
         });
@@ -305,7 +305,7 @@ export default defineComponent({
     };
 
     const updatePickup = async () => {
-      const path = `restaurants/${ctx.root.restaurantId()}/pickup/data/subCategory/${
+      const path = `restaurants/${getRestaurantId()}/pickup/data/subCategory/${
         props.subCategoryId
       }`;
       const data = (await db.doc(path).get()).data();
@@ -313,7 +313,7 @@ export default defineComponent({
       await db.doc(path).set(data);
     };
     const updatePreOrder = async () => {
-      const path = `restaurants/${ctx.root.restaurantId()}/preOrder/data/subCategory/${
+      const path = `restaurants/${getRestaurantId()}/preOrder/data/subCategory/${
         props.subCategoryId
       }`;
       const data = (await db.doc(path).get()).data();
@@ -322,7 +322,7 @@ export default defineComponent({
       await db.doc(path).set(data);
     };
     const updatePickupStock = async () => {
-      const path = `restaurants/${ctx.root.restaurantId()}/pickup/stock/subCategory/${
+      const path = `restaurants/${getRestaurantId()}/pickup/stock/subCategory/${
         props.subCategoryId
       }`;
       const data = (await db.doc(path).get()).data();

@@ -108,7 +108,7 @@ import AdminHeader from "@/app/admin/AdminHeader.vue";
 import NotFound from "@/components/NotFound.vue";
 
 import { checkShopAccount } from "@/utils/userPermission";
-import { useAdminUids, notFoundResponse } from "@/utils/utils";
+import { useAdminUids, notFoundResponse, getRestaurantId } from "@/utils/utils";
 import { usePickupTime } from "@/utils/pickup";
 
 import { useStore } from "vuex";
@@ -204,14 +204,14 @@ export default defineComponent({
       }
       const ts = firebase.firestore.Timestamp.fromDate(tmpDate);
       store.commit("setLoading", true);
-      await db.doc(`restaurants/${ctx.root.restaurantId()}`).update({
+      await db.doc(`restaurants/${getRestaurantId()}`).update({
         suspendUntil: ts,
       });
       store.commit("setLoading", false);
     };
     const handleRemove = async () => {
       store.commit("setLoading", true);
-      await db.doc(`restaurants/${ctx.root.restaurantId()}`).update({
+      await db.doc(`restaurants/${getRestaurantId()}`).update({
         suspendUntil: null,
       });
       store.commit("setLoading", false);

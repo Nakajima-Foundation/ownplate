@@ -118,7 +118,7 @@ import { order_status } from "@/config/constant";
 import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
 
 import { checkShopAccount } from "@/utils/userPermission";
-import { doc2data, useAdminUids } from "@/utils/utils";
+import { doc2data, useAdminUids, getRestaurantId } from "@/utils/utils";
 
 import BackButton from "@/components/BackButton.vue";
 import OrderedInfo from "@/app/admin/Order/OrderedInfo.vue";
@@ -201,7 +201,7 @@ export default defineComponent({
       const res = await getDoc(
         doc(
           db,
-          `restaurants/${ctx.root.restaurantId()}/userLog/${customerUid.value}`
+          `restaurants/${getRestaurantId()}/userLog/${customerUid.value}`
         )
       );
       if (res.exists) {
@@ -220,7 +220,7 @@ export default defineComponent({
       const docs = (
         await getDocs(
           query(
-            collection(db, `restaurants/${ctx.root.restaurantId()}/orders`),
+            collection(db, `restaurants/${getRestaurantId()}/orders`),
             ...queryConditions
           )
         )
@@ -250,7 +250,7 @@ export default defineComponent({
       router.push({
         path:
           "/admin/restaurants/" +
-          ctx.root.restaurantId() +
+          getRestaurantId() +
           "/orders/" +
           order.id,
       });

@@ -17,6 +17,7 @@ import {
   useNationalPhoneNumber,
   shareUrl,
   useBasePath,
+  getRestaurantId,
 } from "@/utils/utils";
 import * as pdf from "@/lib/pdf/pdf";
 import * as pdf2 from "@/lib/pdf/pdf2";
@@ -29,9 +30,9 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props, ctx) {
+  setup(props) {
     const menuObj = ref(null);
-    const restaurantRef = db.doc(`restaurants/${ctx.root.restaurantId()}`);
+    const restaurantRef = db.doc(`restaurants/${getRestaurantId()}`);
     (async () => {
       menuObj.value = array2obj(
         (
@@ -50,7 +51,7 @@ export default defineComponent({
         props.shopInfo,
         menuObj.value,
         nationalPhoneNumber.value,
-        shareUrl(ctx.root, basePath.value)
+        shareUrl(basePath.value)
       );
     };
     const testPrint = async () => {

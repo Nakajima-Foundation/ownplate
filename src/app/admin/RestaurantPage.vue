@@ -1174,6 +1174,7 @@ import {
   regionalSetting,
   useAdminUids,
   notFoundResponse,
+  getRestaurantId,
 } from "@/utils/utils";
 import { uploadFile } from "@/lib/firebase/storage";
 
@@ -1434,7 +1435,7 @@ export default defineComponent({
         const id = await copyRestaurant(
           props.shopInfo,
           uid.value,
-          ctx.root.restaurantId()
+          getRestaurantId()
         );
         router.push({
           path: `/admin/restaurants/${id}`,
@@ -1458,14 +1459,14 @@ export default defineComponent({
     const updateRestaurantData = async (restaurantData) => {
       const cleanData = cleanObject(restaurantData);
       await updateDoc(
-        doc(db, `restaurants/${ctx.root.restaurantId()}`),
+        doc(db, `restaurants/${getRestaurantId()}`),
         cleanData
       );
     };
     const saveRestaurant = async () => {
       submitting.value = true;
       const newData = { ...props.shopInfo };
-      const restaurantId = ctx.root.restaurantId();
+      const restaurantId = getRestaurantId();
       try {
         if (files.value["profile"]) {
           const path = `/images/restaurants/${restaurantId}/${uid.value}/profile.jpg`;

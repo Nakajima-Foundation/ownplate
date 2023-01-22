@@ -134,6 +134,7 @@ import {
   doc2data,
   notFoundResponse,
   orderType,
+  getRestaurantId,
 } from "@/utils/utils";
 import { checkShopAccount } from "@/utils/userPermission";
 
@@ -219,7 +220,7 @@ export default defineComponent({
     }
     const next = async () => {
       let query = db
-        .collection(`restaurants/${ctx.root.restaurantId()}/orders`)
+        .collection(`restaurants/${getRestaurantId()}/orders`)
         .orderBy("timePlaced", "desc")
         .limit(limit);
       if (last.value) {
@@ -238,7 +239,7 @@ export default defineComponent({
             try {
               const cuss = await db
                 .collectionGroup("customer")
-                .where("restaurantId", "==", ctx.root.restaurantId())
+                .where("restaurantId", "==", getRestaurantId())
                 .where("orderId", "in", arr)
                 .get();
               cuss.docs.map((cus) => {

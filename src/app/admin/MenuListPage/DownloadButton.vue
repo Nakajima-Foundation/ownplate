@@ -33,7 +33,7 @@ export default defineComponent({
     },
   },
 
-  setup(props, ctx) {
+  setup(props) {
     const downloadSubmitting = ref(false);
     const shopInfo = computed(() => {
       return props.shopInfo;
@@ -48,7 +48,7 @@ export default defineComponent({
           props.shopInfo,
           props.menuObj,
           nationalPhoneNumber.value,
-          shareUrl(ctx.root, basePath.value)
+          shareUrl(basePath.value)
         );
       } catch (e) {
         alert("sorry error. ask omochikaeri administrator.");

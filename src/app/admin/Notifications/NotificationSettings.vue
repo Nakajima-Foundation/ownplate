@@ -177,7 +177,7 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 
 import { soundFiles } from "@/config/constant";
-import { getSoundIndex } from "@/utils/utils";
+import { getSoundIndex, getRestaurantId } from "@/utils/utils";
 
 import IncompleteOrders from "@/app/admin/Notifications/IncompleteOrders.vue";
 
@@ -205,7 +205,7 @@ export default defineComponent({
     const saveNotificationData = () => {
       notificationConfig.value.updatedAt = serverTimestamp();
       setDoc(
-        doc(db, `restaurants/${ctx.root.restaurantId()}/private/notifications`),
+        doc(db, `restaurants/${getRestaurantId()}/private/notifications`),
         notificationConfig.value
       );
     };
