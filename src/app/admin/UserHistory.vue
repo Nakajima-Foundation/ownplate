@@ -127,6 +127,7 @@ import NotificationIndex from "./Notifications/Index.vue";
 import PreviewLink from "@/app/admin/common/PreviewLink.vue";
 
 import { useRouter, useRoute } from "vue-router";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   components: {
@@ -164,6 +165,7 @@ export default defineComponent({
   setup(props, ctx) {
     const route = useRoute();
     const router = useRouter();
+    const { t } = useI18n({ useScope: 'global' });
 
     const orders = ref([]);
     const userLog = ref({});
@@ -171,7 +173,7 @@ export default defineComponent({
     const last = ref();
     const restaurantId = useRestaurantId();
 
-    const fileName = ctx.root.$t("order.history");
+    const fileName = t("order.history");
 
     const customerUid = computed(() => {
       return route.params.userId;

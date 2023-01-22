@@ -16,6 +16,7 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, getDocs, collection } from "firebase/firestore";
 
 import { data2csv } from "@/utils/csv";
+import { useI18n } from "vue-i18n";
 import moment from "moment";
 
 import { useStore } from "vuex";
@@ -32,6 +33,7 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
+    const { t } = useI18n({ useScope: 'global' });
     const store = useStore();
 
     let csvData = [];
@@ -214,7 +216,7 @@ export default defineComponent({
           fields,
           fieldNames,
         },
-        ctx
+        t,
       );
       downloadAct(dlData);
 

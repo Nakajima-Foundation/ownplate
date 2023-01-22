@@ -66,6 +66,8 @@ import {
   reportHeadersForMo,
 } from "@/utils/reportUtils";
 
+import { useI18n } from "vue-i18n";
+
 export default defineComponent({
   components: {
     DownloadCsv,
@@ -105,7 +107,8 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props, ctx) {
+  setup(props) {
+    const { t } = useI18n({ useScope: 'global' });
     const customers = ref({});
     const writeonFirstLine = (index, key, text) => {
       return (index === 0 && Number(key) === 0) || props.isInMo ? text : "-";
@@ -130,7 +133,7 @@ export default defineComponent({
     });
     const fieldNames = computed(() => {
       return fields.value.map((field) => {
-        return ctx.root.$t(`order.${field}`);
+        return t(`order.${field}`);
       });
     });
     const mergedOrder = computed(() => {
@@ -171,7 +174,7 @@ export default defineComponent({
                 type: writeonFirstLine(
                   index,
                   key,
-                  ctx.root.$t("order.orderType" + order.type)
+                  t("order.orderType" + order.type)
                 ),
                 uid: order.uid, // mo
                 restaurantId: shopInfo.restaurantId, // mo
@@ -218,7 +221,7 @@ export default defineComponent({
                   key,
                   props.isInMo
                     ? "-"
-                    : order.name || ctx.root.$t("order.unspecified")
+                    : order.name || t("order.unspecified")
                 ),
                 "ec.name": writeonFirstLine(
                   index,
@@ -253,7 +256,7 @@ export default defineComponent({
                 statusName: writeonFirstLine(
                   index,
                   key,
-                  ctx.root.$t(`order.status.${status}`)
+                  t(`order.status.${status}`)
                 ),
                 category1: menuItem.category1 || "",
                 category2: menuItem.category2 || "",

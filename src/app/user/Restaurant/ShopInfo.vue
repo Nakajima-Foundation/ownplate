@@ -314,7 +314,7 @@ export default defineComponent({
   },
   emits: ["noAvailableTime"],
   setup(props, ctx) {
-    const { locale } = useI18n({ useScope: 'global' });
+    const { locale, t } = useI18n({ useScope: 'global' });
 
     const d = new Date();
     const moreInfo = ref(false);
@@ -457,7 +457,7 @@ export default defineComponent({
         return [moment(date).format("MM/DD (ddd)"), time].join(" ");
       } else {
         ctx.emit("noAvailableTime", true);
-        return ctx.root.$t("shopInfo.noAvailableTime");
+        return t("shopInfo.noAvailableTime");
       }
     });
     const mapQuery = computed(() => {

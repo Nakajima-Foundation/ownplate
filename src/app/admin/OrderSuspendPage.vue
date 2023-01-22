@@ -112,6 +112,7 @@ import { useAdminUids, notFoundResponse, useRestaurantId } from "@/utils/utils";
 import { usePickupTime } from "@/utils/pickup";
 
 import { useStore } from "vuex";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   components: {
@@ -147,8 +148,9 @@ export default defineComponent({
       required: false,
     },
   },
-  setup(props, ctx) {
+  setup(props) {
     const store = useStore();
+    const { d } = useI18n({ useScope: 'global' });
     const date = ref(null);
 
     const restaurantId = useRestaurantId();
@@ -190,7 +192,7 @@ export default defineComponent({
         if (time < new Date()) {
           return false;
         }
-        return ctx.root.$d(time, "long");
+        return d(time, "long");
       }
       return false;
     });

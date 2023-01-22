@@ -118,9 +118,8 @@ export default defineComponent({
     };
 
     const copyClipboard = async (text) => {
-      // TODO: check no-nuxt branch
       try {
-        await ctx.root.$copyText(text);
+        await ctx.root.$copyText(text); // TODO vue3
         copied.value = true;
         setTimeout(() => {
           copied.value = false;

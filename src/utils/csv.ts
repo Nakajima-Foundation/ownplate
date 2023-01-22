@@ -7,7 +7,7 @@ const escapeCVS = (value: any) => {
   return value;
 };
 
-export const data2csv = (data: any, ctx: any) => {
+export const data2csv = (data: any, t: any) => {
   const header = (data.fieldNames || data.fields).join(",");
   const rows = data.data
     .map((item: any) => {
@@ -20,7 +20,7 @@ export const data2csv = (data: any, ctx: any) => {
     ? (() => {
         const formulas = data.fields.map((field: string, index: number) => {
           if (index === 0) {
-            return ctx.root.$t("order.total");
+            return t("order.total");
           }
           const formula = data.formulas[field];
           const col = String.fromCharCode(0x41 + index); // Handles only A-Z

@@ -179,6 +179,8 @@ import {
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 
+import { useI18n } from "vue-i18n";
+
 export default defineComponent({
   components: {
     Price,
@@ -239,6 +241,7 @@ export default defineComponent({
     const store = useStore();
     const route = useRoute();
     const router = useRouter();
+    const { t } = useI18n({ useScope: 'global' });
 
     const openMenuFlag = ref(props.initialOpenMenuFlag);
     const imagePopup = ref(false);
@@ -276,13 +279,13 @@ export default defineComponent({
 
     const allergensDescription = computed(() => {
       return (
-        ctx.root.$t("allergens.title") +
+        t("allergens.title") +
         ": " +
         allergens.value
           .map((allergen) => {
-            return ctx.root.$t(`allergens.${allergen}`);
+            return t(`allergens.${allergen}`);
           })
-          .join(ctx.root.$t("comma"))
+          .join(t("comma"))
       );
     });
     const options = computed(() => {
