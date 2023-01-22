@@ -303,7 +303,7 @@ export default defineComponent({
     const detachers = ref([]);
     const notFound = ref(null);
 
-    const { isOwner, uid, ownerUid } = useAdminUids(ctx);
+    const { isOwner, uid, ownerUid } = useAdminUids();
 
     const {
       category,

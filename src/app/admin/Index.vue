@@ -389,7 +389,7 @@ export default defineComponent({
       });
       orderDetachers.value = [];
     };
-    const { isOwner, uid, ownerUid, emailVerified } = useAdminUids(ctx);
+    const { isOwner, uid, ownerUid, emailVerified } = useAdminUids();
     const { toggle: simpleMode, switchToggle: switchSimpleMode } =
       useAdminConfigToggle("simpleMode", uid.value, false);
 

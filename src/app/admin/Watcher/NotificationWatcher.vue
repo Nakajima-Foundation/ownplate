@@ -14,7 +14,7 @@ export default defineComponent({
   setup(props, ctx) {
     const watchingMessage = ref(false);
 
-    const { ownerUid } = useAdminUids(ctx);
+    const { ownerUid } = useAdminUids();
 
     const message_detacher = onSnapshot(
       doc(db, `admins/${ownerUid.value}/private/notification`),

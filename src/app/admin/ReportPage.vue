@@ -288,7 +288,7 @@ export default defineComponent({
     const monthIndex = ref(0);
     let detacher = null;
 
-    const { uid } = useAdminUids(ctx);
+    const { uid } = useAdminUids();
     if (!checkShopOwner(props.shopInfo, uid.value)) {
       return notFoundResponse;
     }

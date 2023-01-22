@@ -250,7 +250,7 @@ export default defineComponent({
   },
   emit: ["toEditMode", "positionUp", "positionDown", "forkItem", "deleteItem"],
   setup(props, ctx) {
-    const { isOwner } = useAdminUids(ctx);
+    const { isOwner } = useAdminUids();
     const image =
       (props.menuitem?.images?.item?.resizedImages || {})["600"] ||
       props.menuitem.itemPhoto;

@@ -86,10 +86,14 @@ import { lineVerifyFriend } from "@/lib/firebase/functions";
 import { lineAuthURL } from "@/lib/line/line";
 import { ownPlateConfig } from "@/config/project";
 
+import { useStore } from "vuex";
+
 export default defineComponent({
   setup(_, ctx) {
-    const isLineUser = useIsLineUser(ctx);
-    const isLiffUser = useIsLiffUser(ctx);
+    const store = useStore();
+
+    const isLineUser = useIsLineUser();
+    const isLiffUser = useIsLiffUser();
     const liffIndexId = useLiffIndexId();
 
     const inLiff = useInLiff();
@@ -97,7 +101,7 @@ export default defineComponent({
     const liffConfig = ref(null);
 
     const isWindowActive = computed(() => {
-      return ctx.root.$store.state.isWindowActive;
+      return store.state.isWindowActive;
     });
 
     const friendLink = computed(() => {

@@ -101,7 +101,7 @@ export default defineComponent({
   },
   emit: ["toEditMode", "positionUp", "positionDown", "forkItem", "deleteItem"],
   setup(props, ctx) {
-    const { isOwner } = useAdminUids(ctx);
+    const { isOwner } = useAdminUids();
     const toEdit = () => {
       ctx.emit("toEditMode", props.title.id);
     };

@@ -612,14 +612,16 @@ export const useUid = () => {
   return uid;
 };
 
-export const useIsLiffUser = (ctx: any) => {
+export const useIsLiffUser = () => {
+  const store = useStore();
   return computed(() => {
-    return !!ctx.root.$store.getters.uidLiff;
+    return !!store.getters.uidLiff;
   });
 };
-export const useIsLineUser = (ctx: any) => {
+export const useIsLineUser = () => {
+  const store = useStore();
   return computed(() => {
-    const claims = ctx.root.$store.state.claims;
+    const claims = store.state.claims;
     return !!claims?.line;
   });
 };
@@ -651,9 +653,10 @@ export const useToggle = (defaultValue = false) => {
   };
 };
 
-export const useUser = (ctx: any) => {
+export const useUser = () => {
+  const store = useStore();
   const user = computed(() => {
-    return ctx.root.$store.state.user;
+    return store.state.user;
   });
   return user;
 };
@@ -666,20 +669,22 @@ export const underConstruction =
 
 export const defaultTitle = defaultHeader.title;
 
-export const useAdminUids = (ctx: any) => {
+export const useAdminUids = () => {
+  const store = useStore();
+
   const isOwner = computed(() => {
-    return !ctx.root.$store.getters.isSubAccount;
+    return !store.getters.isSubAccount;
   });
   const uid = computed(() => {
-    return ctx.root.$store.getters.uidAdmin;
+    return store.getters.uidAdmin;
   });
   const ownerUid = computed(() => {
-    return ctx.root.$store.getters.isSubAccount
-      ? ctx.root.$store.getters.parentId
-      : ctx.root.$store.getters.uidAdmin;
+    return store.getters.isSubAccount
+      ? store.getters.parentId
+      : store.getters.uidAdmin;
   });
   const emailVerified = computed(() => {
-    return ctx.root.$store.state.user?.emailVerified;
+    return store.state.user?.emailVerified;
   });
   return {
     isOwner,

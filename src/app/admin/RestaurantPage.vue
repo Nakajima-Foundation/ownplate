@@ -1249,7 +1249,7 @@ export default defineComponent({
     const selectedResult = ref(0);
 
     // only owner
-    const { uid } = useAdminUids(ctx);
+    const { uid } = useAdminUids();
     if (!checkShopOwner(props.shopInfo, uid.value)) {
       return notFoundResponse;
     }

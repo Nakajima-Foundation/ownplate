@@ -487,7 +487,7 @@ export const customRoutes: CustomRoute[] = [
     component: "docs/link.vue",
   },
   {
-    path: "*",
+    path: "/:page(.*)",
     component: "common/404.vue",
   },
 ];

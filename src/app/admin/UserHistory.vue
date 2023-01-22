@@ -170,7 +170,7 @@ export default defineComponent({
     const customerUid = computed(() => {
       return ctx.root.$route.params.userId;
     });
-    const { ownerUid } = useAdminUids(ctx);
+    const { ownerUid } = useAdminUids();
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
       return {
         notFound: true,

@@ -151,7 +151,7 @@ export default defineComponent({
     const name = ref("");
     const sending = ref(false);
 
-    const { isOwner, uid } = useAdminUids(ctx);
+    const { isOwner, uid } = useAdminUids();
 
     db.collection("restaurants")
       .where("uid", "==", uid.value)

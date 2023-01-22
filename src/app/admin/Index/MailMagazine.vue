@@ -27,14 +27,17 @@ import { defineComponent, ref, computed, watch } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { useStore } from "vuex";
 
 export default defineComponent({
-  setup(_, ctx) {
+  setup() {
+    const store = useStore();
+    
     const opt_out = ref(false);
     const ownerUid = computed(() => {
-      return ctx.root.$store.getters.isSubAccount
-        ? ctx.root.$store.getters.parentId
-        : ctx.root.$store.getters.uidAdmin;
+      return store.getters.isSubAccount
+        ? store.getters.parentId
+        : store.getters.uidAdmin;
     });
 
     (async () => {

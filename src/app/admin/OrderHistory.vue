@@ -201,7 +201,7 @@ export default defineComponent({
       },
     ];
 
-    const { isOwner, uid, ownerUid } = useAdminUids(ctx);
+    const { isOwner, uid, ownerUid } = useAdminUids();
 
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
       return notFoundResponse;

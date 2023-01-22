@@ -47,7 +47,7 @@ export default defineComponent({
         ? `${storedCard.value.brand} ***${storedCard.value.last4}`
         : ctx.root.$t("profile.noCard");
     });
-    const isLiffUser = useIsLiffUser(ctx);
+    const isLiffUser = useIsLiffUser();
 
     let detachStripe = null;
     const checkStripe = () => {

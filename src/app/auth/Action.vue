@@ -16,15 +16,19 @@ import { defineComponent, computed } from "vue";
 import ResetPassword from "./Actions/ResetPassword.vue";
 import VerifyEmail from "./Actions/VerifyEmail.vue";
 
+import { useRoute } from "vue-router";
+
 export default defineComponent({
   name: "AccountAction",
   components: {
     ResetPassword,
     VerifyEmail,
   },
-  setup(_, ctx) {
+  setup() {
+    const route = useRoute();
+
     const mode = computed(() => {
-      return ctx.root.$route.query.mode;
+      return route.query.mode;
     });
     return { mode };
   },

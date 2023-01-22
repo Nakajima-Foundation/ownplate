@@ -76,16 +76,22 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 
 import FooterPoweredBy from "@/components/App/FooterPoweredBy.vue";
 
+import { useStore } from "vuex";
+import { useRoute } from "vue-router";
+
 export default defineComponent({
   components: {
     FooterPoweredBy,
   },
-  setup(_, ctx) {
+  setup() {
+    const store = useStore();
+    const route = useRoute();
+    
     const language = ref(regionalSetting.defaultLanguage);
     const languages = regionalSetting.languages;
     const langPopup = ref(false);
 
-    const user = useUser(ctx);
+    const user = useUser();
     const isAdmin = useIsAdmin();
     const uid = useUid();
 
@@ -96,7 +102,7 @@ export default defineComponent({
 
     const setLang = (lang) => {
       language.value = lang;
-      ctx.root.$i18n.locale = lang;
+      // ctx.root.$i18n.locale = lang; TODO for Vue3
       auth.languageCode = lang;
     };
     const saveLang = (lang) => {
@@ -104,7 +110,7 @@ export default defineComponent({
         setDoc(doc(db, profile_path.value), { lang }, { merge: true });
       } else {
         // save into store
-        ctx.root.$store.commit("setLang", lang);
+        store.commit("setLang", lang);
       }
     };
     const changeLang = (lang) => {
@@ -115,8 +121,8 @@ export default defineComponent({
     // lang: query, bot, browser
     // setting (is not here / after user load). TODO: hold on storage
     (() => {
-      if (ctx.root.$route.query.lang) {
-        changeLang(ctx.root.$route.query.lang);
+      if (route.query.lang) {
+        changeLang(route.query.lang);
       } else if (navigator.userAgent.toLowerCase().indexOf("googlebot") > -1) {
         if (isJapan) {
           changeLang("ja");
@@ -149,7 +155,7 @@ export default defineComponent({
     };
 
     const langQuery = computed(() => {
-      return ctx.root.$route.query.lang;
+      return route.query.lang;
     });
     watch(langQuery, async (lang) => {
       if (lang) {
@@ -159,8 +165,8 @@ export default defineComponent({
     watch(user, async () => {
       if (user.value) {
         // lang
-        if (ctx.root.$store.state.lang) {
-          changeLang(ctx.root.$store.state.lang);
+        if (store.state.lang) {
+          changeLang(store.state.lang);
         } else {
           const profileSnapshot = await getDoc(doc(db, profile_path.value));
           if (profileSnapshot.exists()) {

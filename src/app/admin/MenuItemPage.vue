@@ -687,7 +687,7 @@ export default defineComponent({
     const restaurants = ref([]);
     const copyRestaurantId = ref(null);
 
-    const { uid } = useAdminUids(ctx);
+    const { uid } = useAdminUids();
 
     // allow sub Account
     if (!checkShopOwner(props.shopInfo, uid.value)) {

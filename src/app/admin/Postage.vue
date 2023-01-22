@@ -85,7 +85,7 @@ export default defineComponent({
     const enableFree = ref(false);
     const freeThreshold = ref(100000);
 
-    const { uid, ownerUid } = useAdminUids(ctx);
+    const { uid, ownerUid } = useAdminUids();
 
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
       return notFoundResponse;

@@ -104,10 +104,15 @@ import { defineComponent, ref, computed } from "vue";
 
 import { auth } from "@/lib/firebase/firebase9";
 import { verifyPasswordResetCode, confirmPasswordReset } from "firebase/auth";
+
+import { useRoute } from "vue-router";
+
 export default defineComponent({
   name: "AccountAction",
-  setup(_, ctx) {
-    const code = ctx.root.$route.query.oobCode as string;
+  setup() {
+    const route = useRoute();
+
+    const code = route.query.oobCode as string;
 
     const submitting = ref(false);
     const password = ref("");

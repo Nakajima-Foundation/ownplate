@@ -18,7 +18,7 @@ export default defineComponent({
     SideMenu,
     SideMenuMo,
   },
-  setup(_, ctx) {
+  setup() {
     const sideMenu = ref();
 
     const isInMo = useIsInMo();

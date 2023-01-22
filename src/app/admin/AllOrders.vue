@@ -136,7 +136,7 @@ export default defineComponent({
     };
   },
   setup(props, ctx) {
-    const { uid, isOwner } = useAdminUids(ctx);
+    const { uid, isOwner } = useAdminUids();
 
     const orders = ref([]);
     const orderState = ref(0);

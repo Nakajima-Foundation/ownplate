@@ -15,14 +15,17 @@
 import { defineComponent, ref, computed } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, onSnapshot } from "firebase/firestore";
+import { useStore } from "vuex";
 
 export default defineComponent({
-  setup(_, ctx) {
+  setup() {
+    const store = useStore();
+
     const groupData = ref();
     const groupMasterRestaurant = ref();
 
     const moPrefix = computed(() => {
-      return ctx.root.$store.getters.grpupId;
+      return store.getters.grpupId;
     });
     const isInMo = computed(() => {
       return !!moPrefix.value;

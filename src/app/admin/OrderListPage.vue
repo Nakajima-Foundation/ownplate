@@ -149,7 +149,7 @@ export default defineComponent({
 
     let order_detacher = () => {};
 
-    const { ownerUid, uid } = useAdminUids(ctx);
+    const { ownerUid, uid } = useAdminUids();
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
       return notFoundResponse;
     }

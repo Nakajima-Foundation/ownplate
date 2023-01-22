@@ -5,6 +5,7 @@ import { defineComponent, watch } from "vue";
 
 import { soundFiles } from "@/config/constant";
 import { getSoundIndex } from "@/utils/utils";
+import { useStore } from "vuex";
 
 export default defineComponent({
   props: {
@@ -13,11 +14,13 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props, ctx) {
+  setup(props) {
+    const store = useStore();
+
     const update = (newData: any) => {
       const soundIndex = getSoundIndex(newData.nameKey);
-      ctx.root.$store.commit("setSoundOn", newData.soundOn);
-      ctx.root.$store.commit("setSoundFile", soundFiles[soundIndex].file);
+      store.commit("setSoundOn", newData.soundOn);
+      store.commit("setSoundFile", soundFiles[soundIndex].file);
     };
     watch(props.notificationConfig, (newData) => {
       update(newData);

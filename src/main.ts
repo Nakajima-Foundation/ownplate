@@ -65,6 +65,10 @@ app.use(VueClipboard);
 // app.use(VueMeta, {});
 app.use(Oruga, bulmaConfig);
 
+app.use(store);
+app.use(router);
+app.use(i18n);
+
 if (process.env.NODE_ENV !== "development") {
   if (sentryDsn) {
     Sentry.init({

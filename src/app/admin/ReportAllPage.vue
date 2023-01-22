@@ -277,7 +277,7 @@ export default defineComponent({
     const monthIndex = ref(0);
     let detacher = null;
 
-    const { uid, isOwner, ownerUid } = useAdminUids(ctx);
+    const { uid, isOwner, ownerUid } = useAdminUids();
     if (!isOwner.value) {
       return notFoundResponse;
     }

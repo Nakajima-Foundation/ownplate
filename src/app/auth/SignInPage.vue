@@ -142,7 +142,7 @@ export default defineComponent({
     const password = ref("");
     const errors = ref({});
 
-    const user = useUser(ctx);
+    const user = useUser();
 
     const redirectToAdminPage = () => {
       const redirect = ctx.root.$route.query["to"];

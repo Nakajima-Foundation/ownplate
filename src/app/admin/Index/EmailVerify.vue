@@ -39,7 +39,7 @@ import { fromEmail } from "@/config/project";
 
 export default defineComponent({
   setup(_, ctx) {
-    const user = useUser(ctx);
+    const user = useUser();
 
     const sent = ref(false);
     const isError = ref(false);

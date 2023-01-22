@@ -1,16 +1,20 @@
 <template>
   <div>
-    <audio id="audio" ref="audio" :src="soundFile"></audio>
+    <audio id="audio" ref="audioRef" :src="soundFile"></audio>
   </div>
 </template>
 <script>
 import { defineComponent, ref, computed, watch } from "vue";
+import { useStore } from "vuex";
 
 export default defineComponent({
-  setup(props, ctx) {
+  setup() {
+    const store = useStore();
+
     const pleyedSilent = ref(false);
+    const audioRef = ref();
     const soundFile = computed(() => {
-      return ctx.root.$store.state.soundFile;
+      return store.state.soundFile;
     });
 
     const enableSound = async () => {
@@ -18,12 +22,12 @@ export default defineComponent({
       if (!pleyedSilent.value) {
         console.log("silent play");
         try {
-          ctx.refs.audio.setAttribute("src", "/silence.mp3");
-          ctx.refs.audio.currentTime = 0;
-          await ctx.refs.audio.play();
+          audioRef.value.setAttribute("src", "/silence.mp3");
+          audioRef.value.currentTime = 0;
+          await audioRef.value.play();
 
           pleyedSilent.value = true;
-          ctx.root.$store.commit("soundEnable");
+          store.commit("soundEnable");
         } catch (e) {
           console.log(e);
           console.log("error");
@@ -32,26 +36,27 @@ export default defineComponent({
     };
     const play = async () => {
       try {
-        ctx.refs.audio.setAttribute("src", soundFile.value);
-        ctx.refs.audio.currentTime = 0;
-        await ctx.refs.audio.play();
+        audioRef.value.setAttribute("src", soundFile.value);
+        audioRef.value.currentTime = 0;
+        await audioRef.value.play();
       } catch (e) {
         console.log(e);
       }
       return;
     };
     const event = computed(() => {
-      return ctx.root.$store.state.orderEvent;
+      return store.state.orderEvent;
     });
     watch(event, async () => {
       await play();
       console.log(
-        `soundEnable = ${ctx.root.$store.state.soundEnable}, soundOn=${ctx.root.$store.state.soundOn}, soundFile=${ctx.root.$store.state.soundFile}`
+        `soundEnable = ${store.state.soundEnable}, soundOn=${store.state.soundOn}, soundFile=${store.state.soundFile}`
       );
     });
     return {
       enableSound,
       soundFile,
+      audioRef,
     };
   },
 });

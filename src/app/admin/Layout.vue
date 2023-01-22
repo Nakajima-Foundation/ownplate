@@ -92,7 +92,7 @@ export default defineComponent({
   },
   setup(_, ctx) {
     const restaurantId = useRestaurantId();
-    const { uid, ownerUid } = useAdminUids(ctx);
+    const { uid, ownerUid } = useAdminUids();
 
     const notificationConfig = ref({
       soundOn: null,

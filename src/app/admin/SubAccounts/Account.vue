@@ -80,7 +80,7 @@ export default defineComponent({
     const restaurantObj = ref({});
     const restaurants = ref([]);
 
-    const { uid } = useAdminUids(ctx);
+    const { uid } = useAdminUids();
 
     db.collection("restaurants")
       .where("uid", "==", uid.value)
