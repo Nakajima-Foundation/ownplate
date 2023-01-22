@@ -168,6 +168,8 @@ import { regionalSetting, countObj } from "@/utils/utils";
 
 import isEmail from "validator/lib/isEmail";
 
+import { useUserData } from "@/utils/utils";
+
 export default defineComponent({
   props: {
     shopInfo: {
@@ -185,6 +187,8 @@ export default defineComponent({
     const customerInfo = ref({});
     const addressList = ref([]);
 
+    const { uid } = useUserData();
+    
     const updateAddress = (address) => {
       const { address1, address2, address3, prefectureId, prefecture } =
         address;
@@ -215,12 +219,10 @@ export default defineComponent({
       }
     };
     const saveAddress = async () => {
-      const uid = ctx.root.user.uid;
-      await db.doc(`/users/${uid}/address/data`).set(customerInfo.value);
+      await db.doc(`/users/${uid.value}/address/data`).set(customerInfo.value);
     };
     const loadAddress = async () => {
-      const uid = ctx.root.user.uid;
-      return (await db.doc(`/users/${uid}/address/data`).get()).data() || {};
+      return (await db.doc(`/users/${uid.value}/address/data`).get()).data() || {};
     };
     const ecErrors = computed(() => {
       const err = {};

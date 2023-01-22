@@ -67,6 +67,8 @@ import { RestaurantHeader } from "@/config/header";
 import AreaItem from "@/app/user/Restaurants/AreaItem";
 import { ownPlateConfig } from "@/config/project";
 
+import { useUserData } from "@/utils/utils";
+
 export default defineComponent({
   components: {
     AreaItem,
@@ -78,13 +80,15 @@ export default defineComponent({
     ].join(" / ");
     return Object.assign(RestaurantHeader, { title });
   },
-  setup(_, ctx) {
+  setup() {
+    const { isUser, uid } = useUserData();
+    
     const likes = ref([]);
     onMounted(async () => {
-      if (ctx.root.isUser) {
+      if (isUser.value) {
         const snapshot = await getDocs(
           query(
-            collection(db, `users/${ctx.root.user.uid}/reviews`),
+            collection(db, `users/${uid.value}/reviews`),
             orderBy("timeLiked", "desc"),
             limit(100)
           )

@@ -72,7 +72,7 @@ import {
 
 import { RestaurantHeader } from "@/config/header";
 import { ownPlateConfig } from "@/config/project";
-import { useIsInMo, useMoPrefix, routeMode, useBasePath } from "@/utils/utils";
+import { useIsInMo, useMoPrefix, routeMode, useBasePath, useUserData } from "@/utils/utils";
 
 import AreaItem from "@/app/user/Restaurants/AreaItem.vue";
 import BackButton from "@/components/BackButton.vue";
@@ -91,25 +91,26 @@ export default defineComponent({
     ].join(" / ");
     return Object.assign(RestaurantHeader, { title });
   },
-  setup(props, ctx) {
+  setup() {
     const router = useRouter();
     const basePath = useBasePath();
     const likes = ref(null);
 
     const isInMo = useIsInMo();
     const moPrefix = useMoPrefix();
+    const { uid, isUser } = useUserData();
 
     const mode = routeMode();
 
     const path = computed(() => {
       if (isInMo.value) {
-        return `users/${ctx.root.user.uid}/groups/${moPrefix.value}/reviews`;
+        return `users/${uid.value}/groups/${moPrefix.value}/reviews`;
       } else {
-        return `users/${ctx.root.user.uid}/reviews`;
+        return `users/${uid.value}/reviews`;
       }
     });
 
-    if (ctx.root.isUser) {
+    if (isUser.value) {
       (async () => {
         const snapshot = await getDocs(
           query(

@@ -59,7 +59,7 @@
 import { defineComponent, computed, ref } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { getDoc, doc, setDoc } from "firebase/firestore";
-import { useBasePath, isUser } from "@/utils/utils";
+import { useBasePath, useUserData } from "@/utils/utils";
 
 import BackButton from "@/components/BackButton.vue";
 
@@ -69,15 +69,15 @@ export default defineComponent({
   components: {
     BackButton,
   },
-  setup(_, ctx) {
+  setup() {
     const router = useRouter();
     const basePath = useBasePath();
     const customerInfo = ref({});
-    const isUser = useIsUser();
-
+    const { uid, isUser } = useUserData();
+    
     const docPath = computed(() => {
       if (isUser.value) {
-        return `/users/${ctx.root.user.uid}/address/data`;
+        return `/users/${uid.value}/address/data`;
       }
       return null;
     });
