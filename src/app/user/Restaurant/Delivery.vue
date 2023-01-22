@@ -9,7 +9,7 @@
       <div
         class="h-full w-full rounded-lg bg-white p-3 shadow"
         :class="
-          value === 'takeout'
+          modelValue === 'takeout'
             ? 'border-2 border-op-teal text-op-teal'
             : 'cursor-pointer text-black text-opacity-40'
         "
@@ -27,7 +27,7 @@
       <div
         class="h-full w-full rounded-lg bg-white p-3 shadow"
         :class="
-          value === 'delivery'
+          modelValue === 'delivery'
             ? 'border-2 border-op-teal text-op-teal'
             : 'cursor-pointer text-black text-opacity-40'
         "
@@ -67,7 +67,7 @@
       </div>
     </div>
     <div
-      v-if="value === 'delivery'"
+      v-if="modelValue === 'delivery'"
       class="mt-2 rounded-lg bg-blue-500 bg-opacity-10 px-4 py-2"
     >
       <span class="font-bold">{{ $t("shopInfo.deliveryArea") }}</span>
@@ -98,10 +98,11 @@ export default defineComponent({
       type: Object,
       required: true,
     },
-    value: {
+    modelValue: {
       type: String,
-      required: false,
+      required: true,
     },
   },
+  
 });
 </script>

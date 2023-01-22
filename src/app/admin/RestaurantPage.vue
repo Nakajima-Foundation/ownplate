@@ -596,7 +596,7 @@
                     {{ $t("editRestaurant.taxPriceDisplayJp") }}
                   </div>
                   <div>
-                    {{ $tc("tax.taxExample", $n(1000, "currency")) }}
+                    {{ $t("tax.taxExample", {count: $n(1000, "currency")}, 0)}}
                   </div>
                   <div>
                     <b
@@ -1175,6 +1175,7 @@ import {
   useAdminUids,
   notFoundResponse,
   num2time,
+  useRestaurantId,
 } from "@/utils/utils";
 import { uploadFile } from "@/lib/firebase/storage";
 

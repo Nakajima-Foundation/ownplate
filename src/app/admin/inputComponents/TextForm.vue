@@ -7,7 +7,7 @@
     </div>
     <o-field :variant="error.length > 0 ? 'danger' : 'success'">
       <o-input
-        :value="value"
+        :value="modelValue"
         :type="type"
         :placeholder="$t(placeholder)"
         @input="input"
@@ -51,7 +51,7 @@ export default {
       type: Array,
       required: true,
     },
-    value: {
+    modelValue: {
       type: String,
       required: true,
     },

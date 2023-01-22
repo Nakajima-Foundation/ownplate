@@ -8,7 +8,7 @@
       :variant="errors['state'].length > 0 ? 'danger' : 'success'"
       v-if="Array.isArray(states)"
     >
-      <o-select :value="value" placeholder="select" @input="input">
+      <o-select :value="modelValue" placeholder="select" @input="input">
         <option v-for="stateItem in states" :key="stateItem">
           {{ stateItem }}
         </option>
@@ -19,7 +19,7 @@
       v-else
     >
       <o-input
-        :value="value"
+        :value="modelValue"
         type="text"
         :placeholder="$t('editRestaurant.enterCity')"
         maxlength="15"
@@ -36,7 +36,7 @@ export default {
       type: Object,
       required: true,
     },
-    value: {
+    modelValue: {
       type: String,
       required: true,
     },

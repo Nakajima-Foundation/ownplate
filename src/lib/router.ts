@@ -277,7 +277,7 @@ export const customRoutes: CustomRoute[] = [
         component: "admin/Layout.vue",
         children: [
           {
-            path: "/",
+            path: "",
             component: "admin/RestaurantPage.vue",
           },
           {
