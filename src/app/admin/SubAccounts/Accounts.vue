@@ -133,6 +133,7 @@ import { doc2data, array2obj, useAdminUids } from "@/utils/utils";
 import BackButton from "@/components/BackButton.vue";
 
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   metaInfo() {
@@ -145,6 +146,7 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const store = useStore();
+    const router = useRouter();
 
     const restaurantObj = ref({});
     const children = ref([]);
@@ -219,7 +221,7 @@ export default defineComponent({
           name: name.value,
         });
         if (res.data.result) {
-          ctx.root.$router.push(
+          router.push(
             "/admin/subAccounts/accounts/" + res.data.childUid
           );
           email.value = "";

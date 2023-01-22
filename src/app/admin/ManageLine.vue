@@ -103,6 +103,7 @@ import NotFound from "@/components/NotFound.vue";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   components: {
@@ -130,6 +131,7 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const store = useStore();
+    const router = useRouter();
 
     const lineUsers = ref([]);
 
@@ -139,9 +141,9 @@ export default defineComponent({
     }
     const restaurantId = getRestaurantId();
 
-    const lineId = ctx.root.$route.query.userId;
-    const displayName = ctx.root.$route.query.displayName;
-    const state = ctx.root.$route.query.state;
+    const lineId = route.query.userId;
+    const displayName = route.query.displayName;
+    const state = route.query.state;
     if (lineId && displayName && state) {
       if (lineVerify(state)) {
         db.doc(`restaurants/${restaurantId}/lines/${lineId}`)
@@ -160,7 +162,7 @@ export default defineComponent({
       } else {
         console.error("invalid state", state);
       }
-      ctx.root.$router.replace(location.pathname);
+      router.replace(location.pathname);
     }
     const detacher = db
       .collection(`restaurants/${restaurantId}/lines`)

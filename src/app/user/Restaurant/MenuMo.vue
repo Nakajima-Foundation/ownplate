@@ -238,6 +238,7 @@ export default defineComponent({
   setup(props, ctx) {
     const store = useStore();
     const route = useRoute();
+    const router = useRouter();
 
     const openMenuFlag = ref(props.initialOpenMenuFlag);
     const imagePopup = ref(false);
@@ -342,10 +343,10 @@ export default defineComponent({
       scrollToElementById(props.item.id);
       imagePopup.value = true;
       if (props.mode !== "mo") {
-        const current = ctx.root.$router.history.current.path;
+        const current = router.history.current.path;
         const to = basePath.value + "/r/" + restaurantId + (urlSuffix || "");
         if (current !== to) {
-          ctx.root.$router.replace(to);
+          router.replace(to);
         }
       }
       analyticsUtil.sendViewItem(props.item, props.shopInfo, restaurantId);
@@ -361,7 +362,7 @@ export default defineComponent({
         scrollToElementById(props.item.id);
       }, 30);
       if (props.mode !== "mo") {
-        ctx.root.$router.replace(basePath.value + "/r/" + restaurantId);
+        router.replace(basePath.value + "/r/" + restaurantId);
       }
     };
     const setQuantities = (key, newValue) => {

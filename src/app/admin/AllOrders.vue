@@ -117,6 +117,8 @@ import OrderedInfo from "@/app/admin/Order/OrderedInfo.vue";
 import BackButton from "@/components/BackButton.vue";
 import NotFound from "@/components/NotFound.vue";
 
+import { useRouter } from "vue-router";
+
 export default defineComponent({
   components: {
     OrderedInfo,
@@ -136,6 +138,8 @@ export default defineComponent({
     };
   },
   setup(props, ctx) {
+    const router = useRouter();
+
     const { uid, isOwner } = useAdminUids();
 
     const orders = ref([]);
@@ -271,7 +275,7 @@ export default defineComponent({
     };
     const orderSelected = (order) => {
       // We are re-using the restaurant owner's view.
-      ctx.root.$router.push({
+      router.push({
         path:
           "/admin/restaurants/" + order.restaurantId + "/orders/" + order.id,
       });

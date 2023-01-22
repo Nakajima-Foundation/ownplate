@@ -594,7 +594,7 @@ export default defineComponent({
       hasCategory,
       showCategory,
       showSubCategory,
-    } = useCategoryParams(ctx, isInMo.value);
+    } = useCategoryParams(isInMo.value);
 
     const restaurantId = computed(() => {
       return route.params.restaurantId;

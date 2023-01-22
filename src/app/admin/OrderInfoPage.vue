@@ -647,6 +647,7 @@ import {
 } from "@/utils/utils";
 
 import { useStore } from "vuex";
+import { useRoute, useRouter } from "vue-router";
 
 export default defineComponent({
   components: {
@@ -695,6 +696,8 @@ export default defineComponent({
 
   setup(props, ctx) {
     const store = useStore();
+    const route = useRoute();
+    const router = useRouter();
 
     const menuObj = ref({});
     const orderInfo = ref({});
@@ -738,7 +741,7 @@ export default defineComponent({
     }
     const restaurantId = useRestaurantId();
     const orderId = computed(() => {
-      return ctx.root.$route.params.orderId;
+      return route.params.orderId;
     });
 
     const order_detacher = onSnapshot(
@@ -1119,7 +1122,7 @@ export default defineComponent({
         }
         const { data } = await orderUpdate(params);
         // console.log("update", data);
-        ctx.root.$router.push(parentUrl.value);
+        router.push(parentUrl.value);
       } catch (error) {
         console.error(error.message, error.details);
         store.commit("setErrorMessage", {
@@ -1151,7 +1154,7 @@ export default defineComponent({
         });
         sendRedunded();
         // console.log("cancel", data);
-        ctx.root.$router.push(parentUrl.value);
+        router.push(parentUrl.value);
       } catch (error) {
         console.error(error.message, error.details);
         store.commit("setErrorMessage", {
@@ -1204,7 +1207,7 @@ export default defineComponent({
           orderId: orderId.value,
         });
         console.log("paymentCancel", data);
-        ctx.root.$router.push(parentUrl.value);
+        router.push(parentUrl.value);
       } catch (error) {
         console.error(error.message, error.details);
         store.commit("setErrorMessage", {

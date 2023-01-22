@@ -66,6 +66,7 @@ import { defaultHeader } from "@/config/header";
 import { useBasePath, useTopPath, useIsInMo, getMoPrefix } from "@/utils/utils";
 
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   metaInfo() {
@@ -80,6 +81,7 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const store = useStore();
+    const router = useRouter();
 
     const orders = ref([]);
 
@@ -153,14 +155,14 @@ export default defineComponent({
       if (success) {
         loginVisible.value = false;
       } else {
-        ctx.root.$router.push(topPath.value);
+        router.push(topPath.value);
       }
     };
 
     const orderSelected = (order) => {
       const path =
         basePath.value + "/r/" + order.restaurantId + "/order/" + order.id;
-      ctx.root.$router.push({
+      router.push({
         path,
       });
     };

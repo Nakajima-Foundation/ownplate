@@ -14,6 +14,8 @@ import { db } from "@/lib/firebase/firebase9";
 
 import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
 
+import { getRestaurantId } from "@/utils/utils";
+
 export default defineComponent({
   props: {
     shopInfo: {
@@ -32,12 +34,12 @@ export default defineComponent({
   components: {
     CustomerInfo,
   },
-  setup(props, ctx) {
+  setup(props) {
     const customer = ref({});
     getDoc(
       doc(
         db,
-        `restaurants/${ctx.root.$route.params.restaurantId}/orders/${props.orderId}/customer/data`
+        `restaurants/${getRestaurantId()}/orders/${props.orderId}/customer/data`
       )
     ).then((doc) => {
       customer.value = doc.data();

@@ -207,6 +207,8 @@ import { useAdminUids, smallImageErrorHandler } from "@/utils/utils";
 
 import { useStore } from "vuex";
 
+import { useRouter } from "vue-router";
+
 export default defineComponent({
   components: {
     Price,
@@ -253,6 +255,7 @@ export default defineComponent({
   emit: ["toEditMode", "positionUp", "positionDown", "forkItem", "deleteItem"],
   setup(props, ctx) {
     const store = useStore();
+    const router = useRouter();
 
     const { isOwner } = useAdminUids();
     const image =
@@ -275,7 +278,7 @@ export default defineComponent({
     });
     const linkEdit = () => {
       if (isOwner.value && !disabledEdit.value) {
-        ctx.root.$router.push({
+        router.push({
           path: `/admin/restaurants/${ctx.root.restaurantId()}/menus/${
             props.menuitem.id
           }`,

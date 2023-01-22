@@ -22,6 +22,7 @@ import {
 } from "firebase/firestore";
 
 import { doc2data, array2obj } from "@/utils/utils";
+import { useRoute } from "vue-router";
 
 export const useTitles = (restaurantId: Ref) => {
   const titles = ref<DocumentData[]>([]);
@@ -350,12 +351,14 @@ export const useMenu = (
   };
 };
 
-export const useCategoryParams = (ctx: any, isInMo: string) => {
+export const useCategoryParams = (isInMo: string) => {
+  const route = useRoute();
+
   const category = computed(() => {
-    return ctx.root.$route.params.category;
+    return route.params.category;
   });
   const subCategory = computed(() => {
-    return ctx.root.$route.params.subCategory;
+    return route.params.subCategory;
   });
   const watchCat = computed(() => {
     return [category.value, subCategory.value];

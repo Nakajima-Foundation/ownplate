@@ -321,6 +321,7 @@ import { checkAdminPermission } from "@/utils/userPermission";
 import { useAdminConfigToggle } from "@/utils/admin/Toggle";
 
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "RestaurantIndex",
@@ -366,6 +367,7 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const store = useStore();
+    const router = useRouter();
 
     const readyToDisplay = ref(false);
     const restaurantItems = ref(null);
@@ -570,7 +572,7 @@ export default defineComponent({
             createdAt: serverTimestamp(),
           });
 
-          ctx.root.$router.push(`/admin/restaurants/${newDoc.id}`);
+          router.push(`/admin/restaurants/${newDoc.id}`);
         } catch (error) {
           store.commit("setErrorMessage", {});
           console.log(error);

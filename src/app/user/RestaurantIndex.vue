@@ -83,6 +83,8 @@ import { restaurant2AreaObj, sortRestaurantObj } from "@/utils/RestaurantUtils";
 import Map from "@/components/Map";
 import { defaultHeader } from "@/config/header";
 
+import { useRoute } from "vue-router";
+
 export default defineComponent({
   name: "RestaurantIndex",
   metaInfo() {
@@ -95,7 +97,8 @@ export default defineComponent({
   },
 
   setup(_, ctx) {
-    const ownerUid = ctx.root.$route.params.ownerUid;
+    const route = useRoute();
+    const ownerUid = route.params.ownerUid;
 
     const restaurantsObj = ref({});
     const restaurants = ref([]);

@@ -126,6 +126,8 @@ import NotFound from "@/components/NotFound.vue";
 import NotificationIndex from "./Notifications/Index.vue";
 import PreviewLink from "@/app/admin/common/PreviewLink.vue";
 
+import { useRouter, useRoute } from "vue-router";
+
 export default defineComponent({
   components: {
     NotFound,
@@ -160,6 +162,9 @@ export default defineComponent({
     };
   },
   setup(props, ctx) {
+    const route = useRoute();
+    const router = useRouter();
+
     const orders = ref([]);
     const userLog = ref({});
     const limitNum = 30;
@@ -168,7 +173,7 @@ export default defineComponent({
     const fileName = ctx.root.$t("order.history");
 
     const customerUid = computed(() => {
-      return ctx.root.$route.params.userId;
+      return route.params.userId;
     });
     const { ownerUid } = useAdminUids();
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
@@ -177,7 +182,7 @@ export default defineComponent({
       };
     }
 
-    const orderId = ctx.root.$route.query.orderId;
+    const orderId = route.query.orderId;
 
     const phoneNumber = computed(() => {
       if (orders.value[0] && orders.value[0].phoneNumber) {
@@ -242,7 +247,7 @@ export default defineComponent({
         });
     };
     const orderSelected = (order) => {
-      ctx.root.$router.push({
+      router.push({
         path:
           "/admin/restaurants/" +
           ctx.root.restaurantId() +

@@ -52,6 +52,7 @@
 import { defineComponent, computed } from "vue";
 import { useBasePath, smallImageErrorHandler } from "@/utils/utils";
 import { moBaseUrl } from "@/config/project";
+import { useRoute } from "vue-router";
 
 export default defineComponent({
   name,
@@ -70,8 +71,9 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
+  const route = useRoute();
     const basePath = useBasePath();
-    const { category, selectedSubCategory } = ctx.root.$route.params;
+    const { category, selectedSubCategory } = route.params;
     return {
       basePath,
       moBaseUrl,

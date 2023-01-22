@@ -82,6 +82,7 @@ import {
 } from "@/utils/utils";
 
 import { useStore } from "vuex";
+import { useRouter, useRoute } from "vue-router";
 
 export default defineComponent({
   name: "Order",
@@ -143,6 +144,8 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const store = useStore();
+    const route = useRoute();
+    const router = useRouter();
 
     const loginVisible = ref(false);
     const orderInfo = ref({});
@@ -152,7 +155,7 @@ export default defineComponent({
 
     const liffBasePath = useLiffBasePath();
 
-    const orderId = ctx.root.$route.params.orderId;
+    const orderId = route.params.orderId;
     const statusKey = computed(() => {
       return orderInfo.value ? order_status_keys[orderInfo.value.status] : null;
     });
@@ -221,13 +224,13 @@ export default defineComponent({
 
     const handleOpenMenu = () => {
       if (ctx.root.inLiff) {
-        ctx.root.$router.push(liffBasePath + "/r/" + ctx.root.restaurantId());
+        router.push(liffBasePath + "/r/" + ctx.root.restaurantId());
       } else if (props.mode === "mo") {
-        ctx.root.$router.push(
+        router.push(
           `/${props.moPrefix}/r/${ctx.root.restaurantId()}`
         );
       } else {
-        ctx.root.$router.push(`/r/${ctx.root.restaurantId()}`);
+        router.push(`/r/${ctx.root.restaurantId()}`);
       }
     };
     const handleDismissed = (params) => {

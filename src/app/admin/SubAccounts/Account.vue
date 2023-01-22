@@ -63,6 +63,8 @@ import { db } from "@/plugins/firebase";
 
 import { doc2data, array2obj, useAdminUids } from "@/utils/utils";
 
+import { useRouter, useRoute } from "vue-router";
+
 export default defineComponent({
   components: {
     BackButton,
@@ -73,8 +75,11 @@ export default defineComponent({
     };
   },
   setup(props, ctx) {
+    const route = useRoute();
+    const router = useRouter();
+
     const subAccountId = computed(() => {
-      return ctx.root.$route.params.subAccountId;
+      return route.params.subAccountId;
     });
 
     const restaurantObj = ref({});
@@ -129,7 +134,7 @@ export default defineComponent({
           restaurantLists: newRestaurantList.value,
           name: name.value,
         });
-      ctx.root.$router.push("/admin/subaccounts/");
+      router.push("/admin/subaccounts/");
     };
 
     return {

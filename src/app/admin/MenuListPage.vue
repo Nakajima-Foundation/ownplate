@@ -242,6 +242,8 @@ import { useAdminUids, cleanObject, notFoundResponse } from "@/utils/utils";
 import { checkShopAccount } from "@/utils/userPermission";
 import { useAdminConfigToggle } from "@/utils/admin/Toggle";
 
+import { useRouter, useRoute } from "vue-router";
+
 export default defineComponent({
   name: "MenuList",
   components: {
@@ -296,6 +298,9 @@ export default defineComponent({
     };
   },
   setup(props, ctx) {
+    const route = useRoute();
+    const router = useRouter();
+
     const submitting = ref(false);
     const shopInfoSnapshot = ref({});
 
@@ -312,7 +317,7 @@ export default defineComponent({
       hasCategory,
       showCategory,
       showSubCategory,
-    } = useCategoryParams(ctx, props.isInMo);
+    } = useCategoryParams(props.isInMo);
     const { loadCategory, categoryData, categoryDataObj } = useCategory(
       props.moPrefix
     );
@@ -349,10 +354,10 @@ export default defineComponent({
     const menuRestaurantId = computed(() => {
       return props.isInMo
         ? props.groupMasterRestaurant.restaurantId
-        : ctx.root.$route.params.restaurantId;
+        : route.params.restaurantId;
     });
     const restaurantId = computed(() => {
-      return ctx.root.$route.params.restaurantId;
+      return route.params.restaurantId;
     });
     const menuCounter = computed(() => {
       return Object.keys(menuObj.value).length;
@@ -513,7 +518,7 @@ export default defineComponent({
           newMenuLists.push(newData.id);
         }
         await saveMenuList(newMenuLists);
-        ctx.root.$router.push({
+        router.push({
           path: `/admin/restaurants/${menuRestaurantId.value}/menus/${newData.id}`,
         });
       } catch (e) {

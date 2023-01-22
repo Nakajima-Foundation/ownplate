@@ -108,6 +108,7 @@ import { checkShopAccount } from "@/utils/userPermission";
 import { useAdminConfigToggle } from "@/utils/admin/Toggle";
 
 import { useStore } from "vuex";
+import { useRoute, useRouter } from "vue-router";
 
 export default defineComponent({
   components: {
@@ -147,6 +148,8 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const store = useStore();
+    const route = useRoute();
+    const router = useRouter();
 
     const orders = ref([]);
     const dayIndex = ref(0);
@@ -182,7 +185,7 @@ export default defineComponent({
       const newDayIndex =
         lastSeveralDays.value.findIndex((day) => {
           return (
-            moment(day.date).format("YYYY-MM-DD") === ctx.root.$route.query.day
+            moment(day.date).format("YYYY-MM-DD") === route.query.day
           );
         }) || 0;
       dayIndex.value = newDayIndex > 0 ? newDayIndex : 0;
@@ -191,8 +194,8 @@ export default defineComponent({
       const day = moment(lastSeveralDays.value[dayIndex.value].date).format(
         "YYYY-MM-DD"
       );
-      if (ctx.root.$route.query.day !== day) {
-        ctx.root.$router.push({
+      if (route.query.day !== day) {
+        router.push({
           path:
             "/admin/restaurants/" +
             ctx.root.restaurantId() +
@@ -270,7 +273,7 @@ export default defineComponent({
       );
     };
 
-    if (ctx.root.$route.query.day) {
+    if (route.query.day) {
       updateDayIndex();
     }
     dateWasUpdated();
@@ -298,7 +301,7 @@ export default defineComponent({
       dateWasUpdated();
     });
     const dayQuery = computed(() => {
-      return ctx.root.$route.query.day;
+      return route.query.day;
     });
     watch(dayQuery, () => {
       updateDayIndex();

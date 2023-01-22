@@ -27,7 +27,7 @@ import {
 } from "vue";
 
 import { db, firestore } from "@/plugins/firebase";
-import { useIsInMo, useMoPrefix } from "@/utils/utils";
+import { useIsInMo, useMoPrefix, useRestaurantId } from "@/utils/utils";
 
 export default defineComponent({
   components: {},
@@ -40,9 +40,8 @@ export default defineComponent({
   setup(props, ctx) {
     const review = ref({});
     let detacher = null;
-    const restaurantId = computed(() => {
-      return ctx.root.$route.params.restaurantId;
-    });
+    const restaurantId = useRestaurantId();
+
     const isInMo = useIsInMo();
     const moPrefix = useMoPrefix();
 

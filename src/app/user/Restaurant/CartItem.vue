@@ -77,6 +77,7 @@ import {
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import Price from "@/components/Price";
+import { getRestaurantId } from "@/utils/utils";
 
 export default defineComponent({
   props: {
@@ -106,7 +107,7 @@ export default defineComponent({
   },
   emits: ["increase", "decrease"],
   setup(props, ctx) {
-    const restaurantId = ctx.root.$route.params.restaurantId;
+    const restaurantId = getRestaurantId();
     const image = computed(() => {
       return (
         (props.item?.images?.item?.resizedImages || {})["600"] ||

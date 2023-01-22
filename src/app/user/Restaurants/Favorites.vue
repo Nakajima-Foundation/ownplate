@@ -77,6 +77,8 @@ import { useIsInMo, useMoPrefix, routeMode, useBasePath } from "@/utils/utils";
 import AreaItem from "@/app/user/Restaurants/AreaItem.vue";
 import BackButton from "@/components/BackButton.vue";
 
+import { useRouter } from "vue-router";
+
 export default defineComponent({
   components: {
     AreaItem,
@@ -90,6 +92,7 @@ export default defineComponent({
     return Object.assign(RestaurantHeader, { title });
   },
   setup(props, ctx) {
+    const router = useRouter();
     const basePath = useBasePath();
     const likes = ref(null);
 
@@ -124,7 +127,7 @@ export default defineComponent({
           });
       })();
     } else {
-      ctx.root.$router.push(basePath.value + "/u/profile");
+      router.push(basePath.value + "/u/profile");
     }
     return {
       likes,

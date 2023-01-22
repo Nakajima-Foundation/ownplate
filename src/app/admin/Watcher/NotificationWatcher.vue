@@ -6,12 +6,15 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, onSnapshot } from "firebase/firestore";
 
 import { useAdminUids } from "@/utils/utils";
+import { useRoute } from "vue-router";
 
 export default defineComponent({
   props: {
     notificationConfig: Object,
   },
   setup(props, ctx) {
+    const route = useRoute();
+
     const watchingMessage = ref(false);
 
     const { ownerUid } = useAdminUids();
@@ -22,7 +25,7 @@ export default defineComponent({
         if (notification.exists()) {
           const notification_data = notification.data();
           if (
-            ctx.root.$route.path.indexOf(notification_data.path) > -1 &&
+            route.path.indexOf(notification_data.path) > -1 &&
             notification_data.sound &&
             props.notificationConfig.soundOn &&
             watchingMessage.value

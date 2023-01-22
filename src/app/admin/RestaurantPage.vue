@@ -1186,6 +1186,7 @@ import {
 } from "@/config/constant";
 
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "RestaurantPage",
@@ -1226,6 +1227,7 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const store = useStore();
+    const router = useRouter();
 
     const maxDate = new Date();
     const now = new Date();
@@ -1434,7 +1436,7 @@ export default defineComponent({
           uid.value,
           ctx.root.restaurantId()
         );
-        ctx.root.$router.push({
+        router.push({
           path: `/admin/restaurants/${id}`,
         });
         location.reload();
@@ -1487,7 +1489,7 @@ export default defineComponent({
         const restaurantData = getEditShopInfo(newData);
         await updateRestaurantData(restaurantData);
 
-        ctx.root.$router.push({
+        router.push({
           path: `/admin/restaurants/`,
         });
       } catch (error) {

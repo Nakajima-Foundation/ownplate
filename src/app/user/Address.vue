@@ -63,11 +63,14 @@ import { useBasePath } from "@/utils/utils";
 
 import BackButton from "@/components/BackButton.vue";
 
+import { useRouter } from "vue-router";
+
 export default defineComponent({
   components: {
     BackButton,
   },
   setup(_, ctx) {
+    const router = useRouter();
     const basePath = useBasePath();
     const customerInfo = ref({});
 
@@ -79,7 +82,7 @@ export default defineComponent({
     });
 
     if (!ctx.root.isUser) {
-      ctx.root.$router.push(basePath.value + "/u/profile");
+      router.push(basePath.value + "/u/profile");
     }
 
     if (docPath.value) {
