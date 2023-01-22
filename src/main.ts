@@ -17,6 +17,7 @@ import Croppa from "vue-croppa";
 // import SocialSharing from "vue-social-sharing";
 import VueMeta from "vue-meta";
 // import VueQrcode from "@chenfengyuan/vue-qrcode";
+import VueQrcode from '@chenfengyuan/vue-qrcode';
 
 // sentry
 import * as Sentry from "@sentry/vue";
@@ -46,6 +47,8 @@ const app = createApp(App);
 app.component("GMap", GMap);
 app.component("GMapInfoWindow", GMapInfoWindow);
 app.component("GMapMarker", GMapMarker);
+
+app.component(VueQrcode.name, VueQrcode);
 
 /*
 app.prototype.$GMaps = {

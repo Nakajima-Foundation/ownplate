@@ -17,6 +17,7 @@
     "user": "babel-node --presets @babel/env  ./batch/user.js"
   },
   "dependencies": {
+    "@chenfengyuan/vue-qrcode": "^2.0.0",
     "@googlemaps/js-api-loader": "^1.13.11",
     "@line/liff": "^2.18.2",
     "@oruga-ui/oruga-next": "^0.5.10",
@@ -34,6 +35,7 @@
     "moment-timezone": "^0.5.37",
     "node-fetch": "^2.6.7",
     "pdfmake": "0.3.0-beta.2",
+    "qrcode": "^1.5.1",
     "validator": "^13.7.0",
     "vue": "^3.2.45",
     "vue-clipboard3": "^2.0.0",
