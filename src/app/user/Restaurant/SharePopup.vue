@@ -23,7 +23,7 @@
 
         <!-- Body -->
         <div class="flex">
-          <div class="mr-2 flex-shrink-0">
+          <div class="mr-2 flex-shrink-0" v-if="false">
             <qrcode :value="url" :options="{ width: 160 }"></qrcode>
           </div>
 

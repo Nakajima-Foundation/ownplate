@@ -29,6 +29,7 @@ import isLatLong from "validator/lib/isLatLong";
 
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
+import { useI18n } from "vue-i18n";
 
 export const isNull = <T>(value: T) => {
   return value === null || value === undefined;
@@ -127,13 +128,15 @@ export const num2simpleFormatedTime = (num: number) => {
 };
 
 export const num2time = (num: number, root: any) => {
+  const { locale, t } = useI18n({ useScope: 'global' });
+  
   if (num === 0 || num === 60 * 24) {
-    return root.$t("shopInfo.midnight");
+    return t("shopInfo.midnight");
   }
   if (num === 60 * 12) {
-    return root.$t("shopInfo.noon");
+    return t("shopInfo.noon");
   }
-  const offsetTime = root.$i18n.locale == "ja" ? 12 : 13;
+  const offsetTime = locale.value == "ja" ? 12 : 13;
   const isPm = num >= 60 * 12;
   if (num >= 60 * offsetTime) {
     num = num - 60 * 12;
@@ -141,9 +144,9 @@ export const num2time = (num: number, root: any) => {
   const formatedTime = num2simpleFormatedTime(num);
 
   if (isPm) {
-    return root.$tc("shopInfo.pm", 1, { formatedTime });
+    return t("shopInfo.pm", { formatedTime }, 1);
   }
-  return root.$tc("shopInfo.am", 0, { formatedTime });
+  return t("shopInfo.am", { formatedTime }, 0);
 };
 
 export const countObj = (obj: any): number => {
@@ -610,6 +613,12 @@ export const useUid = () => {
     return store.getters.uid;
   });
   return uid;
+};
+export const useIsUser = () => {
+  const store = useStore();
+  return computed(() => {
+    return !!store.getters.uidUser;
+  });
 };
 
 export const useIsLiffUser = () => {

@@ -457,6 +457,11 @@ import {
   useIsInMo,
   useToggle,
   scrollToElementById,
+  useUser,
+  useUid,
+  useIsAdmin,
+  useIsUser,
+  useIsLiffUser,
 } from "@/utils/utils";
 
 import { imageUtils } from "@/utils/RestaurantUtils";
@@ -602,15 +607,12 @@ export default defineComponent({
     const menuId = computed(() => {
       return route.params.menuId;
     });
-    const user = computed(() => {
-      return ctx.root.user;
-    });
-    const uid = computed(() => {
-      return store.getters.uid;
-    });
-    const isAdmin = computed(() => {
-      return !!store.getters.uidAdmin;
-    });
+    const user = useUser();
+    const uid = useUid();
+    const isAdmin = useIsAdmin();
+    const isUser = useIsUser();
+    const isLiffUser = useIsLiffUser();
+    
     const isOwner = computed(() => {
       return isAdmin.value && uid.value === props.shopInfo.uid;
     });
@@ -897,7 +899,7 @@ export default defineComponent({
     };
     const goCheckout = async () => {
       const name = await (async () => {
-        if (ctx.root.isLiffUser) {
+        if (isLiffUser.value) {
           try {
             const user = (await liff.getProfile()) || {};
             return user.displayName;
@@ -921,7 +923,7 @@ export default defineComponent({
         isDelivery:
           (props.shopInfo.enableDelivery && isDelivery.value) || false, // true, // for test
         isPickup: (props.shopInfo.enableMoPickup && isPickup.value) || false,
-        isLiff: ctx.root.isLiffUser,
+        isLiff: isLiffUser.value,
         phoneNumber: user.value.phoneNumber,
         name: name,
         updatedAt: serverTimestamp(),
@@ -1007,7 +1009,7 @@ export default defineComponent({
       // The user has clicked the CheckOut button
       retryCount.value = 0;
 
-      if (ctx.root.isUser || ctx.root.isLiffUser) {
+      if (isUser.value || isLiffUser.value) {
         goCheckout();
       } else {
         window.scrollTo(0, 0);
@@ -1017,7 +1019,7 @@ export default defineComponent({
     const handleDismissed = () => {
       // The user has dismissed the login dialog (including the successful login)
       loginVisible.value = false;
-      if (ctx.root.isUser || ctx.root.isLiffUser) {
+      if (isUser.value || isLiffUser.value) {
         goCheckout();
       } else {
         console.log("this.user it not ready yet");

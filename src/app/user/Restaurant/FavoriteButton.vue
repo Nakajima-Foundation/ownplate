@@ -27,7 +27,7 @@ import {
 } from "vue";
 
 import { db, firestore } from "@/plugins/firebase";
-import { useIsInMo, useMoPrefix, useRestaurantId } from "@/utils/utils";
+import { useIsInMo, useMoPrefix, useRestaurantId, useIsUser } from "@/utils/utils";
 
 export default defineComponent({
   components: {},
@@ -44,6 +44,7 @@ export default defineComponent({
 
     const isInMo = useIsInMo();
     const moPrefix = useMoPrefix();
+    const isUser = useIsUser();
 
     const path = computed(() => {
       if (isInMo.value) {
@@ -53,7 +54,7 @@ export default defineComponent({
       }
     });
 
-    if (ctx.root.isUser) {
+    if (isUser.value) {
       detacher = db.doc(path.value).onSnapshot((snapshot) => {
         review.value = snapshot.data() || {};
         if (review.value.restaurantName) {
@@ -101,6 +102,7 @@ export default defineComponent({
       likes,
       handleLike,
       isInMo,
+      isUser,
     };
   },
 });

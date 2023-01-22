@@ -49,6 +49,7 @@ const locale = region_data.langs[0] || "en";
 
 const i18nData = {
   // locales: ['en', 'es', 'ja'],
+  legacy: false,
   locale,
   fallbackLocale: locale,
   messages: {

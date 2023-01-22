@@ -5,7 +5,7 @@ import { mo_prefixes } from "@/config/project";
 const getUserPages = (prefix: string) => {
   return [
     {
-      path: "/",
+      path: "",
       component: "user/RestaurantPage.vue",
       children: [
         {
