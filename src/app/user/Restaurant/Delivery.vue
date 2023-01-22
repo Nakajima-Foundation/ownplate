@@ -46,22 +46,22 @@
     <div class="mt-2">
       <div v-if="deliveryData.enableDeliveryThreshold">
         {{
-          $tc("shopInfo.deliveryThresholdNotice", 0, {
+          $t("shopInfo.deliveryThresholdNotice", {
             price: $n(deliveryData.deliveryThreshold, "currency"),
-          })
+          }, 0)
         }}
       </div>
       <div v-if="deliveryData.deliveryFee > 0">
         {{
-          $tc("shopInfo.deliveryFeeInfo", 0, {
+          $t("shopInfo.deliveryFeeInfo", {
             price: $n(deliveryData.deliveryFee, "currency"),
-          })
+          }, 0)
         }}
         <span v-if="deliveryData.enableDeliveryFree">
           {{
-            $tc("shopInfo.deliveryFeeThresholdInfo", 0, {
+            $t("shopInfo.deliveryFeeThresholdInfo", {
               price: $n(deliveryData.deliveryFreeThreshold, "currency"),
-            })
+            }, 0)
           }}
         </span>
       </div>
@@ -73,9 +73,9 @@
       <span class="font-bold">{{ $t("shopInfo.deliveryArea") }}</span>
       <div v-if="deliveryData.enableAreaMap">
         {{
-          $tc("shopInfo.deliveryAreaRadius", 0, {
+          $t("shopInfo.deliveryAreaRadius", {
             radius: deliveryData.radius,
-          })
+          }, 0)
         }}
       </div>
       <div v-if="deliveryData.enableAreaText">

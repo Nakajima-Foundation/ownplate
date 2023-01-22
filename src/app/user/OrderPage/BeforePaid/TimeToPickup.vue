@@ -101,7 +101,6 @@ export default defineComponent({
       props.shopInfo,
       exceptData,
       {},
-      ctx,
       isInMo.value,
       isPickup
     );

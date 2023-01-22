@@ -1,8 +1,8 @@
 <template>
   <span>
     <span>
-      {{ $tc("tax.price", $n(price, "currency")) }}
-      <span class="text-xs">{{ $tc("tax.include") }}</span>
+      {{ $t("tax.price", $n(price, "currency")) }}
+      <span class="text-xs">{{ $t("tax.include") }}</span>
       <br />
     </span>
   </span>

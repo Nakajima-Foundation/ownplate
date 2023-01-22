@@ -1175,6 +1175,7 @@ import {
   useAdminUids,
   notFoundResponse,
   getRestaurantId,
+  num2time,
 } from "@/utils/utils";
 import { uploadFile } from "@/lib/firebase/storage";
 
@@ -1572,6 +1573,8 @@ export default defineComponent({
       handleCoverImageRemove,
       handlePhoneChange,
 
+      num2time,
+      
       setDefaultLocation,
       gmapClick,
 

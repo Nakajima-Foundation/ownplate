@@ -655,7 +655,6 @@ export default defineComponent({
       props.shopInfo,
       {},
       menuObj,
-      ctx,
       isInMo.value,
       isPickup
     );

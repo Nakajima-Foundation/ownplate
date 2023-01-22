@@ -167,7 +167,6 @@ export default defineComponent({
       props.shopInfo,
       {},
       {},
-      ctx,
       props.isInMo,
       null
     );

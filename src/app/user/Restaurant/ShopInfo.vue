@@ -279,9 +279,12 @@ import {
   validUrl,
   validLocation,
   validPlaceId,
+  num2time,
 } from "@/utils/utils";
 
 import TransactionsAct from "@/app/user/TransactionsAct.vue";
+
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   components: {
@@ -311,6 +314,8 @@ export default defineComponent({
   },
   emits: ["noAvailableTime"],
   setup(props, ctx) {
+    const { locale } = useI18n({ useScope: 'global' });
+
     const d = new Date();
     const moreInfo = ref(false);
     const weekday = d.getDay();
@@ -437,7 +442,7 @@ export default defineComponent({
     });
 
     const { deliveryAvailableDays, availableDays, temporaryClosure } =
-      usePickupTime(props.shopInfo, {}, {}, ctx, isInMo.value, isPickup);
+      usePickupTime(props.shopInfo, {}, {}, isInMo.value, isPickup);
 
     const minimumAvailableTime = computed(() => {
       const days = props.isDelivery
@@ -445,7 +450,8 @@ export default defineComponent({
         : availableDays.value;
       const time = days[0]?.times[0]?.display;
       const date = days[0]?.date;
-      moment.locale(ctx.root.$i18n.locale);
+      console.log(locale.value);
+      moment.locale(locale.value);
       if (!isNull(time) && !isNull(date)) {
         ctx.emit("noAvailableTime", false);
         return [moment(date).format("MM/DD (ddd)"), time].join(" ");
@@ -506,6 +512,7 @@ export default defineComponent({
       toggleMoreInfo,
       validDate,
 
+      num2time,
       //
       temporaryClosure,
 

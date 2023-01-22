@@ -17,7 +17,6 @@ export const usePickupTime = (
   shopInfo: RestaurantInfoData,
   exceptData: any,
   menuObj: Ref<{ [key: string]: MenuData }>,
-  ctx: any,
   isInMo: boolean,
   isMoPickup: null | ComputedRef<boolean>
 ) => {
@@ -79,7 +78,7 @@ export const usePickupTime = (
           time += timeInterval.value
         ) {
           if (!withinExceptTime(time)) {
-            ret.push({ time, display: num2time(time, ctx.root) });
+            ret.push({ time, display: num2time(time) });
           }
         }
         return ret;

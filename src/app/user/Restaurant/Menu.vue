@@ -279,6 +279,7 @@ import {
   useIsInMo,
   smallImageErrorHandler,
   imageErrorHandler,
+  num2time,
 } from "@/utils/utils";
 
 // menu UI algorithm
@@ -289,6 +290,7 @@ import {
 
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   components: {
@@ -343,6 +345,8 @@ export default defineComponent({
     const route = useRoute();
     const router = useRouter();
 
+    const { t } = useI18n({ useScope: 'global' });
+    
     const openMenuFlag = ref(props.initialOpenMenuFlag);
     const imagePopup = ref(false);
     const isInMo = useIsInMo();
@@ -371,13 +375,13 @@ export default defineComponent({
 
     const allergensDescription = computed(() => {
       return (
-        ctx.root.$t("allergens.title") +
+        t("allergens.title") +
         ": " +
         allergens.value
           .map((allergen) => {
-            return ctx.root.$t(`allergens.${allergen}`);
+            return t(`allergens.${allergen}`);
           })
-          .join(ctx.root.$t("comma"))
+          .join(t("comma"))
       );
     });
     const options = computed(() => {
@@ -538,6 +542,8 @@ export default defineComponent({
 
       smallImageErrorHandler,
       imageErrorHandler,
+
+      num2time,
     };
   },
 });

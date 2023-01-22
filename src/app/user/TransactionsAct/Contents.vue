@@ -270,7 +270,7 @@ import { defineComponent, ref, computed } from "vue";
 import { daysOfWeek } from "@/config/constant";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, onSnapshot, getDoc } from "firebase/firestore";
-import { isNull, useNationalPhoneNumber, useIsInMo } from "@/utils/utils";
+import { isNull, useNationalPhoneNumber, useIsInMo, num2time } from "@/utils/utils";
 
 export default defineComponent({
   props: {
@@ -331,6 +331,8 @@ export default defineComponent({
       closeTransactionsAct, // call by parent
 
       nationalPhoneNumber,
+
+      num2time,
     };
   },
 });

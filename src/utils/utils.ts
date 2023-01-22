@@ -127,7 +127,7 @@ export const num2simpleFormatedTime = (num: number) => {
   ].join("");
 };
 
-export const num2time = (num: number, root: any) => {
+export const num2time = (num: number) => {
   const { locale, t } = useI18n({ useScope: 'global' });
   
   if (num === 0 || num === 60 * 24) {
