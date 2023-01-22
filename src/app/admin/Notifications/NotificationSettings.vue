@@ -177,7 +177,7 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 
 import { soundFiles } from "@/config/constant";
-import { getSoundIndex, getRestaurantId } from "@/utils/utils";
+import { getSoundIndex, getRestaurantId, useSoundPlay } from "@/utils/utils";
 
 import IncompleteOrders from "@/app/admin/Notifications/IncompleteOrders.vue";
 
@@ -228,10 +228,11 @@ export default defineComponent({
     const closeNotificationSettings = () => {
       ctx.emit("close");
     };
+    const soundPlay = useSoundPlay();
     const delayedSoundPlay = () => {
       // We need to add a delay so that it won't interrupt the very first silent sound.
       setTimeout(() => {
-        ctx.root.soundPlay();
+        soundPlay();
       }, 100);
     };
     return {

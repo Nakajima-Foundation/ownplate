@@ -457,11 +457,7 @@ import {
   useIsInMo,
   useToggle,
   scrollToElementById,
-  useUser,
-  useUid,
-  useIsAdmin,
-  useIsUser,
-  useIsLiffUser,
+  useUserData,
 } from "@/utils/utils";
 
 import { imageUtils } from "@/utils/RestaurantUtils";
@@ -607,12 +603,14 @@ export default defineComponent({
     const menuId = computed(() => {
       return route.params.menuId;
     });
-    const user = useUser();
-    const uid = useUid();
-    const isAdmin = useIsAdmin();
-    const isUser = useIsUser();
-    const isLiffUser = useIsLiffUser();
-    
+
+    const {
+      user,
+      uid,
+      isAdmin,
+      isUser,
+      isLiffUser,
+    } = useUserData();
     const isOwner = computed(() => {
       return isAdmin.value && uid.value === props.shopInfo.uid;
     });

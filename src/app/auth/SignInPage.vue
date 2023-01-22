@@ -128,7 +128,7 @@
 import { defineComponent, ref, watch } from "vue";
 import { auth } from "@/lib/firebase/firebase9";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { useUser } from "@/utils/utils";
+import { useUserData  } from "@/utils/utils";
 
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
@@ -149,7 +149,7 @@ export default defineComponent({
     const password = ref("");
     const errors = ref({});
 
-    const user = useUser();
+    const { user, isAdmin } = useUserData();
 
     const redirectToAdminPage = () => {
       const redirect = route.query["to"];
@@ -162,7 +162,7 @@ export default defineComponent({
       }
     };
 
-    if (ctx.root.isAdmin) {
+    if (isAdmin.value) {
       redirectToAdminPage();
     }
 

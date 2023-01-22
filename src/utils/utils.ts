@@ -177,16 +177,21 @@ export const cleanObject = (obj: { [key: string]: any }) => {
     },
     moment(value) {
       return moment(value);
-    },
-    soundPlay(reason) {
-      this.$store.commit("pingOrderEvent");
-      if (reason) {
-        console.log("order: call play: " + reason);
-      } else {
-        console.log("order: call play");
-      }
-    },
+      },
 */
+
+export const useSoundPlay = (reason: string) => {
+  const store = useStore();
+  return (reason: string) => {
+    store.commit("pingOrderEvent");
+    if (reason) {
+      console.log("order: call play: " + reason);
+    } else {
+      console.log("order: call play");
+    }
+  };
+};
+
 export const getSoundIndex = (nameKey: string) => {
   if (nameKey) {
     const index = soundFiles.findIndex((data) => data.nameKey === nameKey);
