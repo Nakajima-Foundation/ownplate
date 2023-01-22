@@ -15,7 +15,6 @@ import { bulmaConfig } from "@oruga-ui/theme-bulma";
 
 import Croppa from "vue-croppa";
 // import SocialSharing from "vue-social-sharing";
-import VueClipboard from "vue-clipboard2";
 import VueMeta from "vue-meta";
 // import VueQrcode from "@chenfengyuan/vue-qrcode";
 
@@ -61,7 +60,6 @@ app.mixin(mixin);
 // Vue.use(VueCompositionAPI);
 // app.use(SocialSharing);
 app.use(Croppa);
-app.use(VueClipboard);
 // app.use(VueMeta, {});
 app.use(Oruga, bulmaConfig);
 

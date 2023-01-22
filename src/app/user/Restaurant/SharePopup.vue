@@ -79,6 +79,7 @@ import { defineComponent, ref } from "vue";
 
 import SharingButtons from "@/app/user/Common/SharingButtons.vue";
 import { shareUrl, useBasePath } from "@/utils/utils";
+import useClipboard from 'vue-clipboard3'
 
 export default defineComponent({
   components: {
@@ -117,9 +118,10 @@ export default defineComponent({
       sharePopup.value = false;
     };
 
+    const { toClipboard } = useClipboard();
     const copyClipboard = async (text) => {
       try {
-        await ctx.root.$copyText(text); // TODO vue3
+        await toClipboard(text);
         copied.value = true;
         setTimeout(() => {
           copied.value = false;
