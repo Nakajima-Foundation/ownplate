@@ -55,9 +55,9 @@
         </div>
         <div>
           {{ $t("order.orderTimes") }}:
-          {{ $tc("order.orderTimesUnit", userLog.counter || 0) }} /
+          {{ $t("order.orderTimesUnit", {count: userLog.counter || 0}, 0) }} /
           {{ $t("order.cancelTimes") }}:
-          {{ $tc("order.cancelTimesUnit", userLog.cancelCounter || 0) }}
+          {{ $t("order.cancelTimesUnit", {count: userLog.cancelCounter || 0}, 0) }}
         </div>
         <div>
           {{ $t("order.lastOrder") }}:
