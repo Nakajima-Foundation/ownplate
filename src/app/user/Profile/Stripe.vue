@@ -33,25 +33,25 @@ import {
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc, query, onSnapshot } from "firebase/firestore";
 import { stripeDeleteCard } from "@/lib/firebase/functions";
-import { useIsLiffUser } from "@/utils/utils";
+import { useIsLiffUser, useUserData } from "@/utils/utils";
 
 import { useStore } from "vuex";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   setup(_, ctx) {
     const store = useStore();
+    const { t } = useI18n({ useScope: 'global' });
 
-    const user = computed(() => {
-      return store.state.user;
-    });
+    const { isLiffUser, user } = useUserData();
+
     const storedCard = ref(null);
 
     const cardDescription = computed(() => {
       return storedCard.value
         ? `${storedCard.value.brand} ***${storedCard.value.last4}`
-        : ctx.root.$t("profile.noCard");
+        : t("profile.noCard");
     });
-    const isLiffUser = useIsLiffUser();
 
     let detachStripe = null;
     const checkStripe = () => {

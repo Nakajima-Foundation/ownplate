@@ -15,7 +15,7 @@ import { collection, onSnapshot, where, query } from "firebase/firestore";
 import { midNight } from "@/utils/dateUtils";
 import { order_status } from "@/config/constant";
 
-import { doc2data, getRestaurantId } from "@/utils/utils";
+import { doc2data, getRestaurantId, useSoundPlay } from "@/utils/utils";
 
 import { useStore } from "vuex";
 
@@ -77,6 +77,7 @@ export default defineComponent({
 
     dateWasUpdated();
 
+    const soundPlay = useSoundPlay();
     const itSound = () => {
       console.log(
         "newOrderWatcher: conf=" +
@@ -89,7 +90,7 @@ export default defineComponent({
         props.notificationConfig.infinityNotification &&
         hasNewOrder.value
       ) {
-        ctx.root.soundPlay("NewOrderWatcher: play");
+        soundPlay("NewOrderWatcher: play");
       }
     };
     const intervalTask = setInterval(() => {

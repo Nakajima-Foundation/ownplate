@@ -22,14 +22,6 @@ const mixin = {
     moment(value) {
       return moment(value);
     },
-    soundPlay(reason) {
-      this.$store.commit("pingOrderEvent");
-      if (reason) {
-        console.log("order: call play: " + reason);
-      } else {
-        console.log("order: call play");
-      }
-    },
     displayOption(option, shopInfo, item) {
       return formatOption(option, (price) => {
         return this.$n(roundPrice(price * taxRate(shopInfo, item)), "currency");

@@ -5,7 +5,7 @@ import { defineComponent, ref, onUnmounted } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, onSnapshot } from "firebase/firestore";
 
-import { useAdminUids } from "@/utils/utils";
+import { useAdminUids, useSoundPlay } from "@/utils/utils";
 import { useRoute } from "vue-router";
 
 export default defineComponent({
@@ -19,6 +19,7 @@ export default defineComponent({
 
     const { ownerUid } = useAdminUids();
 
+    const soundPlay = useSoundPlay();
     const message_detacher = onSnapshot(
       doc(db, `admins/${ownerUid.value}/private/notification`),
       (notification) => {
@@ -30,7 +31,7 @@ export default defineComponent({
             props.notificationConfig.soundOn &&
             watchingMessage.value
           ) {
-            ctx.root.soundPlay("NotificationWatcher: newMessage");
+            soundPlay("NotificationWatcher: newMessage");
           }
         }
         watchingMessage.value = true;

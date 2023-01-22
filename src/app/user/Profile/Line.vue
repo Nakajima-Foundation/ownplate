@@ -87,10 +87,12 @@ import { lineAuthURL } from "@/lib/line/line";
 import { ownPlateConfig } from "@/config/project";
 
 import { useStore } from "vuex";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   setup(_, ctx) {
     const store = useStore();
+    const { t } = useI18n({ useScope: 'global' });
 
     const isLineUser = useIsLineUser();
     const isLiffUser = useIsLiffUser();
@@ -143,17 +145,17 @@ export default defineComponent({
 
     const lineConnection = computed(() => {
       return isLineUser.value
-        ? ctx.root.$t("profile.status.hasLine")
-        : ctx.root.$t("profile.status.noLine");
+        ? t("profile.status.hasLine")
+        : t("profile.status.noLine");
     });
 
     const lineFriend = computed(() => {
       if (isFriend.value === undefined) {
-        return ctx.root.$t("profile.status.verifying");
+        return t("profile.status.verifying");
       }
       return isFriend.value
-        ? ctx.root.$t("profile.status.isFriend")
-        : ctx.root.$t("profile.status.noFriend");
+        ? t("profile.status.isFriend")
+        : t("profile.status.noFriend");
     });
 
     watch(isWindowActive, (newValue) => {

@@ -79,13 +79,13 @@
             :class="numberOfOrders > 0 ? 'bg-yellow-500' : 'bg-op-teal'"
           >
             <span class="text-lg font-bold text-white">
-              {{ $tc("admin.viewOrders") }}</span
+              {{ $t("admin.viewOrders") }}</span
             ><span
               class="ml-4 rounded-full bg-white bg-opacity-20 px-3 py-2 text-sm font-bold text-white"
               >{{
-                $tc("admin.incompleteOrders", numberOfOrders, {
+                $t("admin.incompleteOrders", {
                   count: numberOfOrders,
-                })
+                }, numberOfOrders)
               }}</span
             >
           </div>
