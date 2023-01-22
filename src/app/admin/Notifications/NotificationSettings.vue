@@ -3,7 +3,7 @@
     :active="notificationSettingsPopup"
     :width="488"
     scroll="keep"
-    @close="closeNotificationSettings"
+    @onClose="closeNotificationSettings"
   >
     <div class="mx-2 my-6 rounded-lg bg-white p-6 text-left shadow-lg">
       <!-- Title -->
@@ -177,7 +177,7 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 
 import { soundFiles } from "@/config/constant";
-import { getSoundIndex, getRestaurantId, useSoundPlay } from "@/utils/utils";
+import { getSoundIndex, useRestaurantId, useSoundPlay } from "@/utils/utils";
 
 import IncompleteOrders from "@/app/admin/Notifications/IncompleteOrders.vue";
 
@@ -202,10 +202,11 @@ export default defineComponent({
   setup(props, ctx) {
     const notificationConfig = ref(props.notificationData);
     const soundIndex = ref(getSoundIndex(props.notificationData.nameKey));
+    const restaurantId = useRestaurantId();
     const saveNotificationData = () => {
       notificationConfig.value.updatedAt = serverTimestamp();
       setDoc(
-        doc(db, `restaurants/${getRestaurantId()}/private/notifications`),
+        doc(db, `restaurants/${restaurantId.value}/private/notifications`),
         notificationConfig.value
       );
     };

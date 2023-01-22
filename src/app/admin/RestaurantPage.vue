@@ -1174,7 +1174,6 @@ import {
   regionalSetting,
   useAdminUids,
   notFoundResponse,
-  getRestaurantId,
   num2time,
 } from "@/utils/utils";
 import { uploadFile } from "@/lib/firebase/storage";
@@ -1231,6 +1230,7 @@ export default defineComponent({
     const store = useStore();
     const router = useRouter();
 
+    const restaurantId = useRestaurantId();
     const maxDate = new Date();
     const now = new Date();
     maxDate.setMonth(maxDate.getMonth() + 6);
@@ -1436,7 +1436,7 @@ export default defineComponent({
         const id = await copyRestaurant(
           props.shopInfo,
           uid.value,
-          getRestaurantId()
+          restaurantId.value
         );
         router.push({
           path: `/admin/restaurants/${id}`,
@@ -1460,17 +1460,16 @@ export default defineComponent({
     const updateRestaurantData = async (restaurantData) => {
       const cleanData = cleanObject(restaurantData);
       await updateDoc(
-        doc(db, `restaurants/${getRestaurantId()}`),
+        doc(db, `restaurants/${restaurantId.value}`),
         cleanData
       );
     };
     const saveRestaurant = async () => {
       submitting.value = true;
       const newData = { ...props.shopInfo };
-      const restaurantId = getRestaurantId();
       try {
         if (files.value["profile"]) {
-          const path = `/images/restaurants/${restaurantId}/${uid.value}/profile.jpg`;
+          const path = `/images/restaurants/${restaurantId.value}/${uid.value}/profile.jpg`;
           const profImage = await uploadFile(files.value["profile"], path);
           newData.restProfilePhoto = profImage;
           newData.images.profile = {
@@ -1480,7 +1479,7 @@ export default defineComponent({
         }
 
         if (files.value["cover"]) {
-          const path = `/images/restaurants/${restaurantId}/${uid.value}/cover.jpg`;
+          const path = `/images/restaurants/${restaurantId.value}/${uid.value}/cover.jpg`;
           const coverImage = await uploadFile(files.value["cover"], path);
           newData.restCoverPhoto = coverImage;
           newData.images.cover = {

@@ -262,9 +262,9 @@
               </div>
               <div>
                 {{ $t("order.orderTimes") }}:
-                {{ $tc("order.orderTimesUnit", userLog.counter || 0) }} /
+                {{ $t("order.orderTimesUnit", {count: userLog.counter || 0},  0 ) }} /
                 {{ $t("order.cancelTimes") }}:
-                {{ $tc("order.cancelTimesUnit", userLog.cancelCounter || 0) }}
+                {{ $t("order.cancelTimesUnit", {count: userLog.cancelCounter || 0}, 0) }}
               </div>
               <div>
                 <div
@@ -635,7 +635,6 @@ import {
   stripeRegion,
   convOrderStateForText,
   isDev,
-  getRestaurantId,
 } from "@/utils/utils";
 
 import {
@@ -649,6 +648,8 @@ import {
 
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
+
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   components: {
@@ -699,7 +700,7 @@ export default defineComponent({
     const store = useStore();
     const route = useRoute();
     const router = useRouter();
-
+    const { d } = useI18n({ useScope: 'global' });
     const menuObj = ref({});
     const orderInfo = ref({});
     const customer = ref({});
@@ -718,6 +719,7 @@ export default defineComponent({
     const notFound = ref(null);
     const timeOffset = ref(0);
     const editedAvailableOrders = ref([]);
+    const restaurantId = useRestaurantId();
 
     const { ownerUid, uid } = useAdminUids();
     if (
@@ -727,7 +729,7 @@ export default defineComponent({
       return notFoundResponse;
     }
     if (props.shopInfo.isEC) {
-      getDoc(doc(db, `restaurants/${getRestaurantId()}/ec/postage`)).then(
+      getDoc(doc(db, `restaurants/${restaurantId.value}/ec/postage`)).then(
         (snapshot) => {
           postageInfo.value = snapshot.data() || {};
         }
@@ -735,18 +737,17 @@ export default defineComponent({
     }
     if (props.shopInfo.enableDelivery) {
       getDoc(
-        doc(db, `restaurants/${getRestaurantId()}/delivery/area`)
+        doc(db, `restaurants/${restaurantId.value}/delivery/area`)
       ).then((snapshot) => {
         deliveryData.value = snapshot.data() || {};
       });
     }
-    const restaurantId = useRestaurantId();
     const orderId = computed(() => {
       return route.params.orderId;
     });
 
     const order_detacher = onSnapshot(
-      doc(db, `restaurants/${getRestaurantId()}/orders/${orderId.value}`),
+      doc(db, `restaurants/${restaurantId.value}/orders/${orderId.value}`),
       async (order) => {
         if (!order.exists()) {
           notFound.value = true;
@@ -758,7 +759,7 @@ export default defineComponent({
           const tmpCustomer = await getDoc(
             doc(
               db,
-              `restaurants/${getRestaurantId()}/orders/${
+              `restaurants/${restaurantId.value}/orders/${
                 orderId.value
               }/customer/data`
             )
@@ -785,7 +786,7 @@ export default defineComponent({
       getDoc(
         doc(
           db,
-          `restaurants/${getRestaurantId()}/userLog/${
+          `restaurants/${restaurantId.value}/userLog/${
             orderInfo.value.uid
           }`
         )
@@ -796,7 +797,7 @@ export default defineComponent({
       });
       const menuRestaurantId = props.groupData
         ? props.groupData.restaurantId
-        : getRestaurantId();
+        : restaurantId.value;
       const menuIds = Object.keys(orderInfo.value.menuItems);
       arrayChunk(menuIds, 10).map(async (arr) => {
         getDocs(
@@ -870,7 +871,7 @@ export default defineComponent({
     });
     const timeStampToText = (timestamp) => {
       if (timestamp) {
-        return ctx.root.$d(timestamp.toDate(), "long");
+        return d(timestamp.toDate(), "long");
       }
       return "";
     };
@@ -904,7 +905,7 @@ export default defineComponent({
           const date = new Date(time + offset * 60000);
           return {
             offset,
-            display: `${ctx.root.$d(date, "time")}`,
+            display: `${d(date, "time")}`,
           };
         }
       );
@@ -914,12 +915,12 @@ export default defineComponent({
         return "";
       }
       const date = orderInfo.value.timePlaced.toDate();
-      return ctx.root.$d(date, "long");
+      return d(date, "long");
     });
     const timeEstimated = computed(() => {
       if (orderInfo.value.timeEstimated) {
         const date = orderInfo.value.timeEstimated.toDate();
-        return ctx.root.$d(date, "long");
+        return d(date, "long");
       }
       return undefined; // backward compatibility
     });

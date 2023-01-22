@@ -77,7 +77,7 @@ import {
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import Price from "@/components/Price";
-import { getRestaurantId } from "@/utils/utils";
+import { useRestaurantId } from "@/utils/utils";
 
 export default defineComponent({
   props: {
@@ -107,7 +107,7 @@ export default defineComponent({
   },
   emits: ["increase", "decrease"],
   setup(props, ctx) {
-    const restaurantId = getRestaurantId();
+    const restaurantId = useRestaurantId();
     const image = computed(() => {
       return (
         (props.item?.images?.item?.resizedImages || {})["600"] ||
@@ -122,14 +122,14 @@ export default defineComponent({
     });
     const increase = () => {
       ctx.emit("increase");
-      analyticsUtil.sendAddToCart(props.item, props.shopInfo, restaurantId, 1);
+      analyticsUtil.sendAddToCart(props.item, props.shopInfo, restaurantId.value, 1);
     };
     const decrease = () => {
       ctx.emit("decrease");
       analyticsUtil.sendRemoveFromCart(
         props.item,
         props.shopInfo,
-        restaurantId,
+        restaurantId.value,
         1
       );
     };

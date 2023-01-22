@@ -15,7 +15,7 @@ import { collection, onSnapshot, where, query } from "firebase/firestore";
 import { midNight } from "@/utils/dateUtils";
 import { order_status } from "@/config/constant";
 
-import { doc2data, getRestaurantId, useSoundPlay } from "@/utils/utils";
+import { doc2data, useRestaurantId, useSoundPlay } from "@/utils/utils";
 
 import { useStore } from "vuex";
 
@@ -27,7 +27,7 @@ export default defineComponent({
     const store = useStore();
 
     // intervalTime was 60
-    const restaurantId = getRestaurantId();
+    const restaurantId = useRestaurantId();
     const intervalTime = [
       "OQBBSOa3CgEv35smSDVK", // debug
       "GiZEOBRwDGmdpuqKKlyq",

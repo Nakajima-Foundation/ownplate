@@ -108,7 +108,7 @@ import AdminHeader from "@/app/admin/AdminHeader.vue";
 import NotFound from "@/components/NotFound.vue";
 
 import { checkShopAccount } from "@/utils/userPermission";
-import { useAdminUids, notFoundResponse, getRestaurantId } from "@/utils/utils";
+import { useAdminUids, notFoundResponse, useRestaurantId } from "@/utils/utils";
 import { usePickupTime } from "@/utils/pickup";
 
 import { useStore } from "vuex";
@@ -151,6 +151,7 @@ export default defineComponent({
     const store = useStore();
     const date = ref(null);
 
+    const restaurantId = useRestaurantId();
     const { ownerUid } = useAdminUids();
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
       return notFoundResponse;
@@ -203,14 +204,14 @@ export default defineComponent({
       }
       const ts = firebase.firestore.Timestamp.fromDate(tmpDate);
       store.commit("setLoading", true);
-      await db.doc(`restaurants/${getRestaurantId()}`).update({
+      await db.doc(`restaurants/${restaurantId.value}`).update({
         suspendUntil: ts,
       });
       store.commit("setLoading", false);
     };
     const handleRemove = async () => {
       store.commit("setLoading", true);
-      await db.doc(`restaurants/${getRestaurantId()}`).update({
+      await db.doc(`restaurants/${restaurantId.value}`).update({
         suspendUntil: null,
       });
       store.commit("setLoading", false);

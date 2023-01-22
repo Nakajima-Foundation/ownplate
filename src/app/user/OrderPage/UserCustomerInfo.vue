@@ -36,10 +36,11 @@ export default defineComponent({
   },
   setup(props) {
     const customer = ref({});
+    const restaurantId = getRestaurantId();
     getDoc(
       doc(
         db,
-        `restaurants/${getRestaurantId()}/orders/${props.orderId}/customer/data`
+        `restaurants/${restaurantId}/orders/${props.orderId}/customer/data`
       )
     ).then((doc) => {
       customer.value = doc.data();

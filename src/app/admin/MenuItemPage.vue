@@ -616,6 +616,7 @@ import { checkShopOwner } from "@/utils/userPermission";
 
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   name: "MenuItemPage",
@@ -660,6 +661,7 @@ export default defineComponent({
     const store = useStore();
     const route = useRoute();
     const router = useRouter();
+    const { t } = useI18n({ useScope: 'global' });
 
     const dummyCheckbox = ref([]);
 
@@ -783,11 +785,11 @@ export default defineComponent({
         optionPrice(str) * taxRate(props.shopInfo, menuInfo)
       );
       if (price === 0) {
-        return ctx.root.$t("editMenu.noPriceChange");
+        return t("editMenu.noPriceChange");
       } else if (price > 0) {
-        return "+" + ctx.root.$n(price, "currency");
+        return "+" + n(price, "currency");
       }
-      return ctx.root.$n(price, "currency");
+      return n(price, "currency");
     };
     const handleCategoryUpdated = async (categories) => {
       await db.doc(`restaurants/${menuRestaurantId.value}`).update({

@@ -16,7 +16,7 @@ import { defineComponent, computed, ref } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, updateDoc } from "firebase/firestore";
 import {
-  getRestaurantId
+  useRestaurantId
 } from "@/utils/utils";
 
 import MoSuspend from "./MoSuspend.vue";
@@ -32,19 +32,20 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
+    const restaurantId = useRestaurantId();
     const resetSuspend = () => {
-      updateDoc(doc(db, `restaurants/${getRestaurantId()}`), {
+      updateDoc(doc(db, `restaurants/${restaurantId.value}`), {
         isSuspendAllOrder: false,
         isSuspendPickup: false,
       });
     };
     const setAllOrderSuspend = () => {
-      updateDoc(doc(db, `restaurants/${getRestaurantId()}`), {
+      updateDoc(doc(db, `restaurants/${restaurantId.value}`), {
         isSuspendAllOrder: true,
       });
     };
     const setPickupSuspend = () => {
-      updateDoc(doc(db, `restaurants/${getRestaurantId()}`), {
+      updateDoc(doc(db, `restaurants/${restaurantId.value}`), {
         isSuspendPickup: true,
       });
     };

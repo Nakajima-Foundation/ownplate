@@ -97,7 +97,7 @@ import { db } from "@/plugins/firebase";
 
 import { lineAuthURL, lineVerify } from "@/lib/line/line";
 import { checkShopAccount } from "@/utils/userPermission";
-import { useAdminUids, getRestaurantId, notFoundResponse } from "@/utils/utils";
+import { useAdminUids, useRestaurantId, notFoundResponse } from "@/utils/utils";
 
 import NotFound from "@/components/NotFound.vue";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
@@ -139,7 +139,7 @@ export default defineComponent({
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
       return notFoundResponse;
     }
-    const restaurantId = getRestaurantId();
+    const restaurantId = useRestaurantId();
 
     const lineId = route.query.userId;
     const displayName = route.query.displayName;

@@ -65,7 +65,7 @@
 <script>
 import { defineComponent, ref } from "vue";
 import { db, firestore } from "@/plugins/firebase";
-import { useAdminUids, notFoundResponse, getRestaurantId } from "@/utils/utils";
+import { useAdminUids, notFoundResponse, useRestaurantId } from "@/utils/utils";
 import { checkShopAccount } from "@/utils/userPermission";
 
 import NotFound from "@/components/NotFound.vue";
@@ -91,9 +91,9 @@ export default defineComponent({
       return notFoundResponse;
     }
 
-    const restaurantId = getRestaurantId();
+    const restaurantId = useRestaurantId();
 
-    db.doc(`restaurants/${restaurantId}/ec/postage`)
+    db.doc(`restaurants/${restaurantId.value}/ec/postage`)
       .get()
       .then((postageDoc) => {
         if (postageDoc.exists) {
@@ -127,7 +127,7 @@ export default defineComponent({
         },
         freeThreshold: enableFree.value ? freeThreshold.value : null,
       };
-      await db.doc(`restaurants/${restaurantId}/ec/postage`).set(data);
+      await db.doc(`restaurants/${restaurantId.value}/ec/postage`).set(data);
     };
     return {
       postage,

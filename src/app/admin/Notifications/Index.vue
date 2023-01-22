@@ -25,7 +25,7 @@ import { doc, getDoc, serverTimestamp } from "firebase/firestore";
 import NotificationSettings from "./NotificationSettings";
 import NotificationSettingButton from "./NotificationSettingButton";
 import {
-  getRestaurantId
+  useRestaurantId
 } from "@/utils/utils";
 import { useStore } from "vuex";
 
@@ -43,6 +43,7 @@ export default defineComponent({
   setup() {
     const store = useStore();
     
+    const restaurantId = useRestaurantId();
     const notificationSettingsPopup = ref(false);
     const defaultNotificationData = {
       soundOn: null,
@@ -57,7 +58,7 @@ export default defineComponent({
         const notification = await getDoc(
           doc(
             db,
-            `restaurants/${getRestaurantId()}/private/notifications`
+            `restaurants/${restaurantId.value}/private/notifications`
           )
         );
         notificationData.value = notification.exists

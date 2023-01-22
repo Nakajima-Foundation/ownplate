@@ -118,6 +118,7 @@ import BackButton from "@/components/BackButton.vue";
 import NotFound from "@/components/NotFound.vue";
 
 import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   components: {
@@ -137,8 +138,9 @@ export default defineComponent({
       title: ["Admin All Order", this.defaultTitle].join(" / "),
     };
   },
-  setup(props, ctx) {
+  setup(props) {
     const router = useRouter();
+    const { t } = useI18n({ useScope: 'global' });
 
     const { uid, isOwner } = useAdminUids();
 
@@ -191,7 +193,7 @@ export default defineComponent({
     });
 
     const fieldNames = fields.value.map((field) => {
-      return ctx.root.$t(`order.${field}`);
+      return t(`order.${field}`);
     });
     const tableData = computed(() => {
       return filteredOrders.value.map((order) => {
@@ -200,9 +202,9 @@ export default defineComponent({
           date: time ? moment(time).format("YYYY/MM/DD") : "",
           restaurantId: order.restaurant.restaurantId, // mo
           shopId: order.restaurant.shopId, // mo
-          type: ctx.root.$t("order." + orderTypeKey(order, props.isInMo)),
+          type: t("order." + orderTypeKey(order, props.isInMo)),
           restaurantName: order.restaurant.restaurantName,
-          orderStatus: ctx.root.$t(
+          orderStatus: t(
             "order.status." + order_status_keys[order.status]
           ),
           foodRevenue: order.accounting.food.revenue,

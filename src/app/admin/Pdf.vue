@@ -32,7 +32,8 @@ export default defineComponent({
   },
   setup(props) {
     const menuObj = ref(null);
-    const restaurantRef = db.doc(`restaurants/${getRestaurantId()}`);
+    const restaurantId = getRestaurantId();
+    const restaurantRef = db.doc(`restaurants/${restaurantId}`);
     (async () => {
       menuObj.value = array2obj(
         (

@@ -230,6 +230,7 @@ import { order2ReportData } from "@/models/orderInfo";
 
 import { checkShopOwner } from "@/utils/userPermission";
 import { useCategory, useAllSubcategory } from "../user/Restaurant/Utils";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   components: {
@@ -268,7 +269,8 @@ export default defineComponent({
         : this.defaultTitle,
     };
   },
-  setup(props, ctx) {
+  setup(props) {
+    const { t } = useI18n({ useScope: 'global' });
     const orders = ref([]);
     const total = ref({
       food: {
@@ -300,9 +302,9 @@ export default defineComponent({
     const fieldNames = computed(() => {
       return fields.value.map((field) => {
         if (props.isInMo && field === "restaurantName") {
-          return ctx.root.$t("order.storeName");
+          return t("order.storeName");
         }
-        return ctx.root.$t(`order.${field}`);
+        return t(`order.${field}`);
       });
     });
 
@@ -321,9 +323,9 @@ export default defineComponent({
           date: moment(order.timeConfirmed).format("YYYY/MM/DD"),
           restaurantId: props.shopInfo.restaurantId, // mo
           shopId: props.shopInfo.shopId, // mo
-          type: ctx.root.$t("order." + orderTypeKey(order, props.isInMo)),
+          type: t("order." + orderTypeKey(order, props.isInMo)),
           restaurantName: props.shopInfo.restaurantName,
-          orderStatus: ctx.root.$t(
+          orderStatus: t(
             "order.status." + order_status_keys[order.status]
           ),
           foodRevenue: order.accounting.food.revenue,

@@ -134,7 +134,7 @@ import {
   doc2data,
   notFoundResponse,
   orderType,
-  getRestaurantId,
+  useRestaurantId,
 } from "@/utils/utils";
 import { checkShopAccount } from "@/utils/userPermission";
 
@@ -208,6 +208,7 @@ export default defineComponent({
       return notFoundResponse;
     }
 
+    const restaurantId = useRestaurantId();
     const fileName = props.shopInfo.restaurantId + "_orderhistory_summary.csv";
 
     const { loadCategory, categoryDataObj } = useCategory(props.moPrefix);
@@ -220,7 +221,7 @@ export default defineComponent({
     }
     const next = async () => {
       let query = db
-        .collection(`restaurants/${getRestaurantId()}/orders`)
+        .collection(`restaurants/${restaurantId.value}/orders`)
         .orderBy("timePlaced", "desc")
         .limit(limit);
       if (last.value) {
@@ -239,7 +240,7 @@ export default defineComponent({
             try {
               const cuss = await db
                 .collectionGroup("customer")
-                .where("restaurantId", "==", getRestaurantId())
+                .where("restaurantId", "==", restaurantId.value)
                 .where("orderId", "in", arr)
                 .get();
               cuss.docs.map((cus) => {

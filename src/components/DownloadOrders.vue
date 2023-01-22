@@ -27,6 +27,8 @@ import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import { order_status } from "@/config/constant";
 import { arrayOrNumSum, orderTypeKey, getRestaurantId } from "@/utils/utils";
 
+import { useI18n } from "vue-i18n";
+
 export default defineComponent({
   components: {
     DownloadCsv,
@@ -42,6 +44,8 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
+    const { t } = useI18n({ useScope: 'global' });
+    
     const fields = [
       "datePlaced",
       "type",
@@ -55,7 +59,7 @@ export default defineComponent({
       "payment",
     ];
     const fieldNames = fields.map((field) => {
-      return ctx.root.$t(`order.${field}`);
+      return t(`order.${field}`);
     });
 
     const tableData = computed(() => {
@@ -71,14 +75,14 @@ export default defineComponent({
         }, "unexpected");
         return {
           datePlaced: moment(order.timePlaced).format("YYYY/MM/DD HH:mm"),
-          type: ctx.root.$t("order." + orderTypeKey(order, props.isInMo)),
+          type: t("order." + orderTypeKey(order, props.isInMo)),
           dateEstimated:
             order.timeEstimated &&
             moment(order.timeEstimated).format("YYYY/MM/DD HH:mm"),
           dateConfirmed:
             order.timeConfirmed &&
             moment(order.timeConfirmed).format("YYYY/MM/DD HH:mm"),
-          statusName: ctx.root.$t(`order.status.${status}`),
+          statusName: t(`order.status.${status}`),
           totalCount: totalCount,
           total: order.totalCharge,
           phoneNumber: order.phoneNumber
@@ -89,7 +93,8 @@ export default defineComponent({
         };
       });
     });
-    const fileName = getRestaurantId() + "_orderhistory_detail.csv";
+    const restaurantId = getRestaurantId();
+    const fileName = restaurantId + "_orderhistory_detail.csv";
     return {
       fileName,
       fields,

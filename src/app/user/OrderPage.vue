@@ -79,7 +79,7 @@ import {
   doc2data,
   array2obj,
   useLiffBasePath,
-  getRestaurantId,
+  useRestaurantId,
   useUserData,
 } from "@/utils/utils";
 
@@ -179,10 +179,10 @@ export default defineComponent({
     const orderItems = computed(() => {
       return getOrderItems(orderInfo.value, menuObj.value);
     });
-    const restaurantId = getRestaurantId();
+    const restaurantId = useRestaurantId();
     const loadUserData = () => {
       const order_detacher = onSnapshot(
-        doc(db, `restaurants/${restaurantId}/orders/${orderId}`),
+        doc(db, `restaurants/${restaurantId.value}/orders/${orderId}`),
         async (order) => {
           const order_data = order.exists() ? order.data() : {};
           orderInfo.value = order_data;
@@ -195,7 +195,7 @@ export default defineComponent({
                 return { ...or.item, id: or.id, quantity: or.count };
               }),
               props.shopInfo,
-              restaurantId
+              restaurantId.value
             );
           }
         },
@@ -232,13 +232,13 @@ export default defineComponent({
 
     const handleOpenMenu = () => {
       if (inLiff.value) {
-        router.push(liffBasePath + "/r/" + restaurantId);
+        router.push(liffBasePath + "/r/" + restaurantId.value);
       } else if (props.mode === "mo") {
         router.push(
-          `/${props.moPrefix}/r/${restaurantId}`
+          `/${props.moPrefix}/r/${restaurantId.value}`
         );
       } else {
-        router.push(`/r/${restaurantId}`);
+        router.push(`/r/${restaurantId.value}`);
       }
     };
     const handleDismissed = (params) => {
@@ -249,7 +249,7 @@ export default defineComponent({
     const deleteOrderInfo = async () => {
       try {
         await deleteDoc(
-          doc(db, `restaurants/${restaurantId}/orders/${orderId}`)
+          doc(db, `restaurants/${restaurantId.value}/orders/${orderId}`)
         );
         console.log("suceeded");
       } catch (error) {
