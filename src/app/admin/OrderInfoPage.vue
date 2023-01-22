@@ -646,6 +646,8 @@ import {
   array2obj,
 } from "@/utils/utils";
 
+import { useStore } from "vuex";
+
 export default defineComponent({
   components: {
     OrderInfo,
@@ -692,6 +694,8 @@ export default defineComponent({
   // if restaurant don't have order, render 404.
 
   setup(props, ctx) {
+    const store = useStore();
+
     const menuObj = ref({});
     const orderInfo = ref({});
     const customer = ref({});
@@ -714,7 +718,7 @@ export default defineComponent({
     const { ownerUid, uid } = useAdminUids();
     if (
       !checkShopAccount(props.shopInfo, ownerUid.value) &&
-      !ctx.root.$store.getters.isSuperAdmin
+      !store.getters.isSuperAdmin
     ) {
       return notFoundResponse;
     }
@@ -1104,7 +1108,7 @@ export default defineComponent({
       }
       updating.value = statusKey;
       try {
-        ctx.root.$store.commit("setLoading", true);
+        store.commit("setLoading", true);
         const params = {
           restaurantId: restaurantId.value,
           orderId: orderId.value,
@@ -1118,12 +1122,12 @@ export default defineComponent({
         ctx.root.$router.push(parentUrl.value);
       } catch (error) {
         console.error(error.message, error.details);
-        ctx.root.$store.commit("setErrorMessage", {
+        store.commit("setErrorMessage", {
           code: "order.update",
           error,
         });
       } finally {
-        ctx.root.$store.commit("setLoading", false);
+        store.commit("setLoading", false);
         updating.value = "";
       }
     };
@@ -1150,7 +1154,7 @@ export default defineComponent({
         ctx.root.$router.push(parentUrl.value);
       } catch (error) {
         console.error(error.message, error.details);
-        ctx.root.$store.commit("setErrorMessage", {
+        store.commit("setErrorMessage", {
           code: "order.cancel",
           error,
         });
@@ -1159,13 +1163,13 @@ export default defineComponent({
       }
     };
     const handleOrderChange = async () => {
-      ctx.root.$store.commit("setAlert", {
+      store.commit("setAlert", {
         title: "admin.order.confirmOrderChange",
         code: "admin.order.updateOrderMessage",
         callback: async () => {
           try {
             changing.value = true;
-            ctx.root.$store.commit("setLoading", true);
+            store.commit("setLoading", true);
             const params = {
               restaurantId: restaurantId.value,
               orderId: orderId.value,
@@ -1178,12 +1182,12 @@ export default defineComponent({
             // console.log("update", data);
           } catch (error) {
             console.error(error.message, error.details);
-            ctx.root.$store.commit("setErrorMessage", {
+            store.commit("setErrorMessage", {
               code: "order.update",
               error,
             });
           } finally {
-            ctx.root.$store.commit("setLoading", false);
+            store.commit("setLoading", false);
             changing.value = false;
           }
         },
@@ -1193,7 +1197,7 @@ export default defineComponent({
       console.log("handlePaymentCancel");
 
       try {
-        ctx.root.$store.commit("setLoading", true);
+        store.commit("setLoading", true);
         updating.value = "payment_canceled";
         const { data } = await stripePaymentCancelIntent({
           restaurantId: restaurantId.value,
@@ -1203,13 +1207,13 @@ export default defineComponent({
         ctx.root.$router.push(parentUrl.value);
       } catch (error) {
         console.error(error.message, error.details);
-        ctx.root.$store.commit("setErrorMessage", {
+        store.commit("setErrorMessage", {
           code: "stripe.cancel",
           error,
         });
       } finally {
         updating.value = "";
-        ctx.root.$store.commit("setLoading", false);
+        store.commit("setLoading", false);
       }
     };
     const classOf = (statusKey) => {

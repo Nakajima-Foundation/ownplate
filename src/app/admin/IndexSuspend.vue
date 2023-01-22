@@ -18,14 +18,18 @@ import { doc, onSnapshot, setDoc } from "firebase/firestore";
 
 import MoSuspend from "./MoSuspend.vue";
 
+import { useStore } from "vuex";
+
 export default defineComponent({
   components: {
     MoSuspend,
   },
   setup(props, ctx) {
+    const store = useStore();
+
     const groupData = ref({});
     const groupPath = computed(() => {
-      const groupId = ctx.root.$store.getters.grpupId;
+      const groupId = store.getters.grpupId;
       return `groups/${groupId}/groupConfig/suspend`;
     });
 

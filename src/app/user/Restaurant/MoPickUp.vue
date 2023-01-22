@@ -66,6 +66,9 @@
 
 <script>
 import { defineComponent, ref } from "vue";
+
+import { useStore } from "vuex";
+
 export default defineComponent({
   props: {
     shopInfo: {
@@ -98,6 +101,8 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
+    const store = useStore();
+
     const popup = ref(false);
 
     const input = (value) => {
@@ -105,7 +110,7 @@ export default defineComponent({
         if (Object.values(props.orders).length === 0) {
           ctx.emit("input", value);
         } else {
-          ctx.root.$store.commit("setAlert", {
+          store.commit("setAlert", {
             code: "mobileOrder.methodChangeAlert",
             callback: async () => {
               ctx.emit("input", value);

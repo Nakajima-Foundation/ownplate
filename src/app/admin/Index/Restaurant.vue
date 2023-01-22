@@ -394,6 +394,8 @@ import {
 
 import firebase from "firebase/compat/app";
 
+import { useStore } from "vuex";
+
 export default defineComponent({
   name: "RestaurantEditCard",
   props: {
@@ -444,6 +446,8 @@ export default defineComponent({
   },
   emits: ["positionUp", "positionDown", "deleteFromRestaurantLists"],
   setup(props, ctx) {
+    const store = useStore();
+
     const requestState = ref(0);
     let detacher = null;
 
@@ -466,7 +470,7 @@ export default defineComponent({
     });
 
     const deleteRestaurant = () => {
-      ctx.root.$store.commit("setAlert", {
+      store.commit("setAlert", {
         title: props.shopInfo.restaurantName,
         code: props.isInMo
           ? "mobileOrder.reallyDelete"
@@ -481,7 +485,7 @@ export default defineComponent({
       });
     };
     const deleteFromList = () => {
-      ctx.root.$store.commit("setAlert", {
+      store.commit("setAlert", {
         code: "editRestaurant.reallyOnListDelete",
         callback: () => {
           updateDoc(doc(db, `restaurants/${props.restaurantid}`), {
@@ -493,7 +497,7 @@ export default defineComponent({
     const requestList = () => {
       setDoc(doc(db, `requestList/${props.restaurantid}`), {
         status: 1,
-        uid: ctx.root.$store.getters.uidAdmin,
+        uid: store.getters.uidAdmin,
         created: firebase.firestore.FieldValue.serverTimestamp(),
       });
     };

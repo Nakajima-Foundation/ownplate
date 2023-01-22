@@ -60,6 +60,8 @@ import Map from "@/components/Map";
 
 import { regionalSetting } from "@/utils/utils";
 
+import { useRoute } from "vue-router";
+
 export default defineComponent({
   components: {
     Map,
@@ -72,8 +74,10 @@ export default defineComponent({
       ].join(" / "),
     };
   },
-  setup(_, ctx) {
-    const areaId = ctx.root.$route.params.areaId;
+  setup() {
+    const route = useRoute();
+
+    const areaId = route.params.areaId;
     const areaName = regionalSetting.AddressStates[areaId];
     const restaurants = ref([]);
     if (areaName) {

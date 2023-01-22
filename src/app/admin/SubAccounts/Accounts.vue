@@ -132,6 +132,8 @@ import { doc2data, array2obj, useAdminUids } from "@/utils/utils";
 
 import BackButton from "@/components/BackButton.vue";
 
+import { useStore } from "vuex";
+
 export default defineComponent({
   metaInfo() {
     return {
@@ -142,6 +144,8 @@ export default defineComponent({
     BackButton,
   },
   setup(props, ctx) {
+    const store = useStore();
+
     const restaurantObj = ref({});
     const children = ref([]);
     const detachers = [];
@@ -188,12 +192,12 @@ export default defineComponent({
     });
 
     const deleteChild = (childId) => {
-      ctx.root.$store.commit("setAlert", {
+      store.commit("setAlert", {
         code: "admin.subAccounts.confirmDeletechild",
         callback: async () => {
-          ctx.root.$store.commit("setLoading", true);
+          store.commit("setLoading", true);
           await subAccountDeleteChild({ childUid: childId });
-          ctx.root.$store.commit("setLoading", false);
+          store.commit("setLoading", false);
         },
       });
     };

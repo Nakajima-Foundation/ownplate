@@ -38,16 +38,20 @@ import { getAuth, deleteUser } from "firebase/auth";
 
 import { accountDelete } from "@/lib/firebase/functions";
 
+import { useStore } from "vuex";
+
 export default defineComponent({
   components: {
     PhoneLogin,
   },
-  setup(_, ctx) {
+  setup() {
+    const store = useStore();
+    
     const isDeletingAccount = ref(false);
     const reLoginVisible = ref(false);
 
     const handleDeleteAccount = () => {
-      ctx.root.$store.commit("setAlert", {
+      store.commit("setAlert", {
         code: "profile.reallyDeleteAccount",
         callback: async () => {
           window.scrollTo(0, 0);

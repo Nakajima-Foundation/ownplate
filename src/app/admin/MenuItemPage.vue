@@ -614,6 +614,9 @@ import { uploadFile } from "@/lib/firebase/storage";
 import { getNewItemData } from "@/models/menu";
 import { checkShopOwner } from "@/utils/userPermission";
 
+import { useStore } from "vuex";
+import { useRoute, useRouter } from "vue-router";
+
 export default defineComponent({
   name: "MenuItemPage",
   metaInfo() {
@@ -654,6 +657,10 @@ export default defineComponent({
   },
 
   setup(props, ctx) {
+    const store = useStore();
+    const route = useRoute();
+    const router = useRouter();
+
     const dummyCheckbox = ref([]);
 
     const menuInfo = reactive({
@@ -679,7 +686,7 @@ export default defineComponent({
     const priceStep = 1.0 / stripeRegion.multiple;
 
     const notFound = ref(null);
-    const menuId = ctx.root.$route.params.menuId;
+    const menuId = route.params.menuId;
     const submitting = ref(false);
 
     const files = {};
@@ -696,7 +703,7 @@ export default defineComponent({
     const menuRestaurantId = computed(() => {
       return props.isInMo
         ? props.groupMasterRestaurant.restaurantId
-        : ctx.root.$route.params.restaurantId;
+        : route.params.restaurantId;
     });
 
     const taxRateKeys = regionalSetting["taxRateKeys"];
@@ -817,7 +824,7 @@ export default defineComponent({
         const shop = restaurants.value.find(
           (r) => r.id === copyRestaurantId.value
         );
-        ctx.root.$store.commit("setAlert", {
+        store.commit("setAlert", {
           title: shop.restaurantName,
           code: props.isInMo
             ? "mobileOrder.copyMenuAlert"
@@ -827,7 +834,7 @@ export default defineComponent({
             newItem.publicFlag = false;
             newItem.createdAt = firebase.firestore.FieldValue.serverTimestamp();
             newItem.deletedFlag = false;
-            newItem.uid = ctx.root.$store.getters.uidAdmin;
+            newItem.uid = store.getters.uidAdmin;
 
             const category1 = shop.category1 || [];
             const category2 = shop.category2 || [];
@@ -880,12 +887,12 @@ export default defineComponent({
           .doc(`restaurants/${menuRestaurantId.value}/menus/${menuId}`)
           .update(itemData);
 
-        ctx.root.$router.push({
+        router.push({
           path: `/admin/restaurants/${restaurantId}/menus`,
         });
       } catch (error) {
         submitting.value = false;
-        ctx.root.$store.commit("setErrorMessage", {
+        store.commit("setErrorMessage", {
           code: "menu.save",
           error,
         });

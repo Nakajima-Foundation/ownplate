@@ -205,6 +205,8 @@ import { db } from "@/plugins/firebase";
 import Price from "@/components/Price";
 import { useAdminUids, smallImageErrorHandler } from "@/utils/utils";
 
+import { useStore } from "vuex";
+
 export default defineComponent({
   components: {
     Price,
@@ -250,6 +252,8 @@ export default defineComponent({
   },
   emit: ["toEditMode", "positionUp", "positionDown", "forkItem", "deleteItem"],
   setup(props, ctx) {
+    const store = useStore();
+
     const { isOwner } = useAdminUids();
     const image =
       (props.menuitem?.images?.item?.resizedImages || {})["600"] ||
@@ -289,7 +293,7 @@ export default defineComponent({
       ctx.emit("forkItem", props.menuitem.id);
     };
     const deleteItem = () => {
-      ctx.root.$store.commit("setAlert", {
+      store.commit("setAlert", {
         code: "editMenu.reallyDelete",
         callback: () => {
           ctx.emit("deleteItem", props.menuitem.id);

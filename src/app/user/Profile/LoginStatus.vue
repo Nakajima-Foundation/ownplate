@@ -16,16 +16,20 @@
 import { defineComponent, ref, computed, watch } from "vue";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 
+import { useStore } from "vuex";
+
 export default defineComponent({
   setup(_, ctx) {
+    const store = useStore();
+
     const user = computed(() => {
-      return ctx.root.$store.state.user;
+      return store.state.user;
     });
 
     const loginStatus = computed(() => {
       if (user.value) {
         if (user.value.email) {
-          const extra = ctx.root.$store.getters.isSuperAdmin ? "*admin" : "";
+          const extra = store.getters.isSuperAdmin ? "*admin" : "";
           return `${ctx.root.$t("profile.status.email")}: ${
             user.value.email
           } ${extra}`;

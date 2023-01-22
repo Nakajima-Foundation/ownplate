@@ -102,6 +102,8 @@ import { useAdminUids, getRestaurantId, notFoundResponse } from "@/utils/utils";
 import NotFound from "@/components/NotFound.vue";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 
+import { useStore } from "vuex";
+
 export default defineComponent({
   components: {
     AdminHeader,
@@ -127,6 +129,8 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
+    const store = useStore();
+
     const lineUsers = ref([]);
 
     const { ownerUid, uid } = useAdminUids();
@@ -185,7 +189,7 @@ export default defineComponent({
       location.href = url;
     };
     const handleDelete = (lineId) => {
-      ctx.root.$store.commit("setAlert", {
+      store.commit("setAlert", {
         code: "admin.order.lineDelete",
         callback: async () => {
           console.log("handleDelete", lineId);

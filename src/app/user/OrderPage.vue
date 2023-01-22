@@ -81,6 +81,8 @@ import {
   useLiffBasePath,
 } from "@/utils/utils";
 
+import { useStore } from "vuex";
+
 export default defineComponent({
   name: "Order",
   metaInfo() {
@@ -140,6 +142,8 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
+    const store = useStore();
+
     const loginVisible = ref(false);
     const orderInfo = ref({});
     const menuObj = ref(null);
@@ -191,7 +195,6 @@ export default defineComponent({
       detacher.push(order_detacher);
     };
 
-    const store = ctx.root.$store;
     const disabledPickupTime = computed(() => {
       if (orderInfo.value?.isPickup) {
         const now = Number(moment(store.state.date).format("hhmm"));

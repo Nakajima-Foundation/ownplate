@@ -27,7 +27,7 @@ import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import isURL from "validator/lib/isURL";
 import isLatLong from "validator/lib/isLatLong";
 
-import { useRoute, useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 
 export const isNull = <T>(value: T) => {

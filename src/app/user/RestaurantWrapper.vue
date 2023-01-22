@@ -30,6 +30,8 @@ import { routeMode, getMoPrefix } from "@/utils/utils";
 
 import NotFound from "@/components/NotFound.vue";
 
+import { useRestaurantId } from "@/utils/utils";
+
 export default defineComponent({
   name: "RestaurantWrapper",
   props: {
@@ -41,7 +43,7 @@ export default defineComponent({
   components: {
     NotFound,
   },
-  setup(props, ctx) {
+  setup(props) {
     const mode = routeMode();
     const moPrefix = getMoPrefix();
 
@@ -50,9 +52,7 @@ export default defineComponent({
     const deliveryData = ref({});
     const notFound = ref(null);
 
-    const restaurantId = computed(() => {
-      return ctx.root.$route.params.restaurantId;
-    });
+    const restaurantId = useRestaurantId();
 
     const restaurant_detacher = onSnapshot(
       doc(db, `restaurants/${restaurantId.value}`),

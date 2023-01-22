@@ -47,17 +47,21 @@ import PhoneLogin from "@/app/auth/PhoneLogin";
 
 import { useIsInMo } from "@/utils/utils";
 
+import { useStore } from "vuex";
+
 export default defineComponent({
   components: {
     PhoneLogin,
   },
-  setup(_, ctx) {
+  setup() {
+    const store = useStore();
+
     const isInMo = useIsInMo();
 
     const loginVisible = ref(isInMo.value);
 
     const user = computed(() => {
-      return ctx.root.$store.state.user;
+      return store.state.user;
     });
     watch(user, (newValue) => {
       if (newValue) {

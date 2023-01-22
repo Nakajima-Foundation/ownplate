@@ -287,6 +287,9 @@ import {
 //   if button push, quantities.push(1)
 //   when update quantities, if there is 0 element in quantities and quantities.size > 0, filter 0 element in quantities.
 
+import { useStore } from "vuex";
+import { useRoute, useRouter } from "vue-router";
+
 export default defineComponent({
   components: {
     Price,
@@ -336,12 +339,16 @@ export default defineComponent({
   },
   emits: ["didOrderdChange"],
   setup(props, ctx) {
+    const store = useStore();
+    const route = useRoute();
+    const router = useRouter();
+
     const openMenuFlag = ref(props.initialOpenMenuFlag);
     const imagePopup = ref(false);
     const isInMo = useIsInMo();
     const urlSuffix =
       (isInMo.value ? props.menuLinkBathPath : "") + "/menus/" + props.item.id;
-    const restaurantId = ctx.root.$route.params.restaurantId;
+    const restaurantId = route.params.restaurantId;
 
     const basePath = useBasePath();
 
@@ -353,7 +360,7 @@ export default defineComponent({
     });
     const allergens = computed(() => {
       if (props.item.allergens) {
-        return ctx.root.$store.getters.stripeRegion.allergens.filter(
+        return store.getters.stripeRegion.allergens.filter(
           (allergen) => {
             return props.item.allergens[allergen];
           }
@@ -428,10 +435,10 @@ export default defineComponent({
       scrollToElementById(props.item.id);
       imagePopup.value = true;
 
-      const current = ctx.root.$router.history.current.path;
+      const current = router.history.current.path;
       const to = basePath.value + "/r/" + restaurantId + (urlSuffix || "");
       if (current !== to) {
-        ctx.root.$router.replace(to);
+        router.replace(to);
       }
       analyticsUtil.sendViewItem(props.item, props.shopInfo, restaurantId);
     };
@@ -445,7 +452,7 @@ export default defineComponent({
       setTimeout(() => {
         scrollToElementById(props.item.id);
       }, 30);
-      ctx.root.$router.replace(basePath.value + "/r/" + restaurantId);
+      router.replace(basePath.value + "/r/" + restaurantId);
     };
     const setQuantities = (key, newValue) => {
       const newQuantities = [...props.quantities];

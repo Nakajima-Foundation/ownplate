@@ -1,4 +1,4 @@
-<template>
+i<template>
   <div>
     <div class="mb-2 text-sm font-bold text-black text-opacity-60">
       {{ $t("admin.order.incompleteOrders") }}
@@ -36,11 +36,15 @@ import { isNull } from "@/utils/utils";
 import { midNight } from "@/utils/dateUtils";
 import moment from "moment";
 
+import { useStore } from "vuex";
+
 export default defineComponent({
   props: {
     shopInfo: Object,
   },
   setup(props, ctx) {
+    const store = useStore();
+
     const pickUpDaysInAdvance = computed(() => {
       return (
         (isNull(props.shopInfo.pickUpDaysInAdvance)
@@ -52,7 +56,7 @@ export default defineComponent({
     const orderCounter = computed(() => {
       return lastSeveralDays.value.reduce((tmp, day) => {
         const count = (
-          ctx.root.$store.state.orderObj[
+          store.state.orderObj[
             moment(day.date).format("YYYY-MM-DD")
           ] || []
         ).length;

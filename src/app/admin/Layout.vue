@@ -105,7 +105,7 @@ export default defineComponent({
     const shopInfo = ref(defaultShopInfo);
     const groupData = ref<null | DocumentData>(null);
 
-    if (!checkAdminPermission(ctx)) {
+    if (!checkAdminPermission()) {
       return {
         noRestaurant: true,
       };

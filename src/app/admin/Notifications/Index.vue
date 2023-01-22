@@ -25,6 +25,8 @@ import { doc, getDoc, serverTimestamp } from "firebase/firestore";
 import NotificationSettings from "./NotificationSettings";
 import NotificationSettingButton from "./NotificationSettingButton";
 
+import { useStore } from "vuex";
+
 export default defineComponent({
   props: {
     shopInfo: {
@@ -37,11 +39,13 @@ export default defineComponent({
     NotificationSettingButton,
   },
   setup(_, ctx) {
+    const store = useStore();
+    
     const notificationSettingsPopup = ref(false);
     const defaultNotificationData = {
       soundOn: null,
       infinityNotification: null,
-      uid: ctx.root.$store.getters.uidAdmin,
+      uid: store.getters.uidAdmin,
       createdAt: serverTimestamp(),
     };
     const notificationData = ref(defaultNotificationData);

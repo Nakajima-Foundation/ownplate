@@ -35,10 +35,14 @@ import { doc, getDoc, query, onSnapshot } from "firebase/firestore";
 import { stripeDeleteCard } from "@/lib/firebase/functions";
 import { useIsLiffUser } from "@/utils/utils";
 
+import { useStore } from "vuex";
+
 export default defineComponent({
   setup(_, ctx) {
+    const store = useStore();
+
     const user = computed(() => {
-      return ctx.root.$store.state.user;
+      return store.state.user;
     });
     const storedCard = ref(null);
 
@@ -67,18 +71,18 @@ export default defineComponent({
     };
 
     const handleDeleteCard = () => {
-      ctx.root.$store.commit("setAlert", {
+      store.commit("setAlert", {
         code: "profile.reallyDeleteCard",
         callback: async () => {
           console.log("handleDeleteCard");
-          ctx.root.$store.commit("setLoading", true);
+          store.commit("setLoading", true);
           try {
             const { data } = await stripeDeleteCard();
             console.log("stripeDeleteCard", data);
           } catch (error) {
             console.error(error);
           } finally {
-            ctx.root.$store.commit("setLoading", false);
+            store.commit("setLoading", false);
           }
         },
       });

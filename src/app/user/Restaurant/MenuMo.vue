@@ -176,6 +176,9 @@ import {
 //   if button push, quantities.push(1)
 //   when update quantities, if there is 0 element in quantities and quantities.size > 0, filter 0 element in quantities.
 
+import { useStore } from "vuex";
+import { useRoute, useRouter } from "vue-router";
+
 export default defineComponent({
   components: {
     Price,
@@ -233,12 +236,15 @@ export default defineComponent({
   },
   emits: ["didOrderdChange"],
   setup(props, ctx) {
+    const store = useStore();
+    const route = useRoute();
+
     const openMenuFlag = ref(props.initialOpenMenuFlag);
     const imagePopup = ref(false);
     const isInMo = useIsInMo();
     const urlSuffix =
       (isInMo.value ? props.menuLinkBathPath : "") + "/menus/" + props.item.id;
-    const restaurantId = ctx.root.$route.params.restaurantId;
+    const restaurantId = route.params.restaurantId;
 
     const basePath = useBasePath();
 
@@ -258,7 +264,7 @@ export default defineComponent({
     });
     const allergens = computed(() => {
       if (props.item.allergens) {
-        return ctx.root.$store.getters.stripeRegion.allergens.filter(
+        return store.getters.stripeRegion.allergens.filter(
           (allergen) => {
             return props.item.allergens[allergen];
           }

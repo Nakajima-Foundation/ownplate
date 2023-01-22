@@ -1185,6 +1185,8 @@ import {
   paymentMethods,
 } from "@/config/constant";
 
+import { useStore } from "vuex";
+
 export default defineComponent({
   name: "RestaurantPage",
   components: {
@@ -1223,6 +1225,8 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
+    const store = useStore();
+
     const maxDate = new Date();
     const now = new Date();
     maxDate.setMonth(maxDate.getMonth() + 6);
@@ -1435,14 +1439,14 @@ export default defineComponent({
         });
         location.reload();
       } catch (error) {
-        ctx.root.$store.commit("setErrorMessage", {
+        store.commit("setErrorMessage", {
           code: "restaurant.save",
           error,
         });
       }
     };
     const confirmCopy = async () => {
-      ctx.root.$store.commit("setAlert", {
+      store.commit("setAlert", {
         code: props.isInMo ? "mobileOrder.copyAlert" : "editCommon.copyAlert",
         callback: async () => {
           copyRestaurantFunc();
@@ -1488,7 +1492,7 @@ export default defineComponent({
         });
       } catch (error) {
         submitting.value = false;
-        ctx.root.$store.commit("setErrorMessage", {
+        store.commit("setErrorMessage", {
           code: "restaurant.save",
           error,
         });
@@ -1521,7 +1525,7 @@ export default defineComponent({
     });
 
     const openTips = (key) => {
-      ctx.root.$store.commit("setTips", {
+      store.commit("setTips", {
         key,
       });
     };

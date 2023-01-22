@@ -470,6 +470,9 @@ import {
   loadStockData,
 } from "./Restaurant/Utils";
 
+import { useStore } from "vuex";
+import { useRoute, useRouter } from "vue-router";
+
 export default defineComponent({
   name: "RestaurantPage",
 
@@ -548,6 +551,10 @@ export default defineComponent({
     };
   },
   setup(props, ctx) {
+    const store = useStore();
+    const route = useRoute();
+    const router = useRouter();
+
     const retryCount = ref(0);
 
     const loginVisible = ref(false);
@@ -559,15 +566,13 @@ export default defineComponent({
     const cartItems = ref({});
     const selectedOptions = ref({});
 
-    const store = ctx.root.$store;
-
     const multiple = store.getters.stripeRegion.multiple;
 
     const isInMo = useIsInMo();
 
     const defaultHowToReceive = (() => {
       // for 333
-      const rId = ctx.root.$route.params.restaurantId;
+      const rId = route.params.restaurantId;
       if (store.state.carts[rId]) {
         const cart = store.state.carts[rId] || {};
         if (cart.howtoreceive) {
@@ -592,10 +597,10 @@ export default defineComponent({
     } = useCategoryParams(ctx, isInMo.value);
 
     const restaurantId = computed(() => {
-      return ctx.root.$route.params.restaurantId;
+      return route.params.restaurantId;
     });
     const menuId = computed(() => {
-      return ctx.root.$route.params.menuId;
+      return route.params.menuId;
     });
     const user = computed(() => {
       return ctx.root.user;
@@ -732,11 +737,11 @@ export default defineComponent({
     });
 
     const updateMoUrl = () => {
-      const { category, subCategory, restaurantId } = ctx.root.$route.params;
+      const { category, subCategory, restaurantId } = route.params;
       if (howtoreceive.value && subCategory) {
         const newPath = `/${props.moPrefix}/r/${restaurantId}/cat/${category}/${subCategory}/${howtoreceive.value}`;
-        if (newPath !== ctx.root.$route.path) {
-          ctx.root.$router.replace({
+        if (newPath !== route.path) {
+          router.replace({
             path: newPath,
           });
         }
@@ -968,15 +973,15 @@ export default defineComponent({
         }
         if (props.mode === "liff") {
           const liffIndexId = route.params.liffIndexId;
-          ctx.root.$router.push({
+          router.push({
             path: `/liff/${liffIndexId}/r/${restaurantId.value}/order/${res.id}`,
           });
         } else if (props.mode === "mo") {
-          ctx.root.$router.push({
+          router.push({
             path: `/${props.moPrefix}/r/${restaurantId.value}/order/${res.id}`,
           });
         } else {
-          ctx.root.$router.push({
+          router.push({
             path: `/r/${restaurantId.value}/order/${res.id}`,
           });
         }
@@ -1039,10 +1044,10 @@ export default defineComponent({
     });
 
     const isOpenGroupCategory = computed(() => {
-      return ctx.root.$route.params.list === "categories";
+      return route.params.list === "categories";
     });
     const isOpenGroupSubCategory = computed(() => {
-      return ctx.root.$route.params.list === "category";
+      return route.params.list === "category";
     });
 
     const cartButton = ref();

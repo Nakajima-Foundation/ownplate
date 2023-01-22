@@ -47,6 +47,8 @@ import firebase from "firebase/compat/app";
 import { isNull, useIsInMo } from "@/utils/utils";
 import { usePickupTime } from "@/utils/pickup";
 
+import { useStore } from "vuex";
+
 export default defineComponent({
   props: {
     shopInfo: {
@@ -64,7 +66,7 @@ export default defineComponent({
   },
   emits: ["notAvailable", "updateDisabledPickupTime"],
   setup(props, ctx) {
-    const store = ctx.root.$store;
+    const store = useStore();
 
     const dayIndex = ref(0);
     const time = ref(0);

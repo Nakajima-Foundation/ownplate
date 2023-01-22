@@ -15,15 +15,19 @@ import { collection, onSnapshot, where, query } from "firebase/firestore";
 import { midNight } from "@/utils/dateUtils";
 import { order_status } from "@/config/constant";
 
-import { doc2data } from "@/utils/utils";
+import { doc2data, getRestaurantId } from "@/utils/utils";
+
+import { useStore } from "vuex";
 
 export default defineComponent({
   props: {
     notificationConfig: Object,
   },
   setup(props, ctx) {
+    const store = useStore();
+
     // intervalTime was 60
-    const restaurantId = ctx.root.restaurantId();
+    const restaurantId = getRestaurantId();
     const intervalTime = [
       "OQBBSOa3CgEv35smSDVK", // debug
       "GiZEOBRwDGmdpuqKKlyq",
@@ -58,7 +62,7 @@ export default defineComponent({
         ),
         (result) => {
           orders.value = result.docs.map(doc2data("order"));
-          ctx.root.$store.commit("setOrders", orders.value);
+          store.commit("setOrders", orders.value);
         },
         (error) => {
           if (error.code === "permission-denied") {

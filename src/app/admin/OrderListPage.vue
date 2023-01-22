@@ -107,6 +107,8 @@ import {
 import { checkShopAccount } from "@/utils/userPermission";
 import { useAdminConfigToggle } from "@/utils/admin/Toggle";
 
+import { useStore } from "vuex";
+
 export default defineComponent({
   components: {
     OrderedInfo,
@@ -144,6 +146,8 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
+    const store = useStore();
+
     const orders = ref([]);
     const dayIndex = ref(0);
 
@@ -278,7 +282,7 @@ export default defineComponent({
     const orderCounter = computed(() => {
       return lastSeveralDays.value.reduce((tmp, day) => {
         const count = (
-          ctx.root.$store.state.orderObj[
+          store.state.orderObj[
             moment(day.date).format("YYYY-MM-DD")
           ] || []
         ).length;

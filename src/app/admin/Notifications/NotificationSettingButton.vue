@@ -39,17 +39,21 @@
 <script>
 import { defineComponent, computed } from "vue";
 
+import { useStore } from "vuex";
+
 export default defineComponent({
   props: {
     notificationData: Object,
   },
   setup(_, ctx) {
+    const store = useStore();
+    
     const openNotificationSettings = () => {
       ctx.emit("openNotificationSettings");
     };
     const orderCounter = computed(() => {
-      return Object.keys(ctx.root.$store.state.orderObj).reduce((tmp, key) => {
-        const count = (ctx.root.$store.state.orderObj[key] || []).length;
+      return Object.keys(store.state.orderObj).reduce((tmp, key) => {
+        const count = (store.state.orderObj[key] || []).length;
         return tmp + count;
       }, 0);
     });

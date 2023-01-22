@@ -320,6 +320,8 @@ import { checkAdminPermission } from "@/utils/userPermission";
 
 import { useAdminConfigToggle } from "@/utils/admin/Toggle";
 
+import { useStore } from "vuex";
+
 export default defineComponent({
   name: "RestaurantIndex",
   components: {
@@ -363,6 +365,8 @@ export default defineComponent({
     };
   },
   setup(props, ctx) {
+    const store = useStore();
+
     const readyToDisplay = ref(false);
     const restaurantItems = ref(null);
     const orderDetachers = ref([]);
@@ -568,7 +572,7 @@ export default defineComponent({
 
           ctx.root.$router.push(`/admin/restaurants/${newDoc.id}`);
         } catch (error) {
-          ctx.root.$store.commit("setErrorMessage", {});
+          store.commit("setErrorMessage", {});
           console.log(error);
         }
       }

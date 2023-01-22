@@ -19,6 +19,8 @@ import { defineComponent, computed } from "vue";
 import { lineAuthURL } from "@/lib/line/line";
 import { ownPlateConfig } from "@/config/project";
 
+import { useStore } from "vuex";
+
 export default defineComponent({
   props: {
     groupData: {
@@ -27,6 +29,8 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
+    const store = useStore();
+
     const handleLineAuth = () => {
       const url = lineAuthURL("/callback/line", {
         pathname: location.pathname,
@@ -35,7 +39,7 @@ export default defineComponent({
     };
     const showAddLine = computed(() => {
       // return true;
-      return !!ownPlateConfig.line, !ctx.root.$store.state.claims?.line;
+      return !!ownPlateConfig.line, !store.state.claims?.line;
     });
     const enableLine = computed(() => {
       if (props.groupData?.enableLine === undefined) {

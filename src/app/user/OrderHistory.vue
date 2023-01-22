@@ -65,6 +65,8 @@ import BackButton from "@/components/BackButton.vue";
 import { defaultHeader } from "@/config/header";
 import { useBasePath, useTopPath, useIsInMo, getMoPrefix } from "@/utils/utils";
 
+import { useStore } from "vuex";
+
 export default defineComponent({
   metaInfo() {
     return {
@@ -77,6 +79,8 @@ export default defineComponent({
     BackButton,
   },
   setup(props, ctx) {
+    const store = useStore();
+
     const orders = ref([]);
 
     const basePath = useBasePath();
@@ -86,7 +90,7 @@ export default defineComponent({
     const moPrefix = getMoPrefix();
 
     const uid = computed(() => {
-      return ctx.root.$store.getters.uidUser || ctx.root.$store.getters.uidLiff;
+      return store.getters.uidUser || store.getters.uidLiff;
     });
 
     const loginVisible = computed(() => {

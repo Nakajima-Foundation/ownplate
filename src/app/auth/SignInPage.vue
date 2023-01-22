@@ -130,6 +130,9 @@ import { auth } from "@/lib/firebase/firebase9";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useUser } from "@/utils/utils";
 
+import { useRoute, useRouter } from "vue-router";
+import { useStore } from "vuex";
+
 export default defineComponent({
   name: "Signin",
   metaInfo() {
@@ -137,7 +140,11 @@ export default defineComponent({
       title: [this.defaultTitle, "Signin Admin"].join(" / "),
     };
   },
-  setup(props, ctx) {
+  setup() {
+    const route = useRoute();
+    const router = useRouter();
+    const store = useStore();
+    
     const email = ref("");
     const password = ref("");
     const errors = ref({});
@@ -145,13 +152,13 @@ export default defineComponent({
     const user = useUser();
 
     const redirectToAdminPage = () => {
-      const redirect = ctx.root.$route.query["to"];
+      const redirect = route.query["to"];
       const pathRegex = /^\/[a-zA-Z0-9-\_\/]+$/;
 
       if (redirect && pathRegex.test(redirect)) {
-        ctx.root.$router.push(redirect);
+        router.push(redirect);
       } else {
-        ctx.root.$router.push("/admin/restaurants");
+        router.push("/admin/restaurants");
       }
     };
 
@@ -167,15 +174,15 @@ export default defineComponent({
     });
 
     const handleCancel = () => {
-      ctx.root.$router.push("/");
+      router.push("/");
     };
     const onSignin = () => {
-      ctx.root.$store.commit("setLoading", true);
+      store.commit("setLoading", true);
       errors.value = {};
       signInWithEmailAndPassword(auth, email.value, password.value)
         .then((ret) => {
           console.log("onSignin success");
-          ctx.root.$store.commit("setLoading", false);
+          store.commit("setLoading", false);
         })
         .catch((error) => {
           console.log("onSignin failed", error.code, error.message);
@@ -188,7 +195,7 @@ export default defineComponent({
           } else {
             errors.value = { email: [errorCode] };
           }
-          ctx.root.$store.commit("setLoading", false);
+          store.commit("setLoading", false);
         });
     };
     return {

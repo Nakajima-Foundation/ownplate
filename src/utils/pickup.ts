@@ -9,6 +9,7 @@ import {
 } from "@/utils/utils";
 import moment from "moment";
 import { MenuData } from "@/models/menu";
+import { useStore } from "vuex";
 
 // inMo
 // isMoPickup
@@ -20,6 +21,8 @@ export const usePickupTime = (
   isInMo: boolean,
   isMoPickup: null | ComputedRef<boolean>
 ) => {
+  const store = useStore();
+
   // public
   const temporaryClosure = computed(() => {
     return (shopInfo.temporaryClosure || []).map((day) => {
@@ -105,8 +108,8 @@ export const usePickupTime = (
     return getTodaysLast();
   });
   const getTodaysLast = () => {
-    const now = ctx.root.$store.state.date;
-    console.log(ctx.root.$store.state.date); // never delete this line;
+    const now = store.state.date;
+    console.log(store.state.date); // never delete this line;
     const today = now.getDay();
     const openSlot = openSlots.value[today % 7];
     if (openSlot && openSlot.length > 0) {
@@ -129,8 +132,8 @@ export const usePickupTime = (
       return []; // it means shopInfo is empty (not yet loaded)
     }
 
-    const now = ctx.root.$store.state.date;
-    console.log(ctx.root.$store.state.date); // never delete this line;
+    const now = store.state.date;
+    console.log(store.state.date); // never delete this line;
     const today = now.getDay();
     let suspendUntil = new Date(now);
     suspendUntil.setMinutes(now.getMinutes() + minimumTime);

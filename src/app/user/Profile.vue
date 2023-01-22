@@ -74,6 +74,8 @@ import { defaultHeader } from "@/config/header";
 
 import { useIsInMo } from "@/utils/utils";
 
+import { useStore } from "vuex";
+
 export default defineComponent({
   props: {
     groupData: {
@@ -97,10 +99,12 @@ export default defineComponent({
     };
   },
   setup(props, ctx) {
+    const store = useStore();
+
     const isInMo = useIsInMo();
 
     const claims = computed(() => {
-      return ctx.root.$store.state.claims;
+      return store.state.claims;
     });
     const handleSignOut = () => {
       console.log("handleSignOut");

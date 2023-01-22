@@ -88,6 +88,8 @@
 import { defineComponent, computed } from "vue";
 import { useAdminUids } from "@/utils/utils";
 
+import { useStore } from "vuex";
+
 export default defineComponent({
   props: {
     title: {
@@ -101,6 +103,8 @@ export default defineComponent({
   },
   emit: ["toEditMode", "positionUp", "positionDown", "forkItem", "deleteItem"],
   setup(props, ctx) {
+    const store = useStore();
+
     const { isOwner } = useAdminUids();
     const toEdit = () => {
       ctx.emit("toEditMode", props.title.id);
@@ -115,7 +119,7 @@ export default defineComponent({
       ctx.emit("forkItem", props.title.id);
     };
     const deleteItem = () => {
-      ctx.root.$store.commit("setAlert", {
+      store.commit("setAlert", {
         code: "editMenu.reallyDelete",
         callback: () => {
           ctx.emit("deleteItem", props.title.id);

@@ -18,6 +18,8 @@ import { doc, getDocs, collection } from "firebase/firestore";
 import { data2csv } from "@/utils/csv";
 import moment from "moment";
 
+import { useStore } from "vuex";
+
 export default defineComponent({
   props: {
     restaurantLists: {
@@ -30,6 +32,8 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
+    const store = useStore();
+
     let csvData = [];
     let loading = false;
     const download = async () => {
@@ -37,7 +41,7 @@ export default defineComponent({
         return;
       }
       loading = true;
-      ctx.root.$store.commit("setLoading", true);
+      store.commit("setLoading", true);
       csvData = {};
 
       const downloadAct = (data) => {
@@ -214,7 +218,7 @@ export default defineComponent({
       );
       downloadAct(dlData);
 
-      ctx.root.$store.commit("setLoading", false);
+      store.commit("setLoading", false);
       loading = false;
     };
 
