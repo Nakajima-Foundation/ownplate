@@ -13,7 +13,7 @@
             ? 'border-2 border-op-teal text-op-teal'
             : 'cursor-pointer text-black text-opacity-40'
         "
-        @click="$emit('input', 'takeout')"
+        @click="$emit('update:modelValue', 'takeout')"
       >
         <i class="material-icons w-full text-center"> local_mall </i>
         <div class="-mt-0.5 text-center text-lg font-bold tracking-tighter">
@@ -31,7 +31,7 @@
             ? 'border-2 border-op-teal text-op-teal'
             : 'cursor-pointer text-black text-opacity-40'
         "
-        @click="$emit('input', 'delivery')"
+        @click="$emit('update:modelValue', 'delivery')"
       >
         <i class="material-icons w-full text-center"> delivery_dining </i>
         <div class="-mt-0.5 text-center text-lg font-bold">
@@ -103,6 +103,5 @@ export default defineComponent({
       required: true,
     },
   },
-  
 });
 </script>
