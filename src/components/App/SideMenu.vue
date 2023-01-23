@@ -4,7 +4,7 @@
     :fullwidth="fullwidth"
     :overlay="overlay"
     :right="right"
-    :open.sync="open"
+    v-model:open="open"
   >
     <!-- Logo / Home -->
     <div class="mt-6 mb-4 text-center">
