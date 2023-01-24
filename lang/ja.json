@@ -81,7 +81,7 @@
       "takeout": "お取り寄せする",
       "pickup": "本日受け取る",
       "takeoutDescription": "お店に無いものも最短3日後受け取り",
-      "pickupDescription": "最短1時間後に店舗で受け取り",
+      "pickupDescription": "最短{time}分後に店舗で受け取り",
       "pickupNote": "ただいまの時間は「本日受け取り」をご利用できません。ご注文可能な時間帯は、00:00から{lastOrder}までとなります。",
       "showAll": "在庫なし含む",
       "showOnlyInStock": "在庫ありのみ",
@@ -580,8 +580,8 @@
     "searchRestaurant": "全国のお店を探す",
     "moTagline": "ネット注文サービスは、PC・スマホから簡単に購入が可能な、ファミリーマート公式店舗受け取りサービスです。",
     "moDescription1": "お店に無いものも最短3日後受け取り可能です。",
-    "moDescription2": "最短1時間後に店舗で受け取り可能です。​",
-    "moDescription3": "*対応店舗のみ​​​"
+    "moDescription2": "最短30分後に店舗で受け取り可能です。",
+    "moDescription3": "*対応店舗のみ"
   },
   "order": {
     "allOrders": "全ての注文",
