@@ -10,7 +10,7 @@
 
     <!-- Share Popup-->
     <o-modal
-      :active.sync="sharePopup"
+      v-model:active="sharePopup"
       :width="488"
       scroll="keep"
       style="text-align: initial"
