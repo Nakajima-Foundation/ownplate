@@ -101,7 +101,6 @@ export default defineComponent({
       onSnapshot(
         doc(db, `groups/${props.groupData?.groupId}/groupConfig/suspend`),
         (snapshot) => {
-          console.log(snapshot.data());
           groupSuspend.value = snapshot.data() || {};
         }
       );

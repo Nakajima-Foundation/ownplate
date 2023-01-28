@@ -365,7 +365,7 @@ export default defineComponent({
       title: ["Admin Index", this.defaultTitle].join(" / "),
     };
   },
-  setup(props, ctx) {
+  setup(props) {
     const store = useStore();
     const router = useRouter();
 
@@ -380,7 +380,7 @@ export default defineComponent({
     const restaurantLists = ref([]);
     const numberOfOrderObj = ref({});
     const messages = ref([]);
-    if (!checkAdminPermission(ctx)) {
+    if (!checkAdminPermission()) {
       return;
     }
     ping({

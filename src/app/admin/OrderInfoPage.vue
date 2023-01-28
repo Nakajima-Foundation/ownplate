@@ -1079,7 +1079,9 @@ export default defineComponent({
     });
 
     const updateEnable = (value) => {
-      ctx.root.$set(editedAvailableOrders.value, value[0], value[1]); //  TODO Vue3
+      const newData = editedAvailableOrders.value.concat();
+      newData[value[0]] = value[1];
+      editedAvailableOrders.value = newData;
     };
     const toggleIsOrderChange = () => {
       isOrderChange.value = !isOrderChange.value;
