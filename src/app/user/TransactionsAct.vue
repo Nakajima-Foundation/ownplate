@@ -14,15 +14,15 @@
     </div>
 
     <TransactionsActContents
+      ref="transactions"
       :shopInfo="shopInfo"
       :isDelivery="isDelivery"
-      ref="contents"
     />
   </div>
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 
 import TransactionsActContents from "@/app/user/TransactionsAct/Contents.vue";
 
@@ -40,12 +40,14 @@ export default defineComponent({
   components: {
     TransactionsActContents,
   },
-  setup(props, ctx) {
+  setup() {
+    const transactions = ref();
     const openTransactionsAct = () => {
-      ctx.refs.contents.openTransactionsAct();
+      transactions.value.openTransactionsAct();
     };
     return {
       openTransactionsAct,
+      transactions,
     };
   },
 });
