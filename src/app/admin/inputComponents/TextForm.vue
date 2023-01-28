@@ -7,7 +7,7 @@
     </div>
     <o-field :variant="error.length > 0 ? 'danger' : 'success'">
       <o-input
-        :value="modelValue"
+        :modelValue="modelValue"
         :type="type"
         :placeholder="$t(placeholder)"
         @input="input"
@@ -58,7 +58,7 @@ export default {
   },
   methods: {
     input(e) {
-      this.$emit("input", e);
+      this.$emit("update:modelValue", e.target.value);
     },
     open(key) {
       this.$store.commit("setTips", {

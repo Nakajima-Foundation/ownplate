@@ -17,7 +17,7 @@
     <div class="text-xm mt-2 font-bold text-black text-opacity-30">
       {{ $t("delivery.setDeliveryLocation") }}
     </div>
-    <GMap
+    <GMapMap
       ref="gMap"
       :center="{ lat: 35.6809591, lng: 139.7673068 }"
       :options="{ fullscreenControl: false }"
@@ -25,7 +25,7 @@
       @loaded="mapLoaded"
       @click="gmapClick"
       style="height: 100%"
-    ></GMap>
+    ></GMapMap>
     <div if="estimatedDistance !== null">
       {{ $t("delivery.estimatedDistance") }}: {{ estimatedDistance }}m:
       <div v-if="deliveryInfo.enableAreaMap">

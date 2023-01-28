@@ -25,7 +25,7 @@
           {{ $t("delivery.deliveryLocation") }}
         </div>
         <div class="mb-2">
-          <GMap
+          <GMapMap
             :center="shopInfo.location"
             :options="{ fullscreenControl: false }"
             :zoom="15"
@@ -47,7 +47,7 @@
                 },
               }"
             />
-          </GMap>
+          </GMapMap>
         </div>
       </template>
       <div class="text-base font-bold">{{ $t("order.ec.phone") }}</div>

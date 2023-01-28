@@ -241,7 +241,7 @@
             </div>
 
             <div class="mt-4 border-red-700">
-              <GMap
+              <GMapMap
                 ref="gMap"
                 :center="{ lat: 44.933076, lng: 15.629058 }"
                 :options="{ fullscreenControl: false }"
@@ -254,7 +254,7 @@
                 "
                 @loaded="setDefaultLocation"
                 @click="gmapClick"
-              ></GMap>
+              ></GMapMap>
             </div>
           </div>
         </div>
@@ -310,7 +310,7 @@
               </div>
 
               <!-- New Photo -->
-              <div class="flex-1">
+              <div class="flex-1" v-if="false">
                 <croppa
                   :width="128"
                   :height="128"
@@ -369,7 +369,7 @@
               </div>
 
               <!-- New Photo -->
-              <div>
+              <div v-if="false">
                 <croppa
                   :width="272"
                   :height="128"
@@ -1242,11 +1242,14 @@ export default defineComponent({
     const requireTaxPriceDisplay = regionalSetting.requireTaxPriceDisplay;
 
     const notFound = ref(null);
-
+    const gMap = ref();
+    const mapObj = ref();
+    
     // internal ref;
     const maplocation = ref({});
     const place_id = ref(null);
-    const markers = ref([]);
+    // const markers = ref([]);
+    const markers = [];
     const errorsPhone = ref([]);
     const files = ref({});
     const updateFirstCall = ref(true);
@@ -1318,31 +1321,28 @@ export default defineComponent({
       }
     });
     const removeAllMarker = () => {
-      if (markers.value && markers.value.length > 0) {
-        markers.value.map((marker) => {
+      if (markers && markers.length > 0) {
+        markers.map((marker) => {
           marker.setMap(null);
         });
-        markers.value = [];
+        markers.splice(0);
       }
     };
-    const setCurrentLocation = (location, move = true) => {
+    const setCurrentLocation = async (location, move = true) => {
       if (
-        ctx.refs.gMap &&
-        ctx.refs.gMap.map &&
         location &&
         location.lat &&
         location.lng
       ) {
         if (move) {
-          ctx.refs.gMap.map.setCenter(location);
+          mapObj.value.setCenter(location);
         }
         removeAllMarker();
-        const marker = new google.maps.Marker({
+        markers.push(new google.maps.Marker({
           position: new google.maps.LatLng(location.lat, location.lng),
           title: "hello",
-          map: ctx.refs.gMap.map,
-        });
-        markers.value.push(marker);
+          map: mapObj.value,
+        }));
         maplocation.value = location;
       }
     };
@@ -1416,7 +1416,11 @@ export default defineComponent({
       props.shopInfo.countryCode = payload.countryCode;
       errorsPhone.value = payload.errors;
     };
-    const setDefaultLocation = () => {
+    const setDefaultLocation = async () => {
+      // gMap.value &&
+      // gMap.value.$mapPromise &&
+      mapObj.value = await gMap.value.$mapPromise;
+
       if (props.shopInfo && props.shopInfo.location) {
         setCurrentLocation(props.shopInfo.location);
       }
@@ -1426,7 +1430,7 @@ export default defineComponent({
     });
     const gmapClick = (arg) => {
       setCurrentLocation(
-        { lat: arg.event.latLng.lat(), lng: arg.event.latLng.lng() },
+        { lat: arg.latLng.lat(), lng: arg.latLng.lng() },
         false
       );
       place_id.value = null;
@@ -1512,8 +1516,10 @@ export default defineComponent({
         props.shopInfo.state,
       ].join(",");
 
+      console.log(keyword);
       const res = await google_geocode(keyword);
       if (res && res[0] && res[0].geometry) {
+        console.log(res);
         searchResults.value = res;
         setCurrentLocation(res[0].geometry.location);
         place_id.value = res[0].place_id;
@@ -1577,7 +1583,8 @@ export default defineComponent({
       
       setDefaultLocation,
       gmapClick,
-
+      gMap,
+      
       paymentMethods,
       openTips,
 

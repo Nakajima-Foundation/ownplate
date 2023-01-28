@@ -8,7 +8,7 @@
       :variant="errors['state'].length > 0 ? 'danger' : 'success'"
       v-if="Array.isArray(states)"
     >
-      <o-select :value="modelValue" placeholder="select" @input="input">
+      <o-select :modelValue="modelValue" placeholder="select" @input="input">
         <option v-for="stateItem in states" :key="stateItem">
           {{ stateItem }}
         </option>
@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     input(e) {
-      this.$emit("input", e);
+      this.$emit("update:modelValue", e.target.value);
     },
   },
   data() {

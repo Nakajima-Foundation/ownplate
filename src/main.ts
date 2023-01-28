@@ -27,9 +27,7 @@ import { BrowserTracing } from "@sentry/tracing";
 
 // components
 import App from "@/components/App.vue";
-import GMap from "@/components/gmaps/GMap.vue";
-import GMapInfoWindow from "@/components/gmaps/GMapInfoWindow.vue";
-import GMapMarker from "@/components/gmaps/GMapMarker.vue";
+import VueGoogleMaps from '@fawmi/vue-google-maps'
 
 // config
 import { sentryDsn } from "@/config/project";
@@ -39,23 +37,17 @@ import { GAPIKey } from "@/config/project";
 import "@/assets/css/tailwind.css";
 import "@/assets/css/main.css";
 
-
 const app = createApp(App);
 
 // components
-// app.component(VueQrcode.name, VueQrcode);
-app.component("GMap", GMap);
-app.component("GMapInfoWindow", GMapInfoWindow);
-app.component("GMapMarker", GMapMarker);
-
 app.component(VueQrcode.name, VueQrcode);
 
-/*
-app.prototype.$GMaps = {
-  apiKey: GAPIKey,
-  loaded: false,
-};
-*/
+app.use(VueGoogleMaps, {
+  load: {
+    key: GAPIKey,
+    // language: 'de',
+  },
+})
 
 // mixin
 app.mixin(mixin);

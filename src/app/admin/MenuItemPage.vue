@@ -252,7 +252,7 @@
               </div>
 
               <!-- New Photo -->
-              <div class="flex-1">
+              <div class="flex-1" v-if="false">
                 <croppa
                   :width="128"
                   :height="128"

@@ -39,13 +39,13 @@
             <span>{{ $t("delivery.setAreaMapNotice") }}</span>
           </div>
           <div>
-            <GMap
+            <GMapMap
               ref="gMap"
               :center="{ lat: 35.6809591, lng: 139.7673068 }"
               :options="{ fullscreenControl: false }"
               :zoom="15"
               @loaded="mapLoaded"
-            ></GMap>
+            ></GMapMap>
           </div>
           <div class="mt-2 flex">
             <span class="flex-item mt-auto mb-auto mr-2 inline-block">
