@@ -89,7 +89,7 @@ import {
 } from "vue";
 
 export default defineComponent({
-  setup(_, ctx) {
+  setup() {
     const faqList = [
       {
         q: "ご利用の流れについて",
@@ -205,9 +205,10 @@ export default defineComponent({
     });
 
     const currentY = ref(0);
+    const faq_box = ref();
     const showCursor = computed(() => {
-      if (ctx.refs.faq_box) {
-        const box = ctx.refs.faq_box.getBoundingClientRect();
+      if (faq_box.value) {
+        const box = faq_box.value.getBoundingClientRect();
         const top = window.pageYOffset + box.top;
         return top < currentY.value;
       }
@@ -218,6 +219,7 @@ export default defineComponent({
     return {
       faqList,
       showCursor,
+      faq_box,
     };
   },
 });
