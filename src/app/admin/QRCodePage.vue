@@ -43,11 +43,11 @@
             <div class="rounded-lg bg-white pl-6 pr-6 pt-6 pb-6 shadow-md">
               <!-- QR Code -->
               <div class="text-center" @click="download">
-                <qrcode
+                <vue-qrcode
                   :value="urlMenu"
                   :options="{ width: 160 }"
                   ref="qrcodeRef"
-                ></qrcode>
+                ></vue-qrcode>
               </div>
               <!-- Link -->
               <div class="text-center">

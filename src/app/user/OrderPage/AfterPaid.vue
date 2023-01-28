@@ -203,10 +203,10 @@
             </div>
 
             <div class="mt-2 rounded-lg bg-white p-4 text-center shadow">
-              <qrcode
+              <vue-qrcode
                 :value="urlAdminOrderPage"
                 :options="{ width: 160 }"
-              ></qrcode>
+              ></vue-qrcode>
             </div>
           </div>
         </div>
