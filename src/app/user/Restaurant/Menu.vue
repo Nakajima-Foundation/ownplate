@@ -235,7 +235,7 @@
 
     <!-- Image Popup-->
     <o-modal
-      :active.sync="imagePopup"
+      v-model:active="imagePopup"
       :width="488"
       scroll="keep"
       :on-cancel="closeImage"

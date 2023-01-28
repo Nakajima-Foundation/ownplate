@@ -138,7 +138,7 @@
             </div>
 
             <!-- Cancel Popup-->
-            <o-modal :active.sync="cancelPopup" :width="488" scroll="keep">
+            <o-modal v-model:active="cancelPopup" :width="488" scroll="keep">
               <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
                 <!-- Title -->
                 <div class="text-xl font-bold text-black text-opacity-40">
@@ -421,7 +421,7 @@
 
             <!-- Payment Cancel Popup-->
             <o-modal
-              :active.sync="paymentCancelPopup"
+              v-model:active="paymentCancelPopup"
               :width="488"
               scroll="keep"
             >

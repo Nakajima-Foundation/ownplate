@@ -50,7 +50,7 @@
       </div>
     </div>
 
-    <o-modal :active.sync="isOpenMoSuspendOffModal" :width="488">
+    <o-modal v-model:active="isOpenMoSuspendOffModal" :width="488">
       <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
         <div class="text-xl font-bold text-black text-opacity-40">
           {{ $t("mobileOrder.admin.suspendSettings") }}
@@ -93,7 +93,7 @@
       </div>
     </o-modal>
 
-    <o-modal :active.sync="isOpenMoSuspendOnModal" :width="488">
+    <o-modal v-model:active="isOpenMoSuspendOnModal" :width="488">
       <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
         <!-- ToDo全ての注文受付を再開する場合は以下確認メッセージを表示-->
         <div class="font-bold text-black text-opacity-60">
