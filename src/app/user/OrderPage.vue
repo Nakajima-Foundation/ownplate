@@ -41,9 +41,9 @@
       />
     </template>
     <TransactionsActContents
+      ref="transactions"
       :isDelivery="orderInfo.isDelivery || false"
       :shopInfo="shopInfo"
-      ref="contents"
     />
   </div>
 </template>
@@ -144,7 +144,7 @@ export default defineComponent({
       required: false,
     },
   },
-  setup(props, ctx) {
+  setup(props) {
     const store = useStore();
     const route = useRoute();
     const router = useRouter();
@@ -156,6 +156,7 @@ export default defineComponent({
     } = useUserData();
 
     const loginVisible = ref(false);
+    const transactions = ref();
     const orderInfo = ref({});
     const menuObj = ref(null);
     const detacher = [];
@@ -253,7 +254,7 @@ export default defineComponent({
       }
     };
     const openTransactionsAct = () => {
-      ctx.refs.contents.openTransactionsAct();
+      transactions.value.openTransactionsAct();
     };
     if (isUser.value || isLiffUser.value) {
       loadUserData();
@@ -281,6 +282,7 @@ export default defineComponent({
       handleOpenMenu,
 
       openTransactionsAct,
+      transactions,
       loginVisible,
 
       loadUserData,
