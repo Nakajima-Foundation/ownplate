@@ -5,7 +5,7 @@
     </div>
 
     <div>
-      <o-modal :active.sync="loginVisible" :width="488" scroll="keep">
+      <o-modal v-model:active="loginModal" :width="488" scroll="keep">
         <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
           <phone-login v-on:dismissed="handleDismissed" />
         </div>
@@ -14,8 +14,13 @@
   </section>
 </template>
 <script>
+import {
+  defineComponent,
+  ref,
+} from "vue";
 import PhoneLogin from "@/app/auth/PhoneLogin";
-export default {
+
+export default defineComponent({
   components: {
     PhoneLogin,
   },
@@ -24,11 +29,17 @@ export default {
       type: Boolean,
       required: true,
     },
-  },
-  methods: {
-    handleDismissed(params) {
-      this.$emit("dismissed", params);
     },
+  setup(props) {
+    const loginModal = ref(props.loginVisible);
+
+    const handleDismissed = () => {
+      loginModal.value = false;
+    };
+    return {
+      loginModal,
+      handleDismissed
+    };
   },
-};
+});
 </script>

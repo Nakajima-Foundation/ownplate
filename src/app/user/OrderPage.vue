@@ -1,7 +1,7 @@
 <template>
   <div>
     <template v-if="!isUser && !isLiffUser">
-      <RequireLogin :loginVisible="loginVisible" @dismissed="handleDismissed" />
+      <RequireLogin :loginVisible="loginVisible" ref="requireLoginRef" />
     </template>
     <template v-else-if="notFound || menuNotFound">
       <not-found />
@@ -160,7 +160,8 @@ export default defineComponent({
     const menuObj = ref(null);
     const detacher = [];
     const menuNotFound = ref(null);
-
+    const requireLoginRef = ref();
+    
     const liffBasePath = useLiffBasePath();
 
     const orderId = route.params.orderId;
@@ -241,11 +242,6 @@ export default defineComponent({
         router.push(`/r/${restaurantId.value}`);
       }
     };
-    const handleDismissed = (params) => {
-      console.log("handleDismissed", params);
-      // The user has dismissed the login dialog (including the successful login)
-      loginVisible.value = false;
-    };
     const deleteOrderInfo = async () => {
       try {
         await deleteDoc(
@@ -283,7 +279,6 @@ export default defineComponent({
       orderItems,
 
       handleOpenMenu,
-      handleDismissed,
 
       openTransactionsAct,
       loginVisible,
