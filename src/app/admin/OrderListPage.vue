@@ -26,7 +26,7 @@
 
         <!-- Date -->
         <div class="ml-6 mt-6 sm:ml-4">
-          <o-select v-model="dayIndex">
+          <o-select v-model="dayIndex" update:modelValue="updatedDayIndex">
             <option
               v-for="day in lastSeveralDays"
               :value="day.index"
@@ -298,10 +298,6 @@ export default defineComponent({
       }, {});
     });
 
-    watch(dayIndex, () => {
-      updateQueryDay();
-      dateWasUpdated();
-    });
     const dayQuery = computed(() => {
       return route.query.day;
     });
@@ -312,7 +308,9 @@ export default defineComponent({
     watch(queryIsPlacedDate, () => {
       dateWasUpdated();
     });
-
+    const updatedDayIndex = () => {
+      dateWasUpdated();
+    };
     return {
       orders,
       dayIndex,
@@ -320,11 +318,13 @@ export default defineComponent({
 
       lastSeveralDays,
       pickUpDaysInAdvance,
-      dayIndex,
       orderCounter,
 
       queryIsPlacedDate,
       switchOrderQuery,
+
+      updateDayIndex,
+      updatedDayIndex,
     };
   },
 });
