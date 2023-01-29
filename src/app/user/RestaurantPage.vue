@@ -67,14 +67,14 @@
                     class="my-2 rounded-lg bg-red-700 bg-opacity-10 p-3 text-center text-sm font-bold text-red-700"
                   >
                     {{
-                      $tc("mobileOrder.shopInfo.closeNote", 0, {
+                      $t("mobileOrder.shopInfo.closeNote", {
                         date: moment(shopInfo.moCloseDate.toDate()).format(
                           "M/D"
                         ),
                         time: moment(shopInfo.moCloseDate.toDate()).format(
                           "HH:mm"
                         ),
-                      })
+                      }, 0)
                     }}
                   </div>
                 </div>

@@ -9,7 +9,7 @@
         v-if="disabledPickupTime"
         class="mx-6 mb-3 text-xs font-bold text-red-700"
       >
-        {{ $tc("mobileOrder.shopInfo.pickupNote", 1, { lastOrder }) }}
+        {{ $t("mobileOrder.shopInfo.pickupNote", { lastOrder }, 1) }}
       </div>
       <div class="justify-items-auto grid grid-cols-1 lg:grid-cols-2">
         <template v-for="(counters, itemId) in orders">

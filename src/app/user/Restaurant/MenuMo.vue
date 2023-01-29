@@ -24,7 +24,7 @@
           </a>
           <!-- Price -->
           <div class="mt-1 text-sm font-bold text-black sm:text-base">
-            {{ $tc("tax.price", $n(price, "currency")) }}
+            {{ $t("tax.price", {count: $n(price, "currency")}) }}
           </div>
           <div class="text-xs text-black sm:text-sm">
             {{ $t("tax.include") }}

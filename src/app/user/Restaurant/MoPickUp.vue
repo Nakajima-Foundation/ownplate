@@ -20,7 +20,7 @@
           {{ $t("mobileOrder.shopInfo.pickup") }}
         </div>
         <div class="mt-0.5 px-3 text-center text-xs font-bold">
-          {{ $tc("mobileOrder.shopInfo.pickupDescription", 0 , {time: shopInfo.moPickUpMinimumCookTime }) }}
+          {{ $t("mobileOrder.shopInfo.pickupDescription", {time: shopInfo.moPickUpMinimumCookTime }, 0) }}
         </div>
       </div>
       <div
@@ -32,7 +32,7 @@
           {{ $t("mobileOrder.shopInfo.pickup") }}
         </div>
         <div class="mt-0.5 px-3 text-center text-xs font-bold">
-          {{ $tc("mobileOrder.shopInfo.pickupDescription", 0 , {time: shopInfo.moPickUpMinimumCookTime }) }}
+          {{ $t("mobileOrder.shopInfo.pickupDescription", {time: shopInfo.moPickUpMinimumCookTime }, 0) }}
         </div>
       </div>
       <!-- takeout -->
@@ -58,7 +58,7 @@
       v-if="disabledPickupTime"
       class="mt-4 h-full w-full rounded-lg bg-red-700 bg-opacity-10 p-3 text-xs font-bold text-red-700"
     >
-      {{ $tc("mobileOrder.shopInfo.pickupNote", 1, { lastOrder }) }}
+      {{ $t("mobileOrder.shopInfo.pickupNote", { lastOrder }, 1) }}
     </div>
     <o-modal v-model:active="popup"></o-modal>
   </div>

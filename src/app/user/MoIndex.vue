@@ -105,11 +105,11 @@
                       v-if="restaurant.moCloseDate"
                       class="text-xs font-bold"
                       >{{
-                        $tc("mobileOrder.closeLabel", 0, {
+                        $t("mobileOrder.closeLabel", {
                           date: moment(restaurant.moCloseDate.toDate()).format(
                             "M/D"
                           ),
-                        })
+                        }, 0)
                       }}</span
                     >
                   </div>

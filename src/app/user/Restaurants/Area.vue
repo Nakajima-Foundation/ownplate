@@ -69,7 +69,7 @@ export default defineComponent({
   metaInfo() {
     return {
       title: [
-        this.$tc("pageTitle.restaurantArea", 0, { area: this.areaName }),
+        this.$t("pageTitle.restaurantArea", { area: this.areaName }, 0),
         defaultHeader.title,
       ].join(" / "),
     };
