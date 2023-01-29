@@ -19,7 +19,7 @@
       <div class="rounded-lg bg-black bg-opacity-5 p-4">
         <div class="text-sm font-bold">
           <o-checkbox v-model="enableDelivery" />{{
-            $tc("delivery.enableDelivery", 0, { name: shopInfo.restaurantName })
+            $t("delivery.enableDelivery", { name: shopInfo.restaurantName }, 0)
           }}
         </div>
       </div>
@@ -44,6 +44,12 @@
               :center="{ lat: 35.6809591, lng: 139.7673068 }"
               :options="{ fullscreenControl: false }"
               :zoom="15"
+                style="
+                  width: 100%;
+                  height: 480px;
+                  position: relative;
+                  overflow: hidden;
+                "
               @loaded="mapLoaded"
             ></GMapMap>
           </div>
@@ -334,14 +340,15 @@ export default {
         this.setCurrentLocation(this.shopInfo.location);
       }
     },
-    updateCircle() {
+    async updateCircle() {
       this.removeAllCircle();
-      this.$refs.gMap.map.setCenter(this.maplocation);
+      const map = await this.$refs.gMap.$mapPromise;
+      map.setCenter(this.maplocation);
       const circle = new google.maps.Circle({
         center: this.center,
         fillColor: this.fillColor,
         fillOpacity: 0.3,
-        map: this.$refs.gMap.map,
+        map: map,
         radius: Number(this.radius),
         strokeColor: "#ff0000",
         strokeOpacity: 1,
@@ -349,18 +356,19 @@ export default {
       });
       this.circles.push(circle);
     },
-    setCurrentLocation(location) {
+    async setCurrentLocation(location) {
       if (
         this.$refs.gMap &&
-        this.$refs.gMap.map &&
+        this.$refs.gMap.$mapPromise &&
         location &&
         location.lat &&
         location.lng
       ) {
-        this.$refs.gMap.map.setCenter(this.location);
+        const map = await this.$refs.gMap.$mapPromise;
+        map.setCenter(this.location);
         const marker = new google.maps.Marker({
           position: this.center,
-          map: this.$refs.gMap.map,
+          map,
         });
         this.removeAllMarker();
         this.markers.push(marker);
