@@ -1,6 +1,5 @@
 <template>
 <div class="mx-6 mt-2 h-3/5">
-  aa{{selected}}
     <GMapMap
       style="height: 50vh;"
       ref="gMap"
