@@ -22,7 +22,7 @@ const numberFormats = {
   },
 };
 
-const dateTimeFormats = {
+const datetimeFormats = {
   short: {
     year: "numeric",
     month: "short",
@@ -62,9 +62,10 @@ const i18nData = {
     en: numberFormats,
     ja: numberFormats,
   },
-  dateTimeFormats: {
-    en: dateTimeFormats,
-    ja: dateTimeFormats,
+  datetimeFormats: {
+    en: datetimeFormats,
+    ja: datetimeFormats,
+    "ja-JP": datetimeFormats,
   } as any,
 };
 const i18n = createI18n(i18nData);
