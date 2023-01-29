@@ -5,12 +5,18 @@ export interface orderCreatedData {
   orderId: string;
 }
 
+export interface locationData {
+  lat: number;
+  lng: number;
+};
+
 export interface customerInfoData {
   zip: string;
   prefectureId: number;
   address: string;
   name: string;
   email: string;
+  location?: locationData;
 }
 export interface orderPlacedData {
   restaurantId: string;
