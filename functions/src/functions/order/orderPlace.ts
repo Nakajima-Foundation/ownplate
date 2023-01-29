@@ -198,11 +198,12 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
       // transaction for stock orderTotal
       await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, restaurantOwnerUid, timePlaced, now, true);
       if (hasCustomer) {
-        const { zip, prefectureId, address, name, email } = customerInfo;
+        const { zip, prefectureId, address, name, email, location } = customerInfo;
         await transaction.set(customerRef, {
           zip,
           prefectureId,
           address,
+          location: location || {},
           name,
           email: email || "",
           uid: customerUid,
