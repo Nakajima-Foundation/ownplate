@@ -43,7 +43,7 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props, ctx) {
+  setup(props) {
     const { t } = useI18n({ useScope: 'global' });
     
     const fields = [

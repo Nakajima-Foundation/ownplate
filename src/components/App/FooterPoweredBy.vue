@@ -13,7 +13,7 @@ import { defineComponent } from "vue";
 import { useIsInMo } from "@/utils/utils";
 
 export default defineComponent({
-  setup(_, ctx) {
+  setup() {
     const isInMo = useIsInMo();
     return {
       isInMo,

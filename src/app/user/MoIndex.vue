@@ -171,7 +171,7 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props, ctx) {
+  setup(props) {
     const isInMo = useIsInMo();
 
     const restaurantsObj = ref({});

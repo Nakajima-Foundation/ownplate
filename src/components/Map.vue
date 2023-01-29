@@ -50,7 +50,7 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props, ctx) {
+  setup(props) {
     let max_lat = -1000;
     let max_lng =  -1000;
     let min_lat = 1000;

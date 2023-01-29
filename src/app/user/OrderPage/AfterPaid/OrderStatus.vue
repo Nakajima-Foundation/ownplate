@@ -50,7 +50,7 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props, ctx) {
+  setup(props) {
     const isInMo = useIsInMo();
     const orderStatusKey = computed(() => {
       return Object.keys(order_status).reduce((result, key) => {

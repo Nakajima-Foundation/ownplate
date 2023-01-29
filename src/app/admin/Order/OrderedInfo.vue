@@ -189,7 +189,7 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props, ctx) {
+  setup(props) {
     const { d } = useI18n({ useScope: 'global' });
     
     const restaurant = ref(null);

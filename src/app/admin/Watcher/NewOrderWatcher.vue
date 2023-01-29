@@ -23,7 +23,7 @@ export default defineComponent({
   props: {
     notificationConfig: Object,
   },
-  setup(props, ctx) {
+  setup(props) {
     const store = useStore();
 
     // intervalTime was 60

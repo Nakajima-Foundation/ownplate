@@ -32,7 +32,7 @@ import { defineComponent, computed } from "vue";
 import { useIsInMo, getMoPrefix } from "@/utils/utils";
 
 export default defineComponent({
-  setup(_, ctx) {
+  setup() {
     const isInMo = useIsInMo();
 
     const termsPath = computed(() => {

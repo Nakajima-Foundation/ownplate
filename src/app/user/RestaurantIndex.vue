@@ -96,7 +96,7 @@ export default defineComponent({
     Map,
   },
 
-  setup(_, ctx) {
+  setup() {
     const route = useRoute();
     const ownerUid = route.params.ownerUid;
 

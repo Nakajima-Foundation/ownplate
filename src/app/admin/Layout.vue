@@ -90,7 +90,7 @@ export default defineComponent({
       required: false,
     },
   },
-  setup(_, ctx) {
+  setup() {
     const restaurantId = useRestaurantId();
     const { uid, ownerUid } = useAdminUids();
 

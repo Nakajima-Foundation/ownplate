@@ -12,7 +12,7 @@ export default defineComponent({
   props: {
     notificationConfig: Object,
   },
-  setup(props, ctx) {
+  setup(props) {
     const route = useRoute();
 
     const watchingMessage = ref(false);

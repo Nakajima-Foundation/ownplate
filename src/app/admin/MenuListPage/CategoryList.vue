@@ -44,7 +44,7 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props, ctx) {
+  setup() {
     return {
       smallImageErrorHandler,
       moBaseUrl,

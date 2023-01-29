@@ -78,7 +78,7 @@ import {
 } from "vue";
 
 export default defineComponent({
-  setup(_, ctx) {
+  setup() {
     const faqList = [
       {
         q: "ご利用の流れについて",

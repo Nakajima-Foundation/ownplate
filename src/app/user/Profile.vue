@@ -98,7 +98,7 @@ export default defineComponent({
       title: [defaultHeader.title, "Profile"].join(" / "),
     };
   },
-  setup(props, ctx) {
+  setup(props) {
     const store = useStore();
 
     const isInMo = useIsInMo();

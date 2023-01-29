@@ -30,7 +30,7 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props, ctx) {
+  setup(props) {
     const tableData = ref([]);
     const loadData = async () => {
       const collectionData = await getDocs(

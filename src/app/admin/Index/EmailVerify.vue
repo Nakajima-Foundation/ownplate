@@ -38,7 +38,7 @@ import { useUser } from "@/utils/utils";
 import { fromEmail } from "@/config/project";
 
 export default defineComponent({
-  setup(_, ctx) {
+  setup() {
     const user = useUser();
 
     const sent = ref(false);

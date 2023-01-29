@@ -104,7 +104,7 @@ export default defineComponent({
       required: false,
     },
   },
-  setup(props, ctx) {
+  setup(props) {
     const suspendUntil = computed(() => {
       if (props.shopInfo.suspendUntil) {
         const time = props.shopInfo.suspendUntil.toDate();

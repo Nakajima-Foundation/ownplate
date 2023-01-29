@@ -90,7 +90,7 @@ import { useStore } from "vuex";
 import { useI18n } from "vue-i18n";
 
 export default defineComponent({
-  setup(_, ctx) {
+  setup() {
     const store = useStore();
     const { t } = useI18n({ useScope: 'global' });
 

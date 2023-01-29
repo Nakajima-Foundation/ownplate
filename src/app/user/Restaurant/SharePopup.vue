@@ -103,7 +103,7 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props, ctx) {
+  setup(props) {
     const sharePopup = ref(false);
 
     const basePath = useBasePath();

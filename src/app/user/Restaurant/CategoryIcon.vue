@@ -50,7 +50,7 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props, ctx) {
+  setup() {
     const basePath = useBasePath();
     return {
       basePath,

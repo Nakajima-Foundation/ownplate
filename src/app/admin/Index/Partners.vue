@@ -34,7 +34,7 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props, ctx) {
+  setup(props) {
     const isOpen = ref(false);
     const partners = computed(() => {
       return getPartner(props.shopOwner as ShopOwnerData);

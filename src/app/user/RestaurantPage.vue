@@ -551,7 +551,7 @@ export default defineComponent({
             ].join(" / "),
     };
   },
-  setup(props, ctx) {
+  setup(props) {
     const store = useStore();
     const route = useRoute();
     const router = useRouter();

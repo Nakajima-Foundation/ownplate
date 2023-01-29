@@ -177,7 +177,7 @@ export default defineComponent({
         : this.defaultTitle,
     };
   },
-  setup(props, ctx) {
+  setup(props) {
     const limit = 60;
     const last = ref(undefined);
     const orders = ref([]);

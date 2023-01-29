@@ -31,7 +31,7 @@ export default defineComponent({
     NotFound,
     Outage,
   },
-  setup(_, ctx) {
+  setup() {
     const moPrefix = useMoPrefix();
     const moBasePath = computed(() => {
       return "/" + moPrefix.value;

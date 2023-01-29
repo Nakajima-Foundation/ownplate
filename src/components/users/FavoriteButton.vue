@@ -20,7 +20,7 @@ import { useBasePath } from "@/utils/utils";
 import { useIsInMo } from "@/utils/utils";
 
 export default defineComponent({
-  setup(_, ctx) {
+  setup() {
     const basePath = useBasePath();
     const isInMo = useIsInMo();
     return {

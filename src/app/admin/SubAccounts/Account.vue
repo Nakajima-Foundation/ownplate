@@ -74,7 +74,7 @@ export default defineComponent({
       title: [this.defaultTitle, "Admin Subaccount Account"].join(" / "),
     };
   },
-  setup(props, ctx) {
+  setup() {
     const route = useRoute();
     const router = useRouter();
 

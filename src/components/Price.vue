@@ -25,7 +25,7 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props, ctx) {
+  setup(props) {
     const price = computed(() => {
       return priceWithTax(props.shopInfo, props.menu);
     });

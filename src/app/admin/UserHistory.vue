@@ -162,7 +162,7 @@ export default defineComponent({
         : this.defaultTitle,
     };
   },
-  setup(props, ctx) {
+  setup(props) {
     const route = useRoute();
     const router = useRouter();
     const { t } = useI18n({ useScope: 'global' });

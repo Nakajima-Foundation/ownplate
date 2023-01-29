@@ -79,7 +79,7 @@ export default defineComponent({
     PhoneLogin,
     BackButton,
   },
-  setup(props, ctx) {
+  setup() {
     const store = useStore();
     const router = useRouter();
 

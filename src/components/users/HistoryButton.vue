@@ -19,7 +19,7 @@ import { defineComponent } from "vue";
 import { useBasePath } from "@/utils/utils";
 
 export default defineComponent({
-  setup(_, ctx) {
+  setup() {
     const basePath = useBasePath();
     return {
       basePath,

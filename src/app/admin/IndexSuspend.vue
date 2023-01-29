@@ -24,7 +24,7 @@ export default defineComponent({
   components: {
     MoSuspend,
   },
-  setup(props, ctx) {
+  setup(props) {
     const store = useStore();
 
     const groupData = ref({});

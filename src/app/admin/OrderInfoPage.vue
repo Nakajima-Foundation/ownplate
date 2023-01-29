@@ -696,7 +696,7 @@ export default defineComponent({
   // if user is not owner, render 404
   // if restaurant don't have order, render 404.
 
-  setup(props, ctx) {
+  setup(props) {
     const store = useStore();
     const route = useRoute();
     const router = useRouter();

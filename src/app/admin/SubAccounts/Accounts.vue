@@ -144,7 +144,7 @@ export default defineComponent({
   components: {
     BackButton,
   },
-  setup(props, ctx) {
+  setup() {
     const store = useStore();
     const router = useRouter();
 
