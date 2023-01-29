@@ -32,7 +32,7 @@ export default defineComponent({
       "OQBBSOa3CgEv35smSDVK", // debug
       "GiZEOBRwDGmdpuqKKlyq",
       "KNfeQdS7DM07ObWlZTsn",
-    ].includes(restaurantId)
+    ].includes(restaurantId.value)
       ? 4
       : 60;
 
@@ -55,7 +55,7 @@ export default defineComponent({
       }
       order_detacher = onSnapshot(
         query(
-          collection(db, `restaurants/${restaurantId}/orders`),
+          collection(db, `restaurants/${restaurantId.value}/orders`),
           where("timePlaced", ">=", today.value),
           // .where("timePlaced", "<", this.tommorow)
           where("status", "==", order_status.order_placed)
