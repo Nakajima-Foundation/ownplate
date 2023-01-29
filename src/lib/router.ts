@@ -10,7 +10,7 @@ const getUserPages = (prefix: string) => {
       children: [
         {
           name: "r-restaurant-Page_" + prefix,
-          path: "/",
+          path: "",
           component: "user/Blank.vue",
         },
         {
@@ -31,12 +31,12 @@ const getUserPages = (prefix: string) => {
 const getUserPagesWithCat = (prefix: string) => {
   return [
     {
-      path: "/",
+      path: "",
       component: "user/RestaurantPage.vue",
       children: [
         {
           name: "r-restaurant-Page_" + prefix,
-          path: "/",
+          path: "",
           component: "user/Blank.vue",
         },
         {
@@ -234,7 +234,7 @@ export const customRoutes: CustomRoute[] = [
     component: "liff/LiffWrapper.vue",
     children: [
       {
-        path: "/",
+        path: "",
         component: "liff/Index.vue",
       },
       {
