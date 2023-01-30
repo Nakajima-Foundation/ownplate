@@ -439,7 +439,8 @@ export default defineComponent({
       scrollToElementById(props.item.id);
       imagePopup.value = true;
 
-      const current = router.history.current.path;
+      const current = router.currentRoute.path;
+      
       const to = basePath.value + "/r/" + restaurantId + (urlSuffix || "");
       if (current !== to) {
         router.replace(to);
