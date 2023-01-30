@@ -380,7 +380,7 @@
               class="mx-1 mt-2 inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5"
               @click="closeCategory"
             >
-              <div class="mx-2 text-sm font-bold text-op-teal">
+              <div class="mx-2 text-sm font-bold text-op-teal" @click="closeCategory">
                 {{ title.name }}
               </div>
             </a>
