@@ -2,14 +2,14 @@
   <div>
     <div
       class="grid grid-cols-2 gap-2"
-      :id="value === 'takeout' ? 'isTakeout' : 'isPickup'"
+      :id="modelValue === 'takeout' ? 'isTakeout' : 'isPickup'"
     >
       <!-- pickup -->
       <div
         v-if="shopInfo.enableMoPickup && !moPickupSuspend"
         class="shado-none h-full w-full rounded-lg border-2 bg-white p-3 text-op-teal"
         :class="
-          value === 'pickup'
+          modelValue === 'pickup'
             ? 'border-op-teal'
             : 'cursor-pointer border-black border-opacity-10'
         "
@@ -39,7 +39,7 @@
       <div
         class="h-full w-full rounded-lg border-2 bg-white p-3 text-op-teal shadow-none"
         :class="
-          value === 'takeout'
+          modelValue === 'takeout'
             ? 'border-op-teal '
             : 'cursor-pointer border-black border-opacity-10'
         "
@@ -79,7 +79,7 @@ export default defineComponent({
       type: Object,
       required: true,
     },
-    value: {
+    modelValue: {
       type: String,
       required: true,
     },
@@ -100,20 +100,20 @@ export default defineComponent({
       required: false,
     },
   },
-  setup(props, ctx) {
+  setup(props, context) {
     const store = useStore();
 
     const popup = ref(false);
 
     const input = (value) => {
-      if (props.value !== value) {
+      if (props.modelValue !== value) {
         if (Object.values(props.orders).length === 0) {
-          ctx.emit("input", value);
+          context.emit("update:modelValue", value);
         } else {
           store.commit("setAlert", {
             code: "mobileOrder.methodChangeAlert",
             callback: async () => {
-              ctx.emit("input", value);
+              context.emit("update:modelValue", value);
             },
           });
         }
