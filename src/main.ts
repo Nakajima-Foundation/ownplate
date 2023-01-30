@@ -13,12 +13,9 @@ import i18n from "@/plugins/vue-i18n";
 import Oruga from "@oruga-ui/oruga-next";
 import { bulmaConfig } from "@oruga-ui/theme-bulma";
 
-import Croppa from "vue-croppa";
 import VueSocialSharing from "vue-social-sharing";
-//import VueMeta from "vue-meta";
 import { createMetaManager, plugin as metaPlugin } from 'vue-meta'
 
-// import VueQrcode from "@chenfengyuan/vue-qrcode";
 import VueQrcode from '@chenfengyuan/vue-qrcode';
 
 // sentry
@@ -47,17 +44,13 @@ app.component(VueQrcode.name, VueQrcode);
 app.use(VueGoogleMaps, {
   load: {
     key: GAPIKey,
-    // language: 'de',
   },
 })
 
 // mixin
 app.mixin(mixin);
 
-// Vue.use(VueCompositionAPI);
 app.use(VueSocialSharing);
-app.use(Croppa);
-// app.use(VueMeta, {});
 app.use(Oruga, bulmaConfig);
 
 const metaManager = createMetaManager()
@@ -90,11 +83,3 @@ if (process.env.NODE_ENV !== "development") {
 
 app.mount("#app");
 
-/*
-const app = new Vue({
-  router,
-  store,
-  render: (h) => h(App),
-  i18n,
-}).$mount("#app");
-*/
