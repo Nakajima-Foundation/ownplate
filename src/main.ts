@@ -15,7 +15,9 @@ import { bulmaConfig } from "@oruga-ui/theme-bulma";
 
 import Croppa from "vue-croppa";
 import VueSocialSharing from "vue-social-sharing";
-import VueMeta from "vue-meta";
+//import VueMeta from "vue-meta";
+import { createMetaManager, plugin as metaPlugin } from 'vue-meta'
+
 // import VueQrcode from "@chenfengyuan/vue-qrcode";
 import VueQrcode from '@chenfengyuan/vue-qrcode';
 
@@ -57,6 +59,10 @@ app.use(VueSocialSharing);
 app.use(Croppa);
 // app.use(VueMeta, {});
 app.use(Oruga, bulmaConfig);
+
+const metaManager = createMetaManager()
+app.use(metaManager)
+app.use(metaPlugin)
 
 app.use(store);
 app.use(router);
