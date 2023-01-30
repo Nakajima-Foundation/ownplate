@@ -252,23 +252,12 @@
               </div>
 
               <!-- New Photo -->
-              <div class="flex-1" v-if="false">
-                <croppa
-                  :width="128"
-                  :height="128"
-                  :prevent-white-space="true"
-                  :zoom-speed="5"
-                  :accept="'image/jpeg'"
-                  :placeholder="$t('editCommon.clickAndUpload')"
-                  :placeholder-font-size="13"
-                  :disable-drag-to-move="true"
-                  :disable-scroll-to-zoom="true"
-                  :disable-rotation="true"
-                  initial-position="center"
-                  :canvas-color="'gainsboro'"
-                  :show-remove-button="true"
-                  @file-choose="handleMenuImage"
-                ></croppa>
+              <div class="flex-1">
+                <ImageUpload
+                  @handler="handleMenuImage"
+                  :preview="previewMenu"
+                  style="width: 128px; height: 128px"
+                  />
                 <div class="mt-1 w-32 text-center text-xs">
                   {{ $t("editCommon.new") }}
                 </div>
@@ -594,6 +583,8 @@ import EditCategory from "@/app/admin/MenuItemPage/EditCategory.vue";
 import NotificationIndex from "./Notifications/Index.vue";
 import HoursInput from "@/app/admin/inputComponents/HoursInput.vue";
 
+import ImageUpload from "@/components/ImageUpload.vue";
+
 import { taxRates, daysOfWeek } from "@/config/constant";
 import { ownPlateConfig } from "@/config/project";
 import { halfCharactors, formatOption, optionPrice } from "@/utils/strings";
@@ -641,6 +632,7 @@ export default defineComponent({
     NotificationIndex,
     NotFound,
     HoursInput,
+    ImageUpload,
   },
   props: {
     shopInfo: {
@@ -803,8 +795,10 @@ export default defineComponent({
     const editCategory = (key) => {
       categoryKey.value = key;
     };
-    const handleMenuImage = (e) => {
-      files["menu"] = e;
+    const previewMenu = ref();
+    const handleMenuImage = (file) => {
+      previewMenu.value = URL.createObjectURL(file);
+      files["menu"] = file;
     };
     const deleteOption = (pos) => {
       menuInfo.itemOptionCheckbox.splice(pos, 1);
@@ -934,6 +928,7 @@ export default defineComponent({
       handleCategoryUpdated,
       handleDismissed,
       editCategory,
+      previewMenu,
       handleMenuImage,
       deleteOption,
       addOption,
