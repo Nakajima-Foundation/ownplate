@@ -299,7 +299,7 @@
               <div v-if="restProfilePhoto" class="mr-4">
                 <div>
                   <img
-                    class="rounded object-cover"
+                    class="object-cover"
                     :src="restProfilePhoto"
                     style="width: 128px; height: 128px"
                   />
@@ -310,25 +310,12 @@
               </div>
 
               <!-- New Photo -->
-              <div class="flex-1" v-if="false">
-                <croppa
-                  :width="128"
-                  :height="128"
-                  :prevent-white-space="true"
-                  :zoom-speed="5"
-                  :accept="'image/jpeg'"
-                  :placeholder="$t('editCommon.clickAndUpload')"
-                  :placeholder-font-size="13"
-                  :disable-drag-to-move="true"
-                  :disable-scroll-to-zoom="true"
-                  :disable-rotation="true"
-                  initial-position="center"
-                  :canvas-color="'gainsboro'"
-                  :show-remove-button="true"
-                  @file-choose="handleProfileImage"
-                  @file-type-mismatch="handleProfileImageRemove"
-                  @image-remove="handleProfileImageRemove"
-                ></croppa>
+              <div class="flex-1">
+                <ImageUpload
+                  @handler="handleProfileImage"
+                  :preview="previewProfile"
+                  style="width: 128px; height: 128px"
+                  />
                 <div class="mt-1 w-32 text-center text-xs">
                   {{ $t("editCommon.new") }}
                 </div>
@@ -369,25 +356,13 @@
               </div>
 
               <!-- New Photo -->
-              <div v-if="false">
-                <croppa
-                  :width="272"
-                  :height="128"
-                  :prevent-white-space="true"
-                  :zoom-speed="5"
-                  :accept="'image/jpeg'"
-                  :placeholder="$t('editCommon.clickAndUpload')"
-                  :placeholder-font-size="13"
-                  :disable-drag-to-move="true"
-                  :disable-scroll-to-zoom="true"
-                  :disable-rotation="true"
-                  initial-position="center"
-                  :canvas-color="'gainsboro'"
-                  :show-remove-button="true"
-                  @file-choose="handleCoverImage"
-                  @file-type-mismatch="handleCoverImageRemove"
-                  @image-remove="handleCoverImageRemove"
-                ></croppa>
+
+              <div class="ml-4">
+                <ImageUpload
+                  @handler="handleCoverImage"
+                  :preview="previewCover"
+                  style="width: 272px; height: 128px"
+                  />
                 <div class="mt-1 text-center text-xs" style="width: 272px">
                   {{ $t("editCommon.new") }}
                 </div>
@@ -1159,6 +1134,8 @@ import TextForm from "@/app/admin/inputComponents/TextForm.vue";
 import State from "@/app/admin/inputComponents/State.vue";
 import NotificationIndex from "@/app/admin/Notifications/Index.vue";
 
+import ImageUpload from "@/components/ImageUpload.vue";
+
 import { checkShopOwner } from "@/utils/userPermission";
 
 import {
@@ -1201,6 +1178,7 @@ export default defineComponent({
     NotFound,
     PhoneEntry,
     Price,
+    ImageUpload,
   },
   metaInfo() {
     return {
@@ -1390,24 +1368,20 @@ export default defineComponent({
         }
       );
     };
-    const handleProfileImage = (e) => {
+    const previewProfile = ref(null);
+    const handleProfileImage = (file) => {
       const newFile = Object.assign({}, files.value);
-      newFile["profile"] = e;
+      previewProfile.value = URL.createObjectURL(file);
+
+      newFile["profile"] = file;
       files.value = newFile;
     };
-    const handleCoverImage = (e) => {
+    const previewCover = ref(null);
+    const handleCoverImage = (file) => {
       const newFile = Object.assign({}, files.value);
-      newFile["cover"] = e;
-      files.value = newFile;
-    };
-    const handleProfileImageRemove = (e) => {
-      const newFile = Object.assign({}, files.value);
-      newFile["profile"] = null;
-      files.value = newFile;
-    };
-    const handleCoverImageRemove = (e) => {
-      const newFile = Object.assign({}, files.value);
-      newFile["cover"] = null;
+      previewCover.value = URL.createObjectURL(file);
+
+      newFile["cover"] = file;
       files.value = newFile;
     };
     const handlePhoneChange = (payload) => {
@@ -1575,8 +1549,8 @@ export default defineComponent({
 
       handleProfileImage,
       handleCoverImage,
-      handleProfileImageRemove,
-      handleCoverImageRemove,
+      previewProfile,
+      previewCover,
       handlePhoneChange,
 
       num2time,
