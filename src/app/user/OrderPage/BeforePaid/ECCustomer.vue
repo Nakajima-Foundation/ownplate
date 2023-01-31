@@ -309,6 +309,8 @@ export default defineComponent({
       isSaveAddress,
       saveAddress,
 
+      regionalSetting,
+
       ecErrors,
       hasEcError,
       fullAddress,

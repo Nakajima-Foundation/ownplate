@@ -65,7 +65,7 @@
 <script>
 import { defineComponent, ref } from "vue";
 import { db, firestore } from "@/plugins/firebase";
-import { useAdminUids, notFoundResponse, useRestaurantId } from "@/utils/utils";
+import { useAdminUids, notFoundResponse, useRestaurantId, regionalSetting } from "@/utils/utils";
 import { checkShopAccount } from "@/utils/userPermission";
 
 import NotFound from "@/components/NotFound.vue";
@@ -137,6 +137,7 @@ export default defineComponent({
 
       copy,
       savePostage,
+      regionalSetting,
     };
   },
 });
