@@ -18,7 +18,12 @@
 </template>
 
 <script>
-export default {
+import {
+  defineComponent,
+} from "vue";
+import { useStore } from "vuex";
+
+export default defineComponent({
   name: "TextForm",
   props: {
     required: {
@@ -56,15 +61,21 @@ export default {
       required: true,
     },
   },
-  methods: {
-    input(e) {
-      this.$emit("update:modelValue", e.target.value);
-    },
-    open(key) {
-      this.$store.commit("setTips", {
+  emits: ["update:modelValue"],
+  setup(_, context) {
+    const store = useStore();
+    const input = (e) => {
+      context.emit("update:modelValue", e.target.value);
+    };
+    const open = (key) => {
+      store.commit("setTips", {
         key,
       });
-    },
+    };
+    return {
+      input,
+      open,
+    };
   },
-};
+});
 </script>

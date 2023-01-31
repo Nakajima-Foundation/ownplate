@@ -8,7 +8,7 @@
       :variant="errors['state'].length > 0 ? 'danger' : 'success'"
       v-if="Array.isArray(states)"
     >
-      <o-select :modelValue="modelValue" placeholder="select" @input="input">
+      <o-select :modelValue="modelValue" placeholder="select" @update:modelValue="input">
         <option v-for="stateItem in states" :key="stateItem">
           {{ stateItem }}
         </option>
@@ -29,7 +29,13 @@
 </template>
 
 <script>
-export default {
+import {
+  defineComponent,
+} from "vue";
+
+import { regionalSetting } from "@/utils/utils";
+
+export default defineComponent({
   name: "State",
   props: {
     errors: {
@@ -41,20 +47,19 @@ export default {
       required: true,
     },
   },
-  methods: {
-    input(e) {
-      this.$emit("update:modelValue", e.target.value);
-    },
-  },
-  data() {
+  setup(props, context) {
+    const input = (value) => {
+      context.emit("update:modelValue", value);
+    };
+
+    const states = regionalSetting.AddressStates;
+    const state_key = regionalSetting.StateKey || "shopInfo.state";
+    
     return {
-      states: [],
-      state_key: "",
+      states,
+      state_key,
+      input,
     };
   },
-  created() {
-    this.states = this.regionalSetting.AddressStates;
-    this.state_key = this.regionalSetting.StateKey || "shopInfo.state";
-  },
-};
+});
 </script>

@@ -5,7 +5,7 @@
         <o-select
           v-model="modelValue.start"
           :disabled="disabled"
-          @input="updateValue"
+          @update:modelValue="updateValue"
         >
           <option
             v-for="(timeItem, index) of timeList"
@@ -20,7 +20,7 @@
     <div class="px-2">-</div>
     <div>
       <o-field :variant="variant">
-        <o-select v-model="modelValue.end" :disabled="disabled" @input="updateValue">
+        <o-select v-model="modelValue.end" :disabled="disabled" @update:modelValue="updateValue">
           <option
             v-for="(timeItem, index) of timeList"
             :key="timeItem"
@@ -35,7 +35,11 @@
 </template>
 
 <script>
-export default {
+import {
+  defineComponent,
+} from "vue";
+
+export default defineComponent({
   name: "HoursInput",
   props: {
     disabled: {
@@ -52,14 +56,14 @@ export default {
       default: () => ({}),
     },
   },
-  methods: {
-    updateValue() {
-      this.$emit("update:modelValue", this.modelValue);
-      // this.$emit("input", this.modelValue);
-    },
-  },
-  data() {
+  emits: ["update:modelValue"],
+  setup(props, context) {
+    const updateValue = () => {
+      context.emit("update:modelValue", props.modelValue);
+    };
+
     return {
+      updateValue,
       timeList: [
         null,
         "00:00 AM",
@@ -114,5 +118,5 @@ export default {
       ],
     };
   },
-};
+});
 </script>
