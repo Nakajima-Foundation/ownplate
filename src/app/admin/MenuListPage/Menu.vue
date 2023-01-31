@@ -23,8 +23,8 @@
 
           <div class="mr-4 pt-4">
             <o-checkbox
-              :value="soldOut"
-              @input="soldOutToggle"
+              :modelValue="soldOut"
+              @update:modelValue="soldOutToggle"
               :disabled="disabledEdit"
             >
               <div v-if="soldOut" class="text-sm font-bold text-red-700">
@@ -74,7 +74,7 @@
             >
               <o-checkbox
                 v-model="preOrderAvaiable['isPublic']"
-                @input="updatePreOrder"
+                @update:modelValue="updatePreOrder"
               >
                 {{ $t("mobileOrder.admin.takeout") }}
               </o-checkbox>
@@ -89,7 +89,7 @@
             >
               <o-checkbox
                 v-model="pickupAvaiable['isPublic']"
-                @input="updatePickup"
+                @update:modelValue="updatePickup"
               >
                 {{ $t("mobileOrder.admin.pickup") }}
               </o-checkbox>
@@ -113,7 +113,7 @@
             >
               <o-checkbox
                 v-model="pickupStockData['isStock']"
-                @input="updatePickupStock"
+                @update:modelValue="updatePickupStock"
                 :disabled="pickupStockData['forcePickupStock']"
               >
                 {{ $t("mobileOrder.admin.pickupStock") }}

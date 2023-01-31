@@ -1,6 +1,6 @@
 <template>
   <div class="flex space-x-2">
-    <o-checkbox v-if="editable" :modelValue="available" @update:modelValue="input" />
+    <o-checkbox v-if="editable" :modelValue="available" @update:modelValue="update" />
     <div>
       <div
         class="inline-flex h-9 w-12 flex-shrink-0 items-center justify-center rounded bg-blue-500 bg-opacity-10"
@@ -109,9 +109,9 @@ export default {
     },
   },
   methods: {
-    input(value) {
+    update(value) {
       console.log(this.mkey, value);
-      this.$emit("input", [this.mkey, value]);
+      this.$emit("update", [this.mkey, value]);
     },
     displayOption(option) {
       return formatOption(option, (price) => this.$n(price, "currency"));

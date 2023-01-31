@@ -1,7 +1,6 @@
 // core
 import { createApp } from "vue";
 
-import Vue from "vue";
 import router from "@/lib/router";
 import store from "@/lib/store/index";
 

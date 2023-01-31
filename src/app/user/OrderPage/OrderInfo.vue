@@ -7,7 +7,7 @@
           :orderItem="orderItem"
           :editable="editable"
           :available="(editedAvailableOrders || {})[key]"
-          @input="updateAvailable"
+          @update="updateAvailable"
           :mkey="key"
         ></order-item>
       </template>
@@ -292,7 +292,7 @@ export default {
   },
   methods: {
     updateAvailable(value) {
-      this.$emit("input", value);
+      this.$emit("update", value);
     },
 
     calcTip(ratio) {

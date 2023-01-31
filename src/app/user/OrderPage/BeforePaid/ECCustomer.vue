@@ -65,7 +65,7 @@
       <o-select
         v-model="customerInfo.prefectureId"
         placeholder="select"
-        @input="updatePrefecture"
+        @update:modelValue="updatePrefecture"
       >
         <option
           v-for="(stateItem, key) in regionalSetting.AddressStates"
