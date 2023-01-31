@@ -13,6 +13,7 @@ export interface locationData {
 export interface customerInfoData {
   zip: string;
   prefectureId: number;
+  prefecture: string;
   address: string;
   name: string;
   email: string;

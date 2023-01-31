@@ -5,9 +5,8 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    branches:
+      - master
 
 jobs:
   build:
@@ -55,5 +54,10 @@ jobs:
         run: ./node_modules/.bin/firebase deploy --project=staging
       - name: slack
         run: sh ./utils/buildbot.sh
+        env:
+          SLACKURL: ${{ secrets.SLACKURL }}
+      - name: slack failed
+        if: ${{ failure() }}
+        run: sh ./utils/faildbot.sh
         env:
           SLACKURL: ${{ secrets.SLACKURL }}
