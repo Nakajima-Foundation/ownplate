@@ -57,3 +57,8 @@ jobs:
         run: sh ./utils/buildbot.sh
         env:
           SLACKURL: ${{ secrets.SLACKURL }}
+      - name: slack failed
+        if: ${{ failure() }}
+        run: sh ./utils/faildbot.sh
+        env:
+          SLACKURL: ${{ secrets.SLACKURL }}
