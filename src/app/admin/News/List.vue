@@ -37,7 +37,7 @@
 <script>
 import {
   defineComponent,
-} from "@vue/composition-api";
+} from "vue";
 import ListItem from "@/app/admin/News/ListItem";
 import newsList from "./data";
 

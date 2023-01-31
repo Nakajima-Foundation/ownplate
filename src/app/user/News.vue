@@ -33,10 +33,10 @@
 <script>
 import {
   defineComponent,
-} from "@vue/composition-api";
+} from "vue";
 
 import MarkdownIt from "markdown-it";
-import newsList from "../admin/News/data";
+import newsList from "@/app/admin/News/data";
 
 export default defineComponent({
   metaInfo() {

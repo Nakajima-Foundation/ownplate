@@ -51,10 +51,11 @@
 <script>
 import {
   defineComponent,
-} from "@vue/composition-api";
+} from "vue";
 import MarkdownIt from "markdown-it";
 import newsList from "./data";
 import NotFound from "@/components/NotFound";
+import { useRoute } from "vue-router";
 
 export default defineComponent({
   components: {
@@ -65,8 +66,9 @@ export default defineComponent({
       title: [(this.news || {}).title, this.defaultTitle].join(" / "),
     };
   },
-  setup(_, ctx) {
-    const newsId = ctx.root.$route.params.newsId;
+  setup() {
+    const route = useRoute();
+    const newsId = route.params.newsId;
     const news = newsList.find((element) => element.date === newsId);
     return {
       md: new MarkdownIt(),
