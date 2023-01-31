@@ -23,6 +23,7 @@ import { firebaseConfig, ownPlateConfig, mo_prefixes } from "@/config/project";
 
 import { defaultHeader } from "@/config/header";
 
+import { formatOption } from "@/utils/strings";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import isURL from "validator/lib/isURL";
 import isLatLong from "validator/lib/isLatLong";
@@ -292,17 +293,6 @@ export const taxRate = (shopInfo: RestaurantInfoData, item: MenuData) => {
   }
   return 1 + shopInfo.foodTax * 0.01;
 };
-/*
-const displayOption = (option, shopInfo, item) => {
-  return formatOption(option, (price) => {
-    return this.$n(
-      this.roundPrice(price * this.taxRate(shopInfo, item)),
-      "currency"
-    );
-  });
-};
-
-*/
 
 export const priceWithTax = (shopInfo: RestaurantInfoData, menu: MenuData) => {
   return Math.round(
@@ -336,6 +326,16 @@ export const stripeRegion = stripe_regions[ownPlateConfig.region || "US"];
 export const roundPrice = (price: number) => {
   const m = stripeRegion.multiple;
   return Math.round(price * m) / m;
+};
+
+export const displayOption = (option: string, shopInfo: RestaurantInfoData, item: MenuData) => {
+  const { n } = useI18n({ useScope: 'global' });
+  return formatOption(option, (price) => {
+    return n(
+      roundPrice(price * taxRate(shopInfo, item)),
+      "currency"
+    );
+  });
 };
 
 const optionPrice = (option: string) => {

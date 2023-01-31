@@ -280,6 +280,7 @@ import {
   smallImageErrorHandler,
   imageErrorHandler,
   num2time,
+  displayOption,
 } from "@/utils/utils";
 
 // menu UI algorithm
@@ -545,6 +546,7 @@ export default defineComponent({
       imageErrorHandler,
 
       num2time,
+      displayOption,
     };
   },
 });

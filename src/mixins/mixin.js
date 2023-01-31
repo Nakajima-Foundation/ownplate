@@ -3,9 +3,6 @@ import { firebaseConfig, ownPlateConfig } from "@/config/project";
 import moment from "moment";
 
 import { defaultHeader } from "@/config/header";
-import { formatOption } from "@/utils/strings";
-
-import { roundPrice, taxRate } from "@/utils/utils";
 
 const mixin = {
   methods: {
@@ -20,11 +17,6 @@ const mixin = {
     },
     moment(value) {
       return moment(value);
-    },
-    displayOption(option, shopInfo, item) {
-      return formatOption(option, (price) => {
-        return this.$n(roundPrice(price * taxRate(shopInfo, item)), "currency");
-      });
     },
   },
   computed: {
