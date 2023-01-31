@@ -84,9 +84,9 @@ export default defineComponent({
     AreaItem,
     BackButton,
   },
-  metaInfo(root) {
+  metaInfo() {
     const title = [
-      root.$t("pageTitle.restaurantRoot"),
+      this.$t("pageTitle.restaurantRoot"),
       ownPlateConfig.siteName,
     ].join(" / ");
     return Object.assign(RestaurantHeader, { title });
