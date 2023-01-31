@@ -63,29 +63,12 @@ const mixin = {
       // TODO
       return !!ownPlateConfig.line;
     },
-    isLocaleJapan() {
-      // for hack
-      console.log(this.$i18n.locale);
-      // return this.$i18n.locale === "ja";
-      // TODO: why not ja ?
-      return this.$i18n.locale !== "en" && this.$i18n.locale !== "fr";
-    },
     inLiff() {
       // BY path
       return !!this.$route.params.liffIndexId;
     },
     liffIndexId() {
       return this.$route.params.liffIndexId;
-    },
-    featureHeroMobile() {
-      return this.regionalSetting.FeatureHeroMobile[
-        this.isLocaleJapan ? "ja" : "en"
-      ];
-    },
-    featureHeroTablet() {
-      return this.regionalSetting.FeatureHeroTablet[
-        this.isLocaleJapan ? "ja" : "en"
-      ];
     },
     isUser() {
       return !!this.$store.getters.uidUser;

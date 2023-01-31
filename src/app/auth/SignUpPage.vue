@@ -160,6 +160,7 @@ import isEmail from "validator/lib/isEmail";
 import { db, firestore } from "@/plugins/firebase";
 import { partners } from "@/config/constant";
 
+import { useIsLocaleJapan } from "@/utils/utils";
 import { auth } from "@/lib/firebase/firebase9";
 import {
   createUserWithEmailAndPassword,
@@ -184,6 +185,13 @@ export default {
     };
   },
   computed: {
+    isLocaleJapan() {
+      // for hack
+      console.log(this.$i18n.locale);
+      // return this.$i18n.locale === "ja";
+      // TODO: why not ja ?
+      return this.$i18n.locale !== "en" && this.$i18n.locale !== "fr";
+    },
     partner() {
       if (this.$route.params.partner) {
         const match = partners.find((a) => {

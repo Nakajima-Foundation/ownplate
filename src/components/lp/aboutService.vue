@@ -72,11 +72,15 @@
 
 <script>
 import { defineComponent } from "vue";
-import { serviceKey } from "@/utils/utils";
+import { serviceKey, useIsLocaleJapan } from "@/utils/utils";
 
 export default defineComponent({
   setup() {
-    return { serviceKey };
+    const isLocaleJapan = useIsLocaleJapan();
+    return {
+      serviceKey,
+      isLocaleJapan,
+    };
   },
 });
 </script>

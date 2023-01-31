@@ -177,7 +177,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 
-import { stripeRegion, useIsInMo } from "@/utils/utils";
+import { stripeRegion, useIsInMo, useIsLocaleJapan } from "@/utils/utils";
 import moment from "moment";
 import * as Sentry from "@sentry/vue";
 
@@ -211,6 +211,8 @@ export default defineComponent({
     let recaptchaVerifier = null;
 
     const isInMo = useIsInMo();
+
+    const isLocaleJapan = useIsLocaleJapan();
 
     onMounted(() => {
       recaptchaVerifier = new RecaptchaVerifier(
@@ -344,6 +346,8 @@ export default defineComponent({
       validatePhoneNumber,
       validateVerificationCode,
 
+      isLocaleJapan,
+      
       handleSubmit,
       handleCode,
 

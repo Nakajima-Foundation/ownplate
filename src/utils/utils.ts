@@ -838,6 +838,32 @@ export const orderTypeKey = (order: OrderInfoData, isInMo: boolean) => {
 
 export const isDev = firebaseConfig.projectId === "ownplate-dev";
 
+export const useIsLocaleJapan = () => {
+  // for hack
+  const { locale } = useI18n({ useScope: 'global' });
+  console.log(locale.value);
+  return computed(() => {
+    return locale.value !== "en" && locale.value !== "fr";
+  });
+};
+
+export const useFeatureHeroMobile = () => {
+  const isLocaleJapan = useIsLocaleJapan();
+  
+  return computed(() => {
+    return regionalSetting.FeatureHeroMobile[
+      isLocaleJapan.value ? "ja" : "en"
+    ];
+  });
+};
+export const useFeatureHeroTablet = () => {
+  const isLocaleJapan = useIsLocaleJapan();
+  return computed(() => {
+    regionalSetting.FeatureHeroTablet[
+      isLocaleJapan.value ? "ja" : "en"
+    ];
+  });
+};
 
 // https://developers-jp.googleblog.com/2019/12/how-calculate-distances-map-maps-javascript-api.html
 export const haversine_distance = (lat1: number, lng1: number, lat2: number, lng2: number) => {

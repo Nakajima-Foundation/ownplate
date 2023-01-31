@@ -29,11 +29,13 @@
 <script>
 import { defineComponent, computed } from "vue";
 
-import { useIsInMo, getMoPrefix } from "@/utils/utils";
+import { useIsInMo, getMoPrefix, useIsLocaleJapan } from "@/utils/utils";
 
 export default defineComponent({
   setup() {
     const isInMo = useIsInMo();
+
+    const isLocaleJapan = useIsLocaleJapan();
 
     const termsPath = computed(() => {
       if (isInMo.value) {
@@ -52,6 +54,7 @@ export default defineComponent({
     return {
       termsPath,
       policyPath,
+      isLocaleJapan,
     };
   },
 });

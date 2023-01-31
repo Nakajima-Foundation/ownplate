@@ -22,12 +22,12 @@
         <img
           style="height: 752px"
           class="object-cover lg:hidden"
-          :src="`/${this.featureHeroMobile}`"
+          :src="`/${featureHeroMobile}`"
         />
         <img
           style="height: 416px"
           class="hidden object-cover lg:inline-block"
-          :src="`/${this.featureHeroTablet}`"
+          :src="`/${featureHeroTablet}`"
         />
       </div>
     </div>
@@ -35,13 +35,25 @@
 </template>
 
 <script>
-export default {
-  computed: {
-    coverMobile() {
+import {
+  defineComponent,
+} from "vue";
+import { useFeatureHeroMobile, useFeatureHeroTablet } from "@/utils/utils";
+
+export default defineComponent({
+  setup() {
+    const coverMobile = (() => {
       const seed = (Math.floor(Math.random() * 2) % 2) + 1;
-      console.log(seed);
       return `/LP-Cover-Mobile-1-${seed}.jpg`;
-    },
+    })();
+    const featureHeroTablet = useFeatureHeroTablet();
+    const featureHeroMobile = useFeatureHeroMobile();
+
+    return {
+      coverMobile,
+      featureHeroTablet,
+      featureHeroMobile,
+    }
   },
-};
+});
 </script>
