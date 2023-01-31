@@ -77,7 +77,7 @@
 <script>
 import { defineComponent, ref } from "vue";
 
-import SharingButtons from "@/app/user/Common/SharingButtons.vue";
+import SharingButtons from "@/app/user/Restaurant/SharingButtons.vue";
 import { shareUrl, useBasePath } from "@/utils/utils";
 import useClipboard from 'vue-clipboard3'
 

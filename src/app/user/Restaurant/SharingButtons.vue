@@ -39,7 +39,12 @@
 </template>
 
 <script>
-export default {
+import {
+  defineComponent,
+} from "vue";
+import { regionalSetting } from "@/utils/utils";
+
+export default defineComponent({
   props: {
     title: {
       type: String,
@@ -50,13 +55,14 @@ export default {
       required: false,
     },
   },
-  computed: {
-    targetURL() {
-      return this.url || window.location.href;
-    },
-    hashtag() {
-      return this.regionalSetting.hashTag;
-    },
+  setup(props) {
+    const targetURL = props.url || window.location.href;
+    const hashtag = regionalSetting.hashTag;
+
+    return {
+      targetURL,
+      hashtag,
+    };
   },
-};
+});
 </script>
