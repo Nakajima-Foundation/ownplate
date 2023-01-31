@@ -1,6 +1,5 @@
 import Vue from "vue";
 import { firebaseConfig, ownPlateConfig } from "@/config/project";
-import { regionalSettings } from "@/config/constant";
 import moment from "moment";
 
 import { defaultHeader } from "@/config/header";
@@ -31,9 +30,6 @@ const mixin = {
   computed: {
     defaultTitle() {
       return defaultHeader.title;
-    },
-    regionalSetting() {
-      return regionalSettings[ownPlateConfig.region || "US"];
     },
     user() {
       return this.$store.state.user;
