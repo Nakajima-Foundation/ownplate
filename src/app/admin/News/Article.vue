@@ -49,11 +49,14 @@
 </template>
 
 <script>
+import {
+  defineComponent,
+} from "@vue/composition-api";
 import MarkdownIt from "markdown-it";
 import newsList from "./data";
 import NotFound from "@/components/NotFound";
 
-export default {
+export default defineComponent({
   components: {
     NotFound,
   },
@@ -62,15 +65,15 @@ export default {
       title: [(this.news || {}).title, this.defaultTitle].join(" / "),
     };
   },
-  data() {
-    const newsId = this.$route.params.newsId;
+  setup(_, ctx) {
+    const newsId = ctx.root.$route.params.newsId;
     const news = newsList.find((element) => element.date === newsId);
     return {
       md: new MarkdownIt(),
       news,
     };
   },
-};
+});
 </script>
 
 <style lang="css" scoped>

@@ -35,10 +35,13 @@
 </template>
 
 <script>
+import {
+  defineComponent,
+} from "@vue/composition-api";
 import ListItem from "@/app/admin/News/ListItem";
 import newsList from "./data";
 
-export default {
+export default defineComponent({
   components: {
     ListItem,
   },
@@ -47,10 +50,10 @@ export default {
       title: ["News", this.defaultTitle].join(" / "),
     };
   },
-  data() {
+  setup() {
     return {
-      newsList: newsList,
+      newsList,
     };
   },
-};
+});
 </script>

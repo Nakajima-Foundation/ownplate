@@ -7,8 +7,8 @@
         <th>Name</th>
         <th>e-mail</th>
         <th>Created</th>
-        <th>A</th>
-        <th>O</th>
+        <th>Admin</th>
+        <th>Ope</th>
         <th>Stripe</th>
         <th>JCB</th>
       </tr>
