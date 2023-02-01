@@ -18,6 +18,8 @@ exportIfNeeded("apiJP", "apiJP", exports);
 exportIfNeeded("superDispatch", "super/superDispatch", exports);
 exportIfNeeded("superTwilio", "super/superTwilio", exports);
 
+exportIfNeeded("batchBigQueryPV", "batch/bigQueryPV", exports);
+
 exportIfNeeded("accountDelete", "accountDelete", exports);
 
 exportIfNeeded("lineVerifyFriend", "line/lineVerifyFriend", exports); // by user profile
