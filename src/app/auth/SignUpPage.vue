@@ -110,7 +110,7 @@
           </o-button>
 
           <o-button
-            :disabled="Object.keys(errors).length > 0"
+            :disabled="submitted && Object.keys(errors).length > 0"
             @click="onSignup"
             class="b-reset-tw"
           >
@@ -181,6 +181,7 @@ export default {
       confirmPassword: "",
       deferredPush: false,
       emailTaken: "---invalid---",
+      submitted: false,
     };
   },
   computed: {
@@ -196,7 +197,10 @@ export default {
       return null;
     },
     errors() {
-      let errors = {};
+      if (!this.submitted)  {
+        return {};
+      }
+      const errors = {};
       if (this.password !== this.confirmPassword) {
         errors.confirm = ["admin.error.password.mismatch"];
       }
@@ -213,6 +217,9 @@ export default {
       }
       return errors;
     },
+    hasError() {
+      return Object.keys(this.errors).length > 0;
+    },
   },
   watch: {
     user(newValue) {
@@ -228,6 +235,10 @@ export default {
     },
     async onSignup() {
       const email = this.email; //
+      this.submitted = true;
+      if (this.hasError) {
+        return;
+      }
       try {
         const result = await createUserWithEmailAndPassword(
           auth,
