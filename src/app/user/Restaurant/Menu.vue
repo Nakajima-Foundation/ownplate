@@ -257,13 +257,14 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
   ref,
   watch,
   computed,
   onMounted,
+  PropType,
 } from "vue";
 
 import Price from "@/components/Price.vue";
@@ -293,6 +294,9 @@ import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 
+import { AnalyticsMenuData } from "@/lib/firebase/analytics";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
+
 export default defineComponent({
   components: {
     Price,
@@ -304,7 +308,7 @@ export default defineComponent({
       required: true,
     },
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
     menuPickupData: {
@@ -312,7 +316,7 @@ export default defineComponent({
       required: true,
     },
     quantities: {
-      type: Array,
+      type: Array<number>,
       required: true,
     },
     selectedOptions: {
@@ -353,7 +357,7 @@ export default defineComponent({
     const isInMo = useIsInMo();
     const urlSuffix =
       (isInMo.value ? props.menuLinkBathPath : "") + "/menus/" + props.item.id;
-    const restaurantId = route.params.restaurantId;
+    const restaurantId = route.params.restaurantId as string;
 
     const basePath = useBasePath();
 
@@ -366,7 +370,7 @@ export default defineComponent({
     const allergens = computed(() => {
       if (props.item.allergens) {
         return store.getters.stripeRegion.allergens.filter(
-          (allergen) => {
+          (allergen: string) => {
             return props.item.allergens[allergen];
           }
         );
@@ -379,7 +383,7 @@ export default defineComponent({
         t("allergens.title") +
         ": " +
         allergens.value
-          .map((allergen) => {
+          .map((allergen: string) => {
             return t(`allergens.${allergen}`);
           })
           .join(t("comma"))
@@ -424,7 +428,7 @@ export default defineComponent({
 
     watch(openMenuFlag, () => {
       if (openMenuFlag.value) {
-        analyticsUtil.sendViewItem(props.item, props.shopInfo, restaurantId);
+        analyticsUtil.sendViewItem(props.item as AnalyticsMenuData, props.shopInfo, restaurantId);
       }
     });
     // TODO: improve to set default value.
@@ -440,13 +444,15 @@ export default defineComponent({
       scrollToElementById(props.item.id);
       imagePopup.value = true;
 
+      // TODO confirm 2023-01 
+      // @ts-ignore
       const current = router.currentRoute.path;
       
       const to = basePath.value + "/r/" + restaurantId + (urlSuffix || "");
       if (current !== to) {
         router.replace(to);
       }
-      analyticsUtil.sendViewItem(props.item, props.shopInfo, restaurantId);
+      analyticsUtil.sendViewItem(props.item as AnalyticsMenuData, props.shopInfo, restaurantId);
     };
     onMounted(() => {
       if (props.isOpen) {
@@ -460,9 +466,10 @@ export default defineComponent({
       }, 30);
       router.replace(basePath.value + "/r/" + restaurantId);
     };
-    const setQuantities = (key, newValue) => {
+    const setQuantities = (key: number, newValue: number) => {
       const newQuantities = [...props.quantities];
       newQuantities[key] = newValue;
+      // @ts-ignore
       const newSelectedOptions = [...props.selectedOptions];
       if (newQuantities[key] === 0 && newQuantities.length > 1) {
         newQuantities.splice(key, 1);
@@ -477,27 +484,27 @@ export default defineComponent({
     const toggleMenuFlag = () => {
       openMenuFlag.value = !openMenuFlag.value;
       if (openMenuFlag.value) {
-        analyticsUtil.sendSelectItem(props.item, props.shopInfo, restaurantId);
+        analyticsUtil.sendSelectItem(props.item as AnalyticsMenuData, props.shopInfo, restaurantId);
       }
     };
-    const pullQuantities = (key) => {
+    const pullQuantities = (key: number) => {
       if (props.quantities[key] <= 0) {
         return;
       }
       setQuantities(key, props.quantities[key] - 1);
       analyticsUtil.sendRemoveFromCart(
-        props.item,
+        props.item as AnalyticsMenuData,
         props.shopInfo,
         restaurantId,
         1
       );
     };
-    const pushQuantities = (key) => {
+    const pushQuantities = (key: number) => {
       setQuantities(key, props.quantities[key] + 1);
       if (!openMenuFlag.value) {
         toggleMenuFlag();
       }
-      analyticsUtil.sendAddToCart(props.item, props.shopInfo, restaurantId, 1);
+      analyticsUtil.sendAddToCart(props.item as AnalyticsMenuData, props.shopInfo, restaurantId, 1);
     };
     const pushItem = () => {
       const newSelectedOptions = [...props.selectedOptions];
