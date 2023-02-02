@@ -18,7 +18,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
   ref,
@@ -26,11 +26,18 @@ import {
   onUnmounted,
 } from "vue";
 
-import { db, firestore } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  doc,
+  onSnapshot,
+  serverTimestamp,
+  setDoc,
+} from "firebase/firestore";
+
 import { useIsInMo, useMoPrefix, useRestaurantId, useUserData } from "@/utils/utils";
+import { ReviewData } from "@/models/reviewData";
 
 export default defineComponent({
-  components: {},
   props: {
     shopInfo: {
       type: Object,
@@ -38,8 +45,8 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const review = ref({});
-    let detacher = null;
+    const review = ref<ReviewData>({});
+    let detacher: any = null;
     const restaurantId = useRestaurantId();
 
     const isInMo = useIsInMo();
@@ -55,24 +62,28 @@ export default defineComponent({
     });
 
     if (isUser.value) {
-      detacher = db.doc(path.value).onSnapshot((snapshot) => {
-        review.value = snapshot.data() || {};
-        if (review.value.restaurantName) {
-          // Check if the cached info is out of date, update them.
-          if (
-            review.value.restaurantName !== props.shopInfo.restaurantName ||
-            review.value.restProfilePhoto != props.shopInfo.restProfilePhoto
-          ) {
-            db.doc(path.value).set(
-              {
-                restaurantName: props.shopInfo.restaurantName, // duplicated for quick display
-                restProfilePhoto: props.shopInfo.restProfilePhoto, // duplicated for quick display
-              },
-              { merge: true }
-            );
+      detacher = onSnapshot(
+        doc(db, path.value),
+        (snapshot) => {
+          review.value = snapshot.data() || {};
+          if (review.value.restaurantName) {
+            // Check if the cached info is out of date, update them.
+            if (
+              review.value.restaurantName !== props.shopInfo.restaurantName ||
+                review.value.restProfilePhoto != props.shopInfo.restProfilePhoto
+            ) {
+              setDoc(
+                doc(db, path.value),
+                {
+                  restaurantName: props.shopInfo.restaurantName, // duplicated for quick display
+                  restProfilePhoto: props.shopInfo.restProfilePhoto, // duplicated for quick display
+                },
+                { merge: true }
+              );
+            }
           }
         }
-      });
+      );
     }
 
     onUnmounted(() => {
@@ -86,12 +97,13 @@ export default defineComponent({
     const handleLike = () => {
       // Notice that mounted() will automatically update duplicated restaurant info.
       const nextState = !likes.value;
-      db.doc(path.value).set(
+      setDoc(
+        doc(db, path.value),
         {
           likes: nextState,
           restaurantName: props.shopInfo.restaurantName, // duplicated for quick display
           restProfilePhoto: props.shopInfo.restProfilePhoto, // duplicated for quick display
-          timeLiked: firestore.FieldValue.serverTimestamp(),
+          timeLiked: serverTimestamp(),
           restaurantId: restaurantId.value, // Making it possible to collection query (later)
         },
         { merge: true }
