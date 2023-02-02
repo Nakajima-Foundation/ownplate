@@ -263,7 +263,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
   ref,
@@ -285,6 +285,8 @@ import {
   setDoc,
   collectionGroup,
   serverTimestamp,
+  Unsubscribe,
+  DocumentData,
 } from "firebase/firestore";
 
 import { order_status } from "@/config/constant";
@@ -322,6 +324,9 @@ import { useAdminConfigToggle } from "@/utils/admin/Toggle";
 
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { ShopOwnerData } from "@/models/ShopOwner";
 
 export default defineComponent({
   name: "RestaurantIndex",
@@ -370,16 +375,16 @@ export default defineComponent({
     const router = useRouter();
 
     const readyToDisplay = ref(false);
-    const restaurantItems = ref(null);
-    const orderDetachers = ref([]);
-    const restaurant_detacher = ref(null);
-    const message_detacher = ref(null);
+    const restaurantItems = ref<{[key: string]: RestaurantInfoData} | null>(null);
+    const orderDetachers = ref<Unsubscribe[]>([]);
+    const restaurant_detacher = ref<Unsubscribe|null>(null);
+    const message_detacher = ref<Unsubscribe|null>(null);
     const unsetPaymentWarning = ref(false);
-    const lines = ref({});
-    const shopOwner = ref(null);
-    const restaurantLists = ref([]);
-    const numberOfOrderObj = ref({});
-    const messages = ref([]);
+    const lines = ref<{[key: string]: boolean}>({});
+    const shopOwner = ref<ShopOwnerData | {} | null>(null);
+    const restaurantLists = ref<string[]>([]);
+    const numberOfOrderObj = ref<{[key: string]: number}>({});
+    const messages = ref<DocumentData[]>([]);
     if (!checkAdminPermission()) {
       return;
     }
@@ -401,7 +406,7 @@ export default defineComponent({
 
     const watchOrder = () => {
       detachOrders();
-      orderDetachers.value = Object.keys(restaurantItems.value).map(
+      orderDetachers.value = Object.keys(restaurantItems.value||{}).map(
         (restaurantId) => {
           return onSnapshot(
             query(
@@ -462,8 +467,8 @@ export default defineComponent({
                   return;
                 }
                 restaurantItems.value = (result.docs || []).reduce(
-                  (tmp, doc) => {
-                    tmp[doc.id] = doc2data("restaurant")(doc);
+                  (tmp: {[key: string]: RestaurantInfoData}, doc: any) => {
+                    tmp[doc.id] = doc2data("restaurant")(doc) as RestaurantInfoData;
                     if (!restaurantLists.value.includes(doc.id)) {
                       restaurantLists.value.push(doc.id);
                     }
@@ -499,8 +504,8 @@ export default defineComponent({
                   }
 
                   restaurantItems.value = (result.docs || []).reduce(
-                    (tmp, doc) => {
-                      tmp[doc.id] = doc2data("restaurant")(doc);
+                    (tmp: {[key: string]: RestaurantInfoData}, doc: any) => {
+                      tmp[doc.id] = doc2data("restaurant")(doc) as RestaurantInfoData;
                       return tmp;
                     },
                     {}
@@ -534,12 +539,11 @@ export default defineComponent({
       }
 
       message_detacher.value = onSnapshot(
-        collection(db, `/admins/${uid.value}/messages`),
-        query(orderBy("createdAt", "desc")),
+        query(collection(db, `/admins/${uid.value}/messages`), orderBy("createdAt", "desc")),
         (messageCollection) => {
           messages.value = messageCollection.docs
             .map(doc2data("message"))
-            .filter((a) => a.toDisplay);
+            .filter((a: any) => a.toDisplay);
         }
       );
     });
@@ -579,10 +583,10 @@ export default defineComponent({
         }
       }
     };
-    const updateUnsetWarning = (value) => {
+    const updateUnsetWarning = (value: boolean) => {
       unsetPaymentWarning.value = value;
     };
-    const positionUp = async (itemKey) => {
+    const positionUp = async (itemKey: string) => {
       if (isOwner.value) {
         const pos = restaurantLists.value.indexOf(itemKey);
         if (pos !== 0 && pos !== -1) {
@@ -596,7 +600,7 @@ export default defineComponent({
         }
       }
     };
-    const positionDown = async (itemKey) => {
+    const positionDown = async (itemKey: string) => {
       if (isOwner.value) {
         const pos = restaurantLists.value.indexOf(itemKey);
         if (pos < restaurantLists.value.length - 1 && pos !== -1) {
@@ -611,7 +615,7 @@ export default defineComponent({
         }
       }
     };
-    const deleteFromRestaurantLists = async (restaurantId) => {
+    const deleteFromRestaurantLists = async (restaurantId: string) => {
       if (isOwner.value) {
         // push list
         const newRestaurantLists = [...restaurantLists.value];
@@ -649,8 +653,8 @@ export default defineComponent({
     });
 
     const existMenu = computed(() => {
-      if (!props.groupMasterRestaurant.empty) {
-        return props.groupMasterRestaurant.numberOfMenus > 1;
+      if (!props?.groupMasterRestaurant?.empty) {
+        return props?.groupMasterRestaurant?.numberOfMenus > 1;
       } else {
         return Object.values(restaurantItems.value || []).find((r) => {
           return (r || {}).numberOfMenus > 1;
