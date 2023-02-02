@@ -115,10 +115,23 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref, computed } from "vue";
 
-import { db } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  doc,
+  getDocs,
+  collectionGroup,
+  collection,
+  query,
+  where,
+  orderBy,
+  limit,
+  startAfter,
+  QueryDocumentSnapshot,
+  DocumentData,
+} from "firebase/firestore";
 import { order_status, order_status_for_form } from "@/config/constant";
 
 import NotFound from "@/components/NotFound.vue";
@@ -178,9 +191,9 @@ export default defineComponent({
     };
   },
   setup(props) {
-    const limit = 60;
-    const last = ref(undefined);
-    const orders = ref([]);
+    const limitNum = 60;
+    const last = ref<QueryDocumentSnapshot<DocumentData> | null>(null);
+    const orders = ref<any[]>([]);
     const notFound = ref(null);
 
     const orderState = ref(0);
@@ -211,38 +224,45 @@ export default defineComponent({
     const restaurantId = useRestaurantId();
     const fileName = props.shopInfo.restaurantId + "_orderhistory_summary.csv";
 
-    const { loadCategory, categoryDataObj } = useCategory(props.moPrefix);
+    const { loadCategory, categoryDataObj } = useCategory(props.moPrefix || "");
     const { allSubCategoryDataObj, loadAllSubcategory } = useAllSubcategory(
-      props.moPrefix
+      props.moPrefix || ""
     );
     if (props.isInMo) {
       loadCategory();
       loadAllSubcategory();
     }
     const next = async () => {
-      let query = db
-        .collection(`restaurants/${restaurantId.value}/orders`)
-        .orderBy("timePlaced", "desc")
-        .limit(limit);
+      
+      let dbQuery = query(
+        collection(db, `restaurants/${restaurantId.value}/orders`),
+        orderBy("timePlaced", "desc"),
+        limit(limitNum),
+      )
       if (last.value) {
-        query = query.startAfter(last.value);
+        dbQuery = query(
+          dbQuery,
+          startAfter(last.value)
+        );
       }
-      const docs = (await query.get()).docs;
-      last.value = docs.length == limit ? docs[limit - 1] : null;
+      const docs = (await getDocs(dbQuery)).docs;
+      last.value = docs.length == limitNum ? docs[limitNum - 1] : null;
       const tmpOrders = docs
         .map(doc2data("order"))
         .filter((a) => a.status !== order_status.transaction_hide);
-      const customers = {};
+      const customers: {[key: string]: any} = {};
       if (props.shopInfo.isEC || props.shopInfo.enableDelivery) {
         const ids = tmpOrders.map((order) => order.id);
         await Promise.all(
           arrayChunk(ids, 10).map(async (arr) => {
             try {
-              const cuss = await db
-                .collectionGroup("customer")
-                .where("restaurantId", "==", restaurantId.value)
-                .where("orderId", "in", arr)
-                .get();
+              const cuss = await getDocs(
+                query(
+                  collectionGroup(db, "customer"),
+                  where("restaurantId", "==", restaurantId.value),
+                  where("orderId", "in", arr),
+                )
+              );
               cuss.docs.map((cus) => {
                 const data = cus.data();
                 customers[data.orderId] = data;
@@ -254,7 +274,7 @@ export default defineComponent({
         );
       }
 
-      tmpOrders.forEach((order) => {
+      tmpOrders.forEach((order: any) => {
         order.customerInfo = order.customerInfo || customers[order.id] || {};
         order.timePlaced = order.timePlaced.toDate();
         if (order.timeEstimated) {
@@ -283,7 +303,7 @@ export default defineComponent({
           return order.status === orderState.value;
         })
         .sort(
-          (a, b) =>
+          (a: any, b: any) =>
             (a.timePlaced > b.timePlaced ? -1 : 1) *
             (sortOrder.value === 0 ? 1 : -1)
         );

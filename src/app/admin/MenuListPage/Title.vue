@@ -84,7 +84,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, computed } from "vue";
 import { useAdminUids } from "@/utils/utils";
 
