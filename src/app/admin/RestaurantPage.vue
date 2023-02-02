@@ -1107,7 +1107,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
   ref,
@@ -1116,6 +1116,7 @@ import {
   onUnmounted,
   onMounted,
   onUpdated,
+  PropType,
 } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
@@ -1167,6 +1168,8 @@ import {
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
+
 export default defineComponent({
   name: "RestaurantPage",
   components: {
@@ -1193,7 +1196,7 @@ export default defineComponent({
   },
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
     groupMasterRestaurant: {
@@ -1219,23 +1222,23 @@ export default defineComponent({
     const requireTaxInput = regionalSetting.requireTaxInput;
     const requireTaxPriceDisplay = regionalSetting.requireTaxPriceDisplay;
 
-    const notFound = ref(null);
+    const notFound = ref<boolean | null>(null);
     const gMap = ref();
     const mapObj = ref();
     
     // internal ref;
     const maplocation = ref({});
-    const place_id = ref(null);
+    const place_id = ref<string | null>(null);
     // const markers = ref([]);
-    const markers = [];
+    const markers: any[] = []; // for google map
     const errorsPhone = ref([]);
-    const files = ref({});
+    const files  = ref<{[key: string]: File}>({});
     const updateFirstCall = ref(true);
 
     // external ref
     const submitting = ref(false);
-    const newTemporaryClosure = ref(null);
-    const searchResults = ref([]);
+    const newTemporaryClosure = ref<Date | null>(null);
+    const searchResults = ref<{place_id: string, geometry: any}[]>([]);
     const selectedResult = ref(0);
 
     // only owner
@@ -1253,6 +1256,7 @@ export default defineComponent({
     onUpdated(() => {
       if (updateFirstCall.value) {
         if (window.location.hash) {
+          // @ts-ignore
           document
             .getElementById(window.location.hash.slice(1))
             .scrollIntoView();
@@ -1290,7 +1294,7 @@ export default defineComponent({
     const setLocation = () => {
       if (maplocation.value) {
         props.shopInfo.location = maplocation.value;
-        props.shopInfo.place_id = place_id.value;
+        props.shopInfo.place_id = place_id.value as string;
       }
     };
     watch(notFound, () => {
@@ -1306,7 +1310,7 @@ export default defineComponent({
         markers.splice(0);
       }
     };
-    const setCurrentLocation = async (location, move = true) => {
+    const setCurrentLocation = async (location: any, move = true) => {
       if (
         location &&
         location.lat &&
@@ -1332,16 +1336,16 @@ export default defineComponent({
       setLocation();
     });
 
-    const isFuture = (day) => {
+    const isFuture = (day: Date) => {
       return new Date().getTime() < day.getTime();
     };
-    const isNewTemporaryClosure = (day) => {
-      const func = (elem) => {
+    const isNewTemporaryClosure = (day: Date) => {
+      const func = (elem: Date) => {
         return elem.getTime() === day.getTime();
       };
       return !props.shopInfo.temporaryClosure.some(func);
     };
-    const deleteTemporaryClosure = (key) => {
+    const deleteTemporaryClosure = (key: number) => {
       props.shopInfo.temporaryClosure = props.shopInfo.temporaryClosure.filter(
         (v, n) => n !== key
       );
@@ -1349,8 +1353,8 @@ export default defineComponent({
     const addNewTemporaryClosure = () => {
       if (
         !isNull(newTemporaryClosure.value) &&
-        isNewTemporaryClosure(newTemporaryClosure.value) &&
-        isFuture(newTemporaryClosure.value)
+        isNewTemporaryClosure(newTemporaryClosure.value as Date) &&
+        isFuture(newTemporaryClosure.value as Date)
       ) {
         props.shopInfo.temporaryClosure.push(newTemporaryClosure.value);
         props.shopInfo.temporaryClosure.sort((a, b) => {
@@ -1359,8 +1363,8 @@ export default defineComponent({
       }
       newTemporaryClosure.value = null;
     };
-    const copyPreviousDay = (index) => {
-      const prevIndex = index === "1" ? 7 : index - 1;
+    const copyPreviousDay = (index: string) => {
+      const prevIndex = index === "1" ? 7 : Number(index) - 1;
       props.shopInfo.businessDay[index] = props.shopInfo.businessDay[prevIndex];
       props.shopInfo.openTimes[index] = props.shopInfo.openTimes[prevIndex].map(
         (a) => {
@@ -1368,23 +1372,23 @@ export default defineComponent({
         }
       );
     };
-    const previewProfile = ref(null);
-    const handleProfileImage = (file) => {
+    const previewProfile = ref<string | null>(null);
+    const handleProfileImage = (file: File) => {
       const newFile = Object.assign({}, files.value);
       previewProfile.value = URL.createObjectURL(file);
 
       newFile["profile"] = file;
       files.value = newFile;
     };
-    const previewCover = ref(null);
-    const handleCoverImage = (file) => {
+    const previewCover = ref<string | null>(null);
+    const handleCoverImage = (file: File) => {
       const newFile = Object.assign({}, files.value);
       previewCover.value = URL.createObjectURL(file);
 
       newFile["cover"] = file;
       files.value = newFile;
     };
-    const handlePhoneChange = (payload) => {
+    const handlePhoneChange = (payload: any) => {
       //console.log(payload)
       props.shopInfo.phoneNumber = payload.phoneNumber;
       props.shopInfo.countryCode = payload.countryCode;
@@ -1402,7 +1406,7 @@ export default defineComponent({
     onMounted(() => {
       setDefaultLocation();
     });
-    const gmapClick = (arg) => {
+    const gmapClick = (arg: any) => {
       setCurrentLocation(
         { lat: arg.latLng.lat(), lng: arg.latLng.lng() },
         false
@@ -1436,7 +1440,7 @@ export default defineComponent({
         },
       });
     };
-    const updateRestaurantData = async (restaurantData) => {
+    const updateRestaurantData = async (restaurantData: any) => {
       const cleanData = cleanObject(restaurantData);
       await updateDoc(
         doc(db, `restaurants/${restaurantId.value}`),
@@ -1508,7 +1512,7 @@ export default defineComponent({
       return hasError.value && props.shopInfo.publicFlag;
     });
 
-    const openTips = (key) => {
+    const openTips = (key: string) => {
       store.commit("setTips", {
         key,
       });
