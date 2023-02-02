@@ -29,8 +29,8 @@ i<template>
   </div>
 </template>
 
-<script>
-import { defineComponent, computed } from "vue";
+<script lang="ts">
+import { defineComponent, computed, PropType } from "vue";
 
 import { isNull } from "@/utils/utils";
 import { midNight } from "@/utils/dateUtils";
@@ -38,9 +38,14 @@ import moment from "moment";
 
 import { useStore } from "vuex";
 
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
+
 export default defineComponent({
   props: {
-    shopInfo: Object,
+    shopInfo: {
+      type: Object as PropType<RestaurantInfoData>,
+      required: true,
+    }
   },
   setup(props, ctx) {
     const store = useStore();
@@ -54,7 +59,7 @@ export default defineComponent({
     });
 
     const orderCounter = computed(() => {
-      return lastSeveralDays.value.reduce((tmp, day) => {
+      return lastSeveralDays.value.reduce((tmp: {[key: string]: number}, day) => {
         const count = (
           store.state.orderObj[
             moment(day.date).format("YYYY-MM-DD")
