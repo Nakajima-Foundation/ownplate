@@ -111,7 +111,7 @@
   </o-sidebar>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref, computed } from "vue";
 import { moBaseUrl } from "@/config/project";
 

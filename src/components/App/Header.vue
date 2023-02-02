@@ -22,7 +22,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref, computed } from "vue";
 import {
   useTopPath,
@@ -35,7 +35,7 @@ import { moBaseUrl } from "@/config/project";
 export default defineComponent({
   emits: ["handleOpen"],
   setup(_, ctx) {
-    const specialLogo = {
+    const specialLogo: any = {
       "5OInKqrhlpe7LHYNYXuU": {
         class: "h-8",
         image: "TBP_logo.jpg",

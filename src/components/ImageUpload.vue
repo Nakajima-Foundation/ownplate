@@ -26,7 +26,7 @@
       />
   </div>
 </template>
-<script type="ts">
+<script lang="ts">
 import { defineComponent, ref } from "vue";
 export default defineComponent({
   props: {
@@ -40,7 +40,7 @@ export default defineComponent({
     },
   },
   setup(props, context) {
-    const handler = (e) => {
+    const handler = (e: any) => {
       if (e.dataTransfer) {
         context.emit("handler", e.dataTransfer.files[0]); // drag
       } else if (e.target) {

@@ -59,7 +59,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref, computed, watch } from "vue";
 
 import {
@@ -102,12 +102,12 @@ export default defineComponent({
       return `${path_prefix}/${uid.value}/private/profile`;
     });
 
-    const setLang = (lang) => {
+    const setLang = (lang: string) => {
       language.value = lang;
       locale.value = lang;
       auth.languageCode = lang;
     };
-    const saveLang = (lang) => {
+    const saveLang = (lang: string) => {
       if (!isNull(uid.value)) {
         setDoc(doc(db, profile_path.value), { lang }, { merge: true });
       } else {
@@ -115,7 +115,7 @@ export default defineComponent({
         store.commit("setLang", lang);
       }
     };
-    const changeLang = (lang) => {
+    const changeLang = (lang: string) => {
       setLang(lang);
       saveLang(lang);
     };
@@ -124,7 +124,7 @@ export default defineComponent({
     // setting (is not here / after user load). TODO: hold on storage
     (() => {
       if (route.query.lang) {
-        changeLang(route.query.lang);
+        changeLang(route.query.lang as string);
       } else if (navigator.userAgent.toLowerCase().indexOf("googlebot") > -1) {
         if (isJapan) {
           changeLang("ja");
@@ -135,7 +135,9 @@ export default defineComponent({
         const language =
           (window.navigator.languages && window.navigator.languages[0]) ||
           window.navigator.language ||
+          // @ts-ignore
           window.navigator.userLanguage ||
+          // @ts-ignore
           window.navigator.browserLanguage;
         console.log("browserlang:" + language);
         const lang = (language || "").substr(0, 2);
@@ -151,13 +153,13 @@ export default defineComponent({
     const closeLang = () => {
       langPopup.value = false;
     };
-    const changeLangAndClose = (lang) => {
+    const changeLangAndClose = (lang: string) => {
       changeLang(lang);
       closeLang();
     };
 
     const langQuery = computed(() => {
-      return route.query.lang;
+      return route.query.lang as string;
     });
     watch(langQuery, async (lang) => {
       if (lang) {

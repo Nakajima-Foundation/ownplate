@@ -44,13 +44,13 @@ export const isEmpty = <T>(value: T) => {
 export const useRestaurantId = () => {
   const route = useRoute();
   return computed(() => {
-    return route.params.restaurantId;
+    return route.params.restaurantId as string;
   });
 };
 
 export const getRestaurantId = () => {
   const route = useRoute();
-  return route.params.restaurantId;
+  return route.params.restaurantId as string;
 };
 
 export const resizedProfileImage = (

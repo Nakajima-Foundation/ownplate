@@ -8,20 +8,22 @@
   </span>
 </template>
 
-<script>
-import { defineComponent, computed } from "vue";
+<script lang="ts">
+import { defineComponent, computed, PropType } from "vue";
 
 import { priceWithTax } from "@/utils/utils";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { MenuData } from "@/models/menu";
 
 export default defineComponent({
   name: "Price",
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
     menu: {
-      type: Object,
+      type: Object as PropType<MenuData>,
       required: true,
     },
   },

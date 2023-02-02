@@ -18,7 +18,7 @@
   </download-csv>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, computed } from "vue";
 import DownloadCsv from "@/components/DownloadCSV.vue";
 import moment from "moment";
@@ -63,7 +63,7 @@ export default defineComponent({
     });
 
     const tableData = computed(() => {
-      return props.orders.map((order) => {
+      return props.orders.map((order: any) => {
         const totalCount = Object.keys(order.order).reduce((count, id) => {
           return count + arrayOrNumSum(order.order[id]);
         }, 0);

@@ -14,7 +14,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from "vue";
 import { useBasePath } from "@/utils/utils";
 import { useIsInMo } from "@/utils/utils";

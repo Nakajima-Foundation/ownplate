@@ -11,7 +11,7 @@
   </o-button>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from "vue";
 import ButtonLoading from "@/components/Button/Loading.vue";
 

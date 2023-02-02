@@ -13,12 +13,13 @@
     </div>
   </section>
 </template>
-<script>
+
+<script lang="ts">
 import {
   defineComponent,
   ref,
 } from "vue";
-import PhoneLogin from "@/app/auth/PhoneLogin";
+import PhoneLogin from "@/app/auth/PhoneLogin.vue";
 
 export default defineComponent({
   components: {
