@@ -15,11 +15,14 @@
   </o-button>
 </template>
 
-<script>
-import { defineComponent, ref, computed } from "vue";
+<script lang="ts">
+import { defineComponent, ref, computed, PropType } from "vue";
 
 import * as pdf from "@/lib/pdf/pdf";
 import { usePhoneNumber, shareUrl, useBasePath } from "@/utils/utils";
+
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { MenuData } from "@/models/menu";
 
 export default defineComponent({
   props: {
@@ -28,7 +31,7 @@ export default defineComponent({
       required: true,
     },
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
   },
@@ -40,15 +43,16 @@ export default defineComponent({
     });
     const { nationalPhoneNumber } = usePhoneNumber(shopInfo);
 
+    const basePath = useBasePath();
+    const url = shareUrl(basePath.value)
     const downloadMenu = async () => {
       try {
         downloadSubmitting.value = true;
-        const basePath = useBasePath();
         const dl = await pdf.menuDownload(
           props.shopInfo,
           props.menuObj,
           nationalPhoneNumber.value,
-          shareUrl(basePath.value)
+          url,
         );
       } catch (e) {
         alert("sorry error. ask omochikaeri administrator.");

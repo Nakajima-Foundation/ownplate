@@ -7,9 +7,10 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, ref } from "vue";
-import { db } from "@/plugins/firebase";
+<script lang="ts">
+import { defineComponent, ref, PropType } from "vue";
+import { db } from "@/lib/firebase/firebase9";
+import { doc, getDocs, collection, where, query } from "firebase/firestore";
 import {
   stripeRegion,
   doc2data,
@@ -21,38 +22,45 @@ import {
 } from "@/utils/utils";
 import * as pdf from "@/lib/pdf/pdf";
 import * as pdf2 from "@/lib/pdf/pdf2";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { MenuData } from "@/models/menu";
 
 export default defineComponent({
   name: "pdf",
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
   },
   setup(props) {
-    const menuObj = ref(null);
+    const menuObj = ref<{ [key: string]: MenuData }>({});
+
     const restaurantId = getRestaurantId();
-    const restaurantRef = db.doc(`restaurants/${restaurantId}`);
+    const restaurantRef = doc(db, `restaurants/${restaurantId}`);
     (async () => {
       menuObj.value = array2obj(
         (
-          await restaurantRef
-            .collection("menus")
-            .where("deletedFlag", "==", false)
-            .get()
-        ).docs.map(doc2data(""))
+          await getDocs(
+            query(
+              collection(restaurantRef, "menus"),
+              where("deletedFlag", "==", false)
+            )
+          )
+        ).docs.map(doc2data("")) as MenuData[]
       );
     })();
 
     const { nationalPhoneNumber } = useNationalPhoneNumber(props.shopInfo);
+    const basePath = useBasePath();
+    const url = shareUrl(basePath.value)
+
     const download = () => {
-      const basePath = useBasePath();
       pdf.menuDownload(
         props.shopInfo,
         menuObj.value,
         nationalPhoneNumber.value,
-        shareUrl(basePath.value)
+        url,
       );
     };
     const testPrint = async () => {

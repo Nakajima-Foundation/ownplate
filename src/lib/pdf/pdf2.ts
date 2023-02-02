@@ -118,13 +118,13 @@ export const orderPdfDownload = () => {
   const pdfDoc = orderDownloadData();
   return pdfDoc.download();
 };
-export const orderPrintData = () => {
+export const orderPrintData = (): string => {
   const pdfDoc = orderDownloadData();
   // @ts-ignore
   return pdfDoc.getBase64(); // Promise<string>;
 };
 
-export const testDownload = () => {
+export const testDownload = (): string => {
   const content = [
     {
       image: "headerLogo",
@@ -189,7 +189,7 @@ export const testDownload = () => {
     defaultStyle,
   } as any;
   // @ts-ignore
-  const pdfDoc = pdfMake.createPdf(docDefinition).getBase64();
+  const pdfDoc: string = pdfMake.createPdf(docDefinition).getBase64();
   return pdfDoc;
 };
 
