@@ -192,7 +192,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { db, firestore } from "@/plugins/firebase";
 import {
   defineComponent,
@@ -227,6 +227,7 @@ import {
 } from "@/utils/utils";
 
 import { order2ReportData } from "@/models/orderInfo";
+import { OrderInfoData } from "@/models/orderInfo";
 
 import { checkShopOwner } from "@/utils/userPermission";
 import { useCategory, useAllSubcategory } from "../user/Restaurant/Utils";
@@ -271,7 +272,7 @@ export default defineComponent({
   },
   setup(props) {
     const { t } = useI18n({ useScope: 'global' });
-    const orders = ref([]);
+    const orders = ref<OrderInfoData[]>([]);
     const total = ref({
       food: {
         revenue: 0,
@@ -288,7 +289,7 @@ export default defineComponent({
       totalCharge: 0,
     });
     const monthIndex = ref(0);
-    let detacher = null;
+    let detacher: any = null;
 
     const { uid } = useAdminUids();
     if (!checkShopOwner(props.shopInfo, uid.value)) {
@@ -308,9 +309,9 @@ export default defineComponent({
       });
     });
 
-    const { loadCategory, categoryDataObj } = useCategory(props.moPrefix);
+    const { loadCategory, categoryDataObj } = useCategory(props.moPrefix||"");
     const { allSubCategoryDataObj, loadAllSubcategory } = useAllSubcategory(
-      props.moPrefix
+      props.moPrefix || ""
     );
     if (props.isInMo) {
       loadCategory();
@@ -318,7 +319,7 @@ export default defineComponent({
     }
 
     const tableData = computed(() => {
-      return orders.value.map((order) => {
+      return orders.value.map((order: OrderInfoData) => {
         return {
           date: moment(order.timeConfirmed).format("YYYY/MM/DD"),
           restaurantId: props.shopInfo.restaurantId, // mo
@@ -328,13 +329,13 @@ export default defineComponent({
           orderStatus: t(
             "order.status." + order_status_keys[order.status]
           ),
-          foodRevenue: order.accounting.food.revenue,
-          foodTax: order.accounting.food.tax,
-          alcoholRevenue: order.accounting.alcohol.revenue,
-          salesTax: order.accounting.alcohol.tax,
+          foodRevenue: order.accounting?.food.revenue,
+          foodTax: order.accounting?.food.tax,
+          alcoholRevenue: order.accounting?.alcohol.revenue,
+          salesTax: order.accounting?.alcohol.tax,
           productSubTotal: order.total,
-          tipShort: order.accounting.service.revenue,
-          serviceTax: order.accounting.service.tax,
+          tipShort: order.accounting?.service?.revenue,
+          serviceTax: order.accounting?.service?.tax,
           shippingCost: order.shippingCost || order.deliveryFee || 0,
           total: order.totalCharge,
           totalCount: Object.values(order.order).reduce((count, order) => {
@@ -391,19 +392,20 @@ export default defineComponent({
       detacher = query.orderBy("timeConfirmed").onSnapshot((snapshot) => {
         const serviceTaxRate = props.shopInfo.alcoholTax / 100;
         orders.value = snapshot.docs
-          .map(doc2data("order"))
+          .map(a => doc2data("order")(a as any))
+          // .map(doc2data("order")) // fix after firebase 9
           .map((order) =>
-            order2ReportData(order, serviceTaxRate, props.isInMo)
+            order2ReportData(order as OrderInfoData, serviceTaxRate, props.isInMo)
           );
         total.value = orders.value.reduce(
           (total, order) => {
             const accounting = order.accounting;
-            total.food.revenue += accounting.food.revenue;
-            total.food.tax += accounting.food.tax;
-            total.alcohol.revenue += accounting.alcohol.revenue;
-            total.alcohol.tax += accounting.alcohol.tax;
-            total.service.revenue += accounting.service.revenue;
-            total.service.tax += accounting.service.tax;
+            total.food.revenue += accounting?.food?.revenue || 0;
+            total.food.tax += accounting?.food?.tax || 0;
+            total.alcohol.revenue += accounting?.alcohol?.revenue || 0;
+            total.alcohol.tax += accounting?.alcohol?.tax || 0;
+            total.service.revenue += accounting?.service?.revenue || 0;
+            total.service.tax += accounting?.service?.tax || 0;
             total.totalCharge += order.totalCharge;
             return total;
           },
@@ -425,10 +427,10 @@ export default defineComponent({
         );
       });
     };
-    const orderUrl = (order) => {
+    const orderUrl = (order: OrderInfoData) => {
       return `/admin/restaurants/${props.shopInfo.restaurantId}/orders/${order.id}`;
     };
-    const searchUrl = (order) => {
+    const searchUrl = (order: OrderInfoData) => {
       const value = encodeURIComponent(order.description || nameOfOrder(order));
       return `${ownPlateConfig.stripe.search}?query=${value}`;
     };

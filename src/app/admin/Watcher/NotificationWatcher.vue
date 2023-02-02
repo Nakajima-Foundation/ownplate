@@ -1,6 +1,6 @@
 <template></template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref, onUnmounted } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, onSnapshot } from "firebase/firestore";
@@ -28,7 +28,7 @@ export default defineComponent({
           if (
             route.path.indexOf(notification_data.path) > -1 &&
             notification_data.sound &&
-            props.notificationConfig.soundOn &&
+            props?.notificationConfig?.soundOn &&
             watchingMessage.value
           ) {
             soundPlay("NotificationWatcher: newMessage");

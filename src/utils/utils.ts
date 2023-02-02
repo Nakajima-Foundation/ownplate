@@ -181,9 +181,9 @@ export const cleanObject = (obj: { [key: string]: any }) => {
       },
 */
 
-export const useSoundPlay = (reason?: string) => {
+export const useSoundPlay = () => {
   const store = useStore();
-  return (reason: string) => {
+  return (reason?: string) => {
     store.commit("pingOrderEvent");
     if (reason) {
       console.log("order: call play: " + reason);

@@ -50,15 +50,16 @@
   </div>
 </template>
 
-<script lant="ts">
+<script lang="ts">
 import { defineComponent, ref } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { getDocs, collection, where, limit, query } from "firebase/firestore";
 
 import { defaultHeader } from "@/config/header";
-import Map from "@/components/Map";
+import Map from "@/components/Map.vue";
 
 import { regionalSetting } from "@/utils/utils";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { useRoute } from "vue-router";
 
@@ -77,9 +78,9 @@ export default defineComponent({
   setup() {
     const route = useRoute();
 
-    const areaId = route.params.areaId;
+    const areaId = route.params.areaId as string;
     const areaName = regionalSetting.AddressStates[areaId];
-    const restaurants = ref([]);
+    const restaurants = ref<RestaurantInfoData[]>([]);
     if (areaName) {
       getDocs(
         query(
@@ -94,7 +95,7 @@ export default defineComponent({
           .map((doc) => {
             const data = doc.data();
             data.id = doc.id;
-            return data;
+            return data as RestaurantInfoData;
           })
           .sort((a, b) => {
             return a.restaurantName > b.restaurantName ? 1 : -1;

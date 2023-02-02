@@ -30,6 +30,7 @@ export interface OrderInfoData {
   status: number;
   restaurant: RestaurantInfoData; // ?
   restaurantId: string; // ?
+  description: string;
   accounting?: {
     food: {
       revenue: number;
