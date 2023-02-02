@@ -32,7 +32,7 @@ export const useMenuAndTitle = (
   };
 
   const titles = ref<DocumentData[] | null>(null);
-  const menuObj = ref({});
+  const menuObj = ref<{[key: string]: DocumentData}>({});
   const detachers = ref<Unsubscribe[]>([]);
   const setCache = (cache: any) => {
     menuCache.value = cache;

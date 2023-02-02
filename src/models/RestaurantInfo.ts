@@ -15,7 +15,8 @@ export interface RestaurantInfoData {
 
   introduction: string;
   menuLists: string[];
-
+  numberOfMenus: number;
+  
   ownerName: string;
   uid: string;
 

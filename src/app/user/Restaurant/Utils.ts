@@ -201,7 +201,7 @@ export const useAllSubcategory = (moPrefix: string) => {
 
 export const useMenu = (
   restaurantId: Ref<string>,
-  isInMo: ComputedRef<string>,
+  isInMo: ComputedRef<boolean>,
   category: Ref<string>,
   subCategory: Ref<string>,
   groupData: any
@@ -351,14 +351,14 @@ export const useMenu = (
   };
 };
 
-export const useCategoryParams = (isInMo: string) => {
+export const useCategoryParams = (isInMo: boolean) => {
   const route = useRoute();
 
   const category = computed(() => {
-    return route.params.category;
+    return route.params.category as string;
   });
   const subCategory = computed(() => {
-    return route.params.subCategory;
+    return route.params.subCategory as string;
   });
   const watchCat = computed(() => {
     return [category.value, subCategory.value];
@@ -384,9 +384,9 @@ export const useCategoryParams = (isInMo: string) => {
 };
 
 export const loadStockData = (db: any, shopInfo: any) => {
-  const preOrderPublics = ref({});
-  const pickupPublics = ref({});
-  const pickupStocks = ref({});
+  const preOrderPublics = ref<{[key: string]: boolean}>({});
+  const pickupPublics = ref<{[key: string]: boolean}>({});
+  const pickupStocks = ref<{[key: string]: boolean}>({});
 
   const restaurantId = shopInfo.restaurantId;
 

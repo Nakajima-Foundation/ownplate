@@ -189,7 +189,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
   ref,
@@ -228,7 +228,7 @@ import { loadStockData } from "@/app/user/Restaurant/Utils";
 
 import { ownPlateConfig } from "@/config/project";
 
-import { copyMenuData } from "@/models/menu";
+import { copyMenuData, MenuData } from "@/models/menu";
 
 import {
   useTitles,
@@ -243,6 +243,8 @@ import { checkShopAccount } from "@/utils/userPermission";
 import { useAdminConfigToggle } from "@/utils/admin/Toggle";
 
 import { useRouter, useRoute } from "vue-router";
+
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 export default defineComponent({
   name: "MenuList",
@@ -302,11 +304,11 @@ export default defineComponent({
     const router = useRouter();
 
     const submitting = ref(false);
-    const shopInfoSnapshot = ref({});
+    const shopInfoSnapshot = ref<RestaurantInfoData|{}>({});
 
-    const editings = ref({});
+    const editings = ref<{[key: string]: boolean}>({});
     const detachers = ref([]);
-    const notFound = ref(null);
+    const notFound = ref<boolean | null>(null);
 
     const { isOwner, uid, ownerUid } = useAdminUids();
 
@@ -319,11 +321,11 @@ export default defineComponent({
       showSubCategory,
     } = useCategoryParams(props.isInMo);
     const { loadCategory, categoryData, categoryDataObj } = useCategory(
-      props.moPrefix
+      props.moPrefix || ""
     );
 
     const { subCategoryData, loadSubcategory } = useSubcategory(
-      props.moPrefix,
+      props.moPrefix || "",
       category
     );
     const selectedCategory = computed(() => {
@@ -353,7 +355,7 @@ export default defineComponent({
 
     const menuRestaurantId = computed(() => {
       return props.isInMo
-        ? props.groupMasterRestaurant.restaurantId
+        ? props?.groupMasterRestaurant?.restaurantId
         : route.params.restaurantId;
     });
     const restaurantId = computed(() => {
@@ -374,7 +376,7 @@ export default defineComponent({
     const restaurant_detacher = onSnapshot(
       doc(db, `restaurants/${restaurantId.value}`),
       (results) => {
-        if (results.exists && results.data().uid === ownerUid.value) {
+        if (results.exists() && results.data().uid === ownerUid.value) {
           shopInfoSnapshot.value = results.data();
           notFound.value = false;
         } else {
@@ -394,7 +396,7 @@ export default defineComponent({
     const menuLists = computed(() => {
       return props.isInMo
         ? Object.keys(itemsObj.value)
-        : shopInfoSnapshot.value.menuLists || [];
+        : (shopInfoSnapshot.value as RestaurantInfoData).menuLists || [];
     });
     const menuLength = computed(() => {
       return menuLists.value.length;
@@ -443,12 +445,12 @@ export default defineComponent({
     const { toggle: publicFilter, switchToggle: publicFilterToggle } =
       useAdminConfigToggle("menuPublicFilter", uid.value, false);
 
-    const changeTitleMode = (titleId, value) => {
+    const changeTitleMode = (titleId: string, value: boolean) => {
       const newEditings = { ...editings.value };
       newEditings[titleId] = value;
       editings.value = newEditings;
     };
-    const updateTitle = async (title) => {
+    const updateTitle = async (title: any) => {
       await updateDoc(
         doc(db, `restaurants/${menuRestaurantId.value}/titles/${title.id}`),
         { name: title.name }
@@ -456,17 +458,17 @@ export default defineComponent({
       changeTitleMode(title.id, false);
     };
     // edit title
-    const toEditMode = (titleId) => {
+    const toEditMode = (titleId: string) => {
       changeTitleMode(titleId, true);
     };
     // end of edit title
-    const saveMenuList = async (newMenuLists) => {
+    const saveMenuList = async (newMenuLists: string[]) => {
       await updateDoc(doc(db, `restaurants/${restaurantId.value}`), {
         menuLists: newMenuLists,
         numberOfMenus: numberOfMenus.value,
       });
     };
-    const addTitle = async (operation) => {
+    const addTitle = async (operation: string) => {
       submitting.value = true;
       try {
         const data = {
@@ -492,7 +494,7 @@ export default defineComponent({
         submitting.value = false;
       }
     };
-    const addMenu = async (operation) => {
+    const addMenu = async (operation: string) => {
       submitting.value = true;
       try {
         const itemData = {
@@ -528,7 +530,7 @@ export default defineComponent({
       }
     };
     //
-    const positionUp = async (itemKey) => {
+    const positionUp = async (itemKey: string) => {
       let pos = menuLists.value.indexOf(itemKey);
       if (pos !== 0 && pos !== -1) {
         const newMenuLists = [...menuLists.value];
@@ -549,7 +551,7 @@ export default defineComponent({
         await saveMenuList(newMenuLists);
       }
     };
-    const positionDown = async (itemKey) => {
+    const positionDown = async (itemKey: string) => {
       let pos = menuLists.value.indexOf(itemKey);
       if (pos < menuLength.value - 1 && pos !== -1) {
         const newMenuLists = [...menuLists.value];
@@ -571,7 +573,7 @@ export default defineComponent({
       }
     };
 
-    const forkItem = async (itemKey, newData) => {
+    const forkItem = async (itemKey: string, newData: MenuData) => {
       const pos = menuLists.value.indexOf(itemKey);
       const item = itemsObj.value[itemKey];
 
@@ -580,7 +582,7 @@ export default defineComponent({
       await saveMenuList(newMenuLists);
     };
 
-    const forkTitleItem = async (itemKey) => {
+    const forkTitleItem = async (itemKey: string) => {
       const item = itemsObj.value[itemKey];
       const data = {
         name: item.name,
@@ -592,14 +594,14 @@ export default defineComponent({
         collection(db, `restaurants/${menuRestaurantId.value}/titles`),
         data
       );
-      await forkItem(itemKey, newTitle);
+      await forkItem(itemKey, newTitle as any);
     };
 
-    const forkMenuItem = async (itemKey) => {
+    const forkMenuItem = async (itemKey: string) => {
       const item = itemsObj.value[itemKey];
 
       const data = copyMenuData(
-        item,
+        item as MenuData,
         ownPlateConfig.region === "JP",
         uid.value
       );
@@ -607,10 +609,10 @@ export default defineComponent({
         collection(db, `restaurants/${menuRestaurantId.value}/menus`),
         cleanObject(data)
       );
-      await forkItem(itemKey, newData);
+      await forkItem(itemKey, newData as any);
     };
 
-    const deleteItem = async (itemKey) => {
+    const deleteItem = async (itemKey: string) => {
       // delete from list
       const newMenuLists = menuLists.value;
       const pos = newMenuLists.indexOf(itemKey);
