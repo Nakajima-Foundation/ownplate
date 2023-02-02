@@ -58,7 +58,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref, computed } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -89,12 +89,12 @@ export default defineComponent({
       this.$t("pageTitle.restaurantRoot"),
       ownPlateConfig.siteName,
     ].join(" / ");
-    return Object.assign(RestaurantHeader, { title });
+    return Object.assign(RestaurantHeader, { title }) as any;
   },
   setup() {
     const router = useRouter();
     const basePath = useBasePath();
-    const likes = ref(null);
+    const likes = ref<{}[]|null>(null);
 
     const isInMo = useIsInMo();
     const moPrefix = useMoPrefix();

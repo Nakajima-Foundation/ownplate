@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import BackButton from "@/components/BackButton";
+import BackButton from "@/components/BackButton.vue";
 import { db } from "@/plugins/firebase";
 import { stripeActionStrings } from "@/lib/stripe/stripe";
 export default {
