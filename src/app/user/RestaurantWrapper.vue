@@ -16,7 +16,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
   ref,
@@ -31,6 +31,7 @@ import { routeMode, getMoPrefix } from "@/utils/utils";
 import NotFound from "@/components/NotFound.vue";
 
 import { useRestaurantId } from "@/utils/utils";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 export default defineComponent({
   name: "RestaurantWrapper",
@@ -47,10 +48,10 @@ export default defineComponent({
     const mode = routeMode();
     const moPrefix = getMoPrefix();
 
-    const shopInfo = ref({});
+    const shopInfo = ref<RestaurantInfoData|{[key: string]: any}>({});
     const paymentInfo = ref({});
     const deliveryData = ref({});
-    const notFound = ref(null);
+    const notFound = ref<boolean | null>(null);
 
     const restaurantId = useRestaurantId();
 
@@ -96,7 +97,7 @@ export default defineComponent({
       }
     );
 
-    const groupSuspend = ref({});
+    const groupSuspend = ref<{isSuspendAllOrder?: boolean, isSuspendPickup?: boolean}>({});
     if (props.groupData?.groupId) {
       onSnapshot(
         doc(db, `groups/${props.groupData?.groupId}/groupConfig/suspend`),

@@ -60,6 +60,9 @@ export interface RestaurantInfoData {
   moPickUpMinimumCookTime: number;
   moPickUpDaysInAdvance: number;
 
+  isSuspendPickup: boolean; // mo
+  isSuspendAllOrder: boolean; // mo
+  
   deliveryMinimumCookTime: number;
   suspendUntil: any;
 
