@@ -1232,7 +1232,7 @@ export default defineComponent({
     // const markers = ref([]);
     const markers: any[] = []; // for google map
     const errorsPhone = ref([]);
-    const files  = ref<{[key: string]: File}>({});
+    const files = ref<{[key: string]: File}>({});
     const updateFirstCall = ref(true);
 
     // external ref

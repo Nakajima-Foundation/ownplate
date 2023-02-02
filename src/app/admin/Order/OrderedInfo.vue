@@ -161,8 +161,8 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, ref, computed } from "vue";
+<script lang="ts">
+import { defineComponent, ref, computed, PropType} from "vue";
 
 import { nameOfOrder } from "@/utils/strings";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
@@ -174,10 +174,13 @@ import { order_status, order_status_keys } from "@/config/constant";
 import { arrayOrNumSum, convOrderStateForText } from "@/utils/utils";
 import { useI18n } from "vue-i18n";
 
+import { OrderInfoData } from "@/models/orderInfo";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
+
 export default defineComponent({
   props: {
     order: {
-      type: Object,
+      type: Object as PropType<OrderInfoData>,
       required: true,
     },
     isSuperView: {
@@ -192,11 +195,11 @@ export default defineComponent({
   setup(props) {
     const { d } = useI18n({ useScope: 'global' });
     
-    const restaurant = ref(null);
+    const restaurant = ref<RestaurantInfoData | null>(null);
     if (props.order.restaurantId) {
       getDoc(doc(db, `restaurants/${props.order.restaurantId}`)).then(
         (snapshot) => {
-          restaurant.value = snapshot.data();
+          restaurant.value = snapshot.data() as RestaurantInfoData;
         }
       );
     }
@@ -209,9 +212,12 @@ export default defineComponent({
     });
     const timestamp = computed(() => {
       const time = props.order.timeEstimated || props.order.timePlaced;
+
       if (props.isSuperView) {
+        // @ts-ignore
         return d(time, "long");
       } else {
+        // @ts-ignore
         return d(time, "time");
       }
     });
