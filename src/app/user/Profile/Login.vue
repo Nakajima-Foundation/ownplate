@@ -41,9 +41,9 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref, computed, watch } from "vue";
-import PhoneLogin from "@/app/auth/PhoneLogin";
+import PhoneLogin from "@/app/auth/PhoneLogin.vue";
 
 import { useIsInMo } from "@/utils/utils";
 

@@ -57,14 +57,14 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
 import { getDocs, collection, orderBy, limit, query } from "firebase/firestore";
 
 import { RestaurantHeader } from "@/config/header";
-import AreaItem from "@/app/user/Restaurants/AreaItem";
+import AreaItem from "@/app/user/Restaurants/AreaItem.vue";
 import { ownPlateConfig } from "@/config/project";
 
 import { useUserData } from "@/utils/utils";
@@ -78,12 +78,12 @@ export default defineComponent({
       this.$t("pageTitle.restaurantRoot"),
       ownPlateConfig.siteName,
     ].join(" / ");
-    return Object.assign(RestaurantHeader, { title });
+    return Object.assign(RestaurantHeader, { title }) as any;
   },
   setup() {
     const { isUser, uid } = useUserData();
     
-    const likes = ref([]);
+    const likes = ref<any[]>([]);
     onMounted(async () => {
       if (isUser.value) {
         const snapshot = await getDocs(

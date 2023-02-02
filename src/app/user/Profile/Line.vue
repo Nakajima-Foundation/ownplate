@@ -72,7 +72,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref, computed, watch } from "vue";
 import {
   useIsLineUser,
@@ -81,6 +81,14 @@ import {
   useLiffIndexId,
   underConstruction,
 } from "@/utils/utils";
+import liff from "@line/liff";
+
+import { db } from "@/lib/firebase/firebase9";
+import {
+  doc,
+  getDoc,
+} from "firebase/firestore";
+
 
 import { lineVerifyFriend } from "@/lib/firebase/functions";
 import { lineAuthURL } from "@/lib/line/line";
@@ -99,8 +107,8 @@ export default defineComponent({
     const liffIndexId = useLiffIndexId();
 
     const inLiff = useInLiff();
-    const isFriend = ref(undefined);
-    const liffConfig = ref(null);
+    const isFriend = ref<undefined | boolean>(undefined);
+    const liffConfig = ref<null|any>(null);
 
     const isWindowActive = computed(() => {
       return store.state.isWindowActive;
@@ -135,7 +143,7 @@ export default defineComponent({
         try {
           const { data } = await lineVerifyFriend(
             isLiffUser.value ? { liffIndexId: liffIndexId.value } : {}
-          );
+          ) as any;
           isFriend.value = data.result;
         } catch (error) {
           console.error(error);

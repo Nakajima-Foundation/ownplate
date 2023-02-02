@@ -22,7 +22,8 @@
     </div>
   </div>
 </template>
-<script>
+
+<script lang="ts">
 import { defineComponent } from "vue";
 import { moBaseUrl } from "@/config/project";
 export default defineComponent({

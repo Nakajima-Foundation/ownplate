@@ -31,9 +31,9 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref, computed, watch } from "vue";
-import PhoneLogin from "@/app/auth/PhoneLogin";
+import PhoneLogin from "@/app/auth/PhoneLogin.vue";
 import { getAuth, deleteUser } from "firebase/auth";
 
 import { accountDelete } from "@/lib/firebase/functions";
@@ -59,7 +59,7 @@ export default defineComponent({
         },
       });
     };
-    const continueDelete = async (result) => {
+    const continueDelete = async (result: any) => {
       reLoginVisible.value = false;
       if (result) {
         isDeletingAccount.value = true;
@@ -69,7 +69,9 @@ export default defineComponent({
 
           const auth = getAuth();
           const user = auth.currentUser;
-          await deleteUser(user);
+          if (user) {
+            await deleteUser(user);
+          }
           console.log("deleted");
         } catch (error) {
           console.error(error);

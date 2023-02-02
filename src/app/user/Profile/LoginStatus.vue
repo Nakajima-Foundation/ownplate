@@ -12,7 +12,8 @@
     </div>
   </div>
 </template>
-<script>
+
+<script lang="ts">
 import { defineComponent, ref, computed, watch } from "vue";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 

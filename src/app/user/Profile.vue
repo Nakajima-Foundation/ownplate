@@ -60,15 +60,15 @@ import { defineComponent, computed } from "vue";
 import { auth } from "@/lib/firebase/firebase9";
 import { signOut } from "firebase/auth";
 
-import ProfileLogin from "@/app/user/Profile/Login";
-import ProfileDeleteAccount from "@/app/user/Profile/DeleteAccount";
-import ProfileLoginStatus from "@/app/user/Profile/LoginStatus";
-import ProfileStripe from "@/app/user/Profile/Stripe";
-import ProfileLine from "@/app/user/Profile/Line";
+import ProfileLogin from "@/app/user/Profile/Login.vue";
+import ProfileDeleteAccount from "@/app/user/Profile/DeleteAccount.vue";
+import ProfileLoginStatus from "@/app/user/Profile/LoginStatus.vue";
+import ProfileStripe from "@/app/user/Profile/Stripe.vue";
+import ProfileLine from "@/app/user/Profile/Line.vue";
 
-import HistoryButton from "@/components/users/HistoryButton";
-import FavoriteButton from "@/components/users/FavoriteButton";
-import AddressButton from "@/components/users/AddressButton";
+import HistoryButton from "@/components/users/HistoryButton.vue";
+import FavoriteButton from "@/components/users/FavoriteButton.vue";
+import AddressButton from "@/components/users/AddressButton.vue";
 
 import { defaultHeader } from "@/config/header";
 
