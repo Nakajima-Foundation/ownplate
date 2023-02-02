@@ -99,7 +99,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref, computed } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -112,10 +112,12 @@ import {
   startAfter,
   limit,
   query,
+  QueryConstraint,
 } from "firebase/firestore";
 
 import { order_status } from "@/config/constant";
 import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
+import { OrderInfoData } from "@/models/orderInfo";
 
 import { checkShopAccount } from "@/utils/userPermission";
 import { doc2data, useAdminUids, useRestaurantId } from "@/utils/utils";
@@ -167,7 +169,7 @@ export default defineComponent({
     const router = useRouter();
     const { t } = useI18n({ useScope: 'global' });
 
-    const orders = ref([]);
+    const orders = ref<OrderInfoData[]>([]);
     const userLog = ref({});
     const limitNum = 30;
     const last = ref();
@@ -207,12 +209,12 @@ export default defineComponent({
           `restaurants/${restaurantId.value}/userLog/${customerUid.value}`
         )
       );
-      if (res.exists) {
+      if (res.exists()) {
         userLog.value = res.data();
       }
     };
     const next = async () => {
-      const queryConditions = [
+      const queryConditions: QueryConstraint[] = [
         where("uid", "==", customerUid.value),
         orderBy("timePlaced", "desc"),
         limit(limitNum),
@@ -240,7 +242,7 @@ export default defineComponent({
           if (order.timeConfirmed) {
             order.timeConfirmed = order.timeConfirmed.toDate();
           }
-          return order;
+          return order as OrderInfoData;
         })
         .sort((a, b) => {
           if (a.timePlaced.getTime() === b.timePlaced.getTime()) {
@@ -249,7 +251,7 @@ export default defineComponent({
           return a.timePlaced > b.timePlaced ? -1 : 1;
         });
     };
-    const orderSelected = (order) => {
+    const orderSelected = (order: OrderInfoData) => {
       router.push({
         path:
           "/admin/restaurants/" +
