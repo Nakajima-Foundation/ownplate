@@ -32,7 +32,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from "vue";
 import { smallImageErrorHandler } from "@/utils/utils";
 import { moBaseUrl } from "@/config/project";

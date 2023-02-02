@@ -199,10 +199,17 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, computed } from "vue";
-import { db } from "@/plugins/firebase";
-import Price from "@/components/Price";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  doc,
+  getDoc,
+  updateDoc,
+  setDoc,
+} from "firebase/firestore";
+
+import Price from "@/components/Price.vue";
 import { useAdminUids, smallImageErrorHandler, useRestaurantId } from "@/utils/utils";
 
 import { useStore } from "vuex";
@@ -266,11 +273,11 @@ export default defineComponent({
     const soldOut = computed(() => {
       return !!props.menuitem.soldOut; // = !soldOut;
     });
-    const soldOutToggle = (e) => {
+    const soldOutToggle = (e: boolean) => {
       const path = `restaurants/${restaurantId.value}/menus/${
         props.menuitem.id
       }`;
-      db.doc(path).update("soldOut", e);
+      updateDoc(doc(db, path), {"soldOut": e});
     };
     const disabledEdit = computed(() => {
       return (
@@ -310,26 +317,26 @@ export default defineComponent({
       const path = `restaurants/${restaurantId.value}/pickup/data/subCategory/${
         props.subCategoryId
       }`;
-      const data = (await db.doc(path).get()).data();
-      data.data[props.menuitem.id].isPublic = props.pickupAvaiable["isPublic"];
-      await db.doc(path).set(data);
+      const data = (await getDoc(doc(db, path))).data() || {};
+      data.data[props.menuitem.id].isPublic = (props?.pickupAvaiable || {})["isPublic"];
+      await setDoc(doc(db, path), data);
     };
     const updatePreOrder = async () => {
       const path = `restaurants/${restaurantId.value}/preOrder/data/subCategory/${
         props.subCategoryId
       }`;
-      const data = (await db.doc(path).get()).data();
+      const data = (await getDoc(doc(db, path))).data() || {};
       data.data[props.menuitem.id].isPublic =
-        props.preOrderAvaiable["isPublic"];
-      await db.doc(path).set(data);
+        (props?.preOrderAvaiable || {})["isPublic"];
+      await setDoc(doc(db, path), data);
     };
     const updatePickupStock = async () => {
       const path = `restaurants/${restaurantId.value}/pickup/stock/subCategory/${
         props.subCategoryId
       }`;
-      const data = (await db.doc(path).get()).data();
-      data.data[props.menuitem.id].isStock = props.pickupStockData["isStock"];
-      await db.doc(path).set(data);
+      const data = (await getDoc(doc(db, path))).data() || {};
+      data.data[props.menuitem.id].isStock = (props?.pickupStockData || {})["isStock"];
+      await setDoc(doc(db, path), data);
     };
 
     return {

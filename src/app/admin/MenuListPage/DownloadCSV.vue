@@ -11,7 +11,7 @@
     </div>
   </div>
 </template>
-<script>
+<script lang="ts">
 import { defineComponent, computed, ref } from "vue";
 import moment from "moment";
 
@@ -31,7 +31,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const tableData = ref([]);
+    const tableData = ref<any[]>([]);
     const loadData = async () => {
       const collectionData = await getDocs(
         collection(db, `restaurants/${props.restaurantid}/menus`)
