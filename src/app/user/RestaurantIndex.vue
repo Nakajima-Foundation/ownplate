@@ -63,7 +63,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref, computed } from "vue";
 
 import { doc2data } from "@/utils/utils";
@@ -80,9 +80,11 @@ import {
 
 import { JPPrefecture, USStates } from "@/config/constant";
 import { restaurant2AreaObj, sortRestaurantObj } from "@/utils/RestaurantUtils";
-import Map from "@/components/Map";
+import Map from "@/components/Map.vue";
 import { defaultHeader } from "@/config/header";
 
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { OwnerData } from "@/models/ownerData";
 import { useRoute } from "vue-router";
 
 export default defineComponent({
@@ -101,8 +103,8 @@ export default defineComponent({
     const ownerUid = route.params.ownerUid;
 
     const restaurantsObj = ref({});
-    const restaurants = ref([]);
-    const ownerData = ref({});
+    const restaurants = ref<RestaurantInfoData[]>([]);
+    const ownerData = ref<OwnerData>({});
 
     (async () => {
       const restaurantsCollection = await getDocs(
@@ -115,7 +117,7 @@ export default defineComponent({
         )
       );
       restaurantsObj.value = restaurant2AreaObj(restaurantsCollection.docs);
-      restaurants.value = restaurantsCollection.docs.map(doc2data(""));
+      restaurants.value = restaurantsCollection.docs.map(doc2data("")) as RestaurantInfoData[];
       sortRestaurantObj(restaurantsObj.value);
 
       const ownerDoc = await getDoc(doc(db, `owners/${ownerUid}`));
