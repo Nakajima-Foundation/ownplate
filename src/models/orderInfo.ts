@@ -1,7 +1,10 @@
+import { Timestamp } from "firebase/firestore";
+
 import { MenuImages } from "./menu";
 import { ownPlateConfig } from "@/config/project";
 import { stripeRegion, orderType } from "@/utils/utils";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { CustomerInfo } from "@/models/customer";
 
 export interface OrderMenuItemData {
   category1: string;
@@ -12,11 +15,13 @@ export interface OrderMenuItemData {
   itemPhoto: string;
   exceptDay: any;
   exceptHour: any;
+  tax: string;
 }
 export interface OrderInfoData {
   id: string;
   name: string;
   number: string;
+  uid: string;
   totalCharge: number;
   total: number;
   sub_total: number;
@@ -24,9 +29,11 @@ export interface OrderInfoData {
   deliveryFee: number;
   tax: number;
   // options: {[key: string]: [[key: string]: string]}
-  timeEstimated: any; // TODO firestore timestamp
-  timeConfirmed: any;
-  timePlaced: any;
+  timeCreated: Timestamp ;
+  timeEstimated: Timestamp; // TODO firestore timestamp
+  timeConfirmed: Timestamp;
+  timePlaced: Timestamp;
+
   status: number;
   restaurant: RestaurantInfoData; // ?
   restaurantId: string; // ?
@@ -56,9 +63,24 @@ export interface OrderInfoData {
   options: { [key: string]: [string] };
   payment?: { [key: string]: string };
   type: string;
+
+  prices: any;
+  orderPlacedAt: Timestamp;
+  orderUpdatedAt: Timestamp;
+  lastUpdatedAt: Timestamp;
+  orderCustomerCanceledAt: Timestamp;
+  
+  customerInfo: CustomerInfo;
+  memo: string;
 }
 
-export interface OrderItem {}
+export interface OrderItemData {
+  item: any;
+  count: number | number[];
+  id: string;
+  options: string | [string];
+  orderIndex: any;
+}
 
 export class OrderInfo {}
 
@@ -68,8 +90,11 @@ export const order2ReportData = (
   isInMo: boolean
 ) => {
   const multiple = stripeRegion.multiple;
+  // @ts-ignore
   order.timeConfirmed = order?.timeConfirmed?.toDate();
+  // @ts-ignore
   order.timePlaced = order?.timePlaced?.toDate();
+  // @ts-ignore
   order.timeEstimated = order?.timeEstimated?.toDate();
   if (!order.accounting) {
     order.accounting = {

@@ -9,7 +9,7 @@ import {
 } from "firebase/firestore";
 
 import { ShopOwnerData, PartnerData } from "@/models/ShopOwner";
-import { OrderInfoData, OrderItem } from "@/models/orderInfo";
+import { OrderInfoData, OrderItemData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { MenuData } from "@/models/menu";
 
@@ -239,7 +239,7 @@ export const getOrderItems = (
   menuObj: { [key: string]: MenuData }
 ) => {
   if (orderInfo.order && orderInfo.menuItems) {
-    return Object.keys(orderInfo.order).reduce((tmp: OrderItem[], menuId) => {
+    return Object.keys(orderInfo.order).reduce((tmp: OrderItemData[], menuId) => {
       const numArray = Array.isArray(orderInfo.order[menuId])
         ? orderInfo.order[menuId]
         : [orderInfo.order[menuId]];

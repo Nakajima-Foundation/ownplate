@@ -576,13 +576,14 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
   ref,
   computed,
   onUnmounted,
   watch,
+  PropType,
 } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
@@ -651,6 +652,10 @@ import { useRoute, useRouter } from "vue-router";
 
 import { useI18n } from "vue-i18n";
 
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { OrderInfoData } from "@/models/orderInfo";
+import { ShopOwnerData } from "@/models/ShopOwner";
+
 export default defineComponent({
   components: {
     OrderInfo,
@@ -661,7 +666,7 @@ export default defineComponent({
   },
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
     groupData: {
@@ -702,12 +707,12 @@ export default defineComponent({
     const router = useRouter();
     const { d } = useI18n({ useScope: 'global' });
     const menuObj = ref({});
-    const orderInfo = ref({});
+    const orderInfo = ref<OrderInfoData>({} as OrderInfoData);
     const customer = ref({});
     const postageInfo = ref({});
-    const deliveryData = ref({});
-    const shopOwner = ref(null);
-    const userLog = ref({});
+    const deliveryData = ref<any>({});
+    const shopOwner = ref<ShopOwnerData | null>(null);
+    const userLog = ref<any>({});
 
     const updating = ref("");
     const changing = ref(false);
@@ -716,9 +721,9 @@ export default defineComponent({
     const paymentCancelPopup = ref(false);
     const isOrderChange = ref(false);
 
-    const notFound = ref(null);
+    const notFound = ref<boolean | null>(null);
     const timeOffset = ref(0);
-    const editedAvailableOrders = ref([]);
+    const editedAvailableOrders = ref<boolean[]>([]);
     const restaurantId = useRestaurantId();
 
     const { ownerUid, uid } = useAdminUids();
@@ -743,7 +748,7 @@ export default defineComponent({
       });
     }
     const orderId = computed(() => {
-      return route.params.orderId;
+      return route.params.orderId as string;
     });
 
     const order_detacher = onSnapshot(
@@ -754,7 +759,7 @@ export default defineComponent({
           return;
         }
         const order_data = order.data();
-        orderInfo.value = order_data;
+        orderInfo.value = order_data as OrderInfoData;
         if (orderInfo.value.isDelivery || props.shopInfo.isEC) {
           const tmpCustomer = await getDoc(
             doc(
@@ -791,7 +796,7 @@ export default defineComponent({
           }`
         )
       ).then((res) => {
-        if (res.exists) {
+        if (res.exists()) {
           userLog.value = res.data();
         }
       });
@@ -816,16 +821,16 @@ export default defineComponent({
 
     const orderUpdateInterval = computed(() => {
       if (orderInfo.value.orderPlacedAt && userLog.value.lastUpdatedAt) {
-        const intervalHour =
-          (orderInfo.value.orderPlacedAt - userLog.value.lastUpdatedAt) / 3600;
+        // @ts-ignore
+        const intervalHour = (orderInfo.value.orderPlacedAt - userLog.value.lastUpdatedAt) / 3600;
         return intervalHour;
       }
       return -1000000;
     });
     const orderPickupInterval = computed(() => {
       if (orderInfo.value.timeCreated && userLog.value.lastUpdatedAt) {
-        const intervalHour =
-          (orderInfo.value.timeCreated - userLog.value.lastUpdatedAt) / 3600;
+        // @ts-ignore
+        const intervalHour = (orderInfo.value.timeCreated - userLog.value.lastUpdatedAt) / 3600;
         return intervalHour;
       }
       return -1000000;
@@ -865,11 +870,12 @@ export default defineComponent({
       return getOrderItems(orderInfo.value, menuObj.value);
     });
     watch(orderItems, () => {
-      Object.keys(orderItems.value).map((key) => {
+      Object.keys(orderItems.value).map((key: string) => {
+        // @ts-ignore
         editedAvailableOrders.value[key] = true;
       });
     });
-    const timeStampToText = (timestamp) => {
+    const timeStampToText = (timestamp: Timestamp) => {
       if (timestamp) {
         return d(timestamp.toDate(), "long");
       }
@@ -877,6 +883,7 @@ export default defineComponent({
     };
     const timeOfEvents = computed(() => {
       const mapping = Object.keys(timeEventMapping).reduce((tmp, key) => {
+        // @ts-ignore
         tmp[key] = timeStampToText(orderInfo.value[timeEventMapping[key]]);
         return tmp;
       }, {});
@@ -930,7 +937,7 @@ export default defineComponent({
     const paymentIsNotCompleted = computed(() => {
       return (
         // hasStripe.value && orderInfo.value.status < order_status.ready_to_pickup
-        hasStripe.value && orderInfo.value.payment.stripe === "pending"
+        hasStripe.value && orderInfo.value.payment?.stripe === "pending"
       );
     });
     const phoneNumber = computed(() => {
@@ -972,9 +979,11 @@ export default defineComponent({
     });
     // for editable order
     const edited_available_order_info = computed(() => {
-      const ret = [];
-      Object.keys(editedAvailableOrders.value).forEach((key) => {
+      const ret: {menuId: string, index: number}[] = [];
+      Object.keys(editedAvailableOrders.value).forEach((key: string) => {
+        // @ts-ignore
         if (editedAvailableOrders.value[key]) {
+          // @ts-ignore
           const indexes = orderItems.value[key]?.orderIndex;
           if (indexes) {
             ret.push({ menuId: indexes[0], index: Number(indexes[1]) });
@@ -1000,7 +1009,7 @@ export default defineComponent({
           }
           return tmp;
         },
-        { sub_total: 0, tax: 0, food_sub_total: 0, alcohol_sub_total: 0 }
+        { sub_total: 0, tax: 0, food_sub_total: 0, alcohol_sub_total: 0, food_tax: 0, alcohol_tax: 0, total: 0 }
       );
       ret.sub_total = ret.food_sub_total + ret.alcohol_sub_total;
 
@@ -1028,7 +1037,7 @@ export default defineComponent({
       }
       const shippingCost = costCal(
         postageInfo.value,
-        orderInfo.value?.customerInfo?.prefectureId,
+        orderInfo.value?.customerInfo?.prefectureId as number,
         ret.total
       );
 
@@ -1078,15 +1087,15 @@ export default defineComponent({
       );
     });
 
-    const updateEnable = (value) => {
+    const updateEnable = (value: [number, boolean]) => {
       const newData = editedAvailableOrders.value.concat();
-      newData[value[0]] = value[1];
+      newData[value[0] as number] = value[1];
       editedAvailableOrders.value = newData;
     };
     const toggleIsOrderChange = () => {
       isOrderChange.value = !isOrderChange.value;
     };
-    const isValidTransition = (newStatus) => {
+    const isValidTransition = (newStatus: string) => {
       const newStatusValue = order_status[newStatus];
       return possibleTransitions.value[newStatusValue];
     };
@@ -1107,7 +1116,7 @@ export default defineComponent({
       const date = new Date(time + timeOffset.value * 60000);
       return Timestamp.fromDate(date);
     };
-    const handleChangeStatus = async (statusKey) => {
+    const handleChangeStatus = async (statusKey: string) => {
       const newStatus = order_status[statusKey];
       if (newStatus === orderInfo.value.status) {
         console.log("same status - no need to process");
@@ -1120,14 +1129,14 @@ export default defineComponent({
           restaurantId: restaurantId.value,
           orderId: orderId.value,
           status: newStatus,
-        };
+        } as any;
         if (timeOffset.value > 0) {
           params.timeEstimated = getEestimateTime();
         }
         const { data } = await orderUpdate(params);
         // console.log("update", data);
         router.push(parentUrl.value);
-      } catch (error) {
+      } catch (error: any) {
         console.error(error.message, error.details);
         store.commit("setErrorMessage", {
           code: "order.update",
@@ -1159,7 +1168,7 @@ export default defineComponent({
         sendRedunded();
         // console.log("cancel", data);
         router.push(parentUrl.value);
-      } catch (error) {
+      } catch (error: any) {
         console.error(error.message, error.details);
         store.commit("setErrorMessage", {
           code: "order.cancel",
@@ -1187,7 +1196,7 @@ export default defineComponent({
             isOrderChange.value = false;
 
             // console.log("update", data);
-          } catch (error) {
+          } catch (error: any) {
             console.error(error.message, error.details);
             store.commit("setErrorMessage", {
               code: "order.update",
@@ -1212,7 +1221,7 @@ export default defineComponent({
         });
         console.log("paymentCancel", data);
         router.push(parentUrl.value);
-      } catch (error) {
+      } catch (error: any) {
         console.error(error.message, error.details);
         store.commit("setErrorMessage", {
           code: "stripe.cancel",
@@ -1223,7 +1232,7 @@ export default defineComponent({
         store.commit("setLoading", false);
       }
     };
-    const classOf = (statusKey) => {
+    const classOf = (statusKey: string) => {
       if (order_status[statusKey] == orderInfo.value.status) {
         return statusKey;
       }
