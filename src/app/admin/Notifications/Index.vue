@@ -17,13 +17,13 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc, serverTimestamp } from "firebase/firestore";
 
-import NotificationSettings from "./NotificationSettings";
-import NotificationSettingButton from "./NotificationSettingButton";
+import NotificationSettings from "./NotificationSettings.vue";
+import NotificationSettingButton from "./NotificationSettingButton.vue";
 import {
   useRestaurantId
 } from "@/utils/utils";
@@ -61,11 +61,11 @@ export default defineComponent({
             `restaurants/${restaurantId.value}/private/notifications`
           )
         );
-        notificationData.value = notification.exists
+        notificationData.value = notification.exists()
           ? Object.assign(defaultNotificationData, notification.data())
           : defaultNotificationData;
         loaded.value = true;
-      } catch (error) {
+      } catch (error: any) {
         if (error.code === "permission-denied") {
           // We can ignore this type of error here
           console.warn("Ignoring", error.code);
