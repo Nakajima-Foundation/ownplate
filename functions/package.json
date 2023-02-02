@@ -27,6 +27,7 @@
   "main": "lib/index.js",
   "dependencies": {
     "@firebase/rules-unit-testing": "^2.0.3",
+    "@google-cloud/bigquery": "^6.1.0",
     "@sentry/node": "^5.15.5",
     "aws-sdk": "^2.1103.0",
     "cors": "^2.8.5",
