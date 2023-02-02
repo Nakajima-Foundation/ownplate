@@ -99,8 +99,8 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, ref, computed } from "vue";
+<script lang="ts">
+import { defineComponent, ref, computed, PropType } from "vue";
 import { db, firestore } from "@/plugins/firebase";
 import firebase from "firebase/compat/app";
 
@@ -110,6 +110,7 @@ import NotFound from "@/components/NotFound.vue";
 import { checkShopAccount } from "@/utils/userPermission";
 import { useAdminUids, notFoundResponse, useRestaurantId } from "@/utils/utils";
 import { usePickupTime } from "@/utils/pickup";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { useStore } from "vuex";
 import { useI18n } from "vue-i18n";
@@ -132,7 +133,7 @@ export default defineComponent({
   },
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
     isInMo: {
@@ -151,7 +152,7 @@ export default defineComponent({
   setup(props) {
     const store = useStore();
     const { d } = useI18n({ useScope: 'global' });
-    const date = ref(null);
+    const date = ref<{ offset: number; date: Date; times: any; } | null>(null);
 
     const restaurantId = useRestaurantId();
     const { ownerUid } = useAdminUids();
@@ -166,10 +167,11 @@ export default defineComponent({
     ) {
       return notFoundResponse;
     }
+    
     const { availableDays } = usePickupTime(
       props.shopInfo,
       {},
-      {},
+      ref({}),
       props.isInMo,
       null
     );
@@ -197,8 +199,8 @@ export default defineComponent({
       return false;
     });
 
-    const handleSuspend = async (day, time) => {
-      const tmpDate = new Date(date.value.date);
+    const handleSuspend = async (day: number, time: number) => {
+      const tmpDate = date.value?.date ? new Date(date.value?.date) : new Date();
       tmpDate.setHours(time / 60);
       tmpDate.setMinutes(time % 60);
       if (day && day > 0) {

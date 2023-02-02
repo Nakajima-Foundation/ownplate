@@ -71,7 +71,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
   ref,
@@ -87,6 +87,7 @@ import {
   query,
   onSnapshot,
   setDoc,
+  DocumentData,
 } from "firebase/firestore";
 
 import { midNight } from "@/utils/dateUtils";
@@ -152,7 +153,7 @@ export default defineComponent({
     const route = useRoute();
     const router = useRouter();
 
-    const orders = ref([]);
+    const orders = ref<DocumentData[]>([]);
     const dayIndex = ref(0);
     const restaurantId = useRestaurantId();
 
@@ -212,9 +213,11 @@ export default defineComponent({
 
       // const queryKey = (queryIsPlacedDate.value ? "orderPlacedAt" :  "timePickupForQuery");
       const queryKey = queryIsPlacedDate.value ? "orderPlacedAt" : "timePlaced";
+      /*
       const timeConv = (t, offset) => {
         return new Date(t.getTime() + offset * 3600 * 1000);
-      };
+        };
+      */
       const queryConditions = (() => {
         /*
         if (queryIsPlacedDate.value && props.isInMo) {
@@ -285,7 +288,7 @@ export default defineComponent({
     });
 
     const orderCounter = computed(() => {
-      return lastSeveralDays.value.reduce((tmp, day) => {
+      return lastSeveralDays.value.reduce((tmp: {[key: string]: string}, day) => {
         const count = (
           store.state.orderObj[
             moment(day.date).format("YYYY-MM-DD")
