@@ -17,7 +17,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
 } from "vue";
@@ -64,10 +64,10 @@ export default defineComponent({
   emits: ["update:modelValue"],
   setup(_, context) {
     const store = useStore();
-    const input = (e) => {
+    const input = (e: any) => {
       context.emit("update:modelValue", e.target.value);
     };
-    const open = (key) => {
+    const open = (key: string) => {
       store.commit("setTips", {
         key,
       });

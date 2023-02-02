@@ -28,7 +28,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
 } from "vue";
@@ -48,7 +48,7 @@ export default defineComponent({
     },
   },
   setup(props, context) {
-    const input = (value) => {
+    const input = (value: string) => {
       context.emit("update:modelValue", value);
     };
 
