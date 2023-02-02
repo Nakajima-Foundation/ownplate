@@ -264,18 +264,21 @@
     </o-modal>
   </div>
 </template>
-<script>
-import { defineComponent, ref, computed } from "vue";
+<script lang="ts">
+import { defineComponent, ref, computed, PropType } from "vue";
 
 import { daysOfWeek } from "@/config/constant";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, onSnapshot, getDoc } from "firebase/firestore";
 import { isNull, useNationalPhoneNumber, useIsInMo, num2time } from "@/utils/utils";
 
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { PaymentInfo } from "@/models/paymentInfo";
+
 export default defineComponent({
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
     isDelivery: {
@@ -288,7 +291,7 @@ export default defineComponent({
 
     const restaurantsId = props.shopInfo.restaurantId;
     const days = daysOfWeek;
-    const paymentInfo = ref({});
+    const paymentInfo = ref<PaymentInfo>({});
     const transactionsActPopup = ref(false);
 
     const uid = props.shopInfo.uid;
@@ -305,7 +308,7 @@ export default defineComponent({
     const showPayment = computed(() => {
       return paymentInfo.value.stripe;
     });
-    const validDate = (date) => {
+    const validDate = (date: any) => {
       return !isNull(date.start) && !isNull(date.end);
     };
     const openTransactionsAct = () => {
