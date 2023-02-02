@@ -859,7 +859,7 @@ export const useFeatureHeroMobile = () => {
 export const useFeatureHeroTablet = () => {
   const isLocaleJapan = useIsLocaleJapan();
   return computed(() => {
-    regionalSetting.FeatureHeroTablet[
+    return regionalSetting.FeatureHeroTablet[
       isLocaleJapan.value ? "ja" : "en"
     ];
   });
