@@ -473,10 +473,11 @@
   </div>
 </template>
 
-<script>
-import { defaultHeader } from "../../config/header";
+<script lang="ts">
+import { defineComponent } from "vue";
+import { defaultHeader } from "@/config/header";
 
-export default {
+export default defineComponent({
   metaInfo() {
     return {
       title: [this.$t("pageTitle.terms.admin") || "", defaultHeader.title].join(
@@ -484,7 +485,7 @@ export default {
       ),
     };
   },
-};
+});
 </script>
 
 <style lang="css" scoped>

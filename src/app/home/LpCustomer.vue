@@ -34,7 +34,8 @@
     <snslink />
   </div>
 </template>
-<script>
+<script lang="ts">
+import { defineComponent } from "vue";
 import ownplateServiceImage from "@/components/lp/ownplateServiceImage.vue";
 import entranceButtons from "@/components/lp/entranceButtons.vue";
 import entranceButtonsFoodLovers from "@/components/lp/entranceButtonsFoodLovers.vue";
@@ -52,7 +53,7 @@ import snslink from "@/components/lp/link.vue";
 import HistoryButton from "@/components/users/HistoryButton.vue";
 import FavoriteButton from "@/components/users/FavoriteButton.vue";
 
-export default {
+export default defineComponent({
   components: {
     ownplateServiceImage,
     entranceButtons,
@@ -70,5 +71,5 @@ export default {
     HistoryButton,
     FavoriteButton,
   },
-};
+});
 </script>

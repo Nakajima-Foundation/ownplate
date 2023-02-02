@@ -8,14 +8,15 @@
   </div>
 </template>
 
-<script>
-import entranceButtonsRestaurants from "@/components/lp/entranceButtonsRestaurants";
-import entranceButtonsFoodLovers from "@/components/lp/entranceButtonsFoodLovers";
+<script lang="ts">
+import { defineComponent } from "vue";
+import entranceButtonsRestaurants from "@/components/lp/entranceButtonsRestaurants.vue";
+import entranceButtonsFoodLovers from "@/components/lp/entranceButtonsFoodLovers.vue";
 
-export default {
+export default defineComponent({
   components: {
     entranceButtonsRestaurants,
     entranceButtonsFoodLovers,
   },
-};
+});
 </script>

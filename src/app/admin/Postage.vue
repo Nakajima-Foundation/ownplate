@@ -71,7 +71,6 @@ import {
   setDoc,
 } from "firebase/firestore";
 
-// import { db, firestore } from "@/plugins/firebase";
 import { useAdminUids, notFoundResponse, useRestaurantId, regionalSetting } from "@/utils/utils";
 import { checkShopAccount } from "@/utils/userPermission";
 

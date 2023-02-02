@@ -47,24 +47,34 @@
   </section>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent, onMounted, watch } from "vue";
+
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+import { useIsNotSuperAdmin } from "@/utils/utils";
+
+export default defineComponent({
   metaInfo() {
     return {
       title: [this.defaultTitle, "Super Index"].join(" / "),
     };
   },
-  async mounted() {
-    if (!this.$store.state.user || this.$store.getters.isNotSuperAdmin) {
-      this.$router.push("/");
-    }
-  },
-  watch: {
-    isNotSuperAdmin(newValue) {
-      if (newValue) {
-        this.$router.push("/");
+  setup() {
+    const store = useStore();
+    const router = useRouter();
+    const { isNotSuperAdmin } = useIsNotSuperAdmin();
+    onMounted(() => {
+      if (!store.state.user || isNotSuperAdmin.value) {
+        router.push("/");
       }
-    },
+    });
+    watch(isNotSuperAdmin, (newValue) => {
+      if (newValue) {
+        router.push("/");
+      }
+    });
+    return {};
   },
-};
+});
 </script>

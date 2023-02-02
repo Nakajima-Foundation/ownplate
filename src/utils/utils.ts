@@ -864,6 +864,19 @@ export const useFeatureHeroTablet = () => {
     ];
   });
 };
+export const useIsNotSuperAdmin = () => {
+  const store = useStore();
+  const isNotSuperAdmin = computed(() => {
+    return store.getters.isNotSuperAdmin;
+  });
+  const isNotOperator = computed(() => {
+    return store.getters.isNotOperator;
+  });
+  return {
+    isNotSuperAdmin,
+    isNotOperator,
+  };
+}
 
 // https://developers-jp.googleblog.com/2019/12/how-calculate-distances-map-maps-javascript-api.html
 export const haversine_distance = (lat1: number, lng1: number, lat2: number, lng2: number) => {

@@ -2,9 +2,11 @@
   <not-found />
 </template>
 
-<script>
-import NotFound from "@/components/NotFound";
-export default {
+<script lang="ts">
+import { defineComponent } from "vue";
+import NotFound from "@/components/NotFound.vue";
+
+export default defineComponent({
   metaInfo() {
     return {
       title: [this.defaultTitle, "404"].join(" / "),
@@ -13,5 +15,5 @@ export default {
   components: {
     NotFound,
   },
-};
+});
 </script>
