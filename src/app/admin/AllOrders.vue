@@ -83,7 +83,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref, computed } from "vue";
 
 import moment from "moment-timezone";
@@ -99,6 +99,7 @@ import {
   limit,
   startAfter,
   orderBy,
+  QueryConstraint,
 } from "firebase/firestore";
 
 import { order_status, order_status_keys } from "@/config/constant";
@@ -111,6 +112,8 @@ import {
   notFoundResponse,
   orderTypeKey,
 } from "@/utils/utils";
+import { OrderInfoData } from "@/models/orderInfo";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import DownloadCsv from "@/components/DownloadCSV.vue";
 import OrderedInfo from "@/app/admin/Order/OrderedInfo.vue";
@@ -144,12 +147,12 @@ export default defineComponent({
 
     const { uid, isOwner } = useAdminUids();
 
-    const orders = ref([]);
+    const orders = ref<OrderInfoData[]>([]);
     const orderState = ref(0);
-    const restaurants = {};
+    const restaurants: {[key: string]: RestaurantInfoData} = {};
 
     let isLoading = false;
-    let last = null;
+    let last: null | any = null;
 
     if (!isOwner.value) {
       return notFoundResponse;
@@ -207,13 +210,13 @@ export default defineComponent({
           orderStatus: t(
             "order.status." + order_status_keys[order.status]
           ),
-          foodRevenue: order.accounting.food.revenue,
-          foodTax: order.accounting.food.tax,
-          alcoholRevenue: order.accounting.alcohol.revenue,
-          salesTax: order.accounting.alcohol.tax,
+          foodRevenue: order.accounting?.food.revenue,
+          foodTax: order.accounting?.food?.tax,
+          alcoholRevenue: order.accounting?.alcohol.revenue,
+          salesTax: order.accounting?.alcohol.tax,
           productSubTotal: order.total,
-          tipShort: order.accounting.service.revenue,
-          serviceTax: order.accounting.service.tax,
+          tipShort: order.accounting?.service?.revenue,
+          serviceTax: order.accounting?.service?.tax,
           shippingCost: order.shippingCost || order.deliveryFee || 0,
           total: order.totalCharge,
           totalCount: Object.values(order.order).reduce((count, order) => {
@@ -228,7 +231,7 @@ export default defineComponent({
     const loadData = async () => {
       if (!isLoading) {
         isLoading = true;
-        const queryConditions = [
+        const queryConditions: QueryConstraint[] = [
           where("ownerUid", "==", uid.value),
           orderBy("timePlaced", "desc"),
           limit(100),
@@ -246,7 +249,7 @@ export default defineComponent({
           for (; i < snapshot.docs.length; i++) {
             const orderDoc = snapshot.docs[i];
             const order = order2ReportData(
-              orderDoc.data(),
+              orderDoc.data() as OrderInfoData,
               serviceTaxRate,
               props.isInMo
             );
@@ -256,7 +259,7 @@ export default defineComponent({
               const snapshot = await getDoc(
                 doc(db, `restaurants/${order.restaurantId}`)
               );
-              restaurants[order.restaurantId] = snapshot.data();
+              restaurants[order.restaurantId] = snapshot.data() as RestaurantInfoData;
             }
             order.restaurant = restaurants[order.restaurantId];
             orders.value.push(order);
@@ -275,7 +278,7 @@ export default defineComponent({
         loadData();
       }
     };
-    const orderSelected = (order) => {
+    const orderSelected = (order: OrderInfoData) => {
       // We are re-using the restaurant owner's view.
       router.push({
         path:

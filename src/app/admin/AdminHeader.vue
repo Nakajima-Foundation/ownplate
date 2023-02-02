@@ -68,7 +68,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, computed, ref } from "vue";
 import BackButton from "@/components/BackButton.vue";
 import NotificationIndex from "./Notifications/Index.vue";

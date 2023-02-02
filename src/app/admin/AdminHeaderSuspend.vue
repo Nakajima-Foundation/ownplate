@@ -11,7 +11,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, computed, ref } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, updateDoc } from "firebase/firestore";
