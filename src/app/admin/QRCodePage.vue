@@ -80,9 +80,8 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref, computed } from "vue";
-import { db } from "@/plugins/firebase";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 import { shareUrlAdmin } from "@/utils/utils";
 

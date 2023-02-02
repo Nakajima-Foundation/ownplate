@@ -104,7 +104,8 @@
 </template>
 
 <script>
-import { db, firestore } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import { doc, updateDoc, onSnapshot } from "firebase/firestore";
 import { stripeConnect, stripeDisconnect } from "@/lib/stripe/stripe";
 import { ownPlateConfig } from "@/config/project";
 import * as Cookie from "cookie";
@@ -143,19 +144,22 @@ export default {
       }
     }
 
-    const refPayment = db.doc(`/admins/${this.uid}/public/payment`);
-    this.stripe_connnect_detacher = refPayment.onSnapshot(async (snapshot) => {
-      if (snapshot.exists) {
-        this.paymentInfo = snapshot.data();
-        this.inStorePayment = this.paymentInfo.inStore;
-      } else {
-        refPayment.set({
-          stripe: null,
-          inStore: false,
-        });
-      }
-      this.$emit("updateUnsetWarning", this.unsetWarning);
-    });
+    const refPayment = doc(db, `/admins/${this.uid}/public/payment`);
+    this.stripe_connnect_detacher = onSnapshot(
+      refPayment,
+      (async (snapshot) => {
+        if (snapshot.exists()) {
+          this.paymentInfo = snapshot.data();
+          this.inStorePayment = this.paymentInfo.inStore;
+        } else {
+          refPayment.set({
+            stripe: null,
+            inStore: false,
+          });
+        }
+        this.$emit("updateUnsetWarning", this.unsetWarning);
+      })
+    );
   },
   destroyed() {
     if (this.stripe_connnect_detacher) {
@@ -166,8 +170,8 @@ export default {
     inStorePayment(newValue) {
       if (newValue !== this.paymentInfo.inStore) {
         //console.log("************* inStorePayment change", newValue);
-        const refPayment = db.doc(`/admins/${this.uid}/public/payment`);
-        refPayment.update({
+        const refPayment = doc(db, `/admins/${this.uid}/public/payment`);
+        updateDoc(refPayment,{
           inStore: newValue,
         });
       }

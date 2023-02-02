@@ -62,9 +62,16 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref } from "vue";
-import { db, firestore } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  doc,
+  getDoc,
+  setDoc,
+} from "firebase/firestore";
+
+// import { db, firestore } from "@/plugins/firebase";
 import { useAdminUids, notFoundResponse, useRestaurantId, regionalSetting } from "@/utils/utils";
 import { checkShopAccount } from "@/utils/userPermission";
 
@@ -93,10 +100,9 @@ export default defineComponent({
 
     const restaurantId = useRestaurantId();
 
-    db.doc(`restaurants/${restaurantId.value}/ec/postage`)
-      .get()
+    getDoc(doc(db, `restaurants/${restaurantId.value}/ec/postage`))
       .then((postageDoc) => {
-        if (postageDoc.exists) {
+        if (postageDoc.exists()) {
           const data = postageDoc.data();
           if (data) {
             if (data.postageList) {
@@ -110,7 +116,7 @@ export default defineComponent({
         }
       });
 
-    const copy = (key) => {
+    const copy = (key: number) => {
       const newArray = [...postage.value];
       if (key === 0) {
         newArray[key] = postage.value[postage.value.length - 1];
@@ -127,7 +133,7 @@ export default defineComponent({
         },
         freeThreshold: enableFree.value ? freeThreshold.value : null,
       };
-      await db.doc(`restaurants/${restaurantId.value}/ec/postage`).set(data);
+      await setDoc(doc(db, `restaurants/${restaurantId.value}/ec/postage`), data);
     };
     return {
       postage,
