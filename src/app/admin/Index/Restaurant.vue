@@ -374,7 +374,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
   ref,
@@ -390,6 +390,7 @@ import {
   setDoc,
   deleteDoc,
   onSnapshot,
+  Unsubscribe,
 } from "firebase/firestore";
 
 import firebase from "firebase/compat/app";
@@ -449,7 +450,7 @@ export default defineComponent({
     const store = useStore();
 
     const requestState = ref(0);
-    let detacher = null;
+    let detacher: null | Unsubscribe = null;
 
     onMounted(async () => {
       if (props.isOwner) {

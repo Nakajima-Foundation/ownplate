@@ -30,7 +30,7 @@
     </div>
   </div>
 </template>
-<script>
+<script lang="ts">
 import { defineComponent, ref } from "vue";
 import { auth } from "@/lib/firebase/firebase9";
 import { sendEmailVerification } from "firebase/auth";
@@ -50,9 +50,11 @@ export default defineComponent({
       try {
         isLoading.value = true;
         isError.value = false;
-        const res = await sendEmailVerification(auth.currentUser);
-        console.log(res);
-        sent.value = true;
+        if (auth.currentUser) {
+          const res = await sendEmailVerification(auth.currentUser);
+          console.log(res);
+          sent.value = true;
+        }
       } catch (e) {
         isError.value = true;
       } finally {

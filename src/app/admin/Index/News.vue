@@ -25,7 +25,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from "vue";
 import newsList from "../News/data";
 import { isJapan } from "@/utils/utils";

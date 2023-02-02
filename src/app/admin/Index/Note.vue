@@ -43,7 +43,7 @@
   </div>
 </template>
 
-<script>
+<script lant="ts">
 import { defineComponent } from "vue";
 export default defineComponent({
   props: {

@@ -60,7 +60,7 @@
     </div>
   </div>
 </template>
-<script>
+<script lang="ts">
 import { defineComponent } from "vue";
 import { isJapan } from "@/utils/utils";
 export default defineComponent({
