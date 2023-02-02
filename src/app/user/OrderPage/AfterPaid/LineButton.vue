@@ -14,7 +14,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, computed } from "vue";
 import { lineAuthURL } from "@/lib/line/line";
 import { ownPlateConfig } from "@/config/project";
@@ -39,7 +39,7 @@ export default defineComponent({
     };
     const showAddLine = computed(() => {
       // return true;
-      return !!ownPlateConfig.line, !store.state.claims?.line;
+      return !!ownPlateConfig.line && !store.state.claims?.line;
     });
     const enableLine = computed(() => {
       if (props.groupData?.enableLine === undefined) {
