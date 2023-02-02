@@ -55,7 +55,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, computed, ref } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { getDoc, doc, setDoc } from "firebase/firestore";
@@ -79,7 +79,7 @@ export default defineComponent({
       if (isUser.value) {
         return `/users/${uid.value}/address/data`;
       }
-      return null;
+      return "";
     });
 
     if (!isUser.value) {

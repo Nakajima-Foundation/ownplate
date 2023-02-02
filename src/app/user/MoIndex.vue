@@ -129,7 +129,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref, computed } from "vue";
 
 import { doc2data } from "@/utils/utils";
@@ -149,6 +149,7 @@ import { restaurant2AreaObj, sortRestaurantObj } from "@/utils/RestaurantUtils";
 import { defaultHeader } from "@/config/header";
 import { moBaseUrl, moTitle } from "@/config/project";
 
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { useIsInMo } from "@/utils/utils";
 
 export default defineComponent({
@@ -175,7 +176,7 @@ export default defineComponent({
     const isInMo = useIsInMo();
 
     const restaurantsObj = ref({});
-    const restaurants = ref([]);
+    const restaurants = ref<RestaurantInfoData[]>([]);
 
     (async () => {
       const restaurantsCollection = await getDocs(
@@ -185,14 +186,11 @@ export default defineComponent({
           where("inMoIndex", "==", true),
           where("deletedFlag", "==", false),
           where("groupId", "==", props.moPrefix)
-        ),
-        (error) => {
-          console.log(error);
-        }
+        )
       );
       const tmp = restaurant2AreaObj(restaurantsCollection.docs);
       restaurantsObj.value = Object.keys(tmp).reduce((ret, key) => {
-        const sorted = tmp[key].sort((a, b) => {
+        const sorted = tmp[key].sort((a: RestaurantInfoData, b: RestaurantInfoData) => {
           return (Number(a.zip.replace(/\-/g, "")) || 0) >
             (Number(b.zip.replace(/\-/g, "")) || 0)
             ? 1
@@ -200,8 +198,8 @@ export default defineComponent({
         });
         ret[key] = sorted;
         return ret;
-      }, {});
-      restaurants.value = restaurantsCollection.docs.map(doc2data(""));
+      }, {} as {[key: string]: any});
+      restaurants.value = restaurantsCollection.docs.map(doc2data("")) as RestaurantInfoData[];
     })();
 
     const allArea = computed(() => {
