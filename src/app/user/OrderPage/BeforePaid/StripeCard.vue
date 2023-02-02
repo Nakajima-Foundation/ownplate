@@ -105,8 +105,12 @@
 
 <script>
 import { getStripeInstance, stripeUpdateCustomer } from "@/lib/stripe/stripe";
-import { db } from "@/plugins/firebase";
-
+import { db } from "@/lib/firebase/firebase9";
+import {
+  doc,
+  getDoc
+} from "firebase/firestore";
+  
 export default {
   data() {
     return {
@@ -128,7 +132,7 @@ export default {
   async mounted() {
     this.configureStripe();
     const stripeInfo = (
-      await db.doc(`/users/${this.user.uid}/readonly/stripe`).get()
+      await getDoc(doc(db, `/users/${this.user.uid}/readonly/stripe`))
     ).data();
     if (stripeInfo && stripeInfo.card) {
       this.storedCard = stripeInfo.card;
