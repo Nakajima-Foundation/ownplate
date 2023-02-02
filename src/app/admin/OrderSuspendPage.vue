@@ -101,7 +101,12 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, PropType } from "vue";
-import { db, firestore } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  doc,
+  updateDoc,
+  Timestamp,
+} from "firebase/firestore";
 import firebase from "firebase/compat/app";
 
 import AdminHeader from "@/app/admin/AdminHeader.vue";
@@ -206,16 +211,16 @@ export default defineComponent({
       if (day && day > 0) {
         tmpDate.setDate(tmpDate.getDate() + day);
       }
-      const ts = firebase.firestore.Timestamp.fromDate(tmpDate);
+      const ts = Timestamp.fromDate(tmpDate);
       store.commit("setLoading", true);
-      await db.doc(`restaurants/${restaurantId.value}`).update({
+      await updateDoc(doc(db, `restaurants/${restaurantId.value}`), {
         suspendUntil: ts,
       });
       store.commit("setLoading", false);
     };
     const handleRemove = async () => {
       store.commit("setLoading", true);
-      await db.doc(`restaurants/${restaurantId.value}`).update({
+      await updateDoc(doc(db, `restaurants/${restaurantId.value}`), {
         suspendUntil: null,
       });
       store.commit("setLoading", false);
