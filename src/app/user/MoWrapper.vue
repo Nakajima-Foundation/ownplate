@@ -16,7 +16,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref, computed } from "vue";
 
 import NotFound from "@/components/NotFound.vue";
@@ -37,7 +37,7 @@ export default defineComponent({
       return "/" + moPrefix.value;
     });
 
-    const groupData = ref(null);
+    const groupData = ref<any>(null);
     getDoc(doc(db, `/groups/${moPrefix.value}`)).then((a) => {
       if (a.exists()) {
         groupData.value = a.data();

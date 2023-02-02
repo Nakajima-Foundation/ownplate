@@ -34,11 +34,11 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
 } from "vue";
-import ListItem from "@/app/admin/News/ListItem";
+import ListItem from "@/app/admin/News/ListItem.vue";
 import newsList from "./data";
 
 export default defineComponent({

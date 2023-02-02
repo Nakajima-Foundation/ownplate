@@ -1,6 +1,6 @@
 <template></template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
   watch,
@@ -16,7 +16,7 @@ import { midNight } from "@/utils/dateUtils";
 import { order_status } from "@/config/constant";
 
 import { doc2data, useRestaurantId, useSoundPlay } from "@/utils/utils";
-
+import { OrderInfoData } from "@/models/orderInfo";
 import { useStore } from "vuex";
 
 export default defineComponent({
@@ -36,7 +36,7 @@ export default defineComponent({
       ? 4
       : 60;
 
-    const orders = ref([]);
+    const orders = ref<OrderInfoData[]>([]);
 
     const today = computed(() => {
       return midNight(0);
@@ -48,7 +48,7 @@ export default defineComponent({
       return orders.value.length > 0;
     });
 
-    let order_detacher = null;
+    let order_detacher: any = null;
     const dateWasUpdated = () => {
       if (order_detacher) {
         order_detacher();
@@ -61,7 +61,7 @@ export default defineComponent({
           where("status", "==", order_status.order_placed)
         ),
         (result) => {
-          orders.value = result.docs.map(doc2data("order"));
+          orders.value = result.docs.map(doc2data("order")) as OrderInfoData[];
           store.commit("setOrders", orders.value);
         },
         (error) => {
@@ -81,13 +81,13 @@ export default defineComponent({
     const itSound = () => {
       console.log(
         "newOrderWatcher: conf=" +
-          props.notificationConfig.infinityNotification +
+          props?.notificationConfig?.infinityNotification +
           " order=" +
           hasNewOrder.value
       );
       if (
-        props.notificationConfig.soundOn &&
-        props.notificationConfig.infinityNotification &&
+        props?.notificationConfig?.soundOn &&
+        props?.notificationConfig?.infinityNotification &&
         hasNewOrder.value
       ) {
         soundPlay("NewOrderWatcher: play");
