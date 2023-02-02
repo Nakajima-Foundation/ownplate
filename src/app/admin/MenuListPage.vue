@@ -196,6 +196,7 @@ import {
   computed,
   watch,
   onUnmounted,
+  PropType,
 } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -268,7 +269,7 @@ export default defineComponent({
   },
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
     groupMasterRestaurant: {

@@ -1,7 +1,8 @@
 export interface RestaurantInfoData {
   url: string;
   restaurantName: string;
-
+  id: string;
+  
   restaurantId: string; //mo
   shopId: string; //mo
 

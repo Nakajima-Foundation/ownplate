@@ -5,7 +5,7 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 
-export const uploadFile = (file: File, path: string) => {
+export const uploadFile = (file: File, path: string): Promise<string> => {
   return new Promise((resolve, rejected) => {
     let storage = getStorage();
     let storageRef = ref(storage, path);

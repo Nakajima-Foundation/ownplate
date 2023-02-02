@@ -1,11 +1,12 @@
-import { serverTimestamp } from "firebase/firestore";
+import { serverTimestamp, FieldValue } from "firebase/firestore";
 import { isNull } from "../utils/utils";
 
 export interface MenuImages {
-  item: {
+  item?: {
     resizedImages: {
       [key: string]: string;
     };
+    original: string;
   };
 }
 
@@ -24,6 +25,9 @@ export interface MenuData {
 
   tax: string;
 
+  uid: string;
+  deletedFlag: boolean;
+  
   itemAliasesName: string;
   itemMemo: string;
   itemOptionCheckbox: any[];
@@ -34,6 +38,8 @@ export interface MenuData {
   exceptDay: { [key: string]: boolean };
   exceptHour: ExceptHour;
   validatedFlag: boolean;
+
+  createdAt: FieldValue;
 }
 
 export class Menu {}
@@ -80,7 +86,7 @@ export const getNewItemData = (
     category2: item.category2,
     exceptDay: item.exceptDay || {},
     exceptHour: newExceptHour(item.exceptHour || {}),
-  };
+  } as MenuData;
   return itemData;
 };
 

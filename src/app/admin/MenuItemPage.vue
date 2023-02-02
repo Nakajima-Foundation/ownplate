@@ -565,15 +565,29 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
   ref,
   computed,
   onUnmounted,
   reactive,
+  PropType,
 } from "vue";
-import { db } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  doc,
+  collection,
+  getDoc,
+  getDocs,
+  query,
+  where,
+  addDoc,
+  updateDoc,
+  onSnapshot,
+  serverTimestamp,
+} from "firebase/firestore";
+
 import firebase from "firebase/compat/app";
 
 import NotFound from "@/components/NotFound.vue";
@@ -609,6 +623,9 @@ import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { MenuData } from "@/models/menu";
+
 export default defineComponent({
   name: "MenuItemPage",
   metaInfo() {
@@ -636,7 +653,7 @@ export default defineComponent({
   },
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
     groupMasterRestaurant: {
@@ -657,7 +674,7 @@ export default defineComponent({
 
     const dummyCheckbox = ref([]);
 
-    const menuInfo = reactive({
+    const menuInfo = reactive<MenuData>({
       itemName: "",
       itemAliasesName: "",
       price: 0,
@@ -673,20 +690,20 @@ export default defineComponent({
       exceptHour: {},
       category1: "",
       category2: "",
-    });
+    } as MenuData);
 
     const maxPrice = 1000000.0 / stripeRegion.multiple;
     const allergens = stripeRegion.allergens;
     const priceStep = 1.0 / stripeRegion.multiple;
 
-    const notFound = ref(null);
+    const notFound = ref<boolean | null>(null);
     const menuId = route.params.menuId;
     const submitting = ref(false);
 
-    const files = {};
-    const categoryKey = ref(null);
-    const restaurants = ref([]);
-    const copyRestaurantId = ref(null);
+    const files: {[key: string]: File} = {};
+    const categoryKey = ref<string | null>(null);
+    const restaurants = ref<RestaurantInfoData[]>([]);
+    const copyRestaurantId = ref<string | null>(null);
 
     const { uid } = useAdminUids();
 
@@ -696,7 +713,7 @@ export default defineComponent({
     }
     const menuRestaurantId = computed(() => {
       return props.isInMo
-        ? props.groupMasterRestaurant.restaurantId
+        ? props?.groupMasterRestaurant?.restaurantId
         : route.params.restaurantId;
     });
 
@@ -711,10 +728,9 @@ export default defineComponent({
       props.shopInfo.category2 = [];
     }
     const { restaurantId } = props.shopInfo;
-    db.doc(`restaurants/${menuRestaurantId.value}/menus/${menuId}`)
-      .get()
+    getDoc(doc(db, `restaurants/${menuRestaurantId.value}/menus/${menuId}`))
       .then((menuInfoDoc) => {
-        if (menuInfoDoc.exists) {
+        if (menuInfoDoc.exists()) {
           Object.assign(menuInfo, menuInfoDoc.data());
           notFound.value = false;
         } else {
@@ -722,10 +738,11 @@ export default defineComponent({
         }
       });
 
-    db.collection("restaurants")
-      .where("uid", "==", uid.value)
-      .where("deletedFlag", "==", false)
-      .get()
+    getDocs(query(
+      collection(db, "restaurants"),
+      where("uid", "==", uid.value),
+      where("deletedFlag", "==", false),
+    ))
       .then((restaurantsCollection) => {
         if (
           !restaurantsCollection.empty &&
@@ -733,7 +750,7 @@ export default defineComponent({
         ) {
           restaurants.value = restaurantsCollection.docs.map((r) =>
             doc2data("r")(r)
-          );
+          ) as RestaurantInfoData[];
           copyRestaurantId.value = restaurants.value[0].id;
         }
       });
@@ -758,10 +775,10 @@ export default defineComponent({
     });
 
     const errors = computed(() => {
-      const err = {};
-      ["itemName", "price", "tax"].forEach((name) => {
+      const err: {[key: string]: string[]} = {};
+      ["itemName", "price", "tax"].forEach((name: string) => {
         err[name] = [];
-        if (menuInfo[name] === "") {
+        if (menuInfo[name as keyof MenuData] === "") {
           err[name].push("validationError." + name + ".empty");
         }
       });
@@ -772,7 +789,7 @@ export default defineComponent({
       return countObj(errors.value) > 0;
     });
 
-    const displayOptionPrice = (str) => {
+    const displayOptionPrice = (str: string) => {
       const price = roundPrice(
         optionPrice(str) * taxRate(props.shopInfo, menuInfo)
       );
@@ -783,24 +800,25 @@ export default defineComponent({
       }
       return n(price, "currency");
     };
-    const handleCategoryUpdated = async (categories) => {
-      await db.doc(`restaurants/${menuRestaurantId.value}`).update({
-        [categoryKey.value]: categories,
+    const handleCategoryUpdated = async (categories: string) => {
+      await updateDoc(doc(db, `restaurants/${menuRestaurantId.value}`), {
+        [categoryKey.value||""]: categories,
       });
+      // @ts-ignore
       props.shopInfo[categoryKey.value] = categories;
     };
     const handleDismissed = () => {
       categoryKey.value = null;
     };
-    const editCategory = (key) => {
+    const editCategory = (key: string) => {
       categoryKey.value = key;
     };
     const previewMenu = ref();
-    const handleMenuImage = (file) => {
+    const handleMenuImage = (file: File) => {
       previewMenu.value = URL.createObjectURL(file);
       files["menu"] = file;
     };
-    const deleteOption = (pos) => {
+    const deleteOption = (pos: number) => {
       menuInfo.itemOptionCheckbox.splice(pos, 1);
       // console.log(e);
     };
@@ -820,40 +838,43 @@ export default defineComponent({
         const shop = restaurants.value.find(
           (r) => r.id === copyRestaurantId.value
         );
-        store.commit("setAlert", {
-          title: shop.restaurantName,
-          code: props.isInMo
-            ? "mobileOrder.copyMenuAlert"
-            : "editCommon.copyMenuAlert",
-          callback: async () => {
-            const newItem = newItemData();
-            newItem.publicFlag = false;
-            newItem.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-            newItem.deletedFlag = false;
-            newItem.uid = store.getters.uidAdmin;
+        if (shop) {
+          store.commit("setAlert", {
+            title: shop.restaurantName,
+            code: props.isInMo
+              ? "mobileOrder.copyMenuAlert"
+              : "editCommon.copyMenuAlert",
+            callback: async () => {
+              const newItem = newItemData();
+              newItem.publicFlag = false;
+              newItem.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+              newItem.deletedFlag = false;
+              newItem.uid = store.getters.uidAdmin;
 
-            const category1 = shop.category1 || [];
-            const category2 = shop.category2 || [];
-            if (newItem.category1 && !category1.includes(newItem.category1)) {
-              category1.push(newItem.category1);
-            }
-            if (newItem.category2 && !category2.includes(newItem.category2)) {
-              category2.push(newItem.category2);
-            }
-            const newData = await db
-              .collection(`restaurants/${shop.id}/menus`)
-              .add(newItem);
-
-            const menuLists = shop.menuLists || [];
-            menuLists.push(newData.id);
-
-            await db.doc(`restaurants/${shop.id}`).update({
-              menuLists,
-              category1,
-              category2,
-            });
-          },
-        });
+              const category1 = shop.category1 || [];
+              const category2 = shop.category2 || [];
+              if (newItem.category1 && !category1.includes(newItem.category1)) {
+                category1.push(newItem.category1);
+              }
+              if (newItem.category2 && !category2.includes(newItem.category2)) {
+                category2.push(newItem.category2);
+              }
+              const newData = await addDoc(
+                collection(db, `restaurants/${shop.id}/menus`),
+                newItem
+              );
+              
+              const menuLists = shop.menuLists || [];
+              menuLists.push(newData.id);
+              
+              await updateDoc(doc(db, `restaurants/${shop.id}`), {
+                menuLists,
+                category1,
+                category2,
+              });
+            },
+          });
+        }
       }
     };
     const submitItem = async () => {
@@ -875,13 +896,14 @@ export default defineComponent({
         // We also convert Japanse commas with alphabet commas
         itemData.itemOptionCheckbox = itemData.itemOptionCheckbox.map(
           (option) => {
-            return halfCharactors(option.replace(/、/g, (s) => ","));
+            return halfCharactors(option.replace(/、/g, (s: string) => ","));
           }
         );
 
-        const newData = await db
-          .doc(`restaurants/${menuRestaurantId.value}/menus/${menuId}`)
-          .update(itemData);
+        const newData = await updateDoc(
+          doc(db, `restaurants/${menuRestaurantId.value}/menus/${menuId}`),
+          itemData as any,
+        );
 
         router.push({
           path: `/admin/restaurants/${restaurantId}/menus`,
