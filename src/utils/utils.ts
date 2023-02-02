@@ -268,7 +268,7 @@ export const getOrderItems = (
   return [];
 };
 
-export const itemOptionCheckbox2options = (itemOptionCheckbox: any) => {
+export const itemOptionCheckbox2options = (itemOptionCheckbox: any): string[] => {
   // HACK: Dealing with a special case (probalby a bug in the menu editor)
   if (
     itemOptionCheckbox &&
