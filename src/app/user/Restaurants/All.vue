@@ -55,7 +55,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
@@ -64,15 +64,16 @@ import { getDocs, collection, where, limit, query } from "firebase/firestore";
 import { RestaurantHeader } from "@/config/header";
 import { JPPrefecture } from "@/config/constant";
 import { restaurant2AreaObj, sortRestaurantObj } from "@/utils/RestaurantUtils";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 export default defineComponent({
   metaInfo() {
-    return RestaurantHeader;
+    return RestaurantHeader as any;
   },
   setup() {
     const allArea = JPPrefecture;
 
-    const restaurantsObj = ref([]);
+    const restaurantsObj = ref<{[key: string]: RestaurantInfoData[]}>({});
     getDocs(
       query(
         collection(db, "restaurants"),
