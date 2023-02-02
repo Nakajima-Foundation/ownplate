@@ -31,7 +31,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from "vue";
 
 import CartItem from "./CartItem.vue";
@@ -72,7 +72,7 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
-    const setQuantities = (itemId, key, diff) => {
+    const setQuantities = (itemId: string, key: number, diff: number) => {
       const newQuantities = [...props.orders[itemId]];
       const newOP = [...props.selectedOptions[itemId]];
       newQuantities[key] = newQuantities[key] + diff;
@@ -86,10 +86,10 @@ export default defineComponent({
         optionValues: newOP,
       });
     };
-    const increase = (itemId, key) => {
+    const increase = (itemId: string, key: number) => {
       setQuantities(itemId, key, 1);
     };
-    const decrease = (itemId, key) => {
+    const decrease = (itemId: string, key: number) => {
       setQuantities(itemId, key, -1);
     };
     return {

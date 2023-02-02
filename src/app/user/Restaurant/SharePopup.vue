@@ -74,12 +74,13 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, ref } from "vue";
+<script lang="ts">
+import { defineComponent, ref, PropType } from "vue";
 
 import SharingButtons from "@/app/user/Restaurant/SharingButtons.vue";
 import { shareUrl, useBasePath } from "@/utils/utils";
 import useClipboard from 'vue-clipboard3'
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 export default defineComponent({
   components: {
@@ -87,7 +88,7 @@ export default defineComponent({
   },
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
     suffix: {
@@ -119,7 +120,7 @@ export default defineComponent({
     };
 
     const { toClipboard } = useClipboard();
-    const copyClipboard = async (text) => {
+    const copyClipboard = async (text: string) => {
       try {
         await toClipboard(text);
         copied.value = true;

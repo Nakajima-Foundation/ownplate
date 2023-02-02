@@ -48,14 +48,13 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, computed } from "vue";
 import { useBasePath, smallImageErrorHandler } from "@/utils/utils";
 import { moBaseUrl } from "@/config/project";
 import { useRoute } from "vue-router";
 
 export default defineComponent({
-  name,
   props: {
     selectedCategory: {
       type: Object,

@@ -139,7 +139,7 @@
     </o-button>
   </div>
 </template>
-<script>
+<script lang="ts">
 import { defineComponent, computed, ref, watch } from "vue";
 
 import { arraySum, useIsInMo } from "@/utils/utils";

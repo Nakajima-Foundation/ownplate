@@ -14,15 +14,16 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, computed } from "vue";
+<script lang="ts">
+import { defineComponent, computed, PropType } from "vue";
 
 import { resizedProfileImage } from "@/utils/utils";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 export default defineComponent({
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
   },

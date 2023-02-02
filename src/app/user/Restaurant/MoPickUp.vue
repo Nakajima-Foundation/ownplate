@@ -64,7 +64,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref } from "vue";
 
 import { useStore } from "vuex";
@@ -105,7 +105,7 @@ export default defineComponent({
 
     const popup = ref(false);
 
-    const input = (value) => {
+    const input = (value: string) => {
       if (props.modelValue !== value) {
         if (Object.values(props.orders).length === 0) {
           context.emit("update:modelValue", value);

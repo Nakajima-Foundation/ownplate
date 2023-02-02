@@ -13,7 +13,7 @@ import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { mo_prefixes, moGtmID } from "@/config/project";
 
-interface AnalyticsMenuData extends MenuData {
+export interface AnalyticsMenuData extends MenuData {
   id: string;
   quantity: number;
   category: string;

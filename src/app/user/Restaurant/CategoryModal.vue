@@ -36,7 +36,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import category from "./category";
 export default category("CategoryModal");
 </script>

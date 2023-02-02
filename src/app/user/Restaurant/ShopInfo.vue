@@ -264,8 +264,8 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, computed, ref } from "vue";
+<script lang="ts">
+import { defineComponent, computed, ref, PropType } from "vue";
 import moment from "moment";
 
 import { daysOfWeek, paymentMethods } from "@/config/constant";
@@ -284,6 +284,7 @@ import {
 } from "@/utils/utils";
 
 import TransactionsAct from "@/app/user/TransactionsAct.vue";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { useI18n } from "vue-i18n";
 
@@ -293,7 +294,7 @@ export default defineComponent({
   },
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
     paymentInfo: {
@@ -380,7 +381,7 @@ export default defineComponent({
     });
 
     const isOpen = computed(() => {
-      return Object.keys(daysOfWeek).reduce((tmp, day) => {
+      return Object.keys(daysOfWeek).reduce((tmp: {[key: string]: any}, day) => {
         if (weekday === Number(day) && businessDay.value[day]) {
           // get now and compaire
           const res = openTimes.value[day].reduce((tmp, time) => {
@@ -443,7 +444,7 @@ export default defineComponent({
     });
 
     const { deliveryAvailableDays, availableDays, temporaryClosure } =
-      usePickupTime(props.shopInfo, {}, {}, isInMo.value, isPickup);
+      usePickupTime(props.shopInfo, {}, ref({}), isInMo.value as boolean, isPickup);
 
     const minimumAvailableTime = computed(() => {
       const days = props.isDelivery
@@ -452,7 +453,7 @@ export default defineComponent({
       const time = days[0]?.times[0]?.display;
       const date = days[0]?.date;
       console.log(locale.value);
-      moment.locale(locale.value);
+      moment.locale(locale.value as string);
       if (!isNull(time) && !isNull(date)) {
         ctx.emit("noAvailableTime", false);
         return [moment(date).format("MM/DD (ddd)"), time].join(" ");
@@ -475,7 +476,7 @@ export default defineComponent({
     const toggleMoreInfo = () => {
       moreInfo.value = !moreInfo.value;
     };
-    const validDate = (date) => {
+    const validDate = (date: any) => {
       return !isNull(date.start) && !isNull(date.end);
     };
 
