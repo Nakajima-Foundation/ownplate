@@ -28,9 +28,11 @@ import { defineComponent, ref } from "vue";
 import { stripeReceipt } from "@/lib/stripe/stripe";
 
 import { useRestaurantId } from "@/utils/utils";
+import { useRoute } from "vue-router";
 
 export default defineComponent({
   setup() {
+    const route = useRoute();
     const restaurantId = useRestaurantId();
     const isLoadingReceipt = ref(false);
     const receipt = async () => {
@@ -42,7 +44,7 @@ export default defineComponent({
         const res = await stripeReceipt({
           restaurantId: restaurantId.value,
           orderId: route.params.orderId,
-        });
+        }) as any;
         if (res.data && res.data.receipt_url) {
           window.open(res.data.receipt_url);
         }

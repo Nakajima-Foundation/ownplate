@@ -10,6 +10,8 @@ export interface OrderMenuItemData {
   price: number;
   images: MenuImages;
   itemPhoto: string;
+  exceptDay: any;
+  exceptHour: any;
 }
 export interface OrderInfoData {
   id: string;

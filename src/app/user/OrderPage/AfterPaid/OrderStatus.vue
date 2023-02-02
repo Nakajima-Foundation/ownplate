@@ -33,7 +33,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, computed } from "vue";
 import { order_status } from "@/config/constant";
 import { convOrderStateForText } from "@/utils/utils";

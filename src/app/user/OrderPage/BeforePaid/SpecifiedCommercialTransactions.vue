@@ -81,7 +81,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from "vue";
 import { useIsInMo } from "@/utils/utils";
 export default defineComponent({

@@ -33,13 +33,14 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
   computed,
   ref,
   onMounted,
   watch,
+  PropType,
 } from "vue";
 
 import moment from "moment-timezone";
@@ -49,14 +50,17 @@ import { usePickupTime } from "@/utils/pickup";
 
 import { useStore } from "vuex";
 
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { OrderInfoData } from "@/models/orderInfo";
+
 export default defineComponent({
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
     orderInfo: {
-      type: Object,
+      type: Object as PropType<OrderInfoData>,
       required: true,
     },
     isDelivery: {
@@ -77,7 +81,7 @@ export default defineComponent({
     });
     const exceptData = computed(() => {
       return (Object.values(props.orderInfo.menuItems) || []).reduce(
-        (tmp, menu) => {
+        (tmp: any, menu) => {
           const { exceptDay, exceptHour } = menu;
           Object.keys(exceptDay || {}).map((key) => {
             if (exceptDay[key]) {
@@ -100,8 +104,8 @@ export default defineComponent({
     const { deliveryAvailableDays, availableDays, todaysLast } = usePickupTime(
       props.shopInfo,
       exceptData,
-      {},
-      isInMo.value,
+      ref({}),
+      isInMo.value as boolean,
       isPickup
     );
     // for mo
@@ -143,7 +147,7 @@ export default defineComponent({
 
     watch(days, () => {
       if (
-        !(days.value[dayIndex.value]?.times || []).some((t) => {
+        !(days.value[dayIndex.value]?.times || []).some((t: any) => {
           return time.value == t.time;
         })
       ) {

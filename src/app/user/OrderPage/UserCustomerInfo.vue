@@ -6,10 +6,10 @@
   />
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref } from "vue";
 import CustomerInfo from "@/components/CustomerInfo.vue";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, DocumentData } from "firebase/firestore";
 import { db } from "@/lib/firebase/firebase9";
 
 import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
@@ -35,7 +35,7 @@ export default defineComponent({
     CustomerInfo,
   },
   setup(props) {
-    const customer = ref({});
+    const customer = ref<DocumentData>({});
     const restaurantId = getRestaurantId();
     getDoc(
       doc(
@@ -43,7 +43,9 @@ export default defineComponent({
         `restaurants/${restaurantId}/orders/${props.orderId}/customer/data`
       )
     ).then((doc) => {
-      customer.value = doc.data();
+      if (doc.exists()){ 
+        customer.value = doc.data();
+      }
     });
     const phoneNumber = parsePhoneNumber(props.orderInfo?.phoneNumber || "");
     const nationalPhoneNumber = phoneNumber ? formatNational(phoneNumber) : "";

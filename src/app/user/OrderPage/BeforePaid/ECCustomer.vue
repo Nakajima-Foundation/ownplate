@@ -160,12 +160,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref, computed } from "vue";
 
 import { db } from "@/plugins/firebase";
 import { regionalSetting, countObj } from "@/utils/utils";
-
+import { CustomerInfo } from "@/models/customer";
 import isEmail from "validator/lib/isEmail";
 
 import { useUserData } from "@/utils/utils";
@@ -184,12 +184,12 @@ export default defineComponent({
   emits: ["updateLocation"],
   setup(props, ctx) {
     const isSaveAddress = ref(true);
-    const customerInfo = ref({});
+    const customerInfo = ref<CustomerInfo>({});
     const addressList = ref([]);
 
     const { uid } = useUserData();
     
-    const updateAddress = (address) => {
+    const updateAddress = (address: any) => {
       const { address1, address2, address3, prefectureId, prefecture } =
         address;
 
@@ -225,7 +225,7 @@ export default defineComponent({
       return (await db.doc(`/users/${uid.value}/address/data`).get()).data() || {};
     };
     const ecErrors = computed(() => {
-      const err = {};
+      const err: {[key: string]: string[]} = {};
       const attrs = ["zip", "address", "name", "prefectureId"];
       if (props.shopInfo.isEC) {
         attrs.push("email");
@@ -233,8 +233,8 @@ export default defineComponent({
       attrs.forEach((name) => {
         err[name] = [];
         if (
-          customerInfo.value[name] === undefined ||
-          customerInfo.value[name] === ""
+          customerInfo.value[name as keyof CustomerInfo] === undefined ||
+          customerInfo.value[name as keyof CustomerInfo] === ""
         ) {
           err[name].push("validationError." + name + ".empty");
         }
@@ -272,14 +272,14 @@ export default defineComponent({
       if (ecErrors.value["zip"].length > 0) {
         return;
       }
-      const validZip = zip.replace(/-|ー/g, "").replace(/[！-～]/g, (s) => {
+      const validZip = zip?.replace(/-|ー/g, "").replace(/[！-～]/g, (s) => {
         return String.fromCharCode(s.charCodeAt(0) - 0xfee0);
       });
 
       const zipDoc = await db.doc(`/zipcode/${validZip}`).get();
       const data = zipDoc.data();
       if (zipDoc.exists) {
-        addressList.value = data.addresses;
+        addressList.value = data?.addresses;
       } else {
         addressList.value = [];
       }
@@ -298,7 +298,7 @@ export default defineComponent({
       }
     })();
 
-    const updateHome = (pos) => {
+    const updateHome = (pos: any) => {
       const customer = { ...customerInfo.value };
       customer.location = pos;
       customerInfo.value = customer;
