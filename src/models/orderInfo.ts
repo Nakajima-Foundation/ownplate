@@ -1,6 +1,7 @@
 import { MenuImages } from "./menu";
 import { ownPlateConfig } from "@/config/project";
 import { stripeRegion, orderType } from "@/utils/utils";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 export interface OrderMenuItemData {
   category1: string;
@@ -11,6 +12,7 @@ export interface OrderMenuItemData {
   itemPhoto: string;
 }
 export interface OrderInfoData {
+  id: string;
   name: string;
   number: string;
   totalCharge: number;
@@ -23,6 +25,9 @@ export interface OrderInfoData {
   timeEstimated: any; // TODO firestore timestamp
   timeConfirmed: any;
   timePlaced: any;
+  status: number;
+  restaurant: RestaurantInfoData; // ?
+  restaurantId: string; // ?
   accounting?: {
     food: {
       revenue: number;
@@ -37,11 +42,13 @@ export interface OrderInfoData {
       tax: number;
     };
   };
+  shippingCost: number;
   isDelivery: boolean;
   isEC: boolean;
   isPickup: boolean;
   tip: number;
   menuItems: { [key: string]: OrderMenuItemData };
+  phoneNumber: string;
   order: { [key: string]: [number] };
   options: { [key: string]: [string] };
   payment?: { [key: string]: string };

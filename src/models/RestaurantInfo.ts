@@ -2,6 +2,9 @@ export interface RestaurantInfoData {
   url: string;
   restaurantName: string;
 
+  restaurantId: string; //mo
+  shopId: string; //mo
+
   restCoverPhoto: string;
   restProfilePhoto: string;
 

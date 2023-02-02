@@ -91,7 +91,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref, onUnmounted } from "vue";
 import { db } from "@/plugins/firebase";
 
@@ -103,7 +103,7 @@ import NotFound from "@/components/NotFound.vue";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 
 import { useStore } from "vuex";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 
 export default defineComponent({
   components: {
@@ -132,8 +132,13 @@ export default defineComponent({
   setup(props) {
     const store = useStore();
     const router = useRouter();
+    const route = useRoute();
 
-    const lineUsers = ref([]);
+    interface LineUserData {
+      id: string;
+      notify?: boolean;
+    }
+    const lineUsers = ref<LineUserData[]>([]);
 
     const { ownerUid, uid } = useAdminUids();
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
@@ -143,7 +148,7 @@ export default defineComponent({
 
     const lineId = route.query.userId;
     const displayName = route.query.displayName;
-    const state = route.query.state;
+    const state = route.query.state as string;
     if (lineId && displayName && state) {
       if (lineVerify(state)) {
         db.doc(`restaurants/${restaurantId}/lines/${lineId}`)
@@ -179,7 +184,7 @@ export default defineComponent({
       detacher();
     });
 
-    const handleToggle = async (lineUser) => {
+    const handleToggle = async (lineUser: LineUserData) => {
       await db.doc(`restaurants/${restaurantId}/lines/${lineUser.id}`).update({
         notify: !lineUser.notify,
       });
@@ -190,7 +195,7 @@ export default defineComponent({
       });
       location.href = url;
     };
-    const handleDelete = (lineId) => {
+    const handleDelete = (lineId: string) => {
       store.commit("setAlert", {
         code: "admin.order.lineDelete",
         callback: async () => {
