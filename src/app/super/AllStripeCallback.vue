@@ -13,10 +13,15 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent, onMounted, onUnmounted, ref } from "vue";
 import BackButton from "@/components/BackButton";
 import { db } from "@/plugins/firebase";
 import { stripeActionStrings } from "@/lib/stripe/stripe";
+
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+
 export default {
   components: {
     BackButton,
@@ -26,51 +31,60 @@ export default {
       title: [this.defaultTitle, "Super All Stripe Callback"].join(" / "),
     };
   },
-  data() {
-    return {
-      logs: [],
-      detacher: null,
-      stripeActionStrings,
-      last: null,
-    };
-  },
-  async mounted() {
-    if (!this.$store.state.user || this.$store.getters.isNotSuperAdmin) {
-      this.$router.push("/");
-    }
-    this.detatcher = db
+  setup () {
+    const store = useStore();
+    const router = useRouter();
+
+    const logs = ref([]);
+    let detacher = null;
+    const last = ref(null);
+
+    onMounted(() => {
+      if (!store.state.user || store.getters.isNotSuperAdmin) {
+        router.push("/");
+      }
+    });
+    detacher = db
       .collectionGroup("stripeLogs")
       .orderBy("created", "desc")
       .limit(100)
       .onSnapshot((snapshot) => {
-        this.logs = snapshot.docs.map((doc) => {
-          this.last = doc;
+        logs.value = snapshot.docs.map((doc) => {
+          last.value = doc;
           const log = doc.data();
           log.id = doc.id;
           return log;
         });
       });
-  },
-  methods: {
-    async nextLoad() {
+    
+    const nextLoad = async () => {
+
       const nextData = await db
         .collectionGroup("stripeLogs")
         .orderBy("created", "desc")
-        .startAfter(this.last)
+        .startAfter(last.value)
         .limit(100)
         .get();
       if (!nextData.empty) {
         nextData.docs.forEach((doc) => {
-          this.last = doc;
+          last.value = doc;
           const log = doc.data();
           log.id = doc.id;
-          this.logs.push(log);
+          logs.value.push(log);
         });
       }
-    },
-  },
-  destroyed() {
-    this.detatcher && this.detatcher();
-  },
+    };
+    
+    onUnmounted(() => {
+      detacher && detacher();
+    });
+
+    return {
+      stripeActionStrings,
+      logs,
+      last,
+      nextLoad,
+    };
+  }
 };
 </script>

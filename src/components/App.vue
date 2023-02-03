@@ -52,7 +52,16 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import {
+  defineComponent,
+  onMounted,
+  computed,
+  watch,
+  ref,
+  onUnmounted,
+} from "vue";
+
 import { db, auth, analytics } from "@/lib/firebase/firebase9";
 
 import { doc, getDoc, setDoc } from "firebase/firestore";
@@ -64,7 +73,7 @@ import {
   setCurrentScreen,
 } from "firebase/analytics";
 
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, Unsubscribe } from "firebase/auth";
 
 import Header from "@/components/App/Header.vue";
 import Footer from "@/components/App/Footer.vue";
@@ -73,14 +82,17 @@ import SideMenuWrapper from "@/components/App/SideMenuWrapper.vue";
 import DialogBox from "@/components/DialogBox.vue";
 import AudioPlay from "@/components/AudioPlay.vue";
 
-import { underConstruction } from "@/utils/utils";
+import { underConstruction, useUser, useRestaurantId } from "@/utils/utils";
 
 import * as Sentry from "@sentry/vue";
 import { ownPlateConfig, mo_prefixes } from "@/config/project";
 import { defaultHeader } from "@/config/header";
 import { MoHeader } from "@/config/moHeader";
 
-export default {
+import { useStore } from "vuex";
+import { useRoute } from "vue-router";
+
+export default defineComponent({
   components: {
     DialogBox,
     AudioPlay,
@@ -94,118 +106,113 @@ export default {
   })
     ? MoHeader
     : defaultHeader,
-  data() {
-    return {
-      unregisterAuthObserver: null,
-      timerId: null,
-      underConstruction,
-    };
-  },
-  mounted() {
-    window.addEventListener("focus", () => {
-      this.$store.commit("setActive", true);
+
+  setup() {
+    let unregisterAuthObserver: null | Unsubscribe =  null;
+    let timerId: null | number = null;
+    const store = useStore();
+    const route = useRoute();
+
+    const user = useUser();
+    const restaurantId = useRestaurantId();
+    
+    onMounted(() => {
+      window.addEventListener("focus", () => {
+        store.commit("setActive", true);
+      });
+      window.addEventListener("blur", () => {
+        store.commit("setActive", false);
+      });
     });
-    window.addEventListener("blur", () => {
-      this.$store.commit("setActive", false);
+
+    const isLoading = computed(() => {
+      return store.state.isLoading;
     });
-  },
-  computed: {
-    isLoading() {
-      return this.$store.state.isLoading;
-    },
-    dialog() {
-      return this.$store.state.dialog;
-    },
-    isReadyToRender() {
-      if (this.user !== undefined) {
+    const dialog = computed(() => {
+      return store.state.dialog;
+    });
+    const isReadyToRender = computed(() => {
+      if (user.value !== undefined) {
         return true; // Firebase has already identified the user (or non-user)
       }
       if (
-        this.$route.path === `/r/${this.restaurantId()}` ||
-        this.$route.path === "/"
+        route.path === `/r/${restaurantId.value}` ||
+        route.path === "/"
       ) {
         // console.log("isReadyToRender: quick render activated");
         return true; // We are opening the restaurant page
       }
       return false;
-    },
-    isInMo() {
+    });
+    const isInMo = computed(() => {
       return mo_prefixes.some((prefix) => {
         return (
-          (this.$route.fullPath || "").startsWith(`/${prefix}/`) ||
-          (this.$route.fullPath || "") === `/${prefix}`
+          (route.fullPath || "").startsWith(`/${prefix}/`) ||
+          (route.fullPath || "") === `/${prefix}`
         );
       });
-    },
-  },
-  methods: {
-    async enableSound() {
-      await this.$refs.audioPlay.enableSound();
-    },
-    handleOpen() {
-      this.$refs.sideMenu.handleOpen();
-    },
-    pingAnalytics() {
+    });
+
+    const audioPlay = ref();
+    const enableSound = () => {
+      audioPlay.value.enableSound();
+    };
+    const sideMenu = ref();
+    const handleOpen = () => {
+      sideMenu.value.handleOpen();
+    };
+    const pingAnalytics = () => {
       setCurrentScreen(analytics, document.title);
       logEvent(analytics, "page_view");
+      // @ts-ignore
       logEvent(analytics, "screen_view", {
         app_name: "web",
         screen_name: document.title,
       });
-    },
-  },
-  beforeCreate() {
-    this.$store.commit("setServerConfig", { region: ownPlateConfig.region });
-    this.unregisterAuthObserver = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        user
+    };
+
+    store.commit("setServerConfig", { region: ownPlateConfig.region });
+    unregisterAuthObserver = onAuthStateChanged(auth, async (fUser) => {
+      if (fUser) {
+        fUser
           .getIdTokenResult(true)
           .then((result) => {
-            this.$store.commit("setUser", user);
-            this.$store.commit("setCustomClaims", result.claims);
-            // console.log(!!user.email ? "admin" : "customer");
+            store.commit("setUser", fUser);
+            store.commit("setCustomClaims", result.claims);
+            // console.log(!!fUser.email ? "admin" : "customer");
           })
-          .catch((error) => {
+          .catch((error: any) => {
             // console.error("getIdTokenResult", error);
             Sentry.captureException(error);
           });
         setUserProperties(analytics, {
-          role: !!user.email ? "admin" : "customer",
+          role: !!fUser.email ? "admin" : "customer",
         });
-        setUserId(analytics, user.uid);
+        setUserId(analytics, fUser.uid);
 
-        if (this.isInMo) {
+        if (isInMo.value) {
+          // @ts-ignore
           window.dataLayer.push({
-            uid: user.uid,
+            uid: fUser.uid,
           });
         }
       } else {
         setUserProperties(analytics, { role: "anonymous" });
         // console.log("authStateChanged: null");
-        this.$store.commit("setUser", null);
-        this.$store.commit("setCustomClaims", null);
-        if (this.isInMo) {
+        store.commit("setUser", null);
+        store.commit("setCustomClaims", null);
+        if (isInMo.value) {
+          // @ts-ignore
           window.dataLayer.push({
             uid: null,
           });
         }
       }
     });
-  },
-  watch: {
-    // https://support.google.com/analytics/answer/9234069?hl=ja
-    $route() {
-      this.pingAnalytics();
-    },
-  },
-  async created() {
+    
     console.log(process.env.VUE_APP_CIRCLE_SHA1);
-    const isInLine = () => {
-      return /Line/.test(navigator.userAgent);
-    };
-    const isInLIFF = () => {
-      return /LIFF/.test(navigator.userAgent);
-    };
+    const isInLine = /Line/.test(navigator.userAgent);
+    const isInLIFF = /LIFF/.test(navigator.userAgent);
 
     if (!isInLIFF) {
       if (isInLine) {
@@ -220,26 +227,46 @@ export default {
       }
     }
 
-    this.timerId = window.setInterval(() => {
-      const diff = (new Date() - this.$store.state.openTime) / 1000; // second
+    timerId = window.setInterval(() => {
+      // @ts-ignore
+      const diff = (new Date() - store.state.openTime) / 1000; // second
       if (diff > 20 * 3600) {
-        this.$store.commit("resetOpenTime");
+        store.commit("resetOpenTime");
         location.reload();
       }
-      this.$store.commit("updateDate");
+      store.commit("updateDate");
     }, 60 * 1000);
+    
+    watch(() => route.path, () => {
+      // https://support.google.com/analytics/answer/9234069?hl=ja
+      pingAnalytics();
+    });
+      
+    pingAnalytics();
 
-    this.pingAnalytics();
-  },
-  destroyed() {
-    if (this.unregisterAuthObserver) {
-      this.unregisterAuthObserver();
+    onUnmounted(() => {
+      if (unregisterAuthObserver) {
+        unregisterAuthObserver();
+      }
+      if (timerId) {
+        window.clearInterval(timerId);
+      }
+    });
+    return {
+      audioPlay,
+      sideMenu,
+      underConstruction,
+
+      enableSound,
+      handleOpen,
+      isReadyToRender,
+      dialog,
+      isLoading
+      
     }
-    if (this.timerId) {
-      window.clearInterval(this.timerId);
-    }
   },
-};
+
+});
 </script>
 <style lang="scss">
 // ### Need this commentout for CSS parser bug. Don't remove.

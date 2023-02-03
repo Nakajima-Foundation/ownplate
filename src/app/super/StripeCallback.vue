@@ -11,11 +11,16 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent, onMounted, ref } from "vue";
 import BackButton from "@/components/BackButton.vue";
 import { db } from "@/plugins/firebase";
 import { stripeActionStrings } from "@/lib/stripe/stripe";
-export default {
+
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+
+export default defineComponent({
   metaInfo() {
     return {
       title: [this.defaultTitle, "Super All Stripe Callback"].join(" / "),
@@ -24,27 +29,26 @@ export default {
   components: {
     BackButton,
   },
-  data() {
+  setup () {
+    const store = useStore();
+    const router = useRouter();
+
+    const log = ref(null);
+
+    onMounted(() => {
+      if (!store.state.user || store.getters.isNotSuperAdmin) {
+        router.push("/");
+      }
+    });
+    const logUid =  route.params.uid;
+    const logId = route.params.logId;
+    db.doc(`admins/${logUid}/stripeLogs/${logId}`).get().then((doc) => {
+      log.value = doc.data();
+    });
     return {
-      log: null,
-      detacher: null,
       stripeActionStrings,
-      logUid: this.$route.params.uid,
-      logId: this.$route.params.logId,
-    };
-  },
-  async mounted() {
-    if (!this.$store.state.user || this.$store.getters.isNotSuperAdmin) {
-      this.$router.push("/");
+      log,
     }
-    const doc = await db
-      .doc(`admins/${this.logUid}/stripeLogs/${this.logId}`)
-      .get();
-    this.log = doc.data();
-    console.log(this.log);
   },
-  destroyed() {
-    this.detatcher && this.detatcher();
-  },
-};
+});
 </script>
