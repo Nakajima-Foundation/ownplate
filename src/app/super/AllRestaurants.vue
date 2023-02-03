@@ -118,6 +118,7 @@ import DownloadMenu from "@/app/admin/MenuListPage/DownloadCSV.vue";
 import { useI18n } from "vue-i18n";
 import { getBackUrl, superPermissionCheck } from "@/utils/utils";
 import moment from "moment-timezone";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 export default defineComponent({
   metaInfo() {
@@ -138,8 +139,8 @@ export default defineComponent({
   setup() {
     const { t } = useI18n({ useScope: 'global' });
     let isLoading = false;
-    const restaurants = ref([]);
-    const last = ref(null);
+    const restaurants = ref<RestaurantInfoData[]>([]);
+    const last = ref<any | null>(null);
 
     superPermissionCheck();
     
@@ -156,8 +157,9 @@ export default defineComponent({
         const snapshot = await query.get();
         if (!snapshot.empty) {
           last.value = snapshot.docs[snapshot.docs.length - 1];
+          // @ts-ignore
           snapshot.docs.map(doc2data("resuatraut")).forEach((data) => {
-            restaurants.value.push(data);
+            restaurants.value.push(data as RestaurantInfoData);
           });
         } else {
           last.value = null;
@@ -191,6 +193,7 @@ export default defineComponent({
     const tableData = computed(() => {
       return restaurants.value.map((restaurant) => {
         return {
+          // @ts-ignore
           date: moment(restaurant.createdAt.toDate()).format("YYYY/MM/DD"),
           restaurantName: restaurant.restaurantName,
           state: restaurant.state,
