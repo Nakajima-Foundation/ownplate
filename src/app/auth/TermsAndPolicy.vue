@@ -26,7 +26,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, computed } from "vue";
 
 import { useIsInMo, getMoPrefix, useIsLocaleJapan } from "@/utils/utils";
