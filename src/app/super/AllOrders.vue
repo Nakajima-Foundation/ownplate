@@ -113,7 +113,8 @@ export default defineComponent({
   setup() {
     const { t } = useI18n({ useScope: 'global' });
     const router = useRouter();
-
+    superPermissionCheck();
+    
     const months = [0, 1, 2, 3, 4, 5].map((a) => {
       return moment().subtract(a, "month").format("YYYY-MM");
     });

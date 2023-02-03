@@ -28,7 +28,7 @@ import {
   doc,
 } from "firebase/firestore";
 
-import { useSuper, getBackUrl } from "@/utils/utils";
+import { superPermissionCheck, getBackUrl } from "@/utils/utils";
 import { useRoute } from "vue-router";
 
 export default defineComponent({
@@ -43,6 +43,7 @@ export default defineComponent({
   setup () {
     const route = useRoute();
     const restaurantId = route.params.restaurantId;
+    superPermissionCheck();
     
     const restaurantData = ref<any>({});
     getDoc(
