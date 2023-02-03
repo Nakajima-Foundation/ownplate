@@ -22,7 +22,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
   ref,
@@ -31,7 +31,7 @@ import {
   onUnmounted,
 } from "vue";
 import { db } from "@/lib/firebase/firebase9";
-import { doc, getDoc, query, onSnapshot } from "firebase/firestore";
+import { doc, getDoc, query, onSnapshot, Unsubscribe } from "firebase/firestore";
 import { stripeDeleteCard } from "@/lib/firebase/functions";
 import { useIsLiffUser, useUserData } from "@/utils/utils";
 
@@ -45,7 +45,7 @@ export default defineComponent({
 
     const { isLiffUser, user } = useUserData();
 
-    const storedCard = ref(null);
+    const storedCard = ref<{brand: string, last4: string} | null>(null);
 
     const cardDescription = computed(() => {
       return storedCard.value
@@ -53,7 +53,7 @@ export default defineComponent({
         : t("profile.noCard");
     });
 
-    let detachStripe = null;
+    let detachStripe: Unsubscribe | null = null;
     const checkStripe = () => {
       if (detachStripe) {
         detachStripe();
@@ -61,7 +61,7 @@ export default defineComponent({
       }
       if (user.value && (user.value.phoneNumber || isLiffUser.value)) {
         detachStripe = onSnapshot(
-          query(doc(db, `/users/${user.value.uid}/readonly/stripe`)),
+          doc(db, `/users/${user.value.uid}/readonly/stripe`),
           (snapshot) => {
             const stripeInfo = snapshot.data();
             storedCard.value = stripeInfo?.card;

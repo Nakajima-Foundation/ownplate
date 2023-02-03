@@ -612,6 +612,7 @@ import {
   taxRate,
   notFoundResponse,
   smallImageErrorHandler,
+  displayOption,
 } from "@/utils/utils";
 
 import { uploadFile } from "@/lib/firebase/storage";
@@ -946,6 +947,7 @@ export default defineComponent({
       errors,
       hasError,
 
+      displayOption,
       displayOptionPrice,
       handleCategoryUpdated,
       handleDismissed,

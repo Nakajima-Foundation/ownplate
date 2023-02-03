@@ -49,7 +49,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref, onMounted } from "vue";
 import { haversine_distance } from "@/utils/utils";
 
@@ -72,13 +72,13 @@ export default defineComponent({
     const location = props.shopInfo.location;
     const radius = (props.deliveryInfo && props.deliveryInfo.radius) ? props.deliveryInfo.radius : 1;
 
-    let gCenter = null;
-    let gHome = null;
-    let markers = [];
-    let circles = [];
-    let map = null;
+    let gCenter: any = null;
+    let gHome: any = null;
+    let markers: any[] = [];
+    let circles: any[] = [];
+    let map: any = null;
     
-    const estimatedDistance = ref(null);
+    const estimatedDistance = ref<number | null>(null);
     const gMap = ref();
 
     onMounted(async () => {
@@ -123,18 +123,18 @@ export default defineComponent({
       }
     };
 
-    const setHomeLocation = (lat, lng) => {
+    const setHomeLocation = (lat: number, lng: number) => {
       if (google) {
         gHome = new google.maps.LatLng(lat, lng);
       }
       updateMarker();
       estimatedDistance.value = haversine_distance(lat, lng, location.lat, location.lng);
     };
-    const setHome = (lat, lng) => {
+    const setHome = (lat: number, lng: number) => {
       setHomeLocation(lat, lng);
       context.emit("updateHome", { lat, lng });
     };
-    const gmapClick = (arg) => {
+    const gmapClick = (arg: any) => {
       const latLng = arg?.event?.latLng || arg.latLng;
       setHome(latLng.lat(), latLng.lng());
     };
@@ -160,7 +160,7 @@ export default defineComponent({
       circle.addListener("click", gmapClick);
       circles.push(circle);
     };
-    const updateLocation = (pos) => {
+    const updateLocation = (pos: {lat: number, lng: number}) => {
       setHomeLocation(pos.lat, pos.lng);
     };
 
@@ -182,7 +182,7 @@ export default defineComponent({
       const geocoder = new google.maps.Geocoder();
       geocoder
         .geocode({ address: props.fullAddress, language: "ja" })
-        .then((response) => {
+        .then((response: any) => {
           const res = response.results[0];
           setHome(
             res.geometry.location.lat(),
