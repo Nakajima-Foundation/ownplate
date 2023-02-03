@@ -68,11 +68,15 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent, ref, watch, computed } from "vue";
 import * as Sentry from "@sentry/vue";
 import DialogTips from "./DialogTips.vue";
 
-export default {
+import { useStore } from "vuex";
+import { useI18n } from "vue-i18n";
+
+export default defineComponent({
   components: {
     DialogTips,
   },
@@ -81,53 +85,62 @@ export default {
       type: Object,
     },
   },
-  data() {
-    return {
-      isVisible: true,
-    };
-  },
-  watch: {
-    dialog() {
-      this.isVisible = true; // so that we can re-use this component
-    },
-    isVisible(newValue) {
+  setup(props) {
+    const { t } = useI18n({ useScope: 'global' });
+    const store = useStore();
+    const isVisible = ref(true);
+    
+    const dialogObj = computed(() => {
+      return props.dialog;
+    });
+    watch(dialogObj, () => {
+      isVisible.value = true; // so that we can re-use this component
+    });
+    watch(isVisible, (newValue) => {
       if (!newValue) {
-        this.$store.commit("resetDialog");
+        store.commit("resetDialog");
       }
-    },
-  },
-  computed: {
-    alert() {
-      return this.dialog?.alert;
-    },
-    error() {
-      return this.dialog?.error;
-    },
-    tips() {
-      return this.dialog?.tips;
-    },
-    errorMessage() {
-      Sentry.captureException(this.error?.error);
-      if (this.error.message) {
-        return this.error.message;
-      } else if (this.error.code) {
-        return this.$t("errorPage.code." + this.error.code);
+    });
+
+    const alert = computed(() => {
+      return props.dialog?.alert;
+    });
+    const error = computed(() => {
+      return props.dialog?.error;
+    });
+    const tips = computed(() => {
+      return props.dialog?.tips;
+    });
+    const errorMessage = computed(() => {
+      Sentry.captureException(error.value?.error);
+      if (error.value.message) {
+        return error.value.message;
+      } else if (error.value.code) {
+        return t("errorPage.code." + error.value.code);
       }
       return "";
-    },
-    errorMessage2() {
-      return this.error.message2 || "errorPage.message.generic";
-    },
-  },
-  methods: {
-    handleYes() {
+    })
+    const errorMessage2 = computed(() => { 
+      return error.value.message2 || "errorPage.message.generic";
+    });
+    const handleYes = () => {
       console.log("handleYes");
-      this.alert.callback();
-      this.isVisible = false;
-    },
-    close() {
-      this.isVisible = false;
-    },
+      alert.value.callback();
+      isVisible.value = false;
+    };
+    const close = () => {
+      isVisible.value = false;
+    };
+    return {
+      isVisible,
+      alert,
+      error,
+      tips,
+      errorMessage,
+      errorMessage2,
+      handleYes,
+      close,      
+    };
   },
-};
+});
 </script>
