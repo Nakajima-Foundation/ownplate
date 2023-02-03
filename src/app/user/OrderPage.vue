@@ -48,13 +48,14 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
   ref,
   computed,
   onUnmounted,
   watch,
+  PropType,
 } from "vue";
 import firebase from "firebase/compat/app";
 import moment from "moment-timezone";
@@ -68,7 +69,7 @@ import OrderPageBefore from "@/app/user/OrderPage/BeforePaid.vue";
 import OrderPageAfter from "@/app/user/OrderPage/AfterPaid.vue";
 
 import { db } from "@/lib/firebase/firebase9";
-import { onSnapshot, doc, deleteDoc } from "firebase/firestore";
+import { onSnapshot, doc, deleteDoc, Unsubscribe } from "firebase/firestore";
 
 import { order_status, order_status_keys } from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
@@ -86,6 +87,9 @@ import {
 
 import { useStore } from "vuex";
 import { useRouter, useRoute, onBeforeRouteLeave } from "vue-router";
+
+import { OrderInfoData, OrderMenuItemData } from "@/models/orderInfo";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 export default defineComponent({
   name: "Order",
@@ -113,7 +117,7 @@ export default defineComponent({
   },
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
     paymentInfo: {
@@ -158,15 +162,15 @@ export default defineComponent({
 
     const loginVisible = ref(false);
     const transactions = ref();
-    const orderInfo = ref({});
-    const menuObj = ref(null);
-    const detacher = [];
-    const menuNotFound = ref(null);
+    const orderInfo = ref<OrderInfoData>({} as OrderInfoData);
+    const menuObj = ref<{ [key: string]: OrderMenuItemData } | null>(null);
+    const detacher: Unsubscribe[] = [];
+    const menuNotFound = ref<boolean | null>(null);
     const requireLoginRef = ref();
     
     const liffBasePath = useLiffBasePath();
 
-    const orderId = route.params.orderId;
+    const orderId = route.params.orderId as string;
     const statusKey = computed(() => {
       return orderInfo.value ? order_status_keys[orderInfo.value.status] : null;
     });
@@ -180,7 +184,7 @@ export default defineComponent({
       return orderInfo.value.status >= order_status.order_placed;
     });
     const orderItems = computed(() => {
-      return getOrderItems(orderInfo.value, menuObj.value);
+      return getOrderItems(orderInfo.value, menuObj.value as any);
     });
     const restaurantId = useRestaurantId();
     const loadUserData = () => {
@@ -188,7 +192,7 @@ export default defineComponent({
         doc(db, `restaurants/${restaurantId.value}/orders/${orderId}`),
         async (order) => {
           const order_data = order.exists() ? order.data() : {};
-          orderInfo.value = order_data;
+          orderInfo.value = order_data as OrderInfoData;
           menuObj.value = orderInfo.value.menuItems || {};
           if (just_validated.value) {
             analyticsUtil.sendViewCart(
