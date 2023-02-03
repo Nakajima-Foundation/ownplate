@@ -155,9 +155,7 @@ export default defineComponent({
 
     const handleDismissed = (success: boolean) => {
       console.log("handleDismissed", success);
-      if (success) {
-        loginVisible.value = false;
-      } else {
+      if (!success) {
         router.push(topPath.value);
       }
     };
