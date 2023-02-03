@@ -28,6 +28,7 @@ import {
   collectionGroup,
   orderBy,
   limit,
+  DocumentData,
 } from "firebase/firestore";
 
 import { useSuper } from "@/utils/utils";
@@ -45,7 +46,7 @@ export default defineComponent({
     useSuper();
 
     const prefix = ref("");
-    const profiles = ref([]);
+    const profiles = ref<DocumentData[]>([]);
 
     const handleSearch = () => {
       getDocs(
@@ -58,7 +59,7 @@ export default defineComponent({
       ).then((snapshot) => {
         profiles.value = snapshot.docs.map((doc) => {
           const data = doc.data();
-          data.uid = doc.ref.parent.parent.id;
+          data.uid = doc?.ref?.parent?.parent?.id;
           return data;
         });
       })
