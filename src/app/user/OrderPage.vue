@@ -54,6 +54,7 @@ import {
   ref,
   computed,
   onUnmounted,
+  watch,
 } from "vue";
 import firebase from "firebase/compat/app";
 import moment from "moment-timezone";
@@ -84,7 +85,7 @@ import {
 } from "@/utils/utils";
 
 import { useStore } from "vuex";
-import { useRouter, useRoute } from "vue-router";
+import { useRouter, useRoute, onBeforeRouteLeave } from "vue-router";
 
 export default defineComponent({
   name: "Order",
@@ -262,6 +263,17 @@ export default defineComponent({
       loginVisible.value = true;
     }
 
+    watch(isUser, (value) => {
+      if (value) {
+        loadUserData();
+      }
+    });
+    watch(isLiffUser, (value) => {
+      if (value) {
+        loadUserData();
+      }
+    });
+    
     onUnmounted(() => {
       if (detacher) {
         detacher.map((detacher) => {
@@ -269,7 +281,12 @@ export default defineComponent({
         });
       }
     });
-
+    onBeforeRouteLeave((to, from, next)  => {
+      if (just_validated.value) {
+        deleteOrderInfo();
+      }
+      next();
+    });
     return {
       menuNotFound,
       orderError,
@@ -286,29 +303,10 @@ export default defineComponent({
       loginVisible,
 
       loadUserData,
-      deleteOrderInfo,
 
       disabledPickupTime,
       lastOrder,
     };
-  },
-  watch: {
-    isUser() {
-      if (this.isUser) {
-        this.loadUserData();
-      }
-    },
-    isLiffUser() {
-      if (this.isLiffUser) {
-        this.loadUserData();
-      }
-    },
-  },
-  beforeRouteLeave(to, from, next) {
-    if (this.just_validated) {
-      this.deleteOrderInfo();
-    }
-    next();
   },
 });
 </script>
