@@ -18,7 +18,7 @@
 import { smaregiAuth } from "@/lib/firebase/functions";
 import { smaregi } from "@/config/project";
 
-import BackButton from "@/components/BackButton";
+import BackButton from "@/components/BackButton.vue";
 
 export default {
   components: {
