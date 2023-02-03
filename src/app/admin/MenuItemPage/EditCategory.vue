@@ -47,8 +47,11 @@
   </o-modal>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent, ref, onMounted, onUnmounted, watch, computed } from "vue";
+import { useStore } from "vuex";
+
+export default defineComponent({
   props: {
     shopInfo: {
       type: Object,
@@ -64,46 +67,50 @@ export default {
       title: [this.defaultTitle, "Admin Edit Category"].join(" / "),
     };
   },
-  data() {
-    return {
-      isVisible: true,
-      newEntry: "",
-    };
-  },
-  created() {
-    console.log("***", this.shopInfo);
-  },
-  watch: {
-    isVisible(newValue) {
+  setup(props, context) {
+    const store = useStore();
+
+    const isVisible = ref(true);
+    const newEntry = ref("");
+
+    watch(isVisible, (newValue) => {
       if (!newValue) {
-        this.$emit("dismissed");
+        context.emit("dismissed");
       }
-    },
-  },
-  computed: {
-    isValidEntry() {
-      if (this.newEntry === "") {
+    });
+
+    const categories = computed(() => {
+      return props.shopInfo[props.categoryKey] || [];
+    });
+    const isValidEntry = computed(() => {
+      if (newEntry.value === "") {
         return false;
       }
-      return !this.categories.find((category) => category === this.newEntry);
-    },
-    categories() {
-      return this.shopInfo[this.categoryKey] || [];
-    },
+      return !categories.value.find((category: string) => category === newEntry.value);
+    });
+
+    const handleAdd = () => {
+      console.log("***", newEntry.value);
+      const copyCategories = categories.value.concat();
+      copyCategories.push(newEntry.value);
+      context.emit("updated", copyCategories);
+      newEntry.value = "";
+    };
+    const handleDelete = (index: number) => {
+      const copyCategories = categories.value.concat();
+      copyCategories.splice(index, 1);
+      context.emit("updated", copyCategories);
+    };
+
+    return {
+      isVisible,
+      newEntry,
+      isValidEntry,
+      categories,
+      handleAdd,
+      handleDelete,
+    };
+
   },
-  methods: {
-    handleAdd() {
-      console.log("***", this.newEntry);
-      const categories = this.categories;
-      categories.push(this.newEntry);
-      this.$emit("updated", categories);
-      this.newEntry = "";
-    },
-    handleDelete(index) {
-      const categories = this.categories;
-      categories.splice(index, 1);
-      this.$emit("updated", categories);
-    },
-  },
-};
+});
 </script>
