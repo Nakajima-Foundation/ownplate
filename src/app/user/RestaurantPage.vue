@@ -391,7 +391,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
   ref,
@@ -400,6 +400,7 @@ import {
   computed,
   onBeforeMount,
   onUnmounted,
+  PropType,
 } from "vue";
 
 import moment from "moment-timezone";
@@ -445,6 +446,9 @@ import { order_status } from "@/config/constant";
 
 import { ownPlateConfig, moTitle, moPickup } from "@/config/project";
 import * as analyticsUtil from "@/lib/firebase/analytics";
+
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { AnalyticsMenuData } from "@/lib/firebase/analytics";
 
 import {
   array2obj,
@@ -502,7 +506,7 @@ export default defineComponent({
   },
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
     paymentInfo: {
@@ -564,8 +568,8 @@ export default defineComponent({
     const waitForUser = ref(false);
     const noAvailableTime = ref(false);
 
-    const orders = ref({});
-    const cartItems = ref({});
+    const orders = ref<{[key: string]: number[]}>({});
+    const cartItems = ref<{[key: string]: any}>({});
     const selectedOptions = ref({});
 
     const multiple = store.getters.stripeRegion.multiple;
@@ -574,7 +578,7 @@ export default defineComponent({
 
     const defaultHowToReceive = (() => {
       // for 333
-      const rId = route.params.restaurantId;
+      const rId = route.params.restaurantId as string;
       if (store.state.carts[rId]) {
         const cart = store.state.carts[rId] || {};
         if (cart.howtoreceive) {
@@ -596,10 +600,10 @@ export default defineComponent({
       hasCategory,
       showCategory,
       showSubCategory,
-    } = useCategoryParams(isInMo.value);
+    } = useCategoryParams(isInMo.value || false);
 
     const restaurantId = computed(() => {
-      return route.params.restaurantId;
+      return route.params.restaurantId as string;
     });
     const menuId = computed(() => {
       return route.params.menuId;
@@ -685,7 +689,7 @@ export default defineComponent({
         return preOrderPublics.value[subCategory.value] || {};
       }
     });
-    const moSoldOutDataSet = computed(() => {
+    const moSoldOutDataSet = computed<{[key: string]: any}>(() => {
       if (isPickup.value) {
         return pickupStocks.value[subCategory.value] || {};
       }
@@ -720,7 +724,7 @@ export default defineComponent({
 
     watch(menus, (values) => {
       analyticsUtil.sendMenuListView(
-        values,
+        values as AnalyticsMenuData[],
         props.shopInfo,
         restaurantId.value
       );
@@ -756,10 +760,10 @@ export default defineComponent({
 
     const { loadTitle, titles, titleLists } = useTitles(restaurantId);
 
-    const { loadCategory, categoryData } = useCategory(props.moPrefix);
+    const { loadCategory, categoryData } = useCategory(props.moPrefix || "");
 
     const { subCategoryData, loadSubcategory } = useSubcategory(
-      props.moPrefix,
+      props.moPrefix || "",
       category
     );
 
@@ -863,7 +867,7 @@ export default defineComponent({
         orders.value,
         cartItems.value,
         selectedOptions.value
-      );
+      ) as any;
     });
     const postOptions = computed(() => {
       return getPostOption(trimmedSelectedOptions.value, cartItems.value);
@@ -877,12 +881,13 @@ export default defineComponent({
       );
     });
 
-    const didOrderdChange = (eventArgs) => {
+    const didOrderdChange = (eventArgs: {quantities: number | number[], itemId: string, optionValues: string}) => {
       // NOTE: We need to assign a new object to trigger computed properties
       if (eventArgs.quantities) {
         cartItems.value[eventArgs.itemId] = menuObj.value[eventArgs.itemId];
         const newObject = { ...orders.value };
-        if (arraySum(eventArgs.quantities) > 0) {
+        if (arraySum(eventArgs.quantities as number[]) > 0) {
+          // @ts-ignore
           newObject[eventArgs.itemId] = eventArgs.quantities;
         } else {
           delete newObject[eventArgs.itemId];
@@ -954,9 +959,9 @@ export default defineComponent({
         });
 
         try {
-          const checkoutMenus = [];
+          const checkoutMenus: AnalyticsMenuData[] = [];
           Object.keys(orders.value).forEach((menuId) => {
-            orders.value[menuId].forEach((quantity) => {
+            orders.value[menuId].forEach((quantity: number) => {
               const menu = Object.assign({}, cartItems.value[menuId]);
               menu.quantity = quantity;
               checkoutMenus.push(menu);
@@ -985,7 +990,7 @@ export default defineComponent({
             path: `/r/${restaurantId.value}/order/${res.id}`,
           });
         }
-      } catch (error) {
+      } catch (error: any) {
         if (error.code === "permission-denied" && retryCount.value < 3) {
           retryCount.value++;
           console.log("retrying:", retryCount.value);
@@ -1127,7 +1132,6 @@ export default defineComponent({
             return item && item.id;
           }) || []
       ).filter((title) => title.name !== "");
-      return ret;
     });
 
     return {

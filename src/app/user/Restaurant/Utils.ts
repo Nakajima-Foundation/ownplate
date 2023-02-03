@@ -201,7 +201,7 @@ export const useAllSubcategory = (moPrefix: string) => {
 
 export const useMenu = (
   restaurantId: Ref<string>,
-  isInMo: ComputedRef<boolean>,
+  isInMo: ComputedRef<boolean | null>,
   category: Ref<string>,
   subCategory: Ref<string>,
   groupData: any

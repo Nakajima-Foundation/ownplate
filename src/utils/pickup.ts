@@ -17,7 +17,7 @@ export const usePickupTime = (
   shopInfo: RestaurantInfoData,
   exceptData: any,
   menuObj: Ref<{ [key: string]: MenuData }>,
-  isInMo: boolean,
+  isInMo: boolean | null,
   isMoPickup: null | ComputedRef<boolean>
 ) => {
   const store = useStore();
