@@ -40,7 +40,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
   ref,
@@ -56,6 +56,7 @@ import {
   where,
   orderBy,
   limit,
+  Unsubscribe,
 } from "firebase/firestore";
 
 import OrderedInfo from "@/app/admin/Order/OrderedInfo.vue";
@@ -67,6 +68,8 @@ import { useBasePath, useTopPath, useIsInMo, getMoPrefix } from "@/utils/utils";
 
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+
+import { OrderInfoData } from "@/models/orderInfo";
 
 export default defineComponent({
   metaInfo() {
@@ -83,7 +86,7 @@ export default defineComponent({
     const store = useStore();
     const router = useRouter();
 
-    const orders = ref([]);
+    const orders = ref<OrderInfoData[]>([]);
 
     const basePath = useBasePath();
     const topPath = useTopPath();
@@ -99,7 +102,7 @@ export default defineComponent({
       return !uid.value;
     });
 
-    let detacher = null;
+    let detacher: Unsubscribe | null = null;
     const detach = () => {
       detacher && detacher();
       detacher = null;
@@ -137,7 +140,7 @@ export default defineComponent({
               if (order.timeEstimated) {
                 order.timeEstimated = order.timeEstimated.toDate();
               }
-              return order;
+              return order as OrderInfoData;
             })
             .filter((data) => {
               if (isInMo.value) {
@@ -150,7 +153,7 @@ export default defineComponent({
       }
     };
 
-    const handleDismissed = (success) => {
+    const handleDismissed = (success: boolean) => {
       console.log("handleDismissed", success);
       if (success) {
         loginVisible.value = false;
@@ -159,7 +162,7 @@ export default defineComponent({
       }
     };
 
-    const orderSelected = (order) => {
+    const orderSelected = (order: OrderInfoData) => {
       const path =
         basePath.value + "/r/" + order.restaurantId + "/order/" + order.id;
       router.push({

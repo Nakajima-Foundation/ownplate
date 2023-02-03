@@ -72,6 +72,8 @@ export interface OrderInfoData {
   
   customerInfo: CustomerInfo;
   memo: string;
+
+  groupId?: string; // mo
 }
 
 export interface OrderItemData {
