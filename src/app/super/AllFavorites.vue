@@ -19,60 +19,66 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent, onMounted, ref } from "vue";
 import { db } from "@/plugins/firebase";
 
-export default {
+import { useSuper } from "@/utils/utils";
+
+export default defineComponent({
   metaInfo() {
     return {
       title: [this.defaultTitle, "Super All Favorites"].join(" / "),
     };
   },
-  data() {
-    return {
-      reviews: [],
-      isLoading: false,
-      last: null,
-    };
-  },
-  async created() {
-    await this.loadData();
-  },
-  methods: {
-    async loadData() {
-      if (!this.isLoading) {
-        this.isLoading = true;
+  setup() {
+    useSuper();
+    
+    const reviews = ref([]);
+    const last = ref(null)
+    let isLoading = false
+
+    const loadData = async () => {
+      if (!isLoading) {
+        isLoading = true;
         let query = db
           .collectionGroup("reviews")
           .orderBy("timeLiked", "desc")
           .limit(500);
-        if (this.last) {
-          query = query.startAfter(this.last);
+        if (last.value) {
+          query = query.startAfter(last.value);
         }
         const snapshot = await query.get();
 
         if (!snapshot.empty) {
-          this.last = snapshot.docs[snapshot.docs.length - 1];
+          last.value = snapshot.docs[snapshot.docs.length - 1];
           let i = 0;
           for (; i < snapshot.docs.length; i++) {
             const doc = snapshot.docs[i];
             const userId = doc.ref.path.split("/")[1];
             const review = doc.data();
             review.uid = userId;
-            this.reviews.push(review);
+            reviews.value.push(review);
           }
         } else {
-          this.last = null;
+          last.value = null;
         }
       }
-      this.isLoading = false;
-    },
+      isLoading = false;
+    };
+    loadData();
 
-    async nextLoad() {
-      if (this.last) {
-        this.loadData();
+    const nextLoad = () => {
+      if (last.value) {
+        loadData();
       }
-    },
+    };
+    return {
+      reviews,
+      nextLoad,
+      last,
+    };
+
   },
-};
+});
 </script>
