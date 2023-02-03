@@ -88,7 +88,7 @@ export default defineComponent({
     const router = useRouter();
 
     const email = ref("");
-    const badEmail = "---invalid---";
+    let badEmail = "---invalid---";
     const apiError = ref(null);
     const emailSent = ref(false);
     const submitted = ref(false);
