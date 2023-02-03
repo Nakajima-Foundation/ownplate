@@ -146,9 +146,7 @@ export default defineComponent({
 
     const handleDismissed = (success) => {
       console.log("handleDismissed", success);
-      if (success) {
-        loginVisible.value = false;
-      } else {
+      if (!success) {
         ctx.root.$router.push(topPath.value);
       }
     };
