@@ -19,8 +19,7 @@ import BackButton from "@/components/BackButton";
 import { db } from "@/plugins/firebase";
 import { stripeActionStrings } from "@/lib/stripe/stripe";
 
-import { useStore } from "vuex";
-import { useRouter } from "vue-router";
+import { useSuper } from "@/utils/utils";
 
 export default {
   components: {
@@ -32,18 +31,12 @@ export default {
     };
   },
   setup () {
-    const store = useStore();
-    const router = useRouter();
+    useSuper();
 
     const logs = ref([]);
     let detacher = null;
     const last = ref(null);
 
-    onMounted(() => {
-      if (!store.state.user || store.getters.isNotSuperAdmin) {
-        router.push("/");
-      }
-    });
     detacher = db
       .collectionGroup("stripeLogs")
       .orderBy("created", "desc")

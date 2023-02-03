@@ -1,4 +1,4 @@
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import firebase from "firebase/app";
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -28,7 +28,7 @@ import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import isURL from "validator/lib/isURL";
 import isLatLong from "validator/lib/isLatLong";
 
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { useI18n } from "vue-i18n";
 
@@ -899,4 +899,15 @@ export const haversine_distance = (lat1: number, lng1: number, lat2: number, lng
           )
         );
   return Math.round(d * 1000);
+};
+
+export const useSuper = () => {
+  const store = useStore();
+  const router = useRouter();
+
+  onMounted(() => {
+    if (!store.state.user || store.getters.isNotSuperAdmin) {
+      router.push("/");
+    }
+  });
 };
