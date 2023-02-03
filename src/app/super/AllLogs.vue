@@ -20,11 +20,21 @@
   </section>
 </template>
 
-<script>
-import BackButton from "@/components/BackButton";
-import { db } from "@/plugins/firebase";
+<script lang="ts">
+import { defineComponent, onUnmounted, ref } from "vue";
+import BackButton from "@/components/BackButton.vue";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  onSnapshot,
+  query,
+  collectionGroup,
+  orderBy,
+  limit,
+} from "firebase/firestore";
 
-export default {
+import { useSuper } from "@/utils/utils";
+
+export default defineComponent({
   metaInfo() {
     return {
       title: [this.defaultTitle, "Super All Log"].join(" / "),
@@ -33,33 +43,34 @@ export default {
   components: {
     BackButton,
   },
-  data() {
-    return {
-      logs: [],
-      detacher: null,
-    };
-  },
-  async mounted() {
-    if (!this.$store.state.user || this.$store.getters.isNotSuperAdmin) {
-      this.$router.push("/");
-    }
-  },
-  created() {
-    this.detatcher = db
-      .collectionGroup("adminlogs")
-      .orderBy("createdAt", "desc")
-      .limit(100)
-      .onSnapshot((snapshot) => {
-        this.logs = snapshot.docs.map((doc) => {
+  setup () {
+    useSuper();
+
+    const logs = ref<any[]>([]);
+    let detacher: any = null;
+
+    detacher = onSnapshot(
+      query(
+        collectionGroup(db, "adminlogs"),
+        orderBy("createdAt", "desc"),
+        limit(100),
+      ),
+      (snapshot) => {
+        logs.value = snapshot.docs.map((doc) => {
           const log = doc.data();
           log.id = doc.id;
           log.createdAt = log.createdAt.toDate();
           return log;
         });
       });
+
+    onUnmounted(() => {
+      detacher && detacher();
+    });
+
+    return {
+      logs,
+    };
   },
-  destroyed() {
-    this.detatcher && this.detatcher();
-  },
-};
+});
 </script>
