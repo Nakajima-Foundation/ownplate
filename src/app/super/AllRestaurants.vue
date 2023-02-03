@@ -103,21 +103,23 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
 // TODO: 通知の状況もわかるようにする
 //
+import { defineComponent, onMounted, ref, computed } from "vue";
 import { db } from "@/plugins/firebase";
-
-import superMixin from "@/mixins/SuperMixin";
 
 import { doc2data } from "@/utils/utils";
 
 import BackButton from "@/components/BackButton.vue";
 import DownloadCsv from "@/components/DownloadCSV.vue";
-// import DownloadMenu from "@/app/admin/MenuListPage/DownloadCSV.vue";
+import DownloadMenu from "@/app/admin/MenuListPage/DownloadCSV.vue";
 
-export default {
-  mixins: [superMixin],
+import { useI18n } from "vue-i18n";
+import { getBackUrl, superPermissionCheck } from "@/utils/utils";
+import moment from "moment-timezone";
+
+export default defineComponent({
   metaInfo() {
     return {
       title: [this.defaultTitle, "Super All Restaurants"].join(" / "),
@@ -126,46 +128,70 @@ export default {
   components: {
     BackButton,
     DownloadCsv,
-    //    DownloadMenu,
+    DownloadMenu,
   },
   data() {
     return {
-      restaurants: [],
-      isLoading: false,
       last: null,
     };
   },
-  async mounted() {
-    this.superPermissionCheck();
-  },
-  async created() {
-    await this.loadData();
-  },
-  computed: {
-    fileName() {
-      return "restaurant";
-    },
-    fields() {
-      return [
-        "date",
-        "restaurantName",
-        "state",
-        "onTheList",
-        "publicFlag",
-        "deletedFlag",
-        "menu",
-        "uid",
-      ];
-    },
-    fieldNames() {
-      return this.fields.map((field) => {
-        return this.$t(`restaurantCsv.${field}`);
-      });
-    },
-    tableData() {
-      return this.restaurants.map((restaurant) => {
+  setup() {
+    const { t } = useI18n({ useScope: 'global' });
+    let isLoading = false;
+    const restaurants = ref([]);
+    const last = ref(null);
+
+    superPermissionCheck();
+    
+    const loadData = async () => {
+      if (!isLoading) {
+        isLoading = true;
+        let query = db
+          .collection("restaurants")
+          .orderBy("createdAt", "desc")
+          .limit(100);
+        if (last.value) {
+          query = query.startAfter(last.value);
+        }
+        const snapshot = await query.get();
+        if (!snapshot.empty) {
+          last.value = snapshot.docs[snapshot.docs.length - 1];
+          snapshot.docs.map(doc2data("resuatraut")).forEach((data) => {
+            restaurants.value.push(data);
+          });
+        } else {
+          last.value = null;
+        }
+      }
+      isLoading = false;
+    };
+    const nextLoad = () => {
+      if (last.value) {
+        loadData();
+      }
+    };
+    const allLoad = async () => {
+      // TODO
+      while (last.value) {
+        await loadData();
+      }
+    };
+    loadData();
+
+    const fields = [
+      "date",
+      "restaurantName",
+      "state",
+      "onTheList",
+      "publicFlag",
+      "deletedFlag",
+      "menu",
+      "uid",
+    ];
+    const tableData = computed(() => {
+      return restaurants.value.map((restaurant) => {
         return {
-          date: this.moment(restaurant.createdAt.toDate()).format("YYYY/MM/DD"),
+          date: moment(restaurant.createdAt.toDate()).format("YYYY/MM/DD"),
           restaurantName: restaurant.restaurantName,
           state: restaurant.state,
           onTheList: restaurant.onTheList ? 1 : 0,
@@ -175,41 +201,23 @@ export default {
           uid: restaurant.uid,
         };
       });
-    },
-  },
-  methods: {
-    async loadData() {
-      if (!this.isLoading) {
-        this.isLoading = true;
-        let query = db
-          .collection("restaurants")
-          .orderBy("createdAt", "desc")
-          .limit(100);
-        if (this.last) {
-          query = query.startAfter(this.last);
-        }
-        const snapshot = await query.get();
-        if (!snapshot.empty) {
-          this.last = snapshot.docs[snapshot.docs.length - 1];
-          snapshot.docs.map(doc2data("resuatraut")).forEach((data) => {
-            this.restaurants.push(data);
-          });
-        } else {
-          this.last = null;
-        }
-      }
-      this.isLoading = false;
-    },
-    async nextLoad() {
-      if (this.last) {
-        this.loadData();
-      }
-    },
-    async allLoad() {
-      while (this.last) {
-        await this.loadData();
-      }
-    },
-  },
-};
+    });
+
+    return {
+      fileName:  "restaurant",
+      fields,
+      fieldNames: fields.map((field) => {
+        return t(`restaurantCsv.${field}`);
+      }),
+      tableData,
+      restaurants,
+      last,
+
+      nextLoad,
+      allLoad,
+
+      backUrl: getBackUrl(),
+    };
+}
+});
 </script>

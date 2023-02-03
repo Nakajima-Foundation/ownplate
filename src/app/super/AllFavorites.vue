@@ -34,8 +34,8 @@ export default defineComponent({
   setup() {
     useSuper();
     
-    const reviews = ref([]);
-    const last = ref(null)
+    const reviews = ref<any[]>([]);
+    const last = ref<any>(null)
     let isLoading = false
 
     const loadData = async () => {

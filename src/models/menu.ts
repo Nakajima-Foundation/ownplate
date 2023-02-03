@@ -7,6 +7,7 @@ export interface MenuImages {
       [key: string]: string;
     };
     original: string;
+    path?: string;
   };
 }
 

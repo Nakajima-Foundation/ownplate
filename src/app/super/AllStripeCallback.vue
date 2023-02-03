@@ -15,13 +15,13 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, onUnmounted, ref } from "vue";
-import BackButton from "@/components/BackButton";
+import BackButton from "@/components/BackButton.vue";
 import { db } from "@/plugins/firebase";
 import { stripeActionStrings } from "@/lib/stripe/stripe";
 
 import { useSuper } from "@/utils/utils";
 
-export default {
+export default defineComponent({
   components: {
     BackButton,
   },
@@ -33,9 +33,9 @@ export default {
   setup () {
     useSuper();
 
-    const logs = ref([]);
-    let detacher = null;
-    const last = ref(null);
+    const logs = ref<any[]>([]);
+    let detacher: any = null;
+    const last = ref<any>(null);
 
     detacher = db
       .collectionGroup("stripeLogs")
@@ -79,5 +79,5 @@ export default {
       nextLoad,
     };
   }
-};
+});
 </script>

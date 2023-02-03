@@ -911,3 +911,30 @@ export const useSuper = () => {
     }
   });
 };
+
+// for super
+export const isSuperPage = () => {
+  return location.pathname.startsWith("/s/");
+};
+export const getBackUrl = () => {
+  return isSuperPage() ? "/s" : "/op";
+};
+
+export const superPermissionCheck = () => {
+  const store = useStore();
+  const router = useRouter();
+  if (isSuperPage()) {
+    if (!store.state.user || store.getters.isNotSuperAdmin) {
+      router.push("/");
+    }
+  } else {
+    if (
+      !store.state.user ||
+        (store.getters.isNotSuperAdmin &&
+          store.getters.isNotOperator)
+    ) {
+      router.push("/");
+    }
+  }
+};
+

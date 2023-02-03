@@ -18,6 +18,7 @@ import { db } from "@/plugins/firebase";
 import { stripeActionStrings } from "@/lib/stripe/stripe";
 
 import { useSuper } from "@/utils/utils";
+import { useRoute } from "vue-router";
 
 export default defineComponent({
   metaInfo() {
@@ -30,8 +31,9 @@ export default defineComponent({
   },
   setup () {
     useSuper();
+    const route = useRoute();
     
-    const log = ref(null);
+    const log = ref<any>(null);
 
     const logUid =  route.params.uid;
     const logId = route.params.logId;

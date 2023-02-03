@@ -38,7 +38,6 @@ export default defineComponent({
       );
       collectionData.docs.map((doc) => {
         const menu = doc.data();
-        console.log();
         const data = {
           productName: menu.itemName,
           productPriceWithTax: menu.price,
@@ -49,7 +48,7 @@ export default defineComponent({
           subcategoryId: menu.subCategory,
           productExplanation: menu.itemDescription,
           productNameAlias: menu.itemAliasesName,
-          productImagePath: menu.images.item.path,
+          productImagePath: menu.images?.item?.path,
           noPublish: !menu.publicFlag ? 1 : 0,
           outofstock: menu.soldOut ? 1 : 0,
           delete: menu.deletedFlag ? 1 : 0,
