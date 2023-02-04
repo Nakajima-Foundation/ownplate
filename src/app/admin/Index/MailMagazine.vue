@@ -20,13 +20,10 @@
 </template>
 
 <script lang="ts">
-// import firebase from "firebase/compat/app";
-import { DocumentData } from "firebase/firestore";
-
 import { defineComponent, ref, computed, watch } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, DocumentData } from "firebase/firestore";
 import { useStore } from "vuex";
 
 export default defineComponent({

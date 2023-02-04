@@ -33,9 +33,6 @@
 </template>
 
 <script lang="ts">
-import firebase from "firebase/compat/app";
-import { DocumentData } from "firebase/firestore";
-
 import { defineComponent, ref } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
@@ -45,6 +42,7 @@ import {
   query,
   getDocs,
   documentId,
+  DocumentData,
 } from "firebase/firestore";
 
 export default defineComponent({

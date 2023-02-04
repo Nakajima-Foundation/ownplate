@@ -383,8 +383,6 @@
 </template>
 
 <script>
-import firebase from "firebase/compat/app";
-
 import ShopHeader from "@/app/user/Restaurant/ShopHeader.vue";
 import FavoriteButton from "@/app/user/Restaurant/FavoriteButton.vue";
 
@@ -403,7 +401,7 @@ import OrderPageMap from "@/app/user/OrderPage/BeforePaid/Map.vue";
 import ButtonLoading from "@/components/Button/Loading.vue";
 
 import { db } from "@/lib/firebase/firebase9";
-import { doc, getDoc, deleteDoc } from "firebase/firestore";
+import { doc, getDoc, deleteDoc, Timestamp } from "firebase/firestore";
 
 import { orderPlace } from "@/lib/firebase/functions";
 
@@ -625,7 +623,7 @@ export default {
         }
       }
       const timeToPickup = this.shopInfo.isEC
-        ? firebase.firestore.Timestamp.now()
+        ? Timestamp.now()
         : this.$refs.time.timeToPickup();
       try {
         if (payStripe) {
