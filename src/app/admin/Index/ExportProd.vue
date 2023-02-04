@@ -10,10 +10,10 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from "vue";
 import { db } from "@/lib/firebase/firebase9";
-import { doc, getDocs, collection } from "firebase/firestore";
+import { doc, getDocs, collection, DocumentData } from "firebase/firestore";
 
 import { data2csv } from "@/utils/csv";
 import { useI18n } from "vue-i18n";
@@ -24,7 +24,7 @@ import { useStore } from "vuex";
 export default defineComponent({
   props: {
     restaurantLists: {
-      type: Array,
+      type: Array<string>,
       required: true,
     },
     restaurantItems: {
@@ -36,7 +36,7 @@ export default defineComponent({
     const { t } = useI18n({ useScope: 'global' });
     const store = useStore();
 
-    let csvData = [];
+    let csvData: {[key: string]: {[key: string]: any}} = {};
     let loading = false;
     const download = async () => {
       if (loading) {
@@ -46,7 +46,7 @@ export default defineComponent({
       store.commit("setLoading", true);
       csvData = {};
 
-      const downloadAct = (data) => {
+      const downloadAct = (data: any) => {
         const blob = new Blob([data], {
           type: `application/csv`,
         });
@@ -55,7 +55,7 @@ export default defineComponent({
         link.download = `productsList.csv`;
         link.click();
       };
-      const parseMenuData = (a, restaurantId, shopId) => {
+      const parseMenuData = (a: DocumentData, restaurantId: string, shopId: string) => {
         const menuId = a.id;
         if (!csvData[shopId][menuId]) {
           csvData[shopId][menuId] = {
@@ -67,7 +67,7 @@ export default defineComponent({
         const productId = a.data().productId || menuId;
         csvData[shopId][menuId]["productId"] = productId;
       };
-      const parseData = (a, restaurantId, shopId, type) => {
+      const parseData = (a: DocumentData, restaurantId: string, shopId: string, type: string) => {
         const data = a.data();
         // console.log(data);
         Object.keys(data.data).forEach((menuId) => {
@@ -145,7 +145,7 @@ export default defineComponent({
         );
       }
       console.log(csvData);
-      const tableData = [];
+      const tableData: any[] = [];
       Object.keys(csvData).forEach((shopId) => {
         Object.keys(csvData[shopId]).forEach((menuId) => {
           const data = csvData[shopId][menuId];
