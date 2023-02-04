@@ -183,7 +183,17 @@
 </template>
 
 <script>
-import { db, firestore } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  doc,
+  getDocs,
+  collection,
+  collectionGroup,
+  query,
+  where,
+  limit,
+  orderBy,
+} from "firebase/firestore";
 import {
   defineComponent,
   ref,
@@ -363,11 +373,13 @@ export default defineComponent({
       ].join("-");
     });
 
-    db.collection("restaurants")
-      .where("uid", "==", ownerUid.value)
-      .where("deletedFlag", "==", false)
-      .get()
-      .then((collect) => {
+    getDocs(
+      query(
+        collection(db, "restaurants"),
+        where("uid", "==", ownerUid.value),
+        where("deletedFlag", "==", false),
+      )
+    ).then((collect) => {
         restaurants.value = collect.docs.reduce((tmp, rest) => {
           tmp[rest.id] = rest.data();
           return tmp;
@@ -402,13 +414,14 @@ export default defineComponent({
 
     const updateQuery = async () => {
       const key = formValue.queryKey;
-      const query = db
-        .collectionGroup("orders")
-        .where("ownerUid", "==", uid.value)
-        .where(key, ">=", momentMin.value.toDate())
-        .where(key, "<", momentMax.value.toDate());
-
-      const snapshot = await query.orderBy(key).get();
+      const myQuery = query(
+        collectionGroup(db, "orders"),
+        where("ownerUid", "==", uid.value),
+        where(key, ">=", momentMin.value.toDate()),
+        where(key, "<", momentMax.value.toDate()),
+        orderBy(key)
+      );
+      const snapshot = await getDocs(myQuery);
       const serviceTaxRate = 0.1;
 
       orders.value = snapshot.docs
