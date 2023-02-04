@@ -119,7 +119,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref, onUnmounted, watch } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
@@ -132,6 +132,8 @@ import {
   where,
   orderBy,
   collectionGroup,
+  Unsubscribe,
+  DocumentData,
 } from "firebase/firestore";
 
 import {
@@ -142,6 +144,7 @@ import {
 import { doc2data, array2obj, useAdminUids } from "@/utils/utils";
 
 import BackButton from "@/components/BackButton.vue";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -159,11 +162,11 @@ export default defineComponent({
     const store = useStore();
     const router = useRouter();
 
-    const restaurantObj = ref({});
-    const children = ref([]);
-    const detachers = [];
-    const messages = ref([]);
-    const errors = ref([]);
+    const restaurantObj = ref<{[key: string]: RestaurantInfoData}>({});
+    const children = ref<DocumentData[]>([]);
+    const detachers: Unsubscribe[] = [];
+    const messages = ref<DocumentData[]>([]);
+    const errors = ref<string[]>([]);
     const email = ref("");
     const name = ref("");
     const sending = ref(false);
@@ -180,7 +183,7 @@ export default defineComponent({
     ).then((restaurantCollection) => {
         restaurantObj.value = array2obj(
           restaurantCollection.docs.map(doc2data("restaurant"))
-        );
+        ) as {[key: string]: RestaurantInfoData};
       });
     const childDetacher = onSnapshot(
       collection(db, `admins/${uid.value}/children`),
@@ -208,7 +211,7 @@ export default defineComponent({
       }
     });
 
-    const deleteChild = (childId) => {
+    const deleteChild = (childId: string) => {
       store.commit("setAlert", {
         code: "admin.subAccounts.confirmDeletechild",
         callback: async () => {
@@ -218,7 +221,7 @@ export default defineComponent({
         },
       });
     };
-    const rList = (restaurantLists) => {
+    const rList = (restaurantLists: string[]) => {
       return (restaurantLists || [])
         .map((r) => {
           return restaurantObj.value[r]?.restaurantName;
@@ -234,7 +237,7 @@ export default defineComponent({
         const res = await subAccountInvite({
           email: email.value,
           name: name.value,
-        });
+        }) as any;
         if (res.data.result) {
           router.push(
             "/admin/subAccounts/accounts/" + res.data.childUid
