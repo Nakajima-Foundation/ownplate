@@ -193,7 +193,6 @@
 </template>
 
 <script lang="ts">
-<script>
 import { db } from "@/lib/firebase/firebase9";
 import { doc, query, collection, where, orderBy, onSnapshot } from "firebase/firestore";
 
