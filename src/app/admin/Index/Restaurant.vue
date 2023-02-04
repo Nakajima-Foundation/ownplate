@@ -391,9 +391,8 @@ import {
   deleteDoc,
   onSnapshot,
   Unsubscribe,
+  serverTimestamp,
 } from "firebase/firestore";
-
-import firebase from "firebase/compat/app";
 
 import { useStore } from "vuex";
 
@@ -499,7 +498,7 @@ export default defineComponent({
       setDoc(doc(db, `requestList/${props.restaurantid}`), {
         status: 1,
         uid: store.getters.uidAdmin,
-        created: firebase.firestore.FieldValue.serverTimestamp(),
+        created: serverTimestamp(),
       });
     };
     const requestDelete = () => {

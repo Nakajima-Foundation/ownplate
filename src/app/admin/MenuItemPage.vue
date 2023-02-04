@@ -588,8 +588,6 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 
-import firebase from "firebase/compat/app";
-
 import NotFound from "@/components/NotFound.vue";
 import BackButton from "@/components/BackButton.vue";
 import Price from "@/components/Price.vue";
@@ -848,7 +846,7 @@ export default defineComponent({
             callback: async () => {
               const newItem = newItemData();
               newItem.publicFlag = false;
-              newItem.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+              newItem.createdAt = serverTimestamp();
               newItem.deletedFlag = false;
               newItem.uid = store.getters.uidAdmin;
 

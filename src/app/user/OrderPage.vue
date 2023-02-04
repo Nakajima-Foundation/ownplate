@@ -57,7 +57,6 @@ import {
   watch,
   PropType,
 } from "vue";
-import firebase from "firebase/compat/app";
 import moment from "moment-timezone";
 
 import NotFound from "@/components/NotFound.vue";

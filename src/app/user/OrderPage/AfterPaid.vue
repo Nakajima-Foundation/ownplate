@@ -216,8 +216,6 @@
 </template>
 
 <script>
-import firebase from "firebase/compat/app";
-
 import ShopHeader from "@/app/user/Restaurant/ShopHeader.vue";
 import ShopInfo from "@/app/user/Restaurant/ShopInfo.vue";
 import FavoriteButton from "@/app/user/Restaurant/FavoriteButton.vue";

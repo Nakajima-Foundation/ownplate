@@ -44,7 +44,10 @@ import {
 } from "vue";
 
 import moment from "moment-timezone";
-import firebase from "firebase/compat/app";
+import {
+  Timestamp,
+} from "firebase/firestore";
+
 import { isNull, useIsInMo } from "@/utils/utils";
 import { usePickupTime } from "@/utils/pickup";
 
@@ -166,8 +169,8 @@ export default defineComponent({
       const date = days.value[dayIndex.value].date;
       date.setHours(time.value / 60);
       date.setMinutes(time.value % 60);
-      const ts = firebase.firestore.Timestamp.fromDate(date);
-      return new firebase.firestore.Timestamp(ts.seconds, ts.nanoseconds);
+      const ts = Timestamp.fromDate(date);
+      return new Timestamp(ts.seconds, ts.nanoseconds);
     };
     return {
       // called by parent

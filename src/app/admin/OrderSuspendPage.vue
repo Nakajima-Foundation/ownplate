@@ -107,7 +107,6 @@ import {
   updateDoc,
   Timestamp,
 } from "firebase/firestore";
-import firebase from "firebase/compat/app";
 
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 import NotFound from "@/components/NotFound.vue";
