@@ -108,7 +108,6 @@ export default defineComponent({
   },
   setup(props) {
     const { t } = useI18n({ useScope: 'global' });
-    const customers = ref({});
     const writeonFirstLine = (index, key, text) => {
       return (index === 0 && Number(key) === 0) || props.isInMo ? text : "-";
     };
@@ -121,12 +120,12 @@ export default defineComponent({
       }
       return moment(timeData).format("YYYY/MM/DD HH:mm");
     };
-
+    
     const formulas = {
       count: "sum",
       total: "sum",
     };
-
+    
     const fields = computed(() => {
       return reportHeadersForMo;
     });
@@ -135,17 +134,9 @@ export default defineComponent({
         return t(`order.${field}`);
       });
     });
-    const mergedOrder = computed(() => {
-      return props.orders.map((o) => {
-        if (customers.value[o.id]) {
-          o.customerInfo = o.customerInfo || customers.value[o.id] || {};
-        }
-        return o;
-      });
-    });
     const tableData = computed(() => {
       const items = [];
-      mergedOrder.value.forEach((order) => {
+      props.orders.forEach((order) => {
         const shopInfo = props.shopObj[order.restaurantId];
         const ids = Object.keys(order.order);
         const status = Object.keys(order_status).reduce((result, key) => {
