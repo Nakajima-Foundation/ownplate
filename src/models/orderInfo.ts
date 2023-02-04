@@ -16,6 +16,9 @@ export interface OrderMenuItemData {
   exceptDay: any;
   exceptHour: any;
   tax: string;
+  productId: string; //mo
+  category: string; //mo
+  subCategory: string; //mo
 }
 export interface OrderInfoData {
   id: string;
@@ -33,7 +36,8 @@ export interface OrderInfoData {
   timeEstimated: Timestamp; // TODO firestore timestamp
   timeConfirmed: Timestamp;
   timePlaced: Timestamp;
-
+  transactionCompletedAt: Timestamp;
+  
   status: number;
   restaurant: RestaurantInfoData; // ?
   restaurantId: string; // ?
@@ -67,9 +71,10 @@ export interface OrderInfoData {
   prices: any;
   orderPlacedAt: Timestamp;
   orderUpdatedAt: Timestamp;
+  orderAcceptedAt: Timestamp;
   lastUpdatedAt: Timestamp;
   orderCustomerCanceledAt: Timestamp;
-  
+
   customerInfo: CustomerInfo;
   memo: string;
 
