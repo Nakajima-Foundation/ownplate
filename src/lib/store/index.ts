@@ -1,10 +1,45 @@
 import { createStore } from "vuex";
 
 import { stripe_regions } from "@/config/constant";
+import { User } from "firebase/auth";
+import { OrderInfoData } from "@/models/orderInfo";
 import moment from "moment";
 
 export const strict = false;
 
+interface Claims {
+  admin: boolean;
+  operator: boolean;
+  groupId: string;
+  parentUid?: string;
+  liffId: string;
+};
+
+interface Dialog {
+  alert?: any,
+  error?: any,
+  tips?: any,
+};
+
+interface State {
+  user: undefined | boolean | User
+
+  claims: undefined | Claims;
+  lang: undefined | string;
+  date: Date;
+  carts: any;
+  server: any;
+  orderEvent: number;
+  orderObj: any;
+  soundEnable: boolean;
+  soundOn: boolean;
+  soundFile: string;
+  isWindowActive: boolean;
+  dialog: null | Dialog;
+  isLoading: boolean;
+  isFirefoxPBM: any;
+  openTime: Date,
+}
 export const state = () => ({
   user: undefined, // undefined:not authorized, null:no user
   claims: undefined, // custom claims
@@ -26,93 +61,93 @@ export const state = () => ({
 });
 
 export const getters = {
-  uid: (state) => {
-    return state.user && state.user.uid;
+  uid: (state: State) => {
+    return state.user && (state.user as User).uid;
   },
-  uidAdmin: (state) => {
-    return state.user && state.user.email && state.user.uid;
+  uidAdmin: (state: State) => {
+    return state.user && (state.user as User).email && (state.user as User).uid;
   },
-  uidUser: (state) => {
-    return state.user && state.user.phoneNumber && state.user.uid;
+  uidUser: (state: State) => {
+    return state.user && (state.user as User).phoneNumber && (state.user as User).uid;
   },
-  uidLiff: (state) => {
-    return state.user && state.claims.liffId && state.user.uid;
+  uidLiff: (state: State) => {
+    return state.user && (state.claims as Claims).liffId && (state.user as User).uid;
   },
-  liffId: (state) => {
-    return state.user && state.claims.liffId;
+  liffId: (state: State) => {
+    return state.user && state.claims?.liffId;
   },
-  grpupId: (state) => {
-    return state.user && state.claims.groupId;
+  grpupId: (state: State) => {
+    return state.user && state.claims?.groupId;
   },
-  isAnonymous: (state) => {
+  isAnonymous: (state: State) => {
     return state.user === undefined || state.user === null;
   },
   // TODO: remove
-  stripeRegion: (state) => {
+  stripeRegion: (state: State) => {
     return stripe_regions[state.server.region || "US"];
   },
-  isSuperAdmin: (state) => {
+  isSuperAdmin: (state: State) => {
     return state.claims?.admin;
   },
-  isNotSuperAdmin: (state) => {
+  isNotSuperAdmin: (state: State) => {
     return !state.claims?.admin;
   },
-  isOperator: (state) => {
+  isOperator: (state: State) => {
     return state.claims?.operator;
   },
-  isNotOperator: (state) => {
+  isNotOperator: (state: State) => {
     return !state.claims?.operator;
   },
-  isAdmin: (state) => {
-    return !!(state.user && state.user.email && state.user.uid);
+  isAdmin: (state: State) => {
+    return !!(state.user && (state.user as User).email && (state.user as User).uid);
   },
-  isSubAccount: (state) => {
+  isSubAccount: (state: State) => {
     return !!state.claims?.parentUid;
   },
-  parentId: (state) => {
+  parentId: (state: State) => {
     return state.claims?.parentUid;
   },
 };
 
 export const mutations = {
-  setActive(state, flag) {
+  setActive(state: State, flag: boolean) {
     state.isWindowActive = flag;
   },
-  setLoading(state, flag) {
+  setLoading(state: State, flag: boolean) {
     state.isLoading = flag;
   },
-  setUser(state, user) {
+  setUser(state: State, user: User) {
     state.user = user;
   },
-  updateDate(state) {
+  updateDate(state: State) {
     state.date = new Date();
   },
-  saveCart(state, payload) {
+  saveCart(state: State, payload: any) {
     console.log("saving cart", payload.id, payload.cart);
     // state.carts = {};
     state.carts[payload.id] = payload.cart;
   },
-  resetCart(state, restaurantId) {
+  resetCart(state: State, restaurantId: string) {
     console.log("reset cart", restaurantId);
     // state.carts = {};
     state.carts[restaurantId] = null;
   },
-  setServerConfig(state, config) {
+  setServerConfig(state: State, config: any) {
     state.server = config;
     console.log("store:setServerConfig", state.server.region);
   },
-  setLang(state, lang) {
+  setLang(state: State, lang: string) {
     state.lang = lang;
   },
-  setCustomClaims(state, claims) {
+  setCustomClaims(state: State, claims: Claims) {
     // Note: we can't copy user using Object.assign here
     state.claims = claims;
   },
-  pingOrderEvent(state) {
+  pingOrderEvent(state: State) {
     state.orderEvent = state.orderEvent + 1;
   },
-  setOrders(state, orders) {
-    state.orderObj = orders.reduce((tmp, order) => {
+  setOrders(state: State, orders: OrderInfoData[]) {
+    state.orderObj = orders.reduce((tmp: {[key: string]: OrderInfoData[] }, order: OrderInfoData) => {
       const day = moment(order.timePlaced.toDate()).format("YYYY-MM-DD");
       if (!tmp[day]) {
         tmp[day] = [];
@@ -121,28 +156,28 @@ export const mutations = {
       return tmp;
     }, {});
   },
-  soundEnable(state) {
+  soundEnable(state: State) {
     state.soundEnable = true;
   },
-  setSoundOn(state, flag) {
+  setSoundOn(state: State, flag: boolean) {
     state.soundOn = flag;
   },
-  setSoundFile(state, file) {
+  setSoundFile(state: State, file: string) {
     state.soundFile = file;
   },
-  resetDialog(state) {
+  resetDialog(state: State) {
     state.dialog = null;
   },
-  setAlert(state, params) {
+  setAlert(state: State, params: any) {
     state.dialog = { alert: params };
   },
-  setErrorMessage(state, params) {
+  setErrorMessage(state: State, params: any) {
     state.dialog = { error: params };
   },
-  setTips(state, params) {
+  setTips(state: State, params: any) {
     state.dialog = { tips: params };
   },
-  resetOpenTime(state) {
+  resetOpenTime(state: State) {
     state.openTime = new Date();
   },
 };
