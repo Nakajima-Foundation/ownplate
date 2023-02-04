@@ -116,7 +116,7 @@ import {
   query,
   collection,
   where,
-  updateDoc,
+  setDoc,
   deleteDoc,
   getDoc
 } from "firebase/firestore";
