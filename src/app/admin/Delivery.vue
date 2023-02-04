@@ -203,7 +203,7 @@
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
 import { notFoundResponse } from "@/utils/utils";
-import NotFound from "@/components/NotFound";
+import NotFound from "@/components/NotFound.vue";
 
 export default {
   components: {
