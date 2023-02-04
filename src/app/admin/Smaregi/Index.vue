@@ -96,13 +96,30 @@
 </template>
 
 <script>
+import {
+  defineComponent,
+  ref,
+  computed,
+} from "vue";
+
 import { smaregi } from "@/config/project";
-import { db } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
 import { smaregiStoreList } from "@/lib/firebase/functions";
 
 import { doc2data } from "@/utils/utils";
 
 import BackButton from "@/components/BackButton.vue";
+
+import {
+  doc,
+  getDocs,
+  query,
+  collection,
+  where,
+  updateDoc,
+  deleteDoc,
+  getDoc
+} from "firebase/firestore";
 
 const outOfStockThresholds = [
   { value: 999999, name: "なし" },
@@ -126,7 +143,8 @@ const inStockThresholds = [
   { value: 3, name: "3" },
 ];
 
-export default {
+// export default defineComponent({
+ export default {
   components: {
     BackButton,
   },
@@ -157,8 +175,8 @@ export default {
   },
 
   async created() {
-    const smaregiDoc = await db.doc(`admins/${this.uid}/private/smaregi`).get();
-    this.enable = smaregiDoc && smaregiDoc.exists;
+    const smaregiDoc = await getDoc(doc(db, `admins/${this.uid}/private/smaregi`));
+    this.enable = smaregiDoc && smaregiDoc.exists();
 
     if (this.enable) {
       const smaregiData = smaregiDoc.data();
@@ -172,12 +190,14 @@ export default {
       } finally {
         this.isLoading = false;
       }
-      const restaurantColleciton = await db
-        .collection("restaurants")
-        .where("publicFlag", "==", true)
-        .where("deletedFlag", "==", false)
-        .where("uid", "==", this.uid)
-        .get();
+      const restaurantColleciton = await getDocs(
+        query(
+          collection(db, "restaurants"),
+          where("publicFlag", "==", true),
+          where("deletedFlag", "==", false),
+          where("uid", "==", this.uid),
+        )
+      )
       this.restaurants = restaurantColleciton.docs
         .map(doc2data("message"))
         .sort((a, b) => {
@@ -193,10 +213,12 @@ export default {
         restaurantName: "-----------------",
       });
 
-      const storeCollection = await db
-        .collection(`/smaregi/${this.contractId}/stores`)
-        .where("uid", "==", this.uid)
-        .get();
+      const storeCollection = await getDocs(
+        query(
+          collection(db, `/smaregi/${this.contractId}/stores`),
+          where("uid", "==", this.uid)
+        )
+      )
       const stores = storeCollection.docs.map(doc2data("stores"));
 
       const storeObj = stores.reduce((tmp, current) => {
@@ -248,10 +270,10 @@ export default {
           if (inStock !== 999999 && inStock !== undefined) {
             data.inStock = inStock;
           }
-          db.doc(path).set(data);
+          setDoc(doc(db, path), data);
           // console.log(this.selectedRestaurant[key]);
         } else {
-          db.doc(path).delete();
+          deleteDoc(doc(db, path));
           console.log("TODO DELETE");
         }
       });
