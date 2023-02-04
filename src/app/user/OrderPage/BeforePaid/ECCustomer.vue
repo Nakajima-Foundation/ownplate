@@ -161,23 +161,31 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from "vue";
+import { defineComponent, ref, computed, PropType } from "vue";
 
-import { db } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  doc,
+  getDoc,
+  setDoc,
+} from "firebase/firestore";
 import { regionalSetting, countObj } from "@/utils/utils";
 import { CustomerInfo } from "@/models/customer";
 import isEmail from "validator/lib/isEmail";
 
 import { useUserData } from "@/utils/utils";
 
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { OrderInfoData } from "@/models/orderInfo";
+
 export default defineComponent({
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
     orderInfo: {
-      type: Object,
+      type: Object as PropType<OrderInfoData>,
       required: true,
     },
   },
@@ -219,10 +227,10 @@ export default defineComponent({
       }
     };
     const saveAddress = async () => {
-      await db.doc(`/users/${uid.value}/address/data`).set(customerInfo.value);
+      await setDoc(doc(db, `/users/${uid.value}/address/data`), customerInfo.value);
     };
     const loadAddress = async () => {
-      return (await db.doc(`/users/${uid.value}/address/data`).get()).data() || {};
+      return (await getDoc(doc(db, `/users/${uid.value}/address/data`))).data() || {};
     };
     const ecErrors = computed(() => {
       const err: {[key: string]: string[]} = {};
@@ -276,9 +284,9 @@ export default defineComponent({
         return String.fromCharCode(s.charCodeAt(0) - 0xfee0);
       });
 
-      const zipDoc = await db.doc(`/zipcode/${validZip}`).get();
+      const zipDoc = await getDoc(doc(db, `/zipcode/${validZip}`));
       const data = zipDoc.data();
-      if (zipDoc.exists) {
+      if (zipDoc.exists()) {
         addressList.value = data?.addresses;
       } else {
         addressList.value = [];
