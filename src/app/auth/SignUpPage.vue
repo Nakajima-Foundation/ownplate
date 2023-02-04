@@ -157,7 +157,12 @@
 
 <script>
 import isEmail from "validator/lib/isEmail";
-import { db, firestore } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  doc,
+  setDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 import { partners } from "@/config/constant";
 
 import { auth } from "@/lib/firebase/firebase9";
@@ -248,20 +253,20 @@ export default {
         await sendEmailVerification(result.user);
         console.log("signup success", result.user.uid, this.name);
         if (this.partner) {
-          await db.doc(`admins/${result.user.uid}`).set({
+          await setDoc(doc(db, `admins/${result.user.uid}`), {
             name: this.name,
-            created: firestore.FieldValue.serverTimestamp(),
+            created: serverTimestamp(),
             partners: [this.partner.id],
           });
         } else {
-          await db.doc(`admins/${result.user.uid}`).set({
+          await setDoc(doc(db, `admins/${result.user.uid}`), {
             name: this.name,
-            created: firestore.FieldValue.serverTimestamp(),
+            created: serverTimestamp(),
           });
         }
-        await db.doc(`admins/${result.user.uid}/private/profile`).set({
+        await setDoc(doc(db, `admins/${result.user.uid}/private/profile`), {
           email: result.user.email,
-          updated: firestore.FieldValue.serverTimestamp(),
+          updated: serverTimestamp(),
         });
         if (this.user) {
           console.log("signup calling push");
