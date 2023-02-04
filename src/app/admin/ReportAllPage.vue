@@ -200,7 +200,6 @@ import {
   reactive,
   computed,
   watch,
-  onUnmounted,
 } from "vue";
 import moment from "moment-timezone";
 
@@ -287,7 +286,6 @@ export default defineComponent({
       totalCharge: 0,
     });
     const monthIndex = ref(0);
-    let detacher = null;
 
     const { uid, isOwner, ownerUid } = useAdminUids();
     if (!isOwner.value) {
@@ -469,10 +467,6 @@ export default defineComponent({
     };
 
     updateQuery();
-
-    onUnmounted(() => {
-      detacher && detacher();
-    });
 
     //watch(formValue, () => {
     //updateQuery();
