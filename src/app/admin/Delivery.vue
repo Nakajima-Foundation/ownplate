@@ -200,7 +200,8 @@
 </template>
 
 <script>
-import { db, firestore } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import { doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
 import { notFoundResponse } from "@/utils/utils";
 import NotFound from "@/components/NotFound";
 
@@ -272,10 +273,10 @@ export default {
     this.deliveryMinimumCookTime =
       this.shopInfo.deliveryMinimumCookTime || this.deliveryMinimumCookTime;
 
-    const deliveryDoc = await db
-      .doc(`restaurants/${this.restaurantId()}/delivery/area`)
-      .get();
-    if (deliveryDoc.exists) {
+    const deliveryDoc = await getDoc(
+      doc(db, `restaurants/${this.restaurantId()}/delivery/area`)
+    )
+    if (deliveryDoc.exists()) {
       const data = deliveryDoc.data();
       this.enableAreaMap = data.enableAreaMap;
       this.enableAreaText = data.enableAreaText;
@@ -314,7 +315,7 @@ export default {
       return shopInfo.uid === this.ownerUid;
     },
     async saveDeliveryArea() {
-      await db.doc(`restaurants/${this.restaurantId()}`).update({
+      await updateDoc(doc(db, `restaurants/${this.restaurantId()}`), {
         enableDelivery: this.enableDelivery,
         deliveryMinimumCookTime: Number(this.deliveryMinimumCookTime || 0),
       });
@@ -330,9 +331,7 @@ export default {
         deliveryThreshold: Number(this.deliveryThreshold || 0),
         uid: this.uid,
       };
-      await db
-        .doc(`restaurants/${this.restaurantId()}/delivery/area`)
-        .set(data);
+      await setDoc(doc(db, `restaurants/${this.restaurantId()}/delivery/area`),data);
       this.$router.push("/admin/restaurants");
     },
     mapLoaded() {
