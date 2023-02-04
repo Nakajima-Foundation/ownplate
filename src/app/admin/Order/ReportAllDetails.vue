@@ -52,8 +52,7 @@ import {
   watch,
   onUnmounted,
 } from "vue";
-import { db } from "@/plugins/firebase";
-import DownloadCsv from "@/components/DownloadCSV";
+import DownloadCsv from "@/components/DownloadCSV.vue";
 import moment from "moment";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import { nameOfOrder } from "@/utils/strings";
