@@ -402,7 +402,9 @@ import OrderPageMap from "@/app/user/OrderPage/BeforePaid/Map.vue";
 
 import ButtonLoading from "@/components/Button/Loading.vue";
 
-import { db, firestore } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import { doc, getDoc, deleteDoc } from "firebase/firestore";
+
 import { orderPlace } from "@/lib/firebase/functions";
 
 import { order_status, paymentMethods } from "@/config/constant";
@@ -547,9 +549,9 @@ export default {
   methods: {
     setPostage() {
       if (this.shopInfo.isEC) {
-        db.doc(`restaurants/${this.restaurantId()}/ec/postage`)
-          .get()
-          .then((snapshot) => {
+        getDoc(
+          doc(db, `restaurants/${this.restaurantId()}/ec/postage`)
+        ).then((snapshot) => {
             this.postageInfo = snapshot.data() || {};
           });
       }
@@ -592,9 +594,9 @@ export default {
     },
     async deleteOrderInfo() {
       try {
-        await db
-          .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
-          .delete();
+        await deleteDoc(
+          doc(db, `restaurants/${this.restaurantId()}/orders/${this.orderId}`)
+        );
         console.log("suceeded");
       } catch (error) {
         console.log("failed");
