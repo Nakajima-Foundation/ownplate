@@ -52,8 +52,14 @@ import {
   watch,
   onUnmounted,
 } from "@vue/composition-api";
-import { db } from "@/plugins/firebase";
-import DownloadCsv from "@/components/DownloadCSV";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  getDocs,
+  query,
+  collectionGroup,
+  where,
+} from "firebase/firestore";
+import DownloadCsv from "@/components/DownloadCSV.vue";
 import moment from "moment";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import { nameOfOrder } from "@/utils/strings";
@@ -129,11 +135,13 @@ export default defineComponent({
           const tmpCustomers = { ...customers.value };
           await Promise.all(
             arrayChunk(ids, 10).map(async (arr) => {
-              const cuss = await db
-                .collectionGroup("customer")
-                .where("restaurantId", "==", props.shopInfo.restaurantId)
-                .where("orderId", "in", arr)
-                .get();
+              const cuss = await getDocs(
+                query(
+                  collectionGroup(db, "customer"),
+                  where("restaurantId", "==", props.shopInfo.restaurantId),
+                  where("orderId", "in", arr),
+                )
+              )
               cuss.docs.map((cus) => {
                 const data = cus.data();
                 tmpCustomers[data.orderId] = data;
