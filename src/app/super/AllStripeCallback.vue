@@ -14,9 +14,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onUnmounted, ref } from "vue";
+import { defineComponent, ref } from "vue";
 import BackButton from "@/components/BackButton.vue";
-import { db } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  query,
+  limit,
+  orderBy,
+  startAfter,
+  getDocs,
+  collectionGroup,
+} from "firebase/firestore";
+
 import { stripeActionStrings } from "@/lib/stripe/stripe";
 
 import { useSuper } from "@/utils/utils";
@@ -34,14 +43,15 @@ export default defineComponent({
     useSuper();
 
     const logs = ref<any[]>([]);
-    let detacher: any = null;
     const last = ref<any>(null);
 
-    detacher = db
-      .collectionGroup("stripeLogs")
-      .orderBy("created", "desc")
-      .limit(100)
-      .onSnapshot((snapshot) => {
+    getDocs(
+      query(
+        collectionGroup(db, "stripeLogs"),
+        orderBy("created", "desc"),
+        limit(100),
+      )
+    ).then((snapshot) => {
         logs.value = snapshot.docs.map((doc) => {
           last.value = doc;
           const log = doc.data();
@@ -52,12 +62,15 @@ export default defineComponent({
     
     const nextLoad = async () => {
 
-      const nextData = await db
-        .collectionGroup("stripeLogs")
-        .orderBy("created", "desc")
-        .startAfter(last.value)
-        .limit(100)
-        .get();
+      const nextData = await getDocs(
+        query(
+          collectionGroup(db, "stripeLogs"),
+          orderBy("created", "desc"),
+          startAfter(last.value),
+          limit(100)
+        )
+      )
+
       if (!nextData.empty) {
         nextData.docs.forEach((doc) => {
           last.value = doc;
@@ -68,10 +81,6 @@ export default defineComponent({
       }
     };
     
-    onUnmounted(() => {
-      detacher && detacher();
-    });
-
     return {
       stripeActionStrings,
       logs,

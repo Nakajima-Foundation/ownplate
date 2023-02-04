@@ -81,7 +81,6 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, computed } from "vue";
-import { db } from "@/plugins/firebase";
 
 import moment from "moment";
 
@@ -98,6 +97,18 @@ import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { OrderInfoData } from "@/models/orderInfo";
+
+import { db } from "@/lib/firebase/firebase9";
+import {
+  query,
+  limit,
+  orderBy,
+  startAfter,
+  getDocs,
+  getDoc,
+  doc,
+  collectionGroup,
+} from "firebase/firestore";
 
 export default defineComponent({
   metaInfo() {
@@ -146,29 +157,31 @@ export default defineComponent({
     const loadData = async () =>  {
       if (!isLoading.value) {
         isLoading.value = true;
-        let query = db
-          .collectionGroup("orders")
-          .orderBy("timePlaced", "desc")
-          .limit(100);
+        let myQuery = query(
+          collectionGroup(db, "orders"),
+          orderBy("timePlaced", "desc"),
+          limit(100),
+        );
         if (last.value) {
-          query = query.startAfter(last.value);
+          myQuery = query(
+            myQuery,
+            startAfter(last.value)
+          );
         }
-        const snapshot = await query.get();
+        const snapshot = await getDocs(myQuery);
 
         if (!snapshot.empty) {
           last.value = snapshot.docs[snapshot.docs.length - 1];
           let i = 0;
           for (; i < snapshot.docs.length; i++) {
-            const doc = snapshot.docs[i];
-            const order = doc.data() as OrderInfoData;
-            order.restaurantId = doc.ref.path.split("/")[1];
-            order.id = doc.id;
+            const myDoc = snapshot.docs[i].data();
+            const order = myDoc.data() as OrderInfoData;
+            order.restaurantId = myDoc.ref.path.split("/")[1];
+            order.id = myDoc.id;
             // @ts-ignore
             order.timePlaced = order.timePlaced.toDate();
             if (!restaurants.value[order.restaurantId]) {
-              const snapshot = await db
-                .doc(`restaurants/${order.restaurantId}`)
-                .get();
+              const snapshot = await getDoc(doc(db, `restaurants/${order.restaurantId}`));
               restaurants.value[order.restaurantId] = snapshot.data() as RestaurantInfoData;
             }
             order.restaurant = restaurants.value[order.restaurantId];

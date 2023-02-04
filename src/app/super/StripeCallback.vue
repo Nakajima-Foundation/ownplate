@@ -14,8 +14,12 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
 import BackButton from "@/components/BackButton.vue";
-import { db } from "@/plugins/firebase";
 import { stripeActionStrings } from "@/lib/stripe/stripe";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  doc,
+  getDoc,
+} from "firebase/firestore";
 
 import { useSuper } from "@/utils/utils";
 import { useRoute } from "vue-router";
@@ -37,7 +41,7 @@ export default defineComponent({
 
     const logUid =  route.params.uid;
     const logId = route.params.logId;
-    db.doc(`admins/${logUid}/stripeLogs/${logId}`).get().then((doc) => {
+    getDoc(doc(db, `admins/${logUid}/stripeLogs/${logId}`)).then((doc) => {
       log.value = doc.data();
     });
     return {

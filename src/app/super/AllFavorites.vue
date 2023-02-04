@@ -21,7 +21,15 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
-import { db } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  collectionGroup,
+  query,
+  orderBy,
+  startAfter,
+  limit,
+  getDocs,
+} from "firebase/firestore";
 
 import { useSuper } from "@/utils/utils";
 
@@ -41,14 +49,18 @@ export default defineComponent({
     const loadData = async () => {
       if (!isLoading) {
         isLoading = true;
-        let query = db
-          .collectionGroup("reviews")
-          .orderBy("timeLiked", "desc")
-          .limit(500);
+        let myQuery = query(
+          collectionGroup(db, "reviews"),
+          orderBy("timeLiked", "desc"),
+          limit(500),
+        )
         if (last.value) {
-          query = query.startAfter(last.value);
+          myQuery = query(
+            myQuery,
+            startAfter(last.value),
+          )
         }
-        const snapshot = await query.get();
+        const snapshot = await getDocs(myQuery);
 
         if (!snapshot.empty) {
           last.value = snapshot.docs[snapshot.docs.length - 1];

@@ -107,8 +107,6 @@
 // TODO: 通知の状況もわかるようにする
 //
 import { defineComponent, onMounted, ref, computed } from "vue";
-import { db } from "@/plugins/firebase";
-
 import { doc2data } from "@/utils/utils";
 
 import BackButton from "@/components/BackButton.vue";
@@ -119,6 +117,16 @@ import { useI18n } from "vue-i18n";
 import { getBackUrl, superPermissionCheck } from "@/utils/utils";
 import moment from "moment-timezone";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
+
+import { db } from "@/lib/firebase/firebase9";
+import {
+  query,
+  limit,
+  orderBy,
+  startAfter,
+  getDocs,
+  collection,
+} from "firebase/firestore";
 
 export default defineComponent({
   metaInfo() {
@@ -147,14 +155,18 @@ export default defineComponent({
     const loadData = async () => {
       if (!isLoading) {
         isLoading = true;
-        let query = db
-          .collection("restaurants")
-          .orderBy("createdAt", "desc")
-          .limit(100);
+        let myQuery = query(
+          collection(db, "restaurants"),
+          orderBy("createdAt", "desc"),
+          limit(100),
+        );
         if (last.value) {
-          query = query.startAfter(last.value);
+          myQuery = query(
+            myQuery,
+            startAfter(last.value)
+          )
         }
-        const snapshot = await query.get();
+        const snapshot = await getDocs(myQuery);
         if (!snapshot.empty) {
           last.value = snapshot.docs[snapshot.docs.length - 1];
           // @ts-ignore
@@ -173,7 +185,6 @@ export default defineComponent({
       }
     };
     const allLoad = async () => {
-      // TODO
       while (last.value) {
         await loadData();
       }
