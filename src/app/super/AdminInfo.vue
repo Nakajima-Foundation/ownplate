@@ -3,7 +3,7 @@
     <back-button url="/s/admins" />
     <h1>Admin</h1>
     <div>
-      <o-checkbox v-model="admin.opt_out">Opt out</o-checkbox>
+      <o-checkbox v-model="admin.opt_out" @update:modelValue="updateOpt">Opt out</o-checkbox>
     </div>
     {{ admin.name }}, {{ adminPrivate.email }}
     <h1>Custome Claims</h1>
@@ -18,8 +18,19 @@
   </section>
 </template>
 
-<script>
-import { db } from "@/plugins/firebase";
+<script lang="ts">
+import { defineComponent, ref, computed, watch } from "vue";
+
+import { db } from "@/lib/firebase/firebase9";
+import {
+  getDoc,
+  updateDoc,
+  doc,
+  collection,
+  where,
+  query,
+  getDocs,
+} from "firebase/firestore";
 import { superDispatch } from "@/lib/firebase/functions";
 
 import { doc2data } from "@/utils/utils";
@@ -27,7 +38,11 @@ import { doc2data } from "@/utils/utils";
 import BackButton from "@/components/BackButton.vue";
 import Restaurant from "@/app/super/Components/Restaurant.vue";
 
-export default {
+import { useSuper } from "@/utils/utils";
+import { useRoute } from "vue-router";
+import { useStore } from "vuex";
+
+export default defineComponent({
   metaInfo() {
     return {
       title: [this.defaultTitle, "Super Admin info"].join(" / "),
@@ -37,73 +52,87 @@ export default {
     BackButton,
     Restaurant,
   },
-  data() {
-    return {
-      customClaims: {},
-      restaurants: [],
-      admin: {},
-      adminPrivate: {},
-    };
-  },
-  computed: {
-    isAdmin() {
-      return !!this.customClaims.admin;
-    },
-    isOperator: {
-      get() {
-        return this.customClaims.operator;
+  setup() {
+    useSuper();
+    const route = useRoute();
+    const store = useStore();
+    
+    const customClaims = ref({});
+    const restaurants = ref([]);
+    const admin = ref({});
+    const adminPrivate = ref({});
+    
+    const adminId = route.params.adminId;
+    
+    superDispatch({
+      cmd: "getCustomeClaims",
+      uid: adminId,
+    }).then(({ data }) => {
+      customClaims.value = data.result;
+    });
+    getDocs(
+      query(
+        collection(db, "/restaurants/"),
+        where("uid", "==", adminId)
+      )
+    ).then((snapshot) => {
+      restaurants.value = snapshot.docs.map(doc2data("admin"));
+    });
+    getDoc(
+      doc(db, "/admins/" + adminId + "/private/profile")
+    ).then((adminPrivateSnapshot) => {
+      if (adminPrivateSnapshot.exists()) {
+        adminPrivate.value = adminPrivateSnapshot.data();
+      }
+    });
+    getDoc(doc(db, "/admins/" + adminId)).then((adminSnapshot) => {
+      if (adminSnapshot.exists()) {
+        admin.value = adminSnapshot.data();
+      }
+    });
+
+    const isAdmin = computed(() => {
+      return !!customClaims.value.admin;
+    });
+    const isOperator = computed({
+      get: () => {
+        return customClaims.value.operator;
       },
-      async set(value) {
-        this.$store.commit("setLoading", true);
+      set: async (value) => {
+        store.commit("setLoading", true);
         try {
           const { data } = await superDispatch({
             cmd: "setCustomClaim",
-            uid: this.adminId,
+            uid: adminId,
             key: "operator",
             value: value,
           });
           console.log(data);
-          this.customClaims = data.result;
+          customClaims.value = data.result;
         } catch (error) {
           console.error(error);
         } finally {
-          this.$store.commit("setLoading", false);
+          store.commit("setLoading", false);
         }
       },
-    },
-    adminId() {
-      return this.$route.params.adminId;
-    },
-  },
-  watch: {
-    "admin.opt_out"() {
-      console.log(this.admin);
-      db.doc("/admins/" + this.adminId).set(this.admin, { merge: true });
-    },
-  },
-  async mounted() {
-    const { data } = await superDispatch({
-      cmd: "getCustomeClaims",
-      uid: this.adminId,
     });
-    this.customClaims = data.result;
-    const snapshot = await db
-      .collection("/restaurants/")
-      .where("uid", "==", this.adminId)
-      .get();
-    this.restaurants = snapshot.docs.map(doc2data("admin"));
 
-    const adminPrivateSnapshot = await db
-      .doc("/admins/" + this.adminId + "/private/profile")
-      .get();
-    const adminSnapshot = await db.doc("/admins/" + this.adminId).get();
-    if (adminPrivateSnapshot.exists) {
-      this.adminPrivate = adminPrivateSnapshot.data();
-    }
-    if (adminSnapshot.exists) {
-      this.admin = adminSnapshot.data();
-    }
-    console.log(this.admin, this.adminPrivate);
+    const updateOpt = () => {
+      updateDoc(doc(db, "/admins/" + adminId), {opt_out: admin.value.opt_out });
+    };
+    
+    return {
+      customClaims,
+      restaurants,
+      admin,
+      adminPrivate,
+
+      isAdmin,
+      isOperator,
+      adminId,
+
+      updateOpt,
+    };
   },
-};
+});
 </script>
