@@ -182,7 +182,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { db } from "@/lib/firebase/firebase9";
 import {
   doc,
@@ -226,7 +226,8 @@ import {
   orderTypeKey,
 } from "@/utils/utils";
 
-import { order2ReportData } from "@/models/orderInfo";
+import { order2ReportData, OrderInfoData } from "@/models/orderInfo";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { checkShopOwner } from "@/utils/userPermission";
 import { useCategory, useAllSubcategory } from "../user/Restaurant/Utils";
@@ -260,8 +261,8 @@ export default defineComponent({
     };
   },
   setup(props) {
-    const orders = ref([]);
-    const restaurants = ref({});
+    const orders = ref<OrderInfoData[]>([]);
+    const restaurants = ref<{[key: string]: RestaurantInfoData }>({});
     const { t } = useI18n({ useScope: 'global' });
 
     const formValue = reactive({
@@ -305,9 +306,9 @@ export default defineComponent({
       });
     });
 
-    const { loadCategory, categoryDataObj } = useCategory(props.moPrefix);
+    const { loadCategory, categoryDataObj } = useCategory(props.moPrefix || "");
     const { allSubCategoryDataObj, loadAllSubcategory } = useAllSubcategory(
-      props.moPrefix
+      props.moPrefix || ""
     );
     if (props.isInMo) {
       loadCategory();
@@ -317,8 +318,11 @@ export default defineComponent({
     const tableData = computed(() => {
       return orders.value.map((order) => {
         const shopInfo = restaurants.value[order.restaurantId] || {};
+        // @ts-ignore
         const date = order[formValue.queryKey]?.toDate
+        // @ts-ignore
           ? order[formValue.queryKey]?.toDate()
+        // @ts-ignore
           : order[formValue.queryKey];
         return {
           date: moment(date).format("YYYY/MM/DD"),
@@ -329,13 +333,13 @@ export default defineComponent({
           orderStatus: t(
             "order.status." + order_status_keys[order.status]
           ),
-          foodRevenue: order.accounting.food.revenue,
-          foodTax: order.accounting.food.tax,
-          alcoholRevenue: order.accounting.alcohol.revenue,
-          salesTax: order.accounting.alcohol.tax,
+          foodRevenue: order.accounting?.food.revenue,
+          foodTax: order.accounting?.food.tax,
+          alcoholRevenue: order.accounting?.alcohol.revenue,
+          salesTax: order.accounting?.alcohol.tax,
           productSubTotal: order.total,
-          tipShort: order.accounting.service.revenue,
-          serviceTax: order.accounting.service.tax,
+          tipShort: order.accounting?.service?.revenue,
+          serviceTax: order.accounting?.service?.tax,
           shippingCost: order.shippingCost || order.deliveryFee || 0,
           total: order.totalCharge,
           totalCount: Object.values(order.order).reduce((count, order) => {
@@ -378,8 +382,8 @@ export default defineComponent({
         where("deletedFlag", "==", false),
       )
     ).then((collect) => {
-        restaurants.value = collect.docs.reduce((tmp, rest) => {
-          tmp[rest.id] = rest.data();
+        restaurants.value = collect.docs.reduce((tmp: {[key: string]: RestaurantInfoData }, rest) => {
+          tmp[rest.id] = rest.data() as RestaurantInfoData;
           return tmp;
         }, {});
       });
@@ -424,14 +428,14 @@ export default defineComponent({
 
       orders.value = snapshot.docs
         .map((order) => {
-          const restaurantId = order.ref.parent.parent.id;
+          const restaurantId = order.ref.parent.parent?.id;
           const data = doc2data("order")(order);
           const date = data[formValue.queryKey]?.toDate();
           return {
             ...data,
             restaurantId,
             date,
-          };
+          } as any;
         })
         .map((order) => {
           return order2ReportData(order, serviceTaxRate, props.isInMo);
@@ -439,12 +443,12 @@ export default defineComponent({
       total.value = orders.value.reduce(
         (total, order) => {
           const accounting = order.accounting;
-          total.food.revenue += accounting.food.revenue;
-          total.food.tax += accounting.food.tax;
-          total.alcohol.revenue += accounting.alcohol.revenue;
-          total.alcohol.tax += accounting.alcohol.tax;
-          total.service.revenue += accounting.service.revenue;
-          total.service.tax += accounting.service.tax;
+          total.food.revenue += accounting?.food?.revenue || 0;
+          total.food.tax += accounting?.food?.tax || 0;
+          total.alcohol.revenue += accounting?.alcohol?.revenue || 0;
+          total.alcohol.tax += accounting?.alcohol?.tax || 0;
+          total.service.revenue += accounting?.service?.revenue || 0;
+          total.service.tax += accounting?.service?.tax || 0;
           total.totalCharge += order.totalCharge;
           return total;
         },
