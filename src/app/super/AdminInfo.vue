@@ -57,10 +57,10 @@ export default defineComponent({
     const route = useRoute();
     const store = useStore();
     
-    const customClaims = ref({});
-    const restaurants = ref([]);
-    const admin = ref({});
-    const adminPrivate = ref({});
+    const customClaims = ref<any>({});
+    const restaurants = ref<any[]>([]);
+    const admin = ref<any>({});
+    const adminPrivate = ref<any>({});
     
     const adminId = route.params.adminId;
     
@@ -68,6 +68,7 @@ export default defineComponent({
       cmd: "getCustomeClaims",
       uid: adminId,
     }).then(({ data }) => {
+      // @ts-ignore
       customClaims.value = data.result;
     });
     getDocs(
@@ -107,7 +108,7 @@ export default defineComponent({
             key: "operator",
             value: value,
           });
-          console.log(data);
+          // @ts-ignore
           customClaims.value = data.result;
         } catch (error) {
           console.error(error);
