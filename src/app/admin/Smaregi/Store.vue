@@ -77,7 +77,17 @@
 
 <script>
 import { smaregi } from "@/config/project";
-import { db } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+  deleteDoc,
+  collection,
+  query,
+  where,
+} from "firebase/firestore";
 import { smaregiProductList } from "@/lib/firebase/functions";
 
 import { doc2data, array2obj } from "@/utils/utils";
@@ -111,7 +121,7 @@ export default {
   },
 
   async created() {
-    const smaregiDoc = await db.doc(`admins/${this.uid}/private/smaregi`).get();
+    const smaregiDoc = await getDoc(doc(db, `admins/${this.uid}/private/smaregi`));
     this.enable = smaregiDoc && smaregiDoc.exists;
     if (!this.enable) {
       return;
@@ -122,15 +132,15 @@ export default {
     this.contractId = smaregiData?.smaregi?.contract?.id;
 
     this.storeData = (
-      await db.doc(`/smaregi/${this.contractId}/stores/${this.storeId}`).get()
+      await getDoc(doc(db, `/smaregi/${this.contractId}/stores/${this.storeId}`))
     ).data();
     this.sRestaurantId = this.storeData.restaurantId;
 
-    const menus = await db
-      .collection(`restaurants/${this.sRestaurantId}/menus`)
-      .where("deletedFlag", "==", false)
-      .where("publicFlag", "==", true)
-      .get();
+    const menus = await getDocs(query(
+      collection(db, `restaurants/${this.sRestaurantId}/menus`),
+      where("deletedFlag", "==", false),
+      where("publicFlag", "==", true),
+    ));
 
     this.menus = menus.docs.map(doc2data("message")).sort((a, b) => {
       return a.itemName > b.itemName ? 1 : -1;
@@ -152,10 +162,10 @@ export default {
 
     this.isLoading = false;
 
-    const productCollection = await db
-      .collection(`/smaregi/${this.contractId}/stores/${this.storeId}/products`)
-      .where("uid", "==", this.uid)
-      .get();
+    const productCollection = await getDocs(query(
+      collection(db, `/smaregi/${this.contractId}/stores/${this.storeId}/products`),
+      where("uid", "==", this.uid)
+    ))
     const products = productCollection.docs.map(doc2data("stores"));
 
     const productObj = products.reduce((tmp, current) => {
@@ -163,11 +173,11 @@ export default {
       return tmp;
     }, {});
 
-    const stockCollection = await db
-      .collection(
+    const stockCollection = await getDocs(query(
+      collection(db,
         `smaregiData/${this.contractId}/stores/${this.storeId}/smaregiProducts`
       )
-      .get();
+    ));
     this.stockObj = array2obj(stockCollection.docs.map(doc2data("stock")));
 
     const selectedMenu = {};
@@ -199,9 +209,9 @@ export default {
             restaurantId: this.sRestaurantId,
             menuId,
           };
-          db.doc(path).set(data);
+          setDoc(doc(db, path), data);
         } else {
-          db.doc(path).delete();
+          deleteDoc(doc(db, path));
         }
       });
       this.isEdit = false;
