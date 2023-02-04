@@ -38,7 +38,14 @@ import { DocumentData } from "firebase/firestore";
 
 import { defineComponent, ref } from "vue";
 
-import { db } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  collection,
+  where,
+  query,
+  getDocs,
+  documentId,
+} from "firebase/firestore";
 
 export default defineComponent({
   props: {
@@ -50,21 +57,23 @@ export default defineComponent({
   setup(props) {
     const restaurants = ref<DocumentData[]>([]);
 
-    db.collection("restaurants")
-      .where(
-        firebase.firestore.FieldPath.documentId(),
-        "in",
-        props.config.restaurants || []
+    getDocs(
+      query(
+        collection(db, "restaurants"),
+        where(
+          documentId(),
+          "in",
+          props.config.restaurants || []
+        )
       )
-      .get()
-      .then((collect) => {
-        const r = collect.docs.map((a) => {
-          const data = a.data();
-          data.id = a.id;
-          return data;
-        });
-        restaurants.value = r;
+    ).then((collect) => {
+      const r = collect.docs.map((a) => {
+        const data = a.data();
+        data.id = a.id;
+        return data;
       });
+      restaurants.value = r;
+    });
     return {
       restaurants,
     };

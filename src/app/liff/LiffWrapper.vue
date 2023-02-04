@@ -26,7 +26,11 @@
 
 <script>
 import liff from "@line/liff";
-import { db } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  getDoc,
+  doc,
+} from "firebase/firestore";
 
 import { auth } from "@/lib/firebase/firebase9";
 import { signInWithCustomToken, signOut } from "firebase/auth";
@@ -105,7 +109,7 @@ export default {
   async created() {
     // step 1.
     const loadLiffConfig = async () => {
-      const data = (await db.doc(`/liff/${this.liffIndexId}`).get()).data();
+      const data = (await getDoc(doc(db, `/liff/${this.liffIndexId}`))).data();
       return data;
     };
 
