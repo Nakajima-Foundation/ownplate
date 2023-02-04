@@ -44,7 +44,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
   ref,
@@ -58,6 +58,8 @@ import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import { nameOfOrder } from "@/utils/strings";
 import { order_status } from "@/config/constant";
 import { arrayChunk, forceArray } from "@/utils/utils";
+
+import { OrderInfoData } from "@/models/orderInfo";
 
 import {
   reportHeaders,
@@ -73,7 +75,7 @@ export default defineComponent({
   },
   props: {
     orders: {
-      type: Array,
+      type: Array<OrderInfoData>,
       required: true,
     },
     shopObj: {
@@ -108,10 +110,10 @@ export default defineComponent({
   },
   setup(props) {
     const { t } = useI18n({ useScope: 'global' });
-    const writeonFirstLine = (index, key, text) => {
+    const writeonFirstLine = (index: number, key: number | string, text: any) => {
       return (index === 0 && Number(key) === 0) || props.isInMo ? text : "-";
     };
-    const timeConvert = (timeData) => {
+    const timeConvert = (timeData: any) => {
       if (!timeData) {
         return null;
       }
@@ -135,7 +137,7 @@ export default defineComponent({
       });
     });
     const tableData = computed(() => {
-      const items = [];
+      const items: any[] = [];
       props.orders.forEach((order) => {
         const shopInfo = props.shopObj[order.restaurantId];
         const ids = Object.keys(order.order);
@@ -152,8 +154,11 @@ export default defineComponent({
           const menuItem = (order.menuItems || {})[menuId] || {};
           const taxRate = menuItem.tax === "feed" ? 8 : 10;
           Object.keys(orderItems).forEach((key) => {
+            // @ts-ignore
             const opt = Array.isArray(options[key] || [])
+            // @ts-ignore
               ? options[key]
+            // @ts-ignore
               : [options[key]];
             try {
               items.push({
@@ -239,8 +244,9 @@ export default defineComponent({
                   order?.customerInfo?.email
                 ),
                 shippingCost: writeonFirstLine(index, key, order?.shippingCost),
+                // @ts-ignore
                 count: orderItems[key],
-                options: opt.filter((a) => String(a) !== "").join("/"),
+                options: opt.filter((a: string) => String(a) !== "").join("/"),
                 memo: writeonFirstLine(index, key, order.memo),
                 itemName: menuItem.itemName,
                 statusName: writeonFirstLine(
