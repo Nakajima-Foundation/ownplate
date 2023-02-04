@@ -124,7 +124,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref, watch } from "vue";
 import { auth } from "@/lib/firebase/firebase9";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -152,7 +152,7 @@ export default defineComponent({
     const { user, isAdmin } = useUserData();
 
     const redirectToAdminPage = () => {
-      const redirect = route.query["to"];
+      const redirect = route.query["to"] as string;
       const pathRegex = /^\/[a-zA-Z0-9-\_\/]+$/;
 
       if (redirect && pathRegex.test(redirect)) {
