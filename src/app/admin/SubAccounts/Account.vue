@@ -49,7 +49,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
   ref,
@@ -69,11 +69,13 @@ import {
   collection,
   where,
   orderBy,
+  DocumentData,
 } from "firebase/firestore";
 
 import { doc2data, array2obj, useAdminUids } from "@/utils/utils";
 
 import { useRouter, useRoute } from "vue-router";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 export default defineComponent({
   components: {
@@ -93,7 +95,7 @@ export default defineComponent({
     });
 
     const restaurantObj = ref({});
-    const restaurants = ref([]);
+    const restaurants = ref<RestaurantInfoData[]>([]);
 
     const { uid } = useAdminUids();
 
@@ -110,26 +112,26 @@ export default defineComponent({
         );
         restaurants.value = restaurantCollection.docs
           .map(doc2data("restaurant"))
-          .filter((r) => r.publicFlag);
+          .filter((r) => r.publicFlag) as RestaurantInfoData[];
       });
     const name = ref("");
 
-    const child = ref({});
+    const child = ref<DocumentData | undefined | {[key: string]: string}>({});
     getDoc(doc(db, `admins/${uid.value}/children/${subAccountId.value}`))
       .then((childrenDoc) => {
         child.value = childrenDoc.data();
-        name.value = child.value.name;
+        name.value = child.value?.name;
       });
 
     const restaurantListObj = computed(() => {
-      return (child.value.restaurantLists || []).reduce((t, c) => {
+      return (child.value?.restaurantLists || []).reduce((t: {[key: string]: boolean}, c: string) => {
         t[c] = true;
         return t;
       }, {});
     });
 
     const newRestaurantList = computed(() => {
-      return Object.keys(restaurantListObj.value).reduce((tmp, k) => {
+      return Object.keys(restaurantListObj.value).reduce((tmp: string[], k: string) => {
         const c = restaurantListObj.value[k];
         if (c) {
           tmp.push(k);
