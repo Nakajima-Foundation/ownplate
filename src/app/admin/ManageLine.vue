@@ -93,7 +93,15 @@
 
 <script lang="ts">
 import { defineComponent, ref, onUnmounted } from "vue";
-import { db } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  doc,
+  setDoc,
+  updateDoc,
+  deleteDoc,
+  onSnapshot,
+  collection,
+} from "firebase/firestore";
 
 import { lineAuthURL, lineVerify } from "@/lib/line/line";
 import { checkShopAccount } from "@/utils/userPermission";
@@ -151,13 +159,14 @@ export default defineComponent({
     const state = route.query.state as string;
     if (lineId && displayName && state) {
       if (lineVerify(state)) {
-        db.doc(`restaurants/${restaurantId}/lines/${lineId}`)
-          .set(
-            {
+        console.log(displayName,  uid.value, restaurantId.value);
+        setDoc(
+          doc(db, `restaurants/${restaurantId.value}/lines/${lineId}`),
+          {
               displayName,
               notify: true,
               uid: uid.value,
-              restaurantId: restaurantId,
+              restaurantId: restaurantId.value,
             },
             { merge: true }
           )
@@ -169,14 +178,14 @@ export default defineComponent({
       }
       router.replace(location.pathname);
     }
-    const detacher = db
-      .collection(`restaurants/${restaurantId}/lines`)
-      .onSnapshot((snapshot) => {
-        lineUsers.value = snapshot.docs.map((doc) => {
-          const data = doc.data();
+    const detacher = onSnapshot(
+      collection(db, `restaurants/${restaurantId.value}/lines`),
+      (snapshot) => {
+        lineUsers.value = snapshot.docs.map((myDoc) => {
+          const data = myDoc.data();
           return {
             ...data,
-            id: doc.id,
+            id: myDoc.id,
           };
         });
       });
@@ -185,7 +194,7 @@ export default defineComponent({
     });
 
     const handleToggle = async (lineUser: LineUserData) => {
-      await db.doc(`restaurants/${restaurantId}/lines/${lineUser.id}`).update({
+      await updateDoc(doc(db, `restaurants/${restaurantId.value}/lines/${lineUser.id}`), {
         notify: !lineUser.notify,
       });
     };
@@ -200,7 +209,7 @@ export default defineComponent({
         code: "admin.order.lineDelete",
         callback: async () => {
           console.log("handleDelete", lineId);
-          await db.doc(`restaurants/${restaurantId}/lines/${lineId}`).delete();
+          await deleteDoc(doc(db, `restaurants/${restaurantId.value}/lines/${lineId}`));
         },
       });
     };
