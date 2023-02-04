@@ -48,10 +48,10 @@ import {
 import { db } from "@/lib/firebase/firebase9";
 import { doc, onSnapshot, getDoc, DocumentData } from "firebase/firestore";
 
-import NotificationWatcher from "./Watcher/NotificationWatcher.vue";
-import SoundConfigWatcher from "./Watcher/SoundConfigWatcher.vue";
-import NewOrderWatcher from "./Watcher/NewOrderWatcher.vue";
-import PartnersContact from "./Partners/Contact.vue";
+import NotificationWatcher from "@/app/admin/Watcher/NotificationWatcher.vue";
+import SoundConfigWatcher from "@/app/admin/Watcher/SoundConfigWatcher.vue";
+import NewOrderWatcher from "@/app/admin/Watcher/NewOrderWatcher.vue";
+import PartnersContact from "@/app/admin/Partners/Contact.vue";
 import NotFound from "@/components/NotFound.vue";
 
 import { PartnerData } from "@/models/ShopOwner";

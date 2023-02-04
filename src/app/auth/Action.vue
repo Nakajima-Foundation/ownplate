@@ -13,8 +13,8 @@
 <script lang="ts">
 import { defineComponent, computed } from "vue";
 
-import ResetPassword from "./Actions/ResetPassword.vue";
-import VerifyEmail from "./Actions/VerifyEmail.vue";
+import ResetPassword from "@/app/auth/Actions/ResetPassword.vue";
+import VerifyEmail from "@/app/auth/Actions/VerifyEmail.vue";
 
 import { useRoute } from "vue-router";
 

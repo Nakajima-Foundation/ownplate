@@ -71,7 +71,7 @@
 <script lang="ts">
 import { defineComponent, computed, ref } from "vue";
 import BackButton from "@/components/BackButton.vue";
-import NotificationIndex from "./Notifications/Index.vue";
+import NotificationIndex from "@/app/admin/Notifications/Index.vue";
 import PreviewLink from "@/app/admin/common/PreviewLink.vue";
 import AdminHeaderSuspend from "@/app/admin/AdminHeaderSuspend.vue";
 

@@ -125,7 +125,7 @@ import { doc2data, useAdminUids, useRestaurantId } from "@/utils/utils";
 import BackButton from "@/components/BackButton.vue";
 import OrderedInfo from "@/app/admin/Order/OrderedInfo.vue";
 import NotFound from "@/components/NotFound.vue";
-import NotificationIndex from "./Notifications/Index.vue";
+import NotificationIndex from "@/app/admin/Notifications/Index.vue";
 import PreviewLink from "@/app/admin/common/PreviewLink.vue";
 
 import { useRouter, useRoute } from "vue-router";

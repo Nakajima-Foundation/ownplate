@@ -37,6 +37,6 @@
 </template>
 
 <script lang="ts">
-import category from "./category";
+import category from "@/app/user/Restaurant/category";
 export default category("CategoryModal");
 </script>

@@ -135,7 +135,7 @@
 import { defineComponent, computed, ref } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, updateDoc } from "firebase/firestore";
-import MoSuspendButton from "./MoSuspendButton.vue";
+import MoSuspendButton from "@/app/admin/MoSuspendButton.vue";
 
 export default defineComponent({
   components: {

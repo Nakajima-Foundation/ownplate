@@ -230,7 +230,7 @@ import { order2ReportData, OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { checkShopOwner } from "@/utils/userPermission";
-import { useCategory, useAllSubcategory } from "../user/Restaurant/Utils";
+import { useCategory, useAllSubcategory } from "@/app/user/Restaurant/Utils";
 import { useI18n } from "vue-i18n";
 
 export default defineComponent({

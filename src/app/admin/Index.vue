@@ -296,7 +296,7 @@ import ToggleSwitch from "@/components/ToggleSwitch.vue";
 
 import Restaurant from "@/app/admin/Index/Restaurant.vue";
 import PaymentSection from "@/app/admin/Index/PaymentSection.vue";
-import MessageCard from "./Messages/MessageCard.vue";
+import MessageCard from "@/app/admin/Messages/MessageCard.vue";
 
 import EmailVerify from "@/app/admin/Index/EmailVerify.vue";
 import WelcomeAndLinks from "@/app/admin/Index/WelcomeAndLinks.vue";

@@ -22,8 +22,8 @@ import { defineComponent, ref } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc, serverTimestamp } from "firebase/firestore";
 
-import NotificationSettings from "./NotificationSettings.vue";
-import NotificationSettingButton from "./NotificationSettingButton.vue";
+import NotificationSettings from "@/app/admin/Notifications/NotificationSettings.vue";
+import NotificationSettingButton from "@/app/admin/Notifications/NotificationSettingButton.vue";
 import {
   useRestaurantId
 } from "@/utils/utils";

@@ -39,10 +39,10 @@ import { liffAuthenticate } from "@/lib/firebase/functions";
 
 import queryString from "query-string";
 
-import PC from "./PC.vue";
-import NotFound from "@/components/NotFound";
+import PC from "@/app/liff/PC.vue";
+import NotFound from "@/components/NotFound.vue";
 
-import Modal from "@/components/Modal";
+import Modal from "@/components/Modal.vue";
 
 /*
  liff flow

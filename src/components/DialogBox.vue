@@ -71,7 +71,7 @@
 <script lang="ts">
 import { defineComponent, ref, watch, computed } from "vue";
 import * as Sentry from "@sentry/vue";
-import DialogTips from "./DialogTips.vue";
+import DialogTips from "@/components/DialogTips.vue";
 
 import { useStore } from "vuex";
 import { useI18n } from "vue-i18n";

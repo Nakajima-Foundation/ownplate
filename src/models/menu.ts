@@ -1,5 +1,5 @@
 import { serverTimestamp, FieldValue } from "firebase/firestore";
-import { isNull } from "../utils/utils";
+import { isNull } from "@/utils/utils";
 
 export interface MenuImages {
   item?: {

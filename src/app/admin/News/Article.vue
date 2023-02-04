@@ -53,7 +53,7 @@ import {
   defineComponent,
 } from "vue";
 import MarkdownIt from "markdown-it";
-import newsList from "./data";
+import newsList from "@/app/admin/News/data";
 import NotFound from "@/components/NotFound.vue";
 import { useRoute } from "vue-router";
 

@@ -1,4 +1,4 @@
-<template>
+.<template>
   <div>
     <MoSuspend
       :isSuspendAllOrder="groupData.isSuspendAllOrder || false"
@@ -16,7 +16,7 @@ import { defineComponent, computed, ref } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, onSnapshot, setDoc } from "firebase/firestore";
 
-import MoSuspend from "./MoSuspend.vue";
+import MoSuspend from "@/app/admin/MoSuspend.vue";
 
 import { useStore } from "vuex";
 

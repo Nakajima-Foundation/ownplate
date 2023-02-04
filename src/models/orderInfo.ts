@@ -1,6 +1,6 @@
 import { Timestamp } from "firebase/firestore";
 
-import { MenuImages } from "./menu";
+import { MenuImages } from "@/models/menu";
 import { ownPlateConfig } from "@/config/project";
 import { stripeRegion, orderType } from "@/utils/utils";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";

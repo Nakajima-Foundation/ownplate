@@ -39,7 +39,7 @@ import {
   defineComponent,
 } from "vue";
 import ListItem from "@/app/admin/News/ListItem.vue";
-import newsList from "./data";
+import newsList from "@/app/admin/News/data";
 
 export default defineComponent({
   components: {

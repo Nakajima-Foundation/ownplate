@@ -34,7 +34,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-import CartItem from "./CartItem.vue";
+import CartItem from "@/app/user/Restaurant/CartItem.vue";
 
 export default defineComponent({
   emits: ["closeCart", "didOrderdChange"],

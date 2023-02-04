@@ -19,7 +19,7 @@ import {
   useRestaurantId
 } from "@/utils/utils";
 
-import MoSuspend from "./MoSuspend.vue";
+import MoSuspend from "@/app/admin/MoSuspend.vue";
 
 export default defineComponent({
   components: {
