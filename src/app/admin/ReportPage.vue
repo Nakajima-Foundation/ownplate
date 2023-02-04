@@ -193,7 +193,9 @@
 </template>
 
 <script>
-import { db, firestore } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import { doc, query, collection, where, orderBy, onSnapshot } from "firebase/firestore";
+
 import {
   defineComponent,
   ref,
@@ -372,21 +374,28 @@ export default defineComponent({
 
     const updateQuery = () => {
       detacher && detacher();
-      let query = db
-        .collection(`restaurants/${props.shopInfo.restaurantId}/orders`)
-        .where(
+      let myQuery = query(
+        collection(db, `restaurants/${props.shopInfo.restaurantId}/orders`),
+        where(
           "timeConfirmed",
           ">=",
           lastSeveralMonths.value[monthIndex.value].date
-        );
+        )
+      )
       if (monthIndex.value > 0) {
-        query = query.where(
-          "timeConfirmed",
-          "<",
-          lastSeveralMonths.value[monthIndex.value - 1].date
+        myQuery = query(
+          myQuery,
+          where(
+            "timeConfirmed",
+            "<",
+            lastSeveralMonths.value[monthIndex.value - 1].date
+          )
         );
       }
-      detacher = query.orderBy("timeConfirmed").onSnapshot((snapshot) => {
+      detacher = onSnapshot(query(
+        myQuery,
+        orderBy("timeConfirmed")
+      ), (snapshot) => {
         const serviceTaxRate = props.shopInfo.alcoholTax / 100;
         orders.value = snapshot.docs
           .map(doc2data("order"))
@@ -421,7 +430,7 @@ export default defineComponent({
             totalCharge: 0,
           }
         );
-      });
+      })
     };
     const orderUrl = (order) => {
       return `/admin/restaurants/${props.shopInfo.restaurantId}/orders/${order.id}`;
