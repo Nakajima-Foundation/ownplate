@@ -53,6 +53,7 @@ limit 1000`;
       const path = `/restaurants/${restaurantId}/pageView/${date_jst}/pageViewData/${time_second_jst}`
       console.log(path);
       const data = {
+        restaurantId,
         id: `${time_second_jst}`,
         date: date_jst,
         hour: hour_jst,

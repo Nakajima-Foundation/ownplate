@@ -27,6 +27,7 @@
     "@tailwindcss/line-clamp": "^0.4.2",
     "bulma": "^0.9.4",
     "caniuse-lite": "^1.0.30001393",
+    "chart.js": "^3.9.1",
     "cookie": "^0.4.2",
     "firebase": "^9.15.0",
     "google-libphonenumber": "^3.2.30",

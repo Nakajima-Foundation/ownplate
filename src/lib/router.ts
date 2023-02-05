@@ -315,6 +315,10 @@ export const customRoutes: CustomRoute[] = [
             component: "admin/UserHistory.vue",
           },
           {
+            path: "analytics/index",
+            component: "admin/Analytics/Index.vue",
+          },
+          {
             name: "admin-suspend",
             path: "suspend",
             component: "admin/OrderSuspendPage.vue",

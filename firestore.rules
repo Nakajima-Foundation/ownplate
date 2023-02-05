@@ -413,6 +413,11 @@ service cloud.firestore {
         allow read: if isAdmin(request)
                         && isRestaurantSubAccount(resource.data.restaurantId, request);
     }
+    match /{path=**}/pageViewData/{data} {
+        allow read: if isSuper(request);
+        allow read: if isAdmin(request)
+                        && isRestaurantOwner(resource.data.restaurantId, request);
+    }
     match /{path=**}/phoneLog/{orderId} {
         allow read: if isSuper(request);
     }
