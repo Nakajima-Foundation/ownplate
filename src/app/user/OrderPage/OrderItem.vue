@@ -54,11 +54,17 @@
   </div>
 </template>
 
-<script>
+<script type="ts">
+import {
+  defineComponent,
+  ref,
+  computed,
+} from "@vue/composition-api";
+
 import { formatOption, optionPrice } from "@/utils/strings";
 import { roundPrice, smallImageErrorHandler } from "@/utils/utils";
 
-export default {
+export default defineComponent({
   props: {
     orderItem: {
       type: Object,
@@ -77,48 +83,52 @@ export default {
       required: true,
     },
   },
-  computed: {
-    item() {
-      return this.orderItem.item;
-    },
-    image() {
+  setup(props, ctx) {
+    const item = computed(() => {
+      return props.orderItem.item;
+    });
+    const image = computed(() => {
       return (
-        (this.item?.images?.item?.resizedImages || {})["600"] ||
-        this.item.itemPhoto
+        (item.value?.images?.item?.resizedImages || {})["600"] ||
+          item.value.itemPhoto
       );
-    },
-    count() {
-      return this.orderItem.count;
-    },
-    isAdmin() {
-      return this.$store.getters.isAdmin;
-    },
-    specialRequest() {
-      return this.orderItem.options
+    });
+    const count = computed(() => {
+      return props.orderItem.count;
+    });
+    const displayOption = (option) => {
+      return formatOption(option, (price) => ctx.root.$n(price, "currency"));
+    };
+    const specialRequest = computed(() => {
+      return props.orderItem.options
         .filter((choice) => choice)
-        .map((choice) => this.displayOption(choice))
+        .map((choice) => displayOption(choice))
         .join(", ");
-    },
-    totalPrice() {
-      let price = this.item.price;
-      this.orderItem.options.forEach((option) => {
+    });
+    const totalPrice = computed(() => {
+      let price = item.value.price;
+      props.orderItem.options.forEach((option) => {
         const p = roundPrice(optionPrice(option));
         price += p;
       });
-      return price * this.count;
-    },
-  },
-  methods: {
-    update(value) {
-      console.log(this.mkey, value);
-      this.$emit("update", [this.mkey, value]);
-    },
-    displayOption(option) {
-      return formatOption(option, (price) => this.$n(price, "currency"));
-    },
-    _smallImageErrorHandler(e) {
+      return price * count.value;
+    });
+
+    const input = (value) => {
+      ctx.emit("update", [props.mkey, value]);
+    }
+    const _smallImageErrorHandler = (e) => {
       smallImageErrorHandler(e);
-    },
+    };
+    return {
+      item,
+      image,
+      count,
+      specialRequest,
+      totalPrice,
+      input,
+      _smallImageErrorHandler,
+    };
   },
-};
+});
 </script>
