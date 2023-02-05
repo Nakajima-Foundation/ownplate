@@ -15,10 +15,32 @@ interface Claims {
   liffId: string;
 };
 
+interface DialogAlertData {
+  title: string;
+  code: string;
+  callback: () => void;
+};
+interface DialogErrorData {
+  message: string,
+  message2: string,
+  code: string,
+};
+interface DialogTipsData {
+  key: string,
+};
 interface Dialog {
-  alert?: any,
-  error?: any,
-  tips?: any,
+  alert?: DialogAlertData;
+  error?: DialogErrorData;
+  tips?: DialogTipsData;
+};
+
+interface Server {
+  region?: string;
+};
+
+interface Cart {
+  id?: string;
+  cart: any;
 };
 
 interface State {
@@ -27,17 +49,16 @@ interface State {
   claims: undefined | Claims;
   lang: undefined | string;
   date: Date;
-  carts: any;
-  server: any;
+  carts: {[key: string]: Cart | null };
+  server: Server;
   orderEvent: number;
-  orderObj: any;
+  orderObj: {[key: string]: OrderInfoData[] };
   soundEnable: boolean;
   soundOn: boolean;
   soundFile: string;
   isWindowActive: boolean;
   dialog: null | Dialog;
   isLoading: boolean;
-  isFirefoxPBM: any;
   openTime: Date,
 }
 export const state = () => ({
@@ -56,7 +77,6 @@ export const state = () => ({
   dialog: null, // for DialogBox
   // dialog: {alert: {}, error: {}}, // for DialogBox
   isLoading: false, // for full-page loading animation
-  isFirefoxPBM: undefined, // true, false, null
   openTime: new Date(),
 });
 
@@ -122,17 +142,17 @@ export const mutations = {
   updateDate(state: State) {
     state.date = new Date();
   },
-  saveCart(state: State, payload: any) {
+  saveCart(state: State, payload: Cart) {
     console.log("saving cart", payload.id, payload.cart);
     // state.carts = {};
-    state.carts[payload.id] = payload.cart;
+    state.carts[payload.id as string] = payload.cart;
   },
   resetCart(state: State, restaurantId: string) {
     console.log("reset cart", restaurantId);
     // state.carts = {};
     state.carts[restaurantId] = null;
   },
-  setServerConfig(state: State, config: any) {
+  setServerConfig(state: State, config: Server) {
     state.server = config;
     console.log("store:setServerConfig", state.server.region);
   },
@@ -168,13 +188,13 @@ export const mutations = {
   resetDialog(state: State) {
     state.dialog = null;
   },
-  setAlert(state: State, params: any) {
+  setAlert(state: State, params: DialogAlertData) {
     state.dialog = { alert: params };
   },
-  setErrorMessage(state: State, params: any) {
+  setErrorMessage(state: State, params: DialogErrorData) {
     state.dialog = { error: params };
   },
-  setTips(state: State, params: any) {
+  setTips(state: State, params: DialogTipsData) {
     state.dialog = { tips: params };
   },
   resetOpenTime(state: State) {
