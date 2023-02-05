@@ -12,7 +12,7 @@
       <div v-if="image" class="mt-1 flex-shrink-0">
         <img
           :src="image"
-          @error="_smallImageErrorHandler"
+          @error="FsmallImageErrorHandler"
           class="h-12 w-12 rounded object-cover"
         />
       </div>
@@ -59,10 +59,11 @@ import {
   defineComponent,
   ref,
   computed,
-} from "@vue/composition-api";
+} from "vue";
 
 import { formatOption, optionPrice } from "@/utils/strings";
 import { roundPrice, smallImageErrorHandler } from "@/utils/utils";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   props: {
@@ -83,7 +84,9 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props, ctx) {
+  setup(props, context) {
+    const { n } = useI18n({ useScope: 'global' });
+    
     const item = computed(() => {
       return props.orderItem.item;
     });
@@ -97,7 +100,7 @@ export default defineComponent({
       return props.orderItem.count;
     });
     const displayOption = (option) => {
-      return formatOption(option, (price) => ctx.root.$n(price, "currency"));
+      return formatOption(option, (price) => n(price, "currency"));
     };
     const specialRequest = computed(() => {
       return props.orderItem.options
@@ -114,10 +117,10 @@ export default defineComponent({
       return price * count.value;
     });
 
-    const input = (value) => {
-      ctx.emit("update", [props.mkey, value]);
+    const update = (value) => {
+      context.emit("update", [props.mkey, value]);
     }
-    const _smallImageErrorHandler = (e) => {
+    const FsmallImageErrorHandler = (e) => {
       smallImageErrorHandler(e);
     };
     return {
@@ -126,8 +129,8 @@ export default defineComponent({
       count,
       specialRequest,
       totalPrice,
-      input,
-      _smallImageErrorHandler,
+      update,
+      FsmallImageErrorHandler,
     };
   },
 });
