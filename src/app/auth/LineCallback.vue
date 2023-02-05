@@ -7,72 +7,82 @@
   </div>
 </template>
 
-<script>
+<script type="ts">
+import {
+  defineComponent,
+  ref,
+} from "vue";
+
 // https://firebase.googleblog.com/2016/11/authenticate-your-firebase-users-with-line-login.html
 import { ownPlateConfig } from "@/config/project";
 import { lineGuard } from "@/lib/line/line";
 import { lineValidate } from "@/lib/firebase/functions";
 
-export default {
-  data() {
-    return {
-      isValidating: false,
-    };
-  },
-  async mounted() {
-    if (this.code) {
-      try {
-        this.isValidating = true;
-        const { data } = await lineValidate({
-          code: this.code,
-          redirect_uri: this.redirect_uri,
-        });
-        console.log("lineValidate", data);
+import { useUserData } from "@/utils/utils";
+import { useRoute, useRouter } from "vue-router";
+import { useStore } from "vuex";
 
-        if (data.nonce && data.profile) {
-          const state = this.$route.query.state;
-          const params = lineGuard(data.nonce, state);
+export default defineComponent({
+  setup() {
+    const router = useRouter();
+    const route = useRoute();
+    const store = useStore();
 
-          this.user.getIdTokenResult(true).then((result) => {
-            this.$store.commit("setCustomClaims", result.claims);
-            console.log("isLineuser", this.isLineUser);
-            if (this.isLineUser) {
-              // End-user case
-              this.$router.push(params.pathname);
-            } else {
-              // Restaurant operator case
-              this.$router.push(
-                `${params.pathname}?userId=${
+    const code = route.query.code;
+    const redirect_uri = location.origin + "/callback/line";
+    const isValidating = ref(false);
+    const { user, isLineUser } = useUserData();
+    
+    if (code) {
+      (async () => {
+        try {
+          isValidating.value = true;
+          const { data } = await lineValidate({
+            code,
+            redirect_uri,
+          });
+          console.log("lineValidate", data);
+          
+          if (data.nonce && data.profile) {
+            const state = route.query.state;
+            const params = lineGuard(data.nonce, state);
+            
+            user.value.getIdTokenResult(true).then((result) => {
+              store.commit("setCustomClaims", result.claims);
+              console.log("isLineuser", isLineUser.value);
+              if (isLineUser.value) {
+                // End-user case
+                router.push(params.pathname);
+              } else {
+                // Restaurant operator case
+                router.push(
+                  `${params.pathname}?userId=${
                   data.profile.userId
                 }&displayName=${encodeURIComponent(
                   data.profile.displayName
                 )}&state=${state}`
-              );
-            }
+                );
+              }
+            });
+          } else {
+            console.error("validatin failed", data);
+            throw new Error("something is wrong");
+          }
+        } catch (error) {
+          console.error(error.message, error.details);
+          store.commit("setErrorMessage", {
+            code: "line.validation",
+            message2: "errorPage.message.line",
+            error,
           });
-        } else {
-          console.error("validatin failed", data);
-          throw new Error("something is wrong");
+        } finally {
+          isValidating.value = false;
         }
-      } catch (error) {
-        console.error(error.message, error.details);
-        this.$store.commit("setErrorMessage", {
-          code: "line.validation",
-          message2: "errorPage.message.line",
-          error,
-        });
-      } finally {
-        this.isValidating = false;
-      }
+      })()
+    }
+    return {
+      isValidating
     }
   },
-  computed: {
-    code() {
-      return this.$route.query.code;
-    },
-    redirect_uri() {
-      return location.origin + "/callback/line";
-    },
-  },
-};
+});
 </script>
