@@ -23,6 +23,7 @@ export interface OrderInfoData {
   timeEstimated: any; // TODO firestore timestamp
   timeConfirmed: any;
   timePlaced: any;
+  status: number;
   accounting?: {
     food: {
       revenue: number;
@@ -46,6 +47,7 @@ export interface OrderInfoData {
   options: { [key: string]: [string] };
   payment?: { [key: string]: string };
   type: string;
+  memo: string;
 }
 
 export interface OrderItem {}
