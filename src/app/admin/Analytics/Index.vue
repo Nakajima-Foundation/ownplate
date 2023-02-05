@@ -11,7 +11,7 @@ import {
   defineComponent,
   ref,
   computed,
-} from "@vue/composition-api";
+} from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDocs, query, collectionGroup, where } from "firebase/firestore";
@@ -22,12 +22,14 @@ Chart.register(...registerables);
 
 import moment from "moment";
 
+import { getRestaurantId } from "@/utils/utils";
+
 export default defineComponent({
   components: {
     BarChart,
   },
-  setup(_, ctx) {
-    const restaurantId = ctx.root.$route.params.restaurantId;
+  setup() {
+    const restaurantId = getRestaurantId();
 
     const logs = ref([]);
     
