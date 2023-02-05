@@ -303,8 +303,11 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
-    const orderId = ctx.root.$route.params.orderId;
-    const restaurantId = ctx.root.$route.params.restaurantId;
+    const route = ctx.root.$route;
+    const store = ctx.root.$store;
+    
+    const orderId = route.params.orderId;
+    const restaurantId = route.params.restaurantId;
 
     const hasStripe = computed(() => {
       return props.orderInfo.payment && props.orderInfo.payment.stripe;
@@ -387,11 +390,11 @@ export default defineComponent({
       ctx.emit("handleOpenMenu");
     };
     const handleCancelPayment = () => {
-      ctx.root.$store.commit("setAlert", {
+      store.commit("setAlert", {
         code: "order.cancelOrderConfirm",
         callback: async () => {
           try {
-            ctx.root.$store.commit("setLoading", true);
+            store.commit("setLoading", true);
             const { data } = await stripeCancelIntent({
               restaurantId: restaurantId,
               orderId: orderId,
@@ -401,12 +404,12 @@ export default defineComponent({
           } catch (error) {
             // BUGBUG: Implement the error handling code here
             // console.error(error.message, error.details);
-            ctx.root.$store.commit("setErrorMessage", {
+            store.commit("setErrorMessage", {
               code: "order.cancel",
               error,
             });
           } finally {
-            ctx.root.$store.commit("setLoading", false);
+            store.commit("setLoading", false);
           }
         },
       });
