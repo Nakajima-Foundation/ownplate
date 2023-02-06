@@ -240,7 +240,9 @@ export default defineComponent({
         router.push("/admin/restaurants");
       }
     })
-
+    if (user.value) {
+      router.push("/admin/restaurants");
+    }
 
     const handleCancel = () => {
       router.push("/");
