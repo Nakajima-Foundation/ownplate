@@ -104,62 +104,46 @@
 </template>
 
 <script>
+import {
+  defineComponent,
+  ref,
+  watch,
+  onMounted,
+} from "vue";
+
 import { getStripeInstance, stripeUpdateCustomer } from "@/lib/stripe/stripe";
 import { db } from "@/lib/firebase/firebase9";
 import {
   doc,
-  getDoc
+  getDoc,
 } from "firebase/firestore";
-  
-export default {
-  data() {
-    return {
-      stripe: getStripeInstance(),
-      storedCard: null,
-      useStoredCard: false,
-      elementStatus: { complete: false },
-      cardElement: {},
-      CVCPopup: false,
-      reuse: true,
-    };
-  },
+
+import { useUserData } from "@/utils/utils";
+import { useStore } from "vuex";
+
+export default defineComponent({
   props: {
     stripeJCB: {
       type: Boolean,
       required: true,
     },
   },
-  async mounted() {
-    this.configureStripe();
-    const stripeInfo = (
-      await getDoc(doc(db, `/users/${this.user.uid}/readonly/stripe`))
-    ).data();
-    if (stripeInfo && stripeInfo.card) {
-      this.storedCard = stripeInfo.card;
-      this.useStoredCard = true;
-      this.$emit("change", { complete: true });
-    }
-  },
-  watch: {
-    useStoredCard(newValue) {
-      this.$emit("change", newValue ? { complete: true } : this.elementStatus);
-    },
-  },
-  methods: {
-    async createToken() {
-      if (!this.useStoredCard) {
-        const { token } = await this.stripe.createToken(this.cardElement);
-        const tokenId = token.id;
-        const { data } = await stripeUpdateCustomer({
-          tokenId,
-          reuse: this.reuse,
-        });
-        // console.log("stripeUpdateCustomer", data, tokenId);
-      }
-    },
-    configureStripe() {
-      const elements = this.stripe.elements();
-      const stripeRegion = this.$store.getters.stripeRegion;
+  setup(_, ctx) {
+    const { user } = useUserData();
+    const store = useStore();
+    
+    const stripe = getStripeInstance();
+    const cardElem = ref(null);
+    let elementStatus = { complete: false };
+
+    const storedCard = ref(null);
+    const useStoredCard = ref(false);
+    const CVCPopup = ref(false);
+    const reuse = ref(true);
+
+    const configureStripe = async () => {
+      const elements = stripe.elements();
+      const stripeRegion = store.getters.stripeRegion;
       const cardElement = elements.create("card", {
         hidePostalCode: stripeRegion.hidePostalCode,
         style: {
@@ -182,18 +166,62 @@ export default {
         },
       });
       cardElement.mount("#card-element");
-      this.cardElement = cardElement;
-      this.cardElement.addEventListener("change", (status) => {
-        this.elementStatus = status;
-        this.$emit("change", status);
+      cardElem.value = cardElement;
+      console.log(cardElem.value);
+      cardElem.value.addEventListener("change", (status) => {
+        elementStatus = status;
+        ctx.emit("change", status);
       });
-    },
-    openCVC() {
-      this.CVCPopup = true;
-    },
-    closeCVC() {
-      this.CVCPopup = false;
-    },
+
+      const stripeInfo = (
+        await getDoc(doc(db, `/users/${user.value.uid}/readonly/stripe`))
+      ).data();
+      
+      if (stripeInfo && stripeInfo.card) {
+        storedCard.value = stripeInfo.card;
+        useStoredCard.value = true;
+        ctx.emit("change", { complete: true });
+      }
+
+    };
+
+    onMounted(() => {
+      configureStripe();
+    });
+    
+    watch(useStoredCard, (newValue) => {
+      ctx.emit("change", newValue ? { complete: true } : elementStatus);
+    });
+
+    const createToken = async () => {
+      if (!useStoredCard.value) {
+        const { token } = await stripe.createToken(cardElem.value);
+        const tokenId = token.id;
+        const { data } = await stripeUpdateCustomer({
+          tokenId,
+          reuse: reuse.value,
+        });
+        // console.log("stripeUpdateCustomer", data, tokenId);
+      }
+    };
+    const openCVC = () => {
+      CVCPopup.value = true;
+    };
+    const closeCVC = () => {
+      CVCPopup.value = false;
+    };
+    return {
+      useStoredCard,
+      storedCard,
+      CVCPopup,
+      reuse,
+
+      openCVC,
+      closeCVC,
+
+      createToken, // for parent component
+    };
+    
   },
-};
+});
 </script>
