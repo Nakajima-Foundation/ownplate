@@ -29,7 +29,15 @@ export const subAccountInvitationDeny = httpsCallable(
   "subAccountInvitationDeny"
 );
 
-export const lineValidate = httpsCallable(functionsJP, "lineValidate");
+export const lineValidate = httpsCallable<{
+  code: string, redirect_uri: string
+}, {
+  nonce: string,
+  profile: {
+    userId: string,
+    displayName: string,
+  }
+}>(functionsJP, "lineValidate");
 
 export const superDispatch = httpsCallable(functionsJP, "superDispatch");
 

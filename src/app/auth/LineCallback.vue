@@ -28,7 +28,7 @@ export default defineComponent({
     const route = useRoute();
     const store = useStore();
 
-    const code = route.query.code;
+    const code = route.query.code as string;
     const redirect_uri = location.origin + "/callback/line";
     const isValidating = ref(false);
     const { user, isLineUser } = useUserData();
@@ -44,10 +44,10 @@ export default defineComponent({
           console.log("lineValidate", data);
           
           if (data.nonce && data.profile) {
-            const state = route.query.state;
+            const state = route.query.state as string;
             const params = lineGuard(data.nonce, state);
             
-            user.value.getIdTokenResult(true).then((result) => {
+            user.value.getIdTokenResult(true).then((result: {claims: string}) => {
               store.commit("setCustomClaims", result.claims);
               console.log("isLineuser", isLineUser.value);
               if (isLineUser.value) {
@@ -68,7 +68,7 @@ export default defineComponent({
             console.error("validatin failed", data);
             throw new Error("something is wrong");
           }
-        } catch (error) {
+        } catch (error: any) {
           console.error(error.message, error.details);
           store.commit("setErrorMessage", {
             code: "line.validation",
