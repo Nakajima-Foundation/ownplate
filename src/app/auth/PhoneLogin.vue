@@ -152,7 +152,8 @@
   </div>
 </template>
 
-<script>
+
+<script lang="ts">
 import {
   defineComponent,
   ref,
@@ -167,6 +168,8 @@ import {
   RecaptchaVerifier,
   signInWithPhoneNumber,
   updateProfile,
+  ApplicationVerifier,
+  ConfirmationResult,
 } from "firebase/auth";
 
 import {
@@ -203,12 +206,12 @@ export default defineComponent({
     const isLoading = ref(false);
     const countryCode = countries[0].code || "+1";
     const phoneNumber = ref("");
-    const errors = ref([]);
-    const confirmationResult = ref(null);
+    const errors = ref<string[]>([]);
+    const confirmationResult = ref<ConfirmationResult | null>(null);
     const verificationCode = ref("");
     const name = ref("");
 
-    let recaptchaVerifier = null;
+    let recaptchaVerifier: ApplicationVerifier | null = null;
 
     const isInMo = useIsInMo(ctx.root);
 
@@ -217,7 +220,7 @@ export default defineComponent({
         "signInButton",
         {
           size: "invisible",
-          callback: (response) => {
+          callback: (response: string) => {
             // reCAPTCHA solved, allow signInWithPhoneNumber.
             // console.log("verified", response);
             console.log("verified");
@@ -266,7 +269,7 @@ export default defineComponent({
         confirmationResult.value = await signInWithPhoneNumber(
           auth,
           SMSPhoneNumber.value,
-          recaptchaVerifier
+          recaptchaVerifier as ApplicationVerifier,
         );
 
         const path = moment().format("YYYY/MMDD");
@@ -276,7 +279,7 @@ export default defineComponent({
           phoneNumber: SMSPhoneNumber.value,
           updated: serverTimestamp(),
         });
-      } catch (error) {
+      } catch (error: any) {
         console.log(JSON.stringify(error));
         console.log("error", error.code);
         Sentry.captureException(error);
@@ -290,7 +293,7 @@ export default defineComponent({
       errors.value = [];
       try {
         isLoading.value = true;
-        let result = await confirmationResult.value.confirm(
+        let result = await (confirmationResult.value as ConfirmationResult).confirm(
           verificationCode.value
         );
         // console.log("success!", result);
@@ -315,7 +318,7 @@ export default defineComponent({
         confirmationResult.value = null; // so that we can re-use this
         verificationCode.value = "";
         ctx.emit("dismissed", true);
-      } catch (error) {
+      } catch (error: any) {
         // console.log(JSON.stringify(error));
         // console.log("error", error.code);
         if (!["auth/code-expired", "auth/invalid-verification-code"].includes(error.code)) {
