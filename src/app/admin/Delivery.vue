@@ -199,13 +199,28 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import {
+  defineComponent,
+  computed,
+  ref,
+  onMounted,
+  watch,
+} from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
 import { notFoundResponse } from "@/utils/utils";
 import NotFound from "@/components/NotFound.vue";
 
-export default {
+import {
+  checkAdminPermission,
+  checkShopAccount,
+} from "@/utils/userPermission";
+
+import { useRouter } from "vue-router";
+import { getRestaurantId, useAdminUids } from "@/utils/utils";
+
+export default defineComponent({
   components: {
     NotFound,
   },
@@ -215,183 +230,200 @@ export default {
       required: true,
     },
   },
-  data() {
-    return {
-      enableDelivery: false,
-      enableDeliveryFree: false,
-      enableDeliveryThreshold: false,
-      enableAreaMap: true,
-      enableAreaText: false,
-      notFound: null,
-      deliveryFee: 0,
-      deliveryFreeThreshold: 8000,
-      deliveryThreshold: 3000,
-      deliveryMinimumCookTime: 60,
-      markers: [],
-      circles: [],
-      radius: 500,
-      center: null,
-      areaText: "",
-      existLocation: null,
+  setup(props) {
+    const restaurantId =  getRestaurantId();
+    const router = useRouter();
+    
+    const enableDelivery = ref(false);
+    const enableDeliveryFree = ref(false);
+    const enableDeliveryThreshold = ref(false);
+    const enableAreaMap = ref(true);
+    const enableAreaText = ref(false);
+
+    const deliveryFee = ref(0);
+    const deliveryFreeThreshold = ref(8000);
+    const deliveryThreshold = ref(3000);
+    const deliveryMinimumCookTime = ref(60);
+
+    const radius = ref(500);
+    const areaText = ref("");
+    const existLocation = ref<boolean | null>(null);
+
+    const markers = ref<any[]>([]); //
+    const circles = ref<any[]>([]); //
+    const center = ref(null); // 
+    let maplocation: any = null;
+    
+    const notFound = ref<boolean | null>(null);
+    const gMap = ref();
+    
+    const {
+      ownerUid,
+      uid,
+    } = useAdminUids();
+
+    if (!checkAdminPermission()) {
+      notFound.value = true;
+      return notFoundResponse;
+    }
+
+    if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
+      notFound.value = true;
+      return notFoundResponse;
+    }
+
+    const fillColor = computed(() => {
+      return enableAreaMap.value ? "#ff0000" : "#ffffff";
+    });
+
+    const removeAllMarker = () => {
+      if (markers.value && markers.value.length > 0) {
+        markers.value.map((marker) => {
+          marker.setMap(null);
+        });
+        markers.value = [];
+      }
     };
-  },
-  computed: {
-    ownerUid() {
-      return this.$store.getters.isSubAccount
-        ? this.$store.getters.parentId
-        : this.$store.getters.uidAdmin;
-    },
-    uid() {
-      return this.$store.getters.uidAdmin;
-    },
-    fillColor() {
-      return this.enableAreaMap ? "#ff0000" : "#ffffff";
-    },
-  },
-  watch: {
-    enableAreaMap: function () {
-      this.updateCircle();
-    },
-  },
-  async created() {
-    if (!this.checkAdminPermission()) {
-      this.notFound = true;
-      return notFoundResponse;
-    }
-
-    if (!this.checkShopAccount(this.shopInfo)) {
-      this.notFound = true;
-      return notFoundResponse;
-    }
-
-    const location = this.shopInfo.location;
-    this.existLocation = Object.keys(location).length === 2;
-    if (!this.existLocation) {
-      return;
-    }
-    this.enableDelivery = this.shopInfo.enableDelivery || false;
-    this.deliveryMinimumCookTime =
-      this.shopInfo.deliveryMinimumCookTime || this.deliveryMinimumCookTime;
-
-    const deliveryDoc = await getDoc(
-      doc(db, `restaurants/${this.restaurantId()}/delivery/area`)
-    )
-    if (deliveryDoc.exists()) {
-      const data = deliveryDoc.data();
-      this.enableAreaMap = data.enableAreaMap;
-      this.enableAreaText = data.enableAreaText;
-      this.enableDeliveryFree =
-        data.enableDeliveryFree || this.enableDeliveryFree;
-      this.enableDeliveryThreshold =
-        data.enableDeliveryThreshold || this.enableDeliveryThreshold;
-      this.deliveryFee = data.deliveryFee || this.deliveryFee;
-      this.deliveryFreeThreshold =
-        data.deliveryFreeThreshold || this.deliveryFreeThreshold;
-      this.deliveryThreshold = data.deliveryThreshold || this.deliveryThreshold;
-      this.radius = data.radius;
-      this.areaText = data.areaText;
-    }
-    this.center = new google.maps.LatLng(location.lat, location.lng);
-    this.mapLoaded();
-    this.notFound = false;
-  },
-  mounted() {
-    this.mapLoaded();
-  },
-  methods: {
-    checkAdminPermission() {
-      if (!this.$store.getters.uidAdmin) {
-        const redirectUrl = encodeURIComponent(this.$route.path);
-        if (redirectUrl) {
-          this.$router.replace("/admin/user/signin?to=" + redirectUrl);
-        } else {
-          this.$router.replace("/admin/user/signin");
-        }
-        return false;
+    const removeAllCircle = () => {
+      if (circles.value && circles.value.length > 0) {
+        circles.value.map((circle) => {
+          circle.setMap(null);
+        });
+        circles.value = [];
       }
-      return true;
-    },
-    checkShopAccount(shopInfo) {
-      return shopInfo.uid === this.ownerUid;
-    },
-    async saveDeliveryArea() {
-      await updateDoc(doc(db, `restaurants/${this.restaurantId()}`), {
-        enableDelivery: this.enableDelivery,
-        deliveryMinimumCookTime: Number(this.deliveryMinimumCookTime || 0),
-      });
-      const data = {
-        enableAreaMap: this.enableAreaMap,
-        enableAreaText: this.enableAreaText,
-        radius: this.radius,
-        areaText: this.areaText,
-        enableDeliveryFree: this.enableDeliveryFree,
-        enableDeliveryThreshold: this.enableDeliveryThreshold,
-        deliveryFee: Number(this.deliveryFee || 0),
-        deliveryFreeThreshold: Number(this.deliveryFreeThreshold || 0),
-        deliveryThreshold: Number(this.deliveryThreshold || 0),
-        uid: this.uid,
-      };
-      await setDoc(doc(db, `restaurants/${this.restaurantId()}/delivery/area`),data);
-      this.$router.push("/admin/restaurants");
-    },
-    mapLoaded() {
-      if (this.shopInfo && this.shopInfo.location) {
-        this.setCurrentLocation(this.shopInfo.location);
-      }
-    },
-    async updateCircle() {
-      this.removeAllCircle();
-      const map = await this.$refs.gMap.$mapPromise;
-      map.setCenter(this.maplocation);
+    };
+
+    const updateCircle = async () => {
+      removeAllCircle();
+      const map = await gMap.value.$mapPromise;
+      map.setCenter(maplocation);
       const circle = new google.maps.Circle({
-        center: this.center,
-        fillColor: this.fillColor,
+        center: center.value,
+        fillColor: fillColor.value,
         fillOpacity: 0.3,
         map: map,
-        radius: Number(this.radius),
+        radius: Number(radius.value),
         strokeColor: "#ff0000",
         strokeOpacity: 1,
         strokeWeight: 1,
       });
-      this.circles.push(circle);
-    },
-    async setCurrentLocation(location) {
+      circles.value.push(circle);
+    };
+    
+    const setCurrentLocation = async (location: any) => {
       if (
-        this.$refs.gMap &&
-        this.$refs.gMap.$mapPromise &&
+        gMap.value &&
+        gMap.value.$mapPromise &&
         location &&
         location.lat &&
         location.lng
       ) {
-        const map = await this.$refs.gMap.$mapPromise;
-        map.setCenter(this.location);
+        const map = await gMap.value.$mapPromise;
+        map.setCenter(location);
         const marker = new google.maps.Marker({
-          position: this.center,
+          position: center.value,
           map,
         });
-        this.removeAllMarker();
-        this.markers.push(marker);
+        removeAllMarker();
+        markers.value.push(marker);
 
-        this.maplocation = location;
-        this.updateCircle();
+        maplocation = location;
+        updateCircle();
       }
-    },
-    removeAllMarker() {
-      if (this.markers && this.markers.length > 0) {
-        this.markers.map((marker) => {
-          marker.setMap(null);
-        });
-        this.markers = [];
+    };
+
+    const mapLoaded = () => {
+      if (props.shopInfo && props.shopInfo.location) {
+        setCurrentLocation(props.shopInfo.location);
       }
-    },
-    removeAllCircle() {
-      if (this.circles && this.circles.length > 0) {
-        this.circles.map((circle) => {
-          circle.setMap(null);
-        });
-        this.circles = [];
+    };
+    
+    const location = props.shopInfo.location;
+    existLocation.value = Object.keys(location).length === 2;
+    if (!existLocation.value) {
+      return;
+    }
+    enableDelivery.value = props.shopInfo.enableDelivery || false;
+    deliveryMinimumCookTime.value =
+      props.shopInfo.deliveryMinimumCookTime || deliveryMinimumCookTime.value;
+
+    getDoc(
+      doc(db, `restaurants/${restaurantId}/delivery/area`)
+    ).then((deliveryDoc) => {
+      if (deliveryDoc.exists()) {
+        const data = deliveryDoc.data();
+        enableAreaMap.value = data.enableAreaMap;
+        enableAreaText.value = data.enableAreaText;
+        enableDeliveryFree.value =
+          data.enableDeliveryFree || enableDeliveryFree.value;
+        enableDeliveryThreshold.value =
+          data.enableDeliveryThreshold || enableDeliveryThreshold.value;
+        deliveryFee.value = data.deliveryFee || deliveryFee.value;
+        deliveryFreeThreshold.value =
+          data.deliveryFreeThreshold || deliveryFreeThreshold.value;
+        deliveryThreshold.value = data.deliveryThreshold || deliveryThreshold.value;
+        radius.value = data.radius;
+        areaText.value = data.areaText;
       }
-    },
+      center.value = new google.maps.LatLng(location.lat, location.lng);
+      mapLoaded();
+      notFound.value = false;
+    });
+    onMounted(() => {
+      mapLoaded();
+    });
+
+    const saveDeliveryArea = async () => {
+      await updateDoc(doc(db, `restaurants/${restaurantId}`), {
+        enableDelivery: enableDelivery.value,
+        deliveryMinimumCookTime: Number(deliveryMinimumCookTime.value || 0),
+      });
+      const data = {
+        enableAreaMap: enableAreaMap.value,
+        enableAreaText: enableAreaText.value,
+        radius: radius.value,
+        areaText: areaText.value,
+        enableDeliveryFree: enableDeliveryFree.value,
+        enableDeliveryThreshold: enableDeliveryThreshold.value,
+        deliveryFee: Number(deliveryFee.value || 0),
+        deliveryFreeThreshold: Number(deliveryFreeThreshold.value || 0),
+        deliveryThreshold: Number(deliveryThreshold.value || 0),
+        uid: uid.value,
+      };
+      await setDoc(doc(db, `restaurants/${restaurantId}/delivery/area`),data);
+      router.push("/admin/restaurants");
+    };
+
+    watch(enableAreaMap, () => {
+      updateCircle();
+    });
+
+    return {
+      enableDelivery,
+      enableDeliveryFree,
+      enableDeliveryThreshold,
+      enableAreaMap,
+      enableAreaText,
+      
+      deliveryFee,
+      deliveryFreeThreshold,
+      deliveryThreshold,
+      deliveryMinimumCookTime,
+
+      radius,
+      areaText,
+      existLocation,
+
+      notFound,
+
+      mapLoaded,
+      updateCircle,
+      saveDeliveryArea,
+
+      gMap,
+    };
+    
+
   },
-};
+});
 </script>
