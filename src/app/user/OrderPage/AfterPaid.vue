@@ -148,15 +148,15 @@
 
         <!-- View Menu Page Button -->
         <div v-if="paid" class="mt-6 text-center">
-          <o-button class="b-reset-tw" @click="handleOpenMenu">
+          <router-link :to="menuPagePath">
             <div
-              class="inline-flex h-12 items-center justify-center rounded-full border-2 border-op-teal px-6"
+              class="inline-flex h-12 items-center justify-center rounded-full border-2 border-op-teal px-6 b-reset-tw"
             >
               <div class="text-base font-bold text-op-teal">
                 {{ $t("order.menu") }}
               </div>
             </div>
-          </o-button>
+          </router-link>
         </div>
       </div>
 
@@ -299,6 +299,10 @@ export default defineComponent({
       type: String,
       required: false,
     },
+    menuPagePath: {
+      type: String,
+      required: false,
+    },
     groupData: {
       type: Object,
       required: false,
@@ -389,9 +393,6 @@ export default defineComponent({
         restaurantId
       );
     };
-    const handleOpenMenu = () => {
-      ctx.emit("handleOpenMenu");
-    };
     const handleCancelPayment = () => {
       store.commit("setAlert", {
         code: "order.cancelOrderConfirm",
@@ -434,7 +435,6 @@ export default defineComponent({
       hasMemo,
       isPickup,
       // method
-      handleOpenMenu,
       handleCancelPayment,
     };
   },

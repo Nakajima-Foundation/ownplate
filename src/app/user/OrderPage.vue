@@ -26,7 +26,7 @@
         :groupData="groupData"
         :lastOrder="lastOrder"
         :moSuspend="moSuspend"
-        @handleOpenMenu="handleOpenMenu"
+        :menuPagePath="menuPagePath"
         @openTransactionsAct="openTransactionsAct"
       />
       <OrderPageAfter
@@ -37,7 +37,7 @@
         :paymentInfo="paymentInfo"
         :mode="mode"
         :groupData="groupData"
-        @handleOpenMenu="handleOpenMenu"
+        :menuPagePath="menuPagePath"
       />
     </template>
     <TransactionsActContents
@@ -236,17 +236,16 @@ export default defineComponent({
       return "21:00";
     });
 
-    const handleOpenMenu = () => {
+    const menuPagePath = computed(() => {
       if (inLiff.value) {
-        router.push(liffBasePath + "/r/" + restaurantId.value);
+        return liffBasePath + "/r/" + restaurantId.value;
       } else if (props.mode === "mo") {
-        router.push(
-          `/${props.moPrefix}/r/${restaurantId.value}`
-        );
+        return `/${props.moPrefix}/r/${restaurantId.value}`;
       } else {
-        router.push(`/r/${restaurantId.value}`);
+        return `/r/${restaurantId.value}`;
       }
-    };
+    });
+      
     const deleteOrderInfo = async () => {
       try {
         await deleteDoc(
@@ -299,7 +298,7 @@ export default defineComponent({
       orderInfo,
       orderItems,
 
-      handleOpenMenu,
+      menuPagePath,
 
       openTransactionsAct,
       transactions,
