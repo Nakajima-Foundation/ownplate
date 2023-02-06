@@ -287,6 +287,7 @@ import {
   serverTimestamp,
   Unsubscribe,
   DocumentData,
+  DocumentSnapshot,
 } from "firebase/firestore";
 
 import { order_status } from "@/config/constant";
@@ -467,7 +468,8 @@ export default defineComponent({
                   return;
                 }
                 restaurantItems.value = (result.docs || []).reduce(
-                  (tmp: {[key: string]: RestaurantInfoData}, doc: any) => {
+                  (tmp: {[key: string]: RestaurantInfoData},
+                   doc: DocumentSnapshot<DocumentData>) => {
                     tmp[doc.id] = doc2data("restaurant")(doc) as RestaurantInfoData;
                     if (!restaurantLists.value.includes(doc.id)) {
                       restaurantLists.value.push(doc.id);
@@ -504,7 +506,8 @@ export default defineComponent({
                   }
 
                   restaurantItems.value = (result.docs || []).reduce(
-                    (tmp: {[key: string]: RestaurantInfoData}, doc: any) => {
+                    (tmp: {[key: string]: RestaurantInfoData},
+                     doc: DocumentSnapshot<DocumentData>) => {
                       tmp[doc.id] = doc2data("restaurant")(doc) as RestaurantInfoData;
                       return tmp;
                     },
@@ -543,7 +546,7 @@ export default defineComponent({
         (messageCollection) => {
           messages.value = messageCollection.docs
             .map(doc2data("message"))
-            .filter((a: any) => a.toDisplay);
+            .filter((a: DocumentData) => a.toDisplay);
         }
       );
     });
