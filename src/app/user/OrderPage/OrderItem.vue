@@ -54,7 +54,7 @@
   </div>
 </template>
 
-<script type="ts">
+<script lang="ts">
 import {
   defineComponent,
   computed,
@@ -95,28 +95,28 @@ export default defineComponent({
     const count = computed(() => {
       return props.orderItem.count;
     });
-    const displayOption = (option) => {
+    const displayOption = (option: string) => {
       return formatOption(option, (price) => ctx.root.$n(price, "currency"));
     };
     const specialRequest = computed(() => {
       return props.orderItem.options
-        .filter((choice) => choice)
-        .map((choice) => displayOption(choice))
+        .filter((choice: string) => choice)
+        .map((choice: string) => displayOption(choice))
         .join(", ");
     });
     const totalPrice = computed(() => {
       let price = item.value.price;
-      props.orderItem.options.forEach((option) => {
+      props.orderItem.options.forEach((option: string) => {
         const p = roundPrice(optionPrice(option));
         price += p;
       });
       return price * count.value;
     });
 
-    const input = (value) => {
+    const input = (value: boolean) => {
       ctx.emit("input", [props.mkey, value]);
     }
-    const _smallImageErrorHandler = (e) => {
+    const _smallImageErrorHandler = (e: any) => {
       smallImageErrorHandler(e);
     };
     return {
