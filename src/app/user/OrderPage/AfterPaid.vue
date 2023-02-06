@@ -99,8 +99,8 @@
         <div class="mt-2">
           <order-info
             :shopInfo="shopInfo || {}"
-            :orderItems="this.orderItems"
-            :orderInfo="this.orderInfo || {}"
+            :orderItems="orderItems"
+            :orderInfo="orderInfo || {}"
             :groupData="groupData"
           ></order-info>
         </div>
@@ -215,7 +215,14 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import {
+  defineComponent,
+  ref,
+  computed,
+  PropType,
+} from "vue";
+  
 import ShopHeader from "@/app/user/Restaurant/ShopHeader.vue";
 import ShopInfo from "@/app/user/Restaurant/ShopInfo.vue";
 import FavoriteButton from "@/app/user/Restaurant/FavoriteButton.vue";
@@ -243,7 +250,10 @@ import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import { isEmpty, validUrl } from "@/utils/utils";
 
-export default {
+import { OrderInfoData } from "@/models/orderInfo";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
+
+export default defineComponent({
   name: "Order",
   components: {
     ShopHeader,
@@ -266,11 +276,11 @@ export default {
   },
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
     orderInfo: {
-      type: Object,
+      type: Object as PropType<OrderInfoData>,
       required: true,
     },
     orderItems: {
@@ -290,21 +300,73 @@ export default {
       required: false,
     },
   },
-  created() {
-    if (this.mode == "mo") {
-      const menus = Object.keys(this.orderInfo.menuItems).map((menuId) => {
+  setup(props, ctx) {
+    const route = ctx.root.$route;
+    const store = ctx.root.$store;
+    
+    const orderId = route.params.orderId;
+    const restaurantId = route.params.restaurantId;
+
+    const hasStripe = computed(() => {
+      return props.orderInfo.payment && props.orderInfo.payment.stripe;
+    });
+    const hasLineUrl = computed(() => {
+      return props.shopInfo.lineUrl && validUrl(props.shopInfo.lineUrl);
+    });
+    const urlAdminOrderPage = computed(() => {
+      return `${
+        location.origin
+      }/admin/restaurants/${restaurantId}/orders/${orderId}`;
+    });
+    const timeRequested = computed(() => {
+      const date = props.orderInfo.timePlaced.toDate();
+      return ctx.root.$d(date, "long");
+    });
+    const timeEstimated = computed(() => {
+      if (props.orderInfo.timeEstimated) {
+        const date = props.orderInfo.timeEstimated.toDate();
+        return ctx.root.$d(date, "long");
+      }
+      return undefined; // backward compatibility
+    });
+    const orderName = computed(() => {
+      return nameOfOrder(props.orderInfo);
+    });
+    const just_paid = computed(() => {
+      return props.orderInfo.status === order_status.order_placed;
+    });
+    const canceled = computed(() => {
+      return props.orderInfo.status === order_status.order_canceled;
+    });
+    const paid = computed(() => {
+      return props.orderInfo.status >= order_status.order_placed;
+    });
+    const order_accepted = computed(() => {
+      return props.orderInfo.status >= order_status.order_accepted;
+    });
+    const hasCustomerInfo = computed(() => {
+      return props.orderInfo.status > order_status.validation_ok;
+    });
+    const hasMemo = computed(() => {
+      return props.orderInfo && !isEmpty(props.orderInfo.memo);
+    });
+    const isPickup = computed(() => {
+      return props.orderInfo && props.orderInfo.isPickup;
+    });
+    if (props.mode == "mo") {
+      const menus = Object.keys(props.orderInfo.menuItems).map((menuId) => {
         return {
-          ...this.orderInfo.menuItems[menuId],
+          ...props.orderInfo.menuItems[menuId],
           id: menuId,
-        };
+        } as any;
       });
 
       const data = analyticsUtil.getDataForLayer(
-        this.orderInfo,
-        this.orderId,
+        props.orderInfo,
+        orderId,
         menus,
-        this.shopInfo,
-        this.restaurantId()
+        props.shopInfo,
+        restaurantId
       );
       // console.log(data);
       dataLayer.push({ ecommerce: null }); // Clear the previous ecommerce object.
@@ -313,96 +375,63 @@ export default {
         ecommerce: data,
       });
     }
-  },
-  computed: {
-    hasStripe() {
-      return this.orderInfo.payment && this.orderInfo.payment.stripe;
-    },
-    hasLineUrl() {
-      return this.shopInfo.lineUrl && validUrl(this.shopInfo.lineUrl);
-    },
-    urlAdminOrderPage() {
-      return `${
-        location.origin
-      }/admin/restaurants/${this.restaurantId()}/orders/${this.orderId}`;
-    },
-    timeRequested() {
-      const date = this.orderInfo.timePlaced.toDate();
-      return this.$d(date, "long");
-    },
-    timeEstimated() {
-      if (this.orderInfo.timeEstimated) {
-        const date = this.orderInfo.timeEstimated.toDate();
-        return this.$d(date, "long");
-      }
-      return undefined; // backward compatibility
-    },
-    orderName() {
-      return nameOfOrder(this.orderInfo);
-    },
-    just_paid() {
-      return this.orderInfo.status === order_status.order_placed;
-    },
-    canceled() {
-      return this.orderInfo.status === order_status.order_canceled;
-    },
-    paid() {
-      return this.orderInfo.status >= order_status.order_placed;
-    },
-    order_accepted() {
-      return this.orderInfo.status >= order_status.order_accepted;
-    },
-    hasCustomerInfo() {
-      return this.orderInfo.status > order_status.validation_ok;
-    },
-    orderId() {
-      return this.$route.params.orderId;
-    },
-    hasMemo() {
-      return this.orderInfo && !isEmpty(this.orderInfo.memo);
-    },
-    isPickup() {
-      return this.orderInfo && this.orderInfo.isPickup;
-    },
-  },
-  // end of computed
-  methods: {
-    sendRedunded() {
+
+    const sendRedunded = () => {
       analyticsUtil.sendRedunded(
-        this.orderInfo,
-        this.orderId,
-        this.shopInfo,
-        this.restaurantId()
+        props.orderInfo,
+        orderId,
+        props.shopInfo,
+        restaurantId
       );
-    },
-    handleOpenMenu() {
-      this.$emit("handleOpenMenu");
-    },
-    async handleCancelPayment() {
-      this.$store.commit("setAlert", {
+    };
+    const handleOpenMenu = () => {
+      ctx.emit("handleOpenMenu");
+    };
+    const handleCancelPayment = () => {
+      store.commit("setAlert", {
         code: "order.cancelOrderConfirm",
         callback: async () => {
           try {
-            this.$store.commit("setLoading", true);
+            store.commit("setLoading", true);
             const { data } = await stripeCancelIntent({
-              restaurantId: this.restaurantId(),
-              orderId: this.orderId,
+              restaurantId: restaurantId,
+              orderId: orderId,
             });
-            this.sendRedunded();
+            sendRedunded();
             // console.log("cancel", data);
           } catch (error) {
             // BUGBUG: Implement the error handling code here
             // console.error(error.message, error.details);
-            this.$store.commit("setErrorMessage", {
+            store.commit("setErrorMessage", {
               code: "order.cancel",
               error,
             });
           } finally {
-            this.$store.commit("setLoading", false);
+            store.commit("setLoading", false);
           }
         },
       });
-    },
+    };
+    return {
+      orderId,
+      // computed
+      hasStripe,
+      hasLineUrl,
+      urlAdminOrderPage,
+      timeRequested,
+      timeEstimated,
+      orderName,
+      just_paid,
+      canceled,
+      paid,
+      order_accepted,
+      hasCustomerInfo,
+      hasMemo,
+      isPickup,
+      // method
+      handleOpenMenu,
+      handleCancelPayment,
+    };
   },
-};
+});
 </script>

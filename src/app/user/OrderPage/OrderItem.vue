@@ -57,7 +57,6 @@
 <script type="ts">
 import {
   defineComponent,
-  ref,
   computed,
 } from "vue";
 
