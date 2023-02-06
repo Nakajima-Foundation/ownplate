@@ -383,6 +383,9 @@
 </template>
 
 <script>
+import {
+  defineComponent,
+} from "vue";
 import ShopHeader from "@/app/user/Restaurant/ShopHeader.vue";
 import FavoriteButton from "@/app/user/Restaurant/FavoriteButton.vue";
 
@@ -413,7 +416,7 @@ import { costCal } from "@/utils/commonUtils";
 
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
-export default {
+export default defineComponent({
   name: "Order",
   components: {
     ShopHeader,
@@ -665,5 +668,5 @@ export default {
       this.$emit("openTransactionsAct");
     },
   },
-};
+});
 </script>

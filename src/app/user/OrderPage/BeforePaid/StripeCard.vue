@@ -103,7 +103,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
   ref,
@@ -133,7 +133,7 @@ export default defineComponent({
     const store = useStore();
     
     const stripe = getStripeInstance();
-    const cardElem = ref(null);
+    const cardElem = ref<any>(null);
     let elementStatus = { complete: false };
 
     const storedCard = ref(null);
@@ -168,7 +168,7 @@ export default defineComponent({
       cardElement.mount("#card-element");
       cardElem.value = cardElement;
       console.log(cardElem.value);
-      cardElem.value.addEventListener("change", (status) => {
+      cardElem.value.addEventListener("change", (status: any) => {
         elementStatus = status;
         ctx.emit("change", status);
       });
