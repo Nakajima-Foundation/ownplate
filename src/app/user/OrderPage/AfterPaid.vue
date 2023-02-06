@@ -253,6 +253,10 @@ import { isEmpty, validUrl } from "@/utils/utils";
 import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
+import { useRoute } from "vue-router";
+import { useStore } from "vuex";
+import { useI18n } from "vue-i18n";
+
 export default defineComponent({
   name: "Order",
   components: {
@@ -301,11 +305,12 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
-    const route = ctx.root.$route;
-    const store = ctx.root.$store;
+    const route = useRoute();
+    const store = useStore();
+    const { d } = useI18n({ useScope: 'global' });
     
-    const orderId = route.params.orderId;
-    const restaurantId = route.params.restaurantId;
+    const orderId = route.params.orderId as string;
+    const restaurantId = route.params.restaurantId as string;
 
     const hasStripe = computed(() => {
       return props.orderInfo.payment && props.orderInfo.payment.stripe;
@@ -320,12 +325,12 @@ export default defineComponent({
     });
     const timeRequested = computed(() => {
       const date = props.orderInfo.timePlaced.toDate();
-      return ctx.root.$d(date, "long");
+      return d(date, "long");
     });
     const timeEstimated = computed(() => {
       if (props.orderInfo.timeEstimated) {
         const date = props.orderInfo.timeEstimated.toDate();
-        return ctx.root.$d(date, "long");
+        return d(date, "long");
       }
       return undefined; // backward compatibility
     });
