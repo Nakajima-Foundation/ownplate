@@ -11,6 +11,9 @@
     <!-- News -->
     <News />
 
+    <!-- News -->
+    <Survey v-if="!isInMo"/>
+    
     <!-- Unset Warning -->
     <div v-if="false" class="mx-6 mt-6 rounded-lg bg-red-700 bg-opacity-10 p-4">
       <span class="text-sm text-red-700">{{
@@ -299,6 +302,7 @@ import MessageCard from "./Messages/MessageCard.vue";
 import EmailVerify from "@/app/admin/Index/EmailVerify.vue";
 import WelcomeAndLinks from "@/app/admin/Index/WelcomeAndLinks.vue";
 import News from "@/app/admin/Index/News.vue";
+import Survey from "@/app/admin/Index/Survey.vue";
 import Note from "@/app/admin/Index/Note.vue";
 import MailMagazine from "@/app/admin/Index/MailMagazine.vue";
 import Smaregi from "@/app/admin/Index/Smaregi.vue";
@@ -328,6 +332,7 @@ export default defineComponent({
     MessageCard,
     WelcomeAndLinks,
     News,
+    Survey,
     Partners,
     EmailVerify,
     Smaregi,
