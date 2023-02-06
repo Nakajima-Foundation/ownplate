@@ -404,7 +404,7 @@ import OrderPageMap from "@/app/user/OrderPage/BeforePaid/Map.vue";
 import ButtonLoading from "@/components/Button/Loading.vue";
 
 import { db } from "@/lib/firebase/firebase9";
-import { doc, getDoc, Timestamp } from "firebase/firestore";
+import { doc, getDoc, Timestamp, serverTimestamp } from "firebase/firestore";
 
 import { orderPlace } from "@/lib/firebase/functions";
 
@@ -600,7 +600,7 @@ export default defineComponent({
         restaurantId: this.restaurantId(),
         name: this.orderInfo.name || "",
         orderId: this.orderId, //  (this is last)
-        updatedAt: firestore.FieldValue.serverTimestamp(),
+        updatedAt: serverTimestamp(),
       };
     },
     async handlePayment(payStripe) {
