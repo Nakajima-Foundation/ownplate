@@ -6,7 +6,7 @@
 </div>
 </template>
 
-<script type="ts">
+<script lang="ts">
 import {
   defineComponent,
   ref,
@@ -14,7 +14,7 @@ import {
 } from "@vue/composition-api";
 
 import { db } from "@/lib/firebase/firebase9";
-import { doc, getDocs, query, collectionGroup, where } from "firebase/firestore";
+import { doc, getDocs, query, collectionGroup, where, DocumentData } from "firebase/firestore";
 
 import { Chart, ChartData, registerables } from "chart.js";
 import { BarChart } from "vue-chart-3";
@@ -29,7 +29,7 @@ export default defineComponent({
   setup(_, ctx) {
     const restaurantId = ctx.root.$route.params.restaurantId;
 
-    const logs = ref([]);
+    const logs = ref<DocumentData[]>([]);
     
     const month = "202302";
     
