@@ -161,7 +161,7 @@ import {
   ref,
   watch,
   computed,
-} from "@vue/composition-api";
+} from "vue";
 import isEmail from "validator/lib/isEmail";
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -171,12 +171,14 @@ import {
 } from "firebase/firestore";
 import { partners } from "@/config/constant";
 
-import { useIsLocaleJapan } from "@/utils/utils";
+import { useIsLocaleJapan, useUserData } from "@/utils/utils";
 import { auth } from "@/lib/firebase/firebase9";
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
 } from "firebase/auth";
+
+import { useRoute, useRouter } from "vue-router";
 
 export default defineComponent({
   name: "Signup",
@@ -185,11 +187,11 @@ export default defineComponent({
       title: [this.defaultTitle, "Signup"].join(" / "),
     };
   },
-  setup(_, ctx) {
-    const router = ctx.root.$router
-    const route = ctx.root.$route;
-    // @ts-ignore
-    const user = computed(() => ctx.root.user);
+  setup() {
+    const router = useRouter();
+    const route = useRoute();
+    const isLocaleJapan = useIsLocaleJapan();
+    const { user } = useUserData()
     
     const email = ref("");
     const name = ref("");
@@ -310,6 +312,8 @@ export default defineComponent({
       // metho
       handleCancel,
       onSignup,
+
+      isLocaleJapan,
     };
   },
 });
