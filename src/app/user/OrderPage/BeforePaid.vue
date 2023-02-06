@@ -404,7 +404,7 @@ import OrderPageMap from "@/app/user/OrderPage/BeforePaid/Map.vue";
 import ButtonLoading from "@/components/Button/Loading.vue";
 
 import { db } from "@/lib/firebase/firebase9";
-import { doc, getDoc, deleteDoc, Timestamp } from "firebase/firestore";
+import { doc, getDoc, Timestamp } from "firebase/firestore";
 
 import { orderPlace } from "@/lib/firebase/functions";
 
@@ -592,16 +592,6 @@ export default defineComponent({
     },
     handleCardStateChange(state) {
       this.cardState = state;
-    },
-    async deleteOrderInfo() {
-      try {
-        await deleteDoc(
-          doc(db, `restaurants/${this.restaurantId()}/orders/${this.orderId}`)
-        );
-        console.log("suceeded");
-      } catch (error) {
-        console.log("failed");
-      }
     },
     async saveLiffCustomer() {
       const uid = this.user.uid;
