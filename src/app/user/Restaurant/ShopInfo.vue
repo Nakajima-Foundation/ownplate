@@ -52,6 +52,14 @@
         </template>
       </div>
 
+      <!-- Transactions Act -->
+      <div class="mt-2">
+        <transactions-act
+          :shopInfo="shopInfo"
+          :isDelivery="isDelivery"
+        ></transactions-act>
+      </div>
+      
       <!-- Minimum Available Time -->
       <div
         class="mt-2 rounded-lg bg-blue-500 bg-opacity-10 px-4 py-2"
@@ -145,14 +153,6 @@
               {{ shopInfo.uberEatsUrl }}
             </div>
           </a>
-        </div>
-
-        <!-- Transactions Act -->
-        <div class="mt-2">
-          <transactions-act
-            :shopInfo="shopInfo"
-            :isDelivery="isDelivery"
-          ></transactions-act>
         </div>
 
         <!-- Restaurant Hours -->
