@@ -1469,9 +1469,7 @@ export default defineComponent({
         const restaurantData = getEditShopInfo(newData);
         await updateRestaurantData(restaurantData);
 
-        router.push({
-          path: `/admin/restaurants/#restaurant_` + restaurantId,
-        });
+        router.push(`/admin/restaurants/#restaurant_` + restaurantId.value);
       } catch (error) {
         submitting.value = false;
         store.commit("setErrorMessage", {
