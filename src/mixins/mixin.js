@@ -43,10 +43,6 @@ const mixin = {
       const claims = this.$store.state.claims;
       return !!claims?.line;
     },
-    isLineEnabled() {
-      // TODO
-      return !!ownPlateConfig.line;
-    },
     liffIndexId() {
       return this.$route.params.liffIndexId;
     },

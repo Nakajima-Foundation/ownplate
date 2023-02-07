@@ -416,6 +416,10 @@ import { costCal } from "@/utils/commonUtils";
 
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
+import {
+  isLineEnabled
+} from "@/utils/utils";
+
 export default defineComponent({
   name: "Order",
   components: {
@@ -487,6 +491,7 @@ export default defineComponent({
       postageInfo: {},
       memo: "",
       disabledPickupTime: false,
+      isLineEnabled,
     };
   },
   created() {

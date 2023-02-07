@@ -323,6 +323,8 @@ export const regionalSetting = (regionalSettings as { [key: string]: any })[
 
 export const stripeRegion = stripe_regions[ownPlateConfig.region || "US"];
 
+export const isLineEnabled = !!ownPlateConfig.line;
+
 export const roundPrice = (price: number) => {
   const m = stripeRegion.multiple;
   return Math.round(price * m) / m;

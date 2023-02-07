@@ -80,6 +80,7 @@ import {
   useInLiff,
   useLiffIndexId,
   underConstruction,
+  isLineEnabled,
 } from "@/utils/utils";
 import liff from "@line/liff";
 
@@ -209,6 +210,7 @@ export default defineComponent({
 
       underConstruction,
       inLiff,
+      isLineEnabled,
     };
   },
 });
