@@ -229,6 +229,9 @@ export default {
     liffIndexId() {
       return this.$route.params.liffIndexId;
     },
+    userLiffId() {
+      return this.$store.getters.liffId;
+    },
   },
   watch: {
     userLoad(value) {

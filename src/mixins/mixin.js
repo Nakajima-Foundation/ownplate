@@ -35,9 +35,6 @@ const mixin = {
     isLiffUser() {
       return !!this.$store.getters.uidLiff;
     },
-    userLiffId() {
-      return this.$store.getters.liffId;
-    },
     isLineUser() {
       // TODO
       const claims = this.$store.state.claims;
