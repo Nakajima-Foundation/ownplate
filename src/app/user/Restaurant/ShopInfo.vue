@@ -5,7 +5,7 @@
       <div>
         <a target="_blank" :href="mapQuery">
           <img
-            :src="`https://maps.googleapis.com/maps/api/staticmap?center=${shopInfo.location.lat},${shopInfo.location.lng}&zoom=16&size=800x${mapWidth}&scale=2&maptype=roadmap&markers=color:red%7Clabel:G%7C${shopInfo.location.lat},${shopInfo.location.lng}&key=${GAPIKey}`"
+            :src="mapImage"
             class="w-full object-cover lg:rounded-lg"
           />
         </a>
@@ -465,6 +465,10 @@ export default defineComponent({
       );
     });
 
+    const mapImage = computed(() => {
+      return `https://maps.googleapis.com/maps/api/staticmap?center=${props.shopInfo.location.lat},${props.shopInfo.location.lng}&zoom=16&size=800x${mapWidth.value}&scale=2&maptype=roadmap&markers=color:red%7Clabel:G%7C${props.shopInfo.location.lat},${props.shopInfo.location.lng}&key=${GAPIKey}`;
+    });
+
     const toggleMoreInfo = () => {
       moreInfo.value = !moreInfo.value;
     };
@@ -501,7 +505,7 @@ export default defineComponent({
 
       minimumAvailableTime,
       mapQuery,
-      GAPIKey,
+      mapImage,
       // methods
       toggleMoreInfo,
       validDate,

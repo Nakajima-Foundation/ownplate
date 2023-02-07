@@ -1420,7 +1420,7 @@ export default defineComponent({
         { lat: arg.event.latLng.lat(), lng: arg.event.latLng.lng() },
         false
       );
-      place_id.value = null;
+      // place_id.value = null;
       setLocation();
     };
     const copyRestaurantFunc = async () => {
