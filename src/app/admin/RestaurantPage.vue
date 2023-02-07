@@ -1067,7 +1067,7 @@
       <div class="mt-6 flex justify-center space-x-4">
         <!-- Cancel Button -->
         <router-link
-          :to="`/admin/restaurants/`"
+          :to="`/admin/restaurants/#restaurant_` + shopInfo.restaurantId"
         >
           <div
             class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
