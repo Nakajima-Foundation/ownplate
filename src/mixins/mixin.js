@@ -38,10 +38,6 @@ const mixin = {
     userLiffId() {
       return this.$store.getters.liffId;
     },
-    isAnonymous() {
-      // TODO
-      return this.$store.getters.isAnonymous;
-    },
     isLineUser() {
       // TODO
       const claims = this.$store.state.claims;

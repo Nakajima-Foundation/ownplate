@@ -634,6 +634,10 @@ export const useUserData = () => {
     return store.state.user;
   });
 
+  const isAnonymous = computed(() => {
+    return store.getters.isAnonymous;
+  });
+  
   return {
     user,
     uid,
@@ -642,6 +646,7 @@ export const useUserData = () => {
     isLiffUser,
     isLineUser,
     inLiff,
+    isAnonymous,
   };
 };
 

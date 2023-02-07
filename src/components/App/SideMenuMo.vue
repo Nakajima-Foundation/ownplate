@@ -121,6 +121,7 @@ import {
   useIsInLiff,
   useLiffBasePath,
   regionalSetting,
+  useUserData,
 } from "@/utils/utils";
 
 export default defineComponent({
@@ -130,6 +131,7 @@ export default defineComponent({
     const isAdmin = useIsAdmin();
     const inLiff = useIsInLiff();
     const liffBasePath = useLiffBasePath();
+    const { isAnonymous } = useUserData();
 
     const mo_prefix = useMoPrefix();
 
@@ -167,6 +169,7 @@ export default defineComponent({
       handleOpen,
 
       inLiff,
+      isAnonymous,
     };
   },
 });

@@ -192,6 +192,7 @@ import {
   useIsInLiff,
   useLiffBasePath,
   regionalSetting,
+  useUserData,
 } from "@/utils/utils";
 
 export default defineComponent({
@@ -201,7 +202,8 @@ export default defineComponent({
     const isAdmin = useIsAdmin();
     const inLiff = useIsInLiff();
     const liffBasePath = useLiffBasePath();
-
+    const { isAnonymous } = useUserData();
+    
     const home_path = computed(() => {
       // /liff/hoge or /admin/restaurants or /r
       return inLiff.value
@@ -244,6 +246,7 @@ export default defineComponent({
       handleOpen,
       
       inLiff,
+      isAnonymous,
     };
   },
 });
