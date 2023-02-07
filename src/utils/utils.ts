@@ -81,6 +81,10 @@ export const previewLink = (props: any) => {
   });
 };
 
+export const sleep = async (seconds: number) => {
+  return await new Promise((resolve) => setTimeout(resolve, seconds * 1000));
+};
+
 export const shareUrl = (root: any, prefix: string) => {
   const restaurantId = root.$route.params.restaurantId;
 
