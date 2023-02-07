@@ -208,6 +208,7 @@ export default defineComponent({
       friendLink,
 
       underConstruction,
+      inLiff,
     };
   },
 });

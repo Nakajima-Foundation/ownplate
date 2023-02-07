@@ -242,6 +242,8 @@ export default defineComponent({
       open,
       handleClose,
       handleOpen,
+      
+      inLiff,
     };
   },
 });

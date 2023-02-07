@@ -51,10 +51,6 @@ const mixin = {
       // TODO
       return !!ownPlateConfig.line;
     },
-    inLiff() {
-      // BY path
-      return !!this.$route.params.liffIndexId;
-    },
     liffIndexId() {
       return this.$route.params.liffIndexId;
     },
