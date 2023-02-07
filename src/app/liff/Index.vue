@@ -45,6 +45,10 @@ import {
   DocumentData,
 } from "firebase/firestore";
 
+import {
+  useLiffIndexId,
+} from "@/utils/utils";
+
 export default defineComponent({
   props: {
     config: {
@@ -54,7 +58,8 @@ export default defineComponent({
   },
   setup(props) {
     const restaurants = ref<DocumentData[]>([]);
-
+    const liffIndexId = useLiffIndexId();
+    
     getDocs(
       query(
         collection(db, "restaurants"),
@@ -74,6 +79,7 @@ export default defineComponent({
     });
     return {
       restaurants,
+      liffIndexId,
     };
   },
 });

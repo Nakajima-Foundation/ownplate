@@ -226,6 +226,9 @@ export default {
       }
       return null;
     },
+    liffIndexId() {
+      return this.$route.params.liffIndexId;
+    },
   },
   watch: {
     userLoad(value) {

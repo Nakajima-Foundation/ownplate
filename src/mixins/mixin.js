@@ -43,14 +43,8 @@ const mixin = {
       const claims = this.$store.state.claims;
       return !!claims?.line;
     },
-    liffIndexId() {
-      return this.$route.params.liffIndexId;
-    },
     isUser() {
       return !!this.$store.getters.uidUser;
-    },
-    isNotSuperAdmin() {
-      return this.$store.getters.isNotSuperAdmin;
     },
   },
 };
