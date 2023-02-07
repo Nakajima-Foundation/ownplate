@@ -190,6 +190,7 @@
               v-for="(restaurantId, index) in restaurantLists"
               :key="restaurantId"
             >
+              <a :id='"restaurant_" + restaurantId' />
               <restaurant
                 v-if="restaurantItems[restaurantId]"
                 :simpleMode="simpleMode"
@@ -320,6 +321,8 @@ import { ping } from "@/lib/firebase/functions";
 import {
   getShopOwner,
   doc2data,
+  sleep,
+  scrollToElementById,
   arrayChunk,
   useAdminUids,
 } from "@/utils/utils";
@@ -529,6 +532,11 @@ export default defineComponent({
             );
           });
         }
+        await sleep(0.7);
+        if (location.hash && location.hash.split("_")[0] === '#restaurant') {
+          scrollToElementById(location.hash.replace("#", ""));
+        }
+        
       } catch (error) {
         console.log("Error fetch doc,", error);
       } finally {

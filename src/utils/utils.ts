@@ -88,10 +88,13 @@ export const previewLink = (props: any) => {
   });
 };
 
+export const sleep = async (seconds: number) => {
+  return await new Promise((resolve) => setTimeout(resolve, seconds * 1000));
+};
+
 export const shareUrl = (prefix: string) => {
   const route = useRoute();
   const restaurantId = route.params.restaurantId;
-
   return (
     location.protocol + "//" + location.host + prefix + "/r/" + restaurantId
   );

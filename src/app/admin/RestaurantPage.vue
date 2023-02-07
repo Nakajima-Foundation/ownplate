@@ -20,10 +20,8 @@
       <!-- Save and Cancel -->
       <div class="mt-6 flex justify-center space-x-4">
         <!-- Cancel Button -->
-        <o-button
-          class="b-reset-tw"
-          tag="router-link"
-          :to="`/admin/restaurants/`"
+        <router-link
+          :to="`/admin/restaurants/#restaurant_` + shopInfo.restaurantId"
         >
           <div
             class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
@@ -32,7 +30,7 @@
               $t("button.cancel")
             }}</span>
           </div>
-        </o-button>
+        </router-link>
 
         <!-- Save Button -->
         <o-button
@@ -1043,9 +1041,7 @@
       <!-- Save and Cancel -->
       <div class="mt-6 flex justify-center space-x-4">
         <!-- Cancel Button -->
-        <o-button
-          class="b-reset-tw"
-          tag="router-link"
+        <router-link
           :to="`/admin/restaurants/`"
         >
           <div
@@ -1055,7 +1051,7 @@
               $t("button.cancel")
             }}</span>
           </div>
-        </o-button>
+        </router-link>
 
         <!-- Save Button -->
         <o-button
@@ -1474,7 +1470,7 @@ export default defineComponent({
         await updateRestaurantData(restaurantData);
 
         router.push({
-          path: `/admin/restaurants/`,
+          path: `/admin/restaurants/#restaurant_` + restaurantId,
         });
       } catch (error) {
         submitting.value = false;
