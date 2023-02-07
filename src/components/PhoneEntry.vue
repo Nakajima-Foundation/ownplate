@@ -19,17 +19,19 @@
       <o-input
         type="text"
         v-model="phoneNumber"
-        v-on:input="validatePhoneNumber"
+         @update:modelValue="validatePhoneNumber"
         :placeholder="placeholder"
       />
     </o-field>
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent, ref, onMounted, computed } from "vue";
 import { parsePhoneNumber } from "@/utils/phoneutil";
+import { stripeRegion } from "@/utils/utils";
 
-export default {
+export default defineComponent({
   props: {
     notice: {
       type: String,
@@ -48,43 +50,49 @@ export default {
       required: true,
     },
   },
-  data() {
-    return {
-      countryCode: "+81",
-      errors: [],
-      phoneNumber: this.currentNumber,
-    };
-  },
-  mounted() {
-    // BUGBUG: This code is sufficient for US and JP, but not for EU
-    this.countryCode = this.countries[0].code;
-    //console.log("countryCode:mount", this.countryCode);
-    this.validatePhoneNumber();
-  },
-  computed: {
-    countries() {
-      return this.$store.getters.stripeRegion.countries;
-    },
-    hasError() {
-      return this.errors.length > 0;
-    },
-  },
-  methods: {
+  emits: ["change"],
+  setup(props, ctx) {
+    const countries = stripeRegion.countries;
+    const countryCode = ref(countries[0].code);
+
+    const errors = ref<string[]>([]);
+    const phoneNumber = ref(props.currentNumber);
+    
     // BUGBUG: This code is fine for US and JP, but not sufficient for EU
-    validatePhoneNumber() {
-      this.errors = [];
+    const validatePhoneNumber = () => {
+      errors.value = [];
       try {
-        const number = parsePhoneNumber(this.countryCode + this.phoneNumber);
+        const number = parsePhoneNumber(countryCode.value + phoneNumber.value);
       } catch (error) {
-        this.errors.push("sms.invalidPhoneNumber");
+        errors.value.push("sms.invalidPhoneNumber");
       }
-      this.$emit("change", {
-        phoneNumber: this.phoneNumber,
-        countryCode: this.countryCode,
-        errors: this.errors,
+      ctx.emit("change", {
+        phoneNumber: phoneNumber.value,
+        countryCode: countryCode.value,
+        errors: errors.value,
         // number,
       });
-    },
+    };
+
+    onMounted(() => {
+      // BUGBUG: This code is sufficient for US and JP, but not for EU
+      //console.log("countryCode:mount", this.countryCode);
+      validatePhoneNumber();
+    });
+    const hasError = computed(() => {
+      return errors.value.length > 0;
+    });
+
+    return {
+      countryCode,
+      countries,
+
+      errors,
+      phoneNumber,
+
+      validatePhoneNumber,
+      hasError,
+    }
   },
-};
+});
 </script>

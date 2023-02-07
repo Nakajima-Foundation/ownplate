@@ -1494,10 +1494,8 @@ export default defineComponent({
         props.shopInfo.state,
       ].join(",");
 
-      console.log(keyword);
       const res = await google_geocode(keyword);
       if (res && res[0] && res[0].geometry) {
-        console.log(res);
         searchResults.value = res;
         setCurrentLocation(res[0].geometry.location);
         place_id.value = res[0].place_id;
