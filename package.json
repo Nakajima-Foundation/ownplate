@@ -37,6 +37,7 @@
     "moment-timezone": "^0.5.37",
     "node-fetch": "^2.6.7",
     "pdfmake": "0.3.0-beta.2",
+    "query-string": "^8.1.0",
     "validator": "^13.7.0",
     "vue": "^2.6.14",
     "vue-chart-3": "^2.1.2",
