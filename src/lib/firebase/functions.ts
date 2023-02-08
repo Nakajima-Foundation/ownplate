@@ -55,6 +55,13 @@ export const orderPlace = httpsCallable(functionsJP, "orderPlaceJp");
 
 export const orderCreated = httpsCallable(functionsJP, "orderCreatedJp");
 
-export const liffAuthenticate = httpsCallable(functionsJP, "liffAuthenticate");
+export const liffAuthenticate = httpsCallable<{
+  liffIndexId: string,
+  liffId: string,
+  token: string,
+}, {
+  customToken: string;
+  
+}>(functionsJP, "liffAuthenticate");
 
 export const ping = httpsCallable(functionsJP, "ping");
