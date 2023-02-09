@@ -106,6 +106,7 @@
 <script>
 import { getStripeInstance, stripeUpdateCustomer } from "@/lib/stripe/stripe";
 import { db } from "@/plugins/firebase";
+import moment from "moment";
 
 export default {
   data() {
@@ -131,9 +132,11 @@ export default {
       await db.doc(`/users/${this.user.uid}/readonly/stripe`).get()
     ).data();
     if (stripeInfo && stripeInfo.card) {
-      this.storedCard = stripeInfo.card;
-      this.useStoredCard = true;
-      this.$emit("change", { complete: true });
+      if (stripeInfo.updatedAt.toDate() > moment().subtract(180, "days").toDate()) {
+        this.storedCard = stripeInfo.card;
+        this.useStoredCard = true;
+        this.$emit("change", { complete: true });
+      }
     }
   },
   watch: {
