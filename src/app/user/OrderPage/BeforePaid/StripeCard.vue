@@ -117,6 +117,7 @@ import {
   doc,
   getDoc,
 } from "firebase/firestore";
+import moment from "moment";
 
 import { useUserData } from "@/utils/utils";
 import { useStore } from "vuex";
@@ -178,9 +179,11 @@ export default defineComponent({
       ).data();
       
       if (stripeInfo && stripeInfo.card) {
-        storedCard.value = stripeInfo.card;
-        useStoredCard.value = true;
-        ctx.emit("change", { complete: true });
+        if (stripeInfo.updatedAt.toDate() > moment().subtract(180, "days").toDate()) {
+          storedCard.value = stripeInfo.card;
+          useStoredCard.value = true;
+          ctx.emit("change", { complete: true });
+        }
       }
 
     };
