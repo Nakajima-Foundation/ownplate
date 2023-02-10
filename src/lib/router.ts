@@ -71,6 +71,13 @@ const getUserPagesWithCat = (prefix: string) => {
           path: "cat/:category/:subCategory/menus/:menuId",
           component: "user/Blank.vue",
         },
+        {
+          path: "transactions-act",
+          component: "user/Blank.vue",
+          meta: {
+            isTransactionsAct: true,
+          },
+        },
       ],
     },
     {
