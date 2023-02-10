@@ -13,7 +13,7 @@
       </a>
     </div>
 
-    <TransactionsActContents
+    <TransactionsActModal
       ref="transactions"
       :shopInfo="shopInfo"
       :isDelivery="isDelivery"
@@ -24,7 +24,7 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 
-import TransactionsActContents from "@/app/user/TransactionsAct/Contents.vue";
+import TransactionsActModal from "@/app/user/TransactionsAct/Modal.vue";
 
 export default defineComponent({
   props: {
@@ -38,7 +38,7 @@ export default defineComponent({
     },
   },
   components: {
-    TransactionsActContents,
+    TransactionsActModal,
   },
   setup() {
     const transactions = ref();

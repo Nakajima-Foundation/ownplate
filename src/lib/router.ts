@@ -18,6 +18,13 @@ const getUserPages = (prefix: string) => {
           path: "menus/:menuId",
           component: "user/Blank.vue",
         },
+        {
+          path: "transactions-act",
+          component: "user/Blank.vue",
+          meta: {
+            isTransactionsAct: true,
+          },
+        },
       ],
     },
     {
@@ -79,6 +86,7 @@ interface CustomRoute {
   path: string;
   component: string;
   children?: CustomRoute[];
+  meta?: any;
 }
 
 const mopath = mo_prefixes
@@ -514,6 +522,7 @@ const loadComponent = (data: CustomRoute): any  => {
     path: data.path,
     name: data.name,
     component,
+    meta: data.meta,
   };
 };
 

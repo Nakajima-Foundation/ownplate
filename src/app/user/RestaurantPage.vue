@@ -102,7 +102,7 @@
               </div>
 
               <!-- Restaurant Info -->
-              <div class="mt-4">
+              <div class="mt-4" v-if="!isTransactionAct">
                 <div class="text-xl font-bold text-black text-opacity-30">
                   {{
                     shopInfo.isEC
@@ -128,7 +128,16 @@
           </div>
 
           <!-- Right -->
-          <div>
+          <div v-if="isTransactionAct">
+            <div class="mx-6 mt-2 lg:mx-0">
+              <TransactionsActContents
+                :shopInfo="shopInfo"
+                :isDelivery="isDelivery"
+                :hasCloseButton="false"
+                />
+            </div>
+          </div>
+          <div v-else>
             <div class="mx-6 mt-2 lg:mx-0" v-if="shopInfo.enableDelivery">
               <div class="rounded-lg bg-white shadow">
                 <!-- delivery toggle-->
@@ -424,7 +433,7 @@ import CategoryTop from "@/app/user/Restaurant/CategoryTop.vue";
 import CategoryIcon from "@/app/user/Restaurant/CategoryIcon.vue";
 import Titles from "@/app/user/Restaurant/Titles.vue";
 import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
-
+import TransactionsActContents from "@/app/user/TransactionsAct/Contents.vue";
 import MoPickUp from "@/app/user/Restaurant/MoPickUp.vue";
 
 import { usePickupTime } from "@/utils/pickup";
@@ -495,6 +504,7 @@ export default defineComponent({
     CartButton,
     Cart,
     Delivery,
+    TransactionsActContents,
     CategoryModal,
     SubCategoryModal,
     CategoryTop,
@@ -1134,6 +1144,8 @@ export default defineComponent({
       ).filter((title) => title.name !== "");
     });
 
+    const isTransactionAct = !!ctx.root.$route.meta.isTransactionsAct;
+
     return {
       itemLists,
       titleLists: filteredTitleLists,
@@ -1201,6 +1213,7 @@ export default defineComponent({
       lastOrder,
 
       isFilterStock,
+      isTransactionAct,
     };
   },
 });
