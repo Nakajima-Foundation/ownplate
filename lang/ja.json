@@ -1045,6 +1045,7 @@
         "auth/wrong-password": "パスワードが無効です。",
         "auth/too-many-requests": "ログインに失敗した回数が多すぎます。時間がたってから再度ログインしてください。",
         "auth/invalid-email": "無効なメールアドレスです。",
+        "auth/invalid-login-credentials": "メールアドレスかパスワードが正しくありません。",
         "auth/unauthorized-continue-uri": "ドメインがホワイトリストに登録されていません。",
         "auth/internal-error": "パスワードが無効です。"
       }
