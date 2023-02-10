@@ -375,7 +375,6 @@ export const useIsInLiff = () => {
 };
 export const getMoPrefix = () => {
   const route = useRoute();
-
   return mo_prefixes.find((prefix) => {
     return (
       (route.fullPath || "").startsWith(`/${prefix}/`) ||
@@ -384,8 +383,14 @@ export const getMoPrefix = () => {
   });
 };
 export const useMoPrefix = () => {
+  const route = useRoute();
   return computed(() => {
-    return getMoPrefix();
+    return mo_prefixes.find((prefix) => {
+      return (
+        (route.fullPath || "").startsWith(`/${prefix}/`) ||
+          (route.fullPath || "") === `/${prefix}`
+      );
+    });
   });
 };
 export const useLiffIndexId = () => {

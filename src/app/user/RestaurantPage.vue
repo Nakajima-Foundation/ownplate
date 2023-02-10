@@ -1163,7 +1163,7 @@ export default defineComponent({
       return basePath.value + "/r/" + restaurantId.value;
     });
     const closeTransactionsAct = () => {
-      router.push({path: pageBase.value});
+      router.push(pageBase.value);
     };
     const isTransactionAct = computed(() => {
       return !!route.meta.isTransactionsAct;
