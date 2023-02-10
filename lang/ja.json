@@ -550,7 +550,8 @@
     "options": "オプション",
     "subTotal": "小計: ",
     "quantity": "数量",
-    "addDifferentOptionsItem": "別オプションの商品を追加"
+    "addDifferentOptionsItem": "別オプションの商品を追加",
+    "openCollapse": "写真・メニューオプションを見る"
   },
   "date": {
     "today": "本日"

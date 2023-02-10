@@ -457,7 +457,8 @@
     "options": "Options",
     "subTotal": "Subtotal: ",
     "quantity": "Quantity",
-    "addDifferentOptionsItem": "Add Different Options Item"
+    "addDifferentOptionsItem": "Add Different Options Item",
+    "openCollapse": "See more images and options"
   },
   "date": {
     "today": "Today"
