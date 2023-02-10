@@ -290,7 +290,7 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props) {
+  setup(props, ctx) {
     const isInMo = useIsInMo();
 
     const restaurantsId = props.shopInfo.restaurantId;

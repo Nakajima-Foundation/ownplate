@@ -1144,7 +1144,7 @@ export default defineComponent({
       ).filter((title) => title.name !== "");
     });
 
-    const isTransactionAct = !!ctx.root.$route.meta.isTransactionsAct;
+    const isTransactionAct = !!route.meta.isTransactionsAct;
 
     return {
       itemLists,
