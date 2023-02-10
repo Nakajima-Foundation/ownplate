@@ -6,7 +6,7 @@
         :shopInfo="shopInfo"
         :isDelivery="isDelivery"
         @closeTransactionsAct="closeTransactionsAct"
-        :hasCloseButton="true"
+        closeButton="menu.close"
         />
     </o-modal>
   </div>
