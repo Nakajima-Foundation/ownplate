@@ -47,7 +47,7 @@
         <!-- Body -->
         <div class="grid grid-cols-1 lg:mx-6 lg:grid-cols-2 lg:gap-x-12">
           <!-- Left -->
-          <div>
+          <div id="RestaurantLeftTop">
             <!-- Cover Image -->
             <div class="lg:mt-6" v-if="!shopInfo.moCloseDate">
               <img
@@ -335,10 +335,10 @@
             </div>
           </div>
         </div>
-        <div class="mx-6 mt-3 lg:mx-0" v-if="!isTransactionAct">
+        <div class="mx-6 mt-8" v-if="!isTransactionAct">
           <div class="rounded-lg bg-white shadow">
             <router-link :to="pageBase + '/transactions-act'">
-              <div class="p-4 inline-flex items-center justify-center">
+              <div class="p-4 inline-flex items-center justify-center" @click="scrollTop">
                 <i class="material-icons mr-2 text-lg text-op-teal">account_balance</i>
                 <div class="text-sm font-bold text-op-teal">
                   {{ $t("transactionsAct.title") }}
@@ -1151,16 +1151,19 @@ export default defineComponent({
       return ret;
     });
 
+    const scrollTop = () => {
+      scrollToElementById("RestaurantLeftTop");
+    };
     const pageBase = computed(() => {
       return basePath.value + "/r/" + restaurantId.value;
     });
     const closeTransactionsAct = () => {
+      scrollTop();
       ctx.root.$router.push({path: pageBase.value});
     };
     const isTransactionAct = computed(() => {
       return !!ctx.root.$route.meta.isTransactionsAct;
     });
-
     return {
       itemLists,
       titleLists: filteredTitleLists,
@@ -1231,6 +1234,7 @@ export default defineComponent({
       isTransactionAct,
       closeTransactionsAct,
       pageBase,
+      scrollTop,
     };
   },
 });

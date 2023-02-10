@@ -52,14 +52,6 @@
         </template>
       </div>
 
-      <!-- Transactions Act -->
-      <div class="mt-2">
-        <transactions-act
-          :shopInfo="shopInfo"
-          :isDelivery="isDelivery"
-        ></transactions-act>
-      </div>
-      
       <!-- Minimum Available Time -->
       <div
         class="mt-2 rounded-lg bg-blue-500 bg-opacity-10 px-4 py-2"
@@ -95,6 +87,15 @@
 
       <!-- More Info -->
       <div v-if="moreInfo">
+
+        <!-- Transactions Act -->
+        <div class="mt-2">
+          <transactions-act
+            :shopInfo="shopInfo"
+            :isDelivery="isDelivery"
+            ></transactions-act>
+        </div>
+        
         <!-- Restaurant Website -->
         <div v-if="hasUrl" class="mt-4">
           <a
