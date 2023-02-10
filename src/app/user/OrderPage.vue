@@ -40,7 +40,7 @@
         @handleOpenMenu="handleOpenMenu"
       />
     </template>
-    <TransactionsActContents
+    <TransactionsActModal
       :isDelivery="orderInfo.isDelivery || false"
       :shopInfo="shopInfo"
       ref="contents"
@@ -61,7 +61,7 @@ import moment from "moment-timezone";
 import NotFound from "@/components/NotFound.vue";
 import RequireLogin from "@/components/RequireLogin.vue";
 
-import TransactionsActContents from "@/app/user/TransactionsAct/Contents.vue";
+import TransactionsActModal from "@/app/user/TransactionsAct/Modal.vue";
 
 import OrderPageBefore from "@/app/user/OrderPage/BeforePaid.vue";
 import OrderPageAfter from "@/app/user/OrderPage/AfterPaid.vue";
@@ -103,7 +103,7 @@ export default defineComponent({
     NotFound,
     RequireLogin,
 
-    TransactionsActContents,
+    TransactionsActModal,
   },
   props: {
     shopInfo: {
