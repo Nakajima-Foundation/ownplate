@@ -43,7 +43,7 @@
         <div class="p-4">
           <!-- Item Name -->
           <a :id="`${item.id}`">
-            <div class="text-xl font-bold">{{ title }}</div>
+            <div class="text-base font-bold">{{ title }}</div>
           </a>
           <!-- Price -->
           <div class="mt-2 text-base">
@@ -68,7 +68,19 @@
             {{ allergensDescription }}
           </div>
         </div>
+
+        <!-- ToDo [画像複数対応の場合] 以下のテキスト+アイコンを表示 -->
+        <div v-if="false">
+          <div
+            v-if="!openMenuFlag"
+            class="mb-4 flex items-center justify-center text-center text-xs font-bold text-black text-opacity-40"
+          >
+            {{ $t("sitemenu.openCollapse") }}
+            <i class="material-icons">expand_more</i>
+          </div>
+        </div>
       </div>
+
       <div class="p-4" v-if="menuPickupData.hasExceptData">
         <div class="rounded-lg bg-black bg-opacity-5 p-4">
           <div v-if="menuPickupData.hasExceptDay">
@@ -95,138 +107,184 @@
       </div>
 
       <!-- Item Order Details -->
-      <div
-        v-if="openMenuFlag"
-        class="mx-4 mt-0 border-t-2 border-solid border-black border-opacity-10 pb-4"
-      >
-        <!-- Share Button -->
-        <div class="mt-2 text-center">
-          <share-popup
-            :shopInfo="shopInfo"
-            :mode="mode"
-            :suffix="urlSuffix"
-            :isMenu="true"
-          ></share-popup>
+      <div v-if="openMenuFlag">
+        <!-- ToDo [画像複数対応の場合] 横スクロールできる複数画像を表示 -->
+        <div v-if="false">
+          <div class="mb-2 flex space-x-2 overflow-x-auto px-4">
+            <div class="flex-none">
+              <img
+                @click.stop="openImage()"
+                :src="smallimage"
+                class="h-28 w-28 rounded object-cover sm:h-40 sm:w-40"
+                @error="smallImageErrorHandler"
+              />
+            </div>
+            <div class="flex-none">
+              <img
+                @click.stop="openImage()"
+                :src="smallimage"
+                class="h-28 w-28 rounded object-cover sm:h-40 sm:w-40"
+                @error="smallImageErrorHandler"
+              />
+            </div>
+            <div class="flex-none">
+              <img
+                @click.stop="openImage()"
+                :src="smallimage"
+                class="h-28 w-28 rounded object-cover sm:h-40 sm:w-40"
+                @error="smallImageErrorHandler"
+              />
+            </div>
+            <div class="flex-none">
+              <img
+                @click.stop="openImage()"
+                :src="smallimage"
+                class="h-28 w-28 rounded object-cover sm:h-40 sm:w-40"
+                @error="smallImageErrorHandler"
+              />
+            </div>
+            <div class="flex-none">
+              <img
+                @click.stop="openImage()"
+                :src="smallimage"
+                class="h-28 w-28 rounded object-cover sm:h-40 sm:w-40"
+                @error="smallImageErrorHandler"
+              />
+            </div>
+          </div>
         </div>
-
-        <!-- Item Options -->
-        <template v-for="(value, quantityKey) in quantities">
-          <div v-if="hasOptions">
-            <div class="text-xs">
-              {{ $t("sitemenu.options") }}
-            </div>
-            <div class="mt-2 grid grid-cols-1 space-y-2">
-              <div
-                v-for="(option, index) in options"
-                :key="index"
-                class="rounded-lg bg-black bg-opacity-5 p-4"
-              >
-                <div v-if="option.length === 1" class="field">
-                  <o-checkbox v-model="selectedOptions[quantityKey][index]"
-                    ><div class="text-sm font-bold">
-                      {{ displayOption(option[0], shopInfo, item) }}
-                    </div></o-checkbox
-                  >
-                </div>
-                <div v-else class="field">
-                  <o-radio
-                    v-for="(choice, index2) in option"
-                    v-model="selectedOptions[quantityKey][index]"
-                    :name="`${item.id}_${quantityKey}_${index}`"
-                    :native-value="index2"
-                    :key="`${quantityKey}_${index2}`"
-                    ><div class="text-sm font-bold">
-                      {{ displayOption(choice, shopInfo, item) }}
-                    </div></o-radio
-                  >
-                </div>
-              </div>
-            </div>
+        <div
+          class="mx-4 mt-0 border-t-2 border-solid border-black border-opacity-10 pb-4"
+        >
+          <!-- Share Button -->
+          <div class="mt-2 text-center">
+            <share-popup
+              :shopInfo="shopInfo"
+              :mode="mode"
+              :suffix="urlSuffix"
+              :isMenu="true"
+            ></share-popup>
           </div>
 
-          <!-- Item Quantity / Sold Out -->
-          <div class="mt-4">
-            <div v-if="isSoldOut">
-              <div
-                class="flex h-9 items-center justify-center rounded-full bg-red-700 bg-opacity-10"
-              >
-                <div class="text-sm font-bold text-red-700">
-                  {{ $t("sitemenu.soldOut") }}
+          <!-- Item Options -->
+          <template v-for="(value, quantityKey) in quantities">
+            <div v-if="hasOptions">
+              <div class="text-xs">
+                {{ $t("sitemenu.options") }}
+              </div>
+              <div class="mt-2 grid grid-cols-1 space-y-2">
+                <div
+                  v-for="(option, index) in options"
+                  :key="index"
+                  class="rounded-lg bg-black bg-opacity-5 p-4"
+                >
+                  <div v-if="option.length === 1" class="field">
+                    <o-checkbox v-model="selectedOptions[quantityKey][index]"
+                      ><div class="text-sm font-bold">
+                        {{ displayOption(option[0], shopInfo, item) }}
+                      </div></o-checkbox
+                    >
+                  </div>
+                  <div v-else class="field">
+                    <o-radio
+                      v-for="(choice, index2) in option"
+                      v-model="selectedOptions[quantityKey][index]"
+                      :name="`${item.id}_${quantityKey}_${index}`"
+                      :native-value="index2"
+                      :key="`${quantityKey}_${index2}`"
+                      ><div class="text-sm font-bold">
+                        {{ displayOption(choice, shopInfo, item) }}
+                      </div></o-radio
+                    >
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div v-else>
-              <div>
-                <div class="flex">
-                  <div class="text-xs">
-                    {{ $t("sitemenu.quantity") }}
-                  </div>
-                  <div
-                    v-if="prices[quantityKey] > 0"
-                    class="flex-1 text-right text-xs"
-                  >
-                    {{ $t("sitemenu.subTotal")
-                    }}<Price
-                      :shopInfo="shopInfo"
-                      :menu="{ price: prices[quantityKey], tax: item.tax }"
-                    />
+            <!-- Item Quantity / Sold Out -->
+            <div class="mt-4">
+              <div v-if="isSoldOut">
+                <div
+                  class="flex h-9 items-center justify-center rounded-full bg-red-700 bg-opacity-10"
+                >
+                  <div class="text-sm font-bold text-red-700">
+                    {{ $t("sitemenu.soldOut") }}
                   </div>
                 </div>
-                <div></div>
               </div>
 
-              <div class="mt-2 flex items-center">
+              <div v-else>
                 <div>
-                  <a
-                    @click="pullQuantities(quantityKey)"
-                    class="removeCart inline-flex h-9 w-24 items-center justify-center rounded-full bg-red-700 bg-opacity-10"
-                    :disabled="quantities[quantityKey] === 0"
-                    :data-cart-product="item.id"
-                  >
-                    <i class="material-icons text-lg text-red-700">remove</i>
-                  </a>
+                  <div class="flex">
+                    <div class="text-xs">
+                      {{ $t("sitemenu.quantity") }}
+                    </div>
+                    <div
+                      v-if="prices[quantityKey] > 0"
+                      class="flex-1 text-right text-xs"
+                    >
+                      {{ $t("sitemenu.subTotal")
+                      }}<Price
+                        :shopInfo="shopInfo"
+                        :menu="{ price: prices[quantityKey], tax: item.tax }"
+                      />
+                    </div>
+                  </div>
+                  <div></div>
                 </div>
-                <div class="flex-1 text-center text-3xl text-op-teal">
-                  {{ quantities[quantityKey] }}
-                </div>
-                <div>
-                  <a
-                    @click="pushQuantities(quantityKey)"
-                    class="cardAdd inline-flex h-9 w-24 items-center justify-center rounded-full bg-op-teal bg-opacity-10"
-                    :data-cart-product="item.id"
-                  >
-                    <i class="material-icons text-lg text-op-teal">add</i>
-                  </a>
+
+                <div class="mt-2 flex items-center">
+                  <div>
+                    <a
+                      @click="pullQuantities(quantityKey)"
+                      class="removeCart inline-flex h-9 w-24 items-center justify-center rounded-full bg-red-700 bg-opacity-10"
+                      :disabled="quantities[quantityKey] === 0"
+                      :data-cart-product="item.id"
+                    >
+                      <i class="material-icons text-lg text-red-700">remove</i>
+                    </a>
+                  </div>
+                  <div class="flex-1 text-center text-3xl text-op-teal">
+                    {{ quantities[quantityKey] }}
+                  </div>
+                  <div>
+                    <a
+                      @click="pushQuantities(quantityKey)"
+                      class="cardAdd inline-flex h-9 w-24 items-center justify-center rounded-full bg-op-teal bg-opacity-10"
+                      :data-cart-product="item.id"
+                    >
+                      <i class="material-icons text-lg text-op-teal">add</i>
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div
-            class="mt-4 border-t-2 border-solid border-black border-opacity-10 pb-4"
-            v-if="showMoreOption"
-          ></div>
-        </template>
+            <div
+              class="mt-4 border-t-2 border-solid border-black border-opacity-10 pb-4"
+              v-if="showMoreOption"
+            ></div>
+          </template>
 
-        <!-- Another Order with Different Options -->
-        <div>
-          <!-- # Enable this section If "hasOptions" and more than one order in the default section above. -->
-          <!-- # Show only "Add Another Order Button" first, then add "Another Order" section with the item quantities +1 when the button tapped.  -->
-          <!-- # Once user removed the item to quantities 0, the "Another Order" section will be removed. -->
+          <!-- Another Order with Different Options -->
+          <div>
+            <!-- # Enable this section If "hasOptions" and more than one order in the default section above. -->
+            <!-- # Show only "Add Another Order Button" first, then add "Another Order" section with the item quantities +1 when the button tapped.  -->
+            <!-- # Once user removed the item to quantities 0, the "Another Order" section will be removed. -->
 
-          <!-- Add Another Order Button -->
-          <div v-if="showMoreOption">
-            <div class="text-center">
-              <a
-                @click="pushItem"
-                class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
-              >
-                <i class="material-icons mr-2 text-lg text-op-teal">add</i>
-                <span class="text-sm font-bold text-op-teal">{{
-                  $t("sitemenu.addDifferentOptionsItem")
-                }}</span>
-              </a>
+            <!-- Add Another Order Button -->
+            <div v-if="showMoreOption">
+              <div class="text-center">
+                <a
+                  @click="pushItem"
+                  class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+                >
+                  <i class="material-icons mr-2 text-lg text-op-teal">add</i>
+                  <span class="text-sm font-bold text-op-teal">{{
+                    $t("sitemenu.addDifferentOptionsItem")
+                  }}</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -246,6 +304,36 @@
           class="rounded-lg shadow-lg"
           @error="imageErrorHandler"
         />
+        <!-- ToDo [画像複数対応の場合] 切り替え拡大表示できるサムネイル一覧 -->
+        <div v-if="false">
+          <div class="mt-4 flex justify-center space-x-4">
+            <img
+              :src="image"
+              class="h-12 w-12 rounded object-cover shadow-lg"
+              @error="imageErrorHandler"
+            />
+            <img
+              :src="image"
+              class="h-12 w-12 rounded object-cover shadow-lg"
+              @error="imageErrorHandler"
+            />
+            <img
+              :src="image"
+              class="h-12 w-12 rounded object-cover shadow-lg"
+              @error="imageErrorHandler"
+            />
+            <img
+              :src="image"
+              class="h-12 w-12 rounded object-cover shadow-lg"
+              @error="imageErrorHandler"
+            />
+            <img
+              :src="image"
+              class="h-12 w-12 rounded object-cover shadow-lg"
+              @error="imageErrorHandler"
+            />
+          </div>
+        </div>
         <div class="mt-4 text-left text-base font-bold text-white">
           {{ title }}
         </div>
