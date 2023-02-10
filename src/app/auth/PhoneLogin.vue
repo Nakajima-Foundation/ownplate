@@ -44,7 +44,6 @@
                 type="tel"
                 autocomplete="tel"
                 v-model="phoneNumber"
-                v-on:input="validatePhoneNumber"
                 maxlength="20"
                 :placeholder="$t('sms.pleasetype')"
               />
@@ -105,7 +104,6 @@
                 pattern="[0-9]*"
                 autocomplete="one-time-code"
                 v-model="verificationCode"
-                v-on:input="validateVerificationCode"
                 maxlength="6"
                 :placeholder="$t('sms.typeVerificationCode')"
               />
@@ -248,21 +246,21 @@ export default defineComponent({
       return !hasError.value;
     });
 
-    const validatePhoneNumber = () => {
+    watch(phoneNumber, () => {
       errors.value = [];
       const regex = /^\+?[0-9()\-]{8,20}$/;
       if (!regex.test(phoneNumber.value)) {
         errors.value = ["sms.invalidPhoneNumber"];
       }
-    };
+    });
 
-    const validateVerificationCode = () => {
+    watch(verificationCode, () => {
       errors.value = [];
       const regex = /^[0-9]*$/;
       if (!regex.test(verificationCode.value)) {
         errors.value = ["sms.invalidValidationCode"];
       }
-    };
+    });
 
     const handleSubmit = async () => {
       console.log("submit");
@@ -345,9 +343,6 @@ export default defineComponent({
       hasError,
       readyToSendSMS,
       readyToSendVerificationCode,
-
-      validatePhoneNumber,
-      validateVerificationCode,
 
       isLocaleJapan,
       
