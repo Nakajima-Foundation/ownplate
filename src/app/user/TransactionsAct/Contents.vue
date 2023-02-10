@@ -249,14 +249,14 @@
         </div>
 
         <!-- Actions -->
-        <div class="mt-6 text-center" v-if="hasCloseButton">
+        <div class="mt-6 text-center">
           <a
             @click="closeTransactionsAct()"
             class="inline-flex h-12 items-center justify-center rounded-full bg-black bg-opacity-5 px-6"
             style="min-width: 8rem"
           >
             <div class="text-base font-bold text-black text-opacity-60">
-              {{ $t("menu.close") }}
+              {{ $t(closeButton) }}
             </div>
           </a>
         </div>
@@ -282,8 +282,8 @@ export default defineComponent({
       type: Boolean,
       required: true,
     },
-    hasCloseButton: {
-      type: Boolean,
+    closeButton: {
+      type: String,
       required: true,
     },
   },
