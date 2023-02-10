@@ -133,7 +133,8 @@
               <TransactionsActContents
                 :shopInfo="shopInfo"
                 :isDelivery="isDelivery"
-                :hasCloseButton="false"
+                @closeTransactionsAct="closeTransactionsAct"
+                closeButton="button.back"
                 />
             </div>
           </div>
@@ -334,6 +335,18 @@
             </div>
           </div>
         </div>
+        <div class="mx-6 mt-3 lg:mx-0" v-if="!isTransactionAct">
+          <div class="rounded-lg bg-white shadow">
+            <router-link :to="pageBase + '/transactions-act'">
+              <div class="p-4 inline-flex items-center justify-center">
+                <i class="material-icons mr-2 text-lg text-op-teal">account_balance</i>
+                <div class="text-sm font-bold text-op-teal">
+                  {{ $t("transactionsAct.title") }}
+                </div>
+              </div>
+            </router-link>
+          </div>
+        </div>
       </div>
 
       <!-- Phone Login-->
@@ -467,6 +480,7 @@ import {
   useIsInMo,
   useToggle,
   scrollToElementById,
+  useBasePath,
 } from "@/utils/utils";
 
 import { imageUtils } from "@/utils/RestaurantUtils";
@@ -575,6 +589,7 @@ export default defineComponent({
     const multiple = store.getters.stripeRegion.multiple;
 
     const isInMo = useIsInMo(ctx.root);
+    const basePath = useBasePath(ctx.root);
 
     const defaultHowToReceive = (() => {
       // for 333
@@ -1136,7 +1151,15 @@ export default defineComponent({
       return ret;
     });
 
-    const isTransactionAct = !!ctx.root.$route.meta.isTransactionsAct;
+    const pageBase = computed(() => {
+      return basePath.value + "/r/" + restaurantId.value;
+    });
+    const closeTransactionsAct = () => {
+      ctx.root.$router.push({path: pageBase.value});
+    };
+    const isTransactionAct = computed(() => {
+      return !!ctx.root.$route.meta.isTransactionsAct;
+    });
 
     return {
       itemLists,
@@ -1206,6 +1229,8 @@ export default defineComponent({
 
       isFilterStock,
       isTransactionAct,
+      closeTransactionsAct,
+      pageBase,
     };
   },
 });
