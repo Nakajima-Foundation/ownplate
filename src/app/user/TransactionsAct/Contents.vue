@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Transactions Act Popup-->
-    <o-modal :active.sync="transactionsActPopup" :width="488" scroll="keep">
+    <div>
       <div class="omx-2 rounded-lg bg-white p-6 shadow-lg">
         <!-- Title -->
         <div class="text-xl font-bold text-black text-opacity-40">
@@ -249,7 +249,7 @@
         </div>
 
         <!-- Actions -->
-        <div class="mt-6 text-center">
+        <div class="mt-6 text-center" v-if="hasCloseButton">
           <a
             @click="closeTransactionsAct()"
             class="inline-flex h-12 items-center justify-center rounded-full bg-black bg-opacity-5 px-6"
@@ -261,7 +261,7 @@
           </a>
         </div>
       </div>
-    </o-modal>
+    </div>
   </div>
 </template>
 <script>
@@ -282,6 +282,10 @@ export default defineComponent({
       type: Boolean,
       required: true,
     },
+    hasCloseButton: {
+      type: Boolean,
+      required: true,
+    },
   },
   setup(props, ctx) {
     const isInMo = useIsInMo(ctx.root);
@@ -289,7 +293,6 @@ export default defineComponent({
     const restaurantsId = props.shopInfo.restaurantId;
     const days = daysOfWeek;
     const paymentInfo = ref({});
-    const transactionsActPopup = ref(false);
 
     const uid = props.shopInfo.uid;
 
@@ -308,18 +311,14 @@ export default defineComponent({
     const validDate = (date) => {
       return !isNull(date.start) && !isNull(date.end);
     };
-    const openTransactionsAct = () => {
-      transactionsActPopup.value = true;
-    };
     const closeTransactionsAct = () => {
-      transactionsActPopup.value = false;
+      ctx.emit("closeTransactionsAct");
     };
 
     return {
       restaurantsId,
       days,
       paymentInfo,
-      transactionsActPopup,
 
       showPayment,
       inStorePayment,
@@ -327,7 +326,6 @@ export default defineComponent({
 
       isInMo,
 
-      openTransactionsAct,
       closeTransactionsAct, // call by parent
 
       nationalPhoneNumber,
