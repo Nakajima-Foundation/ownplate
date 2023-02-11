@@ -48,8 +48,8 @@
         <div class="mt-2">
           <order-info
             :shopInfo="shopInfo || {}"
-            :orderItems="this.orderItems"
-            :orderInfo="this.orderInfo || {}"
+            :orderItems="orderItems"
+            :orderInfo="orderInfo || {}"
             :shippingCost="shippingCost"
             :groupData="groupData"
             @change="handleTipChange"
@@ -142,7 +142,7 @@
                 :shopInfo="shopInfo"
                 :orderInfo="orderInfo"
                 :isDelivery="orderInfo.isDelivery || false"
-                ref="time"
+                ref="timeRef"
                 @notAvailable="handleNotAvailable"
                 @updateDisabledPickupTime="updateDisabledPickupTime"
               />
@@ -196,7 +196,7 @@
             <div v-if="showPayment" class="mt-2">
               <stripe-card
                 @change="handleCardStateChange"
-                ref="stripe"
+                ref="stripeRef"
                 :stripeJCB="stripeJCB"
               ></stripe-card>
 
@@ -205,8 +205,8 @@
                 class="mt-4 h-full w-full rounded-lg bg-red-700 bg-opacity-10 p-3 text-xs font-bold text-red-700"
               >
                 {{
-                  $t("mobileOrder.shopInfo.pickupNote", {
-                    lastOrder: $refs.time && $refs.time.lastOrder,
+                  $tc("mobileOrder.shopInfo.pickupNote", {
+                    lastOrder: timeRef && timeRef.lastOrder,
                   }, 1)
                 }}
               </div>
@@ -365,16 +365,6 @@
               {{ $t("order.alertReqireAddress") }}
             </div>
 
-            <!-- Send SMS Checkbox -->
-            <div v-if="!isLineEnabled" class="mt-6">
-              <div class="rounded-lg bg-black bg-opacity-5 p-4">
-                <o-checkbox v-model="sendSMS">
-                  <div class="text-sm font-bold">
-                    {{ $t("order.sendSMS") }}
-                  </div>
-                </o-checkbox>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -382,10 +372,15 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
+  computed,
+  watch,
+  ref,
+  PropType,
 } from "vue";
+
 import ShopHeader from "@/app/user/Restaurant/ShopHeader.vue";
 import FavoriteButton from "@/app/user/Restaurant/FavoriteButton.vue";
 
@@ -414,11 +409,10 @@ import { stripeReceipt } from "@/lib/stripe/stripe";
 
 import { costCal } from "@/utils/commonUtils";
 
-import * as analyticsUtil from "@/lib/firebase/analytics";
+import { OrderInfoData } from "@/models/orderInfo";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
-import {
-  isLineEnabled
-} from "@/utils/utils";
+import * as analyticsUtil from "@/lib/firebase/analytics";
 
 export default defineComponent({
   name: "Order",
@@ -443,11 +437,11 @@ export default defineComponent({
   },
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
     orderInfo: {
-      type: Object,
+      type: Object as PropType<OrderInfoData>,
       required: true,
     },
     orderItems: {
@@ -481,187 +475,250 @@ export default defineComponent({
   },
   data() {
     return {
-      notAvailable: false,
-      isPaying: false,
-      cardState: {},
-
-      isPlacing: false,
-      tip: 0,
-      sendSMS: true,
-      postageInfo: {},
-      memo: "",
-      disabledPickupTime: false,
-      isLineEnabled,
     };
   },
-  created() {
-    this.setPostage();
-  },
-  computed: {
-    showPayment() {
-      return this.stripeAccount;
-    },
-    stripeAccount() {
-      return this.paymentInfo.stripe;
-    },
-    stripeJCB() {
-      return this.paymentInfo.stripeJCB === true;
-    },
-    inStorePayment() {
-      return this.paymentInfo.inStore;
-    },
-    hasCustomerInfo() {
-      return this.orderInfo.status > order_status.validation_ok;
-    },
-    orderId() {
-      return this.$route.params.orderId;
-    },
-    stripeSmallPayment() {
-      return this.orderInfo.total <= 50;
-    },
-    shippingCost() {
-      return costCal(
-        this.postageInfo,
-        this.$refs?.ecCustomerRef?.customerInfo?.prefectureId,
-        this.orderInfo.total
-      );
-    },
-    requireAddress() {
-      return this.shopInfo.isEC || this.orderInfo.isDelivery;
-    },
-    notSubmitAddress() {
-      return this.requireAddress && this.$refs?.ecCustomerRef?.hasEcError;
-    },
-    userMessageError() {
-      return this.shopInfo.acceptUserMessage && this.memo.length > 500;
-    },
+  setup(props, ctx) {
+    const route = ctx.root.$route;
+    const store = ctx.root.$store;
 
-    shopPaymentMethods() {
+    const restaurantId = route.params.restaurantId as string;
+    
+    const notAvailable = ref(false);
+    const isPaying = ref(false);
+    const isPlacing = ref(false);
+
+    const cardState = ref({});
+    const memo = ref("");
+    const disabledPickupTime = ref(false);
+    let tip = 0;
+
+    // ref for refs
+    const ecCustomerRef = ref();
+    const orderPageMapRef = ref();
+    const timeRef = ref();
+    const stripeRef = ref();
+    
+    const postageInfo = ref({});
+    const setPostage = () => {
+      if (props.shopInfo.isEC) {
+        getDoc(
+          doc(db, `restaurants/${restaurantId}/ec/postage`)
+        ).then((snapshot) => {
+          postageInfo.value = snapshot.data() || {};
+        });
+      }
+    };
+    setPostage();
+    
+    const stripeAccount = computed(() => {
+      return props.paymentInfo.stripe;
+    });
+    
+    const stripeJCB = computed(() => {
+      return props.paymentInfo.stripeJCB === true;
+    });
+    const inStorePayment = computed(() => {
+      return props.paymentInfo.inStore;
+    });
+    const showPayment = computed(() =>{
+      return stripeAccount.value;
+    });
+
+    const hasCustomerInfo = computed(() => {
+      return props.orderInfo.status > order_status.validation_ok;
+    });
+
+    const orderId = computed(() => {
+      return route.params.orderId as string;
+    });
+    const stripeSmallPayment = computed(() => {
+      return props.orderInfo.total <= 50;
+    });
+    const shippingCost = computed(() => {
+      return costCal(
+        postageInfo.value,
+        ecCustomerRef.value?.customerInfo?.prefectureId,
+        props.orderInfo.total
+      );
+    });
+    const requireAddress = computed(() => {
+      return props.shopInfo.isEC || props.orderInfo.isDelivery;
+    });
+    const notSubmitAddress = computed(() => {
+      return requireAddress.value && ecCustomerRef.value?.hasEcError;
+    });
+    const userMessageError = computed(() => {
+      return props.shopInfo.acceptUserMessage && memo.value.length > 500;
+    });
+
+    const shopPaymentMethods = computed(() => {
       return (
-        Object.keys(this.shopInfo.paymentMethods || {}).filter((key) => {
-          return !!this.shopInfo.paymentMethods[key];
+        Object.keys(props.shopInfo.paymentMethods || {}).filter((key) => {
+          return !!props.shopInfo.paymentMethods[key];
         }) || []
       );
-    },
-    paymentMethods() {
-      return paymentMethods;
-    },
-    hasPaymentMethods() {
-      return this.shopPaymentMethods.length > 0;
-    },
-  },
-  // end of computed
-  watch: {
-    shopInfo(newValue) {
-      this.setPostage();
-    },
-  },
-  methods: {
-    setPostage() {
-      if (this.shopInfo.isEC) {
-        getDoc(
-          doc(db, `restaurants/${this.restaurantId()}/ec/postage`)
-        ).then((snapshot) => {
-            this.postageInfo = snapshot.data() || {};
-          });
+    });
+    const hasPaymentMethods = computed(() => {
+      return shopPaymentMethods.value.length > 0;
+    })
+    // end of computed
+    const shopInfo = computed(() => {
+      return props.shopInfo;
+    });
+    watch(shopInfo, () => {
+      setPostage();
+    });
+
+    // methods
+    const updateHome = (pos: any) => {
+      ecCustomerRef.value.updateHome(pos);
+    };
+    const updateLocation = (pos: any) => {
+      if (orderPageMapRef.value) {
+        orderPageMapRef.value.updateLocation(pos);
       }
-    },
-    updateHome(pos) {
-      this.$refs.ecCustomerRef.updateHome(pos);
-    },
-    updateLocation(pos) {
-      if (this.$refs.orderPageMapRef) {
-        this.$refs.orderPageMapRef.updateLocation(pos);
-      }
-    },
-    sendPurchase() {
+    };
+    // internal
+    const sendPurchase = () => {
       analyticsUtil.sendPurchase(
-        this.orderInfo,
-        this.orderId,
-        this.orderItems.map((or) => {
+        props.orderInfo,
+        orderId.value,
+        props.orderItems.map((or: any) => {
           return { ...or.item, id: or.id, quantity: or.count };
         }),
-        this.shopInfo,
-        this.restaurantId()
+        props.shopInfo,
+        restaurantId
       );
-    },
-    updateDisabledPickupTime(value) {
-      this.disabledPickupTime = value;
-    },
-    handleNotAvailable(flag) {
+    };
+    const updateDisabledPickupTime = (value: boolean) => {
+      disabledPickupTime.value = value;
+    };
+    const handleOpenMenu = () => {
+      ctx.emit("handleOpenMenu");
+    };
+    const handleNotAvailable = (flag: boolean) => {
       console.log("handleNotAvailable", flag);
-      this.notAvailable = flag;
-    },
-    handleTipChange(tip) {
-      this.tip = tip;
-    },
-    handleCardStateChange(state) {
-      this.cardState = state;
-    },
-    async saveLiffCustomer() {
+      notAvailable.value = flag;
+    };
+    const handleTipChange = (_tip: number) => {
+      tip = _tip;
+    };
+    const handleCardStateChange = (state: {[key: string]: boolean}) => {
+      cardState.value = state;
+    };
+    // internal
+    /*
+    const saveLiffCustomer = async () => {
       const uid = this.user.uid;
       const data = {
         uid,
-        restaurantId: this.restaurantId(),
-        name: this.orderInfo.name || "",
-        orderId: this.orderId, //  (this is last)
+        restaurantId: restaurantId,
+        name: props.orderInfo.name || "",
+        orderId: orderId.value, //  (this is last)
         updatedAt: serverTimestamp(),
       };
-    },
-    async handlePayment(payStripe) {
-      if (this.userMessageError) {
+      // TODO: not implemented yet.
+    };
+    */
+    const handlePayment = async (payStripe: boolean) => {
+      if (userMessageError.value) {
         return;
       }
-      if (this.requireAddress) {
-        if (this.$refs.ecCustomerRef && this.$refs.ecCustomerRef.hasEcError) {
+      if (requireAddress.value) {
+        if (ecCustomerRef.value && ecCustomerRef.value.hasEcError) {
           return;
         }
-        if (this.$refs.ecCustomerRef.isSaveAddress) {
-          await this.$refs.ecCustomerRef.saveAddress();
+        if (ecCustomerRef.value.isSaveAddress) {
+          await ecCustomerRef.value.saveAddress();
         }
       }
-      const timeToPickup = this.shopInfo.isEC
+      const timeToPickup = props.shopInfo.isEC
         ? Timestamp.now()
-        : this.$refs.time.timeToPickup();
+        : timeRef.value.timeToPickup();
       try {
         if (payStripe) {
-          this.isPaying = true;
-          await this.$refs.stripe.createToken();
+          isPaying.value = true;
+          await stripeRef.value.createToken();
         } else {
-          this.isPlacing = true;
+          isPlacing.value = true;
         }
         const { data } = await orderPlace({
           timeToPickup,
-          restaurantId: this.restaurantId(),
-          orderId: this.orderId,
-          tip: this.tip || 0,
+          restaurantId,
+          orderId: orderId.value,
+          tip: tip || 0,
           payStripe,
-          memo: this.memo || "",
-          customerInfo: this.$refs.ecCustomerRef
-            ? this.$refs.ecCustomerRef.customerInfo || {}
+          memo: memo.value || "",
+          customerInfo: ecCustomerRef.value
+            ? ecCustomerRef.value.customerInfo || {}
             : {},
         });
+        /*
         if (this.isLiffUser) {
-          await this.saveLiffCustomer();
+          await saveLiffCustomer();
         }
-        this.sendPurchase();
-        this.$store.commit("resetCart", this.restaurantId());
+        */
+        sendPurchase();
+        store.commit("resetCart", restaurantId);
         window.scrollTo(0, 0);
-      } catch (error) {
+      } catch (error: any) {
         // alert(JSON.stringify(error));
         console.error(error.message, error.details);
-        this.$store.commit("setErrorMessage", {
+        store.commit("setErrorMessage", {
           code: "order.place",
           error,
         });
       } finally {
-        this.isPlacing = false;
-        this.isPaying = false;
+        isPlacing.value = false;
+        isPaying.value = false;
       }
-    },
-    openTransactionsAct() {
-      this.$emit("openTransactionsAct");
-    },
+    };
+    const openTransactionsAct = () => {
+      ctx.emit("openTransactionsAct");
+    };
+
+    return {
+      // ref
+      notAvailable,
+      isPaying,
+      isPlacing,
+      cardState,
+      memo,
+      disabledPickupTime,
+
+      // refs
+      ecCustomerRef,
+      orderPageMapRef,
+      timeRef,
+      stripeRef,
+      
+      // computed
+      stripeJCB,
+      inStorePayment,
+      showPayment,
+      hasCustomerInfo,
+      orderId,
+      stripeSmallPayment,
+      shippingCost,
+      requireAddress,
+      notSubmitAddress,
+      userMessageError,
+      hasPaymentMethods,
+
+      // const
+      paymentMethods,
+
+      // methods
+      updateHome,
+      updateLocation,
+      updateDisabledPickupTime,
+      handleOpenMenu,
+      handleNotAvailable,
+      handleTipChange,
+      handleCardStateChange,
+      handlePayment,
+      openTransactionsAct,
+    };
   },
 });
 </script>
