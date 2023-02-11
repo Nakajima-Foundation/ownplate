@@ -414,6 +414,9 @@ import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
+import { useStore } from "vuex";
+import { useRoute } from "vue-router";
+
 export default defineComponent({
   name: "Order",
   components: {
@@ -478,8 +481,8 @@ export default defineComponent({
     };
   },
   setup(props, ctx) {
-    const route = ctx.root.$route;
-    const store = ctx.root.$store;
+    const route = useRoute();
+    const store = useStore();
 
     const restaurantId = route.params.restaurantId as string;
     
