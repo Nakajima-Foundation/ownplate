@@ -38,6 +38,7 @@ export interface OrderInfoData {
       tax: number;
     };
   };
+  shippingCost: number;
   isDelivery: boolean;
   isEC: boolean;
   isPickup: boolean;
