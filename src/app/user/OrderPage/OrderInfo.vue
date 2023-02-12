@@ -192,7 +192,7 @@ import {
   watch,
   ref,
   PropType,
-} from "@vue/composition-api";
+} from "vue";
 
 import { order_status } from "@/config/constant";
 import { stripeRegion } from "@/utils/utils";
@@ -200,6 +200,8 @@ import OrderItem from "@/app/user/OrderPage/OrderItem.vue";
 
 import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
+
+import { useStore } from "vuex";
 
 export default defineComponent({
   name: "Order",
@@ -238,7 +240,7 @@ export default defineComponent({
     OrderItem,
   },
   setup(props, ctx) {
-    const store = ctx.root.$store;
+    const store = useStore();
 
     const regionTip = stripeRegion.tip;
     const tipStep = 1.0 / stripeRegion.multiple;
