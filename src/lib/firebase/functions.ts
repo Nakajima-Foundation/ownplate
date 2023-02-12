@@ -8,7 +8,11 @@ export const smaregiProductList = httpsCallable(
   "smaregiProductList"
 );
 
-export const smaregiAuth = httpsCallable(functionsJP, "smaregiAuth");
+export const smaregiAuth = httpsCallable<{
+  code: string;
+}, {
+  result: boolean;
+}>(functionsJP, "smaregiAuth");
 
 export const lineVerifyFriend = httpsCallable(functionsJP, "lineVerifyFriend");
 
