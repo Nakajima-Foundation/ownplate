@@ -19,7 +19,11 @@
 
     <div class="mx-6 mt-6">
       <div v-if="enable === false">
-        <a :href="authUrl">連携する</a>
+        <a :href="authUrl"
+           class="inline-flex h-12 items-center rounded-full border-2 border-op-teal px-6"
+           >
+          <span class="text-base font-bold text-op-teal">連携する</span>
+        </a>
       </div>
       <div v-if="enable === true">
         <span class="text-base text-xl font-bold">
@@ -154,29 +158,29 @@ export default defineComponent({
     };
   },
   setup() {
-    const authUrl = `${smaregi.authUrl}?response_type=code&client_id=${smaregi.clientId}&scope=openid+email+offline_access`,
-    const enable = ref(null);
+    const authUrl = `${smaregi.authUrl}?response_type=code&client_id=${smaregi.clientId}&scope=openid+email+offline_access`;
+    const enable = ref<boolean | null>(null);
 
-    const shopList = ref([]);
+    const shopList = ref<any[]>([]);
     const isLoading = ref(false);
 
-    const selectedRestaurant = ref({});
-    const restaurants = ref([]);
+    const selectedRestaurant = ref<any>({});
+    const restaurants = ref<any[]>([]);
 
-    const restaurantObj = ref({});
+    const restaurantObj = ref<any>({});
     const isEdit = ref(false)
     
-    const inStockData = ref({});
-    const outOfStockData = ref({});
+    const inStockData = ref<{[key: string]: number}>({});
+    const outOfStockData = ref<{[key: string]: number}>({});
 
     // internal
-    let contractId = null;
+    let contractId: string | null  = null;
 
     const { uid } = useAdminUids();
     // computed
     const duplicateElement = computed(() => {
       const counter = Object.values(selectedRestaurant.value).reduce(
-        (tmp, ele) => {
+        (tmp: {[key: string]: number}, ele: any) => {
           if (ele === "00000") {
             return tmp;
           }
@@ -189,7 +193,7 @@ export default defineComponent({
         },
         {}
       );
-      return Object.keys(counter).reduce((tmp, key) => {
+      return Object.keys(counter).reduce((tmp: {[key: string]: boolean}, key: any) => {
         if (counter[key] > 1) {
           tmp[key] = true;
         }
@@ -251,19 +255,19 @@ export default defineComponent({
           return tmp;
         }, {});
         
-        const selectedRestaurant = {};
+        const __selectedRestaurant: any = {};
         (shopList.value || []).map((store, key) => {
           const storeId = store.storeId;
           if (storeObj[storeId]) {
             const { outOfStock, inStock } = storeObj[storeId];
-            selectedRestaurant[key] = storeObj[storeId].restaurantId;
+            __selectedRestaurant[key] = storeObj[storeId].restaurantId;
             
             outOfStockData.value[key] =
               outOfStock === undefined ? 999999 : outOfStock;
             inStockData.value[key] = inStock === undefined ? 999999 : inStock;
           }
         });
-        selectedRestaurant.value = selectedRestaurant;
+        selectedRestaurant.value = __selectedRestaurant;
       }
     });
 
@@ -288,7 +292,7 @@ export default defineComponent({
             storeId,
             uid: uid.value,
             restaurantId,
-          };
+          } as any;
           if (outOfStock !== 999999 && outOfStock !== undefined) {
             data.outOfStock = outOfStock;
           }
@@ -304,7 +308,7 @@ export default defineComponent({
       });
       isEdit.value = false;
     };
-    const showStockThreshold = (value) => {
+    const showStockThreshold = (value: any) => {
       if (value === undefined || value === 999999) {
         return "----";
       }

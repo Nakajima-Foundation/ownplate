@@ -121,73 +121,80 @@ export default {
   },
 
   async created() {
-    const smaregiDoc = await getDoc(doc(db, `admins/${this.uid}/private/smaregi`));
-    this.enable = smaregiDoc && smaregiDoc.exists;
-    if (!this.enable) {
-      return;
-    }
-    this.isLoading = true;
+    try {
+      const smaregiDoc = await getDoc(doc(db, `admins/${this.uid}/private/smaregi`));
 
-    const smaregiData = smaregiDoc.data();
-    this.contractId = smaregiData?.smaregi?.contract?.id;
-
-    this.storeData = (
-      await getDoc(doc(db, `/smaregi/${this.contractId}/stores/${this.storeId}`))
-    ).data();
-    this.sRestaurantId = this.storeData.restaurantId;
-
-    const menus = await getDocs(query(
-      collection(db, `restaurants/${this.sRestaurantId}/menus`),
-      where("deletedFlag", "==", false),
-      where("publicFlag", "==", true),
-    ));
-
-    this.menus = menus.docs.map(doc2data("message")).sort((a, b) => {
-      return a.itemName > b.itemName ? 1 : -1;
-    });
-    this.menuObj = this.menus.reduce((tmp, current) => {
-      tmp[current.id] = current;
-      return tmp;
-    }, {});
-    this.menus.unshift({
-      id: "00000",
-      itemName: "-----------------",
-      price: "---",
-    });
-
-    const { data } = await smaregiProductList({
-      store_id: this.storeId,
-    });
-    this.productList = data.res;
-
-    this.isLoading = false;
-
-    const productCollection = await getDocs(query(
-      collection(db, `/smaregi/${this.contractId}/stores/${this.storeId}/products`),
-      where("uid", "==", this.uid)
-    ))
-    const products = productCollection.docs.map(doc2data("stores"));
-
-    const productObj = products.reduce((tmp, current) => {
-      tmp[current.productId] = current;
-      return tmp;
-    }, {});
-
-    const stockCollection = await getDocs(query(
-      collection(db,
-        `smaregiData/${this.contractId}/stores/${this.storeId}/smaregiProducts`
-      )
-    ));
-    this.stockObj = array2obj(stockCollection.docs.map(doc2data("stock")));
-
-    const selectedMenu = {};
-    (this.productList || []).map((product, key) => {
-      const productId = product.productId;
-      if (productObj[productId]) {
-        selectedMenu[key] = productObj[productId].menuId;
+      this.enable = smaregiDoc && smaregiDoc.exists;
+      if (!this.enable) {
+        return;
       }
-    });
-    this.selectedMenu = selectedMenu;
+      this.isLoading = true;
+      
+      const smaregiData = smaregiDoc.data();
+      this.contractId = smaregiData?.smaregi?.contract?.id;
+      
+      console.log("A");
+      this.storeData = (
+        await getDoc(doc(db, `/smaregi/${this.contractId}/stores/${this.storeId}`))
+      ).data();
+      this.sRestaurantId = this.storeData.restaurantId;
+      console.log("A");
+      
+      const menus = await getDocs(query(
+        collection(db, `restaurants/${this.sRestaurantId}/menus`),
+        where("deletedFlag", "==", false),
+        where("publicFlag", "==", true),
+      ));
+      
+      this.menus = menus.docs.map(doc2data("message")).sort((a, b) => {
+        return a.itemName > b.itemName ? 1 : -1;
+      });
+      this.menuObj = this.menus.reduce((tmp, current) => {
+        tmp[current.id] = current;
+        return tmp;
+      }, {});
+      this.menus.unshift({
+        id: "00000",
+        itemName: "-----------------",
+        price: "---",
+      });
+      
+      const { data } = await smaregiProductList({
+        store_id: this.storeId,
+      });
+      this.productList = data.res;
+      
+      this.isLoading = false;
+      
+      const productCollection = await getDocs(query(
+        collection(db, `/smaregi/${this.contractId}/stores/${this.storeId}/products`),
+        where("uid", "==", this.uid)
+      ))
+      const products = productCollection.docs.map(doc2data("stores"));
+      
+      const productObj = products.reduce((tmp, current) => {
+        tmp[current.productId] = current;
+        return tmp;
+      }, {});
+      
+      const stockCollection = await getDocs(query(
+        collection(db,
+                   `smaregiData/${this.contractId}/stores/${this.storeId}/smaregiProducts`
+                  )
+      ));
+      this.stockObj = array2obj(stockCollection.docs.map(doc2data("stock")));
+      
+      const selectedMenu = {};
+      (this.productList || []).map((product, key) => {
+        const productId = product.productId;
+        if (productObj[productId]) {
+          selectedMenu[key] = productObj[productId].menuId;
+        }
+      });
+      this.selectedMenu = selectedMenu;
+    } catch (e) {
+      console.log(e)
+    }
   },
   methods: {
     saveMenus() {
