@@ -16,20 +16,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from "@vue/composition-api";
+import { defineComponent, ref, computed } from "vue";
 
 import { smaregiAuth } from "@/lib/firebase/functions";
 import { smaregi } from "@/config/project";
 
 import BackButton from "@/components/BackButton.vue";
 
+import { useRoute, useRouter } from "vue-router";
+
 export default defineComponent({
   components: {
     BackButton,
   },
-  setup(_, ctx) {
-    const route = ctx.root.$route;
-    const router = ctx.root.$router;
+  setup() {
+    const route = useRoute();
+    const router = useRouter();
 
     const code = route.query.code as string;
 
