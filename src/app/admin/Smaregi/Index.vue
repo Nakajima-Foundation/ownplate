@@ -95,7 +95,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
   ref,
@@ -106,7 +106,7 @@ import { smaregi } from "@/config/project";
 import { db } from "@/lib/firebase/firebase9";
 import { smaregiStoreList } from "@/lib/firebase/functions";
 
-import { doc2data } from "@/utils/utils";
+import { doc2data, useAdminUids } from "@/utils/utils";
 
 import BackButton from "@/components/BackButton.vue";
 
@@ -143,8 +143,7 @@ const inStockThresholds = [
   { value: 3, name: "3" },
 ];
 
-// export default defineComponent({
- export default {
+export default defineComponent({
   components: {
     BackButton,
   },
@@ -154,144 +153,29 @@ const inStockThresholds = [
       title: [this.defaultTitle, "Admin Smaregi Index"].join(" / "),
     };
   },
-  data() {
-    return {
-      authUrl: `${smaregi.authUrl}?response_type=code&client_id=${smaregi.clientId}&scope=openid+email+offline_access`,
-      shopList: [],
-      enable: null,
-      isLoading: false,
-      selectedRestaurant: {},
-      restaurants: [],
-      restaurantObj: {},
-      contractId: null,
-      isEdit: false,
+  setup() {
+    const authUrl = `${smaregi.authUrl}?response_type=code&client_id=${smaregi.clientId}&scope=openid+email+offline_access`,
+    const enable = ref(null);
 
-      outOfStockThresholds,
-      outOfStockData: {},
+    const shopList = ref([]);
+    const isLoading = ref(false);
 
-      inStockThresholds,
-      inStockData: {},
-    };
-  },
+    const selectedRestaurant = ref({});
+    const restaurants = ref([]);
 
-  async created() {
-    const smaregiDoc = await getDoc(doc(db, `admins/${this.uid}/private/smaregi`));
-    this.enable = smaregiDoc && smaregiDoc.exists();
+    const restaurantObj = ref({});
+    const isEdit = ref(false)
+    
+    const inStockData = ref({});
+    const outOfStockData = ref({});
 
-    if (this.enable) {
-      const smaregiData = smaregiDoc.data();
-      this.contractId = smaregiData?.smaregi?.contract?.id;
+    // internal
+    let contractId = null;
 
-      try {
-        this.isLoading = true;
-        const { data } = await smaregiStoreList({});
-        this.shopList = data.res;
-        // console.log("smaregiStoreList", data);
-      } finally {
-        this.isLoading = false;
-      }
-      const restaurantColleciton = await getDocs(
-        query(
-          collection(db, "restaurants"),
-          where("publicFlag", "==", true),
-          where("deletedFlag", "==", false),
-          where("uid", "==", this.uid),
-        )
-      )
-      this.restaurants = restaurantColleciton.docs
-        .map(doc2data("message"))
-        .sort((a, b) => {
-          return a.restaurantName > b.restaurantName ? 1 : -1;
-        });
-      this.restaurantObj = this.restaurants.reduce((tmp, current) => {
-        tmp[current.id] = current;
-        return tmp;
-      }, {});
-
-      this.restaurants.unshift({
-        id: "00000",
-        restaurantName: "-----------------",
-      });
-
-      const storeCollection = await getDocs(
-        query(
-          collection(db, `/smaregi/${this.contractId}/stores`),
-          where("uid", "==", this.uid)
-        )
-      )
-      const stores = storeCollection.docs.map(doc2data("stores"));
-
-      const storeObj = stores.reduce((tmp, current) => {
-        tmp[current.storeId] = current;
-        return tmp;
-      }, {});
-
-      const selectedRestaurant = {};
-      (this.shopList || []).map((store, key) => {
-        const storeId = store.storeId;
-        if (storeObj[storeId]) {
-          const { outOfStock, inStock } = storeObj[storeId];
-          selectedRestaurant[key] = storeObj[storeId].restaurantId;
-
-          this.outOfStockData[key] =
-            outOfStock === undefined ? 999999 : outOfStock;
-          this.inStockData[key] = inStock === undefined ? 999999 : inStock;
-        }
-      });
-      this.selectedRestaurant = selectedRestaurant;
-    }
-  },
-  methods: {
-    saveShops() {
-      if (this.isDuplicateError) {
-        console.log("error");
-        return;
-      }
-
-      (this.shopList || []).map((store, key) => {
-        const restaurantId = this.selectedRestaurant[key];
-        const outOfStock = this.outOfStockData[key];
-        const inStock = this.inStockData[key];
-        // check uniq.
-        const storeId = store.storeId;
-        const path = `/smaregi/${this.contractId}/stores/${storeId}`;
-
-        if (restaurantId && restaurantId !== "00000") {
-          const data = {
-            storeName: store.storeName,
-            contractId: this.contractId,
-            storeId: storeId,
-            uid: this.uid,
-            restaurantId,
-          };
-          if (outOfStock !== 999999 && outOfStock !== undefined) {
-            data.outOfStock = outOfStock;
-          }
-          if (inStock !== 999999 && inStock !== undefined) {
-            data.inStock = inStock;
-          }
-          setDoc(doc(db, path), data);
-          // console.log(this.selectedRestaurant[key]);
-        } else {
-          deleteDoc(doc(db, path));
-          console.log("TODO DELETE");
-        }
-      });
-      this.isEdit = false;
-    },
-    showStockThreshold(value) {
-      if (value === undefined || value === 999999) {
-        return "----";
-      }
-      return value;
-    },
-  },
-  computed: {
-    isDuplicateError() {
-      return Object.keys(this.duplicateElement).length > 0;
-    },
-    duplicateElement() {
-      const counter = Object.values(this.selectedRestaurant).reduce(
+    const { uid } = useAdminUids();
+    // computed
+    const duplicateElement = computed(() => {
+      const counter = Object.values(selectedRestaurant.value).reduce(
         (tmp, ele) => {
           if (ele === "00000") {
             return tmp;
@@ -311,10 +195,149 @@ const inStockThresholds = [
         }
         return tmp;
       }, {});
-    },
-    uid() {
-      return this.$store.getters.uidAdmin;
-    },
+    });
+    const isDuplicateError = computed(() => {
+      return Object.keys(duplicateElement.value).length > 0;
+    });
+
+    getDoc(doc(db, `admins/${uid.value}/private/smaregi`)).then(async (smaregiDoc) => {
+      enable.value = smaregiDoc && smaregiDoc.exists();
+
+      if (enable.value) {
+        const smaregiData = smaregiDoc.data();
+        contractId = smaregiData?.smaregi?.contract?.id;
+
+        try {
+          isLoading.value = true;
+          const { data } = await smaregiStoreList({});
+          shopList.value = data.res;
+          // console.log("smaregiStoreList", data);
+        } finally {
+          isLoading.value = false;
+        }
+        const restaurantColleciton = await getDocs(
+          query(
+            collection(db, "restaurants"),
+            where("publicFlag", "==", true),
+            where("deletedFlag", "==", false),
+            where("uid", "==", uid.value),
+          )
+        )
+        restaurants.value = restaurantColleciton.docs
+          .map(doc2data("message"))
+          .sort((a, b) => {
+            return a.restaurantName > b.restaurantName ? 1 : -1;
+          });
+        restaurantObj.value = restaurants.value.reduce((tmp, current) => {
+          tmp[current.id] = current;
+          return tmp;
+        }, {});
+        
+        restaurants.value.unshift({
+          id: "00000",
+          restaurantName: "-----------------",
+        });
+        
+        const storeCollection = await getDocs(
+          query(
+            collection(db, `/smaregi/${contractId}/stores`),
+            where("uid", "==", uid.value)
+          )
+        )
+        const stores = storeCollection.docs.map(doc2data("stores"));
+        
+        const storeObj = stores.reduce((tmp, current) => {
+          tmp[current.storeId] = current;
+          return tmp;
+        }, {});
+        
+        const selectedRestaurant = {};
+        (shopList.value || []).map((store, key) => {
+          const storeId = store.storeId;
+          if (storeObj[storeId]) {
+            const { outOfStock, inStock } = storeObj[storeId];
+            selectedRestaurant[key] = storeObj[storeId].restaurantId;
+            
+            outOfStockData.value[key] =
+              outOfStock === undefined ? 999999 : outOfStock;
+            inStockData.value[key] = inStock === undefined ? 999999 : inStock;
+          }
+        });
+        selectedRestaurant.value = selectedRestaurant;
+      }
+    });
+
+    const saveShops = () => {
+      if (isDuplicateError.value) {
+        console.log("error");
+        return;
+      }
+
+      (shopList.value || []).map((store, key) => {
+        const restaurantId = selectedRestaurant.value[key];
+        const outOfStock = outOfStockData.value[key];
+        const inStock = inStockData.value[key];
+        // check uniq.
+        const storeId = store.storeId;
+        const path = `/smaregi/${contractId}/stores/${storeId}`;
+
+        if (restaurantId && restaurantId !== "00000") {
+          const data = {
+            storeName: store.storeName,
+            contractId,
+            storeId,
+            uid: uid.value,
+            restaurantId,
+          };
+          if (outOfStock !== 999999 && outOfStock !== undefined) {
+            data.outOfStock = outOfStock;
+          }
+          if (inStock !== 999999 && inStock !== undefined) {
+            data.inStock = inStock;
+          }
+          setDoc(doc(db, path), data);
+          // console.log(selectedRestaurant.value[key]);
+        } else {
+          deleteDoc(doc(db, path));
+          console.log("TODO DELETE");
+        }
+      });
+      isEdit.value = false;
+    };
+    const showStockThreshold = (value) => {
+      if (value === undefined || value === 999999) {
+        return "----";
+      }
+      return value;
+    };
+
+    return {
+      // const 
+      outOfStockThresholds,
+      inStockThresholds,
+
+      authUrl,
+      enable,
+
+      shopList,
+      isLoading,
+      
+      selectedRestaurant ,
+      restaurants,
+      
+      restaurantObj,
+      isEdit,
+      
+      inStockData,
+      outOfStockData,
+
+      // 
+      duplicateElement,
+      isDuplicateError,
+      saveShops,
+      showStockThreshold,
+
+    };
   },
-};
+});
 </script>
