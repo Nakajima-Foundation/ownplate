@@ -1,10 +1,16 @@
 import { functions, functionsJP } from "@/lib/firebase/firebase9";
 import { httpsCallable } from "firebase/functions";
 
-export const smaregiStoreList = httpsCallable(functionsJP, "smaregiStoreList");
+export const smaregiStoreList = httpsCallable<{
+}, {
+  res: any[]
+}>(functionsJP, "smaregiStoreList");
 
-export const smaregiProductList = httpsCallable(
-  functionsJP,
+export const smaregiProductList = httpsCallable<{
+  store_id: string,
+}, {
+  res: any[]
+}>(functionsJP,
   "smaregiProductList"
 );
 
