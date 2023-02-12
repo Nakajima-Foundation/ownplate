@@ -118,7 +118,7 @@
           </div>
           <div class="text-right">
             <div class="text-base">
-              {{ $n(previewTip || 0, "currency") }}
+              {{ $n(Number(previewTip || 0), "currency") }}
             </div>
           </div>
         </div>
@@ -128,15 +128,13 @@
       <div v-if="regionTip.choices.length > 0 && enableTip" class="mt-2">
         <div v-if="isTipEditable">
           <div>
-            <o-input
-              class="w-full"
+            <input
+              class="w-full p-2 border-inherit border-2 rounded-lg"
               type="number"
               :placeholder="$t('order.maxTip', { max: regionTip.max })"
               :step="tipStep"
               v-model="tip"
-              v-on:input="handleTipInput"
               maxlength="30"
-              style
             />
           </div>
 
@@ -262,8 +260,8 @@ export default defineComponent({
       return Math.round(value * m) / m;
     };
     const updateTip = (ratio: number) => {
+      console.log("updateTip");
       tip.value = calcTip(ratio);
-      ctx.emit("change", tip.value);
     };
     const isSameAmount = (ratio: number) => {
       return Number(tip.value) === calcTip(ratio);
@@ -273,18 +271,6 @@ export default defineComponent({
     const maxTip = computed(() => {
       return calcTip(regionTip.max);
     });
-
-    const handleTipInput = () => {
-      if (tip.value < 0) {
-        console.log("negative");
-        tip.value = -tip.value;
-      } else if (tip.value > maxTip.value) {
-        console.log("max");
-        tip.value = maxTip.value;
-      }
-      ctx.emit("change", Number(tip.value));
-    };
-    
 
     // computed
     const actualShippingCost = computed(() => {
@@ -338,7 +324,17 @@ export default defineComponent({
         tip.value = props.orderInfo.tip;
       }
     });
-
+    watch(tip, (v) => {
+      if (v < 0) {
+        console.log("negative");
+        tip.value = -v;
+      } else if (v > maxTip.value) {
+        console.log("max");
+        tip.value = maxTip.value;
+      }
+      ctx.emit("change", Number(tip.value));
+    });
+    
     return {
       // const 
       regionTip,
@@ -350,7 +346,6 @@ export default defineComponent({
       updateAvailable,
       updateTip,
       isSameAmount,
-      handleTipInput,
 
       actualShippingCost,
       verified,
