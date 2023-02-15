@@ -5,31 +5,29 @@ import router from "@/lib/router";
 import store from "@/lib/store/index";
 
 // plugins
-import mixin from "@/mixins/mixin";
+import mixin from "@/plugins/mixin";
 import i18n from "@/plugins/vue-i18n";
 
 // library
 import Oruga from "@oruga-ui/oruga-next";
 import { bulmaConfig } from "@oruga-ui/theme-bulma";
-
 import VueSocialSharing from "vue-social-sharing";
 import { createMetaManager, plugin as metaPlugin } from 'vue-meta'
-
 import VueQrcode from '@chenfengyuan/vue-qrcode';
+import VueGoogleMaps from '@fawmi/vue-google-maps'
 
 // sentry
 import * as Sentry from "@sentry/vue";
 import { BrowserTracing } from "@sentry/tracing";
 
-// import VueCompositionAPI from "vue";
-
 // components
 import App from "@/components/App.vue";
-import VueGoogleMaps from '@fawmi/vue-google-maps'
 
 // config
-import { sentryDsn } from "@/config/project";
-import { GAPIKey } from "@/config/project";
+import {
+  sentryDsn,
+  GAPIKey,
+} from "@/config/project";
 
 // css
 import "@/assets/css/tailwind.css";
