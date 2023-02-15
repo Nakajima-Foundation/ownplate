@@ -158,7 +158,7 @@
       </div>
     </div>
     <div v-else
-      class="cursor-pointer rounded-lg bg-white shadow"
+      class="rounded-lg bg-white shadow"
     >
       <!-- Order Status -->
       <div class="p-2">
