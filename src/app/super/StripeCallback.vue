@@ -23,6 +23,7 @@ import {
 
 import { useSuper } from "@/utils/utils";
 import { useRoute } from "vue-router";
+import moment from "moment";
 
 export default defineComponent({
   metaInfo() {
@@ -47,6 +48,7 @@ export default defineComponent({
     return {
       stripeActionStrings,
       log,
+      moment,
     }
   },
 });

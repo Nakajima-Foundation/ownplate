@@ -30,6 +30,7 @@ import {
   limit,
   getDocs,
 } from "firebase/firestore";
+import moment from "moment";
 
 import { useSuper } from "@/utils/utils";
 
@@ -89,6 +90,7 @@ export default defineComponent({
       reviews,
       nextLoad,
       last,
+      moment,
     };
 
   },

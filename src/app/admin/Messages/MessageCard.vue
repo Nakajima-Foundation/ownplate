@@ -27,8 +27,12 @@ import {
 } from "@/lib/firebase/functions";
 
 import { useStore } from "vuex";
-import { useRouter } from "vue-router";
-import { useRoute } from "vue-router";
+import {
+  useRouter,
+  useRoute,
+} from "vue-router";
+
+import moment from "moment-timezone";
 
 export default defineComponent({
   name: "MessageCard",

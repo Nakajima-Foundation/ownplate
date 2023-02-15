@@ -1,7 +1,7 @@
 <template>
   <div class="m-4">
     <router-link
-      :to="basePath + '/r/' + restaurantId() + '/categories/' + howtoreceive"
+      :to="basePath + '/r/' + restaurantId + '/categories/' + howtoreceive"
     >
       <div
         class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
@@ -22,7 +22,7 @@
           :to="
             basePath +
             '/r/' +
-            restaurantId() +
+            restaurantId +
             '/cat/' +
             category +
             '/' +
@@ -72,13 +72,14 @@ export default defineComponent({
   setup(props) {
   const route = useRoute();
     const basePath = useBasePath();
-    const { category, selectedSubCategory } = route.params;
+    const { category, selectedSubCategory, restaurantId } = route.params;
     return {
       basePath,
       moBaseUrl,
       smallImageErrorHandler,
       category,
       selectedSubCategory,
+      restaurantId,
     };
   },
 });

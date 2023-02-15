@@ -1243,6 +1243,8 @@ export default defineComponent({
       closeTransactionsAct,
       pageBase,
       scrollTop,
+
+      moment,
     };
   },
 });

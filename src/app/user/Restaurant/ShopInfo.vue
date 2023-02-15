@@ -523,6 +523,8 @@ export default defineComponent({
       //
       temporaryClosure,
 
+      moment,
+      
       // for mo
       businessDay,
       openTimes,

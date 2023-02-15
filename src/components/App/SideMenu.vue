@@ -27,7 +27,7 @@
     </div>
 
     <!-- Order History -->
-    <div class="mt-2 text-center" v-if="isCustomer || inLiff">
+    <div class="mt-2 text-center" v-if="isUser || inLiff">
       <router-link :to="historyPage">
         <div
           class="inline-flex h-12 w-56 items-center justify-center rounded-full bg-op-teal font-bold text-white"
@@ -40,7 +40,7 @@
     </div>
 
     <!-- Favorites -->
-    <div class="mt-2 text-center" v-if="isCustomer && !inLiff">
+    <div class="mt-2 text-center" v-if="isUser && !inLiff">
       <router-link to="/r/favorites">
         <div
           class="inline-flex h-12 w-56 items-center justify-center rounded-full bg-op-teal font-bold text-white"
@@ -53,7 +53,7 @@
     </div>
 
     <!-- Find Restaurants -->
-    <div class="mt-2 text-center" v-if="(isCustomer || isAnonymous) && !inLiff">
+    <div class="mt-2 text-center" v-if="(isUser || isAnonymous) && !inLiff">
       <router-link to="/r">
         <div
           class="inline-flex h-12 w-56 items-center justify-center rounded-full bg-op-teal font-bold text-white"
@@ -79,7 +79,7 @@
     </div>
 
     <!-- Links for Admin -->
-    <div v-if="!isCustomer && !inLiff">
+    <div v-if="!isUser && !inLiff">
       <div class="mt-6 mb-4 text-center font-bold opacity-70">
         {{ $t("menu.forRestaurantOwner") }}
       </div>
@@ -199,10 +199,13 @@ export default defineComponent({
   setup() {
     const open = ref(false);
 
-    const isAdmin = useIsAdmin();
-    const inLiff = useIsInLiff();
     const liffBasePath = useLiffBasePath();
-    const { isAnonymous } = useUserData();
+    const {
+      inLiff,
+      isAnonymous,
+      isAdmin,
+      isUser
+    } = useUserData();
     
     const home_path = computed(() => {
       // /liff/hoge or /admin/restaurants or /r
@@ -247,6 +250,8 @@ export default defineComponent({
       
       inLiff,
       isAnonymous,
+      isAdmin,
+      isUser,
     };
   },
 });

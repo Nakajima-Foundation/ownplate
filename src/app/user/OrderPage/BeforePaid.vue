@@ -657,7 +657,7 @@ export default defineComponent({
             : {},
         });
         /*
-        if (this.isLiffUser) {
+        if (isLiffUser) {
           await saveLiffCustomer();
         }
         */

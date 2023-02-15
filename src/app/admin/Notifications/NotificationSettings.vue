@@ -138,7 +138,7 @@
             <router-link
               v-if="isLineEnabled"
               class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
-              :to="`/admin/restaurants/${restaurantId()}/line`"
+              :to="`/admin/restaurants/${restaurantId}/line`"
             >
               <i class="fab fa-line mr-2 text-2xl text-op-teal" />
               <span class="text-sm font-bold text-op-teal">
@@ -246,6 +246,8 @@ export default defineComponent({
       closeNotificationSettings,
       delayedSoundPlay,
       isLineEnabled,
+
+      restaurantId,
     };
   },
 });

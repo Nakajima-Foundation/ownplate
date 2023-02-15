@@ -307,7 +307,7 @@
               <router-link
                 :to="
                   '/admin/restaurants/' +
-                  restaurantId() +
+                  restaurantId +
                   '/userhistory/' +
                   orderInfo.uid +
                   '?orderId=' +
@@ -1321,6 +1321,9 @@ export default defineComponent({
       closePaymentCancel,
 
       convOrderStateForText,
+
+      moment,
+      restaurantId,
     };
   },
 });

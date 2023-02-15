@@ -238,6 +238,7 @@ export default defineComponent({
       allLoad,
 
       backUrl: getBackUrl(),
+      moment,
     };
 }
 });

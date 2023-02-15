@@ -61,7 +61,7 @@ import {
 } from "vue";
 
 import { formatOption, optionPrice } from "@/utils/strings";
-import { roundPrice, smallImageErrorHandler } from "@/utils/utils";
+import { roundPrice, smallImageErrorHandler, useUserData } from "@/utils/utils";
 import { useI18n } from "vue-i18n";
 
 export default defineComponent({
@@ -115,7 +115,10 @@ export default defineComponent({
       });
       return price * count.value;
     });
-
+    const {
+      isAdmin
+    } = useUserData();
+    
     const update = (value: boolean) => {
       context.emit("update", [props.mkey, value]);
     }
@@ -130,6 +133,7 @@ export default defineComponent({
       totalPrice,
       update,
       FsmallImageErrorHandler,
+      isAdmin,
     };
   },
 });

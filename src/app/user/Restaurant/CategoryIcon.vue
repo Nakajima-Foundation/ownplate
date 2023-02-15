@@ -3,7 +3,7 @@
     :to="
       basePath +
       '/r/' +
-      restaurantId() +
+      restaurantId +
       (selectedCategory.subCategoryCounter > 1
         ? `/category/${selectedCategory.id}/${subCategory}/${howtoreceive}`
         : `/categories/${howtoreceive}`)
@@ -29,7 +29,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useBasePath } from "@/utils/utils";
+import { useBasePath, getRestaurantId } from "@/utils/utils";
 
 export default defineComponent({
   props: {
@@ -52,8 +52,11 @@ export default defineComponent({
   },
   setup() {
     const basePath = useBasePath();
+    const restaurantId = getRestaurantId();
+
     return {
       basePath,
+      restaurantId,
     };
   },
 });

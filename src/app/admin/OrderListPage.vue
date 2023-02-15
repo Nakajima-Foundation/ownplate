@@ -48,7 +48,7 @@
       >
         <template v-for="order in orders" :key="order.id">
           <router-link
-            :to="'/admin/restaurants/' + restaurantId() + '/orders/' + order.id"
+            :to="'/admin/restaurants/' + restaurantId + '/orders/' + order.id"
           >
             <ordered-info :key="order.id" :order="order" :isInMo="isInMo" />
           </router-link>
@@ -57,7 +57,7 @@
 
       <!-- Go to History -->
       <div class="mx-6 mt-6">
-        <router-link :to="`/admin/restaurants/${restaurantId()}/history`"
+        <router-link :to="`/admin/restaurants/${restaurantId}/history`"
           ><div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
           >
@@ -328,6 +328,9 @@ export default defineComponent({
 
       updateDayIndex,
       updatedDayIndex,
+
+      restaurantId,
+      moment,
     };
   },
 });

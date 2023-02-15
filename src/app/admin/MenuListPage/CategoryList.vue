@@ -6,7 +6,7 @@
       <router-link
         :to="
           '/admin/restaurants/' +
-          restaurantId() +
+          restaurantId +
           '/menus/cat/' +
           cat.id +
           '/' +
@@ -34,7 +34,10 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { smallImageErrorHandler } from "@/utils/utils";
+import {
+  smallImageErrorHandler,
+  useRestaurantId,
+} from "@/utils/utils";
 import { moBaseUrl } from "@/config/project";
 
 export default defineComponent({
@@ -45,9 +48,11 @@ export default defineComponent({
     },
   },
   setup() {
+    const restaurantId = useRestaurantId();
     return {
       smallImageErrorHandler,
       moBaseUrl,
+      restaurantId,
     };
   },
 });

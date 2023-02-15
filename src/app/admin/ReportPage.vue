@@ -474,6 +474,8 @@ export default defineComponent({
       allSubCategoryDataObj,
 
       notFound: false,
+
+      moment,
     };
   },
 });

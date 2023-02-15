@@ -27,7 +27,7 @@
       <template v-if="!isInMo">
         <o-button
           tag="router-link"
-          :to="`/admin/restaurants/${restaurantId()}/suspend`"
+          :to="`/admin/restaurants/${restaurantId}/suspend`"
           class="b-reset-tw"
           v-if="showSuspend"
         >
@@ -75,6 +75,10 @@ import NotificationIndex from "@/app/admin/Notifications/Index.vue";
 import PreviewLink from "@/app/admin/common/PreviewLink.vue";
 import AdminHeaderSuspend from "@/app/admin/AdminHeaderSuspend.vue";
 
+import {
+  useRestaurantId,
+} from "@/utils/utils";
+
 export default defineComponent({
   components: {
     BackButton,
@@ -105,6 +109,7 @@ export default defineComponent({
     },
   },
   setup(props) {
+    const restaurantId = useRestaurantId();
     const suspendUntil = computed(() => {
       if (props.shopInfo.suspendUntil) {
         const time = props.shopInfo.suspendUntil.toDate();
@@ -118,6 +123,7 @@ export default defineComponent({
 
     return {
       suspendUntil,
+      restaurantId,
     };
   },
 });

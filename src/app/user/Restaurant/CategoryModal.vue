@@ -7,7 +7,7 @@
         :to="
           basePath +
           '/r/' +
-          restaurantId() +
+          restaurantId +
           (cat.subCategoryCounter > 1
             ? `/category/${cat.id}/${howtoreceive}`
             : `/cat/${cat.id}/${cat.subCategory}/${howtoreceive}`)

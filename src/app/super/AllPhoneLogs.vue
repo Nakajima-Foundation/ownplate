@@ -30,6 +30,7 @@ import {
 } from "firebase/firestore";
 
 import { useSuper } from "@/utils/utils";
+import moment from "moment-timezone";
 
 export default defineComponent({
   metaInfo() {
@@ -67,6 +68,7 @@ export default defineComponent({
 
     return {
       logs,
+      moment,
     };
 
   },

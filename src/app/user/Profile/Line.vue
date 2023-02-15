@@ -75,9 +75,7 @@
 <script lang="ts">
 import { defineComponent, ref, computed, watch } from "vue";
 import {
-  useIsLineUser,
-  useIsLiffUser,
-  useInLiff,
+  useUserData,
   useLiffIndexId,
   underConstruction,
   isLineEnabled,
@@ -103,11 +101,13 @@ export default defineComponent({
     const store = useStore();
     const { t } = useI18n({ useScope: 'global' });
 
-    const isLineUser = useIsLineUser();
-    const isLiffUser = useIsLiffUser();
+    const {
+      isLiffUser,
+      isLineUser,
+      inLiff,
+    } = useUserData();
     const liffIndexId = useLiffIndexId();
 
-    const inLiff = useInLiff();
     const isFriend = ref<undefined | boolean>(undefined);
     const liffConfig = ref<null|any>(null);
 
@@ -211,6 +211,9 @@ export default defineComponent({
       underConstruction,
       inLiff,
       isLineEnabled,
+
+      isLiffUser,
+      isLineUser,
     };
   },
 });

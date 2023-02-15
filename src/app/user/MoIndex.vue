@@ -151,6 +151,7 @@ import { moBaseUrl, moTitle } from "@/config/project";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { useIsInMo } from "@/utils/utils";
+import moment from "moment";
 
 export default defineComponent({
   name: "RestaurantIndex",
@@ -207,6 +208,7 @@ export default defineComponent({
     });
 
     return {
+      moment,
       restaurants,
       restaurantsObj,
 

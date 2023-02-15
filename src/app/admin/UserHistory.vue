@@ -10,7 +10,7 @@
         <div class="flex space-x-4">
           <div class="flex-shrink-0">
             <back-button
-              :url="`/admin/restaurants/${restaurantId()}/orders/` + orderId"
+              :url="`/admin/restaurants/${restaurantId}/orders/` + orderId"
             />
           </div>
           <PreviewLink
@@ -130,6 +130,8 @@ import PreviewLink from "@/app/admin/common/PreviewLink.vue";
 
 import { useRouter, useRoute } from "vue-router";
 import { useI18n } from "vue-i18n";
+
+import moment from "moment-timezone";
 
 export default defineComponent({
   components: {
@@ -278,6 +280,9 @@ export default defineComponent({
 
       next,
       orderSelected,
+
+      moment,
+      restaurantId,
     };
   },
 });

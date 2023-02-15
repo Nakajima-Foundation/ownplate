@@ -21,7 +21,7 @@
         <o-button
           class="b-reset-tw"
           tag="router-link"
-          :to="`/admin/restaurants/${this.restaurantId()}/menus`"
+          :to="`/admin/restaurants/${restaurantId}/menus`"
         >
           <div
             class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
@@ -504,7 +504,7 @@
         <o-button
           class="b-reset-tw"
           tag="router-link"
-          :to="`/admin/restaurants/${this.restaurantId()}/menus`"
+          :to="`/admin/restaurants/${restaurantId}/menus`"
         >
           <div
             class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
@@ -960,6 +960,8 @@ export default defineComponent({
       daysOfWeek,
 
       smallImageErrorHandler,
+
+      restaurantId,
     };
   },
 });

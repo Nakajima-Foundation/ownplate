@@ -57,7 +57,7 @@
       >
         <template v-for="order in filteredOrders" :key="order.id">
           <router-link
-            :to="'/admin/restaurants/' + restaurantId() + '/orders/' + order.id"
+            :to="'/admin/restaurants/' + restaurantId + '/orders/' + order.id"
           >
             <ordered-info :order="order" :isSuperView="true" :isInMo="isInMo" />
           </router-link>
@@ -329,6 +329,8 @@ export default defineComponent({
 
       sortOrder,
       orderSorts,
+
+      restaurantId,
     };
   },
 });

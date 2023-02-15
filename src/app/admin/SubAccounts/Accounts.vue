@@ -141,7 +141,7 @@ import {
   subAccountInvite,
 } from "@/lib/firebase/functions";
 
-import { doc2data, array2obj, useAdminUids } from "@/utils/utils";
+import { doc2data, array2obj, useAdminUids, defaultTitle } from "@/utils/utils";
 
 import BackButton from "@/components/BackButton.vue";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
@@ -149,10 +149,12 @@ import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
+import moment from "moment";
+
 export default defineComponent({
   metaInfo() {
     return {
-      title: [this.defaultTitle, "Admin Subaccount Accounts"].join(" / "),
+      title: [defaultTitle, "Admin Subaccount Accounts"].join(" / "),
     };
   },
   components: {
@@ -272,6 +274,8 @@ export default defineComponent({
       deleteChild,
       rList,
       invite,
+
+      moment,
     };
   },
 });

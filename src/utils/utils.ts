@@ -637,6 +637,9 @@ export const useUserData = () => {
     const claims = store.state.claims;
     return !!claims?.line;
   });
+  const claims = computed(() => {
+    return store.state.claims;
+  });
   const inLiff = computed(() => {
     return !!route.params.liffIndexId;
   });
@@ -657,6 +660,7 @@ export const useUserData = () => {
     isLineUser,
     inLiff,
     isAnonymous,
+    claims,
   };
 };
 

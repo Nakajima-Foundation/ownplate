@@ -305,9 +305,11 @@ export default defineComponent({
       loginVisible,
 
       loadUserData,
-
+      isUser,
+      
       disabledPickupTime,
       lastOrder,
+      isLiffUser,
     };
   },
 });

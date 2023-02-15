@@ -72,7 +72,10 @@ import AddressButton from "@/components/users/AddressButton.vue";
 
 import { defaultHeader } from "@/config/header";
 
-import { useIsInMo } from "@/utils/utils";
+import {
+  useIsInMo,
+  useUserData,
+} from "@/utils/utils";
 
 import { useStore } from "vuex";
 
@@ -102,15 +105,15 @@ export default defineComponent({
     const store = useStore();
 
     const isInMo = useIsInMo();
-
-    const claims = computed(() => {
-      return store.state.claims;
-    });
+    
     const handleSignOut = () => {
-      console.log("handleSignOut");
       signOut(auth);
     };
-
+    const {
+      isLiffUser,
+      claims,
+      user
+    } = useUserData();
     const enableLine = computed(() => {
       if (props.groupData?.enableLine === undefined) {
         return true;
@@ -123,6 +126,8 @@ export default defineComponent({
       isInMo,
 
       enableLine,
+      user,
+      isLiffUser,
     };
   },
 });

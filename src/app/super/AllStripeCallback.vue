@@ -29,6 +29,7 @@ import {
 import { stripeActionStrings } from "@/lib/stripe/stripe";
 
 import { useSuper } from "@/utils/utils";
+import moment from "moment-timezone";
 
 export default defineComponent({
   components: {
@@ -86,6 +87,7 @@ export default defineComponent({
       logs,
       last,
       nextLoad,
+      moment,
     };
   }
 });

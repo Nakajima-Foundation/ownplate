@@ -788,7 +788,7 @@
             <div class="rounded-lg bg-black bg-opacity-5 p-4">
               <div class="text-lg font-bold text-op-teal">
                 <router-link
-                  :to="`/admin/restaurants/${restaurantId()}/delivery`"
+                  :to="`/admin/restaurants/${restaurantId}/delivery`"
                   >{{ $t("editRestaurant.deliveryConfigLink") }}</router-link
                 >
               </div>
@@ -1163,6 +1163,7 @@ import {
 
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import moment from "moment";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
@@ -1550,6 +1551,7 @@ export default defineComponent({
       handlePhoneChange,
 
       num2time,
+      moment,
       
       setDefaultLocation,
       gmapClick,
@@ -1557,6 +1559,7 @@ export default defineComponent({
       
       paymentMethods,
       openTips,
+      restaurantId,
 
       confirmCopy,
       saveRestaurant,

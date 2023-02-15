@@ -71,6 +71,7 @@ import { doc2data } from "@/utils/utils";
 import BackButton from "@/components/BackButton.vue";
 
 import { useSuper } from "@/utils/utils";
+import moment from "moment";
 
 const QUERY_LIMIT = 50;
 
@@ -186,7 +187,9 @@ export default defineComponent({
       payment,
       capabilities,
       showActivate,
-      
+
+      moment,
+
     };
   },
 });

@@ -50,7 +50,7 @@
       <div class="column is-narrow w-6"></div>
     </div>
 
-    <lp-customer v-if="isCustomer" />
+    <lp-customer v-if="isUser" />
     <lp-admin v-else-if="isAdmin" />
     <lp v-else="isAdmin" />
   </div>
@@ -65,6 +65,8 @@ import LpCustomer from "@/app/home/LpCustomer.vue";
 
 import { defaultTitle, isJapan } from "@/utils/utils";
 
+import { useUserData } from "@/utils/utils";
+
 export default defineComponent({
   metaInfo() {
     return {
@@ -78,7 +80,16 @@ export default defineComponent({
     LpCustomer,
   },
   setup() {
-    return { isJapan };
+    const {
+      isAdmin,
+      isUser,
+    } = useUserData();
+
+    return {
+      isJapan,
+      isAdmin,
+      isUser,
+    };
   },
 });
 </script>

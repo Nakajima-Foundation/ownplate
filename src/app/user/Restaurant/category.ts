@@ -1,5 +1,5 @@
 import { defineComponent, computed } from "vue";
-import { useBasePath, smallImageErrorHandler } from "@/utils/utils";
+import { useBasePath, smallImageErrorHandler, getRestaurantId } from "@/utils/utils";
 import { moBaseUrl } from "@/config/project";
 
 export default (name: string) => {
@@ -17,11 +17,13 @@ export default (name: string) => {
     },
     setup() {
       const basePath = useBasePath();
-
+      const restaurantId = getRestaurantId();
+      
       return {
         basePath,
         moBaseUrl,
         smallImageErrorHandler,
+        restaurantId,
       };
     },
   });
