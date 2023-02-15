@@ -65,7 +65,7 @@ export default defineComponent({
     const selected = ref<null | Number>(null);
     
     props.restaurants.map((restaurant: RestaurantInfoData) => {
-      if (restaurant.location) {
+      if (restaurant.location && restaurant.location.lat && restaurant.location.lng) {
         // TODO: filter invalid position data.
 
         if (restaurant.location.lat > max_lat) {

@@ -467,7 +467,7 @@ export const validUrl = (url: string) => {
   });
 };
 
-export const validLocation = (location: { lat: string; lng: string }) => {
+export const validLocation = (location: { lat?: number; lng?: number }) => {
   return isLatLong([location.lat || "", location.lng || ""].join(","));
 };
 export const validPlaceId = (placeId: string) => {

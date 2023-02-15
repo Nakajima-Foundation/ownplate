@@ -22,7 +22,10 @@ export interface RestaurantInfoData {
   ownerName: string;
   uid: string;
 
-  location: any;
+  location: {
+    lat?: number;
+    lng?: number;
+  };
   place_id: string;
 
   phoneNumber: string;
