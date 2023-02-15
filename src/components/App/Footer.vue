@@ -63,9 +63,7 @@
 import { defineComponent, ref, computed, watch } from "vue";
 
 import {
-  useUser,
-  useUid,
-  useIsAdmin,
+  useUserData,
   isJapan,
   regionalSetting,
   isNull,
@@ -93,10 +91,12 @@ export default defineComponent({
     const languages = regionalSetting.languages;
     const langPopup = ref(false);
 
-    const user = useUser();
-    const isAdmin = useIsAdmin();
-    const uid = useUid();
-
+    const {
+      user,
+      uid,
+      isAdmin,
+    } = useUserData();
+    
     const profile_path = computed(() => {
       const path_prefix = isAdmin.value ? "admins" : "users";
       return `${path_prefix}/${uid.value}/private/profile`;

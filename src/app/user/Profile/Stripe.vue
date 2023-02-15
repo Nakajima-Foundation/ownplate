@@ -33,7 +33,7 @@ import {
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc, query, onSnapshot, Unsubscribe } from "firebase/firestore";
 import { stripeDeleteCard } from "@/lib/firebase/functions";
-import { useIsLiffUser, useUserData } from "@/utils/utils";
+import { useUserData } from "@/utils/utils";
 
 import { useStore } from "vuex";
 import { useI18n } from "vue-i18n";

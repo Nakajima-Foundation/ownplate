@@ -188,8 +188,6 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
 import {
-  useIsAdmin,
-  useIsInLiff,
   useLiffBasePath,
   regionalSetting,
   useUserData,

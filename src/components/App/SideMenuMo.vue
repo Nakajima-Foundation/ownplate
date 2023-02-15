@@ -117,7 +117,6 @@ import { moBaseUrl } from "@/config/project";
 
 import {
   useMoPrefix,
-  useIsInLiff,
   useLiffBasePath,
   regionalSetting,
   useUserData,

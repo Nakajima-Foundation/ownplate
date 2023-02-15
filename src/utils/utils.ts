@@ -366,7 +366,7 @@ export const useIsInMo = () => {
     });
   });
 };
-export const useIsInLiff = () => {
+const useIsInLiff = () => {
   const route = useRoute();
 
   return computed(() => {
@@ -664,48 +664,6 @@ export const useUserData = () => {
   };
 };
 
-export const useIsAdmin = () => {
-  const store = useStore();
-  return computed(() => {
-    return !!store.getters.uidAdmin;
-  });
-};
-export const useUid = () => {
-  const store = useStore();
-  const uid = computed(() => {
-    return store.getters.uid;
-  });
-  return uid;
-};
-export const useIsUser = () => {
-  const store = useStore();
-  return computed(() => {
-    return !!store.getters.uidUser;
-  });
-};
-
-export const useIsLiffUser = () => {
-  const store = useStore();
-  return computed(() => {
-    return !!store.getters.uidLiff;
-  });
-};
-export const useIsLineUser = () => {
-  const store = useStore();
-  return computed(() => {
-    const claims = store.state.claims;
-    return !!claims?.line;
-  });
-};
-
-export const useInLiff = () => {
-  const route = useRoute();
-  return computed(() => {
-    // BY path
-    return !!route.params.liffIndexId;
-  });
-};
-
 export const useToggle = (defaultValue = false) => {
   const value = ref(defaultValue);
   const toggleOn = () => {
@@ -725,6 +683,7 @@ export const useToggle = (defaultValue = false) => {
   };
 };
 
+// do not use
 export const useUser = () => {
   const store = useStore();
   const user = computed(() => {
