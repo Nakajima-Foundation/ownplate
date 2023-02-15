@@ -174,7 +174,7 @@ export default defineComponent({
           last.value = snapshot.docs[snapshot.docs.length - 1];
           let i = 0;
           for (; i < snapshot.docs.length; i++) {
-            const myDoc = snapshot.docs[i].data();
+            const myDoc = snapshot.docs[i];
             const order = myDoc.data() as OrderInfoData;
             order.restaurantId = myDoc.ref.path.split("/")[1];
             order.id = myDoc.id;

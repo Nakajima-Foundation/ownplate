@@ -11,7 +11,7 @@
         :key="restaurant.id"
         >
         <GMapMarker
-          v-if="restaurant.location"
+          v-if="restaurant.location && restaurant.location.lat"
           :clickable="true"
           @click="setStore(k)"
           :position="{
