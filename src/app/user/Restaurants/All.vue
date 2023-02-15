@@ -65,6 +65,7 @@ import { RestaurantHeader } from "@/config/header";
 import { JPPrefecture } from "@/config/constant";
 import { restaurant2AreaObj, sortRestaurantObj } from "@/utils/RestaurantUtils";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { resizedProfileImage } from "@/utils/utils";
 
 export default defineComponent({
   metaInfo() {
@@ -93,6 +94,7 @@ export default defineComponent({
     return {
       restaurantsObj,
       allArea,
+      resizedProfileImage,
     };
   },
 });

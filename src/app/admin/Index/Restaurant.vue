@@ -396,6 +396,11 @@ import {
 
 import { useStore } from "vuex";
 
+import {
+  resizedProfileImage,
+} from "@/utils/utils";
+
+
 export default defineComponent({
   name: "RestaurantEditCard",
   props: {
@@ -528,6 +533,7 @@ export default defineComponent({
       requestDelete,
       positionUp,
       positionDown,
+      resizedProfileImage,
     };
   },
 });

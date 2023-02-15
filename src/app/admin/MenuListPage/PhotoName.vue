@@ -13,6 +13,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
+import { resizedProfileImage } from "@/utils/utils";
 
 export default defineComponent({
   props: {
@@ -20,6 +21,11 @@ export default defineComponent({
       type: Object,
       required: true,
     },
+  },
+  setup() {
+    return {
+      resizedProfileImage,
+    };
   },
 });
 </script>

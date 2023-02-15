@@ -41,6 +41,9 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import {
+  resizedProfileImage,
+} from "@/utils/utils";
 
 export default defineComponent({
   props: {
@@ -119,6 +122,8 @@ export default defineComponent({
 
       setStore,
       selected,
+
+      resizedProfileImage,
     };
   },
 });

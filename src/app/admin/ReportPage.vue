@@ -226,6 +226,7 @@ import {
   arrayOrNumSum,
   notFoundResponse,
   orderTypeKey,
+  resizedProfileImage,
 } from "@/utils/utils";
 
 import { order2ReportData } from "@/models/orderInfo";
@@ -476,6 +477,7 @@ export default defineComponent({
       notFound: false,
 
       moment,
+      resizedProfileImage,
     };
   },
 });

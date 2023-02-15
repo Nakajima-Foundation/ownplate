@@ -67,7 +67,7 @@ import { RestaurantHeader } from "@/config/header";
 import AreaItem from "@/app/user/Restaurants/AreaItem.vue";
 import { ownPlateConfig } from "@/config/project";
 
-import { useUserData } from "@/utils/utils";
+import { useUserData, resizedProfileImage } from "@/utils/utils";
 
 export default defineComponent({
   components: {
@@ -105,6 +105,7 @@ export default defineComponent({
     });
 
     return {
+      resizedProfileImage,
       likes,
       areas: [
         {

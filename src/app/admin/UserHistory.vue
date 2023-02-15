@@ -120,7 +120,7 @@ import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
 import { OrderInfoData } from "@/models/orderInfo";
 
 import { checkShopAccount } from "@/utils/userPermission";
-import { doc2data, useAdminUids, useRestaurantId } from "@/utils/utils";
+import { doc2data, useAdminUids, useRestaurantId, resizedProfileImage } from "@/utils/utils";
 
 import BackButton from "@/components/BackButton.vue";
 import OrderedInfo from "@/app/admin/Order/OrderedInfo.vue";
@@ -283,6 +283,7 @@ export default defineComponent({
 
       moment,
       restaurantId,
+      resizedProfileImage,
     };
   },
 });

@@ -66,7 +66,7 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
 
-import { doc2data } from "@/utils/utils";
+import { doc2data, resizedProfileImage } from "@/utils/utils";
 
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -141,6 +141,8 @@ export default defineComponent({
 
       allArea,
       coverImage,
+
+      resizedProfileImage,
     };
   },
 });

@@ -32,7 +32,7 @@ import {
 } from "firebase/firestore";
 import moment from "moment";
 
-import { useSuper } from "@/utils/utils";
+import { useSuper, resizedProfileImage } from "@/utils/utils";
 
 export default defineComponent({
   metaInfo() {
@@ -91,6 +91,7 @@ export default defineComponent({
       nextLoad,
       last,
       moment,
+      resizedProfileImage,
     };
 
   },

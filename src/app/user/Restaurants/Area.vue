@@ -58,7 +58,7 @@ import { getDocs, collection, where, limit, query } from "firebase/firestore";
 import { defaultHeader } from "@/config/header";
 import Map from "@/components/Map.vue";
 
-import { regionalSetting } from "@/utils/utils";
+import { regionalSetting, resizedProfileImage } from "@/utils/utils";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { useRoute } from "vue-router";
@@ -105,6 +105,7 @@ export default defineComponent({
     return {
       areaName,
       restaurants,
+      resizedProfileImage,
     };
   },
 });

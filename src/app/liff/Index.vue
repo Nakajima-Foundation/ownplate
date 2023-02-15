@@ -47,6 +47,7 @@ import {
 
 import {
   useLiffIndexId,
+  resizedProfileImage,
 } from "@/utils/utils";
 
 export default defineComponent({
@@ -80,6 +81,7 @@ export default defineComponent({
     return {
       restaurants,
       liffIndexId,
+      resizedProfileImage,
     };
   },
 });

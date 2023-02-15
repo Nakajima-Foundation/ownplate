@@ -171,7 +171,7 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc } from "firebase/firestore";
 
 import { order_status, order_status_keys } from "@/config/constant";
-import { arrayOrNumSum, convOrderStateForText } from "@/utils/utils";
+import { arrayOrNumSum, convOrderStateForText, resizedProfileImage } from "@/utils/utils";
 import { useI18n } from "vue-i18n";
 
 import { OrderInfoData } from "@/models/orderInfo";
@@ -258,6 +258,7 @@ export default defineComponent({
       paymentIsNotCompleted,
 
       convOrderStateForText,
+      resizedProfileImage,
     };
   },
 });

@@ -72,7 +72,14 @@ import {
 
 import { RestaurantHeader } from "@/config/header";
 import { ownPlateConfig } from "@/config/project";
-import { useIsInMo, useMoPrefix, routeMode, useBasePath, useUserData } from "@/utils/utils";
+import {
+  useIsInMo,
+  useMoPrefix,
+  routeMode,
+  useBasePath,
+  useUserData,
+  resizedProfileImage,
+} from "@/utils/utils";
 
 import AreaItem from "@/app/user/Restaurants/AreaItem.vue";
 import BackButton from "@/components/BackButton.vue";
@@ -136,6 +143,7 @@ export default defineComponent({
 
       isInMo,
       mode,
+      resizedProfileImage,
     };
   },
 });

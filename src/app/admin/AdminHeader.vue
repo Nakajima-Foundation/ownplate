@@ -77,6 +77,7 @@ import AdminHeaderSuspend from "@/app/admin/AdminHeaderSuspend.vue";
 
 import {
   useRestaurantId,
+  resizedProfileImage,
 } from "@/utils/utils";
 
 export default defineComponent({
@@ -124,6 +125,7 @@ export default defineComponent({
     return {
       suspendUntil,
       restaurantId,
+      resizedProfileImage,
     };
   },
 });
