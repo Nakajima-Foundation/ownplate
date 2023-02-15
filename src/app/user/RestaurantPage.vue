@@ -541,6 +541,10 @@ export default defineComponent({
       type: String,
       required: false,
     },
+    promotions: {
+      type: Array,
+      required: true,
+    },
     moPrefix: {
       type: String,
       required: false,

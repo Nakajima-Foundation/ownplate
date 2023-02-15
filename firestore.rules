@@ -120,6 +120,9 @@ service cloud.firestore {
         allow read: if request.auth.uid == userId;
         allow write: if request.auth.uid == userId && request.resource.data.restaurantId == restaurantId;
       }
+      match /promotions/{promotionId} {
+        allow read: if request.auth.uid == userId;
+      }
     }
 
     match /adminConfigs/{userId} {
@@ -197,6 +200,9 @@ service cloud.firestore {
       match /groupConfig/suspend {
         allow read: if true;
         allow write: if request.auth.token.groupId == groupId
+      }
+      match /promotions/{promotionId} {
+        allow read: if true
       }
     }
 
