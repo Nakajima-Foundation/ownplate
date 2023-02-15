@@ -31,9 +31,9 @@ export interface MenuData {
   
   itemAliasesName: string;
   itemMemo: string;
-  itemOptionCheckbox: any[];
+  itemOptionCheckbox: string[];
   publicFlag: boolean;
-  allergens: any;
+  allergens: string[];
   category1: string;
   category2: string;
   exceptDay: { [key: string]: boolean };

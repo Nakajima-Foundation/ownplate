@@ -13,8 +13,8 @@ export interface OrderMenuItemData {
   price: number;
   images: MenuImages;
   itemPhoto: string;
-  exceptDay: any;
-  exceptHour: any;
+  exceptDay: {[key:string]: boolean};
+  exceptHour: {start: number, end: number};
   tax: string;
   productId: string; //mo
   category: string; //mo
@@ -68,7 +68,7 @@ export interface OrderInfoData {
   payment?: { [key: string]: string };
   type: string;
 
-  prices: any;
+  prices: {[key: string]: {[key: string]: number}};
   orderPlacedAt: Timestamp;
   orderUpdatedAt: Timestamp;
   orderAcceptedAt: Timestamp;
@@ -82,11 +82,11 @@ export interface OrderInfoData {
 }
 
 export interface OrderItemData {
-  item: any;
+  item: OrderMenuItemData;
   count: number | number[];
   id: string;
   options: string | [string];
-  orderIndex: any;
+  orderIndex: string[];
 }
 
 export class OrderInfo {}

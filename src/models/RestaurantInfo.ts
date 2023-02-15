@@ -52,8 +52,8 @@ export interface RestaurantInfoData {
   foodTax: number;
   alcoholTax: number;
   inclusiveTax: boolean;
-  openTimes: { [key: string]: any[] };
-  businessDay: { [key: string]: any[] };
+  openTimes: { [key: string]: {start: any, end: any}[] };
+  businessDay: { [key: string]: string[] };
 
   moOpenTimes: { [key: string]: any[] };
   moBusinessDay: { [key: string]: any[] };

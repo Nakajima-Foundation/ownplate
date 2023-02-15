@@ -198,7 +198,7 @@ export default defineComponent({
               orderInfo.value,
               orderId,
               orderItems.value.map((or) => {
-                return { ...or.item, id: or.id, quantity: or.count };
+                return { ...or.item, id: or.id, quantity: or.count } as any;
               }),
               props.shopInfo,
               restaurantId.value
