@@ -117,8 +117,7 @@
         </div>
 
         <div class="text-right text-xs">
-          {{ timestamp || "0:00pm" }}
-          <!-- # ToDo: Want to show not only time but also date for the user -->
+          {{ timestamp }}
         </div>
       </div>
 
@@ -133,6 +132,65 @@
         <div class="flex-1">
           <div class="text-base">
             {{ restaurant.restaurantName }}
+          </div>
+
+          <div class="flex items-center">
+            <div class="mr-2 text-sm">
+              {{
+                $tc("sitemenu.orderCounter", totalCount, {
+                  count: totalCount,
+                })
+              }}
+            </div>
+
+            <div class="mr-2 text-sm">
+              {{ $n(order.totalCharge, "currency") }}
+            </div>
+            <div class="mr-2 text-sm" v-if="order.isDelivery">
+              <i class="material-icons"> delivery_dining </i>
+            </div>
+
+            <div class="flex-1 text-right text-sm font-bold">
+              {{ orderName }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div v-else
+      class="cursor-pointer rounded-lg bg-white shadow"
+    >
+      <!-- Order Status -->
+      <div class="p-2">
+        <div
+          class="rounded p-1 text-center text-xs font-bold"
+          :class="statusKey"
+        >
+          {{ $t("order.status." + convOrderStateForText(statusKey, order)) }}
+        </div>
+      </div>
+
+      <!-- Payment Status and Time Stamp -->
+      <div class="flex items-center px-2">
+        <div class="flex-1 text-xs font-bold">
+          <div v-if="hasStripe" :class="'stripe_' + order.payment.stripe">
+            {{ $t("order.status.stripe_" + order.payment.stripe) }}
+          </div>
+          <div v-else class="text-yellow-500">
+            {{ $t("order.status.onsitePayment") }}
+          </div>
+        </div>
+
+        <div class="text-right text-xs">
+          {{ timestamp }}
+        </div>
+      </div>
+
+      <!-- Restaurant Photo and Name, Order Count, Total, and Order ID -->
+      <div class="flex items-center p-2">
+        <div class="flex-1">
+          <div class="text-base">
+            {{ $t("order.closedRestaurant") }}
           </div>
 
           <div class="flex items-center">
@@ -195,7 +253,9 @@ export default defineComponent({
         (snapshot) => {
           restaurant.value = snapshot.data();
         }
-      );
+      ).catch((e) => {
+        console.log("no restaurant")
+      });
     }
 
     const statusKey = computed(() => {
