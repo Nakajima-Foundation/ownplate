@@ -1,8 +1,8 @@
 import {
   ref,
   watch,
+  ComputedRef,
 } from "@vue/composition-api";
-
 
 import {
   getDocs,
@@ -15,13 +15,16 @@ import {
 
 import { db } from "@/lib/firebase/firebase9";
 
+import { OrderInfoData } from "@/models/orderInfo";
+import { PromotionData } from "@/models/promotion";
+
 export const usePromitions = (mode: string, id: string, user: any) => {
-  const promotions = ref<any[]>([]);
+  const promotions = ref<PromotionData[]>([]);
 
   (async () => {
     const path = (mode === "mo") ?  `/groups/${id}/promotions` :  `restaurants/${id}/promotions`;
 
-    const p: any[] = [];
+    const p: PromotionData[] = [];
     await Promise.all([
       getDocs(
         query(
@@ -30,7 +33,7 @@ export const usePromitions = (mode: string, id: string, user: any) => {
           where("hasTerm", "==", false),
         )
       ).then((ret1) => {
-        const res = ret1.docs.map(a => a.data());
+        const res = ret1.docs.map(a => a.data() as PromotionData);
         res.map(a => p.push(a));
       }),
       getDocs(
@@ -42,7 +45,7 @@ export const usePromitions = (mode: string, id: string, user: any) => {
           where("termTo", ">", Timestamp.now()),
         )
       ).then((ret1) => {
-        const res = ret1.docs.map(a => a.data()).filter((a) => {
+        const res = ret1.docs.map(a => a.data() as PromotionData).filter((a) => {
           return a.termFrom.toDate() < new Date();
         });
         res.map(a => p.push(a));
@@ -52,13 +55,12 @@ export const usePromitions = (mode: string, id: string, user: any) => {
 
   })();
 
-  const promotionUsed = ref<{[key: string]: any}>({});
+  const promotionUsed = ref<{[key: string]: PromotionData}>({});
   watch([user, promotions], async () => {
     if (user.value && promotions.value.length > 0) {
       const keys: string[] = [];
       const values: string[] = [];
       promotions.value.map(a => {
-        console.log(a.promotionId);
         if (["discount", "onetimeCoupon"].includes(a.type)) {
           keys.push(a.promotionId);
         } else {
@@ -66,7 +68,7 @@ export const usePromitions = (mode: string, id: string, user: any) => {
         }
       });
       const path = `users/${user.value.uid}/promotions`;
-      const used: {[key: string]: any} = {};
+      const used: {[key: string]: PromotionData} = {};
       await Promise.all([
         keys.length > 0 ?
           getDocs(
@@ -76,7 +78,7 @@ export const usePromitions = (mode: string, id: string, user: any) => {
             )
           ).then(a => {
             a.docs.map((b) => {
-              used[b.id] = b.data();
+              used[b.id] = b.data() as PromotionData;
             });
           }) :
           new Promise((r) => r(1)),
@@ -89,14 +91,12 @@ export const usePromitions = (mode: string, id: string, user: any) => {
             )
           ).then(a => {
             a.docs.map((b) => {
-              used[b.id] = b.data();
+              used[b.id] = b.data() as PromotionData;
             });
           }) :
           new Promise((r) => r(1))
       ])
-
       promotionUsed.value = used;
-
     }
   });
   
@@ -106,4 +106,34 @@ export const usePromitions = (mode: string, id: string, user: any) => {
     promotionUsed,
   };
   
+};
+
+
+export const usePromotionData = (orderInfo: OrderInfoData, promotion: ComputedRef<PromotionData>) => {
+
+  const enablePromotion = ref(false);
+  const discountPrice = ref(0);
+  if (orderInfo && promotion) {
+    enablePromotion.value = orderInfo.total > promotion.value.discountThreshold;
+    if (promotion.value.discountMethod === 'amount') {
+      discountPrice.value = promotion.value.discountValue;
+    } else {
+      discountPrice.value = Number(promotion.value.discountValue * orderInfo.total / 100);
+    }
+  }
+  const isEnablePaymentPromotion = (payStripe: boolean) => {
+    if (promotion.value.paymentRestrictions === "stripe") {
+      return payStripe;
+    }
+    if (promotion.value.paymentRestrictions === "instore") {
+      return !payStripe;
+    }
+    return true;
+  }
+  
+  return {
+    enablePromotion,
+    discountPrice,
+    isEnablePaymentPromotion,
+  };
 };

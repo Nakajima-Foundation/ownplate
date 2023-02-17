@@ -183,6 +183,45 @@
         </div>
       </div>
     </div>
+
+    <!-- promotion discount -->
+    <div v-if="enablePromotion"
+         class="bg-green-300 bg-opacity-30"
+         >
+      <!-- promotion discount -->
+      <span v-if="promotion.paymentRestrictions">
+        {{ promotion.paymentRestrictions }}
+      </span>
+      <div class="mt-2 flex">
+        <div class="flex-1">
+          <div class="text-base">
+            {{ promotion.promotionName }}
+          </div>
+        </div>
+        <div class="text-right">
+          <div class="text-base">
+            {{ $n(-discountPrice, "currency") }}
+          </div>
+        </div>
+      </div>
+      <div
+        class="mt-4 border-t-2 border-solid border-black border-opacity-10 pt-4"
+        >
+        <div class="flex">
+          <div class="flex-1">
+            <div class="text-xl font-bold text-green-600">
+              {{ $t("order.totalCharge") }}
+            </div>
+          </div>
+          <div class="text-right">
+            <div class="text-xl font-bold text-green-600">
+              {{ $n(previewDiscountTotal, "currency") }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
   </div>
 </template>
 
@@ -222,6 +261,20 @@ export default defineComponent({
       type: Object,
       required: false,
     },
+    // promotion
+    promotion: {
+      type: Object,
+      required: false,
+    },
+    enablePromotion: {
+      type: Boolean,
+      required: false,
+    },
+    discountPrice: {
+      type: Number,
+      required: false,
+    },
+    // end of promotion
     editable: {
       type: Boolean,
       required: false,
@@ -291,6 +344,7 @@ export default defineComponent({
         ? props.orderInfo.shippingCost
         : props.shippingCost || 0;
     });
+
     const verified = computed(() => {
       return props.orderInfo.status >= order_status.validation_ok;
     });
@@ -305,12 +359,19 @@ export default defineComponent({
       }
       return props.orderInfo.tip;
     });
+
     const previewTotal = computed(() => {
       return props.editable || isTipEditable.value
         ? props.orderInfo.total +
             Number(tip.value) +
             Number(actualShippingCost.value) +
             Number(props.orderInfo.deliveryFee || 0)
+        : props.orderInfo.totalCharge;
+    });
+    const previewDiscountTotal = computed(() => {
+      return props.editable || isTipEditable.value
+        ? previewTotal.value -
+            Number(props.discountPrice)
         : props.orderInfo.totalCharge;
     });
     const enableTip = computed(() => {
@@ -345,6 +406,8 @@ export default defineComponent({
       // ref
       tip,
 
+      previewDiscountTotal,
+      
       // methods
       updateAvailable,
       updateTip,

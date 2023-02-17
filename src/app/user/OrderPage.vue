@@ -28,6 +28,7 @@
         :moSuspend="moSuspend"
         @handleOpenMenu="handleOpenMenu"
         @openTransactionsAct="openTransactionsAct"
+        :promotions="promotions"
       />
       <OrderPageAfter
         v-else-if="paid"
@@ -125,6 +126,10 @@ export default defineComponent({
     mode: {
       type: String,
       required: false,
+    },
+    promotions: {
+      type: Array,
+      required: true,
     },
     moPrefix: {
       type: String,
