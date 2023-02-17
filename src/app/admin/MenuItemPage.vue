@@ -282,7 +282,7 @@
           </div>
 
           <!-- Additional Photos -->
-          <div v-if="true" class="mt-6">
+          <div v-if="false" class="mt-6">
             <div class="pb-2 text-sm font-bold">
               {{ $t("editMenu.additionalPhotos") }}
             </div>
@@ -330,216 +330,211 @@
                 </div>
               </o-button>
             </div>
+          </div>
 
-            <!-- Item Options -->
-            <div class="mt-6">
-              <div class="pb-2 text-sm font-bold">
-                {{ $t("editMenu.itemOptions") }}
-              </div>
+          <!-- Item Options -->
+          <div class="mt-6">
+            <div class="pb-2 text-sm font-bold">
+              {{ $t("editMenu.itemOptions") }}
+            </div>
 
-              <div class="pb-2 text-sm">
-                {{ $t("editMenu.itemOptionsNote") }}
-              </div>
+            <div class="pb-2 text-sm">
+              {{ $t("editMenu.itemOptionsNote") }}
+            </div>
 
-              <!-- Option Settings -->
-              <div class="grid-col-1 space-y-4">
-                <div v-for="(option, key) in menuInfo.itemOptionCheckbox">
-                  <div :key="key" class="mb-2 flex">
-                    <o-input
-                      v-model="menuInfo.itemOptionCheckbox[key]"
-                      :placeholder="$t('editMenu.enterItemOption')"
-                      class="mr-2 flex-1"
-                    />
-                    <o-button class="b-reset-tw" @click="deleteOption(key)">
-                      <div
-                        class="inline-flex h-9 items-center justify-center rounded-full bg-red-700 bg-opacity-10 px-4"
-                      >
-                        <i class="material-icons text-lg text-red-700"
-                          >delete</i
+            <!-- Option Settings -->
+            <div class="grid-col-1 space-y-4">
+              <div v-for="(option, key) in menuInfo.itemOptionCheckbox">
+                <div :key="key" class="mb-2 flex">
+                  <o-input
+                    v-model="menuInfo.itemOptionCheckbox[key]"
+                    :placeholder="$t('editMenu.enterItemOption')"
+                    class="mr-2 flex-1"
+                  />
+                  <o-button class="b-reset-tw" @click="deleteOption(key)">
+                    <div
+                      class="inline-flex h-9 items-center justify-center rounded-full bg-red-700 bg-opacity-10 px-4"
+                    >
+                      <i class="material-icons text-lg text-red-700">delete</i>
+                    </div>
+                  </o-button>
+                </div>
+
+                <!-- Option Preview -->
+                <div class="rounded-lg bg-black bg-opacity-5 p-4">
+                  <div
+                    class="mb-2 flex text-xs font-bold text-black text-opacity-30"
+                  >
+                    <div class="flex-1">
+                      {{ $t("editMenu.optionsPreview") }}
+                    </div>
+                    <div>{{ $t("editMenu.priceChange") }}</div>
+                  </div>
+
+                  <div v-for="(opt, k) in itemOptions[key]" class="flex">
+                    <div class="flex-1">
+                      <o-checkbox v-if="itemOptions[key].length == 1" disabled>
+                        <div
+                          class="text-sm font-bold text-black text-opacity-60"
                         >
+                          {{ displayOption(opt, shopInfo, menuInfo) }}
+                        </div>
+                      </o-checkbox>
+                      <o-radio
+                        v-else
+                        v-model="dummyCheckbox[key]"
+                        :native-value="k"
+                        disabled
+                      >
+                        <div
+                          class="text-sm font-bold text-black text-opacity-60"
+                        >
+                          {{ displayOption(opt, shopInfo, menuInfo) }}
+                        </div>
+                      </o-radio>
+                    </div>
+                    <div class="text-sm font-bold text-black text-opacity-60">
+                      {{ displayOptionPrice(opt) }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Add Option -->
+            <div class="mt-4">
+              <o-button class="b-reset-tw" @click="addOption">
+                <div
+                  class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+                >
+                  <i class="material-icons mr-2 text-lg text-op-teal">add</i>
+                  <div class="text-sm font-bold text-op-teal">
+                    {{ $t("editMenu.itemAddOption") }}
+                  </div>
+                </div>
+              </o-button>
+            </div>
+          </div>
+
+          <div class="mt-6">
+            <div class="pb-2 text-sm font-bold">
+              {{ $t("editMenu.exclusionDate") }}
+            </div>
+            <span v-for="(day, index) in daysOfWeek" :key="index">
+              <o-checkbox v-model="menuInfo.exceptDay[index]">
+                <span class="text-base font-bold">
+                  {{ $t("week.short." + day) }}
+                  <span v-if="index !== '7'">/</span>
+                </span>
+              </o-checkbox>
+            </span>
+            <div class="mt-2 text-sm font-bold">
+              {{ $t("editMenu.exclusionTime") }}
+            </div>
+            <div class="mt-2">
+              <hours-input
+                v-model="menuInfo.exceptHour"
+                variant="success"
+                :disabled="false"
+              ></hours-input>
+            </div>
+          </div>
+
+          <!-- CSV Categories -->
+          <div class="mt-6">
+            <div class="pb-2 text-sm font-bold">
+              {{ $t("editMenu.csvCategories") }}
+            </div>
+
+            <div class="pb-2 text-sm">
+              {{ $t("editMenu.csvCategoriesNote") }}
+            </div>
+
+            <div
+              class="grid-cols-1 space-y-4 rounded-lg bg-black bg-opacity-5 p-4"
+            >
+              <!-- Category 1 -->
+              <div>
+                <div class="mb-2 flex items-center">
+                  <div
+                    class="flex-1 text-sm font-bold text-black text-opacity-60"
+                  >
+                    {{ $t("editMenu.category1") }}
+                  </div>
+                  <div>
+                    <o-button
+                      class="b-reset-tw"
+                      @click="editCategory('category1')"
+                    >
+                      <div class="inline-flex items-center justify-center">
+                        <div class="text-sm font-bold text-op-teal">
+                          {{ $t("editMenu.editCategory1") }}
+                        </div>
                       </div>
                     </o-button>
                   </div>
-
-                  <!-- Option Preview -->
-                  <div class="rounded-lg bg-black bg-opacity-5 p-4">
-                    <div
-                      class="mb-2 flex text-xs font-bold text-black text-opacity-30"
-                    >
-                      <div class="flex-1">
-                        {{ $t("editMenu.optionsPreview") }}
-                      </div>
-                      <div>{{ $t("editMenu.priceChange") }}</div>
-                    </div>
-
-                    <div v-for="(opt, k) in itemOptions[key]" class="flex">
-                      <div class="flex-1">
-                        <o-checkbox
-                          v-if="itemOptions[key].length == 1"
-                          disabled
-                        >
-                          <div
-                            class="text-sm font-bold text-black text-opacity-60"
-                          >
-                            {{ displayOption(opt, shopInfo, menuInfo) }}
-                          </div>
-                        </o-checkbox>
-                        <o-radio
-                          v-else
-                          v-model="dummyCheckbox[key]"
-                          :native-value="k"
-                          disabled
-                        >
-                          <div
-                            class="text-sm font-bold text-black text-opacity-60"
-                          >
-                            {{ displayOption(opt, shopInfo, menuInfo) }}
-                          </div>
-                        </o-radio>
-                      </div>
-                      <div class="text-sm font-bold text-black text-opacity-60">
-                        {{ displayOptionPrice(opt) }}
-                      </div>
-                    </div>
-                  </div>
                 </div>
+
+                <o-select
+                  v-if="categories1.length > 0"
+                  v-model="menuInfo.category1"
+                  expanded
+                >
+                  <option
+                    v-for="category in categories1"
+                    :key="category"
+                    :value="category"
+                  >
+                    {{ category }}
+                  </option>
+                </o-select>
               </div>
 
-              <!-- Add Option -->
-              <div class="mt-4">
-                <o-button class="b-reset-tw" @click="addOption">
+              <!-- Category 2 -->
+              <div>
+                <div class="mb-2 flex items-center">
                   <div
-                    class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+                    class="flex-1 text-sm font-bold text-black text-opacity-60"
                   >
-                    <i class="material-icons mr-2 text-lg text-op-teal">add</i>
-                    <div class="text-sm font-bold text-op-teal">
-                      {{ $t("editMenu.itemAddOption") }}
-                    </div>
+                    {{ $t("editMenu.category2") }}
                   </div>
-                </o-button>
-              </div>
-            </div>
-
-            <div class="mt-6">
-              <div class="pb-2 text-sm font-bold">
-                {{ $t("editMenu.exclusionDate") }}
-              </div>
-              <span v-for="(day, index) in daysOfWeek" :key="index">
-                <o-checkbox v-model="menuInfo.exceptDay[index]">
-                  <span class="text-base font-bold">
-                    {{ $t("week.short." + day) }}
-                    <span v-if="index !== '7'">/</span>
-                  </span>
-                </o-checkbox>
-              </span>
-              <div class="mt-2 text-sm font-bold">
-                {{ $t("editMenu.exclusionTime") }}
-              </div>
-              <div class="mt-2">
-                <hours-input
-                  v-model="menuInfo.exceptHour"
-                  variant="success"
-                  :disabled="false"
-                ></hours-input>
-              </div>
-            </div>
-
-            <!-- CSV Categories -->
-            <div class="mt-6">
-              <div class="pb-2 text-sm font-bold">
-                {{ $t("editMenu.csvCategories") }}
-              </div>
-
-              <div class="pb-2 text-sm">
-                {{ $t("editMenu.csvCategoriesNote") }}
-              </div>
-
-              <div
-                class="grid-cols-1 space-y-4 rounded-lg bg-black bg-opacity-5 p-4"
-              >
-                <!-- Category 1 -->
-                <div>
-                  <div class="mb-2 flex items-center">
-                    <div
-                      class="flex-1 text-sm font-bold text-black text-opacity-60"
+                  <div>
+                    <o-button
+                      class="b-reset-tw"
+                      @click="editCategory('category2')"
                     >
-                      {{ $t("editMenu.category1") }}
-                    </div>
-                    <div>
-                      <o-button
-                        class="b-reset-tw"
-                        @click="editCategory('category1')"
-                      >
-                        <div class="inline-flex items-center justify-center">
-                          <div class="text-sm font-bold text-op-teal">
-                            {{ $t("editMenu.editCategory1") }}
-                          </div>
+                      <div class="inline-flex items-center justify-center">
+                        <div class="text-sm font-bold text-op-teal">
+                          {{ $t("editMenu.editCategory2") }}
                         </div>
-                      </o-button>
-                    </div>
+                      </div>
+                    </o-button>
                   </div>
-
-                  <o-select
-                    v-if="categories1.length > 0"
-                    v-model="menuInfo.category1"
-                    expanded
-                  >
-                    <option
-                      v-for="category in categories1"
-                      :key="category"
-                      :value="category"
-                    >
-                      {{ category }}
-                    </option>
-                  </o-select>
                 </div>
 
-                <!-- Category 2 -->
-                <div>
-                  <div class="mb-2 flex items-center">
-                    <div
-                      class="flex-1 text-sm font-bold text-black text-opacity-60"
-                    >
-                      {{ $t("editMenu.category2") }}
-                    </div>
-                    <div>
-                      <o-button
-                        class="b-reset-tw"
-                        @click="editCategory('category2')"
-                      >
-                        <div class="inline-flex items-center justify-center">
-                          <div class="text-sm font-bold text-op-teal">
-                            {{ $t("editMenu.editCategory2") }}
-                          </div>
-                        </div>
-                      </o-button>
-                    </div>
-                  </div>
-
-                  <o-select
-                    v-if="categories2.length > 0"
-                    v-model="menuInfo.category2"
-                    expanded
+                <o-select
+                  v-if="categories2.length > 0"
+                  v-model="menuInfo.category2"
+                  expanded
+                >
+                  <option
+                    v-for="category in categories2"
+                    :key="category"
+                    :value="category"
                   >
-                    <option
-                      v-for="category in categories2"
-                      :key="category"
-                      :value="category"
-                    >
-                      {{ category }}
-                    </option>
-                  </o-select>
-                </div>
-
-                <!-- Category Edit Popup -->
-                <edit-category
-                  v-if="categoryKey"
-                  :categoryKey="categoryKey"
-                  :shopInfo="shopInfo"
-                  @dismissed="handleDismissed"
-                  @updated="handleCategoryUpdated"
-                />
+                    {{ category }}
+                  </option>
+                </o-select>
               </div>
+
+              <!-- Category Edit Popup -->
+              <edit-category
+                v-if="categoryKey"
+                :categoryKey="categoryKey"
+                :shopInfo="shopInfo"
+                @dismissed="handleDismissed"
+                @updated="handleCategoryUpdated"
+              />
             </div>
           </div>
         </div>
