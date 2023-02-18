@@ -628,16 +628,31 @@
     "continuousOrder": "Warning: a continuous order",
     "lastOrder": "Last order",
     "thisOrder": "This order",
+    "shippingCost": "Shipping Cost",
+    "isDelivery": "Delivery",
     "ec": {
       "customerInfo": "Customer info",
       "formtitle": "Shipping information",
       "zip": "Zip code",
+      "prefecture": "Prefecture",
       "address": "Address",
       "addressNotice": "Please enter all address information",
       "name": "Full name",
+      "searchAddressFromZip": "Search for an address by zip code",
+      "select": "Select",
       "email": "Email",
       "phone": "Phone"
-    }
+    },
+    "discount": "Discount",
+    "discountAlert": {
+      "stripe": "「事前にカードでお支払い」で決済をいただいた場合は、以下のキャンペーン金額が適用されます。",
+      "instore": "「受取時に店舗でお支払い」を選択した場合は、以下のキャンペーン金額が適用されます。"
+    },
+    "productId": "Product Id",
+    "category": "Category",
+    "categoryId": "Category Id",
+    "subCategory": "SubCategory",
+    "subCategoryId": "SubCategory Id"
   },
   "editEC": {
     "postageList": "Shipping list",
@@ -663,6 +678,7 @@
     "estimatedDistance": "Estimated distance",
     "preparationTimeNotice": "Please enter the shortest time it will take for the customer to complete the delivery after placing the order.",
     "setTheAddressInTheDeliveryLocation": "Set  the address in the delivery destination",
+    "setTheAddressInTheDeliveryLocationDescription": "* Calculate the distance between the store and the delivery destination.",
     "availableDeliveryDistance": "Available Delivery Distance",
     "reference": "(Reference)",
     "aboutDeliveryArea": "Aboout Delivery Area",
@@ -713,8 +729,8 @@
     "auth/too-many-requests": "Too many requests",
     "auth/invalid-phone-number": "Numéro de téléphone invalide",
     "auth/invalid-verification-code": "Le code de vérification par SMS utilisé pour créer les informations d'identification d'authentification du téléphone n'est pas valide. Veuillez renvoyer le code de vérification par SMS et assurez-vous d'utiliser le code de vérification fourni par l'utilisateur.",
-    "auth/missing-verification-code": "SMS確認コードが入力されていません",
-    "auth/missing-verification-code": "Les informations d'identification d'authentification du téléphone ont été créées avec un code de vérification SMS vide."
+    "auth/missing-verification-code": "Les informations d'identification d'authentification du téléphone ont été créées avec un code de vérification SMS vide.",
+    "auth/code-expired": "The SMS verification code has expired. Please resend the SMS verification code and enter it again"
   },
   "admin": {
     "welcomeMessage": "Bienvenue !",
@@ -726,6 +742,8 @@
       "newsTop": "Top Actualité",
       "adminTop": "Top Administrateur"
     },
+    "open": "Open",
+    "closed": "Closed",
     "notes": {
       "title": "Notes",
       "userRestaurantsTitle": "À propos de la liste des restaurants pour l'utilisateur",

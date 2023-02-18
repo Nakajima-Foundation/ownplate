@@ -51,6 +51,25 @@
         </div>
       </div>
 
+      <!-- Promotion discount for after pay -->
+      <div v-if="orderInfo.promotionId"
+           class="mt-2 flex bg-green-300 bg-opacity-30"
+           >
+        <div class="flex-1">
+          <div class="text-base">
+            {{
+            $t( "order.discount" )
+            }}
+            ({{ orderInfo.promotionName }})
+          </div>
+        </div>
+        <div class="text-right">
+          <div class="text-base">
+            {{ $n( -orderInfo.discountPrice, "currency") }}
+          </div>
+        </div>
+      </div>
+
       <!-- Postage for EC -->
       <div
         v-if="shopInfo.isEC"
@@ -184,13 +203,13 @@
       </div>
     </div>
 
-    <!-- promotion discount -->
+    <!-- promotion discount for before pay -->
     <div v-if="enablePromotion"
          class="bg-green-300 bg-opacity-30"
          >
       <!-- promotion discount -->
       <span v-if="promotion.paymentRestrictions">
-        {{ promotion.paymentRestrictions }}
+        {{ $t("order.discountAlert." + promotion.paymentRestrictions) }}
       </span>
       <div class="mt-2 flex">
         <div class="flex-1">
