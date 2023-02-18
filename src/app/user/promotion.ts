@@ -28,7 +28,7 @@ export const usePromitions = (mode: string, id: string, user: any) => {
     await Promise.all([
       getDocs(
         query(
-          collection(db, `/groups/${id}/promotions`),
+          collection(db, path),
           where("enable", "==", true),
           where("hasTerm", "==", false),
         )
@@ -38,7 +38,7 @@ export const usePromitions = (mode: string, id: string, user: any) => {
       }),
       getDocs(
         query(
-          collection(db, `/groups/${id}/promotions`),
+          collection(db, path),
           where("enable", "==", true),
           where("hasTerm", "==", true),
           // where("termFrom", ">=", Timestamp.now()),
