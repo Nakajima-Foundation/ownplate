@@ -175,7 +175,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
           const discountPrice = getDiscountPrice(promotionData, order.total);
           if (promotionData.usageRestrictions) {
             const userPromotionRef = await getUserPromotionRef(db, promotionData, customerUid);
-            if (!enableUserPromotion(transaction, promotionData, userPromotionRef)) {
+            if (!await enableUserPromotion(transaction, promotionData, userPromotionRef)) {
               throw new functions.https.HttpsError("invalid-argument", "This promotion is used.");
             }
             return {
