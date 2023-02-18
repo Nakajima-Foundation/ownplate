@@ -13,6 +13,13 @@ import { getStripeAccount, getPaymentMethodData, getHash } from "../stripe/inten
 import { orderPlacedData } from "../../lib/types";
 import { validateOrderPlaced, validateCustomer } from "../../lib/validator";
 
+import {
+  getPromotion,
+  getUserPromotionRef,
+  enableUserPromotion,
+  setUserPromotionUsed,
+  getDiscountPrice
+} from "./promotion";
 
 export const getOrderData = async (transaction: any, orderRef: any) => {
   const orderDoc = await transaction.get(orderRef);
@@ -108,6 +115,8 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
   const customerUid = utils.validate_customer_auth(context);
 
   const { restaurantId, orderId, tip, timeToPickup, memo, customerInfo, payStripe } = data;
+  // const { promotionId, affiliateId } = data;
+  const { promotionId } = data;
   utils.required_params({ restaurantId, orderId }); // tip is optinoal
 
   const validateResult = validateOrderPlaced(data);
@@ -117,8 +126,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
   }
   const enableStripe = !!payStripe;
 
-  const _tip = Number(tip) || 0;
-  const roundedTip = Math.round(_tip * multiple) / multiple;
+  const roundedTip = Math.round((Number(tip) || 0) * multiple) / multiple;
   const now = admin.firestore.Timestamp.now();
   if (roundedTip < 0) {
     throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
@@ -135,7 +143,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
     if ((restaurantData.groupId || restaurantData.isEC) && roundedTip > 0) {
       throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
     }
-    // checko time
+    // check time
     if (!restaurantData.isEC) {
       if (timePlaced.toDate() < now.toDate()) {
         throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
@@ -144,7 +152,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
     
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
     const customerRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/customer/data`);
-
+    
     const result = await db.runTransaction(async (transaction) => {
       const order = await getOrderData(transaction, orderRef);
       if (!order) {
@@ -156,6 +164,36 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
       if (order.status !== order_status.validation_ok) {
         throw new functions.https.HttpsError("failed-precondition", "The order has been already placed or canceled");
       }
+      // promotion
+      const {
+        userPromotionRef,
+        promotionData,
+        discountPrice,
+      } = await (async () => {
+        if (promotionId) {
+          const promotionData = await getPromotion(db, transaction, promotionId, restaurantData, order.total, enableStripe);
+          const discountPrice = getDiscountPrice(promotionData, order.total);
+          if (promotionData.usageRestrictions) {
+            const userPromotionRef = await getUserPromotionRef(db, promotionData, customerUid);
+            if (!enableUserPromotion(transaction, promotionData, userPromotionRef)) {
+              throw new functions.https.HttpsError("invalid-argument", "This promotion is used.");
+            }
+            return {
+              userPromotionRef,
+              promotionData,
+              discountPrice,
+            };
+          }
+          return {
+            promotionData,
+            discountPrice,
+          }
+        }
+        return {
+          discountPrice: 0,
+        };
+      })();
+      
       const shippingCost = restaurantData.isEC ? costCal(postage, customerInfo?.prefectureId, order.total) : 0;
       const hasCustomer = restaurantData.isEC || order.isDelivery;
       if (hasCustomer) {
@@ -168,7 +206,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
         await transaction.get(customerRef);
       }
 
-      const totalCharge = order.total + roundedTip + (shippingCost || 0) + (order.deliveryFee || 0);
+      const totalCharge = order.total + roundedTip + (shippingCost || 0) + (order.deliveryFee || 0) - discountPrice;
       const totalChargeWithTipAndMultipled = totalCharge * multiple; // for US stripe price
       const orderNumber = utils.nameOfOrder(order.number);
       const paymentIntent = await (async () => {
@@ -217,6 +255,9 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
       const updateData = {
         status: order_status.order_placed,
         totalCharge,
+        discountPrice,
+        promotionName: promotionData?.promotionName || "",
+        promotionId: promotionId || "",
         tip: roundedTip,
         shippingCost,
         sendSMS: true,
@@ -235,7 +276,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
             stripe: "pending",
           },
         };
-        await transaction.set(orderRef, update, { merge: true });
+        await transaction.update(orderRef, update);
         const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`);
         await transaction.set(
           stripeRef,
@@ -247,6 +288,11 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
       } else {
         await transaction.update(orderRef, updateData);
       }
+      // promotion
+      if (userPromotionRef) {
+        await setUserPromotionUsed(transaction, promotionData, userPromotionRef, restaurantData, customerUid)
+      }
+      
       Object.assign(order, { totalCharge, tip, shippingCost }, enableStripe ? {payment: true} : {} );
       return { success: true, order };
     });
