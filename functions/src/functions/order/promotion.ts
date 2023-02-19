@@ -1,5 +1,6 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+import * as crypto from "crypto";
 
 export const getPromotion = async (db, transaction, promotionId, restaurantData, orderTotal, enableStripe) => {
   // get promotion
@@ -41,12 +42,18 @@ export const getPromotion = async (db, transaction, promotionId, restaurantData,
   return promotionData;
 }
 
+const getUserCollectionPath = (uid: string, groupId: string, phoneNumber: string) => {
+  if (groupId) {
+    const hash = crypto.createHash('sha256').update([groupId, phoneNumber].join(":")).digest('hex');
+    return `groups/${groupId}/users/${hash}/promotionHistories`
+  } 
+  return `/users/${uid}/promotionsHistories`;
+}
 
-
-export const getUserPromotionRef = async (db, promotionData, uid) => {
+export const getUserPromotionRef = async (db, promotionData, uid, groupId, phoneNumber) => {
+  const collectionPath = getUserCollectionPath(uid, groupId, phoneNumber);
   if (promotionData.type === "multipletimesCoupon") {
-    const path = `/users/${uid}/promotionsHistory`;
-    const ret = (await db.collection(path)
+    const ret = (await db.collection(collectionPath)
       .where("promotionId", "===", promotionData.promotionId)
       .where("used", "===", false)
       .orderBy("createdAt", "asc")
@@ -56,7 +63,7 @@ export const getUserPromotionRef = async (db, promotionData, uid) => {
       return ret.ref;
     }
   } else {
-    const path = `/users/${uid}/promotionsHistory/${promotionData.promotionId}`;
+    const path = `${collectionPath}/${promotionData.promotionId}`;
     return db.doc(path);
   }
   throw new functions.https.HttpsError("invalid-argument", "No promotion exist.");

@@ -1,6 +1,8 @@
 import {
   ref,
   watch,
+  watchEffect,
+  computed,
   ComputedRef,
 } from "@vue/composition-api";
 
@@ -13,13 +15,17 @@ import {
   Timestamp,
 } from "firebase/firestore";
 
+import {
+  sha256
+} from "@/utils/utils";
+
 import { db } from "@/lib/firebase/firebase9";
 
 import { OrderInfoData } from "@/models/orderInfo";
 import { PromotionData } from "@/models/promotion";
 
 export const usePromitions = (mode: string, id: string, user: any) => {
-  const promotions = ref<PromotionData[]>([]);
+  const promotionData = ref<PromotionData[]>([]);
 
   (async () => {
     const path = (mode === "mo") ?  `/groups/${id}/promotions` :  `restaurants/${id}/promotions`;
@@ -51,25 +57,32 @@ export const usePromitions = (mode: string, id: string, user: any) => {
         res.map(a => p.push(a));
       })
     ]);
-    promotions.value = p;
+    promotionData.value = p;
 
   })();
 
-  const promotionUsed = ref<{[key: string]: PromotionData}>({});
-  watch([user, promotions], async () => {
-    if (user.value && promotions.value.length > 0) {
+  const promotionUsed = ref<{[key: string]: PromotionData | PromotionData[]} | null>(null);
+  watch([user, promotionData], async () => {
+    if (user.value && promotionData.value.length > 0) {
       const keys: string[] = [];
       const values: string[] = [];
-      promotions.value.map(a => {
+      promotionData.value.map(a => {
         if (["discount", "onetimeCoupon"].includes(a.type)) {
           keys.push(a.promotionId);
         } else {
           values.push(a.promotionId);
         }
       });
-      const path = `users/${user.value.uid}/promotions`;
-      const used: {[key: string]: PromotionData} = {};
+      const path = await(async () => {
+        if (mode === "mo") {
+          const hash = await sha256([id, user.value.phoneNumber].join(":")); 
+          return `groups/${id}/users/${hash}/promotionHistories`
+        }
+        return `users/${user.value.uid}/promotionHistories`;
+      })();
+      const used: {[key: string]: PromotionData | PromotionData[]} = {};
       await Promise.all([
+        // for onetime or discount
         keys.length > 0 ?
           getDocs(
             query(
@@ -82,7 +95,7 @@ export const usePromitions = (mode: string, id: string, user: any) => {
             });
           }) :
           new Promise((r) => r(1)),
-        //
+        // for multiple times
         values.length > 0 ?
           getDocs(
             query(
@@ -91,7 +104,10 @@ export const usePromitions = (mode: string, id: string, user: any) => {
             )
           ).then(a => {
             a.docs.map((b) => {
-              used[b.id] = b.data() as PromotionData;
+              if (!used[b.id]) {
+                used[b.id] = [] as PromotionData[];
+              }
+              (used[b.id] as PromotionData[]).push(b.data() as PromotionData);
             });
           }) :
           new Promise((r) => r(1))
@@ -99,11 +115,27 @@ export const usePromitions = (mode: string, id: string, user: any) => {
       promotionUsed.value = used;
     }
   });
-  
+  const promotions = computed(() => {
+    if (promotionUsed.value !== null) {
+      return promotionData.value.filter(a => {
+        if (a.usageRestrictions) {
+          true;
+        }
+        if (a.type == "multipletimesCoupon") {
+
+        } else if (a.type == "onetimeCoupon") {
+          return !((promotionUsed.value || {})[a?.promotionId] as any).used;
+        } else {
+          return !(promotionUsed.value || {})[a?.promotionId];
+        }
+      });
+      // return promotionData.value;
+    }
+    return [];
+  });
   
   return {
     promotions,
-    promotionUsed,
   };
   
 };
@@ -113,15 +145,22 @@ export const usePromotionData = (orderInfo: OrderInfoData, promotion: ComputedRe
 
   const enablePromotion = ref(false);
   const discountPrice = ref(0);
-  if (orderInfo && promotion) {
-    enablePromotion.value = orderInfo.total > promotion.value.discountThreshold;
-    if (promotion.value.discountMethod === 'amount') {
-      discountPrice.value = promotion.value.discountValue;
-    } else {
-      discountPrice.value = Number(promotion.value.discountValue * orderInfo.total / 100);
+
+  watchEffect(() => {
+    if (orderInfo && promotion && promotion.value) {
+      enablePromotion.value = orderInfo.total > promotion.value.discountThreshold;
+      if (promotion.value.discountMethod === 'amount') {
+        discountPrice.value = promotion.value.discountValue;
+      } else {
+        discountPrice.value = Number(promotion.value.discountValue * orderInfo.total / 100);
+      }
     }
-  }
+  });
+
   const isEnablePaymentPromotion = (payStripe: boolean) => {
+    if (!promotion.value) {
+      return false;
+    }
     if (promotion.value.paymentRestrictions === "stripe") {
       return payStripe;
     }

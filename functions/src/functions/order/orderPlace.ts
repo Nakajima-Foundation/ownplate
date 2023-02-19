@@ -113,7 +113,8 @@ const multiple = utils.stripeRegion.multiple; // 100 for USD, 1 for JPY
 // This function is called by users to place orders without paying
 export const place = async (db, data: orderPlacedData, context: functions.https.CallableContext | Context) => {
   const customerUid = utils.validate_customer_auth(context);
-
+  const phoneNumber = context.auth?.token?.phone_number || '';
+  
   const { restaurantId, orderId, tip, timeToPickup, memo, customerInfo, payStripe } = data;
   // const { promotionId, affiliateId } = data;
   const { promotionId } = data;
@@ -174,7 +175,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
           const promotionData = await getPromotion(db, transaction, promotionId, restaurantData, order.total, enableStripe);
           const discountPrice = getDiscountPrice(promotionData, order.total);
           if (promotionData.usageRestrictions) {
-            const userPromotionRef = await getUserPromotionRef(db, promotionData, customerUid);
+            const userPromotionRef = await getUserPromotionRef(db, promotionData, customerUid, restaurantData.groupId, phoneNumber);
             if (!await enableUserPromotion(transaction, promotionData, userPromotionRef)) {
               throw new functions.https.HttpsError("invalid-argument", "This promotion is used.");
             }
