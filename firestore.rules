@@ -68,6 +68,9 @@ service cloud.firestore {
     function isUndefined(data, field) {
       return !data.keys().hasAll([field]);
     }
+    function phoneHashUser(hashId, groupId, request) {
+      return hashing.sha256([groupId, request.auth.token.phone_number].join(":")).toHexString() == hashId.upper();
+    }
     
     // restaurantInfo
     function isUndefinedRestaurantParams(request) {
@@ -119,6 +122,9 @@ service cloud.firestore {
       match /groups/{groupId}/reviews/{restaurantId} {
         allow read: if request.auth.uid == userId;
         allow write: if request.auth.uid == userId && request.resource.data.restaurantId == restaurantId;
+      }
+      match /promotionHistories/{promotionId} {
+        allow read: if request.auth.uid == userId;
       }
     }
 
@@ -197,6 +203,14 @@ service cloud.firestore {
       match /groupConfig/suspend {
         allow read: if true;
         allow write: if request.auth.token.groupId == groupId
+      }
+      match /promotions/{promotionId} {
+        // TODO gropu promotion condition
+        allow read: if true
+      }
+      match /users/{hashId}/promotionHistories/{promotionId} {
+        allow read: if phoneHashUser(hashId, groupId, request)
+        allow read: if request.auth.token.groupId == groupId
       }
     }
 
@@ -355,6 +369,11 @@ service cloud.firestore {
                           && isRestaurantOwner(restaurantId, request);
           allow write: if isAdmin(request)
                           && isRestaurantSubAccount(restaurantId, request);
+        }
+
+        match /promotions/{promotionId} {
+          // TODO restaurant promotion condition
+          allow read: if true
         }
     }
 

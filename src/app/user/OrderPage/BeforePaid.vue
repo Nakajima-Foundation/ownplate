@@ -52,6 +52,9 @@
             :orderInfo="orderInfo || {}"
             :shippingCost="shippingCost"
             :groupData="groupData"
+            :promotion="selectedPromotion"
+            :enablePromotion="enablePromotion"
+            :discountPrice="discountPrice"
             @change="handleTipChange"
           ></order-info>
         </div>
@@ -409,6 +412,7 @@ import { nameOfOrder } from "@/utils/strings";
 import { stripeReceipt } from "@/lib/stripe/stripe";
 
 import { costCal } from "@/utils/commonUtils";
+import { usePromotionData } from "@/app/user/promotion";
 
 import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
@@ -455,6 +459,10 @@ export default defineComponent({
     },
     deliveryData: {
       type: Object,
+      required: true,
+    },
+    promotions: {
+      type: Array,
       required: true,
     },
     mode: {
@@ -557,7 +565,20 @@ export default defineComponent({
     });
     const hasPaymentMethods = computed(() => {
       return shopPaymentMethods.value.length > 0;
-    })
+    });
+    const selectedPromotion = computed(() => {
+      if (props.promotions && props.promotions.length > 0) {
+        return props.promotions[0];
+      }
+      return null;
+    });
+
+    const {
+      enablePromotion,
+      discountPrice,
+      isEnablePaymentPromotion,
+    } = usePromotionData(props.orderInfo, selectedPromotion);
+    
     // end of computed
     const shopInfo = computed(() => {
       return props.shopInfo;
@@ -639,11 +660,13 @@ export default defineComponent({
         } else {
           isPlacing.value = true;
         }
+        const promotionId = isEnablePaymentPromotion(payStripe) ? selectedPromotion.value.promotionId : null;
         const { data } = await orderPlace({
           timeToPickup,
           restaurantId,
           orderId: orderId.value,
           tip: tip || 0,
+          promotionId,
           payStripe,
           memo: memo.value || "",
           customerInfo: ecCustomerRef.value
@@ -701,7 +724,11 @@ export default defineComponent({
       notSubmitAddress,
       userMessageError,
       hasPaymentMethods,
-
+      
+      selectedPromotion,
+      enablePromotion,
+      discountPrice,
+      
       // const
       paymentMethods,
 
