@@ -91,7 +91,7 @@
 
     <!-- For User -->
     <div
-      v-if="restaurant"
+      v-else-if="restaurant"
       @click="$emit('selected', order)"
       class="cursor-pointer rounded-lg bg-white shadow"
     >
