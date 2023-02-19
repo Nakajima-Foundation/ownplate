@@ -668,6 +668,11 @@
       "email": "Email",
       "phone": "Phone"
     },
+    "discount": "Discount",
+    "discountAlert": {
+      "stripe": "「事前にカードでお支払い」で決済をいただいた場合は、以下のキャンペーン金額が適用されます。",
+      "instore": "「受取時に店舗でお支払い」を選択した場合は、以下のキャンペーン金額が適用されます。"
+    },
     "productId": "Product Id",
     "category": "Category",
     "categoryId": "Category Id",
@@ -750,7 +755,8 @@
     "auth/invalid-phone-number": "Invalid Phone Number",
     "auth/invalid-verification-code": "The SMS verification code used to create the phone auth credential is invalid. Please resend the verification code sms and be sure use the verification code provided by the user.",
     "auth/missing-verification-code": "SMS verification code is missing.",
-    "auth/missing-verification-code": "The phone auth credential was created with an empty SMS verification code."
+    "auth/missing-verification-code": "The phone auth credential was created with an empty SMS verification code.",
+    "auth/code-expired": "The SMS verification code has expired. Please resend the SMS verification code and enter it again"
   },
   "admin": {
     "welcomeMessage": "Welcome!",

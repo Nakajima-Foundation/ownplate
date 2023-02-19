@@ -11,6 +11,7 @@
       :moPickupSuspend="moPickupSuspend"
       :notFound="notFound"
       :groupData="groupData"
+      :promotions="promotions"
     />
     <NotFound v-else-if="notFound" />
   </div>
@@ -32,6 +33,7 @@ import NotFound from "@/components/NotFound.vue";
 
 import { useRestaurantId } from "@/utils/utils";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { usePromitions } from "@/app/user/promotion";
 
 export default defineComponent({
   name: "RestaurantWrapper",
@@ -123,6 +125,13 @@ export default defineComponent({
       );
     });
 
+    const user = computed(() => {
+      return ctx.root.user;
+    });
+
+    const id = mode.value === 'mo' ? moPrefix : restaurantId.value;
+    const { promotions } = usePromitions(mode.value, id, user);
+    
     onUnmounted(() => {
       if (restaurant_detacher) {
         restaurant_detacher();
@@ -139,6 +148,8 @@ export default defineComponent({
       paymentInfo,
       deliveryData,
       notFound,
+
+      promotions,
     };
   },
 });
