@@ -128,15 +128,19 @@ export default {
   },
   async mounted() {
     this.configureStripe();
-    const stripeInfo = (
-      await db.doc(`/users/${this.user.uid}/readonly/stripe`).get()
-    ).data();
-    if (stripeInfo && stripeInfo.card) {
-      if (stripeInfo.updatedAt.toDate() > moment().subtract(180, "days").toDate()) {
-        this.storedCard = stripeInfo.card;
-        this.useStoredCard = true;
-        this.$emit("change", { complete: true });
+    try {
+      const stripeInfo = (
+        await db.doc(`/users/${this.user.uid}/readonly/stripe`).get()
+      ).data();
+      if (stripeInfo && stripeInfo.card) {
+        if (stripeInfo.updatedAt.toDate() > moment().subtract(180, "days").toDate()) {
+          this.storedCard = stripeInfo.card;
+          this.useStoredCard = true;
+          this.$emit("change", { complete: true });
+        }
       }
+    } catch (e) {
+      console.log("stripe expired")
     }
   },
   watch: {
