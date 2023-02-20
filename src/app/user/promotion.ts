@@ -4,7 +4,7 @@ import {
   watchEffect,
   computed,
   ComputedRef,
-} from "@vue/composition-api";
+} from "vue";
 
 import {
   getDocs,

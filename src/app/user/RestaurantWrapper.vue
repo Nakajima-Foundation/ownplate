@@ -27,7 +27,7 @@ import {
 
 import { db } from "@/lib/firebase/firebase9";
 import { doc, onSnapshot, getDoc } from "firebase/firestore";
-import { routeMode, getMoPrefix } from "@/utils/utils";
+import { routeMode, getMoPrefix, useUserData } from "@/utils/utils";
 
 import NotFound from "@/components/NotFound.vue";
 
@@ -125,11 +125,9 @@ export default defineComponent({
       );
     });
 
-    const user = computed(() => {
-      return ctx.root.user;
-    });
+    const { user } = useUserData();
 
-    const id = mode.value === 'mo' ? moPrefix : restaurantId.value;
+    const id = mode.value === 'mo' ? moPrefix as string : restaurantId.value;
     const { promotions } = usePromitions(mode.value, id, user);
     
     onUnmounted(() => {
