@@ -415,6 +415,7 @@ import { usePromotionData } from "@/app/user/promotion";
 
 import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { PromotionData } from "@/models/promotion";
 
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
@@ -464,7 +465,7 @@ export default defineComponent({
       required: true,
     },
     promotions: {
-      type: Array,
+      type: Array<PromotionData>,
       required: true,
     },
     mode: {
@@ -572,7 +573,7 @@ export default defineComponent({
     const hasPaymentMethods = computed(() => {
       return shopPaymentMethods.value.length > 0;
     });
-    const selectedPromotion = computed(() => {
+    const selectedPromotion = computed<PromotionData | null>(() => {
       if (props.promotions && props.promotions.length > 0) {
         return props.promotions[0];
       }
@@ -666,7 +667,7 @@ export default defineComponent({
         } else {
           isPlacing.value = true;
         }
-        const promotionId = isEnablePaymentPromotion(payStripe) ? selectedPromotion.value.promotionId : null;
+        const promotionId = isEnablePaymentPromotion(payStripe) ? selectedPromotion.value?.promotionId : null;
         const { data } = await orderPlace({
           timeToPickup,
           restaurantId,

@@ -65,6 +65,9 @@ export default defineComponent({
           (snapshot) => {
             const stripeInfo = snapshot.data();
             storedCard.value = stripeInfo?.card;
+          },
+          (e) => {
+            console.log("stripe expired")
           }
         );
       }

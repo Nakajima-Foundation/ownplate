@@ -174,18 +174,21 @@ export default defineComponent({
         ctx.emit("change", status);
       });
 
-      const stripeInfo = (
-        await getDoc(doc(db, `/users/${user.value.uid}/readonly/stripe`))
-      ).data();
+      try {
+        const stripeInfo = (
+          await getDoc(doc(db, `/users/${user.value.uid}/readonly/stripe`))
+        ).data();
       
-      if (stripeInfo && stripeInfo.card) {
-        if (stripeInfo.updatedAt.toDate() > moment().subtract(180, "days").toDate()) {
-          storedCard.value = stripeInfo.card;
-          useStoredCard.value = true;
-          ctx.emit("change", { complete: true });
+        if (stripeInfo && stripeInfo.card) {
+          if (stripeInfo.updatedAt.toDate() > moment().subtract(180, "days").toDate()) {
+            storedCard.value = stripeInfo.card;
+            useStoredCard.value = true;
+            ctx.emit("change", { complete: true });
+          }
         }
+      } catch (e) {
+        console.log("stripe expired")
       }
-
     };
 
     onMounted(() => {

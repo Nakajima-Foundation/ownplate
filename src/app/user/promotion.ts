@@ -141,7 +141,7 @@ export const usePromitions = (mode: string, id: string, user: any) => {
 };
 
 
-export const usePromotionData = (orderInfo: OrderInfoData, promotion: ComputedRef<PromotionData>) => {
+export const usePromotionData = (orderInfo: OrderInfoData, promotion: ComputedRef<PromotionData | null>) => {
 
   const enablePromotion = ref(false);
   const discountPrice = ref(0);
