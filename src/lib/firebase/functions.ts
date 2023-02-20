@@ -20,21 +20,37 @@ export const smaregiAuth = httpsCallable<{
   result: boolean;
 }>(functionsJP, "smaregiAuth");
 
-export const lineVerifyFriend = httpsCallable(functionsJP, "lineVerifyFriend");
+export const lineVerifyFriend = httpsCallable<{
+  liffIndexId?: string
+}, {
+  result: boolean;
+}>(functionsJP, "lineVerifyFriend");
 
-export const subAccountDeleteChild = httpsCallable(
+export const subAccountDeleteChild = httpsCallable<{
+  childUid: string
+}, {
+}>(
   functionsJP,
   "subAccountDeleteChild"
 );
 
-export const subAccountInvite = httpsCallable(functionsJP, "subAccountInvite");
+export const subAccountInvite = httpsCallable<{
+  email: string,
+  name: string
+}, {
+  result: boolean;
+}>(functionsJP, "subAccountInvite");
 
-export const subAccountInvitationAccept = httpsCallable(
+export const subAccountInvitationAccept = httpsCallable<{
+  messageId: string
+}>(
   functionsJP,
   "subAccountInvitationAccept"
 );
 
-export const subAccountInvitationDeny = httpsCallable(
+export const subAccountInvitationDeny = httpsCallable<{
+  messageId: string
+}>(
   functionsJP,
   "subAccountInvitationDeny"
 );

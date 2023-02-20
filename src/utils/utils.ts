@@ -404,7 +404,7 @@ export const useLiffIndexId = () => {
   const route = useRoute();
 
   return computed(() => {
-    return route.params.liffIndexId;
+    return route.params.liffIndexId as string;
   });
 };
 
