@@ -196,9 +196,9 @@
           <div class="flex items-center">
             <div class="mr-2 text-sm">
               {{
-                $tc("sitemenu.orderCounter", totalCount, {
+                $t("sitemenu.orderCounter", {
                   count: totalCount,
-                })
+                }, totalCount)
               }}
             </div>
 
