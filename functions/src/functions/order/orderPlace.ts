@@ -236,6 +236,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
       })();
       // transaction for stock orderTotal
       await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, restaurantOwnerUid, timePlaced, now, true);
+      // update customer
       if (hasCustomer) {
         const { zip, prefectureId, prefecture, address, name, email, location } = customerInfo;
         await transaction.set(customerRef, {
@@ -262,6 +263,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
         tip: roundedTip,
         shippingCost,
         sendSMS: true,
+        printed: false,
         updatedAt: now,
         orderPlacedAt: now,
         timePlaced,

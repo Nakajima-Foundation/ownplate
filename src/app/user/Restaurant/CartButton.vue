@@ -109,6 +109,7 @@
               </div>
             </template>
             <!-- total and price -->
+            <template v-if="!noPaymentMethod">
             <div
               class="inline-flex items-center justify-center text-base font-bold text-white"
             >
@@ -133,6 +134,7 @@
               </div>
               <i class="material-icons text-2xl">shopping_cart</i>
             </div>
+            </template>
           </div>
         </template>
       </div>

@@ -130,7 +130,9 @@
                 <li v-if="inStorePayment">
                   {{ $t("transactionsAct.paymentDescriptionStore") }}
                 </li>
-                <li>{{ $t("transactionsAct.paymentDescriptionCardNote") }}</li>
+                <li v-if="showPayment">
+                  {{ $t("transactionsAct.paymentDescriptionCardNote") }}
+                </li>
               </ul>
             </div>
             <!--for MobileOrder-->
