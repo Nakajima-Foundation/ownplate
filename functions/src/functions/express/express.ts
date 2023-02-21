@@ -373,7 +373,7 @@ app.use(express.json());
 app.use(alogger);
 
 app.use("/1.0", router); // for stripe
-// app.use("/api/1.0/", apis.apiRouter);
+app.use("/api/1.0/", apis.apiRouter);
 // app.use("/api/2.0/", apis2.apiRouter);
 
 app.use("/smaregi/1.0", smaregi.smaregiRouter);

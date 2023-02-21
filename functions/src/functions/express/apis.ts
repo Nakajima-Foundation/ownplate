@@ -1,8 +1,8 @@
 import express from "express";
 import * as admin from "firebase-admin";
-import { ownPlateConfig } from "../../common/project";
-import cors from "cors";
-import * as Sentry from "@sentry/node";
+// import { ownPlateConfig } from "../../common/project";
+// import cors from "cors";
+// import * as Sentry from "@sentry/node";
 import { validateFirebaseId } from "../../lib/validator";
 
 export const apiRouter = express.Router();
@@ -23,7 +23,7 @@ export const response200 = (res, payload) => {
     payload,
   });
 };
-
+/*
 const hostname = "https://" + ownPlateConfig.hostName;
 
 const num2time = (num) => {
@@ -150,3 +150,66 @@ const corsOptionsDelegate = (req, callback) => {
 
 apiRouter.get("/restaurants", cors(corsOptionsDelegate), getRestaurants);
 apiRouter.get("/restaurants/:restaurantId/menus", cors(corsOptionsDelegate), getMenus);
+*/
+
+const common = async (req: any, res: any, next: any) => {
+  const { restaurantId, starKey } = req.params;
+
+  /*
+  console.log(JSON.stringify(req.headers));
+  console.log(req.body);
+  if (!req.header("authorization")) {
+    res.setHeader('WWW-Authenticate', 'Basic realm="printer"');
+    res.status(401).send("");
+    return ;
+  };
+  */
+  
+  if (!validateFirebaseId(restaurantId)) {
+    return res.status(404).send("");
+  }
+
+  const restaurant = await db.doc(`restaurants/${restaurantId}`).get();
+  if (!restaurant || !restaurant.exists) {
+    return res.status(404).send("");
+  }
+  const restaurant_data: any = restaurant.data();
+  if (!restaurant_data.publicFlag || restaurant_data.deletedFlag) {
+    return res.status(404).send("");
+  }
+  // todo auth
+  console.log(starKey);
+
+  req.restaurant = restaurant_data;
+  next();
+};
+
+const pollingStar = async (req: any, res: any) => {
+  console.log("POST");
+  const body = req.body;
+  const statusCode = body["statusCode"];
+
+  return res.json({
+    jobReady: true, mediaTypes: [ "image/png" ]
+  });
+};
+
+const requestStar = async (req: any, res: any) => {
+  console.log("GET");
+  const { uid, type, mac, token } = req.query;
+  console.log({uid, type, mac, token});
+    
+  // return res.status(200).type('text/plain').send("this is test");
+  // text/plain	
+
+  return res.json({});
+  // jobReady: true, mediaTypes: [ "image/png" ]
+};
+
+
+const deleteStar = pollingStar;
+
+const startPath = "/r/:restaurantId/starprinter/:starKey"; 
+apiRouter.post(startPath, common, pollingStar);
+apiRouter.get(startPath, common, requestStar);
+apiRouter.delete(startPath, deleteStar);
