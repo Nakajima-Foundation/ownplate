@@ -263,6 +263,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
         tip: roundedTip,
         shippingCost,
         sendSMS: true,
+        printed: false,
         updatedAt: now,
         orderPlacedAt: now,
         timePlaced,
