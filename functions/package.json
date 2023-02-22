@@ -30,6 +30,7 @@
     "@google-cloud/bigquery": "^6.1.0",
     "@sentry/node": "^5.15.5",
     "aws-sdk": "^2.1103.0",
+    "convert-svg-to-png": "^0.6.4",
     "cors": "^2.8.5",
     "express": "^4.17.12",
     "firebase-admin": "^11.4.1",

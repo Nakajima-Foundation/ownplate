@@ -7,7 +7,7 @@ import { validateFirebaseId } from "../../lib/validator";
 import { order_status } from "../../common/constant";
 import moment from "moment";
 import * as receiptline from  'receiptline';
-
+import { convert } from 'convert-svg-to-png';
 export const apiRouter = express.Router();
 
 if (!admin.apps.length) {
@@ -209,8 +209,7 @@ const common = async (req: any, res: any, next: any) => {
 
 const pollingStar = async (req: any, res: any) => {
   console.log("POST");
-  // const body = req.body;
-  // const statusCode = body["statusCode"];
+
   const { restaurantId } = req.params;
   const orders = await db.collection(`restaurants/${restaurantId}/orders`)
     .where("printed", "==", false)
@@ -219,8 +218,8 @@ const pollingStar = async (req: any, res: any) => {
     .limit(1).get();
 
   if (orders.docs.length > 0) {
-    const jobToken = orders.docs[0].id || "123123";
-    console.log("jobToken", jobToken);
+    const jobToken = orders.docs[0].id;
+    // console.log("jobToken", jobToken);
     return res.json({
       jobReady: true,
       mediaTypes: [ "image/png" ],
@@ -235,32 +234,41 @@ const pollingStar = async (req: any, res: any) => {
 
 const requestStar = async (req: any, res: any) => {
   console.log("GET");
-  const { uid, type, mac, token } = req.query;
+  // const { uid, type, mac, token } = req.query; 
+  const { token } = req.query;
   const { restaurantId } = req.params;
-  console.log({uid, type, mac, token});
+  // console.log({uid, type, mac, token});
 
   if (token) {
     const doc = await db.doc(`restaurants/${restaurantId}/orders/` + token).get();
-    console.log(doc.data());
-    return res.status(200).type('text/plain').send("this is test. order is " + token);
+    console.log(doc.id);
+    //return res.status(200).type('text/plain').send("this is test. order is " + token);
+
+    const svg = getSVG();
+    // console.log(svg);
+    console.log(svg);
+    const png = await convert(svg, {background: "white"});
+    return res.status(200).type('image/png').send(png);
+    
   }
   return res.json({});
   // text/plain
   /*
   const svg = getSVG();
-  console.log(svg);
-  
+  // console.log(svg);
+  const png = await convert(svg);
+  return res.status(200).type('img/png').send(png);
   */
-  // jobReady: true, mediaTypes: [ "image/png" ]
 };
 
 
 const deleteStar = async (req: any, res: any) => {
   console.log("DELETE");
-  console.log(req.query);
-  const { uid, type, mac, token } = req.query;
+  // console.log(req.query);
+  // const { uid, type, mac, token } = req.query;
+  const { token } = req.query;
   const { restaurantId } = req.params;
-  console.log({uid, type, mac, token});
+  // console.log({uid, type, mac, token});
   
   if (token) {
     await db.doc(`restaurants/${restaurantId}/orders/` + token)
