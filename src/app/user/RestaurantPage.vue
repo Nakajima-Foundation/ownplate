@@ -49,7 +49,7 @@
           <!-- Left -->
           <div id="RestaurantLeftTop">
             <!-- Cover Image -->
-            <div class="lg:mt-6" v-if="!shopInfo.moCloseDate">
+            <div class="lg:mt-6" v-if="!isInMo">
               <img
                 @click.stop="openImage()"
                 :src="coverImage"
