@@ -1,7 +1,7 @@
 import {
   defineComponent,
   ref,
-} from "@vue/composition-api";
+} from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
 import {

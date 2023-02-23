@@ -25,7 +25,7 @@
 <script lang="ts">
 import {
   defineComponent,
-} from "@vue/composition-api";
+} from "vue";
 
 import MoPage202303 from "./MoPage202303.vue";
 import MoPage20230302 from "./MoPage20230302.vue";
