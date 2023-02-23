@@ -12,6 +12,7 @@ import {
   documentId,
 } from "firebase/firestore";
 
+import MoPageSet from "./MoPageSet.vue";
 
 interface Menu {
   id: string;
@@ -25,6 +26,9 @@ interface SetMenu {
 };
 export const moPage = (setMenus: SetMenu[]) => {
   return defineComponent({
+    components: {
+      MoPageSet,
+    },
     props: {
       pageId: {
         type: String,

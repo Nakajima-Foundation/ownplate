@@ -3,22 +3,14 @@
     <div>
     2023-03
     </div>
-    <div v-for="(menu, k) in setMenus" :key="k">
-      {{menu.setName}}
-      <div v-for="(m, j) in menu.menus" :key="j">
-        <template v-if="menuObj[m.id]">
-          {{menuObj[m.id].itemName}}<br/>1セットに{{m.count}}入/
-
-          <button @click="pushQuantities(m.id, 1)">add</button>
-          /<button @click="pullQuantities(m.id, 1)">remove</button>
-          / {{ (orders[m.id]||{})[0] || 0 }}
-          <hr />
-        </template>
-      </div>
-      <div>
-        <button @click="addSet(menu.id)">セット追加</button>
-      </div>
-    </div>
+    <MoPageSet
+      :setMenus="setMenus"
+      :menuObj="menuObj"
+      :orders="orders"
+      @pushQuantities="pushQuantities"
+      @pullQuantities="pullQuantities"
+      @addSet="addSet"
+      />
     <div>
     </div>
     <hr/>
@@ -38,7 +30,7 @@ import {
 
 const setMenus = [{
   id: "setMenu1",
-  setName: "123",
+  setName: "メニュー１セット",
   menus: [{
     id: "16fc6cc015fac4d3494570fa791ee64f28e18932",
     count: 1,
