@@ -5,10 +5,23 @@
       <not-found />
     </template>
     <template v-else>
+      <div
+        v-if="pageId"
+        class="fixed top-0 z-20 h-full w-full bg-white"
+        >
+        <MoPage
+          :pageId="pageId"
+          :pageBase="pageBase"
+          :groupData="groupData"
+          @didOrderdChange="didOrderdChange($event)"
+          :orders="orders"
+          :selectedOptions="selectedOptions"
+          />
+      </div>
       <!-- category modal -->
       <div
         v-if="isOpenGroupCategory"
-        class="fixed top-0 z-20 h-full w-full bg-white"
+        class="fixed top-0 z-40 h-full w-full bg-white"
       >
         <div class="m-4">
           <span class="text-xl font-bold text-black text-opacity-30">
@@ -27,7 +40,7 @@
       <!-- category modal -->
       <div
         v-if="isOpenGroupSubCategory"
-        class="fixed top-0 z-20 h-full w-full bg-white"
+        class="fixed top-0 z-40 h-full w-full bg-white"
       >
         <div class="mx-4 h-[calc(100%-3rem)] overflow-x-scroll">
           <SubCategoryModal
@@ -49,7 +62,7 @@
           <!-- Left -->
           <div id="RestaurantLeftTop">
             <!-- Cover Image -->
-            <div class="lg:mt-6" v-if="!shopInfo.moCloseDate">
+            <div class="lg:mt-6" v-if="!isInMo">
               <img
                 @click.stop="openImage()"
                 :src="coverImage"
@@ -360,7 +373,7 @@
         @closeCart="closeCart"
         :orders="orders"
         :selectedOptions="selectedOptions"
-        :menuObj="menuObj"
+        :menuObj="cartItems"
         :prices="prices"
         :shopInfo="shopInfo"
         :disabledPickupTime="disabledPickupTime"
@@ -448,6 +461,7 @@ import Titles from "@/app/user/Restaurant/Titles.vue";
 import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
 import TransactionsActContents from "@/app/user/TransactionsAct/Contents.vue";
 import MoPickUp from "@/app/user/Restaurant/MoPickUp.vue";
+import MoPage from "@/app/user/Mo/MoPage.vue";
 
 import { usePickupTime } from "@/utils/pickup";
 
@@ -527,6 +541,7 @@ export default defineComponent({
     SubCategoryList,
 
     MoPickUp,
+    MoPage,
   },
   props: {
     shopInfo: {
@@ -913,7 +928,11 @@ export default defineComponent({
     const didOrderdChange = (eventArgs: {quantities: number | number[], itemId: string, optionValues: string}) => {
       // NOTE: We need to assign a new object to trigger computed properties
       if (eventArgs.quantities) {
-        cartItems.value[eventArgs.itemId] = menuObj.value[eventArgs.itemId];
+        if (eventArgs.itemData) { // for mo campaign
+          cartItems.value[eventArgs.itemId] = eventArgs.itemData
+        } else {
+          cartItems.value[eventArgs.itemId] = menuObj.value[eventArgs.itemId];
+        }
         const newObject = { ...orders.value };
         if (arraySum(eventArgs.quantities as number[]) > 0) {
           // @ts-ignore
@@ -1176,6 +1195,9 @@ export default defineComponent({
     const isTransactionAct = computed(() => {
       return !!route.meta.isTransactionsAct;
     });
+    const pageId = computed(() => {
+      return ctx.root.$route.params.pageId;
+    });
     return {
       itemLists,
       titleLists: filteredTitleLists,
@@ -1230,6 +1252,7 @@ export default defineComponent({
       cartButton,
       closeCart,
       menuObj,
+      cartItems,
       menuPickupData,
 
       isInMo,
@@ -1249,6 +1272,7 @@ export default defineComponent({
       scrollTop,
 
       moment,
+      pageId,
     };
   },
 });
