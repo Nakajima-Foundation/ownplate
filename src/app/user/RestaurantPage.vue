@@ -7,11 +7,15 @@
     <template v-else>
       <div
         v-if="pageId"
-        class="fixed top-0 z-30 h-full w-full bg-white"
+        class="fixed top-0 z-20 h-full w-full bg-white"
         >
         <MoPage
           :pageId="pageId"
           :pageBase="pageBase"
+          :groupData="groupData"
+          @didOrderdChange="didOrderdChange($event)"
+          :orders="orders"
+          :selectedOptions="selectedOptions"
           />
       </div>
       <!-- category modal -->
@@ -369,7 +373,7 @@
         @closeCart="closeCart"
         :orders="orders"
         :selectedOptions="selectedOptions"
-        :menuObj="menuObj"
+        :menuObj="cartItems"
         :prices="prices"
         :shopInfo="shopInfo"
         :disabledPickupTime="disabledPickupTime"
@@ -916,7 +920,11 @@ export default defineComponent({
     const didOrderdChange = (eventArgs) => {
       // NOTE: We need to assign a new object to trigger computed properties
       if (eventArgs.quantities) {
-        cartItems.value[eventArgs.itemId] = menuObj.value[eventArgs.itemId];
+        if (eventArgs.itemData) { // for mo campaign
+          cartItems.value[eventArgs.itemId] = eventArgs.itemData
+        } else {
+          cartItems.value[eventArgs.itemId] = menuObj.value[eventArgs.itemId];
+        }
         const newObject = { ...orders.value };
         if (arraySum(eventArgs.quantities) > 0) {
           newObject[eventArgs.itemId] = eventArgs.quantities;
@@ -1236,6 +1244,7 @@ export default defineComponent({
       cartButton,
       closeCart,
       menuObj,
+      cartItems,
       menuPickupData,
 
       isInMo,

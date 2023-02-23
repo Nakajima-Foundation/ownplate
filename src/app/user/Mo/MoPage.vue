@@ -5,6 +5,10 @@
       v-if="pageId == '202303'"
       :pageId="pageId"
       :pageBase="pageBase"
+      :groupData="groupData"
+      @didOrderdChange="didOrderdChange"
+      :orders="orders"
+      :selectedOptions="selectedOptions"
       />
   </div>
 </template>
@@ -29,9 +33,27 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    groupData: {
+      type: Object,
+      required: false,
+    },
+    orders: {
+      type: Object,
+      required: true,
+    },
+    selectedOptions: {
+      type: Object,
+      required: true,
+    },
   },
-  //setup(props, ctx) {
-  // }
+  setup(props, ctx) {
+    const didOrderdChange = (param: any) => {
+      ctx.emit("didOrderdChange", param)
+    }
+    return {
+      didOrderdChange,
+    };
+  }
 });
 </script>
     
