@@ -5,10 +5,19 @@
       <not-found />
     </template>
     <template v-else>
+      <div
+        v-if="pageId"
+        class="fixed top-0 z-30 h-full w-full bg-white"
+        >
+        <MoPage
+          :pageId="pageId"
+          :pageBase="pageBase"
+          />
+      </div>
       <!-- category modal -->
       <div
         v-if="isOpenGroupCategory"
-        class="fixed top-0 z-20 h-full w-full bg-white"
+        class="fixed top-0 z-40 h-full w-full bg-white"
       >
         <div class="m-4">
           <span class="text-xl font-bold text-black text-opacity-30">
@@ -27,7 +36,7 @@
       <!-- category modal -->
       <div
         v-if="isOpenGroupSubCategory"
-        class="fixed top-0 z-20 h-full w-full bg-white"
+        class="fixed top-0 z-40 h-full w-full bg-white"
       >
         <div class="mx-4 h-[calc(100%-3rem)] overflow-x-scroll">
           <SubCategoryModal
@@ -447,6 +456,7 @@ import Titles from "@/app/user/Restaurant/Titles.vue";
 import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
 import TransactionsActContents from "@/app/user/TransactionsAct/Contents.vue";
 import MoPickUp from "@/app/user/Restaurant/MoPickUp.vue";
+import MoPage from "@/app/user/Mo/MoPage.vue";
 
 import { usePickupTime } from "@/utils/pickup";
 
@@ -519,6 +529,7 @@ export default defineComponent({
     SubCategoryList,
 
     MoPickUp,
+    MoPage,
   },
   props: {
     shopInfo: {
@@ -1168,6 +1179,9 @@ export default defineComponent({
     const isTransactionAct = computed(() => {
       return !!ctx.root.$route.meta.isTransactionsAct;
     });
+    const pageId = computed(() => {
+      return ctx.root.$route.params.pageId;
+    });
     return {
       itemLists,
       titleLists: filteredTitleLists,
@@ -1239,6 +1253,8 @@ export default defineComponent({
       closeTransactionsAct,
       pageBase,
       scrollTop,
+
+      pageId,
     };
   },
 });
