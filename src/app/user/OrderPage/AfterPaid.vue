@@ -90,9 +90,7 @@
       <div>
         <!-- Title -->
         <div class="text-xl font-bold text-black text-opacity-30">
-          <div v-if="paid">
-            {{ $t("order.yourOrder") + ": " + orderName }}
-          </div>
+          {{ $t("order.yourOrder") + ": " + orderName }}
         </div>
 
         <!-- Details -->
@@ -122,7 +120,7 @@
         </div>
 
         <!-- Your Message to the Restaurant -->
-        <template v-if="paid && hasMemo">
+        <template v-if="hasMemo">
           <div class="mt-4 rounded-lg bg-white p-4 shadow">
             <div class="text-xs font-bold text-black text-opacity-60">
               {{ $t("order.orderMessage") }}
@@ -147,7 +145,7 @@
         </template>
 
         <!-- View Menu Page Button -->
-        <div v-if="paid" class="mt-6 text-center">
+        <div class="mt-6 text-center">
           <o-button class="b-reset-tw" @click="handleOpenMenu">
             <div
               class="inline-flex h-12 items-center justify-center rounded-full border-2 border-op-teal px-6"
@@ -162,9 +160,7 @@
 
       <!-- Right -->
       <div class="mt-4 lg:mt-0">
-        <!-- (After Paid) Restaurant Details -->
-        <div v-if="paid">
-          <!-- Restaurant Info -->
+        <!-- Restaurant Info -->
           <div>
             <div class="text-xl font-bold text-black text-opacity-30">
               {{
@@ -209,7 +205,6 @@
               ></qrcode>
             </div>
           </div>
-        </div>
       </div>
     </div>
   </div>
