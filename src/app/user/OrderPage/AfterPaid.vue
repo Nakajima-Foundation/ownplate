@@ -140,7 +140,7 @@
         </div>
 
         <!-- Receipt -->
-        <template v-if="order_accepted && hasStripe">
+        <template v-if="order_accepted && hasStripe && !canceled && !cancelPayment">
           <Receipt />
         </template>
 
@@ -307,6 +307,9 @@ export default defineComponent({
     const hasStripe = computed(() => {
       return props.orderInfo.payment && props.orderInfo.payment.stripe;
     });
+    const cancelPayment = computed(() => {
+      return props.orderInfo.payment && props.orderInfo.payment.stripe === "canceled";
+    });
     const hasLineUrl = computed(() => {
       return props.shopInfo.lineUrl && validUrl(props.shopInfo.lineUrl);
     });
@@ -413,6 +416,7 @@ export default defineComponent({
       orderId,
       // computed
       hasStripe,
+      cancelPayment,
       hasLineUrl,
       urlAdminOrderPage,
       timeRequested,
