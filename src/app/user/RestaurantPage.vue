@@ -484,6 +484,7 @@ import { ownPlateConfig, moTitle, moPickup } from "@/config/project";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { MenuData } from "@/models/menu";
 import { AnalyticsMenuData } from "@/lib/firebase/analytics";
 
 import {
@@ -925,7 +926,7 @@ export default defineComponent({
       );
     });
 
-    const didOrderdChange = (eventArgs: {quantities: number | number[], itemId: string, optionValues: string}) => {
+    const didOrderdChange = (eventArgs: {quantities: number | number[], itemId: string, optionValues: string, itemData: MenuData}) => {
       // NOTE: We need to assign a new object to trigger computed properties
       if (eventArgs.quantities) {
         if (eventArgs.itemData) { // for mo campaign
@@ -1196,7 +1197,7 @@ export default defineComponent({
       return !!route.meta.isTransactionsAct;
     });
     const pageId = computed(() => {
-      return ctx.root.$route.params.pageId;
+      return route.params.pageId as string;
     });
     return {
       itemLists,
