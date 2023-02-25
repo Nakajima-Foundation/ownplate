@@ -19,8 +19,11 @@
       >
         <ButtonLoading v-if="isCheckingOut" />
         <template v-if="noPaymentMethod">
-          <div class="text-base font-bold text-white">
+          <div class="text-base font-bold text-white" v-if="shopInfo.publicFlag">
             {{ $t("shopInfo.noPaymentMethod") }}
+          </div>
+          <div class="text-base font-bold text-white" v-else>
+            {{ $t("shopInfo.notPublicShop") }}
           </div>
         </template>
         <template v-if="moSuspend">

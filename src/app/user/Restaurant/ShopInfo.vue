@@ -215,9 +215,14 @@
               <span v-if="inStorePayment">{{
                 $t("shopInfo.onsitePayment")
               }}</span>
-              <span v-if="!showPayment && !inStorePayment">{{
-                $t("shopInfo.noPaymentMethod")
-              }}</span>
+              <span v-if="!showPayment && !inStorePayment">
+                <span v-if="shopInfo.publicFlag">{{
+                  $t("shopInfo.noPaymentMethod")
+                }}</span>
+                <span v-else>{{
+                  $t("shopInfo.notPublicShopMessage")
+                }}</span>
+              </span>
             </div>
           </div>
         </div>

@@ -388,6 +388,8 @@
     "onlinePayment": "Payment en Ligne",
     "onsitePayment": "Paiement à la Livraison",
     "noPaymentMethod": "Commande en ligne indisponible",
+    "notPublicShopMessage": "Not Public",
+    "notPublicShop": "Not Public",
     "paymentMethods": "Payment methods",
     "minimumAvailableTime": "Temps disponible minimum",
     "noAvailableTime": "Aucun de temps de commande",

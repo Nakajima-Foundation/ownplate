@@ -90,9 +90,7 @@
       <div>
         <!-- Title -->
         <div class="text-xl font-bold text-black text-opacity-30">
-          <div v-if="paid">
-            {{ $t("order.yourOrder") + ": " + orderName }}
-          </div>
+          {{ $t("order.yourOrder") + ": " + orderName }}
         </div>
 
         <!-- Details -->
@@ -122,7 +120,7 @@
         </div>
 
         <!-- Your Message to the Restaurant -->
-        <template v-if="paid && hasMemo">
+        <template v-if="hasMemo">
           <div class="mt-4 rounded-lg bg-white p-4 shadow">
             <div class="text-xs font-bold text-black text-opacity-60">
               {{ $t("order.orderMessage") }}
@@ -142,12 +140,12 @@
         </div>
 
         <!-- Receipt -->
-        <template v-if="order_accepted && hasStripe">
+        <template v-if="order_accepted && hasStripe && !canceled && !cancelPayment">
           <Receipt />
         </template>
 
         <!-- View Menu Page Button -->
-        <div v-if="paid" class="mt-6 text-center">
+        <div class="mt-6 text-center">
           <router-link :to="menuPagePath">
             <div
               class="inline-flex h-12 items-center justify-center rounded-full border-2 border-op-teal px-6 b-reset-tw"
@@ -162,9 +160,7 @@
 
       <!-- Right -->
       <div class="mt-4 lg:mt-0">
-        <!-- (After Paid) Restaurant Details -->
-        <div v-if="paid">
-          <!-- Restaurant Info -->
+        <!-- Restaurant Info -->
           <div>
             <div class="text-xl font-bold text-black text-opacity-30">
               {{
@@ -209,7 +205,6 @@
               ></vue-qrcode>
             </div>
           </div>
-        </div>
       </div>
     </div>
   </div>
@@ -319,6 +314,9 @@ export default defineComponent({
     const hasStripe = computed(() => {
       return props.orderInfo.payment && props.orderInfo.payment.stripe;
     });
+    const cancelPayment = computed(() => {
+      return props.orderInfo.payment && props.orderInfo.payment.stripe === "canceled";
+    });
     const hasLineUrl = computed(() => {
       return props.shopInfo.lineUrl && validUrl(props.shopInfo.lineUrl);
     });
@@ -422,6 +420,7 @@ export default defineComponent({
       orderId,
       // computed
       hasStripe,
+      cancelPayment,
       hasLineUrl,
       urlAdminOrderPage,
       timeRequested,

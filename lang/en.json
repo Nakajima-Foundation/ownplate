@@ -394,6 +394,8 @@
     "onlinePayment": "Online Payment",
     "onsitePayment": "On Site Payment",
     "noPaymentMethod": "Online Order Unavailable",
+    "notPublicShopMessage": "Not Public",
+    "notPublicShop": "Not Public",
     "paymentMethods": "Payment methods",
     "minimumAvailableTime": "Minimum available time",
     "noAvailableTime": "No orderable time",
