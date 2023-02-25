@@ -148,11 +148,6 @@ export default {
       if (snapshot.exists) {
         this.paymentInfo = snapshot.data();
         this.inStorePayment = this.paymentInfo.inStore;
-      } else {
-        refPayment.set({
-          stripe: null,
-          inStore: false,
-        });
       }
       this.$emit("updateUnsetWarning", this.unsetWarning);
     });
