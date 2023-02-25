@@ -169,11 +169,6 @@ export default defineComponent({
         if (snapshot.exists()) {
           paymentInfo.value = snapshot.data();
           inStorePayment.value = paymentInfo.value.inStore;
-        } else {
-          setDoc(refPayment, {
-            stripe: null,
-            inStore: false,
-          });
         }
         context.emit("updateUnsetWarning", unsetWarning.value);
       })
