@@ -1,0 +1,144 @@
+<template>
+<div>
+  <template v-if="notFound === null">
+  </template>
+  <template v-else-if="notFound">
+    <not-found />
+  </template>
+  <div v-else>
+    <div class="mx-6 mt-6 lg:flex lg:items-center">
+      <AdminHeader
+        class="mx-6 mt-6 lg:flex lg:items-center"
+        :shopInfo="shopInfo"
+        backLink="/admin/restaurants/"
+        :showSuspend="false"
+        :isInMo="isInMo"
+        :moPrefix="moPrefix"
+      />
+
+    </div>
+    <div>
+      <div class="mx-6 mt-6 rounded-lg bg-black bg-opacity-5 p-4 text-center">
+        <div class="pb-2 text-sm font-bold">
+          CloudPRNT Server URL
+        </div>
+        <o-input
+          type="textarea"
+          rows=2
+          readonly
+          v-model="printerAddress"
+          ></o-input>
+      </div>
+
+      <div class="mx-6 mt-6 rounded-lg bg-black bg-opacity-5 p-4 text-center">
+        <div class="pb-2 text-sm font-bold">
+          Reset Server URL
+        </div>
+        <o-button @click="reset" class="b-reset-tw">
+          <div
+            class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
+            style="min-width: 8rem"
+          >
+            <span class="text-base font-bold text-white">
+              Reset
+            </span>
+          </div>
+        </o-button>
+
+        
+      </div>
+      
+      <div class="mx-6 mt-6 rounded-lg bg-black bg-opacity-5 p-4 text-center">
+        <div class="pb-2 text-sm font-bold">
+          IP Address <span class="text-sx text-opacity-20 text-black">if need</span>
+        </div>
+        <o-input
+          v-model="ipaddress"
+          ></o-input>
+      </div>
+      
+      <div class="mx-6 mt-6 rounded-lg bg-black bg-opacity-5 p-4 text-center">
+        <div class="pb-2 text-sm font-bold">
+          Logs
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+</template>
+
+<script>
+import {
+  defineComponent,
+  ref,
+  computed,
+} from "@vue/composition-api";
+import { db } from "@/lib/firebase/firebase9";
+import { doc, collection, onSnapshot, updateDoc } from "firebase/firestore";
+
+import { ownPlateConfig } from "@/config/project";
+
+import NotFound from "@/components/NotFound.vue";
+import AdminHeader from "@/app/admin/AdminHeader.vue";
+
+export default defineComponent({
+  components: {
+    AdminHeader,
+    NotFound,
+  },
+  props: {
+    shopInfo: {
+      type: Object,
+      required: true,
+    },
+    isInMo: {
+      type: Boolean,
+      required: true,
+    },
+    moPrefix: {
+      type: String,
+      required: false,
+    },
+  },
+  setup(_, ctx) {
+    const notFound = ref(null);
+    const printerConfig = ref();
+    
+    const restaurantId = ctx.root.restaurantId();
+    const restaurantRef = doc(db, `restaurants/${restaurantId}/private/printer`);
+    onSnapshot(
+      restaurantRef,
+      (doc) => {
+        const data = doc.data();
+        console.log(data);
+        if (!data) {
+          notFound.value = true;
+          return;
+        }
+        printerConfig.value = data;
+        notFound.value = false;
+      }
+    );
+
+    // https://staging.ownplate.today/api/1.0/r/121212/starprinter/abcabc
+    const printerAddress = computed(() => {
+      return ["https://" + ownPlateConfig.hostName + "/api/1.0/r/", restaurantId, "/starprinter/", printerConfig.value.key ].join("");
+    });
+    const reset = () => {
+      const newKey = doc(collection(db, "a")).id;
+      console.log(newKey);
+      updateDoc(restaurantRef, {key: newKey});
+      
+      // restaurantRef.update("key", )
+    };
+    return {
+      notFound,
+      printerConfig,
+      printerAddress,
+
+      reset,
+    };
+  },
+});
+</script>
