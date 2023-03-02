@@ -155,18 +155,10 @@ apiRouter.get("/restaurants", cors(corsOptionsDelegate), getRestaurants);
 apiRouter.get("/restaurants/:restaurantId/menus", cors(corsOptionsDelegate), getMenus);
 */
 
-export const getSVG = () => {
+export const getSVG = (restaurantData: any, orderData: any) => {
   const text = `
-    \`"^^^~~~~~~~２０２１年~~~~~~~
-
-    ^令和３年
-
-    April|^^^^"４月|卯月
-
-    "^^^^^^^１
-
-    ^^^木曜日
-Thursday
+^${restaurantData.restaurantName}
+${orderData.id}
 `;
 
   const svg = receiptline.transform(text, { encoding: 'cp932' });
@@ -198,11 +190,18 @@ const common = async (req: any, res: any, next: any) => {
   if (!restaurant_data.publicFlag || restaurant_data.deletedFlag) {
     return res.status(404).send("");
   }
+
+  const restaurantPrinter = await db.doc(`restaurants/${restaurantId}/private/printer`).get();
+  if (!restaurantPrinter || !restaurantPrinter.exists) {
+    return res.status(400).send("");
+  }
+  const restaurantPrinterData = restaurantPrinter.data();
+  if (!restaurantPrinterData || (restaurantPrinterData.key !== starKey)) {
+    return res.status(400).send("");
+  }
+  
   // todo auth
   console.log(starKey);
-  
-  
-  
   req.restaurant = restaurant_data;
   next();
 };
@@ -219,7 +218,6 @@ const pollingStar = async (req: any, res: any) => {
 
   if (orders.docs.length > 0) {
     const jobToken = orders.docs[0].id;
-    // console.log("jobToken", jobToken);
     return res.json({
       jobReady: true,
       mediaTypes: [ "image/png" ],
@@ -234,17 +232,13 @@ const pollingStar = async (req: any, res: any) => {
 
 const requestStar = async (req: any, res: any) => {
   console.log("GET");
-  // const { uid, type, mac, token } = req.query; 
   const { token } = req.query;
   const { restaurantId } = req.params;
-  // console.log({uid, type, mac, token});
 
   if (token) {
     const doc = await db.doc(`restaurants/${restaurantId}/orders/` + token).get();
-    console.log(doc.id);
-    //return res.status(200).type('text/plain').send("this is test. order is " + token);
 
-    const svg = getSVG();
+    const svg = getSVG(req.restaurant, doc.data());
     // console.log(svg);
     console.log(svg);
     const png = await convert(svg, {background: "white"});
@@ -264,11 +258,9 @@ const requestStar = async (req: any, res: any) => {
 
 const deleteStar = async (req: any, res: any) => {
   console.log("DELETE");
-  // console.log(req.query);
   // const { uid, type, mac, token } = req.query;
   const { token } = req.query;
   const { restaurantId } = req.params;
-  // console.log({uid, type, mac, token});
   
   if (token) {
     await db.doc(`restaurants/${restaurantId}/orders/` + token)

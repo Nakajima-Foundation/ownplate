@@ -360,6 +360,10 @@ export const customRoutes: CustomRoute[] = [
             component: "admin/QRCodePage.vue",
           },
           {
+            path: "printer",
+            component: "admin/Printer.vue",
+          },
+          {
             path: "report",
             component: "admin/ReportPage.vue",
           },
