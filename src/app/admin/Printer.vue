@@ -73,7 +73,7 @@ import {
   defineComponent,
   ref,
   computed,
-} from "@vue/composition-api";
+} from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, collection, onSnapshot, updateDoc } from "firebase/firestore";
 
