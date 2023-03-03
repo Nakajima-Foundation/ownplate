@@ -176,6 +176,16 @@
           {{ $t("editRestaurant.minutes") }}
         </div>
       </div>
+      <div class="mt-4 rounded-lg bg-black bg-opacity-5 p-4">
+        <a
+          href="https://docs.omochikaeri.com/manuals/delivery.pdf"
+          target="_blank"
+          class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
+          @click="handleClose()"
+        >
+          {{ $t("menu.deliveryManualLink") }}
+        </a>
+      </div>
       <!-- Save Button -->
       <div class="mt-4 text-center">
         <o-button @click="saveDeliveryArea" class="b-reset-tw">
