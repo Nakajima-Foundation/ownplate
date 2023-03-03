@@ -108,6 +108,18 @@
         </a>
       </div>
 
+      <!-- Printer Manual -->
+      <div class="mt-2 text-center">
+        <a
+          href="https://docs.omochikaeri.com/manuals/printer.pdf"
+          target="_blank"
+          class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
+          @click="handleClose()"
+        >
+          {{ $t("menu.printerManualLink") }}
+        </a>
+      </div>
+      
       <!-- Tips -->
       <div class="mt-2 text-center">
         <a

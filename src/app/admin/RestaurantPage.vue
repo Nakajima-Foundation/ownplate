@@ -794,11 +794,19 @@
               </div>
               <div class="pt-2 text-xs">
                 {{ $t("editRestaurant.deliveryDescription") }}
+                <a
+                  href="https://docs.omochikaeri.com/manuals/delivery.pdf"
+                  target="_blank"
+                  class="text-xs font-bold text-op-teal"
+                  @click="handleClose()"
+                  >
+                  {{ $t("menu.deliveryManualLink") }}
+                </a>
               </div>
             </div>
           </div>
 
-          <!-- TODO: Printer Config -->
+          <!-- Printer Config -->
           <div class="mt-4">
             <div class="pb-2 text-sm font-bold">
               {{ $t("editRestaurant.printerConfigTitle") }}
@@ -811,6 +819,14 @@
               </o-checkbox>
               <div class="pt-2 text-xs">
                 {{ $t("editRestaurant.printerDescription") }}
+                <a
+                  href="https://docs.omochikaeri.com/manuals/printer.pdf"
+                  target="_blank"
+                  class="inline-flex text-xs font-bold text-op-teal"
+                  @click="handleClose()"
+                  >
+                  {{ $t("menu.printerManualLink") }}
+                </a>
               </div>
             </div>
           </div>
