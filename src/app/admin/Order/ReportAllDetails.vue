@@ -60,8 +60,6 @@ import { order_status } from "@/config/constant";
 import { arrayChunk, forceArray } from "@/utils/utils";
 
 import {
-  reportHeaders,
-  reportHeadersWithAddress,
   reportHeadersForMo,
 } from "@/utils/reportUtils";
 
@@ -210,32 +208,6 @@ export default defineComponent({
                     ? "-"
                     : order.name || ctx.root.$t("order.unspecified")
                 ),
-                "ec.name": writeonFirstLine(
-                  index,
-                  key,
-                  order?.customerInfo?.name
-                ),
-                "ec.zip": writeonFirstLine(
-                  index,
-                  key,
-                  order?.customerInfo?.zip
-                ),
-                "ec.prefecture": writeonFirstLine(
-                  index,
-                  key,
-                  order?.customerInfo?.prefecture
-                ),
-                "ec.address": writeonFirstLine(
-                  index,
-                  key,
-                  order?.customerInfo?.address
-                ),
-                "ec.email": writeonFirstLine(
-                  index,
-                  key,
-                  order?.customerInfo?.email
-                ),
-                shippingCost: writeonFirstLine(index, key, order?.shippingCost || order?.deliveryFee),
                 count: orderItems[key],
                 options: opt.filter((a) => String(a) !== "").join("/"),
                 memo: writeonFirstLine(index, key, order.memo),
