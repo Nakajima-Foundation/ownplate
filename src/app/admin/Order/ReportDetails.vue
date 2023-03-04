@@ -126,7 +126,11 @@ export default defineComponent({
       return moment(timeData).format("YYYY/MM/DD HH:mm");
     };
 
-    watch(props.orders, () => {
+    
+    const orders = computed(() => {
+      return props.orders;
+    });
+    watch(orders, () => {
       // load customer
       const ids = props.orders.map((o) => o.id);
 
