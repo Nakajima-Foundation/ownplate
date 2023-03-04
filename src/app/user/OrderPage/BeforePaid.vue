@@ -662,7 +662,8 @@ export default defineComponent({
         } else {
           isPlacing.value = true;
         }
-        const promotionId = isEnablePaymentPromotion(payStripe) ? selectedPromotion.value?.promotionId : null;
+        const promotionId = isEnablePaymentPromotion(payStripe) && enablePromotion.value ? selectedPromotion.value?.promotionId : null;
+        console.log( isEnablePaymentPromotion(payStripe), enablePromotion.value , promotionId)
         const { data } = await orderPlace({
           timeToPickup,
           restaurantId,
