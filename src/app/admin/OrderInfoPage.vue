@@ -372,68 +372,16 @@
               :active.sync="paymentCancelPopup"
               :width="488"
               scroll="keep"
-            >
-              <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
-                <!-- Title -->
-                <div class="text-xl font-bold text-black text-opacity-40">
-                  {{ $t("admin.order.paymentCancelTitle") }}
-                </div>
-
-                <!-- Message -->
-                <div class="mt-6 text-base">
-                  {{ $t("admin.order.paymentCancelMessage") }}
-                </div>
-
-                <!-- Call -->
-                <div v-if="orderInfo.phoneNumber" class="mt-6 text-center">
-                  <div>
-                    <a
-                      :href="nationalPhoneURI"
-                      class="inline-flex h-12 items-center justify-center rounded-full border-2 border-op-teal px-6"
-                    >
-                      <div class="text-base font-bold text-op-teal">
-                        {{ nationalPhoneNumber }}
-                      </div>
-                    </a>
-                  </div>
-                  <div class="mt-2 font-bold">
-                    {{ orderInfo.name }}
-                  </div>
-                </div>
-
-                <!-- Cancel -->
-                <div class="mt-4 text-center">
-                  <o-button
-                    :loading="updating === 'payment_canceled'"
-                    @click="handlePaymentCancel"
-                    class="b-reset-tw"
-                  >
-                    <div
-                      class="inline-flex h-12 items-center justify-center rounded-full bg-red-700 px-6"
-                    >
-                      <div class="text-base font-bold text-white">
-                        {{ $t("admin.order.paymentCancel") }}
-                      </div>
-                    </div>
-                  </o-button>
-                  <div class="mt-2 text-sm font-bold text-red-700">
-                    {{ $t("admin.order.paymentCancelConfirm") }}
-                  </div>
-                </div>
-
-                <!-- Close -->
-                <div class="mt-6 text-center">
-                  <a
-                    @click="closePaymentCancel()"
-                    class="inline-flex h-12 items-center justify-center rounded-full bg-black bg-opacity-5 px-6"
-                    style="min-width: 8rem"
-                  >
-                    <div class="text-base font-bold text-black text-opacity-60">
-                      {{ $t("menu.close") }}
-                    </div>
-                  </a>
-                </div>
-              </div>
+              >
+              <PaymentCancelModal
+                :shopInfo="shopInfo"
+                :orderInfo="orderInfo"
+                :orderId="orderId"
+                :parentUrl="parentUrl"
+                :nationalPhoneURI="nationalPhoneURI"
+                :nationalPhoneNumber="nationalPhoneNumber"
+                @close="closePaymentCancel()"
+                />
             </o-modal>
           </div>
         </div>
@@ -555,10 +503,6 @@ import {
 } from "@/config/constant";
 import { nameOfOrder, formatOption } from "@/utils/strings";
 import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
-import {
-  stripeCancelIntent,
-  stripePaymentCancelIntent,
-} from "@/lib/stripe/stripe";
 import moment from "moment-timezone";
 
 import { ownPlateConfig } from "@/config/project";
@@ -570,6 +514,7 @@ import AdminHeader from "@/app/admin/AdminHeader.vue";
 
 import ButtonLoading from "@/components/Button/Loading.vue";
 import CancelModal from "@/app/admin/Order/CancelModal.vue";
+import PaymentCancelModal from "@/app/admin/Order/PaymentCancelModal.vue";
 
 import { costCal } from "@/utils/commonUtils";
 import { downloadOrderPdf, printOrder, data2UrlSchema } from "@/lib/pdf/pdf2";
@@ -602,6 +547,7 @@ export default defineComponent({
     NotFound,
     ButtonLoading,
     CancelModal,
+    PaymentCancelModal,
   },
   props: {
     shopInfo: {
@@ -1107,29 +1053,6 @@ export default defineComponent({
         },
       });
     };
-    const handlePaymentCancel = async () => {
-      console.log("handlePaymentCancel");
-
-      try {
-        ctx.root.$store.commit("setLoading", true);
-        updating.value = "payment_canceled";
-        const { data } = await stripePaymentCancelIntent({
-          restaurantId: restaurantId.value,
-          orderId: orderId.value,
-        });
-        console.log("paymentCancel", data);
-        ctx.root.$router.push(parentUrl.value);
-      } catch (error) {
-        console.error(error.message, error.details);
-        ctx.root.$store.commit("setErrorMessage", {
-          code: "stripe.cancel",
-          error,
-        });
-      } finally {
-        updating.value = "";
-        ctx.root.$store.commit("setLoading", false);
-      }
-    };
     const classOf = (statusKey) => {
       if (order_status[statusKey] == orderInfo.value.status) {
         return statusKey;
@@ -1209,7 +1132,6 @@ export default defineComponent({
       print,
       handleChangeStatus,
       handleOrderChange,
-      handlePaymentCancel,
       classOf,
 
       openCancel,

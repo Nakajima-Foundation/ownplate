@@ -2,12 +2,12 @@
   <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
     <!-- Title -->
     <div class="text-xl font-bold text-black text-opacity-40">
-      {{ $t("admin.order.cancelTitle") }}
+      {{ $t("admin.order.paymentCancelTitle") }}
     </div>
     
     <!-- Message -->
     <div class="mt-6 text-base">
-      {{ $t("admin.order.cancelMessage") }}
+      {{ $t("admin.order.paymentCancelMessage") }}
     </div>
     
     <!-- Call -->
@@ -22,7 +22,7 @@
           </div>
         </a>
       </div>
-      <div class="mt-2 font-bold" v-if="!isInMo">
+      <div class="mt-2 font-bold">
         {{ orderInfo.name }}
       </div>
     </div>
@@ -30,21 +30,20 @@
     <!-- Cancel -->
     <div class="mt-4 text-center">
       <o-button
-        :disabled="updating"
-        @click="handleCancel"
+        :loading="updating"
+        @click="handlePaymentCancel"
         class="b-reset-tw"
         >
         <div
           class="inline-flex h-12 items-center justify-center rounded-full bg-red-700 px-6"
           >
-          <ButtonLoading v-if="updating" />
           <div class="text-base font-bold text-white">
-            {{ $t("admin.order.delete") }}
+            {{ $t("admin.order.paymentCancel") }}
           </div>
         </div>
       </o-button>
       <div class="mt-2 text-sm font-bold text-red-700">
-        {{ $t("admin.order.deleteConfirm") }}
+        {{ $t("admin.order.paymentCancelConfirm") }}
       </div>
     </div>
     
@@ -61,31 +60,28 @@
       </a>
     </div>
   </div>
-</template>
-
+</template>  
+  
 <script lang="ts">
 import {
   defineComponent,
   ref,
-  PropType,
 } from "@vue/composition-api";
 import {
-  stripeCancelIntent,
+  stripePaymentCancelIntent,
 } from "@/lib/stripe/stripe";
-import * as analyticsUtil from "@/lib/firebase/analytics";
 
-import { OrderInfoData } from "@/models/orderInfo";
-import { RestaurantInfoData } from "@/models/RestaurantInfo";
+
 import ButtonLoading from "@/components/Button/Loading.vue";
 
 export default defineComponent({
   props: {
     shopInfo: {
-      type: Object as PropType<RestaurantInfoData>,
+      type: Object,
       required: true,
     },
     orderInfo: {
-      type: Object as PropType<OrderInfoData>,
+      type: Object,
       required: true,
     },
     orderId: {
@@ -104,10 +100,6 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    isInMo: {
-      type: Boolean,
-      required: true,
-    },
   },
   
   components: {
@@ -118,42 +110,36 @@ export default defineComponent({
     const store = ctx.root.$store;
 
     const updating = ref(false);
-    
-    const sendRedunded = () => {
-      analyticsUtil.sendRedunded(
-        props.orderInfo,
-        props.orderId,
-        props.shopInfo,
-        props.shopInfo.restaurantId
-      );
-    };
-    console.log(props.parentUrl);
-    const handleCancel = async () => {
-      console.log("handleCancel");
+    const handlePaymentCancel = async () => {
+      console.log("handlePaymentCancel");
 
       try {
+        store.commit("setLoading", true);
         updating.value = true;
-        const { data } = await stripeCancelIntent({
+        const { data } = await stripePaymentCancelIntent({
           restaurantId: props.shopInfo.restaurantId,
           orderId: props.orderId,
         });
-        sendRedunded();
+        console.log("paymentCancel", data);
         router.push(props.parentUrl);
       } catch (error: any) {
         console.error(error.message, error.details);
         store.commit("setErrorMessage", {
-          code: "order.cancel",
+          code: "stripe.cancel",
           error,
         });
       } finally {
         updating.value = false;
+        store.commit("setLoading", false);
       }
     };
+
+
     const closeCancel = () => {
       ctx.emit("close")
     };
     return {
-      handleCancel,
+      handlePaymentCancel,
       updating,
       closeCancel,
     };
