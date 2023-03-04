@@ -66,13 +66,16 @@
 import {
   defineComponent,
   ref,
-} from "@vue/composition-api";
+} from "vue";
 import {
   stripePaymentCancelIntent,
 } from "@/lib/stripe/stripe";
 
 
 import ButtonLoading from "@/components/Button/Loading.vue";
+
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   props: {
@@ -106,8 +109,8 @@ export default defineComponent({
     ButtonLoading,
   },
   setup(props, ctx) {
-    const router = ctx.root.$router;
-    const store = ctx.root.$store;
+    const router = useRouter();
+    const store = useStore();
 
     const updating = ref(false);
     const handlePaymentCancel = async () => {

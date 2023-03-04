@@ -68,7 +68,7 @@ import {
   defineComponent,
   ref,
   PropType,
-} from "@vue/composition-api";
+} from "vue";
 import {
   stripeCancelIntent,
 } from "@/lib/stripe/stripe";
@@ -77,6 +77,9 @@ import * as analyticsUtil from "@/lib/firebase/analytics";
 import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import ButtonLoading from "@/components/Button/Loading.vue";
+
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   props: {
@@ -114,8 +117,8 @@ export default defineComponent({
     ButtonLoading,
   },
   setup(props, ctx) {
-    const router = ctx.root.$router;
-    const store = ctx.root.$store;
+    const router = useRouter();
+    const store = useStore();
 
     const updating = ref(false);
     
