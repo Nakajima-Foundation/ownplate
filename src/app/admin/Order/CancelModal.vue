@@ -27,22 +27,35 @@
       </div>
     </div>
     
+    <div v-if="enableCancelReason" class="mt-2">
+      <o-select v-model="cancelReason" rootClass="m-auto">
+        <option
+          v-for="(reason, key) in cancelReasons"
+          :value="reason.key"
+          :key="key"
+          >
+          {{ reason.message }}
+        </option>
+      </o-select>
+    </div>
+    
     <!-- Cancel -->
     <div class="mt-4 text-center">
-      <o-button
-        :disabled="updating"
+      <button
+        :disabled="updating || !enabled"
         @click="handleCancel"
         class="b-reset-tw"
         >
         <div
           class="inline-flex h-12 items-center justify-center rounded-full bg-red-700 px-6"
+          :class="updating || !enabled ? 'bg-opacity-10' : ''"
           >
           <ButtonLoading v-if="updating" />
           <div class="text-base font-bold text-white">
             {{ $t("admin.order.delete") }}
           </div>
         </div>
-      </o-button>
+      </button>
       <div class="mt-2 text-sm font-bold text-red-700">
         {{ $t("admin.order.deleteConfirm") }}
       </div>
@@ -67,6 +80,7 @@
 import {
   defineComponent,
   ref,
+  computed,
   PropType,
 } from "@vue/composition-api";
 import {
@@ -77,6 +91,8 @@ import * as analyticsUtil from "@/lib/firebase/analytics";
 import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import ButtonLoading from "@/components/Button/Loading.vue";
+
+import { cancelReasons, enableReason } from "@/config/project";
 
 export default defineComponent({
   props: {
@@ -118,6 +134,15 @@ export default defineComponent({
     const store = ctx.root.$store;
 
     const updating = ref(false);
+
+    const enableCancelReason = props.isInMo && enableReason;
+    const cancelReason = ref("");
+    const selectedReason = computed(() => {
+      return cancelReason.value !== "";
+    });
+    const enabled = computed(() => {
+      return !enableCancelReason || selectedReason.value;
+    });
     
     const sendRedunded = () => {
       analyticsUtil.sendRedunded(
@@ -127,10 +152,12 @@ export default defineComponent({
         props.shopInfo.restaurantId
       );
     };
-    console.log(props.parentUrl);
-    const handleCancel = async () => {
-      console.log("handleCancel");
 
+    const handleCancel = async () => {
+      if (!enabled.value) {
+        return ;
+      }
+      
       try {
         updating.value = true;
         const { data } = await stripeCancelIntent({
@@ -155,6 +182,10 @@ export default defineComponent({
     return {
       handleCancel,
       updating,
+      enabled,
+      enableCancelReason,
+      cancelReasons,
+      cancelReason,
       closeCancel,
     };
 
