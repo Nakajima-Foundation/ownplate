@@ -7,6 +7,7 @@ export interface RestaurantInfoData {
   shopId: string; // mo
   moLastPickupTime: string; // mo
 
+  restaurantId: string;
   restCoverPhoto: string;
   restProfilePhoto: string;
 
