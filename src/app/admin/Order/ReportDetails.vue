@@ -286,7 +286,7 @@ export default defineComponent({
                   key,
                   order?.customerInfo?.email
                 ),
-                shippingCost: writeonFirstLine(index, key, order?.shippingCost),
+                shippingCost: writeonFirstLine(index, key, order?.shippingCost || order?.deliveryFee),
                 isDelivery: writeonFirstLine(
                   index,
                   key,
