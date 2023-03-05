@@ -408,7 +408,7 @@
               :editedAvailableOrders="editedAvailableOrders"
               @input="updateEnable"
             ></order-info>
-            <div v-if="editedAvailableOrders.length > 1">
+            <div v-if="editedAvailableOrders.length > 1 || orderInfo.orderUpdatedAt">
               <div
                 class="rounded-lg bg-white p-4 text-center shadow"
                 v-if="orderInfo.orderUpdatedAt"
