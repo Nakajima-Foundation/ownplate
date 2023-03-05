@@ -16,7 +16,8 @@ import {
 } from "firebase/firestore";
 
 import {
-  sha256
+  sha256,
+  arrayChunk,
 } from "@/utils/utils";
 
 import { db } from "@/lib/firebase/firebase9";
@@ -177,4 +178,48 @@ export const usePromotionData = (orderInfo: OrderInfoData, promotion: ComputedRe
     discountPrice,
     isEnablePaymentPromotion,
   };
+};
+
+export const useUserPromotionHistory = (mode: string, id: string, user: any) => {
+  const discountHistory = ref<any[]>([]);
+  (async () => {
+    const userPath = await(async () => {
+      if (mode === "mo") {
+        const hash = await sha256([id, user.value.phoneNumber].join(":")); 
+        return `groups/${id}/users/${hash}/promotionHistories`
+      }
+      return `users/${user.value.uid}/promotionHistories`;
+    })();
+    const historySnapShot = await getDocs(collection(db, userPath))
+
+    const path = (mode === "mo") ?  `/groups/${id}/promotions` :  `restaurants/${id}/promotions`;
+    if (historySnapShot.docs && historySnapShot.docs.length > 0) {
+      const userHistory = historySnapShot.docs.map(a => {
+        return { userHistory: a.data(), history: {} };
+      });
+      const promotionIds =  Array.from(new Set(userHistory.map(a => a.userHistory.promotionId)));
+      const histories: {[key: string]: any } = {};
+      await Promise.all(arrayChunk(promotionIds, 10).map(async(ids) => {
+        const ret = await getDocs(query(
+          collection(db, path),
+          where(documentId(), "in", ids)
+        ));
+        ret.docs.map(a => {
+          histories[a.id] = a.data();
+        });
+      }));
+      
+      userHistory.map(a => {
+        a.history = histories[a.userHistory.promotionId];
+      });
+      discountHistory.value = userHistory;
+      // console.log(userHistory, promotionIds, histories);
+    };
+  })();
+
+  return {
+    discountHistory
+  };
+
+  
 };

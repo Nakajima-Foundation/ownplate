@@ -210,6 +210,10 @@ export const customRoutes: CustomRoute[] = [
     component: "user/Profile.vue",
   },
   {
+    path: "/u/dicsountHistory",
+    component: "user/DiscountHistory.vue",
+  },
+  {
     name: "address",
     path: "/u/address",
     component: "user/Address.vue",
@@ -278,6 +282,10 @@ export const customRoutes: CustomRoute[] = [
         name: "liffProfile",
         path: "u/profile",
         component: "user/Profile.vue",
+      },
+      {
+        path: "u/dicsountHistory",
+        component: "user/DiscountHistory.vue",
       },
       {
         name: "liff-terms-user",
