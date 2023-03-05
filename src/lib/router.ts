@@ -142,6 +142,10 @@ const mopath = mo_prefixes
             component: "user/Profile.vue",
           },
           {
+            path: prePath + "/u/dicsountHistory",
+            component: "user/DiscountHistory.vue",
+          },
+          {
             path: prePath + "/terms",
             component: "common/TermsUser.vue",
           },
@@ -357,6 +361,14 @@ export const customRoutes: CustomRoute[] = [
           {
             path: "line",
             component: "admin/ManageLine.vue",
+          },
+          {
+            path: "dicsountHistory",
+            component: "admin/DiscountHistory.vue",
+          },
+          {
+            path: "discounts",
+            component: "admin/Discounts.vue",
           },
           {
             path: "qrcode",
