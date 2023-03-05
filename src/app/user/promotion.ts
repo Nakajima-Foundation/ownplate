@@ -117,19 +117,21 @@ export const usePromitions = (mode: string, id: string, user: any) => {
   });
   const promotions = computed(() => {
     if (promotionUsed.value !== null) {
+      console.log(promotionData.value, promotionUsed.value);
       return promotionData.value.filter(a => {
-        if (a.usageRestrictions) {
+        if (!a.usageRestrictions) {
           true;
         }
         if (a.type == "multipletimesCoupon") {
-
+          // TODO
+          
         } else if (a.type == "onetimeCoupon") {
           return !((promotionUsed.value || {})[a?.promotionId] as any).used;
         } else {
+          // discount case.
           return !(promotionUsed.value || {})[a?.promotionId];
         }
       });
-      // return promotionData.value;
     }
     return [];
   });

@@ -569,8 +569,8 @@ export default defineComponent({
     });
     const selectedPromotion = computed<PromotionData | null>(() => {
       if (props.promotions && props.promotions.length > 0) {
-        // return props.promotions[0];
-        return null;
+        return props.promotions[0];
+        // return null;
       }
       return null;
     });
