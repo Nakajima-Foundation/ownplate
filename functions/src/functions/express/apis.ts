@@ -3,12 +3,17 @@ import * as admin from "firebase-admin";
 // import { ownPlateConfig } from "../../common/project";
 // import cors from "cors";
 // import * as Sentry from "@sentry/node";
+
+import { nameOfOrder } from "../../lib/utils";
+
 import { validateFirebaseId } from "../../lib/validator";
 import { order_status } from "../../common/constant";
 import moment from "moment";
 import * as receiptline from  'receiptline';
 import { convert } from 'convert-svg-to-png';
 export const apiRouter = express.Router();
+
+
 
 if (!admin.apps.length) {
   admin.initializeApp();
@@ -155,10 +160,45 @@ apiRouter.get("/restaurants", cors(corsOptionsDelegate), getRestaurants);
 apiRouter.get("/restaurants/:restaurantId/menus", cors(corsOptionsDelegate), getMenus);
 */
 
+
 export const getSVG = (restaurantData: any, orderData: any) => {
+  const orderNumber = nameOfOrder(orderData.number);
+  const price = orderData.total;
+
+  const orders = Object.keys(orderData.order)
+    .map((menuId) => {
+      const menu = orderData.menuItems[menuId];
+      const name = menu.itemName;
+      return Object.keys(orderData.order[menuId])
+        .map((key) => {
+          const count = orderData.order[menuId][key];
+          const messages: string[] = [];
+          messages.push(`★ ${name} × ${count}`);
+
+          try {
+            if (orderData.options && orderData.options[menuId] && orderData.options[menuId][key]) {
+              const opts = orderData.options[menuId][key].filter((o) => o);
+              if (opts.length > 0) {
+                messages.push("option: " + opts.join("/"));
+              }
+            }
+          } catch (e) {
+            console.log(e);
+          }
+
+          return messages.join("\n");
+        })
+        .join("\n\n");
+    })
+    .join("\n\n");
+
   const text = `
 ^${restaurantData.restaurantName}
-${orderData.id}
+${orderNumber}
+
+${orders}
+
+${price}
 `;
 
   const svg = receiptline.transform(text, { encoding: 'cp932' });
