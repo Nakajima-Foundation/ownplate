@@ -163,6 +163,7 @@ export default defineComponent({
         const { data } = await stripeCancelIntent({
           restaurantId: props.shopInfo.restaurantId,
           orderId: props.orderId,
+          cancelReason: cancelReason.value,
         });
         sendRedunded();
         router.push(props.parentUrl);
