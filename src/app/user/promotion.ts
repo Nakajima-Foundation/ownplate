@@ -151,7 +151,7 @@ export const usePromotionData = (orderInfo: OrderInfoData, promotion: ComputedRe
 
   watchEffect(() => {
     if (orderInfo && promotion && promotion.value) {
-      enablePromotion.value = orderInfo.total > promotion.value.discountThreshold;
+      enablePromotion.value = orderInfo.total >= promotion.value.discountThreshold;
       if (promotion.value.discountMethod === 'amount') {
         discountPrice.value = promotion.value.discountValue;
       } else {
