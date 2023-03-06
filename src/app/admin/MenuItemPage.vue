@@ -33,7 +33,7 @@
         </o-button>
 
         <!-- Save Button -->
-        <o-button @click="submitItem" :disabled="submitting" class="b-reset-tw">
+        <button @click="submitItem" :disabled="submitting">
           <div
             class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
             style="min-width: 8rem"
@@ -48,7 +48,7 @@
               )
             }}</span>
           </div>
-        </o-button>
+        </button>
       </div>
 
       <!-- Publish Status -->
@@ -578,7 +578,7 @@
         </o-button>
 
         <!-- Save Button -->
-        <o-button @click="submitItem" :disabled="submitting" class="b-reset-tw">
+        <button @click="submitItem" :disabled="submitting">
           <div
             class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
             style="min-width: 8rem"
@@ -593,7 +593,7 @@
               )
             }}</span>
           </div>
-        </o-button>
+        </button>
       </div>
 
       <!-- Copy -->
