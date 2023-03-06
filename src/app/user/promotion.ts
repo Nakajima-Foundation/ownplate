@@ -13,6 +13,7 @@ import {
   where,
   documentId,
   Timestamp,
+  onSnapshot,
 } from "firebase/firestore";
 
 import {
@@ -25,17 +26,40 @@ import { db } from "@/lib/firebase/firebase9";
 import { OrderInfoData } from "@/models/orderInfo";
 import { PromotionData } from "@/models/promotion";
 
+const getPromotionPath = (isInMo: boolean, id: string) => {
+  return isInMo ? `/groups/${id}/promotions` : `restaurants/${id}/promotions`;
+};
+
+export const usePromitionsForAdmin = (isInMo: boolean, id: string) => {
+  const promotionDataSet = ref<PromotionData[]>([]);
+
+  (async () => {
+    const promotionPath = getPromotionPath(isInMo, id);
+    onSnapshot(
+      query(
+        collection(db, promotionPath),
+      ),
+      (ret1) => {
+        promotionDataSet.value = ret1.docs.map(a => a.data() as PromotionData);
+      }
+    );
+  })();
+  return {
+    promotionDataSet,
+  };
+};
+
 export const usePromitions = (mode: string, id: string, user: any) => {
   const promotionData = ref<PromotionData[]>([]);
 
   (async () => {
-    const path = (mode === "mo") ?  `/groups/${id}/promotions` :  `restaurants/${id}/promotions`;
+    const promotionPath = getPromotionPath((mode === "mo"), id);
 
     const p: PromotionData[] = [];
     await Promise.all([
       getDocs(
         query(
-          collection(db, path),
+          collection(db, promotionPath),
           where("enable", "==", true),
           where("hasTerm", "==", false),
         )
@@ -45,7 +69,7 @@ export const usePromitions = (mode: string, id: string, user: any) => {
       }),
       getDocs(
         query(
-          collection(db, path),
+          collection(db, promotionPath),
           where("enable", "==", true),
           where("hasTerm", "==", true),
           // where("termFrom", ">=", Timestamp.now()),
@@ -74,7 +98,7 @@ export const usePromitions = (mode: string, id: string, user: any) => {
           values.push(a.promotionId);
         }
       });
-      const path = await(async () => {
+      const userPath = await(async () => {
         if (mode === "mo") {
           const hash = await sha256([id, user.value.phoneNumber].join(":")); 
           return `groups/${id}/users/${hash}/promotionHistories`
@@ -87,7 +111,7 @@ export const usePromitions = (mode: string, id: string, user: any) => {
         keys.length > 0 ?
           getDocs(
             query(
-              collection(db, path),
+              collection(db, userPath),
               where(documentId(), "in", keys)
             )
           ).then(a => {
@@ -100,7 +124,7 @@ export const usePromitions = (mode: string, id: string, user: any) => {
         values.length > 0 ?
           getDocs(
             query(
-              collection(db, path),
+              collection(db, userPath),
               where("promotionId", "in", values)
             )
           ).then(a => {
@@ -192,7 +216,7 @@ export const useUserPromotionHistory = (mode: string, id: string, user: any) => 
     })();
     const historySnapShot = await getDocs(collection(db, userPath))
 
-    const path = (mode === "mo") ?  `/groups/${id}/promotions` :  `restaurants/${id}/promotions`;
+    const promotionPath = getPromotionPath((mode === "mo"), id);
     if (historySnapShot.docs && historySnapShot.docs.length > 0) {
       const userHistory = historySnapShot.docs.map(a => {
         return { userHistory: a.data(), history: {} };
@@ -201,7 +225,7 @@ export const useUserPromotionHistory = (mode: string, id: string, user: any) => 
       const histories: {[key: string]: any } = {};
       await Promise.all(arrayChunk(promotionIds, 10).map(async(ids) => {
         const ret = await getDocs(query(
-          collection(db, path),
+          collection(db, promotionPath),
           where(documentId(), "in", ids)
         ));
         ret.docs.map(a => {

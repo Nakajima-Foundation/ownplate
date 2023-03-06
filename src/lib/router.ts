@@ -403,6 +403,10 @@ export const customRoutes: CustomRoute[] = [
         component: "admin/AllOrders.vue",
       },
       {
+        path: "discounts",
+        component: "admin/Discounts.vue",
+      },
+      {
         path: "report",
         component: "admin/ReportAllPage.vue",
       },
