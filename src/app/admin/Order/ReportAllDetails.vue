@@ -216,33 +216,6 @@ export default defineComponent({
                     ? "-"
                     : order.name || t("order.unspecified")
                 ),
-                "ec.name": writeonFirstLine(
-                  index,
-                  key,
-                  order?.customerInfo?.name
-                ),
-                "ec.zip": writeonFirstLine(
-                  index,
-                  key,
-                  order?.customerInfo?.zip
-                ),
-                "ec.prefecture": writeonFirstLine(
-                  index,
-                  key,
-                  order?.customerInfo?.prefecture
-                ),
-                "ec.address": writeonFirstLine(
-                  index,
-                  key,
-                  order?.customerInfo?.address
-                ),
-                "ec.email": writeonFirstLine(
-                  index,
-                  key,
-                  order?.customerInfo?.email
-                ),
-                shippingCost: writeonFirstLine(index, key, order?.shippingCost),
-                // @ts-ignore
                 count: orderItems[key],
                 options: opt.filter((a: string) => String(a) !== "").join("/"),
                 memo: writeonFirstLine(index, key, order.memo),

@@ -28,7 +28,7 @@
 <script lang="ts">
 import {
   defineComponent,
-} from "@vue/composition-api";
+} from "vue";
 
 import { useIsInMo } from "@/utils/utils";
 import { usePromitionsForAdmin } from "@/app/user/promotion";

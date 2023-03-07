@@ -12,9 +12,13 @@
 import {
   defineComponent,
   computed,
-} from "@vue/composition-api";
+} from "vue";
+import { useRoute } from "vue-router";
 
-import { useIsInMo } from "@/utils/utils";
+import {
+  useIsInMo,
+  useUserData,
+} from "@/utils/utils";
 
 import {
   useUserPromotionHistory
@@ -28,13 +32,11 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
-    const isInMo = useIsInMo(ctx.root);
-    const route = ctx.root.$route;
+    const isInMo = useIsInMo();
+    const route = useRoute();
 
-    const user = computed(() => {
-      // @ts-ignore
-      return ctx.root.user;
-    });
+    const { user } = useUserData();
+
     const restaurantId = computed(() => {
       return route.params.restaurantId as string;
     });
