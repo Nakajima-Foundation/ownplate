@@ -62,8 +62,6 @@ import { arrayChunk, forceArray } from "@/utils/utils";
 import { OrderInfoData } from "@/models/orderInfo";
 
 import {
-  reportHeaders,
-  reportHeadersWithAddress,
   reportHeadersForMo,
 } from "@/utils/reportUtils";
 

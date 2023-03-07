@@ -139,6 +139,10 @@ const mopath = mo_prefixes
             component: "user/Profile.vue",
           },
           {
+            path: prePath + "/u/dicsountHistory",
+            component: "user/DiscountHistory.vue",
+          },
+          {
             path: prePath + "/terms",
             component: "common/TermsUser.vue",
           },
@@ -201,6 +205,10 @@ export const customRoutes: CustomRoute[] = [
     name: "profile",
     path: "/u/profile",
     component: "user/Profile.vue",
+  },
+  {
+    path: "/u/dicsountHistory",
+    component: "user/DiscountHistory.vue",
   },
   {
     name: "address",
@@ -271,6 +279,10 @@ export const customRoutes: CustomRoute[] = [
         name: "liffProfile",
         path: "u/profile",
         component: "user/Profile.vue",
+      },
+      {
+        path: "u/dicsountHistory",
+        component: "user/DiscountHistory.vue",
       },
       {
         name: "liff-terms-user",
@@ -356,6 +368,14 @@ export const customRoutes: CustomRoute[] = [
             component: "admin/ManageLine.vue",
           },
           {
+            path: "dicsountHistory",
+            component: "admin/DiscountHistory.vue",
+          },
+          {
+            path: "discounts",
+            component: "admin/Discounts.vue",
+          },
+          {
             path: "qrcode",
             component: "admin/QRCodePage.vue",
           },
@@ -378,6 +398,10 @@ export const customRoutes: CustomRoute[] = [
         name: "admin-orders-allorders",
         path: "orders",
         component: "admin/AllOrders.vue",
+      },
+      {
+        path: "discounts",
+        component: "admin/Discounts.vue",
       },
       {
         path: "report",

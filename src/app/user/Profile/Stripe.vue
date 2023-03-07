@@ -81,6 +81,7 @@ export default defineComponent({
           store.commit("setLoading", true);
           try {
             const { data } = await stripeDeleteCard();
+            storedCard.value = null;
             console.log("stripeDeleteCard", data);
           } catch (error) {
             console.error(error);

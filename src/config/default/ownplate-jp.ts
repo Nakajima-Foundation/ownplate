@@ -50,3 +50,6 @@ export const moGtmID = "GTM-PLFRX7K";
 export const moBaseUrl = "https://mo-data.omochikaeri.com";
 export const moTitle = "Mobile Order";
 export const moPickup = false;
+
+export const cancelReasons = [];
+export const enableReason = false;

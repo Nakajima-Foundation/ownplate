@@ -132,7 +132,11 @@ export default defineComponent({
       return moment(timeData).format("YYYY/MM/DD HH:mm");
     };
 
-    watch(props.orders, () => {
+    
+    const orders = computed(() => {
+      return props.orders;
+    });
+    watch(orders, () => {
       // load customer
       const ids = props.orders.map((o) => o.id);
 
@@ -291,7 +295,7 @@ export default defineComponent({
                   key,
                   order?.customerInfo?.email
                 ),
-                shippingCost: writeonFirstLine(index, key, order?.shippingCost),
+                shippingCost: writeonFirstLine(index, key, order?.shippingCost || order?.deliveryFee),
                 isDelivery: writeonFirstLine(
                   index,
                   key,
