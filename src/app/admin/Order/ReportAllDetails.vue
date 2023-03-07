@@ -216,6 +216,7 @@ export default defineComponent({
                     ? "-"
                     : order.name || t("order.unspecified")
                 ),
+                // @ts-ignore
                 count: orderItems[key],
                 options: opt.filter((a: string) => String(a) !== "").join("/"),
                 memo: writeonFirstLine(index, key, order.memo),
