@@ -458,5 +458,19 @@ export const partners = [
   },
 ];
 
+export const toBeOrNotSelect = [
+  { value: true, message:'あり' },
+  { value: false, message: 'なし'}
+];
+export const yesOrNoSelect = [
+  { value: true, message: 'Yes' },
+  { value: false, message: 'No' }
+];
+export const promotionPaymentRestrictionsSelect = [
+  { value: 'stripe', message: 'カード決済' },
+  { value: 'instore', message: '現地払い' },
+  { value: null, message: 'なし' }
+];
+
 export const twiml_neworder =
   '<Response><Say language="ja-jp">こんにちは。わたしは、おもちかえりどっとこむです。あたらしいオーダーが入りました。かくにんをよろしくおねがいいたします。おもちかえりどっとこむでした。</Say></Response>';

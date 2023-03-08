@@ -31,7 +31,7 @@ import { routeMode, getMoPrefix } from "@/utils/utils";
 
 import NotFound from "@/components/NotFound.vue";
 
-import { usePromitions } from "@/app/user/promotion";
+import { usePromitions } from "@/utils/promotion";
 
 export default defineComponent({
   name: "RestaurantWrapper",

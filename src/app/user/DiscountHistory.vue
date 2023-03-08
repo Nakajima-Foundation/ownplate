@@ -18,7 +18,7 @@ import { useIsInMo } from "@/utils/utils";
 
 import {
   useUserPromotionHistory
-} from "./promotion";
+} from "@/utils/promotion";
 
 export default defineComponent({
   props: {

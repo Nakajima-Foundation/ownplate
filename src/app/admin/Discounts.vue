@@ -1,8 +1,10 @@
 <template>
   <div class="mx-6 mt-6">
-    discounts
+    <div class="text-center">
+      discounts
+    </div>
     <div v-for="(promotion, k) in promotionDataSet">
-      名前: {{ promotion.promotionName }}<br/>
+      名前: <router-link :to="`/admin/discounts/${promotion.promotionId}`">{{ promotion.promotionName }}</router-link><br/>
       有効: {{ promotion.enable ? "はい" : "いいえ" }}<br/>
       期間: {{ promotion.hasTerm ? "あり":"なし" }} {{ promotion.hasTerm ? promotion.termFrom.toDate().toISOString().slice(0, 10) + "~" + promotion.termTo.toDate().toISOString().slice(0, 10) :"なし" }}<br/> 
       利用回数制限(１回): {{ promotion.usageRestrictions  ? "はい" : "いいえ"}}<br/>
@@ -18,7 +20,7 @@
       決済方法制限: 
       <template v-if="promotion.paymentRestrictions === 'stripe'">カード決済</template>
       <template v-else-if="promotion.paymentRestrictions === 'instore'">現地払い</template>
-      <template v-else-if="promotion.paymentRestrictions === 'instore'">なし</template>
+      <template v-else>なし</template>
       <br/>
     </div>
   </div>
@@ -30,8 +32,7 @@ import {
   defineComponent,
 } from "@vue/composition-api";
 
-import { useIsInMo } from "@/utils/utils";
-import { usePromitionsForAdmin } from "@/app/user/promotion";
+import { usePromitionsForAdmin } from "@/utils/promotion";
 
 export default defineComponent({
   props: {
@@ -52,9 +53,26 @@ export default defineComponent({
   setup(props, ctx) {
     const id = props.isInMo ? props.moPrefix : props.shopInfo?.restaurantId;
     const { promotionDataSet } = usePromitionsForAdmin(props.isInMo, id as string);
+
+    const newDiscount = () => {
+      const data = {
+        promotionName: "",
+        enable: false,
+        type: "discount",
+        discountThreshold: 10000,
+        paymentRestrictions: null,
+        usageRestrictions: true,
+        discountMethod: "amount",
+        discountValue: 100,
+        hasTerm: true,
+        termFrom: new Date(),
+        termTo: new Date(),
+      };
+    };
     
     return {
       promotionDataSet,
+      newDiscount,
     };
   },
 });

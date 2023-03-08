@@ -379,6 +379,10 @@ export const customRoutes: CustomRoute[] = [
             component: "admin/Discounts.vue",
           },
           {
+            path: "discounts/:discountId",
+            component: "admin/Discount.vue",
+          },
+          {
             path: "qrcode",
             component: "admin/QRCodePage.vue",
           },
@@ -405,6 +409,10 @@ export const customRoutes: CustomRoute[] = [
       {
         path: "discounts",
         component: "admin/Discounts.vue",
+      },
+      {
+        path: "discounts/:discountId",
+        component: "admin/Discount.vue",
       },
       {
         path: "report",
