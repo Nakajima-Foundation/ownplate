@@ -92,7 +92,15 @@ import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import ButtonLoading from "@/components/Button/Loading.vue";
 
-import { cancelReasons, enableReason } from "@/config/project";
+import {
+  enableReason
+} from "@/config/project";
+
+import {
+  placedCancelReasons,
+  acceptedCancelReasons,
+  order_status,
+} from "@/config/constant";
 
 export default defineComponent({
   props: {
@@ -180,6 +188,8 @@ export default defineComponent({
     const closeCancel = () => {
       ctx.emit("close")
     };
+
+    const cancelReasons = props.orderInfo.status === order_status.order_placed ? placedCancelReasons : acceptedCancelReasons;
     return {
       handleCancel,
       updating,

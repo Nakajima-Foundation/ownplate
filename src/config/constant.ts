@@ -443,6 +443,46 @@ export const soundFiles = [
   },
 ];
 
+export const placedCancelReasons = [ {
+  message: "キャンセル理由を必ず選択してください",
+  key: "",
+}, {
+  message: "店頭在庫無し",
+  key: "placedNoStock",
+}, {
+  message: "発注しないと店舗で判断",
+  key: "placedNoOrder",
+}, {
+  message: "緊急取消のため発注不可",
+  key: "placedEmergency",
+}, {
+  message: "お客様申し出",
+  key: "placedByCustomer",
+}, {
+  message: "テスト注文のため",
+  key: "placedTest",
+}];
+
+export const acceptedCancelReasons = [ {
+  message: "キャンセル理由を必ず選択してください",
+  key: "",
+}, {
+  message: "商品不良",
+  key: "acceptedBadCondition",
+}, {
+  message: "発注漏れ",
+  key: "acceptedNoOrder",
+}, {
+  message: "商品未納",
+  key: "acceptedNoStock",
+}, {
+  message: "お客様申し出",
+  key: "acceptedByCustomer",
+}, {
+  message: "テスト注文のため",
+  key: "acceptedTest",
+}];
+
 export const partners = [
   {
     id: "singularitysociety",
