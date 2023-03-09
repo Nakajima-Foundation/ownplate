@@ -5,8 +5,8 @@
          @error="smallImageErrorHandler"
          class="w-8"
          /> /
-    <button @click="pushQuantities(mData.id, 1)">add</button>
-    /<button @click="pullQuantities(mData.id, 1)">remove</button>
+    <button @click="pushQuantities(mData.id, 1)" :id="mData.id" class="itemAdd">add</button>
+    /<button @click="pullQuantities(mData.id, 1)" :id="mData.id" class="itemRemove">remove</button>
     / {{ (orders[mData.id]||{})[0] || 0 }}
   </div>
 </template>
