@@ -49,6 +49,7 @@ export interface OrderInfoData {
   payment?: { [key: string]: string };
   type: string;
   memo: string;
+  cancelReason?: string; // mo
 }
 
 export interface OrderItem {}
