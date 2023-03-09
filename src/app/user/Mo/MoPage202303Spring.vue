@@ -37,6 +37,8 @@ import {
 import MoPageMenu from "./MoPageMenu.vue";
 
 const setMenus = [{
+  id: "",
+  setName: "",
   menus: [{
     id: "68dc4c052eb0b02bdd34258fbd21b86e46b44437",
     count: 2,
