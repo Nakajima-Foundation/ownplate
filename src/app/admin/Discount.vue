@@ -41,7 +41,7 @@
         <o-field>
           <o-datepicker
             icon="calendar-today"
-            v-model="promotion.termFrom.toDate()"
+            v-model="termFromDate"
             :min-date="new Date()"
             expanded
             :placeholder="$t('shopInfo.temporaryClosureSelect')"
@@ -49,7 +49,7 @@
           </o-datepicker>
           <o-datepicker
             icon="calendar-today"
-            v-model="promotion.termTo.toDate()"
+            v-model="termToDate"
             :min-date="new Date()"
             expanded
             :placeholder="$t('shopInfo.temporaryClosureSelect')"
@@ -160,9 +160,14 @@ export default defineComponent({
 
     const id = props.isInMo ? props.moPrefix : props.shopInfo?.restaurantId;
     const promotion = ref<PromotionData|null>(null);
+
+    const termFromDate = ref();
+    const termToDate = ref();
     
     getPromotion(props.isInMo, id as string, discountId).then(data => {
       promotion.value = data;
+      termFromDate.value = data.termFrom.toDate();
+      termToDate.value = data.termTo.toDate();
     });
 
     const save = () => {
@@ -171,6 +176,8 @@ export default defineComponent({
 
     return {
       promotion,
+      termFromDate,
+      termToDate,
       save,
       toBeOrNotSelect,
       yesOrNoSelect,
