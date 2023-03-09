@@ -65,6 +65,12 @@ export const reportHeadersForMo = [
   "payment",
   "orderId",
   "memo",
+
+  // for mo 2023
+  "discountPrice",
+  "discountedPrice",
+  "cancelReason",
+  
 ];
 export const reportHeadersWithAddress = [
   ...reportHeadersTop,
