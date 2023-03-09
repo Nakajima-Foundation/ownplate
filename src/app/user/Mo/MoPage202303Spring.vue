@@ -1,20 +1,25 @@
 <template>
   <div>
-    <!-- for test -->
     <div>
-    2023-03
+      2023-03 春のキャンペーン
     </div>
-    <MoPageSet
-      :setMenus="setMenus"
-      :menuObj="menuObj"
-      :orders="orders"
-      @pushQuantities="pushQuantities"
-      @pullQuantities="pullQuantities"
-      @addSet="addSet"
-      />
-    <div>
+
+    <div v-for="(menu, k) in setMenus" :key="k">
+      <div v-for="(m, j) in menu.menus" :key="j">
+        <template v-if="menuObj[m.id]">
+          <MoPageMenu
+            :isSet="false"
+            :menu="menuObj[m.id]"
+            :mData="m"
+            :orders="orders"
+            @pushQuantities="pushQuantities"
+            @pullQuantities="pullQuantities"
+            />
+          <hr />
+        </template>
+      </div>
     </div>
-    <hr/>
+
     <div>
       <router-link
         :to="pageBase"
@@ -29,9 +34,9 @@ import {
   moPage
 } from "./MoPageCommon";
 
+import MoPageMenu from "./MoPageMenu.vue";
+
 const setMenus = [{
-  id: "setMenu1",
-  setName: "メニュー１セット",
   menus: [{
     id: "68dc4c052eb0b02bdd34258fbd21b86e46b44437",
     count: 2,

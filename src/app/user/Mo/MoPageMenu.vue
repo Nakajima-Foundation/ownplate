@@ -1,6 +1,6 @@
 <template>
   <div>
-    {{menu.itemName}}<br/>1セットに{{mData.count}}入/
+    <span v-if="isSet">{{menu.itemName}}<br/>1セットに{{mData.count}}入/</span>
     <img :src="smallimage"
          @error="smallImageErrorHandler"
          class="w-8"
@@ -29,6 +29,10 @@ export default defineComponent({
     },
     mData: {
       type: Object,
+      required: true,
+    },
+    isSet: {
+      type: Boolean,
       required: true,
     },
     orders: {
