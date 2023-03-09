@@ -7,7 +7,7 @@ const reportHeadersTop = [
 ];
 const reportHeadersTopMo = [
   "name",
-  "storeName",
+  "restaurantName",
   "type",
   "statusName",
   "userName",

@@ -321,6 +321,7 @@ export default defineComponent({
                 tax: Math.round((menuItem.price * taxRate) / (100 + taxRate)),
                 productSubTotal: prices[key],
 
+                cancelReason: order.cancelReason,
                 // end of for mo
                 total: writeonFirstLine(index, key, order.totalCharge || ""),
                 payment: writeonFirstLine(
