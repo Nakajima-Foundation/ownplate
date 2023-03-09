@@ -163,7 +163,7 @@ export default defineComponent({
                 id: `${order.id}/${menuId}`,
                 orderId: order.id,
                 name: nameOfOrder(order),
-                storeName: shopInfo.restaurantName,
+                restaurantName: shopInfo.restaurantName,
                 type: writeonFirstLine(
                   index,
                   key,
@@ -246,6 +246,7 @@ export default defineComponent({
                 tax: Math.round((menuItem.price * taxRate) / (100 + taxRate)),
                 productSubTotal: prices[key],
 
+                cancelReason: order.cancelReason,
                 // end of for mo
                 total: writeonFirstLine(index, key, order.totalCharge || ""),
                 payment: writeonFirstLine(

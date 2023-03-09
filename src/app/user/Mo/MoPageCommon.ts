@@ -13,6 +13,7 @@ import {
 } from "firebase/firestore";
 
 import MoPageSet from "./MoPageSet.vue";
+import MoPageMenu from "./MoPageMenu.vue";
 
 interface Menu {
   id: string;
@@ -28,6 +29,7 @@ export const moPage = (setMenus: SetMenu[]) => {
   return defineComponent({
     components: {
       MoPageSet,
+      MoPageMenu,
     },
     props: {
       pageId: {
@@ -50,9 +52,16 @@ export const moPage = (setMenus: SetMenu[]) => {
         type: Object,
         required: true,
       },
+      shopInfo: {
+        type: Object,
+        required: true,
+      },
+      isPickup: {
+        type: Boolean,
+        required: true,
+      },
     },
     setup(props, ctx) {
-      console.log();
       const setMenuObj = setMenus.reduce((tmp: {[key: string]: SetMenu}, current) => {
         tmp[current.id] = current;
         return tmp;

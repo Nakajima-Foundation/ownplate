@@ -654,6 +654,9 @@
       "stripe": "「事前にカードでお支払い」で決済をいただいた場合は、以下のキャンペーン金額が適用されます。",
       "instore": "「受取時に店舗でお支払い」を選択した場合は、以下のキャンペーン金額が適用されます。"
     },
+    "discountPrice": "Discount Price",
+    "discountedPrice": "Discounted Price",
+    "cancelReason": "Cancel Reason",
     "productId": "Product Id",
     "category": "Category",
     "categoryId": "Category Id",

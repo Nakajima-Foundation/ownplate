@@ -307,7 +307,7 @@
       "aupay": "au PAY",
       "alipay": "Alipay(支付宝)",
       "wechatpay": "WeChat Pay",
-      "unipay": "「銀聯（UnionPay / ユニオンペイ）」"
+      "unipay": "銀聯（UnionPay / ユニオンペイ）"
     },
     "profilePhoto": "プロフィール画像",
     "coverPhoto": "カバー画像",
@@ -770,6 +770,9 @@
       "stripe": "「事前にカードでお支払い」で決済をいただいた場合は、以下のキャンペーン金額が適用されます。",
       "instore": "「受取時に店舗でお支払い」を選択した場合は、以下のキャンペーン金額が適用されます。"
     },
+    "discountPrice": "値引き金額",
+    "discountedPrice": "値引き後価格",
+    "cancelReason": "キャンセル理由",
     "productId": "商品番号",
     "category": "カテゴリ",
     "categoryId": "カテゴリID",

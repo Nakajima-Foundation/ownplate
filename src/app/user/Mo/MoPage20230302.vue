@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- for test -->
     <div>
     2023-03
     </div>
@@ -10,6 +11,7 @@
       @pushQuantities="pushQuantities"
       @pullQuantities="pullQuantities"
       @addSet="addSet"
+      :shopInfo="shopInfo"
       />
     <div>
     </div>

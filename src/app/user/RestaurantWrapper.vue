@@ -33,7 +33,7 @@ import NotFound from "@/components/NotFound.vue";
 
 import { useRestaurantId } from "@/utils/utils";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
-import { usePromitions } from "@/app/user/promotion";
+import { usePromitions } from "@/utils/promotion";
 
 export default defineComponent({
   name: "RestaurantWrapper",

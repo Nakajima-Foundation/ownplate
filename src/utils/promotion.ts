@@ -7,8 +7,10 @@ import {
 } from "vue";
 
 import {
+  getDoc,
   getDocs,
   query,
+  doc,
   collection,
   where,
   documentId,
@@ -29,6 +31,14 @@ import { PromotionData } from "@/models/promotion";
 const getPromotionPath = (isInMo: boolean, id: string) => {
   return isInMo ? `/groups/${id}/promotions` : `restaurants/${id}/promotions`;
 };
+
+export const getPromotion = async (isInMo: boolean, id: string, promotionId: string) => {
+  const basePath = getPromotionPath(isInMo, id);
+  const path = `${basePath}/${promotionId}`;
+  const promotionDoc = await getDoc(doc(db, path))
+  return promotionDoc.data() as PromotionData;
+};
+
 
 export const usePromitionsForAdmin = (isInMo: boolean, id: string) => {
   const promotionDataSet = ref<PromotionData[]>([]);

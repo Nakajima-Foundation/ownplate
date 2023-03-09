@@ -28,6 +28,7 @@ import { order_status } from "@/config/constant";
 import { arrayOrNumSum, orderTypeKey, getRestaurantId } from "@/utils/utils";
 
 import { useI18n } from "vue-i18n";
+import { downloadFields, downloadMoFields } from "@/utils/reportUtils";
 
 export default defineComponent({
   components: {
@@ -45,19 +46,7 @@ export default defineComponent({
   },
   setup(props) {
     const { t } = useI18n({ useScope: 'global' });
-    
-    const fields = [
-      "datePlaced",
-      "type",
-      "dateEstimated",
-      "dateConfirmed",
-      "statusName",
-      "totalCount",
-      "total",
-      "phoneNumber",
-      "name",
-      "payment",
-    ];
+    const fields = props.isInMo ? downloadMoFields : downloadFields;
     const fieldNames = fields.map((field) => {
       return t(`order.${field}`);
     });
@@ -90,6 +79,8 @@ export default defineComponent({
             : "LINE",
           name: nameOfOrder(order),
           payment: order.payment?.stripe ? "stripe" : "",
+          // for mo
+          cancelReason: order.cancelReason,
         };
       });
     });

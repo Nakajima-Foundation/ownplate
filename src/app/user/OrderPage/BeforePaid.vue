@@ -411,7 +411,7 @@ import { nameOfOrder } from "@/utils/strings";
 import { stripeReceipt } from "@/lib/stripe/stripe";
 
 import { costCal } from "@/utils/commonUtils";
-import { usePromotionData } from "@/app/user/promotion";
+import { usePromotionData } from "@/utils/promotion";
 
 import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";

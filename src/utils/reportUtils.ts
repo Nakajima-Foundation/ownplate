@@ -7,7 +7,7 @@ const reportHeadersTop = [
 ];
 const reportHeadersTopMo = [
   "name",
-  "storeName",
+  "restaurantName",
   "type",
   "statusName",
   "userName",
@@ -65,6 +65,12 @@ export const reportHeadersForMo = [
   "payment",
   "orderId",
   "memo",
+
+  // for mo 2023
+  "discountPrice",
+  "discountedPrice",
+  "cancelReason",
+  
 ];
 export const reportHeadersWithAddress = [
   ...reportHeadersTop,
@@ -123,6 +129,12 @@ export const revenueMoCSVHeader = [
   "total",
   "name",
   "payment",
+
+  // for mo 2023
+  "discountPrice",
+  "discountedPrice",
+  "cancelReason",
+
 ];
 
 // for table
@@ -138,4 +150,26 @@ export const revenueTableHeader = [
   "shippingCost",
   "total",
   "name",
+];
+
+
+// for download component
+export const downloadFields = [
+  "datePlaced",
+  "type",
+  "dateEstimated",
+  "dateConfirmed",
+  "statusName",
+  "totalCount",
+  "total",
+  "phoneNumber",
+  "name",
+  "payment",
+];
+
+export const downloadMoFields = [
+  ...downloadFields,
+  "discountPrice",
+  "discountedPrice",
+  "cancelReason",
 ];

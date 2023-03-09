@@ -22,7 +22,7 @@ import {
 
 import {
   useUserPromotionHistory
-} from "./promotion";
+} from "@/utils/promotion";
 
 export default defineComponent({
   props: {

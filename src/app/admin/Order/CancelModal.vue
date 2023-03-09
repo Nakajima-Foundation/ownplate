@@ -94,7 +94,15 @@ import ButtonLoading from "@/components/Button/Loading.vue";
 
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import { cancelReasons, enableReason } from "@/config/project";
+import {
+  enableReason
+} from "@/config/project";
+
+import {
+  placedCancelReasons,
+  acceptedCancelReasons,
+  order_status,
+} from "@/config/constant";
 
 export default defineComponent({
   props: {
@@ -182,6 +190,8 @@ export default defineComponent({
     const closeCancel = () => {
       ctx.emit("close")
     };
+
+    const cancelReasons = props.orderInfo.status === order_status.order_placed ? placedCancelReasons : acceptedCancelReasons;
     return {
       handleCancel,
       updating,
