@@ -79,6 +79,7 @@ export interface OrderInfoData {
   memo: string;
 
   groupId?: string; // mo
+  cancelReason?: string; // mo
 }
 
 export interface OrderItemData {
