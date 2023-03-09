@@ -49,14 +49,6 @@ export const moBaseUrl = "https://mo-data-dev.omochikaeri.com";
 export const moTitle = "Mobile Order";
 export const moPickup = true;
 
-export const cancelReasons = [ {
-  message: "キャンセル理由を必ず選択してください",
-  key: "",
-}, {
-  message: "気が付かなかった",
-  key: "neverNoticed",
-}, {
-  message: "在庫切れ",
-  key: "outOfStock",
-}];
 export const enableReason = true;
+
+export const enableCampaignBanner = true;

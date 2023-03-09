@@ -204,6 +204,9 @@
 
             <!-- stock filter Toggle-->
             <div>
+              <MoSetBanner v-if="showSubCategory && enableCampaignBanner"
+                           :pageBase="pageBase"
+                           />
               <div v-if="showSubCategory && isPickup">
                 <div class="mx-6 mt-4 grid grid-cols-2 gap-2 lg:mx-0">
                   <!-- 在庫なし含む -->
@@ -250,7 +253,7 @@
                   :selectedCategory="selectedCategory"
                   :selectedSubCategory="selectedSubCategory"
                   :subCategory="subCategory"
-                />
+                  />
               </div>
               <div v-if="showCategory">
                 <!-- Category view -->
@@ -258,6 +261,10 @@
                   <div class="text-xl font-bold text-black text-opacity-30">
                     {{ $t("shopInfo.productCategory") }}
                   </div>
+                  <MoSetBanner
+                    v-if="enableCampaignBanner"
+                    :pageBase="pageBase"
+                    />
                   <CategoryTop
                     :categoryData="categoryData"
                     :howtoreceive="howtoreceive"
@@ -461,6 +468,7 @@ import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
 import TransactionsActContents from "@/app/user/TransactionsAct/Contents.vue";
 import MoPickUp from "@/app/user/Restaurant/MoPickUp.vue";
 import MoPage from "@/app/user/Mo/MoPage.vue";
+import MoSetBanner from "@/app/user/Mo/MoSetBanner.vue";
 
 import { usePickupTime } from "@/utils/pickup";
 
@@ -479,7 +487,7 @@ import { orderCreated } from "@/lib/firebase/functions";
 
 import { order_status } from "@/config/constant";
 
-import { ownPlateConfig, moTitle, moPickup } from "@/config/project";
+import { ownPlateConfig, moTitle, moPickup, enableCampaignBanner } from "@/config/project";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import {
@@ -534,6 +542,7 @@ export default defineComponent({
 
     MoPickUp,
     MoPage,
+    MoSetBanner,
   },
   props: {
     shopInfo: {
@@ -1256,6 +1265,7 @@ export default defineComponent({
       moPickup,
       disabledPickupTime,
       lastOrder,
+      enableCampaignBanner,
 
       isFilterStock,
       isTransactionAct,
