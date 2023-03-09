@@ -68,23 +68,13 @@ export const cancel = async (db: admin.firestore.Firestore, data: orderCancelDat
         uidCanceledBy: uid,
       };
       const noPayment = !order.payment || !order.payment.stripe || (!isAdmin && order.payment.stripe === "canceled");
-      if (noPayment) {
-        // No payment transaction
-        await updateOrderTotalDataAndUserLog(db, transaction, order.uid, order.order, restaurantId, restaurantOwnerUid, order.timePlaced, now, false);
-        transaction.set(
-          orderRef,
-          updateDataBase,
-          { merge: true }
-        );
-        return { success: true, payment: false, order };
+      const hasPayment = !noPayment;
+      if (hasPayment && order.payment.stripe !== "pending") {
+        throw new functions.https.HttpsError("permission-denied", "Invalid payment state to cancel."); // stripe
       }
-
-      if (order.payment.stripe !== "pending") {
-        throw new functions.https.HttpsError("permission-denied", "Invalid payment state to cancel.");
-      }
-      const paymentIntent = await cancelStripe(db, transaction, stripeRef, restaurantOwnerUid, order.id);
+      const paymentIntent = hasPayment ? await cancelStripe(db, transaction, stripeRef, restaurantOwnerUid, order.id) : {}; // stripe
       await updateOrderTotalDataAndUserLog(db, transaction, order.uid, order.order, restaurantId, restaurantOwnerUid, order.timePlaced, now, false);
-      const updateData = {
+      const updateData = noPayment ? updateDataBase : {
         ...updateDataBase,
         ...{
           payment: {
@@ -92,20 +82,21 @@ export const cancel = async (db: admin.firestore.Firestore, data: orderCancelDat
           },
         }
       };
-      // console.log(updateData);
       transaction.set(orderRef, updateData, { merge: true });
-      transaction.set(
-        stripeRef,
-        {
-          paymentIntent,
-        },
-        { merge: true }
-      );
+      if (hasPayment) { // stripe
+        transaction.set(
+          stripeRef,
+          {
+            paymentIntent,
+          },
+          { merge: true }
+        );
+      }
       Object.assign(order, updateData);
       return {
         success: true,
-        payment: "stripe",
-        byUser: uid === order.uid,
+        payment: hasPayment ? "stripe" : false,
+        byUser: uid === order.uid, // no longer used?
         order,
       };
     });
