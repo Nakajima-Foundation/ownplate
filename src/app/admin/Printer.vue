@@ -82,6 +82,10 @@ import { ownPlateConfig } from "@/config/project";
 import NotFound from "@/components/NotFound.vue";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 
+import {
+  useRestaurantId,
+} from "@/utils/utils";
+
 export default defineComponent({
   components: {
     AdminHeader,
@@ -105,8 +109,8 @@ export default defineComponent({
     const notFound = ref(null);
     const printerConfig = ref();
     
-    const restaurantId = ctx.root.restaurantId();
-    const restaurantRef = doc(db, `restaurants/${restaurantId}/private/printer`);
+    const restaurantId = useRestaurantId();
+    const restaurantRef = doc(db, `restaurants/${restaurantId.value}/private/printer`);
     onSnapshot(
       restaurantRef,
       (doc) => {
@@ -123,7 +127,7 @@ export default defineComponent({
 
     // https://staging.ownplate.today/api/1.0/r/121212/starprinter/abcabc
     const printerAddress = computed(() => {
-      return ["https://" + ownPlateConfig.hostName + "/api/1.0/r/", restaurantId, "/starprinter/", printerConfig.value.key ].join("");
+      return ["https://" + ownPlateConfig.hostName + "/api/1.0/r/", restaurantId.value, "/starprinter/", printerConfig.value.key ].join("");
     });
     const reset = () => {
       const newKey = doc(collection(db, "a")).id;

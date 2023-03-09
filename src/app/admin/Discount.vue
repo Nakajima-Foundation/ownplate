@@ -120,7 +120,7 @@
 import {
   defineComponent,
   ref,
-} from "@vue/composition-api";
+} from "vue";
 
 import {
   useIsInMo,
@@ -135,6 +135,8 @@ import {
   
 import { getPromotion } from "@/utils/promotion";
 import { PromotionData } from "@/models/promotion";
+
+import { useRoute } from "vue-router";
 
 export default defineComponent({
   props: {
@@ -153,7 +155,7 @@ export default defineComponent({
     
   },
   setup(props, ctx) {
-    const route = ctx.root.$route;
+    const route = useRoute();
     const discountId = route.params.discountId as string;
 
     const id = props.isInMo ? props.moPrefix : props.shopInfo?.restaurantId;
