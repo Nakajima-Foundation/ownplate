@@ -10,14 +10,16 @@
         class="mx-auto flex h-40 w-40 justify-center rounded-lg object-cover sm:h-72 sm:w-72"
       />
       <div class="mt-6 text-left text-xl font-bold text-black">
-        商品名がここに入ります
+        {{ menu.itemName }}
       </div>
 
       <!-- Description -->
-      <div class="mt-3 text-sm">商品の説明文がここに入ります</div>
+      <div class="mt-3 text-sm">{{ menu.itemDescription }}</div>
 
       <div class="mt-3 flex">
-        <div class="text-base font-bold text-black">¥500</div>
+        <div class="text-base font-bold text-black">
+          <Price :shopInfo="shopInfo" :menu="menu" />
+        </div>
       </div>
 
       <div class="mt-3 flex items-center">
@@ -48,9 +50,13 @@
 <script lang="ts">
 import { defineComponent, computed } from "@vue/composition-api";
 
+import Price from "@/components/Price.vue";
 import { smallImageErrorHandler } from "@/utils/utils";
 
 export default defineComponent({
+  components: {
+    Price,
+  },
   props: {
     menu: {
       type: Object,
@@ -65,6 +71,10 @@ export default defineComponent({
       required: true,
     },
     orders: {
+      type: Object,
+      required: true,
+    },
+    shopInfo: {
       type: Object,
       required: true,
     },

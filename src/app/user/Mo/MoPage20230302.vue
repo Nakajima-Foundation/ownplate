@@ -11,6 +11,7 @@
       @pushQuantities="pushQuantities"
       @pullQuantities="pullQuantities"
       @addSet="addSet"
+      :shopInfo="shopInfo"
       />
     <div>
     </div>

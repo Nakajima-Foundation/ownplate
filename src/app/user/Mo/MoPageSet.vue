@@ -11,6 +11,7 @@
             :orders="orders"
             @pushQuantities="pushQuantities"
             @pullQuantities="pullQuantities"
+            :shopInfo="shopInfo"
             />
           <hr />
         </template>
@@ -43,6 +44,10 @@ export default defineComponent({
       required: true,
     },
     orders: {
+      type: Object,
+      required: true,
+    },
+    shopInfo: {
       type: Object,
       required: true,
     },

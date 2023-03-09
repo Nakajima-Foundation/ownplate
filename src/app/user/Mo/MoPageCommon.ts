@@ -52,6 +52,14 @@ export const moPage = (setMenus: SetMenu[]) => {
         type: Object,
         required: true,
       },
+      shopInfo: {
+        type: Object,
+        required: true,
+      },
+      isPickup: {
+        type: Boolean,
+        required: true,
+      },
     },
     setup(props, ctx) {
       const setMenuObj = setMenus.reduce((tmp: {[key: string]: SetMenu}, current) => {

@@ -9,6 +9,8 @@
       @didOrderdChange="didOrderdChange"
       :orders="orders"
       :selectedOptions="selectedOptions"
+      :shopInfo="shopInfo"
+      :isPickup="isPickup"
       />
     <MoPage20230302
       v-if="pageId == '20230302'"
@@ -18,6 +20,8 @@
       @didOrderdChange="didOrderdChange"
       :orders="orders"
       :selectedOptions="selectedOptions"
+      :shopInfo="shopInfo"
+      :isPickup="isPickup"
       />
     <MoPage202303Spring
       v-if="pageId == '202303spring'"
@@ -27,6 +31,8 @@
       @didOrderdChange="didOrderdChange"
       :orders="orders"
       :selectedOptions="selectedOptions"
+      :shopInfo="shopInfo"
+      :isPickup="isPickup"
       />
   </div>
 </template>
@@ -65,6 +71,14 @@ export default defineComponent({
     },
     selectedOptions: {
       type: Object,
+      required: true,
+    },
+    shopInfo: {
+      type: Object,
+      required: true,
+    },
+    isPickup: {
+      type: Boolean,
       required: true,
     },
   },

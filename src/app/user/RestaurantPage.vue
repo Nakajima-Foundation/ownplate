@@ -16,6 +16,8 @@
           @didOrderdChange="didOrderdChange($event)"
           :orders="orders"
           :selectedOptions="selectedOptions"
+          :shopInfo="shopInfo"
+          :isPickup="isPickup"
           />
       </div>
       <!-- category modal -->

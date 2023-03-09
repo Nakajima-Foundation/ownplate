@@ -18,6 +18,7 @@
               :orders="orders"
               @pushQuantities="pushQuantities"
               @pullQuantities="pullQuantities"
+              :shopInfo="shopInfo"
             />
             <hr />
           </template>
@@ -25,9 +26,8 @@
       </div>
     </div>
 
-    <!--ToDo 戻る遷移先をモーダルの商品カテゴリ一覧に-->
     <div class="m-4 mt-6 mb-12 sm:max-w-7xl xl:mx-auto">
-      <router-link :to="pageBase"
+      <router-link :to="`${pageBase}/categories/${isPickup ? 'pickup' : 'takeout'}`"
         ><div
           class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
         >
