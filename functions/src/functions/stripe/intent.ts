@@ -54,3 +54,25 @@ export const getPaymentMethodData = async (db: admin.firestore.Firestore, restau
 export const getHash = (message: string) => {
   return crypto.createHash("sha256").update(message).digest("hex");
 };
+
+export const cancelStripe = async (
+  db: admin.firestore.Firestore,
+  transaction: admin.firestore.Transaction,
+  stripeRef: admin.firestore.DocumentReference,
+  restaurantOwnerUid: string,
+  orderId: string,
+) => {
+  const stripeRecord = await getStripeOrderRecord(transaction, stripeRef);
+  const paymentIntentId = stripeRecord.paymentIntent.id;
+
+  const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
+  
+  const idempotencyKey = getHash([orderId, paymentIntentId].join("-"));
+  const stripe = utils.get_stripe();
+  const paymentIntent = await stripe.paymentIntents.cancel(paymentIntentId, {
+    idempotencyKey: `${idempotencyKey}-cancel`,
+    stripeAccount,
+  });
+  return paymentIntent;
+};
+
