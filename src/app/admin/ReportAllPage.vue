@@ -341,6 +341,7 @@ export default defineComponent({
           }, 0),
           name: nameOfOrder(order),
           payment: order.payment?.stripe ? "stripe" : "",
+          cancelReason: order.cancelReason,
         };
       });
     });
