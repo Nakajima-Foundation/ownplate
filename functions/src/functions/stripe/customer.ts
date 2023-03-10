@@ -83,7 +83,7 @@ export const updateCustomer = async (db: admin.firestore.Firestore, data: stripe
           refStripeReadOnly,
           {
             card,
-            updatedAt: admin.firestore.Timestamp.now(),
+            updatedAt: admin.firestore.FieldValue.serverTimestamp(),
           },
           { merge: true }
         );

@@ -49,7 +49,7 @@ export const cancelStripePayment = async (db: admin.firestore.Firestore, data: o
       const paymentIntent = await cancelStripe(db, transaction, stripeRef, restaurantOwnerUid, order.id);
       const updateData = {
         orderRestaurantPaymentCanceledAt: admin.firestore.FieldValue.serverTimestamp(),
-        updatedAt: admin.firestore.Timestamp.now(),
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
         uidPaymentCanceledBy: uid,
         payment: {
           stripe: "canceled",

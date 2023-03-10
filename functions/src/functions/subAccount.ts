@@ -43,7 +43,7 @@ export const invite = async (db, data: subAccountInvitate, context: functions.ht
     const childData = {
       name,
       email,
-      createdAt: firebase.firestore.Timestamp.now(),
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
     };
     await childRef.set(childData);
     // send invite
@@ -55,7 +55,7 @@ export const invite = async (db, data: subAccountInvitate, context: functions.ht
       fromDisplay: true,
       toDisplay: true,
       email,
-      createdAt: firebase.firestore.Timestamp.now(),
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
     };
     await db.doc(`/admins/${childUid}/messages/childInvitation${adminUid}`).set(invitationData);
     return {
