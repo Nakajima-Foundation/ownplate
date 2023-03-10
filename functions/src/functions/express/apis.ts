@@ -1,11 +1,19 @@
 import express from "express";
 import * as admin from "firebase-admin";
-import { ownPlateConfig } from "../../common/project";
-import cors from "cors";
-import * as Sentry from "@sentry/node";
-import { validateFirebaseId } from "../../lib/validator";
+// import { ownPlateConfig } from "../../common/project";
+// import cors from "cors";
+// import * as Sentry from "@sentry/node";
 
+import { nameOfOrder } from "../../lib/utils";
+
+import { validateFirebaseId } from "../../lib/validator";
+import { order_status } from "../../common/constant";
+import moment from "moment";
+import * as receiptline from  'receiptline';
+import { convert } from 'convert-svg-to-png';
 export const apiRouter = express.Router();
+
+
 
 if (!admin.apps.length) {
   admin.initializeApp();
@@ -23,7 +31,7 @@ export const response200 = (res, payload) => {
     payload,
   });
 };
-
+/*
 const hostname = "https://" + ownPlateConfig.hostName;
 
 const num2time = (num) => {
@@ -150,3 +158,159 @@ const corsOptionsDelegate = (req, callback) => {
 
 apiRouter.get("/restaurants", cors(corsOptionsDelegate), getRestaurants);
 apiRouter.get("/restaurants/:restaurantId/menus", cors(corsOptionsDelegate), getMenus);
+*/
+
+
+export const getSVG = (restaurantData: any, orderData: any) => {
+  const orderNumber = nameOfOrder(orderData.number);
+  const price = orderData.total;
+
+  const orders = Object.keys(orderData.order)
+    .map((menuId) => {
+      const menu = orderData.menuItems[menuId];
+      const name = menu.itemName;
+      return Object.keys(orderData.order[menuId])
+        .map((key) => {
+          const count = orderData.order[menuId][key];
+          const messages: string[] = [];
+          messages.push(`★ ${name} × ${count}`);
+
+          try {
+            if (orderData.options && orderData.options[menuId] && orderData.options[menuId][key]) {
+              const opts = orderData.options[menuId][key].filter((o) => o);
+              if (opts.length > 0) {
+                messages.push("option: " + opts.join("/"));
+              }
+            }
+          } catch (e) {
+            console.log(e);
+          }
+
+          return messages.join("\n");
+        })
+        .join("\n\n");
+    })
+    .join("\n\n");
+
+  const text = `
+^${restaurantData.restaurantName}
+${orderNumber}
+
+${orders}
+
+${price}
+`;
+
+  const svg = receiptline.transform(text, { encoding: 'cp932' });
+  return svg;
+};
+
+const common = async (req: any, res: any, next: any) => {
+  const { restaurantId, starKey } = req.params;
+
+  /*
+  console.log(JSON.stringify(req.headers));
+  console.log(req.body);
+  if (!req.header("authorization")) {
+    res.setHeader('WWW-Authenticate', 'Basic realm="printer"');
+    res.status(401).send("");
+    return ;
+  };
+  */
+  
+  if (!validateFirebaseId(restaurantId)) {
+    return res.status(404).send("");
+  }
+
+  const restaurant = await db.doc(`restaurants/${restaurantId}`).get();
+  if (!restaurant || !restaurant.exists) {
+    return res.status(404).send("");
+  }
+  const restaurant_data: any = restaurant.data();
+  if (!restaurant_data.publicFlag || restaurant_data.deletedFlag) {
+    return res.status(404).send("");
+  }
+
+  const restaurantPrinter = await db.doc(`restaurants/${restaurantId}/private/printer`).get();
+  if (!restaurantPrinter || !restaurantPrinter.exists) {
+    return res.status(400).send("");
+  }
+  const restaurantPrinterData = restaurantPrinter.data();
+  if (!restaurantPrinterData || (restaurantPrinterData.key !== starKey)) {
+    return res.status(400).send("");
+  }
+  
+  // todo auth
+  console.log(starKey);
+  req.restaurant = restaurant_data;
+  next();
+};
+
+const pollingStar = async (req: any, res: any) => {
+  console.log("POST");
+
+  const { restaurantId } = req.params;
+  const orders = await db.collection(`restaurants/${restaurantId}/orders`)
+    .where("printed", "==", false)
+    .where("status", "==", order_status.order_placed)
+    .where("timeCreated", ">",  moment().subtract(1, "days").toDate())
+    .limit(1).get();
+
+  if (orders.docs.length > 0) {
+    const jobToken = orders.docs[0].id;
+    return res.json({
+      jobReady: true,
+      mediaTypes: [ "image/png" ],
+      jobToken,
+    });
+  }
+  
+  return res.json({
+    jobReady: true,
+  });
+};
+
+const requestStar = async (req: any, res: any) => {
+  console.log("GET");
+  const { token } = req.query;
+  const { restaurantId } = req.params;
+
+  if (token) {
+    const doc = await db.doc(`restaurants/${restaurantId}/orders/` + token).get();
+
+    const svg = getSVG(req.restaurant, doc.data());
+    // console.log(svg);
+    console.log(svg);
+    const png = await convert(svg, {background: "white"});
+    return res.status(200).type('image/png').send(png);
+    
+  }
+  return res.json({});
+  // text/plain
+  /*
+  const svg = getSVG();
+  // console.log(svg);
+  const png = await convert(svg);
+  return res.status(200).type('img/png').send(png);
+  */
+};
+
+
+const deleteStar = async (req: any, res: any) => {
+  console.log("DELETE");
+  // const { uid, type, mac, token } = req.query;
+  const { token } = req.query;
+  const { restaurantId } = req.params;
+  
+  if (token) {
+    await db.doc(`restaurants/${restaurantId}/orders/` + token)
+      .update({"printed": true})
+  }
+  return res.status(200).send();
+
+};
+
+const startPath = "/r/:restaurantId/starprinter/:starKey"; 
+apiRouter.post(startPath, common, pollingStar);
+apiRouter.get(startPath, common, requestStar);
+apiRouter.delete(startPath, deleteStar);

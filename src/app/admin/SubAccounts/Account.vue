@@ -59,7 +59,17 @@ import {
 } from "@vue/composition-api";
 
 import BackButton from "@/components/BackButton.vue";
-import { db } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  doc,
+  getDoc,
+  getDocs,
+  updateDoc,
+  query,
+  collection,
+  where,
+  orderBy,
+} from "firebase/firestore";
 
 import { doc2data, array2obj, useAdminUids } from "@/utils/utils";
 
@@ -82,12 +92,14 @@ export default defineComponent({
 
     const { uid } = useAdminUids(ctx);
 
-    db.collection("restaurants")
-      .where("uid", "==", uid.value)
-      .where("deletedFlag", "==", false)
-      .orderBy("createdAt", "asc")
-      .get()
-      .then((restaurantCollection) => {
+    getDocs(
+      query(
+        collection(db, "restaurants"),
+        where("uid", "==", uid.value),
+        where("deletedFlag", "==", false),
+        orderBy("createdAt", "asc"),
+      )
+    ).then((restaurantCollection) => {
         restaurantObj.value = array2obj(
           restaurantCollection.docs.map(doc2data("restaurant"))
         );
@@ -98,8 +110,7 @@ export default defineComponent({
     const name = ref("");
 
     const child = ref({});
-    db.doc(`admins/${uid.value}/children/${subAccountId.value}`)
-      .get()
+    getDoc(doc(db, `admins/${uid.value}/children/${subAccountId.value}`))
       .then((childrenDoc) => {
         child.value = childrenDoc.data();
         name.value = child.value.name;
@@ -123,9 +134,9 @@ export default defineComponent({
     });
 
     const saveList = async () => {
-      await db
-        .doc(`admins/${uid.value}/children/${subAccountId.value}`)
-        .update({
+      await updateDoc(
+        doc(db, `admins/${uid.value}/children/${subAccountId.value}`),
+        {
           restaurantLists: newRestaurantList.value,
           name: name.value,
         });

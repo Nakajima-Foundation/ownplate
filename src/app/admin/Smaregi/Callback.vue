@@ -1,57 +1,66 @@
 <template>
   <div>
-    <div class="mt-6 text-center text-xl font-bold text-black text-opacity-40">
+    <div class="mt-6 text-center text-xl font-bold text-black text-opacity-40" v-if="isValidating">
       {{ $t("admin.smaregi.authenticating") }}
     </div>
     <o-loading :is-full-page="false" :active="isValidating"></o-loading>
     <div v-if="error">
-      <div class="flex space-x-4">
+      <div class="flex space-x-4 mt-6">
         <back-button url="/admin/restaurants/" />
       </div>
-
-      {{ $t("admin.smaregi.authenticationError") }}
+      <div class="mt-6 text-center text-xl font-bold text-black text-opacity-40">
+        {{ $t("admin.smaregi.authenticationError") }}
+      </div>
     </div>
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent, ref, computed } from "@vue/composition-api";
+
 import { smaregiAuth } from "@/lib/firebase/functions";
 import { smaregi } from "@/config/project";
 
-import BackButton from "@/components/BackButton";
+import BackButton from "@/components/BackButton.vue";
 
-export default {
+export default defineComponent({
   components: {
     BackButton,
   },
-  data() {
+  setup(_, ctx) {
+    const route = ctx.root.$route;
+    const router = ctx.root.$router;
+
+    const code = route.query.code as string;
+
+    const isValidating = ref(false);
+    const error = ref(false);
+
+    (async () => {
+      if (code) {
+        try {
+          isValidating.value = true;
+          const { data } = await smaregiAuth({
+            code: code,
+          });
+          console.log("smaregiAuth", data);
+          if (data.result) {
+            router.push("/admin/smaregi/index");
+          } else {
+            error.value = true;
+          }
+        } finally {
+          isValidating.value = false;
+        }
+      } else {
+        error.value = true;
+      }
+    })();
+    
     return {
-      isValidating: false,
-      error: false,
+      isValidating,
+      error,
     };
   },
-  async mounted() {
-    if (this.code) {
-      try {
-        this.isValidating = true;
-        const { data } = await smaregiAuth({
-          code: this.code,
-        });
-        console.log("smaregiAuth", data);
-        if (data.result) {
-          this.$router.push("/admin/smaregi/index");
-        } else {
-          this.error = true;
-        }
-      } finally {
-        this.isValidating = false;
-      }
-    }
-  },
-  computed: {
-    code() {
-      return this.$route.query.code;
-    },
-  },
-};
+});
 </script>

@@ -13,8 +13,12 @@
         <td></td>
         <td>電話通知</td>
         <td>宅配</td>
+        <td>印刷</td>
+        <td>Mo</td>
+        <td>EC</td>
         <td>P</td>
         <td>G</td>
+        <td>L</td>
       </tr>
       <tr v-for="restaurant in restaurants" :key="restaurant.id">
         <td style="width: 50%">
@@ -23,10 +27,10 @@
             :to="`/r/${restaurant.id}`"
             v-if="restaurant.publicFlag && !restaurant.deletedFlag"
           >
-            {{ restaurant.restaurantName }}
+            {{ (restaurant.restaurantName || "").slice(0, 30) }}
           </router-link>
           <span v-else>
-            {{ restaurant.restaurantName }}
+            {{ (restaurant.restaurantName || "").slice(0, 30) }}
           </span>
         </td>
         <td>
@@ -56,6 +60,9 @@
         </td>
         <td>
           {{ !!restaurant.enableDelivery ? "o" : "-" }}
+        </td>
+        <td>
+          {{ !!restaurant.enablePrinter ? "o" : "-" }}
         </td>
         <td>
           {{ !!restaurant.enableMoPickup ? "o" : "-" }}

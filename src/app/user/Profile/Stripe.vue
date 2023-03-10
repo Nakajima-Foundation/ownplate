@@ -61,6 +61,9 @@ export default defineComponent({
           (snapshot) => {
             const stripeInfo = snapshot.data();
             storedCard.value = stripeInfo?.card;
+          },
+          (e) => {
+            console.log("stripe expired")
           }
         );
       }
@@ -74,6 +77,7 @@ export default defineComponent({
           ctx.root.$store.commit("setLoading", true);
           try {
             const { data } = await stripeDeleteCard();
+            storedCard.value = null;
             console.log("stripeDeleteCard", data);
           } catch (error) {
             console.error(error);

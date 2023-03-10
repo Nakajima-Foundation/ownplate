@@ -35,7 +35,7 @@ export default defineComponent({
     };
     const showAddLine = computed(() => {
       // return true;
-      return !!ownPlateConfig.line, !ctx.root.$store.state.claims?.line;
+      return !!ownPlateConfig.line && !ctx.root.$store.state.claims?.line;
     });
     const enableLine = computed(() => {
       if (props.groupData?.enableLine === undefined) {

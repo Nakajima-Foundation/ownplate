@@ -213,34 +213,47 @@ export const printOrderData = (
 
   // おもちかえり.com 番号
   content.push({
-    width: convMm2pt(54),
-    table: {
-      widths: ["*"],
-      body: [
-        [
-          {
-            border: [false, false, false, false],
-            text: "おもちかえり.com " + nameOfOrder(orderInfo),
-            fontSize: 10,
-            fillColor: "#eeeeee",
-          },
-        ],
-      ],
-    },
+    border: [false, false, false, false],
+    text: "おもちかえり.com ",
+    margin: [2, 4, 2, 0],
   });
   content.push({
-    text: "受渡方法: " + (orderInfo.isDelivery ? "デリバリー" : "テイクアウト"),
-    fontSize: 6,
-    margin: [2, 1],
+    text: nameOfOrder(orderInfo),
+    fontSize: 12,
+    bold: true,
+    margin: [2, 0, 2, 4],
+  });
+  content.push({
+    text: [
+      {
+        text: "受渡方法: ",
+        fontSize: 6,
+      },
+      {
+        text: orderInfo.isDelivery ? "デリバリー" : "テイクアウト",
+        fontSize: 6,
+        bold: true,
+      },
+    ],
+    margin: [2, 0],
   });
 
   // 日付
   if (orderInfo.timeEstimated) {
     content.push({
-      fontSize: 6,
-      text:
-        "受渡時間: " +
-        moment(orderInfo.timeEstimated.toDate()).format("YYYY/MM/DD HH:mm"),
+      text: [
+        {
+          text: "受渡時間: ",
+          fontSize: 6,
+        },
+        {
+          text: moment(orderInfo.timeEstimated.toDate()).format(
+            "YYYY/MM/DD HH:mm"
+          ),
+          fontSize: 6,
+          bold: true,
+        },
+      ],
       margin: [2, 0],
     });
   }
@@ -249,28 +262,28 @@ export const printOrderData = (
     text: (orderInfo.name || "--") + "さん",
     fontSize: 10,
     alignment: "center",
-    margin: [2, 1],
+    margin: [2, 6, 2, 6],
   });
 
   // オーダー内容
   orderItems.forEach((orderItem: OrderItemData) => {
     content.push({
-      text: [
-        "・",
-        orderItem.item.itemName,
-        " x " + String(orderItem.count),
-      ].join(""),
-      margin: [convMm2pt(0.5), convMm2pt(0.3)],
+      text: orderItem.item.itemName,
+      margin: [2, 0],
     });
     console.log(orderItem);
     const option = displayOption(orderItem.options || []);
     if (option !== "") {
       content.push({
-        text: "\u200B\topt: " + option,
-        margin: [convMm2pt(0.5), convMm2pt(0.3)],
+        text: "\u200B\t(opt: " + option + ")",
+        margin: [2, 0],
         fontSize: 6,
       });
     }
+    content.push({
+      text: " x " + String(orderItem.count),
+      margin: [16, 0],
+    });
     console.log(orderItem);
   });
   // 決済
@@ -286,6 +299,13 @@ export const printOrderData = (
     margin: [2, 0],
     alignment: "right",
   });
+  if (orderInfo.tip) {
+    content.push({
+      text: "心づけ(税込): " + priceString(orderInfo.tip || 0),
+      margin: [2, 0],
+      alignment: "right",
+    });
+  }
   if (orderInfo.isDelivery) {
     content.push({
       text: "配送料: " + priceString(orderInfo.deliveryFee || 0),
@@ -297,6 +317,7 @@ export const printOrderData = (
   content.push({
     text: "合計" + priceString(orderInfo.totalCharge),
     fontSize: 12,
+    bold: true,
     margin: [2, 2],
     alignment: "right",
   });

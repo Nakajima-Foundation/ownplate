@@ -67,60 +67,77 @@
 </template>
 
 <script>
+import {
+  defineComponent,
+  ref,
+  computed,
+} from "@vue/composition-api";
 import isEmail from "validator/lib/isEmail";
 import { auth } from "@/lib/firebase/firebase9";
 import { sendPasswordResetEmail } from "firebase/auth";
 
-export default {
+export default defineComponent({
   name: "Reset",
   metaInfo() {
     return {
       title: [this.defaultTitle, "Reset Password"].join(" / "),
     };
   },
-  data() {
-    return {
-      email: "",
-      badEmail: "---invalid---",
-      apiError: null,
-      emailSent: false,
-    };
-  },
-  computed: {
-    errors() {
-      let errors = {};
-      if (!isEmail(this.email)) {
-        errors.email = ["admin.error.email.invalid"];
-      } else if (this.email === this.badEmail) {
-        errors.email = ["admin.error.code.auth/user-not-found"];
-      } else if (this.apiError) {
-        errors.email = ["admin.error.code." + this.apiError];
+  setup(_, ctx) {
+    const email = ref("");
+    let badEmail = "---invalid---";
+    const apiError = ref(null);
+    const emailSent = ref(false);
+    const submitted = ref(false);
+    
+    const errors = computed(() => {
+      if (!submitted.value) {
+        return {};
       }
-      return errors;
-    },
-  },
-  methods: {
-    handleCancel() {
-      this.$router.push("/admin/user/signin");
-    },
-    async handleNext() {
+      let err = {};
+      if (!isEmail(email.value)) {
+        err.email = ["admin.error.email.invalid"];
+      } else if (email.value === badEmail) {
+        err.email = ["admin.error.code.auth/user-not-found"];
+      } else if (apiError.value) {
+        err.email = ["admin.error.code." + apiError.value];
+      }
+      return err;
+    });
+
+    const handleCancel = () => {
+      ctx.root.$router.push("/admin/user/signin");
+    };
+    const handleNext = async () => {
+      submitted.value = true;
+      if (Object.keys(errors.value).length > 0) {
+        return;
+      }
       const options = { url: window.location.href.replace(/reset$/, "signin") };
       console.log("handleNext", options.url);
-      sendPasswordResetEmail(auth, this.email, options)
+      sendPasswordResetEmail(auth, email.value, options)
         .then(() => {
           console.log("success");
-          this.emailSent = true;
+          emailSent.value = true;
         })
         .catch((error) => {
           console.error("reset", error);
           if (error.code === "auth/user-not-found") {
-            this.badEmail = this.email;
+            badEmail = email.value;
           } else {
-            this.badEmail = "---Invalid---";
-            this.apiError = error.code;
+            badEmail = "---Invalid---";
+            apiError.value = error.code;
           }
         });
-    },
+    };
+    return {
+      handleNext,
+      handleCancel,
+      errors,
+      
+      email,
+      emailSent,
+    };
   },
-};
+});
 </script>

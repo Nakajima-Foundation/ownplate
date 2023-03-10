@@ -96,6 +96,7 @@
     "forAllUser": "For All User",
     "manualLink": "Manual (in Japanese)",
     "deliveryManualLink": "Delivery manual",
+    "printerManualLink": "Printer manual",
     "tipsLink": "Tips (in Japanese)",
     "termsRestaurant": "Terms for Restaurant",
     "termsUser": "Terms for User",
@@ -300,6 +301,9 @@
     "itemDescription": "Item description",
     "itemMemo": "Memo",
     "itemPhoto": "Item photo",
+    "additionalPhotos": "Additional photos (up to 4 photos)",
+    "addPhotos": "Select photos",
+    "deleteAllPhotos": "Delete all photos",
     "itemOptions": "Item options",
     "itemOptionsNote": "For altenatives, use comma to separate them (e.g., \"Chicken, Pork, Tofu\"). You may add a price to an option with (+N), where N is the price.",
     "itemAddOption": "Add Option",
@@ -391,6 +395,8 @@
     "onlinePayment": "Online Payment",
     "onsitePayment": "On Site Payment",
     "noPaymentMethod": "Online Order Unavailable",
+    "notPublicShopMessage": "Not Public",
+    "notPublicShop": "Not Public",
     "paymentMethods": "Payment methods",
     "minimumAvailableTime": "Minimum available time",
     "noAvailableTime": "No orderable time",
@@ -457,7 +463,8 @@
     "options": "Options",
     "subTotal": "Subtotal: ",
     "quantity": "Quantity",
-    "addDifferentOptionsItem": "Add Different Options Item"
+    "addDifferentOptionsItem": "Add Different Options Item",
+    "openCollapse": "See more images and options"
   },
   "date": {
     "today": "Today"
@@ -510,7 +517,12 @@
     "tipShort": "tip",
     "serviceTax": "tip tax",
     "name": "order name",
+    "restaurantId": "restaurantId",
+    "shopId": "shopId",
+    "uid": "uid",
     "restaurantName": "Restaurant name",
+    "closedRestaurant": "Closed Restaurant",
+    "storeName": "Store name",
     "payment": "payment",
     "includingTip": "Including Tip",
     "subtotal": "Subtotal",
@@ -518,6 +530,9 @@
     "foodTax": "Food Tax",
     "inclusiveTax": "Sales Tax (inclusive)",
     "total": "Total",
+    "menuPrice": "Price",
+    "taxRate": "Tax Rate",
+    "tax": "Tax",
     "yourPayment": "Your Payment",
     "details": "Details",
     "print": "Print",
@@ -600,6 +615,8 @@
       "cooking_completed": "Cooking Complete",
       "ready_to_pickup": "Ready to Pickup",
       "transaction_complete": "Pickup Complete",
+      "ready_to_shipping": "Ready to Shopping",
+      "shipping_complete": "Shipping complete",
       "transaction_hide": "Transaction Complete",
       "order_canceled": "Canceled",
       "order_refunded": "Refunded",
@@ -607,6 +624,11 @@
       "stripe_confirmed": "Payment Confirmed",
       "stripe_canceled": "Payment Canceled",
       "onsitePayment": "Onsite Payment",
+      "mo": {
+        "stripe_user_pending": "決済処理中",
+        "stripe_user_confirmed": "決済完了",
+        "stripe_user_canceled": "決済キャンセル"
+      },
       "stripe_user_pending": "Card payment not completed",
       "stripe_user_message_pending": "(The card payment process has not been completed on the restaurant side)",
       "stripe_user_confirmed": "Card payment completed",
@@ -634,18 +656,34 @@
     "continuousOrder": "Warning: a continuous order",
     "lastOrder": "Last order",
     "thisOrder": "This order",
+    "shippingCost": "Shipping Cost",
+    "isDelivery": "Delivery",
     "ec": {
       "customerInfo": "Customer info",
       "formtitle": "Shipping information",
       "zip": "Zip code",
-      "searchAddressFromZip": "Search for an address by zip code",
-      "select": "Select",
+      "prefecture": "Prefecture",
       "address": "Address",
       "addressNotice": "Please enter all address information",
       "name": "Full name",
+      "searchAddressFromZip": "Search for an address by zip code",
+      "select": "Select",
       "email": "Email",
       "phone": "Phone"
-    }
+    },
+    "discount": "Discount",
+    "discountAlert": {
+      "stripe": "「事前にカードでお支払い」で決済をいただいた場合は、以下のキャンペーン金額が適用されます。",
+      "instore": "「受取時に店舗でお支払い」を選択した場合は、以下のキャンペーン金額が適用されます。"
+    },
+    "discountPrice": "Discount Price",
+    "discountedPrice": "Discounted Price",
+    "cancelReason": "Cancel Reason",
+    "productId": "Product Id",
+    "category": "Category",
+    "categoryId": "Category Id",
+    "subCategory": "SubCategory",
+    "subCategoryId": "SubCategory Id"
   },
   "editEC": {
     "postageList": "Shipping list",
@@ -723,7 +761,8 @@
     "auth/invalid-phone-number": "Invalid Phone Number",
     "auth/invalid-verification-code": "The SMS verification code used to create the phone auth credential is invalid. Please resend the verification code sms and be sure use the verification code provided by the user.",
     "auth/missing-verification-code": "SMS verification code is missing.",
-    "auth/missing-verification-code": "The phone auth credential was created with an empty SMS verification code."
+    "auth/missing-verification-code": "The phone auth credential was created with an empty SMS verification code.",
+    "auth/code-expired": "The SMS verification code has expired. Please resend the SMS verification code and enter it again"
   },
   "admin": {
     "welcomeMessage": "Welcome!",
@@ -735,6 +774,8 @@
       "newsTop": "News Top",
       "adminTop": "Admin Top"
     },
+    "open": "Open",
+    "closed": "Closed",
     "notes": {
       "title": "Notes",
       "userRestaurantsTitle": "About Restaurants List for User",
@@ -923,9 +964,10 @@
       },
       "code": {
         "auth/user-not-found": "There is no user record corresponding to this identifier.",
-        "auth/wrong-password": "The password is invalid",
+        "auth/wrong-password": "The password is invalid.",
         "auth/too-many-requests": "Too many unsuccessful login attempts. Please try again later.",
         "auth/invalid-email": "The email address is badly formatted.",
+        "auth/invalid-login-credentials": "The email or the password is invalid.",
         "auth/unauthorized-continue-uri": "Domain not whitelisted by project",
         "auth/internal-error": "Password is invalid."
       }
