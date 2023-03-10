@@ -36,8 +36,6 @@ export const cancel = async (db: admin.firestore.Firestore, data: orderCancelDat
   const restaurant = await utils.get_restaurant(db, restaurantId);
   const restaurantOwnerUid = restaurant["uid"];
 
-  const now = admin.firestore.Timestamp.now();
-
   try {
     const result = await db.runTransaction(async (transaction) => {
       const orderDoc = await transaction.get(orderRef);
@@ -62,7 +60,7 @@ export const cancel = async (db: admin.firestore.Firestore, data: orderCancelDat
       const updateDataBase = {
         timeCanceled: admin.firestore.FieldValue.serverTimestamp(),
         [cancelTimeKey]: admin.firestore.FieldValue.serverTimestamp(),
-        updatedAt: now,
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
         status: order_status.order_canceled,
         cancelReason,
         uidCanceledBy: uid,
@@ -73,7 +71,7 @@ export const cancel = async (db: admin.firestore.Firestore, data: orderCancelDat
         throw new functions.https.HttpsError("permission-denied", "Invalid payment state to cancel."); // stripe
       }
       const paymentIntent = hasPayment ? await cancelStripe(db, transaction, stripeRef, restaurantOwnerUid, order.id) : {}; // stripe
-      await updateOrderTotalDataAndUserLog(db, transaction, order.uid, order.order, restaurantId, restaurantOwnerUid, order.timePlaced, now, false);
+      await updateOrderTotalDataAndUserLog(db, transaction, order.uid, order.order, restaurantId, restaurantOwnerUid, order.timePlaced, false);
       const updateData = noPayment ? updateDataBase : {
         ...updateDataBase,
         ...{

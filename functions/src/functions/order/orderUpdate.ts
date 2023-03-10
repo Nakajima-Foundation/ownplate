@@ -106,8 +106,8 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
       const updateTimeKey = timeEventMapping[order_status_keys[status]];
       const updateData: updateDataOnorderUpdate = {
         status,
-        updatedAt: admin.firestore.Timestamp.now(),
-        [updateTimeKey]: admin.firestore.Timestamp.now(),
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        [updateTimeKey]: admin.firestore.FieldValue.serverTimestamp(),
       };
       if (isStripeProcess) {
         updateData.payment = {
@@ -124,7 +124,7 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
         await transaction.set(stripeRef, { paymentIntent }, { merge: true });
         if (stripeReadOnly) {
           await transaction.update(stripeReadOnlyRef, {
-            updatedAt: admin.firestore.Timestamp.now(),
+            updatedAt: admin.firestore.FieldValue.serverTimestamp(),
           });
         }
       }

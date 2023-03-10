@@ -19,7 +19,6 @@ export const cancelOrder = async (db: admin.firestore.Firestore, restaurantId: s
     if (!order) {
       return;
     };
-    const now = admin.firestore.Timestamp.now();
     const updateDataBase = {
       timeCanceled: admin.firestore.FieldValue.serverTimestamp(),
       timeAutoCanceled: admin.firestore.FieldValue.serverTimestamp(),
@@ -34,7 +33,7 @@ export const cancelOrder = async (db: admin.firestore.Firestore, restaurantId: s
       return;
     }
     const paymentIntent = hasPayment ? await cancelStripe(db, transaction, stripeRef, restaurantOwnerUid, orderId) : {}; // stripe
-    await updateOrderTotalDataAndUserLog(db, transaction, order.uid, order.order, restaurantId, restaurantOwnerUid, order.timePlaced, now, false);
+    await updateOrderTotalDataAndUserLog(db, transaction, order.uid, order.order, restaurantId, restaurantOwnerUid, order.timePlaced, false);
     const updateData = noPayment ? updateDataBase : {
       ...updateDataBase,
       ...{
