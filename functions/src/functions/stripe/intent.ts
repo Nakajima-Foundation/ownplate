@@ -21,7 +21,7 @@ export const getStripeAccount = async (db: admin.firestore.Firestore, restaurant
   return stripeAccount;
 };
 
-export const getStripeOrderRecord = async (transaction: admin.firestore.Transaction, stripeRef:  admin.firestore.DocumentReference) => {
+export const getStripeOrderRecord = async (transaction: admin.firestore.Transaction, stripeRef: admin.firestore.DocumentReference) => {
   const stripeRecord = (await transaction.get(stripeRef)).data();
   if (!stripeRecord || !stripeRecord.paymentIntent || !stripeRecord.paymentIntent.id) {
     throw new functions.https.HttpsError("failed-precondition", "This order has no paymentIntendId.");
