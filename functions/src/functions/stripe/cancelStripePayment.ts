@@ -5,7 +5,7 @@ import * as utils from "../../lib/utils";
 import { sendMessageToCustomer } from "../notify";
 import { Context } from "../../models/TestType";
 
-import { getStripeAccount, getStripeOrderRecord, getHash } from "./intent";
+import { cancelStripe } from "./intent";
 import { validateCancelPayment } from "../../lib/validator";
 import { orderCancelPaymentData } from "../../lib/types";
 
@@ -35,8 +35,6 @@ export const cancelStripePayment = async (db: admin.firestore.Firestore, data: o
     throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
   }
 
-  const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
-
   try {
     const result = await db.runTransaction(async (transaction) => {
       const order = (await transaction.get(orderRef)).data();
@@ -48,15 +46,7 @@ export const cancelStripePayment = async (db: admin.firestore.Firestore, data: o
         throw new functions.https.HttpsError("permission-denied", "Invalid order state to cancel payment.");
       }
 
-      const stripeRecord = await getStripeOrderRecord(transaction, stripeRef);
-      const paymentIntentId = stripeRecord.paymentIntent.id;
-
-      const idempotencyKey = getHash([order.id, paymentIntentId].join("-"));
-      const stripe = utils.get_stripe();
-      const paymentIntent = await stripe.paymentIntents.cancel(paymentIntentId, {
-        idempotencyKey: `${idempotencyKey}-cancel`,
-        stripeAccount,
-      });
+      const paymentIntent = await cancelStripe(db, transaction, stripeRef, restaurantOwnerUid, order.id);
       const updateData = {
         orderRestaurantPaymentCanceledAt: admin.firestore.FieldValue.serverTimestamp(),
         updatedAt: admin.firestore.Timestamp.now(),

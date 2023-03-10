@@ -30,7 +30,7 @@ const getMgsKey = (status: number, isEC: boolean, timeEstimated?: admin.firestor
   return null;
 };
 
-const getPaymentIntent = async (db: admin.firestore.Firestore, restaurantOwnerUid: string, order: any, transaction: any, stripeRef: any) => {
+const getPaymentIntent = async (db: admin.firestore.Firestore, restaurantOwnerUid: string, order: any, transaction: admin.firestore.Transaction, stripeRef: admin.firestore.DocumentReference) => {
   const stripe = utils.get_stripe();
   const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
   // just for stripe payment
