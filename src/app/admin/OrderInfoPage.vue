@@ -102,13 +102,13 @@
             </div>
 
             <!-- Cancel Button -->
-            <div class="mt-6 text-center">
-              <o-button
-                class="b-reset-tw"
+            <div class="mt-6 text-center"
                 v-if="
                   isValidTransition('order_canceled') &&
                   (paymentIsNotCompleted || !hasStripe)
                 "
+                 >
+              <button
                 @click="openCancel()"
               >
                 <div
@@ -119,22 +119,27 @@
                     {{ $t("admin.order.cancelButton") }}
                   </div>
                 </div>
-              </o-button>
-
-              <o-button v-if="cancelStatus" class="b-reset-tw">
-                <div
-                  class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-red-700 bg-opacity-10 text-red-700"
+              </button>
+              <div v-if="isInMo" class="mt-2 text-red-700 font-bold">
+                {{ $t("mobileOrder.admin.autoCancelAlert", {date: $d(autoCancelTime, "long") }) }}
+              </div>
+            </div>
+            
+            <div class="mt-6 text-center"
+                 v-if="cancelStatus"
+                 >
+              <div
+                class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-red-700 bg-opacity-10 text-red-700"
                 >
-                  <div>
-                    <div class="text-base font-extrabold">
-                      {{ $t("order." + cancelStatus) }}
-                    </div>
-                    <div class="text-xs">
-                      {{ timeOfEvents[cancelStatus] }}
-                    </div>
+                <div>
+                  <div class="text-base font-extrabold">
+                    {{ $t("order." + cancelStatus) }}
+                  </div>
+                  <div class="text-xs">
+                    {{ timeOfEvents[cancelStatus] }}
                   </div>
                 </div>
-              </o-button>
+              </div>
             </div>
 
             <!-- Cancel Popup-->
@@ -280,13 +285,13 @@
             v-if="isDev"
           >
             <div class="mt-2">
-              <o-button @click="download()" class="b-reset-tw">
+              <button @click="download()">
                 <div
                   class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-black bg-opacity-5"
                 >
                   Download
                 </div>
-              </o-button>
+              </button>
             </div>
           </div>
 
@@ -299,13 +304,13 @@
             "
           >
             <div>
-              <o-button @click="print()" class="b-reset-tw">
+              <button @click="print()">
                 <div
                   class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-black bg-opacity-5"
                 >
                   {{ $t("order.print") }}
                 </div>
-              </o-button>
+              </button>
             </div>
           </div>
 
@@ -992,7 +997,7 @@ export default defineComponent({
       return Timestamp.fromDate(date);
     };
     const handleChangeStatus = async (statusKey) => {
-      const newStatus = order_status[statusKey];
+       const newStatus = order_status[statusKey];
       if (newStatus === orderInfo.value.status) {
         console.log("same status - no need to process");
         return;
@@ -1053,6 +1058,11 @@ export default defineComponent({
         },
       });
     };
+    const autoCancelTime = computed(() => {
+      const diffSecond = orderInfo.value?.isPickup ? 10 * 60 : 3600 * 24;
+      return new Date((orderInfo.value?.orderPlacedAt.seconds + diffSecond) * 1000);
+      // return orderInfo.value?.orderPlacedAt?.toDate();
+    });
     const classOf = (statusKey) => {
       if (order_status[statusKey] == orderInfo.value.status) {
         return statusKey;
@@ -1107,7 +1117,8 @@ export default defineComponent({
       timeEstimated,
       hasStripe,
       paymentIsNotCompleted,
-
+      autoCancelTime,
+      
       nationalPhoneNumber,
       nationalPhoneURI,
       parentUrl,
