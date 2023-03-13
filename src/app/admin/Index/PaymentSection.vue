@@ -184,7 +184,7 @@ export default defineComponent({
         const refPayment = doc(db, `/admins/${uid.value}/public/payment`);
         updateDoc(refPayment,{
           inStore: newValue,
-        });
+        }, {merge: true});
       }
     });
     watch(unsetWarning, (newValue) => {

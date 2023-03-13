@@ -21,7 +21,7 @@ import {
   getDiscountPrice
 } from "./promotion";
 
-export const getOrderData = async (transaction: any, orderRef: any) => {
+export const getOrderData = async (transaction: admin.firestore.Transaction, orderRef: admin.firestore.DocumentReference) => {
   const orderDoc = await transaction.get(orderRef);
   const order = orderDoc.data();
   if (!order) {

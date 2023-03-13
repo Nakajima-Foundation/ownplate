@@ -88,7 +88,7 @@ service cloud.firestore {
              (isUndefined(request.resource.data, 'groupId') || request.resource.data.groupId == resource.data.groupId) ;
     }
     function notUpdatePaymentParams(resource, request) {
-      return request.resource.data.stripe == resource.data.stripe || request.resource.data.stripe == null;
+      return request.resource.data.stripe == resource.data.stripe || isUndefined(request.resource.data, ['stripe']);
     }
 
     match /users/{userId} {
