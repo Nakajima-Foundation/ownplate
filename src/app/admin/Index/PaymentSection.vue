@@ -106,7 +106,7 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted, onUnmounted, watch, computed } from "vue";
 import { db } from "@/lib/firebase/firebase9";
-import { doc, updateDoc, onSnapshot, Unsubscribe, setDoc } from "firebase/firestore";
+import { doc, onSnapshot, Unsubscribe, setDoc } from "firebase/firestore";
 import { stripeConnect, stripeDisconnect } from "@/lib/stripe/stripe";
 import { ownPlateConfig } from "@/config/project";
 import * as Cookie from "cookie";
@@ -182,7 +182,7 @@ export default defineComponent({
       if (newValue !== paymentInfo.value.inStore) {
         //console.log("************* inStorePayment change", newValue);
         const refPayment = doc(db, `/admins/${uid.value}/public/payment`);
-        updateDoc(refPayment,{
+        setDoc(refPayment,{
           inStore: newValue,
         }, {merge: true});
       }
