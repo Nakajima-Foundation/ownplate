@@ -162,9 +162,9 @@ export default {
       if (newValue !== this.paymentInfo.inStore) {
         //console.log("************* inStorePayment change", newValue);
         const refPayment = db.doc(`/admins/${this.uid}/public/payment`);
-        refPayment.update({
+        refPayment.set({
           inStore: newValue,
-        });
+        }, {merge: true});
       }
     },
     unsetWarning(newValue) {
