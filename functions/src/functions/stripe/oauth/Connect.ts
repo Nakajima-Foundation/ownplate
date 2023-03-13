@@ -32,8 +32,10 @@ export const connect = async (db: admin.firestore.Firestore, data: { code: strin
 
     const batch = db.batch();
     batch.set(refStripe, { auth: response, code });
-    batch.update(db.doc(`/admins/${uid}/public/payment`), {
+    batch.set(db.doc(`/admins/${uid}/public/payment`), {
       stripe: response.stripe_user_id,
+    }, {
+      merge: true,
     });
     await batch.commit();
     return { result: true };
