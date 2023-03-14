@@ -4,7 +4,10 @@
       {{ $t("order.no_jcb") }}
     </div>
 
-    <div v-if="storedCard" class="mt-2 rounded-lg bg-white p-4 shadow">
+    <div
+      v-if="storedCard"
+      class="mt-2 flex items-center rounded-lg bg-white p-4 shadow"
+    >
       <o-checkbox v-model="useStoredCard">
         <div class="text-base">
           <span>{{ storedCard.brand }}</span>
@@ -15,7 +18,7 @@
 
     <div v-show="!useStoredCard">
       <!-- Enter New Card -->
-      <div class="mt-2 rounded-lg bg-white p-4 shadow">
+      <div class="mt-2 h-14 rounded-lg bg-white p-4 shadow">
         <div id="card-element"></div>
       </div>
 
