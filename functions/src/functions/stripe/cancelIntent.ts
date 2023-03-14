@@ -62,7 +62,7 @@ export const cancel = async (db: admin.firestore.Firestore, data: orderCancelDat
         [cancelTimeKey]: admin.firestore.FieldValue.serverTimestamp(),
         updatedAt: admin.firestore.FieldValue.serverTimestamp(),
         status: order_status.order_canceled,
-        cancelReason,
+        cancelReason: cancelReason || null,
         uidCanceledBy: uid,
       };
       const noPayment = !order.payment || !order.payment.stripe || (!isAdmin && order.payment.stripe === "canceled");
