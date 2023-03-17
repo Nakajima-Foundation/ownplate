@@ -5,6 +5,8 @@ import { updateOrderTotalDataAndUserLog } from "../order/orderPlace";
 import { cancelStripe } from "../stripe/intent";
 import { sendMessageToCustomer } from "../notify";
 
+import { autoCancels } from "../../common/project";
+
 import moment from "moment-timezone";
 
 export const cancelOrder = async (db: admin.firestore.Firestore, restaurantId: string, orderId: string) => {
@@ -88,7 +90,7 @@ const autoCancelGroup = async (groupId) => {
 };
 
 export const autoCancel = async () => {
-  await Promise.all(["ss"].map(async (groupId) => { 
+  await Promise.all(autoCancels.map(async (groupId) => { 
     await autoCancelGroup(groupId)
   }));
 };
