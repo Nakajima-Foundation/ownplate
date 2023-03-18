@@ -120,7 +120,7 @@
                   </div>
                 </div>
               </button>
-              <div v-if="isInMo" class="mt-2 text-red-700 font-bold">
+              <div v-if="isInMo && showTimePicker" class="mt-2 text-red-700 font-bold">
                 {{ $t("mobileOrder.admin.autoCancelAlert", {date: $d(autoCancelTime, "long") }) }}
               </div>
             </div>
