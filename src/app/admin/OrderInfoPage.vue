@@ -124,7 +124,6 @@
                 {{ $t("mobileOrder.admin.autoCancelAlert", {date: $d(autoCancelTime, "long") }) }}
               </div>
             </div>
-            
             <div class="mt-6 text-center"
                  v-if="cancelStatus"
                  >
@@ -139,6 +138,9 @@
                     {{ timeOfEvents[cancelStatus] }}
                   </div>
                 </div>
+              </div>
+              <div v-if="orderInfo.cancelReason === 'autoCancel'" class="mt-2 font-bold text-red-700">
+                {{ $t("mobileOrder.admin.autoCancel") }}
               </div>
             </div>
 
