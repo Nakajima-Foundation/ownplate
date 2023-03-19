@@ -57,12 +57,13 @@ export const cancel = async (db: admin.firestore.Firestore, data: orderCancelDat
       }
       const cancelTimeKey = uid === order.uid ? "orderCustomerCanceledAt" : "orderRestaurantCanceledAt";
       // user can cancel if restaurant cancel just only payment and status is placed.
+      const myCancelReason = isAdmin ? cancelReason || null : "byCustomer";
       const updateDataBase = {
         timeCanceled: admin.firestore.FieldValue.serverTimestamp(),
         [cancelTimeKey]: admin.firestore.FieldValue.serverTimestamp(),
         updatedAt: admin.firestore.FieldValue.serverTimestamp(),
         status: order_status.order_canceled,
-        cancelReason: cancelReason || null,
+        cancelReason: myCancelReason,
         uidCanceledBy: uid,
       };
       const noPayment = !order.payment || !order.payment.stripe || (!isAdmin && order.payment.stripe === "canceled");
