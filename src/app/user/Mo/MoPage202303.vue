@@ -1,26 +1,45 @@
 <template>
-  <div>
-    <!-- for test -->
-    <div>
-    2023-03
+  <div class="h-screen overflow-y-scroll">
+
+    <!-- Mo Pickup Toggle -->
+    <div class="mx-6 mt-3 mb-2 lg:mx-0" id="mo_top">
+      <div>
+        <MoPickUp
+          :shopInfo="shopInfo"
+          :value="howtoreceive"
+          @input="updateHowtoreceive"
+          :orders="orders"
+          :disabledPickupTime="disabledPickupTime"
+          :noAvailableTime="noAvailableTime"
+          :lastOrder="lastOrder"
+          :moPickupSuspend="moPickupSuspend"
+          />
+      </div>
     </div>
-    <MoPageSet
-      :setMenus="setMenus"
-      :menuObj="menuObj"
-      :orders="orders"
-      @pushQuantities="pushQuantities"
-      @pullQuantities="pullQuantities"
-      @addSet="addSet"
-      :shopInfo="shopInfo"
-      />
+    
     <div>
-    </div>
-    <hr/>
-    <div>
-      <router-link
-        :to="pageBase"
-        >BACK
-      </router-link>
+      <!-- for test -->
+      <div>
+        2023-03
+      </div>
+      <MoPageSet
+        :setMenus="setMenus"
+        :menuObj="menuObj"
+        :orders="orders"
+        @pushQuantities="pushQuantities"
+        @pullQuantities="pullQuantities"
+        @addSet="addSet"
+        :shopInfo="shopInfo"
+        />
+      <div>
+      </div>
+      <hr/>
+      <div>
+        <router-link
+          :to="pageBase"
+          >BACK
+        </router-link>
+      </div>
     </div>
   </div>
 </template>
