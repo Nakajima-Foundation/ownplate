@@ -159,7 +159,7 @@
             </o-modal>
 
             <!-- Pickup Time -->
-            <div class="mt-2 text-center">
+            <div class="mt-2 text-center" v-if="!cancelStatus">
               <div class="text-xs font-bold">
                 {{ $t("order.timeRequested") }}
               </div>
