@@ -81,7 +81,7 @@ export default defineComponent({
         };
       });
     });
-    const fileName = ctx.root.restaurantId() + "_orderhistory_detail.csv";
+    const fileName = ctx.root.restaurantId() + "_orderhistory_summary.csv";
     return {
       fileName,
       fields,
