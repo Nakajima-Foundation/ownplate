@@ -18,6 +18,13 @@
           :selectedOptions="selectedOptions"
           :shopInfo="shopInfo"
           :isPickup="isPickup"
+          @input="updateHowtoreceive"
+          :howtoreceive="howtoreceive"
+          :disabledPickupTime="disabledPickupTime"
+          :noAvailableTime="noAvailableTime"
+          :lastOrder="lastOrder"
+          :moPickupSuspend="moPickupSuspend"
+
           />
       </div>
       <!-- category modal -->
@@ -637,6 +644,9 @@ export default defineComponent({
     })();
     const howtoreceive = ref(defaultHowToReceive);
     const isFilterStock = ref(false);
+    const updateHowtoreceive = (value) => {
+      howtoreceive.value = value;
+    };
 
     const {
       category,
@@ -1211,6 +1221,7 @@ export default defineComponent({
       isOwner,
       isDelivery,
       howtoreceive,
+      updateHowtoreceive,
 
       orders,
 
