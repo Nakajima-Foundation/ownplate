@@ -177,7 +177,7 @@ export default defineComponent({
         fUser
           .getIdTokenResult(true)
           .then((result) => {
-            const diff = Date.now() - result.claims.auth_time * 1000;
+            const diff = Date.now() - Number(result.claims?.auth_time||0) * 1000;
             if (diff > 3600 * 24 * 30 * 1000) {
               signOut(auth);
             } else {

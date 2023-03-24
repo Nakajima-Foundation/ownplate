@@ -655,7 +655,7 @@ export default defineComponent({
     })();
     const howtoreceive = ref(defaultHowToReceive);
     const isFilterStock = ref(false);
-    const updateHowtoreceive = (value) => {
+    const updateHowtoreceive = (value: string) => {
       howtoreceive.value = value;
     };
 
