@@ -38,3 +38,9 @@ a. オーダーキャンセル
 
 b. クレカ決済キャンセル
    - orderRestaurantPaymentCanceledAt(操作した時間)
+
+# バッチ
+a. オーダーキャンセル
+   - orderRestaurantCanceledAt(操作した時間)
+   - timeCanceled
+   - timeAutoCanceled

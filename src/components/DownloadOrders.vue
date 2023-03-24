@@ -85,7 +85,7 @@ export default defineComponent({
       });
     });
     const restaurantId = getRestaurantId();
-    const fileName = restaurantId + "_orderhistory_detail.csv";
+    const fileName = restaurantId + "_orderhistory_summary.csv";
     return {
       fileName,
       fields,

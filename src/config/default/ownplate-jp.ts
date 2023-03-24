@@ -54,3 +54,5 @@ export const moPickup = false;
 export const enableReason = false;
 
 export const enableCampaignBanner = false;
+
+export const autoCancels = ["ss", "motest"];

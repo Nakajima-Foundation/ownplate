@@ -65,6 +65,8 @@
       "suspendConfirm": "以下の注文方法による受付を休止します。",
       "restoreConfirm": "全ての注文の受付休止を解除してサービスを再開します。",
       "restorePickupConfirm": "ピックアップ注文の受付休止を解除して再開します。",
+      "autoCancelAlert": "{date}までに受付しない場合は自動キャンセルされます。",
+      "autoCancel": "自動キャンセル",
       "suspendAll": "全ての注文(予約注文、ピックアップ)",
       "suspendPickup": "ピックアップ注文のみ",
       "suspend": "休止",

@@ -1,5 +1,22 @@
 <template>
   <div class="h-screen overflow-y-scroll">
+
+    <!-- Mo Pickup Toggle -->
+    <div class="mx-6 mt-3 mb-2 lg:mx-0" id="mo_top">
+      <div>
+        <MoPickUp
+          :shopInfo="shopInfo"
+          :value="howtoreceive"
+          @input="updateHowtoreceive"
+          :orders="orders"
+          :disabledPickupTime="disabledPickupTime"
+          :noAvailableTime="noAvailableTime"
+          :lastOrder="lastOrder"
+          :moPickupSuspend="moPickupSuspend"
+          />
+      </div>
+    </div>
+    
     <div class="m-4 mt-6 rounded-lg bg-red-300 p-6 sm:max-w-7xl xl:mx-auto">
       <div class="mx-auto mb-8 max-w-md">
         <img
@@ -43,8 +60,6 @@
 
 <script lang="ts">
 import { moPage } from "./MoPageCommon";
-
-import MoPageMenu from "./MoPageMenu.vue";
 
 const setMenus = [
   {

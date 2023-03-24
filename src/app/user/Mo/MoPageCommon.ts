@@ -14,6 +14,7 @@ import {
 
 import MoPageSet from "./MoPageSet.vue";
 import MoPageMenu from "./MoPageMenu.vue";
+import MoPickUp from "@/app/user/Restaurant/MoPickUp.vue";
 
 interface Menu {
   id: string;
@@ -30,6 +31,7 @@ export const moPage = (setMenus: SetMenu[]) => {
     components: {
       MoPageSet,
       MoPageMenu,
+      MoPickUp,
     },
     props: {
       pageId: {
@@ -59,6 +61,27 @@ export const moPage = (setMenus: SetMenu[]) => {
       isPickup: {
         type: Boolean,
         required: true,
+      },
+
+      howtoreceive: {
+        type: String,
+        required: true,
+      },
+      disabledPickupTime: {
+        type: Boolean,
+        required: true,
+      },
+      noAvailableTime: {
+        type: Boolean,
+        required: false,
+      },
+      lastOrder: {
+        type: String,
+        required: false,
+      },
+      moPickupSuspend: {
+        type: Boolean,
+        required: false,
       },
     },
     setup(props, ctx) {
@@ -119,6 +142,10 @@ export const moPage = (setMenus: SetMenu[]) => {
           }
         }
       };
+
+      const updateHowtoreceive = (value: string) => {
+        ctx.emit("input", value);
+      };
       
       return {
         setMenus,
@@ -129,6 +156,7 @@ export const moPage = (setMenus: SetMenu[]) => {
         pullQuantities,
 
         addSet,
+        updateHowtoreceive,
       };
     },
   });

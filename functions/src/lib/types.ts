@@ -40,7 +40,7 @@ export interface orderUpdateData {
 
 export interface updateDataOnorderUpdate {
   status: number;
-  updatedAt: admin.firestore.Timestamp;
+  updatedAt: admin.firestore.FieldValue;
   orderAcceptedAt?: admin.firestore.Timestamp;
 
   timeConfirmed?: admin.firestore.Timestamp;

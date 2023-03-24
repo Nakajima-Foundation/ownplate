@@ -31,7 +31,16 @@ export const getOrderData = async (transaction: admin.firestore.Transaction, ord
   return order;
 };
 
-export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUid, order, restaurantId, ownerUid, timePlaced, now, positive) => {
+export const updateOrderTotalDataAndUserLog = async (
+  db: admin.firestore.Firestore,
+  transaction: admin.firestore.Transaction,
+  customerUid: string,
+  order: any,
+  restaurantId: string,
+  ownerUid: string,
+  timePlaced,
+  positive: boolean,
+) => {
   const menuIds = Object.keys(order);
   console.log(utils.timezone);
   const date = moment(timePlaced.toDate()).tz(utils.timezone).format("YYYYMMDD");
@@ -39,8 +48,8 @@ export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUi
   // Firestore transactions require all reads to be executed before all writes.
 
   // Read !!
-  const totalRef: { [key: string]: any } = {};
-  const totals: { [key: string]: any } = {};
+  const totalRef: { [key: string]: admin.firestore.DocumentReference } = {};
+  const totals: { [key: string]: admin.firestore.DocumentData | undefined } = {};
   const nums: { [key: string]: number } = {};
   await Promise.all(
     menuIds.map(async (menuId) => {
@@ -90,7 +99,7 @@ export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUi
       // lastOrder: timePlaced,
       restaurantId,
       ownerUid,
-      updateAt: now,
+      updateAt: admin.firestore.FieldValue.serverTimestamp(),
     };
     await transaction.set(userLogRef, data);
   } else {
@@ -101,7 +110,7 @@ export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUi
       cancelCounter,
       currentOrder: timePlaced,
       lastOrder: userLog.currentOrder || timePlaced,
-      updateAt: now,
+      updateAt: admin.firestore.FieldValue.serverTimestamp(),
       lastUpdatedAt: userLog.updateAt || new admin.firestore.Timestamp(1577804400, 0),
     };
     await transaction.update(userLogRef, updateData);
@@ -128,7 +137,6 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
   const enableStripe = !!payStripe;
 
   const roundedTip = Math.round((Number(tip) || 0) * multiple) / multiple;
-  const now = admin.firestore.Timestamp.now();
   if (roundedTip < 0) {
     throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
   }
@@ -146,7 +154,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
     }
     // check time
     if (!restaurantData.isEC) {
-      if (timePlaced.toDate() < now.toDate()) {
+      if (timePlaced.toDate() < new Date()) {
         throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
       }
     }
@@ -235,7 +243,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
         return {};
       })();
       // transaction for stock orderTotal
-      await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, restaurantOwnerUid, timePlaced, now, true);
+      await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, restaurantOwnerUid, timePlaced, true);
       // update customer
       if (hasCustomer) {
         const { zip, prefectureId, prefecture, address, name, email, location } = customerInfo;
@@ -250,7 +258,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
           uid: customerUid,
           orderId,
           restaurantId,
-          createdAt: now,
+          createdAt: admin.firestore.FieldValue.serverTimestamp(),
         });
       }
       // customerUid
@@ -264,8 +272,8 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
         shippingCost,
         sendSMS: true,
         printed: false,
-        updatedAt: now,
-        orderPlacedAt: now,
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        orderPlacedAt: admin.firestore.FieldValue.serverTimestamp(),
         timePlaced,
         timePickupForQuery: timePlaced,
         memo: memo || "",

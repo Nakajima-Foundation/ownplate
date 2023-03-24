@@ -122,7 +122,7 @@ export const orderChange = async (db: admin.firestore.Firestore, data: orderChan
           tax: accountingResult.alcohol_tax,
         },
       },
-      orderUpdatedAt: admin.firestore.Timestamp.now(),
+      orderUpdatedAt: admin.firestore.FieldValue.serverTimestamp(),
     };
 
     if (!order.payment) {

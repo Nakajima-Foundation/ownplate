@@ -73,7 +73,7 @@ import {
   setCurrentScreen,
 } from "firebase/analytics";
 
-import { onAuthStateChanged, Unsubscribe } from "firebase/auth";
+import { onAuthStateChanged, Unsubscribe, signOut } from "firebase/auth";
 
 import Header from "@/components/App/Header.vue";
 import Footer from "@/components/App/Footer.vue";
@@ -177,9 +177,14 @@ export default defineComponent({
         fUser
           .getIdTokenResult(true)
           .then((result) => {
-            store.commit("setUser", fUser);
-            store.commit("setCustomClaims", result.claims);
-            // console.log(!!fUser.email ? "admin" : "customer");
+            const diff = Date.now() - result.claims.auth_time * 1000;
+            if (diff > 3600 * 24 * 30 * 1000) {
+              signOut(auth);
+            } else {
+              store.commit("setUser", fUser);
+              store.commit("setCustomClaims", result.claims);
+            }
+            // console.log(!!user.email ? "admin" : "customer");
           })
           .catch((error: any) => {
             // console.error("getIdTokenResult", error);

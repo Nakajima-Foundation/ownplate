@@ -75,7 +75,7 @@ export const sendMessageToCustomer = async (
         uid: orderData.uid,
         month: monthstr,
         last4: orderData.phoneNumber.slice(-4),
-        createdAt: process.env.NODE_ENV !== "test" ? admin.firestore.Timestamp.now() : Date.now(),
+        createdAt: process.env.NODE_ENV !== "test" ? admin.firestore.FieldValue.serverTimestamp() : Date.now(),
       });
     } catch (e) {
       console.log(e);
@@ -218,7 +218,7 @@ export const notifyRestaurant = async (db: admin.firestore.Firestore, messageId:
       orderId,
       messageId,
       results,
-      updatedAt: process.env.NODE_ENV !== "test" ? admin.firestore.Timestamp.now() : Date.now(),
+      updatedAt: process.env.NODE_ENV !== "test" ? admin.firestore.FieldValue.serverTimestamp() : Date.now(),
     });
   }
 
@@ -235,7 +235,7 @@ export const notifyRestaurant = async (db: admin.firestore.Firestore, messageId:
     lineMessage,
     sound: true,
     path: `/admin/restaurants/${restaurantId}`,
-    updatedAt: process.env.NODE_ENV !== "test" ? admin.firestore.Timestamp.now() : Date.now(),
+    updatedAt: process.env.NODE_ENV !== "test" ? admin.firestore.FieldValue.serverTimestamp() : Date.now(),
     url,
   });
 
@@ -248,7 +248,7 @@ export const notifyRestaurant = async (db: admin.firestore.Firestore, messageId:
         date: datestr,
         orderId,
         phoneNumber: restaurant.phoneNumber,
-        updatedAt: process.env.NODE_ENV !== "test" ? admin.firestore.Timestamp.now() : Date.now(),
+        updatedAt: process.env.NODE_ENV !== "test" ? admin.firestore.FieldValue.serverTimestamp() : Date.now(),
       });
     }
   }

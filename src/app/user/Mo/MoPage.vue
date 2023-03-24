@@ -11,6 +11,13 @@
       :selectedOptions="selectedOptions"
       :shopInfo="shopInfo"
       :isPickup="isPickup"
+
+      :howtoreceive="howtoreceive"
+      @input="updateHowtoreceive"
+      :disabledPickupTime="disabledPickupTime"
+      :noAvailableTime="noAvailableTime"
+      :lastOrder="lastOrder"
+      :moPickupSuspend="moPickupSuspend"
       />
     <MoPage20230302
       v-if="pageId == '20230302'"
@@ -22,6 +29,14 @@
       :selectedOptions="selectedOptions"
       :shopInfo="shopInfo"
       :isPickup="isPickup"
+
+      :howtoreceive="howtoreceive"
+      @input="updateHowtoreceive"
+      :disabledPickupTime="disabledPickupTime"
+      :noAvailableTime="noAvailableTime"
+      :lastOrder="lastOrder"
+      :moPickupSuspend="moPickupSuspend"
+
       />
     <MoPage202303Spring
       v-if="pageId == '202303spring'"
@@ -33,6 +48,14 @@
       :selectedOptions="selectedOptions"
       :shopInfo="shopInfo"
       :isPickup="isPickup"
+
+      :howtoreceive="howtoreceive"
+      @input="updateHowtoreceive"
+      :disabledPickupTime="disabledPickupTime"
+      :noAvailableTime="noAvailableTime"
+      :lastOrder="lastOrder"
+      :moPickupSuspend="moPickupSuspend"
+
       />
   </div>
 </template>
@@ -81,13 +104,39 @@ export default defineComponent({
       type: Boolean,
       required: true,
     },
+
+    howtoreceive: {
+      type: String,
+      required: true,
+    },
+      disabledPickupTime: {
+        type: Boolean,
+        required: true,
+      },
+      noAvailableTime: {
+        type: Boolean,
+        required: false,
+      },
+      lastOrder: {
+        type: String,
+        required: false,
+      },
+      moPickupSuspend: {
+        type: Boolean,
+        required: false,
+      },
+
   },
   setup(props, ctx) {
     const didOrderdChange = (param: any) => {
       ctx.emit("didOrderdChange", param)
     }
+    const updateHowtoreceive = (value: string) => {
+      ctx.emit("input", value);
+    };
     return {
       didOrderdChange,
+      updateHowtoreceive,
     };
   }
 });
