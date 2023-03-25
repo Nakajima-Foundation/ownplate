@@ -12,9 +12,11 @@ import {
   documentId,
 } from "firebase/firestore";
 
-import MoPageSet from "./MoPageSet.vue";
-import MoPageMenu from "./MoPageMenu.vue";
+import MoPageSet from "@/app/user/Mo/MoPageSet.vue";
+import MoPageMenu from "@/app/user/Mo/MoPageMenu.vue";
 import MoPickUp from "@/app/user/Restaurant/MoPickUp.vue";
+
+import { moBaseUrl } from "@/config/project";
 
 interface Menu {
   id: string;
@@ -157,6 +159,8 @@ export const moPage = (setMenus: SetMenu[]) => {
 
         addSet,
         updateHowtoreceive,
+
+        moBaseUrl,
       };
     },
   });

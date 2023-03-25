@@ -19,11 +19,11 @@
     <div class="m-4 mt-6 rounded-lg bg-[#FF82A0] sm:max-w-7xl xl:mx-auto">
       <div class="w-full rounded-lg">
         <img
-          src="https://mo-data-dev.omochikaeri.com/images/assets/setcampaign-hero-image_mobile.png"
+          :src="moBaseUrl + '/images/assets/setcampaign-hero-image_mobile.png'"
           class="object-cover sm:hidden"
         />
         <img
-          src="https://mo-data-dev.omochikaeri.com/images/assets/setcampaign-hero-image_tablet.png"
+          :src="moBaseUrl + '/images/assets/setcampaign-hero-image_tablet.png'"
           class="hidden object-cover sm:block"
         />
       </div>
