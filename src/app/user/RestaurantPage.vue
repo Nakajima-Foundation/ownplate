@@ -942,7 +942,8 @@ export default defineComponent({
       // NOTE: We need to assign a new object to trigger computed properties
       if (eventArgs.quantities) {
         if (eventArgs.itemData) { // for mo campaign
-          cartItems.value[eventArgs.itemId] = eventArgs.itemData
+          cartItems.value[eventArgs.itemId] = eventArgs.itemData;
+          menuObj.value[eventArgs.itemId] = eventArgs.itemData;
         } else {
           cartItems.value[eventArgs.itemId] = menuObj.value[eventArgs.itemId];
         }
