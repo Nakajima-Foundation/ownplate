@@ -5,7 +5,7 @@
     >
     <div class="mx-auto mb-4 max-w-md rounded-lg bg-white p-5 shadow">
       <img
-        :src="smallimage"
+        :src="resizedImage"
         @error="smallImageErrorHandler"
         class="mx-auto flex h-40 w-40 justify-center rounded-lg object-cover sm:h-72 sm:w-72"
       />
@@ -94,6 +94,12 @@ export default defineComponent({
         props.menu.itemPhoto
       );
     });
+    const resizedImage = computed(() => {
+      return (
+        (props.menu?.images?.item?.resizedImages || {})["600"] ||
+        props.menu.itemPhoto
+      );
+    });
     return {
       pushQuantities: (id: string, num: number) => {
         ctx.emit("pushQuantities", id, num);
@@ -106,6 +112,7 @@ export default defineComponent({
       },
       smallImageErrorHandler,
       smallimage,
+      resizedImage,
       image,
     };
   },
