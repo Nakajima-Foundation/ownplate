@@ -20,7 +20,9 @@
         <div class="text-base font-bold text-red-600">
           <Price :shopInfo="shopInfo" :menu="menu" />
         </div>
-        <div class="ml-2 mb-0.5 text-xs text-black line-through">¥000</div>
+        <div class="ml-2 mb-0.5 text-xs text-black line-through">
+          <Price :shopInfo="shopInfo" :menu="menu" :offset="mData.offset || 0" />
+        </div>
       </div>
 
       <div class="mt-3 flex items-center">
