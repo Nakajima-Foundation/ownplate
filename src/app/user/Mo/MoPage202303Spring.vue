@@ -64,7 +64,7 @@
 </template>
 
 <script lang="ts">
-import { moPage } from "./MoPageCommon";
+import { moPage, getMenuId } from "./MoPageCommon";
 
 const setMenus = [
   {
@@ -72,17 +72,17 @@ const setMenus = [
     setName: "",
     menus: [
       {
-        id: "a2868abfe17326f758af04671379e79294c7fa27",
+        id: getMenuId("9999999"),
         offset: 100,
         count: 2,
       },
       {
-        id: "a50cf5774de264bbed07fffc905e5c5eed1f5229",
+        id: getMenuId("9999998"),
         offset: 100,
         count: 3,
       },
       {
-        id: "b211daf0cff08cd3e2b8b789cc941ed889116317",
+        id: getMenuId("9999997"),
         offset: 100,
         count: 1,
       },

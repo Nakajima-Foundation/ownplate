@@ -16,7 +16,8 @@ import MoPageSet from "@/app/user/Mo/MoPageSet.vue";
 import MoPageMenu from "@/app/user/Mo/MoPageMenu.vue";
 import MoPickUp from "@/app/user/Restaurant/MoPickUp.vue";
 
-import { moBaseUrl } from "@/config/project";
+import { moBaseUrl, firebaseConfig } from "@/config/project";
+import { SHA1, enc } from "crypto-js";
 
 interface Menu {
   id: string;
@@ -28,6 +29,13 @@ interface SetMenu {
   setName: string;
   menus: Menu[];
 };
+
+export const getMenuId = (productId: string) => {
+  const key = firebaseConfig.projectId + ":" + productId;
+  const menuId = SHA1(key)
+  return menuId.toString(enc.Hex);
+};
+
 export const moPage = (setMenus: SetMenu[]) => {
   return defineComponent({
     components: {
