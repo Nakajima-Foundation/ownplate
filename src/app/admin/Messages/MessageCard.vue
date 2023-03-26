@@ -79,7 +79,8 @@ export default defineComponent({
     };
     return {
       childInvitationAccept,
-      childInvitationDeny
+      childInvitationDeny,
+      moment,
     };
   },
 });
