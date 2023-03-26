@@ -47,7 +47,7 @@
       </div>
     </div>
 
-    <div class="m-4 mt-6 mb-12 sm:max-w-5xl lg:mx-auto">
+    <div class="m-4 mt-6 mb-28 sm:max-w-5xl lg:mx-auto">
       <router-link
         :to="`${pageBase}/categories/${isPickup ? 'pickup' : 'takeout'}`"
         ><div
