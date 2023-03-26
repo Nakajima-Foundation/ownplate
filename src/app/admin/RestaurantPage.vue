@@ -1244,7 +1244,7 @@ export default defineComponent({
     const place_id = ref<string | null>(null);
     // const markers = ref([]);
     const markers: any[] = []; // for google map
-    const errorsPhone = ref([]);
+    const errorsPhone = ref<string[]>([]);
     const files = ref<{[key: string]: File}>({});
     const updateFirstCall = ref(true);
 
@@ -1323,7 +1323,7 @@ export default defineComponent({
         markers.splice(0);
       }
     };
-    const setCurrentLocation = async (location: any, move = true) => {
+    const setCurrentLocation = async (location: {lat?: number, lng?: number}, move = true) => {
       if (
         location &&
         location.lat &&
@@ -1401,7 +1401,11 @@ export default defineComponent({
       newFile["cover"] = file;
       files.value = newFile;
     };
-    const handlePhoneChange = (payload: any) => {
+    const handlePhoneChange = (payload: {
+      phoneNumber: string,
+      countryCode: string,
+      errors: string[],
+    }) => {
       //console.log(payload)
       props.shopInfo.phoneNumber = payload.phoneNumber;
       props.shopInfo.countryCode = payload.countryCode;
