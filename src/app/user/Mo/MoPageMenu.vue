@@ -5,7 +5,7 @@
     >
     <div class="mx-auto mb-4 max-w-md rounded-lg bg-white p-5 shadow">
       <img
-        :src="smallimage"
+        :src="resizedImage"
         @error="smallImageErrorHandler"
         class="mx-auto flex h-40 w-40 justify-center rounded-lg object-cover sm:h-72 sm:w-72"
       />
@@ -16,9 +16,12 @@
       <!-- Description -->
       <div class="mt-3 text-sm">{{ menu.itemDescription }}</div>
 
-      <div class="mt-3 flex">
-        <div class="text-base font-bold text-black">
+      <div class="mt-3 inline-flex items-end">
+        <div class="text-base font-bold text-red-600">
           <Price :shopInfo="shopInfo" :menu="menu" />
+        </div>
+        <div class="ml-2 mb-0.5 text-xs text-black line-through">
+          <Price :shopInfo="shopInfo" :menu="menu" :offset="mData.offset || 0" />
         </div>
       </div>
 
@@ -96,6 +99,12 @@ export default defineComponent({
         props.menu.itemPhoto
       );
     });
+    const resizedImage = computed(() => {
+      return (
+        (props.menu?.images?.item?.resizedImages || {})["600"] ||
+        props.menu.itemPhoto
+      );
+    });
     return {
       pushQuantities: (id: string, num: number) => {
         ctx.emit("pushQuantities", id, num);
@@ -108,6 +117,7 @@ export default defineComponent({
       },
       smallImageErrorHandler,
       smallimage,
+      resizedImage,
       image,
     };
   },

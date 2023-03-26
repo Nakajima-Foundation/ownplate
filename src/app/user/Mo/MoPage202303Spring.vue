@@ -1,8 +1,7 @@
 <template>
   <div class="h-screen overflow-y-scroll">
-
     <!-- Mo Pickup Toggle -->
-    <div class="mx-6 mt-3 mb-2 lg:mx-0" id="mo_top">
+    <div class="mx-6 mt-3 mb-2 sm:max-w-5xl lg:mx-auto">
       <div>
         <MoPickUp
           :shopInfo="shopInfo"
@@ -13,38 +12,44 @@
           :noAvailableTime="noAvailableTime"
           :lastOrder="lastOrder"
           :moPickupSuspend="moPickupSuspend"
-          />
-      </div>
-    </div>
-    
-    <div class="m-4 mt-6 rounded-lg bg-red-300 p-6 sm:max-w-7xl xl:mx-auto">
-      <div class="mx-auto mb-8 max-w-md">
-        <img
-          src="https://mo-data-dev.omochikaeri.com/images/assets/logo_vertical.png"
-          class="object-cover"
         />
       </div>
+    </div>
 
-      <div v-for="(menu, k) in setMenus" :key="k">
-        <div v-for="(m, j) in menu.menus" :key="j">
-          <template v-if="menuObj[m.id]">
-            <MoPageMenu
-              :isSet="false"
-              :menu="menuObj[m.id]"
-              :mData="m"
-              :orders="orders"
-              @pushQuantities="pushQuantities"
-              @pullQuantities="pullQuantities"
-              :shopInfo="shopInfo"
-            />
-            <hr />
-          </template>
+    <div class="m-4 mt-6 rounded-lg bg-[#FF82A0] sm:max-w-5xl lg:mx-auto">
+      <div class="flex w-full justify-center">
+        <img
+          :src="moBaseUrl + '/images/assets/setcampaign-hero-image_mobile.png'"
+          class="rounded-lg object-cover sm:hidden"
+        />
+        <img
+          :src="moBaseUrl + '/images/assets/setcampaign-hero-image_tablet.png'"
+          class="hidden rounded-lg object-cover sm:block"
+        />
+      </div>
+      <div class="mx-6 mb-8 pb-6">
+        <div v-for="(menu, k) in setMenus" :key="k">
+          <div v-for="(m, j) in menu.menus" :key="j">
+            <template v-if="menuObj[m.id]">
+              <MoPageMenu
+                :isSet="false"
+                :menu="menuObj[m.id]"
+                :mData="m"
+                :orders="orders"
+                @pushQuantities="pushQuantities"
+                @pullQuantities="pullQuantities"
+                :shopInfo="shopInfo"
+              />
+              <hr />
+            </template>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="m-4 mt-6 mb-12 sm:max-w-7xl xl:mx-auto">
-      <router-link :to="`${pageBase}/categories/${isPickup ? 'pickup' : 'takeout'}`"
+    <div class="m-4 mt-6 mb-12 sm:max-w-5xl lg:mx-auto">
+      <router-link
+        :to="`${pageBase}/categories/${isPickup ? 'pickup' : 'takeout'}`"
         ><div
           class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
         >
@@ -59,7 +64,7 @@
 </template>
 
 <script lang="ts">
-import { moPage } from "./MoPageCommon";
+import { moPage, getMenuId } from "./MoPageCommon";
 
 const setMenus = [
   {
@@ -67,15 +72,18 @@ const setMenus = [
     setName: "",
     menus: [
       {
-        id: "68dc4c052eb0b02bdd34258fbd21b86e46b44437",
+        id: getMenuId("9999999"),
+        offset: 100,
         count: 2,
       },
       {
-        id: "58b5197d27a96743a6405c5029fbce6d721d3beb",
+        id: getMenuId("9999998"),
+        offset: 100,
         count: 3,
       },
       {
-        id: "9a714af83e3aee2d5b779d9de5b9eb9c4361847d",
+        id: getMenuId("9999997"),
+        offset: 100,
         count: 1,
       },
     ],

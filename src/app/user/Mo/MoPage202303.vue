@@ -1,8 +1,7 @@
 <template>
   <div class="h-screen overflow-y-scroll">
-
     <!-- Mo Pickup Toggle -->
-    <div class="mx-6 mt-3 mb-2 lg:mx-0" id="mo_top">
+    <div class="mx-6 mt-3 mb-2 sm:max-w-7xl xl:mx-auto">
       <div>
         <MoPickUp
           :shopInfo="shopInfo"

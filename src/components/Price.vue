@@ -26,10 +26,14 @@ export default defineComponent({
       type: Object as PropType<MenuData>,
       required: true,
     },
+    offset: {
+      type: Number,
+      required: false,
+    },
   },
   setup(props) {
     const price = computed(() => {
-      return priceWithTax(props.shopInfo, props.menu);
+      return priceWithTax(props.shopInfo, props.menu) + (props.offset || 0);
     });
 
     return {
