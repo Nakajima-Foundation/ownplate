@@ -15,7 +15,7 @@
       <div class="mt-6">
         <!-- Incomplete Orders -->
         <div>
-          <incomplete-orders v-if="shopInfo" :shopInfo="shopInfo" />
+          <incomplete-orders v-if="shopInfo" :shopInfo="shopInfo" @close="closeNotificationSettings()"/>
         </div>
 
         <!-- Settings -->

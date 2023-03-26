@@ -5,7 +5,7 @@ i<template>
     </div>
 
     <!-- Links for Incomplete Orders Date -->
-    <div>
+    <div @click="closeNotificationSettings">
       <router-link
         :class="`mb-2 mr-2 inline-flex h-9 items-center justify-center rounded-full px-4 ${
           index === 0 ? 'bg-red-700 bg-opacity-10' : 'bg-black bg-opacity-5'
@@ -19,7 +19,7 @@ i<template>
         <span
           :class="`text-sm font-bold ${
             index === 0 ? 'text-red-700' : 'text-op-teal'
-          }`"
+            }`"
         >
           {{ $d(day.date, "short") }} {{ index === 0 ? "本日" : "" }} -
           {{ orderCounter[moment(day.date).format("YYYY-MM-DD")] }}
@@ -82,11 +82,16 @@ export default defineComponent({
       );
     });
 
+    const closeNotificationSettings = () => { 
+      ctx.emit("close");
+    };
+
     return {
       lastSeveralDays,
       orderCounter,
       moment,
       restaurantId,
+      closeNotificationSettings,
     };
   },
 });
