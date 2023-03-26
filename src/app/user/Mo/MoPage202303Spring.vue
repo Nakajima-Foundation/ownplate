@@ -1,7 +1,7 @@
 <template>
   <div class="h-screen overflow-y-scroll">
     <!-- Mo Pickup Toggle -->
-    <div class="mx-6 mt-3 mb-2 sm:max-w-7xl xl:mx-auto">
+    <div class="mx-6 mt-3 mb-2 sm:max-w-5xl lg:mx-auto">
       <div>
         <MoPickUp
           :shopInfo="shopInfo"
@@ -16,15 +16,15 @@
       </div>
     </div>
 
-    <div class="m-4 mt-6 rounded-lg bg-[#FF82A0] sm:max-w-7xl xl:mx-auto">
-      <div class="w-full rounded-lg">
+    <div class="m-4 mt-6 rounded-lg bg-[#FF82A0] sm:max-w-5xl lg:mx-auto">
+      <div class="flex w-full justify-center">
         <img
           :src="moBaseUrl + '/images/assets/setcampaign-hero-image_mobile.png'"
-          class="object-cover sm:hidden"
+          class="rounded-lg object-cover sm:hidden"
         />
         <img
           :src="moBaseUrl + '/images/assets/setcampaign-hero-image_tablet.png'"
-          class="hidden object-cover sm:block"
+          class="hidden rounded-lg object-cover sm:block"
         />
       </div>
       <div class="mx-6 mb-8 pb-6">
@@ -47,7 +47,7 @@
       </div>
     </div>
 
-    <div class="m-4 mt-6 mb-12 sm:max-w-7xl xl:mx-auto">
+    <div class="m-4 mt-6 mb-12 sm:max-w-5xl lg:mx-auto">
       <router-link
         :to="`${pageBase}/categories/${isPickup ? 'pickup' : 'takeout'}`"
         ><div
