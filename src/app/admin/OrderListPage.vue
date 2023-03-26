@@ -26,7 +26,7 @@
 
         <!-- Date -->
         <div class="ml-6 mt-6 sm:ml-4">
-          <o-select v-model="dayIndex" update:modelValue="updatedDayIndex">
+          <o-select v-model="dayIndex" @update:modelValue="updatedDayIndex">
             <option
               v-for="day in lastSeveralDays"
               :value="day.index"
