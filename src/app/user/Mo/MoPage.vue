@@ -144,18 +144,18 @@ export default defineComponent({
     };
     onMounted(() => {
       html?.style.setProperty("overflow", "hidden", "important");
-      if (isIOS) {
-        // @ts-ignore
-        html?.addEventListener("touchmove", scroll_control, {passive: false});
-      }
+      // if (isIOS) {
+      // @ts-ignore
+      // html?.addEventListener("touchmove", scroll_control, {passive: false});
+      // }
       
     });
     onUnmounted(() => {
       html?.style.setProperty("overflow", "");
-      if (isIOS) {
-        // @ts-ignore
-        html?.removeEventListener('touchmove', scroll_control, {passive: false});
-      }
+      // if (isIOS) {
+      // @ts-ignore
+      // html?.removeEventListener('touchmove', scroll_control, {passive: false});
+      //}
     });
     return {
       didOrderdChange,
