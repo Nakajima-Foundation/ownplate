@@ -63,6 +63,8 @@
 <script lang="ts">
 import {
   defineComponent,
+  onMounted,
+  onUnmounted,
 } from "@vue/composition-api";
 
 import MoPage202303 from "./MoPage202303.vue";
@@ -134,6 +136,27 @@ export default defineComponent({
     const updateHowtoreceive = (value: string) => {
       ctx.emit("input", value);
     };
+
+    const html = document.querySelector("html")
+    const isIOS = !!window.navigator.userAgent.match(/version\/([\w\.\,]+) .*mobile(?:\/\w+ | ?)safari/i)
+    const scroll_control = (e: any) => {
+      e.preventDefault();
+    };
+    onMounted(() => {
+      html?.style.setProperty("overflow", "hidden", "important");
+      if (isIOS) {
+        // @ts-ignore
+        html?.addEventListener("touchmove", scroll_control, {passive: false});
+      }
+      
+    });
+    onUnmounted(() => {
+      html?.style.setProperty("overflow", "");
+      if (isIOS) {
+        // @ts-ignore
+        html?.removeEventListener('touchmove', scroll_control, {passive: false});
+      }
+    });
     return {
       didOrderdChange,
       updateHowtoreceive,
