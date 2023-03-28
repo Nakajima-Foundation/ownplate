@@ -1,15 +1,15 @@
 <template>
-  <div>
+  <div class="mx-6 lg:mx-0">
     <router-link :to="pageBase + '/page/202303spring'">
       <div class="mt-2 mb-4 w-full rounded-lg bg-red-100">
         <img
           :src="moBaseUrl + '/images/assets/setcampaign-banner_mobile.png'"
-          class="object-cover sm:hidden"
+          class="rounded-lg object-cover sm:hidden"
           id="springBanner"
         />
         <img
           :src="moBaseUrl + '/images/assets/setcampaign-banner_tablet.png'"
-          class="hidden object-cover sm:block"
+          class="hidden rounded-lg object-cover sm:block"
           id="springBanner"
         />
       </div>
@@ -29,7 +29,7 @@ export default defineComponent({
   },
   setup() {
     return {
-      moBaseUrl
+      moBaseUrl,
     };
   },
 });
