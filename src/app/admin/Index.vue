@@ -177,6 +177,7 @@
                 <ExportProd
                   :restaurantLists="restaurantLists"
                   :restaurantItems="restaurantItems"
+                  :masterRestaurantId="groupData.restaurantId"
                 />
               </div>
             </div>

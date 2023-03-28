@@ -31,6 +31,10 @@ export default defineComponent({
       type: Object,
       required: true,
     },
+    masterRestaurantId: {
+      type: String,
+      required: true,
+    },
   },
   setup(props) {
     const { t } = useI18n({ useScope: 'global' });
@@ -109,15 +113,14 @@ export default defineComponent({
         });
       };
 
+      const mCollection = await getDocs(
+        collection(db, `restaurants/${props.masterRestaurantId}/menus`)
+      );
       for await (const restaurantId of props.restaurantLists) {
-        // for await (const restaurantId of ["Nc51IWDVuidWOpvcnjqd"]) {
         const restaurant = props.restaurantItems[restaurantId] || {};
         const shopId = restaurant.shopId || restaurantId;
         csvData[shopId] = {};
 
-        const mCollection = await getDocs(
-          collection(db, `restaurants/${restaurantId}/menus`)
-        );
         mCollection.docs.forEach((a) => parseMenuData(a, restaurantId, shopId));
 
         const pCollection = await getDocs(

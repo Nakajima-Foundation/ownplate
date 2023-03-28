@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen overflow-y-scroll">
+  <div class="h-screen overflow-y-scroll bg-white">
     <!-- Mo Pickup Toggle -->
     <div class="mx-6 mt-3 mb-2 sm:max-w-5xl lg:mx-auto">
       <div>
@@ -47,7 +47,7 @@
       </div>
     </div>
 
-    <div class="m-4 mt-6 mb-12 sm:max-w-5xl lg:mx-auto">
+    <div class="m-4 mt-6 pb-40 sm:max-w-5xl lg:mx-auto">
       <router-link
         :to="`${pageBase}/categories/${isPickup ? 'pickup' : 'takeout'}`"
         ><div

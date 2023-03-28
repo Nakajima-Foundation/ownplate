@@ -150,7 +150,7 @@ export default defineComponent({
           const options = order.options[menuId] || [];
           const prices = order.prices[menuId] || [];
           const menuItem = (order.menuItems || {})[menuId] || {};
-          const taxRate = menuItem.tax === "feed" ? 8 : 10;
+          const taxRate = menuItem.tax === "food" ? 8 : 10;
           Object.keys(orderItems).forEach((key) => {
             // @ts-ignore
             const opt = Array.isArray(options[key] || [])
