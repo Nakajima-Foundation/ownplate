@@ -103,7 +103,6 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore();
-
     const isInMo = useIsInMo();
     
     const handleSignOut = () => {
