@@ -104,6 +104,15 @@
       <!-- Save -->
       <div class="mt-6 flex justify-center space-x-4">
         <button
+          @click="cancel"
+          class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
+          >
+          <span class="text-base font-bold text-black text-opacity-60">
+            {{ $t("button.cancel") }}
+          </span>
+        </button>
+
+        <button
           @click="save"
           class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
           >
@@ -121,6 +130,13 @@ import {
   defineComponent,
   ref,
 } from "@vue/composition-api";
+import { db } from "@/lib/firebase/firebase9";
+
+import {
+  updateDoc,
+  doc,
+  Timestamp,
+} from "firebase/firestore";
 
 import {
   useIsInMo,
@@ -133,7 +149,10 @@ import {
 } from "@/config/constant";
 
   
-import { getPromotion } from "@/utils/promotion";
+import {
+  getPromotion,
+  getPromotionDocumentPath,
+} from "@/utils/promotion";
 import { PromotionData } from "@/models/promotion";
 
 export default defineComponent({
@@ -154,6 +173,7 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const route = ctx.root.$route;
+    const router = ctx.root.$router;
     const discountId = route.params.discountId as string;
 
     const id = props.isInMo ? props.moPrefix : props.shopInfo?.restaurantId;
@@ -168,10 +188,40 @@ export default defineComponent({
       termToDate.value = data.termTo.toDate();
     });
 
-    const save = () => {
-      console.log(promotion.value);
+    const back = () => {
+      router.push({
+        path: `/admin/discounts`,
+      });
+    };      
+    const save = async () => {
+      const {
+        promotionName,
+        enable,
+        hasTerm,
+        discountThreshold,
+        discountValue,
+        paymentRestrictions
+      } = promotion.value as PromotionData;
+      const updateData = {
+        promotionName,
+        enable,
+        hasTerm,
+        discountThreshold,
+        discountValue,
+        paymentRestrictions,
+        termFrom: Timestamp.fromDate(termFromDate.value),
+        termTo: Timestamp.fromDate(termToDate.value),
+      };
+      const path = getPromotionDocumentPath(props.isInMo, id as string, discountId);
+      await updateDoc(doc(db, path), updateData);
+
+      back();
     };
 
+    const cancel = () => {
+      back();
+    };
+    
     return {
       promotion,
       termFromDate,
@@ -180,6 +230,7 @@ export default defineComponent({
       toBeOrNotSelect,
       yesOrNoSelect,
       promotionPaymentRestrictionsSelect,
+      cancel,
     };
   }
 });
