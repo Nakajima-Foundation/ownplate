@@ -1441,7 +1441,9 @@ export default defineComponent({
         router.push({
           path: `/admin/restaurants/${id}`,
         });
-        location.reload();
+        setTimeout(() => {
+          location.reload();
+        }, 200);
       } catch (error) {
         store.commit("setErrorMessage", {
           code: "restaurant.save",
