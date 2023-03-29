@@ -28,7 +28,7 @@ import { db } from "@/lib/firebase/firebase9";
 import { OrderInfoData } from "@/models/orderInfo";
 import { PromotionData } from "@/models/promotion";
 
-const getPromotionCollctionPath = (isInMo: boolean, id: string) => {
+export const getPromotionCollctionPath = (isInMo: boolean, id: string) => {
   return isInMo ? `/groups/${id}/promotions` : `restaurants/${id}/promotions`;
 };
 

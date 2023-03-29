@@ -24,6 +24,17 @@
       <br/>
       <hr class="h-1 bg-gray-200 border-0 left-1/2 dark:bg-gray-900"/>
     </div>
+
+    <div>
+      <button
+        @click="newDiscount"
+        class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
+        >
+        <span class="text-base font-bold text-white">
+          {{ $t("editCommon.new") }}
+        </span>
+      </button>
+    </div>
   </div>
 </template>
 
@@ -33,7 +44,20 @@ import {
   defineComponent,
 } from "@vue/composition-api";
 
-import { usePromitionsForAdmin } from "@/utils/promotion";
+import { db } from "@/lib/firebase/firebase9";
+
+import {
+  usePromitionsForAdmin,
+  getPromotionCollctionPath,
+} from "@/utils/promotion";
+
+import {
+  setDoc,
+  doc,
+  collection,
+  Timestamp,
+} from "firebase/firestore";
+
 
 export default defineComponent({
   props: {
@@ -55,20 +79,24 @@ export default defineComponent({
     const id = props.isInMo ? props.moPrefix : props.shopInfo?.restaurantId;
     const { promotionDataSet } = usePromitionsForAdmin(props.isInMo, id as string);
 
-    const newDiscount = () => {
+    const newDiscount = async () => {
+      const path = getPromotionCollctionPath(props.isInMo, id as string)
+      const promotionId = doc(collection(db, path)).id;
       const data = {
-        promotionName: "",
+        promotionName: "no name",
+        promotionId,
         enable: false,
         type: "discount",
         discountThreshold: 10000,
-        paymentRestrictions: null,
+        paymentRestrictions: "",
         usageRestrictions: true,
         discountMethod: "amount",
         discountValue: 100,
         hasTerm: true,
-        termFrom: new Date(),
-        termTo: new Date(),
+        termFrom: Timestamp.fromDate(new Date()),
+        termTo: Timestamp.fromDate(new Date()),
       };
+      const newData = await setDoc(doc(db, path + "/" + promotionId), data);
     };
     
     return {
