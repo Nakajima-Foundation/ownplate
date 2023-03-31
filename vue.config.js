@@ -24,6 +24,7 @@ module.exports = {
       filename: 'motest.html',
     },
   },
+  productionSourceMap: false,
   devServer: {
     port: 3000
   },
