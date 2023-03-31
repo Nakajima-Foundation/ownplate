@@ -116,8 +116,12 @@ export default defineComponent({
     const error = ref("");
 
     const isExpired = ref<null | boolean>(null);
-
+    const submitted = ref(false);
+    
     const errors = computed(() => {
+      if (!submitted.value)  {
+        return {};
+      }
       const _errors: { [key: string]: string[] } = {};
       if (password.value !== confirmPassword.value) {
         _errors.confirm = ["admin.error.password.mismatch"];
@@ -134,7 +138,14 @@ export default defineComponent({
       return _errors;
     });
 
+    const hasError = computed(() => {
+      return Object.keys(errors.value).length > 0;
+    })
     const resetPassword = async () => {
+      submitted.value = true;
+      if (hasError.value) {
+        return;
+      }
       submitting.value = true;
       try {
         const res = await confirmPasswordReset(auth, code, password.value);

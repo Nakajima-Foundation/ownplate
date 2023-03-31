@@ -5,18 +5,27 @@ export interface orderCreatedData {
   orderId: string;
 }
 
+export interface locationData {
+  lat: number;
+  lng: number;
+};
+
 export interface customerInfoData {
   zip: string;
   prefectureId: number;
+  prefecture: string;
   address: string;
   name: string;
   email: string;
+  location?: locationData;
 }
 export interface orderPlacedData {
   restaurantId: string;
   orderId: string;
   tip: number;
   timeToPickup: admin.firestore.Timestamp;
+  promotionId: string;
+  affiliateId: string;
   memo: string;
   payStripe: boolean;
   customerInfo: customerInfoData;
@@ -31,7 +40,7 @@ export interface orderUpdateData {
 
 export interface updateDataOnorderUpdate {
   status: number;
-  updatedAt: admin.firestore.Timestamp;
+  updatedAt: admin.firestore.FieldValue;
   orderAcceptedAt?: admin.firestore.Timestamp;
 
   timeConfirmed?: admin.firestore.Timestamp;
@@ -70,6 +79,7 @@ export interface confirmIntentData {
 export interface orderCancelData {
   restaurantId: string;
   orderId: string;
+  cancelReason: string;
 }
 
 export interface newOrderData {

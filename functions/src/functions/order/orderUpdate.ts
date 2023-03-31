@@ -30,7 +30,7 @@ const getMgsKey = (status: number, isEC: boolean, timeEstimated?: admin.firestor
   return null;
 };
 
-const getPaymentIntent = async (db: admin.firestore.Firestore, restaurantOwnerUid: string, order: any, transaction: any, stripeRef: any) => {
+const getPaymentIntent = async (db: admin.firestore.Firestore, restaurantOwnerUid: string, order: any, transaction: admin.firestore.Transaction, stripeRef: admin.firestore.DocumentReference) => {
   const stripe = utils.get_stripe();
   const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
   // just for stripe payment
@@ -80,6 +80,7 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
         throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
       }
       order.id = orderId;
+
       const isStripeProcess = order.status === order_status.order_placed && order.payment && order.payment.stripe !== "canceled";
       const nextStatus = next_transitions[order.status];
       if (!nextStatus || nextStatus !== status) {
@@ -96,13 +97,17 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
       ) {
         throw new functions.https.HttpsError("permission-denied", "Paid order can not be change like this", status);
       }
-
+      
+      const customerUid = order.uid;
+      const stripeReadOnlyRef = db.doc(`/users/${customerUid}/readonly/stripe`);
+      const stripeReadOnly = (await transaction.get(stripeReadOnlyRef)).data();
+      
       // everything are ok
       const updateTimeKey = timeEventMapping[order_status_keys[status]];
       const updateData: updateDataOnorderUpdate = {
         status,
-        updatedAt: admin.firestore.Timestamp.now(),
-        [updateTimeKey]: admin.firestore.Timestamp.now(),
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        [updateTimeKey]: admin.firestore.FieldValue.serverTimestamp(),
       };
       if (isStripeProcess) {
         updateData.payment = {
@@ -117,6 +122,11 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
       await transaction.update(orderRef, updateData as { [x: string]: any; });
       if (isStripeProcess) {
         await transaction.set(stripeRef, { paymentIntent }, { merge: true });
+        if (stripeReadOnly) {
+          await transaction.update(stripeReadOnlyRef, {
+            updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+          });
+        }
       }
       return { success: true, order };
     });

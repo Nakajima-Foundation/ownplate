@@ -17,6 +17,7 @@ export const ownPlateConfig = {
     "アプリインストール不要で、すぐに使えるテイクアウト・お持ち帰りサービス。食べたいお店がすぐに見つかり、オンラインで注文可能。レストランに優しい決済手数料以外は全て無料で、すぐに使えます。",
   region: "JP",
   hostName: "omochikaeri.com",
+  analyticsId: "analytics_234424279",
   stripe: {
     clientId: "ca_HAiZ4FX4JuoHdN8tcGjlEypJZFHErPRo",
     apiKey: "pk_live_XEjVg6hx6kgu5WSiGOnEiEHd0077C0E2e4",
@@ -49,3 +50,9 @@ export const moGtmID = "GTM-PLFRX7K";
 export const moBaseUrl = "https://mo-data.omochikaeri.com";
 export const moTitle = "Mobile Order";
 export const moPickup = false;
+
+export const enableReason = false;
+
+export const enableCampaignBanner = false;
+
+export const autoCancels = ["ss", "motest"];

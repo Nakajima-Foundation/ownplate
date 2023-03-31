@@ -1,4 +1,4 @@
-import * as firebase from "firebase-admin";
+import * as admin from "firebase-admin";
 
 import * as functions from "firebase-functions";
 // import * as admin from 'firebase-admin';
@@ -21,7 +21,7 @@ export const invite = async (db, data: subAccountInvitate, context: functions.ht
       throw new functions.https.HttpsError("invalid-argument", "invalid email.");
     }
 
-    const user = await firebase.auth().getUserByEmail(email);
+    const user = await admin.auth().getUserByEmail(email);
     if (!user) {
       throw new functions.https.HttpsError("invalid-argument", "User does not exist.");
     }
@@ -43,7 +43,7 @@ export const invite = async (db, data: subAccountInvitate, context: functions.ht
     const childData = {
       name,
       email,
-      createdAt: firebase.firestore.Timestamp.now(),
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
     };
     await childRef.set(childData);
     // send invite
@@ -55,7 +55,7 @@ export const invite = async (db, data: subAccountInvitate, context: functions.ht
       fromDisplay: true,
       toDisplay: true,
       email,
-      createdAt: firebase.firestore.Timestamp.now(),
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
     };
     await db.doc(`/admins/${childUid}/messages/childInvitation${adminUid}`).set(invitationData);
     return {
@@ -71,7 +71,7 @@ export const invitationValidateProcess = async (
   db,
   data: subAccountInvitationAcceptDeny,
   context: functions.https.CallableContext | Context,
-  callback: (adminUid: string, messageData: firebase.firestore.DocumentData, messageRef: firebase.firestore.DocumentReference) => Promise<void> // eslint-disable-line
+  callback: (adminUid: string, messageData: admin.firestore.DocumentData, messageRef: admin.firestore.DocumentReference) => Promise<void> // eslint-disable-line
 ) => {
   // check admin and is not child yet.
   const { messageId } = data;
@@ -91,9 +91,9 @@ const childInvitationProcess = async (
   db: any,
   data: subAccountInvitationAcceptDeny,
   context: functions.https.CallableContext | Context,
-  callback: (messageData: firebase.firestore.DocumentData, messageRef: firebase.firestore.DocumentReference) => Promise<void> // eslint-disable-line
+  callback: (messageData: admin.firestore.DocumentData, messageRef: admin.firestore.DocumentReference) => Promise<void> // eslint-disable-line
 ) => {
-  await invitationValidateProcess(db, data, context, async (adminUid: string, messageData: firebase.firestore.DocumentData, messageRef: firebase.firestore.DocumentReference) => {
+  await invitationValidateProcess(db, data, context, async (adminUid: string, messageData: admin.firestore.DocumentData, messageRef: admin.firestore.DocumentReference) => {
     if (messageData.type === "childInvitation") {
       // validation
       if (messageData.toDisplay === false) {
@@ -119,7 +119,7 @@ export const accept = async (db, data: subAccountInvitationAcceptDeny, context: 
     await childInvitationProcess(db, data, context, async (messageData, messageRef) => {
       await db.runTransaction(async (tr) => {
         const customClaims = { parentUid: messageData.fromUid };
-        await firebase.auth().setCustomUserClaims(messageData.toUid, customClaims);
+        await admin.auth().setCustomUserClaims(messageData.toUid, customClaims);
 
         const childRef = db.doc(`admins/${messageData.fromUid}/children/${messageData.toUid}`);
         await tr.get(childRef);
@@ -195,7 +195,7 @@ export const deleteChild = async (db, data: subAccountDeleteChildData, context: 
       }
       // ok!!
       const customClaims = {};
-      await firebase.auth().setCustomUserClaims(childUid, customClaims);
+      await admin.auth().setCustomUserClaims(childUid, customClaims);
 
       await tr.delete(childRef);
       await tr.delete(messageRef);

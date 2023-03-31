@@ -237,6 +237,14 @@ export const validateOrderPlaced = (data: orderPlacedData) => {
       type: "timestamp",
       required: true,
     },
+    promotionId: {
+      type: "firebaseId",
+      required: false,
+    },
+    affiliateId: {
+      type: "firebaseId",
+      required: false,
+    },
     // memo: {
   };
   return validateData(data, validator);
@@ -275,6 +283,10 @@ export const validateCancel = (data: orderCancelData) => {
     orderId: {
       type: "firebaseId",
       required: true,
+    },
+    cancelReason: {
+      type: "numAlpha",
+      required: false,
     },
   };
   return validateData(data, validator);

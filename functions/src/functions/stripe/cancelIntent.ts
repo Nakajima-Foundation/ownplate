@@ -7,7 +7,7 @@ import { updateOrderTotalDataAndUserLog } from "../order/orderPlace";
 import { sendMessageToCustomer, notifyCanceledOrderToRestaurant } from "../notify";
 import { Context } from "../../models/TestType";
 
-import { getStripeAccount, getStripeOrderRecord, getHash } from "./intent";
+import { cancelStripe } from "./intent";
 import { validateCancel } from "../../lib/validator";
 import { orderCancelData } from "../../lib/types";
 
@@ -17,7 +17,7 @@ export const cancel = async (db: admin.firestore.Firestore, data: orderCancelDat
 
   const uid = isAdmin ? utils.validate_owner_admin_auth(context) : utils.validate_customer_auth(context);
 
-  const { restaurantId, orderId } = data;
+  const { restaurantId, orderId, cancelReason } = data;
   utils.required_params({ restaurantId, orderId });
 
   const validateResult = validateCancel(data);
@@ -35,8 +35,6 @@ export const cancel = async (db: admin.firestore.Firestore, data: orderCancelDat
   const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`);
   const restaurant = await utils.get_restaurant(db, restaurantId);
   const restaurantOwnerUid = restaurant["uid"];
-
-  const now = admin.firestore.Timestamp.now();
 
   try {
     const result = await db.runTransaction(async (transaction) => {
@@ -59,61 +57,45 @@ export const cancel = async (db: admin.firestore.Firestore, data: orderCancelDat
       }
       const cancelTimeKey = uid === order.uid ? "orderCustomerCanceledAt" : "orderRestaurantCanceledAt";
       // user can cancel if restaurant cancel just only payment and status is placed.
-      if (!order.payment || !order.payment.stripe || (!isAdmin && order.payment.stripe === "canceled")) {
-        // No payment transaction
-        await updateOrderTotalDataAndUserLog(db, transaction, order.uid, order.order, restaurantId, uid, order.timePlaced, now, false);
+      const myCancelReason = isAdmin ? cancelReason || null : "canceledByCustomer";
+      const updateDataBase = {
+        timeCanceled: admin.firestore.FieldValue.serverTimestamp(),
+        [cancelTimeKey]: admin.firestore.FieldValue.serverTimestamp(),
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        status: order_status.order_canceled,
+        cancelReason: myCancelReason,
+        uidCanceledBy: uid,
+      };
+      const noPayment = !order.payment || !order.payment.stripe || (!isAdmin && order.payment.stripe === "canceled");
+      const hasPayment = !noPayment;
+      if (hasPayment && order.payment.stripe !== "pending") {
+        throw new functions.https.HttpsError("permission-denied", "Invalid payment state to cancel."); // stripe
+      }
+      const paymentIntent = hasPayment ? await cancelStripe(db, transaction, stripeRef, restaurantOwnerUid, order.id) : {}; // stripe
+      await updateOrderTotalDataAndUserLog(db, transaction, order.uid, order.order, restaurantId, restaurantOwnerUid, order.timePlaced, false);
+      const updateData = noPayment ? updateDataBase : {
+        ...updateDataBase,
+        ...{
+          payment: {
+            stripe: "canceled",
+          },
+        }
+      };
+      transaction.set(orderRef, updateData, { merge: true });
+      if (hasPayment) { // stripe
         transaction.set(
-          orderRef,
+          stripeRef,
           {
-            timeCanceled: admin.firestore.FieldValue.serverTimestamp(),
-            [cancelTimeKey]: admin.firestore.FieldValue.serverTimestamp(),
-            updatedAt: now,
-            status: order_status.order_canceled,
-            uidCanceledBy: uid,
+            paymentIntent,
           },
           { merge: true }
         );
-        return { success: true, payment: false, order };
       }
-
-      if (order.payment.stripe !== "pending") {
-        throw new functions.https.HttpsError("permission-denied", "Invalid payment state to cancel.");
-      }
-      const stripeRecord = await getStripeOrderRecord(transaction, stripeRef);
-      const paymentIntentId = stripeRecord.paymentIntent.id;
-
-      const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
-
-      const idempotencyKey = getHash([order.id, paymentIntentId].join("-"));
-      const stripe = utils.get_stripe();
-      const paymentIntent = await stripe.paymentIntents.cancel(paymentIntentId, {
-        idempotencyKey: `${idempotencyKey}-cancel`,
-        stripeAccount,
-      });
-      await updateOrderTotalDataAndUserLog(db, transaction, order.uid, order.order, restaurantId, restaurant.uid, order.timePlaced, now, false);
-      const updateData = {
-        timeCanceled: admin.firestore.FieldValue.serverTimestamp(),
-        [cancelTimeKey]: admin.firestore.FieldValue.serverTimestamp(),
-        status: order_status.order_canceled,
-        updatedAt: now,
-        uidCanceledBy: uid,
-        payment: {
-          stripe: "canceled",
-        },
-      };
-      transaction.set(orderRef, updateData, { merge: true });
-      transaction.set(
-        stripeRef,
-        {
-          paymentIntent,
-        },
-        { merge: true }
-      );
       Object.assign(order, updateData);
       return {
         success: true,
-        payment: "stripe",
-        byUser: uid === order.uid,
+        payment: hasPayment ? "stripe" : false,
+        byUser: uid === order.uid, // no longer used?
         order,
       };
     });

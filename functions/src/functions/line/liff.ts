@@ -61,7 +61,7 @@ export const liffAuthenticate = async (db: admin.firestore.Firestore, data: liff
           liffIndexId,
           liffId: liffConfig.liffId,
           lineChannelId: liffConfig.clientId,
-          createdAt: admin.firestore.Timestamp.now(),
+          createdAt: admin.firestore.FieldValue.serverTimestamp(),
         },
         { merge: true }
       );

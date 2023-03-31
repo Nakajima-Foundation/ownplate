@@ -11,6 +11,7 @@
       :moPickupSuspend="moPickupSuspend"
       :notFound="notFound"
       :groupData="groupData"
+      :promotions="promotions"
     />
     <NotFound v-else-if="notFound" />
   </div>
@@ -29,6 +30,8 @@ import { doc, onSnapshot, getDoc } from "firebase/firestore";
 import { routeMode, getMoPrefix } from "@/utils/utils";
 
 import NotFound from "@/components/NotFound.vue";
+
+import { usePromitions } from "@/utils/promotion";
 
 export default defineComponent({
   name: "RestaurantWrapper",
@@ -101,7 +104,6 @@ export default defineComponent({
       onSnapshot(
         doc(db, `groups/${props.groupData?.groupId}/groupConfig/suspend`),
         (snapshot) => {
-          console.log(snapshot.data());
           groupSuspend.value = snapshot.data() || {};
         }
       );
@@ -123,6 +125,13 @@ export default defineComponent({
       );
     });
 
+    const user = computed(() => {
+      return ctx.root.user;
+    });
+
+    const id = mode.value === 'mo' ? moPrefix : restaurantId.value;
+    const { promotions } = usePromitions(mode.value, id, user);
+    
     onUnmounted(() => {
       if (restaurant_detacher) {
         restaurant_detacher();
@@ -139,6 +148,8 @@ export default defineComponent({
       paymentInfo,
       deliveryData,
       notFound,
+
+      promotions,
     };
   },
 });

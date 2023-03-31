@@ -208,7 +208,7 @@ export default defineComponent({
       return notFoundResponse;
     }
 
-    const fileName = props.shopInfo.restaurantId + "_orderhistory_summary.csv";
+    const fileName = props.shopInfo.restaurantId + "_orderhistory_detail.csv";
 
     const { loadCategory, categoryDataObj } = useCategory(props.moPrefix);
     const { allSubCategoryDataObj, loadAllSubcategory } = useAllSubcategory(

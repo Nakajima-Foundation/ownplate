@@ -102,13 +102,13 @@
             </div>
 
             <!-- Cancel Button -->
-            <div class="mt-6 text-center">
-              <o-button
-                class="b-reset-tw"
+            <div class="mt-6 text-center"
                 v-if="
                   isValidTransition('order_canceled') &&
                   (paymentIsNotCompleted || !hasStripe)
                 "
+                 >
+              <button
                 @click="openCancel()"
               >
                 <div
@@ -119,92 +119,47 @@
                     {{ $t("admin.order.cancelButton") }}
                   </div>
                 </div>
-              </o-button>
-
-              <o-button v-if="cancelStatus" class="b-reset-tw">
-                <div
-                  class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-red-700 bg-opacity-10 text-red-700"
+              </button>
+              <div v-if="isInMo && showTimePicker" class="mt-2 text-red-700 font-bold">
+                {{ $t("mobileOrder.admin.autoCancelAlert", {date: $d(autoCancelTime, "long") }) }}
+              </div>
+            </div>
+            <div class="mt-6 text-center"
+                 v-if="cancelStatus"
+                 >
+              <div
+                class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-red-700 bg-opacity-10 text-red-700"
                 >
-                  <div>
-                    <div class="text-base font-extrabold">
-                      {{ $t("order." + cancelStatus) }}
-                    </div>
-                    <div class="text-xs">
-                      {{ timeOfEvents[cancelStatus] }}
-                    </div>
+                <div>
+                  <div class="text-base font-extrabold">
+                    {{ $t("order." + cancelStatus) }}
+                  </div>
+                  <div class="text-xs">
+                    {{ timeOfEvents[cancelStatus] }}
                   </div>
                 </div>
-              </o-button>
+              </div>
+              <div v-if="orderInfo.cancelReason === 'autoCancel'" class="mt-2 font-bold text-red-700">
+                {{ $t("mobileOrder.admin.autoCancel") }}
+              </div>
             </div>
 
             <!-- Cancel Popup-->
             <o-modal :active.sync="cancelPopup" :width="488" scroll="keep">
-              <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
-                <!-- Title -->
-                <div class="text-xl font-bold text-black text-opacity-40">
-                  {{ $t("admin.order.cancelTitle") }}
-                </div>
-
-                <!-- Message -->
-                <div class="mt-6 text-base">
-                  {{ $t("admin.order.cancelMessage") }}
-                </div>
-
-                <!-- Call -->
-                <div v-if="orderInfo.phoneNumber" class="mt-6 text-center">
-                  <div>
-                    <a
-                      :href="nationalPhoneURI"
-                      class="inline-flex h-12 items-center justify-center rounded-full border-2 border-op-teal px-6"
-                    >
-                      <div class="text-base font-bold text-op-teal">
-                        {{ nationalPhoneNumber }}
-                      </div>
-                    </a>
-                  </div>
-                  <div class="mt-2 font-bold" v-if="!isInMo">
-                    {{ orderInfo.name }}
-                  </div>
-                </div>
-
-                <!-- Cancel -->
-                <div class="mt-4 text-center">
-                  <o-button
-                    :disabled="updating === 'order_canceled'"
-                    @click="handleCancel"
-                    class="b-reset-tw"
-                  >
-                    <div
-                      class="inline-flex h-12 items-center justify-center rounded-full bg-red-700 px-6"
-                    >
-                      <ButtonLoading v-if="updating === 'order_canceled'" />
-                      <div class="text-base font-bold text-white">
-                        {{ $t("admin.order.delete") }}
-                      </div>
-                    </div>
-                  </o-button>
-                  <div class="mt-2 text-sm font-bold text-red-700">
-                    {{ $t("admin.order.deleteConfirm") }}
-                  </div>
-                </div>
-
-                <!-- Close -->
-                <div class="mt-6 text-center">
-                  <a
-                    @click="closeCancel()"
-                    class="inline-flex h-12 items-center justify-center rounded-full bg-black bg-opacity-5 px-6"
-                    style="min-width: 8rem"
-                  >
-                    <div class="text-base font-bold text-black text-opacity-60">
-                      {{ $t("menu.close") }}
-                    </div>
-                  </a>
-                </div>
-              </div>
+              <CancelModal
+                :shopInfo="shopInfo"
+                :orderInfo="orderInfo"
+                :orderId="orderId"
+                :isInMo="isInMo"
+                :parentUrl="parentUrl"
+                :nationalPhoneURI="nationalPhoneURI"
+                :nationalPhoneNumber="nationalPhoneNumber"
+                @close="closeCancel()"
+                />
             </o-modal>
 
             <!-- Pickup Time -->
-            <div class="mt-2 text-center">
+            <div class="mt-2 text-center" v-if="!cancelStatus">
               <div class="text-xs font-bold">
                 {{ $t("order.timeRequested") }}
               </div>
@@ -332,13 +287,13 @@
             v-if="isDev"
           >
             <div class="mt-2">
-              <o-button @click="download()" class="b-reset-tw">
+              <button @click="download()">
                 <div
                   class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-black bg-opacity-5"
                 >
                   Download
                 </div>
-              </o-button>
+              </button>
             </div>
           </div>
 
@@ -351,13 +306,13 @@
             "
           >
             <div>
-              <o-button @click="print()" class="b-reset-tw">
+              <button @click="print()">
                 <div
                   class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-black bg-opacity-5"
                 >
                   {{ $t("order.print") }}
                 </div>
-              </o-button>
+              </button>
             </div>
           </div>
 
@@ -424,68 +379,16 @@
               :active.sync="paymentCancelPopup"
               :width="488"
               scroll="keep"
-            >
-              <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
-                <!-- Title -->
-                <div class="text-xl font-bold text-black text-opacity-40">
-                  {{ $t("admin.order.paymentCancelTitle") }}
-                </div>
-
-                <!-- Message -->
-                <div class="mt-6 text-base">
-                  {{ $t("admin.order.paymentCancelMessage") }}
-                </div>
-
-                <!-- Call -->
-                <div v-if="orderInfo.phoneNumber" class="mt-6 text-center">
-                  <div>
-                    <a
-                      :href="nationalPhoneURI"
-                      class="inline-flex h-12 items-center justify-center rounded-full border-2 border-op-teal px-6"
-                    >
-                      <div class="text-base font-bold text-op-teal">
-                        {{ nationalPhoneNumber }}
-                      </div>
-                    </a>
-                  </div>
-                  <div class="mt-2 font-bold">
-                    {{ orderInfo.name }}
-                  </div>
-                </div>
-
-                <!-- Cancel -->
-                <div class="mt-4 text-center">
-                  <o-button
-                    :loading="updating === 'payment_canceled'"
-                    @click="handlePaymentCancel"
-                    class="b-reset-tw"
-                  >
-                    <div
-                      class="inline-flex h-12 items-center justify-center rounded-full bg-red-700 px-6"
-                    >
-                      <div class="text-base font-bold text-white">
-                        {{ $t("admin.order.paymentCancel") }}
-                      </div>
-                    </div>
-                  </o-button>
-                  <div class="mt-2 text-sm font-bold text-red-700">
-                    {{ $t("admin.order.paymentCancelConfirm") }}
-                  </div>
-                </div>
-
-                <!-- Close -->
-                <div class="mt-6 text-center">
-                  <a
-                    @click="closePaymentCancel()"
-                    class="inline-flex h-12 items-center justify-center rounded-full bg-black bg-opacity-5 px-6"
-                    style="min-width: 8rem"
-                  >
-                    <div class="text-base font-bold text-black text-opacity-60">
-                      {{ $t("menu.close") }}
-                    </div>
-                  </a>
-                </div>
-              </div>
+              >
+              <PaymentCancelModal
+                :shopInfo="shopInfo"
+                :orderInfo="orderInfo"
+                :orderId="orderId"
+                :parentUrl="parentUrl"
+                :nationalPhoneURI="nationalPhoneURI"
+                :nationalPhoneNumber="nationalPhoneNumber"
+                @close="closePaymentCancel()"
+                />
             </o-modal>
           </div>
         </div>
@@ -512,7 +415,7 @@
               :editedAvailableOrders="editedAvailableOrders"
               @input="updateEnable"
             ></order-info>
-            <div v-if="editedAvailableOrders.length > 1">
+            <div v-if="editedAvailableOrders.length > 1 || orderInfo.orderUpdatedAt">
               <div
                 class="rounded-lg bg-white p-4 text-center shadow"
                 v-if="orderInfo.orderUpdatedAt"
@@ -607,10 +510,6 @@ import {
 } from "@/config/constant";
 import { nameOfOrder, formatOption } from "@/utils/strings";
 import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
-import {
-  stripeCancelIntent,
-  stripePaymentCancelIntent,
-} from "@/lib/stripe/stripe";
 import moment from "moment-timezone";
 
 import { ownPlateConfig } from "@/config/project";
@@ -621,10 +520,11 @@ import CustomerInfo from "@/components/CustomerInfo.vue";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 
 import ButtonLoading from "@/components/Button/Loading.vue";
+import CancelModal from "@/app/admin/Order/CancelModal.vue";
+import PaymentCancelModal from "@/app/admin/Order/PaymentCancelModal.vue";
 
 import { costCal } from "@/utils/commonUtils";
 import { downloadOrderPdf, printOrder, data2UrlSchema } from "@/lib/pdf/pdf2";
-import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import { checkShopAccount } from "@/utils/userPermission";
 import {
@@ -653,6 +553,8 @@ export default defineComponent({
     CustomerInfo,
     NotFound,
     ButtonLoading,
+    CancelModal,
+    PaymentCancelModal,
   },
   props: {
     shopInfo: {
@@ -1097,7 +999,7 @@ export default defineComponent({
       return Timestamp.fromDate(date);
     };
     const handleChangeStatus = async (statusKey) => {
-      const newStatus = order_status[statusKey];
+       const newStatus = order_status[statusKey];
       if (newStatus === orderInfo.value.status) {
         console.log("same status - no need to process");
         return;
@@ -1124,37 +1026,6 @@ export default defineComponent({
         });
       } finally {
         ctx.root.$store.commit("setLoading", false);
-        updating.value = "";
-      }
-    };
-    const sendRedunded = () => {
-      analyticsUtil.sendRedunded(
-        orderInfo.value,
-        orderId.value,
-        props.shopInfo,
-        restaurantId.value
-      );
-      // console.log(orderItems.value);
-    };
-    const handleCancel = async () => {
-      console.log("handleCancel");
-
-      try {
-        updating.value = "order_canceled";
-        const { data } = await stripeCancelIntent({
-          restaurantId: restaurantId.value,
-          orderId: orderId.value,
-        });
-        sendRedunded();
-        // console.log("cancel", data);
-        ctx.root.$router.push(parentUrl.value);
-      } catch (error) {
-        console.error(error.message, error.details);
-        ctx.root.$store.commit("setErrorMessage", {
-          code: "order.cancel",
-          error,
-        });
-      } finally {
         updating.value = "";
       }
     };
@@ -1189,29 +1060,11 @@ export default defineComponent({
         },
       });
     };
-    const handlePaymentCancel = async () => {
-      console.log("handlePaymentCancel");
-
-      try {
-        ctx.root.$store.commit("setLoading", true);
-        updating.value = "payment_canceled";
-        const { data } = await stripePaymentCancelIntent({
-          restaurantId: restaurantId.value,
-          orderId: orderId.value,
-        });
-        console.log("paymentCancel", data);
-        ctx.root.$router.push(parentUrl.value);
-      } catch (error) {
-        console.error(error.message, error.details);
-        ctx.root.$store.commit("setErrorMessage", {
-          code: "stripe.cancel",
-          error,
-        });
-      } finally {
-        updating.value = "";
-        ctx.root.$store.commit("setLoading", false);
-      }
-    };
+    const autoCancelTime = computed(() => {
+      const diffSecond = orderInfo.value?.isPickup ? 10 * 60 : 3600 * 24;
+      return new Date((orderInfo.value?.orderPlacedAt.seconds + diffSecond) * 1000);
+      // return orderInfo.value?.orderPlacedAt?.toDate();
+    });
     const classOf = (statusKey) => {
       if (order_status[statusKey] == orderInfo.value.status) {
         return statusKey;
@@ -1266,7 +1119,8 @@ export default defineComponent({
       timeEstimated,
       hasStripe,
       paymentIsNotCompleted,
-
+      autoCancelTime,
+      
       nationalPhoneNumber,
       nationalPhoneURI,
       parentUrl,
@@ -1290,9 +1144,7 @@ export default defineComponent({
       download,
       print,
       handleChangeStatus,
-      handleCancel,
       handleOrderChange,
-      handlePaymentCancel,
       classOf,
 
       openCancel,

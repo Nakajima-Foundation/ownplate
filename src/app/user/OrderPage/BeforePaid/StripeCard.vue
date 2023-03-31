@@ -4,7 +4,10 @@
       {{ $t("order.no_jcb") }}
     </div>
 
-    <div v-if="storedCard" class="mt-2 rounded-lg bg-white p-4 shadow">
+    <div
+      v-if="storedCard"
+      class="mt-2 flex items-center rounded-lg bg-white p-4 shadow"
+    >
       <o-checkbox v-model="useStoredCard">
         <div class="text-base">
           <span>{{ storedCard.brand }}</span>
@@ -15,7 +18,7 @@
 
     <div v-show="!useStoredCard">
       <!-- Enter New Card -->
-      <div class="mt-2 rounded-lg bg-white p-4 shadow">
+      <div class="mt-2 h-14 rounded-lg bg-white p-4 shadow">
         <div id="card-element"></div>
       </div>
 
@@ -106,6 +109,7 @@
 <script>
 import { getStripeInstance, stripeUpdateCustomer } from "@/lib/stripe/stripe";
 import { db } from "@/plugins/firebase";
+import moment from "moment";
 
 export default {
   data() {
@@ -127,13 +131,22 @@ export default {
   },
   async mounted() {
     this.configureStripe();
-    const stripeInfo = (
-      await db.doc(`/users/${this.user.uid}/readonly/stripe`).get()
-    ).data();
-    if (stripeInfo && stripeInfo.card) {
-      this.storedCard = stripeInfo.card;
-      this.useStoredCard = true;
-      this.$emit("change", { complete: true });
+    try {
+      const stripeInfo = (
+        await db.doc(`/users/${this.user.uid}/readonly/stripe`).get()
+      ).data();
+      if (stripeInfo && stripeInfo.card) {
+        if (
+          stripeInfo.updatedAt.toDate() >
+          moment().subtract(180, "days").toDate()
+        ) {
+          this.storedCard = stripeInfo.card;
+          this.useStoredCard = true;
+          this.$emit("change", { complete: true });
+        }
+      }
+    } catch (e) {
+      console.log("stripe expired");
     }
   },
   watch: {

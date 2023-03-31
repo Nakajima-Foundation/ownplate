@@ -18,6 +18,9 @@ exportIfNeeded("apiJP", "apiJP", exports);
 exportIfNeeded("superDispatch", "super/superDispatch", exports);
 exportIfNeeded("superTwilio", "super/superTwilio", exports);
 
+exportIfNeeded("batchBigQueryPV", "batch/bigQueryPV", exports);
+exportIfNeeded("autoCancel", "batch/autoCancel", exports);
+
 exportIfNeeded("accountDelete", "accountDelete", exports);
 
 exportIfNeeded("lineVerifyFriend", "line/lineVerifyFriend", exports); // by user profile
@@ -54,3 +57,4 @@ exportIfNeeded("subAccountInvitationDeny", "subaccount/deny", exports);
 exportIfNeeded("subAccountDeleteChild", "subaccount/delete", exports);
 
 exportIfNeeded("ping", "ping", exports);
+exportIfNeeded("beforeSignIn", "auth/beforeSignIn", exports);

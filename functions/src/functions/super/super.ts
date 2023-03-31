@@ -35,7 +35,7 @@ export const dispatch = async (db: admin.firestore.Firestore, data: dispatchData
             value,
             email: userRecord.email,
             success: true,
-            createdAt: admin.firestore.Timestamp.now(),
+            createdAt: admin.firestore.FieldValue.serverTimestamp(),
           });
         } else {
           await db.collection(`admins/${uidSuper}/adminlogs`).add({
@@ -46,7 +46,7 @@ export const dispatch = async (db: admin.firestore.Firestore, data: dispatchData
             value,
             success: false,
             error: "invalid_parameters",
-            createdAt: admin.firestore.Timestamp.now(),
+            createdAt: admin.firestore.FieldValue.serverTimestamp(),
           });
         }
         break;
@@ -60,7 +60,7 @@ export const dispatch = async (db: admin.firestore.Firestore, data: dispatchData
           value,
           success: false,
           error: "invalid_cmd",
-          createdAt: admin.firestore.Timestamp.now(),
+          createdAt: admin.firestore.FieldValue.serverTimestamp(),
         });
         throw new functions.https.HttpsError("invalid-argument", "Invalid command.");
     }
@@ -99,7 +99,7 @@ export const superTwilioCall = async (db: admin.firestore.Firestore, data: super
       restaurantId,
       date: datestr,
       phoneNumber: restaurantData.phoneNumber,
-      updatedAt: admin.firestore.Timestamp.now(),
+      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
     });
   }
   return {};
