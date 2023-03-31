@@ -4,7 +4,8 @@
       discounts
     </div>
     <div v-for="(promotion, k) in promotionDataSet">
-      名前: <router-link :to="isInMo ? `/admin/discounts/${promotion.promotionId}` : `/admin/restaurants/${shopInfo.restaurantId}/discounts/${promotion.promotionId}`">{{ promotion.promotionName }}</router-link><br/>
+      名前: <router-link :to="isInMo ? `/admin/discounts/${promotion.promotionId}` : `/admin/restaurants/${shopInfo.restaurantId}/discounts
+/${promotion.promotionId}`">{{ promotion.promotionName }}</router-link><br/>
       有効: {{ promotion.enable ? "はい" : "いいえ" }}<br/>
       期間: {{ promotion.hasTerm ? "あり":"なし" }} {{ promotion.hasTerm ? promotion.termFrom.toDate().toISOString().slice(0, 10) + "~" + promotion.termTo.toDate().toISOString().slice(0, 10) :"なし" }}<br/> 
       利用回数制限(１回): {{ promotion.usageRestrictions  ? "はい" : "いいえ"}}<br/>
