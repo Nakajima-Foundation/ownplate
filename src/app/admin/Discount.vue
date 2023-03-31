@@ -169,7 +169,10 @@ import {
 } from "@/utils/promotion";
 import { PromotionData } from "@/models/promotion";
 
-import { useRoute } from "vue-router";
+import {
+  useRoute,
+  useRouter,
+} from "vue-router";
 
 export default defineComponent({
   props: {
