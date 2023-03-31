@@ -77,6 +77,20 @@
       </div>
       <div class="mt-6">
         <div class="pb-2 text-sm font-bold">
+          割引１回のみ(なしの場合は、何回でも割引が適用されます)
+        </div>
+        <o-select v-model="promotion.usageRestrictions">
+          <option
+            v-for="(result, key) in toBeOrNotSelect"
+            :value="result.value"
+            :key="key"
+            >
+            {{ result.message }}
+          </option>
+        </o-select>
+      </div>
+      <div class="mt-6">
+        <div class="pb-2 text-sm font-bold">
           割引
         </div>
         <o-field>
