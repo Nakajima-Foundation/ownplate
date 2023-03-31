@@ -16,6 +16,7 @@ import { validateOrderPlaced, validateCustomer } from "../../lib/validator";
 import {
   getPromotion,
   getUserPromotionRef,
+  getNewUserPromotionRef,
   enableUserPromotion,
   setUserPromotionUsed,
   getDiscountPrice
@@ -193,7 +194,9 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
               discountPrice,
             };
           }
+          const userPromotionRef = getNewUserPromotionRef(db,  customerUid, restaurantData.groupId, phoneNumber);
           return {
+            userPromotionRef,
             promotionData,
             discountPrice,
           }

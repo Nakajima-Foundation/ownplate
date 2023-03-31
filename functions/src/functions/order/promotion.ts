@@ -50,6 +50,10 @@ const getUserCollectionPath = (uid: string, groupId: string, phoneNumber: string
   return `/users/${uid}/promotionsHistories`;
 }
 
+export const getNewUserPromotionRef = (db, uid, groupId, phoneNumber) => {
+  const collectionPath = getUserCollectionPath(uid, groupId, phoneNumber);
+  return db.collection(collectionPath).doc();
+};
 export const getUserPromotionRef = async (db, promotionData, uid, groupId, phoneNumber) => {
   const collectionPath = getUserCollectionPath(uid, groupId, phoneNumber);
   if (promotionData.type === "multipletimesCoupon") {

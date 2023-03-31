@@ -106,13 +106,18 @@ export const usePromitions = (mode: string, id: string, user: any) => {
     if (user.value && promotionData.value.length > 0) {
       const keys: string[] = [];
       const values: string[] = [];
-      promotionData.value.map(a => {
-        if (["discount", "onetimeCoupon"].includes(a.type)) {
-          keys.push(a.promotionId);
-        } else {
-          values.push(a.promotionId);
-        }
-      });
+      
+      if (promotionData.value) {
+        promotionData.value.map(a => {
+          if (a.usageRestrictions) {
+            if (["discount", "onetimeCoupon"].includes(a.type)) {
+              keys.push(a.promotionId);
+            } else {
+              values.push(a.promotionId);
+            }
+          }
+        });
+      }
       const userPath = await(async () => {
         if (mode === "mo") {
           const hash = await sha256([id, user.value.phoneNumber].join(":")); 
