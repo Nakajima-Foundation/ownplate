@@ -37,6 +37,7 @@ import PhoneLogin from "@/app/auth/PhoneLogin.vue";
 import { getAuth, deleteUser } from "firebase/auth";
 
 import { accountDelete } from "@/lib/firebase/functions";
+import { useUserData } from "@/utils/utils";
 
 import { useStore } from "vuex";
 
@@ -46,6 +47,7 @@ export default defineComponent({
   },
   setup() {
     const store = useStore();
+    const { user } = useUserData();
     
     const isDeletingAccount = ref(false);
     const reLoginVisible = ref(false);
@@ -59,6 +61,8 @@ export default defineComponent({
         },
       });
     };
+    // To avoid to auth/requires-recent-login error, user need reLogin.
+    // see https://stackoverflow.com/questions/56617518/
     const continueDelete = async (result: any) => {
       reLoginVisible.value = false;
       if (result) {
@@ -87,6 +91,8 @@ export default defineComponent({
 
       isDeletingAccount,
       reLoginVisible,
+
+      user,
     };
   },
 });
