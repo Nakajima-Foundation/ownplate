@@ -12,6 +12,16 @@
       </o-button>
     </div>
 
+    <!-- Phone Login-->
+    <o-modal v-model:active="reLoginVisible" :width="488" scroll="keep">
+      <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
+        <phone-login
+          v-on:dismissed="continueDelete"
+          :relogin="user.phoneNumber"
+        />
+      </div>
+    </o-modal>
+
     <!-- Loading -->
     <o-loading
       :is-full-page="false"
@@ -24,7 +34,7 @@
 <script lang="ts">
 import { defineComponent, ref, computed, watch } from "vue";
 import PhoneLogin from "@/app/auth/PhoneLogin.vue";
-import { getAuth, deleteUser, signOut } from "firebase/auth";
+import { getAuth, deleteUser } from "firebase/auth";
 
 import { accountDelete } from "@/lib/firebase/functions";
 
@@ -38,38 +48,45 @@ export default defineComponent({
     const store = useStore();
     
     const isDeletingAccount = ref(false);
+    const reLoginVisible = ref(false);
 
-    const continueDelete = async () => {
-      isDeletingAccount.value = true;
-      try {
-        const { data } = await accountDelete();
-        // console.log("deleteAccount", data);
-        const auth = getAuth();
-        const user = auth.currentUser;
-        if (user) {
-          await deleteUser(user);
-        }
-        signOut(auth);
-        console.log("deleted");
-      } catch (error) {
-        console.error(error);
-      } finally {
-        isDeletingAccount.value = false;
-      }
-    };
     const handleDeleteAccount = () => {
       store.commit("setAlert", {
         code: "profile.reallyDeleteAccount",
         callback: async () => {
-          continueDelete();
           window.scrollTo(0, 0);
+          reLoginVisible.value = true;
         },
       });
+    };
+    const continueDelete = async (result: any) => {
+      reLoginVisible.value = false;
+      if (result) {
+        isDeletingAccount.value = true;
+        try {
+          const { data } = await accountDelete();
+          console.log("deleteAccount", data);
+
+          const auth = getAuth();
+          const user = auth.currentUser;
+          if (user) {
+            await deleteUser(user);
+          }
+          console.log("deleted");
+        } catch (error) {
+          console.error(error);
+        } finally {
+          isDeletingAccount.value = false;
+        }
+      }
     };
 
     return {
       handleDeleteAccount,
+      continueDelete,
+
       isDeletingAccount,
+      reLoginVisible,
     };
   },
 });
