@@ -14,7 +14,11 @@
       </div>
 
       <!-- Description -->
-      <div class="mt-3 text-sm">{{ menu.itemDescription }}</div>
+      <div class="mt-3 text-sm">
+        <div v-for="(d, k) in menu.itemDescription.split('\n')" :key="k">
+          {{d}}
+        </div>
+      </div>
 
       <div class="mt-3 inline-flex items-end">
         <div class="text-base font-bold text-red-600">

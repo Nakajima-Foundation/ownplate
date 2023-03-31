@@ -28,13 +28,18 @@ import { db } from "@/lib/firebase/firebase9";
 import { OrderInfoData } from "@/models/orderInfo";
 import { PromotionData } from "@/models/promotion";
 
-const getPromotionPath = (isInMo: boolean, id: string) => {
+export const getPromotionCollctionPath = (isInMo: boolean, id: string) => {
   return isInMo ? `/groups/${id}/promotions` : `restaurants/${id}/promotions`;
 };
 
-export const getPromotion = async (isInMo: boolean, id: string, promotionId: string) => {
-  const basePath = getPromotionPath(isInMo, id);
+export const getPromotionDocumentPath = (isInMo: boolean, id: string, promotionId: string) => {
+  const basePath = getPromotionCollctionPath(isInMo, id);
   const path = `${basePath}/${promotionId}`;
+  return path;
+};
+
+export const getPromotion = async (isInMo: boolean, id: string, promotionId: string) => {
+  const path = getPromotionDocumentPath(isInMo, id, promotionId);
   const promotionDoc = await getDoc(doc(db, path))
   return promotionDoc.data() as PromotionData;
 };
@@ -44,7 +49,7 @@ export const usePromitionsForAdmin = (isInMo: boolean, id: string) => {
   const promotionDataSet = ref<PromotionData[]>([]);
 
   (async () => {
-    const promotionPath = getPromotionPath(isInMo, id);
+    const promotionPath = getPromotionCollctionPath(isInMo, id);
     onSnapshot(
       query(
         collection(db, promotionPath),
@@ -63,7 +68,7 @@ export const usePromitions = (mode: string, id: string, user: any) => {
   const promotionData = ref<PromotionData[]>([]);
 
   (async () => {
-    const promotionPath = getPromotionPath((mode === "mo"), id);
+    const promotionPath = getPromotionCollctionPath((mode === "mo"), id);
 
     const p: PromotionData[] = [];
     await Promise.all([
@@ -226,7 +231,7 @@ export const useUserPromotionHistory = (mode: string, id: string, user: any) => 
     })();
     const historySnapShot = await getDocs(collection(db, userPath))
 
-    const promotionPath = getPromotionPath((mode === "mo"), id);
+    const promotionPath = getPromotionCollctionPath((mode === "mo"), id);
     if (historySnapShot.docs && historySnapShot.docs.length > 0) {
       const userHistory = historySnapShot.docs.map(a => {
         return { userHistory: a.data(), history: {} };

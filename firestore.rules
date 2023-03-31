@@ -65,6 +65,9 @@ service cloud.firestore {
     function isGroupOwner(userId, request) {
       return get(/databases/$(database)/documents/admins/$(userId)/groups/data).data.groupId == request.auth.token.groupId
     }
+    function isGroupOwner2(groupId, request) {
+      return get(/databases/$(database)/documents/groups/$(groupId)).data.ownerId == request.auth.uid && request.auth.token.groupId == groupId
+    }
     function isUndefined(data, field) {
       return !data.keys().hasAll([field]);
     }
@@ -201,8 +204,9 @@ service cloud.firestore {
         allow write: if request.auth.token.groupId == groupId
       }
       match /promotions/{promotionId} {
-        // TODO gropu promotion condition
+        // TODO group promotion condition
         allow read: if true
+        allow write: if isGroupOwner2(groupId, request);
       }
       match /users/{hashId}/promotionHistories/{promotionId} {
         allow read: if phoneHashUser(hashId, groupId, request)
@@ -371,6 +375,8 @@ service cloud.firestore {
         match /promotions/{promotionId} {
           // TODO restaurant promotion condition
           allow read: if true
+          allow write: if isAdmin(request)
+                          && isRestaurantOwner(restaurantId, request);
         }
     }
 

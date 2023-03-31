@@ -12,7 +12,7 @@
     <News />
 
     <!-- News -->
-    <Survey v-if="!isInMo"/>
+    <Survey v-if="false"/>
     
     <!-- Unset Warning -->
     <div v-if="false" class="mx-6 mt-6 rounded-lg bg-red-700 bg-opacity-10 p-4">

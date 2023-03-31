@@ -77,6 +77,20 @@
       </div>
       <div class="mt-6">
         <div class="pb-2 text-sm font-bold">
+          割引１回のみ(なしの場合は、何回でも割引が適用されます)
+        </div>
+        <o-select v-model="promotion.usageRestrictions">
+          <option
+            v-for="(result, key) in toBeOrNotSelect"
+            :value="result.value"
+            :key="key"
+            >
+            {{ result.message }}
+          </option>
+        </o-select>
+      </div>
+      <div class="mt-6">
+        <div class="pb-2 text-sm font-bold">
           割引
         </div>
         <o-field>
@@ -104,6 +118,15 @@
       <!-- Save -->
       <div class="mt-6 flex justify-center space-x-4">
         <button
+          @click="cancel"
+          class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
+          >
+          <span class="text-base font-bold text-black text-opacity-60">
+            {{ $t("button.cancel") }}
+          </span>
+        </button>
+
+        <button
           @click="save"
           class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
           >
@@ -121,6 +144,13 @@ import {
   defineComponent,
   ref,
 } from "vue";
+import { db } from "@/lib/firebase/firebase9";
+
+import {
+  updateDoc,
+  doc,
+  Timestamp,
+} from "firebase/firestore";
 
 import {
   useIsInMo,
@@ -133,7 +163,10 @@ import {
 } from "@/config/constant";
 
   
-import { getPromotion } from "@/utils/promotion";
+import {
+  getPromotion,
+  getPromotionDocumentPath,
+} from "@/utils/promotion";
 import { PromotionData } from "@/models/promotion";
 
 import { useRoute } from "vue-router";
@@ -156,6 +189,7 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const route = useRoute();
+    const router = useRouter();
     const discountId = route.params.discountId as string;
 
     const id = props.isInMo ? props.moPrefix : props.shopInfo?.restaurantId;
@@ -170,10 +204,40 @@ export default defineComponent({
       termToDate.value = data.termTo.toDate();
     });
 
-    const save = () => {
-      console.log(promotion.value);
+    const back = () => {
+      router.push({
+        path: props.isInMo ? `/admin/discounts` : `/admin/restaurants/${props.shopInfo?.restaurantId}/discounts`,
+      });
+    };      
+    const save = async () => {
+      const {
+        promotionName,
+        enable,
+        hasTerm,
+        discountThreshold,
+        discountValue,
+        paymentRestrictions
+      } = promotion.value as PromotionData;
+      const updateData = {
+        promotionName,
+        enable,
+        hasTerm,
+        discountThreshold,
+        discountValue,
+        paymentRestrictions,
+        termFrom: Timestamp.fromDate(termFromDate.value),
+        termTo: Timestamp.fromDate(termToDate.value),
+      };
+      const path = getPromotionDocumentPath(props.isInMo, id as string, discountId);
+      await updateDoc(doc(db, path), updateData);
+
+      back();
     };
 
+    const cancel = () => {
+      back();
+    };
+    
     return {
       promotion,
       termFromDate,
@@ -182,6 +246,7 @@ export default defineComponent({
       toBeOrNotSelect,
       yesOrNoSelect,
       promotionPaymentRestrictionsSelect,
+      cancel,
     };
   }
 });
