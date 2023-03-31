@@ -204,7 +204,7 @@ export default defineComponent({
 
     const back = () => {
       router.push({
-        path: `/admin/discounts`,
+        path: props.isInMo ? `/admin/discounts` : `/admin/restaurants/${props.shopInfo?.restaurantId}/discounts`,
       });
     };      
     const save = async () => {
