@@ -335,11 +335,12 @@
             <div class="grid-col-1 space-y-4">
               <div v-for="(option, key) in menuInfo.itemOptionCheckbox">
                 <div :key="key" class="mb-2 flex">
-                  <o-input
-                    v-model="menuInfo.itemOptionCheckbox[key]"
-                    :placeholder="$t('editMenu.enterItemOption')"
-                    class="mr-2 flex-1"
-                  />
+                  <div class="flex-1 mr-2">
+                    <o-input
+                      v-model="menuInfo.itemOptionCheckbox[key]"
+                      :placeholder="$t('editMenu.enterItemOption')"
+                      />
+                  </div>
                   <o-button class="b-reset-tw" @click="deleteOption(key)">
                     <div
                       class="inline-flex h-9 items-center justify-center rounded-full bg-red-700 bg-opacity-10 px-4"
