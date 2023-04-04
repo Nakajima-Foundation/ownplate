@@ -372,15 +372,15 @@ export const customRoutes: CustomRoute[] = [
           },
           {
             path: "dicsountHistory",
-            component: "admin/DiscountHistory.vue",
+            component: "admin/Discount/DiscountHistory.vue",
           },
           {
             path: "discounts",
-            component: "admin/Discounts.vue",
+            component: "admin/Discount/Discounts.vue",
           },
           {
             path: "discounts/:discountId",
-            component: "admin/Discount.vue",
+            component: "admin/Discount/Discount.vue",
           },
           {
             path: "qrcode",
