@@ -307,7 +307,9 @@ export default defineComponent({
       return route.query.day;
     });
     watch(dayQuery, () => {
-      updateDayIndex();
+      if (dayQuery.value) {
+        updateDayIndex();
+      }
     });
 
     watch(queryIsPlacedDate, () => {
