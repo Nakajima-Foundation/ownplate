@@ -42,7 +42,7 @@ export const getPromotion = async (db, transaction, promotionId, restaurantData,
   return promotionData;
 }
 
-const getUserCollectionPath = (uid: string, groupId: string, phoneNumber: string) => {
+const getUserHistoryCollectionPath = (uid: string, groupId: string, phoneNumber: string) => {
   if (groupId) {
     const hash = crypto.createHash('sha256').update([groupId, phoneNumber].join(":")).digest('hex');
     return `groups/${groupId}/users/${hash}/promotionHistories`
@@ -51,7 +51,7 @@ const getUserCollectionPath = (uid: string, groupId: string, phoneNumber: string
 }
 
 export const getUserPromotionRef = async (db, promotionData, uid, groupId, phoneNumber) => {
-  const collectionPath = getUserCollectionPath(uid, groupId, phoneNumber);
+  const collectionPath = getUserHistoryCollectionPath(uid, groupId, phoneNumber);
   if (promotionData.type === "multipletimesCoupon") {
     const ret = (await db.collection(collectionPath)
       .where("promotionId", "===", promotionData.promotionId)
@@ -87,24 +87,24 @@ export const enableUserPromotion = async (transaction: admin.firestore.Transacti
 }
 
 export const setUserPromotionUsed = async (transaction: admin.firestore.Transaction, promotionData: any, userPromotionRef: admin.firestore.DocumentReference, restaurantData: any, customerUid: string) => {
+  /*
   if (promotionData.type === "multipletimesCoupon" ||
     promotionData.type === "onetimeCoupon") {
     await transaction.set(userPromotionRef, {
       used: true,
       usedAt: admin.firestore.FieldValue.serverTimestamp(),
     }, { merge: true });
-  }
-  if (promotionData.type === "discount") {
-    await transaction.set(userPromotionRef, {
-      uid: customerUid,
-      restaurantId: restaurantData.restaurantId,
-      groupId: restaurantData.groupId,
-      promotionId: promotionData.promotionId,
-      used: true,
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
-      usedAt: admin.firestore.FieldValue.serverTimestamp(),
-    });
-  }
+    }
+  */
+  await transaction.set(userPromotionRef, {
+    uid: customerUid,
+    restaurantId: restaurantData.restaurantId,
+    groupId: restaurantData.groupId || "",
+    promotionId: promotionData.promotionId,
+    used: true,
+    createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    usedAt: admin.firestore.FieldValue.serverTimestamp(),
+  });
 };
 
 export const getDiscountPrice = (promotion: any, total: number) => {
