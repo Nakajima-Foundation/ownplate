@@ -53,7 +53,7 @@ export default defineComponent({
       where(idKey, "==", id),
       orderBy("createdAt", "desc"),
     )).then((docs) => {
-      const tmp = [];
+      const tmp: any[] = [];
       docs.docs.map((a) => {
         tmp.push(a.data());
       });
