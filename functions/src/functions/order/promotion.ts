@@ -86,7 +86,7 @@ export const enableUserPromotion = async (transaction: admin.firestore.Transacti
   throw new functions.https.HttpsError("invalid-argument", "No promotion exist.");
 }
 
-export const setUserPromotionUsed = async (transaction: admin.firestore.Transaction, promotionData: any, userPromotionRef: admin.firestore.DocumentReference, restaurantData: any, customerUid: string, orderId: string) => {
+export const setUserPromotionUsed = async (transaction: admin.firestore.Transaction, promotionData: any, userPromotionRef: admin.firestore.DocumentReference, restaurantData: any, customerUid: string, orderId: string, totalCharge: number, discountPrice: number, enableStripe: boolean) => {
   /*
   if (promotionData.type === "multipletimesCoupon" ||
     promotionData.type === "onetimeCoupon") {
@@ -102,6 +102,9 @@ export const setUserPromotionUsed = async (transaction: admin.firestore.Transact
     groupId: restaurantData.groupId || "",
     promotionId: promotionData.promotionId,
     orderId,
+    totalCharge,
+    discountPrice,
+    isStripe: enableStripe,
     used: true,
     createdAt: admin.firestore.FieldValue.serverTimestamp(),
     usedAt: admin.firestore.FieldValue.serverTimestamp(),
