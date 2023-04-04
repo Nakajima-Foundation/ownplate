@@ -214,7 +214,8 @@ export default defineComponent({
         hasTerm,
         discountThreshold,
         discountValue,
-        paymentRestrictions
+        paymentRestrictions,
+        usageRestrictions,
       } = promotion.value as PromotionData;
       const updateData = {
         promotionName,
@@ -223,6 +224,7 @@ export default defineComponent({
         discountThreshold,
         discountValue,
         paymentRestrictions,
+        usageRestrictions,
         termFrom: Timestamp.fromDate(termFromDate.value),
         termTo: Timestamp.fromDate(termToDate.value),
       };

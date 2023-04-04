@@ -160,7 +160,7 @@ export const usePromotions = (mode: string, id: string, user: any) => {
       console.log(promotionData.value, promotionUsed.value);
       return promotionData.value.filter(a => {
         if (!a.usageRestrictions) {
-          true;
+          return true;
         }
         if (a.type == "multipletimesCoupon") {
           // TODO
