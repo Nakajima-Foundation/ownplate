@@ -47,7 +47,7 @@ const getUserHistoryCollectionPath = (uid: string, groupId: string, phoneNumber:
     const hash = crypto.createHash('sha256').update([groupId, phoneNumber].join(":")).digest('hex');
     return `groups/${groupId}/users/${hash}/promotionHistories`
   } 
-  return `/users/${uid}/promotionsHistories`;
+  return `/users/${uid}/promotionHistories`;
 }
 
 export const getUserPromotionRef = async (db, promotionData, uid, groupId, phoneNumber) => {
