@@ -48,7 +48,7 @@ import {
 import { db } from "@/lib/firebase/firebase9";
 
 import {
-  usePromitionsForAdmin,
+  usePromotionsForAdmin,
   getPromotionCollctionPath,
 } from "@/utils/promotion";
 
@@ -78,7 +78,7 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const id = props.isInMo ? props.moPrefix : props.shopInfo?.restaurantId;
-    const { promotionDataSet } = usePromitionsForAdmin(props.isInMo, id as string);
+    const { promotionDataSet } = usePromotionsForAdmin(props.isInMo, id as string);
 
     const newDiscount = async () => {
       const path = getPromotionCollctionPath(props.isInMo, id as string)

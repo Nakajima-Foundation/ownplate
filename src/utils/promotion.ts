@@ -45,7 +45,7 @@ export const getPromotion = async (isInMo: boolean, id: string, promotionId: str
 };
 
 
-export const usePromitionsForAdmin = (isInMo: boolean, id: string) => {
+export const usePromotionsForAdmin = (isInMo: boolean, id: string) => {
   const promotionDataSet = ref<PromotionData[]>([]);
 
   (async () => {
@@ -64,7 +64,7 @@ export const usePromitionsForAdmin = (isInMo: boolean, id: string) => {
   };
 };
 
-export const usePromitions = (mode: string, id: string, user: any) => {
+export const usePromotions = (mode: string, id: string, user: any) => {
   const promotionData = ref<PromotionData[]>([]);
 
   (async () => {
