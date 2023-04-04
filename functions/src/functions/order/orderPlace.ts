@@ -15,9 +15,10 @@ import { validateOrderPlaced, validateCustomer } from "../../lib/validator";
 
 import {
   getPromotion,
-  getUserPromotionRef,
   enableUserPromotion,
-  setUserPromotionUsed,
+  userPromotionHistoryData,
+  getUserHistoryDoc,
+  getUserHistoryCollectionPath,
   getDiscountPrice
 } from "./promotion";
 
@@ -175,7 +176,8 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
       }
       // promotion
       const {
-        userPromotionRef,
+        historyCollectionRef,
+        historyDocRef,
         promotionData,
         discountPrice,
       } = await (async () => {
@@ -183,17 +185,19 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
           const promotionData = await getPromotion(db, transaction, promotionId, restaurantData, order.total, enableStripe);
           const discountPrice = getDiscountPrice(promotionData, order.total);
           if (promotionData.usageRestrictions) {
-            const userPromotionRef = await getUserPromotionRef(db, promotionData, customerUid, restaurantData.groupId, phoneNumber);
-            if (!await enableUserPromotion(transaction, promotionData, userPromotionRef)) {
+            const historyDocRef = await getUserHistoryDoc(db, promotionData, customerUid, restaurantData.groupId, phoneNumber);
+            if (!await enableUserPromotion(transaction, promotionData, historyDocRef)) {
               throw new functions.https.HttpsError("invalid-argument", "This promotion is used.");
             }
             return {
-              userPromotionRef,
+              historyDocRef,
               promotionData,
               discountPrice,
             };
           }
+          const historyCollectionRef = db.collection(getUserHistoryCollectionPath(customerUid, restaurantData.groupId, phoneNumber));
           return {
+            historyCollectionRef,
             promotionData,
             discountPrice,
           }
@@ -300,8 +304,13 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
         await transaction.update(orderRef, updateData);
       }
       // promotion
-      if (userPromotionRef) {
-        await setUserPromotionUsed(transaction, promotionData, userPromotionRef, restaurantData, customerUid)
+      if (historyDocRef) {
+        const data = userPromotionHistoryData(promotionData, restaurantData, customerUid, orderId, totalCharge, discountPrice, enableStripe);
+        await transaction.set(historyDocRef, data);
+      } else if (historyCollectionRef) {
+        const data = userPromotionHistoryData(promotionData, restaurantData, customerUid, orderId, totalCharge, discountPrice, enableStripe);
+        console.log(data);
+        await transaction.set(historyCollectionRef.doc(), data);
       }
       
       Object.assign(order, { totalCharge, tip, shippingCost }, enableStripe ? {payment: true} : {} );

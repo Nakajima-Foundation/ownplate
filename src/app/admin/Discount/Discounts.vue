@@ -3,9 +3,8 @@
     <div class="text-center">
       discounts
     </div>
-    <div v-for="(promotion, k) in promotionDataSet">
-      名前: <router-link :to="isInMo ? `/admin/discounts/${promotion.promotionId}` : `/admin/restaurants/${shopInfo.restaurantId}/discounts
-/${promotion.promotionId}`">{{ promotion.promotionName }}</router-link><br/>
+    <div v-for="(promotion, k) in promotionDataSet" :key="k" >
+      名前: <router-link :to="isInMo ? `/admin/discounts/${promotion.promotionId}` : `/admin/restaurants/${shopInfo.restaurantId}/discounts/${promotion.promotionId}`">{{ promotion.promotionName }}</router-link><br/>
       有効: {{ promotion.enable ? "はい" : "いいえ" }}<br/>
       期間: {{ promotion.hasTerm ? "あり":"なし" }} {{ promotion.hasTerm ? promotion.termFrom.toDate().toISOString().slice(0, 10) + "~" + promotion.termTo.toDate().toISOString().slice(0, 10) :"なし" }}<br/> 
       利用回数制限(１回): {{ promotion.usageRestrictions  ? "はい" : "いいえ"}}<br/>
@@ -48,7 +47,7 @@ import {
 import { db } from "@/lib/firebase/firebase9";
 
 import {
-  usePromitionsForAdmin,
+  usePromotionsForAdmin,
   getPromotionCollctionPath,
 } from "@/utils/promotion";
 
@@ -78,7 +77,7 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const id = props.isInMo ? props.moPrefix : props.shopInfo?.restaurantId;
-    const { promotionDataSet } = usePromitionsForAdmin(props.isInMo, id as string);
+    const { promotionDataSet } = usePromotionsForAdmin(props.isInMo, id as string);
 
     const newDiscount = async () => {
       const path = getPromotionCollctionPath(props.isInMo, id as string)

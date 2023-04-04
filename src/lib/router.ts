@@ -139,7 +139,7 @@ const mopath = mo_prefixes
             component: "user/Profile.vue",
           },
           {
-            path: prePath + "/u/dicsountHistory",
+            path: prePath + "/u/discounthistory",
             component: "user/DiscountHistory.vue",
           },
           {
@@ -207,7 +207,7 @@ export const customRoutes: CustomRoute[] = [
     component: "user/Profile.vue",
   },
   {
-    path: "/u/dicsountHistory",
+    path: "/u/discounthistory",
     component: "user/DiscountHistory.vue",
   },
   {
@@ -281,7 +281,7 @@ export const customRoutes: CustomRoute[] = [
         component: "user/Profile.vue",
       },
       {
-        path: "u/dicsountHistory",
+        path: "u/discounthistory",
         component: "user/DiscountHistory.vue",
       },
       {
@@ -368,16 +368,16 @@ export const customRoutes: CustomRoute[] = [
             component: "admin/ManageLine.vue",
           },
           {
-            path: "dicsountHistory",
-            component: "admin/DiscountHistory.vue",
+            path: "discounthistory",
+            component: "admin/Discount/DiscountHistory.vue",
           },
           {
             path: "discounts",
-            component: "admin/Discounts.vue",
+            component: "admin/Discount/Discounts.vue",
           },
           {
             path: "discounts/:discountId",
-            component: "admin/Discount.vue",
+            component: "admin/Discount/Discount.vue",
           },
           {
             path: "qrcode",
@@ -404,12 +404,16 @@ export const customRoutes: CustomRoute[] = [
         component: "admin/AllOrders.vue",
       },
       {
+        path: "discounthistory",
+        component: "admin/Discount/DiscountHistory.vue",
+      },
+      {
         path: "discounts",
-        component: "admin/Discounts.vue",
+        component: "admin/Discount/Discounts.vue",
       },
       {
         path: "discounts/:discountId",
-        component: "admin/Discount.vue",
+        component: "admin/Discount/Discount.vue",
       },
       {
         path: "report",
