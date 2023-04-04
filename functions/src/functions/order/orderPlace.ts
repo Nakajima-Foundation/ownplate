@@ -301,7 +301,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
       }
       // promotion
       if (userPromotionRef) {
-        await setUserPromotionUsed(transaction, promotionData, userPromotionRef, restaurantData, customerUid)
+        await setUserPromotionUsed(transaction, promotionData, userPromotionRef, restaurantData, customerUid, orderId)
       }
       
       Object.assign(order, { totalCharge, tip, shippingCost }, enableStripe ? {payment: true} : {} );
