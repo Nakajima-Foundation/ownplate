@@ -142,7 +142,7 @@ const mopath = mo_prefixes
             component: "user/Profile.vue",
           },
           {
-            path: prePath + "/u/dicsountHistory",
+            path: prePath + "/u/discounthistory",
             component: "user/DiscountHistory.vue",
           },
           {
@@ -210,7 +210,7 @@ export const customRoutes: CustomRoute[] = [
     component: "user/Profile.vue",
   },
   {
-    path: "/u/dicsountHistory",
+    path: "/u/discounthistory",
     component: "user/DiscountHistory.vue",
   },
   {
@@ -284,7 +284,7 @@ export const customRoutes: CustomRoute[] = [
         component: "user/Profile.vue",
       },
       {
-        path: "u/dicsountHistory",
+        path: "u/discounthistory",
         component: "user/DiscountHistory.vue",
       },
       {
@@ -371,7 +371,7 @@ export const customRoutes: CustomRoute[] = [
             component: "admin/ManageLine.vue",
           },
           {
-            path: "dicsountHistory",
+            path: "discounthistory",
             component: "admin/Discount/DiscountHistory.vue",
           },
           {
@@ -405,6 +405,10 @@ export const customRoutes: CustomRoute[] = [
         name: "admin-orders-allorders",
         path: "orders",
         component: "admin/AllOrders.vue",
+      },
+      {
+        path: "discounthistory",
+        component: "admin/Discount/DiscountHistory.vue",
       },
       {
         path: "discounts",
