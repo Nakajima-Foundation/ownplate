@@ -107,7 +107,7 @@ export const usePromotions = (mode: string, id: string, user: any) => {
       const keys: string[] = [];
       const values: string[] = [];
       promotionData.value.map(a => {
-        if (["discount", "onetimeCoupon"].includes(a.type)) {
+        if (["discount", "onetimeCoupon"].includes(a.type) && a.usageRestrictions) {
           keys.push(a.promotionId);
         } else {
           values.push(a.promotionId);
@@ -157,7 +157,7 @@ export const usePromotions = (mode: string, id: string, user: any) => {
   });
   const promotions = computed(() => {
     if (promotionUsed.value !== null) {
-      console.log(promotionData.value, promotionUsed.value);
+      // console.log(promotionData.value, promotionUsed.value);
       return promotionData.value.filter(a => {
         if (!a.usageRestrictions) {
           return true;
