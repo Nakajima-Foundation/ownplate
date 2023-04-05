@@ -78,15 +78,14 @@
                 class="mt-4 inline-flex h-9 w-full justify-center rounded-lg bg-green-600 bg-opacity-10 px-4 py-1 font-bold text-green-600"
               >
                 <span class="ml-1 mt-1 text-sm">
-                  {{ $n(orderInfo.discountPrice, "currency") }}{{ $t("order.discountPriceMessage")}}
-
-                </span
-                >
+                  {{ $n(orderInfo.discountPrice, "currency")
+                  }}{{ $t("order.discountPriceMessage") }}
+                </span>
               </div>
             </div>
             <div v-if="orderInfo.isPickup">
               <div
-                class="mt-4 inline-flex h-9 w-full justify-center rounded-lg bg-green-600 bg-opacity-10 px-4 py-1 font-bold text-green-600"
+                class="mt-1 inline-flex h-9 w-full justify-center rounded-lg bg-green-600 bg-opacity-10 px-4 py-1 font-bold text-green-600"
               >
                 <i class="material-icons"> local_mall </i>
                 <span class="ml-1 mt-1 text-sm">
@@ -113,15 +112,14 @@
             </div>
 
             <!-- Cancel Button -->
-            <div class="mt-6 text-center"
-                v-if="
-                  isValidTransition('order_canceled') &&
-                  (paymentIsNotCompleted || !hasStripe)
-                "
-                 >
-              <button
-                @click="openCancel()"
-              >
+            <div
+              class="mt-6 text-center"
+              v-if="
+                isValidTransition('order_canceled') &&
+                (paymentIsNotCompleted || !hasStripe)
+              "
+            >
+              <button @click="openCancel()">
                 <div
                   class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
                 >
@@ -131,16 +129,21 @@
                   </div>
                 </div>
               </button>
-              <div v-if="isInMo && showTimePicker" class="mt-2 text-red-700 font-bold">
-                {{ $t("mobileOrder.admin.autoCancelAlert", {date: $d(autoCancelTime, "long") }) }}
+              <div
+                v-if="isInMo && showTimePicker"
+                class="mt-2 font-bold text-red-700"
+              >
+                {{
+                  $t("mobileOrder.admin.autoCancelAlert", {
+                    date: $d(autoCancelTime, "long"),
+                  })
+                }}
               </div>
             </div>
-            <div class="mt-6 text-center"
-                 v-if="cancelStatus"
-                 >
+            <div class="mt-6 text-center" v-if="cancelStatus">
               <div
                 class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-red-700 bg-opacity-10 text-red-700"
-                >
+              >
                 <div>
                   <div class="text-base font-extrabold">
                     {{ $t("order." + cancelStatus) }}
@@ -150,7 +153,10 @@
                   </div>
                 </div>
               </div>
-              <div v-if="orderInfo.cancelReason === 'autoCancel'" class="mt-2 font-bold text-red-700">
+              <div
+                v-if="orderInfo.cancelReason === 'autoCancel'"
+                class="mt-2 font-bold text-red-700"
+              >
                 {{ $t("mobileOrder.admin.autoCancel") }}
               </div>
             </div>
@@ -166,7 +172,7 @@
                 :nationalPhoneURI="nationalPhoneURI"
                 :nationalPhoneNumber="nationalPhoneNumber"
                 @close="closeCancel()"
-                />
+              />
             </o-modal>
 
             <!-- Pickup Time -->
@@ -390,7 +396,7 @@
               :active.sync="paymentCancelPopup"
               :width="488"
               scroll="keep"
-              >
+            >
               <PaymentCancelModal
                 :shopInfo="shopInfo"
                 :orderInfo="orderInfo"
@@ -399,7 +405,7 @@
                 :nationalPhoneURI="nationalPhoneURI"
                 :nationalPhoneNumber="nationalPhoneNumber"
                 @close="closePaymentCancel()"
-                />
+              />
             </o-modal>
           </div>
         </div>
@@ -426,7 +432,11 @@
               :editedAvailableOrders="editedAvailableOrders"
               @input="updateEnable"
             ></order-info>
-            <div v-if="editedAvailableOrders.length > 1 || orderInfo.orderUpdatedAt">
+            <div
+              v-if="
+                editedAvailableOrders.length > 1 || orderInfo.orderUpdatedAt
+              "
+            >
               <div
                 class="rounded-lg bg-white p-4 text-center shadow"
                 v-if="orderInfo.orderUpdatedAt"
@@ -1010,7 +1020,7 @@ export default defineComponent({
       return Timestamp.fromDate(date);
     };
     const handleChangeStatus = async (statusKey) => {
-       const newStatus = order_status[statusKey];
+      const newStatus = order_status[statusKey];
       if (newStatus === orderInfo.value.status) {
         console.log("same status - no need to process");
         return;
@@ -1073,7 +1083,9 @@ export default defineComponent({
     };
     const autoCancelTime = computed(() => {
       const diffSecond = orderInfo.value?.isPickup ? 10 * 60 : 3600 * 24;
-      return new Date((orderInfo.value?.orderPlacedAt.seconds + diffSecond) * 1000);
+      return new Date(
+        (orderInfo.value?.orderPlacedAt.seconds + diffSecond) * 1000
+      );
       // return orderInfo.value?.orderPlacedAt?.toDate();
     });
     const classOf = (statusKey) => {
@@ -1131,7 +1143,7 @@ export default defineComponent({
       hasStripe,
       paymentIsNotCompleted,
       autoCancelTime,
-      
+
       nationalPhoneNumber,
       nationalPhoneURI,
       parentUrl,

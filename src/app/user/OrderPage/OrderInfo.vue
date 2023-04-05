@@ -52,20 +52,19 @@
       </div>
 
       <!-- Promotion discount for after pay -->
-      <div v-if="orderInfo.promotionId"
-           class="mt-2 flex bg-green-300 bg-opacity-30"
-           >
+      <div
+        v-if="orderInfo.promotionId"
+        class="-mx-2 mt-2 flex rounded-md bg-green-600 bg-opacity-10 px-2 py-1"
+      >
         <div class="flex-1">
           <div class="text-base">
-            {{
-            $t( "order.discount" )
-            }}
+            {{ $t("order.discount") }}
             ({{ orderInfo.promotionName }})
           </div>
         </div>
         <div class="text-right">
           <div class="text-base">
-            {{ $n( -orderInfo.discountPrice, "currency") }}
+            {{ $n(-orderInfo.discountPrice, "currency") }}
           </div>
         </div>
       </div>
@@ -204,9 +203,7 @@
     </div>
 
     <!-- promotion discount for before pay -->
-    <div v-if="enablePromotion"
-         class="bg-green-300 bg-opacity-30"
-         >
+    <div v-if="enablePromotion" class="bg-green-300 bg-opacity-30">
       <!-- promotion discount -->
       <span v-if="promotion.paymentRestrictions">
         {{ $t("order.discountAlert." + promotion.paymentRestrictions) }}
@@ -225,7 +222,7 @@
       </div>
       <div
         class="mt-4 border-t-2 border-solid border-black border-opacity-10 pt-4"
-        >
+      >
         <div class="flex">
           <div class="flex-1">
             <div class="text-xl font-bold text-green-600">
@@ -240,7 +237,6 @@
         </div>
       </div>
     </div>
-    
   </div>
 </template>
 
@@ -315,10 +311,10 @@ export default defineComponent({
 
     const regionTip = stripeRegion.tip;
     const tipStep = 1.0 / stripeRegion.multiple;
-    
+
     const tip = ref<number | string>("");
 
-    // methods 
+    // methods
     const updateAvailable = (value: boolean) => {
       ctx.emit("input", value);
     };
@@ -339,8 +335,8 @@ export default defineComponent({
     const isSameAmount = (ratio: number) => {
       return Number(tip.value) === calcTip(ratio);
     };
-    // computed 
-    // internal 
+    // computed
+    // internal
     const maxTip = computed(() => {
       return calcTip(regionTip.max);
     });
@@ -355,7 +351,6 @@ export default defineComponent({
       }
       ctx.emit("change", Number(tip.value));
     };
-    
 
     // computed
     const actualShippingCost = computed(() => {
@@ -389,8 +384,7 @@ export default defineComponent({
     });
     const previewDiscountTotal = computed(() => {
       return props.editable || isTipEditable.value
-        ? previewTotal.value -
-            Number(props.discountPrice)
+        ? previewTotal.value - Number(props.discountPrice)
         : props.orderInfo.totalCharge;
     });
     const enableTip = computed(() => {
@@ -419,14 +413,14 @@ export default defineComponent({
     });
 
     return {
-      // const 
+      // const
       regionTip,
       tipStep,
       // ref
       tip,
 
       previewDiscountTotal,
-      
+
       // methods
       updateAvailable,
       updateTip,
@@ -439,9 +433,7 @@ export default defineComponent({
       previewTip,
       previewTotal,
       enableTip,
-
     };
-
   },
 });
 </script>

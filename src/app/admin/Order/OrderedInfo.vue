@@ -73,12 +73,14 @@
           {{ $n(order.totalCharge, "currency") }}
         </div>
 
-        <div class="items-center justify-center rounded-full bg-green-300 bg-opacity-30 px-4 text-xs
-                    font-bold text-green-600
-                    " v-if="order.promotionId">
-          {{ $n(order.discountPrice, "currency") }}{{ $t("order.discountPriceSuffix")}}
+        <div
+          class="mr-1 items-center justify-center rounded-lg bg-green-600 bg-opacity-10 px-2 py-1 text-xs font-bold text-green-600"
+          v-if="order.promotionId"
+        >
+          {{ $n(order.discountPrice, "currency")
+          }}{{ $t("order.discountPriceSuffix") }}
         </div>
-        
+
         <div class="mr-2 text-sm" v-if="order.isDelivery">
           <i class="material-icons"> delivery_dining </i>
         </div>
@@ -163,9 +165,7 @@
         </div>
       </div>
     </div>
-    <div v-else
-      class="rounded-lg bg-white shadow"
-    >
+    <div v-else class="rounded-lg bg-white shadow">
       <!-- Order Status -->
       <div class="p-2">
         <div
@@ -255,13 +255,13 @@ export default defineComponent({
   setup(props, ctx) {
     const restaurant = ref(null);
     if (props.order.restaurantId) {
-      getDoc(doc(db, `restaurants/${props.order.restaurantId}`)).then(
-        (snapshot) => {
+      getDoc(doc(db, `restaurants/${props.order.restaurantId}`))
+        .then((snapshot) => {
           restaurant.value = snapshot.data();
-        }
-      ).catch((e) => {
-        console.log("no restaurant")
-      });
+        })
+        .catch((e) => {
+          console.log("no restaurant");
+        });
     }
 
     const statusKey = computed(() => {
