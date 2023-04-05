@@ -213,6 +213,7 @@ export default defineComponent({
           totalCount: Object.values(order.order).reduce((count, order) => {
             return count + arrayOrNumSum(order);
           }, 0),
+          discountPrice: order.discountPrice,
           name: nameOfOrder(order),
           payment: order.payment?.stripe ? "stripe" : "",
           cancelReason: order.cancelReason,

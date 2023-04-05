@@ -240,6 +240,7 @@ export default defineComponent({
                 cancelReason: order.cancelReason,
                 // end of for mo
                 total: writeonFirstLine(index, key, order.totalCharge || ""),
+                discountPrice: writeonFirstLine(index, key, order.discountPrice || ""),
                 payment: writeonFirstLine(
                   index,
                   key,
