@@ -1,7 +1,7 @@
 <template>
   <div>
     <template v-if="notFound == null"></template>
-    <template v-else-if="notFound && !isOwner">
+    <template v-else-if="notFound && !isOwner && !isSubAccount">
       <not-found />
     </template>
     <template v-else>
@@ -685,6 +685,9 @@ export default defineComponent({
     const isOwner = computed(() => {
       return isAdmin.value && uid.value === props.shopInfo.uid;
     });
+    const isSubAccount = computed(() => {
+      return isAdmin.value && store.state?.claims?.parentUid === props.shopInfo.uid;
+    });
     const isPreview = computed(() => {
       return props.notFound && isOwner.value;
     });
@@ -1229,6 +1232,7 @@ export default defineComponent({
       menuId,
 
       isOwner,
+      isSubAccount,
       isDelivery,
       howtoreceive,
       updateHowtoreceive,
