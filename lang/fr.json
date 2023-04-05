@@ -673,6 +673,7 @@
       "instore": "「受取時に店舗でお支払い」を選択した場合は、以下のキャンペーン金額が適用されます。"
     },
     "discountPriceSuffix": "Discount",
+    "discountPriceMessage": "値引きがあります",
     "discountPrice": "Discount Price",
     "discountedPrice": "Discounted Price",
     "cancelReason": "Cancel Reason",
