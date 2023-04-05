@@ -1,5 +1,27 @@
 <template>
   <div>
+    <!-- QR Header Area -->
+    <div class="columns is-gapless">
+      <!-- Left Gap -->
+      <div class="column is-narrow w-6"></div>
+      <!-- Center Column -->
+      <div class="column">
+        <!-- Nav Bar -->
+        <div class="level">
+          <!-- Back Button and Restaurant Profile -->
+          <AdminHeader
+            class="mx-6 mt-6 lg:flex lg:items-center"
+            :shopInfo="shopInfo"
+            backLink="/admin/restaurants/"
+            :showSuspend="false"
+            :isInMo="isInMo"
+            :moPrefix="moPrefix"
+            />
+        </div>
+      </div>
+      <!-- Right Gap -->
+      <div class="column is-narrow w-6"></div>
+    </div>
     <div v-for="(h, k) in histories" :key="k">
       uid: {{h.uid}}<br/>
       rid: {{h.restaurantId}}<br/>
@@ -30,8 +52,12 @@ import {
   orderBy,
 } from "firebase/firestore";
 
+import AdminHeader from "@/app/admin/AdminHeader.vue";
 
 export default defineComponent({
+  components: {
+    AdminHeader,
+  },
   props: {
     isInMo: {
       type: Boolean,
