@@ -1,10 +1,15 @@
 <template>
   <div>
     <div v-for="(h, k) in histories" :key="k">
-      {{h.uid}}
-      {{h.restaurantId}}
-      {{h.promotionId}}
-      {{h.usedAt.toDate()}}
+      uid: {{h.uid}}<br/>
+      rid: {{h.restaurantId}}<br/>
+      pid: {{h.promotionId}}<br/>
+      oid: {{h.orderId}}<br/>
+      date: {{h.usedAt.toDate()}}<br/>
+      total: {{h.totalCharge}}<br/>
+      discount: {{h.discountPrice}}<br/>
+      <hr class="h-1 bg-gray-200 border-0 left-1/2 dark:bg-gray-900"/>
+
     </div>
   </div>
 </template>

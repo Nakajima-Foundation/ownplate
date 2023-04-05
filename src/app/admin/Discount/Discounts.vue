@@ -22,6 +22,7 @@
       <template v-else-if="promotion.paymentRestrictions === 'instore'">現地払い</template>
       <template v-else>なし</template>
       <br/>
+      <router-link :to="isInMo ? `/admin/discounts/${promotion.promotionId}/history` : `/admin/restaurants/${shopInfo.restaurantId}/discounts/${promotion.promotionId}/history`">履歴</router-link><br/>
       <hr class="h-1 bg-gray-200 border-0 left-1/2 dark:bg-gray-900"/>
     </div>
 
