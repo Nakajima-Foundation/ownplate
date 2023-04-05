@@ -42,17 +42,28 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
+    const route = ctx.root.$route;
 
     const id = props.isInMo ? props.moPrefix : props.shopInfo?.restaurantId;
     const idKey = props.isInMo ? "groupId" : "restaurantId";
+    const discountId = route.params.discountId as string;
 
     const histories = ref<any[]>([]);
-
-    getDocs(query(
-      collectionGroup(db, "promotionHistories"),
-      where(idKey, "==", id),
+    const cond = discountId ?
+      query(
+        collectionGroup(db, "promotionHistories"),
+        where(idKey, "==", id),
+        where("promotionId", "==", discountId),
+      ) :
+      query(
+        collectionGroup(db, "promotionHistories"),
+        where(idKey, "==", id)
+      );
+    const q = query(
+      cond,
       orderBy("createdAt", "desc"),
-    )).then((docs) => {
+    );
+    getDocs(q).then((docs) => {
       const tmp: any[] = [];
       docs.docs.map((a) => {
         tmp.push(a.data());
