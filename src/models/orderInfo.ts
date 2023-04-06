@@ -75,6 +75,8 @@ export interface OrderInfoData {
   lastUpdatedAt: Timestamp;
   orderCustomerCanceledAt: Timestamp;
 
+  discountPrice: number;
+  
   customerInfo: CustomerInfo;
   memo: string;
 

@@ -54,6 +54,10 @@ import {
 
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 
+import {
+  useRoute,
+} from "vue-router";
+
 export default defineComponent({
   components: {
     AdminHeader,
@@ -73,7 +77,7 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
-    const route = ctx.root.$route;
+    const route = useRoute();
 
     const id = props.isInMo ? props.moPrefix : props.shopInfo?.restaurantId;
     const idKey = props.isInMo ? "groupId" : "restaurantId";
