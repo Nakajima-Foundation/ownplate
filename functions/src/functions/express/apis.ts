@@ -217,6 +217,7 @@ export const getSVG = (restaurantData: any, orderData: any) => {
 {w:auto; b:space}
 支払方法："現地払い"|
 
+${orders}
 
 `;
 
