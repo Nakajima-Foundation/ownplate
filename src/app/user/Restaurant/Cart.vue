@@ -85,7 +85,7 @@ export default defineComponent({
     },
     promotion: {
       type: Object,
-      required: true,
+      required: false,
     },
     selectedOptions: {
       type: Object,
