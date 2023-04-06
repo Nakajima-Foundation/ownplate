@@ -1,10 +1,37 @@
 <template>
   <div>
+    <!-- QR Header Area -->
+    <div class="columns is-gapless">
+      <!-- Left Gap -->
+      <div class="column is-narrow w-6"></div>
+      <!-- Center Column -->
+      <div class="column">
+        <!-- Nav Bar -->
+        <div class="level">
+          <!-- Back Button and Restaurant Profile -->
+          <AdminHeader
+            class="mx-6 mt-6 lg:flex lg:items-center"
+            :shopInfo="shopInfo"
+            backLink="/admin/restaurants/"
+            :showSuspend="false"
+            :isInMo="isInMo"
+            :moPrefix="moPrefix"
+            />
+        </div>
+      </div>
+      <!-- Right Gap -->
+      <div class="column is-narrow w-6"></div>
+    </div>
     <div v-for="(h, k) in histories" :key="k">
-      {{h.uid}}
-      {{h.restaurantId}}
-      {{h.promotionId}}
-      {{h.usedAt.toDate()}}
+      uid: {{h.uid}}<br/>
+      rid: {{h.restaurantId}}<br/>
+      pid: {{h.promotionId}}<br/>
+      oid: {{h.orderId}}<br/>
+      date: {{h.usedAt.toDate()}}<br/>
+      total: {{h.totalCharge}}<br/>
+      discount: {{h.discountPrice}}<br/>
+      <hr class="h-1 bg-gray-200 border-0 left-1/2 dark:bg-gray-900"/>
+
     </div>
   </div>
 </template>
@@ -25,8 +52,12 @@ import {
   orderBy,
 } from "firebase/firestore";
 
+import AdminHeader from "@/app/admin/AdminHeader.vue";
 
 export default defineComponent({
+  components: {
+    AdminHeader,
+  },
   props: {
     isInMo: {
       type: Boolean,
@@ -42,17 +73,28 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
+    const route = ctx.root.$route;
 
     const id = props.isInMo ? props.moPrefix : props.shopInfo?.restaurantId;
     const idKey = props.isInMo ? "groupId" : "restaurantId";
+    const discountId = route.params.discountId as string;
 
     const histories = ref<any[]>([]);
-
-    getDocs(query(
-      collectionGroup(db, "promotionHistories"),
-      where(idKey, "==", id),
+    const cond = discountId ?
+      query(
+        collectionGroup(db, "promotionHistories"),
+        where(idKey, "==", id),
+        where("promotionId", "==", discountId),
+      ) :
+      query(
+        collectionGroup(db, "promotionHistories"),
+        where(idKey, "==", id)
+      );
+    const q = query(
+      cond,
       orderBy("createdAt", "desc"),
-    )).then((docs) => {
+    );
+    getDocs(q).then((docs) => {
       const tmp: any[] = [];
       docs.docs.map((a) => {
         tmp.push(a.data());

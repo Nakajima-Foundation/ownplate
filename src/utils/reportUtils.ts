@@ -68,7 +68,7 @@ export const reportHeadersForMo = [
 
   // for mo 2023
   "discountPrice",
-  "discountedPrice",
+  "beforeDiscountPrice",
   "cancelReason",
   
 ];
@@ -132,7 +132,7 @@ export const revenueMoCSVHeader = [
 
   // for mo 2023
   "discountPrice",
-  "discountedPrice",
+  "beforeDiscountPrice",
   "cancelReason",
 
 ];
@@ -170,6 +170,6 @@ export const downloadFields = [
 export const downloadMoFields = [
   ...downloadFields,
   "discountPrice",
-  "discountedPrice",
+  "beforeDiscountPrice",
   "cancelReason",
 ];

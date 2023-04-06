@@ -73,9 +73,20 @@
                 </div>
               </div>
             </div>
-            <div v-if="orderInfo.isPickup">
+            <div v-if="orderInfo.promotionId">
               <div
                 class="mt-4 inline-flex h-9 w-full justify-center rounded-lg bg-green-600 bg-opacity-10 px-4 py-1 font-bold text-green-600"
+              >
+                <span class="ml-1 mt-1 text-sm">
+                  {{ $n(orderInfo.discountPrice, "currency") }}{{ $t("order.discountPriceMessage")}}
+
+                </span
+                >
+              </div>
+            </div>
+            <div v-if="orderInfo.isPickup">
+              <div
+                class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-green-600 bg-opacity-10 px-4 py-1 font-bold text-green-600"
               >
                 <i class="material-icons"> local_mall </i>
                 <span class="ml-1 mt-1 text-sm">

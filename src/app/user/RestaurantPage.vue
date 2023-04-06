@@ -27,6 +27,15 @@
 
           />
       </div>
+
+			<!--ToDo ディスカウントバナー、カートに商品がない状態で常に表示、金額はデータを取得する -->
+			<div v-if="false">
+			<div class="mb-2 border-4 border-green-600 text-green-600 text-center font-bold fixed left-4 right-4 mx-auto max-w-lg cursor-pointer items-center rounded-full bg-white p-3 shadow-lg bottom-3 z-30 sm:bottom-8">
+				<div class="text-xs">¥1,000(税込)以上のご利用&事前クレジット決済で</div>
+				<div class="text-lg mt-0.5 -mb-0.5">¥300値引きキャンペーン実施中！</div>
+			</div>
+			</div>
+
       <!-- category modal -->
       <div
         v-if="isOpenGroupCategory"

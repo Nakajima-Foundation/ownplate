@@ -27,6 +27,19 @@
           </div>
         </template>
       </div>
+			
+			<!--ToDo ディスカウントバナー表示、金額はデータを取得する -->
+			<div v-if="false">
+			<div class="border-green-600 text-green-600 text-center font-bold mt-1 mx-6 sm:mx-auto max-w-xl items-center mb-3 rounded-lg bg-green-600 bg-opacity-10 p-2">
+				<div class="text-xs">¥1,000(税込)以上のご利用&事前クレジット決済で</div>
+				<div class="text-lg -mb-1">¥300値引きキャンペーン実施中！</div>
+			</div>
+			<!--ToDo 割引適用までの金額を表示する -->
+			<div class="flex mx-6 sm:mx-auto max-w-xl justify-center font-bold text-sm">
+				<div>あと<span class="text-green-600">¥625</span>で¥300値引き</div>
+			</div>
+			</div>
+
     </div>
   </div>
 </template>

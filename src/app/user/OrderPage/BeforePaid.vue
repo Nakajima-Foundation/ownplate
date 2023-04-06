@@ -214,6 +214,13 @@
                 }}
               </div>
 
+							<!--ToDo 注意書きメッセージの表示-->
+							<div v-if="false">
+								<div class="border-green-600 text-green-600 text-center font-bold mx-auto w-72 items-center mt-8 -mb-3 rounded-lg bg-green-600 bg-opacity-10 px-6 py-2">
+									<div class="text-xs">事前クレジット決済で決済いただいた場合はキャンペーン金額が適用されます</div>
+								</div>
+							</div>
+
               <div class="mt-6 text-center">
                 <o-button
                   :disabled="

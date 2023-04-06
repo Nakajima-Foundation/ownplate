@@ -52,7 +52,7 @@
 
       <!-- Promotion discount for after pay -->
       <div v-if="orderInfo.promotionId"
-           class="mt-2 flex bg-green-300 bg-opacity-30"
+           class="-mx-2 mt-2 flex bg-green-600 bg-opacity-10 px-2 py-1 rounded-md"
            >
         <div class="flex-1">
           <div class="text-base">

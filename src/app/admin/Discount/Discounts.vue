@@ -1,5 +1,27 @@
 <template>
   <div class="mx-6 mt-6">
+    <!-- QR Header Area -->
+    <div class="columns is-gapless">
+      <!-- Left Gap -->
+      <div class="column is-narrow w-6"></div>
+      <!-- Center Column -->
+      <div class="column">
+        <!-- Nav Bar -->
+        <div class="level">
+          <!-- Back Button and Restaurant Profile -->
+          <AdminHeader
+            class="mx-6 mt-6 lg:flex lg:items-center"
+            :shopInfo="shopInfo"
+            backLink="/admin/restaurants/"
+            :showSuspend="false"
+            :isInMo="isInMo"
+            :moPrefix="moPrefix"
+            />
+        </div>
+      </div>
+      <!-- Right Gap -->
+      <div class="column is-narrow w-6"></div>
+    </div>
     <div class="text-center">
       discounts
     </div>
@@ -22,6 +44,7 @@
       <template v-else-if="promotion.paymentRestrictions === 'instore'">現地払い</template>
       <template v-else>なし</template>
       <br/>
+      <router-link :to="isInMo ? `/admin/discounts/${promotion.promotionId}/history` : `/admin/restaurants/${shopInfo.restaurantId}/discounts/${promotion.promotionId}/history`">履歴</router-link><br/>
       <hr class="h-1 bg-gray-200 border-0 left-1/2 dark:bg-gray-900"/>
     </div>
 
@@ -45,6 +68,7 @@ import {
 } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
+import AdminHeader from "@/app/admin/AdminHeader.vue";
 
 import {
   usePromotionsForAdmin,
@@ -58,8 +82,10 @@ import {
   Timestamp,
 } from "firebase/firestore";
 
-
 export default defineComponent({
+  components: {
+    AdminHeader,
+  },
   props: {
     isInMo: {
       type: Boolean,

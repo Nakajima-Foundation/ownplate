@@ -103,7 +103,11 @@ export const usePromotions = (mode: string, id: string, user: any) => {
 
   const promotionUsed = ref<{[key: string]: PromotionData | PromotionData[]} | null>(null);
   watch([user, promotionData], async () => {
-    if (user.value && promotionData.value.length > 0) {
+    if (promotionData.value.length > 0) {
+      if (!user.value || !user.value.phoneNumber) {
+        promotionUsed.value = {};
+        return
+      }
       const keys: string[] = [];
       const values: string[] = [];
       promotionData.value.map(a => {
@@ -134,7 +138,7 @@ export const usePromotions = (mode: string, id: string, user: any) => {
               used[b.id] = b.data() as PromotionData;
             });
           }) :
-          new Promise((r) => r(1)),
+          Promise.resolve(1),
         // for multiple times
         values.length > 0 ?
           getDocs(
@@ -149,16 +153,14 @@ export const usePromotions = (mode: string, id: string, user: any) => {
               }
               (used[b.id] as PromotionData[]).push(b.data() as PromotionData);
             });
-          }) :
-          new Promise((r) => r(1))
-      ])
+          }) : Promise.resolve(1)
+      ]);
       promotionUsed.value = used;
     }
   });
   const promotions = computed(() => {
     if (promotionUsed.value !== null) {
-      // console.log(promotionData.value, promotionUsed.value);
-      return promotionData.value.filter(a => {
+      const ret = promotionData.value.filter(a => {
         if (!a.usageRestrictions) {
           return true;
         }
@@ -172,6 +174,7 @@ export const usePromotions = (mode: string, id: string, user: any) => {
           return !(promotionUsed.value || {})[a?.promotionId];
         }
       });
+      return ret;
     }
     return [];
   });
@@ -222,6 +225,9 @@ export const usePromotionData = (orderInfo: OrderInfoData, promotion: ComputedRe
 export const useUserPromotionHistory = (mode: string, id: string, user: any) => {
   const discountHistory = ref<any[]>([]);
   (async () => {
+    if (!user.value || !user.value.phoneNumber) {
+      return 
+    }
     const userPath = await(async () => {
       if (mode === "mo") {
         const hash = await sha256([id, user.value.phoneNumber].join(":")); 
