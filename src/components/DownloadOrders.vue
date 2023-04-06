@@ -71,7 +71,8 @@ export default defineComponent({
           statusName: ctx.root.$t(`order.status.${status}`),
           totalCount: totalCount,
           total: order.totalCharge,
-          discountPrice: order.discountPrice,
+          discountPrice: order.discountPrice || 0,
+          beforeDiscountPrice: order.totalCharge + (order.discountPrice || 0),
           phoneNumber: order.phoneNumber
             ? formatNational(parsePhoneNumber(order.phoneNumber))
             : "LINE",

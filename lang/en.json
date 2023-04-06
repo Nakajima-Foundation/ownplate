@@ -735,7 +735,7 @@
     "discountPriceSuffix": "Discount",
     "discountPriceMessage": "値引きがあります",
     "discountPrice": "Discount Price",
-    "discountedPrice": "Discounted Price",
+    "beforeDiscountPrice": "Before Discount Price",
     "cancelReason": "Cancel Reason",
     "productId": "Product Id",
     "category": "Category",
