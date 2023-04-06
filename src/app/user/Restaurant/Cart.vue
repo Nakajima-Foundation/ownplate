@@ -38,8 +38,10 @@
           </div>
 			  </div>
 			  <!--ToDo 割引適用までの金額を表示する -->
-			  <div class="flex mx-6 sm:mx-auto max-w-xl justify-center font-bold text-sm">
-				  <div>あと<span class="text-green-600">¥625</span>で¥300値引き</div>
+			  <div class="flex mx-6 sm:mx-auto max-w-xl justify-center font-bold text-sm"
+             v-if=" promotion.discountThreshold > totalPrice.total"
+             >
+            <PromotionMessage3 :promotion="promotion" :totalPrice="totalPrice" />
 			  </div>
 			</div>
 
@@ -54,6 +56,7 @@ import CartItem from "@/app/user/Restaurant/CartItem.vue";
 
 import PromotionMessage1 from "@/app/user/Restaurant/PromotionMessage1.vue";
 import PromotionMessage2 from "@/app/user/Restaurant/PromotionMessage2.vue";
+import PromotionMessage3 from "@/app/user/Restaurant/PromotionMessage3.vue";
 
 export default defineComponent({
   emits: ["closeCart", "didOrderdChange"],
@@ -61,6 +64,7 @@ export default defineComponent({
     CartItem,
     PromotionMessage1,
     PromotionMessage2,
+    PromotionMessage3,
   },
   props: {
     shopInfo: {
@@ -94,6 +98,10 @@ export default defineComponent({
     lastOrder: {
       type: String,
       required: false,
+    },
+    totalPrice: {
+      type: Object,
+      required: true,
     },
   },
   setup(props, ctx) {

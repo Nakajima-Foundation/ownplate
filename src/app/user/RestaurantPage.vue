@@ -407,6 +407,7 @@
         :disabledPickupTime="disabledPickupTime"
         :lastOrder="lastOrder"
         @didOrderdChange="didOrderdChange"
+        :totalPrice="totalPrice"
         :promotion="promotion"
       />
 
