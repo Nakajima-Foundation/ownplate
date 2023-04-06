@@ -407,6 +407,7 @@
         :disabledPickupTime="disabledPickupTime"
         :lastOrder="lastOrder"
         @didOrderdChange="didOrderdChange"
+        :promotion="promotion"
       />
 
       <!-- for disable all UI -->
