@@ -193,12 +193,31 @@ export const getSVG = (restaurantData: any, orderData: any) => {
     .join("\n\n");
 
   const text = `
-^${restaurantData.restaurantName}
-${orderNumber}
+^^${restaurantData.restaurantName}
+おもちかえり.com
 
-${orders}
+^^^"${orderNumber}"
 
-${price}
+|受渡方法："デリバリー"
+|受渡時間："2022/11/15 09:00"
+
+^^--さん|
+{w:*,4;b:line}
+商品1\n~~*サルサソース\n~~*ハラペーニョソース | x1
+商品2\n~~*ハラペーニョソース | x1
+商品3\n~~*大盛り | x1
+-
+{w:16,16;a:right}
+小計 | ¥300
+消費税（内税） | ¥22
+配達料金 | ¥500
+心づけ (サービス料・消費税含む)| ¥30
+-
+^^合計 | ^^^¥${price}
+{w:auto; b:space}
+支払方法："現地払い"|
+
+
 `;
 
   const svg = receiptline.transform(text, { encoding: 'cp932' });
