@@ -73,7 +73,7 @@
           {{ $n(order.totalCharge, "currency") }}
         </div>
 
-        <div class="items-center justify-center rounded-full bg-green-300 bg-opacity-30 px-4 text-xs
+        <div class="mr-2 items-center justify-center rounded-md bg-green-600 bg-opacity-10 p-1 text-xs
                     font-bold text-green-600
                     " v-if="order.promotionId">
           {{ $n(order.discountPrice, "currency") }}{{ $t("order.discountPriceSuffix")}}
