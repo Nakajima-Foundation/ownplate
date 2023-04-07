@@ -248,6 +248,7 @@ service cloud.firestore {
       allow read: if resource.data.groupId == request.auth.token.groupId;
       allow read: if isAdmin(request) && isRestaurantOwner(resource.data.restaurantId, request)
       allow read: if isAdmin(request) && isRestaurantSubAccount(resource.data.restaurantId, request)
+      allow delete: if isAdmin(request) && isRestaurantOwner(resource.data.restaurantId, request)
     }
 
     // End of Rules for collection group
