@@ -119,7 +119,9 @@ export const usePromotions = (mode: string, id: string, user: any) => {
         res.map(a => p.push(a));
       })
     ]);
-    promotionData.value = p;
+    promotionData.value = p.sort((a, b) => {
+      return a.discountValue > b.discountValue ? 1 : -1;
+    });
 
   })();
 
