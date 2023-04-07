@@ -26,8 +26,9 @@
       discounts
     </div>
     <div v-for="(promotion, k) in promotionDataSet" :key="k" >
+      <div v-if="promotion.currentOpen">現在有効</div>
 			<div class="inline-flex mb-2 items-end">
-      名前: <router-link :to="isInMo ? `/admin/discounts/${promotion.promotionId}` : `/admin/restaurants/${shopInfo.restaurantId}/discounts/${promotion.promotionId}`">
+        名前: <router-link :to="isInMo ? `/admin/discounts/${promotion.promotionId}` : `/admin/restaurants/${shopInfo.restaurantId}/discounts/${promotion.promotionId}`">
 				<div class="inline-flex items-center ml-1 font-bold text-op-teal">
 				<div>{{ promotion.promotionName }}</div><i class="material-icons ml-1">edit</i></div></router-link>
 			</div>

@@ -66,7 +66,7 @@
         
         <o-select v-model="promotion.hasTerm">
           <option
-            v-for="(result, key) in toBeOrNotSelect2"
+            v-for="(result, key) in toBeOrNotSelect"
             :value="result.value"
             :key="key"
             >
@@ -117,7 +117,7 @@
         </div>
         <o-select v-model="promotion.usageRestrictions">
           <option
-            v-for="(result, key) in toBeOrNotSelect"
+            v-for="(result, key) in toBeOrNotSelect2"
             :value="result.value"
             :key="key"
             >

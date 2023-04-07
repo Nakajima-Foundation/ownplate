@@ -57,7 +57,13 @@ export const usePromotionsForAdmin = (isInMo: boolean, id: string) => {
         collection(db, promotionPath),
       ),
       (ret1) => {
-        promotionDataSet.value = ret1.docs.map(a => a.data() as PromotionData);
+        promotionDataSet.value = ret1.docs.map(a => {
+          const data = a.data() as PromotionData;
+          const now = new Date();
+          const ok = data.enable && (!data.hasTerm || (data.termFrom.toDate() < now && data.termTo.toDate() > now))
+          data.currentOpen = ok;
+          return data;
+        });
       }
     );
   })();

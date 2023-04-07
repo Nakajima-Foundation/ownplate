@@ -15,4 +15,7 @@ export interface PromotionData {
   hasTerm: boolean;
   termFrom: Timestamp;
   termTo: Timestamp;
+
+  currentOpen?: boolean;
+
 };
