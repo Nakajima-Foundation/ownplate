@@ -33,7 +33,7 @@
       </div>
       <div class="mt-6">
         <div class="pb-2 text-sm font-bold">
-          有効
+          ディスカウントの有効化
         </div>
         <o-select v-model="promotion.enable">
           <option
@@ -41,22 +41,36 @@
             :value="result.value"
             :key="key"
             >
-            {{ result.message }}
+            {{ $t('admin.' + result.messageKey) }}
           </option>
         </o-select>
       </div>
       <div class="mt-6">
         <div class="pb-2 text-sm font-bold">
-          期間
+          割引タイプ
+        </div>
+        <o-select v-model="promotion.type">
+          <option
+            v-for="(result, key) in discountTypeSelect"
+            :value="result.value"
+            :key="key"
+            >
+            {{ $t('admin.promotion.' + result.messageKey) }}
+          </option>
+        </o-select>
+      </div>
+      <div class="mt-6">
+        <div class="pb-2 text-sm font-bold">
+          ディスカウント適用期間
         </div>
         
         <o-select v-model="promotion.hasTerm">
           <option
-            v-for="(result, key) in toBeOrNotSelect"
+            v-for="(result, key) in toBeOrNotSelect2"
             :value="result.value"
             :key="key"
             >
-            {{ result.message }}
+            {{ $t('admin.' + result.messageKey) }}
           </option>
         </o-select>
 
@@ -99,7 +113,7 @@
       </div>
       <div class="mt-6">
         <div class="pb-2 text-sm font-bold">
-          割引１回のみ(なしの場合は、何回でも割引が適用されます)
+          利用回数制限
         </div>
         <o-select v-model="promotion.usageRestrictions">
           <option
@@ -113,12 +127,36 @@
       </div>
       <div class="mt-6">
         <div class="pb-2 text-sm font-bold">
-          割引
+          割引方法
         </div>
-        <o-field>
+        <o-select v-model="promotion.discountMethod">
+          <option
+            v-for="(result, key) in discountMethodSelect"
+            :value="result.value"
+            :key="key"
+            >
+            {{ $t('admin.promotion.' + result.messageKey) }}
+          </option>
+        </o-select>
+      </div>
+      <div class="mt-6">
+        <div class="pb-2 text-sm font-bold">
+          <template v-if="promotion.discountMethod === 'amount'">
+            割引額
+          </template>
+          <template v-else>
+            割引率
+          </template>
+        </div>
+        <o-field >
           <o-input type="text" v-model="promotion.discountValue" class="w-1/2" />
           <span class="button is-static">
-            {{ $t("currency.JPY") }}
+            <template v-if="promotion.discountMethod === 'amount'">
+              {{ $t("currency.JPY") }}
+            </template>
+            <template v-else>
+              %
+            </template>
           </span>
         </o-field>
       </div>
@@ -183,7 +221,10 @@ import {
 
 import {
   toBeOrNotSelect,
+  toBeOrNotSelect2,
   yesOrNoSelect,
+  discountMethodSelect,
+  discountTypeSelect,
   promotionPaymentRestrictionsSelect,
 } from "@/config/constant";
 
@@ -272,7 +313,10 @@ export default defineComponent({
       termToDate,
       save,
       toBeOrNotSelect,
+      toBeOrNotSelect2,
       yesOrNoSelect,
+      discountMethodSelect,
+      discountTypeSelect,
       promotionPaymentRestrictionsSelect,
       cancel,
     };

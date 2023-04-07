@@ -38,9 +38,9 @@
       利用回数制限(１回): {{ promotion.usageRestrictions  ? "はい" : "いいえ"}}<br/>
       利用可能最低金額: {{ promotion.discountThreshold }}円<br/>
       割引タイプ:
-      <template v-if="promotion.type === 'discount'">ディスカウント</template>
-      <template v-if="promotion.type === 'onetimeCoupon'">１回のみ発行可能クーポン</template>
-      <template v-if="promotion.type === 'multipletimesCoupon'">発行回数制限なしクーポン</template><br/>
+      <template v-if="promotion.type === 'discount'">{{ $t('admin.promotion.discount') }}</template>
+      <template v-if="promotion.type === 'onetimeCoupon'">{{ $t('admin.promotion.onetimeCoupon') }}</template>
+      <template v-if="promotion.type === 'multipletimesCoupon'">{{ $t('admin.promotion.multipletimesCoupon' )}}</template><br/>
       割引:
       <template v-if="promotion.discountMethod === 'amount'">一律{{ promotion.discountValue }}円</template>
       <template v-if="promotion.discountMethod === 'ratio'">割引率{{ promotion.discountValue }}%</template>
