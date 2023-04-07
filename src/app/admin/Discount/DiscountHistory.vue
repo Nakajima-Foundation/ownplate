@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mx-6 mt-6">
     <!-- QR Header Area -->
     <div class="columns is-gapless" v-if="shopInfo">
       <!-- Left Gap -->
@@ -36,8 +36,9 @@
         discount: {{h.discountPrice}}<br/>
         <o-button
           @click="deleteHistory(h)"
-          >Delete</o-button>
-        <hr class="h-1 bg-gray-200 border-0 left-1/2 dark:bg-gray-900"/>
+					class="border-0 flex items-center justify-center mt-2 h-9 w-20 rounded-full bg-black bg-opacity-5 font-bold text-red-700"
+          >削除</o-button>
+        <hr class="my-4 h-0.5 bg-gray-200 border-0 left-1/2 dark:bg-gray-900"/>
         
       </div>
     </div>

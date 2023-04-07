@@ -205,7 +205,7 @@
 
     <!-- promotion discount for before pay -->
     <div v-if="enablePromotion"
-         class="bg-green-300 bg-opacity-30"
+         class="-mx-2 mt-2 flex bg-green-600 bg-opacity-10 px-2 py-1 rounded-md"
          >
       <!-- promotion discount -->
       <span v-if="promotion.paymentRestrictions">
