@@ -195,7 +195,7 @@ export const usePromotionData = (orderInfo: OrderInfoData, promotion: ComputedRe
     if (orderInfo && promotion && promotion.value) {
       enablePromotion.value = orderInfo.total >= promotion.value.discountThreshold;
       if (promotion.value.discountMethod === 'amount') {
-        discountPrice.value = promotion.value.discountValue;
+        discountPrice.value = Number(promotion.value.discountValue);
       } else {
         discountPrice.value = Number(promotion.value.discountValue * orderInfo.total / 100);
       }
@@ -236,7 +236,7 @@ export const useUserPromotionHistory = (mode: string, id: string, user: any) => 
       return `users/${user.value.uid}/promotionHistories`;
     })();
     const historySnapShot = await getDocs(collection(db, userPath))
-
+    
     const promotionPath = getPromotionCollctionPath((mode === "mo"), id);
     if (historySnapShot.docs && historySnapShot.docs.length > 0) {
       const userHistory = historySnapShot.docs.map(a => {
@@ -255,6 +255,7 @@ export const useUserPromotionHistory = (mode: string, id: string, user: any) => 
       }));
       
       userHistory.map(a => {
+
         a.history = histories[a.userHistory.promotionId];
       });
       discountHistory.value = userHistory;

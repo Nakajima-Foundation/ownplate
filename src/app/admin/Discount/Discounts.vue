@@ -1,7 +1,7 @@
 <template>
   <div class="mx-6 mt-6">
     <!-- QR Header Area -->
-    <div class="columns is-gapless">
+    <div class="columns is-gapless" v-if="shopInfo">
       <!-- Left Gap -->
       <div class="column is-narrow w-6"></div>
       <!-- Center Column -->
@@ -22,11 +22,17 @@
       <!-- Right Gap -->
       <div class="column is-narrow w-6"></div>
     </div>
-    <div class="text-center">
+    <div class="text-xl font-bold text-black text-opacity-30 mb-4">
       discounts
     </div>
     <div v-for="(promotion, k) in promotionDataSet" :key="k" >
-      名前: <router-link :to="isInMo ? `/admin/discounts/${promotion.promotionId}` : `/admin/restaurants/${shopInfo.restaurantId}/discounts/${promotion.promotionId}`">{{ promotion.promotionName }}</router-link><br/>
+			<div class="inline-flex mb-2 items-end">
+      名前: <router-link :to="isInMo ? `/admin/discounts/${promotion.promotionId}` : `/admin/restaurants/${shopInfo.restaurantId}/discounts/${promotion.promotionId}`">
+				<div class="inline-flex items-center ml-1 font-bold text-op-teal">
+				<div>{{ promotion.promotionName }}</div><i class="material-icons ml-1">edit</i></div></router-link>
+			</div>
+			<div>
+
       有効: {{ promotion.enable ? "はい" : "いいえ" }}<br/>
       期間: {{ promotion.hasTerm ? "あり":"なし" }} {{ promotion.hasTerm ? promotion.termFrom.toDate().toISOString().slice(0, 10) + "~" + promotion.termTo.toDate().toISOString().slice(0, 10) :"なし" }}<br/> 
       利用回数制限(１回): {{ promotion.usageRestrictions  ? "はい" : "いいえ"}}<br/>
@@ -43,9 +49,10 @@
       <template v-if="promotion.paymentRestrictions === 'stripe'">カード決済</template>
       <template v-else-if="promotion.paymentRestrictions === 'instore'">現地払い</template>
       <template v-else>なし</template>
-      <br/>
-      <router-link :to="isInMo ? `/admin/discounts/${promotion.promotionId}/history` : `/admin/restaurants/${shopInfo.restaurantId}/discounts/${promotion.promotionId}/history`">履歴</router-link><br/>
-      <hr class="h-1 bg-gray-200 border-0 left-1/2 dark:bg-gray-900"/>
+      </div>
+      <router-link :to="isInMo ? `/admin/discounts/${promotion.promotionId}/history` : `/admin/restaurants/${shopInfo.restaurantId}/discounts/${promotion.promotionId}/history`">
+				<div class="flex items-center justify-center mt-2 h-9 w-20 rounded-full bg-black bg-opacity-5 font-bold text-op-teal">履歴</div></router-link>
+      <hr class="my-4 h-0.5 bg-gray-200 border-0 left-1/2 dark:bg-gray-900"/>
     </div>
 
     <div>

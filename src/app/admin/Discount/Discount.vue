@@ -1,7 +1,7 @@
 <template>
   <div class="mx-6 mt-6">
     <!-- QR Header Area -->
-    <div class="columns is-gapless">
+    <div class="columns is-gapless" v-if="shopInfo">
       <!-- Left Gap -->
       <div class="column is-narrow w-6"></div>
       <!-- Center Column -->
@@ -254,8 +254,8 @@ export default defineComponent({
         promotionName,
         enable,
         hasTerm,
-        discountThreshold,
-        discountValue,
+        discountThreshold: Number(discountThreshold),
+        discountValue: Number(discountValue),
         paymentRestrictions,
         usageRestrictions,
         termFrom: Timestamp.fromDate(termFromDate.value),
