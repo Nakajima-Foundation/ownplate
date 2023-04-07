@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- QR Header Area -->
-    <div class="columns is-gapless">
+    <div class="columns is-gapless" v-if="shopInfo">
       <!-- Left Gap -->
       <div class="column is-narrow w-6"></div>
       <!-- Center Column -->
@@ -22,16 +22,24 @@
       <!-- Right Gap -->
       <div class="column is-narrow w-6"></div>
     </div>
-    <div v-for="(h, k) in histories" :key="k">
-      uid: {{h.uid}}<br/>
-      rid: {{h.restaurantId}}<br/>
-      pid: {{h.promotionId}}<br/>
-      oid: {{h.orderId}}<br/>
-      date: {{h.usedAt.toDate()}}<br/>
-      total: {{h.totalCharge}}<br/>
-      discount: {{h.discountPrice}}<br/>
-      <hr class="h-1 bg-gray-200 border-0 left-1/2 dark:bg-gray-900"/>
-
+    <div v-if="histories.length === 0">
+      No history data.
+    </div>
+    <div v-else>
+      <div v-for="(h, k) in histories" :key="k">
+        uid: {{h.uid}}<br/>
+        rid: {{h.restaurantId}}<br/>
+        pid: {{h.promotionId}}<br/>
+        oid: {{h.orderId}}<br/>
+        date: {{h.usedAt.toDate()}}<br/>
+        total: {{h.totalCharge}}<br/>
+        discount: {{h.discountPrice}}<br/>
+        <o-button
+          @click="deleteHistory(h)"
+          >Delete</o-button>
+        <hr class="h-1 bg-gray-200 border-0 left-1/2 dark:bg-gray-900"/>
+        
+      </div>
     </div>
   </div>
 </template>
@@ -45,11 +53,13 @@ import {
 
 import { db } from "@/lib/firebase/firebase9";
 import {
-  getDocs,
+  onSnapshot,
   query,
   collectionGroup,
   where,
   orderBy,
+  deleteDoc,
+  doc,
 } from "firebase/firestore";
 
 import AdminHeader from "@/app/admin/AdminHeader.vue";
@@ -94,15 +104,25 @@ export default defineComponent({
       cond,
       orderBy("createdAt", "desc"),
     );
-    getDocs(q).then((docs) => {
-      const tmp: any[] = [];
-      docs.docs.map((a) => {
-        tmp.push(a.data());
-      });
-      histories.value = tmp;
-    });
+    
+    onSnapshot(q,
+               (docs) => {
+                 const tmp: any[] = [];
+                 docs.docs.map((a) => {
+                   const d = a.data()
+                   d.path = a.ref.path;
+                   tmp.push(d);
+                 });
+                 histories.value = tmp;
+               });
+
+    const deleteHistory = (history) => {
+      deleteDoc(doc(db, history.path));
+      // console.log(history);
+    };
     return {
       histories,
+      deleteHistory,
     };
   },
 });

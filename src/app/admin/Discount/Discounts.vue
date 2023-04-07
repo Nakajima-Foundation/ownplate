@@ -1,7 +1,7 @@
 <template>
   <div class="mx-6 mt-6">
     <!-- QR Header Area -->
-    <div class="columns is-gapless">
+    <div class="columns is-gapless" v-if="shopInfo">
       <!-- Left Gap -->
       <div class="column is-narrow w-6"></div>
       <!-- Center Column -->
@@ -32,6 +32,7 @@
 				<div>{{ promotion.promotionName }}</div><i class="material-icons ml-1">edit</i></div></router-link>
 			</div>
 			<div>
+
       有効: {{ promotion.enable ? "はい" : "いいえ" }}<br/>
       期間: {{ promotion.hasTerm ? "あり":"なし" }} {{ promotion.hasTerm ? promotion.termFrom.toDate().toISOString().slice(0, 10) + "~" + promotion.termTo.toDate().toISOString().slice(0, 10) :"なし" }}<br/> 
       利用回数制限(１回): {{ promotion.usageRestrictions  ? "はい" : "いいえ"}}<br/>
