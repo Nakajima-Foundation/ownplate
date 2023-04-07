@@ -4,6 +4,7 @@ import {
   watchEffect,
   computed,
   ComputedRef,
+  onUnmounted,
 } from "@vue/composition-api";
 
 import {
@@ -16,6 +17,7 @@ import {
   documentId,
   Timestamp,
   onSnapshot,
+  Unsubscribe,
 } from "firebase/firestore";
 
 import {
@@ -102,6 +104,16 @@ export const usePromotions = (mode: string, id: string, user: any) => {
   })();
 
   const promotionUsed = ref<{[key: string]: PromotionData | PromotionData[]} | null>(null);
+  let detacher1: Unsubscribe | null = null;
+  let detacher2: Unsubscribe | null = null;
+  onUnmounted(() => {
+    if (detacher1) {
+      detacher1();
+    }
+    if (detacher2) {
+      detacher2();
+    }
+  });
   watch([user, promotionData], async () => {
     if (promotionData.value.length > 0) {
       if (!user.value || !user.value.phoneNumber) {
@@ -117,6 +129,7 @@ export const usePromotions = (mode: string, id: string, user: any) => {
           values.push(a.promotionId);
         }
       });
+      // TODO set condition
       const userPath = await(async () => {
         if (mode === "mo") {
           const hash = await sha256([id, user.value.phoneNumber].join(":")); 
@@ -124,38 +137,44 @@ export const usePromotions = (mode: string, id: string, user: any) => {
         }
         return `users/${user.value.uid}/promotionHistories`;
       })();
-      const used: {[key: string]: PromotionData | PromotionData[]} = {};
-      await Promise.all([
-        // for onetime or discount
-        keys.length > 0 ?
-          getDocs(
-            query(
-              collection(db, userPath),
-              where(documentId(), "in", keys)
-            )
-          ).then(a => {
+      
+
+      // for onetime or discount
+      if (keys.length === 0 && values.length === 0) {
+        promotionUsed.value = {};
+        return;
+      }
+      detacher1 = keys.length > 0 ?
+        onSnapshot(
+          query(
+            collection(db, userPath),
+            where(documentId(), "in", keys)
+          ),
+          (a => {
+            const used = promotionUsed.value ? {...promotionUsed.value} : {};
             a.docs.map((b) => {
               used[b.id] = b.data() as PromotionData;
-            });
-          }) :
-          Promise.resolve(1),
-        // for multiple times
-        values.length > 0 ?
-          getDocs(
-            query(
-              collection(db, userPath),
-              where("promotionId", "in", values)
-            )
-          ).then(a => {
+            })
+            promotionUsed.value = used;
+          })) : null;
+      
+      // for multiple times
+      detacher2 = values.length > 0 ?
+        onSnapshot(
+          query(
+            collection(db, userPath),
+            where("promotionId", "in", values)
+          ),
+          (a => {
+            const used = promotionUsed.value ? {...promotionUsed.value} : {};
             a.docs.map((b) => {
               if (!used[b.id]) {
                 used[b.id] = [] as PromotionData[];
               }
               (used[b.id] as PromotionData[]).push(b.data() as PromotionData);
             });
-          }) : Promise.resolve(1)
-      ]);
-      promotionUsed.value = used;
+            promotionUsed.value = used;
+          })) : null;
     }
   });
   const promotions = computed(() => {
