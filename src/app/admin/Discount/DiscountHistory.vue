@@ -116,7 +116,7 @@ export default defineComponent({
                  histories.value = tmp;
                });
 
-    const deleteHistory = (history) => {
+    const deleteHistory = (history: any) => {
       deleteDoc(doc(db, history.path));
       // console.log(history);
     };
