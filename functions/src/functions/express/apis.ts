@@ -278,7 +278,8 @@ const common = async (req: any, res: any, next: any) => {
 };
 
 const pollingStar = async (req: any, res: any) => {
-  const { restaurantId, statusCode } = req.params;
+  const { restaurantId } = req.params;
+  const { statusCode } = req.query;
   console.log("POST", statusCode);
   
   const orders = await db.collection(`restaurants/${restaurantId}/orders`)
@@ -302,9 +303,9 @@ const pollingStar = async (req: any, res: any) => {
 };
 
 const requestStar = async (req: any, res: any) => {
-  console.log("GET");
   const { token, type } = req.query;
   const { restaurantId } = req.params;
+  console.log("GET", type);
 
   
   if (token) {
