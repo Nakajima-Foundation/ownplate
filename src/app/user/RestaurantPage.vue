@@ -520,6 +520,7 @@ import * as analyticsUtil from "@/lib/firebase/analytics";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { MenuData } from "@/models/menu";
 import { AnalyticsMenuData } from "@/lib/firebase/analytics";
+import Promotion from "@/models/promotion";
 
 import {
   array2obj,
@@ -604,7 +605,7 @@ export default defineComponent({
       required: false,
     },
     promotions: {
-      type: Array,
+      type: Array<Promotion>,
       required: true,
     },
     moPrefix: {
