@@ -75,7 +75,7 @@ const getUserHistoryPath = async (mode: string, id: string, user: any) => {
 }
 const getHistoryCondition = (mode: string, id: string) => {
   if (mode === "mo") {
-    return where("grouoId", "==", id);
+    return where("groupId", "==", id);
   }
   return where("restaurantId", "==", id);
 }
