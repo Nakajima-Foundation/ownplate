@@ -1,5 +1,8 @@
 import { functions, functionsJP } from "@/lib/firebase/firebase9";
 import { httpsCallable } from "firebase/functions";
+import {
+  Timestamp,
+} from "firebase/firestore";
 
 export const smaregiStoreList = httpsCallable<{
 }, {
@@ -73,7 +76,15 @@ export const stripeDeleteCard = httpsCallable(functions, "stripeDeleteCard");
 
 export const accountDelete = httpsCallable(functionsJP, "accountDelete");
 
-export const orderUpdate = httpsCallable(functionsJP, "orderUpdateJp");
+export const orderUpdate = httpsCallable<{
+  restaurantId: string,
+  orderId: string,
+  status: number,
+  timeEstimated?: Timestamp,
+}, {
+  result: boolean,
+  type: string
+}>(functionsJP, "orderUpdateJp");
 
 export const orderChange = httpsCallable(functionsJP, "orderChangeJp");
 

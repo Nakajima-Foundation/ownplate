@@ -1062,7 +1062,7 @@ export default defineComponent({
             });
           }
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error(error.message, error.details);
         store.commit("setErrorMessage", {
           code: "order.update",
