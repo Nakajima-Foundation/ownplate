@@ -581,8 +581,12 @@ export default defineComponent({
     });
     const selectedPromotion = computed<Promotion | null>(() => {
       if (props.promotions && props.promotions.length > 0) {
-        return props.promotions[0];
-        // return null;
+        const matched = props.promotions.filter((a) => {
+          return props.orderInfo.total >= a.discountThreshold;
+        });
+        if (matched && matched.length > 0) {
+          return matched[matched.length - 1];
+        }
       }
       return null;
     });
