@@ -137,13 +137,16 @@ export default {
         await db.doc(`/users/${this.user.uid}/readonly/stripe`).get()
       ).data();
       if (stripeInfo && stripeInfo.card) {
+        const expire = moment(`${stripeInfo.card.exp_year}${stripeInfo.card.exp_month}01T000000+0900`).endOf('month').toDate();
         if (
           stripeInfo.updatedAt.toDate() >
           moment().subtract(180, "days").toDate()
         ) {
+          if (expire > new Date()) {
           this.storedCard = stripeInfo.card;
           this.useStoredCard = true;
           this.$emit("change", { complete: true });
+          }
         }
       }
     } catch (e) {
