@@ -1137,7 +1137,8 @@
     },
     "message": {
       "generic": "Please try this operation later.",
-      "line": "Plase try to connect LINE again."
+      "line": "Plase try to connect LINE again.",
+      "cardError": "If the error occurs repeatedly, please cancel the card payment only and process the order."
     },
     "code": {
       "line": {
@@ -1147,6 +1148,7 @@
         "checkout": "Failed to perform the checkout process.",
         "place": "Failed to place the order.",
         "update": "Failed to update the order status.",
+        "updateCard": "Card processing failed.",
         "cancel": "Failed to cancel the order."
       },
       "stripe": {

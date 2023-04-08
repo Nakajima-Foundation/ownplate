@@ -142,7 +142,14 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
       await sendMessageToCustomer(db, msgKey, restaurant.restaurantName, orderData, restaurantId, orderId, params);
     }
     return { result: true };
-  } catch (error) {
+  } catch (error: any) {
+    if (error.type && error.type === "StripeCardError") {
+      utils.log_error(error);
+      return {
+        result: false,
+        type: error.type,
+      };
+    }
     throw utils.process_error(error);
   }
 };

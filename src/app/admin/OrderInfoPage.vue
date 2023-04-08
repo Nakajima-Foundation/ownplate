@@ -1028,7 +1028,20 @@ export default defineComponent({
         }
         const { data } = await orderUpdate(params);
         // console.log("update", data);
-        ctx.root.$router.push(parentUrl.value);
+        if (data.result) {
+          ctx.root.$router.push(parentUrl.value);
+        } else {
+          if (data.type === 'StripeCardError') {
+            ctx.root.$store.commit("setErrorMessage", {
+              code: "order.updateCard",
+              message2: "errorPage.message.cardError",
+            });
+          } else {
+            ctx.root.$store.commit("setErrorMessage", {
+              code: "order.update",
+            });
+          }
+        }
       } catch (error) {
         console.error(error.message, error.details);
         ctx.root.$store.commit("setErrorMessage", {

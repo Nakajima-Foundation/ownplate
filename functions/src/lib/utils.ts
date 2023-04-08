@@ -120,6 +120,12 @@ export const get_delivery_cost = (orderData: any, deliveryData: any, total: numb
   return 0;
 };
 
+export const log_error = (error: any) => {
+  console.error(error.type);
+  console.error(error);
+  Sentry.captureException(error);
+}
+
 export const process_error = (error: any) => {
   console.error(error);
   Sentry.captureException(error);

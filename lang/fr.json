@@ -1074,7 +1074,8 @@
     },
     "message": {
       "generic": "Veuillez essayer cette opération plus tard.",
-      "line": "Veuillez réessayer de connecter LINE."
+      "line": "Veuillez réessayer de connecter LINE.",
+      "cardError": "If the error occurs repeatedly, please cancel the card payment only and process the order."
     },
     "code": {
       "line": {
@@ -1084,6 +1085,7 @@
         "checkout": "Échec de l'exécution du processus de paiement.",
         "place": "Échec de la passation de la commande.",
         "update": "Échec de la mise à jour de l'état de la commande.",
+        "updateCard": "Card processing failed.",
         "cancel": "Échec de l'annulation de la commande."
       },
       "stripe": {
