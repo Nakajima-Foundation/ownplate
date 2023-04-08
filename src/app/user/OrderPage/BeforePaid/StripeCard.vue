@@ -12,6 +12,7 @@
         <div class="text-base">
           <span>{{ storedCard.brand }}</span>
           <span>**** **** **** {{ storedCard.last4 }}</span>
+          <span>・{{ storedCard.exp_month }}/{{ storedCard.exp_year }}</span>
         </div>
       </o-checkbox>
     </div>

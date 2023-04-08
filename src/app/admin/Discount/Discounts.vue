@@ -26,21 +26,22 @@
       discounts
     </div>
     <div v-for="(promotion, k) in promotionDataSet" :key="k" >
+      <div v-if="promotion.currentOpen">現在有効</div>
 			<div class="inline-flex mb-2 items-end">
-      名前: <router-link :to="isInMo ? `/admin/discounts/${promotion.promotionId}` : `/admin/restaurants/${shopInfo.restaurantId}/discounts/${promotion.promotionId}`">
+        名前: <router-link :to="isInMo ? `/admin/discounts/${promotion.promotionId}` : `/admin/restaurants/${shopInfo.restaurantId}/discounts/${promotion.promotionId}`">
 				<div class="inline-flex items-center ml-1 font-bold text-op-teal">
 				<div>{{ promotion.promotionName }}</div><i class="material-icons ml-1">edit</i></div></router-link>
 			</div>
 			<div>
 
       有効: {{ promotion.enable ? "はい" : "いいえ" }}<br/>
-      期間: {{ promotion.hasTerm ? "あり":"なし" }} {{ promotion.hasTerm ? promotion.termFrom.toDate().toISOString().slice(0, 10) + "~" + promotion.termTo.toDate().toISOString().slice(0, 10) :"なし" }}<br/> 
+      期間: {{ promotion.hasTerm ? "あり":"なし" }} {{ promotion.hasTerm ? promotion.termFrom.toISOString().slice(0, 10) + "~" + promotion.termTo.toISOString().slice(0, 10) :"なし" }}<br/> 
       利用回数制限(１回): {{ promotion.usageRestrictions  ? "はい" : "いいえ"}}<br/>
       利用可能最低金額: {{ promotion.discountThreshold }}円<br/>
       割引タイプ:
-      <template v-if="promotion.type === 'discount'">ディスカウント</template>
-      <template v-if="promotion.type === 'onetimeCoupon'">１回のみ発行可能クーポン</template>
-      <template v-if="promotion.type === 'multipletimesCoupon'">発行回数制限なしクーポン</template><br/>
+      <template v-if="promotion.type === 'discount'">{{ $t('admin.promotion.discount') }}</template>
+      <template v-if="promotion.type === 'onetimeCoupon'">{{ $t('admin.promotion.onetimeCoupon') }}</template>
+      <template v-if="promotion.type === 'multipletimesCoupon'">{{ $t('admin.promotion.multipletimesCoupon' )}}</template><br/>
       割引:
       <template v-if="promotion.discountMethod === 'amount'">一律{{ promotion.discountValue }}円</template>
       <template v-if="promotion.discountMethod === 'ratio'">割引率{{ promotion.discountValue }}%</template>

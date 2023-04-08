@@ -427,7 +427,7 @@ import { usePromotionData } from "@/utils/promotion";
 
 import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
-import { PromotionData } from "@/models/promotion";
+import Promotion from "@/models/promotion";
 
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
@@ -477,7 +477,7 @@ export default defineComponent({
       required: true,
     },
     promotions: {
-      type: Array<PromotionData>,
+      type: Array<Promotion>,
       required: true,
     },
     mode: {
@@ -585,10 +585,14 @@ export default defineComponent({
     const hasPaymentMethods = computed(() => {
       return shopPaymentMethods.value.length > 0;
     });
-    const selectedPromotion = computed<PromotionData | null>(() => {
+    const selectedPromotion = computed<Promotion | null>(() => {
       if (props.promotions && props.promotions.length > 0) {
-        return props.promotions[0];
-        // return null;
+        const matched = props.promotions.filter((a) => {
+          return props.orderInfo.total >= a.discountThreshold;
+        });
+        if (matched && matched.length > 0) {
+          return matched[matched.length - 1];
+        }
       }
       return null;
     });

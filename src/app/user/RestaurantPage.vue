@@ -408,7 +408,7 @@
         :lastOrder="lastOrder"
         @didOrderdChange="didOrderdChange"
         :totalPrice="totalPrice"
-        :promotion="promotion"
+        :promotions="promotions"
       />
 
       <!-- for disable all UI -->
@@ -553,7 +553,7 @@ import { useRoute, useRouter } from "vue-router";
 
 export default defineComponent({
   name: "RestaurantPage",
-
+  
   components: {
     Menu,
     MenuMo,
@@ -574,7 +574,7 @@ export default defineComponent({
     CategoryIcon,
     Titles,
     SubCategoryList,
-
+    
     PromotionMessage1,
     PromotionMessage2,
     
@@ -628,14 +628,14 @@ export default defineComponent({
     // TODO: add area to header
     return {
       title:
-        Object.keys(this.shopInfo).length == 0
-          ? document.title
-          : [
-              this.shopInfo?.restaurantName || "",
-              this.isInMo
-                ? moTitle
-                : ownPlateConfig.restaurantPageTitle || this.defaultTitle,
-            ].join(" / "),
+      Object.keys(this.shopInfo).length == 0
+        ? document.title
+        : [
+          this.shopInfo?.restaurantName || "",
+          this.isInMo
+            ? moTitle
+            : ownPlateConfig.restaurantPageTitle || this.defaultTitle,
+        ].join(" / "),
     };
   },
   setup(props) {
@@ -644,7 +644,7 @@ export default defineComponent({
     const router = useRouter();
 
     const retryCount = ref(0);
-
+    
     const loginVisible = ref(false);
     const isCheckingOut = ref(false);
     const waitForUser = ref(false);
@@ -678,7 +678,7 @@ export default defineComponent({
     const updateHowtoreceive = (value: string) => {
       howtoreceive.value = value;
     };
-
+    
     const {
       category,
       subCategory,
@@ -711,7 +711,7 @@ export default defineComponent({
     const isPreview = computed(() => {
       return props.notFound && isOwner.value;
     });
-
+    
     const isDelivery = computed(() => {
       return howtoreceive.value === "delivery";
     });
@@ -727,14 +727,14 @@ export default defineComponent({
         howtoreceive.value = "takeout";
       }
     });
-
+    
     const coverImage = computed(() => {
       return (
         (props.shopInfo?.images?.cover?.resizedImages || {})["1200"] ||
-        props.shopInfo.restCoverPhoto
+          props.shopInfo.restCoverPhoto
       );
     });
-
+    
     const { loadMenu, setCache, menus, menuObj, menuCache } = useMenu(
       restaurantId,
       isInMo,
@@ -742,7 +742,7 @@ export default defineComponent({
       subCategory,
       props.groupData
     );
-
+    
     const { menuPickupData, availableDays, todaysLast } = usePickupTime(
       props.shopInfo,
       {},
@@ -753,7 +753,7 @@ export default defineComponent({
     const lastOrder = computed(() => {
       return (todaysLast.value || {}).lastOrderDisplay;
     });
-
+    
     const disabledPickupTime = computed(() => {
       if (isPickup.value) {
         const now = Number(
@@ -764,13 +764,13 @@ export default defineComponent({
       }
       return false;
     });
-
+    
     // for Mo
     const { preOrderPublics, pickupPublics, pickupStocks } = loadStockData(
       db,
       props.shopInfo
     );
-
+    
     const isPublucDataSet = computed(() => {
       if (isPickup.value) {
         return pickupPublics.value[subCategory.value] || {};
@@ -785,7 +785,7 @@ export default defineComponent({
       return {};
     });
     // end of for Mo
-
+    
     // changed from onMount
     // avoid to reset cart when pickup or other not takeout
     onBeforeMount(() => {
@@ -801,7 +801,7 @@ export default defineComponent({
         }
       }
     });
-
+    
     loadMenu(() => {
       if (location.hash && location.hash[0] === "#") {
         const id = location.hash.slice(1);
@@ -810,7 +810,7 @@ export default defineComponent({
         }, 400);
       }
     });
-
+    
     watch(menus, (values) => {
       analyticsUtil.sendMenuListView(
         values as AnalyticsMenuData[],
@@ -818,7 +818,7 @@ export default defineComponent({
         restaurantId.value
       );
     });
-
+    
     watch(watchCat, () => {
       loadMenu();
     });
@@ -828,7 +828,7 @@ export default defineComponent({
         updateMoUrl();
       }
     });
-
+    
     const updateMoUrl = () => {
       const { category, subCategory, restaurantId } = route.params;
       if (howtoreceive.value && subCategory) {
@@ -846,7 +846,7 @@ export default defineComponent({
         orders.value = {};
       }
     });
-
+    
     const { loadTitle, titles, titleLists } = useTitles(restaurantId);
 
     const { loadCategory, categoryData } = useCategory(props.moPrefix || "");
@@ -855,7 +855,7 @@ export default defineComponent({
       props.moPrefix || "",
       category
     );
-
+    
     const selectedCategory = computed(() => {
       if (category.value && categoryData.value) {
         return (
@@ -866,7 +866,7 @@ export default defineComponent({
       }
       return {};
     });
-
+    
     const selectedSubCategory = computed(() => {
       if (subCategory.value && subCategoryData.value) {
         return (
@@ -877,7 +877,7 @@ export default defineComponent({
       }
       return {};
     });
-
+    
     if (isInMo.value) {
       loadCategory();
       if (category.value) {
@@ -888,7 +888,7 @@ export default defineComponent({
     if (!isInMo.value) {
       loadTitle();
     }
-
+    
     const itemLists = computed(() => {
       if (isInMo.value) {
         if (isPickup.value) {
@@ -897,7 +897,7 @@ export default defineComponent({
               if (isFilterStock.value) {
                 const soldOutData = moSoldOutDataSet.value[menu.id] || {};
                 const isStock =
-                  !menu.soldOut &&
+                      !menu.soldOut &&
                   (!!soldOutData.forcePickupStock || !!soldOutData.isStock);
                 return isStock;
               }
@@ -910,18 +910,18 @@ export default defineComponent({
             .sort((a, b) => {
             const aSoldOutData = moSoldOutDataSet.value[a.id] || {};
             const aIsStock =
-              !a.soldOut &&
-              (!!aSoldOutData.forcePickupStock || !!aSoldOutData.isStock);
-
+            !a.soldOut &&
+            (!!aSoldOutData.forcePickupStock || !!aSoldOutData.isStock);
+            
             const bSoldOutData = moSoldOutDataSet.value[b.id] || {};
             const bIsStock =
-              !b.soldOut &&
-              (!!bSoldOutData.forcePickupStock || !!bSoldOutData.isStock);
-
+            !b.soldOut &&
+            (!!bSoldOutData.forcePickupStock || !!bSoldOutData.isStock);
+            
             if (aIsStock === bIsStock) {
-              return a.itemName > b.itemName ? 1 : -1;
+            return a.itemName > b.itemName ? 1 : -1;
             }
-
+            
             return aIsStock ? -1 : 1;
             });
           */
@@ -945,7 +945,7 @@ export default defineComponent({
           });
       }
     });
-
+    
     const totalPrice = computed(() => {
       const subTotal = prices2subtotal(prices.value);
       const total = subtotal2total(subTotal, cartItems.value, props.shopInfo);
@@ -1009,7 +1009,7 @@ export default defineComponent({
         }
         return user.value.displayName;
       })();
-
+      
       const order_data = {
         order: orders.value,
         options: convOptionArray2Obj(postOptions.value),
@@ -1018,7 +1018,7 @@ export default defineComponent({
         uid: user.value.uid,
         ownerUid: props.shopInfo.uid,
         isDelivery:
-          (props.shopInfo.enableDelivery && isDelivery.value) || false, // true, // for test
+        (props.shopInfo.enableDelivery && isDelivery.value) || false, // true, // for test
         isPickup: (props.shopInfo.enableMoPickup && isPickup.value) || false,
         isLiff: isLiffUser.value,
         phoneNumber: user.value.phoneNumber,
@@ -1051,7 +1051,7 @@ export default defineComponent({
           restaurantId: restaurantId.value,
           orderId: res.id,
         });
-
+        
         try {
           const checkoutMenus: AnalyticsMenuData[] = [];
           Object.keys(orders.value).forEach((menuId) => {
@@ -1123,7 +1123,7 @@ export default defineComponent({
         waitForUser.value = true;
       }
     };
-
+    
     watch(user, (newValue) => {
       if (waitForUser.value && newValue) {
         console.log("handling deferred notification");
@@ -1141,14 +1141,14 @@ export default defineComponent({
         ? [category.value, subCategory.value].join("_")
         : "";
     });
-
+    
     const isOpenGroupCategory = computed(() => {
       return route.params.list === "categories";
     });
     const isOpenGroupSubCategory = computed(() => {
       return route.params.list === "category";
     });
-
+    
     const cartButton = ref();
     const isShowCart = computed(() => {
       return cartButton.value?.isShowCart;
@@ -1156,16 +1156,16 @@ export default defineComponent({
     const closeCart = () => {
       cartButton.value?.closeCart();
     };
-
+    
     const isShowCategoryIcon = computed(() => {
       return (
         !!showSubCategory.value &&
-        !isOpenGroupCategory.value &&
-        !isOpenGroupSubCategory.value &&
-        !isShowCart.value
+          !isOpenGroupCategory.value &&
+          !isOpenGroupSubCategory.value &&
+          !isShowCart.value
       );
     });
-
+    
     watchEffect(() => {
       if (isShowCategoryIcon.value) {
         setTimeout(() => {
@@ -1173,7 +1173,7 @@ export default defineComponent({
         }, 200);
       }
     });
-
+    
     watch(isShowCart, (value) => {
       if (value) {
         document.body.style.position = "fixed";
@@ -1213,7 +1213,7 @@ export default defineComponent({
         document.body.style.position = "";
       }
     });
-
+    
     const filteredTitleLists = computed(() => {
       const menuLists = props.shopInfo.menuLists || [];
       const itemsObj = array2obj(titles.value);
@@ -1227,7 +1227,7 @@ export default defineComponent({
           }) || []
       ).filter((title) => title.name !== "");
     });
-
+    
     const scrollTop = () => {
       scrollToElementById("RestaurantLeftTop");
     };
@@ -1256,6 +1256,16 @@ export default defineComponent({
       }
       return null;
     });
+    const matchedPromotions = computed(() => {
+      return props.promotions.filter((a) => {
+        return totalPrice.value.total >= a.discountThreshold;
+      });
+    });
+    const possiblePromotions = computed(() => {
+      return props.promotions.filter((a) => {
+        return a.discountThreshold > totalPrice.value.total;
+      });
+    });
     return {
       itemLists,
       titleLists: filteredTitleLists,
@@ -1277,7 +1287,8 @@ export default defineComponent({
       prices,
       totalQuantities,
       promotion,
-
+      matchedPromotions,
+      
       isPreview,
 
       selectedCategory,

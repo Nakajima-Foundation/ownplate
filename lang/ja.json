@@ -871,6 +871,16 @@
       "newsTop": "お知らせ一覧",
       "adminTop": "管理画面"
     },
+    "yes": "あり",
+    "yesOnce": "あり(1回)",
+    "no": "なし",
+    "promotion": {
+      "amount": "金額",
+      "ratio": "割引率",
+      "discount": "ディスカウント",
+      "onetimeCoupon": "１回のみ発行可能クーポン",
+      "multipletimesCoupon": "発行回数制限なしクーポン"
+    },
     "open": "営業",
     "closed": "休業",
     "notes": {

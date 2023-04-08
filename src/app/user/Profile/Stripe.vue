@@ -6,7 +6,17 @@
     </div>
 
     <div class="mt-2 text-base font-bold">
-      {{ cardDescription }}
+      <template v-if="storedCard">
+        <div>
+          {{ storedCard.brand}} ***{{storedCard.last4}}
+        </div>
+        <div>
+          {{ storedCard.exp_month }}/{{ storedCard.exp_year }}
+        </div>
+      </template>
+      <template v-else>
+        {{ $t("profile.noCard") }}
+      </template>
     </div>
 
     <div v-if="storedCard" class="mt-2">
@@ -46,12 +56,6 @@ export default defineComponent({
     const { isLiffUser, user } = useUserData();
 
     const storedCard = ref<{brand: string, last4: string} | null>(null);
-
-    const cardDescription = computed(() => {
-      return storedCard.value
-        ? `${storedCard.value.brand} ***${storedCard.value.last4}`
-        : t("profile.noCard");
-    });
 
     let detachStripe: Unsubscribe | null = null;
     const checkStripe = () => {
@@ -101,7 +105,6 @@ export default defineComponent({
     });
 
     return {
-      cardDescription,
       storedCard,
 
       handleDeleteCard,

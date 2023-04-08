@@ -771,6 +771,16 @@
       "newsTop": "Top Actualité",
       "adminTop": "Top Administrateur"
     },
+    "yes": "あり",
+    "yesOnce": "あり(1回)",
+    "no": "なし",
+    "promotion": {
+      "amount": "金額",
+      "ratio": "割引率",
+      "discount": "ディスカウント",
+      "onetimeCoupon": "１回のみ発行可能クーポン",
+      "multipletimesCoupon": "発行回数制限なしクーポン"
+    },
     "open": "Open",
     "closed": "Closed",
     "notes": {
