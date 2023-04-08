@@ -35,7 +35,7 @@
 			<div>
 
       有効: {{ promotion.enable ? "はい" : "いいえ" }}<br/>
-      期間: {{ promotion.hasTerm ? "あり":"なし" }} {{ promotion.hasTerm ? promotion.termFrom.toDate().toISOString().slice(0, 10) + "~" + promotion.termTo.toDate().toISOString().slice(0, 10) :"なし" }}<br/> 
+      期間: {{ promotion.hasTerm ? "あり":"なし" }} {{ promotion.hasTerm ? promotion.termFrom.toISOString().slice(0, 10) + "~" + promotion.termTo.toISOString().slice(0, 10) :"なし" }}<br/> 
       利用回数制限(１回): {{ promotion.usageRestrictions  ? "はい" : "いいえ"}}<br/>
       利用可能最低金額: {{ promotion.discountThreshold }}円<br/>
       割引タイプ:

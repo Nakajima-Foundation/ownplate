@@ -48,7 +48,7 @@ export const getPromotion = async (isInMo: boolean, id: string, promotionId: str
 
 
 export const usePromotionsForAdmin = (isInMo: boolean, id: string) => {
-  const promotionDataSet = ref<PromotionData[]>([]);
+  const promotionDataSet = ref<Promotion[]>([]);
 
   (async () => {
     const promotionPath = getPromotionCollctionPath(isInMo, id);
@@ -57,10 +57,7 @@ export const usePromotionsForAdmin = (isInMo: boolean, id: string) => {
         collection(db, promotionPath),
       ),
       (ret1) => {
-        promotionDataSet.value = ret1.docs.map(a => {
-          const p = new Promotion(a);
-          return p.data;
-        });
+        promotionDataSet.value = ret1.docs.map(a => new Promotion(a));
       }
     );
   })();
@@ -111,13 +108,13 @@ export const usePromotions = (mode: string, id: string, user: any) => {
         )
       ).then((ret1) => {
         const res = ret1.docs.map(a =>  new Promotion(a)).filter((a) => {
-          return a.data.termFrom.toDate() < new Date();
+          return a.termFrom < new Date();
         });
         res.map(a => p.push(a));
       })
     ]);
     promotionData.value = p.sort((a, b) => {
-      return a.data.discountValue > b.data.discountValue ? 1 : -1;
+      return a.discountValue > b.discountValue ? 1 : -1;
     });
 
   })();
@@ -143,10 +140,10 @@ export const usePromotions = (mode: string, id: string, user: any) => {
       const keys: string[] = [];
       const values: string[] = [];
       promotionData.value.map(a => {
-        if (["discount", "onetimeCoupon"].includes(a.data.type) && a.data.usageRestrictions) {
-          keys.push(a.data.promotionId);
+        if (["discount", "onetimeCoupon"].includes(a.type) && a.usageRestrictions) {
+          keys.push(a.promotionId);
         } else {
-          values.push(a.data.promotionId);
+          values.push(a.promotionId);
         }
       });
       // TODO set condition
@@ -195,20 +192,20 @@ export const usePromotions = (mode: string, id: string, user: any) => {
   const promotions = computed(() => {
     if (promotionUsed.value !== null) {
       const ret = promotionData.value.filter(a => {
-        if (!a.data.usageRestrictions) {
+        if (!a.usageRestrictions) {
           return true;
         }
-        if (a.data.type == "multipletimesCoupon") {
+        if (a.type == "multipletimesCoupon") {
           // TODO
           
-        } else if (a.data.type == "onetimeCoupon") {
+        } else if (a.type == "onetimeCoupon") {
           return !((promotionUsed.value || {})[a?.data.promotionId] as any).used;
         } else {
           // discount case.
           return !(promotionUsed.value || {})[a?.data.promotionId];
         }
       });
-      return ret.map(a => a.data);
+      return ret;
     }
     return [];
   });

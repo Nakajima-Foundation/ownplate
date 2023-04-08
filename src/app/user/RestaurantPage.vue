@@ -30,7 +30,6 @@
 
 			<div v-if="totalQuantities === 0 && promotion && promotion.type === 'discount'">
 			  <div class="mb-2 border-4 border-green-600 text-green-600 text-center font-bold fixed left-4 right-4 mx-auto max-w-lg cursor-pointer items-center rounded-full bg-white p-3 shadow-lg bottom-3 z-30 sm:bottom-8">
-          aa{{ matchedPromotions }}
 				  <div class="text-xs">
             <PromotionMessage1 :promotion="promotion" />
           </div>
@@ -513,6 +512,8 @@ import {
 import { orderCreated } from "@/lib/firebase/functions";
 
 import { order_status } from "@/config/constant";
+
+import Promotion from "@/models/promotion";
 
 import { ownPlateConfig, moTitle, moPickup, enableCampaignBanner } from "@/config/project";
 import * as analyticsUtil from "@/lib/firebase/analytics";
