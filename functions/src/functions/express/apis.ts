@@ -163,7 +163,7 @@ apiRouter.get("/restaurants/:restaurantId/menus", cors(corsOptionsDelegate), get
 
 export const escapeOptionPrice = (text: string) => {
   const optionPriceRegex = /\(((\+|＋|ー|−)[0-9.]+)\)/g;
-  console.log(text);
+  // console.log(text);
   return text.replace(optionPriceRegex, "");
 };
 export const escapePrinterString = (text: string) => {
@@ -278,9 +278,9 @@ const common = async (req: any, res: any, next: any) => {
 };
 
 const pollingStar = async (req: any, res: any) => {
-  console.log("POST");
-
-  const { restaurantId } = req.params;
+  const { restaurantId, statusCode } = req.params;
+  console.log("POST", statusCode);
+  
   const orders = await db.collection(`restaurants/${restaurantId}/orders`)
     .where("printed", "==", false)
     .where("status", "==", order_status.order_placed)
@@ -303,33 +303,29 @@ const pollingStar = async (req: any, res: any) => {
 
 const requestStar = async (req: any, res: any) => {
   console.log("GET");
-  const { token } = req.query;
+  const { token, type } = req.query;
   const { restaurantId } = req.params;
 
+  
   if (token) {
     const doc = await db.doc(`restaurants/${restaurantId}/orders/` + token).get();
+
+    console.log("print", token);
 
     const svg = getSVG(req.restaurant, doc.data());
     const png = await convert(svg, {background: "white"});
     return res.status(200).type('image/png').send(png);
     
   }
-  return res.json({});
-  // text/plain
-  /*
-  const svg = getSVG();
-  // console.log(svg);
-  const png = await convert(svg);
-  return res.status(200).type('img/png').send(png);
-  */
+  return res.status(200).json({});
 };
 
 
 const deleteStar = async (req: any, res: any) => {
-  console.log("DELETE");
   // const { uid, type, mac, token } = req.query;
-  const { token } = req.query;
+  const { token, code } = req.query;
   const { restaurantId } = req.params;
+  console.log("DELETE", token, code);
   
   if (token) {
     await db.doc(`restaurants/${restaurantId}/orders/` + token)
