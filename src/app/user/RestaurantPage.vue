@@ -408,7 +408,7 @@
         :lastOrder="lastOrder"
         @didOrderdChange="didOrderdChange"
         :totalPrice="totalPrice"
-        :promotion="promotion"
+        :promotions="promotions"
       />
 
       <!-- for disable all UI -->
@@ -1249,7 +1249,7 @@ export default defineComponent({
         return totalPrice.value.total >= a.discountThreshold;
       });
     });
-    const posiblePromotions = computed(() => {
+    const possiblePromotions = computed(() => {
       return props.promotions.filter((a) => {
         return a.discountThreshold > totalPrice.value.total;
       });

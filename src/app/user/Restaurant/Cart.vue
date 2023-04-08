@@ -28,7 +28,7 @@
         </template>
       </div>
 			
-			<div v-if="promotion">
+			<div v-if="promotions" v-for="(promotion, k) in promotions" :key="k">
 			  <div class="border-green-600 text-green-600 text-center font-bold mt-1 mx-6 sm:mx-auto max-w-xl items-center mb-3 rounded-lg bg-green-600 bg-opacity-10 p-2">
 				  <div class="text-xs">
             <PromotionMessage1 :promotion="promotion" />
@@ -37,7 +37,7 @@
             <PromotionMessage2 :promotion="promotion" />
           </div>
 			  </div>
-			  <!--ToDo 割引適用までの金額を表示する -->
+
 			  <div class="flex mx-6 sm:mx-auto max-w-xl justify-center font-bold text-sm"
              v-if=" promotion.discountThreshold > totalPrice.total"
              >
@@ -83,8 +83,8 @@ export default defineComponent({
       type: Object,
       required: true,
     },
-    promotion: {
-      type: Object,
+    promotions: {
+      type: Array,
       required: false,
     },
     selectedOptions: {
