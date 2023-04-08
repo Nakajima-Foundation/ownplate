@@ -513,8 +513,6 @@ import { orderCreated } from "@/lib/firebase/functions";
 
 import { order_status } from "@/config/constant";
 
-import Promotion from "@/models/promotion";
-
 import { ownPlateConfig, moTitle, moPickup, enableCampaignBanner } from "@/config/project";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
