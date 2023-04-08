@@ -28,7 +28,7 @@ import {
 import { db } from "@/lib/firebase/firebase9";
 
 import { OrderInfoData } from "@/models/orderInfo";
-import { PromotionData } from "@/models/promotion";
+import Promotion, { PromotionData, UserPromotionHistoryData } from "@/models/promotion";
 
 export const getPromotionCollctionPath = (isInMo: boolean, id: string) => {
   return isInMo ? `/groups/${id}/promotions` : `restaurants/${id}/promotions`;
@@ -58,7 +58,8 @@ export const usePromotionsForAdmin = (isInMo: boolean, id: string) => {
       ),
       (ret1) => {
         promotionDataSet.value = ret1.docs.map(a => {
-          const data = a.data() as PromotionData;
+          const p = new Promotion(a);
+          const data = p.data;
           const now = new Date();
           const ok = data.enable && (!data.hasTerm || (data.termFrom.toDate() < now && data.termTo.toDate() > now))
           data.currentOpen = ok;
@@ -72,7 +73,7 @@ export const usePromotionsForAdmin = (isInMo: boolean, id: string) => {
   };
 };
 
-const getUserPath = async (mode: string, id: string, user: any) => {
+const getUserHistoryPath = async (mode: string, id: string, user: any) => {
   if (mode === "mo") {
     const hash = await sha256([id, user.value.phoneNumber].join(":")); 
     return `groups/${id}/users/${hash}/promotionHistories`
@@ -87,12 +88,12 @@ const getHistoryCondition = (mode: string, id: string) => {
 }
 
 export const usePromotions = (mode: string, id: string, user: any) => {
-  const promotionData = ref<PromotionData[]>([]);
+  const promotionData = ref<Promotion[]>([]);
 
   (async () => {
     const promotionPath = getPromotionCollctionPath((mode === "mo"), id);
 
-    const p: PromotionData[] = [];
+    const p: Promotion[] = [];
     await Promise.all([
       getDocs(
         query(
@@ -101,7 +102,7 @@ export const usePromotions = (mode: string, id: string, user: any) => {
           where("hasTerm", "==", false),
         )
       ).then((ret1) => {
-        const res = ret1.docs.map(a => a.data() as PromotionData);
+        const res = ret1.docs.map(a => new Promotion(a));
         res.map(a => p.push(a));
       }),
       getDocs(
@@ -113,19 +114,20 @@ export const usePromotions = (mode: string, id: string, user: any) => {
           where("termTo", ">", Timestamp.now()),
         )
       ).then((ret1) => {
-        const res = ret1.docs.map(a => a.data() as PromotionData).filter((a) => {
-          return a.termFrom.toDate() < new Date();
+        const res = ret1.docs.map(a =>  new Promotion(a)).filter((a) => {
+          return a.data.termFrom.toDate() < new Date();
         });
         res.map(a => p.push(a));
       })
     ]);
     promotionData.value = p.sort((a, b) => {
-      return a.discountValue > b.discountValue ? 1 : -1;
+      return a.data.discountValue > b.data.discountValue ? 1 : -1;
     });
 
   })();
 
-  const promotionUsed = ref<{[key: string]: PromotionData | PromotionData[]} | null>(null);
+  
+  const promotionUsed = ref<{[key: string]: UserPromotionHistoryData | UserPromotionHistoryData[]} | null>(null);
   let detacher1: Unsubscribe | null = null;
   let detacher2: Unsubscribe | null = null;
   onUnmounted(() => {
@@ -145,14 +147,14 @@ export const usePromotions = (mode: string, id: string, user: any) => {
       const keys: string[] = [];
       const values: string[] = [];
       promotionData.value.map(a => {
-        if (["discount", "onetimeCoupon"].includes(a.type) && a.usageRestrictions) {
-          keys.push(a.promotionId);
+        if (["discount", "onetimeCoupon"].includes(a.data.type) && a.data.usageRestrictions) {
+          keys.push(a.data.promotionId);
         } else {
-          values.push(a.promotionId);
+          values.push(a.data.promotionId);
         }
       });
       // TODO set condition
-      const userPath = await getUserPath(mode, id, user);
+      const userHistoryPath = await getUserHistoryPath(mode, id, user);
 
       // for onetime or discount
       if (keys.length === 0 && values.length === 0) {
@@ -162,14 +164,14 @@ export const usePromotions = (mode: string, id: string, user: any) => {
       detacher1 = keys.length > 0 ?
         onSnapshot(
           query(
-            collection(db, userPath),
+            collection(db, userHistoryPath),
             where(documentId(), "in", keys),
             getHistoryCondition(mode, id),
           ),
           (a => {
             const used = promotionUsed.value ? {...promotionUsed.value} : {};
             a.docs.map((b) => {
-              used[b.id] = b.data() as PromotionData;
+              used[b.id] = b.data() as UserPromotionHistoryData;
             })
             promotionUsed.value = used;
           })) : null;
@@ -178,7 +180,7 @@ export const usePromotions = (mode: string, id: string, user: any) => {
       detacher2 = values.length > 0 ?
         onSnapshot(
           query(
-            collection(db, userPath),
+            collection(db, userHistoryPath),
             where("promotionId", "in", values),
             getHistoryCondition(mode, id),
           ),
@@ -186,9 +188,9 @@ export const usePromotions = (mode: string, id: string, user: any) => {
             const used = promotionUsed.value ? {...promotionUsed.value} : {};
             a.docs.map((b) => {
               if (!used[b.id]) {
-                used[b.id] = [] as PromotionData[];
+                used[b.id] = [] as UserPromotionHistoryData[];
               }
-              (used[b.id] as PromotionData[]).push(b.data() as PromotionData);
+              (used[b.id] as UserPromotionHistoryData[]).push(b.data() as UserPromotionHistoryData);
             });
             promotionUsed.value = used;
           })) : null;
@@ -197,20 +199,20 @@ export const usePromotions = (mode: string, id: string, user: any) => {
   const promotions = computed(() => {
     if (promotionUsed.value !== null) {
       const ret = promotionData.value.filter(a => {
-        if (!a.usageRestrictions) {
+        if (!a.data.usageRestrictions) {
           return true;
         }
-        if (a.type == "multipletimesCoupon") {
+        if (a.data.type == "multipletimesCoupon") {
           // TODO
           
-        } else if (a.type == "onetimeCoupon") {
-          return !((promotionUsed.value || {})[a?.promotionId] as any).used;
+        } else if (a.data.type == "onetimeCoupon") {
+          return !((promotionUsed.value || {})[a?.data.promotionId] as any).used;
         } else {
           // discount case.
-          return !(promotionUsed.value || {})[a?.promotionId];
+          return !(promotionUsed.value || {})[a?.data.promotionId];
         }
       });
-      return ret;
+      return ret.map(a => a.data);
     }
     return [];
   });
@@ -261,8 +263,8 @@ export const useUserPromotionHistory = (mode: string, id: string, user: any) => 
     if (!user.value || !user.value.phoneNumber) {
       return 
     }
-    const userPath = await getUserPath(mode, id, user);
-    const historySnapShot = await getDocs(collection(db, userPath))
+    const userHistoryPath = await getUserHistoryPath(mode, id, user);
+    const historySnapShot = await getDocs(collection(db, userHistoryPath))
     
     const promotionPath = getPromotionCollctionPath((mode === "mo"), id);
     if (historySnapShot.docs && historySnapShot.docs.length > 0) {

@@ -1,8 +1,11 @@
+import { QueryDocumentSnapshot, DocumentSnapshot, DocumentData } from "firebase/firestore";
+import FirebaseModel from "./firebasemodel";
 import {
   Timestamp,
 } from "firebase/firestore";
 
-export interface PromotionData {
+
+export interface PromotionData extends DocumentData{
   promotionId: string;
   promotionName: string;
   enable: boolean;
@@ -19,3 +22,14 @@ export interface PromotionData {
   currentOpen?: boolean;
 
 };
+
+export interface UserPromotionHistoryData {
+  promotionId: string;
+}
+
+export default class Promotion extends FirebaseModel<PromotionData> {
+  
+  constructor(_model: QueryDocumentSnapshot | DocumentSnapshot<PromotionData>) {
+    super(_model);
+  }
+}
