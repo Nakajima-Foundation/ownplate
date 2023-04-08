@@ -279,8 +279,8 @@ const common = async (req: any, res: any, next: any) => {
 
 const pollingStar = async (req: any, res: any) => {
   const { restaurantId } = req.params;
-  const { statusCode } = req.query;
-  console.log("POST", {statusCode});
+  const { statusCode } = req.body;
+  console.log("POST", {statusCode}, req.body);
   
   const orders = await db.collection(`restaurants/${restaurantId}/orders`)
     .where("printed", "==", false)
