@@ -280,7 +280,7 @@ const common = async (req: any, res: any, next: any) => {
 const pollingStar = async (req: any, res: any) => {
   const { restaurantId } = req.params;
   const { statusCode } = req.query;
-  console.log("POST", statusCode);
+  console.log("POST", {statusCode});
   
   const orders = await db.collection(`restaurants/${restaurantId}/orders`)
     .where("printed", "==", false)
@@ -290,6 +290,7 @@ const pollingStar = async (req: any, res: any) => {
 
   if (orders.docs.length > 0) {
     const jobToken = orders.docs[0].id;
+    console.log("POSTJOB");
     return res.json({
       jobReady: true,
       mediaTypes: [ "image/png" ],
@@ -298,14 +299,14 @@ const pollingStar = async (req: any, res: any) => {
   }
   
   return res.json({
-    jobReady: true,
+    jobReady: false,
   });
 };
 
 const requestStar = async (req: any, res: any) => {
   const { token, type } = req.query;
   const { restaurantId } = req.params;
-  console.log("GET", type);
+  console.log("GET", {type});
 
   
   if (token) {
@@ -324,9 +325,9 @@ const requestStar = async (req: any, res: any) => {
 
 const deleteStar = async (req: any, res: any) => {
   // const { uid, type, mac, token } = req.query;
-  const { token, code } = req.query;
+  const { token, code, retry } = req.query;
   const { restaurantId } = req.params;
-  console.log("DELETE", token, code);
+  console.log("DELETE", { token, code, retry });
   
   if (token) {
     await db.doc(`restaurants/${restaurantId}/orders/` + token)
