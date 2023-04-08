@@ -161,6 +161,16 @@ apiRouter.get("/restaurants/:restaurantId/menus", cors(corsOptionsDelegate), get
 */
 
 
+export const escapeOptionPrice = (text: string) => {
+  const optionPriceRegex = /\(((\+|\-|＋|ー|−)[0-9\.]+)\)/g;
+  console.log(text);
+  return text.replace(optionPriceRegex, "");
+};
+export const escapePrinterString = (text: string) => {
+  // {}+-|"`^,;:
+  return text.replace(/[{}+\-|"`^,;:]+/g, "");
+};
+
 export const getSVG = (restaurantData: any, orderData: any) => {
   const orderNumber = nameOfOrder(orderData.number);
 
@@ -172,7 +182,7 @@ export const getSVG = (restaurantData: any, orderData: any) => {
       return Object.keys(orderData.order[menuId])
         .map((key) => {
           const count = orderData.order[menuId][key];
-          messages.push(`${name} | x${count}`);
+          messages.push(`${escapePrinterString(name)} | x${count}`);
 
           try {
             if (orderData.options && orderData.options[menuId] && orderData.options[menuId][key]) {
@@ -181,7 +191,7 @@ export const getSVG = (restaurantData: any, orderData: any) => {
                 opts.map(opt => {
                   console.log(opt);
                   if (opt) {
-                    messages.push("~~~*" + opt + "|");
+                    messages.push("~~~*" + escapePrinterString(escapeOptionPrice(opt)) + "|");
                   }
                 });
               }
@@ -195,8 +205,9 @@ export const getSVG = (restaurantData: any, orderData: any) => {
   const howToReceive = orderData.isDelivery ? "デリバリー" : "テイクアウト";
   const timeEstimated = moment(orderData.timePlaced.toDate()).tz(timezone).format("YYYY/MM/DD HH:mm");
   const taxPayment = restaurantData.inclusiveTax ? "内税" : "外税";
+  const onlinePay = orderData?.payment?.stripe ? "事前クレジット決済" : "現地払い";
   const text = `
-^^${restaurantData.restaurantName}
+^^${escapePrinterString(restaurantData.restaurantName)}
 おもちかえり.com
 
 ^^^"${orderNumber}"
@@ -204,7 +215,7 @@ export const getSVG = (restaurantData: any, orderData: any) => {
 |受渡方法："${howToReceive}"
 |受渡希望時間："${timeEstimated}"
 
-${orderData.name}さん|
+${escapePrinterString(orderData.name)}さん|
 {w:*,4;b:line}
 ${orders}
 -
@@ -216,7 +227,7 @@ ${orders}
 -
 ^^合計 | ^^^¥${orderData.totalCharge}
 {w:auto; b:space}
-支払方法："現地払い"|
+支払方法："${onlinePay}"|
 
 
 `;
