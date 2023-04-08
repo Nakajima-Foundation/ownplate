@@ -2,6 +2,7 @@ import * as admin from "firebase-admin";
 import { should } from "chai";
 import { getSVG } from "../src/functions/express/apis";
 import { writeFile } from 'fs';
+import { convert } from 'convert-svg-to-png';
 
 should();
 
@@ -39,6 +40,8 @@ describe("Order function", () => {
     const ret = getSVG(restaurantData, orderData);
     
     await writeFile(`./order.svg`, ret, () => {});
+    const png = await convert(ret, {background: "white"});
+    await writeFile(`./order.png`, png, () => {});
     console.log(ret);
   });
 });

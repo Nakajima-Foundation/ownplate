@@ -202,7 +202,7 @@ export const getSVG = (restaurantData: any, orderData: any) => {
 ^^^"${orderNumber}"
 
 |受渡方法："${howToReceive}"
-|受渡時間："${timeEstimated}"
+|受渡希望時間："${timeEstimated}"
 
 ${orderData.name}さん|
 {w:*,4;b:line}
@@ -299,8 +299,6 @@ const requestStar = async (req: any, res: any) => {
     const doc = await db.doc(`restaurants/${restaurantId}/orders/` + token).get();
 
     const svg = getSVG(req.restaurant, doc.data());
-    // console.log(svg);
-    console.log(svg);
     const png = await convert(svg, {background: "white"});
     return res.status(200).type('image/png').send(png);
     
