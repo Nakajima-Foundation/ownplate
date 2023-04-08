@@ -162,7 +162,7 @@ apiRouter.get("/restaurants/:restaurantId/menus", cors(corsOptionsDelegate), get
 
 
 export const escapeOptionPrice = (text: string) => {
-  const optionPriceRegex = /\(((\+|\-|＋|ー|−)[0-9\.]+)\)/g;
+  const optionPriceRegex = /\(((\+|＋|ー|−)[0-9.]+)\)/g;
   console.log(text);
   return text.replace(optionPriceRegex, "");
 };
