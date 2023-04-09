@@ -34,17 +34,17 @@
 			</div>
 			<div>
 
-      有効: {{ promotion.enable ? "はい" : "いいえ" }}<br/>
-      期間: {{ promotion.hasTerm ? "あり":"なし" }} {{ promotion.hasTerm ? promotion.termFrom.toISOString().slice(0, 10) + "~" + promotion.termTo.toISOString().slice(0, 10) :"なし" }}<br/> 
-      利用回数制限(１回): {{ promotion.usageRestrictions  ? "はい" : "いいえ"}}<br/>
-      利用可能最低金額: {{ promotion.discountThreshold }}円<br/>
+      ディスカウントの有効化: {{ promotion.enable ? "あり" : "なし" }}<br/>
       割引タイプ:
       <template v-if="promotion.type === 'discount'">{{ $t('admin.promotion.discount') }}</template>
       <template v-if="promotion.type === 'onetimeCoupon'">{{ $t('admin.promotion.onetimeCoupon') }}</template>
       <template v-if="promotion.type === 'multipletimesCoupon'">{{ $t('admin.promotion.multipletimesCoupon' )}}</template><br/>
+      ディスカウント適用期間: {{ promotion.hasTerm ? "あり":"なし" }} {{ promotion.hasTerm ? promotion.termFrom.toISOString().slice(0, 10) + "~" + promotion.termTo.toISOString().slice(0, 10) :"なし" }}<br/> 
+      利用可能最低金額: {{ promotion.discountThreshold }}円<br/>
+      利用回数制限: {{ promotion.usageRestrictions  ? "あり(1回)" : "なし"}}<br/>
       割引:
-      <template v-if="promotion.discountMethod === 'amount'">一律{{ promotion.discountValue }}円</template>
-      <template v-if="promotion.discountMethod === 'ratio'">割引率{{ promotion.discountValue }}%</template>
+      <template v-if="promotion.discountMethod === 'amount'">金額/{{ promotion.discountValue }}円</template>
+      <template v-if="promotion.discountMethod === 'ratio'">割引率/{{ promotion.discountValue }}%</template>
       <br/>
       決済方法制限: 
       <template v-if="promotion.paymentRestrictions === 'stripe'">カード決済</template>
