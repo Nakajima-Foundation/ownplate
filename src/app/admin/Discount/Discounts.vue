@@ -39,7 +39,7 @@
       <template v-if="promotion.type === 'discount'">{{ $t('admin.promotion.discount') }}</template>
       <template v-if="promotion.type === 'onetimeCoupon'">{{ $t('admin.promotion.onetimeCoupon') }}</template>
       <template v-if="promotion.type === 'multipletimesCoupon'">{{ $t('admin.promotion.multipletimesCoupon' )}}</template><br/>
-      ディスカウント適用期間: {{ promotion.hasTerm ? "あり":"なし" }} {{ promotion.hasTerm ? promotion.termFrom.toISOString().slice(0, 10) + "~" + promotion.termTo.toISOString().slice(0, 10) :"なし" }}<br/> 
+      ディスカウント適用期間: {{ promotion.hasTerm ? "あり":"なし" }} {{ promotion.hasTerm ? promotion.termFrom.toISOString().slice(0, 10) + "~" + promotion.termTo.toISOString().slice(0, 10) :"" }}<br/> 
       利用可能最低金額: {{ promotion.discountThreshold }}円<br/>
       利用回数制限: {{ promotion.usageRestrictions  ? "あり(1回)" : "なし"}}<br/>
       割引:
