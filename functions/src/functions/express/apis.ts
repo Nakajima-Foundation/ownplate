@@ -231,7 +231,7 @@ ${orders}
 
 
 `;
-
+  console.log(text);
   const svg = receiptline.transform(text, { encoding: 'cp932' });
   return svg;
 };
