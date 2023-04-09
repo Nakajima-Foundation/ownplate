@@ -77,8 +77,13 @@ describe("Order function", () => {
       '\n';
     const svg = receiptline.transform(text, { encoding: 'cp932' });
     // const png = await convert(svg, {background: "white"});
-    const res = await sharp(Buffer.from(svg)).png().toBuffer()
-    console.log(res);
+    await sharp(Buffer.from(svg))
+      .flatten({ background: { r: 255, g: 255, b: 255 } })
+      .png()
+      .toFile("./order2.png")
+    // .toBuffer()
+    
+    // console.log(res);
   });
 
 });

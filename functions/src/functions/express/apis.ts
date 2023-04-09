@@ -318,7 +318,10 @@ const requestStar = async (req: any, res: any) => {
 
     const svg = getSVG(req.restaurant, doc.data());
     // const png = await convert(svg, {background: "white"});
-    const png = await sharp(Buffer.from(svg)).png().toBuffer();
+    const png = await sharp(Buffer.from(svg))
+      .flatten({ background: { r: 255, g: 255, b: 255 } })
+      .png()
+      .toBuffer();
 
     return res.status(200).type('image/png').send(png);
     
