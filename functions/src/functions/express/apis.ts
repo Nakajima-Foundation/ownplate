@@ -225,7 +225,7 @@ ${orders}
 配達料金 | ¥${orderData.deliveryFee || 0} 
 心づけ (サービス料・消費税含む)| ¥${orderData.tip || 0}
 -
-^^合計 | ^^^¥${orderData.totalCharge}
+^^ 合計 | ^^^¥${orderData.totalCharge}
 {w:auto; b:space}
 支払方法："${onlinePay}"|
 
