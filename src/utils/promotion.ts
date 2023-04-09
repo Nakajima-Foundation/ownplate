@@ -49,7 +49,6 @@ export const getPromotion = async (isInMo: boolean, id: string, promotionId: str
 
 export const usePromotionsForAdmin = (isInMo: boolean, id: string) => {
   const promotionDataSet = ref<Promotion[]>([]);
-
   (async () => {
     const promotionPath = getPromotionCollctionPath(isInMo, id);
     onSnapshot(
@@ -57,7 +56,21 @@ export const usePromotionsForAdmin = (isInMo: boolean, id: string) => {
         collection(db, promotionPath),
       ),
       (ret1) => {
-        promotionDataSet.value = ret1.docs.map(a => new Promotion(a));
+        promotionDataSet.value = ret1.docs.map(a => new Promotion(a)).sort((a, b) => {
+          if (a.currentOpen !== b.currentOpen) {
+            return a.currentOpen ? -1 : 1;
+          }
+          if (a.enable !== b.enable) {
+            return a.enable ? -1 : 1;
+          }
+          if (a.enable !== b.enable) {
+            return a.enable ? -1 : 1;
+          }
+          if (a.hasTerm !== b.hasTerm) {
+            return a.hasTerm ? -1 : 1;
+          }
+          return a.termFrom > b.termFrom ? -1 : 1;
+        });
       }
     );
   })();
