@@ -165,7 +165,6 @@ apiRouter.get("/restaurants/:restaurantId/menus", cors(corsOptionsDelegate), get
 
 export const escapeOptionPrice = (text: string) => {
   const optionPriceRegex = /\(((\+|＋|ー|−)[0-9.]+)\)/g;
-  // console.log(text);
   return text.replace(optionPriceRegex, "");
 };
 export const escapePrinterString = (text: string) => {
@@ -191,7 +190,6 @@ export const getSVG = (restaurantData: any, orderData: any) => {
               const opts = orderData.options[menuId][key].filter((o) => o);
               if (opts.length > 0) {
                 opts.map(opt => {
-                  console.log(opt);
                   if (opt) {
                     messages.push("~~~*" + escapePrinterString(escapeOptionPrice(opt)) + "|");
                   }
@@ -233,7 +231,7 @@ ${orders}
 
 
 `;
-  console.log({text});
+  // console.log({text});
   const svg = receiptline.transform(text, { encoding: 'cp932' });
   return svg;
 };
@@ -241,16 +239,6 @@ ${orders}
 const common = async (req: any, res: any, next: any) => {
   const { restaurantId, starKey } = req.params;
 
-  /*
-  console.log(JSON.stringify(req.headers));
-  console.log(req.body);
-  if (!req.header("authorization")) {
-    res.setHeader('WWW-Authenticate', 'Basic realm="printer"');
-    res.status(401).send("");
-    return ;
-  };
-  */
-  
   if (!validateFirebaseId(restaurantId)) {
     return res.status(404).send("");
   }
@@ -274,7 +262,6 @@ const common = async (req: any, res: any, next: any) => {
   }
   
   // todo auth
-  console.log(starKey);
   req.restaurant = restaurant_data;
   next();
 };
@@ -282,7 +269,8 @@ const common = async (req: any, res: any, next: any) => {
 const pollingStar = async (req: any, res: any) => {
   const { restaurantId } = req.params;
   const { statusCode } = req.body;
-  console.log("POST", {statusCode}, req.body);
+  // console.log("POST", {statusCode}, req.body);
+  console.log("POST", {statusCode});
   
   const orders = await db.collection(`restaurants/${restaurantId}/orders`)
     .where("printed", "==", false)
@@ -293,6 +281,11 @@ const pollingStar = async (req: any, res: any) => {
   if (orders.docs.length > 0) {
     const jobToken = orders.docs[0].id;
     console.log("POSTJOB");
+    await db.collection(`restaurants/${restaurantId}/printLog`).add({
+      restaurantId,
+      orderId: orders.docs[0].id,
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    });
     return res.json({
       jobReady: true,
       mediaTypes: [ "image/png" ],
@@ -314,7 +307,7 @@ const requestStar = async (req: any, res: any) => {
   if (token) {
     const doc = await db.doc(`restaurants/${restaurantId}/orders/` + token).get();
 
-    console.log("print", token);
+    // console.log("print", token);
 
     const svg = getSVG(req.restaurant, doc.data());
     // const png = await convert(svg, {background: "white"});
