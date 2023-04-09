@@ -22,10 +22,19 @@
       <!-- Right Gap -->
       <div class="column is-narrow w-6"></div>
     </div>
+    <div class="mx-6 mt-6 lg:flex lg:items-center" v-else>
+      <!-- Back and Preview -->
+      <div class="flex space-x-4">
+        <div class="flex-shrink-0">
+          <back-button url="/admin/discounts/" />
+        </div>
+      </div>
+    </div>
+
     <div v-if="histories.length === 0">
       No history data.
     </div>
-    <div v-else>
+    <div v-else class="mt-2">
       <div v-for="(h, k) in histories" :key="k">
         uid: {{h.uid}}<br/>
         rid: {{h.restaurantId}}<br/>
@@ -63,10 +72,12 @@ import {
 } from "firebase/firestore";
 
 import AdminHeader from "@/app/admin/AdminHeader.vue";
+import BackButton from "@/components/BackButton.vue";
 
 export default defineComponent({
   components: {
     AdminHeader,
+    BackButton,
   },
   props: {
     isInMo: {

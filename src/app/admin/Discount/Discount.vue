@@ -22,6 +22,15 @@
       <!-- Right Gap -->
       <div class="column is-narrow w-6"></div>
     </div>
+    <div class="mx-6 mt-6 lg:flex lg:items-center" v-else>
+      <!-- Back and Preview -->
+      <div class="flex space-x-4">
+        <div class="flex-shrink-0">
+          <back-button url="/admin/discounts/" />
+        </div>
+      </div>
+    </div>
+
     <div v-if="promotion">
       <div class="mt-6">
         <div class="pb-2 text-sm font-bold">
@@ -207,6 +216,7 @@ import {
 import { db } from "@/lib/firebase/firebase9";
 
 import AdminHeader from "@/app/admin/AdminHeader.vue";
+import BackButton from "@/components/BackButton.vue";
 
 import {
   updateDoc,
@@ -238,6 +248,7 @@ import { PromotionData } from "@/models/promotion";
 export default defineComponent({
   components: {
     AdminHeader,
+    BackButton,
   },
   props: {
     isInMo: {

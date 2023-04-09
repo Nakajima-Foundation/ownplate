@@ -22,10 +22,21 @@
       <!-- Right Gap -->
       <div class="column is-narrow w-6"></div>
     </div>
-    <div class="text-xl font-bold text-black text-opacity-30 mb-4">
+
+    <div class="mx-6 mt-6 lg:flex lg:items-center" v-else>
+      <!-- Back and Preview -->
+      <div class="flex space-x-4">
+        <div class="flex-shrink-0">
+          <back-button url="/admin/restaurants/" />
+        </div>
+      </div>
+    </div>
+
+    <div class="text-xl font-bold text-black text-opacity-30 mb-4 mt-2">
       discounts
     </div>
-    <div v-for="(promotion, k) in promotionDataSet" :key="k" >
+    <div v-for="(promotion, k) in promotionDataSet" :key="k"
+         :class="!promotion.currentOpen ? 'bg-opacity-10 bg-black' : ''">
       <div v-if="promotion.currentOpen">現在有効</div>
 			<div class="inline-flex mb-2 items-end">
         名前: <router-link :to="isInMo ? `/admin/discounts/${promotion.promotionId}` : `/admin/restaurants/${shopInfo.restaurantId}/discounts/${promotion.promotionId}`">
@@ -77,6 +88,7 @@ import {
 
 import { db } from "@/lib/firebase/firebase9";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
+import BackButton from "@/components/BackButton.vue";
 
 import {
   usePromotionsForAdmin,
@@ -88,11 +100,13 @@ import {
   doc,
   collection,
   Timestamp,
+  serverTimestamp,
 } from "firebase/firestore";
 
 export default defineComponent({
   components: {
     AdminHeader,
+    BackButton,
   },
   props: {
     isInMo: {
@@ -129,6 +143,7 @@ export default defineComponent({
         hasTerm: true,
         termFrom: Timestamp.fromDate(new Date()),
         termTo: Timestamp.fromDate(new Date()),
+        createdAt: serverTimestamp(),
       };
       const newData = await setDoc(doc(db, path + "/" + promotionId), data);
     };
