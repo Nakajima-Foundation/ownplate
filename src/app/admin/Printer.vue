@@ -111,12 +111,7 @@ export default defineComponent({
       restaurantRef,
       (doc) => {
         const data = doc.data();
-        console.log(data);
-        if (!data) {
-          notFound.value = true;
-          return;
-        }
-        printerConfig.value = data;
+        printerConfig.value = data || {};
         notFound.value = false;
       }
     );
@@ -127,8 +122,6 @@ export default defineComponent({
     const reset = () => {
       const newKey = doc(collection(db, "a")).id;
       updateDoc(restaurantRef, {key: newKey});
-      
-      // restaurantRef.update("key", )
     };
     return {
       notFound,
