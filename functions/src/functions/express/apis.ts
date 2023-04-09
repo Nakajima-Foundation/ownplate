@@ -10,7 +10,9 @@ import { validateFirebaseId } from "../../lib/validator";
 import { order_status } from "../../common/constant";
 import moment from "moment-timezone";
 import * as receiptline from  'receiptline';
-import { convert } from 'convert-svg-to-png';
+// import { convert } from 'convert-svg-to-png';
+import sharp from "sharp";
+
 export const apiRouter = express.Router();
 
 
@@ -315,7 +317,9 @@ const requestStar = async (req: any, res: any) => {
     console.log("print", token);
 
     const svg = getSVG(req.restaurant, doc.data());
-    const png = await convert(svg, {background: "white"});
+    // const png = await convert(svg, {background: "white"});
+    const png = await sharp(Buffer.from(svg)).png().toBuffer();
+
     return res.status(200).type('image/png').send(png);
     
   }

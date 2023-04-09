@@ -2,7 +2,9 @@ import * as admin from "firebase-admin";
 import { should } from "chai";
 import { getSVG } from "../src/functions/express/apis";
 import { writeFile } from 'fs';
+import * as receiptline from  'receiptline';
 import { convert } from 'convert-svg-to-png';
+import sharp from "sharp";
 
 should();
 
@@ -44,5 +46,40 @@ describe("Order function", () => {
     await writeFile(`./order.png`, png, () => {});
     console.log(ret);
   });
+
+  it("Order function, orderCounter test", async function () {
+    
+    const text = '^^テストカフェ8080 デリバリーss\n' +
+      'おもちかえり.com\n' +
+      '\n' +
+      '^^^"#535"\n' +
+      '\n' +
+      '|受渡方法："テイクアウト"\n' +
+      '|受渡希望時間："2023/04/09 11:40"\n' +
+      '\n' +
+      'テスト太郎さん|\n' +
+      '{w:*,4;b:line}\n' +
+      'お寿司盛り合わせ | x1\n' +
+      '~~~*わさびあり|\n' +
+      'お寿司盛り合わせ | x1\n' +
+      '~~~*わさびあり|\n' +
+      '-\n' +
+      '{w:16,16;a:right}\n' +
+      '小計 | ¥2000\n' +
+      '消費税（内税） | ¥148\n' +
+      '配達料金 | ¥0 \n' +
+      '心づけ (サービス料・消費税含む)| ¥0\n' +
+      '-\n' +
+      '^^合計 | ^^^¥2000\n' +
+      '{w:auto; b:space}\n' +
+      '支払方法："現地払い"|\n' +
+      '\n' +
+      '\n';
+    const svg = receiptline.transform(text, { encoding: 'cp932' });
+    // const png = await convert(svg, {background: "white"});
+    const res = await sharp(Buffer.from(svg)).png().toBuffer()
+    console.log(res);
+  });
+
 });
      
