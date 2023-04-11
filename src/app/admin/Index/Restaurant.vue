@@ -192,7 +192,7 @@
       <!-- Delivery and Printer and Discount -->
       <div
         class="mt-4 flex items-center justify-center space-x-4"
-        v-if="!simpleMode && isOwner"
+        v-if="!simpleMode && isOwner && !isInMo"
       >
         <div>
           <router-link :to="`/admin/restaurants/${restaurantid}/delivery`">
