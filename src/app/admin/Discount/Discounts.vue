@@ -10,7 +10,7 @@
         <div class="level">
           <!-- Back Button and Restaurant Profile -->
           <AdminHeader
-            class="mx-6 mt-6 lg:flex lg:items-center"
+            class="mt-6 lg:flex lg:items-center"
             :shopInfo="shopInfo"
             backLink="/admin/restaurants/"
             :showSuspend="false"
@@ -23,7 +23,7 @@
       <div class="column is-narrow w-6"></div>
     </div>
 
-    <div class="mx-6 mt-6 lg:flex lg:items-center" v-else>
+    <div class="mt-6 lg:flex lg:items-center" v-else>
       <!-- Back and Preview -->
       <div class="flex space-x-4">
         <div class="flex-shrink-0">
