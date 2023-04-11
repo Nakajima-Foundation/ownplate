@@ -931,6 +931,11 @@
       "cancelOrderChange": "Cancel an order change",
       "confirmOrderChange": "Change order"
     },
+    "menu": {
+      "delivery": "Delivery",
+      "printer": "Auto Print",
+      "discount": "Discount"
+    },
     "sound": {
       "default": "Défault",
       "gong": "Gong",

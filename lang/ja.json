@@ -1034,6 +1034,11 @@
       "cancelOrderChange": "注文の変更を取り消す",
       "confirmOrderChange": "注文の変更を確定"
     },
+    "menu": {
+      "delivery": "宅配",
+      "printer": "自動印刷",
+      "discount": "割引"
+    },
     "sound": {
       "default": "ピコリン",
       "gong": "ジャーン",
