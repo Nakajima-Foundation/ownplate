@@ -34,7 +34,7 @@
     <div v-if="promotion">
       <div class="mt-6">
         <div class="pb-2 text-sm font-bold">
-          名前
+          {{ $t("admin.promotion.name") }}
         </div>
         <div>
           <o-input type="text" v-model="promotion.promotionName"/>
@@ -42,7 +42,7 @@
       </div>
       <div class="mt-6">
         <div class="pb-2 text-sm font-bold">
-          ディスカウントの有効化
+          {{ $t("admin.promotion.activation") }}
         </div>
         <o-select v-model="promotion.enable">
           <option
@@ -56,7 +56,7 @@
       </div>
       <div class="mt-6">
         <div class="pb-2 text-sm font-bold">
-          割引タイプ
+          {{ $t("admin.promotion.type") }}
         </div>
         <o-select v-model="promotion.type">
           <option
@@ -70,7 +70,7 @@
       </div>
       <div class="mt-6">
         <div class="pb-2 text-sm font-bold">
-          ディスカウント適用期間
+          {{ $t("admin.promotion.period") }}
         </div>
         
         <o-select v-model="promotion.hasTerm">
@@ -106,7 +106,7 @@
       </div>
       <div class="mt-6">
         <div class="pb-2 text-sm font-bold">
-          利用可能最低金額
+          {{ $t("admin.promotion.minimumAmount") }}
         </div>
         <div>
           <o-field>
@@ -124,7 +124,7 @@
       </div>
       <div class="mt-6">
         <div class="pb-2 text-sm font-bold">
-          利用回数制限
+          {{ $t("admin.promotion.limitation") }}
         </div>
         <o-select v-model="promotion.usageRestrictions">
           <option
@@ -138,7 +138,7 @@
       </div>
       <div class="mt-6">
         <div class="pb-2 text-sm font-bold">
-          割引方法
+          {{ $t("admin.promotion.discounts") }}
         </div>
         <o-select v-model="promotion.discountMethod">
           <option
@@ -153,10 +153,10 @@
       <div class="mt-6">
         <div class="pb-2 text-sm font-bold">
           <template v-if="promotion.discountMethod === 'amount'">
-            割引額
+            {{ $t("admin.promotion.amount") }}
           </template>
           <template v-else>
-            割引率
+            {{ $t("admin.promotion.ratio") }}
           </template>
         </div>
         <o-field >
@@ -173,7 +173,7 @@
       </div>
       <div class="mt-6">
         <div class="pb-2 text-sm font-bold">
-          決済方法制限 
+          {{ $t("admin.promotion.paymentMethod") }}
         </div>
         <o-select v-model="promotion.paymentRestrictions">
           <option

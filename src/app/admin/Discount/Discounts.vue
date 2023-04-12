@@ -32,45 +32,97 @@
       </div>
     </div>
 
-    <div class="text-xl font-bold text-black text-opacity-30 mb-4 mt-2">
-      discounts
+    <div class="text-xl font-bold text-black text-opacity-30 mb-2 mt-4">
+      {{ $t("admin.promotion.list") }}
     </div>
     <div v-for="(promotion, k) in promotionDataSet" :key="k"
-         :class="!promotion.currentOpen ? 'bg-opacity-10 bg-black' : ''">
-      <div v-if="promotion.currentOpen">現在有効</div>
-			<div class="inline-flex mb-2 items-end">
-        名前: <router-link :to="isInMo ? `/admin/discounts/${promotion.promotionId}` : `/admin/restaurants/${shopInfo.restaurantId}/discounts/${promotion.promotionId}`">
+         :class="!promotion.currentOpen ? 'bg-opacity-10 bg-black rounded-lg p-4 shadow mb-2' : 'rounded-lg bg-white p-4 shadow mb-2'">
+      <div v-if="promotion.currentOpen" class="font-bold text-green-600 mb-2 rounded-lg bg-green-600 bg-opacity-10 py-1 text-center">{{ $t("admin.promotion.activationState") }}</div>
+			<div class="inline-flex mb-1 items-center">
+				<div class="text-sm text-black text-opacity-40 font-bold">
+        	{{ $t("admin.promotion.name") }}: 
+				</div>
+				<router-link :to="isInMo ? `/admin/discounts/${promotion.promotionId}` : `/admin/restaurants/${shopInfo.restaurantId}/discounts/${promotion.promotionId}`">
 				<div class="inline-flex items-center ml-1 font-bold text-op-teal">
-				<div>{{ promotion.promotionName }}</div><i class="material-icons ml-1">edit</i></div></router-link>
+				{{ promotion.promotionName }}<i class="material-icons ml-1">edit</i></div></router-link>
 			</div>
-			<div>
 
-      ディスカウントの有効化: {{ promotion.enable ? "あり" : "なし" }}<br/>
-      割引タイプ:
-      <template v-if="promotion.type === 'discount'">{{ $t('admin.promotion.discount') }}</template>
-      <template v-if="promotion.type === 'onetimeCoupon'">{{ $t('admin.promotion.onetimeCoupon') }}</template>
-      <template v-if="promotion.type === 'multipletimesCoupon'">{{ $t('admin.promotion.multipletimesCoupon' )}}</template><br/>
-      ディスカウント適用期間: {{ promotion.hasTerm ? "あり":"なし" }} {{ promotion.hasTerm ? promotion.termFrom.toISOString().slice(0, 10) + "~" + promotion.termTo.toISOString().slice(0, 10) :"" }}<br/> 
-      利用可能最低金額: {{ promotion.discountThreshold }}円<br/>
-      利用回数制限: {{ promotion.usageRestrictions  ? "あり(1回)" : "なし"}}<br/>
-      割引:
-      <template v-if="promotion.discountMethod === 'amount'">金額/{{ promotion.discountValue }}円</template>
-      <template v-if="promotion.discountMethod === 'ratio'">割引率/{{ promotion.discountValue }}%</template>
-      <br/>
-      決済方法制限: 
-      <template v-if="promotion.paymentRestrictions === 'stripe'">カード決済</template>
-      <template v-else-if="promotion.paymentRestrictions === 'instore'">現地払い</template>
-      <template v-else>なし</template>
-      </div>
+			<div class="mt-1 flex items-center">
+				<div class="text-sm text-black text-opacity-40 font-bold">
+      		{{ $t("admin.promotion.activation") }}: 
+				</div>
+				<div class="ml-1">
+					{{ promotion.enable ? "あり" : "なし" }}
+				</div>
+			</div>
+
+			<div class="mt-1 flex items-center">
+				<div class="text-sm text-black text-opacity-40 font-bold">
+      		{{ $t("admin.promotion.type") }}: 
+				</div>
+				<div class="ml-1l">
+      		<template v-if="promotion.type === 'discount'">{{ $t('admin.promotion.discount') }}</template>
+      		<template v-if="promotion.type === 'onetimeCoupon'">{{ $t('admin.promotion.onetimeCoupon') }}</template>
+      		<template v-if="promotion.type === 'multipletimesCoupon'">{{ $t('admin.promotion.multipletimesCoupon' )}}</template>
+				</div>
+			</div>
+
+			<div class="mt-1 flex items-center">
+				<div class="text-sm text-black text-opacity-40 font-bold">
+      		{{ $t("admin.promotion.period") }}: 
+				</div>
+				<div class="ml-1">
+					{{ promotion.hasTerm ? "あり":"なし" }} {{ promotion.hasTerm ? promotion.termFrom.toISOString().slice(0, 10) + "~" + promotion.termTo.toISOString().slice(0, 10) :"" }}<br/> 
+				</div>
+			</div>
+
+			<div class="mt-1 flex items-center">
+				<div class="text-sm text-black text-opacity-40 font-bold">
+      		{{ $t("admin.promotion.minimumAmount") }}: 
+				</div>
+				<div class="ml-1">
+					{{ promotion.discountThreshold }}{{ $t("admin.promotion.yen") }}
+				</div>
+			</div>
+
+			<div class="mt-1 flex items-center">
+				<div class="text-sm text-black text-opacity-40 font-bold">
+      		{{ $t("admin.promotion.limitation") }}: 
+				</div>
+				<div class="ml-1">
+					{{ promotion.usageRestrictions  ? "あり(1回)" : "なし"}}
+				</div>
+			</div>
+
+			<div class="mt-1 flex items-center">
+				<div class="text-sm text-black text-opacity-40 font-bold">
+      		{{ $t("admin.promotion.discounts") }}: 
+				</div>
+				<div class="ml-1">
+      		<template v-if="promotion.discountMethod === 'amount'">{{ $t("admin.promotion.amount") }}/{{ promotion.discountValue }}円</template>
+      		<template v-if="promotion.discountMethod === 'ratio'">{{ $t("admin.promotion.ratio") }}/{{ promotion.discountValue }}%</template>
+				</div>
+			</div>
+
+			<div class="mt-1 flex items-center">
+				<div class="text-sm text-black text-opacity-40 font-bold">
+      		{{ $t("admin.promotion.paymentMethod") }}: 
+				</div>
+				<div class="ml-1">
+      		<template v-if="promotion.paymentRestrictions === 'stripe'">{{ $t("admin.promotion.creditCard") }}</template>
+      		<template v-else-if="promotion.paymentRestrictions === 'instore'">{{ $t("admin.promotion.store") }}</template>
+      		<template v-else>{{ $t("admin.promotion.unrestricted") }}</template>
+				</div>
+			</div>
+
       <router-link :to="isInMo ? `/admin/discounts/${promotion.promotionId}/history` : `/admin/restaurants/${shopInfo.restaurantId}/discounts/${promotion.promotionId}/history`">
-				<div class="flex items-center justify-center mt-2 h-9 w-20 rounded-full bg-black bg-opacity-5 font-bold text-op-teal">履歴</div></router-link>
-      <hr class="my-4 h-0.5 bg-gray-200 border-0 left-1/2 dark:bg-gray-900"/>
+				<div class="flex items-center justify-center mt-3 h-9 w-24 rounded-full bg-black bg-opacity-5 font-bold text-op-teal">{{ $t("admin.promotion.history") }}</div></router-link>
     </div>
 
     <div>
       <button
         @click="newDiscount"
-        class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
+        class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow mt-2"
         >
         <span class="text-base font-bold text-white">
           {{ $t("editCommon.new") }}
