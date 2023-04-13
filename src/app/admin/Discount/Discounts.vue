@@ -72,7 +72,7 @@
       		{{ $t("admin.promotion.period") }}: 
 				</div>
 				<div class="ml-1">
-					{{ promotion.hasTerm ? "あり":"なし" }} {{ promotion.hasTerm ? promotion.termFrom.toISOString().slice(0, 10) + "~" + promotion.termTo.toISOString().slice(0, 10) :"" }}<br/> 
+					{{ promotion.hasTerm ? "あり":"なし" }} {{ promotion.hasTerm ? moment(promotion.termFrom).format("YYYY/MM/DD HH:mm") + "~" + moment(promotion.termTo).format("YYYY/MM/DD HH:mm") :"" }}<br/> 
 				</div>
 			</div>
 
