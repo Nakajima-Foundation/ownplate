@@ -84,7 +84,7 @@
         </o-select>
 
         <o-field>
-          <o-datepicker
+          <o-datetimepicker
             icon="calendar-today"
             v-model="termFromDate"
             :min-date="new Date()"
@@ -92,8 +92,8 @@
             :placeholder="$t('shopInfo.temporaryClosureSelect')"
 						class="lg:w-96"
             >
-          </o-datepicker>
-          <o-datepicker
+          </o-datetimepicker>
+          <o-datetimepicker
             icon="calendar-today"
             v-model="termToDate"
             :min-date="new Date()"
@@ -101,7 +101,7 @@
             :placeholder="$t('shopInfo.temporaryClosureSelect')"
 						class="lg:w-96"
             >
-          </o-datepicker>
+          </o-datetimepicker>
         </o-field>
       </div>
       <div class="mt-6">
