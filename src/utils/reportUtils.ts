@@ -148,6 +148,7 @@ export const revenueTableHeader = [
   "tipShort",
   "serviceTax",
   "shippingCost",
+  "discount",
   "total",
   "name",
 ];
