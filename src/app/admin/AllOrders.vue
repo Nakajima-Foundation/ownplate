@@ -214,6 +214,7 @@ export default defineComponent({
             return count + arrayOrNumSum(order);
           }, 0),
           discountPrice: order.discountPrice,
+          beforeDiscountPrice: order.totalCharge + (order.discountPrice || 0),
           name: nameOfOrder(order),
           payment: order.payment?.stripe ? "stripe" : "",
           cancelReason: order.cancelReason,
