@@ -78,6 +78,9 @@ const getUserPagesWithCat = (prefix: string) => {
           name: "r-restaurant-MoPage_" + prefix,
           path: "page/:pageId",
           component: "user/Blank.vue",
+          meta: {
+            pageType: "store",
+          }
         },
         {
           path: "transactions-act",
@@ -121,8 +124,8 @@ const mopath = mo_prefixes
             component: "user/Outage.vue",
           },
           {
-            path: prePath + "/campaign/202301",
-            component: "user/campaign/202301.vue",
+            path: prePath + "/campaign/202304",
+            component: "user/Mo/MoPage202304.vue",
           },
           {
             path: prePath + "/r/favorites",
