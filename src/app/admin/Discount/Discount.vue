@@ -83,7 +83,7 @@
           </option>
         </o-select>
 
-        <o-field>
+        <o-field v-if="promotion.hasTerm">
           <o-datetimepicker
             icon="calendar-today"
             v-model="termFromDate"
