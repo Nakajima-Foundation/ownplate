@@ -1238,9 +1238,10 @@ export default defineComponent({
       }, 0);
       return ret;
     });
+    // for banner
     const promotion = computed(() => {
       if (props.promotions.length > 0) {
-        return props.promotions[0];
+        return props.promotions[props.promotions.length - 1];
       }
       return null;
     });
