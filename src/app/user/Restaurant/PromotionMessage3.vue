@@ -3,7 +3,7 @@
   あと<span class="text-green-600">
     {{ $n( promotion.discountThreshold - totalPrice.total, "currency") }}
   </span>
-  で
+  購入すると
   <template v-if="promotion.discountMethod === 'amount'">
     {{ $n(promotion.discountValue, "currency") }}値引き
   </template>

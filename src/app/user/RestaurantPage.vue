@@ -34,7 +34,7 @@
             <PromotionMessage1 :promotion="promotion" />
           </div>
 				  <div class="text-lg mt-0.5 -mb-0.5">
-            <PromotionMessage2 :promotion="promotion" />
+            <PromotionMessage5 :promotion="promotion" />
           </div>
 			  </div>
 			</div>
@@ -494,7 +494,7 @@ import MoPage from "@/app/user/Mo/MoPage.vue";
 import MoSetBanner from "@/app/user/Mo/MoSetBanner.vue";
 
 import PromotionMessage1 from "@/app/user/Restaurant/PromotionMessage1.vue";
-import PromotionMessage2 from "@/app/user/Restaurant/PromotionMessage2.vue";
+import PromotionMessage5 from "@/app/user/Restaurant/PromotionMessage5.vue";
 
 import { usePickupTime } from "@/utils/pickup";
 
@@ -567,7 +567,7 @@ export default defineComponent({
     SubCategoryList,
     
     PromotionMessage1,
-    PromotionMessage2,
+    PromotionMessage5,
     
     MoPickUp,
     MoPage,
