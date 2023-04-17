@@ -6,10 +6,3 @@
   </div>
 </template>
 
-<script lang="ts">
-import { moPage, getMenuId } from "./MoPageCommon";
-
-const setMenus: any[] = [];
-export default moPage(setMenus);
-</script>
-

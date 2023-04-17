@@ -28,7 +28,7 @@
           />
       </div>
 
-			<div v-if="totalQuantities === 0 && promotion && promotion.type === 'discount'">
+			<div v-if="totalQuantities === 0 && promotion && promotion.type === 'discount' && !pageId">
 			  <div class="mb-2 border-4 border-green-600 text-green-600 text-center font-bold fixed left-4 right-4 mx-auto max-w-lg cursor-pointer items-center rounded-full bg-white p-3 shadow-lg bottom-3 z-30 sm:bottom-8">
 				  <div class="text-xs">
             <PromotionMessage1 :promotion="promotion" />
