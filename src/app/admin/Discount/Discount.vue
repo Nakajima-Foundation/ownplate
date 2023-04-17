@@ -296,6 +296,7 @@ export default defineComponent({
         hasTerm,
         discountThreshold,
         discountValue,
+        discountMethod,
         paymentRestrictions,
         usageRestrictions,
       } = promotion.value as PromotionData;
@@ -307,6 +308,7 @@ export default defineComponent({
         discountValue: Number(discountValue),
         paymentRestrictions,
         usageRestrictions,
+        discountMethod,
         termFrom: Timestamp.fromDate(termFromDate.value),
         termTo: Timestamp.fromDate(termToDate.value),
       };
