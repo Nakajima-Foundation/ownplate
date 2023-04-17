@@ -409,6 +409,7 @@
         @didOrderdChange="didOrderdChange"
         :totalPrice="totalPrice"
         :promotions="promotions"
+        :possiblePromotions="possiblePromotions"
       />
 
       <!-- for disable all UI -->
@@ -1276,6 +1277,7 @@ export default defineComponent({
       totalQuantities,
       promotion,
       matchedPromotions,
+      possiblePromotions,
       
       isPreview,
 

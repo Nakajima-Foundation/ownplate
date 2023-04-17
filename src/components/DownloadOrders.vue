@@ -83,7 +83,7 @@ export default defineComponent({
         };
       });
     });
-    const fileName = ctx.root.restaurantId() + "_orderhistory_summary.csv";
+    const fileName = ctx.root.restaurantId() + "_orderhistory_summary";
     return {
       fileName,
       fields,
