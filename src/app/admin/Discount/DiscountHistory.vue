@@ -35,9 +35,10 @@
     <div v-if="histories.length === 0" class="mt-4 text-black text-opacity-30 font-bold">
       {{ $t("admin.promotion.noHistory") }}
     </div>
-    <div v-else class="rounded-lg bg-white p-4 shadow mb-2">
+    <div v-else>
       <div v-for="(h, k) in histories" :key="k">
 
+				<div class="rounded-lg bg-white p-4 shadow mb-2">
 				<div class="mt-1 flex items-center">
 				<div class="text-sm text-black text-opacity-40 font-bold">
        	 {{ $t("admin.promotion.uid") }}: 
@@ -98,7 +99,7 @@
           @click="deleteHistory(h)"
           class="border-0 flex items-center justify-center mt-3 h-9 w-24 rounded-full bg-black bg-opacity-5 font-bold text-red-700">
 					{{ $t("admin.promotion.delete") }}</o-button>
-      </div>
+      </div></div>
 			</div>
     </div>
   </div>

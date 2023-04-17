@@ -1,11 +1,6 @@
 <template>
   <span>
-    <template v-if="promotion.paymentRestrictions === 'stripe'">
-      事前クレジットカード決済で
-    </template>
-    <template v-if="promotion.paymentRestrictions === 'instore'">
-      現地払いで
-    </template>
+    {{ $n(promotion.discountThreshold, "currency") }}(税込)以上のご購入
   </span>
 </template>
 

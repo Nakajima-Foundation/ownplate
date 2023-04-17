@@ -205,10 +205,10 @@
 
     <!-- promotion discount for before pay -->
     <div v-if="enablePromotion"
-         class="bg-green-300 bg-opacity-30"
+         class="bg-green-600 bg-opacity-10 p-2 -mx-2 rounded-lg mt-2"
          >
       <!-- promotion discount -->
-      <span v-if="promotion.paymentRestrictions">
+      <span v-if="promotion.paymentRestrictions" class="text-sm font-bold text-opacity-40 text-black">
         {{ $t("order.discountAlert." + promotion.paymentRestrictions) }}
       </span>
       <div class="mt-2 flex">
@@ -224,7 +224,7 @@
         </div>
       </div>
       <div
-        class="mt-4 border-t-2 border-solid border-black border-opacity-10 pt-4"
+        class="mt-4 border-t-2 border-solid border-black border-opacity-10 pt-4 pb-2"
         >
         <div class="flex">
           <div class="flex-1">
