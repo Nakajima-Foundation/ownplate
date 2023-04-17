@@ -116,9 +116,12 @@ export default defineComponent({
       return moment(timeData).format("YYYY/MM/DD HH:mm");
     };
     
-    const formulas = {
+    const formulas =  props.isInMo ? {
       count: "sum",
-      total: "sum",
+      productSubTotal: "sum",
+    } : {
+      count: "sum",
+      total: "sum",    
     };
     
     const fields = computed(() => {
