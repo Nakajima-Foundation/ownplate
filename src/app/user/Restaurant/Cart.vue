@@ -33,9 +33,14 @@
 				  <div class="text-xs">
             <PromotionMessage1 :promotion="promotion" />
           </div>
+					<div class="flex items-end justify-center mt-0.5">
+					<div class="text-sm">
+						<PromotionMessage4 :promotion="promotion" />
+					</div>
 				  <div class="text-lg -mb-1">
             <PromotionMessage2 :promotion="promotion" />
           </div>
+					</div>
 			  </div>
 
 			  <div class="flex mx-6 sm:mx-auto max-w-xl justify-center font-bold text-sm"
@@ -57,6 +62,7 @@ import CartItem from "@/app/user/Restaurant/CartItem.vue";
 import PromotionMessage1 from "@/app/user/Restaurant/PromotionMessage1.vue";
 import PromotionMessage2 from "@/app/user/Restaurant/PromotionMessage2.vue";
 import PromotionMessage3 from "@/app/user/Restaurant/PromotionMessage3.vue";
+import PromotionMessage4 from "@/app/user/Restaurant/PromotionMessage4.vue";
 
 export default defineComponent({
   emits: ["closeCart", "didOrderdChange"],
@@ -64,7 +70,8 @@ export default defineComponent({
     CartItem,
     PromotionMessage1,
     PromotionMessage2,
-    PromotionMessage3,
+		PromotionMessage3,
+		PromotionMessage4,
   },
   props: {
     shopInfo: {
