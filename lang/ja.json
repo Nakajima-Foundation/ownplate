@@ -881,7 +881,7 @@
       "discount": "ディスカウント",
       "onetimeCoupon": "１回のみ発行可能クーポン",
       "multipletimesCoupon": "発行回数制限なしクーポン",
-			"list": "プロモーション一覧",
+			"list": "ディスカウント一覧",
 			"activationState": "現在有効",
 			"name": "名前",
 			"activation": "割引の有効化",
