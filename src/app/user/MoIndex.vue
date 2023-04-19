@@ -43,7 +43,8 @@
       </div>
     </div>
 
-    <!-- Campaign202301 -->
+    <!-- Campaign202305 -->
+		<!--ToDo「Campaign202305」のコンポーネントを呼び出してここに表示-->
     
     <div class="mx-6 mt-8 text-xl font-bold text-black text-opacity-40">
       {{ $t("find.shopList") }}
