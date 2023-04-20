@@ -1,7 +1,7 @@
 <template>
   <div class="fixed top-0 z-20 h-full w-full bg-white">
     <div class="h-screen overflow-y-scroll bg-[#F7F8FB]">
-      hello.LP
+      <MoPage202305 />
     </div>
   </div>
 </template>

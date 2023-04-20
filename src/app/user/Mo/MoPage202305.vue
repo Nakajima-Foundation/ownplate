@@ -106,3 +106,19 @@
   </div>
 </template>
 
+<script lang="ts">
+import {
+  defineComponent,
+} from "@vue/composition-api";
+
+import { moBaseUrl } from "@/config/project";
+export default defineComponent({
+
+  setup() {
+    return {
+      moBaseUrl
+    };
+  },
+});
+
+</script>
