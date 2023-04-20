@@ -82,19 +82,21 @@
 		<div class="mt-8 pb-40">
 			<!--ToDo サイトトップ(店舗一覧)から遷移した場合は以下の「店舗一覧」ボタンを表示-->
       <div
-          class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+        v-if="!isIndex"
+        class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
         >
-          <i class="material-icons text-op-teal">list</i>
-          <span class="ml-1 text-sm font-bold text-op-teal">
-            {{ $t("shopInfo.productCategory") }}
-          </span>
-        </div>
+        <i class="material-icons text-op-teal">list</i>
+        <span class="ml-1 text-sm font-bold text-op-teal">
+          {{ $t("shopInfo.productCategory") }}
+        </span>
+      </div>
 
 			<!--ToDo 店舗トップから遷移した場合は以下の「商品カテゴリ一覧」ボタンを表示-->
       <div
-          class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+        v-if="isIndex"
+        class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
         >
-          <i class="material-icons text-op-teal">store</i>
+        <i class="material-icons text-op-teal">store</i>
           <span class="ml-1 text-sm font-bold text-op-teal">
             {{ $t("mobileOrder.restaurantLists") }}
           </span>
@@ -114,9 +116,12 @@ import {
 import { moBaseUrl } from "@/config/project";
 export default defineComponent({
 
-  setup() {
+  setup(_, ctx) {
+    const isIndex = ctx.root.$route?.meta?.type === "index";
+
     return {
-      moBaseUrl
+      moBaseUrl,
+      isIndex,
     };
   },
 });
