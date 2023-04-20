@@ -104,6 +104,11 @@
               </div>
             </td>
             <td class="p-2">
+              <div class="text-right">
+                {{ order.discountPrice || 0  }}
+              </div>
+            </td>
+            <td class="p-2">
               <div class="text-right">{{ order.totalCharge }}</div>
             </td>
             <td class="p-2">

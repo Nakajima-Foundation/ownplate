@@ -58,7 +58,7 @@
         <div class="flex-1">
           <div class="text-base">
             {{
-            $t( "order.discount" )
+            $t( "order.discountString" )
             }}
             ({{ orderInfo.promotionName }})
           </div>
