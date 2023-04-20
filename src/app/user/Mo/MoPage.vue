@@ -5,7 +5,6 @@
       v-if="pageId == '202305'"
       :pageBase="pageBase"
       />
-    {{ moBasePath }}
     <MoPage202303Spring
       v-if="pageId == '202303spring'"
       :pageId="pageId"
@@ -70,10 +69,6 @@ export default defineComponent({
     },
     isPickup: {
       type: Boolean,
-      required: true,
-    },
-    moBasePath: {
-      type: String,
       required: true,
     },
 

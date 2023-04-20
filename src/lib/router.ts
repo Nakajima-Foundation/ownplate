@@ -126,6 +126,9 @@ const mopath = mo_prefixes
           {
             path: prePath + "/campaign/202305",
             component: "user/Mo/MoPage202305Wrapper.vue",
+            meta: {
+              type: "index",
+            },
           },
           {
             path: prePath + "/r/favorites",
