@@ -45,6 +45,13 @@
 import { defineComponent, ref, computed } from "@vue/composition-api";
 import { moBaseUrl } from "@/config/project";
 export default defineComponent({
+  props: {
+    moBasePath: {
+      type: String,
+      required: true,
+    },
+  },
+  
   setup() {
     return {
       moBaseUrl,
