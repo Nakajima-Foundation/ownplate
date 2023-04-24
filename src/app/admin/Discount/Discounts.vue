@@ -189,8 +189,12 @@ export default defineComponent({
     const { promotionDataSet } = usePromotionsForAdmin(props.isInMo, id as string);
 
     const { ownerUid, uid, isOwner } = useAdminUids(ctx);
+    console.log(props.isInMo);
     if (props.isInMo) {
       if (!isOwner.value) {
+        return notFoundResponse;
+      }
+      if (props.shopInfo) {
         return notFoundResponse;
       }
     } else if (

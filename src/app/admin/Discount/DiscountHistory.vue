@@ -166,6 +166,9 @@ export default defineComponent({
       if (!isOwner.value) {
         return notFoundResponse;
       }
+      if (props.shopInfo) {
+        return notFoundResponse;
+      }
     } else if (
       !checkShopAccount(props.shopInfo || {}, ownerUid.value) || !ownerUid.value 
     ) {
