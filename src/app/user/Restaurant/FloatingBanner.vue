@@ -1,13 +1,11 @@
 <template>
 	<div class="mb-2 border-4 border-green-600 text-green-600 text-center font-bold fixed left-4 right-4 mx-auto max-w-lg cursor-pointer items-center rounded-full bg-white p-3 shadow-lg bottom-3 z-30 sm:bottom-8">
-		<!--ToDo おもちかえりの場合は以下のメッセージを表示-->
-		<div v-if="false">
-		<div class="text-xs">
+    <!-- for mo -->
+		<div class="text-xs" v-if="!isInMo">
       <PromotionMessage6 :promotion="promotion" />
     </div>
-		</div>
-		<!--ToDo MobileOrderの場合は以下のメッセージを表示-->
-		<div class="text-xs">
+    <!-- for omochikaeri -->
+		<div class="text-xs" v-else>
       <PromotionMessage1 :promotion="promotion" />
     </div>
 		<div class="text-lg mt-0.5 -mb-0.5">
@@ -34,6 +32,10 @@ export default defineComponent({
   props: {
     promotion: {
       type: Object,
+      required: true,
+    },
+    isInMo: {
+      type: Boolean,
       required: true,
     },
   }

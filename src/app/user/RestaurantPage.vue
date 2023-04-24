@@ -31,10 +31,10 @@
 			<div v-if="totalQuantities === 0 && promotion && promotion.type === 'discount' && !pageId">
         <template v-if="isInMo">
           <router-link :to="pageBase + '/page/202305'">
-            <FloatingBanner :promotion="promotion" />
+            <FloatingBanner :promotion="promotion" :isInMo="isInMo" />
           </router-link>
         </template>
-        <FloatingBanner :promotion="promotion" v-else />
+        <FloatingBanner :promotion="promotion" :isInMo="isInMo" v-else />
 			</div>
 
       <!-- category modal -->
