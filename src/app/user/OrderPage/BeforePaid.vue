@@ -216,13 +216,21 @@
 
 							<!--ToDo 注意書きメッセージの表示-->
 							<div v-if="selectedPromotion && selectedPromotion.paymentRestrictions === 'stripe'">
+								<!--ToDo おもちかえりの場合は以下のメッセージを表示-->
 								<div class="border-green-600 text-green-600 text-center font-bold mx-auto w-72 items-center mt-8 -mb-3 rounded-lg bg-green-600 bg-opacity-10 px-6 py-2">
-									<div class="text-xs">事前クレジット決済で決済いただいた場合はキャンペーン金額が適用されます</div>
+									<div class="text-xs">{{ $t("order.promotionNoteCard") }}</div>
+								</div>
+								<!--ToDo MobileOrderの場合は以下のメッセージを表示-->
+								<div v-if="false">
+								<div class="border-green-600 text-green-600 text-center font-bold mx-auto w-72 items-center mt-8 -mb-3 rounded-lg bg-green-600 bg-opacity-10 px-6 py-2">
+									<div class="text-xs">{{ $t("order.promotionNoteCardMo") }}</div>
+								</div>
 								</div>
 							</div>
+
 							<div v-if="selectedPromotion && selectedPromotion.paymentRestrictions === 'instore'">
 								<div class="border-green-600 text-green-600 text-center font-bold mx-auto w-72 items-center mt-8 -mb-3 rounded-lg bg-green-600 bg-opacity-10 px-6 py-2">
-									<div class="text-xs">現地払いで購入いただいた場合はキャンペーン金額が適用されます</div>
+									<div class="text-xs">{{ $t("order.promotionNoteStore") }}</div>
 								</div>
 							</div>
 
