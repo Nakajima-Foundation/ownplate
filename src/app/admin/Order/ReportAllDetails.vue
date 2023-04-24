@@ -241,6 +241,7 @@ export default defineComponent({
                 productSubTotal: prices[key],
 
                 cancelReason: order.cancelReason,
+                paymentCancel: !!order.uidPaymentCanceledBy,
                 // end of for mo
                 total: writeonFirstLine(index, key, order.totalCharge || ""),
                 discountPrice: writeonFirstLine(index, key, order.discountPrice || 0),

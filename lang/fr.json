@@ -531,6 +531,7 @@
     "name": "order name",
     "restaurantName": "Nom du restaurant",
     "payment": "payment",
+    "paymentCancel": "payment cancel",
     "includingTip": "avec pourboire",
     "subtotal": "Sous-Total",
     "salesTax": "Taxe de vente",

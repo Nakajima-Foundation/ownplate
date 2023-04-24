@@ -585,6 +585,7 @@
     "closedRestaurant": "Closed Restaurant",
     "storeName": "Store name",
     "payment": "payment",
+    "paymentCancel": "payment cancel",
     "includingTip": "Including Tip",
     "subtotal": "Subtotal",
     "salesTax": "Sales Tax",
