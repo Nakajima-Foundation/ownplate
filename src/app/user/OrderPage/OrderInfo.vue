@@ -208,9 +208,16 @@
          class="bg-green-600 bg-opacity-10 p-2 -mx-2 rounded-lg mt-2"
          >
       <!-- promotion discount -->
+			<!--ToDo おもちかえりの場合は以下のメッセージを表示-->
       <span v-if="promotion.paymentRestrictions" class="text-sm font-bold text-opacity-40 text-black">
         {{ $t("order.discountAlert." + promotion.paymentRestrictions) }}
       </span>
+			<!--ToDo MobileOrderの場合は以下のメッセージを表示-->
+			<div v-if="false">
+			 <span v-if="promotion.paymentRestrictions" class="text-sm font-bold text-opacity-40 text-black">
+        {{ $t("order.discountAlertMo." + promotion.paymentRestrictions) }}
+      </span>
+			</div>
       <div class="mt-2 flex">
         <div class="flex-1">
           <div class="text-base">
