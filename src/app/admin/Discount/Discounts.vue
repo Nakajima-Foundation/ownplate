@@ -1,5 +1,8 @@
 <template>
-  <div class="mx-6 mt-6">
+  <div v-if="notFound">
+    404
+  </div>
+  <div class="mx-6 mt-6" v-else>
     <!-- QR Header Area -->
     <div class="columns is-gapless" v-if="shopInfo">
       <!-- Left Gap -->
@@ -155,6 +158,12 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 
+import {
+  useAdminUids,
+  notFoundResponse,
+} from "@/utils/utils";
+import { checkShopAccount } from "@/utils/userPermission";
+
 export default defineComponent({
   components: {
     AdminHeader,
@@ -178,6 +187,17 @@ export default defineComponent({
   setup(props, ctx) {
     const id = props.isInMo ? props.moPrefix : props.shopInfo?.restaurantId;
     const { promotionDataSet } = usePromotionsForAdmin(props.isInMo, id as string);
+
+    const { ownerUid, uid, isOwner } = useAdminUids(ctx);
+    if (props.isInMo) {
+      if (!isOwner.value) {
+        return notFoundResponse;
+      }
+    } else if (
+      !checkShopAccount(props.shopInfo || {}, ownerUid.value) || !ownerUid.value 
+    ) {
+      return notFoundResponse;
+    }
 
     const newDiscount = async () => {
       const path = getPromotionCollctionPath(props.isInMo, id as string)
@@ -203,6 +223,7 @@ export default defineComponent({
     return {
       promotionDataSet,
       newDiscount,
+      notFound: false,
     };
   },
 });

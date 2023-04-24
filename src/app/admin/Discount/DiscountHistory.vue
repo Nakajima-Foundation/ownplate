@@ -1,5 +1,8 @@
 <template>
-  <div>
+  <div v-if="notFound">
+    404
+  </div>
+  <div v-else>
     <!-- QR Header Area -->
     <div class="columns is-gapless" v-if="shopInfo">
       <!-- Left Gap -->
@@ -123,6 +126,12 @@ import {
   doc,
 } from "firebase/firestore";
 
+import {
+  useAdminUids,
+  notFoundResponse,
+} from "@/utils/utils";
+import { checkShopAccount } from "@/utils/userPermission";
+
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 import BackButton from "@/components/BackButton.vue";
 
@@ -151,6 +160,17 @@ export default defineComponent({
     const id = props.isInMo ? props.moPrefix : props.shopInfo?.restaurantId;
     const idKey = props.isInMo ? "groupId" : "restaurantId";
     const discountId = route.params.discountId as string;
+
+    const { ownerUid, uid, isOwner } = useAdminUids(ctx);
+    if (props.isInMo) {
+      if (!isOwner.value) {
+        return notFoundResponse;
+      }
+    } else if (
+      !checkShopAccount(props.shopInfo || {}, ownerUid.value) || !ownerUid.value 
+    ) {
+      return notFoundResponse;
+    }
 
     const histories = ref<any[]>([]);
     const cond = discountId ?
@@ -186,6 +206,7 @@ export default defineComponent({
     return {
       histories,
       deleteHistory,
+      notFound: false,
     };
   },
 });

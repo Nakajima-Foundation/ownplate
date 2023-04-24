@@ -1,5 +1,8 @@
 <template>
-  <div class="mx-6 mt-6">
+  <div v-if="notFound">
+    404
+  </div>
+  <div class="mx-6 mt-6" v-else>
     <!-- QR Header Area -->
     <div class="columns is-gapless" v-if="shopInfo">
       <!-- Left Gap -->
@@ -247,6 +250,12 @@ import {
 } from "@/utils/promotion";
 import { PromotionData } from "@/models/promotion";
 
+import {
+  useAdminUids,
+  notFoundResponse,
+} from "@/utils/utils";
+import { checkShopAccount } from "@/utils/userPermission";
+
 export default defineComponent({
   components: {
     AdminHeader,
@@ -277,7 +286,18 @@ export default defineComponent({
 
     const termFromDate = ref();
     const termToDate = ref();
-    
+
+    const { ownerUid, uid, isOwner } = useAdminUids(ctx);
+    if (props.isInMo) {
+      if (!isOwner.value) {
+        return notFoundResponse;
+      }
+    } else if (
+      !checkShopAccount(props.shopInfo || {}, ownerUid.value) || !ownerUid.value 
+    ) {
+      return notFoundResponse;
+    }
+   
     getPromotion(props.isInMo, id as string, discountId).then(data => {
       promotion.value = data;
       termFromDate.value = data.termFrom.toDate();
@@ -334,6 +354,7 @@ export default defineComponent({
       discountTypeSelect,
       promotionPaymentRestrictionsSelect,
       cancel,
+      notFound: false,
     };
   }
 });
