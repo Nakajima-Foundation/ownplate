@@ -664,6 +664,7 @@
     "sortOrder": "Sort Order",
 		"promotionNoteCardMo":"If you pay now by credit card, the discount will be applied.",
 		"promotionNoteCard":"If you pay now by credit card, the discount will be applied.",
+		"promotionNoteStoreMo":"If you pay later at the store, the discount below will be applied.",
 		"promotionNoteStore":"If you pay later at the store, the discount will be applied.",
     "sort": {
       "newest": "Sort by newst order",

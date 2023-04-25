@@ -229,8 +229,15 @@
 							</div>
 
 							<div v-if="selectedPromotion && selectedPromotion.paymentRestrictions === 'instore'">
+								<!--ToDo おもちかえりの場合は以下のメッセージを表示-->
 								<div class="border-green-600 text-green-600 text-center font-bold mx-auto w-72 items-center mt-8 -mb-3 rounded-lg bg-green-600 bg-opacity-10 px-6 py-2">
 									<div class="text-xs">{{ $t("order.promotionNoteStore") }}</div>
+								</div>
+								<!--ToDo MobileOrderの場合は以下のメッセージを表示-->
+								<div v-if="false">
+								<div class="border-green-600 text-green-600 text-center font-bold mx-auto w-72 items-center mt-8 -mb-3 rounded-lg bg-green-600 bg-opacity-10 px-6 py-2">
+									<div class="text-xs">{{ $t("order.promotionNoteStoreMo") }}</div>
+								</div>
 								</div>
 							</div>
 
