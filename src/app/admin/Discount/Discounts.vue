@@ -113,7 +113,7 @@
 				</div>
 				<div class="ml-1">
       		<template v-if="promotion.paymentRestrictions === 'stripe'">{{ $t("admin.promotion.creditCard") }}</template>
-      		<template v-else-if="promotion.paymentRestrictions === 'instore'">{{ $t("admin.promotion.cash") }}</template>
+      		<template v-else-if="promotion.paymentRestrictions === 'instore'">{{ $t("admin.promotion.store") }}</template>
       		<template v-else>{{ $t("admin.promotion.unrestricted") }}</template>
 				</div>
 			</div>

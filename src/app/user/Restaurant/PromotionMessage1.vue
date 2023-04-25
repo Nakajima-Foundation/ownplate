@@ -4,7 +4,7 @@
       事前クレジットカード決済で
     </template>
     <template v-if="promotion.paymentRestrictions === 'instore'">
-      現地払いで
+      受取時に店舗でお支払いで
     </template>
   </span>
 </template>
