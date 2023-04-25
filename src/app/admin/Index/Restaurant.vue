@@ -206,7 +206,7 @@
             </div>
           </router-link>
         </div>
-        <div>
+        <div v-if="false">
           <router-link :to="`/admin/restaurants/${restaurantid}/printer`">
             <div
               class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
