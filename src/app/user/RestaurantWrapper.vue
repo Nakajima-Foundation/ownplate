@@ -31,7 +31,7 @@ import { routeMode, getMoPrefix } from "@/utils/utils";
 
 import NotFound from "@/components/NotFound.vue";
 
-import { usePromitions } from "@/utils/promotion";
+import { usePromotions } from "@/utils/promotion";
 
 export default defineComponent({
   name: "RestaurantWrapper",
@@ -130,7 +130,7 @@ export default defineComponent({
     });
 
     const id = mode.value === 'mo' ? moPrefix : restaurantId.value;
-    const { promotions } = usePromitions(mode.value, id, user);
+    const { promotions } = usePromotions(mode.value, id, user);
     
     onUnmounted(() => {
       if (restaurant_detacher) {

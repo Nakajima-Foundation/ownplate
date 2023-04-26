@@ -1,9 +1,43 @@
 <template>
-  <div class="mx-6 mt-6">
+  <div v-if="notFound">
+    404
+  </div>
+  <div class="mx-6 mt-6" v-else>
+    <!-- QR Header Area -->
+    <div class="columns is-gapless" v-if="shopInfo">
+      <!-- Left Gap -->
+      <div class="column is-narrow w-6"></div>
+      <!-- Center Column -->
+      <div class="column">
+        <!-- Nav Bar -->
+        <div class="level">
+          <!-- Back Button and Restaurant Profile -->
+          <AdminHeader
+            class="mt-6 lg:flex lg:items-center"
+            :shopInfo="shopInfo"
+            backLink="/admin/restaurants/"
+            :showSuspend="false"
+            :isInMo="isInMo"
+            :moPrefix="moPrefix"
+            />
+        </div>
+      </div>
+      <!-- Right Gap -->
+      <div class="column is-narrow w-6"></div>
+    </div>
+    <div class="mt-6 lg:flex lg:items-center" v-else>
+      <!-- Back and Preview -->
+      <div class="flex space-x-4">
+        <div class="flex-shrink-0">
+          <back-button url="/admin/discounts/" />
+        </div>
+      </div>
+    </div>
+
     <div v-if="promotion">
       <div class="mt-6">
         <div class="pb-2 text-sm font-bold">
-          名前
+          {{ $t("admin.promotion.name") }}
         </div>
         <div>
           <o-input type="text" v-model="promotion.promotionName"/>
@@ -11,7 +45,7 @@
       </div>
       <div class="mt-6">
         <div class="pb-2 text-sm font-bold">
-          有効
+          {{ $t("admin.promotion.activation") }}
         </div>
         <o-select v-model="promotion.enable">
           <option
@@ -19,13 +53,27 @@
             :value="result.value"
             :key="key"
             >
-            {{ result.message }}
+            {{ $t('admin.' + result.messageKey) }}
           </option>
         </o-select>
       </div>
       <div class="mt-6">
         <div class="pb-2 text-sm font-bold">
-          期間
+          {{ $t("admin.promotion.type") }}
+        </div>
+        <o-select v-model="promotion.type">
+          <option
+            v-for="(result, key) in discountTypeSelect"
+            :value="result.value"
+            :key="key"
+            >
+            {{ $t('admin.promotion.' + result.messageKey) }}
+          </option>
+        </o-select>
+      </div>
+      <div class="mt-6">
+        <div class="pb-2 text-sm font-bold">
+          {{ $t("admin.promotion.period") }}
         </div>
         
         <o-select v-model="promotion.hasTerm">
@@ -34,32 +82,34 @@
             :value="result.value"
             :key="key"
             >
-            {{ result.message }}
+            {{ $t('admin.' + result.messageKey) }}
           </option>
         </o-select>
 
-        <o-field>
-          <o-datepicker
+        <o-field v-if="promotion.hasTerm">
+          <o-datetimepicker
             icon="calendar-today"
             v-model="termFromDate"
             :min-date="new Date()"
             expanded
             :placeholder="$t('shopInfo.temporaryClosureSelect')"
+						class="lg:w-96"
             >
-          </o-datepicker>
-          <o-datepicker
+          </o-datetimepicker>
+          <o-datetimepicker
             icon="calendar-today"
             v-model="termToDate"
             :min-date="new Date()"
             expanded
             :placeholder="$t('shopInfo.temporaryClosureSelect')"
+						class="lg:w-96"
             >
-          </o-datepicker>
+          </o-datetimepicker>
         </o-field>
       </div>
       <div class="mt-6">
         <div class="pb-2 text-sm font-bold">
-          利用可能最低金額
+          {{ $t("admin.promotion.minimumAmount") }}
         </div>
         <div>
           <o-field>
@@ -77,11 +127,11 @@
       </div>
       <div class="mt-6">
         <div class="pb-2 text-sm font-bold">
-          割引１回のみ(なしの場合は、何回でも割引が適用されます)
+          {{ $t("admin.promotion.limitation") }}
         </div>
         <o-select v-model="promotion.usageRestrictions">
           <option
-            v-for="(result, key) in toBeOrNotSelect"
+            v-for="(result, key) in toBeOrNotSelect2"
             :value="result.value"
             :key="key"
             >
@@ -91,18 +141,42 @@
       </div>
       <div class="mt-6">
         <div class="pb-2 text-sm font-bold">
-          割引
+          {{ $t("admin.promotion.discounts") }}
         </div>
-        <o-field>
+        <o-select v-model="promotion.discountMethod">
+          <option
+            v-for="(result, key) in discountMethodSelect"
+            :value="result.value"
+            :key="key"
+            >
+            {{ $t('admin.promotion.' + result.messageKey) }}
+          </option>
+        </o-select>
+      </div>
+      <div class="mt-6">
+        <div class="pb-2 text-sm font-bold">
+          <template v-if="promotion.discountMethod === 'amount'">
+            {{ $t("admin.promotion.amount") }}
+          </template>
+          <template v-else>
+            {{ $t("admin.promotion.ratio") }}
+          </template>
+        </div>
+        <o-field >
           <o-input type="text" v-model="promotion.discountValue" class="w-1/2" />
           <span class="button is-static">
-            {{ $t("currency.JPY") }}
+            <template v-if="promotion.discountMethod === 'amount'">
+              {{ $t("currency.JPY") }}
+            </template>
+            <template v-else>
+              %
+            </template>
           </span>
         </o-field>
       </div>
       <div class="mt-6">
         <div class="pb-2 text-sm font-bold">
-          決済方法制限 
+          {{ $t("admin.promotion.paymentMethod") }}
         </div>
         <o-select v-model="promotion.paymentRestrictions">
           <option
@@ -146,6 +220,9 @@ import {
 } from "@vue/composition-api";
 import { db } from "@/lib/firebase/firebase9";
 
+import AdminHeader from "@/app/admin/AdminHeader.vue";
+import BackButton from "@/components/BackButton.vue";
+
 import {
   updateDoc,
   doc,
@@ -156,9 +233,13 @@ import {
   useIsInMo,
 } from "@/utils/utils";
 
+
 import {
   toBeOrNotSelect,
+  toBeOrNotSelect2,
   yesOrNoSelect,
+  discountMethodSelect,
+  discountTypeSelect,
   promotionPaymentRestrictionsSelect,
 } from "@/config/constant";
 
@@ -169,7 +250,17 @@ import {
 } from "@/utils/promotion";
 import { PromotionData } from "@/models/promotion";
 
+import {
+  useAdminUids,
+  notFoundResponse,
+} from "@/utils/utils";
+import { checkShopAccount } from "@/utils/userPermission";
+
 export default defineComponent({
+  components: {
+    AdminHeader,
+    BackButton,
+  },
   props: {
     isInMo: {
       type: Boolean,
@@ -195,7 +286,21 @@ export default defineComponent({
 
     const termFromDate = ref();
     const termToDate = ref();
-    
+
+    const { ownerUid, uid, isOwner } = useAdminUids(ctx);
+    if (props.isInMo) {
+      if (!isOwner.value) {
+        return notFoundResponse;
+      }
+      if (props.shopInfo) {
+        return notFoundResponse;
+      }
+    } else if (
+      !checkShopAccount(props.shopInfo || {}, ownerUid.value) || !ownerUid.value 
+    ) {
+      return notFoundResponse;
+    }
+   
     getPromotion(props.isInMo, id as string, discountId).then(data => {
       promotion.value = data;
       termFromDate.value = data.termFrom.toDate();
@@ -214,15 +319,19 @@ export default defineComponent({
         hasTerm,
         discountThreshold,
         discountValue,
-        paymentRestrictions
+        discountMethod,
+        paymentRestrictions,
+        usageRestrictions,
       } = promotion.value as PromotionData;
       const updateData = {
         promotionName,
         enable,
         hasTerm,
-        discountThreshold,
-        discountValue,
+        discountThreshold: Number(discountThreshold),
+        discountValue: Number(discountValue),
         paymentRestrictions,
+        usageRestrictions,
+        discountMethod,
         termFrom: Timestamp.fromDate(termFromDate.value),
         termTo: Timestamp.fromDate(termToDate.value),
       };
@@ -242,9 +351,13 @@ export default defineComponent({
       termToDate,
       save,
       toBeOrNotSelect,
+      toBeOrNotSelect2,
       yesOrNoSelect,
+      discountMethodSelect,
+      discountTypeSelect,
       promotionPaymentRestrictionsSelect,
       cancel,
+      notFound: false,
     };
   }
 });

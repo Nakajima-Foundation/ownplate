@@ -210,7 +210,6 @@ service cloud.firestore {
       }
       match /users/{hashId}/promotionHistories/{promotionId} {
         allow read: if phoneHashUser(hashId, groupId, request)
-        allow read: if request.auth.token.groupId == groupId
       }
     }
 
@@ -244,7 +243,13 @@ service cloud.firestore {
 
     match /{path=**}/subCategory/{subcategory} {
       allow read: if true;
-    }      
+    }
+    match /{path=**}/promotionHistories/{historyId} {
+      allow read: if resource.data.groupId == request.auth.token.groupId;
+      allow read: if isAdmin(request) && isRestaurantOwner(resource.data.restaurantId, request)
+      allow read: if isAdmin(request) && isRestaurantSubAccount(resource.data.restaurantId, request)
+      allow delete: if isAdmin(request) && isRestaurantOwner(resource.data.restaurantId, request)
+    }
 
     // End of Rules for collection group
 
@@ -287,6 +292,10 @@ service cloud.firestore {
         match /private/printer {
           allow read, write: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
           allow read, update: if isSuper(request);
+        }
+        match /printLog/{logId} {
+          allow read: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
+          allow read: if isSuper(request);
         }
         match /userLog/{userId} {
           allow read: if isAdmin(request) && isRestaurantOwner(restaurantId, request);

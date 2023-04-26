@@ -48,7 +48,7 @@
         
       </div>
       
-      <div class="mx-6 mt-6 rounded-lg bg-black bg-opacity-5 p-4 text-center">
+      <div class="mx-6 mt-6 rounded-lg bg-black bg-opacity-5 p-4 text-center" v-if="false">
         <div class="pb-2 text-sm font-bold">
           IP Address <span class="text-sx text-opacity-20 text-black">if need</span>
         </div>
@@ -57,7 +57,7 @@
           ></o-input>
       </div>
       
-      <div class="mx-6 mt-6 rounded-lg bg-black bg-opacity-5 p-4 text-center">
+      <div class="mx-6 mt-6 rounded-lg bg-black bg-opacity-5 p-4 text-center" v-if="false">
         <div class="pb-2 text-sm font-bold">
           Logs
         </div>
@@ -111,26 +111,17 @@ export default defineComponent({
       restaurantRef,
       (doc) => {
         const data = doc.data();
-        console.log(data);
-        if (!data) {
-          notFound.value = true;
-          return;
-        }
-        printerConfig.value = data;
+        printerConfig.value = data || {};
         notFound.value = false;
       }
     );
 
-    // https://staging.ownplate.today/api/1.0/r/121212/starprinter/abcabc
     const printerAddress = computed(() => {
       return ["https://" + ownPlateConfig.hostName + "/api/1.0/r/", restaurantId, "/starprinter/", printerConfig.value.key ].join("");
     });
     const reset = () => {
       const newKey = doc(collection(db, "a")).id;
-      console.log(newKey);
       updateDoc(restaurantRef, {key: newKey});
-      
-      // restaurantRef.update("key", )
     };
     return {
       notFound,

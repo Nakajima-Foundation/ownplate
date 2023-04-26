@@ -43,7 +43,8 @@
       </div>
     </div>
 
-    <!-- Campaign202301 -->
+    <!-- Campaign202305 -->
+    <Campaign202305 :moBasePath="moBasePath" v-if="enableCampaignBanner" />
     
     <div class="mx-6 mt-8 text-xl font-bold text-black text-opacity-40">
       {{ $t("find.shopList") }}
@@ -117,12 +118,15 @@ import {
 import { JPPrefecture, USStates } from "@/config/constant";
 import { restaurant2AreaObj, sortRestaurantObj } from "@/utils/RestaurantUtils";
 import { defaultHeader } from "@/config/header";
-import { moBaseUrl, moTitle } from "@/config/project";
-
+import { moBaseUrl, moTitle, enableCampaignBanner } from "@/config/project";
+import Campaign202305 from "./Mo/Campaign202305";
 import { useIsInMo } from "@/utils/utils";
 
 export default defineComponent({
   name: "RestaurantIndex",
+  components: {
+    Campaign202305
+  },
   metaInfo() {
     return {
       title: (this.isInMo
@@ -186,6 +190,7 @@ export default defineComponent({
       moBaseUrl,
 
       isInMo,
+      enableCampaignBanner,
     };
   },
 });

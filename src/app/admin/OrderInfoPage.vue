@@ -73,9 +73,20 @@
                 </div>
               </div>
             </div>
-            <div v-if="orderInfo.isPickup">
+            <div v-if="orderInfo.promotionId">
               <div
                 class="mt-4 inline-flex h-9 w-full justify-center rounded-lg bg-green-600 bg-opacity-10 px-4 py-1 font-bold text-green-600"
+              >
+                <span class="ml-1 mt-1 text-sm">
+                  {{ $n(orderInfo.discountPrice, "currency") }}{{ $t("order.discountPriceMessage")}}
+
+                </span
+                >
+              </div>
+            </div>
+            <div v-if="orderInfo.isPickup">
+              <div
+                class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-green-600 bg-opacity-10 px-4 py-1 font-bold text-green-600"
               >
                 <i class="material-icons"> local_mall </i>
                 <span class="ml-1 mt-1 text-sm">
@@ -1017,7 +1028,20 @@ export default defineComponent({
         }
         const { data } = await orderUpdate(params);
         // console.log("update", data);
-        ctx.root.$router.push(parentUrl.value);
+        if (data.result) {
+          ctx.root.$router.push(parentUrl.value);
+        } else {
+          if (data.type === 'StripeCardError') {
+            ctx.root.$store.commit("setErrorMessage", {
+              code: "order.updateCard",
+              message2: "errorPage.message.cardError",
+            });
+          } else {
+            ctx.root.$store.commit("setErrorMessage", {
+              code: "order.update",
+            });
+          }
+        }
       } catch (error) {
         console.error(error.message, error.details);
         ctx.root.$store.commit("setErrorMessage", {

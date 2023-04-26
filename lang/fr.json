@@ -531,6 +531,7 @@
     "name": "order name",
     "restaurantName": "Nom du restaurant",
     "payment": "payment",
+    "paymentCancel": "payment cancel",
     "includingTip": "avec pourboire",
     "subtotal": "Sous-Total",
     "salesTax": "Taxe de vente",
@@ -603,6 +604,10 @@
     "paymentAndCancellation": "Paiement et annulation",
     "statusTitle": "Order Status",
     "sortOrder": "Sort Order",
+		"promotionNoteCardMo":"If you pay now by credit card, the discount will be applied.",
+		"promotionNoteCard":"If you pay now by credit card, the discount will be applied.",
+		"promotionNoteStoreMo":"If you pay later at the store, the discount below will be applied.",
+		"promotionNoteStore":"If you pay later at the store, the discount will be applied.",
     "sort": {
       "newest": "Sort by newst order",
       "oldest": "Sort by oldest order"
@@ -668,12 +673,19 @@
       "phone": "Phone"
     },
     "discount": "Discount",
+    "discountString": "Discount",
     "discountAlert": {
-      "stripe": "「事前にカードでお支払い」で決済をいただいた場合は、以下のキャンペーン金額が適用されます。",
-      "instore": "「受取時に店舗でお支払い」を選択した場合は、以下のキャンペーン金額が適用されます。"
+    	"stripe": "If you pay now by credit card, the discount below will be applied.",
+      "instore": "If you pay later at the store, the discount below will be applied."
     },
+		"discountAlertMo": {
+			"stripe": "If you pay now by credit card, the discount below will be applied.",
+      "instore": "If you pay later at the store, the discount below will be applied."
+    },
+    "discountPriceSuffix": "Discount",
+    "discountPriceMessage": "値引きがあります",
     "discountPrice": "Discount Price",
-    "discountedPrice": "Discounted Price",
+    "beforeDiscountPrice": "Before Discount Price",
     "cancelReason": "Cancel Reason",
     "productId": "Product Id",
     "category": "Category",
@@ -768,6 +780,40 @@
       "title": "Actualité",
       "newsTop": "Top Actualité",
       "adminTop": "Top Administrateur"
+    },
+    "yes": "Oui",
+    "yesOnce": "Oui(une fois)",
+    "no": "Non",
+    "promotion": {
+      "amount": "Montant",
+      "ratio": "Taux d'actualisation",
+      "discount": "Remise",
+      "onetimeCoupon": "Coupons émis une seule fois",
+      "multipletimesCoupon": "Coupons émis avec un nombre illimité",
+			"list": "Promotions",
+			"activationState": "Actuellement active",
+			"name": "Nom",
+			"activation": "Activer",
+			"type": "Type de remise",
+			"period": "Période d'application",
+			"minimumAmount": "Montant minimum disponible",
+			"yen": "yen",
+			"limitation": "Limite de l'utilisation",
+			"discounts": "Remise",
+			"paymentMethod": "Accepter",
+			"creditCard": "que les cartes de crédit",
+			"store": "que les paiements sur place",
+			"unrestricted": "les cartes de crédit et les paiements sur place",
+			"history": "Histoire",
+			"noHistory": "Non Historique des commandes",
+			"delete": "Supprimer",
+			"uid": "uid",
+			"rid": "rid",
+			"pid": "pid",
+			"oid": "oid",
+			"date": "Date",
+			"total": "Total",
+			"discountPrice": "Prix discount"
     },
     "open": "Open",
     "closed": "Closed",
@@ -919,6 +965,11 @@
       "cancelOrderChange": "Cancel an order change",
       "confirmOrderChange": "Change order"
     },
+    "menu": {
+      "delivery": "Delivery",
+      "printer": "Auto Print",
+      "discount": "Discount"
+    },
     "sound": {
       "default": "Défault",
       "gong": "Gong",
@@ -1062,7 +1113,8 @@
     },
     "message": {
       "generic": "Veuillez essayer cette opération plus tard.",
-      "line": "Veuillez réessayer de connecter LINE."
+      "line": "Veuillez réessayer de connecter LINE.",
+      "cardError": "If the error occurs repeatedly, please cancel the card payment only and process the order."
     },
     "code": {
       "line": {
@@ -1072,6 +1124,7 @@
         "checkout": "Échec de l'exécution du processus de paiement.",
         "place": "Échec de la passation de la commande.",
         "update": "Échec de la mise à jour de l'état de la commande.",
+        "updateCard": "Card processing failed.",
         "cancel": "Échec de l'annulation de la commande."
       },
       "stripe": {

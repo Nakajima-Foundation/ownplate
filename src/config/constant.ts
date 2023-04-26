@@ -499,12 +499,25 @@ export const partners = [
 ];
 
 export const toBeOrNotSelect = [
-  { value: true, message:'あり' },
-  { value: false, message: 'なし'}
+  { value: true, message:'あり', messageKey: 'yes' },
+  { value: false, message: 'なし', messageKey: 'no' }
+];
+export const toBeOrNotSelect2 = [
+  { value: true, message:'あり(1回)', messageKey: 'yesOnce' },
+  { value: false, message: 'なし', messageKey: 'no' }
 ];
 export const yesOrNoSelect = [
   { value: true, message: 'Yes' },
   { value: false, message: 'No' }
+];
+export const discountMethodSelect = [
+  { value: 'amount', messageKey: 'amount' },
+  { value: 'ratio', messageKey: 'ratio' }
+];
+export const discountTypeSelect = [
+  { value: 'discount', messageKey: 'discount' },
+  // { value: 'onetimeCoupon', messageKey: 'onetimeCoupon' },
+  // { value: 'multipletimesCoupon', messageKey: 'multipletimesCoupon' }
 ];
 export const promotionPaymentRestrictionsSelect = [
   { value: 'stripe', message: 'カード決済' },
