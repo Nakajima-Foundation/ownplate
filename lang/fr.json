@@ -963,7 +963,11 @@
       "alreadyChanged": "already changed",
       "willOrderChange": "Change order",
       "cancelOrderChange": "Cancel an order change",
-      "confirmOrderChange": "Change order"
+      "confirmOrderChange": "Change order",
+			"cardPaymentMessage": "Payment has been completed. No need to receive payment at the store.",
+			"storePaymentMessage": "Payment has not been completed. Please receive payment at the store.",
+			"cardPayment": "Credit Card Payment",
+			"storePayment": "Store Payment"
     },
     "menu": {
       "delivery": "Delivery",

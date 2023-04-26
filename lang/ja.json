@@ -1073,7 +1073,11 @@
       "alreadyChanged": "変更済み",
       "willOrderChange": "注文を変更する",
       "cancelOrderChange": "注文の変更を取り消す",
-      "confirmOrderChange": "注文の変更を確定"
+      "confirmOrderChange": "注文の変更を確定",
+			"cardPaymentMessage": "事前決済です。店頭での代金の受け取りは不要です",
+			"storePaymentMessage": "受け取り払いです。店頭で代金を受け取ってください",
+			"cardPayment": "事前決済",
+			"storePayment": "受け取り払い"
     },
     "menu": {
       "delivery": "宅配",
