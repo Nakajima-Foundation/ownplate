@@ -11,7 +11,7 @@
       <router-link :to="home_path">
         <img
           class="m-auto w-48"
-          :src="moBaseUrl + '/images/assets/logo_horizontal.png'"
+          :src="moBaseUrl + '/images/assets/logo_horizontal_new.png'"
           @click="handleClose()"
         />
       </router-link>
