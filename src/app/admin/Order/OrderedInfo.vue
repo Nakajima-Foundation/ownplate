@@ -73,6 +73,18 @@
           {{ $n(order.totalCharge, "currency") }}
         </div>
 
+				 <div class="mr-2 items-center justify-center rounded-md bg-yellow-500 bg-opacity-10 p-1 text-xs
+                    font-bold text-yellow-500
+                    " v-if="hasStripe">
+          {{ $t("admin.order.cardPayment")}}
+        </div>
+
+				 <div class="mr-2 items-center justify-center rounded-md bg-red-700 bg-opacity-10 p-1 text-xs
+                    font-bold text-red-700
+                    " v-else>
+          {{ $t("admin.order.storePayment")}}
+        </div>
+
         <div class="mr-2 items-center justify-center rounded-md bg-green-600 bg-opacity-10 p-1 text-xs
                     font-bold text-green-600
                     " v-if="order.promotionId">
