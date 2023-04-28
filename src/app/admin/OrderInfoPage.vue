@@ -448,6 +448,7 @@
               :orderInfo="isOrderChange ? editable_order_info : orderInfo || {}"
               :editable="isOrderChange"
               :editedAvailableOrders="editedAvailableOrders"
+              :mode="isInMo ? 'mo' : ''"
               @input="updateEnable"
             ></order-info>
             <div v-if="editedAvailableOrders.length > 1 || orderInfo.orderUpdatedAt">
