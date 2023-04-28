@@ -75,7 +75,7 @@
 
 				 <div class="mr-2 items-center justify-center rounded-md bg-yellow-500 bg-opacity-10 p-1 text-xs
                     font-bold text-yellow-500
-                    " v-if="hasStripe">
+                    " v-if="hasStripe && order.payment.stripe !== 'canceled'">
           {{ $t("admin.order.cardPayment")}}
         </div>
 
