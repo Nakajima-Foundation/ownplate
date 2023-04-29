@@ -222,7 +222,7 @@ export default defineComponent({
     }
 
     const restaurantId = useRestaurantId();
-    const fileName = props.shopInfo.restaurantId + "_orderhistory_detail.csv";
+    const fileName = props.shopInfo.restaurantId + "_orderhistory_detail";
 
     const { loadCategory, categoryDataObj } = useCategory(props.moPrefix || "");
     const { allSubCategoryDataObj, loadAllSubcategory } = useAllSubcategory(

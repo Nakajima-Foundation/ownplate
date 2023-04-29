@@ -69,6 +69,7 @@ export const reportHeadersForMo = [
   // for mo 2023
   "discountPrice",
   "beforeDiscountPrice",
+  "paymentCancel",
   "cancelReason",
   
 ];
@@ -136,6 +137,28 @@ export const revenueMoCSVHeader = [
   "cancelReason",
 
 ];
+export const revenueMoAllCSVHeader = [
+  "date",
+  "type",
+  "restaurantId",
+  "shopId",
+  "restaurantName",
+  "orderStatus",
+  "foodRevenue",
+  "foodTax",
+  "alcoholRevenue",
+  "salesTax",
+  "total",
+  "name",
+  "payment",
+
+  // for mo 2023
+  "discountPrice",
+  "beforeDiscountPrice",
+  "paymentCancel",
+  "cancelReason",
+
+];
 
 // for table
 export const revenueTableHeader = [
@@ -148,6 +171,7 @@ export const revenueTableHeader = [
   "tipShort",
   "serviceTax",
   "shippingCost",
+  "discount",
   "total",
   "name",
 ];

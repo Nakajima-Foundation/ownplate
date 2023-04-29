@@ -121,9 +121,12 @@ export default defineComponent({
       return moment(timeData).format("YYYY/MM/DD HH:mm");
     };
     
-    const formulas = {
+    const formulas =  props.isInMo ? {
       count: "sum",
-      total: "sum",
+      productSubTotal: "sum",
+    } : {
+      count: "sum",
+      total: "sum",    
     };
     
     const fields = computed(() => {
@@ -247,6 +250,7 @@ export default defineComponent({
                 productSubTotal: prices[key],
 
                 cancelReason: order.cancelReason,
+                paymentCancel: !!order.uidPaymentCanceledBy,
                 // end of for mo
                 total: writeonFirstLine(index, key, order.totalCharge || ""),
                 discountPrice: writeonFirstLine(index, key, order.discountPrice || 0),

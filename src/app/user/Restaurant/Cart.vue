@@ -28,20 +28,26 @@
         </template>
       </div>
 			
-			<div v-if="promotions" v-for="(promotion, k) in promotions" :key="k">
+			<div v-if="promotions && promotions.length > 0"> 
 			  <div class="border-green-600 text-green-600 text-center font-bold mt-1 mx-6 sm:mx-auto max-w-xl items-center mb-3 rounded-lg bg-green-600 bg-opacity-10 p-2">
 				  <div class="text-xs">
-            <PromotionMessage1 :promotion="promotion" />
+            <PromotionMessage1 :promotion="promotions[0]" />
           </div>
-				  <div class="text-lg -mb-1">
-            <PromotionMessage2 :promotion="promotion" />
-          </div>
+          <div v-for="(promotion, k) in promotions" :key="k">
+					  <div class="flex items-end justify-center mt-0.5">
+					    <div class="text-sm">
+						    <PromotionMessage4 :promotion="promotion" />
+					    </div>
+				      <div class="text-lg -mb-1">
+                <PromotionMessage2 :promotion="promotion" />
+              </div>
+					  </div>
+				  </div>
 			  </div>
-
-			  <div class="flex mx-6 sm:mx-auto max-w-xl justify-center font-bold text-sm"
-             v-if=" promotion.discountThreshold > totalPrice.total"
-             >
-            <PromotionMessage3 :promotion="promotion" :totalPrice="totalPrice" />
+  	  </div>
+		  <div v-if="possiblePromotions && possiblePromotions.length > 0" >
+			  <div v-for="(p, k) in [possiblePromotions[0]]"  class="flex mx-6 sm:mx-auto max-w-xl justify-center font-bold text-sm" :key="p.id">
+          <PromotionMessage3 :promotion="p" :totalPrice="totalPrice" />
 			  </div>
 			</div>
 
@@ -57,6 +63,7 @@ import CartItem from "@/app/user/Restaurant/CartItem.vue";
 import PromotionMessage1 from "@/app/user/Restaurant/PromotionMessage1.vue";
 import PromotionMessage2 from "@/app/user/Restaurant/PromotionMessage2.vue";
 import PromotionMessage3 from "@/app/user/Restaurant/PromotionMessage3.vue";
+import PromotionMessage4 from "@/app/user/Restaurant/PromotionMessage4.vue";
 
 export default defineComponent({
   emits: ["closeCart", "didOrderdChange"],
@@ -64,7 +71,8 @@ export default defineComponent({
     CartItem,
     PromotionMessage1,
     PromotionMessage2,
-    PromotionMessage3,
+		PromotionMessage3,
+		PromotionMessage4,
   },
   props: {
     shopInfo: {
@@ -84,6 +92,10 @@ export default defineComponent({
       required: true,
     },
     promotions: {
+      type: Array,
+      required: false,
+    },
+    possiblePromotions: {
       type: Array,
       required: false,
     },

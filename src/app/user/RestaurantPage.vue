@@ -28,15 +28,13 @@
           />
       </div>
 
-			<div v-if="totalQuantities === 0 && promotion && promotion.type === 'discount'">
-			  <div class="mb-2 border-4 border-green-600 text-green-600 text-center font-bold fixed left-4 right-4 mx-auto max-w-lg cursor-pointer items-center rounded-full bg-white p-3 shadow-lg bottom-3 z-30 sm:bottom-8">
-				  <div class="text-xs">
-            <PromotionMessage1 :promotion="promotion" />
-          </div>
-				  <div class="text-lg mt-0.5 -mb-0.5">
-            <PromotionMessage2 :promotion="promotion" />
-          </div>
-			  </div>
+			<div v-if="totalQuantities === 0 && promotion && promotion.type === 'discount' && !pageId">
+        <template v-if="isInMo">
+          <router-link :to="pageBase + '/page/202305'">
+            <FloatingBanner :promotion="promotion" :isInMo="isInMo" />
+          </router-link>
+        </template>
+        <FloatingBanner :promotion="promotion" :isInMo="isInMo" v-else />
 			</div>
 
       <!-- category modal -->
@@ -225,9 +223,6 @@
 
             <!-- stock filter Toggle-->
             <div>
-              <MoSetBanner v-if="showSubCategory && enableCampaignBanner"
-                           :pageBase="pageBase"
-                           />
               <div v-if="showSubCategory && isPickup">
                 <div class="mx-6 mt-4 grid grid-cols-2 gap-2 lg:mx-0">
                   <!-- 在庫なし含む -->
@@ -282,10 +277,6 @@
                   <div class="text-xl font-bold text-black text-opacity-30">
                     {{ $t("shopInfo.productCategory") }}
                   </div>
-                  <MoSetBanner
-                    v-if="enableCampaignBanner"
-                    :pageBase="pageBase"
-                    />
                   <CategoryTop
                     :categoryData="categoryData"
                     :howtoreceive="howtoreceive"
@@ -409,6 +400,7 @@
         @didOrderdChange="didOrderdChange"
         :totalPrice="totalPrice"
         :promotions="promotions"
+        :possiblePromotions="possiblePromotions"
       />
 
       <!-- for disable all UI -->
@@ -493,10 +485,8 @@ import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
 import TransactionsActContents from "@/app/user/TransactionsAct/Contents.vue";
 import MoPickUp from "@/app/user/Restaurant/MoPickUp.vue";
 import MoPage from "@/app/user/Mo/MoPage.vue";
-import MoSetBanner from "@/app/user/Mo/MoSetBanner.vue";
 
-import PromotionMessage1 from "@/app/user/Restaurant/PromotionMessage1.vue";
-import PromotionMessage2 from "@/app/user/Restaurant/PromotionMessage2.vue";
+import FloatingBanner from "@/app/user/Restaurant/FloatingBanner.vue";
 
 import { usePickupTime } from "@/utils/pickup";
 
@@ -576,13 +566,10 @@ export default defineComponent({
     CategoryIcon,
     Titles,
     SubCategoryList,
-    
-    PromotionMessage1,
-    PromotionMessage2,
+    FloatingBanner,
     
     MoPickUp,
     MoPage,
-    MoSetBanner,
   },
   props: {
     shopInfo: {
@@ -1256,9 +1243,10 @@ export default defineComponent({
       }, 0);
       return ret;
     });
+    // for banner
     const promotion = computed(() => {
       if (props.promotions.length > 0) {
-        return props.promotions[0];
+        return props.promotions[props.promotions.length - 1];
       }
       return null;
     });
@@ -1294,6 +1282,7 @@ export default defineComponent({
       totalQuantities,
       promotion,
       matchedPromotions,
+      possiblePromotions,
       
       isPreview,
 

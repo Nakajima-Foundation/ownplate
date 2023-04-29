@@ -1,42 +1,9 @@
 <template>
   <div>
     <!-- {{pageId}} -->
-    <MoPage202303
-      v-if="pageId == '202303'"
-      :pageId="pageId"
+    <MoPage202305
+      v-if="pageId == '202305'"
       :pageBase="pageBase"
-      :groupData="groupData"
-      @didOrderdChange="didOrderdChange"
-      :orders="orders"
-      :selectedOptions="selectedOptions"
-      :shopInfo="shopInfo"
-      :isPickup="isPickup"
-
-      :howtoreceive="howtoreceive"
-      @input="updateHowtoreceive"
-      :disabledPickupTime="disabledPickupTime"
-      :noAvailableTime="noAvailableTime"
-      :lastOrder="lastOrder"
-      :moPickupSuspend="moPickupSuspend"
-      />
-    <MoPage20230302
-      v-if="pageId == '20230302'"
-      :pageId="pageId"
-      :pageBase="pageBase"
-      :groupData="groupData"
-      @didOrderdChange="didOrderdChange"
-      :orders="orders"
-      :selectedOptions="selectedOptions"
-      :shopInfo="shopInfo"
-      :isPickup="isPickup"
-
-      :howtoreceive="howtoreceive"
-      @input="updateHowtoreceive"
-      :disabledPickupTime="disabledPickupTime"
-      :noAvailableTime="noAvailableTime"
-      :lastOrder="lastOrder"
-      :moPickupSuspend="moPickupSuspend"
-
       />
     <MoPage202303Spring
       v-if="pageId == '202303spring'"
@@ -67,14 +34,12 @@ import {
   onUnmounted,
 } from "vue";
 
-import MoPage202303 from "./MoPage202303.vue";
-import MoPage20230302 from "./MoPage20230302.vue";
+import MoPage202305 from "./MoPage202305.vue";
 import MoPage202303Spring from "./MoPage202303Spring.vue";
 
 export default defineComponent({
   components: {
-    MoPage202303,
-    MoPage20230302,
+    MoPage202305,
     MoPage202303Spring,
   },
   props: {

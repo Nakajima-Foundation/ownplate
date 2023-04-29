@@ -531,6 +531,7 @@
     "name": "order name",
     "restaurantName": "Nom du restaurant",
     "payment": "payment",
+    "paymentCancel": "payment cancel",
     "includingTip": "avec pourboire",
     "subtotal": "Sous-Total",
     "salesTax": "Taxe de vente",
@@ -603,6 +604,10 @@
     "paymentAndCancellation": "Paiement et annulation",
     "statusTitle": "Order Status",
     "sortOrder": "Sort Order",
+		"promotionNoteCardMo":"If you pay now by credit card, the discount will be applied.",
+		"promotionNoteCard":"If you pay now by credit card, the discount will be applied.",
+		"promotionNoteStoreMo":"If you pay later at the store, the discount below will be applied.",
+		"promotionNoteStore":"If you pay later at the store, the discount will be applied.",
     "sort": {
       "newest": "Sort by newst order",
       "oldest": "Sort by oldest order"
@@ -668,9 +673,14 @@
       "phone": "Phone"
     },
     "discount": "Discount",
+    "discountString": "Discount",
     "discountAlert": {
-      "stripe": "「事前にカードでお支払い」で決済をいただいた場合は、以下のキャンペーン金額が適用されます。",
-      "instore": "「受取時に店舗でお支払い」を選択した場合は、以下のキャンペーン金額が適用されます。"
+    	"stripe": "If you pay now by credit card, the discount below will be applied.",
+      "instore": "If you pay later at the store, the discount below will be applied."
+    },
+		"discountAlertMo": {
+			"stripe": "If you pay now by credit card, the discount below will be applied.",
+      "instore": "If you pay later at the store, the discount below will be applied."
     },
     "discountPriceSuffix": "Discount",
     "discountPriceMessage": "値引きがあります",
@@ -771,15 +781,39 @@
       "newsTop": "Top Actualité",
       "adminTop": "Top Administrateur"
     },
-    "yes": "あり",
-    "yesOnce": "あり(1回)",
-    "no": "なし",
+    "yes": "Oui",
+    "yesOnce": "Oui(une fois)",
+    "no": "Non",
     "promotion": {
-      "amount": "金額",
-      "ratio": "割引率",
-      "discount": "ディスカウント",
-      "onetimeCoupon": "１回のみ発行可能クーポン",
-      "multipletimesCoupon": "発行回数制限なしクーポン"
+      "amount": "Montant",
+      "ratio": "Taux d'actualisation",
+      "discount": "Remise",
+      "onetimeCoupon": "Coupons émis une seule fois",
+      "multipletimesCoupon": "Coupons émis avec un nombre illimité",
+			"list": "Promotions",
+			"activationState": "Actuellement active",
+			"name": "Nom",
+			"activation": "Activer",
+			"type": "Type de remise",
+			"period": "Période d'application",
+			"minimumAmount": "Montant minimum disponible",
+			"yen": "yen",
+			"limitation": "Limite de l'utilisation",
+			"discounts": "Remise",
+			"paymentMethod": "Accepter",
+			"creditCard": "que les cartes de crédit",
+			"store": "que les paiements sur place",
+			"unrestricted": "les cartes de crédit et les paiements sur place",
+			"history": "Histoire",
+			"noHistory": "Non Historique des commandes",
+			"delete": "Supprimer",
+			"uid": "uid",
+			"rid": "rid",
+			"pid": "pid",
+			"oid": "oid",
+			"date": "Date",
+			"total": "Total",
+			"discountPrice": "Prix discount"
     },
     "open": "Open",
     "closed": "Closed",
@@ -929,7 +963,16 @@
       "alreadyChanged": "already changed",
       "willOrderChange": "Change order",
       "cancelOrderChange": "Cancel an order change",
-      "confirmOrderChange": "Change order"
+      "confirmOrderChange": "Change order",
+			"cardPaymentMessage": "Payment has been completed. No need to receive payment at the store.",
+			"storePaymentMessage": "Payment has not been completed. Please receive payment at the store.",
+			"cardPayment": "Credit Card Payment",
+			"storePayment": "Store Payment"
+    },
+    "menu": {
+      "delivery": "Delivery",
+      "printer": "Auto Print",
+      "discount": "Discount"
     },
     "sound": {
       "default": "Défault",

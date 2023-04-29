@@ -104,6 +104,11 @@
               </div>
             </td>
             <td class="p-2">
+              <div class="text-right">
+                {{ order.discountPrice || 0  }}
+              </div>
+            </td>
+            <td class="p-2">
               <div class="text-right">{{ order.totalCharge }}</div>
             </td>
             <td class="p-2">
@@ -136,6 +141,7 @@
             <td class="p-2">
               <div class="text-right">{{ total.service.tax }}</div>
             </td>
+            <td></td>
             <td></td>
             <td></td>
             <td class="p-2">
@@ -214,7 +220,7 @@ import { nameOfOrder } from "@/utils/strings";
 import { midNightOfMonth } from "@/utils/dateUtils";
 import {
   revenueCSVHeader,
-  revenueMoCSVHeader,
+  revenueMoAllCSVHeader,
   revenueTableHeader,
 } from "@/utils/reportUtils";
 import { order_status_keys } from "@/config/constant";
@@ -294,7 +300,7 @@ export default defineComponent({
     }
 
     const fields = computed(() => {
-      return props.isInMo ? revenueMoCSVHeader : revenueCSVHeader;
+      return props.isInMo ? revenueMoAllCSVHeader : revenueCSVHeader;
     });
 
     const fieldNames = computed(() => {
@@ -349,6 +355,7 @@ export default defineComponent({
           beforeDiscountPrice: order.totalCharge + (order.discountPrice || 0),
           name: nameOfOrder(order),
           payment: order.payment?.stripe ? "stripe" : "",
+          paymentCancel: !!order.uidPaymentCanceledBy, // for mo
           cancelReason: order.cancelReason,
         };
       });

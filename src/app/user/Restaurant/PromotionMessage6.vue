@@ -1,10 +1,10 @@
 <template>
   <span>
     <template v-if="promotion.paymentRestrictions === 'stripe'">
-      事前クレジットカード決済で
+      「オンライン支払いで注文」で
     </template>
     <template v-if="promotion.paymentRestrictions === 'instore'">
-      受取時に店舗でお支払いで
+      「受け取り払いで注文」で
     </template>
   </span>
 </template>
@@ -13,7 +13,7 @@
 <script lang="ts">
 import {
   defineComponent,
-} from "vue";
+} from "@vue/composition-api";
 
 export default defineComponent({
   props: {

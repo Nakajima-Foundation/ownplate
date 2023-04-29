@@ -185,6 +185,18 @@
             <div v-if="isOwner && isInMo" class="mb-2">
               <IndexSuspend />
             </div>
+            <div v-if="isOwner && isInMo" class="mb-2">
+              <router-link to="/admin/discounts">
+                <div
+                  class="flex h-14 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 text-op-teal"
+                >
+                  <span class="text-base font-bold">{{
+                    $t("mobileOrder.admin.discount")
+                  }}</span>
+                </div>
+              </router-link>
+
+            </div>
 
             <a name="addMenu" />
             <div
@@ -315,7 +327,7 @@ import Footer from "@/app/admin/Index/Footer.vue";
 import Partners from "@/app/admin/Index/Partners.vue";
 import SubAccount from "@/app/admin/Index/SubAccount.vue";
 import ExportProd from "@/app/admin/Index/ExportProd.vue";
-import IndexSuspend from "@/app/admin/IndexSuspend.vue";
+import IndexSuspend from "@/app/admin/Index/Suspend.vue";
 
 import { ping } from "@/lib/firebase/functions";
 

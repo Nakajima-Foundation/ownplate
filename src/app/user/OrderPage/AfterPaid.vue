@@ -100,6 +100,7 @@
             :orderItems="orderItems"
             :orderInfo="orderInfo || {}"
             :groupData="groupData"
+            :mode="mode"
           ></order-info>
         </div>
 

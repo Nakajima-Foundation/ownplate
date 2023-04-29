@@ -73,9 +73,33 @@
                 </div>
               </div>
             </div>
+
+						<div v-if="hasStripe && orderInfo.payment.stripe !== 'canceled'">
+              <div
+                class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-yellow-500 bg-opacity-10 px-4 py-1 font-bold text-yellow-500"
+              >
+                <span class="ml-1 mt-1 text-sm">
+                  {{ $t("admin.order.cardPaymentMessage")}}
+
+                </span
+                >
+              </div>
+            </div>
+						<div v-else>
+              <div
+                class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-red-700 bg-opacity-10 px-4 py-1 font-bold text-red-700"
+              >
+                <span class="ml-1 mt-1 text-sm">
+                  {{ $t("admin.order.storePaymentMessage")}}
+
+                </span
+                >
+              </div>
+            </div>
+
             <div v-if="orderInfo.promotionId">
               <div
-                class="mt-4 inline-flex h-9 w-full justify-center rounded-lg bg-green-600 bg-opacity-10 px-4 py-1 font-bold text-green-600"
+                class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-green-600 bg-opacity-10 px-4 py-1 font-bold text-green-600"
               >
                 <span class="ml-1 mt-1 text-sm">
                   {{ $n(orderInfo.discountPrice, "currency") }}{{ $t("order.discountPriceMessage")}}
@@ -424,6 +448,7 @@
               :orderInfo="isOrderChange ? editable_order_info : orderInfo || {}"
               :editable="isOrderChange"
               :editedAvailableOrders="editedAvailableOrders"
+              :mode="isInMo ? 'mo' : ''"
               @update="updateEnable"
             ></order-info>
             <div v-if="editedAvailableOrders.length > 1 || orderInfo.orderUpdatedAt">
