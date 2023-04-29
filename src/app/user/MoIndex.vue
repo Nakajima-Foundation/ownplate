@@ -121,7 +121,7 @@ import { defaultHeader } from "@/config/header";
 import { moBaseUrl, moTitle, enableCampaignBanner } from "@/config/project";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
-import Campaign202305 from "./Mo/Campaign202305";
+import Campaign202305 from "./Mo/Campaign202305.vue";
 import { useIsInMo } from "@/utils/utils";
 import moment from "moment";
 

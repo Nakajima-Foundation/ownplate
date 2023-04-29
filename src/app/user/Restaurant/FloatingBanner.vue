@@ -17,7 +17,7 @@
 <script lang="ts">
 import {
   defineComponent,
-} from "@vue/composition-api";
+} from "vue";
 
 import PromotionMessage1 from "@/app/user/Restaurant/PromotionMessage1.vue";
 import PromotionMessage5 from "@/app/user/Restaurant/PromotionMessage5.vue";

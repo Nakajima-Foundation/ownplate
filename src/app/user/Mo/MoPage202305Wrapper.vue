@@ -9,7 +9,7 @@
 <script lang="ts">
 import {
   defineComponent,
-} from "@vue/composition-api";
+} from "vue";
 
 import MoPage202305 from "./MoPage202305.vue";
 export default defineComponent({

@@ -114,9 +114,10 @@
 <script lang="ts">
 import {
   defineComponent,
-} from "@vue/composition-api";
+} from "vue";
 
 import { moBaseUrl } from "@/config/project";
+import { useRoute } from "vue-router";
 export default defineComponent({
   props: {
     moBasePath: {
@@ -126,8 +127,9 @@ export default defineComponent({
       type: String,
     },
   },
-  setup(_, ctx) {
-    const isIndex = ctx.root.$route?.meta?.type === "index";
+  setup() {
+    const route = useRoute();
+    const isIndex = route?.meta?.type === "index";
 
     return {
       moBaseUrl,

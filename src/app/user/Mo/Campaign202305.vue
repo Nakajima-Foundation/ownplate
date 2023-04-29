@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from "@vue/composition-api";
+import { defineComponent, ref, computed } from "vue";
 import { moBaseUrl } from "@/config/project";
 export default defineComponent({
   props: {
