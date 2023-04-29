@@ -12,7 +12,7 @@
       "
       @click="handleCheckOut"
       class="b-reset-tw fixed left-1/2 bottom-3 z-30 ml-[-9rem] w-[18rem] sm:bottom-8"
-    >
+      >
       <div
         class="inline-flex w-72 items-center justify-center rounded-full bg-op-teal shadow-lg"
         :class="shopInfo.enableDelivery ? 'pt-2 pb-2' : 'h-20'"
@@ -194,6 +194,10 @@ export default defineComponent({
       type: Boolean,
       required: true,
     },
+    enableCartModal: {
+      type: Boolean,
+      required: true,
+    },
     moSuspend: {
       type: Boolean,
       required: false,
@@ -257,7 +261,7 @@ export default defineComponent({
     });
 
     const handleCheckOut = () => {
-      if (isInMo.value && !isShowCart.value) {
+      if (props.enableCartModal && !isShowCart.value) {
         isShowCart.value = true;
       } else {
         ctx.emit("handleCheckOut");

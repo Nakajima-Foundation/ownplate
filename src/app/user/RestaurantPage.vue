@@ -415,6 +415,7 @@
       <div v-if="isCheckingOut" class="fixed top-0 left-0 h-full w-full"></div>
       <!-- Cart Button -->
       <CartButton
+        :enableCartModal="enableCartModal"
         ref="cartButton"
         @handleCheckOut="handleCheckOut"
         :shopInfo="shopInfo"
@@ -1242,6 +1243,10 @@ export default defineComponent({
     const isTransactionAct = computed(() => {
       return !!route.meta.isTransactionsAct;
     });
+    const enableCartModal = computed(() => {
+      // TODO: setting for omochikaeri
+      return isInMo.value || false;
+    });
     const pageId = computed(() => {
       return route.params.pageId as string;
     });
@@ -1328,6 +1333,7 @@ export default defineComponent({
       menuObj,
       cartItems,
       menuPickupData,
+      enableCartModal,
 
       isInMo,
       isPickup,
