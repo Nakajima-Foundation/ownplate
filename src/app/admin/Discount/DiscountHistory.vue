@@ -158,14 +158,14 @@ export default defineComponent({
       required: false,
     },
   },
-  setup(props, ctx) {
+  setup(props) {
     const route = useRoute();
 
     const id = props.isInMo ? props.moPrefix : props.shopInfo?.restaurantId;
     const idKey = props.isInMo ? "groupId" : "restaurantId";
     const discountId = route.params.discountId as string;
 
-    const { ownerUid, uid, isOwner } = useAdminUids(ctx);
+    const { ownerUid, uid, isOwner } = useAdminUids();
     if (props.isInMo) {
       if (!isOwner.value) {
         return notFoundResponse;

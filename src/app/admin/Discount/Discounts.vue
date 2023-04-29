@@ -184,11 +184,11 @@ export default defineComponent({
     },
     
   },
-  setup(props, ctx) {
+  setup(props) {
     const id = props.isInMo ? props.moPrefix : props.shopInfo?.restaurantId;
     const { promotionDataSet } = usePromotionsForAdmin(props.isInMo, id as string);
 
-    const { ownerUid, uid, isOwner } = useAdminUids(ctx);
+    const { ownerUid, uid, isOwner } = useAdminUids();
     console.log(props.isInMo);
     if (props.isInMo) {
       if (!isOwner.value) {

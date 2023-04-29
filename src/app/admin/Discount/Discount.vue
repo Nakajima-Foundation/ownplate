@@ -280,7 +280,7 @@ export default defineComponent({
     },
     
   },
-  setup(props, ctx) {
+  setup(props) {
     const route = useRoute();
     const router = useRouter();
     const discountId = route.params.discountId as string;
@@ -291,7 +291,7 @@ export default defineComponent({
     const termFromDate = ref();
     const termToDate = ref();
 
-    const { ownerUid, uid, isOwner } = useAdminUids(ctx);
+    const { ownerUid, uid, isOwner } = useAdminUids();
     if (props.isInMo) {
       if (!isOwner.value) {
         return notFoundResponse;
