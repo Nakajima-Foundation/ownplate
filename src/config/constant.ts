@@ -520,8 +520,8 @@ export const discountTypeSelect = [
   // { value: 'multipletimesCoupon', messageKey: 'multipletimesCoupon' }
 ];
 export const promotionPaymentRestrictionsSelect = [
-  { value: 'stripe', message: 'カード決済' },
-  { value: 'instore', message: '現地払い' },
+  { value: 'stripe', message: '事前カード決済' },
+  { value: 'instore', message: '受け取り払い' },
   { value: null, message: 'なし' }
 ];
 

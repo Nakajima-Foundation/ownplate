@@ -2,11 +2,11 @@
   <div>
     <div class="mx-0 mt-6 flex justify-center sm:mx-6 sm:max-w-7xl xl:mx-auto">
       <img
-        :src="moBaseUrl + '/images/assets/mo_hero_mobile.png'"
+        :src="moBaseUrl + '/images/assets/mo_hero_mobile_new.png'"
         class="sm:hidden"
       />
       <img
-        :src="moBaseUrl + '/images/assets/mo_hero_tablet.png'"
+        :src="moBaseUrl + '/images/assets/mo_hero_tablet_new.png'"
         class="hidden sm:block"
       />
     </div>
