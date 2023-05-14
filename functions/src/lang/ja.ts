@@ -30,7 +30,7 @@ export const resource_mo = {
     msg_order_accepted: "ご注文の受付が完了しました。受け渡し予定時刻は{{time}}です。" + suffix1 + suffix2, // mo
     msg_cooking_completed: "ご注文商品の準備ができました。受け渡し予定時刻は{{time}}です。" + suffix1 + suffix2, // mo
     msg_order_canceled: "商品のご用意ができなかった為、ご注文がキャンセルされました。" + suffix1, // mo
-    msg_stripe_payment_canceled: "決済処理が正しく完了できなかったため、カード決済を取り消しました。代金は受け取り時に店舗でお支払いください。" + suffix1 + "\n※カード決済を対象とした割引キャンペーンが実施されている場合は、割引の対象外となりますのでご了承ください。\n※注文をキャンセルされたい場合はお手数ですが、注文店舗へ直接ご連絡いただきますようお願いします。", // mo
+    msg_stripe_payment_canceled: "決済処理が正しく完了できなかったため、カード決済を取り消しました。代金は受け取り時に店舗でお支払いください。" + suffix1, // mo
     msg_order_updated: "注文内容が変更されました。" + suffix1, //
     msg_order_canceled_by_user: "お客様ご自身にてキャンセルされたか、商品のご用意ができなかった為、ご注文がキャンセルされました。" + suffix1, // mo
   },
