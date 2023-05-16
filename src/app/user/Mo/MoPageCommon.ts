@@ -1,6 +1,7 @@
 import {
   defineComponent,
   ref,
+  computed,
 } from "@vue/composition-api";
 
 import { db } from "@/lib/firebase/firebase9";
@@ -161,6 +162,10 @@ export const moPage = (setMenus: SetMenu[]) => {
       const updateHowtoreceive = (value: string) => {
         ctx.emit("input", value);
       };
+
+      const hasOrder = computed(() => {
+        return Object.keys(props.orders||{}).length;
+      });
       
       return {
         setMenus,
@@ -174,6 +179,7 @@ export const moPage = (setMenus: SetMenu[]) => {
         updateHowtoreceive,
 
         moBaseUrl,
+        hasOrder,
       };
     },
   });

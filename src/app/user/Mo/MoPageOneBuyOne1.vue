@@ -16,8 +16,9 @@
       </div>
     </div>
 
-		<!--ToDo フローティング案内文をカートボタンがない時のみ表示させる-->
-		<div class="mb-2 border-4 border-green-600 text-green-600 text-center font-bold text-sm fixed left-4 right-4 mx-auto max-w-lg items-center rounded-full bg-white p-3 shadow-lg bottom-3 z-30 sm:bottom-8">
+		<div class="mb-2 border-4 border-green-600 text-green-600 text-center font-bold text-sm fixed left-4 right-4 mx-auto max-w-lg items-center rounded-full bg-white p-3 shadow-lg bottom-3 z-30 sm:bottom-8"
+         v-if="hasOrder === 0"
+         >
       {{ $t("mobileOrder.campaign.fixedMessage1") }}
 		</div>
 
