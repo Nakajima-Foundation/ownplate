@@ -1,6 +1,7 @@
 import {
   defineComponent,
   ref,
+  computed,
 } from "@vue/composition-api";
 
 import { db } from "@/lib/firebase/firebase9";
@@ -12,9 +13,11 @@ import {
   documentId,
 } from "firebase/firestore";
 
-import MoPageSet from "@/app/user/Mo/MoPageSet.vue";
 import MoPageMenu from "@/app/user/Mo/MoPageMenu.vue";
+import MoPageMenu2 from "@/app/user/Mo/MoPageMenu2.vue";
 import MoPickUp from "@/app/user/Restaurant/MoPickUp.vue";
+
+import MoPageOneBuyOneTemplate from "@/app/user/Mo/MoPageOneBuyOneTemplate.vue";
 
 import { moBaseUrl, firebaseConfig } from "@/config/project";
 import { SHA1, enc } from "crypto-js";
@@ -39,9 +42,10 @@ export const getMenuId = (productId: string) => {
 export const moPage = (setMenus: SetMenu[]) => {
   return defineComponent({
     components: {
-      MoPageSet,
       MoPageMenu,
+      MoPageMenu2,
       MoPickUp,
+      MoPageOneBuyOneTemplate,
     },
     props: {
       pageId: {
@@ -119,6 +123,8 @@ export const moPage = (setMenus: SetMenu[]) => {
         menuObj.value = menuQuerySnap.docs.reduce((tmp: {[key: string]: any}, m) => {
           const data = m.data();
           data.id = m.id;
+          // @ts-ignore
+          data.offset = menuDataObj[m.id].offset || 0;
           tmp[m.id] = data;
           return tmp;
         }, {});
@@ -156,6 +162,10 @@ export const moPage = (setMenus: SetMenu[]) => {
       const updateHowtoreceive = (value: string) => {
         ctx.emit("input", value);
       };
+
+      const hasOrder = computed(() => {
+        return Object.keys(props.orders||{}).length;
+      });
       
       return {
         setMenus,
@@ -169,6 +179,7 @@ export const moPage = (setMenus: SetMenu[]) => {
         updateHowtoreceive,
 
         moBaseUrl,
+        hasOrder,
       };
     },
   });

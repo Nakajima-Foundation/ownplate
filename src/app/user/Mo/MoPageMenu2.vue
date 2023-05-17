@@ -1,54 +1,39 @@
 <template>
-  <div>
-    <div class="mx-auto mb-4 max-w-md rounded-lg bg-white p-5 shadow">
+    <div class="w-full rounded-lg bg-white shadow">
       <img
         :src="resizedImage"
         @error="smallImageErrorHandler"
-        class="mx-auto flex h-40 w-40 justify-center rounded-lg object-cover sm:h-72 sm:w-72"
+        class="w-full rounded-t-lg bg-white object-cover pb-3"
       />
-      <div class="mt-6 text-left text-xl font-bold text-black">
+
+		<div class="px-2 sm:px-3 pb-1 sm:pb-2">
+      <div class="h-14 text-sm tracking-tight text-black line-clamp-3 sm:h-[72px] sm:text-base">
         {{ menu.itemName }}
       </div>
-
-      <!-- Description -->
-      <div class="mt-3 text-sm">
-        <div v-for="(d, k) in menu.itemDescription.split('\n')" :key="k">
-          {{d}}
-        </div>
-      </div>
-
-      <div class="mt-3 inline-flex items-end">
-        <div class="text-base font-bold text-red-600">
+      
+      <div class="mt-4 inline-flex items-end">
+        <div class="w-14 sm:w-auto text-sm font-bold leading-none text-red-600">
           <Price :shopInfo="shopInfo" :menu="menu" />
         </div>
-        <div class="ml-2 mb-0.5 text-xs text-black line-through">
+        <div class="w-9 sm:w-auto ml-0.5 sm:ml-2 text-xs text-black line-through leading-none">
           <Price :shopInfo="shopInfo" :menu="menu" :offset="menu.offset || 0" />
         </div>
       </div>
 
-      <div class="mt-3 flex items-center">
-        <button
-          @click="pullQuantities(menu.id, 1)"
-          :id="menu.id"
-          class="itemRemove inline-flex h-9 w-24 items-center justify-center rounded-full bg-red-700 bg-opacity-10"
-        >
-          <i class="material-icons text-lg text-red-700">remove</i>
-        </button>
-
-        <div class="flex-1 text-center text-3xl text-op-teal">
-          {{ (orders[menu.id] || {})[0] || 0 }}
+      <div class="mt-1 -mr-1 sm:mt-2 flex justify-end">
+        <div class="mr-auto flex h-9 items-center text-xs font-bold leading-none text-black sm:text-sm">
+          {{ $t("mobileOrder.inStock") }}
         </div>
-
         <button
           @click="pushQuantities(menu.id, 1)"
           :id="menu.id"
-          class="itemAdd inline-flex h-9 w-24 items-center justify-center rounded-full bg-op-teal bg-opacity-10"
+          class="itemAdd inline-flex h-9 w-9 items-center justify-center rounded-full bg-op-teal bg-opacity-10"
         >
           <i class="material-icons text-lg text-op-teal">add</i>
         </button>
-      </div>
+			</div>
     </div>
-  </div>
+	</div>
 </template>
 
 <script lang="ts">

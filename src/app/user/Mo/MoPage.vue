@@ -5,8 +5,8 @@
       v-if="pageId == '202305'"
       :pageBase="pageBase"
       />
-    <MoPage202303Spring
-      v-if="pageId == '202303spring'"
+    <MoPageOneBuyOne1
+      v-if="pageId == '202306buy1'"
       :pageId="pageId"
       :pageBase="pageBase"
       :groupData="groupData"
@@ -35,12 +35,12 @@ import {
 } from "@vue/composition-api";
 
 import MoPage202305 from "./MoPage202305.vue";
-import MoPage202303Spring from "./MoPage202303Spring.vue";
+import MoPageOneBuyOne1 from "./MoPageOneBuyOne1.vue";
 
 export default defineComponent({
   components: {
     MoPage202305,
-    MoPage202303Spring,
+    MoPageOneBuyOne1,
   },
   props: {
     pageId: {
