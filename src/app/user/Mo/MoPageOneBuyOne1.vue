@@ -16,48 +16,50 @@
       </div>
     </div>
 
+		<!--Floating text-->
 		<div class="mb-2 border-4 border-green-600 text-green-600 text-center font-bold text-sm fixed left-4 right-4 mx-auto max-w-lg items-center rounded-full bg-white p-3 shadow-lg bottom-3 z-30 sm:bottom-8"
          v-if="hasOrder === 0"
          >
       {{ $t("mobileOrder.campaign.fixedMessage1") }}
 		</div>
 
+		<!--Banner-->
     <div class="m-4 mt-6 rounded-lg bg-white sm:max-w-5xl lg:mx-auto">
       <div class="flex w-full justify-center">
         <img
-          :src="moBaseUrl + '/images/assets/setcampaign-hero-image_mobile.png'"
+          :src="moBaseUrl + '/images/assets/202306/202306_lp_mobile.png'"
           class="rounded-lg object-cover sm:hidden"
         />
 				<img
-          :src="moBaseUrl + '/images/assets/setcampaign-hero-image_tablet.png'"
+          :src="moBaseUrl + '/images/assets/202306/202306_lp_tablet.png'"
           class="rounded-lg object-cover hidden sm:block"
         />
       </div>
     </div>
 
-		<div class="m-4 mt-6 rounded-lg bg-white sm:max-w-5xl lg:mx-auto border-2 border-[#0068B7]">
+		<!--Overview-->
+		<div class="m-4 rounded-lg bg-white sm:max-w-5xl lg:mx-auto border-2 border-[#0068B7]">
 			<div class="text-center bg-[#0068B7] text-white font-bold py-1">
 				{{ $t("mobileOrder.campaign.part1") }}
 			</div>
-			<div class="text-black py-3 font-bold px-5 ">
-				<div class="text-sm text-center">{{ $t("mobileOrder.campaign.period1") }}</div>
-				<div class="text-sm text-center">{{ $t("mobileOrder.campaign.receivingPeriod1") }}</div>
+			<div class="text-black py-3 font-bold px-5">
+				<div class="text-sm sm:text-base text-center">{{ $t("mobileOrder.campaign.period1") }}</div>
+				<div class="text-sm sm:text-base text-center">{{ $t("mobileOrder.campaign.receivingPeriod1") }}</div>
+				<div class="sm:w-11/12 md:w-8/12 mx-auto">
 				<div class="mt-2 text-xs text-black text-opacity-40">{{ $t("mobileOrder.campaign.note11") }}</div>
-				<div class="mt-2 text-xs text-black text-opacity-40">{{ $t("mobileOrder.campaign.note12") }}</div>
+				<div class="mt-1 text-xs text-black text-opacity-40">{{ $t("mobileOrder.campaign.note12") }}</div>
+				</div>
 			</div>
 		</div>
 
-    <div class="mx-4 mb-4 rounded-lg pb-6 bg-[#DBF5FE] sm:max-w-5xl lg:mx-auto">
+		<!--Item 1-->
+    <div class="mx-4 mb-4 rounded-lg bg-[#DBF5FE] sm:max-w-5xl lg:mx-auto">
       <MoPageOneBuyOneTemplate>
         <template v-slot:header>
 				<div class="flex w-full justify-center mb-3 sm:mb-6">
           <img
-          :src="moBaseUrl + '/images/assets/campaign_202305_mobile.png'"
-          class="rounded-lg object-cover sm:hidden"
-        />
-        <img
-          :src="moBaseUrl + '/images/assets/campaign_202305_tablet.png'"
-          class="rounded-lg object-cover hidden sm:block"
+          :src="moBaseUrl + '/images/assets/202306/20230606_1_buy.png'"
+          class="rounded-lg object-cover"
         />
 				</div>
           </template>
@@ -85,29 +87,22 @@
           <template v-slot:footer>
           <div class="flex w-full justify-center mt-3 sm:mt-6">
           	<img
-          	:src="moBaseUrl + '/images/assets/campaign_202305_mobile.png'"
-          	class="rounded-lg object-cover sm:hidden"
-        		/>
-        		<img
-          	:src="moBaseUrl + '/images/assets/campaign_202305_tablet.png'"
-          	class="rounded-lg object-cover hidden sm:block"
-        		/>
+          :src="moBaseUrl + '/images/assets/202306/20230606_1_get.png'"
+          class="rounded-lg object-cover"
+        />
 				</div>
         </template>
       </MoPageOneBuyOneTemplate>
     </div>
 
-    <div class="mx-4 mb-4 rounded-lg pb-6 bg-[#DBF5FE] sm:max-w-5xl lg:mx-auto">
+		<!--Item 2-->
+    <div class="mx-4 mb-4 rounded-lg bg-[#DBF5FE] sm:max-w-5xl lg:mx-auto">
       <MoPageOneBuyOneTemplate>
         <template v-slot:header>
           <div class="flex w-full justify-center mb-3 sm:mb-6">
           <img
-          :src="moBaseUrl + '/images/assets/campaign_202305_mobile.png'"
-          class="rounded-lg object-cover sm:hidden"
-        />
-        <img
-          :src="moBaseUrl + '/images/assets/campaign_202305_tablet.png'"
-          class="rounded-lg object-cover hidden sm:block"
+          :src="moBaseUrl + '/images/assets/202306/20230606_2_buy.png'"
+          class="rounded-lg object-cover"
         />
 				</div>
           </template>
@@ -135,13 +130,267 @@
           <template v-slot:footer>
              <div class="flex w-full justify-center mt-3 sm:mt-6">
           	<img
-          	:src="moBaseUrl + '/images/assets/campaign_202305_mobile.png'"
-          	class="rounded-lg object-cover sm:hidden"
-        		/>
-        		<img
-          	:src="moBaseUrl + '/images/assets/campaign_202305_tablet.png'"
-          	class="rounded-lg object-cover hidden sm:block"
-        		/>
+          :src="moBaseUrl + '/images/assets/202306/20230606_2_get.png'"
+          class="rounded-lg object-cover"
+        />
+				</div>
+        </template>
+      </MoPageOneBuyOneTemplate>
+    </div>
+
+		<!--Item 3-->
+    <div class="mx-4 mb-4 rounded-lg bg-[#DBF5FE] sm:max-w-5xl lg:mx-auto">
+      <MoPageOneBuyOneTemplate>
+        <template v-slot:header>
+				<div class="flex w-full justify-center mb-3 sm:mb-6">
+          <img
+          :src="moBaseUrl + '/images/assets/202306/20230606_3_buy.png'"
+          class="rounded-lg object-cover"
+        />
+				</div>
+          </template>
+
+          <template v-slot:menu>
+					<div class="mx-2 grid grid-cols-3 content-start gap-2">
+            <MoPageMenu2
+              v-if="menuObj['b2287c39e8faa8ff6abee7e23e9a330e3326ad6f']"
+              :menu="menuObj['b2287c39e8faa8ff6abee7e23e9a330e3326ad6f']"
+              :orders="orders"
+              @pushQuantities="pushQuantities"
+              @pullQuantities="pullQuantities"
+              :shopInfo="shopInfo"
+              />
+            <MoPageMenu2
+              v-if="menuObj['c51d14bfcb35d8160c149a5e25eac2813b6d06b9']"
+              :menu="menuObj['c51d14bfcb35d8160c149a5e25eac2813b6d06b9']"
+              :orders="orders"
+              @pushQuantities="pushQuantities"
+              @pullQuantities="pullQuantities"
+              :shopInfo="shopInfo"
+              />
+					</div>
+          </template>
+          <template v-slot:footer>
+          <div class="flex w-full justify-center mt-3 sm:mt-6">
+          	<img
+          :src="moBaseUrl + '/images/assets/202306/20230606_3_get.png'"
+          class="rounded-lg object-cover"
+        />
+				</div>
+        </template>
+      </MoPageOneBuyOneTemplate>
+    </div>
+
+		<!--Item 4-->
+    <div class="mx-4 mb-4 rounded-lg bg-[#DBF5FE] sm:max-w-5xl lg:mx-auto">
+      <MoPageOneBuyOneTemplate>
+        <template v-slot:header>
+				<div class="flex w-full justify-center mb-3 sm:mb-6">
+          <img
+          :src="moBaseUrl + '/images/assets/202306/20230606_4_buy.png'"
+          class="rounded-lg object-cover"
+        />
+				</div>
+          </template>
+
+          <template v-slot:menu>
+					<div class="mx-2 grid grid-cols-3 content-start gap-2">
+            <MoPageMenu2
+              v-if="menuObj['b2287c39e8faa8ff6abee7e23e9a330e3326ad6f']"
+              :menu="menuObj['b2287c39e8faa8ff6abee7e23e9a330e3326ad6f']"
+              :orders="orders"
+              @pushQuantities="pushQuantities"
+              @pullQuantities="pullQuantities"
+              :shopInfo="shopInfo"
+              />
+            <MoPageMenu2
+              v-if="menuObj['c51d14bfcb35d8160c149a5e25eac2813b6d06b9']"
+              :menu="menuObj['c51d14bfcb35d8160c149a5e25eac2813b6d06b9']"
+              :orders="orders"
+              @pushQuantities="pushQuantities"
+              @pullQuantities="pullQuantities"
+              :shopInfo="shopInfo"
+              />
+					</div>
+          </template>
+          <template v-slot:footer>
+          <div class="flex w-full justify-center mt-3 sm:mt-6">
+          	<img
+          :src="moBaseUrl + '/images/assets/202306/20230606_4_get.png'"
+          class="rounded-lg object-cover"
+        />
+				</div>
+        </template>
+      </MoPageOneBuyOneTemplate>
+    </div>
+
+		<!--Item 5-->
+    <div class="mx-4 mb-4 rounded-lg bg-[#DBF5FE] sm:max-w-5xl lg:mx-auto">
+      <MoPageOneBuyOneTemplate>
+        <template v-slot:header>
+				<div class="flex w-full justify-center mb-3 sm:mb-6">
+          <img
+          :src="moBaseUrl + '/images/assets/202306/20230606_5_buy.png'"
+          class="rounded-lg object-cover"
+        />
+				</div>
+          </template>
+
+          <template v-slot:menu>
+					<div class="mx-2 grid grid-cols-3 content-start gap-2">
+            <MoPageMenu2
+              v-if="menuObj['b2287c39e8faa8ff6abee7e23e9a330e3326ad6f']"
+              :menu="menuObj['b2287c39e8faa8ff6abee7e23e9a330e3326ad6f']"
+              :orders="orders"
+              @pushQuantities="pushQuantities"
+              @pullQuantities="pullQuantities"
+              :shopInfo="shopInfo"
+              />
+            <MoPageMenu2
+              v-if="menuObj['c51d14bfcb35d8160c149a5e25eac2813b6d06b9']"
+              :menu="menuObj['c51d14bfcb35d8160c149a5e25eac2813b6d06b9']"
+              :orders="orders"
+              @pushQuantities="pushQuantities"
+              @pullQuantities="pullQuantities"
+              :shopInfo="shopInfo"
+              />
+					</div>
+          </template>
+          <template v-slot:footer>
+          <div class="flex w-full justify-center mt-3 sm:mt-6">
+          	<img
+          :src="moBaseUrl + '/images/assets/202306/20230606_5_get.png'"
+          class="rounded-lg object-cover"
+        />
+				</div>
+        </template>
+      </MoPageOneBuyOneTemplate>
+    </div>
+
+		<!--Item 6-->
+    <div class="mx-4 mb-4 rounded-lg bg-[#DBF5FE] sm:max-w-5xl lg:mx-auto">
+      <MoPageOneBuyOneTemplate>
+        <template v-slot:header>
+				<div class="flex w-full justify-center mb-3 sm:mb-6">
+          <img
+          :src="moBaseUrl + '/images/assets/202306/20230606_6_buy.png'"
+          class="rounded-lg object-cover"
+        />
+				</div>
+          </template>
+
+          <template v-slot:menu>
+					<div class="mx-2 grid grid-cols-3 content-start gap-2">
+            <MoPageMenu2
+              v-if="menuObj['b2287c39e8faa8ff6abee7e23e9a330e3326ad6f']"
+              :menu="menuObj['b2287c39e8faa8ff6abee7e23e9a330e3326ad6f']"
+              :orders="orders"
+              @pushQuantities="pushQuantities"
+              @pullQuantities="pullQuantities"
+              :shopInfo="shopInfo"
+              />
+            <MoPageMenu2
+              v-if="menuObj['c51d14bfcb35d8160c149a5e25eac2813b6d06b9']"
+              :menu="menuObj['c51d14bfcb35d8160c149a5e25eac2813b6d06b9']"
+              :orders="orders"
+              @pushQuantities="pushQuantities"
+              @pullQuantities="pullQuantities"
+              :shopInfo="shopInfo"
+              />
+					</div>
+          </template>
+          <template v-slot:footer>
+          <div class="flex w-full justify-center mt-3 sm:mt-6">
+          	<img
+          :src="moBaseUrl + '/images/assets/202306/20230606_6_get.png'"
+          class="rounded-lg object-cover"
+        />
+				</div>
+        </template>
+      </MoPageOneBuyOneTemplate>
+    </div>
+
+		<!--Item 7-->
+    <div class="mx-4 mb-4 rounded-lg bg-[#DBF5FE] sm:max-w-5xl lg:mx-auto">
+      <MoPageOneBuyOneTemplate>
+        <template v-slot:header>
+				<div class="flex w-full justify-center mb-3 sm:mb-6">
+          <img
+          :src="moBaseUrl + '/images/assets/202306/20230606_7_buy.png'"
+          class="rounded-lg object-cover"
+        />
+				</div>
+          </template>
+
+          <template v-slot:menu>
+					<div class="mx-2 grid grid-cols-3 content-start gap-2">
+            <MoPageMenu2
+              v-if="menuObj['b2287c39e8faa8ff6abee7e23e9a330e3326ad6f']"
+              :menu="menuObj['b2287c39e8faa8ff6abee7e23e9a330e3326ad6f']"
+              :orders="orders"
+              @pushQuantities="pushQuantities"
+              @pullQuantities="pullQuantities"
+              :shopInfo="shopInfo"
+              />
+            <MoPageMenu2
+              v-if="menuObj['c51d14bfcb35d8160c149a5e25eac2813b6d06b9']"
+              :menu="menuObj['c51d14bfcb35d8160c149a5e25eac2813b6d06b9']"
+              :orders="orders"
+              @pushQuantities="pushQuantities"
+              @pullQuantities="pullQuantities"
+              :shopInfo="shopInfo"
+              />
+					</div>
+          </template>
+          <template v-slot:footer>
+          <div class="flex w-full justify-center mt-3 sm:mt-6">
+          	<img
+          :src="moBaseUrl + '/images/assets/202306/20230606_7_get.png'"
+          class="rounded-lg object-cover"
+        />
+				</div>
+        </template>
+      </MoPageOneBuyOneTemplate>
+    </div>
+
+		<!--Item 8-->
+    <div class="mx-4 mb-4 rounded-lg bg-[#DBF5FE] sm:max-w-5xl lg:mx-auto">
+      <MoPageOneBuyOneTemplate>
+        <template v-slot:header>
+				<div class="flex w-full justify-center mb-3 sm:mb-6">
+          <img
+          :src="moBaseUrl + '/images/assets/202306/20230606_8_buy.png'"
+          class="rounded-lg object-cover"
+        />
+				</div>
+          </template>
+
+          <template v-slot:menu>
+					<div class="mx-2 grid grid-cols-3 content-start gap-2">
+            <MoPageMenu2
+              v-if="menuObj['b2287c39e8faa8ff6abee7e23e9a330e3326ad6f']"
+              :menu="menuObj['b2287c39e8faa8ff6abee7e23e9a330e3326ad6f']"
+              :orders="orders"
+              @pushQuantities="pushQuantities"
+              @pullQuantities="pullQuantities"
+              :shopInfo="shopInfo"
+              />
+            <MoPageMenu2
+              v-if="menuObj['c51d14bfcb35d8160c149a5e25eac2813b6d06b9']"
+              :menu="menuObj['c51d14bfcb35d8160c149a5e25eac2813b6d06b9']"
+              :orders="orders"
+              @pushQuantities="pushQuantities"
+              @pullQuantities="pullQuantities"
+              :shopInfo="shopInfo"
+              />
+					</div>
+          </template>
+          <template v-slot:footer>
+          <div class="flex w-full justify-center mt-3 sm:mt-6">
+          	<img
+          :src="moBaseUrl + '/images/assets/202306/20230606_8_get.png'"
+          class="rounded-lg object-cover"
+        />
 				</div>
         </template>
       </MoPageOneBuyOneTemplate>

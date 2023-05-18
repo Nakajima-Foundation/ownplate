@@ -51,6 +51,13 @@
 			  </div>
 			</div>
 
+			<!--ToDo 1buy1対象商品がカート内ある時に注意書きを表示、毎週変更-->
+			<div v-if="false">
+				<div class="text-xs border-green-600 text-green-600 font-bold mt-1 mx-6 sm:mx-auto max-w-xl mb-3 rounded-lg bg-green-600 bg-opacity-10 py-2 px-4">
+					{{ $t("mobileOrder.campaign.fixedMessageCart1") }}
+				</div>
+			</div>
+
     </div>
   </div>
 </template>
