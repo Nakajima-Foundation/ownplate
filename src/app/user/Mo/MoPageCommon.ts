@@ -22,6 +22,10 @@ import MoPageOneBuyOneTemplate from "@/app/user/Mo/MoPageOneBuyOneTemplate.vue";
 import { moBaseUrl, firebaseConfig } from "@/config/project";
 import { SHA1, enc } from "crypto-js";
 
+import {
+  arrayChunk,
+} from "@/utils/utils";
+
 interface Menu {
   id: string;
   count: number;
@@ -112,24 +116,26 @@ export const moPage = (setMenus: SetMenu[]) => {
       }, {});
 
       const menuObj = ref<{[key: string]: any}>({});
-      getDocs(
-        query(
-          collection(db, `restaurants/${props.groupData.restaurantId}/menus`),
-          where("publicFlag", "==", true),
-          where("deletedFlag", "==", false),
-          where(documentId(), "in", Object.keys(menuDataObj))
-        )
-      ).then((menuQuerySnap) => {
-        menuObj.value = menuQuerySnap.docs.reduce((tmp: {[key: string]: any}, m) => {
-          const data = m.data();
-          data.id = m.id;
-          // @ts-ignore
-          data.offset = menuDataObj[m.id].offset || 0;
-          tmp[m.id] = data;
-          return tmp;
-        }, {});
+      arrayChunk(Object.keys(menuDataObj), 10).map((menuIds) => {
+        getDocs(
+          query(
+            collection(db, `restaurants/${props.groupData.restaurantId}/menus`),
+            where("publicFlag", "==", true),
+            where("deletedFlag", "==", false),
+            where(documentId(), "in", menuIds)
+          )
+        ).then((menuQuerySnap) => {
+          menuQuerySnap.docs.map(m => {
+            const data = m.data();
+            data.id = m.id;
+            // @ts-ignore
+            data.offset = menuDataObj[m.id].offset || 0;
+            const tmp = {...menuObj.value};
+            tmp[m.id] = data;
+            menuObj.value = tmp;
+          });
+        });
       });
-
       const setQuantities = (itemId: string, newValue: number) => {
         const newQuantities = [newValue];
         ctx.emit("didOrderdChange", {
@@ -180,6 +186,7 @@ export const moPage = (setMenus: SetMenu[]) => {
 
         moBaseUrl,
         hasOrder,
+        getMenuId,
       };
     },
   });

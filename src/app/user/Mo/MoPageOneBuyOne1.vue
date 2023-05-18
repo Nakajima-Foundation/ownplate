@@ -67,16 +67,24 @@
           <template v-slot:menu>
 					<div class="mx-2 grid grid-cols-3 content-start gap-2">
             <MoPageMenu2
-              v-if="menuObj['b2287c39e8faa8ff6abee7e23e9a330e3326ad6f']"
-              :menu="menuObj['b2287c39e8faa8ff6abee7e23e9a330e3326ad6f']"
+              v-if="menuObj[getMenuId('999184')]"
+              :menu="menuObj[getMenuId('999184')]"
               :orders="orders"
               @pushQuantities="pushQuantities"
               @pullQuantities="pullQuantities"
               :shopInfo="shopInfo"
               />
             <MoPageMenu2
-              v-if="menuObj['c51d14bfcb35d8160c149a5e25eac2813b6d06b9']"
-              :menu="menuObj['c51d14bfcb35d8160c149a5e25eac2813b6d06b9']"
+              v-if="menuObj[getMenuId('999185')]"
+              :menu="menuObj[getMenuId('999185')]"
+              :orders="orders"
+              @pushQuantities="pushQuantities"
+              @pullQuantities="pullQuantities"
+              :shopInfo="shopInfo"
+              />
+            <MoPageMenu2
+              v-if="menuObj[getMenuId('999186')]"
+              :menu="menuObj[getMenuId('999186')]"
               :orders="orders"
               @pushQuantities="pushQuantities"
               @pullQuantities="pullQuantities"
@@ -110,16 +118,24 @@
           <template v-slot:menu>
 					<div class="mx-2 grid grid-cols-3 content-start gap-2">
             <MoPageMenu2
-              v-if="menuObj['00a1518fb7e27f95f87daf6e03f04bda36093606']"
-              :menu="menuObj['00a1518fb7e27f95f87daf6e03f04bda36093606']"
+              v-if="menuObj[getMenuId('999187')]"
+              :menu="menuObj[getMenuId('999187')]"
               :orders="orders"
               @pushQuantities="pushQuantities"
               @pullQuantities="pullQuantities"
               :shopInfo="shopInfo"
               />
             <MoPageMenu2
-              v-if="menuObj['883994b1b3f5f57c24fe2e8abf7d7e22467f61ad']"
-              :menu="menuObj['883994b1b3f5f57c24fe2e8abf7d7e22467f61ad']"
+              v-if="menuObj[getMenuId('999188')]"
+              :menu="menuObj[getMenuId('999188')]"
+              :orders="orders"
+              @pushQuantities="pushQuantities"
+              @pullQuantities="pullQuantities"
+              :shopInfo="shopInfo"
+              />
+            <MoPageMenu2
+              v-if="menuObj[getMenuId('999189')]"
+              :menu="menuObj[getMenuId('999189')]"
               :orders="orders"
               @pushQuantities="pushQuantities"
               @pullQuantities="pullQuantities"
@@ -153,16 +169,16 @@
           <template v-slot:menu>
 					<div class="mx-2 grid grid-cols-3 content-start gap-2">
             <MoPageMenu2
-              v-if="menuObj['b2287c39e8faa8ff6abee7e23e9a330e3326ad6f']"
-              :menu="menuObj['b2287c39e8faa8ff6abee7e23e9a330e3326ad6f']"
+              v-if="menuObj[getMenuId('999190')]"
+              :menu="menuObj[getMenuId('999190')]"
               :orders="orders"
               @pushQuantities="pushQuantities"
               @pullQuantities="pullQuantities"
               :shopInfo="shopInfo"
               />
             <MoPageMenu2
-              v-if="menuObj['c51d14bfcb35d8160c149a5e25eac2813b6d06b9']"
-              :menu="menuObj['c51d14bfcb35d8160c149a5e25eac2813b6d06b9']"
+              v-if="menuObj[getMenuId('999191')]"
+              :menu="menuObj[getMenuId('999191')]"
               :orders="orders"
               @pushQuantities="pushQuantities"
               @pullQuantities="pullQuantities"
@@ -196,16 +212,16 @@
           <template v-slot:menu>
 					<div class="mx-2 grid grid-cols-3 content-start gap-2">
             <MoPageMenu2
-              v-if="menuObj['b2287c39e8faa8ff6abee7e23e9a330e3326ad6f']"
-              :menu="menuObj['b2287c39e8faa8ff6abee7e23e9a330e3326ad6f']"
+              v-if="menuObj[getMenuId('999192')]"
+              :menu="menuObj[getMenuId('999192')]"
               :orders="orders"
               @pushQuantities="pushQuantities"
               @pullQuantities="pullQuantities"
               :shopInfo="shopInfo"
               />
             <MoPageMenu2
-              v-if="menuObj['c51d14bfcb35d8160c149a5e25eac2813b6d06b9']"
-              :menu="menuObj['c51d14bfcb35d8160c149a5e25eac2813b6d06b9']"
+              v-if="menuObj[getMenuId('999193')]"
+              :menu="menuObj[getMenuId('999193')]"
               :orders="orders"
               @pushQuantities="pushQuantities"
               @pullQuantities="pullQuantities"
@@ -239,16 +255,16 @@
           <template v-slot:menu>
 					<div class="mx-2 grid grid-cols-3 content-start gap-2">
             <MoPageMenu2
-              v-if="menuObj['b2287c39e8faa8ff6abee7e23e9a330e3326ad6f']"
-              :menu="menuObj['b2287c39e8faa8ff6abee7e23e9a330e3326ad6f']"
+              v-if="menuObj[getMenuId('999194')]"
+              :menu="menuObj[getMenuId('999194')]"
               :orders="orders"
               @pushQuantities="pushQuantities"
               @pullQuantities="pullQuantities"
               :shopInfo="shopInfo"
               />
             <MoPageMenu2
-              v-if="menuObj['c51d14bfcb35d8160c149a5e25eac2813b6d06b9']"
-              :menu="menuObj['c51d14bfcb35d8160c149a5e25eac2813b6d06b9']"
+              v-if="menuObj[getMenuId('999195')]"
+              :menu="menuObj[getMenuId('999195')]"
               :orders="orders"
               @pushQuantities="pushQuantities"
               @pullQuantities="pullQuantities"
@@ -282,16 +298,8 @@
           <template v-slot:menu>
 					<div class="mx-2 grid grid-cols-3 content-start gap-2">
             <MoPageMenu2
-              v-if="menuObj['b2287c39e8faa8ff6abee7e23e9a330e3326ad6f']"
-              :menu="menuObj['b2287c39e8faa8ff6abee7e23e9a330e3326ad6f']"
-              :orders="orders"
-              @pushQuantities="pushQuantities"
-              @pullQuantities="pullQuantities"
-              :shopInfo="shopInfo"
-              />
-            <MoPageMenu2
-              v-if="menuObj['c51d14bfcb35d8160c149a5e25eac2813b6d06b9']"
-              :menu="menuObj['c51d14bfcb35d8160c149a5e25eac2813b6d06b9']"
+              v-if="menuObj[getMenuId('999196')]"
+              :menu="menuObj[getMenuId('999196')]"
               :orders="orders"
               @pushQuantities="pushQuantities"
               @pullQuantities="pullQuantities"
@@ -325,16 +333,8 @@
           <template v-slot:menu>
 					<div class="mx-2 grid grid-cols-3 content-start gap-2">
             <MoPageMenu2
-              v-if="menuObj['b2287c39e8faa8ff6abee7e23e9a330e3326ad6f']"
-              :menu="menuObj['b2287c39e8faa8ff6abee7e23e9a330e3326ad6f']"
-              :orders="orders"
-              @pushQuantities="pushQuantities"
-              @pullQuantities="pullQuantities"
-              :shopInfo="shopInfo"
-              />
-            <MoPageMenu2
-              v-if="menuObj['c51d14bfcb35d8160c149a5e25eac2813b6d06b9']"
-              :menu="menuObj['c51d14bfcb35d8160c149a5e25eac2813b6d06b9']"
+              v-if="menuObj[getMenuId('999197')]"
+              :menu="menuObj[getMenuId('999197')]"
               :orders="orders"
               @pushQuantities="pushQuantities"
               @pullQuantities="pullQuantities"
@@ -368,16 +368,16 @@
           <template v-slot:menu>
 					<div class="mx-2 grid grid-cols-3 content-start gap-2">
             <MoPageMenu2
-              v-if="menuObj['b2287c39e8faa8ff6abee7e23e9a330e3326ad6f']"
-              :menu="menuObj['b2287c39e8faa8ff6abee7e23e9a330e3326ad6f']"
+              v-if="menuObj[getMenuId('999198')]"
+              :menu="menuObj[getMenuId('999198')]"
               :orders="orders"
               @pushQuantities="pushQuantities"
               @pullQuantities="pullQuantities"
               :shopInfo="shopInfo"
               />
             <MoPageMenu2
-              v-if="menuObj['c51d14bfcb35d8160c149a5e25eac2813b6d06b9']"
-              :menu="menuObj['c51d14bfcb35d8160c149a5e25eac2813b6d06b9']"
+              v-if="menuObj[getMenuId('999199')]"
+              :menu="menuObj[getMenuId('999199')]"
               :orders="orders"
               @pushQuantities="pushQuantities"
               @pullQuantities="pullQuantities"
@@ -424,33 +424,35 @@ const setMenus = [
     id: "buy",
     setName: "",
     menus: [
-      {
-        // id: getMenuId("9999999"),
-        id :"00a1518fb7e27f95f87daf6e03f04bda36093606",
-        offset: 100,
-        count: 2,
-      },
-      {
-        // id: getMenuId("9999999"),
-        id :"883994b1b3f5f57c24fe2e8abf7d7e22467f61ad",
-        offset: 100,
-        count: 2,
-      },
-      {
-        // id: getMenuId("9999999"),
-        id :"b2287c39e8faa8ff6abee7e23e9a330e3326ad6f",
-        offset: 100,
-        count: 2,
-      },
-      {
-        // id: getMenuId("9999999"),
-        id :"c51d14bfcb35d8160c149a5e25eac2813b6d06b9",
-        offset: 100,
-        count: 2,
-      },
+      "999184",
+      "999185",
+      "999186",
+      "999187",
+      "999188",
+      "999189",
       
+      "999190",
+      "999191",
       
-    ],
+      "999192",
+      "999193",
+      
+      "999194",
+      "999195",
+      
+      "999196",
+      
+      "999197",
+
+      "999198",
+      "999199",
+    ].map((id) => {
+      return {
+        id: getMenuId(id),
+        offset: 30,
+        count: 2,
+      };
+    }),
   },
 ];
 export default moPage(setMenus);
