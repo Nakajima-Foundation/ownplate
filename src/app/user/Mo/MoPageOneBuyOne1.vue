@@ -54,17 +54,14 @@
 
 		<!--Item 1-->
     <div class="mx-4 mb-4 rounded-lg bg-[#DBF5FE] sm:max-w-5xl lg:mx-auto">
-      <MoPageOneBuyOneTemplate>
+      <MoPageOneBuyOneTemplate
+        :buySrc="moBaseUrl + '/images/assets/202306/20230606_1_buy.png'"
+        :getSrc="moBaseUrl + '/images/assets/202306/20230606_1_get.png'"
+        >
         <template v-slot:header>
-				<div class="flex w-full justify-center mb-3 sm:mb-6">
-          <img
-          :src="moBaseUrl + '/images/assets/202306/20230606_1_buy.png'"
-          class="rounded-lg object-cover"
-        />
-				</div>
-          </template>
+        </template>
 
-          <template v-slot:menu>
+        <template v-slot:menu>
 					<div class="mx-2 grid grid-cols-3 content-start gap-2">
             <MoPageMenu2
               v-if="menuObj[getMenuId('999184')]"
@@ -91,31 +88,22 @@
               :shopInfo="shopInfo"
               />
 					</div>
-          </template>
-          <template v-slot:footer>
-          <div class="flex w-full justify-center mt-3 sm:mt-6">
-          	<img
-          :src="moBaseUrl + '/images/assets/202306/20230606_1_get.png'"
-          class="rounded-lg object-cover"
-        />
-				</div>
+        </template>
+        <template v-slot:footer>
         </template>
       </MoPageOneBuyOneTemplate>
     </div>
 
 		<!--Item 2-->
     <div class="mx-4 mb-4 rounded-lg bg-[#DBF5FE] sm:max-w-5xl lg:mx-auto">
-      <MoPageOneBuyOneTemplate>
+      <MoPageOneBuyOneTemplate
+        :buySrc="moBaseUrl + '/images/assets/202306/20230606_2_buy.png'"
+        :getSrc="moBaseUrl + '/images/assets/202306/20230606_2_get.png'"
+        >
         <template v-slot:header>
-          <div class="flex w-full justify-center mb-3 sm:mb-6">
-          <img
-          :src="moBaseUrl + '/images/assets/202306/20230606_2_buy.png'"
-          class="rounded-lg object-cover"
-        />
-				</div>
-          </template>
+        </template>
 
-          <template v-slot:menu>
+        <template v-slot:menu>
 					<div class="mx-2 grid grid-cols-3 content-start gap-2">
             <MoPageMenu2
               v-if="menuObj[getMenuId('999187')]"
@@ -142,31 +130,22 @@
               :shopInfo="shopInfo"
               />
 					</div>
-          </template>
-          <template v-slot:footer>
-             <div class="flex w-full justify-center mt-3 sm:mt-6">
-          	<img
-          :src="moBaseUrl + '/images/assets/202306/20230606_2_get.png'"
-          class="rounded-lg object-cover"
-        />
-				</div>
+        </template>
+        <template v-slot:footer>
         </template>
       </MoPageOneBuyOneTemplate>
     </div>
 
 		<!--Item 3-->
     <div class="mx-4 mb-4 rounded-lg bg-[#DBF5FE] sm:max-w-5xl lg:mx-auto">
-      <MoPageOneBuyOneTemplate>
+      <MoPageOneBuyOneTemplate
+        :buySrc="moBaseUrl + '/images/assets/202306/20230606_3_buy.png'"
+        :getSrc="moBaseUrl + '/images/assets/202306/20230606_3_get.png'"
+        >
         <template v-slot:header>
-				<div class="flex w-full justify-center mb-3 sm:mb-6">
-          <img
-          :src="moBaseUrl + '/images/assets/202306/20230606_3_buy.png'"
-          class="rounded-lg object-cover"
-        />
-				</div>
-          </template>
+        </template>
 
-          <template v-slot:menu>
+        <template v-slot:menu>
 					<div class="mx-2 grid grid-cols-3 content-start gap-2">
             <MoPageMenu2
               v-if="menuObj[getMenuId('999190')]"
@@ -185,31 +164,22 @@
               :shopInfo="shopInfo"
               />
 					</div>
-          </template>
-          <template v-slot:footer>
-          <div class="flex w-full justify-center mt-3 sm:mt-6">
-          	<img
-          :src="moBaseUrl + '/images/assets/202306/20230606_3_get.png'"
-          class="rounded-lg object-cover"
-        />
-				</div>
+        </template>
+        <template v-slot:footer>
         </template>
       </MoPageOneBuyOneTemplate>
     </div>
 
 		<!--Item 4-->
     <div class="mx-4 mb-4 rounded-lg bg-[#DBF5FE] sm:max-w-5xl lg:mx-auto">
-      <MoPageOneBuyOneTemplate>
+      <MoPageOneBuyOneTemplate
+        :buySrc="moBaseUrl + '/images/assets/202306/20230606_4_buy.png'"
+        :getSrc="moBaseUrl + '/images/assets/202306/20230606_4_get.png'"
+        >
         <template v-slot:header>
-				<div class="flex w-full justify-center mb-3 sm:mb-6">
-          <img
-          :src="moBaseUrl + '/images/assets/202306/20230606_4_buy.png'"
-          class="rounded-lg object-cover"
-        />
-				</div>
-          </template>
+        </template>
 
-          <template v-slot:menu>
+        <template v-slot:menu>
 					<div class="mx-2 grid grid-cols-3 content-start gap-2">
             <MoPageMenu2
               v-if="menuObj[getMenuId('999192')]"
@@ -228,31 +198,22 @@
               :shopInfo="shopInfo"
               />
 					</div>
-          </template>
-          <template v-slot:footer>
-          <div class="flex w-full justify-center mt-3 sm:mt-6">
-          	<img
-          :src="moBaseUrl + '/images/assets/202306/20230606_4_get.png'"
-          class="rounded-lg object-cover"
-        />
-				</div>
+        </template>
+        <template v-slot:footer>
         </template>
       </MoPageOneBuyOneTemplate>
     </div>
 
 		<!--Item 5-->
     <div class="mx-4 mb-4 rounded-lg bg-[#DBF5FE] sm:max-w-5xl lg:mx-auto">
-      <MoPageOneBuyOneTemplate>
+      <MoPageOneBuyOneTemplate
+        :buySrc="moBaseUrl + '/images/assets/202306/20230606_5_buy.png'"
+        :getSrc="moBaseUrl + '/images/assets/202306/20230606_5_get.png'"
+        >
         <template v-slot:header>
-				<div class="flex w-full justify-center mb-3 sm:mb-6">
-          <img
-          :src="moBaseUrl + '/images/assets/202306/20230606_5_buy.png'"
-          class="rounded-lg object-cover"
-        />
-				</div>
-          </template>
+        </template>
 
-          <template v-slot:menu>
+        <template v-slot:menu>
 					<div class="mx-2 grid grid-cols-3 content-start gap-2">
             <MoPageMenu2
               v-if="menuObj[getMenuId('999194')]"
@@ -271,31 +232,22 @@
               :shopInfo="shopInfo"
               />
 					</div>
-          </template>
-          <template v-slot:footer>
-          <div class="flex w-full justify-center mt-3 sm:mt-6">
-          	<img
-          :src="moBaseUrl + '/images/assets/202306/20230606_5_get.png'"
-          class="rounded-lg object-cover"
-        />
-				</div>
+        </template>
+        <template v-slot:footer>
         </template>
       </MoPageOneBuyOneTemplate>
     </div>
 
 		<!--Item 6-->
     <div class="mx-4 mb-4 rounded-lg bg-[#DBF5FE] sm:max-w-5xl lg:mx-auto">
-      <MoPageOneBuyOneTemplate>
+      <MoPageOneBuyOneTemplate
+        :buySrc="moBaseUrl + '/images/assets/202306/20230606_6_buy.png'"
+        :getSrc="moBaseUrl + '/images/assets/202306/20230606_6_get.png'"
+        >
         <template v-slot:header>
-				<div class="flex w-full justify-center mb-3 sm:mb-6">
-          <img
-          :src="moBaseUrl + '/images/assets/202306/20230606_6_buy.png'"
-          class="rounded-lg object-cover"
-        />
-				</div>
-          </template>
+        </template>
 
-          <template v-slot:menu>
+        <template v-slot:menu>
 					<div class="mx-2 grid grid-cols-3 content-start gap-2">
             <MoPageMenu2
               v-if="menuObj[getMenuId('999196')]"
@@ -306,31 +258,22 @@
               :shopInfo="shopInfo"
               />
 					</div>
-          </template>
-          <template v-slot:footer>
-          <div class="flex w-full justify-center mt-3 sm:mt-6">
-          	<img
-          :src="moBaseUrl + '/images/assets/202306/20230606_6_get.png'"
-          class="rounded-lg object-cover"
-        />
-				</div>
+        </template>
+        <template v-slot:footer>
         </template>
       </MoPageOneBuyOneTemplate>
     </div>
 
 		<!--Item 7-->
     <div class="mx-4 mb-4 rounded-lg bg-[#DBF5FE] sm:max-w-5xl lg:mx-auto">
-      <MoPageOneBuyOneTemplate>
+      <MoPageOneBuyOneTemplate
+        :buySrc="moBaseUrl + '/images/assets/202306/20230606_7_buy.png'"
+        :getSrc="moBaseUrl + '/images/assets/202306/20230606_7_get.png'"
+        >
         <template v-slot:header>
-				<div class="flex w-full justify-center mb-3 sm:mb-6">
-          <img
-          :src="moBaseUrl + '/images/assets/202306/20230606_7_buy.png'"
-          class="rounded-lg object-cover"
-        />
-				</div>
-          </template>
+        </template>
 
-          <template v-slot:menu>
+        <template v-slot:menu>
 					<div class="mx-2 grid grid-cols-3 content-start gap-2">
             <MoPageMenu2
               v-if="menuObj[getMenuId('999197')]"
@@ -341,31 +284,22 @@
               :shopInfo="shopInfo"
               />
 					</div>
-          </template>
-          <template v-slot:footer>
-          <div class="flex w-full justify-center mt-3 sm:mt-6">
-          	<img
-          :src="moBaseUrl + '/images/assets/202306/20230606_7_get.png'"
-          class="rounded-lg object-cover"
-        />
-				</div>
+        </template>
+        <template v-slot:footer>
         </template>
       </MoPageOneBuyOneTemplate>
     </div>
 
 		<!--Item 8-->
     <div class="mx-4 mb-4 rounded-lg bg-[#DBF5FE] sm:max-w-5xl lg:mx-auto">
-      <MoPageOneBuyOneTemplate>
+      <MoPageOneBuyOneTemplate
+        :buySrc="moBaseUrl + '/images/assets/202306/20230606_8_buy.png'"
+        :getSrc="moBaseUrl + '/images/assets/202306/20230606_8_get.png'"
+        >
         <template v-slot:header>
-				<div class="flex w-full justify-center mb-3 sm:mb-6">
-          <img
-          :src="moBaseUrl + '/images/assets/202306/20230606_8_buy.png'"
-          class="rounded-lg object-cover"
-        />
-				</div>
-          </template>
+        </template>
 
-          <template v-slot:menu>
+        <template v-slot:menu>
 					<div class="mx-2 grid grid-cols-3 content-start gap-2">
             <MoPageMenu2
               v-if="menuObj[getMenuId('999198')]"

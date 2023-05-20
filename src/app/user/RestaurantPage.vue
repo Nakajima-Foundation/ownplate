@@ -223,6 +223,11 @@
 
             <!-- stock filter Toggle-->
             <div>
+              <MoOneBuyOneBanner
+                v-if="showSubCategory && enableCampaignBanner"
+                :term="buyTerm"
+                :pageBase="pageBase"
+                />
               <div v-if="showSubCategory && isPickup">
                 <div class="mx-6 mt-4 grid grid-cols-2 gap-2 lg:mx-0">
                   <!-- 在庫なし含む -->
@@ -277,6 +282,11 @@
                   <div class="text-xl font-bold text-black text-opacity-30">
                     {{ $t("shopInfo.productCategory") }}
                   </div>
+                  <MoOneBuyOneBanner
+                    v-if="enableCampaignBanner"
+                    :pageBase="pageBase"
+                    :term="buyTerm"
+                    />
                   <CategoryTop
                     :categoryData="categoryData"
                     :howtoreceive="howtoreceive"
@@ -483,6 +493,7 @@ import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
 import TransactionsActContents from "@/app/user/TransactionsAct/Contents.vue";
 import MoPickUp from "@/app/user/Restaurant/MoPickUp.vue";
 import MoPage from "@/app/user/Mo/MoPage.vue";
+import MoOneBuyOneBanner from "@/app/user/Mo/MoOneBuyOneBanner.vue";
 
 import FloatingBanner from "@/app/user/Restaurant/FloatingBanner.vue";
 
@@ -559,6 +570,7 @@ export default defineComponent({
     
     MoPickUp,
     MoPage,
+    MoOneBuyOneBanner,
   },
   props: {
     shopInfo: {
@@ -1242,6 +1254,34 @@ export default defineComponent({
         return a.discountThreshold > totalPrice.value.total;
       });
     });
+    // for mo
+    const buyTerm = computed(() => {
+      // "6月6日〜6/12",
+			// "6月13日〜6/19",
+			// "6月20日〜6/26",
+      
+      const date = moment(store.state.date).tz("Asia/Tokyo").date();
+      const hour = moment(store.state.date).tz("Asia/Tokyo").hour();
+      console.log({hour});
+      console.log(hour % 4);
+      return (hour % 4);
+      /*
+      if (date < 6) {
+        return 0;
+      }
+      if (date < 13) {
+        return 1
+      }
+      if (date < 20) {
+        return 2;
+      }
+      if (date < 27) {
+        return 3;
+      }
+      return 4;
+      */
+    });
+    
     return {
       itemLists,
       titleLists: filteredTitleLists,
@@ -1322,6 +1362,7 @@ export default defineComponent({
       scrollTop,
 
       pageId,
+      buyTerm,
     };
   },
 });
