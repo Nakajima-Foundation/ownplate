@@ -63,30 +63,17 @@
 
         <template v-slot:menu>
 					<div class="mx-2 grid grid-cols-3 content-start gap-2">
-            <MoPageMenu2
-              v-if="menuObj[getMenuId('999184')]"
-              :menu="menuObj[getMenuId('999184')]"
-              :orders="orders"
-              @pushQuantities="pushQuantities"
-              @pullQuantities="pullQuantities"
-              :shopInfo="shopInfo"
-              />
-            <MoPageMenu2
-              v-if="menuObj[getMenuId('999185')]"
-              :menu="menuObj[getMenuId('999185')]"
-              :orders="orders"
-              @pushQuantities="pushQuantities"
-              @pullQuantities="pullQuantities"
-              :shopInfo="shopInfo"
-              />
-            <MoPageMenu2
-              v-if="menuObj[getMenuId('999186')]"
-              :menu="menuObj[getMenuId('999186')]"
-              :orders="orders"
-              @pushQuantities="pushQuantities"
-              @pullQuantities="pullQuantities"
-              :shopInfo="shopInfo"
-              />
+            <template v-for="(id, k) in ['999184', '999185', '999186']" >
+              <MoPageMenu2
+                :key="k"
+                v-if="menuObj[getMenuId(id)]"
+                :menu="menuObj[getMenuId(id)]"
+                :orders="orders"
+                @pushQuantities="pushQuantities"
+                @pullQuantities="pullQuantities"
+                :shopInfo="shopInfo"
+                />
+            </template>
 					</div>
         </template>
         <template v-slot:footer>
@@ -105,30 +92,17 @@
 
         <template v-slot:menu>
 					<div class="mx-2 grid grid-cols-3 content-start gap-2">
-            <MoPageMenu2
-              v-if="menuObj[getMenuId('999187')]"
-              :menu="menuObj[getMenuId('999187')]"
-              :orders="orders"
-              @pushQuantities="pushQuantities"
-              @pullQuantities="pullQuantities"
-              :shopInfo="shopInfo"
-              />
-            <MoPageMenu2
-              v-if="menuObj[getMenuId('999188')]"
-              :menu="menuObj[getMenuId('999188')]"
-              :orders="orders"
-              @pushQuantities="pushQuantities"
-              @pullQuantities="pullQuantities"
-              :shopInfo="shopInfo"
-              />
-            <MoPageMenu2
-              v-if="menuObj[getMenuId('999189')]"
-              :menu="menuObj[getMenuId('999189')]"
-              :orders="orders"
-              @pushQuantities="pushQuantities"
-              @pullQuantities="pullQuantities"
-              :shopInfo="shopInfo"
-              />
+            <template v-for="(id, k) in ['999187', '999188', '999189']" >
+              <MoPageMenu2
+                :key="k"
+                v-if="menuObj[getMenuId(id)]"
+                :menu="menuObj[getMenuId(id)]"
+                :orders="orders"
+                @pushQuantities="pushQuantities"
+                @pullQuantities="pullQuantities"
+                :shopInfo="shopInfo"
+                />
+            </template>
 					</div>
         </template>
         <template v-slot:footer>
@@ -147,22 +121,17 @@
 
         <template v-slot:menu>
 					<div class="mx-2 grid grid-cols-3 content-start gap-2">
-            <MoPageMenu2
-              v-if="menuObj[getMenuId('999190')]"
-              :menu="menuObj[getMenuId('999190')]"
-              :orders="orders"
-              @pushQuantities="pushQuantities"
-              @pullQuantities="pullQuantities"
-              :shopInfo="shopInfo"
-              />
-            <MoPageMenu2
-              v-if="menuObj[getMenuId('999191')]"
-              :menu="menuObj[getMenuId('999191')]"
-              :orders="orders"
-              @pushQuantities="pushQuantities"
-              @pullQuantities="pullQuantities"
-              :shopInfo="shopInfo"
-              />
+            <template v-for="(id, k) in ['999190', '999191']" >
+              <MoPageMenu2
+                :key="k"
+                v-if="menuObj[getMenuId(id)]"
+                :menu="menuObj[getMenuId(id)]"
+                :orders="orders"
+                @pushQuantities="pushQuantities"
+                @pullQuantities="pullQuantities"
+                :shopInfo="shopInfo"
+                />
+            </template>
 					</div>
         </template>
         <template v-slot:footer>
@@ -181,22 +150,17 @@
 
         <template v-slot:menu>
 					<div class="mx-2 grid grid-cols-3 content-start gap-2">
-            <MoPageMenu2
-              v-if="menuObj[getMenuId('999192')]"
-              :menu="menuObj[getMenuId('999192')]"
-              :orders="orders"
-              @pushQuantities="pushQuantities"
-              @pullQuantities="pullQuantities"
-              :shopInfo="shopInfo"
-              />
-            <MoPageMenu2
-              v-if="menuObj[getMenuId('999193')]"
-              :menu="menuObj[getMenuId('999193')]"
-              :orders="orders"
-              @pushQuantities="pushQuantities"
-              @pullQuantities="pullQuantities"
-              :shopInfo="shopInfo"
-              />
+            <template v-for="(id, k) in ['999192', '999193']" >
+              <MoPageMenu2
+                :key="k"
+                v-if="menuObj[getMenuId(id)]"
+                :menu="menuObj[getMenuId(id)]"
+                :orders="orders"
+                @pushQuantities="pushQuantities"
+                @pullQuantities="pullQuantities"
+                :shopInfo="shopInfo"
+                />
+            </template>
 					</div>
         </template>
         <template v-slot:footer>
@@ -215,22 +179,17 @@
 
         <template v-slot:menu>
 					<div class="mx-2 grid grid-cols-3 content-start gap-2">
-            <MoPageMenu2
-              v-if="menuObj[getMenuId('999194')]"
-              :menu="menuObj[getMenuId('999194')]"
-              :orders="orders"
-              @pushQuantities="pushQuantities"
-              @pullQuantities="pullQuantities"
-              :shopInfo="shopInfo"
-              />
-            <MoPageMenu2
-              v-if="menuObj[getMenuId('999195')]"
-              :menu="menuObj[getMenuId('999195')]"
-              :orders="orders"
-              @pushQuantities="pushQuantities"
-              @pullQuantities="pullQuantities"
-              :shopInfo="shopInfo"
-              />
+            <template v-for="(id, k) in ['999194', '999195']" >
+              <MoPageMenu2
+                :key="k"
+                v-if="menuObj[getMenuId(id)]"
+                :menu="menuObj[getMenuId(id)]"
+                :orders="orders"
+                @pushQuantities="pushQuantities"
+                @pullQuantities="pullQuantities"
+                :shopInfo="shopInfo"
+                />
+            </template>
 					</div>
         </template>
         <template v-slot:footer>
@@ -275,14 +234,17 @@
 
         <template v-slot:menu>
 					<div class="mx-2 grid grid-cols-3 content-start gap-2">
-            <MoPageMenu2
-              v-if="menuObj[getMenuId('999197')]"
-              :menu="menuObj[getMenuId('999197')]"
-              :orders="orders"
-              @pushQuantities="pushQuantities"
-              @pullQuantities="pullQuantities"
-              :shopInfo="shopInfo"
-              />
+            <template v-for="(id, k) in ['999197']" >
+              <MoPageMenu2
+                :key="k"
+                v-if="menuObj[getMenuId(id)]"
+                :menu="menuObj[getMenuId(id)]"
+                :orders="orders"
+                @pushQuantities="pushQuantities"
+                @pullQuantities="pullQuantities"
+                :shopInfo="shopInfo"
+                />
+            </template>
 					</div>
         </template>
         <template v-slot:footer>
@@ -298,34 +260,22 @@
         >
         <template v-slot:header>
         </template>
-
         <template v-slot:menu>
 					<div class="mx-2 grid grid-cols-3 content-start gap-2">
-            <MoPageMenu2
-              v-if="menuObj[getMenuId('999198')]"
-              :menu="menuObj[getMenuId('999198')]"
-              :orders="orders"
-              @pushQuantities="pushQuantities"
-              @pullQuantities="pullQuantities"
-              :shopInfo="shopInfo"
-              />
-            <MoPageMenu2
-              v-if="menuObj[getMenuId('999199')]"
-              :menu="menuObj[getMenuId('999199')]"
-              :orders="orders"
-              @pushQuantities="pushQuantities"
-              @pullQuantities="pullQuantities"
-              :shopInfo="shopInfo"
-              />
+            <template v-for="(id, k) in ['999198', '999199']" >
+              <MoPageMenu2
+                :key="k"
+                v-if="menuObj[getMenuId(id)]"
+                :menu="menuObj[getMenuId(id)]"
+                :orders="orders"
+                @pushQuantities="pushQuantities"
+                @pullQuantities="pullQuantities"
+                :shopInfo="shopInfo"
+                />
+            </template>
 					</div>
-          </template>
-          <template v-slot:footer>
-          <div class="flex w-full justify-center mt-3 sm:mt-6">
-          	<img
-          :src="moBaseUrl + '/images/assets/202306/20230606_8_get.png'"
-          class="rounded-lg object-cover"
-        />
-				</div>
+        </template>
+        <template v-slot:footer>
         </template>
       </MoPageOneBuyOneTemplate>
     </div>
