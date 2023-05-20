@@ -24,6 +24,44 @@
       :moPickupSuspend="moPickupSuspend"
 
       />
+    <MoPageOneBuyOne2
+      v-if="pageId == '202306buy2'"
+      :pageId="pageId"
+      :pageBase="pageBase"
+      :groupData="groupData"
+      @didOrderdChange="didOrderdChange"
+      :orders="orders"
+      :selectedOptions="selectedOptions"
+      :shopInfo="shopInfo"
+      :isPickup="isPickup"
+
+      :howtoreceive="howtoreceive"
+      @input="updateHowtoreceive"
+      :disabledPickupTime="disabledPickupTime"
+      :noAvailableTime="noAvailableTime"
+      :lastOrder="lastOrder"
+      :moPickupSuspend="moPickupSuspend"
+
+      />
+    <MoPageOneBuyOne3
+      v-if="pageId == '202306buy3'"
+      :pageId="pageId"
+      :pageBase="pageBase"
+      :groupData="groupData"
+      @didOrderdChange="didOrderdChange"
+      :orders="orders"
+      :selectedOptions="selectedOptions"
+      :shopInfo="shopInfo"
+      :isPickup="isPickup"
+
+      :howtoreceive="howtoreceive"
+      @input="updateHowtoreceive"
+      :disabledPickupTime="disabledPickupTime"
+      :noAvailableTime="noAvailableTime"
+      :lastOrder="lastOrder"
+      :moPickupSuspend="moPickupSuspend"
+
+      />
   </div>
 </template>
 
@@ -36,11 +74,15 @@ import {
 
 import MoPage202305 from "./MoPage202305.vue";
 import MoPageOneBuyOne1 from "./MoPageOneBuyOne1.vue";
+import MoPageOneBuyOne2 from "./MoPageOneBuyOne2.vue";
+import MoPageOneBuyOne3 from "./MoPageOneBuyOne3.vue";
 
 export default defineComponent({
   components: {
     MoPage202305,
     MoPageOneBuyOne1,
+    MoPageOneBuyOne2,
+    MoPageOneBuyOne3,
   },
   props: {
     pageId: {

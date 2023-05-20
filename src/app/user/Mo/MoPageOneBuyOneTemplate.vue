@@ -28,11 +28,11 @@ import { defineComponent, computed } from "@vue/composition-api";
 export default defineComponent({
   props: {
     buySrc: {
-      type: Object,
+      type: String,
       required: true,
     },
     getSrc: {
-      type: Object,
+      type: String,
       required: true,
     },
 
