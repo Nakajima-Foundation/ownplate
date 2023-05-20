@@ -53,232 +53,200 @@
 		</div>
 
 		<!--Item 1-->
-    <div class="mx-4 mb-4 rounded-lg bg-[#DBF5FE] sm:max-w-5xl lg:mx-auto">
-      <MoPageOneBuyOneTemplate
-        :buySrc="moBaseUrl + '/images/assets/202306/20230606_1_buy.png'"
-        :getSrc="moBaseUrl + '/images/assets/202306/20230606_1_get.png'"
-        >
-        <template v-slot:header>
-        </template>
-
-        <template v-slot:menu>
-					<div class="mx-2 grid grid-cols-3 content-start gap-2">
-            <template v-for="(id, k) in ['999184', '999185', '999186']" >
-              <MoPageMenu2
-                :key="k"
-                v-if="menuObj[getMenuId(id)]"
-                :menu="menuObj[getMenuId(id)]"
-                :orders="orders"
-                @pushQuantities="pushQuantities"
-                @pullQuantities="pullQuantities"
-                :shopInfo="shopInfo"
-                />
-            </template>
-					</div>
-        </template>
-        <template v-slot:footer>
-        </template>
-      </MoPageOneBuyOneTemplate>
-    </div>
-
-		<!--Item 2-->
-    <div class="mx-4 mb-4 rounded-lg bg-[#DBF5FE] sm:max-w-5xl lg:mx-auto">
-      <MoPageOneBuyOneTemplate
-        :buySrc="moBaseUrl + '/images/assets/202306/20230606_2_buy.png'"
-        :getSrc="moBaseUrl + '/images/assets/202306/20230606_2_get.png'"
-        >
-        <template v-slot:header>
-        </template>
-
-        <template v-slot:menu>
-					<div class="mx-2 grid grid-cols-3 content-start gap-2">
-            <template v-for="(id, k) in ['999187', '999188', '999189']" >
-              <MoPageMenu2
-                :key="k"
-                v-if="menuObj[getMenuId(id)]"
-                :menu="menuObj[getMenuId(id)]"
-                :orders="orders"
-                @pushQuantities="pushQuantities"
-                @pullQuantities="pullQuantities"
-                :shopInfo="shopInfo"
-                />
-            </template>
-					</div>
-        </template>
-        <template v-slot:footer>
-        </template>
-      </MoPageOneBuyOneTemplate>
-    </div>
-
-		<!--Item 3-->
-    <div class="mx-4 mb-4 rounded-lg bg-[#DBF5FE] sm:max-w-5xl lg:mx-auto">
-      <MoPageOneBuyOneTemplate
-        :buySrc="moBaseUrl + '/images/assets/202306/20230606_3_buy.png'"
-        :getSrc="moBaseUrl + '/images/assets/202306/20230606_3_get.png'"
-        >
-        <template v-slot:header>
-        </template>
-
-        <template v-slot:menu>
-					<div class="mx-2 grid grid-cols-3 content-start gap-2">
-            <template v-for="(id, k) in ['999190', '999191']" >
-              <MoPageMenu2
-                :key="k"
-                v-if="menuObj[getMenuId(id)]"
-                :menu="menuObj[getMenuId(id)]"
-                :orders="orders"
-                @pushQuantities="pushQuantities"
-                @pullQuantities="pullQuantities"
-                :shopInfo="shopInfo"
-                />
-            </template>
-					</div>
-        </template>
-        <template v-slot:footer>
-        </template>
-      </MoPageOneBuyOneTemplate>
-    </div>
-
-		<!--Item 4-->
-    <div class="mx-4 mb-4 rounded-lg bg-[#DBF5FE] sm:max-w-5xl lg:mx-auto">
-      <MoPageOneBuyOneTemplate
-        :buySrc="moBaseUrl + '/images/assets/202306/20230606_4_buy.png'"
-        :getSrc="moBaseUrl + '/images/assets/202306/20230606_4_get.png'"
-        >
-        <template v-slot:header>
-        </template>
-
-        <template v-slot:menu>
-					<div class="mx-2 grid grid-cols-3 content-start gap-2">
-            <template v-for="(id, k) in ['999192', '999193']" >
-              <MoPageMenu2
-                :key="k"
-                v-if="menuObj[getMenuId(id)]"
-                :menu="menuObj[getMenuId(id)]"
-                :orders="orders"
-                @pushQuantities="pushQuantities"
-                @pullQuantities="pullQuantities"
-                :shopInfo="shopInfo"
-                />
-            </template>
-					</div>
-        </template>
-        <template v-slot:footer>
-        </template>
-      </MoPageOneBuyOneTemplate>
-    </div>
-
-		<!--Item 5-->
-    <div class="mx-4 mb-4 rounded-lg bg-[#DBF5FE] sm:max-w-5xl lg:mx-auto">
-      <MoPageOneBuyOneTemplate
-        :buySrc="moBaseUrl + '/images/assets/202306/20230606_5_buy.png'"
-        :getSrc="moBaseUrl + '/images/assets/202306/20230606_5_get.png'"
-        >
-        <template v-slot:header>
-        </template>
-
-        <template v-slot:menu>
-					<div class="mx-2 grid grid-cols-3 content-start gap-2">
-            <template v-for="(id, k) in ['999194', '999195']" >
-              <MoPageMenu2
-                :key="k"
-                v-if="menuObj[getMenuId(id)]"
-                :menu="menuObj[getMenuId(id)]"
-                :orders="orders"
-                @pushQuantities="pushQuantities"
-                @pullQuantities="pullQuantities"
-                :shopInfo="shopInfo"
-                />
-            </template>
-					</div>
-        </template>
-        <template v-slot:footer>
-        </template>
-      </MoPageOneBuyOneTemplate>
-    </div>
-
-		<!--Item 6-->
-    <div class="mx-4 mb-4 rounded-lg bg-[#DBF5FE] sm:max-w-5xl lg:mx-auto">
-      <MoPageOneBuyOneTemplate
-        :buySrc="moBaseUrl + '/images/assets/202306/20230606_6_buy.png'"
-        :getSrc="moBaseUrl + '/images/assets/202306/20230606_6_get.png'"
-        >
-        <template v-slot:header>
-        </template>
-
-        <template v-slot:menu>
-					<div class="mx-2 grid grid-cols-3 content-start gap-2">
+    <MoPageOneBuyOneTemplate
+      :buySrc="moBaseUrl + '/images/assets/202306/20230606_1_buy.png'"
+      :getSrc="moBaseUrl + '/images/assets/202306/20230606_1_get.png'"
+      >
+      <template v-slot:header>
+      </template>
+      
+      <template v-slot:menu>
+          <template v-for="(id, k) in ['999184', '999185', '999186']" >
             <MoPageMenu2
-              v-if="menuObj[getMenuId('999196')]"
-              :menu="menuObj[getMenuId('999196')]"
+              :key="k"
+              v-if="menuObj[getMenuId(id)]"
+              :menu="menuObj[getMenuId(id)]"
               :orders="orders"
               @pushQuantities="pushQuantities"
               @pullQuantities="pullQuantities"
               :shopInfo="shopInfo"
               />
-					</div>
+          </template>
+      </template>
+      <template v-slot:footer>
+      </template>
+    </MoPageOneBuyOneTemplate>
+
+		<!--Item 2-->
+    <MoPageOneBuyOneTemplate
+      :buySrc="moBaseUrl + '/images/assets/202306/20230606_2_buy.png'"
+      :getSrc="moBaseUrl + '/images/assets/202306/20230606_2_get.png'"
+      >
+      <template v-slot:header>
+      </template>
+      
+      <template v-slot:menu>
+        <template v-for="(id, k) in ['999187', '999188', '999189']" >
+          <MoPageMenu2
+            :key="k"
+            v-if="menuObj[getMenuId(id)]"
+            :menu="menuObj[getMenuId(id)]"
+            :orders="orders"
+            @pushQuantities="pushQuantities"
+            @pullQuantities="pullQuantities"
+            :shopInfo="shopInfo"
+            />
         </template>
-        <template v-slot:footer>
+      </template>
+      <template v-slot:footer>
+      </template>
+    </MoPageOneBuyOneTemplate>
+
+		<!--Item 3-->
+    <MoPageOneBuyOneTemplate
+      :buySrc="moBaseUrl + '/images/assets/202306/20230606_3_buy.png'"
+      :getSrc="moBaseUrl + '/images/assets/202306/20230606_3_get.png'"
+      >
+      <template v-slot:header>
+      </template>
+      
+      <template v-slot:menu>
+        <template v-for="(id, k) in ['999190', '999191']" >
+          <MoPageMenu2
+            :key="k"
+            v-if="menuObj[getMenuId(id)]"
+            :menu="menuObj[getMenuId(id)]"
+            :orders="orders"
+            @pushQuantities="pushQuantities"
+            @pullQuantities="pullQuantities"
+            :shopInfo="shopInfo"
+            />
         </template>
-      </MoPageOneBuyOneTemplate>
-    </div>
+      </template>
+      <template v-slot:footer>
+      </template>
+    </MoPageOneBuyOneTemplate>
+
+		<!--Item 4-->
+    <MoPageOneBuyOneTemplate
+      :buySrc="moBaseUrl + '/images/assets/202306/20230606_4_buy.png'"
+      :getSrc="moBaseUrl + '/images/assets/202306/20230606_4_get.png'"
+      >
+      <template v-slot:header>
+      </template>
+      
+      <template v-slot:menu>
+        <template v-for="(id, k) in ['999192', '999193']" >
+          <MoPageMenu2
+            :key="k"
+            v-if="menuObj[getMenuId(id)]"
+            :menu="menuObj[getMenuId(id)]"
+            :orders="orders"
+            @pushQuantities="pushQuantities"
+            @pullQuantities="pullQuantities"
+            :shopInfo="shopInfo"
+            />
+        </template>
+      </template>
+      <template v-slot:footer>
+      </template>
+    </MoPageOneBuyOneTemplate>
+
+		<!--Item 5-->
+    <MoPageOneBuyOneTemplate
+      :buySrc="moBaseUrl + '/images/assets/202306/20230606_5_buy.png'"
+      :getSrc="moBaseUrl + '/images/assets/202306/20230606_5_get.png'"
+      >
+      <template v-slot:header>
+      </template>
+      
+      <template v-slot:menu>
+        <template v-for="(id, k) in ['999194', '999195']" >
+          <MoPageMenu2
+            :key="k"
+            v-if="menuObj[getMenuId(id)]"
+            :menu="menuObj[getMenuId(id)]"
+            :orders="orders"
+            @pushQuantities="pushQuantities"
+            @pullQuantities="pullQuantities"
+            :shopInfo="shopInfo"
+            />
+        </template>
+      </template>
+      <template v-slot:footer>
+      </template>
+    </MoPageOneBuyOneTemplate>
+
+		<!--Item 6-->
+    <MoPageOneBuyOneTemplate
+      :buySrc="moBaseUrl + '/images/assets/202306/20230606_6_buy.png'"
+      :getSrc="moBaseUrl + '/images/assets/202306/20230606_6_get.png'"
+      >
+      <template v-slot:header>
+      </template>
+      
+      <template v-slot:menu>
+        <MoPageMenu2
+          v-if="menuObj[getMenuId('999196')]"
+          :menu="menuObj[getMenuId('999196')]"
+          :orders="orders"
+          @pushQuantities="pushQuantities"
+          @pullQuantities="pullQuantities"
+          :shopInfo="shopInfo"
+          />
+      </template>
+      <template v-slot:footer>
+      </template>
+    </MoPageOneBuyOneTemplate>
 
 		<!--Item 7-->
-    <div class="mx-4 mb-4 rounded-lg bg-[#DBF5FE] sm:max-w-5xl lg:mx-auto">
-      <MoPageOneBuyOneTemplate
-        :buySrc="moBaseUrl + '/images/assets/202306/20230606_7_buy.png'"
-        :getSrc="moBaseUrl + '/images/assets/202306/20230606_7_get.png'"
-        >
-        <template v-slot:header>
+    <MoPageOneBuyOneTemplate
+      :buySrc="moBaseUrl + '/images/assets/202306/20230606_7_buy.png'"
+      :getSrc="moBaseUrl + '/images/assets/202306/20230606_7_get.png'"
+      >
+      <template v-slot:header>
+      </template>
+      
+      <template v-slot:menu>
+        <template v-for="(id, k) in ['999197']" >
+          <MoPageMenu2
+            :key="k"
+            v-if="menuObj[getMenuId(id)]"
+            :menu="menuObj[getMenuId(id)]"
+            :orders="orders"
+            @pushQuantities="pushQuantities"
+            @pullQuantities="pullQuantities"
+            :shopInfo="shopInfo"
+            />
         </template>
-
-        <template v-slot:menu>
-					<div class="mx-2 grid grid-cols-3 content-start gap-2">
-            <template v-for="(id, k) in ['999197']" >
-              <MoPageMenu2
-                :key="k"
-                v-if="menuObj[getMenuId(id)]"
-                :menu="menuObj[getMenuId(id)]"
-                :orders="orders"
-                @pushQuantities="pushQuantities"
-                @pullQuantities="pullQuantities"
-                :shopInfo="shopInfo"
-                />
-            </template>
-					</div>
-        </template>
-        <template v-slot:footer>
-        </template>
-      </MoPageOneBuyOneTemplate>
-    </div>
+      </template>
+      <template v-slot:footer>
+      </template>
+    </MoPageOneBuyOneTemplate>
 
 		<!--Item 8-->
-    <div class="mx-4 mb-4 rounded-lg bg-[#DBF5FE] sm:max-w-5xl lg:mx-auto">
-      <MoPageOneBuyOneTemplate
-        :buySrc="moBaseUrl + '/images/assets/202306/20230606_8_buy.png'"
-        :getSrc="moBaseUrl + '/images/assets/202306/20230606_8_get.png'"
-        >
-        <template v-slot:header>
+    <MoPageOneBuyOneTemplate
+      :buySrc="moBaseUrl + '/images/assets/202306/20230606_8_buy.png'"
+      :getSrc="moBaseUrl + '/images/assets/202306/20230606_8_get.png'"
+      >
+      <template v-slot:header>
+      </template>
+      <template v-slot:menu>
+        <template v-for="(id, k) in ['999198', '999199']" >
+          <MoPageMenu2
+            :key="k"
+            v-if="menuObj[getMenuId(id)]"
+            :menu="menuObj[getMenuId(id)]"
+            :orders="orders"
+            @pushQuantities="pushQuantities"
+            @pullQuantities="pullQuantities"
+            :shopInfo="shopInfo"
+            />
         </template>
-        <template v-slot:menu>
-					<div class="mx-2 grid grid-cols-3 content-start gap-2">
-            <template v-for="(id, k) in ['999198', '999199']" >
-              <MoPageMenu2
-                :key="k"
-                v-if="menuObj[getMenuId(id)]"
-                :menu="menuObj[getMenuId(id)]"
-                :orders="orders"
-                @pushQuantities="pushQuantities"
-                @pullQuantities="pullQuantities"
-                :shopInfo="shopInfo"
-                />
-            </template>
-					</div>
-        </template>
-        <template v-slot:footer>
-        </template>
-      </MoPageOneBuyOneTemplate>
-    </div>
+      </template>
+      <template v-slot:footer>
+      </template>
+    </MoPageOneBuyOneTemplate>
 
 		<div class="mx-5 mt-4 text-xs font-bold text-black text-opacity-40 sm:max-w-5xl lg:mx-auto">
         {{ $t("mobileOrder.fixedFormat") }}

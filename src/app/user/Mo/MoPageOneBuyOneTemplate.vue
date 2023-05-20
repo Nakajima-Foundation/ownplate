@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mx-4 mb-4 rounded-lg bg-[#DBF5FE] sm:max-w-5xl lg:mx-auto">
     <div>
       <div class="flex w-full justify-center mb-3 sm:mb-6">
         <img
@@ -9,7 +9,9 @@
 			</div>
       <slot name="header"></slot>
     </div>
-    <slot name="menu"></slot>
+		<div class="mx-2 grid grid-cols-3 content-start gap-2">
+      <slot name="menu"></slot>
+    </div>
     <div>
       <div class="flex w-full justify-center mt-3 sm:mt-6">
         <img
