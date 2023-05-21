@@ -53,7 +53,7 @@
 
 			<div v-if="hasOneBuyOne">
 				<div class="text-xs border-green-600 text-green-600 font-bold mt-1 mx-6 sm:mx-auto max-w-xl mb-3 rounded-lg bg-green-600 bg-opacity-10 py-2 px-4">
-					{{ $t("mobileOrder.campaign.fixedMessageCart1") }}
+					{{ $t("mobileOrder.campaign.fixedMessageCart" + term) }}
 				</div>
 			</div>
     </div>
@@ -119,6 +119,10 @@ export default defineComponent({
     totalPrice: {
       type: Object,
       required: true,
+    },
+    term: {
+      type: Number,
+      required: false,
     },
   },
   setup(props, ctx) {

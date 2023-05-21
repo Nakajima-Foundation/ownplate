@@ -411,6 +411,7 @@
         :totalPrice="totalPrice"
         :promotions="promotions"
         :possiblePromotions="possiblePromotions"
+        :term="buyTerm"
       />
 
       <!-- for disable all UI -->
