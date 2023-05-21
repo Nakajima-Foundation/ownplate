@@ -24,7 +24,7 @@
           :noAvailableTime="noAvailableTime"
           :lastOrder="lastOrder"
           :moPickupSuspend="moPickupSuspend"
-
+          :term="buyTerm"
           />
       </div>
 

@@ -6,7 +6,7 @@
       :pageBase="pageBase"
       />
     <MoPageOneBuyOne1
-      v-if="pageId == '202306buy1'"
+      v-else-if="pageId == '202306buy1' && term < 2"
       :pageId="pageId"
       :pageBase="pageBase"
       :groupData="groupData"
@@ -25,7 +25,7 @@
 
       />
     <MoPageOneBuyOne2
-      v-if="pageId == '202306buy2'"
+      v-else-if="pageId == '202306buy2' && term < 3"
       :pageId="pageId"
       :pageBase="pageBase"
       :groupData="groupData"
@@ -44,7 +44,7 @@
 
       />
     <MoPageOneBuyOne3
-      v-if="pageId == '202306buy3'"
+      v-else-if="pageId == '202306buy3'"
       :pageId="pageId"
       :pageBase="pageBase"
       :groupData="groupData"
@@ -62,6 +62,7 @@
       :moPickupSuspend="moPickupSuspend"
 
       />
+    <NotFound v-else />
   </div>
 </template>
 
@@ -76,6 +77,7 @@ import MoPage202305 from "./MoPage202305.vue";
 import MoPageOneBuyOne1 from "./MoPageOneBuyOne1.vue";
 import MoPageOneBuyOne2 from "./MoPageOneBuyOne2.vue";
 import MoPageOneBuyOne3 from "./MoPageOneBuyOne3.vue";
+import NotFound from "@/components/NotFound.vue";
 
 export default defineComponent({
   components: {
@@ -83,6 +85,7 @@ export default defineComponent({
     MoPageOneBuyOne1,
     MoPageOneBuyOne2,
     MoPageOneBuyOne3,
+    NotFound,
   },
   props: {
     pageId: {
@@ -118,23 +121,26 @@ export default defineComponent({
       type: String,
       required: true,
     },
-      disabledPickupTime: {
-        type: Boolean,
-        required: true,
-      },
-      noAvailableTime: {
-        type: Boolean,
-        required: false,
-      },
-      lastOrder: {
-        type: String,
-        required: false,
-      },
-      moPickupSuspend: {
-        type: Boolean,
-        required: false,
-      },
-
+    disabledPickupTime: {
+      type: Boolean,
+      required: true,
+    },
+    noAvailableTime: {
+      type: Boolean,
+      required: false,
+    },
+    lastOrder: {
+      type: String,
+      required: false,
+    },
+    moPickupSuspend: {
+      type: Boolean,
+      required: false,
+    },
+    term: {
+      type: Number,
+      required: true,
+    },
   },
   setup(props, ctx) {
     const didOrderdChange = (param: any) => {
