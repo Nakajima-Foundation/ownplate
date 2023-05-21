@@ -208,17 +208,15 @@
       </template>
       
       <template v-slot:menu>
-        <template v-for="(id, k) in ['999197']" >
-          <MoPageMenu2
-            :key="k"
-            v-if="menuObj[getMenuId(id)]"
-            :menu="menuObj[getMenuId(id)]"
-            :orders="orders"
-            @pushQuantities="pushQuantities"
-            @pullQuantities="pullQuantities"
-            :shopInfo="shopInfo"
-            />
-        </template>
+        <MoPageMenu2
+          :key="k"
+          v-if="menuObj[getMenuId('999197')]"
+          :menu="menuObj[getMenuId('999197')]"
+          :orders="orders"
+          @pushQuantities="pushQuantities"
+          @pullQuantities="pullQuantities"
+          :shopInfo="shopInfo"
+          />
       </template>
       <template v-slot:footer>
       </template>

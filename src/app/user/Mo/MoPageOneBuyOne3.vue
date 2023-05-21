@@ -61,17 +61,17 @@
       </template>
       
       <template v-slot:menu>
-          <template v-for="(id, k) in ['999184', '999185', '999186']" >
-            <MoPageMenu2
-              :key="k"
-              v-if="menuObj[getMenuId(id)]"
-              :menu="menuObj[getMenuId(id)]"
-              :orders="orders"
-              @pushQuantities="pushQuantities"
-              @pullQuantities="pullQuantities"
-              :shopInfo="shopInfo"
-              />
-          </template>
+        <template v-for="(id, k) in ['999387', '999388']" >
+          <MoPageMenu2
+            :key="k"
+            v-if="menuObj[getMenuId(id)]"
+            :menu="menuObj[getMenuId(id)]"
+            :orders="orders"
+            @pushQuantities="pushQuantities"
+            @pullQuantities="pullQuantities"
+            :shopInfo="shopInfo"
+            />
+        </template>
       </template>
       <template v-slot:footer>
       </template>
@@ -86,7 +86,7 @@
       </template>
       
       <template v-slot:menu>
-        <template v-for="(id, k) in ['999187', '999188', '999189']" >
+        <template v-for="(id, k) in ['999389', '999390']" >
           <MoPageMenu2
             :key="k"
             v-if="menuObj[getMenuId(id)]"
@@ -111,7 +111,7 @@
       </template>
       
       <template v-slot:menu>
-        <template v-for="(id, k) in ['999190', '999191']" >
+        <template v-for="(id, k) in ['999391', '999392', '999393']" >
           <MoPageMenu2
             :key="k"
             v-if="menuObj[getMenuId(id)]"
@@ -136,17 +136,14 @@
       </template>
       
       <template v-slot:menu>
-        <template v-for="(id, k) in ['999192', '999193']" >
-          <MoPageMenu2
-            :key="k"
-            v-if="menuObj[getMenuId(id)]"
-            :menu="menuObj[getMenuId(id)]"
-            :orders="orders"
-            @pushQuantities="pushQuantities"
-            @pullQuantities="pullQuantities"
-            :shopInfo="shopInfo"
-            />
-        </template>
+        <MoPageMenu2
+          v-if="menuObj[getMenuId('999394')]"
+          :menu="menuObj[getMenuId('999394')]"
+          :orders="orders"
+          @pushQuantities="pushQuantities"
+          @pullQuantities="pullQuantities"
+          :shopInfo="shopInfo"
+          />
       </template>
       <template v-slot:footer>
       </template>
@@ -161,7 +158,7 @@
       </template>
       
       <template v-slot:menu>
-        <template v-for="(id, k) in ['999194', '999195']" >
+        <template v-for="(id, k) in ['999395', '999396']" >
           <MoPageMenu2
             :key="k"
             v-if="menuObj[getMenuId(id)]"
@@ -186,53 +183,7 @@
       </template>
       
       <template v-slot:menu>
-        <MoPageMenu2
-          v-if="menuObj[getMenuId('999196')]"
-          :menu="menuObj[getMenuId('999196')]"
-          :orders="orders"
-          @pushQuantities="pushQuantities"
-          @pullQuantities="pullQuantities"
-          :shopInfo="shopInfo"
-          />
-      </template>
-      <template v-slot:footer>
-      </template>
-    </MoPageOneBuyOneTemplate>
-
-		<!--Item 7-->
-    <MoPageOneBuyOneTemplate
-      :buySrc="moBaseUrl + '/images/assets/202306/20230606_7_buy.png'"
-      :getSrc="moBaseUrl + '/images/assets/202306/20230606_7_get.png'"
-      >
-      <template v-slot:header>
-      </template>
-      
-      <template v-slot:menu>
-        <template v-for="(id, k) in ['999197']" >
-          <MoPageMenu2
-            :key="k"
-            v-if="menuObj[getMenuId(id)]"
-            :menu="menuObj[getMenuId(id)]"
-            :orders="orders"
-            @pushQuantities="pushQuantities"
-            @pullQuantities="pullQuantities"
-            :shopInfo="shopInfo"
-            />
-        </template>
-      </template>
-      <template v-slot:footer>
-      </template>
-    </MoPageOneBuyOneTemplate>
-
-		<!--Item 8-->
-    <MoPageOneBuyOneTemplate
-      :buySrc="moBaseUrl + '/images/assets/202306/20230606_8_buy.png'"
-      :getSrc="moBaseUrl + '/images/assets/202306/20230606_8_get.png'"
-      >
-      <template v-slot:header>
-      </template>
-      <template v-slot:menu>
-        <template v-for="(id, k) in ['999198', '999199']" >
+        <template v-for="(id, k) in ['999397', '999398', '999399']" >
           <MoPageMenu2
             :key="k"
             v-if="menuObj[getMenuId(id)]"
@@ -276,28 +227,19 @@ const setMenus = [
     id: "buy",
     setName: "",
     menus: [
-      "999184",
-      "999185",
-      "999186",
-      "999187",
-      "999188",
-      "999189",
-      
-      "999190",
-      "999191",
-      
-      "999192",
-      "999193",
-      
-      "999194",
-      "999195",
-      
-      "999196",
-      
-      "999197",
-
-      "999198",
-      "999199",
+      "999387",
+      "999388",
+      "999389",
+      "999390",
+      "999391",
+      "999392",
+      "999393",
+      "999394",
+      "999395",
+      "999396",
+      "999397",
+      "999398",
+      "999399",
     ].map((id) => {
       return {
         id: getMenuId(id),
