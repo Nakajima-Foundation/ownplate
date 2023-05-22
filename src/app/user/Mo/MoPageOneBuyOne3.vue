@@ -40,15 +40,32 @@
 		<!--Overview-->
 		<div class="m-4 rounded-lg bg-white sm:max-w-5xl lg:mx-auto border-2 border-[#0068B7]">
 			<div class="text-center bg-[#0068B7] text-white font-bold py-1">
-				{{ $t("mobileOrder.campaign.part3") }}
+				{{ $t("mobileOrder.campaign.overview") }}
 			</div>
 			<div class="text-black py-3 font-bold px-5">
-				<div class="text-sm sm:text-base text-center">{{ $t("mobileOrder.campaign.period3") }}</div>
-				<div class="text-sm sm:text-base text-center">{{ $t("mobileOrder.campaign.receivingPeriod3") }}</div>
-				<div class="sm:w-11/12 md:w-8/12 mx-auto">
-				<div class="mt-2 text-xs text-black text-opacity-40">{{ $t("mobileOrder.campaign.note11") }}</div>
-				<div class="mt-1 text-xs text-black text-opacity-40">{{ $t("mobileOrder.campaign.note12") }}</div>
+				<div class="-ml-2 text-sm sm:text-base font-bold text-black text-opacity-40 mb-1">{{ $t("mobileOrder.campaign.part3") }}</div>
+				<div class="text-sm sm:text-base font-bold">
+					<div>{{ $t("mobileOrder.campaign.period3") }}</div>
+					<div>{{ $t("mobileOrder.campaign.receivingPeriod3") }}</div>
 				</div>
+					<div class="-ml-2 mt-3 text-sm sm:text-base font-bold text-black text-opacity-40">{{ $t("mobileOrder.campaign.notes") }}</div>
+					<ul class="ml-4 list-outside list-disc text-xs sm:text-sm">
+						<li class="mt-2">{{ $t("mobileOrder.campaign.note11") }}</li>
+						<li class="mt-2">{{ $t("mobileOrder.campaign.note12") }}</li>
+						<li class="mt-2">{{ $t("mobileOrder.campaign.note13") }}</li>
+					</ul>
+					<div class="ml-4 text-xs sm:text-sm">
+						<div class="mt-1">{{ $t("mobileOrder.campaign.note14") }}</div>
+						<div class="mt-0.5">{{ $t("mobileOrder.campaign.note15") }}</div>
+						<div class="mt-0.5">{{ $t("mobileOrder.campaign.note16") }}</div>
+					</div>
+					<ul class="ml-4 list-outside list-disc text-xs sm:text-sm">
+						<li class="mt-2">{{ $t("mobileOrder.campaign.note17") }}</li>
+						<li class="mt-2">{{ $t("mobileOrder.campaign.note18") }}</li>
+						<li class="mt-2">{{ $t("mobileOrder.campaign.note19") }}</li>
+						<li class="mt-2">{{ $t("mobileOrder.campaign.note20") }}</li>
+						<li class="mt-2">{{ $t("mobileOrder.campaign.note21") }}</li>
+					</ul>
 			</div>
 		</div>
 
