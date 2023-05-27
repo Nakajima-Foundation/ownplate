@@ -20,7 +20,7 @@
 		<div class="mb-2 border-4 border-green-600 text-green-600 text-center font-bold text-sm fixed left-4 right-4 mx-auto max-w-lg items-center rounded-full bg-white p-3 shadow-lg bottom-3 z-30 sm:bottom-8"
          v-if="hasOrder === 0"
          >
-      {{ $t("mobileOrder.campaign.fixedMessage1") }}
+      {{ $t("mobileOrder.campaign.fixedMessage2") }}
 		</div>
 
 		<!--Banner-->
@@ -71,8 +71,8 @@
 
 		<!--Item 1-->
     <MoPageOneBuyOneTemplate
-      :buySrc="moBaseUrl + '/images/assets/202306/20230606_1_buy.png'"
-      :getSrc="moBaseUrl + '/images/assets/202306/20230606_1_get.png'"
+      :buySrc="moBaseUrl + '/images/assets/202306/20230613_1_buy.png'"
+      :getSrc="moBaseUrl + '/images/assets/202306/20230613_1_get.png'"
       >
       <template v-slot:header>
       </template>
@@ -93,8 +93,8 @@
 
 		<!--Item 2-->
     <MoPageOneBuyOneTemplate
-      :buySrc="moBaseUrl + '/images/assets/202306/20230606_2_buy.png'"
-      :getSrc="moBaseUrl + '/images/assets/202306/20230606_2_get.png'"
+      :buySrc="moBaseUrl + '/images/assets/202306/20230613_2_buy.png'"
+      :getSrc="moBaseUrl + '/images/assets/202306/20230613_2_get.png'"
       >
       <template v-slot:header>
       </template>
@@ -118,8 +118,8 @@
 
 		<!--Item 3-->
     <MoPageOneBuyOneTemplate
-      :buySrc="moBaseUrl + '/images/assets/202306/20230606_3_buy.png'"
-      :getSrc="moBaseUrl + '/images/assets/202306/20230606_3_get.png'"
+      :buySrc="moBaseUrl + '/images/assets/202306/20230613_3_buy.png'"
+      :getSrc="moBaseUrl + '/images/assets/202306/20230613_3_get.png'"
       >
       <template v-slot:header>
       </template>
@@ -143,8 +143,8 @@
 
 		<!--Item 4-->
     <MoPageOneBuyOneTemplate
-      :buySrc="moBaseUrl + '/images/assets/202306/20230606_4_buy.png'"
-      :getSrc="moBaseUrl + '/images/assets/202306/20230606_4_get.png'"
+      :buySrc="moBaseUrl + '/images/assets/202306/20230613_4_buy.png'"
+      :getSrc="moBaseUrl + '/images/assets/202306/20230613_4_get.png'"
       >
       <template v-slot:header>
       </template>
@@ -168,8 +168,8 @@
 
 		<!--Item 5-->
     <MoPageOneBuyOneTemplate
-      :buySrc="moBaseUrl + '/images/assets/202306/20230606_5_buy.png'"
-      :getSrc="moBaseUrl + '/images/assets/202306/20230606_5_get.png'"
+      :buySrc="moBaseUrl + '/images/assets/202306/20230613_5_buy.png'"
+      :getSrc="moBaseUrl + '/images/assets/202306/20230613_5_get.png'"
       >
       <template v-slot:header>
       </template>
@@ -190,8 +190,8 @@
 
 		<!--Item 6-->
     <MoPageOneBuyOneTemplate
-      :buySrc="moBaseUrl + '/images/assets/202306/20230606_6_buy.png'"
-      :getSrc="moBaseUrl + '/images/assets/202306/20230606_6_get.png'"
+      :buySrc="moBaseUrl + '/images/assets/202306/20230613_6_buy.png'"
+      :getSrc="moBaseUrl + '/images/assets/202306/20230613_6_get.png'"
       >
       <template v-slot:header>
       </template>
@@ -212,8 +212,8 @@
 
 		<!--Item 7-->
     <MoPageOneBuyOneTemplate
-      :buySrc="moBaseUrl + '/images/assets/202306/20230606_7_buy.png'"
-      :getSrc="moBaseUrl + '/images/assets/202306/20230606_7_get.png'"
+      :buySrc="moBaseUrl + '/images/assets/202306/20230613_7_buy.png'"
+      :getSrc="moBaseUrl + '/images/assets/202306/20230613_7_get.png'"
       >
       <template v-slot:header>
       </template>
