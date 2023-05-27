@@ -51,7 +51,7 @@
 			  </div>
 			</div>
 
-			<div v-if="hasOneBuyOne">
+			<div v-if="hasOneBuyOne && [1,2,3].includes(term)">
 				<div class="text-xs border-green-600 text-green-600 font-bold mt-1 mx-6 sm:mx-auto max-w-xl mb-3 rounded-lg bg-green-600 bg-opacity-10 py-2 px-4">
 					{{ $t("mobileOrder.campaign.fixedMessageCart" + term) }}
 				</div>
