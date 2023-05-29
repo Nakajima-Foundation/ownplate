@@ -1271,7 +1271,7 @@ export default defineComponent({
         return 0;
       }
       if (date < 13) {
-        return 1
+        return 1;
       }
       if (date < 20) {
         return 2;
@@ -1285,7 +1285,7 @@ export default defineComponent({
         return 0;
       }
       if (date < 3) { // 2
-        return 1
+        return 1;
       }
       if (date < 30) { // 3 - 29
         return 2;
