@@ -1263,9 +1263,9 @@ export default defineComponent({
       
       const date = moment(store.state.date).tz("Asia/Tokyo").date();
       const hour = moment(store.state.date).tz("Asia/Tokyo").hour();
-      console.log({hour});
-      console.log(hour % 4);
-      return (hour % 4);
+      // console.log({hour});
+      // console.log(hour % 4);
+      // return (hour % 4);
       /*
       if (date < 6) {
         return 0;
@@ -1281,6 +1281,19 @@ export default defineComponent({
       }
       return 4;
       */
+      if (date < 2) { // 1
+        return 0;
+      }
+      if (date < 3) { // 2
+        return 1
+      }
+      if (date < 30) { // 3 - 29
+        return 2;
+      }
+      if (date < 31) { // 30
+        return 3;
+      }
+      return 4; // 31
     });
     
     return {
