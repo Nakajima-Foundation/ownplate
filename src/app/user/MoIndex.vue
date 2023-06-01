@@ -44,8 +44,8 @@
     </div>
 
 		<!--Campaign202306-->
-		<div v-if="false">
-		<Campaign202306 :moBasePath="moBasePath" />
+		<div>
+		  <Campaign202306 :moBasePath="moBasePath" />
 		</div>
 
     <div class="mx-6 mt-8 text-xl font-bold text-black text-opacity-40">
