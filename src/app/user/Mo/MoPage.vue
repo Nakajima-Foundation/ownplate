@@ -6,7 +6,7 @@
       :pageBase="pageBase"
       />
     <MoPageOneBuyOne1
-      v-else-if="pageId == '202306buy1' && term < 5"
+      v-else-if="pageId == '202306buy1' && term === 1"
       :pageId="pageId"
       :pageBase="pageBase"
       :groupData="groupData"
@@ -25,7 +25,7 @@
 
       />
     <MoPageOneBuyOne2
-      v-else-if="pageId == '202306buy2' && term < 5"
+      v-else-if="pageId == '202306buy2' && term === 2"
       :pageId="pageId"
       :pageBase="pageBase"
       :groupData="groupData"
@@ -44,7 +44,7 @@
 
       />
     <MoPageOneBuyOne3
-      v-else-if="pageId == '202306buy3'"
+      v-else-if="pageId == '202306buy3' && term === 3"
       :pageId="pageId"
       :pageBase="pageBase"
       :groupData="groupData"

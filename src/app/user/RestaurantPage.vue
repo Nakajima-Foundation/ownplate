@@ -1282,13 +1282,13 @@ export default defineComponent({
       return 4;
       */
       if (date < 2) { // 1
-        return 0;
-      }
-      if (date < 3) { // 2
         return 1;
       }
-      if (date < 30) { // 3 - 29
+      if (date < 3) { // 2
         return 2;
+      }
+      if (date < 30) { // 3 - 29
+        return 3;
       }
       if (date < 31) { // 30
         return 3;
