@@ -51,12 +51,17 @@
 			  </div>
 			</div>
 
+			<div v-if="hasOneBuyOne && [1,2,3].includes(term)">
+				<div class="text-xs border-green-600 text-green-600 font-bold mt-1 mx-6 sm:mx-auto max-w-xl mb-3 rounded-lg bg-green-600 bg-opacity-10 py-2 px-4">
+					{{ $t("mobileOrder.campaign.fixedMessageCart" + term) }}
+				</div>
+			</div>
     </div>
   </div>
 </template>
 
 <script>
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent, computed } from "@vue/composition-api";
 
 import CartItem from "@/app/user/Restaurant/CartItem.vue";
 
@@ -115,6 +120,10 @@ export default defineComponent({
       type: Object,
       required: true,
     },
+    term: {
+      type: Number,
+      required: false,
+    },
   },
   setup(props, ctx) {
     const setQuantities = (itemId, key, diff) => {
@@ -137,12 +146,21 @@ export default defineComponent({
     const decrease = (itemId, key) => {
       setQuantities(itemId, key, -1);
     };
+    // mo
+    const hasOneBuyOne = computed(() => {
+      return Object.keys(props.orders).some(itemId => {
+        // console.log(props.menuObj[itemId]);
+        return props.menuObj[itemId].category === "998";
+      });
+    });
     return {
       closeCart: () => {
         ctx.emit("closeCart");
       },
       increase,
       decrease,
+
+      hasOneBuyOne,
     };
   },
 });

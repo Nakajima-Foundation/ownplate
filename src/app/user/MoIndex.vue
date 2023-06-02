@@ -43,6 +43,11 @@
       </div>
     </div>
 
+		<!--Campaign202306-->
+		<div>
+		  <Campaign202306 :moBasePath="moBasePath" />
+		</div>
+
     <div class="mx-6 mt-8 text-xl font-bold text-black text-opacity-40">
       {{ $t("find.shopList") }}
     </div>
@@ -117,10 +122,12 @@ import { restaurant2AreaObj, sortRestaurantObj } from "@/utils/RestaurantUtils";
 import { defaultHeader } from "@/config/header";
 import { moBaseUrl, moTitle, enableCampaignBanner } from "@/config/project";
 import { useIsInMo } from "@/utils/utils";
+import Campaign202306 from "./Mo/Campaign202306";
 
 export default defineComponent({
   name: "RestaurantIndex",
-  components: {
+	components: {
+		Campaign202306
   },
   metaInfo() {
     return {
