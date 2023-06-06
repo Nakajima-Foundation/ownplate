@@ -3,12 +3,12 @@
     <router-link :to="pageBase + '/page/202306buy' + term">
       <div class="mt-2 mb-4 w-full rounded-lg bg-white">
         <img
-          :src="moBaseUrl + '/images/assets/202306/202306_banner_mobile.png'"
+          :src="moBaseUrl + '/images/assets/202306/202306_banner_mobile2.png'"
           class="rounded-lg object-cover sm:hidden"
           id=""
         />
         <img
-          :src="moBaseUrl + '/images/assets/202306/202306_banner_tablet.png'"
+          :src="moBaseUrl + '/images/assets/202306/202306_banner_tablet2.png'"
           class="hidden rounded-lg object-cover sm:block"
           id=""
         />
