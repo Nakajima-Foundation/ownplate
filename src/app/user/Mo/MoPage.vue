@@ -1,12 +1,8 @@
 <template>
   <div>
     <!-- {{pageId}} -->
-    <MoPage202305
-      v-if="pageId == '202305'"
-      :pageBase="pageBase"
-      />
     <MoPageOneBuyOne1
-      v-else-if="pageId == '202306buy1' && term === 1"
+      v-if="pageId == '202306buy1' && term === 1"
       :pageId="pageId"
       :pageBase="pageBase"
       :groupData="groupData"
@@ -73,7 +69,6 @@ import {
   onUnmounted,
 } from "@vue/composition-api";
 
-import MoPage202305 from "./MoPage202305.vue";
 import MoPageOneBuyOne1 from "./MoPageOneBuyOne1.vue";
 import MoPageOneBuyOne2 from "./MoPageOneBuyOne2.vue";
 import MoPageOneBuyOne3 from "./MoPageOneBuyOne3.vue";
@@ -81,7 +76,6 @@ import NotFound from "@/components/NotFound.vue";
 
 export default defineComponent({
   components: {
-    MoPage202305,
     MoPageOneBuyOne1,
     MoPageOneBuyOne2,
     MoPageOneBuyOne3,

@@ -62,7 +62,7 @@
 </template>
 
 <script lang="ts">
-import { moPage, getMenuId } from "./MoPageCommon";
+import { moPage, getMenuId } from "../MoPageCommon";
 
 const setMenus = [
   {

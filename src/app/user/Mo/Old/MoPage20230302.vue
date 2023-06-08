@@ -16,7 +16,10 @@
       </div>
     </div>
     
-    <div>
+    <div class="m-4 mt-6 rounded-lg bg-red-300 p-6 sm:max-w-7xl xl:mx-auto">
+      hello
+    </div>
+    <div class="m-4 mt-6">
       <!-- for test -->
       <div>
         2023-03
@@ -46,21 +49,23 @@
 <script lang="ts">
 import {
   moPage
-} from "./MoPageCommon";
+} from "../MoPageCommon";
 
 const setMenus = [{
   id: "setMenu1",
   setName: "メニュー１セット",
   menus: [{
-    id: "16fc6cc015fac4d3494570fa791ee64f28e18932",
-    count: 1,
-  }, {
-    id: "68d085d49cb8e3429816dbcfd773c07007216322",
+    id: "68dc4c052eb0b02bdd34258fbd21b86e46b44437",
     count: 2,
-  },{
-    id: "f848011904c7dca7b8494c62cc34622874e27ade",
+  }, {
+    id: "58b5197d27a96743a6405c5029fbce6d721d3beb",
     count: 3,
-  }
+  },
+          {
+    id: "9a714af83e3aee2d5b779d9de5b9eb9c4361847d",
+    count: 1,
+    }
+          
          ],
 }];
 export default moPage(setMenus);
