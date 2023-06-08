@@ -58,6 +58,25 @@
       :moPickupSuspend="moPickupSuspend"
 
       />
+    <MoPage20230701
+      v-else-if="pageId == '202307'"
+      :pageId="pageId"
+      :pageBase="pageBase"
+      :groupData="groupData"
+      @didOrderdChange="didOrderdChange"
+      :orders="orders"
+      :selectedOptions="selectedOptions"
+      :shopInfo="shopInfo"
+      :isPickup="isPickup"
+
+      :howtoreceive="howtoreceive"
+      @input="updateHowtoreceive"
+      :disabledPickupTime="disabledPickupTime"
+      :noAvailableTime="noAvailableTime"
+      :lastOrder="lastOrder"
+      :moPickupSuspend="moPickupSuspend"
+
+      />
     <NotFound v-else />
   </div>
 </template>
@@ -72,6 +91,8 @@ import {
 import MoPageOneBuyOne1 from "./MoPageOneBuyOne1.vue";
 import MoPageOneBuyOne2 from "./MoPageOneBuyOne2.vue";
 import MoPageOneBuyOne3 from "./MoPageOneBuyOne3.vue";
+import MoPage20230701 from "./MoPage20230701.vue";
+
 import NotFound from "@/components/NotFound.vue";
 
 export default defineComponent({
@@ -79,6 +100,7 @@ export default defineComponent({
     MoPageOneBuyOne1,
     MoPageOneBuyOne2,
     MoPageOneBuyOne3,
+    MoPage20230701,
     NotFound,
   },
   props: {
