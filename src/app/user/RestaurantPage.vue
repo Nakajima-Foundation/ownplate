@@ -221,6 +221,13 @@
               </div>
             </div>
 
+						<!--ToDo 「聖路加ガーデン店」かつ「本日受け取る」を選択しているときのみ表示-->
+						<div v-if="false"
+                class="mx-6 mt-3 mb-2 rounded-lg bg-red-700 bg-opacity-10 p-3 font-bold text-red-700 lg:mx-0"
+              >
+                {{ $t("mobileOrder.autoCancel") }}
+              </div>
+
             <!-- stock filter Toggle-->
             <div>
               <MoOneBuyOneBanner
