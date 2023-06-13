@@ -206,7 +206,7 @@
             </div>
           </router-link>
         </div>
-        <div v-if="false">
+        <div v-if="isDev">
           <router-link :to="`/admin/restaurants/${restaurantid}/printer`">
             <div
               class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
@@ -220,7 +220,7 @@
           </router-link>
         </div>
 
-        <div v-if="isOwner && false">
+        <div v-if="isOwner && isDev">
           <router-link :to="`/admin/restaurants/${restaurantid}/discounts`">
             <div
               class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
@@ -440,6 +440,10 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 
+import {
+  isDev,
+} from "@/utils/utils";
+
 import firebase from "firebase/compat/app";
 
 export default defineComponent({
@@ -565,6 +569,7 @@ export default defineComponent({
       requestState,
 
       previewLink,
+      isDev,
 
       deleteRestaurant,
       deleteFromList,
