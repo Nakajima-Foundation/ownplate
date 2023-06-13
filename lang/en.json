@@ -31,6 +31,7 @@
     "inStock": "In stock",
     "closeLabel": "(*Orders will be closed on {date})",
 		"fixedFormat":"※商品画像はイメージです。表示価格は店頭価格と異なる場合がございます。アレルゲン情報などの商品の詳細情報は、商品パッケージもしくはファミリーマートの公式ホームページをご確認ください。",
+		"autoCancel":"*Please note that orders placed between midnight and 7:00 AM will be canceled.",
     "admin": {
       "takeout": "Pre order",
       "pickup": "Takeaway",
