@@ -16,252 +16,62 @@
       </div>
     </div>
 
-		<!--Floating text-->
-		<div class="mb-2 border-4 border-green-600 text-green-600 text-center font-bold text-sm fixed left-4 right-4 mx-auto max-w-lg items-center rounded-full bg-white p-3 shadow-lg bottom-3 z-30 sm:bottom-8"
-         v-if="hasOrder === 0"
-         >
-      {{ $t("mobileOrder.campaign.fixedMessage1") }}
-		</div>
-
 		<!--Banner-->
     <div class="m-4 mt-6 rounded-lg bg-white sm:max-w-5xl lg:mx-auto">
       <div class="flex w-full justify-center">
         <img
-          :src="moBaseUrl + '/images/assets/202306/202306_lp_mobile.png'"
+          :src="moBaseUrl + '/images/assets/202307/202307_lp_mobile.png'"
           class="rounded-lg object-cover sm:hidden"
         />
 				<img
-          :src="moBaseUrl + '/images/assets/202306/202306_lp_tablet.png'"
+          :src="moBaseUrl + '/images/assets/202307/202307_lp_tablet.png'"
           class="rounded-lg object-cover hidden sm:block"
         />
       </div>
     </div>
 
 		<!--Overview-->
-		<div class="m-4 rounded-lg bg-white sm:max-w-5xl lg:mx-auto border-2 border-[#0068B7]">
-			<div class="text-center bg-[#0068B7] text-white font-bold py-1">
+		<div class="m-4 rounded-lg bg-white sm:max-w-5xl lg:mx-auto border-2 border-[#D3BC4A]">
+			<div class="text-center bg-[#D3BC4A] text-white font-bold py-1">
 				{{ $t("mobileOrder.campaign.overview") }}
 			</div>
-			<div class="py-3 px-5">
-				<div class="-ml-2 text-sm sm:text-base font-bold text-black text-opacity-40 mb-1">{{ $t("mobileOrder.campaign.part1") }}</div>
-				<div class="text-sm sm:text-base font-bold">
-					<div>{{ $t("mobileOrder.campaign.period1") }}</div>
-					<div>{{ $t("mobileOrder.campaign.receivingPeriod1") }}</div>
+			<div class="py-4 px-5">
+				<div class="text-sm sm:text-base">
+					<div>{{ $t("mobileOrder.campaign.overviewJuly1") }}</div>
+					<div class="mt-2">{{ $t("mobileOrder.campaign.overviewJuly2") }}</div>
+					<div class="mt-1">{{ $t("mobileOrder.campaign.overviewJuly3") }}</div>
+					<div class="mt-1">{{ $t("mobileOrder.campaign.overviewJuly4") }}</div>
+					<div class="mt-2">{{ $t("mobileOrder.campaign.overviewJuly5") }}</div>
 				</div>
-					<div class="-ml-2 mt-3 text-sm sm:text-base font-bold text-black text-opacity-40">{{ $t("mobileOrder.campaign.notes") }}</div>
+				<div class="-ml-2 mt-4 text-sm sm:text-base font-bold text-black text-opacity-40 mb-1">{{ $t("mobileOrder.campaign.part1") }}</div>
+				<div class="text-sm sm:text-base font-bold">
+					<div>{{ $t("mobileOrder.campaign.periodJuly") }}</div>
+				</div>
+					<div class="-ml-2 mt-4 text-sm sm:text-base font-bold text-black text-opacity-40">{{ $t("mobileOrder.campaign.notes") }}</div>
 					<ul class="ml-4 list-outside list-disc text-xs sm:text-sm">
-						<li class="mt-2">{{ $t("mobileOrder.campaign.note11") }}</li>
-						<li class="mt-2">{{ $t("mobileOrder.campaign.note12") }}</li>
-						<li class="mt-2">{{ $t("mobileOrder.campaign.note13") }}</li>
-					</ul>
-					<div class="ml-4 text-xs sm:text-sm">
-						<div class="mt-1">{{ $t("mobileOrder.campaign.note14") }}</div>
-						<div class="mt-0.5">{{ $t("mobileOrder.campaign.note15") }}</div>
-						<div class="mt-0.5">{{ $t("mobileOrder.campaign.note16") }}</div>
-					</div>
-					<ul class="ml-4 list-outside list-disc text-xs sm:text-sm">
-						<li class="mt-2">{{ $t("mobileOrder.campaign.note17") }}</li>
-						<li class="mt-2">{{ $t("mobileOrder.campaign.note18") }}</li>
-						<li class="mt-2">{{ $t("mobileOrder.campaign.note19") }}</li>
-						<li class="mt-2">{{ $t("mobileOrder.campaign.note20") }}</li>
-						<li class="mt-2">{{ $t("mobileOrder.campaign.note21") }}</li>
+						<li class="mt-2">{{ $t("mobileOrder.campaign.note22") }}</li>
+						<li class="mt-2">{{ $t("mobileOrder.campaign.note23") }}</li>
+						<li class="mt-2">{{ $t("mobileOrder.campaign.note24") }}</li>
 					</ul>
 			</div>
 		</div>
 
-		<!--Item 1-->
-    <MoPageOneBuyOneTemplate
-      :buySrc="moBaseUrl + '/images/assets/202306/20230606_1_buy.png'"
-      :getSrc="moBaseUrl + '/images/assets/202306/20230606_1_get.png'"
-      >
-      <template v-slot:header>
-      </template>
-      
-      <template v-slot:menu>
-          <template v-for="(id, k) in ['999184', '999185', '999186']" >
-            <MoPageMenu2
-              :key="k"
-              v-if="menuObj[getMenuId(id)]"
-              :menu="menuObj[getMenuId(id)]"
-              :orders="orders"
-              @pushQuantities="pushQuantities"
-              @pullQuantities="pullQuantities"
-              :shopInfo="shopInfo"
+		<div class="mx-6 mb-8 pb-6">
+        <div v-for="(menu, k) in setMenus" :key="k">
+          <div v-for="(m, j) in menu.menus" :key="j">
+            <template v-if="menuObj[m.id]">
+              <MoPageMenu
+                :menu="menuObj[m.id]"
+                :orders="orders"
+                @pushQuantities="pushQuantities"
+                @pullQuantities="pullQuantities"
+                :shopInfo="shopInfo"
               />
-          </template>
-      </template>
-      <template v-slot:footer>
-      </template>
-    </MoPageOneBuyOneTemplate>
-
-		<!--Item 2-->
-    <MoPageOneBuyOneTemplate
-      :buySrc="moBaseUrl + '/images/assets/202306/20230606_2_buy.png'"
-      :getSrc="moBaseUrl + '/images/assets/202306/20230606_2_get.png'"
-      >
-      <template v-slot:header>
-      </template>
-      
-      <template v-slot:menu>
-        <template v-for="(id, k) in ['999187', '999188', '999189']" >
-          <MoPageMenu2
-            :key="k"
-            v-if="menuObj[getMenuId(id)]"
-            :menu="menuObj[getMenuId(id)]"
-            :orders="orders"
-            @pushQuantities="pushQuantities"
-            @pullQuantities="pullQuantities"
-            :shopInfo="shopInfo"
-            />
-        </template>
-      </template>
-      <template v-slot:footer>
-      </template>
-    </MoPageOneBuyOneTemplate>
-
-		<!--Item 3-->
-    <MoPageOneBuyOneTemplate
-      :buySrc="moBaseUrl + '/images/assets/202306/20230606_3_buy.png'"
-      :getSrc="moBaseUrl + '/images/assets/202306/20230606_3_get.png'"
-      >
-      <template v-slot:header>
-      </template>
-      
-      <template v-slot:menu>
-        <template v-for="(id, k) in ['999190', '999191']" >
-          <MoPageMenu2
-            :key="k"
-            v-if="menuObj[getMenuId(id)]"
-            :menu="menuObj[getMenuId(id)]"
-            :orders="orders"
-            @pushQuantities="pushQuantities"
-            @pullQuantities="pullQuantities"
-            :shopInfo="shopInfo"
-            />
-        </template>
-      </template>
-      <template v-slot:footer>
-      </template>
-    </MoPageOneBuyOneTemplate>
-
-		<!--Item 4-->
-    <MoPageOneBuyOneTemplate
-      :buySrc="moBaseUrl + '/images/assets/202306/20230606_4_buy.png'"
-      :getSrc="moBaseUrl + '/images/assets/202306/20230606_4_get.png'"
-      >
-      <template v-slot:header>
-      </template>
-      
-      <template v-slot:menu>
-        <template v-for="(id, k) in ['999192', '999193']" >
-          <MoPageMenu2
-            :key="k"
-            v-if="menuObj[getMenuId(id)]"
-            :menu="menuObj[getMenuId(id)]"
-            :orders="orders"
-            @pushQuantities="pushQuantities"
-            @pullQuantities="pullQuantities"
-            :shopInfo="shopInfo"
-            />
-        </template>
-      </template>
-      <template v-slot:footer>
-      </template>
-    </MoPageOneBuyOneTemplate>
-
-		<!--Item 5-->
-    <MoPageOneBuyOneTemplate
-      :buySrc="moBaseUrl + '/images/assets/202306/20230606_5_buy.png'"
-      :getSrc="moBaseUrl + '/images/assets/202306/20230606_5_get.png'"
-      >
-      <template v-slot:header>
-      </template>
-      
-      <template v-slot:menu>
-        <template v-for="(id, k) in ['999194', '999195']" >
-          <MoPageMenu2
-            :key="k"
-            v-if="menuObj[getMenuId(id)]"
-            :menu="menuObj[getMenuId(id)]"
-            :orders="orders"
-            @pushQuantities="pushQuantities"
-            @pullQuantities="pullQuantities"
-            :shopInfo="shopInfo"
-            />
-        </template>
-      </template>
-      <template v-slot:footer>
-      </template>
-    </MoPageOneBuyOneTemplate>
-
-		<!--Item 6-->
-    <MoPageOneBuyOneTemplate
-      :buySrc="moBaseUrl + '/images/assets/202306/20230606_6_buy.png'"
-      :getSrc="moBaseUrl + '/images/assets/202306/20230606_6_get.png'"
-      >
-      <template v-slot:header>
-      </template>
-      
-      <template v-slot:menu>
-        <MoPageMenu2
-          v-if="menuObj[getMenuId('999196')]"
-          :menu="menuObj[getMenuId('999196')]"
-          :orders="orders"
-          @pushQuantities="pushQuantities"
-          @pullQuantities="pullQuantities"
-          :shopInfo="shopInfo"
-          />
-      </template>
-      <template v-slot:footer>
-      </template>
-    </MoPageOneBuyOneTemplate>
-
-		<!--Item 7-->
-    <MoPageOneBuyOneTemplate
-      :buySrc="moBaseUrl + '/images/assets/202306/20230606_7_buy.png'"
-      :getSrc="moBaseUrl + '/images/assets/202306/20230606_7_get.png'"
-      >
-      <template v-slot:header>
-      </template>
-      
-      <template v-slot:menu>
-        <MoPageMenu2
-          :key="k"
-          v-if="menuObj[getMenuId('999197')]"
-          :menu="menuObj[getMenuId('999197')]"
-          :orders="orders"
-          @pushQuantities="pushQuantities"
-          @pullQuantities="pullQuantities"
-          :shopInfo="shopInfo"
-          />
-      </template>
-      <template v-slot:footer>
-      </template>
-    </MoPageOneBuyOneTemplate>
-
-		<!--Item 8-->
-    <MoPageOneBuyOneTemplate
-      :buySrc="moBaseUrl + '/images/assets/202306/20230606_8_buy.png'"
-      :getSrc="moBaseUrl + '/images/assets/202306/20230606_8_get.png'"
-      >
-      <template v-slot:header>
-      </template>
-      <template v-slot:menu>
-        <template v-for="(id, k) in ['999198', '999199']" >
-          <MoPageMenu2
-            :key="k"
-            v-if="menuObj[getMenuId(id)]"
-            :menu="menuObj[getMenuId(id)]"
-            :orders="orders"
-            @pushQuantities="pushQuantities"
-            @pullQuantities="pullQuantities"
-            :shopInfo="shopInfo"
-            />
-        </template>
-      </template>
-      <template v-slot:footer>
-      </template>
-    </MoPageOneBuyOneTemplate>
+              <hr />
+            </template>
+          </div>
+        </div>
+      </div>
 
 		<div class="mx-5 mt-4 text-xs font-bold text-black text-opacity-40 sm:max-w-5xl lg:mx-auto">
         {{ $t("mobileOrder.fixedFormat") }}

@@ -10,12 +10,20 @@
         {{ menu.itemName }}
       </div>
 
-      <!-- Description -->
+      <!-- Description
       <div class="mt-3 text-sm">
         <div v-for="(d, k) in menu.itemDescription.split('\n')" :key="k">
           {{d}}
         </div>
-      </div>
+      </div> -->
+
+			<div>
+			<div class="mt-3 inline-flex items-center justify-center rounded-md bg-yellow-400 text-white px-1.5 py-0.5"
+        >
+          <i class="material-icons rotate-90">forward</i>
+					<span class="text-sm font-bold">{{ $t("mobileOrder.campaign.1000yen") }}</span>
+			</div>
+			</div>
 
       <div class="mt-3 inline-flex items-end">
         <div class="text-base font-bold text-red-600">
