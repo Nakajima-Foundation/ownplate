@@ -221,8 +221,8 @@
               </div>
             </div>
 
-						<!--ToDo 「聖路加ガーデン店」かつ「本日受け取る」を選択しているときのみ表示-->
-						<div v-if="false"
+            <!-- for mo -->
+						<div v-if="isPickup && isSpecialShop"
                 class="mx-6 mt-3 mb-2 rounded-lg bg-red-700 bg-opacity-10 p-3 font-bold text-red-700 lg:mx-0"
               >
                 {{ $t("mobileOrder.autoCancel") }}
@@ -1297,6 +1297,13 @@ export default defineComponent({
       return 4; // 31
       */
     });
+
+    const isSpecialShop = computed(() => {
+      return ([
+        "3ee2442f5ada277e133bac5a93d41a84d024c3ff",
+        "4c821e8903633f8e7fc6a10beb0da1fa5730c942"
+      ].includes(restaurantId.value));
+    });
     
     return {
       itemLists,
@@ -1365,6 +1372,7 @@ export default defineComponent({
 
       isPublucDataSet,
       moSoldOutDataSet,
+      isSpecialShop,
 
       moPickup,
       disabledPickupTime,
