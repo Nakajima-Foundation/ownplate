@@ -294,6 +294,16 @@
                     :pageBase="pageBase"
                     :term="buyTerm"
                     />
+								
+								<!--7月施策バナー表示-->
+								<div v-if="false">
+									<MoFukubukuroBanner
+                    v-if="enableCampaignBanner"
+                    :pageBase="pageBase"
+                    :term="buyTerm"
+                    />
+								</div>
+
                   <CategoryTop
                     :categoryData="categoryData"
                     :howtoreceive="howtoreceive"
@@ -502,6 +512,7 @@ import TransactionsActContents from "@/app/user/TransactionsAct/Contents.vue";
 import MoPickUp from "@/app/user/Restaurant/MoPickUp.vue";
 import MoPage from "@/app/user/Mo/MoPage.vue";
 import MoOneBuyOneBanner from "@/app/user/Mo/MoOneBuyOneBanner.vue";
+import MoFukubukuroBanner from "@/app/user/Mo/MoFukubukuroBanner.vue";
 
 import FloatingBanner from "@/app/user/Restaurant/FloatingBanner.vue";
 
@@ -578,7 +589,8 @@ export default defineComponent({
     
     MoPickUp,
     MoPage,
-    MoOneBuyOneBanner,
+		MoOneBuyOneBanner,
+		MoFukubukuroBanner,
   },
   props: {
     shopInfo: {

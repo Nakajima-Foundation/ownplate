@@ -56,7 +56,7 @@
 			</div>
 		</div>
 
-		<div class="mx-6 mb-8 pb-6">
+		<div class="mx-6">
         <div v-for="(menu, k) in setMenus" :key="k">
           <div v-for="(m, j) in menu.menus" :key="j">
             <template v-if="menuObj[m.id]">
