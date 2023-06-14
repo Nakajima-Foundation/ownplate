@@ -48,6 +48,12 @@
 		  <Campaign202306 :moBasePath="moBasePath" />
 		</div>
 
+		<!--ToDo 7月施策用の訴求テキスト-->
+		<!--Campaign202307-->
+		<div v-if="false">
+		  <Campaign202307 :moBasePath="moBasePath" />
+		</div>
+
     <div class="mx-6 mt-8 text-xl font-bold text-black text-opacity-40">
       {{ $t("find.shopList") }}
     </div>
@@ -123,11 +129,13 @@ import { defaultHeader } from "@/config/header";
 import { moBaseUrl, moTitle, enableCampaignBanner } from "@/config/project";
 import { useIsInMo } from "@/utils/utils";
 import Campaign202306 from "./Mo/Campaign202306";
+import Campaign202307 from "./Mo/Campaign202307";
 
 export default defineComponent({
   name: "RestaurantIndex",
 	components: {
-		Campaign202306
+		Campaign202306,
+		Campaign202307
   },
   metaInfo() {
     return {
