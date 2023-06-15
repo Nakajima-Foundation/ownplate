@@ -1,12 +1,8 @@
 <template>
   <div>
     <!-- {{pageId}} -->
-    <MoPage202305
-      v-if="pageId == '202305'"
-      :pageBase="pageBase"
-      />
     <MoPageOneBuyOne1
-      v-else-if="pageId == '202306buy1' && term === 1"
+      v-if="pageId == '202306buy1' && term === 1"
       :pageId="pageId"
       :pageBase="pageBase"
       :groupData="groupData"
@@ -62,6 +58,25 @@
       :moPickupSuspend="moPickupSuspend"
 
       />
+    <MoPage20230701
+      v-else-if="pageId == '202307'"
+      :pageId="pageId"
+      :pageBase="pageBase"
+      :groupData="groupData"
+      @didOrderdChange="didOrderdChange"
+      :orders="orders"
+      :selectedOptions="selectedOptions"
+      :shopInfo="shopInfo"
+      :isPickup="isPickup"
+
+      :howtoreceive="howtoreceive"
+      @input="updateHowtoreceive"
+      :disabledPickupTime="disabledPickupTime"
+      :noAvailableTime="noAvailableTime"
+      :lastOrder="lastOrder"
+      :moPickupSuspend="moPickupSuspend"
+
+      />
     <NotFound v-else />
   </div>
 </template>
@@ -73,18 +88,19 @@ import {
   onUnmounted,
 } from "@vue/composition-api";
 
-import MoPage202305 from "./MoPage202305.vue";
 import MoPageOneBuyOne1 from "./MoPageOneBuyOne1.vue";
 import MoPageOneBuyOne2 from "./MoPageOneBuyOne2.vue";
 import MoPageOneBuyOne3 from "./MoPageOneBuyOne3.vue";
+import MoPage20230701 from "./MoPage20230701.vue";
+
 import NotFound from "@/components/NotFound.vue";
 
 export default defineComponent({
   components: {
-    MoPage202305,
     MoPageOneBuyOne1,
     MoPageOneBuyOne2,
     MoPageOneBuyOne3,
+    MoPage20230701,
     NotFound,
   },
   props: {

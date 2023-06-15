@@ -1,5 +1,4 @@
 <template>
-  <div>
     <div class="mx-auto mb-4 max-w-md rounded-lg bg-white p-5 shadow">
       <img
         :src="resizedImage"
@@ -10,19 +9,24 @@
         {{ menu.itemName }}
       </div>
 
-      <!-- Description -->
+      <!-- Description
       <div class="mt-3 text-sm">
         <div v-for="(d, k) in menu.itemDescription.split('\n')" :key="k">
           {{d}}
         </div>
-      </div>
+      </div> -->
 
-      <div class="mt-3 inline-flex items-end">
-        <div class="text-base font-bold text-red-600">
+			<div>
+			<div class="mt-3 inline-flex items-center justify-center rounded-md bg-yellow-400 text-white px-1.5 py-0.5"
+        >
+          <i class="material-icons rotate-90">forward</i>
+					<span class="text-sm font-bold">{{ $t("mobileOrder.campaign.1000yen") }}</span>
+			</div>
+			</div>
+
+      <div class="mt-1 inline-flex items-end">
+        <div class="text-base font-bold text-black">
           <Price :shopInfo="shopInfo" :menu="menu" />
-        </div>
-        <div class="ml-2 mb-0.5 text-xs text-black line-through">
-          <Price :shopInfo="shopInfo" :menu="menu" :offset="menu.offset || 0" />
         </div>
       </div>
 
@@ -48,7 +52,6 @@
         </button>
       </div>
     </div>
-  </div>
 </template>
 
 <script lang="ts">
