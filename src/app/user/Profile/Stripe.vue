@@ -69,8 +69,10 @@ export default defineComponent({
             if (stripeInfo && stripeInfo.card) {
               const expire = moment(`${stripeInfo.card.exp_year}${stripeInfo.card.exp_month}01T000000+0900`).endOf('month').toDate();
               if (
-                stripeInfo.updatedAt.toDate() >
-                  moment().subtract(180, "days").toDate()
+                stripeInfo.updatedAt && (
+                  stripeInfo.updatedAt.toDate() >
+                    moment().subtract(180, "days").toDate()
+                )
               ) {
                 if (expire > new Date()) {
                   storedCard.value = stripeInfo?.card;
