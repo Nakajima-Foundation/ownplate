@@ -74,6 +74,7 @@
         <li class="mt-2">{{ $t("mobileOrder.campaign.note2") }}</li>
         <li class="mt-2">{{ $t("mobileOrder.campaign.note3") }}</li>
         <li class="mt-2">{{ $t("mobileOrder.campaign.note4") }}</li>
+        <li class="mt-2">{{ $t("mobileOrder.campaign.note10") }}</li>
         <li class="mt-2">{{ $t("mobileOrder.campaign.note5") }}</li>
         <li class="mt-2">{{ $t("mobileOrder.campaign.note6") }}</li>
       </ul>

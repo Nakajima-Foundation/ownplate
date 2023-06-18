@@ -43,9 +43,17 @@
       </div>
     </div>
 
-    <!-- Campaign202305 -->
-    <Campaign202305 :moBasePath="moBasePath" v-if="enableCampaignBanner" />
-    
+		<!--Campaign202306-->
+		<div>
+		  <Campaign202306 :moBasePath="moBasePath" />
+		</div>
+
+		<!--ToDo 7月施策用の訴求テキスト-->
+		<!--Campaign202307-->
+		<div v-if="false">
+		  <Campaign202307 :moBasePath="moBasePath" />
+		</div>
+
     <div class="mx-6 mt-8 text-xl font-bold text-black text-opacity-40">
       {{ $t("find.shopList") }}
     </div>
@@ -124,11 +132,14 @@ import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import Campaign202305 from "./Mo/Campaign202305.vue";
 import { useIsInMo } from "@/utils/utils";
 import moment from "moment";
+import Campaign202306 from "./Mo/Campaign202306.vue";
+import Campaign202307 from "./Mo/Campaign202307.vue";
 
 export default defineComponent({
   name: "RestaurantIndex",
-  components: {
-    Campaign202305
+	components: {
+		Campaign202306,
+		Campaign202307
   },
   metaInfo() {
     return {

@@ -47,6 +47,7 @@ import { useUserData } from "@/utils/utils";
 
 import { useStore } from "vuex";
 import { useI18n } from "vue-i18n";
+import moment from "moment";
 
 export default defineComponent({
   setup() {
@@ -68,7 +69,19 @@ export default defineComponent({
           doc(db, `/users/${user.value.uid}/readonly/stripe`),
           (snapshot) => {
             const stripeInfo = snapshot.data();
-            storedCard.value = stripeInfo?.card;
+            if (stripeInfo && stripeInfo.card) {
+              const expire = moment(`${stripeInfo.card.exp_year}${stripeInfo.card.exp_month}01T000000+0900`).endOf('month').toDate();
+              if (
+                stripeInfo.updatedAt && (
+                  stripeInfo.updatedAt.toDate() >
+                    moment().subtract(180, "days").toDate()
+                )
+              ) {
+                if (expire > new Date()) {
+                  storedCard.value = stripeInfo?.card;
+                }
+              }
+            }
           },
           (e) => {
             console.log("stripe expired")

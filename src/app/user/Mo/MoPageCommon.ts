@@ -1,6 +1,7 @@
 import {
   defineComponent,
   ref,
+  computed,
 } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
@@ -12,12 +13,18 @@ import {
   documentId,
 } from "firebase/firestore";
 
-import MoPageSet from "@/app/user/Mo/MoPageSet.vue";
 import MoPageMenu from "@/app/user/Mo/MoPageMenu.vue";
+import MoPageMenu2 from "@/app/user/Mo/MoPageMenu2.vue";
 import MoPickUp from "@/app/user/Restaurant/MoPickUp.vue";
+
+import MoPageOneBuyOneTemplate from "@/app/user/Mo/MoPageOneBuyOneTemplate.vue";
 
 import { moBaseUrl, firebaseConfig } from "@/config/project";
 import { SHA1, enc } from "crypto-js";
+
+import {
+  arrayChunk,
+} from "@/utils/utils";
 
 interface Menu {
   id: string;
@@ -39,9 +46,10 @@ export const getMenuId = (productId: string) => {
 export const moPage = (setMenus: SetMenu[]) => {
   return defineComponent({
     components: {
-      MoPageSet,
       MoPageMenu,
+      MoPageMenu2,
       MoPickUp,
+      MoPageOneBuyOneTemplate,
     },
     props: {
       pageId: {
@@ -108,22 +116,26 @@ export const moPage = (setMenus: SetMenu[]) => {
       }, {});
 
       const menuObj = ref<{[key: string]: any}>({});
-      getDocs(
-        query(
-          collection(db, `restaurants/${props.groupData.restaurantId}/menus`),
-          where("publicFlag", "==", true),
-          where("deletedFlag", "==", false),
-          where(documentId(), "in", Object.keys(menuDataObj))
-        )
-      ).then((menuQuerySnap) => {
-        menuObj.value = menuQuerySnap.docs.reduce((tmp: {[key: string]: any}, m) => {
-          const data = m.data();
-          data.id = m.id;
-          tmp[m.id] = data;
-          return tmp;
-        }, {});
+      arrayChunk(Object.keys(menuDataObj), 10).map((menuIds) => {
+        getDocs(
+          query(
+            collection(db, `restaurants/${props.groupData.restaurantId}/menus`),
+            where("publicFlag", "==", true),
+            where("deletedFlag", "==", false),
+            where(documentId(), "in", menuIds)
+          )
+        ).then((menuQuerySnap) => {
+          menuQuerySnap.docs.map(m => {
+            const data = m.data();
+            data.id = m.id;
+            // @ts-ignore
+            data.offset = menuDataObj[m.id].offset || 0;
+            const tmp = {...menuObj.value};
+            tmp[m.id] = data;
+            menuObj.value = tmp;
+          });
+        });
       });
-
       const setQuantities = (itemId: string, newValue: number) => {
         const newQuantities = [newValue];
         ctx.emit("didOrderdChange", {
@@ -156,6 +168,10 @@ export const moPage = (setMenus: SetMenu[]) => {
       const updateHowtoreceive = (value: string) => {
         ctx.emit("input", value);
       };
+
+      const hasOrder = computed(() => {
+        return Object.keys(props.orders||{}).length;
+      });
       
       return {
         setMenus,
@@ -169,6 +185,8 @@ export const moPage = (setMenus: SetMenu[]) => {
         updateHowtoreceive,
 
         moBaseUrl,
+        hasOrder,
+        getMenuId,
       };
     },
   });

@@ -149,6 +149,53 @@ export default defineComponent({
     const configureStripe = async () => {
       const elements = stripe.elements();
       const stripeRegion = store.getters.stripeRegion;
+=======
+  async mounted() {
+    this.configureStripe();
+    try {
+      const stripeInfo = (
+        await db.doc(`/users/${this.user.uid}/readonly/stripe`).get()
+      ).data();
+      if (stripeInfo && stripeInfo.card) {
+        const expire = moment(`${stripeInfo.card.exp_year}${stripeInfo.card.exp_month}01T000000+0900`).endOf('month').toDate();
+        if (
+          stripeInfo.updatedAt && (
+            stripeInfo.updatedAt.toDate() >
+              moment().subtract(180, "days").toDate()
+          )
+        ) {
+          if (expire > new Date()) {
+          this.storedCard = stripeInfo.card;
+          this.useStoredCard = true;
+          this.$emit("change", { complete: true });
+          }
+        }
+      }
+    } catch (e) {
+      console.log("stripe expired");
+    }
+  },
+  watch: {
+    useStoredCard(newValue) {
+      this.$emit("change", newValue ? { complete: true } : this.elementStatus);
+    },
+  },
+  methods: {
+    async createToken() {
+      if (!this.useStoredCard) {
+        const { token } = await this.stripe.createToken(this.cardElement);
+        const tokenId = token.id;
+        const { data } = await stripeUpdateCustomer({
+          tokenId,
+          reuse: this.reuse,
+        });
+        // console.log("stripeUpdateCustomer", data, tokenId);
+      }
+    },
+    configureStripe() {
+      const elements = this.stripe.elements();
+      const stripeRegion = this.$store.getters.stripeRegion;
+>>>>>>> 7ec1f6df1ec2ff84305c24dd39fe30c0ef203107
       const cardElement = elements.create("card", {
         hidePostalCode: stripeRegion.hidePostalCode,
         style: {

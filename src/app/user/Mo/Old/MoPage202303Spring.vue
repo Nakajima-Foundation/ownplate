@@ -32,9 +32,7 @@
           <div v-for="(m, j) in menu.menus" :key="j">
             <template v-if="menuObj[m.id]">
               <MoPageMenu
-                :isSet="false"
                 :menu="menuObj[m.id]"
-                :mData="m"
                 :orders="orders"
                 @pushQuantities="pushQuantities"
                 @pullQuantities="pullQuantities"
@@ -64,7 +62,7 @@
 </template>
 
 <script lang="ts">
-import { moPage, getMenuId } from "./MoPageCommon";
+import { moPage, getMenuId } from "../MoPageCommon";
 
 const setMenus = [
   {

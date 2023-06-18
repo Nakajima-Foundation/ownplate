@@ -75,7 +75,7 @@ import {
   computed,
 } from "vue";
 import { db } from "@/lib/firebase/firebase9";
-import { doc, collection, onSnapshot, updateDoc } from "firebase/firestore";
+import { doc, collection, onSnapshot, setDoc } from "firebase/firestore";
 
 import { ownPlateConfig } from "@/config/project";
 
@@ -121,11 +121,13 @@ export default defineComponent({
     );
 
     const printerAddress = computed(() => {
-      return ["https://" + ownPlateConfig.hostName + "/api/1.0/r/", restaurantId.value, "/starprinter/", printerConfig.value.key ].join("");
+      if (printerConfig.value?.key) {
+        return ["https://" + ownPlateConfig.hostName + "/api/1.0/r/", restaurantId.value, "/starprinter/", printerConfig.value.key ].join("");
+      }
     });
     const reset = () => {
       const newKey = doc(collection(db, "a")).id;
-      updateDoc(restaurantRef, {key: newKey});
+      setDoc(restaurantRef, {key: newKey}, {merge: true});
     };
     return {
       notFound,

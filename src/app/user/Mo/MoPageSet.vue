@@ -5,9 +5,7 @@
       <div v-for="(m, j) in menu.menus" :key="j">
         <template v-if="menuObj[m.id]">
           <MoPageMenu
-            :isSet="true"
             :menu="menuObj[m.id]"
-            :mData="m"
             :orders="orders"
             @pushQuantities="pushQuantities"
             @pullQuantities="pullQuantities"

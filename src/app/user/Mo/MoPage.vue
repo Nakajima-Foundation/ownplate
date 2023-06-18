@@ -1,12 +1,8 @@
 <template>
   <div>
     <!-- {{pageId}} -->
-    <MoPage202305
-      v-if="pageId == '202305'"
-      :pageBase="pageBase"
-      />
-    <MoPage202303Spring
-      v-if="pageId == '202303spring'"
+    <MoPageOneBuyOne1
+      v-if="pageId == '202306buy1' && term === 1"
       :pageId="pageId"
       :pageBase="pageBase"
       :groupData="groupData"
@@ -24,6 +20,64 @@
       :moPickupSuspend="moPickupSuspend"
 
       />
+    <MoPageOneBuyOne2
+      v-else-if="pageId == '202306buy2' && term === 2"
+      :pageId="pageId"
+      :pageBase="pageBase"
+      :groupData="groupData"
+      @didOrderdChange="didOrderdChange"
+      :orders="orders"
+      :selectedOptions="selectedOptions"
+      :shopInfo="shopInfo"
+      :isPickup="isPickup"
+
+      :howtoreceive="howtoreceive"
+      @input="updateHowtoreceive"
+      :disabledPickupTime="disabledPickupTime"
+      :noAvailableTime="noAvailableTime"
+      :lastOrder="lastOrder"
+      :moPickupSuspend="moPickupSuspend"
+
+      />
+    <MoPageOneBuyOne3
+      v-else-if="pageId == '202306buy3' && term === 3"
+      :pageId="pageId"
+      :pageBase="pageBase"
+      :groupData="groupData"
+      @didOrderdChange="didOrderdChange"
+      :orders="orders"
+      :selectedOptions="selectedOptions"
+      :shopInfo="shopInfo"
+      :isPickup="isPickup"
+
+      :howtoreceive="howtoreceive"
+      @input="updateHowtoreceive"
+      :disabledPickupTime="disabledPickupTime"
+      :noAvailableTime="noAvailableTime"
+      :lastOrder="lastOrder"
+      :moPickupSuspend="moPickupSuspend"
+
+      />
+    <MoPage20230701
+      v-else-if="pageId == '202307'"
+      :pageId="pageId"
+      :pageBase="pageBase"
+      :groupData="groupData"
+      @didOrderdChange="didOrderdChange"
+      :orders="orders"
+      :selectedOptions="selectedOptions"
+      :shopInfo="shopInfo"
+      :isPickup="isPickup"
+
+      :howtoreceive="howtoreceive"
+      @input="updateHowtoreceive"
+      :disabledPickupTime="disabledPickupTime"
+      :noAvailableTime="noAvailableTime"
+      :lastOrder="lastOrder"
+      :moPickupSuspend="moPickupSuspend"
+
+      />
+    <NotFound v-else />
   </div>
 </template>
 
@@ -34,13 +88,20 @@ import {
   onUnmounted,
 } from "vue";
 
-import MoPage202305 from "./MoPage202305.vue";
-import MoPage202303Spring from "./MoPage202303Spring.vue";
+import MoPageOneBuyOne1 from "./MoPageOneBuyOne1.vue";
+import MoPageOneBuyOne2 from "./MoPageOneBuyOne2.vue";
+import MoPageOneBuyOne3 from "./MoPageOneBuyOne3.vue";
+import MoPage20230701 from "./MoPage20230701.vue";
+
+import NotFound from "@/components/NotFound.vue";
 
 export default defineComponent({
   components: {
-    MoPage202305,
-    MoPage202303Spring,
+    MoPageOneBuyOne1,
+    MoPageOneBuyOne2,
+    MoPageOneBuyOne3,
+    MoPage20230701,
+    NotFound,
   },
   props: {
     pageId: {
@@ -76,23 +137,26 @@ export default defineComponent({
       type: String,
       required: true,
     },
-      disabledPickupTime: {
-        type: Boolean,
-        required: true,
-      },
-      noAvailableTime: {
-        type: Boolean,
-        required: false,
-      },
-      lastOrder: {
-        type: String,
-        required: false,
-      },
-      moPickupSuspend: {
-        type: Boolean,
-        required: false,
-      },
-
+    disabledPickupTime: {
+      type: Boolean,
+      required: true,
+    },
+    noAvailableTime: {
+      type: Boolean,
+      required: false,
+    },
+    lastOrder: {
+      type: String,
+      required: false,
+    },
+    moPickupSuspend: {
+      type: Boolean,
+      required: false,
+    },
+    term: {
+      type: Number,
+      required: true,
+    },
   },
   setup(props, ctx) {
     const didOrderdChange = (param: any) => {
