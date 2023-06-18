@@ -44,6 +44,7 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc, query, onSnapshot } from "firebase/firestore";
 import { stripeDeleteCard } from "@/lib/firebase/functions";
 import { useIsLiffUser } from "@/utils/utils";
+import moment from "moment";
 
 export default defineComponent({
   setup(_, ctx) {
@@ -65,7 +66,17 @@ export default defineComponent({
           query(doc(db, `/users/${user.value.uid}/readonly/stripe`)),
           (snapshot) => {
             const stripeInfo = snapshot.data();
-            storedCard.value = stripeInfo?.card;
+            if (stripeInfo && stripeInfo.card) {
+              const expire = moment(`${stripeInfo.card.exp_year}${stripeInfo.card.exp_month}01T000000+0900`).endOf('month').toDate();
+              if (
+                stripeInfo.updatedAt.toDate() >
+                  moment().subtract(180, "days").toDate()
+              ) {
+                if (expire > new Date()) {
+                  storedCard.value = stripeInfo?.card;
+                }
+              }
+            }
           },
           (e) => {
             console.log("stripe expired")
