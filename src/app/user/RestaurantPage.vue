@@ -231,10 +231,20 @@
             <!-- stock filter Toggle-->
             <div>
               <MoOneBuyOneBanner
-                v-if="showSubCategory && enableCampaignBanner"
+                v-if="false"
                 :term="buyTerm"
                 :pageBase="pageBase"
                 />
+
+							<!--7月施策バナー表示-->
+								  <div v-if="true" class="mx-6 mt-4">
+									  <MoFukubukuroBanner
+                      v-if="showSubCategory && enableCampaignBanner"
+                      :pageBase="pageBase"
+                      :term="buyTerm"
+                      />
+								  </div>
+
               <div v-if="showSubCategory && isPickup">
                 <div class="mx-6 mt-4 grid grid-cols-2 gap-2 lg:mx-0">
                   <!-- 在庫なし含む -->
