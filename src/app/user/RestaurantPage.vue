@@ -290,19 +290,19 @@
                     {{ $t("shopInfo.productCategory") }}
                   </div>
                   <MoOneBuyOneBanner
-                    v-if="enableCampaignBanner"
+                    v-if="false"
                     :pageBase="pageBase"
                     :term="buyTerm"
                     />
 								
 								<!--7月施策バナー表示-->
-								<div v-if="false">
-									<MoFukubukuroBanner
-                    v-if="enableCampaignBanner"
-                    :pageBase="pageBase"
-                    :term="buyTerm"
-                    />
-								</div>
+								  <div v-if="true">
+									  <MoFukubukuroBanner
+                      v-if="enableCampaignBanner"
+                      :pageBase="pageBase"
+                      :term="buyTerm"
+                      />
+								  </div>
 
                   <CategoryTop
                     :categoryData="categoryData"

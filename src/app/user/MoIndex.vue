@@ -44,14 +44,14 @@
     </div>
 
 		<!--Campaign202306-->
-		<div>
-		  <Campaign202306 :moBasePath="moBasePath" />
+		<div v-if="false">
+		  <Campaign202306 :moBasePath="moBasePath" v-if="enableCampaignBanner" />
 		</div>
 
 		<!--ToDo 7月施策用の訴求テキスト-->
 		<!--Campaign202307-->
-		<div v-if="false">
-		  <Campaign202307 :moBasePath="moBasePath" />
+		<div>
+		  <Campaign202307 :moBasePath="moBasePath"  v-if="enableCampaignBanner" />
 		</div>
 
     <div class="mx-6 mt-8 text-xl font-bold text-black text-opacity-40">
