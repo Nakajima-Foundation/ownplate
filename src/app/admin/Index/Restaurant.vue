@@ -452,7 +452,6 @@ import {
   isDev,
 } from "@/utils/utils";
 
-
 export default defineComponent({
   name: "RestaurantEditCard",
   props: {
