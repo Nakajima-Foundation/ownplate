@@ -107,6 +107,23 @@ interface CustomRoute {
   meta?: any;
 }
 
+const mopath2 =  mo_prefixes
+  .map((prefix) => {
+    const prePath = "/" + prefix;
+    return [
+      {
+        path: prePath,
+        component: "user/MoWrapper.vue",
+        children: [
+          {
+            path: prePath + "/*",
+            component: "user/Mo/MoClosed.vue",
+          }
+        ]
+      }
+    ]
+  }).flat();
+
 const mopath = mo_prefixes
   .map((prefix) => {
     const prePath = "/" + prefix;
@@ -122,6 +139,10 @@ const mopath = mo_prefixes
           {
             path: prePath + "/outage",
             component: "user/Outage.vue",
+          },
+          {
+            path: prePath + "/closed",
+            component: "user/Mo/MoClosed.vue",
           },
           {
             path: prePath + "/r/favorites",
