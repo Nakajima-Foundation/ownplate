@@ -89,7 +89,7 @@
       <div v-if="moreInfo">
 
         <!-- Transactions Act -->
-        <div class="mt-2">
+        <div class="mt-4">
           <transactions-act
             :shopInfo="shopInfo"
             :isDelivery="isDelivery"
@@ -104,25 +104,24 @@
             class="inline-flex items-center justify-center"
             rel="noopener noreferrer"
           >
-            <i class="material-icons mr-2 text-lg text-op-teal">language</i>
             <div class="text-sm font-bold text-op-teal">
-              {{ shopInfo.url }}
-            </div>
+              {{ $t("shopInfo.visitWebsite") }}
+						</div>
+						<i class="material-icons ml-1 text-lg text-op-teal">launch</i>
           </a>
         </div>
 
-        <!-- Restaurant LINE -->
+        <!-- Restaurant Social Link -->
+				<div class="inline-flex items-center justify-center my-2">
+
+				<!-- Restaurant LINE -->
         <div v-if="hasLineUrl" class="mt-2">
           <a
             target="_blank"
             :href="shopInfo.lineUrl"
-            class="inline-flex items-center justify-center"
             rel="noopener noreferrer"
           >
-            <i class="fab fa-line mr-2 text-lg" style="color: #4ec263"></i>
-            <div class="text-sm font-bold" style="color: #4ec263">
-              {{ shopInfo.lineUrl }}
-            </div>
+            <i class="fab fa-line mr-6 text-4xl" style="color: #4ec263"></i>
           </a>
         </div>
 
@@ -131,13 +130,9 @@
           <a
             target="_blank"
             :href="shopInfo.instagramUrl"
-            class="inline-flex items-center justify-center"
             rel="noopener noreferrer"
           >
-            <i class="fab fa-instagram mr-2 text-lg" style="color: #dd2a7b"></i>
-            <div class="text-sm font-bold" style="color: #dd2a7b">
-              {{ shopInfo.instagramUrl }}
-            </div>
+            <i class="fab fa-instagram mr-6 text-4xl" style="color: #dd2a7b"></i>
           </a>
         </div>
 
@@ -146,15 +141,12 @@
           <a
             target="_blank"
             :href="shopInfo.uberEatsUrl"
-            class="inline-flex items-center justify-center"
             rel="noopener noreferrer"
           >
-            <i class="fab fa-uber mr-2 text-lg" style="color: #06c167"></i>
-            <div class="text-sm font-bold" style="color: #06c167">
-              {{ shopInfo.uberEatsUrl }}
-            </div>
+            <i class="fab fa-uber mr-6 text-4xl" style="color: #06c167"></i>
           </a>
         </div>
+				</div>
 
         <!-- Restaurant Hours -->
         <div class="mt-2">

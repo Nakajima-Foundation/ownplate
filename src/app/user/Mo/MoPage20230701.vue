@@ -39,8 +39,10 @@
 				<div class="text-sm sm:text-base">
 					<div>{{ $t("mobileOrder.campaign.overviewJuly1") }}</div>
 					<div class="mt-2">{{ $t("mobileOrder.campaign.overviewJuly2") }}</div>
-					<div class="mt-1">{{ $t("mobileOrder.campaign.overviewJuly3") }}</div>
-					<div class="mt-1">{{ $t("mobileOrder.campaign.overviewJuly4") }}</div>
+					<ul class="mt-2 ml-4 list-outside list-disc">
+						<li class="mt-0.5">{{ $t("mobileOrder.campaign.overviewJuly3") }}</li>
+						<li class="mt-0.5">{{ $t("mobileOrder.campaign.overviewJuly4") }}</li>
+					</ul>
 					<div class="mt-2">{{ $t("mobileOrder.campaign.overviewJuly5") }}</div>
 				</div>
 				<div class="-ml-2 mt-4 text-sm sm:text-base font-bold text-black text-opacity-40 mb-1">{{ $t("mobileOrder.campaign.part1") }}</div>

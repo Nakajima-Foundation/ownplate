@@ -1,57 +1,25 @@
 <template>
   <div>
-    <div class="mx-0 mt-6 flex justify-center sm:mx-6 sm:max-w-7xl xl:mx-auto">
+    <div class="mx-0 mb-6 sm:mt-6 flex justify-center sm:mx-6 sm:max-w-7xl xl:mx-auto sm:rounded-lg">
       <img
-        :src="moBaseUrl + '/images/assets/mo_hero_mobile_new.png'"
+        :src="moBaseUrl + '/images/assets/mo_hero_mobile2.png'"
         class="sm:hidden"
       />
       <img
-        :src="moBaseUrl + '/images/assets/mo_hero_tablet_new.png'"
+        :src="moBaseUrl + '/images/assets/mo_hero_tablet2.png'"
         class="hidden sm:block"
       />
     </div>
 
-    <div
-      class="mx-10 mt-6 text-center font-bold text-black sm:max-w-7xl sm:text-xl xl:mx-auto"
-    >
-      {{ $t("lp.moTagline") }}
-    </div>
-
-    <div
-      class="mx-6 mt-6 mb-6 flex justify-center space-x-4 sm:max-w-7xl xl:mx-auto"
-    >
-      <!-- pickup -->
-      <div class="w-full rounded-lg bg-white px-4 pb-4 text-center shadow-none">
-        <div class="mx-auto mb-4 h-20 w-32">
-          <img :src="moBaseUrl + '/images/assets/mo_icon_store.png'" />
-        </div>
-        <div class="text-sm text-black sm:text-base">
-          {{ $t("lp.moDescription2") }}
-        </div>
-        <div class="mt-0.5 text-xs text-black text-opacity-60 sm:text-sm">
-          {{ $t("lp.moDescription3") }}
-        </div>
-      </div>
-      <!-- takeout -->
-      <div class="w-full rounded-lg bg-white px-4 pb-4 text-center shadow-none">
-        <div class="mx-auto mb-4 h-20 w-32">
-          <img :src="moBaseUrl + '/images/assets/mo_icon_shipping.png'" />
-        </div>
-        <div class="text-sm text-black sm:text-base">
-          {{ $t("lp.moDescription1") }}
-        </div>
-      </div>
-    </div>
-
 		<!--Campaign202306-->
-		<div>
-		  <Campaign202306 :moBasePath="moBasePath" />
+		<div v-if="false">
+		  <Campaign202306 :moBasePath="moBasePath" v-if="enableCampaignBanner" />
 		</div>
 
 		<!--ToDo 7月施策用の訴求テキスト-->
 		<!--Campaign202307-->
-		<div v-if="false">
-		  <Campaign202307 :moBasePath="moBasePath" />
+		<div>
+		  <Campaign202307 :moBasePath="moBasePath"  v-if="enableCampaignBanner" />
 		</div>
 
     <div class="mx-6 mt-8 text-xl font-bold text-black text-opacity-40">
