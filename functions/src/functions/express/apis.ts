@@ -207,7 +207,7 @@ export const getSVG = (restaurantData: any, orderData: any) => {
   const taxPayment = restaurantData.inclusiveTax ? "内税" : "外税";
   const onlinePay = orderData?.payment?.stripe ? "事前クレジット決済" : "現地払い";
   const text = `
-^^${escapePrinterString(restaurantData.restaurantName)}
+^^${escapePrinterString(restaurantData.restaurantName || '')}
 おもちかえり.com
 
 ^^^"${orderNumber}"
@@ -215,7 +215,7 @@ export const getSVG = (restaurantData: any, orderData: any) => {
 |受渡方法："${howToReceive}"
 |受渡希望時間："${timeEstimated}"
 
-${escapePrinterString(orderData.name)}さん|
+${escapePrinterString(orderData.name || '')}さん|
 {w:*,4;b:line}
 ${orders}
 -

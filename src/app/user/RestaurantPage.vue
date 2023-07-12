@@ -24,7 +24,6 @@
           :noAvailableTime="noAvailableTime"
           :lastOrder="lastOrder"
           :moPickupSuspend="moPickupSuspend"
-          :term="buyTerm"
           />
       </div>
 
@@ -230,18 +229,11 @@
 
             <!-- stock filter Toggle-->
             <div>
-              <MoOneBuyOneBanner
-                v-if="false"
-                :term="buyTerm"
-                :pageBase="pageBase"
-                />
-
 							<!--7月施策バナー表示-->
 								  <div v-if="true" class="mx-6 mt-4">
 									  <MoFukubukuroBanner
                       v-if="showSubCategory && enableCampaignBanner"
                       :pageBase="pageBase"
-                      :term="buyTerm"
                       />
 								  </div>
 
@@ -299,18 +291,12 @@
                   <div class="text-xl font-bold text-black text-opacity-30">
                     {{ $t("shopInfo.productCategory") }}
                   </div>
-                  <MoOneBuyOneBanner
-                    v-if="false"
-                    :pageBase="pageBase"
-                    :term="buyTerm"
-                    />
 								
 								<!--7月施策バナー表示-->
 								  <div v-if="true">
 									  <MoFukubukuroBanner
                       v-if="enableCampaignBanner"
                       :pageBase="pageBase"
-                      :term="buyTerm"
                       />
 								  </div>
 
@@ -438,7 +424,6 @@
         :totalPrice="totalPrice"
         :promotions="promotions"
         :possiblePromotions="possiblePromotions"
-        :term="buyTerm"
       />
 
       <!-- for disable all UI -->
@@ -523,7 +508,6 @@ import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
 import TransactionsActContents from "@/app/user/TransactionsAct/Contents.vue";
 import MoPickUp from "@/app/user/Restaurant/MoPickUp.vue";
 import MoPage from "@/app/user/Mo/MoPage.vue";
-import MoOneBuyOneBanner from "@/app/user/Mo/MoOneBuyOneBanner.vue";
 import MoFukubukuroBanner from "@/app/user/Mo/MoFukubukuroBanner.vue";
 
 import FloatingBanner from "@/app/user/Restaurant/FloatingBanner.vue";
@@ -610,7 +594,6 @@ export default defineComponent({
     
     MoPickUp,
     MoPage,
-		MoOneBuyOneBanner,
 		MoFukubukuroBanner,
   },
   props: {
@@ -1302,41 +1285,6 @@ export default defineComponent({
         return a.discountThreshold > totalPrice.value.total;
       });
     });
-    // for mo
-    const buyTerm = computed(() => {
-      // "6月6日〜6/12",
-			// "6月13日〜6/19",
-			// "6月20日〜6/26",
-      const date = moment(store.state.date).tz("Asia/Tokyo").date();
-      if (date < 6) {
-        return 0;
-      }
-      if (date < 13) {
-        return 1;
-      }
-      if (date < 20) {
-        return 2;
-      }
-      if (date < 27) {
-        return 3;
-      }
-      return 4;
-      /*
-      if (date < 2) { // 1
-        return 1;
-      }
-      if (date < 3) { // 2
-        return 2;
-      }
-      if (date < 30) { // 3 - 29
-        return 3;
-      }
-      if (date < 31) { // 30
-        return 3;
-      }
-      return 4; // 31
-      */
-    });
 
     const isSpecialShop = computed(() => {
       return ([
@@ -1429,7 +1377,6 @@ export default defineComponent({
 
       moment,
       pageId,
-      buyTerm,
     };
   },
 });

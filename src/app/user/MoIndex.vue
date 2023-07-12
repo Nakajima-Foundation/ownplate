@@ -11,12 +11,6 @@
       />
     </div>
 
-		<!--Campaign202306-->
-		<div v-if="false">
-		  <Campaign202306 :moBasePath="moBasePath" v-if="enableCampaignBanner" />
-		</div>
-
-		<!--ToDo 7月施策用の訴求テキスト-->
 		<!--Campaign202307-->
 		<div>
 		  <Campaign202307 :moBasePath="moBasePath"  v-if="enableCampaignBanner" />

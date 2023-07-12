@@ -26,10 +26,6 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    term: {
-      type: Number,
-      required: true,
-    },
   },
   setup() {
     return {
