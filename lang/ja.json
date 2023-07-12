@@ -1075,6 +1075,7 @@
       "suspendUntil": "{display} まで休止",
       "suspendDayUntil": "{display} 日後の終わりまで休止",
       "suspendNewOrders": "新規注文受付",
+      "notSuspendAvailable": "今日の営業時間は終わっているので休止設定できません",
       "suspendForAllDay": "終日休止",
       "suspending": "受付休止中",
       "unsuspendAt": "解除時刻 ",

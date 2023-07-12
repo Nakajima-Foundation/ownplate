@@ -1018,6 +1018,7 @@
       "suspendUntil": "Suspend until {display}",
       "suspendDayUntil": "Suspend until the end of {display} days",
       "suspendNewOrders": "Suspend New Orders",
+      "notSuspendAvailable": "Business hours are over for today, so you can't set suspend",
       "suspendForAllDay": "For All Day",
       "suspending": "Suspendinding",
       "unsuspendAt": "Unsuspend at ",
