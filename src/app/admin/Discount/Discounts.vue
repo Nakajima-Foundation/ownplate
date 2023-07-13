@@ -163,6 +163,7 @@ import {
   notFoundResponse,
 } from "@/utils/utils";
 import { checkShopAccount } from "@/utils/userPermission";
+import moment from "moment-timezone";
 
 export default defineComponent({
   components: {
@@ -228,6 +229,7 @@ export default defineComponent({
       promotionDataSet,
       newDiscount,
       notFound: false,
+      moment,
     };
   },
 });
