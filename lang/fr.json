@@ -64,6 +64,19 @@
       "showAll": "Show all",
       "showOnlyInStock": "Show only in stock",
       "closeNote": "*Orders at this store will be closed at {time} on {date}."
+		},
+    "closing": {
+      "notice": "Avis",
+			"heading": "Avis de fin de service",
+			"paragraph1": "Nous vous remercions pour votre soutien continu. La commande mobile ne sera plus disponible le vendredi 18 août 2023. Nous nous excusons pour les désagréments occasionnés et vous remercions de votre compréhension.",
+			"paragraph2": "Vous trouverez ci-dessous l'horaire jusqu'à la fin du service.",
+			"paragraph3": "Les nouvelles commandes ne sont plus acceptées.",
+			"ordering": "[Date et heure de la commande]",
+			"orderingDate": "Jusqu'à 16 heures, le jeudi 10 août 2023",
+			"acceptance": "[Date et heure de réception]",
+			"acceptanceDate": "Jusqu'à 22 heures, le vendredi 18 août 2023",
+			"closedMessage": "Avis de fin de service",
+			"closedParagraph": "Nous vous remercions pour votre soutien continu. La commande mobile ne sera plus disponible le vendredi 18 août 2023. Nous nous excusons pour les désagréments occasionnés et vous remercions de votre compréhension."
     }
   },
   "profile": {

@@ -229,6 +229,17 @@
 
             <!-- stock filter Toggle-->
             <div>
+							<!--To Do 期間に合わせてそれぞれのコンポーネントを表示-->
+								<!--7/27((木))〜8/10(木) 終了告知期間-->
+									<div class="mx-6 mt-4 lg:mx-0">
+		  							<MoClosing0727 :moBasePath="moBasePath"/>
+									</div>
+
+								<!--8/10(木)〜8/18(金) 注文受付終了〜サービス終了まで-->
+									<div class="mx-6 mt-4 lg:mx-0">
+		  							<MoClosing0810 :moBasePath="moBasePath"/>
+									</div>
+
 							<!--7月施策バナー表示-->
 								  <div v-if="true" class="mx-6 mt-4">
 									  <MoFukubukuroBanner
@@ -291,6 +302,17 @@
                   <div class="text-xl font-bold text-black text-opacity-30">
                     {{ $t("shopInfo.productCategory") }}
                   </div>
+								
+								<!--To Do 期間に合わせてそれぞれのコンポーネントを表示-->
+								<!--7/27((木))〜8/10(木) 終了告知期間-->
+									<div class="mt-4">
+		  							<MoClosing0727 :moBasePath="moBasePath"/>
+									</div>
+
+								<!--8/10(木)〜8/18(金) 注文受付終了〜サービス終了まで-->
+									<div class="mt-4">
+		  							<MoClosing0810 :moBasePath="moBasePath"/>
+									</div>
 								
 								<!--7月施策バナー表示-->
 								  <div v-if="true">

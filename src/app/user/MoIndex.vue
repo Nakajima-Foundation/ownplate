@@ -11,6 +11,17 @@
       />
     </div>
 
+		<!--To Do 期間に合わせてそれぞれのコンポーネントを表示-->
+			<!--7/27((木))〜8/10(木) 終了告知期間-->
+			<div>
+		  	<MoClosing0727 :moBasePath="moBasePath"/>
+			</div>
+
+			<!--8/10(木)〜8/18(金) 注文受付終了〜サービス終了まで-->
+			<div>
+		  	<MoClosing0810 :moBasePath="moBasePath"/>
+			</div>
+
 		<!--Campaign202307-->
 		<div>
 		  <Campaign202307 :moBasePath="moBasePath"  v-if="enableCampaignBanner" />
