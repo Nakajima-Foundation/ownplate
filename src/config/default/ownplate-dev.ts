@@ -54,3 +54,5 @@ export const enableReason = true;
 export const enableCampaignBanner = true;
 
 export const autoCancels = ["ss", "motest"];
+
+export const moCloseStatus = 0; // 1, 2 ,3

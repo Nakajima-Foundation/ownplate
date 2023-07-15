@@ -231,12 +231,12 @@
             <div>
 							<!--To Do 期間に合わせてそれぞれのコンポーネントを表示-->
 								<!--7/27((木))〜8/10(木) 終了告知期間-->
-									<div class="mx-6 mt-4 lg:mx-0">
+									<div class="mx-6 mt-4 lg:mx-0" v-if="moCloseStatus === 1 && showSubCategory">
 		  							<MoClosing0727 :moBasePath="moBasePath"/>
 									</div>
 
 								<!--8/10(木)〜8/18(金) 注文受付終了〜サービス終了まで-->
-									<div class="mx-6 mt-4 lg:mx-0">
+									<div class="mx-6 mt-4 lg:mx-0" v-if="moCloseStatus === 2 && showSubCategory">
 		  							<MoClosing0810 :moBasePath="moBasePath"/>
 									</div>
 
@@ -305,12 +305,12 @@
 								
 								<!--To Do 期間に合わせてそれぞれのコンポーネントを表示-->
 								<!--7/27((木))〜8/10(木) 終了告知期間-->
-									<div class="mt-4">
+									<div class="mt-4" v-if="moCloseStatus === 1">
 		  							<MoClosing0727 :moBasePath="moBasePath"/>
 									</div>
 
 								<!--8/10(木)〜8/18(金) 注文受付終了〜サービス終了まで-->
-									<div class="mt-4">
+									<div class="mt-4" v-if="moCloseStatus === 2">
 		  							<MoClosing0810 :moBasePath="moBasePath"/>
 									</div>
 								
@@ -532,6 +532,9 @@ import MoFukubukuroBanner from "@/app/user/Mo/MoFukubukuroBanner.vue";
 
 import FloatingBanner from "@/app/user/Restaurant/FloatingBanner.vue";
 
+import MoClosing0727 from "./Mo/MoClosing0727.vue";
+import MoClosing0810 from "./Mo/MoClosing0810.vue";
+
 import { usePickupTime } from "@/utils/pickup";
 
 import liff from "@line/liff";
@@ -549,7 +552,7 @@ import { orderCreated } from "@/lib/firebase/functions";
 
 import { order_status } from "@/config/constant";
 
-import { ownPlateConfig, moTitle, moPickup, enableCampaignBanner } from "@/config/project";
+import { ownPlateConfig, moTitle, moPickup, enableCampaignBanner, moCloseStatus } from "@/config/project";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import {
@@ -606,6 +609,9 @@ export default defineComponent({
     MoPickUp,
     MoPage,
 		MoFukubukuroBanner,
+
+    MoClosing0727,
+    MoClosing0810,
   },
   props: {
     shopInfo: {
@@ -633,6 +639,10 @@ export default defineComponent({
       required: true,
     },
     moPrefix: {
+      type: String,
+      required: false,
+    },
+    moBasePath: {
       type: String,
       required: false,
     },
@@ -1378,6 +1388,7 @@ export default defineComponent({
       scrollTop,
 
       pageId,
+      moCloseStatus,
     };
   },
 });
