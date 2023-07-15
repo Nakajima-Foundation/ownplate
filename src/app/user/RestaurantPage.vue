@@ -176,10 +176,6 @@
 		  				<MoClosing0727 :moBasePath="moBasePath"/>
 						</div>
             
-						<!--8/10(木)〜8/18(金) 注文受付終了〜サービス終了まで-->
-						<div class="mx-6 mt-4 lg:mx-0" v-if="moCloseStatus === 2">
-		  				<MoClosing0810 :moBasePath="moBasePath"/>
-						</div>
             <div class="mx-6 mt-2 lg:mx-0" v-if="shopInfo.enableDelivery">
               <div class="rounded-lg bg-white shadow">
                 <!-- delivery toggle-->
@@ -197,7 +193,11 @@
 
             <!-- Mo Suspend -->
             <div v-if="moSuspend && isInMo">
-              <div
+						  <!--8/10(木)〜8/18(金) 注文受付終了〜サービス終了まで-->
+						  <div class="mx-6 mt-4 lg:mx-0" v-if="moCloseStatus === 2">
+		  				  <MoClosing0810 :moBasePath="moBasePath"/>
+						  </div>
+              <div v-else
                 class="mx-6 mt-3 mb-2 rounded-lg bg-red-700 bg-opacity-10 p-3 font-bold text-red-700 lg:mx-0"
               >
                 {{ $t("mobileOrder.suspendMessage") }}
