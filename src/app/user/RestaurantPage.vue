@@ -172,7 +172,7 @@
           <div v-else>
 						<!--To Do 期間に合わせてそれぞれのコンポーネントを表示-->
 						<!--7/27((木))〜8/10(木) 終了告知期間-->
-						<div class="mx-6 mt-4 lg:mx-0" v-if="moCloseStatus === 1 && isInMo">
+						<div class="my-4" v-if="moCloseStatus === 1 && isInMo">
 		  				<MoClosing0727 :moBasePath="moBasePath"/>
 						</div>
             
@@ -194,7 +194,7 @@
             <!-- Mo Suspend -->
             <div v-if="moSuspend && isInMo">
 						  <!--8/10(木)〜8/18(金) 注文受付終了〜サービス終了まで-->
-						  <div class="mx-6 mt-4 lg:mx-0" v-if="moCloseStatus === 2">
+						  <div class="my-4" v-if="moCloseStatus === 2">
 		  				  <MoClosing0810 :moBasePath="moBasePath"/>
 						  </div>
               <div v-else
