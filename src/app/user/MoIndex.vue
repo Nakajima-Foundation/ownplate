@@ -13,12 +13,12 @@
 
 		<!--To Do 期間に合わせてそれぞれのコンポーネントを表示-->
 		<!--7/27((木))〜8/10(木) 終了告知期間-->
-			<div v-if="moCloseStatus === 1">
+			<div class="lg:mx-6" v-if="moCloseStatus === 1">
 		  	<MoClosing0727 :moBasePath="moBasePath"/>
 			</div>
 
 			<!--8/10(木)〜8/18(金) 注文受付終了〜サービス終了まで-->
-			<div v-if="moCloseStatus === 2">
+			<div class="lg:mx-6" v-if="moCloseStatus === 2">
 		  	<MoClosing0810 :moBasePath="moBasePath"/>
 			</div>
 

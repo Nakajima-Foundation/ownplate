@@ -1,6 +1,6 @@
 <!--7/27((木))〜8/10(木) 終了告知期間-->
 <template>
-	<div class="mx-6 rounded-lg bg-white sm:max-w-7xl xl:mx-auto mb-1">
+	<div class="mx-6 rounded-lg bg-white sm:max-w-7xl lg:mx-auto mb-1">
 		<div class="rounded-lg text-center bg-red-700 bg-opacity-10 text-red-600 font-bold py-1">
 			{{ $t("mobileOrder.closing.notice") }}
 		</div>
