@@ -6,7 +6,7 @@
     </template>
     <template v-else>
       <!-- Header -->
-      <AdminHeader
+      <AdminHeaderOrderInfoPage
         class="mx-6 mt-6 lg:flex lg:items-center"
         :shopInfo="shopInfo"
         :backLink="parentUrl"
@@ -553,7 +553,7 @@ import { ownPlateConfig } from "@/config/project";
 import NotFound from "@/components/NotFound.vue";
 import OrderInfo from "@/app/user/OrderPage/OrderInfo.vue";
 import CustomerInfo from "@/components/CustomerInfo.vue";
-import AdminHeader from "@/app/admin/AdminHeader.vue";
+import AdminHeaderOrderInfoPage from "@/app/admin/AdminHeaderOrderInfoPage.vue";
 
 import ButtonLoading from "@/components/Button/Loading.vue";
 import CancelModal from "@/app/admin/Order/CancelModal.vue";
@@ -585,7 +585,7 @@ import {
 export default defineComponent({
   components: {
     OrderInfo,
-    AdminHeader,
+    AdminHeaderOrderInfoPage,
     CustomerInfo,
     NotFound,
     ButtonLoading,

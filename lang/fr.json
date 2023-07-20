@@ -745,6 +745,7 @@
   },
   "button": {
     "back": "Retour",
+		"backToOrderListPage": "Voir les commandes",
     "addTitle": "Ajouter un titre de groupe",
     "addItem": "Ajouter un article",
     "downloadMenu": "Télécharger le menu",

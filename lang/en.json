@@ -837,6 +837,7 @@
   },
   "button": {
     "back": "Back",
+		"backToOrderListPage": "View Orders",
     "addTitle": "Add Group Title",
     "addItem": "Add Item",
     "downloadMenu": "Download menu",

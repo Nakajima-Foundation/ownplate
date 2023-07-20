@@ -894,6 +894,7 @@
   },
   "button": {
     "back": "戻る",
+		"backToOrderListPage": "注文確認に戻る",
     "addTitle": "商品グループ名を追加",
     "addItem": "商品を追加",
     "downloadMenu": "チラシをダウンロード",
