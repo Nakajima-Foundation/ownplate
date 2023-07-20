@@ -2,7 +2,7 @@
   <div>
     <div class="flex space-x-4">
       <div class="flex-shrink-0">
-        <back-button :url="backLink" />
+        <back-button :url="backLink" :iconText="iconText" :backText="backText" />
       </div>
       <PreviewLink :shopInfo="shopInfo" :isInMo="isInMo" :moPrefix="moPrefix" />
     </div>
@@ -100,6 +100,14 @@ export default defineComponent({
       required: true,
     },
     moPrefix: {
+      type: String,
+      required: false,
+    },
+    iconText: {
+      type: String,
+      required: false,
+    },
+    backText: {
       type: String,
       required: false,
     },
