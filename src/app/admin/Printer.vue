@@ -6,7 +6,6 @@
     <not-found />
   </template>
   <div v-else>
-    <div class="mx-6 mt-6 lg:flex lg:items-center">
       <AdminHeader
         class="mx-6 mt-6 lg:flex lg:items-center"
         :shopInfo="shopInfo"

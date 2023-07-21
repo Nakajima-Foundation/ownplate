@@ -836,8 +836,10 @@
     "setAreaMapNotice": "Specify the approximate deliverable range in a circle centered on the store. This range is a guide, so please judge whether delivery is possible at the time of ordering and accept the order."
   },
   "button": {
+		"adminTop":"Admin Top",
     "back": "Back",
 		"backToOrderListPage": "View Orders",
+		"backToDiscounts": "View Promotions",
     "addTitle": "Add Group Title",
     "addItem": "Add Item",
     "downloadMenu": "Download menu",
