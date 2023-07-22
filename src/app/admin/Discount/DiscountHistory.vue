@@ -10,7 +10,6 @@
       <!-- Center Column -->
       <div class="column">
         <!-- Nav Bar -->
-        <div class="level">
           <!-- Back Button and Restaurant Profile -->
           <AdminHeader
             class="mx-6 mt-6 lg:flex lg:items-center"
@@ -20,7 +19,6 @@
             :isInMo="isInMo"
             :moPrefix="moPrefix"
             />
-        </div>
       </div>
       <!-- Right Gap -->
       <div class="column is-narrow w-6"></div>
@@ -29,13 +27,16 @@
       <!-- Back and Preview -->
       <div class="flex space-x-4">
         <div class="flex-shrink-0">
-          <back-button url="/admin/discounts/" />
+          <back-button 
+					backText="button.backToDiscounts"
+        	iconText="arrow_back"
+					url="/admin/discounts/" />
         </div>
       </div>
     </div>
 
 		<div class="mx-6 mt-4">
-    <div v-if="histories.length === 0" class="mt-4 text-black text-opacity-30 font-bold">
+    <div v-if="histories.length === 0" class="mt-8 text-black text-opacity-30 font-bold">
       {{ $t("admin.promotion.noHistory") }}
     </div>
     <div v-else>

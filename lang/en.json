@@ -134,6 +134,19 @@
 			"fixedMessageCart1":"※モバイルオーダーでさらにお得「1個買うと1個もらえる」キャンペーンに対する商品引換券の進呈を受けるには6/12迄のお受け取りが必要です。",
 			"fixedMessageCart2":"※モバイルオーダーでさらにお得「1個買うと1個もらえる」キャンペーンに対する商品引換券の進呈を受けるには6/19迄のお受け取りが必要です。",
 			"fixedMessageCart3":"※モバイルオーダーでさらにお得「1個買うと1個もらえる」キャンペーンに対する商品引換券の進呈を受けるには6/26迄のお受け取りが必要です。"
+		},
+    "closing": {
+      "notice": "Notice",
+			"heading": "End of Service Notice",
+			"paragraph1": "Thank you for your continuous support. Mobile Order will no longer be available on Friday, August 18, 2023. We apologize for any inconvenience and appreciate your understanding.",
+			"paragraph2": "Please check below for the schedule until the end of the service.",
+			"paragraph3": "New orders are no longer being accepted.",
+			"ordering": "[Date and time for ordering]",
+			"orderingDate": "Until 16:00, Thursday, August 10, 2023",
+			"acceptance": "[Date and time of receipt]",
+			"acceptanceDate": "Until 22:00, Friday, August 18, 2023",
+			"closedMessage": "End of Service Notice",
+			"closedParagraph": "Thank you for your continuous support. Mobile Order is no longer available on Friday, August 18, 2023. We apologize for any inconvenience and appreciate your understanding."
     }
   },
   "profile": {
@@ -823,7 +836,10 @@
     "setAreaMapNotice": "Specify the approximate deliverable range in a circle centered on the store. This range is a guide, so please judge whether delivery is possible at the time of ordering and accept the order."
   },
   "button": {
+		"adminTop":"Admin Top",
     "back": "Back",
+		"backToOrderListPage": "View Orders",
+		"backToDiscounts": "View Promotions",
     "addTitle": "Add Group Title",
     "addItem": "Add Item",
     "downloadMenu": "Download menu",

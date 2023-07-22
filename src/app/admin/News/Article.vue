@@ -12,7 +12,7 @@
           >
             <i class="material-icons mr-2 text-lg text-op-teal">home</i>
             <div class="text-sm font-bold text-op-teal">
-              {{ $t("admin.news.adminTop") }}
+              {{ $t("button.adminTop") }}
             </div>
           </div>
         </router-link>

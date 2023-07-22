@@ -2,7 +2,7 @@
   <div v-if="notFound">
     404
   </div>
-  <div class="mx-6 mt-6" v-else>
+  <div class="mx-6" v-else>
     <!-- QR Header Area -->
     <div class="columns is-gapless" v-if="shopInfo">
       <!-- Left Gap -->
@@ -10,7 +10,6 @@
       <!-- Center Column -->
       <div class="column">
         <!-- Nav Bar -->
-        <div class="level">
           <!-- Back Button and Restaurant Profile -->
           <AdminHeader
             class="mt-6 lg:flex lg:items-center"
@@ -20,7 +19,6 @@
             :isInMo="isInMo"
             :moPrefix="moPrefix"
             />
-        </div>
       </div>
       <!-- Right Gap -->
       <div class="column is-narrow w-6"></div>

@@ -170,6 +170,12 @@
             </div>
           </div>
           <div v-else>
+						<!--To Do 期間に合わせてそれぞれのコンポーネントを表示-->
+						<!--7/27((木))〜8/10(木) 終了告知期間-->
+						<div class="my-4" v-if="moCloseStatus === 1 && isInMo">
+		  				<MoClosing0727 :moBasePath="moBasePath"/>
+						</div>
+            
             <div class="mx-6 mt-2 lg:mx-0" v-if="shopInfo.enableDelivery">
               <div class="rounded-lg bg-white shadow">
                 <!-- delivery toggle-->
@@ -187,7 +193,11 @@
 
             <!-- Mo Suspend -->
             <div v-if="moSuspend && isInMo">
-              <div
+						  <!--8/10(木)〜8/18(金) 注文受付終了〜サービス終了まで-->
+						  <div class="my-4" v-if="moCloseStatus === 2">
+		  				  <MoClosing0810 :moBasePath="moBasePath"/>
+						  </div>
+              <div v-else
                 class="mx-6 mt-3 mb-2 rounded-lg bg-red-700 bg-opacity-10 p-3 font-bold text-red-700 lg:mx-0"
               >
                 {{ $t("mobileOrder.suspendMessage") }}
@@ -229,6 +239,7 @@
 
             <!-- stock filter Toggle-->
             <div>
+
 							<!--7月施策バナー表示-->
 								  <div v-if="true" class="mx-6 mt-4">
 									  <MoFukubukuroBanner
@@ -512,6 +523,9 @@ import MoFukubukuroBanner from "@/app/user/Mo/MoFukubukuroBanner.vue";
 
 import FloatingBanner from "@/app/user/Restaurant/FloatingBanner.vue";
 
+import MoClosing0727 from "./Mo/MoClosing0727.vue";
+import MoClosing0810 from "./Mo/MoClosing0810.vue";
+
 import { usePickupTime } from "@/utils/pickup";
 
 import liff from "@line/liff";
@@ -529,7 +543,7 @@ import { orderCreated } from "@/lib/firebase/functions";
 
 import { order_status } from "@/config/constant";
 
-import { ownPlateConfig, moTitle, moPickup, enableCampaignBanner } from "@/config/project";
+import { ownPlateConfig, moTitle, moPickup, enableCampaignBanner, moCloseStatus } from "@/config/project";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
@@ -595,6 +609,9 @@ export default defineComponent({
     MoPickUp,
     MoPage,
 		MoFukubukuroBanner,
+
+    MoClosing0727,
+    MoClosing0810,
   },
   props: {
     shopInfo: {
@@ -622,6 +639,10 @@ export default defineComponent({
       required: true,
     },
     moPrefix: {
+      type: String,
+      required: false,
+    },
+    moBasePath: {
       type: String,
       required: false,
     },
@@ -1377,6 +1398,7 @@ export default defineComponent({
 
       moment,
       pageId,
+      moCloseStatus,
     };
   },
 });

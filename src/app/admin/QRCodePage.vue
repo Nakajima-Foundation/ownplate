@@ -12,7 +12,6 @@
         <!-- Center Column -->
         <div class="column">
           <!-- Nav Bar -->
-          <div class="level">
             <!-- Back Button and Restaurant Profile -->
             <AdminHeader
               class="mx-6 mt-6 lg:flex lg:items-center"
@@ -22,7 +21,6 @@
               :isInMo="isInMo"
               :moPrefix="moPrefix"
             />
-          </div>
         </div>
         <!-- Right Gap -->
         <div class="column is-narrow w-6"></div>

@@ -7,6 +7,9 @@
     <div v-else-if="isOutage">
       <Outage />
     </div>
+    <div v-else-if="moCloseStatus === 3">
+      <MoClosed />
+    </div>
     <router-view
       v-else
       :moPrefix="moPrefix"
@@ -21,15 +24,18 @@ import { defineComponent, ref, computed } from "vue";
 
 import NotFound from "@/components/NotFound.vue";
 import Outage from "@/app/user/Outage.vue";
+import MoClosed from "@/app/user/Mo/MoClosed.vue";
 
 import { useMoPrefix } from "@/utils/utils";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc } from "firebase/firestore";
+import { moCloseStatus } from "@/config/project";
 
 export default defineComponent({
   components: {
     NotFound,
     Outage,
+    MoClosed,
   },
   setup() {
     const moPrefix = useMoPrefix();
@@ -53,6 +59,7 @@ export default defineComponent({
       moBasePath,
       groupData,
       isOutage,
+      moCloseStatus,
     };
   },
 });
