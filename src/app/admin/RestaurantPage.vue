@@ -13,7 +13,7 @@
 
         <!-- Notifications -->
         <div class="mt-4 flex-shrink-0 text-right lg:mt-0">
-          <notification-index :shopInfo="shopInfo" />
+          <notification-index :shopInfo="editShopInfo" />
         </div>
       </div>
 
@@ -21,7 +21,7 @@
       <div class="mt-6 flex justify-center space-x-4">
         <!-- Cancel Button -->
         <router-link
-          :to="`/admin/restaurants/#restaurant_` + shopInfo.restaurantId"
+          :to="`/admin/restaurants/#restaurant_` + editShopInfo.restaurantId"
         >
           <div
             class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
@@ -46,7 +46,7 @@
               $t(
                 submitting
                   ? "editCommon.saving"
-                  : shopInfo.publicFlag
+                  : editShopInfo.publicFlag
                   ? "editCommon.save"
                   : "editCommon.saveDraft"
               )
@@ -58,18 +58,18 @@
       <!-- Publish Status -->
       <div class="mx-6 mt-6 rounded-lg bg-black bg-opacity-5 p-4 text-center">
         <o-checkbox
-          v-model="shopInfo.publicFlag"
+          v-model="editShopInfo.publicFlag"
           :disabled="hasError"
-          :variant="!shopInfo.publicFlag ? 'danger' : ''"
+          :variant="!editShopInfo.publicFlag ? 'danger' : ''"
         >
           <div class="font-bold">{{ $t("shopInfo.public") }}</div>
         </o-checkbox>
 
         <div class="mt-1 text-sm font-bold">
-          <div v-if="shopInfo.publicFlag">
+          <div v-if="editShopInfo.publicFlag">
             {{ $t("editRestaurant.publishDescription") }}
           </div>
-          <div v-if="!shopInfo.publicFlag" class="text-red-700">
+          <div v-if="!editShopInfo.publicFlag" class="text-red-700">
             {{ $t("editRestaurant.draftDescription") }}
           </div>
           <div v-if="hasError" class="text-red-700">
@@ -90,7 +90,7 @@
           <!-- Restaurant Name -->
           <div>
             <text-form
-              v-model="shopInfo.restaurantName"
+              v-model="editShopInfo.restaurantName"
               :titleKey="isInMo ? 'mobileOrder.shopInfoName' : 'shopInfo.name'"
               placeholder="editRestaurant.enterRestaurantName"
               :error="errors['restaurantName']"
@@ -101,7 +101,7 @@
           <!-- Owner Name -->
           <div class="mt-4">
             <text-form
-              v-model="shopInfo.ownerName"
+              v-model="editShopInfo.ownerName"
               titleKey="shopInfo.ownerName"
               placeholder="editRestaurant.enterOwnerName"
               :error="errors['ownerName']"
@@ -118,21 +118,21 @@
                 <div class="flex-1">
                   <text-form
                     :error="errors['zip']"
-                    v-model="shopInfo.zip"
+                    v-model="editShopInfo.zip"
                     titleKey="shopInfo.zip"
                     placeholder="editRestaurant.enterZip"
                     :maxlength="10"
                   />
                 </div>
                 <div class="pl-4">
-                  <state :errors="errors" v-model="shopInfo.state" />
+                  <state :errors="errors" v-model="editShopInfo.state" />
                 </div>
               </div>
               <!-- City -->
               <div class="mt-4">
                 <text-form
                   :error="errors['city']"
-                  v-model="shopInfo.city"
+                  v-model="editShopInfo.city"
                   titleKey="shopInfo.city"
                   placeholder="editRestaurant.enterCity"
                   :maxlength="15"
@@ -142,7 +142,7 @@
               <div class="mt-4">
                 <text-form
                   :error="errors['streetAddress']"
-                  v-model="shopInfo.streetAddress"
+                  v-model="editShopInfo.streetAddress"
                   titleKey="shopInfo.streetAddress"
                   placeholder="editRestaurant.enterStreetAddress"
                   :maxlength="30"
@@ -156,7 +156,7 @@
               <div class="mt-4">
                 <text-form
                   :error="errors['streetAddress']"
-                  v-model="shopInfo.streetAddress"
+                  v-model="editShopInfo.streetAddress"
                   titleKey="shopInfo.streetAddress"
                   placeholder="editRestaurant.enterStreetAddress"
                   :maxlength="30"
@@ -166,7 +166,7 @@
               <div class="mt-4">
                 <text-form
                   :error="errors['city']"
-                  v-model="shopInfo.city"
+                  v-model="editShopInfo.city"
                   titleKey="shopInfo.city"
                   placeholder="editRestaurant.enterCity"
                   :maxlength="15"
@@ -175,12 +175,12 @@
               <!-- State and Zip -->
               <div class="mt-4 flex">
                 <div class="pr-4">
-                  <state :errors="errors" v-model="shopInfo.state" />
+                  <state :errors="errors" v-model="editShopInfo.state" />
                 </div>
                 <div class="flex-1">
                   <text-form
                     :error="errors['zip']"
-                    v-model="shopInfo.zip"
+                    v-model="editShopInfo.zip"
                     titleKey="shopInfo.zip"
                     placeholder="editRestaurant.enterZip"
                     :maxlength="10"
@@ -194,7 +194,7 @@
           <div
             class="mt-4"
             :class="
-              !(shopInfo.location && shopInfo.location.lat) || !maplocation
+              !(editShopInfo.location && editShopInfo.location.lat) || !maplocation
                 ? 'border-2 border-red-700'
                 : ''
             "
@@ -273,7 +273,7 @@
             </div>
             <div>
               <phone-entry
-                :currentNumber="shopInfo.phoneNumber"
+                :currentNumber="editShopInfo.phoneNumber"
                 :placeholder="$t('editRestaurant.enterPhone')"
                 @change="handlePhoneChange"
               />
@@ -383,7 +383,7 @@
           <!-- URL -->
           <div>
             <text-form
-              v-model="shopInfo.url"
+              v-model="editShopInfo.url"
               :error="errors['url']"
               titleKey="shopInfo.website"
               placeholder="editRestaurant.enterWebsite"
@@ -399,7 +399,7 @@
               {{ $t("editRestaurant.enablePrelineTitle") }}
             </div>
             <div class="rounded-lg bg-black bg-opacity-5 p-4">
-              <o-checkbox v-model="shopInfo.enablePreline">
+              <o-checkbox v-model="editShopInfo.enablePreline">
                 <div class="text-sm font-bold">
                   {{ $t("editRestaurant.enablePrelineDescription") }}
                 </div>
@@ -410,7 +410,7 @@
           <!-- Description -->
           <div class="mt-4">
             <text-form
-              v-model="shopInfo.introduction"
+              v-model="editShopInfo.introduction"
               type="textarea"
               :required="false"
               :maxlength="300"
@@ -423,7 +423,7 @@
           <!-- Order Notice -->
           <div class="mt-4">
             <text-form
-              v-model="shopInfo.orderNotice"
+              v-model="editShopInfo.orderNotice"
               type="textarea"
               :required="false"
               :maxlength="300"
@@ -436,7 +436,7 @@
           <!-- Thank you Message -->
           <div class="mt-4">
             <text-form
-              v-model="shopInfo.orderThanks"
+              v-model="editShopInfo.orderThanks"
               type="textarea"
               :required="false"
               :maxlength="300"
@@ -449,7 +449,7 @@
           <!-- LINE URL -->
           <div class="mt-4">
             <text-form
-              v-model="shopInfo.lineUrl"
+              v-model="editShopInfo.lineUrl"
               :error="errors['lineUrl']"
               titleKey="shopInfo.lineUrl"
               placeholder="editRestaurant.enterLineUrl"
@@ -461,7 +461,7 @@
           <!-- Instagram URL -->
           <div class="mt-4">
             <text-form
-              v-model="shopInfo.instagramUrl"
+              v-model="editShopInfo.instagramUrl"
               :error="errors['instagramUrl']"
               titleKey="shopInfo.instagramUrl"
               placeholder="editRestaurant.enterInstagramUrl"
@@ -473,7 +473,7 @@
           <!-- UberEats URL -->
           <div class="mt-4">
             <text-form
-              v-model="shopInfo.uberEatsUrl"
+              v-model="editShopInfo.uberEatsUrl"
               :error="errors['uberEatsUrl']"
               titleKey="shopInfo.uberEatsUrl"
               placeholder="editRestaurant.enterUberEatsUrl"
@@ -498,7 +498,7 @@
                     "
                   >
                     <o-input
-                      v-model="shopInfo.foodTax"
+                      v-model="editShopInfo.foodTax"
                       placeholder="8.2"
                       type="text"
                       maxlength="5"
@@ -519,7 +519,7 @@
                     "
                   >
                     <o-input
-                      v-model="shopInfo.alcoholTax"
+                      v-model="editShopInfo.alcoholTax"
                       placeholder="10.2"
                       type="text"
                       maxlength="5"
@@ -542,7 +542,7 @@
                 >
                   <div v-for="taxItem in taxRates" class="text-base">
                     {{ $t("editMenu." + taxRateKeys[taxItem]) }}
-                    {{ shopInfo[taxItem + "Tax"] }}%
+                    {{ editShopInfo[taxItem + "Tax"] }}%
                   </div>
                 </div>
               </div>
@@ -555,7 +555,7 @@
               </div>
               <div class="rounded-lg bg-black bg-opacity-5 p-4">
                 <div>
-                  <o-checkbox v-model="shopInfo.inclusiveTax">
+                  <o-checkbox v-model="editShopInfo.inclusiveTax">
                     <div class="font-bold">
                       {{ $t("editRestaurant.taxIncluded") }}
                     </div>
@@ -574,7 +574,7 @@
                   <div>
                     <b
                       ><Price
-                        :shopInfo="shopInfo"
+                        :shopInfo="editShopInfo"
                         :menu="{ price: 1000, tax: 'food' }"
                       />
                     </b>
@@ -617,7 +617,7 @@
                   "
                 >
                   <o-input
-                    v-model.number="shopInfo.pickUpMinimumCookTime"
+                    v-model.number="editShopInfo.pickUpMinimumCookTime"
                     placeholder="10"
                     type="text"
                     class="w-24"
@@ -633,7 +633,7 @@
                 <div class="mt-2">
                   <o-radio
                     v-for="choice in minimumCookTimeChoices"
-                    v-model="shopInfo.pickUpMinimumCookTime"
+                    v-model="editShopInfo.pickUpMinimumCookTime"
                     :native-value="choice.value"
                     :key="choice.value"
                     >{{ $t(choice.messageKey) }}</o-radio
@@ -659,7 +659,7 @@
                       : 'success'
                   "
                 >
-                  <o-select v-model.number="shopInfo.pickUpDaysInAdvance">
+                  <o-select v-model.number="editShopInfo.pickUpDaysInAdvance">
                     <option
                       v-for="(day, index) in reservationTheDayBefore"
                       :key="index"
@@ -689,7 +689,7 @@
               <!-- Preparation Time -->
               <div v-for="(paymentMethod, k) in paymentMethods" :key="k">
                 <o-checkbox
-                  v-model="(shopInfo.paymentMethods || {})[paymentMethod.key]"
+                  v-model="(editShopInfo.paymentMethods || {})[paymentMethod.key]"
                 >
                   <div class="text-sm font-bold">
                     {{
@@ -719,7 +719,7 @@
                   </div>
 
                   <div class="ml-2">
-                    {{ shopInfo.moPickUpMinimumCookTime }}
+                    {{ editShopInfo.moPickUpMinimumCookTime }}
                     {{ $t("editRestaurant.minutes") }}
                   </div>
                 </div>
@@ -729,7 +729,7 @@
                   <div class="mb-1">
                     {{ $t("editRestaurant.reservationTheDayBefore") }}
                   </div>
-                  {{ shopInfo.moPickUpDaysInAdvance }}
+                  {{ editShopInfo.moPickUpDaysInAdvance }}
                   {{ $t("mobileOrder.reservationTheDaysBefore") }}
                 </div>
               </div>
@@ -737,7 +737,7 @@
           </template>
 
           <!-- mo Hours -->
-          <div class="mt-4" v-if="isInMo && moPickup && shopInfo.moBusinessDay">
+          <div class="mt-4" v-if="isInMo && moPickup && editShopInfo.moBusinessDay">
             <div class="pb-2 text-sm font-bold">
               {{ $t("mobileOrder.pickupHours") }}
             </div>
@@ -753,7 +753,7 @@
                       {{ $t("week.short." + day) }}
                       {{
                         $t(
-                          shopInfo.moBusinessDay[index]
+                          editShopInfo.moBusinessDay[index]
                             ? "admin.open"
                             : "admin.closed"
                         )
@@ -766,13 +766,13 @@
                 <div class="mt-2">
                   <span
                     :class="
-                      shopInfo.moBusinessDay[index]
+                      editShopInfo.moBusinessDay[index]
                         ? ''
                         : 'font-bold text-red-600'
                     "
                   >
-                    {{ num2time(shopInfo.moOpenTimes[index][0].start) }} -
-                    {{ num2time(shopInfo.moOpenTimes[index][0].end) }}
+                    {{ num2time(editShopInfo.moOpenTimes[index][0].start) }} -
+                    {{ num2time(editShopInfo.moOpenTimes[index][0].end) }}
                   </span>
                 </div>
               </div>
@@ -812,7 +812,7 @@
               {{ $t("editRestaurant.printerConfigTitle") }}
             </div>
             <div class="rounded-lg bg-black bg-opacity-5 p-4">
-              <o-checkbox v-model="shopInfo.enablePrinter">
+              <o-checkbox v-model="editShopInfo.enablePrinter">
                 <div class="text-sm font-bold">
                   {{ $t("editRestaurant.elablePrinter") }}
                 </div>
@@ -838,7 +838,7 @@
               {{ $t("editRestaurant.emailNotificationTitle") }}
             </div>
             <div class="rounded-lg bg-black bg-opacity-5 p-4">
-              <o-checkbox v-model="shopInfo.emailNotification">
+              <o-checkbox v-model="editShopInfo.emailNotification">
                 <div class="text-sm font-bold">
                   {{ $t("editRestaurant.emailNotificationDescription") }}
                 </div>
@@ -856,7 +856,7 @@
               {{ $t("editRestaurant.phoneCall") }}
             </div>
             <div class="rounded-lg bg-black bg-opacity-5 p-4">
-              <o-checkbox v-model="shopInfo.phoneCall">
+              <o-checkbox v-model="editShopInfo.phoneCall">
                 <div class="text-sm font-bold">
                   {{ $t("editRestaurant.phoneCallDescription") }}
                 </div>
@@ -873,7 +873,7 @@
               {{ $t("editRestaurant.acceptUserMessage") }}
             </div>
             <div class="rounded-lg bg-black bg-opacity-5 p-4">
-              <o-checkbox v-model="shopInfo.acceptUserMessage">
+              <o-checkbox v-model="editShopInfo.acceptUserMessage">
                 <div class="text-sm font-bold">
                   {{ $t("editRestaurant.acceptUserMessageDescription") }}
                 </div>
@@ -905,7 +905,7 @@
                 <!-- Enable/Disable Day and Copy Previous Day -->
                 <div class="flex items-center">
                   <div class="flex-1">
-                    <o-checkbox v-model="shopInfo.businessDay[index]">
+                    <o-checkbox v-model="editShopInfo.businessDay[index]">
                       <div class="text-base font-bold">
                         {{ $t("week.short." + day) }}
                       </div>
@@ -936,11 +936,11 @@
                 <!-- Main Hours -->
                 <div class="mt-2">
                   <hours-input
-                    v-model="shopInfo.openTimes[index][0]"
+                    v-model="editShopInfo.openTimes[index][0]"
                     :variant="
                       errors['time'][index][0].length > 0 ? 'danger' : 'success'
                     "
-                    :disabled="!shopInfo.businessDay[index]"
+                    :disabled="!editShopInfo.businessDay[index]"
                   ></hours-input>
                 </div>
 
@@ -950,11 +950,11 @@
                     {{ $t("editRestaurant.businessHourOption") }}
                   </div>
                   <hours-input
-                    v-model="shopInfo.openTimes[index][1]"
+                    v-model="editShopInfo.openTimes[index][1]"
                     :variant="
                       errors['time'][index][1].length > 0 ? 'danger' : 'success'
                     "
-                    :disabled="!shopInfo.businessDay[index]"
+                    :disabled="!editShopInfo.businessDay[index]"
                   ></hours-input>
                 </div>
               </div>
@@ -1000,7 +1000,7 @@
 
               <!-- Saved Closure Days -->
               <div class="mb-2 grid grid-cols-1 space-y-2">
-                <template v-for="(day, key) in shopInfo.temporaryClosure || []">
+                <template v-for="(day, key) in editShopInfo.temporaryClosure || []">
                   <template v-if="day.getTime() > now.getTime()">
                     <div
                       class="flex items-center rounded bg-white bg-opacity-50 px-2"
@@ -1035,18 +1035,18 @@
       <!-- Publish Status -->
       <div class="mx-6 mt-6 rounded-lg bg-black bg-opacity-5 p-4 text-center">
         <o-checkbox
-          v-model="shopInfo.publicFlag"
+          v-model="editShopInfo.publicFlag"
           :disabled="hasError"
-          :variant="!shopInfo.publicFlag ? 'danger' : ''"
+          :variant="!editShopInfo.publicFlag ? 'danger' : ''"
         >
           <div class="font-bold">{{ $t("shopInfo.public") }}</div>
         </o-checkbox>
 
         <div class="mt-1 text-sm font-bold">
-          <div v-if="shopInfo.publicFlag">
+          <div v-if="editShopInfo.publicFlag">
             {{ $t("editRestaurant.publishDescription") }}
           </div>
-          <div v-if="!shopInfo.publicFlag" class="text-red-700">
+          <div v-if="!editShopInfo.publicFlag" class="text-red-700">
             {{ $t("editRestaurant.draftDescription") }}
           </div>
           <div v-if="hasError" class="text-red-700">
@@ -1059,7 +1059,7 @@
       <div class="mt-6 flex justify-center space-x-4">
         <!-- Cancel Button -->
         <router-link
-          :to="`/admin/restaurants/#restaurant_` + shopInfo.restaurantId"
+          :to="`/admin/restaurants/#restaurant_` + editShopInfo.restaurantId"
         >
           <div
             class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
@@ -1084,7 +1084,7 @@
               $t(
                 submitting
                   ? "editCommon.saving"
-                  : shopInfo.publicFlag
+                  : editShopInfo.publicFlag
                   ? "editCommon.save"
                   : "editCommon.saveDraft"
               )
@@ -1124,6 +1124,7 @@
 import {
   defineComponent,
   ref,
+  reactive,
   computed,
   watch,
   onUnmounted,
@@ -1255,6 +1256,8 @@ export default defineComponent({
     const searchResults = ref<{place_id: string, geometry: any}[]>([]);
     const selectedResult = ref(0);
 
+    const editShopInfo = reactive(props.shopInfo);
+    
     // only owner
     const { uid } = useAdminUids();
     if (!checkShopOwner(props.shopInfo, uid.value)) {
@@ -1281,19 +1284,19 @@ export default defineComponent({
 
     const restProfilePhoto = computed(() => {
       return (
-        (props.shopInfo?.images?.profile?.resizedImages || {})["600"] ||
-        props.shopInfo.restProfilePhoto
+        (editShopInfo?.images?.profile?.resizedImages || {})["600"] ||
+        editShopInfo.restProfilePhoto
       );
     });
     const restCoverPhoto = computed(() => {
       return (
-        (props.shopInfo?.images?.cover?.resizedImages || {})["600"] ||
-        props.shopInfo.restCoverPhoto
+        (editShopInfo?.images?.cover?.resizedImages || {})["600"] ||
+        editShopInfo.restCoverPhoto
       );
     });
     const errors = computed(() => {
       return shopInfoValidator(
-        props.shopInfo,
+        editShopInfo,
         requireTaxInput,
         errorsPhone.value,
         files.value["profile"],
@@ -1307,8 +1310,8 @@ export default defineComponent({
 
     const setLocation = () => {
       if (maplocation.value) {
-        props.shopInfo.location = maplocation.value;
-        props.shopInfo.place_id = place_id.value as string;
+        editShopInfo.location = maplocation.value;
+        editShopInfo.place_id = place_id.value as string;
       }
     };
     watch(notFound, () => {
@@ -1357,10 +1360,10 @@ export default defineComponent({
       const func = (elem: Date) => {
         return elem.getTime() === day.getTime();
       };
-      return !props.shopInfo.temporaryClosure.some(func);
+      return !editShopInfo.temporaryClosure.some(func);
     };
     const deleteTemporaryClosure = (key: number) => {
-      props.shopInfo.temporaryClosure = props.shopInfo.temporaryClosure.filter(
+      editShopInfo.temporaryClosure = editShopInfo.temporaryClosure.filter(
         (v, n) => n !== key
       );
     };
@@ -1370,8 +1373,8 @@ export default defineComponent({
         isNewTemporaryClosure(newTemporaryClosure.value as Date) &&
         isFuture(newTemporaryClosure.value as Date)
       ) {
-        props.shopInfo.temporaryClosure.push(newTemporaryClosure.value);
-        props.shopInfo.temporaryClosure.sort((a, b) => {
+        editShopInfo.temporaryClosure.push(newTemporaryClosure.value);
+        editShopInfo.temporaryClosure.sort((a, b) => {
           return a.getTime() > b.getTime() ? 1 : -1;
         });
       }
@@ -1379,8 +1382,8 @@ export default defineComponent({
     };
     const copyPreviousDay = (index: string) => {
       const prevIndex = index === "1" ? 7 : Number(index) - 1;
-      props.shopInfo.businessDay[index] = props.shopInfo.businessDay[prevIndex];
-      props.shopInfo.openTimes[index] = props.shopInfo.openTimes[prevIndex].map(
+      editShopInfo.businessDay[index] = editShopInfo.businessDay[prevIndex];
+      editShopInfo.openTimes[index] = editShopInfo.openTimes[prevIndex].map(
         (a) => {
           return { ...a };
         }
@@ -1408,8 +1411,8 @@ export default defineComponent({
       errors: string[],
     }) => {
       //console.log(payload)
-      props.shopInfo.phoneNumber = payload.phoneNumber;
-      props.shopInfo.countryCode = payload.countryCode;
+      editShopInfo.phoneNumber = payload.phoneNumber;
+      editShopInfo.countryCode = payload.countryCode;
       errorsPhone.value = payload.errors;
     };
     const setDefaultLocation = async () => {
@@ -1417,8 +1420,8 @@ export default defineComponent({
       // gMap.value.$mapPromise &&
       mapObj.value = await gMap.value.$mapPromise;
 
-      if (props.shopInfo && props.shopInfo.location) {
-        setCurrentLocation(props.shopInfo.location);
+      if (editShopInfo && editShopInfo.location) {
+        setCurrentLocation(editShopInfo.location);
       }
     };
     onMounted(() => {
@@ -1435,7 +1438,7 @@ export default defineComponent({
     const copyRestaurantFunc = async () => {
       try {
         const id = await copyRestaurant(
-          props.shopInfo,
+          editShopInfo,
           uid.value,
           restaurantId.value
         );
@@ -1469,7 +1472,7 @@ export default defineComponent({
     };
     const saveRestaurant = async () => {
       submitting.value = true;
-      const newData = { ...props.shopInfo };
+      const newData = { ...editShopInfo };
       try {
         if (files.value["profile"]) {
           const path = `/images/restaurants/${restaurantId.value}/${uid.value}/profile.jpg`;
@@ -1506,10 +1509,10 @@ export default defineComponent({
       // https://gitlab.com/broj42/nuxt-gmaps#readme
       // https://codesandbox.io/s/6j6zw48l83
       const keyword = [
-        props.shopInfo.restaurantName,
-        props.shopInfo.streetAddress,
-        props.shopInfo.city,
-        props.shopInfo.state,
+        editShopInfo.restaurantName,
+        editShopInfo.streetAddress,
+        editShopInfo.city,
+        editShopInfo.state,
       ].join(",");
 
       const res = await google_geocode(keyword);
@@ -1525,7 +1528,7 @@ export default defineComponent({
     };
 
     const disableSave = computed(() => {
-      return hasError.value && props.shopInfo.publicFlag;
+      return hasError.value && editShopInfo.publicFlag;
     });
 
     const openTips = (key: string) => {
@@ -1543,6 +1546,8 @@ export default defineComponent({
       taxRateKeys,
       region,
 
+      editShopInfo,
+      
       requireTaxInput,
       requireTaxPriceDisplay,
 
