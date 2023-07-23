@@ -6,24 +6,12 @@
     </div>
     <o-field
       :variant="errors['state'].length > 0 ? 'danger' : 'success'"
-      v-if="Array.isArray(states)"
     >
       <o-select :modelValue="modelValue" placeholder="select" @update:modelValue="input">
         <option v-for="stateItem in states" :key="stateItem">
           {{ stateItem }}
         </option>
       </o-select>
-    </o-field>
-    <o-field
-      :variant="errors['state'].length > 0 ? 'danger' : 'success'"
-      v-else
-    >
-      <o-input
-        :value="modelValue"
-        type="text"
-        :placeholder="$t('editRestaurant.enterCity')"
-        maxlength="15"
-      ></o-input>
     </o-field>
   </div>
 </template>
