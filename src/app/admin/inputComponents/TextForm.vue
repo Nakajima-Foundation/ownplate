@@ -10,7 +10,7 @@
         :modelValue="modelValue"
         :type="type"
         :placeholder="$t(placeholder)"
-        @input="input"
+        @update:modelValue="input"
         :maxlength="maxlength"
       ></o-input>
     </o-field>
@@ -65,7 +65,7 @@ export default defineComponent({
   setup(_, context) {
     const store = useStore();
     const input = (e: any) => {
-      context.emit("update:modelValue", e.target.value);
+      context.emit("update:modelValue", e);
     };
     const open = (key: string) => {
       store.commit("setTips", {
