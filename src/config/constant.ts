@@ -97,24 +97,6 @@ export const stripe_regions: { [key: string]: any } = {
       "raw",
     ],
   },
-  EU: {
-    langs: ["en", "fr", "es", "it", "de", "nl"],
-    currency: "EUR",
-    multiple: 100,
-    hidePostalCode: false,
-    tip: {
-      default: 15,
-      max: 100,
-      choices: [10, 15, 18, 20],
-    },
-    countries: [
-      { code: "+44", name: "sms.country.UK" },
-      { code: "+33", name: "sms.country.FR" },
-      { code: "+34", name: "sms.country.ES" },
-      { code: "+49", name: "sms.country.DE" },
-    ],
-    allergens: ["gluten", "crustacean", "egg", "milk", "lupin", "mollusc"],
-  },
   JP: {
     langs: ["ja"],
     currency: "JPY",
@@ -372,43 +354,6 @@ export const regionalSettings = {
     },
     covid19trace: true,
     hashTag: "omochikaeri",
-  },
-  EU: {
-    CurrencyKey: "EUR",
-    StateKey: "shopInfo.state",
-    AddressStates: null,
-    Logo: "OwnPlate-Logo-Horizontal-YellowBlack.svg",
-    Logo2: "OwnPlate-Logo-Stack-YellowBlack.svg",
-    FeatureHeroMobile: {
-      ja: "Feature-Hero-Mobile-ja.svg",
-      en: "Feature-Hero-Mobile-en.svg",
-    },
-    FeatureHeroTablet: {
-      ja: "Feature-Hero-Tablet-ja.svg",
-      en: "Feature-Hero-Tablet-en.svg",
-    },
-    FeatureHero: {
-      ja: "Feature-Hero-v01-ja.svg",
-      en: "Feature-Hero-v01-en.svg",
-    },
-    requireTaxInput: true,
-    requireTaxPriceDisplay: false,
-    taxRateKeys: {
-      food: "food",
-      alcohol: "alcohol",
-    },
-    defaultLanguage: "en",
-    languages: {
-      en: "English (US)",
-      es: "Español",
-      de: "Deutsch",
-      fr: "Le français",
-      it: "italiano",
-      nl: "Nederlands",
-      ja: "日本語",
-    },
-    covid19trace: false,
-    hashTag: "ownplate",
   },
 };
 
