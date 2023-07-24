@@ -70,7 +70,8 @@ export default defineComponent({
           (snapshot) => {
             const stripeInfo = snapshot.data();
             if (stripeInfo && stripeInfo.card) {
-              const expire = moment(`${stripeInfo.card.exp_year}${stripeInfo.card.exp_month}01T000000+0900`).endOf('month').toDate();
+              const date = ('00' + String(stripeInfo.card.exp_month)).slice(-2);
+              const expire = moment(`${stripeInfo.card.exp_year}${date}01T000000+0900`).endOf('month').toDate();
               if (
                 stripeInfo.updatedAt && (
                   stripeInfo.updatedAt.toDate() >
@@ -84,6 +85,7 @@ export default defineComponent({
             }
           },
           (e) => {
+            console.log(e);
             console.log("stripe expired")
           }
         );
