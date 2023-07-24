@@ -14,6 +14,8 @@
         :showSuspend="false"
         :isInMo="isInMo"
         :moPrefix="moPrefix"
+				backText="button.backToOrderListPage"
+        iconText="arrow_back"
       />
 
       <!-- Title -->
