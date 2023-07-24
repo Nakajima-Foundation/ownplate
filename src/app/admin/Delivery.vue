@@ -16,7 +16,34 @@
       </div>
     </template>
     <div class="mx-6 mt-4" v-else>
-      <div class="rounded-lg bg-black bg-opacity-5 p-4">
+      <!-- Save and Cancel -->
+      <div class="mt-6 flex justify-center space-x-4">
+        <!-- Cancel Button -->
+        <router-link
+          :to="`/admin/restaurants/#restaurant_` + restaurantId"
+        >
+          <div
+            class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
+          >
+            <span class="text-base font-bold text-black text-opacity-60">{{
+              $t("button.cancel")
+            }}</span>
+          </div>
+        </router-link>
+
+        <o-button @click="saveDeliveryArea" class="b-reset-tw">
+          <div
+            class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
+            style="min-width: 8rem"
+          >
+            <span class="text-base font-bold text-white">{{
+              $t("editCommon.save")
+            }}</span>
+          </div>
+        </o-button>
+      </div>
+      
+      <div class="rounded-lg bg-black bg-opacity-5 p-4 mt-4">
         <div class="text-sm font-bold">
           <o-checkbox v-model="enableDelivery" />{{
             $t("delivery.enableDelivery", { name: shopInfo.restaurantName }, 0)
@@ -192,8 +219,22 @@
           {{ $t("menu.deliveryManualLink") }}
         </a>
       </div>
-      <!-- Save Button -->
-      <div class="mt-4 text-center">
+
+      <!-- Save and Cancel -->
+      <div class="mt-6 flex justify-center space-x-4">
+        <!-- Cancel Button -->
+        <router-link
+          :to="`/admin/restaurants/#restaurant_` + restaurantId"
+        >
+          <div
+            class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
+          >
+            <span class="text-base font-bold text-black text-opacity-60">{{
+              $t("button.cancel")
+            }}</span>
+          </div>
+        </router-link>
+
         <o-button @click="saveDeliveryArea" class="b-reset-tw">
           <div
             class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
@@ -401,7 +442,7 @@ export default defineComponent({
         uid: uid.value,
       };
       await setDoc(doc(db, `restaurants/${restaurantId}/delivery/area`),data);
-      router.push("/admin/restaurants");
+      router.push("/admin/restaurants#restaurant_" + restaurantId);
     };
 
     watch(enableAreaMap, () => {
@@ -423,7 +464,8 @@ export default defineComponent({
       radius,
       areaText,
       existLocation,
-
+      restaurantId,
+      
       notFound,
 
       mapLoaded,
