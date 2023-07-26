@@ -6,7 +6,6 @@
     <not-found />
   </template>
   <div v-else>
-    <div class="mx-6 mt-6 lg:flex lg:items-center">
       <AdminHeader
         class="mx-6 mt-6 lg:flex lg:items-center"
         :shopInfo="shopInfo"
@@ -16,7 +15,6 @@
         :moPrefix="moPrefix"
       />
 
-    </div>
     <div>
       <div class="mx-6 mt-6 rounded-lg bg-black bg-opacity-5 p-4 text-center">
         <div class="pb-2 text-sm font-bold">

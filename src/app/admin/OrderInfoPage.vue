@@ -13,6 +13,8 @@
         :showSuspend="true"
         :isInMo="isInMo"
         :moPrefix="moPrefix"
+        backText="button.backToOrderListPage"
+        iconText="arrow_back"
       />
 
       <!-- Body -->
@@ -85,7 +87,7 @@
                 >
               </div>
             </div>
-						<div v-else>
+						<div v-else-if="orderInfo.status !== order_status.order_canceled" >
               <div
                 class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-red-700 bg-opacity-10 px-4 py-1 font-bold text-red-700"
               >

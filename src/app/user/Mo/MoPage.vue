@@ -1,65 +1,8 @@
 <template>
   <div>
     <!-- {{pageId}} -->
-    <MoPageOneBuyOne1
-      v-if="pageId == '202306buy1' && term === 1"
-      :pageId="pageId"
-      :pageBase="pageBase"
-      :groupData="groupData"
-      @didOrderdChange="didOrderdChange"
-      :orders="orders"
-      :selectedOptions="selectedOptions"
-      :shopInfo="shopInfo"
-      :isPickup="isPickup"
-
-      :howtoreceive="howtoreceive"
-      @input="updateHowtoreceive"
-      :disabledPickupTime="disabledPickupTime"
-      :noAvailableTime="noAvailableTime"
-      :lastOrder="lastOrder"
-      :moPickupSuspend="moPickupSuspend"
-
-      />
-    <MoPageOneBuyOne2
-      v-else-if="pageId == '202306buy2' && term === 2"
-      :pageId="pageId"
-      :pageBase="pageBase"
-      :groupData="groupData"
-      @didOrderdChange="didOrderdChange"
-      :orders="orders"
-      :selectedOptions="selectedOptions"
-      :shopInfo="shopInfo"
-      :isPickup="isPickup"
-
-      :howtoreceive="howtoreceive"
-      @input="updateHowtoreceive"
-      :disabledPickupTime="disabledPickupTime"
-      :noAvailableTime="noAvailableTime"
-      :lastOrder="lastOrder"
-      :moPickupSuspend="moPickupSuspend"
-
-      />
-    <MoPageOneBuyOne3
-      v-else-if="pageId == '202306buy3' && term === 3"
-      :pageId="pageId"
-      :pageBase="pageBase"
-      :groupData="groupData"
-      @didOrderdChange="didOrderdChange"
-      :orders="orders"
-      :selectedOptions="selectedOptions"
-      :shopInfo="shopInfo"
-      :isPickup="isPickup"
-
-      :howtoreceive="howtoreceive"
-      @input="updateHowtoreceive"
-      :disabledPickupTime="disabledPickupTime"
-      :noAvailableTime="noAvailableTime"
-      :lastOrder="lastOrder"
-      :moPickupSuspend="moPickupSuspend"
-
-      />
     <MoPage20230701
-      v-else-if="pageId == '202307'"
+      v-if="pageId == '202307'"
       :pageId="pageId"
       :pageBase="pageBase"
       :groupData="groupData"
@@ -152,10 +95,6 @@ export default defineComponent({
     moPickupSuspend: {
       type: Boolean,
       required: false,
-    },
-    term: {
-      type: Number,
-      required: true,
     },
   },
   setup(props, ctx) {

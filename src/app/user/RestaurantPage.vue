@@ -24,7 +24,6 @@
           :noAvailableTime="noAvailableTime"
           :lastOrder="lastOrder"
           :moPickupSuspend="moPickupSuspend"
-          :term="buyTerm"
           />
       </div>
 
@@ -171,6 +170,12 @@
             </div>
           </div>
           <div v-else>
+						<!--To Do 期間に合わせてそれぞれのコンポーネントを表示-->
+						<!--7/27((木))〜8/10(木) 終了告知期間-->
+						<div class="my-4" v-if="moCloseStatus === 1 && isInMo">
+		  				<MoClosing0727 :moBasePath="moBasePath"/>
+						</div>
+            
             <div class="mx-6 mt-2 lg:mx-0" v-if="shopInfo.enableDelivery">
               <div class="rounded-lg bg-white shadow">
                 <!-- delivery toggle-->
@@ -188,7 +193,11 @@
 
             <!-- Mo Suspend -->
             <div v-if="moSuspend && isInMo">
-              <div
+						  <!--8/10(木)〜8/18(金) 注文受付終了〜サービス終了まで-->
+						  <div class="my-4" v-if="moCloseStatus === 2">
+		  				  <MoClosing0810 :moBasePath="moBasePath"/>
+						  </div>
+              <div v-else
                 class="mx-6 mt-3 mb-2 rounded-lg bg-red-700 bg-opacity-10 p-3 font-bold text-red-700 lg:mx-0"
               >
                 {{ $t("mobileOrder.suspendMessage") }}
@@ -230,18 +239,12 @@
 
             <!-- stock filter Toggle-->
             <div>
-              <MoOneBuyOneBanner
-                v-if="false"
-                :term="buyTerm"
-                :pageBase="pageBase"
-                />
 
 							<!--7月施策バナー表示-->
 								  <div v-if="true" class="mx-6 mt-4">
 									  <MoFukubukuroBanner
                       v-if="showSubCategory && enableCampaignBanner"
                       :pageBase="pageBase"
-                      :term="buyTerm"
                       />
 								  </div>
 
@@ -299,18 +302,12 @@
                   <div class="text-xl font-bold text-black text-opacity-30">
                     {{ $t("shopInfo.productCategory") }}
                   </div>
-                  <MoOneBuyOneBanner
-                    v-if="false"
-                    :pageBase="pageBase"
-                    :term="buyTerm"
-                    />
 								
 								<!--7月施策バナー表示-->
 								  <div v-if="true">
 									  <MoFukubukuroBanner
                       v-if="enableCampaignBanner"
                       :pageBase="pageBase"
-                      :term="buyTerm"
                       />
 								  </div>
 
@@ -438,7 +435,6 @@
         :totalPrice="totalPrice"
         :promotions="promotions"
         :possiblePromotions="possiblePromotions"
-        :term="buyTerm"
       />
 
       <!-- for disable all UI -->
@@ -521,10 +517,12 @@ import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
 import TransactionsActContents from "@/app/user/TransactionsAct/Contents.vue";
 import MoPickUp from "@/app/user/Restaurant/MoPickUp.vue";
 import MoPage from "@/app/user/Mo/MoPage.vue";
-import MoOneBuyOneBanner from "@/app/user/Mo/MoOneBuyOneBanner.vue";
 import MoFukubukuroBanner from "@/app/user/Mo/MoFukubukuroBanner.vue";
 
 import FloatingBanner from "@/app/user/Restaurant/FloatingBanner.vue";
+
+import MoClosing0727 from "./Mo/MoClosing0727.vue";
+import MoClosing0810 from "./Mo/MoClosing0810.vue";
 
 import { usePickupTime } from "@/utils/pickup";
 
@@ -543,7 +541,7 @@ import { orderCreated } from "@/lib/firebase/functions";
 
 import { order_status } from "@/config/constant";
 
-import { ownPlateConfig, moTitle, moPickup, enableCampaignBanner } from "@/config/project";
+import { ownPlateConfig, moTitle, moPickup, enableCampaignBanner, moCloseStatus } from "@/config/project";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import {
@@ -599,8 +597,10 @@ export default defineComponent({
     
     MoPickUp,
     MoPage,
-		MoOneBuyOneBanner,
 		MoFukubukuroBanner,
+
+    MoClosing0727,
+    MoClosing0810,
   },
   props: {
     shopInfo: {
@@ -628,6 +628,10 @@ export default defineComponent({
       required: true,
     },
     moPrefix: {
+      type: String,
+      required: false,
+    },
+    moBasePath: {
       type: String,
       required: false,
     },
@@ -1284,41 +1288,6 @@ export default defineComponent({
         return a.discountThreshold > totalPrice.value.total;
       });
     });
-    // for mo
-    const buyTerm = computed(() => {
-      // "6月6日〜6/12",
-			// "6月13日〜6/19",
-			// "6月20日〜6/26",
-      const date = moment(store.state.date).tz("Asia/Tokyo").date();
-      if (date < 6) {
-        return 0;
-      }
-      if (date < 13) {
-        return 1;
-      }
-      if (date < 20) {
-        return 2;
-      }
-      if (date < 27) {
-        return 3;
-      }
-      return 4;
-      /*
-      if (date < 2) { // 1
-        return 1;
-      }
-      if (date < 3) { // 2
-        return 2;
-      }
-      if (date < 30) { // 3 - 29
-        return 3;
-      }
-      if (date < 31) { // 30
-        return 3;
-      }
-      return 4; // 31
-      */
-    });
 
     const isSpecialShop = computed(() => {
       return ([
@@ -1408,7 +1377,7 @@ export default defineComponent({
       scrollTop,
 
       pageId,
-      buyTerm,
+      moCloseStatus,
     };
   },
 });

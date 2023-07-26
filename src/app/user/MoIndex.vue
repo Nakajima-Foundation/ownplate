@@ -11,12 +11,17 @@
       />
     </div>
 
-		<!--Campaign202306-->
-		<div v-if="false">
-		  <Campaign202306 :moBasePath="moBasePath" v-if="enableCampaignBanner" />
-		</div>
+		<!--To Do 期間に合わせてそれぞれのコンポーネントを表示-->
+		<!--7/27((木))〜8/10(木) 終了告知期間-->
+			<div class="lg:mx-6" v-if="moCloseStatus === 1">
+		  	<MoClosing0727 :moBasePath="moBasePath"/>
+			</div>
 
-		<!--ToDo 7月施策用の訴求テキスト-->
+			<!--8/10(木)〜8/18(金) 注文受付終了〜サービス終了まで-->
+			<div class="lg:mx-6" v-if="moCloseStatus === 2">
+		  	<MoClosing0810 :moBasePath="moBasePath"/>
+			</div>
+
 		<!--Campaign202307-->
 		<div>
 		  <Campaign202307 :moBasePath="moBasePath"  v-if="enableCampaignBanner" />
@@ -94,16 +99,18 @@ import {
 import { JPPrefecture, USStates } from "@/config/constant";
 import { restaurant2AreaObj, sortRestaurantObj } from "@/utils/RestaurantUtils";
 import { defaultHeader } from "@/config/header";
-import { moBaseUrl, moTitle, enableCampaignBanner } from "@/config/project";
+import { moBaseUrl, moTitle, enableCampaignBanner, moCloseStatus } from "@/config/project";
 import { useIsInMo } from "@/utils/utils";
-import Campaign202306 from "./Mo/Campaign202306";
-import Campaign202307 from "./Mo/Campaign202307";
+import Campaign202307 from "./Mo/Campaign202307.vue";
+import MoClosing0727 from "./Mo/MoClosing0727.vue";
+import MoClosing0810 from "./Mo/MoClosing0810.vue";
 
 export default defineComponent({
   name: "RestaurantIndex",
 	components: {
-		Campaign202306,
-		Campaign202307
+		Campaign202307,
+    MoClosing0727,
+    MoClosing0810,
   },
   metaInfo() {
     return {
@@ -169,6 +176,7 @@ export default defineComponent({
 
       isInMo,
       enableCampaignBanner,
+      moCloseStatus,
     };
   },
 });
