@@ -143,7 +143,8 @@
             :href="shopInfo.uberEatsUrl"
             rel="noopener noreferrer"
           >
-            <i class="fab fa-uber mr-6 text-4xl" style="color: #06c167"></i>
+            <i><img src="/uber_eats_icon.svg" class="w-14 -ml-2"/></i>
+						
           </a>
         </div>
 				</div>
