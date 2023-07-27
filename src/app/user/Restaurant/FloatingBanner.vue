@@ -54,9 +54,6 @@ import {
   defineComponent,
   ref,
 } from "vue";
-=======
-} from "@vue/composition-api";
->>>>>>> e151f31c42e6f65a8b950b7087dd7c3cbdfbdbea
 
 import PromotionMessage5 from "@/app/user/Restaurant/PromotionMessage5.vue";
 import PromotionMessage6 from "@/app/user/Restaurant/PromotionMessage6.vue";
