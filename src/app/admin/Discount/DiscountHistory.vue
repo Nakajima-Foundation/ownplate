@@ -14,7 +14,7 @@
           <AdminHeader
             class="mx-6 mt-6 lg:flex lg:items-center"
             :shopInfo="shopInfo"
-            backLink="/admin/restaurants/{restautantId}/discounts"
+            :backLink="`/admin/restaurants/${shopInfo.restaurantId}/discounts`"
             :showSuspend="false"
             :isInMo="isInMo"
             :moPrefix="moPrefix"
