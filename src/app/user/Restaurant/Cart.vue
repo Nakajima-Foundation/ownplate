@@ -31,8 +31,7 @@
 			<div v-if="promotions && promotions.length > 0"> 
 			  <div class="border-green-600 text-green-600 text-center font-bold mt-1 mx-6 sm:mx-auto max-w-xl items-center mb-3 rounded-lg bg-green-600 bg-opacity-10 p-2">
 				  <div class="text-xs">
-            <!-- for mo. omochikaeri is PromotionMessage6  -->
-            <PromotionMessage1 :promotion="promotions[0]" />
+            <PromotionMessage6 :promotion="promotions[0]" />
           </div>
           <div v-for="(promotion, k) in promotions" :key="k">
 					  <div class="flex items-end justify-center mt-0.5">
@@ -61,7 +60,6 @@ import { defineComponent, computed } from "@vue/composition-api";
 
 import CartItem from "@/app/user/Restaurant/CartItem.vue";
 
-import PromotionMessage1 from "@/app/user/Restaurant/PromotionMessage1.vue";
 import PromotionMessage2 from "@/app/user/Restaurant/PromotionMessage2.vue";
 import PromotionMessage3 from "@/app/user/Restaurant/PromotionMessage3.vue";
 import PromotionMessage4 from "@/app/user/Restaurant/PromotionMessage4.vue";
@@ -70,7 +68,6 @@ export default defineComponent({
   emits: ["closeCart", "didOrderdChange"],
   components: {
     CartItem,
-    PromotionMessage1,
     PromotionMessage2,
 		PromotionMessage3,
 		PromotionMessage4,
