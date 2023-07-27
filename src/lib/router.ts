@@ -72,14 +72,6 @@ const getUserPagesWithCat = (prefix: string) => {
           component: "user/Blank.vue",
         },
         {
-          name: "r-restaurant-MoPage_" + prefix,
-          path: "page/:pageId",
-          component: "user/Blank.vue",
-          meta: {
-            pageType: "store",
-          }
-        },
-        {
           path: "transactions-act",
           component: "user/Blank.vue",
           meta: {

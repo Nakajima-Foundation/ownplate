@@ -2,9 +2,7 @@
   <!-- for Promotion -->
   <div>
 	<div class="mb-2 border-4 border-green-600 text-green-600 text-center font-bold fixed left-4 right-4 mx-auto max-w-lg cursor-pointer items-center rounded-full bg-white p-3 shadow-lg bottom-3 z-30 sm:bottom-8" @click="promotionVisible=true">
-    <!-- for mo -->
-		<div class="text-xs" v-if="!isInMo">
-      <!-- for omochikaeri -->
+		<div class="text-xs">
       <PromotionMessage6 :promotion="promotion" />
     </div>
 		<div class="text-lg mt-0.5 -mb-0.5">
@@ -71,10 +69,6 @@ export default defineComponent({
     possiblePromotions: {
       type: Array,
       required: false,
-    },
-    isInMo: {
-      type: Boolean,
-      required: true,
     },
   },
   setup() {

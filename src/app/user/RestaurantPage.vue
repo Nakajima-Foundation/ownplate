@@ -5,13 +5,8 @@
       <not-found />
     </template>
     <template v-else>
-			<div v-if="totalQuantities === 0 && promotion && promotion.type === 'discount' && !pageId">
-        <template v-if="isInMo">
-          <router-link :to="pageBase + '/page/202305'">
-            <FloatingBanner :promotion="promotion" :isInMo="isInMo" />
-          </router-link>
-        </template>
-        <FloatingBanner :promotion="promotion" :isInMo="isInMo" :possiblePromotions="possiblePromotions" v-else />
+			<div v-if="totalQuantities === 0 && promotion && promotion.type === 'discount'">
+        <FloatingBanner :promotion="promotion" :possiblePromotions="possiblePromotions" />
 			</div>
 
       <!-- category modal -->
@@ -1238,9 +1233,6 @@ export default defineComponent({
       // TODO: setting for omochikaeri
       return isInMo.value || false;
     });
-    const pageId = computed(() => {
-      return route.params.pageId as string;
-    });
     const totalQuantities = computed(() => {
       const ret = Object.values(orders.value).reduce((total, order) => {
         return total + arraySum(order);
@@ -1355,7 +1347,6 @@ export default defineComponent({
       scrollTop,
 
       moment,
-      pageId,
       moCloseStatus,
     };
   },
