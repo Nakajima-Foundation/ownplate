@@ -53,6 +53,7 @@ import {
   ref,
 } from "vue";
 
+import moment from "moment-timezone";
 import PromotionMessage5 from "@/app/user/Restaurant/PromotionMessage5.vue";
 import PromotionMessage6 from "@/app/user/Restaurant/PromotionMessage6.vue";
 
@@ -75,6 +76,7 @@ export default defineComponent({
     const promotionVisible = ref(false);
     return {
       promotionVisible,
+      moment,
     };
   },
 });
