@@ -5,28 +5,6 @@
       <not-found />
     </template>
     <template v-else>
-      <div
-        v-if="pageId"
-        class="fixed top-0 z-20 h-full w-full bg-white"
-        >
-        <MoPage
-          :pageId="pageId"
-          :pageBase="pageBase"
-          :groupData="groupData"
-          @didOrderdChange="didOrderdChange($event)"
-          :orders="orders"
-          :selectedOptions="selectedOptions"
-          :shopInfo="shopInfo"
-          :isPickup="isPickup"
-          @input="updateHowtoreceive"
-          :howtoreceive="howtoreceive"
-          :disabledPickupTime="disabledPickupTime"
-          :noAvailableTime="noAvailableTime"
-          :lastOrder="lastOrder"
-          :moPickupSuspend="moPickupSuspend"
-          />
-      </div>
-
 			<div v-if="totalQuantities === 0 && promotion && promotion.type === 'discount' && !pageId">
         <template v-if="isInMo">
           <router-link :to="pageBase + '/page/202305'">
@@ -240,14 +218,6 @@
             <!-- stock filter Toggle-->
             <div>
 
-							<!--7月施策バナー表示-->
-								  <div v-if="true" class="mx-6 mt-4">
-									  <MoFukubukuroBanner
-                      v-if="showSubCategory && enableCampaignBanner"
-                      :pageBase="pageBase"
-                      />
-								  </div>
-
               <div v-if="showSubCategory && isPickup">
                 <div class="mx-6 mt-4 grid grid-cols-2 gap-2 lg:mx-0">
                   <!-- 在庫なし含む -->
@@ -303,14 +273,6 @@
                     {{ $t("shopInfo.productCategory") }}
                   </div>
 								
-								<!--7月施策バナー表示-->
-								  <div v-if="true">
-									  <MoFukubukuroBanner
-                      v-if="enableCampaignBanner"
-                      :pageBase="pageBase"
-                      />
-								  </div>
-
                   <CategoryTop
                     :categoryData="categoryData"
                     :howtoreceive="howtoreceive"
@@ -516,8 +478,6 @@ import Titles from "@/app/user/Restaurant/Titles.vue";
 import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
 import TransactionsActContents from "@/app/user/TransactionsAct/Contents.vue";
 import MoPickUp from "@/app/user/Restaurant/MoPickUp.vue";
-import MoPage from "@/app/user/Mo/MoPage.vue";
-import MoFukubukuroBanner from "@/app/user/Mo/MoFukubukuroBanner.vue";
 
 import FloatingBanner from "@/app/user/Restaurant/FloatingBanner.vue";
 
@@ -596,8 +556,6 @@ export default defineComponent({
     FloatingBanner,
     
     MoPickUp,
-    MoPage,
-		MoFukubukuroBanner,
 
     MoClosing0727,
     MoClosing0810,
