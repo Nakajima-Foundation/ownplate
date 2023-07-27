@@ -33,7 +33,7 @@
             <FloatingBanner :promotion="promotion" :isInMo="isInMo" />
           </router-link>
         </template>
-        <FloatingBanner :promotion="promotion" :isInMo="isInMo" v-else />
+        <FloatingBanner :promotion="promotion" :isInMo="isInMo" :possiblePromotions="possiblePromotions" v-else />
 			</div>
 
       <!-- category modal -->

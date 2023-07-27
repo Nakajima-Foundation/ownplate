@@ -31,6 +31,7 @@
 			<div v-if="promotions && promotions.length > 0"> 
 			  <div class="border-green-600 text-green-600 text-center font-bold mt-1 mx-6 sm:mx-auto max-w-xl items-center mb-3 rounded-lg bg-green-600 bg-opacity-10 p-2">
 				  <div class="text-xs">
+            <!-- for mo. omochikaeri is PromotionMessage6  -->
             <PromotionMessage1 :promotion="promotions[0]" />
           </div>
           <div v-for="(promotion, k) in promotions" :key="k">
