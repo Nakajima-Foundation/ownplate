@@ -1231,7 +1231,8 @@ export default defineComponent({
     });
     const enableCartModal = computed(() => {
       // TODO: setting for omochikaeri
-      return isInMo.value || false;
+      // return isInMo.value || false;
+      return true;
     });
     const totalQuantities = computed(() => {
       const ret = Object.values(orders.value).reduce((total, order) => {
