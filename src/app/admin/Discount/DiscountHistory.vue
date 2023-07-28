@@ -14,10 +14,12 @@
           <AdminHeader
             class="mx-6 mt-6 lg:flex lg:items-center"
             :shopInfo="shopInfo"
-            backLink="/admin/restaurants/"
+            :backLink="`/admin/restaurants/${shopInfo.restaurantId}/discounts`"
             :showSuspend="false"
             :isInMo="isInMo"
             :moPrefix="moPrefix"
+						backText="button.backToDiscounts"
+        		iconText="arrow_back"
             />
       </div>
       <!-- Right Gap -->

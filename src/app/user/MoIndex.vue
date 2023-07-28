@@ -22,11 +22,6 @@
 		  	<MoClosing0810 :moBasePath="moBasePath"/>
 			</div>
 
-		<!--Campaign202307-->
-		<div>
-		  <Campaign202307 :moBasePath="moBasePath"  v-if="enableCampaignBanner" />
-		</div>
-
     <div class="mx-6 mt-8 text-xl font-bold text-black text-opacity-40">
       {{ $t("find.shopList") }}
     </div>
@@ -101,14 +96,12 @@ import { restaurant2AreaObj, sortRestaurantObj } from "@/utils/RestaurantUtils";
 import { defaultHeader } from "@/config/header";
 import { moBaseUrl, moTitle, enableCampaignBanner, moCloseStatus } from "@/config/project";
 import { useIsInMo } from "@/utils/utils";
-import Campaign202307 from "./Mo/Campaign202307.vue";
 import MoClosing0727 from "./Mo/MoClosing0727.vue";
 import MoClosing0810 from "./Mo/MoClosing0810.vue";
 
 export default defineComponent({
   name: "RestaurantIndex",
 	components: {
-		Campaign202307,
     MoClosing0727,
     MoClosing0810,
   },

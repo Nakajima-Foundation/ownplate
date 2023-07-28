@@ -33,6 +33,9 @@ export const reportHeaders = [
   "total",
   "payment",
   "memo",
+
+  "discountPrice",
+
 ];
 export const reportHeadersForMo = [
   ...reportHeadersTopMo,
@@ -92,6 +95,9 @@ export const reportHeadersWithAddress = [
   "shippingCost",
   "payment",
   "memo",
+
+  "discountPrice",
+
 ];
 
 /* ---- */
@@ -113,6 +119,9 @@ export const revenueCSVHeader = [
   "totalCount",
   "name",
   "payment",
+
+  "discountPrice",
+
 ];
 
 // for csv
