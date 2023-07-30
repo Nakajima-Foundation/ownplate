@@ -326,7 +326,7 @@
     "timeToPickup": "受け渡し予定時刻設定",
     "preparationTime": "受け渡し準備時間",
     "preparationTimeDescription": "注文が入ってから受け渡しまでの最短時間",
-    "deliveryPreparationTime": "宅配可能時間",
+    "deliveryPreparationTime": "配達可能時間",
     "reservationTheDayBefore": "前日受付",
     "reservationTheDayBeforeDescription": "いつから注文を受け付けるか",
     "reservationTheDaysBefore": {
@@ -1130,7 +1130,7 @@
       "history": "全ての注文履歴",
       "more": "更に表示",
       "all": "全て表示",
-      "deliveryOrder": "宅配の注文です",
+      "deliveryOrder": "デリバリーです",
       "pickupOrder": "ピックアップの注文です",
       "messageFromCustomer": "お客様からのメッセージ",
       "changeOrderDetail": "注文内容の変更",
@@ -1144,7 +1144,7 @@
 			"storePayment": "受け取り払い"
     },
     "menu": {
-      "delivery": "宅配",
+      "delivery": "デリバリー",
       "printer": "自動印刷",
       "discount": "値引"
     },
