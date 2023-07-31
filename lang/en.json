@@ -601,6 +601,19 @@
     "moDescription2": "You can pick up your order at the store in an hour at the earliest.",
     "moDescription3": "*Only at certain stores​​"
   },
+	"promotion": {
+		"heading": "Ongoing Campaigns",
+    "period": "Period:",
+		"terms": "Terms of Use:",
+		"applied": "is the minimum amount of spent applied discount",
+		"oneTimeOnly": "Available for one time use only",
+		"noLimit": "Available as many times as you like",
+		"fromAmountSpent": "",
+		"discount": "discount on the amount spent",
+		"notes": "Notes on use",
+		"notes1": "The promotional discount will be applied automatically when the amount exceeds the amount stated in the Terms of Use. Please check the total amount on the order confirmation screen after you click the checkout button.",
+		"notes2": "Only one promotion is available per order, therefore the promotion with the largest discount will be applied."
+	},
   "order": {
     "allOrders": "All Orders",
     "menu": "View Menu Page",

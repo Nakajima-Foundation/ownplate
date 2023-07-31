@@ -525,6 +525,19 @@
     "moDescription2": "Vous pouvez récupérer votre commande au magasin dans une heure au plus tôt.",
     "moDescription3": "*Seulement dans certains magasins​​"
   },
+	"promotion": {
+		"heading": "Campagnes en cours",
+    "period": "Période:",
+		"terms": "Conditions d'utilisation:",
+		"applied": "est le montant minimum de la réduction appliquée",
+		"oneTimeOnly": "Disponible pour une utilisation unique",
+		"noLimit": "Disponible autant de fois que vous le souhaitez",
+		"fromAmountSpent": "",
+		"discount": "de réduction sur le montant dépensé",
+		"notes": "Notes sur l'utilisation",
+		"notes1": "La remise promotionnelle sera appliquée automatiquement lorsque le montant dépasse le montant indiqué dans les conditions d'utilisation. Veuillez vérifier le montant total sur l'écran de confirmation de la commande après avoir cliqué sur le bouton de paiement.",
+		"notes2": "Une seule promotion est disponible par commande, c'est donc la promotion avec la remise la plus importante qui sera appliquée."
+	},
   "order": {
     "allOrders": "Toutes les commandes",
     "menu": "Afficher la page du menu",
