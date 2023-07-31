@@ -85,7 +85,7 @@
         <div class="pb-2 text-sm font-bold">
           {{ $t("admin.promotion.period") }}
         </div>
-        
+
         <o-select v-model="promotion.hasTerm">
           <option
             v-for="(result, key) in toBeOrNotSelect"
@@ -117,13 +117,13 @@
           </o-datetimepicker>
         </o-field>
       </div>
-      <div class="mt-6">
+      <div class="mt-6 w-40">
         <div class="pb-2 text-sm font-bold">
           {{ $t("admin.promotion.minimumAmount") }}
         </div>
         <div>
           <o-field>
-            <o-input type="number" v-model="promotion.discountThreshold" class="w-1/2"
+            <o-input type="number" v-model="promotion.discountThreshold"
                      :step="1"
                      min="0"
                      />
@@ -163,7 +163,7 @@
           </option>
         </o-select>
       </div>
-      <div class="mt-6">
+      <div class="mt-6 w-40">
         <div class="pb-2 text-sm font-bold">
           <template v-if="promotion.discountMethod === 'amount'">
             {{ $t("admin.promotion.amount") }}
@@ -173,7 +173,7 @@
           </template>
         </div>
         <o-field >
-          <o-input type="text" v-model="promotion.discountValue" class="w-1/2" />
+          <o-input type="text" v-model="promotion.discountValue" />
           <span class="button is-static">
             <template v-if="promotion.discountMethod === 'amount'">
               {{ $t("currency.JPY") }}
@@ -253,7 +253,7 @@ import {
   promotionPaymentRestrictionsSelect,
 } from "@/config/constant";
 
-  
+
 import {
   getPromotion,
   getPromotionDocumentPath,
@@ -288,7 +288,7 @@ export default defineComponent({
       type: Object,
       required: false,
     },
-    
+
   },
   setup(props) {
     const route = useRoute();
@@ -310,11 +310,11 @@ export default defineComponent({
         return notFoundResponse;
       }
     } else if (
-      !checkShopAccount(props.shopInfo || {}, ownerUid.value) || !ownerUid.value 
+      !checkShopAccount(props.shopInfo || {}, ownerUid.value) || !ownerUid.value
     ) {
       return notFoundResponse;
     }
-   
+
     getPromotion(props.isInMo, id as string, discountId).then(data => {
       promotion.value = data;
       termFromDate.value = data.termFrom.toDate();
@@ -325,7 +325,7 @@ export default defineComponent({
       router.push({
         path: props.isInMo ? `/admin/discounts` : `/admin/restaurants/${props.shopInfo?.restaurantId}/discounts`,
       });
-    };      
+    };
     const save = async () => {
       const {
         promotionName,
@@ -358,7 +358,7 @@ export default defineComponent({
     const cancel = () => {
       back();
     };
-    
+
     return {
       promotion,
       termFromDate,
