@@ -77,6 +77,24 @@
           "order": "ASCENDING"
         },
         {
+          "fieldPath": "status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "timeCreated",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "orders",
+      "queryScope": "COLLECTION_GROUP",
+      "fields": [
+        {
+          "fieldPath": "groupId",
+          "order": "ASCENDING"
+        },
+        {
           "fieldPath": "uid",
           "order": "ASCENDING"
         },
@@ -189,11 +207,125 @@
       "queryScope": "COLLECTION",
       "fields": [
         {
+          "fieldPath": "printed",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "timeCreated",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "orders",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
           "fieldPath": "status",
           "order": "ASCENDING"
         },
         {
           "fieldPath": "timePlaced",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "pageViewData",
+      "queryScope": "COLLECTION_GROUP",
+      "fields": [
+        {
+          "fieldPath": "month",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "restaurantId",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "promotionHistories",
+      "queryScope": "COLLECTION_GROUP",
+      "fields": [
+        {
+          "fieldPath": "groupId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "promotionHistories",
+      "queryScope": "COLLECTION_GROUP",
+      "fields": [
+        {
+          "fieldPath": "groupId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "promotionId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "promotionHistories",
+      "queryScope": "COLLECTION_GROUP",
+      "fields": [
+        {
+          "fieldPath": "promotionId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "restaurantId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "promotionHistories",
+      "queryScope": "COLLECTION_GROUP",
+      "fields": [
+        {
+          "fieldPath": "restaurantId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "promotions",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "enable",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "hasTerm",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "termTo",
           "order": "ASCENDING"
         }
       ]
@@ -321,6 +453,7 @@
     {
       "collectionGroup": "adminlogs",
       "fieldPath": "createdAt",
+      "ttl": false,
       "indexes": [
         {
           "order": "ASCENDING",
@@ -343,6 +476,7 @@
     {
       "collectionGroup": "customer",
       "fieldPath": "orderId",
+      "ttl": false,
       "indexes": [
         {
           "order": "ASCENDING",
@@ -365,6 +499,7 @@
     {
       "collectionGroup": "groups",
       "fieldPath": "groupId",
+      "ttl": false,
       "indexes": [
         {
           "order": "ASCENDING",
@@ -387,6 +522,7 @@
     {
       "collectionGroup": "lines",
       "fieldPath": "uid",
+      "ttl": false,
       "indexes": [
         {
           "order": "ASCENDING",
@@ -409,6 +545,7 @@
     {
       "collectionGroup": "orders",
       "fieldPath": "status",
+      "ttl": false,
       "indexes": [
         {
           "order": "ASCENDING",
@@ -431,6 +568,7 @@
     {
       "collectionGroup": "orders",
       "fieldPath": "timePlaced",
+      "ttl": false,
       "indexes": [
         {
           "order": "ASCENDING",
@@ -453,6 +591,30 @@
     {
       "collectionGroup": "orders",
       "fieldPath": "uid",
+      "ttl": false,
+      "indexes": [
+        {
+          "order": "ASCENDING",
+          "queryScope": "COLLECTION"
+        },
+        {
+          "order": "DESCENDING",
+          "queryScope": "COLLECTION"
+        },
+        {
+          "arrayConfig": "CONTAINS",
+          "queryScope": "COLLECTION"
+        },
+        {
+          "order": "ASCENDING",
+          "queryScope": "COLLECTION_GROUP"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "phoneLog",
+      "fieldPath": "restaurantId",
+      "ttl": false,
       "indexes": [
         {
           "order": "ASCENDING",
@@ -475,6 +637,7 @@
     {
       "collectionGroup": "phoneLog",
       "fieldPath": "updatedAt",
+      "ttl": false,
       "indexes": [
         {
           "order": "ASCENDING",
@@ -497,6 +660,30 @@
     {
       "collectionGroup": "private",
       "fieldPath": "email",
+      "ttl": false,
+      "indexes": [
+        {
+          "order": "ASCENDING",
+          "queryScope": "COLLECTION"
+        },
+        {
+          "order": "DESCENDING",
+          "queryScope": "COLLECTION"
+        },
+        {
+          "arrayConfig": "CONTAINS",
+          "queryScope": "COLLECTION"
+        },
+        {
+          "order": "ASCENDING",
+          "queryScope": "COLLECTION_GROUP"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "private",
+      "fieldPath": "updated",
+      "ttl": false,
       "indexes": [
         {
           "order": "ASCENDING",
@@ -519,6 +706,7 @@
     {
       "collectionGroup": "public",
       "fieldPath": "stripe",
+      "ttl": false,
       "indexes": [
         {
           "order": "ASCENDING",
@@ -541,6 +729,7 @@
     {
       "collectionGroup": "public",
       "fieldPath": "stripeAccount",
+      "ttl": false,
       "indexes": [
         {
           "order": "ASCENDING",
@@ -563,6 +752,7 @@
     {
       "collectionGroup": "restaurants",
       "fieldPath": "groupId",
+      "ttl": false,
       "indexes": [
         {
           "order": "ASCENDING",
@@ -585,6 +775,7 @@
     {
       "collectionGroup": "reviews",
       "fieldPath": "timeLiked",
+      "ttl": false,
       "indexes": [
         {
           "order": "ASCENDING",
@@ -607,6 +798,7 @@
     {
       "collectionGroup": "stripeLogs",
       "fieldPath": "created",
+      "ttl": false,
       "indexes": [
         {
           "order": "ASCENDING",
@@ -629,6 +821,7 @@
     {
       "collectionGroup": "trace",
       "fieldPath": "traceId",
+      "ttl": false,
       "indexes": [
         {
           "order": "ASCENDING",

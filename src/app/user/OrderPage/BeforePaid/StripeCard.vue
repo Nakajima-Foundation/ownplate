@@ -4,18 +4,22 @@
       {{ $t("order.no_jcb") }}
     </div>
 
-    <div v-if="storedCard" class="mt-2 rounded-lg bg-white p-4 shadow">
+    <div
+      v-if="storedCard"
+      class="mt-2 flex items-center rounded-lg bg-white p-4 shadow"
+    >
       <o-checkbox v-model="useStoredCard">
         <div class="text-base">
           <span>{{ storedCard.brand }}</span>
           <span>**** **** **** {{ storedCard.last4 }}</span>
+          <span>・{{ storedCard.exp_month }}/{{ storedCard.exp_year }}</span>
         </div>
       </o-checkbox>
     </div>
 
     <div v-show="!useStoredCard">
       <!-- Enter New Card -->
-      <div class="mt-2 rounded-lg bg-white p-4 shadow">
+      <div class="mt-2 h-14 rounded-lg bg-white p-4 shadow">
         <div id="card-element"></div>
       </div>
 
@@ -106,6 +110,7 @@
 <script>
 import { getStripeInstance, stripeUpdateCustomer } from "@/lib/stripe/stripe";
 import { db } from "@/plugins/firebase";
+import moment from "moment";
 
 export default {
   data() {
@@ -127,13 +132,29 @@ export default {
   },
   async mounted() {
     this.configureStripe();
-    const stripeInfo = (
-      await db.doc(`/users/${this.user.uid}/readonly/stripe`).get()
-    ).data();
-    if (stripeInfo && stripeInfo.card) {
-      this.storedCard = stripeInfo.card;
-      this.useStoredCard = true;
-      this.$emit("change", { complete: true });
+    try {
+      const stripeInfo = (
+        await db.doc(`/users/${this.user.uid}/readonly/stripe`).get()
+      ).data();
+      if (stripeInfo && stripeInfo.card) {
+        const date = ('00' + String(stripeInfo.card.exp_month)).slice(-2);
+        const expire = moment(`${stripeInfo.card.exp_year}${date}01T000000+0900`).endOf('month').toDate();
+        if (
+          stripeInfo.updatedAt && (
+            stripeInfo.updatedAt.toDate() >
+              moment().subtract(180, "days").toDate()
+          )
+        ) {
+          if (expire > new Date()) {
+            this.storedCard = stripeInfo.card;
+            this.useStoredCard = true;
+            this.$emit("change", { complete: true });
+          }
+        }
+      }
+    } catch (e) {
+      console.log(e);
+      console.log("stripe expired");
     }
   },
   watch: {

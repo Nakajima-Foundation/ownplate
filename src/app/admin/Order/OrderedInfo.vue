@@ -73,6 +73,24 @@
           {{ $n(order.totalCharge, "currency") }}
         </div>
 
+				 <div class="mr-2 items-center justify-center rounded-md bg-yellow-500 bg-opacity-10 p-1 text-xs
+                    font-bold text-yellow-500
+                    " v-if="hasStripe && order.payment.stripe !== 'canceled'">
+          {{ $t("admin.order.cardPayment")}}
+        </div>
+
+				 <div class="mr-2 items-center justify-center rounded-md bg-red-700 bg-opacity-10 p-1 text-xs
+                    font-bold text-red-700
+                    " v-else>
+          {{ $t("admin.order.storePayment")}}
+        </div>
+
+        <div class="mr-2 items-center justify-center rounded-md bg-green-600 bg-opacity-10 p-1 text-xs
+                    font-bold text-green-600
+                    " v-if="order.promotionId">
+          {{ $n(order.discountPrice, "currency") }}{{ $t("order.discountPriceSuffix")}}
+        </div>
+        
         <div class="mr-2 text-sm" v-if="order.isDelivery">
           <i class="material-icons"> delivery_dining </i>
         </div>
@@ -91,7 +109,7 @@
 
     <!-- For User -->
     <div
-      v-if="restaurant"
+      v-else-if="restaurant"
       @click="$emit('selected', order)"
       class="cursor-pointer rounded-lg bg-white shadow"
     >
@@ -117,8 +135,7 @@
         </div>
 
         <div class="text-right text-xs">
-          {{ timestamp || "0:00pm" }}
-          <!-- # ToDo: Want to show not only time but also date for the user -->
+          {{ timestamp }}
         </div>
       </div>
 
@@ -133,6 +150,70 @@
         <div class="flex-1">
           <div class="text-base">
             {{ restaurant.restaurantName }}
+          </div>
+
+          <div class="flex items-center">
+            <div class="mr-2 text-sm">
+              {{
+                $tc("sitemenu.orderCounter", totalCount, {
+                  count: totalCount,
+                })
+              }}
+            </div>
+
+            <div class="mr-2 text-sm">
+              {{ $n(order.totalCharge, "currency") }}
+            </div>
+            <div class="mr-2 items-center justify-center rounded-md bg-green-600 bg-opacity-10 p-1 text-xs
+                        font-bold text-green-600
+                        " v-if="order.promotionId && isSuperView">
+              {{ $n(order.discountPrice, "currency") }}{{ $t("order.discountPriceSuffix")}}
+            </div>
+            <div class="mr-2 text-sm" v-if="order.isDelivery">
+              <i class="material-icons"> delivery_dining </i>
+            </div>
+
+            <div class="flex-1 text-right text-sm font-bold">
+              {{ orderName }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div v-else
+      class="rounded-lg bg-white shadow"
+    >
+      <!-- Order Status -->
+      <div class="p-2">
+        <div
+          class="rounded p-1 text-center text-xs font-bold"
+          :class="statusKey"
+        >
+          {{ $t("order.status." + convOrderStateForText(statusKey, order)) }}
+        </div>
+      </div>
+
+      <!-- Payment Status and Time Stamp -->
+      <div class="flex items-center px-2">
+        <div class="flex-1 text-xs font-bold">
+          <div v-if="hasStripe" :class="'stripe_' + order.payment.stripe">
+            {{ $t("order.status.stripe_" + order.payment.stripe) }}
+          </div>
+          <div v-else class="text-yellow-500">
+            {{ $t("order.status.onsitePayment") }}
+          </div>
+        </div>
+
+        <div class="text-right text-xs">
+          {{ timestamp }}
+        </div>
+      </div>
+
+      <!-- Restaurant Photo and Name, Order Count, Total, and Order ID -->
+      <div class="flex items-center p-2">
+        <div class="flex-1">
+          <div class="text-base">
+            {{ $t("order.closedRestaurant") }}
           </div>
 
           <div class="flex items-center">
@@ -195,7 +276,9 @@ export default defineComponent({
         (snapshot) => {
           restaurant.value = snapshot.data();
         }
-      );
+      ).catch((e) => {
+        console.log("no restaurant")
+      });
     }
 
     const statusKey = computed(() => {

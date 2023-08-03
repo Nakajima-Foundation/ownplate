@@ -1,7 +1,7 @@
 <template>
-  <div class="fixed top-0 h-screen w-full bg-black bg-opacity-50">
+  <div class="fixed top-0 h-screen w-full bg-black bg-opacity-50 z-30">
     <div class="h-1/5 w-full" @click="closeCart"></div>
-    <div class="fixed z-10 h-4/5 w-full overflow-x-scroll bg-white pb-32">
+    <div class="fixed h-4/5 w-full overflow-x-scroll bg-white pb-32">
       <div class="mt-6 mb-4 flex justify-center font-bold text-black">
         {{ shopInfo.restaurantName }}
       </div>
@@ -27,19 +27,50 @@
           </div>
         </template>
       </div>
+			
+			<div v-if="promotions && promotions.length > 0"> 
+			  <div class="border-green-600 text-green-600 text-center font-bold mt-1 mx-6 sm:mx-auto max-w-xl items-center mb-3 rounded-lg bg-green-600 bg-opacity-10 p-2">
+				  <div class="text-xs">
+            <PromotionMessage6 :promotion="promotions[0]" />
+          </div>
+          <div v-for="(promotion, k) in promotions" :key="k">
+					  <div class="flex items-end justify-center mt-0.5">
+					    <div class="text-sm">
+						    <PromotionMessage4 :promotion="promotion" />
+					    </div>
+				      <div class="text-lg -mb-1">
+                <PromotionMessage2 :promotion="promotion" />
+              </div>
+					  </div>
+				  </div>
+			  </div>
+  	  </div>
+		  <div v-if="possiblePromotions && possiblePromotions.length > 0" >
+			  <div v-for="(p, k) in [possiblePromotions[0]]"  class="flex mx-6 sm:mx-auto max-w-xl justify-center font-bold text-sm" :key="p.id">
+          <PromotionMessage3 :promotion="p" :totalPrice="totalPrice" />
+			  </div>
+			</div>
+
     </div>
   </div>
 </template>
 
 <script>
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent, computed } from "@vue/composition-api";
 
-import CartItem from "./CartItem.vue";
+import CartItem from "@/app/user/Restaurant/CartItem.vue";
+
+import PromotionMessage2 from "@/app/user/Restaurant/PromotionMessage2.vue";
+import PromotionMessage3 from "@/app/user/Restaurant/PromotionMessage3.vue";
+import PromotionMessage4 from "@/app/user/Restaurant/PromotionMessage4.vue";
 
 export default defineComponent({
   emits: ["closeCart", "didOrderdChange"],
   components: {
     CartItem,
+    PromotionMessage2,
+		PromotionMessage3,
+		PromotionMessage4,
   },
   props: {
     shopInfo: {
@@ -58,6 +89,14 @@ export default defineComponent({
       type: Object,
       required: true,
     },
+    promotions: {
+      type: Array,
+      required: false,
+    },
+    possiblePromotions: {
+      type: Array,
+      required: false,
+    },
     selectedOptions: {
       type: Object,
       required: true,
@@ -69,6 +108,10 @@ export default defineComponent({
     lastOrder: {
       type: String,
       required: false,
+    },
+    totalPrice: {
+      type: Object,
+      required: true,
     },
   },
   setup(props, ctx) {
@@ -92,12 +135,21 @@ export default defineComponent({
     const decrease = (itemId, key) => {
       setQuantities(itemId, key, -1);
     };
+    // mo
+    const hasOneBuyOne = computed(() => {
+      return Object.keys(props.orders).some(itemId => {
+        // console.log(props.menuObj[itemId]);
+        return props.menuObj[itemId].category === "998";
+      });
+    });
     return {
       closeCart: () => {
         ctx.emit("closeCart");
       },
       increase,
       decrease,
+
+      hasOneBuyOne,
     };
   },
 });

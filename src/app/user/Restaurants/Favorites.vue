@@ -1,7 +1,10 @@
 <template>
   <div>
     <div class="mx-6 mt-6">
-      <back-button :url="basePath + '/u/profile/'" />
+      <back-button :url="basePath + '/u/profile/'"
+                   backText="button.myPage"
+                   iconText="arrow_back"
+                   />
     </div>
 
     <div class="mx-6 mt-6 text-xl font-bold text-black text-opacity-40">

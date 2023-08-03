@@ -2,7 +2,10 @@
   <div>
     <!-- Back -->
     <div class="mx-6 mt-6">
-      <back-button :url="basePath + '/u/profile/'" />
+      <back-button :url="basePath + '/u/profile/'"
+                   backText="button.myPage"
+                   iconText="arrow_back"
+                   />
     </div>
 
     <!-- Title -->
@@ -146,9 +149,7 @@ export default defineComponent({
 
     const handleDismissed = (success) => {
       console.log("handleDismissed", success);
-      if (success) {
-        loginVisible.value = false;
-      } else {
+      if (!success) {
         ctx.root.$router.push(topPath.value);
       }
     };

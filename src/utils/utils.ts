@@ -81,6 +81,10 @@ export const previewLink = (props: any) => {
   });
 };
 
+export const sleep = async (seconds: number) => {
+  return await new Promise((resolve) => setTimeout(resolve, seconds * 1000));
+};
+
 export const shareUrl = (root: any, prefix: string) => {
   const restaurantId = root.$route.params.restaurantId;
 
@@ -313,11 +317,20 @@ export const getPartner = (shopOwner: ShopOwnerData) => {
   });
 };
 
+export const sha256 = async (str: string) =>  {
+  const buff = new Uint8Array(str.split("").map((c: string) => c.charCodeAt(0))).buffer;
+  const digest = await crypto.subtle.digest('SHA-256', buff);
+  return [...(new Uint8Array(digest))].map((x: number) => ('00' + x.toString(16)).slice(-2)).join('');
+ }
+
+
 export const regionalSetting = (regionalSettings as { [key: string]: any })[
   ownPlateConfig.region || "US"
 ];
 
 export const stripeRegion = stripe_regions[ownPlateConfig.region || "US"];
+
+export const isLineEnabled = !!ownPlateConfig.line;
 
 export const roundPrice = (price: number) => {
   const m = stripeRegion.multiple;

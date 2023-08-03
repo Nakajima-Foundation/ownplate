@@ -15,6 +15,7 @@ export const ownPlateConfig = {
   siteDescription: "Zero Comission Take-out Service",
   region: "JP",
   hostName: "staging.ownplate.today",
+  analyticsId: "analytics_234384968",
   stripe: {
     clientId: "ca_GyPukeEMH37oDt0ZBNMNC7Ig7tWYNWlM",
     apiKey: "pk_test_D3jszT5TNpS0uLplY5nNfVTO000zXyS86G",
@@ -47,3 +48,11 @@ export const moGtmID = "GTM-PLFRX7K";
 export const moBaseUrl = "https://mo-data-dev.omochikaeri.com";
 export const moTitle = "Mobile Order";
 export const moPickup = true;
+
+export const enableReason = true;
+
+export const enableCampaignBanner = false;
+
+export const autoCancels = ["ss", "motest"];
+
+export const moCloseStatus = 1; // 1, 2 ,3

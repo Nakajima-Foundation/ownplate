@@ -443,6 +443,46 @@ export const soundFiles = [
   },
 ];
 
+export const placedCancelReasons = [ {
+  message: "キャンセル理由を必ず選択してください",
+  key: "",
+}, {
+  message: "店頭在庫無し",
+  key: "placedNoStock",
+}, {
+  message: "発注しないと店舗で判断",
+  key: "placedNoOrder",
+}, {
+  message: "緊急取消のため発注不可",
+  key: "placedEmergency",
+}, {
+  message: "お客様申し出",
+  key: "placedByCustomer",
+}, {
+  message: "テスト注文のため",
+  key: "placedTest",
+}];
+
+export const acceptedCancelReasons = [ {
+  message: "キャンセル理由を必ず選択してください",
+  key: "",
+}, {
+  message: "商品不良",
+  key: "acceptedBadCondition",
+}, {
+  message: "発注漏れ",
+  key: "acceptedNoOrder",
+}, {
+  message: "商品未納",
+  key: "acceptedNoStock",
+}, {
+  message: "お客様申し出",
+  key: "acceptedByCustomer",
+}, {
+  message: "テスト注文のため",
+  key: "acceptedTest",
+}];
+
 export const partners = [
   {
     id: "singularitysociety",
@@ -456,6 +496,33 @@ export const partners = [
     logo: "legssystem.png",
     ask: true,
   },
+];
+
+export const toBeOrNotSelect = [
+  { value: true, message:'あり', messageKey: 'yes' },
+  { value: false, message: 'なし', messageKey: 'no' }
+];
+export const toBeOrNotSelect2 = [
+  { value: true, message:'あり(1回)', messageKey: 'yesOnce' },
+  { value: false, message: 'なし', messageKey: 'no' }
+];
+export const yesOrNoSelect = [
+  { value: true, message: 'Yes' },
+  { value: false, message: 'No' }
+];
+export const discountMethodSelect = [
+  { value: 'amount', messageKey: 'amount' },
+  { value: 'ratio', messageKey: 'ratio' }
+];
+export const discountTypeSelect = [
+  { value: 'discount', messageKey: 'discount' },
+  // { value: 'onetimeCoupon', messageKey: 'onetimeCoupon' },
+  // { value: 'multipletimesCoupon', messageKey: 'multipletimesCoupon' }
+];
+export const promotionPaymentRestrictionsSelect = [
+  { value: 'stripe', message: '事前カード決済' },
+  { value: 'instore', message: '受け取り払い' },
+  { value: null, message: 'なし' }
 ];
 
 export const twiml_neworder =

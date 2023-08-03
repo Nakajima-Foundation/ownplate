@@ -51,6 +51,25 @@
         </div>
       </div>
 
+      <!-- Promotion discount for after pay -->
+      <div v-if="orderInfo.promotionId"
+           class="-mx-2 mt-2 flex bg-green-600 bg-opacity-10 px-2 py-1 rounded-md"
+           >
+        <div class="flex-1">
+          <div class="text-base">
+            {{
+            $t( "order.discountString" )
+            }}
+            ({{ orderInfo.promotionName }})
+          </div>
+        </div>
+        <div class="text-right">
+          <div class="text-base">
+            {{ $n( -orderInfo.discountPrice, "currency") }}
+          </div>
+        </div>
+      </div>
+
       <!-- Postage for EC -->
       <div
         v-if="shopInfo.isEC"
@@ -183,14 +202,72 @@
         </div>
       </div>
     </div>
+
+    <!-- promotion discount for before pay -->
+    <div v-if="enablePromotion"
+         class="bg-green-600 bg-opacity-10 p-2 -mx-2 rounded-lg mt-2"
+         >
+      <!-- promotion discount -->
+      <template v-if="promotion.paymentRestrictions">
+			  <!-- おもちかえりの場合は以下のメッセージを表示-->
+        <span v-if="mode !== 'mo'" class="text-sm font-bold text-opacity-40 text-black">
+          {{ $t("order.discountAlert." + promotion.paymentRestrictions) }}
+        </span>
+			  <!-- MobileOrderの場合は以下のメッセージを表示-->
+			  <span v-else class="text-sm font-bold text-opacity-40 text-black">
+          {{ $t("order.discountAlertMo." + promotion.paymentRestrictions) }}
+        </span>
+      </template>
+      <div class="mt-2 flex">
+        <div class="flex-1">
+          <div class="text-base">
+            {{ promotion.promotionName }}
+          </div>
+        </div>
+        <div class="text-right">
+          <div class="text-base">
+            {{ $n(-discountPrice, "currency") }}
+          </div>
+        </div>
+      </div>
+      <div
+        class="mt-4 border-t-2 border-solid border-black border-opacity-10 pt-4 pb-2"
+        >
+        <div class="flex">
+          <div class="flex-1">
+            <div class="text-xl font-bold text-green-600">
+              {{ $t("order.totalCharge") }}
+            </div>
+          </div>
+          <div class="text-right">
+            <div class="text-xl font-bold text-green-600">
+              {{ $n(previewDiscountTotal, "currency") }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import {
+  defineComponent,
+  computed,
+  watch,
+  ref,
+  PropType,
+} from "@vue/composition-api";
+
 import { order_status } from "@/config/constant";
+import { stripeRegion } from "@/utils/utils";
 import OrderItem from "@/app/user/OrderPage/OrderItem.vue";
 
-export default {
+import { OrderInfoData } from "@/models/orderInfo";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
+
+export default defineComponent({
   name: "Order",
 
   props: {
@@ -199,17 +276,35 @@ export default {
       required: true,
     },
     orderInfo: {
-      type: Object,
+      type: Object as PropType<OrderInfoData>,
       required: true,
     },
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
     groupData: {
       type: Object,
       required: false,
     },
+    // promotion
+    promotion: {
+      type: Object,
+      required: false,
+    },
+    enablePromotion: {
+      type: Boolean,
+      required: false,
+    },
+    discountPrice: {
+      type: Number,
+      required: false,
+    },
+    mode: {
+      type: String,
+      required: true,
+    },
+    // end of promotion
     editable: {
       type: Boolean,
       required: false,
@@ -223,104 +318,141 @@ export default {
       required: false,
     },
   },
-  data() {
-    return {
-      tip: "",
-    };
-  },
-  watch: {
-    orderInfo() {
-      console.log("orderInfo changed", this.orderInfo.total);
-      if (this.isTipEditable) {
-        if (this.tip === "" && this.regionTip.default === 0) {
-          return; // display the placeholder
-        }
-        this.updateTip(this.regionTip.default);
-      } else {
-        this.tip = this.orderInfo.tip;
-      }
-    },
-  },
   components: {
     OrderItem,
   },
-  computed: {
-    actualShippingCost() {
-      return this.orderInfo.shippingCost
-        ? this.orderInfo.shippingCost
-        : this.shippingCost || 0;
-    },
-    regionTip() {
-      return this.$store.getters.stripeRegion.tip;
-    },
-    tipStep() {
-      return 1.0 / this.$store.getters.stripeRegion.multiple;
-    },
-    verified() {
-      return this.orderInfo.status >= order_status.validation_ok;
-    },
-    isTipEditable() {
-      return this.orderInfo.status === order_status.validation_ok;
-    },
+  setup(props, ctx) {
+    const store = ctx.root.$store;
 
-    previewTip() {
-      // both edittable tip or orderinfo tip
-      if (this.isTipEditable) {
-        return this.tip;
-      }
-      return this.orderInfo.tip;
-    },
-    previewTotal() {
-      return this.editable || this.isTipEditable
-        ? this.orderInfo.total +
-            Number(this.tip) +
-            Number(this.actualShippingCost) +
-            Number(this.orderInfo.deliveryFee || 0)
-        : this.orderInfo.totalCharge;
-    },
-    enableTip() {
-      if (this.shopInfo.isEC) {
-        return false;
-      }
-      if (this.groupData) {
-        return this.groupData.enableTip;
-      }
-      return true;
-    },
-    maxTip() {
-      return this.calcTip(this.regionTip.max);
-    },
-  },
-  methods: {
-    updateAvailable(value) {
-      this.$emit("input", value);
-    },
+    const regionTip = stripeRegion.tip;
+    const tipStep = 1.0 / stripeRegion.multiple;
+    
+    const tip = ref<number | string>("");
 
-    calcTip(ratio) {
-      const m = this.$store.getters.stripeRegion.multiple;
-      const value = Math.round((this.orderInfo.total * ratio * m) / 100) / m;
+    // methods 
+    const updateAvailable = (value: boolean) => {
+      ctx.emit("input", value);
+    };
+
+    // internal
+    const calcTip = (ratio: number) => {
+      const m = stripeRegion.multiple;
+      const value = Math.round((props.orderInfo.total * ratio * m) / 100) / m;
       if (m === 1) {
         return Math.round(value);
       }
       return Math.round(value * m) / m;
-    },
-    updateTip(ratio) {
-      this.tip = this.calcTip(ratio);
-      this.$emit("change", this.tip);
-    },
-    isSameAmount(ratio) {
-      return Number(this.tip) === this.calcTip(ratio);
-    },
-    handleTipInput() {
-      if (this.tip < 0) {
+    };
+    const updateTip = (ratio: number) => {
+      tip.value = calcTip(ratio);
+      ctx.emit("change", tip.value);
+    };
+    const isSameAmount = (ratio: number) => {
+      return Number(tip.value) === calcTip(ratio);
+    };
+    // computed 
+    // internal 
+    const maxTip = computed(() => {
+      return calcTip(regionTip.max);
+    });
+
+    const handleTipInput = () => {
+      if (tip.value < 0) {
         console.log("negative");
-        this.tip = -this.tip;
-      } else if (this.tip > this.maxTip) {
+        tip.value = -tip.value;
+      } else if (tip.value > maxTip.value) {
         console.log("max");
-        this.tip = this.maxTip;
+        tip.value = maxTip.value;
       }
-      this.$emit("change", Number(this.tip));
-    },
+      ctx.emit("change", Number(tip.value));
+    };
+    
+
+    // computed
+    const actualShippingCost = computed(() => {
+      return props.orderInfo.shippingCost
+        ? props.orderInfo.shippingCost
+        : props.shippingCost || 0;
+    });
+
+    const verified = computed(() => {
+      return props.orderInfo.status >= order_status.validation_ok;
+    });
+    const isTipEditable = computed(() => {
+      return props.orderInfo.status === order_status.validation_ok;
+    });
+
+    const previewTip = computed(() => {
+      // both edittable tip or orderinfo tip
+      if (isTipEditable.value) {
+        return tip.value;
+      }
+      return props.orderInfo.tip;
+    });
+
+    const previewTotal = computed(() => {
+      return props.editable || isTipEditable.value
+        ? props.orderInfo.total +
+            Number(tip.value) +
+            Number(actualShippingCost.value) +
+            Number(props.orderInfo.deliveryFee || 0)
+        : props.orderInfo.totalCharge;
+    });
+    const previewDiscountTotal = computed(() => {
+      return props.editable || isTipEditable.value
+        ? previewTotal.value -
+            Number(props.discountPrice)
+        : props.orderInfo.totalCharge;
+    });
+    const enableTip = computed(() => {
+      if (props.shopInfo.isEC) {
+        return false;
+      }
+      if (props.groupData) {
+        return props.groupData.enableTip;
+      }
+      return true;
+    });
+
+    const orderInfo = computed(() => {
+      return props.orderInfo;
+    });
+    watch(orderInfo, () => {
+      console.log("orderInfo changed", props.orderInfo.total);
+      if (isTipEditable.value) {
+        if (tip.value === "" && regionTip.default === 0) {
+          return; // display the placeholder
+        }
+        updateTip(regionTip.default);
+      } else {
+        tip.value = props.orderInfo.tip;
+      }
+    });
+
+    return {
+      // const 
+      regionTip,
+      tipStep,
+      // ref
+      tip,
+
+      previewDiscountTotal,
+      
+      // methods
+      updateAvailable,
+      updateTip,
+      isSameAmount,
+      handleTipInput,
+
+      actualShippingCost,
+      verified,
+      isTipEditable,
+      previewTip,
+      previewTotal,
+      enableTip,
+
+    };
+
   },
-};
+});
 </script>

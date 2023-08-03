@@ -11,7 +11,7 @@
         moSuspend
       "
       @click="handleCheckOut"
-      class="b-reset-tw fixed left-1/2 bottom-3 z-10 ml-[-9rem] w-[18rem] sm:bottom-8"
+      class="b-reset-tw fixed left-1/2 bottom-3 z-30 ml-[-9rem] w-[18rem] sm:bottom-8"
     >
       <div
         class="inline-flex w-72 items-center justify-center rounded-full bg-op-teal shadow-lg"
@@ -19,8 +19,11 @@
       >
         <ButtonLoading v-if="isCheckingOut" />
         <template v-if="noPaymentMethod">
-          <div class="text-base font-bold text-white">
+          <div class="text-base font-bold text-white" v-if="shopInfo.publicFlag">
             {{ $t("shopInfo.noPaymentMethod") }}
+          </div>
+          <div class="text-base font-bold text-white" v-else>
+            {{ $t("shopInfo.notPublicShop") }}
           </div>
         </template>
         <template v-if="moSuspend">
@@ -109,6 +112,7 @@
               </div>
             </template>
             <!-- total and price -->
+            <template v-if="!noPaymentMethod">
             <div
               class="inline-flex items-center justify-center text-base font-bold text-white"
             >
@@ -133,6 +137,7 @@
               </div>
               <i class="material-icons text-2xl">shopping_cart</i>
             </div>
+            </template>
           </div>
         </template>
       </div>

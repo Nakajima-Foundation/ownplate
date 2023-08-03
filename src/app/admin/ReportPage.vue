@@ -105,6 +105,12 @@
               </div>
             </td>
             <td class="p-2">
+              <div class="text-right">
+                {{ order.discountPrice || 0 }}
+              </div>
+            </td>
+            
+            <td class="p-2">
               <div class="text-right">{{ order.totalCharge }}</div>
             </td>
             <td class="p-2">
@@ -146,6 +152,7 @@
             <td class="p-2">
               <div class="text-right">{{ total.service.tax }}</div>
             </td>
+            <td></td>
             <td></td>
             <td></td>
             <td class="p-2">
@@ -193,7 +200,9 @@
 </template>
 
 <script>
-import { db, firestore } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import { doc, query, collection, where, orderBy, onSnapshot } from "firebase/firestore";
+
 import {
   defineComponent,
   ref,
@@ -338,6 +347,8 @@ export default defineComponent({
           totalCount: Object.values(order.order).reduce((count, order) => {
             return count + arrayOrNumSum(order);
           }, 0),
+          discountPrice: order.discountPrice || 0,
+          beforeDiscountPrice: order.totalCharge + (order.discountPrice || 0),
           name: nameOfOrder(order),
           payment: order.payment?.stripe ? "stripe" : "",
         };
@@ -372,21 +383,28 @@ export default defineComponent({
 
     const updateQuery = () => {
       detacher && detacher();
-      let query = db
-        .collection(`restaurants/${props.shopInfo.restaurantId}/orders`)
-        .where(
+      let myQuery = query(
+        collection(db, `restaurants/${props.shopInfo.restaurantId}/orders`),
+        where(
           "timeConfirmed",
           ">=",
           lastSeveralMonths.value[monthIndex.value].date
-        );
+        )
+      )
       if (monthIndex.value > 0) {
-        query = query.where(
-          "timeConfirmed",
-          "<",
-          lastSeveralMonths.value[monthIndex.value - 1].date
+        myQuery = query(
+          myQuery,
+          where(
+            "timeConfirmed",
+            "<",
+            lastSeveralMonths.value[monthIndex.value - 1].date
+          )
         );
       }
-      detacher = query.orderBy("timeConfirmed").onSnapshot((snapshot) => {
+      detacher = onSnapshot(query(
+        myQuery,
+        orderBy("timeConfirmed")
+      ), (snapshot) => {
         const serviceTaxRate = props.shopInfo.alcoholTax / 100;
         orders.value = snapshot.docs
           .map(doc2data("order"))
@@ -421,7 +439,7 @@ export default defineComponent({
             totalCharge: 0,
           }
         );
-      });
+      })
     };
     const orderUrl = (order) => {
       return `/admin/restaurants/${props.shopInfo.restaurantId}/orders/${order.id}`;

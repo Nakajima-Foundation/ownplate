@@ -1,0 +1,50 @@
+<template>
+  <div>
+    <!-- Transactions Act Popup-->
+    <o-modal :active.sync="transactionsActPopup" :width="488" scroll="keep">
+      <Contents
+        :shopInfo="shopInfo"
+        :isDelivery="isDelivery"
+        @closeTransactionsAct="closeTransactionsAct"
+        closeButton="menu.close"
+        />
+    </o-modal>
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent, ref } from "@vue/composition-api";
+import Contents from "@/app/user/TransactionsAct/Contents.vue";
+
+export default defineComponent({
+  props: {
+    shopInfo: {
+      type: Object,
+      required: true,
+    },
+    isDelivery: {
+      type: Boolean,
+      required: true,
+    },
+  },
+  components: {
+    Contents,
+  },
+  setup(props, ctx) {
+    const transactionsActPopup = ref(false);
+
+    const openTransactionsAct = () => {
+      transactionsActPopup.value = true;
+    };
+    const closeTransactionsAct = () => {
+      transactionsActPopup.value = false;
+    };
+
+    return {
+      transactionsActPopup,
+      openTransactionsAct, // call by parent
+      closeTransactionsAct, // call by parent
+    };
+  },
+});
+</script>

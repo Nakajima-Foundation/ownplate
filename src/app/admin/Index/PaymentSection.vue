@@ -148,19 +148,6 @@ export default {
       if (snapshot.exists) {
         this.paymentInfo = snapshot.data();
         this.inStorePayment = this.paymentInfo.inStore;
-      } else {
-        let stripe = null;
-        // ---- Backward compatibility
-        const refStripe = db.doc(`/admins/${this.uid}/public/stripe`);
-        const stripeData = (await refStripe.get()).data();
-        if (stripeData) {
-          stripe = stripeData.stripeAccount;
-        }
-        // ---- End of Backward compatibility
-        refPayment.set({
-          stripe,
-          inStore: false,
-        });
       }
       this.$emit("updateUnsetWarning", this.unsetWarning);
     });
@@ -175,9 +162,9 @@ export default {
       if (newValue !== this.paymentInfo.inStore) {
         //console.log("************* inStorePayment change", newValue);
         const refPayment = db.doc(`/admins/${this.uid}/public/payment`);
-        refPayment.update({
+        refPayment.set({
           inStore: newValue,
-        });
+        }, {merge: true});
       }
     },
     unsetWarning(newValue) {

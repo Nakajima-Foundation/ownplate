@@ -11,6 +11,9 @@
     <!-- News -->
     <News />
 
+    <!-- News -->
+    <Survey v-if="false"/>
+    
     <!-- Unset Warning -->
     <div v-if="false" class="mx-6 mt-6 rounded-lg bg-red-700 bg-opacity-10 p-4">
       <span class="text-sm text-red-700">{{
@@ -174,6 +177,7 @@
                 <ExportProd
                   :restaurantLists="restaurantLists"
                   :restaurantItems="restaurantItems"
+                  :masterRestaurantId="groupData.restaurantId"
                 />
               </div>
             </div>
@@ -181,12 +185,25 @@
             <div v-if="isOwner && isInMo" class="mb-2">
               <IndexSuspend />
             </div>
+            <div v-if="isOwner && isInMo" class="mb-2">
+              <router-link to="/admin/discounts">
+                <div
+                  class="flex h-14 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 text-op-teal"
+                >
+                  <span class="text-base font-bold">{{
+                    $t("mobileOrder.admin.discount")
+                  }}</span>
+                </div>
+              </router-link>
+
+            </div>
 
             <a name="addMenu" />
             <div
               v-for="(restaurantId, index) in restaurantLists"
               :key="restaurantId"
             >
+              <a :id='"restaurant_" + restaurantId' />
               <restaurant
                 v-if="restaurantItems[restaurantId]"
                 :simpleMode="simpleMode"
@@ -299,6 +316,7 @@ import MessageCard from "./Messages/MessageCard.vue";
 import EmailVerify from "@/app/admin/Index/EmailVerify.vue";
 import WelcomeAndLinks from "@/app/admin/Index/WelcomeAndLinks.vue";
 import News from "@/app/admin/Index/News.vue";
+import Survey from "@/app/admin/Index/Survey.vue";
 import Note from "@/app/admin/Index/Note.vue";
 import MailMagazine from "@/app/admin/Index/MailMagazine.vue";
 import Smaregi from "@/app/admin/Index/Smaregi.vue";
@@ -306,13 +324,15 @@ import Footer from "@/app/admin/Index/Footer.vue";
 import Partners from "@/app/admin/Index/Partners.vue";
 import SubAccount from "@/app/admin/Index/SubAccount.vue";
 import ExportProd from "@/app/admin/Index/ExportProd.vue";
-import IndexSuspend from "@/app/admin/IndexSuspend.vue";
+import IndexSuspend from "@/app/admin/Index/Suspend.vue";
 
 import { ping } from "@/lib/firebase/functions";
 
 import {
   getShopOwner,
   doc2data,
+  sleep,
+  scrollToElementById,
   arrayChunk,
   useAdminUids,
 } from "@/utils/utils";
@@ -328,6 +348,7 @@ export default defineComponent({
     MessageCard,
     WelcomeAndLinks,
     News,
+    Survey,
     Partners,
     EmailVerify,
     Smaregi,
@@ -510,6 +531,11 @@ export default defineComponent({
             );
           });
         }
+        await sleep(0.7);
+        if (location.hash && location.hash.split("_")[0] === '#restaurant') {
+          scrollToElementById(location.hash.replace("#", ""));
+        }
+        
       } catch (error) {
         console.log("Error fetch doc,", error);
       } finally {

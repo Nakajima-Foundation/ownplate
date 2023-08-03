@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Transactions Act Popup-->
-    <o-modal :active.sync="transactionsActPopup" :width="488" scroll="keep">
+    <div>
       <div class="omx-2 rounded-lg bg-white p-6 shadow-lg">
         <!-- Title -->
         <div class="text-xl font-bold text-black text-opacity-40">
@@ -130,7 +130,9 @@
                 <li v-if="inStorePayment">
                   {{ $t("transactionsAct.paymentDescriptionStore") }}
                 </li>
-                <li>{{ $t("transactionsAct.paymentDescriptionCardNote") }}</li>
+                <li v-if="showPayment">
+                  {{ $t("transactionsAct.paymentDescriptionCardNote") }}
+                </li>
               </ul>
             </div>
             <!--for MobileOrder-->
@@ -256,12 +258,12 @@
             style="min-width: 8rem"
           >
             <div class="text-base font-bold text-black text-opacity-60">
-              {{ $t("menu.close") }}
+              {{ $t(closeButton) }}
             </div>
           </a>
         </div>
       </div>
-    </o-modal>
+    </div>
   </div>
 </template>
 <script>
@@ -282,6 +284,10 @@ export default defineComponent({
       type: Boolean,
       required: true,
     },
+    closeButton: {
+      type: String,
+      required: true,
+    },
   },
   setup(props, ctx) {
     const isInMo = useIsInMo(ctx.root);
@@ -289,7 +295,6 @@ export default defineComponent({
     const restaurantsId = props.shopInfo.restaurantId;
     const days = daysOfWeek;
     const paymentInfo = ref({});
-    const transactionsActPopup = ref(false);
 
     const uid = props.shopInfo.uid;
 
@@ -308,18 +313,14 @@ export default defineComponent({
     const validDate = (date) => {
       return !isNull(date.start) && !isNull(date.end);
     };
-    const openTransactionsAct = () => {
-      transactionsActPopup.value = true;
-    };
     const closeTransactionsAct = () => {
-      transactionsActPopup.value = false;
+      ctx.emit("closeTransactionsAct");
     };
 
     return {
       restaurantsId,
       days,
       paymentInfo,
-      transactionsActPopup,
 
       showPayment,
       inStorePayment,
@@ -327,7 +328,6 @@ export default defineComponent({
 
       isInMo,
 
-      openTransactionsAct,
       closeTransactionsAct, // call by parent
 
       nationalPhoneNumber,

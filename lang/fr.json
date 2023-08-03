@@ -30,10 +30,30 @@
     "soldOut": "Sold out",
     "inStock": "In stock",
     "closeLabel": "(*Orders will be closed on {date})",
+		"fixedFormat":"※商品画像はイメージです。表示価格は店頭価格と異なる場合がございます。アレルゲン情報などの商品の詳細情報は、商品パッケージもしくはファミリーマートの公式ホームページをご確認ください。",
+		"autoCancel":"*Veuillez noter que les commandes passées entre minuit et 7 heures du matin seront annulées.",
     "admin": {
       "takeout": "Pre order",
       "pickup": "Takeaway",
-      "pickupStock": "Stock of takeaway"
+      "forcePickupStock": "常時在庫",
+      "pickupStock": "Stock of takeaway",
+      "threshold": "閾値（閾値以上: 在庫あり、閾値未満: 在庫なし）",
+      "thresholdPickup": "ピックアップ",
+      "thresholdSearchStock": "在庫検索",
+      "suspendSettings": "受付休止設定",
+      "suspendAllStore": "（全店舗）",
+      "suspending": "サービス休止中",
+      "suspendingPickup": "ピックアップ休止中",
+      "suspendConfirm": "以下の注文方法による受付を休止します。",
+      "restoreConfirm": "全ての注文の受付休止を解除してサービスを再開します。",
+      "restorePickupConfirm": "ピックアップ注文の受付休止を解除して再開します。",
+      "autoCancelAlert": "{date}までに受付しない場合は自動キャンセルされます。",
+      "autoCancel": "自動キャンセル",
+      "suspendAll": "全ての注文(予約注文、ピックアップ)",
+      "suspendPickup": "ピックアップ注文のみ",
+      "suspend": "休止",
+      "Restore": "再開",
+      "cancel": "キャンセル"
     },
     "shopInfo": {
       "takeout": "Online order",
@@ -44,6 +64,19 @@
       "showAll": "Show all",
       "showOnlyInStock": "Show only in stock",
       "closeNote": "*Orders at this store will be closed at {time} on {date}."
+		},
+    "closing": {
+      "notice": "Avis",
+			"heading": "Avis de fin de service",
+			"paragraph1": "Nous vous remercions pour votre soutien continu. La commande mobile ne sera plus disponible le vendredi 18 août 2023. Nous nous excusons pour les désagréments occasionnés et vous remercions de votre compréhension.",
+			"paragraph2": "Vous trouverez ci-dessous l'horaire jusqu'à la fin du service.",
+			"paragraph3": "Les nouvelles commandes ne sont plus acceptées.",
+			"ordering": "[Date et heure de la commande]",
+			"orderingDate": "Jusqu'à 16 heures, le jeudi 10 août 2023",
+			"acceptance": "[Date et heure de réception]",
+			"acceptanceDate": "Jusqu'à 22 heures, le vendredi 18 août 2023",
+			"closedMessage": "Avis de fin de service",
+			"closedParagraph": "Nous vous remercions pour votre soutien continu. La commande mobile ne sera plus disponible le vendredi 18 août 2023. Nous nous excusons pour les désagréments occasionnés et vous remercions de votre compréhension."
     }
   },
   "profile": {
@@ -96,6 +129,7 @@
     "forAllUser": "Pour tous les utilisateurs",
     "manualLink": "Anual (en japonais)",
     "deliveryManualLink": "Delivery manual",
+    "printerManualLink": "Printer manual",
     "tipsLink": "Conseils (en japonais)",
     "termsRestaurant": "CGU pour le restaurant",
     "termsUser": "CGU pour l'utilisateur",
@@ -294,6 +328,9 @@
     "itemDescription": "Description de l'article",
     "itemMemo": "Memo",
     "itemPhoto": "Photo de l'article",
+    "additionalPhotos": "Photos supplémentaires (jusqu'à 4 photos)",
+    "addPhotos": "Sélectionnez les photos",
+    "deleteAllPhotos": "Supprimer toutes les photos",
     "itemOptions": "Option de l'article",
     "itemOptionsNote": "Pour les alternatives, utilisez une virgule pour les séparer (ex: \"Poulet, Boeuf, Mouton \"). Vous pouvez ajouter un prix à une option avec (+ N), où N est le prix.",
     "itemAddOption": "Ajouter une option",
@@ -345,6 +382,7 @@
     "share": "Partager",
     "like": "Aimer",
     "liked": "Aimée",
+		"visitWebsite": "Visiter le site web",
     "mo": {
       "like": "Aimer",
       "liked": "Aimée",
@@ -385,6 +423,8 @@
     "onlinePayment": "Payment en Ligne",
     "onsitePayment": "Paiement à la Livraison",
     "noPaymentMethod": "Commande en ligne indisponible",
+    "notPublicShopMessage": "Not Public",
+    "notPublicShop": "Not Public",
     "paymentMethods": "Payment methods",
     "minimumAvailableTime": "Temps disponible minimum",
     "noAvailableTime": "Aucun de temps de commande",
@@ -451,7 +491,8 @@
     "options": "Options",
     "subTotal": "Sous-total: ",
     "quantity": "Quantité",
-    "addDifferentOptionsItem": "Add Different Options Item"
+    "addDifferentOptionsItem": "Add Different Options Item",
+    "openCollapse": "Voir d'autres images et options"
   },
   "date": {
     "today": "Aujourd'hui"
@@ -484,6 +525,19 @@
     "moDescription2": "Vous pouvez récupérer votre commande au magasin dans une heure au plus tôt.",
     "moDescription3": "*Seulement dans certains magasins​​"
   },
+	"promotion": {
+		"heading": "Campagnes en cours",
+    "period": "Période:",
+		"terms": "Conditions d'utilisation:",
+		"applied": "est le montant minimum de la réduction appliquée",
+		"oneTimeOnly": "Disponible pour une utilisation unique",
+		"noLimit": "Disponible autant de fois que vous le souhaitez",
+		"fromAmountSpent": "",
+		"discount": "de réduction sur le montant dépensé",
+		"notes": "Notes sur l'utilisation",
+		"notes1": "La remise promotionnelle sera appliquée automatiquement lorsque le montant dépasse le montant indiqué dans les conditions d'utilisation. Veuillez vérifier le montant total sur l'écran de confirmation de la commande après avoir cliqué sur le bouton de paiement.",
+		"notes2": "Une seule promotion est disponible par commande, c'est donc la promotion avec la remise la plus importante qui sera appliquée."
+	},
   "order": {
     "allOrders": "Toutes les commandes",
     "menu": "Afficher la page du menu",
@@ -506,6 +560,7 @@
     "name": "order name",
     "restaurantName": "Nom du restaurant",
     "payment": "payment",
+    "paymentCancel": "payment cancel",
     "includingTip": "avec pourboire",
     "subtotal": "Sous-Total",
     "salesTax": "Taxe de vente",
@@ -578,6 +633,10 @@
     "paymentAndCancellation": "Paiement et annulation",
     "statusTitle": "Order Status",
     "sortOrder": "Sort Order",
+		"promotionNoteCardMo":"If you pay now by credit card, the discount will be applied.",
+		"promotionNoteCard":"If you pay now by credit card, the discount will be applied.",
+		"promotionNoteStoreMo":"If you pay later at the store, the discount below will be applied.",
+		"promotionNoteStore":"If you pay later at the store, the discount will be applied.",
     "sort": {
       "newest": "Sort by newst order",
       "oldest": "Sort by oldest order"
@@ -627,16 +686,41 @@
     "continuousOrder": "Warning: a continuous order",
     "lastOrder": "Last order",
     "thisOrder": "This order",
+    "shippingCost": "Shipping Cost",
+    "isDelivery": "Delivery",
     "ec": {
       "customerInfo": "Customer info",
       "formtitle": "Shipping information",
       "zip": "Zip code",
+      "prefecture": "Prefecture",
       "address": "Address",
       "addressNotice": "Please enter all address information",
       "name": "Full name",
+      "searchAddressFromZip": "Search for an address by zip code",
+      "select": "Select",
       "email": "Email",
       "phone": "Phone"
-    }
+    },
+    "discount": "Discount",
+    "discountString": "Discount",
+    "discountAlert": {
+    	"stripe": "If you pay now by credit card, the discount below will be applied.",
+      "instore": "If you pay later at the store, the discount below will be applied."
+    },
+		"discountAlertMo": {
+			"stripe": "If you pay now by credit card, the discount below will be applied.",
+      "instore": "If you pay later at the store, the discount below will be applied."
+    },
+    "discountPriceSuffix": "Discount",
+    "discountPriceMessage": "値引きがあります",
+    "discountPrice": "Discount Price",
+    "beforeDiscountPrice": "Before Discount Price",
+    "cancelReason": "Cancel Reason",
+    "productId": "Product Id",
+    "category": "Category",
+    "categoryId": "Category Id",
+    "subCategory": "SubCategory",
+    "subCategoryId": "SubCategory Id"
   },
   "editEC": {
     "postageList": "Shipping list",
@@ -662,6 +746,7 @@
     "estimatedDistance": "Estimated distance",
     "preparationTimeNotice": "Please enter the shortest time it will take for the customer to complete the delivery after placing the order.",
     "setTheAddressInTheDeliveryLocation": "Set  the address in the delivery destination",
+    "setTheAddressInTheDeliveryLocationDescription": "* Calculate the distance between the store and the delivery destination.",
     "availableDeliveryDistance": "Available Delivery Distance",
     "reference": "(Reference)",
     "aboutDeliveryArea": "Aboout Delivery Area",
@@ -672,13 +757,17 @@
     "setAreaMapNotice": "Specify the approximate deliverable range in a circle centered on the store. This range is a guide, so please judge whether delivery is possible at the time of ordering and accept the order."
   },
   "button": {
+		"adminTop":"Top Administrateur",
     "back": "Retour",
+		"backToOrderListPage": "Voir les commandes",
+		"backToDiscounts": "Voir les promotions",
     "addTitle": "Ajouter un titre de groupe",
     "addItem": "Ajouter un article",
     "downloadMenu": "Télécharger le menu",
     "cancel": "Annuler",
     "next": "Suivant",
     "category": "Catégorie",
+    "myPage": "My Page",
     "backToTop": "Top"
   },
   "sms": {
@@ -712,8 +801,8 @@
     "auth/too-many-requests": "Too many requests",
     "auth/invalid-phone-number": "Numéro de téléphone invalide",
     "auth/invalid-verification-code": "Le code de vérification par SMS utilisé pour créer les informations d'identification d'authentification du téléphone n'est pas valide. Veuillez renvoyer le code de vérification par SMS et assurez-vous d'utiliser le code de vérification fourni par l'utilisateur.",
-    "auth/missing-verification-code": "SMS確認コードが入力されていません",
-    "auth/missing-verification-code": "Les informations d'identification d'authentification du téléphone ont été créées avec un code de vérification SMS vide."
+    "auth/missing-verification-code": "Les informations d'identification d'authentification du téléphone ont été créées avec un code de vérification SMS vide.",
+    "auth/code-expired": "The SMS verification code has expired. Please resend the SMS verification code and enter it again"
   },
   "admin": {
     "welcomeMessage": "Bienvenue !",
@@ -725,6 +814,42 @@
       "newsTop": "Top Actualité",
       "adminTop": "Top Administrateur"
     },
+    "yes": "Oui",
+    "yesOnce": "Oui(une fois)",
+    "no": "Non",
+    "promotion": {
+      "amount": "Montant",
+      "ratio": "Taux d'actualisation",
+      "discount": "Remise",
+      "onetimeCoupon": "Coupons émis une seule fois",
+      "multipletimesCoupon": "Coupons émis avec un nombre illimité",
+			"list": "Promotions",
+			"activationState": "Actuellement active",
+			"name": "Nom",
+			"activation": "Activer",
+			"type": "Type de remise",
+			"period": "Période d'application",
+			"minimumAmount": "Montant minimum disponible",
+			"yen": "yen",
+			"limitation": "Limite de l'utilisation",
+			"discounts": "Remise",
+			"paymentMethod": "Accepter",
+			"creditCard": "que les cartes de crédit",
+			"store": "que les paiements sur place",
+			"unrestricted": "les cartes de crédit et les paiements sur place",
+			"history": "Histoire",
+			"noHistory": "Non Historique des commandes",
+			"delete": "Supprimer",
+			"uid": "uid",
+			"rid": "rid",
+			"pid": "pid",
+			"oid": "oid",
+			"date": "Date",
+			"total": "Total",
+			"discountPrice": "Prix discount"
+    },
+    "open": "Open",
+    "closed": "Closed",
     "notes": {
       "title": "Notes",
       "userRestaurantsTitle": "À propos de la liste des restaurants pour l'utilisateur",
@@ -871,7 +996,16 @@
       "alreadyChanged": "already changed",
       "willOrderChange": "Change order",
       "cancelOrderChange": "Cancel an order change",
-      "confirmOrderChange": "Change order"
+      "confirmOrderChange": "Change order",
+			"cardPaymentMessage": "Payment has been completed. No need to receive payment at the store.",
+			"storePaymentMessage": "Payment has not been completed. Please receive payment at the store.",
+			"cardPayment": "Credit Card Payment",
+			"storePayment": "Store Payment"
+    },
+    "menu": {
+      "delivery": "Delivery",
+      "printer": "Auto Print",
+      "discount": "Discount"
     },
     "sound": {
       "default": "Défault",
@@ -914,6 +1048,7 @@
         "auth/wrong-password": "Le mot de passe est invalide",
         "auth/too-many-requests": "Trop de tentatives de connexion infructueuses. Veuillez réessayer plus tard.",
         "auth/invalid-email": "L'adresse e-mail est mal formatée.",
+        "auth/invalid-login-credentials": "The email or the password is invalid.",
         "auth/unauthorized-continue-uri": "Domaine non ajouté à la liste blanche du projet",
         "auth/internal-error": "Password is invalid."
       }
@@ -1015,7 +1150,8 @@
     },
     "message": {
       "generic": "Veuillez essayer cette opération plus tard.",
-      "line": "Veuillez réessayer de connecter LINE."
+      "line": "Veuillez réessayer de connecter LINE.",
+      "cardError": "If the error occurs repeatedly, please cancel the card payment only and process the order."
     },
     "code": {
       "line": {
@@ -1025,6 +1161,7 @@
         "checkout": "Échec de l'exécution du processus de paiement.",
         "place": "Échec de la passation de la commande.",
         "update": "Échec de la mise à jour de l'état de la commande.",
+        "updateCard": "Card processing failed.",
         "cancel": "Échec de l'annulation de la commande."
       },
       "stripe": {

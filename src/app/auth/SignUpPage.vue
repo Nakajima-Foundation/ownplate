@@ -110,7 +110,7 @@
           </o-button>
 
           <o-button
-            :disabled="Object.keys(errors).length > 0"
+            :disabled="submitted && Object.keys(errors).length > 0"
             @click="onSignup"
             class="b-reset-tw"
           >
@@ -155,9 +155,20 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import {
+  defineComponent,
+  ref,
+  watch,
+  computed,
+} from "@vue/composition-api";
 import isEmail from "validator/lib/isEmail";
-import { db, firestore } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  doc,
+  setDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 import { partners } from "@/config/constant";
 
 import { auth } from "@/lib/firebase/firebase9";
@@ -166,108 +177,139 @@ import {
   sendEmailVerification,
 } from "firebase/auth";
 
-export default {
+export default defineComponent({
   name: "Signup",
   metaInfo() {
     return {
       title: [this.defaultTitle, "Signup"].join(" / "),
     };
   },
-  data() {
-    return {
-      email: "",
-      name: "",
-      password: "",
-      confirmPassword: "",
-      deferredPush: false,
-      emailTaken: "---invalid---",
-    };
-  },
-  computed: {
-    partner() {
-      if (this.$route.params.partner) {
+  setup(_, ctx) {
+    const router = ctx.root.$router
+    const route = ctx.root.$route;
+    // @ts-ignore
+    const user = computed(() => ctx.root.user);
+    
+    const email = ref("");
+    const name = ref("");
+    const password = ref("");
+    const confirmPassword = ref("");
+    const deferredPush = ref(false);
+    const emailTaken = ref("---invalid---");
+    const submitted = ref(false);
+
+    const partner = computed(() => {
+      if (route.params.partner) {
         const match = partners.find((a) => {
-          return a.id === this.$route.params.partner;
+          return a.id === route.params.partner;
         });
         if (match) {
           return match;
         }
       }
       return null;
-    },
-    errors() {
-      let errors = {};
-      if (this.password !== this.confirmPassword) {
-        errors.confirm = ["admin.error.password.mismatch"];
+    });
+    const errors = computed(() => {
+      if (!submitted.value)  {
+        return {};
       }
-      if (this.password.length < 8) {
-        errors.password = ["admin.error.password.tooshort"];
+      const errs: {[key: string]: string[]} = {};
+      if (password.value !== confirmPassword.value) {
+        errs.confirm = ["admin.error.password.mismatch"];
       }
-      if (!/[0-9]/.test(this.password) || !/[a-zA-Z]/.test(this.password)) {
-        errors.password = ["admin.error.password.invalid"];
+      if (password.value.length < 8) {
+        errs.password = ["admin.error.password.tooshort"];
       }
-      if (!isEmail(this.email)) {
-        errors.email = ["admin.error.email.invalid"];
-      } else if (this.email === this.emailTaken) {
-        errors.email = ["admin.error.email.taken"];
+      if (!/[0-9]/.test(password.value) || !/[a-zA-Z]/.test(password.value)) {
+        errs.password = ["admin.error.password.invalid"];
       }
-      return errors;
-    },
-  },
-  watch: {
-    user(newValue) {
-      console.log("user updated", this.deferredPush);
-      if (this.deferredPush && newValue) {
-        this.$router.push("/admin/restaurants");
+      if (!isEmail(email.value)) {
+        errs.email = ["admin.error.email.invalid"];
+      } else if (email.value === emailTaken.value) {
+        errs.email = ["admin.error.email.taken"];
       }
-    },
-  },
-  methods: {
-    handleCancel() {
-      this.$router.push("/");
-    },
-    async onSignup() {
-      const email = this.email; //
+      return errs;
+    });
+    const hasError = computed(() => {
+      return Object.keys(errors.value).length > 0;
+    })
+
+    watch(user, (newValue) => {
+      console.log("user updated", deferredPush.value);
+      if (deferredPush.value && newValue) {
+        router.push("/admin/restaurants");
+      }
+    })
+    if (user.value) {
+      router.push("/admin/restaurants");
+    }
+
+    const handleCancel = () => {
+      router.push("/");
+    };
+    const onSignup = async () => {
+      submitted.value = true;
+      if (hasError.value) {
+        return;
+      }
       try {
         const result = await createUserWithEmailAndPassword(
           auth,
-          this.email,
-          this.password
+          email.value,
+          password.value
         );
         await sendEmailVerification(result.user);
-        console.log("signup success", result.user.uid, this.name);
-        if (this.partner) {
-          await db.doc(`admins/${result.user.uid}`).set({
-            name: this.name,
-            created: firestore.FieldValue.serverTimestamp(),
-            partners: [this.partner.id],
+        console.log("signup success", result.user.uid, name.value);
+        if (partner.value) {
+          await setDoc(doc(db, `admins/${result.user.uid}`), {
+            name: name.value,
+            created: serverTimestamp(),
+            partners: [partner.value.id],
           });
         } else {
-          await db.doc(`admins/${result.user.uid}`).set({
-            name: this.name,
-            created: firestore.FieldValue.serverTimestamp(),
+          await setDoc(doc(db, `admins/${result.user.uid}`), {
+            name: name.value,
+            created: serverTimestamp(),
           });
         }
-        await db.doc(`admins/${result.user.uid}/private/profile`).set({
+        await setDoc(doc(db, `admins/${result.user.uid}/private/profile`), {
           email: result.user.email,
-          updated: firestore.FieldValue.serverTimestamp(),
+          updated: serverTimestamp(),
         });
-        if (this.user) {
+        if (user) {
           console.log("signup calling push");
-          this.$router.push("/admin/restaurants");
+          router.push("/admin/restaurants");
         } else {
           console.log("signup deferred push");
-          this.deferredPush = true;
+          deferredPush.value = true;
         }
-      } catch (error) {
+      } catch (error: any) {
         console.warn("onSignup failed", error.code, error.message);
         if (error.code === "auth/email-already-in-use") {
-          this.emailTaken = email;
+          emailTaken.value = email.value;
         } else {
           // BUGBUG: Not processing other type of errors
         }
       }
-    },
+    };
+    return {
+      //
+      email,
+      name,
+      password,
+      confirmPassword,
+      deferredPush,
+      emailTaken,
+      submitted,
+      
+      // computed
+      partner,
+      errors,
+      hasError,
+      // metho
+      handleCancel,
+      onSignup,
+    };
   },
-};
+});
 </script>

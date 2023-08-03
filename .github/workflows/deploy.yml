@@ -5,15 +5,16 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    branches:
+      - master
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: read
+      id-token: write
     strategy:
       matrix:
         node-version: [16.x]
@@ -21,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
       - uses: actions/cache@v3
@@ -42,13 +43,21 @@ jobs:
         working-directory: ./functions
         run: |
           npm install --arch=x64 --platform=linux
-#      - name: Deploy to Firebase
-#        uses: w9jds/firebase-action@master
-#        with:
-#          args: deploy --project=staging
-#        env:
-#          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+      - name: 'Authenticate to Google Cloud'
+        id: auth
+        uses: 'google-github-actions/auth@v1'
+        with:
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.SERVICE_ACCOUNT }}
+          create_credentials_file: true
+      - name: Deploy to Firebase
+        run: ./node_modules/.bin/firebase deploy --project=staging
       - name: slack
         run: sh ./utils/buildbot.sh
+        env:
+          SLACKURL: ${{ secrets.SLACKURL }}
+      - name: slack failed
+        if: ${{ failure() }}
+        run: sh ./utils/faildbot.sh
         env:
           SLACKURL: ${{ secrets.SLACKURL }}

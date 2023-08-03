@@ -20,10 +20,8 @@
       <!-- Save and Cancel -->
       <div class="mt-6 flex justify-center space-x-4">
         <!-- Cancel Button -->
-        <o-button
-          class="b-reset-tw"
-          tag="router-link"
-          :to="`/admin/restaurants/`"
+        <router-link
+          :to="`/admin/restaurants/#restaurant_` + shopInfo.restaurantId"
         >
           <div
             class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
@@ -32,7 +30,7 @@
               $t("button.cancel")
             }}</span>
           </div>
-        </o-button>
+        </router-link>
 
         <!-- Save Button -->
         <o-button
@@ -716,7 +714,7 @@
               <!-- Preparation Time -->
               <div v-for="(paymentMethod, k) in paymentMethods" :key="k">
                 <o-checkbox
-                  v-model="shopInfo.paymentMethods[paymentMethod.key]"
+                  v-model="(shopInfo.paymentMethods || {})[paymentMethod.key]"
                 >
                   <div class="text-sm font-bold">
                     {{
@@ -821,11 +819,19 @@
               </div>
               <div class="pt-2 text-xs">
                 {{ $t("editRestaurant.deliveryDescription") }}
+                <a
+                  href="https://docs.omochikaeri.com/manuals/delivery.pdf"
+                  target="_blank"
+                  class="text-xs font-bold text-op-teal"
+                  @click="handleClose()"
+                >
+                  {{ $t("menu.deliveryManualLink") }}
+                </a>
               </div>
             </div>
           </div>
 
-          <!-- TODO: Printer Config -->
+          <!-- Printer Config -->
           <div class="mt-4">
             <div class="pb-2 text-sm font-bold">
               {{ $t("editRestaurant.printerConfigTitle") }}
@@ -838,6 +844,14 @@
               </o-checkbox>
               <div class="pt-2 text-xs">
                 {{ $t("editRestaurant.printerDescription") }}
+                <a
+                  href="https://docs.omochikaeri.com/manuals/printer.pdf"
+                  target="_blank"
+                  class="inline-flex text-xs font-bold text-op-teal"
+                  @click="handleClose()"
+                >
+                  {{ $t("menu.printerManualLink") }}
+                </a>
               </div>
             </div>
           </div>
@@ -986,6 +1000,7 @@
               <!-- Date Picker -->
               <o-field>
                 <o-datepicker
+                  class="w-full"
                   icon="calendar-today"
                   v-model="newTemporaryClosure"
                   ref="datepicker"
@@ -1068,10 +1083,8 @@
       <!-- Save and Cancel -->
       <div class="mt-6 flex justify-center space-x-4">
         <!-- Cancel Button -->
-        <o-button
-          class="b-reset-tw"
-          tag="router-link"
-          :to="`/admin/restaurants/`"
+        <router-link
+          :to="`/admin/restaurants/#restaurant_` + shopInfo.restaurantId"
         >
           <div
             class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
@@ -1080,7 +1093,7 @@
               $t("button.cancel")
             }}</span>
           </div>
-        </o-button>
+        </router-link>
 
         <!-- Save Button -->
         <o-button
@@ -1420,7 +1433,7 @@ export default defineComponent({
         { lat: arg.event.latLng.lat(), lng: arg.event.latLng.lng() },
         false
       );
-      place_id.value = null;
+      // place_id.value = null;
       setLocation();
     };
     const copyRestaurantFunc = async () => {
@@ -1484,7 +1497,7 @@ export default defineComponent({
         await updateRestaurantData(restaurantData);
 
         ctx.root.$router.push({
-          path: `/admin/restaurants/`,
+          path: `/admin/restaurants/#restaurant_` + restaurantId,
         });
       } catch (error) {
         submitting.value = false;

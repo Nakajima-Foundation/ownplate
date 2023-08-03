@@ -8,7 +8,7 @@
         >
           <i class="material-icons mr-2 text-lg text-op-teal">home</i>
           <div class="text-sm font-bold text-op-teal">
-            {{ $t("admin.news.adminTop") }}
+            {{ $t("button.adminTop") }}
           </div>
         </div>
       </router-link>
@@ -35,10 +35,13 @@
 </template>
 
 <script>
+import {
+  defineComponent,
+} from "@vue/composition-api";
 import ListItem from "@/app/admin/News/ListItem";
 import newsList from "./data";
 
-export default {
+export default defineComponent({
   components: {
     ListItem,
   },
@@ -47,10 +50,10 @@ export default {
       title: ["News", this.defaultTitle].join(" / "),
     };
   },
-  data() {
+  setup() {
     return {
-      newsList: newsList,
+      newsList,
     };
   },
-};
+});
 </script>

@@ -33,7 +33,7 @@
         </o-button>
 
         <!-- Save Button -->
-        <o-button @click="submitItem" :disabled="submitting" class="b-reset-tw">
+        <button @click="submitItem" :disabled="submitting">
           <div
             class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
             style="min-width: 8rem"
@@ -48,7 +48,7 @@
               )
             }}</span>
           </div>
-        </o-button>
+        </button>
       </div>
 
       <!-- Publish Status -->
@@ -278,6 +278,57 @@
             <!-- Description -->
             <div class="pt-2 text-sm text-black text-opacity-60">
               {{ $t("editCommon.clickAndUploadDetail") }}
+            </div>
+          </div>
+
+          <!-- Additional Photos -->
+          <div v-if="false" class="mt-6">
+            <div class="pb-2 text-sm font-bold">
+              {{ $t("editMenu.additionalPhotos") }}
+            </div>
+
+            <div class="flex">
+              <!-- ToDo 写真が追加されると追加された分だけ(最大4枚)サムネイルを表示-->
+              <div class="relative mr-2">
+                <img
+                  class="h-24 w-24 rounded"
+                  :src="itemPhoto"
+                  @error="smallImageErrorHandler"
+                />
+                <!-- ToDo 写真右上の ×アイコンを押すと写真を削除-->
+                <span
+                  class="material-icons absolute top-1 right-1 rounded-full bg-black bg-opacity-40 text-white"
+                >
+                  close
+                </span>
+              </div>
+            </div>
+
+            <div class="mt-4 flex">
+              <!-- ToDo 以下のボタンを押すと写真選択のウィンドウが立ち上がり、複数選択&アップロードできる -->
+              <o-button class="b-reset-tw mr-2">
+                <!-- ToDo 写真が4枚アップロード済みの時はボタンをグレーアウト、"text-op-teal" → "text-black text-opacity-20" を適用 -->
+                <div
+                  class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 text-op-teal"
+                >
+                  <i class="material-icons mr-2 text-lg">add</i>
+                  <div class="text-sm font-bold">
+                    {{ $t("editMenu.addPhotos") }}
+                  </div>
+                </div>
+              </o-button>
+
+              <!-- ToDo 写真が1枚でもアップロードされたら以下の削除ボタンを表示させる-->
+              <o-button class="b-reset-tw">
+                <div
+                  class="inline-flex h-9 items-center justify-center rounded-full bg-red-700 bg-opacity-10 px-4 text-red-700"
+                >
+                  <i class="material-icons mr-2 text-lg">delete</i>
+                  <div class="text-sm font-bold">
+                    {{ $t("editMenu.deleteAllPhotos") }}
+                  </div>
+                </div>
+              </o-button>
             </div>
           </div>
 
@@ -527,7 +578,7 @@
         </o-button>
 
         <!-- Save Button -->
-        <o-button @click="submitItem" :disabled="submitting" class="b-reset-tw">
+        <button @click="submitItem" :disabled="submitting">
           <div
             class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
             style="min-width: 8rem"
@@ -542,7 +593,7 @@
               )
             }}</span>
           </div>
-        </o-button>
+        </button>
       </div>
 
       <!-- Copy -->

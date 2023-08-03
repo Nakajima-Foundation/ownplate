@@ -104,6 +104,11 @@
               </div>
             </td>
             <td class="p-2">
+              <div class="text-right">
+                {{ order.discountPrice || 0  }}
+              </div>
+            </td>
+            <td class="p-2">
               <div class="text-right">{{ order.totalCharge }}</div>
             </td>
             <td class="p-2">
@@ -136,6 +141,7 @@
             <td class="p-2">
               <div class="text-right">{{ total.service.tax }}</div>
             </td>
+            <td></td>
             <td></td>
             <td></td>
             <td class="p-2">
@@ -183,14 +189,23 @@
 </template>
 
 <script>
-import { db, firestore } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  doc,
+  getDocs,
+  collection,
+  collectionGroup,
+  query,
+  where,
+  limit,
+  orderBy,
+} from "firebase/firestore";
 import {
   defineComponent,
   ref,
   reactive,
   computed,
   watch,
-  onUnmounted,
 } from "@vue/composition-api";
 import moment from "moment-timezone";
 
@@ -205,7 +220,7 @@ import { nameOfOrder } from "@/utils/strings";
 import { midNightOfMonth } from "@/utils/dateUtils";
 import {
   revenueCSVHeader,
-  revenueMoCSVHeader,
+  revenueMoAllCSVHeader,
   revenueTableHeader,
 } from "@/utils/reportUtils";
 import { order_status_keys } from "@/config/constant";
@@ -275,7 +290,6 @@ export default defineComponent({
       totalCharge: 0,
     });
     const monthIndex = ref(0);
-    let detacher = null;
 
     const { uid, isOwner, ownerUid } = useAdminUids(ctx);
     if (!isOwner.value) {
@@ -283,7 +297,7 @@ export default defineComponent({
     }
 
     const fields = computed(() => {
-      return props.isInMo ? revenueMoCSVHeader : revenueCSVHeader;
+      return props.isInMo ? revenueMoAllCSVHeader : revenueCSVHeader;
     });
 
     const fieldNames = computed(() => {
@@ -331,8 +345,12 @@ export default defineComponent({
           totalCount: Object.values(order.order).reduce((count, order) => {
             return count + arrayOrNumSum(order);
           }, 0),
+          discountPrice: order.discountPrice || 0,
+          beforeDiscountPrice: order.totalCharge + (order.discountPrice || 0),
           name: nameOfOrder(order),
           payment: order.payment?.stripe ? "stripe" : "",
+          paymentCancel: !!order.uidPaymentCanceledBy, // for mo
+          cancelReason: order.cancelReason,
         };
       });
     });
@@ -361,11 +379,13 @@ export default defineComponent({
       ].join("-");
     });
 
-    db.collection("restaurants")
-      .where("uid", "==", ownerUid.value)
-      .where("deletedFlag", "==", false)
-      .get()
-      .then((collect) => {
+    getDocs(
+      query(
+        collection(db, "restaurants"),
+        where("uid", "==", ownerUid.value),
+        where("deletedFlag", "==", false),
+      )
+    ).then((collect) => {
         restaurants.value = collect.docs.reduce((tmp, rest) => {
           tmp[rest.id] = rest.data();
           return tmp;
@@ -400,13 +420,14 @@ export default defineComponent({
 
     const updateQuery = async () => {
       const key = formValue.queryKey;
-      const query = db
-        .collectionGroup("orders")
-        .where("ownerUid", "==", uid.value)
-        .where(key, ">=", momentMin.value.toDate())
-        .where(key, "<", momentMax.value.toDate());
-
-      const snapshot = await query.orderBy(key).get();
+      const myQuery = query(
+        collectionGroup(db, "orders"),
+        where("ownerUid", "==", uid.value),
+        where(key, ">=", momentMin.value.toDate()),
+        where(key, "<", momentMax.value.toDate()),
+        orderBy(key)
+      );
+      const snapshot = await getDocs(myQuery);
       const serviceTaxRate = 0.1;
 
       orders.value = snapshot.docs
@@ -454,10 +475,6 @@ export default defineComponent({
     };
 
     updateQuery();
-
-    onUnmounted(() => {
-      detacher && detacher();
-    });
 
     //watch(formValue, () => {
     //updateQuery();

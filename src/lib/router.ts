@@ -21,6 +21,13 @@ const getUserPages = (prefix: string) => {
           path: "menus/:menuId",
           component: "user/Blank.vue",
         },
+        {
+          path: "transactions-act",
+          component: "user/Blank.vue",
+          meta: {
+            isTransactionsAct: true,
+          },
+        },
       ],
     },
     {
@@ -67,6 +74,13 @@ const getUserPagesWithCat = (prefix: string) => {
           path: "cat/:category/:subCategory/menus/:menuId",
           component: "user/Blank.vue",
         },
+        {
+          path: "transactions-act",
+          component: "user/Blank.vue",
+          meta: {
+            isTransactionsAct: true,
+          },
+        },
       ],
     },
     {
@@ -82,7 +96,25 @@ interface CustomRoute {
   path: string;
   component: string;
   children?: CustomRoute[];
+  meta?: any;
 }
+
+const mopath2 =  mo_prefixes
+  .map((prefix) => {
+    const prePath = "/" + prefix;
+    return [
+      {
+        path: prePath,
+        component: "user/MoWrapper.vue",
+        children: [
+          {
+            path: prePath + "/*",
+            component: "user/Mo/MoClosed.vue",
+          }
+        ]
+      }
+    ]
+  }).flat();
 
 const mopath = mo_prefixes
   .map((prefix) => {
@@ -101,8 +133,8 @@ const mopath = mo_prefixes
             component: "user/Outage.vue",
           },
           {
-            path: prePath + "/campaign/202301",
-            component: "user/campaign/202301.vue",
+            path: prePath + "/closed",
+            component: "user/Mo/MoClosed.vue",
           },
           {
             path: prePath + "/r/favorites",
@@ -120,6 +152,10 @@ const mopath = mo_prefixes
           {
             path: prePath + "/u/profile",
             component: "user/Profile.vue",
+          },
+          {
+            path: prePath + "/u/discounthistory",
+            component: "user/DiscountHistory.vue",
           },
           {
             path: prePath + "/terms",
@@ -184,6 +220,10 @@ export const customRoutes: CustomRoute[] = [
     name: "profile",
     path: "/u/profile",
     component: "user/Profile.vue",
+  },
+  {
+    path: "/u/discounthistory",
+    component: "user/DiscountHistory.vue",
   },
   {
     name: "address",
@@ -256,6 +296,10 @@ export const customRoutes: CustomRoute[] = [
         component: "user/Profile.vue",
       },
       {
+        path: "u/discounthistory",
+        component: "user/DiscountHistory.vue",
+      },
+      {
         name: "liff-terms-user",
         path: "terms/user",
         component: "common/TermsUser.vue",
@@ -318,6 +362,10 @@ export const customRoutes: CustomRoute[] = [
             component: "admin/UserHistory.vue",
           },
           {
+            path: "analytics/index",
+            component: "admin/Analytics/Index.vue",
+          },
+          {
             name: "admin-suspend",
             path: "suspend",
             component: "admin/OrderSuspendPage.vue",
@@ -335,8 +383,28 @@ export const customRoutes: CustomRoute[] = [
             component: "admin/ManageLine.vue",
           },
           {
+            path: "discounthistory",
+            component: "admin/Discount/DiscountHistory.vue",
+          },
+          {
+            path: "discounts",
+            component: "admin/Discount/Discounts.vue",
+          },
+          {
+            path: "discounts/:discountId",
+            component: "admin/Discount/Discount.vue",
+          },
+          {
+            path: "discounts/:discountId/history",
+            component: "admin/Discount/DiscountHistory.vue",
+          },
+          {
             path: "qrcode",
             component: "admin/QRCodePage.vue",
+          },
+          {
+            path: "printer",
+            component: "admin/Printer.vue",
           },
           {
             path: "report",
@@ -353,6 +421,22 @@ export const customRoutes: CustomRoute[] = [
         name: "admin-orders-allorders",
         path: "orders",
         component: "admin/AllOrders.vue",
+      },
+      {
+        path: "discounthistory",
+        component: "admin/Discount/DiscountHistory.vue",
+      },
+      {
+        path: "discounts",
+        component: "admin/Discount/Discounts.vue",
+      },
+      {
+        path: "discounts/:discountId",
+        component: "admin/Discount/Discount.vue",
+      },
+      {
+        path: "discounts/:discountId/history",
+        component: "admin/Discount/DiscountHistory.vue",
       },
       {
         path: "report",
@@ -512,6 +596,7 @@ const loadComponent = (data: CustomRoute): RouteConfig => {
     path: data.path,
     name: data.name,
     component,
+    meta: data.meta,
   };
 };
 

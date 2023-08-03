@@ -13,8 +13,16 @@ import { getStripeAccount, getPaymentMethodData, getHash } from "../stripe/inten
 import { orderPlacedData } from "../../lib/types";
 import { validateOrderPlaced, validateCustomer } from "../../lib/validator";
 
+import {
+  getPromotion,
+  enableUserPromotion,
+  userPromotionHistoryData,
+  getUserHistoryDoc,
+  getUserHistoryCollectionPath,
+  getDiscountPrice
+} from "./promotion";
 
-export const getOrderData = async (transaction: any, orderRef: any) => {
+export const getOrderData = async (transaction: admin.firestore.Transaction, orderRef: admin.firestore.DocumentReference) => {
   const orderDoc = await transaction.get(orderRef);
   const order = orderDoc.data();
   if (!order) {
@@ -24,7 +32,16 @@ export const getOrderData = async (transaction: any, orderRef: any) => {
   return order;
 };
 
-export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUid, order, restaurantId, ownerUid, timePlaced, now, positive) => {
+export const updateOrderTotalDataAndUserLog = async (
+  db: admin.firestore.Firestore,
+  transaction: admin.firestore.Transaction,
+  customerUid: string,
+  order: any,
+  restaurantId: string,
+  ownerUid: string,
+  timePlaced,
+  positive: boolean,
+) => {
   const menuIds = Object.keys(order);
   console.log(utils.timezone);
   const date = moment(timePlaced.toDate()).tz(utils.timezone).format("YYYYMMDD");
@@ -32,8 +49,8 @@ export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUi
   // Firestore transactions require all reads to be executed before all writes.
 
   // Read !!
-  const totalRef: { [key: string]: any } = {};
-  const totals: { [key: string]: any } = {};
+  const totalRef: { [key: string]: admin.firestore.DocumentReference } = {};
+  const totals: { [key: string]: admin.firestore.DocumentData | undefined } = {};
   const nums: { [key: string]: number } = {};
   await Promise.all(
     menuIds.map(async (menuId) => {
@@ -83,7 +100,7 @@ export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUi
       // lastOrder: timePlaced,
       restaurantId,
       ownerUid,
-      updateAt: now,
+      updateAt: admin.firestore.FieldValue.serverTimestamp(),
     };
     await transaction.set(userLogRef, data);
   } else {
@@ -94,7 +111,7 @@ export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUi
       cancelCounter,
       currentOrder: timePlaced,
       lastOrder: userLog.currentOrder || timePlaced,
-      updateAt: now,
+      updateAt: admin.firestore.FieldValue.serverTimestamp(),
       lastUpdatedAt: userLog.updateAt || new admin.firestore.Timestamp(1577804400, 0),
     };
     await transaction.update(userLogRef, updateData);
@@ -106,8 +123,11 @@ const multiple = utils.stripeRegion.multiple; // 100 for USD, 1 for JPY
 // This function is called by users to place orders without paying
 export const place = async (db, data: orderPlacedData, context: functions.https.CallableContext | Context) => {
   const customerUid = utils.validate_customer_auth(context);
-
+  const phoneNumber = context.auth?.token?.phone_number || '';
+  
   const { restaurantId, orderId, tip, timeToPickup, memo, customerInfo, payStripe } = data;
+  // const { promotionId, affiliateId } = data;
+  const { promotionId } = data;
   utils.required_params({ restaurantId, orderId }); // tip is optinoal
 
   const validateResult = validateOrderPlaced(data);
@@ -117,9 +137,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
   }
   const enableStripe = !!payStripe;
 
-  const _tip = Number(tip) || 0;
-  const roundedTip = Math.round(_tip * multiple) / multiple;
-  const now = admin.firestore.Timestamp.now();
+  const roundedTip = Math.round((Number(tip) || 0) * multiple) / multiple;
   if (roundedTip < 0) {
     throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
   }
@@ -135,16 +153,16 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
     if ((restaurantData.groupId || restaurantData.isEC) && roundedTip > 0) {
       throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
     }
-    // checko time
+    // check time
     if (!restaurantData.isEC) {
-      if (timePlaced.toDate() < now.toDate()) {
+      if (timePlaced.toDate() < new Date()) {
         throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
       }
     }
     
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
     const customerRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/customer/data`);
-
+    
     const result = await db.runTransaction(async (transaction) => {
       const order = await getOrderData(transaction, orderRef);
       if (!order) {
@@ -156,6 +174,39 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
       if (order.status !== order_status.validation_ok) {
         throw new functions.https.HttpsError("failed-precondition", "The order has been already placed or canceled");
       }
+      // promotion
+      const {
+        historyCollectionRef,
+        historyDocRef,
+        promotionData,
+        discountPrice,
+      } = await (async () => {
+        if (promotionId) {
+          const promotionData = await getPromotion(db, transaction, promotionId, restaurantData, order.total, enableStripe);
+          const discountPrice = getDiscountPrice(promotionData, order.total);
+          if (promotionData.usageRestrictions) {
+            const historyDocRef = await getUserHistoryDoc(db, promotionData, customerUid, restaurantData.groupId, phoneNumber);
+            if (!await enableUserPromotion(transaction, promotionData, historyDocRef)) {
+              throw new functions.https.HttpsError("invalid-argument", "This promotion is used.");
+            }
+            return {
+              historyDocRef,
+              promotionData,
+              discountPrice,
+            };
+          }
+          const historyCollectionRef = db.collection(getUserHistoryCollectionPath(customerUid, restaurantData.groupId, phoneNumber));
+          return {
+            historyCollectionRef,
+            promotionData,
+            discountPrice,
+          }
+        }
+        return {
+          discountPrice: 0,
+        };
+      })();
+      
       const shippingCost = restaurantData.isEC ? costCal(postage, customerInfo?.prefectureId, order.total) : 0;
       const hasCustomer = restaurantData.isEC || order.isDelivery;
       if (hasCustomer) {
@@ -168,7 +219,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
         await transaction.get(customerRef);
       }
 
-      const totalCharge = order.total + roundedTip + (shippingCost || 0) + (order.deliveryFee || 0);
+      const totalCharge = order.total + roundedTip + (shippingCost || 0) + (order.deliveryFee || 0) - discountPrice;
       const totalChargeWithTipAndMultipled = totalCharge * multiple; // for US stripe price
       const orderNumber = utils.nameOfOrder(order.number);
       const paymentIntent = await (async () => {
@@ -196,30 +247,37 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
         return {};
       })();
       // transaction for stock orderTotal
-      await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, restaurantOwnerUid, timePlaced, now, true);
+      await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, restaurantOwnerUid, timePlaced, true);
+      // update customer
       if (hasCustomer) {
-        const { zip, prefectureId, address, name, email } = customerInfo;
+        const { zip, prefectureId, prefecture, address, name, email, location } = customerInfo;
         await transaction.set(customerRef, {
           zip,
           prefectureId,
+          prefecture: prefecture || "",
           address,
+          location: location || {},
           name,
           email: email || "",
           uid: customerUid,
           orderId,
           restaurantId,
-          createdAt: now,
+          createdAt: admin.firestore.FieldValue.serverTimestamp(),
         });
       }
       // customerUid
       const updateData = {
         status: order_status.order_placed,
         totalCharge,
+        discountPrice,
+        promotionName: promotionData?.promotionName || "",
+        promotionId: promotionId || "",
         tip: roundedTip,
         shippingCost,
         sendSMS: true,
-        updatedAt: now,
-        orderPlacedAt: now,
+        printed: false,
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        orderPlacedAt: admin.firestore.FieldValue.serverTimestamp(),
         timePlaced,
         timePickupForQuery: timePlaced,
         memo: memo || "",
@@ -233,7 +291,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
             stripe: "pending",
           },
         };
-        await transaction.set(orderRef, update, { merge: true });
+        await transaction.update(orderRef, update);
         const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`);
         await transaction.set(
           stripeRef,
@@ -245,6 +303,16 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
       } else {
         await transaction.update(orderRef, updateData);
       }
+      // promotion
+      if (historyDocRef) {
+        const data = userPromotionHistoryData(promotionData, restaurantData, customerUid, orderId, totalCharge, discountPrice, enableStripe);
+        await transaction.set(historyDocRef, data);
+      } else if (historyCollectionRef) {
+        const data = userPromotionHistoryData(promotionData, restaurantData, customerUid, orderId, totalCharge, discountPrice, enableStripe);
+        console.log(data);
+        await transaction.set(historyCollectionRef.doc(), data);
+      }
+      
       Object.assign(order, { totalCharge, tip, shippingCost }, enableStripe ? {payment: true} : {} );
       return { success: true, order };
     });

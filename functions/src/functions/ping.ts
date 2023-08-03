@@ -9,7 +9,7 @@ export const operationLog = (context: functions.https.CallableContext, params: a
   const restaurantId = params.restaurantId || "-----";
   const operationType = params.operationType || "-----";
   const pathName = params.pathName || "";
-
+  
   const header = {};
   for (let i = 0; i < context.rawRequest.rawHeaders.length; i += 2) {
     header[context.rawRequest.rawHeaders[i]] = context.rawRequest.rawHeaders[i + 1];
@@ -23,6 +23,11 @@ export const operationLog = (context: functions.https.CallableContext, params: a
   const country = header["X-Appengine-Country"];
   const ip = header["X-Appengine-User-Ip"];
 
+  const signInIpAddress = context.auth?.token?.signInIpAddress || "";
+  if (signInIpAddress && signInIpAddress !== ip) {
+    functions.logger.log("differentIP: " + uid, {signInIpAddress, ip});
+  }
+  
   // path, restautantId, time, method, options
   const log = {
     logType: "operationLog",
@@ -37,6 +42,7 @@ export const operationLog = (context: functions.https.CallableContext, params: a
     restaurantId,
     uid,
     pathName,
+    signInIpAddress,
   };
   const message = [operationType, restaurantId, uid].join(":");
   functions.logger.log(message, log);
