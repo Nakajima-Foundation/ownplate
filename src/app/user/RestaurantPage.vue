@@ -281,7 +281,7 @@
                     <template v-for="(item, key) in itemLists">
                       <div v-if="item._dataType === 'title'" :key="key">
                         <div
-                          class="inline-flex items-center justify-center text-xl font-bold text-black text-opacity-30"
+                          class="inline-flex items-center justify-center text-xl font-bold text-black text-opacity-30 cursor-pointer"
                           :class="key === 0 ? '' : 'mt-6'"
                           :id="item.id"
                           @click="openCategory"
@@ -423,6 +423,7 @@
     <o-modal v-model:active="categoryPopup" :width="488" scroll="keep">
       <div class="px-2 text-center">
         <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
+          <div class="font-bold">{{ $t("order.category") }}</div>
           <template v-for="(title, key) in titleLists">
             <a
               :href="`#${title.id}`"
