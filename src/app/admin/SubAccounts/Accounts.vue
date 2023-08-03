@@ -122,7 +122,18 @@
 <script>
 import { defineComponent, ref, onUnmounted, watch } from "@vue/composition-api";
 
-import { db } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  doc,
+  collection,
+  onSnapshot,
+  getDocs,
+  query,
+  where,
+  orderBy,
+  collectionGroup,
+} from "firebase/firestore";
+
 import {
   subAccountDeleteChild,
   subAccountInvite,
@@ -153,28 +164,32 @@ export default defineComponent({
 
     const { isOwner, uid } = useAdminUids(ctx);
 
-    db.collection("restaurants")
-      .where("uid", "==", uid.value)
-      .where("deletedFlag", "==", false)
-      .orderBy("createdAt", "asc")
-      .get()
-      .then((restaurantCollection) => {
+    getDocs(
+      query(
+        collection(db,"restaurants"),
+        where("uid", "==", uid.value),
+        where("deletedFlag", "==", false),
+        orderBy("createdAt", "asc"),
+      )
+    ).then((restaurantCollection) => {
         restaurantObj.value = array2obj(
           restaurantCollection.docs.map(doc2data("restaurant"))
         );
       });
-    const childDetacher = db
-      .collection(`admins/${uid.value}/children`)
-      .onSnapshot((childrenCollection) => {
+    const childDetacher = onSnapshot(
+      collection(db, `admins/${uid.value}/children`),
+      (childrenCollection) => {
         children.value = childrenCollection.docs.map(doc2data("admin"));
       });
     detachers.push(childDetacher);
 
-    const messageDetacher = db
-      .collectionGroup(`messages`)
-      .where("fromUid", "==", uid.value)
-      .orderBy("createdAt", "desc")
-      .onSnapshot((messageCollection) => {
+    const messageDetacher = onSnapshot(
+      query(
+        collectionGroup(db, `messages`),
+        where("fromUid", "==", uid.value),
+        orderBy("createdAt", "desc"),
+      ),
+      (messageCollection) => {
         messages.value = messageCollection.docs.map(doc2data("message"));
       });
     detachers.push(messageDetacher);

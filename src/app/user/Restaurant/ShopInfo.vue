@@ -5,7 +5,7 @@
       <div>
         <a target="_blank" :href="mapQuery">
           <img
-            :src="`https://maps.googleapis.com/maps/api/staticmap?center=${shopInfo.location.lat},${shopInfo.location.lng}&zoom=16&size=800x${mapWidth}&scale=2&maptype=roadmap&markers=color:red%7Clabel:G%7C${shopInfo.location.lat},${shopInfo.location.lng}&key=${GAPIKey}`"
+            :src="mapImage"
             class="w-full object-cover lg:rounded-lg"
           />
         </a>
@@ -87,6 +87,15 @@
 
       <!-- More Info -->
       <div v-if="moreInfo">
+
+        <!-- Transactions Act -->
+        <div class="mt-2">
+          <transactions-act
+            :shopInfo="shopInfo"
+            :isDelivery="isDelivery"
+            ></transactions-act>
+        </div>
+        
         <!-- Restaurant Website -->
         <div v-if="hasUrl" class="mt-4">
           <a
@@ -147,14 +156,6 @@
           </a>
         </div>
 
-        <!-- Transactions Act -->
-        <div class="mt-2">
-          <transactions-act
-            :shopInfo="shopInfo"
-            :isDelivery="isDelivery"
-          ></transactions-act>
-        </div>
-
         <!-- Restaurant Hours -->
         <div class="mt-2">
           <div class="text-sm font-bold">
@@ -175,7 +176,7 @@
               >
                 <div class="w-16">{{ $t("week.short." + day) }}</div>
                 <div class="flex-1">
-                  <template v-if="businessDay[key]">
+                  <template v-if="(businessDay)[key]">
                     <template v-for="data in openTimes[key]">
                       <template v-if="validDate(data)">
                         {{ num2time(data.start) }} - {{ num2time(data.end) }}
@@ -214,9 +215,14 @@
               <span v-if="inStorePayment">{{
                 $t("shopInfo.onsitePayment")
               }}</span>
-              <span v-if="!showPayment && !inStorePayment">{{
-                $t("shopInfo.noPaymentMethod")
-              }}</span>
+              <span v-if="!showPayment && !inStorePayment">
+                <span v-if="shopInfo.publicFlag">{{
+                  $t("shopInfo.noPaymentMethod")
+                }}</span>
+                <span v-else>{{
+                  $t("shopInfo.notPublicShopMessage")
+                }}</span>
+              </span>
             </div>
           </div>
         </div>
@@ -230,7 +236,7 @@
             <ul>
               <li
                 v-for="(paymentMethod, k) in paymentMethods"
-                v-if="shopInfo.paymentMethods[paymentMethod.key]"
+                v-if="(shopInfo.paymentMethods || {})[paymentMethod.key]"
               >
                 {{
                   $t("editRestaurant.paymentMethodChoices." + paymentMethod.key)
@@ -362,9 +368,9 @@ export default defineComponent({
     });
     const businessDay = computed(() => {
       if (isInMo.value && isPickup.value) {
-        return props.shopInfo.moBusinessDay;
+        return props.shopInfo.moBusinessDay || {};
       }
-      return props.shopInfo.businessDay;
+      return props.shopInfo.businessDay || {};
     });
     const openTimes = computed(() => {
       if (isInMo.value && isPickup.value) {
@@ -428,7 +434,7 @@ export default defineComponent({
     const shopPaymentMethods = computed(() => {
       return (
         Object.keys(props.shopInfo.paymentMethods || {}).filter((key) => {
-          return !!props.shopInfo.paymentMethods[key];
+          return !!(props.shopInfo.paymentMethods || {})[key];
         }) || []
       );
     });
@@ -463,6 +469,10 @@ export default defineComponent({
         "&query_place_id=" +
         props.shopInfo.place_id
       );
+    });
+
+    const mapImage = computed(() => {
+      return `https://maps.googleapis.com/maps/api/staticmap?center=${props.shopInfo.location.lat},${props.shopInfo.location.lng}&zoom=16&size=800x${mapWidth.value}&scale=2&maptype=roadmap&markers=color:red%7Clabel:G%7C${props.shopInfo.location.lat},${props.shopInfo.location.lng}&key=${GAPIKey}`;
     });
 
     const toggleMoreInfo = () => {
@@ -501,7 +511,7 @@ export default defineComponent({
 
       minimumAvailableTime,
       mapQuery,
-      GAPIKey,
+      mapImage,
       // methods
       toggleMoreInfo,
       validDate,

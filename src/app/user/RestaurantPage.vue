@@ -5,10 +5,25 @@
       <not-found />
     </template>
     <template v-else>
+      <div
+        v-if="pageId"
+        class="fixed top-0 z-20 h-full w-full bg-white"
+        >
+        <MoPage
+          :pageId="pageId"
+          :pageBase="pageBase"
+          :groupData="groupData"
+          @didOrderdChange="didOrderdChange($event)"
+          :orders="orders"
+          :selectedOptions="selectedOptions"
+          :shopInfo="shopInfo"
+          :isPickup="isPickup"
+          />
+      </div>
       <!-- category modal -->
       <div
         v-if="isOpenGroupCategory"
-        class="fixed top-0 z-20 h-full w-full bg-white"
+        class="fixed top-0 z-40 h-full w-full bg-white"
       >
         <div class="m-4">
           <span class="text-xl font-bold text-black text-opacity-30">
@@ -27,7 +42,7 @@
       <!-- category modal -->
       <div
         v-if="isOpenGroupSubCategory"
-        class="fixed top-0 z-20 h-full w-full bg-white"
+        class="fixed top-0 z-40 h-full w-full bg-white"
       >
         <div class="mx-4 h-[calc(100%-3rem)] overflow-x-scroll">
           <SubCategoryModal
@@ -47,9 +62,9 @@
         <!-- Body -->
         <div class="grid grid-cols-1 lg:mx-6 lg:grid-cols-2 lg:gap-x-12">
           <!-- Left -->
-          <div>
+          <div id="RestaurantLeftTop">
             <!-- Cover Image -->
-            <div class="lg:mt-6" v-if="!shopInfo.moCloseDate">
+            <div class="lg:mt-6" v-if="!isInMo">
               <img
                 @click.stop="openImage()"
                 :src="coverImage"
@@ -102,7 +117,7 @@
               </div>
 
               <!-- Restaurant Info -->
-              <div class="mt-4">
+              <div class="mt-4" v-if="!isTransactionAct">
                 <div class="text-xl font-bold text-black text-opacity-30">
                   {{
                     shopInfo.isEC
@@ -128,7 +143,17 @@
           </div>
 
           <!-- Right -->
-          <div>
+          <div v-if="isTransactionAct">
+            <div class="mx-6 mt-2 lg:mx-0">
+              <TransactionsActContents
+                :shopInfo="shopInfo"
+                :isDelivery="isDelivery"
+                @closeTransactionsAct="closeTransactionsAct"
+                closeButton="button.back"
+                />
+            </div>
+          </div>
+          <div v-else>
             <div class="mx-6 mt-2 lg:mx-0" v-if="shopInfo.enableDelivery">
               <div class="rounded-lg bg-white shadow">
                 <!-- delivery toggle-->
@@ -181,6 +206,9 @@
 
             <!-- stock filter Toggle-->
             <div>
+              <MoSetBanner v-if="showSubCategory && enableCampaignBanner"
+                           :pageBase="pageBase"
+                           />
               <div v-if="showSubCategory && isPickup">
                 <div class="mx-6 mt-4 grid grid-cols-2 gap-2 lg:mx-0">
                   <!-- 在庫なし含む -->
@@ -227,7 +255,7 @@
                   :selectedCategory="selectedCategory"
                   :selectedSubCategory="selectedSubCategory"
                   :subCategory="subCategory"
-                />
+                  />
               </div>
               <div v-if="showCategory">
                 <!-- Category view -->
@@ -235,6 +263,10 @@
                   <div class="text-xl font-bold text-black text-opacity-30">
                     {{ $t("shopInfo.productCategory") }}
                   </div>
+                  <MoSetBanner
+                    v-if="enableCampaignBanner"
+                    :pageBase="pageBase"
+                    />
                   <CategoryTop
                     :categoryData="categoryData"
                     :howtoreceive="howtoreceive"
@@ -325,6 +357,18 @@
             </div>
           </div>
         </div>
+        <div class="mx-6 mt-8" v-if="!isTransactionAct">
+          <div class="rounded-lg bg-white shadow">
+            <router-link :to="pageBase + '/transactions-act'">
+              <div class="p-4 inline-flex items-center justify-center" @click="scrollTop">
+                <i class="material-icons mr-2 text-lg text-op-teal">account_balance</i>
+                <div class="text-sm font-bold text-op-teal">
+                  {{ $t("transactionsAct.title") }}
+                </div>
+              </div>
+            </router-link>
+          </div>
+        </div>
       </div>
 
       <!-- Phone Login-->
@@ -338,7 +382,7 @@
         @closeCart="closeCart"
         :orders="orders"
         :selectedOptions="selectedOptions"
-        :menuObj="menuObj"
+        :menuObj="cartItems"
         :prices="prices"
         :shopInfo="shopInfo"
         :disabledPickupTime="disabledPickupTime"
@@ -378,6 +422,7 @@
             <a
               :href="`#${title.id}`"
               class="mx-1 mt-2 inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5"
+              @click="closeCategory"
             >
               <div class="mx-2 text-sm font-bold text-op-teal">
                 {{ title.name }}
@@ -422,8 +467,10 @@ import CategoryTop from "@/app/user/Restaurant/CategoryTop.vue";
 import CategoryIcon from "@/app/user/Restaurant/CategoryIcon.vue";
 import Titles from "@/app/user/Restaurant/Titles.vue";
 import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
-
+import TransactionsActContents from "@/app/user/TransactionsAct/Contents.vue";
 import MoPickUp from "@/app/user/Restaurant/MoPickUp.vue";
+import MoPage from "@/app/user/Mo/MoPage.vue";
+import MoSetBanner from "@/app/user/Mo/MoSetBanner.vue";
 
 import { usePickupTime } from "@/utils/pickup";
 
@@ -442,7 +489,7 @@ import { orderCreated } from "@/lib/firebase/functions";
 
 import { order_status } from "@/config/constant";
 
-import { ownPlateConfig, moTitle, moPickup } from "@/config/project";
+import { ownPlateConfig, moTitle, moPickup, enableCampaignBanner } from "@/config/project";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import {
@@ -457,6 +504,7 @@ import {
   useIsInMo,
   useToggle,
   scrollToElementById,
+  useBasePath,
 } from "@/utils/utils";
 
 import { imageUtils } from "@/utils/RestaurantUtils";
@@ -486,6 +534,7 @@ export default defineComponent({
     CartButton,
     Cart,
     Delivery,
+    TransactionsActContents,
     CategoryModal,
     SubCategoryModal,
     CategoryTop,
@@ -494,6 +543,8 @@ export default defineComponent({
     SubCategoryList,
 
     MoPickUp,
+    MoPage,
+    MoSetBanner,
   },
   props: {
     shopInfo: {
@@ -515,6 +566,10 @@ export default defineComponent({
     mode: {
       type: String,
       required: false,
+    },
+    promotions: {
+      type: Array,
+      required: true,
     },
     moPrefix: {
       type: String,
@@ -564,6 +619,7 @@ export default defineComponent({
     const multiple = store.getters.stripeRegion.multiple;
 
     const isInMo = useIsInMo(ctx.root);
+    const basePath = useBasePath(ctx.root);
 
     const defaultHowToReceive = (() => {
       // for 333
@@ -875,7 +931,11 @@ export default defineComponent({
     const didOrderdChange = (eventArgs) => {
       // NOTE: We need to assign a new object to trigger computed properties
       if (eventArgs.quantities) {
-        cartItems.value[eventArgs.itemId] = menuObj.value[eventArgs.itemId];
+        if (eventArgs.itemData) { // for mo campaign
+          cartItems.value[eventArgs.itemId] = eventArgs.itemData
+        } else {
+          cartItems.value[eventArgs.itemId] = menuObj.value[eventArgs.itemId];
+        }
         const newObject = { ...orders.value };
         if (arraySum(eventArgs.quantities) > 0) {
           newObject[eventArgs.itemId] = eventArgs.quantities;
@@ -1125,6 +1185,22 @@ export default defineComponent({
       return ret;
     });
 
+    const scrollTop = () => {
+      scrollToElementById("RestaurantLeftTop");
+    };
+    const pageBase = computed(() => {
+      return basePath.value + "/r/" + restaurantId.value;
+    });
+    const closeTransactionsAct = () => {
+      scrollTop();
+      ctx.root.$router.push({path: pageBase.value});
+    };
+    const isTransactionAct = computed(() => {
+      return !!ctx.root.$route.meta.isTransactionsAct;
+    });
+    const pageId = computed(() => {
+      return ctx.root.$route.params.pageId;
+    });
     return {
       itemLists,
       titleLists: filteredTitleLists,
@@ -1179,6 +1255,7 @@ export default defineComponent({
       cartButton,
       closeCart,
       menuObj,
+      cartItems,
       menuPickupData,
 
       isInMo,
@@ -1190,8 +1267,15 @@ export default defineComponent({
       moPickup,
       disabledPickupTime,
       lastOrder,
+      enableCampaignBanner,
 
       isFilterStock,
+      isTransactionAct,
+      closeTransactionsAct,
+      pageBase,
+      scrollTop,
+
+      pageId,
     };
   },
 });

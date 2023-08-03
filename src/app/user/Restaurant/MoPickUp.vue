@@ -20,7 +20,7 @@
           {{ $t("mobileOrder.shopInfo.pickup") }}
         </div>
         <div class="mt-0.5 px-3 text-center text-xs font-bold">
-          {{ $t("mobileOrder.shopInfo.pickupDescription") }}
+          {{ $tc("mobileOrder.shopInfo.pickupDescription", 0 , {time: shopInfo.moPickUpMinimumCookTime }) }}
         </div>
       </div>
       <div
@@ -32,7 +32,7 @@
           {{ $t("mobileOrder.shopInfo.pickup") }}
         </div>
         <div class="mt-0.5 px-3 text-center text-xs font-bold">
-          {{ $t("mobileOrder.shopInfo.pickupDescription") }}
+          {{ $tc("mobileOrder.shopInfo.pickupDescription", 0 , {time: shopInfo.moPickUpMinimumCookTime }) }}
         </div>
       </div>
       <!-- takeout -->

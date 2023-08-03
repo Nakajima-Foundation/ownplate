@@ -26,7 +26,7 @@ import { DocumentData } from "firebase/firestore";
 import { defineComponent, ref, computed, watch } from "@vue/composition-api";
 
 import { db } from "@/lib/firebase/firebase9";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 export default defineComponent({
   setup(_, ctx) {
@@ -44,9 +44,12 @@ export default defineComponent({
     })();
 
     watch(opt_out, (current) => {
-      updateDoc(doc(db, `/adminConfigs/${ownerUid.value}`), {
-        opt_out: opt_out.value,
-      });
+      console.log(opt_out);
+      setDoc(
+        doc(db, `/adminConfigs/${ownerUid.value}`),
+        { opt_out: opt_out.value },
+        { merge: true }
+      );
     });
 
     return {

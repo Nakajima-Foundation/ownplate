@@ -21,6 +21,13 @@ const getUserPages = (prefix: string) => {
           path: "menus/:menuId",
           component: "user/Blank.vue",
         },
+        {
+          path: "transactions-act",
+          component: "user/Blank.vue",
+          meta: {
+            isTransactionsAct: true,
+          },
+        },
       ],
     },
     {
@@ -67,6 +74,18 @@ const getUserPagesWithCat = (prefix: string) => {
           path: "cat/:category/:subCategory/menus/:menuId",
           component: "user/Blank.vue",
         },
+        {
+          name: "r-restaurant-MoPage_" + prefix,
+          path: "page/:pageId",
+          component: "user/Blank.vue",
+        },
+        {
+          path: "transactions-act",
+          component: "user/Blank.vue",
+          meta: {
+            isTransactionsAct: true,
+          },
+        },
       ],
     },
     {
@@ -82,6 +101,7 @@ interface CustomRoute {
   path: string;
   component: string;
   children?: CustomRoute[];
+  meta?: any;
 }
 
 const mopath = mo_prefixes
@@ -120,6 +140,10 @@ const mopath = mo_prefixes
           {
             path: prePath + "/u/profile",
             component: "user/Profile.vue",
+          },
+          {
+            path: prePath + "/u/dicsountHistory",
+            component: "user/DiscountHistory.vue",
           },
           {
             path: prePath + "/terms",
@@ -184,6 +208,10 @@ export const customRoutes: CustomRoute[] = [
     name: "profile",
     path: "/u/profile",
     component: "user/Profile.vue",
+  },
+  {
+    path: "/u/dicsountHistory",
+    component: "user/DiscountHistory.vue",
   },
   {
     name: "address",
@@ -256,6 +284,10 @@ export const customRoutes: CustomRoute[] = [
         component: "user/Profile.vue",
       },
       {
+        path: "u/dicsountHistory",
+        component: "user/DiscountHistory.vue",
+      },
+      {
         name: "liff-terms-user",
         path: "terms/user",
         component: "common/TermsUser.vue",
@@ -318,6 +350,10 @@ export const customRoutes: CustomRoute[] = [
             component: "admin/UserHistory.vue",
           },
           {
+            path: "analytics/index",
+            component: "admin/Analytics/Index.vue",
+          },
+          {
             name: "admin-suspend",
             path: "suspend",
             component: "admin/OrderSuspendPage.vue",
@@ -335,8 +371,24 @@ export const customRoutes: CustomRoute[] = [
             component: "admin/ManageLine.vue",
           },
           {
+            path: "dicsountHistory",
+            component: "admin/DiscountHistory.vue",
+          },
+          {
+            path: "discounts",
+            component: "admin/Discounts.vue",
+          },
+          {
+            path: "discounts/:discountId",
+            component: "admin/Discount.vue",
+          },
+          {
             path: "qrcode",
             component: "admin/QRCodePage.vue",
+          },
+          {
+            path: "printer",
+            component: "admin/Printer.vue",
           },
           {
             path: "report",
@@ -353,6 +405,14 @@ export const customRoutes: CustomRoute[] = [
         name: "admin-orders-allorders",
         path: "orders",
         component: "admin/AllOrders.vue",
+      },
+      {
+        path: "discounts",
+        component: "admin/Discounts.vue",
+      },
+      {
+        path: "discounts/:discountId",
+        component: "admin/Discount.vue",
       },
       {
         path: "report",
@@ -512,6 +572,7 @@ const loadComponent = (data: CustomRoute): RouteConfig => {
     path: data.path,
     name: data.name,
     component,
+    meta: data.meta,
   };
 };
 

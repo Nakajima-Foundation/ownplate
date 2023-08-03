@@ -13,7 +13,7 @@
       </a>
     </div>
 
-    <TransactionsActContents
+    <TransactionsActModal
       :shopInfo="shopInfo"
       :isDelivery="isDelivery"
       ref="contents"
@@ -24,7 +24,7 @@
 <script>
 import { defineComponent } from "@vue/composition-api";
 
-import TransactionsActContents from "@/app/user/TransactionsAct/Contents.vue";
+import TransactionsActModal from "@/app/user/TransactionsAct/Modal.vue";
 
 export default defineComponent({
   props: {
@@ -38,7 +38,7 @@ export default defineComponent({
     },
   },
   components: {
-    TransactionsActContents,
+    TransactionsActModal,
   },
   setup(props, ctx) {
     const openTransactionsAct = () => {

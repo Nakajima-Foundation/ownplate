@@ -91,10 +91,6 @@ const mixin = {
       const claims = this.$store.state.claims;
       return !!claims?.line;
     },
-    isLineEnabled() {
-      // TODO
-      return !!ownPlateConfig.line;
-    },
     isLocaleJapan() {
       // for hack
       console.log(this.$i18n.locale);

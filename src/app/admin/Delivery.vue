@@ -176,6 +176,16 @@
           {{ $t("editRestaurant.minutes") }}
         </div>
       </div>
+      <div class="mt-4 rounded-lg bg-black bg-opacity-5 p-4">
+        <a
+          href="https://docs.omochikaeri.com/manuals/delivery.pdf"
+          target="_blank"
+          class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
+          @click="handleClose()"
+        >
+          {{ $t("menu.deliveryManualLink") }}
+        </a>
+      </div>
       <!-- Save Button -->
       <div class="mt-4 text-center">
         <o-button @click="saveDeliveryArea" class="b-reset-tw">
@@ -194,7 +204,8 @@
 </template>
 
 <script>
-import { db, firestore } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import { doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
 import { notFoundResponse } from "@/utils/utils";
 import NotFound from "@/components/NotFound";
 
@@ -266,10 +277,10 @@ export default {
     this.deliveryMinimumCookTime =
       this.shopInfo.deliveryMinimumCookTime || this.deliveryMinimumCookTime;
 
-    const deliveryDoc = await db
-      .doc(`restaurants/${this.restaurantId()}/delivery/area`)
-      .get();
-    if (deliveryDoc.exists) {
+    const deliveryDoc = await getDoc(
+      doc(db, `restaurants/${this.restaurantId()}/delivery/area`)
+    )
+    if (deliveryDoc.exists()) {
       const data = deliveryDoc.data();
       this.enableAreaMap = data.enableAreaMap;
       this.enableAreaText = data.enableAreaText;
@@ -308,7 +319,7 @@ export default {
       return shopInfo.uid === this.ownerUid;
     },
     async saveDeliveryArea() {
-      await db.doc(`restaurants/${this.restaurantId()}`).update({
+      await updateDoc(doc(db, `restaurants/${this.restaurantId()}`), {
         enableDelivery: this.enableDelivery,
         deliveryMinimumCookTime: Number(this.deliveryMinimumCookTime || 0),
       });
@@ -324,9 +335,7 @@ export default {
         deliveryThreshold: Number(this.deliveryThreshold || 0),
         uid: this.uid,
       };
-      await db
-        .doc(`restaurants/${this.restaurantId()}/delivery/area`)
-        .set(data);
+      await setDoc(doc(db, `restaurants/${this.restaurantId()}/delivery/area`),data);
       this.$router.push("/admin/restaurants");
     },
     mapLoaded() {

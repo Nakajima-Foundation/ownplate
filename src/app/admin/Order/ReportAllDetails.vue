@@ -52,8 +52,7 @@ import {
   watch,
   onUnmounted,
 } from "@vue/composition-api";
-import { db } from "@/plugins/firebase";
-import DownloadCsv from "@/components/DownloadCSV";
+import DownloadCsv from "@/components/DownloadCSV.vue";
 import moment from "moment";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import { nameOfOrder } from "@/utils/strings";
@@ -61,8 +60,6 @@ import { order_status } from "@/config/constant";
 import { arrayChunk, forceArray } from "@/utils/utils";
 
 import {
-  reportHeaders,
-  reportHeadersWithAddress,
   reportHeadersForMo,
 } from "@/utils/reportUtils";
 
@@ -106,7 +103,6 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
-    const customers = ref({});
     const writeonFirstLine = (index, key, text) => {
       return (index === 0 && Number(key) === 0) || props.isInMo ? text : "-";
     };
@@ -119,12 +115,12 @@ export default defineComponent({
       }
       return moment(timeData).format("YYYY/MM/DD HH:mm");
     };
-
+    
     const formulas = {
       count: "sum",
       total: "sum",
     };
-
+    
     const fields = computed(() => {
       return reportHeadersForMo;
     });
@@ -133,17 +129,9 @@ export default defineComponent({
         return ctx.root.$t(`order.${field}`);
       });
     });
-    const mergedOrder = computed(() => {
-      return props.orders.map((o) => {
-        if (customers.value[o.id]) {
-          o.customerInfo = o.customerInfo || customers.value[o.id] || {};
-        }
-        return o;
-      });
-    });
     const tableData = computed(() => {
       const items = [];
-      mergedOrder.value.forEach((order) => {
+      props.orders.forEach((order) => {
         const shopInfo = props.shopObj[order.restaurantId];
         const ids = Object.keys(order.order);
         const status = Object.keys(order_status).reduce((result, key) => {
@@ -167,7 +155,7 @@ export default defineComponent({
                 id: `${order.id}/${menuId}`,
                 orderId: order.id,
                 name: nameOfOrder(order),
-                storeName: shopInfo.restaurantName,
+                restaurantName: shopInfo.restaurantName,
                 type: writeonFirstLine(
                   index,
                   key,
@@ -220,32 +208,6 @@ export default defineComponent({
                     ? "-"
                     : order.name || ctx.root.$t("order.unspecified")
                 ),
-                "ec.name": writeonFirstLine(
-                  index,
-                  key,
-                  order?.customerInfo?.name
-                ),
-                "ec.zip": writeonFirstLine(
-                  index,
-                  key,
-                  order?.customerInfo?.zip
-                ),
-                "ec.prefecture": writeonFirstLine(
-                  index,
-                  key,
-                  order?.customerInfo?.prefecture
-                ),
-                "ec.address": writeonFirstLine(
-                  index,
-                  key,
-                  order?.customerInfo?.address
-                ),
-                "ec.email": writeonFirstLine(
-                  index,
-                  key,
-                  order?.customerInfo?.email
-                ),
-                shippingCost: writeonFirstLine(index, key, order?.shippingCost),
                 count: orderItems[key],
                 options: opt.filter((a) => String(a) !== "").join("/"),
                 memo: writeonFirstLine(index, key, order.memo),
@@ -275,6 +237,7 @@ export default defineComponent({
                 tax: Math.round((menuItem.price * taxRate) / (100 + taxRate)),
                 productSubTotal: prices[key],
 
+                cancelReason: order.cancelReason,
                 // end of for mo
                 total: writeonFirstLine(index, key, order.totalCharge || ""),
                 payment: writeonFirstLine(
