@@ -25,7 +25,7 @@ export const updateDb = (_db) => {
 };
 
 const subscribe = async (req: any, res: any) => {
-  await db.collection("smaregiLog/log/subscribe").add({ data: req.body, createdAt: admin.firestore.Timestamp.now() });
+  await db.collection("smaregiLog/log/subscribe").add({ data: req.body, createdAt: admin.firestore.FieldValue.serverTimestamp() });
   return response200(res, {});
 };
 
@@ -65,7 +65,7 @@ export const processAction = async (data) => {
         const amount = stockListData[0].stockAmount;
         console.log(amount);
         db.doc(`smaregiData/${contractId}/stores/${storeId}/smaregiProducts/${productId}`).set({
-          updatedAt: admin.firestore.Timestamp.now(),
+          updatedAt: admin.firestore.FieldValue.serverTimestamp(),
           storeId: storeId,
           productId: productId,
           amount: Number(amount),
@@ -83,7 +83,7 @@ export const processAction = async (data) => {
             menuId,
             storeId: storeId,
             productId: productId,
-            updatedAt: admin.firestore.Timestamp.now(),
+            updatedAt: admin.firestore.FieldValue.serverTimestamp(),
             amount: Number(amount),
           });
           const menuPath = `/restaurants/${restaurantId}/menus/${menuId}`;
@@ -118,7 +118,7 @@ const webhook = async (req: any, res: any) => {
   await db.doc(`smaregiLog/${contractId}/month/${moment().format("YYYYMM")}/webhookLog/${time}`).set({
     data,
     contractId,
-    createdAt: admin.firestore.Timestamp.now(),
+    createdAt: admin.firestore.FieldValue.serverTimestamp(),
   });
 
   return response200(res, {});

@@ -13,6 +13,8 @@
         :showSuspend="true"
         :isInMo="isInMo"
         :moPrefix="moPrefix"
+        backText="button.backToOrderListPage"
+        iconText="arrow_back"
       />
 
       <!-- Body -->
@@ -73,9 +75,44 @@
                 </div>
               </div>
             </div>
+
+						<div v-if="hasStripe && orderInfo.payment.stripe !== 'canceled'">
+              <div
+                class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-yellow-500 bg-opacity-10 px-4 py-1 font-bold text-yellow-500"
+              >
+                <span class="ml-1 mt-1 text-sm">
+                  {{ $t("admin.order.cardPaymentMessage")}}
+
+                </span
+                >
+              </div>
+            </div>
+						<div v-else-if="orderInfo.status !== order_status.order_canceled" >
+              <div
+                class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-red-700 bg-opacity-10 px-4 py-1 font-bold text-red-700"
+              >
+                <span class="ml-1 mt-1 text-sm">
+                  {{ $t("admin.order.storePaymentMessage")}}
+
+                </span
+                >
+              </div>
+            </div>
+
+            <div v-if="orderInfo.promotionId">
+              <div
+                class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-green-600 bg-opacity-10 px-4 py-1 font-bold text-green-600"
+              >
+                <span class="ml-1 mt-1 text-sm">
+                  {{ $n(orderInfo.discountPrice, "currency") }}{{ $t("order.discountPriceMessage")}}
+
+                </span
+                >
+              </div>
+            </div>
             <div v-if="orderInfo.isPickup">
               <div
-                class="mt-4 inline-flex h-9 w-full justify-center rounded-lg bg-green-600 bg-opacity-10 px-4 py-1 font-bold text-green-600"
+                class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-green-600 bg-opacity-10 px-4 py-1 font-bold text-green-600"
               >
                 <i class="material-icons"> local_mall </i>
                 <span class="ml-1 mt-1 text-sm">
@@ -102,13 +139,13 @@
             </div>
 
             <!-- Cancel Button -->
-            <div class="mt-6 text-center">
-              <o-button
-                class="b-reset-tw"
+            <div class="mt-6 text-center"
                 v-if="
                   isValidTransition('order_canceled') &&
                   (paymentIsNotCompleted || !hasStripe)
                 "
+                 >
+              <button
                 @click="openCancel()"
               >
                 <div
@@ -119,22 +156,29 @@
                     {{ $t("admin.order.cancelButton") }}
                   </div>
                 </div>
-              </o-button>
-
-              <o-button v-if="cancelStatus" class="b-reset-tw">
-                <div
-                  class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-red-700 bg-opacity-10 text-red-700"
+              </button>
+              <div v-if="isInMo && showTimePicker" class="mt-2 text-red-700 font-bold">
+                {{ $t("mobileOrder.admin.autoCancelAlert", {date: $d(autoCancelTime, "long") }) }}
+              </div>
+            </div>
+            <div class="mt-6 text-center"
+                 v-if="cancelStatus"
+                 >
+              <div
+                class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-red-700 bg-opacity-10 text-red-700"
                 >
-                  <div>
-                    <div class="text-base font-extrabold">
-                      {{ $t("order." + cancelStatus) }}
-                    </div>
-                    <div class="text-xs">
-                      {{ timeOfEvents[cancelStatus] }}
-                    </div>
+                <div>
+                  <div class="text-base font-extrabold">
+                    {{ $t("order." + cancelStatus) }}
+                  </div>
+                  <div class="text-xs">
+                    {{ timeOfEvents[cancelStatus] }}
                   </div>
                 </div>
-              </o-button>
+              </div>
+              <div v-if="orderInfo.cancelReason === 'autoCancel'" class="mt-2 font-bold text-red-700">
+                {{ $t("mobileOrder.admin.autoCancel") }}
+              </div>
             </div>
 
             <!-- Cancel Popup-->
@@ -152,7 +196,7 @@
             </o-modal>
 
             <!-- Pickup Time -->
-            <div class="mt-2 text-center">
+            <div class="mt-2 text-center" v-if="!cancelStatus">
               <div class="text-xs font-bold">
                 {{ $t("order.timeRequested") }}
               </div>
@@ -280,13 +324,13 @@
             v-if="isDev"
           >
             <div class="mt-2">
-              <o-button @click="download()" class="b-reset-tw">
+              <button @click="download()">
                 <div
                   class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-black bg-opacity-5"
                 >
                   Download
                 </div>
-              </o-button>
+              </button>
             </div>
           </div>
 
@@ -299,13 +343,13 @@
             "
           >
             <div>
-              <o-button @click="print()" class="b-reset-tw">
+              <button @click="print()">
                 <div
                   class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-black bg-opacity-5"
                 >
                   {{ $t("order.print") }}
                 </div>
-              </o-button>
+              </button>
             </div>
           </div>
 
@@ -406,6 +450,7 @@
               :orderInfo="isOrderChange ? editable_order_info : orderInfo || {}"
               :editable="isOrderChange"
               :editedAvailableOrders="editedAvailableOrders"
+              :mode="isInMo ? 'mo' : ''"
               @input="updateEnable"
             ></order-info>
             <div v-if="editedAvailableOrders.length > 1 || orderInfo.orderUpdatedAt">
@@ -992,7 +1037,7 @@ export default defineComponent({
       return Timestamp.fromDate(date);
     };
     const handleChangeStatus = async (statusKey) => {
-      const newStatus = order_status[statusKey];
+       const newStatus = order_status[statusKey];
       if (newStatus === orderInfo.value.status) {
         console.log("same status - no need to process");
         return;
@@ -1010,7 +1055,20 @@ export default defineComponent({
         }
         const { data } = await orderUpdate(params);
         // console.log("update", data);
-        ctx.root.$router.push(parentUrl.value);
+        if (data.result) {
+          ctx.root.$router.push(parentUrl.value);
+        } else {
+          if (data.type === 'StripeCardError') {
+            ctx.root.$store.commit("setErrorMessage", {
+              code: "order.updateCard",
+              message2: "errorPage.message.cardError",
+            });
+          } else {
+            ctx.root.$store.commit("setErrorMessage", {
+              code: "order.update",
+            });
+          }
+        }
       } catch (error) {
         console.error(error.message, error.details);
         ctx.root.$store.commit("setErrorMessage", {
@@ -1053,6 +1111,11 @@ export default defineComponent({
         },
       });
     };
+    const autoCancelTime = computed(() => {
+      const diffSecond = orderInfo.value?.isPickup ? 10 * 60 : 3600 * 24;
+      return new Date((orderInfo.value?.orderPlacedAt.seconds + diffSecond) * 1000);
+      // return orderInfo.value?.orderPlacedAt?.toDate();
+    });
     const classOf = (statusKey) => {
       if (order_status[statusKey] == orderInfo.value.status) {
         return statusKey;
@@ -1107,7 +1170,8 @@ export default defineComponent({
       timeEstimated,
       hasStripe,
       paymentIsNotCompleted,
-
+      autoCancelTime,
+      
       nationalPhoneNumber,
       nationalPhoneURI,
       parentUrl,

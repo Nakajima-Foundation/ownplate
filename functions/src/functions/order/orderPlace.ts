@@ -15,9 +15,10 @@ import { validateOrderPlaced, validateCustomer } from "../../lib/validator";
 
 import {
   getPromotion,
-  getUserPromotionRef,
   enableUserPromotion,
-  setUserPromotionUsed,
+  userPromotionHistoryData,
+  getUserHistoryDoc,
+  getUserHistoryCollectionPath,
   getDiscountPrice
 } from "./promotion";
 
@@ -31,7 +32,16 @@ export const getOrderData = async (transaction: admin.firestore.Transaction, ord
   return order;
 };
 
-export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUid, order, restaurantId, ownerUid, timePlaced, now, positive) => {
+export const updateOrderTotalDataAndUserLog = async (
+  db: admin.firestore.Firestore,
+  transaction: admin.firestore.Transaction,
+  customerUid: string,
+  order: any,
+  restaurantId: string,
+  ownerUid: string,
+  timePlaced,
+  positive: boolean,
+) => {
   const menuIds = Object.keys(order);
   console.log(utils.timezone);
   const date = moment(timePlaced.toDate()).tz(utils.timezone).format("YYYYMMDD");
@@ -39,8 +49,8 @@ export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUi
   // Firestore transactions require all reads to be executed before all writes.
 
   // Read !!
-  const totalRef: { [key: string]: any } = {};
-  const totals: { [key: string]: any } = {};
+  const totalRef: { [key: string]: admin.firestore.DocumentReference } = {};
+  const totals: { [key: string]: admin.firestore.DocumentData | undefined } = {};
   const nums: { [key: string]: number } = {};
   await Promise.all(
     menuIds.map(async (menuId) => {
@@ -90,7 +100,7 @@ export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUi
       // lastOrder: timePlaced,
       restaurantId,
       ownerUid,
-      updateAt: now,
+      updateAt: admin.firestore.FieldValue.serverTimestamp(),
     };
     await transaction.set(userLogRef, data);
   } else {
@@ -101,7 +111,7 @@ export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUi
       cancelCounter,
       currentOrder: timePlaced,
       lastOrder: userLog.currentOrder || timePlaced,
-      updateAt: now,
+      updateAt: admin.firestore.FieldValue.serverTimestamp(),
       lastUpdatedAt: userLog.updateAt || new admin.firestore.Timestamp(1577804400, 0),
     };
     await transaction.update(userLogRef, updateData);
@@ -128,7 +138,6 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
   const enableStripe = !!payStripe;
 
   const roundedTip = Math.round((Number(tip) || 0) * multiple) / multiple;
-  const now = admin.firestore.Timestamp.now();
   if (roundedTip < 0) {
     throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
   }
@@ -146,7 +155,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
     }
     // check time
     if (!restaurantData.isEC) {
-      if (timePlaced.toDate() < now.toDate()) {
+      if (timePlaced.toDate() < new Date()) {
         throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
       }
     }
@@ -167,7 +176,8 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
       }
       // promotion
       const {
-        userPromotionRef,
+        historyCollectionRef,
+        historyDocRef,
         promotionData,
         discountPrice,
       } = await (async () => {
@@ -175,17 +185,19 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
           const promotionData = await getPromotion(db, transaction, promotionId, restaurantData, order.total, enableStripe);
           const discountPrice = getDiscountPrice(promotionData, order.total);
           if (promotionData.usageRestrictions) {
-            const userPromotionRef = await getUserPromotionRef(db, promotionData, customerUid, restaurantData.groupId, phoneNumber);
-            if (!await enableUserPromotion(transaction, promotionData, userPromotionRef)) {
+            const historyDocRef = await getUserHistoryDoc(db, promotionData, customerUid, restaurantData.groupId, phoneNumber);
+            if (!await enableUserPromotion(transaction, promotionData, historyDocRef)) {
               throw new functions.https.HttpsError("invalid-argument", "This promotion is used.");
             }
             return {
-              userPromotionRef,
+              historyDocRef,
               promotionData,
               discountPrice,
             };
           }
+          const historyCollectionRef = db.collection(getUserHistoryCollectionPath(customerUid, restaurantData.groupId, phoneNumber));
           return {
+            historyCollectionRef,
             promotionData,
             discountPrice,
           }
@@ -235,7 +247,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
         return {};
       })();
       // transaction for stock orderTotal
-      await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, restaurantOwnerUid, timePlaced, now, true);
+      await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, restaurantOwnerUid, timePlaced, true);
       // update customer
       if (hasCustomer) {
         const { zip, prefectureId, prefecture, address, name, email, location } = customerInfo;
@@ -250,7 +262,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
           uid: customerUid,
           orderId,
           restaurantId,
-          createdAt: now,
+          createdAt: admin.firestore.FieldValue.serverTimestamp(),
         });
       }
       // customerUid
@@ -264,8 +276,8 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
         shippingCost,
         sendSMS: true,
         printed: false,
-        updatedAt: now,
-        orderPlacedAt: now,
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        orderPlacedAt: admin.firestore.FieldValue.serverTimestamp(),
         timePlaced,
         timePickupForQuery: timePlaced,
         memo: memo || "",
@@ -292,8 +304,13 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
         await transaction.update(orderRef, updateData);
       }
       // promotion
-      if (userPromotionRef) {
-        await setUserPromotionUsed(transaction, promotionData, userPromotionRef, restaurantData, customerUid)
+      if (historyDocRef) {
+        const data = userPromotionHistoryData(promotionData, restaurantData, customerUid, orderId, totalCharge, discountPrice, enableStripe);
+        await transaction.set(historyDocRef, data);
+      } else if (historyCollectionRef) {
+        const data = userPromotionHistoryData(promotionData, restaurantData, customerUid, orderId, totalCharge, discountPrice, enableStripe);
+        console.log(data);
+        await transaction.set(historyCollectionRef.doc(), data);
       }
       
       Object.assign(order, { totalCharge, tip, shippingCost }, enableStripe ? {payment: true} : {} );

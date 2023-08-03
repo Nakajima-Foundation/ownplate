@@ -30,7 +30,7 @@ const getMgsKey = (status: number, isEC: boolean, timeEstimated?: admin.firestor
   return null;
 };
 
-const getPaymentIntent = async (db: admin.firestore.Firestore, restaurantOwnerUid: string, order: any, transaction: any, stripeRef: any) => {
+const getPaymentIntent = async (db: admin.firestore.Firestore, restaurantOwnerUid: string, order: any, transaction: admin.firestore.Transaction, stripeRef: admin.firestore.DocumentReference) => {
   const stripe = utils.get_stripe();
   const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
   // just for stripe payment
@@ -106,8 +106,8 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
       const updateTimeKey = timeEventMapping[order_status_keys[status]];
       const updateData: updateDataOnorderUpdate = {
         status,
-        updatedAt: admin.firestore.Timestamp.now(),
-        [updateTimeKey]: admin.firestore.Timestamp.now(),
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        [updateTimeKey]: admin.firestore.FieldValue.serverTimestamp(),
       };
       if (isStripeProcess) {
         updateData.payment = {
@@ -124,7 +124,7 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
         await transaction.set(stripeRef, { paymentIntent }, { merge: true });
         if (stripeReadOnly) {
           await transaction.update(stripeReadOnlyRef, {
-            updatedAt: admin.firestore.Timestamp.now(),
+            updatedAt: admin.firestore.FieldValue.serverTimestamp(),
           });
         }
       }
@@ -142,7 +142,14 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
       await sendMessageToCustomer(db, msgKey, restaurant.restaurantName, orderData, restaurantId, orderId, params);
     }
     return { result: true };
-  } catch (error) {
+  } catch (error: any) {
+    if (error.type && error.type === "StripeCardError") {
+      utils.log_error(error);
+      return {
+        result: false,
+        type: error.type,
+      };
+    }
     throw utils.process_error(error);
   }
 };

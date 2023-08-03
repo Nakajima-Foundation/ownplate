@@ -52,6 +52,7 @@
             :orderInfo="orderInfo || {}"
             :shippingCost="shippingCost"
             :groupData="groupData"
+            :mode="mode"
             :promotion="selectedPromotion"
             :enablePromotion="enablePromotion"
             :discountPrice="discountPrice"
@@ -213,6 +214,32 @@
                   })
                 }}
               </div>
+
+							<div v-if="selectedPromotion && selectedPromotion.paymentRestrictions === 'stripe'">
+								<!-- おもちかえりの場合は以下のメッセージを表示-->
+								<div class="border-green-600 text-green-600 text-center font-bold mx-auto w-72 items-center mt-8 -mb-3 rounded-lg bg-green-600 bg-opacity-10 px-6 py-2" v-if="mode !== 'mo'">
+									<div class="text-xs">{{ $t("order.promotionNoteCard") }}</div>
+								</div>
+								<!-- MobileOrderの場合は以下のメッセージを表示-->
+								<div v-else>
+								  <div class="border-green-600 text-green-600 text-center font-bold mx-auto w-72 items-center mt-8 -mb-3 rounded-lg bg-green-600 bg-opacity-10 px-6 py-2">
+									  <div class="text-xs">{{ $t("order.promotionNoteCardMo") }}</div>
+								  </div>
+								</div>
+							</div>
+
+							<div v-if="selectedPromotion && selectedPromotion.paymentRestrictions === 'instore'">
+								<!-- おもちかえりの場合は以下のメッセージを表示 -->
+								<div class="border-green-600 text-green-600 text-center font-bold mx-auto w-72 items-center mt-8 -mb-3 rounded-lg bg-green-600 bg-opacity-10 px-6 py-2"  v-if="mode !== 'mo'">
+									<div class="text-xs">{{ $t("order.promotionNoteStore") }}</div>
+								</div>
+								<!-- MobileOrderの場合は以下のメッセージを表示 -->
+								<div v-else>
+								  <div class="border-green-600 text-green-600 text-center font-bold mx-auto w-72 items-center mt-8 -mb-3 rounded-lg bg-green-600 bg-opacity-10 px-6 py-2">
+									  <div class="text-xs">{{ $t("order.promotionNoteStoreMo") }}</div>
+								  </div>
+								</div>
+							</div>
 
               <div class="mt-6 text-center">
                 <o-button
@@ -416,7 +443,7 @@ import { usePromotionData } from "@/utils/promotion";
 
 import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
-import { PromotionData } from "@/models/promotion";
+import Promotion from "@/models/promotion";
 
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
@@ -463,7 +490,7 @@ export default defineComponent({
       required: true,
     },
     promotions: {
-      type: Array<PromotionData>,
+      type: Array<Promotion>,
       required: true,
     },
     mode: {
@@ -567,10 +594,14 @@ export default defineComponent({
     const hasPaymentMethods = computed(() => {
       return shopPaymentMethods.value.length > 0;
     });
-    const selectedPromotion = computed<PromotionData | null>(() => {
+    const selectedPromotion = computed<Promotion | null>(() => {
       if (props.promotions && props.promotions.length > 0) {
-        return props.promotions[0];
-        // return null;
+        const matched = props.promotions.filter((a) => {
+          return props.orderInfo.total >= a.discountThreshold;
+        });
+        if (matched && matched.length > 0) {
+          return matched[matched.length - 1];
+        }
       }
       return null;
     });

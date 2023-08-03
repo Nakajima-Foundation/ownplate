@@ -31,7 +31,7 @@ export default defineComponent({
 
     const logs = ref<DocumentData[]>([]);
     
-    const month = "202302";
+    const month = "202303";
     
     getDocs(
       query(

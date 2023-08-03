@@ -1,6 +1,6 @@
 {
   "name": "OwnPlate",
-  "version": "2.0.24",
+  "version": "2.1.0",
   "private": true,
   "description": "OwnPlate - Delicious food",
   "author": "OwnPlate developer team",
@@ -30,6 +30,7 @@
     "caniuse-lite": "^1.0.30001393",
     "chart.js": "^3.9.1",
     "cookie": "^0.4.2",
+    "crypto-js": "^4.1.1",
     "firebase": "^9.15.0",
     "google-libphonenumber": "^3.2.30",
     "markdown-it": "^12.3.2",
@@ -58,6 +59,7 @@
     "@babel/runtime": "^7.17.8",
     "@google-cloud/firestore": "^5.0.2",
     "@types/cookie": "^0.4.1",
+    "@types/crypto-js": "^4.1.1",
     "@types/google-libphonenumber": "^7.4.23",
     "@types/gtag.js": "^0.0.10",
     "@types/lodash": "^4.14.181",

@@ -6,6 +6,7 @@ export default functions
   .region("asia-northeast1")
   .runWith({
     maxInstances: 100,
+    timeoutSeconds: 10,
     memory: "1GB" as "1GB",
     secrets: secretKeys,
   })

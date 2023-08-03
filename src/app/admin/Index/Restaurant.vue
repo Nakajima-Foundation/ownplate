@@ -189,7 +189,55 @@
         </router-link>
       </div>
 
+      <!-- Delivery and Printer and Discount -->
+      <div
+        class="mt-4 flex items-center justify-center space-x-4"
+        v-if="!simpleMode && isOwner && !isInMo"
+      >
+        <div>
+          <router-link :to="`/admin/restaurants/${restaurantid}/delivery`">
+            <div
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+            >
+              <i class="material-icons mr-2 text-lg text-op-teal">delivery_dining</i>
+              <span class="text-sm font-bold text-op-teal">{{
+                $t("admin.menu.delivery")
+              }}</span>
+            </div>
+          </router-link>
+        </div>
+        <div>
+          <router-link :to="`/admin/restaurants/${restaurantid}/printer`">
+            <div
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+            >
+              <i class="material-icons mr-2 text-lg text-op-teal"
+                >print</i>
+              <span class="text-sm font-bold text-op-teal">{{
+                $t("admin.menu.printer")
+              }}</span>
+            </div>
+          </router-link>
+        </div>
+
+        <div v-if="isOwner && isDev">
+          <router-link :to="`/admin/restaurants/${restaurantid}/discounts`">
+            <div
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+            >
+              <i class="material-icons mr-2 text-lg text-op-teal"
+                >sell</i
+              >
+              <span class="text-sm font-bold text-op-teal">{{
+                $t("admin.menu.discount")
+              }}</span>
+            </div>
+          </router-link>
+        </div>
+      </div>
+
       <!-- QR Code and Monthly Report -->
+
       <div
         class="mt-4 flex items-center justify-center space-x-4"
         v-if="!simpleMode"
@@ -222,7 +270,7 @@
           </router-link>
         </div>
       </div>
-
+      
       <!-- Directory Request -->
       <div v-if="isOwner && !simpleMode">
         <!-- On Directory -->
@@ -392,6 +440,10 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 
+import {
+  isDev,
+} from "@/utils/utils";
+
 import firebase from "firebase/compat/app";
 
 export default defineComponent({
@@ -517,6 +569,7 @@ export default defineComponent({
       requestState,
 
       previewLink,
+      isDev,
 
       deleteRestaurant,
       deleteFromList,

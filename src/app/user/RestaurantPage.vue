@@ -5,21 +5,10 @@
       <not-found />
     </template>
     <template v-else>
-      <div
-        v-if="pageId"
-        class="fixed top-0 z-20 h-full w-full bg-white"
-        >
-        <MoPage
-          :pageId="pageId"
-          :pageBase="pageBase"
-          :groupData="groupData"
-          @didOrderdChange="didOrderdChange($event)"
-          :orders="orders"
-          :selectedOptions="selectedOptions"
-          :shopInfo="shopInfo"
-          :isPickup="isPickup"
-          />
-      </div>
+			<div v-if="totalQuantities === 0 && promotion && promotion.type === 'discount'">
+        <FloatingBanner :promotion="promotion" :possiblePromotions="possiblePromotions" />
+			</div>
+
       <!-- category modal -->
       <div
         v-if="isOpenGroupCategory"
@@ -154,6 +143,12 @@
             </div>
           </div>
           <div v-else>
+						<!--To Do 期間に合わせてそれぞれのコンポーネントを表示-->
+						<!--7/27((木))〜8/10(木) 終了告知期間-->
+						<div class="my-4" v-if="moCloseStatus === 1 && isInMo">
+		  				<MoClosing0727 :moBasePath="moBasePath"/>
+						</div>
+            
             <div class="mx-6 mt-2 lg:mx-0" v-if="shopInfo.enableDelivery">
               <div class="rounded-lg bg-white shadow">
                 <!-- delivery toggle-->
@@ -171,7 +166,11 @@
 
             <!-- Mo Suspend -->
             <div v-if="moSuspend && isInMo">
-              <div
+						  <!--8/10(木)〜8/18(金) 注文受付終了〜サービス終了まで-->
+						  <div class="my-4" v-if="moCloseStatus === 2">
+		  				  <MoClosing0810 :moBasePath="moBasePath"/>
+						  </div>
+              <div v-else
                 class="mx-6 mt-3 mb-2 rounded-lg bg-red-700 bg-opacity-10 p-3 font-bold text-red-700 lg:mx-0"
               >
                 {{ $t("mobileOrder.suspendMessage") }}
@@ -204,11 +203,16 @@
               </div>
             </div>
 
+            <!-- for mo -->
+						<div v-if="isPickup && isSpecialShop"
+                class="mx-6 mt-3 mb-2 rounded-lg bg-red-700 bg-opacity-10 p-3 font-bold text-red-700 lg:mx-0"
+              >
+                {{ $t("mobileOrder.autoCancel") }}
+              </div>
+
             <!-- stock filter Toggle-->
             <div>
-              <MoSetBanner v-if="showSubCategory && enableCampaignBanner"
-                           :pageBase="pageBase"
-                           />
+
               <div v-if="showSubCategory && isPickup">
                 <div class="mx-6 mt-4 grid grid-cols-2 gap-2 lg:mx-0">
                   <!-- 在庫なし含む -->
@@ -263,10 +267,7 @@
                   <div class="text-xl font-bold text-black text-opacity-30">
                     {{ $t("shopInfo.productCategory") }}
                   </div>
-                  <MoSetBanner
-                    v-if="enableCampaignBanner"
-                    :pageBase="pageBase"
-                    />
+								
                   <CategoryTop
                     :categoryData="categoryData"
                     :howtoreceive="howtoreceive"
@@ -280,7 +281,7 @@
                     <template v-for="(item, key) in itemLists">
                       <div v-if="item._dataType === 'title'" :key="key">
                         <div
-                          class="inline-flex items-center justify-center text-xl font-bold text-black text-opacity-30"
+                          class="inline-flex items-center justify-center text-xl font-bold text-black text-opacity-30 cursor-pointer"
                           :class="key === 0 ? '' : 'mt-6'"
                           :id="item.id"
                           @click="openCategory"
@@ -388,6 +389,9 @@
         :disabledPickupTime="disabledPickupTime"
         :lastOrder="lastOrder"
         @didOrderdChange="didOrderdChange"
+        :totalPrice="totalPrice"
+        :promotions="promotions"
+        :possiblePromotions="possiblePromotions"
       />
 
       <!-- for disable all UI -->
@@ -418,6 +422,7 @@
     <o-modal :active.sync="categoryPopup" :width="488" scroll="keep">
       <div class="px-2 text-center">
         <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
+          <div class="font-bold">{{ $t("order.category") }}</div>
           <template v-for="(title, key) in titleLists">
             <a
               :href="`#${title.id}`"
@@ -469,8 +474,11 @@ import Titles from "@/app/user/Restaurant/Titles.vue";
 import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
 import TransactionsActContents from "@/app/user/TransactionsAct/Contents.vue";
 import MoPickUp from "@/app/user/Restaurant/MoPickUp.vue";
-import MoPage from "@/app/user/Mo/MoPage.vue";
-import MoSetBanner from "@/app/user/Mo/MoSetBanner.vue";
+
+import FloatingBanner from "@/app/user/Restaurant/FloatingBanner.vue";
+
+import MoClosing0727 from "./Mo/MoClosing0727.vue";
+import MoClosing0810 from "./Mo/MoClosing0810.vue";
 
 import { usePickupTime } from "@/utils/pickup";
 
@@ -489,7 +497,7 @@ import { orderCreated } from "@/lib/firebase/functions";
 
 import { order_status } from "@/config/constant";
 
-import { ownPlateConfig, moTitle, moPickup, enableCampaignBanner } from "@/config/project";
+import { ownPlateConfig, moTitle, moPickup, enableCampaignBanner, moCloseStatus } from "@/config/project";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import {
@@ -520,7 +528,7 @@ import {
 
 export default defineComponent({
   name: "RestaurantPage",
-
+  
   components: {
     Menu,
     MenuMo,
@@ -541,10 +549,12 @@ export default defineComponent({
     CategoryIcon,
     Titles,
     SubCategoryList,
-
+    FloatingBanner,
+    
     MoPickUp,
-    MoPage,
-    MoSetBanner,
+
+    MoClosing0727,
+    MoClosing0810,
   },
   props: {
     shopInfo: {
@@ -575,6 +585,10 @@ export default defineComponent({
       type: String,
       required: false,
     },
+    moBasePath: {
+      type: String,
+      required: false,
+    },
     groupData: {
       type: Object,
       required: false,
@@ -592,35 +606,35 @@ export default defineComponent({
     // TODO: add area to header
     return {
       title:
-        Object.keys(this.shopInfo).length == 0
-          ? document.title
-          : [
-              this.shopInfo?.restaurantName || "",
-              this.isInMo
-                ? moTitle
-                : ownPlateConfig.restaurantPageTitle || this.defaultTitle,
-            ].join(" / "),
+      Object.keys(this.shopInfo).length == 0
+        ? document.title
+        : [
+          this.shopInfo?.restaurantName || "",
+          this.isInMo
+            ? moTitle
+            : ownPlateConfig.restaurantPageTitle || this.defaultTitle,
+        ].join(" / "),
     };
   },
   setup(props, ctx) {
     const retryCount = ref(0);
-
+    
     const loginVisible = ref(false);
     const isCheckingOut = ref(false);
     const waitForUser = ref(false);
     const noAvailableTime = ref(false);
-
+    
     const orders = ref({});
     const cartItems = ref({});
     const selectedOptions = ref({});
-
+    
     const store = ctx.root.$store;
-
+    
     const multiple = store.getters.stripeRegion.multiple;
-
+    
     const isInMo = useIsInMo(ctx.root);
     const basePath = useBasePath(ctx.root);
-
+    
     const defaultHowToReceive = (() => {
       // for 333
       const rId = ctx.root.$route.params.restaurantId;
@@ -637,7 +651,10 @@ export default defineComponent({
     })();
     const howtoreceive = ref(defaultHowToReceive);
     const isFilterStock = ref(false);
-
+    const updateHowtoreceive = (value) => {
+      howtoreceive.value = value;
+    };
+    
     const {
       category,
       subCategory,
@@ -646,7 +663,7 @@ export default defineComponent({
       showCategory,
       showSubCategory,
     } = useCategoryParams(ctx, isInMo.value);
-
+    
     const restaurantId = computed(() => {
       return ctx.root.$route.params.restaurantId;
     });
@@ -668,7 +685,7 @@ export default defineComponent({
     const isPreview = computed(() => {
       return props.notFound && isOwner.value;
     });
-
+    
     const isDelivery = computed(() => {
       return howtoreceive.value === "delivery";
     });
@@ -684,14 +701,14 @@ export default defineComponent({
         howtoreceive.value = "takeout";
       }
     });
-
+    
     const coverImage = computed(() => {
       return (
         (props.shopInfo?.images?.cover?.resizedImages || {})["1200"] ||
-        props.shopInfo.restCoverPhoto
+          props.shopInfo.restCoverPhoto
       );
     });
-
+    
     const { loadMenu, setCache, menus, menuObj, menuCache } = useMenu(
       restaurantId,
       isInMo,
@@ -699,7 +716,7 @@ export default defineComponent({
       subCategory,
       props.groupData
     );
-
+    
     const { menuPickupData, availableDays, todaysLast } = usePickupTime(
       props.shopInfo,
       {},
@@ -711,7 +728,7 @@ export default defineComponent({
     const lastOrder = computed(() => {
       return (todaysLast.value || {}).lastOrderDisplay;
     });
-
+    
     const disabledPickupTime = computed(() => {
       if (isPickup.value) {
         const now = Number(
@@ -722,13 +739,13 @@ export default defineComponent({
       }
       return false;
     });
-
+    
     // for Mo
     const { preOrderPublics, pickupPublics, pickupStocks } = loadStockData(
       db,
       props.shopInfo
     );
-
+    
     const isPublucDataSet = computed(() => {
       if (isPickup.value) {
         return pickupPublics.value[subCategory.value] || {};
@@ -743,7 +760,7 @@ export default defineComponent({
       return {};
     });
     // end of for Mo
-
+    
     // changed from onMount
     // avoid to reset cart when pickup or other not takeout
     onBeforeMount(() => {
@@ -759,7 +776,7 @@ export default defineComponent({
         }
       }
     });
-
+    
     loadMenu(() => {
       if (location.hash && location.hash[0] === "#") {
         const id = location.hash.slice(1);
@@ -768,7 +785,7 @@ export default defineComponent({
         }, 400);
       }
     });
-
+    
     watch(menus, (values) => {
       analyticsUtil.sendMenuListView(
         values,
@@ -776,7 +793,7 @@ export default defineComponent({
         restaurantId.value
       );
     });
-
+    
     watch(watchCat, () => {
       loadMenu();
     });
@@ -786,7 +803,7 @@ export default defineComponent({
         updateMoUrl();
       }
     });
-
+    
     const updateMoUrl = () => {
       const { category, subCategory, restaurantId } = ctx.root.$route.params;
       if (howtoreceive.value && subCategory) {
@@ -804,16 +821,16 @@ export default defineComponent({
         orders.value = {};
       }
     });
-
+    
     const { loadTitle, titles, titleLists } = useTitles(restaurantId);
-
+    
     const { loadCategory, categoryData } = useCategory(props.moPrefix);
-
+    
     const { subCategoryData, loadSubcategory } = useSubcategory(
       props.moPrefix,
       category
     );
-
+    
     const selectedCategory = computed(() => {
       if (category.value && categoryData.value) {
         return (
@@ -824,7 +841,7 @@ export default defineComponent({
       }
       return {};
     });
-
+    
     const selectedSubCategory = computed(() => {
       if (subCategory.value && subCategoryData.value) {
         return (
@@ -835,7 +852,7 @@ export default defineComponent({
       }
       return {};
     });
-
+    
     if (isInMo.value) {
       loadCategory();
       if (category.value) {
@@ -846,7 +863,7 @@ export default defineComponent({
     if (!isInMo.value) {
       loadTitle();
     }
-
+    
     const itemLists = computed(() => {
       if (isInMo.value) {
         if (isPickup.value) {
@@ -855,7 +872,7 @@ export default defineComponent({
               if (isFilterStock.value) {
                 const soldOutData = moSoldOutDataSet.value[menu.id] || {};
                 const isStock =
-                  !menu.soldOut &&
+                      !menu.soldOut &&
                   (!!soldOutData.forcePickupStock || !!soldOutData.isStock);
                 return isStock;
               }
@@ -868,18 +885,18 @@ export default defineComponent({
             .sort((a, b) => {
             const aSoldOutData = moSoldOutDataSet.value[a.id] || {};
             const aIsStock =
-              !a.soldOut &&
-              (!!aSoldOutData.forcePickupStock || !!aSoldOutData.isStock);
-
+            !a.soldOut &&
+            (!!aSoldOutData.forcePickupStock || !!aSoldOutData.isStock);
+            
             const bSoldOutData = moSoldOutDataSet.value[b.id] || {};
             const bIsStock =
-              !b.soldOut &&
-              (!!bSoldOutData.forcePickupStock || !!bSoldOutData.isStock);
-
+            !b.soldOut &&
+            (!!bSoldOutData.forcePickupStock || !!bSoldOutData.isStock);
+            
             if (aIsStock === bIsStock) {
-              return a.itemName > b.itemName ? 1 : -1;
+            return a.itemName > b.itemName ? 1 : -1;
             }
-
+            
             return aIsStock ? -1 : 1;
             });
           */
@@ -903,7 +920,7 @@ export default defineComponent({
           });
       }
     });
-
+    
     const totalPrice = computed(() => {
       const subTotal = prices2subtotal(prices.value);
       const total = subtotal2total(subTotal, cartItems.value, props.shopInfo);
@@ -927,12 +944,13 @@ export default defineComponent({
         trimmedSelectedOptions.value
       );
     });
-
+    
     const didOrderdChange = (eventArgs) => {
       // NOTE: We need to assign a new object to trigger computed properties
       if (eventArgs.quantities) {
         if (eventArgs.itemData) { // for mo campaign
-          cartItems.value[eventArgs.itemId] = eventArgs.itemData
+          cartItems.value[eventArgs.itemId] = eventArgs.itemData;
+          menuObj.value[eventArgs.itemId] = eventArgs.itemData;
         } else {
           cartItems.value[eventArgs.itemId] = menuObj.value[eventArgs.itemId];
         }
@@ -965,7 +983,7 @@ export default defineComponent({
         }
         return user.value.displayName;
       })();
-
+      
       const order_data = {
         order: orders.value,
         options: convOptionArray2Obj(postOptions.value),
@@ -974,7 +992,7 @@ export default defineComponent({
         uid: user.value.uid,
         ownerUid: props.shopInfo.uid,
         isDelivery:
-          (props.shopInfo.enableDelivery && isDelivery.value) || false, // true, // for test
+        (props.shopInfo.enableDelivery && isDelivery.value) || false, // true, // for test
         isPickup: (props.shopInfo.enableMoPickup && isPickup.value) || false,
         isLiff: ctx.root.isLiffUser,
         phoneNumber: user.value.phoneNumber,
@@ -1007,7 +1025,7 @@ export default defineComponent({
           restaurantId: restaurantId.value,
           orderId: res.id,
         });
-
+        
         try {
           const checkoutMenus = [];
           Object.keys(orders.value).forEach((menuId) => {
@@ -1061,7 +1079,7 @@ export default defineComponent({
     const handleCheckOut = () => {
       // The user has clicked the CheckOut button
       retryCount.value = 0;
-
+      
       if (ctx.root.isUser || ctx.root.isLiffUser) {
         goCheckout();
       } else {
@@ -1079,7 +1097,7 @@ export default defineComponent({
         waitForUser.value = true;
       }
     };
-
+    
     watch(user, (newValue) => {
       if (waitForUser.value && newValue) {
         console.log("handling deferred notification");
@@ -1097,14 +1115,14 @@ export default defineComponent({
         ? [category.value, subCategory.value].join("_")
         : "";
     });
-
+    
     const isOpenGroupCategory = computed(() => {
       return ctx.root.$route.params.list === "categories";
     });
     const isOpenGroupSubCategory = computed(() => {
       return ctx.root.$route.params.list === "category";
     });
-
+    
     const cartButton = ref();
     const isShowCart = computed(() => {
       return cartButton.value?.isShowCart;
@@ -1112,16 +1130,16 @@ export default defineComponent({
     const closeCart = () => {
       cartButton.value?.closeCart();
     };
-
+    
     const isShowCategoryIcon = computed(() => {
       return (
         !!showSubCategory.value &&
-        !isOpenGroupCategory.value &&
-        !isOpenGroupSubCategory.value &&
-        !isShowCart.value
+          !isOpenGroupCategory.value &&
+          !isOpenGroupSubCategory.value &&
+          !isShowCart.value
       );
     });
-
+    
     watchEffect(() => {
       if (isShowCategoryIcon.value) {
         setTimeout(() => {
@@ -1129,7 +1147,7 @@ export default defineComponent({
         }, 200);
       }
     });
-
+    
     watch(isShowCart, (value) => {
       if (value) {
         document.body.style.position = "fixed";
@@ -1169,7 +1187,7 @@ export default defineComponent({
         document.body.style.position = "";
       }
     });
-
+    
     const filteredTitleLists = computed(() => {
       const menuLists = props.shopInfo.menuLists || [];
       const itemsObj = array2obj(titles.value);
@@ -1184,7 +1202,7 @@ export default defineComponent({
       ).filter((title) => title.name !== "");
       return ret;
     });
-
+    
     const scrollTop = () => {
       scrollToElementById("RestaurantLeftTop");
     };
@@ -1198,9 +1216,37 @@ export default defineComponent({
     const isTransactionAct = computed(() => {
       return !!ctx.root.$route.meta.isTransactionsAct;
     });
-    const pageId = computed(() => {
-      return ctx.root.$route.params.pageId;
+    const totalQuantities = computed(() => {
+      const ret = Object.values(orders.value).reduce((total, order) => {
+        return total + arraySum(order);
+      }, 0);
+      return ret;
     });
+    // for banner
+    const promotion = computed(() => {
+      if (props.promotions.length > 0) {
+        return props.promotions[props.promotions.length - 1];
+      }
+      return null;
+    });
+    const matchedPromotions = computed(() => {
+      return props.promotions.filter((a) => {
+        return totalPrice.value.total >= a.discountThreshold;
+      });
+    });
+    const possiblePromotions = computed(() => {
+      return props.promotions.filter((a) => {
+        return a.discountThreshold > totalPrice.value.total;
+      });
+    });
+
+    const isSpecialShop = computed(() => {
+      return ([
+        "3ee2442f5ada277e133bac5a93d41a84d024c3ff",
+        "4c821e8903633f8e7fc6a10beb0da1fa5730c942"
+      ].includes(restaurantId.value));
+    });
+    
     return {
       itemLists,
       titleLists: filteredTitleLists,
@@ -1211,6 +1257,7 @@ export default defineComponent({
       isOwner,
       isDelivery,
       howtoreceive,
+      updateHowtoreceive,
 
       orders,
 
@@ -1218,7 +1265,11 @@ export default defineComponent({
 
       totalPrice,
       prices,
-
+      totalQuantities,
+      promotion,
+      matchedPromotions,
+      possiblePromotions,
+      
       isPreview,
 
       selectedCategory,
@@ -1263,6 +1314,7 @@ export default defineComponent({
 
       isPublucDataSet,
       moSoldOutDataSet,
+      isSpecialShop,
 
       moPickup,
       disabledPickupTime,
@@ -1275,7 +1327,7 @@ export default defineComponent({
       pageBase,
       scrollTop,
 
-      pageId,
+      moCloseStatus,
     };
   },
 });

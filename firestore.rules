@@ -65,6 +65,9 @@ service cloud.firestore {
     function isGroupOwner(userId, request) {
       return get(/databases/$(database)/documents/admins/$(userId)/groups/data).data.groupId == request.auth.token.groupId
     }
+    function isGroupOwner2(groupId, request) {
+      return get(/databases/$(database)/documents/groups/$(groupId)).data.ownerId == request.auth.uid && request.auth.token.groupId == groupId
+    }
     function isUndefined(data, field) {
       return !data.keys().hasAll([field]);
     }
@@ -82,13 +85,13 @@ service cloud.firestore {
     }
     function notUpdateRestaurantParams(resource, request) {
       return (isUndefined(request.resource.data, 'isEC')  || request.resource.data.isEC == resource.data.isEC) &&
-             (isUndefined(request.resource.data, 'onTheList')  || request.resource.data.onTheList == resource.data.onTheList) &&      
+             (isUndefined(request.resource.data, 'onTheList')  || request.resource.data.onTheList == resource.data.onTheList) || (request.resource.data.onTheList == false) &&      
              (isUndefined(request.resource.data, 'inMoIndex')  || request.resource.data.inMoIndex == resource.data.inMoIndex) &&      
              (isUndefined(request.resource.data, 'enableMoPickup') || request.resource.data.enableMoPickup == resource.data.enableMoPickup) &&
              (isUndefined(request.resource.data, 'groupId') || request.resource.data.groupId == resource.data.groupId) ;
     }
     function notUpdatePaymentParams(resource, request) {
-      return request.resource.data.stripe == resource.data.stripe || request.resource.data.stripe == null;
+      return request.resource.data.stripe == resource.data.stripe || isUndefined(request.resource.data, ['stripe']);
     }
 
     match /users/{userId} {
@@ -201,12 +204,12 @@ service cloud.firestore {
         allow write: if request.auth.token.groupId == groupId
       }
       match /promotions/{promotionId} {
-        // TODO gropu promotion condition
+        // TODO group promotion condition
         allow read: if true
+        allow write: if isGroupOwner2(groupId, request);
       }
       match /users/{hashId}/promotionHistories/{promotionId} {
         allow read: if phoneHashUser(hashId, groupId, request)
-        allow read: if request.auth.token.groupId == groupId
       }
     }
 
@@ -240,7 +243,13 @@ service cloud.firestore {
 
     match /{path=**}/subCategory/{subcategory} {
       allow read: if true;
-    }      
+    }
+    match /{path=**}/promotionHistories/{historyId} {
+      allow read: if resource.data.groupId == request.auth.token.groupId;
+      allow read: if isAdmin(request) && isRestaurantOwner(resource.data.restaurantId, request)
+      allow read: if isAdmin(request) && isRestaurantSubAccount(resource.data.restaurantId, request)
+      allow delete: if isAdmin(request) && isRestaurantOwner(resource.data.restaurantId, request)
+    }
 
     // End of Rules for collection group
 
@@ -283,6 +292,10 @@ service cloud.firestore {
         match /private/printer {
           allow read, write: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
           allow read, update: if isSuper(request);
+        }
+        match /printLog/{logId} {
+          allow read: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
+          allow read: if isSuper(request);
         }
         match /userLog/{userId} {
           allow read: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
@@ -371,6 +384,8 @@ service cloud.firestore {
         match /promotions/{promotionId} {
           // TODO restaurant promotion condition
           allow read: if true
+          allow write: if isAdmin(request)
+                          && isRestaurantOwner(restaurantId, request);
         }
     }
 

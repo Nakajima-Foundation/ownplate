@@ -33,6 +33,9 @@ export const reportHeaders = [
   "total",
   "payment",
   "memo",
+
+  "discountPrice",
+
 ];
 export const reportHeadersForMo = [
   ...reportHeadersTopMo,
@@ -68,7 +71,8 @@ export const reportHeadersForMo = [
 
   // for mo 2023
   "discountPrice",
-  "discountedPrice",
+  "beforeDiscountPrice",
+  "paymentCancel",
   "cancelReason",
   
 ];
@@ -91,6 +95,9 @@ export const reportHeadersWithAddress = [
   "shippingCost",
   "payment",
   "memo",
+
+  "discountPrice",
+
 ];
 
 /* ---- */
@@ -112,6 +119,9 @@ export const revenueCSVHeader = [
   "totalCount",
   "name",
   "payment",
+
+  "discountPrice",
+
 ];
 
 // for csv
@@ -132,7 +142,29 @@ export const revenueMoCSVHeader = [
 
   // for mo 2023
   "discountPrice",
-  "discountedPrice",
+  "beforeDiscountPrice",
+  "cancelReason",
+
+];
+export const revenueMoAllCSVHeader = [
+  "date",
+  "type",
+  "restaurantId",
+  "shopId",
+  "restaurantName",
+  "orderStatus",
+  "foodRevenue",
+  "foodTax",
+  "alcoholRevenue",
+  "salesTax",
+  "total",
+  "name",
+  "payment",
+
+  // for mo 2023
+  "discountPrice",
+  "beforeDiscountPrice",
+  "paymentCancel",
   "cancelReason",
 
 ];
@@ -148,6 +180,7 @@ export const revenueTableHeader = [
   "tipShort",
   "serviceTax",
   "shippingCost",
+  "discount",
   "total",
   "name",
 ];
@@ -170,6 +203,6 @@ export const downloadFields = [
 export const downloadMoFields = [
   ...downloadFields,
   "discountPrice",
-  "discountedPrice",
+  "beforeDiscountPrice",
   "cancelReason",
 ];

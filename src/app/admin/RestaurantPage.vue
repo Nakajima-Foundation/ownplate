@@ -714,7 +714,7 @@
               <!-- Preparation Time -->
               <div v-for="(paymentMethod, k) in paymentMethods" :key="k">
                 <o-checkbox
-                  v-model="(shopInfo.paymentMethods||{})[paymentMethod.key]"
+                  v-model="(shopInfo.paymentMethods || {})[paymentMethod.key]"
                 >
                   <div class="text-sm font-bold">
                     {{
@@ -824,7 +824,7 @@
                   target="_blank"
                   class="text-xs font-bold text-op-teal"
                   @click="handleClose()"
-                  >
+                >
                   {{ $t("menu.deliveryManualLink") }}
                 </a>
               </div>
@@ -849,7 +849,7 @@
                   target="_blank"
                   class="inline-flex text-xs font-bold text-op-teal"
                   @click="handleClose()"
-                  >
+                >
                   {{ $t("menu.printerManualLink") }}
                 </a>
               </div>
@@ -1000,6 +1000,7 @@
               <!-- Date Picker -->
               <o-field>
                 <o-datepicker
+                  class="w-full"
                   icon="calendar-today"
                   v-model="newTemporaryClosure"
                   ref="datepicker"

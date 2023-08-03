@@ -24,10 +24,14 @@ export default defineComponent({
       type: Object,
       required: true,
     },
+    offset: {
+      type: Number,
+      required: false,
+    },
   },
   setup(props, ctx) {
     const price = computed(() => {
-      return priceWithTax(props.shopInfo, props.menu);
+      return priceWithTax(props.shopInfo, props.menu) + (props.offset || 0);
     });
 
     return {

@@ -71,6 +71,11 @@ export default defineComponent({
   font-weight: normal;
   color: #333333;
 }
+/deep/ .article-list > ul > li ul li a:link { color: #1197a7  !important; } 
+/deep/ .article-list > ul > li ul li a:visited { color: #1197a7  !important; } 
+/deep/ .article-list > ul > li ul li a:hover { color: #1197a7  !important; } 
+/deep/ .article-list > ul > li ul li a:active { color: #1197a7  !important; } 
+
 
 /*
   /deep/ .article-list h2 {

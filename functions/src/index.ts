@@ -19,6 +19,7 @@ exportIfNeeded("superDispatch", "super/superDispatch", exports);
 exportIfNeeded("superTwilio", "super/superTwilio", exports);
 
 exportIfNeeded("batchBigQueryPV", "batch/bigQueryPV", exports);
+exportIfNeeded("autoCancel", "batch/autoCancel", exports);
 
 exportIfNeeded("accountDelete", "accountDelete", exports);
 
@@ -56,3 +57,4 @@ exportIfNeeded("subAccountInvitationDeny", "subaccount/deny", exports);
 exportIfNeeded("subAccountDeleteChild", "subaccount/delete", exports);
 
 exportIfNeeded("ping", "ping", exports);
+exportIfNeeded("beforeSignIn", "auth/beforeSignIn", exports);

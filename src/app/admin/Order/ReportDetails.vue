@@ -198,7 +198,7 @@ export default defineComponent({
           const options = order.options[menuId] || [];
           const prices = order.prices[menuId] || [];
           const menuItem = (order.menuItems || {})[menuId] || {};
-          const taxRate = menuItem.tax === "feed" ? 8 : 10;
+          const taxRate = menuItem.tax === "food" ? 8 : 10;
           Object.keys(orderItems).forEach((key) => {
             const opt = Array.isArray(options[key] || [])
               ? options[key]
@@ -324,6 +324,8 @@ export default defineComponent({
                 cancelReason: order.cancelReason,
                 // end of for mo
                 total: writeonFirstLine(index, key, order.totalCharge || ""),
+                discountPrice: writeonFirstLine(index, key, order.discountPrice || 0),
+                beforeDiscountPrice: writeonFirstLine(index, key, order.totalCharge + (order.discountPrice || 0)),
                 payment: writeonFirstLine(
                   index,
                   key,

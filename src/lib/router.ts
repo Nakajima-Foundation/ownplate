@@ -75,11 +75,6 @@ const getUserPagesWithCat = (prefix: string) => {
           component: "user/Blank.vue",
         },
         {
-          name: "r-restaurant-MoPage_" + prefix,
-          path: "page/:pageId",
-          component: "user/Blank.vue",
-        },
-        {
           path: "transactions-act",
           component: "user/Blank.vue",
           meta: {
@@ -104,6 +99,23 @@ interface CustomRoute {
   meta?: any;
 }
 
+const mopath2 =  mo_prefixes
+  .map((prefix) => {
+    const prePath = "/" + prefix;
+    return [
+      {
+        path: prePath,
+        component: "user/MoWrapper.vue",
+        children: [
+          {
+            path: prePath + "/*",
+            component: "user/Mo/MoClosed.vue",
+          }
+        ]
+      }
+    ]
+  }).flat();
+
 const mopath = mo_prefixes
   .map((prefix) => {
     const prePath = "/" + prefix;
@@ -121,8 +133,8 @@ const mopath = mo_prefixes
             component: "user/Outage.vue",
           },
           {
-            path: prePath + "/campaign/202301",
-            component: "user/campaign/202301.vue",
+            path: prePath + "/closed",
+            component: "user/Mo/MoClosed.vue",
           },
           {
             path: prePath + "/r/favorites",
@@ -142,7 +154,7 @@ const mopath = mo_prefixes
             component: "user/Profile.vue",
           },
           {
-            path: prePath + "/u/dicsountHistory",
+            path: prePath + "/u/discounthistory",
             component: "user/DiscountHistory.vue",
           },
           {
@@ -210,7 +222,7 @@ export const customRoutes: CustomRoute[] = [
     component: "user/Profile.vue",
   },
   {
-    path: "/u/dicsountHistory",
+    path: "/u/discounthistory",
     component: "user/DiscountHistory.vue",
   },
   {
@@ -284,7 +296,7 @@ export const customRoutes: CustomRoute[] = [
         component: "user/Profile.vue",
       },
       {
-        path: "u/dicsountHistory",
+        path: "u/discounthistory",
         component: "user/DiscountHistory.vue",
       },
       {
@@ -371,16 +383,20 @@ export const customRoutes: CustomRoute[] = [
             component: "admin/ManageLine.vue",
           },
           {
-            path: "dicsountHistory",
-            component: "admin/DiscountHistory.vue",
+            path: "discounthistory",
+            component: "admin/Discount/DiscountHistory.vue",
           },
           {
             path: "discounts",
-            component: "admin/Discounts.vue",
+            component: "admin/Discount/Discounts.vue",
           },
           {
             path: "discounts/:discountId",
-            component: "admin/Discount.vue",
+            component: "admin/Discount/Discount.vue",
+          },
+          {
+            path: "discounts/:discountId/history",
+            component: "admin/Discount/DiscountHistory.vue",
           },
           {
             path: "qrcode",
@@ -407,12 +423,20 @@ export const customRoutes: CustomRoute[] = [
         component: "admin/AllOrders.vue",
       },
       {
+        path: "discounthistory",
+        component: "admin/Discount/DiscountHistory.vue",
+      },
+      {
         path: "discounts",
-        component: "admin/Discounts.vue",
+        component: "admin/Discount/Discounts.vue",
       },
       {
         path: "discounts/:discountId",
-        component: "admin/Discount.vue",
+        component: "admin/Discount/Discount.vue",
+      },
+      {
+        path: "discounts/:discountId/history",
+        component: "admin/Discount/DiscountHistory.vue",
       },
       {
         path: "report",

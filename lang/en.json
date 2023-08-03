@@ -30,10 +30,35 @@
     "soldOut": "Sold out",
     "inStock": "In stock",
     "closeLabel": "(*Orders will be closed on {date})",
+		"fixedFormat":"※商品画像はイメージです。表示価格は店頭価格と異なる場合がございます。アレルゲン情報などの商品の詳細情報は、商品パッケージもしくはファミリーマートの公式ホームページをご確認ください。",
+		"autoCancel":"*Please note that orders placed between midnight and 7:00 AM will be canceled.",
     "admin": {
       "takeout": "Pre order",
       "pickup": "Takeaway",
-      "pickupStock": "Stock of takeaway"
+      "forcePickupStock": "常時在庫",
+      "pickupStock": "Stock of takeaway",
+      "threshold": "閾値（閾値以上: 在庫あり、閾値未満: 在庫なし）",
+      "thresholdPickup": "ピックアップ",
+      "thresholdSearchStock": "在庫検索",
+      "suspendSettings": "受付休止設定",
+      "suspendAllStore": "（全店舗）",
+      "suspending": "サービス休止中",
+      "suspendingPickup": "ピックアップ休止中",
+      "suspendConfirm": "以下の注文方法による受付を休止します。",
+      "restoreConfirm": "全ての注文の受付休止を解除してサービスを再開します。",
+      "restorePickupConfirm": "ピックアップ注文の受付休止を解除して再開します。",
+      "autoCancelAlert": "{date}までに受付しない場合は自動キャンセルされます。",
+      "suspendAll": "全ての注文(予約注文、ピックアップ)",
+      "suspendPickup": "ピックアップ注文のみ",
+      "suspend": "休止",
+      "Restore": "再開",
+      "cancel": "キャンセル"
+    },
+    "reportKeys": {
+      "orderPlacedAt": "注文時刻",
+      "orderAcceptedAt": "注文受付時刻",
+      "timeConfirmed": "準備完了時刻",
+      "transactionCompletedAt": "受渡完了時刻"
     },
     "shopInfo": {
       "takeout": "Online order",
@@ -44,6 +69,84 @@
       "showAll": "Show all",
       "showOnlyInStock": "Show only in stock",
       "closeNote": "*Orders at this store will be closed at {time} on {date}."
+    },
+     "campaign": {
+      "title": "お店で使える300円クーポンプレゼントキャンペーン！",
+      "lead": "モバイルオーダーにて事前クレジットカード決済をご利用された方の購入金額に応じて最大300円割引になる、おトクなキャンペーンをご紹介します！",
+      "leadNote1": "＊割引券は各店先着100名様に商品受取の際にお渡しします。",
+      "leadNote2": "＊お店での1,000円以上のお買い物にご利用できます。",
+      "leadNote3": "＊1/17(火)10時～2/17(金)22時までにお受け取りをされた方が対象です。",
+      "leadNote4": "＊その他、ご利用に際しては下記の概要・注意事項をご確認ください。",
+      "overview": "キャンペーン概要",
+      "receiving": "割引券プレゼントの対象となる受取期間：",
+      "receivingPeriod": "2023/1/17(火)10:00～2023/2/17(金)22:00",
+      "using": "期間：",
+      "usingPeriod": "2023/05/09(火)0:00～2023/05/22(月)23:59",
+      "about": "キャンペーンについて：",
+      "description1": "上記期間中、モバイルオーダーにて事前クレジットカード決済をご利用された方の購入金額に応じて下記の割引内容が適用されます。対象期間中は、何回でもご利用可能です。",
+			"description2": "・税込500円〜999円のお買い上げ…100円引き",
+			"description3": "・税込1,000円以上のお買い上げ…300円引き",
+      "descriptionNote1": "※対象期間にご注文した分に関しては、割引が適応になります。",
+      "descriptionNote2": "※受取時に店舗でお支払いを利用して注文した場合は割引の対象にはなりません。",
+      "descriptionNote3": "＊割引券に記載のある店舗のみで有効です。",
+      "notes": "【注意事項】",
+      "note1": "2023/05/09(火)から2023/05/22(月)までの注文分が、割引の対象となります。",
+      "note2": "ファミリーマート通常価格(税込)からの割引となります。",
+      "note3": "「事前にカードでお支払い」を選択して注文した場合に割引の対象となります。",
+      "note4": "「受取時に店舗でお支払い」を選択して注文した場合は割引の対象にはなりません。",
+      "note5": "他のセール・割引券・引換券との併用はできません。",
+      "note6": "免許品(たばこ、酒)、版権商品、雑誌、本、サービス商材、地域限定商品を除いた商品は割引の対象になりません。",
+      "note7": "1,000円(税込)未満のお会計にはご利用になれません。",
+      "note8": "割引は割引券に記載のある店舗のみで有効です。",
+      "note9": "割引券はモバイルオーダーの店舗受け取り払いでもご利用いただけます。",
+      "note10": "お客様がお支払いに使用したクレジットカードが何らかの理由により決済できなかった場合は、店頭支払いとなり割引は適用されませんのでご了承ください。",
+      "topTitle": "お店で使える300円クーポンプレゼントキャンペーン！",
+      "topDescription1": "事前クレジットカード決済をしたお客さま限定の割引キャンペーン実施中！",
+			"topDescription2": "モバイルオーダーの購入金額に応じて期間中何度でも最大300円割引！",
+			"topDescription3": "この機会にぜひお試しください！",
+			"topDescription4": "※税込500円以上ご購入で100円割引／税込1,000円以上ご購入で300円割引",
+      "topDescription5": "キャンペーンの詳細・注意事項は",
+      "topDescription6": "から",
+      "topLink": "こちら",
+			"part1":"【実施期間】",
+			"part2":"【第2弾 実施期間】",
+			"part3":"【第3弾 実施期間】",
+			"period1":"キャンペーン期間：2023/06/06(火)〜2023/06/12(月)まで",
+			"receivingPeriod1":"無料引換期間：2023/06/13(火)〜2023/06/19(月)まで",
+			"period2":"キャンペーン期間：2023/06/13(火)〜2023/06/19(月)まで",
+			"receivingPeriod2":"無料引換期間：2023/06/20(火)〜2023/06/26(月)まで",
+			"period3":"キャンペーン期間：2023/06/20(火)〜2023/06/26(月)まで",
+			"receivingPeriod3":"無料引換期間：2023/6/27(火)〜2023/07/03(月)まで",
+			"note11":"上記、キャンペーン期間内に本キャンペーン専用ページからのご注文で「1個買うと1個もらえるキャンペーン」の対象商品をお買い上げいただくと、対象商品1個につき30円引きとなります。",
+			"note12":"本キャンペーン専用ページ以外でのご注文では割引が適用されません。",
+			"note13":"本キャンペーンは3週間、週替わりで対象商品が変わります。",
+			"note14":"第1弾：2023/06/06(火)～2023/06/12(月)まで",
+			"note15":"第2弾：2023/06/13(火)～2023/06/19(月)まで",
+			"note16":"第3弾：2023/06/20(火)～2023/06/26(月)まで",
+			"note17":"実施期間中、何回でもご利用可能です。",
+			"note18":"無料引換券は注文した商品のお受け取り時に店頭でお渡しいたします。",
+			"note19":"店舗でのお受け取りを上記のキャンペーン期間外で指定した場合は無料引換券は進呈されません。",
+			"note20":"他のセール・割引券・引換券との併用はできません。",
+			"note21":"ファミリーマート通常価格（税込）からの割引となります。",
+			"fixedMessage1":"キャンペーンに対する商品引換券の進呈を受けるには6/12迄のお受け取りが必要です。",
+			"fixedMessage2":"キャンペーンに対する商品引換券の進呈を受けるには6/19迄のお受け取りが必要です。",
+			"fixedMessage3":"キャンペーンに対する商品引換券の進呈を受けるには6/26迄のお受け取りが必要です。",
+			"fixedMessageCart1":"※モバイルオーダーでさらにお得「1個買うと1個もらえる」キャンペーンに対する商品引換券の進呈を受けるには6/12迄のお受け取りが必要です。",
+			"fixedMessageCart2":"※モバイルオーダーでさらにお得「1個買うと1個もらえる」キャンペーンに対する商品引換券の進呈を受けるには6/19迄のお受け取りが必要です。",
+			"fixedMessageCart3":"※モバイルオーダーでさらにお得「1個買うと1個もらえる」キャンペーンに対する商品引換券の進呈を受けるには6/26迄のお受け取りが必要です。"
+		},
+    "closing": {
+      "notice": "Notice",
+			"heading": "End of Service Notice",
+			"paragraph1": "Thank you for your continuous support. Mobile Order will no longer be available on Friday, August 18, 2023. We apologize for any inconvenience and appreciate your understanding.",
+			"paragraph2": "Please check below for the schedule until the end of the service.",
+			"paragraph3": "New orders are no longer being accepted.",
+			"ordering": "[Date and time for ordering]",
+			"orderingDate": "Until 16:00, Thursday, August 10, 2023",
+			"acceptance": "[Date and time of receipt]",
+			"acceptanceDate": "Until 22:00, Friday, August 18, 2023",
+			"closedMessage": "End of Service Notice",
+			"closedParagraph": "Thank you for your continuous support. Mobile Order is no longer available on Friday, August 18, 2023. We apologize for any inconvenience and appreciate your understanding."
     }
   },
   "profile": {
@@ -355,6 +458,7 @@
     "share": "Share",
     "like": "Like",
     "liked": "Liked",
+		"visitWebsite": "Visit Website",
     "mo": {
       "like": "Like",
       "liked": "Liked",
@@ -497,6 +601,19 @@
     "moDescription2": "You can pick up your order at the store in an hour at the earliest.",
     "moDescription3": "*Only at certain stores​​"
   },
+	"promotion": {
+		"heading": "Ongoing Campaigns",
+    "period": "Period:",
+		"terms": "Terms of Use:",
+		"applied": "is the minimum amount of spent applied discount",
+		"oneTimeOnly": "Available for one time use only",
+		"noLimit": "Available as many times as you like",
+		"fromAmountSpent": "",
+		"discount": "discount on the amount spent",
+		"notes": "Notes on use",
+		"notes1": "The promotional discount will be applied automatically when the amount exceeds the amount stated in the Terms of Use. Please check the total amount on the order confirmation screen after you click the checkout button.",
+		"notes2": "Only one promotion is available per order, therefore the promotion with the largest discount will be applied."
+	},
   "order": {
     "allOrders": "All Orders",
     "menu": "View Menu Page",
@@ -524,6 +641,7 @@
     "closedRestaurant": "Closed Restaurant",
     "storeName": "Store name",
     "payment": "payment",
+    "paymentCancel": "payment cancel",
     "includingTip": "Including Tip",
     "subtotal": "Subtotal",
     "salesTax": "Sales Tax",
@@ -600,6 +718,10 @@
     "paymentAndCancellation": "Payment and Cancellation",
     "statusTitle": "Order Status",
     "sortOrder": "Sort Order",
+		"promotionNoteCardMo":"If you pay now by credit card, the discount will be applied.",
+		"promotionNoteCard":"If you pay now by credit card, the discount will be applied.",
+		"promotionNoteStoreMo":"If you pay later at the store, the discount below will be applied.",
+		"promotionNoteStore":"If you pay later at the store, the discount will be applied.",
     "sort": {
       "newest": "Sort by newst order",
       "oldest": "Sort by oldest order"
@@ -672,12 +794,19 @@
       "phone": "Phone"
     },
     "discount": "Discount",
+    "discountString": "Discount",
     "discountAlert": {
-      "stripe": "「事前にカードでお支払い」で決済をいただいた場合は、以下のキャンペーン金額が適用されます。",
-      "instore": "「受取時に店舗でお支払い」を選択した場合は、以下のキャンペーン金額が適用されます。"
+    	"stripe": "If you pay now by credit card, the discount below will be applied.",
+      "instore": "If you pay later at the store, the discount below will be applied."
     },
+		"discountAlertMo": {
+			"stripe": "If you pay now by credit card, the discount below will be applied.",
+      "instore": "If you pay later at the store, the discount below will be applied."
+    },
+    "discountPriceSuffix": "Discount",
+    "discountPriceMessage": "値引きがあります",
     "discountPrice": "Discount Price",
-    "discountedPrice": "Discounted Price",
+    "beforeDiscountPrice": "Before Discount Price",
     "cancelReason": "Cancel Reason",
     "productId": "Product Id",
     "category": "Category",
@@ -720,13 +849,17 @@
     "setAreaMapNotice": "Specify the approximate deliverable range in a circle centered on the store. This range is a guide, so please judge whether delivery is possible at the time of ordering and accept the order."
   },
   "button": {
+		"adminTop":"Admin Top",
     "back": "Back",
+		"backToOrderListPage": "View Orders",
+		"backToDiscounts": "View Promotions",
     "addTitle": "Add Group Title",
     "addItem": "Add Item",
     "downloadMenu": "Download menu",
     "cancel": "Cancel",
     "next": "Next",
     "category": "Category",
+    "myPage": "My Page",
     "backToTop": "Top"
   },
   "sms": {
@@ -773,6 +906,40 @@
       "title": "News",
       "newsTop": "News Top",
       "adminTop": "Admin Top"
+    },
+    "yes": "Yes",
+    "yesOnce": "Yes(once)",
+    "no": "No",
+    "promotion": {
+      "amount": "Amount",
+      "ratio": "Discount Rates",
+      "discount": "Discount",
+      "onetimeCoupon": "Coupons issued only once",
+      "multipletimesCoupon": "Coupons issued with an unlimited number",
+			"list": "Promotions",
+			"activationState": "Currently Active",
+			"name": "Name",
+			"activation": "Activate",
+			"type": "Discount Type",
+			"period": "Application Period",
+			"minimumAmount": "Minimum Amount Available",
+			"yen": "yen",
+			"limitation": "Limit of Use",
+			"discounts": "Discount",
+			"paymentMethod": "Accept",
+			"creditCard": "Only credit cards",
+			"store": "Only store payment",
+			"unrestricted": "Credit cards and store payment",
+			"history": "History",
+			"noHistory": "No Order History",
+			"delete": "Delete",
+			"uid": "uid",
+			"rid": "rid",
+			"pid": "pid",
+			"oid": "oid",
+			"date": "Date",
+			"total": "Total",
+			"discountPrice": "Discount Price"
     },
     "open": "Open",
     "closed": "Closed",
@@ -924,7 +1091,16 @@
       "alreadyChanged": "already changed",
       "willOrderChange": "Change order",
       "cancelOrderChange": "Cancel an order change",
-      "confirmOrderChange": "Change order"
+      "confirmOrderChange": "Change order",
+			"cardPaymentMessage": "Payment has been completed. No need to receive payment at the store.",
+			"storePaymentMessage": "Payment has not been completed. Please receive payment at the store.",
+			"cardPayment": "Credit Card Payment",
+			"storePayment": "Store Payment"
+    },
+    "menu": {
+      "delivery": "Delivery",
+      "printer": "Auto Print",
+      "discount": "Discount"
     },
     "sound": {
       "default": "Default",
@@ -1069,7 +1245,8 @@
     },
     "message": {
       "generic": "Please try this operation later.",
-      "line": "Plase try to connect LINE again."
+      "line": "Plase try to connect LINE again.",
+      "cardError": "If the error occurs repeatedly, please cancel the card payment only and process the order."
     },
     "code": {
       "line": {
@@ -1079,6 +1256,7 @@
         "checkout": "Failed to perform the checkout process.",
         "place": "Failed to place the order.",
         "update": "Failed to update the order status.",
+        "updateCard": "Card processing failed.",
         "cancel": "Failed to cancel the order."
       },
       "stripe": {
