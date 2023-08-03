@@ -23,6 +23,7 @@ import {
 
 import { doc2data, array2obj } from "@/utils/utils";
 import { useRoute } from "vue-router";
+import { MenuData } from "@/models/menu";
 
 export const useTitles = (restaurantId: Ref) => {
   const titles = ref<DocumentData[]>([]);
@@ -87,7 +88,6 @@ export const useCategory = (moPrefix: string) => {
           console.log("Empty");
           return;
         }
-        // categoryData.value = category.docs.map(doc2data("category"))
         categoryData.value = category.docs
           .map((doc) => {
             return [doc2data("category")(doc)];
@@ -254,7 +254,7 @@ export const useMenu = (
     // if (hasSubCategory) {
     if (isInMo.value) {
       allMenuObj.value[key] = [];
-      const cacheBase: DocumentData[] = [];
+      const cacheBase: MenuData[] = [];
 
       if (loading[key]) {
         return;
@@ -287,7 +287,7 @@ export const useMenu = (
               return data.validatedFlag === undefined || data.validatedFlag;
             })
             .map((a) => {
-              const m = doc2data("menu")(a);
+              const m = doc2data<MenuData>("menu")(a);
               cacheBase.push(m);
               return m;
             });

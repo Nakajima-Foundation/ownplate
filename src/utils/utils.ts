@@ -4,6 +4,7 @@ import { db } from "@/lib/firebase/firebase9";
 import {
   DocumentData,
   DocumentSnapshot,
+  QueryDocumentSnapshot,
   doc,
   getDoc,
 } from "firebase/firestore";
@@ -100,12 +101,12 @@ export const shareUrl = (prefix: string) => {
   );
 };
 
-export const doc2data = (dataType: string) => {
-  return (doc: DocumentSnapshot<DocumentData>): DocumentData => {
+export const doc2data = <T = DocumentData>(dataType: string) => {
+  return (doc: DocumentSnapshot<DocumentData> | QueryDocumentSnapshot<DocumentData>): T => {
     const data = doc.data() || ({} as DocumentData);
     data.id = doc.id;
     data._dataType = dataType;
-    return data;
+    return data as T;
   };
 };
 

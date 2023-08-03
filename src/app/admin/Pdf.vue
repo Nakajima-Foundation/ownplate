@@ -47,7 +47,7 @@ export default defineComponent({
               where("deletedFlag", "==", false)
             )
           )
-        ).docs.map(doc2data("")) as MenuData[]
+        ).docs.map(doc2data<MenuData>(""))
       );
     })();
 
