@@ -21,15 +21,6 @@ export interface AnalyticsMenuData extends MenuData {
 }
 interface AnalyticsData {}
 
-const isInMo = () => {
-  return mo_prefixes.some((prefix) => {
-    return (
-      (location.pathname || "").startsWith(`/${prefix}/`) ||
-      (location.pathname || "") === `/${prefix}`
-    );
-  });
-};
-
 export const sku_item_data = (
   menu: AnalyticsMenuData,
   shopInfo: RestaurantInfoData,

@@ -28,7 +28,7 @@ import { order_status } from "@/config/constant";
 import { arrayOrNumSum, orderTypeKey, getRestaurantId } from "@/utils/utils";
 
 import { useI18n } from "vue-i18n";
-import { downloadFields, downloadMoFields } from "@/utils/reportUtils";
+import { downloadFields } from "@/utils/reportUtils";
 
 export default defineComponent({
   components: {
@@ -46,7 +46,7 @@ export default defineComponent({
   },
   setup(props) {
     const { t } = useI18n({ useScope: 'global' });
-    const fields = props.isInMo ? downloadMoFields : downloadFields;
+    const fields = downloadFields;
     const fieldNames = fields.map((field) => {
       return t(`order.${field}`);
     });

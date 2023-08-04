@@ -200,9 +200,3 @@ export const downloadFields = [
   "payment",
 ];
 
-export const downloadMoFields = [
-  ...downloadFields,
-  "discountPrice",
-  "beforeDiscountPrice",
-  "cancelReason",
-];
