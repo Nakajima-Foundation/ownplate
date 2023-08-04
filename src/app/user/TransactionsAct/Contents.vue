@@ -119,7 +119,7 @@
           <!-- Payment Period and Method -->
           <div class="mt-4">
             <!--for omochikaeri-->
-            <div v-if="!isInMo">
+            <div>
               <div class="text-sm font-bold text-black text-opacity-30">
                 {{ $t("transactionsAct.payment") }}
               </div>
@@ -135,26 +135,12 @@
                 </li>
               </ul>
             </div>
-            <!--for MobileOrder-->
-            <div v-if="isInMo">
-              <div class="text-sm font-bold text-black text-opacity-30">
-                {{ $t("transactionsAct.paymentMo") }}
-              </div>
-              <ul class="ml-5 mt-1 list-outside list-disc">
-                <li v-if="showPayment">
-                  {{ $t("transactionsAct.paymentDescriptionCardMo") }}
-                </li>
-                <li>
-                  {{ $t("transactionsAct.paymentDescriptionCardNoteMo") }}
-                </li>
-              </ul>
-            </div>
           </div>
 
           <!-- Delivery Time -->
           <div class="mt-4">
             <!--for omochikaeri-->
-            <div v-if="!isInMo">
+            <div>
               <div class="text-sm font-bold text-black text-opacity-30">
                 {{ $t("transactionsAct.delivery") }}
               </div>
@@ -164,28 +150,18 @@
               </div>
             </div>
 
-            <!--for MobileOrder-->
-            <div v-if="isInMo">
-              <div class="text-sm font-bold text-black text-opacity-30">
-                {{ $t("transactionsAct.deliveryMo") }}
-              </div>
-
-              <div class="mt-1 text-base">
-                {{ $t("transactionsAct.deliveryDescriptionMo") }}
-              </div>
-            </div>
           </div>
 
           <!-- Cancellation -->
           <div class="mt-4">
             <!--for omochikaeri-->
-            <div v-if="!isInMo">
+            <div>
               <div class="text-sm font-bold text-black text-opacity-30">
                 {{ $t("transactionsAct.cancellation") }}
               </div>
               <ul class="ml-5 mt-1 list-outside list-disc">
                 <li>{{ $t("transactionsAct.cancellationDescription1") }}</li>
-                <li v-if="!isInMo">
+                <li>
                   {{ $t("transactionsAct.cancellationDescription4") }}
                 </li>
                 <li>
@@ -231,22 +207,6 @@
               </ul>
             </div>
 
-            <!--for MobileOrder-->
-            <div v-if="isInMo">
-              <div class="text-sm font-bold text-black text-opacity-30">
-                {{ $t("transactionsAct.cancellationMo") }}
-              </div>
-              <ul class="ml-5 mt-1 list-outside list-disc">
-                <li>{{ $t("transactionsAct.cancellationDescription1Mo") }}</li>
-                <li>
-                  {{ $t("transactionsAct.cancellationDescription2Mo") }}
-                </li>
-                <li>
-                  {{ $t("transactionsAct.cancellationTakeoutDescriptionMo") }}
-                </li>
-                <li>{{ $t("transactionsAct.cancellationDescription3Mo") }}</li>
-              </ul>
-            </div>
           </div>
         </div>
 
@@ -272,7 +232,7 @@ import { defineComponent, ref, computed, PropType } from "vue";
 import { daysOfWeek } from "@/config/constant";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, onSnapshot, getDoc } from "firebase/firestore";
-import { isNull, useNationalPhoneNumber, useIsInMo, num2time } from "@/utils/utils";
+import { isNull, useNationalPhoneNumber, num2time } from "@/utils/utils";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { PaymentInfo } from "@/models/paymentInfo";
@@ -293,8 +253,6 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
-    const isInMo = useIsInMo();
-
     const restaurantsId = props.shopInfo.restaurantId;
     const days = daysOfWeek;
     const paymentInfo = ref<PaymentInfo>({});
@@ -328,8 +286,6 @@ export default defineComponent({
       showPayment,
       inStorePayment,
       validDate,
-
-      isInMo,
 
       closeTransactionsAct, // call by parent
 
