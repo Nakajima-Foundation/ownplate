@@ -205,7 +205,7 @@
          class="bg-green-600 bg-opacity-10 p-2 -mx-2 rounded-lg mt-2"
          >
       <!-- promotion discount -->
-      <template v-if="promotion.paymentRestrictions">
+      <template v-if="promotion?.paymentRestrictions">
 			  <!-- おもちかえりの場合は以下のメッセージを表示-->
         <span class="text-sm font-bold text-opacity-40 text-black">
           {{ $t("order.discountAlert." + promotion.paymentRestrictions) }}

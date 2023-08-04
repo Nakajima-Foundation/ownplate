@@ -94,7 +94,6 @@
           >
             <ECCustomer
               ref="ecCustomerRef"
-              :user="user"
               :shopInfo="shopInfo"
               :orderInfo="orderInfo"
               @updateLocation="updateLocation"
