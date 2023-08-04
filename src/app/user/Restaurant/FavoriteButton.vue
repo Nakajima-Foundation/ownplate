@@ -4,14 +4,14 @@
       <div v-if="likes" class="inline-flex items-center justify-center">
         <i class="material-icons mr-2 text-lg text-red-700">favorite</i>
         <div class="text-sm font-bold text-red-700">
-          {{ $t(isInMo ? "shopInfo.mo.liked" : "shopInfo.liked") }}
+          {{ $t("shopInfo.liked") }}
         </div>
       </div>
 
       <div v-else class="inline-flex items-center justify-center">
         <i class="material-icons text-lg text-op-teal">favorite_border</i>
         <div class="text-sm font-bold text-op-teal">
-          {{ $t(isInMo ? "shopInfo.mo.like" : "shopInfo.like") }}
+          {{ $t("shopInfo.like") }}
         </div>
       </div>
     </a>
@@ -34,7 +34,7 @@ import {
   setDoc,
 } from "firebase/firestore";
 
-import { useIsInMo, useMoPrefix, useRestaurantId, useUserData } from "@/utils/utils";
+import { useRestaurantId, useUserData } from "@/utils/utils";
 import { ReviewData } from "@/models/reviewData";
 
 export default defineComponent({
@@ -49,16 +49,10 @@ export default defineComponent({
     let detacher: any = null;
     const restaurantId = useRestaurantId();
 
-    const isInMo = useIsInMo();
-    const moPrefix = useMoPrefix();
     const { isUser, uid } = useUserData();
 
     const path = computed(() => {
-      if (isInMo.value) {
-        return `users/${uid.value}/groups/${moPrefix.value}/reviews/${restaurantId.value}`;
-      } else {
-        return `users/${uid.value}/reviews/${restaurantId.value}`;
-      }
+      return `users/${uid.value}/reviews/${restaurantId.value}`;
     });
 
     if (isUser.value) {
@@ -113,7 +107,6 @@ export default defineComponent({
     return {
       likes,
       handleLike,
-      isInMo,
       isUser,
     };
   },
