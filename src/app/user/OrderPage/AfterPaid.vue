@@ -7,7 +7,7 @@
 
     <!-- After Paid -->
     <!-- Thank you Message -->
-    <ThankYou v-if="mode !== 'mo'" />
+    <ThankYou />
 
     <!-- Line Button -->
     <LineButton :groupData="groupData" />
@@ -23,8 +23,6 @@
         :shopInfo="shopInfo"
         :timeEstimated="timeEstimated"
         :timeRequested="timeRequested"
-        :paid="paid"
-        :mode="mode"
       />
 
       <!-- Stripe status -->
@@ -60,7 +58,7 @@
     </div>
     <!-- Special Thank you Message from the Restaurant -->
     <ThankYouFromRestaurant
-      v-if="!canceled && mode !== 'mo'"
+      v-if="!canceled"
       :shopInfo="shopInfo"
     />
 
@@ -167,11 +165,7 @@
               {{
                 shopInfo.isEC
                   ? $t("shopInfo.ecShopDetails")
-                  : $t(
-                      mode === "mo"
-                        ? "mobileOrder.storeDetails"
-                        : "shopInfo.restaurantDetails"
-                    )
+                  : $t("shopInfo.restaurantDetails")
               }}
             </div>
 
@@ -191,11 +185,7 @@
           <div class="mt-6" v-if="!shopInfo.isEC">
             <div class="text-xl font-bold text-black text-opacity-30">
               {{
-                $t(
-                  mode === "mo"
-                    ? "mobileOrder.adminQRCode"
-                    : "order.adminQRCode"
-                )
+                $t("order.adminQRCode")
               }}
             </div>
 
@@ -346,9 +336,6 @@ export default defineComponent({
     const canceled = computed(() => {
       return props.orderInfo.status === order_status.order_canceled;
     });
-    const paid = computed(() => {
-      return props.orderInfo.status >= order_status.order_placed;
-    });
     const order_accepted = computed(() => {
       return props.orderInfo.status >= order_status.order_accepted;
     });
@@ -361,28 +348,6 @@ export default defineComponent({
     const isPickup = computed(() => {
       return props.orderInfo && props.orderInfo.isPickup;
     });
-    if (props.mode == "mo") {
-      const menus = Object.keys(props.orderInfo.menuItems).map((menuId) => {
-        return {
-          ...props.orderInfo.menuItems[menuId],
-          id: menuId,
-        } as any;
-      });
-
-      const data = analyticsUtil.getDataForLayer(
-        props.orderInfo,
-        orderId,
-        menus,
-        props.shopInfo,
-        restaurantId
-      );
-      // console.log(data);
-      dataLayer.push({ ecommerce: null }); // Clear the previous ecommerce object.
-      dataLayer.push({
-        event: "purchase",
-        ecommerce: data,
-      });
-    }
 
     const sendRedunded = () => {
       analyticsUtil.sendRedunded(
@@ -429,7 +394,6 @@ export default defineComponent({
       orderName,
       just_paid,
       canceled,
-      paid,
       order_accepted,
       hasCustomerInfo,
       hasMemo,
