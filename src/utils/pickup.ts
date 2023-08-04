@@ -86,17 +86,19 @@ export const usePickupTime = (
     return tmp + 1;
   });
 
-  // this is for mo, but can we use for omochikaeri??
+  const isAvaiableToday = computed(() => {
+    return availableDays.value.length > 0 && availableDays.value[0].offset === 0;
+  });
+
   const todaysLast = computed(() => {
     return getTodaysLast();
   });
   const getTodaysLast = () => {
     const now = store.state.date;
     console.log(store.state.date); // never delete this line;
-    const today = now.getDay();
-    const openSlot = openSlots.value[today % 7];
-    if (openSlot && openSlot.length > 0) {
-      const { time } = openSlot[openSlot.length - 1];
+    if (isAvaiableToday.value) {
+      const lastTime = availableDays.value[0].times[availableDays.value[0].times.length - 1];
+      const { time } = lastTime;
       const lastOrder = time - shopInfo.pickUpMinimumCookTime;
       return {
         time,
@@ -114,7 +116,6 @@ export const usePickupTime = (
     if (!shopInfoBusinessDay.value) {
       return []; // it means shopInfo is empty (not yet loaded)
     }
-
     const now = store.state.date;
     console.log(store.state.date); // never delete this line;
     const today = now.getDay();
@@ -140,7 +141,7 @@ export const usePickupTime = (
         const delta = suspendUntil.getTime() - date.getTime();
         if (delta > 0) {
           times = times.filter((time: { time: number }) => {
-            return time.time >= Math.round(delta / 60000);
+            return time.time >= Math.ceil(delta / 60000);
           });
         }
         return { offset, date, times };
