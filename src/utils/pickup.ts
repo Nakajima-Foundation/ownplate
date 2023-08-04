@@ -11,6 +11,12 @@ import moment from "moment";
 import { MenuData } from "@/models/menu";
 import { useStore } from "vuex";
 
+type AvailableDay = {
+  offset: number;
+  date: Date;
+  times: { time: number; display: string; }[];
+}
+
 export const usePickupTime = (
   shopInfo: RestaurantInfoData,
   exceptData: any,
@@ -86,18 +92,24 @@ export const usePickupTime = (
     return tmp + 1;
   });
 
-  const isAvaiableToday = computed(() => {
+  const isAvailableToday = computed(() => {
     return availableDays.value.length > 0 && availableDays.value[0].offset === 0;
   });
-
-  const todaysLast = computed(() => {
-    return getTodaysLast();
+  const deliveryIsAvailableToday = computed(() => {
+    return deliveryAvailableDays.value.length > 0 && deliveryAvailableDays.value[0].offset === 0;
   });
-  const getTodaysLast = () => {
+  
+  const todaysLast = computed(() => {
+    return getTodaysLast(isAvailableToday, availableDays);
+  });
+  const deliveryTodaysLast = computed(() => {
+    return getTodaysLast(deliveryIsAvailableToday, deliveryAvailableDays);
+  });
+  const getTodaysLast = (isAvailable: ComputedRef<boolean>, days: ComputedRef<AvailableDay[]>) => {
     const now = store.state.date;
     console.log(store.state.date); // never delete this line;
-    if (isAvaiableToday.value) {
-      const lastTime = availableDays.value[0].times[availableDays.value[0].times.length - 1];
+    if (isAvailableToday.value) {
+      const lastTime = days.value[0].times[days.value[0].times.length - 1];
       const { time } = lastTime;
       const lastOrder = time - shopInfo.pickUpMinimumCookTime;
       return {
@@ -152,11 +164,11 @@ export const usePickupTime = (
   };
 
   // public
-  const availableDays = computed(() => {
+  const availableDays = computed<AvailableDay[]>(() => {
     return getAvailableDays(minimumCookTime.value);
   });
   // public
-  const deliveryAvailableDays = computed(() => {
+  const deliveryAvailableDays = computed<AvailableDay[]>(() => {
     return getAvailableDays(minimumDeliveryTime.value);
   });
 
