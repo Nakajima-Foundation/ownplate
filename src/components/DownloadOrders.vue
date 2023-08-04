@@ -39,10 +39,6 @@ export default defineComponent({
       type: Array,
       required: true,
     },
-    isInMo: {
-      type: Boolean,
-      required: true,
-    },
   },
   setup(props) {
     const { t } = useI18n({ useScope: 'global' });
