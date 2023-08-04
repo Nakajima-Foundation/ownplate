@@ -177,39 +177,6 @@
               </div>
             </div>
 
-            <div v-if="moPickup && isInMo">
-              <!-- Mo Pickup Suspend -->
-
-              <div
-                class="mx-6 mt-3 mb-2 rounded-lg bg-red-700 bg-opacity-10 p-3 font-bold text-red-700 lg:mx-0"
-                v-if="moPickupSuspend"
-              >
-                {{ $t("mobileOrder.suspendPickupMessage") }}
-              </div>
-
-              <!-- Mo Pickup Toggle -->
-              <div class="mx-6 mt-3 mb-2 lg:mx-0" id="mo_top">
-                <div>
-                  <MoPickUp
-                    :shopInfo="shopInfo"
-                    v-model="howtoreceive"
-                    :orders="orders"
-                    :disabledPickupTime="disabledPickupTime"
-                    :noAvailableTime="noAvailableTime"
-                    :lastOrder="lastOrder"
-                    :moPickupSuspend="moPickupSuspend"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <!-- for mo -->
-						<div v-if="isPickup && isSpecialShop"
-                class="mx-6 mt-3 mb-2 rounded-lg bg-red-700 bg-opacity-10 p-3 font-bold text-red-700 lg:mx-0"
-              >
-                {{ $t("mobileOrder.autoCancel") }}
-              </div>
-
             <!-- stock filter Toggle-->
             <div>
 
@@ -386,8 +353,6 @@
         :menuObj="cartItems"
         :prices="prices"
         :shopInfo="shopInfo"
-        :disabledPickupTime="disabledPickupTime"
-        :lastOrder="lastOrder"
         @didOrderdChange="didOrderdChange"
         :totalPrice="totalPrice"
         :promotions="promotions"
@@ -409,8 +374,6 @@
         :noAvailableTime="noAvailableTime"
         :isDelivery="isDelivery"
         :totalPrice="totalPrice"
-        :disabledPickupTime="disabledPickupTime"
-        :moSuspend="moSuspend"
       />
     </template>
     <!-- Image Popup-->
@@ -475,7 +438,6 @@ import CategoryIcon from "@/app/user/Restaurant/CategoryIcon.vue";
 import Titles from "@/app/user/Restaurant/Titles.vue";
 import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
 import TransactionsActContents from "@/app/user/TransactionsAct/Contents.vue";
-import MoPickUp from "@/app/user/Restaurant/MoPickUp.vue";
 
 import FloatingBanner from "@/app/user/Restaurant/FloatingBanner.vue";
 
@@ -562,8 +524,6 @@ export default defineComponent({
     SubCategoryList,
     FloatingBanner,
     
-    MoPickUp,
-
     MoClosing0727,
     MoClosing0810,
   },
@@ -605,10 +565,6 @@ export default defineComponent({
       required: false,
     },
     moSuspend: {
-      type: Boolean,
-      required: false,
-    },
-    moPickupSuspend: {
       type: Boolean,
       required: false,
     },
@@ -707,15 +663,6 @@ export default defineComponent({
     const isPickup = computed(() => {
       return howtoreceive.value === "pickup";
     });
-    // force reset
-    const moPickupSuspend = computed(() => {
-      return props.moPickupSuspend;
-    });
-    watch(moPickupSuspend, (v) => {
-      if (v) {
-        howtoreceive.value = "takeout";
-      }
-    });
     
     const coverImage = computed(() => {
       return (
@@ -739,20 +686,6 @@ export default defineComponent({
       isInMo.value,
       isPickup
     );
-    const lastOrder = computed(() => {
-      return (todaysLast.value || {}).lastOrderDisplay;
-    });
-    
-    const disabledPickupTime = computed(() => {
-      if (isPickup.value) {
-        const now = Number(
-          moment(store.state.date).tz("Asia/Tokyo").format("HHmm")
-        );
-        const last = Number((todaysLast.value || {}).lastOrderStr || 0);
-        return now > last;
-      }
-      return false;
-    });
     
     // for Mo
     const { preOrderPublics, pickupPublics, pickupStocks } = loadStockData(
@@ -1259,13 +1192,6 @@ export default defineComponent({
       });
     });
 
-    const isSpecialShop = computed(() => {
-      return ([
-        "3ee2442f5ada277e133bac5a93d41a84d024c3ff",
-        "4c821e8903633f8e7fc6a10beb0da1fa5730c942"
-      ].includes(restaurantId.value));
-    });
-    
     return {
       itemLists,
       titleLists: filteredTitleLists,
@@ -1335,11 +1261,8 @@ export default defineComponent({
 
       isPublucDataSet,
       moSoldOutDataSet,
-      isSpecialShop,
 
       moPickup,
-      disabledPickupTime,
-      lastOrder,
       enableCampaignBanner,
 
       isFilterStock,

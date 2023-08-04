@@ -6,9 +6,7 @@
         isCheckingOut ||
         noPaymentMethod ||
         noAvailableTime ||
-        cantDelivery ||
-        (isShowCart && disabledPickupTime) ||
-        moSuspend
+        cantDelivery
       "
       @click="handleCheckOut"
       class="b-reset-tw fixed left-1/2 bottom-3 z-30 ml-[-9rem] w-[18rem] sm:bottom-8"
@@ -24,11 +22,6 @@
           </div>
           <div class="text-base font-bold text-white" v-else>
             {{ $t("shopInfo.notPublicShop") }}
-          </div>
-        </template>
-        <template v-if="moSuspend">
-          <div class="text-base font-bold text-white">
-            {{ $t("mobileOrder.suspendCartButton") }}
           </div>
         </template>
 
@@ -190,21 +183,9 @@ export default defineComponent({
       type: Object,
       required: true,
     },
-    disabledPickupTime: {
-      type: Boolean,
-      required: true,
-    },
     enableCartModal: {
       type: Boolean,
       required: true,
-    },
-    moSuspend: {
-      type: Boolean,
-      required: false,
-    },
-    moPickupSuspend: {
-      type: Boolean,
-      required: false,
     },
   },
   emits: ["handleCheckOut", "showCart"],

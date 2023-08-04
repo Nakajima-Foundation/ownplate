@@ -103,6 +103,7 @@ export const usePickupTime = (
     return tmp + 1;
   });
 
+  // this is for mo, but can we use for omochikaeri??
   const todaysLast = computed(() => {
     return getTodaysLast();
   });
@@ -113,7 +114,7 @@ export const usePickupTime = (
     const openSlot = openSlots.value[today % 7];
     if (openSlot && openSlot.length > 0) {
       const { time } = openSlot[openSlot.length - 1];
-      const lastOrder = time - shopInfo.moPickUpMinimumCookTime;
+      const lastOrder = time - shopInfo.pickUpMinimumCookTime;
       return {
         time,
         display: num2simpleFormatedTime(time),

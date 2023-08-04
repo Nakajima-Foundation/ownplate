@@ -5,12 +5,6 @@
       <div class="mt-6 mb-4 flex justify-center font-bold text-black">
         {{ shopInfo.restaurantName }}
       </div>
-      <div
-        v-if="disabledPickupTime"
-        class="mx-6 mb-3 text-xs font-bold text-red-700"
-      >
-        {{ $t("mobileOrder.shopInfo.pickupNote", { lastOrder }, 1) }}
-      </div>
       <div class="justify-items-auto grid grid-cols-1 lg:grid-cols-2">
         <template v-for="(counters, itemId) in orders">
           <div v-for="(counter, key) in counters" :key="`${itemId}-${key}`">
@@ -101,14 +95,6 @@ export default defineComponent({
       type: Object,
       required: true,
     },
-    disabledPickupTime: {
-      type: Boolean,
-      required: true,
-    },
-    lastOrder: {
-      type: String,
-      required: false,
-    },
     totalPrice: {
       type: Object,
       required: true,
@@ -135,13 +121,6 @@ export default defineComponent({
     const decrease = (itemId: string, key: number) => {
       setQuantities(itemId, key, -1);
     };
-    // mo
-    const hasOneBuyOne = computed(() => {
-      return Object.keys(props.orders).some(itemId => {
-        // console.log(props.menuObj[itemId]);
-        return props.menuObj[itemId].category === "998";
-      });
-    });
     return {
       closeCart: () => {
         ctx.emit("closeCart");
@@ -149,7 +128,6 @@ export default defineComponent({
       increase,
       decrease,
 
-      hasOneBuyOne,
     };
   },
 });
