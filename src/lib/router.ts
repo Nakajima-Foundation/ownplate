@@ -123,10 +123,6 @@ const mopath = mo_prefixes
         children: [
           {
             path: prePath,
-            component: "user/MoIndex.vue",
-          },
-          {
-            path: prePath + "/closed",
             component: "user/Mo/MoClosed.vue",
           },
           {
