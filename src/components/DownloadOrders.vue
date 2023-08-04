@@ -64,7 +64,7 @@ export default defineComponent({
         }, "unexpected");
         return {
           datePlaced: moment(order.timePlaced).format("YYYY/MM/DD HH:mm"),
-          type: t("order." + orderTypeKey(order, props.isInMo)),
+          type: t("order." + orderTypeKey(order)),
           dateEstimated:
             order.timeEstimated &&
             moment(order.timeEstimated).format("YYYY/MM/DD HH:mm"),

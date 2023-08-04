@@ -283,7 +283,7 @@ export default defineComponent({
         if (order.timeConfirmed) {
           order.timeConfirmed = order.timeConfirmed.toDate();
         }
-        order.type = orderType(order, props.isInMo);
+        order.type = orderType(order);
         orders.value.push(order);
       });
     };

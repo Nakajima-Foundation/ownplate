@@ -132,6 +132,6 @@ export const order2ReportData = (
       tax: 0,
     };
   }
-  order.type = orderType(order, isInMo);
+  order.type = orderType(order);
   return order;
 };

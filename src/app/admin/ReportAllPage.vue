@@ -334,7 +334,7 @@ export default defineComponent({
           date: moment(date).format("YYYY/MM/DD"),
           restaurantId: order.restaurantId, // mo
           shopId: shopInfo.shopId, // mo
-          type: t("order." + orderTypeKey(order, props.isInMo)),
+          type: t("order." + orderTypeKey(order)),
           restaurantName: shopInfo.restaurantName,
           orderStatus: t(
             "order.status." + order_status_keys[order.status]

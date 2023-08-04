@@ -792,7 +792,7 @@ export const imageErrorHandler = (e: any) => {
   e.target.src = "/images/noimage.png";
 };
 
-export const orderType = (order: OrderInfoData, isInMo: boolean) => {
+export const orderType = (order: OrderInfoData) => {
   if (order.isEC) {
     return "EC";
   }
@@ -802,13 +802,10 @@ export const orderType = (order: OrderInfoData, isInMo: boolean) => {
   if (order.isPickup) {
     return "Pickup";
   }
-  if (isInMo) {
-    return "PreOrder";
-  }
   return "Takeout";
 };
-export const orderTypeKey = (order: OrderInfoData, isInMo: boolean) => {
-  return "orderType" + orderType(order, isInMo);
+export const orderTypeKey = (order: OrderInfoData) => {
+  return "orderType" + orderType(order);
 };
 
 export const isDev = firebaseConfig.projectId === "ownplate-dev";
