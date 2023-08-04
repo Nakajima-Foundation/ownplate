@@ -112,7 +112,7 @@
         </div>
 
         <!-- Enter Name -->
-        <div v-if="!relogin && !isInMo">
+        <div v-if="!relogin">
           <div class="text-sm font-bold">
             {{ $t("sms.userName") }}
           </div>
@@ -178,7 +178,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 
-import { stripeRegion, useIsInMo, useIsLocaleJapan } from "@/utils/utils";
+import { stripeRegion, useIsLocaleJapan } from "@/utils/utils";
 import moment from "moment";
 import * as Sentry from "@sentry/vue";
 
@@ -210,8 +210,6 @@ export default defineComponent({
     const name = ref("");
 
     let recaptchaVerifier: ApplicationVerifier | null = null;
-
-    const isInMo = useIsInMo();
 
     const isLocaleJapan = useIsLocaleJapan();
 
@@ -349,7 +347,6 @@ export default defineComponent({
       handleSubmit,
       handleCode,
 
-      isInMo,
     };
   },
 });
