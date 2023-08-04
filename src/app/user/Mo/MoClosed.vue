@@ -8,7 +8,7 @@
     <div class="mx-auto h-40 w-40 rounded-full bg-black bg-opacity-5">
       <div>
         <img
-          :src="moBaseUrl + '/images/outage/mo_icon_outage.svg'"
+          src="/mo_icon_outage.svg"
           class="opacity-50"
         />
       </div>
