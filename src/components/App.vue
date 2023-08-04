@@ -144,15 +144,6 @@ export default defineComponent({
       }
       return false;
     });
-    const isInMo = computed(() => {
-      return mo_prefixes.some((prefix) => {
-        return (
-          (route.fullPath || "").startsWith(`/${prefix}/`) ||
-          (route.fullPath || "") === `/${prefix}`
-        );
-      });
-    });
-
     const audioPlay = ref();
     const enableSound = () => {
       audioPlay.value.enableSound();
@@ -195,23 +186,11 @@ export default defineComponent({
         });
         setUserId(analytics, fUser.uid);
 
-        if (isInMo.value) {
-          // @ts-ignore
-          window.dataLayer.push({
-            uid: fUser.uid,
-          });
-        }
       } else {
         setUserProperties(analytics, { role: "anonymous" });
         // console.log("authStateChanged: null");
         store.commit("setUser", null);
         store.commit("setCustomClaims", null);
-        if (isInMo.value) {
-          // @ts-ignore
-          window.dataLayer.push({
-            uid: null,
-          });
-        }
       }
     });
     
