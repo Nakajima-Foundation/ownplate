@@ -81,11 +81,7 @@ export const shareUrlAdmin = (props: any) => {
 };
 export const previewLink = (props: any) => {
   return computed(() => {
-    if (props.isInMo) {
-      return "/" + props.moPrefix + "/r/" + props.shopInfo.restaurantId;
-    } else {
-      return "/r/" + props.shopInfo.restaurantId;
-    }
+    return "/r/" + props.shopInfo.restaurantId;
   });
 };
 

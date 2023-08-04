@@ -4,9 +4,6 @@
     <div v-else-if="groupData === false">
       <NotFound />
     </div>
-    <div v-else-if="isOutage">
-      <Outage />
-    </div>
     <div v-else-if="moCloseStatus === 3">
       <MoClosed />
     </div>
@@ -23,7 +20,6 @@
 import { defineComponent, ref, computed } from "vue";
 
 import NotFound from "@/components/NotFound.vue";
-import Outage from "@/app/user/Outage.vue";
 import MoClosed from "@/app/user/Mo/MoClosed.vue";
 
 import { useMoPrefix } from "@/utils/utils";
@@ -34,7 +30,6 @@ import { moCloseStatus } from "@/config/project";
 export default defineComponent({
   components: {
     NotFound,
-    Outage,
     MoClosed,
   },
   setup() {
@@ -51,14 +46,10 @@ export default defineComponent({
         groupData.value = false;
       }
     });
-    const isOutage = computed(() => {
-      return groupData.value && groupData.value.isOutage;
-    });
     return {
       moPrefix,
       moBasePath,
       groupData,
-      isOutage,
       moCloseStatus,
     };
   },

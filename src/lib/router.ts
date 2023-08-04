@@ -126,10 +126,6 @@ const mopath = mo_prefixes
             component: "user/MoIndex.vue",
           },
           {
-            path: prePath + "/outage",
-            component: "user/Outage.vue",
-          },
-          {
             path: prePath + "/closed",
             component: "user/Mo/MoClosed.vue",
           },
@@ -137,22 +133,6 @@ const mopath = mo_prefixes
             path: prePath + "/r/:restaurantId",
             component: "user/RestaurantWrapper.vue",
             children: getUserPagesWithCat(prefix),
-          },
-          {
-            path: prePath + "/u/discounthistory",
-            component: "user/DiscountHistory.vue",
-          },
-          {
-            path: prePath + "/terms",
-            component: "common/TermsUser.vue",
-          },
-          {
-            path: prePath + "/privacy",
-            component: "common/Privacy.vue",
-          },
-          {
-            path: prePath + "/faq",
-            component: "common/FAQMo.vue",
           },
         ],
       },
