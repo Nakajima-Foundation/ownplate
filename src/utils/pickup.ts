@@ -29,15 +29,9 @@ export const usePickupTime = (
     });
   });
   const shopInfoBusinessDay = computed(() => {
-    if (isInMo && isMoPickup && isMoPickup.value) {
-      return shopInfo.moBusinessDay;
-    }
     return shopInfo.businessDay;
   });
   const shopInfoOpenTimes = computed(() => {
-    if (isInMo && isMoPickup && isMoPickup.value) {
-      return shopInfo.moOpenTimes;
-    }
     return shopInfo.openTimes;
   });
   const businessDays = computed(() => {
@@ -60,7 +54,7 @@ export const usePickupTime = (
     );
   });
   const timeInterval = computed(() => {
-    return isInMo ? 15 : 10; // LATER: Make it customizable
+    return 10; // LATER: Make it customizable
   });
   const withinExceptTime = (time: number) => {
     return ((exceptData.value || {}).exceptHours || []).some(
@@ -71,7 +65,7 @@ export const usePickupTime = (
   };
   const openSlots = computed(() => {
     return [7, 1, 2, 3, 4, 5, 6].map((day) => {
-      return shopInfoOpenTimes.value[day].reduce((ret, value) => {
+      return shopInfoOpenTimes.value[day].reduce((ret: {time: number, display: string }[], value) => {
         for (
           let time = value.start;
           time <= value.end;
@@ -86,20 +80,13 @@ export const usePickupTime = (
     });
   });
   const minimumCookTime = computed(() => {
-    return isMoPickup && isMoPickup.value
-      ? shopInfo.moPickUpMinimumCookTime
-      : shopInfo.pickUpMinimumCookTime || 25;
+    return shopInfo.pickUpMinimumCookTime || 25;
   });
   const minimumDeliveryTime = computed(() => {
     return shopInfo.deliveryMinimumCookTime || 25;
   });
   const daysInAdvance = computed(() => {
-    const tmp =
-      isMoPickup && isMoPickup.value
-        ? shopInfo.moPickUpDaysInAdvance
-        : isNull(shopInfo.pickUpDaysInAdvance)
-        ? 3
-        : shopInfo.pickUpDaysInAdvance;
+    const tmp = isNull(shopInfo.pickUpDaysInAdvance) ? 3 : shopInfo.pickUpDaysInAdvance;
     return tmp + 1;
   });
 
