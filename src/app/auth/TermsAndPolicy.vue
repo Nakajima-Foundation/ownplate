@@ -29,27 +29,17 @@
 <script lang="ts">
 import { defineComponent, computed } from "vue";
 
-import { useIsInMo, getMoPrefix, useIsLocaleJapan } from "@/utils/utils";
+import { useIsLocaleJapan } from "@/utils/utils";
 
 export default defineComponent({
   setup() {
-    const isInMo = useIsInMo();
-
     const isLocaleJapan = useIsLocaleJapan();
 
     const termsPath = computed(() => {
-      if (isInMo.value) {
-        return "/" + getMoPrefix() + "/terms";
-      } else {
-        return "/terms/user";
-      }
+      return "/terms/user";
     });
     const policyPath = computed(() => {
-      if (isInMo.value) {
-        return "/" + getMoPrefix() + "/privacy";
-      } else {
-        return "/privacy";
-      }
+      return "/privacy";
     });
     return {
       termsPath,
