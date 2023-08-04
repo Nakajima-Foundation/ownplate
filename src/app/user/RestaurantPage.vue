@@ -120,7 +120,6 @@
                     :shopInfo="shopInfo"
                     :paymentInfo="paymentInfo"
                     :isDelivery="isDelivery"
-                    :isPickup="isPickup"
                     @noAvailableTime="noAvailableTime = $event"
                   ></shop-info>
                 </div>

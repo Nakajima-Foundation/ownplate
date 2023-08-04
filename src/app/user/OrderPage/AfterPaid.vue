@@ -173,7 +173,6 @@
                 :compact="true"
                 :shopInfo="shopInfo"
                 :isDelivery="orderInfo.isDelivery"
-                :isPickup="isPickup"
                 :paymentInfo="paymentInfo"
               />
             </div>

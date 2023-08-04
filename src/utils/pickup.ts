@@ -96,22 +96,24 @@ export const usePickupTime = (
     return availableDays.value.length > 0 && availableDays.value[0].offset === 0;
   });
   const deliveryIsAvailableToday = computed(() => {
+    console.log(deliveryAvailableDays.value[0].offset);
     return deliveryAvailableDays.value.length > 0 && deliveryAvailableDays.value[0].offset === 0;
   });
   
   const todaysLast = computed(() => {
-    return getTodaysLast(isAvailableToday, availableDays);
+    return getTodaysLast(isAvailableToday, availableDays, minimumCookTime);
   });
   const deliveryTodaysLast = computed(() => {
-    return getTodaysLast(deliveryIsAvailableToday, deliveryAvailableDays);
+    return getTodaysLast(deliveryIsAvailableToday, deliveryAvailableDays, minimumDeliveryTime);
   });
-  const getTodaysLast = (isAvailable: ComputedRef<boolean>, days: ComputedRef<AvailableDay[]>) => {
+  const getTodaysLast = (isAvailable: ComputedRef<boolean>, days: ComputedRef<AvailableDay[]>, minTime: ComputedRef<number>) => {
     const now = store.state.date;
     console.log(store.state.date); // never delete this line;
-    if (isAvailableToday.value) {
+    if (isAvailable.value) {
       const lastTime = days.value[0].times[days.value[0].times.length - 1];
       const { time } = lastTime;
-      const lastOrder = time - shopInfo.pickUpMinimumCookTime;
+      const lastOrder = time - minTime.value
+    
       return {
         time,
         display: num2simpleFormatedTime(time),
@@ -119,6 +121,7 @@ export const usePickupTime = (
         lastOrder,
         lastOrderDisplay: num2simpleFormatedTime(lastOrder),
         lastOrderStr: num2simpleTime(lastOrder),
+        lastOrderTime: num2time(lastOrder),
       };
     }
     return null;
@@ -212,5 +215,6 @@ export const usePickupTime = (
     temporaryClosure,
     menuPickupData,
     todaysLast,
+    deliveryTodaysLast,
   };
 };

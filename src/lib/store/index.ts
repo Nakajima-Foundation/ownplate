@@ -66,6 +66,7 @@ export const state = () => ({
   claims: undefined, // custom claims
   lang: undefined,
   date: new Date(),
+  // date: new Date("2023-08-05T22:10:00+09:00"),
   carts: {}, // for "Edit Order"
   server: {}, // server configuration
   orderEvent: 0,

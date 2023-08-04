@@ -54,7 +54,7 @@
 
       <!-- Minimum Available Time -->
       <div
-        class="mt-2 rounded-lg bg-blue-500 bg-opacity-10 px-4 py-2"
+        class="mt-2 rounded-lg bg-blue-500 bg-opacity-10 px-4 py-2 text-sm"
         v-if="!shopInfo.isEC"
       >
         <div class="text-sm font-bold">
@@ -62,8 +62,14 @@
               $t("shopInfo.minimumAvailableTime")
           }}
         </div>
-        <div class="text-sm">
+        <div>
           {{ minimumAvailableTime }}
+        </div>
+        <div v-if="lastTime">
+          本日最終受付: {{ lastTime.lastOrderTime }}:00
+        </div>
+        <div v-else>
+          本日は受付できません
         </div>
       </div>
 
@@ -298,10 +304,6 @@ export default defineComponent({
       type: Boolean,
       required: false,
     },
-    isPickup: {
-      type: Boolean,
-      required: false,
-    },
   },
   emits: ["noAvailableTime"],
   setup(props, ctx) {
@@ -351,9 +353,6 @@ export default defineComponent({
       return "";
     });
 
-    const isPickup = computed(() => {
-      return props.isPickup;
-    });
     const businessDay = computed(() => {
       return props.shopInfo.businessDay || {};
     });
@@ -424,9 +423,13 @@ export default defineComponent({
       return shopPaymentMethods.value.length > 0;
     });
 
-    const { deliveryAvailableDays, availableDays, temporaryClosure } =
+    const { deliveryAvailableDays, availableDays, temporaryClosure, todaysLast, deliveryTodaysLast } =
       usePickupTime(props.shopInfo, {}, ref({}));
 
+    const lastTime = computed(() => {
+      console.log(props.isDelivery ,  deliveryTodaysLast.value, todaysLast.value);
+      return props.isDelivery ? deliveryTodaysLast.value : todaysLast.value;
+    });
     const minimumAvailableTime = computed(() => {
       const days = props.isDelivery
         ? deliveryAvailableDays.value
@@ -493,6 +496,7 @@ export default defineComponent({
       paymentMethods,
 
       minimumAvailableTime,
+      lastTime,
       mapQuery,
       mapImage,
       // methods
@@ -505,7 +509,6 @@ export default defineComponent({
 
       moment,
       
-      // for mo
       businessDay,
       openTimes,
     };

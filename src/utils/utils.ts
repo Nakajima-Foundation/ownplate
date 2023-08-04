@@ -124,7 +124,6 @@ export const num2simpleFormatedTime = (num: number) => {
     String(Math.floor(num / 60)).padStart(2, "0"),
     ":",
     String(num % 60).padStart(2, "0"),
-    " ",
   ].join("");
 };
 
