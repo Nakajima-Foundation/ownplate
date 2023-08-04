@@ -48,7 +48,7 @@ import {
   Timestamp,
 } from "firebase/firestore";
 
-import { isNull, useIsInMo } from "@/utils/utils";
+import { isNull } from "@/utils/utils";
 import { usePickupTime } from "@/utils/pickup";
 
 import { useStore } from "vuex";
@@ -78,7 +78,6 @@ export default defineComponent({
     const dayIndex = ref(0);
     const time = ref(0);
 
-    const isInMo = useIsInMo();
     const isPickup = computed(() => {
       return props.orderInfo.isPickup;
     });

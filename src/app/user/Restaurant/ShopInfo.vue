@@ -274,7 +274,6 @@ import { usePickupTime } from "@/utils/pickup";
 import {
   stripeRegion,
   isNull,
-  useIsInMo,
   useNationalPhoneNumber,
   validUrl,
   validLocation,
@@ -322,8 +321,6 @@ export default defineComponent({
     const weekday = d.getDay();
     const today = d;
 
-    const isInMo = useIsInMo();
-
     const mapWidth = computed(() => {
       // two rows
       if (window.innerWidth > 1024) {
@@ -367,15 +364,9 @@ export default defineComponent({
       return props.isPickup;
     });
     const businessDay = computed(() => {
-      if (isInMo.value && isPickup.value) {
-        return props.shopInfo.moBusinessDay || {};
-      }
       return props.shopInfo.businessDay || {};
     });
     const openTimes = computed(() => {
-      if (isInMo.value && isPickup.value) {
-        return props.shopInfo.moOpenTimes;
-      }
       return props.shopInfo.openTimes;
     });
 

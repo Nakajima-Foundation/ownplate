@@ -556,9 +556,7 @@ export default defineComponent({
         ? document.title
         : [
           this.shopInfo?.restaurantName || "",
-          this.isInMo
-            ? moTitle
-            : ownPlateConfig.restaurantPageTitle || this.defaultTitle,
+          ownPlateConfig.restaurantPageTitle || this.defaultTitle,
         ].join(" / "),
     };
   },
@@ -805,25 +803,6 @@ export default defineComponent({
             .sort((a, b) => {
               return a.itemName > b.itemName ? 1 : -1;
             });
-          /*
-            .sort((a, b) => {
-            const aSoldOutData = moSoldOutDataSet.value[a.id] || {};
-            const aIsStock =
-            !a.soldOut &&
-            (!!aSoldOutData.forcePickupStock || !!aSoldOutData.isStock);
-            
-            const bSoldOutData = moSoldOutDataSet.value[b.id] || {};
-            const bIsStock =
-            !b.soldOut &&
-            (!!bSoldOutData.forcePickupStock || !!bSoldOutData.isStock);
-            
-            if (aIsStock === bIsStock) {
-            return a.itemName > b.itemName ? 1 : -1;
-            }
-            
-            return aIsStock ? -1 : 1;
-            });
-          */
         } else {
           return menus.value.sort((a, b) => {
             return a.itemName > b.itemName ? 1 : -1;
@@ -902,9 +881,6 @@ export default defineComponent({
           } catch (e) {
             return "";
           }
-        }
-        if (isInMo.value) {
-          return "";
         }
         return user.value.displayName;
       })();
@@ -1141,8 +1117,6 @@ export default defineComponent({
       return !!route.meta.isTransactionsAct;
     });
     const enableCartModal = computed(() => {
-      // TODO: setting for omochikaeri
-      // return isInMo.value || false;
       return true;
     });
     const totalQuantities = computed(() => {
