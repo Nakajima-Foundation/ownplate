@@ -139,10 +139,6 @@ const mopath = mo_prefixes
             children: getUserPagesWithCat(prefix),
           },
           {
-            path: prePath + "/u/profile",
-            component: "user/Profile.vue",
-          },
-          {
             path: prePath + "/u/discounthistory",
             component: "user/DiscountHistory.vue",
           },
