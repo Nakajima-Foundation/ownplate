@@ -427,7 +427,6 @@ export default defineComponent({
       usePickupTime(props.shopInfo, {}, ref({}));
 
     const lastTime = computed(() => {
-      console.log(props.isDelivery ,  deliveryTodaysLast.value, todaysLast.value);
       return props.isDelivery ? deliveryTodaysLast.value : todaysLast.value;
     });
     const minimumAvailableTime = computed(() => {
