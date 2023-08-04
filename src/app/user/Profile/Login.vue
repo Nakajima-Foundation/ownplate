@@ -7,19 +7,15 @@
         @click.prevent="handleSignIn"
       >
         <i class="material-icons mr-2 text-2xl text-op-teal">local_mall</i>
-        <div class="text-lg font-bold text-op-teal" v-if="!isInMo">
+        <div class="text-lg font-bold text-op-teal">
           <!-- omochikaeri -->
           {{ $t("profile.signIn") }}
-        </div>
-        <div class="text-lg font-bold text-op-teal" v-if="isInMo">
-          <!-- mobile order -->
-          {{ $t("profile.signInMO") }}
         </div>
       </a>
     </div>
 
     <!-- Sign In as a Restaurant -->
-    <div class="mt-6 text-center" v-if="!isInMo">
+    <div class="mt-6 text-center">
       <router-link to="/admin/user/signin">
         <div
           class="inline-flex h-16 items-center justify-center rounded-full border-2 border-op-teal px-6"
@@ -45,8 +41,6 @@
 import { defineComponent, ref, computed, watch } from "vue";
 import PhoneLogin from "@/app/auth/PhoneLogin.vue";
 
-import { useIsInMo } from "@/utils/utils";
-
 import { useStore } from "vuex";
 
 export default defineComponent({
@@ -56,9 +50,7 @@ export default defineComponent({
   setup() {
     const store = useStore();
 
-    const isInMo = useIsInMo();
-
-    const loginVisible = ref(isInMo.value);
+    const loginVisible = ref(false);
 
     const user = computed(() => {
       return store.state.user;
@@ -82,7 +74,6 @@ export default defineComponent({
       loginVisible,
       handleDismissed,
       handleSignIn,
-      isInMo,
     };
   },
 });
