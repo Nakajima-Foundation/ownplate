@@ -25,7 +25,7 @@
           <favorite-button />
 
           <!-- Address -->
-          <address-button v-if="!isInMo" />
+          <address-button />
 
           <ProfileStripe />
 
@@ -73,7 +73,6 @@ import AddressButton from "@/components/users/AddressButton.vue";
 import { defaultHeader } from "@/config/header";
 
 import {
-  useIsInMo,
   useUserData,
 } from "@/utils/utils";
 
@@ -103,7 +102,6 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore();
-    const isInMo = useIsInMo();
     
     const handleSignOut = () => {
       signOut(auth);
@@ -122,7 +120,6 @@ export default defineComponent({
     return {
       claims,
       handleSignOut,
-      isInMo,
 
       enableLine,
       user,
