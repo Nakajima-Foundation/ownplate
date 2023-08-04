@@ -25,7 +25,6 @@
           @selected="orderSelected($event)"
           :order="order"
           :isSuperView="true"
-          :isInMo="isInMo"
         />
       </template>
       <div v-else>
@@ -67,7 +66,7 @@ import PhoneLogin from "@/app/auth/PhoneLogin.vue";
 import BackButton from "@/components/BackButton.vue";
 
 import { defaultHeader } from "@/config/header";
-import { useBasePath, useTopPath, useIsInMo, getMoPrefix } from "@/utils/utils";
+import { useBasePath, useTopPath } from "@/utils/utils";
 
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -94,9 +93,6 @@ export default defineComponent({
     const basePath = useBasePath();
     const topPath = useTopPath();
 
-    const isInMo = useIsInMo();
-    const moPrefix = getMoPrefix();
-
     const uid = computed(() => {
       return store.getters.uidUser || store.getters.uidLiff;
     });
@@ -116,15 +112,7 @@ export default defineComponent({
       loading.value = true;
       detach();
       if (uid.value) {
-        const orderQuery = isInMo.value
-          ? query(
-              collectionGroup(db, "orders"),
-              where("uid", "==", uid.value),
-              where("groupId", "==", moPrefix),
-              orderBy("orderPlacedAt", "desc"),
-              limit(200)
-            )
-          : query(
+        const orderQuery = query(
               collectionGroup(db, "orders"),
               where("uid", "==", uid.value),
               orderBy("orderPlacedAt", "desc"),
@@ -146,9 +134,7 @@ export default defineComponent({
               return order as OrderInfoData;
             })
             .filter((data) => {
-              if (isInMo.value) {
-                return true;
-              }
+              // filter mo order for safe // todo remove
               return data.groupId === undefined;
             });
           loading.value = false;
@@ -191,7 +177,6 @@ export default defineComponent({
 
       loading,
 
-      isInMo,
     };
   },
 });

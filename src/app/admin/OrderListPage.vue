@@ -50,7 +50,7 @@
           <router-link
             :to="'/admin/restaurants/' + restaurantId + '/orders/' + order.id"
           >
-            <ordered-info :key="order.id" :order="order" :isInMo="isInMo" />
+            <ordered-info :key="order.id" :order="order" />
           </router-link>
         </template>
       </div>

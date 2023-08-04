@@ -42,7 +42,6 @@
           :isSuperView="true"
           @selected="orderSelected($event)"
           :order="order"
-          :isInMo="isInMo"
         />
       </div>
 

@@ -43,7 +43,6 @@
                 :isSuperView="true"
                 @selected="orderSelected($event)"
                 :order="order"
-                :isInMo="false"
               />
               <router-link :to="`/s/restaurants/${order.restaurantId}`">
                 {{ order.restaurant.restaurantName }}

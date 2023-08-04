@@ -78,7 +78,6 @@
           :key="order.id"
           @selected="orderSelected($event)"
           :order="order"
-          :isInMo="isInMo"
           :isSuperView="true"
         />
       </div>

@@ -39,7 +39,7 @@
         </div>
 
         <div class="flex-1 text-right text-base">
-          <div v-if="order.name && !isInMo">
+          <div v-if="order.name">
             <i
               class="fab fa-line mr-2 text-lg"
               style="color: #4ec263"
@@ -88,7 +88,7 @@
         <div class="mr-2 items-center justify-center rounded-md bg-green-600 bg-opacity-10 p-1 text-xs
                     font-bold text-green-600
                     " v-if="order.promotionId">
-          {{ $n(order.discountPrice, "currency") }}{{ $t("order.discountPriceSuffix")}}
+          {{ $n(Number(order.discountPrice||0), "currency") }}{{ $t("order.discountPriceSuffix")}}
         </div>
         
         <div class="mr-2 text-sm" v-if="order.isDelivery">
@@ -167,7 +167,7 @@
             <div class="mr-2 items-center justify-center rounded-md bg-green-600 bg-opacity-10 p-1 text-xs
                         font-bold text-green-600
                         " v-if="order.promotionId && isSuperView">
-              {{ $n(order.discountPrice, "currency") }}{{ $t("order.discountPriceSuffix")}}
+              {{ $n(Number(order.discountPrice||0), "currency") }}{{ $t("order.discountPriceSuffix")}}
             </div>
             <div class="mr-2 text-sm" v-if="order.isDelivery">
               <i class="material-icons"> delivery_dining </i>
@@ -267,10 +267,6 @@ export default defineComponent({
     isSuperView: {
       type: Boolean,
       required: false,
-    },
-    isInMo: {
-      type: Boolean,
-      required: true,
     },
   },
   setup(props) {

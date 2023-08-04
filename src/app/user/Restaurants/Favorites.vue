@@ -8,7 +8,7 @@
     </div>
 
     <div class="mx-6 mt-6 text-xl font-bold text-black text-opacity-40">
-      {{ $t(isInMo ? "find.favoriteShop" : "find.likes") }}
+      {{ $t("find.likes") }}
     </div>
 
     <!-- Likes -->
@@ -19,7 +19,7 @@
           class="mx-6 mt-2 rounded-xl border-2 border-dashed border-black border-opacity-10 p-4 text-center"
         >
           <span class="text-base text-black text-opacity-40">
-            {{ $t(isInMo ? "find.nofavoriteShop" : "find.noLikes") }}</span
+            {{ $t("find.noLikes") }}</span
           >
         </div>
       </div>
@@ -76,8 +76,6 @@ import {
 import { RestaurantHeader } from "@/config/header";
 import { ownPlateConfig } from "@/config/project";
 import {
-  useIsInMo,
-  useMoPrefix,
   routeMode,
   useBasePath,
   useUserData,
@@ -106,18 +104,12 @@ export default defineComponent({
     const basePath = useBasePath();
     const likes = ref<{}[]|null>(null);
 
-    const isInMo = useIsInMo();
-    const moPrefix = useMoPrefix();
     const { uid, isUser } = useUserData();
 
     const mode = routeMode();
 
     const path = computed(() => {
-      if (isInMo.value) {
-        return `users/${uid.value}/groups/${moPrefix.value}/reviews`;
-      } else {
-        return `users/${uid.value}/reviews`;
-      }
+      return `users/${uid.value}/reviews`;
     });
 
     if (isUser.value) {
@@ -144,7 +136,6 @@ export default defineComponent({
       likes,
       basePath,
 
-      isInMo,
       mode,
       resizedProfileImage,
     };
