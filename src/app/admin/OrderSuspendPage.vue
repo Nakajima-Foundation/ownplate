@@ -183,8 +183,6 @@ export default defineComponent({
       props.shopInfo,
       {},
       ref({}),
-      props.isInMo,
-      null
     );
 
     const availableTimes = computed(() => {

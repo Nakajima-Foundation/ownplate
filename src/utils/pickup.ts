@@ -11,14 +11,10 @@ import moment from "moment";
 import { MenuData } from "@/models/menu";
 import { useStore } from "vuex";
 
-// inMo
-// isMoPickup
 export const usePickupTime = (
   shopInfo: RestaurantInfoData,
   exceptData: any,
   menuObj: Ref<{ [key: string]: MenuData }>,
-  isInMo: boolean | null,
-  isMoPickup: null | ComputedRef<boolean>
 ) => {
   const store = useStore();
 

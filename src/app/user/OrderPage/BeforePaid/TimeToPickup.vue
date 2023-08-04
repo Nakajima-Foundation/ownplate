@@ -108,8 +108,6 @@ export default defineComponent({
       props.shopInfo,
       exceptData,
       ref({}),
-      isInMo.value as boolean,
-      isPickup
     );
     // for mo
     const lastOrder = computed(() => {

@@ -443,7 +443,7 @@ export default defineComponent({
     });
 
     const { deliveryAvailableDays, availableDays, temporaryClosure } =
-      usePickupTime(props.shopInfo, {}, ref({}), isInMo.value as boolean, isPickup);
+      usePickupTime(props.shopInfo, {}, ref({}));
 
     const minimumAvailableTime = computed(() => {
       const days = props.isDelivery
