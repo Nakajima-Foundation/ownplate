@@ -26,7 +26,7 @@
       />
 
       <!-- Stripe status -->
-      <StripeStatus v-if="hasStripe" :orderInfo="orderInfo" :mode="mode" />
+      <StripeStatus v-if="hasStripe" :orderInfo="orderInfo" />
 
       <!-- Cancel Button -->
       <div class="mt-8 mb-5 text-center">
@@ -98,7 +98,6 @@
             :orderItems="orderItems"
             :orderInfo="orderInfo || {}"
             :groupData="groupData"
-            :mode="mode"
           ></order-info>
         </div>
 
@@ -174,7 +173,6 @@
                 :compact="true"
                 :shopInfo="shopInfo"
                 :isDelivery="orderInfo.isDelivery"
-                :mode="mode"
                 :isPickup="isPickup"
                 :paymentInfo="paymentInfo"
               />

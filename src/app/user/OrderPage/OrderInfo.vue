@@ -207,12 +207,8 @@
       <!-- promotion discount -->
       <template v-if="promotion.paymentRestrictions">
 			  <!-- おもちかえりの場合は以下のメッセージを表示-->
-        <span v-if="mode !== 'mo'" class="text-sm font-bold text-opacity-40 text-black">
+        <span class="text-sm font-bold text-opacity-40 text-black">
           {{ $t("order.discountAlert." + promotion.paymentRestrictions) }}
-        </span>
-			  <!-- MobileOrderの場合は以下のメッセージを表示-->
-			  <span v-else class="text-sm font-bold text-opacity-40 text-black">
-          {{ $t("order.discountAlertMo." + promotion.paymentRestrictions) }}
         </span>
       </template>
       <div class="mt-2 flex">
@@ -298,10 +294,6 @@ export default defineComponent({
     discountPrice: {
       type: Number,
       required: false,
-    },
-    mode: {
-      type: String,
-      required: true,
     },
     // end of promotion
     editable: {

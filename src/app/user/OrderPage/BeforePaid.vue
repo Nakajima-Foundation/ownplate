@@ -52,7 +52,6 @@
             :orderInfo="orderInfo || {}"
             :shippingCost="shippingCost"
             :groupData="groupData"
-            :mode="mode"
             :promotion="selectedPromotion"
             :enablePromotion="enablePromotion"
             :discountPrice="discountPrice"

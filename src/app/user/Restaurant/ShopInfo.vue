@@ -58,14 +58,9 @@
         v-if="!shopInfo.isEC"
       >
         <div class="text-sm font-bold">
-          <template v-if="mode === 'mo'">
-            {{ $t("shopInfo.mo.minimumAvailableTime") }}
-          </template>
-          <template v-else>
-            {{ $t("shopInfo." + (isDelivery ? "delivery" : "takeout")) }}:{{
+          {{ $t("shopInfo." + (isDelivery ? "delivery" : "takeout")) }}:{{
               $t("shopInfo.minimumAvailableTime")
-            }}
-          </template>
+          }}
         </div>
         <div class="text-sm">
           {{ minimumAvailableTime }}
@@ -302,10 +297,6 @@ export default defineComponent({
     isDelivery: {
       type: Boolean,
       required: false,
-    },
-    mode: {
-      type: String,
-      required: true,
     },
     isPickup: {
       type: Boolean,

@@ -53,7 +53,7 @@
           <!-- Left -->
           <div id="RestaurantLeftTop">
             <!-- Cover Image -->
-            <div class="lg:mt-6" v-if="!isInMo">
+            <div class="lg:mt-6">
               <img
                 @click.stop="openImage()"
                 :src="coverImage"
@@ -111,8 +111,6 @@
                   {{
                     shopInfo.isEC
                       ? $t("shopInfo.ecShopDetails")
-                      : isInMo
-                      ? $t("mobileOrder.storeDetails")
                       : $t("shopInfo.restaurantDetails")
                   }}
                 </div>
@@ -122,7 +120,6 @@
                     :shopInfo="shopInfo"
                     :paymentInfo="paymentInfo"
                     :isDelivery="isDelivery"
-                    :mode="mode"
                     :isPickup="isPickup"
                     @noAvailableTime="noAvailableTime = $event"
                   ></shop-info>
