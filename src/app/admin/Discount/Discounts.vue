@@ -185,7 +185,7 @@ export default defineComponent({
   },
   setup(props) {
     const id = props.isInMo ? props.moPrefix : props.shopInfo?.restaurantId;
-    const { promotionDataSet } = usePromotionsForAdmin(props.isInMo, id as string);
+    const { promotionDataSet } = usePromotionsForAdmin(id as string);
 
     const { ownerUid, uid, isOwner } = useAdminUids();
     console.log(props.isInMo);
@@ -203,7 +203,7 @@ export default defineComponent({
     }
 
     const newDiscount = async () => {
-      const path = getPromotionCollctionPath(props.isInMo, id as string)
+      const path = getPromotionCollctionPath(id as string)
       const promotionId = doc(collection(db, path)).id;
       const data = {
         promotionName: "no name",

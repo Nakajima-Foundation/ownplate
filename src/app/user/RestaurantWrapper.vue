@@ -128,7 +128,7 @@ export default defineComponent({
     const { user } = useUserData();
 
     const id = mode.value === 'mo' ? moPrefix as string : restaurantId.value;
-    const { promotions } = usePromotions(mode.value, id, user);
+    const { promotions } = usePromotions(id, user);
     
     onUnmounted(() => {
       if (restaurant_detacher) {

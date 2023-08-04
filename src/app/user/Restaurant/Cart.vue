@@ -57,6 +57,7 @@ import CartItem from "@/app/user/Restaurant/CartItem.vue";
 import PromotionMessage2 from "@/app/user/Restaurant/PromotionMessage2.vue";
 import PromotionMessage3 from "@/app/user/Restaurant/PromotionMessage3.vue";
 import PromotionMessage4 from "@/app/user/Restaurant/PromotionMessage4.vue";
+import PromotionMessage6 from "@/app/user/Restaurant/PromotionMessage6.vue";
 
 export default defineComponent({
   emits: ["closeCart", "didOrderdChange"],
@@ -65,6 +66,7 @@ export default defineComponent({
     PromotionMessage2,
 		PromotionMessage3,
 		PromotionMessage4,
+    PromotionMessage6,
   },
   props: {
     shopInfo: {

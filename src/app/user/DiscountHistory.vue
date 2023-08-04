@@ -1,8 +1,8 @@
 <template>
   <div>
     <div v-for="(discount, k) in discountHistory" :key="k">
-      {{ discount.userHistory.usedAt.toDate().toISOString().slice(0, 10) }}
-      {{ discount.history.promotionName }}
+      {{ discount?.userHistory?.usedAt.toDate().toISOString().slice(0, 10) }}
+      {{ discount?.history?.promotionName }}
     </div>
   </div>
 </template>
@@ -37,12 +37,13 @@ export default defineComponent({
 
     const { user } = useUserData();
 
+    // TODO: fix restaurant path is not set
     const restaurantId = computed(() => {
       return route.params.restaurantId as string;
     });
     
     const id = isInMo.value ? props.moPrefix as string : restaurantId.value;
-    const { discountHistory } = useUserPromotionHistory( isInMo.value ? 'mo' : '' , id, user);
+    const { discountHistory } = useUserPromotionHistory(id, user);
     return {
       discountHistory
     };

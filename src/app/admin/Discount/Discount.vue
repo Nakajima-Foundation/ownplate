@@ -315,7 +315,7 @@ export default defineComponent({
       return notFoundResponse;
     }
 
-    getPromotion(props.isInMo, id as string, discountId).then(data => {
+    getPromotion(id as string, discountId).then(data => {
       promotion.value = data;
       termFromDate.value = data.termFrom.toDate();
       termToDate.value = data.termTo.toDate();
@@ -349,7 +349,7 @@ export default defineComponent({
         termFrom: Timestamp.fromDate(termFromDate.value),
         termTo: Timestamp.fromDate(termToDate.value),
       };
-      const path = getPromotionDocumentPath(props.isInMo, id as string, discountId);
+      const path = getPromotionDocumentPath(id as string, discountId);
       await updateDoc(doc(db, path), updateData);
 
       back();

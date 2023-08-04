@@ -21,7 +21,6 @@ import {
 } from "firebase/firestore";
 
 import {
-  sha256,
   arrayChunk,
 } from "@/utils/utils";
 
@@ -30,27 +29,27 @@ import { db } from "@/lib/firebase/firebase9";
 import { OrderInfoData } from "@/models/orderInfo";
 import Promotion, { PromotionData, UserPromotionHistoryData } from "@/models/promotion";
 
-export const getPromotionCollctionPath = (isInMo: boolean, id: string) => {
-  return isInMo ? `/groups/${id}/promotions` : `restaurants/${id}/promotions`;
+export const getPromotionCollctionPath = (id: string) => {
+  return `restaurants/${id}/promotions`;
 };
 
-export const getPromotionDocumentPath = (isInMo: boolean, id: string, promotionId: string) => {
-  const basePath = getPromotionCollctionPath(isInMo, id);
+export const getPromotionDocumentPath = (id: string, promotionId: string) => {
+  const basePath = getPromotionCollctionPath(id);
   const path = `${basePath}/${promotionId}`;
   return path;
 };
 
-export const getPromotion = async (isInMo: boolean, id: string, promotionId: string) => {
-  const path = getPromotionDocumentPath(isInMo, id, promotionId);
+export const getPromotion = async (id: string, promotionId: string) => {
+  const path = getPromotionDocumentPath(id, promotionId);
   const promotionDoc = await getDoc(doc(db, path))
   return promotionDoc.data() as PromotionData;
 };
 
 
-export const usePromotionsForAdmin = (isInMo: boolean, id: string) => {
+export const usePromotionsForAdmin = (id: string) => {
   const promotionDataSet = ref<Promotion[]>([]);
   (async () => {
-    const promotionPath = getPromotionCollctionPath(isInMo, id);
+    const promotionPath = getPromotionCollctionPath(id);
     onSnapshot(
       query(
         collection(db, promotionPath),
@@ -79,25 +78,18 @@ export const usePromotionsForAdmin = (isInMo: boolean, id: string) => {
   };
 };
 
-const getUserHistoryPath = async (mode: string, id: string, user: any) => {
-  if (mode === "mo") {
-    const hash = await sha256([id, user.value.phoneNumber].join(":")); 
-    return `groups/${id}/users/${hash}/promotionHistories`
-  }
+const getUserHistoryPath = async (id: string, user: any) => {
   return `users/${user.value.uid}/promotionHistories`;
 }
-const getHistoryCondition = (mode: string, id: string) => {
-  if (mode === "mo") {
-    return where("groupId", "==", id);
-  }
+const getHistoryCondition = (id: string) => {
   return where("restaurantId", "==", id);
 }
 
-export const usePromotions = (mode: string, id: string, user: any) => {
+export const usePromotions = (id: string, user: any) => {
   const promotionData = ref<Promotion[]>([]);
 
   (async () => {
-    const promotionPath = getPromotionCollctionPath((mode === "mo"), id);
+    const promotionPath = getPromotionCollctionPath(id);
 
     const p: Promotion[] = [];
     await Promise.all([
@@ -160,7 +152,7 @@ export const usePromotions = (mode: string, id: string, user: any) => {
         }
       });
       // TODO set condition
-      const userHistoryPath = await getUserHistoryPath(mode, id, user);
+      const userHistoryPath = await getUserHistoryPath(id, user);
 
       // for onetime or discount
       if (keys.length === 0 && values.length === 0) {
@@ -172,7 +164,7 @@ export const usePromotions = (mode: string, id: string, user: any) => {
           query(
             collection(db, userHistoryPath),
             where(documentId(), "in", keys),
-            getHistoryCondition(mode, id),
+            getHistoryCondition(id),
           ),
           (a => {
             const used = promotionUsed.value ? {...promotionUsed.value} : {};
@@ -188,7 +180,7 @@ export const usePromotions = (mode: string, id: string, user: any) => {
           query(
             collection(db, userHistoryPath),
             where("promotionId", "in", values),
-            getHistoryCondition(mode, id),
+            getHistoryCondition(id),
           ),
           (a => {
             const used = promotionUsed.value ? {...promotionUsed.value} : {};
@@ -263,16 +255,16 @@ export const usePromotionData = (orderInfo: OrderInfoData, promotion: ComputedRe
   };
 };
 
-export const useUserPromotionHistory = (mode: string, id: string, user: any) => {
+export const useUserPromotionHistory = (id: string, user: any) => {
   const discountHistory = ref<any[]>([]);
   (async () => {
     if (!user.value || !user.value.phoneNumber) {
       return 
     }
-    const userHistoryPath = await getUserHistoryPath(mode, id, user);
+    const userHistoryPath = await getUserHistoryPath(id, user);
     const historySnapShot = await getDocs(collection(db, userHistoryPath))
     
-    const promotionPath = getPromotionCollctionPath((mode === "mo"), id);
+    const promotionPath = getPromotionCollctionPath(id);
     if (historySnapShot.docs && historySnapShot.docs.length > 0) {
       const userHistory = historySnapShot.docs.map(a => {
         return { userHistory: a.data(), history: {} };
