@@ -365,7 +365,6 @@ import {
   arraySum,
   itemOptionCheckbox2options,
   scrollToElementById,
-  useIsInMo,
   smallImageErrorHandler,
   imageErrorHandler,
   num2time,
@@ -442,9 +441,7 @@ export default defineComponent({
     
     const openMenuFlag = ref(props.initialOpenMenuFlag);
     const imagePopup = ref(false);
-    const isInMo = useIsInMo();
-    const urlSuffix =
-      (isInMo.value ? props.menuLinkBathPath : "") + "/menus/" + props.item.id;
+    const urlSuffix = "/menus/" + props.item.id;
     const restaurantId = route.params.restaurantId as string;
 
     const basePath = useBasePath();

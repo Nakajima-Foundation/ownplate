@@ -140,7 +140,7 @@
 <script lang="ts">
 import { defineComponent, computed, ref, watch } from "vue";
 
-import { arraySum, useIsInMo } from "@/utils/utils";
+import { arraySum } from "@/utils/utils";
 
 import Price from "@/components/Price.vue";
 import ButtonLoading from "@/components/Button/Loading.vue";
@@ -191,7 +191,6 @@ export default defineComponent({
   emits: ["handleCheckOut", "showCart"],
 
   setup(props, ctx) {
-    const isInMo = useIsInMo();
     const isShowCart = ref(false);
 
     const totalQuantities = computed(() => {
@@ -252,7 +251,7 @@ export default defineComponent({
       isShowCart.value = false;
     };
     const buttonText = computed(() => {
-      if (isInMo.value && !isShowCart.value) {
+      if (!isShowCart.value) {
         return "sitemenu.confirmCart";
       } else {
         return "sitemenu.checkout";

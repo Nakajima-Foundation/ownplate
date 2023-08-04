@@ -16,7 +16,6 @@ import {
 import { useRoute } from "vue-router";
 
 import {
-  useIsInMo,
   useUserData,
 } from "@/utils/utils";
 
@@ -32,7 +31,6 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
-    const isInMo = useIsInMo();
     const route = useRoute();
 
     const { user } = useUserData();
@@ -42,7 +40,7 @@ export default defineComponent({
       return route.params.restaurantId as string;
     });
     
-    const id = isInMo.value ? props.moPrefix as string : restaurantId.value;
+    const id = restaurantId.value;
     const { discountHistory } = useUserPromotionHistory(id, user);
     return {
       discountHistory
