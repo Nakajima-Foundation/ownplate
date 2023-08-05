@@ -159,9 +159,9 @@
                 @positionDown="positionDown($event)"
                 @forkItem="forkMenuItem($event)"
                 @deleteItem="deleteItem($event)"
-                :preOrderAvaiable="preOrderAvaiable[menuList] || {}"
-                :pickupAvaiable="pickupAvaiable[menuList] || {}"
-                :pickupStockData="pickupStockData[menuList] || {}"
+                :preOrderAvaiable="{}"
+                :pickupAvaiable="{}"
+                :pickupStockData="{}"
                 :subCategoryId="subCategory"
               />
             </div>
@@ -225,7 +225,6 @@ import DownloadCSV from "@/app/admin/MenuListPage/DownloadCSV.vue";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 
 import { useMenuAndTitle } from "@/app/admin/MenuListPage/Utils";
-import { loadStockData } from "@/app/user/Restaurant/Utils";
 
 import { ownPlateConfig } from "@/config/project";
 
@@ -412,21 +411,6 @@ export default defineComponent({
     loadMenu();
 
     // mo
-    const { preOrderPublics, pickupPublics, pickupStocks } = loadStockData(
-      db,
-      props.shopInfo
-    );
-
-    const preOrderAvaiable = computed(() => {
-      return (preOrderPublics.value || {})[subCategory.value] || {};
-    });
-    const pickupAvaiable = computed(() => {
-      return (pickupPublics.value || {})[subCategory.value] || {};
-    });
-    const pickupStockData = computed(() => {
-      return (pickupStocks.value || {})[subCategory.value] || {};
-    });
-
     watch(isLoading, (value) => {
       if (!props.isInMo) {
         if (!value) {
@@ -673,9 +657,6 @@ export default defineComponent({
       subCategory,
 
       // mo
-      preOrderAvaiable,
-      pickupAvaiable,
-      pickupStockData,
       menuRestaurantId,
     };
   },
