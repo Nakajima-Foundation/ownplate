@@ -277,10 +277,6 @@ export default defineComponent({
       type: Object,
       required: true,
     },
-    mode: {
-      type: String,
-      required: false,
-    },
     menuPagePath: {
       type: String,
       required: false,

@@ -29,7 +29,7 @@
 
           <ProfileStripe />
 
-          <ProfileLine v-if="enableLine" />
+          <ProfileLine />
         </div>
 
         <!-- Sign Out -->
@@ -79,12 +79,6 @@ import {
 import { useStore } from "vuex";
 
 export default defineComponent({
-  props: {
-    groupData: {
-      type: Object,
-      required: false,
-    },
-  },
   components: {
     HistoryButton,
     FavoriteButton,
@@ -111,17 +105,10 @@ export default defineComponent({
       claims,
       user
     } = useUserData();
-    const enableLine = computed(() => {
-      if (props.groupData?.enableLine === undefined) {
-        return true;
-      }
-      return props.groupData?.enableLine;
-    });
     return {
       claims,
       handleSignOut,
 
-      enableLine,
       user,
       isLiffUser,
     };

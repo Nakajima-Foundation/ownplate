@@ -22,7 +22,6 @@
         :orderItems="orderItems"
         :paymentInfo="paymentInfo"
         :deliveryData="deliveryData"
-        :mode="mode"
         :lastOrder="lastOrder"
         :menuPagePath="menuPagePath"
         @openTransactionsAct="openTransactionsAct"
@@ -34,7 +33,6 @@
         :orderInfo="orderInfo"
         :orderItems="orderItems"
         :paymentInfo="paymentInfo"
-        :mode="mode"
         :menuPagePath="menuPagePath"
       />
     </template>
@@ -129,25 +127,9 @@ export default defineComponent({
       type: Boolean,
       required: false,
     },
-    mode: {
-      type: String,
-      required: false,
-    },
     promotions: {
       type: Array,
       required: true,
-    },
-    moPrefix: {
-      type: String,
-      required: false,
-    },
-    groupData: {
-      type: Object,
-      required: false,
-    },
-    moSuspend: {
-      type: Boolean,
-      required: false,
     },
   },
   setup(props) {
@@ -241,8 +223,6 @@ export default defineComponent({
     const menuPagePath = computed(() => {
       if (inLiff.value) {
         return liffBasePath + "/r/" + restaurantId.value;
-      } else if (props.mode === "mo") {
-        return `/${props.moPrefix}/r/${restaurantId.value}`;
       } else {
         return `/r/${restaurantId.value}`;
       }

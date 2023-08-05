@@ -7,8 +7,6 @@
       :deliveryData="deliveryData"
       :mode="mode"
       :moPrefix="moPrefix"
-      :moSuspend="moSuspend"
-      :moPickupSuspend="moPickupSuspend"
       :notFound="notFound"
       :groupData="groupData"
       :promotions="promotions"
@@ -109,22 +107,6 @@ export default defineComponent({
       );
     }
 
-    const moSuspend = computed(() => {
-      return !!(
-        shopInfo.value?.isSuspendAllOrder ||
-        groupSuspend.value.isSuspendAllOrder
-      );
-    });
-    const moPickupSuspend = computed(() => {
-      return (
-        !!(
-          shopInfo.value?.isSuspendPickup || groupSuspend.value.isSuspendPickup
-        ) &&
-        !moSuspend.value &&
-        shopInfo.value.enableMoPickup
-      );
-    });
-
     const { user } = useUserData();
 
     const id = mode.value === 'mo' ? moPrefix as string : restaurantId.value;
@@ -138,9 +120,6 @@ export default defineComponent({
     return {
       mode,
       moPrefix,
-
-      moSuspend,
-      moPickupSuspend,
 
       shopInfo,
       paymentInfo,

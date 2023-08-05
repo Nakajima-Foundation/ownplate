@@ -241,32 +241,10 @@
                   </div>
                 </o-button>
                 <div
-                  v-if="mode !== 'mo' && stripeSmallPayment"
-                  class="mt-2 text-sm font-bold text-red-700"
-                >
-                  {{ $t("errorPage.code.smallPayment") }}
-                </div>
-              </div>
-              <div v-if="mode === 'mo'" class="text-center">
-                <div
                   v-if="stripeSmallPayment"
                   class="mt-2 text-sm font-bold text-red-700"
                 >
-                  <div>
-                    {{ $t("mobileOrder.smallPayment1") }}
-                  </div>
-                  <div>
-                    {{ $t("mobileOrder.smallPayment2") }}
-                  </div>
-                  <div>
-                    {{ $t("mobileOrder.smallPayment3") }}
-                  </div>
-                </div>
-                <div
-                  v-else
-                  class="mt-2 text-center text-xs text-black text-opacity-50"
-                >
-                  {{ $t("order.placeOrderMoNote") }}
+                  {{ $t("errorPage.code.smallPayment") }}
                 </div>
               </div>
             </div>
@@ -451,10 +429,6 @@ export default defineComponent({
     promotions: {
       type: Array<Promotion>,
       required: true,
-    },
-    mode: {
-      type: String,
-      required: false,
     },
     menuPagePath: {
       type: String,
