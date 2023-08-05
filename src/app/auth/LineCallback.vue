@@ -79,6 +79,8 @@ export default defineComponent({
           isValidating.value = false;
         }
       })()
+    } else {
+      router.push("/");
     }
     return {
       isValidating
