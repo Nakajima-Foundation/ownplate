@@ -582,9 +582,6 @@ export default defineComponent({
           return cart.howtoreceive;
         }
       }
-      if (props.shopInfo.enableMoPickup) {
-        return "pickup";
-      }
       return "takeout";
     })();
     const howtoreceive = ref(defaultHowToReceive);

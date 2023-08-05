@@ -24,12 +24,6 @@ import {
 } from "@/utils/promotion";
 
 export default defineComponent({
-  props: {
-    moPrefix: {
-      type: String,
-      required: false,
-    },
-  },
   setup(props, ctx) {
     const route = useRoute();
 
