@@ -335,6 +335,14 @@
             <div class="grid-col-1 space-y-4">
               <div v-for="(option, key) in menuInfo.itemOptionCheckbox">
                 <div :key="key" class="mb-2 flex">
+                  <o-button @click="positionDown(key)" class="b-reset-tw">
+                    <div
+                      class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 mr-2"
+                      v-if="key !== menuInfo.itemOptionCheckbox.length - 1"
+                      >
+                      <i class="material-icons text-lg text-op-teal">arrow_downward</i>
+                    </div>
+                  </o-button>
                   <div class="flex-1 mr-2">
                     <o-input
                       v-model="menuInfo.itemOptionCheckbox[key]"
@@ -595,7 +603,7 @@
             >
               <i class="material-icons mr-2 text-lg text-op-teal"> queue </i>
               <span class="text-sm font-bold text-op-teal">{{
-                $t(isInMo ? "mobileOrder.copyMenu" : "editCommon.copyMenu")
+                $t("editCommon.copyMenu")
               }}</span>
             </div>
           </o-button>
@@ -711,10 +719,6 @@ export default defineComponent({
       type: Object,
       required: false,
     },
-    isInMo: {
-      type: Boolean,
-      required: true,
-    },
   },
 
   setup(props) {
@@ -763,9 +767,7 @@ export default defineComponent({
       return notFoundResponse;
     }
     const menuRestaurantId = computed(() => {
-      return props.isInMo
-        ? props?.groupMasterRestaurant?.restaurantId
-        : route.params.restaurantId;
+      return route.params.restaurantId;
     });
 
     const taxRateKeys = regionalSetting["taxRateKeys"];
@@ -892,9 +894,7 @@ export default defineComponent({
         if (shop) {
           store.commit("setAlert", {
             title: shop.restaurantName,
-            code: props.isInMo
-              ? "mobileOrder.copyMenuAlert"
-              : "editCommon.copyMenuAlert",
+            code: "editCommon.copyMenuAlert",
             callback: async () => {
               const newItem = newItemData();
               newItem.publicFlag = false;
@@ -969,6 +969,14 @@ export default defineComponent({
       }
     };
 
+    const positionDown = (key: number) => {
+      const item = [...menuInfo.itemOptionCheckbox];
+      const tmp = item[key];
+      item[key] = item[key + 1]
+      item[key + 1] = tmp;
+      menuInfo.itemOptionCheckbox = item;
+    };
+    
     return {
       dummyCheckbox: [],
       menuInfo,
@@ -1014,6 +1022,8 @@ export default defineComponent({
       smallImageErrorHandler,
 
       restaurantId,
+
+      positionDown,
     };
   },
 });
