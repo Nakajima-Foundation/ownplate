@@ -1,17 +1,33 @@
 import { ownPlateConfig } from "@/config/project";
 import * as Cookie from "cookie";
 
+export const lineAuthRestaurantURL = (
+  path: string,
+  options: { [key: string]: string },
+  client_id: string,
+) => {
+  return lineAuthURLBase(path, options, client_id);
+};
+
 export const lineAuthURL = (
   path: string,
   options: { [key: string]: string },
+) => {
+  return lineAuthURLBase(path, options, ownPlateConfig.line.LOGIN_CHANNEL_ID);
+};
+
+export const lineAuthURLBase = (
+  path: string,
+  options: { [key: string]: string },
+  client_id: string,
 ) => {
   const state = "s" + Math.random();
   const nonce = "n" + Math.random();
   const query = {
     response_type: "code",
-    client_id: ownPlateConfig.line.LOGIN_CHANNEL_ID,
+    client_id,
     redirect_uri: location.origin + path,
-    scope: "profile openid email",
+    scope: "profile openid email", // todo??
     bot_prompt: "aggressive",
     state,
     nonce,

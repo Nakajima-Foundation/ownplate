@@ -10,7 +10,7 @@
     <ThankYou />
 
     <!-- Line Button -->
-    <LineButton />
+    <LineButton :shopInfo="shopInfo"/>
 
     <!-- Order Summary -->
     <div class="mx-6 mt-6 rounded-lg bg-white px-2 pt-6 pb-1 shadow">

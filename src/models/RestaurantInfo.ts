@@ -41,6 +41,9 @@ export interface RestaurantInfoData {
   emailNotification: boolean;
   enablePrinter: boolean; // for debug
 
+  hasLine: boolean;
+  lineClientId: string;
+  
   isEC: boolean; // set by system
   enableDelivery: boolean;
   enableMoPickup: boolean; // set by sys

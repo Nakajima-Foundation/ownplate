@@ -59,7 +59,7 @@ export const subAccountInvitationDeny = httpsCallable<{
 );
 
 export const lineValidate = httpsCallable<{
-  code: string, redirect_uri: string
+  code: string, redirect_uri: string, restaurantId?: string,
 }, {
   nonce: string,
   profile: {

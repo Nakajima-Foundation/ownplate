@@ -15,25 +15,43 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
-import { lineAuthURL } from "@/lib/line/line";
+import { defineComponent, computed, PropType } from "vue";
+import { lineAuthURL, lineAuthRestaurantURL } from "@/lib/line/line";
 import { ownPlateConfig } from "@/config/project";
 
 import { useStore } from "vuex";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 export default defineComponent({
+  props: {
+    shopInfo: {
+      type: Object as PropType<RestaurantInfoData>,
+      required: true,
+    },
+  },
   setup(props) {
     const store = useStore();
-
+    
     const handleLineAuth = () => {
-      const url = lineAuthURL("/callback/line", {
-        pathname: location.pathname,
-      });
+      const url = (() => {
+        if (props.shopInfo.hasLine && props.shopInfo.lineClientId) {
+          return lineAuthRestaurantURL(
+            "/callback/" + props.shopInfo.restaurantId + "/line", {
+              pathname: location.pathname,
+            },
+            props.shopInfo.lineClientId,
+          );
+        } else {
+          return lineAuthURL("/callback/line", {
+            pathname: location.pathname,
+          });
+        }
+      })()
       location.href = url;
     };
     const showAddLine = computed(() => {
-      // return true;
-      return !!ownPlateConfig.line && !store.state.claims?.line;
+      return true;
+      // return !!ownPlateConfig.line && !store.state.claims?.line;
     });
     return {
       handleLineAuth,
