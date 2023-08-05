@@ -29,7 +29,8 @@ export default defineComponent({
     const store = useStore();
 
     const code = route.query.code as string;
-    const redirect_uri = location.origin + "/callback/line";
+    const restaurantId = route.params.restaurantId as string | undefined;
+    const redirect_uri = location.origin + "/callback/" + (restaurantId ? restaurantId + "/" : "") + "line";
     const isValidating = ref(false);
     const { user, isLineUser } = useUserData();
     
@@ -40,6 +41,7 @@ export default defineComponent({
           const { data } = await lineValidate({
             code,
             redirect_uri,
+            restaurantId,
           });
           console.log("lineValidate", data);
           

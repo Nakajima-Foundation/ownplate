@@ -531,6 +531,10 @@ export const customRoutes: CustomRoute[] = [
     component: "auth/LineCallback.vue",
   },
   {
+    path: "/callback/:restaurantId/line",
+    component: "auth/LineCallback.vue",
+  },
+  {
     path: "/l/:urlKey",
     component: "docs/link.vue",
   },

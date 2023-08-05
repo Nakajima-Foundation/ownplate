@@ -4,6 +4,7 @@ import Stripe from "stripe";
 import * as Sentry from "@sentry/node";
 
 import { Context } from "../models/TestType";
+import { RestaurantInfoData } from "../models/RestaurantInfo";
 import * as admin from "firebase-admin";
 
 const region = "JP"; // config
@@ -91,7 +92,7 @@ export const required_params = (params) => {
 
 export const get_restaurant = async (db: admin.firestore.Firestore, restaurantId: String) => {
   const snapshot = await db.doc(`/restaurants/${restaurantId}`).get();
-  const data = snapshot.data();
+  const data = snapshot.data() as RestaurantInfoData;
   if (!data) {
     throw new functions.https.HttpsError("invalid-argument", "There is no restaurant with this id.");
   }
@@ -107,6 +108,15 @@ export const get_restaurant_postage = async (db: admin.firestore.Firestore, rest
 export const get_restaurant_delivery_area = async (db: admin.firestore.Firestore, restaurantId: String) => {
   const snapshot = await db.doc(`/restaurants/${restaurantId}/delivery/area`).get();
   const data = snapshot.data() || {};
+  return data;
+};
+
+export const get_restaurant_line_config = async (db: admin.firestore.Firestore, restaurantId: String) => {
+  const snapshot = await db.doc(`/restaurants/${restaurantId}/private/line`).get();
+  const data = snapshot.data() as { client_secret: string, message_token: string };
+  if (!data) {
+    throw new functions.https.HttpsError("invalid-argument", "There is no restaurant with this id.");
+  }
   return data;
 };
 
