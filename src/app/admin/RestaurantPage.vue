@@ -1378,7 +1378,7 @@ export default defineComponent({
           return a.getTime() > b.getTime() ? 1 : -1;
         });
       }
-      newTemporaryClosure.value = null;
+      // newTemporaryClosure.value = null;
     };
     const copyPreviousDay = (index: string) => {
       const prevIndex = index === "1" ? 7 : Number(index) - 1;
