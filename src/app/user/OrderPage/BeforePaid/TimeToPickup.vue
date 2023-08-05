@@ -78,9 +78,6 @@ export default defineComponent({
     const dayIndex = ref(0);
     const time = ref(0);
 
-    const isPickup = computed(() => {
-      return props.orderInfo.isPickup;
-    });
     const exceptData = computed(() => {
       return (Object.values(props.orderInfo.menuItems) || []).reduce(
         (tmp: any, menu) => {
@@ -108,20 +105,8 @@ export default defineComponent({
       exceptData,
       ref({}),
     );
-    // for mo
-    const lastOrder = computed(() => {
-      return (todaysLast.value || {}).lastOrderDisplay;
-    });
 
     const disabledPickupTime = computed(() => {
-      if (isPickup.value) {
-        const now = Number(
-          moment(store.state.date).tz("Asia/Tokyo").format("HHmm")
-        );
-        const last = Number((todaysLast.value || {}).lastOrderStr || 0);
-        console.log(now, last);
-        return now > last;
-      }
       return false;
     });
 
@@ -172,7 +157,6 @@ export default defineComponent({
     return {
       // called by parent
       timeToPickup,
-      lastOrder,
 
       availableDays: days,
 

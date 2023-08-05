@@ -1,5 +1,5 @@
 <template>
-  <div v-if="showAddLine && enableLine" class="mt-6 text-center">
+  <div v-if="showAddLine" class="mt-6 text-center">
     <o-button @click="handleLineAuth" class="b-reset-tw">
       <div
         class="inline-flex h-12 items-center justify-center rounded-full px-6"
@@ -22,12 +22,6 @@ import { ownPlateConfig } from "@/config/project";
 import { useStore } from "vuex";
 
 export default defineComponent({
-  props: {
-    groupData: {
-      type: Object,
-      required: false,
-    },
-  },
   setup(props) {
     const store = useStore();
 
@@ -41,16 +35,9 @@ export default defineComponent({
       // return true;
       return !!ownPlateConfig.line && !store.state.claims?.line;
     });
-    const enableLine = computed(() => {
-      if (props.groupData?.enableLine === undefined) {
-        return true;
-      }
-      return props.groupData?.enableLine;
-    });
     return {
       handleLineAuth,
       showAddLine,
-      enableLine,
     };
   },
 });

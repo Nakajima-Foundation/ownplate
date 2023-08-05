@@ -278,10 +278,6 @@ export default defineComponent({
       type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
-    groupData: {
-      type: Object,
-      required: false,
-    },
     // promotion
     promotion: {
       type: Object,
@@ -386,9 +382,6 @@ export default defineComponent({
     const enableTip = computed(() => {
       if (props.shopInfo.isEC) {
         return false;
-      }
-      if (props.groupData) {
-        return props.groupData.enableTip;
       }
       return true;
     });

@@ -10,7 +10,7 @@
     <ThankYou />
 
     <!-- Line Button -->
-    <LineButton :groupData="groupData" />
+    <LineButton />
 
     <!-- Order Summary -->
     <div class="mx-6 mt-6 rounded-lg bg-white px-2 pt-6 pb-1 shadow">
@@ -97,7 +97,6 @@
             :shopInfo="shopInfo || {}"
             :orderItems="orderItems"
             :orderInfo="orderInfo || {}"
-            :groupData="groupData"
           ></order-info>
         </div>
 
@@ -284,10 +283,6 @@ export default defineComponent({
     },
     menuPagePath: {
       type: String,
-      required: false,
-    },
-    groupData: {
-      type: Object,
       required: false,
     },
   },

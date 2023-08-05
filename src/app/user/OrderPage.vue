@@ -23,9 +23,7 @@
         :paymentInfo="paymentInfo"
         :deliveryData="deliveryData"
         :mode="mode"
-        :groupData="groupData"
         :lastOrder="lastOrder"
-        :moSuspend="moSuspend"
         :menuPagePath="menuPagePath"
         @openTransactionsAct="openTransactionsAct"
         :promotions="promotions"
@@ -37,7 +35,6 @@
         :orderItems="orderItems"
         :paymentInfo="paymentInfo"
         :mode="mode"
-        :groupData="groupData"
         :menuPagePath="menuPagePath"
       />
     </template>

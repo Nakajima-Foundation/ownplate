@@ -51,7 +51,6 @@
             :orderItems="orderItems"
             :orderInfo="orderInfo || {}"
             :shippingCost="shippingCost"
-            :groupData="groupData"
             :promotion="selectedPromotion"
             :enablePromotion="enablePromotion"
             :discountPrice="discountPrice"
@@ -146,7 +145,6 @@
                 :isDelivery="orderInfo.isDelivery || false"
                 ref="timeRef"
                 @notAvailable="handleNotAvailable"
-                @updateDisabledPickupTime="updateDisabledPickupTime"
               />
             </div>
           </div>
@@ -202,40 +200,16 @@
                 :stripeJCB="stripeJCB"
               ></stripe-card>
 
-              <div
-                v-if="disabledPickupTime"
-                class="mt-4 h-full w-full rounded-lg bg-red-700 bg-opacity-10 p-3 text-xs font-bold text-red-700"
-              >
-                {{
-                  $t("mobileOrder.shopInfo.pickupNote", {
-                    lastOrder: timeRef && timeRef.lastOrder,
-                  }, 1)
-                }}
-              </div>
 
 							<div v-if="selectedPromotion && selectedPromotion.paymentRestrictions === 'stripe'">
-								<!-- おもちかえりの場合は以下のメッセージを表示-->
-								<div class="border-green-600 text-green-600 text-center font-bold mx-auto w-72 items-center mt-8 -mb-3 rounded-lg bg-green-600 bg-opacity-10 px-6 py-2" v-if="mode !== 'mo'">
+								<div class="border-green-600 text-green-600 text-center font-bold mx-auto w-72 items-center mt-8 -mb-3 rounded-lg bg-green-600 bg-opacity-10 px-6 py-2">
 									<div class="text-xs">{{ $t("order.promotionNoteCard") }}</div>
-								</div>
-								<!-- MobileOrderの場合は以下のメッセージを表示-->
-								<div v-else>
-								  <div class="border-green-600 text-green-600 text-center font-bold mx-auto w-72 items-center mt-8 -mb-3 rounded-lg bg-green-600 bg-opacity-10 px-6 py-2">
-									  <div class="text-xs">{{ $t("order.promotionNoteCardMo") }}</div>
-								  </div>
 								</div>
 							</div>
 
 							<div v-if="selectedPromotion && selectedPromotion.paymentRestrictions === 'instore'">
-								<!-- おもちかえりの場合は以下のメッセージを表示 -->
-								<div class="border-green-600 text-green-600 text-center font-bold mx-auto w-72 items-center mt-8 -mb-3 rounded-lg bg-green-600 bg-opacity-10 px-6 py-2"  v-if="mode !== 'mo'">
+								<div class="border-green-600 text-green-600 text-center font-bold mx-auto w-72 items-center mt-8 -mb-3 rounded-lg bg-green-600 bg-opacity-10 px-6 py-2">
 									<div class="text-xs">{{ $t("order.promotionNoteStore") }}</div>
-								</div>
-								<!-- MobileOrderの場合は以下のメッセージを表示 -->
-								<div v-else>
-								  <div class="border-green-600 text-green-600 text-center font-bold mx-auto w-72 items-center mt-8 -mb-3 rounded-lg bg-green-600 bg-opacity-10 px-6 py-2">
-									  <div class="text-xs">{{ $t("order.promotionNoteStoreMo") }}</div>
-								  </div>
 								</div>
 							</div>
 
@@ -246,29 +220,21 @@
                     notAvailable ||
                     notSubmitAddress ||
                     userMessageError ||
-                    disabledPickupTime ||
                     stripeSmallPayment ||
-                    moSuspend ||
                     isPaying ||
                     isPlacing
                   "
                   @click="handlePayment(true)"
-                  class="b-reset-tw"
-                  :class="orderInfo.isPickup ? 'pickup' : 'takeout'"
+                  class="b-reset-tw "
                 >
                   <div
                     class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal px-6 shadow"
                     style="min-width: 288px"
                   >
                     <ButtonLoading v-if="isPaying" />
-                    <div class="text-xl font-bold text-white" v-if="moSuspend">
-                      {{ $t("mobileOrder.suspendCartButton") }}
-                    </div>
-                    <div class="text-xl font-bold text-white" v-else>
+                    <div class="text-xl font-bold text-white">
                       {{
-                        mode === "mo"
-                          ? $t("order.placeOrderMo")
-                          : $t("order.placeOrder")
+                        $t("order.placeOrder")
                       }}
                       <!-- {{ $n(orderInfo.total + tip, "currency") }} -->
                     </div>
@@ -327,8 +293,6 @@
                     notAvailable ||
                     notSubmitAddress ||
                     userMessageError ||
-                    disabledPickupTime ||
-                    moSuspend ||
                     isPaying ||
                     isPlacing
                   "
@@ -341,20 +305,15 @@
                     style="min-width: 288px"
                   >
                     <ButtonLoading v-if="isPlacing" />
-                    <div class="text-xl font-bold text-white" v-if="moSuspend">
-                      {{ $t("mobileOrder.suspendCartButton") }}
-                    </div>
-                    <div class="text-xl font-bold text-white" v-else>
+                    <div class="text-xl font-bold text-white">
                       {{
-                        mode === "mo"
-                          ? $t("order.placeOrderNoPaymentMo")
-                          : $t("order.placeOrderNoPayment")
+                        $t("order.placeOrderNoPayment")
                       }}
                     </div>
                   </div>
                 </o-button>
               </div>
-              <div v-if="mode !== 'mo'">
+              <div>
                 <div class="mt-2 text-sm font-bold text-black text-opacity-60">
                   {{ $t("order.placeOrderNoPaymentNote") }}
                 </div>
@@ -501,14 +460,6 @@ export default defineComponent({
       type: String,
       required: false,
     },
-    groupData: {
-      type: Object,
-      required: false,
-    },
-    moSuspend: {
-      type: Boolean,
-      required: false,
-    },
   },
   data() {
     return {
@@ -526,7 +477,7 @@ export default defineComponent({
 
     const cardState = ref({});
     const memo = ref("");
-    const disabledPickupTime = ref(false);
+
     let tip = 0;
 
     // ref for refs
@@ -645,9 +596,6 @@ export default defineComponent({
         restaurantId
       );
     };
-    const updateDisabledPickupTime = (value: boolean) => {
-      disabledPickupTime.value = value;
-    };
     const handleOpenMenu = () => {
       ctx.emit("handleOpenMenu");
     };
@@ -742,7 +690,6 @@ export default defineComponent({
       isPlacing,
       cardState,
       memo,
-      disabledPickupTime,
 
       // refs
       ecCustomerRef,
@@ -773,7 +720,6 @@ export default defineComponent({
       // methods
       updateHome,
       updateLocation,
-      updateDisabledPickupTime,
       handleOpenMenu,
       handleNotAvailable,
       handleTipChange,
