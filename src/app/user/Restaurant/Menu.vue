@@ -298,12 +298,13 @@
       scroll="keep"
       :on-cancel="closeImage"
     >
-      <div class="px-2 text-center" @click.stop="closeImage()">
+      <div class="mx-6 rounded-lg bg-white p-5">
         <img
           :src="image"
           class="rounded-lg shadow-lg"
           @error="imageErrorHandler"
         />
+        
         <!-- ToDo [画像複数対応の場合] 切り替え拡大表示できるサムネイル一覧 -->
         <div v-if="false">
           <div class="mt-4 flex justify-center space-x-4">
@@ -334,12 +335,43 @@
             />
           </div>
         </div>
-        <div class="mt-4 text-left text-base font-bold text-white">
+        <div class="mt-6 text-left text-xl font-bold text-black">
           {{ title }}
         </div>
-        <div class="text-left text-sm font-bold text-white">
-          <Price :shopInfo="shopInfo" :menu="item" />
+        <div class="mt-3 flex justify-between">
+          <div class="text-left font-bold text-black">
+            <Price :shopInfo="shopInfo" :menu="item" />
+          </div>
         </div>
+
+        <div v-if="isSoldOut" class="-mb-3"></div>
+
+        <div v-else class="mt-1 flex items-center">
+          <div>
+            <a
+              @click="pullQuantities(0)"
+              class="removeCart inline-flex h-9 w-24 items-center justify-center rounded-full bg-red-700 bg-opacity-10"
+              :disabled="quantities[0] === 0"
+              :data-cart-product="item.id"
+            >
+              <i class="material-icons text-lg text-red-700">remove</i>
+            </a>
+          </div>
+          <div class="flex-1 text-center text-3xl text-op-teal">
+            {{ quantities[0] }}
+          </div>
+          <div>
+            <a
+              @click="pushQuantities(0)"
+              class="cardAdd inline-flex h-9 w-24 items-center justify-center rounded-full bg-op-teal bg-opacity-10"
+              :data-cart-product="item.id"
+            >
+              <i class="material-icons text-lg text-op-teal">add</i>
+            </a>
+          </div>
+        </div>
+
+        
       </div>
     </o-modal>
   </div>
