@@ -1288,6 +1288,7 @@
     "registerAsAFriend": "友達登録をお願いします",
     "authenticating": "LINE認証",
     "notifyMe": "LINEで通知を受けとる",
+    "notifyMeFromFriend": "お店LINEから通知を受けとる",
     "addFriend": "友だち追加",
     "addFriendDescription": "ご注文状況の通知を受けるには、「おもてなし.com 公式アカウント」を友だち追加する必要があります。"
   },

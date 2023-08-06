@@ -40,7 +40,6 @@ export const lineAuthURLBase = (
   const cookie = `line_params=${encodeURIComponent(
     params
   )}; expires=${date.toUTCString()}; path=/`;
-  console.log(cookie);
   document.cookie = cookie;
 
   const queryString = Object.keys(query)

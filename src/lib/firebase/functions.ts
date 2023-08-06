@@ -25,6 +25,7 @@ export const smaregiAuth = httpsCallable<{
 
 export const lineVerifyFriend = httpsCallable<{
   liffIndexId?: string
+  restaurantId?: string
 }, {
   result: boolean;
 }>(functionsJP, "lineVerifyFriend");

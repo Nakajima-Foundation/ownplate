@@ -8,16 +8,39 @@ import { enableNotification } from "../notificationConfig";
 import { lineValidateData } from "../../lib/types";
 import { validateLineValidate } from "../../lib/validator";
 
-const LINE_MESSAGE_TOKEN = process.env.LINE_MESSAGE_TOKEN;
+const getUidLineAndToken = async (db: admin.firestore.Firestore, context: functions.https.CallableContext, customerUid: string, restaurantId?: string) => {
+  if (restaurantId) {
+    const config = await utils.get_restaurant_line_config(db, restaurantId);
+    const lineUser = await utils.get_restaurant_line_user(db, restaurantId, customerUid);
+    
+    return {
+      uidLine: lineUser?.profile?.userId,
+      token: config?.message_token,
+    };
+  } else {
+    const isLine = customerUid.slice(0, 5) === "line:"; // is Liff user
+    const uidLine = isLine ? customerUid.slice(5) : context.auth?.token?.line?.slice(5);
+    return {
+      uidLine,
+      token: process.env.LINE_MESSAGE_TOKEN,
+    }
+  }
+};
 
-export const verifyFriend = async (db: admin.firestore.Firestore, context: functions.https.CallableContext) => {
+export const verifyFriend = async (db: admin.firestore.Firestore, data: {restaurantId?: string}, context: functions.https.CallableContext) => {
   const customerUid = utils.validate_customer_auth(context);
-  const isLine = customerUid.slice(0, 5) === "line:";
-  const uidLine = isLine ? customerUid.slice(5) : context.auth?.token?.line?.slice(5);
+  const { restaurantId } = data;
+  const {
+    uidLine,
+    token,
+  } = await getUidLineAndToken(db, context, customerUid, restaurantId);
+  if (!uidLine || !token) {
+    return { result: false }; // restaurant line
+  }
   try {
     const profile = await netutils.request(`https://api.line.me/v2/bot/profile/${uidLine}`, {
       headers: {
-        Authorization: `Bearer ${LINE_MESSAGE_TOKEN}`,
+        Authorization: `Bearer ${token}`,
       },
     });
     if (profile.userId && profile.displayName) {
@@ -30,9 +53,6 @@ export const verifyFriend = async (db: admin.firestore.Firestore, context: funct
   }
 };
 
-// user - omochikaeri
-// user - restaurant
-// admin - omochikaeri
 const getLineConfig = async (db: admin.firestore.Firestore, restaurantId?: string) => {
   if (restaurantId) {
     const restaurantData = await utils.get_restaurant(db, restaurantId);

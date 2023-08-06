@@ -90,7 +90,7 @@ export const required_params = (params) => {
   }
 };
 
-export const get_restaurant = async (db: admin.firestore.Firestore, restaurantId: String) => {
+export const get_restaurant = async (db: admin.firestore.Firestore, restaurantId: string) => {
   const snapshot = await db.doc(`/restaurants/${restaurantId}`).get();
   const data = snapshot.data() as RestaurantInfoData;
   if (!data) {
@@ -99,21 +99,30 @@ export const get_restaurant = async (db: admin.firestore.Firestore, restaurantId
   return data;
 };
 
-export const get_restaurant_postage = async (db: admin.firestore.Firestore, restaurantId: String) => {
+export const get_restaurant_postage = async (db: admin.firestore.Firestore, restaurantId: string) => {
   const snapshot = await db.doc(`/restaurants/${restaurantId}/ec/postage`).get();
   const data = snapshot.data() || {};
   return data;
 };
 
-export const get_restaurant_delivery_area = async (db: admin.firestore.Firestore, restaurantId: String) => {
+export const get_restaurant_delivery_area = async (db: admin.firestore.Firestore, restaurantId: string) => {
   const snapshot = await db.doc(`/restaurants/${restaurantId}/delivery/area`).get();
   const data = snapshot.data() || {};
   return data;
 };
 
-export const get_restaurant_line_config = async (db: admin.firestore.Firestore, restaurantId: String) => {
+export const get_restaurant_line_config = async (db: admin.firestore.Firestore, restaurantId: string) => {
   const snapshot = await db.doc(`/restaurants/${restaurantId}/private/line`).get();
   const data = snapshot.data() as { client_secret: string, message_token: string };
+  if (!data) {
+    throw new functions.https.HttpsError("invalid-argument", "There is no restaurant with this id.");
+  }
+  return data;
+};
+
+export const get_restaurant_line_user = async (db: admin.firestore.Firestore, restaurantId: string, uid: string) => {
+  const snapshot = await db.doc(`/restaurants/${restaurantId}/lineUsers/${uid}`).get();
+  const data = snapshot.data();
   if (!data) {
     throw new functions.https.HttpsError("invalid-argument", "There is no restaurant with this id.");
   }
