@@ -19,8 +19,6 @@ const LINE_MESSAGE_TOKEN = process.env.LINE_MESSAGE_TOKEN || "";
 const aws_key = process.env.AWS_ID;
 const aws_secret = process.env.AWS_SECRET;
 
-export const isEnabled = !!ownPlateConfig.line;
-
 // for customer
 export const sendMessageToCustomer = async (
   db: admin.firestore.Firestore,
@@ -54,14 +52,9 @@ export const sendMessageToCustomer = async (
   };
   const url = `https://${ownPlateConfig.hostName}/r/${restaurantId}/order/${orderId}?openExternalBrowser=1`;
 
-  // Not JP
-  if (!isEnabled) {
-    return await sms.pushSMS(aws_key, aws_secret, "OwnPlate", getMessage(url), orderData.phoneNumber, false);
-  }
   // for JP Mobile Order
   if (orderData.groupId && !/11111111$/.test(orderData.phoneNumber)) {
     const { groupId } = orderData;
-    // const groupUrl = `https://${ownPlateConfig.hostName}/${groupId}/r/${restaurantId}/order/${orderId}?openExternalBrowser=1`;
 
     const yearstr = moment().format("YYYY");
     const monthstr = moment().format("YYYY-MM");
