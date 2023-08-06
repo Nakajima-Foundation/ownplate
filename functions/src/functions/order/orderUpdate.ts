@@ -64,12 +64,11 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
   }
 
   try {
-    const restaurantDoc = await db.doc(`restaurants/${restaurantId}`).get();
-    const restaurant = restaurantDoc.data() || {};
-    if (restaurant.uid !== ownerUid) {
+    const restaurantData = await utils.get_restaurant(db, restaurantId);
+    if (restaurantData.uid !== ownerUid) {
       throw new functions.https.HttpsError("permission-denied", "The user does not have an authority to perform this operation.");
     }
-    const restaurantOwnerUid = restaurant["uid"];
+    const restaurantOwnerUid = restaurantData.uid;
 
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
     const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`);
@@ -139,7 +138,7 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
         params["time"] = moment(orderData.timeEstimated.toDate()).tz(utils.timezone).locale("ja").format("LLL");
         console.log("timeEstimated", params["time"]);
       }
-      await sendMessageToCustomer(db, msgKey, restaurant.restaurantName, orderData, restaurantId, orderId, params);
+      await sendMessageToCustomer(db, msgKey, restaurantData.hasLine, restaurantData.restaurantName, orderData, restaurantId, orderId, params);
     }
     return { result: true };
   } catch (error: any) {

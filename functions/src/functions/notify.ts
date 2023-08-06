@@ -23,6 +23,7 @@ const aws_secret = process.env.AWS_SECRET;
 export const sendMessageToCustomer = async (
   db: admin.firestore.Firestore,
   msgKey: string,
+  hasLine: boolean,
   restaurantName: string,
   orderData: admin.firestore.DocumentData,
   restaurantId: string,
