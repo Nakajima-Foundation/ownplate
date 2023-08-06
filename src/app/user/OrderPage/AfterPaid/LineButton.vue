@@ -1,5 +1,10 @@
 <template>
   <div v-if="showAddLine" class="mt-6 text-center">
+    <div class="mx-6 rounded-lg bg-black bg-opacity-5 p-4" if="false">
+      <div class="mt-2 text-sm">
+        {{ $t("order.lineMessage") }}
+      </div>
+    </div>
     <o-button @click="handleLineAuth" class="b-reset-tw">
       <div
         class="inline-flex h-12 items-center justify-center rounded-full px-6"
