@@ -77,6 +77,19 @@ export const sendMessageToCustomer = async (
 
     return await sms.pushSMS(process.env.MO_AWS_KEY, process.env.MO_AWS_SECRET, "Mobile Order", getMoMessage(), orderData.phoneNumber, true);
   }
+  // for JP restaurant push
+  if (hasLine) {
+    const config = await utils.get_restaurant_line_config(db, restaurantId);
+    const lineUser = await utils.get_restaurant_line_user(db, restaurantId, orderData.uid);
+    
+    const uidLine = lineUser?.profile?.userId;
+    const token =  config?.message_token;
+    if (uidLine && token) {
+      await line.sendMessageDirect(uidLine, getMessage(url), token);
+      return;
+    }
+  }
+  
   // for JP
   const { lineId, liffIndexId, liffId } = (await line.getLineId(db, orderData.uid)) as any;
 
