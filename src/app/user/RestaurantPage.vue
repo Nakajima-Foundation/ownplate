@@ -430,10 +430,6 @@ export default defineComponent({
       type: String,
       required: false,
     },
-    moBasePath: {
-      type: String,
-      required: false,
-    },
   },
   metaInfo() {
     // TODO: add area to header
