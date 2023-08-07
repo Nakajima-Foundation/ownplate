@@ -192,7 +192,7 @@
       <!-- Delivery and Printer and Discount -->
       <div
         class="mt-4 flex items-center justify-center space-x-4"
-        v-if="!simpleMode && isOwner && !isInMo"
+        v-if="!simpleMode && isOwner"
       >
         <div>
           <router-link :to="`/admin/restaurants/${restaurantid}/delivery`">
@@ -278,11 +278,7 @@
           <div>
             <span class="text-sm font-bold text-black text-opacity-40"
               >{{
-                $t(
-                  isInMo
-                    ? "mobileOrder.directoryStatus"
-                    : "admin.directory.status"
-                )
+                $t("admin.directory.status")
               }}:</span
             >
             <span class="text-sm font-bold text-green-600">{{
@@ -487,14 +483,6 @@ export default defineComponent({
       type: Boolean,
       required: true,
     },
-    isInMo: {
-      type: Boolean,
-      required: true,
-    },
-    moPrefix: {
-      type: String,
-      required: false,
-    },
     simpleMode: {
       type: Boolean,
       required: true,
@@ -528,9 +516,7 @@ export default defineComponent({
     const deleteRestaurant = () => {
       store.commit("setAlert", {
         title: props.shopInfo.restaurantName,
-        code: props.isInMo
-          ? "mobileOrder.reallyDelete"
-          : "editRestaurant.reallyDelete",
+        code: "editRestaurant.reallyDelete",
         callback: async () => {
           ctx.emit("deleteFromRestaurantLists", props.restaurantid);
 
