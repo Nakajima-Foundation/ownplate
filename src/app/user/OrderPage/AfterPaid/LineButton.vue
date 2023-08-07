@@ -1,26 +1,34 @@
 <template>
   <div v-if="showAddLine" class="mt-6 text-center">
-    <div class="mx-6 rounded-lg bg-black bg-opacity-5 p-4" if="false">
+    <div class="mx-6 rounded-lg bg-black bg-opacity-5 p-4" v-if="hasLine">
+      <button @click="handleLineAuth">
+        <div
+          class="inline-flex h-12 items-center justify-center rounded-full px-6"
+          style="background: #18b900"
+          >
+          <i class="fab fa-line mr-2 text-2xl text-white" />
+          <div class="text-base font-bold text-white">
+            {{ $t("line.notifyMeFromFriend") }}
+          </div>
+        </div>
+      </button>
       <div class="mt-2 text-sm">
         {{ $t("order.lineMessage") }}
       </div>
     </div>
-    <o-button @click="handleLineAuth" class="b-reset-tw">
-      <div
-        class="inline-flex h-12 items-center justify-center rounded-full px-6"
-        style="background: #18b900"
-      >
-        <i class="fab fa-line mr-2 text-2xl text-white" />
-        <div class="text-base font-bold text-white">
-          <span v-if="hasLine">
-            {{ $t("line.notifyMeFromFriend") }}
-          </span>
-          <span v-else>
+    <div v-else>
+      <button @click="handleLineAuth">
+        <div
+          class="inline-flex h-12 items-center justify-center rounded-full px-6"
+          style="background: #18b900"
+          >
+          <i class="fab fa-line mr-2 text-2xl text-white" />
+          <div class="text-base font-bold text-white">
             {{ $t("line.notifyMe") }}
-          </span>
+          </div>
         </div>
-      </div>
-    </o-button>
+      </button>
+    </div>
   </div>
 </template>
 
