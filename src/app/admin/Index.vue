@@ -6,7 +6,7 @@
     <!-- Welcome and Link -->
     <WelcomeAndLinks />
 
-    <EmailVerify v-if="!emailVerified && !isInMo" />
+    <EmailVerify v-if="!emailVerified" />
 
     <!-- News -->
     <News />
@@ -103,7 +103,7 @@
         <div class="pb-2">
           <span class="mb-2 text-xl font-bold text-black text-opacity-40">
             {{
-              $t(isInMo ? "mobileOrder.restaurantLists" : "admin.restaurant")
+              $t("admin.restaurant")
             }}
           </span>
         </div>
@@ -127,11 +127,7 @@
                   >
                     <i class="material-icons mr-2 text-lg text-op-teal">add</i>
                     <span class="text-sm font-bold text-op-teal">{{
-                      $t(
-                        isInMo
-                          ? "mobileOrder.addNewRestaurant"
-                          : "admin.addNewRestaurant"
-                      )
+                      $t("admin.addNewRestaurant")
                     }}</span>
                   </div>
                 </o-button>
@@ -148,54 +144,10 @@
                   class="flex h-14 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 text-op-teal"
                 >
                   <span class="text-base font-bold">{{
-                    $t(
-                      isInMo
-                        ? "mobileOrder.viewAllOrders"
-                        : "admin.viewAllOrders"
-                    )
+                    $t("admin.viewAllOrders")
                   }}</span>
                 </div>
               </router-link>
-            </div>
-
-            <div class="grid grid-cols-2 space-x-2">
-              <!-- All Report -->
-              <div v-if="isOwner && isInMo" class="mb-2">
-                <router-link to="/admin/report">
-                  <div
-                    class="flex h-14 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 text-op-teal"
-                  >
-                    <i class="material-icons mr-2 text-lg">description</i>
-                    <div class="text-sm font-bold">
-                      {{ $t("mobileOrder.viewAllReport") }}
-                    </div>
-                  </div>
-                </router-link>
-              </div>
-
-              <div v-if="isOwner && isInMo" class="mb-2">
-                <ExportProd
-                  :restaurantLists="restaurantLists"
-                  :restaurantItems="restaurantItems"
-                  :masterRestaurantId="groupData.restaurantId"
-                />
-              </div>
-            </div>
-
-            <div v-if="isOwner && isInMo" class="mb-2">
-              <IndexSuspend />
-            </div>
-            <div v-if="isOwner && isInMo" class="mb-2">
-              <router-link to="/admin/discounts">
-                <div
-                  class="flex h-14 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 text-op-teal"
-                >
-                  <span class="text-base font-bold">{{
-                    $t("mobileOrder.admin.discount")
-                  }}</span>
-                </div>
-              </router-link>
-
             </div>
 
             <a name="addMenu" />
@@ -263,7 +215,7 @@
         </div>
 
         <!-- Note -->
-        <Note :isInMo="isInMo" />
+        <Note />
 
         <!-- Mail Magazine-->
         <MailMagazine />
@@ -327,7 +279,6 @@ import Footer from "@/app/admin/Index/Footer.vue";
 import Partners from "@/app/admin/Index/Partners.vue";
 import SubAccount from "@/app/admin/Index/SubAccount.vue";
 import ExportProd from "@/app/admin/Index/ExportProd.vue";
-import IndexSuspend from "@/app/admin/Index/Suspend.vue";
 
 import { ping } from "@/lib/firebase/functions";
 
@@ -367,7 +318,6 @@ export default defineComponent({
     Footer,
     ToggleSwitch,
     ExportProd,
-    IndexSuspend,
   },
   props: {
     groupMasterRestaurant: {

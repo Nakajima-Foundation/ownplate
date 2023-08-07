@@ -58,7 +58,6 @@
       </template>
       <template v-else>
         <!-- for mo suspend -->
-        <AdminHeaderSuspend :shopInfo="shopInfo" />
       </template>
       <!-- Notifications -->
       <div>
@@ -73,7 +72,6 @@ import { defineComponent, computed, ref } from "vue";
 import BackButton from "@/components/BackButton.vue";
 import NotificationIndex from "@/app/admin/Notifications/Index.vue";
 import PreviewLink from "@/app/admin/common/PreviewLink.vue";
-import AdminHeaderSuspend from "@/app/admin/AdminHeaderSuspend.vue";
 
 import {
   useRestaurantId,
@@ -85,7 +83,6 @@ export default defineComponent({
     BackButton,
     NotificationIndex,
     PreviewLink,
-    AdminHeaderSuspend,
   },
   props: {
     shopInfo: {
