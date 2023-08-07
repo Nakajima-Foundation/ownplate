@@ -1154,7 +1154,7 @@ import TextForm from "@/app/admin/inputComponents/TextForm.vue";
 import State from "@/app/admin/inputComponents/State.vue";
 import NotificationIndex from "@/app/admin/Notifications/Index.vue";
 
-import QRCode from "@/app/admin/QRCodePage.vue";
+import QRCode from "@/app/admin/QRCode.vue";
 
 import ImageUpload from "@/components/ImageUpload.vue";
 
