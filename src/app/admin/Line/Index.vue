@@ -75,12 +75,12 @@
 
         <!-- Save Button -->
         <div class="mt-4 text-center">
-          <button @click="save">
+          <button @click="save" :disabled="isSaving">
             <div
               class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
             >
               <span class="text-base font-bold text-white">{{
-                $t("editCommon.save")
+                $t(isSaving ? "editCommon.saving" : "editCommon.save")
               }}</span>
             </div>
           </button>
@@ -133,7 +133,7 @@ import {
   getDoc,
   setDoc,
 } from "firebase/firestore";
-
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   components: {
@@ -155,6 +155,7 @@ export default defineComponent({
     },
   },
   setup(props) {
+    const router = useRouter();
 
     const { ownerUid, uid } = useAdminUids();
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
@@ -192,24 +193,32 @@ export default defineComponent({
       return clientId.value !== "" && client_secret.value !== "" && message_token.value !== "";
     });
 
-    const save = () => {
-      setDoc(
+    const isSaving = ref(false);
+    const save = async () => {
+      isSaving.value = true;
+      await Promise.all([setDoc(
         doc(db, `/restaurants/${props.shopInfo.restaurantId}/private/line`),
         {
           client_secret: client_secret.value || "",
           message_token: message_token.value || "",
         },
         { merge: true }
-      );
-      setDoc(
-        doc(db, `/restaurants/${props.shopInfo.restaurantId}`),
-        {
-          hasLine: hasLine.value,
-          message_token: message_token.value,
-        },
-        { merge: true }
-      )
-    };
+      ),
+                         setDoc(
+                           doc(db, `/restaurants/${props.shopInfo.restaurantId}`),
+                           {
+                             hasLine: hasLine.value,
+                             message_token: message_token.value,
+                           },
+                           { merge: true }
+                         )
+                        ]);
+      router.push({
+        path: `/admin/restaurants`,
+      });
+      isSaving.value = false;
+
+    }
     return {
       imagePopup,
       notFound: false,
@@ -224,6 +233,7 @@ export default defineComponent({
       hasLine,
       open,
       iType,
+      isSaving,
     };
   }
 });
