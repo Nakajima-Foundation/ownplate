@@ -23,14 +23,6 @@ export default defineComponent({
       type: Object,
       required: true,
     },
-    isInMo: {
-      type: Boolean,
-      required: true,
-    },
-    moPrefix: {
-      type: String,
-      required: false,
-    },
   },
   setup(props) {
     const link = previewLink(props);

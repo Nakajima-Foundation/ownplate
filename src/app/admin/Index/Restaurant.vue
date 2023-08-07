@@ -567,11 +567,7 @@ export default defineComponent({
       ctx.emit("positionDown", props.restaurantid);
     };
     const previewLink = computed(() => {
-      if (props.isInMo) {
-        return "/" + props.moPrefix + "/r/" + props.restaurantid;
-      } else {
-        return "/r/" + props.restaurantid;
-      }
+      return "/r/" + props.restaurantid;
     });
     return {
       requestState,
