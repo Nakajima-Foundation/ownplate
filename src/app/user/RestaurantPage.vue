@@ -339,7 +339,7 @@ import { orderCreated } from "@/lib/firebase/functions";
 
 import { order_status } from "@/config/constant";
 
-import { ownPlateConfig, moTitle, moPickup, enableCampaignBanner } from "@/config/project";
+import { ownPlateConfig, moTitle } from "@/config/project";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
@@ -524,9 +524,6 @@ export default defineComponent({
     
     const isDelivery = computed(() => {
       return howtoreceive.value === "delivery";
-    });
-    const isPickup = computed(() => {
-      return howtoreceive.value === "pickup";
     });
     
     const coverImage = computed(() => {
@@ -800,10 +797,6 @@ export default defineComponent({
           router.push({
             path: `/liff/${liffIndexId}/r/${restaurantId.value}/order/${res.id}`,
           });
-        } else if (props.mode === "mo") {
-          router.push({
-            path: `/${props.moPrefix}/r/${restaurantId.value}/order/${res.id}`,
-          });
         } else {
           router.push({
             path: `/r/${restaurantId.value}/order/${res.id}`,
@@ -1054,14 +1047,10 @@ export default defineComponent({
       closeCart,
       menuObj,
       cartItems,
-      menuPickupData,
+      menuPickupData, // not mo.
       enableCartModal,
 
       isInMo,
-      isPickup,
-
-      moPickup,
-      enableCampaignBanner,
 
       isFilterStock,
       isTransactionAct,

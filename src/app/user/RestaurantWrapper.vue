@@ -71,10 +71,7 @@ export default defineComponent({
           if (mode.value === "liff") {
             return !shopInfo.value.supportLiff;
           }
-          if (mode.value === "mo") {
-            return !shopInfo.value.groupId;
-          }
-          return !!shopInfo.value.groupId || !!shopInfo.value.supportLiff;
+          return !!shopInfo.value.supportLiff;
         })();
 
         if (!notFound.value) {
@@ -97,20 +94,9 @@ export default defineComponent({
       }
     );
 
-    const groupSuspend = ref<{isSuspendAllOrder?: boolean, isSuspendPickup?: boolean}>({});
-    if (props.groupData?.groupId) {
-      onSnapshot(
-        doc(db, `groups/${props.groupData?.groupId}/groupConfig/suspend`),
-        (snapshot) => {
-          groupSuspend.value = snapshot.data() || {};
-        }
-      );
-    }
-
     const { user } = useUserData();
 
-    const id = mode.value === 'mo' ? moPrefix as string : restaurantId.value;
-    const { promotions } = usePromotions(id, user);
+    const { promotions } = usePromotions(restaurantId.value, user);
     
     onUnmounted(() => {
       if (restaurant_detacher) {
