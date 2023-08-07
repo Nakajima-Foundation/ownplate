@@ -30,8 +30,8 @@ const getUpdateOrder = (newOrders: newOrderData[], order, options, rawOptions) =
       }
       updateOrderData[menuId].push(order[menuId][index]);
       const optionIndex = updateOrderData[menuId].length - 1;
-      updateOptions[menuId][optionIndex] = options[menuId][optionIndex];
-      updateRawOptions[menuId][optionIndex] = rawOptions[menuId][optionIndex];
+      updateOptions[menuId][optionIndex] = options[menuId][index];
+      updateRawOptions[menuId][optionIndex] = rawOptions[menuId][index];
     }
   });
 
