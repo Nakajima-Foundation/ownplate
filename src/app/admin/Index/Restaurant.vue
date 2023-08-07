@@ -173,7 +173,7 @@
           </div>
         </router-link>
 
-        <router-link :to="'/admin/restaurants/' + restaurantid + '/line'">
+        <router-link :to="'/admin/restaurants/' + restaurantid + '/linelist'">
           <div
             :class="
               lineEnable ? 'text-green-600' : 'text-black text-opacity-40'
