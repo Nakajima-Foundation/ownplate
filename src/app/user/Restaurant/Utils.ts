@@ -204,7 +204,6 @@ export const useMenu = (
   isInMo: ComputedRef<boolean | null>,
   category: Ref<string>,
   subCategory: Ref<string>,
-  groupData: any
 ) => {
   const allMenuObj = ref<{ [key: string]: DocumentData[] }>({});
   const menuCache = ref<{ [key: string]: any }>({});
@@ -227,9 +226,6 @@ export const useMenu = (
     }
   };
   const menuPath = computed(() => {
-    if (isInMo.value && groupData?.restaurantId) {
-      return `restaurants/${groupData.restaurantId}/menus`;
-    }
     return `restaurants/${restaurantId.value}/menus`;
   });
   const setCache = (cache: any) => {

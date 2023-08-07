@@ -434,10 +434,6 @@ export default defineComponent({
       type: String,
       required: false,
     },
-    groupData: {
-      type: Object,
-      required: false,
-    },
   },
   metaInfo() {
     // TODO: add area to header
@@ -538,7 +534,6 @@ export default defineComponent({
       isInMo,
       category,
       subCategory,
-      props.groupData
     );
     
     const { menuPickupData, availableDays, todaysLast } = usePickupTime(

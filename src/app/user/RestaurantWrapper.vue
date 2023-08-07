@@ -8,7 +8,6 @@
       :mode="mode"
       :moPrefix="moPrefix"
       :notFound="notFound"
-      :groupData="groupData"
       :promotions="promotions"
     />
     <NotFound v-else-if="notFound" />
@@ -35,12 +34,6 @@ import { usePromotions } from "@/utils/promotion";
 
 export default defineComponent({
   name: "RestaurantWrapper",
-  props: {
-    groupData: {
-      type: Object,
-      required: false,
-    },
-  },
   components: {
     NotFound,
   },
