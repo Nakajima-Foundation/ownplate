@@ -195,15 +195,6 @@ export default defineComponent({
       detacher.push(order_detacher);
     };
 
-    const disabledPickupTime = computed(() => {
-      if (orderInfo.value?.isPickup) {
-        const now = Number(moment(store.state.date).format("hhmm"));
-        const last = Number(props.shopInfo.moLastPickupTime || "2100");
-        return now >= last;
-      }
-      return false;
-    });
-
     const menuPagePath = computed(() => {
       if (inLiff.value) {
         return liffBasePath + "/r/" + restaurantId.value;
@@ -273,7 +264,6 @@ export default defineComponent({
       loadUserData,
       isUser,
       
-      disabledPickupTime,
       isLiffUser,
     };
   },
