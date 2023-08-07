@@ -22,7 +22,6 @@
         :orderItems="orderItems"
         :paymentInfo="paymentInfo"
         :deliveryData="deliveryData"
-        :lastOrder="lastOrder"
         :menuPagePath="menuPagePath"
         @openTransactionsAct="openTransactionsAct"
         :promotions="promotions"
@@ -204,21 +203,6 @@ export default defineComponent({
       }
       return false;
     });
-    const lastOrder = computed(() => {
-      if (props.shopInfo.moLastPickupTime) {
-        return [
-          (props.shopInfo.moLastPickupTime || "")
-            .split("")
-            .slice(0, 2)
-            .join(""),
-          (props.shopInfo.moLastPickupTime || "")
-            .split("")
-            .slice(2, 4)
-            .join(""),
-        ].join(":");
-      }
-      return "21:00";
-    });
 
     const menuPagePath = computed(() => {
       if (inLiff.value) {
@@ -290,7 +274,6 @@ export default defineComponent({
       isUser,
       
       disabledPickupTime,
-      lastOrder,
       isLiffUser,
     };
   },
