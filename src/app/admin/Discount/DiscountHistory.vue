@@ -16,8 +16,6 @@
             :shopInfo="shopInfo"
             :backLink="`/admin/restaurants/${shopInfo.restaurantId}/discounts`"
             :showSuspend="false"
-            :isInMo="isInMo"
-            :moPrefix="moPrefix"
 						backText="button.backToDiscounts"
         		iconText="arrow_back"
             />
@@ -148,14 +146,6 @@ export default defineComponent({
     BackButton,
   },
   props: {
-    isInMo: {
-      type: Boolean,
-      required: false,
-    },
-    moPrefix: {
-      type: String,
-      required: false,
-    },
     shopInfo: {
       type: Object,
       required: false,
@@ -164,19 +154,12 @@ export default defineComponent({
   setup(props) {
     const route = useRoute();
 
-    const id = props.isInMo ? props.moPrefix : props.shopInfo?.restaurantId;
-    const idKey = props.isInMo ? "groupId" : "restaurantId";
+    const id = props.shopInfo?.restaurantId;
+    const idKey = "restaurantId";
     const discountId = route.params.discountId as string;
 
     const { ownerUid, uid, isOwner } = useAdminUids();
-    if (props.isInMo) {
-      if (!isOwner.value) {
-        return notFoundResponse;
-      }
-      if (props.shopInfo) {
-        return notFoundResponse;
-      }
-    } else if (
+    if (
       !checkShopAccount(props.shopInfo || {}, ownerUid.value) || !ownerUid.value 
     ) {
       return notFoundResponse;
