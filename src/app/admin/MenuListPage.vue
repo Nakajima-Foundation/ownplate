@@ -11,8 +11,6 @@
         :shopInfo="shopInfo"
         backLink="/admin/restaurants/"
         :showSuspend="false"
-        :isInMo="isInMo"
-        :moPrefix="moPrefix"
       />
 
       <template v-if="showCategory">
@@ -153,16 +151,10 @@
                   index == 0 ? 'first' : menuLength - 1 === index ? 'last' : ''
                 "
                 :shopInfo="shopInfo"
-                :isInMo="isInMo"
-                :groupData="groupData"
                 @positionUp="positionUp($event)"
                 @positionDown="positionDown($event)"
                 @forkItem="forkMenuItem($event)"
                 @deleteItem="deleteItem($event)"
-                :preOrderAvaiable="{}"
-                :pickupAvaiable="{}"
-                :pickupStockData="{}"
-                :subCategoryId="subCategory"
               />
             </div>
           </div>
@@ -177,7 +169,6 @@
             :submitting="submitting"
             @addTitle="addTitle()"
             @addMenu="addMenu()"
-            v-if="!isInMo"
           />
 
           <div class="mt-2 text-center" v-if="menuCounter > 0">

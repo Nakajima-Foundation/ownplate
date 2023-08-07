@@ -25,7 +25,6 @@
             <o-checkbox
               :modelValue="soldOut"
               @update:modelValue="soldOutToggle"
-              :disabled="disabledEdit"
             >
               <div v-if="soldOut" class="text-sm font-bold text-red-700">
                 {{ $t("admin.itemSoldOut") }}
@@ -63,65 +62,6 @@
           </div>
         </a>
 
-        <div v-if="isInMo" class="mx-2 pb-2">
-          <div class="rounded bg-green-600 bg-opacity-5 p-2 text-xs">
-            <span
-              :class="
-                preOrderAvaiable['isPublic']
-                  ? 'font-bold text-green-600'
-                  : 'text-gray-500 text-opacity-60'
-              "
-            >
-              <o-checkbox
-                v-model="preOrderAvaiable['isPublic']"
-                @update:modelValue="updatePreOrder"
-              >
-                {{ $t("mobileOrder.admin.takeout") }}
-              </o-checkbox>
-            </span>
-            /
-            <span
-              :class="
-                pickupAvaiable['isPublic']
-                  ? 'font-bold text-green-600'
-                  : 'text-gray-500 text-opacity-60'
-              "
-            >
-              <o-checkbox
-                v-model="pickupAvaiable['isPublic']"
-                @update:modelValue="updatePickup"
-              >
-                {{ $t("mobileOrder.admin.pickup") }}
-              </o-checkbox>
-            </span>
-            (<span
-              :class="
-                pickupStockData['forcePickupStock']
-                  ? 'font-bold text-green-600'
-                  : 'text-gray-500 text-opacity-60'
-              "
-            >
-              {{ $t("mobileOrder.admin.forcePickupStock") }}
-            </span>
-            :
-            <span
-              :class="
-                pickupStockData['isStock']
-                  ? 'font-bold text-green-600'
-                  : 'text-gray-500 text-opacity-60'
-              "
-            >
-              <o-checkbox
-                v-model="pickupStockData['isStock']"
-                @update:modelValue="updatePickupStock"
-                :disabled="pickupStockData['forcePickupStock']"
-              >
-                {{ $t("mobileOrder.admin.pickupStock") }}
-              </o-checkbox> </span
-            >)
-          </div>
-        </div>
-
         <!-- Owner Memo -->
         <div v-if="menuitem.itemMemo" class="mx-2 pb-2">
           <div class="rounded bg-black bg-opacity-5 p-2 text-xs">
@@ -133,7 +73,7 @@
 
     <div
       class="mt-2 text-right lg:mt-0 lg:ml-4 lg:flex-shrink-0"
-      v-if="isOwner && !isInMo"
+      v-if="isOwner"
     >
       <!-- Card Actions -->
       <div class="inline-flex space-x-2">
@@ -233,31 +173,6 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    // mo
-    isInMo: {
-      type: Boolean,
-      required: true,
-    },
-    groupData: {
-      type: Object,
-      required: false,
-    },
-    preOrderAvaiable: {
-      type: Object,
-      required: false,
-    },
-    pickupAvaiable: {
-      type: Object,
-      required: false,
-    },
-    pickupStockData: {
-      type: Object,
-      required: false,
-    },
-    subCategoryId: {
-      type: String,
-      required: false,
-    },
   },
   emit: ["toEditMode", "positionUp", "positionDown", "forkItem", "deleteItem"],
   setup(props, ctx) {
@@ -279,14 +194,8 @@ export default defineComponent({
       }`;
       updateDoc(doc(db, path), {"soldOut": e});
     };
-    const disabledEdit = computed(() => {
-      return (
-        props.isInMo &&
-        props.groupData?.restaurantId !== restaurantId.value
-      );
-    });
     const linkEdit = () => {
-      if (isOwner.value && !disabledEdit.value) {
+      if (isOwner.value) {
         router.push({
           path: `/admin/restaurants/${restaurantId.value}/menus/${
             props.menuitem.id
@@ -313,39 +222,12 @@ export default defineComponent({
       });
     };
 
-    const updatePickup = async () => {
-      const path = `restaurants/${restaurantId.value}/pickup/data/subCategory/${
-        props.subCategoryId
-      }`;
-      const data = (await getDoc(doc(db, path))).data() || {};
-      data.data[props.menuitem.id].isPublic = (props?.pickupAvaiable || {})["isPublic"];
-      await setDoc(doc(db, path), data);
-    };
-    const updatePreOrder = async () => {
-      const path = `restaurants/${restaurantId.value}/preOrder/data/subCategory/${
-        props.subCategoryId
-      }`;
-      const data = (await getDoc(doc(db, path))).data() || {};
-      data.data[props.menuitem.id].isPublic =
-        (props?.preOrderAvaiable || {})["isPublic"];
-      await setDoc(doc(db, path), data);
-    };
-    const updatePickupStock = async () => {
-      const path = `restaurants/${restaurantId.value}/pickup/stock/subCategory/${
-        props.subCategoryId
-      }`;
-      const data = (await getDoc(doc(db, path))).data() || {};
-      data.data[props.menuitem.id].isStock = (props?.pickupStockData || {})["isStock"];
-      await setDoc(doc(db, path), data);
-    };
-
     return {
       isOwner,
 
       image,
       soldOut,
       soldOutToggle,
-      disabledEdit,
       linkEdit,
 
       positionUp,
@@ -355,9 +237,6 @@ export default defineComponent({
 
       smallImageErrorHandler,
 
-      updatePickup,
-      updatePreOrder,
-      updatePickupStock,
     };
   },
 });
