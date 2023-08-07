@@ -297,7 +297,7 @@ service cloud.firestore {
           allow read, write: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
           allow read, update: if isSuper(request);
         }
-        match /lineUsersData/${uid} {
+        match /lineUsersData/{uid} {
           allow read: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
           allow read: if isSuper(request);
         }
