@@ -96,45 +96,22 @@ interface CustomRoute {
   meta?: any;
 }
 
-const mopath2 =  mo_prefixes
-  .map((prefix) => {
-    const prePath = "/" + prefix;
-    return [
-      {
-        path: prePath,
-        component: "user/MoWrapper.vue",
-        children: [
-          {
-            path: prePath + "/*",
-            component: "user/Mo/MoClosed.vue",
-          }
-        ]
-      }
-    ]
-  }).flat();
-
 const mopath = mo_prefixes
   .map((prefix) => {
     const prePath = "/" + prefix;
     return [
       {
         path: prePath,
-        component: "user/MoWrapper.vue",
-        children: [
-          {
-            path: prePath,
-            component: "user/Mo/MoClosed.vue",
-          },
-          {
-            path: prePath + "/r/:restaurantId",
-            component: "user/RestaurantWrapper.vue",
-            children: getUserPagesWithCat(prefix),
-          },
-        ],
+        component: "user/Mo/MoClosed.vue",
+      },
+      {
+        path: prePath + "/:page(.*)",
+        component: "user/Mo/MoClosed.vue",
       },
     ];
   })
   .flat();
+console.log(mopath);
 
 export const customRoutes: CustomRoute[] = [
   {
