@@ -317,7 +317,7 @@ export const customRoutes: CustomRoute[] = [
             component: "admin/Delivery.vue",
           },
           {
-            path: "line",
+            path: "linelist",
             component: "admin/ManageLine.vue",
           },
           {
