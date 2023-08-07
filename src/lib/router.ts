@@ -345,10 +345,6 @@ export const customRoutes: CustomRoute[] = [
             component: "admin/Discount/DiscountHistory.vue",
           },
           {
-            path: "qrcode",
-            component: "admin/QRCodePage.vue",
-          },
-          {
             path: "printer",
             component: "admin/Printer.vue",
           },

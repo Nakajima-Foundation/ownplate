@@ -1250,6 +1250,7 @@
       "confirmDeletechild": "サブアカウントを解除します"
     },
     "line": {
+      "title": "LINE連携",
       "settings": "LINEチャンネル設定",
       "users":  "LINEユーザ一覧",
       "notice1": "お店のLINE公式アカウントとおもちかえり.comを連携させて、お店のLINE公式アカウントのトークでお客様に注文状況をお知らせすることができます。",

@@ -1116,6 +1116,9 @@
           </div>
         </o-button>
       </div>
+
+      <!-- QRCode -->
+      
     </div>
   </div>
 </template>

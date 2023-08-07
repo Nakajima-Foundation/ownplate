@@ -11,8 +11,6 @@
         :shopInfo="shopInfo"
         :backLink="`/admin/restaurants`"
         :showSuspend="false"
-        :isInMo="isInMo"
-        :moPrefix="moPrefix"
       />
 
       <!-- Body -->
