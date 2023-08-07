@@ -10,8 +10,6 @@
         :shopInfo="shopInfo"
         :backLink="'/admin/restaurants/'"
         :showSuspend="true"
-        :isInMo="isInMo"
-        :moPrefix="moPrefix"
       />
 
       <div class="sm:flex">
@@ -59,7 +57,7 @@
           <router-link
             :to="'/admin/restaurants/' + restaurantId + '/orders/' + order.id"
           >
-            <ordered-info :order="order" :isSuperView="true" :isInMo="isInMo" />
+            <ordered-info :order="order" :isSuperView="true" />
           </router-link>
         </template>
       </div>

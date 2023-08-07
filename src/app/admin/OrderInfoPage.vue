@@ -11,8 +11,6 @@
         :shopInfo="shopInfo"
         :backLink="parentUrl"
         :showSuspend="true"
-        :isInMo="isInMo"
-        :moPrefix="moPrefix"
         backText="button.backToOrderListPage"
         iconText="arrow_back"
       />
@@ -157,9 +155,6 @@
                   </div>
                 </div>
               </button>
-              <div v-if="isInMo && showTimePicker" class="mt-2 text-red-700 font-bold">
-                {{ $t("mobileOrder.admin.autoCancelAlert", {date: $d(autoCancelTime, "long") }) }}
-              </div>
             </div>
             <div class="mt-6 text-center"
                  v-if="cancelStatus"
@@ -187,7 +182,6 @@
                 :shopInfo="shopInfo"
                 :orderInfo="orderInfo"
                 :orderId="orderId"
-                :isInMo="isInMo"
                 :parentUrl="parentUrl"
                 :nationalPhoneURI="nationalPhoneURI"
                 :nationalPhoneNumber="nationalPhoneNumber"
@@ -250,7 +244,7 @@
                     nationalPhoneNumber
                   }}</a>
                 </div>
-                <div class="text-base" v-if="!isInMo">{{ orderInfo.name }}</div>
+                <div class="text-base">{{ orderInfo.name }}</div>
               </div>
               <div>
                 {{ $t("order.orderTimes") }}:
@@ -608,22 +602,6 @@ export default defineComponent({
       type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
-    groupData: {
-      type: Object,
-      required: false,
-    },
-    isInMo: {
-      type: Boolean,
-      required: true,
-    },
-    moPrefix: {
-      type: String,
-      required: false,
-    },
-    groupMasterRestaurant: {
-      type: Object,
-      required: false,
-    },
   },
   metaInfo() {
     return {
@@ -739,9 +717,7 @@ export default defineComponent({
           userLog.value = res.data();
         }
       });
-      const menuRestaurantId = props.groupData
-        ? props.groupData.restaurantId
-        : restaurantId.value;
+      const menuRestaurantId = restaurantId.value;
       const menuIds = Object.keys(orderInfo.value.menuItems);
       arrayChunk(menuIds, 10).map(async (arr) => {
         getDocs(
@@ -1011,7 +987,6 @@ export default defineComponent({
     });
     const availableOrderChange = computed(() => {
       return (
-        !props.isInMo &&
         orderInfo.value &&
         orderInfo.value.status === order_status.order_placed &&
         isNull(orderInfo.value.orderUpdatedAt)

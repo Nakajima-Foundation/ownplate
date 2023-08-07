@@ -49,7 +49,7 @@
               nationalPhoneNumber
             }}</a>
           </div>
-          <div class="text-base" v-if="!isInMo">{{ orders[0].name }}</div>
+          <div class="text-base">{{ orders[0].name }}</div>
         </div>
         <div>
           {{ $t("order.orderTimes") }}:
@@ -142,14 +142,6 @@ export default defineComponent({
     shopInfo: {
       type: Object,
       required: true,
-    },
-    isInMo: {
-      type: Boolean,
-      required: true,
-    },
-    moPrefix: {
-      type: String,
-      required: false,
     },
   },
   metaInfo() {
