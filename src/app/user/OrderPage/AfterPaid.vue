@@ -10,7 +10,7 @@
     <ThankYou />
 
     <!-- Line Button -->
-    <LineButton :shopInfo="shopInfo"/>
+    <LineButton :shopInfo="shopInfo" :hasFriends="hasFriends" :hasLine="hasLine" />
 
     <!-- Order Summary -->
     <div class="mx-6 mt-6 rounded-lg bg-white px-2 pt-6 pb-1 shadow">
@@ -280,6 +280,14 @@ export default defineComponent({
     menuPagePath: {
       type: String,
       required: false,
+    },
+    hasFriends: {
+      type: Boolean,
+      required: false,
+    },
+    hasLine: {
+      type: Boolean,
+      required: true,
     },
   },
   setup(props, ctx) {

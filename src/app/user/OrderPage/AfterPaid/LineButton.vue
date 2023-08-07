@@ -1,5 +1,5 @@
 <template>
-  <div v-if="showAddLine" class="mt-6 text-center">
+<div v-if="showAddLine" class="mt-6 text-center">
     <div class="mx-6 rounded-lg bg-black bg-opacity-5 p-4" v-if="hasLine">
       <button @click="handleLineAuth">
         <div
@@ -47,23 +47,21 @@ export default defineComponent({
       type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
+    hasFriends: {
+      type: Boolean,
+      required: false,
+    },
+    hasLine: {
+      type: Boolean,
+      required: true,
+    },
   },
   setup(props) {
     const store = useStore();
     
-    const hasLine = computed(() => {
-      return props.shopInfo.hasLine && props.shopInfo.lineClientId;
-    });
-
-    const hasFriends = ref<boolean | undefined>(undefined);
-    watch(hasLine, async () => {
-      const ret = await lineVerifyFriend({restaurantId: props.shopInfo.restaurantId});
-      hasFriends.value = ret.data.result;
-    }, { immediate: true });
-    
     const handleLineAuth = () => {
       const url = (() => {
-        if (hasLine) {
+        if (props.hasLine) {
           return lineAuthRestaurantURL(
             "/callback/" + props.shopInfo.restaurantId + "/line", {
               pathname: location.pathname,
@@ -79,15 +77,14 @@ export default defineComponent({
       location.href = url;
     };
     const showAddLine = computed(() => {
-      if (hasLine.value) {
-        return  hasFriends.value;
+      if (props.hasLine) {
+        return !props.hasFriends;
       }
       return !!ownPlateConfig.line && !store.state.claims?.line;
     });
     return {
       handleLineAuth,
       showAddLine,
-      hasLine,
     };
   },
 });
