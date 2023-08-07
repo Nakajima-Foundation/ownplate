@@ -1134,6 +1134,7 @@
     "registerAsAFriend": "Please register as a friend",
     "authenticating": "Authentication LINE",
     "notifyMe": "Recevoir notification LINE",
+    "notifyMeFromFriend": "Receive LINE from Restaurant",
     "addFriend": "Suivre",
     "addFriendDescription": "Pour recevoir des notifications LINE, vous devez suivre le canal officiel"
   },

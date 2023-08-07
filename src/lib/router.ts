@@ -321,6 +321,14 @@ export const customRoutes: CustomRoute[] = [
             component: "admin/ManageLine.vue",
           },
           {
+            path: "line",
+            component: "admin/Line/Index.vue",
+          },
+          {
+            path: "lineusers",
+            component: "admin/Line/users.vue",
+          },
+          {
             path: "discounthistory",
             component: "admin/Discount/DiscountHistory.vue",
           },
@@ -335,10 +343,6 @@ export const customRoutes: CustomRoute[] = [
           {
             path: "discounts/:discountId/history",
             component: "admin/Discount/DiscountHistory.vue",
-          },
-          {
-            path: "qrcode",
-            component: "admin/QRCodePage.vue",
           },
           {
             path: "printer",
@@ -505,6 +509,10 @@ export const customRoutes: CustomRoute[] = [
   },
   {
     path: "/callback/line",
+    component: "auth/LineCallback.vue",
+  },
+  {
+    path: "/callback/:restaurantId/line",
     component: "auth/LineCallback.vue",
   },
   {

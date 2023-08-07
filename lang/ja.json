@@ -1249,6 +1249,23 @@
       "selectRestaurant": "このアカウントが操作できるお店を選択してください。",
       "confirmDeletechild": "サブアカウントを解除します"
     },
+    "line": {
+      "title": "LINE連携",
+      "settings": "LINEチャンネル設定",
+      "users":  "LINEユーザ一覧",
+      "notice1": "お店のLINE公式アカウントとおもちかえり.comを連携させて、お店のLINE公式アカウントのトークでお客様に注文状況をお知らせすることができます。",
+      "notice2": "ご利用にはLINE開発者サイトで、LINEログインチャンネルとMessaging APIの設定が必要です。",
+      "notice3": "Messaging APIはLINE公式アカウントと同じものを使います。",
+      "notice4": "LINEログインチャンネルにとMessaging APIを「リンクされたボット」として登録しておくことが必要です。",
+      "notice5": "また、LINEログインの「コールバックURL」におもちかえりで指定するURLの登録が必要です。",
+      "loginClientId": "LINEログイン:チャンネルID",
+      "loginChannelSecret": "LINEログイン:チャンネルシークレット",
+      "messagingAccessToken": "Messaging API: チャンネルアクセストークン",
+      "callbackUrl": "LINEログイン:コールバックURL",
+      "showBelow": "設定の下のほうにあります",
+      "enabled": "有効にする",
+      "callbackURLCopyToLine": "この値をコピーしてLINE側に設定をしてください。"
+    },
     "smaregi": {
       "index": "スマレジ連携",
       "authenticating": "連携中",
@@ -1288,6 +1305,7 @@
     "registerAsAFriend": "友達登録をお願いします",
     "authenticating": "LINE認証",
     "notifyMe": "LINEで通知を受けとる",
+    "notifyMeFromFriend": "お店LINEから通知を受けとる",
     "addFriend": "友だち追加",
     "addFriendDescription": "ご注文状況の通知を受けるには、「おもてなし.com 公式アカウント」を友だち追加する必要があります。"
   },

@@ -33,6 +33,8 @@
         :orderItems="orderItems"
         :paymentInfo="paymentInfo"
         :menuPagePath="menuPagePath"
+        :hasFriends="hasFriends"
+        :hasLine="hasLine"
       />
     </template>
     <TransactionsActModal
@@ -67,6 +69,7 @@ import { onSnapshot, doc, deleteDoc, Unsubscribe } from "firebase/firestore";
 
 import { order_status, order_status_keys } from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
+import { lineVerifyFriend } from "@/lib/firebase/functions";
 
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
@@ -145,6 +148,7 @@ export default defineComponent({
     const loginVisible = ref(false);
     const transactions = ref();
     const orderInfo = ref<OrderInfoData>({} as OrderInfoData);
+    const hasFriends = ref<boolean | null>(null);
     const menuObj = ref<{ [key: string]: OrderMenuItemData } | null>(null);
     const detacher: Unsubscribe[] = [];
     const menuNotFound = ref<boolean | null>(null);
@@ -169,7 +173,12 @@ export default defineComponent({
       return getOrderItems(orderInfo.value, menuObj.value as any);
     });
     const restaurantId = useRestaurantId();
-    const loadUserData = () => {
+
+    const hasLine = computed(() => {
+      return !!(props.shopInfo.hasLine && props.shopInfo.lineClientId);
+    });
+
+    const loadUserData = async () => {
       const order_detacher = onSnapshot(
         doc(db, `restaurants/${restaurantId.value}/orders/${orderId}`),
         async (order) => {
@@ -193,6 +202,13 @@ export default defineComponent({
         }
       );
       detacher.push(order_detacher);
+
+      if (hasLine.value) {
+        const ret = await lineVerifyFriend({restaurantId: props.shopInfo.restaurantId});
+        hasFriends.value = ret.data.result;
+      } else {
+        hasFriends.value = null;
+      }
     };
 
     const menuPagePath = computed(() => {
@@ -265,6 +281,9 @@ export default defineComponent({
       isUser,
       
       isLiffUser,
+
+      hasFriends,
+      hasLine,
     };
   },
 });

@@ -113,6 +113,11 @@ import AdminHeader from "@/app/admin/AdminHeader.vue";
 import { useStore } from "vuex";
 import { useRouter, useRoute } from "vue-router";
 
+interface LineUserData {
+  id: string;
+  notify?: boolean;
+}
+
 export default defineComponent({
   components: {
     AdminHeader,
@@ -134,10 +139,6 @@ export default defineComponent({
     const router = useRouter();
     const route = useRoute();
 
-    interface LineUserData {
-      id: string;
-      notify?: boolean;
-    }
     const lineUsers = ref<LineUserData[]>([]);
 
     const { ownerUid, uid } = useAdminUids();

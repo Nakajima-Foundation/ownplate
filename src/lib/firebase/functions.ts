@@ -25,6 +25,7 @@ export const smaregiAuth = httpsCallable<{
 
 export const lineVerifyFriend = httpsCallable<{
   liffIndexId?: string
+  restaurantId?: string
 }, {
   result: boolean;
 }>(functionsJP, "lineVerifyFriend");
@@ -59,7 +60,7 @@ export const subAccountInvitationDeny = httpsCallable<{
 );
 
 export const lineValidate = httpsCallable<{
-  code: string, redirect_uri: string
+  code: string, redirect_uri: string, restaurantId?: string,
 }, {
   nonce: string,
   profile: {

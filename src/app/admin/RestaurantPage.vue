@@ -1116,6 +1116,11 @@
           </div>
         </o-button>
       </div>
+
+      <!-- QRCode -->
+      <div class="mx-6 mt-6 rounded-lg bg-black bg-opacity-5 p-4 text-center">
+        <QRCode :shopInfo="shopInfo" />
+      </div>
     </div>
   </div>
 </template>
@@ -1148,6 +1153,8 @@ import HoursInput from "@/app/admin/inputComponents/HoursInput.vue";
 import TextForm from "@/app/admin/inputComponents/TextForm.vue";
 import State from "@/app/admin/inputComponents/State.vue";
 import NotificationIndex from "@/app/admin/Notifications/Index.vue";
+
+import QRCode from "@/app/admin/QRCode.vue";
 
 import ImageUpload from "@/components/ImageUpload.vue";
 
@@ -1193,6 +1200,7 @@ export default defineComponent({
     State,
     BackButton,
     NotificationIndex,
+    QRCode,
     NotFound,
     PhoneEntry,
     Price,
