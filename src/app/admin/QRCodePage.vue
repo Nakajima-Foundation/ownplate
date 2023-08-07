@@ -1,76 +1,31 @@
 <template>
   <div>
-    <template v-if="notFound === null"></template>
-    <template v-else-if="notFound === true">
-      <not-found />
-    </template>
-    <div v-else-if="notFound === false">
-      <!-- QR Header Area -->
-      <div class="columns is-gapless">
-        <!-- Left Gap -->
-        <div class="column is-narrow w-6"></div>
-        <!-- Center Column -->
-        <div class="column">
-          <!-- Nav Bar -->
-            <!-- Back Button and Restaurant Profile -->
-            <AdminHeader
-              class="mx-6 mt-6 lg:flex lg:items-center"
-              :shopInfo="shopInfo"
-              backLink="/admin/restaurants/"
-              :showSuspend="false"
-            />
-        </div>
-        <!-- Right Gap -->
-        <div class="column is-narrow w-6"></div>
+    <!-- QR Code -->
+    <div class="p-6">
+      <div class="text-center" @click="download">
+        <vue-qrcode
+          :value="urlMenu"
+          :options="{ width: 160 }"
+          ref="qrcodeRef"
+          ></vue-qrcode>
       </div>
-
-      <!-- QR Codes -->
-      <div class="columns is-gapless">
-        <!-- Left Gap -->
-        <div class="column is-narrow w-6"></div>
-
-        <!-- Left Column -->
-        <div class="column">
-          <div class="ml-6 mr-6">
-            <!-- Menu Page -->
-            <div class="mt-6 pb-2 text-xl font-bold text-black text-opacity-40">
-              {{ $t("admin.qrcode.restaurant") }}
-            </div>
-            <div class="rounded-lg bg-white pl-6 pr-6 pt-6 pb-6 shadow-md">
-              <!-- QR Code -->
-              <div class="text-center" @click="download">
-                <vue-qrcode
-                  :value="urlMenu"
-                  :options="{ width: 160 }"
-                  ref="qrcodeRef"
-                ></vue-qrcode>
-              </div>
-              <!-- Link -->
-              <div class="text-center">
-                <a :href="urlMenu" target="_blank">
-                  <div
-                    class="inline-flex min-h-[36px] cursor-pointer items-center justify-center px-2 font-bold text-op-teal"
-                  >
-                    {{ shopInfo.restaurantName }}
-                  </div>
-                </a>
-              </div>
-              <!-- Download -->
-              <div class="text-center" @click="download">
-                <div
-                  class="inline-flex min-h-[36px] cursor-pointer items-center justify-center px-2 font-bold text-op-teal"
-                >
-                  {{ $t("admin.qrcode.download") }}
-                </div>
-              </div>
-            </div>
+      <!-- Link -->
+      <div class="text-center">
+        <a :href="urlMenu" target="_blank">
+          <div
+            class="inline-flex min-h-[36px] cursor-pointer items-center justify-center px-2 font-bold text-op-teal"
+            >
+            {{ shopInfo.restaurantName }}
           </div>
+        </a>
+      </div>
+      <!-- Download -->
+      <div class="text-center" @click="download">
+        <div
+          class="inline-flex min-h-[36px] cursor-pointer items-center justify-center px-2 font-bold text-op-teal"
+          >
+          {{ $t("admin.qrcode.download") }}
         </div>
-
-        <!-- Right Column -->
-        <div class="column"></div>
-        <!-- Right Gap -->
-        <div class="column is-narrow w-6"></div>
       </div>
     </div>
   </div>
@@ -78,30 +33,9 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
-import AdminHeader from "@/app/admin/AdminHeader.vue";
 import { shareUrlAdmin } from "@/utils/utils";
 
-import { useAdminUids, notFoundResponse } from "@/utils/utils";
-import { checkShopAccount } from "@/utils/userPermission";
-
-import NotFound from "@/components/NotFound.vue";
-
 export default defineComponent({
-  components: {
-    AdminHeader,
-    NotFound,
-  },
-  metaInfo() {
-    return {
-      title: this.shopInfo.restaurantName
-        ? [
-            "Admin QRCode",
-            this.shopInfo.restaurantName,
-            this.defaultTitle,
-          ].join(" / ")
-        : this.defaultTitle,
-    };
-  },
   props: {
     shopInfo: {
       type: Object,
@@ -109,11 +43,6 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const { ownerUid } = useAdminUids();
-    if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
-      return notFoundResponse;
-    }
-
     const urlMenu = shareUrlAdmin(props);
     const qrcodeRef = ref();
 
