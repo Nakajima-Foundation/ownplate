@@ -10,8 +10,6 @@
         :shopInfo="shopInfo"
         backLink="/admin/restaurants/"
         :showSuspend="true"
-        :isInMo="isInMo"
-        :moPrefix="moPrefix"
       />
 
       <div class="sm:flex">
@@ -135,18 +133,6 @@ export default defineComponent({
       type: Object,
       required: true,
     },
-    isInMo: {
-      type: Boolean,
-      required: true,
-    },
-    moPrefix: {
-      type: String,
-      required: false,
-    },
-    groupMasterRestaurant: {
-      type: Object,
-      required: false,
-    },
   },
   setup(props) {
     const store = useStore();
@@ -209,32 +195,8 @@ export default defineComponent({
       order_detacher();
       orders.value = [];
 
-      // const queryKey = (queryIsPlacedDate.value ? "orderPlacedAt" :  "timePickupForQuery");
       const queryKey = queryIsPlacedDate.value ? "orderPlacedAt" : "timePlaced";
-      /*
-      const timeConv = (t, offset) => {
-        return new Date(t.getTime() + offset * 3600 * 1000);
-        };
-      */
       const queryConditions = (() => {
-        /*
-        if (queryIsPlacedDate.value && props.isInMo) {
-          // console.log(timeConv(lastSeveralDays.value[dayIndex.value].date, -15))
-          // console.log(timeConv(lastSeveralDays.value[dayIndex.value].date, 9))
-          return [
-            where(
-              queryKey,
-              ">=",
-              timeConv(lastSeveralDays.value[dayIndex.value].date, -15)
-            ),
-            where(
-              queryKey,
-              "<",
-              timeConv(lastSeveralDays.value[dayIndex.value].date, 9)
-            ),
-          ];
-        }
-        */
         const q = [
           where(queryKey, ">=", lastSeveralDays.value[dayIndex.value].date),
         ];

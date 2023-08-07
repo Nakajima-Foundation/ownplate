@@ -22,33 +22,21 @@
           </div>
         </a>
       </div>
-      <div class="mt-2 font-bold" v-if="!isInMo">
+      <div class="mt-2 font-bold">
         {{ orderInfo.name }}
       </div>
-    </div>
-    
-    <div v-if="enableCancelReason" class="mt-2">
-      <o-select v-model="cancelReason" rootClass="m-auto">
-        <option
-          v-for="(reason, key) in cancelReasons"
-          :value="reason.key"
-          :key="key"
-          >
-          {{ reason.message }}
-        </option>
-      </o-select>
     </div>
     
     <!-- Cancel -->
     <div class="mt-4 text-center">
       <button
-        :disabled="updating || !enabled"
+        :disabled="updating"
         @click="handleCancel"
         class="b-reset-tw"
         >
         <div
           class="inline-flex h-12 items-center justify-center rounded-full bg-red-700 px-6"
-          :class="updating || !enabled ? 'bg-opacity-10' : ''"
+          :class="updating ? 'bg-opacity-10' : ''"
           >
           <ButtonLoading v-if="updating" />
           <div class="text-base font-bold text-white">
@@ -94,13 +82,8 @@ import ButtonLoading from "@/components/Button/Loading.vue";
 
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import {
-  enableReason
-} from "@/config/project";
 
 import {
-  placedCancelReasons,
-  acceptedCancelReasons,
   order_status,
 } from "@/config/constant";
 
@@ -145,15 +128,6 @@ export default defineComponent({
 
     const updating = ref(false);
 
-    const enableCancelReason = props.isInMo && enableReason;
-    const cancelReason = ref("");
-    const selectedReason = computed(() => {
-      return cancelReason.value !== "";
-    });
-    const enabled = computed(() => {
-      return !enableCancelReason || selectedReason.value;
-    });
-    
     const sendRedunded = () => {
       analyticsUtil.sendRedunded(
         props.orderInfo,
@@ -164,16 +138,12 @@ export default defineComponent({
     };
 
     const handleCancel = async () => {
-      if (!enabled.value) {
-        return ;
-      }
       
       try {
         updating.value = true;
         const { data } = await stripeCancelIntent({
           restaurantId: props.shopInfo.restaurantId,
           orderId: props.orderId,
-          cancelReason: cancelReason.value,
         });
         sendRedunded();
         router.push(props.parentUrl);
@@ -191,14 +161,9 @@ export default defineComponent({
       ctx.emit("close")
     };
 
-    const cancelReasons = props.orderInfo.status === order_status.order_placed ? placedCancelReasons : acceptedCancelReasons;
     return {
       handleCancel,
       updating,
-      enabled,
-      enableCancelReason,
-      cancelReasons,
-      cancelReason,
       closeCancel,
     };
 

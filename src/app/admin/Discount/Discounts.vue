@@ -16,8 +16,6 @@
             :shopInfo="shopInfo"
             backLink="/admin/restaurants/"
             :showSuspend="false"
-            :isInMo="isInMo"
-            :moPrefix="moPrefix"
             />
       </div>
       <!-- Right Gap -->
@@ -43,7 +41,7 @@
 				<div class="text-sm text-black text-opacity-40 font-bold">
         	{{ $t("admin.promotion.name") }}: 
 				</div>
-				<router-link :to="isInMo ? `/admin/discounts/${promotion.promotionId}` : `/admin/restaurants/${shopInfo.restaurantId}/discounts/${promotion.promotionId}`">
+				<router-link :to="`/admin/restaurants/${shopInfo.restaurantId}/discounts/${promotion.promotionId}`">
 				<div class="inline-flex items-center ml-1 font-bold text-op-teal">
 				{{ promotion.promotionName }}<i class="material-icons ml-1">edit</i></div></router-link>
 			</div>
@@ -116,7 +114,7 @@
 				</div>
 			</div>
 
-      <router-link :to="isInMo ? `/admin/discounts/${promotion.promotionId}/history` : `/admin/restaurants/${shopInfo.restaurantId}/discounts/${promotion.promotionId}/history`">
+      <router-link :to="`/admin/restaurants/${shopInfo.restaurantId}/discounts/${promotion.promotionId}/history`">
 				<div class="flex items-center justify-center mt-3 h-9 w-24 rounded-full bg-black bg-opacity-5 font-bold text-op-teal">{{ $t("admin.promotion.history") }}</div></router-link>
     </div>
 
@@ -169,14 +167,6 @@ export default defineComponent({
     BackButton,
   },
   props: {
-    isInMo: {
-      type: Boolean,
-      required: false,
-    },
-    moPrefix: {
-      type: String,
-      required: false,
-    },
     shopInfo: {
       type: Object,
       required: false,
@@ -184,19 +174,12 @@ export default defineComponent({
     
   },
   setup(props) {
-    const id = props.isInMo ? props.moPrefix : props.shopInfo?.restaurantId;
+    const id = props.shopInfo?.restaurantId;
     const { promotionDataSet } = usePromotionsForAdmin(id as string);
 
     const { ownerUid, uid, isOwner } = useAdminUids();
-    console.log(props.isInMo);
-    if (props.isInMo) {
-      if (!isOwner.value) {
-        return notFoundResponse;
-      }
-      if (props.shopInfo) {
-        return notFoundResponse;
-      }
-    } else if (
+
+    if (
       !checkShopAccount(props.shopInfo || {}, ownerUid.value) || !ownerUid.value 
     ) {
       return notFoundResponse;

@@ -182,7 +182,6 @@
                 @deleteFromRestaurantLists="deleteFromRestaurantLists($event)"
                 :isOwner="isOwner"
                 :moPrefix="moPrefix"
-                :isInMo="isInMo"
               />
             </div>
 
@@ -327,10 +326,6 @@ export default defineComponent({
     groupData: {
       type: Object,
       required: false,
-    },
-    isInMo: {
-      type: Boolean,
-      required: true,
     },
     moPrefix: {
       type: String,

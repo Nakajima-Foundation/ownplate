@@ -24,7 +24,6 @@
 
     <div class="mt-4 flex lg:mt-0">
       <!-- Suspend Button -->
-      <template v-if="!isInMo">
         <o-button
           tag="router-link"
           :to="`/admin/restaurants/${restaurantId}/suspend`"
@@ -55,10 +54,6 @@
             </div>
           </div>
         </o-button>
-      </template>
-      <template v-else>
-        <!-- for mo suspend -->
-      </template>
       <!-- Notifications -->
       <div>
         <notification-index :shopInfo="shopInfo" />
@@ -96,14 +91,6 @@ export default defineComponent({
     showSuspend: {
       type: Boolean,
       required: true,
-    },
-    isInMo: {
-      type: Boolean,
-      required: true,
-    },
-    moPrefix: {
-      type: String,
-      required: false,
     },
     iconText: {
       type: String,

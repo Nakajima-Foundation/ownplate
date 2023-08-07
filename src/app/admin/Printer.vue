@@ -11,8 +11,6 @@
         :shopInfo="shopInfo"
         backLink="/admin/restaurants/"
         :showSuspend="false"
-        :isInMo="isInMo"
-        :moPrefix="moPrefix"
       />
 
     <div>
@@ -93,14 +91,6 @@ export default defineComponent({
     shopInfo: {
       type: Object,
       required: true,
-    },
-    isInMo: {
-      type: Boolean,
-      required: true,
-    },
-    moPrefix: {
-      type: String,
-      required: false,
     },
   },
   setup(_, ctx) {
