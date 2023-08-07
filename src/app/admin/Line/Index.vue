@@ -1,0 +1,231 @@
+<template>
+  <div>
+    <div v-if="notFound == null"></div>
+    <div v-else-if="notFound == true">
+      <NotFound />
+    </div>
+    <div v-else>
+      <!-- Header -->
+      <AdminHeader
+        class="mx-6 mt-6 lg:flex lg:items-center"
+        :shopInfo="shopInfo"
+        :backLink="`/admin/restaurants`"
+        :showSuspend="false"
+        :isInMo="isInMo"
+        :moPrefix="moPrefix"
+      />
+
+      <!-- Body -->
+      <div class="grid-col-1 mx-6 mt-6 space-y-4 lg:mx-auto lg:max-w-2xl">
+        <!-- Title -->
+        <div
+          class="text-xl font-bold text-black text-opacity-30"
+        >
+          {{ $t("admin.line.settings") }}
+        </div>
+      </div>
+      <div class="m-6 font-bold">
+        <ul>
+          <li>{{  $t("admin.line.notice1") }}</li>
+          <li>{{  $t("admin.line.notice2") }}</li>
+          <li>{{  $t("admin.line.notice3") }}</li>
+          <li>{{  $t("admin.line.notice4") }}</li>
+          <li>{{  $t("admin.line.notice5") }}</li>
+        </ul>
+      </div>
+
+      <hr class="my-4 border border-solid border-black border-opacity-5" />
+
+      <div class="m-6">
+        <div class="pb-2 text-sm font-bold">
+          {{ $t("admin.line.loginClientId") }} <span class="cursor-pointer" @click="open('loginClientId')">?</span>
+        </div> 
+        <div>
+          <o-input type="text" v-model="clientId"/>
+        </div>
+
+        <div class="pb-2 text-sm font-bold mt-2">
+          {{ $t("admin.line.loginChannelSecret") }} <span class="cursor-pointer" @click="open('loginChannelSecret')">?</span>
+        </div>
+        <div>
+          <o-input type="text" v-model="client_secret"/>
+        </div>
+        
+        <div class="pb-2 text-sm font-bold mt-2">
+          {{ $t("admin.line.messagingAccessToken") }} <span class="cursor-pointer" @click="open('messagingAccessToken')">?</span>
+        </div>
+        <div>
+          <o-input type="text" v-model="message_token"/>
+        </div>
+        
+        <hr class="my-4 border border-solid border-black border-opacity-5" />
+        
+        <div class="pb-2 text-sm font-bold">
+          {{ $t("admin.line.callbackUrl") }} <span class="cursor-pointer" @click="open('callback')">?</span>
+        </div>
+        
+        <div>
+          <o-input type="text" :modelValue="callbackUrl"/>
+        </div>
+
+
+        <div class="pb-2 text-sm font-bold mt-4">
+          <o-checkbox v-model="hasLine" :disabled="!ok" /> {{ $t("admin.line.enabled") }}
+        </div>
+
+        <!-- Save Button -->
+        <div class="mt-4 text-center">
+          <button @click="save">
+            <div
+              class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
+            >
+              <span class="text-base font-bold text-white">{{
+                $t("editCommon.save")
+              }}</span>
+            </div>
+          </button>
+          
+        </div>        
+        
+      </div>
+      <o-modal
+        :width="488"
+        scroll="keep"
+        :on-cancel="closeImage"
+        v-model:active="imagePopup"
+        >
+        <div class="bg-white">
+          <div v-if="iType == 'loginClientId'">
+            <img src="/images/lines/lineLoginId.png" class="p-4" />
+          </div>
+          <div v-if="iType == 'loginChannelSecret'">
+            <img src="/images/lines/lineLoginHeader.png" class="p-4" />
+            <div class="bg-gray-200">
+              {{ $t("admin.line.showBelow") }}
+            </div>
+            <img src="/images/lines/lineLoginSecret.png" class="p-4" />
+          </div>
+          <div v-if="iType == 'messagingAccessToken'">
+            <img src="/images/lines/lineMessageToken.png" class="p-4" />
+            <img src="/images/lines/lineMessageHeader.png" class="p-4" />
+          </div>
+          <div v-if="iType == 'callback'">
+            <img src="/images/lines/lineLoginCallback.png" class="p-4" />
+          </div>
+        </div>
+      </o-modal>
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent, ref, onUnmounted, computed } from "vue";
+
+import { checkShopAccount } from "@/utils/userPermission";
+import { useAdminUids, useRestaurantId, notFoundResponse } from "@/utils/utils";
+
+import NotFound from "@/components/NotFound.vue";
+import AdminHeader from "@/app/admin/AdminHeader.vue";
+
+import { db } from "@/lib/firebase/firebase9";
+import {
+  doc,
+  getDoc,
+  setDoc,
+} from "firebase/firestore";
+
+
+export default defineComponent({
+  components: {
+    AdminHeader,
+    NotFound,
+  },
+  props: {
+    shopInfo: {
+      type: Object,
+      required: true,
+    },
+    isInMo: {
+      type: Boolean,
+      required: true,
+    },
+    moPrefix: {
+      type: String,
+      required: false,
+    },
+  },
+  setup(props) {
+
+    const { ownerUid, uid } = useAdminUids();
+    if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
+      return notFoundResponse;
+    }
+
+    // {{ shopInfo.hasLine}}
+    const hasLine = ref(props.shopInfo.hasLine|| false);
+    const clientId = ref(props.shopInfo.lineClientId);
+    const client_secret = ref("");
+    const message_token = ref("");
+
+    // /restaurants/${restaurantId}/private/line
+    getDoc(doc(db, `/restaurants/${props.shopInfo.restaurantId}/private/line`)).then((doc) => {
+      const data = doc.data();
+      if (data) {
+        client_secret.value = data.client_secret;
+        message_token.value = data.message_token;
+      }
+    });
+    const imagePopup = ref(false);
+    const iType = ref("");
+    
+    const open = (imageType: string) => {
+      imagePopup.value = true;
+      iType.value = imageType;
+    };
+    const closeImage = () => {
+      imagePopup.value = false;
+    };
+
+    const callbackUrl = location.origin + "/callback/" + props.shopInfo.restaurantId + "/line";
+
+    const ok = computed(() => {
+      return clientId.value !== "" && client_secret.value !== "" && message_token.value !== "";
+    });
+
+    const save = () => {
+      setDoc(
+        doc(db, `/restaurants/${props.shopInfo.restaurantId}/private/line`),
+        {
+          client_secret: client_secret.value || "",
+          message_token: message_token.value || "",
+        },
+        { merge: true }
+      );
+      setDoc(
+        doc(db, `/restaurants/${props.shopInfo.restaurantId}`),
+        {
+          hasLine: hasLine.value,
+          message_token: message_token.value,
+        },
+        { merge: true }
+      )
+    };
+    return {
+      imagePopup,
+      notFound: false,
+      clientId,
+      client_secret,
+      message_token,
+      ok,
+      save,
+      closeImage,
+      
+      callbackUrl,
+      hasLine,
+      open,
+      iType,
+    };
+  }
+});
+
+</script>

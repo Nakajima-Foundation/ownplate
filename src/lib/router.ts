@@ -321,6 +321,10 @@ export const customRoutes: CustomRoute[] = [
             component: "admin/ManageLine.vue",
           },
           {
+            path: "line",
+            component: "admin/Line/Index.vue",
+          },
+          {
             path: "discounthistory",
             component: "admin/Discount/DiscountHistory.vue",
           },
