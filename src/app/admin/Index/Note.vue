@@ -11,20 +11,12 @@
       <div>
         <div class="pb-2 text-base font-bold text-black text-opacity-60">
           {{
-            $t(
-              isInMo
-                ? "mobileOrder.userRestaurantsTitle"
-                : "admin.notes.userRestaurantsTitle"
-            )
+            $t("admin.notes.userRestaurantsTitle")
           }}
         </div>
         <div class="text-base text-black text-opacity-60">
           {{
-            $t(
-              isInMo
-                ? "mobileOrder.userRestaurantsBody"
-                : "admin.notes.userRestaurantsBody"
-            )
+            $t("admin.notes.userRestaurantsBody")
           }}
         </div>
       </div>
@@ -47,10 +39,6 @@
 import { defineComponent } from "vue";
 export default defineComponent({
   props: {
-    isInMo: {
-      type: Boolean,
-      required: true,
-    },
   },
 });
 </script>

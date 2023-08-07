@@ -15,8 +15,6 @@
           </div>
           <PreviewLink
             :shopInfo="shopInfo"
-            :isInMo="isInMo"
-            :moPrefix="moPrefix"
           />
         </div>
 

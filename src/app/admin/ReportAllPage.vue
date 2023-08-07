@@ -212,7 +212,6 @@ import moment from "moment-timezone";
 import BackButton from "@/components/BackButton.vue";
 import DownloadCsv from "@/components/DownloadCSV.vue";
 import ReportDetails from "@/app/admin/Order/ReportAllDetails.vue";
-import PreviewLink from "@/app/admin/common/PreviewLink.vue";
 import NotFound from "@/components/NotFound.vue";
 
 import { ownPlateConfig } from "@/config/project";
@@ -244,7 +243,6 @@ export default defineComponent({
     BackButton,
     DownloadCsv,
     ReportDetails,
-    PreviewLink,
     NotFound,
   },
   props: {
