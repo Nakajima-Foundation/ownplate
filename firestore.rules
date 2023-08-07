@@ -293,6 +293,10 @@ service cloud.firestore {
           allow read, write: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
           allow read, update: if isSuper(request);
         }
+        match /private/line {
+          allow read, write: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
+          allow read, update: if isSuper(request);
+        }
         match /printLog/{logId} {
           allow read: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
           allow read: if isSuper(request);
