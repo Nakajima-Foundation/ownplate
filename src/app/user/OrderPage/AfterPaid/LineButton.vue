@@ -1,6 +1,7 @@
 <template>
 <div v-if="showAddLine" class="mt-6 text-center">
-    <div class="mx-6 rounded-lg bg-black bg-opacity-5 p-4" v-if="hasLine">
+  <div v-if="hasLine">
+    <div class="mx-6 rounded-lg bg-black bg-opacity-5 p-4" v-if="hasFriends !== null">
       <button @click="handleLineAuth">
         <div
           class="inline-flex h-12 items-center justify-center rounded-full px-6"
@@ -15,21 +16,22 @@
       <div class="mt-2 text-sm">
         {{ $t("order.lineMessage") }}
       </div>
-    </div>
-    <div v-else>
-      <button @click="handleLineAuth">
-        <div
-          class="inline-flex h-12 items-center justify-center rounded-full px-6"
-          style="background: #18b900"
-          >
-          <i class="fab fa-line mr-2 text-2xl text-white" />
-          <div class="text-base font-bold text-white">
-            {{ $t("line.notifyMe") }}
-          </div>
-        </div>
-      </button>
-    </div>
+      </div>
   </div>
+  <div v-else>
+    <button @click="handleLineAuth">
+      <div
+        class="inline-flex h-12 items-center justify-center rounded-full px-6"
+        style="background: #18b900"
+        >
+        <i class="fab fa-line mr-2 text-2xl text-white" />
+        <div class="text-base font-bold text-white">
+          {{ $t("line.notifyMe") }}
+        </div>
+      </div>
+    </button>
+  </div>
+</div>
 </template>
 
 <script lang="ts">
