@@ -220,7 +220,7 @@
           </router-link>
         </div>
 
-        <div v-if="isOwner && isDev">
+        <div v-if="isOwner">
           <router-link :to="`/admin/restaurants/${restaurantid}/discounts`">
             <div
               class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
