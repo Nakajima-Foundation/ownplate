@@ -380,10 +380,6 @@ export const customRoutes: CustomRoute[] = [
         component: "admin/Discount/DiscountHistory.vue",
       },
       {
-        path: "report",
-        component: "admin/ReportAllPage.vue",
-      },
-      {
         name: "admin-subaccounts-accounts",
         path: "subaccounts",
         component: "admin/SubAccounts/Accounts.vue",
