@@ -406,12 +406,8 @@ export const useLiffBasePath = () => {
 
 export const routeMode = () => {
   const isInLiff = useIsInLiff();
-  const isInMo = useIsInMo();
 
   return computed(() => {
-    if (isInMo.value) {
-      return "mo";
-    }
     if (isInLiff.value) {
       return "liff";
     }
@@ -423,13 +419,8 @@ export const routeMode = () => {
 export const useBasePath = () => {
   const isInLiff = useIsInLiff();
   const liffBasePath = useLiffBasePath();
-  const isInMo = useIsInMo();
-  const moPrefix = useMoPrefix();
 
   return computed(() => {
-    if (isInMo.value) {
-      return "/" + moPrefix.value;
-    }
     if (isInLiff.value) {
       return liffBasePath.value;
     }
@@ -441,13 +432,8 @@ export const useBasePath = () => {
 export const useTopPath = () => {
   const inLiff = useIsInLiff();
   const liffBasePath = useLiffBasePath();
-  const isInMo = useIsInMo();
-  const moPrefix = useMoPrefix();
 
   return computed(() => {
-    if (isInMo.value) {
-      return "/" + moPrefix.value;
-    }
     if (inLiff.value) {
       return liffBasePath.value;
     }
