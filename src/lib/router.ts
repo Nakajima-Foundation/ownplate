@@ -111,7 +111,6 @@ const mopath = mo_prefixes
     ];
   })
   .flat();
-console.log(mopath);
 
 export const customRoutes: CustomRoute[] = [
   {
