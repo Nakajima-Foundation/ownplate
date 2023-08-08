@@ -66,10 +66,10 @@
           {{ minimumAvailableTime }}
         </div>
         <div v-if="lastTime">
-          本日最終受付: {{ lastTime.lastOrderTime }}:00
+          {{ $t("shopInfo.lastOrder") }}: {{ lastTime.lastOrderTime }}
         </div>
         <div v-else>
-          本日は受付できません
+          {{ $t("shopInfo.todayNotAvailable") }}
         </div>
       </div>
 

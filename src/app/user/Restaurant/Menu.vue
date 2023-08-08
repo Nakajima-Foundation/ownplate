@@ -12,16 +12,16 @@
             <img
               @click.stop="openImage()"
               :src="smallimage"
-              class="h-24 w-24 rounded object-cover"
+              class="h-36 w-36 rounded object-cover"
               @error="smallImageErrorHandler"
             />
           </div>
 
           <!-- Add / Sold Out Button -->
-          <div>
+          <div class="w-full">
             <div
               v-if="isSoldOut"
-              class="inline-flex h-9 w-24 items-center justify-center rounded-full bg-red-700 bg-opacity-10"
+              class="flex h-9 w-24 items-center justify-center rounded-full bg-red-700 bg-opacity-10 m-auto"
             >
               <div class="text-sm font-bold text-red-700">
                 {{ $t("sitemenu.soldOut") }}
@@ -30,7 +30,7 @@
             <div
               v-else
               @click.stop="pushQuantities(0)"
-              class="cardAdd inline-flex h-9 w-24 items-center justify-center rounded-full bg-op-teal bg-opacity-10"
+              class="cardAdd flex h-9 w-36 items-center justify-center rounded-full bg-op-teal bg-opacity-10 m-auto"
               :data-cart-product="item.id"
             >
               <div class="text-sm font-bold text-op-teal">
@@ -298,7 +298,7 @@
       scroll="keep"
       :on-cancel="closeImage"
     >
-      <div class="mx-6 rounded-lg bg-white p-5">
+      <div class="sm:mx-6 rounded-lg bg-white p-5">
         <img
           :src="image"
           class="rounded-lg shadow-lg"

@@ -544,6 +544,8 @@
     "notPublicShop": "ページ非公開",
     "paymentMethods": "受け取り払い時の決済方法",
     "minimumAvailableTime": "最短受付可能時間",
+    "lastOrder": "本日最終受付",
+    "todayNotAvailable": "本日は受付できません",
     "noAvailableTime": "受付時間外",
     "deliveryThresholdNotice": "デリバリーは合計{price}以上のご注文から可能です。",
     "deliveryArea": "配達可能エリア",
