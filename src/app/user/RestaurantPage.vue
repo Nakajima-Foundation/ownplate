@@ -9,40 +9,6 @@
         <FloatingBanner :promotion="promotion" :possiblePromotions="possiblePromotions" />
 			</div>
 
-      <!-- category modal -->
-      <div
-        v-if="isOpenGroupCategory"
-        class="fixed top-0 z-40 h-full w-full bg-white"
-      >
-        <div class="m-4">
-          <span class="text-xl font-bold text-black text-opacity-30">
-            {{ $t("shopInfo.productCategory") }}
-          </span>
-        </div>
-        <div class="mx-4 h-[calc(100%-3rem)] overflow-x-scroll">
-          <CategoryModal
-            class="mb-20"
-            :categoryData="categoryData"
-            :howtoreceive="howtoreceive"
-          />
-        </div>
-      </div>
-
-      <!-- category modal -->
-      <div
-        v-if="isOpenGroupSubCategory"
-        class="fixed top-0 z-40 h-full w-full bg-white"
-      >
-        <div class="mx-4 h-[calc(100%-3rem)] overflow-x-scroll">
-          <SubCategoryModal
-            class="mb-20"
-            :subCategoryData="subCategoryData"
-            :howtoreceive="howtoreceive"
-            :selectedCategory="selectedCategory"
-          />
-        </div>
-      </div>
-
       <!-- Restaurant Page -->
       <div>
         <!-- For Owner Preview Only -->
@@ -141,30 +107,7 @@
 
             <!-- For Responsible -->
             <div class="mx-6 mt-3 lg:mx-0">
-              <!-- Category Icon -->
-              <div v-if="isShowCategoryIcon">
-                <CategoryIcon
-                  :howtoreceive="howtoreceive"
-                  :selectedCategory="selectedCategory"
-                  :selectedSubCategory="selectedSubCategory"
-                  :subCategory="subCategory"
-                  />
-              </div>
-              <div v-if="showCategory">
-                <!-- Category view -->
-                <div class="grid-col-1 mt-6 grid space-y-2">
-                  <div class="text-xl font-bold text-black text-opacity-30">
-                    {{ $t("shopInfo.productCategory") }}
-                  </div>
-								
-                  <CategoryTop
-                    :categoryData="categoryData"
-                    :howtoreceive="howtoreceive"
-                  />
-                </div>
-              </div>
-              <div v-else>
-                <div class="grid-col-1 grid space-y-2" :key="subCategoryKey">
+                <div class="grid-col-1 grid space-y-2">
                   <template v-for="(item, key) in itemLists">
                     <div v-if="item._dataType === 'title'" :key="key">
                       <div
@@ -182,10 +125,10 @@
                     
                     <div
                       v-if="item._dataType === 'menu'"
-                      :key="[subCategoryKey, item.id].join('_')"
+                      :key="item.id"
                       >
                       <Menu
-                        :key="[subCategoryKey, 'item', item.id].join('_')"
+                        :key="['item', item.id].join('_')"
                         :item="item"
                         :menuPickupData="menuPickupData[item.id] || {}"
                         :quantities="orders[item.id] || [0]"
@@ -194,7 +137,6 @@
                                               (orders[item.id] || []).length > 0
                                               "
                         :shopInfo="shopInfo"
-                        :menuLinkBathPath="menuLinkBathPath"
                         :isOpen="menuId === item.id"
                         :prices="prices[item.id] || []"
                         :mode="mode"
@@ -203,7 +145,6 @@
                     </div>
                   </template>
                 </div>
-              </div>
             </div>
           </div>
         </div>
@@ -312,10 +253,6 @@ import RestaurantPreview from "@/app/user/Restaurant/Preview.vue";
 import CartButton from "@/app/user/Restaurant/CartButton.vue";
 import Cart from "@/app/user/Restaurant/Cart.vue";
 import Delivery from "@/app/user/Restaurant/Delivery.vue";
-import CategoryModal from "@/app/user/Restaurant/CategoryModal.vue";
-import SubCategoryModal from "@/app/user/Restaurant/SubCategoryModal.vue";
-import CategoryTop from "@/app/user/Restaurant/CategoryTop.vue";
-import CategoryIcon from "@/app/user/Restaurant/CategoryIcon.vue";
 import Titles from "@/app/user/Restaurant/Titles.vue";
 import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
 import TransactionsActContents from "@/app/user/TransactionsAct/Contents.vue";
@@ -367,10 +304,7 @@ import { imageUtils } from "@/utils/RestaurantUtils";
 
 import {
   useTitles,
-  useCategory,
-  useSubcategory,
   useMenu,
-  useCategoryParams,
 } from "./Restaurant/Utils";
 
 import { useStore } from "vuex";
@@ -392,10 +326,6 @@ export default defineComponent({
     Cart,
     Delivery,
     TransactionsActContents,
-    CategoryModal,
-    SubCategoryModal,
-    CategoryTop,
-    CategoryIcon,
     Titles,
     SubCategoryList,
     FloatingBanner,
@@ -476,20 +406,11 @@ export default defineComponent({
       return "takeout";
     })();
     const howtoreceive = ref(defaultHowToReceive);
-    const isFilterStock = ref(false);
+
     const updateHowtoreceive = (value: string) => {
       howtoreceive.value = value;
     };
     
-    const {
-      category,
-      subCategory,
-      watchCat,
-      hasCategory,
-      showCategory,
-      showSubCategory,
-    } = useCategoryParams(isInMo.value || false);
-
     const restaurantId = computed(() => {
       return route.params.restaurantId as string;
     });
@@ -528,8 +449,8 @@ export default defineComponent({
     const { loadMenu, setCache, menus, menuObj, menuCache } = useMenu(
       restaurantId,
       isInMo,
-      category,
-      subCategory,
+      ref(""),
+      ref(""),
     );
     
     const { menuPickupData, availableDays, todaysLast } = usePickupTime(
@@ -571,95 +492,28 @@ export default defineComponent({
       );
     });
     
-    watch(watchCat, () => {
-      loadMenu();
-    });
-    watch(category, () => {
-      if (category.value) {
-        loadSubcategory();
-        updateMoUrl();
-      }
-    });
-    
-    const updateMoUrl = () => {
-      const { category, subCategory, restaurantId } = route.params;
-      if (howtoreceive.value && subCategory) {
-        const newPath = `/${props.moPrefix}/r/${restaurantId}/cat/${category}/${subCategory}/${howtoreceive.value}`;
-        if (newPath !== route.path) {
-          router.replace({
-            path: newPath,
-          });
-        }
-      }
-    };
     watch(howtoreceive, (value) => {
-      if (isInMo.value) {
-        updateMoUrl();
+      if (false) {
         orders.value = {};
       }
     });
     
     const { loadTitle, titles, titleLists } = useTitles(restaurantId);
-
-    const { loadCategory, categoryData } = useCategory(props.moPrefix || "");
-
-    const { subCategoryData, loadSubcategory } = useSubcategory(
-      props.moPrefix || "",
-      category
-    );
-    
-    const selectedCategory = computed(() => {
-      if (category.value && categoryData.value) {
-        return (
-          categoryData.value.find((cat) => {
-            return cat.id === category.value;
-          }) || {}
-        );
-      }
-      return {};
-    });
-    
-    const selectedSubCategory = computed(() => {
-      if (subCategory.value && subCategoryData.value) {
-        return (
-          subCategoryData.value.find((cat) => {
-            return cat.id === subCategory.value;
-          }) || {}
-        );
-      }
-      return {};
-    });
-    
-    if (isInMo.value) {
-      loadCategory();
-      if (category.value) {
-        loadSubcategory();
-        updateMoUrl();
-      }
-    }
-    if (!isInMo.value) {
-      loadTitle();
-    }
+    loadTitle();
     
     const itemLists = computed(() => {
-      if (isInMo.value) {
-        return menus.value.sort((a, b) => {
-          return a.itemName > b.itemName ? 1 : -1;
+      const menuLists = props.shopInfo.menuLists || [];
+      const itemsObj = array2obj(menus.value.concat(titles.value));
+      return menuLists
+        .map((itemId) => {
+          return { ...itemsObj[itemId] };
+        })
+        .filter((item) => {
+          return item;
+        })
+        .filter((item) => {
+          return !(item._dataType === "title" && item.name === "");
         });
-      } else {
-        const menuLists = props.shopInfo.menuLists || [];
-        const itemsObj = array2obj(menus.value.concat(titles.value));
-        return menuLists
-          .map((itemId) => {
-            return { ...itemsObj[itemId] };
-          })
-          .filter((item) => {
-            return item;
-          })
-          .filter((item) => {
-            return !(item._dataType === "title" && item.name === "");
-          });
-      }
     });
     
     const totalPrice = computed(() => {
@@ -839,25 +693,6 @@ export default defineComponent({
         goCheckout();
       }
     });
-    const categoryBathPath = computed(() => {
-      return `/${props.moPrefix}/r/${restaurantId.value}/cat/${category.value}`;
-    });
-    const menuLinkBathPath = computed(() => {
-      return `/cat/${category.value}/${subCategory.value}`;
-    });
-    const subCategoryKey = computed(() => {
-      return showSubCategory.value
-        ? [category.value, subCategory.value].join("_")
-        : "";
-    });
-    
-    const isOpenGroupCategory = computed(() => {
-      return route.params.list === "categories";
-    });
-    const isOpenGroupSubCategory = computed(() => {
-      return route.params.list === "category";
-    });
-    
     const cartButton = ref();
     const isShowCart = computed(() => {
       return cartButton.value?.isShowCart || false;
@@ -866,22 +701,6 @@ export default defineComponent({
       cartButton.value?.closeCart();
     };
     
-    const isShowCategoryIcon = computed(() => {
-      return (
-        !!showSubCategory.value &&
-          !isOpenGroupCategory.value &&
-          !isOpenGroupSubCategory.value &&
-          !isShowCart.value
-      );
-    });
-    
-    watchEffect(() => {
-      if (isShowCategoryIcon.value) {
-        setTimeout(() => {
-          scrollToElementById("mo_top");
-        }, 200);
-      }
-    });
     
     let y = 0;
     watch(isShowCart, (value) => {
@@ -897,33 +716,6 @@ export default defineComponent({
     });
     onUnmounted(() => {
       if (isShowCart.value) {
-        document.body.style.position = "";
-      }
-    });
-    //
-    watch(isOpenGroupCategory, (value) => {
-      if (value) {
-        document.body.style.position = "fixed";
-      } else {
-        document.body.style.position = "";
-        scrollToElementById("subCategoryTop");
-      }
-    });
-    onUnmounted(() => {
-      if (isOpenGroupCategory.value) {
-        document.body.style.position = "";
-      }
-    });
-    watch(isOpenGroupSubCategory, (value) => {
-      if (value) {
-        document.body.style.position = "fixed";
-      } else {
-        document.body.style.position = "";
-        scrollToElementById("subCategoryTop");
-      }
-    });
-    onUnmounted(() => {
-      if (isOpenGroupSubCategory.value) {
         document.body.style.position = "";
       }
     });
@@ -1008,9 +800,6 @@ export default defineComponent({
       
       isPreview,
 
-      selectedCategory,
-      selectedSubCategory,
-
       didOrderdChange,
 
       handleCheckOut,
@@ -1019,22 +808,6 @@ export default defineComponent({
       loginVisible,
       isCheckingOut,
       noAvailableTime,
-
-      showCategory,
-      showSubCategory,
-      subCategoryKey,
-      isShowCategoryIcon,
-
-      categoryData,
-      subCategoryData,
-      categoryBathPath,
-
-      menuLinkBathPath,
-
-      subCategory,
-
-      isOpenGroupCategory,
-      isOpenGroupSubCategory,
 
       ...imageUtils(),
 
@@ -1046,9 +819,7 @@ export default defineComponent({
       menuPickupData, // not mo.
       enableCartModal,
 
-      isInMo,
 
-      isFilterStock,
       isTransactionAct,
       closeTransactionsAct,
       pageBase,

@@ -450,10 +450,6 @@ export default defineComponent({
       type: Boolean,
       required: true,
     },
-    menuLinkBathPath: {
-      type: String,
-      required: true,
-    },
     prices: {
       type: Array,
       required: true,

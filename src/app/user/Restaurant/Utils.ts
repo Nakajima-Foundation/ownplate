@@ -211,9 +211,6 @@ export const useMenu = (
   const loading: { [key: string]: boolean } = {};
 
   const allMenuObjKey = computed(() => {
-    if (isInMo.value) {
-      return [category.value, subCategory.value].join("_");
-    }
     return "mono";
   });
   const menus = computed(() => {
@@ -234,11 +231,6 @@ export const useMenu = (
   };
   const loadMenu = async (callback?: () => void) => {
     detacheMenu();
-    // if (isInMo.value && !category.value && !subCategory.value) {
-    if (isInMo.value && (!category.value || !subCategory.value)) {
-      return;
-    }
-    // const hasSubCategory = category.value && subCategory.value;
     if (menuCache.value[allMenuObjKey.value]) {
       allMenuObj.value[allMenuObjKey.value] =
         menuCache.value[allMenuObjKey.value];
@@ -247,88 +239,29 @@ export const useMenu = (
 
     const key = allMenuObjKey.value;
     const path = menuPath.value;
-    // if (hasSubCategory) {
-    if (isInMo.value) {
-      allMenuObj.value[key] = [];
-      const cacheBase: MenuData[] = [];
 
-      if (loading[key]) {
-        return;
+    const menuQuery = query(
+      collection(db, menuPath.value),
+      where("deletedFlag", "==", false),
+      where("publicFlag", "==", true)
+    );
+
+    menuDetacher.value = onSnapshot(query(menuQuery), (menu) => {
+      if (!menu.empty) {
+        const ret = menu.docs
+          .filter((a) => {
+            const data = a.data();
+            return data.validatedFlag === undefined || data.validatedFlag;
+          })
+          .map(doc2data("menu"));
+        allMenuObj.value = { [key]: ret };
+        if (callback) {
+          callback();
+        }
+      } else {
+        allMenuObj.value[key] = [];
       }
-      loading[key] = true;
-
-      const limitVal = 20;
-      const loop = async (
-        category: string,
-        subCategory: string,
-        last: null | QueryDocumentSnapshot<DocumentData>
-      ) => {
-        // console.log("loop: ", subCategory);
-        const tmpQuery = query(
-          collection(db, path),
-          where("deletedFlag", "==", false),
-          where("publicFlag", "==", true),
-          where("category", "==", category),
-          where("subCategory", "==", subCategory),
-          orderBy("createdAt"),
-          limit(limitVal)
-        );
-        const menuQuery = last ? query(tmpQuery, startAfter(last)) : tmpQuery;
-
-        const menu = await getDocs(query(menuQuery));
-        if (!menu.empty) {
-          menu.docs
-            .filter((a) => {
-              const data = a.data();
-              return data.validatedFlag === undefined || data.validatedFlag;
-            })
-            .map((a) => {
-              const m = doc2data<MenuData>("menu")(a);
-              cacheBase.push(m);
-              return m;
-            });
-          const newVal = { ...allMenuObj.value };
-          newVal[key] = cacheBase;
-          allMenuObj.value = newVal;
-
-          const newMenuCache = { ...menuCache.value };
-          newMenuCache[key] = cacheBase;
-          menuCache.value = newMenuCache;
-        }
-        return menu.docs.length == limitVal ? menu.docs[limitVal - 1] : null;
-      };
-
-      const doLoop = async (category: string, subCategory: string) => {
-        let last: null | QueryDocumentSnapshot<DocumentData> = null;
-        do {
-          last = await loop(category, subCategory, last);
-        } while (last);
-      };
-      await doLoop(category.value, subCategory.value);
-    } else {
-      const menuQuery = query(
-        collection(db, menuPath.value),
-        where("deletedFlag", "==", false),
-        where("publicFlag", "==", true)
-      );
-
-      menuDetacher.value = onSnapshot(query(menuQuery), (menu) => {
-        if (!menu.empty) {
-          const ret = menu.docs
-            .filter((a) => {
-              const data = a.data();
-              return data.validatedFlag === undefined || data.validatedFlag;
-            })
-            .map(doc2data("menu"));
-          allMenuObj.value = { [key]: ret };
-          if (callback) {
-            callback();
-          }
-        } else {
-          allMenuObj.value[key] = [];
-        }
-      });
-    }
+    });
   };
 
   const menuObj = computed(() => {
