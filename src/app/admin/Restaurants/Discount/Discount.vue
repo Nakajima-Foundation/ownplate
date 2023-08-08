@@ -14,8 +14,10 @@
           <AdminHeader
             class="mt-6 lg:flex lg:items-center"
             :shopInfo="shopInfo"
-            backLink="/admin/restaurants/"
+            :backLink="`/admin/restaurants/${shopInfo.restaurantId}/discounts`"
             :showSuspend="false"
+						backText="button.backToDiscounts"
+        		iconText="arrow_back"
             />
       </div>
       <!-- Right Gap -->
