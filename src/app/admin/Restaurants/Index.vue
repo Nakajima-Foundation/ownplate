@@ -91,7 +91,7 @@
           <div>
             <text-form
               v-model="editShopInfo.restaurantName"
-              :titleKey="isInMo ? 'mobileOrder.shopInfoName' : 'shopInfo.name'"
+              titleKey="shopInfo.name"
               placeholder="editRestaurant.enterRestaurantName"
               :error="errors['restaurantName']"
               :maxlength="50"
@@ -230,11 +230,7 @@
 
             <div class="mt-2 text-center text-sm font-bold text-red-700">
               {{
-                $t(
-                  isInMo
-                    ? "mobileOrder.updateMapDescription"
-                    : "editRestaurant.updateMapDescription"
-                )
+                $t("editRestaurant.updateMapDescription")
               }}
             </div>
 
@@ -588,11 +584,7 @@
           <div class="mt-4">
             <div class="pb-2 text-sm font-bold">
               {{
-                $t(
-                  isInMo
-                    ? "mobileOrder.timeToPickup"
-                    : "editRestaurant.timeToPickup"
-                )
+                $t("editRestaurant.timeToPickup")
               }}
             </div>
 
@@ -700,81 +692,6 @@
                     }}
                   </div>
                 </o-checkbox>
-              </div>
-            </div>
-          </div>
-
-          <!-- Time to Mo Pickup -->
-          <template v-if="moPickup">
-            <div class="mt-4" v-if="isInMo">
-              <div class="pb-2 text-sm font-bold">
-                {{ $t("mobileOrder.timeToMoPickup") }}
-              </div>
-
-              <div class="rounded-lg bg-black bg-opacity-5 p-4">
-                <!-- Preparation Time -->
-                <div>
-                  <div class="mb-1">
-                    {{ $t("editRestaurant.preparationTime") }}
-                  </div>
-
-                  <div class="ml-2">
-                    {{ editShopInfo.moPickUpMinimumCookTime }}
-                    {{ $t("editRestaurant.minutes") }}
-                  </div>
-                </div>
-
-                <!-- The Day Before -->
-                <div class="mt-2">
-                  <div class="mb-1">
-                    {{ $t("editRestaurant.reservationTheDayBefore") }}
-                  </div>
-                  {{ editShopInfo.moPickUpDaysInAdvance }}
-                  {{ $t("mobileOrder.reservationTheDaysBefore") }}
-                </div>
-              </div>
-            </div>
-          </template>
-
-          <!-- mo Hours -->
-          <div class="mt-4" v-if="isInMo && moPickup && editShopInfo.moBusinessDay">
-            <div class="pb-2 text-sm font-bold">
-              {{ $t("mobileOrder.pickupHours") }}
-            </div>
-
-            <div
-              class="grid grid-cols-1 space-y-2 rounded-lg bg-black bg-opacity-5 p-4"
-            >
-              <div v-for="(day, index) in days" :key="index">
-                <!-- Enable/Disable Day and Copy Previous Day -->
-                <div class="flex items-center">
-                  <div class="flex-1">
-                    <div class="text-base font-bold">
-                      {{ $t("week.short." + day) }}
-                      {{
-                        $t(
-                          editShopInfo.moBusinessDay[index]
-                            ? "admin.open"
-                            : "admin.closed"
-                        )
-                      }}
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Main Hours -->
-                <div class="mt-2">
-                  <span
-                    :class="
-                      editShopInfo.moBusinessDay[index]
-                        ? ''
-                        : 'font-bold text-red-600'
-                    "
-                  >
-                    {{ num2time(editShopInfo.moOpenTimes[index][0].start) }} -
-                    {{ num2time(editShopInfo.moOpenTimes[index][0].end) }}
-                  </span>
-                </div>
               </div>
             </div>
           </div>
@@ -1106,8 +1023,6 @@
               $t(
                 submitting
                   ? "editCommon.saving"
-                  : isInMo
-                  ? "mobileOrder.copy"
                   : "editCommon.copy"
               )
             }}</span>
@@ -1218,14 +1133,6 @@ export default defineComponent({
   props: {
     shopInfo: {
       type: Object as PropType<RestaurantInfoData>,
-      required: true,
-    },
-    groupMasterRestaurant: {
-      type: Object,
-      required: false,
-    },
-    isInMo: {
-      type: Boolean,
       required: true,
     },
   },
@@ -1463,7 +1370,7 @@ export default defineComponent({
     };
     const confirmCopy = async () => {
       store.commit("setAlert", {
-        code: props.isInMo ? "mobileOrder.copyAlert" : "editCommon.copyAlert",
+        code: "editCommon.copyAlert",
         callback: async () => {
           copyRestaurantFunc();
         },
