@@ -214,7 +214,6 @@
           href="https://docs.omochikaeri.com/manuals/delivery.pdf"
           target="_blank"
           class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
-          @click="handleClose()"
         >
           {{ $t("menu.deliveryManualLink") }}
         </a>

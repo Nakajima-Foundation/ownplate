@@ -798,7 +798,6 @@
                   href="https://docs.omochikaeri.com/manuals/delivery.pdf"
                   target="_blank"
                   class="text-xs font-bold text-op-teal"
-                  @click="handleClose()"
                 >
                   {{ $t("menu.deliveryManualLink") }}
                 </a>
@@ -823,7 +822,6 @@
                   href="https://docs.omochikaeri.com/manuals/printer.pdf"
                   target="_blank"
                   class="inline-flex text-xs font-bold text-op-teal"
-                  @click="handleClose()"
                 >
                   {{ $t("menu.printerManualLink") }}
                 </a>
