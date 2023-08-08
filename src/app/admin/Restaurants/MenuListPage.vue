@@ -169,10 +169,7 @@ import { copyMenuData, MenuData } from "@/models/menu";
 
 import {
   useTitles,
-  useCategory,
-  useSubcategory,
   useMenu,
-  useCategoryParams,
 } from "@/app/user/Restaurant/Utils";
 
 import { useAdminUids, cleanObject, notFoundResponse } from "@/utils/utils";
@@ -246,43 +243,11 @@ export default defineComponent({
 
     const { isOwner, uid, ownerUid } = useAdminUids();
 
-    const {
-      category,
-      subCategory,
-      watchCat,
-      hasCategory,
-      showCategory,
-      showSubCategory,
-    } = useCategoryParams(props.isInMo);
-    const { loadCategory, categoryData, categoryDataObj } = useCategory(
-      props.moPrefix || ""
-    );
-
-    const { subCategoryData, loadSubcategory } = useSubcategory(
-      props.moPrefix || "",
-      category
-    );
-    watch(category, () => {
-      if (category.value) {
-        loadSubcategory();
-      }
-    });
-    if (props.isInMo) {
-      loadCategory();
-      if (category.value) {
-        loadSubcategory();
-      }
-    }
-
-    // end of category
-
     const menuRestaurantId = computed(() => {
-      return props.isInMo
-        ? props?.groupMasterRestaurant?.restaurantId
-        : route.params.restaurantId;
+      return route.params.restaurantId as string;
     });
     const restaurantId = computed(() => {
-      return route.params.restaurantId;
+      return route.params.restaurantId as string;
     });
     const menuCounter = computed(() => {
       return Object.keys(menuObj.value).length;
@@ -314,7 +279,7 @@ export default defineComponent({
     });
 
     const { menuObj, itemsObj, numberOfMenus, loadMenu, isLoading } =
-      useMenuAndTitle(menuRestaurantId, props.isInMo, category, subCategory);
+      useMenuAndTitle(menuRestaurantId);
 
     const menuLists = computed(() => {
       return props.isInMo

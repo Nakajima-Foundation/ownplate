@@ -18,9 +18,6 @@ import { doc2data, array2obj } from "@/utils/utils";
 
 export const useMenuAndTitle = (
   menuRestaurantId: Ref<string>,
-  isInMo: boolean,
-  category: ComputedRef<string>,
-  subCategory: ComputedRef<string>
 ) => {
   const menus = ref<DocumentData[] | null>(null);
   const menuCache: { [key: string]: any } = ref({});
@@ -41,31 +38,17 @@ export const useMenuAndTitle = (
 
   const loadMenu = () => {
     detacheMenu();
-    if (isInMo && !category.value && !subCategory.value) {
-      return;
-    }
-    const cacheKey =
-      category.value && subCategory.value
-        ? [category.value, subCategory.value].join("_")
-        : "";
+    const cacheKey = "mono";
     if (menuCache.value[cacheKey]) {
       menus.value = menuCache.value[cacheKey];
       return;
     }
     isLoading.value = true;
 
-    const menuQuery =
-      category.value && subCategory.value
-        ? query(
-            collection(db, `restaurants/${menuRestaurantId.value}/menus`),
-            where("deletedFlag", "==", false),
-            where("category", "==", category.value),
-            where("subCategory", "==", subCategory.value)
-          )
-        : query(
-            collection(db, `restaurants/${menuRestaurantId.value}/menus`),
-            where("deletedFlag", "==", false)
-          );
+    const menuQuery = query(
+      collection(db, `restaurants/${menuRestaurantId.value}/menus`),
+      where("deletedFlag", "==", false)
+    );
     menuDetacher.value = onSnapshot(
       query(menuQuery),
       (results) => {
@@ -85,7 +68,7 @@ export const useMenuAndTitle = (
       where("deletedFlag", "==", false)
     ),
     (results) => {
-      titles.value = (results.empty || isInMo ? [] : results.docs).map(
+      titles.value = (results.empty ? [] : results.docs).map(
         doc2data("title")
       );
     }
