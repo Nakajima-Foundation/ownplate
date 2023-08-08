@@ -271,7 +271,7 @@ export default defineComponent({
   props: {
     shopInfo: {
       type: Object,
-      required: false,
+      required: true,
     },
 
   },
@@ -280,7 +280,7 @@ export default defineComponent({
     const router = useRouter();
     const discountId = route.params.discountId as string;
 
-    const id = props.shopInfo?.restaurantId;
+    const id = props.shopInfo.restaurantId;
     const promotion = ref<PromotionData|null>(null);
 
     const termFromDate = ref();

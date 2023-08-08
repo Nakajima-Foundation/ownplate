@@ -9,7 +9,7 @@
       <AdminHeader
         class="mx-6 mt-6 lg:flex lg:items-center"
         :shopInfo="shopInfo"
-        backLink="/admin/restaurants/"
+        :backLink="`/admin/restaurants/#restaurant_` + shopInfo.restaurantId"
         :showSuspend="false"
       />
 
@@ -20,10 +20,6 @@
             {{ $t("shopInfo.productCategory") }}
           </div>
           <CategoryList :categoryData="categoryData" />
-          <DownloadCSV
-            :restaurantid="menuRestaurantId"
-            v-if="isInMo && isOwner"
-          />
         </div>
       </template>
       <template v-else>
@@ -647,8 +643,6 @@ export default defineComponent({
       categoryBathPath,
       subCategory,
 
-      // mo
-      menuRestaurantId,
     };
   },
 });
