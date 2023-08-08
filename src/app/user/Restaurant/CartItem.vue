@@ -27,7 +27,7 @@
         </div>
       </div>
       <div
-        class="h-12 w-12 rounded-lg border-gray-100 bg-white shadow-none lg:h-24 lg:w-24"
+        class="h-16 w-16 rounded-lg border-gray-100 bg-white shadow-none lg:h-24 lg:w-24"
       >
         <img
           :src="image"
