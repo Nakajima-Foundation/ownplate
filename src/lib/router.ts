@@ -262,99 +262,94 @@ export const customRoutes: CustomRoute[] = [
         children: [
           {
             path: "",
-            component: "admin/RestaurantPage.vue",
+            component: "admin/Restaurants/Index.vue",
           },
           {
             name: "admin-pdf",
             path: "pdf",
-            component: "admin/Pdf.vue",
+            component: "admin/Restaurants/Pdf.vue",
           },
           {
             name: "admin-menus",
             path: "menus",
-            component: "admin/MenuListPage.vue",
-          },
-          {
-            name: "admin-menus-cat",
-            path: "menus/cat/:category/:subCategory",
-            component: "admin/MenuListPage.vue",
+            component: "admin/Restaurants/MenuListPage.vue",
           },
           {
             name: "admin-menus-item",
             path: "menus/:menuId",
-            component: "admin/MenuItemPage.vue",
+            component: "admin/Restaurants/MenuItemPage.vue",
           },
           {
             name: "admin-orders",
             path: "orders",
-            component: "admin/OrderListPage.vue",
+            component: "admin/Restaurants/OrderListPage.vue",
           },
           {
             path: "history",
-            component: "admin/OrderHistory.vue",
-          },
-          {
-            name: "user-histories",
-            path: "userhistory/:userId",
-            component: "admin/UserHistory.vue",
-          },
-          {
-            path: "analytics/index",
-            component: "admin/Analytics/Index.vue",
+            component: "admin/Restaurants/OrderHistory.vue",
           },
           {
             name: "admin-suspend",
             path: "suspend",
-            component: "admin/OrderSuspendPage.vue",
-          },
-          {
-            path: "postage",
-            component: "admin/Postage.vue",
-          },
-          {
-            path: "delivery",
-            component: "admin/Delivery.vue",
-          },
-          {
-            path: "linelist",
-            component: "admin/ManageLine.vue",
-          },
-          {
-            path: "line",
-            component: "admin/Line/Index.vue",
-          },
-          {
-            path: "lineusers",
-            component: "admin/Line/users.vue",
-          },
-          {
-            path: "discounthistory",
-            component: "admin/Discount/DiscountHistory.vue",
-          },
-          {
-            path: "discounts",
-            component: "admin/Discount/Discounts.vue",
-          },
-          {
-            path: "discounts/:discountId",
-            component: "admin/Discount/Discount.vue",
-          },
-          {
-            path: "discounts/:discountId/history",
-            component: "admin/Discount/DiscountHistory.vue",
-          },
-          {
-            path: "printer",
-            component: "admin/Printer.vue",
-          },
-          {
-            path: "report",
-            component: "admin/ReportPage.vue",
+            component: "admin/Restaurants/OrderSuspendPage.vue",
           },
           {
             name: "admin-order-info",
             path: "orders/:orderId",
-            component: "admin/OrderInfoPage.vue",
+            component: "admin/Restaurants/OrderInfoPage.vue",
+          },
+          {
+            name: "user-histories",
+            path: "userhistory/:userId",
+            component: "admin/Restaurants/UserHistory.vue",
+          },
+          {
+            path: "analytics/index",
+            component: "admin/Restaurants/Analytics/Index.vue",
+          },
+          {
+            path: "linelist",
+            component: "admin/Restaurants/ManageLine.vue",
+          },
+          {
+            path: "line",
+            component: "admin/Restaurants/Line/Index.vue",
+          },
+          {
+            path: "lineusers",
+            component: "admin/Restaurants/Line/users.vue",
+          },
+          {
+            path: "postage",
+            component: "admin/Restaurants/Postage.vue",
+          },
+          {
+            path: "delivery",
+            component: "admin/Restaurants/Delivery.vue",
+          },
+          {
+            path: "discounthistory",
+            component: "admin/Restaurants/Discount/DiscountHistory.vue",
+          },
+          {
+            path: "discounts",
+            component: "admin/Restaurants/Discount/Discounts.vue",
+          },
+          {
+            path: "discounts/:discountId",
+            component: "admin/Restaurants/Discount/Discount.vue",
+          },
+          {
+            path: "discounts/:discountId/history",
+            component: "admin/Restaurants/Discount/DiscountHistory.vue",
+          },
+          {
+            path: "printer",
+            component: "admin/Restaurants/Printer.vue",
+          },
+          {
+            path: "report",
+            component: "admin/Restaurants/ReportPage.vue",
           },
         ],
       },
@@ -362,22 +357,6 @@ export const customRoutes: CustomRoute[] = [
         name: "admin-orders-allorders",
         path: "orders",
         component: "admin/AllOrders.vue",
-      },
-      {
-        path: "discounthistory",
-        component: "admin/Discount/DiscountHistory.vue",
-      },
-      {
-        path: "discounts",
-        component: "admin/Discount/Discounts.vue",
-      },
-      {
-        path: "discounts/:discountId",
-        component: "admin/Discount/Discount.vue",
-      },
-      {
-        path: "discounts/:discountId/history",
-        component: "admin/Discount/DiscountHistory.vue",
       },
       {
         name: "admin-subaccounts-accounts",

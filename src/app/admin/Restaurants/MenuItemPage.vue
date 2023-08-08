@@ -651,7 +651,7 @@ import {
 import NotFound from "@/components/NotFound.vue";
 import BackButton from "@/components/BackButton.vue";
 import Price from "@/components/Price.vue";
-import EditCategory from "@/app/admin/MenuItemPage/EditCategory.vue";
+import EditCategory from "@/app/admin/Restaurants/MenuItemPage/EditCategory.vue";
 import NotificationIndex from "@/app/admin/Notifications/Index.vue";
 import HoursInput from "@/app/admin/inputComponents/HoursInput.vue";
 

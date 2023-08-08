@@ -202,20 +202,20 @@ import {
 import NotFound from "@/components/NotFound.vue";
 import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
 
-import Menu from "@/app/admin/MenuListPage/Menu.vue";
-import Title from "@/app/admin/MenuListPage/Title.vue";
-import TitleInput from "@/app/admin/MenuListPage/TitleInput.vue";
+import Menu from "@/app/admin/Restaurants/MenuListPage/Menu.vue";
+import Title from "@/app/admin/Restaurants/MenuListPage/Title.vue";
+import TitleInput from "@/app/admin/Restaurants/MenuListPage/TitleInput.vue";
 
 import ToggleSwitch from "@/components/ToggleSwitch.vue";
-import AddButton from "@/app/admin/MenuListPage/AddButton.vue";
-import PhotoName from "@/app/admin/MenuListPage/PhotoName.vue";
-import DownloadButton from "@/app/admin/MenuListPage/DownloadButton.vue";
-import CategoryList from "@/app/admin/MenuListPage/CategoryList.vue";
-import CategoryButton from "@/app/admin/MenuListPage/CategoryButton.vue";
-import DownloadCSV from "@/app/admin/MenuListPage/DownloadCSV.vue";
+import AddButton from "@/app/admin/Restaurants/MenuListPage/AddButton.vue";
+import PhotoName from "@/app/admin/Restaurants/MenuListPage/PhotoName.vue";
+import DownloadButton from "@/app/admin/Restaurants/MenuListPage/DownloadButton.vue";
+import CategoryList from "@/app/admin/Restaurants/MenuListPage/CategoryList.vue";
+import CategoryButton from "@/app/admin/Restaurants/MenuListPage/CategoryButton.vue";
+import DownloadCSV from "@/app/admin/Restaurants/MenuListPage/DownloadCSV.vue";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 
-import { useMenuAndTitle } from "@/app/admin/MenuListPage/Utils";
+import { useMenuAndTitle } from "@/app/admin/Restaurants/MenuListPage/Utils";
 
 import { ownPlateConfig } from "@/config/project";
 

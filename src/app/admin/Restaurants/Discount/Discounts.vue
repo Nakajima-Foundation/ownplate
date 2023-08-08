@@ -171,7 +171,6 @@ export default defineComponent({
       type: Object,
       required: false,
     },
-    
   },
   setup(props) {
     const id = props.shopInfo?.restaurantId;

@@ -147,6 +147,8 @@ import {
   useRoute,
 } from "vue-router";
 
+import moment from "moment-timezone";
+
 export default defineComponent({
   components: {
     AdminHeader,
@@ -206,6 +208,7 @@ export default defineComponent({
     return {
       histories,
       deleteHistory,
+      moment,
       notFound: false,
     };
   },
