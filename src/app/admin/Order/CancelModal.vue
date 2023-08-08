@@ -113,10 +113,6 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    isInMo: {
-      type: Boolean,
-      required: true,
-    },
   },
   
   components: {
