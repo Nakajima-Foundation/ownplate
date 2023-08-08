@@ -10,7 +10,7 @@
         <div class="flex space-x-4">
           <div class="flex-shrink-0">
             <back-button
-              :url="`/admin/restaurants/${restaurantId()}/orders/` + orderId"
+              :url="`/admin/restaurants/${shopInfo.restaurantId}/orders/` + orderId"
             />
           </div>
           <PreviewLink
