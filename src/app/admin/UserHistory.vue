@@ -11,6 +11,8 @@
           <div class="flex-shrink-0">
             <back-button
               :url="`/admin/restaurants/${shopInfo.restaurantId}/orders/` + orderId"
+              iconText="arrow_back"
+              backText="button.backToOrderPage"
             />
           </div>
           <PreviewLink
