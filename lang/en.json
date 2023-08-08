@@ -1192,6 +1192,23 @@
       "selectRestaurant": "Please select a restaurant that can operate this account.",
       "confirmDeletechild": "Cancel the sub-account"
     },
+    "line": {
+      "title": "LINE連携",
+      "settings": "LINEチャンネル設定",
+      "users":  "LINEユーザ一覧",
+      "notice1": "お店のLINE公式アカウントとおもちかえり.comを連携させて、お店のLINE公式アカウントのトークでお客様に注文状況をお知らせすることができます。",
+      "notice2": "ご利用にはLINE開発者サイトで、LINEログインチャンネルとMessaging APIの設定が必要です。",
+      "notice3": "Messaging APIはLINE公式アカウントと同じものを使います。",
+      "notice4": "LINEログインチャンネルにとMessaging APIを「リンクされたボット」として登録しておくことが必要です。",
+      "notice5": "また、LINEログインの「コールバックURL」におもちかえりで指定するURLの登録が必要です。",
+      "loginClientId": "LINEログイン:チャンネルID",
+      "loginChannelSecret": "LINEログイン:チャンネルシークレット",
+      "messagingAccessToken": "Messaging API: チャンネルアクセストークン",
+      "callbackUrl": "LINEログイン:コールバックURL",
+      "showBelow": "設定の下のほうにあります",
+      "enabled": "有効にする",
+      "callbackURLCopyToLine": "この値をコピーしてLINE側に設定をしてください。"
+    },
     "smaregi": {
       "index": "Smaregi",
       "authenticating": "Authenticating",
