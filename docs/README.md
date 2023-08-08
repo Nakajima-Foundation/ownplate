@@ -3,6 +3,7 @@
 - [サービス内で使っている音源へのリンク](SOUND.md)
 
 # 設定
+
 - [Line LIFFの初期設定](./LINELIFF.md)
 - [Storageの設定](STORAGE_CORS.md)
 
