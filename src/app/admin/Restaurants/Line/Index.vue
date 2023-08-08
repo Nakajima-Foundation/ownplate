@@ -9,7 +9,7 @@
       <AdminHeader
         class="mx-6 mt-6 lg:flex lg:items-center"
         :shopInfo="shopInfo"
-        :backLink="`/admin/restaurants`"
+        :backLink="`/admin/restaurants/#restaurant_` + shopInfo.restaurantId"
         :showSuspend="false"
       />
 
@@ -213,6 +213,7 @@ export default defineComponent({
                         ]);
       router.push({
         path: `/admin/restaurants`,
+        hash: `#restaurant_` + props.shopInfo.restaurantId ,
       });
       isSaving.value = false;
 

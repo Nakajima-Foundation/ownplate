@@ -4,7 +4,7 @@
   </div>
   <div class="mx-6" v-else>
     <!-- QR Header Area -->
-    <div class="columns is-gapless" v-if="shopInfo">
+    <div class="columns is-gapless">
       <!-- Left Gap -->
       <div class="column is-narrow w-6"></div>
       <!-- Center Column -->
@@ -14,21 +14,12 @@
           <AdminHeader
             class="mt-6 lg:flex lg:items-center"
             :shopInfo="shopInfo"
-            backLink="/admin/restaurants/"
+            :backLink="`/admin/restaurants/#restaurant_` + shopInfo.restaurantId"
             :showSuspend="false"
             />
       </div>
       <!-- Right Gap -->
       <div class="column is-narrow w-6"></div>
-    </div>
-
-    <div class="mt-6 lg:flex lg:items-center" v-else>
-      <!-- Back and Preview -->
-      <div class="flex space-x-4">
-        <div class="flex-shrink-0">
-          <back-button url="/admin/restaurants/" />
-        </div>
-      </div>
     </div>
 
     <div class="text-xl font-bold text-black text-opacity-30 mb-2 mt-4">
