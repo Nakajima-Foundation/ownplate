@@ -173,8 +173,7 @@ export default defineComponent({
 
     if (
       !props.shopInfo ||
-      props.shopInfo.deletedFlag ||
-      !props.shopInfo.publicFlag
+      props.shopInfo.deletedFlag
     ) {
       return notFoundResponse;
     }
