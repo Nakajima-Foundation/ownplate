@@ -15,5 +15,3 @@ export const resource = {
     msg_order_canceled_by_user: "注文がキャンセルされました",
   },
 };
-const suffix1 = "{{restaurantName}}注文番号:{{orderNumber}}";
-const suffix2 = "注文金額:{{price}}円";

@@ -4,7 +4,7 @@ import * as functions from "firebase-functions";
 
 import { order_status } from "../../common/constant";
 import * as utils from "../../lib/utils";
-import { orderAccounting, getGroupRestautantRef, createNewOrderData } from "../order/orderCreated";
+import { orderAccounting, createNewOrderData } from "../order/orderCreated";
 import { sendMessageToCustomer } from "../notify";
 import { costCal } from "../../common/commonUtils";
 import { Context } from "../../models/TestType";
@@ -66,7 +66,7 @@ export const orderChange = async (db: admin.firestore.Firestore, data: orderChan
     throw new functions.https.HttpsError("permission-denied", "Cannot be changed to an empty order.");
   }
   // check mo
-  const menuRestaurantRef = restaurantData.groupId ? await getGroupRestautantRef(db, restaurantData.groupId) : restaurantRef;
+  const menuRestaurantRef = restaurantRef;
 
   try {
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);

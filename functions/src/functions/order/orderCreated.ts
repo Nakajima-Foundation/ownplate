@@ -6,14 +6,6 @@ import { createCustomer } from "../stripe/customer";
 import { orderCreatedData, menuItem } from "../../lib/types";
 import { validateOrderCreated } from "../../lib/validator";
 
-export const getGroupRestautantRef = async (db, groupId: string) => {
-  const groupData = (await db.doc(`groups/${groupId}`).get()).data();
-  if (!groupData) {
-    throw new functions.https.HttpsError("invalid-argument", "This group does not exist.");
-  }
-  return db.doc(`restaurants/${groupData.restaurantId}`);
-};
-
 const getOptionPrice = (selectedOptionsRaw, menu, multiple) => {
   return selectedOptionsRaw.reduce((tmpPrice, selectedOpt, key) => {
     const opt = menu.itemOptionCheckbox[key].split(",");
@@ -184,7 +176,7 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
       return orderRef.update("status", order_status.error);
     }
     // check mo
-    const menuRestaurantRef = restaurantData.groupId ? await getGroupRestautantRef(db, restaurantData.groupId) : restaurantRef;
+    const menuRestaurantRef = restaurantRef;
 
     const order = await orderRef.get();
 
@@ -284,7 +276,6 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
             tax: accountingResult.alcohol_tax,
           },
         },
-        groupId: restaurantData.groupId,
       })
     );
     return { result: true };
