@@ -70,7 +70,7 @@ export const getNewItemData = (
     itemMemo: item.itemMemo,
     itemPhoto: item.itemPhoto,
     images: {
-      item: item.images.item || {},
+      item: item?.images?.item || {},
     },
     itemOptionCheckbox: item.itemOptionCheckbox || [],
     publicFlag: validatedFlag ? item.publicFlag || false : false,
