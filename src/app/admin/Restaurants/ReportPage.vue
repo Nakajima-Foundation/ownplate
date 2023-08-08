@@ -412,7 +412,7 @@ export default defineComponent({
           .map(a => doc2data("order")(a as any))
           // .map(doc2data("order")) // fix after firebase 9
           .map((order) =>
-            order2ReportData(order as OrderInfoData, serviceTaxRate, props.isInMo)
+            order2ReportData(order as OrderInfoData, serviceTaxRate)
           );
         total.value = orders.value.reduce(
           (total, order) => {

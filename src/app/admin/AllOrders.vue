@@ -129,12 +129,6 @@ export default defineComponent({
     BackButton,
     NotFound,
   },
-  props: {
-    isInMo: {
-      type: Boolean,
-      required: true,
-    },
-  },
   metaInfo() {
     return {
       title: ["Admin All Order", this.defaultTitle].join(" / "),
@@ -191,7 +185,7 @@ export default defineComponent({
     });
     const fileName = "all_orders_of_all_restaurants";
     const fields = computed(() => {
-      return props.isInMo ? revenueMoCSVHeader : revenueCSVHeader;
+      return revenueCSVHeader;
     });
 
     const fieldNames = fields.value.map((field) => {
@@ -253,7 +247,6 @@ export default defineComponent({
             const order = order2ReportData(
               orderDoc.data() as OrderInfoData,
               serviceTaxRate,
-              props.isInMo
             );
             order.restaurantId = orderDoc.ref.path.split("/")[1];
             order.id = orderDoc.id;

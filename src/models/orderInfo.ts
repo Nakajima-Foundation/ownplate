@@ -97,7 +97,6 @@ export class OrderInfo {}
 export const order2ReportData = (
   order: OrderInfoData,
   serviceTaxRate: number,
-  isInMo: boolean
 ) => {
   const multiple = stripeRegion.multiple;
   // @ts-ignore
