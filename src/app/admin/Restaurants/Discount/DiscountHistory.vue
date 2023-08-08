@@ -107,6 +107,7 @@
 				</div></div>
 
         <o-button
+          v-if="false"
           @click="deleteHistory(h)"
           class="border-0 flex items-center justify-center mt-3 h-9 w-24 rounded-full bg-black bg-opacity-5 font-bold text-red-700">
 					{{ $t("admin.promotion.delete") }}</o-button>
