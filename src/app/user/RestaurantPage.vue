@@ -860,7 +860,7 @@ export default defineComponent({
     
     const cartButton = ref();
     const isShowCart = computed(() => {
-      return cartButton.value?.isShowCart;
+      return cartButton.value?.isShowCart || false;
     });
     const closeCart = () => {
       cartButton.value?.closeCart();
@@ -883,11 +883,16 @@ export default defineComponent({
       }
     });
     
+    let y = 0;
     watch(isShowCart, (value) => {
       if (value) {
+        y = window.pageYOffset;
         document.body.style.position = "fixed";
       } else {
         document.body.style.position = "";
+        if (y) {
+          scrollTo(0, y);
+        }
       }
     });
     onUnmounted(() => {
