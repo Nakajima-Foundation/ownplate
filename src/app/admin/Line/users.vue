@@ -45,6 +45,7 @@ import {
   doc,
   getDocs,
   collection,
+  DocumentData,
 } from "firebase/firestore";
 
 
@@ -66,7 +67,7 @@ export default defineComponent({
       return notFoundResponse;
     }
 
-    const users = ref([]);
+    const users = ref<DocumentData[]>([]);
     const loadUsers = async () => { 
       const col = await getDocs(collection(db, `restaurants/${props.shopInfo.restaurantId}/lineUsersData`))
       users.value = col.docs.map(a => a.data());

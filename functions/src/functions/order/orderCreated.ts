@@ -65,7 +65,7 @@ export const orderAccounting = (restaurantData, food_sub_total, alcohol_sub_tota
 };
 
 // restaurantData is for mo.
-export const createNewOrderData = async (restaurantRef, orderRef, orderData, multiple, restaurantData, moRestaurantRef) => {
+export const createNewOrderData = async (restaurantRef, orderRef, orderData, multiple) => {
   const menuIds = Object.keys(orderData.order);
   const menuObj = await utils.getMenuObj(restaurantRef, menuIds);
 
@@ -204,7 +204,7 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
     }
     const multiple = utils.stripeRegion.multiple; //100 for USD, 1 for JPY
 
-    const { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total } = await createNewOrderData(menuRestaurantRef, orderRef, orderData, multiple, restaurantData, restaurantRef);
+    const { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total } = await createNewOrderData(menuRestaurantRef, orderRef, orderData, multiple);
 
     // Atomically increment the orderCount of the restaurant
     let orderCount = 0;
