@@ -989,10 +989,10 @@
 			"history": "履歴",
 			"noHistory": "履歴はありません",
 			"delete": "削除",
-			"uid": "uid",
+			"uid": "利用者",
 			"rid": "rid",
 			"pid": "pid",
-			"oid": "oid",
+			"oid": "注文番号",
 			"date": "注文日",
 			"total": "合計金額",
 			"discountPrice": "割引"

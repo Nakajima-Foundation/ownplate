@@ -47,13 +47,17 @@
 				<div class="rounded-lg bg-white p-4 shadow mb-2">
 				<div class="mt-1 flex items-center">
 				<div class="text-sm text-black text-opacity-40 font-bold">
-       	 {{ $t("admin.promotion.uid") }}: 
+       	  {{ $t("admin.promotion.uid") }}:
+            
 				</div>
 				<div class="ml-1">
-				 {{h.uid}}
+          <router-link :to="`/admin/restaurants/${h.restaurantId}/userhistory/${h.uid}`"
+                       class="underline">
+				    {{h.uid}}
+          </router-link>
 				</div></div>
 
-				<div class="mt-1 flex items-center">
+				<div class="mt-1 flex items-center" v-if="false">
 				<div class="text-sm text-black text-opacity-40 font-bold">
         	{{ $t("admin.promotion.rid") }}: 
 				</div>
@@ -61,7 +65,7 @@
 					{{h.restaurantId}}
 				</div></div>
 
-				<div class="mt-1 flex items-center">
+				<div class="mt-1 flex items-center" v-if="false">
 				<div class="text-sm text-black text-opacity-40 font-bold">
         	{{ $t("admin.promotion.pid") }}: 
 				</div>
@@ -74,7 +78,10 @@
         	{{ $t("admin.promotion.oid") }}: 
 				</div>
 				<div class="ml-1">
-					{{h.orderId}}
+          <router-link :to="`/admin/restaurants/${h.restaurantId}/orders/${h.orderId}`"
+                       class="underline">
+            {{h.orderId}}
+          </router-link>
 				</div></div>
 
 				<div class="mt-1 flex items-center">
@@ -82,7 +89,7 @@
         	{{ $t("admin.promotion.date") }}: 
 				</div>
 				<div class="ml-1">
-					{{h.usedAt.toDate()}}
+					{{moment(h.usedAt.toDate()).format("YYYY/MM/DD HH:mm")}}
 				</div></div>
 
 				<div class="mt-1 flex items-center">
