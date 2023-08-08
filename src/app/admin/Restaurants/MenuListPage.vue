@@ -13,16 +13,6 @@
         :showSuspend="false"
       />
 
-      <template v-if="showCategory">
-        <!-- Category view -->
-        <div class="grid-col-1 mx-6 mt-6 grid space-y-2">
-          <div class="text-xl font-bold text-black text-opacity-30">
-            {{ $t("shopInfo.productCategory") }}
-          </div>
-          <CategoryList :categoryData="categoryData" />
-        </div>
-      </template>
-      <template v-else>
         <!-- Toggle to View All or Public Only -->
         <div class="mx-6 mt-6 lg:text-center">
           <ToggleSwitch
@@ -33,42 +23,6 @@
           />
         </div>
 
-        <!-- category for mo -->
-        <div v-if="showSubCategory">
-          <CategoryButton
-            :shopInfo="shopInfo"
-            :selectedCategory="selectedCategory"
-          />
-        </div>
-
-        <!-- category for mo -->
-        <div v-if="showSubCategory">
-          <div class="mx-6 mt-2 lg:mx-auto lg:max-w-2xl">
-            <SubCategoryList
-              :subCategoryData="subCategoryData"
-              :categoryBathPath="categoryBathPath"
-              :subCategoryId="subCategory"
-            />
-          </div>
-        </div>
-
-        <div v-if="isInMo && selectedSubCategoryData">
-          <div class="mx-6 mt-2 lg:mx-auto lg:max-w-2xl">
-            <div class="mt-4 text-xs font-bold text-black text-opacity-50">
-              {{ $t("mobileOrder.admin.threshold") }}
-            </div>
-            <div class="mt-0.5 text-base font-bold">
-              <span class="text-xs text-black text-opacity-50">{{
-                $t("mobileOrder.admin.thresholdPickup")
-              }}</span>
-              {{ selectedSubCategoryData["thresholdMoPickup"] }}
-              <span class="text-xs text-black text-opacity-50"
-                >/ {{ $t("mobileOrder.admin.thresholdSearchStock") }}</span
-              >
-              {{ selectedSubCategoryData["thresholdSearchStock"] }}
-            </div>
-          </div>
-        </div>
         <!-- No Menu or Too Many Menu-->
         <div
           v-if="(!existsMenu || menuCounter > 5) && isOwner && !isInMo"
@@ -171,7 +125,6 @@
             <DownloadButton :shopInfo="shopInfo" :menuObj="menuObj" />
           </div>
         </div>
-      </template>
     </div>
   </div>
 </template>
@@ -196,7 +149,6 @@ import {
 } from "firebase/firestore";
 
 import NotFound from "@/components/NotFound.vue";
-import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
 
 import Menu from "@/app/admin/Restaurants/MenuListPage/Menu.vue";
 import Title from "@/app/admin/Restaurants/MenuListPage/Title.vue";
@@ -206,8 +158,6 @@ import ToggleSwitch from "@/components/ToggleSwitch.vue";
 import AddButton from "@/app/admin/Restaurants/MenuListPage/AddButton.vue";
 import PhotoName from "@/app/admin/Restaurants/MenuListPage/PhotoName.vue";
 import DownloadButton from "@/app/admin/Restaurants/MenuListPage/DownloadButton.vue";
-import CategoryList from "@/app/admin/Restaurants/MenuListPage/CategoryList.vue";
-import CategoryButton from "@/app/admin/Restaurants/MenuListPage/CategoryButton.vue";
 import DownloadCSV from "@/app/admin/Restaurants/MenuListPage/DownloadCSV.vue";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 
@@ -248,9 +198,6 @@ export default defineComponent({
     PhotoName,
     DownloadButton,
 
-    SubCategoryList,
-    CategoryList,
-    CategoryButton,
     DownloadCSV,
   },
   props: {
@@ -315,15 +262,6 @@ export default defineComponent({
       props.moPrefix || "",
       category
     );
-    const selectedCategory = computed(() => {
-      return categoryDataObj.value[category.value] || {};
-    });
-    const selectedSubCategoryData = computed(() => {
-      //      return subCategoryData.value
-      return subCategoryData.value.find((a) => {
-        return a.id === subCategory.value;
-      });
-    });
     watch(category, () => {
       if (category.value) {
         loadSubcategory();
@@ -335,9 +273,7 @@ export default defineComponent({
         loadSubcategory();
       }
     }
-    const categoryBathPath = computed(() => {
-      return `/admin/restaurants/${restaurantId.value}/menus/cat/${category.value}`;
-    });
+
     // end of category
 
     const menuRestaurantId = computed(() => {
@@ -392,9 +328,6 @@ export default defineComponent({
       return menuLength.value > 0;
     });
 
-    watch(watchCat, () => {
-      loadMenu();
-    });
     loadMenu();
 
     // mo
@@ -631,17 +564,6 @@ export default defineComponent({
       forkTitleItem,
       forkMenuItem,
       deleteItem,
-
-      // category,
-      categoryData,
-      subCategoryData,
-      selectedCategory,
-      selectedSubCategoryData,
-
-      showCategory,
-      showSubCategory,
-      categoryBathPath,
-      subCategory,
 
     };
   },
