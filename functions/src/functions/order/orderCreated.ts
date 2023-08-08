@@ -94,36 +94,12 @@ export const createNewOrderData = async (restaurantRef, orderRef, orderData, mul
     console.error("[createNewOrderData] menuError");
     return orderRef.update("status", order_status.error);
   }
-  // for mo
-  const subCategoryIds = utils.convSubCateIds(menuObj);
-  const isInMo = !!restaurantData.groupId;
-  const isPickup = !!orderData.isPickup;
-  const moData = isInMo ? await utils.getMoDataObj(moRestaurantRef, subCategoryIds, isPickup ? 'pickup/data' : 'preOrder/data') : {};
-  const moStock = isInMo && isPickup ? await utils.getMoDataObj(moRestaurantRef, subCategoryIds, 'pickup/stock') : {};
-  // console.log(subCategoryIds, moData, moStock);
-  // 
+
   menuIds.map((menuId) => {
     const menu = menuObj[menuId];
 
-    // for mo
-    if (restaurantData.groupId) {
-      if (!(moData[menuId] || {}).isPublic) {
-        return;
-      }
-      if (restaurantData.isPickup) {
-        if (menu.soldOut) {
-          return;
-        }
-        const s = moStock[menuId] || {};
-        if (!s.forcePickupStock && !s.isStock) {
-          return ;
-        }
-      }
-      // for mo
-    }  else {
-      if (menu.soldOut) {
-        return;
-      }
+    if (menu.soldOut) {
+      return;
     }
     
     const prices: number[] = [];
@@ -226,13 +202,9 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
     const ownerUid = restaurantData.uid;
     const {
       isDelivery,
-      isPickup,
       isLiff, 
     } = orderData;
     if (isDelivery && !restaurantData.enableDelivery) {
-      throw new functions.https.HttpsError("invalid-argument", "Invalid delivery order.");
-    }
-    if (isPickup && !restaurantData.enableMoPickup) {
       throw new functions.https.HttpsError("invalid-argument", "Invalid delivery order.");
     }
     if (isLiff && !restaurantData.supportLiff) {
@@ -278,7 +250,7 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
       utils.filterData({
         // copy and validate
         isDelivery,
-        isPickup,
+        isPickup: false, // TODO: remove for mo
         isLiff, 
 
         // just copy
