@@ -187,9 +187,6 @@
           :orders="orders"
           :shopInfo="shopInfo"
           :fileName="fileNameDetail"
-          :isInMo="isInMo"
-          :categoryDataObj="categoryDataObj"
-          :allSubCategoryDataObj="allSubCategoryDataObj"
           buttonTitle="admin.report.download-csv-monthly-details"
         />
       </div>
@@ -221,7 +218,6 @@ import { nameOfOrder } from "@/utils/strings";
 import { midNightOfMonth } from "@/utils/dateUtils";
 import {
   revenueCSVHeader,
-  revenueMoCSVHeader,
   revenueTableHeader,
 } from "@/utils/reportUtils";
 import { order_status_keys } from "@/config/constant";
@@ -305,7 +301,7 @@ export default defineComponent({
     }
 
     const fields = computed(() => {
-      return props.isInMo ? revenueMoCSVHeader : revenueCSVHeader;
+      return revenueCSVHeader;
     });
 
     const fieldNames = computed(() => {

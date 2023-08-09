@@ -91,7 +91,7 @@
       <div v-if="isOwner">
         <!-- Download Orders -->
         <div class="mx-6 mt-6 text-center">
-          <download-orders :orders="filteredOrders" :isInMo="isInMo" />
+          <download-orders :orders="filteredOrders" />
         </div>
 
         <!-- Download Report -->
@@ -102,9 +102,6 @@
             :hideTable="true"
             :withStatus="true"
             :shopInfo="shopInfo"
-            :isInMo="isInMo"
-            :categoryDataObj="categoryDataObj"
-            :allSubCategoryDataObj="allSubCategoryDataObj"
             buttonTitle="admin.report.download-csv-history-details"
           />
         </div>
@@ -170,10 +167,6 @@ export default defineComponent({
     },
     moPrefix: {
       type: String,
-      required: false,
-    },
-    groupMasterRestaurant: {
-      type: Object,
       required: false,
     },
   },

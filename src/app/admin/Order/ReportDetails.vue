@@ -69,7 +69,6 @@ import { arrayChunk, forceArray } from "@/utils/utils";
 import {
   reportHeaders,
   reportHeadersWithAddress,
-  reportHeadersForMo,
 } from "@/utils/reportUtils";
 
 import { OrderInfoData } from "@/models/orderInfo";
@@ -98,18 +97,6 @@ export default defineComponent({
       required: false,
       default: false,
     },
-    isInMo: {
-      type: Boolean,
-      required: true,
-    },
-    categoryDataObj: {
-      type: Object,
-      required: true,
-    },
-    allSubCategoryDataObj: {
-      type: Object,
-      required: true,
-    },
     buttonTitle: {
       type: String,
       required: true,
@@ -120,7 +107,7 @@ export default defineComponent({
 
     const customers = ref<{[key: string]: CustomerInfo}>({});
     const writeonFirstLine = (index: number, key: number | string, text: any) => {
-      return (index === 0 && Number(key) === 0) || props.isInMo ? text : "-";
+      return (index === 0 && Number(key) === 0) ? text : "-";
     };
     const timeConvert = (timeData: any) => {
       if (!timeData) {
@@ -169,9 +156,7 @@ export default defineComponent({
     };
 
     const fields = computed(() => {
-      if (props.isInMo) {
-        return reportHeadersForMo;
-      } else if (props.shopInfo?.isEC || props.shopInfo?.enableDelivery) {
+      if (props.shopInfo?.isEC || props.shopInfo?.enableDelivery) {
         return reportHeadersWithAddress;
       }
       return reportHeaders;
@@ -266,9 +251,7 @@ export default defineComponent({
                 userName: writeonFirstLine(
                   index,
                   key,
-                  props.isInMo
-                    ? "-"
-                    : order.name || t("order.unspecified")
+                  order.name || t("order.unspecified")
                 ),
                 "ec.name": writeonFirstLine(
                   index,
@@ -315,14 +298,7 @@ export default defineComponent({
                 category2: menuItem.category2 || "",
 
                 categoryId: menuItem.category || "",
-                category: menuItem.category
-                  ? (props.categoryDataObj || {})[menuItem.category]?.name || ""
-                  : "",
                 subCategoryId: menuItem.subCategory || "",
-                subCategory: menuItem.subCategory
-                  ? (props.allSubCategoryDataObj || {})[menuItem.subCategory]
-                      ?.name || ""
-                  : "",
                 productId: menuItem.productId || "",
 
                 // for mo
