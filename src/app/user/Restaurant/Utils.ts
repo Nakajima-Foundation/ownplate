@@ -66,8 +66,6 @@ export const useTitles = (restaurantId: Ref) => {
 export const useMenu = (
   restaurantId: Ref<string>,
   isInMo: ComputedRef<boolean | null>,
-  category: Ref<string>,
-  subCategory: Ref<string>,
 ) => {
   const allMenuObj = ref<{ [key: string]: DocumentData[] }>({});
   const menuCache = ref<{ [key: string]: any }>({});

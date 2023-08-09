@@ -449,8 +449,6 @@ export default defineComponent({
     const { loadMenu, setCache, menus, menuObj, menuCache } = useMenu(
       restaurantId,
       isInMo,
-      ref(""),
-      ref(""),
     );
     
     const { menuPickupData, availableDays, todaysLast } = usePickupTime(
