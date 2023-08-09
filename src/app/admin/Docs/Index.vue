@@ -79,10 +79,19 @@
         - <span class="font-normal text-xs">おもちかえり.comの更新情報です。機能の追加や変更はこちらを確認してください。</span>
       </div>
       <div>
-        Note記事 -  <span class="font-normal text-xs">おもちかえり.comに追加された機能の説明や活用方法、店舗紹介などを不定期紹介しています。</span>  
+        <a
+          href="https://note.com/singsoc/m/m19dd935e84e4"
+          target="_blank"
+          class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
+          >Note
+        </a> -  <span class="font-normal text-xs">おもちかえり.comに追加された機能の説明や活用方法、店舗紹介などを不定期紹介しています。</span>  
       </div>
       <div>
-        お問い合わせ -  <span class="font-normal text-xs">おもちかえり.comの利用に関して、不明点や要望などの問い合わせ窓口です。テイクアウト/デリバリー利用時の店舗への質問は各店舗へ直接問い合わせてください</span>  
+        <a
+          href="https://docs.google.com/forms/d/e/1FAIpQLSfGR4kk65ynfkCRGJsvJz01HZf7AU1nGLL9Rn9i4G9-qiW6MQ/viewform"
+          target="_blank"
+          class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
+          >お問い合わせ</a> -  <span class="font-normal text-xs">おもちかえり.comの利用に関して、不明点や要望などの問い合わせ窓口です。テイクアウト/デリバリー利用時の店舗への質問は各店舗へ直接問い合わせてください</span>  
       </div>
       <div>
         <router-link to="/admin/faq"
