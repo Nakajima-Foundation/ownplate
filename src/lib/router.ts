@@ -343,6 +343,11 @@ export const customRoutes: CustomRoute[] = [
     component: "admin/FAQ.vue",
   },
   {
+    name: "admin-docs",
+    path: "/admin/docs",
+    component: "admin/Docs/Index.vue",
+  },
+  {
     name: "admin-news-article",
     path: "/admin/news/:newsId",
     component: "admin/News/Article.vue",
