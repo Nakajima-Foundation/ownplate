@@ -25,7 +25,7 @@
 
         <!-- No Menu or Too Many Menu-->
         <div
-          v-if="(!existsMenu || menuCounter > 5) && isOwner && !isInMo"
+          v-if="(!existsMenu || menuCounter > 5) && isOwner"
           class="mx-6 mt-6 rounded-lg border-2 border-op-teal p-4 pb-2 lg:mx-auto lg:max-w-2xl"
         >
           <div class="text-center text-sm font-bold text-op-teal">
@@ -202,22 +202,6 @@ export default defineComponent({
       type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
-    groupMasterRestaurant: {
-      type: Object,
-      required: false,
-    },
-    groupData: {
-      type: Object,
-      required: false,
-    },
-    isInMo: {
-      type: Boolean,
-      required: true,
-    },
-    moPrefix: {
-      type: String,
-      required: false,
-    },
   },
   metaInfo() {
     return {
@@ -243,9 +227,6 @@ export default defineComponent({
 
     const { isOwner, uid, ownerUid } = useAdminUids();
 
-    const menuRestaurantId = computed(() => {
-      return route.params.restaurantId as string;
-    });
     const restaurantId = computed(() => {
       return route.params.restaurantId as string;
     });
@@ -279,12 +260,10 @@ export default defineComponent({
     });
 
     const { menuObj, itemsObj, numberOfMenus, loadMenu, isLoading } =
-      useMenuAndTitle(menuRestaurantId);
+      useMenuAndTitle(restaurantId);
 
     const menuLists = computed(() => {
-      return props.isInMo
-        ? Object.keys(itemsObj.value)
-        : (shopInfoSnapshot.value as RestaurantInfoData).menuLists || [];
+      return (shopInfoSnapshot.value as RestaurantInfoData).menuLists || [];
     });
     const menuLength = computed(() => {
       return menuLists.value.length;
@@ -297,17 +276,15 @@ export default defineComponent({
 
     // mo
     watch(isLoading, (value) => {
-      if (!props.isInMo) {
-        if (!value) {
-          // finish load
-          if (
-            numberOfMenus.value > 0 &&
+      if (!value) {
+        // finish load
+        if (
+          numberOfMenus.value > 0 &&
             numberOfMenus.value !== props.shopInfo?.numberOfMenus
-          ) {
-            updateDoc(doc(db, `restaurants/${restaurantId.value}`), {
-              numberOfMenus: numberOfMenus.value,
-            });
-          }
+        ) {
+          updateDoc(doc(db, `restaurants/${restaurantId.value}`), {
+            numberOfMenus: numberOfMenus.value,
+          });
         }
       }
     });
@@ -322,7 +299,7 @@ export default defineComponent({
     };
     const updateTitle = async (title: any) => {
       await updateDoc(
-        doc(db, `restaurants/${menuRestaurantId.value}/titles/${title.id}`),
+        doc(db, `restaurants/${restaurantId.value}/titles/${title.id}`),
         { name: title.name }
       );
       changeTitleMode(title.id, false);
@@ -348,7 +325,7 @@ export default defineComponent({
           deletedFlag: false,
         };
         const newTitle = await addDoc(
-          collection(db, `restaurants/${menuRestaurantId.value}/titles`),
+          collection(db, `restaurants/${restaurantId.value}/titles`),
           data
         );
         const newMenuLists = menuLists.value;
@@ -379,7 +356,7 @@ export default defineComponent({
           createdAt: new Date(),
         };
         const newData = await addDoc(
-          collection(db, `restaurants/${menuRestaurantId.value}/menus`),
+          collection(db, `restaurants/${restaurantId.value}/menus`),
           itemData
         );
 
@@ -391,7 +368,7 @@ export default defineComponent({
         }
         await saveMenuList(newMenuLists);
         router.push({
-          path: `/admin/restaurants/${menuRestaurantId.value}/menus/${newData.id}`,
+          path: `/admin/restaurants/${restaurantId.value}/menus/${newData.id}`,
         });
       } catch (e) {
         console.log(e);
@@ -461,7 +438,7 @@ export default defineComponent({
         createdAt: serverTimestamp(),
       };
       const newTitle = await addDoc(
-        collection(db, `restaurants/${menuRestaurantId.value}/titles`),
+        collection(db, `restaurants/${restaurantId.value}/titles`),
         data
       );
       await forkItem(itemKey, newTitle as any);
@@ -469,14 +446,13 @@ export default defineComponent({
 
     const forkMenuItem = async (itemKey: string) => {
       const item = itemsObj.value[itemKey];
-
       const data = copyMenuData(
         item as MenuData,
         ownPlateConfig.region === "JP",
         uid.value
       );
       const newData = await addDoc(
-        collection(db, `restaurants/${menuRestaurantId.value}/menus`),
+        collection(db, `restaurants/${restaurantId.value}/menus`),
         cleanObject(data)
       );
       await forkItem(itemKey, newData as any);
@@ -490,13 +466,13 @@ export default defineComponent({
       menuLists.value.splice(pos, 1);
       if (item._dataType === "menu") {
         await updateDoc(
-          doc(db, `restaurants/${menuRestaurantId.value}/menus/${itemKey}`),
+          doc(db, `restaurants/${restaurantId.value}/menus/${itemKey}`),
           { deletedFlag: true }
         );
       }
       if (item._dataType === "title") {
         await updateDoc(
-          doc(db, `restaurants/${menuRestaurantId.value}/titles/${itemKey}`),
+          doc(db, `restaurants/${restaurantId.value}/titles/${itemKey}`),
           { deletedFlag: true }
         );
       }
