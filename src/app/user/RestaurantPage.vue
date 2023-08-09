@@ -254,7 +254,6 @@ import CartButton from "@/app/user/Restaurant/CartButton.vue";
 import Cart from "@/app/user/Restaurant/Cart.vue";
 import Delivery from "@/app/user/Restaurant/Delivery.vue";
 import Titles from "@/app/user/Restaurant/Titles.vue";
-import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
 import TransactionsActContents from "@/app/user/TransactionsAct/Contents.vue";
 
 import FloatingBanner from "@/app/user/Restaurant/FloatingBanner.vue";
@@ -327,9 +326,7 @@ export default defineComponent({
     Delivery,
     TransactionsActContents,
     Titles,
-    SubCategoryList,
     FloatingBanner,
-    
   },
   props: {
     shopInfo: {
