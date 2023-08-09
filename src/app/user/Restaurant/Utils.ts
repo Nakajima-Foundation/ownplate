@@ -4,6 +4,7 @@ import {
   computed,
   Ref,
   ComputedRef,
+  
 } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
@@ -65,16 +66,11 @@ export const useTitles = (restaurantId: Ref) => {
 export const useMenu = (
   restaurantId: Ref<string>,
 ) => {
-  const allMenuObj = ref<{ [key: string]: MenuData[] }>({});
-  const menuCache = ref<{ [key: string]: MenuData[] }>({});
+  const menuCache = ref<MenuData[]>([]);
   const menuDetacher = ref();
-  const loading: { [key: string]: boolean } = {};
 
-  const allMenuObjKey = computed(() => {
-    return "mono";
-  });
   const menus = computed(() => {
-    return allMenuObj.value["mono"] || [];
+    return menuCache.value;
   });
 
   const detacheMenu = () => {
@@ -86,18 +82,14 @@ export const useMenu = (
     return `restaurants/${restaurantId.value}/menus`;
   });
   const setCache = (cache: any) => {
-    allMenuObj.value = cache;
     menuCache.value = cache;
   };
   const loadMenu = async (callback?: () => void) => {
     detacheMenu();
-    if (menuCache.value["mono"]) {
-      allMenuObj.value["mono"] =
-        menuCache.value["mono"];
+    if (menuCache.value.length > 0) {
       return;
     }
 
-    const key = allMenuObjKey.value;
     const path = menuPath.value;
 
     const menuQuery = query(
@@ -114,20 +106,17 @@ export const useMenu = (
             return data.validatedFlag === undefined || data.validatedFlag;
           })
           .map(doc2data("menu")) as MenuData[];
-        allMenuObj.value = { [key]: ret};
+        menuCache.value = ret;
         if (callback) {
           callback();
         }
       } else {
-        allMenuObj.value[key] = [];
+        menuCache.value = [];
       }
     });
   };
 
   const menuObj = computed(() => {
-    if (false) {
-      return array2obj(Object.values(menuCache.value).flat());
-    }
     return array2obj(menus.value);
   });
 
