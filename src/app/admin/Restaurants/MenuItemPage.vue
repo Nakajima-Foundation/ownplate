@@ -715,10 +715,6 @@ export default defineComponent({
       type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
-    groupMasterRestaurant: {
-      type: Object,
-      required: false,
-    },
   },
 
   setup(props) {

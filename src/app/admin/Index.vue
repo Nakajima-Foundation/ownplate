@@ -162,10 +162,7 @@
                 :shopInfo="restaurantItems[restaurantId]"
                 :restaurantid="restaurantId"
                 :numberOfMenus="
-                  (!groupMasterRestaurant.empty
-                    ? groupMasterRestaurant
-                    : restaurantItems[restaurantId]
-                  ).numberOfMenus || 0
+                                (restaurantItems[restaurantId]).numberOfMenus || 0
                 "
                 :numberOfOrders="numberOfOrderObj[restaurantId] || 0"
                 :lineEnable="lines[restaurantId] || false"
@@ -181,7 +178,6 @@
                 @positionDown="positionDown($event)"
                 @deleteFromRestaurantLists="deleteFromRestaurantLists($event)"
                 :isOwner="isOwner"
-                :moPrefix="moPrefix"
               />
             </div>
 
@@ -317,20 +313,6 @@ export default defineComponent({
     Footer,
     ToggleSwitch,
     ExportProd,
-  },
-  props: {
-    groupMasterRestaurant: {
-      type: Object,
-      required: false,
-    },
-    groupData: {
-      type: Object,
-      required: false,
-    },
-    moPrefix: {
-      type: String,
-      required: false,
-    },
   },
   metaInfo() {
     return {
@@ -627,13 +609,9 @@ export default defineComponent({
     });
 
     const existMenu = computed(() => {
-      if (!props?.groupMasterRestaurant?.empty) {
-        return props?.groupMasterRestaurant?.numberOfMenus > 1;
-      } else {
-        return Object.values(restaurantItems.value || []).find((r) => {
-          return (r || {}).numberOfMenus > 1;
-        });
-      }
+      return Object.values(restaurantItems.value || []).find((r) => {
+        return (r || {}).numberOfMenus > 1;
+      });
     });
     const existPublicRestaurant = computed(() => {
       return Object.values(restaurantItems.value || []).find((r) => {

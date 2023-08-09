@@ -21,10 +21,6 @@
       <!-- Notification Settings Popup-->
       <router-view
         :shopInfo="shopInfo"
-        :groupData="groupData"
-        :groupMasterRestaurant="groupMasterRestaurant"
-        :isInMo="isInMo"
-        :moPrefix="moPrefix"
         v-if="noRestaurant === false"
       ></router-view>
       <NotificationWatcher :notificationConfig="notificationConfig" />
@@ -76,20 +72,6 @@ export default defineComponent({
     NewOrderWatcher,
     PartnersContact,
   },
-  props: {
-    groupMasterRestaurant: {
-      type: Object,
-      required: false,
-    },
-    isInMo: {
-      type: Boolean,
-      required: true,
-    },
-    moPrefix: {
-      type: String,
-      required: false,
-    },
-  },
   setup() {
     const restaurantId = useRestaurantId();
     const { uid, ownerUid } = useAdminUids();
@@ -103,7 +85,6 @@ export default defineComponent({
 
     const noRestaurant = ref<boolean | null>(null);
     const shopInfo = ref(defaultShopInfo);
-    const groupData = ref<null | DocumentData>(null);
 
     if (!checkAdminPermission()) {
       return {
@@ -129,14 +110,6 @@ export default defineComponent({
           return;
         }
         const restaurant_data = restaurant.data();
-        if (restaurant_data.groupId) {
-          const groupDoc = await getDoc(
-            doc(db, `groups/${restaurant_data.groupId}`)
-          );
-          if (groupDoc.exists()) {
-            groupData.value = groupDoc.data();
-          }
-        }
 
         const copy = JSON.parse(JSON.stringify(defaultShopInfo));
         const loadShopInfo = Object.assign(
@@ -209,7 +182,6 @@ export default defineComponent({
       isOpen,
 
       shopInfo,
-      groupData,
       noRestaurant,
     };
   },

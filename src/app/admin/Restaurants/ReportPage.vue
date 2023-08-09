@@ -234,7 +234,6 @@ import { order2ReportData } from "@/models/orderInfo";
 import { OrderInfoData } from "@/models/orderInfo";
 
 import { checkShopOwner } from "@/utils/userPermission";
-import { useCategory, useAllSubcategory } from "@/app/user/Restaurant/Utils";
 import { useI18n } from "vue-i18n";
 
 export default defineComponent({

@@ -146,8 +146,6 @@ import {
 } from "@/utils/utils";
 import { checkShopAccount } from "@/utils/userPermission";
 
-import { useCategory, useAllSubcategory } from "@/app/user/Restaurant/Utils";
-
 export default defineComponent({
   components: {
     NotFound,
