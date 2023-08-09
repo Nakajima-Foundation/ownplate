@@ -35,59 +35,6 @@ const getUserPages = (prefix: string) => {
   ];
 };
 
-const getUserPagesWithCat = (prefix: string) => {
-  return [
-    {
-      path: "",
-      component: "user/RestaurantPage.vue",
-      children: [
-        {
-          name: "r-restaurant-Page_" + prefix,
-          path: "",
-          component: "user/Blank.vue",
-        },
-        {
-          name: "r-restaurant-Cats_" + prefix,
-          path: ":list(categories)/:state(takeout|pickup)",
-          component: "user/Blank.vue",
-        },
-        {
-          name: "r-restaurant-SubCats_" + prefix,
-          path: ":list(category)/:category/:state(takeout|pickup)",
-          component: "user/Blank.vue",
-        },
-        {
-          name: "r-restaurant-SubCats2_" + prefix,
-          path: ":list(category)/:category/:selectedSubCategory/:state(takeout|pickup)",
-          component: "user/Blank.vue",
-        },
-        {
-          name: "r-restaurant-Cat_" + prefix,
-          path: "cat/:category/:subCategory/:state(takeout|pickup)?",
-          component: "user/Blank.vue",
-        },
-        {
-          name: "r-restaurant-Menu_" + prefix,
-          path: "cat/:category/:subCategory/menus/:menuId",
-          component: "user/Blank.vue",
-        },
-        {
-          path: "transactions-act",
-          component: "user/Blank.vue",
-          meta: {
-            isTransactionsAct: true,
-          },
-        },
-      ],
-    },
-    {
-      name: "r-restaurantId-order_" + prefix,
-      path: "order/:orderId",
-      component: "user/OrderPage.vue",
-    },
-  ];
-};
-
 interface CustomRoute {
   name?: string;
   path: string;
