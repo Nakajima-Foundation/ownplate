@@ -250,18 +250,6 @@ export default defineComponent({
       type: Object,
       required: true,
     },
-    groupMasterRestaurant: {
-      type: Object,
-      required: false,
-    },
-    moPrefix: {
-      type: String,
-      required: false,
-    },
-    isInMo: {
-      type: Boolean,
-      required: true,
-    },
   },
   metaInfo() {
     return {
@@ -306,21 +294,9 @@ export default defineComponent({
 
     const fieldNames = computed(() => {
       return fields.value.map((field) => {
-        if (props.isInMo && field === "restaurantName") {
-          return t("order.storeName");
-        }
         return t(`order.${field}`);
       });
     });
-
-    const { loadCategory, categoryDataObj } = useCategory(props.moPrefix||"");
-    const { allSubCategoryDataObj, loadAllSubcategory } = useAllSubcategory(
-      props.moPrefix || ""
-    );
-    if (props.isInMo) {
-      loadCategory();
-      loadAllSubcategory();
-    }
 
     const tableData = computed(() => {
       return orders.value.map((order: OrderInfoData) => {
@@ -473,9 +449,6 @@ export default defineComponent({
       orderUrl,
       nameOfOrder,
       searchUrl,
-
-      categoryDataObj,
-      allSubCategoryDataObj,
 
       notFound: false,
 
