@@ -14,6 +14,19 @@
       />
 
     <div>
+      <div class="mx-6 mt-6 rounded-lg bg-black bg-opacity-5 p-4 text-center font-bold">
+        <div>
+          注文が入ったときに、スター精密のレシートプリンターから自動的に注文内容を印刷する機能です。
+        </div>
+        <a
+          href="https://docs.omochikaeri.com/manuals/printer.pdf"
+          target="_blank"
+          class="font-bold text-op-teal"
+          @click="handleClose()"
+        >
+          {{ $t("menu.printerManualLink") }}
+        </a>
+      </div>
       <div class="mx-6 mt-6 rounded-lg bg-black bg-opacity-5 p-4 text-center">
         <div class="pb-2 text-sm font-bold">
           CloudPRNT Server URL
@@ -24,6 +37,10 @@
           readonly
           v-model="printerAddress"
           ></o-input>
+        <div v-if="printerAddress">
+          こちらのURLをプリンターに設定してください。
+        </div>
+        
       </div>
 
       <div class="mx-6 mt-6 rounded-lg bg-black bg-opacity-5 p-4 text-center">
@@ -103,6 +120,9 @@ export default defineComponent({
       restaurantRef,
       (doc) => {
         const data = doc.data();
+        if (data === undefined) {
+          reset();
+        }
         printerConfig.value = data || {};
         notFound.value = false;
       }
