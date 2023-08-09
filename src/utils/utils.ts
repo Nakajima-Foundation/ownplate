@@ -433,7 +433,13 @@ export const useTopPath = () => {
   const inLiff = useIsInLiff();
   const liffBasePath = useLiffBasePath();
 
+  const isInMo = useIsInMo();
+  const moPrefix = useMoPrefix();
+
   return computed(() => {
+    if (isInMo.value) {
+      return "/" + moPrefix.value;
+    }
     if (inLiff.value) {
       return liffBasePath.value;
     }
