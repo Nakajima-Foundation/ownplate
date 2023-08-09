@@ -5,13 +5,6 @@ const reportHeadersTop = [
   "statusName",
   "userName",
 ];
-const reportHeadersTopMo = [
-  "name",
-  "restaurantName",
-  "type",
-  "statusName",
-  "userName",
-];
 const reportHeadersTime = [
   "datePlaced",
   "dateAccepted",
@@ -36,45 +29,6 @@ export const reportHeaders = [
 
   "discountPrice",
 
-];
-export const reportHeadersForMo = [
-  ...reportHeadersTopMo,
-  // "phoneNumber",
-  "restaurantId",
-  "shopId",
-  "uid",
-
-  ...reportHeadersTime,
-
-  "itemName",
-  // ...reportHeadersItem,
-
-  "productId",
-  "category",
-  "categoryId",
-  "subCategory",
-  "subCategoryId",
-
-  // for mo
-  "menuPrice",
-  "taxRate",
-  "tax",
-  // end for mo
-
-  "count",
-
-  "productSubTotal",
-  "total",
-  "payment",
-  "orderId",
-  "memo",
-
-  // for mo 2023
-  "discountPrice",
-  "beforeDiscountPrice",
-  "paymentCancel",
-  "cancelReason",
-  
 ];
 export const reportHeadersWithAddress = [
   ...reportHeadersTop,
@@ -121,51 +75,6 @@ export const revenueCSVHeader = [
   "payment",
 
   "discountPrice",
-
-];
-
-// for csv
-export const revenueMoCSVHeader = [
-  "date",
-  "type",
-  "restaurantId",
-  "shopId",
-  "restaurantName",
-  "orderStatus",
-  "foodRevenue",
-  "foodTax",
-  "alcoholRevenue",
-  "salesTax",
-  "total",
-  "name",
-  "payment",
-
-  // for mo 2023
-  "discountPrice",
-  "beforeDiscountPrice",
-  "cancelReason",
-
-];
-export const revenueMoAllCSVHeader = [
-  "date",
-  "type",
-  "restaurantId",
-  "shopId",
-  "restaurantName",
-  "orderStatus",
-  "foodRevenue",
-  "foodTax",
-  "alcoholRevenue",
-  "salesTax",
-  "total",
-  "name",
-  "payment",
-
-  // for mo 2023
-  "discountPrice",
-  "beforeDiscountPrice",
-  "paymentCancel",
-  "cancelReason",
 
 ];
 
