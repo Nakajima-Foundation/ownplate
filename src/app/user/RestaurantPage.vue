@@ -279,7 +279,7 @@ import { ownPlateConfig, moTitle } from "@/config/project";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
-import { MenuData } from "@/models/menu";
+import { MenuData, TitleData } from "@/models/menu";
 import { AnalyticsMenuData } from "@/lib/firebase/analytics";
 import Promotion from "@/models/promotion";
 
@@ -292,7 +292,6 @@ import {
   getPrices,
   getTrimmedSelectedOptions,
   getPostOption,
-  useIsInMo,
   useToggle,
   scrollToElementById,
   useUserData,
@@ -388,7 +387,6 @@ export default defineComponent({
 
     const multiple = store.getters.stripeRegion.multiple;
 
-    const isInMo = useIsInMo();
     const basePath = useBasePath();
 
     const defaultHowToReceive = (() => {
@@ -445,7 +443,6 @@ export default defineComponent({
     
     const { loadMenu, setCache, menus, menuObj, menuCache } = useMenu(
       restaurantId,
-      isInMo,
     );
     
     const { menuPickupData, availableDays, todaysLast } = usePickupTime(
@@ -498,7 +495,8 @@ export default defineComponent({
     
     const itemLists = computed(() => {
       const menuLists = props.shopInfo.menuLists || [];
-      const itemsObj = array2obj(menus.value.concat(titles.value));
+      
+      const itemsObj = array2obj(([] as (MenuData | TitleData)[]).concat(menus.value).concat(titles.value));
       return menuLists
         .map((itemId) => {
           return { ...itemsObj[itemId] };

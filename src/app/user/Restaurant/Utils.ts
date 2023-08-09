@@ -17,16 +17,15 @@ import {
   limit,
   startAfter,
   orderBy,
-  DocumentData,
   QueryDocumentSnapshot,
 } from "firebase/firestore";
 
 import { doc2data, array2obj } from "@/utils/utils";
 import { useRoute } from "vue-router";
-import { MenuData } from "@/models/menu";
+import { MenuData, TitleData } from "@/models/menu";
 
 export const useTitles = (restaurantId: Ref) => {
-  const titles = ref<DocumentData[]>([]);
+  const titles = ref<TitleData[]>([]);
 
   const titleDetacher = ref();
   const detacheTitle = () => {
@@ -65,10 +64,9 @@ export const useTitles = (restaurantId: Ref) => {
 
 export const useMenu = (
   restaurantId: Ref<string>,
-  isInMo: ComputedRef<boolean | null>,
 ) => {
-  const allMenuObj = ref<{ [key: string]: DocumentData[] }>({});
-  const menuCache = ref<{ [key: string]: any }>({});
+  const allMenuObj = ref<{ [key: string]: MenuData[] }>({});
+  const menuCache = ref<{ [key: string]: MenuData[] }>({});
   const menuDetacher = ref();
   const loading: { [key: string]: boolean } = {};
 
@@ -76,7 +74,7 @@ export const useMenu = (
     return "mono";
   });
   const menus = computed(() => {
-    return allMenuObj.value[allMenuObjKey.value] || [];
+    return allMenuObj.value["mono"] || [];
   });
 
   const detacheMenu = () => {
@@ -93,9 +91,9 @@ export const useMenu = (
   };
   const loadMenu = async (callback?: () => void) => {
     detacheMenu();
-    if (menuCache.value[allMenuObjKey.value]) {
-      allMenuObj.value[allMenuObjKey.value] =
-        menuCache.value[allMenuObjKey.value];
+    if (menuCache.value["mono"]) {
+      allMenuObj.value["mono"] =
+        menuCache.value["mono"];
       return;
     }
 
@@ -115,8 +113,8 @@ export const useMenu = (
             const data = a.data();
             return data.validatedFlag === undefined || data.validatedFlag;
           })
-          .map(doc2data("menu"));
-        allMenuObj.value = { [key]: ret };
+          .map(doc2data("menu")) as MenuData[];
+        allMenuObj.value = { [key]: ret};
         if (callback) {
           callback();
         }
@@ -127,7 +125,7 @@ export const useMenu = (
   };
 
   const menuObj = computed(() => {
-    if (isInMo.value) {
+    if (false) {
       return array2obj(Object.values(menuCache.value).flat());
     }
     return array2obj(menus.value);

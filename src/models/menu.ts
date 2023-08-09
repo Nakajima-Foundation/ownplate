@@ -15,8 +15,14 @@ export interface ExceptHour {
   start?: number;
   end?: number;
 }
+export interface TitleData {
+  _dataType: "title";
+  id: string;
+  name: string;
+}
 
 export interface MenuData {
+  _dataType: "menu";
   id: string;
   itemDescription: string;
   itemName: string;
