@@ -360,6 +360,8 @@
     "printerConfigTitle": "Printer settings",
     "elablePrinter": "Enable print",
     "printerDescription": "You can print your order information using a printer made by Star Seiki connected via Bluetooth.",
+    "printerDescription2": "If enabled, a print button will be displayed on the order details page after accepting the order",
+    "printerDescriptionConfig": "Click here for automatic print settings",
     "phoneCall": "Phone Notification",
     "phoneCallDescription": "Make a call when a new order comes in",
     "phoneCallNotice": "Although it is currently provided free of charge, this feature may be a paid feature in the future due to telephone call charges. In that case, even if this function is turned on, there is no sudden cost",

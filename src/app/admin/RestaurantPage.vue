@@ -853,6 +853,15 @@
                   {{ $t("menu.printerManualLink") }}
                 </a>
               </div>
+              <div class="text-xs">
+                {{ $t("editRestaurant.printerDescription2") }}
+              </div>
+              <div class="text-xs pt-2">
+                <router-link 
+                  class="inline-flex text-xs font-bold text-op-teal"
+                  :to="`/admin/restaurants/${restaurantId()}/printer`"
+                  >{{ $t("editRestaurant.printerDescriptionConfig") }}</router-link>
+              </div>
             </div>
           </div>
 
