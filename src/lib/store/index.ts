@@ -10,7 +10,6 @@ export const strict = false;
 interface Claims {
   admin: boolean;
   operator: boolean;
-  groupId: string;
   parentUid?: string;
   liffId: string;
 };
@@ -96,9 +95,6 @@ export const getters = {
   },
   liffId: (state: State) => {
     return state.user && state.claims?.liffId;
-  },
-  grpupId: (state: State) => {
-    return state.user && state.claims?.groupId;
   },
   isAnonymous: (state: State) => {
     return state.user === undefined || state.user === null;
