@@ -161,14 +161,6 @@ export default defineComponent({
       type: Object,
       required: true,
     },
-    isInMo: {
-      type: Boolean,
-      required: true,
-    },
-    moPrefix: {
-      type: String,
-      required: false,
-    },
   },
   metaInfo() {
     return {
@@ -215,14 +207,6 @@ export default defineComponent({
     const restaurantId = useRestaurantId();
     const fileName = props.shopInfo.restaurantId + "_orderhistory_detail";
 
-    const { loadCategory, categoryDataObj } = useCategory(props.moPrefix || "");
-    const { allSubCategoryDataObj, loadAllSubcategory } = useAllSubcategory(
-      props.moPrefix || ""
-    );
-    if (props.isInMo) {
-      loadCategory();
-      loadAllSubcategory();
-    }
     const next = async () => {
       
       let dbQuery = query(
@@ -311,9 +295,6 @@ export default defineComponent({
       // methods
       next,
       all,
-
-      categoryDataObj,
-      allSubCategoryDataObj,
 
       orderStatus,
       orderState,
