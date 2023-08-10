@@ -659,7 +659,21 @@
     "moTagline": "モバイルオーダーは、PC・スマホから簡単に購入が可能な、ファミリーマート公式店舗受け取りサービスです。",
     "moDescription1": "お店に無いものも最短3日後受け取り可能です。",
     "moDescription2": "最短30分後に店舗で受け取り可能です。",
-    "moDescription3": "*対応店舗のみ"
+    "moDescription3": "*対応店舗のみ",
+		"forRestaurantOwner": "＼ 飲食店様向け ／",
+		"signUpForFree": "無料でご利用を開始",
+		"clickHereToOrder": "テイクアウトのご注文はこちら",
+		"feature": "おもちかえり.comの特徴",
+		"feature1": "オンラインカード決済対応",
+		"feature2": "自社デリバリー対応",
+		"feature3": "専用プリンターで印刷対応",
+		"feature4": "スマレジとの在庫連携",
+		"howToStart": "開始の流れ",
+		"step1": "アカウント作成",
+		"step2": "お店の情報・メニュー情報を登録",
+		"step3": "お支払いなどの設定を登録",
+		"step4": "テイクアウト・サービス開始！",
+		"clickHereForDetails": "詳しいご利用の手引きはこちら"
   },
 	"promotion": {
 		"heading": "開催中のキャンペーン",

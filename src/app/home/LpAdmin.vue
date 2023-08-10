@@ -1,5 +1,6 @@
 <template>
   <div>
+		い
     <ownplate-service-image />
     <div class="mx-auto max-w-screen-xl">
       <entrance-buttons />

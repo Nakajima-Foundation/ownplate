@@ -1,6 +1,51 @@
 <template>
   <div class="mt-12 h-52 bg-[#616161]">
     <!-- Footer -->
+		<div
+      class="mt-6 mx-4 inline-flex w-full text-center"
+    >
+      <!-- Facebook User Group -->
+      <div class="inline-block px-1 pb-2" v-if="false">
+        <a
+          href="https://www.facebook.com/groups/278028420106364/"
+          target="_blank"
+        >
+          <div
+            class="inline-flex h-10 items-center justify-center rounded-full bg-white bg-opacity-10 px-4"
+          >
+            <i class="fab fa-facebook mr-2 text-lg text-white text-opacity-50"></i>
+            <span class="text-sm font-bold text-white text-opacity-80">{{
+              $t("admin.facebookUserGroup")
+            }}</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Twitter -->
+      <div class="inline-block px-1 pb-2">
+        <a href="https://twitter.com/omochikaericom" target="_blank">
+          <div
+            class="inline-flex h-10 items-center justify-center rounded-full bg-white bg-opacity-10 px-4"
+          >
+            <i class="fab fa-twitter mr-2 text-lg text-white text-opacity-50"></i>
+            <span class="text-sm font-bold text-white text-opacity-80"> Twitter </span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Twitter -->
+      <div class="inline-block px-1 pb-2">
+        <a href="https://note.com/singsoc/m/m19dd935e84e4" target="_blank">
+          <div
+            class="inline-flex h-10 items-center justify-center rounded-full bg-white bg-opacity-10 px-4"
+          >
+            <i class="material-icons mr-2 text-lg text-white text-opacity-50">mail_outline</i>
+            <span class="text-sm font-bold text-white text-opacity-80"> Note </span>
+          </div>
+        </a>
+      </div>
+    </div>
+
     <div>
       <div class="mx-4 mt-4 text-right">
         <a

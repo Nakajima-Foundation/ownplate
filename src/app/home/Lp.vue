@@ -1,10 +1,10 @@
 <template>
   <div>
-    <ownplate-service-image />
+    <admin-service-introduction />
     <div class="mx-auto max-w-screen-xl">
-      <entrance-buttons />
+      <admin-feature />
+			<admin-how-to-start />
       <userVoices />
-      <demo />
       <!-- <moreButton /> -->
       <!-- <threeSteps /> -->
       <!-- <askButtons /> -->
@@ -12,20 +12,19 @@
       <!-- <mediaLink /> -->
       <operators />
       <aboutService />
-      <entrance-buttons />
+      <goToUserLP />
       <!-- <askButtons /> -->
       <!-- <news /> -->
-      <news />
     </div>
-    <snslink />
   </div>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-import ownplateServiceImage from "@/components/lp/ownplateServiceImage.vue";
-import entranceButtons from "@/components/lp/entranceButtons.vue";
+import adminServiceIntroduction from "@/components/lp/adminServiceIntroduction.vue";
+import adminFeature from "@/components/lp/adminFeature.vue";
+import adminHowToStart from "@/components/lp/adminHowToStart.vue";
 import userVoices from "@/components/lp/userVoices.vue";
-import demo from "@/components/lp/demo.vue";
+import goToUserLP from "@/components/lp/goToUserLP.vue";
 import moreButton from "@/components/lp/moreButton.vue";
 import threeSteps from "@/components/lp/threeSteps.vue";
 import askButtons from "@/components/lp/askButtons.vue";
@@ -38,9 +37,10 @@ import snslink from "@/components/lp/link.vue";
 
 export default defineComponent({
   components: {
-    ownplateServiceImage,
-    entranceButtons,
-    demo,
+    adminServiceIntroduction,
+		adminFeature,
+		adminHowToStart,
+		goToUserLP,
     userVoices,
     moreButton,
     threeSteps,
