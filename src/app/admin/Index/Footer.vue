@@ -3,10 +3,7 @@
     <div class="text-center">
       <!-- User Manuals -->
       <div class="inline-block px-1 pb-2" v-if="isJapan">
-        <a
-          href="https://docs.omochikaeri.com/manuals/manual.pdf"
-          target="_blank"
-        >
+        <router-link to="/admin/docs">
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-white bg-opacity-80 px-4"
           >
@@ -15,20 +12,7 @@
               $t("admin.userManual")
             }}</span>
           </div>
-        </a>
-      </div>
-
-      <div class="inline-block px-1 pb-2" v-if="isJapan">
-        <a href="https://docs.omochikaeri.com/manuals/tips.pdf" target="_blank">
-          <div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-white bg-opacity-80 px-4"
-          >
-            <i class="material-icons mr-2 text-lg text-op-teal">help_outline</i>
-            <span class="text-sm font-bold text-op-teal">{{
-              $t("menu.tipsLink")
-            }}</span>
-          </div>
-        </a>
+        </router-link>
       </div>
 
       <!-- Support -->
