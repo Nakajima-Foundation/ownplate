@@ -53,8 +53,6 @@ export interface MenuData {
   createdAt: FieldValue;
 }
 
-export class Menu {}
-
 // for util function
 
 const newExceptHour = (exceptHour: ExceptHour) => {
@@ -113,3 +111,11 @@ export const copyMenuData = (item: MenuData, isJP: boolean, uid: string) => {
   });
   return data;
 };
+
+export const isAvailableLunchOrDinner = (item: MenuData) => {
+  const { availableLunch, availableDinner } = item;
+  if (!availableLunch && !availableDinner) {
+    return { availableLunch: true, availableDinner: true };
+  }
+  return { availableLunch, availableDinner };
+}

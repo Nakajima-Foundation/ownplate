@@ -19,7 +19,7 @@
           <!-- Left -->
           <div id="RestaurantLeftTop">
             <!-- Cover Image -->
-            <div class="lg:mt-6">
+            <div class="lg:mt-6 cursor-pointer">
               <img
                 @click.stop="openImage()"
                 :src="coverImage"
@@ -117,6 +117,7 @@
             <div class="mx-6 mt-3 lg:mx-0">
                 <div class="grid-col-1 grid space-y-2">
                   <template v-for="(item, key) in itemLists">
+                    <!-- Title -->
                     <div v-if="item._dataType === 'title'" :key="key">
                       <div
                         class="inline-flex items-center justify-center text-xl font-bold text-black text-opacity-30 cursor-pointer"
@@ -131,6 +132,7 @@
                       </div>
                     </div>
                     
+                    <!-- Menu -->
                     <div
                       v-if="item._dataType === 'menu'"
                       :key="item.id"
@@ -201,8 +203,8 @@
         :paymentInfo="paymentInfo"
         :deliveryData="deliveryData"
         :isCheckingOut="isCheckingOut"
-        :noAvailableTime="noAvailableTime"
         :isDelivery="isDelivery"
+        :noAvailableTime="noAvailableTime"
         :totalPrice="totalPrice"
       />
     </template>
@@ -287,7 +289,7 @@ import { ownPlateConfig, moTitle } from "@/config/project";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
-import { MenuData, TitleData } from "@/models/menu";
+import { MenuData, TitleData, isAvailableLunchOrDinner } from "@/models/menu";
 import { AnalyticsMenuData } from "@/lib/firebase/analytics";
 import Promotion from "@/models/promotion";
 
@@ -514,18 +516,12 @@ export default defineComponent({
         })
         .filter((item) => {
           if (props.shopInfo.enableLunchDinner && item._dataType === "menu") {
-            const { availableLunch, availableDinner } = item;
-            if (availableLunch && availableDinner) {
-              return true;
-            }
-            if (!availableLunch && !availableDinner) {
-              return true;
-            }
+            const { availableLunch, availableDinner } = isAvailableLunchOrDinner(item);
             if (lunchOrDinner.value === "lunch") {
-              return !!availableLunch && !availableDinner;
+              return availableLunch;
             }
             if (lunchOrDinner.value === "dinner") {
-              return !availableLunch && !!availableDinner;
+              return availableDinner;
             }
           }
           return true;
@@ -742,15 +738,14 @@ export default defineComponent({
     const filteredTitleLists = computed(() => {
       const menuLists = props.shopInfo.menuLists || [];
       const itemsObj = array2obj(titles.value);
-      return (
-        menuLists
-          .map((itemId) => {
-            return { ...itemsObj[itemId] };
-          })
-          .filter((item) => {
-            return item && item.id;
-          }) || []
-      ).filter((title) => title.name !== "");
+      return menuLists
+        .map((itemId) => {
+          return { ...itemsObj[itemId] };
+        })
+        .filter((item) => {
+          return item && item.id;
+        })
+        .filter((title) => title.name !== "") || []
     });
     
     const scrollTop = () => {
