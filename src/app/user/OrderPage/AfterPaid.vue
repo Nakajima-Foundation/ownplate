@@ -341,9 +341,6 @@ export default defineComponent({
     const hasMemo = computed(() => {
       return props.orderInfo && !isEmpty(props.orderInfo.memo);
     });
-    const isPickup = computed(() => {
-      return props.orderInfo && props.orderInfo.isPickup;
-    });
 
     const sendRedunded = () => {
       analyticsUtil.sendRedunded(
@@ -393,7 +390,6 @@ export default defineComponent({
       order_accepted,
       hasCustomerInfo,
       hasMemo,
-      isPickup,
       // method
       handleCancelPayment,
     };

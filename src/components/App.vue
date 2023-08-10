@@ -16,7 +16,7 @@
     <div class="flex-1">
       <div>
         <div
-          v-if="underConstruction"
+          v-if="isDev"
           class="bg-yellow-200 p-2 text-center font-bold text-red-500"
         >
           {{ $t("underConstruction") }}
@@ -82,7 +82,7 @@ import SideMenuWrapper from "@/components/App/SideMenuWrapper.vue";
 import DialogBox from "@/components/DialogBox.vue";
 import AudioPlay from "@/components/AudioPlay.vue";
 
-import { underConstruction, useUser, useRestaurantId } from "@/utils/utils";
+import { isDev, useUser, useRestaurantId } from "@/utils/utils";
 
 import * as Sentry from "@sentry/vue";
 import { ownPlateConfig, mo_prefixes } from "@/config/project";
@@ -239,7 +239,7 @@ export default defineComponent({
     return {
       audioPlay,
       sideMenu,
-      underConstruction,
+      isDev,
 
       enableSound,
       handleOpen,

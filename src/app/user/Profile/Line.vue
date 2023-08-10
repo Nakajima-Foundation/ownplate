@@ -47,10 +47,10 @@
 
       <!-- LINE Not Connected -->
 
-      <div v-if="!inLiff && (!isLineUser || underConstruction)">
+      <div v-if="!inLiff && (!isLineUser || isDev)">
         <div v-if="isLineEnabled" class="mt-4 text-center">
           <div
-            v-if="isLineUser && underConstruction"
+            v-if="isLineUser && isDev"
             class="mb-2 text-base font-bold"
           >
             再設定 for Dev
@@ -77,7 +77,7 @@ import { defineComponent, ref, computed, watch } from "vue";
 import {
   useUserData,
   useLiffIndexId,
-  underConstruction,
+  isDev,
   isLineEnabled,
 } from "@/utils/utils";
 import liff from "@line/liff";
@@ -208,7 +208,7 @@ export default defineComponent({
       handleLineAuth,
       friendLink,
 
-      underConstruction,
+      isDev,
       inLiff,
       isLineEnabled,
 
