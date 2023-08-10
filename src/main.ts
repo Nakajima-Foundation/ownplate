@@ -5,8 +5,8 @@ import router from "@/lib/router";
 import store from "@/lib/store";
 
 // plugins
-import mixin from "@/plugins/mixin";
-import i18n from "@/plugins/vue-i18n";
+import mixin from "@/lib/mixin";
+import i18n from "@/lib/vue-i18n";
 
 // library
 import Oruga from "@oruga-ui/oruga-next";
