@@ -112,7 +112,7 @@
           <!-- Restaurant Address -->
           <div>
             <!-- Japan Format -->
-            <template v-if="region === 'JP'">
+            <template>
               <!-- Zip and State -->
               <div class="mt-4 flex">
                 <div class="flex-1">
@@ -150,44 +150,6 @@
               </div>
             </template>
 
-            <!-- Other -->
-            <template v-else>
-              <!-- Street -->
-              <div class="mt-4">
-                <text-form
-                  :error="errors['streetAddress']"
-                  v-model="editShopInfo.streetAddress"
-                  titleKey="shopInfo.streetAddress"
-                  placeholder="editRestaurant.enterStreetAddress"
-                  :maxlength="30"
-                />
-              </div>
-              <!-- City -->
-              <div class="mt-4">
-                <text-form
-                  :error="errors['city']"
-                  v-model="editShopInfo.city"
-                  titleKey="shopInfo.city"
-                  placeholder="editRestaurant.enterCity"
-                  :maxlength="15"
-                />
-              </div>
-              <!-- State and Zip -->
-              <div class="mt-4 flex">
-                <div class="pr-4">
-                  <state :errors="errors" v-model="editShopInfo.state" />
-                </div>
-                <div class="flex-1">
-                  <text-form
-                    :error="errors['zip']"
-                    v-model="editShopInfo.zip"
-                    titleKey="shopInfo.zip"
-                    placeholder="editRestaurant.enterZip"
-                    :maxlength="10"
-                  />
-                </div>
-              </div>
-            </template>
           </div>
 
           <!-- Map -->
