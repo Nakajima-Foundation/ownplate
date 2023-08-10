@@ -3,6 +3,14 @@ import { createStore } from "vuex";
 import { stripe_regions } from "@/config/constant";
 import { User } from "firebase/auth";
 import { OrderInfoData } from "@/models/orderInfo";
+import { MenuData } from "@/models/menu";
+
+import {
+  OrderDataType,
+  CartItemsType,
+  CartOptionType,
+} from "@/models/cartType";
+
 import moment from "moment";
 
 export const strict = false;
@@ -37,9 +45,13 @@ interface Server {
   region?: string;
 };
 
-interface Cart {
-  id?: string;
-  cart: any;
+type Cart = {
+  orders: OrderDataType;
+  options: CartOptionType;
+  cartItems: CartItemsType;
+  menuCache: MenuData[];
+  howtoreceive: string;
+  lunchOrDinner: string;
 };
 
 interface State {
@@ -139,7 +151,7 @@ export const mutations = {
   updateDate(state: State) {
     state.date = new Date();
   },
-  saveCart(state: State, payload: Cart) {
+  saveCart(state: State, payload: {id: string, cart: Cart}) {
     console.log("saving cart", payload.id, payload.cart);
     // state.carts = {};
     state.carts[payload.id as string] = payload.cart;

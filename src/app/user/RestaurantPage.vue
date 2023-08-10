@@ -114,7 +114,6 @@
             <!-- titles for omochikaeri -->
             <Titles :titleLists="titleLists" v-if="titleLists.length > 0" />
 
-
             <!-- For Responsible -->
             <div class="mx-6 mt-3 lg:mx-0">
                 <div class="grid-col-1 grid space-y-2">
@@ -320,6 +319,12 @@ import {
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 
+import {
+  OrderDataType,
+  CartItemsType,
+  CartOptionType,
+} from "@/models/cartType";
+
 export default defineComponent({
   name: "RestaurantPage",
   
@@ -394,9 +399,9 @@ export default defineComponent({
     const waitForUser = ref(false);
     const noAvailableTime = ref(false);
 
-    const orders = ref<{[key: string]: number[]}>({});
-    const cartItems = ref<{[key: string]: any}>({});
-    const selectedOptions = ref({});
+    const orders = ref<OrderDataType>({});
+    const cartItems = ref<CartItemsType>({});
+    const selectedOptions = ref<CartOptionType>({});
 
     const multiple = store.getters.stripeRegion.multiple;
 
@@ -471,6 +476,7 @@ export default defineComponent({
         orders.value = cart.orders || {};
         cartItems.value = cart.cartItems || {};
         selectedOptions.value = cart.options || {};
+        lunchOrDinner.value = cart.lunchOrDinner || "lunch"
         setCache(cart.menuCache);
         if (cart.howtoreceive) {
           howtoreceive.value = cart.howtoreceive;
@@ -650,6 +656,7 @@ export default defineComponent({
             cartItems: cartItems.value,
             menuCache: menuCache.value,
             howtoreceive: howtoreceive.value,
+            lunchOrDinner: lunchOrDinner.value,
           },
         });
         await orderCreated({
