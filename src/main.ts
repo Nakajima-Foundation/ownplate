@@ -2,7 +2,7 @@
 import { createApp } from "vue";
 
 import router from "@/lib/router";
-import store from "@/lib/store/index";
+import store from "@/lib/store";
 
 // plugins
 import mixin from "@/plugins/mixin";
