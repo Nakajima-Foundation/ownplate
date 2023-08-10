@@ -183,10 +183,6 @@ export default defineComponent({
       type: Object,
       required: true,
     },
-    enableCartModal: {
-      type: Boolean,
-      required: true,
-    },
   },
   emits: ["handleCheckOut", "showCart"],
 
@@ -241,7 +237,7 @@ export default defineComponent({
     });
 
     const handleCheckOut = () => {
-      if (props.enableCartModal && !isShowCart.value) {
+      if (!isShowCart.value) {
         isShowCart.value = true;
       } else {
         ctx.emit("handleCheckOut");

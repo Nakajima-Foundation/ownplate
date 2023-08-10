@@ -186,7 +186,6 @@
       <div v-if="isCheckingOut" class="fixed top-0 left-0 h-full w-full"></div>
       <!-- Cart Button -->
       <CartButton
-        :enableCartModal="enableCartModal"
         ref="cartButton"
         @handleCheckOut="handleCheckOut"
         :shopInfo="shopInfo"
@@ -740,9 +739,7 @@ export default defineComponent({
     const isTransactionAct = computed(() => {
       return !!route.meta.isTransactionsAct;
     });
-    const enableCartModal = computed(() => {
-      return true;
-    });
+
     const totalQuantities = computed(() => {
       const ret = Object.values(orders.value).reduce((total, order) => {
         return total + arraySum(order);
@@ -810,8 +807,6 @@ export default defineComponent({
       menuObj,
       cartItems,
       menuPickupData, // not mo.
-      enableCartModal,
-
 
       isTransactionAct,
       closeTransactionsAct,
