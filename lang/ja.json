@@ -566,6 +566,9 @@
     "delivery": "デリバリー",
     "takeoutDescription": "お店で受け取り",
     "deliveryDescription": "ご自宅/職場で受け取り",
+    "lunchOrDinner": "ランチ/ディナー",
+    "lunch": "ランチ",
+    "dinner": "ディナー",
     "viewMore": "もっと見る",
     "viewLess": "閉じる",
     "productCategory": "商品カテゴリ一覧"
