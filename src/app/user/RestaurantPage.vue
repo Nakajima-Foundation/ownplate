@@ -89,6 +89,14 @@
             </div>
           </div>
           <div v-else>
+            <!-- Lunch/Dinner -->
+            <div class="mx-6 mt-2 lg:mx-0" v-if="shopInfo.enableLunchDinner">
+              <div class="rounded-lg bg-white shadow">
+                <LunchDinner :shopInfo="shopInfo"
+                             v-model="lunchOrDinner"
+                             />
+              </div>
+            </div>
             <div class="mx-6 mt-2 lg:mx-0" v-if="shopInfo.enableDelivery">
               <div class="rounded-lg bg-white shadow">
                 <!-- delivery toggle-->
@@ -252,6 +260,7 @@ import RestaurantPreview from "@/app/user/Restaurant/Preview.vue";
 import CartButton from "@/app/user/Restaurant/CartButton.vue";
 import Cart from "@/app/user/Restaurant/Cart.vue";
 import Delivery from "@/app/user/Restaurant/Delivery.vue";
+import LunchDinner from "@/app/user/Restaurant/LunchDinner.vue";
 import Titles from "@/app/user/Restaurant/Titles.vue";
 import TransactionsActContents from "@/app/user/TransactionsAct/Contents.vue";
 
@@ -322,6 +331,7 @@ export default defineComponent({
     CartButton,
     Cart,
     Delivery,
+    LunchDinner,
     TransactionsActContents,
     Titles,
     FloatingBanner,
@@ -404,6 +414,8 @@ export default defineComponent({
     const updateHowtoreceive = (value: string) => {
       howtoreceive.value = value;
     };
+
+    const lunchOrDinner = ref("lunch");
     
     const restaurantId = computed(() => {
       return route.params.restaurantId as string;
@@ -501,7 +513,22 @@ export default defineComponent({
           return { ...itemsObj[itemId] };
         })
         .filter((item) => {
-          return item;
+          if (props.shopInfo.enableLunchDinner && item._dataType === "menu") {
+            const { availableLunch, availableDinner } = item;
+            if (availableLunch && availableDinner) {
+              return true;
+            }
+            if (!availableLunch && !availableDinner) {
+              return true;
+            }
+            if (lunchOrDinner.value === "lunch") {
+              return !!availableLunch && !availableDinner;
+            }
+            if (lunchOrDinner.value === "dinner") {
+              return !availableLunch && !!availableDinner;
+            }
+          }
+          return true;
         })
         .filter((item) => {
           return !(item._dataType === "title" && item.name === "");
@@ -814,6 +841,8 @@ export default defineComponent({
       scrollTop,
 
       moment,
+
+      lunchOrDinner,
     };
   },
 });
