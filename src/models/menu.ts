@@ -118,4 +118,11 @@ export const isAvailableLunchOrDinner = (item: MenuData) => {
     return { availableLunch: true, availableDinner: true };
   }
   return { availableLunch, availableDinner };
-}
+};
+export const onlyLunchOrDinner = (item: MenuData) => {
+  const { availableLunch, availableDinner } = isAvailableLunchOrDinner(item);
+  return {
+    onlyLunch: availableLunch && !availableDinner,
+    onlyDinner: !availableLunch && availableDinner,
+  };
+};

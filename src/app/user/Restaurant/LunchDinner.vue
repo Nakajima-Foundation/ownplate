@@ -13,7 +13,7 @@
             ? 'border-2 border-op-teal text-op-teal'
             : 'cursor-pointer text-black text-opacity-40'
         "
-        @click="$emit('update:modelValue', 'lunch')"
+        @click="input('lunch')"
       >
         <i class="material-icons w-full text-center"> lunch_dining </i>
         <div class="-mt-0.5 text-center text-lg font-bold tracking-tighter">
@@ -28,7 +28,7 @@
             ? 'border-2 border-op-teal text-op-teal'
             : 'cursor-pointer text-black text-opacity-40'
         "
-        @click="$emit('update:modelValue', 'dinner')"
+        @click="input('dinner')"
       >
         <i class="material-icons w-full text-center"> dinner_dining </i>
         <div class="-mt-0.5 text-center text-lg font-bold">
@@ -41,7 +41,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref, PropType } from "vue";
+import { useStore } from "vuex";
+
 export default defineComponent({
   props: {
     shopInfo: {
@@ -52,6 +54,37 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    hasDinnerOnlyOrder: {
+      type: Boolean,
+      required: true,
+    },
+    hasLunchOnlyOrder: {
+      type: Boolean,
+      required: true,
+    },
+  },
+  setup(props, ctx) {
+    const store = useStore();
+    const popup = ref(false);
+
+    const input = (value: string) => {
+      if ((value === "dinner" && props.hasLunchOnlyOrder) ||
+          (value === "lunch" && props.hasDinnerOnlyOrder)) {
+        store.commit("setAlert", {
+          title: "lunchOrDinner.alert." + value + ".title",
+          code: "lunchOrDinner.alert." + value + ".body",
+          callback: async () => {
+            ctx.emit("update:modelValue", value);
+          },
+        });
+      } else {
+        ctx.emit("update:modelValue", value);
+      }
+    };
+    return {
+      input,
+      popup,
+    };
   },
 });
 </script>

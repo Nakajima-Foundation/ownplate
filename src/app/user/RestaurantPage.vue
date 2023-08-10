@@ -94,6 +94,8 @@
               <div class="rounded-lg bg-white shadow">
                 <LunchDinner :shopInfo="shopInfo"
                              v-model="lunchOrDinner"
+                             :hasDinnerOnlyOrder="hasDinnerOnlyOrder"
+                             :hasLunchOnlyOrder="hasLunchOnlyOrder"
                              />
               </div>
             </div>
@@ -289,7 +291,7 @@ import { ownPlateConfig, moTitle } from "@/config/project";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
-import { MenuData, TitleData, isAvailableLunchOrDinner } from "@/models/menu";
+import { MenuData, TitleData, isAvailableLunchOrDinner, onlyLunchOrDinner } from "@/models/menu";
 import { AnalyticsMenuData } from "@/lib/firebase/analytics";
 import Promotion from "@/models/promotion";
 
@@ -413,10 +415,6 @@ export default defineComponent({
     })();
     const howtoreceive = ref(defaultHowToReceive);
 
-    const updateHowtoreceive = (value: string) => {
-      howtoreceive.value = value;
-    };
-
     const lunchOrDinner = ref("lunch");
     
     const restaurantId = computed(() => {
@@ -500,6 +498,7 @@ export default defineComponent({
     watch(howtoreceive, (value) => {
       if (false) {
         orders.value = {};
+        cartItems.value = {};
       }
     });
     
@@ -530,6 +529,36 @@ export default defineComponent({
           return !(item._dataType === "title" && item.name === "");
         });
     });
+    // lunch or dinner
+    const hasDinnerOnlyOrder = computed(() => {
+      return Object.keys(orders.value).some(menuId => {
+        const item = menuObj.value[menuId];
+        return item && onlyLunchOrDinner(item).onlyDinner;
+      });
+    });
+    const hasLunchOnlyOrder = computed(() => {
+      return Object.keys(orders.value).some(menuId => {
+        const item = menuObj.value[menuId];
+        return item && onlyLunchOrDinner(item).onlyLunch;
+      });
+    });
+    const resetCart = () => {
+      orders.value = {};
+      cartItems.value = {};
+    };
+    watch(lunchOrDinner, (v) => {
+      if (v === "lunch") {
+        if (hasDinnerOnlyOrder.value) {
+          resetCart();
+        }
+      }
+      if (v === "dinner") {
+        if (hasLunchOnlyOrder.value) {
+          resetCart();
+        }
+      }
+    });
+    //
     
     const totalPrice = computed(() => {
       const subTotal = prices2subtotal(prices.value);
@@ -791,7 +820,6 @@ export default defineComponent({
       isSubAccount,
       isDelivery,
       howtoreceive,
-      updateHowtoreceive,
 
       orders,
 
@@ -832,6 +860,9 @@ export default defineComponent({
       moment,
 
       lunchOrDinner,
+      hasDinnerOnlyOrder,
+      hasLunchOnlyOrder,
+
     };
   },
 });
