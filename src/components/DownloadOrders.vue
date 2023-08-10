@@ -77,8 +77,6 @@ export default defineComponent({
             : "LINE",
           name: nameOfOrder(order),
           payment: order.payment?.stripe ? "stripe" : "",
-          // for mo
-          cancelReason: order.cancelReason,
         };
       });
     });
