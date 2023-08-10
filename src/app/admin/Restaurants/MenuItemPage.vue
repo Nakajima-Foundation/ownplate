@@ -226,6 +226,39 @@
               </o-field>
             </div>
           </div>
+
+          <div class="mt-4 text-sm font-bold cursor-pointer"
+               @click="openTips('lunchDinner')"
+               >
+            {{ $t("editMenu.lunchDinner") }}
+            <i class="material-icons">
+              <span class="text-sm">help</span>
+            </i>
+            <span class="text-red-700">*</span>
+          </div>
+          <div class="mt-2">
+            <div class="rounded-lg bg-black bg-opacity-5 p-4">
+              <div>
+                <o-checkbox v-model="menuInfo.availableLunch">
+                  <div
+                    class="text-sm font-bold text-black text-opacity-60"
+                    >
+                    {{ $t("editMenu.lunch") }}
+                  </div>
+                </o-checkbox>
+              </div>
+              <div class="mt-2">
+                <o-checkbox v-model="menuInfo.availableDinner">
+                  <div
+                    class="text-sm font-bold text-black text-opacity-60"
+                    >
+                    {{ $t("editMenu.dinner") }}
+                  </div>
+                </o-checkbox>
+              </div>
+            </div>
+          </div>
+          
         </div>
 
         <!-- Right -->
@@ -414,27 +447,38 @@
             </div>
           </div>
 
-          <div class="mt-6">
-            <div class="pb-2 text-sm font-bold">
-              {{ $t("editMenu.exclusionDate") }}
-            </div>
-            <span v-for="(day, index) in daysOfWeek" :key="index">
-              <o-checkbox v-model="menuInfo.exceptDay[index]">
-                <span class="text-base font-bold">
-                  {{ $t("week.short." + day) }}
-                  <span v-if="index !== '7'">/</span>
-                </span>
-              </o-checkbox>
-            </span>
-            <div class="mt-2 text-sm font-bold">
-              {{ $t("editMenu.exclusionTime") }}
-            </div>
-            <div class="mt-2">
-              <hours-input
-                v-model="menuInfo.exceptHour"
-                variant="success"
-                :disabled="false"
-              ></hours-input>
+          <div class="mt-4 text-sm font-bold cursor-pointer"
+               @click="openTips('exclusionDateTime')"
+               >
+            {{ $t("editMenu.exclusionDateTime") }}
+            <i class="material-icons">
+              <span class="text-sm">help</span>
+            </i>
+            <span class="text-red-700">*</span>
+          </div>
+          <div class="mt-2">
+            <div class="rounded-lg bg-black bg-opacity-5 p-4">
+              <div class="pb-2 text-sm font-bold">
+                {{ $t("editMenu.exclusionDate") }}
+              </div>
+              <span v-for="(day, index) in daysOfWeek" :key="index">
+                <o-checkbox v-model="menuInfo.exceptDay[index]">
+                  <span class="text-base font-bold">
+                    {{ $t("week.short." + day) }}
+                    <span v-if="index !== '7'">/</span>
+                  </span>
+                </o-checkbox>
+              </span>
+              <div class="mt-2 text-sm font-bold">
+                {{ $t("editMenu.exclusionTime") }}
+              </div>
+              <div class="mt-2">
+                <hours-input
+                  v-model="menuInfo.exceptHour"
+                  variant="success"
+                  :disabled="false"
+                  ></hours-input>
+              </div>
             </div>
           </div>
 
@@ -875,6 +919,7 @@ export default defineComponent({
       menuInfo.itemOptionCheckbox.push("");
     };
     const newItemData = () => {
+      console.log(menuInfo);
       const itemData = getNewItemData(
         menuInfo,
         ownPlateConfig.region === "JP",
@@ -973,6 +1018,11 @@ export default defineComponent({
       menuInfo.itemOptionCheckbox = item;
     };
     
+    const openTips = (key: string) => {
+      store.commit("setTips", {
+        key,
+      });
+    };
     return {
       dummyCheckbox: [],
       menuInfo,
@@ -1020,6 +1070,8 @@ export default defineComponent({
       restaurantId,
 
       positionDown,
+
+      openTips,
     };
   },
 });

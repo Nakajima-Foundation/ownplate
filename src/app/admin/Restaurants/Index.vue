@@ -258,7 +258,7 @@
           <!-- Phone -->
           <div>
             <div
-              class="pb-2 text-sm font-bold"
+              class="pb-2 text-sm font-bold cursor-pointer"
               @click="openTips('phonenumber')"
             >
               {{ $t("shopInfo.phonenumber") }}
@@ -668,7 +668,7 @@
           <!-- Payment methods -->
           <div class="mt-4">
             <div
-              class="pb-2 text-sm font-bold"
+              class="pb-2 text-sm font-bold cursor-pointer"
               @click="openTips('paymentMethods')"
             >
               {{ $t("editRestaurant.paymentMethods") }}

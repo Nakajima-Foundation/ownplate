@@ -346,10 +346,14 @@ export default defineComponent({
       try {
         const itemData = {
           itemName: "",
+          itemAliasesName: "",
           price: 0,
           tax: "food",
           itemDescription: "",
+          itemMemo: "",
           uid: uid.value,
+          availableLunch: true,
+          availableDinner: true,
           deletedFlag: false,
           publicFlag: true,
           validatedFlag: false,

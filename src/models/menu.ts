@@ -42,6 +42,10 @@ export interface MenuData {
   allergens: string[];
   category1: string;
   category2: string;
+
+  availableLunch: boolean;
+  availableDinner: boolean;
+
   exceptDay: { [key: string]: boolean };
   exceptHour: ExceptHour;
   validatedFlag: boolean;
@@ -91,6 +95,8 @@ export const getNewItemData = (
     validatedFlag,
     category1: item.category1,
     category2: item.category2,
+    availableLunch: item.availableLunch || false,
+    availableDinner: item.availableDinner || false,
     exceptDay: item.exceptDay || {},
     exceptHour: newExceptHour(item.exceptHour || {}),
   } as MenuData;
