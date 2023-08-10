@@ -180,14 +180,16 @@
             <div class="pb-2 text-sm font-bold">
               {{ $t("allergens.title") }}
             </div>
-            <div>
+            <div class="mt-2 rounded-lg bg-black bg-opacity-5 px-4 py-4">
+              <div>
               <o-checkbox
                 v-for="allergen in allergens"
                 v-model="menuInfo.allergens[allergen]"
                 :key="allergen"
-                class="mb-2"
+
                 >{{ $t(`allergens.${allergen}`) }}</o-checkbox
               >
+              </div>
             </div>
           </div>
 
