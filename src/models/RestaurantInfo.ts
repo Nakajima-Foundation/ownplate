@@ -50,6 +50,8 @@ export interface RestaurantInfoData {
   groupId: string; // set by sys
   supportLiff: boolean;
 
+  enableLunchDinner: boolean;
+  
   countryCode: string;
   acceptUserMessage: boolean;
   foodTax: number;
