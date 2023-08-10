@@ -3,8 +3,6 @@ import {
   onUnmounted,
   computed,
   Ref,
-  ComputedRef,
-  
 } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
@@ -13,12 +11,7 @@ import {
   onSnapshot,
   getDocs,
   collection,
-  collectionGroup,
   where,
-  limit,
-  startAfter,
-  orderBy,
-  QueryDocumentSnapshot,
 } from "firebase/firestore";
 
 import { doc2data, array2obj } from "@/utils/utils";
@@ -78,9 +71,6 @@ export const useMenu = (
       menuDetacher.value();
     }
   };
-  const menuPath = computed(() => {
-    return `restaurants/${restaurantId.value}/menus`;
-  });
   const setCache = (cache: any) => {
     menuCache.value = cache;
   };
@@ -90,10 +80,8 @@ export const useMenu = (
       return;
     }
 
-    const path = menuPath.value;
-
     const menuQuery = query(
-      collection(db, menuPath.value),
+      collection(db, `restaurants/${restaurantId.value}/menus`),
       where("deletedFlag", "==", false),
       where("publicFlag", "==", true)
     );
