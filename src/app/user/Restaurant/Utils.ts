@@ -71,7 +71,7 @@ export const useMenu = (
       menuDetacher.value();
     }
   };
-  const setCache = (cache: any) => {
+  const setCache = (cache: MenuData[]) => {
     menuCache.value = cache;
   };
   const loadMenu = async (callback?: () => void) => {

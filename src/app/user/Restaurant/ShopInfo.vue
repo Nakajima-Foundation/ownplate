@@ -361,7 +361,7 @@ export default defineComponent({
     });
 
     const isOpen = computed(() => {
-      return Object.keys(daysOfWeek).reduce((tmp: {[key: string]: any}, day) => {
+      return Object.keys(daysOfWeek).reduce((tmp: {[key: string]: boolean}, day) => {
         if (weekday === Number(day) && businessDay.value[day]) {
           // get now and compaire
           const res = openTimes.value[day].reduce((tmp, time) => {

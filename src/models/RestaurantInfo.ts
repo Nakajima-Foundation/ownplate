@@ -47,7 +47,7 @@ export interface RestaurantInfoData {
   isEC: boolean; // set by system
   enableDelivery: boolean;
   enableMoPickup: boolean; // set by sys
-  groupId: string; // set by sys
+  groupId: string; // set by sys // TODO remove
   supportLiff: boolean;
 
   enableLunchDinner: boolean;
@@ -60,21 +60,12 @@ export interface RestaurantInfoData {
   openTimes: { [key: string]: {start: any, end: any}[] };
   businessDay: { [key: string]: string[] };
 
-  moOpenTimes: { [key: string]: any[] };
-  moBusinessDay: { [key: string]: any[] };
-
   pickUpMinimumCookTime: number;
   pickUpDaysInAdvance: number;
 
   paymentMethods: { [key: string]: boolean };
 
-  moPickUpMinimumCookTime: number;
-  moPickUpDaysInAdvance: number;
-
   onTheList: boolean;
-  
-  isSuspendPickup: boolean; // mo
-  isSuspendAllOrder: boolean; // mo
   
   deliveryMinimumCookTime: number;
   suspendUntil: any;
