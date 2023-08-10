@@ -555,18 +555,12 @@ export default defineComponent({
       );
     });
 
-    const didOrderdChange = (eventArgs: {quantities: number | number[], itemId: string, optionValues: string, itemData: MenuData}) => {
+    const didOrderdChange = (eventArgs: {quantities: number[], itemId: string, optionValues: string, itemData: MenuData}) => {
       // NOTE: We need to assign a new object to trigger computed properties
       if (eventArgs.quantities) {
-        if (eventArgs.itemData) { // for mo campaign
-          cartItems.value[eventArgs.itemId] = eventArgs.itemData;
-          menuObj.value[eventArgs.itemId] = eventArgs.itemData;
-        } else {
-          cartItems.value[eventArgs.itemId] = menuObj.value[eventArgs.itemId];
-        }
+        cartItems.value[eventArgs.itemId] = menuObj.value[eventArgs.itemId];
         const newObject = { ...orders.value };
-        if (arraySum(eventArgs.quantities as number[]) > 0) {
-          // @ts-ignore
+        if (arraySum(eventArgs.quantities) > 0) {
           newObject[eventArgs.itemId] = eventArgs.quantities;
         } else {
           delete newObject[eventArgs.itemId];
