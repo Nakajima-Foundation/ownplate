@@ -273,7 +273,6 @@ import Smaregi from "@/app/admin/Index/Smaregi.vue";
 import Footer from "@/app/admin/Index/Footer.vue";
 import Partners from "@/app/admin/Index/Partners.vue";
 import SubAccount from "@/app/admin/Index/SubAccount.vue";
-import ExportProd from "@/app/admin/Index/ExportProd.vue";
 
 import { ping } from "@/lib/firebase/functions";
 
@@ -312,7 +311,6 @@ export default defineComponent({
     Note,
     Footer,
     ToggleSwitch,
-    ExportProd,
   },
   metaInfo() {
     return {

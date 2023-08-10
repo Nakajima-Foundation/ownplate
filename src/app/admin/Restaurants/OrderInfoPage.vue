@@ -171,9 +171,6 @@
                   </div>
                 </div>
               </div>
-              <div v-if="orderInfo.cancelReason === 'autoCancel'" class="mt-2 font-bold text-red-700">
-                {{ $t("mobileOrder.admin.autoCancel") }}
-              </div>
             </div>
 
             <!-- Cancel Popup-->
