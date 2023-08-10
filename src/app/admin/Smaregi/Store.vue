@@ -6,7 +6,11 @@
     <div class="mx-6 mt-6 lg:flex lg:items-center">
       <!-- Back and Preview -->
       <div class="flex space-x-4">
-        <back-button url="/admin/smaregi/index" />
+        <back-button url="/admin/smaregi/index"
+                     iconText="arrow_back"
+                     backText="button.backToSmaregi"
+
+                     />
       </div>
 
       <!-- Title -->

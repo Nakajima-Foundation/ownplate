@@ -4,7 +4,10 @@
     <div class="mx-6 mt-6 lg:flex lg:items-center">
       <!-- Back and Preview -->
       <div class="flex space-x-4">
-        <back-button url="/admin/subaccounts/" />
+        <back-button url="/admin/subaccounts/"
+                     iconText="arrow_back"
+                     backText="button.backToSubaccounts"
+                     />
       </div>
     </div>
 

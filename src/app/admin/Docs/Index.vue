@@ -1,5 +1,20 @@
 <template>
+<div>
+  <!-- Header -->
+  <div class="mx-6 mt-6 lg:flex lg:items-center">
+    <!-- Back and Preview -->
+    <div class="flex space-x-4" v-if="store.getters.isAdmin">
+      <back-button url="/admin/restaurants" />
+    </div>
+    <div class="flex space-x-4" v-else>
+      <back-button url="/"
+                   backText="button.backToTop"
+                   />
+    </div>
+  </div>
+  
   <!-- PDF -->
+  
   <div class="mx-6">
     <div class="mt-6 text-sm font-bold">
       説明書一覧 <span class="font-normal text-xs">(別タブでPDFファイルが開きます)</span>
@@ -100,7 +115,32 @@
       </div>
     </div>
   </div>
+</div>
 
 </template>
+
+<script lang="ts">
+import {
+  defineComponent,
+} from "vue";
+
+import BackButton from "@/components/BackButton.vue";
+
+import { useStore } from "vuex";
+
+export default defineComponent({
+  components: {
+    BackButton,
+  },
+  setup() {
+    const store = useStore();
+    
+    return {
+      store,
+    };
+  },
+
+});
+</script>
 
   
