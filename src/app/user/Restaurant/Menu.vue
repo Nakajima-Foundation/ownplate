@@ -43,7 +43,14 @@
         <div class="p-4">
           <!-- Item Name -->
           <a :id="`${item.id}`">
-            <div class="text-base font-bold">{{ title }}</div>
+            <div class="text-base font-bold flex">
+              {{ title }}
+              <template v-if="shopInfo.enableLunchDinner">
+                /
+                <i class="material-icons text-center" v-if="availableLunch"> lunch_dining </i>
+                <i class="material-icons text-center" v-if="availableDinner"> dinner_dining </i>
+              </template>
+            </div>
           </a>
           <!-- Price -->
           <div class="mt-2 text-base">
@@ -415,6 +422,7 @@ import { useI18n } from "vue-i18n";
 
 import { AnalyticsMenuData } from "@/lib/firebase/analytics";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { MenuData, isAvailableLunchOrDinner } from "@/models/menu";
 
 export default defineComponent({
   components: {
@@ -423,7 +431,7 @@ export default defineComponent({
   },
   props: {
     item: {
-      type: Object,
+      type: Object as PropType<MenuData>,
       required: true,
     },
     shopInfo: {
@@ -631,6 +639,7 @@ export default defineComponent({
         optionValues: newSelectedOptions,
       });
     };
+    
     return {
       openMenuFlag,
       imagePopup,
@@ -667,6 +676,8 @@ export default defineComponent({
 
       num2time,
       displayOption,
+
+      ...isAvailableLunchOrDinner(props.item),
     };
   },
 });
