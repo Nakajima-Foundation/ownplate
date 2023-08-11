@@ -74,7 +74,7 @@ export interface RestaurantInfoData {
   publicFlag: boolean;
   deletedFlag: boolean;
   temporaryClosure: any[];
-
+  lastOrderTime?: number;
   category1: string[];
   category2: string[];
 

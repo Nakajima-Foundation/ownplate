@@ -898,6 +898,27 @@
             </div>
           </div>
           
+
+          <!-- Temporary Closure -->
+          <div class="mt-4">
+            <div class="pb-2 text-sm font-bold">
+              最終注文時間
+            </div>
+            <div class="text-xs">
+              「営業終了時間」と「受け渡し準備時間」を考慮した「最終注文可能な時間」よりも前に、注文を締め切る場合にはこちらを設定してください。
+            </div>
+            <div class="text-xs">
+              未設定の場合は「営業終了時間」と「受け渡し準備時間」を考慮した時間となります。
+            </div>
+            <div class="mt-2">
+              <hour-input
+                v-model="editShopInfo.lastOrderTime"
+                variant="success"
+                :disabled="false"
+                ></hour-input>
+            </div>
+          </div>
+
           <!-- Temporary Closure -->
           <div class="mt-4">
             <div class="pb-2 text-sm font-bold">
@@ -1086,6 +1107,7 @@ import PhoneEntry from "@/components/PhoneEntry.vue";
 import Price from "@/components/Price.vue";
 
 import HoursInput from "@/app/admin/inputComponents/HoursInput.vue";
+import HourInput from "@/app/admin/inputComponents/HourInput.vue";
 import TextForm from "@/app/admin/inputComponents/TextForm.vue";
 import State from "@/app/admin/inputComponents/State.vue";
 import NotificationIndex from "@/app/admin/Notifications/Index.vue";
@@ -1132,6 +1154,7 @@ export default defineComponent({
   name: "RestaurantPage",
   components: {
     HoursInput,
+    HourInput,
     TextForm,
     State,
     BackButton,

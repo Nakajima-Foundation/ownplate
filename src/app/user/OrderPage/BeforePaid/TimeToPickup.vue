@@ -100,7 +100,7 @@ export default defineComponent({
       );
     });
 
-    const { deliveryAvailableDays, availableDays, todaysLast } = usePickupTime(
+    const { deliveryAvailableDays, availableDays } = usePickupTime(
       props.shopInfo,
       exceptData,
       ref({}),

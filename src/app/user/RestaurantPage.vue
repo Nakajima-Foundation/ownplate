@@ -463,7 +463,7 @@ export default defineComponent({
       restaurantId,
     );
     
-    const { menuPickupData, availableDays, todaysLast } = usePickupTime(
+    const { menuPickupData, availableDays } = usePickupTime(
       props.shopInfo,
       {},
       menuObj,

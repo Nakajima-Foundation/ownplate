@@ -69,6 +69,7 @@ export const getEditShopInfo = (shopInfo: RestaurantInfoData) => {
     ),
     businessDay: shopInfo.businessDay,
     temporaryClosure: shopInfo.temporaryClosure,
+    lastOrderTime: shopInfo.lastOrderTime || null,
     category1: shopInfo.category1,
     category2: shopInfo.category2,
     uid: shopInfo.uid,
