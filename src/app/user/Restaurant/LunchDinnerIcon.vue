@@ -6,6 +6,7 @@
 <script lang="ts">
 import {
   defineComponent,
+  PropType,
 } from "vue";
 import { MenuData, isAvailableLunchOrDinner } from "@/models/menu";
 
