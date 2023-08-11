@@ -306,7 +306,7 @@
     "additionalPhotos": "Additional photos (up to 4 photos)",
     "addPhotos": "Select photos",
     "deleteAllPhotos": "Delete all photos",
-    "exclusionDateTime": "Blackout date/time",
+    "exclusionDateTime": "Exclusion date/time",
     "lunchDinner": "Lunch/Dinner",
     "lunch": "Lunch",
     "dinner": "Dinner",
@@ -1013,7 +1013,7 @@
       "cancelButton": "Cancel this order",
       "cancelTitle": "Order Canceling",
       "cancelMessage": "Please contact to the customer and tell the order will be canceled.",
-      "updateOrderMessage": "お客様にご連絡の上、ご注文を変更することを確定してください。",
+      "updateOrderMessage": "Please contact the customer to confirm the change to the order.",
       "paymentCancelButton": "Cancel only card payment",
       "delete": "Cancel this order",
       "deleteConfirm": "(This action is undoable)",
@@ -1138,21 +1138,21 @@
       "confirmDeletechild": "Cancel the sub-account"
     },
     "line": {
-      "title": "LINE連携",
-      "settings": "LINEチャンネル設定",
-      "users":  "LINEユーザ一覧",
-      "notice1": "お店のLINE公式アカウントとおもちかえり.comを連携させて、お店のLINE公式アカウントのトークでお客様に注文状況をお知らせすることができます。",
-      "notice2": "ご利用にはLINE開発者サイトで、LINEログインチャンネルとMessaging APIの設定が必要です。",
-      "notice3": "Messaging APIはLINE公式アカウントと同じものを使います。",
-      "notice4": "LINEログインチャンネルにとMessaging APIを「リンクされたボット」として登録しておくことが必要です。",
-      "notice5": "また、LINEログインの「コールバックURL」におもちかえりで指定するURLの登録が必要です。",
-      "loginClientId": "LINEログイン:チャンネルID",
-      "loginChannelSecret": "LINEログイン:チャンネルシークレット",
-      "messagingAccessToken": "Messaging API: チャンネルアクセストークン",
-      "callbackUrl": "LINEログイン:コールバックURL",
-      "showBelow": "設定の下のほうにあります",
-      "enabled": "有効にする",
-      "callbackURLCopyToLine": "この値をコピーしてLINE側に設定をしてください。"
+      "title": "LINE integration",
+      "settings": "LINE Channel Config",
+      "users":  "LINE User List",
+      "notice1": "By linking the store's official LINE account with omochikaeri.com, customers can be notified of the order status through the chat on the store's official LINE account.",
+      "notice2": "To use it, you need to set up the LINE login channel and Messaging API on the LINE developer site.",
+      "notice3": "The Messaging API uses the same one as the LINE Official Account.",
+      "notice4": "It is necessary to register the LINE Login channel and the Messaging API as a 'linked bot'.",
+      "notice5": "Also, you need to register the URL that you specify in the 'Callback URL' of LINE Login.",
+      "loginClientId": "LINE Login: Channel ID",
+      "loginChannelSecret": "LINE Login: Channel Secret",
+      "messagingAccessToken": "Messaging API: Channel Access Token",
+      "callbackUrl": "LINE Login: callback URL",
+      "showBelow": "it's at the bottom of the settings",
+      "enabled": "Enabled",
+      "callbackURLCopyToLine": "Copy this value and set it on the LINE side."
     },
     "smaregi": {
       "index": "Smaregi",
@@ -1263,12 +1263,13 @@
       "body": "Displayed as a phone number for customers on the restaurant's page, and also notified by calling this number if phone notifications are turned on"
     },
     "exclusionDateTime": {
-      "title": "除外日/時間",
-      "body": "このメニューを販売できない日、時間を指定します。どちらか一方、もしくは両方を設定可能です。\n設定しない場合は、営業日のいつでも注文可能となります。"
+      "title": "Exclusion date/time",
+      "body": "Specify the day and time when this menu cannot be sold. Either one or both can be set.
+If not set, orders can be placed at any time on business days"
     },
     "lunchDinner": {
-      "title": "ランチ/ディナー設定",
-      "body": "商品ごとのランチ/ディナーの設定をします。\nランチ/ディナーの両方をチェックしている、もしくは両方をチェックしていない場合には、ランチ/ディナーの両方で注文可能となります\n飲食店設定でランチ/ディナーを設定し、営業時間を正しく設定してご利用ください。"
+      "title": "Lunch/Dinner config",
+      "body": "Set lunch/dinner for each product. If both lunch and dinner are checked, or if both are not checked, you can order for both lunch and dinner. Please set it correctly before using"
     },
     "itemOptions": {
       "title": "オプション",
