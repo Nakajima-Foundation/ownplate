@@ -21,6 +21,7 @@ export const usePickupTime = (
   shopInfo: RestaurantInfoData,
   exceptData: any,
   menuObj: Ref<{ [key: string]: MenuData }>,
+  lunchOrDinner?: string,
 ) => {
   const store = useStore();
 
@@ -67,7 +68,17 @@ export const usePickupTime = (
   };
   const openSlots = computed(() => {
     return [7, 1, 2, 3, 4, 5, 6].map((day) => {
-      return shopInfoOpenTimes.value[day].reduce((ret: {time: number, display: string }[], value) => {
+      const openTime = (() => {
+        if (lunchOrDinner === "lunch") {
+          return [shopInfoOpenTimes.value[day][0]];
+        }
+        if (lunchOrDinner === "dinner") {
+          return [shopInfoOpenTimes.value[day][1]];
+        }
+        return shopInfoOpenTimes.value[day];
+      })();
+      
+      return [openTime[0]].reduce((ret: {time: number, display: string }[], value) => {
         for (
           let time = value.start;
           time <= value.end;
