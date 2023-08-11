@@ -79,13 +79,13 @@ export default defineComponent({
 </script>
 
 <style lang="css" scoped>
-/deep/ .article-list ul {
+::v-deep(.article-list) ul {
   list-style: none;
   margin-top: 8px;
   margin-bottom: 12px;
 }
 
-/deep/ .article-list > ul > li ul li {
+::v-deep(.article-list) > ul > li ul li {
   list-style: outside;
   margin-left: 36px;
   margin-bottom: 4px;
