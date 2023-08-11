@@ -4,7 +4,7 @@
 		<div>
 			<img
         class="object-cover w-40 sm:w-56"
-        src="/takeout_icon.png">
+        src="/images/top/takeout_icon.png">
 		</div>
 
 		<div class="mt-8 sm:mt-0">

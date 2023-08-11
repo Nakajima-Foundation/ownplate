@@ -60,6 +60,11 @@ const mopath = mo_prefixes
   .flat();
 
 export const customRoutes: CustomRoute[] = [
+	{
+    name: "home",
+    path: "/home",
+    component: "user/Index.vue",
+  },
   {
     name: "top",
     path: "/",
