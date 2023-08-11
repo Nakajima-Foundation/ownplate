@@ -22,6 +22,7 @@ export const usePickupTime = (
   exceptData: any,
   menuObj: Ref<{ [key: string]: MenuData }>,
   lunchOrDinner?: string,
+  skipToday?: boolean,
 ) => {
   const store = useStore();
 
@@ -155,6 +156,9 @@ export const usePickupTime = (
     }
     return Array.from(Array(daysInAdvance.value).keys())
       .filter((offset) => {
+        if (skipToday && offset === 0) {
+          return false;
+        }
         return businessDays.value[(today + offset) % 7];
       })
       .filter((offset) => {
