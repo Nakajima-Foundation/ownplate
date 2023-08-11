@@ -191,6 +191,7 @@
         :totalPrice="totalPrice"
         :promotions="promotions"
         :possiblePromotions="possiblePromotions"
+        :lunchOrDinner="lunchOrDinner"
       />
 
       <!-- for disable all UI -->
