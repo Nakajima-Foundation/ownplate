@@ -9,7 +9,7 @@
 				<div>
 				<img 
           class="object-cover w-2/3 sm:w-2/4 lg:w-1/3"
-          src="/admin_icon1.png">
+          src="/images/top/admin_icon1.png">
 				</div>
 				<div class="text-black text-center text-op-90 text-sm sm:text-base font-bold mt-3">
 					{{ $t("lp.feature1") }}
@@ -20,7 +20,7 @@
 				<div>
 				<img
           class="object-cover w-2/3 sm:w-2/4 lg:w-1/3"
-          src="/admin_icon2.png">
+          src="/images/top/admin_icon2.png">
 				</div>
 				<div class="text-black text-center text-op-90 text-sm sm:text-base font-bold mt-3">
 					{{ $t("lp.feature2") }}
@@ -31,7 +31,7 @@
 				<div>
 				<img
           class="object-cover w-2/3 sm:w-2/4 lg:w-1/3"
-          src="/admin_icon3.png">
+          src="/images/top/admin_icon3.png">
 				</div>
 				<div class="text-black text-center text-op-90 text-sm sm:text-base font-bold mt-3">
 					{{ $t("lp.feature3") }}
@@ -42,7 +42,7 @@
 				<div>
 				<img
           class="object-cover w-2/3 sm:w-2/4 lg:w-1/3"
-          src="/admin_icon4.png">
+          src="/images/top/admin_icon4.png">
 				</div>
 				<div class="text-black text-center text-op-90 text-sm sm:text-base font-bold mt-3">
 					{{ $t("lp.feature4") }}

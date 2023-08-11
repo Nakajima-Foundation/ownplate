@@ -33,7 +33,7 @@
         </a>
       </div>
 
-      <!-- Twitter -->
+      <!-- Note -->
       <div class="inline-block px-1 pb-2">
         <a href="https://note.com/singsoc/m/m19dd935e84e4" target="_blank">
           <div

@@ -2,10 +2,13 @@
   <div>
       <!-- Hero Image -->
       <div>
-        <img :src="coverMobile" class="w-full lg:hidden" />
         <img
-          src="/admin_hero_desktop.jpg"
-          class="hidden w-full lg:inline-block"
+          src="/images/top/admin_hero_desktop.jpg"
+          class="hidden w-full lg:block"
+        />
+				<img
+          src="/images/top/admin_hero_tablet.jpg"
+          class="lg:hidden w-full"
         />
       </div>
 
@@ -16,7 +19,7 @@
      	 	</div>
 
 				<div class="mt-2">
-				<router-link to="admin/user/signup">
+				<router-link to="/admin/user/signup">
 					<div class="inline-flex h-16 items-center rounded-full bg-ownplate-yellow px-8 shadow hover:bg-opacity-80">
             <span class="text-xl font-bold text-black opacity-90">
 							{{ $t("lp.signUpForFree") }}
@@ -38,7 +41,7 @@
 			<div class="bg-ownplate-yellow flex justify-center">
 				<img
           class="object-cover lg:max-w-7xl"
-          src="/admin_feature.png">
+          src="/images/top/admin_feature.png">
 			</div>
   </div>
 </template>
@@ -49,15 +52,5 @@ import {
 } from "vue";
 
 export default defineComponent({
-  setup() {
-    const coverMobile = (() => {
-      const seed = (Math.floor(Math.random() * 2) % 2) + 1;
-      return `admin_hero_tablet.jpg`;
-    })();
-
-    return {
-      coverMobile,
-    }
-  },
 });
 </script>

@@ -10,7 +10,7 @@
 				<div>
 				<img
           class="object-cover w-14 sm:w-1/3"
-          src="/step1.png">
+          src="/images/top/step1.png">
 				</div>
 				<div class="text-black text-op-90 sm:text-lg font-bold sm:mt-5 ml-4 sm:ml-0 flex-1">
 					{{ $t("lp.step1") }}
@@ -21,7 +21,7 @@
 				<div>
 				<img
           class="object-cover w-14 sm:w-1/3"
-          src="/step2.png">
+          src="/images/top/step2.png">
 				</div>
 				<div class="text-black text-op-90 sm:text-lg font-bold sm:mt-5 ml-4 sm:ml-0 flex-1">
 					{{ $t("lp.step2") }}
@@ -32,7 +32,7 @@
 				<div>
 				<img
           class="object-cover w-14 sm:w-1/3"
-          src="/step3.png">
+          src="/images/top/step3.png">
 				</div>
 				<div class="text-black text-op-90 sm:text-lg font-bold sm:mt-5 ml-4 sm:ml-0 flex-1">
 					{{ $t("lp.step3") }}
@@ -43,7 +43,7 @@
 				<div>
 				<img
           class="object-cover w-14 sm:w-1/3"
-          src="/step4.png">
+          src="/images/top/step4.png">
 				</div>
 				<div class="text-black text-op-90 sm:text-lg font-bold sm:mt-5 ml-4 sm:ml-0 flex-1">
 					{{ $t("lp.step4") }}
@@ -52,7 +52,7 @@
 		</div>
 
 		<div class="text-center sm:mt-16 mt-12">
-			<router-link to="admin/docs">
+			<router-link to="/admin/docs">
 				<div class="inline-flex items-center justify-center">				
 					<span class="text-op-teal text-lg font-bold lg:text-xl">
 						{{ $t("lp.clickHereForDetails") }}
@@ -62,7 +62,7 @@
 			</router-link>
 
 			<div class="mt-8 sm:mb-6 mb-4">
-				<router-link to="admin/user/signup">
+				<router-link to="/admin/user/signup">
 					<div class="inline-flex h-16 items-center rounded-full bg-ownplate-yellow px-8 shadow hover:bg-opacity-80">
             <span class="text-xl font-bold text-black opacity-90">
 							{{ $t("lp.signUpForFree") }}
