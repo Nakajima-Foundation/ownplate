@@ -47,8 +47,7 @@
               {{ title }}
               <template v-if="shopInfo.enableLunchDinner">
                 /
-                <i class="material-icons text-center" v-if="availableLunch"> lunch_dining </i>
-                <i class="material-icons text-center" v-if="availableDinner"> dinner_dining </i>
+                <LunchDinnerIcon :item="item" />
               </template>
             </div>
           </a>
@@ -396,6 +395,8 @@ import {
 
 import Price from "@/components/Price.vue";
 import SharePopup from "@/app/user/Restaurant/SharePopup.vue";
+import LunchDinnerIcon from "@/app/user/Restaurant/LunchDinnerIcon.vue"
+
 import * as analyticsUtil from "@/lib/firebase/analytics";
 import { daysOfWeek } from "@/config/constant";
 
@@ -422,12 +423,13 @@ import { useI18n } from "vue-i18n";
 
 import { AnalyticsMenuData } from "@/lib/firebase/analytics";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
-import { MenuData, isAvailableLunchOrDinner } from "@/models/menu";
+import { MenuData } from "@/models/menu";
 
 export default defineComponent({
   components: {
     Price,
     SharePopup,
+    LunchDinnerIcon,
   },
   props: {
     item: {
@@ -677,7 +679,6 @@ export default defineComponent({
       num2time,
       displayOption,
 
-      ...isAvailableLunchOrDinner(props.item),
     };
   },
 });
