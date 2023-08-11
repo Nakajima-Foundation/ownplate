@@ -1264,8 +1264,7 @@
     },
     "exclusionDateTime": {
       "title": "Exclusion date/time",
-      "body": "Specify the day and time when this menu cannot be sold. Either one or both can be set.
-If not set, orders can be placed at any time on business days"
+      "body": "Specify the day and time when this menu cannot be sold. Either one or both can be set. If not set, orders can be placed at any time on business days"
     },
     "lunchDinner": {
       "title": "Lunch/Dinner config",
