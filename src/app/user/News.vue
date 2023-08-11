@@ -54,28 +54,27 @@ export default defineComponent({
 </script>
 
 <style lang="css" scoped>
-/deep/ .article-list h2 {
+::v-deep(.article-list) h2 {
   font-weight: bold;  
 }
-/deep/ .article-list ul {
+::v-deep(.article-list) ul {
   list-style: none;
   margin-top: 8px;
   margin-bottom: 12px;
   font-weight: bold;  
 }
 
-/deep/ .article-list > ul > li ul li {
+::v-deep(.article-list) > ul > li ul li {
   list-style: outside;
   margin-left: 36px;
   margin-bottom: 4px;
   font-weight: normal;
   color: #333333;
 }
-/deep/ .article-list > ul > li ul li a:link { color: #1197a7  !important; } 
-/deep/ .article-list > ul > li ul li a:visited { color: #1197a7  !important; } 
-/deep/ .article-list > ul > li ul li a:hover { color: #1197a7  !important; } 
-/deep/ .article-list > ul > li ul li a:active { color: #1197a7  !important; } 
-
+::v-deep(.article-list) > ul > li ul li a:link { color: #1197a7  !important; } 
+::v-deep(.article-list) > ul > li ul li a:visited { color: #1197a7  !important; } 
+::v-deep(.article-list) > ul > li ul li a:hover { color: #1197a7  !important; } 
+::v-deep(.article-list) > ul > li ul li a:active { color: #1197a7  !important; } 
 
 /*
   /deep/ .article-list h2 {
