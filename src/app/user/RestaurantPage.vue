@@ -628,6 +628,7 @@ export default defineComponent({
         status: order_status.new_order,
         uid: user.value.uid,
         ownerUid: props.shopInfo.uid,
+        lunchOrDinner: props.shopInfo.enableLunchDinner ? (lunchOrDinner.value) : null,
         isDelivery:
         (props.shopInfo.enableDelivery && isDelivery.value) || false, // true, // for test
         isPickup: false,
@@ -638,7 +639,6 @@ export default defineComponent({
         timeCreated: serverTimestamp(),
         // price never set here.
       };
-      // console.log(order_data);
       isCheckingOut.value = true;
       try {
         const res = await addDoc(

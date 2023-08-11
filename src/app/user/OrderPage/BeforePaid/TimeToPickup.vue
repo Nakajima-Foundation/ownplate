@@ -104,6 +104,7 @@ export default defineComponent({
       props.shopInfo,
       exceptData,
       ref({}),
+      props.orderInfo.lunchOrDinner,
     );
 
     const disabledPickupTime = computed(() => {

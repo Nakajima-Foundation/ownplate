@@ -175,9 +175,6 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
       console.error("[orderCreated] not exists");
       return orderRef.update("status", order_status.error);
     }
-    // check mo
-    const menuRestaurantRef = restaurantRef;
-
     const order = await orderRef.get();
 
     if (!order) {
@@ -194,17 +191,28 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
     const ownerUid = restaurantData.uid;
     const {
       isDelivery,
-      isLiff, 
+      isLiff,
+      lunchOrDinner,
     } = orderData;
     if (isDelivery && !restaurantData.enableDelivery) {
       throw new functions.https.HttpsError("invalid-argument", "Invalid delivery order.");
     }
     if (isLiff && !restaurantData.supportLiff) {
-      throw new functions.https.HttpsError("invalid-argument", "Invalid delivery order.");
+      throw new functions.https.HttpsError("invalid-argument", "Invalid liff order.");
     }
+    if (restaurantData.enableLunchDinner) {
+      if (!["lunch", "dinner"].includes(lunchOrDinner)) {
+        throw new functions.https.HttpsError("invalid-argument", "Invalid lunch dinner order.");
+      }
+    } else {
+      if (lunchOrDinner) {
+        throw new functions.https.HttpsError("invalid-argument", "Invalid lunch dinner order.");
+      }
+    }
+
     const multiple = utils.stripeRegion.multiple; //100 for USD, 1 for JPY
 
-    const { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total } = await createNewOrderData(menuRestaurantRef, orderRef, orderData, multiple);
+    const { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total } = await createNewOrderData(restaurantRef, orderRef, orderData, multiple);
 
     // Atomically increment the orderCount of the restaurant
     let orderCount = 0;
@@ -245,6 +253,8 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
         isPickup: false, // TODO: remove for mo
         isLiff, 
 
+        lunchOrDinner,
+        
         // just copy
         options,
         rawOptions,

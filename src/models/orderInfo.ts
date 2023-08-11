@@ -80,6 +80,8 @@ export interface OrderInfoData {
   customerInfo: CustomerInfo;
   memo: string;
 
+  lunchOrDinner?: string;
+
   groupId?: string; // mo
   cancelReason?: string; // mo
 }
