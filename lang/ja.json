@@ -542,7 +542,10 @@
 		"step2": "お店の情報・メニュー情報を登録",
 		"step3": "お支払いなどの設定を登録",
 		"step4": "テイクアウト・サービス開始！",
-		"clickHereForDetails": "詳しいご利用の手引きはこちら"
+		"clickHereForDetails": "詳しいご利用の手引きはこちら",
+		"enjoy": "お店の笑顔も",
+		"omochikaeri": "おもちかえり！",
+		"forOwnerToOpen": "出店をご希望の飲食店の方へ"
   },
 	"promotion": {
 		"heading": "開催中のキャンペーン",
