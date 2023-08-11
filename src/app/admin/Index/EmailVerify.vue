@@ -46,13 +46,11 @@ export default defineComponent({
     const isLoading = ref(false);
 
     const send = async () => {
-      console.log(auth.currentUser);
       try {
         isLoading.value = true;
         isError.value = false;
         if (auth.currentUser) {
           const res = await sendEmailVerification(auth.currentUser);
-          console.log(res);
           sent.value = true;
         }
       } catch (e) {

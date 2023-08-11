@@ -151,7 +151,22 @@
           </div>
         </div>
       </form>
+        <!-- Sign Up as a New User -->
+        <div class="mt-6 text-center">
+          <router-link to="/admin/user/signin">
+            <div class="inline-flex items-center justify-center">
+              <i class="material-icons mr-2 text-lg text-op-teal"
+                >store</i
+              >
+              <div class="text-sm font-bold text-op-teal">
+                {{ $t("admin.goToSignIn") }}
+              </div>
+            </div>
+          </router-link>
+        </div>
+
     </div>
+
   </div>
 </template>
 
@@ -162,6 +177,7 @@ import {
   watch,
   computed,
 } from "vue";
+import { useStore } from "vuex";
 import isEmail from "validator/lib/isEmail";
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -190,6 +206,7 @@ export default defineComponent({
   setup() {
     const router = useRouter();
     const route = useRoute();
+    const store = useStore();
     const isLocaleJapan = useIsLocaleJapan();
     const { user } = useUserData()
     
@@ -255,6 +272,7 @@ export default defineComponent({
       if (hasError.value) {
         return;
       }
+      store.commit("setLoading", true);
       try {
         const result = await createUserWithEmailAndPassword(
           auth,
@@ -279,6 +297,7 @@ export default defineComponent({
           email: result.user.email,
           updated: serverTimestamp(),
         });
+        store.commit("setLoading", false);
         if (user) {
           console.log("signup calling push");
           router.push("/admin/restaurants");
@@ -287,6 +306,8 @@ export default defineComponent({
           deferredPush.value = true;
         }
       } catch (error: any) {
+        store.commit("setLoading", false);
+
         console.warn("onSignup failed", error.code, error.message);
         if (error.code === "auth/email-already-in-use") {
           emailTaken.value = email.value;
