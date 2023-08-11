@@ -51,7 +51,6 @@
     "friendLink": "友だち設定する",
     "signIn": "テイクアウトのお客様",
     "signInRestaurant": "飲食店の管理者様",
-    "signInMO": "ログイン",
     "deleteAccount": "アカウント削除",
     "reallyDeleteAccount": "過去の履歴は消えてしまいます。本当にアカウントを削除しますか？",
     "reSendSMSforDeleteAccount": "最終確認のため登録されている電話番号にSMS確認コードを送ります。",
@@ -260,6 +259,12 @@
     "emailNotificationTitle": "注文をメールで通知",
     "emailNotificationDescription": "オンラインで注文が入った時にメールでお知らせします",
     "emailNotificationNotice": "メールの受信ボックスに見当たらない場合は迷惑メールフォルダに入っていないかご確認ください。",
+    "orderConfirmViewConfig": "注文確認画面設定",
+    "notificationConfig": "通知設定",
+    "moveToLineConfig": "LINE通知設定画面に移動します。移動の前に、このページの保存を忘れずに。",
+    "openDaysConfig": "営業日時設定",
+    "lunchOrDinnerToggle": "ランチ/ディナーの自動切り替え",
+    "lunchOrDinnerNotice": "各営業日の営業時間を必ず２つ入力してください。上がランチ、下(別時間帯(オプション))がディナーの営業時間となります。",
     "acceptUserMessage": "メッセージを受付",
     "acceptUserMessageDescription": "お客様からのメッセージを受付ける",
     "acceptUserMessageNotice": "注文確認画面で、お客様が一言メッセージを入力可能にします。注文時の注意書きの後にメッセージ欄が表示されるので、「注文時の注意書き」にメッセージに書く内容を記載してください。(例: お得な割引の連絡をするのでメールアドレスを入力してください. / 誕生月の場合はお知らせください。プレゼントを用意します。)",
@@ -282,6 +287,8 @@
     "itemName": "商品名",
     "itemAliasesName": "商品別名(管理画面のみ表示される情報です)",
     "price": "値段",
+    "priceSettings": "値段の設定",
+    "availableDayTimeSettings": "商品の注文可能時間設定",
     "free": "無料",
     "optionsPreview": "オプションプレビュー",
     "priceChange": "値段変化",
@@ -298,12 +305,12 @@
     "additionalPhotos": "詳細写真(最大4枚まで追加表示できます)",
     "addPhotos": "写真を選択",
     "deleteAllPhotos": "すべて削除",
-    "exclusionDateTime": "除外日/時間",
+    "exclusionDateTime": "販売除外日/時間",
     "lunchDinner": "ランチ/ディナー",
     "lunch": "ランチ",
     "dinner": "ディナー",
     "itemOptions": "オプション",
-    "itemOptionsNote": "二択や三択の場合、半角カンマで区切ってください(例:「チキン, ポーク, 豆腐」)。有料オプションの場合には、最後に(+100)のように値段を指定してください(例：「大盛り (+150)」)",
+    "itemOptionsNote": "トッピングや、大盛りなどの商品のオプションを指定します。二択や三択の場合、半角カンマで区切ってください(例:「チキン, ポーク, 豆腐」)。有料オプションの場合には、最後に(+100)のように値段を指定してください(例：「普通盛り,大盛り (+150),特盛(+300)」)",
     "itemAddOption": "オプション追加",
     "itemInvalidMessage": "データが正しく入力されていないため、公開されません",
     "saveAsDraft": "下書きとして保存されます(メニューに表示されません)",
@@ -467,21 +474,7 @@
     "cancellationDeliveryDescription1": "指定のデリバリー場所に到着してから5分以上経過し、かつ連絡が取れない場合",
     "cancellationDeliveryDescription2": "指定のデリバリー場所に到着してから15分以上経過した場合",
     "cancellationDeliveryDescription3": "本規約の規定に違反した場所をデリバリー場所として指定した場合",
-    "link": "こちら",
-    "paymentMo": "お支払い方法",
-    "paymentNoteMo": "お支払い等に関するご注意",
-    "paymentDescriptionCardMo": "「ご注文時のクレッジットカード払い」もしくは「受取時に店舗でお支払い」",
-    "paymentDescriptionCardNoteMo": "事前にクレジットカード払いでご注文されても、お店側で「受付済み」にするタイミングでカード決済の処理が正しく完了しなかった場合には、商品受取時の店舗でのお支払いに変更させていただきます。",
-    "deliveryMo": "ご注文商品の受け渡し時期および方法",
-    "deliveryDescriptionMo": "お客様が指定された店舗および日時での受け渡し",
-    "cancellationMo": "ご注文のキャンセルについて",
-    "cancellationDescription1Mo": "店舗側がご注文を「受付済み」にするまでは、「注文履歴」よりご注文のキャンセルが可能です。",
-    "cancellationDescription2Mo": "「受付済み」の表示以降は、ご注文のキャンセルはできません。",
-    "cancellationDescription3Mo": "「受け渡し準備完了」の表示から2時間を経過した場合には、店舗側でご注文をキャンセルさせていただく場合がございますが、原則として「ご注文された商品代金相当額」をお支払いいただく必要がございます。",
-    "cancellationDescription4Mo": "店舗側からご注文のキャンセルをさせていただく場合がございます。",
-    "cancellationDescription5Mo": "詳細については",
-    "cancellationDescription6Mo": "をご確認ください。",
-    "cancellationTakeoutDescriptionMo": "「受付済み」のご注文であっても、材料不足・売り切れ・過度の注文の集中・注文受付時のエラー・その他、店舗側の都合によりキャンセルさせていただく場合がございます。すでに代金をお支払いの場合には、ご注文いただいた店舗に対して返金処理を求めることができますが、店舗側の故意または重過失のない限り、お支払い代金を超えての損害賠償を求めることはできません。"
+    "link": "こちら"
   },
   "sitemenu": {
     "menu": "メニュー",
@@ -603,6 +596,8 @@
     "print": "印刷",
     "thisIsDeliveryOrder": "これはデリバリーの注文です",
     "thisIsTakeoutOrder": "これはテイクアウトの注文です",
+    "thisIsLunchOrder": "これはランチの注文です",
+    "thisIsDinnerOrder": "これはディナーの注文です",
     "alertReqireAddress": "入力が完了していません。確認をしてください。",
     "orderErrorMessage": "注文処理できませんでした。カートに入れた商品が売り切れになった可能性があります。ページを戻って、再度注文をしてください。",
     "saveAddress": "配送先を保存",
@@ -889,7 +884,6 @@
 			"date": "注文日",
 			"total": "合計金額",
 			"discountPrice": "割引"
-
     },
     "open": "営業",
     "closed": "休業",
@@ -1269,11 +1263,11 @@
     },
     "exclusionDateTime": {
       "title": "除外日/時間",
-      "body": "そのメニューを販売できない日や、時間をしています。どちらか一方、もしくは両方を設定可能です。設定しない場合は、いつでも注文可能となります。"
+      "body": "このメニューを販売できない日、時間を指定します。どちらか一方、もしくは両方を設定可能です。\n設定しない場合は、営業日のいつでも注文可能となります。"
     },
     "lunchDinner": {
       "title": "ランチ/ディナー設定",
-      "body": "商品ごとのランチ/ディナーの設定をします。ランチ/ディナーの両方をチェックしている、もしくは両方をチェックしていない場合には、いつでも注文可能となります"
+      "body": "商品ごとのランチ/ディナーの設定をします。\nランチ/ディナーの両方をチェックしている、もしくは両方をチェックしていない場合には、ランチ/ディナーの両方で注文可能となります\n飲食店設定でランチ/ディナーを設定し、営業時間を正しく設定してご利用ください。"
     },
     "itemOptions": {
       "title": "オプション",

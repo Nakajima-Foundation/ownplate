@@ -65,6 +65,7 @@
       "email": "email",
       "phone": "Phone number",
       "line": "LINE",
+      "liff": "LINE",
       "unexpected": "Unexpected",
       "isFriend": "a friend",
       "noFriend": "not a friend",
@@ -258,6 +259,12 @@
     "emailNotificationTitle": "Email Notification",
     "emailNotificationDescription": "Send an email when a new order comes in",
     "emailNotificationNotice": "If you can't find it in your inbox, please check your spam folder.",
+    "orderConfirmViewConfig": "注文確認画面設定",
+    "notificationConfig": "通知設定",
+    "moveToLineConfig": "LINE通知設定画面に移動します。移動の前に、このページの保存を忘れずに。",
+    "openDaysConfig": "営業日時設定",
+    "lunchOrDinnerToggle": "ランチ/ディナーの自動切り替え",
+    "lunchOrDinnerNotice": "各営業日の営業時間を必ず２つ入力してください。上がランチ、下(別時間帯(オプション))がディナーの営業時間となります。",
     "acceptUserMessage": "Accept a message with customer",
     "acceptUserMessageDescription": "Accept a message with customer",
     "acceptUserMessageNotice": "Allows customers to enter a single message on the order confirmation screen.",
@@ -281,6 +288,8 @@
     "itemName": "Item name",
     "itemAliasesName": "Item Alias (This information is only displayed in the admin page.)",
     "price": "Price",
+    "priceSettings": "値段の設定",
+    "availableDayTimeSettings": "商品の注文可能時間設定",
     "free": "Free",
     "optionsPreview": "Options Preview",
     "priceChange": "Price Change",
@@ -297,6 +306,10 @@
     "additionalPhotos": "Additional photos (up to 4 photos)",
     "addPhotos": "Select photos",
     "deleteAllPhotos": "Delete all photos",
+    "exclusionDateTime": "販売除外日/時間",
+    "lunchDinner": "ランチ/ディナー",
+    "lunch": "ランチ",
+    "dinner": "ディナー",
     "itemOptions": "Item options",
     "itemOptionsNote": "For altenatives, use comma to separate them (e.g., \"Chicken, Pork, Tofu\"). You may add a price to an option with (+N), where N is the price.",
     "itemAddOption": "Add Option",
@@ -333,6 +346,7 @@
     "shopList": "Store list",
     "areas": {
       "hokkaido": "Hokkaido Area",
+      "tohoku": "東北地方",
       "kanto": "Kanto Area",
       "chubu": "Chubu Area",
       "hokuriku": "Hokuriku Area",
@@ -362,6 +376,7 @@
     "name": "Restaurant name",
     "ownerName": "restaurant's owner name",
     "restaurantDetails": "Restaurant Details",
+    "ecShopDetails": "店舗情報",
     "streetAddress": "Street address",
     "city": "City",
     "state": "State",
@@ -393,6 +408,8 @@
     "notPublicShop": "Not Public",
     "paymentMethods": "Payment methods",
     "minimumAvailableTime": "Minimum available time",
+    "lastOrder": "本日最終受付",
+    "todayNotAvailable": "本日は受付できません",
     "noAvailableTime": "No orderable time",
     "deliveryThresholdNotice": "Delivery is possible from orders totaling {price} or more.",
     "deliveryArea": "Delivery area",
@@ -407,9 +424,24 @@
     "delivery": "Delivery",
     "takeoutDescription": "Pick up at shop",
     "deliveryDescription": "Delivery to home or work",
+    "lunchOrDinner": "ランチ/ディナー",
+    "lunch": "ランチ",
+    "dinner": "ディナー",
     "viewMore": "View More",
     "viewLess": "Close",
     "productCategory": "Product Category"
+  },
+  "lunchOrDinner": {
+    "alert": {
+      "dinner": {
+        "title": "ディナーへ切り替え",
+        "body": "メニューをディナーに変更します。カート内のアイテムはリセットされますが、よろしいでしょうか？"
+      },
+      "lunch": {
+        "title": "ランチへ切り替え",
+        "body": "メニューをランチに変更します。カート内のアイテムはリセットされますが、よろしいでしょうか？"
+      }
+    }
   },
   "transactionsAct": {
     "title": "Specified Commercial Transaction Act",
@@ -422,6 +454,7 @@
     "priceDescription": "Please check the product page.",
     "otherFees": "Other Expenses",
     "otherFeesDescription": "You are responsible for any expenses related to transportation to and from the restaurant.",
+    "otherFeesDescriptionDelivery": "送料が別途かかります。送料は各店舗のページをご確認ください。",
     "payment": "Time and Method of Payment",
     "paymentDescription": "Credit Card Payment / Store Payment",
     "paymentDescriptionCard": "Credit Card Payment",
@@ -528,6 +561,7 @@
     "yourOrder": "Your Order",
     "confirmOrder": "Confirm Order",
     "editItems": "Edit Items",
+    "productSubTotal": "商品合計",
     "revenue": "revenue",
     "foodRevenue": "food revenue",
     "alcoholRevenue": "alcohol revenue",
@@ -563,6 +597,8 @@
     "print": "Print",
     "thisIsDeliveryOrder": "This is a delivery order",
     "thisIsTakeoutOrder": "This is a takeaway order",
+    "thisIsLunchOrder": "これはランチの注文です",
+    "thisIsDinnerOrder": "これはディナーの注文です",
     "alertReqireAddress": "The input is not completed. Please check.",
     "orderErrorMessage": "The order could not be processed. The item may have been sold out in the cart. Please go back to the page and place your order again.",
     "saveAddress": "Save delivery address",
@@ -804,7 +840,6 @@
     "auth/invalid-phone-number": "Invalid Phone Number",
     "auth/invalid-verification-code": "The SMS verification code used to create the phone auth credential is invalid. Please resend the verification code sms and be sure use the verification code provided by the user.",
     "auth/missing-verification-code": "SMS verification code is missing.",
-    "auth/missing-verification-code": "The phone auth credential was created with an empty SMS verification code.",
     "auth/code-expired": "The SMS verification code has expired. Please resend the SMS verification code and enter it again"
   },
   "admin": {
@@ -978,6 +1013,7 @@
       "cancelButton": "Cancel this order",
       "cancelTitle": "Order Canceling",
       "cancelMessage": "Please contact to the customer and tell the order will be canceled.",
+      "updateOrderMessage": "お客様にご連絡の上、ご注文を変更することを確定してください。",
       "paymentCancelButton": "Cancel only card payment",
       "delete": "Cancel this order",
       "deleteConfirm": "(This action is undoable)",
@@ -1225,6 +1261,18 @@
     "phonenumber": {
       "title": "Phone Number",
       "body": "Displayed as a phone number for customers on the restaurant's page, and also notified by calling this number if phone notifications are turned on"
+    },
+    "exclusionDateTime": {
+      "title": "除外日/時間",
+      "body": "このメニューを販売できない日、時間を指定します。どちらか一方、もしくは両方を設定可能です。\n設定しない場合は、営業日のいつでも注文可能となります。"
+    },
+    "lunchDinner": {
+      "title": "ランチ/ディナー設定",
+      "body": "商品ごとのランチ/ディナーの設定をします。\nランチ/ディナーの両方をチェックしている、もしくは両方をチェックしていない場合には、ランチ/ディナーの両方で注文可能となります\n飲食店設定でランチ/ディナーを設定し、営業時間を正しく設定してご利用ください。"
+    },
+    "itemOptions": {
+      "title": "オプション",
+      "body": ""
     }
   },
   "validationError": {

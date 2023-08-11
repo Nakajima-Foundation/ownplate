@@ -89,16 +89,6 @@
             </div>
           </div>
           <div v-else>
-            <!-- Lunch/Dinner -->
-            <div class="mx-6 mt-2 lg:mx-0" v-if="shopInfo.enableLunchDinner">
-              <div class="rounded-lg bg-white shadow">
-                <LunchDinner :shopInfo="shopInfo"
-                             v-model="lunchOrDinner"
-                             :hasDinnerOnlyOrder="hasDinnerOnlyOrder"
-                             :hasLunchOnlyOrder="hasLunchOnlyOrder"
-                             />
-              </div>
-            </div>
             <div class="mx-6 mt-2 lg:mx-0" v-if="shopInfo.enableDelivery">
               <div class="rounded-lg bg-white shadow">
                 <!-- delivery toggle-->
@@ -114,8 +104,19 @@
             <!-- titles for omochikaeri -->
             <Titles :titleLists="titleLists" v-if="titleLists.length > 0" />
 
+            <!-- Lunch/Dinner -->
+            <div class="mx-6 mt-4 lg:mx-0" v-if="shopInfo.enableLunchDinner">
+              <div class="rounded-lg bg-white shadow">
+                <LunchDinner :shopInfo="shopInfo"
+                             v-model="lunchOrDinner"
+                             :hasDinnerOnlyOrder="hasDinnerOnlyOrder"
+                             :hasLunchOnlyOrder="hasLunchOnlyOrder"
+                             />
+              </div>
+            </div>
+
             <!-- For Responsible -->
-            <div class="mx-6 mt-3 lg:mx-0">
+            <div class="mx-6 mt-2 lg:mx-0">
                 <div class="grid-col-1 grid space-y-2">
                   <template v-for="(item, key) in itemLists">
                     <!-- Title -->
@@ -191,6 +192,7 @@
         :totalPrice="totalPrice"
         :promotions="promotions"
         :possiblePromotions="possiblePromotions"
+        :lunchOrDinner="lunchOrDinner"
       />
 
       <!-- for disable all UI -->

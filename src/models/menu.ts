@@ -34,12 +34,14 @@ export interface MenuData {
 
   uid: string;
   deletedFlag: boolean;
+
+  soldOut: boolean;
   
   itemAliasesName: string;
   itemMemo: string;
   itemOptionCheckbox: string[];
   publicFlag: boolean;
-  allergens: string[];
+  allergens: {[key: string]: boolean};
   category1: string;
   category2: string;
 

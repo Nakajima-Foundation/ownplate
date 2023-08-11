@@ -111,70 +111,73 @@
           </div>
 
           <!-- Item Price -->
-          <div class="mt-6">
-            <div class="pb-2 text-sm font-bold">
-              {{ $t("editMenu.price") }}
-              <span class="text-red-700">*</span>
-            </div>
-            <div>
-              <o-field
-                :variant="errors['price'].length > 0 ? 'danger' : 'success'"
-              >
-                <o-input
-                  v-model="menuInfo.price"
-                  type="number"
-                  :step="priceStep"
-                  placeholder="00.00"
-                  :max="maxPrice"
-                  min="0.00"
-                  expanded
-                ></o-input>
-                <div>
-                  <span class="button is-static">
-                    {{ $t("currency." + currencyKey) }}
-                  </span>
-                </div>
-              </o-field>
-            </div>
-          </div>
-
-          <!-- Item Tax -->
-          <div class="mt-6">
-            <div class="pb-2 text-sm font-bold">
-              {{ $t("editMenu.tax") }}
-              <span class="text-red-700">*</span>
-            </div>
-            <div>
-              <o-field
-                :variant="errors['tax'].length > 0 ? 'danger' : 'success'"
-              >
-                <o-select v-model="menuInfo.tax" placeholder="select">
-                  <option
-                    v-for="taxItem in taxRates"
-                    :value="taxItem"
-                    :key="taxItem"
+          <div class="rounded-lg border bg-white p-2 mt-4">
+            <span class="font-bold">{{ $t("editMenu.priceSettings") }}</span>
+            <div class="mt-4">
+              <div class="pb-2 text-sm font-bold">
+                {{ $t("editMenu.price") }}
+                <span class="text-red-700">*</span>
+              </div>
+              <div>
+                <o-field
+                  :variant="errors['price'].length > 0 ? 'danger' : 'success'"
                   >
-                    {{ shopInfo && (shopInfo[taxItem + "Tax"] || 0) + "%" }}
-                    - {{ $t("editMenu." + taxRateKeys[taxItem]) }}
-                  </option>
-                </o-select>
-              </o-field>
+                  <o-input
+                    v-model="menuInfo.price"
+                    type="number"
+                    :step="priceStep"
+                    placeholder="00.00"
+                    :max="maxPrice"
+                    min="0.00"
+                    expanded
+                    ></o-input>
+                  <div>
+                    <span class="button is-static">
+                      {{ $t("currency." + currencyKey) }}
+                    </span>
+                  </div>
+                </o-field>
+              </div>
+            </div>
+            
+            <!-- Item Tax -->
+            <div class="mt-6">
+              <div class="pb-2 text-sm font-bold">
+                {{ $t("editMenu.tax") }}
+                <span class="text-red-700">*</span>
+              </div>
+              <div>
+                <o-field
+                  :variant="errors['tax'].length > 0 ? 'danger' : 'success'"
+                  >
+                  <o-select v-model="menuInfo.tax" placeholder="select">
+                    <option
+                      v-for="taxItem in taxRates"
+                      :value="taxItem"
+                      :key="taxItem"
+                      >
+                      {{ shopInfo && (shopInfo[taxItem + "Tax"] || 0) + "%" }}
+                      - {{ $t("editMenu." + taxRateKeys[taxItem]) }}
+                    </option>
+                  </o-select>
+                </o-field>
+              </div>
+            </div>
+            
+            <!-- Price Example -->
+            <div
+              v-if="requireTaxPriceDisplay"
+              class="mt-6 rounded-lg bg-black bg-opacity-5 p-4"
+              >
+              <div class="inline text-sm font-bold">
+                {{ $t("editMenu.displayPrice") }}:
+              </div>
+              <div class="inline">
+                <Price :shopInfo="shopInfo" :menu="menuInfo" />
+              </div>
             </div>
           </div>
-
-          <!-- Price Example -->
-          <div
-            v-if="requireTaxPriceDisplay"
-            class="mt-6 rounded-lg bg-black bg-opacity-5 p-4"
-          >
-            <div class="inline text-sm font-bold">
-              {{ $t("editMenu.displayPrice") }}:
-            </div>
-            <div class="inline">
-              <Price :shopInfo="shopInfo" :menu="menuInfo" />
-            </div>
-          </div>
-
+          
           <!-- Allergens -->
           <div class="mt-6">
             <div class="pb-2 text-sm font-bold">
@@ -229,40 +232,83 @@
             </div>
           </div>
 
-          <div class="mt-4 text-sm font-bold cursor-pointer"
-               @click="openTips('lunchDinner')"
-               >
-            {{ $t("editMenu.lunchDinner") }}
-            <i class="material-icons">
-              <span class="text-sm">help</span>
-            </i>
-            <span class="text-red-700">*</span>
-          </div>
-          <div class="mt-2">
-            <div class="rounded-lg bg-black bg-opacity-5 p-4">
-              <div>
-                <o-checkbox v-model="menuInfo.availableLunch">
-                  <div
-                    class="text-sm font-bold text-black text-opacity-60"
-                    >
-                    {{ $t("editMenu.lunch") }}
-                  </div>
-                </o-checkbox>
-              </div>
-              <div class="mt-2">
-                <o-checkbox v-model="menuInfo.availableDinner">
-                  <div
-                    class="text-sm font-bold text-black text-opacity-60"
-                    >
-                    {{ $t("editMenu.dinner") }}
-                  </div>
-                </o-checkbox>
+          <div class="rounded border bg-white p-2 mt-4">
+            
+            <span class="font-bold">{{ $t("editMenu.availableDayTimeSettings") }}</span>
+            <!-- Lunch  or Dinner -->
+            <div class="mt-4 text-sm font-bold cursor-pointer"
+                 @click="openTips('lunchDinner')"
+                 >
+              {{ $t("editMenu.lunchDinner") }}
+              <i class="material-icons">
+                <span class="text-sm">help</span>
+              </i>
+              <span class="text-red-700">*</span>
+            </div>
+            <div class="mt-2">
+              <div class="rounded-lg bg-black bg-opacity-5 p-4">
+                <div>
+                  <o-checkbox v-model="menuInfo.availableLunch">
+                    <div
+                      class="text-sm font-bold text-black text-opacity-60"
+                      >
+                      {{ $t("editMenu.lunch") }}
+                    </div>
+                  </o-checkbox>
+                </div>
+                <div class="mt-2">
+                  <o-checkbox v-model="menuInfo.availableDinner">
+                    <div
+                      class="text-sm font-bold text-black text-opacity-60"
+                      >
+                      {{ $t("editMenu.dinner") }}
+                    </div>
+                  </o-checkbox>
+                </div>
               </div>
             </div>
+            <!-- end of Lunch Dinner -->
+            
+            <!-- exclusionDate/Time -->
+            <div class="mt-4 text-sm font-bold cursor-pointer"
+                 @click="openTips('exclusionDateTime')"
+                 >
+              {{ $t("editMenu.exclusionDateTime") }}
+              <i class="material-icons">
+                <span class="text-sm">help</span>
+              </i>
+              <span class="text-red-700">*</span>
+            </div>
+            <div class="mt-2">
+              <div class="rounded-lg bg-black bg-opacity-5 p-4">
+                <div class="pb-2 text-sm font-bold">
+                  {{ $t("editMenu.exclusionDate") }}
+                </div>
+                <span v-for="(day, index) in daysOfWeek" :key="index">
+                  <o-checkbox v-model="menuInfo.exceptDay[index]">
+                    <span class="text-base font-bold">
+                      {{ $t("week.short." + day) }}
+                      <span v-if="index !== '7'">/</span>
+                    </span>
+                  </o-checkbox>
+                </span>
+                <div class="mt-2 text-sm font-bold">
+                  {{ $t("editMenu.exclusionTime") }}
+                </div>
+                <div class="mt-2">
+                  <hours-input
+                    v-model="menuInfo.exceptHour"
+                    variant="success"
+                    :disabled="false"
+                    ></hours-input>
+                </div>
+              </div>
+            </div>
+            <!-- end of exclusionDate/Time -->
           </div>
-          
-        </div>
 
+        </div>
+        
         <!-- Right -->
         <div class="mt-6 lg:mt-0">
           <!-- Item Photo -->
@@ -449,40 +495,6 @@
             </div>
           </div>
 
-          <div class="mt-4 text-sm font-bold cursor-pointer"
-               @click="openTips('exclusionDateTime')"
-               >
-            {{ $t("editMenu.exclusionDateTime") }}
-            <i class="material-icons">
-              <span class="text-sm">help</span>
-            </i>
-            <span class="text-red-700">*</span>
-          </div>
-          <div class="mt-2">
-            <div class="rounded-lg bg-black bg-opacity-5 p-4">
-              <div class="pb-2 text-sm font-bold">
-                {{ $t("editMenu.exclusionDate") }}
-              </div>
-              <span v-for="(day, index) in daysOfWeek" :key="index">
-                <o-checkbox v-model="menuInfo.exceptDay[index]">
-                  <span class="text-base font-bold">
-                    {{ $t("week.short." + day) }}
-                    <span v-if="index !== '7'">/</span>
-                  </span>
-                </o-checkbox>
-              </span>
-              <div class="mt-2 text-sm font-bold">
-                {{ $t("editMenu.exclusionTime") }}
-              </div>
-              <div class="mt-2">
-                <hours-input
-                  v-model="menuInfo.exceptHour"
-                  variant="success"
-                  :disabled="false"
-                  ></hours-input>
-              </div>
-            </div>
-          </div>
 
           <!-- CSV Categories -->
           <div class="mt-6">

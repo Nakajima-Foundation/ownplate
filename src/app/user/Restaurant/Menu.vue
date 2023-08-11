@@ -43,7 +43,13 @@
         <div class="p-4">
           <!-- Item Name -->
           <a :id="`${item.id}`">
-            <div class="text-base font-bold">{{ title }}</div>
+            <div class="text-base font-bold flex">
+              {{ title }}
+              <template v-if="shopInfo.enableLunchDinner">
+                /
+                <LunchDinnerIcon :item="item" />
+              </template>
+            </div>
           </a>
           <!-- Price -->
           <div class="mt-2 text-base">
@@ -389,6 +395,8 @@ import {
 
 import Price from "@/components/Price.vue";
 import SharePopup from "@/app/user/Restaurant/SharePopup.vue";
+import LunchDinnerIcon from "@/app/user/Restaurant/LunchDinnerIcon.vue"
+
 import * as analyticsUtil from "@/lib/firebase/analytics";
 import { daysOfWeek } from "@/config/constant";
 
@@ -415,15 +423,17 @@ import { useI18n } from "vue-i18n";
 
 import { AnalyticsMenuData } from "@/lib/firebase/analytics";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { MenuData } from "@/models/menu";
 
 export default defineComponent({
   components: {
     Price,
     SharePopup,
+    LunchDinnerIcon,
   },
   props: {
     item: {
-      type: Object,
+      type: Object as PropType<MenuData>,
       required: true,
     },
     shopInfo: {
@@ -631,6 +641,7 @@ export default defineComponent({
         optionValues: newSelectedOptions,
       });
     };
+    
     return {
       openMenuFlag,
       imagePopup,
@@ -667,6 +678,7 @@ export default defineComponent({
 
       num2time,
       displayOption,
+
     };
   },
 });

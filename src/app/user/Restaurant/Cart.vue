@@ -2,9 +2,27 @@
   <div class="fixed top-0 h-screen w-full bg-black bg-opacity-50 z-30">
     <div class="h-1/5 w-full" @click="closeCart"></div>
     <div class="fixed h-4/5 w-full overflow-x-scroll bg-white pb-32">
-      <div class="mt-6 mb-4 flex justify-center font-bold text-black">
-        {{ shopInfo.restaurantName }}
+      <div class="mt-6 mb-4">
+        <div class="flex justify-center font-bold text-black">
+          {{ shopInfo.restaurantName }}
+        </div>
+        
+        <!-- lunch or dinner -->
+        <div
+          class="flex justify-center"
+          v-if="shopInfo.enableLunchDinner"
+          >
+          <div class="text-base font-bold text-red-600">
+            <span v-if="lunchOrDinner === 'lunch'">
+              {{ $t("order.thisIsLunchOrder") }}
+            </span>
+            <span v-else>
+              {{ $t("order.thisIsDinnerOrder") }}
+            </span>
+          </div>
+        </div>
       </div>
+      
       <div class="justify-items-auto grid grid-cols-1 lg:grid-cols-2">
         <template v-for="(counters, itemId) in orders">
           <div v-for="(counter, key) in counters" :key="`${itemId}-${key}`">
@@ -100,6 +118,10 @@ export default defineComponent({
     totalPrice: {
       type: Object,
       required: true,
+    },
+    lunchOrDinner: {
+      type: String,
+      required: false,
     },
   },
   setup(props, ctx) {

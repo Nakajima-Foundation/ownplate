@@ -171,12 +171,19 @@
                 <div class="w-16">{{ $t("week.short." + day) }}</div>
                 <div class="flex-1">
                   <template v-if="(businessDay)[key]">
-                    <template v-for="data in openTimes[key]">
+                    <div v-for="(data, dateKey) in openTimes[key]">
                       <template v-if="validDate(data)">
                         {{ num2time(data.start) }} - {{ num2time(data.end) }}
-                        <br />
                       </template>
-                    </template>
+                      <template v-if="shopInfo.enableLunchDinner">
+                        <span v-if="dateKey === 0" class="font-bold">
+                          :{{ $t("shopInfo.lunch") }}
+                        </span>
+                        <span v-if="dateKey === 1" class="font-bold">
+                          :{{ $t("shopInfo.dinner") }}
+                        </span>
+                      </template>
+                    </div>
                   </template>
                   <template v-else>{{ $t("shopInfo.closed") }}</template>
                 </div>
