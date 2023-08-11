@@ -48,8 +48,11 @@
             </div>
           </div>
           <div class="p-4">
-            <div class="text-xl font-bold text-black text-opacity-80">
-              {{ menuitem.itemName }}
+            <div class="text-xl font-bold text-black text-opacity-80 flex">
+              <span class="flex">{{ menuitem.itemName }}</span>
+              <span class="flex" v-if="shopInfo.enableLunchDinner">
+                / <LunchDinnerIcon :item="menuitem" />
+              </span>
             </div>
             <div class="mt-2 text-base text-black text-opacity-80">
               <Price :shopInfo="shopInfo" :menu="menuitem" />
@@ -150,6 +153,8 @@ import {
 } from "firebase/firestore";
 
 import Price from "@/components/Price.vue";
+import LunchDinnerIcon from "@/app/user/Restaurant/LunchDinnerIcon.vue"
+
 import { useAdminUids, smallImageErrorHandler, useRestaurantId } from "@/utils/utils";
 
 import { useStore } from "vuex";
@@ -159,6 +164,7 @@ import { useRouter } from "vue-router";
 export default defineComponent({
   components: {
     Price,
+    LunchDinnerIcon,
   },
   props: {
     menuitem: {
