@@ -108,12 +108,12 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  watch,
-  onMounted,
-} from "vue";
+  import {
+    defineComponent,
+    ref,
+    watch,
+    onMounted,
+  } from "vue";
 
 import { getStripeInstance, stripeUpdateCustomer } from "@/lib/stripe/stripe";
 import { db } from "@/lib/firebase/firebase9";
@@ -140,12 +140,12 @@ export default defineComponent({
     const stripe = getStripeInstance();
     const cardElem = ref<any>(null);
     let elementStatus = { complete: false };
-
+    
     const storedCard = ref(null);
     const useStoredCard = ref(false);
     const CVCPopup = ref(false);
     const reuse = ref(true);
-
+    
     const configureStripe = async () => {
       const elements = stripe.elements();
       const stripeRegion = store.getters.stripeRegion;
@@ -172,21 +172,21 @@ export default defineComponent({
       });
       cardElement.mount("#card-element");
       cardElem.value = cardElement;
-      console.log(cardElem.value);
+      // console.log(cardElem.value);
       cardElem.value.addEventListener("change", (status: any) => {
         elementStatus = status;
         ctx.emit("change", status);
       });
-
+      
       try {
         const stripeInfo = (
           await getDoc(doc(db, `/users/${user.value.uid}/readonly/stripe`))
         ).data();
-      
+        
         if (stripeInfo && stripeInfo.card) {
           const date = ('00' + String(stripeInfo.card.exp_month)).slice(-2);
           const expire = moment(`${stripeInfo.card.exp_year}${date}01T000000+0900`).endOf('month').toDate();
-          console.log(expire);
+          // console.log(expire);
           if (stripeInfo.updatedAt && (stripeInfo.updatedAt.toDate() > moment().subtract(180, "days").toDate())) {
             if (expire > new Date()) {
             storedCard.value = stripeInfo.card;
