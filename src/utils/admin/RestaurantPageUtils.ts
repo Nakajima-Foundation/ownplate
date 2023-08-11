@@ -38,6 +38,7 @@ export const getEditShopInfo = (shopInfo: RestaurantInfoData) => {
     phoneCall: shopInfo.phoneCall,
     emailNotification: shopInfo.emailNotification,
     enablePrinter: shopInfo.enablePrinter,
+    enableLunchDinner: shopInfo.enableLunchDinner || false,
     acceptUserMessage: shopInfo.acceptUserMessage,
     countryCode: shopInfo.countryCode,
     url: shopInfo.url,
