@@ -79,7 +79,7 @@ export const usePickupTime = (
         return shopInfoOpenTimes.value[day];
       })();
       
-      return [openTime[0]].reduce((ret: {time: number, display: string }[], value) => {
+      return openTime.reduce((ret: {time: number, display: string }[], value) => {
         for (
           let time = value.start;
           time <= value.end;
@@ -118,6 +118,8 @@ export const usePickupTime = (
   const deliveryTodaysLast = computed(() => {
     return getTodaysLast(deliveryIsAvailableToday, deliveryAvailableDays, minimumDeliveryTime);
   });
+
+  // just for display
   const getTodaysLast = (isAvailable: ComputedRef<boolean>, days: ComputedRef<AvailableDay[]>, minTime: ComputedRef<number>) => {
     const now = store.state.date;
     console.log(store.state.date); // never delete this line;
