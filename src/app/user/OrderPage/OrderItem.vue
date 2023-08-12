@@ -17,7 +17,6 @@
         />
       </div>
     </div>
-
     <div class="flex-1">
       <div class="text-base font-bold">
         <s v-if="editable && !available">
@@ -31,6 +30,10 @@
           <span v-else> / {{ item.itemAliasesName }} </span>
         </span>
       </div>
+      <div v-if="soldOutToday" class="text-xs text-red-600">
+         {{ $t("sitemenu.soldOutToday") }}
+      </div>
+
       <div v-if="specialRequest" class="mt-1 text-xs font-bold">
         <s v-if="editable && !available">
           {{ specialRequest }}
@@ -58,17 +61,25 @@
 import {
   defineComponent,
   computed,
+  PropType,
 } from "vue";
 
 import { formatOption, optionPrice } from "@/utils/strings";
 import { roundPrice, smallImageErrorHandler, useUserData } from "@/utils/utils";
 import { useI18n } from "vue-i18n";
+import { MenuData } from "@/models/menu";
+
+import moment from "moment-timezone";
 
 export default defineComponent({
   props: {
     orderItem: {
       type: Object,
       required: true,
+    },
+    menuData: {
+      type: Object as PropType<MenuData>,
+      required: false,
     },
     editable: {
       type: Boolean,
@@ -125,6 +136,11 @@ export default defineComponent({
     const FsmallImageErrorHandler = (e: any) => {
       smallImageErrorHandler(e);
     };
+
+    const today = moment().format("YYYY-MM-DD");
+    const soldOutToday = computed(() => {
+      return (props.menuData?.soldOutToday === today);
+    });
     return {
       item,
       image,
@@ -134,6 +150,7 @@ export default defineComponent({
       update,
       FsmallImageErrorHandler,
       isAdmin,
+      soldOutToday,
     };
   },
 });

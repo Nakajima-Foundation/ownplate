@@ -8,6 +8,7 @@
           :editable="editable"
           :available="(editedAvailableOrders || {})[key]"
           @update="updateAvailable"
+          :menuData="(menuData||{})[orderItem.id]"
           :mkey="key"
         ></order-item>
       </template>
@@ -259,6 +260,7 @@ import OrderItem from "@/app/user/OrderPage/OrderItem.vue";
 
 import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { MenuData } from "@/models/menu";
 
 import { useStore } from "vuex";
 
@@ -273,6 +275,10 @@ export default defineComponent({
     orderInfo: {
       type: Object as PropType<OrderInfoData>,
       required: true,
+    },
+    menuData: {
+      type: Object as PropType<{[key: string]: MenuData}>,
+      required: false,
     },
     shopInfo: {
       type: Object as PropType<RestaurantInfoData>,

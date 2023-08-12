@@ -50,6 +50,7 @@
             :shopInfo="shopInfo || {}"
             :orderItems="orderItems"
             :orderInfo="orderInfo || {}"
+            :menuData="menuData"
             :shippingCost="shippingCost"
             :promotion="selectedPromotion"
             :enablePromotion="enablePromotion"
@@ -547,7 +548,7 @@ export default defineComponent({
     const shopInfo = computed(() => {
       return props.shopInfo;
     });
-    const { hasSoldOutToday } = useHasSoldOutToday(restaurantId, props.orderInfo);
+    const { hasSoldOutToday, menuData } = useHasSoldOutToday(restaurantId, props.orderInfo);
 
     // end of computed
     watch(shopInfo, () => {
@@ -708,6 +709,7 @@ export default defineComponent({
 
       //
       hasSoldOutToday,
+      menuData,
     };
   },
 });
