@@ -13,7 +13,6 @@ module.exports = {
   plugins: ["vue"],
   rules: {
     "no-console": "off", //console.log();OK
-    "no-unused-vars": "off",
     "vue/max-attributes-per-line": "off",
 
     "vue/no-mutating-props": "warn",
