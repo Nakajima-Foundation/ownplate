@@ -118,7 +118,7 @@ import { doc2data } from "@/utils/utils";
 
 import BackButton from "@/components/BackButton.vue";
 import DownloadCsv from "@/components/DownloadCSV.vue";
-import DownloadMenu from "@/app/admin/Restaurants/MenuListPage/DownloadCSV.vue";
+import DownloadMenu from "@/app/super/DownloadCSV.vue";
 
 import { useI18n } from "vue-i18n";
 import { getBackUrl, superPermissionCheck } from "@/utils/utils";

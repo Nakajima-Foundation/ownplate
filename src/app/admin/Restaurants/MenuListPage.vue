@@ -156,7 +156,6 @@ import TitleInput from "@/app/admin/Restaurants/MenuListPage/TitleInput.vue";
 
 import ToggleSwitch from "@/components/ToggleSwitch.vue";
 import AddButton from "@/app/admin/Restaurants/MenuListPage/AddButton.vue";
-// import PhotoName from "@/app/admin/Restaurants/MenuListPage/PhotoName.vue";
 import DownloadButton from "@/app/admin/Restaurants/MenuListPage/DownloadButton.vue";
 // import DownloadCSV from "@/app/admin/Restaurants/MenuListPage/DownloadCSV.vue";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
@@ -187,7 +186,6 @@ export default defineComponent({
 
     ToggleSwitch,
     AddButton,
-    // PhotoName,
     DownloadButton,
 
     // DownloadCSV,
