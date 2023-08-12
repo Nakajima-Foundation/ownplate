@@ -25,11 +25,11 @@ module.exports = {
     "vue/no-reserved-component-names": "warn",
     "vue/no-unused-components": "warn",
     "@typescript-eslint/ban-ts-comment": "warn",
-    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-unused-vars": "warn",
     "@typescript-eslint/ban-ts-comment": "warn",
-    "no-extra-semi": "warn",
+    "no-extra-semi": "error",
     "no-unexpected-multiline": "warn",
-    "no-unreachable": "warn",
+    "no-unreachable": "error",
   }
 };

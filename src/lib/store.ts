@@ -20,30 +20,30 @@ interface Claims {
   operator: boolean;
   parentUid?: string;
   liffId: string;
-};
+}
 
 interface DialogAlertData {
   title: string;
   code: string;
   callback: () => void;
-};
+}
 interface DialogErrorData {
   message: string,
   message2: string,
   code: string,
-};
+}
 interface DialogTipsData {
   key: string,
-};
+}
 interface Dialog {
   alert?: DialogAlertData;
   error?: DialogErrorData;
   tips?: DialogTipsData;
-};
+}
 
 interface Server {
   region?: string;
-};
+}
 
 type Cart = {
   orders: OrderDataType;

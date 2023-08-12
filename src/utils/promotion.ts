@@ -286,7 +286,7 @@ export const useUserPromotionHistory = (id: string, user: any) => {
       });
       discountHistory.value = userHistory;
       // console.log(userHistory, promotionIds, histories);
-    };
+    }
   })();
 
   return {
