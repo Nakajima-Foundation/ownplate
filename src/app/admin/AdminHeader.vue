@@ -17,7 +17,7 @@
           />
         </div>
         <div class="text-base font-bold">
-          {{ shopInfo.restaurantName }}
+          {{ shopInfo.restaurantName }} <span v-if="pageText">/ {{ $t("adminTitle." + pageText) }}</span>
         </div>
       </div>
     </div>
@@ -97,6 +97,10 @@ export default defineComponent({
       required: false,
     },
     backText: {
+      type: String,
+      required: false,
+    },
+    pageText: { 
       type: String,
       required: false,
     },

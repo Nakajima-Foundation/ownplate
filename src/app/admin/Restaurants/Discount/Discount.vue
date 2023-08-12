@@ -18,6 +18,7 @@
             :showSuspend="false"
 						backText="button.backToDiscounts"
         		iconText="arrow_back"
+            pageText="discountDetail"
             />
       </div>
       <!-- Right Gap -->

@@ -13,6 +13,7 @@
         :showSuspend="true"
         backText="button.backToOrderListPage"
         iconText="arrow_back"
+        pageText="orderDetail"
       />
 
       <!-- Body -->

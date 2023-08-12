@@ -10,6 +10,7 @@
         :shopInfo="shopInfo"
         :backLink="`/admin/restaurants/#restaurant_` + shopInfo.restaurantId"
         :showSuspend="true"
+        pageText="orderList"
       />
 
       <div class="sm:flex">

@@ -10,7 +10,6 @@
     <!-- Header -->
     <div class="mx-6 mt-6 lg:flex lg:items-center">
       <div class="flex-1"></div>
-      
       <!-- Notifications -->
       <div class="mt-4 flex-shrink-0 text-right lg:mt-0">
         <notification-index :shopInfo="editShopInfo" />

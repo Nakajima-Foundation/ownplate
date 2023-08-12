@@ -14,6 +14,7 @@
         :showSuspend="false"
 				backText="button.backToOrderListPage"
         iconText="arrow_back"
+        pageText="orderSuspend"
       />
 
       <!-- Title -->

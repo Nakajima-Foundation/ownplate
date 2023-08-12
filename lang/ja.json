@@ -12,6 +12,18 @@
       "privacy": "プライバシーポリシー"
     }
   },
+  "adminTitle": {
+    "menuList": "商品一覧",
+    "orderList": "注文一覧",
+    "orderHistory": "全ての注文履歴",
+    "orderDetail": "注文詳細",
+    "orderSuspend": "受付休止設定",
+    "autoPrinter": "自動印刷",
+    "lineAuth": "LINE連携設定",
+    "discountList": "値引設定一覧",
+    "discountDetail": "値引設定",
+    "discountHistory": "値引履歴"
+  },
   "greeting": "こんにちは、世界",
   "underConstruction": "注意：これはテスト用のサーバーです。",
   "comma": "、",

@@ -16,6 +16,7 @@
             :shopInfo="shopInfo"
             :backLink="`/admin/restaurants/#restaurant_` + shopInfo.restaurantId"
             :showSuspend="false"
+            pageText="discountList"
             />
       </div>
       <!-- Right Gap -->

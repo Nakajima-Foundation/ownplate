@@ -11,6 +11,7 @@
         :shopInfo="shopInfo"
         :backLink="`/admin/restaurants/#restaurant_` + shopInfo.restaurantId"
         :showSuspend="false"
+        pageText="menuList"
       />
 
       <!-- Toggle to View All or Public Only -->
