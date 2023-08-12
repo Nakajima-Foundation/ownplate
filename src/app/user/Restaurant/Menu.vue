@@ -6,9 +6,9 @@
       :class="totalQuantity > 0 ? 'border-2 border-op-teal' : ''"
     >
       <div @click="toggleMenuFlag()" class="flow-root cursor-pointer">
-        <div class="float-right p-4">
+        <div class="float-right p-4 w-48">
           <!-- Image -->
-          <div v-if="smallimage" class="pb-2">
+          <div v-if="smallimage" class="pb-2 text-center">
             <img
               @click.stop="openImage()"
               :src="smallimage"
@@ -37,6 +37,14 @@
                 {{ $t("sitemenu.add") }}
               </div>
             </div>
+          </div>
+          <div v-if="isSoldOutToday" class="w-full">
+            <div class="text-center text-sm font-bold text-red-600 bg-red-100 rounded-full mt-2 w-36 mx-auto">
+              {{ $t("sitemenu.soldOutToday") }}
+            </div>
+          </div>
+          <div v-if="false" class="text-xs mt-2">
+            翌日以降の受け渡しとなります。
           </div>
         </div>
 
@@ -411,6 +419,8 @@ import {
   displayOption,
 } from "@/utils/utils";
 
+import moment from "moment-timezone";
+
 // menu UI algorithm
 //   init quantities = [0]
 //   if sum(quantities) > 0, show button
@@ -486,6 +496,10 @@ export default defineComponent({
 
     const isSoldOut = computed(() => {
       return !!props.item.soldOut;
+    });
+    const isSoldOutToday = computed(() => {
+      const today = moment(store.state.date).format("YYYY-MM-DD");
+      return props.item.soldOutToday === today;
     });
     const totalQuantity = computed(() => {
       return arraySum(props.quantities);
@@ -651,6 +665,7 @@ export default defineComponent({
 
       // computed
       isSoldOut,
+      isSoldOutToday,
       totalQuantity,
       allergens,
       allergensDescription,

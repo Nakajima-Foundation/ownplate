@@ -5,6 +5,9 @@
         <div class="font-bold text-black">
           {{ item.itemName }}
         </div>
+        <div v-if="isSoldOutToday" class="text-xs text-red-600">
+          {{ $t("sitemenu.soldOutToday") }}
+        </div>
         <div class="mt-1" v-for="(option, k) in options" :key="k">
           <div v-if="option.length === 1">
             <div v-if="selectedOptions[k]">
@@ -82,6 +85,9 @@ import { useRestaurantId } from "@/utils/utils";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { MenuData } from "@/models/menu";
 import { AnalyticsMenuData } from "@/lib/firebase/analytics";
+import { useStore } from "vuex";
+
+import moment from "moment-timezone";
 
 export default defineComponent({
   props: {
@@ -111,6 +117,7 @@ export default defineComponent({
   },
   emits: ["increase", "decrease"],
   setup(props, ctx) {
+    const store = useStore();
     const restaurantId = useRestaurantId();
     const image = computed(() => {
       return (
@@ -137,6 +144,10 @@ export default defineComponent({
         1
       );
     };
+    const isSoldOutToday = computed(() => {
+      const today = moment(store.state.date).format("YYYY-MM-DD");
+      return props.item.soldOutToday === today;
+    });
     return {
       image,
       options,
@@ -144,6 +155,7 @@ export default defineComponent({
       increase,
       decrease,
       smallImageErrorHandler,
+      isSoldOutToday,
     };
   },
 });
