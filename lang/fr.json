@@ -908,6 +908,7 @@
     "editMenuItems": "Menu",
     "pleaseAddMenu": "Aucun menu ajouté",
     "itemSoldOut": "Complet",
+    "itemSoldOutToday": "Sold Out Today",
     "itemPublished": "Published",
     "itemNotPublished": "Not Published",
     "editAbout": "Modifier les détails du restaurant",

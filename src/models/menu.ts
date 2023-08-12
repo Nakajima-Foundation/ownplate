@@ -36,6 +36,7 @@ export interface MenuData {
   deletedFlag: boolean;
 
   soldOut: boolean;
+  soldOutToday?: string;
   
   itemAliasesName: string;
   itemMemo: string;

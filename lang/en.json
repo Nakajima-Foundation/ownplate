@@ -965,6 +965,7 @@
     "editMenuItems": "Menu",
     "pleaseAddMenu": "No Menu Added",
     "itemSoldOut": "Sold Out",
+    "itemSoldOutToday": "Sold Out Today",
     "itemPublished": "Published",
     "itemNotPublished": "Not Published",
     "editAbout": "Edit Info",

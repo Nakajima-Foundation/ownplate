@@ -34,6 +34,19 @@
               </div>
             </o-checkbox>
           </div>
+          <div class="mr-4 pt-4">
+            <o-checkbox
+              :modelValue="soldOutToday"
+              @update:modelValue="soldOutTodayToggle"
+            >
+              <div v-if="soldOut" class="text-sm font-bold text-red-700">
+                {{ $t("admin.itemSoldOutToday") }}
+              </div>
+              <div v-else class="text-sm font-bold text-black text-opacity-30">
+                {{ $t("admin.itemSoldOutToday") }}
+              </div>
+            </o-checkbox>
+          </div>
         </div>
 
         <!-- Item Details -->
@@ -160,7 +173,7 @@ import { useAdminUids, smallImageErrorHandler, useRestaurantId } from "@/utils/u
 import { useStore } from "vuex";
 
 import { useRouter } from "vue-router";
-
+import moment from "moment-timezone";
 export default defineComponent({
   components: {
     Price,
@@ -200,6 +213,22 @@ export default defineComponent({
       }`;
       updateDoc(doc(db, path), {"soldOut": e});
     };
+    
+    const soldOutToday = computed(() => {
+      const today = moment(store.state.date).format("YYYY-MM-DD")
+      return props.menuitem.soldOutToday === today; // = !soldOut;
+    });
+    const soldOutTodayToggle = (e: boolean) => {
+      const today = moment(store.state.date).format("YYYY-MM-DD")
+      const path = `restaurants/${restaurantId.value}/menus/${
+        props.menuitem.id
+      }`;
+      if (e) {
+        updateDoc(doc(db, path), {"soldOutToday": today});
+      } else {
+        updateDoc(doc(db, path), {"soldOutToday": null});
+      }
+    };
     const linkEdit = () => {
       if (isOwner.value) {
         router.push({
@@ -234,6 +263,8 @@ export default defineComponent({
       image,
       soldOut,
       soldOutToggle,
+      soldOutToday,
+      soldOutTodayToggle,
       linkEdit,
 
       positionUp,
