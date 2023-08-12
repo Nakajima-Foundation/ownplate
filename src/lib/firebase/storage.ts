@@ -13,7 +13,7 @@ export const uploadFile = (file: File, path: string): Promise<string> => {
 
     uploadTask.on(
       "state_changed",
-      (snapshot) => {},
+      () => {},
       (err) => {
         rejected(err);
       },

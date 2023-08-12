@@ -1,5 +1,4 @@
 import { ref, computed, onMounted } from "vue";
-import firebase from "firebase/app";
 import { db } from "@/lib/firebase/firebase9";
 import {
   DocumentData,
@@ -242,10 +241,6 @@ export const getOrderItems = (
       const numArray = Array.isArray(orderInfo.order[menuId])
         ? orderInfo.order[menuId]
         : [orderInfo.order[menuId]];
-      const opt =
-        orderInfo.options && orderInfo.options[menuId]
-          ? orderInfo.options[menuId]
-          : null;
       const optArray = Array.isArray(orderInfo.order[menuId])
         ? orderInfo.options[menuId]
         : [orderInfo.options[menuId]];
@@ -581,7 +576,7 @@ export const getPostOption = (
 ) => {
   return Object.keys(trimmedSelectedOptions).reduce(
     (ret: { [key: string]: any }, id) => {
-      ret[id] = (trimmedSelectedOptions[id] || []).map((item, k) => {
+      ret[id] = (trimmedSelectedOptions[id] || []).map((item) => {
         return item
           .map((selectedOpt: any, key) => {
             const opt = (cartItems[id] || {}).itemOptionCheckbox[key].split(

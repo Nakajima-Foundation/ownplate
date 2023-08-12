@@ -1,7 +1,5 @@
 import pdfMake from "pdfmake/build/pdfmake";
 
-import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
-
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { arrayChunk } from "@/utils/utils";
@@ -12,10 +10,10 @@ const fontHost = location.protocol + "//" + location.host + "/fonts/";
 
 // https://github.com/bpampuch/pdfmake/blob/7b5675d5b9d5d7b815bd721e00504b16560a6382/src/standardPageSizes.js
 const A4width = 595.28;
-const A4height = 841.89;
+// const A4height = 841.89;
 
 // https://github.com/bpampuch/pdfmake/issues/359
-const A4MarginVertical = 120; // 60 * 2
+// const A4MarginVertical = 120; // 60 * 2
 const A4MarginHorizontal = 80; // 40 * 2
 
 const A4ContentWidth = A4width - A4MarginHorizontal;

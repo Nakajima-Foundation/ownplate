@@ -129,7 +129,6 @@ export default defineComponent({
         props.orderInfo,
         props.orderId,
         props.shopInfo,
-        props.shopInfo.restaurantId
       );
     };
 

@@ -5,7 +5,7 @@ export const json_response = async (response: Response) => {
     const data = await response.json();
     return data;
   } else {
-    const error_json = await response.json();
+    // const error_json = await response.json();
     const error = new Error(response.statusText);
     // error.response = error_json;
     throw error;

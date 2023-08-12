@@ -128,7 +128,7 @@ export const usePickupTime = (
 
   // just for display
   const getTodaysLast = (isAvailable: ComputedRef<boolean>, days: ComputedRef<AvailableDay[]>, minTime: ComputedRef<number>) => {
-    const now = store.state.date;
+    // const now = store.state.date;
     console.log(store.state.date); // never delete this line;
     if (isAvailable.value) {
       const lastTime = days.value[0].times[days.value[0].times.length - 1];

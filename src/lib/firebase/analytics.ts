@@ -11,8 +11,6 @@ import { MenuData } from "@/models/menu";
 import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
-import { mo_prefixes, moGtmID } from "@/config/project";
-
 export interface AnalyticsMenuData extends MenuData {
   id: string;
   quantity: number;
@@ -126,7 +124,6 @@ export const sendRedunded = (
   orderInfo: OrderInfoData,
   orderId: string,
   shopInfo: RestaurantInfoData,
-  restaurantId: string
 ) => {
   try {
     const analyticsData = {

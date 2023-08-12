@@ -347,7 +347,6 @@ export default defineComponent({
         props.orderInfo,
         orderId,
         props.shopInfo,
-        restaurantId
       );
     };
     const handleCancelPayment = () => {

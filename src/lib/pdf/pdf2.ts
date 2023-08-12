@@ -1,9 +1,7 @@
 import pdfMake from "pdfmake/build/pdfmake";
 import moment from "moment";
 
-import { nameOfOrder, formatOption, optionPrice } from "@/utils/strings";
-import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
-import { convChar } from "@/lib/pdf/pdf";
+import { nameOfOrder, formatOption } from "@/utils/strings";
 
 import { OrderInfoData, OrderItemData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";

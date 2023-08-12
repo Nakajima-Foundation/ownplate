@@ -1,4 +1,3 @@
-import Vue from "vue";
 import { createI18n } from "vue-i18n";
 
 import i18nEN from "../../lang/en.json";
