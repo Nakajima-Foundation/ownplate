@@ -16,6 +16,8 @@ module.exports = {
     "no-unused-vars": "off",
     "vue/max-attributes-per-line": "off",
 
+    "vue/no-mutating-props": "warn",
+    "vue/no-side-effects-in-computed-properties": "warn",
     "no-irregular-whitespace": "warn",
     "vue/no-unused-vars": "warn",
     "vue/multi-word-component-names": "warn",

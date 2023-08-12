@@ -9,7 +9,7 @@
       <PromotionMessage5 :promotion="promotion" />
     </div>
 	</div>
-  <o-modal :active.sync="promotionVisible" width="80%" scroll="keep">
+  <o-modal v-model:active="promotionVisible" width="80%" scroll="keep">
     <div class="my-6 rounded-lg bg-white shadow-lg border-op-teal border-2">
 			<div class="text-center bg-op-teal text-white font-bold py-1">
 			{{ $t("promotion.heading") }}
