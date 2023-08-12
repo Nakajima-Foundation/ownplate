@@ -327,6 +327,7 @@
     "exclusionTime": "除外時間",
     "showAllMenu": "全ての商品",
     "showPublicMenu": "公開中のみ",
+    "showSoldOutMenu": "売り切れのみ",
     "selectCategory": "選択"
   },
   "editTitle": {

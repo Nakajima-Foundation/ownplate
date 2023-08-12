@@ -328,6 +328,7 @@
     "exclusionTime": "Exclusion Time",
     "showAllMenu": "All Items",
     "showPublicMenu": "Published Items",
+    "showSoldOutMenu": "Sold Out Items",
     "selectCategory": "Select"
   },
   "editTitle": {
