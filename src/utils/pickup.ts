@@ -134,7 +134,7 @@ export const usePickupTime = (
       const lastTime = days.value[0].times[days.value[0].times.length - 1];
       const { time } = lastTime;
       const lastOrder = Math.min(time - minTime.value, shopInfo.lastOrderTime|| 1000000);
-      console.log(shopInfo.lastOrderTime, time, lastOrder)
+      // console.log(shopInfo.lastOrderTime, time, lastOrder)
       
       return {
         time,
@@ -154,9 +154,9 @@ export const usePickupTime = (
     return getAvailableDays(minimumTime).map((a) => {
       const { offset, date, times } = a;
       const newTimes = times.filter((b:  { time: number }) => {
-        console.log(b, shopInfo.lastOrderTime);
+        // console.log(b, shopInfo.lastOrderTime);
         if (shopInfo.lastOrderTime) {
-          console.log(shopInfo.lastOrderTime, b.time)
+          // console.log(shopInfo.lastOrderTime, b.time)
           return shopInfo.lastOrderTime >= b.time;
         }
         return true;
