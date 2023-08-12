@@ -2,7 +2,7 @@
   <section class="mx-auto max-w-full px-6 pb-12 pt-4">
     <back-button url="/s" />
 
-    <div v-for="(admin, k) in admins">
+    <div v-for="(admin, k) in admins" :key="k">
       <router-link :to="`/s/admins/${admin.id}`">{{ admin.name }}</router-link>
       {{ admin.partners }} {{ admin?.created?.toDate() }}
     </div>
@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onUnmounted, ref } from "vue";
+import { defineComponent, ref } from "vue";
 import BackButton from "@/components/BackButton.vue";
 import { db } from "@/lib/firebase/firebase9";
 import {

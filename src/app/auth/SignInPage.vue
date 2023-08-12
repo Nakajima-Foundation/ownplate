@@ -180,7 +180,7 @@ export default defineComponent({
       store.commit("setLoading", true);
       errors.value = {};
       signInWithEmailAndPassword(auth, email.value, password.value)
-        .then((ret) => {
+        .then(() => {
           console.log("onSignin success");
           store.commit("setLoading", false);
         })

@@ -688,7 +688,7 @@ export default defineComponent({
         }
         notFound.value = false;
       },
-      (e) => {
+      () => {
         notFound.value = true;
         return;
       }
@@ -1085,7 +1085,7 @@ export default defineComponent({
               newOrder: edited_available_order_info.value,
             };
 
-            const { data } = await orderChange(params);
+            await orderChange(params);
             isOrderChange.value = false;
 
             // console.log("update", data);

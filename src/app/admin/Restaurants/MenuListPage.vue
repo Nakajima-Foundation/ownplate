@@ -420,7 +420,6 @@ export default defineComponent({
 
     const forkItem = async (itemKey: string, newData: MenuData) => {
       const pos = menuLists.value.indexOf(itemKey);
-      const item = itemsObj.value[itemKey];
 
       const newMenuLists = menuLists.value;
       newMenuLists.splice(pos, 0, newData.id);

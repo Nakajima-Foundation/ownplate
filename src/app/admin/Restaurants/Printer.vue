@@ -110,7 +110,7 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(_, ctx) {
+  setup() {
     const notFound = ref(null);
     const printerConfig = ref();
     

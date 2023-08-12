@@ -53,6 +53,7 @@
             <th
               class="p-2 text-xs font-bold"
               v-for="(field, k) in revenueTableHeader"
+              :key="k"
             >
               <div class="text-right">{{ $t("order." + field) }}</div>
             </th>
@@ -196,7 +197,7 @@
 
 <script lang="ts">
 import { db } from "@/lib/firebase/firebase9";
-import { doc, query, collection, where, orderBy, onSnapshot } from "firebase/firestore";
+import { query, collection, where, orderBy, onSnapshot } from "firebase/firestore";
 
 import {
   defineComponent,

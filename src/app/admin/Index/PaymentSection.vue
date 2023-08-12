@@ -223,7 +223,7 @@ export default defineComponent({
         callback: async () => {
           try {
             store.commit("setLoading", true);
-            const { data } = await stripeDisconnect();
+            await stripeDisconnect();
             // TODO: show connected view
           } catch (error: any) {
             console.error(error, error.details);

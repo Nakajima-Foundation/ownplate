@@ -517,7 +517,7 @@
               <div
                 class="grid grid-cols-1 space-y-2 rounded-lg bg-black bg-opacity-5 p-4"
                 >
-                <div v-for="taxItem in taxRates" class="text-base">
+                <div v-for="(taxItem, k) in taxRates" class="text-base" :key="k">
                   {{ $t("editMenu." + taxRateKeys[taxItem]) }}
                   {{ editShopInfo[taxItem + "Tax"] }}%
                 </div>
@@ -961,6 +961,7 @@
                 <template v-for="(day, key) in editShopInfo.temporaryClosure || []">
                   <template v-if="day.getTime() > now.getTime()">
                     <div
+                      :key="key"
                       class="flex items-center rounded bg-white bg-opacity-50 px-2"
                       >
                       <div class="flex-1 p-2">

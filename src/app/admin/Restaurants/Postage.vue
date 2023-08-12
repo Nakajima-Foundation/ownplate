@@ -87,7 +87,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const postage = ref(Array.from([...Array(47)]).map((k) => 0));
+    const postage = ref(Array.from([...Array(47)]).map(() => 0));
     const enableFree = ref(false);
     const freeThreshold = ref(100000);
 

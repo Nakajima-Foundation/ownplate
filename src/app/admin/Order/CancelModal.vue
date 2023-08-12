@@ -68,7 +68,6 @@
 import {
   defineComponent,
   ref,
-  computed,
   PropType,
 } from "vue";
 import {
@@ -82,10 +81,6 @@ import ButtonLoading from "@/components/Button/Loading.vue";
 
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-
-import {
-  order_status,
-} from "@/config/constant";
 
 export default defineComponent({
   props: {
@@ -136,7 +131,7 @@ export default defineComponent({
       
       try {
         updating.value = true;
-        const { data } = await stripeCancelIntent({
+        await stripeCancelIntent({
           restaurantId: props.shopInfo.restaurantId,
           orderId: props.orderId,
         });
