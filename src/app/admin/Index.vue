@@ -328,7 +328,7 @@ export default defineComponent({
     const message_detacher = ref<Unsubscribe|null>(null);
     const unsetPaymentWarning = ref(false);
     const lines = ref<{[key: string]: boolean}>({});
-    const shopOwner = ref<ShopOwnerData | {} | null>(null);
+    const shopOwner = ref<ShopOwnerData | Record<string, never> | null>(null);
     const restaurantLists = ref<string[]>([]);
     const numberOfOrderObj = ref<{[key: string]: number}>({});
     const messages = ref<DocumentData[]>([]);

@@ -62,7 +62,7 @@ export default defineComponent({
     const center_lng = ref(15.629058);
     const zoom = ref(13);
 
-    const selected = ref<null | Number>(null);
+    const selected = ref<null | number>(null);
     
     props.restaurants.map((restaurant: RestaurantInfoData) => {
       if (restaurant.location && restaurant.location.lat && restaurant.location.lng) {

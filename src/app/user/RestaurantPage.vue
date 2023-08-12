@@ -501,13 +501,6 @@ export default defineComponent({
       );
     });
     
-    watch(howtoreceive, (value) => {
-      if (false) {
-        orders.value = {};
-        cartItems.value = {};
-      }
-    });
-    
     const { loadTitle, titles, titleLists } = useTitles(restaurantId);
     loadTitle();
     

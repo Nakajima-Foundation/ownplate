@@ -31,7 +31,7 @@
           </div>
         </template>
 
-        <template v-else="!noPaymentMethod">
+        <template v-else-if="!noPaymentMethod">
           <div class="inline-flex flex-col items-center justify-center">
             <!-- delivery -->
             <template v-if="isDelivery">

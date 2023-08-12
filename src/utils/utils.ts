@@ -340,7 +340,7 @@ export const displayOption = (option: string, shopInfo: RestaurantInfoData, item
 };
 
 const optionPrice = (option: string) => {
-  const regex = /\(((\+|\-|＋|ー|−)[0-9\.]+)\)/;
+  const regex = /\(((\+|-|＋|ー|−)[0-9.]+)\)/;
   const match = (option || "").match(regex);
   if (match) {
     return Number(match[1].replace(/ー|−/g, "-").replace(/＋/g, "+"));

@@ -124,6 +124,7 @@ export default defineComponent({
       } else {
         return ownPlateConfig.line.FRIEND_LINK;
       }
+      return "";
     });
     const handleLineAuth = () => {
       const url = lineAuthURL("/callback/line", {

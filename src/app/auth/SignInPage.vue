@@ -153,7 +153,7 @@ export default defineComponent({
 
     const redirectToAdminPage = () => {
       const redirect = route.query["to"] as string;
-      const pathRegex = /^\/[a-zA-Z0-9-\_\/]+$/;
+      const pathRegex = /^\/[a-zA-Z0-9-_/]+$/;
 
       if (redirect && pathRegex.test(redirect)) {
         router.push(redirect);

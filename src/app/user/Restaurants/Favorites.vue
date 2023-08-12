@@ -71,6 +71,7 @@ import {
   orderBy,
   limit,
   query,
+  DocumentData,
 } from "firebase/firestore";
 
 import { RestaurantHeader } from "@/config/header";
@@ -102,7 +103,7 @@ export default defineComponent({
   setup() {
     const router = useRouter();
     const basePath = useBasePath();
-    const likes = ref<{}[]|null>(null);
+    const likes = ref<DocumentData[]|null>(null);
 
     const { uid, isUser } = useUserData();
 

@@ -132,6 +132,7 @@ export default defineComponent({
       if (printerConfig.value?.key) {
         return ["https://" + ownPlateConfig.hostName + "/api/1.0/r/", restaurantId.value, "/starprinter/", printerConfig.value.key ].join("");
       }
+      return "";
     });
     const reset = () => {
       const newKey = doc(collection(db, "a")).id;

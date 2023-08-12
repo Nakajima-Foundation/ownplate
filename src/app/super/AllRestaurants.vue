@@ -146,11 +146,6 @@ export default defineComponent({
     DownloadCsv,
     DownloadMenu,
   },
-  data() {
-    return {
-      last: null,
-    };
-  },
   setup() {
     const { t } = useI18n({ useScope: 'global' });
     let isLoading = false;

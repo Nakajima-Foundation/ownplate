@@ -182,7 +182,7 @@ export default defineComponent({
             Sentry.captureException(error);
           });
         setUserProperties(analytics, {
-          role: !!fUser.email ? "admin" : "customer",
+          role: fUser.email ? "admin" : "customer",
         });
         setUserId(analytics, fUser.uid);
 

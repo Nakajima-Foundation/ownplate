@@ -246,7 +246,7 @@ export default defineComponent({
 
     watch(phoneNumber, () => {
       errors.value = [];
-      const regex = /^\+?[0-9()\-]{8,20}$/;
+      const regex = /^\+?[0-9()-]{8,20}$/;
       if (!regex.test(phoneNumber.value)) {
         errors.value = ["sms.invalidPhoneNumber"];
       }
@@ -291,7 +291,7 @@ export default defineComponent({
       errors.value = [];
       try {
         isLoading.value = true;
-        let result = await (confirmationResult.value as ConfirmationResult).confirm(
+        const result = await (confirmationResult.value as ConfirmationResult).confirm(
           verificationCode.value
         );
         // console.log("success!", result);

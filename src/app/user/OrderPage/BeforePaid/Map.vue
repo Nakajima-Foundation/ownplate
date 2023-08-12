@@ -75,7 +75,7 @@ export default defineComponent({
     let gCenter: any = null;
     let gHome: any = null;
     let markers: any[] = [];
-    let circles: any[] = [];
+    const circles: any[] = [];
     let map: any = null;
     
     const estimatedDistance = ref<number | null>(null);

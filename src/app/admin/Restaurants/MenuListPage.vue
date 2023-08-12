@@ -219,7 +219,7 @@ export default defineComponent({
     const router = useRouter();
 
     const submitting = ref(false);
-    const shopInfoSnapshot = ref<RestaurantInfoData|{}>({});
+    const shopInfoSnapshot = ref<RestaurantInfoData|Record<string, never>>({});
 
     const editings = ref<{[key: string]: boolean}>({});
     const detachers = ref([]);
@@ -246,7 +246,7 @@ export default defineComponent({
       doc(db, `restaurants/${restaurantId.value}`),
       (results) => {
         if (results.exists() && results.data().uid === ownerUid.value) {
-          shopInfoSnapshot.value = results.data();
+          shopInfoSnapshot.value = results.data() as RestaurantInfoData;
           notFound.value = false;
         } else {
           notFound.value = true;

@@ -52,7 +52,7 @@
 
     <lp-customer v-if="isUser" />
     <lp-admin v-else-if="isAdmin" />
-    <lp v-else="isAdmin" />
+    <lp v-else />
   </div>
 </template>
 

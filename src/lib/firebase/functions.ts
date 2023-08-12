@@ -4,8 +4,7 @@ import {
   Timestamp,
 } from "firebase/firestore";
 
-export const smaregiStoreList = httpsCallable<{
-}, {
+export const smaregiStoreList = httpsCallable<Record<string, never>, {
   res: any[]
 }>(functionsJP, "smaregiStoreList");
 
@@ -32,8 +31,7 @@ export const lineVerifyFriend = httpsCallable<{
 
 export const subAccountDeleteChild = httpsCallable<{
   childUid: string
-}, {
-}>(
+}, Record<string, never>>(
   functionsJP,
   "subAccountDeleteChild"
 );
