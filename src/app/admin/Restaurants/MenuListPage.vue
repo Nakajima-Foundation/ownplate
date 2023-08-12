@@ -13,16 +13,14 @@
         :showSuspend="false"
       />
 
+      <!-- Toggle to View All or Public Only -->
         <!-- Toggle to View All or Public Only -->
         <div class="mx-6 mt-6 lg:text-center">
-          <ToggleSwitch
-            :toggleState="!publicFilter"
-            @toggleFunction="publicFilterToggle()"
-            onName="editMenu.showAllMenu"
-            offName="editMenu.showPublicMenu"
+          <ToggleSwitch2
+            v-model="toggleStatus"
+            :toggleValues="toggleValues"
           />
         </div>
-
         <!-- No Menu or Too Many Menu-->
         <div
           v-if="(!existsMenu || menuCounter > 5) && isOwner"
@@ -92,7 +90,7 @@
               v-else-if="
                 itemsObj[menuList] &&
                 itemsObj[menuList]._dataType === 'menu' &&
-                (!publicFilter || itemsObj[menuList].publicFlag)
+                (showAllItems || showPublicItems && itemsObj[menuList].publicFlag || showSoldOutItems && itemsObj[menuList].soldOut)
               "
             >
               <Menu
@@ -155,9 +153,9 @@ import Title from "@/app/admin/Restaurants/MenuListPage/Title.vue";
 import TitleInput from "@/app/admin/Restaurants/MenuListPage/TitleInput.vue";
 
 import ToggleSwitch from "@/components/ToggleSwitch.vue";
+import ToggleSwitch2 from "@/components/ToggleSwitch2.vue";
 import AddButton from "@/app/admin/Restaurants/MenuListPage/AddButton.vue";
 import DownloadButton from "@/app/admin/Restaurants/MenuListPage/DownloadButton.vue";
-// import DownloadCSV from "@/app/admin/Restaurants/MenuListPage/DownloadCSV.vue";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 
 import { useMenuAndTitle } from "@/app/admin/Restaurants/MenuListPage/Utils";
@@ -168,7 +166,7 @@ import { copyMenuData, MenuData } from "@/models/menu";
 
 import { useAdminUids, cleanObject, notFoundResponse } from "@/utils/utils";
 import { checkShopAccount } from "@/utils/userPermission";
-import { useAdminConfigToggle } from "@/utils/admin/Toggle";
+import { useAdminConfigToggle2 } from "@/utils/admin/Toggle";
 
 import { useRouter, useRoute } from "vue-router";
 
@@ -185,10 +183,9 @@ export default defineComponent({
     AdminHeader,
 
     ToggleSwitch,
+    ToggleSwitch2,
     AddButton,
     DownloadButton,
-
-    // DownloadCSV,
   },
   props: {
     shopInfo: {
@@ -281,8 +278,29 @@ export default defineComponent({
       }
     });
 
-    const { toggle: publicFilter, switchToggle: publicFilterToggle } =
-      useAdminConfigToggle("menuPublicFilter", uid.value, false);
+    const { toggle: toggleStatus } =
+      useAdminConfigToggle2("menuToggleSwitch", uid.value, 0, true);
+    const toggleValues = [{
+      name: "showAllMenu",
+      value: "all",
+    }, {
+      name: "showPublicMenu",
+      value: "public",
+    }, {
+      name: "showSoldOutMenu",
+      value: "soldout",
+    }];
+     
+    const showPublicItems = computed(() => {
+      return toggleValues[toggleStatus.value].value === "public"
+    });
+    const showAllItems = computed(() => {
+      return toggleValues[toggleStatus.value].value === "all"
+    });
+    const showSoldOutItems = computed(() => {
+      return toggleValues[toggleStatus.value].value === "soldout"
+    });
+    
 
     const changeTitleMode = (titleId: string, value: boolean) => {
       const newEditings = { ...editings.value };
@@ -383,13 +401,13 @@ export default defineComponent({
           newMenuLists[pos - 1] = newMenuLists[pos];
           newMenuLists[pos] = tmp;
           pos = pos - 1;
-          // if public filter case,
-          //  loop swap while tmp obj is public or title. pos == 0 means you are top.
         } while (
-          publicFilter.value &&
-          menuObj.value[tmp] &&
-          !menuObj.value[tmp].publicFlag &&
-          pos !== 0
+          menuObj.value[tmp] && // don't move. side effect.
+          (
+            (showPublicItems.value && !menuObj.value[tmp].publicFlag) ||
+            (showSoldOutItems.value && !menuObj.value[tmp].soldOut)
+          ) &&
+          pos !== 0 // if public filter case, loop swap while tmp obj is public or title. pos == 0 means you are top.
         );
         await saveMenuList(newMenuLists);
       }
@@ -404,13 +422,13 @@ export default defineComponent({
           newMenuLists[pos + 1] = newMenuLists[pos];
           newMenuLists[pos] = tmp;
           pos = pos + 1;
-          // if public filter case,
-          //  loop swap while tmp obj is public or title. pos == menuLength.value means you are bottom.
         } while (
-          publicFilter.value &&
-          menuObj.value[tmp] &&
-          !menuObj.value[tmp].publicFlag &&
-          pos < menuLength.value - 1
+          menuObj.value[tmp] && // don't move. side effect.
+          (
+            (showPublicItems.value && !menuObj.value[tmp].publicFlag) ||
+            (showSoldOutItems.value && !menuObj.value[tmp].soldOut)
+          ) &&
+          pos < menuLength.value - 1 // if public filter case, loop swap while tmp obj is public or title. pos == menuLength.value means you are bottom.
         );
         await saveMenuList(newMenuLists);
       }
@@ -473,13 +491,20 @@ export default defineComponent({
       }
       await saveMenuList(newMenuLists);
     };
+
     return {
+      toggleStatus,
+      toggleValues,
+
       //ref
       submitting,
       editings,
       notFound,
-      publicFilter,
 
+      showPublicItems,
+      showAllItems,
+      showSoldOutItems,
+      
       // computed
       isOwner,
       menuCounter,
@@ -490,7 +515,6 @@ export default defineComponent({
       menuObj,
 
       // methods
-      publicFilterToggle,
       updateTitle,
       toEditMode,
       addTitle,
