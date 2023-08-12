@@ -251,8 +251,6 @@ import {
   PropType,
 } from "vue";
 
-import moment from "moment-timezone";
-
 import Menu from "@/app/user/Restaurant/Menu.vue";
 import PhoneLogin from "@/app/auth/PhoneLogin.vue";
 import ShopHeader from "@/app/user/Restaurant/ShopHeader.vue";
@@ -865,8 +863,6 @@ export default defineComponent({
       closeTransactionsAct,
       pageBase,
       scrollTop,
-
-      moment,
 
       lunchOrDinner,
       hasDinnerOnlyOrder,

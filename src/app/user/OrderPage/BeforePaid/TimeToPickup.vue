@@ -70,6 +70,10 @@ export default defineComponent({
       type: Boolean,
       required: false,
     },
+    hasSoldOutToday: {
+      type: Boolean,
+      required: false,
+    }
   },
   emits: ["notAvailable", "updateDisabledPickupTime"],
   setup(props, ctx) {
@@ -105,6 +109,7 @@ export default defineComponent({
       exceptData,
       ref({}),
       props.orderInfo.lunchOrDinner,
+      computed(() => props.hasSoldOutToday),
     );
 
     const disabledPickupTime = computed(() => {

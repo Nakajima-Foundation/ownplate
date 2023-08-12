@@ -143,7 +143,8 @@
                 :shopInfo="shopInfo"
                 :orderInfo="orderInfo"
                 :isDelivery="orderInfo.isDelivery || false"
-                ref="timeRef"
+                :hasSoldOutToday="hasSoldOutToday"
+                ref="timeToPickupRef"
                 @notAvailable="handleNotAvailable"
               />
             </div>
@@ -381,6 +382,8 @@ import Promotion from "@/models/promotion";
 
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
+import { useHasSoldOutToday } from "./Stock";
+
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 
@@ -457,7 +460,7 @@ export default defineComponent({
     // ref for refs
     const ecCustomerRef = ref();
     const orderPageMapRef = ref();
-    const timeRef = ref();
+    const timeToPickupRef = ref();
     const stripeRef = ref();
     
     const postageInfo = ref({});
@@ -541,10 +544,12 @@ export default defineComponent({
       isEnablePaymentPromotion,
     } = usePromotionData(props.orderInfo, selectedPromotion);
     
-    // end of computed
     const shopInfo = computed(() => {
       return props.shopInfo;
     });
+    const { hasSoldOutToday } = useHasSoldOutToday(restaurantId, props.orderInfo);
+
+    // end of computed
     watch(shopInfo, () => {
       setPostage();
     });
@@ -611,7 +616,7 @@ export default defineComponent({
       }
       const timeToPickup = props.shopInfo.isEC
         ? Timestamp.now()
-        : timeRef.value.timeToPickup();
+        : timeToPickupRef.value.timeToPickup();
       try {
         if (payStripe) {
           isPaying.value = true;
@@ -668,7 +673,7 @@ export default defineComponent({
       // refs
       ecCustomerRef,
       orderPageMapRef,
-      timeRef,
+      timeToPickupRef,
       stripeRef,
       
       // computed
@@ -700,6 +705,9 @@ export default defineComponent({
       handleCardStateChange,
       handlePayment,
       openTransactionsAct,
+
+      //
+      hasSoldOutToday,
     };
   },
 });
