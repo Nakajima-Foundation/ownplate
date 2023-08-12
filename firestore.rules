@@ -155,8 +155,9 @@ service cloud.firestore {
       }
       match /private/profile {
         allow read: if request.auth.uid == userId;
-        allow write: if request.auth.uid == userId
+        allow create: if request.auth.uid == userId
           && request.resource.data.email == request.auth.token.email;
+        allow update: if request.auth.uid == userId;
       }
       match /private/smaregi {
         allow read, write: if request.auth.uid == userId;
