@@ -9,10 +9,7 @@
       <AdminHeader
         class="mx-6 mt-6 lg:flex lg:items-center"
         :shopInfo="shopInfo"
-        :backLink="`/admin/restaurants/${shopInfo.restaurantId}/orders`"
         :showSuspend="false"
-				backText="button.backToOrderListPage"
-        iconText="arrow_back"
       />
 
       <!-- Body -->
