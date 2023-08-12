@@ -12,7 +12,7 @@ import CustomerInfo from "@/components/CustomerInfo.vue";
 import { doc, getDoc, DocumentData } from "firebase/firestore";
 import { db } from "@/lib/firebase/firebase9";
 
-import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
+import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 
 import { getRestaurantId } from "@/utils/utils";
 

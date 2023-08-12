@@ -30,7 +30,7 @@ export default defineComponent({
   components: {
     Contents,
   },
-  setup(props, ctx) {
+  setup() {
     const transactionsActPopup = ref(false);
 
     const openTransactionsAct = () => {

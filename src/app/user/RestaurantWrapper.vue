@@ -18,7 +18,6 @@
 import {
   defineComponent,
   ref,
-  computed,
   onUnmounted,
 } from "vue";
 
@@ -37,7 +36,7 @@ export default defineComponent({
   components: {
     NotFound,
   },
-  setup(props) {
+  setup() {
     const mode = routeMode();
     const moPrefix = getMoPrefix();
 
@@ -81,7 +80,7 @@ export default defineComponent({
           }
         }
       },
-      (e) => {
+      () => {
         notFound.value = true;
         console.log("no restaurant");
       }

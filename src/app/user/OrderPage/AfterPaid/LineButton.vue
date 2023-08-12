@@ -35,9 +35,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, computed, PropType } from "vue";
+import { defineComponent, computed, PropType } from "vue";
 import { lineAuthURL, lineAuthRestaurantURL } from "@/lib/line/line";
-import { lineVerifyFriend } from "@/lib/firebase/functions";
 import { ownPlateConfig } from "@/config/project";
 
 import { useStore } from "vuex";

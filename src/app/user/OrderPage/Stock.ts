@@ -3,16 +3,11 @@ import {
 } from "vue";
 
 import {
-  getDoc,
   getDocs,
   query,
-  doc,
   collection,
   where,
   documentId,
-  Timestamp,
-  onSnapshot,
-  Unsubscribe,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase/firebase9";
 

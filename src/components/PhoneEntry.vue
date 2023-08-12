@@ -62,7 +62,7 @@ export default defineComponent({
     const validatePhoneNumber = () => {
       errors.value = [];
       try {
-        const number = parsePhoneNumber(countryCode.value + phoneNumber.value);
+        parsePhoneNumber(countryCode.value + phoneNumber.value);
       } catch (error) {
         errors.value.push("sms.invalidPhoneNumber");
       }

@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from "vue";
+import { defineComponent, ref } from "vue";
 import BackButton from "@/components/BackButton.vue";
 import { stripeActionStrings } from "@/lib/stripe/stripe";
 import { db } from "@/lib/firebase/firebase9";

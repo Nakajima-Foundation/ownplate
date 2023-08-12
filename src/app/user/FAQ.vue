@@ -70,11 +70,7 @@
 
 <script lang="ts">
 import {
-  onMounted,
-  onUnmounted,
   defineComponent,
-  ref,
-  computed,
 } from "vue";
 
 export default defineComponent({

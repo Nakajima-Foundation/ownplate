@@ -9,13 +9,11 @@ import { db } from "@/lib/firebase/firebase9";
 import {
   query,
   onSnapshot,
-  getDocs,
   collection,
   where,
 } from "firebase/firestore";
 
 import { doc2data, array2obj } from "@/utils/utils";
-import { useRoute } from "vue-router";
 import { MenuData, TitleData } from "@/models/menu";
 
 export const useTitles = (restaurantId: Ref) => {

@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onUnmounted, ref } from "vue";
+import { defineComponent, ref } from "vue";
 
 import { superTwilio } from "@/lib/firebase/functions";
 
@@ -54,7 +54,7 @@ export default defineComponent({
 
     const phone = async () => {
       if (confirm("ok")) {
-        const ret = await superTwilio({ restaurantId: restaurantId });
+        await superTwilio({ restaurantId: restaurantId });
       }
     };
     return {

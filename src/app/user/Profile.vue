@@ -55,7 +55,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent } from "vue";
 
 import { auth } from "@/lib/firebase/firebase9";
 import { signOut } from "firebase/auth";
@@ -76,8 +76,6 @@ import {
   useUserData,
 } from "@/utils/utils";
 
-import { useStore } from "vuex";
-
 export default defineComponent({
   components: {
     HistoryButton,
@@ -94,9 +92,7 @@ export default defineComponent({
       title: [defaultHeader.title, "Profile"].join(" / "),
     };
   },
-  setup(props) {
-    const store = useStore();
-    
+  setup() {
     const handleSignOut = () => {
       signOut(auth);
     };

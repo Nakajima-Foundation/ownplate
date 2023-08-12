@@ -139,7 +139,7 @@
                       v-if="item._dataType === 'menu'"
                       :key="item.id"
                       >
-                      <Menu
+                      <RestaurantMenu
                         :key="['item', item.id].join('_')"
                         :item="item"
                         :menuPickupData="menuPickupData[item.id] || {}"
@@ -153,7 +153,7 @@
                         :prices="prices[item.id] || []"
                         :mode="mode"
                         @didOrderdChange="didOrderdChange($event)"
-                        ></Menu>
+                        ></RestaurantMenu>
                     </div>
                   </template>
                 </div>
@@ -222,7 +222,7 @@
       <div class="px-2 text-center">
         <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
           <div class="font-bold">{{ $t("order.category") }}</div>
-          <template v-for="(title, key) in titleLists">
+          <template v-for="(title, key) in titleLists" :key="key">
             <a
               :href="`#${title.id}`"
               class="mx-1 mt-2 inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5"
@@ -244,14 +244,13 @@ import {
   defineComponent,
   ref,
   watch,
-  watchEffect,
   computed,
   onBeforeMount,
   onUnmounted,
   PropType,
 } from "vue";
 
-import Menu from "@/app/user/Restaurant/Menu.vue";
+import RestaurantMenu from "@/app/user/Restaurant/Menu.vue";
 import PhoneLogin from "@/app/auth/PhoneLogin.vue";
 import ShopHeader from "@/app/user/Restaurant/ShopHeader.vue";
 import SharePopup from "@/app/user/Restaurant/SharePopup.vue";
@@ -275,10 +274,7 @@ import liff from "@line/liff";
 import { db } from "@/lib/firebase/firebase9";
 import {
   addDoc,
-  query,
-  onSnapshot,
   collection,
-  where,
   serverTimestamp,
 } from "firebase/firestore";
 
@@ -286,7 +282,7 @@ import { orderCreated } from "@/lib/firebase/functions";
 
 import { order_status } from "@/config/constant";
 
-import { ownPlateConfig, moTitle } from "@/config/project";
+import { ownPlateConfig } from "@/config/project";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
@@ -303,7 +299,7 @@ import {
   getPrices,
   getTrimmedSelectedOptions,
   getPostOption,
-  useToggle,
+  // useToggle,
   scrollToElementById,
   useUserData,
   useBasePath,
@@ -329,7 +325,7 @@ export default defineComponent({
   name: "RestaurantPage",
   
   components: {
-    Menu,
+    RestaurantMenu,
     PhoneLogin,
     ShopHeader,
     SharePopup,
@@ -461,7 +457,7 @@ export default defineComponent({
       restaurantId,
     );
     
-    const { menuPickupData, availableDays } = usePickupTime(
+    const { menuPickupData } = usePickupTime(
       props.shopInfo,
       {},
       menuObj,
@@ -501,7 +497,7 @@ export default defineComponent({
       );
     });
     
-    const { loadTitle, titles, titleLists } = useTitles(restaurantId);
+    const { loadTitle, titles } = useTitles(restaurantId);
     loadTitle();
     
     const itemLists = computed(() => {

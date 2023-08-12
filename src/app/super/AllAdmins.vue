@@ -187,7 +187,8 @@ export default defineComponent({
       payment,
       capabilities,
       showActivate,
-
+      activate,
+      
       moment,
 
     };

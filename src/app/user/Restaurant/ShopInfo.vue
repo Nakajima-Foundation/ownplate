@@ -157,7 +157,7 @@
           </div>
 
           <div class="mt-1">
-            <template v-for="(day, key) in days">
+            <template v-for="(day, key) in days" :key="key">
               <div
                 class="flex rounded px-2 py-1 text-sm"
                 :class="
@@ -255,7 +255,7 @@
           </div>
 
           <div class="mt-1 ml-1">
-            <div v-for="(day, key) in dispTemporaryClosure" class="text-sm">
+            <div v-for="(day, key) in dispTemporaryClosure" class="text-sm" :key="key">
               {{ moment(day.toDate()).format("YYYY/MM/DD") }}
               {{
                 $t(
@@ -276,11 +276,10 @@ import { defineComponent, computed, ref, PropType } from "vue";
 import moment from "moment";
 
 import { daysOfWeek, paymentMethods } from "@/config/constant";
-import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
+import { formatURL } from "@/utils/phoneutil";
 import { ownPlateConfig, GAPIKey } from "@/config/project";
 import { usePickupTime } from "@/utils/pickup";
 import {
-  stripeRegion,
   isNull,
   useNationalPhoneNumber,
   validUrl,

@@ -24,7 +24,7 @@ import {
 } from "@/utils/promotion";
 
 export default defineComponent({
-  setup(props, ctx) {
+  setup() {
     const route = useRoute();
 
     const { user } = useUserData();

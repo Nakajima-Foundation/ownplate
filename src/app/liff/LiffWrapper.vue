@@ -280,6 +280,7 @@ export default defineComponent({
       liffUrl,
       openModal,
       loading,
+      friendUrl,
     };
   },
 });

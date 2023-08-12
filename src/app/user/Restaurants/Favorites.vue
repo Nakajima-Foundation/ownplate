@@ -67,7 +67,6 @@ import { db } from "@/lib/firebase/firebase9";
 import {
   getDocs,
   collection,
-  where,
   orderBy,
   limit,
   query,
@@ -83,14 +82,14 @@ import {
   resizedProfileImage,
 } from "@/utils/utils";
 
-import AreaItem from "@/app/user/Restaurants/AreaItem.vue";
+// import AreaItem from "@/app/user/Restaurants/AreaItem.vue";
 import BackButton from "@/components/BackButton.vue";
 
 import { useRouter } from "vue-router";
 
 export default defineComponent({
   components: {
-    AreaItem,
+    // AreaItem,
     BackButton,
   },
   metaInfo() {

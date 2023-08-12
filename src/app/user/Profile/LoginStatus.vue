@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watch } from "vue";
+import { defineComponent, computed } from "vue";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 
 import { useStore } from "vuex";

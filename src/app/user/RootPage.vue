@@ -13,7 +13,7 @@
     </div>
 
     <!-- Areas -->
-    <div v-for="area in areas">
+    <div v-for="(area, k) in areas" :key="k">
       <div class="mx-6 mt-6 text-base font-bold text-black text-opacity-40">
         {{ $t("find.areas." + area.name) }}
       </div>

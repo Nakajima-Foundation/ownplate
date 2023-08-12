@@ -36,12 +36,11 @@
 import {
   defineComponent,
   ref,
-  computed,
   watch,
   onUnmounted,
 } from "vue";
 import { db } from "@/lib/firebase/firebase9";
-import { doc, getDoc, query, onSnapshot, Unsubscribe } from "firebase/firestore";
+import { doc, onSnapshot, Unsubscribe } from "firebase/firestore";
 import { stripeDeleteCard } from "@/lib/firebase/functions";
 import { useUserData } from "@/utils/utils";
 
@@ -52,8 +51,6 @@ import moment from "moment";
 export default defineComponent({
   setup() {
     const store = useStore();
-    const { t } = useI18n({ useScope: 'global' });
-
     const { isLiffUser, user } = useUserData();
 
     const storedCard = ref<{brand: string, last4: string} | null>(null);

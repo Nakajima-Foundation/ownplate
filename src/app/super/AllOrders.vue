@@ -79,7 +79,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, computed } from "vue";
+import { defineComponent, ref, computed } from "vue";
 
 import moment from "moment";
 

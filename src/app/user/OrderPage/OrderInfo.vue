@@ -262,8 +262,6 @@ import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { MenuData } from "@/models/menu";
 
-import { useStore } from "vuex";
-
 export default defineComponent({
   name: "Order",
 
@@ -315,8 +313,6 @@ export default defineComponent({
     OrderItem,
   },
   setup(props, ctx) {
-    const store = useStore();
-
     const regionTip = stripeRegion.tip;
     const tipStep = 1.0 / stripeRegion.multiple;
     

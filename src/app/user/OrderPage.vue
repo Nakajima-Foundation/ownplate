@@ -54,7 +54,6 @@ import {
   watch,
   PropType,
 } from "vue";
-import moment from "moment-timezone";
 
 import NotFound from "@/components/NotFound.vue";
 import RequireLogin from "@/components/RequireLogin.vue";
@@ -68,22 +67,18 @@ import { db } from "@/lib/firebase/firebase9";
 import { onSnapshot, doc, deleteDoc, Unsubscribe } from "firebase/firestore";
 
 import { order_status, order_status_keys } from "@/config/constant";
-import { nameOfOrder } from "@/utils/strings";
 import { lineVerifyFriend } from "@/lib/firebase/functions";
 
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import {
   getOrderItems,
-  doc2data,
-  array2obj,
   useLiffBasePath,
   useRestaurantId,
   useUserData,
 } from "@/utils/utils";
 
-import { useStore } from "vuex";
-import { useRouter, useRoute, onBeforeRouteLeave } from "vue-router";
+import { useRoute, onBeforeRouteLeave } from "vue-router";
 
 import { OrderInfoData, OrderMenuItemData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
@@ -134,9 +129,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const store = useStore();
     const route = useRoute();
-    const router = useRouter();
 
     const {
       isUser,

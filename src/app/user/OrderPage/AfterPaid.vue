@@ -200,7 +200,6 @@
 <script lang="ts">
 import {
   defineComponent,
-  ref,
   computed,
   PropType,
 } from "vue";
@@ -221,8 +220,6 @@ import StripeStatus from "@/app/user/OrderPage/AfterPaid/StripeStatus.vue";
 import OrderStatus from "@/app/user/OrderPage/AfterPaid/OrderStatus.vue";
 import Receipt from "@/app/user/OrderPage/AfterPaid/Receipt.vue";
 import Pickup from "@/app/user/OrderPage/AfterPaid/Pickup.vue";
-
-import { orderPlace } from "@/lib/firebase/functions";
 
 import { order_status } from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
@@ -290,7 +287,7 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props, ctx) {
+  setup(props) {
     const route = useRoute();
     const store = useStore();
     const { d } = useI18n({ useScope: 'global' });
@@ -355,7 +352,7 @@ export default defineComponent({
         callback: async () => {
           try {
             store.commit("setLoading", true);
-            const { data } = await stripeCancelIntent({
+            await stripeCancelIntent({
               restaurantId: restaurantId,
               orderId: orderId,
             });

@@ -113,7 +113,7 @@
 <script lang="ts">
 // TODO: 通知の状況もわかるようにする
 //
-import { defineComponent, onMounted, ref, computed } from "vue";
+import { defineComponent, ref, computed } from "vue";
 import { doc2data } from "@/utils/utils";
 
 import BackButton from "@/components/BackButton.vue";

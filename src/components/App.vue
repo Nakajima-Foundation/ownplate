@@ -7,7 +7,7 @@
     <NotificationBanner />
 
     <!-- Header -->
-    <Header @handleOpen="handleOpen" />
+    <AppHeader @handleOpen="handleOpen" />
 
     <!-- Side Bar -->
     <SideMenuWrapper ref="sideMenu" />
@@ -45,7 +45,7 @@
       ></o-icon>
     </o-loading>
 
-    <Footer />
+    <AppFooter />
 
     <!-- Audio Play -->
     <audio-play ref="audioPlay" />
@@ -62,9 +62,7 @@ import {
   onUnmounted,
 } from "vue";
 
-import { db, auth, analytics } from "@/lib/firebase/firebase9";
-
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { auth, analytics } from "@/lib/firebase/firebase9";
 
 import {
   logEvent,
@@ -75,8 +73,8 @@ import {
 
 import { onAuthStateChanged, Unsubscribe, signOut } from "firebase/auth";
 
-import Header from "@/components/App/Header.vue";
-import Footer from "@/components/App/Footer.vue";
+import AppHeader from "@/components/App/Header.vue";
+import AppFooter from "@/components/App/Footer.vue";
 import NotificationBanner from "@/components/App/NotificationBanner.vue";
 import SideMenuWrapper from "@/components/App/SideMenuWrapper.vue";
 import DialogBox from "@/components/DialogBox.vue";
@@ -97,8 +95,8 @@ export default defineComponent({
     DialogBox,
     AudioPlay,
     SideMenuWrapper,
-    Header,
-    Footer,
+    AppHeader,
+    AppFooter,
     NotificationBanner,
   },
   metaInfo: mo_prefixes.some((prefix) => {

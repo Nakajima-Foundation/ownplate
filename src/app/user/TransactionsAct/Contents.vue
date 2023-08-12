@@ -51,22 +51,20 @@
             </div>
 
             <div class="mt-1 text-base">
-              <template v-for="(day, key) in days">
-                <div class="flex px-2 py-1 text-sm">
-                  <div class="w-16">{{ $t("week.short." + day) }}</div>
-                  <div class="flex-1">
-                    <template v-if="(shopInfo.businessDay || {})[key]">
-                      <template v-for="data in (shopInfo.openTimes || {})[key]">
-                        <template v-if="validDate(data)">
-                          {{ num2time(data.start) }} - {{ num2time(data.end) }}
-                          <br />
-                        </template>
+              <div v-for="(day, key) in days" class="flex px-2 py-1 text-sm" :key="key">
+                <div class="w-16">{{ $t("week.short." + day) }}</div>
+                <div class="flex-1">
+                  <template v-if="(shopInfo.businessDay || {})[key]">
+                    <template v-for="(data, k) in (shopInfo.openTimes || {})[key]">
+                      <template v-if="validDate(data)">
+                        <span :key="k">{{ num2time(data.start) }} - {{ num2time(data.end) }}<br /></span>
+                          
                       </template>
                     </template>
-                    <template v-else>{{ $t("shopInfo.closed") }}</template>
-                  </div>
+                  </template>
+                  <template v-else>{{ $t("shopInfo.closed") }}</template>
                 </div>
-              </template>
+              </div>
             </div>
           </div>
 
@@ -231,7 +229,7 @@ import { defineComponent, ref, computed, PropType } from "vue";
 
 import { daysOfWeek } from "@/config/constant";
 import { db } from "@/lib/firebase/firebase9";
-import { doc, onSnapshot, getDoc } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 import { isNull, useNationalPhoneNumber, num2time } from "@/utils/utils";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";

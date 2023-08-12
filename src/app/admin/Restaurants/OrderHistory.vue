@@ -115,7 +115,6 @@ import { defineComponent, ref, computed } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
 import {
-  doc,
   getDocs,
   collectionGroup,
   collection,
@@ -196,7 +195,7 @@ export default defineComponent({
       },
     ];
 
-    const { isOwner, uid, ownerUid } = useAdminUids();
+    const { isOwner, ownerUid } = useAdminUids();
 
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
       return notFoundResponse;

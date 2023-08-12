@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from "vue";
+import { defineComponent, computed } from "vue";
 import { data2csv } from "@/utils/csv";
 import { useI18n } from "vue-i18n";
 
