@@ -168,7 +168,7 @@ export default defineComponent({
     const idKey = "restaurantId";
     const discountId = route.params.discountId as string;
 
-    const { ownerUid, uid, isOwner } = useAdminUids();
+    const { ownerUid } = useAdminUids();
     if (
       !checkShopAccount(props.shopInfo || {}, ownerUid.value) || !ownerUid.value 
     ) {

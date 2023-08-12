@@ -71,9 +71,6 @@ import {
   stripePaymentCancelIntent,
 } from "@/lib/stripe/stripe";
 
-
-import ButtonLoading from "@/components/Button/Loading.vue";
-
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
@@ -103,10 +100,6 @@ export default defineComponent({
       type: String,
       required: true,
     },
-  },
-  
-  components: {
-    ButtonLoading,
   },
   setup(props, ctx) {
     const router = useRouter();

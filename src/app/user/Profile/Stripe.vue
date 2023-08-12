@@ -45,7 +45,6 @@ import { stripeDeleteCard } from "@/lib/firebase/functions";
 import { useUserData } from "@/utils/utils";
 
 import { useStore } from "vuex";
-import { useI18n } from "vue-i18n";
 import moment from "moment";
 
 export default defineComponent({

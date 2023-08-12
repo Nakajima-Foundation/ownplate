@@ -15,7 +15,7 @@ export default defineComponent({
 
     (async () => {
       try {
-        const res = await applyActionCode(
+        await applyActionCode(
           auth,
           route.query.oobCode as string
         );

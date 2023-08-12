@@ -134,7 +134,7 @@ export default defineComponent({
       title: ["Admin All Order", this.defaultTitle].join(" / "),
     };
   },
-  setup(props) {
+  setup() {
     const router = useRouter();
     const { t } = useI18n({ useScope: 'global' });
 

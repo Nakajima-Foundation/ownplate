@@ -37,12 +37,10 @@
 import {
   defineComponent,
   ref,
-  computed,
-  watch,
   onUnmounted,
 } from "vue";
 import { db } from "@/lib/firebase/firebase9";
-import { doc, onSnapshot, getDoc, DocumentData } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 
 import NotificationWatcher from "@/app/admin/Watcher/NotificationWatcher.vue";
 import SoundConfigWatcher from "@/app/admin/Watcher/SoundConfigWatcher.vue";
@@ -74,7 +72,7 @@ export default defineComponent({
   },
   setup() {
     const restaurantId = useRestaurantId();
-    const { uid, ownerUid } = useAdminUids();
+    const { ownerUid } = useAdminUids();
 
     const notificationConfig = ref({
       soundOn: null,

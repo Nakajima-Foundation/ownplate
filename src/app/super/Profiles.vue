@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onUnmounted, ref } from "vue";
+import { defineComponent, ref } from "vue";
 import BackButton from "@/components/BackButton.vue";
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -26,7 +26,6 @@ import {
   where,
   query,
   collectionGroup,
-  orderBy,
   limit,
   DocumentData,
 } from "firebase/firestore";

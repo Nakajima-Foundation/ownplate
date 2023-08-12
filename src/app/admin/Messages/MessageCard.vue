@@ -51,8 +51,6 @@ export default defineComponent({
   },
 
   setup(props) {
-    const uid = props.message.fromUid;
-
     const store = useStore();
     const router = useRouter();
     const route = useRoute();

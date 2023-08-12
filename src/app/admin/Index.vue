@@ -222,7 +222,7 @@
     </div>
     <div class="mt-6 bg-ownplate-yellow p-4">
       <!-- Footer -->
-      <Footer />
+      <IndexFooter />
     </div>
   </div>
 </template>
@@ -232,7 +232,6 @@ import {
   defineComponent,
   ref,
   computed,
-  watch,
   onUnmounted,
   onMounted,
 } from "vue";
@@ -270,7 +269,7 @@ import Survey from "@/app/admin/Index/Survey.vue";
 import Note from "@/app/admin/Index/Note.vue";
 import MailMagazine from "@/app/admin/Index/MailMagazine.vue";
 import Smaregi from "@/app/admin/Index/Smaregi.vue";
-import Footer from "@/app/admin/Index/Footer.vue";
+import IndexFooter from "@/app/admin/Index/Footer.vue";
 import Partners from "@/app/admin/Index/Partners.vue";
 import SubAccount from "@/app/admin/Index/SubAccount.vue";
 
@@ -309,7 +308,7 @@ export default defineComponent({
     SubAccount,
     MailMagazine,
     Note,
-    Footer,
+    IndexFooter,
     ToggleSwitch,
   },
   metaInfo() {
@@ -317,7 +316,7 @@ export default defineComponent({
       title: ["Admin Index", this.defaultTitle].join(" / "),
     };
   },
-  setup(props) {
+  setup() {
     const store = useStore();
     const router = useRouter();
 

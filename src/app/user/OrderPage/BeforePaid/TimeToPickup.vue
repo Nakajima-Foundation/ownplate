@@ -43,15 +43,12 @@ import {
   PropType,
 } from "vue";
 
-import moment from "moment-timezone";
 import {
   Timestamp,
 } from "firebase/firestore";
 
 import { isNull } from "@/utils/utils";
 import { usePickupTime } from "@/utils/pickup";
-
-import { useStore } from "vuex";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { OrderInfoData } from "@/models/orderInfo";
@@ -77,8 +74,6 @@ export default defineComponent({
   },
   emits: ["notAvailable", "updateDisabledPickupTime"],
   setup(props, ctx) {
-    const store = useStore();
-
     const dayIndex = ref(0);
     const time = ref(0);
 

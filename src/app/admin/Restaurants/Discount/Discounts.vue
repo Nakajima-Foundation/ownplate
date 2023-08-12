@@ -130,7 +130,6 @@ import {
 
 import { db } from "@/lib/firebase/firebase9";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
-import BackButton from "@/components/BackButton.vue";
 
 import {
   usePromotionsForAdmin,
@@ -155,7 +154,6 @@ import moment from "moment-timezone";
 export default defineComponent({
   components: {
     AdminHeader,
-    BackButton,
   },
   props: {
     shopInfo: {
@@ -167,7 +165,7 @@ export default defineComponent({
     const id = props.shopInfo?.restaurantId;
     const { promotionDataSet } = usePromotionsForAdmin(id as string);
 
-    const { ownerUid, uid, isOwner } = useAdminUids();
+    const { ownerUid } = useAdminUids();
 
     if (
       !checkShopAccount(props.shopInfo || {}, ownerUid.value) || !ownerUid.value 
@@ -193,7 +191,7 @@ export default defineComponent({
         termTo: Timestamp.fromDate(new Date()),
         createdAt: serverTimestamp(),
       };
-      const newData = await setDoc(doc(db, path + "/" + promotionId), data);
+      await setDoc(doc(db, path + "/" + promotionId), data);
     };
     
     return {

@@ -137,7 +137,7 @@ export default defineComponent({
       return store.getters.liffId;
     });
 
-    watch(userLoad, (value) => {
+    watch(userLoad, () => {
       if (store.state.user !== undefined && liffIdToken.value !== "") {
         if (store.state.user === null) {
           (async () => {
@@ -147,7 +147,7 @@ export default defineComponent({
               token: liffIdToken.value,
             });
             if (data.customToken) {
-              const user = await signInWithCustomToken(auth, data.customToken);
+              await signInWithCustomToken(auth, data.customToken);
             }
             loading.value = false;
           })();
@@ -186,7 +186,7 @@ export default defineComponent({
       liffUrl.value = "https://liff.line.me/" + liffId.value + relativePath; // 1656180429-yJ8ZmlBv/r/123
 
       if (!liff.isInClient()) {
-        const { isWeb, isIOS, isAndroid } = getOS();
+        const { isIOS, isAndroid } = getOS();
         if (liffStateQuery && liffStateQuery["redirect"]) {
           liffUrl.value = "https://liff.line.me/" + liffId.value + liffStatePath;
           error.value = "pc";

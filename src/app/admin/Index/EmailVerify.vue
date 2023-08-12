@@ -34,13 +34,10 @@
 import { defineComponent, ref } from "vue";
 import { auth } from "@/lib/firebase/firebase9";
 import { sendEmailVerification } from "firebase/auth";
-import { useUser } from "@/utils/utils";
 import { fromEmail } from "@/config/project";
 
 export default defineComponent({
   setup() {
-    const user = useUser();
-
     const sent = ref(false);
     const isError = ref(false);
     const isLoading = ref(false);
@@ -50,7 +47,7 @@ export default defineComponent({
         isLoading.value = true;
         isError.value = false;
         if (auth.currentUser) {
-          const res = await sendEmailVerification(auth.currentUser);
+          await sendEmailVerification(auth.currentUser);
           sent.value = true;
         }
       } catch (e) {

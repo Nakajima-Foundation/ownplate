@@ -128,7 +128,6 @@ import NotificationIndex from "@/app/admin/Notifications/Index.vue";
 import PreviewLink from "@/app/admin/common/PreviewLink.vue";
 
 import { useRouter, useRoute } from "vue-router";
-import { useI18n } from "vue-i18n";
 
 import moment from "moment-timezone";
 
@@ -160,15 +159,12 @@ export default defineComponent({
   setup(props) {
     const route = useRoute();
     const router = useRouter();
-    const { t } = useI18n({ useScope: 'global' });
 
     const orders = ref<OrderInfoData[]>([]);
     const userLog = ref({});
     const limitNum = 30;
     const last = ref();
     const restaurantId = useRestaurantId();
-
-    const fileName = t("order.history");
 
     const customerUid = computed(() => {
       return route.params.userId;

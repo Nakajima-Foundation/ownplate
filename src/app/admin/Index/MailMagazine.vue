@@ -23,7 +23,7 @@
 import { defineComponent, ref, computed, watch } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
-import { doc, getDoc, setDoc, DocumentData } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useStore } from "vuex";
 
 export default defineComponent({
@@ -43,7 +43,7 @@ export default defineComponent({
       opt_out.value = adminConfig.opt_out || false;
     })();
 
-    watch(opt_out, (current) => {
+    watch(opt_out, () => {
       console.log(opt_out);
       setDoc(
         doc(db, `/adminConfigs/${ownerUid.value}`),

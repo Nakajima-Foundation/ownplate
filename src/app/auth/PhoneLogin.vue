@@ -162,7 +162,6 @@ import {
 
 import { db, auth } from "@/lib/firebase/firebase9";
 import {
-  signOut,
   RecaptchaVerifier,
   signInWithPhoneNumber,
   updateProfile,
@@ -219,7 +218,7 @@ export default defineComponent({
         "signInButton",
         {
           size: "invisible",
-          callback: (response: string) => {
+          callback: () => {
             // reCAPTCHA solved, allow signInWithPhoneNumber.
             // console.log("verified", response);
             console.log("verified");

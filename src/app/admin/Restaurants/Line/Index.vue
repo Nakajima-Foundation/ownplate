@@ -121,10 +121,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onUnmounted, computed } from "vue";
+import { defineComponent, ref, computed } from "vue";
 
 import { checkShopAccount } from "@/utils/userPermission";
-import { useAdminUids, useRestaurantId, notFoundResponse } from "@/utils/utils";
+import { useAdminUids, notFoundResponse } from "@/utils/utils";
 
 import NotFound from "@/components/NotFound.vue";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
@@ -151,7 +151,7 @@ export default defineComponent({
   setup(props) {
     const router = useRouter();
 
-    const { ownerUid, uid } = useAdminUids();
+    const { ownerUid } = useAdminUids();
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
       return notFoundResponse;
     }

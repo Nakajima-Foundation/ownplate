@@ -43,9 +43,6 @@ export default defineComponent({
     const today = computed(() => {
       return midNight(0);
     });
-    const tommorow = computed(() => {
-      return midNight(1);
-    });
     const hasNewOrder = computed(() => {
       return orders.value.length > 0;
     });

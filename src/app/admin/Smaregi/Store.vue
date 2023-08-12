@@ -86,7 +86,6 @@ import {
   ref,
 } from "vue";
 
-import { smaregi } from "@/config/project";
 import { db } from "@/lib/firebase/firebase9";
 import {
   doc,

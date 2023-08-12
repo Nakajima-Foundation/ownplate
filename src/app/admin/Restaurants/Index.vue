@@ -1089,19 +1089,17 @@ import {
   reactive,
   computed,
   watch,
-  onUnmounted,
   onMounted,
   onUpdated,
   PropType,
 } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
-import { doc, updateDoc, getDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 
 import { google_geocode } from "@/lib/google/api";
 import { ownPlateConfig, moPickup } from "@/config/project";
 
-import BackButton from "@/components/BackButton.vue";
 import NotFound from "@/components/NotFound.vue";
 import PhoneEntry from "@/components/PhoneEntry.vue";
 import Price from "@/components/Price.vue";
@@ -1120,7 +1118,6 @@ import { checkShopOwner } from "@/utils/userPermission";
 
 import {
   getEditShopInfo,
-  defaultShopInfo,
   shopInfoValidator,
   copyRestaurant,
 } from "@/utils/admin/RestaurantPageUtils";
@@ -1157,7 +1154,6 @@ export default defineComponent({
     HourInput,
     TextForm,
     State,
-    BackButton,
     NotificationIndex,
     QRCode,
     NotFound,

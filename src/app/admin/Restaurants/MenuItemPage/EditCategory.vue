@@ -48,8 +48,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, onUnmounted, watch, computed } from "vue";
-import { useStore } from "vuex";
+import { defineComponent, ref, watch, computed } from "vue";
 
 export default defineComponent({
   props: {
@@ -68,8 +67,6 @@ export default defineComponent({
     };
   },
   setup(props, context) {
-    const store = useStore();
-
     const isVisible = ref(true);
     const newEntry = ref("");
 

@@ -124,7 +124,6 @@ import { defineComponent, ref, onUnmounted, watch } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
 import {
-  doc,
   collection,
   onSnapshot,
   getDocs,
@@ -173,7 +172,7 @@ export default defineComponent({
     const name = ref("");
     const sending = ref(false);
 
-    const { isOwner, uid } = useAdminUids();
+    const { uid } = useAdminUids();
 
     getDocs(
       query(

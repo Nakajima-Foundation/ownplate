@@ -156,9 +156,9 @@ import TitleInput from "@/app/admin/Restaurants/MenuListPage/TitleInput.vue";
 
 import ToggleSwitch from "@/components/ToggleSwitch.vue";
 import AddButton from "@/app/admin/Restaurants/MenuListPage/AddButton.vue";
-import PhotoName from "@/app/admin/Restaurants/MenuListPage/PhotoName.vue";
+// import PhotoName from "@/app/admin/Restaurants/MenuListPage/PhotoName.vue";
 import DownloadButton from "@/app/admin/Restaurants/MenuListPage/DownloadButton.vue";
-import DownloadCSV from "@/app/admin/Restaurants/MenuListPage/DownloadCSV.vue";
+// import DownloadCSV from "@/app/admin/Restaurants/MenuListPage/DownloadCSV.vue";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 
 import { useMenuAndTitle } from "@/app/admin/Restaurants/MenuListPage/Utils";
@@ -166,11 +166,6 @@ import { useMenuAndTitle } from "@/app/admin/Restaurants/MenuListPage/Utils";
 import { ownPlateConfig } from "@/config/project";
 
 import { copyMenuData, MenuData } from "@/models/menu";
-
-import {
-  useTitles,
-  useMenu,
-} from "@/app/user/Restaurant/Utils";
 
 import { useAdminUids, cleanObject, notFoundResponse } from "@/utils/utils";
 import { checkShopAccount } from "@/utils/userPermission";
@@ -192,10 +187,10 @@ export default defineComponent({
 
     ToggleSwitch,
     AddButton,
-    PhotoName,
+    // PhotoName,
     DownloadButton,
 
-    DownloadCSV,
+    // DownloadCSV,
   },
   props: {
     shopInfo: {
@@ -222,7 +217,6 @@ export default defineComponent({
     const shopInfoSnapshot = ref<RestaurantInfoData|Record<string, never>>({});
 
     const editings = ref<{[key: string]: boolean}>({});
-    const detachers = ref([]);
     const notFound = ref<boolean | null>(null);
 
     const { isOwner, uid, ownerUid } = useAdminUids();

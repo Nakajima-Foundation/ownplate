@@ -160,9 +160,7 @@ import { defineComponent, computed } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import {
   doc,
-  getDoc,
   updateDoc,
-  setDoc,
 } from "firebase/firestore";
 
 import Price from "@/components/Price.vue";

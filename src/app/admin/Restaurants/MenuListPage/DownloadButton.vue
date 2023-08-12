@@ -22,7 +22,6 @@ import * as pdf from "@/lib/pdf/pdf";
 import { usePhoneNumber, shareUrl, useBasePath } from "@/utils/utils";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
-import { MenuData } from "@/models/menu";
 
 export default defineComponent({
   props: {
@@ -48,7 +47,7 @@ export default defineComponent({
     const downloadMenu = async () => {
       try {
         downloadSubmitting.value = true;
-        const dl = await pdf.menuDownload(
+        await pdf.menuDownload(
           props.shopInfo,
           props.menuObj,
           nationalPhoneNumber.value,

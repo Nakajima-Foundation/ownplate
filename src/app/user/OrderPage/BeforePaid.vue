@@ -349,7 +349,7 @@ import {
 } from "vue";
 
 import ShopHeader from "@/app/user/Restaurant/ShopHeader.vue";
-import FavoriteButton from "@/app/user/Restaurant/FavoriteButton.vue";
+// import FavoriteButton from "@/app/user/Restaurant/FavoriteButton.vue";
 
 import OrderInfo from "@/app/user/OrderPage/OrderInfo.vue";
 import UserCustomerInfo from "@/app/user/OrderPage/UserCustomerInfo.vue";
@@ -366,13 +366,11 @@ import OrderPageMap from "@/app/user/OrderPage/BeforePaid/Map.vue";
 import ButtonLoading from "@/components/Button/Loading.vue";
 
 import { db } from "@/lib/firebase/firebase9";
-import { doc, getDoc, Timestamp, serverTimestamp } from "firebase/firestore";
+import { doc, getDoc, Timestamp } from "firebase/firestore";
 
 import { orderPlace } from "@/lib/firebase/functions";
 
 import { order_status, paymentMethods } from "@/config/constant";
-import { nameOfOrder } from "@/utils/strings";
-import { stripeReceipt } from "@/lib/stripe/stripe";
 
 import { costCal } from "@/utils/commonUtils";
 import { usePromotionData } from "@/utils/promotion";
@@ -392,7 +390,7 @@ export default defineComponent({
   name: "Order",
   components: {
     ShopHeader,
-    FavoriteButton,
+    // FavoriteButton,
 
     OrderInfo,
     UserCustomerInfo,
@@ -627,7 +625,7 @@ export default defineComponent({
         }
         const promotionId = isEnablePaymentPromotion(payStripe) && enablePromotion.value ? selectedPromotion.value?.promotionId : null;
         // console.log( isEnablePaymentPromotion(payStripe), enablePromotion.value , promotionId)
-        const { data } = await orderPlace({
+        await orderPlace({
           timeToPickup,
           restaurantId,
           orderId: orderId.value,

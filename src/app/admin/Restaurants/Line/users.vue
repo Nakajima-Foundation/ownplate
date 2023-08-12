@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onUnmounted } from "vue";
+import { defineComponent, ref } from "vue";
 
 import { checkShopAccount } from "@/utils/userPermission";
 import { useAdminUids, notFoundResponse } from "@/utils/utils";
@@ -42,7 +42,6 @@ import AdminHeader from "@/app/admin/AdminHeader.vue";
 
 import { db } from "@/lib/firebase/firebase9";
 import {
-  doc,
   getDocs,
   collection,
   DocumentData,
@@ -62,7 +61,7 @@ export default defineComponent({
   },
   setup(props) {
 
-    const { ownerUid, uid } = useAdminUids();
+    const { ownerUid } = useAdminUids();
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
       return notFoundResponse;
     }

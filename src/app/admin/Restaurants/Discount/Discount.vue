@@ -231,7 +231,6 @@ import {
 import { db } from "@/lib/firebase/firebase9";
 
 import AdminHeader from "@/app/admin/AdminHeader.vue";
-import BackButton from "@/components/BackButton.vue";
 
 import {
   updateDoc,
@@ -268,7 +267,6 @@ import { checkShopAccount } from "@/utils/userPermission";
 export default defineComponent({
   components: {
     AdminHeader,
-    BackButton,
   },
   props: {
     shopInfo: {
@@ -288,7 +286,7 @@ export default defineComponent({
     const termFromDate = ref();
     const termToDate = ref();
 
-    const { ownerUid, uid, isOwner } = useAdminUids();
+    const { ownerUid } = useAdminUids();
     if (
       !checkShopAccount(props.shopInfo || {}, ownerUid.value) || !ownerUid.value
     ) {

@@ -688,7 +688,6 @@ import {
   defineComponent,
   ref,
   computed,
-  onUnmounted,
   reactive,
   PropType,
 } from "vue";
@@ -702,12 +701,10 @@ import {
   where,
   addDoc,
   updateDoc,
-  onSnapshot,
   serverTimestamp,
 } from "firebase/firestore";
 
 import NotFound from "@/components/NotFound.vue";
-import BackButton from "@/components/BackButton.vue";
 import Price from "@/components/Price.vue";
 import EditCategory from "@/app/admin/Restaurants/MenuItemPage/EditCategory.vue";
 import NotificationIndex from "@/app/admin/Notifications/Index.vue";
@@ -717,7 +714,7 @@ import ImageUpload from "@/components/ImageUpload.vue";
 
 import { taxRates, daysOfWeek } from "@/config/constant";
 import { ownPlateConfig } from "@/config/project";
-import { halfCharactors, formatOption, optionPrice } from "@/utils/strings";
+import { halfCharactors, optionPrice } from "@/utils/strings";
 import {
   doc2data,
   useAdminUids,
@@ -762,7 +759,6 @@ export default defineComponent({
   components: {
     Price,
     EditCategory,
-    BackButton,
     NotificationIndex,
     NotFound,
     HoursInput,
@@ -1002,7 +998,7 @@ export default defineComponent({
         // We also convert Japanse commas with alphabet commas
         itemData.itemOptionCheckbox = itemData.itemOptionCheckbox.map(
           (option) => {
-            return halfCharactors(option.replace(/、/g, (s: string) => ","));
+            return halfCharactors(option.replace(/、/g, () => ","));
           }
         );
 
@@ -1038,7 +1034,7 @@ export default defineComponent({
       });
     };
     return {
-      dummyCheckbox: [],
+      dummyCheckbox,
       menuInfo,
 
       taxRates,

@@ -153,7 +153,7 @@ export default defineComponent({
       }
       submitting.value = true;
       try {
-        const res = await confirmPasswordReset(auth, code, password.value);
+        await confirmPasswordReset(auth, code, password.value);
         isSuccess.value = true;
       } catch (e: any) {
         error.value = e.code;
@@ -163,7 +163,7 @@ export default defineComponent({
 
     (async () => {
       try {
-        const res = await verifyPasswordResetCode(auth, code);
+        await verifyPasswordResetCode(auth, code);
         isExpired.value = false;
       } catch (e) {
         isExpired.value = true;

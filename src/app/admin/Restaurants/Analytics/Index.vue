@@ -14,9 +14,9 @@ import {
 } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
-import { doc, getDocs, query, collectionGroup, where, DocumentData } from "firebase/firestore";
+import { getDocs, query, collectionGroup, where, DocumentData } from "firebase/firestore";
 
-import { Chart, ChartData, registerables } from "chart.js";
+import { Chart, registerables } from "chart.js";
 import { BarChart } from "vue-chart-3";
 Chart.register(...registerables);
 
