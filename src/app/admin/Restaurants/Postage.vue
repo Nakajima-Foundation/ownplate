@@ -15,6 +15,7 @@
             <div
               v-for="(state, key) in regionalSetting.AddressStates"
               class="flex"
+              :key="key"
             >
               <span class="w-2/12">{{ state }}</span>
               <o-input class="w-4/12" v-model="postage[key]" />

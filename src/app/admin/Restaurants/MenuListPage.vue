@@ -69,7 +69,7 @@
                 ></title-input>
               </div>
               <div v-else>
-                <Title
+                <TitleView
                   :title="itemsObj[menuList]"
                   :position="
                     index == 0
@@ -96,7 +96,7 @@
               "
               :id="itemsObj[menuList].id"
               >
-              <Menu
+              <MenuView
                 :menuitem="itemsObj[menuList]"
                 :position="
                   index == 0 ? 'first' : menuLength - 1 === index ? 'last' : ''
@@ -151,11 +151,10 @@ import {
 
 import NotFound from "@/components/NotFound.vue";
 
-import Menu from "@/app/admin/Restaurants/MenuListPage/Menu.vue";
-import Title from "@/app/admin/Restaurants/MenuListPage/Title.vue";
+import MenuView from "@/app/admin/Restaurants/MenuListPage/Menu.vue";
+import TitleView from "@/app/admin/Restaurants/MenuListPage/Title.vue";
 import TitleInput from "@/app/admin/Restaurants/MenuListPage/TitleInput.vue";
 
-import ToggleSwitch from "@/components/ToggleSwitch.vue";
 import ToggleSwitch2 from "@/components/ToggleSwitch2.vue";
 import AddButton from "@/app/admin/Restaurants/MenuListPage/AddButton.vue";
 import DownloadButton from "@/app/admin/Restaurants/MenuListPage/DownloadButton.vue";
@@ -184,14 +183,13 @@ import {
 export default defineComponent({
   name: "MenuList",
   components: {
-    Menu,
-    Title,
+    MenuView,
+    TitleView,
     TitleInput,
     NotFound,
 
     AdminHeader,
 
-    ToggleSwitch,
     ToggleSwitch2,
     AddButton,
     DownloadButton,
@@ -470,7 +468,7 @@ export default defineComponent({
         data
       );
       await forkItem(itemKey, newTitle as any);
-      await scroll(newData.id);
+      await scroll(newTitle.id);
     };
 
     const forkMenuItem = async (itemKey: string) => {

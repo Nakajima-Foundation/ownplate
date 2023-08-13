@@ -34,7 +34,7 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
-    const toggleFunction = (e) => {
+    const toggleFunction = (e: number) => {
       ctx.emit("update:modelValue", e);
     };
     return {

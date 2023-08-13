@@ -181,7 +181,7 @@
           </div>
 
           <!-- Item Options -->
-          <template v-for="(value, quantityKey) in quantities">
+          <template v-for="(value, quantityKey) in quantities" :key="quantityKey">
             <div v-if="hasOptions">
               <div class="text-xs">
                 {{ $t("sitemenu.options") }}
@@ -536,7 +536,7 @@ export default defineComponent({
       return totalQuantity.value > 0 && hasOptions.value;
     });
     const defaultOpions = computed(() => {
-      return options.value.map((option, index) => {
+      return options.value.map((option) => {
         return option.length === 1 ? false : 0;
       });
     });

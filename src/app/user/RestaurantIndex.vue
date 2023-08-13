@@ -29,7 +29,7 @@
         </div>
       </div>
     </div>
-    <template v-for="state in allArea">
+    <template v-for="(state, k) in allArea" :key="k">
       <div v-if="restaurantsObj[state]">
         <div
           class="mx-6 mt-6 mb-2 text-base font-bold text-black text-opacity-40"
@@ -39,7 +39,7 @@
         <div
           class="mx-6 mt-2 grid grid-cols-1 items-center gap-2 lg:grid-cols-3 xl:grid-cols-4"
         >
-          <div v-for="restaurant in restaurantsObj[state]">
+          <div v-for="(restaurant, k2) in restaurantsObj[state]" :key="k2">
             <router-link :to="`/r/${restaurant.id}`">
               <div class="flex items-center">
                 <div class="mr-4 h-12 w-12 rounded-full bg-black bg-opacity-10">
@@ -58,7 +58,7 @@
       </div>
     </template>
     <div>
-      <Map :restaurants="restaurants" v-if="restaurants.length > 0" />
+      <MapView :restaurants="restaurants" v-if="restaurants.length > 0" />
     </div>
   </div>
 </template>
@@ -80,7 +80,7 @@ import {
 
 import { JPPrefecture, USStates } from "@/config/constant";
 import { restaurant2AreaObj, sortRestaurantObj } from "@/utils/RestaurantUtils";
-import Map from "@/components/Map.vue";
+import MapView from "@/components/Map.vue";
 import { defaultHeader } from "@/config/header";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
@@ -95,7 +95,7 @@ export default defineComponent({
     };
   },
   components: {
-    Map,
+    MapView,
   },
 
   setup() {

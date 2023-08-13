@@ -18,7 +18,7 @@
       </o-field>
     </div>
     <div v-if="ecErrors['zip'].length > 0" class="mb-2 font-bold text-red-700">
-      <div v-for="(error, key) in ecErrors['zip']">
+      <div v-for="(error, key) in ecErrors['zip']" :key="key">
         {{ $t(error) }}
       </div>
     </div>
@@ -97,7 +97,7 @@
       v-if="ecErrors['address'].length > 0"
       class="mb-2 font-bold text-red-700"
     >
-      <div v-for="(error, key) in ecErrors['address']">
+      <div v-for="(error, key) in ecErrors['address']" :key="key">
         {{ $t(error) }}
       </div>
     </div>
@@ -119,7 +119,7 @@
       </o-field>
     </div>
     <div v-if="ecErrors['name'].length > 0" class="mb-2 font-bold text-red-700">
-      <div v-for="(error, key) in ecErrors['name']">
+      <div v-for="(error, key) in ecErrors['name']" :key="key">
         {{ $t(error) }}
       </div>
     </div>
@@ -144,7 +144,7 @@
         v-if="ecErrors['email'].length > 0"
         class="mb-2 font-bold text-red-700"
       >
-        <div v-for="(error, key) in ecErrors['email']">
+        <div v-for="(error, key) in ecErrors['email']" :key="key">
           {{ $t(error) }}
         </div>
       </div>

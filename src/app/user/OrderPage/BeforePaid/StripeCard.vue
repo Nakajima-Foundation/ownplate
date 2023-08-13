@@ -213,7 +213,7 @@ export default defineComponent({
       if (!useStoredCard.value) {
         const { token } = await stripe.createToken(cardElem.value);
         const tokenId = token.id;
-        const { data } = await stripeUpdateCustomer({
+        await stripeUpdateCustomer({
           tokenId,
           reuse: reuse.value,
         });

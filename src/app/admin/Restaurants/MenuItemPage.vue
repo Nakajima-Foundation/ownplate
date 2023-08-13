@@ -414,7 +414,7 @@
 
             <!-- Option Settings -->
             <div class="grid-col-1 space-y-4">
-              <div v-for="(option, key) in menuInfo.itemOptionCheckbox">
+              <div v-for="(option, key) in menuInfo.itemOptionCheckbox" :key="key">
                 <div :key="key" class="mb-2 flex">
                   <o-button @click="positionDown(key)" class="b-reset-tw">
                     <div
@@ -450,7 +450,7 @@
                     <div>{{ $t("editMenu.priceChange") }}</div>
                   </div>
 
-                  <div v-for="(opt, k) in itemOptions[key]" class="flex">
+                  <div v-for="(opt, k) in itemOptions[key]" class="flex" :key="k">
                     <div class="flex-1">
                       <o-checkbox v-if="itemOptions[key].length == 1" disabled>
                         <div
@@ -1002,7 +1002,7 @@ export default defineComponent({
           }
         );
 
-        const newData = await updateDoc(
+        await updateDoc(
           doc(db, `restaurants/${menuRestaurantId.value}/menus/${menuId}`),
           itemData as any,
         );

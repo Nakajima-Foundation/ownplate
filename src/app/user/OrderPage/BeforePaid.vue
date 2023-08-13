@@ -112,6 +112,7 @@
             >
               <div
                 v-for="(error, key) in $refs.ecCustomerRef.ecErrors['location']"
+                :key="key"
               >
                 {{ $t(error) }}
               </div>
@@ -305,6 +306,7 @@
                   <div class="ml-2 text-left text-xs">
                     <div
                       v-for="(paymentMethod, k) in paymentMethods"
+                      :key="k"
                     >
                       <div v-if="(shopInfo.paymentMethods||{})[paymentMethod.key]">
                       {{

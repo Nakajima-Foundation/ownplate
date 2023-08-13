@@ -16,7 +16,7 @@ import NotFound from "@/components/NotFound.vue";
 import { useRoute } from "vue-router";
 
 export default defineComponent({
-  name: "Link",
+  name: "LinkPage",
   components: {
     NotFound,
   },

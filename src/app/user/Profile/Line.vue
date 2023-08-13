@@ -178,12 +178,12 @@ export default defineComponent({
         checkFriend();
       }
     });
-    watch(isLineUser, (newValue) => {
+    watch(isLineUser, () => {
       if (isFriend.value === undefined) {
         checkFriend();
       }
     });
-    watch(isLiffUser, (newValue) => {
+    watch(isLiffUser, () => {
       if (isFriend.value === undefined) {
         checkFriend();
       }

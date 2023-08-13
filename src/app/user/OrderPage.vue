@@ -66,7 +66,7 @@ import OrderPageAfter from "@/app/user/OrderPage/AfterPaid.vue";
 import { db } from "@/lib/firebase/firebase9";
 import { onSnapshot, doc, deleteDoc, Unsubscribe } from "firebase/firestore";
 
-import { order_status, order_status_keys } from "@/config/constant";
+import { order_status } from "@/config/constant";
 import { lineVerifyFriend } from "@/lib/firebase/functions";
 
 import * as analyticsUtil from "@/lib/firebase/analytics";
@@ -149,9 +149,6 @@ export default defineComponent({
     const liffBasePath = useLiffBasePath();
 
     const orderId = route.params.orderId as string;
-    const statusKey = computed(() => {
-      return orderInfo.value ? order_status_keys[orderInfo.value.status] : null;
-    });
     const orderError = computed(() => {
       return orderInfo.value.status === order_status.error;
     });
@@ -189,7 +186,7 @@ export default defineComponent({
             );
           }
         },
-        (error) => {
+        () => {
           menuNotFound.value = true;
         }
       );

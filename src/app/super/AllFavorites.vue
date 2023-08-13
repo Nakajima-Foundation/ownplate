@@ -1,7 +1,7 @@
 <template>
   <div class="mx-6 mt-6">
     <div>
-      <div v-for="(review, key) in reviews">
+      <div v-for="(review, key) in reviews" :key="key">
         <img
           :src="resizedProfileImage(review, '600')"
           class="h-12 w-12 rounded-full object-cover"
@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from "vue";
+import { defineComponent, ref } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import {
   collectionGroup,

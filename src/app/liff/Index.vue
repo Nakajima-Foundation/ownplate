@@ -7,7 +7,7 @@
     <div
       class="mx-6 mt-2 grid grid-cols-1 items-center gap-2 lg:grid-cols-3 xl:grid-cols-4"
     >
-      <div v-for="(restaurant, k) in restaurants">
+      <div v-for="(restaurant, k) in restaurants" :key="k">
         <router-link :to="`/liff/${liffIndexId}/r/${restaurant.id}`">
           <div class="flex items-center">
             <div class="mr-4 h-12 w-12 rounded-full bg-black bg-opacity-10">

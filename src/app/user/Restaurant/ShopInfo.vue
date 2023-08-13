@@ -171,7 +171,7 @@
                 <div class="w-16">{{ $t("week.short." + day) }}</div>
                 <div class="flex-1">
                   <template v-if="(businessDay)[key]">
-                    <div v-for="(data, dateKey) in openTimes[key]">
+                    <div v-for="(data, dateKey) in openTimes[key]" :key="dateKey">
                       <template v-if="validDate(data)">
                         {{ num2time(data.start) }} - {{ num2time(data.end) }}
                       </template>

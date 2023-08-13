@@ -58,7 +58,7 @@
 			  </div>
   	  </div>
 		  <div v-if="possiblePromotions && possiblePromotions.length > 0" >
-			  <div v-for="(p, k) in [possiblePromotions[0]]"  class="flex mx-6 sm:mx-auto max-w-xl justify-center font-bold text-sm" :key="p.id">
+			  <div v-for="(p, k) in [possiblePromotions[0]]"  class="flex mx-6 sm:mx-auto max-w-xl justify-center font-bold text-sm" :key="k">
           <PromotionMessage3 :promotion="p" :totalPrice="totalPrice" />
 			  </div>
 			</div>
@@ -68,7 +68,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent } from "vue";
 
 import CartItem from "@/app/user/Restaurant/CartItem.vue";
 
