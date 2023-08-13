@@ -49,6 +49,7 @@
               v-if="
                 itemsObj[menuList] && itemsObj[menuList]._dataType === 'title'
               "
+              :id="itemsObj[menuList].id"
             >
               <div v-if="editings[menuList] === true">
                 <title-input
@@ -93,7 +94,8 @@
                 itemsObj[menuList]._dataType === 'menu' &&
                 (showAllItems || showPublicItems && itemsObj[menuList].publicFlag || showSoldOutItems && itemsObj[menuList].soldOut)
               "
-            >
+              :id="itemsObj[menuList].id"
+              >
               <Menu
                 :menuitem="itemsObj[menuList]"
                 :position="
@@ -172,6 +174,12 @@ import { useAdminConfigToggle2 } from "@/utils/admin/Toggle";
 import { useRouter, useRoute } from "vue-router";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
+
+import {
+  sleep,
+  scrollToElementById,
+} from "@/utils/utils";
+
 
 export default defineComponent({
   name: "MenuList",
@@ -442,7 +450,13 @@ export default defineComponent({
       newMenuLists.splice(pos, 0, newData.id);
       await saveMenuList(newMenuLists);
     };
-
+    const scroll = async (id: string) => {
+      if (toggleStatus.value !== 0) {
+        toggleStatus.value = 0;
+        await sleep(0.4);
+        scrollToElementById(id)
+      }
+    }
     const forkTitleItem = async (itemKey: string) => {
       const item = itemsObj.value[itemKey];
       const data = {
@@ -456,6 +470,7 @@ export default defineComponent({
         data
       );
       await forkItem(itemKey, newTitle as any);
+      await scroll(newData.id);
     };
 
     const forkMenuItem = async (itemKey: string) => {
@@ -470,6 +485,7 @@ export default defineComponent({
         cleanObject(data)
       );
       await forkItem(itemKey, newData as any);
+      await scroll(newData.id);
     };
 
     const deleteItem = async (itemKey: string) => {
