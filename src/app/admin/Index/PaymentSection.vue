@@ -203,9 +203,9 @@ export default defineComponent({
         state: "s" + Math.random(),
         redirect_uri: encodeURI(redirectURI),
       };
+      type TmpType = typeof params;
       const queryString = Object.keys(params)
-      // @ts-ignore
-            .map((key) => `${key}=${params[key]}`)
+            .map((key) => `${key}=${params[key as keyof TmpType]}`)
             .join("&");
       
       const date = new Date();

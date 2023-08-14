@@ -11,7 +11,6 @@ import { ownPlateConfig } from "@/config/project";
 
 const region = ownPlateConfig.region || "US";
 
-// @ts-ignore
 const region_data = constant.stripe_regions[region];
 
 const numberFormats = {

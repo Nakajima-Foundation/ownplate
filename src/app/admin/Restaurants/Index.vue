@@ -1228,10 +1228,9 @@ export default defineComponent({
     onUpdated(() => {
       if (updateFirstCall.value) {
         if (window.location.hash) {
-          // @ts-ignore
           document
-            .getElementById(window.location.hash.slice(1))
-            .scrollIntoView();
+            ?.getElementById(window.location.hash.slice(1))
+            ?.scrollIntoView();
         }
         updateFirstCall.value = false;
       }

@@ -179,11 +179,9 @@ export default defineComponent({
       } else {
         const language =
           (window.navigator.languages && window.navigator.languages[0]) ||
-          window.navigator.language ||
-          // @ts-ignore
-          window.navigator.userLanguage ||
-          // @ts-ignore
-          window.navigator.browserLanguage;
+          window.navigator.language
+          // window.navigator?.userLanguage ||  ie 11
+          // window.navigator.browserLanguage;  || ie
         console.log("browserlang:" + language);
         const lang = (language || "").substr(0, 2);
         if (lang.length === 2) {
