@@ -193,8 +193,9 @@
                   class="rounded-lg bg-black bg-opacity-5 p-4"
                 >
                   <div v-if="option.length === 1" class="field">
-                    <o-checkbox v-model="selectedOptions[quantityKey][index]"
-                      ><div class="text-sm font-bold">
+                    <o-checkbox :modelValue="selectedOptions[quantityKey][index]"
+                                @update:modelValue="updateSelectedOptions(quantityKey, index, $event)"
+                                ><div class="text-sm font-bold">
                         {{ displayOption(option[0], shopInfo, item) }}
                       </div></o-checkbox
                     >
@@ -202,7 +203,8 @@
                   <div v-else class="field">
                     <o-radio
                       v-for="(choice, index2) in option"
-                      v-model="selectedOptions[quantityKey][index]"
+                      :modelValue="selectedOptions[quantityKey][index]"
+                      @update:modelValue="updateSelectedOptions(quantityKey, index, $event)"
                       :name="`${item.id}_${quantityKey}_${index}`"
                       :native-value="index2"
                       :key="`${quantityKey}_${index2}`"
@@ -479,7 +481,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ["didOrderdChange"],
+  emits: ["didOrderdChange", "updateSelectedOptions"],
   setup(props, ctx) {
     const store = useStore();
     const route = useRoute();
@@ -618,6 +620,11 @@ export default defineComponent({
         optionValues: newSelectedOptions,
       });
     };
+    const updateSelectedOptions = (quantityKey: number, index: number, e: boolean | string) => {
+      const newSelectedOptions = [...props.selectedOptions];
+      newSelectedOptions[quantityKey][index] = e;
+      ctx.emit("updateSelectedOptions", newSelectedOptions);
+    };
     const toggleMenuFlag = () => {
       openMenuFlag.value = !openMenuFlag.value;
       if (openMenuFlag.value) {
@@ -687,7 +694,8 @@ export default defineComponent({
       pullQuantities,
       pushQuantities,
       pushItem,
-
+      updateSelectedOptions,
+      
       smallImageErrorHandler,
       imageErrorHandler,
 

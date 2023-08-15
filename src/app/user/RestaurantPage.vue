@@ -153,6 +153,7 @@
                         :prices="prices[item.id] || []"
                         :mode="mode"
                         @didOrderdChange="didOrderdChange($event)"
+                        @updateSelectedOptions="updateSelectedOptions(item.id, $event)"
                         ></RestaurantMenu>
                     </div>
                   </template>
@@ -597,6 +598,11 @@ export default defineComponent({
         });
       }
     };
+    const updateSelectedOptions = (id: string, e: any) => {
+      const newSelectedOptions = Object.assign({}, selectedOptions.value)
+      newSelectedOptions[id] = e;
+      selectedOptions.value = newSelectedOptions;
+    };
     const goCheckout = async () => {
       const name = await (async () => {
         if (isLiffUser.value) {
@@ -831,7 +837,8 @@ export default defineComponent({
       isPreview,
 
       didOrderdChange,
-
+      updateSelectedOptions,
+      
       handleCheckOut,
       handleDismissed,
 
