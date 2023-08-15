@@ -6,7 +6,8 @@
         <o-field>
           <o-input
             ref="textInput"
-            v-model="title.name"
+            :modelValue="title.name"
+            @update:modelValue="updateTitle"
             @blur="blur"
             :placeholder="$t('editTitle.enterCategory')"
           ></o-input>
@@ -99,9 +100,13 @@ export default defineComponent({
     onMounted(() => {
       textInput.value.focus();
     });
+    const title = ref(props.title.name);
     const blur = () => {
       // save and update this.
-      ctx.emit("updateTitle", props.title);
+      ctx.emit("updateTitle", {id: props.title.id, name: title.value});
+    };
+    const updateTitle = () => {
+      title.value = e;
     };
     const positionUp = () => {
       ctx.emit("positionUp", props.title.id);
@@ -118,6 +123,7 @@ export default defineComponent({
       positionUp,
       positionDown,
       forkItem,
+      updateTitle,
     };
   },
 });
