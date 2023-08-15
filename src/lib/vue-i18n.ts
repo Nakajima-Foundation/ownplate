@@ -1,9 +1,9 @@
 import { createI18n } from "vue-i18n";
 
-import i18nEN from "../../lang/en.json";
-import i18nES from "../../lang/es.json";
-import i18nJA from "../../lang/ja.json";
-import i18nFR from "../../lang/fr.json";
+import i18nEN from "@/lang/en";
+import i18nES from "@/lang/es";
+import i18nJA from "@/lang/ja";
+import i18nFR from "@/lang/fr";
 
 import * as constant from "@/config/constant";
 

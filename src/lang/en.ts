@@ -1,4 +1,4 @@
-{
+const data = {
   "serviceName": {
     "ownPlate": "OwnPlate",
     "omochikaeri": "おもちかえり.com"
@@ -1299,4 +1299,6 @@
       "invalidEmail": "Please enter your valid email address"
     }
   }
-}
+};
+
+export default data;

@@ -1,4 +1,4 @@
-{
+const data = {
   "serviceName": {
     "ownPlate": "OwnPlate",
     "omochikaeri": "おもちかえり.com"
@@ -978,7 +978,7 @@
     "editMenuItems": "メニュー",
     "pleaseAddMenu": "メニューが登録されていません",
     "itemSoldOut": "売り切れ",
-    "itemSoldOutToday": "本日売切",
+    "itemSoldOutToday": "本日売り切れ",
     "itemPublished": "公開中",
     "itemNotPublished": "非公開中",
     "editAbout": "店情報の変更",
@@ -1312,3 +1312,5 @@
     }
   }
 }
+
+export default data;
