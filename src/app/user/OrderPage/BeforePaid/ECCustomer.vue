@@ -198,7 +198,7 @@ export default defineComponent({
     const { uid } = useUserData();
     
     const updateAddress = (address: any) => {
-      const { address1, address2, address3, prefectureId, prefecture } =
+      const { address2, address3, prefectureId, prefecture } =
         address;
 
       const data = {

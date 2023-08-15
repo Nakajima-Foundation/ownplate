@@ -12,7 +12,6 @@ import { defineComponent, ref, PropType } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDocs, collection, where, query } from "firebase/firestore";
 import {
-  stripeRegion,
   doc2data,
   array2obj,
   useNationalPhoneNumber,

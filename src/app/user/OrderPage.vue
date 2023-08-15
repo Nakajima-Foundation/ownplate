@@ -144,7 +144,6 @@ export default defineComponent({
     const menuObj = ref<{ [key: string]: OrderMenuItemData } | null>(null);
     const detacher: Unsubscribe[] = [];
     const menuNotFound = ref<boolean | null>(null);
-    const requireLoginRef = ref();
     
     const liffBasePath = useLiffBasePath();
 
