@@ -105,7 +105,7 @@ export default defineComponent({
       // save and update this.
       ctx.emit("updateTitle", {id: props.title.id, name: title.value});
     };
-    const updateTitle = () => {
+    const updateTitle = (e: string) => {
       title.value = e;
     };
     const positionUp = () => {
