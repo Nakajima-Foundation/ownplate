@@ -20,7 +20,7 @@
     <div class="px-2">-</div>
     <div>
       <o-field :variant="variant">
-        <o-select v-model="modelValue.end" :disabled="disabled" @update:modelValue="updateValueEnd">
+        <o-select :modelValue="modelValue.end" :disabled="disabled" @update:modelValue="updateValueEnd">
           <option
             v-for="(timeItem, index) of timeList"
             :key="timeItem"
