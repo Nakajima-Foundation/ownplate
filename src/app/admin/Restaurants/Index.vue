@@ -1419,6 +1419,9 @@ export default defineComponent({
     };
     const updateRestaurantData = async (restaurantData: any) => {
       const cleanData = cleanObject(restaurantData);
+      if (!cleanData.lastOrderTime) {
+        cleanData.lastOrderTime = null;
+      }
       await updateDoc(
         doc(db, `restaurants/${restaurantId.value}`),
         cleanData
