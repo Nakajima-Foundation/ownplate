@@ -108,7 +108,6 @@ export default defineComponent({
           return;
         }
         const restaurant_data = restaurant.data();
-
         const copy = JSON.parse(JSON.stringify(defaultShopInfo));
         const loadShopInfo = Object.assign(
           {},

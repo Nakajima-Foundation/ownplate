@@ -127,6 +127,8 @@ export const defaultShopInfo = {
   pickUpMinimumCookTime: 25,
   pickUpDaysInAdvance: 3,
   images: {},
+  category1: [],
+  category2: [],
   publicFlag: false,
   temporaryClosure: [],
   paymentMethods: {},

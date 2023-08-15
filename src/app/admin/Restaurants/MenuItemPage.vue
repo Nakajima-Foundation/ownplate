@@ -824,12 +824,6 @@ export default defineComponent({
     const requireTaxPriceDisplay = regionalSetting.requireTaxPriceDisplay;
     const currencyKey = regionalSetting["CurrencyKey"];
 
-    if (!props.shopInfo.category1) {
-      props.shopInfo.category1 = [];
-    }
-    if (!props.shopInfo.category2) {
-      props.shopInfo.category2 = [];
-    }
     const { restaurantId } = props.shopInfo;
     getDoc(doc(db, `restaurants/${menuRestaurantId.value}/menus/${menuId}`))
       .then((menuInfoDoc) => {
@@ -907,8 +901,6 @@ export default defineComponent({
       await updateDoc(doc(db, `restaurants/${menuRestaurantId.value}`), {
         [categoryKey.value||""]: categories,
       });
-      // @ts-ignore
-      props.shopInfo[categoryKey.value] = categories;
     };
     const handleDismissed = () => {
       categoryKey.value = null;
