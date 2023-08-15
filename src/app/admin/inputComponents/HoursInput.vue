@@ -3,9 +3,9 @@
     <div>
       <o-field :variant="variant">
         <o-select
-          v-model="modelValue.start"
+          :modelValue="modelValue.start"
           :disabled="disabled"
-          @update:modelValue="updateValue"
+          @update:modelValue="updateValueStart"
         >
           <option
             v-for="(timeItem, index) of timeList"
@@ -20,7 +20,7 @@
     <div class="px-2">-</div>
     <div>
       <o-field :variant="variant">
-        <o-select v-model="modelValue.end" :disabled="disabled" @update:modelValue="updateValue">
+        <o-select v-model="modelValue.end" :disabled="disabled" @update:modelValue="updateValueEnd">
           <option
             v-for="(timeItem, index) of timeList"
             :key="timeItem"
@@ -62,12 +62,20 @@ export default defineComponent({
   },
   emits: ["update:modelValue"],
   setup(props, context) {
-    const updateValue = () => {
-      context.emit("update:modelValue", props.modelValue);
+    const updateValueStart = (e: any) => {
+      const a = {...props.modelValue};
+      a.start = e;
+      context.emit("update:modelValue", a);
+    };
+    const updateValueEnd = (e: any) => {
+      const a = {...props.modelValue};
+      a.end = e;
+      context.emit("update:modelValue", a);
     };
 
     return {
-      updateValue,
+      updateValueStart,
+      updateValueEnd,
       timeList,
     };
   },
