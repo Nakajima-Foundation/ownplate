@@ -150,7 +150,6 @@ export default defineComponent({
   setup(props) {
     const store = useStore();
     const { d } = useI18n({ useScope: 'global' });
-    const date = ref<{ offset: number; date: Date; times: any; } | null>(null);
 
     const restaurantId = useRestaurantId();
     const { ownerUid } = useAdminUids();
@@ -170,16 +169,20 @@ export default defineComponent({
       {},
       ref({}),
     );
-
+    
+    // const date = ref<{ offset: number; date: Date; times: any; } | null>(null);
+    const date = computed<{ offset: number; date: Date; times: any; } | null>(() => {
+      if (availableDays.value.length > 0) {
+        return availableDays.value[0];
+      }
+      return null;
+    });
     const availableTimes = computed(() => {
       // Note: availableDays will change if we change shopInfo.suspendUntil.
       // This logic works because we use availableDays when suspendUntil is not set or too old.
-      if (availableDays.value.length > 0) {
-        date.value = availableDays.value[0];
+      if (date.value) {
         const times = date.value.times;
         return times.slice(1, 13); // first twelve time slots (except first) regardless of the time
-      } else {
-        date.value = null;
       }
       return [];
     });
