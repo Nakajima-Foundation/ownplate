@@ -210,7 +210,7 @@ export const customRoutes: CustomRoute[] = [
       },
       {
         path: "restaurants/:restaurantId",
-        component: "admin/Layout.vue",
+        component: "admin/Restaurants/Wrapper.vue",
         children: [
           {
             path: "",
