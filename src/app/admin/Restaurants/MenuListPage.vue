@@ -164,7 +164,7 @@ import { useMenuAndTitle } from "@/app/admin/Restaurants/MenuListPage/Utils";
 
 import { ownPlateConfig } from "@/config/project";
 
-import { copyMenuData, MenuData } from "@/models/menu";
+import { copyMenuData, MenuData, TitleData } from "@/models/menu";
 
 import { useAdminUids, cleanObject, notFoundResponse } from "@/utils/utils";
 import { checkShopAccount } from "@/utils/userPermission";
@@ -314,7 +314,7 @@ export default defineComponent({
       newEditings[titleId] = value;
       editings.value = newEditings;
     };
-    const updateTitle = async (title: any) => {
+    const updateTitle = async (title: {name: string, id: string}) => {
       await updateDoc(
         doc(db, `restaurants/${restaurantId.value}/titles/${title.id}`),
         { name: title.name }
@@ -441,7 +441,7 @@ export default defineComponent({
       }
     };
 
-    const forkItem = async (itemKey: string, newData: MenuData) => {
+    const forkItem = async (itemKey: string, newData: MenuData | TitleData) => {
       const pos = menuLists.value.indexOf(itemKey);
 
       const newMenuLists = menuLists.value;
