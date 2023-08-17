@@ -536,7 +536,7 @@ const data = {
     "moDescription1": "お店に無いものも最短3日後受け取り可能です。",
     "moDescription2": "最短30分後に店舗で受け取り可能です。",
     "moDescription3": "*対応店舗のみ",
-		"forRestaurantOwner": "＼ 飲食店様向け ／",
+		"forRestaurantOwner": "飲食店様向け",
 		"signUpForFree": "無料でご利用を開始",
 		"clickHereToOrder": "テイクアウトのご注文はこちら",
 		"feature": "おもちかえり.comの特徴",

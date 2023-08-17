@@ -540,7 +540,8 @@ const data = {
 		"clickHereForDetails": "Click here for detailed instructions",
 		"enjoy": "Enjoy our",
 		"omochikaeri": "service!",
-		"forOwnerToOpen": "For restaurants wishing to open a store"
+		"forOwnerToOpen": "For restaurants wishing to open a store",
+		"clickHereToSignup": "Click here to sign up for free"
   },
 	"promotion": {
 		"heading": "Ongoing Campaigns",

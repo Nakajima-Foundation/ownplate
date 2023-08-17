@@ -503,7 +503,8 @@ const data = {
 		"clickHereForDetails": "Cliquez ici pour des instructions détaillées",
 		"enjoy": "Profitez de notre",
 		"omochikaeri": "service!",
-		"forOwnerToOpen": "Pour les restaurants souhaitant ouvrir un magasin"
+		"forOwnerToOpen": "Pour les restaurants souhaitant ouvrir un magasin",
+		"clickHereToSignup": "Cliquez ici pour vous inscrire gratuitement"
   },
 	"promotion": {
 		"heading": "Campagnes en cours",
