@@ -29,7 +29,7 @@
 				</div>
 
 				<div class="mt-8">
-				<router-link to="/">
+				<router-link to="/home">
 					<div class="text-op-teal text-lg font-bold lg:text-xl">
 							{{ $t("lp.clickHereToOrder") }}
         	</div>

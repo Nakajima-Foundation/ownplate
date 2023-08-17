@@ -552,7 +552,8 @@ const data = {
 		"clickHereForDetails": "詳しいご利用の手引きはこちら",
 		"enjoy": "お店の笑顔も",
 		"omochikaeri": "おもちかえり！",
-		"forOwnerToOpen": "出店をご希望の飲食店の方へ"
+		"forOwnerToOpen": "出店をご希望の飲食店の方へ",
+		"clickHereToSignup": "無料の出店ご登録はこちら"
   },
 	"promotion": {
 		"heading": "開催中のキャンペーン",
@@ -913,7 +914,8 @@ const data = {
       "before": "おもちかえり.com へのご登録がまだの方は、まずこちらの",
       "manualName": "「ご利用の手引き」",
       "after": "に目を通して、ご登録を進めてください。"
-    },
+		},
+		"forSignup": "まだご登録がお済みでない飲食店の方へ",
     "pleaseSignIn": "ログインしてください(飲食店向け)",
     "goToSignIn": "ログインへ",
     "mailIsExpired": "メールの有効期限が切れています。",
