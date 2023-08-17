@@ -102,7 +102,7 @@ const data = {
     "deliveryManualLink": "デリバリーマニュアル",
     "printerManualLink": "印刷機能マニュアル",
     "tipsLink": "おもちかえり活用術",
-    "termsRestaurant": "利用規約",
+    "termsRestaurant": "利用規約(加盟店)",
     "termsUser": "利用規約",
     "privacy": "プライバシーポリシー",
     "faq": "ご利用について",
@@ -820,7 +820,10 @@ const data = {
     "next": "次へ",
     "category": "カテゴリ",
     "myPage": "マイページ",
-    "backToTop": "トップへ"
+		"backToTop": "トップへ",
+		"login": "ログイン",
+		"linkToAdminDocs": "ご利用の手引き",
+		"news":"運営からのお知らせ"
   },
   "sms": {
     "signin": "本人確認",

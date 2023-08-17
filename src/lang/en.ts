@@ -808,7 +808,10 @@ const data = {
     "next": "Next",
     "category": "Category",
     "myPage": "My Page",
-    "backToTop": "Top"
+		"backToTop": "Top",
+		"login": "Sign in",
+		"linkToAdminDocs": "Detailed instructions",
+		"news":"News"
   },
   "sms": {
     "signin": "Phone Number Sign In",

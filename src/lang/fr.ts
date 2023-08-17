@@ -752,7 +752,10 @@ const data = {
     "next": "Suivant",
     "category": "Catégorie",
     "myPage": "My Page",
-    "backToTop": "Top"
+		"backToTop": "Top",
+		"login": "Sign in",
+		"linkToAdminDocs": "Instructions détaillées",
+		"news":"Actualités"
   },
   "sms": {
     "signin": "Se connecter avec un numéro de téléphone",
