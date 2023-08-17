@@ -9,7 +9,7 @@
 
 		<div class="mt-8 sm:mt-0 md:ml-16 sm:ml-8">
 			<router-link to="/r">
-				<div class="inline-flex h-16 items-center rounded-full bg-white px-14 shadow hover:bg-opacity-90">
+				<div class="inline-flex h-16 items-center rounded-full bg-white px-12 sm:px-16 shadow hover:bg-opacity-90">
            <span class="text-xl font-bold text-op-teal">
 						{{ $t("lp.searchRestaurant") }}
 					</span>
@@ -20,7 +20,7 @@
         <div class="inline-flex items-center space-x-4">
           <router-link
             to="/r/area/12"
-            class="inline-flex h-16 items-center rounded-full bg-ownplate-yellow px-11 hover:bg-opacity-80"
+            class="inline-flex h-16 items-center rounded-full bg-ownplate-yellow px-10 sm:px-12 hover:bg-opacity-80"
           >
             <span class="text-xl font-bold text-black text-op-90">{{
               $t("lp.tokyo")
@@ -28,7 +28,7 @@
           </router-link>
           <router-link
             to="/r/area/26"
-            class="inline-flex h-16 items-center rounded-full bg-ownplate-yellow px-11 hover:bg-opacity-80"
+            class="inline-flex h-16 items-center rounded-full bg-ownplate-yellow px-10 sm:px-12 hover:bg-opacity-80"
           >
             <span class="text-xl font-bold text-black text-op-90">{{
               $t("lp.osaka")
