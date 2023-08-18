@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Transactions Act Popup-->
-    <o-modal :active.sync="transactionsActPopup" :width="488" scroll="keep">
+    <o-modal v-model:active="transactionsActPopup" :width="488" scroll="keep">
       <Contents
         :shopInfo="shopInfo"
         :isDelivery="isDelivery"
@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "@vue/composition-api";
+import { defineComponent, ref } from "vue";
 import Contents from "@/app/user/TransactionsAct/Contents.vue";
 
 export default defineComponent({
@@ -30,7 +30,7 @@ export default defineComponent({
   components: {
     Contents,
   },
-  setup(props, ctx) {
+  setup() {
     const transactionsActPopup = ref(false);
 
     const openTransactionsAct = () => {

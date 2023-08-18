@@ -17,13 +17,17 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, ref } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent, ref } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc, serverTimestamp } from "firebase/firestore";
 
-import NotificationSettings from "./NotificationSettings";
-import NotificationSettingButton from "./NotificationSettingButton";
+import NotificationSettings from "@/app/admin/Notifications/NotificationSettings.vue";
+import NotificationSettingButton from "@/app/admin/Notifications/NotificationSettingButton.vue";
+import {
+  useRestaurantId
+} from "@/utils/utils";
+import { useStore } from "vuex";
 
 export default defineComponent({
   props: {
@@ -36,12 +40,15 @@ export default defineComponent({
     NotificationSettings,
     NotificationSettingButton,
   },
-  setup(_, ctx) {
+  setup() {
+    const store = useStore();
+    
+    const restaurantId = useRestaurantId();
     const notificationSettingsPopup = ref(false);
     const defaultNotificationData = {
       soundOn: null,
       infinityNotification: null,
-      uid: ctx.root.$store.getters.uidAdmin,
+      uid: store.getters.uidAdmin,
       createdAt: serverTimestamp(),
     };
     const notificationData = ref(defaultNotificationData);
@@ -51,14 +58,14 @@ export default defineComponent({
         const notification = await getDoc(
           doc(
             db,
-            `restaurants/${ctx.root.restaurantId()}/private/notifications`
+            `restaurants/${restaurantId.value}/private/notifications`
           )
         );
-        notificationData.value = notification.exists
+        notificationData.value = notification.exists()
           ? Object.assign(defaultNotificationData, notification.data())
           : defaultNotificationData;
         loaded.value = true;
-      } catch (error) {
+      } catch (error: any) {
         if (error.code === "permission-denied") {
           // We can ignore this type of error here
           console.warn("Ignoring", error.code);

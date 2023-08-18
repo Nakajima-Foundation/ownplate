@@ -1,55 +1,57 @@
 <template>
   <div>
-    <ownplate-service-image />
+    <admin-service-introduction :isAdmin="isAdmin" />
     <div class="mx-auto max-w-screen-xl">
-      <entrance-buttons />
+      <admin-feature />
+			<admin-how-to-start />
       <userVoices />
-      <demo />
-      <!-- <moreButton /> -->
-      <!-- <threeSteps /> -->
-      <!-- <askButtons /> -->
-      <!-- <communityIcons /> -->
-      <!-- <mediaLink /> -->
       <operators />
       <aboutService />
-      <entrance-buttons />
-      <!-- <askButtons /> -->
-      <!-- <news /> -->
-      <news />
+      <goToUserLP />
     </div>
-    <snslink />
   </div>
 </template>
-<script>
-import ownplateServiceImage from "@/components/lp/ownplateServiceImage.vue";
-import entranceButtons from "@/components/lp/entranceButtons.vue";
+<script lang="ts">
+import { defineComponent } from "vue";
+import adminServiceIntroduction from "@/components/lp/adminServiceIntroduction.vue";
+import adminFeature from "@/components/lp/adminFeature.vue";
+import adminHowToStart from "@/components/lp/adminHowToStart.vue";
 import userVoices from "@/components/lp/userVoices.vue";
-import demo from "@/components/lp/demo.vue";
-import moreButton from "@/components/lp/moreButton.vue";
-import threeSteps from "@/components/lp/threeSteps.vue";
-import askButtons from "@/components/lp/askButtons.vue";
-import communityIcons from "@/components/lp/communityIcons.vue";
-import mediaLink from "@/components/lp/mediaLink.vue";
+import goToUserLP from "@/components/lp/goToUserLP.vue";
 import operators from "@/components/lp/operators.vue";
 import aboutService from "@/components/lp/aboutService.vue";
-import news from "@/components/lp/news.vue";
-import snslink from "@/components/lp/link.vue";
 
-export default {
+import { defaultTitle, sleep } from "@/utils/utils";
+
+export default defineComponent({
+  metaInfo() {
+    return {
+      title: [defaultTitle, "Top"].join(" / "),
+    };
+  },
   components: {
-    ownplateServiceImage,
-    entranceButtons,
-    demo,
+    adminServiceIntroduction,
+		adminFeature,
+		adminHowToStart,
+		goToUserLP,
     userVoices,
-    moreButton,
-    threeSteps,
-    askButtons,
-    communityIcons,
-    mediaLink,
     operators,
     aboutService,
-    news,
-    snslink,
   },
-};
+  props: {
+    isAdmin: {
+      type: Boolean,
+      require: true,
+      default: false,
+    },
+  },
+  setup() {
+    (async () => {
+      await sleep(0.1);
+      window.scrollTo(0, 0);
+    })()
+    return {
+    };
+  },
+});
 </script>

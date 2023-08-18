@@ -6,7 +6,7 @@
     <!-- Welcome and Link -->
     <WelcomeAndLinks />
 
-    <EmailVerify v-if="!emailVerified && !isInMo" />
+    <EmailVerify v-if="!emailVerified" />
 
     <!-- News -->
     <News />
@@ -103,7 +103,7 @@
         <div class="pb-2">
           <span class="mb-2 text-xl font-bold text-black text-opacity-40">
             {{
-              $t(isInMo ? "mobileOrder.restaurantLists" : "admin.restaurant")
+              $t("admin.restaurant")
             }}
           </span>
         </div>
@@ -127,11 +127,7 @@
                   >
                     <i class="material-icons mr-2 text-lg text-op-teal">add</i>
                     <span class="text-sm font-bold text-op-teal">{{
-                      $t(
-                        isInMo
-                          ? "mobileOrder.addNewRestaurant"
-                          : "admin.addNewRestaurant"
-                      )
+                      $t("admin.addNewRestaurant")
                     }}</span>
                   </div>
                 </o-button>
@@ -148,54 +144,10 @@
                   class="flex h-14 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 text-op-teal"
                 >
                   <span class="text-base font-bold">{{
-                    $t(
-                      isInMo
-                        ? "mobileOrder.viewAllOrders"
-                        : "admin.viewAllOrders"
-                    )
+                    $t("admin.viewAllOrders")
                   }}</span>
                 </div>
               </router-link>
-            </div>
-
-            <div class="grid grid-cols-2 space-x-2">
-              <!-- All Report -->
-              <div v-if="isOwner && isInMo" class="mb-2">
-                <router-link to="/admin/report">
-                  <div
-                    class="flex h-14 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 text-op-teal"
-                  >
-                    <i class="material-icons mr-2 text-lg">description</i>
-                    <div class="text-sm font-bold">
-                      {{ $t("mobileOrder.viewAllReport") }}
-                    </div>
-                  </div>
-                </router-link>
-              </div>
-
-              <div v-if="isOwner && isInMo" class="mb-2">
-                <ExportProd
-                  :restaurantLists="restaurantLists"
-                  :restaurantItems="restaurantItems"
-                  :masterRestaurantId="groupData.restaurantId"
-                />
-              </div>
-            </div>
-
-            <div v-if="isOwner && isInMo" class="mb-2">
-              <IndexSuspend />
-            </div>
-            <div v-if="isOwner && isInMo" class="mb-2">
-              <router-link to="/admin/discounts">
-                <div
-                  class="flex h-14 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 text-op-teal"
-                >
-                  <span class="text-base font-bold">{{
-                    $t("mobileOrder.admin.discount")
-                  }}</span>
-                </div>
-              </router-link>
-
             </div>
 
             <a name="addMenu" />
@@ -210,10 +162,7 @@
                 :shopInfo="restaurantItems[restaurantId]"
                 :restaurantid="restaurantId"
                 :numberOfMenus="
-                  (!groupMasterRestaurant.empty
-                    ? groupMasterRestaurant
-                    : restaurantItems[restaurantId]
-                  ).numberOfMenus || 0
+                                (restaurantItems[restaurantId]).numberOfMenus || 0
                 "
                 :numberOfOrders="numberOfOrderObj[restaurantId] || 0"
                 :lineEnable="lines[restaurantId] || false"
@@ -229,8 +178,6 @@
                 @positionDown="positionDown($event)"
                 @deleteFromRestaurantLists="deleteFromRestaurantLists($event)"
                 :isOwner="isOwner"
-                :moPrefix="moPrefix"
-                :isInMo="isInMo"
               />
             </div>
 
@@ -263,7 +210,7 @@
         </div>
 
         <!-- Note -->
-        <Note :isInMo="isInMo" />
+        <Note />
 
         <!-- Mail Magazine-->
         <MailMagazine />
@@ -275,20 +222,19 @@
     </div>
     <div class="mt-6 bg-ownplate-yellow p-4">
       <!-- Footer -->
-      <Footer />
+      <IndexFooter />
     </div>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
   ref,
   computed,
-  watch,
   onUnmounted,
   onMounted,
-} from "@vue/composition-api";
+} from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -302,6 +248,9 @@ import {
   setDoc,
   collectionGroup,
   serverTimestamp,
+  Unsubscribe,
+  DocumentData,
+  DocumentSnapshot,
 } from "firebase/firestore";
 
 import { order_status } from "@/config/constant";
@@ -311,7 +260,7 @@ import ToggleSwitch from "@/components/ToggleSwitch.vue";
 
 import Restaurant from "@/app/admin/Index/Restaurant.vue";
 import PaymentSection from "@/app/admin/Index/PaymentSection.vue";
-import MessageCard from "./Messages/MessageCard.vue";
+import MessageCard from "@/app/admin/Messages/MessageCard.vue";
 
 import EmailVerify from "@/app/admin/Index/EmailVerify.vue";
 import WelcomeAndLinks from "@/app/admin/Index/WelcomeAndLinks.vue";
@@ -320,11 +269,9 @@ import Survey from "@/app/admin/Index/Survey.vue";
 import Note from "@/app/admin/Index/Note.vue";
 import MailMagazine from "@/app/admin/Index/MailMagazine.vue";
 import Smaregi from "@/app/admin/Index/Smaregi.vue";
-import Footer from "@/app/admin/Index/Footer.vue";
+import IndexFooter from "@/app/admin/Index/Footer.vue";
 import Partners from "@/app/admin/Index/Partners.vue";
 import SubAccount from "@/app/admin/Index/SubAccount.vue";
-import ExportProd from "@/app/admin/Index/ExportProd.vue";
-import IndexSuspend from "@/app/admin/Index/Suspend.vue";
 
 import { ping } from "@/lib/firebase/functions";
 
@@ -339,6 +286,12 @@ import {
 import { checkAdminPermission } from "@/utils/userPermission";
 
 import { useAdminConfigToggle } from "@/utils/admin/Toggle";
+
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { ShopOwnerData } from "@/models/ShopOwner";
 
 export default defineComponent({
   name: "RestaurantIndex",
@@ -355,47 +308,30 @@ export default defineComponent({
     SubAccount,
     MailMagazine,
     Note,
-    Footer,
+    IndexFooter,
     ToggleSwitch,
-    ExportProd,
-    IndexSuspend,
-  },
-  props: {
-    groupMasterRestaurant: {
-      type: Object,
-      required: false,
-    },
-    groupData: {
-      type: Object,
-      required: false,
-    },
-    isInMo: {
-      type: Boolean,
-      required: true,
-    },
-    moPrefix: {
-      type: String,
-      required: false,
-    },
   },
   metaInfo() {
     return {
       title: ["Admin Index", this.defaultTitle].join(" / "),
     };
   },
-  setup(props, ctx) {
+  setup() {
+    const store = useStore();
+    const router = useRouter();
+
     const readyToDisplay = ref(false);
-    const restaurantItems = ref(null);
-    const orderDetachers = ref([]);
-    const restaurant_detacher = ref(null);
-    const message_detacher = ref(null);
+    const restaurantItems = ref<{[key: string]: RestaurantInfoData} | null>(null);
+    const orderDetachers = ref<Unsubscribe[]>([]);
+    const restaurant_detacher = ref<Unsubscribe|null>(null);
+    const message_detacher = ref<Unsubscribe|null>(null);
     const unsetPaymentWarning = ref(false);
-    const lines = ref({});
-    const shopOwner = ref(null);
-    const restaurantLists = ref([]);
-    const numberOfOrderObj = ref({});
-    const messages = ref([]);
-    if (!checkAdminPermission(ctx)) {
+    const lines = ref<{[key: string]: boolean}>({});
+    const shopOwner = ref<ShopOwnerData | Record<string, never> | null>(null);
+    const restaurantLists = ref<string[]>([]);
+    const numberOfOrderObj = ref<{[key: string]: number}>({});
+    const messages = ref<DocumentData[]>([]);
+    if (!checkAdminPermission()) {
       return;
     }
     ping({
@@ -410,13 +346,13 @@ export default defineComponent({
       });
       orderDetachers.value = [];
     };
-    const { isOwner, uid, ownerUid, emailVerified } = useAdminUids(ctx);
+    const { isOwner, uid, ownerUid, emailVerified } = useAdminUids();
     const { toggle: simpleMode, switchToggle: switchSimpleMode } =
       useAdminConfigToggle("simpleMode", uid.value, false);
 
     const watchOrder = () => {
       detachOrders();
-      orderDetachers.value = Object.keys(restaurantItems.value).map(
+      orderDetachers.value = Object.keys(restaurantItems.value||{}).map(
         (restaurantId) => {
           return onSnapshot(
             query(
@@ -477,8 +413,9 @@ export default defineComponent({
                   return;
                 }
                 restaurantItems.value = (result.docs || []).reduce(
-                  (tmp, doc) => {
-                    tmp[doc.id] = doc2data("restaurant")(doc);
+                  (tmp: {[key: string]: RestaurantInfoData},
+                   doc: DocumentSnapshot<DocumentData>) => {
+                    tmp[doc.id] = doc2data("restaurant")(doc) as RestaurantInfoData;
                     if (!restaurantLists.value.includes(doc.id)) {
                       restaurantLists.value.push(doc.id);
                     }
@@ -514,8 +451,9 @@ export default defineComponent({
                   }
 
                   restaurantItems.value = (result.docs || []).reduce(
-                    (tmp, doc) => {
-                      tmp[doc.id] = doc2data("restaurant")(doc);
+                    (tmp: {[key: string]: RestaurantInfoData},
+                     doc: DocumentSnapshot<DocumentData>) => {
+                      tmp[doc.id] = doc2data("restaurant")(doc) as RestaurantInfoData;
                       return tmp;
                     },
                     {}
@@ -554,12 +492,11 @@ export default defineComponent({
       }
 
       message_detacher.value = onSnapshot(
-        collection(db, `/admins/${uid.value}/messages`),
-        query(orderBy("createdAt", "desc")),
+        query(collection(db, `/admins/${uid.value}/messages`), orderBy("createdAt", "desc")),
         (messageCollection) => {
           messages.value = messageCollection.docs
             .map(doc2data("message"))
-            .filter((a) => a.toDisplay);
+            .filter((a: DocumentData) => a.toDisplay);
         }
       );
     });
@@ -592,17 +529,17 @@ export default defineComponent({
             createdAt: serverTimestamp(),
           });
 
-          ctx.root.$router.push(`/admin/restaurants/${newDoc.id}`);
+          router.push(`/admin/restaurants/${newDoc.id}`);
         } catch (error) {
-          ctx.root.$store.commit("setErrorMessage", {});
+          store.commit("setErrorMessage", {});
           console.log(error);
         }
       }
     };
-    const updateUnsetWarning = (value) => {
+    const updateUnsetWarning = (value: boolean) => {
       unsetPaymentWarning.value = value;
     };
-    const positionUp = async (itemKey) => {
+    const positionUp = async (itemKey: string) => {
       if (isOwner.value) {
         const pos = restaurantLists.value.indexOf(itemKey);
         if (pos !== 0 && pos !== -1) {
@@ -616,7 +553,7 @@ export default defineComponent({
         }
       }
     };
-    const positionDown = async (itemKey) => {
+    const positionDown = async (itemKey: string) => {
       if (isOwner.value) {
         const pos = restaurantLists.value.indexOf(itemKey);
         if (pos < restaurantLists.value.length - 1 && pos !== -1) {
@@ -631,7 +568,7 @@ export default defineComponent({
         }
       }
     };
-    const deleteFromRestaurantLists = async (restaurantId) => {
+    const deleteFromRestaurantLists = async (restaurantId: string) => {
       if (isOwner.value) {
         // push list
         const newRestaurantLists = [...restaurantLists.value];
@@ -669,13 +606,9 @@ export default defineComponent({
     });
 
     const existMenu = computed(() => {
-      if (!props.groupMasterRestaurant.empty) {
-        return props.groupMasterRestaurant.numberOfMenus > 1;
-      } else {
-        return Object.values(restaurantItems.value || []).find((r) => {
-          return (r || {}).numberOfMenus > 1;
-        });
-      }
+      return Object.values(restaurantItems.value || []).find((r) => {
+        return (r || {}).numberOfMenus > 1;
+      });
     });
     const existPublicRestaurant = computed(() => {
       return Object.values(restaurantItems.value || []).find((r) => {

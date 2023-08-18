@@ -33,49 +33,53 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
   computed,
   ref,
   onMounted,
   watch,
-} from "@vue/composition-api";
+  PropType,
+} from "vue";
 
-import moment from "moment-timezone";
-import firebase from "firebase/compat/app";
-import { isNull, useIsInMo } from "@/utils/utils";
+import {
+  Timestamp,
+} from "firebase/firestore";
+
+import { isNull } from "@/utils/utils";
 import { usePickupTime } from "@/utils/pickup";
+
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { OrderInfoData } from "@/models/orderInfo";
 
 export default defineComponent({
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
     orderInfo: {
-      type: Object,
+      type: Object as PropType<OrderInfoData>,
       required: true,
     },
     isDelivery: {
       type: Boolean,
       required: false,
     },
+    hasSoldOutToday: {
+      type: Boolean,
+      required: false,
+    }
   },
   emits: ["notAvailable", "updateDisabledPickupTime"],
   setup(props, ctx) {
-    const store = ctx.root.$store;
-
     const dayIndex = ref(0);
     const time = ref(0);
 
-    const isInMo = useIsInMo(ctx.root);
-    const isPickup = computed(() => {
-      return props.orderInfo.isPickup;
-    });
     const exceptData = computed(() => {
       return (Object.values(props.orderInfo.menuItems) || []).reduce(
-        (tmp, menu) => {
+        (tmp: any, menu) => {
           const { exceptDay, exceptHour } = menu;
           Object.keys(exceptDay || {}).map((key) => {
             if (exceptDay[key]) {
@@ -95,28 +99,15 @@ export default defineComponent({
       );
     });
 
-    const { deliveryAvailableDays, availableDays, todaysLast } = usePickupTime(
+    const { deliveryAvailableDays, availableDays } = usePickupTime(
       props.shopInfo,
       exceptData,
-      {},
-      ctx,
-      isInMo.value,
-      isPickup
+      ref({}),
+      props.orderInfo.lunchOrDinner,
+      computed(() => props.hasSoldOutToday),
     );
-    // for mo
-    const lastOrder = computed(() => {
-      return (todaysLast.value || {}).lastOrderDisplay;
-    });
 
     const disabledPickupTime = computed(() => {
-      if (isPickup.value) {
-        const now = Number(
-          moment(store.state.date).tz("Asia/Tokyo").format("HHmm")
-        );
-        const last = Number((todaysLast.value || {}).lastOrderStr || 0);
-        console.log(now, last);
-        return now > last;
-      }
       return false;
     });
 
@@ -142,7 +133,7 @@ export default defineComponent({
 
     watch(days, () => {
       if (
-        !(days.value[dayIndex.value]?.times || []).some((t) => {
+        !(days.value[dayIndex.value]?.times || []).some((t: any) => {
           return time.value == t.time;
         })
       ) {
@@ -161,13 +152,12 @@ export default defineComponent({
       const date = days.value[dayIndex.value].date;
       date.setHours(time.value / 60);
       date.setMinutes(time.value % 60);
-      const ts = firebase.firestore.Timestamp.fromDate(date);
-      return new firebase.firestore.Timestamp(ts.seconds, ts.nanoseconds);
+      const ts = Timestamp.fromDate(date);
+      return new Timestamp(ts.seconds, ts.nanoseconds);
     };
     return {
       // called by parent
       timeToPickup,
-      lastOrder,
 
       availableDays: days,
 

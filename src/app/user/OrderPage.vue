@@ -1,7 +1,7 @@
 <template>
   <div>
     <template v-if="!isUser && !isLiffUser">
-      <RequireLogin :loginVisible="loginVisible" @dismissed="handleDismissed" />
+      <RequireLogin :loginVisible="loginVisible" ref="requireLoginRef" />
     </template>
     <template v-else-if="notFound || menuNotFound">
       <not-found />
@@ -22,11 +22,7 @@
         :orderItems="orderItems"
         :paymentInfo="paymentInfo"
         :deliveryData="deliveryData"
-        :mode="mode"
-        :groupData="groupData"
-        :lastOrder="lastOrder"
-        :moSuspend="moSuspend"
-        @handleOpenMenu="handleOpenMenu"
+        :menuPagePath="menuPagePath"
         @openTransactionsAct="openTransactionsAct"
         :promotions="promotions"
       />
@@ -36,28 +32,28 @@
         :orderInfo="orderInfo"
         :orderItems="orderItems"
         :paymentInfo="paymentInfo"
-        :mode="mode"
-        :groupData="groupData"
-        @handleOpenMenu="handleOpenMenu"
+        :menuPagePath="menuPagePath"
+        :hasFriends="hasFriends"
+        :hasLine="hasLine"
       />
     </template>
     <TransactionsActModal
+      ref="transactions"
       :isDelivery="orderInfo.isDelivery || false"
       :shopInfo="shopInfo"
-      ref="contents"
     />
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
   ref,
   computed,
   onUnmounted,
-} from "@vue/composition-api";
-import firebase from "firebase/compat/app";
-import moment from "moment-timezone";
+  watch,
+  PropType,
+} from "vue";
 
 import NotFound from "@/components/NotFound.vue";
 import RequireLogin from "@/components/RequireLogin.vue";
@@ -68,19 +64,24 @@ import OrderPageBefore from "@/app/user/OrderPage/BeforePaid.vue";
 import OrderPageAfter from "@/app/user/OrderPage/AfterPaid.vue";
 
 import { db } from "@/lib/firebase/firebase9";
-import { onSnapshot, doc, deleteDoc } from "firebase/firestore";
+import { onSnapshot, doc, deleteDoc, Unsubscribe } from "firebase/firestore";
 
-import { order_status, order_status_keys } from "@/config/constant";
-import { nameOfOrder } from "@/utils/strings";
+import { order_status } from "@/config/constant";
+import { lineVerifyFriend } from "@/lib/firebase/functions";
 
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import {
   getOrderItems,
-  doc2data,
-  array2obj,
   useLiffBasePath,
+  useRestaurantId,
+  useUserData,
 } from "@/utils/utils";
+
+import { useRoute, onBeforeRouteLeave } from "vue-router";
+
+import { OrderInfoData, OrderMenuItemData } from "@/models/orderInfo";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 export default defineComponent({
   name: "Order",
@@ -89,7 +90,6 @@ export default defineComponent({
       title:
         this.shopInfo?.restaurantName && this.statusKey
           ? [
-              // this.defaultTitle, for mo
               this.shopInfo ? this.shopInfo?.restaurantName : "--",
               "Order Page",
               this.$t("order.status." + this.statusKey),
@@ -108,7 +108,7 @@ export default defineComponent({
   },
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
     paymentInfo: {
@@ -123,40 +123,31 @@ export default defineComponent({
       type: Boolean,
       required: false,
     },
-    mode: {
-      type: String,
-      required: false,
-    },
     promotions: {
       type: Array,
       required: true,
     },
-    moPrefix: {
-      type: String,
-      required: false,
-    },
-    groupData: {
-      type: Object,
-      required: false,
-    },
-    moSuspend: {
-      type: Boolean,
-      required: false,
-    },
   },
-  setup(props, ctx) {
+  setup(props) {
+    const route = useRoute();
+
+    const {
+      isUser,
+      isLiffUser,
+      inLiff,
+    } = useUserData();
+
     const loginVisible = ref(false);
-    const orderInfo = ref({});
-    const menuObj = ref(null);
-    const detacher = [];
-    const menuNotFound = ref(null);
+    const transactions = ref();
+    const orderInfo = ref<OrderInfoData>({} as OrderInfoData);
+    const hasFriends = ref<boolean | null>(null);
+    const menuObj = ref<{ [key: string]: OrderMenuItemData } | null>(null);
+    const detacher: Unsubscribe[] = [];
+    const menuNotFound = ref<boolean | null>(null);
+    
+    const liffBasePath = useLiffBasePath();
 
-    const liffBasePath = useLiffBasePath(ctx.root);
-
-    const orderId = ctx.root.$route.params.orderId;
-    const statusKey = computed(() => {
-      return orderInfo.value ? order_status_keys[orderInfo.value.status] : null;
-    });
+    const orderId = route.params.orderId as string;
     const orderError = computed(() => {
       return orderInfo.value.status === order_status.error;
     });
@@ -167,80 +158,59 @@ export default defineComponent({
       return orderInfo.value.status >= order_status.order_placed;
     });
     const orderItems = computed(() => {
-      return getOrderItems(orderInfo.value, menuObj.value);
+      return getOrderItems(orderInfo.value, menuObj.value as any);
+    });
+    const restaurantId = useRestaurantId();
+
+    const hasLine = computed(() => {
+      return !!(props.shopInfo.hasLine && props.shopInfo.lineClientId);
     });
 
-    const loadUserData = () => {
+    const loadUserData = async () => {
       const order_detacher = onSnapshot(
-        doc(db, `restaurants/${ctx.root.restaurantId()}/orders/${orderId}`),
+        doc(db, `restaurants/${restaurantId.value}/orders/${orderId}`),
         async (order) => {
           const order_data = order.exists() ? order.data() : {};
-          orderInfo.value = order_data;
+          orderInfo.value = order_data as OrderInfoData;
           menuObj.value = orderInfo.value.menuItems || {};
           if (just_validated.value) {
             analyticsUtil.sendViewCart(
               orderInfo.value,
               orderId,
               orderItems.value.map((or) => {
-                return { ...or.item, id: or.id, quantity: or.count };
+                return { ...or.item, id: or.id, quantity: or.count } as any;
               }),
               props.shopInfo,
-              ctx.root.restaurantId()
+              restaurantId.value
             );
           }
         },
-        (error) => {
+        () => {
           menuNotFound.value = true;
         }
       );
       detacher.push(order_detacher);
-    };
 
-    const store = ctx.root.$store;
-    const disabledPickupTime = computed(() => {
-      if (orderInfo.value?.isPickup) {
-        const now = Number(moment(store.state.date).format("hhmm"));
-        const last = Number(props.shopInfo.moLastPickupTime || "2100");
-        return now >= last;
-      }
-      return false;
-    });
-    const lastOrder = computed(() => {
-      if (props.shopInfo.moLastPickupTime) {
-        return [
-          (props.shopInfo.moLastPickupTime || "")
-            .split("")
-            .slice(0, 2)
-            .join(""),
-          (props.shopInfo.moLastPickupTime || "")
-            .split("")
-            .slice(2, 4)
-            .join(""),
-        ].join(":");
-      }
-      return "21:00";
-    });
-
-    const handleOpenMenu = () => {
-      if (ctx.root.inLiff) {
-        ctx.root.$router.push(liffBasePath + "/r/" + ctx.root.restaurantId());
-      } else if (props.mode === "mo") {
-        ctx.root.$router.push(
-          `/${props.moPrefix}/r/${ctx.root.restaurantId()}`
-        );
+      if (hasLine.value) {
+        const ret = await lineVerifyFriend({restaurantId: props.shopInfo.restaurantId});
+        hasFriends.value = ret.data.result;
       } else {
-        ctx.root.$router.push(`/r/${ctx.root.restaurantId()}`);
+        hasFriends.value = null;
       }
     };
-    const handleDismissed = (params) => {
-      console.log("handleDismissed", params);
-      // The user has dismissed the login dialog (including the successful login)
-      loginVisible.value = false;
-    };
+
+    const menuPagePath = computed(() => {
+      if (inLiff.value) {
+        return liffBasePath + "/r/" + restaurantId.value;
+      } else {
+        return `/r/${restaurantId.value}`;
+      }
+    });
+      
     const deleteOrderInfo = async () => {
       try {
         await deleteDoc(
-          doc(db, `restaurants/${ctx.root.restaurantId()}/orders/${orderId}`)
+          doc(db, `restaurants/${restaurantId.value}/orders/${orderId}`)
         );
         console.log("suceeded");
       } catch (error) {
@@ -248,15 +218,25 @@ export default defineComponent({
       }
     };
     const openTransactionsAct = () => {
-      ctx.refs.contents.openTransactionsAct();
+      transactions.value.openTransactionsAct();
     };
-
-    if (ctx.root.isUser || ctx.root.isLiffUser) {
+    if (isUser.value || isLiffUser.value) {
       loadUserData();
-    } else if (!ctx.root.isUser) {
+    } else if (!isUser.value) {
       loginVisible.value = true;
     }
 
+    watch(isUser, (value) => {
+      if (value) {
+        loadUserData();
+      }
+    });
+    watch(isLiffUser, (value) => {
+      if (value) {
+        loadUserData();
+      }
+    });
+    
     onUnmounted(() => {
       if (detacher) {
         detacher.map((detacher) => {
@@ -264,7 +244,12 @@ export default defineComponent({
         });
       }
     });
-
+    onBeforeRouteLeave((to, from, next)  => {
+      if (just_validated.value) {
+        deleteOrderInfo();
+      }
+      next();
+    });
     return {
       menuNotFound,
       orderError,
@@ -274,36 +259,20 @@ export default defineComponent({
       orderInfo,
       orderItems,
 
-      handleOpenMenu,
-      handleDismissed,
+      menuPagePath,
 
       openTransactionsAct,
+      transactions,
       loginVisible,
 
       loadUserData,
-      deleteOrderInfo,
+      isUser,
+      
+      isLiffUser,
 
-      disabledPickupTime,
-      lastOrder,
+      hasFriends,
+      hasLine,
     };
-  },
-  watch: {
-    isUser() {
-      if (this.isUser) {
-        this.loadUserData();
-      }
-    },
-    isLiffUser() {
-      if (this.isLiffUser) {
-        this.loadUserData();
-      }
-    },
-  },
-  beforeRouteLeave(to, from, next) {
-    if (this.just_validated) {
-      this.deleteOrderInfo();
-    }
-    next();
   },
 });
 </script>

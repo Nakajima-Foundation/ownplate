@@ -48,13 +48,14 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
-} from "@vue/composition-api";
+} from "vue";
 import MarkdownIt from "markdown-it";
-import newsList from "./data";
-import NotFound from "@/components/NotFound";
+import newsList from "@/app/admin/News/data";
+import NotFound from "@/components/NotFound.vue";
+import { useRoute } from "vue-router";
 
 export default defineComponent({
   components: {
@@ -65,8 +66,9 @@ export default defineComponent({
       title: [(this.news || {}).title, this.defaultTitle].join(" / "),
     };
   },
-  setup(_, ctx) {
-    const newsId = ctx.root.$route.params.newsId;
+  setup() {
+    const route = useRoute();
+    const newsId = route.params.newsId;
     const news = newsList.find((element) => element.date === newsId);
     return {
       md: new MarkdownIt(),
@@ -77,13 +79,13 @@ export default defineComponent({
 </script>
 
 <style lang="css" scoped>
-/deep/ .article-list ul {
+::v-deep(.article-list) ul {
   list-style: none;
   margin-top: 8px;
   margin-bottom: 12px;
 }
 
-/deep/ .article-list > ul > li ul li {
+::v-deep(.article-list) > ul > li ul li {
   list-style: outside;
   margin-left: 36px;
   margin-bottom: 4px;

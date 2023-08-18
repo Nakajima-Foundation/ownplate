@@ -16,8 +16,8 @@
     </div>
   </div>
 </template>
-<script>
-import { defineComponent } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent } from "vue";
 import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
 
 export default defineComponent({

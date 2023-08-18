@@ -94,20 +94,6 @@
           </o-button>
         </div>
 
-        <!-- Sign Up as a New User -->
-        <div class="mt-6 text-center">
-          <router-link to="/admin/user/signup">
-            <div class="inline-flex items-center justify-center">
-              <i class="material-icons mr-2 text-lg text-op-teal"
-                >person_add_alt_1</i
-              >
-              <div class="text-sm font-bold text-op-teal">
-                {{ $t("admin.pleaseSignUp") }}
-              </div>
-            </div>
-          </router-link>
-        </div>
-
         <!-- Forgot Password -->
         <div class="mt-6 text-center">
           <router-link to="/admin/user/reset">
@@ -121,14 +107,34 @@
         </div>
       </form>
     </div>
+
+		<!-- Sign Up as a New User -->
+      <div class="mt-12 text-center">
+				<div class="font-bold text-black text-opacity-40">
+         	{{ $t("admin.forSignup") }}
+       	</div>
+
+				<div class="mt-6">
+				<router-link to="/admin/user/signup">
+					<div class="inline-flex h-16 items-center rounded-full bg-ownplate-yellow px-8 shadow hover:bg-opacity-80">
+           	<span class="text-xl font-bold text-black opacity-90">
+							{{ $t("lp.signUpForFree") }}
+						</span>
+       		</div>
+				</router-link>
+				</div>
+       </div>
   </div>
 </template>
 
-<script>
-import { defineComponent, ref, watch } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent, ref, watch } from "vue";
 import { auth } from "@/lib/firebase/firebase9";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { useUser } from "@/utils/utils";
+import { useUserData  } from "@/utils/utils";
+
+import { useRoute, useRouter } from "vue-router";
+import { useStore } from "vuex";
 
 export default defineComponent({
   name: "Signin",
@@ -137,25 +143,29 @@ export default defineComponent({
       title: [this.defaultTitle, "Signin Admin"].join(" / "),
     };
   },
-  setup(props, ctx) {
+  setup() {
+    const route = useRoute();
+    const router = useRouter();
+    const store = useStore();
+    
     const email = ref("");
     const password = ref("");
     const errors = ref({});
 
-    const user = useUser(ctx);
+    const { user, isAdmin } = useUserData();
 
     const redirectToAdminPage = () => {
-      const redirect = ctx.root.$route.query["to"];
-      const pathRegex = /^\/[a-zA-Z0-9-\_\/]+$/;
+      const redirect = route.query["to"] as string;
+      const pathRegex = /^\/[a-zA-Z0-9-_/]+$/;
 
       if (redirect && pathRegex.test(redirect)) {
-        ctx.root.$router.push(redirect);
+        router.push(redirect);
       } else {
-        ctx.root.$router.push("/admin/restaurants");
+        router.push("/admin/restaurants");
       }
     };
 
-    if (ctx.root.isAdmin) {
+    if (isAdmin.value) {
       redirectToAdminPage();
     }
 
@@ -167,15 +177,15 @@ export default defineComponent({
     });
 
     const handleCancel = () => {
-      ctx.root.$router.push("/");
+      router.push("/");
     };
     const onSignin = () => {
-      ctx.root.$store.commit("setLoading", true);
+      store.commit("setLoading", true);
       errors.value = {};
       signInWithEmailAndPassword(auth, email.value, password.value)
-        .then((ret) => {
+        .then(() => {
           console.log("onSignin success");
-          ctx.root.$store.commit("setLoading", false);
+          store.commit("setLoading", false);
         })
         .catch((error) => {
           console.log("onSignin failed", error.code, error.message);
@@ -188,7 +198,7 @@ export default defineComponent({
           } else {
             errors.value = { email: [errorCode] };
           }
-          ctx.root.$store.commit("setLoading", false);
+          store.commit("setLoading", false);
         });
     };
     return {

@@ -4,7 +4,7 @@ import * as functions from "firebase-functions";
 
 import { order_status } from "../../common/constant";
 import * as utils from "../../lib/utils";
-import { orderAccounting, getGroupRestautantRef, createNewOrderData } from "../order/orderCreated";
+import { orderAccounting, createNewOrderData } from "../order/orderCreated";
 import { sendMessageToCustomer } from "../notify";
 import { costCal } from "../../common/commonUtils";
 import { Context } from "../../models/TestType";
@@ -58,7 +58,7 @@ export const orderChange = async (db: admin.firestore.Firestore, data: orderChan
     await utils.validate_sub_account_request(db, uid, ownerUid, restaurantId);
   }
   const restaurantRef = db.doc(`restaurants/${restaurantId}`);
-  const restaurantData = (await restaurantRef.get()).data() || {};
+  const restaurantData = await utils.get_restaurant(db, restaurantId);
   if (restaurantData.uid !== ownerUid) {
     throw new functions.https.HttpsError("permission-denied", "The user does not have an authority to perform this operation.");
   }
@@ -66,7 +66,7 @@ export const orderChange = async (db: admin.firestore.Firestore, data: orderChan
     throw new functions.https.HttpsError("permission-denied", "Cannot be changed to an empty order.");
   }
   // check mo
-  const menuRestaurantRef = restaurantData.groupId ? await getGroupRestautantRef(db, restaurantData.groupId) : restaurantRef;
+  const menuRestaurantRef = restaurantRef;
 
   try {
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
@@ -88,7 +88,7 @@ export const orderChange = async (db: admin.firestore.Firestore, data: orderChan
       order: updateOrderData,
       rawOptions: updateRawOptions,
     };
-    const { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total } = await createNewOrderData(menuRestaurantRef, orderRef, baseData, multiple, restaurantData, restaurantRef);
+    const { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total } = await createNewOrderData(menuRestaurantRef, orderRef, baseData, multiple);
 
     const accountingResult = orderAccounting(restaurantData, food_sub_total, alcohol_sub_total, multiple);
     // was created new order data
@@ -173,7 +173,7 @@ export const orderChange = async (db: admin.firestore.Firestore, data: orderChan
       });
     }
     if (order.sendSMS) {
-      await sendMessageToCustomer(db, "msg_order_updated", restaurantData.restaurantName, order, restaurantId, orderId, {}, true);
+      await sendMessageToCustomer(db, "msg_order_updated", restaurantData.hasLine, restaurantData.restaurantName, order, restaurantId, orderId, {}, true);
     }
     return { result: true };
   } catch (error) {

@@ -33,8 +33,8 @@ export const cancel = async (db: admin.firestore.Firestore, data: orderCancelDat
   
   const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
   const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`);
-  const restaurant = await utils.get_restaurant(db, restaurantId);
-  const restaurantOwnerUid = restaurant["uid"];
+  const restaurantData = await utils.get_restaurant(db, restaurantId);
+  const restaurantOwnerUid = restaurantData.uid;
 
   try {
     const result = await db.runTransaction(async (transaction) => {
@@ -101,10 +101,10 @@ export const cancel = async (db: admin.firestore.Firestore, data: orderCancelDat
     });
     // sendSMS is always true
     if (isAdmin && result.order.sendSMS) {
-      await sendMessageToCustomer(db, "msg_order_canceled", restaurant.restaurantName, result.order, restaurantId, orderId, {}, true);
+      await sendMessageToCustomer(db, "msg_order_canceled", restaurantData.hasLine, restaurantData.restaurantName, result.order, restaurantId, orderId, {}, true);
     }
     if (!isAdmin) {
-      await notifyCanceledOrderToRestaurant(db, restaurantId, result.order, restaurant.restaurantName);
+      await notifyCanceledOrderToRestaurant(db, restaurantId, result.order, restaurantData.restaurantName);
     }
     return { result: true };
   } catch (error) {

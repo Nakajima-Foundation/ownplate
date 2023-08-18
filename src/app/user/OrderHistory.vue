@@ -25,7 +25,6 @@
           @selected="orderSelected($event)"
           :order="order"
           :isSuperView="true"
-          :isInMo="isInMo"
         />
       </template>
       <div v-else>
@@ -35,7 +34,7 @@
       </div>
     </div>
     <!-- Phone Login-->
-    <o-modal :active.sync="loginVisible" :width="488" scroll="keep">
+    <o-modal v-model:active="loginVisible" :width="488" scroll="keep">
       <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
         <phone-login v-on:dismissed="handleDismissed" />
       </div>
@@ -43,14 +42,14 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
   ref,
   computed,
   onUnmounted,
   watch,
-} from "@vue/composition-api";
+} from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import {
   collectionGroup,
@@ -59,6 +58,7 @@ import {
   where,
   orderBy,
   limit,
+  Unsubscribe,
 } from "firebase/firestore";
 
 import OrderedInfo from "@/app/admin/Order/OrderedInfo.vue";
@@ -66,7 +66,12 @@ import PhoneLogin from "@/app/auth/PhoneLogin.vue";
 import BackButton from "@/components/BackButton.vue";
 
 import { defaultHeader } from "@/config/header";
-import { useBasePath, useTopPath, useIsInMo, getMoPrefix } from "@/utils/utils";
+import { useBasePath, useTopPath } from "@/utils/utils";
+
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+
+import { OrderInfoData } from "@/models/orderInfo";
 
 export default defineComponent({
   metaInfo() {
@@ -79,24 +84,24 @@ export default defineComponent({
     PhoneLogin,
     BackButton,
   },
-  setup(props, ctx) {
-    const orders = ref([]);
+  setup() {
+    const store = useStore();
+    const router = useRouter();
 
-    const basePath = useBasePath(ctx.root);
-    const topPath = useTopPath(ctx.root);
+    const orders = ref<OrderInfoData[]>([]);
 
-    const isInMo = useIsInMo(ctx.root);
-    const moPrefix = getMoPrefix(ctx.root);
+    const basePath = useBasePath();
+    const topPath = useTopPath();
 
     const uid = computed(() => {
-      return ctx.root.$store.getters.uidUser || ctx.root.$store.getters.uidLiff;
+      return store.getters.uidUser || store.getters.uidLiff;
     });
 
     const loginVisible = computed(() => {
       return !uid.value;
     });
 
-    let detacher = null;
+    let detacher: Unsubscribe | null = null;
     const detach = () => {
       detacher && detacher();
       detacher = null;
@@ -107,15 +112,7 @@ export default defineComponent({
       loading.value = true;
       detach();
       if (uid.value) {
-        const orderQuery = isInMo.value
-          ? query(
-              collectionGroup(db, "orders"),
-              where("uid", "==", uid.value),
-              where("groupId", "==", moPrefix),
-              orderBy("orderPlacedAt", "desc"),
-              limit(200)
-            )
-          : query(
+        const orderQuery = query(
               collectionGroup(db, "orders"),
               where("uid", "==", uid.value),
               orderBy("orderPlacedAt", "desc"),
@@ -134,12 +131,10 @@ export default defineComponent({
               if (order.timeEstimated) {
                 order.timeEstimated = order.timeEstimated.toDate();
               }
-              return order;
+              return order as OrderInfoData;
             })
             .filter((data) => {
-              if (isInMo.value) {
-                return true;
-              }
+              // filter mo order for safe // todo remove
               return data.groupId === undefined;
             });
           loading.value = false;
@@ -147,17 +142,17 @@ export default defineComponent({
       }
     };
 
-    const handleDismissed = (success) => {
+    const handleDismissed = (success: boolean) => {
       console.log("handleDismissed", success);
       if (!success) {
-        ctx.root.$router.push(topPath.value);
+        router.push(topPath.value);
       }
     };
 
-    const orderSelected = (order) => {
+    const orderSelected = (order: OrderInfoData) => {
       const path =
         basePath.value + "/r/" + order.restaurantId + "/order/" + order.id;
-      ctx.root.$router.push({
+      router.push({
         path,
       });
     };
@@ -182,7 +177,6 @@ export default defineComponent({
 
       loading,
 
-      isInMo,
     };
   },
 });

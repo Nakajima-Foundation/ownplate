@@ -44,14 +44,13 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
   ref,
   computed,
   watch,
-  onUnmounted,
-} from "@vue/composition-api";
+} from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import {
   getDocs,
@@ -69,8 +68,11 @@ import { arrayChunk, forceArray } from "@/utils/utils";
 import {
   reportHeaders,
   reportHeadersWithAddress,
-  reportHeadersForMo,
 } from "@/utils/reportUtils";
+
+import { OrderInfoData } from "@/models/orderInfo";
+import { CustomerInfo } from "@/models/customer";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   components: {
@@ -78,7 +80,7 @@ export default defineComponent({
   },
   props: {
     orders: {
-      type: Array,
+      type: Array<OrderInfoData>,
       required: true,
     },
     shopInfo: {
@@ -94,29 +96,19 @@ export default defineComponent({
       required: false,
       default: false,
     },
-    isInMo: {
-      type: Boolean,
-      required: true,
-    },
-    categoryDataObj: {
-      type: Object,
-      required: true,
-    },
-    allSubCategoryDataObj: {
-      type: Object,
-      required: true,
-    },
     buttonTitle: {
       type: String,
       required: true,
     },
   },
-  setup(props, ctx) {
-    const customers = ref({});
-    const writeonFirstLine = (index, key, text) => {
-      return (index === 0 && Number(key) === 0) || props.isInMo ? text : "-";
+  setup(props) {
+    const { t } = useI18n({ useScope: 'global' });
+
+    const customers = ref<{[key: string]: CustomerInfo}>({});
+    const writeonFirstLine = (index: number, key: number | string, text: any) => {
+      return (index === 0 && Number(key) === 0) ? text : "-";
     };
-    const timeConvert = (timeData) => {
+    const timeConvert = (timeData: any) => {
       if (!timeData) {
         return null;
       }
@@ -163,16 +155,14 @@ export default defineComponent({
     };
 
     const fields = computed(() => {
-      if (props.isInMo) {
-        return reportHeadersForMo;
-      } else if (props.shopInfo?.isEC || props.shopInfo?.enableDelivery) {
+      if (props.shopInfo?.isEC || props.shopInfo?.enableDelivery) {
         return reportHeadersWithAddress;
       }
       return reportHeaders;
     });
     const fieldNames = computed(() => {
       return fields.value.map((field) => {
-        return ctx.root.$t(`order.${field}`);
+        return t(`order.${field}`);
       });
     });
     const mergedOrder = computed(() => {
@@ -184,7 +174,7 @@ export default defineComponent({
       });
     });
     const tableData = computed(() => {
-      const items = [];
+      const items: any[] = [];
       mergedOrder.value.forEach((order) => {
         const ids = Object.keys(order.order);
         const status = Object.keys(order_status).reduce((result, key) => {
@@ -200,8 +190,11 @@ export default defineComponent({
           const menuItem = (order.menuItems || {})[menuId] || {};
           const taxRate = menuItem.tax === "food" ? 8 : 10;
           Object.keys(orderItems).forEach((key) => {
+            // @ts-ignore
             const opt = Array.isArray(options[key] || [])
+            // @ts-ignore
               ? options[key]
+            // @ts-ignore
               : [options[key]];
             try {
               items.push({
@@ -212,7 +205,7 @@ export default defineComponent({
                 type: writeonFirstLine(
                   index,
                   key,
-                  ctx.root.$t("order.orderType" + order.type)
+                  t("order.orderType" + order.type)
                 ),
                 uid: order.uid, // mo
                 restaurantId: props.shopInfo.restaurantId, // mo
@@ -257,9 +250,7 @@ export default defineComponent({
                 userName: writeonFirstLine(
                   index,
                   key,
-                  props.isInMo
-                    ? "-"
-                    : order.name || ctx.root.$t("order.unspecified")
+                  order.name || t("order.unspecified")
                 ),
                 "ec.name": writeonFirstLine(
                   index,
@@ -292,27 +283,21 @@ export default defineComponent({
                   key,
                   order?.isDelivery ? "1" : ""
                 ),
+                // @ts-ignore
                 count: orderItems[key],
-                options: opt.filter((a) => String(a) !== "").join("/"),
+                options: opt.filter((a: string) => String(a) !== "").join("/"),
                 memo: writeonFirstLine(index, key, order.memo),
                 itemName: menuItem.itemName,
                 statusName: writeonFirstLine(
                   index,
                   key,
-                  ctx.root.$t(`order.status.${status}`)
+                  t(`order.status.${status}`)
                 ),
                 category1: menuItem.category1 || "",
                 category2: menuItem.category2 || "",
 
                 categoryId: menuItem.category || "",
-                category: menuItem.category
-                  ? (props.categoryDataObj || {})[menuItem.category]?.name || ""
-                  : "",
                 subCategoryId: menuItem.subCategory || "",
-                subCategory: menuItem.subCategory
-                  ? (props.allSubCategoryDataObj || {})[menuItem.subCategory]
-                      ?.name || ""
-                  : "",
                 productId: menuItem.productId || "",
 
                 // for mo

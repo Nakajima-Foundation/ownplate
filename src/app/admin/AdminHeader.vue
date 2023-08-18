@@ -4,7 +4,7 @@
       <div class="flex-shrink-0">
         <back-button :url="backLink" :iconText="iconText" :backText="backText" />
       </div>
-      <PreviewLink :shopInfo="shopInfo" :isInMo="isInMo" :moPrefix="moPrefix" />
+      <PreviewLink :shopInfo="shopInfo" />
     </div>
 
     <!-- Photo and Name -->
@@ -17,17 +17,16 @@
           />
         </div>
         <div class="text-base font-bold">
-          {{ shopInfo.restaurantName }}
+          {{ shopInfo.restaurantName }} <span v-if="pageText">/ {{ $t("adminTitle." + pageText) }}</span>
         </div>
       </div>
     </div>
 
     <div class="mt-4 flex lg:mt-0">
       <!-- Suspend Button -->
-      <template v-if="!isInMo">
         <o-button
           tag="router-link"
-          :to="`/admin/restaurants/${restaurantId()}/suspend`"
+          :to="`/admin/restaurants/${restaurantId}/suspend`"
           class="b-reset-tw"
           v-if="showSuspend"
         >
@@ -55,11 +54,6 @@
             </div>
           </div>
         </o-button>
-      </template>
-      <template v-else>
-        <!-- for mo suspend -->
-        <AdminHeaderSuspend :shopInfo="shopInfo" />
-      </template>
       <!-- Notifications -->
       <div>
         <notification-index :shopInfo="shopInfo" />
@@ -68,19 +62,22 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, computed, ref } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent, computed } from "vue";
 import BackButton from "@/components/BackButton.vue";
-import NotificationIndex from "./Notifications/Index.vue";
+import NotificationIndex from "@/app/admin/Notifications/Index.vue";
 import PreviewLink from "@/app/admin/common/PreviewLink.vue";
-import AdminHeaderSuspend from "@/app/admin/AdminHeaderSuspend.vue";
+
+import {
+  useRestaurantId,
+  resizedProfileImage,
+} from "@/utils/utils";
 
 export default defineComponent({
   components: {
     BackButton,
     NotificationIndex,
     PreviewLink,
-    AdminHeaderSuspend,
   },
   props: {
     shopInfo: {
@@ -95,14 +92,6 @@ export default defineComponent({
       type: Boolean,
       required: true,
     },
-    isInMo: {
-      type: Boolean,
-      required: true,
-    },
-    moPrefix: {
-      type: String,
-      required: false,
-    },
     iconText: {
       type: String,
       required: false,
@@ -111,8 +100,13 @@ export default defineComponent({
       type: String,
       required: false,
     },
+    pageText: { 
+      type: String,
+      required: false,
+    },
   },
-  setup(props, ctx) {
+  setup(props) {
+    const restaurantId = useRestaurantId();
     const suspendUntil = computed(() => {
       if (props.shopInfo.suspendUntil) {
         const time = props.shopInfo.suspendUntil.toDate();
@@ -126,6 +120,8 @@ export default defineComponent({
 
     return {
       suspendUntil,
+      restaurantId,
+      resizedProfileImage,
     };
   },
 });

@@ -118,6 +118,7 @@ export interface stripeUpdateCustomerData {
 export interface lineValidateData {
   code: string;
   redirect_uri: string;
+  restaurantId?: string;
 }
 export interface liffAuthenticateData {
   token: string;

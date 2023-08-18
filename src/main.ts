@@ -1,67 +1,67 @@
 // core
-import Vue from "vue";
+import { createApp } from "vue";
+
 import router from "@/lib/router";
-import store from "@/lib/store/index";
+import store from "@/lib/store";
 
 // plugins
-import mixin from "@/mixins/mixin";
-import i18n from "@/plugins/vue-i18n";
+import mixin from "@/lib/mixin";
+import i18n from "@/lib/vue-i18n";
 
 // library
-import Oruga from "@oruga-ui/oruga";
+import Oruga from "@oruga-ui/oruga-next";
 import { bulmaConfig } from "@oruga-ui/theme-bulma";
-
-import Croppa from "vue-croppa";
-import SocialSharing from "vue-social-sharing";
-import VueClipboard from "vue-clipboard2";
-import VueMeta from "vue-meta";
-import VueQrcode from "@chenfengyuan/vue-qrcode";
+import VueSocialSharing from "vue-social-sharing";
+import { createMetaManager, plugin as metaPlugin } from 'vue-meta'
+import VueQrcode from '@chenfengyuan/vue-qrcode';
+import VueGoogleMaps from '@fawmi/vue-google-maps'
 
 // sentry
 import * as Sentry from "@sentry/vue";
 import { BrowserTracing } from "@sentry/tracing";
 
-import VueCompositionAPI from "@vue/composition-api";
-
 // components
 import App from "@/components/App.vue";
-import GMap from "@/components/gmaps/GMap.vue";
-import GMapInfoWindow from "@/components/gmaps/GMapInfoWindow.vue";
-import GMapMarker from "@/components/gmaps/GMapMarker.vue";
 
 // config
-import { sentryDsn } from "@/config/project";
-import { GAPIKey } from "@/config/project";
+import {
+  sentryDsn,
+  GAPIKey,
+} from "@/config/project";
 
 // css
 import "@/assets/css/tailwind.css";
 import "@/assets/css/main.css";
 
-// components
-Vue.component(VueQrcode.name, VueQrcode);
-Vue.component("GMap", GMap);
-Vue.component("GMapInfoWindow", GMapInfoWindow);
-Vue.component("GMapMarker", GMapMarker);
+const app = createApp(App);
 
-Vue.prototype.$GMaps = {
-  apiKey: GAPIKey,
-  loaded: false,
-};
+// components
+app.component(VueQrcode.name, VueQrcode);
+
+app.use(VueGoogleMaps, {
+  load: {
+    key: GAPIKey,
+  },
+})
 
 // mixin
-Vue.mixin(mixin);
+app.mixin(mixin);
 
-Vue.use(VueCompositionAPI);
-Vue.use(SocialSharing);
-Vue.use(Croppa);
-Vue.use(VueClipboard);
-Vue.use(VueMeta, {});
-Vue.use(Oruga, bulmaConfig);
+app.use(VueSocialSharing);
+app.use(Oruga, bulmaConfig);
+
+const metaManager = createMetaManager()
+app.use(metaManager)
+app.use(metaPlugin)
+
+app.use(store);
+app.use(router);
+app.use(i18n);
 
 if (process.env.NODE_ENV !== "development") {
   if (sentryDsn) {
     Sentry.init({
-      Vue,
+      app,
       dsn: sentryDsn,
       integrations: [
         new BrowserTracing({
@@ -77,9 +77,6 @@ if (process.env.NODE_ENV !== "development") {
   }
 }
 
-const app = new Vue({
-  router,
-  store,
-  render: (h) => h(App),
-  i18n,
-}).$mount("#app");
+
+app.mount("#app");
+

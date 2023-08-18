@@ -25,50 +25,68 @@
   </div>
 </template>
 
-<script>
-import { db } from "@/plugins/firebase";
+<script lang="ts">
+import { defineComponent } from "vue";
+
 import {
   subAccountInvitationAccept,
   subAccountInvitationDeny,
 } from "@/lib/firebase/functions";
 
-export default {
+import { useStore } from "vuex";
+import {
+  useRouter,
+  useRoute,
+} from "vue-router";
+
+import moment from "moment-timezone";
+
+export default defineComponent({
   name: "MessageCard",
   props: {
-    message: Object,
+    message: {
+      type: Object,
+      required: true,
+    },
   },
 
-  async created() {
-    const uid = this.message.fromUid;
-    console.log(this.message);
-  },
-  methods: {
-    childInvitationAccept() {
-      this.$store.commit("setAlert", {
+  setup(props) {
+    const store = useStore();
+    const router = useRouter();
+    const route = useRoute();
+
+    const childInvitationAccept = () => {
+      store.commit("setAlert", {
         title: "admin.messages.childInvitationAccept",
         code: "admin.messages.childInvitationAcceptMessage",
         callback: async () => {
-          this.$store.commit("setLoading", true);
-          await subAccountInvitationAccept({ messageId: this.message.id });
-          this.$store.commit("setLoading", false);
-          this.$router.go({
-            path: this.$router.currentRoute.path,
+          store.commit("setLoading", true);
+          await subAccountInvitationAccept({ messageId: props.message.id });
+          store.commit("setLoading", false);
+          // @ts-ignore
+          router.go({
+            path: route.path,
             force: true,
           });
         },
       });
-    },
-    childInvitationDeny() {
+    };
+    const childInvitationDeny = () => {
       console.log("deny");
-      this.$store.commit("setAlert", {
+      store.commit("setAlert", {
         code: "admin.messages.childInvitationDeny",
         callback: async () => {
-          this.$store.commit("setLoading", true);
-          await subAccountInvitationDeny({ messageId: this.message.id });
-          this.$store.commit("setLoading", false);
+          store.commit("setLoading", true);
+          await subAccountInvitationDeny({ messageId: props.message.id });
+          store.commit("setLoading", false);
         },
       });
-    },
+    };
+    return {
+      childInvitationAccept,
+      childInvitationDeny,
+      moment,
+    };
   },
-};
+});
 </script>

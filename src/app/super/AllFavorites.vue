@@ -1,7 +1,7 @@
 <template>
   <div class="mx-6 mt-6">
     <div>
-      <div v-for="(review, key) in reviews">
+      <div v-for="(review, key) in reviews" :key="key">
         <img
           :src="resizedProfileImage(review, '600')"
           class="h-12 w-12 rounded-full object-cover"
@@ -19,60 +19,81 @@
   </div>
 </template>
 
-<script>
-import { db } from "@/plugins/firebase";
+<script lang="ts">
+import { defineComponent, ref } from "vue";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  collectionGroup,
+  query,
+  orderBy,
+  startAfter,
+  limit,
+  getDocs,
+} from "firebase/firestore";
+import moment from "moment";
 
-export default {
+import { useSuper, resizedProfileImage } from "@/utils/utils";
+
+export default defineComponent({
   metaInfo() {
     return {
       title: [this.defaultTitle, "Super All Favorites"].join(" / "),
     };
   },
-  data() {
-    return {
-      reviews: [],
-      isLoading: false,
-      last: null,
-    };
-  },
-  async created() {
-    await this.loadData();
-  },
-  methods: {
-    async loadData() {
-      if (!this.isLoading) {
-        this.isLoading = true;
-        let query = db
-          .collectionGroup("reviews")
-          .orderBy("timeLiked", "desc")
-          .limit(500);
-        if (this.last) {
-          query = query.startAfter(this.last);
+  setup() {
+    useSuper();
+    
+    const reviews = ref<any[]>([]);
+    const last = ref<any>(null)
+    let isLoading = false
+
+    const loadData = async () => {
+      if (!isLoading) {
+        isLoading = true;
+        let myQuery = query(
+          collectionGroup(db, "reviews"),
+          orderBy("timeLiked", "desc"),
+          limit(500),
+        )
+        if (last.value) {
+          myQuery = query(
+            myQuery,
+            startAfter(last.value),
+          )
         }
-        const snapshot = await query.get();
+        const snapshot = await getDocs(myQuery);
 
         if (!snapshot.empty) {
-          this.last = snapshot.docs[snapshot.docs.length - 1];
+          last.value = snapshot.docs[snapshot.docs.length - 1];
           let i = 0;
           for (; i < snapshot.docs.length; i++) {
             const doc = snapshot.docs[i];
             const userId = doc.ref.path.split("/")[1];
             const review = doc.data();
             review.uid = userId;
-            this.reviews.push(review);
+            reviews.value.push(review);
           }
         } else {
-          this.last = null;
+          last.value = null;
         }
       }
-      this.isLoading = false;
-    },
+      isLoading = false;
+    };
+    loadData();
 
-    async nextLoad() {
-      if (this.last) {
-        this.loadData();
+    const nextLoad = () => {
+      if (last.value) {
+        loadData();
       }
-    },
+    };
+    return {
+      reviews,
+      nextLoad,
+      last,
+      moment,
+      resizedProfileImage,
+    };
+
   },
-};
+});
 </script>

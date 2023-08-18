@@ -1,12 +1,9 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
-import * as crypto from "crypto";
 
 export const getPromotion = async (db, transaction, promotionId, restaurantData, orderTotal, enableStripe) => {
   // get promotion
-  const promotionPath = (restaurantData.groupId) ?
-    `/groups/${restaurantData.groupId}/promotions/${promotionId}` :
-    `restaurants/${restaurantData.restaurantId}/promotions/${promotionId}`;
+  const promotionPath = `restaurants/${restaurantData.restaurantId}/promotions/${promotionId}`;
   const promotionDoc = await transaction.get(db.doc(promotionPath));
 
   if (!promotionDoc) {
@@ -42,16 +39,12 @@ export const getPromotion = async (db, transaction, promotionId, restaurantData,
   return promotionData;
 }
 
-export const getUserHistoryCollectionPath = (uid: string, groupId: string, phoneNumber: string) => {
-  if (groupId) {
-    const hash = crypto.createHash('sha256').update([groupId, phoneNumber].join(":")).digest('hex');
-    return `groups/${groupId}/users/${hash}/promotionHistories`
-  } 
+export const getUserHistoryCollectionPath = (uid: string) => {
   return `/users/${uid}/promotionHistories`;
 }
 
-export const getUserHistoryDoc = async (db, promotionData, uid, groupId, phoneNumber) => {
-  const collectionPath = getUserHistoryCollectionPath(uid, groupId, phoneNumber);
+export const getUserHistoryDoc = async (db, promotionData, uid) => {
+  const collectionPath = getUserHistoryCollectionPath(uid);
   if (promotionData.type === "multipletimesCoupon") {
     const ret = (await db.collection(collectionPath)
       .where("promotionId", "===", promotionData.promotionId)
@@ -91,7 +84,7 @@ export const userPromotionHistoryData = (promotionData: any, restaurantData: any
   return {
     uid: customerUid,
     restaurantId: restaurantData.restaurantId,
-    groupId: restaurantData.groupId || "",
+    groupId: "",
     promotionId: promotionData.promotionId,
     orderId,
     totalCharge,

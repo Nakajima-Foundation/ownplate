@@ -44,7 +44,6 @@
                 type="tel"
                 autocomplete="tel"
                 v-model="phoneNumber"
-                v-on:input="validatePhoneNumber"
                 maxlength="20"
                 :placeholder="$t('sms.pleasetype')"
               />
@@ -105,7 +104,6 @@
                 pattern="[0-9]*"
                 autocomplete="one-time-code"
                 v-model="verificationCode"
-                v-on:input="validateVerificationCode"
                 maxlength="6"
                 :placeholder="$t('sms.typeVerificationCode')"
               />
@@ -114,7 +112,7 @@
         </div>
 
         <!-- Enter Name -->
-        <div v-if="!relogin && !isInMo">
+        <div v-if="!relogin">
           <div class="text-sm font-bold">
             {{ $t("sms.userName") }}
           </div>
@@ -160,11 +158,10 @@ import {
   watch,
   computed,
   onMounted,
-} from "@vue/composition-api";
+} from "vue";
 
 import { db, auth } from "@/lib/firebase/firebase9";
 import {
-  signOut,
   RecaptchaVerifier,
   signInWithPhoneNumber,
   updateProfile,
@@ -180,7 +177,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 
-import { stripeRegion, useIsInMo } from "@/utils/utils";
+import { stripeRegion, useIsLocaleJapan } from "@/utils/utils";
 import moment from "moment";
 import * as Sentry from "@sentry/vue";
 
@@ -213,20 +210,20 @@ export default defineComponent({
 
     let recaptchaVerifier: ApplicationVerifier | null = null;
 
-    const isInMo = useIsInMo(ctx.root);
+    const isLocaleJapan = useIsLocaleJapan();
 
     onMounted(() => {
       recaptchaVerifier = new RecaptchaVerifier(
+        auth,
         "signInButton",
         {
           size: "invisible",
-          callback: (response: string) => {
+          callback: () => {
             // reCAPTCHA solved, allow signInWithPhoneNumber.
             // console.log("verified", response);
             console.log("verified");
           },
         },
-        auth
       );
     });
 
@@ -246,21 +243,21 @@ export default defineComponent({
       return !hasError.value;
     });
 
-    const validatePhoneNumber = () => {
+    watch(phoneNumber, () => {
       errors.value = [];
-      const regex = /^\+?[0-9()\-]{8,20}$/;
+      const regex = /^\+?[0-9()-]{8,20}$/;
       if (!regex.test(phoneNumber.value)) {
         errors.value = ["sms.invalidPhoneNumber"];
       }
-    };
+    });
 
-    const validateVerificationCode = () => {
+    watch(verificationCode, () => {
       errors.value = [];
       const regex = /^[0-9]*$/;
       if (!regex.test(verificationCode.value)) {
         errors.value = ["sms.invalidValidationCode"];
       }
-    };
+    });
 
     const handleSubmit = async () => {
       console.log("submit");
@@ -293,7 +290,7 @@ export default defineComponent({
       errors.value = [];
       try {
         isLoading.value = true;
-        let result = await (confirmationResult.value as ConfirmationResult).confirm(
+        const result = await (confirmationResult.value as ConfirmationResult).confirm(
           verificationCode.value
         );
         // console.log("success!", result);
@@ -344,13 +341,11 @@ export default defineComponent({
       readyToSendSMS,
       readyToSendVerificationCode,
 
-      validatePhoneNumber,
-      validateVerificationCode,
-
+      isLocaleJapan,
+      
       handleSubmit,
       handleCode,
 
-      isInMo,
     };
   },
 });

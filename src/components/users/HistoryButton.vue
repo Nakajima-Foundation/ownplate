@@ -14,13 +14,13 @@
   </div>
 </template>
 
-<script>
-import { defineComponent } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent } from "vue";
 import { useBasePath } from "@/utils/utils";
 
 export default defineComponent({
-  setup(_, ctx) {
-    const basePath = useBasePath(ctx.root);
+  setup() {
+    const basePath = useBasePath();
     return {
       basePath,
     };

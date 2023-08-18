@@ -7,55 +7,45 @@
       :deliveryData="deliveryData"
       :mode="mode"
       :moPrefix="moPrefix"
-      :moSuspend="moSuspend"
-      :moPickupSuspend="moPickupSuspend"
       :notFound="notFound"
-      :groupData="groupData"
       :promotions="promotions"
     />
     <NotFound v-else-if="notFound" />
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
   ref,
-  computed,
   onUnmounted,
-} from "@vue/composition-api";
+} from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
 import { doc, onSnapshot, getDoc } from "firebase/firestore";
-import { routeMode, getMoPrefix } from "@/utils/utils";
+import { routeMode, getMoPrefix, useUserData } from "@/utils/utils";
 
 import NotFound from "@/components/NotFound.vue";
 
+import { useRestaurantId } from "@/utils/utils";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { usePromotions } from "@/utils/promotion";
 
 export default defineComponent({
   name: "RestaurantWrapper",
-  props: {
-    groupData: {
-      type: Object,
-      required: false,
-    },
-  },
   components: {
     NotFound,
   },
-  setup(props, ctx) {
-    const mode = routeMode(ctx.root);
-    const moPrefix = getMoPrefix(ctx.root);
+  setup() {
+    const mode = routeMode();
+    const moPrefix = getMoPrefix();
 
-    const shopInfo = ref({});
+    const shopInfo = ref<RestaurantInfoData|{[key: string]: any}>({});
     const paymentInfo = ref({});
     const deliveryData = ref({});
-    const notFound = ref(null);
+    const notFound = ref<boolean | null>(null);
 
-    const restaurantId = computed(() => {
-      return ctx.root.$route.params.restaurantId;
-    });
+    const restaurantId = useRestaurantId();
 
     const restaurant_detacher = onSnapshot(
       doc(db, `restaurants/${restaurantId.value}`),
@@ -73,10 +63,7 @@ export default defineComponent({
           if (mode.value === "liff") {
             return !shopInfo.value.supportLiff;
           }
-          if (mode.value === "mo") {
-            return !shopInfo.value.groupId;
-          }
-          return !!shopInfo.value.groupId || !!shopInfo.value.supportLiff;
+          return !!shopInfo.value.supportLiff;
         })();
 
         if (!notFound.value) {
@@ -93,44 +80,15 @@ export default defineComponent({
           }
         }
       },
-      (e) => {
+      () => {
         notFound.value = true;
         console.log("no restaurant");
       }
     );
 
-    const groupSuspend = ref({});
-    if (props.groupData?.groupId) {
-      onSnapshot(
-        doc(db, `groups/${props.groupData?.groupId}/groupConfig/suspend`),
-        (snapshot) => {
-          groupSuspend.value = snapshot.data() || {};
-        }
-      );
-    }
+    const { user } = useUserData();
 
-    const moSuspend = computed(() => {
-      return !!(
-        shopInfo.value?.isSuspendAllOrder ||
-        groupSuspend.value.isSuspendAllOrder
-      );
-    });
-    const moPickupSuspend = computed(() => {
-      return (
-        !!(
-          shopInfo.value?.isSuspendPickup || groupSuspend.value.isSuspendPickup
-        ) &&
-        !moSuspend.value &&
-        shopInfo.value.enableMoPickup
-      );
-    });
-
-    const user = computed(() => {
-      return ctx.root.user;
-    });
-
-    const id = mode.value === 'mo' ? moPrefix : restaurantId.value;
-    const { promotions } = usePromotions(mode.value, id, user);
+    const { promotions } = usePromotions(restaurantId.value, user);
     
     onUnmounted(() => {
       if (restaurant_detacher) {
@@ -140,9 +98,6 @@ export default defineComponent({
     return {
       mode,
       moPrefix,
-
-      moSuspend,
-      moPickupSuspend,
 
       shopInfo,
       paymentInfo,

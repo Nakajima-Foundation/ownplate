@@ -7,18 +7,23 @@
     </div>
     <o-field :variant="error.length > 0 ? 'danger' : 'success'">
       <o-input
-        :value="value"
+        :modelValue="modelValue"
         :type="type"
         :placeholder="$t(placeholder)"
-        @input="input"
+        @update:modelValue="input"
         :maxlength="maxlength"
       ></o-input>
     </o-field>
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import {
+  defineComponent,
+} from "vue";
+import { useStore } from "vuex";
+
+export default defineComponent({
   name: "TextForm",
   props: {
     required: {
@@ -51,20 +56,26 @@ export default {
       type: Array,
       required: true,
     },
-    value: {
+    modelValue: {
       type: String,
       required: true,
     },
   },
-  methods: {
-    input(e) {
-      this.$emit("input", e);
-    },
-    open(key) {
-      this.$store.commit("setTips", {
+  emits: ["update:modelValue"],
+  setup(_, context) {
+    const store = useStore();
+    const input = (e: any) => {
+      context.emit("update:modelValue", e);
+    };
+    const open = (key: string) => {
+      store.commit("setTips", {
         key,
       });
-    },
+    };
+    return {
+      input,
+      open,
+    };
   },
-};
+});
 </script>

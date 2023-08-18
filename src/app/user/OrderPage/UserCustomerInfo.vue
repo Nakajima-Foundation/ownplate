@@ -6,13 +6,15 @@
   />
 </template>
 
-<script>
-import { defineComponent, ref } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent, ref } from "vue";
 import CustomerInfo from "@/components/CustomerInfo.vue";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, DocumentData } from "firebase/firestore";
 import { db } from "@/lib/firebase/firebase9";
 
-import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
+import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
+
+import { getRestaurantId } from "@/utils/utils";
 
 export default defineComponent({
   props: {
@@ -32,15 +34,18 @@ export default defineComponent({
   components: {
     CustomerInfo,
   },
-  setup(props, ctx) {
-    const customer = ref({});
+  setup(props) {
+    const customer = ref<DocumentData>({});
+    const restaurantId = getRestaurantId();
     getDoc(
       doc(
         db,
-        `restaurants/${ctx.root.$route.params.restaurantId}/orders/${props.orderId}/customer/data`
+        `restaurants/${restaurantId}/orders/${props.orderId}/customer/data`
       )
     ).then((doc) => {
-      customer.value = doc.data();
+      if (doc.exists()){ 
+        customer.value = doc.data();
+      }
     });
     const phoneNumber = parsePhoneNumber(props.orderInfo?.phoneNumber || "");
     const nationalPhoneNumber = phoneNumber ? formatNational(phoneNumber) : "";

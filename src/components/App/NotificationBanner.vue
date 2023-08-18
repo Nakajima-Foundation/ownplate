@@ -8,10 +8,14 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, ref, computed, watch } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent, ref, computed, watch } from "vue";
+import { useStore } from "vuex";
+
 export default defineComponent({
-  setup(props, ctx) {
+  setup() {
+    const store = useStore();
+
     const isFlash = ref(false);
 
     const flash = () => {
@@ -26,7 +30,7 @@ export default defineComponent({
     };
 
     const event = computed(() => {
-      return ctx.root.$store.state.orderEvent;
+      return store.state.orderEvent;
     });
     watch(event, () => {
       flash();

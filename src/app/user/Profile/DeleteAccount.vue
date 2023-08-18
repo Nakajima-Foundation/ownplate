@@ -13,7 +13,7 @@
     </div>
 
     <!-- Phone Login-->
-    <o-modal :active.sync="reLoginVisible" :width="488" scroll="keep">
+    <o-modal v-model:active="reLoginVisible" :width="488" scroll="keep">
       <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
         <phone-login
           v-on:dismissed="continueDelete"
@@ -31,23 +31,29 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, ref, computed, watch } from "@vue/composition-api";
-import PhoneLogin from "@/app/auth/PhoneLogin";
+<script lang="ts">
+import { defineComponent, ref } from "vue";
+import PhoneLogin from "@/app/auth/PhoneLogin.vue";
 import { getAuth, deleteUser } from "firebase/auth";
 
 import { accountDelete } from "@/lib/firebase/functions";
+import { useUserData } from "@/utils/utils";
+
+import { useStore } from "vuex";
 
 export default defineComponent({
   components: {
     PhoneLogin,
   },
-  setup(_, ctx) {
+  setup() {
+    const store = useStore();
+    const { user } = useUserData();
+    
     const isDeletingAccount = ref(false);
     const reLoginVisible = ref(false);
 
     const handleDeleteAccount = () => {
-      ctx.root.$store.commit("setAlert", {
+      store.commit("setAlert", {
         code: "profile.reallyDeleteAccount",
         callback: async () => {
           window.scrollTo(0, 0);
@@ -55,7 +61,9 @@ export default defineComponent({
         },
       });
     };
-    const continueDelete = async (result) => {
+    // To avoid to auth/requires-recent-login error, user need reLogin.
+    // see https://stackoverflow.com/questions/56617518/
+    const continueDelete = async (result: any) => {
       reLoginVisible.value = false;
       if (result) {
         isDeletingAccount.value = true;
@@ -65,7 +73,9 @@ export default defineComponent({
 
           const auth = getAuth();
           const user = auth.currentUser;
-          await deleteUser(user);
+          if (user) {
+            await deleteUser(user);
+          }
           console.log("deleted");
         } catch (error) {
           console.error(error);
@@ -81,6 +91,8 @@ export default defineComponent({
 
       isDeletingAccount,
       reLoginVisible,
+
+      user,
     };
   },
 });

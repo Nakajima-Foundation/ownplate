@@ -79,13 +79,13 @@
             :class="numberOfOrders > 0 ? 'bg-yellow-500' : 'bg-op-teal'"
           >
             <span class="text-lg font-bold text-white">
-              {{ $tc("admin.viewOrders") }}</span
+              {{ $t("admin.viewOrders") }}</span
             ><span
               class="ml-4 rounded-full bg-white bg-opacity-20 px-3 py-2 text-sm font-bold text-white"
               >{{
-                $tc("admin.incompleteOrders", numberOfOrders, {
+                $t("admin.incompleteOrders", {
                   count: numberOfOrders,
-                })
+                }, numberOfOrders)
               }}</span
             >
           </div>
@@ -173,7 +173,7 @@
           </div>
         </router-link>
 
-        <router-link :to="'/admin/restaurants/' + restaurantid + '/line'">
+        <router-link :to="'/admin/restaurants/' + restaurantid + '/linelist'">
           <div
             :class="
               lineEnable ? 'text-green-600' : 'text-black text-opacity-40'
@@ -192,7 +192,7 @@
       <!-- Delivery and Printer and Discount -->
       <div
         class="mt-4 flex items-center justify-center space-x-4"
-        v-if="!simpleMode && isOwner && !isInMo"
+        v-if="!simpleMode && isOwner"
       >
         <div>
           <router-link :to="`/admin/restaurants/${restaurantid}/delivery`">
@@ -243,13 +243,13 @@
         v-if="!simpleMode"
       >
         <div>
-          <router-link :to="`/admin/restaurants/${restaurantid}/qrcode`">
+          <router-link :to="`/admin/restaurants/${restaurantid}/line`">
             <div
               class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
             >
-              <i class="material-icons mr-2 text-lg text-op-teal">qr_code_2 </i>
+              <i class="fab fa-line mr-2 text-lg text-op-teal" />
               <span class="text-sm font-bold text-op-teal">{{
-                $t("admin.qrcode.title")
+                $t("admin.line.title")
               }}</span>
             </div>
           </router-link>
@@ -278,11 +278,7 @@
           <div>
             <span class="text-sm font-bold text-black text-opacity-40"
               >{{
-                $t(
-                  isInMo
-                    ? "mobileOrder.directoryStatus"
-                    : "admin.directory.status"
-                )
+                $t("admin.directory.status")
               }}:</span
             >
             <span class="text-sm font-bold text-green-600">{{
@@ -422,29 +418,34 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
   ref,
   onMounted,
   onUnmounted,
   computed,
-} from "@vue/composition-api";
+} from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import {
   doc,
-  getDoc,
   updateDoc,
   setDoc,
   deleteDoc,
   onSnapshot,
+  Unsubscribe,
+  serverTimestamp,
 } from "firebase/firestore";
+
+import { useStore } from "vuex";
+
+import {
+  resizedProfileImage,
+} from "@/utils/utils";
 
 import {
   isDev,
 } from "@/utils/utils";
-
-import firebase from "firebase/compat/app";
 
 export default defineComponent({
   name: "RestaurantEditCard",
@@ -481,14 +482,6 @@ export default defineComponent({
       type: Boolean,
       required: true,
     },
-    isInMo: {
-      type: Boolean,
-      required: true,
-    },
-    moPrefix: {
-      type: String,
-      required: false,
-    },
     simpleMode: {
       type: Boolean,
       required: true,
@@ -496,8 +489,10 @@ export default defineComponent({
   },
   emits: ["positionUp", "positionDown", "deleteFromRestaurantLists"],
   setup(props, ctx) {
+    const store = useStore();
+
     const requestState = ref(0);
-    let detacher = null;
+    let detacher: null | Unsubscribe = null;
 
     onMounted(async () => {
       if (props.isOwner) {
@@ -518,11 +513,9 @@ export default defineComponent({
     });
 
     const deleteRestaurant = () => {
-      ctx.root.$store.commit("setAlert", {
+      store.commit("setAlert", {
         title: props.shopInfo.restaurantName,
-        code: props.isInMo
-          ? "mobileOrder.reallyDelete"
-          : "editRestaurant.reallyDelete",
+        code: "editRestaurant.reallyDelete",
         callback: async () => {
           ctx.emit("deleteFromRestaurantLists", props.restaurantid);
 
@@ -533,7 +526,7 @@ export default defineComponent({
       });
     };
     const deleteFromList = () => {
-      ctx.root.$store.commit("setAlert", {
+      store.commit("setAlert", {
         code: "editRestaurant.reallyOnListDelete",
         callback: () => {
           updateDoc(doc(db, `restaurants/${props.restaurantid}`), {
@@ -545,8 +538,8 @@ export default defineComponent({
     const requestList = () => {
       setDoc(doc(db, `requestList/${props.restaurantid}`), {
         status: 1,
-        uid: ctx.root.$store.getters.uidAdmin,
-        created: firebase.firestore.FieldValue.serverTimestamp(),
+        uid: store.getters.uidAdmin,
+        created: serverTimestamp(),
       });
     };
     const requestDelete = () => {
@@ -559,11 +552,7 @@ export default defineComponent({
       ctx.emit("positionDown", props.restaurantid);
     };
     const previewLink = computed(() => {
-      if (props.isInMo) {
-        return "/" + props.moPrefix + "/r/" + props.restaurantid;
-      } else {
-        return "/r/" + props.restaurantid;
-      }
+      return "/r/" + props.restaurantid;
     });
     return {
       requestState,
@@ -577,6 +566,7 @@ export default defineComponent({
       requestDelete,
       positionUp,
       positionDown,
+      resizedProfileImage,
     };
   },
 });

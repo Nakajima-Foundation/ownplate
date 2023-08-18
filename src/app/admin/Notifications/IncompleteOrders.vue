@@ -1,16 +1,16 @@
-<template>
+i<template>
   <div>
     <div class="mb-2 text-sm font-bold text-black text-opacity-60">
       {{ $t("admin.order.incompleteOrders") }}
     </div>
 
     <!-- Links for Incomplete Orders Date -->
-    <div>
+    <div @click="closeNotificationSettings">
       <router-link
         :class="`mb-2 mr-2 inline-flex h-9 items-center justify-center rounded-full px-4 ${
           index === 0 ? 'bg-red-700 bg-opacity-10' : 'bg-black bg-opacity-5'
         }`"
-        :to="`/admin/restaurants/${restaurantId()}/orders?day=${moment(
+        :to="`/admin/restaurants/${restaurantId}/orders?day=${moment(
           day.date
         ).format('YYYY-MM-DD')}`"
         v-for="(day, index) in lastSeveralDays"
@@ -19,7 +19,7 @@
         <span
           :class="`text-sm font-bold ${
             index === 0 ? 'text-red-700' : 'text-op-teal'
-          }`"
+            }`"
         >
           {{ $d(day.date, "short") }} {{ index === 0 ? "本日" : "" }} -
           {{ orderCounter[moment(day.date).format("YYYY-MM-DD")] }}
@@ -29,18 +29,31 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, computed } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent, computed, PropType } from "vue";
 
-import { isNull } from "@/utils/utils";
+import {
+  isNull,
+  useRestaurantId,
+} from "@/utils/utils";
 import { midNight } from "@/utils/dateUtils";
 import moment from "moment";
 
+import { useStore } from "vuex";
+
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
+
 export default defineComponent({
   props: {
-    shopInfo: Object,
+    shopInfo: {
+      type: Object as PropType<RestaurantInfoData>,
+      required: true,
+    }
   },
   setup(props, ctx) {
+    const store = useStore();
+    const restaurantId = useRestaurantId();
+
     const pickUpDaysInAdvance = computed(() => {
       return (
         (isNull(props.shopInfo.pickUpDaysInAdvance)
@@ -50,9 +63,9 @@ export default defineComponent({
     });
 
     const orderCounter = computed(() => {
-      return lastSeveralDays.value.reduce((tmp, day) => {
+      return lastSeveralDays.value.reduce((tmp: {[key: string]: number}, day) => {
         const count = (
-          ctx.root.$store.state.orderObj[
+          store.state.orderObj[
             moment(day.date).format("YYYY-MM-DD")
           ] || []
         ).length;
@@ -69,9 +82,16 @@ export default defineComponent({
       );
     });
 
+    const closeNotificationSettings = () => { 
+      ctx.emit("close");
+    };
+
     return {
       lastSeveralDays,
       orderCounter,
+      moment,
+      restaurantId,
+      closeNotificationSettings,
     };
   },
 });

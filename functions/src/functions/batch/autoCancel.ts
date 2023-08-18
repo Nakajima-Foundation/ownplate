@@ -59,7 +59,7 @@ export const cancelOrder = async (db: admin.firestore.Firestore, restaurantId: s
     };
   });
   if (result) {
-    await sendMessageToCustomer(db, "msg_order_canceled", restaurant.restaurantName, result.order, restaurantId, orderId, {}, true);
+    await sendMessageToCustomer(db, "msg_order_canceled", false, restaurant.restaurantName, result.order, restaurantId, orderId, {}, true);
   }
 }
 

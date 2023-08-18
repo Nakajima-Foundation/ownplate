@@ -1,8 +1,6 @@
 export const enforceAppCheck = true;
 
 export const secretKeys = [
-  "MO_AWS_KEY",
-  "MO_AWS_SECRET",
   "AWS_ID",
   "AWS_SECRET",
   "AWS_SES_USER",

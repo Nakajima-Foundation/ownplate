@@ -1,11 +1,13 @@
-import { serverTimestamp } from "firebase/firestore";
-import { isNull } from "../utils/utils";
+import { serverTimestamp, FieldValue } from "firebase/firestore";
+import { isNull } from "@/utils/utils";
 
 export interface MenuImages {
-  item: {
+  item?: {
     resizedImages: {
       [key: string]: string;
     };
+    original: string;
+    path?: string;
   };
 }
 
@@ -13,8 +15,14 @@ export interface ExceptHour {
   start?: number;
   end?: number;
 }
+export interface TitleData {
+  _dataType: "title";
+  id: string;
+  name: string;
+}
 
 export interface MenuData {
+  _dataType: "menu";
   id: string;
   itemDescription: string;
   itemName: string;
@@ -24,19 +32,29 @@ export interface MenuData {
 
   tax: string;
 
+  uid: string;
+  deletedFlag: boolean;
+
+  soldOut: boolean;
+  soldOutToday?: string;
+  
   itemAliasesName: string;
   itemMemo: string;
-  itemOptionCheckbox: any[];
+  itemOptionCheckbox: string[];
   publicFlag: boolean;
-  allergens: any;
+  allergens: {[key: string]: boolean};
   category1: string;
   category2: string;
+
+  availableLunch: boolean;
+  availableDinner: boolean;
+
   exceptDay: { [key: string]: boolean };
   exceptHour: ExceptHour;
   validatedFlag: boolean;
-}
 
-export class Menu {}
+  createdAt: FieldValue;
+}
 
 // for util function
 
@@ -78,9 +96,11 @@ export const getNewItemData = (
     validatedFlag,
     category1: item.category1,
     category2: item.category2,
+    availableLunch: item.availableLunch || false,
+    availableDinner: item.availableDinner || false,
     exceptDay: item.exceptDay || {},
     exceptHour: newExceptHour(item.exceptHour || {}),
-  };
+  } as MenuData;
   return itemData;
 };
 
@@ -93,4 +113,19 @@ export const copyMenuData = (item: MenuData, isJP: boolean, uid: string) => {
     createdAt: serverTimestamp(),
   });
   return data;
+};
+
+export const isAvailableLunchOrDinner = (item: MenuData) => {
+  const { availableLunch, availableDinner } = item;
+  if (!availableLunch && !availableDinner) {
+    return { availableLunch: true, availableDinner: true };
+  }
+  return { availableLunch, availableDinner };
+};
+export const onlyLunchOrDinner = (item: MenuData) => {
+  const { availableLunch, availableDinner } = isAvailableLunchOrDinner(item);
+  return {
+    onlyLunch: availableLunch && !availableDinner,
+    onlyDinner: !availableLunch && availableDinner,
+  };
 };

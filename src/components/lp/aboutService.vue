@@ -70,13 +70,17 @@
   </div>
 </template>
 
-<script>
-import { defineComponent } from "@vue/composition-api";
-import { serviceKey } from "@/utils/utils";
+<script lang="ts">
+import { defineComponent } from "vue";
+import { serviceKey, useIsLocaleJapan } from "@/utils/utils";
 
 export default defineComponent({
   setup() {
-    return { serviceKey };
+    const isLocaleJapan = useIsLocaleJapan();
+    return {
+      serviceKey,
+      isLocaleJapan,
+    };
   },
 });
 </script>

@@ -32,30 +32,29 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
   ref,
-  computed,
   watch,
   onUnmounted,
-} from "@vue/composition-api";
+} from "vue";
 import { db } from "@/lib/firebase/firebase9";
-import { doc, getDoc, query, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot, Unsubscribe } from "firebase/firestore";
 import { stripeDeleteCard } from "@/lib/firebase/functions";
-import { useIsLiffUser } from "@/utils/utils";
+import { useUserData } from "@/utils/utils";
+
+import { useStore } from "vuex";
 import moment from "moment";
 
 export default defineComponent({
-  setup(_, ctx) {
-    const user = computed(() => {
-      return ctx.root.$store.state.user;
-    });
-    const storedCard = ref(null);
+  setup() {
+    const store = useStore();
+    const { isLiffUser, user } = useUserData();
 
-    const isLiffUser = useIsLiffUser(ctx);
+    const storedCard = ref<{brand: string, last4: string} | null>(null);
 
-    let detachStripe = null;
+    let detachStripe: Unsubscribe | null = null;
     const checkStripe = () => {
       if (detachStripe) {
         detachStripe();
@@ -63,11 +62,12 @@ export default defineComponent({
       }
       if (user.value && (user.value.phoneNumber || isLiffUser.value)) {
         detachStripe = onSnapshot(
-          query(doc(db, `/users/${user.value.uid}/readonly/stripe`)),
+          doc(db, `/users/${user.value.uid}/readonly/stripe`),
           (snapshot) => {
             const stripeInfo = snapshot.data();
             if (stripeInfo && stripeInfo.card) {
-              const expire = moment(`${stripeInfo.card.exp_year}${stripeInfo.card.exp_month}01T000000+0900`).endOf('month').toDate();
+              const date = ('00' + String(stripeInfo.card.exp_month)).slice(-2);
+              const expire = moment(`${stripeInfo.card.exp_year}${date}01T000000+0900`).endOf('month').toDate();
               if (
                 stripeInfo.updatedAt && (
                   stripeInfo.updatedAt.toDate() >
@@ -81,6 +81,7 @@ export default defineComponent({
             }
           },
           (e) => {
+            console.log(e);
             console.log("stripe expired")
           }
         );
@@ -88,11 +89,11 @@ export default defineComponent({
     };
 
     const handleDeleteCard = () => {
-      ctx.root.$store.commit("setAlert", {
+      store.commit("setAlert", {
         code: "profile.reallyDeleteCard",
         callback: async () => {
           console.log("handleDeleteCard");
-          ctx.root.$store.commit("setLoading", true);
+          store.commit("setLoading", true);
           try {
             const { data } = await stripeDeleteCard();
             storedCard.value = null;
@@ -100,7 +101,7 @@ export default defineComponent({
           } catch (error) {
             console.error(error);
           } finally {
-            ctx.root.$store.commit("setLoading", false);
+            store.commit("setLoading", false);
           }
         },
       });

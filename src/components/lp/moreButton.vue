@@ -20,6 +20,6 @@
     <div class="column is-narrow w-6"></div>
   </div>
 </template>
-<script>
+<script lang="ts">
 export default {};
 </script>

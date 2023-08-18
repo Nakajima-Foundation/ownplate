@@ -7,10 +7,10 @@
 
     <!-- After Paid -->
     <!-- Thank you Message -->
-    <ThankYou v-if="mode !== 'mo'" />
+    <ThankYou />
 
     <!-- Line Button -->
-    <LineButton :groupData="groupData" />
+    <LineButton :shopInfo="shopInfo" :hasFriends="hasFriends" :hasLine="hasLine" />
 
     <!-- Order Summary -->
     <div class="mx-6 mt-6 rounded-lg bg-white px-2 pt-6 pb-1 shadow">
@@ -23,12 +23,10 @@
         :shopInfo="shopInfo"
         :timeEstimated="timeEstimated"
         :timeRequested="timeRequested"
-        :paid="paid"
-        :mode="mode"
       />
 
       <!-- Stripe status -->
-      <StripeStatus v-if="hasStripe" :orderInfo="orderInfo" :mode="mode" />
+      <StripeStatus v-if="hasStripe" :orderInfo="orderInfo" />
 
       <!-- Cancel Button -->
       <div class="mt-8 mb-5 text-center">
@@ -60,7 +58,7 @@
     </div>
     <!-- Special Thank you Message from the Restaurant -->
     <ThankYouFromRestaurant
-      v-if="!canceled && mode !== 'mo'"
+      v-if="!canceled"
       :shopInfo="shopInfo"
     />
 
@@ -99,8 +97,6 @@
             :shopInfo="shopInfo || {}"
             :orderItems="orderItems"
             :orderInfo="orderInfo || {}"
-            :groupData="groupData"
-            :mode="mode"
           ></order-info>
         </div>
 
@@ -147,15 +143,15 @@
 
         <!-- View Menu Page Button -->
         <div class="mt-6 text-center">
-          <o-button class="b-reset-tw" @click="handleOpenMenu">
+          <router-link :to="menuPagePath">
             <div
-              class="inline-flex h-12 items-center justify-center rounded-full border-2 border-op-teal px-6"
+              class="inline-flex h-12 items-center justify-center rounded-full border-2 border-op-teal px-6 b-reset-tw"
             >
               <div class="text-base font-bold text-op-teal">
                 {{ $t("order.menu") }}
               </div>
             </div>
-          </o-button>
+          </router-link>
         </div>
       </div>
 
@@ -167,11 +163,7 @@
               {{
                 shopInfo.isEC
                   ? $t("shopInfo.ecShopDetails")
-                  : $t(
-                      mode === "mo"
-                        ? "mobileOrder.storeDetails"
-                        : "shopInfo.restaurantDetails"
-                    )
+                  : $t("shopInfo.restaurantDetails")
               }}
             </div>
 
@@ -180,8 +172,6 @@
                 :compact="true"
                 :shopInfo="shopInfo"
                 :isDelivery="orderInfo.isDelivery"
-                :mode="mode"
-                :isPickup="isPickup"
                 :paymentInfo="paymentInfo"
               />
             </div>
@@ -191,19 +181,15 @@
           <div class="mt-6" v-if="!shopInfo.isEC">
             <div class="text-xl font-bold text-black text-opacity-30">
               {{
-                $t(
-                  mode === "mo"
-                    ? "mobileOrder.adminQRCode"
-                    : "order.adminQRCode"
-                )
+                $t("order.adminQRCode")
               }}
             </div>
 
             <div class="mt-2 rounded-lg bg-white p-4 text-center shadow">
-              <qrcode
+              <vue-qrcode
                 :value="urlAdminOrderPage"
                 :options="{ width: 160 }"
-              ></qrcode>
+              ></vue-qrcode>
             </div>
           </div>
       </div>
@@ -214,13 +200,10 @@
 <script lang="ts">
 import {
   defineComponent,
-  ref,
   computed,
   PropType,
-} from "@vue/composition-api";
+} from "vue";
   
-import firebase from "firebase/compat/app";
-
 import ShopHeader from "@/app/user/Restaurant/ShopHeader.vue";
 import ShopInfo from "@/app/user/Restaurant/ShopInfo.vue";
 import FavoriteButton from "@/app/user/Restaurant/FavoriteButton.vue";
@@ -238,8 +221,6 @@ import OrderStatus from "@/app/user/OrderPage/AfterPaid/OrderStatus.vue";
 import Receipt from "@/app/user/OrderPage/AfterPaid/Receipt.vue";
 import Pickup from "@/app/user/OrderPage/AfterPaid/Pickup.vue";
 
-import { orderPlace } from "@/lib/firebase/functions";
-
 import { order_status } from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
 import { stripeCancelIntent } from "@/lib/stripe/stripe";
@@ -250,6 +231,10 @@ import { isEmpty, validUrl } from "@/utils/utils";
 
 import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
+
+import { useRoute } from "vue-router";
+import { useStore } from "vuex";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   name: "Order",
@@ -289,21 +274,26 @@ export default defineComponent({
       type: Object,
       required: true,
     },
-    mode: {
+    menuPagePath: {
       type: String,
       required: false,
     },
-    groupData: {
-      type: Object,
+    hasFriends: {
+      type: Boolean,
       required: false,
     },
+    hasLine: {
+      type: Boolean,
+      required: true,
+    },
   },
-  setup(props, ctx) {
-    const route = ctx.root.$route;
-    const store = ctx.root.$store;
+  setup(props) {
+    const route = useRoute();
+    const store = useStore();
+    const { d } = useI18n({ useScope: 'global' });
     
-    const orderId = route.params.orderId;
-    const restaurantId = route.params.restaurantId;
+    const orderId = route.params.orderId as string;
+    const restaurantId = route.params.restaurantId as string;
 
     const hasStripe = computed(() => {
       return props.orderInfo.payment && props.orderInfo.payment.stripe;
@@ -321,12 +311,12 @@ export default defineComponent({
     });
     const timeRequested = computed(() => {
       const date = props.orderInfo.timePlaced.toDate();
-      return ctx.root.$d(date, "long");
+      return d(date, "long");
     });
     const timeEstimated = computed(() => {
       if (props.orderInfo.timeEstimated) {
         const date = props.orderInfo.timeEstimated.toDate();
-        return ctx.root.$d(date, "long");
+        return d(date, "long");
       }
       return undefined; // backward compatibility
     });
@@ -339,9 +329,6 @@ export default defineComponent({
     const canceled = computed(() => {
       return props.orderInfo.status === order_status.order_canceled;
     });
-    const paid = computed(() => {
-      return props.orderInfo.status >= order_status.order_placed;
-    });
     const order_accepted = computed(() => {
       return props.orderInfo.status >= order_status.order_accepted;
     });
@@ -351,42 +338,13 @@ export default defineComponent({
     const hasMemo = computed(() => {
       return props.orderInfo && !isEmpty(props.orderInfo.memo);
     });
-    const isPickup = computed(() => {
-      return props.orderInfo && props.orderInfo.isPickup;
-    });
-    if (props.mode == "mo") {
-      const menus = Object.keys(props.orderInfo.menuItems).map((menuId) => {
-        return {
-          ...props.orderInfo.menuItems[menuId],
-          id: menuId,
-        } as any;
-      });
-
-      const data = analyticsUtil.getDataForLayer(
-        props.orderInfo,
-        orderId,
-        menus,
-        props.shopInfo,
-        restaurantId
-      );
-      // console.log(data);
-      dataLayer.push({ ecommerce: null }); // Clear the previous ecommerce object.
-      dataLayer.push({
-        event: "purchase",
-        ecommerce: data,
-      });
-    }
 
     const sendRedunded = () => {
       analyticsUtil.sendRedunded(
         props.orderInfo,
         orderId,
         props.shopInfo,
-        restaurantId
       );
-    };
-    const handleOpenMenu = () => {
-      ctx.emit("handleOpenMenu");
     };
     const handleCancelPayment = () => {
       store.commit("setAlert", {
@@ -394,7 +352,7 @@ export default defineComponent({
         callback: async () => {
           try {
             store.commit("setLoading", true);
-            const { data } = await stripeCancelIntent({
+            await stripeCancelIntent({
               restaurantId: restaurantId,
               orderId: orderId,
             });
@@ -425,13 +383,10 @@ export default defineComponent({
       orderName,
       just_paid,
       canceled,
-      paid,
       order_accepted,
       hasCustomerInfo,
       hasMemo,
-      isPickup,
       // method
-      handleOpenMenu,
       handleCancelPayment,
     };
   },

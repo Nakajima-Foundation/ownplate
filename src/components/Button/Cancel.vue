@@ -10,8 +10,8 @@
   </o-button>
 </template>
 
-<script>
-import { defineComponent } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent } from "vue";
 
 export default defineComponent({
   props: {

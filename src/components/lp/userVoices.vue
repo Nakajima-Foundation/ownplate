@@ -2,7 +2,7 @@
   <div>
     <!-- User Voices Title -->
     <div
-      class="mt-8 text-center text-2xl font-bold text-black opacity-40 lg:text-3xl"
+      class="mt-16 text-black text-center text-op-90 text-2xl font-bold"
     >
       {{ $t("lp.customerVoice1") }}
       <br />{{ $t("lp.customerVoice2") }}
@@ -114,28 +114,10 @@
         >
       </div>
     </div>
-
-    <!-- Screenshots -->
-    <div class="mx-6 mt-4 text-center">
-      <img src="/LP-Screenshots.png" class="m-auto max-h-80 rounded-2xl" />
-    </div>
-
-    <!-- More -->
-    <div class="mt-4 text-center">
-      <a href="/l/tips" target="_blank">
-        <div
-          class="inline-flex h-16 items-center rounded-full bg-ownplate-yellow px-8 shadow hover:bg-opacity-30"
-        >
-          <span class="text-xl font-bold text-black opacity-60">{{
-            $t("lp.moreDetails")
-          }}</span>
-        </div>
-      </a>
-    </div>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {};
 </script>
 <style scoped>

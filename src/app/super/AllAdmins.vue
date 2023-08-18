@@ -49,18 +49,33 @@
   </section>
 </template>
 
-<script>
-import { db } from "@/plugins/firebase";
+<script lang="ts">
+import { defineComponent, ref } from "vue";
+
+import { db } from "@/lib/firebase/firebase9";
+import {
+  onSnapshot,
+  updateDoc,
+  doc,
+  collection,
+  query,
+  orderBy,
+  startAfter,
+  limit,
+  getDoc,
+} from "firebase/firestore";
+
 import { stripeVerify } from "@/lib/stripe/stripe";
-import superMixin from "@/mixins/SuperMixin";
 import { doc2data } from "@/utils/utils";
 
 import BackButton from "@/components/BackButton.vue";
 
+import { useSuper } from "@/utils/utils";
+import moment from "moment";
+
 const QUERY_LIMIT = 50;
 
-export default {
-  mixins: [superMixin],
+export default defineComponent({
   components: {
     BackButton,
   },
@@ -69,98 +84,114 @@ export default {
       title: [this.defaultTitle, "Super All Admin"].join(" / "),
     };
   },
-  data() {
-    return {
-      admins: [],
-      infos: {},
-      last: null,
-      detacher: null,
-    };
-  },
-  async mounted() {
-    this.superPermissionCheck();
-  },
-  created() {
-    this.updateQuery();
-  },
-  destroyed() {
-    this.detacher && this.detacher();
-  },
-  methods: {
-    updateQuery() {
-      this.detacher && this.detacher();
-      let query = db.collection("admins").orderBy("created", "desc");
-      if (this.last) {
-        query = query.startAfter(this.last);
-      }
-      this.detacher = query.limit(QUERY_LIMIT).onSnapshot((snapshot) => {
-        if (snapshot.docs.length === QUERY_LIMIT) {
-          this.last = snapshot.docs[QUERY_LIMIT - 1];
-        } else {
-          this.last = null;
-        }
-        const admins = snapshot.docs.map(doc2data("admin"));
-        admins.forEach(async (admin) => {
-          this.admins.push(admin);
-          // NOTE: We are getting extra data only once for each admin
-          if (!this.infos[admin.id]) {
-            this.updateInfo(admin);
-          }
-        });
-      });
-    },
-    async updateInfo(admin) {
-      const info = {};
+  setup () {
+    useSuper();
+
+    const admins = ref([]);
+    const infos = ref<{[key: string]: any}>({});
+    const last = ref<any>(null);
+    let detacher: any = null;
+
+    const updateInfo = async (admin: any) => {
+      const info: any = {};
       const payment = (
-        await db.doc(`admins/${admin.id}/public/payment`).get()
+        await getDoc(doc(db, `admins/${admin.id}/public/payment`))
       ).data();
       if (payment?.stripe) {
         try {
           const { data } = await stripeVerify({
             account_id: payment?.stripe,
           });
-          console.log("data", payment?.stripe, data);
-          payment.verified = data.result;
-          if (data.account) {
-            info.account = data.account;
+          // console.log("data", payment?.stripe, data);
+          payment.verified = (data as any).result;
+          if ((data as any).account) {
+            info.account = (data as any).account;
           }
-        } catch (error) {
+        } catch (error: any) {
           console.error(error.message);
           payment.verified = false;
         }
       }
       info.payment = payment || {};
       const profile = (
-        await db.doc(`admins/${admin.id}/private/profile`).get()
+        await getDoc(doc(db, `admins/${admin.id}/private/profile`))
       ).data();
       info.profile = profile || {};
-      this.infos[admin.id] = info;
-      this.infos = Object.assign({}, this.infos);
-    },
-    profile(admin) {
-      return this.infos[admin.id]?.profile || {};
-    },
-    payment(admin) {
-      return this.infos[admin.id]?.payment || {};
-    },
-    account(admin) {
-      return this.infos[admin.id]?.account || {};
-    },
-    capabilities(admin) {
-      return this.account(admin)?.capabilities || {};
-    },
-    showActivate(admin) {
-      return (
-        this.capabilities(admin).jcb_payments === "active" &&
-        !this.payment(admin).stripeJCB
+      infos.value[admin.id] = info;
+      infos.value = Object.assign({}, infos.value);
+    };
+    const updateQuery = () => {
+      detacher && detacher();
+      let myQuery = query(
+        collection(db, "admins"),
+        limit(QUERY_LIMIT),
+        orderBy("created", "desc"),
       );
-    },
-    async activate(admin) {
-      await db.doc(`admins/${admin.id}/public/payment`).update({
+      if (last.value)
+        myQuery = query(
+          myQuery,
+          startAfter(last.value)
+        );
+      detacher = onSnapshot(
+        myQuery,
+        (snapshot) => {
+          if (snapshot.docs.length === QUERY_LIMIT) {
+            last.value = snapshot.docs[QUERY_LIMIT - 1];
+          } else {
+            last.value = null;
+          }
+          // @ts-ignore
+          const _admins = snapshot.docs.map(doc2data("admin"));
+          _admins.forEach(async (admin) => {
+            // @ts-ignore
+            admins.value.push(admin);
+            // NOTE: We are getting extra data only once for each admin
+            if (!infos.value[admin.id]) {
+              updateInfo(admin);
+            }
+          });
+        }
+        )
+    };
+    const profile = (admin: any) => {
+      return infos.value[admin.id]?.profile || {};
+    };
+    const payment = (admin: any) => {
+      return infos.value[admin.id]?.payment || {};
+    };
+    const account = (admin: any) => {
+      return infos.value[admin.id]?.account || {};
+    };
+    const capabilities = (admin: any) => {
+      return account(admin)?.capabilities || {};
+    };
+    const showActivate = (admin: any) => {
+      return (
+        capabilities(admin).jcb_payments === "active" &&
+          !payment(admin).stripeJCB
+      );
+    }
+    const activate = async (admin: any) => {
+      await updateDoc(doc(db, `admins/${admin.id}/public/payment`), {
         stripeJCB: true,
       });
-      this.updateInfo(admin);
-    },
+      updateInfo(admin);
+    };
+    updateQuery();
+    return {
+      admins,
+      last,
+      updateQuery,
+
+      profile,
+      payment,
+      capabilities,
+      showActivate,
+      activate,
+      
+      moment,
+
+    };
   },
-};
+});
 </script>

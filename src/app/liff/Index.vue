@@ -7,7 +7,7 @@
     <div
       class="mx-6 mt-2 grid grid-cols-1 items-center gap-2 lg:grid-cols-3 xl:grid-cols-4"
     >
-      <div v-for="(restaurant, k) in restaurants">
+      <div v-for="(restaurant, k) in restaurants" :key="k">
         <router-link :to="`/liff/${liffIndexId}/r/${restaurant.id}`">
           <div class="flex items-center">
             <div class="mr-4 h-12 w-12 rounded-full bg-black bg-opacity-10">
@@ -33,12 +33,22 @@
 </template>
 
 <script lang="ts">
-import firebase from "firebase/compat/app";
-import { DocumentData } from "firebase/firestore";
+import { defineComponent, ref } from "vue";
 
-import { defineComponent, ref } from "@vue/composition-api";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  collection,
+  where,
+  query,
+  getDocs,
+  documentId,
+  DocumentData,
+} from "firebase/firestore";
 
-import { db } from "@/plugins/firebase";
+import {
+  useLiffIndexId,
+  resizedProfileImage,
+} from "@/utils/utils";
 
 export default defineComponent({
   props: {
@@ -49,24 +59,29 @@ export default defineComponent({
   },
   setup(props) {
     const restaurants = ref<DocumentData[]>([]);
-
-    db.collection("restaurants")
-      .where(
-        firebase.firestore.FieldPath.documentId(),
-        "in",
-        props.config.restaurants || []
+    const liffIndexId = useLiffIndexId();
+    
+    getDocs(
+      query(
+        collection(db, "restaurants"),
+        where(
+          documentId(),
+          "in",
+          props.config.restaurants || []
+        )
       )
-      .get()
-      .then((collect) => {
-        const r = collect.docs.map((a) => {
-          const data = a.data();
-          data.id = a.id;
-          return data;
-        });
-        restaurants.value = r;
+    ).then((collect) => {
+      const r = collect.docs.map((a) => {
+        const data = a.data();
+        data.id = a.id;
+        return data;
       });
+      restaurants.value = r;
+    });
     return {
       restaurants,
+      liffIndexId,
+      resizedProfileImage,
     };
   },
 });

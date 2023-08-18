@@ -34,12 +34,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
-} from "@vue/composition-api";
-import ListItem from "@/app/admin/News/ListItem";
-import newsList from "./data";
+} from "vue";
+import ListItem from "@/app/admin/News/ListItem.vue";
+import newsList from "@/app/admin/News/data";
 
 export default defineComponent({
   components: {

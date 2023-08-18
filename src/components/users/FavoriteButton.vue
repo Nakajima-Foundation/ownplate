@@ -7,25 +7,22 @@
       >
         <i class="material-icons mr-2 text-2xl text-white">favorite</i>
         <div class="text-xl font-bold text-white">
-          {{ $t(isInMo ? "find.favoriteShop" : "find.likes") }}
+          {{ $t("find.likes") }}
         </div>
       </div>
     </router-link>
   </div>
 </template>
 
-<script>
-import { defineComponent } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent } from "vue";
 import { useBasePath } from "@/utils/utils";
-import { useIsInMo } from "@/utils/utils";
 
 export default defineComponent({
-  setup(_, ctx) {
-    const basePath = useBasePath(ctx.root);
-    const isInMo = useIsInMo(ctx.root);
+  setup() {
+    const basePath = useBasePath();
     return {
       basePath,
-      isInMo,
     };
   },
 });

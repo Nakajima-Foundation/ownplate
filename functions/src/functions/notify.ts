@@ -5,7 +5,7 @@ import moment from "moment-timezone";
 import * as fs from "fs";
 
 import i18next from "i18next";
-import { resources, resources_mo } from "./resources";
+import { resources } from "./resources";
 
 import { ownPlateConfig } from "../common/project";
 
@@ -23,6 +23,7 @@ const aws_secret = process.env.AWS_SECRET;
 export const sendMessageToCustomer = async (
   db: admin.firestore.Firestore,
   msgKey: string,
+  hasLine: boolean,
   restaurantName: string,
   orderData: admin.firestore.DocumentData,
   restaurantId: string,
@@ -34,48 +35,27 @@ export const sendMessageToCustomer = async (
 
   const t = await i18next.init({
     lng: utils.stripeRegion.langs[0],
-    resources: orderData.groupId ? resources_mo : resources,
+    resources,
   });
   const getMessage = (_url: string) => {
     const message = `${t(msgKey, params)} ${restaurantName} ${orderNumber} ${_url}`;
     return message;
   };
-  const getMoMessage = () => {
-    const newParams = {
-      ...params,
-      restaurantName,
-      orderNumber,
-      price: orderData.total,
-    };
-    const message = `${t(msgKey, newParams)}`;
-    return message;
-  };
   const url = `https://${ownPlateConfig.hostName}/r/${restaurantId}/order/${orderId}?openExternalBrowser=1`;
 
-  // for JP Mobile Order
-  if (orderData.groupId && !/11111111$/.test(orderData.phoneNumber)) {
-    const { groupId } = orderData;
-
-    const yearstr = moment().format("YYYY");
-    const monthstr = moment().format("YYYY-MM");
-    const datestr = moment().format("YYYY-MM-DD");
-    try {
-      db.collection(`log/smsLog/sms${yearstr}/sms${datestr}/${groupId}SmsLogData`).add({
-        restaurantId,
-        orderId,
-        groupId,
-        date: datestr,
-        uid: orderData.uid,
-        month: monthstr,
-        last4: orderData.phoneNumber.slice(-4),
-        createdAt: process.env.NODE_ENV !== "test" ? admin.firestore.FieldValue.serverTimestamp() : Date.now(),
-      });
-    } catch (e) {
-      console.log(e);
+  // for JP restaurant push
+  if (hasLine) {
+    const config = await utils.get_restaurant_line_config(db, restaurantId);
+    const lineUser = await utils.get_restaurant_line_user(db, restaurantId, orderData.uid);
+    
+    const uidLine = lineUser?.profile?.userId;
+    const token =  config?.message_token;
+    if (uidLine && token) {
+      await line.sendMessageDirect(uidLine, getMessage(url), token);
+      return;
     }
-
-    return await sms.pushSMS(process.env.MO_AWS_KEY, process.env.MO_AWS_SECRET, "Mobile Order", getMoMessage(), orderData.phoneNumber, true);
   }
+  
   // for JP
   const { lineId, liffIndexId, liffId } = (await line.getLineId(db, orderData.uid)) as any;
 

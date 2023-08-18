@@ -22,13 +22,18 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, ref } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent, ref } from "vue";
 
 import { stripeReceipt } from "@/lib/stripe/stripe";
 
+import { useRestaurantId } from "@/utils/utils";
+import { useRoute } from "vue-router";
+
 export default defineComponent({
-  setup(props, ctx) {
+  setup() {
+    const route = useRoute();
+    const restaurantId = useRestaurantId();
     const isLoadingReceipt = ref(false);
     const receipt = async () => {
       if (isLoadingReceipt.value) {
@@ -37,9 +42,9 @@ export default defineComponent({
       isLoadingReceipt.value = true;
       try {
         const res = await stripeReceipt({
-          restaurantId: ctx.root.restaurantId(),
-          orderId: ctx.root.$route.params.orderId,
-        });
+          restaurantId: restaurantId.value,
+          orderId: route.params.orderId,
+        }) as any;
         if (res.data && res.data.receipt_url) {
           window.open(res.data.receipt_url);
         }

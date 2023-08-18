@@ -22,31 +22,30 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, ref, computed } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent, computed } from "vue";
 import {
   useTopPath,
   regionalSetting,
   useRestaurantId,
   useIsInMo,
 } from "@/utils/utils";
-import { moBaseUrl } from "@/config/project";
 
 export default defineComponent({
   emits: ["handleOpen"],
   setup(_, ctx) {
-    const specialLogo = {
+    const specialLogo: any = {
       "5OInKqrhlpe7LHYNYXuU": {
         class: "h-8",
         image: "TBP_logo.jpg",
       },
     };
 
-    const isInMo = useIsInMo(ctx.root);
+    const isInMo = useIsInMo();
 
-    const topPath = useTopPath(ctx.root);
+    const topPath = useTopPath();
 
-    const restaurantId = useRestaurantId(ctx.root);
+    const restaurantId = useRestaurantId();
 
     const logoClass = computed(() => {
       if (restaurantId.value && specialLogo[restaurantId.value]) {

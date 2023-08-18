@@ -51,22 +51,20 @@
             </div>
 
             <div class="mt-1 text-base">
-              <template v-for="(day, key) in days">
-                <div class="flex px-2 py-1 text-sm">
-                  <div class="w-16">{{ $t("week.short." + day) }}</div>
-                  <div class="flex-1">
-                    <template v-if="(shopInfo.businessDay || {})[key]">
-                      <template v-for="data in (shopInfo.openTimes || {})[key]">
-                        <template v-if="validDate(data)">
-                          {{ num2time(data.start) }} - {{ num2time(data.end) }}
-                          <br />
-                        </template>
+              <div v-for="(day, key) in days" class="flex px-2 py-1 text-sm" :key="key">
+                <div class="w-16">{{ $t("week.short." + day) }}</div>
+                <div class="flex-1">
+                  <template v-if="(shopInfo.businessDay || {})[key]">
+                    <template v-for="(data, k) in (shopInfo.openTimes || {})[key]">
+                      <template v-if="validDate(data)">
+                        <span :key="k">{{ num2time(data.start) }} - {{ num2time(data.end) }}<br /></span>
+                          
                       </template>
                     </template>
-                    <template v-else>{{ $t("shopInfo.closed") }}</template>
-                  </div>
+                  </template>
+                  <template v-else>{{ $t("shopInfo.closed") }}</template>
                 </div>
-              </template>
+              </div>
             </div>
           </div>
 
@@ -119,7 +117,7 @@
           <!-- Payment Period and Method -->
           <div class="mt-4">
             <!--for omochikaeri-->
-            <div v-if="!isInMo">
+            <div>
               <div class="text-sm font-bold text-black text-opacity-30">
                 {{ $t("transactionsAct.payment") }}
               </div>
@@ -135,26 +133,12 @@
                 </li>
               </ul>
             </div>
-            <!--for MobileOrder-->
-            <div v-if="isInMo">
-              <div class="text-sm font-bold text-black text-opacity-30">
-                {{ $t("transactionsAct.paymentMo") }}
-              </div>
-              <ul class="ml-5 mt-1 list-outside list-disc">
-                <li v-if="showPayment">
-                  {{ $t("transactionsAct.paymentDescriptionCardMo") }}
-                </li>
-                <li>
-                  {{ $t("transactionsAct.paymentDescriptionCardNoteMo") }}
-                </li>
-              </ul>
-            </div>
           </div>
 
           <!-- Delivery Time -->
           <div class="mt-4">
             <!--for omochikaeri-->
-            <div v-if="!isInMo">
+            <div>
               <div class="text-sm font-bold text-black text-opacity-30">
                 {{ $t("transactionsAct.delivery") }}
               </div>
@@ -164,28 +148,18 @@
               </div>
             </div>
 
-            <!--for MobileOrder-->
-            <div v-if="isInMo">
-              <div class="text-sm font-bold text-black text-opacity-30">
-                {{ $t("transactionsAct.deliveryMo") }}
-              </div>
-
-              <div class="mt-1 text-base">
-                {{ $t("transactionsAct.deliveryDescriptionMo") }}
-              </div>
-            </div>
           </div>
 
           <!-- Cancellation -->
           <div class="mt-4">
             <!--for omochikaeri-->
-            <div v-if="!isInMo">
+            <div>
               <div class="text-sm font-bold text-black text-opacity-30">
                 {{ $t("transactionsAct.cancellation") }}
               </div>
               <ul class="ml-5 mt-1 list-outside list-disc">
                 <li>{{ $t("transactionsAct.cancellationDescription1") }}</li>
-                <li v-if="!isInMo">
+                <li>
                   {{ $t("transactionsAct.cancellationDescription4") }}
                 </li>
                 <li>
@@ -231,22 +205,6 @@
               </ul>
             </div>
 
-            <!--for MobileOrder-->
-            <div v-if="isInMo">
-              <div class="text-sm font-bold text-black text-opacity-30">
-                {{ $t("transactionsAct.cancellationMo") }}
-              </div>
-              <ul class="ml-5 mt-1 list-outside list-disc">
-                <li>{{ $t("transactionsAct.cancellationDescription1Mo") }}</li>
-                <li>
-                  {{ $t("transactionsAct.cancellationDescription2Mo") }}
-                </li>
-                <li>
-                  {{ $t("transactionsAct.cancellationTakeoutDescriptionMo") }}
-                </li>
-                <li>{{ $t("transactionsAct.cancellationDescription3Mo") }}</li>
-              </ul>
-            </div>
           </div>
         </div>
 
@@ -266,18 +224,21 @@
     </div>
   </div>
 </template>
-<script>
-import { defineComponent, ref, computed } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent, ref, computed, PropType } from "vue";
 
 import { daysOfWeek } from "@/config/constant";
 import { db } from "@/lib/firebase/firebase9";
-import { doc, onSnapshot, getDoc } from "firebase/firestore";
-import { isNull, useNationalPhoneNumber, useIsInMo } from "@/utils/utils";
+import { doc, onSnapshot } from "firebase/firestore";
+import { isNull, useNationalPhoneNumber, num2time } from "@/utils/utils";
+
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { PaymentInfo } from "@/models/paymentInfo";
 
 export default defineComponent({
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
     isDelivery: {
@@ -290,11 +251,9 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
-    const isInMo = useIsInMo(ctx.root);
-
     const restaurantsId = props.shopInfo.restaurantId;
     const days = daysOfWeek;
-    const paymentInfo = ref({});
+    const paymentInfo = ref<PaymentInfo>({});
 
     const uid = props.shopInfo.uid;
 
@@ -310,7 +269,7 @@ export default defineComponent({
     const showPayment = computed(() => {
       return paymentInfo.value.stripe;
     });
-    const validDate = (date) => {
+    const validDate = (date: any) => {
       return !isNull(date.start) && !isNull(date.end);
     };
     const closeTransactionsAct = () => {
@@ -326,11 +285,11 @@ export default defineComponent({
       inStorePayment,
       validDate,
 
-      isInMo,
-
       closeTransactionsAct, // call by parent
 
       nationalPhoneNumber,
+
+      num2time,
     };
   },
 });

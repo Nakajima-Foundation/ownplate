@@ -17,15 +17,20 @@
     <div class="text-xm mt-2 font-bold text-black text-opacity-30">
       {{ $t("delivery.setDeliveryLocation") }}
     </div>
-    <GMap
+    
+    <GMapMap
       ref="gMap"
       :center="{ lat: 35.6809591, lng: 139.7673068 }"
       :options="{ fullscreenControl: false }"
       :zoom="15"
-      @loaded="mapLoaded"
+      style="
+             width: 100%;
+             height: 480px;
+             position: relative;
+             overflow: hidden;
+             "
       @click="gmapClick"
-      style="height: 100%"
-    ></GMap>
+    ></GMapMap>
     <div if="estimatedDistance !== null">
       {{ $t("delivery.estimatedDistance") }}: {{ estimatedDistance }}m:
       <div v-if="deliveryInfo.enableAreaMap">
@@ -44,8 +49,11 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent, ref, onMounted } from "vue";
+import { haversine_distance } from "@/utils/utils";
+
+export default defineComponent({
   props: {
     shopInfo: {
       type: Object,
@@ -60,183 +68,136 @@ export default {
       required: false,
     },
   },
-  computed: {
-    location() {
-      return this.shopInfo.location;
-    },
-    radius() {
-      if (this.deliveryInfo && this.deliveryInfo.radius) {
-        return this.deliveryInfo.radius;
-      }
-      return 1;
-    },
-  },
-  watch: {
-    radius() {
-      this.updateCircle();
-    },
-  },
-  data() {
-    return {
-      center: null,
-      home: null,
-      markers: [],
-      circles: [],
-      estimatedDistance: null,
-      maplocation: null,
-    };
-  },
-  async created() {
-    this.mapLoaded();
-  },
-  mounted() {
-    this.mapLoaded();
-  },
-  methods: {
-    mapLoaded() {
-      if (this.shopInfo && this.shopInfo.location) {
-        this.setCurrentLocation(this.shopInfo.location);
-      }
-    },
-    setCurrentLocation(location) {
-      if (
-        this.$refs.gMap &&
-        this.$refs.gMap.map &&
-        location &&
-        location.lat &&
-        location.lng
-      ) {
-        this.center = new google.maps.LatLng(location.lat, location.lng);
-        this.$refs.gMap.map.setCenter(this.location);
-        this.updateMarker();
+  setup(props, context) {
+    const location = props.shopInfo.location;
+    const radius = (props.deliveryInfo && props.deliveryInfo.radius) ? props.deliveryInfo.radius : 1;
 
-        this.maplocation = location;
-        this.updateCircle();
+    let gCenter: any = null;
+    let gHome: any = null;
+    let markers: any[] = [];
+    const circles: any[] = [];
+    let map: any = null;
+    
+    const estimatedDistance = ref<number | null>(null);
+    const gMap = ref();
+
+    onMounted(async () => {
+      map = await gMap.value.$mapPromise;
+      if (location) {
+        setCurrentLocation();
       }
-    },
-    updateMarker() {
-      if (!this.$refs.gMap || !this.$refs.gMap.map) {
+    });
+
+    const removeAllMarker = () => {
+      if (markers && markers.length > 0) {
+        markers.map((marker) => {
+          marker.setMap(null);
+        });
+        markers = [];
+      }
+    };
+    const updateMarker = async () => {
+      if (!map) {
         return;
       }
-      this.removeAllMarker();
-      if (this.center) {
+      removeAllMarker();
+      if (gCenter) {
         const marker = new google.maps.Marker({
-          position: this.center,
-          map: this.$refs.gMap.map,
+          position: gCenter,
+          map,
           icon: {
             url: "http://maps.google.co.jp/mapfiles/ms/icons/restaurant.png",
           },
         });
-        this.markers.push(marker);
+        markers.push(marker);
       }
-      if (this.home) {
+      if (gHome) {
         const marker = new google.maps.Marker({
-          position: this.home,
-          map: this.$refs.gMap.map,
+          position: gHome,
+          map,
           icon: {
             url: "http://maps.google.co.jp/mapfiles/ms/icons/blue-dot.png",
           },
         });
-        this.markers.push(marker);
+        markers.push(marker);
       }
-    },
-    updateCircle() {
+    };
+
+    const setHomeLocation = (lat: number, lng: number) => {
+      if (google) {
+        gHome = new google.maps.LatLng(lat, lng);
+      }
+      updateMarker();
+      estimatedDistance.value = haversine_distance(lat, lng, location.lat, location.lng);
+    };
+    const setHome = (lat: number, lng: number) => {
+      setHomeLocation(lat, lng);
+      context.emit("updateHome", { lat, lng });
+    };
+    const gmapClick = (arg: any) => {
+      const latLng = arg?.event?.latLng || arg.latLng;
+      setHome(latLng.lat(), latLng.lng());
+    };
+
+
+    const updateCircle = async () => {
       if (
-        !this.$refs.gMap ||
-        !this.$refs.gMap.map ||
-        !this.deliveryInfo.enableAreaMap
+        !props.deliveryInfo.enableAreaMap
       ) {
         return;
       }
-      this.removeAllCircle();
-      this.$refs.gMap.map.setCenter(this.maplocation);
+      map.setCenter(location);
       const circle = new google.maps.Circle({
-        center: this.center,
+        center: gCenter,
         fillColor: "#ff0000",
         fillOpacity: 0.3,
-        map: this.$refs.gMap.map,
-        radius: Number(this.radius),
+        map: map,
+        radius: Number(radius),
         strokeColor: "#ff0000",
         strokeOpacity: 1,
         strokeWeight: 1,
       });
-      circle.addListener("click", this.gmapClick); // todo remove lister
-      this.circles.push(circle);
-    },
-    removeAllMarker() {
-      if (this.markers && this.markers.length > 0) {
-        this.markers.map((marker) => {
-          marker.setMap(null);
-        });
-        this.markers = [];
+      circle.addListener("click", gmapClick);
+      circles.push(circle);
+    };
+    const updateLocation = (pos: {lat: number, lng: number}) => {
+      setHomeLocation(pos.lat, pos.lng);
+    };
+
+    const setCurrentLocation = async () => {
+      if (
+        location &&
+        location.lat &&
+        location.lng
+      ) {
+        gCenter = new google.maps.LatLng(location.lat, location.lng);
+        map.setCenter(location);
+        updateMarker();
+        updateCircle();
       }
-    },
-    removeAllCircle() {
-      if (this.circles && this.circles.length > 0) {
-        this.circles.map((circle) => {
-          circle.removeListener("click");
-          circle.setMap(null);
-        });
-        this.circles = [];
-      }
-    },
-    gmapClick(arg) {
-      const latLng = arg?.event?.latLng || arg.latLng;
-      this.setHome(latLng.lat(), latLng.lng());
-    },
-    setHome(lat, lng) {
-      this.setHomeLocation(lat, lng);
-      this.$emit("updateHome", { lat, lng });
-    },
-    setHomeLocation(lat, lng) {
-      if (google) {
-        this.home = new google.maps.LatLng(lat, lng);
-      }
-      this.updateMarker();
-      this.estimatedDistance = this.haversine_distance(
-        lat,
-        lng,
-        this.shopInfo.location.lat,
-        this.shopInfo.location.lng
-      );
-    },
-    updateLocation(pos) {
-      this.setHomeLocation(pos.lat, pos.lng);
-    },
-    conv() {
+    };
+
+
+    const conv = () => {
       const geocoder = new google.maps.Geocoder();
       geocoder
-        .geocode({ address: this.fullAddress, language: "ja" })
-        .then((response) => {
+        .geocode({ address: props.fullAddress, language: "ja" })
+        .then((response: any) => {
           const res = response.results[0];
-          this.setHome(
+          setHome(
             res.geometry.location.lat(),
             res.geometry.location.lng()
           );
         });
-    },
-    // https://developers-jp.googleblog.com/2019/12/how-calculate-distances-map-maps-javascript-api.html
-    haversine_distance(lat1, lng1, lat2, lng2) {
-      const R = 6371.071;
-      const rlat1 = lat1 * (Math.PI / 180);
-      const rlat2 = lat2 * (Math.PI / 180);
-      const difflat = rlat2 - rlat1;
-      const difflon = (lng2 - lng1) * (Math.PI / 180);
-
-      const d =
-        2 *
-        R *
-        Math.asin(
-          Math.sqrt(
-            Math.sin(difflat / 2) * Math.sin(difflat / 2) +
-              Math.cos(rlat1) *
-                Math.cos(rlat2) *
-                Math.sin(difflon / 2) *
-                Math.sin(difflon / 2)
-          )
-        );
-      return Math.round(d * 1000);
-    },
+    };
+    return {
+      conv,
+      gMap,
+      gmapClick,
+      estimatedDistance,
+      radius,
+      updateLocation,
+    };
   },
-};
+});
 </script>

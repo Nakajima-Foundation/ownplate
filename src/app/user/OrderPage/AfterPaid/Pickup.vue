@@ -23,8 +23,8 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, computed } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent, computed } from "vue";
 import { order_status } from "@/config/constant";
 
 export default defineComponent({
@@ -45,31 +45,15 @@ export default defineComponent({
       type: String,
       required: false,
     },
-    mode: {
-      type: String,
-      required: true,
-    },
-    paid: {
-      type: Boolean,
-      required: true,
-    },
   },
   setup(props) {
     const waiting = computed(() => {
       return props.orderInfo.status < order_status.cooking_completed;
     });
     const showRequest = computed(() => {
-      if (props.mode === "mo") {
-        return props.orderInfo.status === order_status.order_placed;
-        // return props.paid;
-      }
       return waiting.value && !props.shopInfo.isEC;
     });
     const showEstimated = computed(() => {
-      if (props.mode === "mo") {
-        return props.orderInfo.status > order_status.order_placed;
-        // return !props.paid;
-      }
       return props.timeEstimated;
     });
     return {

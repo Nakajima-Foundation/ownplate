@@ -8,18 +8,39 @@ import { enableNotification } from "../notificationConfig";
 import { lineValidateData } from "../../lib/types";
 import { validateLineValidate } from "../../lib/validator";
 
-const LINE_MESSAGE_TOKEN = process.env.LINE_MESSAGE_TOKEN;
+const getUidLineAndToken = async (db: admin.firestore.Firestore, context: functions.https.CallableContext, customerUid: string, restaurantId?: string) => {
+  if (restaurantId) {
+    const config = await utils.get_restaurant_line_config(db, restaurantId);
+    const lineUser = await utils.get_restaurant_line_user(db, restaurantId, customerUid);
+    
+    return {
+      uidLine: lineUser?.profile?.userId,
+      token: config?.message_token,
+    };
+  } else {
+    const isLine = customerUid.slice(0, 5) === "line:"; // is Liff user
+    const uidLine = isLine ? customerUid.slice(5) : context.auth?.token?.line?.slice(5);
+    return {
+      uidLine,
+      token: process.env.LINE_MESSAGE_TOKEN,
+    }
+  }
+};
 
-const client_id = ownPlateConfig.line.LOGIN_CHANNEL_ID;
-
-export const verifyFriend = async (db: admin.firestore.Firestore, context: functions.https.CallableContext) => {
+export const verifyFriend = async (db: admin.firestore.Firestore, data: {restaurantId?: string}, context: functions.https.CallableContext) => {
   const customerUid = utils.validate_customer_auth(context);
-  const isLine = customerUid.slice(0, 5) === "line:";
-  const uidLine = isLine ? customerUid.slice(5) : context.auth?.token?.line?.slice(5);
+  const { restaurantId } = data;
+  const {
+    uidLine,
+    token,
+  } = await getUidLineAndToken(db, context, customerUid, restaurantId);
+  if (!uidLine || !token) {
+    return { result: false }; // restaurant line
+  }
   try {
     const profile = await netutils.request(`https://api.line.me/v2/bot/profile/${uidLine}`, {
       headers: {
-        Authorization: `Bearer ${LINE_MESSAGE_TOKEN}`,
+        Authorization: `Bearer ${token}`,
       },
     });
     if (profile.userId && profile.displayName) {
@@ -32,10 +53,39 @@ export const verifyFriend = async (db: admin.firestore.Firestore, context: funct
   }
 };
 
+const getLineConfig = async (db: admin.firestore.Firestore, restaurantId?: string) => {
+  if (restaurantId) {
+    const restaurantData = await utils.get_restaurant(db, restaurantId);
+    const { hasLine, lineClientId } = restaurantData;
+
+    const restaurantLineData = await utils.get_restaurant_line_config(db, restaurantId);
+    
+    // get_restaurant
+    const client_id = lineClientId;
+    const client_secret = restaurantLineData.client_secret;
+
+    if (!hasLine || !client_id || !client_secret) {
+      throw new functions.https.HttpsError("invalid-argument", "There is no restaurant with this id.");
+    }
+    
+    return {
+      client_id,
+      client_secret,
+    };
+  } else {
+    const client_id = ownPlateConfig.line.LOGIN_CHANNEL_ID;
+    const client_secret = process.env.LINE_SECRET_KEY;
+    return {
+      client_id,
+      client_secret,
+    };
+  }
+};
+
 export const validate = async (db: admin.firestore.Firestore, data: lineValidateData, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
 
-  const { code, redirect_uri } = data;
+  const { code, redirect_uri, restaurantId } = data;
   utils.required_params({ code, redirect_uri });
 
   const validateResult = validateLineValidate(data);
@@ -44,8 +94,11 @@ export const validate = async (db: admin.firestore.Firestore, data: lineValidate
     throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
   }
 
-  const LINE_SECRET_KEY = process.env.LINE_SECRET_KEY;
-
+  const {
+    client_id,
+    client_secret,
+  } = await getLineConfig(db, restaurantId);
+  
   try {
     // We validate the OAuth token (code) given to the redirected page.
     // Result: access_token, id_token, expires_in, refresh_token, scope, token_type
@@ -54,7 +107,7 @@ export const validate = async (db: admin.firestore.Firestore, data: lineValidate
       code,
       redirect_uri,
       client_id,
-      client_secret: LINE_SECRET_KEY,
+      client_secret,
     });
     if (!access.id_token || !access.access_token) {
       throw new functions.https.HttpsError("invalid-argument", "Validation failed.");
@@ -78,7 +131,22 @@ export const validate = async (db: admin.firestore.Firestore, data: lineValidate
     });
 
     const lineUid = `line:${profile.userId}`;
-    if (context.auth!.token.phone_number) {
+    if (restaurantId) {
+      await db.doc(`/restaurants/${restaurantId}/lineUsers/${uid}`).set(
+        {
+          access,
+          verified,
+          profile,
+        },
+        { merge: true }
+      );
+      await db.doc(`/restaurants/${restaurantId}/lineUsersData/${uid}`).set(
+        {
+          profile,
+        },
+        { merge: true }
+      );
+    } else if (context.auth!.token.phone_number) {
       // For end-user, seet the custom claim
       await admin.auth().setCustomUserClaims(uid, {
         line: lineUid,

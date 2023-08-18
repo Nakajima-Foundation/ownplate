@@ -39,7 +39,7 @@
         </div>
 
         <div class="flex-1 text-right text-base">
-          <div v-if="order.name && !isInMo">
+          <div v-if="order.name">
             <i
               class="fab fa-line mr-2 text-lg"
               style="color: #4ec263"
@@ -66,7 +66,7 @@
       <!-- Order Count, Total, and Tip -->
       <div class="flex items-center p-2">
         <div class="mr-2 text-sm">
-          {{ $tc("sitemenu.orderCounter", totalCount, { count: totalCount }) }}
+          {{ $t("sitemenu.orderCounter", { count: totalCount }, totalCount) }}
         </div>
 
         <div class="mr-2 text-sm">
@@ -88,7 +88,7 @@
         <div class="mr-2 items-center justify-center rounded-md bg-green-600 bg-opacity-10 p-1 text-xs
                     font-bold text-green-600
                     " v-if="order.promotionId">
-          {{ $n(order.discountPrice, "currency") }}{{ $t("order.discountPriceSuffix")}}
+          {{ $n(Number(order.discountPrice||0), "currency") }}{{ $t("order.discountPriceSuffix")}}
         </div>
         
         <div class="mr-2 text-sm" v-if="order.isDelivery">
@@ -155,9 +155,9 @@
           <div class="flex items-center">
             <div class="mr-2 text-sm">
               {{
-                $tc("sitemenu.orderCounter", totalCount, {
+                $t("sitemenu.orderCounter", {
                   count: totalCount,
-                })
+                }, totalCount)
               }}
             </div>
 
@@ -167,7 +167,7 @@
             <div class="mr-2 items-center justify-center rounded-md bg-green-600 bg-opacity-10 p-1 text-xs
                         font-bold text-green-600
                         " v-if="order.promotionId && isSuperView">
-              {{ $n(order.discountPrice, "currency") }}{{ $t("order.discountPriceSuffix")}}
+              {{ $n(Number(order.discountPrice||0), "currency") }}{{ $t("order.discountPriceSuffix")}}
             </div>
             <div class="mr-2 text-sm" v-if="order.isDelivery">
               <i class="material-icons"> delivery_dining </i>
@@ -219,9 +219,9 @@
           <div class="flex items-center">
             <div class="mr-2 text-sm">
               {{
-                $tc("sitemenu.orderCounter", totalCount, {
+                $t("sitemenu.orderCounter", {
                   count: totalCount,
-                })
+                }, totalCount)
               }}
             </div>
 
@@ -242,8 +242,8 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, ref, computed } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent, ref, computed, PropType} from "vue";
 
 import { nameOfOrder } from "@/utils/strings";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
@@ -252,31 +252,33 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc } from "firebase/firestore";
 
 import { order_status, order_status_keys } from "@/config/constant";
-import { arrayOrNumSum, convOrderStateForText } from "@/utils/utils";
+import { arrayOrNumSum, convOrderStateForText, resizedProfileImage } from "@/utils/utils";
+import { useI18n } from "vue-i18n";
+
+import { OrderInfoData } from "@/models/orderInfo";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 export default defineComponent({
   props: {
     order: {
-      type: Object,
+      type: Object as PropType<OrderInfoData>,
       required: true,
     },
     isSuperView: {
       type: Boolean,
       required: false,
     },
-    isInMo: {
-      type: Boolean,
-      required: true,
-    },
   },
-  setup(props, ctx) {
-    const restaurant = ref(null);
+  setup(props) {
+    const { d } = useI18n({ useScope: 'global' });
+    
+    const restaurant = ref<RestaurantInfoData | null>(null);
     if (props.order.restaurantId) {
       getDoc(doc(db, `restaurants/${props.order.restaurantId}`)).then(
         (snapshot) => {
-          restaurant.value = snapshot.data();
+          restaurant.value = snapshot.data() as RestaurantInfoData;
         }
-      ).catch((e) => {
+      ).catch(() => {
         console.log("no restaurant")
       });
     }
@@ -289,10 +291,13 @@ export default defineComponent({
     });
     const timestamp = computed(() => {
       const time = props.order.timeEstimated || props.order.timePlaced;
+
       if (props.isSuperView) {
-        return ctx.root.$d(time, "long");
+        // @ts-ignore
+        return d(time, "long");
       } else {
-        return ctx.root.$d(time, "time");
+        // @ts-ignore
+        return d(time, "time");
       }
     });
     const phoneNumber = computed(() => {
@@ -332,6 +337,7 @@ export default defineComponent({
       paymentIsNotCompleted,
 
       convOrderStateForText,
+      resizedProfileImage,
     };
   },
 });

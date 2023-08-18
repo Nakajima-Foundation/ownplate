@@ -1,11 +1,9 @@
 import pdfMake from "pdfmake/build/pdfmake";
 import moment from "moment";
 
-import { nameOfOrder, formatOption, optionPrice } from "@/utils/strings";
-import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
-import { convChar } from "@/lib/pdf/pdf";
+import { nameOfOrder, formatOption } from "@/utils/strings";
 
-import { OrderInfoData } from "@/models/orderInfo";
+import { OrderInfoData, OrderItemData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 const fontHost = location.protocol + "//" + location.host + "/fonts/";
 
@@ -16,14 +14,6 @@ const pdfFont = {
   },
 };
 pdfMake.fonts = pdfFont;
-
-interface OrderItemData {
-  item: any;
-  count: number;
-  id: string;
-  options: [string];
-  orderIndex: any;
-}
 
 const styles = {
   title: {
@@ -118,13 +108,13 @@ export const orderPdfDownload = () => {
   const pdfDoc = orderDownloadData();
   return pdfDoc.download();
 };
-export const orderPrintData = () => {
+export const orderPrintData = (): string => {
   const pdfDoc = orderDownloadData();
   // @ts-ignore
   return pdfDoc.getBase64(); // Promise<string>;
 };
 
-export const testDownload = () => {
+export const testDownload = (): string => {
   const content = [
     {
       image: "headerLogo",
@@ -189,7 +179,7 @@ export const testDownload = () => {
     defaultStyle,
   } as any;
   // @ts-ignore
-  const pdfDoc = pdfMake.createPdf(docDefinition).getBase64();
+  const pdfDoc: string = pdfMake.createPdf(docDefinition).getBase64();
   return pdfDoc;
 };
 
@@ -272,7 +262,7 @@ export const printOrderData = (
       margin: [2, 0],
     });
     console.log(orderItem);
-    const option = displayOption(orderItem.options || []);
+    const option = displayOption(orderItem.options as string[] || []);
     if (option !== "") {
       content.push({
         text: "\u200B\t(opt: " + option + ")",
@@ -344,7 +334,7 @@ export const printOrder = (
   restaurantInfo: RestaurantInfoData,
   orderInfo: OrderInfoData,
   orderItems: OrderItemData[]
-) => {
+): string => {
   const pdfDoc = printOrderData(restaurantInfo, orderInfo, orderItems);
   // @ts-ignore
   return pdfDoc.getBase64();
@@ -358,7 +348,7 @@ export const downloadOrderPdf = (
   pdfDoc.download();
 };
 
-export const data2UrlSchema = (data: string, size: string) => {
+export const data2UrlSchema = (data: string, size: string): string => {
   const passprnt_uri =
     "starpassprnt://v1/print/nopreview?" +
     "back=" +

@@ -42,7 +42,6 @@
           :isSuperView="true"
           @selected="orderSelected($event)"
           :order="order"
-          :isInMo="isInMo"
         />
       </div>
 
@@ -83,8 +82,8 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, ref, computed } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent, ref, computed } from "vue";
 
 import moment from "moment-timezone";
 
@@ -99,11 +98,12 @@ import {
   limit,
   startAfter,
   orderBy,
+  QueryConstraint,
 } from "firebase/firestore";
 
 import { order_status, order_status_keys } from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
-import { revenueCSVHeader, revenueMoCSVHeader } from "@/utils/reportUtils";
+import { revenueCSVHeader } from "@/utils/reportUtils";
 import { order2ReportData } from "@/models/orderInfo";
 import {
   arrayOrNumSum,
@@ -111,11 +111,16 @@ import {
   notFoundResponse,
   orderTypeKey,
 } from "@/utils/utils";
+import { OrderInfoData } from "@/models/orderInfo";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import DownloadCsv from "@/components/DownloadCSV.vue";
 import OrderedInfo from "@/app/admin/Order/OrderedInfo.vue";
 import BackButton from "@/components/BackButton.vue";
 import NotFound from "@/components/NotFound.vue";
+
+import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   components: {
@@ -124,26 +129,23 @@ export default defineComponent({
     BackButton,
     NotFound,
   },
-  props: {
-    isInMo: {
-      type: Boolean,
-      required: true,
-    },
-  },
   metaInfo() {
     return {
       title: ["Admin All Order", this.defaultTitle].join(" / "),
     };
   },
-  setup(props, ctx) {
-    const { uid, isOwner } = useAdminUids(ctx);
+  setup() {
+    const router = useRouter();
+    const { t } = useI18n({ useScope: 'global' });
 
-    const orders = ref([]);
+    const { uid, isOwner } = useAdminUids();
+
+    const orders = ref<OrderInfoData[]>([]);
     const orderState = ref(0);
-    const restaurants = {};
+    const restaurants: {[key: string]: RestaurantInfoData} = {};
 
     let isLoading = false;
-    let last = null;
+    let last: null | any = null;
 
     if (!isOwner.value) {
       return notFoundResponse;
@@ -183,11 +185,11 @@ export default defineComponent({
     });
     const fileName = "all_orders_of_all_restaurants";
     const fields = computed(() => {
-      return props.isInMo ? revenueMoCSVHeader : revenueCSVHeader;
+      return revenueCSVHeader;
     });
 
     const fieldNames = fields.value.map((field) => {
-      return ctx.root.$t(`order.${field}`);
+      return t(`order.${field}`);
     });
     const tableData = computed(() => {
       return filteredOrders.value.map((order) => {
@@ -196,18 +198,18 @@ export default defineComponent({
           date: time ? moment(time).format("YYYY/MM/DD") : "",
           restaurantId: order.restaurant.restaurantId, // mo
           shopId: order.restaurant.shopId, // mo
-          type: ctx.root.$t("order." + orderTypeKey(order, props.isInMo)),
+          type: t("order." + orderTypeKey(order)),
           restaurantName: order.restaurant.restaurantName,
-          orderStatus: ctx.root.$t(
+          orderStatus: t(
             "order.status." + order_status_keys[order.status]
           ),
-          foodRevenue: order.accounting.food.revenue,
-          foodTax: order.accounting.food.tax,
-          alcoholRevenue: order.accounting.alcohol.revenue,
-          salesTax: order.accounting.alcohol.tax,
+          foodRevenue: order.accounting?.food.revenue,
+          foodTax: order.accounting?.food?.tax,
+          alcoholRevenue: order.accounting?.alcohol.revenue,
+          salesTax: order.accounting?.alcohol.tax,
           productSubTotal: order.total,
-          tipShort: order.accounting.service.revenue,
-          serviceTax: order.accounting.service.tax,
+          tipShort: order.accounting?.service?.revenue,
+          serviceTax: order.accounting?.service?.tax,
           shippingCost: order.shippingCost || order.deliveryFee || 0,
           total: order.totalCharge,
           totalCount: Object.values(order.order).reduce((count, order) => {
@@ -225,7 +227,7 @@ export default defineComponent({
     const loadData = async () => {
       if (!isLoading) {
         isLoading = true;
-        const queryConditions = [
+        const queryConditions: QueryConstraint[] = [
           where("ownerUid", "==", uid.value),
           orderBy("timePlaced", "desc"),
           limit(100),
@@ -243,9 +245,8 @@ export default defineComponent({
           for (; i < snapshot.docs.length; i++) {
             const orderDoc = snapshot.docs[i];
             const order = order2ReportData(
-              orderDoc.data(),
+              orderDoc.data() as OrderInfoData,
               serviceTaxRate,
-              props.isInMo
             );
             order.restaurantId = orderDoc.ref.path.split("/")[1];
             order.id = orderDoc.id;
@@ -253,7 +254,7 @@ export default defineComponent({
               const snapshot = await getDoc(
                 doc(db, `restaurants/${order.restaurantId}`)
               );
-              restaurants[order.restaurantId] = snapshot.data();
+              restaurants[order.restaurantId] = snapshot.data() as RestaurantInfoData;
             }
             order.restaurant = restaurants[order.restaurantId];
             orders.value.push(order);
@@ -272,9 +273,9 @@ export default defineComponent({
         loadData();
       }
     };
-    const orderSelected = (order) => {
+    const orderSelected = (order: OrderInfoData) => {
       // We are re-using the restaurant owner's view.
-      ctx.root.$router.push({
+      router.push({
         path:
           "/admin/restaurants/" + order.restaurantId + "/orders/" + order.id,
       });

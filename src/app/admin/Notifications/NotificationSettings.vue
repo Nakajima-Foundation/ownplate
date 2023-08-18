@@ -3,7 +3,7 @@
     :active="notificationSettingsPopup"
     :width="488"
     scroll="keep"
-    @close="closeNotificationSettings"
+    @onClose="closeNotificationSettings"
   >
     <div class="mx-2 my-6 rounded-lg bg-white p-6 text-left shadow-lg">
       <!-- Title -->
@@ -15,7 +15,7 @@
       <div class="mt-6">
         <!-- Incomplete Orders -->
         <div>
-          <incomplete-orders v-if="shopInfo" :shopInfo="shopInfo" />
+          <incomplete-orders v-if="shopInfo" :shopInfo="shopInfo" @close="closeNotificationSettings()"/>
         </div>
 
         <!-- Settings -->
@@ -138,7 +138,7 @@
             <router-link
               v-if="isLineEnabled"
               class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
-              :to="`/admin/restaurants/${restaurantId()}/line`"
+              :to="`/admin/restaurants/${restaurantId}/line`"
             >
               <i class="fab fa-line mr-2 text-2xl text-op-teal" />
               <span class="text-sm font-bold text-op-teal">
@@ -165,19 +165,17 @@
   </o-modal>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
   ref,
-  computed,
-  onMounted,
   watch,
-} from "@vue/composition-api";
+} from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 
 import { soundFiles } from "@/config/constant";
-import { getSoundIndex, isLineEnabled } from "@/utils/utils";
+import { getSoundIndex, useRestaurantId, useSoundPlay, isLineEnabled } from "@/utils/utils";
 
 import IncompleteOrders from "@/app/admin/Notifications/IncompleteOrders.vue";
 
@@ -202,10 +200,11 @@ export default defineComponent({
   setup(props, ctx) {
     const notificationConfig = ref(props.notificationData);
     const soundIndex = ref(getSoundIndex(props.notificationData.nameKey));
+    const restaurantId = useRestaurantId();
     const saveNotificationData = () => {
       notificationConfig.value.updatedAt = serverTimestamp();
       setDoc(
-        doc(db, `restaurants/${ctx.root.restaurantId()}/private/notifications`),
+        doc(db, `restaurants/${restaurantId.value}/private/notifications`),
         notificationConfig.value
       );
     };
@@ -228,10 +227,11 @@ export default defineComponent({
     const closeNotificationSettings = () => {
       ctx.emit("close");
     };
+    const soundPlay = useSoundPlay();
     const delayedSoundPlay = () => {
       // We need to add a delay so that it won't interrupt the very first silent sound.
       setTimeout(() => {
-        ctx.root.soundPlay();
+        soundPlay();
       }, 100);
     };
     return {
@@ -244,6 +244,8 @@ export default defineComponent({
       closeNotificationSettings,
       delayedSoundPlay,
       isLineEnabled,
+
+      restaurantId,
     };
   },
 });

@@ -18,8 +18,8 @@
     </div>
 
     <!-- Restaurants -->
-    <template v-for="state in allArea">
-      <div v-if="restaurantsObj[state]">
+    <template v-for="(state, k) in allArea">
+      <div v-if="restaurantsObj[state]" :key="k">
         <div
           class="mx-6 mt-6 mb-2 text-base font-bold text-black text-opacity-40"
         >
@@ -28,7 +28,7 @@
         <div
           class="mx-6 mt-2 grid grid-cols-1 items-center gap-2 lg:grid-cols-3 xl:grid-cols-4"
         >
-          <div v-for="restaurant in restaurantsObj[state]">
+          <div v-for="(restaurant, k) in restaurantsObj[state]" :key="k">
             <router-link :to="`/r/${restaurant.id}`">
               <div class="flex items-center">
                 <div class="mr-4 h-12 w-12 rounded-full bg-black bg-opacity-10">
@@ -55,24 +55,26 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, ref } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent, ref } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
-import { getDocs, collection, where, limit, query } from "firebase/firestore";
+import { getDocs, collection, where, query } from "firebase/firestore";
 
 import { RestaurantHeader } from "@/config/header";
 import { JPPrefecture } from "@/config/constant";
 import { restaurant2AreaObj, sortRestaurantObj } from "@/utils/RestaurantUtils";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { resizedProfileImage } from "@/utils/utils";
 
 export default defineComponent({
   metaInfo() {
-    return RestaurantHeader;
+    return RestaurantHeader as any;
   },
   setup() {
     const allArea = JPPrefecture;
 
-    const restaurantsObj = ref([]);
+    const restaurantsObj = ref<{[key: string]: RestaurantInfoData[]}>({});
     getDocs(
       query(
         collection(db, "restaurants"),
@@ -92,6 +94,7 @@ export default defineComponent({
     return {
       restaurantsObj,
       allArea,
+      resizedProfileImage,
     };
   },
 });

@@ -9,11 +9,11 @@
       <div
         class="h-full w-full rounded-lg bg-white p-3 shadow"
         :class="
-          value === 'takeout'
+          modelValue === 'takeout'
             ? 'border-2 border-op-teal text-op-teal'
             : 'cursor-pointer text-black text-opacity-40'
         "
-        @click="$emit('input', 'takeout')"
+        @click="$emit('update:modelValue', 'takeout')"
       >
         <i class="material-icons w-full text-center"> local_mall </i>
         <div class="-mt-0.5 text-center text-lg font-bold tracking-tighter">
@@ -27,11 +27,11 @@
       <div
         class="h-full w-full rounded-lg bg-white p-3 shadow"
         :class="
-          value === 'delivery'
+          modelValue === 'delivery'
             ? 'border-2 border-op-teal text-op-teal'
             : 'cursor-pointer text-black text-opacity-40'
         "
-        @click="$emit('input', 'delivery')"
+        @click="$emit('update:modelValue', 'delivery')"
       >
         <i class="material-icons w-full text-center"> delivery_dining </i>
         <div class="-mt-0.5 text-center text-lg font-bold">
@@ -46,36 +46,36 @@
     <div class="mt-2">
       <div v-if="deliveryData.enableDeliveryThreshold">
         {{
-          $tc("shopInfo.deliveryThresholdNotice", 0, {
+          $t("shopInfo.deliveryThresholdNotice", {
             price: $n(deliveryData.deliveryThreshold, "currency"),
-          })
+          }, 0)
         }}
       </div>
       <div v-if="deliveryData.deliveryFee > 0">
         {{
-          $tc("shopInfo.deliveryFeeInfo", 0, {
+          $t("shopInfo.deliveryFeeInfo", {
             price: $n(deliveryData.deliveryFee, "currency"),
-          })
+          }, 0)
         }}
         <span v-if="deliveryData.enableDeliveryFree">
           {{
-            $tc("shopInfo.deliveryFeeThresholdInfo", 0, {
+            $t("shopInfo.deliveryFeeThresholdInfo", {
               price: $n(deliveryData.deliveryFreeThreshold, "currency"),
-            })
+            }, 0)
           }}
         </span>
       </div>
     </div>
     <div
-      v-if="value === 'delivery'"
+      v-if="modelValue === 'delivery'"
       class="mt-2 rounded-lg bg-blue-500 bg-opacity-10 px-4 py-2"
     >
       <span class="font-bold">{{ $t("shopInfo.deliveryArea") }}</span>
       <div v-if="deliveryData.enableAreaMap">
         {{
-          $tc("shopInfo.deliveryAreaRadius", 0, {
+          $t("shopInfo.deliveryAreaRadius", {
             radius: deliveryData.radius,
-          })
+          }, 0)
         }}
       </div>
       <div v-if="deliveryData.enableAreaText">
@@ -86,8 +86,8 @@
   </div>
 </template>
 
-<script>
-import { defineComponent } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent } from "vue";
 export default defineComponent({
   props: {
     shopInfo: {
@@ -98,7 +98,7 @@ export default defineComponent({
       type: Object,
       required: true,
     },
-    value: {
+    modelValue: {
       type: String,
       required: true,
     },

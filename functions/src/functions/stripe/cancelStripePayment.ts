@@ -28,8 +28,8 @@ export const cancelStripePayment = async (db: admin.firestore.Firestore, data: o
 
   const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
   const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`);
-  const restaurant = await utils.get_restaurant(db, restaurantId);
-  const restaurantOwnerUid = restaurant["uid"];
+  const restaurantData = await utils.get_restaurant(db, restaurantId);
+  const restaurantOwnerUid = restaurantData.uid;
   if (restaurantOwnerUid !== ownerUid) {
     console.error("cancelStripePayment: invalid operator:", uid);
     throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
@@ -68,7 +68,7 @@ export const cancelStripePayment = async (db: admin.firestore.Firestore, data: o
     });
     // sendSMS is always true
     if (result.order.sendSMS) {
-      await sendMessageToCustomer(db, "msg_stripe_payment_canceled", restaurant.restaurantName, result.order, restaurantId, orderId, {}, true);
+      await sendMessageToCustomer(db, "msg_stripe_payment_canceled", restaurantData.hasLine, restaurantData.restaurantName, result.order, restaurantId, orderId, {}, true);
     }
     return { result: true };
   } catch (error) {

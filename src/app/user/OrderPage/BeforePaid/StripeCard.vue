@@ -36,7 +36,7 @@
         </div>
 
         <!-- CVC Popup-->
-        <o-modal :active.sync="CVCPopup" :width="488" scroll="keep">
+        <o-modal v-model:active="CVCPopup" :width="488" scroll="keep">
           <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
             <!-- Title -->
             <div class="text-xl font-bold text-black text-opacity-40">
@@ -107,76 +107,48 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+  import {
+    defineComponent,
+    ref,
+    watch,
+    onMounted,
+  } from "vue";
+
 import { getStripeInstance, stripeUpdateCustomer } from "@/lib/stripe/stripe";
-import { db } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  doc,
+  getDoc,
+} from "firebase/firestore";
 import moment from "moment";
 
-export default {
-  data() {
-    return {
-      stripe: getStripeInstance(),
-      storedCard: null,
-      useStoredCard: false,
-      elementStatus: { complete: false },
-      cardElement: {},
-      CVCPopup: false,
-      reuse: true,
-    };
-  },
+import { useUserData } from "@/utils/utils";
+import { useStore } from "vuex";
+
+export default defineComponent({
   props: {
     stripeJCB: {
       type: Boolean,
       required: true,
     },
   },
-  async mounted() {
-    this.configureStripe();
-    try {
-      const stripeInfo = (
-        await db.doc(`/users/${this.user.uid}/readonly/stripe`).get()
-      ).data();
-      if (stripeInfo && stripeInfo.card) {
-        const date = ('00' + String(stripeInfo.card.exp_month)).slice(-2);
-        const expire = moment(`${stripeInfo.card.exp_year}${date}01T000000+0900`).endOf('month').toDate();
-        if (
-          stripeInfo.updatedAt && (
-            stripeInfo.updatedAt.toDate() >
-              moment().subtract(180, "days").toDate()
-          )
-        ) {
-          if (expire > new Date()) {
-            this.storedCard = stripeInfo.card;
-            this.useStoredCard = true;
-            this.$emit("change", { complete: true });
-          }
-        }
-      }
-    } catch (e) {
-      console.log(e);
-      console.log("stripe expired");
-    }
-  },
-  watch: {
-    useStoredCard(newValue) {
-      this.$emit("change", newValue ? { complete: true } : this.elementStatus);
-    },
-  },
-  methods: {
-    async createToken() {
-      if (!this.useStoredCard) {
-        const { token } = await this.stripe.createToken(this.cardElement);
-        const tokenId = token.id;
-        const { data } = await stripeUpdateCustomer({
-          tokenId,
-          reuse: this.reuse,
-        });
-        // console.log("stripeUpdateCustomer", data, tokenId);
-      }
-    },
-    configureStripe() {
-      const elements = this.stripe.elements();
-      const stripeRegion = this.$store.getters.stripeRegion;
+  setup(_, ctx) {
+    const { user } = useUserData();
+    const store = useStore();
+    
+    const stripe = getStripeInstance();
+    const cardElem = ref<any>(null);
+    let elementStatus = { complete: false };
+    
+    const storedCard = ref(null);
+    const useStoredCard = ref(false);
+    const CVCPopup = ref(false);
+    const reuse = ref(true);
+    
+    const configureStripe = async () => {
+      const elements = stripe.elements();
+      const stripeRegion = store.getters.stripeRegion;
       const cardElement = elements.create("card", {
         hidePostalCode: stripeRegion.hidePostalCode,
         style: {
@@ -199,18 +171,73 @@ export default {
         },
       });
       cardElement.mount("#card-element");
-      this.cardElement = cardElement;
-      this.cardElement.addEventListener("change", (status) => {
-        this.elementStatus = status;
-        this.$emit("change", status);
+      cardElem.value = cardElement;
+      // console.log(cardElem.value);
+      cardElem.value.addEventListener("change", (status: any) => {
+        elementStatus = status;
+        ctx.emit("change", status);
       });
-    },
-    openCVC() {
-      this.CVCPopup = true;
-    },
-    closeCVC() {
-      this.CVCPopup = false;
-    },
+      
+      try {
+        const stripeInfo = (
+          await getDoc(doc(db, `/users/${user.value.uid}/readonly/stripe`))
+        ).data();
+        
+        if (stripeInfo && stripeInfo.card) {
+          const date = ('00' + String(stripeInfo.card.exp_month)).slice(-2);
+          const expire = moment(`${stripeInfo.card.exp_year}${date}01T000000+0900`).endOf('month').toDate();
+          // console.log(expire);
+          if (stripeInfo.updatedAt && (stripeInfo.updatedAt.toDate() > moment().subtract(180, "days").toDate())) {
+            if (expire > new Date()) {
+            storedCard.value = stripeInfo.card;
+            useStoredCard.value = true;
+            ctx.emit("change", { complete: true });
+            }
+          }
+        }
+      } catch (e) {
+        console.log(e);
+        console.log("stripe expired")
+      }
+    };
+
+    onMounted(() => {
+      configureStripe();
+    });
+    
+    watch(useStoredCard, (newValue) => {
+      ctx.emit("change", newValue ? { complete: true } : elementStatus);
+    });
+
+    const createToken = async () => {
+      if (!useStoredCard.value) {
+        const { token } = await stripe.createToken(cardElem.value);
+        const tokenId = token.id;
+        await stripeUpdateCustomer({
+          tokenId,
+          reuse: reuse.value,
+        });
+        // console.log("stripeUpdateCustomer", data, tokenId);
+      }
+    };
+    const openCVC = () => {
+      CVCPopup.value = true;
+    };
+    const closeCVC = () => {
+      CVCPopup.value = false;
+    };
+    return {
+      useStoredCard,
+      storedCard,
+      CVCPopup,
+      reuse,
+
+      openCVC,
+      closeCVC,
+
+      createToken, // for parent component
+    };
+    
   },
-};
+});
 </script>

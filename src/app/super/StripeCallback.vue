@@ -11,11 +11,21 @@
   </section>
 </template>
 
-<script>
-import BackButton from "@/components/BackButton";
-import { db } from "@/plugins/firebase";
+<script lang="ts">
+import { defineComponent, ref } from "vue";
+import BackButton from "@/components/BackButton.vue";
 import { stripeActionStrings } from "@/lib/stripe/stripe";
-export default {
+import { db } from "@/lib/firebase/firebase9";
+import {
+  doc,
+  getDoc,
+} from "firebase/firestore";
+
+import { useSuper } from "@/utils/utils";
+import { useRoute } from "vue-router";
+import moment from "moment";
+
+export default defineComponent({
   metaInfo() {
     return {
       title: [this.defaultTitle, "Super All Stripe Callback"].join(" / "),
@@ -24,27 +34,22 @@ export default {
   components: {
     BackButton,
   },
-  data() {
+  setup () {
+    useSuper();
+    const route = useRoute();
+    
+    const log = ref<any>(null);
+
+    const logUid =  route.params.uid;
+    const logId = route.params.logId;
+    getDoc(doc(db, `admins/${logUid}/stripeLogs/${logId}`)).then((doc) => {
+      log.value = doc.data();
+    });
     return {
-      log: null,
-      detacher: null,
       stripeActionStrings,
-      logUid: this.$route.params.uid,
-      logId: this.$route.params.logId,
-    };
-  },
-  async mounted() {
-    if (!this.$store.state.user || this.$store.getters.isNotSuperAdmin) {
-      this.$router.push("/");
+      log,
+      moment,
     }
-    const doc = await db
-      .doc(`admins/${this.logUid}/stripeLogs/${this.logId}`)
-      .get();
-    this.log = doc.data();
-    console.log(this.log);
   },
-  destroyed() {
-    this.detatcher && this.detatcher();
-  },
-};
+});
 </script>

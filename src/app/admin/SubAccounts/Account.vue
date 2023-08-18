@@ -4,7 +4,10 @@
     <div class="mx-6 mt-6 lg:flex lg:items-center">
       <!-- Back and Preview -->
       <div class="flex space-x-4">
-        <back-button url="/admin/subaccounts/" />
+        <back-button url="/admin/subaccounts/"
+                     iconText="arrow_back"
+                     backText="button.backToSubaccounts"
+                     />
       </div>
     </div>
 
@@ -49,14 +52,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
   ref,
-  onUnmounted,
-  watch,
   computed,
-} from "@vue/composition-api";
+} from "vue";
 
 import BackButton from "@/components/BackButton.vue";
 import { db } from "@/lib/firebase/firebase9";
@@ -69,9 +70,13 @@ import {
   collection,
   where,
   orderBy,
+  DocumentData,
 } from "firebase/firestore";
 
 import { doc2data, array2obj, useAdminUids } from "@/utils/utils";
+
+import { useRouter, useRoute } from "vue-router";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 export default defineComponent({
   components: {
@@ -82,15 +87,18 @@ export default defineComponent({
       title: [this.defaultTitle, "Admin Subaccount Account"].join(" / "),
     };
   },
-  setup(props, ctx) {
+  setup() {
+    const route = useRoute();
+    const router = useRouter();
+
     const subAccountId = computed(() => {
-      return ctx.root.$route.params.subAccountId;
+      return route.params.subAccountId;
     });
 
     const restaurantObj = ref({});
-    const restaurants = ref([]);
+    const restaurants = ref<RestaurantInfoData[]>([]);
 
-    const { uid } = useAdminUids(ctx);
+    const { uid } = useAdminUids();
 
     getDocs(
       query(
@@ -105,26 +113,26 @@ export default defineComponent({
         );
         restaurants.value = restaurantCollection.docs
           .map(doc2data("restaurant"))
-          .filter((r) => r.publicFlag);
+          .filter((r) => r.publicFlag) as RestaurantInfoData[];
       });
     const name = ref("");
 
-    const child = ref({});
+    const child = ref<DocumentData | undefined | {[key: string]: string}>({});
     getDoc(doc(db, `admins/${uid.value}/children/${subAccountId.value}`))
       .then((childrenDoc) => {
         child.value = childrenDoc.data();
-        name.value = child.value.name;
+        name.value = child.value?.name;
       });
 
     const restaurantListObj = computed(() => {
-      return (child.value.restaurantLists || []).reduce((t, c) => {
+      return (child.value?.restaurantLists || []).reduce((t: {[key: string]: boolean}, c: string) => {
         t[c] = true;
         return t;
       }, {});
     });
 
     const newRestaurantList = computed(() => {
-      return Object.keys(restaurantListObj.value).reduce((tmp, k) => {
+      return Object.keys(restaurantListObj.value).reduce((tmp: string[], k: string) => {
         const c = restaurantListObj.value[k];
         if (c) {
           tmp.push(k);
@@ -140,7 +148,7 @@ export default defineComponent({
           restaurantLists: newRestaurantList.value,
           name: name.value,
         });
-      ctx.root.$router.push("/admin/subaccounts/");
+      router.push("/admin/subaccounts/");
     };
 
     return {

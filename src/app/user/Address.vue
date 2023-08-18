@@ -58,31 +58,35 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, computed, ref } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent, computed, ref } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { getDoc, doc, setDoc } from "firebase/firestore";
-import { useBasePath } from "@/utils/utils";
+import { useBasePath, useUserData } from "@/utils/utils";
 
 import BackButton from "@/components/BackButton.vue";
+
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   components: {
     BackButton,
   },
-  setup(_, ctx) {
-    const basePath = useBasePath(ctx.root);
+  setup() {
+    const router = useRouter();
+    const basePath = useBasePath();
     const customerInfo = ref({});
-
+    const { uid, isUser } = useUserData();
+    
     const docPath = computed(() => {
-      if (ctx.root.isUser) {
-        return `/users/${ctx.root.user.uid}/address/data`;
+      if (isUser.value) {
+        return `/users/${uid.value}/address/data`;
       }
-      return null;
+      return "";
     });
 
-    if (!ctx.root.isUser) {
-      ctx.root.$router.push(basePath.value + "/u/profile");
+    if (!isUser.value) {
+      router.push(basePath.value + "/u/profile");
     }
 
     if (docPath.value) {

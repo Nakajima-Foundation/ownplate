@@ -13,7 +13,7 @@
     </div>
 
     <!-- Areas -->
-    <div v-for="area in areas">
+    <div v-for="(area, k) in areas" :key="k">
       <div class="mx-6 mt-6 text-base font-bold text-black text-opacity-40">
         {{ $t("find.areas." + area.name) }}
       </div>
@@ -57,15 +57,17 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, onMounted, ref } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent, onMounted, ref } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
 import { getDocs, collection, orderBy, limit, query } from "firebase/firestore";
 
 import { RestaurantHeader } from "@/config/header";
-import AreaItem from "@/app/user/Restaurants/AreaItem";
+import AreaItem from "@/app/user/Restaurants/AreaItem.vue";
 import { ownPlateConfig } from "@/config/project";
+
+import { useUserData, resizedProfileImage } from "@/utils/utils";
 
 export default defineComponent({
   components: {
@@ -76,15 +78,17 @@ export default defineComponent({
       this.$t("pageTitle.restaurantRoot"),
       ownPlateConfig.siteName,
     ].join(" / ");
-    return Object.assign(RestaurantHeader, { title });
+    return Object.assign(RestaurantHeader, { title }) as any;
   },
-  setup(_, ctx) {
-    const likes = ref([]);
+  setup() {
+    const { isUser, uid } = useUserData();
+    
+    const likes = ref<any[]>([]);
     onMounted(async () => {
-      if (ctx.root.isUser) {
+      if (isUser.value) {
         const snapshot = await getDocs(
           query(
-            collection(db, `users/${ctx.root.user.uid}/reviews`),
+            collection(db, `users/${uid.value}/reviews`),
             orderBy("timeLiked", "desc"),
             limit(100)
           )
@@ -101,6 +105,7 @@ export default defineComponent({
     });
 
     return {
+      resizedProfileImage,
       likes,
       areas: [
         {

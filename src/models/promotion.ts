@@ -21,7 +21,7 @@ export interface PromotionData extends DocumentData{
 
   currentOpen?: boolean;
 
-};
+}
 
 export interface UserPromotionHistoryData {
   promotionId: string;
