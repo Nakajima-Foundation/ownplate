@@ -1,6 +1,6 @@
 <template>
   <div>
-    <admin-service-introduction />
+    <admin-service-introduction :isAdmin="isAdmin" />
     <div class="mx-auto max-w-screen-xl">
       <admin-feature />
 			<admin-how-to-start />
@@ -30,6 +30,13 @@ export default defineComponent({
     userVoices,
     operators,
     aboutService,
+  },
+  props: {
+    isAdmin: {
+      type: Boolean,
+      require: true,
+      default: false,
+    },
   },
 });
 </script>

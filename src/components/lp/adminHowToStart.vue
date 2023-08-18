@@ -62,7 +62,7 @@
 			</router-link>
 
 			<div class="mt-8 sm:mb-6 mb-4">
-				<router-link to="/admin/user/signup">
+				<router-link :to="isAdmin ? `/admin/restaurants` : `/admin/user/signup`">
 					<div class="inline-flex h-16 items-center rounded-full bg-ownplate-yellow px-8 shadow hover:bg-opacity-80">
             <span class="text-xl font-bold text-black opacity-90">
 							{{ $t("lp.signUpForFree") }}
