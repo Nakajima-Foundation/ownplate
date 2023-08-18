@@ -94,20 +94,6 @@
           </o-button>
         </div>
 
-        <!-- Sign Up as a New User -->
-        <div class="mt-6 text-center">
-          <router-link to="/admin/user/signup">
-            <div class="inline-flex items-center justify-center">
-              <i class="material-icons mr-2 text-lg text-op-teal"
-                >person_add_alt_1</i
-              >
-              <div class="text-sm font-bold text-op-teal">
-                {{ $t("admin.pleaseSignUp") }}
-              </div>
-            </div>
-          </router-link>
-        </div>
-
         <!-- Forgot Password -->
         <div class="mt-6 text-center">
           <router-link to="/admin/user/reset">
@@ -121,6 +107,23 @@
         </div>
       </form>
     </div>
+
+		<!-- Sign Up as a New User -->
+      <div class="mt-12 text-center">
+				<div class="font-bold text-black text-opacity-40">
+         	{{ $t("admin.forSignup") }}
+       	</div>
+
+				<div class="mt-6">
+				<router-link to="/admin/user/signup">
+					<div class="inline-flex h-16 items-center rounded-full bg-ownplate-yellow px-8 shadow hover:bg-opacity-80">
+           	<span class="text-xl font-bold text-black opacity-90">
+							{{ $t("lp.signUpForFree") }}
+						</span>
+       		</div>
+				</router-link>
+				</div>
+       </div>
   </div>
 </template>
 

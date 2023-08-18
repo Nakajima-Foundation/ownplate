@@ -102,7 +102,7 @@ const data = {
     "deliveryManualLink": "デリバリーマニュアル",
     "printerManualLink": "印刷機能マニュアル",
     "tipsLink": "おもちかえり活用術",
-    "termsRestaurant": "利用規約",
+    "termsRestaurant": "利用規約(加盟店)",
     "termsUser": "利用規約",
     "privacy": "プライバシーポリシー",
     "faq": "ご利用について",
@@ -536,7 +536,7 @@ const data = {
     "moDescription1": "お店に無いものも最短3日後受け取り可能です。",
     "moDescription2": "最短30分後に店舗で受け取り可能です。",
     "moDescription3": "*対応店舗のみ",
-		"forRestaurantOwner": "＼ 飲食店様向け ／",
+		"forRestaurantOwner": "飲食店様向け",
 		"signUpForFree": "無料でご利用を開始",
 		"clickHereToOrder": "テイクアウトのご注文はこちら",
 		"feature": "おもちかえり.comの特徴",
@@ -552,7 +552,8 @@ const data = {
 		"clickHereForDetails": "詳しいご利用の手引きはこちら",
 		"enjoy": "お店の笑顔も",
 		"omochikaeri": "おもちかえり！",
-		"forOwnerToOpen": "出店をご希望の飲食店の方へ"
+		"forOwnerToOpen": "出店をご希望の飲食店の方へ",
+		"clickHereToSignup": "無料の出店ご登録はこちら"
   },
 	"promotion": {
 		"heading": "開催中のキャンペーン",
@@ -819,7 +820,10 @@ const data = {
     "next": "次へ",
     "category": "カテゴリ",
     "myPage": "マイページ",
-    "backToTop": "トップへ"
+		"backToTop": "トップへ",
+		"login": "ログイン",
+		"linkToAdminDocs": "ご利用の手引き",
+		"news":"運営からのお知らせ"
   },
   "sms": {
     "signin": "本人確認",
@@ -913,7 +917,8 @@ const data = {
       "before": "おもちかえり.com へのご登録がまだの方は、まずこちらの",
       "manualName": "「ご利用の手引き」",
       "after": "に目を通して、ご登録を進めてください。"
-    },
+		},
+		"forSignup": "まだご登録がお済みでない飲食店の方へ",
     "pleaseSignIn": "ログインしてください(飲食店向け)",
     "goToSignIn": "ログインへ",
     "mailIsExpired": "メールの有効期限が切れています。",

@@ -503,7 +503,8 @@ const data = {
 		"clickHereForDetails": "Cliquez ici pour des instructions détaillées",
 		"enjoy": "Profitez de notre",
 		"omochikaeri": "service!",
-		"forOwnerToOpen": "Pour les restaurants souhaitant ouvrir un magasin"
+		"forOwnerToOpen": "Pour les restaurants souhaitant ouvrir un magasin",
+		"clickHereToSignup": "Cliquez ici pour vous inscrire gratuitement"
   },
 	"promotion": {
 		"heading": "Campagnes en cours",
@@ -751,7 +752,10 @@ const data = {
     "next": "Suivant",
     "category": "Catégorie",
     "myPage": "My Page",
-    "backToTop": "Top"
+		"backToTop": "Top",
+		"login": "Sign in",
+		"linkToAdminDocs": "Instructions détaillées",
+		"news":"Actualités"
   },
   "sms": {
     "signin": "Se connecter avec un numéro de téléphone",
@@ -845,7 +849,8 @@ const data = {
       "before": "Si vous n'êtes pas encore inscrit sur OwnPlate.com, veuillez suivre",
       "manualName": "\"ce guide d'utilisation\"",
       "after": "et vous inscrire d'abord avant de poursuivre."
-    },
+		},
+		"forSignup": "Pour les restaurants qui ne se sont pas encore inscrits",
     "pleaseSignIn": "Se Connecter (pour les restaurants)",
     "goToSignIn": "Go Sign In",
     "mailIsExpired": "Email is expired",
