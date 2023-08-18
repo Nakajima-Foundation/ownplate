@@ -150,15 +150,8 @@
   </div>
 </template>
 
-
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  watch,
-  computed,
-  onMounted,
-} from "vue";
+import { defineComponent, ref, watch, computed, onMounted } from "vue";
 
 import { db, auth } from "@/lib/firebase/firebase9";
 import {
@@ -213,18 +206,14 @@ export default defineComponent({
     const isLocaleJapan = useIsLocaleJapan();
 
     onMounted(() => {
-      recaptchaVerifier = new RecaptchaVerifier(
-        auth,
-        "signInButton",
-        {
-          size: "invisible",
-          callback: () => {
-            // reCAPTCHA solved, allow signInWithPhoneNumber.
-            // console.log("verified", response);
-            console.log("verified");
-          },
+      recaptchaVerifier = new RecaptchaVerifier(auth, "signInButton", {
+        size: "invisible",
+        callback: () => {
+          // reCAPTCHA solved, allow signInWithPhoneNumber.
+          // console.log("verified", response);
+          console.log("verified");
         },
-      );
+      });
     });
 
     const hasError = computed(() => {
@@ -290,9 +279,9 @@ export default defineComponent({
       errors.value = [];
       try {
         isLoading.value = true;
-        const result = await (confirmationResult.value as ConfirmationResult).confirm(
-          verificationCode.value
-        );
+        const result = await (
+          confirmationResult.value as ConfirmationResult
+        ).confirm(verificationCode.value);
         // console.log("success!", result);
         if (name.value) {
           const user = auth.currentUser; // paranoia: instead of this.$store.state.user;
@@ -310,7 +299,7 @@ export default defineComponent({
             phoneNumber: result.user.phoneNumber,
             updated: serverTimestamp(),
           },
-          { merge: true }
+          { merge: true },
         );
         confirmationResult.value = null; // so that we can re-use this
         verificationCode.value = "";
@@ -318,7 +307,11 @@ export default defineComponent({
       } catch (error: any) {
         // console.log(JSON.stringify(error));
         // console.log("error", error.code);
-        if (!["auth/code-expired", "auth/invalid-verification-code"].includes(error.code)) {
+        if (
+          !["auth/code-expired", "auth/invalid-verification-code"].includes(
+            error.code,
+          )
+        ) {
           Sentry.captureException(error);
         }
         errors.value = ["sms." + error.code];
@@ -342,10 +335,9 @@ export default defineComponent({
       readyToSendVerificationCode,
 
       isLocaleJapan,
-      
+
       handleSubmit,
       handleCode,
-
     };
   },
 });

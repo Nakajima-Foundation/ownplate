@@ -74,14 +74,14 @@ export default defineComponent({
   setup() {
     const allArea = JPPrefecture;
 
-    const restaurantsObj = ref<{[key: string]: RestaurantInfoData[]}>({});
+    const restaurantsObj = ref<{ [key: string]: RestaurantInfoData[] }>({});
     getDocs(
       query(
         collection(db, "restaurants"),
         where("publicFlag", "==", true),
         where("deletedFlag", "==", false),
-        where("onTheList", "==", true)
-      )
+        where("onTheList", "==", true),
+      ),
     )
       .then((res) => {
         const restaurants = res.docs || [];

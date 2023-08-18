@@ -3,13 +3,7 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  watch,
-  computed,
-  ref,
-  onUnmounted,
-} from "vue";
+import { defineComponent, watch, computed, ref, onUnmounted } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
 import { collection, onSnapshot, where, query } from "firebase/firestore";
@@ -57,7 +51,7 @@ export default defineComponent({
           collection(db, `restaurants/${restaurantId.value}/orders`),
           where("timePlaced", ">=", today.value),
           // .where("timePlaced", "<", this.tommorow)
-          where("status", "==", order_status.order_placed)
+          where("status", "==", order_status.order_placed),
         ),
         (result) => {
           orders.value = result.docs.map(doc2data("order")) as OrderInfoData[];
@@ -70,7 +64,7 @@ export default defineComponent({
           } else {
             throw error;
           }
-        }
+        },
       );
     };
 
@@ -82,7 +76,7 @@ export default defineComponent({
         "newOrderWatcher: conf=" +
           props?.notificationConfig?.infinityNotification +
           " order=" +
-          hasNewOrder.value
+          hasNewOrder.value,
       );
       if (
         props?.notificationConfig?.soundOn &&

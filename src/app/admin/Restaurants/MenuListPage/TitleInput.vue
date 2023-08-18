@@ -103,7 +103,7 @@ export default defineComponent({
     const title = ref(props.title.name);
     const blur = () => {
       // save and update this.
-      ctx.emit("updateTitle", {id: props.title.id, name: title.value});
+      ctx.emit("updateTitle", { id: props.title.id, name: title.value });
     };
     const updateTitle = (e: string) => {
       title.value = e;

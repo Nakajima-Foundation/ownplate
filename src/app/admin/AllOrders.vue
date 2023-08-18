@@ -136,13 +136,13 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter();
-    const { t } = useI18n({ useScope: 'global' });
+    const { t } = useI18n({ useScope: "global" });
 
     const { uid, isOwner } = useAdminUids();
 
     const orders = ref<OrderInfoData[]>([]);
     const orderState = ref(0);
-    const restaurants: {[key: string]: RestaurantInfoData} = {};
+    const restaurants: { [key: string]: RestaurantInfoData } = {};
 
     let isLoading = false;
     let last: null | any = null;
@@ -200,9 +200,7 @@ export default defineComponent({
           shopId: order.restaurant.shopId, // mo
           type: t("order." + orderTypeKey(order)),
           restaurantName: order.restaurant.restaurantName,
-          orderStatus: t(
-            "order.status." + order_status_keys[order.status]
-          ),
+          orderStatus: t("order.status." + order_status_keys[order.status]),
           foodRevenue: order.accounting?.food.revenue,
           foodTax: order.accounting?.food?.tax,
           alcoholRevenue: order.accounting?.alcohol.revenue,
@@ -236,7 +234,7 @@ export default defineComponent({
           queryConditions.push(startAfter(last));
         }
         const snapshot = await getDocs(
-          query(collectionGroup(db, "orders"), ...queryConditions)
+          query(collectionGroup(db, "orders"), ...queryConditions),
         );
         const serviceTaxRate = 0.1;
         if (!snapshot.empty) {
@@ -252,9 +250,10 @@ export default defineComponent({
             order.id = orderDoc.id;
             if (!restaurants[order.restaurantId]) {
               const snapshot = await getDoc(
-                doc(db, `restaurants/${order.restaurantId}`)
+                doc(db, `restaurants/${order.restaurantId}`),
               );
-              restaurants[order.restaurantId] = snapshot.data() as RestaurantInfoData;
+              restaurants[order.restaurantId] =
+                snapshot.data() as RestaurantInfoData;
             }
             order.restaurant = restaurants[order.restaurantId];
             orders.value.push(order);

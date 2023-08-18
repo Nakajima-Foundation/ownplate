@@ -79,7 +79,7 @@ import { defineComponent, ref, PropType } from "vue";
 
 import SharingButtons from "@/app/user/Restaurant/SharingButtons.vue";
 import { shareUrl, useBasePath } from "@/utils/utils";
-import useClipboard from 'vue-clipboard3'
+import useClipboard from "vue-clipboard3";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 export default defineComponent({

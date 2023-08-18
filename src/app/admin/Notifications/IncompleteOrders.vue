@@ -1,4 +1,5 @@
-i<template>
+i
+<template>
   <div>
     <div class="mb-2 text-sm font-bold text-black text-opacity-60">
       {{ $t("admin.order.incompleteOrders") }}
@@ -11,7 +12,7 @@ i<template>
           index === 0 ? 'bg-red-700 bg-opacity-10' : 'bg-black bg-opacity-5'
         }`"
         :to="`/admin/restaurants/${restaurantId}/orders?day=${moment(
-          day.date
+          day.date,
         ).format('YYYY-MM-DD')}`"
         v-for="(day, index) in lastSeveralDays"
         :key="day.index"
@@ -19,7 +20,7 @@ i<template>
         <span
           :class="`text-sm font-bold ${
             index === 0 ? 'text-red-700' : 'text-op-teal'
-            }`"
+          }`"
         >
           {{ $d(day.date, "short") }} {{ index === 0 ? "本日" : "" }} -
           {{ orderCounter[moment(day.date).format("YYYY-MM-DD")] }}
@@ -32,10 +33,7 @@ i<template>
 <script lang="ts">
 import { defineComponent, computed, PropType } from "vue";
 
-import {
-  isNull,
-  useRestaurantId,
-} from "@/utils/utils";
+import { isNull, useRestaurantId } from "@/utils/utils";
 import { midNight } from "@/utils/dateUtils";
 import moment from "moment";
 
@@ -48,7 +46,7 @@ export default defineComponent({
     shopInfo: {
       type: Object as PropType<RestaurantInfoData>,
       required: true,
-    }
+    },
   },
   setup(props, ctx) {
     const store = useStore();
@@ -63,26 +61,27 @@ export default defineComponent({
     });
 
     const orderCounter = computed(() => {
-      return lastSeveralDays.value.reduce((tmp: {[key: string]: number}, day) => {
-        const count = (
-          store.state.orderObj[
-            moment(day.date).format("YYYY-MM-DD")
-          ] || []
-        ).length;
-        tmp[moment(day.date).format("YYYY-MM-DD")] = count || 0;
-        return tmp;
-      }, {});
+      return lastSeveralDays.value.reduce(
+        (tmp: { [key: string]: number }, day) => {
+          const count = (
+            store.state.orderObj[moment(day.date).format("YYYY-MM-DD")] || []
+          ).length;
+          tmp[moment(day.date).format("YYYY-MM-DD")] = count || 0;
+          return tmp;
+        },
+        {},
+      );
     });
     const lastSeveralDays = computed(() => {
       return Array.from(Array(pickUpDaysInAdvance.value).keys()).map(
         (index) => {
           const date = midNight(index);
           return { index, date };
-        }
+        },
       );
     });
 
-    const closeNotificationSettings = () => { 
+    const closeNotificationSettings = () => {
       ctx.emit("close");
     };
 

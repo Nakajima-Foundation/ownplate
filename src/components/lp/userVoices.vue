@@ -1,9 +1,7 @@
 <template>
   <div>
     <!-- User Voices Title -->
-    <div
-      class="mt-16 text-black text-center text-op-90 text-2xl font-bold"
-    >
+    <div class="mt-16 text-black text-center text-op-90 text-2xl font-bold">
       {{ $t("lp.customerVoice1") }}
       <br />{{ $t("lp.customerVoice2") }}
     </div>

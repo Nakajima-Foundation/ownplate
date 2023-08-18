@@ -11,7 +11,7 @@
         {{
           $t(
             "order.status." +
-              convOrderStateForTextFunc(orderStatusKey, orderInfo)
+              convOrderStateForTextFunc(orderStatusKey, orderInfo),
           )
         }}
       </div>

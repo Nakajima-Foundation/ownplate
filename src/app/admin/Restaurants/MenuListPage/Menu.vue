@@ -158,15 +158,16 @@
 <script lang="ts">
 import { defineComponent, computed } from "vue";
 import { db } from "@/lib/firebase/firebase9";
-import {
-  doc,
-  updateDoc,
-} from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 
 import Price from "@/components/Price.vue";
-import LunchDinnerIcon from "@/app/user/Restaurant/LunchDinnerIcon.vue"
+import LunchDinnerIcon from "@/app/user/Restaurant/LunchDinnerIcon.vue";
 
-import { useAdminUids, smallImageErrorHandler, useRestaurantId } from "@/utils/utils";
+import {
+  useAdminUids,
+  smallImageErrorHandler,
+  useRestaurantId,
+} from "@/utils/utils";
 
 import { useStore } from "vuex";
 
@@ -206,33 +207,27 @@ export default defineComponent({
       return !!props.menuitem.soldOut; // = !soldOut;
     });
     const soldOutToggle = (e: boolean) => {
-      const path = `restaurants/${restaurantId.value}/menus/${
-        props.menuitem.id
-      }`;
-      updateDoc(doc(db, path), {"soldOut": e});
+      const path = `restaurants/${restaurantId.value}/menus/${props.menuitem.id}`;
+      updateDoc(doc(db, path), { soldOut: e });
     };
-    
+
     const soldOutToday = computed(() => {
-      const today = moment(store.state.date).format("YYYY-MM-DD")
+      const today = moment(store.state.date).format("YYYY-MM-DD");
       return props.menuitem.soldOutToday === today; // = !soldOut;
     });
     const soldOutTodayToggle = (e: boolean) => {
-      const today = moment(store.state.date).format("YYYY-MM-DD")
-      const path = `restaurants/${restaurantId.value}/menus/${
-        props.menuitem.id
-      }`;
+      const today = moment(store.state.date).format("YYYY-MM-DD");
+      const path = `restaurants/${restaurantId.value}/menus/${props.menuitem.id}`;
       if (e) {
-        updateDoc(doc(db, path), {"soldOutToday": today});
+        updateDoc(doc(db, path), { soldOutToday: today });
       } else {
-        updateDoc(doc(db, path), {"soldOutToday": null});
+        updateDoc(doc(db, path), { soldOutToday: null });
       }
     };
     const linkEdit = () => {
       if (isOwner.value) {
         router.push({
-          path: `/admin/restaurants/${restaurantId.value}/menus/${
-            props.menuitem.id
-          }`,
+          path: `/admin/restaurants/${restaurantId.value}/menus/${props.menuitem.id}`,
         });
       }
     };
@@ -271,7 +266,6 @@ export default defineComponent({
       deleteItem,
 
       smallImageErrorHandler,
-
     };
   },
 });

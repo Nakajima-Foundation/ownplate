@@ -46,7 +46,6 @@
             <li>{{ $t("transactionsAct.paymentDescriptionCardNote") }}</li>
           </ul>
         </div>
-
       </div>
     </div>
   </div>

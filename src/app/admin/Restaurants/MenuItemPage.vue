@@ -44,7 +44,7 @@
                   ? "editCommon.saving"
                   : menuInfo.publicFlag
                   ? "editCommon.save"
-                  : "editCommon.saveDraft"
+                  : "editCommon.saveDraft",
               )
             }}</span>
           </div>
@@ -121,7 +121,7 @@
               <div>
                 <o-field
                   :variant="errors['price'].length > 0 ? 'danger' : 'success'"
-                  >
+                >
                   <o-input
                     v-model="menuInfo.price"
                     type="number"
@@ -130,7 +130,7 @@
                     :max="maxPrice"
                     min="0.00"
                     expanded
-                    ></o-input>
+                  ></o-input>
                   <div>
                     <span class="button is-static">
                       {{ $t("currency." + currencyKey) }}
@@ -139,7 +139,7 @@
                 </o-field>
               </div>
             </div>
-            
+
             <!-- Item Tax -->
             <div class="mt-6">
               <div class="pb-2 text-sm font-bold">
@@ -149,13 +149,13 @@
               <div>
                 <o-field
                   :variant="errors['tax'].length > 0 ? 'danger' : 'success'"
-                  >
+                >
                   <o-select v-model="menuInfo.tax" placeholder="select">
                     <option
                       v-for="taxItem in taxRates"
                       :value="taxItem"
                       :key="taxItem"
-                      >
+                    >
                       {{ shopInfo && (shopInfo[taxItem + "Tax"] || 0) + "%" }}
                       - {{ $t("editMenu." + taxRateKeys[taxItem]) }}
                     </option>
@@ -163,12 +163,12 @@
                 </o-field>
               </div>
             </div>
-            
+
             <!-- Price Example -->
             <div
               v-if="requireTaxPriceDisplay"
               class="mt-6 rounded-lg bg-black bg-opacity-5 p-4"
-              >
+            >
               <div class="inline text-sm font-bold">
                 {{ $t("editMenu.displayPrice") }}:
               </div>
@@ -177,7 +177,7 @@
               </div>
             </div>
           </div>
-          
+
           <!-- Allergens -->
           <div class="mt-6">
             <div class="pb-2 text-sm font-bold">
@@ -185,13 +185,12 @@
             </div>
             <div class="mt-2 rounded-lg bg-black bg-opacity-5 px-4 py-4">
               <div>
-              <o-checkbox
-                v-for="allergen in allergens"
-                v-model="menuInfo.allergens[allergen]"
-                :key="allergen"
-
-                >{{ $t(`allergens.${allergen}`) }}</o-checkbox
-              >
+                <o-checkbox
+                  v-for="allergen in allergens"
+                  v-model="menuInfo.allergens[allergen]"
+                  :key="allergen"
+                  >{{ $t(`allergens.${allergen}`) }}</o-checkbox
+                >
               </div>
             </div>
           </div>
@@ -233,12 +232,14 @@
           </div>
 
           <div class="rounded border bg-white p-2 mt-4">
-            
-            <span class="font-bold">{{ $t("editMenu.availableDayTimeSettings") }}</span>
+            <span class="font-bold">{{
+              $t("editMenu.availableDayTimeSettings")
+            }}</span>
             <!-- Lunch  or Dinner -->
-            <div class="mt-4 text-sm font-bold cursor-pointer"
-                 @click="openTips('lunchDinner')"
-                 >
+            <div
+              class="mt-4 text-sm font-bold cursor-pointer"
+              @click="openTips('lunchDinner')"
+            >
               {{ $t("editMenu.lunchDinner") }}
               <i class="material-icons">
                 <span class="text-sm">help</span>
@@ -249,18 +250,14 @@
               <div class="rounded-lg bg-black bg-opacity-5 p-4">
                 <div>
                   <o-checkbox v-model="menuInfo.availableLunch">
-                    <div
-                      class="text-sm font-bold text-black text-opacity-60"
-                      >
+                    <div class="text-sm font-bold text-black text-opacity-60">
                       {{ $t("editMenu.lunch") }}
                     </div>
                   </o-checkbox>
                 </div>
                 <div class="mt-2">
                   <o-checkbox v-model="menuInfo.availableDinner">
-                    <div
-                      class="text-sm font-bold text-black text-opacity-60"
-                      >
+                    <div class="text-sm font-bold text-black text-opacity-60">
                       {{ $t("editMenu.dinner") }}
                     </div>
                   </o-checkbox>
@@ -268,11 +265,12 @@
               </div>
             </div>
             <!-- end of Lunch Dinner -->
-            
+
             <!-- exclusionDate/Time -->
-            <div class="mt-4 text-sm font-bold cursor-pointer"
-                 @click="openTips('exclusionDateTime')"
-                 >
+            <div
+              class="mt-4 text-sm font-bold cursor-pointer"
+              @click="openTips('exclusionDateTime')"
+            >
               {{ $t("editMenu.exclusionDateTime") }}
               <i class="material-icons">
                 <span class="text-sm">help</span>
@@ -300,15 +298,14 @@
                     v-model="menuInfo.exceptHour"
                     variant="success"
                     :disabled="false"
-                    ></hours-input>
+                  ></hours-input>
                 </div>
               </div>
             </div>
             <!-- end of exclusionDate/Time -->
           </div>
-
         </div>
-        
+
         <!-- Right -->
         <div class="mt-6 lg:mt-0">
           <!-- Item Photo -->
@@ -338,7 +335,7 @@
                   @handler="handleMenuImage"
                   :preview="previewMenu"
                   style="width: 128px; height: 128px"
-                  />
+                />
                 <div class="mt-1 w-32 text-center text-xs">
                   {{ $t("editCommon.new") }}
                 </div>
@@ -414,21 +411,26 @@
 
             <!-- Option Settings -->
             <div class="grid-col-1 space-y-4">
-              <div v-for="(option, key) in menuInfo.itemOptionCheckbox" :key="key">
+              <div
+                v-for="(option, key) in menuInfo.itemOptionCheckbox"
+                :key="key"
+              >
                 <div :key="key" class="mb-2 flex">
                   <o-button @click="positionDown(key)" class="b-reset-tw">
                     <div
                       class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 mr-2"
                       v-if="key !== menuInfo.itemOptionCheckbox.length - 1"
+                    >
+                      <i class="material-icons text-lg text-op-teal"
+                        >arrow_downward</i
                       >
-                      <i class="material-icons text-lg text-op-teal">arrow_downward</i>
                     </div>
                   </o-button>
                   <div class="flex-1 mr-2">
                     <o-input
                       v-model="menuInfo.itemOptionCheckbox[key]"
                       :placeholder="$t('editMenu.enterItemOption')"
-                      />
+                    />
                   </div>
                   <o-button class="b-reset-tw" @click="deleteOption(key)">
                     <div
@@ -450,7 +452,11 @@
                     <div>{{ $t("editMenu.priceChange") }}</div>
                   </div>
 
-                  <div v-for="(opt, k) in itemOptions[key]" class="flex" :key="k">
+                  <div
+                    v-for="(opt, k) in itemOptions[key]"
+                    class="flex"
+                    :key="k"
+                  >
                     <div class="flex-1">
                       <o-checkbox v-if="itemOptions[key].length == 1" disabled>
                         <div
@@ -494,7 +500,6 @@
               </o-button>
             </div>
           </div>
-
 
           <!-- CSV Categories -->
           <div class="mt-6">
@@ -645,7 +650,7 @@
                   ? "editCommon.saving"
                   : menuInfo.publicFlag
                   ? "editCommon.save"
-                  : "editCommon.saveDraft"
+                  : "editCommon.saveDraft",
               )
             }}</span>
           </div>
@@ -684,13 +689,7 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  computed,
-  reactive,
-  PropType,
-} from "vue";
+import { defineComponent, ref, computed, reactive, PropType } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import {
   doc,
@@ -775,7 +774,7 @@ export default defineComponent({
     const store = useStore();
     const route = useRoute();
     const router = useRouter();
-    const { t, n } = useI18n({ useScope: 'global' });
+    const { t, n } = useI18n({ useScope: "global" });
 
     const dummyCheckbox = ref([]);
 
@@ -805,7 +804,7 @@ export default defineComponent({
     const menuId = route.params.menuId;
     const submitting = ref(false);
 
-    const files: {[key: string]: File} = {};
+    const files: { [key: string]: File } = {};
     const categoryKey = ref<string | null>(null);
     const restaurants = ref<RestaurantInfoData[]>([]);
     const copyRestaurantId = ref<string | null>(null);
@@ -825,32 +824,34 @@ export default defineComponent({
     const currencyKey = regionalSetting["CurrencyKey"];
 
     const { restaurantId } = props.shopInfo;
-    getDoc(doc(db, `restaurants/${menuRestaurantId.value}/menus/${menuId}`))
-      .then((menuInfoDoc) => {
-        if (menuInfoDoc.exists()) {
-          Object.assign(menuInfo, menuInfoDoc.data());
-          notFound.value = false;
-        } else {
-          notFound.value = true;
-        }
-      });
+    getDoc(
+      doc(db, `restaurants/${menuRestaurantId.value}/menus/${menuId}`),
+    ).then((menuInfoDoc) => {
+      if (menuInfoDoc.exists()) {
+        Object.assign(menuInfo, menuInfoDoc.data());
+        notFound.value = false;
+      } else {
+        notFound.value = true;
+      }
+    });
 
-    getDocs(query(
-      collection(db, "restaurants"),
-      where("uid", "==", uid.value),
-      where("deletedFlag", "==", false),
-    ))
-      .then((restaurantsCollection) => {
-        if (
-          !restaurantsCollection.empty &&
-          restaurantsCollection.docs.length > 0
-        ) {
-          restaurants.value = restaurantsCollection.docs.map((r) =>
-            doc2data("r")(r)
-          ) as RestaurantInfoData[];
-          copyRestaurantId.value = restaurants.value[0].id;
-        }
-      });
+    getDocs(
+      query(
+        collection(db, "restaurants"),
+        where("uid", "==", uid.value),
+        where("deletedFlag", "==", false),
+      ),
+    ).then((restaurantsCollection) => {
+      if (
+        !restaurantsCollection.empty &&
+        restaurantsCollection.docs.length > 0
+      ) {
+        restaurants.value = restaurantsCollection.docs.map((r) =>
+          doc2data("r")(r),
+        ) as RestaurantInfoData[];
+        copyRestaurantId.value = restaurants.value[0].id;
+      }
+    });
 
     const itemOptions = computed(() => {
       return menuInfo.itemOptionCheckbox.map((v) => {
@@ -872,7 +873,7 @@ export default defineComponent({
     });
 
     const errors = computed(() => {
-      const err: {[key: string]: string[]} = {};
+      const err: { [key: string]: string[] } = {};
       ["itemName", "price", "tax"].forEach((name: string) => {
         err[name] = [];
         if (menuInfo[name as keyof MenuData] === "") {
@@ -888,7 +889,7 @@ export default defineComponent({
 
     const displayOptionPrice = (str: string) => {
       const price = roundPrice(
-        optionPrice(str) * taxRate(props.shopInfo, menuInfo)
+        optionPrice(str) * taxRate(props.shopInfo, menuInfo),
       );
       if (price === 0) {
         return t("editMenu.noPriceChange");
@@ -899,7 +900,7 @@ export default defineComponent({
     };
     const handleCategoryUpdated = async (categories: string) => {
       await updateDoc(doc(db, `restaurants/${menuRestaurantId.value}`), {
-        [categoryKey.value||""]: categories,
+        [categoryKey.value || ""]: categories,
       });
     };
     const handleDismissed = () => {
@@ -925,14 +926,14 @@ export default defineComponent({
       const itemData = getNewItemData(
         menuInfo,
         ownPlateConfig.region === "JP",
-        !hasError.value
+        !hasError.value,
       );
       return itemData;
     };
     const copyItem = () => {
       if (copyRestaurantId.value !== null) {
         const shop = restaurants.value.find(
-          (r) => r.id === copyRestaurantId.value
+          (r) => r.id === copyRestaurantId.value,
         );
         if (shop) {
           store.commit("setAlert", {
@@ -955,12 +956,12 @@ export default defineComponent({
               }
               const newData = await addDoc(
                 collection(db, `restaurants/${shop.id}/menus`),
-                newItem
+                newItem,
               );
-              
+
               const menuLists = shop.menuLists || [];
               menuLists.push(newData.id);
-              
+
               await updateDoc(doc(db, `restaurants/${shop.id}`), {
                 menuLists,
                 category1,
@@ -991,7 +992,7 @@ export default defineComponent({
         itemData.itemOptionCheckbox = itemData.itemOptionCheckbox.map(
           (option) => {
             return halfCharactors(option.replace(/、/g, () => ","));
-          }
+          },
         );
 
         await updateDoc(
@@ -1015,11 +1016,11 @@ export default defineComponent({
     const positionDown = (key: number) => {
       const item = [...menuInfo.itemOptionCheckbox];
       const tmp = item[key];
-      item[key] = item[key + 1]
+      item[key] = item[key + 1];
       item[key + 1] = tmp;
       menuInfo.itemOptionCheckbox = item;
     };
-    
+
     const openTips = (key: string) => {
       store.commit("setTips", {
         key,

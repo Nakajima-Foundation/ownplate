@@ -43,9 +43,7 @@ import {
   PropType,
 } from "vue";
 
-import {
-  Timestamp,
-} from "firebase/firestore";
+import { Timestamp } from "firebase/firestore";
 
 import { isNull } from "@/utils/utils";
 import { usePickupTime } from "@/utils/pickup";
@@ -70,7 +68,7 @@ export default defineComponent({
     hasSoldOutToday: {
       type: Boolean,
       required: false,
-    }
+    },
   },
   emits: ["notAvailable", "updateDisabledPickupTime"],
   setup(props, ctx) {
@@ -95,7 +93,7 @@ export default defineComponent({
           }
           return tmp;
         },
-        { exceptDay: {}, exceptHours: [] }
+        { exceptDay: {}, exceptHours: [] },
       );
     });
 

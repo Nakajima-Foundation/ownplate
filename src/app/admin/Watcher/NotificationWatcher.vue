@@ -45,7 +45,7 @@ export default defineComponent({
         } else {
           throw error;
         }
-      }
+      },
     );
     onUnmounted(() => {
       message_detacher();

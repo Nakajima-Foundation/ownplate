@@ -24,7 +24,7 @@ export const uploadFile = (file: File, path: string): Promise<string> => {
           // console.log('File available at', downloadURL);
           resolve(downloadURL);
         });
-      }
+      },
     );
   });
 };

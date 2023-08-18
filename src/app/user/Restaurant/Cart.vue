@@ -6,12 +6,9 @@
         <div class="flex justify-center font-bold text-black">
           {{ shopInfo.restaurantName }}
         </div>
-        
+
         <!-- lunch or dinner -->
-        <div
-          class="flex justify-center"
-          v-if="shopInfo.enableLunchDinner"
-          >
+        <div class="flex justify-center" v-if="shopInfo.enableLunchDinner">
           <div class="text-base font-bold text-red-600">
             <span v-if="lunchOrDinner === 'lunch'">
               {{ $t("order.thisIsLunchOrder") }}
@@ -22,7 +19,7 @@
           </div>
         </div>
       </div>
-      
+
       <div class="justify-items-auto grid grid-cols-1 lg:grid-cols-2">
         <template v-for="(counters, itemId) in orders">
           <div v-for="(counter, key) in counters" :key="`${itemId}-${key}`">
@@ -39,30 +36,35 @@
           </div>
         </template>
       </div>
-			
-			<div v-if="promotions && promotions.length > 0"> 
-			  <div class="border-green-600 text-green-600 text-center font-bold mt-1 mx-6 sm:mx-auto max-w-xl items-center mb-3 rounded-lg bg-green-600 bg-opacity-10 p-2">
-				  <div class="text-xs">
+
+      <div v-if="promotions && promotions.length > 0">
+        <div
+          class="border-green-600 text-green-600 text-center font-bold mt-1 mx-6 sm:mx-auto max-w-xl items-center mb-3 rounded-lg bg-green-600 bg-opacity-10 p-2"
+        >
+          <div class="text-xs">
             <PromotionMessage6 :promotion="promotions[0]" />
           </div>
           <div v-for="(promotion, k) in promotions" :key="k">
-					  <div class="flex items-end justify-center mt-0.5">
-					    <div class="text-sm">
-						    <PromotionMessage4 :promotion="promotion" />
-					    </div>
-				      <div class="text-lg -mb-1">
+            <div class="flex items-end justify-center mt-0.5">
+              <div class="text-sm">
+                <PromotionMessage4 :promotion="promotion" />
+              </div>
+              <div class="text-lg -mb-1">
                 <PromotionMessage2 :promotion="promotion" />
               </div>
-					  </div>
-				  </div>
-			  </div>
-  	  </div>
-		  <div v-if="possiblePromotions && possiblePromotions.length > 0" >
-			  <div v-for="(p, k) in [possiblePromotions[0]]"  class="flex mx-6 sm:mx-auto max-w-xl justify-center font-bold text-sm" :key="k">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div v-if="possiblePromotions && possiblePromotions.length > 0">
+        <div
+          v-for="(p, k) in [possiblePromotions[0]]"
+          class="flex mx-6 sm:mx-auto max-w-xl justify-center font-bold text-sm"
+          :key="k"
+        >
           <PromotionMessage3 :promotion="p" :totalPrice="totalPrice" />
-			  </div>
-			</div>
-
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -82,8 +84,8 @@ export default defineComponent({
   components: {
     CartItem,
     PromotionMessage2,
-		PromotionMessage3,
-		PromotionMessage4,
+    PromotionMessage3,
+    PromotionMessage4,
     PromotionMessage6,
   },
   props: {
@@ -151,7 +153,6 @@ export default defineComponent({
       },
       increase,
       decrease,
-
     };
   },
 });

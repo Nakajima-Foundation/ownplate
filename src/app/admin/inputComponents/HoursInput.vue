@@ -20,7 +20,11 @@
     <div class="px-2">-</div>
     <div>
       <o-field :variant="variant">
-        <o-select :modelValue="modelValue.end" :disabled="disabled" @update:modelValue="updateValueEnd">
+        <o-select
+          :modelValue="modelValue.end"
+          :disabled="disabled"
+          @update:modelValue="updateValueEnd"
+        >
           <option
             v-for="(timeItem, index) of timeList"
             :key="timeItem"
@@ -35,13 +39,9 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-} from "vue";
+import { defineComponent } from "vue";
 
-import {
-  timeList
-} from "@/config/constant";
+import { timeList } from "@/config/constant";
 
 export default defineComponent({
   name: "HoursInput",
@@ -63,12 +63,12 @@ export default defineComponent({
   emits: ["update:modelValue"],
   setup(props, context) {
     const updateValueStart = (e: any) => {
-      const a = {...props.modelValue};
+      const a = { ...props.modelValue };
       a.start = e;
       context.emit("update:modelValue", a);
     };
     const updateValueEnd = (e: any) => {
-      const a = {...props.modelValue};
+      const a = { ...props.modelValue };
       a.end = e;
       context.emit("update:modelValue", a);
     };

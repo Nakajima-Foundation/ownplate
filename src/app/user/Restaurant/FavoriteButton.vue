@@ -19,20 +19,10 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  computed,
-  onUnmounted,
-} from "vue";
+import { defineComponent, ref, computed, onUnmounted } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
-import {
-  doc,
-  onSnapshot,
-  serverTimestamp,
-  setDoc,
-} from "firebase/firestore";
+import { doc, onSnapshot, serverTimestamp, setDoc } from "firebase/firestore";
 
 import { useRestaurantId, useUserData } from "@/utils/utils";
 import { ReviewData } from "@/models/reviewData";
@@ -56,28 +46,25 @@ export default defineComponent({
     });
 
     if (isUser.value) {
-      detacher = onSnapshot(
-        doc(db, path.value),
-        (snapshot) => {
-          review.value = snapshot.data() || {};
-          if (review.value.restaurantName) {
-            // Check if the cached info is out of date, update them.
-            if (
-              review.value.restaurantName !== props.shopInfo.restaurantName ||
-                review.value.restProfilePhoto != props.shopInfo.restProfilePhoto
-            ) {
-              setDoc(
-                doc(db, path.value),
-                {
-                  restaurantName: props.shopInfo.restaurantName, // duplicated for quick display
-                  restProfilePhoto: props.shopInfo.restProfilePhoto, // duplicated for quick display
-                },
-                { merge: true }
-              );
-            }
+      detacher = onSnapshot(doc(db, path.value), (snapshot) => {
+        review.value = snapshot.data() || {};
+        if (review.value.restaurantName) {
+          // Check if the cached info is out of date, update them.
+          if (
+            review.value.restaurantName !== props.shopInfo.restaurantName ||
+            review.value.restProfilePhoto != props.shopInfo.restProfilePhoto
+          ) {
+            setDoc(
+              doc(db, path.value),
+              {
+                restaurantName: props.shopInfo.restaurantName, // duplicated for quick display
+                restProfilePhoto: props.shopInfo.restProfilePhoto, // duplicated for quick display
+              },
+              { merge: true },
+            );
           }
         }
-      );
+      });
     }
 
     onUnmounted(() => {
@@ -100,7 +87,7 @@ export default defineComponent({
           timeLiked: serverTimestamp(),
           restaurantId: restaurantId.value, // Making it possible to collection query (later)
         },
-        { merge: true }
+        { merge: true },
       );
     };
 

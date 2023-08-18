@@ -34,10 +34,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import {
-  smallImageErrorHandler,
-  useRestaurantId,
-} from "@/utils/utils";
+import { smallImageErrorHandler, useRestaurantId } from "@/utils/utils";
 import { moBaseUrl } from "@/config/project";
 
 export default defineComponent({

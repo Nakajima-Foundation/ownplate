@@ -3,7 +3,9 @@
     <back-button url="/s/admins" />
     <h1>Admin</h1>
     <div>
-      <o-checkbox v-model="admin.opt_out" @update:modelValue="updateOpt">Opt out</o-checkbox>
+      <o-checkbox v-model="admin.opt_out" @update:modelValue="updateOpt"
+        >Opt out</o-checkbox
+      >
     </div>
     {{ admin.name }}, {{ adminPrivate.email }}
     <h1>Custome Claims</h1>
@@ -56,14 +58,14 @@ export default defineComponent({
     useSuper();
     const route = useRoute();
     const store = useStore();
-    
+
     const customClaims = ref<any>({});
     const restaurants = ref<any[]>([]);
     const admin = ref<any>({});
     const adminPrivate = ref<any>({});
-    
+
     const adminId = route.params.adminId;
-    
+
     superDispatch({
       cmd: "getCustomeClaims",
       uid: adminId,
@@ -72,20 +74,17 @@ export default defineComponent({
       customClaims.value = data.result;
     });
     getDocs(
-      query(
-        collection(db, "/restaurants/"),
-        where("uid", "==", adminId)
-      )
+      query(collection(db, "/restaurants/"), where("uid", "==", adminId)),
     ).then((snapshot) => {
       restaurants.value = snapshot.docs.map(doc2data("admin"));
     });
-    getDoc(
-      doc(db, "/admins/" + adminId + "/private/profile")
-    ).then((adminPrivateSnapshot) => {
-      if (adminPrivateSnapshot.exists()) {
-        adminPrivate.value = adminPrivateSnapshot.data();
-      }
-    });
+    getDoc(doc(db, "/admins/" + adminId + "/private/profile")).then(
+      (adminPrivateSnapshot) => {
+        if (adminPrivateSnapshot.exists()) {
+          adminPrivate.value = adminPrivateSnapshot.data();
+        }
+      },
+    );
     getDoc(doc(db, "/admins/" + adminId)).then((adminSnapshot) => {
       if (adminSnapshot.exists()) {
         admin.value = adminSnapshot.data();
@@ -119,9 +118,11 @@ export default defineComponent({
     });
 
     const updateOpt = () => {
-      updateDoc(doc(db, "/admins/" + adminId), {opt_out: admin.value.opt_out });
+      updateDoc(doc(db, "/admins/" + adminId), {
+        opt_out: admin.value.opt_out,
+      });
     };
-    
+
     return {
       customClaims,
       restaurants,

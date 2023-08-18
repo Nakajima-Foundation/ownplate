@@ -1,4 +1,4 @@
 const data = {
-  "greeting": "¡Hola mundo!"
-}
+  greeting: "¡Hola mundo!",
+};
 export default data;

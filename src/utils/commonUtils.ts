@@ -6,7 +6,7 @@ interface PostageInfo {
 export const costCal = (
   postageInfo: PostageInfo | any,
   prefectureId: number,
-  total: number
+  total: number,
 ) => {
   const postageList = postageInfo?.postageList?.default || [];
   const freeThreshold = postageInfo?.freeThreshold || null;

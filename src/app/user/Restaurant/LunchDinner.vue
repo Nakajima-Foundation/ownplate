@@ -36,7 +36,6 @@
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -68,8 +67,10 @@ export default defineComponent({
     const popup = ref(false);
 
     const input = (value: string) => {
-      if ((value === "dinner" && props.hasLunchOnlyOrder) ||
-          (value === "lunch" && props.hasDinnerOnlyOrder)) {
+      if (
+        (value === "dinner" && props.hasLunchOnlyOrder) ||
+        (value === "lunch" && props.hasDinnerOnlyOrder)
+      ) {
         store.commit("setAlert", {
           title: "lunchOrDinner.alert." + value + ".title",
           code: "lunchOrDinner.alert." + value + ".body",

@@ -28,7 +28,6 @@ export const reportHeaders = [
   "memo",
 
   "discountPrice",
-
 ];
 export const reportHeadersWithAddress = [
   ...reportHeadersTop,
@@ -51,7 +50,6 @@ export const reportHeadersWithAddress = [
   "memo",
 
   "discountPrice",
-
 ];
 
 /* ---- */
@@ -75,7 +73,6 @@ export const revenueCSVHeader = [
   "payment",
 
   "discountPrice",
-
 ];
 
 // for table
@@ -94,7 +91,6 @@ export const revenueTableHeader = [
   "name",
 ];
 
-
 // for download component
 export const downloadFields = [
   "datePlaced",
@@ -108,4 +104,3 @@ export const downloadFields = [
   "name",
   "payment",
 ];
-

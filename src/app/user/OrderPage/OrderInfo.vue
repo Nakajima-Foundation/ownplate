@@ -8,7 +8,7 @@
           :editable="editable"
           :available="(editedAvailableOrders || {})[key]"
           @update="updateAvailable"
-          :menuData="(menuData||{})[orderItem.id]"
+          :menuData="(menuData || {})[orderItem.id]"
           :mkey="key"
         ></order-item>
       </template>
@@ -39,7 +39,9 @@
           <div class="text-base">
             {{
               $t(
-                orderInfo.inclusiveTax ? "order.inclusiveTax" : "order.salesTax"
+                orderInfo.inclusiveTax
+                  ? "order.inclusiveTax"
+                  : "order.salesTax",
               )
             }}
           </div>
@@ -52,20 +54,19 @@
       </div>
 
       <!-- Promotion discount for after pay -->
-      <div v-if="orderInfo.promotionId"
-           class="-mx-2 mt-2 flex bg-green-600 bg-opacity-10 px-2 py-1 rounded-md"
-           >
+      <div
+        v-if="orderInfo.promotionId"
+        class="-mx-2 mt-2 flex bg-green-600 bg-opacity-10 px-2 py-1 rounded-md"
+      >
         <div class="flex-1">
           <div class="text-base">
-            {{
-            $t( "order.discountString" )
-            }}
+            {{ $t("order.discountString") }}
             ({{ orderInfo.promotionName }})
           </div>
         </div>
         <div class="text-right">
           <div class="text-base">
-            {{ $n( -orderInfo.discountPrice, "currency") }}
+            {{ $n(-orderInfo.discountPrice, "currency") }}
           </div>
         </div>
       </div>
@@ -202,12 +203,13 @@
     </div>
 
     <!-- promotion discount for before pay -->
-    <div v-if="enablePromotion"
-         class="bg-green-600 bg-opacity-10 p-2 -mx-2 rounded-lg mt-2"
-         >
+    <div
+      v-if="enablePromotion"
+      class="bg-green-600 bg-opacity-10 p-2 -mx-2 rounded-lg mt-2"
+    >
       <!-- promotion discount -->
       <template v-if="promotion?.paymentRestrictions">
-			  <!-- おもちかえりの場合は以下のメッセージを表示-->
+        <!-- おもちかえりの場合は以下のメッセージを表示-->
         <span class="text-sm font-bold text-opacity-40 text-black">
           {{ $t("order.discountAlert." + promotion.paymentRestrictions) }}
         </span>
@@ -226,7 +228,7 @@
       </div>
       <div
         class="mt-4 border-t-2 border-solid border-black border-opacity-10 pt-4 pb-2"
-        >
+      >
         <div class="flex">
           <div class="flex-1">
             <div class="text-xl font-bold text-green-600">
@@ -241,18 +243,11 @@
         </div>
       </div>
     </div>
-    
   </div>
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  computed,
-  watch,
-  ref,
-  PropType,
-} from "vue";
+import { defineComponent, computed, watch, ref, PropType } from "vue";
 
 import { order_status } from "@/config/constant";
 import { stripeRegion } from "@/utils/utils";
@@ -275,7 +270,7 @@ export default defineComponent({
       required: true,
     },
     menuData: {
-      type: Object as PropType<{[key: string]: MenuData}>,
+      type: Object as PropType<{ [key: string]: MenuData }>,
       required: false,
     },
     shopInfo: {
@@ -315,10 +310,10 @@ export default defineComponent({
   setup(props, ctx) {
     const regionTip = stripeRegion.tip;
     const tipStep = 1.0 / stripeRegion.multiple;
-    
+
     const tip = ref<number | string>("");
 
-    // methods 
+    // methods
     const updateAvailable = (value: boolean) => {
       ctx.emit("update", value);
     };
@@ -339,8 +334,8 @@ export default defineComponent({
     const isSameAmount = (ratio: number) => {
       return Number(tip.value) === calcTip(ratio);
     };
-    // computed 
-    // internal 
+    // computed
+    // internal
     const maxTip = computed(() => {
       return calcTip(regionTip.max);
     });
@@ -377,8 +372,7 @@ export default defineComponent({
     });
     const previewDiscountTotal = computed(() => {
       return props.editable || isTipEditable.value
-        ? previewTotal.value -
-            Number(props.discountPrice)
+        ? previewTotal.value - Number(props.discountPrice)
         : props.orderInfo.totalCharge;
     });
     const enableTip = computed(() => {
@@ -412,16 +406,16 @@ export default defineComponent({
       }
       ctx.emit("change", Number(tip.value));
     });
-    
+
     return {
-      // const 
+      // const
       regionTip,
       tipStep,
       // ref
       tip,
 
       previewDiscountTotal,
-      
+
       // methods
       updateAvailable,
       updateTip,
@@ -433,9 +427,7 @@ export default defineComponent({
       previewTip,
       previewTotal,
       enableTip,
-
     };
-
   },
 });
 </script>

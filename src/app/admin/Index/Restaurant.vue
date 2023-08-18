@@ -83,9 +83,13 @@
             ><span
               class="ml-4 rounded-full bg-white bg-opacity-20 px-3 py-2 text-sm font-bold text-white"
               >{{
-                $t("admin.incompleteOrders", {
-                  count: numberOfOrders,
-                }, numberOfOrders)
+                $t(
+                  "admin.incompleteOrders",
+                  {
+                    count: numberOfOrders,
+                  },
+                  numberOfOrders,
+                )
               }}</span
             >
           </div>
@@ -199,7 +203,9 @@
             <div
               class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
             >
-              <i class="material-icons mr-2 text-lg text-op-teal">delivery_dining</i>
+              <i class="material-icons mr-2 text-lg text-op-teal"
+                >delivery_dining</i
+              >
               <span class="text-sm font-bold text-op-teal">{{
                 $t("admin.menu.delivery")
               }}</span>
@@ -211,8 +217,7 @@
             <div
               class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
             >
-              <i class="material-icons mr-2 text-lg text-op-teal"
-                >print</i>
+              <i class="material-icons mr-2 text-lg text-op-teal">print</i>
               <span class="text-sm font-bold text-op-teal">{{
                 $t("admin.menu.printer")
               }}</span>
@@ -225,9 +230,7 @@
             <div
               class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
             >
-              <i class="material-icons mr-2 text-lg text-op-teal"
-                >sell</i
-              >
+              <i class="material-icons mr-2 text-lg text-op-teal">sell</i>
               <span class="text-sm font-bold text-op-teal">{{
                 $t("admin.menu.discount")
               }}</span>
@@ -270,16 +273,14 @@
           </router-link>
         </div>
       </div>
-      
+
       <!-- Directory Request -->
       <div v-if="isOwner && !simpleMode">
         <!-- On Directory -->
         <div v-if="shopInfo.onTheList" class="mt-4 text-center">
           <div>
             <span class="text-sm font-bold text-black text-opacity-40"
-              >{{
-                $t("admin.directory.status")
-              }}:</span
+              >{{ $t("admin.directory.status") }}:</span
             >
             <span class="text-sm font-bold text-green-600">{{
               $t("admin.directory.listed")
@@ -419,13 +420,7 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  onMounted,
-  onUnmounted,
-  computed,
-} from "vue";
+import { defineComponent, ref, onMounted, onUnmounted, computed } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import {
   doc,
@@ -439,13 +434,9 @@ import {
 
 import { useStore } from "vuex";
 
-import {
-  resizedProfileImage,
-} from "@/utils/utils";
+import { resizedProfileImage } from "@/utils/utils";
 
-import {
-  isDev,
-} from "@/utils/utils";
+import { isDev } from "@/utils/utils";
 
 export default defineComponent({
   name: "RestaurantEditCard",
@@ -504,7 +495,7 @@ export default defineComponent({
             } else {
               requestState.value = 0;
             }
-          }
+          },
         );
       }
     });

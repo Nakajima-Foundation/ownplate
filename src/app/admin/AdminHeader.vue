@@ -2,7 +2,11 @@
   <div>
     <div class="flex space-x-4">
       <div class="flex-shrink-0">
-        <back-button :url="backLink" :iconText="iconText" :backText="backText" />
+        <back-button
+          :url="backLink"
+          :iconText="iconText"
+          :backText="backText"
+        />
       </div>
       <PreviewLink :shopInfo="shopInfo" />
     </div>
@@ -17,43 +21,44 @@
           />
         </div>
         <div class="text-base font-bold">
-          {{ shopInfo.restaurantName }} <span v-if="pageText">/ {{ $t("adminTitle." + pageText) }}</span>
+          {{ shopInfo.restaurantName }}
+          <span v-if="pageText">/ {{ $t("adminTitle." + pageText) }}</span>
         </div>
       </div>
     </div>
 
     <div class="mt-4 flex lg:mt-0">
       <!-- Suspend Button -->
-        <o-button
-          tag="router-link"
-          :to="`/admin/restaurants/${restaurantId}/suspend`"
-          class="b-reset-tw"
-          v-if="showSuspend"
+      <o-button
+        tag="router-link"
+        :to="`/admin/restaurants/${restaurantId}/suspend`"
+        class="b-reset-tw"
+        v-if="showSuspend"
+      >
+        <div
+          v-if="suspendUntil"
+          class="inline-flex h-9 items-center justify-center rounded-full bg-red-700 bg-opacity-5 px-4 mr-4"
         >
-          <div
-            v-if="suspendUntil"
-            class="inline-flex h-9 items-center justify-center rounded-full bg-red-700 bg-opacity-5 px-4 mr-4"
+          <i class="material-icons mr-2 text-lg text-red-700"
+            >remove_shopping_cart</i
           >
-            <i class="material-icons mr-2 text-lg text-red-700"
-              >remove_shopping_cart</i
-            >
-            <div class="text-sm font-bold text-red-700">
-              {{ $t("admin.order.suspending") }}
-            </div>
+          <div class="text-sm font-bold text-red-700">
+            {{ $t("admin.order.suspending") }}
           </div>
+        </div>
 
-          <div
-            v-else
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 mr-4"
+        <div
+          v-else
+          class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 mr-4"
+        >
+          <i class="material-icons mr-2 text-lg text-op-teal"
+            >remove_shopping_cart</i
           >
-            <i class="material-icons mr-2 text-lg text-op-teal"
-              >remove_shopping_cart</i
-            >
-            <div class="text-sm font-bold text-op-teal">
-              {{ $t("admin.order.suspendSettings") }}
-            </div>
+          <div class="text-sm font-bold text-op-teal">
+            {{ $t("admin.order.suspendSettings") }}
           </div>
-        </o-button>
+        </div>
+      </o-button>
       <!-- Notifications -->
       <div>
         <notification-index :shopInfo="shopInfo" />
@@ -68,10 +73,7 @@ import BackButton from "@/components/BackButton.vue";
 import NotificationIndex from "@/app/admin/Notifications/Index.vue";
 import PreviewLink from "@/app/admin/common/PreviewLink.vue";
 
-import {
-  useRestaurantId,
-  resizedProfileImage,
-} from "@/utils/utils";
+import { useRestaurantId, resizedProfileImage } from "@/utils/utils";
 
 export default defineComponent({
   components: {
@@ -100,7 +102,7 @@ export default defineComponent({
       type: String,
       required: false,
     },
-    pageText: { 
+    pageText: {
       type: String,
       required: false,
     },

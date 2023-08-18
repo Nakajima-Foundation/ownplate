@@ -1,10 +1,11 @@
 <template>
   <div>
     <div class="mx-6 mt-6">
-      <back-button :url="basePath + '/u/profile/'"
-                   backText="button.myPage"
-                   iconText="arrow_back"
-                   />
+      <back-button
+        :url="basePath + '/u/profile/'"
+        backText="button.myPage"
+        iconText="arrow_back"
+      />
     </div>
 
     <div class="mx-6 mt-6 lg:mx-auto lg:max-w-2xl">
@@ -77,7 +78,7 @@ export default defineComponent({
     const basePath = useBasePath();
     const customerInfo = ref({});
     const { uid, isUser } = useUserData();
-    
+
     const docPath = computed(() => {
       if (isUser.value) {
         return `/users/${uid.value}/address/data`;

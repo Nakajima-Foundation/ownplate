@@ -2,10 +2,11 @@
   <div>
     <!-- Back -->
     <div class="mx-6 mt-6">
-      <back-button :url="basePath + '/u/profile/'"
-                   backText="button.myPage"
-                   iconText="arrow_back"
-                   />
+      <back-button
+        :url="basePath + '/u/profile/'"
+        backText="button.myPage"
+        iconText="arrow_back"
+      />
     </div>
 
     <!-- Title -->
@@ -43,13 +44,7 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  computed,
-  onUnmounted,
-  watch,
-} from "vue";
+import { defineComponent, ref, computed, onUnmounted, watch } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import {
   collectionGroup,
@@ -113,11 +108,11 @@ export default defineComponent({
       detach();
       if (uid.value) {
         const orderQuery = query(
-              collectionGroup(db, "orders"),
-              where("uid", "==", uid.value),
-              orderBy("orderPlacedAt", "desc"),
-              limit(200)
-            );
+          collectionGroup(db, "orders"),
+          where("uid", "==", uid.value),
+          orderBy("orderPlacedAt", "desc"),
+          limit(200),
+        );
 
         detacher = onSnapshot(orderQuery, (snapshot) => {
           orders.value = snapshot.docs
@@ -176,7 +171,6 @@ export default defineComponent({
       basePath,
 
       loading,
-
     };
   },
 });

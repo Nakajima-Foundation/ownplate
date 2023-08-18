@@ -6,7 +6,10 @@
       </div>
     </div>
     <div class="mt-2">
-      <div v-for="(line, k) in $t('dialogTips.' + tipsKey + '.body').split('\n')" :key="k">
+      <div
+        v-for="(line, k) in $t('dialogTips.' + tipsKey + '.body').split('\n')"
+        :key="k"
+      >
         {{ line }}
       </div>
     </div>

@@ -149,20 +149,19 @@ export default defineComponent({
     const state = route.query.state as string;
     if (lineId && displayName && state) {
       if (lineVerify(state)) {
-        console.log(displayName,  uid.value, restaurantId.value);
+        console.log(displayName, uid.value, restaurantId.value);
         setDoc(
           doc(db, `restaurants/${restaurantId.value}/lines/${lineId}`),
           {
-              displayName,
-              notify: true,
-              uid: uid.value,
-              restaurantId: restaurantId.value,
-            },
-            { merge: true }
-          )
-          .then(() => {
-            console.log("registered lineId", lineId);
-          });
+            displayName,
+            notify: true,
+            uid: uid.value,
+            restaurantId: restaurantId.value,
+          },
+          { merge: true },
+        ).then(() => {
+          console.log("registered lineId", lineId);
+        });
       } else {
         console.error("invalid state", state);
       }
@@ -178,15 +177,19 @@ export default defineComponent({
             id: myDoc.id,
           };
         });
-      });
+      },
+    );
     onUnmounted(() => {
       detacher();
     });
 
     const handleToggle = async (lineUser: LineUserData) => {
-      await updateDoc(doc(db, `restaurants/${restaurantId.value}/lines/${lineUser.id}`), {
-        notify: !lineUser.notify,
-      });
+      await updateDoc(
+        doc(db, `restaurants/${restaurantId.value}/lines/${lineUser.id}`),
+        {
+          notify: !lineUser.notify,
+        },
+      );
     };
     const handleLineAuth = () => {
       const url = lineAuthURL("/callback/line", {
@@ -199,7 +202,9 @@ export default defineComponent({
         code: "admin.order.lineDelete",
         callback: async () => {
           console.log("handleDelete", lineId);
-          await deleteDoc(doc(db, `restaurants/${restaurantId.value}/lines/${lineId}`));
+          await deleteDoc(
+            doc(db, `restaurants/${restaurantId.value}/lines/${lineId}`),
+          );
         },
       });
     };

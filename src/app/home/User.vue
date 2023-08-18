@@ -3,8 +3,8 @@
     <user-hero-image />
     <div class="mx-auto max-w-screen-xl">
       <search-restaurant />
-			<goToAdminLP />
-			<operators />
+      <goToAdminLP />
+      <operators />
       <aboutService />
     </div>
   </div>
@@ -27,8 +27,8 @@ export default defineComponent({
   },
   components: {
     userHeroImage,
-		searchRestaurant,
-		goToAdminLP,
+    searchRestaurant,
+    goToAdminLP,
     operators,
     aboutService,
   },
@@ -36,9 +36,8 @@ export default defineComponent({
     (async () => {
       await sleep(0.1);
       window.scrollTo(0, 0);
-    })()
-    return {
-    };
+    })();
+    return {};
   },
 });
 </script>

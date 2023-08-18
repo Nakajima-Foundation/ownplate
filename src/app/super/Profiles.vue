@@ -41,7 +41,7 @@ export default defineComponent({
   components: {
     BackButton,
   },
-  setup () {
+  setup() {
     useSuper();
 
     const prefix = ref("");
@@ -54,14 +54,14 @@ export default defineComponent({
           limit(100),
           where("email", ">=", prefix.value),
           where("email", "<=", prefix.value + "\uf8ff"),
-        )
+        ),
       ).then((snapshot) => {
         profiles.value = snapshot.docs.map((doc) => {
           const data = doc.data();
           data.uid = doc?.ref?.parent?.parent?.id;
           return data;
         });
-      })
+      });
     };
     return {
       profiles,

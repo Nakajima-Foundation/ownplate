@@ -206,24 +206,20 @@ export default defineComponent({
     const fileName = props.shopInfo.restaurantId + "_orderhistory_detail";
 
     const next = async () => {
-      
       let dbQuery = query(
         collection(db, `restaurants/${restaurantId.value}/orders`),
         orderBy("timePlaced", "desc"),
         limit(limitNum),
-      )
+      );
       if (last.value) {
-        dbQuery = query(
-          dbQuery,
-          startAfter(last.value)
-        );
+        dbQuery = query(dbQuery, startAfter(last.value));
       }
       const docs = (await getDocs(dbQuery)).docs;
       last.value = docs.length == limitNum ? docs[limitNum - 1] : null;
       const tmpOrders = docs
         .map(doc2data("order"))
         .filter((a) => a.status !== order_status.transaction_hide);
-      const customers: {[key: string]: any} = {};
+      const customers: { [key: string]: any } = {};
       if (props.shopInfo.isEC || props.shopInfo.enableDelivery) {
         const ids = tmpOrders.map((order) => order.id);
         await Promise.all(
@@ -234,7 +230,7 @@ export default defineComponent({
                   collectionGroup(db, "customer"),
                   where("restaurantId", "==", restaurantId.value),
                   where("orderId", "in", arr),
-                )
+                ),
               );
               cuss.docs.map((cus) => {
                 const data = cus.data();
@@ -243,7 +239,7 @@ export default defineComponent({
             } catch (e) {
               console.log(e);
             }
-          })
+          }),
         );
       }
 
@@ -278,7 +274,7 @@ export default defineComponent({
         .sort(
           (a: any, b: any) =>
             (a.timePlaced > b.timePlaced ? -1 : 1) *
-            (sortOrder.value === 0 ? 1 : -1)
+            (sortOrder.value === 0 ? 1 : -1),
         );
     });
 

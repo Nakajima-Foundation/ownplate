@@ -1,10 +1,11 @@
 <template>
   <div>
     <div class="mx-6 mt-6">
-      <back-button :url="basePath + '/u/profile/'"
-                   backText="button.myPage"
-                   iconText="arrow_back"
-                   />
+      <back-button
+        :url="basePath + '/u/profile/'"
+        backText="button.myPage"
+        iconText="arrow_back"
+      />
     </div>
 
     <div class="mx-6 mt-6 text-xl font-bold text-black text-opacity-40">
@@ -102,7 +103,7 @@ export default defineComponent({
   setup() {
     const router = useRouter();
     const basePath = useBasePath();
-    const likes = ref<DocumentData[]|null>(null);
+    const likes = ref<DocumentData[] | null>(null);
 
     const { uid, isUser } = useUserData();
 
@@ -118,8 +119,8 @@ export default defineComponent({
           query(
             collection(db, path.value),
             orderBy("timeLiked", "desc"),
-            limit(100)
-          )
+            limit(100),
+          ),
         );
         likes.value = (snapshot.docs || [])
           .map((doc) => {

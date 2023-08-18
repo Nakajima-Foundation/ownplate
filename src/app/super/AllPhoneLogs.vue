@@ -41,7 +41,7 @@ export default defineComponent({
   components: {
     BackButton,
   },
-  setup () {
+  setup() {
     useSuper();
 
     const logs = ref<any[]>([]);
@@ -60,7 +60,8 @@ export default defineComponent({
           log.createdAt = log.updatedAt.toDate();
           return log;
         });
-      });
+      },
+    );
 
     onUnmounted(() => {
       detacher && detacher();
@@ -70,7 +71,6 @@ export default defineComponent({
       logs,
       moment,
     };
-
   },
 });
 </script>

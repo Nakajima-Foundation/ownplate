@@ -5,15 +5,18 @@ import { DocumentData } from "firebase/firestore";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 export const restaurant2AreaObj = (restaurants: DocumentData[]) => {
-  return restaurants.reduce((tmp: {[key: string]: RestaurantInfoData[]}, doc) => {
-    const data = doc.data();
-    data.id = doc.id;
-    if (!tmp[data.state]) {
-      tmp[data.state] = [];
-    }
-    tmp[data.state].push(data);
-    return tmp;
-  }, {});
+  return restaurants.reduce(
+    (tmp: { [key: string]: RestaurantInfoData[] }, doc) => {
+      const data = doc.data();
+      data.id = doc.id;
+      if (!tmp[data.state]) {
+        tmp[data.state] = [];
+      }
+      tmp[data.state].push(data);
+      return tmp;
+    },
+    {},
+  );
 };
 
 export const sortRestaurantObj = (restaurantsObj: {

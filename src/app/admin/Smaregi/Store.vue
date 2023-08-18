@@ -6,11 +6,11 @@
     <div class="mx-6 mt-6 lg:flex lg:items-center">
       <!-- Back and Preview -->
       <div class="flex space-x-4">
-        <back-button url="/admin/smaregi/index"
-                     iconText="arrow_back"
-                     backText="button.backToSmaregi"
-
-                     />
+        <back-button
+          url="/admin/smaregi/index"
+          iconText="arrow_back"
+          backText="button.backToSmaregi"
+        />
       </div>
 
       <!-- Title -->
@@ -80,11 +80,7 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  computed,
-  ref,
-} from "vue";
+import { defineComponent, computed, ref } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -132,11 +128,11 @@ export default defineComponent({
     let sRestaurantId: string | null = null;
 
     const { uid } = useAdminUids();
-    const storeId = route.params.storeId as string
+    const storeId = route.params.storeId as string;
 
     const duplicateElement = computed(() => {
       const counter = Object.values(selectedMenu.value).reduce(
-        (tmp: {[key: string]: number}, ele: any) => {
+        (tmp: { [key: string]: number }, ele: any) => {
           if (ele === "00000") {
             return tmp;
           }
@@ -147,91 +143,108 @@ export default defineComponent({
           }
           return tmp;
         },
-        {}
+        {},
       );
-      return Object.keys(counter).reduce((tmp: {[key: string]: boolean}, key: any) => {
-        if (counter[key] > 1) {
-          tmp[key] = true;
-        }
-        return tmp;
-      }, {});
+      return Object.keys(counter).reduce(
+        (tmp: { [key: string]: boolean }, key: any) => {
+          if (counter[key] > 1) {
+            tmp[key] = true;
+          }
+          return tmp;
+        },
+        {},
+      );
     });
     const isDuplicateError = computed(() => {
       return Object.keys(duplicateElement.value).length > 0;
     });
 
-    getDoc(doc(db, `admins/${uid.value}/private/smaregi`)).then(async (smaregiDoc) => {
-      enable.value = smaregiDoc && smaregiDoc.exists();
-      if (!enable.value) {
-        return;
-      }
-      try {
-        isLoading.value = true;
-      
-        const smaregiData = smaregiDoc.data();
-        contractId = smaregiData?.smaregi?.contract?.id;
-      
-        storeData.value = (
-          await getDoc(doc(db, `/smaregi/${contractId}/stores/${storeId}`))
-        ).data();
-        sRestaurantId = storeData.value.restaurantId;
-        
-        const _menus = await getDocs(query(
-          collection(db, `restaurants/${sRestaurantId}/menus`),
-          where("deletedFlag", "==", false),
-          where("publicFlag", "==", true),
-        ));
-        
-        menus.value = _menus.docs.map(doc2data("message")).sort((a, b) => {
-          return a.itemName > b.itemName ? 1 : -1;
-        });
-        menuObj.value = menus.value.reduce((tmp, current) => {
-          tmp[current.id] = current;
-          return tmp;
-        }, {});
-        menus.value.unshift({
-          id: "00000",
-          itemName: "-----------------",
-          price: "---",
-        });
-        
-        const { data } = await smaregiProductList({
-          store_id: storeId,
-        });
-        productList.value = data.res;
-        
-        isLoading.value = false;
-        
-        const productCollection = await getDocs(query(
-          collection(db, `/smaregi/${contractId}/stores/${storeId}/products`),
-          where("uid", "==", uid.value)
-        ))
-        const products = productCollection.docs.map(doc2data("stores"));
-        
-        const productObj = products.reduce((tmp, current) => {
-          tmp[current.productId] = current;
-          return tmp;
-        }, {});
-        
-        const stockCollection = await getDocs(query(
-          collection(db,
-                     `smaregiData/${contractId}/stores/${storeId}/smaregiProducts`
-                    )
-        ));
-        stockObj.value = array2obj(stockCollection.docs.map(doc2data("stock")));
-        
-        const _selectedMenu: any = {};
-        (productList.value || []).map((product, key) => {
-          const productId = product.productId;
-          if (productObj[productId]) {
-            _selectedMenu[key] = productObj[productId].menuId;
-          }
-        });
-        selectedMenu.value = _selectedMenu;
-      } catch (e) {
-        console.log(e)
-      }
-    });
+    getDoc(doc(db, `admins/${uid.value}/private/smaregi`)).then(
+      async (smaregiDoc) => {
+        enable.value = smaregiDoc && smaregiDoc.exists();
+        if (!enable.value) {
+          return;
+        }
+        try {
+          isLoading.value = true;
+
+          const smaregiData = smaregiDoc.data();
+          contractId = smaregiData?.smaregi?.contract?.id;
+
+          storeData.value = (
+            await getDoc(doc(db, `/smaregi/${contractId}/stores/${storeId}`))
+          ).data();
+          sRestaurantId = storeData.value.restaurantId;
+
+          const _menus = await getDocs(
+            query(
+              collection(db, `restaurants/${sRestaurantId}/menus`),
+              where("deletedFlag", "==", false),
+              where("publicFlag", "==", true),
+            ),
+          );
+
+          menus.value = _menus.docs.map(doc2data("message")).sort((a, b) => {
+            return a.itemName > b.itemName ? 1 : -1;
+          });
+          menuObj.value = menus.value.reduce((tmp, current) => {
+            tmp[current.id] = current;
+            return tmp;
+          }, {});
+          menus.value.unshift({
+            id: "00000",
+            itemName: "-----------------",
+            price: "---",
+          });
+
+          const { data } = await smaregiProductList({
+            store_id: storeId,
+          });
+          productList.value = data.res;
+
+          isLoading.value = false;
+
+          const productCollection = await getDocs(
+            query(
+              collection(
+                db,
+                `/smaregi/${contractId}/stores/${storeId}/products`,
+              ),
+              where("uid", "==", uid.value),
+            ),
+          );
+          const products = productCollection.docs.map(doc2data("stores"));
+
+          const productObj = products.reduce((tmp, current) => {
+            tmp[current.productId] = current;
+            return tmp;
+          }, {});
+
+          const stockCollection = await getDocs(
+            query(
+              collection(
+                db,
+                `smaregiData/${contractId}/stores/${storeId}/smaregiProducts`,
+              ),
+            ),
+          );
+          stockObj.value = array2obj(
+            stockCollection.docs.map(doc2data("stock")),
+          );
+
+          const _selectedMenu: any = {};
+          (productList.value || []).map((product, key) => {
+            const productId = product.productId;
+            if (productObj[productId]) {
+              _selectedMenu[key] = productObj[productId].menuId;
+            }
+          });
+          selectedMenu.value = _selectedMenu;
+        } catch (e) {
+          console.log(e);
+        }
+      },
+    );
     const saveMenus = () => {
       if (isDuplicateError.value) {
         console.log("error");
@@ -270,13 +283,11 @@ export default defineComponent({
       selectedMenu,
       isEdit,
 
-
       isDuplicateError,
       duplicateElement,
 
-saveMenus,
-};
-
+      saveMenus,
+    };
   },
 });
 </script>

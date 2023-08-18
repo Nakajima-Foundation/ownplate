@@ -50,7 +50,7 @@ export default defineComponent({
     watch(event, async () => {
       await play();
       console.log(
-        `soundEnable = ${store.state.soundEnable}, soundOn=${store.state.soundOn}, soundFile=${store.state.soundFile}`
+        `soundEnable = ${store.state.soundEnable}, soundOn=${store.state.soundOn}, soundFile=${store.state.soundFile}`,
       );
     });
     return {

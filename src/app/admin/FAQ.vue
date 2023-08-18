@@ -69,16 +69,16 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-} from "vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   setup() {
     const faqList = [
       {
         q: "店舗ごとに支払い方法を設定することはできますか？",
-        answers: ["支払い方法(現地払い/オンラインクレジット決済）は管理アカウントの設定となり、全ての店舗で共通となります。違う設定の店舗をご利用したい場合は、管理アカウントを追加してご利用ください。"],
+        answers: [
+          "支払い方法(現地払い/オンラインクレジット決済）は管理アカウントの設定となり、全ての店舗で共通となります。違う設定の店舗をご利用したい場合は、管理アカウントを追加してご利用ください。",
+        ],
       },
     ];
 

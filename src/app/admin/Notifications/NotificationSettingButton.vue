@@ -47,7 +47,7 @@ export default defineComponent({
   },
   setup(_, ctx) {
     const store = useStore();
-    
+
     const openNotificationSettings = () => {
       ctx.emit("openNotificationSettings");
     };

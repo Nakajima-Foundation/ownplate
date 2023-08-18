@@ -190,7 +190,7 @@ const priceString = (price: number) => {
 export const printOrderData = (
   restaurantInfo: RestaurantInfoData,
   orderInfo: OrderInfoData,
-  orderItems: OrderItemData[]
+  orderItems: OrderItemData[],
 ) => {
   const content = [];
   console.log(orderInfo, orderItems, restaurantInfo);
@@ -238,7 +238,7 @@ export const printOrderData = (
         },
         {
           text: moment(orderInfo.timeEstimated.toDate()).format(
-            "YYYY/MM/DD HH:mm"
+            "YYYY/MM/DD HH:mm",
           ),
           fontSize: 6,
           bold: true,
@@ -262,7 +262,7 @@ export const printOrderData = (
       margin: [2, 0],
     });
     console.log(orderItem);
-    const option = displayOption(orderItem.options as string[] || []);
+    const option = displayOption((orderItem.options as string[]) || []);
     if (option !== "") {
       content.push({
         text: "\u200B\t(opt: " + option + ")",
@@ -333,7 +333,7 @@ export const printOrderData = (
 export const printOrder = (
   restaurantInfo: RestaurantInfoData,
   orderInfo: OrderInfoData,
-  orderItems: OrderItemData[]
+  orderItems: OrderItemData[],
 ): string => {
   const pdfDoc = printOrderData(restaurantInfo, orderInfo, orderItems);
   // @ts-ignore
@@ -342,7 +342,7 @@ export const printOrder = (
 export const downloadOrderPdf = (
   restaurantInfo: RestaurantInfoData,
   orderInfo: OrderInfoData,
-  orderItems: OrderItemData[]
+  orderItems: OrderItemData[],
 ) => {
   const pdfDoc = printOrderData(restaurantInfo, orderInfo, orderItems);
   pdfDoc.download();
@@ -365,7 +365,7 @@ export const displayOption = (options: string[]) => {
     .filter((choice: string) => choice)
     .map((choice: string) => {
       return formatOption(choice, (price: number) =>
-        Number(price).toLocaleString()
+        Number(price).toLocaleString(),
       );
     })
     .join(", ");

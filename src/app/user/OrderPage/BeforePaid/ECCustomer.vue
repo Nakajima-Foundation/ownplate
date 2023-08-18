@@ -164,11 +164,7 @@
 import { defineComponent, ref, computed, PropType } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
-import {
-  doc,
-  getDoc,
-  setDoc,
-} from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { regionalSetting, countObj } from "@/utils/utils";
 import { CustomerInfo } from "@/models/customer";
 import isEmail from "validator/lib/isEmail";
@@ -196,10 +192,9 @@ export default defineComponent({
     const addressList = ref([]);
 
     const { uid } = useUserData();
-    
+
     const updateAddress = (address: any) => {
-      const { address2, address3, prefectureId, prefecture } =
-        address;
+      const { address2, address3, prefectureId, prefecture } = address;
 
       const data = {
         address: [address2, address3].join(""),
@@ -227,13 +222,18 @@ export default defineComponent({
       }
     };
     const saveAddress = async () => {
-      await setDoc(doc(db, `/users/${uid.value}/address/data`), customerInfo.value);
+      await setDoc(
+        doc(db, `/users/${uid.value}/address/data`),
+        customerInfo.value,
+      );
     };
     const loadAddress = async () => {
-      return (await getDoc(doc(db, `/users/${uid.value}/address/data`))).data() || {};
+      return (
+        (await getDoc(doc(db, `/users/${uid.value}/address/data`))).data() || {}
+      );
     };
     const ecErrors = computed(() => {
-      const err: {[key: string]: string[]} = {};
+      const err: { [key: string]: string[] } = {};
       const attrs = ["zip", "address", "name", "prefectureId"];
       if (props.shopInfo.isEC) {
         attrs.push("email");
@@ -250,7 +250,7 @@ export default defineComponent({
       if (
         customerInfo.value["zip"] &&
         !customerInfo.value["zip"].match(
-          /^((\d|[０-９]){3}(-|ー)(\d|[０-９]){4})|(\d|[０-９]){7}$/
+          /^((\d|[０-９]){3}(-|ー)(\d|[０-９]){4})|(\d|[０-９]){7}$/,
         )
       ) {
         err["zip"].push("validationError.zip.invalidZip");

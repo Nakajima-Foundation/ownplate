@@ -83,7 +83,9 @@ export default defineComponent({
       if (newEntry.value === "") {
         return false;
       }
-      return !categories.value.find((category: string) => category === newEntry.value);
+      return !categories.value.find(
+        (category: string) => category === newEntry.value,
+      );
     });
 
     const handleAdd = () => {
@@ -107,7 +109,6 @@ export default defineComponent({
       handleAdd,
       handleDelete,
     };
-
   },
 });
 </script>

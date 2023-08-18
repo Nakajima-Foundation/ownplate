@@ -1,9 +1,4 @@
-import {
-  ref,
-  computed,
-  onUnmounted,
-  Ref,
-} from "vue";
+import { ref, computed, onUnmounted, Ref } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import {
   collection,
@@ -15,9 +10,7 @@ import {
 } from "firebase/firestore";
 import { doc2data, array2obj } from "@/utils/utils";
 
-export const useMenuAndTitle = (
-  menuRestaurantId: Ref<string>,
-) => {
+export const useMenuAndTitle = (menuRestaurantId: Ref<string>) => {
   const menus = ref<DocumentData[] | null>(null);
   const menuCache: { [key: string]: any } = ref({});
   const menuDetacher = ref<Unsubscribe | null>(null);
@@ -28,7 +21,7 @@ export const useMenuAndTitle = (
   };
 
   const titles = ref<DocumentData[] | null>(null);
-  const menuObj = ref<{[key: string]: DocumentData}>({});
+  const menuObj = ref<{ [key: string]: DocumentData }>({});
   const isLoading = ref(true);
 
   const loadMenu = () => {
@@ -42,7 +35,7 @@ export const useMenuAndTitle = (
 
     const menuQuery = query(
       collection(db, `restaurants/${menuRestaurantId.value}/menus`),
-      where("deletedFlag", "==", false)
+      where("deletedFlag", "==", false),
     );
     menuDetacher.value = onSnapshot(
       query(menuQuery),
@@ -53,20 +46,18 @@ export const useMenuAndTitle = (
 
       (e) => {
         console.log(e);
-      }
+      },
     );
   };
 
   const titleDetacher = onSnapshot(
     query(
       collection(db, `restaurants/${menuRestaurantId.value}/titles`),
-      where("deletedFlag", "==", false)
+      where("deletedFlag", "==", false),
     ),
     (results) => {
-      titles.value = (results.empty ? [] : results.docs).map(
-        doc2data("title")
-      );
-    }
+      titles.value = (results.empty ? [] : results.docs).map(doc2data("title"));
+    },
   );
 
   const itemsObj = computed(() => {

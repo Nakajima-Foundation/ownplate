@@ -1,1002 +1,1021 @@
 <template>
-<div>
-  <div v-if="notFound == null"></div>
-  <div v-else-if="notFound == true">
-    <NotFound />
-  </div>
-  
-  <!-- Never show before load restaurant data -->
-  <div v-else>
-    <!-- Header -->
-    <div class="mx-6 mt-6 lg:flex lg:items-center">
-      <div class="flex-1"></div>
-      <!-- Notifications -->
-      <div class="mt-4 flex-shrink-0 text-right lg:mt-0">
-        <notification-index :shopInfo="editShopInfo" />
-      </div>
+  <div>
+    <div v-if="notFound == null"></div>
+    <div v-else-if="notFound == true">
+      <NotFound />
     </div>
-    
-    <!-- Save and Cancel -->
-    <div class="mt-6 flex justify-center space-x-4">
-      <!-- Cancel Button -->
-      <router-link
-        :to="`/admin/restaurants/#restaurant_` + editShopInfo.restaurantId"
-        >
-        <div
-          class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
-          >
-          <span class="text-base font-bold text-black text-opacity-60">{{
-            $t("button.cancel")
-            }}</span>
-        </div>
-      </router-link>
-      
-      <!-- Save Button -->
-      <o-button
-        @click="saveRestaurant"
-        :disabled="submitting || disableSave"
-        class="b-reset-tw"
-        >
-        <div
-          class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
-          style="min-width: 8rem"
-          >
-          <span class="text-base font-bold text-white">{{
-            $t(
-            submitting
-            ? "editCommon.saving"
-            : editShopInfo.publicFlag
-            ? "editCommon.save"
-            : "editCommon.saveDraft"
-            )
-            }}</span>
-        </div>
-      </o-button>
-    </div>
-    
-    <!-- Publish Status -->
-    <div class="mx-6 mt-6 rounded-lg bg-black bg-opacity-5 p-4 text-center">
-      <o-checkbox
-        v-model="editShopInfo.publicFlag"
-        :disabled="hasError"
-        :variant="!editShopInfo.publicFlag ? 'danger' : ''"
-        >
-        <div class="font-bold">{{ $t("shopInfo.public") }}</div>
-      </o-checkbox>
-      
-      <div class="mt-1 text-sm font-bold">
-        <div v-if="editShopInfo.publicFlag">
-          {{ $t("editRestaurant.publishDescription") }}
-        </div>
-        <div v-if="!editShopInfo.publicFlag" class="text-red-700">
-          {{ $t("editRestaurant.draftDescription") }}
-        </div>
-        <div v-if="hasError" class="text-red-700">
-          {{ $t("editRestaurant.draftWarning") }}
+
+    <!-- Never show before load restaurant data -->
+    <div v-else>
+      <!-- Header -->
+      <div class="mx-6 mt-6 lg:flex lg:items-center">
+        <div class="flex-1"></div>
+        <!-- Notifications -->
+        <div class="mt-4 flex-shrink-0 text-right lg:mt-0">
+          <notification-index :shopInfo="editShopInfo" />
         </div>
       </div>
-    </div>
-    
-    <!-- Required Note -->
-    <div class="mx-6 mt-6 text-sm font-bold text-red-700">
-      * {{ $t("editRestaurant.required") }}
-    </div>
-    
-    <!-- Settings 1 -->
-    <div class="mx-6 mt-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
-      <!-- Left -->
-      <div>
-        <!-- Restaurant Name -->
-        <div>
-          <text-form
-            v-model="editShopInfo.restaurantName"
-            titleKey="shopInfo.name"
-            placeholder="editRestaurant.enterRestaurantName"
-            :error="errors['restaurantName']"
-            :maxlength="50"
-            />
-        </div>
-        
-        <!-- Owner Name -->
-        <div class="mt-4">
-          <text-form
-            v-model="editShopInfo.ownerName"
-            titleKey="shopInfo.ownerName"
-            placeholder="editRestaurant.enterOwnerName"
-            :error="errors['ownerName']"
-            :maxlength="50"
-            />
-        </div>
-        
-        <!-- Restaurant Address -->
-        <!-- Zip and State -->
-        <div class="mt-4 flex">
-          <div class="flex-1">
-            <text-form
-              :error="errors['zip']"
-              v-model="editShopInfo.zip"
-              titleKey="shopInfo.zip"
-              placeholder="editRestaurant.enterZip"
-              :maxlength="10"
-              />
-          </div>
-          <div class="pl-4">
-            <state :errors="errors" v-model="editShopInfo.state" />
-          </div>
-        </div>
-        <!-- City -->
-        <div class="mt-4">
-          <text-form
-            :error="errors['city']"
-            v-model="editShopInfo.city"
-            titleKey="shopInfo.city"
-            placeholder="editRestaurant.enterCity"
-            :maxlength="15"
-            />
-        </div>
-        <!-- Street -->
-        <div class="mt-4">
-          <text-form
-            :error="errors['streetAddress']"
-            v-model="editShopInfo.streetAddress"
-            titleKey="shopInfo.streetAddress"
-            placeholder="editRestaurant.enterStreetAddress"
-            :maxlength="30"
-            />
-        </div>
-        
-        <!-- Map -->
-        <div
-          class="mt-4"
-          :class="
-                  !(editShopInfo.location && editShopInfo.location.lat) || !maplocation
-                  ? 'border-2 border-red-700'
-                  : ''
-                  "
-          >
-          <div class="mt-2 p-2 text-sm font-bold">
-            {{ $t("editRestaurant.setupMap") }}
-          </div>
-          <div class="text-center">
-            <a
-              @click="updateAndUpdateMap"
-              class="inline-flex h-12 items-center rounded-full bg-op-teal px-6 shadow"
-              ><div class="text-base font-bold text-white">
-                {{ $t("editRestaurant.searchMap") }}
-            </div></a
-                    >
-          </div>
-          <div v-if="searchResults.length > 0">
-            <div class="mt-4">
-              <o-select v-model="selectedResult">
-                <option
-                  v-for="(result, key) in searchResults"
-                  :value="key"
-                  :key="key"
-                  >
-                  {{ result.formatted_address }}
-                </option>
-              </o-select>
-            </div>
-          </div>
-          <div v-else class="mt-3 text-center text-sm">
-            {{ $t("editRestaurant.enterAddress") }}
-          </div>
-          
-          <div class="mt-2 text-center text-sm font-bold text-red-700">
-            {{
-            $t("editRestaurant.updateMapDescription")
-            }}
-          </div>
-          
-          <div class="mt-4 border-red-700">
-            <GMapMap
-              ref="gMap"
-              :center="{ lat: 44.933076, lng: 15.629058 }"
-              :options="{ fullscreenControl: false }"
-              :zoom="18"
-              style="
-                     width: 100%;
-                     height: 280px;
-                     position: relative;
-                     overflow: hidden;
-                     "
-              @loaded="setDefaultLocation"
-              @click="gmapClick"
-              ></GMapMap>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Right -->
-      <div class="mt-6 lg:mt-0">
-        <!-- Phone -->
-        <div>
+
+      <!-- Save and Cancel -->
+      <div class="mt-6 flex justify-center space-x-4">
+        <!-- Cancel Button -->
+        <router-link
+          :to="`/admin/restaurants/#restaurant_` + editShopInfo.restaurantId"
+        >
           <div
-            class="pb-2 text-sm font-bold cursor-pointer"
-            @click="openTips('phonenumber')"
-            >
-            {{ $t("shopInfo.phonenumber") }}
-            <i class="material-icons">
-              <span class="text-sm">help</span>
-            </i>
-            <span class="text-red-700">*</span>
+            class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
+          >
+            <span class="text-base font-bold text-black text-opacity-60">{{
+              $t("button.cancel")
+            }}</span>
           </div>
+        </router-link>
+
+        <!-- Save Button -->
+        <o-button
+          @click="saveRestaurant"
+          :disabled="submitting || disableSave"
+          class="b-reset-tw"
+        >
+          <div
+            class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
+            style="min-width: 8rem"
+          >
+            <span class="text-base font-bold text-white">{{
+              $t(
+                submitting
+                  ? "editCommon.saving"
+                  : editShopInfo.publicFlag
+                  ? "editCommon.save"
+                  : "editCommon.saveDraft",
+              )
+            }}</span>
+          </div>
+        </o-button>
+      </div>
+
+      <!-- Publish Status -->
+      <div class="mx-6 mt-6 rounded-lg bg-black bg-opacity-5 p-4 text-center">
+        <o-checkbox
+          v-model="editShopInfo.publicFlag"
+          :disabled="hasError"
+          :variant="!editShopInfo.publicFlag ? 'danger' : ''"
+        >
+          <div class="font-bold">{{ $t("shopInfo.public") }}</div>
+        </o-checkbox>
+
+        <div class="mt-1 text-sm font-bold">
+          <div v-if="editShopInfo.publicFlag">
+            {{ $t("editRestaurant.publishDescription") }}
+          </div>
+          <div v-if="!editShopInfo.publicFlag" class="text-red-700">
+            {{ $t("editRestaurant.draftDescription") }}
+          </div>
+          <div v-if="hasError" class="text-red-700">
+            {{ $t("editRestaurant.draftWarning") }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Required Note -->
+      <div class="mx-6 mt-6 text-sm font-bold text-red-700">
+        * {{ $t("editRestaurant.required") }}
+      </div>
+
+      <!-- Settings 1 -->
+      <div class="mx-6 mt-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
+        <!-- Left -->
+        <div>
+          <!-- Restaurant Name -->
           <div>
-            <phone-entry
-              :currentNumber="editShopInfo.phoneNumber"
-              :placeholder="$t('editRestaurant.enterPhone')"
-              @change="handlePhoneChange"
-              />
-          </div>
-        </div>
-        
-        <!-- Profile Photo -->
-        <div>
-          <div class="pb-2 text-sm font-bold">
-            {{ $t("editRestaurant.profilePhoto") }}
-            <span class="text-red-700">*</span>
-          </div>
-          <div
-            class="flex"
-            :class="{
-                    'rounded border border-red-700 p-2':
-                    errors['restProfilePhoto'].length !== 0,
-                    }"
-            >
-            <!-- Current Photo -->
-            <div v-if="restProfilePhoto" class="mr-4">
-              <div>
-                <img
-                  class="object-cover"
-                  :src="restProfilePhoto"
-                  style="width: 128px; height: 128px"
-                  />
-              </div>
-              <div class="mt-1 text-center text-xs">
-                {{ $t("editCommon.current") }}
-              </div>
-            </div>
-            
-            <!-- New Photo -->
-            <div class="flex-1">
-              <ImageUpload
-                @handler="handleProfileImage"
-                :preview="previewProfile"
-                style="width: 128px; height: 128px"
-                />
-              <div class="mt-1 w-32 text-center text-xs">
-                {{ $t("editCommon.new") }}
-              </div>
-            </div>
-          </div>
-          
-          <!-- Description -->
-          <div class="pt-2 text-sm text-black text-opacity-60">
-            {{ $t("editCommon.clickAndUploadDetail") }}
-          </div>
-        </div>
-        
-        <!-- Cover Photo -->
-        <div class="mt-4">
-          <div class="pb-2 text-sm font-bold">
-            {{ $t("editRestaurant.coverPhoto") }}
-            <span class="text-red-700">*</span>
-          </div>
-          <div
-            class="flex"
-            :class="{
-                    'rounded border border-red-700 p-2':
-                    errors['restCoverPhoto'].length !== 0,
-                    }"
-            >
-            <!-- Current Photo -->
-            <div v-if="restCoverPhoto">
-              <div>
-                <img
-                  class="rounded object-cover"
-                  :src="restCoverPhoto"
-                  style="width: 272px; height: 128px"
-                  />
-              </div>
-              <div class="mt-1 text-center text-xs" style="width: 272px">
-                {{ $t("editCommon.current") }}
-              </div>
-            </div>
-            
-            <!-- New Photo -->
-            
-            <div class="ml-4">
-              <ImageUpload
-                @handler="handleCoverImage"
-                :preview="previewCover"
-                style="width: 272px; height: 128px"
-                />
-              <div class="mt-1 text-center text-xs" style="width: 272px">
-                {{ $t("editCommon.new") }}
-              </div>
-            </div>
-          </div>
-          <!-- Description -->
-          <div class="pt-2 text-sm text-black text-opacity-60">
-            {{ $t("editCommon.clickAndUploadDetail") }}
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Settings 2 -->
-    <div
-      class="mx-6 mt-6 grid grid-cols-1 border-t-2 border-solid border-black border-opacity-10 pt-6 lg:grid-cols-2 lg:gap-x-12"
-      >
-      <!-- Left -->
-      <div>
-        <!-- Enable Pre Line -->
-        <div class="mt-4 mb-4">
-          <a id="preline" />
-          <div class="pb-2 text-sm font-bold">
-            {{ $t("editRestaurant.enablePrelineTitle") }}
-          </div>
-          <div class="rounded-lg bg-black bg-opacity-5 p-4">
-            <o-checkbox v-model="editShopInfo.enablePreline">
-              <div class="text-sm font-bold">
-                {{ $t("editRestaurant.enablePrelineDescription") }}
-              </div>
-            </o-checkbox>
-          </div>
-        </div>
-        
-        <!-- Description -->
-        <div class="mt-4">
-          <text-form
-            v-model="editShopInfo.introduction"
-            type="textarea"
-            :required="false"
-            :maxlength="300"
-            titleKey="editRestaurant.introduction"
-            placeholder="editRestaurant.enterIntroduction"
-            :error="errors['introduction']"
+            <text-form
+              v-model="editShopInfo.restaurantName"
+              titleKey="shopInfo.name"
+              placeholder="editRestaurant.enterRestaurantName"
+              :error="errors['restaurantName']"
+              :maxlength="50"
             />
-        </div>
-        
-        <div class="rounded-lg border bg-white p-2 mt-4">
-          <div class="pb-2 text-sm font-bold">
-            {{ $t("editRestaurant.orderConfirmViewConfig") }}
           </div>
-          
-          <!-- Order Notice -->
+
+          <!-- Owner Name -->
           <div class="mt-4">
             <text-form
-              v-model="editShopInfo.orderNotice"
+              v-model="editShopInfo.ownerName"
+              titleKey="shopInfo.ownerName"
+              placeholder="editRestaurant.enterOwnerName"
+              :error="errors['ownerName']"
+              :maxlength="50"
+            />
+          </div>
+
+          <!-- Restaurant Address -->
+          <!-- Zip and State -->
+          <div class="mt-4 flex">
+            <div class="flex-1">
+              <text-form
+                :error="errors['zip']"
+                v-model="editShopInfo.zip"
+                titleKey="shopInfo.zip"
+                placeholder="editRestaurant.enterZip"
+                :maxlength="10"
+              />
+            </div>
+            <div class="pl-4">
+              <state :errors="errors" v-model="editShopInfo.state" />
+            </div>
+          </div>
+          <!-- City -->
+          <div class="mt-4">
+            <text-form
+              :error="errors['city']"
+              v-model="editShopInfo.city"
+              titleKey="shopInfo.city"
+              placeholder="editRestaurant.enterCity"
+              :maxlength="15"
+            />
+          </div>
+          <!-- Street -->
+          <div class="mt-4">
+            <text-form
+              :error="errors['streetAddress']"
+              v-model="editShopInfo.streetAddress"
+              titleKey="shopInfo.streetAddress"
+              placeholder="editRestaurant.enterStreetAddress"
+              :maxlength="30"
+            />
+          </div>
+
+          <!-- Map -->
+          <div
+            class="mt-4"
+            :class="
+              !(editShopInfo.location && editShopInfo.location.lat) ||
+              !maplocation
+                ? 'border-2 border-red-700'
+                : ''
+            "
+          >
+            <div class="mt-2 p-2 text-sm font-bold">
+              {{ $t("editRestaurant.setupMap") }}
+            </div>
+            <div class="text-center">
+              <a
+                @click="updateAndUpdateMap"
+                class="inline-flex h-12 items-center rounded-full bg-op-teal px-6 shadow"
+                ><div class="text-base font-bold text-white">
+                  {{ $t("editRestaurant.searchMap") }}
+                </div></a
+              >
+            </div>
+            <div v-if="searchResults.length > 0">
+              <div class="mt-4">
+                <o-select v-model="selectedResult">
+                  <option
+                    v-for="(result, key) in searchResults"
+                    :value="key"
+                    :key="key"
+                  >
+                    {{ result.formatted_address }}
+                  </option>
+                </o-select>
+              </div>
+            </div>
+            <div v-else class="mt-3 text-center text-sm">
+              {{ $t("editRestaurant.enterAddress") }}
+            </div>
+
+            <div class="mt-2 text-center text-sm font-bold text-red-700">
+              {{ $t("editRestaurant.updateMapDescription") }}
+            </div>
+
+            <div class="mt-4 border-red-700">
+              <GMapMap
+                ref="gMap"
+                :center="{ lat: 44.933076, lng: 15.629058 }"
+                :options="{ fullscreenControl: false }"
+                :zoom="18"
+                style="
+                  width: 100%;
+                  height: 280px;
+                  position: relative;
+                  overflow: hidden;
+                "
+                @loaded="setDefaultLocation"
+                @click="gmapClick"
+              ></GMapMap>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right -->
+        <div class="mt-6 lg:mt-0">
+          <!-- Phone -->
+          <div>
+            <div
+              class="pb-2 text-sm font-bold cursor-pointer"
+              @click="openTips('phonenumber')"
+            >
+              {{ $t("shopInfo.phonenumber") }}
+              <i class="material-icons">
+                <span class="text-sm">help</span>
+              </i>
+              <span class="text-red-700">*</span>
+            </div>
+            <div>
+              <phone-entry
+                :currentNumber="editShopInfo.phoneNumber"
+                :placeholder="$t('editRestaurant.enterPhone')"
+                @change="handlePhoneChange"
+              />
+            </div>
+          </div>
+
+          <!-- Profile Photo -->
+          <div>
+            <div class="pb-2 text-sm font-bold">
+              {{ $t("editRestaurant.profilePhoto") }}
+              <span class="text-red-700">*</span>
+            </div>
+            <div
+              class="flex"
+              :class="{
+                'rounded border border-red-700 p-2':
+                  errors['restProfilePhoto'].length !== 0,
+              }"
+            >
+              <!-- Current Photo -->
+              <div v-if="restProfilePhoto" class="mr-4">
+                <div>
+                  <img
+                    class="object-cover"
+                    :src="restProfilePhoto"
+                    style="width: 128px; height: 128px"
+                  />
+                </div>
+                <div class="mt-1 text-center text-xs">
+                  {{ $t("editCommon.current") }}
+                </div>
+              </div>
+
+              <!-- New Photo -->
+              <div class="flex-1">
+                <ImageUpload
+                  @handler="handleProfileImage"
+                  :preview="previewProfile"
+                  style="width: 128px; height: 128px"
+                />
+                <div class="mt-1 w-32 text-center text-xs">
+                  {{ $t("editCommon.new") }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div class="pt-2 text-sm text-black text-opacity-60">
+              {{ $t("editCommon.clickAndUploadDetail") }}
+            </div>
+          </div>
+
+          <!-- Cover Photo -->
+          <div class="mt-4">
+            <div class="pb-2 text-sm font-bold">
+              {{ $t("editRestaurant.coverPhoto") }}
+              <span class="text-red-700">*</span>
+            </div>
+            <div
+              class="flex"
+              :class="{
+                'rounded border border-red-700 p-2':
+                  errors['restCoverPhoto'].length !== 0,
+              }"
+            >
+              <!-- Current Photo -->
+              <div v-if="restCoverPhoto">
+                <div>
+                  <img
+                    class="rounded object-cover"
+                    :src="restCoverPhoto"
+                    style="width: 272px; height: 128px"
+                  />
+                </div>
+                <div class="mt-1 text-center text-xs" style="width: 272px">
+                  {{ $t("editCommon.current") }}
+                </div>
+              </div>
+
+              <!-- New Photo -->
+
+              <div class="ml-4">
+                <ImageUpload
+                  @handler="handleCoverImage"
+                  :preview="previewCover"
+                  style="width: 272px; height: 128px"
+                />
+                <div class="mt-1 text-center text-xs" style="width: 272px">
+                  {{ $t("editCommon.new") }}
+                </div>
+              </div>
+            </div>
+            <!-- Description -->
+            <div class="pt-2 text-sm text-black text-opacity-60">
+              {{ $t("editCommon.clickAndUploadDetail") }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Settings 2 -->
+      <div
+        class="mx-6 mt-6 grid grid-cols-1 border-t-2 border-solid border-black border-opacity-10 pt-6 lg:grid-cols-2 lg:gap-x-12"
+      >
+        <!-- Left -->
+        <div>
+          <!-- Enable Pre Line -->
+          <div class="mt-4 mb-4">
+            <a id="preline" />
+            <div class="pb-2 text-sm font-bold">
+              {{ $t("editRestaurant.enablePrelineTitle") }}
+            </div>
+            <div class="rounded-lg bg-black bg-opacity-5 p-4">
+              <o-checkbox v-model="editShopInfo.enablePreline">
+                <div class="text-sm font-bold">
+                  {{ $t("editRestaurant.enablePrelineDescription") }}
+                </div>
+              </o-checkbox>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="mt-4">
+            <text-form
+              v-model="editShopInfo.introduction"
               type="textarea"
               :required="false"
               :maxlength="300"
-              titleKey="editRestaurant.orderNotice"
-              placeholder="editRestaurant.enterOrderNotice"
-              :error="errors['orderNotice']"
-              />
-          </div>
-          
-          <!-- Order Memo from Takeout Customer -->
-          <div class="mt-4">
-            <div class="pb-2 text-sm font-bold">
-              {{ $t("editRestaurant.acceptUserMessage") }}
-            </div>
-            <div class="rounded-lg bg-black bg-opacity-5 p-4">
-              <o-checkbox v-model="editShopInfo.acceptUserMessage">
-                <div class="text-sm font-bold">
-                  {{ $t("editRestaurant.acceptUserMessageDescription") }}
-                </div>
-              </o-checkbox>
-              <div class="pt-2 text-xs">
-                {{ $t("editRestaurant.acceptUserMessageNotice") }}
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Thank you Message -->
-        <div class="mt-4">
-          <text-form
-            v-model="editShopInfo.orderThanks"
-            type="textarea"
-            :required="false"
-            :maxlength="300"
-            titleKey="editRestaurant.orderThanks"
-            placeholder="editRestaurant.enterOrderThanks"
-            :error="errors['orderThanks']"
+              titleKey="editRestaurant.introduction"
+              placeholder="editRestaurant.enterIntroduction"
+              :error="errors['introduction']"
             />
-        </div>
-        
-        <div class="rounded-lg border bg-white p-2 mt-4">
-          
-          <!-- URL -->
-          <div>
-            <text-form
-              v-model="editShopInfo.url"
-              :error="errors['url']"
-              titleKey="shopInfo.website"
-              placeholder="editRestaurant.enterWebsite"
-              :maxlength="100"
-              :required="false"
-              />
           </div>
-          
-          <!-- LINE URL -->
-          <div class="mt-4">
-            <text-form
-              v-model="editShopInfo.lineUrl"
-              :error="errors['lineUrl']"
-              titleKey="shopInfo.lineUrl"
-              placeholder="editRestaurant.enterLineUrl"
-              :maxlength="100"
-              :required="false"
-              />
-          </div>
-          
-          <!-- Instagram URL -->
-          <div class="mt-4">
-            <text-form
-              v-model="editShopInfo.instagramUrl"
-              :error="errors['instagramUrl']"
-              titleKey="shopInfo.instagramUrl"
-              placeholder="editRestaurant.enterInstagramUrl"
-              :maxlength="100"
-              :required="false"
-              />
-          </div>
-          
-          <!-- UberEats URL -->
-          <div class="mt-4">
-            <text-form
-              v-model="editShopInfo.uberEatsUrl"
-              :error="errors['uberEatsUrl']"
-              titleKey="shopInfo.uberEatsUrl"
-              placeholder="editRestaurant.enterUberEatsUrl"
-              :maxlength="100"
-              :required="false"
-              />
-          </div>
-        </div>
-        
-        <!-- Tax -->
-        <div>
-          <!-- Tax Input Required -->
-          <div v-if="requireTaxInput">
-            <div class="mt-4 flex">
-              <div>
-                <div class="pb-2 text-sm font-bold">
-                  {{ $t("editRestaurant.foodTax") }}
-                </div>
-                <o-field
-                  class="inline-flex items-center"
-                  :variant="
-                            errors['foodTax'].length > 0 ? 'danger' : 'success'
-                            "
-                  >
-                  <o-input
-                    v-model="editShopInfo.foodTax"
-                    placeholder="8.2"
-                    type="text"
-                    maxlength="5"
-                    class="w-24"
-                    />
-                  <div class="ml-2">%</div>
-                </o-field>
-              </div>
-              
-              <div class="ml-4">
-                <div class="pb-2 text-sm font-bold">
-                  {{ $t("editRestaurant.alcoholTax") }}
-                </div>
-                <o-field
-                  class="inline-flex items-center"
-                  :variant="
-                            errors['alcoholTax'].length > 0 ? 'danger' : 'success'
-                            "
-                  >
-                  <o-input
-                    v-model="editShopInfo.alcoholTax"
-                    placeholder="10.2"
-                    type="text"
-                    maxlength="5"
-                    class="w-24"
-                    />
-                  <div class="ml-2">%</div>
-                </o-field>
-              </div>
+
+          <div class="rounded-lg border bg-white p-2 mt-4">
+            <div class="pb-2 text-sm font-bold">
+              {{ $t("editRestaurant.orderConfirmViewConfig") }}
             </div>
-          </div>
-          
-          <!-- Tax Input Not Required -->
-          <div v-if="!requireTaxInput">
+
+            <!-- Order Notice -->
+            <div class="mt-4">
+              <text-form
+                v-model="editShopInfo.orderNotice"
+                type="textarea"
+                :required="false"
+                :maxlength="300"
+                titleKey="editRestaurant.orderNotice"
+                placeholder="editRestaurant.enterOrderNotice"
+                :error="errors['orderNotice']"
+              />
+            </div>
+
+            <!-- Order Memo from Takeout Customer -->
             <div class="mt-4">
               <div class="pb-2 text-sm font-bold">
-                {{ $t("editRestaurant.tax") }}
+                {{ $t("editRestaurant.acceptUserMessage") }}
               </div>
-              <div
-                class="grid grid-cols-1 space-y-2 rounded-lg bg-black bg-opacity-5 p-4"
-                >
-                <div v-for="(taxItem, k) in taxRates" class="text-base" :key="k">
-                  {{ $t("editMenu." + taxRateKeys[taxItem]) }}
-                  {{ editShopInfo[taxItem + "Tax"] }}%
+              <div class="rounded-lg bg-black bg-opacity-5 p-4">
+                <o-checkbox v-model="editShopInfo.acceptUserMessage">
+                  <div class="text-sm font-bold">
+                    {{ $t("editRestaurant.acceptUserMessageDescription") }}
+                  </div>
+                </o-checkbox>
+                <div class="pt-2 text-xs">
+                  {{ $t("editRestaurant.acceptUserMessageNotice") }}
                 </div>
               </div>
             </div>
           </div>
-          
-          <!-- Tax Display -->
-          <div v-if="requireTaxPriceDisplay" class="mt-4">
-            <div class="pb-2 text-sm font-bold">
-              {{ $t("editRestaurant.taxPriceDisplay") }}
+          <!-- Thank you Message -->
+          <div class="mt-4">
+            <text-form
+              v-model="editShopInfo.orderThanks"
+              type="textarea"
+              :required="false"
+              :maxlength="300"
+              titleKey="editRestaurant.orderThanks"
+              placeholder="editRestaurant.enterOrderThanks"
+              :error="errors['orderThanks']"
+            />
+          </div>
+
+          <div class="rounded-lg border bg-white p-2 mt-4">
+            <!-- URL -->
+            <div>
+              <text-form
+                v-model="editShopInfo.url"
+                :error="errors['url']"
+                titleKey="shopInfo.website"
+                placeholder="editRestaurant.enterWebsite"
+                :maxlength="100"
+                :required="false"
+              />
             </div>
+
+            <!-- LINE URL -->
+            <div class="mt-4">
+              <text-form
+                v-model="editShopInfo.lineUrl"
+                :error="errors['lineUrl']"
+                titleKey="shopInfo.lineUrl"
+                placeholder="editRestaurant.enterLineUrl"
+                :maxlength="100"
+                :required="false"
+              />
+            </div>
+
+            <!-- Instagram URL -->
+            <div class="mt-4">
+              <text-form
+                v-model="editShopInfo.instagramUrl"
+                :error="errors['instagramUrl']"
+                titleKey="shopInfo.instagramUrl"
+                placeholder="editRestaurant.enterInstagramUrl"
+                :maxlength="100"
+                :required="false"
+              />
+            </div>
+
+            <!-- UberEats URL -->
+            <div class="mt-4">
+              <text-form
+                v-model="editShopInfo.uberEatsUrl"
+                :error="errors['uberEatsUrl']"
+                titleKey="shopInfo.uberEatsUrl"
+                placeholder="editRestaurant.enterUberEatsUrl"
+                :maxlength="100"
+                :required="false"
+              />
+            </div>
+          </div>
+
+          <!-- Tax -->
+          <div>
+            <!-- Tax Input Required -->
+            <div v-if="requireTaxInput">
+              <div class="mt-4 flex">
+                <div>
+                  <div class="pb-2 text-sm font-bold">
+                    {{ $t("editRestaurant.foodTax") }}
+                  </div>
+                  <o-field
+                    class="inline-flex items-center"
+                    :variant="
+                      errors['foodTax'].length > 0 ? 'danger' : 'success'
+                    "
+                  >
+                    <o-input
+                      v-model="editShopInfo.foodTax"
+                      placeholder="8.2"
+                      type="text"
+                      maxlength="5"
+                      class="w-24"
+                    />
+                    <div class="ml-2">%</div>
+                  </o-field>
+                </div>
+
+                <div class="ml-4">
+                  <div class="pb-2 text-sm font-bold">
+                    {{ $t("editRestaurant.alcoholTax") }}
+                  </div>
+                  <o-field
+                    class="inline-flex items-center"
+                    :variant="
+                      errors['alcoholTax'].length > 0 ? 'danger' : 'success'
+                    "
+                  >
+                    <o-input
+                      v-model="editShopInfo.alcoholTax"
+                      placeholder="10.2"
+                      type="text"
+                      maxlength="5"
+                      class="w-24"
+                    />
+                    <div class="ml-2">%</div>
+                  </o-field>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tax Input Not Required -->
+            <div v-if="!requireTaxInput">
+              <div class="mt-4">
+                <div class="pb-2 text-sm font-bold">
+                  {{ $t("editRestaurant.tax") }}
+                </div>
+                <div
+                  class="grid grid-cols-1 space-y-2 rounded-lg bg-black bg-opacity-5 p-4"
+                >
+                  <div
+                    v-for="(taxItem, k) in taxRates"
+                    class="text-base"
+                    :key="k"
+                  >
+                    {{ $t("editMenu." + taxRateKeys[taxItem]) }}
+                    {{ editShopInfo[taxItem + "Tax"] }}%
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tax Display -->
+            <div v-if="requireTaxPriceDisplay" class="mt-4">
+              <div class="pb-2 text-sm font-bold">
+                {{ $t("editRestaurant.taxPriceDisplay") }}
+              </div>
+              <div class="rounded-lg bg-black bg-opacity-5 p-4">
+                <div>
+                  <o-checkbox v-model="editShopInfo.inclusiveTax">
+                    <div class="font-bold">
+                      {{ $t("editRestaurant.taxIncluded") }}
+                    </div>
+                  </o-checkbox>
+                </div>
+                <div class="mt-2">
+                  <div
+                    v-if="region === 'JP'"
+                    class="mb-2 text-xs font-bold text-red-700"
+                  >
+                    {{ $t("editRestaurant.taxPriceDisplayJp") }}
+                  </div>
+                  <div>
+                    {{
+                      $t("tax.taxExample", { count: $n(1000, "currency") }, 0)
+                    }}
+                  </div>
+                  <div>
+                    <b
+                      ><Price
+                        :shopInfo="editShopInfo"
+                        :menu="{ price: 1000, tax: 'food' }"
+                      />
+                    </b>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Time to Pickup -->
+          <div class="mt-4">
+            <div class="pb-2 text-sm font-bold">
+              {{ $t("editRestaurant.timeToPickup") }}
+            </div>
+
             <div class="rounded-lg bg-black bg-opacity-5 p-4">
+              <!-- Preparation Time -->
               <div>
-                <o-checkbox v-model="editShopInfo.inclusiveTax">
-                  <div class="font-bold">
-                    {{ $t("editRestaurant.taxIncluded") }}
+                <div class="mb-1">
+                  <b>{{ $t("editRestaurant.preparationTime") }}</b>
+                  <span class="text-xs"
+                    >({{
+                      $t("editRestaurant.preparationTimeDescription")
+                    }})</span
+                  >
+                </div>
+
+                <o-field
+                  class="flex items-center"
+                  :variant="
+                    errors['pickUpMinimumCookTime'].length > 0
+                      ? 'danger'
+                      : 'success'
+                  "
+                >
+                  <o-input
+                    v-model.number="editShopInfo.pickUpMinimumCookTime"
+                    placeholder="10"
+                    type="text"
+                    class="w-24"
+                  />
+                  <div class="ml-2">
+                    {{ $t("editRestaurant.minutes") }}
+                    <span class="text-xs"
+                      >({{ $t("editRestaurant.withinFiveDays") }})</span
+                    >
+                  </div>
+                </o-field>
+
+                <div class="mt-2">
+                  <o-radio
+                    v-for="choice in minimumCookTimeChoices"
+                    v-model="editShopInfo.pickUpMinimumCookTime"
+                    :native-value="choice.value"
+                    :key="choice.value"
+                    >{{ $t(choice.messageKey) }}</o-radio
+                  >
+                </div>
+              </div>
+
+              <!-- The Day Before -->
+              <div class="mt-2">
+                <div class="mb-1">
+                  <b>{{ $t("editRestaurant.reservationTheDayBefore") }}</b>
+                  <span class="text-xs">
+                    ({{
+                      $t("editRestaurant.reservationTheDayBeforeDescription")
+                    }})</span
+                  >
+                </div>
+                <o-field
+                  class="flex items-center"
+                  :variant="
+                    errors['pickUpDaysInAdvance'].length > 0
+                      ? 'danger'
+                      : 'success'
+                  "
+                >
+                  <o-select v-model.number="editShopInfo.pickUpDaysInAdvance">
+                    <option
+                      v-for="(day, index) in reservationTheDayBefore"
+                      :key="index"
+                      :value="day.value"
+                    >
+                      {{ $t(day.messageKey) }}
+                    </option>
+                  </o-select>
+                </o-field>
+              </div>
+            </div>
+          </div>
+
+          <!-- Payment methods -->
+          <div class="mt-4">
+            <div
+              class="pb-2 text-sm font-bold cursor-pointer"
+              @click="openTips('paymentMethods')"
+            >
+              {{ $t("editRestaurant.paymentMethods") }}
+              <i class="material-icons">
+                <span class="text-sm">help</span>
+              </i>
+            </div>
+
+            <div class="rounded-lg bg-black bg-opacity-5 p-4">
+              <!-- Preparation Time -->
+              <div v-for="(paymentMethod, k) in paymentMethods" :key="k">
+                <o-checkbox
+                  v-model="
+                    (editShopInfo.paymentMethods || {})[paymentMethod.key]
+                  "
+                >
+                  <div class="text-sm font-bold">
+                    {{
+                      $t(
+                        "editRestaurant.paymentMethodChoices." +
+                          paymentMethod.key,
+                      )
+                    }}
                   </div>
                 </o-checkbox>
               </div>
-              <div class="mt-2">
-                <div
-                  v-if="region === 'JP'"
-                  class="mb-2 text-xs font-bold text-red-700"
-                  >
-                  {{ $t("editRestaurant.taxPriceDisplayJp") }}
-                </div>
-                <div>
-                  {{ $t("tax.taxExample", {count: $n(1000, "currency")}, 0)}}
-                </div>
-                <div>
-                  <b
-                    ><Price
-                       :shopInfo="editShopInfo"
-                       :menu="{ price: 1000, tax: 'food' }"
-                       />
-                  </b>
-                </div>
+            </div>
+          </div>
+
+          <!-- Delivery Config -->
+          <div v-if="region === 'JP'" class="mt-4">
+            <a id="deliveryConfig" />
+            <div class="pb-2 text-sm font-bold">
+              {{ $t("editRestaurant.deliveryConfigTitle") }}
+            </div>
+            <div class="rounded-lg bg-black bg-opacity-5 p-4">
+              <div class="text-lg font-bold text-op-teal">
+                <router-link
+                  :to="`/admin/restaurants/${restaurantId}/delivery`"
+                  >{{ $t("editRestaurant.deliveryConfigLink") }}</router-link
+                >
+              </div>
+              <div class="pt-2 text-xs">
+                {{ $t("editRestaurant.deliveryDescription") }}
+                <a
+                  href="https://docs.omochikaeri.com/manuals/delivery.pdf"
+                  target="_blank"
+                  class="text-xs font-bold text-op-teal"
+                >
+                  {{ $t("menu.deliveryManualLink") }}
+                </a>
               </div>
             </div>
           </div>
-        </div>
-        
-        <!-- Time to Pickup -->
-        <div class="mt-4">
-          <div class="pb-2 text-sm font-bold">
-            {{
-            $t("editRestaurant.timeToPickup")
-            }}
-          </div>
-          
-          <div class="rounded-lg bg-black bg-opacity-5 p-4">
-            <!-- Preparation Time -->
-            <div>
-              <div class="mb-1">
-                <b>{{ $t("editRestaurant.preparationTime") }}</b>
-                <span class="text-xs"
-                      >({{
-                  $t("editRestaurant.preparationTimeDescription")
-                  }})</span
-                       >
-              </div>
-              
-              <o-field
-                class="flex items-center"
-                :variant="
-                          errors['pickUpMinimumCookTime'].length > 0
-                          ? 'danger'
-                          : 'success'
-                          "
-                >
-                <o-input
-                  v-model.number="editShopInfo.pickUpMinimumCookTime"
-                  placeholder="10"
-                  type="text"
-                  class="w-24"
-                  />
-                <div class="ml-2">
-                  {{ $t("editRestaurant.minutes") }}
-                  <span class="text-xs"
-                        >({{ $t("editRestaurant.withinFiveDays") }})</span
-                                                                      >
-                </div>
-              </o-field>
-              
-              <div class="mt-2">
-                <o-radio
-                  v-for="choice in minimumCookTimeChoices"
-                  v-model="editShopInfo.pickUpMinimumCookTime"
-                  :native-value="choice.value"
-                  :key="choice.value"
-                  >{{ $t(choice.messageKey) }}</o-radio
-                                                >
-              </div>
+
+          <!-- Printer Config -->
+          <div class="mt-4">
+            <div class="pb-2 text-sm font-bold">
+              {{ $t("editRestaurant.printerConfigTitle") }}
             </div>
-            
-            <!-- The Day Before -->
-            <div class="mt-2">
-              <div class="mb-1">
-                <b>{{ $t("editRestaurant.reservationTheDayBefore") }}</b>
-                <span class="text-xs">
-                  ({{
-                  $t("editRestaurant.reservationTheDayBeforeDescription")
-                  }})</span
-                       >
-              </div>
-              <o-field
-                class="flex items-center"
-                :variant="
-                          errors['pickUpDaysInAdvance'].length > 0
-                          ? 'danger'
-                          : 'success'
-                          "
-                >
-                <o-select v-model.number="editShopInfo.pickUpDaysInAdvance">
-                  <option
-                    v-for="(day, index) in reservationTheDayBefore"
-                    :key="index"
-                    :value="day.value"
-                    >
-                    {{ $t(day.messageKey) }}
-                  </option>
-                </o-select>
-              </o-field>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Payment methods -->
-        <div class="mt-4">
-          <div
-            class="pb-2 text-sm font-bold cursor-pointer"
-            @click="openTips('paymentMethods')"
-            >
-            {{ $t("editRestaurant.paymentMethods") }}
-            <i class="material-icons">
-              <span class="text-sm">help</span>
-            </i>
-          </div>
-          
-          <div class="rounded-lg bg-black bg-opacity-5 p-4">
-            <!-- Preparation Time -->
-            <div v-for="(paymentMethod, k) in paymentMethods" :key="k">
-              <o-checkbox
-                v-model="(editShopInfo.paymentMethods || {})[paymentMethod.key]"
-                >
+            <div class="rounded-lg bg-black bg-opacity-5 p-4">
+              <o-checkbox v-model="editShopInfo.enablePrinter">
                 <div class="text-sm font-bold">
-                  {{
-                  $t(
-                  "editRestaurant.paymentMethodChoices." +
-                  paymentMethod.key
-                  )
-                  }}
+                  {{ $t("editRestaurant.elablePrinter") }}
                 </div>
               </o-checkbox>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Delivery Config -->
-        <div v-if="region === 'JP'" class="mt-4">
-          <a id="deliveryConfig" />
-          <div class="pb-2 text-sm font-bold">
-            {{ $t("editRestaurant.deliveryConfigTitle") }}
-          </div>
-          <div class="rounded-lg bg-black bg-opacity-5 p-4">
-            <div class="text-lg font-bold text-op-teal">
-              <router-link
-                :to="`/admin/restaurants/${restaurantId}/delivery`"
-                >{{ $t("editRestaurant.deliveryConfigLink") }}</router-link
-                                                                >
-            </div>
-            <div class="pt-2 text-xs">
-              {{ $t("editRestaurant.deliveryDescription") }}
-              <a
-                href="https://docs.omochikaeri.com/manuals/delivery.pdf"
-                target="_blank"
-                class="text-xs font-bold text-op-teal"
+              <div class="pt-2 text-xs">
+                {{ $t("editRestaurant.printerDescription") }}
+                <a
+                  href="https://docs.omochikaeri.com/manuals/printer.pdf"
+                  target="_blank"
+                  class="inline-flex text-xs font-bold text-op-teal"
                 >
-                {{ $t("menu.deliveryManualLink") }}
-              </a>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Printer Config -->
-        <div class="mt-4">
-          <div class="pb-2 text-sm font-bold">
-            {{ $t("editRestaurant.printerConfigTitle") }}
-          </div>
-          <div class="rounded-lg bg-black bg-opacity-5 p-4">
-            <o-checkbox v-model="editShopInfo.enablePrinter">
-              <div class="text-sm font-bold">
-                {{ $t("editRestaurant.elablePrinter") }}
+                  {{ $t("menu.printerManualLink") }}
+                </a>
               </div>
-            </o-checkbox>
-            <div class="pt-2 text-xs">
-              {{ $t("editRestaurant.printerDescription") }}
-              <a
-                href="https://docs.omochikaeri.com/manuals/printer.pdf"
-                target="_blank"
-                class="inline-flex text-xs font-bold text-op-teal"
+              <div class="text-xs">
+                {{ $t("editRestaurant.printerDescription2") }}
+              </div>
+              <div class="text-xs pt-2">
+                <router-link
+                  class="inline-flex text-xs font-bold text-op-teal"
+                  :to="`/admin/restaurants/${restaurantId}/printer`"
+                  >{{
+                    $t("editRestaurant.printerDescriptionConfig")
+                  }}</router-link
                 >
-                {{ $t("menu.printerManualLink") }}
-              </a>
-            </div>
-            <div class="text-xs">
-              {{ $t("editRestaurant.printerDescription2") }}
-            </div>
-            <div class="text-xs pt-2">
-              <router-link 
-                class="inline-flex text-xs font-bold text-op-teal"
-                :to="`/admin/restaurants/${restaurantId}/printer`"
-                >{{ $t("editRestaurant.printerDescriptionConfig") }}</router-link>
+              </div>
             </div>
           </div>
+
+          <!-- notification -->
+          <div class="rounded-lg border bg-white p-2 mt-4">
+            <div class="pb-2 text-sm font-bold">
+              {{ $t("editRestaurant.notificationConfig") }}
+            </div>
+            <!-- Email Notification -->
+            <div class="mt-2">
+              <a id="emailNotification" />
+              <div class="pb-2 text-sm font-bold">
+                {{ $t("editRestaurant.emailNotificationTitle") }}
+              </div>
+              <div class="rounded-lg bg-black bg-opacity-5 p-4">
+                <o-checkbox v-model="editShopInfo.emailNotification">
+                  <div class="text-sm font-bold">
+                    {{ $t("editRestaurant.emailNotificationDescription") }}
+                  </div>
+                </o-checkbox>
+                <div class="pt-2 text-xs">
+                  {{ $t("editRestaurant.emailNotificationNotice") }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Phone Call -->
+            <div class="mt-4">
+              <a id="phoneCall" />
+              <div class="pb-2 text-sm font-bold">
+                {{ $t("editRestaurant.phoneCall") }}
+              </div>
+              <div class="rounded-lg bg-black bg-opacity-5 p-4">
+                <o-checkbox v-model="editShopInfo.phoneCall">
+                  <div class="text-sm font-bold">
+                    {{ $t("editRestaurant.phoneCallDescription") }}
+                  </div>
+                </o-checkbox>
+                <div class="pt-2 text-xs">
+                  {{ $t("editRestaurant.phoneCallNotice") }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Line -->
+            <div class="mt-4">
+              <a id="phoneCall" />
+              <div class="pb-2 text-sm font-bold">
+                {{ $t("editRestaurant.lineNotification") }}
+              </div>
+              <div class="rounded-lg bg-black bg-opacity-5 p-4">
+                <router-link
+                  class="text-sm font-bold text-op-teal"
+                  :to="`/admin/restaurants/${restaurantId}/linelist`"
+                >
+                  {{ $t("editRestaurant.moveToLineConfig") }}
+                </router-link>
+              </div>
+            </div>
+          </div>
+          <!-- end of notification -->
         </div>
-        
-        <!-- notification -->
+
+        <!-- Right -->
+
         <div class="rounded-lg border bg-white p-2 mt-4">
           <div class="pb-2 text-sm font-bold">
-            {{ $t("editRestaurant.notificationConfig") }}
+            {{ $t("editRestaurant.openDaysConfig") }}
           </div>
-          <!-- Email Notification -->
-          <div class="mt-2">
-            <a id="emailNotification" />
-            <div class="pb-2 text-sm font-bold">
-              {{ $t("editRestaurant.emailNotificationTitle") }}
-            </div>
-            <div class="rounded-lg bg-black bg-opacity-5 p-4">
-              <o-checkbox v-model="editShopInfo.emailNotification">
-                <div class="text-sm font-bold">
-                  {{ $t("editRestaurant.emailNotificationDescription") }}
-                </div>
+          <div class="rounded-lg bg-black bg-opacity-5 p-4">
+            <div>
+              <o-checkbox v-model="editShopInfo.enableLunchDinner">
+                <span class="text-base font-bold">
+                  {{ $t("editRestaurant.lunchOrDinnerToggle") }}
+                </span>
               </o-checkbox>
-              <div class="pt-2 text-xs">
-                {{ $t("editRestaurant.emailNotificationNotice") }}
-              </div>
+            </div>
+            <div class="text-sm">
+              {{ $t("editRestaurant.lunchOrDinnerNotice") }}
             </div>
           </div>
-          
-          <!-- Phone Call -->
-          <div class="mt-4">
-            <a id="phoneCall" />
+          <!-- Hours -->
+          <div class="mt-4 lg:mt-0">
             <div class="pb-2 text-sm font-bold">
-              {{ $t("editRestaurant.phoneCall") }}
+              {{ $t("shopInfo.hours") }} <span class="text-red-700">*</span>
             </div>
-            <div class="rounded-lg bg-black bg-opacity-5 p-4">
-              <o-checkbox v-model="editShopInfo.phoneCall">
-                <div class="text-sm font-bold">
-                  {{ $t("editRestaurant.phoneCallDescription") }}
-                </div>
-              </o-checkbox>
-              <div class="pt-2 text-xs">
-                {{ $t("editRestaurant.phoneCallNotice") }}
+            <div>
+              <div class="text-sm font-bold text-red-700">
+                {{ $t("editRestaurant.businessHourDescription") }}
               </div>
-            </div>
-          </div>
-          
-          <!-- Line -->
-          <div class="mt-4">
-            <a id="phoneCall" />
-            <div class="pb-2 text-sm font-bold">
-              {{ $t("editRestaurant.lineNotification") }}
-            </div>
-            <div class="rounded-lg bg-black bg-opacity-5 p-4">
-              <router-link
-                class="text-sm font-bold text-op-teal"
-                :to="`/admin/restaurants/${restaurantId}/linelist`"
-                >
-                {{ $t("editRestaurant.moveToLineConfig") }}
-              </router-link>
-            </div>
-          </div>
-        </div>
-        <!-- end of notification -->
-      </div>
-      
-      <!-- Right -->
-      
-      <div class="rounded-lg border bg-white p-2 mt-4">
-        <div class="pb-2 text-sm font-bold">
-          {{ $t("editRestaurant.openDaysConfig") }}
-        </div>
-        <div
-          class="rounded-lg bg-black bg-opacity-5 p-4"
-          >
-          <div>
-            <o-checkbox v-model="editShopInfo.enableLunchDinner">
-              <span class="text-base font-bold">
-                {{ $t("editRestaurant.lunchOrDinnerToggle") }}
-              </span>
-            </o-checkbox>
-          </div>
-          <div class="text-sm">
-            {{ $t("editRestaurant.lunchOrDinnerNotice") }}
-          </div>
-        </div>
-        <!-- Hours -->
-        <div class="mt-4 lg:mt-0">
-          <div class="pb-2 text-sm font-bold">
-            {{ $t("shopInfo.hours") }} <span class="text-red-700">*</span>
-          </div>
-          <div>
-            <div class="text-sm font-bold text-red-700">
-              {{ $t("editRestaurant.businessHourDescription") }}
-            </div>
-            
-            <div class="mt-2 grid grid-cols-1 space-y-2">
-              <div
-                v-for="(day, index) in days"
-                :key="index"
-                class="rounded-lg bg-black bg-opacity-5 p-4"
-                >
-                <!-- Enable/Disable Day and Copy Previous Day -->
-                <div class="flex items-center">
-                  <div class="flex-1">
-                    <o-checkbox v-model="editShopInfo.businessDay[index]">
-                      <div class="text-base font-bold">
-                        {{ $t("week.short." + day) }}
-                      </div>
-                    </o-checkbox>
-                  </div>
-                  
-                  <div>
-                    <a
-                      @click="copyPreviousDay(index)"
-                      class="inline-flex items-center justify-center"
-                      >
-                      <i class="material-icons mr-2 text-lg text-op-teal">
-                        content_copy
-                      </i>
-                      <div class="text-sm font-bold text-op-teal">
-                        {{
-                        $t(
-                        index === "1"
-                        ? "editRestaurant.copySunDay"
-                        : "editRestaurant.copyPreviousDay"
-                        )
-                        }}
-                      </div>
-                    </a>
-                  </div>
-                </div>
-                
-                <!-- Main Hours -->
-                <div class="mt-2">
-                  <div class="flex">
-                    <hours-input
-                      v-model="editShopInfo.openTimes[index][0]"
-                      :variant="
-                                errors['time'][index][0].length > 0 ? 'danger' : 'success'
-                                "
-                      :disabled="!editShopInfo.businessDay[index]"
-                      ></hours-input>
-                    <div class="flex-item my-auto ml-2 font-bold" v-if="editShopInfo.enableLunchDinner">:ランチ</div>
-                  </div>
-                </div>
-                
-                <!-- Another Hours -->
-                <div class="mt-2">
-                  <div class="mb-1 text-xs">
-                    {{ $t("editRestaurant.businessHourOption") }}
-                  </div>
-                  <div class="flex">
-                    <hours-input
-                      v-model="editShopInfo.openTimes[index][1]"
-                      :variant="
-                                errors['time'][index][1].length > 0 ? 'danger' : 'success'
-                                "
-                      :disabled="!editShopInfo.businessDay[index]"
-                      ></hours-input>
-                    <div class="flex-item my-auto ml-2 font-bold" v-if="editShopInfo.enableLunchDinner">:ディナー</div>
-                    
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          
 
-          <!-- Temporary Closure -->
-          <div class="mt-4">
-            <div class="pb-2 text-sm font-bold">
-              最終注文時間
+              <div class="mt-2 grid grid-cols-1 space-y-2">
+                <div
+                  v-for="(day, index) in days"
+                  :key="index"
+                  class="rounded-lg bg-black bg-opacity-5 p-4"
+                >
+                  <!-- Enable/Disable Day and Copy Previous Day -->
+                  <div class="flex items-center">
+                    <div class="flex-1">
+                      <o-checkbox v-model="editShopInfo.businessDay[index]">
+                        <div class="text-base font-bold">
+                          {{ $t("week.short." + day) }}
+                        </div>
+                      </o-checkbox>
+                    </div>
+
+                    <div>
+                      <a
+                        @click="copyPreviousDay(index)"
+                        class="inline-flex items-center justify-center"
+                      >
+                        <i class="material-icons mr-2 text-lg text-op-teal">
+                          content_copy
+                        </i>
+                        <div class="text-sm font-bold text-op-teal">
+                          {{
+                            $t(
+                              index === "1"
+                                ? "editRestaurant.copySunDay"
+                                : "editRestaurant.copyPreviousDay",
+                            )
+                          }}
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+
+                  <!-- Main Hours -->
+                  <div class="mt-2">
+                    <div class="flex">
+                      <hours-input
+                        v-model="editShopInfo.openTimes[index][0]"
+                        :variant="
+                          errors['time'][index][0].length > 0
+                            ? 'danger'
+                            : 'success'
+                        "
+                        :disabled="!editShopInfo.businessDay[index]"
+                      ></hours-input>
+                      <div
+                        class="flex-item my-auto ml-2 font-bold"
+                        v-if="editShopInfo.enableLunchDinner"
+                      >
+                        :ランチ
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Another Hours -->
+                  <div class="mt-2">
+                    <div class="mb-1 text-xs">
+                      {{ $t("editRestaurant.businessHourOption") }}
+                    </div>
+                    <div class="flex">
+                      <hours-input
+                        v-model="editShopInfo.openTimes[index][1]"
+                        :variant="
+                          errors['time'][index][1].length > 0
+                            ? 'danger'
+                            : 'success'
+                        "
+                        :disabled="!editShopInfo.businessDay[index]"
+                      ></hours-input>
+                      <div
+                        class="flex-item my-auto ml-2 font-bold"
+                        v-if="editShopInfo.enableLunchDinner"
+                      >
+                        :ディナー
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="text-xs">
-              「営業終了時間」と「受け渡し準備時間」を考慮した「最終注文可能な時間」よりも前に、注文を締め切る場合にはこちらを設定してください。
-            </div>
-            <div class="text-xs">
-              未設定の場合は「営業終了時間」と「受け渡し準備時間」を考慮した時間となります。
-            </div>
-            <div class="mt-2">
-              <hour-input
-                v-model="editShopInfo.lastOrderTime"
-                variant="success"
-                :disabled="false"
+
+            <!-- Temporary Closure -->
+            <div class="mt-4">
+              <div class="pb-2 text-sm font-bold">最終注文時間</div>
+              <div class="text-xs">
+                「営業終了時間」と「受け渡し準備時間」を考慮した「最終注文可能な時間」よりも前に、注文を締め切る場合にはこちらを設定してください。
+              </div>
+              <div class="text-xs">
+                未設定の場合は「営業終了時間」と「受け渡し準備時間」を考慮した時間となります。
+              </div>
+              <div class="mt-2">
+                <hour-input
+                  v-model="editShopInfo.lastOrderTime"
+                  variant="success"
+                  :disabled="false"
                 ></hour-input>
-            </div>
-          </div>
-
-          <!-- Temporary Closure -->
-          <div class="mt-4">
-            <div class="pb-2 text-sm font-bold">
-              {{ $t("shopInfo.temporaryClosure") }}
-            </div>
-            
-            <div class="rounded-lg bg-black bg-opacity-5 p-4 pb-2">
-              <div class="mb-2 text-sm font-bold text-black text-opacity-40">
-                {{ $t("shopInfo.temporaryClosureDescription") }}
               </div>
-              
-              <!-- Date Picker -->
-              <o-field>
-                <o-datepicker
-                  class="w-full"
-                  icon="calendar-today"
-                  v-model="newTemporaryClosure"
-                  ref="datepicker"
-                  :min-date="new Date()"
-                  :max-date="maxDate"
-                  expanded
-                  :placeholder="$t('shopInfo.temporaryClosureSelect')"
+            </div>
+
+            <!-- Temporary Closure -->
+            <div class="mt-4">
+              <div class="pb-2 text-sm font-bold">
+                {{ $t("shopInfo.temporaryClosure") }}
+              </div>
+
+              <div class="rounded-lg bg-black bg-opacity-5 p-4 pb-2">
+                <div class="mb-2 text-sm font-bold text-black text-opacity-40">
+                  {{ $t("shopInfo.temporaryClosureDescription") }}
+                </div>
+
+                <!-- Date Picker -->
+                <o-field>
+                  <o-datepicker
+                    class="w-full"
+                    icon="calendar-today"
+                    v-model="newTemporaryClosure"
+                    ref="datepicker"
+                    :min-date="new Date()"
+                    :max-date="maxDate"
+                    expanded
+                    :placeholder="$t('shopInfo.temporaryClosureSelect')"
                   >
-                </o-datepicker>
-                
-                <o-button @click="addNewTemporaryClosure" class="b-reset-tw">
-                  <div
-                    class="inline-flex h-9 items-center justify-center rounded-r bg-black bg-opacity-5 px-4"
-                    >
-                    <i class="material-icons mr-2 text-lg text-op-teal">add</i>
-                    <div class="text-sm font-bold text-op-teal">
-                      {{ $t("shopInfo.temporaryClosureAdd") }}
-                    </div>
-                  </div>
-                </o-button>
-              </o-field>
-              
-              <!-- Saved Closure Days -->
-              <div class="mb-2 grid grid-cols-1 space-y-2">
-                <template v-for="(day, key) in editShopInfo.temporaryClosure || []">
-                  <template v-if="day.getTime() > now.getTime()">
+                  </o-datepicker>
+
+                  <o-button @click="addNewTemporaryClosure" class="b-reset-tw">
                     <div
-                      :key="key"
-                      class="flex items-center rounded bg-white bg-opacity-50 px-2"
+                      class="inline-flex h-9 items-center justify-center rounded-r bg-black bg-opacity-5 px-4"
+                    >
+                      <i class="material-icons mr-2 text-lg text-op-teal"
+                        >add</i
                       >
-                      <div class="flex-1 p-2">
-                        {{ moment(day).format("YYYY/MM/DD") }}
-                        {{
-                        $t(
-                        "week.short." +
-                        days[Number(moment(day).format("e")) || 7]
-                        )
-                        }}
-                      </div>
-                      <div>
-                        <a
-                          @click="deleteTemporaryClosure(key)"
-                          class="inline-flex p-2"
-                          ><i class="material-icons text-lg text-red-700"
-                              >delete</i
-                                       ></a
-                                          >
+                      <div class="text-sm font-bold text-op-teal">
+                        {{ $t("shopInfo.temporaryClosureAdd") }}
                       </div>
                     </div>
+                  </o-button>
+                </o-field>
+
+                <!-- Saved Closure Days -->
+                <div class="mb-2 grid grid-cols-1 space-y-2">
+                  <template
+                    v-for="(day, key) in editShopInfo.temporaryClosure || []"
+                  >
+                    <template v-if="day.getTime() > now.getTime()">
+                      <div
+                        :key="key"
+                        class="flex items-center rounded bg-white bg-opacity-50 px-2"
+                      >
+                        <div class="flex-1 p-2">
+                          {{ moment(day).format("YYYY/MM/DD") }}
+                          {{
+                            $t(
+                              "week.short." +
+                                days[Number(moment(day).format("e")) || 7],
+                            )
+                          }}
+                        </div>
+                        <div>
+                          <a
+                            @click="deleteTemporaryClosure(key)"
+                            class="inline-flex p-2"
+                            ><i class="material-icons text-lg text-red-700"
+                              >delete</i
+                            ></a
+                          >
+                        </div>
+                      </div>
+                    </template>
                   </template>
-                </template>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    
-    <!-- Publish Status -->
-    <div class="mx-6 mt-6 rounded-lg bg-black bg-opacity-5 p-4 text-center">
-      <o-checkbox
-        v-model="editShopInfo.publicFlag"
-        :disabled="hasError"
-        :variant="!editShopInfo.publicFlag ? 'danger' : ''"
+
+      <!-- Publish Status -->
+      <div class="mx-6 mt-6 rounded-lg bg-black bg-opacity-5 p-4 text-center">
+        <o-checkbox
+          v-model="editShopInfo.publicFlag"
+          :disabled="hasError"
+          :variant="!editShopInfo.publicFlag ? 'danger' : ''"
         >
           <div class="font-bold">{{ $t("shopInfo.public") }}</div>
         </o-checkbox>
@@ -1045,7 +1064,7 @@
                   ? "editCommon.saving"
                   : editShopInfo.publicFlag
                   ? "editCommon.save"
-                  : "editCommon.saveDraft"
+                  : "editCommon.saveDraft",
               )
             }}</span>
           </div>
@@ -1064,11 +1083,7 @@
           >
             <i class="material-icons mr-2 text-lg text-op-teal"> queue </i>
             <span class="text-sm font-bold text-op-teal">{{
-              $t(
-                submitting
-                  ? "editCommon.saving"
-                  : "editCommon.copy"
-              )
+              $t(submitting ? "editCommon.saving" : "editCommon.copy")
             }}</span>
           </div>
         </o-button>
@@ -1195,24 +1210,24 @@ export default defineComponent({
     const notFound = ref<boolean | null>(null);
     const gMap = ref();
     const mapObj = ref();
-    
+
     // internal ref;
     const maplocation = ref({});
     const place_id = ref<string | null>(null);
     // const markers = ref([]);
     const markers: any[] = []; // for google map
     const errorsPhone = ref<string[]>([]);
-    const files = ref<{[key: string]: File}>({});
+    const files = ref<{ [key: string]: File }>({});
     const updateFirstCall = ref(true);
 
     // external ref
     const submitting = ref(false);
     const newTemporaryClosure = ref<Date | null>(null);
-    const searchResults = ref<{place_id: string, geometry: any}[]>([]);
+    const searchResults = ref<{ place_id: string; geometry: any }[]>([]);
     const selectedResult = ref(0);
 
     const editShopInfo = reactive(props.shopInfo);
-    
+
     // only owner
     const { uid } = useAdminUids();
     if (!checkShopOwner(props.shopInfo, uid.value)) {
@@ -1254,7 +1269,7 @@ export default defineComponent({
         requireTaxInput,
         errorsPhone.value,
         files.value["profile"],
-        files.value["cover"]
+        files.value["cover"],
       );
     });
     const hasError = computed(() => {
@@ -1281,21 +1296,22 @@ export default defineComponent({
         markers.splice(0);
       }
     };
-    const setCurrentLocation = async (location: {lat?: number, lng?: number}, move = true) => {
-      if (
-        location &&
-        location.lat &&
-        location.lng
-      ) {
+    const setCurrentLocation = async (
+      location: { lat?: number; lng?: number },
+      move = true,
+    ) => {
+      if (location && location.lat && location.lng) {
         if (move) {
           mapObj.value.setCenter(location);
         }
         removeAllMarker();
-        markers.push(new google.maps.Marker({
-          position: new google.maps.LatLng(location.lat, location.lng),
-          title: "hello",
-          map: mapObj.value,
-        }));
+        markers.push(
+          new google.maps.Marker({
+            position: new google.maps.LatLng(location.lat, location.lng),
+            title: "hello",
+            map: mapObj.value,
+          }),
+        );
         maplocation.value = location;
       }
     };
@@ -1318,7 +1334,7 @@ export default defineComponent({
     };
     const deleteTemporaryClosure = (key: number) => {
       editShopInfo.temporaryClosure = editShopInfo.temporaryClosure.filter(
-        (v, n) => n !== key
+        (v, n) => n !== key,
       );
     };
     const addNewTemporaryClosure = () => {
@@ -1340,7 +1356,7 @@ export default defineComponent({
       editShopInfo.openTimes[index] = editShopInfo.openTimes[prevIndex].map(
         (a) => {
           return { ...a };
-        }
+        },
       );
     };
     const previewProfile = ref<string | null>(null);
@@ -1360,9 +1376,9 @@ export default defineComponent({
       files.value = newFile;
     };
     const handlePhoneChange = (payload: {
-      phoneNumber: string,
-      countryCode: string,
-      errors: string[],
+      phoneNumber: string;
+      countryCode: string;
+      errors: string[];
     }) => {
       //console.log(payload)
       editShopInfo.phoneNumber = payload.phoneNumber;
@@ -1384,7 +1400,7 @@ export default defineComponent({
     const gmapClick = (arg: any) => {
       setCurrentLocation(
         { lat: arg.latLng.lat(), lng: arg.latLng.lng() },
-        false
+        false,
       );
       // place_id.value = null;
       setLocation();
@@ -1394,7 +1410,7 @@ export default defineComponent({
         const id = await copyRestaurant(
           editShopInfo,
           uid.value,
-          restaurantId.value
+          restaurantId.value,
         );
         router.push({
           path: `/admin/restaurants/${id}`,
@@ -1422,10 +1438,7 @@ export default defineComponent({
       if (!cleanData.lastOrderTime) {
         cleanData.lastOrderTime = null;
       }
-      await updateDoc(
-        doc(db, `restaurants/${restaurantId.value}`),
-        cleanData
-      );
+      await updateDoc(doc(db, `restaurants/${restaurantId.value}`), cleanData);
     };
     const saveRestaurant = async () => {
       submitting.value = true;
@@ -1504,7 +1517,7 @@ export default defineComponent({
       region,
 
       editShopInfo,
-      
+
       requireTaxInput,
       requireTaxPriceDisplay,
 
@@ -1537,11 +1550,11 @@ export default defineComponent({
 
       num2time,
       moment,
-      
+
       setDefaultLocation,
       gmapClick,
       gMap,
-      
+
       paymentMethods,
       openTips,
       restaurantId,

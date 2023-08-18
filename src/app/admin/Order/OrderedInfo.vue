@@ -73,24 +73,28 @@
           {{ $n(order.totalCharge, "currency") }}
         </div>
 
-				 <div class="mr-2 items-center justify-center rounded-md bg-yellow-500 bg-opacity-10 p-1 text-xs
-                    font-bold text-yellow-500
-                    " v-if="hasStripe && order.payment.stripe !== 'canceled'">
-          {{ $t("admin.order.cardPayment")}}
+        <div
+          class="mr-2 items-center justify-center rounded-md bg-yellow-500 bg-opacity-10 p-1 text-xs font-bold text-yellow-500"
+          v-if="hasStripe && order.payment.stripe !== 'canceled'"
+        >
+          {{ $t("admin.order.cardPayment") }}
         </div>
 
-				 <div class="mr-2 items-center justify-center rounded-md bg-red-700 bg-opacity-10 p-1 text-xs
-                    font-bold text-red-700
-                    " v-else>
-          {{ $t("admin.order.storePayment")}}
+        <div
+          class="mr-2 items-center justify-center rounded-md bg-red-700 bg-opacity-10 p-1 text-xs font-bold text-red-700"
+          v-else
+        >
+          {{ $t("admin.order.storePayment") }}
         </div>
 
-        <div class="mr-2 items-center justify-center rounded-md bg-green-600 bg-opacity-10 p-1 text-xs
-                    font-bold text-green-600
-                    " v-if="order.promotionId">
-          {{ $n(Number(order.discountPrice||0), "currency") }}{{ $t("order.discountPriceSuffix")}}
+        <div
+          class="mr-2 items-center justify-center rounded-md bg-green-600 bg-opacity-10 p-1 text-xs font-bold text-green-600"
+          v-if="order.promotionId"
+        >
+          {{ $n(Number(order.discountPrice || 0), "currency")
+          }}{{ $t("order.discountPriceSuffix") }}
         </div>
-        
+
         <div class="mr-2 text-sm" v-if="order.isDelivery">
           <i class="material-icons"> delivery_dining </i>
         </div>
@@ -155,19 +159,25 @@
           <div class="flex items-center">
             <div class="mr-2 text-sm">
               {{
-                $t("sitemenu.orderCounter", {
-                  count: totalCount,
-                }, totalCount)
+                $t(
+                  "sitemenu.orderCounter",
+                  {
+                    count: totalCount,
+                  },
+                  totalCount,
+                )
               }}
             </div>
 
             <div class="mr-2 text-sm">
               {{ $n(order.totalCharge, "currency") }}
             </div>
-            <div class="mr-2 items-center justify-center rounded-md bg-green-600 bg-opacity-10 p-1 text-xs
-                        font-bold text-green-600
-                        " v-if="order.promotionId && isSuperView">
-              {{ $n(Number(order.discountPrice||0), "currency") }}{{ $t("order.discountPriceSuffix")}}
+            <div
+              class="mr-2 items-center justify-center rounded-md bg-green-600 bg-opacity-10 p-1 text-xs font-bold text-green-600"
+              v-if="order.promotionId && isSuperView"
+            >
+              {{ $n(Number(order.discountPrice || 0), "currency")
+              }}{{ $t("order.discountPriceSuffix") }}
             </div>
             <div class="mr-2 text-sm" v-if="order.isDelivery">
               <i class="material-icons"> delivery_dining </i>
@@ -180,9 +190,7 @@
         </div>
       </div>
     </div>
-    <div v-else
-      class="rounded-lg bg-white shadow"
-    >
+    <div v-else class="rounded-lg bg-white shadow">
       <!-- Order Status -->
       <div class="p-2">
         <div
@@ -219,9 +227,13 @@
           <div class="flex items-center">
             <div class="mr-2 text-sm">
               {{
-                $t("sitemenu.orderCounter", {
-                  count: totalCount,
-                }, totalCount)
+                $t(
+                  "sitemenu.orderCounter",
+                  {
+                    count: totalCount,
+                  },
+                  totalCount,
+                )
               }}
             </div>
 
@@ -243,7 +255,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, PropType} from "vue";
+import { defineComponent, ref, computed, PropType } from "vue";
 
 import { nameOfOrder } from "@/utils/strings";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
@@ -252,7 +264,11 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc } from "firebase/firestore";
 
 import { order_status, order_status_keys } from "@/config/constant";
-import { arrayOrNumSum, convOrderStateForText, resizedProfileImage } from "@/utils/utils";
+import {
+  arrayOrNumSum,
+  convOrderStateForText,
+  resizedProfileImage,
+} from "@/utils/utils";
 import { useI18n } from "vue-i18n";
 
 import { OrderInfoData } from "@/models/orderInfo";
@@ -270,17 +286,17 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const { d } = useI18n({ useScope: 'global' });
-    
+    const { d } = useI18n({ useScope: "global" });
+
     const restaurant = ref<RestaurantInfoData | null>(null);
     if (props.order.restaurantId) {
-      getDoc(doc(db, `restaurants/${props.order.restaurantId}`)).then(
-        (snapshot) => {
+      getDoc(doc(db, `restaurants/${props.order.restaurantId}`))
+        .then((snapshot) => {
           restaurant.value = snapshot.data() as RestaurantInfoData;
-        }
-      ).catch(() => {
-        console.log("no restaurant")
-      });
+        })
+        .catch(() => {
+          console.log("no restaurant");
+        });
     }
 
     const statusKey = computed(() => {

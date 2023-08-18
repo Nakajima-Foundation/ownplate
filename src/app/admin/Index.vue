@@ -12,8 +12,8 @@
     <News />
 
     <!-- News -->
-    <Survey v-if="false"/>
-    
+    <Survey v-if="false" />
+
     <!-- Unset Warning -->
     <div v-if="false" class="mx-6 mt-6 rounded-lg bg-red-700 bg-opacity-10 p-4">
       <span class="text-sm text-red-700">{{
@@ -102,9 +102,7 @@
       <div>
         <div class="pb-2">
           <span class="mb-2 text-xl font-bold text-black text-opacity-40">
-            {{
-              $t("admin.restaurant")
-            }}
+            {{ $t("admin.restaurant") }}
           </span>
         </div>
 
@@ -155,14 +153,14 @@
               v-for="(restaurantId, index) in restaurantLists"
               :key="restaurantId"
             >
-              <a :id='"restaurant_" + restaurantId' />
+              <a :id="'restaurant_' + restaurantId" />
               <restaurant
                 v-if="restaurantItems[restaurantId]"
                 :simpleMode="simpleMode"
                 :shopInfo="restaurantItems[restaurantId]"
                 :restaurantid="restaurantId"
                 :numberOfMenus="
-                                (restaurantItems[restaurantId]).numberOfMenus || 0
+                  restaurantItems[restaurantId].numberOfMenus || 0
                 "
                 :numberOfOrders="numberOfOrderObj[restaurantId] || 0"
                 :lineEnable="lines[restaurantId] || false"
@@ -228,13 +226,7 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  computed,
-  onUnmounted,
-  onMounted,
-} from "vue";
+import { defineComponent, ref, computed, onUnmounted, onMounted } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -321,15 +313,17 @@ export default defineComponent({
     const router = useRouter();
 
     const readyToDisplay = ref(false);
-    const restaurantItems = ref<{[key: string]: RestaurantInfoData} | null>(null);
+    const restaurantItems = ref<{ [key: string]: RestaurantInfoData } | null>(
+      null,
+    );
     const orderDetachers = ref<Unsubscribe[]>([]);
-    const restaurant_detacher = ref<Unsubscribe|null>(null);
-    const message_detacher = ref<Unsubscribe|null>(null);
+    const restaurant_detacher = ref<Unsubscribe | null>(null);
+    const message_detacher = ref<Unsubscribe | null>(null);
     const unsetPaymentWarning = ref(false);
-    const lines = ref<{[key: string]: boolean}>({});
+    const lines = ref<{ [key: string]: boolean }>({});
     const shopOwner = ref<ShopOwnerData | Record<string, never> | null>(null);
     const restaurantLists = ref<string[]>([]);
-    const numberOfOrderObj = ref<{[key: string]: number}>({});
+    const numberOfOrderObj = ref<{ [key: string]: number }>({});
     const messages = ref<DocumentData[]>([]);
     if (!checkAdminPermission()) {
       return;
@@ -352,12 +346,12 @@ export default defineComponent({
 
     const watchOrder = () => {
       detachOrders();
-      orderDetachers.value = Object.keys(restaurantItems.value||{}).map(
+      orderDetachers.value = Object.keys(restaurantItems.value || {}).map(
         (restaurantId) => {
           return onSnapshot(
             query(
               collection(db, `restaurants/${restaurantId}/orders`),
-              where("timePlaced", ">=", midNight())
+              where("timePlaced", ">=", midNight()),
             ),
             // IDEALLY: .where("status", "<", order_status.ready_to_pickup)
             (result) => {
@@ -369,9 +363,9 @@ export default defineComponent({
                   return data.status < order_status.ready_to_pickup;
                 }).length;
               numberOfOrderObj.value = newObj;
-            }
+            },
           );
-        }
+        },
       );
     };
     onMounted(async () => {
@@ -383,14 +377,14 @@ export default defineComponent({
         restaurantLists.value = await (async () => {
           if (isOwner.value) {
             const restaurantListsDoc = await getDoc(
-              doc(db, `/admins/${uid.value}/public/RestaurantLists`)
+              doc(db, `/admins/${uid.value}/public/RestaurantLists`),
             );
             return restaurantListsDoc.exists()
               ? restaurantListsDoc.data().lists || []
               : [];
           } else {
             const restaurantListsDoc = await getDoc(
-              doc(db, `/admins/${ownerUid.value}/children/${uid.value}`)
+              doc(db, `/admins/${ownerUid.value}/children/${uid.value}`),
             );
             return restaurantListsDoc.exists()
               ? restaurantListsDoc.data().restaurantLists || []
@@ -404,7 +398,7 @@ export default defineComponent({
               collection(db, "restaurants"),
               where("uid", "==", ownerUid.value),
               where("deletedFlag", "==", false),
-              orderBy("createdAt", "asc")
+              orderBy("createdAt", "asc"),
             ),
             async (result) => {
               try {
@@ -413,15 +407,19 @@ export default defineComponent({
                   return;
                 }
                 restaurantItems.value = (result.docs || []).reduce(
-                  (tmp: {[key: string]: RestaurantInfoData},
-                   doc: DocumentSnapshot<DocumentData>) => {
-                    tmp[doc.id] = doc2data("restaurant")(doc) as RestaurantInfoData;
+                  (
+                    tmp: { [key: string]: RestaurantInfoData },
+                    doc: DocumentSnapshot<DocumentData>,
+                  ) => {
+                    tmp[doc.id] = doc2data("restaurant")(
+                      doc,
+                    ) as RestaurantInfoData;
                     if (!restaurantLists.value.includes(doc.id)) {
                       restaurantLists.value.push(doc.id);
                     }
                     return tmp;
                   },
-                  {}
+                  {},
                 );
                 watchOrder();
               } catch (error) {
@@ -429,7 +427,7 @@ export default defineComponent({
               } finally {
                 readyToDisplay.value = true;
               }
-            }
+            },
           );
         }
         if (!isOwner.value && restaurantLists.value.length > 0) {
@@ -441,7 +439,7 @@ export default defineComponent({
                 where("uid", "==", ownerUid.value),
                 where("restaurantId", "in", restaurantIds),
                 where("deletedFlag", "==", false),
-                orderBy("createdAt", "asc")
+                orderBy("createdAt", "asc"),
               ),
               async (result) => {
                 try {
@@ -451,12 +449,16 @@ export default defineComponent({
                   }
 
                   restaurantItems.value = (result.docs || []).reduce(
-                    (tmp: {[key: string]: RestaurantInfoData},
-                     doc: DocumentSnapshot<DocumentData>) => {
-                      tmp[doc.id] = doc2data("restaurant")(doc) as RestaurantInfoData;
+                    (
+                      tmp: { [key: string]: RestaurantInfoData },
+                      doc: DocumentSnapshot<DocumentData>,
+                    ) => {
+                      tmp[doc.id] = doc2data("restaurant")(
+                        doc,
+                      ) as RestaurantInfoData;
                       return tmp;
                     },
-                    {}
+                    {},
                   );
                   // if subAccounts has more than 11 restaurant, this will call multiple. TODO: optimize.
                   watchOrder();
@@ -465,15 +467,14 @@ export default defineComponent({
                 } finally {
                   readyToDisplay.value = true;
                 }
-              }
+              },
             );
           });
         }
         await sleep(0.7);
-        if (location.hash && location.hash.split("_")[0] === '#restaurant') {
+        if (location.hash && location.hash.split("_")[0] === "#restaurant") {
           scrollToElementById(location.hash.replace("#", ""));
         }
-        
       } catch (error) {
         console.log("Error fetch doc,", error);
       } finally {
@@ -487,17 +488,20 @@ export default defineComponent({
               const restaurantId = res.data().restaurantId;
               lines.value[restaurantId] = true;
             });
-          }
+          },
         );
       }
 
       message_detacher.value = onSnapshot(
-        query(collection(db, `/admins/${uid.value}/messages`), orderBy("createdAt", "desc")),
+        query(
+          collection(db, `/admins/${uid.value}/messages`),
+          orderBy("createdAt", "desc"),
+        ),
         (messageCollection) => {
           messages.value = messageCollection.docs
             .map(doc2data("message"))
             .filter((a: DocumentData) => a.toDisplay);
-        }
+        },
       );
     });
 
@@ -506,7 +510,7 @@ export default defineComponent({
         await setDoc(
           doc(db, `/admins/${uid.value}/public/RestaurantLists`),
           { lists: restaurantLists.value },
-          { merge: true }
+          { merge: true },
         );
       }
     };
@@ -580,7 +584,7 @@ export default defineComponent({
         await setDoc(
           doc(db, path),
           { lists: newRestaurantLists },
-          { merge: true }
+          { merge: true },
         );
         // end of list
       }

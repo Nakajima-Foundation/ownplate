@@ -15,10 +15,7 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-} from "vue";
+import { defineComponent, ref } from "vue";
 import PhoneLogin from "@/app/auth/PhoneLogin.vue";
 
 export default defineComponent({
@@ -30,7 +27,7 @@ export default defineComponent({
       type: Boolean,
       required: true,
     },
-    },
+  },
   setup(props) {
     const loginModal = ref(props.loginVisible);
 
@@ -39,7 +36,7 @@ export default defineComponent({
     };
     return {
       loginModal,
-      handleDismissed
+      handleDismissed,
     };
   },
 });

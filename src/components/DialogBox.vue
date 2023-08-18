@@ -86,10 +86,10 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const { t } = useI18n({ useScope: 'global' });
+    const { t } = useI18n({ useScope: "global" });
     const store = useStore();
     const isVisible = ref(true);
-    
+
     const dialogObj = computed(() => {
       return props.dialog;
     });
@@ -119,8 +119,8 @@ export default defineComponent({
         return t("errorPage.code." + error.value.code);
       }
       return "";
-    })
-    const errorMessage2 = computed(() => { 
+    });
+    const errorMessage2 = computed(() => {
       return error.value.message2 || "errorPage.message.generic";
     });
     const handleYes = () => {
@@ -139,7 +139,7 @@ export default defineComponent({
       errorMessage,
       errorMessage2,
       handleYes,
-      close,      
+      close,
     };
   },
 });

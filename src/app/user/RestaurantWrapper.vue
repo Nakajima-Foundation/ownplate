@@ -15,11 +15,7 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  onUnmounted,
-} from "vue";
+import { defineComponent, ref, onUnmounted } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
 import { doc, onSnapshot, getDoc } from "firebase/firestore";
@@ -40,7 +36,7 @@ export default defineComponent({
     const mode = routeMode();
     const moPrefix = getMoPrefix();
 
-    const shopInfo = ref<RestaurantInfoData|{[key: string]: any}>({});
+    const shopInfo = ref<RestaurantInfoData | { [key: string]: any }>({});
     const paymentInfo = ref({});
     const deliveryData = ref({});
     const notFound = ref<boolean | null>(null);
@@ -73,7 +69,7 @@ export default defineComponent({
           });
           if (shopInfo.value.enableDelivery) {
             getDoc(
-              doc(db, `restaurants/${restaurantId.value}/delivery/area`)
+              doc(db, `restaurants/${restaurantId.value}/delivery/area`),
             ).then((snapshot) => {
               deliveryData.value = snapshot.data() || {};
             });
@@ -83,13 +79,13 @@ export default defineComponent({
       () => {
         notFound.value = true;
         console.log("no restaurant");
-      }
+      },
     );
 
     const { user } = useUserData();
 
     const { promotions } = usePromotions(restaurantId.value, user);
-    
+
     onUnmounted(() => {
       if (restaurant_detacher) {
         restaurant_detacher();

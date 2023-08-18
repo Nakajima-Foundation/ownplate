@@ -4,10 +4,7 @@
     <div v-if="hasLocation">
       <div>
         <a target="_blank" :href="mapQuery">
-          <img
-            :src="mapImage"
-            class="w-full object-cover lg:rounded-lg"
-          />
+          <img :src="mapImage" class="w-full object-cover lg:rounded-lg" />
         </a>
       </div>
       <div class="mx-4 mt-4 pb-2">
@@ -59,7 +56,7 @@
       >
         <div class="text-sm font-bold">
           {{ $t("shopInfo." + (isDelivery ? "delivery" : "takeout")) }}:{{
-              $t("shopInfo.minimumAvailableTime")
+            $t("shopInfo.minimumAvailableTime")
           }}
         </div>
         <div>
@@ -88,15 +85,14 @@
 
       <!-- More Info -->
       <div v-if="moreInfo">
-
         <!-- Transactions Act -->
         <div class="mt-4">
           <transactions-act
             :shopInfo="shopInfo"
             :isDelivery="isDelivery"
-            ></transactions-act>
+          ></transactions-act>
         </div>
-        
+
         <!-- Restaurant Website -->
         <div v-if="hasUrl" class="mt-4">
           <a
@@ -107,48 +103,49 @@
           >
             <div class="text-sm font-bold text-op-teal">
               {{ $t("shopInfo.visitWebsite") }}
-						</div>
-						<i class="material-icons ml-1 text-lg text-op-teal">launch</i>
+            </div>
+            <i class="material-icons ml-1 text-lg text-op-teal">launch</i>
           </a>
         </div>
 
         <!-- Restaurant Social Link -->
-				<div class="inline-flex items-center justify-center my-2">
+        <div class="inline-flex items-center justify-center my-2">
+          <!-- Restaurant LINE -->
+          <div v-if="hasLineUrl" class="mt-2">
+            <a
+              target="_blank"
+              :href="shopInfo.lineUrl"
+              rel="noopener noreferrer"
+            >
+              <i class="fab fa-line mr-6 text-4xl" style="color: #4ec263"></i>
+            </a>
+          </div>
 
-				<!-- Restaurant LINE -->
-        <div v-if="hasLineUrl" class="mt-2">
-          <a
-            target="_blank"
-            :href="shopInfo.lineUrl"
-            rel="noopener noreferrer"
-          >
-            <i class="fab fa-line mr-6 text-4xl" style="color: #4ec263"></i>
-          </a>
-        </div>
+          <!-- Restaurant Instagram -->
+          <div v-if="hasInstagramUrl" class="mt-2">
+            <a
+              target="_blank"
+              :href="shopInfo.instagramUrl"
+              rel="noopener noreferrer"
+            >
+              <i
+                class="fab fa-instagram mr-6 text-4xl"
+                style="color: #dd2a7b"
+              ></i>
+            </a>
+          </div>
 
-        <!-- Restaurant Instagram -->
-        <div v-if="hasInstagramUrl" class="mt-2">
-          <a
-            target="_blank"
-            :href="shopInfo.instagramUrl"
-            rel="noopener noreferrer"
-          >
-            <i class="fab fa-instagram mr-6 text-4xl" style="color: #dd2a7b"></i>
-          </a>
+          <!-- Restaurant Uber Eats -->
+          <div v-if="hasUberEatsUrl" class="mt-2">
+            <a
+              target="_blank"
+              :href="shopInfo.uberEatsUrl"
+              rel="noopener noreferrer"
+            >
+              <i><img src="/uber_eats_icon.svg" class="w-14 -ml-2" /></i>
+            </a>
+          </div>
         </div>
-
-        <!-- Restaurant Uber Eats -->
-        <div v-if="hasUberEatsUrl" class="mt-2">
-          <a
-            target="_blank"
-            :href="shopInfo.uberEatsUrl"
-            rel="noopener noreferrer"
-          >
-            <i><img src="/uber_eats_icon.svg" class="w-14 -ml-2"/></i>
-						
-          </a>
-        </div>
-				</div>
 
         <!-- Restaurant Hours -->
         <div class="mt-2">
@@ -170,8 +167,11 @@
               >
                 <div class="w-16">{{ $t("week.short." + day) }}</div>
                 <div class="flex-1">
-                  <template v-if="(businessDay)[key]">
-                    <div v-for="(data, dateKey) in openTimes[key]" :key="dateKey">
+                  <template v-if="businessDay[key]">
+                    <div
+                      v-for="(data, dateKey) in openTimes[key]"
+                      :key="dateKey"
+                    >
                       <template v-if="validDate(data)">
                         {{ num2time(data.start) }} - {{ num2time(data.end) }}
                       </template>
@@ -220,9 +220,7 @@
                 <span v-if="shopInfo.publicFlag">{{
                   $t("shopInfo.noPaymentMethod")
                 }}</span>
-                <span v-else>{{
-                  $t("shopInfo.notPublicShopMessage")
-                }}</span>
+                <span v-else>{{ $t("shopInfo.notPublicShopMessage") }}</span>
               </span>
             </div>
           </div>
@@ -236,11 +234,12 @@
           <div class="mt-1 ml-1">
             <ul>
               <template v-for="(paymentMethod, k) in paymentMethods" :key="k">
-                <li
-                  v-if="(shopInfo.paymentMethods || {})[paymentMethod.key]"
-                  >
+                <li v-if="(shopInfo.paymentMethods || {})[paymentMethod.key]">
                   {{
-                  $t("editRestaurant.paymentMethodChoices." + paymentMethod.key)
+                    $t(
+                      "editRestaurant.paymentMethodChoices." +
+                        paymentMethod.key,
+                    )
                   }}
                 </li>
               </template>
@@ -255,12 +254,16 @@
           </div>
 
           <div class="mt-1 ml-1">
-            <div v-for="(day, key) in dispTemporaryClosure" class="text-sm" :key="key">
+            <div
+              v-for="(day, key) in dispTemporaryClosure"
+              class="text-sm"
+              :key="key"
+            >
               {{ moment(day.toDate()).format("YYYY/MM/DD") }}
               {{
                 $t(
                   "week.short." +
-                    days[Number(moment(day.toDate()).format("e")) || 7]
+                    days[Number(moment(day.toDate()).format("e")) || 7],
                 )
               }}
             </div>
@@ -313,7 +316,7 @@ export default defineComponent({
   },
   emits: ["noAvailableTime"],
   setup(props, ctx) {
-    const { locale, t } = useI18n({ useScope: 'global' });
+    const { locale, t } = useI18n({ useScope: "global" });
 
     const d = new Date();
     const moreInfo = ref(false);
@@ -348,7 +351,7 @@ export default defineComponent({
     });
 
     const { parsedNumber, nationalPhoneNumber } = useNationalPhoneNumber(
-      props.shopInfo
+      props.shopInfo,
     );
 
     const phoneUrl = computed(() => {
@@ -367,21 +370,24 @@ export default defineComponent({
     });
 
     const isOpen = computed(() => {
-      return Object.keys(daysOfWeek).reduce((tmp: {[key: string]: boolean}, day) => {
-        if (weekday === Number(day) && businessDay.value[day]) {
-          // get now and compaire
-          const res = openTimes.value[day].reduce((tmp, time) => {
-            const now = today.getHours() * 60 + today.getMinutes();
-            const ret = now >= time.start && now <= time.end;
-            tmp = tmp || ret;
-            return tmp;
-          }, false);
-          tmp[day] = res;
-        } else {
-          tmp[day] = false;
-        }
-        return tmp;
-      }, {});
+      return Object.keys(daysOfWeek).reduce(
+        (tmp: { [key: string]: boolean }, day) => {
+          if (weekday === Number(day) && businessDay.value[day]) {
+            // get now and compaire
+            const res = openTimes.value[day].reduce((tmp, time) => {
+              const now = today.getHours() * 60 + today.getMinutes();
+              const ret = now >= time.start && now <= time.end;
+              tmp = tmp || ret;
+              return tmp;
+            }, false);
+            tmp[day] = res;
+          } else {
+            tmp[day] = false;
+          }
+          return tmp;
+        },
+        {},
+      );
     });
     const hasLocation = computed(() => {
       return (
@@ -429,8 +435,13 @@ export default defineComponent({
       return shopPaymentMethods.value.length > 0;
     });
 
-    const { deliveryAvailableDays, availableDays, temporaryClosure, todaysLast, deliveryTodaysLast } =
-      usePickupTime(props.shopInfo, {}, ref({}));
+    const {
+      deliveryAvailableDays,
+      availableDays,
+      temporaryClosure,
+      todaysLast,
+      deliveryTodaysLast,
+    } = usePickupTime(props.shopInfo, {}, ref({}));
 
     const lastTime = computed(() => {
       return props.isDelivery ? deliveryTodaysLast.value : todaysLast.value;
@@ -513,7 +524,7 @@ export default defineComponent({
       temporaryClosure,
 
       moment,
-      
+
       businessDay,
       openTimes,
     };

@@ -122,9 +122,9 @@ export default defineComponent({
 
     const isExpired = ref<null | boolean>(null);
     const submitted = ref(false);
-    
+
     const errors = computed(() => {
-      if (!submitted.value)  {
+      if (!submitted.value) {
         return {};
       }
       const _errors: { [key: string]: string[] } = {};
@@ -145,7 +145,7 @@ export default defineComponent({
 
     const hasError = computed(() => {
       return Object.keys(errors.value).length > 0;
-    })
+    });
     const resetPassword = async () => {
       submitted.value = true;
       if (hasError.value) {

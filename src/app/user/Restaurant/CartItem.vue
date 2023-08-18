@@ -133,7 +133,12 @@ export default defineComponent({
     });
     const increase = () => {
       ctx.emit("increase");
-      analyticsUtil.sendAddToCart(props.item as AnalyticsMenuData, props.shopInfo, restaurantId.value, 1);
+      analyticsUtil.sendAddToCart(
+        props.item as AnalyticsMenuData,
+        props.shopInfo,
+        restaurantId.value,
+        1,
+      );
     };
     const decrease = () => {
       ctx.emit("decrease");
@@ -141,7 +146,7 @@ export default defineComponent({
         props.item as AnalyticsMenuData,
         props.shopInfo,
         restaurantId.value,
-        1
+        1,
       );
     };
     const isSoldOutToday = computed(() => {

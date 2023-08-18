@@ -37,12 +37,12 @@ export interface MenuData {
 
   soldOut: boolean;
   soldOutToday?: string;
-  
+
   itemAliasesName: string;
   itemMemo: string;
   itemOptionCheckbox: string[];
   publicFlag: boolean;
-  allergens: {[key: string]: boolean};
+  allergens: { [key: string]: boolean };
   category1: string;
   category2: string;
 
@@ -77,7 +77,7 @@ const newExceptHour = (exceptHour: ExceptHour) => {
 export const getNewItemData = (
   item: MenuData,
   isJP: boolean,
-  validatedFlag: boolean
+  validatedFlag: boolean,
 ) => {
   const itemData = {
     itemName: item.itemName,

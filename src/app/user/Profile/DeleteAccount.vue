@@ -48,7 +48,7 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const { user } = useUserData();
-    
+
     const isDeletingAccount = ref(false);
     const reLoginVisible = ref(false);
 

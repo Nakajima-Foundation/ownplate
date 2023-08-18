@@ -17,12 +17,9 @@ const link = [
   },
 ];
 
-const gtmBodyTag = [
-].join("\n");
+const gtmBodyTag = [].join("\n");
 
-const script = [
-  { src: "https://js.stripe.com/v3/" },
-];
+const script = [{ src: "https://js.stripe.com/v3/" }];
 
 const noscript = [
   {

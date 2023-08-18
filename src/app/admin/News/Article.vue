@@ -49,9 +49,7 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-} from "vue";
+import { defineComponent } from "vue";
 import MarkdownIt from "markdown-it";
 import newsList from "@/app/admin/News/data";
 import NotFound from "@/components/NotFound.vue";

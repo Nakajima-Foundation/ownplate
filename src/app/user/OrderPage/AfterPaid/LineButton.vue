@@ -1,37 +1,40 @@
 <template>
-<div v-if="showAddLine" class="mt-6 text-center">
-  <div v-if="hasLine">
-    <div class="mx-6 rounded-lg bg-black bg-opacity-5 p-4" v-if="hasFriends !== null">
+  <div v-if="showAddLine" class="mt-6 text-center">
+    <div v-if="hasLine">
+      <div
+        class="mx-6 rounded-lg bg-black bg-opacity-5 p-4"
+        v-if="hasFriends !== null"
+      >
+        <button @click="handleLineAuth">
+          <div
+            class="inline-flex h-12 items-center justify-center rounded-full px-6"
+            style="background: #18b900"
+          >
+            <i class="fab fa-line mr-2 text-2xl text-white" />
+            <div class="text-base font-bold text-white">
+              {{ $t("line.notifyMeFromFriend") }}
+            </div>
+          </div>
+        </button>
+        <div class="mt-2 text-sm">
+          {{ $t("order.lineMessage") }}
+        </div>
+      </div>
+    </div>
+    <div v-else>
       <button @click="handleLineAuth">
         <div
           class="inline-flex h-12 items-center justify-center rounded-full px-6"
           style="background: #18b900"
-          >
+        >
           <i class="fab fa-line mr-2 text-2xl text-white" />
           <div class="text-base font-bold text-white">
-            {{ $t("line.notifyMeFromFriend") }}
+            {{ $t("line.notifyMe") }}
           </div>
         </div>
       </button>
-      <div class="mt-2 text-sm">
-        {{ $t("order.lineMessage") }}
-      </div>
-      </div>
+    </div>
   </div>
-  <div v-else>
-    <button @click="handleLineAuth">
-      <div
-        class="inline-flex h-12 items-center justify-center rounded-full px-6"
-        style="background: #18b900"
-        >
-        <i class="fab fa-line mr-2 text-2xl text-white" />
-        <div class="text-base font-bold text-white">
-          {{ $t("line.notifyMe") }}
-        </div>
-      </div>
-    </button>
-  </div>
-</div>
 </template>
 
 <script lang="ts">
@@ -59,12 +62,13 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore();
-    
+
     const handleLineAuth = () => {
       const url = (() => {
         if (props.hasLine) {
           return lineAuthRestaurantURL(
-            "/callback/" + props.shopInfo.restaurantId + "/line", {
+            "/callback/" + props.shopInfo.restaurantId + "/line",
+            {
               pathname: location.pathname,
             },
             props.shopInfo.lineClientId,
@@ -74,7 +78,7 @@ export default defineComponent({
             pathname: location.pathname,
           });
         }
-      })()
+      })();
       location.href = url;
     };
     const showAddLine = computed(() => {

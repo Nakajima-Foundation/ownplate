@@ -3,7 +3,7 @@
     <admin-service-introduction :isAdmin="isAdmin" />
     <div class="mx-auto max-w-screen-xl">
       <admin-feature />
-			<admin-how-to-start />
+      <admin-how-to-start />
       <userVoices />
       <operators />
       <aboutService />
@@ -31,9 +31,9 @@ export default defineComponent({
   },
   components: {
     adminServiceIntroduction,
-		adminFeature,
-		adminHowToStart,
-		goToUserLP,
+    adminFeature,
+    adminHowToStart,
+    goToUserLP,
     userVoices,
     operators,
     aboutService,
@@ -49,9 +49,8 @@ export default defineComponent({
     (async () => {
       await sleep(0.1);
       window.scrollTo(0, 0);
-    })()
-    return {
-    };
+    })();
+    return {};
   },
 });
 </script>

@@ -66,13 +66,14 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { db } from "@/lib/firebase/firebase9";
-import {
-  doc,
-  getDoc,
-  setDoc,
-} from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
-import { useAdminUids, notFoundResponse, useRestaurantId, regionalSetting } from "@/utils/utils";
+import {
+  useAdminUids,
+  notFoundResponse,
+  useRestaurantId,
+  regionalSetting,
+} from "@/utils/utils";
 import { checkShopAccount } from "@/utils/userPermission";
 
 import NotFound from "@/components/NotFound.vue";
@@ -100,8 +101,8 @@ export default defineComponent({
 
     const restaurantId = useRestaurantId();
 
-    getDoc(doc(db, `restaurants/${restaurantId.value}/ec/postage`))
-      .then((postageDoc) => {
+    getDoc(doc(db, `restaurants/${restaurantId.value}/ec/postage`)).then(
+      (postageDoc) => {
         if (postageDoc.exists()) {
           const data = postageDoc.data();
           if (data) {
@@ -114,7 +115,8 @@ export default defineComponent({
             }
           }
         }
-      });
+      },
+    );
 
     const copy = (key: number) => {
       const newArray = [...postage.value];
@@ -133,7 +135,10 @@ export default defineComponent({
         },
         freeThreshold: enableFree.value ? freeThreshold.value : null,
       };
-      await setDoc(doc(db, `restaurants/${restaurantId.value}/ec/postage`), data);
+      await setDoc(
+        doc(db, `restaurants/${restaurantId.value}/ec/postage`),
+        data,
+      );
     };
     return {
       postage,

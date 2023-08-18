@@ -4,7 +4,7 @@ export type OrderDataType = {
 
 export type CartItemsType = {
   [key: string]: any;
-}
+};
 
 export type CartOptionType = {
   [key: string]: (number | boolean)[][];

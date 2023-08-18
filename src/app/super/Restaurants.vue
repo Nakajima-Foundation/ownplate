@@ -9,7 +9,9 @@
         {{ restaurantData.restaurantName }}
       </div>
       <div>
-        <button @click="phone" class="mt-4 h-9 rounded-full bg-green-400 px-4">phone</button>
+        <button @click="phone" class="mt-4 h-9 rounded-full bg-green-400 px-4">
+          phone
+        </button>
       </div>
     </div>
   </div>
@@ -23,10 +25,7 @@ import { superTwilio } from "@/lib/firebase/functions";
 import BackButton from "@/components/BackButton.vue";
 
 import { db } from "@/lib/firebase/firebase9";
-import {
-  getDoc,
-  doc,
-} from "firebase/firestore";
+import { getDoc, doc } from "firebase/firestore";
 
 import { superPermissionCheck, getBackUrl } from "@/utils/utils";
 import { useRoute } from "vue-router";
@@ -40,15 +39,13 @@ export default defineComponent({
   components: {
     BackButton,
   },
-  setup () {
+  setup() {
     const route = useRoute();
     const restaurantId = route.params.restaurantId;
     superPermissionCheck();
-    
+
     const restaurantData = ref<any>({});
-    getDoc(
-      doc(db, `restaurants/${restaurantId}`)
-    ).then(a => {
+    getDoc(doc(db, `restaurants/${restaurantId}`)).then((a) => {
       restaurantData.value = a.data();
     });
 

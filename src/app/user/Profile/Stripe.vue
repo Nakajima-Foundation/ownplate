@@ -7,12 +7,8 @@
 
     <div class="mt-2 text-base font-bold">
       <template v-if="storedCard">
-        <div>
-          {{ storedCard.brand}} ***{{storedCard.last4}}
-        </div>
-        <div>
-          {{ storedCard.exp_month }}/{{ storedCard.exp_year }}
-        </div>
+        <div>{{ storedCard.brand }} ***{{ storedCard.last4 }}</div>
+        <div>{{ storedCard.exp_month }}/{{ storedCard.exp_year }}</div>
       </template>
       <template v-else>
         {{ $t("profile.noCard") }}
@@ -33,12 +29,7 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  watch,
-  onUnmounted,
-} from "vue";
+import { defineComponent, ref, watch, onUnmounted } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, onSnapshot, Unsubscribe } from "firebase/firestore";
 import { stripeDeleteCard } from "@/lib/firebase/functions";
@@ -52,7 +43,7 @@ export default defineComponent({
     const store = useStore();
     const { isLiffUser, user } = useUserData();
 
-    const storedCard = ref<{brand: string, last4: string} | null>(null);
+    const storedCard = ref<{ brand: string; last4: string } | null>(null);
 
     let detachStripe: Unsubscribe | null = null;
     const checkStripe = () => {
@@ -66,13 +57,16 @@ export default defineComponent({
           (snapshot) => {
             const stripeInfo = snapshot.data();
             if (stripeInfo && stripeInfo.card) {
-              const date = ('00' + String(stripeInfo.card.exp_month)).slice(-2);
-              const expire = moment(`${stripeInfo.card.exp_year}${date}01T000000+0900`).endOf('month').toDate();
+              const date = ("00" + String(stripeInfo.card.exp_month)).slice(-2);
+              const expire = moment(
+                `${stripeInfo.card.exp_year}${date}01T000000+0900`,
+              )
+                .endOf("month")
+                .toDate();
               if (
-                stripeInfo.updatedAt && (
-                  stripeInfo.updatedAt.toDate() >
-                    moment().subtract(180, "days").toDate()
-                )
+                stripeInfo.updatedAt &&
+                stripeInfo.updatedAt.toDate() >
+                  moment().subtract(180, "days").toDate()
               ) {
                 if (expire > new Date()) {
                   storedCard.value = stripeInfo?.card;
@@ -82,8 +76,8 @@ export default defineComponent({
           },
           (e) => {
             console.log(e);
-            console.log("stripe expired")
-          }
+            console.log("stripe expired");
+          },
         );
       }
     };

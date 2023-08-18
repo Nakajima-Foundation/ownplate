@@ -4,19 +4,19 @@
     <div class="text-xl font-bold text-black text-opacity-40">
       {{ $t("admin.order.cancelTitle") }}
     </div>
-    
+
     <!-- Message -->
     <div class="mt-6 text-base">
       {{ $t("admin.order.cancelMessage") }}
     </div>
-    
+
     <!-- Call -->
     <div v-if="orderInfo.phoneNumber" class="mt-6 text-center">
       <div>
         <a
           :href="nationalPhoneURI"
           class="inline-flex h-12 items-center justify-center rounded-full border-2 border-op-teal px-6"
-          >
+        >
           <div class="text-base font-bold text-op-teal">
             {{ nationalPhoneNumber }}
           </div>
@@ -26,18 +26,14 @@
         {{ orderInfo.name }}
       </div>
     </div>
-    
+
     <!-- Cancel -->
     <div class="mt-4 text-center">
-      <button
-        :disabled="updating"
-        @click="handleCancel"
-        class="b-reset-tw"
-        >
+      <button :disabled="updating" @click="handleCancel" class="b-reset-tw">
         <div
           class="inline-flex h-12 items-center justify-center rounded-full bg-red-700 px-6"
           :class="updating ? 'bg-opacity-10' : ''"
-          >
+        >
           <ButtonLoading v-if="updating" />
           <div class="text-base font-bold text-white">
             {{ $t("admin.order.delete") }}
@@ -48,14 +44,14 @@
         {{ $t("admin.order.deleteConfirm") }}
       </div>
     </div>
-    
+
     <!-- Close -->
     <div class="mt-6 text-center">
       <a
         @click="closeCancel()"
         class="inline-flex h-12 items-center justify-center rounded-full bg-black bg-opacity-5 px-6"
         style="min-width: 8rem"
-        >
+      >
         <div class="text-base font-bold text-black text-opacity-60">
           {{ $t("menu.close") }}
         </div>
@@ -65,14 +61,8 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  PropType,
-} from "vue";
-import {
-  stripeCancelIntent,
-} from "@/lib/stripe/stripe";
+import { defineComponent, ref, PropType } from "vue";
+import { stripeCancelIntent } from "@/lib/stripe/stripe";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import { OrderInfoData } from "@/models/orderInfo";
@@ -109,7 +99,7 @@ export default defineComponent({
       required: true,
     },
   },
-  
+
   components: {
     ButtonLoading,
   },
@@ -128,7 +118,6 @@ export default defineComponent({
     };
 
     const handleCancel = async () => {
-      
       try {
         updating.value = true;
         await stripeCancelIntent({
@@ -148,7 +137,7 @@ export default defineComponent({
       }
     };
     const closeCancel = () => {
-      ctx.emit("close")
+      ctx.emit("close");
     };
 
     return {
@@ -156,7 +145,6 @@ export default defineComponent({
       updating,
       closeCancel,
     };
-
   },
 });
 </script>

@@ -34,7 +34,7 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
-    const { t } = useI18n({ useScope: 'global' });
+    const { t } = useI18n({ useScope: "global" });
     const content = computed(() => {
       return data2csv(props, t);
     });

@@ -7,7 +7,7 @@
         :isDelivery="isDelivery"
         @closeTransactionsAct="closeTransactionsAct"
         closeButton="menu.close"
-        />
+      />
     </o-modal>
   </div>
 </template>

@@ -39,7 +39,9 @@
             </div>
           </div>
           <div v-if="isSoldOutToday" class="w-full">
-            <div class="text-center text-sm font-bold text-red-600 bg-red-100 rounded-full mt-2 w-36 mx-auto">
+            <div
+              class="text-center text-sm font-bold text-red-600 bg-red-100 rounded-full mt-2 w-36 mx-auto"
+            >
               {{ $t("sitemenu.soldOutToday") }}
             </div>
           </div>
@@ -181,7 +183,10 @@
           </div>
 
           <!-- Item Options -->
-          <template v-for="(value, quantityKey) in quantities" :key="quantityKey">
+          <template
+            v-for="(value, quantityKey) in quantities"
+            :key="quantityKey"
+          >
             <div v-if="hasOptions">
               <div class="text-xs">
                 {{ $t("sitemenu.options") }}
@@ -193,9 +198,12 @@
                   class="rounded-lg bg-black bg-opacity-5 p-4"
                 >
                   <div v-if="option.length === 1" class="field">
-                    <o-checkbox :modelValue="selectedOptions[quantityKey][index]"
-                                @update:modelValue="updateSelectedOptions(quantityKey, index, $event)"
-                                ><div class="text-sm font-bold">
+                    <o-checkbox
+                      :modelValue="selectedOptions[quantityKey][index]"
+                      @update:modelValue="
+                        updateSelectedOptions(quantityKey, index, $event)
+                      "
+                      ><div class="text-sm font-bold">
                         {{ displayOption(option[0], shopInfo, item) }}
                       </div></o-checkbox
                     >
@@ -204,7 +212,9 @@
                     <o-radio
                       v-for="(choice, index2) in option"
                       :modelValue="selectedOptions[quantityKey][index]"
-                      @update:modelValue="updateSelectedOptions(quantityKey, index, $event)"
+                      @update:modelValue="
+                        updateSelectedOptions(quantityKey, index, $event)
+                      "
                       :name="`${item.id}_${quantityKey}_${index}`"
                       :native-value="index2"
                       :key="`${quantityKey}_${index2}`"
@@ -320,7 +330,7 @@
           class="rounded-lg shadow-lg"
           @error="imageErrorHandler"
         />
-        
+
         <!-- ToDo [画像複数対応の場合] 切り替え拡大表示できるサムネイル一覧 -->
         <div v-if="false">
           <div class="mt-4 flex justify-center space-x-4">
@@ -386,8 +396,6 @@
             </a>
           </div>
         </div>
-
-        
       </div>
     </o-modal>
   </div>
@@ -405,7 +413,7 @@ import {
 
 import Price from "@/components/Price.vue";
 import SharePopup from "@/app/user/Restaurant/SharePopup.vue";
-import LunchDinnerIcon from "@/app/user/Restaurant/LunchDinnerIcon.vue"
+import LunchDinnerIcon from "@/app/user/Restaurant/LunchDinnerIcon.vue";
 
 import * as analyticsUtil from "@/lib/firebase/analytics";
 import { daysOfWeek } from "@/config/constant";
@@ -487,8 +495,8 @@ export default defineComponent({
     const route = useRoute();
     const router = useRouter();
 
-    const { t } = useI18n({ useScope: 'global' });
-    
+    const { t } = useI18n({ useScope: "global" });
+
     const openMenuFlag = ref(props.initialOpenMenuFlag);
     const imagePopup = ref(false);
     const urlSuffix = "/menus/" + props.item.id;
@@ -511,7 +519,7 @@ export default defineComponent({
         return store.getters.stripeRegion.allergens.filter(
           (allergen: string) => {
             return props.item.allergens[allergen];
-          }
+          },
         );
       }
       return [];
@@ -567,7 +575,11 @@ export default defineComponent({
 
     watch(openMenuFlag, () => {
       if (openMenuFlag.value) {
-        analyticsUtil.sendViewItem(props.item as AnalyticsMenuData, props.shopInfo, restaurantId);
+        analyticsUtil.sendViewItem(
+          props.item as AnalyticsMenuData,
+          props.shopInfo,
+          restaurantId,
+        );
       }
     });
     // TODO: improve to set default value.
@@ -583,15 +595,19 @@ export default defineComponent({
       scrollToElementById(props.item.id);
       imagePopup.value = true;
 
-      // TODO confirm 2023-01 
+      // TODO confirm 2023-01
       // @ts-ignore
       const current = router.currentRoute.path;
-      
+
       const to = basePath.value + "/r/" + restaurantId + (urlSuffix || "");
       if (current !== to) {
         router.replace(to);
       }
-      analyticsUtil.sendViewItem(props.item as AnalyticsMenuData, props.shopInfo, restaurantId);
+      analyticsUtil.sendViewItem(
+        props.item as AnalyticsMenuData,
+        props.shopInfo,
+        restaurantId,
+      );
     };
     onMounted(() => {
       if (props.isOpen) {
@@ -620,7 +636,11 @@ export default defineComponent({
         optionValues: newSelectedOptions,
       });
     };
-    const updateSelectedOptions = (quantityKey: number, index: number, e: boolean | string) => {
+    const updateSelectedOptions = (
+      quantityKey: number,
+      index: number,
+      e: boolean | string,
+    ) => {
       const newSelectedOptions = [...props.selectedOptions];
       newSelectedOptions[quantityKey][index] = e;
       ctx.emit("updateSelectedOptions", newSelectedOptions);
@@ -628,7 +648,11 @@ export default defineComponent({
     const toggleMenuFlag = () => {
       openMenuFlag.value = !openMenuFlag.value;
       if (openMenuFlag.value) {
-        analyticsUtil.sendSelectItem(props.item as AnalyticsMenuData, props.shopInfo, restaurantId);
+        analyticsUtil.sendSelectItem(
+          props.item as AnalyticsMenuData,
+          props.shopInfo,
+          restaurantId,
+        );
       }
     };
     const pullQuantities = (key: number) => {
@@ -640,7 +664,7 @@ export default defineComponent({
         props.item as AnalyticsMenuData,
         props.shopInfo,
         restaurantId,
-        1
+        1,
       );
     };
     const pushQuantities = (key: number) => {
@@ -648,7 +672,12 @@ export default defineComponent({
       if (!openMenuFlag.value) {
         toggleMenuFlag();
       }
-      analyticsUtil.sendAddToCart(props.item as AnalyticsMenuData, props.shopInfo, restaurantId, 1);
+      analyticsUtil.sendAddToCart(
+        props.item as AnalyticsMenuData,
+        props.shopInfo,
+        restaurantId,
+        1,
+      );
     };
     const pushItem = () => {
       const newSelectedOptions = [...props.selectedOptions];
@@ -662,7 +691,7 @@ export default defineComponent({
         optionValues: newSelectedOptions,
       });
     };
-    
+
     return {
       openMenuFlag,
       imagePopup,
@@ -695,13 +724,12 @@ export default defineComponent({
       pushQuantities,
       pushItem,
       updateSelectedOptions,
-      
+
       smallImageErrorHandler,
       imageErrorHandler,
 
       num2time,
       displayOption,
-
     };
   },
 });

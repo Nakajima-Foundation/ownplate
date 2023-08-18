@@ -55,7 +55,7 @@ export const getRestaurantId = () => {
 
 export const resizedProfileImage = (
   restaurant: RestaurantInfoData,
-  size: string
+  size: string,
 ) => {
   return (
     (restaurant.images?.profile?.resizedImages || {})[size] ||
@@ -97,7 +97,9 @@ export const shareUrl = (prefix: string) => {
 };
 
 export const doc2data = <T = DocumentData>(dataType: string) => {
-  return (doc: DocumentSnapshot<DocumentData> | QueryDocumentSnapshot<DocumentData>): T => {
+  return (
+    doc: DocumentSnapshot<DocumentData> | QueryDocumentSnapshot<DocumentData>,
+  ): T => {
     const data = doc.data() || ({} as DocumentData);
     data.id = doc.id;
     data._dataType = dataType;
@@ -127,8 +129,8 @@ export const num2simpleFormatedTime = (num: number) => {
 };
 
 export const num2time = (num: number) => {
-  const { locale, t } = useI18n({ useScope: 'global' });
-  
+  const { locale, t } = useI18n({ useScope: "global" });
+
   if (num === 0 || num === 60 * 24) {
     return t("shopInfo.midnight");
   }
@@ -209,7 +211,7 @@ export const getShopOwner = async (uid: string): Promise<ShopOwnerData> => {
 };
 export const arraySum = (arr: number[]) => {
   return Object.values(arr || [0]).reduce(
-    (accumulator, currentValue) => accumulator + currentValue
+    (accumulator, currentValue) => accumulator + currentValue,
   );
 };
 export const arrayOrNumSum = (arr: number | number[]) => {
@@ -234,35 +236,40 @@ export const convOrderStateForText = (orderState: string, orderInfo: any) => {
 
 export const getOrderItems = (
   orderInfo: OrderInfoData,
-  menuObj: { [key: string]: MenuData }
+  menuObj: { [key: string]: MenuData },
 ) => {
   if (orderInfo.order && orderInfo.menuItems) {
-    return Object.keys(orderInfo.order).reduce((tmp: OrderItemData[], menuId) => {
-      const numArray = Array.isArray(orderInfo.order[menuId])
-        ? orderInfo.order[menuId]
-        : [orderInfo.order[menuId]];
-      const optArray = Array.isArray(orderInfo.order[menuId])
-        ? orderInfo.options[menuId]
-        : [orderInfo.options[menuId]];
-      Object.keys(numArray).map((numKey: string) => {
-        const item = orderInfo.menuItems[menuId] || menuObj[menuId] || {};
-        item.images = (menuObj[menuId] || {}).images;
-        item.itemPhoto = (menuObj[menuId] || {}).itemPhoto;
-        tmp.push({
-          item,
-          count: numArray[Number(numKey)],
-          id: menuId,
-          options: optArray[Number(numKey)],
-          orderIndex: [menuId, numKey],
+    return Object.keys(orderInfo.order).reduce(
+      (tmp: OrderItemData[], menuId) => {
+        const numArray = Array.isArray(orderInfo.order[menuId])
+          ? orderInfo.order[menuId]
+          : [orderInfo.order[menuId]];
+        const optArray = Array.isArray(orderInfo.order[menuId])
+          ? orderInfo.options[menuId]
+          : [orderInfo.options[menuId]];
+        Object.keys(numArray).map((numKey: string) => {
+          const item = orderInfo.menuItems[menuId] || menuObj[menuId] || {};
+          item.images = (menuObj[menuId] || {}).images;
+          item.itemPhoto = (menuObj[menuId] || {}).itemPhoto;
+          tmp.push({
+            item,
+            count: numArray[Number(numKey)],
+            id: menuId,
+            options: optArray[Number(numKey)],
+            orderIndex: [menuId, numKey],
+          });
         });
-      });
-      return tmp;
-    }, []);
+        return tmp;
+      },
+      [],
+    );
   }
   return [];
 };
 
-export const itemOptionCheckbox2options = (itemOptionCheckbox: any): string[] => {
+export const itemOptionCheckbox2options = (
+  itemOptionCheckbox: any,
+): string[] => {
   // HACK: Dealing with a special case (probalby a bug in the menu editor)
   if (
     itemOptionCheckbox &&
@@ -298,7 +305,7 @@ export const priceWithTax = (shopInfo: RestaurantInfoData, menu: MenuData) => {
         return (1 + shopInfo.alcoholTax * 0.01) * menu.price;
       }
       return (1 + shopInfo.foodTax * 0.01) * menu.price;
-    })()
+    })(),
   );
 };
 
@@ -324,13 +331,14 @@ export const roundPrice = (price: number) => {
   return Math.round(price * m) / m;
 };
 
-export const displayOption = (option: string, shopInfo: RestaurantInfoData, item: MenuData) => {
-  const { n } = useI18n({ useScope: 'global' });
+export const displayOption = (
+  option: string,
+  shopInfo: RestaurantInfoData,
+  item: MenuData,
+) => {
+  const { n } = useI18n({ useScope: "global" });
   return formatOption(option, (price) => {
-    return n(
-      roundPrice(price * taxRate(shopInfo, item)),
-      "currency"
-    );
+    return n(roundPrice(price * taxRate(shopInfo, item)), "currency");
   });
 };
 
@@ -379,7 +387,7 @@ export const useMoPrefix = () => {
     return mo_prefixes.find((prefix) => {
       return (
         (route.fullPath || "").startsWith(`/${prefix}/`) ||
-          (route.fullPath || "") === `/${prefix}`
+        (route.fullPath || "") === `/${prefix}`
       );
     });
   });
@@ -465,11 +473,11 @@ export const convOptionArray2Obj = <T>(obj: { [key: string]: T[] }) => {
           tmp[key] = value;
           return tmp;
         },
-        {}
+        {},
       );
       return newObj;
     },
-    {}
+    {},
   );
 };
 
@@ -479,14 +487,14 @@ export const prices2subtotal = (prices: { [key: string]: number[] }) => {
       tmp[menuId] = prices[menuId].reduce((a, b) => a + b, 0);
       return tmp;
     },
-    {}
+    {},
   );
 };
 
 export const getPriceWithTax = (
   subTotal: number,
   menu: MenuData,
-  shopInfo: RestaurantInfoData
+  shopInfo: RestaurantInfoData,
 ) => {
   if (!shopInfo.inclusiveTax) {
     if (menu.tax === "alcohol") {
@@ -500,7 +508,7 @@ export const getPriceWithTax = (
 export const subtotal2total = (
   subTotal: { [key: string]: number },
   cartItems: { [key: string]: MenuData },
-  shopInfo: RestaurantInfoData
+  shopInfo: RestaurantInfoData,
 ) => {
   return Object.keys(subTotal).reduce((tmp, menuId) => {
     const menu = cartItems[menuId] || {};
@@ -512,7 +520,7 @@ export const getPrices = (
   multiple: number,
   orders: { [key: string]: number[] },
   cartItems: { [key: string]: MenuData },
-  trimmedSelectedOptions: { [key: string]: { [key: string]: number[] } }
+  trimmedSelectedOptions: { [key: string]: { [key: string]: number[] } },
 ) => {
   const ret: any = {};
 
@@ -538,7 +546,7 @@ export const getPrices = (
           }
           return tmpPrice;
         },
-        menu.price
+        menu.price,
       );
       ret[menuId].push(price * num);
     });
@@ -549,12 +557,12 @@ export const getPrices = (
 export const getTrimmedSelectedOptions = (
   orders: { [key: string]: number[] },
   cartItems: { [key: string]: MenuData },
-  selectedOptions: { [key: string]: any }
+  selectedOptions: { [key: string]: any },
 ) => {
   return Object.keys(orders).reduce(
     (ret: { [key: string]: { [key: string]: number[] } }, id) => {
       const options = itemOptionCheckbox2options(
-        (cartItems[id] || {}).itemOptionCheckbox
+        (cartItems[id] || {}).itemOptionCheckbox,
       );
       const selectedOption = selectedOptions[id].map((selected: any[]) => {
         if (Array.isArray(selected) && selected.length > options.length) {
@@ -566,13 +574,13 @@ export const getTrimmedSelectedOptions = (
       ret[id] = selectedOption;
       return ret;
     },
-    {}
+    {},
   );
 };
 
 export const getPostOption = (
   trimmedSelectedOptions: { [key: string]: any[][] },
-  cartItems: { [key: string]: MenuData }
+  cartItems: { [key: string]: MenuData },
 ) => {
   return Object.keys(trimmedSelectedOptions).reduce(
     (ret: { [key: string]: any }, id) => {
@@ -580,7 +588,7 @@ export const getPostOption = (
         return item
           .map((selectedOpt: any, key) => {
             const opt = (cartItems[id] || {}).itemOptionCheckbox[key].split(
-              ","
+              ",",
             );
             if (opt.length === 1) {
               if (selectedOpt) {
@@ -595,7 +603,7 @@ export const getPostOption = (
       });
       return ret;
     },
-    {}
+    {},
   );
 };
 
@@ -633,7 +641,7 @@ export const useUserData = () => {
   const isAnonymous = computed(() => {
     return store.getters.isAnonymous;
   });
-  
+
   return {
     user,
     uid,
@@ -782,7 +790,8 @@ export const orderType = (order: OrderInfoData) => {
   if (order.isDelivery) {
     return "Delivery";
   }
-  if (order.isPickup) { // TODO: remove
+  if (order.isPickup) {
+    // TODO: remove
     return "Pickup";
   }
   return "Takeout";
@@ -795,7 +804,7 @@ export const isDev = firebaseConfig.projectId === "ownplate-dev";
 
 export const useIsLocaleJapan = () => {
   // for hack
-  const { locale } = useI18n({ useScope: 'global' });
+  const { locale } = useI18n({ useScope: "global" });
   console.log(locale.value);
   return computed(() => {
     return locale.value !== "en" && locale.value !== "fr";
@@ -804,19 +813,15 @@ export const useIsLocaleJapan = () => {
 
 export const useFeatureHeroMobile = () => {
   const isLocaleJapan = useIsLocaleJapan();
-  
+
   return computed(() => {
-    return regionalSetting.FeatureHeroMobile[
-      isLocaleJapan.value ? "ja" : "en"
-    ];
+    return regionalSetting.FeatureHeroMobile[isLocaleJapan.value ? "ja" : "en"];
   });
 };
 export const useFeatureHeroTablet = () => {
   const isLocaleJapan = useIsLocaleJapan();
   return computed(() => {
-    return regionalSetting.FeatureHeroTablet[
-      isLocaleJapan.value ? "ja" : "en"
-    ];
+    return regionalSetting.FeatureHeroTablet[isLocaleJapan.value ? "ja" : "en"];
   });
 };
 export const useIsNotSuperAdmin = () => {
@@ -831,28 +836,33 @@ export const useIsNotSuperAdmin = () => {
     isNotSuperAdmin,
     isNotOperator,
   };
-}
+};
 
 // https://developers-jp.googleblog.com/2019/12/how-calculate-distances-map-maps-javascript-api.html
-export const haversine_distance = (lat1: number, lng1: number, lat2: number, lng2: number) => {
+export const haversine_distance = (
+  lat1: number,
+  lng1: number,
+  lat2: number,
+  lng2: number,
+) => {
   const R = 6371.071;
   const rlat1 = lat1 * (Math.PI / 180);
   const rlat2 = lat2 * (Math.PI / 180);
   const difflat = rlat2 - rlat1;
   const difflon = (lng2 - lng1) * (Math.PI / 180);
-  
+
   const d =
-        2 *
-        R *
-        Math.asin(
-          Math.sqrt(
-            Math.sin(difflat / 2) * Math.sin(difflat / 2) +
-              Math.cos(rlat1) *
-                Math.cos(rlat2) *
-              Math.sin(difflon / 2) *
-              Math.sin(difflon / 2)
-          )
-        );
+    2 *
+    R *
+    Math.asin(
+      Math.sqrt(
+        Math.sin(difflat / 2) * Math.sin(difflat / 2) +
+          Math.cos(rlat1) *
+            Math.cos(rlat2) *
+            Math.sin(difflon / 2) *
+            Math.sin(difflon / 2),
+      ),
+    );
   return Math.round(d * 1000);
 };
 
@@ -885,11 +895,9 @@ export const superPermissionCheck = () => {
   } else {
     if (
       !store.state.user ||
-        (store.getters.isNotSuperAdmin &&
-          store.getters.isNotOperator)
+      (store.getters.isNotSuperAdmin && store.getters.isNotOperator)
     ) {
       router.push("/");
     }
   }
 };
-

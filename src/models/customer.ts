@@ -5,5 +5,5 @@ export interface CustomerInfo {
   prefectureId?: number;
   email?: string;
   name?: string;
-  location?: {lat: number, lng: number};
+  location?: { lat: number; lng: number };
 }

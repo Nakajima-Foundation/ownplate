@@ -49,10 +49,7 @@
 
       <div v-if="!inLiff && (!isLineUser || isDev)">
         <div v-if="isLineEnabled" class="mt-4 text-center">
-          <div
-            v-if="isLineUser && isDev"
-            class="mb-2 text-base font-bold"
-          >
+          <div v-if="isLineUser && isDev" class="mb-2 text-base font-bold">
             再設定 for Dev
           </div>
           <o-button @click="handleLineAuth" class="b-reset-tw">
@@ -83,11 +80,7 @@ import {
 import liff from "@line/liff";
 
 import { db } from "@/lib/firebase/firebase9";
-import {
-  doc,
-  getDoc,
-} from "firebase/firestore";
-
+import { doc, getDoc } from "firebase/firestore";
 
 import { lineVerifyFriend } from "@/lib/firebase/functions";
 import { lineAuthURL } from "@/lib/line/line";
@@ -99,17 +92,13 @@ import { useI18n } from "vue-i18n";
 export default defineComponent({
   setup() {
     const store = useStore();
-    const { t } = useI18n({ useScope: 'global' });
+    const { t } = useI18n({ useScope: "global" });
 
-    const {
-      isLiffUser,
-      isLineUser,
-      inLiff,
-    } = useUserData();
+    const { isLiffUser, isLineUser, inLiff } = useUserData();
     const liffIndexId = useLiffIndexId();
 
     const isFriend = ref<undefined | boolean>(undefined);
-    const liffConfig = ref<null|any>(null);
+    const liffConfig = ref<null | any>(null);
 
     const isWindowActive = computed(() => {
       return store.state.isWindowActive;
@@ -143,9 +132,9 @@ export default defineComponent({
         }
       } else {
         try {
-          const { data } = await lineVerifyFriend(
-            isLiffUser.value ? { liffIndexId: liffIndexId.value } : {}
-          ) as any;
+          const { data } = (await lineVerifyFriend(
+            isLiffUser.value ? { liffIndexId: liffIndexId.value } : {},
+          )) as any;
           isFriend.value = data.result;
         } catch (error) {
           console.error(error);

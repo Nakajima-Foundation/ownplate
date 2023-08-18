@@ -6,22 +6,14 @@
     </div>
   </div>
 </template>
-    
 
 <script lang="ts">
-import {
-  defineComponent,
-  computed,
-} from "vue";
+import { defineComponent, computed } from "vue";
 import { useRoute } from "vue-router";
 
-import {
-  useUserData,
-} from "@/utils/utils";
+import { useUserData } from "@/utils/utils";
 
-import {
-  useUserPromotionHistory
-} from "@/utils/promotion";
+import { useUserPromotionHistory } from "@/utils/promotion";
 
 export default defineComponent({
   setup() {
@@ -33,13 +25,12 @@ export default defineComponent({
     const restaurantId = computed(() => {
       return route.params.restaurantId as string;
     });
-    
+
     const id = restaurantId.value;
     const { discountHistory } = useUserPromotionHistory(id, user);
     return {
-      discountHistory
+      discountHistory,
     };
   },
 });
-
 </script>

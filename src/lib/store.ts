@@ -28,12 +28,12 @@ interface DialogAlertData {
   callback: () => void;
 }
 interface DialogErrorData {
-  message: string,
-  message2: string,
-  code: string,
+  message: string;
+  message2: string;
+  code: string;
 }
 interface DialogTipsData {
-  key: string,
+  key: string;
 }
 interface Dialog {
   alert?: DialogAlertData;
@@ -55,22 +55,22 @@ type Cart = {
 };
 
 interface State {
-  user: undefined | boolean | User
+  user: undefined | boolean | User;
 
   claims: undefined | Claims;
   lang: undefined | string;
   date: Date;
-  carts: {[key: string]: Cart | null };
+  carts: { [key: string]: Cart | null };
   server: Server;
   orderEvent: number;
-  orderObj: {[key: string]: OrderInfoData[] };
+  orderObj: { [key: string]: OrderInfoData[] };
   soundEnable: boolean;
   soundOn: boolean;
   soundFile: string;
   isWindowActive: boolean;
   dialog: null | Dialog;
   isLoading: boolean;
-  openTime: Date,
+  openTime: Date;
 }
 export const state = () => ({
   user: undefined, // undefined:not authorized, null:no user
@@ -100,10 +100,14 @@ export const getters = {
     return state.user && (state.user as User).email && (state.user as User).uid;
   },
   uidUser: (state: State) => {
-    return state.user && (state.user as User).phoneNumber && (state.user as User).uid;
+    return (
+      state.user && (state.user as User).phoneNumber && (state.user as User).uid
+    );
   },
   uidLiff: (state: State) => {
-    return state.user && (state.claims as Claims).liffId && (state.user as User).uid;
+    return (
+      state.user && (state.claims as Claims).liffId && (state.user as User).uid
+    );
   },
   liffId: (state: State) => {
     return state.user && state.claims?.liffId;
@@ -128,7 +132,11 @@ export const getters = {
     return !state.claims?.operator;
   },
   isAdmin: (state: State) => {
-    return !!(state.user && (state.user as User).email && (state.user as User).uid);
+    return !!(
+      state.user &&
+      (state.user as User).email &&
+      (state.user as User).uid
+    );
   },
   isSubAccount: (state: State) => {
     return !!state.claims?.parentUid;
@@ -151,7 +159,7 @@ export const mutations = {
   updateDate(state: State) {
     state.date = new Date();
   },
-  saveCart(state: State, payload: {id: string, cart: Cart}) {
+  saveCart(state: State, payload: { id: string; cart: Cart }) {
     console.log("saving cart", payload.id, payload.cart);
     // state.carts = {};
     state.carts[payload.id as string] = payload.cart;
@@ -176,14 +184,17 @@ export const mutations = {
     state.orderEvent = state.orderEvent + 1;
   },
   setOrders(state: State, orders: OrderInfoData[]) {
-    state.orderObj = orders.reduce((tmp: {[key: string]: OrderInfoData[] }, order: OrderInfoData) => {
-      const day = moment(order.timePlaced.toDate()).format("YYYY-MM-DD");
-      if (!tmp[day]) {
-        tmp[day] = [];
-      }
-      tmp[day].push(order);
-      return tmp;
-    }, {});
+    state.orderObj = orders.reduce(
+      (tmp: { [key: string]: OrderInfoData[] }, order: OrderInfoData) => {
+        const day = moment(order.timePlaced.toDate()).format("YYYY-MM-DD");
+        if (!tmp[day]) {
+          tmp[day] = [];
+        }
+        tmp[day].push(order);
+        return tmp;
+      },
+      {},
+    );
   },
   soundEnable(state: State) {
     state.soundEnable = true;

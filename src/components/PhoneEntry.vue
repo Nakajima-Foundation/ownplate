@@ -19,7 +19,7 @@
       <o-input
         type="text"
         v-model="phoneNumber"
-         @update:modelValue="validatePhoneNumber"
+        @update:modelValue="validatePhoneNumber"
         :placeholder="placeholder"
       />
     </o-field>
@@ -57,7 +57,7 @@ export default defineComponent({
 
     const errors = ref<string[]>([]);
     const phoneNumber = ref(props.currentNumber);
-    
+
     // BUGBUG: This code is fine for US and JP, but not sufficient for EU
     const validatePhoneNumber = () => {
       errors.value = [];
@@ -92,7 +92,7 @@ export default defineComponent({
 
       validatePhoneNumber,
       hasError,
-    }
+    };
   },
 });
 </script>

@@ -7,14 +7,14 @@
           :value="urlMenu"
           :options="{ width: 160 }"
           ref="qrcodeRef"
-          ></vue-qrcode>
+        ></vue-qrcode>
       </div>
       <!-- Link -->
       <div class="text-center">
         <a :href="urlMenu" target="_blank">
           <div
             class="inline-flex min-h-[36px] cursor-pointer items-center justify-center px-2 font-bold text-op-teal"
-            >
+          >
             {{ shopInfo.restaurantName }}
           </div>
         </a>
@@ -23,7 +23,7 @@
       <div class="text-center" @click="download">
         <div
           class="inline-flex min-h-[36px] cursor-pointer items-center justify-center px-2 font-bold text-op-teal"
-          >
+        >
           {{ $t("admin.qrcode.download") }}
         </div>
       </div>

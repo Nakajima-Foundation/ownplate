@@ -40,7 +40,7 @@ export default defineComponent({
       title: [this.defaultTitle, "Super All Stripe Callback"].join(" / "),
     };
   },
-  setup () {
+  setup() {
     useSuper();
 
     const logs = ref<any[]>([]);
@@ -51,26 +51,25 @@ export default defineComponent({
         collectionGroup(db, "stripeLogs"),
         orderBy("created", "desc"),
         limit(100),
-      )
+      ),
     ).then((snapshot) => {
-        logs.value = snapshot.docs.map((doc) => {
-          last.value = doc;
-          const log = doc.data();
-          log.id = doc.id;
-          return log;
-        });
+      logs.value = snapshot.docs.map((doc) => {
+        last.value = doc;
+        const log = doc.data();
+        log.id = doc.id;
+        return log;
       });
-    
-    const nextLoad = async () => {
+    });
 
+    const nextLoad = async () => {
       const nextData = await getDocs(
         query(
           collectionGroup(db, "stripeLogs"),
           orderBy("created", "desc"),
           startAfter(last.value),
-          limit(100)
-        )
-      )
+          limit(100),
+        ),
+      );
 
       if (!nextData.empty) {
         nextData.docs.forEach((doc) => {
@@ -81,7 +80,7 @@ export default defineComponent({
         });
       }
     };
-    
+
     return {
       stripeActionStrings,
       logs,
@@ -89,6 +88,6 @@ export default defineComponent({
       nextLoad,
       moment,
     };
-  }
+  },
 });
 </script>

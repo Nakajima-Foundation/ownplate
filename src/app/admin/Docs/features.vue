@@ -1,9 +1,7 @@
 <template>
   <div class="mx-6">
     <div>
-      <div class="mt-2 text-sm font-bold">
-        申し込み方法
-      </div>
+      <div class="mt-2 text-sm font-bold">申し込み方法</div>
       <div class="mt-2 rounded-lg bg-black bg-opacity-5 p-4">
         <div>
           おもちかえり.comのご利用は、メールアドレスがあればオンラインで申し込みし、すぐに利用可能です
@@ -15,9 +13,7 @@
     </div>
 
     <div>
-      <div class="mt-2 text-sm font-bold">
-        主な機能
-      </div>
+      <div class="mt-2 text-sm font-bold">主な機能</div>
       <div class="mt-2 rounded-lg bg-black bg-opacity-5 p-4">
         <div>
           <li>飲食店/飲食店利用者、それぞれWebブラウザのみで利用可能</li>
@@ -39,12 +35,9 @@
         </div>
       </div>
     </div>
-    
 
     <div>
-      <div class="mt-2 text-sm font-bold">
-        制限
-      </div>
+      <div class="mt-2 text-sm font-bold">制限</div>
       <div class="mt-2 rounded-lg bg-black bg-opacity-5 p-4">
         <div>
           <li>店舗数 制限なし</li>
@@ -52,11 +45,9 @@
         </div>
       </div>
     </div>
-    
+
     <div>
-      <div class="mt-2 text-sm font-bold">
-        店舗への受注通知方法
-      </div>
+      <div class="mt-2 text-sm font-bold">店舗への受注通知方法</div>
       <div class="mt-2 rounded-lg bg-black bg-opacity-5 p-4">
         <div>
           <li>ブラウザ上で音声</li>
@@ -69,9 +60,7 @@
     </div>
 
     <div>
-      <div class="mt-2 text-sm font-bold">
-        飲食店利用者への通知方法
-      </div>
+      <div class="mt-2 text-sm font-bold">飲食店利用者への通知方法</div>
       <div class="mt-2 rounded-lg bg-black bg-opacity-5 p-4">
         <div>
           <li>おもちかえり.comLINE公式アカウント</li>
@@ -82,9 +71,7 @@
     </div>
 
     <div>
-      <div class="mt-2 text-sm font-bold">
-        決済方法
-      </div>
+      <div class="mt-2 text-sm font-bold">決済方法</div>
       <div class="mt-2 rounded-lg bg-black bg-opacity-5 p-4">
         <div>
           <li>現地払い</li>
@@ -96,9 +83,6 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-} from "vue";
-export default defineComponent({
-});
+import { defineComponent } from "vue";
+export default defineComponent({});
 </script>

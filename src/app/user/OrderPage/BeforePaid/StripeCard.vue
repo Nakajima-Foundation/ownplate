@@ -108,19 +108,11 @@
 </template>
 
 <script lang="ts">
-  import {
-    defineComponent,
-    ref,
-    watch,
-    onMounted,
-  } from "vue";
+import { defineComponent, ref, watch, onMounted } from "vue";
 
 import { getStripeInstance, stripeUpdateCustomer } from "@/lib/stripe/stripe";
 import { db } from "@/lib/firebase/firebase9";
-import {
-  doc,
-  getDoc,
-} from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import moment from "moment";
 
 import { useUserData } from "@/utils/utils";
@@ -136,16 +128,16 @@ export default defineComponent({
   setup(_, ctx) {
     const { user } = useUserData();
     const store = useStore();
-    
+
     const stripe = getStripeInstance();
     const cardElem = ref<any>(null);
     let elementStatus = { complete: false };
-    
+
     const storedCard = ref(null);
     const useStoredCard = ref(false);
     const CVCPopup = ref(false);
     const reuse = ref(true);
-    
+
     const configureStripe = async () => {
       const elements = stripe.elements();
       const stripeRegion = store.getters.stripeRegion;
@@ -177,34 +169,42 @@ export default defineComponent({
         elementStatus = status;
         ctx.emit("change", status);
       });
-      
+
       try {
         const stripeInfo = (
           await getDoc(doc(db, `/users/${user.value.uid}/readonly/stripe`))
         ).data();
-        
+
         if (stripeInfo && stripeInfo.card) {
-          const date = ('00' + String(stripeInfo.card.exp_month)).slice(-2);
-          const expire = moment(`${stripeInfo.card.exp_year}${date}01T000000+0900`).endOf('month').toDate();
+          const date = ("00" + String(stripeInfo.card.exp_month)).slice(-2);
+          const expire = moment(
+            `${stripeInfo.card.exp_year}${date}01T000000+0900`,
+          )
+            .endOf("month")
+            .toDate();
           // console.log(expire);
-          if (stripeInfo.updatedAt && (stripeInfo.updatedAt.toDate() > moment().subtract(180, "days").toDate())) {
+          if (
+            stripeInfo.updatedAt &&
+            stripeInfo.updatedAt.toDate() >
+              moment().subtract(180, "days").toDate()
+          ) {
             if (expire > new Date()) {
-            storedCard.value = stripeInfo.card;
-            useStoredCard.value = true;
-            ctx.emit("change", { complete: true });
+              storedCard.value = stripeInfo.card;
+              useStoredCard.value = true;
+              ctx.emit("change", { complete: true });
             }
           }
         }
       } catch (e) {
         console.log(e);
-        console.log("stripe expired")
+        console.log("stripe expired");
       }
     };
 
     onMounted(() => {
       configureStripe();
     });
-    
+
     watch(useStoredCard, (newValue) => {
       ctx.emit("change", newValue ? { complete: true } : elementStatus);
     });
@@ -237,7 +237,6 @@ export default defineComponent({
 
       createToken, // for parent component
     };
-    
   },
 });
 </script>

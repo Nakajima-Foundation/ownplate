@@ -7,12 +7,11 @@
       <router-link :to="'/o/' + message.fromUid">
         <div
           class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
-          >
+        >
           <span class="text-sm font-bold text-op-teal">{{
-          $t("admin.messages.childInvitationMessage2")
+            $t("admin.messages.childInvitationMessage2")
           }}</span>
-        </div>
-      </router-link
+        </div> </router-link
       ><br />
       {{ $t("admin.messages.childInvitationMessage3") }}<br />
       <o-button @click="childInvitationAccept">{{
@@ -34,10 +33,7 @@ import {
 } from "@/lib/firebase/functions";
 
 import { useStore } from "vuex";
-import {
-  useRouter,
-  useRoute,
-} from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 
 import moment from "moment-timezone";
 

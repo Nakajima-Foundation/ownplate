@@ -45,19 +45,9 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  computed,
-  watch,
-} from "vue";
+import { defineComponent, ref, computed, watch } from "vue";
 import { db } from "@/lib/firebase/firebase9";
-import {
-  getDocs,
-  query,
-  collectionGroup,
-  where,
-} from "firebase/firestore";
+import { getDocs, query, collectionGroup, where } from "firebase/firestore";
 import DownloadCsv from "@/components/DownloadCSV.vue";
 import moment from "moment";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
@@ -65,10 +55,7 @@ import { nameOfOrder } from "@/utils/strings";
 import { order_status } from "@/config/constant";
 import { arrayChunk, forceArray } from "@/utils/utils";
 
-import {
-  reportHeaders,
-  reportHeadersWithAddress,
-} from "@/utils/reportUtils";
+import { reportHeaders, reportHeadersWithAddress } from "@/utils/reportUtils";
 
 import { OrderInfoData } from "@/models/orderInfo";
 import { CustomerInfo } from "@/models/customer";
@@ -102,11 +89,15 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const { t } = useI18n({ useScope: 'global' });
+    const { t } = useI18n({ useScope: "global" });
 
-    const customers = ref<{[key: string]: CustomerInfo}>({});
-    const writeonFirstLine = (index: number, key: number | string, text: any) => {
-      return (index === 0 && Number(key) === 0) ? text : "-";
+    const customers = ref<{ [key: string]: CustomerInfo }>({});
+    const writeonFirstLine = (
+      index: number,
+      key: number | string,
+      text: any,
+    ) => {
+      return index === 0 && Number(key) === 0 ? text : "-";
     };
     const timeConvert = (timeData: any) => {
       if (!timeData) {
@@ -118,7 +109,6 @@ export default defineComponent({
       return moment(timeData).format("YYYY/MM/DD HH:mm");
     };
 
-    
     const orders = computed(() => {
       return props.orders;
     });
@@ -136,13 +126,13 @@ export default defineComponent({
                   collectionGroup(db, "customer"),
                   where("restaurantId", "==", props.shopInfo.restaurantId),
                   where("orderId", "in", arr),
-                )
-              )
+                ),
+              );
               cuss.docs.map((cus) => {
                 const data = cus.data();
                 tmpCustomers[data.orderId] = data;
               });
-            })
+            }),
           );
           customers.value = tmpCustomers;
         })();
@@ -192,10 +182,10 @@ export default defineComponent({
           Object.keys(orderItems).forEach((key) => {
             // @ts-ignore
             const opt = Array.isArray(options[key] || [])
-            // @ts-ignore
-              ? options[key]
-            // @ts-ignore
-              : [options[key]];
+              ? // @ts-ignore
+                options[key]
+              : // @ts-ignore
+                [options[key]];
             try {
               items.push({
                 id: `${order.id}/${menuId}`,
@@ -205,7 +195,7 @@ export default defineComponent({
                 type: writeonFirstLine(
                   index,
                   key,
-                  t("order.orderType" + order.type)
+                  t("order.orderType" + order.type),
                 ),
                 uid: order.uid, // mo
                 restaurantId: props.shopInfo.restaurantId, // mo
@@ -213,75 +203,79 @@ export default defineComponent({
                 timeRequested: writeonFirstLine(
                   index,
                   key,
-                  timeConvert(order.timePlaced)
+                  timeConvert(order.timePlaced),
                 ),
                 timeToPickup: writeonFirstLine(
                   index,
                   key,
-                  timeConvert(order.timeEstimated)
+                  timeConvert(order.timeEstimated),
                 ),
                 datePlaced: writeonFirstLine(
                   index,
                   key,
-                  timeConvert(order.orderPlacedAt)
+                  timeConvert(order.orderPlacedAt),
                 ),
                 dateAccepted: writeonFirstLine(
                   index,
                   key,
-                  timeConvert(order.orderAcceptedAt)
+                  timeConvert(order.orderAcceptedAt),
                 ),
                 dateConfirmed: writeonFirstLine(
                   index,
                   key,
-                  timeConvert(order.timeConfirmed)
+                  timeConvert(order.timeConfirmed),
                 ),
                 dateCompleted: writeonFirstLine(
                   index,
                   key,
-                  timeConvert(order.transactionCompletedAt)
+                  timeConvert(order.transactionCompletedAt),
                 ),
                 phoneNumber: writeonFirstLine(
                   index,
                   key,
                   order.phoneNumber
                     ? formatNational(parsePhoneNumber(order.phoneNumber))
-                    : "LINE"
+                    : "LINE",
                 ),
                 userName: writeonFirstLine(
                   index,
                   key,
-                  order.name || t("order.unspecified")
+                  order.name || t("order.unspecified"),
                 ),
                 "ec.name": writeonFirstLine(
                   index,
                   key,
-                  order?.customerInfo?.name
+                  order?.customerInfo?.name,
                 ),
                 "ec.zip": writeonFirstLine(
                   index,
                   key,
-                  order?.customerInfo?.zip
+                  order?.customerInfo?.zip,
                 ),
                 "ec.prefecture": writeonFirstLine(
                   index,
                   key,
-                  order?.customerInfo?.prefecture
+                  order?.customerInfo?.prefecture,
                 ),
                 "ec.address": writeonFirstLine(
                   index,
                   key,
-                  order?.customerInfo?.address
+                  order?.customerInfo?.address,
                 ),
                 "ec.email": writeonFirstLine(
                   index,
                   key,
-                  order?.customerInfo?.email
+                  order?.customerInfo?.email,
                 ),
-                shippingCost: writeonFirstLine(index, key, order?.shippingCost || order?.deliveryFee),
+                shippingCost: writeonFirstLine(
+                  index,
+                  key,
+                  order?.shippingCost || order?.deliveryFee,
+                ),
                 isDelivery: writeonFirstLine(
                   index,
                   key,
-                  order?.isDelivery ? "1" : ""
+                  order?.isDelivery ? "1" : "",
                 ),
                 // @ts-ignore
                 count: orderItems[key],
@@ -291,7 +285,7 @@ export default defineComponent({
                 statusName: writeonFirstLine(
                   index,
                   key,
-                  t(`order.status.${status}`)
+                  t(`order.status.${status}`),
                 ),
                 category1: menuItem.category1 || "",
                 category2: menuItem.category2 || "",
@@ -309,12 +303,20 @@ export default defineComponent({
                 cancelReason: order.cancelReason,
                 // end of for mo
                 total: writeonFirstLine(index, key, order.totalCharge || ""),
-                discountPrice: writeonFirstLine(index, key, order.discountPrice || 0),
-                beforeDiscountPrice: writeonFirstLine(index, key, order.totalCharge + (order.discountPrice || 0)),
+                discountPrice: writeonFirstLine(
+                  index,
+                  key,
+                  order.discountPrice || 0,
+                ),
+                beforeDiscountPrice: writeonFirstLine(
+                  index,
+                  key,
+                  order.totalCharge + (order.discountPrice || 0),
+                ),
                 payment: writeonFirstLine(
                   index,
                   key,
-                  order.payment?.stripe ? "stripe" : ""
+                  order.payment?.stripe ? "stripe" : "",
                 ),
               });
             } catch (e) {

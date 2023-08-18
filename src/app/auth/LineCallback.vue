@@ -8,10 +8,7 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-} from "vue";
+import { defineComponent, ref } from "vue";
 
 // https://firebase.googleblog.com/2016/11/authenticate-your-firebase-users-with-line-login.html
 import { lineGuard } from "@/lib/line/line";
@@ -29,10 +26,14 @@ export default defineComponent({
 
     const code = route.query.code as string;
     const restaurantId = route.params.restaurantId as string | undefined;
-    const redirect_uri = location.origin + "/callback/" + (restaurantId ? restaurantId + "/" : "") + "line";
+    const redirect_uri =
+      location.origin +
+      "/callback/" +
+      (restaurantId ? restaurantId + "/" : "") +
+      "line";
     const isValidating = ref(false);
     const { user, isLineUser } = useUserData();
-    
+
     if (code) {
       (async () => {
         try {
@@ -43,28 +44,30 @@ export default defineComponent({
             restaurantId,
           });
           console.log("lineValidate", data);
-          
+
           if (data.nonce && data.profile) {
             const state = route.query.state as string;
             const params = lineGuard(data.nonce, state);
-            
-            user.value.getIdTokenResult(true).then((result: {claims: string}) => {
-              store.commit("setCustomClaims", result.claims);
-              console.log("isLineuser", isLineUser.value);
-              if (isLineUser.value) {
-                // End-user case
-                router.push(params.pathname);
-              } else {
-                // Restaurant operator case
-                router.push(
-                  `${params.pathname}?userId=${
-                  data.profile.userId
-                }&displayName=${encodeURIComponent(
-                  data.profile.displayName
-                )}&state=${state}`
-                );
-              }
-            });
+
+            user.value
+              .getIdTokenResult(true)
+              .then((result: { claims: string }) => {
+                store.commit("setCustomClaims", result.claims);
+                console.log("isLineuser", isLineUser.value);
+                if (isLineUser.value) {
+                  // End-user case
+                  router.push(params.pathname);
+                } else {
+                  // Restaurant operator case
+                  router.push(
+                    `${params.pathname}?userId=${
+                      data.profile.userId
+                    }&displayName=${encodeURIComponent(
+                      data.profile.displayName,
+                    )}&state=${state}`,
+                  );
+                }
+              });
           } else {
             console.error("validatin failed", data);
             throw new Error("something is wrong");
@@ -79,13 +82,13 @@ export default defineComponent({
         } finally {
           isValidating.value = false;
         }
-      })()
+      })();
     } else {
       router.push("/");
     }
     return {
-      isValidating
-    }
+      isValidating,
+    };
   },
 });
 </script>

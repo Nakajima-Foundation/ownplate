@@ -5,10 +5,7 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-} from "vue";
+import { defineComponent, ref } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc } from "firebase/firestore";
 import NotFound from "@/components/NotFound.vue";

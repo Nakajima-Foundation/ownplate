@@ -34,7 +34,7 @@ export default defineComponent({
     const tableData = ref<any[]>([]);
     const loadData = async () => {
       const collectionData = await getDocs(
-        collection(db, `restaurants/${props.restaurantid}/menus`)
+        collection(db, `restaurants/${props.restaurantid}/menus`),
       );
       collectionData.docs.map((doc) => {
         const menu = doc.data();

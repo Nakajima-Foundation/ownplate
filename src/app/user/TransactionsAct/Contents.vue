@@ -51,14 +51,22 @@
             </div>
 
             <div class="mt-1 text-base">
-              <div v-for="(day, key) in days" class="flex px-2 py-1 text-sm" :key="key">
+              <div
+                v-for="(day, key) in days"
+                class="flex px-2 py-1 text-sm"
+                :key="key"
+              >
                 <div class="w-16">{{ $t("week.short." + day) }}</div>
                 <div class="flex-1">
                   <template v-if="(shopInfo.businessDay || {})[key]">
-                    <template v-for="(data, k) in (shopInfo.openTimes || {})[key]">
+                    <template
+                      v-for="(data, k) in (shopInfo.openTimes || {})[key]"
+                    >
                       <template v-if="validDate(data)">
-                        <span :key="k">{{ num2time(data.start) }} - {{ num2time(data.end) }}<br /></span>
-                          
+                        <span :key="k"
+                          >{{ num2time(data.start) }} - {{ num2time(data.end)
+                          }}<br
+                        /></span>
                       </template>
                     </template>
                   </template>
@@ -147,7 +155,6 @@
                 {{ $t("transactionsAct.deliveryDescription") }}
               </div>
             </div>
-
           </div>
 
           <!-- Cancellation -->
@@ -204,7 +211,6 @@
                 <li>{{ $t("transactionsAct.cancellationDescription3") }}</li>
               </ul>
             </div>
-
           </div>
         </div>
 

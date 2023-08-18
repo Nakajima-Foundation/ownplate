@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div class="mt-6 text-center text-xl font-bold text-black text-opacity-40" v-if="isValidating">
+    <div
+      class="mt-6 text-center text-xl font-bold text-black text-opacity-40"
+      v-if="isValidating"
+    >
       {{ $t("admin.smaregi.authenticating") }}
     </div>
     <o-loading :is-full-page="false" :active="isValidating"></o-loading>
@@ -8,7 +11,9 @@
       <div class="flex space-x-4 mt-6">
         <back-button url="/admin/restaurants/" />
       </div>
-      <div class="mt-6 text-center text-xl font-bold text-black text-opacity-40">
+      <div
+        class="mt-6 text-center text-xl font-bold text-black text-opacity-40"
+      >
         {{ $t("admin.smaregi.authenticationError") }}
       </div>
     </div>
@@ -57,7 +62,7 @@ export default defineComponent({
         error.value = true;
       }
     })();
-    
+
     return {
       isValidating,
       error,

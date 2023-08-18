@@ -7,16 +7,10 @@
     </div>
     <div :class="'stripe_' + orderInfo.payment.stripe">
       <div class="text-xl">
-        {{
-          $t(
-            "order.status" +
-              ".stripe_user_" +
-              orderInfo.payment.stripe
-          )
-        }}
+        {{ $t("order.status" + ".stripe_user_" + orderInfo.payment.stripe) }}
       </div>
       <div>
-       {{ $t("order.status.stripe_user_message_" + orderInfo.payment.stripe) }}
+        {{ $t("order.status.stripe_user_message_" + orderInfo.payment.stripe) }}
       </div>
     </div>
     <div v-if="isJustCancelPayment">

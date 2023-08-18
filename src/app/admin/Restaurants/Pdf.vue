@@ -43,16 +43,16 @@ export default defineComponent({
           await getDocs(
             query(
               collection(restaurantRef, "menus"),
-              where("deletedFlag", "==", false)
-            )
+              where("deletedFlag", "==", false),
+            ),
           )
-        ).docs.map(doc2data<MenuData>(""))
+        ).docs.map(doc2data<MenuData>("")),
       );
     })();
 
     const { nationalPhoneNumber } = useNationalPhoneNumber(props.shopInfo);
     const basePath = useBasePath();
-    const url = shareUrl(basePath.value)
+    const url = shareUrl(basePath.value);
 
     const download = () => {
       pdf.menuDownload(

@@ -82,7 +82,7 @@ export default defineComponent({
   },
   setup() {
     const { isUser, uid } = useUserData();
-    
+
     const likes = ref<any[]>([]);
     onMounted(async () => {
       if (isUser.value) {
@@ -90,8 +90,8 @@ export default defineComponent({
           query(
             collection(db, `users/${uid.value}/reviews`),
             orderBy("timeLiked", "desc"),
-            limit(100)
-          )
+            limit(100),
+          ),
         );
 
         likes.value = (snapshot.docs || [])

@@ -33,7 +33,7 @@ export default defineComponent({
       title: [this.defaultTitle, "Super Partners"].join(" / "),
     };
   },
-  setup () {
+  setup() {
     useSuper();
 
     const admins = ref<DocumentData[]>([]);
@@ -42,8 +42,8 @@ export default defineComponent({
       query(
         collection(db, "admins"),
         where("partners", "!=", null),
-        limit(200)
-      )
+        limit(200),
+      ),
     ).then((adminCollections) => {
       admins.value = adminCollections.docs
         .map((admin) => {
@@ -53,7 +53,8 @@ export default defineComponent({
         })
         .sort((a, b) => {
           console.log(a, b);
-          return (a?.created?.toDate() || new Date()).getTime() < (b?.created?.toDate() || new Date()).getTime()
+          return (a?.created?.toDate() || new Date()).getTime() <
+            (b?.created?.toDate() || new Date()).getTime()
             ? 1
             : -1;
         });

@@ -75,26 +75,22 @@
               </div>
             </div>
 
-						<div v-if="hasStripe && orderInfo.payment.stripe !== 'canceled'">
+            <div v-if="hasStripe && orderInfo.payment.stripe !== 'canceled'">
               <div
                 class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-yellow-500 bg-opacity-10 px-4 py-1 font-bold text-yellow-500"
               >
                 <span class="ml-1 mt-1 text-sm">
-                  {{ $t("admin.order.cardPaymentMessage")}}
-
-                </span
-                >
+                  {{ $t("admin.order.cardPaymentMessage") }}
+                </span>
               </div>
             </div>
-						<div v-else-if="orderInfo.status !== order_status.order_canceled" >
+            <div v-else-if="orderInfo.status !== order_status.order_canceled">
               <div
                 class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-red-700 bg-opacity-10 px-4 py-1 font-bold text-red-700"
               >
                 <span class="ml-1 mt-1 text-sm">
-                  {{ $t("admin.order.storePaymentMessage")}}
-
-                </span
-                >
+                  {{ $t("admin.order.storePaymentMessage") }}
+                </span>
               </div>
             </div>
 
@@ -103,10 +99,9 @@
                 class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-green-600 bg-opacity-10 px-4 py-1 font-bold text-green-600"
               >
                 <span class="ml-1 mt-1 text-sm">
-                  {{ $n(orderInfo.discountPrice, "currency") }}{{ $t("order.discountPriceMessage")}}
-
-                </span
-                >
+                  {{ $n(orderInfo.discountPrice, "currency")
+                  }}{{ $t("order.discountPriceMessage") }}
+                </span>
               </div>
             </div>
             <div v-if="orderInfo.isPickup">
@@ -138,15 +133,14 @@
             </div>
 
             <!-- Cancel Button -->
-            <div class="mt-6 text-center"
-                v-if="
-                  isValidTransition('order_canceled') &&
-                  (paymentIsNotCompleted || !hasStripe)
-                "
-                 >
-              <button
-                @click="openCancel()"
-              >
+            <div
+              class="mt-6 text-center"
+              v-if="
+                isValidTransition('order_canceled') &&
+                (paymentIsNotCompleted || !hasStripe)
+              "
+            >
+              <button @click="openCancel()">
                 <div
                   class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
                 >
@@ -157,12 +151,10 @@
                 </div>
               </button>
             </div>
-            <div class="mt-6 text-center"
-                 v-if="cancelStatus"
-                 >
+            <div class="mt-6 text-center" v-if="cancelStatus">
               <div
                 class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-red-700 bg-opacity-10 text-red-700"
-                >
+              >
                 <div>
                   <div class="text-base font-extrabold">
                     {{ $t("order." + cancelStatus) }}
@@ -184,7 +176,7 @@
                 :nationalPhoneURI="nationalPhoneURI"
                 :nationalPhoneNumber="nationalPhoneNumber"
                 @close="closeCancel()"
-                />
+              />
             </o-modal>
 
             <!-- Pickup Time -->
@@ -246,9 +238,17 @@
               </div>
               <div>
                 {{ $t("order.orderTimes") }}:
-                {{ $t("order.orderTimesUnit", {count: userLog.counter || 0},  0 ) }} /
-                {{ $t("order.cancelTimes") }}:
-                {{ $t("order.cancelTimesUnit", {count: userLog.cancelCounter || 0}, 0) }}
+                {{
+                  $t("order.orderTimesUnit", { count: userLog.counter || 0 }, 0)
+                }}
+                / {{ $t("order.cancelTimes") }}:
+                {{
+                  $t(
+                    "order.cancelTimesUnit",
+                    { count: userLog.cancelCounter || 0 },
+                    0,
+                  )
+                }}
               </div>
               <div>
                 <div
@@ -261,7 +261,7 @@
                     {{
                       userLog.lastOrder
                         ? moment(userLog.lastOrder.toDate()).format(
-                            "YYYY/MM/DD HH:mm"
+                            "YYYY/MM/DD HH:mm",
                           )
                         : "--"
                     }}<br />
@@ -269,7 +269,7 @@
                     {{
                       orderInfo.timePlaced
                         ? moment(orderInfo.timePlaced.toDate()).format(
-                            "YYYY/MM/DD HH:mm"
+                            "YYYY/MM/DD HH:mm",
                           )
                         : "--"
                     }}
@@ -280,7 +280,7 @@
                   {{
                     userLog.lastOrder
                       ? moment(userLog.lastOrder.toDate()).format(
-                          "YYYY/MM/DD HH:mm"
+                          "YYYY/MM/DD HH:mm",
                         )
                       : "--"
                   }}
@@ -370,7 +370,7 @@
                         {{
                           $t(
                             "order.status." +
-                              convOrderStateForText(orderState, orderInfo)
+                              convOrderStateForText(orderState, orderInfo),
                           )
                         }}
                       </div>
@@ -408,7 +408,7 @@
               v-model:active="paymentCancelPopup"
               :width="488"
               scroll="keep"
-              >
+            >
               <PaymentCancelModal
                 :shopInfo="shopInfo"
                 :orderInfo="orderInfo"
@@ -417,7 +417,7 @@
                 :nationalPhoneURI="nationalPhoneURI"
                 :nationalPhoneNumber="nationalPhoneNumber"
                 @close="closePaymentCancel()"
-                />
+              />
             </o-modal>
           </div>
         </div>
@@ -444,7 +444,11 @@
               :editedAvailableOrders="editedAvailableOrders"
               @update="updateEnable"
             ></order-info>
-            <div v-if="editedAvailableOrders.length > 1 || orderInfo.orderUpdatedAt">
+            <div
+              v-if="
+                editedAvailableOrders.length > 1 || orderInfo.orderUpdatedAt
+              "
+            >
               <div
                 class="rounded-lg bg-white p-4 text-center shadow"
                 v-if="orderInfo.orderUpdatedAt"
@@ -620,7 +624,7 @@ export default defineComponent({
     const store = useStore();
     const route = useRoute();
     const router = useRouter();
-    const { d } = useI18n({ useScope: 'global' });
+    const { d } = useI18n({ useScope: "global" });
     const menuObj = ref({});
     const orderInfo = ref<OrderInfoData>({} as OrderInfoData);
     const customer = ref({});
@@ -652,15 +656,15 @@ export default defineComponent({
       getDoc(doc(db, `restaurants/${restaurantId.value}/ec/postage`)).then(
         (snapshot) => {
           postageInfo.value = snapshot.data() || {};
-        }
+        },
       );
     }
     if (props.shopInfo.enableDelivery) {
-      getDoc(
-        doc(db, `restaurants/${restaurantId.value}/delivery/area`)
-      ).then((snapshot) => {
-        deliveryData.value = snapshot.data() || {};
-      });
+      getDoc(doc(db, `restaurants/${restaurantId.value}/delivery/area`)).then(
+        (snapshot) => {
+          deliveryData.value = snapshot.data() || {};
+        },
+      );
     }
     const orderId = computed(() => {
       return route.params.orderId as string;
@@ -679,10 +683,8 @@ export default defineComponent({
           const tmpCustomer = await getDoc(
             doc(
               db,
-              `restaurants/${restaurantId.value}/orders/${
-                orderId.value
-              }/customer/data`
-            )
+              `restaurants/${restaurantId.value}/orders/${orderId.value}/customer/data`,
+            ),
           );
           customer.value =
             tmpCustomer.data() || orderInfo.value?.customerInfo || {};
@@ -692,7 +694,7 @@ export default defineComponent({
       () => {
         notFound.value = true;
         return;
-      }
+      },
     );
 
     getShopOwner(uid.value).then((data) => {
@@ -706,10 +708,8 @@ export default defineComponent({
       getDoc(
         doc(
           db,
-          `restaurants/${restaurantId.value}/userLog/${
-            orderInfo.value.uid
-          }`
-        )
+          `restaurants/${restaurantId.value}/userLog/${orderInfo.value.uid}`,
+        ),
       ).then((res) => {
         if (res.exists()) {
           userLog.value = res.data();
@@ -721,8 +721,8 @@ export default defineComponent({
         getDocs(
           query(
             collection(db, `restaurants/${menuRestaurantId}/menus`),
-            where(documentId(), "in", arr)
-          )
+            where(documentId(), "in", arr),
+          ),
         ).then((menu) => {
           if (!menu.empty) {
             const tmpMenuObj = array2obj(menu.docs.map(doc2data("menu")));
@@ -734,16 +734,18 @@ export default defineComponent({
 
     const orderUpdateInterval = computed(() => {
       if (orderInfo.value.orderPlacedAt && userLog.value.lastUpdatedAt) {
-        // @ts-ignore
-        const intervalHour = (orderInfo.value.orderPlacedAt - userLog.value.lastUpdatedAt) / 3600;
+        const intervalHour =
+          // @ts-ignore
+          (orderInfo.value.orderPlacedAt - userLog.value.lastUpdatedAt) / 3600;
         return intervalHour;
       }
       return -1000000;
     });
     const orderPickupInterval = computed(() => {
       if (orderInfo.value.timeCreated && userLog.value.lastUpdatedAt) {
+        const intervalHour =
         // @ts-ignore
-        const intervalHour = (orderInfo.value.timeCreated - userLog.value.lastUpdatedAt) / 3600;
+          (orderInfo.value.timeCreated - userLog.value.lastUpdatedAt) / 3600;
         return intervalHour;
       }
       return -1000000;
@@ -807,7 +809,7 @@ export default defineComponent({
     });
     const search = computed(() => {
       const value = encodeURIComponent(
-        orderInfo.value.description || orderName.value
+        orderInfo.value.description || orderName.value,
       );
       return `${ownPlateConfig.stripe.search}?query=${value}`;
     });
@@ -827,7 +829,7 @@ export default defineComponent({
             offset,
             display: `${d(date, "time")}`,
           };
-        }
+        },
       );
     });
     const timeRequested = computed(() => {
@@ -892,7 +894,7 @@ export default defineComponent({
     });
     // for editable order
     const edited_available_order_info = computed(() => {
-      const ret: {menuId: string, index: number}[] = [];
+      const ret: { menuId: string; index: number }[] = [];
       Object.keys(editedAvailableOrders.value).forEach((key: string) => {
         // @ts-ignore
         if (editedAvailableOrders.value[key]) {
@@ -922,7 +924,15 @@ export default defineComponent({
           }
           return tmp;
         },
-        { sub_total: 0, tax: 0, food_sub_total: 0, alcohol_sub_total: 0, food_tax: 0, alcohol_tax: 0, total: 0 }
+        {
+          sub_total: 0,
+          tax: 0,
+          food_sub_total: 0,
+          alcohol_sub_total: 0,
+          food_tax: 0,
+          alcohol_tax: 0,
+          total: 0,
+        },
       );
       ret.sub_total = ret.food_sub_total + ret.alcohol_sub_total;
 
@@ -930,11 +940,11 @@ export default defineComponent({
       if (inclusiveTax) {
         ret.food_tax =
           Math.round(
-            ret.food_sub_total * (1 - 1 / (1 + foodTax / 100)) * multiple
+            ret.food_sub_total * (1 - 1 / (1 + foodTax / 100)) * multiple,
           ) / multiple;
         ret.alcohol_tax =
           Math.round(
-            ret.alcohol_sub_total * (1 - 1 / (1 + alcoholTax / 100)) * multiple
+            ret.alcohol_sub_total * (1 - 1 / (1 + alcoholTax / 100)) * multiple,
           ) / multiple;
         ret.tax = ret.food_tax + ret.alcohol_tax;
         ret.total = ret.sub_total;
@@ -951,7 +961,7 @@ export default defineComponent({
       const shippingCost = costCal(
         postageInfo.value,
         orderInfo.value?.customerInfo?.prefectureId as number,
-        ret.total
+        ret.total,
       );
 
       const deliveryFee = (() => {
@@ -1018,7 +1028,7 @@ export default defineComponent({
       const data = await printOrder(
         props.shopInfo,
         orderInfo.value,
-        orderItems.value
+        orderItems.value,
       );
       const passprnt_uri = data2UrlSchema(data, "2");
       location.href = passprnt_uri;
@@ -1050,7 +1060,7 @@ export default defineComponent({
         if (data.result) {
           router.push(parentUrl.value);
         } else {
-          if (data.type === 'StripeCardError') {
+          if (data.type === "StripeCardError") {
             store.commit("setErrorMessage", {
               code: "order.updateCard",
               message2: "errorPage.message.cardError",
@@ -1105,7 +1115,9 @@ export default defineComponent({
     };
     const autoCancelTime = computed(() => {
       const diffSecond = orderInfo.value?.isPickup ? 10 * 60 : 3600 * 24;
-      return new Date((orderInfo.value?.orderPlacedAt.seconds + diffSecond) * 1000);
+      return new Date(
+        (orderInfo.value?.orderPlacedAt.seconds + diffSecond) * 1000,
+      );
       // return orderInfo.value?.orderPlacedAt?.toDate();
     });
     const classOf = (statusKey: string) => {
@@ -1163,7 +1175,7 @@ export default defineComponent({
       hasStripe,
       paymentIsNotCompleted,
       autoCancelTime,
-      
+
       nationalPhoneNumber,
       nationalPhoneURI,
       parentUrl,

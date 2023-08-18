@@ -9,7 +9,7 @@
         $t(
           isLoadingReceipt
             ? "order.receipt.loading"
-            : "order.receipt.getReceipt"
+            : "order.receipt.getReceipt",
         )
       }}</span>
     </div>
@@ -41,10 +41,10 @@ export default defineComponent({
       }
       isLoadingReceipt.value = true;
       try {
-        const res = await stripeReceipt({
+        const res = (await stripeReceipt({
           restaurantId: restaurantId.value,
           orderId: route.params.orderId,
-        }) as any;
+        })) as any;
         if (res.data && res.data.receipt_url) {
           window.open(res.data.receipt_url);
         }

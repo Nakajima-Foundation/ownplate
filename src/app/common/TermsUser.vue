@@ -410,7 +410,7 @@ export default defineComponent({
   metaInfo() {
     return {
       title: [this.$t("pageTitle.terms.user") || "", defaultHeader.title].join(
-        " / "
+        " / ",
       ),
     };
   },

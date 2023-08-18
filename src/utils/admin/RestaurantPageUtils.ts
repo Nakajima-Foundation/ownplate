@@ -65,7 +65,7 @@ export const getEditShopInfo = (shopInfo: RestaurantInfoData) => {
           });
         return tmp;
       },
-      {}
+      {},
     ),
     businessDay: shopInfo.businessDay,
     temporaryClosure: shopInfo.temporaryClosure,
@@ -144,7 +144,7 @@ export const shopInfoValidator = (
   requireTaxInput: boolean,
   errorsPhone: string[],
   files_profile?: File,
-  files_cover?: File
+  files_cover?: File,
 ) => {
   const err: shopInfoValidatorError = {};
   [
@@ -169,28 +169,28 @@ export const shopInfoValidator = (
   // validate pickUpMinimumCookTime
   if (!Number.isInteger(shopInfo["pickUpMinimumCookTime"])) {
     (err["pickUpMinimumCookTime"] as string[]).push(
-      "validationError." + name + ".notNumbery"
+      "validationError." + name + ".notNumbery",
     );
   } else {
     if (shopInfo["pickUpMinimumCookTime"] > 24 * 60 * 7) {
       (err["pickUpMinimumCookTime"] as string[]).push(
-        "validationError." + name + ".tooMuch"
+        "validationError." + name + ".tooMuch",
       );
     }
     if (shopInfo["pickUpMinimumCookTime"] < 0) {
       (err["pickUpMinimumCookTime"] as string[]).push(
-        "validationError." + name + ".negative"
+        "validationError." + name + ".negative",
       );
     }
   }
   if (
     !reservationTheDayBefore.some(
       (day: { messageKey: string; value: number }) =>
-        day.value === shopInfo["pickUpDaysInAdvance"]
+        day.value === shopInfo["pickUpDaysInAdvance"],
     )
   ) {
     (err["pickUpDaysInAdvance"] as string[]).push(
-      "validationError." + name + ".invalid"
+      "validationError." + name + ".invalid",
     );
   }
 
@@ -203,7 +203,7 @@ export const shopInfoValidator = (
       if (shopInfo[name as keyof RestaurantInfoData] !== "") {
         if (isNaN(shopInfo[name as keyof RestaurantInfoData])) {
           (err[name] as string[]).push(
-            "validationError." + name + ".invalidNumber"
+            "validationError." + name + ".invalidNumber",
           );
         }
       }
@@ -274,7 +274,7 @@ export const shopInfoValidator = (
 export const copyRestaurant = async (
   shopInfo: RestaurantInfoData,
   uid: string,
-  restaurantId: string
+  restaurantId: string,
 ) => {
   const restaurantData = getEditShopInfo(shopInfo);
   restaurantData.restaurantName = restaurantData.restaurantName + " - COPY";
@@ -286,7 +286,7 @@ export const copyRestaurant = async (
 
   const restaurantDoc = await addDoc(
     collection(db, "restaurants"),
-    cleanObject(newRestaurantData)
+    cleanObject(newRestaurantData),
   );
   const id = restaurantDoc.id;
 
@@ -294,37 +294,37 @@ export const copyRestaurant = async (
   const menus = await getDocs(
     query(
       collection(db, `restaurants/${restaurantId}/menus`),
-      where("deletedFlag", "==", false)
-    )
+      where("deletedFlag", "==", false),
+    ),
   );
 
   await Promise.all(
     menus.docs.map(async (a) => {
       const newMenu = await addDoc(
         collection(db, `restaurants/${id}/menus`),
-        a.data()
+        a.data(),
       );
       menuListIds[a.id] = newMenu.id;
       return;
-    })
+    }),
   );
   // console.log(menus.docs);
   const titles = await getDocs(
     query(
       collection(db, `restaurants/${restaurantId}/titles`),
-      where("deletedFlag", "==", false)
-    )
+      where("deletedFlag", "==", false),
+    ),
   );
 
   await Promise.all(
     titles.docs.map(async (a) => {
       const newMenu = await addDoc(
         collection(db, `restaurants/${id}/titles`),
-        a.data()
+        a.data(),
       );
       menuListIds[a.id] = newMenu.id;
       return;
-    })
+    }),
   );
 
   const newMenuList: string[] = [];

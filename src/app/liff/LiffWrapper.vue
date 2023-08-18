@@ -28,10 +28,7 @@
 import { defineComponent, ref, computed, watch } from "vue";
 import liff from "@line/liff";
 import { db } from "@/lib/firebase/firebase9";
-import {
-  getDoc,
-  doc,
-} from "firebase/firestore";
+import { getDoc, doc } from "firebase/firestore";
 
 import { auth } from "@/lib/firebase/firebase9";
 import { signInWithCustomToken, signOut } from "firebase/auth";
@@ -45,9 +42,7 @@ import NotFound from "@/components/NotFound.vue";
 
 import Modal from "@/components/Modal.vue";
 
-import {
-  useUserData,
-} from "@/utils/utils"
+import { useUserData } from "@/utils/utils";
 
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
@@ -106,7 +101,7 @@ export default defineComponent({
     const store = useStore();
     const route = useRoute();
 
-    const error = ref<string|null>(null);
+    const error = ref<string | null>(null);
     const config = ref();
     const liffUrl = ref("");
     const openModal = ref(false);
@@ -114,11 +109,8 @@ export default defineComponent({
     const liffIdToken = ref("");
     const liffId = ref("");
 
-    const {
-      user,
-      isLiffUser,
-    } = useUserData()
-    
+    const { user, isLiffUser } = useUserData();
+
     // computed
     const userLoad = computed(() => {
       return [store.state.user, liffIdToken.value];
@@ -175,20 +167,21 @@ export default defineComponent({
     // step 2
     const checkInLiff = () => {
       const { liffStatePath, liffStateQuery } = parseLiffState(
-        route.query["liff.state"] as string
+        route.query["liff.state"] as string,
       );
 
       // https://staging.ownplate.today/liff/test/r/123 -> https://liff.line.me/1656180429-yJ8ZmlBv/r/123
       const omochikaeriLiffBasePath = "/liff/" + liffIndexId.value; // /liff/test
       const relativePath = window.location.pathname.slice(
-        omochikaeriLiffBasePath.length
+        omochikaeriLiffBasePath.length,
       ); // /r/123
       liffUrl.value = "https://liff.line.me/" + liffId.value + relativePath; // 1656180429-yJ8ZmlBv/r/123
 
       if (!liff.isInClient()) {
         const { isIOS, isAndroid } = getOS();
         if (liffStateQuery && liffStateQuery["redirect"]) {
-          liffUrl.value = "https://liff.line.me/" + liffId.value + liffStatePath;
+          liffUrl.value =
+            "https://liff.line.me/" + liffId.value + liffStatePath;
           error.value = "pc";
           return false;
         }
@@ -226,7 +219,7 @@ export default defineComponent({
         if (!liff.isLoggedIn()) {
           liff.login();
         }
-        liffIdToken.value = await liff.getIDToken() as string;
+        liffIdToken.value = (await liff.getIDToken()) as string;
       } catch (e) {
         console.log("liff_login", e);
       }
@@ -240,27 +233,27 @@ export default defineComponent({
         error.value = "no_liff";
         return;
       }
-      
+
       // step 1.1.
       if (route.params.restaurantId) {
         const hasRestaurant = (config.value.restaurants || []).some(
           (restaurantId: string) => {
             return restaurantId === route.params.restaurantId;
-          }
+          },
         );
         if (!hasRestaurant) {
           error.value = "no_restaurant";
           return;
         }
       }
-      
+
       if (location.hostname !== "localhost") {
         // if not liff user, force sign out
         if (user.value && !isLiffUser.value) {
           signOut(auth);
         }
       }
-      
+
       liffId.value = config.value.liffId;
       // step 2.
       if (!checkInLiff()) {
@@ -268,7 +261,7 @@ export default defineComponent({
       }
       // step 3.
       await liffInit();
-      
+
       if (location.hostname === "localhost") {
         loading.value = false;
       }

@@ -11,9 +11,7 @@
           <div class="flex-shrink-0">
             <back-button url="/admin/restaurants/" />
           </div>
-          <PreviewLink
-            :shopInfo="shopInfo"
-          />
+          <PreviewLink :shopInfo="shopInfo" />
         </div>
 
         <!-- Photo and Name -->
@@ -108,7 +106,7 @@
                 {{ order.discountPrice || 0 }}
               </div>
             </td>
-            
+
             <td class="p-2">
               <div class="text-right">{{ order.totalCharge }}</div>
             </td>
@@ -197,15 +195,15 @@
 
 <script lang="ts">
 import { db } from "@/lib/firebase/firebase9";
-import { query, collection, where, orderBy, onSnapshot } from "firebase/firestore";
-
 import {
-  defineComponent,
-  ref,
-  computed,
-  watch,
-  onUnmounted,
-} from "vue";
+  query,
+  collection,
+  where,
+  orderBy,
+  onSnapshot,
+} from "firebase/firestore";
+
+import { defineComponent, ref, computed, watch, onUnmounted } from "vue";
 import moment from "moment";
 
 import BackButton from "@/components/BackButton.vue";
@@ -217,10 +215,7 @@ import NotFound from "@/components/NotFound.vue";
 import { ownPlateConfig } from "@/config/project";
 import { nameOfOrder } from "@/utils/strings";
 import { midNightOfMonth } from "@/utils/dateUtils";
-import {
-  revenueCSVHeader,
-  revenueTableHeader,
-} from "@/utils/reportUtils";
+import { revenueCSVHeader, revenueTableHeader } from "@/utils/reportUtils";
 import { order_status_keys } from "@/config/constant";
 import {
   useAdminUids,
@@ -263,7 +258,7 @@ export default defineComponent({
     };
   },
   setup(props) {
-    const { t } = useI18n({ useScope: 'global' });
+    const { t } = useI18n({ useScope: "global" });
     const orders = ref<OrderInfoData[]>([]);
     const total = ref({
       food: {
@@ -306,9 +301,7 @@ export default defineComponent({
           shopId: props.shopInfo.shopId, // mo
           type: t("order." + orderTypeKey(order)),
           restaurantName: props.shopInfo.restaurantName,
-          orderStatus: t(
-            "order.status." + order_status_keys[order.status]
-          ),
+          orderStatus: t("order.status." + order_status_keys[order.status]),
           foodRevenue: order.accounting?.food.revenue,
           foodTax: order.accounting?.food.tax,
           alcoholRevenue: order.accounting?.alcohol.revenue,
@@ -337,7 +330,7 @@ export default defineComponent({
     const fileNameSummary = computed(() => {
       return [
         moment(lastSeveralMonths.value[monthIndex.value].date).format(
-          "YYYY-MM"
+          "YYYY-MM",
         ),
         "revenue",
         props.shopInfo.restaurantId,
@@ -347,7 +340,7 @@ export default defineComponent({
     const fileNameDetail = computed(() => {
       return [
         moment(lastSeveralMonths.value[monthIndex.value].date).format(
-          "YYYY-MM"
+          "YYYY-MM",
         ),
         "revenue",
         props.shopInfo.restaurantId,
@@ -362,59 +355,59 @@ export default defineComponent({
         where(
           "timeConfirmed",
           ">=",
-          lastSeveralMonths.value[monthIndex.value].date
-        )
-      )
+          lastSeveralMonths.value[monthIndex.value].date,
+        ),
+      );
       if (monthIndex.value > 0) {
         myQuery = query(
           myQuery,
           where(
             "timeConfirmed",
             "<",
-            lastSeveralMonths.value[monthIndex.value - 1].date
-          )
+            lastSeveralMonths.value[monthIndex.value - 1].date,
+          ),
         );
       }
-      detacher = onSnapshot(query(
-        myQuery,
-        orderBy("timeConfirmed")
-      ), (snapshot) => {
-        const serviceTaxRate = props.shopInfo.alcoholTax / 100;
-        orders.value = snapshot.docs
-          .map(a => doc2data("order")(a as any))
-          // .map(doc2data("order")) // fix after firebase 9
-          .map((order) =>
-            order2ReportData(order as OrderInfoData, serviceTaxRate)
+      detacher = onSnapshot(
+        query(myQuery, orderBy("timeConfirmed")),
+        (snapshot) => {
+          const serviceTaxRate = props.shopInfo.alcoholTax / 100;
+          orders.value = snapshot.docs
+            .map((a) => doc2data("order")(a as any))
+            // .map(doc2data("order")) // fix after firebase 9
+            .map((order) =>
+              order2ReportData(order as OrderInfoData, serviceTaxRate),
+            );
+          total.value = orders.value.reduce(
+            (total, order) => {
+              const accounting = order.accounting;
+              total.food.revenue += accounting?.food?.revenue || 0;
+              total.food.tax += accounting?.food?.tax || 0;
+              total.alcohol.revenue += accounting?.alcohol?.revenue || 0;
+              total.alcohol.tax += accounting?.alcohol?.tax || 0;
+              total.service.revenue += accounting?.service?.revenue || 0;
+              total.service.tax += accounting?.service?.tax || 0;
+              total.totalCharge += order.totalCharge;
+              return total;
+            },
+            {
+              food: {
+                revenue: 0,
+                tax: 0,
+              },
+              alcohol: {
+                revenue: 0,
+                tax: 0,
+              },
+              service: {
+                revenue: 0,
+                tax: 0,
+              },
+              totalCharge: 0,
+            },
           );
-        total.value = orders.value.reduce(
-          (total, order) => {
-            const accounting = order.accounting;
-            total.food.revenue += accounting?.food?.revenue || 0;
-            total.food.tax += accounting?.food?.tax || 0;
-            total.alcohol.revenue += accounting?.alcohol?.revenue || 0;
-            total.alcohol.tax += accounting?.alcohol?.tax || 0;
-            total.service.revenue += accounting?.service?.revenue || 0;
-            total.service.tax += accounting?.service?.tax || 0;
-            total.totalCharge += order.totalCharge;
-            return total;
-          },
-          {
-            food: {
-              revenue: 0,
-              tax: 0,
-            },
-            alcohol: {
-              revenue: 0,
-              tax: 0,
-            },
-            service: {
-              revenue: 0,
-              tax: 0,
-            },
-            totalCharge: 0,
-          }
-        );
-      })
+        },
+      );
     };
     const orderUrl = (order: OrderInfoData) => {
       return `/admin/restaurants/${props.shopInfo.restaurantId}/orders/${order.id}`;

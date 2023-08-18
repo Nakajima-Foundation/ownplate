@@ -1,7 +1,5 @@
 <template>
-  <div v-if="notFound">
-    404
-  </div>
+  <div v-if="notFound">404</div>
   <div class="mx-6" v-else>
     <!-- QR Header Area -->
     <div class="columns is-gapless" v-if="shopInfo">
@@ -10,40 +8,40 @@
       <!-- Center Column -->
       <div class="column">
         <!-- Nav Bar -->
-          <!-- Back Button and Restaurant Profile -->
-          <AdminHeader
-            class="mt-6 lg:flex lg:items-center"
-            :shopInfo="shopInfo"
-            :backLink="`/admin/restaurants/${shopInfo.restaurantId}/discounts`"
-            :showSuspend="false"
-						backText="button.backToDiscounts"
-        		iconText="arrow_back"
-            pageText="discountDetail"
-            />
+        <!-- Back Button and Restaurant Profile -->
+        <AdminHeader
+          class="mt-6 lg:flex lg:items-center"
+          :shopInfo="shopInfo"
+          :backLink="`/admin/restaurants/${shopInfo.restaurantId}/discounts`"
+          :showSuspend="false"
+          backText="button.backToDiscounts"
+          iconText="arrow_back"
+          pageText="discountDetail"
+        />
       </div>
       <!-- Right Gap -->
       <div class="column is-narrow w-6"></div>
     </div>
-       <!-- Save -->
-      <div class="mt-12 flex justify-center space-x-4">
-        <button
-          @click="cancel"
-          class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
-          >
-          <span class="text-base font-bold text-black text-opacity-60">
-            {{ $t("button.cancel") }}
-          </span>
-        </button>
+    <!-- Save -->
+    <div class="mt-12 flex justify-center space-x-4">
+      <button
+        @click="cancel"
+        class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
+      >
+        <span class="text-base font-bold text-black text-opacity-60">
+          {{ $t("button.cancel") }}
+        </span>
+      </button>
 
-        <button
-          @click="save"
-          class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
-          >
-          <span class="text-base font-bold text-white">
-            {{ $t("editCommon.save") }}
-          </span>
-        </button>
-      </div>
+      <button
+        @click="save"
+        class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
+      >
+        <span class="text-base font-bold text-white">
+          {{ $t("editCommon.save") }}
+        </span>
+      </button>
+    </div>
 
     <div v-if="promotion">
       <div class="mt-6">
@@ -51,7 +49,7 @@
           {{ $t("admin.promotion.name") }}
         </div>
         <div>
-          <o-input type="text" v-model="promotion.promotionName"/>
+          <o-input type="text" v-model="promotion.promotionName" />
         </div>
       </div>
       <div class="mt-6">
@@ -63,8 +61,8 @@
             v-for="(result, key) in toBeOrNotSelect"
             :value="result.value"
             :key="key"
-            >
-            {{ $t('admin.' + result.messageKey) }}
+          >
+            {{ $t("admin." + result.messageKey) }}
           </option>
         </o-select>
       </div>
@@ -77,8 +75,8 @@
             v-for="(result, key) in discountTypeSelect"
             :value="result.value"
             :key="key"
-            >
-            {{ $t('admin.promotion.' + result.messageKey) }}
+          >
+            {{ $t("admin.promotion." + result.messageKey) }}
           </option>
         </o-select>
       </div>
@@ -92,8 +90,8 @@
             v-for="(result, key) in toBeOrNotSelect"
             :value="result.value"
             :key="key"
-            >
-            {{ $t('admin.' + result.messageKey) }}
+          >
+            {{ $t("admin." + result.messageKey) }}
           </option>
         </o-select>
 
@@ -104,8 +102,8 @@
             :min-date="new Date()"
             expanded
             :placeholder="$t('shopInfo.temporaryClosureSelect')"
-						class="lg:w-96"
-            >
+            class="lg:w-96"
+          >
           </o-datetimepicker>
           <o-datetimepicker
             icon="calendar-today"
@@ -113,8 +111,8 @@
             :min-date="new Date()"
             expanded
             :placeholder="$t('shopInfo.temporaryClosureSelect')"
-						class="lg:w-96"
-            >
+            class="lg:w-96"
+          >
           </o-datetimepicker>
         </o-field>
       </div>
@@ -124,10 +122,12 @@
         </div>
         <div>
           <o-field>
-            <o-input type="number" v-model="promotion.discountThreshold"
-                     :step="1"
-                     min="0"
-                     />
+            <o-input
+              type="number"
+              v-model="promotion.discountThreshold"
+              :step="1"
+              min="0"
+            />
             <div>
               <span class="button is-static">
                 {{ $t("currency.JPY") }}
@@ -145,7 +145,7 @@
             v-for="(result, key) in toBeOrNotSelect2"
             :value="result.value"
             :key="key"
-            >
+          >
             {{ result.message }}
           </option>
         </o-select>
@@ -159,8 +159,8 @@
             v-for="(result, key) in discountMethodSelect"
             :value="result.value"
             :key="key"
-            >
-            {{ $t('admin.promotion.' + result.messageKey) }}
+          >
+            {{ $t("admin.promotion." + result.messageKey) }}
           </option>
         </o-select>
       </div>
@@ -173,15 +173,13 @@
             {{ $t("admin.promotion.ratio") }}
           </template>
         </div>
-        <o-field >
+        <o-field>
           <o-input type="text" v-model="promotion.discountValue" />
           <span class="button is-static">
             <template v-if="promotion.discountMethod === 'amount'">
               {{ $t("currency.JPY") }}
             </template>
-            <template v-else>
-              %
-            </template>
+            <template v-else> % </template>
           </span>
         </o-field>
       </div>
@@ -194,18 +192,17 @@
             v-for="(result, key) in promotionPaymentRestrictionsSelect"
             :value="result.value"
             :key="key"
-            >
+          >
             {{ result.message }}
           </option>
         </o-select>
-
       </div>
       <!-- Save -->
       <div class="mt-6 flex justify-center space-x-4">
         <button
           @click="cancel"
           class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
-          >
+        >
           <span class="text-base font-bold text-black text-opacity-60">
             {{ $t("button.cancel") }}
           </span>
@@ -214,30 +211,23 @@
         <button
           @click="save"
           class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
-          >
+        >
           <span class="text-base font-bold text-white">
             {{ $t("editCommon.save") }}
           </span>
         </button>
       </div>
     </div>
-</div>
+  </div>
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-} from "vue";
+import { defineComponent, ref } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 
-import {
-  updateDoc,
-  doc,
-  Timestamp,
-} from "firebase/firestore";
+import { updateDoc, doc, Timestamp } from "firebase/firestore";
 
 import {
   toBeOrNotSelect,
@@ -248,21 +238,11 @@ import {
   promotionPaymentRestrictionsSelect,
 } from "@/config/constant";
 
-
-import {
-  getPromotion,
-  getPromotionDocumentPath,
-} from "@/utils/promotion";
+import { getPromotion, getPromotionDocumentPath } from "@/utils/promotion";
 import { PromotionData } from "@/models/promotion";
 
-import {
-  useRoute,
-  useRouter,
-} from "vue-router";
-import {
-  useAdminUids,
-  notFoundResponse,
-} from "@/utils/utils";
+import { useRoute, useRouter } from "vue-router";
+import { useAdminUids, notFoundResponse } from "@/utils/utils";
 import { checkShopAccount } from "@/utils/userPermission";
 
 export default defineComponent({
@@ -274,7 +254,6 @@ export default defineComponent({
       type: Object,
       required: true,
     },
-
   },
   setup(props) {
     const route = useRoute();
@@ -282,19 +261,20 @@ export default defineComponent({
     const discountId = route.params.discountId as string;
 
     const id = props.shopInfo.restaurantId;
-    const promotion = ref<PromotionData|null>(null);
+    const promotion = ref<PromotionData | null>(null);
 
     const termFromDate = ref();
     const termToDate = ref();
 
     const { ownerUid } = useAdminUids();
     if (
-      !checkShopAccount(props.shopInfo || {}, ownerUid.value) || !ownerUid.value
+      !checkShopAccount(props.shopInfo || {}, ownerUid.value) ||
+      !ownerUid.value
     ) {
       return notFoundResponse;
     }
 
-    getPromotion(id as string, discountId).then(data => {
+    getPromotion(id as string, discountId).then((data) => {
       promotion.value = data;
       termFromDate.value = data.termFrom.toDate();
       termToDate.value = data.termTo.toDate();
@@ -352,7 +332,6 @@ export default defineComponent({
       cancel,
       notFound: false,
     };
-  }
+  },
 });
-
 </script>

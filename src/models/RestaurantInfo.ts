@@ -2,7 +2,7 @@ export interface RestaurantInfoData {
   url: string;
   restaurantName: string;
   id: string;
-  
+
   restaurantId: string; // mo
   shopId: string; // mo
   moLastPickupTime: string; // mo
@@ -18,7 +18,7 @@ export interface RestaurantInfoData {
   introduction: string;
   menuLists: string[];
   numberOfMenus: number;
-  
+
   ownerName: string;
   uid: string;
 
@@ -43,7 +43,7 @@ export interface RestaurantInfoData {
 
   hasLine: boolean;
   lineClientId: string;
-  
+
   isEC: boolean; // set by system
   enableDelivery: boolean;
   enableMoPickup: boolean; // set by sys
@@ -51,13 +51,13 @@ export interface RestaurantInfoData {
   supportLiff: boolean;
 
   enableLunchDinner: boolean;
-  
+
   countryCode: string;
   acceptUserMessage: boolean;
   foodTax: number;
   alcoholTax: number;
   inclusiveTax: boolean;
-  openTimes: { [key: string]: {start: any, end: any}[] };
+  openTimes: { [key: string]: { start: any; end: any }[] };
   businessDay: { [key: string]: string[] };
 
   pickUpMinimumCookTime: number;
@@ -66,7 +66,7 @@ export interface RestaurantInfoData {
   paymentMethods: { [key: string]: boolean };
 
   onTheList: boolean;
-  
+
   deliveryMinimumCookTime: number;
   suspendUntil: any;
 

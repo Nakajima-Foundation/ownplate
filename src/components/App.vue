@@ -106,14 +106,14 @@ export default defineComponent({
     : defaultHeader,
 
   setup() {
-    let unregisterAuthObserver: null | Unsubscribe =  null;
+    let unregisterAuthObserver: null | Unsubscribe = null;
     let timerId: null | number = null;
     const store = useStore();
     const route = useRoute();
 
     const user = useUser();
     const restaurantId = useRestaurantId();
-    
+
     onMounted(() => {
       window.addEventListener("focus", () => {
         store.commit("setActive", true);
@@ -133,10 +133,7 @@ export default defineComponent({
       if (user.value !== undefined) {
         return true; // Firebase has already identified the user (or non-user)
       }
-      if (
-        route.path === `/r/${restaurantId.value}` ||
-        route.path === "/"
-      ) {
+      if (route.path === `/r/${restaurantId.value}` || route.path === "/") {
         // console.log("isReadyToRender: quick render activated");
         return true; // We are opening the restaurant page
       }
@@ -166,7 +163,8 @@ export default defineComponent({
         fUser
           .getIdTokenResult(true)
           .then((result) => {
-            const diff = Date.now() - Number(result.claims?.auth_time||0) * 1000;
+            const diff =
+              Date.now() - Number(result.claims?.auth_time || 0) * 1000;
             if (diff > 3600 * 24 * 30 * 1000) {
               signOut(auth);
             } else {
@@ -183,7 +181,6 @@ export default defineComponent({
           role: fUser.email ? "admin" : "customer",
         });
         setUserId(analytics, fUser.uid);
-
       } else {
         setUserProperties(analytics, { role: "anonymous" });
         // console.log("authStateChanged: null");
@@ -191,7 +188,7 @@ export default defineComponent({
         store.commit("setCustomClaims", null);
       }
     });
-    
+
     console.log(process.env.VUE_APP_CIRCLE_SHA1);
     const isInLine = /Line/.test(navigator.userAgent);
     const isInLIFF = /LIFF/.test(navigator.userAgent);
@@ -218,12 +215,15 @@ export default defineComponent({
       }
       store.commit("updateDate");
     }, 60 * 1000);
-    
-    watch(() => route.path, () => {
-      // https://support.google.com/analytics/answer/9234069?hl=ja
-      pingAnalytics();
-    });
-      
+
+    watch(
+      () => route.path,
+      () => {
+        // https://support.google.com/analytics/answer/9234069?hl=ja
+        pingAnalytics();
+      },
+    );
+
     pingAnalytics();
 
     onUnmounted(() => {
@@ -243,11 +243,9 @@ export default defineComponent({
       handleOpen,
       isReadyToRender,
       dialog,
-      isLoading
-      
-    }
+      isLoading,
+    };
   },
-
 });
 </script>
 <style lang="scss">

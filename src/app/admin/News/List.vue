@@ -35,9 +35,7 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-} from "vue";
+import { defineComponent } from "vue";
 import ListItem from "@/app/admin/News/ListItem.vue";
 import newsList from "@/app/admin/News/data";
 

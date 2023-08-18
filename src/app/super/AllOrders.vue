@@ -121,10 +121,10 @@ export default defineComponent({
     BackButton,
   },
   setup() {
-    const { t } = useI18n({ useScope: 'global' });
+    const { t } = useI18n({ useScope: "global" });
     const router = useRouter();
     superPermissionCheck();
-    
+
     const months = [0, 1, 2, 3, 4, 5].map((a) => {
       return moment().subtract(a, "month").format("YYYY-MM");
     });
@@ -134,7 +134,7 @@ export default defineComponent({
     const monthValue = ref(months[0]);
     const isLoading = ref(false);
     const last = ref<any | null>(null);
-    const restaurants = ref<{[key: string]: RestaurantInfoData}>({});
+    const restaurants = ref<{ [key: string]: RestaurantInfoData }>({});
 
     const orderStatus = (() => {
       return Object.keys(order_status).map((key) => {
@@ -143,7 +143,7 @@ export default defineComponent({
           key: key === "error" ? "" : key,
         };
       });
-    })()
+    })();
     const filteredOrders = computed(() => {
       return orders.value.filter((order) => {
         if (orderState.value === 0) {
@@ -152,8 +152,8 @@ export default defineComponent({
         return order.status === orderState.value;
       });
     });
-    
-    const loadData = async () =>  {
+
+    const loadData = async () => {
       if (!isLoading.value) {
         isLoading.value = true;
         let myQuery = query(
@@ -162,10 +162,7 @@ export default defineComponent({
           limit(100),
         );
         if (last.value) {
-          myQuery = query(
-            myQuery,
-            startAfter(last.value)
-          );
+          myQuery = query(myQuery, startAfter(last.value));
         }
         const snapshot = await getDocs(myQuery);
 
@@ -180,8 +177,11 @@ export default defineComponent({
             // @ts-ignore
             order.timePlaced = order.timePlaced.toDate();
             if (!restaurants.value[order.restaurantId]) {
-              const snapshot = await getDoc(doc(db, `restaurants/${order.restaurantId}`));
-              restaurants.value[order.restaurantId] = snapshot.data() as RestaurantInfoData;
+              const snapshot = await getDoc(
+                doc(db, `restaurants/${order.restaurantId}`),
+              );
+              restaurants.value[order.restaurantId] =
+                snapshot.data() as RestaurantInfoData;
             }
             order.restaurant = restaurants.value[order.restaurantId];
             if (order.timeEstimated) {
@@ -202,24 +202,26 @@ export default defineComponent({
       }
     };
     const LoadTillMonth = async () => {
-      if (isLoading.value)  {
-        return ;
+      if (isLoading.value) {
+        return;
       }
       const limit = moment(monthValue.value + "-01 00:00:00+09:00");
 
       while (
-        moment(orders.value[orders.value.length - 1]?.timeCreated?.toDate()) > limit
+        moment(orders.value[orders.value.length - 1]?.timeCreated?.toDate()) >
+        limit
       ) {
         await loadData();
         console.log(orders.value.length);
-      } 
+      }
     };
     loadData();
-    
+
     const orderSelected = (order: OrderInfoData) => {
       // We are re-using the restaurant owner's view.
       router.push({
-        path: "/admin/restaurants/" + order.restaurantId + "/orders/" + order.id,
+        path:
+          "/admin/restaurants/" + order.restaurantId + "/orders/" + order.id,
       });
     };
 
@@ -235,7 +237,7 @@ export default defineComponent({
       "payment",
     ];
     const fieldNames = fields.map((field) => {
-        return t(`order.${field}`);
+      return t(`order.${field}`);
     });
 
     const tableData = computed(() => {
@@ -244,9 +246,7 @@ export default defineComponent({
         return {
           date: time ? moment(time).format("YYYY/MM/DD") : "",
           restaurantName: order.restaurant.restaurantName,
-          orderStatus: t(
-            "order.status." + order_status_keys[order.status]
-          ),
+          orderStatus: t("order.status." + order_status_keys[order.status]),
           revenue: order.totalCharge,
           total: Object.values(order.order).reduce((count, order) => {
             return count + arrayOrNumSum(order);
@@ -256,7 +256,7 @@ export default defineComponent({
         };
       });
     });
-    
+
     return {
       orders,
       orderState,
@@ -265,23 +265,20 @@ export default defineComponent({
       last,
       restaurants,
       months,
-      
+
       orderStatus,
       filteredOrders,
-      
+
       fieldNames,
       tableData,
       fields,
       fileName,
-      
+
       orderSelected,
       nextLoad,
       LoadTillMonth,
       backUrl: getBackUrl(),
-
-      
     };
-
   },
 });
 </script>

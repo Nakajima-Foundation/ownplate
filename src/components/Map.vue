@@ -1,34 +1,30 @@
 <template>
-<div class="mx-6 mt-2 h-3/5">
+  <div class="mx-6 mt-2 h-3/5">
     <GMapMap
-      style="height: 50vh;"
+      style="height: 50vh"
       ref="gMap"
       :center="{ lat: center_lat, lng: center_lng }"
       :options="{ fullscreenControl: false }"
       :zoom="zoom"
     >
-      <template v-for="(restaurant, k) in restaurants"
-        :key="restaurant.id"
-        >
+      <template v-for="(restaurant, k) in restaurants" :key="restaurant.id">
         <GMapMarker
           v-if="restaurant.location && restaurant.location.lat"
           :clickable="true"
           @click="setStore(k)"
           :position="{
-                     lat: restaurant.location.lat,
-                     lng: restaurant.location.lng,
-                     }"
-          >
-          <GMapInfoWindow
-            :opened="selected === k"
-            >
+            lat: restaurant.location.lat,
+            lng: restaurant.location.lng,
+          }"
+        >
+          <GMapInfoWindow :opened="selected === k">
             <div class="text-center">
               <router-link :to="`/r/${restaurant.id}`">
                 {{ restaurant.restaurantName }}<br />
                 <img
                   :src="resizedProfileImage(restaurant, '600')"
                   class="h-12 w-12 rounded-full object-cover"
-                  />
+                />
               </router-link>
             </div>
           </GMapInfoWindow>
@@ -41,9 +37,7 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
-import {
-  resizedProfileImage,
-} from "@/utils/utils";
+import { resizedProfileImage } from "@/utils/utils";
 
 export default defineComponent({
   props: {
@@ -54,18 +48,22 @@ export default defineComponent({
   },
   setup(props) {
     let max_lat = -1000;
-    let max_lng =  -1000;
+    let max_lng = -1000;
     let min_lat = 1000;
-    let min_lng =  1000;
+    let min_lng = 1000;
 
     const center_lat = ref(44.933076);
     const center_lng = ref(15.629058);
     const zoom = ref(13);
 
     const selected = ref<null | number>(null);
-    
+
     props.restaurants.map((restaurant: RestaurantInfoData) => {
-      if (restaurant.location && restaurant.location.lat && restaurant.location.lng) {
+      if (
+        restaurant.location &&
+        restaurant.location.lat &&
+        restaurant.location.lng
+      ) {
         // TODO: filter invalid position data.
 
         if (restaurant.location.lat > max_lat) {
@@ -112,7 +110,7 @@ export default defineComponent({
     }
 
     const setStore = (key: number) => {
-      selected.value = key
+      selected.value = key;
       console.log(key);
     };
     return {

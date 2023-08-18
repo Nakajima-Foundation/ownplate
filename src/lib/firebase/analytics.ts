@@ -22,7 +22,7 @@ interface AnalyticsData {}
 export const sku_item_data = (
   menu: AnalyticsMenuData,
   shopInfo: RestaurantInfoData,
-  restaurantId: string
+  restaurantId: string,
 ) => {
   return {
     item_id: "SKU_" + menu.id,
@@ -36,7 +36,7 @@ export const sku_item_data2 = (
   menu: AnalyticsMenuData,
   shopInfo: RestaurantInfoData,
   restaurantId: string,
-  quantity: number
+  quantity: number,
 ) => {
   return {
     item_id: "SKU_" + menu.id,
@@ -59,7 +59,7 @@ const analyticsWrapper = (eventName: string, data: AnalyticsData) => {
 export const sendMenuListView = (
   menus: AnalyticsMenuData[],
   shopInfo: RestaurantInfoData,
-  restaurantId: string
+  restaurantId: string,
 ) => {
   try {
     const analyticsData = {
@@ -79,7 +79,7 @@ export const sendBeginCheckoout = (
   price: number,
   menus: AnalyticsMenuData[],
   shopInfo: RestaurantInfoData,
-  restaurantId: string
+  restaurantId: string,
 ) => {
   try {
     const analyticsData = {
@@ -100,7 +100,7 @@ export const sendPurchase = (
   orderId: string,
   menus: AnalyticsMenuData[],
   shopInfo: RestaurantInfoData,
-  restaurantId: string
+  restaurantId: string,
 ) => {
   try {
     const analyticsData = {
@@ -144,7 +144,7 @@ export const sendRedunded = (
 export const sendViewItem = (
   item: AnalyticsMenuData,
   shopInfo: RestaurantInfoData,
-  restaurantId: string
+  restaurantId: string,
 ) => {
   // is open image
   try {
@@ -162,7 +162,7 @@ export const sendViewItem = (
 export const sendSelectItem = (
   item: AnalyticsMenuData,
   shopInfo: RestaurantInfoData,
-  restaurantId: string
+  restaurantId: string,
 ) => {
   // is open toggle
   try {
@@ -180,7 +180,7 @@ export const sendAddToCart = (
   item: AnalyticsMenuData,
   shopInfo: RestaurantInfoData,
   restaurantId: string,
-  quantity: number
+  quantity: number,
 ) => {
   try {
     const analyticsData = {
@@ -199,7 +199,7 @@ export const sendRemoveFromCart = (
   item: AnalyticsMenuData,
   shopInfo: RestaurantInfoData,
   restaurantId: string,
-  quantity: number
+  quantity: number,
 ) => {
   try {
     const analyticsData = {
@@ -219,7 +219,7 @@ export const sendViewCart = (
   orderId: string,
   menus: AnalyticsMenuData[],
   shopInfo: RestaurantInfoData,
-  restaurantId: string
+  restaurantId: string,
 ) => {
   try {
     const analyticsData = {
@@ -240,7 +240,7 @@ export const sku_item_data_for_datalayer = (
   menu: AnalyticsMenuData,
   shopInfo: RestaurantInfoData,
   restaurantId: string,
-  quantity: number
+  quantity: number,
 ) => {
   return {
     item_name: menu.itemName,
@@ -257,7 +257,7 @@ export const getDataForLayer = (
   orderId: string,
   menus: AnalyticsMenuData[],
   shopInfo: RestaurantInfoData,
-  restaurantId: string
+  restaurantId: string,
 ) => {
   const analyticsData = {
     transaction_id: orderId,

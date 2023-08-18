@@ -71,13 +71,7 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  computed,
-  onUnmounted,
-  watch,
-} from "vue";
+import { defineComponent, ref, computed, onUnmounted, watch } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import {
   collection,
@@ -164,7 +158,7 @@ export default defineComponent({
         (index) => {
           const date = midNight(pickUpDaysInAdvance.value - index);
           return { index, date };
-        }
+        },
       );
     });
     dayIndex.value = getPickUpDaysInAdvance();
@@ -172,21 +166,17 @@ export default defineComponent({
     const updateDayIndex = () => {
       const newDayIndex =
         lastSeveralDays.value.findIndex((day) => {
-          return (
-            moment(day.date).format("YYYY-MM-DD") === route.query.day
-          );
+          return moment(day.date).format("YYYY-MM-DD") === route.query.day;
         }) || 0;
       dayIndex.value = newDayIndex > 0 ? newDayIndex : 0;
     };
     const updateQueryDay = () => {
       const day = moment(lastSeveralDays.value[dayIndex.value].date).format(
-        "YYYY-MM-DD"
+        "YYYY-MM-DD",
       );
       if (route.query.day !== day) {
-        router.push("/admin/restaurants/" +
-          restaurantId.value +
-            "/orders?day=" +
-          day,
+        router.push(
+          "/admin/restaurants/" + restaurantId.value + "/orders?day=" + day,
         );
       }
     };
@@ -201,7 +191,11 @@ export default defineComponent({
         ];
         if (dayIndex.value > 0) {
           q.push(
-            where(queryKey, "<", lastSeveralDays.value[dayIndex.value - 1].date)
+            where(
+              queryKey,
+              "<",
+              lastSeveralDays.value[dayIndex.value - 1].date,
+            ),
           );
         }
         return q;
@@ -209,7 +203,7 @@ export default defineComponent({
       order_detacher = onSnapshot(
         query(
           collection(db, `restaurants/${restaurantId.value}/orders`),
-          ...queryConditions
+          ...queryConditions,
         ),
         (result) => {
           orders.value = result.docs
@@ -233,7 +227,7 @@ export default defineComponent({
               }
               return order;
             });
-        }
+        },
       );
     };
 
@@ -247,17 +241,18 @@ export default defineComponent({
     });
 
     const orderCounter = computed(() => {
-      return lastSeveralDays.value.reduce((tmp: {[key: string]: string}, day) => {
-        const count = (
-          store.state.orderObj[
-            moment(day.date).format("YYYY-MM-DD")
-          ] || []
-        ).length;
-        if (count > 0) {
-          tmp[moment(day.date).format("YYYY-MM-DD")] = "(" + count + ")";
-        }
-        return tmp;
-      }, {});
+      return lastSeveralDays.value.reduce(
+        (tmp: { [key: string]: string }, day) => {
+          const count = (
+            store.state.orderObj[moment(day.date).format("YYYY-MM-DD")] || []
+          ).length;
+          if (count > 0) {
+            tmp[moment(day.date).format("YYYY-MM-DD")] = "(" + count + ")";
+          }
+          return tmp;
+        },
+        {},
+      );
     });
 
     watch(dayIndex, () => {

@@ -72,9 +72,7 @@ import AddressButton from "@/components/users/AddressButton.vue";
 
 import { defaultHeader } from "@/config/header";
 
-import {
-  useUserData,
-} from "@/utils/utils";
+import { useUserData } from "@/utils/utils";
 
 export default defineComponent({
   components: {
@@ -96,11 +94,7 @@ export default defineComponent({
     const handleSignOut = () => {
       signOut(auth);
     };
-    const {
-      isLiffUser,
-      claims,
-      user
-    } = useUserData();
+    const { isLiffUser, claims, user } = useUserData();
     return {
       claims,
       handleSignOut,

@@ -131,11 +131,7 @@ export default defineComponent({
   setup(props) {
     const route = useRoute();
 
-    const {
-      isUser,
-      isLiffUser,
-      inLiff,
-    } = useUserData();
+    const { isUser, isLiffUser, inLiff } = useUserData();
 
     const loginVisible = ref(false);
     const transactions = ref();
@@ -144,7 +140,7 @@ export default defineComponent({
     const menuObj = ref<{ [key: string]: OrderMenuItemData } | null>(null);
     const detacher: Unsubscribe[] = [];
     const menuNotFound = ref<boolean | null>(null);
-    
+
     const liffBasePath = useLiffBasePath();
 
     const orderId = route.params.orderId as string;
@@ -181,18 +177,20 @@ export default defineComponent({
                 return { ...or.item, id: or.id, quantity: or.count } as any;
               }),
               props.shopInfo,
-              restaurantId.value
+              restaurantId.value,
             );
           }
         },
         () => {
           menuNotFound.value = true;
-        }
+        },
       );
       detacher.push(order_detacher);
 
       if (hasLine.value) {
-        const ret = await lineVerifyFriend({restaurantId: props.shopInfo.restaurantId});
+        const ret = await lineVerifyFriend({
+          restaurantId: props.shopInfo.restaurantId,
+        });
         hasFriends.value = ret.data.result;
       } else {
         hasFriends.value = null;
@@ -206,11 +204,11 @@ export default defineComponent({
         return `/r/${restaurantId.value}`;
       }
     });
-      
+
     const deleteOrderInfo = async () => {
       try {
         await deleteDoc(
-          doc(db, `restaurants/${restaurantId.value}/orders/${orderId}`)
+          doc(db, `restaurants/${restaurantId.value}/orders/${orderId}`),
         );
         console.log("suceeded");
       } catch (error) {
@@ -236,7 +234,7 @@ export default defineComponent({
         loadUserData();
       }
     });
-    
+
     onUnmounted(() => {
       if (detacher) {
         detacher.map((detacher) => {
@@ -244,7 +242,7 @@ export default defineComponent({
         });
       }
     });
-    onBeforeRouteLeave((to, from, next)  => {
+    onBeforeRouteLeave((to, from, next) => {
       if (just_validated.value) {
         deleteOrderInfo();
       }
@@ -267,7 +265,7 @@ export default defineComponent({
 
       loadUserData,
       isUser,
-      
+
       isLiffUser,
 
       hasFriends,

@@ -34,11 +34,7 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  onUnmounted,
-} from "vue";
+import { defineComponent, ref, onUnmounted } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, onSnapshot } from "firebase/firestore";
 
@@ -113,13 +109,13 @@ export default defineComponent({
           {},
           copy,
           restaurant_data,
-          defaultTax
+          defaultTax,
         );
         if (loadShopInfo.temporaryClosure) {
           loadShopInfo.temporaryClosure = loadShopInfo.temporaryClosure.map(
             (day: any) => {
               return day.toDate();
-            }
+            },
           );
         }
         shopInfo.value = loadShopInfo;
@@ -129,7 +125,7 @@ export default defineComponent({
         console.log(e);
         noRestaurant.value = true;
         return;
-      }
+      },
     );
 
     const notification_detacher = ref();
@@ -140,7 +136,7 @@ export default defineComponent({
         if (notification.exists()) {
           notificationConfig.value = Object.assign(
             notificationConfig.value,
-            notification.data()
+            notification.data(),
           );
         }
       },
@@ -151,7 +147,7 @@ export default defineComponent({
         } else {
           throw error;
         }
-      }
+      },
     );
     onUnmounted(() => {
       if (notification_detacher.value) {

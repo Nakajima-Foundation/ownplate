@@ -29,9 +29,7 @@ export default defineComponent({
     const { isNotSuperAdmin, isNotOperator } = useIsNotSuperAdmin();
 
     onMounted(() => {
-      if (
-        !store.state.user || (isNotSuperAdmin.value && isNotOperator.value)
-      ) {
+      if (!store.state.user || (isNotSuperAdmin.value && isNotOperator.value)) {
         router.push("/");
       }
     });
@@ -39,8 +37,8 @@ export default defineComponent({
       if (newValue && isNotOperator.value) {
         router.push("/");
       }
-    })
-    watch(isNotOperator, newValue => {
+    });
+    watch(isNotOperator, (newValue) => {
       if (newValue && isNotSuperAdmin.value) {
         router.push("/");
       }

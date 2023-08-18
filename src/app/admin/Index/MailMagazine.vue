@@ -29,7 +29,7 @@ import { useStore } from "vuex";
 export default defineComponent({
   setup() {
     const store = useStore();
-    
+
     const opt_out = ref(false);
     const ownerUid = computed(() => {
       return store.getters.isSubAccount
@@ -48,7 +48,7 @@ export default defineComponent({
       setDoc(
         doc(db, `/adminConfigs/${ownerUid.value}`),
         { opt_out: opt_out.value },
-        { merge: true }
+        { merge: true },
       );
     });
 

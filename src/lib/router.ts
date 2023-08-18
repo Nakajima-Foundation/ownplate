@@ -60,7 +60,7 @@ const mopath = mo_prefixes
   .flat();
 
 export const customRoutes: CustomRoute[] = [
-	{
+  {
     name: "home",
     path: "/home",
     component: "home/User.vue",
@@ -462,7 +462,7 @@ export const customRoutes: CustomRoute[] = [
 ];
 
 //const loadComponent = (data: CustomRoute): RouteConfig => {
-const loadComponent = (data: CustomRoute): any  => {
+const loadComponent = (data: CustomRoute): any => {
   const component = () => import("@/app/" + data.component);
   //
   if (data.children) {

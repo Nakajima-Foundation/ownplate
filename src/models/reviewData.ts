@@ -1,5 +1,5 @@
-export interface ReviewData{
-  restaurantName?: string,
-  restProfilePhoto?: string,
+export interface ReviewData {
+  restaurantName?: string;
+  restProfilePhoto?: string;
   likes?: boolean;
 }

@@ -10,14 +10,14 @@
         <div class="flex space-x-4">
           <div class="flex-shrink-0">
             <back-button
-              :url="`/admin/restaurants/${shopInfo.restaurantId}/orders/` + orderId"
+              :url="
+                `/admin/restaurants/${shopInfo.restaurantId}/orders/` + orderId
+              "
               iconText="arrow_back"
               backText="button.backToOrderPage"
             />
           </div>
-          <PreviewLink
-            :shopInfo="shopInfo"
-          />
+          <PreviewLink :shopInfo="shopInfo" />
         </div>
 
         <!-- Photo and Name -->
@@ -55,9 +55,15 @@
         </div>
         <div>
           {{ $t("order.orderTimes") }}:
-          {{ $t("order.orderTimesUnit", {count: userLog.counter || 0}, 0) }} /
+          {{ $t("order.orderTimesUnit", { count: userLog.counter || 0 }, 0) }} /
           {{ $t("order.cancelTimes") }}:
-          {{ $t("order.cancelTimesUnit", {count: userLog.cancelCounter || 0}, 0) }}
+          {{
+            $t(
+              "order.cancelTimesUnit",
+              { count: userLog.cancelCounter || 0 },
+              0,
+            )
+          }}
         </div>
         <div>
           {{ $t("order.lastOrder") }}:
@@ -119,7 +125,12 @@ import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
 import { OrderInfoData } from "@/models/orderInfo";
 
 import { checkShopAccount } from "@/utils/userPermission";
-import { doc2data, useAdminUids, useRestaurantId, resizedProfileImage } from "@/utils/utils";
+import {
+  doc2data,
+  useAdminUids,
+  useRestaurantId,
+  resizedProfileImage,
+} from "@/utils/utils";
 
 import BackButton from "@/components/BackButton.vue";
 import OrderedInfo from "@/app/admin/Order/OrderedInfo.vue";
@@ -195,8 +206,8 @@ export default defineComponent({
       const res = await getDoc(
         doc(
           db,
-          `restaurants/${restaurantId.value}/userLog/${customerUid.value}`
-        )
+          `restaurants/${restaurantId.value}/userLog/${customerUid.value}`,
+        ),
       );
       if (res.exists()) {
         userLog.value = res.data();
@@ -215,8 +226,8 @@ export default defineComponent({
         await getDocs(
           query(
             collection(db, `restaurants/${restaurantId.value}/orders`),
-            ...queryConditions
-          )
+            ...queryConditions,
+          ),
         )
       ).docs;
       last.value = docs.length == limitNum ? docs[limitNum - 1] : null;
@@ -244,10 +255,7 @@ export default defineComponent({
     const orderSelected = (order: OrderInfoData) => {
       router.push({
         path:
-          "/admin/restaurants/" +
-          restaurantId.value +
-          "/orders/" +
-          order.id,
+          "/admin/restaurants/" + restaurantId.value + "/orders/" + order.id,
       });
     };
 

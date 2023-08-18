@@ -15,117 +15,108 @@
       />
 
       <!-- Toggle to View All or Public Only -->
-        <!-- Toggle to View All or Public Only -->
-        <div class="mx-6 mt-6 lg:text-center">
-          <ToggleSwitch2
-            v-model="toggleStatus"
-            :toggleValues="toggleValues"
-          />
-        </div>
-        <!-- No Menu or Too Many Menu-->
-        <div
-          v-if="(!existsMenu || menuCounter > 5) && isOwner"
-          class="mx-6 mt-6 rounded-lg border-2 border-op-teal p-4 pb-2 lg:mx-auto lg:max-w-2xl"
-        >
-          <div class="text-center text-sm font-bold text-op-teal">
-            {{ $t("editMenu.pleaseAddItem") }}
-          </div>
-
-          <AddButton
-            :submitting="submitting"
-            @addTitle="addTitle('top')"
-            @addMenu="addMenu('top')"
-          />
+      <!-- Toggle to View All or Public Only -->
+      <div class="mx-6 mt-6 lg:text-center">
+        <ToggleSwitch2 v-model="toggleStatus" :toggleValues="toggleValues" />
+      </div>
+      <!-- No Menu or Too Many Menu-->
+      <div
+        v-if="(!existsMenu || menuCounter > 5) && isOwner"
+        class="mx-6 mt-6 rounded-lg border-2 border-op-teal p-4 pb-2 lg:mx-auto lg:max-w-2xl"
+      >
+        <div class="text-center text-sm font-bold text-op-teal">
+          {{ $t("editMenu.pleaseAddItem") }}
         </div>
 
-        <!-- Category Titles / Menu Items -->
-        <div
-          v-if="existsMenu"
-          class="grid-col-1 mx-6 mt-6 space-y-4 lg:mx-auto lg:max-w-2xl"
-        >
-          <div v-for="(menuList, index) in menuLists" :key="menuList">
-            <!-- Category Title -->
-            <div
-              v-if="
-                itemsObj[menuList] && itemsObj[menuList]._dataType === 'title'
-              "
-              :id="itemsObj[menuList].id"
-            >
-              <div v-if="editings[menuList] === true">
-                <title-input
-                  :title="itemsObj[menuList]"
-                  :position="
-                    index == 0
-                      ? 'first'
-                      : menuLength - 1 === index
-                      ? 'last'
-                      : ''
-                  "
-                  @toEditMode="toEditMode($event)"
-                  @positionUp="positionUp($event)"
-                  @positionDown="positionDown($event)"
-                  @forkItem="forkTitleItem($event)"
-                  @updateTitle="updateTitle($event)"
-                ></title-input>
-              </div>
-              <div v-else>
-                <TitleView
-                  :title="itemsObj[menuList]"
-                  :position="
-                    index == 0
-                      ? 'first'
-                      : menuLength - 1 === index
-                      ? 'last'
-                      : ''
-                  "
-                  @toEditMode="toEditMode($event)"
-                  @positionUp="positionUp($event)"
-                  @positionDown="positionDown($event)"
-                  @forkItem="forkTitleItem($event)"
-                  @deleteItem="deleteItem($event)"
-                />
-              </div>
-            </div>
+        <AddButton
+          :submitting="submitting"
+          @addTitle="addTitle('top')"
+          @addMenu="addMenu('top')"
+        />
+      </div>
 
-            <!-- Menu Item -->
-            <div
-              v-else-if="
-                itemsObj[menuList] &&
-                itemsObj[menuList]._dataType === 'menu' &&
-                (showAllItems || showPublicItems && itemsObj[menuList].publicFlag || showSoldOutItems && itemsObj[menuList].soldOut)
-              "
-              :id="itemsObj[menuList].id"
-              >
-              <MenuView
-                :menuitem="itemsObj[menuList]"
+      <!-- Category Titles / Menu Items -->
+      <div
+        v-if="existsMenu"
+        class="grid-col-1 mx-6 mt-6 space-y-4 lg:mx-auto lg:max-w-2xl"
+      >
+        <div v-for="(menuList, index) in menuLists" :key="menuList">
+          <!-- Category Title -->
+          <div
+            v-if="
+              itemsObj[menuList] && itemsObj[menuList]._dataType === 'title'
+            "
+            :id="itemsObj[menuList].id"
+          >
+            <div v-if="editings[menuList] === true">
+              <title-input
+                :title="itemsObj[menuList]"
                 :position="
                   index == 0 ? 'first' : menuLength - 1 === index ? 'last' : ''
                 "
-                :shopInfo="shopInfo"
+                @toEditMode="toEditMode($event)"
                 @positionUp="positionUp($event)"
                 @positionDown="positionDown($event)"
-                @forkItem="forkMenuItem($event)"
+                @forkItem="forkTitleItem($event)"
+                @updateTitle="updateTitle($event)"
+              ></title-input>
+            </div>
+            <div v-else>
+              <TitleView
+                :title="itemsObj[menuList]"
+                :position="
+                  index == 0 ? 'first' : menuLength - 1 === index ? 'last' : ''
+                "
+                @toEditMode="toEditMode($event)"
+                @positionUp="positionUp($event)"
+                @positionDown="positionDown($event)"
+                @forkItem="forkTitleItem($event)"
                 @deleteItem="deleteItem($event)"
               />
             </div>
           </div>
-        </div>
 
-        <!-- Add Group Title, Menu Item, and Download Menu -->
-        <div
-          class="mx-6 mt-6 rounded-lg border-2 border-op-teal p-4 pb-2 lg:mx-auto lg:max-w-2xl"
-          v-if="isOwner"
-        >
-          <AddButton
-            :submitting="submitting"
-            @addTitle="addTitle()"
-            @addMenu="addMenu()"
-          />
-
-          <div class="mt-2 text-center" v-if="menuCounter > 0">
-            <DownloadButton :shopInfo="shopInfo" :menuObj="menuObj" />
+          <!-- Menu Item -->
+          <div
+            v-else-if="
+              itemsObj[menuList] &&
+              itemsObj[menuList]._dataType === 'menu' &&
+              (showAllItems ||
+                (showPublicItems && itemsObj[menuList].publicFlag) ||
+                (showSoldOutItems && itemsObj[menuList].soldOut))
+            "
+            :id="itemsObj[menuList].id"
+          >
+            <MenuView
+              :menuitem="itemsObj[menuList]"
+              :position="
+                index == 0 ? 'first' : menuLength - 1 === index ? 'last' : ''
+              "
+              :shopInfo="shopInfo"
+              @positionUp="positionUp($event)"
+              @positionDown="positionDown($event)"
+              @forkItem="forkMenuItem($event)"
+              @deleteItem="deleteItem($event)"
+            />
           </div>
         </div>
+      </div>
+
+      <!-- Add Group Title, Menu Item, and Download Menu -->
+      <div
+        class="mx-6 mt-6 rounded-lg border-2 border-op-teal p-4 pb-2 lg:mx-auto lg:max-w-2xl"
+        v-if="isOwner"
+      >
+        <AddButton
+          :submitting="submitting"
+          @addTitle="addTitle()"
+          @addMenu="addMenu()"
+        />
+
+        <div class="mt-2 text-center" v-if="menuCounter > 0">
+          <DownloadButton :shopInfo="shopInfo" :menuObj="menuObj" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -174,11 +165,7 @@ import { useRouter, useRoute } from "vue-router";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
-import {
-  sleep,
-  scrollToElementById,
-} from "@/utils/utils";
-
+import { sleep, scrollToElementById } from "@/utils/utils";
 
 export default defineComponent({
   name: "MenuList",
@@ -216,9 +203,11 @@ export default defineComponent({
     const router = useRouter();
 
     const submitting = ref(false);
-    const shopInfoSnapshot = ref<RestaurantInfoData|Record<string, never>>({});
+    const shopInfoSnapshot = ref<RestaurantInfoData | Record<string, never>>(
+      {},
+    );
 
-    const editings = ref<{[key: string]: boolean}>({});
+    const editings = ref<{ [key: string]: boolean }>({});
     const notFound = ref<boolean | null>(null);
 
     const { isOwner, uid, ownerUid } = useAdminUids();
@@ -249,7 +238,7 @@ export default defineComponent({
           // 404
           console.log("Error fetch shopInfoSnapshot.");
         }
-      }
+      },
     );
     onUnmounted(() => {
       restaurant_detacher();
@@ -276,7 +265,7 @@ export default defineComponent({
         // finish load
         if (
           numberOfMenus.value > 0 &&
-            numberOfMenus.value !== props.shopInfo?.numberOfMenus
+          numberOfMenus.value !== props.shopInfo?.numberOfMenus
         ) {
           updateDoc(doc(db, `restaurants/${restaurantId.value}`), {
             numberOfMenus: numberOfMenus.value,
@@ -285,39 +274,46 @@ export default defineComponent({
       }
     });
 
-    const { toggle: toggleStatus } =
-      useAdminConfigToggle2("menuToggleSwitch", uid.value, 0, true);
-    const toggleValues = [{
-      name: "showAllMenu",
-      value: "all",
-    }, {
-      name: "showPublicMenu",
-      value: "public",
-    }, {
-      name: "showSoldOutMenu",
-      value: "soldout",
-    }];
-     
+    const { toggle: toggleStatus } = useAdminConfigToggle2(
+      "menuToggleSwitch",
+      uid.value,
+      0,
+      true,
+    );
+    const toggleValues = [
+      {
+        name: "showAllMenu",
+        value: "all",
+      },
+      {
+        name: "showPublicMenu",
+        value: "public",
+      },
+      {
+        name: "showSoldOutMenu",
+        value: "soldout",
+      },
+    ];
+
     const showPublicItems = computed(() => {
-      return toggleValues[toggleStatus.value].value === "public"
+      return toggleValues[toggleStatus.value].value === "public";
     });
     const showAllItems = computed(() => {
-      return toggleValues[toggleStatus.value].value === "all"
+      return toggleValues[toggleStatus.value].value === "all";
     });
     const showSoldOutItems = computed(() => {
-      return toggleValues[toggleStatus.value].value === "soldout"
+      return toggleValues[toggleStatus.value].value === "soldout";
     });
-    
 
     const changeTitleMode = (titleId: string, value: boolean) => {
       const newEditings = { ...editings.value };
       newEditings[titleId] = value;
       editings.value = newEditings;
     };
-    const updateTitle = async (title: {name: string, id: string}) => {
+    const updateTitle = async (title: { name: string; id: string }) => {
       await updateDoc(
         doc(db, `restaurants/${restaurantId.value}/titles/${title.id}`),
-        { name: title.name }
+        { name: title.name },
       );
       changeTitleMode(title.id, false);
     };
@@ -343,7 +339,7 @@ export default defineComponent({
         };
         const newTitle = await addDoc(
           collection(db, `restaurants/${restaurantId.value}/titles`),
-          data
+          data,
         );
         const newMenuLists = menuLists.value;
         if (operation === "top") {
@@ -378,7 +374,7 @@ export default defineComponent({
         };
         const newData = await addDoc(
           collection(db, `restaurants/${restaurantId.value}/menus`),
-          itemData
+          itemData,
         );
 
         const newMenuLists = menuLists.value;
@@ -410,10 +406,8 @@ export default defineComponent({
           pos = pos - 1;
         } while (
           menuObj.value[tmp] && // don't move. side effect.
-          (
-            (showPublicItems.value && !menuObj.value[tmp].publicFlag) ||
-            (showSoldOutItems.value && !menuObj.value[tmp].soldOut)
-          ) &&
+          ((showPublicItems.value && !menuObj.value[tmp].publicFlag) ||
+            (showSoldOutItems.value && !menuObj.value[tmp].soldOut)) &&
           pos !== 0 // if public filter case, loop swap while tmp obj is public or title. pos == 0 means you are top.
         );
         await saveMenuList(newMenuLists);
@@ -431,10 +425,8 @@ export default defineComponent({
           pos = pos + 1;
         } while (
           menuObj.value[tmp] && // don't move. side effect.
-          (
-            (showPublicItems.value && !menuObj.value[tmp].publicFlag) ||
-            (showSoldOutItems.value && !menuObj.value[tmp].soldOut)
-          ) &&
+          ((showPublicItems.value && !menuObj.value[tmp].publicFlag) ||
+            (showSoldOutItems.value && !menuObj.value[tmp].soldOut)) &&
           pos < menuLength.value - 1 // if public filter case, loop swap while tmp obj is public or title. pos == menuLength.value means you are bottom.
         );
         await saveMenuList(newMenuLists);
@@ -452,9 +444,9 @@ export default defineComponent({
       if (toggleStatus.value !== 0) {
         toggleStatus.value = 0;
         await sleep(0.4);
-        scrollToElementById(id)
+        scrollToElementById(id);
       }
-    }
+    };
     const forkTitleItem = async (itemKey: string) => {
       const item = itemsObj.value[itemKey];
       const data = {
@@ -465,7 +457,7 @@ export default defineComponent({
       };
       const newTitle = await addDoc(
         collection(db, `restaurants/${restaurantId.value}/titles`),
-        data
+        data,
       );
       await forkItem(itemKey, newTitle as any);
       await scroll(newTitle.id);
@@ -476,11 +468,11 @@ export default defineComponent({
       const data = copyMenuData(
         item as MenuData,
         ownPlateConfig.region === "JP",
-        uid.value
+        uid.value,
       );
       const newData = await addDoc(
         collection(db, `restaurants/${restaurantId.value}/menus`),
-        cleanObject(data)
+        cleanObject(data),
       );
       await forkItem(itemKey, newData as any);
       await scroll(newData.id);
@@ -495,13 +487,13 @@ export default defineComponent({
       if (item._dataType === "menu") {
         await updateDoc(
           doc(db, `restaurants/${restaurantId.value}/menus/${itemKey}`),
-          { deletedFlag: true }
+          { deletedFlag: true },
         );
       }
       if (item._dataType === "title") {
         await updateDoc(
           doc(db, `restaurants/${restaurantId.value}/titles/${itemKey}`),
-          { deletedFlag: true }
+          { deletedFlag: true },
         );
       }
       await saveMenuList(newMenuLists);
@@ -519,7 +511,7 @@ export default defineComponent({
       showPublicItems,
       showAllItems,
       showSoldOutItems,
-      
+
       // computed
       isOwner,
       menuCounter,
@@ -539,7 +531,6 @@ export default defineComponent({
       forkTitleItem,
       forkMenuItem,
       deleteItem,
-
     };
   },
 });

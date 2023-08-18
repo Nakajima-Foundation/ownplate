@@ -3,7 +3,8 @@
     class="inline-flex items-center rounded-full bg-green-600 bg-opacity-10 p-1"
   >
     <div
-      v-for="(v, k) in toggleValues" :key="k"
+      v-for="(v, k) in toggleValues"
+      :key="k"
       class="inline-flex h-9 items-center rounded-full px-4"
       :class="modelValue === k ? 'bg-green-600' : ''"
       @click="toggleFunction(k)"
@@ -12,7 +13,7 @@
         class="text-sm font-bold"
         :class="modelValue === k ? 'text-white' : 'text-green-600'"
       >
-        {{$t("editMenu." + v.name)}}
+        {{ $t("editMenu." + v.name) }}
       </div>
     </div>
   </a>

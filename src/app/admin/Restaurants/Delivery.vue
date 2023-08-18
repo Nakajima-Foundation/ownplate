@@ -19,9 +19,7 @@
       <!-- Save and Cancel -->
       <div class="mt-6 flex justify-center space-x-4">
         <!-- Cancel Button -->
-        <router-link
-          :to="`/admin/restaurants/#restaurant_` + restaurantId"
-        >
+        <router-link :to="`/admin/restaurants/#restaurant_` + restaurantId">
           <div
             class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
           >
@@ -42,7 +40,7 @@
           </div>
         </o-button>
       </div>
-      
+
       <div class="rounded-lg bg-black bg-opacity-5 p-4 mt-4">
         <div class="text-sm font-bold">
           <o-checkbox v-model="enableDelivery" />{{
@@ -71,12 +69,12 @@
               :center="{ lat: 35.6809591, lng: 139.7673068 }"
               :options="{ fullscreenControl: false }"
               :zoom="15"
-                style="
-                  width: 100%;
-                  height: 480px;
-                  position: relative;
-                  overflow: hidden;
-                "
+              style="
+                width: 100%;
+                height: 480px;
+                position: relative;
+                overflow: hidden;
+              "
               @loaded="mapLoaded"
             ></GMapMap>
           </div>
@@ -222,9 +220,7 @@
       <!-- Save and Cancel -->
       <div class="mt-6 flex justify-center space-x-4">
         <!-- Cancel Button -->
-        <router-link
-          :to="`/admin/restaurants/#restaurant_` + restaurantId"
-        >
+        <router-link :to="`/admin/restaurants/#restaurant_` + restaurantId">
           <div
             class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
           >
@@ -250,22 +246,13 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  computed,
-  ref,
-  onMounted,
-  watch,
-} from "vue";
+import { defineComponent, computed, ref, onMounted, watch } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
 import { notFoundResponse } from "@/utils/utils";
 import NotFound from "@/components/NotFound.vue";
 
-import {
-  checkAdminPermission,
-  checkShopAccount,
-} from "@/utils/userPermission";
+import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
 
 import { useRouter } from "vue-router";
 import { getRestaurantId, useAdminUids } from "@/utils/utils";
@@ -281,9 +268,9 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const restaurantId =  getRestaurantId();
+    const restaurantId = getRestaurantId();
     const router = useRouter();
-    
+
     const enableDelivery = ref(false);
     const enableDeliveryFree = ref(false);
     const enableDeliveryThreshold = ref(false);
@@ -301,16 +288,13 @@ export default defineComponent({
 
     const markers = ref<any[]>([]); //
     const circles = ref<any[]>([]); //
-    const center = ref(null); // 
+    const center = ref(null); //
     let maplocation: any = null;
-    
+
     const notFound = ref<boolean | null>(null);
     const gMap = ref();
-    
-    const {
-      ownerUid,
-      uid,
-    } = useAdminUids();
+
+    const { ownerUid, uid } = useAdminUids();
 
     if (!checkAdminPermission()) {
       notFound.value = true;
@@ -359,7 +343,7 @@ export default defineComponent({
       });
       circles.value.push(circle);
     };
-    
+
     const setCurrentLocation = async (location: any) => {
       if (
         gMap.value &&
@@ -387,7 +371,7 @@ export default defineComponent({
         setCurrentLocation(props.shopInfo.location);
       }
     };
-    
+
     const location = props.shopInfo.location;
     existLocation.value = Object.keys(location).length === 2;
     if (!existLocation.value) {
@@ -397,28 +381,29 @@ export default defineComponent({
     deliveryMinimumCookTime.value =
       props.shopInfo.deliveryMinimumCookTime || deliveryMinimumCookTime.value;
 
-    getDoc(
-      doc(db, `restaurants/${restaurantId}/delivery/area`)
-    ).then((deliveryDoc) => {
-      if (deliveryDoc.exists()) {
-        const data = deliveryDoc.data();
-        enableAreaMap.value = data.enableAreaMap;
-        enableAreaText.value = data.enableAreaText;
-        enableDeliveryFree.value =
-          data.enableDeliveryFree || enableDeliveryFree.value;
-        enableDeliveryThreshold.value =
-          data.enableDeliveryThreshold || enableDeliveryThreshold.value;
-        deliveryFee.value = data.deliveryFee || deliveryFee.value;
-        deliveryFreeThreshold.value =
-          data.deliveryFreeThreshold || deliveryFreeThreshold.value;
-        deliveryThreshold.value = data.deliveryThreshold || deliveryThreshold.value;
-        radius.value = data.radius;
-        areaText.value = data.areaText;
-      }
-      center.value = new google.maps.LatLng(location.lat, location.lng);
-      mapLoaded();
-      notFound.value = false;
-    });
+    getDoc(doc(db, `restaurants/${restaurantId}/delivery/area`)).then(
+      (deliveryDoc) => {
+        if (deliveryDoc.exists()) {
+          const data = deliveryDoc.data();
+          enableAreaMap.value = data.enableAreaMap;
+          enableAreaText.value = data.enableAreaText;
+          enableDeliveryFree.value =
+            data.enableDeliveryFree || enableDeliveryFree.value;
+          enableDeliveryThreshold.value =
+            data.enableDeliveryThreshold || enableDeliveryThreshold.value;
+          deliveryFee.value = data.deliveryFee || deliveryFee.value;
+          deliveryFreeThreshold.value =
+            data.deliveryFreeThreshold || deliveryFreeThreshold.value;
+          deliveryThreshold.value =
+            data.deliveryThreshold || deliveryThreshold.value;
+          radius.value = data.radius;
+          areaText.value = data.areaText;
+        }
+        center.value = new google.maps.LatLng(location.lat, location.lng);
+        mapLoaded();
+        notFound.value = false;
+      },
+    );
     onMounted(() => {
       mapLoaded();
     });
@@ -440,7 +425,7 @@ export default defineComponent({
         deliveryThreshold: Number(deliveryThreshold.value || 0),
         uid: uid.value,
       };
-      await setDoc(doc(db, `restaurants/${restaurantId}/delivery/area`),data);
+      await setDoc(doc(db, `restaurants/${restaurantId}/delivery/area`), data);
       router.push("/admin/restaurants#restaurant_" + restaurantId);
     };
 
@@ -454,7 +439,7 @@ export default defineComponent({
       enableDeliveryThreshold,
       enableAreaMap,
       enableAreaText,
-      
+
       deliveryFee,
       deliveryFreeThreshold,
       deliveryThreshold,
@@ -464,7 +449,7 @@ export default defineComponent({
       areaText,
       existLocation,
       restaurantId,
-      
+
       notFound,
 
       mapLoaded,
@@ -473,8 +458,6 @@ export default defineComponent({
 
       gMap,
     };
-    
-
   },
 });
 </script>

@@ -108,22 +108,24 @@
       </form>
     </div>
 
-		<!-- Sign Up as a New User -->
-      <div class="mt-12 text-center">
-				<div class="font-bold text-black text-opacity-40">
-         	{{ $t("admin.forSignup") }}
-       	</div>
+    <!-- Sign Up as a New User -->
+    <div class="mt-12 text-center">
+      <div class="font-bold text-black text-opacity-40">
+        {{ $t("admin.forSignup") }}
+      </div>
 
-				<div class="mt-6">
-				<router-link to="/admin/user/signup">
-					<div class="inline-flex h-16 items-center rounded-full bg-ownplate-yellow px-8 shadow hover:bg-opacity-80">
-           	<span class="text-xl font-bold text-black opacity-90">
-							{{ $t("lp.signUpForFree") }}
-						</span>
-       		</div>
-				</router-link>
-				</div>
-       </div>
+      <div class="mt-6">
+        <router-link to="/admin/user/signup">
+          <div
+            class="inline-flex h-16 items-center rounded-full bg-ownplate-yellow px-8 shadow hover:bg-opacity-80"
+          >
+            <span class="text-xl font-bold text-black opacity-90">
+              {{ $t("lp.signUpForFree") }}
+            </span>
+          </div>
+        </router-link>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -131,7 +133,7 @@
 import { defineComponent, ref, watch } from "vue";
 import { auth } from "@/lib/firebase/firebase9";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { useUserData  } from "@/utils/utils";
+import { useUserData } from "@/utils/utils";
 
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
@@ -147,7 +149,7 @@ export default defineComponent({
     const route = useRoute();
     const router = useRouter();
     const store = useStore();
-    
+
     const email = ref("");
     const password = ref("");
     const errors = ref({});

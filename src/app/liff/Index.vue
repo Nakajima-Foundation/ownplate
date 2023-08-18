@@ -45,10 +45,7 @@ import {
   DocumentData,
 } from "firebase/firestore";
 
-import {
-  useLiffIndexId,
-  resizedProfileImage,
-} from "@/utils/utils";
+import { useLiffIndexId, resizedProfileImage } from "@/utils/utils";
 
 export default defineComponent({
   props: {
@@ -60,16 +57,12 @@ export default defineComponent({
   setup(props) {
     const restaurants = ref<DocumentData[]>([]);
     const liffIndexId = useLiffIndexId();
-    
+
     getDocs(
       query(
         collection(db, "restaurants"),
-        where(
-          documentId(),
-          "in",
-          props.config.restaurants || []
-        )
-      )
+        where(documentId(), "in", props.config.restaurants || []),
+      ),
     ).then((collect) => {
       const r = collect.docs.map((a) => {
         const data = a.data();

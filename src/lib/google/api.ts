@@ -24,7 +24,7 @@ export const google_geocode = async (keyword: string) => {
   const qs = Object.keys(parameters)
     .map((key: string) => {
       return `${key}=${encodeURIComponent(
-        parameters[key as keyof GeoCodeParams]
+        parameters[key as keyof GeoCodeParams],
       )}`;
     })
     .join("&");

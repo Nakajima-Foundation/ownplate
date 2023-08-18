@@ -84,7 +84,7 @@ export default defineComponent({
     (async () => {
       await sleep(0.1);
       window.scrollTo(0, 0);
-    })()
+    })();
     return {
       isAdmin,
       // isUser,

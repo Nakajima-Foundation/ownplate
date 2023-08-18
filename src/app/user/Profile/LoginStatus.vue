@@ -23,8 +23,8 @@ import { useI18n } from "vue-i18n";
 export default defineComponent({
   setup() {
     const store = useStore();
-    const { t } = useI18n({ useScope: 'global' });
-    
+    const { t } = useI18n({ useScope: "global" });
+
     const user = computed(() => {
       return store.state.user;
     });
@@ -33,14 +33,10 @@ export default defineComponent({
       if (user.value) {
         if (user.value.email) {
           const extra = store.getters.isSuperAdmin ? "*admin" : "";
-          return `${t("profile.status.email")}: ${
-            user.value.email
-          } ${extra}`;
+          return `${t("profile.status.email")}: ${user.value.email} ${extra}`;
         } else if (user.value.phoneNumber) {
           const number = parsePhoneNumber(user.value.phoneNumber);
-          return `${t("profile.status.phone")}: ${formatNational(
-            number
-          )}`;
+          return `${t("profile.status.phone")}: ${formatNational(number)}`;
         } else if (user.value.uid.slice(0, 5) === "line:") {
           return t("profile.status.line");
         } else if (user.value.uid.slice(0, 5) === "liff:") {

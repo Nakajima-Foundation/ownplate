@@ -42,10 +42,10 @@ export default defineComponent({
   },
   setup() {
     useSuper();
-    
+
     const reviews = ref<any[]>([]);
-    const last = ref<any>(null)
-    let isLoading = false
+    const last = ref<any>(null);
+    let isLoading = false;
 
     const loadData = async () => {
       if (!isLoading) {
@@ -54,12 +54,9 @@ export default defineComponent({
           collectionGroup(db, "reviews"),
           orderBy("timeLiked", "desc"),
           limit(500),
-        )
+        );
         if (last.value) {
-          myQuery = query(
-            myQuery,
-            startAfter(last.value),
-          )
+          myQuery = query(myQuery, startAfter(last.value));
         }
         const snapshot = await getDocs(myQuery);
 
@@ -93,7 +90,6 @@ export default defineComponent({
       moment,
       resizedProfileImage,
     };
-
   },
 });
 </script>

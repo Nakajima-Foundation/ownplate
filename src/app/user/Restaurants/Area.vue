@@ -88,8 +88,8 @@ export default defineComponent({
           where("publicFlag", "==", true),
           where("deletedFlag", "==", false),
           where("onTheList", "==", true),
-          where("state", "==", areaName)
-        )
+          where("state", "==", areaName),
+        ),
       ).then((res) => {
         restaurants.value = (res.docs || [])
           .map((doc) => {

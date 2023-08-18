@@ -81,7 +81,7 @@ export default defineComponent({
   components: {
     BackButton,
   },
-  setup () {
+  setup() {
     useSuper();
 
     const requests = ref<any[]>([]);
@@ -92,29 +92,26 @@ export default defineComponent({
         collection(db, "requestList"),
         limit(500),
         orderBy("created", "desc"),
-      )
+      ),
     ).then(async (snapshot) => {
       requests.value = snapshot.docs.map(doc2data("request"));
       const ids = requests.value.map((a) => a.id);
       arrayChunk(ids, 10).map(async (arr) => {
         const resCols = await getDocs(
-          query(
-            collection(db, "restaurants"),
-            where(documentId(), "in", arr),
-          )
-        )
+          query(collection(db, "restaurants"), where(documentId(), "in", arr)),
+        );
         if (!resCols.empty) {
           restaurantsObj.value = Object.assign(
             {},
             restaurantsObj.value,
-            array2obj(resCols.docs.map(doc2data("restaurant")))
+            array2obj(resCols.docs.map(doc2data("restaurant"))),
           );
         }
       });
     });
-    
+
     const enableList = (id: string) => {
-      updateDoc(doc(db, `restaurants/${id}`), {"onTheList": true});
+      updateDoc(doc(db, `restaurants/${id}`), { onTheList: true });
       const tmp = Object.assign({}, restaurantsObj.value) as any;
       tmp[id].onTheList = true;
       restaurantsObj.value = tmp;
@@ -123,8 +120,7 @@ export default defineComponent({
       requests,
       restaurantsObj,
       enableList,
-    }
-    
+    };
   },
 });
 </script>

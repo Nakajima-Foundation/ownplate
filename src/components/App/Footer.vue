@@ -1,9 +1,7 @@
 <template>
   <div class="mt-12 h-52 bg-[#616161]">
     <!-- Footer -->
-		<div
-      class="mt-6 mx-4 inline-flex w-full text-center"
-    >
+    <div class="mt-6 mx-4 inline-flex w-full text-center">
       <!-- Facebook User Group -->
       <div class="inline-block px-1 pb-2" v-if="false">
         <a
@@ -13,7 +11,9 @@
           <div
             class="inline-flex h-10 items-center justify-center rounded-full bg-white bg-opacity-10 px-4"
           >
-            <i class="fab fa-facebook mr-2 text-lg text-white text-opacity-50"></i>
+            <i
+              class="fab fa-facebook mr-2 text-lg text-white text-opacity-50"
+            ></i>
             <span class="text-sm font-bold text-white text-opacity-80">{{
               $t("admin.facebookUserGroup")
             }}</span>
@@ -27,8 +27,12 @@
           <div
             class="inline-flex h-10 items-center justify-center rounded-full bg-white bg-opacity-10 px-4"
           >
-            <i class="fab fa-twitter mr-2 text-lg text-white text-opacity-50"></i>
-            <span class="text-sm font-bold text-white text-opacity-80"> Twitter </span>
+            <i
+              class="fab fa-twitter mr-2 text-lg text-white text-opacity-50"
+            ></i>
+            <span class="text-sm font-bold text-white text-opacity-80">
+              Twitter
+            </span>
           </div>
         </a>
       </div>
@@ -39,8 +43,12 @@
           <div
             class="inline-flex h-10 items-center justify-center rounded-full bg-white bg-opacity-10 px-4"
           >
-            <i class="material-icons mr-2 text-lg text-white text-opacity-50">mail_outline</i>
-            <span class="text-sm font-bold text-white text-opacity-80"> Note </span>
+            <i class="material-icons mr-2 text-lg text-white text-opacity-50"
+              >mail_outline</i
+            >
+            <span class="text-sm font-bold text-white text-opacity-80">
+              Note
+            </span>
           </div>
         </a>
       </div>
@@ -107,12 +115,7 @@
 <script lang="ts">
 import { defineComponent, ref, computed, watch } from "vue";
 
-import {
-  useUserData,
-  isJapan,
-  regionalSetting,
-  isNull,
-} from "@/utils/utils";
+import { useUserData, isJapan, regionalSetting, isNull } from "@/utils/utils";
 
 import { db, auth } from "@/lib/firebase/firebase9";
 import { doc, getDoc, setDoc } from "firebase/firestore";
@@ -130,18 +133,14 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const route = useRoute();
-    const { locale } = useI18n({ useScope: 'global' });
-    
+    const { locale } = useI18n({ useScope: "global" });
+
     const language = ref(regionalSetting.defaultLanguage);
     const languages = regionalSetting.languages;
     const langPopup = ref(false);
 
-    const {
-      user,
-      uid,
-      isAdmin,
-    } = useUserData();
-    
+    const { user, uid, isAdmin } = useUserData();
+
     const profile_path = computed(() => {
       const path_prefix = isAdmin.value ? "admins" : "users";
       return `${path_prefix}/${uid.value}/private/profile`;
@@ -179,9 +178,9 @@ export default defineComponent({
       } else {
         const language =
           (window.navigator.languages && window.navigator.languages[0]) ||
-          window.navigator.language
-          // window.navigator?.userLanguage ||  ie 11
-          // window.navigator.browserLanguage;  || ie
+          window.navigator.language;
+        // window.navigator?.userLanguage ||  ie 11
+        // window.navigator.browserLanguage;  || ie
         console.log("browserlang:" + language);
         const lang = (language || "").substr(0, 2);
         if (lang.length === 2) {

@@ -43,7 +43,7 @@ export default defineComponent({
     const { nationalPhoneNumber } = usePhoneNumber(shopInfo);
 
     const basePath = useBasePath();
-    const url = shareUrl(basePath.value)
+    const url = shareUrl(basePath.value);
     const downloadMenu = async () => {
       try {
         downloadSubmitting.value = true;

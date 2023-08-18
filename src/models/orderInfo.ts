@@ -13,8 +13,8 @@ export interface OrderMenuItemData {
   price: number;
   images: MenuImages;
   itemPhoto: string;
-  exceptDay: {[key:string]: boolean};
-  exceptHour: {start: number, end: number};
+  exceptDay: { [key: string]: boolean };
+  exceptHour: { start: number; end: number };
   tax: string;
   productId: string; //mo
   category: string; //mo
@@ -32,12 +32,12 @@ export interface OrderInfoData {
   deliveryFee: number;
   tax: number;
   // options: {[key: string]: [[key: string]: string]}
-  timeCreated: Timestamp ;
+  timeCreated: Timestamp;
   timeEstimated: Timestamp; // TODO firestore timestamp
   timeConfirmed: Timestamp;
   timePlaced: Timestamp;
   transactionCompletedAt: Timestamp;
-  
+
   status: number;
   restaurant: RestaurantInfoData; // ?
   restaurantId: string; // ?
@@ -68,7 +68,7 @@ export interface OrderInfoData {
   payment?: { [key: string]: string };
   type: string;
 
-  prices: {[key: string]: {[key: string]: number}};
+  prices: { [key: string]: { [key: string]: number } };
   orderPlacedAt: Timestamp;
   orderUpdatedAt: Timestamp;
   orderAcceptedAt: Timestamp;
@@ -76,7 +76,7 @@ export interface OrderInfoData {
   orderCustomerCanceledAt: Timestamp;
   uidPaymentCanceledBy: boolean;
   discountPrice: number;
-  
+
   customerInfo: CustomerInfo;
   memo: string;
 

@@ -113,11 +113,13 @@ export default defineComponent({
           where("publicFlag", "==", true),
           where("deletedFlag", "==", false),
           where("onTheList", "==", true),
-          where("uid", "==", ownerUid)
-        )
+          where("uid", "==", ownerUid),
+        ),
       );
       restaurantsObj.value = restaurant2AreaObj(restaurantsCollection.docs);
-      restaurants.value = restaurantsCollection.docs.map(doc2data("")) as RestaurantInfoData[];
+      restaurants.value = restaurantsCollection.docs.map(
+        doc2data(""),
+      ) as RestaurantInfoData[];
       sortRestaurantObj(restaurantsObj.value);
 
       const ownerDoc = await getDoc(doc(db, `owners/${ownerUid}`));

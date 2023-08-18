@@ -1,17 +1,7 @@
-import {
-  ref,
-  onUnmounted,
-  computed,
-  Ref,
-} from "vue";
+import { ref, onUnmounted, computed, Ref } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
-import {
-  query,
-  onSnapshot,
-  collection,
-  where,
-} from "firebase/firestore";
+import { query, onSnapshot, collection, where } from "firebase/firestore";
 
 import { doc2data, array2obj } from "@/utils/utils";
 import { MenuData, TitleData } from "@/models/menu";
@@ -34,13 +24,13 @@ export const useTitles = (restaurantId: Ref) => {
     titleDetacher.value = onSnapshot(
       query(
         collection(db, `restaurants/${restaurantId.value}/titles`),
-        where("deletedFlag", "==", false)
+        where("deletedFlag", "==", false),
       ),
       (title) => {
         if (!title.empty) {
           titles.value = title.docs.map(doc2data("title"));
         }
-      }
+      },
     );
   };
   const titleLists = computed(() => {
@@ -54,9 +44,7 @@ export const useTitles = (restaurantId: Ref) => {
   };
 };
 
-export const useMenu = (
-  restaurantId: Ref<string>,
-) => {
+export const useMenu = (restaurantId: Ref<string>) => {
   const menuCache = ref<MenuData[]>([]);
   const menuDetacher = ref();
 
@@ -81,7 +69,7 @@ export const useMenu = (
     const menuQuery = query(
       collection(db, `restaurants/${restaurantId.value}/menus`),
       where("deletedFlag", "==", false),
-      where("publicFlag", "==", true)
+      where("publicFlag", "==", true),
     );
 
     menuDetacher.value = onSnapshot(query(menuQuery), (menu) => {
@@ -114,5 +102,3 @@ export const useMenu = (
     menuCache,
   };
 };
-
-

@@ -67,11 +67,7 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  computed,
-} from "vue";
+import { defineComponent, ref, computed } from "vue";
 import isEmail from "validator/lib/isEmail";
 import { auth } from "@/lib/firebase/firebase9";
 import { sendPasswordResetEmail } from "firebase/auth";
@@ -92,7 +88,7 @@ export default defineComponent({
     const apiError = ref(null);
     const emailSent = ref(false);
     const submitted = ref(false);
-    
+
     const errors = computed(() => {
       if (!submitted.value) {
         return {};
@@ -137,7 +133,7 @@ export default defineComponent({
       handleNext,
       handleCancel,
       errors,
-      
+
       email,
       emailSent,
     };

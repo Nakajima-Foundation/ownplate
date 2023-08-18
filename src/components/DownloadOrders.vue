@@ -41,7 +41,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const { t } = useI18n({ useScope: 'global' });
+    const { t } = useI18n({ useScope: "global" });
     const fields = downloadFields;
     const fieldNames = fields.map((field) => {
       return t(`order.${field}`);

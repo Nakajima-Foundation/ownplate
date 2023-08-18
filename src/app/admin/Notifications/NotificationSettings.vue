@@ -15,7 +15,11 @@
       <div class="mt-6">
         <!-- Incomplete Orders -->
         <div>
-          <incomplete-orders v-if="shopInfo" :shopInfo="shopInfo" @close="closeNotificationSettings()"/>
+          <incomplete-orders
+            v-if="shopInfo"
+            :shopInfo="shopInfo"
+            @close="closeNotificationSettings()"
+          />
         </div>
 
         <!-- Settings -->
@@ -166,16 +170,17 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  watch,
-} from "vue";
+import { defineComponent, ref, watch } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 
 import { soundFiles } from "@/config/constant";
-import { getSoundIndex, useRestaurantId, useSoundPlay, isLineEnabled } from "@/utils/utils";
+import {
+  getSoundIndex,
+  useRestaurantId,
+  useSoundPlay,
+  isLineEnabled,
+} from "@/utils/utils";
 
 import IncompleteOrders from "@/app/admin/Notifications/IncompleteOrders.vue";
 
@@ -205,7 +210,7 @@ export default defineComponent({
       notificationConfig.value.updatedAt = serverTimestamp();
       setDoc(
         doc(db, `restaurants/${restaurantId.value}/private/notifications`),
-        notificationConfig.value
+        notificationConfig.value,
       );
     };
     watch(soundIndex, (newData, oldData) => {

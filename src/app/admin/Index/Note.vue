@@ -10,14 +10,10 @@
     >
       <div>
         <div class="pb-2 text-base font-bold text-black text-opacity-60">
-          {{
-            $t("admin.notes.userRestaurantsTitle")
-          }}
+          {{ $t("admin.notes.userRestaurantsTitle") }}
         </div>
         <div class="text-base text-black text-opacity-60">
-          {{
-            $t("admin.notes.userRestaurantsBody")
-          }}
+          {{ $t("admin.notes.userRestaurantsBody") }}
         </div>
       </div>
 
@@ -38,7 +34,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 export default defineComponent({
-  props: {
-  },
+  props: {},
 });
 </script>

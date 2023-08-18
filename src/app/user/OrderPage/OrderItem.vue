@@ -1,6 +1,10 @@
 <template>
   <div class="flex space-x-2">
-    <o-checkbox v-if="editable" :modelValue="available" @update:modelValue="update" />
+    <o-checkbox
+      v-if="editable"
+      :modelValue="available"
+      @update:modelValue="update"
+    />
     <div>
       <div
         class="inline-flex h-9 w-12 flex-shrink-0 items-center justify-center rounded bg-blue-500 bg-opacity-10"
@@ -31,7 +35,7 @@
         </span>
       </div>
       <div v-if="soldOutToday" class="text-xs text-red-600">
-         {{ $t("sitemenu.soldOutToday") }}
+        {{ $t("sitemenu.soldOutToday") }}
       </div>
 
       <div v-if="specialRequest" class="mt-1 text-xs font-bold">
@@ -58,11 +62,7 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  computed,
-  PropType,
-} from "vue";
+import { defineComponent, computed, PropType } from "vue";
 
 import { formatOption, optionPrice } from "@/utils/strings";
 import { roundPrice, smallImageErrorHandler, useUserData } from "@/utils/utils";
@@ -95,15 +95,15 @@ export default defineComponent({
     },
   },
   setup(props, context) {
-    const { n } = useI18n({ useScope: 'global' });
-    
+    const { n } = useI18n({ useScope: "global" });
+
     const item = computed(() => {
       return props.orderItem.item;
     });
     const image = computed(() => {
       return (
         (item.value?.images?.item?.resizedImages || {})["600"] ||
-          item.value.itemPhoto
+        item.value.itemPhoto
       );
     });
     const count = computed(() => {
@@ -126,20 +126,18 @@ export default defineComponent({
       });
       return price * count.value;
     });
-    const {
-      isAdmin
-    } = useUserData();
-    
+    const { isAdmin } = useUserData();
+
     const update = (value: boolean) => {
       context.emit("update", [props.mkey, value]);
-    }
+    };
     const FsmallImageErrorHandler = (e: any) => {
       smallImageErrorHandler(e);
     };
 
     const today = moment().format("YYYY-MM-DD");
     const soldOutToday = computed(() => {
-      return (props.menuData?.soldOutToday === today);
+      return props.menuData?.soldOutToday === today;
     });
     return {
       item,

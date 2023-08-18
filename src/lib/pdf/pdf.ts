@@ -94,7 +94,7 @@ export const menuDownload = (
   shopInfo: RestaurantInfoData,
   menuObj: { [key: string]: MenuData }, // TODO
   nationalPhoneNumber: string,
-  shareUrl: string
+  shareUrl: string,
 ) => {
   pdfMake.fonts = pdfFont;
 
@@ -107,7 +107,7 @@ export const menuDownload = (
         return tmp;
       }, [] as MenuData[])
       .slice(0, 6),
-    2
+    2,
   );
 
   const images: { [key: string]: string } = {
@@ -140,7 +140,7 @@ export const menuDownload = (
       {
         border: [false, false, false, false],
         text: convChar(
-          "ネットでオーダーできるテイクアウトサービスをはじめました！\nこちらのQRコード↓↓↓↓↓からご注文できます！"
+          "ネットでオーダーできるテイクアウトサービスをはじめました！\nこちらのQRコード↓↓↓↓↓からご注文できます！",
         ),
         alignment: "center",
         fillColor: "#FCC03D",
@@ -229,7 +229,7 @@ export const menuDownload = (
             shopInfo.streetAddress,
           ].join(""),
           "電話 " + nationalPhoneNumber,
-        ].join("\n")
+        ].join("\n"),
       ),
       style: "address",
       bold: true,
@@ -255,7 +255,7 @@ export const menuDownload = (
     menu: MenuData,
     image: string,
     key1: string | number,
-    key2: number
+    key2: number,
   ) => {
     return [
       {

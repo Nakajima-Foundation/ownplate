@@ -10,7 +10,11 @@
     <ThankYou />
 
     <!-- Line Button -->
-    <LineButton :shopInfo="shopInfo" :hasFriends="hasFriends" :hasLine="hasLine" />
+    <LineButton
+      :shopInfo="shopInfo"
+      :hasFriends="hasFriends"
+      :hasLine="hasLine"
+    />
 
     <!-- Order Summary -->
     <div class="mx-6 mt-6 rounded-lg bg-white px-2 pt-6 pb-1 shadow">
@@ -57,10 +61,7 @@
       }}</span>
     </div>
     <!-- Special Thank you Message from the Restaurant -->
-    <ThankYouFromRestaurant
-      v-if="!canceled"
-      :shopInfo="shopInfo"
-    />
+    <ThankYouFromRestaurant v-if="!canceled" :shopInfo="shopInfo" />
 
     <!-- Favorite Button -->
     <div class="mt-6 text-center">
@@ -137,7 +138,9 @@
         </div>
 
         <!-- Receipt -->
-        <template v-if="order_accepted && hasStripe && !canceled && !cancelPayment">
+        <template
+          v-if="order_accepted && hasStripe && !canceled && !cancelPayment"
+        >
           <Receipt />
         </template>
 
@@ -158,52 +161,46 @@
       <!-- Right -->
       <div class="mt-4 lg:mt-0">
         <!-- Restaurant Info -->
-          <div>
-            <div class="text-xl font-bold text-black text-opacity-30">
-              {{
-                shopInfo.isEC
-                  ? $t("shopInfo.ecShopDetails")
-                  : $t("shopInfo.restaurantDetails")
-              }}
-            </div>
-
-            <div class="mt-2">
-              <shop-info
-                :compact="true"
-                :shopInfo="shopInfo"
-                :isDelivery="orderInfo.isDelivery"
-                :paymentInfo="paymentInfo"
-              />
-            </div>
+        <div>
+          <div class="text-xl font-bold text-black text-opacity-30">
+            {{
+              shopInfo.isEC
+                ? $t("shopInfo.ecShopDetails")
+                : $t("shopInfo.restaurantDetails")
+            }}
           </div>
 
-          <!-- QR Code -->
-          <div class="mt-6" v-if="!shopInfo.isEC">
-            <div class="text-xl font-bold text-black text-opacity-30">
-              {{
-                $t("order.adminQRCode")
-              }}
-            </div>
-
-            <div class="mt-2 rounded-lg bg-white p-4 text-center shadow">
-              <vue-qrcode
-                :value="urlAdminOrderPage"
-                :options="{ width: 160 }"
-              ></vue-qrcode>
-            </div>
+          <div class="mt-2">
+            <shop-info
+              :compact="true"
+              :shopInfo="shopInfo"
+              :isDelivery="orderInfo.isDelivery"
+              :paymentInfo="paymentInfo"
+            />
           </div>
+        </div>
+
+        <!-- QR Code -->
+        <div class="mt-6" v-if="!shopInfo.isEC">
+          <div class="text-xl font-bold text-black text-opacity-30">
+            {{ $t("order.adminQRCode") }}
+          </div>
+
+          <div class="mt-2 rounded-lg bg-white p-4 text-center shadow">
+            <vue-qrcode
+              :value="urlAdminOrderPage"
+              :options="{ width: 160 }"
+            ></vue-qrcode>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  computed,
-  PropType,
-} from "vue";
-  
+import { defineComponent, computed, PropType } from "vue";
+
 import ShopHeader from "@/app/user/Restaurant/ShopHeader.vue";
 import ShopInfo from "@/app/user/Restaurant/ShopInfo.vue";
 import FavoriteButton from "@/app/user/Restaurant/FavoriteButton.vue";
@@ -290,8 +287,8 @@ export default defineComponent({
   setup(props) {
     const route = useRoute();
     const store = useStore();
-    const { d } = useI18n({ useScope: 'global' });
-    
+    const { d } = useI18n({ useScope: "global" });
+
     const orderId = route.params.orderId as string;
     const restaurantId = route.params.restaurantId as string;
 
@@ -299,15 +296,15 @@ export default defineComponent({
       return props.orderInfo.payment && props.orderInfo.payment.stripe;
     });
     const cancelPayment = computed(() => {
-      return props.orderInfo.payment && props.orderInfo.payment.stripe === "canceled";
+      return (
+        props.orderInfo.payment && props.orderInfo.payment.stripe === "canceled"
+      );
     });
     const hasLineUrl = computed(() => {
       return props.shopInfo.lineUrl && validUrl(props.shopInfo.lineUrl);
     });
     const urlAdminOrderPage = computed(() => {
-      return `${
-        location.origin
-      }/admin/restaurants/${restaurantId}/orders/${orderId}`;
+      return `${location.origin}/admin/restaurants/${restaurantId}/orders/${orderId}`;
     });
     const timeRequested = computed(() => {
       const date = props.orderInfo.timePlaced.toDate();
@@ -340,11 +337,7 @@ export default defineComponent({
     });
 
     const sendRedunded = () => {
-      analyticsUtil.sendRedunded(
-        props.orderInfo,
-        orderId,
-        props.shopInfo,
-      );
+      analyticsUtil.sendRedunded(props.orderInfo, orderId, props.shopInfo);
     };
     const handleCancelPayment = () => {
       store.commit("setAlert", {

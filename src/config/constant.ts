@@ -26,7 +26,7 @@ export const order_status_keys = Object.keys(order_status).reduce(
     tmp[String(order_status[key])] = key;
     return tmp;
   },
-  {}
+  {},
 );
 
 export const possible_transitions = {
@@ -388,45 +388,59 @@ export const soundFiles = [
   },
 ];
 
-export const placedCancelReasons = [ {
-  message: "キャンセル理由を必ず選択してください",
-  key: "",
-}, {
-  message: "店頭在庫無し",
-  key: "placedNoStock",
-}, {
-  message: "発注しないと店舗で判断",
-  key: "placedNoOrder",
-}, {
-  message: "緊急取消のため発注不可",
-  key: "placedEmergency",
-}, {
-  message: "お客様申し出",
-  key: "placedByCustomer",
-}, {
-  message: "テスト注文のため",
-  key: "placedTest",
-}];
+export const placedCancelReasons = [
+  {
+    message: "キャンセル理由を必ず選択してください",
+    key: "",
+  },
+  {
+    message: "店頭在庫無し",
+    key: "placedNoStock",
+  },
+  {
+    message: "発注しないと店舗で判断",
+    key: "placedNoOrder",
+  },
+  {
+    message: "緊急取消のため発注不可",
+    key: "placedEmergency",
+  },
+  {
+    message: "お客様申し出",
+    key: "placedByCustomer",
+  },
+  {
+    message: "テスト注文のため",
+    key: "placedTest",
+  },
+];
 
-export const acceptedCancelReasons = [ {
-  message: "キャンセル理由を必ず選択してください",
-  key: "",
-}, {
-  message: "商品不良",
-  key: "acceptedBadCondition",
-}, {
-  message: "発注漏れ",
-  key: "acceptedNoOrder",
-}, {
-  message: "商品未納",
-  key: "acceptedNoStock",
-}, {
-  message: "お客様申し出",
-  key: "acceptedByCustomer",
-}, {
-  message: "テスト注文のため",
-  key: "acceptedTest",
-}];
+export const acceptedCancelReasons = [
+  {
+    message: "キャンセル理由を必ず選択してください",
+    key: "",
+  },
+  {
+    message: "商品不良",
+    key: "acceptedBadCondition",
+  },
+  {
+    message: "発注漏れ",
+    key: "acceptedNoOrder",
+  },
+  {
+    message: "商品未納",
+    key: "acceptedNoStock",
+  },
+  {
+    message: "お客様申し出",
+    key: "acceptedByCustomer",
+  },
+  {
+    message: "テスト注文のため",
+    key: "acceptedTest",
+  },
+];
 
 export const partners = [
   {
@@ -444,37 +458,36 @@ export const partners = [
 ];
 
 export const toBeOrNotSelect = [
-  { value: true, message:'あり', messageKey: 'yes' },
-  { value: false, message: 'なし', messageKey: 'no' }
+  { value: true, message: "あり", messageKey: "yes" },
+  { value: false, message: "なし", messageKey: "no" },
 ];
 export const toBeOrNotSelect2 = [
-  { value: true, message:'あり(1回)', messageKey: 'yesOnce' },
-  { value: false, message: 'なし', messageKey: 'no' }
+  { value: true, message: "あり(1回)", messageKey: "yesOnce" },
+  { value: false, message: "なし", messageKey: "no" },
 ];
 export const yesOrNoSelect = [
-  { value: true, message: 'Yes' },
-  { value: false, message: 'No' }
+  { value: true, message: "Yes" },
+  { value: false, message: "No" },
 ];
 export const discountMethodSelect = [
-  { value: 'amount', messageKey: 'amount' },
-  { value: 'ratio', messageKey: 'ratio' }
+  { value: "amount", messageKey: "amount" },
+  { value: "ratio", messageKey: "ratio" },
 ];
 export const discountTypeSelect = [
-  { value: 'discount', messageKey: 'discount' },
+  { value: "discount", messageKey: "discount" },
   // { value: 'onetimeCoupon', messageKey: 'onetimeCoupon' },
   // { value: 'multipletimesCoupon', messageKey: 'multipletimesCoupon' }
 ];
 export const promotionPaymentRestrictionsSelect = [
-  { value: 'stripe', message: '事前カード決済' },
-  { value: 'instore', message: '受け取り払い' },
-  { value: null, message: 'なし' }
+  { value: "stripe", message: "事前カード決済" },
+  { value: "instore", message: "受け取り払い" },
+  { value: null, message: "なし" },
 ];
 
 export const twiml_neworder =
   '<Response><Say language="ja-jp">こんにちは。わたしは、おもちかえりどっとこむです。あたらしいオーダーが入りました。かくにんをよろしくおねがいいたします。おもちかえりどっとこむでした。</Say></Response>';
 
-
-export const timeList =  [
+export const timeList = [
   null,
   "00:00 AM",
   "00:30 AM",

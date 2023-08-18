@@ -84,11 +84,11 @@ export default defineComponent({
       title: [this.defaultTitle, "Super All Admin"].join(" / "),
     };
   },
-  setup () {
+  setup() {
     useSuper();
 
     const admins = ref([]);
-    const infos = ref<{[key: string]: any}>({});
+    const infos = ref<{ [key: string]: any }>({});
     const last = ref<any>(null);
     let detacher: any = null;
 
@@ -127,31 +127,24 @@ export default defineComponent({
         limit(QUERY_LIMIT),
         orderBy("created", "desc"),
       );
-      if (last.value)
-        myQuery = query(
-          myQuery,
-          startAfter(last.value)
-        );
-      detacher = onSnapshot(
-        myQuery,
-        (snapshot) => {
-          if (snapshot.docs.length === QUERY_LIMIT) {
-            last.value = snapshot.docs[QUERY_LIMIT - 1];
-          } else {
-            last.value = null;
-          }
-          // @ts-ignore
-          const _admins = snapshot.docs.map(doc2data("admin"));
-          _admins.forEach(async (admin) => {
-            // @ts-ignore
-            admins.value.push(admin);
-            // NOTE: We are getting extra data only once for each admin
-            if (!infos.value[admin.id]) {
-              updateInfo(admin);
-            }
-          });
+      if (last.value) myQuery = query(myQuery, startAfter(last.value));
+      detacher = onSnapshot(myQuery, (snapshot) => {
+        if (snapshot.docs.length === QUERY_LIMIT) {
+          last.value = snapshot.docs[QUERY_LIMIT - 1];
+        } else {
+          last.value = null;
         }
-        )
+        // @ts-ignore
+        const _admins = snapshot.docs.map(doc2data("admin"));
+        _admins.forEach(async (admin) => {
+          // @ts-ignore
+          admins.value.push(admin);
+          // NOTE: We are getting extra data only once for each admin
+          if (!infos.value[admin.id]) {
+            updateInfo(admin);
+          }
+        });
+      });
     };
     const profile = (admin: any) => {
       return infos.value[admin.id]?.profile || {};
@@ -168,9 +161,9 @@ export default defineComponent({
     const showActivate = (admin: any) => {
       return (
         capabilities(admin).jcb_payments === "active" &&
-          !payment(admin).stripeJCB
+        !payment(admin).stripeJCB
       );
-    }
+    };
     const activate = async (admin: any) => {
       await updateDoc(doc(db, `admins/${admin.id}/public/payment`), {
         stripeJCB: true,
@@ -188,9 +181,8 @@ export default defineComponent({
       capabilities,
       showActivate,
       activate,
-      
-      moment,
 
+      moment,
     };
   },
 });

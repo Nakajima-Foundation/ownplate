@@ -15,10 +15,7 @@ export default defineComponent({
 
     (async () => {
       try {
-        await applyActionCode(
-          auth,
-          route.query.oobCode as string
-        );
+        await applyActionCode(auth, route.query.oobCode as string);
       } catch (e) {
         console.log(e);
         console.log("error");

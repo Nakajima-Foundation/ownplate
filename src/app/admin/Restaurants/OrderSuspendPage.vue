@@ -12,7 +12,7 @@
         :shopInfo="shopInfo"
         :backLink="`/admin/restaurants/${shopInfo.restaurantId}/orders`"
         :showSuspend="false"
-				backText="button.backToOrderListPage"
+        backText="button.backToOrderListPage"
         iconText="arrow_back"
         pageText="orderSuspend"
       />
@@ -32,7 +32,7 @@
       <div class="mx-6 mt-6">
         <div v-if="!suspendUntil">
           <div v-if="availableTimes.length === 0">
-             {{ $t("admin.order.notSuspendAvailable") }}
+            {{ $t("admin.order.notSuspendAvailable") }}
           </div>
           <div v-else>
             <o-button
@@ -40,35 +40,45 @@
               :key="time.time"
               @click="handleSuspend(0, time.time)"
               class="b-reset-tw mr-4 mb-4"
-              >
+            >
               <div
                 class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+              >
+                <i class="material-icons mr-2 text-lg text-op-teal"
+                  >alarm_off</i
                 >
-                <i class="material-icons mr-2 text-lg text-op-teal">alarm_off</i>
                 <div class="text-sm font-bold text-op-teal">
-                  {{ $t("admin.order.suspendUntil", { display: time.display }) }}
+                  {{
+                    $t("admin.order.suspendUntil", { display: time.display })
+                  }}
                 </div>
               </div>
             </o-button>
-            
+
             <div class="mt-4">
-              <div v-for="(day, k) in [0, 1, 2, 7]" :key="k" class="inline-flex">
+              <div
+                v-for="(day, k) in [0, 1, 2, 7]"
+                :key="k"
+                class="inline-flex"
+              >
                 <o-button
                   v-if="availableTimes.length > 0"
                   class="b-reset-tw"
                   @click="handleSuspend(day, 24 * 60)"
-                  >
+                >
                   <div
                     class="mr-4 mb-4 inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
-                    >
+                  >
                     <i class="material-icons mr-2 text-lg text-op-teal"
-                       >alarm_off</i
-                                   >
+                      >alarm_off</i
+                    >
                     <div class="text-sm font-bold text-op-teal">
                       <span v-if="day > 0">{{
                         $t("admin.order.suspendDayUntil", { display: day })
-                        }}</span>
-                      <span v-else>{{ $t("admin.order.suspendForAllDay") }}</span>
+                      }}</span>
+                      <span v-else>{{
+                        $t("admin.order.suspendForAllDay")
+                      }}</span>
                     </div>
                   </div>
                 </o-button>
@@ -108,11 +118,7 @@
 <script lang="ts">
 import { defineComponent, ref, computed, PropType } from "vue";
 import { db } from "@/lib/firebase/firebase9";
-import {
-  doc,
-  updateDoc,
-  Timestamp,
-} from "firebase/firestore";
+import { doc, updateDoc, Timestamp } from "firebase/firestore";
 
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 import NotFound from "@/components/NotFound.vue";
@@ -149,7 +155,7 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore();
-    const { d } = useI18n({ useScope: 'global' });
+    const { d } = useI18n({ useScope: "global" });
 
     const restaurantId = useRestaurantId();
     const { ownerUid } = useAdminUids();
@@ -157,26 +163,21 @@ export default defineComponent({
       return notFoundResponse;
     }
 
-    if (
-      !props.shopInfo ||
-      props.shopInfo.deletedFlag
-    ) {
+    if (!props.shopInfo || props.shopInfo.deletedFlag) {
       return notFoundResponse;
     }
-    
-    const { availableDays } = usePickupTime(
-      props.shopInfo,
-      {},
-      ref({}),
-    );
-    
+
+    const { availableDays } = usePickupTime(props.shopInfo, {}, ref({}));
+
     // const date = ref<{ offset: number; date: Date; times: any; } | null>(null);
-    const date = computed<{ offset: number; date: Date; times: any; } | null>(() => {
-      if (availableDays.value.length > 0) {
-        return availableDays.value[0];
-      }
-      return null;
-    });
+    const date = computed<{ offset: number; date: Date; times: any } | null>(
+      () => {
+        if (availableDays.value.length > 0) {
+          return availableDays.value[0];
+        }
+        return null;
+      },
+    );
     const availableTimes = computed(() => {
       // Note: availableDays will change if we change shopInfo.suspendUntil.
       // This logic works because we use availableDays when suspendUntil is not set or too old.
@@ -198,7 +199,9 @@ export default defineComponent({
     });
 
     const handleSuspend = async (day: number, time: number) => {
-      const tmpDate = date.value?.date ? new Date(date.value?.date) : new Date();
+      const tmpDate = date.value?.date
+        ? new Date(date.value?.date)
+        : new Date();
       tmpDate.setHours(time / 60);
       tmpDate.setMinutes(time % 60);
       if (day && day > 0) {

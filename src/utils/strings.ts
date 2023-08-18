@@ -18,7 +18,7 @@ export const optionPrice = (option: string) => {
 
 export const formatOption = (
   option: string,
-  localize: (price: number) => string
+  localize: (price: number) => string,
 ) => {
   const match = option.match(regexOptionPrice);
   if (match) {

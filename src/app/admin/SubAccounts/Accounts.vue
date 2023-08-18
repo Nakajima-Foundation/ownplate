@@ -43,7 +43,7 @@
             {{
               $t(
                 "admin.subAccounts.messageResult." +
-                  (child.accepted === true ? "accepted" : "waiting")
+                  (child.accepted === true ? "accepted" : "waiting"),
               )
             }}
           </td>
@@ -81,7 +81,9 @@
           <o-button @click="invite" :disabled="sending">
             {{
               $t(
-                sending ? "admin.subAccounts.sending" : "admin.subAccounts.send"
+                sending
+                  ? "admin.subAccounts.sending"
+                  : "admin.subAccounts.send",
               )
             }}
           </o-button>
@@ -107,7 +109,7 @@
                     ? "accepted"
                     : message.accepted === false
                     ? "denied"
-                    : "waiting")
+                    : "waiting"),
               )
             }}/{{
               moment(message.createdAt.toDate()).format("YYYY/MM/DD HH:mm")
@@ -163,7 +165,7 @@ export default defineComponent({
     const store = useStore();
     const router = useRouter();
 
-    const restaurantObj = ref<{[key: string]: RestaurantInfoData}>({});
+    const restaurantObj = ref<{ [key: string]: RestaurantInfoData }>({});
     const children = ref<DocumentData[]>([]);
     const detachers: Unsubscribe[] = [];
     const messages = ref<DocumentData[]>([]);
@@ -176,21 +178,22 @@ export default defineComponent({
 
     getDocs(
       query(
-        collection(db,"restaurants"),
+        collection(db, "restaurants"),
         where("uid", "==", uid.value),
         where("deletedFlag", "==", false),
         orderBy("createdAt", "asc"),
-      )
+      ),
     ).then((restaurantCollection) => {
-        restaurantObj.value = array2obj(
-          restaurantCollection.docs.map(doc2data("restaurant"))
-        ) as {[key: string]: RestaurantInfoData};
-      });
+      restaurantObj.value = array2obj(
+        restaurantCollection.docs.map(doc2data("restaurant")),
+      ) as { [key: string]: RestaurantInfoData };
+    });
     const childDetacher = onSnapshot(
       collection(db, `admins/${uid.value}/children`),
       (childrenCollection) => {
         children.value = childrenCollection.docs.map(doc2data("admin"));
-      });
+      },
+    );
     detachers.push(childDetacher);
 
     const messageDetacher = onSnapshot(
@@ -201,7 +204,8 @@ export default defineComponent({
       ),
       (messageCollection) => {
         messages.value = messageCollection.docs.map(doc2data("message"));
-      });
+      },
+    );
     detachers.push(messageDetacher);
 
     onUnmounted(() => {
@@ -235,14 +239,12 @@ export default defineComponent({
     const invite = async () => {
       sending.value = true;
       try {
-        const res = await subAccountInvite({
+        const res = (await subAccountInvite({
           email: email.value,
           name: name.value,
-        }) as any;
+        })) as any;
         if (res.data.result) {
-          router.push(
-            "/admin/subAccounts/accounts/" + res.data.childUid
-          );
+          router.push("/admin/subAccounts/accounts/" + res.data.childUid);
           email.value = "";
           name.value = "";
         } else {

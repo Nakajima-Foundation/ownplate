@@ -147,13 +147,13 @@ export default defineComponent({
     DownloadMenu,
   },
   setup() {
-    const { t } = useI18n({ useScope: 'global' });
+    const { t } = useI18n({ useScope: "global" });
     let isLoading = false;
     const restaurants = ref<RestaurantInfoData[]>([]);
     const last = ref<any | null>(null);
 
     superPermissionCheck();
-    
+
     const loadData = async () => {
       if (!isLoading) {
         isLoading = true;
@@ -163,10 +163,7 @@ export default defineComponent({
           limit(100),
         );
         if (last.value) {
-          myQuery = query(
-            myQuery,
-            startAfter(last.value)
-          )
+          myQuery = query(myQuery, startAfter(last.value));
         }
         const snapshot = await getDocs(myQuery);
         if (!snapshot.empty) {
@@ -220,7 +217,7 @@ export default defineComponent({
     });
 
     return {
-      fileName:  "restaurant",
+      fileName: "restaurant",
       fields,
       fieldNames: fields.map((field) => {
         return t(`restaurantCsv.${field}`);
@@ -235,6 +232,6 @@ export default defineComponent({
       backUrl: getBackUrl(),
       moment,
     };
-}
+  },
 });
 </script>

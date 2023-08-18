@@ -4,19 +4,19 @@
     <div class="text-xl font-bold text-black text-opacity-40">
       {{ $t("admin.order.paymentCancelTitle") }}
     </div>
-    
+
     <!-- Message -->
     <div class="mt-6 text-base">
       {{ $t("admin.order.paymentCancelMessage") }}
     </div>
-    
+
     <!-- Call -->
     <div v-if="orderInfo.phoneNumber" class="mt-6 text-center">
       <div>
         <a
           :href="nationalPhoneURI"
           class="inline-flex h-12 items-center justify-center rounded-full border-2 border-op-teal px-6"
-          >
+        >
           <div class="text-base font-bold text-op-teal">
             {{ nationalPhoneNumber }}
           </div>
@@ -26,17 +26,17 @@
         {{ orderInfo.name }}
       </div>
     </div>
-    
+
     <!-- Cancel -->
     <div class="mt-4 text-center">
       <o-button
         :loading="updating"
         @click="handlePaymentCancel"
         class="b-reset-tw"
-        >
+      >
         <div
           class="inline-flex h-12 items-center justify-center rounded-full bg-red-700 px-6"
-          >
+        >
           <div class="text-base font-bold text-white">
             {{ $t("admin.order.paymentCancel") }}
           </div>
@@ -46,30 +46,25 @@
         {{ $t("admin.order.paymentCancelConfirm") }}
       </div>
     </div>
-    
+
     <!-- Close -->
     <div class="mt-6 text-center">
       <a
         @click="closeCancel()"
         class="inline-flex h-12 items-center justify-center rounded-full bg-black bg-opacity-5 px-6"
         style="min-width: 8rem"
-        >
+      >
         <div class="text-base font-bold text-black text-opacity-60">
           {{ $t("menu.close") }}
         </div>
       </a>
     </div>
   </div>
-</template>  
-  
+</template>
+
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-} from "vue";
-import {
-  stripePaymentCancelIntent,
-} from "@/lib/stripe/stripe";
+import { defineComponent, ref } from "vue";
+import { stripePaymentCancelIntent } from "@/lib/stripe/stripe";
 
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -130,16 +125,14 @@ export default defineComponent({
       }
     };
 
-
     const closeCancel = () => {
-      ctx.emit("close")
+      ctx.emit("close");
     };
     return {
       handlePaymentCancel,
       updating,
       closeCancel,
     };
-
   },
 });
 </script>

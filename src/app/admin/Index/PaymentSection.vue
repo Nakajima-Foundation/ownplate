@@ -104,7 +104,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, onUnmounted, watch, computed } from "vue";
+import {
+  defineComponent,
+  ref,
+  onMounted,
+  onUnmounted,
+  watch,
+  computed,
+} from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, onSnapshot, Unsubscribe, setDoc } from "firebase/firestore";
 import { stripeConnect, stripeDisconnect } from "@/lib/stripe/stripe";
@@ -124,7 +131,7 @@ export default defineComponent({
     const router = useRouter();
 
     const paymentInfo = ref<PaymentInfo>({}); // { stripe, inStore, ... }
-    let stripe_connnect_detacher: Unsubscribe | null =  null;
+    let stripe_connnect_detacher: Unsubscribe | null = null;
     const inStorePayment = ref<boolean | undefined>(false);
 
     onMounted(async () => {
@@ -163,16 +170,13 @@ export default defineComponent({
     });
 
     const refPayment = doc(db, `/admins/${uid.value}/public/payment`);
-    stripe_connnect_detacher = onSnapshot(
-      refPayment,
-      (async (snapshot) => {
-        if (snapshot.exists()) {
-          paymentInfo.value = snapshot.data();
-          inStorePayment.value = paymentInfo.value.inStore;
-        }
-        context.emit("updateUnsetWarning", unsetWarning.value);
-      })
-    );
+    stripe_connnect_detacher = onSnapshot(refPayment, async (snapshot) => {
+      if (snapshot.exists()) {
+        paymentInfo.value = snapshot.data();
+        inStorePayment.value = paymentInfo.value.inStore;
+      }
+      context.emit("updateUnsetWarning", unsetWarning.value);
+    });
     onUnmounted(() => {
       if (stripe_connnect_detacher) {
         stripe_connnect_detacher();
@@ -182,9 +186,13 @@ export default defineComponent({
       if (newValue !== paymentInfo.value.inStore) {
         //console.log("************* inStorePayment change", newValue);
         const refPayment = doc(db, `/admins/${uid.value}/public/payment`);
-        setDoc(refPayment,{
-          inStore: newValue,
-        }, {merge: true});
+        setDoc(
+          refPayment,
+          {
+            inStore: newValue,
+          },
+          { merge: true },
+        );
       }
     });
     watch(unsetWarning, (newValue) => {
@@ -205,16 +213,16 @@ export default defineComponent({
       };
       type TmpType = typeof params;
       const queryString = Object.keys(params)
-            .map((key) => `${key}=${params[key as keyof TmpType]}`)
-            .join("&");
-      
+        .map((key) => `${key}=${params[key as keyof TmpType]}`)
+        .join("&");
+
       const date = new Date();
       date.setTime(date.getTime() + 5 * 60 * 1000); // five minutes
       const cookie = `stripe_state=${
         params.state
       }; expires=${date.toUTCString()}; path=/`;
       document.cookie = cookie;
-      
+
       location.href = `https://connect.stripe.com/oauth/authorize?${queryString}`;
     };
     const handlePaymentAccountDisconnect = async () => {
@@ -237,7 +245,7 @@ export default defineComponent({
         },
       });
     };
-    
+
     return {
       paymentInfo,
       inStorePayment,

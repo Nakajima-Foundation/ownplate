@@ -40,10 +40,10 @@ export default defineComponent({
     getDoc(
       doc(
         db,
-        `restaurants/${restaurantId}/orders/${props.orderId}/customer/data`
-      )
+        `restaurants/${restaurantId}/orders/${props.orderId}/customer/data`,
+      ),
     ).then((doc) => {
-      if (doc.exists()){ 
+      if (doc.exists()) {
         customer.value = doc.data();
       }
     });

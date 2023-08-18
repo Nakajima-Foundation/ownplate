@@ -16,15 +16,14 @@
       <!-- Body -->
       <div class="grid-col-1 mx-6 mt-6 space-y-4 lg:mx-auto lg:max-w-2xl">
         <!-- Title -->
-        <div
-          class="text-xl font-bold text-black text-opacity-30"
-        >
+        <div class="text-xl font-bold text-black text-opacity-30">
           {{ $t("admin.line.users") }}
         </div>
       </div>
       <div class="m-6">
         <div v-for="(user, k) in users" :key="k">
-          <img :src="user.profile.pictureUrl" class="w-12"/> {{ user.profile.displayName }}
+          <img :src="user.profile.pictureUrl" class="w-12" />
+          {{ user.profile.displayName }}
         </div>
       </div>
     </div>
@@ -41,12 +40,7 @@ import NotFound from "@/components/NotFound.vue";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 
 import { db } from "@/lib/firebase/firebase9";
-import {
-  getDocs,
-  collection,
-  DocumentData,
-} from "firebase/firestore";
-
+import { getDocs, collection, DocumentData } from "firebase/firestore";
 
 export default defineComponent({
   components: {
@@ -60,25 +54,27 @@ export default defineComponent({
     },
   },
   setup(props) {
-
     const { ownerUid } = useAdminUids();
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
       return notFoundResponse;
     }
 
     const users = ref<DocumentData[]>([]);
-    const loadUsers = async () => { 
-      const col = await getDocs(collection(db, `restaurants/${props.shopInfo.restaurantId}/lineUsersData`))
-      users.value = col.docs.map(a => a.data());
+    const loadUsers = async () => {
+      const col = await getDocs(
+        collection(
+          db,
+          `restaurants/${props.shopInfo.restaurantId}/lineUsersData`,
+        ),
+      );
+      users.value = col.docs.map((a) => a.data());
     };
     loadUsers();
-    
-    
+
     return {
       users,
       notFound: false,
     };
-  }
+  },
 });
-
 </script>

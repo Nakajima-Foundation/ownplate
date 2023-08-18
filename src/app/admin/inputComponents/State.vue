@@ -4,10 +4,12 @@
       {{ $t(this.state_key) }}
       <span class="text-red-700">*</span>
     </div>
-    <o-field
-      :variant="errors['state'].length > 0 ? 'danger' : 'success'"
-    >
-      <o-select :modelValue="modelValue" placeholder="select" @update:modelValue="input">
+    <o-field :variant="errors['state'].length > 0 ? 'danger' : 'success'">
+      <o-select
+        :modelValue="modelValue"
+        placeholder="select"
+        @update:modelValue="input"
+      >
         <option v-for="stateItem in states" :key="stateItem">
           {{ stateItem }}
         </option>
@@ -17,9 +19,7 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-} from "vue";
+import { defineComponent } from "vue";
 
 import { regionalSetting } from "@/utils/utils";
 
@@ -42,7 +42,7 @@ export default defineComponent({
 
     const states = regionalSetting.AddressStates;
     const state_key = regionalSetting.StateKey || "shopInfo.state";
-    
+
     return {
       states,
       state_key,

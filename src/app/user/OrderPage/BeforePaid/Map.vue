@@ -17,18 +17,13 @@
     <div class="text-xm mt-2 font-bold text-black text-opacity-30">
       {{ $t("delivery.setDeliveryLocation") }}
     </div>
-    
+
     <GMapMap
       ref="gMap"
       :center="{ lat: 35.6809591, lng: 139.7673068 }"
       :options="{ fullscreenControl: false }"
       :zoom="15"
-      style="
-             width: 100%;
-             height: 480px;
-             position: relative;
-             overflow: hidden;
-             "
+      style="width: 100%; height: 480px; position: relative; overflow: hidden"
       @click="gmapClick"
     ></GMapMap>
     <div if="estimatedDistance !== null">
@@ -70,14 +65,17 @@ export default defineComponent({
   },
   setup(props, context) {
     const location = props.shopInfo.location;
-    const radius = (props.deliveryInfo && props.deliveryInfo.radius) ? props.deliveryInfo.radius : 1;
+    const radius =
+      props.deliveryInfo && props.deliveryInfo.radius
+        ? props.deliveryInfo.radius
+        : 1;
 
     let gCenter: any = null;
     let gHome: any = null;
     let markers: any[] = [];
     const circles: any[] = [];
     let map: any = null;
-    
+
     const estimatedDistance = ref<number | null>(null);
     const gMap = ref();
 
@@ -128,7 +126,12 @@ export default defineComponent({
         gHome = new google.maps.LatLng(lat, lng);
       }
       updateMarker();
-      estimatedDistance.value = haversine_distance(lat, lng, location.lat, location.lng);
+      estimatedDistance.value = haversine_distance(
+        lat,
+        lng,
+        location.lat,
+        location.lng,
+      );
     };
     const setHome = (lat: number, lng: number) => {
       setHomeLocation(lat, lng);
@@ -139,11 +142,8 @@ export default defineComponent({
       setHome(latLng.lat(), latLng.lng());
     };
 
-
     const updateCircle = async () => {
-      if (
-        !props.deliveryInfo.enableAreaMap
-      ) {
+      if (!props.deliveryInfo.enableAreaMap) {
         return;
       }
       map.setCenter(location);
@@ -160,16 +160,12 @@ export default defineComponent({
       circle.addListener("click", gmapClick);
       circles.push(circle);
     };
-    const updateLocation = (pos: {lat: number, lng: number}) => {
+    const updateLocation = (pos: { lat: number; lng: number }) => {
       setHomeLocation(pos.lat, pos.lng);
     };
 
     const setCurrentLocation = async () => {
-      if (
-        location &&
-        location.lat &&
-        location.lng
-      ) {
+      if (location && location.lat && location.lng) {
         gCenter = new google.maps.LatLng(location.lat, location.lng);
         map.setCenter(location);
         updateMarker();
@@ -177,17 +173,13 @@ export default defineComponent({
       }
     };
 
-
     const conv = () => {
       const geocoder = new google.maps.Geocoder();
       geocoder
         .geocode({ address: props.fullAddress, language: "ja" })
         .then((response: any) => {
           const res = response.results[0];
-          setHome(
-            res.geometry.location.lat(),
-            res.geometry.location.lng()
-          );
+          setHome(res.geometry.location.lat(), res.geometry.location.lng());
         });
     };
     return {
