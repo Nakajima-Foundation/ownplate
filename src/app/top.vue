@@ -61,9 +61,7 @@ import Lp from "@/app/home/Lp.vue";
 // import LpAdmin from "@/app/home/LpAdmin.vue";
 //import LpCustomer from "@/app/home/LpCustomer.vue";
 
-import { defaultTitle } from "@/utils/utils";
-
-import { useUserData } from "@/utils/utils";
+import { defaultTitle, useUserData, sleep } from "@/utils/utils";
 
 export default defineComponent({
   metaInfo() {
@@ -83,6 +81,10 @@ export default defineComponent({
       // isUser,
     } = useUserData();
 
+    (async () => {
+      await sleep(0.1);
+      window.scrollTo(0, 0);
+    })()
     return {
       isAdmin,
       // isUser,

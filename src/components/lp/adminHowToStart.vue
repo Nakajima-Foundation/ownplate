@@ -81,5 +81,12 @@ import {
 } from "vue";
 
 export default defineComponent({
+  props: {
+    isAdmin: {
+      type: Boolean,
+      require: true,
+      default: false,
+    },
+  },
 });
 </script>

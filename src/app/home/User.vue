@@ -17,13 +17,28 @@ import goToAdminLP from "@/components/lp/goToAdminLP.vue";
 import operators from "@/components/lp/operators.vue";
 import aboutService from "@/components/lp/aboutService.vue";
 
+import { defaultTitle, sleep } from "@/utils/utils";
+
 export default defineComponent({
+  metaInfo() {
+    return {
+      title: [defaultTitle, "Top"].join(" / "),
+    };
+  },
   components: {
     userHeroImage,
 		searchRestaurant,
 		goToAdminLP,
     operators,
     aboutService,
+  },
+  setup() {
+    (async () => {
+      await sleep(0.1);
+      window.scrollTo(0, 0);
+    })()
+    return {
+    };
   },
 });
 </script>

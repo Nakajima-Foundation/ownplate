@@ -21,7 +21,14 @@ import goToUserLP from "@/components/lp/goToUserLP.vue";
 import operators from "@/components/lp/operators.vue";
 import aboutService from "@/components/lp/aboutService.vue";
 
+import { defaultTitle, sleep } from "@/utils/utils";
+
 export default defineComponent({
+  metaInfo() {
+    return {
+      title: [defaultTitle, "Top"].join(" / "),
+    };
+  },
   components: {
     adminServiceIntroduction,
 		adminFeature,
@@ -37,6 +44,14 @@ export default defineComponent({
       require: true,
       default: false,
     },
+  },
+  setup() {
+    (async () => {
+      await sleep(0.1);
+      window.scrollTo(0, 0);
+    })()
+    return {
+    };
   },
 });
 </script>
