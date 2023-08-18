@@ -13,7 +13,7 @@
         </div>
       </div>
     </div>
-    <o-modal v-model:active="isOpen" :width="488">
+    <o-modal :active="isOpen" :width="488">
       <PartnersContact :id="(partners[0] || {}).id" />
     </o-modal>
   </div>

@@ -29,7 +29,7 @@
     </div>
 
     <!-- Phone Login-->
-    <o-modal v-model:active="loginVisible" :width="488" scroll="keep">
+    <o-modal :active="loginVisible" :width="488" scroll="keep">
       <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
         <phone-login v-on:dismissed="handleDismissed" />
       </div>
