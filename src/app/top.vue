@@ -51,7 +51,7 @@
     </div>
 
     <lp-customer v-if="isUser" />
-    <lp-admin v-else-if="isAdmin" />
+    <lp v-else-if="isAdmin" />
     <lp v-else />
   </div>
 </template>
@@ -60,7 +60,7 @@
 import { defineComponent } from "vue";
 
 import Lp from "@/app/home/Lp.vue";
-import LpAdmin from "@/app/home/LpAdmin.vue";
+// import LpAdmin from "@/app/home/LpAdmin.vue";
 import LpCustomer from "@/app/home/LpCustomer.vue";
 
 import { defaultTitle, isJapan } from "@/utils/utils";
@@ -76,7 +76,7 @@ export default defineComponent({
 
   components: {
     Lp,
-    LpAdmin,
+    //    LpAdmin,
     LpCustomer,
   },
   setup() {
