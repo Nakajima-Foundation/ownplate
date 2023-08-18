@@ -63,7 +63,7 @@ export const customRoutes: CustomRoute[] = [
 	{
     name: "home",
     path: "/home",
-    component: "user/Index.vue",
+    component: "home/User.vue",
   },
   {
     name: "top",
