@@ -291,10 +291,10 @@ export default defineComponent({
       handleClose,
       handleOpen,
 
-      inLiff: false,
-      isAnonymous: false,
-      isAdmin: false,
-      isUser: true,
+      inLiff,
+      isAnonymous,
+      isAdmin,
+      isUser,
     };
   },
 });
