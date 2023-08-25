@@ -397,10 +397,11 @@ export default defineComponent({
       }
     });
     watch(tip, (v) => {
-      if (v < 0) {
+      const tipNum = Number(v);
+      if (tipNum < 0) {
         console.log("negative");
         tip.value = -v;
-      } else if (v > maxTip.value) {
+      } else if (tipNum > maxTip.value) {
         console.log("max");
         tip.value = maxTip.value;
       }
