@@ -93,7 +93,7 @@ export const createNewOrderData = async (restaurantRef, orderRef, orderData, mul
     if (menu.soldOut) {
       return;
     }
-    
+
     const prices: number[] = [];
     const newOrder: number[] = [];
 
@@ -189,11 +189,7 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
 
     // validate
     const ownerUid = restaurantData.uid;
-    const {
-      isDelivery,
-      isLiff,
-      lunchOrDinner,
-    } = orderData;
+    const { isDelivery, isLiff, lunchOrDinner } = orderData;
     if (isDelivery && !restaurantData.enableDelivery) {
       throw new functions.https.HttpsError("invalid-argument", "Invalid delivery order.");
     }
@@ -234,27 +230,18 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
 
     await createCustomer(db, customerUid, context.auth.token.phone_number);
 
-
     // just copy original data.
-    const {
-      options,
-      rawOptions,
-      uid,
-      phoneNumber,
-      name,
-      updatedAt,
-      timeCreated,
-    } = orderData;
+    const { options, rawOptions, uid, phoneNumber, name, updatedAt, timeCreated } = orderData;
 
     await orderRef.set(
       utils.filterData({
         // copy and validate
         isDelivery,
         isPickup: false, // TODO: remove for mo
-        isLiff, 
+        isLiff,
 
         lunchOrDinner,
-        
+
         // just copy
         options,
         rawOptions,
@@ -264,7 +251,7 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
         updatedAt,
         timeCreated,
         // end of copy
-        
+
         ownerUid,
         order: newOrderData,
         menuItems: newItems, // Clone of ordered menu items (simplified)

@@ -8,7 +8,7 @@ export interface orderCreatedData {
 export interface locationData {
   lat: number;
   lng: number;
-};
+}
 
 export interface customerInfoData {
   zip: string;

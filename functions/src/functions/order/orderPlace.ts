@@ -13,14 +13,7 @@ import { getStripeAccount, getPaymentMethodData, getHash } from "../stripe/inten
 import { orderPlacedData } from "../../lib/types";
 import { validateOrderPlaced, validateCustomer } from "../../lib/validator";
 
-import {
-  getPromotion,
-  enableUserPromotion,
-  userPromotionHistoryData,
-  getUserHistoryDoc,
-  getUserHistoryCollectionPath,
-  getDiscountPrice
-} from "./promotion";
+import { getPromotion, enableUserPromotion, userPromotionHistoryData, getUserHistoryDoc, getUserHistoryCollectionPath, getDiscountPrice } from "./promotion";
 
 export const getOrderData = async (transaction: admin.firestore.Transaction, orderRef: admin.firestore.DocumentReference) => {
   const orderDoc = await transaction.get(orderRef);
@@ -40,7 +33,7 @@ export const updateOrderTotalDataAndUserLog = async (
   restaurantId: string,
   ownerUid: string,
   timePlaced,
-  positive: boolean,
+  positive: boolean
 ) => {
   const menuIds = Object.keys(order);
   console.log(utils.timezone);
@@ -123,7 +116,7 @@ const multiple = utils.stripeRegion.multiple; // 100 for USD, 1 for JPY
 // This function is called by users to place orders without paying
 export const place = async (db, data: orderPlacedData, context: functions.https.CallableContext | Context) => {
   const customerUid = utils.validate_customer_auth(context);
-  
+
   const { restaurantId, orderId, tip, timeToPickup, memo, customerInfo, payStripe } = data;
   // const { promotionId, affiliateId } = data;
   const { promotionId } = data;
@@ -142,7 +135,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
   }
   // In isEC, timeToPickup is now. else time to pick
   const timePlaced = new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds);
-  
+
   try {
     const restaurantData = await utils.get_restaurant(db, restaurantId);
     const restaurantOwnerUid = restaurantData["uid"];
@@ -158,10 +151,10 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
         throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
       }
     }
-    
+
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
     const customerRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/customer/data`);
-    
+
     const result = await db.runTransaction(async (transaction) => {
       const order = await getOrderData(transaction, orderRef);
       if (!order) {
@@ -174,18 +167,13 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
         throw new functions.https.HttpsError("failed-precondition", "The order has been already placed or canceled");
       }
       // promotion
-      const {
-        historyCollectionRef,
-        historyDocRef,
-        promotionData,
-        discountPrice,
-      } = await (async () => {
+      const { historyCollectionRef, historyDocRef, promotionData, discountPrice } = await (async () => {
         if (promotionId) {
           const promotionData = await getPromotion(db, transaction, promotionId, restaurantData, order.total, enableStripe);
           const discountPrice = getDiscountPrice(promotionData, order.total);
           if (promotionData.usageRestrictions) {
             const historyDocRef = await getUserHistoryDoc(db, promotionData, customerUid);
-            if (!await enableUserPromotion(transaction, promotionData, historyDocRef)) {
+            if (!(await enableUserPromotion(transaction, promotionData, historyDocRef))) {
               throw new functions.https.HttpsError("invalid-argument", "This promotion is used.");
             }
             return {
@@ -199,13 +187,13 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
             historyCollectionRef,
             promotionData,
             discountPrice,
-          }
+          };
         }
         return {
           discountPrice: 0,
         };
       })();
-      
+
       const shippingCost = restaurantData.isEC ? costCal(postage, customerInfo?.prefectureId, order.total) : 0;
       const hasCustomer = restaurantData.isEC || order.isDelivery;
       if (hasCustomer) {
@@ -311,8 +299,8 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
         console.log(data);
         await transaction.set(historyCollectionRef.doc(), data);
       }
-      
-      Object.assign(order, { totalCharge, tip, shippingCost }, enableStripe ? {payment: true} : {} );
+
+      Object.assign(order, { totalCharge, tip, shippingCost }, enableStripe ? { payment: true } : {});
       return { success: true, order };
     });
     await notifyNewOrderToRestaurant(db, restaurantId, result.order, restaurantData.restaurantName);

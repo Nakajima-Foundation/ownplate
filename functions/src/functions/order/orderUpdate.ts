@@ -30,7 +30,13 @@ const getMgsKey = (status: number, isEC: boolean, timeEstimated?: admin.firestor
   return null;
 };
 
-const getPaymentIntent = async (db: admin.firestore.Firestore, restaurantOwnerUid: string, order: any, transaction: admin.firestore.Transaction, stripeRef: admin.firestore.DocumentReference) => {
+const getPaymentIntent = async (
+  db: admin.firestore.Firestore,
+  restaurantOwnerUid: string,
+  order: any,
+  transaction: admin.firestore.Transaction,
+  stripeRef: admin.firestore.DocumentReference
+) => {
   const stripe = utils.get_stripe();
   const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
   // just for stripe payment
@@ -96,11 +102,11 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
       ) {
         throw new functions.https.HttpsError("permission-denied", "Paid order can not be change like this", status);
       }
-      
+
       const customerUid = order.uid;
       const stripeReadOnlyRef = db.doc(`/users/${customerUid}/readonly/stripe`);
       const stripeReadOnly = (await transaction.get(stripeReadOnlyRef)).data();
-      
+
       // everything are ok
       const updateTimeKey = timeEventMapping[order_status_keys[status]];
       const updateData: updateDataOnorderUpdate = {
@@ -118,7 +124,7 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
         updateData.timePickupForQuery = updateData.timeEstimated;
         order.timeEstimated = updateData.timeEstimated;
       }
-      await transaction.update(orderRef, updateData as { [x: string]: any; });
+      await transaction.update(orderRef, updateData as { [x: string]: any });
       if (isStripeProcess) {
         await transaction.set(stripeRef, { paymentIntent }, { merge: true });
         if (stripeReadOnly) {

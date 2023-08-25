@@ -5,7 +5,7 @@ import moment from "moment-timezone";
 import * as utils from "../../lib/utils";
 import { ownPlateConfig } from "../../common/project";
 
-const { BigQuery } = require('@google-cloud/bigquery');
+const { BigQuery } = require("@google-cloud/bigquery");
 
 export const bigQueryPV = async (db: admin.firestore.Firestore) => {
   const bigquery = new BigQuery();
@@ -14,7 +14,7 @@ export const bigQueryPV = async (db: admin.firestore.Firestore) => {
   // console.log(time);
   const date = moment().tz(utils.timezone).subtract(2, "days").format("YYYYMMDD");
   const table = `${ownPlateConfig.analyticsId}.events_${date}`;
-  
+
   const sqlQuery = `
 select 
 FORMAT_TIMESTAMP('%Y%m%d%H', TIMESTAMP_TRUNC(timestamp_micros(event_timestamp), SECOND), "Asia/Tokyo") AS time_second_jst,
@@ -29,28 +29,24 @@ limit 1000`;
 
   const options = {
     query: sqlQuery,
-    location: 'asia-northeast1',
-    params: {corpus: 'romeoandjuliet', min_word_count: 400},
+    location: "asia-northeast1",
+    params: { corpus: "romeoandjuliet", min_word_count: 400 },
   };
 
   try {
     const [rows] = await bigquery.query(options);
     // const ret: any[] = [];
     for await (const row of rows) {
-      const {
-        pagelocation,
-        time_second_jst,
-        pageviews,
-      } = row;
+      const { pagelocation, time_second_jst, pageviews } = row;
 
-      const date_jst = time_second_jst.slice(0, 8)
-      const hour_jst = time_second_jst.slice(8, 10)
+      const date_jst = time_second_jst.slice(0, 8);
+      const hour_jst = time_second_jst.slice(8, 10);
 
       const restaurantId = pagelocation.split("/")[4];
       if (["favorites", "area"].includes(restaurantId)) {
         continue;
       }
-      const path = `/restaurants/${restaurantId}/pageView/${date_jst}/pageViewData/${time_second_jst}`
+      const path = `/restaurants/${restaurantId}/pageView/${date_jst}/pageViewData/${time_second_jst}`;
       console.log(path);
       const data = {
         restaurantId,
@@ -63,12 +59,10 @@ limit 1000`;
       };
       await db.doc(path).set(data);
       // ret.push({path, data});
-      
     }
-
   } catch (err) {
     console.error(err);
   }
   // }
-  return {}
-}
+  return {};
+};

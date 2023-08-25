@@ -58,12 +58,12 @@ export const is_subAccount = (context: functions.https.CallableContext | Context
   return !!context.auth?.token?.parentUid;
 };
 export const validate_sub_account_request = async (db: admin.firestore.Firestore, uid: string, ownerUid: string, restaurantId: string) => {
-  const rList = ((await db.doc(`admins/${ownerUid}/children/${uid}`).get()).data()||{}).restaurantLists || [];
+  const rList = ((await db.doc(`admins/${ownerUid}/children/${uid}`).get()).data() || {}).restaurantLists || [];
   if (!rList.includes(restaurantId)) {
     throw new functions.https.HttpsError("permission-denied", "The user does not have an authority to perform this operation.");
   }
   return true;
-}
+};
 
 export const getStripeWebhookSecretKey = () => {
   const SECRET = process.env.STRIPE_WH_SECRET;
@@ -113,7 +113,7 @@ export const get_restaurant_delivery_area = async (db: admin.firestore.Firestore
 
 export const get_restaurant_line_config = async (db: admin.firestore.Firestore, restaurantId: string) => {
   const snapshot = await db.doc(`/restaurants/${restaurantId}/private/line`).get();
-  const data = snapshot.data() as { client_secret: string, message_token: string };
+  const data = snapshot.data() as { client_secret: string; message_token: string };
   if (!data) {
     throw new functions.https.HttpsError("invalid-argument", "There is no restaurant with this id.");
   }
@@ -143,7 +143,7 @@ export const log_error = (error: any) => {
   console.error(error.type);
   console.error(error);
   Sentry.captureException(error);
-}
+};
 
 export const process_error = (error: any) => {
   console.error(error);
@@ -224,5 +224,3 @@ export const filterData = (data: { [key: string]: any }) => {
 export const isEmpty = (value: any) => {
   return value === null || value === undefined || value === "";
 };
-
-

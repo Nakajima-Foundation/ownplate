@@ -9,6 +9,7 @@ export default functions
   .runWith({
     memory: "1GB" as "1GB",
   })
-  .storage.object().onFinalize(async (object) => {
-  return imageFunctions.imageProcessing(db, object);
-});
+  .storage.object()
+  .onFinalize(async (object) => {
+    return imageFunctions.imageProcessing(db, object);
+  });

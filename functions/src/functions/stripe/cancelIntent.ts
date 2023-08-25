@@ -30,7 +30,7 @@ export const cancel = async (db: admin.firestore.Firestore, data: orderCancelDat
     const adminUid = utils.validate_auth(context);
     await utils.validate_sub_account_request(db, adminUid, uid, restaurantId);
   }
-  
+
   const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
   const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`);
   const restaurantData = await utils.get_restaurant(db, restaurantId);
@@ -73,16 +73,19 @@ export const cancel = async (db: admin.firestore.Firestore, data: orderCancelDat
       }
       const paymentIntent = hasPayment ? await cancelStripe(db, transaction, stripeRef, restaurantOwnerUid, order.id) : {}; // stripe
       await updateOrderTotalDataAndUserLog(db, transaction, order.uid, order.order, restaurantId, restaurantOwnerUid, order.timePlaced, false);
-      const updateData = noPayment ? updateDataBase : {
-        ...updateDataBase,
-        ...{
-          payment: {
-            stripe: "canceled",
-          },
-        }
-      };
+      const updateData = noPayment
+        ? updateDataBase
+        : {
+            ...updateDataBase,
+            ...{
+              payment: {
+                stripe: "canceled",
+              },
+            },
+          };
       transaction.set(orderRef, updateData, { merge: true });
-      if (hasPayment) { // stripe
+      if (hasPayment) {
+        // stripe
         transaction.set(
           stripeRef,
           {

@@ -12,7 +12,7 @@ const getUidLineAndToken = async (db: admin.firestore.Firestore, context: functi
   if (restaurantId) {
     const config = await utils.get_restaurant_line_config(db, restaurantId);
     const lineUser = await utils.get_restaurant_line_user(db, restaurantId, customerUid);
-    
+
     return {
       uidLine: lineUser?.profile?.userId,
       token: config?.message_token,
@@ -23,17 +23,14 @@ const getUidLineAndToken = async (db: admin.firestore.Firestore, context: functi
     return {
       uidLine,
       token: process.env.LINE_MESSAGE_TOKEN,
-    }
+    };
   }
 };
 
-export const verifyFriend = async (db: admin.firestore.Firestore, data: {restaurantId?: string}, context: functions.https.CallableContext) => {
+export const verifyFriend = async (db: admin.firestore.Firestore, data: { restaurantId?: string }, context: functions.https.CallableContext) => {
   const customerUid = utils.validate_customer_auth(context);
   const { restaurantId } = data;
-  const {
-    uidLine,
-    token,
-  } = await getUidLineAndToken(db, context, customerUid, restaurantId);
+  const { uidLine, token } = await getUidLineAndToken(db, context, customerUid, restaurantId);
   if (!uidLine || !token) {
     return { result: false }; // restaurant line
   }
@@ -59,7 +56,7 @@ const getLineConfig = async (db: admin.firestore.Firestore, restaurantId?: strin
     const { hasLine, lineClientId } = restaurantData;
 
     const restaurantLineData = await utils.get_restaurant_line_config(db, restaurantId);
-    
+
     // get_restaurant
     const client_id = lineClientId;
     const client_secret = restaurantLineData.client_secret;
@@ -67,7 +64,7 @@ const getLineConfig = async (db: admin.firestore.Firestore, restaurantId?: strin
     if (!hasLine || !client_id || !client_secret) {
       throw new functions.https.HttpsError("invalid-argument", "There is no restaurant with this id.");
     }
-    
+
     return {
       client_id,
       client_secret,
@@ -94,11 +91,8 @@ export const validate = async (db: admin.firestore.Firestore, data: lineValidate
     throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
   }
 
-  const {
-    client_id,
-    client_secret,
-  } = await getLineConfig(db, restaurantId);
-  
+  const { client_id, client_secret } = await getLineConfig(db, restaurantId);
+
   try {
     // We validate the OAuth token (code) given to the redirected page.
     // Result: access_token, id_token, expires_in, refresh_token, scope, token_type
@@ -174,7 +168,7 @@ export const validate = async (db: admin.firestore.Firestore, data: lineValidate
 
 export const sendMessageDirect = async (lineId: string, message: string, token: string) => {
   if (!enableNotification) {
-    return ;
+    return;
   }
   if (!token) {
     console.log("no line message token");

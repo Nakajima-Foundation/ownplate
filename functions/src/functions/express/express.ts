@@ -64,7 +64,7 @@ export const sitemap_response = async (req, res) => {
     const urlset = xmlbuilder.create("urlset").att("xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9");
 
     const docs = (await db.collection("restaurants").where("publicFlag", "==", true).where("deletedFlag", "==", false).orderBy("updatedAt", "desc").get()).docs.filter((doc) => {
-      return !(doc.data().groupId);
+      return !doc.data().groupId;
     });
     await Promise.all(
       docs.map(async (doc) => {
@@ -125,8 +125,7 @@ const ogpPage = async (req: any, res: any) => {
     encoding: "utf8",
   });
   // res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Content-Security-Policy", "frame-ancestors 'none'"),
-  res.setHeader("X-Frame-Options", "deny");
+  res.setHeader("Content-Security-Policy", "frame-ancestors 'none'"), res.setHeader("X-Frame-Options", "deny");
   res.setHeader("X-Content-Type-Options", "nosniff");
   res.setHeader("X-XSS-Protection", "1; mode=block");
   res.setHeader("X-Permitted-Cross-Domain-Policies", "none");
@@ -227,8 +226,7 @@ const ownerPage = async (req: any, res: any) => {
     encoding: "utf8",
   });
   // res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Content-Security-Policy", "frame-ancestors 'none'"),
-  res.setHeader("X-Frame-Options", "deny");
+  res.setHeader("Content-Security-Policy", "frame-ancestors 'none'"), res.setHeader("X-Frame-Options", "deny");
   res.setHeader("X-Content-Type-Options", "nosniff");
   res.setHeader("X-XSS-Protection", "1; mode=block");
   res.setHeader("X-Permitted-Cross-Domain-Policies", "none");

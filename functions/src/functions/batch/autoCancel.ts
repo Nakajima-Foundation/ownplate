@@ -14,13 +14,13 @@ export const cancelOrder = async (db: admin.firestore.Firestore, restaurantId: s
   const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`);
   const restaurant = await utils.get_restaurant(db, restaurantId);
   const restaurantOwnerUid = restaurant["uid"];
-  
+
   const result = await db.runTransaction(async (transaction) => {
     const orderDoc = await transaction.get(orderRef);
     const order = orderDoc.data();
     if (!order) {
       return;
-    };
+    }
     const updateDataBase = {
       timeCanceled: admin.firestore.FieldValue.serverTimestamp(),
       timeAutoCanceled: admin.firestore.FieldValue.serverTimestamp(),
@@ -36,16 +36,19 @@ export const cancelOrder = async (db: admin.firestore.Firestore, restaurantId: s
     }
     const paymentIntent = hasPayment ? await cancelStripe(db, transaction, stripeRef, restaurantOwnerUid, orderId) : {}; // stripe
     await updateOrderTotalDataAndUserLog(db, transaction, order.uid, order.order, restaurantId, restaurantOwnerUid, order.timePlaced, false);
-    const updateData = noPayment ? updateDataBase : {
-      ...updateDataBase,
-      ...{
-        payment: {
-          stripe: "canceled",
-        },
-      }
-    };
+    const updateData = noPayment
+      ? updateDataBase
+      : {
+          ...updateDataBase,
+          ...{
+            payment: {
+              stripe: "canceled",
+            },
+          },
+        };
     transaction.set(orderRef, updateData, { merge: true });
-    if (hasPayment) { // stripe
+    if (hasPayment) {
+      // stripe
       transaction.set(
         stripeRef,
         {
@@ -61,37 +64,34 @@ export const cancelOrder = async (db: admin.firestore.Firestore, restaurantId: s
   if (result) {
     await sendMessageToCustomer(db, "msg_order_canceled", false, restaurant.restaurantName, result.order, restaurantId, orderId, {}, true);
   }
-}
-
+};
 
 const autoCancelGroup = async (groupId) => {
-  const yesterday = moment().add(-5, 'days');
+  const yesterday = moment().add(-5, "days");
   const db = admin.firestore();
-  const collection = await db.collectionGroup("orders")
-        .where("groupId", "==", groupId)
-        .where("status", "==", 300)
-        .where("timeCreated", ">", yesterday.toDate())
-        .limit(10).get()
+  const collection = await db.collectionGroup("orders").where("groupId", "==", groupId).where("status", "==", 300).where("timeCreated", ">", yesterday.toDate()).limit(10).get();
 
-  await Promise.all(collection.docs.map(async (res) => {
-    // console.log(res.data());
-    const data = res.data();
-    const [,restaurantId,,orderId] = res.ref.path.split("/");
-    
-    const diffSecond = data.isPickup ? 10 * 60 : 3600 * 24;
+  await Promise.all(
+    collection.docs.map(async (res) => {
+      // console.log(res.data());
+      const data = res.data();
+      const [, restaurantId, , orderId] = res.ref.path.split("/");
 
-    if ((moment().unix() - moment(data.orderPlacedAt.toDate()).unix()) > diffSecond) {
-      // console.log(data);
-      console.log(restaurantId, orderId);
-      await cancelOrder(db, restaurantId, orderId)
-    }
-  }));
-  
+      const diffSecond = data.isPickup ? 10 * 60 : 3600 * 24;
+
+      if (moment().unix() - moment(data.orderPlacedAt.toDate()).unix() > diffSecond) {
+        // console.log(data);
+        console.log(restaurantId, orderId);
+        await cancelOrder(db, restaurantId, orderId);
+      }
+    })
+  );
 };
 
 export const autoCancel = async () => {
-  await Promise.all(autoCancels.map(async (groupId) => { 
-    await autoCancelGroup(groupId)
-  }));
+  await Promise.all(
+    autoCancels.map(async (groupId) => {
+      await autoCancelGroup(groupId);
+    })
+  );
 };
-

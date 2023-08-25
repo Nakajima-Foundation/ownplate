@@ -24,7 +24,7 @@ export const getPromotion = async (db, transaction, promotionId, restaurantData,
       throw new functions.https.HttpsError("invalid-argument", "No promotion exist.");
     }
   }
-  if (promotionData.discountThreshold> orderTotal) {
+  if (promotionData.discountThreshold > orderTotal) {
     throw new functions.https.HttpsError("invalid-argument", "No promotion exist.");
   }
   if (promotionData.paymentRestrictions) {
@@ -37,21 +37,17 @@ export const getPromotion = async (db, transaction, promotionId, restaurantData,
   }
   // coupon is ok
   return promotionData;
-}
+};
 
 export const getUserHistoryCollectionPath = (uid: string) => {
   return `/users/${uid}/promotionHistories`;
-}
+};
 
 export const getUserHistoryDoc = async (db, promotionData, uid) => {
   const collectionPath = getUserHistoryCollectionPath(uid);
   if (promotionData.type === "multipletimesCoupon") {
-    const ret = (await db.collection(collectionPath)
-      .where("promotionId", "===", promotionData.promotionId)
-      .where("used", "===", false)
-      .orderBy("createdAt", "asc")
-      .limit(1)
-      .get()).docs[0];
+    const ret = (await db.collection(collectionPath).where("promotionId", "===", promotionData.promotionId).where("used", "===", false).orderBy("createdAt", "asc").limit(1).get())
+      .docs[0];
     if (ret) {
       const path = `${collectionPath}/${ret.id}`;
       return db.doc(path);
@@ -61,26 +57,32 @@ export const getUserHistoryDoc = async (db, promotionData, uid) => {
     return db.doc(path);
   }
   throw new functions.https.HttpsError("invalid-argument", "No promotion exist.");
-}
-
+};
 
 export const enableUserPromotion = async (transaction: admin.firestore.Transaction, promotionData: any, userPromotionRef: admin.firestore.DocumentReference) => {
-  const ret = (await transaction.get(userPromotionRef)).data()
+  const ret = (await transaction.get(userPromotionRef)).data();
 
-  if (promotionData.type === "multipletimesCoupon" ||
-    promotionData.type === "onetimeCoupon") {
+  if (promotionData.type === "multipletimesCoupon" || promotionData.type === "onetimeCoupon") {
     if (ret) {
-      return !ret.used
+      return !ret.used;
     }
     return false;
   }
   if (promotionData.type === "discount") {
-    return !ret
+    return !ret;
   }
   throw new functions.https.HttpsError("invalid-argument", "No promotion exist.");
-}
+};
 
-export const userPromotionHistoryData = (promotionData: any, restaurantData: any, customerUid: string, orderId: string, totalCharge: number, discountPrice: number, enableStripe: boolean) => {
+export const userPromotionHistoryData = (
+  promotionData: any,
+  restaurantData: any,
+  customerUid: string,
+  orderId: string,
+  totalCharge: number,
+  discountPrice: number,
+  enableStripe: boolean
+) => {
   return {
     uid: customerUid,
     restaurantId: restaurantData.restaurantId,
@@ -97,9 +99,9 @@ export const userPromotionHistoryData = (promotionData: any, restaurantData: any
 };
 
 export const getDiscountPrice = (promotion: any, total: number) => {
-  if (promotion.discountMethod === 'amount') {
+  if (promotion.discountMethod === "amount") {
     return promotion.discountValue;
   } else {
-    return Number(promotion.discountValue * total / 100);
+    return Number((promotion.discountValue * total) / 100);
   }
 };
