@@ -12,7 +12,6 @@ const data = {
       privacy: "Privacy policy",
     },
   },
-  greeting: "Hello World2",
   underConstruction: "WARNING: This is a staging server for development.",
   comma: ", ",
   mobileOrder: {
@@ -390,11 +389,6 @@ const data = {
     like: "Like",
     liked: "Liked",
     visitWebsite: "Visit Website",
-    mo: {
-      like: "Like",
-      liked: "Liked",
-      minimumAvailableTime: "Minimum available time",
-    },
     qrcode: "QR Code",
     copyUrl: "Copy URL",
     copyMenuUrl: "Copy URL",
@@ -559,12 +553,6 @@ const data = {
     izakaya: "Izakaya",
     patisserie: "pastry shop",
     searchRestaurant: "Search for restaurant",
-    moTagline:
-      "FamilyMart's official layaway service that allows you to easily make purchases from your PC or smartphone.",
-    moDescription1: "You can order products that we do not normally carry.",
-    moDescription2:
-      "You can pick up your order at the store in an hour at the earliest.",
-    moDescription3: "*Only at certain stores​​",
     forRestaurantOwner: "For restaurants owner",
     signUpForFree: "Open a store for free",
     clickHereToOrder: "Click here to order take-out",
@@ -657,8 +645,6 @@ const data = {
     "3digitsCVC": "The final three digits on the back",
     "4digitsCVC": "The four digits on the front",
     placeOrder: "Place Order - Pay Now",
-    placeOrderMo: "Place Order - Pay Now",
-    placeOrderMoNote: "*Please fill in your credit card information",
     or: "OR",
     placeOrderNoPayment: "Place Order - Pay Later",
     placeOrderNoPaymentMo: "Place Order - Pay Later",
@@ -711,12 +697,8 @@ const data = {
     paymentAndCancellation: "Payment and Cancellation",
     statusTitle: "Order Status",
     sortOrder: "Sort Order",
-    promotionNoteCardMo:
-      "If you pay now by credit card, the discount will be applied.",
     promotionNoteCard:
       "If you pay now by credit card, the discount will be applied.",
-    promotionNoteStoreMo:
-      "If you pay later at the store, the discount below will be applied.",
     promotionNoteStore:
       "If you pay later at the store, the discount will be applied.",
     sort: {
@@ -743,11 +725,6 @@ const data = {
       stripe_confirmed: "Payment Confirmed",
       stripe_canceled: "Payment Canceled",
       onsitePayment: "Onsite Payment",
-      mo: {
-        stripe_user_pending: "決済処理中",
-        stripe_user_confirmed: "決済完了",
-        stripe_user_canceled: "決済キャンセル",
-      },
       stripe_user_pending: "Card payment not completed",
       stripe_user_message_pending:
         "(The card payment process has not been completed on the restaurant side)",
@@ -795,12 +772,6 @@ const data = {
     discount: "Discount",
     discountString: "Discount",
     discountAlert: {
-      stripe:
-        "If you pay now by credit card, the discount below will be applied.",
-      instore:
-        "If you pay later at the store, the discount below will be applied.",
-    },
-    discountAlertMo: {
       stripe:
         "If you pay now by credit card, the discount below will be applied.",
       instore:
@@ -1358,10 +1329,6 @@ const data = {
     notFound: {
       message1: "The page you're looking for can't be found.",
       message2: "Try contacting the restaurant in other way.",
-      moMessageTop: "The service is currently suspended.",
-      moMessage1: "The service is temporarily suspended.",
-      moMessage2: "We sincerely apologize for any inconvenience caused.",
-      moMessage3: "Please wait for a while until service resumes.",
     },
     requireLogin: {
       message1: "You must be signed in to see your order",

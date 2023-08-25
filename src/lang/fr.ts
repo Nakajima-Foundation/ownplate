@@ -13,7 +13,6 @@ const data = {
       privacy: "Politique de Confidentialité",
     },
   },
-  greeting: "Salut le toutle  Monde",
   underConstruction:
     "ATTENTION: Ceci est un serveur de préproduction pour le dévelopement.",
   comma: ", ",
@@ -377,11 +376,6 @@ const data = {
     like: "Aimer",
     liked: "Aimée",
     visitWebsite: "Visiter le site web",
-    mo: {
-      like: "Aimer",
-      liked: "Aimée",
-      minimumAvailableTime: "Temps disponible minimum",
-    },
     qrcode: "Code QR",
     copyUrl: "Copier le Lien",
     copyMenuUrl: "Copier le Lien",
@@ -530,13 +524,6 @@ const data = {
     izakaya: "Izakaya",
     patisserie: "Pâtisserie",
     searchRestaurant: "Rechercher un restaurant",
-    moTagline:
-      "Le service officiel de mise de côté de FamilyMart qui vous permet d'effectuer facilement des achats depuis votre PC ou votre smartphone.",
-    moDescription1:
-      "Vous pouvez commander des produits que nous ne vendons pas normalement.",
-    moDescription2:
-      "Vous pouvez récupérer votre commande au magasin dans une heure au plus tôt.",
-    moDescription3: "*Seulement dans certains magasins​​",
     forRestaurantOwner: "Pour les restaurateurs",
     signUpForFree: "Ouvrir un magasin gratuitement",
     clickHereToOrder: "Cliquez ici pour commander des plats à emporter",
@@ -617,9 +604,6 @@ const data = {
     "3digitsCVC": "Les trois derniers chiffres au dos",
     "4digitsCVC": "Les quatre chiffres sur le devant",
     placeOrder: "Passer la commande - Payer maintenant",
-    placeOrderMo: "Passer la commande - Payer maintenant",
-    placeOrderMoNote:
-      "*Veuillez remplir les informations de votre carte de crédit",
     or: "OU",
     placeOrderNoPayment: "Passer la commande - payer plus tard",
     placeOrderNoPaymentMo: "Passer la commande - payer plus tard",
@@ -672,12 +656,8 @@ const data = {
     paymentAndCancellation: "Paiement et annulation",
     statusTitle: "Order Status",
     sortOrder: "Sort Order",
-    promotionNoteCardMo:
-      "If you pay now by credit card, the discount will be applied.",
     promotionNoteCard:
       "If you pay now by credit card, the discount will be applied.",
-    promotionNoteStoreMo:
-      "If you pay later at the store, the discount below will be applied.",
     promotionNoteStore:
       "If you pay later at the store, the discount will be applied.",
     sort: {
@@ -749,12 +729,6 @@ const data = {
     discount: "Discount",
     discountString: "Discount",
     discountAlert: {
-      stripe:
-        "If you pay now by credit card, the discount below will be applied.",
-      instore:
-        "If you pay later at the store, the discount below will be applied.",
-    },
-    discountAlertMo: {
       stripe:
         "If you pay now by credit card, the discount below will be applied.",
       instore:
@@ -1310,11 +1284,6 @@ const data = {
     notFound: {
       message1: "La page que vous recherchez est introuvable.",
       message2: "Essayez de contacter le restaurant d'une autre manière.",
-      moMessageTop: "Le service est actuellement suspendu.",
-      moMessage1: "Le service est temporairement suspendu.",
-      moMessage2: "Nous nous excusons sincèrement pour tout désagrément causé.",
-      moMessage3:
-        "Veuillez patienter un moment jusqu'à ce que le service reprenne.",
     },
     requireLogin: {
       message1: "Vous devez être connecté pour voir votre commande",
