@@ -95,6 +95,7 @@ const data = {
     termsRestaurant: "CGU pour le restaurant",
     termsUser: "CGU pour l'utilisateur",
     privacy: "Politique de Confidentialité",
+    clickHereToOrder: "Click here to order",
     faq: "FAQ",
     updated: "Dernière Mise à jour",
     selectLanguage: "Selectioner la langue",

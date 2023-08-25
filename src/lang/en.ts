@@ -99,6 +99,7 @@ const data = {
     termsRestaurant: "Terms for Restaurant",
     termsUser: "Terms for User",
     privacy: "Privacy Policy",
+    clickHereToOrder: "Click here to order",
     faq: "FAQ",
     updated: "Last Updated",
     selectLanguage: "Select language",

@@ -109,6 +109,7 @@ const data = {
     termsRestaurant: "利用規約(飲食店様向け)",
     termsUser: "利用規約(お客様向け)",
     privacy: "プライバシーポリシー",
+    clickHereToOrder: "テイクアウトのご注文TOP",
     faq: "ご利用について",
     updated: "最終更新日",
     selectLanguage: "表示言語選択",
