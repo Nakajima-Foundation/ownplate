@@ -24,7 +24,6 @@ const data = {
     discountDetail: "値引設定",
     discountHistory: "値引履歴",
   },
-  greeting: "こんにちは、世界",
   underConstruction: "注意：これはテスト用のサーバーです。",
   comma: "、",
   mobileOrder: {
@@ -398,11 +397,6 @@ const data = {
     like: "お気に入りに登録",
     liked: "お気に入り済み",
     visitWebsite: "店舗のホームページを見る",
-    mo: {
-      like: "お気に入り店舗に登録",
-      liked: "お気に入り店舗登録済み",
-      minimumAvailableTime: "最短受け渡し可能時間",
-    },
     qrcode: "飲食店QRコード",
     copyUrl: "このお店のURLをコピー",
     copyMenuUrl: "この商品のURLをコピー",
@@ -568,11 +562,6 @@ const data = {
     izakaya: "居酒屋",
     patisserie: "パティスリー",
     searchRestaurant: "全国のお店を探す",
-    moTagline:
-      "モバイルオーダーは、PC・スマホから簡単に購入が可能な、ファミリーマート公式店舗受け取りサービスです。",
-    moDescription1: "お店に無いものも最短3日後受け取り可能です。",
-    moDescription2: "最短30分後に店舗で受け取り可能です。",
-    moDescription3: "*対応店舗のみ",
     forRestaurantOwner: "飲食店様向け",
     signUpForFree: "無料でご利用を開始",
     clickHereToOrder: "テイクアウトのご注文はこちら",
@@ -665,11 +654,8 @@ const data = {
     "3digitsCVC": "カードのうら面の右端3ケタ",
     "4digitsCVC": "カードのおもて面の4ケタ",
     placeOrder: "オンライン支払いで注文",
-    placeOrderMo: "事前にカードでお支払い",
-    placeOrderMoNote: "※カード情報を先に入力してください",
     or: "もしくは",
     placeOrderNoPayment: "受け取り払いで注文",
-    placeOrderNoPaymentMo: "受取時に店舗でお支払い",
     placeOrderNoPaymentNote: "ここで決済せずに商品受け取り時に支払います",
     validating: "処理しています...",
     thankyou: "ご注文、ありがとうございます",
@@ -719,12 +705,8 @@ const data = {
     paymentAndCancellation: "キャンセル・お支払いについて",
     statusTitle: "注文状況",
     sortOrder: "表示順",
-    promotionNoteCardMo:
-      "「事前にカードでお支払い」で決済いただいた場合はキャンペーン金額が適用されます",
     promotionNoteCard:
       "「オンライン支払いで注文」で決済いただいた場合はキャンペーン金額が適用されます",
-    promotionNoteStoreMo:
-      "「受取時に店舗でお支払い」で購入いただいた場合はキャンペーン金額が適用されます",
     promotionNoteStore:
       "「受け取り払いで注文」で購入いただいた場合はキャンペーン金額が適用されます",
     sort: {
@@ -751,11 +733,6 @@ const data = {
       stripe_confirmed: "カード決済完了",
       stripe_canceled: "決済キャンセル",
       onsitePayment: "受け取り払い",
-      mo: {
-        stripe_user_pending: "決済処理中",
-        stripe_user_confirmed: "決済完了",
-        stripe_user_canceled: "決済キャンセル",
-      },
       stripe_user_pending: "カード決済未完了",
       stripe_user_message_pending: "(お店側で決済処理が終わっていません)",
       stripe_user_confirmed: "カード決済完了",
@@ -807,12 +784,6 @@ const data = {
         "「オンライン支払いで注文」で決済いただいた場合は、以下のキャンペーン金額が適用されます。",
       instore:
         "「受け取り払いで注文」で購入いただいた場合は、以下のキャンペーン金額が適用されます。",
-    },
-    discountAlertMo: {
-      stripe:
-        "「事前にカードでお支払い」で決済いただいた場合は、以下のキャンペーン金額が適用されます。",
-      instore:
-        "「受取時に店舗でお支払い」で購入いただいた場合は、以下のキャンペーン金額が適用されます。",
     },
     discountPriceSuffix: "値引き",
     discountPriceMessage: "値引きがあります",
@@ -1363,10 +1334,6 @@ const data = {
     notFound: {
       message1: "ページがみつかりません。",
       message2: "もう一度確認してアクセスしてください。",
-      moMessageTop: "ただいまサービス休止中です。",
-      moMessage1: "一時的にサービスを休止しております。",
-      moMessage2: "ご迷惑をお掛けし誠に申し訳ございません。",
-      moMessage3: "サービス再開までしばらくお待ちください。",
     },
     requireLogin: {
       message1: "オーダーを確認するにはログインが必要です",
