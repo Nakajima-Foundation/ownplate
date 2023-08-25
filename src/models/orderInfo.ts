@@ -92,6 +92,7 @@ export interface OrderItemData {
   id: string;
   options: string | [string];
   orderIndex: string[];
+  price?: number;
 }
 
 export class OrderInfo {}

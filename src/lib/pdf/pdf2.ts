@@ -1,7 +1,8 @@
 import pdfMake from "pdfmake/build/pdfmake";
 import moment from "moment";
 
-import { nameOfOrder, formatOption } from "@/utils/strings";
+import { nameOfOrder, formatOption, optionPrice } from "@/utils/strings";
+import { roundPrice, useNationalPhoneNumber } from "@/utils/utils";
 
 import { OrderInfoData, OrderItemData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
@@ -194,6 +195,9 @@ export const printOrderData = (
 ) => {
   const content = [];
   console.log(orderInfo, orderItems, restaurantInfo);
+
+  const { nationalPhoneNumber } = useNationalPhoneNumber(restaurantInfo);
+
   // 店名
   content.push({
     text: restaurantInfo.restaurantName,
@@ -215,13 +219,14 @@ export const printOrderData = (
         fontSize: 6,
       },
       {
-        text: "00-1234-5678",
+        text: nationalPhoneNumber.value || "",
         fontSize: 6,
       },
     ],
     margin: [2, 0],
   });
   // 登録番号
+  /* TODO: add restaurant admin
   content.push({
     text: [
       {
@@ -235,6 +240,7 @@ export const printOrderData = (
     ],
     margin: [2, 0, 0, 2],
   });
+  */
   content.push({
     text: nameOfOrder(orderInfo),
     fontSize: 12,
@@ -289,8 +295,16 @@ export const printOrderData = (
       text: orderItem.item.itemName + " ※ ",
       margin: [2, 0],
     });
-    console.log(orderItem);
-    const option = displayOption((orderItem.options as string[]) || []);
+    const options = orderItem.options
+      ? Array.isArray(orderItem.options)
+        ? orderItem.options
+        : [orderItem.options]
+      : [];
+    const price = options.reduce((p, option: string) => {
+      return p + roundPrice(optionPrice(option));
+    }, orderItem.item.price || 0);
+
+    const option = displayOption(options);
     if (option !== "") {
       content.push({
         text: "\u200B\t(opt: " + option + ")",
@@ -299,7 +313,7 @@ export const printOrderData = (
       });
     }
     content.push({
-      text: ["@" + "100", " x " + String(orderItem.count)],
+      text: ["@" + price, " x " + String(orderItem.count)],
       margin: [16, 0],
     });
     console.log(orderItem);
