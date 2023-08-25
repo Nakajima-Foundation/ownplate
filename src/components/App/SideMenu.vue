@@ -121,51 +121,28 @@
         @click="handleClose()"
       />
 
-      <div class="mt-2 text-center">
-        <!-- Terms for admin -->
-        <router-link to="/terms/admin">
-          <div
-            class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
-            @click="handleClose()"
-          >
-            {{ $t("menu.termsRestaurant") }}
-          </div>
-        </router-link>
-      </div>
+      <SideMenuText to="/terms/admin" text="menu.termsRestaurant" @click="handleClose()" />
     </div>
 
     <!-- Links for Admin -->
     <div v-if="isAdmin">
       <div class="mt-6 text-center">
         <!--Link to admin docs-->
-        <div class="mt-2 text-center">
-          <router-link to="/admin/docs">
-            <div class="inline-flex items-center justify-center">
-              <span class="text-sm text-op-teal font-bold">
-                {{ $t("button.linkToAdminDocs") }}
-              </span>
-              <i class="material-icons ml-0.5 text-lg text-op-teal">launch</i>
-            </div>
-          </router-link>
-        </div>
+        <SideMenuText
+          to="/admin/docs"
+          text="button.linkToAdminDocs"
+          icon="launch"
+          @click="handleClose()"
+          />
 
         <!-- Terms for admin -->
-        <div class="mt-2 text-center">
-          <router-link to="/terms/admin">
-            <div
-              class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
-              @click="handleClose()"
-            >
-              {{ $t("menu.termsRestaurant") }}
-            </div>
-          </router-link>
-        </div>
+        <SideMenuText to="/terms/admin" text="menu.termsRestaurant" @click="handleClose()" />
       </div>
     </div>
 
     <!--ToDo この<div> ログイン後のユーザー & ログイン前のユーザー（飲食店LPまたはご利用手引きのページ以外のページから訪れた全ての人）に表示-->
     <!-- Links for Customer -->
-    <div v-if="!isAdmin">
+    <div v-if="isAdminUser">
       <div class="mt-6 text-center">
         <!-- News -->
         <div class="mt-2 text-center">
@@ -194,19 +171,10 @@
     </div>
 
     <!-- Links for All -->
-    <div>
-      <!-- Privacy -->
-      <div class="mt-2 text-center">
-        <router-link :to="base_path + '/privacy'">
-          <div
-            class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
-            @click="handleClose()"
-          >
-            {{ $t("menu.privacy") }}
-          </div>
-        </router-link>
-      </div>
-    </div>
+
+    <!-- Privacy -->
+    <SideMenuText :to="base_path + '/privacy'" text="menu.privacy" @click="handleClose()" />
+
 
     <!--ToDo この<div> ログイン前のアドミン（飲食店LPまたはご利用手引きのページ(admin/docs)からメニューを押した場合）に表示-->
     <div v-if="!isAdmin && !isUser">
@@ -223,8 +191,6 @@
       </div>
     </div>
 
-    <!--ToDo この<div> ログイン前のユーザー（飲食店LPまたはご利用手引きのページ以外のページから訪れた全ての人）に表示-->
-    <div v-if="!isAdmin && !isUser"></div>
   </o-sidebar>
 </template>
 
