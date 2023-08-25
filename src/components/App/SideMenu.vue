@@ -21,29 +21,11 @@
     </div>
 
     <!-- Sign in for Any Users -->
-    <div class="mt-2 text-center" v-if="isAnonymous">
-      <router-link :to="base_path + '/u/profile'">
-        <div
-          class="inline-flex h-12 w-56 items-center justify-center rounded-full bg-op-teal font-bold text-white"
-          @click="handleClose()"
-        >
-          <i class="material-icons mr-2">person</i>
-          <span>{{ $t("button.login") }}</span>
-        </div>
-      </router-link>
-    </div>
-
-    <!--Sign in for admin-->
-    <div class="mt-2 text-center" v-if="false">
-      <router-link :to="base_path + '/admin/user/signin'">
-        <div
-          class="inline-flex h-12 w-56 items-center justify-center rounded-full bg-op-teal font-bold text-white"
-          @click="handleClose()"
-        >
-          <i class="material-icons mr-2">person</i>
-          <span>{{ $t("button.login") }}</span>
-        </div>
-      </router-link>
+    <div v-if="isAnonymous">
+      <SideMenuButton text="button.login"
+                      icon="person"
+                      :to="base_path + '/u/profile'"
+                      @handleClose="handleClose()" />
     </div>
 
     <!-- Profile -->
@@ -99,19 +81,14 @@
     </div>
 
     <!-- Find Restaurants -->
-    <div class="mt-2 text-center" v-if="(isUser || isAnonymous) && !inLiff">
-      <router-link to="/r">
-        <div
-          class="inline-flex h-12 w-56 items-center justify-center rounded-full bg-op-teal font-bold text-white"
-          @click="handleClose()"
-        >
-          <i class="material-icons mr-2">restaurant</i>
-          <span>{{ $t("find.allRestaurants") }}</span>
-        </div>
-      </router-link>
+    <div v-if="(isUser || isAnonymous) && !inLiff">
+      <SideMenuButton text="find.allRestaurants"
+                      icon="restaurant"
+                      to="/r"
+                      @handleClose="handleClose()" />
     </div>
 
-    <!--Sign up for admin-->
+    <!-- Sign up for admin -->
     <div class="mt-2 text-center" v-if="false">
       <router-link :to="base_path + '/admin/user/signup'">
         <div
@@ -165,17 +142,19 @@
     </div>
 
     <!-- Links for Admin -->
-    <div v-if="!isUser">
+    <div v-if="isAdmin">
       <div class="mt-6 text-center">
         <!--Link to admin docs-->
-        <router-link to="/admin/docs">
-          <div class="mt-2 inline-flex items-center justify-center">
-            <span class="text-sm text-op-teal font-bold">
-              {{ $t("button.linkToAdminDocs") }}
-            </span>
-            <i class="material-icons ml-0.5 text-lg text-op-teal">launch</i>
-          </div>
-        </router-link>
+        <div class="mt-2 text-center">
+          <router-link to="/admin/docs">
+            <div class="inline-flex items-center justify-center">
+              <span class="text-sm text-op-teal font-bold">
+                {{ $t("button.linkToAdminDocs") }}
+              </span>
+              <i class="material-icons ml-0.5 text-lg text-op-teal">launch</i>
+            </div>
+          </router-link>
+        </div>
 
         <!-- Terms for admin -->
         <div class="mt-2 text-center">
@@ -259,8 +238,12 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
 import { useLiffBasePath, regionalSetting, useUserData } from "@/utils/utils";
+import SideMenuButton from "@/components/App/SideMenuButton.vue";
 
 export default defineComponent({
+  components: {
+    SideMenuButton,
+  },
   setup() {
     const open = ref(false);
 
