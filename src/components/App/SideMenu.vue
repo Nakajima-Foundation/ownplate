@@ -22,10 +22,12 @@
 
     <!-- Sign in for Any Users -->
     <div v-if="isAnonymous">
-      <SideMenuButton text="button.login"
-                      icon="person"
-                      :to="base_path + '/u/profile'"
-                      @handleClose="handleClose()" />
+      <SideMenuButton
+        text="button.login"
+        icon="person"
+        :to="base_path + '/u/profile'"
+        @handleClose="handleClose()"
+      />
     </div>
 
     <!-- Profile -->
@@ -82,10 +84,12 @@
 
     <!-- Find Restaurants -->
     <div v-if="(isUser || isAnonymous) && !inLiff">
-      <SideMenuButton text="find.allRestaurants"
-                      icon="restaurant"
-                      to="/r"
-                      @handleClose="handleClose()" />
+      <SideMenuButton
+        text="find.allRestaurants"
+        icon="restaurant"
+        to="/r"
+        @handleClose="handleClose()"
+      />
     </div>
 
     <!-- Sign up for admin -->
@@ -107,27 +111,16 @@
       <div class="mt-12 font-bold text-black text-opacity-40 text-center mb-2">
         {{ $t("lp.forRestaurantOwner") }}
       </div>
-      <div class="mt-2 text-center">
-        <router-link to="/">
-          <div
-            class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
-            @click="handleClose()"
-          >
-            {{ $t("lp.clickHereToSignup") }}
-          </div>
-        </router-link>
-      </div>
-      <div class="mt-2 text-center">
-        <!--Link to admin docs-->
-        <router-link to="/admin/docs">
-          <div class="inline-flex items-center justify-center">
-            <span class="text-sm text-op-teal font-bold">
-              {{ $t("button.linkToAdminDocs") }}
-            </span>
-            <i class="material-icons ml-0.5 text-lg text-op-teal">launch</i>
-          </div>
-        </router-link>
-      </div>
+
+      <SideMenuText to="/" text="lp.clickHereToSignup" @click="handleClose()" />
+
+      <SideMenuText
+        to="/admin/docs"
+        text="button.linkToAdminDocs"
+        icon="launch"
+        @click="handleClose()"
+      />
+
       <div class="mt-2 text-center">
         <!-- Terms for admin -->
         <router-link to="/terms/admin">
@@ -239,10 +232,12 @@
 import { defineComponent, ref, computed } from "vue";
 import { useLiffBasePath, regionalSetting, useUserData } from "@/utils/utils";
 import SideMenuButton from "@/components/App/SideMenuButton.vue";
+import SideMenuText from "@/components/App/SideMenuText.vue";
 
 export default defineComponent({
   components: {
     SideMenuButton,
+    SideMenuText,
   },
   setup() {
     const open = ref(false);
