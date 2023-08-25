@@ -206,35 +206,35 @@ export const printOrderData = (
     border: [false, false, false, false],
     text: "おもちかえり.com ",
     margin: [2, 4, 2, 0],
-	});
-	// 電話番号
+  });
+  // 電話番号
   content.push({
-      text: [
-        {
-          text: "TEL: ",
-          fontSize: 6,
-        },
-        {
-          text: "00-1234-5678",
-          fontSize: 6,
-        },
-      ],
-      margin: [2, 0],
-    });
-	// 登録番号
+    text: [
+      {
+        text: "TEL: ",
+        fontSize: 6,
+      },
+      {
+        text: "00-1234-5678",
+        fontSize: 6,
+      },
+    ],
+    margin: [2, 0],
+  });
+  // 登録番号
   content.push({
-      text: [
-        {
-          text: "登録番号: ",
-          fontSize: 6,
-        },
-        {
-          text: "T123456",
-          fontSize: 6,
-        },
-      ],
-      margin: [2, 0, 0, 2],
-    });
+    text: [
+      {
+        text: "登録番号: ",
+        fontSize: 6,
+      },
+      {
+        text: "T123456",
+        fontSize: 6,
+      },
+    ],
+    margin: [2, 0, 0, 2],
+  });
   content.push({
     text: nameOfOrder(orderInfo),
     fontSize: 12,
@@ -298,32 +298,25 @@ export const printOrderData = (
         fontSize: 6,
       });
     }
-		content.push({
-			text: [
-				"@" + "100",
-				" x " + String(orderItem.count),
-			],
-			margin: [16, 0],
+    content.push({
+      text: ["@" + "100", " x " + String(orderItem.count)],
+      margin: [16, 0],
     });
     console.log(orderItem);
-	});
-	if (orderInfo.tip) {
-		content.push({
-    text: [
-      "心づけ(税込): " + priceString(orderInfo.tip || 0),
-    ],
-    margin: [2, 0],
-		alignment: "right",
   });
+  if (orderInfo.tip) {
+    content.push({
+      text: ["心づけ(税込): " + priceString(orderInfo.tip || 0)],
+      margin: [2, 0],
+      alignment: "right",
+    });
   }
-	if (orderInfo.isDelivery) {
-		content.push({
-    text: [
-      "配送料(税込): " + priceString(orderInfo.deliveryFee || 0),
-    ],
-    margin: [2, 0],
-    alignment: "right",
-  });
+  if (orderInfo.isDelivery) {
+    content.push({
+      text: ["配送料(税込): " + priceString(orderInfo.deliveryFee || 0)],
+      margin: [2, 0],
+      alignment: "right",
+    });
   }
   // 決済
   // 合計金額
@@ -333,8 +326,8 @@ export const printOrderData = (
     bold: true,
     margin: [2, 3],
     alignment: "right",
-	});
-	 // 税率ごとの合計金額
+  });
+  // 税率ごとの合計金額
   content.push({
     text: [
       "8%対象: " + priceString(orderInfo.sub_total),
@@ -345,8 +338,8 @@ export const printOrderData = (
     ].join("\n"),
     margin: [2, 0],
     alignment: "right",
-	});
-	content.push({
+  });
+  content.push({
     text: [
       "10%対象: " + priceString(orderInfo.sub_total),
       "(" +
@@ -357,8 +350,8 @@ export const printOrderData = (
     margin: [2, 0],
     alignment: "right",
   });
-	
-	content.push({
+
+  content.push({
     text: "※軽減税率対象",
     fontSize: 6,
     margin: [2, 1],
