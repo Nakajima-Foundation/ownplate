@@ -31,55 +31,43 @@
     </div>
 
     <!-- Profile -->
-    <div class="mt-2 text-center" v-if="!isAnonymous">
-      <router-link :to="base_path + '/u/profile'">
-        <div
-          class="inline-flex h-12 w-56 items-center justify-center rounded-full bg-op-teal font-bold text-white"
-          @click="handleClose()"
-        >
-          <i class="material-icons mr-2">person</i>
-          <span>{{ $t("profile.title") }}</span>
-        </div>
-      </router-link>
+    <div v-if="!isAnonymous">
+      <SideMenuButton
+        text="profile.title"
+        icon="person"
+        :to="base_path + '/u/profile'"
+        @handleClose="handleClose()"
+      />
     </div>
 
     <!-- Admin Top -->
-    <div class="mt-2 text-center" v-if="isAdmin">
-      <router-link to="/admin/restaurants">
-        <div
-          class="inline-flex h-12 w-56 items-center justify-center rounded-full bg-op-teal font-bold text-white"
-          @click="handleClose()"
-        >
-          <i class="material-icons mr-2">home</i>
-          <span>{{ $t("admin.news.adminTop") }}</span>
-        </div>
-      </router-link>
+    <div v-if="isAdmin">
+      <SideMenuButton
+        text="admin.news.adminTop"
+        icon="home"
+        to="/admin/restaurants"
+        @handleClose="handleClose()"
+      />
     </div>
 
     <!-- Order History -->
-    <div class="mt-2 text-center" v-if="isUser || inLiff">
-      <router-link :to="historyPage">
-        <div
-          class="inline-flex h-12 w-56 items-center justify-center rounded-full bg-op-teal font-bold text-white"
-          @click="handleClose()"
-        >
-          <i class="material-icons mr-2">history</i>
-          <span>{{ $t("order.history") }}</span>
-        </div>
-      </router-link>
+    <div v-if="isUser || inLiff">
+      <SideMenuButton
+        text="order.history"
+        icon="history"
+        :to="historyPage"
+        @handleClose="handleClose()"
+      />
     </div>
 
     <!-- Favorites -->
     <div class="mt-2 text-center" v-if="isUser && !inLiff">
-      <router-link to="/r/favorites">
-        <div
-          class="inline-flex h-12 w-56 items-center justify-center rounded-full bg-op-teal font-bold text-white"
-          @click="handleClose()"
-        >
-          <i class="material-icons mr-2">favorite</i>
-          <span>{{ $t("find.likes") }}</span>
-        </div>
-      </router-link>
+      <SideMenuButton
+        text="find.likes"
+        icon="favorite"
+        to="/r/favorites"
+        @handleClose="handleClose()"
+      />
     </div>
 
     <!-- Find Restaurants -->
@@ -106,9 +94,19 @@
 
     <!-- end of menu link -->
 
-    <!-- Go to Admin LP for anonymouse -->
     <div v-if="isAnonymous">
-      <div class="mt-12 font-bold text-black text-opacity-40 text-center mb-2">
+      <!-- Go to User LP -->
+      <div class="mt-4 text-center">
+        <SideMenuText
+          to="/home"
+          text="menu.clickHereToOrder"
+          @click="handleClose()"
+        />
+      </div>
+    </div>
+
+    <div v-if="isAnonymous">
+      <div class="mt-6 font-bold text-black text-opacity-40 text-center mb-2">
         {{ $t("lp.forRestaurantOwner") }}
       </div>
 
@@ -121,7 +119,15 @@
         @click="handleClose()"
       />
 
-      <SideMenuText to="/terms/admin" text="menu.termsRestaurant" @click="handleClose()" />
+      <!-- News -->
+      <SideMenuText to="/news" text="button.news" @click="handleClose()" />
+
+      <!-- Terms -->
+      <SideMenuText
+        to="/terms/admin"
+        text="menu.termsRestaurant"
+        @click="handleClose()"
+      />
     </div>
 
     <!-- Links for Admin -->
@@ -133,64 +139,39 @@
           text="button.linkToAdminDocs"
           icon="launch"
           @click="handleClose()"
-          />
+        />
 
         <!-- Terms for admin -->
-        <SideMenuText to="/terms/admin" text="menu.termsRestaurant" @click="handleClose()" />
+        <SideMenuText
+          to="/terms/admin"
+          text="menu.termsRestaurant"
+          @click="handleClose()"
+        />
+
+        <!-- News -->
+        <SideMenuText to="/news" text="button.news" @click="handleClose()" />
       </div>
     </div>
 
-    <!--ToDo この<div> ログイン後のユーザー & ログイン前のユーザー（飲食店LPまたはご利用手引きのページ以外のページから訪れた全ての人）に表示-->
-    <!-- Links for Customer -->
-    <div v-if="isAdminUser">
-      <div class="mt-6 text-center">
-        <!-- News -->
-        <div class="mt-2 text-center">
-          <router-link to="/news">
-            <div
-              class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
-              @click="handleClose()"
-            >
-              {{ $t("button.news") }}
-            </div>
-          </router-link>
-        </div>
+    <!-- Separater -->
+    <div class="mt-6" v-if="isAnonymous" />
+    <div class="mt-4" v-if="isUser" />
 
-        <!-- Terms for users -->
-        <div class="mt-2 text-center">
-          <router-link :to="base_path + '/terms/user'">
-            <div
-              class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
-              @click="handleClose()"
-            >
-              {{ $t("menu.termsUser") }}
-            </div>
-          </router-link>
-        </div>
-      </div>
+    <!-- Terms for users -->
+    <div v-if="isAnonymous || isUser">
+      <SideMenuText
+        :to="base_path + '/terms/user'"
+        text="menu.termsUser"
+        @click="handleClose()"
+      />
     </div>
 
     <!-- Links for All -->
-
-    <!-- Privacy -->
-    <SideMenuText :to="base_path + '/privacy'" text="menu.privacy" @click="handleClose()" />
-
-
-    <!--ToDo この<div> ログイン前のアドミン（飲食店LPまたはご利用手引きのページ(admin/docs)からメニューを押した場合）に表示-->
-    <div v-if="!isAdmin && !isUser">
-      <!-- Go to User LP -->
-      <div class="mt-12 text-center">
-        <router-link to="/home">
-          <div
-            class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
-            @click="handleClose()"
-          >
-            {{ $t("lp.clickHereToOrder") }}
-          </div>
-        </router-link>
-      </div>
-    </div>
-
+    <SideMenuText
+      :to="base_path + '/privacy'"
+      text="menu.privacy"
+      @click="handleClose()"
+    />
   </o-sidebar>
 </template>
 
