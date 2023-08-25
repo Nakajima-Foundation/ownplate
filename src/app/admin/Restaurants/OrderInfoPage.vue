@@ -744,7 +744,7 @@ export default defineComponent({
     const orderPickupInterval = computed(() => {
       if (orderInfo.value.timeCreated && userLog.value.lastUpdatedAt) {
         const intervalHour =
-        // @ts-ignore
+          // @ts-ignore
           (orderInfo.value.timeCreated - userLog.value.lastUpdatedAt) / 3600;
         return intervalHour;
       }
