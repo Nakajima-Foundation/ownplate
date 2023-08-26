@@ -342,29 +342,32 @@ export const printOrderData = (
     alignment: "right",
   });
   // 税率ごとの合計金額
-  content.push({
-    text: [
-      "8%対象: " + priceString(orderInfo.sub_total),
-      "(" +
-        (orderInfo.inclusiveTax ? "内税額: " : "外税額:") +
-        priceString(orderInfo.tax) +
-        ")",
-    ].join("\n"),
-    margin: [2, 0],
-    alignment: "right",
-  });
-  content.push({
-    text: [
-      "10%対象: " + priceString(orderInfo.sub_total),
-      "(" +
-        (orderInfo.inclusiveTax ? "内税額: " : "外税額:") +
-        priceString(orderInfo.tax) +
-        ")",
-    ].join("\n"),
-    margin: [2, 0],
-    alignment: "right",
-  });
-
+  if ((orderInfo?.accounting?.food?.revenue || 0) > 0) {
+    content.push({
+      text: [
+        "8%対象: " + priceString(orderInfo?.accounting?.food?.revenue || 0),
+        "(" +
+          (orderInfo.inclusiveTax ? "内税額: " : "外税額:") +
+          priceString(orderInfo?.accounting?.food?.tax || 0) +
+          ")",
+      ].join("\n"),
+      margin: [2, 0],
+      alignment: "right",
+    });
+  }
+  if ((orderInfo?.accounting?.alcohol?.revenue || 0) > 0) {
+    content.push({
+      text: [
+        "10%対象: " + priceString(orderInfo?.accounting?.alcohol?.revenue || 0),
+        "(" +
+          (orderInfo.inclusiveTax ? "内税額: " : "外税額:") +
+          priceString(orderInfo?.accounting?.alcohol?.tax || 0) +
+          ")",
+      ].join("\n"),
+      margin: [2, 0],
+      alignment: "right",
+    });
+  }
   content.push({
     text: "※軽減税率対象",
     fontSize: 6,
