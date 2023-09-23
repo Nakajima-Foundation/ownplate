@@ -38,7 +38,7 @@
               </div>
             </div>
           </div>
-          <div v-if="isSoldOutToday" class="w-full">
+          <div v-if="isSoldOutToday && !isSoldOut" class="w-full">
             <div
               class="text-center text-sm font-bold text-red-600 bg-red-100 rounded-full mt-2 w-36 mx-auto"
             >
