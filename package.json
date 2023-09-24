@@ -1,6 +1,6 @@
 {
   "name": "OwnPlate",
-  "version": "2.1.1",
+  "version": "3.0.0",
   "private": true,
   "description": "OwnPlate - Delicious food",
   "author": "OwnPlate developer team",
@@ -74,8 +74,8 @@
     "prettier": "^3.0.3",
     "prettier-plugin-tailwindcss": "^0.5.4",
     "raw-loader": "^4.0.2",
-    "sass": "^1.55.0",
-    "sass-loader": "^13.0.2",
+    "sass": "^1.68.0",
+    "sass-loader": "^13.3.2",
     "tailwindcss": "^3.3.3",
     "typescript": "~5.2.2"
   }
