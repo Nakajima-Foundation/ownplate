@@ -6,17 +6,12 @@
     <template v-if="promotion.discountMethod === 'ratio'">
       最大{{ promotion.discountValue }}% 値引き
     </template>
-		<span class="text-sm -ml-1">
-		キャンペーン実施中！
-		</span>
+    <span class="text-sm -ml-1"> キャンペーン実施中！ </span>
   </div>
 </template>
 
-
 <script lang="ts">
-import {
-  defineComponent,
-} from "@vue/composition-api";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   props: {
@@ -24,6 +19,6 @@ export default defineComponent({
       type: Object,
       required: true,
     },
-  }
+  },
 });
 </script>

@@ -100,14 +100,19 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, computed } from "@vue/composition-api";
+import { defineComponent, ref, computed } from "vue";
 
 import { auth } from "@/lib/firebase/firebase9";
 import { verifyPasswordResetCode, confirmPasswordReset } from "firebase/auth";
+
+import { useRoute } from "vue-router";
+
 export default defineComponent({
   name: "AccountAction",
-  setup(_, ctx) {
-    const code = ctx.root.$route.query.oobCode as string;
+  setup() {
+    const route = useRoute();
+
+    const code = route.query.oobCode as string;
 
     const submitting = ref(false);
     const password = ref("");
@@ -117,9 +122,9 @@ export default defineComponent({
 
     const isExpired = ref<null | boolean>(null);
     const submitted = ref(false);
-    
+
     const errors = computed(() => {
-      if (!submitted.value)  {
+      if (!submitted.value) {
         return {};
       }
       const _errors: { [key: string]: string[] } = {};
@@ -140,7 +145,7 @@ export default defineComponent({
 
     const hasError = computed(() => {
       return Object.keys(errors.value).length > 0;
-    })
+    });
     const resetPassword = async () => {
       submitted.value = true;
       if (hasError.value) {
@@ -148,7 +153,7 @@ export default defineComponent({
       }
       submitting.value = true;
       try {
-        const res = await confirmPasswordReset(auth, code, password.value);
+        await confirmPasswordReset(auth, code, password.value);
         isSuccess.value = true;
       } catch (e: any) {
         error.value = e.code;
@@ -158,7 +163,7 @@ export default defineComponent({
 
     (async () => {
       try {
-        const res = await verifyPasswordResetCode(auth, code);
+        await verifyPasswordResetCode(auth, code);
         isExpired.value = false;
       } catch (e) {
         isExpired.value = true;

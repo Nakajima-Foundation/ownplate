@@ -17,11 +17,22 @@
   </section>
 </template>
 
-<script>
-import BackButton from "@/components/BackButton";
-import { db } from "@/plugins/firebase";
+<script lang="ts">
+import { defineComponent, ref } from "vue";
+import BackButton from "@/components/BackButton.vue";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  getDocs,
+  where,
+  query,
+  collectionGroup,
+  limit,
+  DocumentData,
+} from "firebase/firestore";
 
-export default {
+import { useSuper } from "@/utils/utils";
+
+export default defineComponent({
   metaInfo() {
     return {
       title: [this.defaultTitle, "Super All Profiles"].join(" / "),
@@ -30,28 +41,33 @@ export default {
   components: {
     BackButton,
   },
-  data() {
+  setup() {
+    useSuper();
+
+    const prefix = ref("");
+    const profiles = ref<DocumentData[]>([]);
+
+    const handleSearch = () => {
+      getDocs(
+        query(
+          collectionGroup(db, "private"),
+          limit(100),
+          where("email", ">=", prefix.value),
+          where("email", "<=", prefix.value + "\uf8ff"),
+        ),
+      ).then((snapshot) => {
+        profiles.value = snapshot.docs.map((doc) => {
+          const data = doc.data();
+          data.uid = doc?.ref?.parent?.parent?.id;
+          return data;
+        });
+      });
+    };
     return {
-      prefix: "",
-      profiles: [],
+      profiles,
+      prefix,
+      handleSearch,
     };
   },
-  methods: {
-    handleSearch() {
-      this.detatcher = db
-        .collectionGroup("private")
-        .limit(100)
-        .where("email", ">=", this.prefix)
-        .where("email", "<=", this.prefix + "\uf8ff")
-        .onSnapshot((snapshot) => {
-          this.profiles = snapshot.docs.map((doc) => {
-            const data = doc.data();
-            data.uid = doc.ref.parent.parent.id;
-            return data;
-          });
-          console.log(this.profiles);
-        });
-    },
-  },
-};
+});
 </script>

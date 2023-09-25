@@ -68,17 +68,11 @@
   </div>
 </template>
 
-<script>
-import {
-  onMounted,
-  onUnmounted,
-  defineComponent,
-  ref,
-  computed,
-} from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent } from "vue";
 
 export default defineComponent({
-  setup(_, ctx) {
+  setup() {
     const faqList = [
       {
         q: "ご利用の流れについて",

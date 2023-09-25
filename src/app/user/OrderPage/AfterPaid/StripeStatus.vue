@@ -7,16 +7,9 @@
     </div>
     <div :class="'stripe_' + orderInfo.payment.stripe">
       <div class="text-xl">
-        {{
-          $t(
-            "order.status" +
-              (mode === "mo" ? ".mo" : "") +
-              ".stripe_user_" +
-              orderInfo.payment.stripe
-          )
-        }}
+        {{ $t("order.status" + ".stripe_user_" + orderInfo.payment.stripe) }}
       </div>
-      <div v-if="mode !== 'mo'">
+      <div>
         {{ $t("order.status.stripe_user_message_" + orderInfo.payment.stripe) }}
       </div>
     </div>
@@ -26,18 +19,14 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, computed } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent, computed } from "vue";
 import { order_status } from "@/config/constant";
 
 export default defineComponent({
   props: {
     orderInfo: {
       type: Object,
-      required: true,
-    },
-    mode: {
-      type: String,
       required: true,
     },
   },

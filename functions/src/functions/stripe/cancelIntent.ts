@@ -30,11 +30,11 @@ export const cancel = async (db: admin.firestore.Firestore, data: orderCancelDat
     const adminUid = utils.validate_auth(context);
     await utils.validate_sub_account_request(db, adminUid, uid, restaurantId);
   }
-  
+
   const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
   const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`);
-  const restaurant = await utils.get_restaurant(db, restaurantId);
-  const restaurantOwnerUid = restaurant["uid"];
+  const restaurantData = await utils.get_restaurant(db, restaurantId);
+  const restaurantOwnerUid = restaurantData.uid;
 
   try {
     const result = await db.runTransaction(async (transaction) => {
@@ -73,16 +73,19 @@ export const cancel = async (db: admin.firestore.Firestore, data: orderCancelDat
       }
       const paymentIntent = hasPayment ? await cancelStripe(db, transaction, stripeRef, restaurantOwnerUid, order.id) : {}; // stripe
       await updateOrderTotalDataAndUserLog(db, transaction, order.uid, order.order, restaurantId, restaurantOwnerUid, order.timePlaced, false);
-      const updateData = noPayment ? updateDataBase : {
-        ...updateDataBase,
-        ...{
-          payment: {
-            stripe: "canceled",
-          },
-        }
-      };
+      const updateData = noPayment
+        ? updateDataBase
+        : {
+            ...updateDataBase,
+            ...{
+              payment: {
+                stripe: "canceled",
+              },
+            },
+          };
       transaction.set(orderRef, updateData, { merge: true });
-      if (hasPayment) { // stripe
+      if (hasPayment) {
+        // stripe
         transaction.set(
           stripeRef,
           {
@@ -101,10 +104,10 @@ export const cancel = async (db: admin.firestore.Firestore, data: orderCancelDat
     });
     // sendSMS is always true
     if (isAdmin && result.order.sendSMS) {
-      await sendMessageToCustomer(db, "msg_order_canceled", restaurant.restaurantName, result.order, restaurantId, orderId, {}, true);
+      await sendMessageToCustomer(db, "msg_order_canceled", restaurantData.hasLine, restaurantData.restaurantName, result.order, restaurantId, orderId, {}, true);
     }
     if (!isAdmin) {
-      await notifyCanceledOrderToRestaurant(db, restaurantId, result.order, restaurant.restaurantName);
+      await notifyCanceledOrderToRestaurant(db, restaurantId, result.order, restaurantData.restaurantName);
     }
     return { result: true };
   } catch (error) {

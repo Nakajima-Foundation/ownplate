@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div class="mt-6 text-center text-xl font-bold text-black text-opacity-40" v-if="isValidating">
+    <div
+      class="mt-6 text-center text-xl font-bold text-black text-opacity-40"
+      v-if="isValidating"
+    >
       {{ $t("admin.smaregi.authenticating") }}
     </div>
     <o-loading :is-full-page="false" :active="isValidating"></o-loading>
@@ -8,7 +11,9 @@
       <div class="flex space-x-4 mt-6">
         <back-button url="/admin/restaurants/" />
       </div>
-      <div class="mt-6 text-center text-xl font-bold text-black text-opacity-40">
+      <div
+        class="mt-6 text-center text-xl font-bold text-black text-opacity-40"
+      >
         {{ $t("admin.smaregi.authenticationError") }}
       </div>
     </div>
@@ -16,20 +21,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from "@vue/composition-api";
+import { defineComponent, ref } from "vue";
 
 import { smaregiAuth } from "@/lib/firebase/functions";
-import { smaregi } from "@/config/project";
 
 import BackButton from "@/components/BackButton.vue";
+
+import { useRoute, useRouter } from "vue-router";
 
 export default defineComponent({
   components: {
     BackButton,
   },
-  setup(_, ctx) {
-    const route = ctx.root.$route;
-    const router = ctx.root.$router;
+  setup() {
+    const route = useRoute();
+    const router = useRouter();
 
     const code = route.query.code as string;
 
@@ -56,7 +62,7 @@ export default defineComponent({
         error.value = true;
       }
     })();
-    
+
     return {
       isValidating,
       error,

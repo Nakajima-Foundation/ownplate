@@ -16,7 +16,7 @@ export const generateResizeImage = async (db, object) => {
     })
   );
 
-  const hasError = Object.values(resizedImages).some(a => !a);
+  const hasError = Object.values(resizedImages).some((a) => !a);
   if (hasError) {
     await db.doc(firestorePath).set(
       {
@@ -28,9 +28,9 @@ export const generateResizeImage = async (db, object) => {
       },
       { merge: true }
     );
-    await imageUtil.removeFile(object)
+    await imageUtil.removeFile(object);
     // await object.bucket.file(filePath).delete();
-  }  else {
+  } else {
     if (Object.keys(resizedImages).length > 0) {
       await db.doc(firestorePath).set(
         {
@@ -38,7 +38,7 @@ export const generateResizeImage = async (db, object) => {
             [imageId]: {
               original: filePath,
               resizedImages,
-          },
+            },
           },
         },
         { merge: true }

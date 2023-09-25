@@ -55,3 +55,42 @@ The user can get own orders using CollectionGroup.
 ```
 TBD
 ```
+
+
+/smaregi/{contractId}
+{
+ contractId
+ uid
+}
+
+/smaregi/{contractId}/stores/{storeId}
+{
+ contractId,
+ storeId
+
+ uid
+ restaurantId
+}
+
+/smaregi/{contractId}/stores/{storeId}/products/{prodcts}
+{
+ contractId,
+ storeId,
+ productId,
+
+ uid
+ restaurantId,
+ menuId,
+}
+
+/smaregi/{contractId}/stores/{storeId}/stocks/{prodcts} {
+ contractId,
+ storeId,
+ productId,
+
+ uid
+ restaurantId,
+ menuId,
+
+ stock,
+}

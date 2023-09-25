@@ -35,7 +35,7 @@ export const nationalPhoneNumber = (restaurant) => {
 
 export const phoneCall = async (restaurant) => {
   if (!enableNotification) {
-    return ;
+    return;
   }
   const to = intenationalPhoneNumber(restaurant);
   if (!sid || !token || !phone_from) {

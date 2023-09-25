@@ -1,33 +1,39 @@
-<template></template>
+<template>
+  <div />
+</template>
 
-<script>
-import { defineComponent, ref, onUnmounted } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent, ref, onUnmounted } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, onSnapshot } from "firebase/firestore";
 
-import { useAdminUids } from "@/utils/utils";
+import { useAdminUids, useSoundPlay } from "@/utils/utils";
+import { useRoute } from "vue-router";
 
 export default defineComponent({
   props: {
     notificationConfig: Object,
   },
-  setup(props, ctx) {
+  setup(props) {
+    const route = useRoute();
+
     const watchingMessage = ref(false);
 
-    const { ownerUid } = useAdminUids(ctx);
+    const { ownerUid } = useAdminUids();
 
+    const soundPlay = useSoundPlay();
     const message_detacher = onSnapshot(
       doc(db, `admins/${ownerUid.value}/private/notification`),
       (notification) => {
         if (notification.exists()) {
           const notification_data = notification.data();
           if (
-            ctx.root.$route.path.indexOf(notification_data.path) > -1 &&
+            route.path.indexOf(notification_data.path) > -1 &&
             notification_data.sound &&
-            props.notificationConfig.soundOn &&
+            props?.notificationConfig?.soundOn &&
             watchingMessage.value
           ) {
-            ctx.root.soundPlay("NotificationWatcher: newMessage");
+            soundPlay("NotificationWatcher: newMessage");
           }
         }
         watchingMessage.value = true;
@@ -39,7 +45,7 @@ export default defineComponent({
         } else {
           throw error;
         }
-      }
+      },
     );
     onUnmounted(() => {
       message_detacher();

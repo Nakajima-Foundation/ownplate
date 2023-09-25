@@ -18,15 +18,17 @@
   </download-csv>
 </template>
 
-<script>
-import { defineComponent, computed } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent, computed } from "vue";
 import DownloadCsv from "@/components/DownloadCSV.vue";
 import moment from "moment";
 import { nameOfOrder } from "@/utils/strings";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import { order_status } from "@/config/constant";
-import { arrayOrNumSum, orderTypeKey } from "@/utils/utils";
-import { downloadFields, downloadMoFields } from "@/utils/reportUtils";
+import { arrayOrNumSum, orderTypeKey, getRestaurantId } from "@/utils/utils";
+
+import { useI18n } from "vue-i18n";
+import { downloadFields } from "@/utils/reportUtils";
 
 export default defineComponent({
   components: {
@@ -37,19 +39,16 @@ export default defineComponent({
       type: Array,
       required: true,
     },
-    isInMo: {
-      type: Boolean,
-      required: true,
-    },
   },
-  setup(props, ctx) {
-    const fields = props.isInMo ? downloadMoFields : downloadFields;
+  setup(props) {
+    const { t } = useI18n({ useScope: "global" });
+    const fields = downloadFields;
     const fieldNames = fields.map((field) => {
-      return ctx.root.$t(`order.${field}`);
+      return t(`order.${field}`);
     });
 
     const tableData = computed(() => {
-      return props.orders.map((order) => {
+      return props.orders.map((order: any) => {
         const totalCount = Object.keys(order.order).reduce((count, id) => {
           return count + arrayOrNumSum(order.order[id]);
         }, 0);
@@ -61,14 +60,14 @@ export default defineComponent({
         }, "unexpected");
         return {
           datePlaced: moment(order.timePlaced).format("YYYY/MM/DD HH:mm"),
-          type: ctx.root.$t("order." + orderTypeKey(order, props.isInMo)),
+          type: t("order." + orderTypeKey(order)),
           dateEstimated:
             order.timeEstimated &&
             moment(order.timeEstimated).format("YYYY/MM/DD HH:mm"),
           dateConfirmed:
             order.timeConfirmed &&
             moment(order.timeConfirmed).format("YYYY/MM/DD HH:mm"),
-          statusName: ctx.root.$t(`order.status.${status}`),
+          statusName: t(`order.status.${status}`),
           totalCount: totalCount,
           total: order.totalCharge,
           discountPrice: order.discountPrice || 0,
@@ -78,12 +77,11 @@ export default defineComponent({
             : "LINE",
           name: nameOfOrder(order),
           payment: order.payment?.stripe ? "stripe" : "",
-          // for mo
-          cancelReason: order.cancelReason,
         };
       });
     });
-    const fileName = ctx.root.restaurantId() + "_orderhistory_summary";
+    const restaurantId = getRestaurantId();
+    const fileName = restaurantId + "_orderhistory_summary";
     return {
       fileName,
       fields,

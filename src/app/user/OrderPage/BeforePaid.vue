@@ -2,16 +2,16 @@
   <div>
     <!-- Back Button (Edit Order) -->
     <div class="mx-6 mt-6">
-      <o-button @click="handleOpenMenu" class="b-reset-tw">
+      <router-link :to="menuPagePath">
         <div
-          class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+          class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 b-reset-tw"
         >
           <i class="material-icons mr-2 text-lg text-op-teal">arrow_back</i>
           <div class="text-sm font-bold text-op-teal">
             {{ $t("button.back") }}
           </div>
         </div>
-      </o-button>
+      </router-link>
     </div>
 
     <!-- Restaurant Profile Photo and Name -->
@@ -50,9 +50,8 @@
             :shopInfo="shopInfo || {}"
             :orderItems="orderItems"
             :orderInfo="orderInfo || {}"
+            :menuData="menuData"
             :shippingCost="shippingCost"
-            :groupData="groupData"
-            :mode="mode"
             :promotion="selectedPromotion"
             :enablePromotion="enablePromotion"
             :discountPrice="discountPrice"
@@ -95,7 +94,6 @@
           >
             <ECCustomer
               ref="ecCustomerRef"
-              :user="user"
               :shopInfo="shopInfo"
               :orderInfo="orderInfo"
               @updateLocation="updateLocation"
@@ -114,6 +112,7 @@
             >
               <div
                 v-for="(error, key) in $refs.ecCustomerRef.ecErrors['location']"
+                :key="key"
               >
                 {{ $t(error) }}
               </div>
@@ -146,9 +145,9 @@
                 :shopInfo="shopInfo"
                 :orderInfo="orderInfo"
                 :isDelivery="orderInfo.isDelivery || false"
-                ref="timeRef"
+                :hasSoldOutToday="hasSoldOutToday"
+                ref="timeToPickupRef"
                 @notAvailable="handleNotAvailable"
-                @updateDisabledPickupTime="updateDisabledPickupTime"
               />
             </div>
           </div>
@@ -205,41 +204,32 @@
               ></stripe-card>
 
               <div
-                v-if="disabledPickupTime"
-                class="mt-4 h-full w-full rounded-lg bg-red-700 bg-opacity-10 p-3 text-xs font-bold text-red-700"
+                v-if="
+                  selectedPromotion &&
+                  selectedPromotion.paymentRestrictions === 'stripe'
+                "
               >
-                {{
-                  $tc("mobileOrder.shopInfo.pickupNote", 1, {
-                    lastOrder: timeRef && timeRef.lastOrder,
-                  })
-                }}
+                <div
+                  class="border-green-600 text-green-600 text-center font-bold mx-auto w-72 items-center mt-8 -mb-3 rounded-lg bg-green-600 bg-opacity-10 px-6 py-2"
+                >
+                  <div class="text-xs">{{ $t("order.promotionNoteCard") }}</div>
+                </div>
               </div>
 
-							<div v-if="selectedPromotion && selectedPromotion.paymentRestrictions === 'stripe'">
-								<!-- おもちかえりの場合は以下のメッセージを表示-->
-								<div class="border-green-600 text-green-600 text-center font-bold mx-auto w-72 items-center mt-8 -mb-3 rounded-lg bg-green-600 bg-opacity-10 px-6 py-2" v-if="mode !== 'mo'">
-									<div class="text-xs">{{ $t("order.promotionNoteCard") }}</div>
-								</div>
-								<!-- MobileOrderの場合は以下のメッセージを表示-->
-								<div v-else>
-								  <div class="border-green-600 text-green-600 text-center font-bold mx-auto w-72 items-center mt-8 -mb-3 rounded-lg bg-green-600 bg-opacity-10 px-6 py-2">
-									  <div class="text-xs">{{ $t("order.promotionNoteCardMo") }}</div>
-								  </div>
-								</div>
-							</div>
-
-							<div v-if="selectedPromotion && selectedPromotion.paymentRestrictions === 'instore'">
-								<!-- おもちかえりの場合は以下のメッセージを表示 -->
-								<div class="border-green-600 text-green-600 text-center font-bold mx-auto w-72 items-center mt-8 -mb-3 rounded-lg bg-green-600 bg-opacity-10 px-6 py-2"  v-if="mode !== 'mo'">
-									<div class="text-xs">{{ $t("order.promotionNoteStore") }}</div>
-								</div>
-								<!-- MobileOrderの場合は以下のメッセージを表示 -->
-								<div v-else>
-								  <div class="border-green-600 text-green-600 text-center font-bold mx-auto w-72 items-center mt-8 -mb-3 rounded-lg bg-green-600 bg-opacity-10 px-6 py-2">
-									  <div class="text-xs">{{ $t("order.promotionNoteStoreMo") }}</div>
-								  </div>
-								</div>
-							</div>
+              <div
+                v-if="
+                  selectedPromotion &&
+                  selectedPromotion.paymentRestrictions === 'instore'
+                "
+              >
+                <div
+                  class="border-green-600 text-green-600 text-center font-bold mx-auto w-72 items-center mt-8 -mb-3 rounded-lg bg-green-600 bg-opacity-10 px-6 py-2"
+                >
+                  <div class="text-xs">
+                    {{ $t("order.promotionNoteStore") }}
+                  </div>
+                </div>
+              </div>
 
               <div class="mt-6 text-center">
                 <o-button
@@ -248,61 +238,29 @@
                     notAvailable ||
                     notSubmitAddress ||
                     userMessageError ||
-                    disabledPickupTime ||
                     stripeSmallPayment ||
-                    moSuspend ||
                     isPaying ||
                     isPlacing
                   "
                   @click="handlePayment(true)"
                   class="b-reset-tw"
-                  :class="orderInfo.isPickup ? 'pickup' : 'takeout'"
                 >
                   <div
                     class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal px-6 shadow"
                     style="min-width: 288px"
                   >
                     <ButtonLoading v-if="isPaying" />
-                    <div class="text-xl font-bold text-white" v-if="moSuspend">
-                      {{ $t("mobileOrder.suspendCartButton") }}
-                    </div>
-                    <div class="text-xl font-bold text-white" v-else>
-                      {{
-                        mode === "mo"
-                          ? $t("order.placeOrderMo")
-                          : $t("order.placeOrder")
-                      }}
+                    <div class="text-xl font-bold text-white">
+                      {{ $t("order.placeOrder") }}
                       <!-- {{ $n(orderInfo.total + tip, "currency") }} -->
                     </div>
                   </div>
                 </o-button>
                 <div
-                  v-if="mode !== 'mo' && stripeSmallPayment"
-                  class="mt-2 text-sm font-bold text-red-700"
-                >
-                  {{ $t("errorPage.code.smallPayment") }}
-                </div>
-              </div>
-              <div v-if="mode === 'mo'" class="text-center">
-                <div
                   v-if="stripeSmallPayment"
                   class="mt-2 text-sm font-bold text-red-700"
                 >
-                  <div>
-                    {{ $t("mobileOrder.smallPayment1") }}
-                  </div>
-                  <div>
-                    {{ $t("mobileOrder.smallPayment2") }}
-                  </div>
-                  <div>
-                    {{ $t("mobileOrder.smallPayment3") }}
-                  </div>
-                </div>
-                <div
-                  v-else
-                  class="mt-2 text-center text-xs text-black text-opacity-50"
-                >
-                  {{ $t("order.placeOrderMoNote") }}
+                  {{ $t("errorPage.code.smallPayment") }}
                 </div>
               </div>
             </div>
@@ -329,34 +287,25 @@
                     notAvailable ||
                     notSubmitAddress ||
                     userMessageError ||
-                    disabledPickupTime ||
-                    moSuspend ||
                     isPaying ||
                     isPlacing
                   "
                   @click="handlePayment(false)"
                   class="b-reset-tw"
-                  :class="orderInfo.isPickup ? 'pickup' : 'takeout'"
+                  :class="'takeout'"
                 >
                   <div
                     class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal px-6 shadow"
                     style="min-width: 288px"
                   >
                     <ButtonLoading v-if="isPlacing" />
-                    <div class="text-xl font-bold text-white" v-if="moSuspend">
-                      {{ $t("mobileOrder.suspendCartButton") }}
-                    </div>
-                    <div class="text-xl font-bold text-white" v-else>
-                      {{
-                        mode === "mo"
-                          ? $t("order.placeOrderNoPaymentMo")
-                          : $t("order.placeOrderNoPayment")
-                      }}
+                    <div class="text-xl font-bold text-white">
+                      {{ $t("order.placeOrderNoPayment") }}
                     </div>
                   </div>
                 </o-button>
               </div>
-              <div v-if="mode !== 'mo'">
+              <div>
                 <div class="mt-2 text-sm font-bold text-black text-opacity-60">
                   {{ $t("order.placeOrderNoPaymentNote") }}
                 </div>
@@ -366,16 +315,19 @@
                     {{ $t("shopInfo.paymentMethods") }}:
                   </div>
                   <div class="ml-2 text-left text-xs">
-                    <div
-                      v-for="(paymentMethod, k) in paymentMethods"
-                      v-if="(shopInfo.paymentMethods||{})[paymentMethod.key]"
-                    >
-                      {{
-                        $t(
-                          "editRestaurant.paymentMethodChoices." +
-                            paymentMethod.key
-                        )
-                      }}
+                    <div v-for="(paymentMethod, k) in paymentMethods" :key="k">
+                      <div
+                        v-if="
+                          (shopInfo.paymentMethods || {})[paymentMethod.key]
+                        "
+                      >
+                        {{
+                          $t(
+                            "editRestaurant.paymentMethodChoices." +
+                              paymentMethod.key,
+                          )
+                        }}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -393,7 +345,6 @@
             >
               {{ $t("order.alertReqireAddress") }}
             </div>
-
           </div>
         </div>
       </div>
@@ -402,18 +353,10 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  computed,
-  watch,
-  ref,
-  PropType,
-} from "@vue/composition-api";
-
-import firebase from "firebase/compat/app";
+import { defineComponent, computed, watch, ref, PropType } from "vue";
 
 import ShopHeader from "@/app/user/Restaurant/ShopHeader.vue";
-import FavoriteButton from "@/app/user/Restaurant/FavoriteButton.vue";
+// import FavoriteButton from "@/app/user/Restaurant/FavoriteButton.vue";
 
 import OrderInfo from "@/app/user/OrderPage/OrderInfo.vue";
 import UserCustomerInfo from "@/app/user/OrderPage/UserCustomerInfo.vue";
@@ -430,13 +373,11 @@ import OrderPageMap from "@/app/user/OrderPage/BeforePaid/Map.vue";
 import ButtonLoading from "@/components/Button/Loading.vue";
 
 import { db } from "@/lib/firebase/firebase9";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, Timestamp } from "firebase/firestore";
 
 import { orderPlace } from "@/lib/firebase/functions";
 
 import { order_status, paymentMethods } from "@/config/constant";
-import { nameOfOrder } from "@/utils/strings";
-import { stripeReceipt } from "@/lib/stripe/stripe";
 
 import { costCal } from "@/utils/commonUtils";
 import { usePromotionData } from "@/utils/promotion";
@@ -447,11 +388,16 @@ import Promotion from "@/models/promotion";
 
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
+import { useHasSoldOutToday } from "./Stock";
+
+import { useStore } from "vuex";
+import { useRoute } from "vue-router";
+
 export default defineComponent({
   name: "Order",
   components: {
     ShopHeader,
-    FavoriteButton,
+    // FavoriteButton,
 
     OrderInfo,
     UserCustomerInfo,
@@ -493,67 +439,58 @@ export default defineComponent({
       type: Array<Promotion>,
       required: true,
     },
-    mode: {
+    menuPagePath: {
       type: String,
-      required: false,
-    },
-    groupData: {
-      type: Object,
-      required: false,
-    },
-    moSuspend: {
-      type: Boolean,
       required: false,
     },
   },
   data() {
-    return {
-    };
+    return {};
   },
   setup(props, ctx) {
-    const route = ctx.root.$route;
-    const store = ctx.root.$store;
+    const route = useRoute();
+    const store = useStore();
 
     const restaurantId = route.params.restaurantId as string;
-    
+
     const notAvailable = ref(false);
     const isPaying = ref(false);
     const isPlacing = ref(false);
 
     const cardState = ref({});
     const memo = ref("");
-    const disabledPickupTime = ref(false);
+
     let tip = 0;
 
     // ref for refs
     const ecCustomerRef = ref();
     const orderPageMapRef = ref();
-    const timeRef = ref();
+    const timeToPickupRef = ref();
     const stripeRef = ref();
-    
+
     const postageInfo = ref({});
     const setPostage = () => {
       if (props.shopInfo.isEC) {
-        getDoc(
-          doc(db, `restaurants/${restaurantId}/ec/postage`)
-        ).then((snapshot) => {
-          postageInfo.value = snapshot.data() || {};
-        });
+        getDoc(doc(db, `restaurants/${restaurantId}/ec/postage`)).then(
+          (snapshot) => {
+            postageInfo.value = snapshot.data() || {};
+          },
+        );
       }
     };
     setPostage();
-    
+
     const stripeAccount = computed(() => {
       return props.paymentInfo.stripe;
     });
-    
+
     const stripeJCB = computed(() => {
       return props.paymentInfo.stripeJCB === true;
     });
     const inStorePayment = computed(() => {
       return props.paymentInfo.inStore;
     });
-    const showPayment = computed(() =>{
+    const showPayment = computed(() => {
       return stripeAccount.value;
     });
 
@@ -571,7 +508,7 @@ export default defineComponent({
       return costCal(
         postageInfo.value,
         ecCustomerRef.value?.customerInfo?.prefectureId,
-        props.orderInfo.total
+        props.orderInfo.total,
       );
     });
     const requireAddress = computed(() => {
@@ -606,16 +543,18 @@ export default defineComponent({
       return null;
     });
 
-    const {
-      enablePromotion,
-      discountPrice,
-      isEnablePaymentPromotion,
-    } = usePromotionData(props.orderInfo, selectedPromotion);
-    
-    // end of computed
+    const { enablePromotion, discountPrice, isEnablePaymentPromotion } =
+      usePromotionData(props.orderInfo, selectedPromotion);
+
     const shopInfo = computed(() => {
       return props.shopInfo;
     });
+    const { hasSoldOutToday, menuData } = useHasSoldOutToday(
+      restaurantId,
+      props.orderInfo,
+    );
+
+    // end of computed
     watch(shopInfo, () => {
       setPostage();
     });
@@ -638,11 +577,8 @@ export default defineComponent({
           return { ...or.item, id: or.id, quantity: or.count };
         }),
         props.shopInfo,
-        restaurantId
+        restaurantId,
       );
-    };
-    const updateDisabledPickupTime = (value: boolean) => {
-      disabledPickupTime.value = value;
     };
     const handleOpenMenu = () => {
       ctx.emit("handleOpenMenu");
@@ -654,7 +590,7 @@ export default defineComponent({
     const handleTipChange = (_tip: number) => {
       tip = _tip;
     };
-    const handleCardStateChange = (state: {[key: string]: boolean}) => {
+    const handleCardStateChange = (state: { [key: string]: boolean }) => {
       cardState.value = state;
     };
     // internal
@@ -666,7 +602,7 @@ export default defineComponent({
         restaurantId: restaurantId,
         name: props.orderInfo.name || "",
         orderId: orderId.value, //  (this is last)
-        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        updatedAt: serverTimestamp(),
       };
       // TODO: not implemented yet.
     };
@@ -684,8 +620,8 @@ export default defineComponent({
         }
       }
       const timeToPickup = props.shopInfo.isEC
-        ? firebase.firestore.Timestamp.now()
-        : timeRef.value.timeToPickup();
+        ? Timestamp.now()
+        : timeToPickupRef.value.timeToPickup();
       try {
         if (payStripe) {
           isPaying.value = true;
@@ -693,9 +629,12 @@ export default defineComponent({
         } else {
           isPlacing.value = true;
         }
-        const promotionId = isEnablePaymentPromotion(payStripe) && enablePromotion.value ? selectedPromotion.value?.promotionId : null;
-        console.log( isEnablePaymentPromotion(payStripe), enablePromotion.value , promotionId)
-        const { data } = await orderPlace({
+        const promotionId =
+          isEnablePaymentPromotion(payStripe) && enablePromotion.value
+            ? selectedPromotion.value?.promotionId
+            : null;
+        // console.log( isEnablePaymentPromotion(payStripe), enablePromotion.value , promotionId)
+        await orderPlace({
           timeToPickup,
           restaurantId,
           orderId: orderId.value,
@@ -708,7 +647,7 @@ export default defineComponent({
             : {},
         });
         /*
-        if (this.isLiffUser) {
+        if (isLiffUser) {
           await saveLiffCustomer();
         }
         */
@@ -738,14 +677,13 @@ export default defineComponent({
       isPlacing,
       cardState,
       memo,
-      disabledPickupTime,
 
       // refs
       ecCustomerRef,
       orderPageMapRef,
-      timeRef,
+      timeToPickupRef,
       stripeRef,
-      
+
       // computed
       stripeJCB,
       inStorePayment,
@@ -758,24 +696,27 @@ export default defineComponent({
       notSubmitAddress,
       userMessageError,
       hasPaymentMethods,
-      
+
       selectedPromotion,
       enablePromotion,
       discountPrice,
-      
+
       // const
       paymentMethods,
 
       // methods
       updateHome,
       updateLocation,
-      updateDisabledPickupTime,
       handleOpenMenu,
       handleNotAvailable,
       handleTipChange,
       handleCardStateChange,
       handlePayment,
       openTransactionsAct,
+
+      //
+      hasSoldOutToday,
+      menuData,
     };
   },
 });

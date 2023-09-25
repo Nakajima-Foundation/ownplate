@@ -2,7 +2,7 @@
   <div>
     <!-- Operators Title -->
     <div
-      class="mt-8 text-center text-xl font-bold text-black opacity-40 lg:text-3xl"
+      class="mt-16 text-center text-xl font-bold text-black opacity-40 lg:text-3xl"
     >
       {{ $t("lp.operationTeams") }}
     </div>
@@ -15,6 +15,6 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {};
 </script>

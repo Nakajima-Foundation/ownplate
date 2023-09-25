@@ -13,14 +13,14 @@
         </div>
       </div>
     </div>
-    <o-modal :active.sync="isOpen" :width="488">
+    <o-modal :active="isOpen" :width="488">
       <PartnersContact :id="(partners[0] || {}).id" />
     </o-modal>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, computed } from "@vue/composition-api";
-import PartnersContact from "../Partners/Contact.vue";
+import { defineComponent, ref, computed } from "vue";
+import PartnersContact from "@/app/admin/Partners/Contact.vue";
 import { getPartner } from "@/utils/utils";
 import { ShopOwnerData } from "@/models/ShopOwner";
 
@@ -34,7 +34,7 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props, ctx) {
+  setup(props) {
     const isOpen = ref(false);
     const partners = computed(() => {
       return getPartner(props.shopOwner as ShopOwnerData);

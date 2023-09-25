@@ -5,7 +5,7 @@ export const json_response = async (response: Response) => {
     const data = await response.json();
     return data;
   } else {
-    const error_json = await response.json();
+    // const error_json = await response.json();
     const error = new Error(response.statusText);
     // error.response = error_json;
     throw error;
@@ -24,7 +24,7 @@ export const google_geocode = async (keyword: string) => {
   const qs = Object.keys(parameters)
     .map((key: string) => {
       return `${key}=${encodeURIComponent(
-        parameters[key as keyof GeoCodeParams]
+        parameters[key as keyof GeoCodeParams],
       )}`;
     })
     .join("&");

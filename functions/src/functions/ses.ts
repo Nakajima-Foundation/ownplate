@@ -6,7 +6,7 @@ const aws_secret = process.env.AWS_SES_PASS;
 
 export const sendMail = async (to, title, body) => {
   if (!enableNotification) {
-    return ;
+    return;
   }
   const mailOptions = {
     from: "おもちかえり.com <info@omochikaeri.com>",

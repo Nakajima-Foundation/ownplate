@@ -103,106 +103,117 @@
   </div>
 </template>
 
-<script>
-import { db, firestore } from "@/plugins/firebase";
+<script lang="ts">
+import {
+  defineComponent,
+  ref,
+  onMounted,
+  onUnmounted,
+  watch,
+  computed,
+} from "vue";
+import { db } from "@/lib/firebase/firebase9";
+import { doc, onSnapshot, Unsubscribe, setDoc } from "firebase/firestore";
 import { stripeConnect, stripeDisconnect } from "@/lib/stripe/stripe";
 import { ownPlateConfig } from "@/config/project";
 import * as Cookie from "cookie";
 
+import { useStore } from "vuex";
+import { useRoute, useRouter } from "vue-router";
+import { PaymentInfo } from "@/models/paymentInfo";
+
 const client_id = ownPlateConfig.stripe.clientId;
 
-export default {
-  data() {
-    return {
-      paymentInfo: {}, // { stripe, inStore, ... }
-      stripe_connnect_detacher: null,
-      inStorePayment: false,
-    };
-  },
-  async mounted() {
-    const code = this.$route.query.code;
-    if (code) {
-      const state = this.$route.query.state;
-      const cookies = Cookie.parse(document.cookie);
-      //console.log("mounted", code, state, cookies.stripe_state);
-      if (state === cookies?.stripe_state) {
-        this.$store.commit("setLoading", true);
-        try {
-          const { data } = await stripeConnect({ code });
-          console.log(data);
-        } catch (error) {
-          console.error(error);
-          this.$store.commit("setErrorMessage", {
-            code: "stripe.connect",
-            error,
-          });
-        } finally {
-          this.$store.commit("setLoading", false);
-          this.$router.replace(location.pathname);
+export default defineComponent({
+  setup(_, context) {
+    const store = useStore();
+    const route = useRoute();
+    const router = useRouter();
+
+    const paymentInfo = ref<PaymentInfo>({}); // { stripe, inStore, ... }
+    let stripe_connnect_detacher: Unsubscribe | null = null;
+    const inStorePayment = ref<boolean | undefined>(false);
+
+    onMounted(async () => {
+      const code = route.query.code as string;
+      if (code) {
+        const state = route.query.state;
+        const cookies = Cookie.parse(document.cookie);
+        //console.log("mounted", code, state, cookies.stripe_state);
+        if (state === cookies?.stripe_state) {
+          store.commit("setLoading", true);
+          try {
+            const { data } = await stripeConnect({ code });
+            console.log(data);
+          } catch (error: any) {
+            console.error(error);
+            store.commit("setErrorMessage", {
+              code: "stripe.connect",
+              error,
+            });
+          } finally {
+            store.commit("setLoading", false);
+            router.replace(location.pathname);
+          }
         }
       }
-    }
-
-    const refPayment = db.doc(`/admins/${this.uid}/public/payment`);
-    this.stripe_connnect_detacher = refPayment.onSnapshot(async (snapshot) => {
-      if (snapshot.exists) {
-        this.paymentInfo = snapshot.data();
-        this.inStorePayment = this.paymentInfo.inStore;
-      }
-      this.$emit("updateUnsetWarning", this.unsetWarning);
     });
-  },
-  destroyed() {
-    if (this.stripe_connnect_detacher) {
-      this.stripe_connnect_detacher();
-    }
-  },
-  watch: {
-    inStorePayment(newValue) {
-      if (newValue !== this.paymentInfo.inStore) {
-        //console.log("************* inStorePayment change", newValue);
-        const refPayment = db.doc(`/admins/${this.uid}/public/payment`);
-        refPayment.set({
-          inStore: newValue,
-        }, {merge: true});
+
+    const uid = computed(() => {
+      return store.getters.uidAdmin;
+    });
+    const hasStripe = computed(() => {
+      return !!paymentInfo.value.stripe;
+    });
+    const unsetWarning = computed(() => {
+      return !inStorePayment.value && !hasStripe.value;
+    });
+
+    const refPayment = doc(db, `/admins/${uid.value}/public/payment`);
+    stripe_connnect_detacher = onSnapshot(refPayment, async (snapshot) => {
+      if (snapshot.exists()) {
+        paymentInfo.value = snapshot.data();
+        inStorePayment.value = paymentInfo.value.inStore;
       }
-    },
-    unsetWarning(newValue) {
-      this.$emit("updateUnsetWarning", newValue);
-    },
-  },
-  computed: {
-    dashboard() {
-      return ownPlateConfig.stripe.dashboard;
-    },
-    uid() {
-      return this.$store.getters.uidAdmin;
-    },
-    redirectURI() {
-      return `${location.protocol}//${location.host}${location.pathname}`;
-    },
-    hasStripe() {
-      return !!this.paymentInfo.stripe;
-    },
-    // # Not In Use
-    // cardStyle() {
-    //   return this.unsetWarning ? { border: "solid 2px #b00020" } : {};
-    // },
-    unsetWarning() {
-      return !this.inStorePayment && !this.hasStripe;
-    },
-  },
-  methods: {
-    handleLinkStripe() {
+      context.emit("updateUnsetWarning", unsetWarning.value);
+    });
+    onUnmounted(() => {
+      if (stripe_connnect_detacher) {
+        stripe_connnect_detacher();
+      }
+    });
+    watch(inStorePayment, (newValue) => {
+      if (newValue !== paymentInfo.value.inStore) {
+        //console.log("************* inStorePayment change", newValue);
+        const refPayment = doc(db, `/admins/${uid.value}/public/payment`);
+        setDoc(
+          refPayment,
+          {
+            inStore: newValue,
+          },
+          { merge: true },
+        );
+      }
+    });
+    watch(unsetWarning, (newValue) => {
+      context.emit("updateUnsetWarning", newValue);
+    });
+
+    const dashboard = ownPlateConfig.stripe.dashboard;
+
+    const redirectURI = `${location.protocol}//${location.host}${location.pathname}`;
+
+    const handleLinkStripe = () => {
       const params = {
         response_type: "code",
         scope: "read_write",
         client_id: client_id,
         state: "s" + Math.random(),
-        redirect_uri: encodeURI(this.redirectURI),
+        redirect_uri: encodeURI(redirectURI),
       };
+      type TmpType = typeof params;
       const queryString = Object.keys(params)
-        .map((key) => `${key}=${params[key]}`)
+        .map((key) => `${key}=${params[key as keyof TmpType]}`)
         .join("&");
 
       const date = new Date();
@@ -213,28 +224,38 @@ export default {
       document.cookie = cookie;
 
       location.href = `https://connect.stripe.com/oauth/authorize?${queryString}`;
-    },
-    async handlePaymentAccountDisconnect() {
-      this.$store.commit("setAlert", {
+    };
+    const handlePaymentAccountDisconnect = async () => {
+      store.commit("setAlert", {
         code: "admin.payments.reallyDisconnectStripe",
         callback: async () => {
           try {
-            this.$store.commit("setLoading", true);
-            const { data } = await stripeDisconnect();
-            console.log(data);
+            store.commit("setLoading", true);
+            await stripeDisconnect();
             // TODO: show connected view
-          } catch (error) {
+          } catch (error: any) {
             console.error(error, error.details);
-            this.$store.commit("setErrorMessage", {
+            store.commit("setErrorMessage", {
               code: "stripe.disconnect",
               error,
             });
           } finally {
-            this.$store.commit("setLoading", false);
+            store.commit("setLoading", false);
           }
         },
       });
-    },
+    };
+
+    return {
+      paymentInfo,
+      inStorePayment,
+      hasStripe,
+      unsetWarning,
+      dashboard,
+
+      handlePaymentAccountDisconnect,
+      handleLinkStripe,
+    };
   },
-};
+});
 </script>

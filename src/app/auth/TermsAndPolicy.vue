@@ -26,32 +26,25 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, computed } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent, computed } from "vue";
 
-import { useIsInMo, getMoPrefix } from "@/utils/utils";
+import { useIsLocaleJapan } from "@/utils/utils";
 
 export default defineComponent({
-  setup(_, ctx) {
-    const isInMo = useIsInMo(ctx.root);
+  setup() {
+    const isLocaleJapan = useIsLocaleJapan();
 
     const termsPath = computed(() => {
-      if (isInMo.value) {
-        return "/" + getMoPrefix(ctx.root) + "/terms";
-      } else {
-        return "/terms/user";
-      }
+      return "/terms/user";
     });
     const policyPath = computed(() => {
-      if (isInMo.value) {
-        return "/" + getMoPrefix(ctx.root) + "/privacy";
-      } else {
-        return "/privacy";
-      }
+      return "/privacy";
     });
     return {
       termsPath,
       policyPath,
+      isLocaleJapan,
     };
   },
 });

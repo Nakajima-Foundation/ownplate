@@ -12,11 +12,11 @@ export const getStripeInstance = () => {
 
 export const stripeCancelIntent = httpsCallable(
   functions,
-  "stripeCancelIntent"
+  "stripeCancelIntent",
 );
 export const stripePaymentCancelIntent = httpsCallable(
   functions,
-  "stripePaymentCancelIntent"
+  "stripePaymentCancelIntent",
 );
 
 export const stripeConnect = httpsCallable(functions, "stripeConnect");
@@ -24,7 +24,7 @@ export const stripeDisconnect = httpsCallable(functions, "stripeDisconnect");
 export const stripeVerify = httpsCallable(functions, "stripeVerify");
 export const stripeUpdateCustomer = httpsCallable(
   functions,
-  "stripeUpdateCustomer"
+  "stripeUpdateCustomer",
 );
 export const stripeReceipt = httpsCallable(functions, "stripeReceipt");
 

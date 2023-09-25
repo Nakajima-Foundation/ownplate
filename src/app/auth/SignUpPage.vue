@@ -151,31 +151,37 @@
           </div>
         </div>
       </form>
+      <!-- Sign Up as a New User -->
+      <div class="mt-6 text-center">
+        <router-link to="/admin/user/signin">
+          <div class="inline-flex items-center justify-center">
+            <i class="material-icons mr-2 text-lg text-op-teal">store</i>
+            <div class="text-sm font-bold text-op-teal">
+              {{ $t("admin.goToSignIn") }}
+            </div>
+          </div>
+        </router-link>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  watch,
-  computed,
-} from "@vue/composition-api";
+import { defineComponent, ref, watch, computed } from "vue";
+import { useStore } from "vuex";
 import isEmail from "validator/lib/isEmail";
 import { db } from "@/lib/firebase/firebase9";
-import {
-  doc,
-  setDoc,
-  serverTimestamp,
-} from "firebase/firestore";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { partners } from "@/config/constant";
 
+import { useIsLocaleJapan, useUserData } from "@/utils/utils";
 import { auth } from "@/lib/firebase/firebase9";
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
 } from "firebase/auth";
+
+import { useRoute, useRouter } from "vue-router";
 
 export default defineComponent({
   name: "Signup",
@@ -184,12 +190,13 @@ export default defineComponent({
       title: [this.defaultTitle, "Signup"].join(" / "),
     };
   },
-  setup(_, ctx) {
-    const router = ctx.root.$router
-    const route = ctx.root.$route;
-    // @ts-ignore
-    const user = computed(() => ctx.root.user);
-    
+  setup() {
+    const router = useRouter();
+    const route = useRoute();
+    const store = useStore();
+    const isLocaleJapan = useIsLocaleJapan();
+    const { user } = useUserData();
+
     const email = ref("");
     const name = ref("");
     const password = ref("");
@@ -210,10 +217,10 @@ export default defineComponent({
       return null;
     });
     const errors = computed(() => {
-      if (!submitted.value)  {
+      if (!submitted.value) {
         return {};
       }
-      const errs: {[key: string]: string[]} = {};
+      const errs: { [key: string]: string[] } = {};
       if (password.value !== confirmPassword.value) {
         errs.confirm = ["admin.error.password.mismatch"];
       }
@@ -232,14 +239,14 @@ export default defineComponent({
     });
     const hasError = computed(() => {
       return Object.keys(errors.value).length > 0;
-    })
+    });
 
     watch(user, (newValue) => {
       console.log("user updated", deferredPush.value);
       if (deferredPush.value && newValue) {
         router.push("/admin/restaurants");
       }
-    })
+    });
     if (user.value) {
       router.push("/admin/restaurants");
     }
@@ -252,11 +259,12 @@ export default defineComponent({
       if (hasError.value) {
         return;
       }
+      store.commit("setLoading", true);
       try {
         const result = await createUserWithEmailAndPassword(
           auth,
           email.value,
-          password.value
+          password.value,
         );
         await sendEmailVerification(result.user);
         console.log("signup success", result.user.uid, name.value);
@@ -276,6 +284,7 @@ export default defineComponent({
           email: result.user.email,
           updated: serverTimestamp(),
         });
+        store.commit("setLoading", false);
         if (user) {
           console.log("signup calling push");
           router.push("/admin/restaurants");
@@ -284,6 +293,8 @@ export default defineComponent({
           deferredPush.value = true;
         }
       } catch (error: any) {
+        store.commit("setLoading", false);
+
         console.warn("onSignup failed", error.code, error.message);
         if (error.code === "auth/email-already-in-use") {
           emailTaken.value = email.value;
@@ -301,7 +312,7 @@ export default defineComponent({
       deferredPush,
       emailTaken,
       submitted,
-      
+
       // computed
       partner,
       errors,
@@ -309,6 +320,8 @@ export default defineComponent({
       // metho
       handleCancel,
       onSignup,
+
+      isLocaleJapan,
     };
   },
 });

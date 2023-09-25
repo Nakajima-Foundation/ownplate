@@ -1,8 +1,6 @@
 export const enforceAppCheck = true;
 
 export const secretKeys = [
-  "MO_AWS_KEY",
-  "MO_AWS_SECRET",
   "AWS_ID",
   "AWS_SECRET",
   "AWS_SES_USER",
@@ -16,5 +14,4 @@ export const secretKeys = [
   "TWILIO_SID",
   "TWILIO_TOKEN",
   "TWILIO_PHONE",
-
 ];

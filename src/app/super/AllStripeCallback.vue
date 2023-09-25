@@ -13,11 +13,25 @@
   </section>
 </template>
 
-<script>
-import BackButton from "@/components/BackButton";
-import { db } from "@/plugins/firebase";
+<script lang="ts">
+import { defineComponent, ref } from "vue";
+import BackButton from "@/components/BackButton.vue";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  query,
+  limit,
+  orderBy,
+  startAfter,
+  getDocs,
+  collectionGroup,
+} from "firebase/firestore";
+
 import { stripeActionStrings } from "@/lib/stripe/stripe";
-export default {
+
+import { useSuper } from "@/utils/utils";
+import moment from "moment-timezone";
+
+export default defineComponent({
   components: {
     BackButton,
   },
@@ -26,51 +40,54 @@ export default {
       title: [this.defaultTitle, "Super All Stripe Callback"].join(" / "),
     };
   },
-  data() {
-    return {
-      logs: [],
-      detacher: null,
-      stripeActionStrings,
-      last: null,
-    };
-  },
-  async mounted() {
-    if (!this.$store.state.user || this.$store.getters.isNotSuperAdmin) {
-      this.$router.push("/");
-    }
-    this.detatcher = db
-      .collectionGroup("stripeLogs")
-      .orderBy("created", "desc")
-      .limit(100)
-      .onSnapshot((snapshot) => {
-        this.logs = snapshot.docs.map((doc) => {
-          this.last = doc;
-          const log = doc.data();
-          log.id = doc.id;
-          return log;
-        });
+  setup() {
+    useSuper();
+
+    const logs = ref<any[]>([]);
+    const last = ref<any>(null);
+
+    getDocs(
+      query(
+        collectionGroup(db, "stripeLogs"),
+        orderBy("created", "desc"),
+        limit(100),
+      ),
+    ).then((snapshot) => {
+      logs.value = snapshot.docs.map((doc) => {
+        last.value = doc;
+        const log = doc.data();
+        log.id = doc.id;
+        return log;
       });
-  },
-  methods: {
-    async nextLoad() {
-      const nextData = await db
-        .collectionGroup("stripeLogs")
-        .orderBy("created", "desc")
-        .startAfter(this.last)
-        .limit(100)
-        .get();
+    });
+
+    const nextLoad = async () => {
+      const nextData = await getDocs(
+        query(
+          collectionGroup(db, "stripeLogs"),
+          orderBy("created", "desc"),
+          startAfter(last.value),
+          limit(100),
+        ),
+      );
+
       if (!nextData.empty) {
         nextData.docs.forEach((doc) => {
-          this.last = doc;
+          last.value = doc;
           const log = doc.data();
           log.id = doc.id;
-          this.logs.push(log);
+          logs.value.push(log);
         });
       }
-    },
+    };
+
+    return {
+      stripeActionStrings,
+      logs,
+      last,
+      nextLoad,
+      moment,
+    };
   },
-  destroyed() {
-    this.detatcher && this.detatcher();
-  },
-};
+});
 </script>

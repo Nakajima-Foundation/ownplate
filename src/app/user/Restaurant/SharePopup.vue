@@ -10,7 +10,7 @@
 
     <!-- Share Popup-->
     <o-modal
-      :active.sync="sharePopup"
+      v-model:active="sharePopup"
       :width="488"
       scroll="keep"
       style="text-align: initial"
@@ -24,7 +24,7 @@
         <!-- Body -->
         <div class="flex">
           <div class="mr-2 flex-shrink-0">
-            <qrcode :value="url" :options="{ width: 160 }"></qrcode>
+            <vue-qrcode :value="url" :options="{ width: 160 }"></vue-qrcode>
           </div>
 
           <div class="flex-1">
@@ -74,11 +74,13 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, ref } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent, ref, PropType } from "vue";
 
-import SharingButtons from "@/app/user/Common/SharingButtons.vue";
+import SharingButtons from "@/app/user/Restaurant/SharingButtons.vue";
 import { shareUrl, useBasePath } from "@/utils/utils";
+import useClipboard from "vue-clipboard3";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 export default defineComponent({
   components: {
@@ -86,7 +88,7 @@ export default defineComponent({
   },
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
     suffix: {
@@ -102,11 +104,11 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props, ctx) {
+  setup(props) {
     const sharePopup = ref(false);
 
-    const basePath = useBasePath(ctx.root);
-    const url = shareUrl(ctx.root, basePath.value) + (props.suffix || "");
+    const basePath = useBasePath();
+    const url = shareUrl(basePath.value) + (props.suffix || "");
     const copied = ref(false);
     const copyError = ref(false);
 
@@ -117,10 +119,10 @@ export default defineComponent({
       sharePopup.value = false;
     };
 
-    const copyClipboard = async (text) => {
-      // TODO: check no-nuxt branch
+    const { toClipboard } = useClipboard();
+    const copyClipboard = async (text: string) => {
       try {
-        await ctx.root.$copyText(text);
+        await toClipboard(text);
         copied.value = true;
         setTimeout(() => {
           copied.value = false;

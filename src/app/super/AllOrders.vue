@@ -43,7 +43,6 @@
                 :isSuperView="true"
                 @selected="orderSelected($event)"
                 :order="order"
-                :isInMo="false"
               />
               <router-link :to="`/s/restaurants/${order.restaurantId}`">
                 {{ order.restaurant.restaurantName }}
@@ -79,10 +78,9 @@
   </div>
 </template>
 
-<script>
-import { db } from "@/plugins/firebase";
+<script lang="ts">
+import { defineComponent, ref, computed } from "vue";
 
-import superMixin from "@/mixins/SuperMixin";
 import moment from "moment";
 
 import OrderedInfo from "@/app/admin/Order/OrderedInfo.vue";
@@ -93,80 +91,162 @@ import { order_status, order_status_keys } from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
 import { arrayOrNumSum } from "@/utils/utils";
 
-export default {
+import { getBackUrl, superPermissionCheck } from "@/utils/utils";
+import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { OrderInfoData } from "@/models/orderInfo";
+
+import { db } from "@/lib/firebase/firebase9";
+import {
+  query,
+  limit,
+  orderBy,
+  startAfter,
+  getDocs,
+  getDoc,
+  doc,
+  collectionGroup,
+} from "firebase/firestore";
+
+export default defineComponent({
   metaInfo() {
     return {
       title: [this.defaultTitle, "Super All Orders"].join(" / "),
     };
   },
-  mixins: [superMixin],
   components: {
     OrderedInfo,
     DownloadCsv,
     BackButton,
   },
-  data() {
+  setup() {
+    const { t } = useI18n({ useScope: "global" });
+    const router = useRouter();
+    superPermissionCheck();
+
     const months = [0, 1, 2, 3, 4, 5].map((a) => {
       return moment().subtract(a, "month").format("YYYY-MM");
     });
-    return {
-      orders: [],
-      orderState: 0,
-      monthValue: months[0],
-      isLoading: false,
-      last: null,
-      restaurants: {},
-      months,
-    };
-  },
-  async mounted() {
-    this.superPermissionCheck();
-  },
-  computed: {
-    orderStatus() {
+
+    const orders = ref<OrderInfoData[]>([]);
+    const orderState = ref(0);
+    const monthValue = ref(months[0]);
+    const isLoading = ref(false);
+    const last = ref<any | null>(null);
+    const restaurants = ref<{ [key: string]: RestaurantInfoData }>({});
+
+    const orderStatus = (() => {
       return Object.keys(order_status).map((key) => {
         return {
           index: order_status[key],
           key: key === "error" ? "" : key,
         };
       });
-    },
-    filteredOrders() {
-      return this.orders.filter((order) => {
-        if (this.orderState === 0) {
+    })();
+    const filteredOrders = computed(() => {
+      return orders.value.filter((order) => {
+        if (orderState.value === 0) {
           return true;
         }
-        return order.status === this.orderState;
+        return order.status === orderState.value;
       });
-    },
-    fileName() {
-      return "super-all-orders";
-    },
-    fields() {
-      return [
-        "date",
-        "restaurantName",
-        "orderStatus",
-        "total",
-        "revenue",
-        "name",
-        "payment",
-      ];
-    },
-    fieldNames() {
-      return this.fields.map((field) => {
-        return this.$t(`order.${field}`);
+    });
+
+    const loadData = async () => {
+      if (!isLoading.value) {
+        isLoading.value = true;
+        let myQuery = query(
+          collectionGroup(db, "orders"),
+          orderBy("timePlaced", "desc"),
+          limit(100),
+        );
+        if (last.value) {
+          myQuery = query(myQuery, startAfter(last.value));
+        }
+        const snapshot = await getDocs(myQuery);
+
+        if (!snapshot.empty) {
+          last.value = snapshot.docs[snapshot.docs.length - 1];
+          let i = 0;
+          for (; i < snapshot.docs.length; i++) {
+            const myDoc = snapshot.docs[i];
+            const order = myDoc.data() as OrderInfoData;
+            order.restaurantId = myDoc.ref.path.split("/")[1];
+            order.id = myDoc.id;
+            // @ts-ignore
+            order.timePlaced = order.timePlaced.toDate();
+            if (!restaurants.value[order.restaurantId]) {
+              const snapshot = await getDoc(
+                doc(db, `restaurants/${order.restaurantId}`),
+              );
+              restaurants.value[order.restaurantId] =
+                snapshot.data() as RestaurantInfoData;
+            }
+            order.restaurant = restaurants.value[order.restaurantId];
+            if (order.timeEstimated) {
+              // @ts-ignore
+              order.timeEstimated = order.timeEstimated.toDate();
+            }
+            orders.value.push(order);
+          }
+        } else {
+          last.value = null;
+        }
+      }
+      isLoading.value = false;
+    };
+    const nextLoad = () => {
+      if (last.value) {
+        loadData();
+      }
+    };
+    const LoadTillMonth = async () => {
+      if (isLoading.value) {
+        return;
+      }
+      const limit = moment(monthValue.value + "-01 00:00:00+09:00");
+
+      while (
+        moment(orders.value[orders.value.length - 1]?.timeCreated?.toDate()) >
+        limit
+      ) {
+        await loadData();
+        console.log(orders.value.length);
+      }
+    };
+    loadData();
+
+    const orderSelected = (order: OrderInfoData) => {
+      // We are re-using the restaurant owner's view.
+      router.push({
+        path:
+          "/admin/restaurants/" + order.restaurantId + "/orders/" + order.id,
       });
-    },
-    tableData() {
-      return this.filteredOrders.map((order) => {
+    };
+
+    const fileName = "super-all-orders";
+
+    const fields = [
+      "date",
+      "restaurantName",
+      "orderStatus",
+      "total",
+      "revenue",
+      "name",
+      "payment",
+    ];
+    const fieldNames = fields.map((field) => {
+      return t(`order.${field}`);
+    });
+
+    const tableData = computed(() => {
+      return filteredOrders.value.map((order) => {
         const time = order.timeEstimated || order.timePlaced;
         return {
-          date: time ? this.moment(time).format("YYYY/MM/DD") : "",
+          date: time ? moment(time).format("YYYY/MM/DD") : "",
           restaurantName: order.restaurant.restaurantName,
-          orderStatus: this.$t(
-            "order.status." + order_status_keys[order.status]
-          ),
+          orderStatus: t("order.status." + order_status_keys[order.status]),
           revenue: order.totalCharge,
           total: Object.values(order.order).reduce((count, order) => {
             return count + arrayOrNumSum(order);
@@ -175,71 +255,30 @@ export default {
           payment: order.payment?.stripe ? "stripe" : "",
         };
       });
-    },
-  },
-  async created() {
-    await this.loadData();
-  },
-  methods: {
-    async loadData() {
-      if (!this.isLoading) {
-        this.isLoading = true;
-        let query = db
-          .collectionGroup("orders")
-          .orderBy("timePlaced", "desc")
-          .limit(100);
-        if (this.last) {
-          query = query.startAfter(this.last);
-        }
-        const snapshot = await query.get();
+    });
 
-        if (!snapshot.empty) {
-          this.last = snapshot.docs[snapshot.docs.length - 1];
-          let i = 0;
-          for (; i < snapshot.docs.length; i++) {
-            const doc = snapshot.docs[i];
-            const order = doc.data();
-            order.restaurantId = doc.ref.path.split("/")[1];
-            order.id = doc.id;
-            order.timePlaced = order.timePlaced.toDate();
-            if (!this.restaurants[order.restaurantId]) {
-              const snapshot = await db
-                .doc(`restaurants/${order.restaurantId}`)
-                .get();
-              this.restaurants[order.restaurantId] = snapshot.data();
-            }
-            order.restaurant = this.restaurants[order.restaurantId];
-            if (order.timeEstimated) {
-              order.timeEstimated = order.timeEstimated.toDate();
-            }
-            this.orders.push(order);
-          }
-        } else {
-          this.last = null;
-        }
-      }
-      this.isLoading = false;
-    },
-    async nextLoad() {
-      if (this.last) {
-        this.loadData();
-      }
-    },
-    async LoadTillMonth() {
-      const limit = moment(this.monthValue + "-01 00:00:00+09:00");
-      while (
-        moment(this.orders[this.orders.length - 1].timeCreated.toDate()) > limit
-      ) {
-        await this.loadData();
-      }
-    },
-    orderSelected(order) {
-      // We are re-using the restaurant owner's view.
-      this.$router.push({
-        path:
-          "/admin/restaurants/" + order.restaurantId + "/orders/" + order.id,
-      });
-    },
+    return {
+      orders,
+      orderState,
+      monthValue,
+      isLoading,
+      last,
+      restaurants,
+      months,
+
+      orderStatus,
+      filteredOrders,
+
+      fieldNames,
+      tableData,
+      fields,
+      fileName,
+
+      orderSelected,
+      nextLoad,
+      LoadTillMonth,
+      backUrl: getBackUrl(),
+    };
   },
-};
+});
 </script>

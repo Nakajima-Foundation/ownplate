@@ -7,19 +7,15 @@
         @click.prevent="handleSignIn"
       >
         <i class="material-icons mr-2 text-2xl text-op-teal">local_mall</i>
-        <div class="text-lg font-bold text-op-teal" v-if="!isInMo">
+        <div class="text-lg font-bold text-op-teal">
           <!-- omochikaeri -->
           {{ $t("profile.signIn") }}
-        </div>
-        <div class="text-lg font-bold text-op-teal" v-if="isInMo">
-          <!-- mobile order -->
-          {{ $t("profile.signInMO") }}
         </div>
       </a>
     </div>
 
     <!-- Sign In as a Restaurant -->
-    <div class="mt-6 text-center" v-if="!isInMo">
+    <div class="mt-6 text-center">
       <router-link to="/admin/user/signin">
         <div
           class="inline-flex h-16 items-center justify-center rounded-full border-2 border-op-teal px-6"
@@ -33,7 +29,7 @@
     </div>
 
     <!-- Phone Login-->
-    <o-modal :active.sync="loginVisible" :width="488" scroll="keep">
+    <o-modal :active="loginVisible" :width="488" scroll="keep">
       <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
         <phone-login v-on:dismissed="handleDismissed" />
       </div>
@@ -41,23 +37,23 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, ref, computed, watch } from "@vue/composition-api";
-import PhoneLogin from "@/app/auth/PhoneLogin";
+<script lang="ts">
+import { defineComponent, ref, computed, watch } from "vue";
+import PhoneLogin from "@/app/auth/PhoneLogin.vue";
 
-import { useIsInMo } from "@/utils/utils";
+import { useStore } from "vuex";
 
 export default defineComponent({
   components: {
     PhoneLogin,
   },
-  setup(_, ctx) {
-    const isInMo = useIsInMo(ctx.root);
+  setup() {
+    const store = useStore();
 
-    const loginVisible = ref(isInMo.value);
+    const loginVisible = ref(false);
 
     const user = computed(() => {
-      return ctx.root.$store.state.user;
+      return store.state.user;
     });
     watch(user, (newValue) => {
       if (newValue) {
@@ -78,7 +74,6 @@ export default defineComponent({
       loginVisible,
       handleDismissed,
       handleSignIn,
-      isInMo,
     };
   },
 });

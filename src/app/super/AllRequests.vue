@@ -52,15 +52,27 @@
   </section>
 </template>
 
-<script>
-import { db } from "@/plugins/firebase";
-import firebase from "firebase/compat/app";
-
+<script lang="ts">
+import { defineComponent, ref } from "vue";
 import { doc2data, array2obj, arrayChunk } from "@/utils/utils";
 
 import BackButton from "@/components/BackButton.vue";
 
-export default {
+import { db } from "@/lib/firebase/firebase9";
+import {
+  updateDoc,
+  doc,
+  collection,
+  where,
+  query,
+  limit,
+  orderBy,
+  getDocs,
+  documentId,
+} from "firebase/firestore";
+import { useSuper } from "@/utils/utils";
+
+export default defineComponent({
   metaInfo() {
     return {
       title: [this.defaultTitle, "Super All Requests"].join(" / "),
@@ -69,51 +81,46 @@ export default {
   components: {
     BackButton,
   },
-  data() {
+  setup() {
+    useSuper();
+
+    const requests = ref<any[]>([]);
+    const restaurantsObj = ref({});
+
+    getDocs(
+      query(
+        collection(db, "requestList"),
+        limit(500),
+        orderBy("created", "desc"),
+      ),
+    ).then(async (snapshot) => {
+      requests.value = snapshot.docs.map(doc2data("request"));
+      const ids = requests.value.map((a) => a.id);
+      arrayChunk(ids, 10).map(async (arr) => {
+        const resCols = await getDocs(
+          query(collection(db, "restaurants"), where(documentId(), "in", arr)),
+        );
+        if (!resCols.empty) {
+          restaurantsObj.value = Object.assign(
+            {},
+            restaurantsObj.value,
+            array2obj(resCols.docs.map(doc2data("restaurant"))),
+          );
+        }
+      });
+    });
+
+    const enableList = (id: string) => {
+      updateDoc(doc(db, `restaurants/${id}`), { onTheList: true });
+      const tmp = Object.assign({}, restaurantsObj.value) as any;
+      tmp[id].onTheList = true;
+      restaurantsObj.value = tmp;
+    };
     return {
-      requests: [],
-      detacher: null,
-      restaurantsObj: {},
+      requests,
+      restaurantsObj,
+      enableList,
     };
   },
-  async mounted() {
-    if (!this.$store.state.user || this.$store.getters.isNotSuperAdmin) {
-      this.$router.push("/");
-    }
-  },
-  created() {
-    this.detatcher = db
-      .collection("requestList")
-      .limit(500)
-      .orderBy("created", "desc")
-      .onSnapshot(async (snapshot) => {
-        this.requests = snapshot.docs.map(doc2data("request"));
-        const ids = this.requests.map((a) => a.id);
-        arrayChunk(ids, 10).map(async (arr) => {
-          const resCols = await db
-            .collection("restaurants")
-            .where(firebase.firestore.FieldPath.documentId(), "in", arr)
-            .get();
-          if (!resCols.empty) {
-            this.restaurantsObj = Object.assign(
-              {},
-              this.restaurantsObj,
-              array2obj(resCols.docs.map(doc2data("restaurant")))
-            );
-          }
-        });
-      });
-  },
-  destroyed() {
-    this.detatcher && this.detatcher();
-  },
-  methods: {
-    enableList(id) {
-      db.doc(`restaurants/${id}`).update("onTheList", true);
-      const tmp = Object.assign({}, this.restaurantsObj);
-      tmp[id].onTheList = true;
-      this.restaurantsObj = tmp;
-    },
-  },
-};
+});
 </script>

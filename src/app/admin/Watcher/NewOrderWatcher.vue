@@ -1,13 +1,9 @@
-<template></template>
+<template>
+  <div />
+</template>
 
-<script>
-import {
-  defineComponent,
-  watch,
-  computed,
-  ref,
-  onUnmounted,
-} from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent, watch, computed, ref, onUnmounted } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
 import { collection, onSnapshot, where, query } from "firebase/firestore";
@@ -15,50 +11,51 @@ import { collection, onSnapshot, where, query } from "firebase/firestore";
 import { midNight } from "@/utils/dateUtils";
 import { order_status } from "@/config/constant";
 
-import { doc2data } from "@/utils/utils";
+import { doc2data, useRestaurantId, useSoundPlay } from "@/utils/utils";
+import { OrderInfoData } from "@/models/orderInfo";
+import { useStore } from "vuex";
 
 export default defineComponent({
   props: {
     notificationConfig: Object,
   },
-  setup(props, ctx) {
+  setup(props) {
+    const store = useStore();
+
     // intervalTime was 60
-    const restaurantId = ctx.root.restaurantId();
+    const restaurantId = useRestaurantId();
     const intervalTime = [
       "OQBBSOa3CgEv35smSDVK", // debug
       "GiZEOBRwDGmdpuqKKlyq",
       "KNfeQdS7DM07ObWlZTsn",
-    ].includes(restaurantId)
+    ].includes(restaurantId.value)
       ? 4
       : 60;
 
-    const orders = ref([]);
+    const orders = ref<OrderInfoData[]>([]);
 
     const today = computed(() => {
       return midNight(0);
-    });
-    const tommorow = computed(() => {
-      return midNight(1);
     });
     const hasNewOrder = computed(() => {
       return orders.value.length > 0;
     });
 
-    let order_detacher = null;
+    let order_detacher: any = null;
     const dateWasUpdated = () => {
       if (order_detacher) {
         order_detacher();
       }
       order_detacher = onSnapshot(
         query(
-          collection(db, `restaurants/${restaurantId}/orders`),
+          collection(db, `restaurants/${restaurantId.value}/orders`),
           where("timePlaced", ">=", today.value),
           // .where("timePlaced", "<", this.tommorow)
-          where("status", "==", order_status.order_placed)
+          where("status", "==", order_status.order_placed),
         ),
         (result) => {
-          orders.value = result.docs.map(doc2data("order"));
-          ctx.root.$store.commit("setOrders", orders.value);
+          orders.value = result.docs.map(doc2data("order")) as OrderInfoData[];
+          store.commit("setOrders", orders.value);
         },
         (error) => {
           if (error.code === "permission-denied") {
@@ -67,25 +64,26 @@ export default defineComponent({
           } else {
             throw error;
           }
-        }
+        },
       );
     };
 
     dateWasUpdated();
 
+    const soundPlay = useSoundPlay();
     const itSound = () => {
       console.log(
         "newOrderWatcher: conf=" +
-          props.notificationConfig.infinityNotification +
+          props?.notificationConfig?.infinityNotification +
           " order=" +
-          hasNewOrder.value
+          hasNewOrder.value,
       );
       if (
-        props.notificationConfig.soundOn &&
-        props.notificationConfig.infinityNotification &&
+        props?.notificationConfig?.soundOn &&
+        props?.notificationConfig?.infinityNotification &&
         hasNewOrder.value
       ) {
-        ctx.root.soundPlay("NewOrderWatcher: play");
+        soundPlay("NewOrderWatcher: play");
       }
     };
     const intervalTask = setInterval(() => {

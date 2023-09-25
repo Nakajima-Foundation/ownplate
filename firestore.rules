@@ -155,8 +155,9 @@ service cloud.firestore {
       }
       match /private/profile {
         allow read: if request.auth.uid == userId;
-        allow write: if request.auth.uid == userId
+        allow create: if request.auth.uid == userId
           && request.resource.data.email == request.auth.token.email;
+        allow update: if request.auth.uid == userId;
       }
       match /private/smaregi {
         allow read, write: if request.auth.uid == userId;
@@ -292,6 +293,14 @@ service cloud.firestore {
         match /private/printer {
           allow read, write: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
           allow read, update: if isSuper(request);
+        }
+        match /private/line {
+          allow read, write: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
+          allow read, update: if isSuper(request);
+        }
+        match /lineUsersData/{uid} {
+          allow read: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
+          allow read: if isSuper(request);
         }
         match /printLog/{logId} {
           allow read: if isAdmin(request) && isRestaurantOwner(restaurantId, request);

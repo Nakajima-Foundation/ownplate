@@ -2,13 +2,13 @@
   <div class="rounded-lg bg-white p-4 shadow">
     <!-- Order Items -->
     <div class="grid grid-cols-1 space-y-4">
-      <template v-for="(orderItem, key) in orderItems">
+      <template v-for="(orderItem, key) in orderItems" :key="orderItem.key">
         <order-item
           :orderItem="orderItem"
-          :key="orderItem.key"
           :editable="editable"
           :available="(editedAvailableOrders || {})[key]"
-          @input="updateAvailable"
+          @update="updateAvailable"
+          :menuData="(menuData || {})[orderItem.id]"
           :mkey="key"
         ></order-item>
       </template>
@@ -39,7 +39,9 @@
           <div class="text-base">
             {{
               $t(
-                orderInfo.inclusiveTax ? "order.inclusiveTax" : "order.salesTax"
+                orderInfo.inclusiveTax
+                  ? "order.inclusiveTax"
+                  : "order.salesTax",
               )
             }}
           </div>
@@ -52,20 +54,19 @@
       </div>
 
       <!-- Promotion discount for after pay -->
-      <div v-if="orderInfo.promotionId"
-           class="-mx-2 mt-2 flex bg-green-600 bg-opacity-10 px-2 py-1 rounded-md"
-           >
+      <div
+        v-if="orderInfo.promotionId"
+        class="-mx-2 mt-2 flex bg-green-600 bg-opacity-10 px-2 py-1 rounded-md"
+      >
         <div class="flex-1">
           <div class="text-base">
-            {{
-            $t( "order.discountString" )
-            }}
+            {{ $t("order.discountString") }}
             ({{ orderInfo.promotionName }})
           </div>
         </div>
         <div class="text-right">
           <div class="text-base">
-            {{ $n( -orderInfo.discountPrice, "currency") }}
+            {{ $n(-orderInfo.discountPrice, "currency") }}
           </div>
         </div>
       </div>
@@ -138,7 +139,7 @@
           </div>
           <div class="text-right">
             <div class="text-base">
-              {{ $n(previewTip, "currency") }}
+              {{ $n(Number(previewTip || 0), "currency") }}
             </div>
           </div>
         </div>
@@ -148,15 +149,13 @@
       <div v-if="regionTip.choices.length > 0 && enableTip" class="mt-2">
         <div v-if="isTipEditable">
           <div>
-            <o-input
-              class="w-full"
+            <input
+              class="w-full p-2 border-inherit border-2 rounded-lg"
               type="number"
               :placeholder="$t('order.maxTip', { max: regionTip.max })"
               :step="tipStep"
               v-model="tip"
-              v-on:input="handleTipInput"
               maxlength="30"
-              style
             />
           </div>
 
@@ -204,18 +203,15 @@
     </div>
 
     <!-- promotion discount for before pay -->
-    <div v-if="enablePromotion"
-         class="bg-green-600 bg-opacity-10 p-2 -mx-2 rounded-lg mt-2"
-         >
+    <div
+      v-if="enablePromotion"
+      class="bg-green-600 bg-opacity-10 p-2 -mx-2 rounded-lg mt-2"
+    >
       <!-- promotion discount -->
-      <template v-if="promotion.paymentRestrictions">
-			  <!-- おもちかえりの場合は以下のメッセージを表示-->
-        <span v-if="mode !== 'mo'" class="text-sm font-bold text-opacity-40 text-black">
+      <template v-if="promotion?.paymentRestrictions">
+        <!-- おもちかえりの場合は以下のメッセージを表示-->
+        <span class="text-sm font-bold text-opacity-40 text-black">
           {{ $t("order.discountAlert." + promotion.paymentRestrictions) }}
-        </span>
-			  <!-- MobileOrderの場合は以下のメッセージを表示-->
-			  <span v-else class="text-sm font-bold text-opacity-40 text-black">
-          {{ $t("order.discountAlertMo." + promotion.paymentRestrictions) }}
         </span>
       </template>
       <div class="mt-2 flex">
@@ -232,7 +228,7 @@
       </div>
       <div
         class="mt-4 border-t-2 border-solid border-black border-opacity-10 pt-4 pb-2"
-        >
+      >
         <div class="flex">
           <div class="flex-1">
             <div class="text-xl font-bold text-green-600">
@@ -247,18 +243,11 @@
         </div>
       </div>
     </div>
-    
   </div>
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  computed,
-  watch,
-  ref,
-  PropType,
-} from "@vue/composition-api";
+import { defineComponent, computed, watch, ref, PropType } from "vue";
 
 import { order_status } from "@/config/constant";
 import { stripeRegion } from "@/utils/utils";
@@ -266,6 +255,7 @@ import OrderItem from "@/app/user/OrderPage/OrderItem.vue";
 
 import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { MenuData } from "@/models/menu";
 
 export default defineComponent({
   name: "Order",
@@ -279,13 +269,13 @@ export default defineComponent({
       type: Object as PropType<OrderInfoData>,
       required: true,
     },
+    menuData: {
+      type: Object as PropType<{ [key: string]: MenuData }>,
+      required: false,
+    },
     shopInfo: {
       type: Object as PropType<RestaurantInfoData>,
       required: true,
-    },
-    groupData: {
-      type: Object,
-      required: false,
     },
     // promotion
     promotion: {
@@ -299,10 +289,6 @@ export default defineComponent({
     discountPrice: {
       type: Number,
       required: false,
-    },
-    mode: {
-      type: String,
-      required: true,
     },
     // end of promotion
     editable: {
@@ -322,16 +308,14 @@ export default defineComponent({
     OrderItem,
   },
   setup(props, ctx) {
-    const store = ctx.root.$store;
-
     const regionTip = stripeRegion.tip;
     const tipStep = 1.0 / stripeRegion.multiple;
-    
+
     const tip = ref<number | string>("");
 
-    // methods 
+    // methods
     const updateAvailable = (value: boolean) => {
-      ctx.emit("input", value);
+      ctx.emit("update", value);
     };
 
     // internal
@@ -344,29 +328,17 @@ export default defineComponent({
       return Math.round(value * m) / m;
     };
     const updateTip = (ratio: number) => {
+      console.log("updateTip");
       tip.value = calcTip(ratio);
-      ctx.emit("change", tip.value);
     };
     const isSameAmount = (ratio: number) => {
       return Number(tip.value) === calcTip(ratio);
     };
-    // computed 
-    // internal 
+    // computed
+    // internal
     const maxTip = computed(() => {
       return calcTip(regionTip.max);
     });
-
-    const handleTipInput = () => {
-      if (tip.value < 0) {
-        console.log("negative");
-        tip.value = -tip.value;
-      } else if (tip.value > maxTip.value) {
-        console.log("max");
-        tip.value = maxTip.value;
-      }
-      ctx.emit("change", Number(tip.value));
-    };
-    
 
     // computed
     const actualShippingCost = computed(() => {
@@ -400,16 +372,12 @@ export default defineComponent({
     });
     const previewDiscountTotal = computed(() => {
       return props.editable || isTipEditable.value
-        ? previewTotal.value -
-            Number(props.discountPrice)
+        ? previewTotal.value - Number(props.discountPrice)
         : props.orderInfo.totalCharge;
     });
     const enableTip = computed(() => {
       if (props.shopInfo.isEC) {
         return false;
-      }
-      if (props.groupData) {
-        return props.groupData.enableTip;
       }
       return true;
     });
@@ -428,21 +396,31 @@ export default defineComponent({
         tip.value = props.orderInfo.tip;
       }
     });
+    watch(tip, (v) => {
+      const tipNum = Number(v);
+      if (tipNum < 0) {
+        console.log("negative");
+        tip.value = -v;
+      } else if (tipNum > maxTip.value) {
+        console.log("max");
+        tip.value = maxTip.value;
+      }
+      ctx.emit("change", Number(tip.value));
+    });
 
     return {
-      // const 
+      // const
       regionTip,
       tipStep,
       // ref
       tip,
 
       previewDiscountTotal,
-      
+
       // methods
       updateAvailable,
       updateTip,
       isSameAmount,
-      handleTipInput,
 
       actualShippingCost,
       verified,
@@ -450,9 +428,7 @@ export default defineComponent({
       previewTip,
       previewTotal,
       enableTip,
-
     };
-
   },
 });
 </script>

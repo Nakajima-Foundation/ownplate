@@ -29,7 +29,7 @@
         </div>
       </div>
     </div>
-    <template v-for="state in allArea">
+    <template v-for="(state, k) in allArea" :key="k">
       <div v-if="restaurantsObj[state]">
         <div
           class="mx-6 mt-6 mb-2 text-base font-bold text-black text-opacity-40"
@@ -39,7 +39,7 @@
         <div
           class="mx-6 mt-2 grid grid-cols-1 items-center gap-2 lg:grid-cols-3 xl:grid-cols-4"
         >
-          <div v-for="restaurant in restaurantsObj[state]">
+          <div v-for="(restaurant, k2) in restaurantsObj[state]" :key="k2">
             <router-link :to="`/r/${restaurant.id}`">
               <div class="flex items-center">
                 <div class="mr-4 h-12 w-12 rounded-full bg-black bg-opacity-10">
@@ -58,15 +58,15 @@
       </div>
     </template>
     <div>
-      <Map :restaurants="restaurants" v-if="restaurants.length > 0" />
+      <MapView :restaurants="restaurants" v-if="restaurants.length > 0" />
     </div>
   </div>
 </template>
 
-<script>
-import { defineComponent, ref, computed } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent, ref, computed } from "vue";
 
-import { doc2data } from "@/utils/utils";
+import { doc2data, resizedProfileImage } from "@/utils/utils";
 
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -80,8 +80,12 @@ import {
 
 import { JPPrefecture, USStates } from "@/config/constant";
 import { restaurant2AreaObj, sortRestaurantObj } from "@/utils/RestaurantUtils";
-import Map from "@/components/Map";
+import MapView from "@/components/Map.vue";
 import { defaultHeader } from "@/config/header";
+
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { OwnerData } from "@/models/ownerData";
+import { useRoute } from "vue-router";
 
 export default defineComponent({
   name: "RestaurantIndex",
@@ -91,15 +95,16 @@ export default defineComponent({
     };
   },
   components: {
-    Map,
+    MapView,
   },
 
-  setup(_, ctx) {
-    const ownerUid = ctx.root.$route.params.ownerUid;
+  setup() {
+    const route = useRoute();
+    const ownerUid = route.params.ownerUid;
 
     const restaurantsObj = ref({});
-    const restaurants = ref([]);
-    const ownerData = ref({});
+    const restaurants = ref<RestaurantInfoData[]>([]);
+    const ownerData = ref<OwnerData>({});
 
     (async () => {
       const restaurantsCollection = await getDocs(
@@ -108,11 +113,13 @@ export default defineComponent({
           where("publicFlag", "==", true),
           where("deletedFlag", "==", false),
           where("onTheList", "==", true),
-          where("uid", "==", ownerUid)
-        )
+          where("uid", "==", ownerUid),
+        ),
       );
       restaurantsObj.value = restaurant2AreaObj(restaurantsCollection.docs);
-      restaurants.value = restaurantsCollection.docs.map(doc2data(""));
+      restaurants.value = restaurantsCollection.docs.map(
+        doc2data(""),
+      ) as RestaurantInfoData[];
       sortRestaurantObj(restaurantsObj.value);
 
       const ownerDoc = await getDoc(doc(db, `owners/${ownerUid}`));
@@ -136,6 +143,8 @@ export default defineComponent({
 
       allArea,
       coverImage,
+
+      resizedProfileImage,
     };
   },
 });

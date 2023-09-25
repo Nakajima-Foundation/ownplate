@@ -4,9 +4,10 @@
   </span>
 </template>
 
-<script>
-import { defineComponent, ref, computed } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent, computed } from "vue";
 import { data2csv } from "@/utils/csv";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   props: {
@@ -33,8 +34,9 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
+    const { t } = useI18n({ useScope: "global" });
     const content = computed(() => {
-      return data2csv(props, ctx);
+      return data2csv(props, t);
     });
 
     const handleDownload = () => {

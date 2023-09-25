@@ -10,33 +10,40 @@
   </section>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent, onMounted, watch } from "vue";
+
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+import { useIsNotSuperAdmin } from "@/utils/utils";
+
+export default defineComponent({
   metaInfo() {
     return {
       title: [this.defaultTitle, "operator index"].join(" / "),
     };
   },
-  async mounted() {
-    // console.log(this.$store.state.user, this.$store.getters.isNotSuperAdmin, this.$store.getters.isNotOperator);
-    if (
-      !this.$store.state.user ||
-      (this.$store.getters.isNotSuperAdmin && this.$store.getters.isNotOperator)
-    ) {
-      this.$router.push("/");
-    }
-  },
-  watch: {
-    isNotSuperAdmin(newValue) {
-      if (newValue && isNotOperator) {
-        this.$router.push("/");
+  setup() {
+    const store = useStore();
+    const router = useRouter();
+    const { isNotSuperAdmin, isNotOperator } = useIsNotSuperAdmin();
+
+    onMounted(() => {
+      if (!store.state.user || (isNotSuperAdmin.value && isNotOperator.value)) {
+        router.push("/");
       }
-    },
-    isNotOperator(newValue) {
-      if (newValue && isNotSuperAdmin) {
-        this.$router.push("/");
+    });
+    watch(isNotSuperAdmin, (newValue) => {
+      if (newValue && isNotOperator.value) {
+        router.push("/");
       }
-    },
+    });
+    watch(isNotOperator, (newValue) => {
+      if (newValue && isNotSuperAdmin.value) {
+        router.push("/");
+      }
+    });
+    return {};
   },
-};
+});
 </script>

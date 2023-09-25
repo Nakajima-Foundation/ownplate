@@ -1,77 +1,21 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
-import { RouteConfig } from "vue-router";
-Vue.use(VueRouter);
+import { createRouter, createWebHistory } from "vue-router";
 
 import { mo_prefixes } from "@/config/project";
 
 const getUserPages = (prefix: string) => {
   return [
     {
-      path: "/",
+      path: "",
       component: "user/RestaurantPage.vue",
       children: [
         {
           name: "r-restaurant-Page_" + prefix,
-          path: "/",
+          path: "",
           component: "user/Blank.vue",
         },
         {
           name: "r-restaurant-Menu_" + prefix,
           path: "menus/:menuId",
-          component: "user/Blank.vue",
-        },
-        {
-          path: "transactions-act",
-          component: "user/Blank.vue",
-          meta: {
-            isTransactionsAct: true,
-          },
-        },
-      ],
-    },
-    {
-      name: "r-restaurantId-order_" + prefix,
-      path: "order/:orderId",
-      component: "user/OrderPage.vue",
-    },
-  ];
-};
-
-const getUserPagesWithCat = (prefix: string) => {
-  return [
-    {
-      path: "/",
-      component: "user/RestaurantPage.vue",
-      children: [
-        {
-          name: "r-restaurant-Page_" + prefix,
-          path: "/",
-          component: "user/Blank.vue",
-        },
-        {
-          name: "r-restaurant-Cats_" + prefix,
-          path: ":list(categories)/:state(takeout|pickup)",
-          component: "user/Blank.vue",
-        },
-        {
-          name: "r-restaurant-SubCats_" + prefix,
-          path: ":list(category)/:category/:state(takeout|pickup)",
-          component: "user/Blank.vue",
-        },
-        {
-          name: "r-restaurant-SubCats2_" + prefix,
-          path: ":list(category)/:category/:selectedSubCategory/:state(takeout|pickup)",
-          component: "user/Blank.vue",
-        },
-        {
-          name: "r-restaurant-Cat_" + prefix,
-          path: "cat/:category/:subCategory/:state(takeout|pickup)?",
-          component: "user/Blank.vue",
-        },
-        {
-          name: "r-restaurant-Menu_" + prefix,
-          path: "cat/:category/:subCategory/menus/:menuId",
           component: "user/Blank.vue",
         },
         {
@@ -99,83 +43,28 @@ interface CustomRoute {
   meta?: any;
 }
 
-const mopath2 =  mo_prefixes
-  .map((prefix) => {
-    const prePath = "/" + prefix;
-    return [
-      {
-        path: prePath,
-        component: "user/MoWrapper.vue",
-        children: [
-          {
-            path: prePath + "/*",
-            component: "user/Mo/MoClosed.vue",
-          }
-        ]
-      }
-    ]
-  }).flat();
-
 const mopath = mo_prefixes
   .map((prefix) => {
     const prePath = "/" + prefix;
     return [
       {
         path: prePath,
-        component: "user/MoWrapper.vue",
-        children: [
-          {
-            path: prePath,
-            component: "user/MoIndex.vue",
-          },
-          {
-            path: prePath + "/outage",
-            component: "user/Outage.vue",
-          },
-          {
-            path: prePath + "/closed",
-            component: "user/Mo/MoClosed.vue",
-          },
-          {
-            path: prePath + "/r/favorites",
-            component: "user/Restaurants/Favorites.vue",
-          },
-          {
-            path: prePath + "/r/:restaurantId",
-            component: "user/RestaurantWrapper.vue",
-            children: getUserPagesWithCat(prefix),
-          },
-          {
-            path: prePath + "/u/history",
-            component: "user/OrderHistory.vue",
-          },
-          {
-            path: prePath + "/u/profile",
-            component: "user/Profile.vue",
-          },
-          {
-            path: prePath + "/u/discounthistory",
-            component: "user/DiscountHistory.vue",
-          },
-          {
-            path: prePath + "/terms",
-            component: "common/TermsUser.vue",
-          },
-          {
-            path: prePath + "/privacy",
-            component: "common/Privacy.vue",
-          },
-          {
-            path: prePath + "/faq",
-            component: "common/FAQMo.vue",
-          },
-        ],
+        component: "user/Mo/MoClosed.vue",
+      },
+      {
+        path: prePath + "/:page(.*)",
+        component: "user/Mo/MoClosed.vue",
       },
     ];
   })
   .flat();
 
 export const customRoutes: CustomRoute[] = [
+  {
+    name: "home",
+    path: "/home",
+    component: "home/User.vue",
+  },
   {
     name: "top",
     path: "/",
@@ -277,7 +166,7 @@ export const customRoutes: CustomRoute[] = [
     component: "liff/LiffWrapper.vue",
     children: [
       {
-        path: "/",
+        path: "",
         component: "liff/Index.vue",
       },
       {
@@ -321,99 +210,98 @@ export const customRoutes: CustomRoute[] = [
       },
       {
         path: "restaurants/:restaurantId",
-        component: "admin/Layout.vue",
+        component: "admin/Restaurants/Wrapper.vue",
         children: [
           {
-            path: "/",
-            component: "admin/RestaurantPage.vue",
+            path: "",
+            component: "admin/Restaurants/Index.vue",
           },
           {
             name: "admin-pdf",
             path: "pdf",
-            component: "admin/Pdf.vue",
+            component: "admin/Restaurants/Pdf.vue",
           },
           {
             name: "admin-menus",
             path: "menus",
-            component: "admin/MenuListPage.vue",
-          },
-          {
-            name: "admin-menus-cat",
-            path: "menus/cat/:category/:subCategory",
-            component: "admin/MenuListPage.vue",
+            component: "admin/Restaurants/MenuListPage.vue",
           },
           {
             name: "admin-menus-item",
             path: "menus/:menuId",
-            component: "admin/MenuItemPage.vue",
+            component: "admin/Restaurants/MenuItemPage.vue",
           },
           {
             name: "admin-orders",
             path: "orders",
-            component: "admin/OrderListPage.vue",
+            component: "admin/Restaurants/OrderListPage.vue",
           },
           {
             path: "history",
-            component: "admin/OrderHistory.vue",
-          },
-          {
-            name: "user-histories",
-            path: "userhistory/:userId",
-            component: "admin/UserHistory.vue",
-          },
-          {
-            path: "analytics/index",
-            component: "admin/Analytics/Index.vue",
+            component: "admin/Restaurants/OrderHistory.vue",
           },
           {
             name: "admin-suspend",
             path: "suspend",
-            component: "admin/OrderSuspendPage.vue",
-          },
-          {
-            path: "postage",
-            component: "admin/Postage.vue",
-          },
-          {
-            path: "delivery",
-            component: "admin/Delivery.vue",
-          },
-          {
-            path: "line",
-            component: "admin/ManageLine.vue",
-          },
-          {
-            path: "discounthistory",
-            component: "admin/Discount/DiscountHistory.vue",
-          },
-          {
-            path: "discounts",
-            component: "admin/Discount/Discounts.vue",
-          },
-          {
-            path: "discounts/:discountId",
-            component: "admin/Discount/Discount.vue",
-          },
-          {
-            path: "discounts/:discountId/history",
-            component: "admin/Discount/DiscountHistory.vue",
-          },
-          {
-            path: "qrcode",
-            component: "admin/QRCodePage.vue",
-          },
-          {
-            path: "printer",
-            component: "admin/Printer.vue",
-          },
-          {
-            path: "report",
-            component: "admin/ReportPage.vue",
+            component: "admin/Restaurants/OrderSuspendPage.vue",
           },
           {
             name: "admin-order-info",
             path: "orders/:orderId",
-            component: "admin/OrderInfoPage.vue",
+            component: "admin/Restaurants/OrderInfoPage.vue",
+          },
+          {
+            name: "user-histories",
+            path: "userhistory/:userId",
+            component: "admin/Restaurants/UserHistory.vue",
+          },
+          {
+            path: "analytics/index",
+            component: "admin/Restaurants/Analytics/Index.vue",
+          },
+          {
+            path: "linelist",
+            component: "admin/Restaurants/ManageLine.vue",
+          },
+          {
+            path: "line",
+            component: "admin/Restaurants/Line/Index.vue",
+          },
+          {
+            path: "lineusers",
+            component: "admin/Restaurants/Line/users.vue",
+          },
+          {
+            path: "postage",
+            component: "admin/Restaurants/Postage.vue",
+          },
+          {
+            path: "delivery",
+            component: "admin/Restaurants/Delivery.vue",
+          },
+          {
+            path: "discounthistory",
+            component: "admin/Restaurants/Discount/DiscountHistory.vue",
+          },
+          {
+            path: "discounts",
+            component: "admin/Restaurants/Discount/Discounts.vue",
+          },
+          {
+            path: "discounts/:discountId",
+            component: "admin/Restaurants/Discount/Discount.vue",
+          },
+          {
+            path: "discounts/:discountId/history",
+            component: "admin/Restaurants/Discount/DiscountHistory.vue",
+          },
+          {
+            path: "printer",
+            component: "admin/Restaurants/Printer.vue",
+          },
+          {
+            path: "report",
+            component: "admin/Restaurants/ReportPage.vue",
           },
         ],
       },
@@ -421,26 +309,6 @@ export const customRoutes: CustomRoute[] = [
         name: "admin-orders-allorders",
         path: "orders",
         component: "admin/AllOrders.vue",
-      },
-      {
-        path: "discounthistory",
-        component: "admin/Discount/DiscountHistory.vue",
-      },
-      {
-        path: "discounts",
-        component: "admin/Discount/Discounts.vue",
-      },
-      {
-        path: "discounts/:discountId",
-        component: "admin/Discount/Discount.vue",
-      },
-      {
-        path: "discounts/:discountId/history",
-        component: "admin/Discount/DiscountHistory.vue",
-      },
-      {
-        path: "report",
-        component: "admin/ReportAllPage.vue",
       },
       {
         name: "admin-subaccounts-accounts",
@@ -478,6 +346,16 @@ export const customRoutes: CustomRoute[] = [
     name: "admin-faq",
     path: "/admin/faq",
     component: "admin/FAQ.vue",
+  },
+  {
+    name: "admin-docs",
+    path: "/admin/docs",
+    component: "admin/Docs/Index.vue",
+  },
+  {
+    name: "admin-featureList",
+    path: "/admin/docs/features",
+    component: "admin/Docs/features.vue",
   },
   {
     name: "admin-news-article",
@@ -570,16 +448,21 @@ export const customRoutes: CustomRoute[] = [
     component: "auth/LineCallback.vue",
   },
   {
+    path: "/callback/:restaurantId/line",
+    component: "auth/LineCallback.vue",
+  },
+  {
     path: "/l/:urlKey",
     component: "docs/link.vue",
   },
   {
-    path: "*",
+    path: "/:page(.*)",
     component: "common/404.vue",
   },
 ];
 
-const loadComponent = (data: CustomRoute): RouteConfig => {
+//const loadComponent = (data: CustomRoute): RouteConfig => {
+const loadComponent = (data: CustomRoute): any => {
   const component = () => import("@/app/" + data.component);
   //
   if (data.children) {
@@ -602,9 +485,9 @@ const loadComponent = (data: CustomRoute): RouteConfig => {
 
 const routes = customRoutes.map(loadComponent);
 
-const router = new VueRouter({
-  mode: "history",
-  base: "/",
+const router = createRouter({
+  history: createWebHistory(process.env.BASE_URL),
+  // base: "/",
   routes,
 });
 

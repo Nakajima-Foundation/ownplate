@@ -4,11 +4,8 @@
   </span>
 </template>
 
-
 <script lang="ts">
-import {
-  defineComponent,
-} from "@vue/composition-api";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   props: {
@@ -16,6 +13,6 @@ export default defineComponent({
       type: Object,
       required: true,
     },
-  }
+  },
 });
 </script>

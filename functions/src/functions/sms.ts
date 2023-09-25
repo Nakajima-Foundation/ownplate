@@ -3,7 +3,7 @@ import { enableNotification } from "./notificationConfig";
 
 export const pushSMS = async (aws_key, aws_secret, subject, message, phone_number, isMo) => {
   if (!enableNotification) {
-    return ;
+    return;
   }
 
   // send sms
