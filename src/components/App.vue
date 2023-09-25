@@ -1,10 +1,13 @@
 <template>
+  <metainfo>
+    <template v-slot:title="{ content }">{{ content }}</template>
+  </metainfo>
   <div class="flex min-h-screen flex-col" @click="enableSound()">
     <!-- Notification Banner -->
     <NotificationBanner />
 
     <!-- Header -->
-    <Header @handleOpen="handleOpen" />
+    <AppHeader @handleOpen="handleOpen" />
 
     <!-- Side Bar -->
     <SideMenuWrapper ref="sideMenu" />
@@ -13,7 +16,7 @@
     <div class="flex-1">
       <div>
         <div
-          v-if="underConstruction"
+          v-if="isDev"
           class="bg-yellow-200 p-2 text-center font-bold text-red-500"
         >
           {{ $t("underConstruction") }}
@@ -42,17 +45,24 @@
       ></o-icon>
     </o-loading>
 
-    <Footer />
+    <AppFooter />
 
     <!-- Audio Play -->
     <audio-play ref="audioPlay" />
   </div>
 </template>
 
-<script>
-import { db, auth, analytics } from "@/lib/firebase/firebase9";
+<script lang="ts">
+import {
+  defineComponent,
+  onMounted,
+  computed,
+  watch,
+  ref,
+  onUnmounted,
+} from "vue";
 
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { auth, analytics } from "@/lib/firebase/firebase9";
 
 import {
   logEvent,
@@ -61,29 +71,32 @@ import {
   setCurrentScreen,
 } from "firebase/analytics";
 
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { onAuthStateChanged, Unsubscribe, signOut } from "firebase/auth";
 
-import Header from "@/components/App/Header.vue";
-import Footer from "@/components/App/Footer.vue";
+import AppHeader from "@/components/App/Header.vue";
+import AppFooter from "@/components/App/Footer.vue";
 import NotificationBanner from "@/components/App/NotificationBanner.vue";
 import SideMenuWrapper from "@/components/App/SideMenuWrapper.vue";
 import DialogBox from "@/components/DialogBox.vue";
 import AudioPlay from "@/components/AudioPlay.vue";
 
-import { underConstruction } from "@/utils/utils";
+import { isDev, useUser, useRestaurantId } from "@/utils/utils";
 
 import * as Sentry from "@sentry/vue";
 import { ownPlateConfig, mo_prefixes } from "@/config/project";
 import { defaultHeader } from "@/config/header";
 import { MoHeader } from "@/config/moHeader";
 
-export default {
+import { useStore } from "vuex";
+import { useRoute } from "vue-router";
+
+export default defineComponent({
   components: {
     DialogBox,
     AudioPlay,
     SideMenuWrapper,
-    Header,
-    Footer,
+    AppHeader,
+    AppFooter,
     NotificationBanner,
   },
   metaInfo: mo_prefixes.some((prefix) => {
@@ -91,123 +104,94 @@ export default {
   })
     ? MoHeader
     : defaultHeader,
-  data() {
-    return {
-      unregisterAuthObserver: null,
-      timerId: null,
-      underConstruction,
-    };
-  },
-  mounted() {
-    window.addEventListener("focus", () => {
-      this.$store.commit("setActive", true);
+
+  setup() {
+    let unregisterAuthObserver: null | Unsubscribe = null;
+    let timerId: null | number = null;
+    const store = useStore();
+    const route = useRoute();
+
+    const user = useUser();
+    const restaurantId = useRestaurantId();
+
+    onMounted(() => {
+      window.addEventListener("focus", () => {
+        store.commit("setActive", true);
+      });
+      window.addEventListener("blur", () => {
+        store.commit("setActive", false);
+      });
     });
-    window.addEventListener("blur", () => {
-      this.$store.commit("setActive", false);
+
+    const isLoading = computed(() => {
+      return store.state.isLoading;
     });
-  },
-  computed: {
-    isLoading() {
-      return this.$store.state.isLoading;
-    },
-    dialog() {
-      return this.$store.state.dialog;
-    },
-    isReadyToRender() {
-      if (this.user !== undefined) {
+    const dialog = computed(() => {
+      return store.state.dialog;
+    });
+    const isReadyToRender = computed(() => {
+      if (user.value !== undefined) {
         return true; // Firebase has already identified the user (or non-user)
       }
-      if (
-        this.$route.path === `/r/${this.restaurantId()}` ||
-        this.$route.path === "/"
-      ) {
+      if (route.path === `/r/${restaurantId.value}` || route.path === "/") {
         // console.log("isReadyToRender: quick render activated");
         return true; // We are opening the restaurant page
       }
       return false;
-    },
-    isInMo() {
-      return mo_prefixes.some((prefix) => {
-        return (
-          (this.$route.fullPath || "").startsWith(`/${prefix}/`) ||
-          (this.$route.fullPath || "") === `/${prefix}`
-        );
-      });
-    },
-  },
-  methods: {
-    async enableSound() {
-      await this.$refs.audioPlay.enableSound();
-    },
-    handleOpen() {
-      this.$refs.sideMenu.handleOpen();
-    },
-    pingAnalytics() {
+    });
+    const audioPlay = ref();
+    const enableSound = () => {
+      audioPlay.value.enableSound();
+    };
+    const sideMenu = ref();
+    const handleOpen = () => {
+      sideMenu.value.handleOpen();
+    };
+    const pingAnalytics = () => {
       setCurrentScreen(analytics, document.title);
       logEvent(analytics, "page_view");
+      // @ts-ignore
       logEvent(analytics, "screen_view", {
         app_name: "web",
         screen_name: document.title,
       });
-    },
-  },
-  beforeCreate() {
-    this.$store.commit("setServerConfig", { region: ownPlateConfig.region });
-    this.unregisterAuthObserver = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        user
+    };
+
+    store.commit("setServerConfig", { region: ownPlateConfig.region });
+    unregisterAuthObserver = onAuthStateChanged(auth, async (fUser) => {
+      if (fUser) {
+        fUser
           .getIdTokenResult(true)
           .then((result) => {
-            const diff = Date.now() - result.claims.auth_time * 1000;
+            const diff =
+              Date.now() - Number(result.claims?.auth_time || 0) * 1000;
             if (diff > 3600 * 24 * 30 * 1000) {
               signOut(auth);
             } else {
-              this.$store.commit("setUser", user);
-              this.$store.commit("setCustomClaims", result.claims);
+              store.commit("setUser", fUser);
+              store.commit("setCustomClaims", result.claims);
             }
             // console.log(!!user.email ? "admin" : "customer");
           })
-          .catch((error) => {
+          .catch((error: any) => {
             // console.error("getIdTokenResult", error);
             Sentry.captureException(error);
           });
         setUserProperties(analytics, {
-          role: !!user.email ? "admin" : "customer",
+          role: fUser.email ? "admin" : "customer",
         });
-        setUserId(analytics, user.uid);
-
-        if (this.isInMo) {
-          window.dataLayer.push({
-            uid: user.uid,
-          });
-        }
+        setUserId(analytics, fUser.uid);
       } else {
         setUserProperties(analytics, { role: "anonymous" });
         // console.log("authStateChanged: null");
-        this.$store.commit("setUser", null);
-        this.$store.commit("setCustomClaims", null);
-        if (this.isInMo) {
-          window.dataLayer.push({
-            uid: null,
-          });
-        }
+        store.commit("setUser", null);
+        store.commit("setCustomClaims", null);
       }
     });
-  },
-  watch: {
-    // https://support.google.com/analytics/answer/9234069?hl=ja
-    $route() {
-      this.pingAnalytics();
-    },
-  },
-  async created() {
+
     console.log(process.env.VUE_APP_CIRCLE_SHA1);
-    const isInLine = () => {
-      return /Line/.test(navigator.userAgent);
-    };
-    const isInLIFF = () => {
-      return /LIFF/.test(navigator.userAgent);
-    };
+    const isInLine = /Line/.test(navigator.userAgent);
+    const isInLIFF = /LIFF/.test(navigator.userAgent);
 
     if (!isInLIFF) {
       if (isInLine) {
@@ -222,26 +206,47 @@ export default {
       }
     }
 
-    this.timerId = window.setInterval(() => {
-      const diff = (new Date() - this.$store.state.openTime) / 1000; // second
+    timerId = window.setInterval(() => {
+      // @ts-ignore
+      const diff = (new Date() - store.state.openTime) / 1000; // second
       if (diff > 20 * 3600) {
-        this.$store.commit("resetOpenTime");
+        store.commit("resetOpenTime");
         location.reload();
       }
-      this.$store.commit("updateDate");
+      store.commit("updateDate");
     }, 60 * 1000);
 
-    this.pingAnalytics();
+    watch(
+      () => route.path,
+      () => {
+        // https://support.google.com/analytics/answer/9234069?hl=ja
+        pingAnalytics();
+      },
+    );
+
+    pingAnalytics();
+
+    onUnmounted(() => {
+      if (unregisterAuthObserver) {
+        unregisterAuthObserver();
+      }
+      if (timerId) {
+        window.clearInterval(timerId);
+      }
+    });
+    return {
+      audioPlay,
+      sideMenu,
+      isDev,
+
+      enableSound,
+      handleOpen,
+      isReadyToRender,
+      dialog,
+      isLoading,
+    };
   },
-  destroyed() {
-    if (this.unregisterAuthObserver) {
-      this.unregisterAuthObserver();
-    }
-    if (this.timerId) {
-      window.clearInterval(this.timerId);
-    }
-  },
-};
+});
 </script>
 <style lang="scss">
 // ### Need this commentout for CSS parser bug. Don't remove.

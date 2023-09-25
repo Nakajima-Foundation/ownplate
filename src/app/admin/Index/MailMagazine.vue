@@ -20,21 +20,21 @@
 </template>
 
 <script lang="ts">
-// import firebase from "firebase/compat/app";
-import { DocumentData } from "firebase/firestore";
-
-import { defineComponent, ref, computed, watch } from "@vue/composition-api";
+import { defineComponent, ref, computed, watch } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc, setDoc } from "firebase/firestore";
+import { useStore } from "vuex";
 
 export default defineComponent({
-  setup(_, ctx) {
+  setup() {
+    const store = useStore();
+
     const opt_out = ref(false);
     const ownerUid = computed(() => {
-      return ctx.root.$store.getters.isSubAccount
-        ? ctx.root.$store.getters.parentId
-        : ctx.root.$store.getters.uidAdmin;
+      return store.getters.isSubAccount
+        ? store.getters.parentId
+        : store.getters.uidAdmin;
     });
 
     (async () => {
@@ -43,12 +43,12 @@ export default defineComponent({
       opt_out.value = adminConfig.opt_out || false;
     })();
 
-    watch(opt_out, (current) => {
+    watch(opt_out, () => {
       console.log(opt_out);
       setDoc(
         doc(db, `/adminConfigs/${ownerUid.value}`),
         { opt_out: opt_out.value },
-        { merge: true }
+        { merge: true },
       );
     });
 

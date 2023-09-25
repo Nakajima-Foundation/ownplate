@@ -60,13 +60,13 @@ export const cancelStripe = async (
   transaction: admin.firestore.Transaction,
   stripeRef: admin.firestore.DocumentReference,
   restaurantOwnerUid: string,
-  orderId: string,
+  orderId: string
 ) => {
   const stripeRecord = await getStripeOrderRecord(transaction, stripeRef);
   const paymentIntentId = stripeRecord.paymentIntent.id;
 
   const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
-  
+
   const idempotencyKey = getHash([orderId, paymentIntentId].join("-"));
   const stripe = utils.get_stripe();
   const paymentIntent = await stripe.paymentIntents.cancel(paymentIntentId, {
@@ -75,4 +75,3 @@ export const cancelStripe = async (
   });
   return paymentIntent;
 };
-

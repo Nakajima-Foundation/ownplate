@@ -6,7 +6,7 @@ export const nameOfOrder = (order: OrderInfoData) => {
     : "";
 };
 
-export const regexOptionPrice = /\(((\+|\-|＋|ー|−)[0-9\.]+)\)/;
+export const regexOptionPrice = /\(((\+|-|＋|ー|−)[0-9.]+)\)/;
 
 export const optionPrice = (option: string) => {
   const match = option.match(regexOptionPrice);
@@ -18,7 +18,7 @@ export const optionPrice = (option: string) => {
 
 export const formatOption = (
   option: string,
-  localize: (price: number) => string
+  localize: (price: number) => string,
 ) => {
   const match = option.match(regexOptionPrice);
   if (match) {

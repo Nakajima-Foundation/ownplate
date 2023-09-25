@@ -30,29 +30,26 @@
     </div>
   </div>
 </template>
-<script>
-import { defineComponent, ref } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent, ref } from "vue";
 import { auth } from "@/lib/firebase/firebase9";
 import { sendEmailVerification } from "firebase/auth";
-import { useUser } from "@/utils/utils";
 import { fromEmail } from "@/config/project";
 
 export default defineComponent({
-  setup(_, ctx) {
-    const user = useUser(ctx);
-
+  setup() {
     const sent = ref(false);
     const isError = ref(false);
     const isLoading = ref(false);
 
     const send = async () => {
-      console.log(auth.currentUser);
       try {
         isLoading.value = true;
         isError.value = false;
-        const res = await sendEmailVerification(auth.currentUser);
-        console.log(res);
-        sent.value = true;
+        if (auth.currentUser) {
+          await sendEmailVerification(auth.currentUser);
+          sent.value = true;
+        }
       } catch (e) {
         isError.value = true;
       } finally {

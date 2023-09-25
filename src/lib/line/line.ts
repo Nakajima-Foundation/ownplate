@@ -1,31 +1,45 @@
 import { ownPlateConfig } from "@/config/project";
 import * as Cookie from "cookie";
 
+export const lineAuthRestaurantURL = (
+  path: string,
+  options: { [key: string]: string },
+  client_id: string,
+) => {
+  return lineAuthURLBase(path, options, client_id);
+};
+
 export const lineAuthURL = (
   path: string,
   options: { [key: string]: string },
-  channelId: string
+) => {
+  return lineAuthURLBase(path, options, ownPlateConfig.line.LOGIN_CHANNEL_ID);
+};
+
+export const lineAuthURLBase = (
+  path: string,
+  options: { [key: string]: string },
+  client_id: string,
 ) => {
   const state = "s" + Math.random();
   const nonce = "n" + Math.random();
   const query = {
     response_type: "code",
-    client_id: channelId || ownPlateConfig.line.LOGIN_CHANNEL_ID,
+    client_id,
     redirect_uri: location.origin + path,
-    scope: "profile openid email",
+    scope: "profile openid email", // todo??
     bot_prompt: "aggressive",
     state,
     nonce,
   } as { [key: string]: string };
   const params = JSON.stringify(
-    Object.assign({}, options || {}, { state, nonce })
+    Object.assign({}, options || {}, { state, nonce }),
   );
   const date = new Date();
   date.setTime(date.getTime() + 5 * 60 * 1000); // five minutes
   const cookie = `line_params=${encodeURIComponent(
-    params
+    params,
   )}; expires=${date.toUTCString()}; path=/`;
-  console.log(cookie);
   document.cookie = cookie;
 
   const queryString = Object.keys(query)

@@ -4,58 +4,49 @@
       <div v-if="likes" class="inline-flex items-center justify-center">
         <i class="material-icons mr-2 text-lg text-red-700">favorite</i>
         <div class="text-sm font-bold text-red-700">
-          {{ $t(isInMo ? "shopInfo.mo.liked" : "shopInfo.liked") }}
+          {{ $t("shopInfo.liked") }}
         </div>
       </div>
 
       <div v-else class="inline-flex items-center justify-center">
         <i class="material-icons text-lg text-op-teal">favorite_border</i>
         <div class="text-sm font-bold text-op-teal">
-          {{ $t(isInMo ? "shopInfo.mo.like" : "shopInfo.like") }}
+          {{ $t("shopInfo.like") }}
         </div>
       </div>
     </a>
   </div>
 </template>
 
-<script>
-import {
-  defineComponent,
-  ref,
-  computed,
-  onUnmounted,
-} from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent, ref, computed, onUnmounted } from "vue";
 
-import { db, firestore } from "@/plugins/firebase";
-import { useIsInMo, useMoPrefix } from "@/utils/utils";
+import { db } from "@/lib/firebase/firebase9";
+import { doc, onSnapshot, serverTimestamp, setDoc } from "firebase/firestore";
+
+import { useRestaurantId, useUserData } from "@/utils/utils";
+import { ReviewData } from "@/models/reviewData";
 
 export default defineComponent({
-  components: {},
   props: {
     shopInfo: {
       type: Object,
       required: true,
     },
   },
-  setup(props, ctx) {
-    const review = ref({});
-    let detacher = null;
-    const restaurantId = computed(() => {
-      return ctx.root.$route.params.restaurantId;
-    });
-    const isInMo = useIsInMo(ctx.root);
-    const moPrefix = useMoPrefix(ctx.root);
+  setup(props) {
+    const review = ref<ReviewData>({});
+    let detacher: any = null;
+    const restaurantId = useRestaurantId();
+
+    const { isUser, uid } = useUserData();
 
     const path = computed(() => {
-      if (isInMo.value) {
-        return `users/${ctx.root.user.uid}/groups/${moPrefix.value}/reviews/${restaurantId.value}`;
-      } else {
-        return `users/${ctx.root.user.uid}/reviews/${restaurantId.value}`;
-      }
+      return `users/${uid.value}/reviews/${restaurantId.value}`;
     });
 
-    if (ctx.root.isUser) {
-      detacher = db.doc(path.value).onSnapshot((snapshot) => {
+    if (isUser.value) {
+      detacher = onSnapshot(doc(db, path.value), (snapshot) => {
         review.value = snapshot.data() || {};
         if (review.value.restaurantName) {
           // Check if the cached info is out of date, update them.
@@ -63,12 +54,13 @@ export default defineComponent({
             review.value.restaurantName !== props.shopInfo.restaurantName ||
             review.value.restProfilePhoto != props.shopInfo.restProfilePhoto
           ) {
-            db.doc(path.value).set(
+            setDoc(
+              doc(db, path.value),
               {
                 restaurantName: props.shopInfo.restaurantName, // duplicated for quick display
                 restProfilePhoto: props.shopInfo.restProfilePhoto, // duplicated for quick display
               },
-              { merge: true }
+              { merge: true },
             );
           }
         }
@@ -86,22 +78,23 @@ export default defineComponent({
     const handleLike = () => {
       // Notice that mounted() will automatically update duplicated restaurant info.
       const nextState = !likes.value;
-      db.doc(path.value).set(
+      setDoc(
+        doc(db, path.value),
         {
           likes: nextState,
           restaurantName: props.shopInfo.restaurantName, // duplicated for quick display
           restProfilePhoto: props.shopInfo.restProfilePhoto, // duplicated for quick display
-          timeLiked: firestore.FieldValue.serverTimestamp(),
+          timeLiked: serverTimestamp(),
           restaurantId: restaurantId.value, // Making it possible to collection query (later)
         },
-        { merge: true }
+        { merge: true },
       );
     };
 
     return {
       likes,
       handleLike,
-      isInMo,
+      isUser,
     };
   },
 });

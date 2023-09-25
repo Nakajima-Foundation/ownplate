@@ -11,15 +11,9 @@
         {{
           $t(
             "order.status." +
-              convOrderStateForTextFunc(orderStatusKey, orderInfo)
+              convOrderStateForTextFunc(orderStatusKey, orderInfo),
           )
         }}
-      </div>
-      <div
-        v-if="isInMo && orderIsPlaced"
-        class="mt-2 text-xs font-bold tracking-tight text-red-700"
-      >
-        {{ $t("mobileOrder.orderPlacedAlert") }}
       </div>
     </div>
     <div>
@@ -33,11 +27,10 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, computed } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent, computed } from "vue";
 import { order_status } from "@/config/constant";
 import { convOrderStateForText } from "@/utils/utils";
-import { useIsInMo } from "@/utils/utils";
 
 export default defineComponent({
   props: {
@@ -50,8 +43,7 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props, ctx) {
-    const isInMo = useIsInMo(ctx.root);
+  setup(props) {
     const orderStatusKey = computed(() => {
       return Object.keys(order_status).reduce((result, key) => {
         return order_status[key] === props.orderInfo.status ? key : result;
@@ -61,7 +53,6 @@ export default defineComponent({
       return props.orderInfo.status === order_status.order_placed;
     });
     return {
-      isInMo,
       orderStatusKey,
       convOrderStateForTextFunc: convOrderStateForText,
       orderIsPlaced,

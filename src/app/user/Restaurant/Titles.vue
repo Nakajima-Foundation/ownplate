@@ -1,6 +1,6 @@
 <template>
   <div class="mx-6 lg:mx-0">
-    <template v-for="(title, key) in titleLists">
+    <template v-for="(title, key) in titleLists" :key="key">
       <a
         :href="`#${title.id}`"
         class="mx-2 mt-2 inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5"
@@ -13,8 +13,8 @@
   </div>
 </template>
 
-<script>
-import { defineComponent } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent } from "vue";
 
 export default defineComponent({
   props: {

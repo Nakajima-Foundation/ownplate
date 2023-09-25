@@ -13,8 +13,8 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, computed } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent } from "vue";
 import { previewLink } from "@/utils/utils";
 
 export default defineComponent({
@@ -22,14 +22,6 @@ export default defineComponent({
     shopInfo: {
       type: Object,
       required: true,
-    },
-    isInMo: {
-      type: Boolean,
-      required: true,
-    },
-    moPrefix: {
-      type: String,
-      required: false,
     },
   },
   setup(props) {

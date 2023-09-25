@@ -2,21 +2,29 @@
   <section class="mx-auto max-w-full px-6 pb-12 pt-4">
     <back-button url="/s" />
 
-    <div v-for="(admin, k) in admins">
+    <div v-for="(admin, k) in admins" :key="k">
       <router-link :to="`/s/admins/${admin.id}`">{{ admin.name }}</router-link>
-      {{ admin.partners }} {{ admin.created.toDate() }}
+      {{ admin.partners }} {{ admin?.created?.toDate() }}
     </div>
   </section>
 </template>
 
-<script>
-import BackButton from "@/components/BackButton";
-import { db } from "@/plugins/firebase";
+<script lang="ts">
+import { defineComponent, ref } from "vue";
+import BackButton from "@/components/BackButton.vue";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  getDocs,
+  query,
+  collection,
+  where,
+  limit,
+  DocumentData,
+} from "firebase/firestore";
 
-import superMixin from "@/mixins/SuperMixin";
+import { useSuper } from "@/utils/utils";
 
-export default {
-  mixins: [superMixin],
+export default defineComponent({
   components: {
     BackButton,
   },
@@ -25,32 +33,36 @@ export default {
       title: [this.defaultTitle, "Super Partners"].join(" / "),
     };
   },
-  async created() {
-    const adminCollections = await db
-      .collection("admins")
-      .where("partners", "!=", null)
-      .limit(200)
-      .get();
-    this.admins = adminCollections.docs
-      .map((admin) => {
-        const data = admin.data();
-        data.id = admin.id;
-        return data;
-      })
-      .sort((a, b) => {
-        return a.created.toDate().getTime() < b.created.toDate().getTime()
-          ? 1
-          : -1;
-      });
-    console.log(this.admins);
-  },
-  async mounted() {
-    this.superPermissionCheck();
-  },
-  data() {
+  setup() {
+    useSuper();
+
+    const admins = ref<DocumentData[]>([]);
+
+    getDocs(
+      query(
+        collection(db, "admins"),
+        where("partners", "!=", null),
+        limit(200),
+      ),
+    ).then((adminCollections) => {
+      admins.value = adminCollections.docs
+        .map((admin) => {
+          const data = admin.data();
+          data.id = admin.id;
+          return data;
+        })
+        .sort((a, b) => {
+          console.log(a, b);
+          return (a?.created?.toDate() || new Date()).getTime() <
+            (b?.created?.toDate() || new Date()).getTime()
+            ? 1
+            : -1;
+        });
+    });
+
     return {
-      admins: [],
+      admins,
     };
   },
-};
+});
 </script>

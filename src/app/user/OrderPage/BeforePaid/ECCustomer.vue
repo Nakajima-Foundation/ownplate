@@ -18,7 +18,7 @@
       </o-field>
     </div>
     <div v-if="ecErrors['zip'].length > 0" class="mb-2 font-bold text-red-700">
-      <div v-for="(error, key) in ecErrors['zip']">
+      <div v-for="(error, key) in ecErrors['zip']" :key="key">
         {{ $t(error) }}
       </div>
     </div>
@@ -65,7 +65,7 @@
       <o-select
         v-model="customerInfo.prefectureId"
         placeholder="select"
-        @input="updatePrefecture"
+        @update:modelValue="updatePrefecture"
       >
         <option
           v-for="(stateItem, key) in regionalSetting.AddressStates"
@@ -97,7 +97,7 @@
       v-if="ecErrors['address'].length > 0"
       class="mb-2 font-bold text-red-700"
     >
-      <div v-for="(error, key) in ecErrors['address']">
+      <div v-for="(error, key) in ecErrors['address']" :key="key">
         {{ $t(error) }}
       </div>
     </div>
@@ -119,7 +119,7 @@
       </o-field>
     </div>
     <div v-if="ecErrors['name'].length > 0" class="mb-2 font-bold text-red-700">
-      <div v-for="(error, key) in ecErrors['name']">
+      <div v-for="(error, key) in ecErrors['name']" :key="key">
         {{ $t(error) }}
       </div>
     </div>
@@ -144,7 +144,7 @@
         v-if="ecErrors['email'].length > 0"
         class="mb-2 font-bold text-red-700"
       >
-        <div v-for="(error, key) in ecErrors['email']">
+        <div v-for="(error, key) in ecErrors['email']" :key="key">
           {{ $t(error) }}
         </div>
       </div>
@@ -160,34 +160,41 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, ref, computed } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent, ref, computed, PropType } from "vue";
 
-import { db } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { regionalSetting, countObj } from "@/utils/utils";
-
+import { CustomerInfo } from "@/models/customer";
 import isEmail from "validator/lib/isEmail";
+
+import { useUserData } from "@/utils/utils";
+
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { OrderInfoData } from "@/models/orderInfo";
 
 export default defineComponent({
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
     orderInfo: {
-      type: Object,
+      type: Object as PropType<OrderInfoData>,
       required: true,
     },
   },
   emits: ["updateLocation"],
   setup(props, ctx) {
     const isSaveAddress = ref(true);
-    const customerInfo = ref({});
+    const customerInfo = ref<CustomerInfo>({});
     const addressList = ref([]);
 
-    const updateAddress = (address) => {
-      const { address1, address2, address3, prefectureId, prefecture } =
-        address;
+    const { uid } = useUserData();
+
+    const updateAddress = (address: any) => {
+      const { address2, address3, prefectureId, prefecture } = address;
 
       const data = {
         address: [address2, address3].join(""),
@@ -215,15 +222,18 @@ export default defineComponent({
       }
     };
     const saveAddress = async () => {
-      const uid = ctx.root.user.uid;
-      await db.doc(`/users/${uid}/address/data`).set(customerInfo.value);
+      await setDoc(
+        doc(db, `/users/${uid.value}/address/data`),
+        customerInfo.value,
+      );
     };
     const loadAddress = async () => {
-      const uid = ctx.root.user.uid;
-      return (await db.doc(`/users/${uid}/address/data`).get()).data() || {};
+      return (
+        (await getDoc(doc(db, `/users/${uid.value}/address/data`))).data() || {}
+      );
     };
     const ecErrors = computed(() => {
-      const err = {};
+      const err: { [key: string]: string[] } = {};
       const attrs = ["zip", "address", "name", "prefectureId"];
       if (props.shopInfo.isEC) {
         attrs.push("email");
@@ -231,8 +241,8 @@ export default defineComponent({
       attrs.forEach((name) => {
         err[name] = [];
         if (
-          customerInfo.value[name] === undefined ||
-          customerInfo.value[name] === ""
+          customerInfo.value[name as keyof CustomerInfo] === undefined ||
+          customerInfo.value[name as keyof CustomerInfo] === ""
         ) {
           err[name].push("validationError." + name + ".empty");
         }
@@ -240,7 +250,7 @@ export default defineComponent({
       if (
         customerInfo.value["zip"] &&
         !customerInfo.value["zip"].match(
-          /^((\d|[０-９]){3}(-|ー)(\d|[０-９]){4})|(\d|[０-９]){7}$/
+          /^((\d|[０-９]){3}(-|ー)(\d|[０-９]){4})|(\d|[０-９]){7}$/,
         )
       ) {
         err["zip"].push("validationError.zip.invalidZip");
@@ -270,14 +280,14 @@ export default defineComponent({
       if (ecErrors.value["zip"].length > 0) {
         return;
       }
-      const validZip = zip.replace(/-|ー/g, "").replace(/[！-～]/g, (s) => {
+      const validZip = zip?.replace(/-|ー/g, "").replace(/[！-～]/g, (s) => {
         return String.fromCharCode(s.charCodeAt(0) - 0xfee0);
       });
 
-      const zipDoc = await db.doc(`/zipcode/${validZip}`).get();
+      const zipDoc = await getDoc(doc(db, `/zipcode/${validZip}`));
       const data = zipDoc.data();
-      if (zipDoc.exists) {
-        addressList.value = data.addresses;
+      if (zipDoc.exists()) {
+        addressList.value = data?.addresses;
       } else {
         addressList.value = [];
       }
@@ -296,7 +306,7 @@ export default defineComponent({
       }
     })();
 
-    const updateHome = (pos) => {
+    const updateHome = (pos: any) => {
       const customer = { ...customerInfo.value };
       customer.location = pos;
       customerInfo.value = customer;
@@ -306,6 +316,8 @@ export default defineComponent({
       addressList,
       isSaveAddress,
       saveAddress,
+
+      regionalSetting,
 
       ecErrors,
       hasEcError,

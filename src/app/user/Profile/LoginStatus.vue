@@ -12,36 +12,39 @@
     </div>
   </div>
 </template>
-<script>
-import { defineComponent, ref, computed, watch } from "@vue/composition-api";
+
+<script lang="ts">
+import { defineComponent, computed } from "vue";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 
+import { useStore } from "vuex";
+import { useI18n } from "vue-i18n";
+
 export default defineComponent({
-  setup(_, ctx) {
+  setup() {
+    const store = useStore();
+    const { t } = useI18n({ useScope: "global" });
+
     const user = computed(() => {
-      return ctx.root.$store.state.user;
+      return store.state.user;
     });
 
     const loginStatus = computed(() => {
       if (user.value) {
         if (user.value.email) {
-          const extra = ctx.root.$store.getters.isSuperAdmin ? "*admin" : "";
-          return `${ctx.root.$t("profile.status.email")}: ${
-            user.value.email
-          } ${extra}`;
+          const extra = store.getters.isSuperAdmin ? "*admin" : "";
+          return `${t("profile.status.email")}: ${user.value.email} ${extra}`;
         } else if (user.value.phoneNumber) {
           const number = parsePhoneNumber(user.value.phoneNumber);
-          return `${ctx.root.$t("profile.status.phone")}: ${formatNational(
-            number
-          )}`;
+          return `${t("profile.status.phone")}: ${formatNational(number)}`;
         } else if (user.value.uid.slice(0, 5) === "line:") {
-          return ctx.root.$t("profile.status.line");
+          return t("profile.status.line");
         } else if (user.value.uid.slice(0, 5) === "liff:") {
-          return ctx.root.$t("profile.status.liff");
+          return t("profile.status.liff");
         }
-        return ctx.root.$t("profile.status.unexpected");
+        return t("profile.status.unexpected");
       }
-      return ctx.root.$t("profile.status.none");
+      return t("profile.status.none");
     });
     return {
       loginStatus,

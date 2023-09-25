@@ -6,7 +6,8 @@ export default functions
     memory: "1GB" as "1GB",
     maxInstances: 50,
   })
-  .auth.user().beforeSignIn((user, context) => {
+  .auth.user()
+  .beforeSignIn((user, context) => {
     return {
       sessionClaims: {
         signInIpAddress: context.ipAddress,

@@ -43,7 +43,7 @@
             {{
               $t(
                 "admin.subAccounts.messageResult." +
-                  (child.accepted === true ? "accepted" : "waiting")
+                  (child.accepted === true ? "accepted" : "waiting"),
               )
             }}
           </td>
@@ -81,7 +81,9 @@
           <o-button @click="invite" :disabled="sending">
             {{
               $t(
-                sending ? "admin.subAccounts.sending" : "admin.subAccounts.send"
+                sending
+                  ? "admin.subAccounts.sending"
+                  : "admin.subAccounts.send",
               )
             }}
           </o-button>
@@ -107,7 +109,7 @@
                     ? "accepted"
                     : message.accepted === false
                     ? "denied"
-                    : "waiting")
+                    : "waiting"),
               )
             }}/{{
               moment(message.createdAt.toDate()).format("YYYY/MM/DD HH:mm")
@@ -119,12 +121,11 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, ref, onUnmounted, watch } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent, ref, onUnmounted, watch } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
 import {
-  doc,
   collection,
   onSnapshot,
   getDocs,
@@ -132,6 +133,8 @@ import {
   where,
   orderBy,
   collectionGroup,
+  Unsubscribe,
+  DocumentData,
 } from "firebase/firestore";
 
 import {
@@ -139,48 +142,58 @@ import {
   subAccountInvite,
 } from "@/lib/firebase/functions";
 
-import { doc2data, array2obj, useAdminUids } from "@/utils/utils";
+import { doc2data, array2obj, useAdminUids, defaultTitle } from "@/utils/utils";
 
 import BackButton from "@/components/BackButton.vue";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
+
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+
+import moment from "moment";
 
 export default defineComponent({
   metaInfo() {
     return {
-      title: [this.defaultTitle, "Admin Subaccount Accounts"].join(" / "),
+      title: [defaultTitle, "Admin Subaccount Accounts"].join(" / "),
     };
   },
   components: {
     BackButton,
   },
-  setup(props, ctx) {
-    const restaurantObj = ref({});
-    const children = ref([]);
-    const detachers = [];
-    const messages = ref([]);
-    const errors = ref([]);
+  setup() {
+    const store = useStore();
+    const router = useRouter();
+
+    const restaurantObj = ref<{ [key: string]: RestaurantInfoData }>({});
+    const children = ref<DocumentData[]>([]);
+    const detachers: Unsubscribe[] = [];
+    const messages = ref<DocumentData[]>([]);
+    const errors = ref<string[]>([]);
     const email = ref("");
     const name = ref("");
     const sending = ref(false);
 
-    const { isOwner, uid } = useAdminUids(ctx);
+    const { uid } = useAdminUids();
 
     getDocs(
       query(
-        collection(db,"restaurants"),
+        collection(db, "restaurants"),
         where("uid", "==", uid.value),
         where("deletedFlag", "==", false),
         orderBy("createdAt", "asc"),
-      )
+      ),
     ).then((restaurantCollection) => {
-        restaurantObj.value = array2obj(
-          restaurantCollection.docs.map(doc2data("restaurant"))
-        );
-      });
+      restaurantObj.value = array2obj(
+        restaurantCollection.docs.map(doc2data("restaurant")),
+      ) as { [key: string]: RestaurantInfoData };
+    });
     const childDetacher = onSnapshot(
       collection(db, `admins/${uid.value}/children`),
       (childrenCollection) => {
         children.value = childrenCollection.docs.map(doc2data("admin"));
-      });
+      },
+    );
     detachers.push(childDetacher);
 
     const messageDetacher = onSnapshot(
@@ -191,7 +204,8 @@ export default defineComponent({
       ),
       (messageCollection) => {
         messages.value = messageCollection.docs.map(doc2data("message"));
-      });
+      },
+    );
     detachers.push(messageDetacher);
 
     onUnmounted(() => {
@@ -202,17 +216,17 @@ export default defineComponent({
       }
     });
 
-    const deleteChild = (childId) => {
-      ctx.root.$store.commit("setAlert", {
+    const deleteChild = (childId: string) => {
+      store.commit("setAlert", {
         code: "admin.subAccounts.confirmDeletechild",
         callback: async () => {
-          ctx.root.$store.commit("setLoading", true);
+          store.commit("setLoading", true);
           await subAccountDeleteChild({ childUid: childId });
-          ctx.root.$store.commit("setLoading", false);
+          store.commit("setLoading", false);
         },
       });
     };
-    const rList = (restaurantLists) => {
+    const rList = (restaurantLists: string[]) => {
       return (restaurantLists || [])
         .map((r) => {
           return restaurantObj.value[r]?.restaurantName;
@@ -225,14 +239,12 @@ export default defineComponent({
     const invite = async () => {
       sending.value = true;
       try {
-        const res = await subAccountInvite({
+        const res = (await subAccountInvite({
           email: email.value,
           name: name.value,
-        });
+        })) as any;
         if (res.data.result) {
-          ctx.root.$router.push(
-            "/admin/subAccounts/accounts/" + res.data.childUid
-          );
+          router.push("/admin/subAccounts/accounts/" + res.data.childUid);
           email.value = "";
           name.value = "";
         } else {
@@ -263,6 +275,8 @@ export default defineComponent({
       deleteChild,
       rList,
       invite,
+
+      moment,
     };
   },
 });

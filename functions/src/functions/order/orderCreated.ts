@@ -6,14 +6,6 @@ import { createCustomer } from "../stripe/customer";
 import { orderCreatedData, menuItem } from "../../lib/types";
 import { validateOrderCreated } from "../../lib/validator";
 
-export const getGroupRestautantRef = async (db, groupId: string) => {
-  const groupData = (await db.doc(`groups/${groupId}`).get()).data();
-  if (!groupData) {
-    throw new functions.https.HttpsError("invalid-argument", "This group does not exist.");
-  }
-  return db.doc(`restaurants/${groupData.restaurantId}`);
-};
-
 const getOptionPrice = (selectedOptionsRaw, menu, multiple) => {
   return selectedOptionsRaw.reduce((tmpPrice, selectedOpt, key) => {
     const opt = menu.itemOptionCheckbox[key].split(",");
@@ -73,7 +65,7 @@ export const orderAccounting = (restaurantData, food_sub_total, alcohol_sub_tota
 };
 
 // restaurantData is for mo.
-export const createNewOrderData = async (restaurantRef, orderRef, orderData, multiple, restaurantData, moRestaurantRef) => {
+export const createNewOrderData = async (restaurantRef, orderRef, orderData, multiple) => {
   const menuIds = Object.keys(orderData.order);
   const menuObj = await utils.getMenuObj(restaurantRef, menuIds);
 
@@ -94,38 +86,14 @@ export const createNewOrderData = async (restaurantRef, orderRef, orderData, mul
     console.error("[createNewOrderData] menuError");
     return orderRef.update("status", order_status.error);
   }
-  // for mo
-  const subCategoryIds = utils.convSubCateIds(menuObj);
-  const isInMo = !!restaurantData.groupId;
-  const isPickup = !!orderData.isPickup;
-  const moData = isInMo ? await utils.getMoDataObj(moRestaurantRef, subCategoryIds, isPickup ? 'pickup/data' : 'preOrder/data') : {};
-  const moStock = isInMo && isPickup ? await utils.getMoDataObj(moRestaurantRef, subCategoryIds, 'pickup/stock') : {};
-  // console.log(subCategoryIds, moData, moStock);
-  // 
+
   menuIds.map((menuId) => {
     const menu = menuObj[menuId];
 
-    // for mo
-    if (restaurantData.groupId) {
-      if (!(moData[menuId] || {}).isPublic) {
-        return;
-      }
-      if (restaurantData.isPickup) {
-        if (menu.soldOut) {
-          return;
-        }
-        const s = moStock[menuId] || {};
-        if (!s.forcePickupStock && !s.isStock) {
-          return ;
-        }
-      }
-      // for mo
-    }  else {
-      if (menu.soldOut) {
-        return;
-      }
+    if (menu.soldOut) {
+      return;
     }
-    
+
     const prices: number[] = [];
     const newOrder: number[] = [];
 
@@ -207,9 +175,6 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
       console.error("[orderCreated] not exists");
       return orderRef.update("status", order_status.error);
     }
-    // check mo
-    const menuRestaurantRef = restaurantData.groupId ? await getGroupRestautantRef(db, restaurantData.groupId) : restaurantRef;
-
     const order = await orderRef.get();
 
     if (!order) {
@@ -224,23 +189,26 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
 
     // validate
     const ownerUid = restaurantData.uid;
-    const {
-      isDelivery,
-      isPickup,
-      isLiff, 
-    } = orderData;
+    const { isDelivery, isLiff, lunchOrDinner } = orderData;
     if (isDelivery && !restaurantData.enableDelivery) {
       throw new functions.https.HttpsError("invalid-argument", "Invalid delivery order.");
     }
-    if (isPickup && !restaurantData.enableMoPickup) {
-      throw new functions.https.HttpsError("invalid-argument", "Invalid delivery order.");
-    }
     if (isLiff && !restaurantData.supportLiff) {
-      throw new functions.https.HttpsError("invalid-argument", "Invalid delivery order.");
+      throw new functions.https.HttpsError("invalid-argument", "Invalid liff order.");
     }
+    if (restaurantData.enableLunchDinner) {
+      if (!["lunch", "dinner"].includes(lunchOrDinner)) {
+        throw new functions.https.HttpsError("invalid-argument", "Invalid lunch dinner order.");
+      }
+    } else {
+      if (lunchOrDinner) {
+        throw new functions.https.HttpsError("invalid-argument", "Invalid lunch dinner order.");
+      }
+    }
+
     const multiple = utils.stripeRegion.multiple; //100 for USD, 1 for JPY
 
-    const { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total } = await createNewOrderData(menuRestaurantRef, orderRef, orderData, multiple, restaurantData, restaurantRef);
+    const { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total } = await createNewOrderData(restaurantRef, orderRef, orderData, multiple);
 
     // Atomically increment the orderCount of the restaurant
     let orderCount = 0;
@@ -262,24 +230,17 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
 
     await createCustomer(db, customerUid, context.auth.token.phone_number);
 
-
     // just copy original data.
-    const {
-      options,
-      rawOptions,
-      uid,
-      phoneNumber,
-      name,
-      updatedAt,
-      timeCreated,
-    } = orderData;
+    const { options, rawOptions, uid, phoneNumber, name, updatedAt, timeCreated } = orderData;
 
     await orderRef.set(
       utils.filterData({
         // copy and validate
         isDelivery,
-        isPickup,
-        isLiff, 
+        isPickup: false, // TODO: remove for mo
+        isLiff,
+
+        lunchOrDinner,
 
         // just copy
         options,
@@ -290,7 +251,7 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
         updatedAt,
         timeCreated,
         // end of copy
-        
+
         ownerUid,
         order: newOrderData,
         menuItems: newItems, // Clone of ordered menu items (simplified)
@@ -312,7 +273,6 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
             tax: accountingResult.alcohol_tax,
           },
         },
-        groupId: restaurantData.groupId,
       })
     );
     return { result: true };

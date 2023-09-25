@@ -44,21 +44,10 @@
   </div>
 </template>
 
-<script>
-import {
-  defineComponent,
-  ref,
-  computed,
-  watch,
-  onUnmounted,
-} from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent, ref, computed, watch } from "vue";
 import { db } from "@/lib/firebase/firebase9";
-import {
-  getDocs,
-  query,
-  collectionGroup,
-  where,
-} from "firebase/firestore";
+import { getDocs, query, collectionGroup, where } from "firebase/firestore";
 import DownloadCsv from "@/components/DownloadCSV.vue";
 import moment from "moment";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
@@ -66,11 +55,11 @@ import { nameOfOrder } from "@/utils/strings";
 import { order_status } from "@/config/constant";
 import { arrayChunk, forceArray } from "@/utils/utils";
 
-import {
-  reportHeaders,
-  reportHeadersWithAddress,
-  reportHeadersForMo,
-} from "@/utils/reportUtils";
+import { reportHeaders, reportHeadersWithAddress } from "@/utils/reportUtils";
+
+import { OrderInfoData } from "@/models/orderInfo";
+import { CustomerInfo } from "@/models/customer";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   components: {
@@ -78,7 +67,7 @@ export default defineComponent({
   },
   props: {
     orders: {
-      type: Array,
+      type: Array<OrderInfoData>,
       required: true,
     },
     shopInfo: {
@@ -94,29 +83,23 @@ export default defineComponent({
       required: false,
       default: false,
     },
-    isInMo: {
-      type: Boolean,
-      required: true,
-    },
-    categoryDataObj: {
-      type: Object,
-      required: true,
-    },
-    allSubCategoryDataObj: {
-      type: Object,
-      required: true,
-    },
     buttonTitle: {
       type: String,
       required: true,
     },
   },
-  setup(props, ctx) {
-    const customers = ref({});
-    const writeonFirstLine = (index, key, text) => {
-      return (index === 0 && Number(key) === 0) || props.isInMo ? text : "-";
+  setup(props) {
+    const { t } = useI18n({ useScope: "global" });
+
+    const customers = ref<{ [key: string]: CustomerInfo }>({});
+    const writeonFirstLine = (
+      index: number,
+      key: number | string,
+      text: any,
+    ) => {
+      return index === 0 && Number(key) === 0 ? text : "-";
     };
-    const timeConvert = (timeData) => {
+    const timeConvert = (timeData: any) => {
       if (!timeData) {
         return null;
       }
@@ -126,7 +109,6 @@ export default defineComponent({
       return moment(timeData).format("YYYY/MM/DD HH:mm");
     };
 
-    
     const orders = computed(() => {
       return props.orders;
     });
@@ -144,13 +126,13 @@ export default defineComponent({
                   collectionGroup(db, "customer"),
                   where("restaurantId", "==", props.shopInfo.restaurantId),
                   where("orderId", "in", arr),
-                )
-              )
+                ),
+              );
               cuss.docs.map((cus) => {
                 const data = cus.data();
                 tmpCustomers[data.orderId] = data;
               });
-            })
+            }),
           );
           customers.value = tmpCustomers;
         })();
@@ -163,16 +145,14 @@ export default defineComponent({
     };
 
     const fields = computed(() => {
-      if (props.isInMo) {
-        return reportHeadersForMo;
-      } else if (props.shopInfo?.isEC || props.shopInfo?.enableDelivery) {
+      if (props.shopInfo?.isEC || props.shopInfo?.enableDelivery) {
         return reportHeadersWithAddress;
       }
       return reportHeaders;
     });
     const fieldNames = computed(() => {
       return fields.value.map((field) => {
-        return ctx.root.$t(`order.${field}`);
+        return t(`order.${field}`);
       });
     });
     const mergedOrder = computed(() => {
@@ -184,7 +164,7 @@ export default defineComponent({
       });
     });
     const tableData = computed(() => {
-      const items = [];
+      const items: any[] = [];
       mergedOrder.value.forEach((order) => {
         const ids = Object.keys(order.order);
         const status = Object.keys(order_status).reduce((result, key) => {
@@ -200,9 +180,12 @@ export default defineComponent({
           const menuItem = (order.menuItems || {})[menuId] || {};
           const taxRate = menuItem.tax === "food" ? 8 : 10;
           Object.keys(orderItems).forEach((key) => {
+            // @ts-ignore
             const opt = Array.isArray(options[key] || [])
-              ? options[key]
-              : [options[key]];
+              ? // @ts-ignore
+                options[key]
+              : // @ts-ignore
+                [options[key]];
             try {
               items.push({
                 id: `${order.id}/${menuId}`,
@@ -212,7 +195,7 @@ export default defineComponent({
                 type: writeonFirstLine(
                   index,
                   key,
-                  ctx.root.$t("order.orderType" + order.type)
+                  t("order.orderType" + order.type),
                 ),
                 uid: order.uid, // mo
                 restaurantId: props.shopInfo.restaurantId, // mo
@@ -220,99 +203,95 @@ export default defineComponent({
                 timeRequested: writeonFirstLine(
                   index,
                   key,
-                  timeConvert(order.timePlaced)
+                  timeConvert(order.timePlaced),
                 ),
                 timeToPickup: writeonFirstLine(
                   index,
                   key,
-                  timeConvert(order.timeEstimated)
+                  timeConvert(order.timeEstimated),
                 ),
                 datePlaced: writeonFirstLine(
                   index,
                   key,
-                  timeConvert(order.orderPlacedAt)
+                  timeConvert(order.orderPlacedAt),
                 ),
                 dateAccepted: writeonFirstLine(
                   index,
                   key,
-                  timeConvert(order.orderAcceptedAt)
+                  timeConvert(order.orderAcceptedAt),
                 ),
                 dateConfirmed: writeonFirstLine(
                   index,
                   key,
-                  timeConvert(order.timeConfirmed)
+                  timeConvert(order.timeConfirmed),
                 ),
                 dateCompleted: writeonFirstLine(
                   index,
                   key,
-                  timeConvert(order.transactionCompletedAt)
+                  timeConvert(order.transactionCompletedAt),
                 ),
                 phoneNumber: writeonFirstLine(
                   index,
                   key,
                   order.phoneNumber
                     ? formatNational(parsePhoneNumber(order.phoneNumber))
-                    : "LINE"
+                    : "LINE",
                 ),
                 userName: writeonFirstLine(
                   index,
                   key,
-                  props.isInMo
-                    ? "-"
-                    : order.name || ctx.root.$t("order.unspecified")
+                  order.name || t("order.unspecified"),
                 ),
                 "ec.name": writeonFirstLine(
                   index,
                   key,
-                  order?.customerInfo?.name
+                  order?.customerInfo?.name,
                 ),
                 "ec.zip": writeonFirstLine(
                   index,
                   key,
-                  order?.customerInfo?.zip
+                  order?.customerInfo?.zip,
                 ),
                 "ec.prefecture": writeonFirstLine(
                   index,
                   key,
-                  order?.customerInfo?.prefecture
+                  order?.customerInfo?.prefecture,
                 ),
                 "ec.address": writeonFirstLine(
                   index,
                   key,
-                  order?.customerInfo?.address
+                  order?.customerInfo?.address,
                 ),
                 "ec.email": writeonFirstLine(
                   index,
                   key,
-                  order?.customerInfo?.email
+                  order?.customerInfo?.email,
                 ),
-                shippingCost: writeonFirstLine(index, key, order?.shippingCost || order?.deliveryFee),
+                shippingCost: writeonFirstLine(
+                  index,
+                  key,
+                  order?.shippingCost || order?.deliveryFee,
+                ),
                 isDelivery: writeonFirstLine(
                   index,
                   key,
-                  order?.isDelivery ? "1" : ""
+                  order?.isDelivery ? "1" : "",
                 ),
+                // @ts-ignore
                 count: orderItems[key],
-                options: opt.filter((a) => String(a) !== "").join("/"),
+                options: opt.filter((a: string) => String(a) !== "").join("/"),
                 memo: writeonFirstLine(index, key, order.memo),
                 itemName: menuItem.itemName,
                 statusName: writeonFirstLine(
                   index,
                   key,
-                  ctx.root.$t(`order.status.${status}`)
+                  t(`order.status.${status}`),
                 ),
                 category1: menuItem.category1 || "",
                 category2: menuItem.category2 || "",
 
                 categoryId: menuItem.category || "",
-                category: menuItem.category
-                  ? (props.categoryDataObj || {})[menuItem.category]?.name || ""
-                  : "",
                 subCategoryId: menuItem.subCategory || "",
-                subCategory: menuItem.subCategory
-                  ? (props.allSubCategoryDataObj || {})[menuItem.subCategory]
-                      ?.name || ""
-                  : "",
                 productId: menuItem.productId || "",
 
                 // for mo
@@ -324,12 +303,20 @@ export default defineComponent({
                 cancelReason: order.cancelReason,
                 // end of for mo
                 total: writeonFirstLine(index, key, order.totalCharge || ""),
-                discountPrice: writeonFirstLine(index, key, order.discountPrice || 0),
-                beforeDiscountPrice: writeonFirstLine(index, key, order.totalCharge + (order.discountPrice || 0)),
+                discountPrice: writeonFirstLine(
+                  index,
+                  key,
+                  order.discountPrice || 0,
+                ),
+                beforeDiscountPrice: writeonFirstLine(
+                  index,
+                  key,
+                  order.totalCharge + (order.discountPrice || 0),
+                ),
                 payment: writeonFirstLine(
                   index,
                   key,
-                  order.payment?.stripe ? "stripe" : ""
+                  order.payment?.stripe ? "stripe" : "",
                 ),
               });
             } catch (e) {

@@ -4,57 +4,50 @@
       {{ $t(this.state_key) }}
       <span class="text-red-700">*</span>
     </div>
-    <o-field
-      :variant="errors['state'].length > 0 ? 'danger' : 'success'"
-      v-if="Array.isArray(states)"
-    >
-      <o-select :value="value" placeholder="select" @input="input">
+    <o-field :variant="errors['state'].length > 0 ? 'danger' : 'success'">
+      <o-select
+        :modelValue="modelValue"
+        placeholder="select"
+        @update:modelValue="input"
+      >
         <option v-for="stateItem in states" :key="stateItem">
           {{ stateItem }}
         </option>
       </o-select>
     </o-field>
-    <o-field
-      :variant="errors['state'].length > 0 ? 'danger' : 'success'"
-      v-else
-    >
-      <o-input
-        :value="value"
-        type="text"
-        :placeholder="$t('editRestaurant.enterCity')"
-        maxlength="15"
-      ></o-input>
-    </o-field>
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from "vue";
+
+import { regionalSetting } from "@/utils/utils";
+
+export default defineComponent({
   name: "State",
   props: {
     errors: {
       type: Object,
       required: true,
     },
-    value: {
+    modelValue: {
       type: String,
       required: true,
     },
   },
-  methods: {
-    input(e) {
-      this.$emit("input", e);
-    },
-  },
-  data() {
+  setup(props, context) {
+    const input = (value: string) => {
+      context.emit("update:modelValue", value);
+    };
+
+    const states = regionalSetting.AddressStates;
+    const state_key = regionalSetting.StateKey || "shopInfo.state";
+
     return {
-      states: [],
-      state_key: "",
+      states,
+      state_key,
+      input,
     };
   },
-  created() {
-    this.states = this.regionalSetting.AddressStates;
-    this.state_key = this.regionalSetting.StateKey || "shopInfo.state";
-  },
-};
+});
 </script>

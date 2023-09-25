@@ -25,9 +25,9 @@
   </div>
 </template>
 
-<script>
-import { defineComponent } from "@vue/composition-api";
-import newsList from "../News/data";
+<script lang="ts">
+import { defineComponent } from "vue";
+import newsList from "@/app/admin/News/data";
 import { isJapan } from "@/utils/utils";
 
 export default defineComponent({

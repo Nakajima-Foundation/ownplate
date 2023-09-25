@@ -66,15 +66,12 @@
   </div>
 </template>
 
-<script>
-import {
-  defineComponent,
-  ref,
-  computed,
-} from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent, ref, computed } from "vue";
 import isEmail from "validator/lib/isEmail";
 import { auth } from "@/lib/firebase/firebase9";
 import { sendPasswordResetEmail } from "firebase/auth";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "Reset",
@@ -83,18 +80,20 @@ export default defineComponent({
       title: [this.defaultTitle, "Reset Password"].join(" / "),
     };
   },
-  setup(_, ctx) {
+  setup() {
+    const router = useRouter();
+
     const email = ref("");
     let badEmail = "---invalid---";
     const apiError = ref(null);
     const emailSent = ref(false);
     const submitted = ref(false);
-    
+
     const errors = computed(() => {
       if (!submitted.value) {
         return {};
       }
-      let err = {};
+      const err: any = {};
       if (!isEmail(email.value)) {
         err.email = ["admin.error.email.invalid"];
       } else if (email.value === badEmail) {
@@ -106,7 +105,7 @@ export default defineComponent({
     });
 
     const handleCancel = () => {
-      ctx.root.$router.push("/admin/user/signin");
+      router.push("/admin/user/signin");
     };
     const handleNext = async () => {
       submitted.value = true;
@@ -134,7 +133,7 @@ export default defineComponent({
       handleNext,
       handleCancel,
       errors,
-      
+
       email,
       emailSent,
     };

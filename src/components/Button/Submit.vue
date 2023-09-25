@@ -11,8 +11,8 @@
   </o-button>
 </template>
 
-<script>
-import { defineComponent } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent } from "vue";
 import ButtonLoading from "@/components/Button/Loading.vue";
 
 export default defineComponent({

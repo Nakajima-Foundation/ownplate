@@ -1,52 +1,95 @@
 <template>
-  <div v-if="showAddLine && enableLine" class="mt-6 text-center">
-    <o-button @click="handleLineAuth" class="b-reset-tw">
+  <div v-if="showAddLine" class="mt-6 text-center">
+    <div v-if="hasLine">
       <div
-        class="inline-flex h-12 items-center justify-center rounded-full px-6"
-        style="background: #18b900"
+        class="mx-6 rounded-lg bg-black bg-opacity-5 p-4"
+        v-if="hasFriends !== null"
       >
-        <i class="fab fa-line mr-2 text-2xl text-white" />
-        <div class="text-base font-bold text-white">
-          {{ $t("line.notifyMe") }}
+        <button @click="handleLineAuth">
+          <div
+            class="inline-flex h-12 items-center justify-center rounded-full px-6"
+            style="background: #18b900"
+          >
+            <i class="fab fa-line mr-2 text-2xl text-white" />
+            <div class="text-base font-bold text-white">
+              {{ $t("line.notifyMeFromFriend") }}
+            </div>
+          </div>
+        </button>
+        <div class="mt-2 text-sm">
+          {{ $t("order.lineMessage") }}
         </div>
       </div>
-    </o-button>
+    </div>
+    <div v-else>
+      <button @click="handleLineAuth">
+        <div
+          class="inline-flex h-12 items-center justify-center rounded-full px-6"
+          style="background: #18b900"
+        >
+          <i class="fab fa-line mr-2 text-2xl text-white" />
+          <div class="text-base font-bold text-white">
+            {{ $t("line.notifyMe") }}
+          </div>
+        </div>
+      </button>
+    </div>
   </div>
 </template>
 
-<script>
-import { defineComponent, computed } from "@vue/composition-api";
-import { lineAuthURL } from "@/lib/line/line";
+<script lang="ts">
+import { defineComponent, computed, PropType } from "vue";
+import { lineAuthURL, lineAuthRestaurantURL } from "@/lib/line/line";
 import { ownPlateConfig } from "@/config/project";
+
+import { useStore } from "vuex";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 export default defineComponent({
   props: {
-    groupData: {
-      type: Object,
+    shopInfo: {
+      type: Object as PropType<RestaurantInfoData>,
+      required: true,
+    },
+    hasFriends: {
+      type: Boolean,
       required: false,
     },
+    hasLine: {
+      type: Boolean,
+      required: true,
+    },
   },
-  setup(props, ctx) {
+  setup(props) {
+    const store = useStore();
+
     const handleLineAuth = () => {
-      const url = lineAuthURL("/callback/line", {
-        pathname: location.pathname,
-      });
+      const url = (() => {
+        if (props.hasLine) {
+          return lineAuthRestaurantURL(
+            "/callback/" + props.shopInfo.restaurantId + "/line",
+            {
+              pathname: location.pathname,
+            },
+            props.shopInfo.lineClientId,
+          );
+        } else {
+          return lineAuthURL("/callback/line", {
+            pathname: location.pathname,
+          });
+        }
+      })();
       location.href = url;
     };
     const showAddLine = computed(() => {
-      // return true;
-      return !!ownPlateConfig.line && !ctx.root.$store.state.claims?.line;
-    });
-    const enableLine = computed(() => {
-      if (props.groupData?.enableLine === undefined) {
-        return true;
+      if (props.hasLine) {
+        return !props.hasFriends;
       }
-      return props.groupData?.enableLine;
+      return !!ownPlateConfig.line && !store.state.claims?.line;
     });
     return {
       handleLineAuth,
       showAddLine,
-      enableLine,
     };
   },
 });

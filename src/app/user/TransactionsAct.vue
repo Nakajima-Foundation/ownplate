@@ -14,15 +14,15 @@
     </div>
 
     <TransactionsActModal
+      ref="transactions"
       :shopInfo="shopInfo"
       :isDelivery="isDelivery"
-      ref="contents"
     />
   </div>
 </template>
 
-<script>
-import { defineComponent } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent, ref } from "vue";
 
 import TransactionsActModal from "@/app/user/TransactionsAct/Modal.vue";
 
@@ -40,12 +40,14 @@ export default defineComponent({
   components: {
     TransactionsActModal,
   },
-  setup(props, ctx) {
+  setup() {
+    const transactions = ref();
     const openTransactionsAct = () => {
-      ctx.refs.contents.openTransactionsAct();
+      transactions.value.openTransactionsAct();
     };
     return {
       openTransactionsAct,
+      transactions,
     };
   },
 });

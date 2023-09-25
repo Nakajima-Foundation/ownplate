@@ -47,12 +47,9 @@
 
       <!-- LINE Not Connected -->
 
-      <div v-if="!inLiff && (!isLineUser || underConstruction)">
+      <div v-if="!inLiff && (!isLineUser || isDev)">
         <div v-if="isLineEnabled" class="mt-4 text-center">
-          <div
-            v-if="isLineUser && underConstruction"
-            class="mb-2 text-base font-bold"
-          >
+          <div v-if="isLineUser && isDev" class="mb-2 text-base font-bold">
             再設定 for Dev
           </div>
           <o-button @click="handleLineAuth" class="b-reset-tw">
@@ -72,33 +69,39 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, ref, computed, watch } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent, ref, computed, watch } from "vue";
 import {
-  useIsLineUser,
-  useIsLiffUser,
-  useInLiff,
+  useUserData,
   useLiffIndexId,
-  underConstruction,
+  isDev,
   isLineEnabled,
 } from "@/utils/utils";
+import liff from "@line/liff";
+
+import { db } from "@/lib/firebase/firebase9";
+import { doc, getDoc } from "firebase/firestore";
 
 import { lineVerifyFriend } from "@/lib/firebase/functions";
 import { lineAuthURL } from "@/lib/line/line";
 import { ownPlateConfig } from "@/config/project";
 
-export default defineComponent({
-  setup(_, ctx) {
-    const isLineUser = useIsLineUser(ctx);
-    const isLiffUser = useIsLiffUser(ctx);
-    const liffIndexId = useLiffIndexId(ctx.root);
+import { useStore } from "vuex";
+import { useI18n } from "vue-i18n";
 
-    const inLiff = useInLiff(ctx);
-    const isFriend = ref(undefined);
-    const liffConfig = ref(null);
+export default defineComponent({
+  setup() {
+    const store = useStore();
+    const { t } = useI18n({ useScope: "global" });
+
+    const { isLiffUser, isLineUser, inLiff } = useUserData();
+    const liffIndexId = useLiffIndexId();
+
+    const isFriend = ref<undefined | boolean>(undefined);
+    const liffConfig = ref<null | any>(null);
 
     const isWindowActive = computed(() => {
-      return ctx.root.$store.state.isWindowActive;
+      return store.state.isWindowActive;
     });
 
     const friendLink = computed(() => {
@@ -110,6 +113,7 @@ export default defineComponent({
       } else {
         return ownPlateConfig.line.FRIEND_LINK;
       }
+      return "";
     });
     const handleLineAuth = () => {
       const url = lineAuthURL("/callback/line", {
@@ -128,9 +132,9 @@ export default defineComponent({
         }
       } else {
         try {
-          const { data } = await lineVerifyFriend(
-            isLiffUser.value ? { liffIndexId: liffIndexId.value } : {}
-          );
+          const { data } = (await lineVerifyFriend(
+            isLiffUser.value ? { liffIndexId: liffIndexId.value } : {},
+          )) as any;
           isFriend.value = data.result;
         } catch (error) {
           console.error(error);
@@ -140,17 +144,17 @@ export default defineComponent({
 
     const lineConnection = computed(() => {
       return isLineUser.value
-        ? ctx.root.$t("profile.status.hasLine")
-        : ctx.root.$t("profile.status.noLine");
+        ? t("profile.status.hasLine")
+        : t("profile.status.noLine");
     });
 
     const lineFriend = computed(() => {
       if (isFriend.value === undefined) {
-        return ctx.root.$t("profile.status.verifying");
+        return t("profile.status.verifying");
       }
       return isFriend.value
-        ? ctx.root.$t("profile.status.isFriend")
-        : ctx.root.$t("profile.status.noFriend");
+        ? t("profile.status.isFriend")
+        : t("profile.status.noFriend");
     });
 
     watch(isWindowActive, (newValue) => {
@@ -163,12 +167,12 @@ export default defineComponent({
         checkFriend();
       }
     });
-    watch(isLineUser, (newValue) => {
+    watch(isLineUser, () => {
       if (isFriend.value === undefined) {
         checkFriend();
       }
     });
-    watch(isLiffUser, (newValue) => {
+    watch(isLiffUser, () => {
       if (isFriend.value === undefined) {
         checkFriend();
       }
@@ -194,8 +198,12 @@ export default defineComponent({
       handleLineAuth,
       friendLink,
 
-      underConstruction,
+      isDev,
+      inLiff,
       isLineEnabled,
+
+      isLiffUser,
+      isLineUser,
     };
   },
 });

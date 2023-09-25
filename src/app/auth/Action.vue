@@ -11,10 +11,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "@vue/composition-api";
+import { defineComponent, computed } from "vue";
 
-import ResetPassword from "./Actions/ResetPassword.vue";
-import VerifyEmail from "./Actions/VerifyEmail.vue";
+import ResetPassword from "@/app/auth/Actions/ResetPassword.vue";
+import VerifyEmail from "@/app/auth/Actions/VerifyEmail.vue";
+
+import { useRoute } from "vue-router";
 
 export default defineComponent({
   name: "AccountAction",
@@ -22,9 +24,11 @@ export default defineComponent({
     ResetPassword,
     VerifyEmail,
   },
-  setup(_, ctx) {
+  setup() {
+    const route = useRoute();
+
     const mode = computed(() => {
-      return ctx.root.$route.query.mode;
+      return route.query.mode;
     });
     return { mode };
   },

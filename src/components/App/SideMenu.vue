@@ -4,7 +4,7 @@
     :fullwidth="fullwidth"
     :overlay="overlay"
     :right="right"
-    :open.sync="open"
+    v-model:open="open"
   >
     <!-- Logo / Home -->
     <div class="mt-6 mb-4 text-center">
@@ -13,206 +13,184 @@
       </router-link>
     </div>
 
+    <!-- for owner before login | not implemented -->
+    <div v-if="isAnonymous && false">
+      <div class="font-bold text-black text-opacity-40 text-center mb-2">
+        {{ $t("lp.forRestaurantOwner") }}
+      </div>
+    </div>
+
+    <!-- Sign in for Any Users -->
+    <div v-if="isAnonymous">
+      <SideMenuButton
+        text="button.login"
+        icon="person"
+        :to="base_path + '/u/profile'"
+        @handleClose="handleClose()"
+      />
+    </div>
+
     <!-- Profile -->
-    <div class="mt-2 text-center">
-      <router-link :to="base_path + '/u/profile'">
-        <div
-          class="inline-flex h-12 w-56 items-center justify-center rounded-full bg-op-teal font-bold text-white"
-          @click="handleClose()"
-        >
-          <i class="material-icons mr-2">person</i>
-          <span>{{ $t("profile.title") }}</span>
-        </div>
-      </router-link>
-    </div>
-
-    <!-- Order History -->
-    <div class="mt-2 text-center" v-if="isCustomer || inLiff">
-      <router-link :to="historyPage">
-        <div
-          class="inline-flex h-12 w-56 items-center justify-center rounded-full bg-op-teal font-bold text-white"
-          @click="handleClose()"
-        >
-          <i class="material-icons mr-2">history</i>
-          <span>{{ $t("order.history") }}</span>
-        </div>
-      </router-link>
-    </div>
-
-    <!-- Favorites -->
-    <div class="mt-2 text-center" v-if="isCustomer && !inLiff">
-      <router-link to="/r/favorites">
-        <div
-          class="inline-flex h-12 w-56 items-center justify-center rounded-full bg-op-teal font-bold text-white"
-          @click="handleClose()"
-        >
-          <i class="material-icons mr-2">favorite</i>
-          <span>{{ $t("find.likes") }}</span>
-        </div>
-      </router-link>
-    </div>
-
-    <!-- Find Restaurants -->
-    <div class="mt-2 text-center" v-if="(isCustomer || isAnonymous) && !inLiff">
-      <router-link to="/r">
-        <div
-          class="inline-flex h-12 w-56 items-center justify-center rounded-full bg-op-teal font-bold text-white"
-          @click="handleClose()"
-        >
-          <i class="material-icons mr-2">restaurant</i>
-          <span>{{ $t("find.allRestaurants") }}</span>
-        </div>
-      </router-link>
+    <div v-if="!isAnonymous">
+      <SideMenuButton
+        text="profile.title"
+        icon="person"
+        :to="base_path + '/u/profile'"
+        @handleClose="handleClose()"
+      />
     </div>
 
     <!-- Admin Top -->
-    <div class="mt-2 text-center" v-if="isAdmin">
-      <router-link to="/admin/restaurants">
+    <div v-if="isAdmin">
+      <SideMenuButton
+        text="admin.news.adminTop"
+        icon="home"
+        to="/admin/restaurants"
+        @handleClose="handleClose()"
+      />
+    </div>
+
+    <!-- Order History -->
+    <div v-if="isUser || inLiff">
+      <SideMenuButton
+        text="order.history"
+        icon="history"
+        :to="historyPage"
+        @handleClose="handleClose()"
+      />
+    </div>
+
+    <!-- Favorites -->
+    <div class="mt-2 text-center" v-if="isUser && !inLiff">
+      <SideMenuButton
+        text="find.likes"
+        icon="favorite"
+        to="/r/favorites"
+        @handleClose="handleClose()"
+      />
+    </div>
+
+    <!-- Find Restaurants -->
+    <div v-if="(isUser || isAnonymous) && !inLiff">
+      <SideMenuButton
+        text="find.allRestaurants"
+        icon="restaurant"
+        to="/r"
+        @handleClose="handleClose()"
+      />
+    </div>
+
+    <!-- Sign up for admin -->
+    <div class="mt-2 text-center" v-if="false">
+      <router-link :to="base_path + '/admin/user/signup'">
         <div
-          class="inline-flex h-12 w-56 items-center justify-center rounded-full bg-op-teal font-bold text-white"
+          class="inline-flex h-12 w-56 items-center justify-center rounded-full bg-ownplate-yellow font-bold text-black text-opacity-90"
           @click="handleClose()"
         >
-          <i class="material-icons mr-2">home</i>
-          <span>{{ $t("admin.news.adminTop") }}</span>
+          <span>{{ $t("lp.signUpForFree") }}</span>
         </div>
       </router-link>
     </div>
 
-    <!-- Links for Admin -->
-    <div v-if="!isCustomer && !inLiff">
-      <div class="mt-6 mb-4 text-center font-bold opacity-70">
-        {{ $t("menu.forRestaurantOwner") }}
-      </div>
+    <!-- end of menu link -->
 
-      <!-- Manual -->
-      <div class="mt-2 text-center">
-        <a
-          href="https://docs.omochikaeri.com/manuals/manual.pdf"
-          target="_blank"
-          class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
+    <div v-if="isAnonymous">
+      <!-- Go to User LP -->
+      <div class="mt-4 text-center">
+        <SideMenuText
+          to="/home"
+          text="menu.clickHereToOrder"
           @click="handleClose()"
-        >
-          {{ $t("menu.manualLink") }}
-        </a>
-      </div>
-
-      <!-- Delivery Manual -->
-      <div class="mt-2 text-center">
-        <a
-          href="https://docs.omochikaeri.com/manuals/delivery.pdf"
-          target="_blank"
-          class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
-          @click="handleClose()"
-        >
-          {{ $t("menu.deliveryManualLink") }}
-        </a>
-      </div>
-
-      <!-- Printer Manual -->
-      <div class="mt-2 text-center">
-        <a
-          href="https://docs.omochikaeri.com/manuals/printer.pdf"
-          target="_blank"
-          class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
-          @click="handleClose()"
-        >
-          {{ $t("menu.printerManualLink") }}
-        </a>
-      </div>
-      
-      <!-- Tips -->
-      <div class="mt-2 text-center">
-        <a
-          href="https://docs.omochikaeri.com/manuals/tips.pdf"
-          target="_blank"
-          class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
-          @click="handleClose()"
-        >
-          {{ $t("menu.tipsLink") }}
-        </a>
-      </div>
-
-      <!-- Smaregi -->
-      <div class="mt-2 text-center">
-        <a
-          href="https://docs.omochikaeri.com/manuals/smaregi.pdf"
-          target="_blank"
-          class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
-          @click="handleClose()"
-        >
-          {{ $t("admin.thirdPartyService.smaregiManual") }}
-        </a>
-      </div>
-
-      <!-- Terms -->
-      <div class="mt-2 text-center">
-        <router-link to="/terms/admin">
-          <div
-            class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
-            @click="handleClose()"
-          >
-            {{ $t("menu.termsRestaurant") }}
-          </div>
-        </router-link>
+        />
       </div>
     </div>
 
-    <!-- Links for Customer -->
-    <div v-if="!isAdmin">
-      <div class="mt-6 mb-4 text-center font-bold opacity-70">
-        {{ $t("menu.forCustomer") }}
+    <div v-if="isAnonymous">
+      <div class="mt-6 font-bold text-black text-opacity-40 text-center mb-2">
+        {{ $t("lp.forRestaurantOwner") }}
       </div>
 
+      <SideMenuText to="/" text="lp.clickHereToSignup" @click="handleClose()" />
+
+      <SideMenuText
+        to="/admin/docs"
+        text="button.linkToAdminDocs"
+        icon="launch"
+        @click="handleClose()"
+      />
+
+      <!-- News -->
+      <SideMenuText to="/news" text="button.news" @click="handleClose()" />
+
       <!-- Terms -->
-      <div class="mt-2 text-center">
-        <router-link :to="base_path + '/terms/user'">
-          <div
-            class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
-            @click="handleClose()"
-          >
-            {{ $t("menu.termsUser") }}
-          </div>
-        </router-link>
+      <SideMenuText
+        to="/terms/admin"
+        text="menu.termsRestaurant"
+        @click="handleClose()"
+      />
+    </div>
+
+    <!-- Links for Admin -->
+    <div v-if="isAdmin">
+      <div class="mt-6 text-center">
+        <!--Link to admin docs-->
+        <SideMenuText
+          to="/admin/docs"
+          text="button.linkToAdminDocs"
+          icon="launch"
+          @click="handleClose()"
+        />
+
+        <!-- Terms for admin -->
+        <SideMenuText
+          to="/terms/admin"
+          text="menu.termsRestaurant"
+          @click="handleClose()"
+        />
+
+        <!-- News -->
+        <SideMenuText to="/news" text="button.news" @click="handleClose()" />
       </div>
+    </div>
+
+    <!-- Separater -->
+    <div class="mt-6" v-if="isAnonymous" />
+    <div class="mt-4" v-if="isUser" />
+
+    <!-- Terms for users -->
+    <div v-if="isAnonymous || isUser">
+      <SideMenuText
+        :to="base_path + '/terms/user'"
+        text="menu.termsUser"
+        @click="handleClose()"
+      />
     </div>
 
     <!-- Links for All -->
-    <div>
-      <div class="mt-6 mb-4 text-center font-bold opacity-70">
-        {{ $t("menu.forAllUser") }}
-      </div>
-
-      <!-- Privacy -->
-      <div class="mt-2 text-center">
-        <router-link :to="base_path + '/privacy'">
-          <div
-            class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
-            @click="handleClose()"
-          >
-            {{ $t("menu.privacy") }}
-          </div>
-        </router-link>
-      </div>
-    </div>
+    <SideMenuText
+      :to="base_path + '/privacy'"
+      text="menu.privacy"
+      @click="handleClose()"
+    />
   </o-sidebar>
 </template>
 
-<script>
-import { defineComponent, ref, computed } from "@vue/composition-api";
-import {
-  useIsAdmin,
-  useIsInLiff,
-  useLiffBasePath,
-  regionalSetting,
-} from "@/utils/utils";
+<script lang="ts">
+import { defineComponent, ref, computed } from "vue";
+import { useLiffBasePath, regionalSetting, useUserData } from "@/utils/utils";
+import SideMenuButton from "@/components/App/SideMenuButton.vue";
+import SideMenuText from "@/components/App/SideMenuText.vue";
 
 export default defineComponent({
-  setup(_, ctx) {
+  components: {
+    SideMenuButton,
+    SideMenuText,
+  },
+  setup() {
     const open = ref(false);
 
-    const isAdmin = useIsAdmin(ctx);
-    const inLiff = useIsInLiff(ctx.root);
-    const liffBasePath = useLiffBasePath(ctx.root);
+    const liffBasePath = useLiffBasePath();
+    const { inLiff, isAnonymous, isAdmin, isUser } = useUserData();
 
     const home_path = computed(() => {
       // /liff/hoge or /admin/restaurants or /r
@@ -254,6 +232,11 @@ export default defineComponent({
       open,
       handleClose,
       handleOpen,
+
+      inLiff,
+      isAnonymous,
+      isAdmin,
+      isUser,
     };
   },
 });

@@ -1,5 +1,9 @@
-import { defineComponent, computed } from "@vue/composition-api";
-import { useBasePath, smallImageErrorHandler } from "@/utils/utils";
+import { defineComponent } from "vue";
+import {
+  useBasePath,
+  smallImageErrorHandler,
+  getRestaurantId,
+} from "@/utils/utils";
 import { moBaseUrl } from "@/config/project";
 
 export default (name: string) => {
@@ -15,13 +19,15 @@ export default (name: string) => {
         required: true,
       },
     },
-    setup(props, ctx) {
-      const basePath = useBasePath(ctx.root);
+    setup() {
+      const basePath = useBasePath();
+      const restaurantId = getRestaurantId();
 
       return {
         basePath,
         moBaseUrl,
         smallImageErrorHandler,
+        restaurantId,
       };
     },
   });

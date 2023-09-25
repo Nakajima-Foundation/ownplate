@@ -8,7 +8,7 @@ export interface orderCreatedData {
 export interface locationData {
   lat: number;
   lng: number;
-};
+}
 
 export interface customerInfoData {
   zip: string;
@@ -118,6 +118,7 @@ export interface stripeUpdateCustomerData {
 export interface lineValidateData {
   code: string;
   redirect_uri: string;
+  restaurantId?: string;
 }
 export interface liffAuthenticateData {
   token: string;

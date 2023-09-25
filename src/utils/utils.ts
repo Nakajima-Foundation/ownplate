@@ -1,15 +1,15 @@
-import { ref, computed } from "@vue/composition-api";
-import firebase from "firebase/app";
+import { ref, computed, onMounted } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import {
   DocumentData,
   DocumentSnapshot,
+  QueryDocumentSnapshot,
   doc,
   getDoc,
 } from "firebase/firestore";
 
 import { ShopOwnerData, PartnerData } from "@/models/ShopOwner";
-import { OrderInfoData, OrderItem } from "@/models/orderInfo";
+import { OrderInfoData, OrderItemData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { MenuData } from "@/models/menu";
 
@@ -23,9 +23,14 @@ import { firebaseConfig, ownPlateConfig, mo_prefixes } from "@/config/project";
 
 import { defaultHeader } from "@/config/header";
 
+import { formatOption } from "@/utils/strings";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import isURL from "validator/lib/isURL";
 import isLatLong from "validator/lib/isLatLong";
+
+import { useRoute, useRouter } from "vue-router";
+import { useStore } from "vuex";
+import { useI18n } from "vue-i18n";
 
 export const isNull = <T>(value: T) => {
   return value === null || value === undefined;
@@ -36,19 +41,21 @@ export const isEmpty = <T>(value: T) => {
 };
 
 // from mixin
-export const useRestaurantId = (root: any) => {
+export const useRestaurantId = () => {
+  const route = useRoute();
   return computed(() => {
-    return root.$route.params.restaurantId;
+    return route.params.restaurantId as string;
   });
 };
 
-export const getRestaurantId = (root: any) => {
-  return root.$route.params.restaurantId;
+export const getRestaurantId = () => {
+  const route = useRoute();
+  return route.params.restaurantId as string;
 };
 
 export const resizedProfileImage = (
   restaurant: RestaurantInfoData,
-  size: string
+  size: string,
 ) => {
   return (
     (restaurant.images?.profile?.resizedImages || {})[size] ||
@@ -73,11 +80,7 @@ export const shareUrlAdmin = (props: any) => {
 };
 export const previewLink = (props: any) => {
   return computed(() => {
-    if (props.isInMo) {
-      return "/" + props.moPrefix + "/r/" + props.shopInfo.restaurantId;
-    } else {
-      return "/r/" + props.shopInfo.restaurantId;
-    }
+    return "/r/" + props.shopInfo.restaurantId;
   });
 };
 
@@ -85,20 +88,22 @@ export const sleep = async (seconds: number) => {
   return await new Promise((resolve) => setTimeout(resolve, seconds * 1000));
 };
 
-export const shareUrl = (root: any, prefix: string) => {
-  const restaurantId = root.$route.params.restaurantId;
-
+export const shareUrl = (prefix: string) => {
+  const route = useRoute();
+  const restaurantId = route.params.restaurantId;
   return (
     location.protocol + "//" + location.host + prefix + "/r/" + restaurantId
   );
 };
 
-export const doc2data = (dataType: string) => {
-  return (doc: DocumentSnapshot<DocumentData>): DocumentData => {
+export const doc2data = <T = DocumentData>(dataType: string) => {
+  return (
+    doc: DocumentSnapshot<DocumentData> | QueryDocumentSnapshot<DocumentData>,
+  ): T => {
     const data = doc.data() || ({} as DocumentData);
     data.id = doc.id;
     data._dataType = dataType;
-    return data;
+    return data as T;
   };
 };
 
@@ -120,18 +125,19 @@ export const num2simpleFormatedTime = (num: number) => {
     String(Math.floor(num / 60)).padStart(2, "0"),
     ":",
     String(num % 60).padStart(2, "0"),
-    " ",
   ].join("");
 };
 
-export const num2time = (num: number, root: any) => {
+export const num2time = (num: number) => {
+  const { locale, t } = useI18n({ useScope: "global" });
+
   if (num === 0 || num === 60 * 24) {
-    return root.$t("shopInfo.midnight");
+    return t("shopInfo.midnight");
   }
   if (num === 60 * 12) {
-    return root.$t("shopInfo.noon");
+    return t("shopInfo.noon");
   }
-  const offsetTime = root.$i18n.locale == "ja" ? 12 : 13;
+  const offsetTime = locale.value == "ja" ? 12 : 13;
   const isPm = num >= 60 * 12;
   if (num >= 60 * offsetTime) {
     num = num - 60 * 12;
@@ -139,9 +145,9 @@ export const num2time = (num: number, root: any) => {
   const formatedTime = num2simpleFormatedTime(num);
 
   if (isPm) {
-    return root.$tc("shopInfo.pm", 1, { formatedTime });
+    return t("shopInfo.pm", { formatedTime }, 1);
   }
-  return root.$tc("shopInfo.am", 0, { formatedTime });
+  return t("shopInfo.am", { formatedTime }, 0);
 };
 
 export const countObj = (obj: any): number => {
@@ -172,16 +178,21 @@ export const cleanObject = (obj: { [key: string]: any }) => {
     },
     moment(value) {
       return moment(value);
-    },
-    soundPlay(reason) {
-      this.$store.commit("pingOrderEvent");
-      if (reason) {
-        console.log("order: call play: " + reason);
-      } else {
-        console.log("order: call play");
-      }
-    },
+      },
 */
+
+export const useSoundPlay = () => {
+  const store = useStore();
+  return (reason?: string) => {
+    store.commit("pingOrderEvent");
+    if (reason) {
+      console.log("order: call play: " + reason);
+    } else {
+      console.log("order: call play");
+    }
+  };
+};
+
 export const getSoundIndex = (nameKey: string) => {
   if (nameKey) {
     const index = soundFiles.findIndex((data) => data.nameKey === nameKey);
@@ -200,7 +211,7 @@ export const getShopOwner = async (uid: string): Promise<ShopOwnerData> => {
 };
 export const arraySum = (arr: number[]) => {
   return Object.values(arr || [0]).reduce(
-    (accumulator, currentValue) => accumulator + currentValue
+    (accumulator, currentValue) => accumulator + currentValue,
   );
 };
 export const arrayOrNumSum = (arr: number | number[]) => {
@@ -225,39 +236,40 @@ export const convOrderStateForText = (orderState: string, orderInfo: any) => {
 
 export const getOrderItems = (
   orderInfo: OrderInfoData,
-  menuObj: { [key: string]: MenuData }
+  menuObj: { [key: string]: MenuData },
 ) => {
   if (orderInfo.order && orderInfo.menuItems) {
-    return Object.keys(orderInfo.order).reduce((tmp: OrderItem[], menuId) => {
-      const numArray = Array.isArray(orderInfo.order[menuId])
-        ? orderInfo.order[menuId]
-        : [orderInfo.order[menuId]];
-      const opt =
-        orderInfo.options && orderInfo.options[menuId]
+    return Object.keys(orderInfo.order).reduce(
+      (tmp: OrderItemData[], menuId) => {
+        const numArray = Array.isArray(orderInfo.order[menuId])
+          ? orderInfo.order[menuId]
+          : [orderInfo.order[menuId]];
+        const optArray = Array.isArray(orderInfo.order[menuId])
           ? orderInfo.options[menuId]
-          : null;
-      const optArray = Array.isArray(orderInfo.order[menuId])
-        ? orderInfo.options[menuId]
-        : [orderInfo.options[menuId]];
-      Object.keys(numArray).map((numKey: string) => {
-        const item = orderInfo.menuItems[menuId] || menuObj[menuId] || {};
-        item.images = (menuObj[menuId] || {}).images;
-        item.itemPhoto = (menuObj[menuId] || {}).itemPhoto;
-        tmp.push({
-          item,
-          count: numArray[Number(numKey)],
-          id: menuId,
-          options: optArray[Number(numKey)],
-          orderIndex: [menuId, numKey],
+          : [orderInfo.options[menuId]];
+        Object.keys(numArray).map((numKey: string) => {
+          const item = orderInfo.menuItems[menuId] || menuObj[menuId] || {};
+          item.images = (menuObj[menuId] || {}).images;
+          item.itemPhoto = (menuObj[menuId] || {}).itemPhoto;
+          tmp.push({
+            item,
+            count: numArray[Number(numKey)],
+            id: menuId,
+            options: optArray[Number(numKey)],
+            orderIndex: [menuId, numKey],
+          });
         });
-      });
-      return tmp;
-    }, []);
+        return tmp;
+      },
+      [],
+    );
   }
   return [];
 };
 
-export const itemOptionCheckbox2options = (itemOptionCheckbox: any) => {
+export const itemOptionCheckbox2options = (
+  itemOptionCheckbox: any,
+): string[] => {
   // HACK: Dealing with a special case (probalby a bug in the menu editor)
   if (
     itemOptionCheckbox &&
@@ -282,17 +294,6 @@ export const taxRate = (shopInfo: RestaurantInfoData, item: MenuData) => {
   }
   return 1 + shopInfo.foodTax * 0.01;
 };
-/*
-const displayOption = (option, shopInfo, item) => {
-  return formatOption(option, (price) => {
-    return this.$n(
-      this.roundPrice(price * this.taxRate(shopInfo, item)),
-      "currency"
-    );
-  });
-};
-
-*/
 
 export const priceWithTax = (shopInfo: RestaurantInfoData, menu: MenuData) => {
   return Math.round(
@@ -304,7 +305,7 @@ export const priceWithTax = (shopInfo: RestaurantInfoData, menu: MenuData) => {
         return (1 + shopInfo.alcoholTax * 0.01) * menu.price;
       }
       return (1 + shopInfo.foodTax * 0.01) * menu.price;
-    })()
+    })(),
   );
 };
 
@@ -316,13 +317,6 @@ export const getPartner = (shopOwner: ShopOwnerData) => {
     return match;
   });
 };
-
-export const sha256 = async (str: string) =>  {
-  const buff = new Uint8Array(str.split("").map((c: string) => c.charCodeAt(0))).buffer;
-  const digest = await crypto.subtle.digest('SHA-256', buff);
-  return [...(new Uint8Array(digest))].map((x: number) => ('00' + x.toString(16)).slice(-2)).join('');
- }
-
 
 export const regionalSetting = (regionalSettings as { [key: string]: any })[
   ownPlateConfig.region || "US"
@@ -337,65 +331,86 @@ export const roundPrice = (price: number) => {
   return Math.round(price * m) / m;
 };
 
+export const displayOption = (
+  option: string,
+  shopInfo: RestaurantInfoData,
+  item: MenuData,
+) => {
+  const { n } = useI18n({ useScope: "global" });
+  return formatOption(option, (price) => {
+    return n(roundPrice(price * taxRate(shopInfo, item)), "currency");
+  });
+};
+
 const optionPrice = (option: string) => {
-  const regex = /\(((\+|\-|＋|ー|−)[0-9\.]+)\)/;
+  const regex = /\(((\+|-|＋|ー|−)[0-9.]+)\)/;
   const match = (option || "").match(regex);
   if (match) {
     return Number(match[1].replace(/ー|−/g, "-").replace(/＋/g, "+"));
   }
   return 0;
 };
-export const useIsInMo = (root: any) => {
+export const useIsInMo = () => {
+  const route = useRoute();
+
   return computed(() => {
-    if (location.pathname !== root.$route.path) {
+    if (location.pathname !== route.path) {
       return null;
     }
     return mo_prefixes.some((prefix) => {
       return (
-        (root.$route.fullPath || "").startsWith(`/${prefix}/`) ||
-        (root.$route.fullPath || "") === `/${prefix}`
+        (route.fullPath || "").startsWith(`/${prefix}/`) ||
+        (route.fullPath || "") === `/${prefix}`
       );
     });
   });
 };
-export const useIsInLiff = (root: any) => {
+const useIsInLiff = () => {
+  const route = useRoute();
+
   return computed(() => {
-    return (root.$route.fullPath || "").startsWith(`/liff/`);
+    return (route.fullPath || "").startsWith(`/liff/`);
   });
 };
-export const getMoPrefix = (root: any) => {
+export const getMoPrefix = () => {
+  const route = useRoute();
   return mo_prefixes.find((prefix) => {
     return (
-      (root.$route.fullPath || "").startsWith(`/${prefix}/`) ||
-      (root.$route.fullPath || "") === `/${prefix}`
+      (route.fullPath || "").startsWith(`/${prefix}/`) ||
+      (route.fullPath || "") === `/${prefix}`
     );
   });
 };
-export const useMoPrefix = (root: any) => {
+export const useMoPrefix = () => {
+  const route = useRoute();
   return computed(() => {
-    return getMoPrefix(root);
+    return mo_prefixes.find((prefix) => {
+      return (
+        (route.fullPath || "").startsWith(`/${prefix}/`) ||
+        (route.fullPath || "") === `/${prefix}`
+      );
+    });
   });
 };
-export const useLiffIndexId = (root: any) => {
+export const useLiffIndexId = () => {
+  const route = useRoute();
+
   return computed(() => {
-    return root.$route.params.liffIndexId;
+    return route.params.liffIndexId as string;
   });
 };
-export const useLiffBasePath = (root: any) => {
-  const liffIndexId = useLiffIndexId(root);
+
+export const useLiffBasePath = () => {
+  const liffIndexId = useLiffIndexId();
   return computed(() => {
     return `/liff/${liffIndexId.value}`;
   });
 };
 
-export const routeMode = (root: any) => {
-  const isInLiff = useIsInLiff(root);
-  const isInMo = useIsInMo(root);
+export const routeMode = () => {
+  const isInLiff = useIsInLiff();
 
   return computed(() => {
-    if (isInMo.value) {
-      return "mo";
-    }
     if (isInLiff.value) {
       return "liff";
     }
@@ -404,28 +419,25 @@ export const routeMode = (root: any) => {
 };
 
 // "" or "/mo" or "/liff/hoge"
-export const useBasePath = (root: any) => {
-  const isInLiff = useIsInLiff(root);
-  const liffBasePath = useLiffBasePath(root);
-  const isInMo = useIsInMo(root);
-  const moPrefix = useMoPrefix(root);
+export const useBasePath = () => {
+  const isInLiff = useIsInLiff();
+  const liffBasePath = useLiffBasePath();
 
   return computed(() => {
-    if (isInMo.value) {
-      return "/" + moPrefix.value;
-    }
     if (isInLiff.value) {
       return liffBasePath.value;
     }
     return "";
   });
 };
+
 // "/" or "/mo", or "/liff/hoge"
-export const useTopPath = (root: any) => {
-  const inLiff = useIsInLiff(root);
-  const liffBasePath = useLiffBasePath(root);
-  const isInMo = useIsInMo(root);
-  const moPrefix = useMoPrefix(root);
+export const useTopPath = () => {
+  const inLiff = useIsInLiff();
+  const liffBasePath = useLiffBasePath();
+
+  const isInMo = useIsInMo();
+  const moPrefix = useMoPrefix();
 
   return computed(() => {
     if (isInMo.value) {
@@ -446,7 +458,7 @@ export const validUrl = (url: string) => {
   });
 };
 
-export const validLocation = (location: { lat: string; lng: string }) => {
+export const validLocation = (location: { lat?: number; lng?: number }) => {
   return isLatLong([location.lat || "", location.lng || ""].join(","));
 };
 export const validPlaceId = (placeId: string) => {
@@ -461,11 +473,11 @@ export const convOptionArray2Obj = <T>(obj: { [key: string]: T[] }) => {
           tmp[key] = value;
           return tmp;
         },
-        {}
+        {},
       );
       return newObj;
     },
-    {}
+    {},
   );
 };
 
@@ -475,14 +487,14 @@ export const prices2subtotal = (prices: { [key: string]: number[] }) => {
       tmp[menuId] = prices[menuId].reduce((a, b) => a + b, 0);
       return tmp;
     },
-    {}
+    {},
   );
 };
 
 export const getPriceWithTax = (
   subTotal: number,
   menu: MenuData,
-  shopInfo: RestaurantInfoData
+  shopInfo: RestaurantInfoData,
 ) => {
   if (!shopInfo.inclusiveTax) {
     if (menu.tax === "alcohol") {
@@ -496,7 +508,7 @@ export const getPriceWithTax = (
 export const subtotal2total = (
   subTotal: { [key: string]: number },
   cartItems: { [key: string]: MenuData },
-  shopInfo: RestaurantInfoData
+  shopInfo: RestaurantInfoData,
 ) => {
   return Object.keys(subTotal).reduce((tmp, menuId) => {
     const menu = cartItems[menuId] || {};
@@ -508,7 +520,7 @@ export const getPrices = (
   multiple: number,
   orders: { [key: string]: number[] },
   cartItems: { [key: string]: MenuData },
-  trimmedSelectedOptions: { [key: string]: { [key: string]: number[] } }
+  trimmedSelectedOptions: { [key: string]: { [key: string]: number[] } },
 ) => {
   const ret: any = {};
 
@@ -534,7 +546,7 @@ export const getPrices = (
           }
           return tmpPrice;
         },
-        menu.price
+        menu.price,
       );
       ret[menuId].push(price * num);
     });
@@ -545,12 +557,12 @@ export const getPrices = (
 export const getTrimmedSelectedOptions = (
   orders: { [key: string]: number[] },
   cartItems: { [key: string]: MenuData },
-  selectedOptions: { [key: string]: any }
+  selectedOptions: { [key: string]: any },
 ) => {
   return Object.keys(orders).reduce(
     (ret: { [key: string]: { [key: string]: number[] } }, id) => {
       const options = itemOptionCheckbox2options(
-        (cartItems[id] || {}).itemOptionCheckbox
+        (cartItems[id] || {}).itemOptionCheckbox,
       );
       const selectedOption = selectedOptions[id].map((selected: any[]) => {
         if (Array.isArray(selected) && selected.length > options.length) {
@@ -562,21 +574,21 @@ export const getTrimmedSelectedOptions = (
       ret[id] = selectedOption;
       return ret;
     },
-    {}
+    {},
   );
 };
 
 export const getPostOption = (
   trimmedSelectedOptions: { [key: string]: any[][] },
-  cartItems: { [key: string]: MenuData }
+  cartItems: { [key: string]: MenuData },
 ) => {
   return Object.keys(trimmedSelectedOptions).reduce(
     (ret: { [key: string]: any }, id) => {
-      ret[id] = (trimmedSelectedOptions[id] || []).map((item, k) => {
+      ret[id] = (trimmedSelectedOptions[id] || []).map((item) => {
         return item
           .map((selectedOpt: any, key) => {
             const opt = (cartItems[id] || {}).itemOptionCheckbox[key].split(
-              ","
+              ",",
             );
             if (opt.length === 1) {
               if (selectedOpt) {
@@ -591,39 +603,56 @@ export const getPostOption = (
       });
       return ret;
     },
-    {}
+    {},
   );
 };
 
-export const useIsAdmin = (ctx: any) => {
-  return computed(() => {
-    return !!ctx.root.$store.getters.uidAdmin;
-  });
-};
-export const useUid = (ctx: any) => {
-  const uid = computed(() => {
-    return ctx.root.$store.getters.uid;
-  });
-  return uid;
-};
+export const useUserData = () => {
+  const store = useStore();
+  const route = useRoute();
 
-export const useIsLiffUser = (ctx: any) => {
-  return computed(() => {
-    return !!ctx.root.$store.getters.uidLiff;
+  const isAdmin = computed(() => {
+    return !!store.getters.uidAdmin;
   });
-};
-export const useIsLineUser = (ctx: any) => {
-  return computed(() => {
-    const claims = ctx.root.$store.state.claims;
+  const uid = computed(() => {
+    return store.getters.uid;
+  });
+  const isUser = computed(() => {
+    return !!store.getters.uidUser;
+  });
+
+  const isLiffUser = computed(() => {
+    return !!store.getters.uidLiff;
+  });
+  const isLineUser = computed(() => {
+    const claims = store.state.claims;
     return !!claims?.line;
   });
-};
-
-export const useInLiff = (ctx: any) => {
-  return computed(() => {
-    // BY path
-    return !!ctx.root.$route.params.liffIndexId;
+  const claims = computed(() => {
+    return store.state.claims;
   });
+  const inLiff = computed(() => {
+    return !!route.params.liffIndexId;
+  });
+  const user = computed(() => {
+    return store.state.user;
+  });
+
+  const isAnonymous = computed(() => {
+    return store.getters.isAnonymous;
+  });
+
+  return {
+    user,
+    uid,
+    isAdmin,
+    isUser,
+    isLiffUser,
+    isLineUser,
+    inLiff,
+    isAnonymous,
+    claims,
+  };
 };
 
 export const useToggle = (defaultValue = false) => {
@@ -645,9 +674,11 @@ export const useToggle = (defaultValue = false) => {
   };
 };
 
-export const useUser = (ctx: any) => {
+// do not use
+export const useUser = () => {
+  const store = useStore();
   const user = computed(() => {
-    return ctx.root.$store.state.user;
+    return store.state.user;
   });
   return user;
 };
@@ -655,25 +686,24 @@ export const useUser = (ctx: any) => {
 export const isJapan = ownPlateConfig.region === "JP";
 export const serviceKey = isJapan ? "omochikaeri" : "ownPlate";
 
-export const underConstruction =
-  ownPlateConfig.hostName === "staging.ownplate.today";
-
 export const defaultTitle = defaultHeader.title;
 
-export const useAdminUids = (ctx: any) => {
+export const useAdminUids = () => {
+  const store = useStore();
+
   const isOwner = computed(() => {
-    return !ctx.root.$store.getters.isSubAccount;
+    return !store.getters.isSubAccount;
   });
   const uid = computed(() => {
-    return ctx.root.$store.getters.uidAdmin;
+    return store.getters.uidAdmin;
   });
   const ownerUid = computed(() => {
-    return ctx.root.$store.getters.isSubAccount
-      ? ctx.root.$store.getters.parentId
-      : ctx.root.$store.getters.uidAdmin;
+    return store.getters.isSubAccount
+      ? store.getters.parentId
+      : store.getters.uidAdmin;
   });
   const emailVerified = computed(() => {
-    return ctx.root.$store.state.user?.emailVerified;
+    return store.state.user?.emailVerified;
   });
   return {
     isOwner,
@@ -753,7 +783,7 @@ export const imageErrorHandler = (e: any) => {
   e.target.src = "/images/noimage.png";
 };
 
-export const orderType = (order: OrderInfoData, isInMo: boolean) => {
+export const orderType = (order: OrderInfoData) => {
   if (order.isEC) {
     return "EC";
   }
@@ -761,15 +791,113 @@ export const orderType = (order: OrderInfoData, isInMo: boolean) => {
     return "Delivery";
   }
   if (order.isPickup) {
+    // TODO: remove
     return "Pickup";
-  }
-  if (isInMo) {
-    return "PreOrder";
   }
   return "Takeout";
 };
-export const orderTypeKey = (order: OrderInfoData, isInMo: boolean) => {
-  return "orderType" + orderType(order, isInMo);
+export const orderTypeKey = (order: OrderInfoData) => {
+  return "orderType" + orderType(order);
 };
 
 export const isDev = firebaseConfig.projectId === "ownplate-dev";
+
+export const useIsLocaleJapan = () => {
+  // for hack
+  const { locale } = useI18n({ useScope: "global" });
+  console.log(locale.value);
+  return computed(() => {
+    return locale.value !== "en" && locale.value !== "fr";
+  });
+};
+
+export const useFeatureHeroMobile = () => {
+  const isLocaleJapan = useIsLocaleJapan();
+
+  return computed(() => {
+    return regionalSetting.FeatureHeroMobile[isLocaleJapan.value ? "ja" : "en"];
+  });
+};
+export const useFeatureHeroTablet = () => {
+  const isLocaleJapan = useIsLocaleJapan();
+  return computed(() => {
+    return regionalSetting.FeatureHeroTablet[isLocaleJapan.value ? "ja" : "en"];
+  });
+};
+export const useIsNotSuperAdmin = () => {
+  const store = useStore();
+  const isNotSuperAdmin = computed(() => {
+    return store.getters.isNotSuperAdmin;
+  });
+  const isNotOperator = computed(() => {
+    return store.getters.isNotOperator;
+  });
+  return {
+    isNotSuperAdmin,
+    isNotOperator,
+  };
+};
+
+// https://developers-jp.googleblog.com/2019/12/how-calculate-distances-map-maps-javascript-api.html
+export const haversine_distance = (
+  lat1: number,
+  lng1: number,
+  lat2: number,
+  lng2: number,
+) => {
+  const R = 6371.071;
+  const rlat1 = lat1 * (Math.PI / 180);
+  const rlat2 = lat2 * (Math.PI / 180);
+  const difflat = rlat2 - rlat1;
+  const difflon = (lng2 - lng1) * (Math.PI / 180);
+
+  const d =
+    2 *
+    R *
+    Math.asin(
+      Math.sqrt(
+        Math.sin(difflat / 2) * Math.sin(difflat / 2) +
+          Math.cos(rlat1) *
+            Math.cos(rlat2) *
+            Math.sin(difflon / 2) *
+            Math.sin(difflon / 2),
+      ),
+    );
+  return Math.round(d * 1000);
+};
+
+export const useSuper = () => {
+  const store = useStore();
+  const router = useRouter();
+
+  onMounted(() => {
+    if (!store.state.user || store.getters.isNotSuperAdmin) {
+      router.push("/");
+    }
+  });
+};
+
+// for super
+export const isSuperPage = () => {
+  return location.pathname.startsWith("/s/");
+};
+export const getBackUrl = () => {
+  return isSuperPage() ? "/s" : "/op";
+};
+
+export const superPermissionCheck = () => {
+  const store = useStore();
+  const router = useRouter();
+  if (isSuperPage()) {
+    if (!store.state.user || store.getters.isNotSuperAdmin) {
+      router.push("/");
+    }
+  } else {
+    if (
+      !store.state.user ||
+      (store.getters.isNotSuperAdmin && store.getters.isNotOperator)
+    ) {
+      router.push("/");
+    }
+  }
+};

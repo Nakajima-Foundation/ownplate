@@ -1,7 +1,5 @@
 import pdfMake from "pdfmake/build/pdfmake";
 
-import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
-
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { arrayChunk } from "@/utils/utils";
@@ -12,10 +10,10 @@ const fontHost = location.protocol + "//" + location.host + "/fonts/";
 
 // https://github.com/bpampuch/pdfmake/blob/7b5675d5b9d5d7b815bd721e00504b16560a6382/src/standardPageSizes.js
 const A4width = 595.28;
-const A4height = 841.89;
+// const A4height = 841.89;
 
 // https://github.com/bpampuch/pdfmake/issues/359
-const A4MarginVertical = 120; // 60 * 2
+// const A4MarginVertical = 120; // 60 * 2
 const A4MarginHorizontal = 80; // 40 * 2
 
 const A4ContentWidth = A4width - A4MarginHorizontal;
@@ -96,7 +94,7 @@ export const menuDownload = (
   shopInfo: RestaurantInfoData,
   menuObj: { [key: string]: MenuData }, // TODO
   nationalPhoneNumber: string,
-  shareUrl: string
+  shareUrl: string,
 ) => {
   pdfMake.fonts = pdfFont;
 
@@ -109,7 +107,7 @@ export const menuDownload = (
         return tmp;
       }, [] as MenuData[])
       .slice(0, 6),
-    2
+    2,
   );
 
   const images: { [key: string]: string } = {
@@ -142,7 +140,7 @@ export const menuDownload = (
       {
         border: [false, false, false, false],
         text: convChar(
-          "ネットでオーダーできるテイクアウトサービスをはじめました！\nこちらのQRコード↓↓↓↓↓からご注文できます！"
+          "ネットでオーダーできるテイクアウトサービスをはじめました！\nこちらのQRコード↓↓↓↓↓からご注文できます！",
         ),
         alignment: "center",
         fillColor: "#FCC03D",
@@ -231,7 +229,7 @@ export const menuDownload = (
             shopInfo.streetAddress,
           ].join(""),
           "電話 " + nationalPhoneNumber,
-        ].join("\n")
+        ].join("\n"),
       ),
       style: "address",
       bold: true,
@@ -257,7 +255,7 @@ export const menuDownload = (
     menu: MenuData,
     image: string,
     key1: string | number,
-    key2: number
+    key2: number,
   ) => {
     return [
       {

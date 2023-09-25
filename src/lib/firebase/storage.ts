@@ -5,15 +5,15 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 
-export const uploadFile = (file: File, path: string) => {
+export const uploadFile = (file: File, path: string): Promise<string> => {
   return new Promise((resolve, rejected) => {
-    let storage = getStorage();
-    let storageRef = ref(storage, path);
-    let uploadTask = uploadBytesResumable(storageRef, file);
+    const storage = getStorage();
+    const storageRef = ref(storage, path);
+    const uploadTask = uploadBytesResumable(storageRef, file);
 
     uploadTask.on(
       "state_changed",
-      (snapshot) => {},
+      () => {},
       (err) => {
         rejected(err);
       },
@@ -24,7 +24,7 @@ export const uploadFile = (file: File, path: string) => {
           // console.log('File available at', downloadURL);
           resolve(downloadURL);
         });
-      }
+      },
     );
   });
 };

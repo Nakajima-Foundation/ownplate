@@ -12,7 +12,7 @@ export const deleteAccount = async (db: admin.firestore.Firestore, context: func
       const docs = (await _query.limit(100).get()).docs;
       if (docs.length > 0) {
         const batch = db.batch();
-        docs.map(doc => {
+        docs.map((doc) => {
           batch.update(doc.ref, {
             accountDeleted: true,
             timeAccountDeleted: admin.firestore.FieldValue.serverTimestamp(),
@@ -43,7 +43,7 @@ export const deleteAccount = async (db: admin.firestore.Firestore, context: func
     await refPrivate.doc("profile").delete();
     await refUser.delete();
     await deleteCustomer(db, customerUid);
-    
+
     return { result: customerUid, count };
   } catch (error) {
     throw utils.process_error(error);

@@ -1,8 +1,12 @@
 export interface RestaurantInfoData {
   url: string;
   restaurantName: string;
+  id: string;
 
-  restaurantId: string;
+  restaurantId: string; // mo
+  shopId: string; // mo
+  moLastPickupTime: string; // mo
+
   restCoverPhoto: string;
   restProfilePhoto: string;
 
@@ -13,11 +17,15 @@ export interface RestaurantInfoData {
 
   introduction: string;
   menuLists: string[];
+  numberOfMenus: number;
 
   ownerName: string;
   uid: string;
 
-  location: any;
+  location: {
+    lat?: number;
+    lng?: number;
+  };
   place_id: string;
 
   phoneNumber: string;
@@ -33,30 +41,31 @@ export interface RestaurantInfoData {
   emailNotification: boolean;
   enablePrinter: boolean; // for debug
 
+  hasLine: boolean;
+  lineClientId: string;
+
   isEC: boolean; // set by system
   enableDelivery: boolean;
   enableMoPickup: boolean; // set by sys
-  groupId: string; // set by sys
+  groupId: string; // set by sys // TODO remove
   supportLiff: boolean;
+
+  enableLunchDinner: boolean;
 
   countryCode: string;
   acceptUserMessage: boolean;
   foodTax: number;
   alcoholTax: number;
   inclusiveTax: boolean;
-  openTimes: { [key: string]: any[] };
-  businessDay: { [key: string]: any[] };
-
-  moOpenTimes: { [key: string]: any[] };
-  moBusinessDay: { [key: string]: any[] };
+  openTimes: { [key: string]: { start: any; end: any }[] };
+  businessDay: { [key: string]: string[] };
 
   pickUpMinimumCookTime: number;
   pickUpDaysInAdvance: number;
 
   paymentMethods: { [key: string]: boolean };
 
-  moPickUpMinimumCookTime: number;
-  moPickUpDaysInAdvance: number;
+  onTheList: boolean;
 
   deliveryMinimumCookTime: number;
   suspendUntil: any;
@@ -65,7 +74,7 @@ export interface RestaurantInfoData {
   publicFlag: boolean;
   deletedFlag: boolean;
   temporaryClosure: any[];
-
+  lastOrderTime?: number;
   category1: string[];
   category2: string[];
 

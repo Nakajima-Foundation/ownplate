@@ -392,6 +392,10 @@ export const validateLineValidate = (data: lineValidateData) => {
       type: "url",
       required: true,
     },
+    restaurantId: {
+      type: "firebaseId",
+      required: false,
+    },
   };
   return validateData(data, validator);
 };

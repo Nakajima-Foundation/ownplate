@@ -44,7 +44,6 @@
                 type="tel"
                 autocomplete="tel"
                 v-model="phoneNumber"
-                v-on:input="validatePhoneNumber"
                 maxlength="20"
                 :placeholder="$t('sms.pleasetype')"
               />
@@ -105,7 +104,6 @@
                 pattern="[0-9]*"
                 autocomplete="one-time-code"
                 v-model="verificationCode"
-                v-on:input="validateVerificationCode"
                 maxlength="6"
                 :placeholder="$t('sms.typeVerificationCode')"
               />
@@ -114,7 +112,7 @@
         </div>
 
         <!-- Enter Name -->
-        <div v-if="!relogin && !isInMo">
+        <div v-if="!relogin">
           <div class="text-sm font-bold">
             {{ $t("sms.userName") }}
           </div>
@@ -152,19 +150,11 @@
   </div>
 </template>
 
-
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  watch,
-  computed,
-  onMounted,
-} from "@vue/composition-api";
+import { defineComponent, ref, watch, computed, onMounted } from "vue";
 
 import { db, auth } from "@/lib/firebase/firebase9";
 import {
-  signOut,
   RecaptchaVerifier,
   signInWithPhoneNumber,
   updateProfile,
@@ -180,7 +170,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 
-import { stripeRegion, useIsInMo } from "@/utils/utils";
+import { stripeRegion, useIsLocaleJapan } from "@/utils/utils";
 import moment from "moment";
 import * as Sentry from "@sentry/vue";
 
@@ -213,21 +203,17 @@ export default defineComponent({
 
     let recaptchaVerifier: ApplicationVerifier | null = null;
 
-    const isInMo = useIsInMo(ctx.root);
+    const isLocaleJapan = useIsLocaleJapan();
 
     onMounted(() => {
-      recaptchaVerifier = new RecaptchaVerifier(
-        "signInButton",
-        {
-          size: "invisible",
-          callback: (response: string) => {
-            // reCAPTCHA solved, allow signInWithPhoneNumber.
-            // console.log("verified", response);
-            console.log("verified");
-          },
+      recaptchaVerifier = new RecaptchaVerifier(auth, "signInButton", {
+        size: "invisible",
+        callback: () => {
+          // reCAPTCHA solved, allow signInWithPhoneNumber.
+          // console.log("verified", response);
+          console.log("verified");
         },
-        auth
-      );
+      });
     });
 
     const hasError = computed(() => {
@@ -246,21 +232,21 @@ export default defineComponent({
       return !hasError.value;
     });
 
-    const validatePhoneNumber = () => {
+    watch(phoneNumber, () => {
       errors.value = [];
-      const regex = /^\+?[0-9()\-]{8,20}$/;
+      const regex = /^\+?[0-9()-]{8,20}$/;
       if (!regex.test(phoneNumber.value)) {
         errors.value = ["sms.invalidPhoneNumber"];
       }
-    };
+    });
 
-    const validateVerificationCode = () => {
+    watch(verificationCode, () => {
       errors.value = [];
       const regex = /^[0-9]*$/;
       if (!regex.test(verificationCode.value)) {
         errors.value = ["sms.invalidValidationCode"];
       }
-    };
+    });
 
     const handleSubmit = async () => {
       console.log("submit");
@@ -293,9 +279,9 @@ export default defineComponent({
       errors.value = [];
       try {
         isLoading.value = true;
-        let result = await (confirmationResult.value as ConfirmationResult).confirm(
-          verificationCode.value
-        );
+        const result = await (
+          confirmationResult.value as ConfirmationResult
+        ).confirm(verificationCode.value);
         // console.log("success!", result);
         if (name.value) {
           const user = auth.currentUser; // paranoia: instead of this.$store.state.user;
@@ -313,7 +299,7 @@ export default defineComponent({
             phoneNumber: result.user.phoneNumber,
             updated: serverTimestamp(),
           },
-          { merge: true }
+          { merge: true },
         );
         confirmationResult.value = null; // so that we can re-use this
         verificationCode.value = "";
@@ -321,7 +307,11 @@ export default defineComponent({
       } catch (error: any) {
         // console.log(JSON.stringify(error));
         // console.log("error", error.code);
-        if (!["auth/code-expired", "auth/invalid-verification-code"].includes(error.code)) {
+        if (
+          !["auth/code-expired", "auth/invalid-verification-code"].includes(
+            error.code,
+          )
+        ) {
           Sentry.captureException(error);
         }
         errors.value = ["sms." + error.code];
@@ -344,13 +334,10 @@ export default defineComponent({
       readyToSendSMS,
       readyToSendVerificationCode,
 
-      validatePhoneNumber,
-      validateVerificationCode,
+      isLocaleJapan,
 
       handleSubmit,
       handleCode,
-
-      isInMo,
     };
   },
 });

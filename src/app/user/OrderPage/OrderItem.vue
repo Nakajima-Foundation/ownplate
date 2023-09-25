@@ -1,6 +1,10 @@
 <template>
   <div class="flex space-x-2">
-    <o-checkbox v-if="editable" :value="available" @input="input" />
+    <o-checkbox
+      v-if="editable"
+      :modelValue="available"
+      @update:modelValue="update"
+    />
     <div>
       <div
         class="inline-flex h-9 w-12 flex-shrink-0 items-center justify-center rounded bg-blue-500 bg-opacity-10"
@@ -12,12 +16,11 @@
       <div v-if="image" class="mt-1 flex-shrink-0">
         <img
           :src="image"
-          @error="_smallImageErrorHandler"
+          @error="FsmallImageErrorHandler"
           class="h-12 w-12 rounded object-cover"
         />
       </div>
     </div>
-
     <div class="flex-1">
       <div class="text-base font-bold">
         <s v-if="editable && !available">
@@ -31,6 +34,10 @@
           <span v-else> / {{ item.itemAliasesName }} </span>
         </span>
       </div>
+      <div v-if="soldOutToday" class="text-xs text-red-600">
+        {{ $t("sitemenu.soldOutToday") }}
+      </div>
+
       <div v-if="specialRequest" class="mt-1 text-xs font-bold">
         <s v-if="editable && !available">
           {{ specialRequest }}
@@ -55,19 +62,24 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  computed,
-} from "@vue/composition-api";
+import { defineComponent, computed, PropType } from "vue";
 
 import { formatOption, optionPrice } from "@/utils/strings";
-import { roundPrice, smallImageErrorHandler } from "@/utils/utils";
+import { roundPrice, smallImageErrorHandler, useUserData } from "@/utils/utils";
+import { useI18n } from "vue-i18n";
+import { MenuData } from "@/models/menu";
+
+import moment from "moment-timezone";
 
 export default defineComponent({
   props: {
     orderItem: {
       type: Object,
       required: true,
+    },
+    menuData: {
+      type: Object as PropType<MenuData>,
+      required: false,
     },
     editable: {
       type: Boolean,
@@ -82,21 +94,23 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props, ctx) {
+  setup(props, context) {
+    const { n } = useI18n({ useScope: "global" });
+
     const item = computed(() => {
       return props.orderItem.item;
     });
     const image = computed(() => {
       return (
         (item.value?.images?.item?.resizedImages || {})["600"] ||
-          item.value.itemPhoto
+        item.value.itemPhoto
       );
     });
     const count = computed(() => {
       return props.orderItem.count;
     });
     const displayOption = (option: string) => {
-      return formatOption(option, (price) => ctx.root.$n(price, "currency"));
+      return formatOption(option, (price) => n(price, "currency"));
     };
     const specialRequest = computed(() => {
       return props.orderItem.options
@@ -112,21 +126,29 @@ export default defineComponent({
       });
       return price * count.value;
     });
+    const { isAdmin } = useUserData();
 
-    const input = (value: boolean) => {
-      ctx.emit("input", [props.mkey, value]);
-    }
-    const _smallImageErrorHandler = (e: any) => {
+    const update = (value: boolean) => {
+      context.emit("update", [props.mkey, value]);
+    };
+    const FsmallImageErrorHandler = (e: any) => {
       smallImageErrorHandler(e);
     };
+
+    const today = moment().format("YYYY-MM-DD");
+    const soldOutToday = computed(() => {
+      return props.menuData?.soldOutToday === today;
+    });
     return {
       item,
       image,
       count,
       specialRequest,
       totalPrice,
-      input,
-      _smallImageErrorHandler,
+      update,
+      FsmallImageErrorHandler,
+      isAdmin,
+      soldOutToday,
     };
   },
 });

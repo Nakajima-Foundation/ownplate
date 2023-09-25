@@ -2,7 +2,7 @@
   <div>
     QRCode
     <div>
-      <qrcode :value="liffUrl" :options="{ width: 160 }"></qrcode>
+      <vue-qrcode :value="liffUrl" :options="{ width: 160 }"></vue-qrcode>
     </div>
     <div>
       <a :href="liffUrl">link</a>
@@ -10,12 +10,13 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from "vue";
+export default defineComponent({
   props: {
     liffUrl: {
       type: String,
     },
   },
-};
+});
 </script>

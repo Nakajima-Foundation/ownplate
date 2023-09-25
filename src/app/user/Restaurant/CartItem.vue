@@ -5,6 +5,9 @@
         <div class="font-bold text-black">
           {{ item.itemName }}
         </div>
+        <div v-if="isSoldOutToday" class="text-xs text-red-600">
+          {{ $t("sitemenu.soldOutToday") }}
+        </div>
         <div class="mt-1" v-for="(option, k) in options" :key="k">
           <div v-if="option.length === 1">
             <div v-if="selectedOptions[k]">
@@ -27,7 +30,7 @@
         </div>
       </div>
       <div
-        class="h-12 w-12 rounded-lg border-gray-100 bg-white shadow-none lg:h-24 lg:w-24"
+        class="h-16 w-16 rounded-lg border-gray-100 bg-white shadow-none lg:h-24 lg:w-24"
       >
         <img
           :src="image"
@@ -67,8 +70,8 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, computed } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent, computed, PropType } from "vue";
 import {
   itemOptionCheckbox2options,
   getPriceWithTax,
@@ -76,16 +79,24 @@ import {
 } from "@/utils/utils";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
-import Price from "@/components/Price";
+import Price from "@/components/Price.vue";
+import { useRestaurantId } from "@/utils/utils";
+
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { MenuData } from "@/models/menu";
+import { AnalyticsMenuData } from "@/lib/firebase/analytics";
+import { useStore } from "vuex";
+
+import moment from "moment-timezone";
 
 export default defineComponent({
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
     item: {
-      type: Object,
+      type: Object as PropType<MenuData>,
       required: true,
     },
     quantity: {
@@ -106,7 +117,8 @@ export default defineComponent({
   },
   emits: ["increase", "decrease"],
   setup(props, ctx) {
-    const restaurantId = ctx.root.$route.params.restaurantId;
+    const store = useStore();
+    const restaurantId = useRestaurantId();
     const image = computed(() => {
       return (
         (props.item?.images?.item?.resizedImages || {})["600"] ||
@@ -121,17 +133,26 @@ export default defineComponent({
     });
     const increase = () => {
       ctx.emit("increase");
-      analyticsUtil.sendAddToCart(props.item, props.shopInfo, restaurantId, 1);
+      analyticsUtil.sendAddToCart(
+        props.item as AnalyticsMenuData,
+        props.shopInfo,
+        restaurantId.value,
+        1,
+      );
     };
     const decrease = () => {
       ctx.emit("decrease");
       analyticsUtil.sendRemoveFromCart(
-        props.item,
+        props.item as AnalyticsMenuData,
         props.shopInfo,
-        restaurantId,
-        1
+        restaurantId.value,
+        1,
       );
     };
+    const isSoldOutToday = computed(() => {
+      const today = moment(store.state.date).format("YYYY-MM-DD");
+      return props.item.soldOutToday === today;
+    });
     return {
       image,
       options,
@@ -139,6 +160,7 @@ export default defineComponent({
       increase,
       decrease,
       smallImageErrorHandler,
+      isSoldOutToday,
     };
   },
 });

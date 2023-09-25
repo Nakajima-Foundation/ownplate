@@ -25,7 +25,7 @@
           {{ $t("delivery.deliveryLocation") }}
         </div>
         <div class="mb-2">
-          <GMap
+          <GMapMap
             :center="shopInfo.location"
             :options="{ fullscreenControl: false }"
             :zoom="15"
@@ -47,7 +47,7 @@
                 },
               }"
             />
-          </GMap>
+          </GMapMap>
         </div>
       </template>
       <div class="text-base font-bold">{{ $t("order.ec.phone") }}</div>
@@ -58,8 +58,8 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, ref } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent } from "vue";
 
 export default defineComponent({
   props: {

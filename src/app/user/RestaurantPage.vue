@@ -1,46 +1,19 @@
 <template>
   <div>
     <template v-if="notFound == null"></template>
-    <template v-else-if="notFound && !isOwner">
+    <template v-else-if="notFound && !isOwner && !isSubAccount">
       <not-found />
     </template>
     <template v-else>
-			<div v-if="totalQuantities === 0 && promotion && promotion.type === 'discount'">
-        <FloatingBanner :promotion="promotion" :possiblePromotions="possiblePromotions" />
-			</div>
-
-      <!-- category modal -->
       <div
-        v-if="isOpenGroupCategory"
-        class="fixed top-0 z-40 h-full w-full bg-white"
+        v-if="
+          totalQuantities === 0 && promotion && promotion.type === 'discount'
+        "
       >
-        <div class="m-4">
-          <span class="text-xl font-bold text-black text-opacity-30">
-            {{ $t("shopInfo.productCategory") }}
-          </span>
-        </div>
-        <div class="mx-4 h-[calc(100%-3rem)] overflow-x-scroll">
-          <CategoryModal
-            class="mb-20"
-            :categoryData="categoryData"
-            :howtoreceive="howtoreceive"
-          />
-        </div>
-      </div>
-
-      <!-- category modal -->
-      <div
-        v-if="isOpenGroupSubCategory"
-        class="fixed top-0 z-40 h-full w-full bg-white"
-      >
-        <div class="mx-4 h-[calc(100%-3rem)] overflow-x-scroll">
-          <SubCategoryModal
-            class="mb-20"
-            :subCategoryData="subCategoryData"
-            :howtoreceive="howtoreceive"
-            :selectedCategory="selectedCategory"
-          />
-        </div>
+        <FloatingBanner
+          :promotion="promotion"
+          :possiblePromotions="possiblePromotions"
+        />
       </div>
 
       <!-- Restaurant Page -->
@@ -53,7 +26,7 @@
           <!-- Left -->
           <div id="RestaurantLeftTop">
             <!-- Cover Image -->
-            <div class="lg:mt-6" v-if="!isInMo">
+            <div class="lg:mt-6 cursor-pointer">
               <img
                 @click.stop="openImage()"
                 :src="coverImage"
@@ -66,22 +39,6 @@
               <!-- Restaurant Profile Photo and Name -->
               <div class="mt-4">
                 <ShopHeader :shopInfo="shopInfo"></ShopHeader>
-                <div v-if="shopInfo.moCloseDate">
-                  <div
-                    class="my-2 rounded-lg bg-red-700 bg-opacity-10 p-3 text-center text-sm font-bold text-red-700"
-                  >
-                    {{
-                      $tc("mobileOrder.shopInfo.closeNote", 0, {
-                        date: moment(shopInfo.moCloseDate.toDate()).format(
-                          "M/D"
-                        ),
-                        time: moment(shopInfo.moCloseDate.toDate()).format(
-                          "HH:mm"
-                        ),
-                      })
-                    }}
-                  </div>
-                </div>
               </div>
 
               <!-- Restaurant Descriptions -->
@@ -111,8 +68,6 @@
                   {{
                     shopInfo.isEC
                       ? $t("shopInfo.ecShopDetails")
-                      : isInMo
-                      ? $t("mobileOrder.storeDetails")
                       : $t("shopInfo.restaurantDetails")
                   }}
                 </div>
@@ -122,8 +77,6 @@
                     :shopInfo="shopInfo"
                     :paymentInfo="paymentInfo"
                     :isDelivery="isDelivery"
-                    :mode="mode"
-                    :isPickup="isPickup"
                     @noAvailableTime="noAvailableTime = $event"
                   ></shop-info>
                 </div>
@@ -139,16 +92,10 @@
                 :isDelivery="isDelivery"
                 @closeTransactionsAct="closeTransactionsAct"
                 closeButton="button.back"
-                />
+              />
             </div>
           </div>
           <div v-else>
-						<!--To Do 期間に合わせてそれぞれのコンポーネントを表示-->
-						<!--7/27((木))〜8/10(木) 終了告知期間-->
-						<div class="my-4" v-if="moCloseStatus === 1 && isInMo">
-		  				<MoClosing0727 :moBasePath="moBasePath"/>
-						</div>
-            
             <div class="mx-6 mt-2 lg:mx-0" v-if="shopInfo.enableDelivery">
               <div class="rounded-lg bg-white shadow">
                 <!-- delivery toggle-->
@@ -164,194 +111,55 @@
             <!-- titles for omochikaeri -->
             <Titles :titleLists="titleLists" v-if="titleLists.length > 0" />
 
-            <!-- Mo Suspend -->
-            <div v-if="moSuspend && isInMo">
-						  <!--8/10(木)〜8/18(金) 注文受付終了〜サービス終了まで-->
-						  <div class="my-4" v-if="moCloseStatus === 2">
-		  				  <MoClosing0810 :moBasePath="moBasePath"/>
-						  </div>
-              <div v-else
-                class="mx-6 mt-3 mb-2 rounded-lg bg-red-700 bg-opacity-10 p-3 font-bold text-red-700 lg:mx-0"
-              >
-                {{ $t("mobileOrder.suspendMessage") }}
-              </div>
-            </div>
-
-            <div v-if="moPickup && isInMo">
-              <!-- Mo Pickup Suspend -->
-
-              <div
-                class="mx-6 mt-3 mb-2 rounded-lg bg-red-700 bg-opacity-10 p-3 font-bold text-red-700 lg:mx-0"
-                v-if="moPickupSuspend"
-              >
-                {{ $t("mobileOrder.suspendPickupMessage") }}
-              </div>
-
-              <!-- Mo Pickup Toggle -->
-              <div class="mx-6 mt-3 mb-2 lg:mx-0" id="mo_top">
-                <div>
-                  <MoPickUp
-                    :shopInfo="shopInfo"
-                    v-model="howtoreceive"
-                    :orders="orders"
-                    :disabledPickupTime="disabledPickupTime"
-                    :noAvailableTime="noAvailableTime"
-                    :lastOrder="lastOrder"
-                    :moPickupSuspend="moPickupSuspend"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <!-- for mo -->
-						<div v-if="isPickup && isSpecialShop"
-                class="mx-6 mt-3 mb-2 rounded-lg bg-red-700 bg-opacity-10 p-3 font-bold text-red-700 lg:mx-0"
-              >
-                {{ $t("mobileOrder.autoCancel") }}
-              </div>
-
-            <!-- stock filter Toggle-->
-            <div>
-
-              <div v-if="showSubCategory && isPickup">
-                <div class="mx-6 mt-4 grid grid-cols-2 gap-2 lg:mx-0">
-                  <!-- 在庫なし含む -->
-                  <div
-                    class="shado-none h-full w-full rounded-lg border-2 bg-white p-2 text-op-teal"
-                    :class="
-                      !isFilterStock
-                        ? 'border-op-teal'
-                        : 'cursor-pointer border-black border-opacity-10'
-                    "
-                    @click="isFilterStock = !isFilterStock"
-                  >
-                    <div
-                      class="-mt-0.5 text-center text-lg font-bold tracking-tighter"
-                    >
-                      {{ $t("mobileOrder.shopInfo.showAll") }}
-                    </div>
-                  </div>
-
-                  <!-- 在庫ありのみ -->
-                  <div
-                    class="h-full w-full rounded-lg border-2 bg-white p-2 text-op-teal shadow-none"
-                    :class="
-                      isFilterStock
-                        ? 'border-op-teal '
-                        : 'cursor-pointer border-black border-opacity-10'
-                    "
-                    @click="isFilterStock = !isFilterStock"
-                  >
-                    <div class="-mt-0.5 text-center text-lg font-bold">
-                      {{ $t("mobileOrder.shopInfo.showOnlyInStock") }}
-                    </div>
-                  </div>
-                </div>
+            <!-- Lunch/Dinner -->
+            <div class="mx-6 mt-4 lg:mx-0" v-if="shopInfo.enableLunchDinner">
+              <div class="rounded-lg bg-white shadow">
+                <LunchDinner
+                  :shopInfo="shopInfo"
+                  v-model="lunchOrDinner"
+                  :hasDinnerOnlyOrder="hasDinnerOnlyOrder"
+                  :hasLunchOnlyOrder="hasLunchOnlyOrder"
+                />
               </div>
             </div>
 
             <!-- For Responsible -->
-            <div class="mx-6 mt-3 lg:mx-0">
-              <!-- Category Icon -->
-              <div v-if="isShowCategoryIcon">
-                <CategoryIcon
-                  :howtoreceive="howtoreceive"
-                  :selectedCategory="selectedCategory"
-                  :selectedSubCategory="selectedSubCategory"
-                  :subCategory="subCategory"
-                  />
-              </div>
-              <div v-if="showCategory">
-                <!-- Category view -->
-                <div class="grid-col-1 mt-6 grid space-y-2">
-                  <div class="text-xl font-bold text-black text-opacity-30">
-                    {{ $t("shopInfo.productCategory") }}
+            <div class="mx-6 mt-2 lg:mx-0">
+              <div class="grid-col-1 grid space-y-2">
+                <template v-for="(item, key) in itemLists">
+                  <!-- Title -->
+                  <div v-if="item._dataType === 'title'" :key="key">
+                    <div
+                      class="inline-flex items-center justify-center text-xl font-bold text-black text-opacity-30 cursor-pointer"
+                      :class="key === 0 ? '' : 'mt-6'"
+                      :id="item.id"
+                      @click="openCategory"
+                    >
+                      <i class="material-icons mr-2">menu_book</i>
+                      <span>
+                        {{ item.name }}
+                      </span>
+                    </div>
                   </div>
-								
-                  <CategoryTop
-                    :categoryData="categoryData"
-                    :howtoreceive="howtoreceive"
-                  />
-                </div>
-              </div>
-              <div v-else>
-                <template v-if="!isInMo">
-                  <!-- Menu Items for omochikaeri -->
-                  <div class="grid-col-1 grid space-y-2" :key="subCategoryKey">
-                    <template v-for="(item, key) in itemLists">
-                      <div v-if="item._dataType === 'title'" :key="key">
-                        <div
-                          class="inline-flex items-center justify-center text-xl font-bold text-black text-opacity-30 cursor-pointer"
-                          :class="key === 0 ? '' : 'mt-6'"
-                          :id="item.id"
-                          @click="openCategory"
-                        >
-                          <i class="material-icons mr-2">menu_book</i>
-                          <span>
-                            {{ item.name }}
-                          </span>
-                        </div>
-                      </div>
 
-                      <div
-                        v-if="item._dataType === 'menu'"
-                        :key="[subCategoryKey, item.id].join('_')"
-                      >
-                        <Menu
-                          :key="[subCategoryKey, 'item', item.id].join('_')"
-                          :item="item"
-                          :menuPickupData="menuPickupData[item.id] || {}"
-                          :quantities="orders[item.id] || [0]"
-                          :selectedOptions="selectedOptions[item.id]"
-                          :initialOpenMenuFlag="
-                            (orders[item.id] || []).length > 0
-                          "
-                          :shopInfo="shopInfo"
-                          :menuLinkBathPath="menuLinkBathPath"
-                          :isOpen="menuId === item.id"
-                          :prices="prices[item.id] || []"
-                          :mode="mode"
-                          @didOrderdChange="didOrderdChange($event)"
-                        ></Menu>
-                      </div>
-                    </template>
-                  </div>
-                </template>
-                <template v-else>
-                  <!-- Menu Items for Mo -->
-                  <div
-                    class="mt-3 grid min-h-screen grid-cols-3 content-start gap-2"
-                    :key="subCategoryKey"
-                  >
-                    <template v-for="(item, key) in itemLists">
-                      <div
-                        v-if="
-                          item._dataType === 'menu' &&
-                          (!moPickup ||
-                            (isPublucDataSet[item.id] || {}).isPublic)
-                        "
-                        :key="[subCategoryKey, item.id].join('_')"
-                      >
-                        <MenuMo
-                          :key="[subCategoryKey, 'item', item.id].join('_')"
-                          :item="item"
-                          :menuPickupData="menuPickupData[item.id] || {}"
-                          :quantities="orders[item.id] || [0]"
-                          :selectedOptions="selectedOptions[item.id]"
-                          :initialOpenMenuFlag="
-                            (orders[item.id] || []).length > 0
-                          "
-                          :shopInfo="shopInfo"
-                          :menuLinkBathPath="menuLinkBathPath"
-                          :isOpen="menuId === item.id"
-                          :prices="prices[item.id] || []"
-                          :mode="mode"
-                          :isPickup="isPickup"
-                          :moSoldOutData="moSoldOutDataSet[item.id] || {}"
-                          @didOrderdChange="didOrderdChange($event)"
-                        ></MenuMo>
-                      </div>
-                    </template>
+                  <!-- Menu -->
+                  <div v-if="item._dataType === 'menu'" :key="item.id">
+                    <RestaurantMenu
+                      :key="['item', item.id].join('_')"
+                      :item="item"
+                      :menuPickupData="menuPickupData[item.id] || {}"
+                      :quantities="orders[item.id] || [0]"
+                      :selectedOptions="selectedOptions[item.id]"
+                      :initialOpenMenuFlag="(orders[item.id] || []).length > 0"
+                      :shopInfo="shopInfo"
+                      :isOpen="menuId === item.id"
+                      :prices="prices[item.id] || []"
+                      :mode="mode"
+                      @didOrderdChange="didOrderdChange($event)"
+                      @updateSelectedOptions="
+                        updateSelectedOptions(item.id, $event)
+                      "
+                    ></RestaurantMenu>
                   </div>
                 </template>
               </div>
@@ -361,8 +169,13 @@
         <div class="mx-6 mt-8" v-if="!isTransactionAct">
           <div class="rounded-lg bg-white shadow">
             <router-link :to="pageBase + '/transactions-act'">
-              <div class="p-4 inline-flex items-center justify-center" @click="scrollTop">
-                <i class="material-icons mr-2 text-lg text-op-teal">account_balance</i>
+              <div
+                class="p-4 inline-flex items-center justify-center"
+                @click="scrollTop"
+              >
+                <i class="material-icons mr-2 text-lg text-op-teal"
+                  >account_balance</i
+                >
                 <div class="text-sm font-bold text-op-teal">
                   {{ $t("transactionsAct.title") }}
                 </div>
@@ -373,7 +186,7 @@
       </div>
 
       <!-- Phone Login-->
-      <o-modal :active.sync="loginVisible" :width="488" scroll="keep">
+      <o-modal v-model:active="loginVisible" :width="488" scroll="keep">
         <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
           <phone-login v-on:dismissed="handleDismissed" />
         </div>
@@ -386,12 +199,11 @@
         :menuObj="cartItems"
         :prices="prices"
         :shopInfo="shopInfo"
-        :disabledPickupTime="disabledPickupTime"
-        :lastOrder="lastOrder"
         @didOrderdChange="didOrderdChange"
         :totalPrice="totalPrice"
         :promotions="promotions"
         :possiblePromotions="possiblePromotions"
+        :lunchOrDinner="lunchOrDinner"
       />
 
       <!-- for disable all UI -->
@@ -405,25 +217,23 @@
         :paymentInfo="paymentInfo"
         :deliveryData="deliveryData"
         :isCheckingOut="isCheckingOut"
-        :noAvailableTime="noAvailableTime"
         :isDelivery="isDelivery"
+        :noAvailableTime="noAvailableTime"
         :totalPrice="totalPrice"
-        :disabledPickupTime="disabledPickupTime"
-        :moSuspend="moSuspend"
       />
     </template>
     <!-- Image Popup-->
-    <o-modal :active.sync="imagePopup" :width="488" scroll="keep">
+    <o-modal v-model:active="imagePopup" :width="488" scroll="keep">
       <div class="px-2 text-center" @click.stop="closeImage()">
         <img :src="coverImage" class="rounded-lg shadow-lg" />
       </div>
     </o-modal>
     <!-- Image Popup ??-->
-    <o-modal :active.sync="categoryPopup" :width="488" scroll="keep">
+    <o-modal v-model:active="categoryPopup" :width="488" scroll="keep">
       <div class="px-2 text-center">
         <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
           <div class="font-bold">{{ $t("order.category") }}</div>
-          <template v-for="(title, key) in titleLists">
+          <template v-for="(title, key) in titleLists" :key="key">
             <a
               :href="`#${title.id}`"
               class="mx-1 mt-2 inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5"
@@ -440,21 +250,18 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
   ref,
   watch,
-  watchEffect,
   computed,
   onBeforeMount,
   onUnmounted,
-} from "@vue/composition-api";
+  PropType,
+} from "vue";
 
-import moment from "moment-timezone";
-
-import Menu from "@/app/user/Restaurant/Menu.vue";
-import MenuMo from "@/app/user/Restaurant/MenuMo.vue";
+import RestaurantMenu from "@/app/user/Restaurant/Menu.vue";
 import PhoneLogin from "@/app/auth/PhoneLogin.vue";
 import ShopHeader from "@/app/user/Restaurant/ShopHeader.vue";
 import SharePopup from "@/app/user/Restaurant/SharePopup.vue";
@@ -466,39 +273,34 @@ import RestaurantPreview from "@/app/user/Restaurant/Preview.vue";
 import CartButton from "@/app/user/Restaurant/CartButton.vue";
 import Cart from "@/app/user/Restaurant/Cart.vue";
 import Delivery from "@/app/user/Restaurant/Delivery.vue";
-import CategoryModal from "@/app/user/Restaurant/CategoryModal.vue";
-import SubCategoryModal from "@/app/user/Restaurant/SubCategoryModal.vue";
-import CategoryTop from "@/app/user/Restaurant/CategoryTop.vue";
-import CategoryIcon from "@/app/user/Restaurant/CategoryIcon.vue";
+import LunchDinner from "@/app/user/Restaurant/LunchDinner.vue";
 import Titles from "@/app/user/Restaurant/Titles.vue";
-import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
 import TransactionsActContents from "@/app/user/TransactionsAct/Contents.vue";
-import MoPickUp from "@/app/user/Restaurant/MoPickUp.vue";
 
 import FloatingBanner from "@/app/user/Restaurant/FloatingBanner.vue";
-
-import MoClosing0727 from "./Mo/MoClosing0727.vue";
-import MoClosing0810 from "./Mo/MoClosing0810.vue";
 
 import { usePickupTime } from "@/utils/pickup";
 
 import liff from "@line/liff";
 import { db } from "@/lib/firebase/firebase9";
-import {
-  addDoc,
-  query,
-  onSnapshot,
-  collection,
-  where,
-  serverTimestamp,
-} from "firebase/firestore";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
 import { orderCreated } from "@/lib/firebase/functions";
 
 import { order_status } from "@/config/constant";
 
-import { ownPlateConfig, moTitle, moPickup, enableCampaignBanner, moCloseStatus } from "@/config/project";
+import { ownPlateConfig } from "@/config/project";
 import * as analyticsUtil from "@/lib/firebase/analytics";
+
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import {
+  MenuData,
+  TitleData,
+  isAvailableLunchOrDinner,
+  onlyLunchOrDinner,
+} from "@/models/menu";
+import { AnalyticsMenuData } from "@/lib/firebase/analytics";
+import Promotion from "@/models/promotion";
 
 import {
   array2obj,
@@ -509,29 +311,30 @@ import {
   getPrices,
   getTrimmedSelectedOptions,
   getPostOption,
-  useIsInMo,
-  useToggle,
+  // useToggle,
   scrollToElementById,
+  useUserData,
   useBasePath,
 } from "@/utils/utils";
 
 import { imageUtils } from "@/utils/RestaurantUtils";
 
+import { useTitles, useMenu } from "./Restaurant/Utils";
+
+import { useStore } from "vuex";
+import { useRoute, useRouter } from "vue-router";
+
 import {
-  useTitles,
-  useCategory,
-  useSubcategory,
-  useMenu,
-  useCategoryParams,
-  loadStockData,
-} from "./Restaurant/Utils";
+  OrderDataType,
+  CartItemsType,
+  CartOptionType,
+} from "@/models/cartType";
 
 export default defineComponent({
   name: "RestaurantPage",
-  
+
   components: {
-    Menu,
-    MenuMo,
+    RestaurantMenu,
     PhoneLogin,
     ShopHeader,
     SharePopup,
@@ -542,23 +345,14 @@ export default defineComponent({
     CartButton,
     Cart,
     Delivery,
+    LunchDinner,
     TransactionsActContents,
-    CategoryModal,
-    SubCategoryModal,
-    CategoryTop,
-    CategoryIcon,
     Titles,
-    SubCategoryList,
     FloatingBanner,
-    
-    MoPickUp,
-
-    MoClosing0727,
-    MoClosing0810,
   },
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
     paymentInfo: {
@@ -578,27 +372,11 @@ export default defineComponent({
       required: false,
     },
     promotions: {
-      type: Array,
+      type: Array<Promotion>,
       required: true,
     },
     moPrefix: {
       type: String,
-      required: false,
-    },
-    moBasePath: {
-      type: String,
-      required: false,
-    },
-    groupData: {
-      type: Object,
-      required: false,
-    },
-    moSuspend: {
-      type: Boolean,
-      required: false,
-    },
-    moPickupSuspend: {
-      type: Boolean,
       required: false,
     },
   },
@@ -606,161 +384,85 @@ export default defineComponent({
     // TODO: add area to header
     return {
       title:
-      Object.keys(this.shopInfo).length == 0
-        ? document.title
-        : [
-          this.shopInfo?.restaurantName || "",
-          this.isInMo
-            ? moTitle
-            : ownPlateConfig.restaurantPageTitle || this.defaultTitle,
-        ].join(" / "),
+        Object.keys(this.shopInfo).length == 0
+          ? document.title
+          : [
+              this.shopInfo?.restaurantName || "",
+              ownPlateConfig.restaurantPageTitle || this.defaultTitle,
+            ].join(" / "),
     };
   },
-  setup(props, ctx) {
+  setup(props) {
+    const store = useStore();
+    const route = useRoute();
+    const router = useRouter();
+
     const retryCount = ref(0);
-    
+
     const loginVisible = ref(false);
     const isCheckingOut = ref(false);
     const waitForUser = ref(false);
     const noAvailableTime = ref(false);
-    
-    const orders = ref({});
-    const cartItems = ref({});
-    const selectedOptions = ref({});
-    
-    const store = ctx.root.$store;
-    
+
+    const orders = ref<OrderDataType>({});
+    const cartItems = ref<CartItemsType>({});
+    const selectedOptions = ref<CartOptionType>({});
+
     const multiple = store.getters.stripeRegion.multiple;
-    
-    const isInMo = useIsInMo(ctx.root);
-    const basePath = useBasePath(ctx.root);
-    
+
+    const basePath = useBasePath();
+
     const defaultHowToReceive = (() => {
       // for 333
-      const rId = ctx.root.$route.params.restaurantId;
+      const rId = route.params.restaurantId as string;
       if (store.state.carts[rId]) {
         const cart = store.state.carts[rId] || {};
         if (cart.howtoreceive) {
           return cart.howtoreceive;
         }
       }
-      if (props.shopInfo.enableMoPickup) {
-        return "pickup";
-      }
       return "takeout";
     })();
     const howtoreceive = ref(defaultHowToReceive);
-    const isFilterStock = ref(false);
-    const updateHowtoreceive = (value) => {
-      howtoreceive.value = value;
-    };
-    
-    const {
-      category,
-      subCategory,
-      watchCat,
-      hasCategory,
-      showCategory,
-      showSubCategory,
-    } = useCategoryParams(ctx, isInMo.value);
-    
+
+    const lunchOrDinner = ref("lunch");
+
     const restaurantId = computed(() => {
-      return ctx.root.$route.params.restaurantId;
+      return route.params.restaurantId as string;
     });
     const menuId = computed(() => {
-      return ctx.root.$route.params.menuId;
+      return route.params.menuId;
     });
-    const user = computed(() => {
-      return ctx.root.user;
-    });
-    const uid = computed(() => {
-      return store.getters.uid;
-    });
-    const isAdmin = computed(() => {
-      return !!store.getters.uidAdmin;
-    });
+
+    const { user, uid, isAdmin, isUser, isLiffUser } = useUserData();
     const isOwner = computed(() => {
       return isAdmin.value && uid.value === props.shopInfo.uid;
+    });
+    const isSubAccount = computed(() => {
+      return (
+        isAdmin.value && store.state?.claims?.parentUid === props.shopInfo.uid
+      );
     });
     const isPreview = computed(() => {
       return props.notFound && isOwner.value;
     });
-    
+
     const isDelivery = computed(() => {
       return howtoreceive.value === "delivery";
     });
-    const isPickup = computed(() => {
-      return howtoreceive.value === "pickup";
-    });
-    // force reset
-    const moPickupSuspend = computed(() => {
-      return props.moPickupSuspend;
-    });
-    watch(moPickupSuspend, (v) => {
-      if (v) {
-        howtoreceive.value = "takeout";
-      }
-    });
-    
+
     const coverImage = computed(() => {
       return (
         (props.shopInfo?.images?.cover?.resizedImages || {})["1200"] ||
-          props.shopInfo.restCoverPhoto
+        props.shopInfo.restCoverPhoto
       );
     });
-    
-    const { loadMenu, setCache, menus, menuObj, menuCache } = useMenu(
-      restaurantId,
-      isInMo,
-      category,
-      subCategory,
-      props.groupData
-    );
-    
-    const { menuPickupData, availableDays, todaysLast } = usePickupTime(
-      props.shopInfo,
-      {},
-      menuObj,
-      ctx,
-      isInMo.value,
-      isPickup
-    );
-    const lastOrder = computed(() => {
-      return (todaysLast.value || {}).lastOrderDisplay;
-    });
-    
-    const disabledPickupTime = computed(() => {
-      if (isPickup.value) {
-        const now = Number(
-          moment(store.state.date).tz("Asia/Tokyo").format("HHmm")
-        );
-        const last = Number((todaysLast.value || {}).lastOrderStr || 0);
-        return now > last;
-      }
-      return false;
-    });
-    
-    // for Mo
-    const { preOrderPublics, pickupPublics, pickupStocks } = loadStockData(
-      db,
-      props.shopInfo
-    );
-    
-    const isPublucDataSet = computed(() => {
-      if (isPickup.value) {
-        return pickupPublics.value[subCategory.value] || {};
-      } else {
-        return preOrderPublics.value[subCategory.value] || {};
-      }
-    });
-    const moSoldOutDataSet = computed(() => {
-      if (isPickup.value) {
-        return pickupStocks.value[subCategory.value] || {};
-      }
-      return {};
-    });
-    // end of for Mo
-    
+
+    const { loadMenu, setCache, menus, menuObj, menuCache } =
+      useMenu(restaurantId);
+
+    const { menuPickupData } = usePickupTime(props.shopInfo, {}, menuObj);
+
     // changed from onMount
     // avoid to reset cart when pickup or other not takeout
     onBeforeMount(() => {
@@ -770,13 +472,14 @@ export default defineComponent({
         orders.value = cart.orders || {};
         cartItems.value = cart.cartItems || {};
         selectedOptions.value = cart.options || {};
+        lunchOrDinner.value = cart.lunchOrDinner || "lunch";
         setCache(cart.menuCache);
         if (cart.howtoreceive) {
           howtoreceive.value = cart.howtoreceive;
         }
       }
     });
-    
+
     loadMenu(() => {
       if (location.hash && location.hash[0] === "#") {
         const id = location.hash.slice(1);
@@ -785,142 +488,78 @@ export default defineComponent({
         }, 400);
       }
     });
-    
+
     watch(menus, (values) => {
       analyticsUtil.sendMenuListView(
-        values,
+        values as AnalyticsMenuData[],
         props.shopInfo,
-        restaurantId.value
+        restaurantId.value,
       );
     });
-    
-    watch(watchCat, () => {
-      loadMenu();
-    });
-    watch(category, () => {
-      if (category.value) {
-        loadSubcategory();
-        updateMoUrl();
-      }
-    });
-    
-    const updateMoUrl = () => {
-      const { category, subCategory, restaurantId } = ctx.root.$route.params;
-      if (howtoreceive.value && subCategory) {
-        const newPath = `/${props.moPrefix}/r/${restaurantId}/cat/${category}/${subCategory}/${howtoreceive.value}`;
-        if (newPath !== ctx.root.$route.path) {
-          ctx.root.$router.replace({
-            path: newPath,
-          });
-        }
-      }
-    };
-    watch(howtoreceive, (value) => {
-      if (isInMo.value) {
-        updateMoUrl();
-        orders.value = {};
-      }
-    });
-    
-    const { loadTitle, titles, titleLists } = useTitles(restaurantId);
-    
-    const { loadCategory, categoryData } = useCategory(props.moPrefix);
-    
-    const { subCategoryData, loadSubcategory } = useSubcategory(
-      props.moPrefix,
-      category
-    );
-    
-    const selectedCategory = computed(() => {
-      if (category.value && categoryData.value) {
-        return (
-          categoryData.value.find((cat) => {
-            return cat.id === category.value;
-          }) || {}
-        );
-      }
-      return {};
-    });
-    
-    const selectedSubCategory = computed(() => {
-      if (subCategory.value && subCategoryData.value) {
-        return (
-          subCategoryData.value.find((cat) => {
-            return cat.id === subCategory.value;
-          }) || {}
-        );
-      }
-      return {};
-    });
-    
-    if (isInMo.value) {
-      loadCategory();
-      if (category.value) {
-        loadSubcategory();
-        updateMoUrl();
-      }
-    }
-    if (!isInMo.value) {
-      loadTitle();
-    }
-    
+
+    const { loadTitle, titles } = useTitles(restaurantId);
+    loadTitle();
+
     const itemLists = computed(() => {
-      if (isInMo.value) {
-        if (isPickup.value) {
-          return menus.value
-            .filter((menu) => {
-              if (isFilterStock.value) {
-                const soldOutData = moSoldOutDataSet.value[menu.id] || {};
-                const isStock =
-                      !menu.soldOut &&
-                  (!!soldOutData.forcePickupStock || !!soldOutData.isStock);
-                return isStock;
-              }
-              return true;
-            })
-            .sort((a, b) => {
-              return a.itemName > b.itemName ? 1 : -1;
-            });
-          /*
-            .sort((a, b) => {
-            const aSoldOutData = moSoldOutDataSet.value[a.id] || {};
-            const aIsStock =
-            !a.soldOut &&
-            (!!aSoldOutData.forcePickupStock || !!aSoldOutData.isStock);
-            
-            const bSoldOutData = moSoldOutDataSet.value[b.id] || {};
-            const bIsStock =
-            !b.soldOut &&
-            (!!bSoldOutData.forcePickupStock || !!bSoldOutData.isStock);
-            
-            if (aIsStock === bIsStock) {
-            return a.itemName > b.itemName ? 1 : -1;
+      const menuLists = props.shopInfo.menuLists || [];
+
+      const itemsObj = array2obj(
+        ([] as (MenuData | TitleData)[])
+          .concat(menus.value)
+          .concat(titles.value),
+      );
+      return menuLists
+        .map((itemId) => {
+          return { ...itemsObj[itemId] };
+        })
+        .filter((item) => {
+          if (props.shopInfo.enableLunchDinner && item._dataType === "menu") {
+            const { availableLunch, availableDinner } =
+              isAvailableLunchOrDinner(item);
+            if (lunchOrDinner.value === "lunch") {
+              return availableLunch;
             }
-            
-            return aIsStock ? -1 : 1;
-            });
-          */
-        } else {
-          return menus.value.sort((a, b) => {
-            return a.itemName > b.itemName ? 1 : -1;
-          });
+            if (lunchOrDinner.value === "dinner") {
+              return availableDinner;
+            }
+          }
+          return true;
+        })
+        .filter((item) => {
+          return !(item._dataType === "title" && item.name === "");
+        });
+    });
+    // lunch or dinner
+    const hasDinnerOnlyOrder = computed(() => {
+      return Object.keys(orders.value).some((menuId) => {
+        const item = menuObj.value[menuId];
+        return item && onlyLunchOrDinner(item).onlyDinner;
+      });
+    });
+    const hasLunchOnlyOrder = computed(() => {
+      return Object.keys(orders.value).some((menuId) => {
+        const item = menuObj.value[menuId];
+        return item && onlyLunchOrDinner(item).onlyLunch;
+      });
+    });
+    const resetCart = () => {
+      orders.value = {};
+      cartItems.value = {};
+    };
+    watch(lunchOrDinner, (v) => {
+      if (v === "lunch") {
+        if (hasDinnerOnlyOrder.value) {
+          resetCart();
         }
-      } else {
-        const menuLists = props.shopInfo.menuLists || [];
-        const itemsObj = array2obj(menus.value.concat(titles.value));
-        return menuLists
-          .map((itemId) => {
-            return { ...itemsObj[itemId] };
-          })
-          .filter((item) => {
-            return item;
-          })
-          .filter((item) => {
-            return !(item._dataType === "title" && item.name === "");
-          });
+      }
+      if (v === "dinner") {
+        if (hasLunchOnlyOrder.value) {
+          resetCart();
+        }
       }
     });
-    
+    //
+
     const totalPrice = computed(() => {
       const subTotal = prices2subtotal(prices.value);
       const total = subtotal2total(subTotal, cartItems.value, props.shopInfo);
@@ -930,8 +569,8 @@ export default defineComponent({
       return getTrimmedSelectedOptions(
         orders.value,
         cartItems.value,
-        selectedOptions.value
-      );
+        selectedOptions.value,
+      ) as any;
     });
     const postOptions = computed(() => {
       return getPostOption(trimmedSelectedOptions.value, cartItems.value);
@@ -941,19 +580,19 @@ export default defineComponent({
         multiple,
         orders.value,
         cartItems.value,
-        trimmedSelectedOptions.value
+        trimmedSelectedOptions.value,
       );
     });
-    
-    const didOrderdChange = (eventArgs) => {
+
+    const didOrderdChange = (eventArgs: {
+      quantities: number[];
+      itemId: string;
+      optionValues: string;
+      itemData: MenuData;
+    }) => {
       // NOTE: We need to assign a new object to trigger computed properties
       if (eventArgs.quantities) {
-        if (eventArgs.itemData) { // for mo campaign
-          cartItems.value[eventArgs.itemId] = eventArgs.itemData;
-          menuObj.value[eventArgs.itemId] = eventArgs.itemData;
-        } else {
-          cartItems.value[eventArgs.itemId] = menuObj.value[eventArgs.itemId];
-        }
+        cartItems.value[eventArgs.itemId] = menuObj.value[eventArgs.itemId];
         const newObject = { ...orders.value };
         if (arraySum(eventArgs.quantities) > 0) {
           newObject[eventArgs.itemId] = eventArgs.quantities;
@@ -968,9 +607,14 @@ export default defineComponent({
         });
       }
     };
+    const updateSelectedOptions = (id: string, e: any) => {
+      const newSelectedOptions = Object.assign({}, selectedOptions.value);
+      newSelectedOptions[id] = e;
+      selectedOptions.value = newSelectedOptions;
+    };
     const goCheckout = async () => {
       const name = await (async () => {
-        if (ctx.root.isLiffUser) {
+        if (isLiffUser.value) {
           try {
             const user = (await liff.getProfile()) || {};
             return user.displayName;
@@ -978,12 +622,9 @@ export default defineComponent({
             return "";
           }
         }
-        if (isInMo.value) {
-          return "";
-        }
         return user.value.displayName;
       })();
-      
+
       const order_data = {
         order: orders.value,
         options: convOptionArray2Obj(postOptions.value),
@@ -991,22 +632,24 @@ export default defineComponent({
         status: order_status.new_order,
         uid: user.value.uid,
         ownerUid: props.shopInfo.uid,
+        lunchOrDinner: props.shopInfo.enableLunchDinner
+          ? lunchOrDinner.value
+          : null,
         isDelivery:
-        (props.shopInfo.enableDelivery && isDelivery.value) || false, // true, // for test
-        isPickup: (props.shopInfo.enableMoPickup && isPickup.value) || false,
-        isLiff: ctx.root.isLiffUser,
+          (props.shopInfo.enableDelivery && isDelivery.value) || false, // true, // for test
+        isPickup: false,
+        isLiff: isLiffUser.value,
         phoneNumber: user.value.phoneNumber,
         name: name,
         updatedAt: serverTimestamp(),
         timeCreated: serverTimestamp(),
         // price never set here.
       };
-      // console.log(order_data);
       isCheckingOut.value = true;
       try {
         const res = await addDoc(
           collection(db, `restaurants/${restaurantId.value}/orders`),
-          order_data
+          order_data,
         );
         // Store the current order associated with this order id, so that we can re-use it
         // when the user clicks the "Edit Items" on the next page.
@@ -1019,17 +662,18 @@ export default defineComponent({
             cartItems: cartItems.value,
             menuCache: menuCache.value,
             howtoreceive: howtoreceive.value,
+            lunchOrDinner: lunchOrDinner.value,
           },
         });
         await orderCreated({
           restaurantId: restaurantId.value,
           orderId: res.id,
         });
-        
+
         try {
-          const checkoutMenus = [];
+          const checkoutMenus: AnalyticsMenuData[] = [];
           Object.keys(orders.value).forEach((menuId) => {
-            orders.value[menuId].forEach((quantity) => {
+            orders.value[menuId].forEach((quantity: number) => {
               const menu = Object.assign({}, cartItems.value[menuId]);
               menu.quantity = quantity;
               checkoutMenus.push(menu);
@@ -1039,26 +683,22 @@ export default defineComponent({
             totalPrice.value.total,
             checkoutMenus,
             props.shopInfo,
-            restaurantId.value
+            restaurantId.value,
           );
         } catch (e) {
           console.log(e);
         }
         if (props.mode === "liff") {
           const liffIndexId = route.params.liffIndexId;
-          ctx.root.$router.push({
+          router.push({
             path: `/liff/${liffIndexId}/r/${restaurantId.value}/order/${res.id}`,
           });
-        } else if (props.mode === "mo") {
-          ctx.root.$router.push({
-            path: `/${props.moPrefix}/r/${restaurantId.value}/order/${res.id}`,
-          });
         } else {
-          ctx.root.$router.push({
+          router.push({
             path: `/r/${restaurantId.value}/order/${res.id}`,
           });
         }
-      } catch (error) {
+      } catch (error: any) {
         if (error.code === "permission-denied" && retryCount.value < 3) {
           retryCount.value++;
           console.log("retrying:", retryCount.value);
@@ -1079,8 +719,8 @@ export default defineComponent({
     const handleCheckOut = () => {
       // The user has clicked the CheckOut button
       retryCount.value = 0;
-      
-      if (ctx.root.isUser || ctx.root.isLiffUser) {
+
+      if (isUser.value || isLiffUser.value) {
         goCheckout();
       } else {
         window.scrollTo(0, 0);
@@ -1090,69 +730,38 @@ export default defineComponent({
     const handleDismissed = () => {
       // The user has dismissed the login dialog (including the successful login)
       loginVisible.value = false;
-      if (ctx.root.isUser || ctx.root.isLiffUser) {
+      if (isUser.value || isLiffUser.value) {
         goCheckout();
       } else {
         console.log("this.user it not ready yet");
         waitForUser.value = true;
       }
     };
-    
+
     watch(user, (newValue) => {
       if (waitForUser.value && newValue) {
         console.log("handling deferred notification");
         goCheckout();
       }
     });
-    const categoryBathPath = computed(() => {
-      return `/${props.moPrefix}/r/${restaurantId.value}/cat/${category.value}`;
-    });
-    const menuLinkBathPath = computed(() => {
-      return `/cat/${category.value}/${subCategory.value}`;
-    });
-    const subCategoryKey = computed(() => {
-      return showSubCategory.value
-        ? [category.value, subCategory.value].join("_")
-        : "";
-    });
-    
-    const isOpenGroupCategory = computed(() => {
-      return ctx.root.$route.params.list === "categories";
-    });
-    const isOpenGroupSubCategory = computed(() => {
-      return ctx.root.$route.params.list === "category";
-    });
-    
     const cartButton = ref();
     const isShowCart = computed(() => {
-      return cartButton.value?.isShowCart;
+      return cartButton.value?.isShowCart || false;
     });
     const closeCart = () => {
       cartButton.value?.closeCart();
     };
-    
-    const isShowCategoryIcon = computed(() => {
-      return (
-        !!showSubCategory.value &&
-          !isOpenGroupCategory.value &&
-          !isOpenGroupSubCategory.value &&
-          !isShowCart.value
-      );
-    });
-    
-    watchEffect(() => {
-      if (isShowCategoryIcon.value) {
-        setTimeout(() => {
-          scrollToElementById("mo_top");
-        }, 200);
-      }
-    });
-    
+
+    let y = 0;
     watch(isShowCart, (value) => {
       if (value) {
+        y = window.pageYOffset;
         document.body.style.position = "fixed";
       } else {
         document.body.style.position = "";
+        if (y) {
+          scrollTo(0, y);
+        }
       }
     });
     onUnmounted(() => {
@@ -1160,34 +769,7 @@ export default defineComponent({
         document.body.style.position = "";
       }
     });
-    //
-    watch(isOpenGroupCategory, (value) => {
-      if (value) {
-        document.body.style.position = "fixed";
-      } else {
-        document.body.style.position = "";
-        scrollToElementById("subCategoryTop");
-      }
-    });
-    onUnmounted(() => {
-      if (isOpenGroupCategory.value) {
-        document.body.style.position = "";
-      }
-    });
-    watch(isOpenGroupSubCategory, (value) => {
-      if (value) {
-        document.body.style.position = "fixed";
-      } else {
-        document.body.style.position = "";
-        scrollToElementById("subCategoryTop");
-      }
-    });
-    onUnmounted(() => {
-      if (isOpenGroupSubCategory.value) {
-        document.body.style.position = "";
-      }
-    });
-    
+
     const filteredTitleLists = computed(() => {
       const menuLists = props.shopInfo.menuLists || [];
       const itemsObj = array2obj(titles.value);
@@ -1198,11 +780,11 @@ export default defineComponent({
           })
           .filter((item) => {
             return item && item.id;
-          }) || []
-      ).filter((title) => title.name !== "");
-      return ret;
+          })
+          .filter((title) => title.name !== "") || []
+      );
     });
-    
+
     const scrollTop = () => {
       scrollToElementById("RestaurantLeftTop");
     };
@@ -1211,11 +793,12 @@ export default defineComponent({
     });
     const closeTransactionsAct = () => {
       scrollTop();
-      ctx.root.$router.push({path: pageBase.value});
+      router.push(pageBase.value);
     };
     const isTransactionAct = computed(() => {
-      return !!ctx.root.$route.meta.isTransactionsAct;
+      return !!route.meta.isTransactionsAct;
     });
+
     const totalQuantities = computed(() => {
       const ret = Object.values(orders.value).reduce((total, order) => {
         return total + arraySum(order);
@@ -1240,13 +823,6 @@ export default defineComponent({
       });
     });
 
-    const isSpecialShop = computed(() => {
-      return ([
-        "3ee2442f5ada277e133bac5a93d41a84d024c3ff",
-        "4c821e8903633f8e7fc6a10beb0da1fa5730c942"
-      ].includes(restaurantId.value));
-    });
-    
     return {
       itemLists,
       titleLists: filteredTitleLists,
@@ -1255,9 +831,9 @@ export default defineComponent({
       menuId,
 
       isOwner,
+      isSubAccount,
       isDelivery,
       howtoreceive,
-      updateHowtoreceive,
 
       orders,
 
@@ -1269,13 +845,11 @@ export default defineComponent({
       promotion,
       matchedPromotions,
       possiblePromotions,
-      
+
       isPreview,
 
-      selectedCategory,
-      selectedSubCategory,
-
       didOrderdChange,
+      updateSelectedOptions,
 
       handleCheckOut,
       handleDismissed,
@@ -1284,22 +858,6 @@ export default defineComponent({
       isCheckingOut,
       noAvailableTime,
 
-      showCategory,
-      showSubCategory,
-      subCategoryKey,
-      isShowCategoryIcon,
-
-      categoryData,
-      subCategoryData,
-      categoryBathPath,
-
-      menuLinkBathPath,
-
-      subCategory,
-
-      isOpenGroupCategory,
-      isOpenGroupSubCategory,
-
       ...imageUtils(),
 
       isShowCart,
@@ -1307,27 +865,16 @@ export default defineComponent({
       closeCart,
       menuObj,
       cartItems,
-      menuPickupData,
+      menuPickupData, // not mo.
 
-      isInMo,
-      isPickup,
-
-      isPublucDataSet,
-      moSoldOutDataSet,
-      isSpecialShop,
-
-      moPickup,
-      disabledPickupTime,
-      lastOrder,
-      enableCampaignBanner,
-
-      isFilterStock,
       isTransactionAct,
       closeTransactionsAct,
       pageBase,
       scrollTop,
 
-      moCloseStatus,
+      lunchOrDinner,
+      hasDinnerOnlyOrder,
+      hasLunchOnlyOrder,
     };
   },
 });

@@ -6,7 +6,12 @@
       </div>
     </div>
     <div class="mt-2">
-      {{ $t("dialogTips." + tipsKey + ".body") }}
+      <div
+        v-for="(line, k) in $t('dialogTips.' + tipsKey + '.body').split('\n')"
+        :key="k"
+      >
+        {{ line }}
+      </div>
     </div>
     <div>
       <div class="mt-6 text-center">
@@ -21,8 +26,8 @@
   </div>
 </template>
 
-<script>
-import { defineComponent } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent } from "vue";
 export default defineComponent({
   props: {
     tipsKey: {

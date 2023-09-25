@@ -4,6 +4,7 @@ import Stripe from "stripe";
 import * as Sentry from "@sentry/node";
 
 import { Context } from "../models/TestType";
+import { RestaurantInfoData } from "../models/RestaurantInfo";
 import * as admin from "firebase-admin";
 
 const region = "JP"; // config
@@ -57,12 +58,12 @@ export const is_subAccount = (context: functions.https.CallableContext | Context
   return !!context.auth?.token?.parentUid;
 };
 export const validate_sub_account_request = async (db: admin.firestore.Firestore, uid: string, ownerUid: string, restaurantId: string) => {
-  const rList = ((await db.doc(`admins/${ownerUid}/children/${uid}`).get()).data()||{}).restaurantLists || [];
+  const rList = ((await db.doc(`admins/${ownerUid}/children/${uid}`).get()).data() || {}).restaurantLists || [];
   if (!rList.includes(restaurantId)) {
     throw new functions.https.HttpsError("permission-denied", "The user does not have an authority to perform this operation.");
   }
   return true;
-}
+};
 
 export const getStripeWebhookSecretKey = () => {
   const SECRET = process.env.STRIPE_WH_SECRET;
@@ -89,24 +90,42 @@ export const required_params = (params) => {
   }
 };
 
-export const get_restaurant = async (db: admin.firestore.Firestore, restaurantId: String) => {
+export const get_restaurant = async (db: admin.firestore.Firestore, restaurantId: string) => {
   const snapshot = await db.doc(`/restaurants/${restaurantId}`).get();
-  const data = snapshot.data();
+  const data = snapshot.data() as RestaurantInfoData;
   if (!data) {
     throw new functions.https.HttpsError("invalid-argument", "There is no restaurant with this id.");
   }
   return data;
 };
 
-export const get_restaurant_postage = async (db: admin.firestore.Firestore, restaurantId: String) => {
+export const get_restaurant_postage = async (db: admin.firestore.Firestore, restaurantId: string) => {
   const snapshot = await db.doc(`/restaurants/${restaurantId}/ec/postage`).get();
   const data = snapshot.data() || {};
   return data;
 };
 
-export const get_restaurant_delivery_area = async (db: admin.firestore.Firestore, restaurantId: String) => {
+export const get_restaurant_delivery_area = async (db: admin.firestore.Firestore, restaurantId: string) => {
   const snapshot = await db.doc(`/restaurants/${restaurantId}/delivery/area`).get();
   const data = snapshot.data() || {};
+  return data;
+};
+
+export const get_restaurant_line_config = async (db: admin.firestore.Firestore, restaurantId: string) => {
+  const snapshot = await db.doc(`/restaurants/${restaurantId}/private/line`).get();
+  const data = snapshot.data() as { client_secret: string; message_token: string };
+  if (!data) {
+    throw new functions.https.HttpsError("invalid-argument", "There is no restaurant with this id.");
+  }
+  return data;
+};
+
+export const get_restaurant_line_user = async (db: admin.firestore.Firestore, restaurantId: string, uid: string) => {
+  const snapshot = await db.doc(`/restaurants/${restaurantId}/lineUsers/${uid}`).get();
+  const data = snapshot.data();
+  if (!data) {
+    throw new functions.https.HttpsError("invalid-argument", "There is no restaurant with this id.");
+  }
   return data;
 };
 
@@ -124,7 +143,7 @@ export const log_error = (error: any) => {
   console.error(error.type);
   console.error(error);
   Sentry.captureException(error);
-}
+};
 
 export const process_error = (error: any) => {
   console.error(error);
@@ -204,42 +223,4 @@ export const filterData = (data: { [key: string]: any }) => {
 
 export const isEmpty = (value: any) => {
   return value === null || value === undefined || value === "";
-};
-
-
-// forMo
-export const convSubCateIds = (menuObj: { [key: string]: any }) => {
-  const ret = {};
-  Object.values(menuObj).map((menu) => {
-    if (menu.subCategory) {
-      ret[menu.subCategory] = true;
-    }
-  });
-  return Object.keys(ret);
-};
-export const getMoDataObj = async (refRestaurant, subCategoryIds, target) => {
-  const db = refRestaurant.firestore;
-  const restaurantId = refRestaurant.id;
-  // preOrder
-  const path = `/restaurants/${restaurantId}/${target}/subCategory`;
-  // console.log(path);
-  const retObj = {};
-  await Promise.all(
-    chunk(subCategoryIds, 10).map(async (subCategoryIdsChunk) => {
-      const subCateCollections = await db.collection(path).where(admin.firestore.FieldPath.documentId(), "in", subCategoryIdsChunk).get();
-      subCateCollections.forEach((m) => {
-        const data = (m.data() || {}).data || {};
-        Object.keys(data).map(id => {
-          retObj[id] = data[id];
-        });
-      });
-    })
-  );
-  return retObj;
-}
-
-export const getMoStockObj = () => {
-  // const pathStock = `/restaurants/${restaurantId}/pickup/stock/subCategory`;
-  // const pathData = `/restaurants/${restaurantId}/pickup/data/subCategory`;
-  return {};
 };
