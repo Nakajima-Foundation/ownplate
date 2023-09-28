@@ -417,7 +417,7 @@ const data = {
     paymentMethods: "Payment methods",
     minimumAvailableTime: "Temps disponible minimum",
     lastOrder: "本日最終受付",
-    todayNotAvailable: "本日は受付できません",
+    todayNotAvailable: "翌日以降の受け取りとなります",
     noAvailableTime: "Aucun de temps de commande",
     deliveryThresholdNotice:
       "Delivery is possible from orders totaling {price} or more.",

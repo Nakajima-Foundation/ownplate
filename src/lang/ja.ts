@@ -438,7 +438,7 @@ const data = {
     paymentMethods: "受け取り払い時の決済方法",
     minimumAvailableTime: "最短受付可能時間",
     lastOrder: "本日最終受付",
-    todayNotAvailable: "本日は受付できません",
+    todayNotAvailable: "翌日以降の受け取りとなります",
     noAvailableTime: "受付時間外",
     deliveryThresholdNotice:
       "デリバリーは合計{price}以上のご注文から可能です。",
