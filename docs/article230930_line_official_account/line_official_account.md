@@ -62,14 +62,14 @@ LINE公式アカウントとは別に、LINE Developers というサイトがあ
 
 - ここで一度、おもちかえり.com 管理画面を`別タブ`または`別ウインドウ`で開きます。
 
-#### おもちかえり.com 管理画面
+#### 2.2.2. おもちかえり.com 管理画面
 - 店舗情報より `LINE連携` ボタンを押します
 	![](./images/omochikaeri_admin_restaurant_info.png)
 - `LINEログイン:コールバックURL` をコピーします
 	![](./images/omochikaeri_admin_restaurant_info_callback.png)
 - 先ほどの `LINE Developers > プロバイダー名 > チャネル名(LINEログイン)` に戻ります。
 
-#### LINEログイン設定
+#### 2.2.3. LINEログイン設定
 - `LINEログイン設定` を選択します。
 	![](./images/line_developers_console_line_login_line-login-setting.png)
 - `コールバックURL` の `編集` ボタンを押します。
@@ -79,8 +79,39 @@ LINE公式アカウントとは別に、LINE Developers というサイトがあ
 - LINE Developers 側の設定はこれで終了です。  
 	次は LINE Developers の情報をコピーして、おもちかえり.com の管理画面へペーストする作業です。
 
-## LINE Developers から おもちかえり.com 管理画面 へ転記
-### LINE Developers 側の準備
+## 3. LINE Developers から おもちかえり.com 管理画面 へ転記
+### 3.1. LINE Developers 側の準備
 - これまでに利用していた `LINE Developers > プロバイダー名 > チャネル名(LINEログイン)` の `チャネル基本設定` を選択します。
-### おもちかえり.com 側の準備
+
+	![](./images/line_developers_console_line_login_basics.png)
+
+### 3.2. おもちかえり.com 側の準備
+- 項番2.2.2 と同様に `管理画面 > 店舗情報 > LINE連携` にします。
+	![](./images/line_developers_console_line_login_line-login-setting.png)
+
+### チャネルID / チャネルシークレット の転記
+LINE Developers 側のチャネル名(LINEログイン)の
+
+  - 上段: チャンネルID
+  - 下段: チャネルシークレット  
+
+を、おもちかえり.com へコピー & ペーストします。
 ![](./images/line_developers_to_omochikaeri_line_login.png)
+
+- 次は LINE Developers側の作業です。
+
+### LINE Messaging API 
+- 今回作成した `Provider 名` を選択します。
+	![](./images/line_developers_console_select_provider.png)
+
+- `LINE公式アカウント名 (Messaging API)` を選択します。
+	![](./images/line_developers_console_select_line-official-account.png)
+
+- `Messaging API設定` を選択します。
+	![](./images/line_developers_console_messaging-api-setting.png)
+
+- `チャネルアクセストークン(長期)` の `発行` ボタンを押します。
+	![](./images/line_developers_console_messaging-api-access-token.png)
+
+- `チャネルアクセストークン（長期）`を、おもちかえり.com へコピー & ペーストします。その後、`有効にする` にチェックを入れて `保存` ボタンを押します。
+	![](./images/line_developers_to_omochikaeri_messaging-api.png)
