@@ -31,7 +31,7 @@
     "cookie": "^0.4.2",
     "crypto-js": "^4.1.1",
     "firebase": "^10.4.0",
-    "google-libphonenumber": "^3.2.30",
+    "google-libphonenumber": "^3.2.33",
     "markdown-it": "^12.3.2",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.37",
@@ -52,7 +52,7 @@
   "devDependencies": {
     "@types/cookie": "^0.4.1",
     "@types/crypto-js": "^4.1.1",
-    "@types/google-libphonenumber": "^7.4.23",
+    "@types/google-libphonenumber": "^7.4.27",
     "@types/pdfmake": "^0.1.21",
     "@types/query-string": "^6.3.0",
     "@types/validator": "^13.7.6",
