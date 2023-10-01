@@ -220,7 +220,7 @@ export default defineComponent({
           doc(db, `/restaurants/${props.shopInfo.restaurantId}`),
           {
             hasLine: hasLine.value,
-            message_token: message_token.value,
+            lineClientId: clientId.value,
           },
           { merge: true },
         ),
