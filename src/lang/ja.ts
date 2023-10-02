@@ -810,6 +810,8 @@ const data = {
     updateDeliveryRange: "範囲を更新",
     areaTextExample: "港区北青山　１〜３丁目、南青山１〜７丁目",
     enableDelivery: "{name}のデリバリーを有効にする",
+    deliveryOnlyStore:
+      "{name}をデリバリー専門店にする(デリバリー有効時に専門店になりテイクアウトは利用不可)",
     deliveryLocation: "配送先",
     deliveryFeeSetting: "配達料金設定",
     deliveryFee: "配達料金",
