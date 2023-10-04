@@ -47,6 +47,15 @@
             $t("delivery.enableDelivery", { name: shopInfo.restaurantName }, 0)
           }}
         </div>
+        <div class="text-sm font-bold">
+          <o-checkbox v-model="deliveryOnlyStore" />{{
+            $t(
+              "delivery.deliveryOnlyStore",
+              { name: shopInfo.restaurantName },
+              0,
+            )
+          }}
+        </div>
       </div>
 
       <!-- area map -->
@@ -272,6 +281,8 @@ export default defineComponent({
     const router = useRouter();
 
     const enableDelivery = ref(false);
+    const deliveryOnlyStore = ref(false);
+
     const enableDeliveryFree = ref(false);
     const enableDeliveryThreshold = ref(false);
     const enableAreaMap = ref(true);
@@ -378,6 +389,7 @@ export default defineComponent({
       return;
     }
     enableDelivery.value = props.shopInfo.enableDelivery || false;
+    deliveryOnlyStore.value = props.shopInfo.deliveryOnlyStore || false;
     deliveryMinimumCookTime.value =
       props.shopInfo.deliveryMinimumCookTime || deliveryMinimumCookTime.value;
 
@@ -411,6 +423,7 @@ export default defineComponent({
     const saveDeliveryArea = async () => {
       await updateDoc(doc(db, `restaurants/${restaurantId}`), {
         enableDelivery: enableDelivery.value,
+        deliveryOnlyStore: deliveryOnlyStore.value,
         deliveryMinimumCookTime: Number(deliveryMinimumCookTime.value || 0),
       });
       const data = {
@@ -435,6 +448,7 @@ export default defineComponent({
 
     return {
       enableDelivery,
+      deliveryOnlyStore,
       enableDeliveryFree,
       enableDeliveryThreshold,
       enableAreaMap,
