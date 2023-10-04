@@ -1,6 +1,6 @@
 {
   "name": "OwnPlate",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "private": true,
   "description": "OwnPlate - Delicious food",
   "author": "OwnPlate developer team",
@@ -50,6 +50,8 @@
     "vuex": "^4.1.0"
   },
   "devDependencies": {
+    "@babel/node": "^7.22.19",
+    "@babel/plugin-transform-runtime": "^7.22.15",
     "@types/cookie": "^0.4.1",
     "@types/crypto-js": "^4.1.1",
     "@types/google-libphonenumber": "^7.4.27",
