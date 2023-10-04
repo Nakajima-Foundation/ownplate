@@ -1,6 +1,6 @@
 {
   "name": "OwnPlate",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "private": true,
   "description": "OwnPlate - Delicious food",
   "author": "OwnPlate developer team",
@@ -31,7 +31,7 @@
     "cookie": "^0.4.2",
     "crypto-js": "^4.1.1",
     "firebase": "^10.4.0",
-    "google-libphonenumber": "^3.2.30",
+    "google-libphonenumber": "^3.2.33",
     "markdown-it": "^12.3.2",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.37",
@@ -50,9 +50,11 @@
     "vuex": "^4.1.0"
   },
   "devDependencies": {
+    "@babel/node": "^7.22.19",
+    "@babel/plugin-transform-runtime": "^7.22.15",
     "@types/cookie": "^0.4.1",
     "@types/crypto-js": "^4.1.1",
-    "@types/google-libphonenumber": "^7.4.23",
+    "@types/google-libphonenumber": "^7.4.27",
     "@types/pdfmake": "^0.1.21",
     "@types/query-string": "^6.3.0",
     "@types/validator": "^13.7.6",
@@ -70,7 +72,7 @@
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-vue": "^9.17.0",
     "firebase-admin": "^11.10.1",
-    "postcss": "^8.4.30",
+    "postcss": "^8.4.31",
     "prettier": "^3.0.3",
     "prettier-plugin-tailwindcss": "^0.5.4",
     "raw-loader": "^4.0.2",

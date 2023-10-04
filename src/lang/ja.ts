@@ -438,7 +438,7 @@ const data = {
     paymentMethods: "受け取り払い時の決済方法",
     minimumAvailableTime: "最短受付可能時間",
     lastOrder: "本日最終受付",
-    todayNotAvailable: "本日は受付できません",
+    todayNotAvailable: "翌日以降の受け取りとなります",
     noAvailableTime: "受付時間外",
     deliveryThresholdNotice:
       "デリバリーは合計{price}以上のご注文から可能です。",
@@ -810,6 +810,7 @@ const data = {
     updateDeliveryRange: "範囲を更新",
     areaTextExample: "港区北青山　１〜３丁目、南青山１〜７丁目",
     enableDelivery: "{name}のデリバリーを有効にする",
+    deliveryOnlyStore: "受け取り方法をデリバリーのみにする",
     deliveryLocation: "配送先",
     deliveryFeeSetting: "配達料金設定",
     deliveryFee: "配達料金",

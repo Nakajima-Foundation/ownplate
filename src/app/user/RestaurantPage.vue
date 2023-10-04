@@ -421,6 +421,9 @@ export default defineComponent({
           return cart.howtoreceive;
         }
       }
+      if (props.shopInfo.deliveryOnlyStore) {
+        return "delivery";
+      }
       return "takeout";
     })();
     const howtoreceive = ref(defaultHowToReceive);

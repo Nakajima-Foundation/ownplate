@@ -124,7 +124,8 @@ export const get_restaurant_line_user = async (db: admin.firestore.Firestore, re
   const snapshot = await db.doc(`/restaurants/${restaurantId}/lineUsers/${uid}`).get();
   const data = snapshot.data();
   if (!data) {
-    throw new functions.https.HttpsError("invalid-argument", "There is no restaurant with this id.");
+    return null;
+    // throw new functions.https.HttpsError("invalid-argument", "There is no restaurant with this id.");
   }
   return data;
 };
