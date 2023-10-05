@@ -1,11 +1,12 @@
 おもちかえり.com と お店のLINE公式アカウント の連携方法
 
-2023/9/26 の更新により、飲食店様のLINE公式アカウントからお客様に対して、注文の受理、注文の準備完了の通知ができるようになりました。
+2023/9/26 の更新により、飲食店様のLINE公式アカウントからお客様に対して、注文の受理、注文の準備完了の通知ができるようになりました。(注意: 1注文につき2通分、メッセージ通数にカウントされます。参考URL LINE公式アカウント料金プラン https://www.lycbiz.com/jp/service/line-official-account/plan/)
 
-![](./images/line_users_screen_line_official_account.png)
+<img src="./images/line_users_screen_line_official_account.png" width="250px">
 
 
-この記事ではLINE公式アカウントをもっている飲食店様向けに設定方法について説明します。
+
+この記事ではLINE公式アカウントをもっている飲食店様向けに設定方法を説明します。
 
 ## 1. LINE 公式アカウントの管理画面 での設定
 - LINE 公式アカウントの管理画面にログインします。
