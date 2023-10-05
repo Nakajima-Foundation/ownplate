@@ -19,7 +19,7 @@
 		- [1.3.2. おもちかえり.com 側の準備](#132-おもちかえりcom-側の準備)
 		- [1.3.3. チャネルID / チャネルシークレット の転記](#133-チャネルid--チャネルシークレット-の転記)
 		- [1.3.4. LINE Messaging API](#134-line-messaging-api)
-	- [LINE Developers での設定その2](#line-developers-での設定その2)
+	- [1.4. LINE Developers での設定その2](#14-line-developers-での設定その2)
 - [2. お客様側の設定](#2-お客様側の設定)
 	- [2.1. 初期設定時の注意点](#21-初期設定時の注意点)
 	- [2.2. 注文完了画面](#22-注文完了画面)
@@ -148,7 +148,7 @@ LINE Developers 側のチャネル名(LINEログイン)の
 - `チャネルアクセストークン（長期）`を、おもちかえり.com へコピー & ペーストします。その後、`有効にする` にチェックを入れて `保存` ボタンを押します。  
 	![](./images/line_developers_to_omochikaeri_messaging-api.png)
 
-## LINE Developers での設定その2
+## 1.4. LINE Developers での設定その2
 最後に今回作成した LINE ログインを公開して飲食店様側の設定は終了です。
 
 - 今回作成した `Provider 名` を選択します。  
