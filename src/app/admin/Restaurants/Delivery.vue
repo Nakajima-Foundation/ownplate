@@ -4,7 +4,7 @@
     <template v-else-if="notFound === true">
       <not-found />
     </template>
-    <template v-if="existLocation === false">
+    <template v-else-if="existLocation === false">
       <div class="mx-6 mt-4">
         <div class="rounded-lg bg-black bg-opacity-5 p-4">
           <div class="text-xl font-bold text-red-600">
@@ -15,242 +15,251 @@
         </div>
       </div>
     </template>
-    <div class="mx-6 mt-4" v-else>
-      <!-- Save and Cancel -->
-      <div class="mt-6 flex justify-center space-x-4">
-        <!-- Cancel Button -->
-        <router-link :to="`/admin/restaurants/#restaurant_` + restaurantId">
-          <div
-            class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
-          >
-            <span class="text-base font-bold text-black text-opacity-60">{{
-              $t("button.cancel")
-            }}</span>
-          </div>
-        </router-link>
+    <template v-else>
+      <div class="mx-6 mt-4">
+        <!-- Save and Cancel -->
+        <div class="mt-6 flex justify-center space-x-4">
+          <!-- Cancel Button -->
+          <router-link :to="`/admin/restaurants/#restaurant_` + restaurantId">
+            <div
+              class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
+            >
+              <span class="text-base font-bold text-black text-opacity-60">{{
+                $t("button.cancel")
+              }}</span>
+            </div>
+          </router-link>
 
-        <o-button @click="saveDeliveryArea" class="b-reset-tw">
-          <div
-            class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
-            style="min-width: 8rem"
-          >
-            <span class="text-base font-bold text-white">{{
-              $t("editCommon.save")
-            }}</span>
-          </div>
-        </o-button>
-      </div>
-
-      <div class="rounded-lg bg-black bg-opacity-5 p-4 mt-4">
-        <div class="text-sm font-bold">
-          <o-checkbox v-model="enableDelivery" />{{
-            $t("delivery.enableDelivery", { name: shopInfo.restaurantName }, 0)
-          }}
-        </div>
-        <div class="text-sm font-bold">
-          <o-checkbox v-model="deliveryOnlyStore" />{{
-            $t(
-              "delivery.deliveryOnlyStore",
-              { name: shopInfo.restaurantName },
-              0,
-            )
-          }}
-        </div>
-      </div>
-
-      <!-- area map -->
-      <div class="mt-4 rounded-lg bg-black bg-opacity-5 p-4">
-        <div class="text-lm pb-2 font-bold">
-          {{ $t("delivery.areaSetting") }}
+          <o-button @click="saveDeliveryArea" class="b-reset-tw">
+            <div
+              class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
+              style="min-width: 8rem"
+            >
+              <span class="text-base font-bold text-white">{{
+                $t("editCommon.save")
+              }}</span>
+            </div>
+          </o-button>
         </div>
 
-        <div>
-          <div class="flex pb-2 text-sm font-bold">
-            <o-checkbox v-model="enableAreaMap" :disabled="!enableDelivery" />
-            {{ $t("delivery.setAreaMap") }}
+        <div class="rounded-lg bg-black bg-opacity-5 p-4 mt-4">
+          <div class="text-sm font-bold">
+            <o-checkbox v-model="enableDelivery" />{{
+              $t(
+                "delivery.enableDelivery",
+                { name: shopInfo.restaurantName },
+                0,
+              )
+            }}
           </div>
+          <div class="text-sm font-bold">
+            <o-checkbox v-model="deliveryOnlyStore" />{{
+              $t(
+                "delivery.deliveryOnlyStore",
+                { name: shopInfo.restaurantName },
+                0,
+              )
+            }}
+          </div>
+        </div>
+
+        <!-- area map -->
+        <div class="mt-4 rounded-lg bg-black bg-opacity-5 p-4">
+          <div class="text-lm pb-2 font-bold">
+            {{ $t("delivery.areaSetting") }}
+          </div>
+
           <div>
-            <span>{{ $t("delivery.setAreaMapNotice") }}</span>
+            <div class="flex pb-2 text-sm font-bold">
+              <o-checkbox v-model="enableAreaMap" :disabled="!enableDelivery" />
+              {{ $t("delivery.setAreaMap") }}
+            </div>
+            <div>
+              <span>{{ $t("delivery.setAreaMapNotice") }}</span>
+            </div>
+            <div>
+              <GMapMap
+                ref="gMap"
+                :center="{ lat: 35.6809591, lng: 139.7673068 }"
+                :options="{ fullscreenControl: false }"
+                :zoom="15"
+                style="
+                  width: 100%;
+                  height: 480px;
+                  position: relative;
+                  overflow: hidden;
+                "
+                @loaded="mapLoaded"
+              ></GMapMap>
+            </div>
+            <div class="mt-2 flex">
+              <span class="flex-item mt-auto mb-auto mr-2 inline-block">
+                {{ $t("delivery.deliveryRange") }}:
+              </span>
+              <span class="flex-item mt-auto mb-auto mr-2 inline-block">
+                <input
+                  v-model="radius"
+                  :disabled="!enableAreaMap || !enableDelivery"
+                />
+                m
+              </span>
+              <o-button
+                class="b-reset-tw"
+                :disabled="!enableAreaMap || !enableDelivery"
+                @click="updateCircle"
+              >
+                <div
+                  class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
+                >
+                  <span class="text-base font-bold text-white">
+                    {{ $t("delivery.updateDeliveryRange") }}
+                  </span>
+                </div>
+              </o-button>
+            </div>
           </div>
-          <div>
-            <GMapMap
-              ref="gMap"
-              :center="{ lat: 35.6809591, lng: 139.7673068 }"
-              :options="{ fullscreenControl: false }"
-              :zoom="15"
-              style="
-                width: 100%;
-                height: 480px;
-                position: relative;
-                overflow: hidden;
-              "
-              @loaded="mapLoaded"
-            ></GMapMap>
+          <!-- area text -->
+          <div class="mt-4">
+            <div class="flex pb-2 text-sm font-bold">
+              <o-checkbox
+                v-model="enableAreaText"
+                :disabled="!enableDelivery"
+              />
+              {{ $t("delivery.setAreaText") }}
+            </div>
+
+            <o-input
+              v-model="areaText"
+              type="textarea"
+              :placeholder="$t('delivery.areaTextExample')"
+              :disabled="!enableAreaText || !enableDelivery"
+            >
+            </o-input>
+          </div>
+        </div>
+
+        <div class="mt-4 rounded-lg bg-black bg-opacity-5 p-4">
+          <div class="text-lm pb-2 font-bold">
+            {{ $t("delivery.deliveryThreshold") }}:
           </div>
           <div class="mt-2 flex">
+            <o-checkbox
+              v-model="enableDeliveryThreshold"
+              :disabled="!enableDelivery"
+            />
             <span class="flex-item mt-auto mb-auto mr-2 inline-block">
-              {{ $t("delivery.deliveryRange") }}:
+              <input
+                v-model="deliveryThreshold"
+                :disabled="!enableDelivery"
+                type="number"
+              />
+              {{ $t("delivery.yen") }}
+            </span>
+          </div>
+          <div class="text-sm">
+            * {{ $t("delivery.deliveryThresholdNotice") }}
+          </div>
+        </div>
+
+        <div class="mt-4 rounded-lg bg-black bg-opacity-5 p-4">
+          <div class="text-lm pb-2 font-bold">
+            {{ $t("delivery.deliveryFeeSetting") }}
+          </div>
+          <div class="mt-2 flex">
+            <span class="flex-item mt-auto mb-auto mr-2 inline-block font-bold">
+              {{ $t("delivery.deliveryFee") }}:
             </span>
             <span class="flex-item mt-auto mb-auto mr-2 inline-block">
               <input
-                v-model="radius"
-                :disabled="!enableAreaMap || !enableDelivery"
+                v-model="deliveryFee"
+                :disabled="!enableDelivery"
+                type="number"
               />
-              m
+              {{ $t("delivery.yen") }}
             </span>
-            <o-button
-              class="b-reset-tw"
-              :disabled="!enableAreaMap || !enableDelivery"
-              @click="updateCircle"
+          </div>
+          <div class="text-sm">
+            * {{ $t("delivery.deliveryFeeSettingNotice") }}
+          </div>
+
+          <div class="mt-2 flex">
+            <o-checkbox
+              v-model="enableDeliveryFree"
+              :disabled="!enableDelivery"
+            />
+            <span class="flex-item mt-auto mb-auto mr-2 inline-block font-bold">
+              {{ $t("delivery.deliveryFreeThreshold") }}:
+            </span>
+            <span class="flex-item mt-auto mb-auto mr-2 inline-block">
+              <input
+                v-model="deliveryFreeThreshold"
+                :disabled="!enableDelivery"
+                type="number"
+              />
+              {{ $t("delivery.yen") }}
+            </span>
+          </div>
+          <div class="text-sm">
+            * {{ $t("delivery.deliveryFreeThresholdNotice") }}
+          </div>
+        </div>
+
+        <div class="mt-4 rounded-lg bg-black bg-opacity-5 p-4">
+          <div class="text-lm pb-2 font-bold">
+            {{ $t("editRestaurant.deliveryPreparationTime") }}
+          </div>
+          <div>
+            {{ $t("editRestaurant.preparationTime") }}
+            {{ $t("delivery.reference") }} {{ shopInfo.pickUpMinimumCookTime }}
+            {{ $t("editRestaurant.minutes") }}
+          </div>
+          <div>* {{ $t("delivery.preparationTimeNotice") }}</div>
+          <div>
+            {{ $t("editRestaurant.deliveryPreparationTime") }}
+            <input
+              v-model="deliveryMinimumCookTime"
+              :disabled="!enableDelivery"
+              type="number"
+            />
+            {{ $t("editRestaurant.minutes") }}
+          </div>
+        </div>
+        <div class="mt-4 rounded-lg bg-black bg-opacity-5 p-4">
+          <a
+            href="https://docs.omochikaeri.com/manuals/delivery.pdf"
+            target="_blank"
+            class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
+          >
+            {{ $t("menu.deliveryManualLink") }}
+          </a>
+        </div>
+
+        <!-- Save and Cancel -->
+        <div class="mt-6 flex justify-center space-x-4">
+          <!-- Cancel Button -->
+          <router-link :to="`/admin/restaurants/#restaurant_` + restaurantId">
+            <div
+              class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
             >
-              <div
-                class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
-              >
-                <span class="text-base font-bold text-white">
-                  {{ $t("delivery.updateDeliveryRange") }}
-                </span>
-              </div>
-            </o-button>
-          </div>
-        </div>
-        <!-- area text -->
-        <div class="mt-4">
-          <div class="flex pb-2 text-sm font-bold">
-            <o-checkbox v-model="enableAreaText" :disabled="!enableDelivery" />
-            {{ $t("delivery.setAreaText") }}
-          </div>
+              <span class="text-base font-bold text-black text-opacity-60">{{
+                $t("button.cancel")
+              }}</span>
+            </div>
+          </router-link>
 
-          <o-input
-            v-model="areaText"
-            type="textarea"
-            :placeholder="$t('delivery.areaTextExample')"
-            :disabled="!enableAreaText || !enableDelivery"
-          >
-          </o-input>
+          <o-button @click="saveDeliveryArea" class="b-reset-tw">
+            <div
+              class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
+              style="min-width: 8rem"
+            >
+              <span class="text-base font-bold text-white">{{
+                $t("editCommon.save")
+              }}</span>
+            </div>
+          </o-button>
         </div>
       </div>
-
-      <div class="mt-4 rounded-lg bg-black bg-opacity-5 p-4">
-        <div class="text-lm pb-2 font-bold">
-          {{ $t("delivery.deliveryThreshold") }}:
-        </div>
-        <div class="mt-2 flex">
-          <o-checkbox
-            v-model="enableDeliveryThreshold"
-            :disabled="!enableDelivery"
-          />
-          <span class="flex-item mt-auto mb-auto mr-2 inline-block">
-            <input
-              v-model="deliveryThreshold"
-              :disabled="!enableDelivery"
-              type="number"
-            />
-            {{ $t("delivery.yen") }}
-          </span>
-        </div>
-        <div class="text-sm">
-          * {{ $t("delivery.deliveryThresholdNotice") }}
-        </div>
-      </div>
-
-      <div class="mt-4 rounded-lg bg-black bg-opacity-5 p-4">
-        <div class="text-lm pb-2 font-bold">
-          {{ $t("delivery.deliveryFeeSetting") }}
-        </div>
-        <div class="mt-2 flex">
-          <span class="flex-item mt-auto mb-auto mr-2 inline-block font-bold">
-            {{ $t("delivery.deliveryFee") }}:
-          </span>
-          <span class="flex-item mt-auto mb-auto mr-2 inline-block">
-            <input
-              v-model="deliveryFee"
-              :disabled="!enableDelivery"
-              type="number"
-            />
-            {{ $t("delivery.yen") }}
-          </span>
-        </div>
-        <div class="text-sm">
-          * {{ $t("delivery.deliveryFeeSettingNotice") }}
-        </div>
-
-        <div class="mt-2 flex">
-          <o-checkbox
-            v-model="enableDeliveryFree"
-            :disabled="!enableDelivery"
-          />
-          <span class="flex-item mt-auto mb-auto mr-2 inline-block font-bold">
-            {{ $t("delivery.deliveryFreeThreshold") }}:
-          </span>
-          <span class="flex-item mt-auto mb-auto mr-2 inline-block">
-            <input
-              v-model="deliveryFreeThreshold"
-              :disabled="!enableDelivery"
-              type="number"
-            />
-            {{ $t("delivery.yen") }}
-          </span>
-        </div>
-        <div class="text-sm">
-          * {{ $t("delivery.deliveryFreeThresholdNotice") }}
-        </div>
-      </div>
-
-      <div class="mt-4 rounded-lg bg-black bg-opacity-5 p-4">
-        <div class="text-lm pb-2 font-bold">
-          {{ $t("editRestaurant.deliveryPreparationTime") }}
-        </div>
-        <div>
-          {{ $t("editRestaurant.preparationTime") }}
-          {{ $t("delivery.reference") }} {{ shopInfo.pickUpMinimumCookTime }}
-          {{ $t("editRestaurant.minutes") }}
-        </div>
-        <div>* {{ $t("delivery.preparationTimeNotice") }}</div>
-        <div>
-          {{ $t("editRestaurant.deliveryPreparationTime") }}
-          <input
-            v-model="deliveryMinimumCookTime"
-            :disabled="!enableDelivery"
-            type="number"
-          />
-          {{ $t("editRestaurant.minutes") }}
-        </div>
-      </div>
-      <div class="mt-4 rounded-lg bg-black bg-opacity-5 p-4">
-        <a
-          href="https://docs.omochikaeri.com/manuals/delivery.pdf"
-          target="_blank"
-          class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
-        >
-          {{ $t("menu.deliveryManualLink") }}
-        </a>
-      </div>
-
-      <!-- Save and Cancel -->
-      <div class="mt-6 flex justify-center space-x-4">
-        <!-- Cancel Button -->
-        <router-link :to="`/admin/restaurants/#restaurant_` + restaurantId">
-          <div
-            class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
-          >
-            <span class="text-base font-bold text-black text-opacity-60">{{
-              $t("button.cancel")
-            }}</span>
-          </div>
-        </router-link>
-
-        <o-button @click="saveDeliveryArea" class="b-reset-tw">
-          <div
-            class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
-            style="min-width: 8rem"
-          >
-            <span class="text-base font-bold text-white">{{
-              $t("editCommon.save")
-            }}</span>
-          </div>
-        </o-button>
-      </div>
-    </div>
+    </template>
   </div>
 </template>
 
@@ -386,7 +395,10 @@ export default defineComponent({
     const location = props.shopInfo.location;
     existLocation.value = Object.keys(location).length === 2;
     if (!existLocation.value) {
-      return;
+      return {
+        notFound: false,
+        existLocation,
+      };
     }
     enableDelivery.value = props.shopInfo.enableDelivery || false;
     deliveryOnlyStore.value = props.shopInfo.deliveryOnlyStore || false;

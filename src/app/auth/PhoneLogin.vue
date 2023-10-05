@@ -207,7 +207,8 @@ export default defineComponent({
 
     onMounted(() => {
       recaptchaVerifier = new RecaptchaVerifier(
-        "signInButton", {
+        "signInButton",
+        {
           size: "invisible",
           callback: () => {
             // reCAPTCHA solved, allow signInWithPhoneNumber.
@@ -215,7 +216,8 @@ export default defineComponent({
             console.log("verified");
           },
         },
-      auth);
+        auth,
+      );
     });
 
     const hasError = computed(() => {

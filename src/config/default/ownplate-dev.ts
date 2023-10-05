@@ -44,15 +44,4 @@ export const GAPIKey = "AIzaSyBopNQwD1RT2k9dLqH6WYPWIkMZF3RWXMQ";
 export const fromEmail = "noreply@ownplate-dev.firebaseapp.com";
 
 export const mo_prefixes = ["mo", "motest", "ss"];
-export const moGtmID = "GTM-PLFRX7K";
-export const moBaseUrl = "https://mo-data-dev.omochikaeri.com";
-export const moTitle = "Mobile Order";
-export const moPickup = true;
 
-export const enableReason = true;
-
-export const enableCampaignBanner = false;
-
-export const autoCancels = ["ss", "motest"];
-
-export const moCloseStatus = 1; // 1, 2 ,3
