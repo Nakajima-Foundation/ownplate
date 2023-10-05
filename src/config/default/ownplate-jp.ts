@@ -49,4 +49,3 @@ export const mo_prefixes = ["mo", "ss"];
 
 export const autoCancels = ["ss", "motest"];
 
-export const moCloseStatus = 0; // 1, 2 ,3
