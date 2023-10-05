@@ -13,6 +13,9 @@
 - `Messaging API を利用する` ボタンを押します。  
 	![](./images/line_official_account_setting_messagingapi_button.png)
 - プロバイダー名（飲食店名など）を入力し、`同意する` ボタンを押します。  
+	> 参考: お客様の画面はこのように表示されます。  
+	> <img src="./images/line_users_screen_provider.png" width="250px">
+
 	既存のプロバイダーを利用する場合は、該当するプロバイダーを選択してください。  
 	![](./images/line_official_account_setting_messagingapi_button_provider.png)
 - プライバシーポリシーと利用規約のURLを入力して、`OK` ボタンを押します。任意なので空欄でも大丈夫です。  
@@ -47,6 +50,13 @@ LINE公式アカウントとは別に、LINE Developers というサイトがあ
   - プライバシーポリシーURL: 任意。飲食店様の情報を登録します。
   - サービス利用規約URL: 任意。飲食店様の情報を入力を登録します。
   - LINE開発者契約の内容に同意します: 内容を確認の上、チェックします。
+
+	> 参考: お客様にはこのように表示されます。
+  > **チャネルアイコン**:	紫枠
+  > **チャネル名**:	赤枠
+  > **チャネル説明**:	青枠
+	> <img src="./images/line_users_screen_name_image_etc.png" width="250px">
+
 
 　上記入力後に `作成` ボタンを押します。
 	![](./images/line_developers_console_new_channel_form.png)
