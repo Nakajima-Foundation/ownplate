@@ -4,11 +4,28 @@
 
 <img src="./images/line_users_screen_line_official_account.png" width="250px">
 
-
-
 この記事ではLINE公式アカウントをもっている飲食店様向けに設定方法を説明します。
 
-## 1. LINE 公式アカウントの管理画面 での設定
+- [1. 飲食店様側の設定](#1-飲食店様側の設定)
+	- [1.1. LINE 公式アカウントの管理画面 での設定](#11-line-公式アカウントの管理画面-での設定)
+	- [1.2. LINE Developers での設定](#12-line-developers-での設定)
+		- [1.2.1. 新規チャネル作成](#121-新規チャネル作成)
+		- [1.2.2. チャネル設定](#122-チャネル設定)
+			- [1.2.2.1. チャネル基本設定](#1221-チャネル基本設定)
+			- [1.2.2.2. おもちかえり.com 管理画面](#1222-おもちかえりcom-管理画面)
+			- [1.2.2.3. LINEログイン設定](#1223-lineログイン設定)
+	- [1.3. LINE Developers から おもちかえり.com 管理画面 へ転記](#13-line-developers-から-おもちかえりcom-管理画面-へ転記)
+		- [1.3.1. LINE Developers 側の準備](#131-line-developers-側の準備)
+		- [1.3.2. おもちかえり.com 側の準備](#132-おもちかえりcom-側の準備)
+		- [1.3.3. チャネルID / チャネルシークレット の転記](#133-チャネルid--チャネルシークレット-の転記)
+		- [1.3.4. LINE Messaging API](#134-line-messaging-api)
+- [2. お客様側の設定](#2-お客様側の設定)
+	- [2.1. 注文完了画面](#21-注文完了画面)
+		- [2.1.1. 初期設定時の注意点](#211-初期設定時の注意点)
+	- [2.2. LINE](#22-line)
+
+# 1. 飲食店様側の設定
+## 1.1. LINE 公式アカウントの管理画面 での設定
 - LINE 公式アカウントの管理画面にログインします。
 - `設定` を押します。  
 	![](./images/line_official_account_setting.png)
@@ -27,8 +44,8 @@
 - 最終確認をして、`OK` ボタンを押します。  
 	![](./images/line_official_account_setting_messagingapi_button_confirm.png)
 
-## 2. LINE Developers での設定
-### 2.1. 新規チャネル作成
+## 1.2. LINE Developers での設定
+### 1.2.1. 新規チャネル作成
 LINE公式アカウントとは別に、LINE Developers というサイトがあります。今回はこの LINE Developers 上での設定方法について説明します。  
 
 - LINE Developers にログインします。  
@@ -65,8 +82,8 @@ LINE公式アカウントとは別に、LINE Developers というサイトがあ
 　上記入力後に `作成` ボタンを押します。
 	![](./images/line_developers_console_new_channel_form.png)
 
-### 2.2. チャネル設定
-#### 2.2.1. チャネル基本設定
+### 1.2.2. チャネル設定
+#### 1.2.2.1. チャネル基本設定
 - 項番2.1 の設定が完了すると以下の画面が表示されます。  
 	![](./images/line_developers_console_line_login.png)
 - このページの下段の `友だち追加オプション` の項目の`編集`ボタンを押します。  
@@ -76,14 +93,14 @@ LINE公式アカウントとは別に、LINE Developers というサイトがあ
 
 - ここで一度、おもちかえり.com 管理画面を`別タブ`または`別ウインドウ`で開きます。
 
-#### 2.2.2. おもちかえり.com 管理画面
+#### 1.2.2.2. おもちかえり.com 管理画面
 - 店舗情報より `LINE連携` ボタンを押します  
 	![](./images/omochikaeri_admin_restaurant_info.png)
 - `LINEログイン:コールバックURL` をコピーします  
 	![](./images/omochikaeri_admin_restaurant_info_callback.png)
 - 先ほどの `LINE Developers > プロバイダー名 > チャネル名(LINEログイン)` に戻ります。
 
-#### 2.2.3. LINEログイン設定
+#### 1.2.2.3. LINEログイン設定
 - `LINEログイン設定` を選択します。  
 	![](./images/line_developers_console_line_login_line-login-setting.png)
 - `コールバックURL` の `編集` ボタンを押します。  
@@ -93,17 +110,17 @@ LINE公式アカウントとは別に、LINE Developers というサイトがあ
 - LINE Developers 側の設定はこれで終了です。  
 	次は LINE Developers の情報をコピーして、おもちかえり.com の管理画面へペーストする作業です。
 
-## 3. LINE Developers から おもちかえり.com 管理画面 へ転記
-### 3.1. LINE Developers 側の準備
+## 1.3. LINE Developers から おもちかえり.com 管理画面 へ転記
+### 1.3.1. LINE Developers 側の準備
 - これまでに利用していた `LINE Developers > プロバイダー名 > チャネル名(LINEログイン)` の `チャネル基本設定` を選択します。  
 
 	![](./images/line_developers_console_line_login_basics.png)
 
-### 3.2. おもちかえり.com 側の準備
+### 1.3.2. おもちかえり.com 側の準備
 - 項番2.2.2 と同様に `管理画面 > 店舗情報 > LINE連携` にします。  
 	![](./images/line_developers_console_line_login_line-login-setting.png)
 
-### 3.3. チャネルID / チャネルシークレット の転記
+### 1.3.3. チャネルID / チャネルシークレット の転記
 LINE Developers 側のチャネル名(LINEログイン)の
 
   - 上段: チャンネルID
@@ -114,7 +131,7 @@ LINE Developers 側のチャネル名(LINEログイン)の
 
 - 次は LINE Developers側の作業です。
 
-### 3.4. LINE Messaging API 
+### 1.3.4. LINE Messaging API 
 - 今回作成した `Provider 名` を選択します。  
 	![](./images/line_developers_console_select_provider.png)
 
@@ -129,3 +146,23 @@ LINE Developers 側のチャネル名(LINEログイン)の
 
 - `チャネルアクセストークン（長期）`を、おもちかえり.com へコピー & ペーストします。その後、`有効にする` にチェックを入れて `保存` ボタンを押します。  
 	![](./images/line_developers_to_omochikaeri_messaging-api.png)
+
+# 2. お客様側の設定
+## 2.1. 注文完了画面
+注文完了後の画面上部の `お店LINEから通知を受け取り` をタップします。
+
+<img src="./images/line_users_screen_order.png" width="250px">
+
+### 2.1.1. 初期設定時の注意点
+- iPhone ユーザー
+  - Safari ブラウザを利用してください
+  - 通常モード（プライベートモードを利用しない）を利用してください
+- Android ユーザー
+  - Chrome ブラウザを利用してください
+  - 通常モード（プライベートモードを利用しない）を利用してください
+
+## 2.2. LINE
+上記を実行すると LINE アプリへ遷移します。遷移後、`許可する` ボタンをタップします。  
+以上でお客様側の設定は完了です。
+
+<img src="./images/line_users_screen_authentication.png" width="250px">
