@@ -426,6 +426,16 @@
                       >
                     </div>
                   </o-button>
+                  <o-button @click="positionUp(key)" class="b-reset-tw">
+                    <div
+                      class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 mr-2"
+                      v-if="key !== 0"
+                    >
+                      <i class="material-icons text-lg text-op-teal"
+                        >arrow_upward</i
+                      >
+                    </div>
+                  </o-button>
                   <div class="flex-1 mr-2">
                     <o-input
                       v-model="menuInfo.itemOptionCheckbox[key]"
@@ -1020,6 +1030,13 @@ export default defineComponent({
       item[key + 1] = tmp;
       menuInfo.itemOptionCheckbox = item;
     };
+    const positionUp = (key: number) => {
+      const item = [...menuInfo.itemOptionCheckbox];
+      const tmp = item[key - 1];
+      item[key - 1] = item[key];
+      item[key] = tmp;
+      menuInfo.itemOptionCheckbox = item;
+    };
 
     const openTips = (key: string) => {
       store.commit("setTips", {
@@ -1073,6 +1090,7 @@ export default defineComponent({
       restaurantId,
 
       positionDown,
+      positionUp,
 
       openTips,
     };
