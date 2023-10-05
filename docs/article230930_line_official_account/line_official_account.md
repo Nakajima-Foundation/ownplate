@@ -19,6 +19,7 @@
 		- [1.3.2. おもちかえり.com 側の準備](#132-おもちかえりcom-側の準備)
 		- [1.3.3. チャネルID / チャネルシークレット の転記](#133-チャネルid--チャネルシークレット-の転記)
 		- [1.3.4. LINE Messaging API](#134-line-messaging-api)
+	- [LINE Developers での設定その2](#line-developers-での設定その2)
 - [2. お客様側の設定](#2-お客様側の設定)
 	- [2.1. 初期設定時の注意点](#21-初期設定時の注意点)
 	- [2.2. 注文完了画面](#22-注文完了画面)
@@ -107,7 +108,7 @@ LINE公式アカウントとは別に、LINE Developers というサイトがあ
 	![](./images/line_developers_console_line_login_line-login-callback.png)
 - 先ほどおもちかえり.com 管理画面でコピーした `コールバックURL` をペーストして、`更新` ボタンを押します。  
 	![](./images/line_developers_console_line_login_line-login-callback2.png)
-- LINE Developers 側の設定はこれで終了です。  
+- LINE Developers 側の設定はこれで一旦終了です。  
 	次は LINE Developers の情報をコピーして、おもちかえり.com の管理画面へペーストする作業です。
 
 ## 1.3. LINE Developers から おもちかえり.com 管理画面 へ転記
@@ -146,6 +147,26 @@ LINE Developers 側のチャネル名(LINEログイン)の
 
 - `チャネルアクセストークン（長期）`を、おもちかえり.com へコピー & ペーストします。その後、`有効にする` にチェックを入れて `保存` ボタンを押します。  
 	![](./images/line_developers_to_omochikaeri_messaging-api.png)
+
+## LINE Developers での設定その2
+最後に今回作成した LINE ログインを公開して飲食店様側の設定は終了です。
+
+- 今回作成した `Provider 名` を選択します。  
+	![](./images/line_developers_console_select_provider.png)
+
+- 今回作成した `LIEN ログイン名` を選択します。  
+	![](./images/line_developers_console_channel2.png)
+
+- `開発中` ボタンを押します。  
+	![](./images/line_developers_console_line_login_development.png)
+
+- `公開` ボタンを押します。  
+	![](./images/line_developers_console_publish.png)
+
+- 先ほど `開発中` となっていた箇所が `公開済み` になります。
+	![](./images/line_developers_console_published.png)
+
+- 以上で、飲食店様側の設定は完了です。
 
 # 2. お客様側の設定
 ## 2.1. 初期設定時の注意点
