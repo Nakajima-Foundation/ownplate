@@ -8,6 +8,11 @@ module.exports = {
       template: 'public/index.html',
       filename: 'index.html',
     },
+    motest: {
+      entry: 'src/main.ts',
+      template: 'public/top/motest.html',
+      filename: 'motest.html',
+    }
   },
   productionSourceMap: false,
   devServer: {
