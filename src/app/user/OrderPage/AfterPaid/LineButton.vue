@@ -44,9 +44,7 @@ import { ownPlateConfig } from "@/config/project";
 
 import { useStore } from "vuex";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
-import {
-  isDev,
-} from "@/utils/utils";
+import { isDev } from "@/utils/utils";
 
 export default defineComponent({
   props: {
