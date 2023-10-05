@@ -14,7 +14,6 @@
         <td>電話通知</td>
         <td>宅配</td>
         <td>印刷</td>
-        <td>Mo</td>
         <td>EC</td>
         <td>P</td>
         <td>G</td>
@@ -63,9 +62,6 @@
         </td>
         <td>
           {{ !!restaurant.enablePrinter ? "o" : "-" }}
-        </td>
-        <td>
-          {{ !!restaurant.enableMoPickup ? "o" : "-" }}
         </td>
         <td>
           {{ !!restaurant.isEC ? "o" : "-" }}

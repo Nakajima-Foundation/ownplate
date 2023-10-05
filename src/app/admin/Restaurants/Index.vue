@@ -1113,7 +1113,7 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, updateDoc } from "firebase/firestore";
 
 import { google_geocode } from "@/lib/google/api";
-import { ownPlateConfig, moPickup } from "@/config/project";
+import { ownPlateConfig } from "@/config/project";
 
 import NotFound from "@/components/NotFound.vue";
 import PhoneEntry from "@/components/PhoneEntry.vue";
@@ -1565,7 +1565,6 @@ export default defineComponent({
 
       disableSave,
 
-      moPickup,
     };
   },
 });
