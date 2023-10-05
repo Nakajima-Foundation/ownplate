@@ -540,7 +540,6 @@ export const timeList = [
   "12:00 AM",
 ];
 
-
 export const timeList2 = [
   null,
   "00:00 AM",
