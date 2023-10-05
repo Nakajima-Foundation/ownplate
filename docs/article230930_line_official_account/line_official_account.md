@@ -1,6 +1,6 @@
-おもちかえり.com と お店のLINE公式アカウント の連携方法
+# おもちかえり.com と 飲食店様 LINE公式アカウント の連携方法 <!-- omit in toc -->
 
-2023/9/26 の更新により、飲食店様のLINE公式アカウントからお客様に対して、注文の受理、注文の準備完了の通知ができるようになりました。(注意: 1注文につき2通分、メッセージ通数にカウントされます。参考URL LINE公式アカウント料金プラン https://www.lycbiz.com/jp/service/line-official-account/plan/)
+2023/9/26 の更新により、飲食店様のLINE公式アカウントからお客様に対して、注文の受理・注文の準備完了・キャンセルなどの通知ができるようになりました。(注意: 1注文につき最低2通分、LINE公式アカウントのメッセージ通数にカウントされます。参考URL LINE公式アカウント料金プラン https://www.lycbiz.com/jp/service/line-official-account/plan/ )
 
 <img src="./images/line_users_screen_line_official_account.png" width="250px">
 
@@ -34,7 +34,7 @@
 - `Messaging API を利用する` ボタンを押します。  
 	![](./images/line_official_account_setting_messagingapi_button.png)
 - プロバイダー名（飲食店名など）を入力し、`同意する` ボタンを押します。  
-	> 参考: お客様の画面はこのように表示されます。  
+	> 参考: お客様画面の赤枠部分に表示されます。  
 	> <img src="./images/line_users_screen_provider.png" width="250px">
 
 	既存のプロバイダーを利用する場合は、該当するプロバイダーを選択してください。  
@@ -46,14 +46,14 @@
 
 ## 1.2. LINE Developers での設定
 ### 1.2.1. 新規チャネル作成
-LINE公式アカウントとは別に、LINE Developers というサイトがあります。今回はこの LINE Developers 上での設定方法について説明します。  
+LINE公式アカウントとは別に、LINE Developers というサイトがあります。ここでは LINE Developers 上での設定方法について説明します。  
 
 - LINE Developers にログインします。  
 	URL: https://account.line.biz/login?redirectUri=https%3A%2F%2Fdevelopers.line.biz%2Fconsole%2F
-- ログインするとコンソール画面になります。  
-- 項番1 で作成したプロバイダー名を選択します。  
+- ログインするとコンソール画面が表示されます。  
+- 項番1.1 で作成したプロバイダー名を選択します。  
 	![](./images/line_developers_console.png)
-- 項番1 で設定したLINE公式アカウント名が表示されていることを確認します。  
+- 項番1.1 で設定したLINE公式アカウント名が表示されていることを確認します。  
 	![](./images/line_developers_console_channel.png)
 - `新規チャネル作成` ボタンを押します。  
 	![](./images/line_developers_console_new_channel.png)
