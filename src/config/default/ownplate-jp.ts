@@ -47,5 +47,4 @@ export const fromEmail = "noreply@omochikaeri.com";
 
 export const mo_prefixes = ["mo", "ss"];
 
-export const autoCancels = ["ss", "motest"];
 

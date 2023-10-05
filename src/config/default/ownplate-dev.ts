@@ -45,5 +45,3 @@ export const fromEmail = "noreply@ownplate-dev.firebaseapp.com";
 
 export const mo_prefixes = ["mo", "motest", "ss"];
 
-export const autoCancels = ["ss", "motest"];
-
