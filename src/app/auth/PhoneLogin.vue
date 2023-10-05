@@ -206,14 +206,16 @@ export default defineComponent({
     const isLocaleJapan = useIsLocaleJapan();
 
     onMounted(() => {
-      recaptchaVerifier = new RecaptchaVerifier(auth, "signInButton", {
-        size: "invisible",
-        callback: () => {
-          // reCAPTCHA solved, allow signInWithPhoneNumber.
-          // console.log("verified", response);
-          console.log("verified");
+      recaptchaVerifier = new RecaptchaVerifier(
+        "signInButton", {
+          size: "invisible",
+          callback: () => {
+            // reCAPTCHA solved, allow signInWithPhoneNumber.
+            // console.log("verified", response);
+            console.log("verified");
+          },
         },
-      });
+      auth);
     });
 
     const hasError = computed(() => {
