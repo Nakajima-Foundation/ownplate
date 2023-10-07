@@ -91,28 +91,4 @@ export default defineComponent({
   color: #333333;
 }
 
-/*
-/deep/ .article-list h2 {
-  @apply text-xl font-bold text-black text-opacity-30 mb-8;
-}
-/deep/ .article-list ul {
-  @apply list-outside list-disc pl-6;
-}
-
-/deep/ .article-list > ul {
-  @apply list-none p-0;
-}
-
-/deep/ .article-list > ul > li {
-  @apply text-xl font-bold text-black text-opacity-30;
-}
-
-/deep/ .article-list > ul > li:not(:first-child) {
-  @apply list-none pt-6;
-}
-
-/deep/ .article-list > ul > li ul li {
-  @apply text-base font-normal text-black mt-4;
-}
-*/
 </style>
