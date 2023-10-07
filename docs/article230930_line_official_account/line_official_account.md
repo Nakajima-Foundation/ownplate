@@ -35,7 +35,9 @@
 - `Messaging API を利用する` ボタンを押します。  
 	![](./images/line_official_account_setting_messagingapi_button.png)
 - プロバイダー名（飲食店名など）を入力し、`同意する` ボタンを押します。  
-	> 参考: お客様画面の赤枠部分に表示されます。  
+	> 参考1: LINE ではプロバイダーのことを「サービスを提供し、利用者の情報を取得する個人の開発者、企業、組織」と定義しています。
+
+	> 参考2: プロバイダー名はお客様画面の赤枠部分に表示されます。  
 	> <img src="./images/line_users_screen_provider.png" width="250px">
 
 	既存のプロバイダーを利用する場合は、該当するプロバイダーを選択してください。  
@@ -85,7 +87,7 @@ LINE公式アカウントとは別に、LINE Developers というサイトがあ
 
 ### 1.2.2. チャネル設定
 #### 1.2.2.1. チャネル基本設定
-- 項番2.1 の設定が完了すると以下の画面が表示されます。  
+- 項番1.2.1 の設定が完了すると以下の画面が表示されます。  
 	![](./images/line_developers_console_line_login.png)
 - このページの下段の `友だち追加オプション` の項目の`編集`ボタンを押します。  
 	![](./images/line_developers_console_line_login_add_friend_option.png)
@@ -118,8 +120,8 @@ LINE公式アカウントとは別に、LINE Developers というサイトがあ
 	![](./images/line_developers_console_line_login_basics.png)
 
 ### 1.3.2. おもちかえり.com 側の準備
-- 項番2.2.2 と同様に `管理画面 > 店舗情報 > LINE連携` にします。  
-	![](./images/line_developers_console_line_login_line-login-setting.png)
+- 項番1.2.2.2 と同様に `管理画面 > 店舗情報 > LINE連携` にします。  
+	![](./images/omochikaeri_admin_restaurant_info.png)
 
 ### 1.3.3. チャネルID / チャネルシークレット の転記
 LINE Developers 側のチャネル名(LINEログイン)の
