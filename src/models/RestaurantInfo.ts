@@ -46,7 +46,7 @@ export interface RestaurantInfoData {
 
   isEC: boolean; // set by system
   enableDelivery: boolean;
-  enableMoPickup: boolean; // set by sys
+  deliveryOnlyStore: boolean;
   groupId: string; // set by sys // TODO remove
   supportLiff: boolean;
 

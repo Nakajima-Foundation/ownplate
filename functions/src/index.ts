@@ -19,7 +19,6 @@ exportIfNeeded("superDispatch", "super/superDispatch", exports);
 exportIfNeeded("superTwilio", "super/superTwilio", exports);
 
 // exportIfNeeded("batchBigQueryPV", "batch/bigQueryPV", exports);
-// exportIfNeeded("autoCancel", "batch/autoCancel", exports);
 
 exportIfNeeded("accountDelete", "accountDelete", exports);
 

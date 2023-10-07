@@ -1,9 +1,9 @@
 <template>
-  <div v-if="showAddLine" class="mt-6 text-center">
+  <div v-if="showAddLine || isDev" class="mt-6 text-center">
     <div v-if="hasLine">
       <div
         class="mx-6 rounded-lg bg-black bg-opacity-5 p-4"
-        v-if="hasFriends !== null"
+        v-if="hasFriends !== null || isDev"
       >
         <button @click="handleLineAuth">
           <div
@@ -44,6 +44,7 @@ import { ownPlateConfig } from "@/config/project";
 
 import { useStore } from "vuex";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { isDev } from "@/utils/utils";
 
 export default defineComponent({
   props: {
@@ -90,6 +91,7 @@ export default defineComponent({
     return {
       handleLineAuth,
       showAddLine,
+      isDev,
     };
   },
 });

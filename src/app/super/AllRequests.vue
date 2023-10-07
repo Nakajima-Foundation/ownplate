@@ -96,7 +96,7 @@ export default defineComponent({
     ).then(async (snapshot) => {
       requests.value = snapshot.docs.map(doc2data("request"));
       const ids = requests.value.map((a) => a.id);
-      arrayChunk(ids, 10).map(async (arr) => {
+      for (const arr of arrayChunk(ids, 10)) {
         const resCols = await getDocs(
           query(collection(db, "restaurants"), where(documentId(), "in", arr)),
         );
@@ -107,7 +107,7 @@ export default defineComponent({
             array2obj(resCols.docs.map(doc2data("restaurant"))),
           );
         }
-      });
+      }
     });
 
     const enableList = (id: string) => {

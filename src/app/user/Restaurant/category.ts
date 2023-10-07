@@ -4,7 +4,6 @@ import {
   smallImageErrorHandler,
   getRestaurantId,
 } from "@/utils/utils";
-import { moBaseUrl } from "@/config/project";
 
 export default (name: string) => {
   return defineComponent({
@@ -25,7 +24,6 @@ export default (name: string) => {
 
       return {
         basePath,
-        moBaseUrl,
         smallImageErrorHandler,
         restaurantId,
       };

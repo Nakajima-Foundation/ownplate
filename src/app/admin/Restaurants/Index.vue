@@ -1113,14 +1113,14 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, updateDoc } from "firebase/firestore";
 
 import { google_geocode } from "@/lib/google/api";
-import { ownPlateConfig, moPickup } from "@/config/project";
+import { ownPlateConfig } from "@/config/project";
 
 import NotFound from "@/components/NotFound.vue";
 import PhoneEntry from "@/components/PhoneEntry.vue";
 import Price from "@/components/Price.vue";
 
 import HoursInput from "@/app/admin/inputComponents/HoursInput.vue";
-import HourInput from "@/app/admin/inputComponents/HourInput.vue";
+import HourInput from "@/app/admin/inputComponents/HourInput2.vue";
 import TextForm from "@/app/admin/inputComponents/TextForm.vue";
 import State from "@/app/admin/inputComponents/State.vue";
 import NotificationIndex from "@/app/admin/Notifications/Index.vue";
@@ -1564,8 +1564,6 @@ export default defineComponent({
       updateAndUpdateMap,
 
       disableSave,
-
-      moPickup,
     };
   },
 });
