@@ -16,7 +16,7 @@ import { useRoute } from "vue-router";
 import news from "../../../../docs/NEWS.md";
 import linenews from "../../../../docs/article230930_line_official_account/line_official_account.md";
 
-const articles = {
+const articles: { [key: string]: string } = {
   news,
   line202309: linenews,
 };
@@ -24,7 +24,7 @@ const articles = {
 export default defineComponent({
   setup() {
     const route = useRoute();
-    const articleId = route.params.articleId;
+    const articleId = route.params.articleId as string;
     const article = articles[articleId];
 
     return {
