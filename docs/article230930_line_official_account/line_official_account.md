@@ -1,6 +1,8 @@
 # おもちかえり.com と 飲食店様 LINE公式アカウント の連携方法 <!-- omit in toc -->
 
-2023/9/26 の更新により、飲食店様のLINE公式アカウントからお客様に対して、注文の受理・注文の準備完了・キャンセルなどの通知ができるようになりました。(注意: LINE公式アカウントのメッセージ通数にカウントされます。参考URL LINE公式アカウント料金プラン https://www.lycbiz.com/jp/service/line-official-account/plan/ )
+2023/9/26 の更新により、飲食店様のLINE公式アカウントからお客様に対して、注文の受理・注文の準備完了・キャンセルなどの通知ができるようになりました。(注意: LINE公式アカウントのメッセージ通数にカウントされます。
+
+参考URL [LINE公式アカウント料金プラン](https://www.lycbiz.com/jp/service/line-official-account/plan/ )
 
 <img src="./images/line_users_screen_line_official_account.png" width="250px">
 
@@ -52,7 +54,7 @@
 LINE公式アカウントとは別に、LINE Developers というサイトがあります。ここでは LINE Developers 上での設定方法について説明します。  
 
 - LINE Developers にログインします。  
-	URL: https://account.line.biz/login?redirectUri=https%3A%2F%2Fdevelopers.line.biz%2Fconsole%2F
+	URL: [https://account.line.biz/login?redirectUri=https%3A%2F%2Fdevelopers.line.biz%2Fconsole%2F](https://account.line.biz/login?redirectUri=https%3A%2F%2Fdevelopers.line.biz%2Fconsole%2F)
 - ログインするとコンソール画面が表示されます。  
 - 項番1.1 で作成したプロバイダー名を選択します。  
 	![](./images/line_developers_console.png)

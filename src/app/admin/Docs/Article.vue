@@ -57,7 +57,7 @@ export default defineComponent({
 
 <style lang="css" scoped>
 ::v-deep(h1) {
-  @apply my-4 text-base font-bold text-black text-opacity-60;
+  @apply my-4 text-xl font-bold text-black text-opacity-60;
 }
 ::v-deep(h2) {
   @apply my-4 text-base font-bold text-black text-opacity-60;
@@ -69,13 +69,19 @@ export default defineComponent({
   @apply my-4 text-base font-bold text-black text-opacity-60;
 }
 ::v-deep(p) {
-  @apply my-2 text-base font-bold text-black text-opacity-60;
+  @apply my-2 text-sm text-black text-opacity-60;
+}
+::v-deep(a) {
+  @apply underline;
+}
+::v-deep(img) {
+  @apply my-4
 }
 ::v-deep(ul) {
-  @apply my-2 text-base font-bold text-black text-opacity-60;
+  @apply my-2 text-sm text-black text-opacity-60 list-disc;
 }
 ::v-deep(ol) {
-  @apply my-2 text-base font-bold text-black text-opacity-60;
+  @apply my-2 text-sm text-black text-opacity-60;
 }
 
 ::v-deep(table) {
