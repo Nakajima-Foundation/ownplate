@@ -793,6 +793,7 @@ const data = {
     backToOrderListPage: "Voir les commandes",
     backToOrderPage: "View Order",
     backToDiscounts: "Voir les promotions",
+    backToDocument: "View Documents",
     backToSubaccounts: "View Subaccounts",
     backToSmaregi: "View Smaregi",
     addTitle: "Ajouter un titre de groupe",
