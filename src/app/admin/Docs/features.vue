@@ -1,4 +1,11 @@
 <template>
+<!-- Header -->
+<div class="mx-6 mt-6 lg:flex lg:items-center">
+  <!-- Back and Preview -->
+  <div class="flex space-x-4">
+    <back-button url="/admin/docs/" backText="button.backToDocument" />
+  </div>
+</div>
   <div class="mx-6">
     <div>
       <div class="mt-2 text-sm font-bold">申し込み方法</div>
@@ -84,5 +91,11 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-export default defineComponent({});
+import BackButton from "@/components/BackButton.vue";
+export default defineComponent({
+  components: {
+    BackButton,
+  },
+
+});
 </script>
