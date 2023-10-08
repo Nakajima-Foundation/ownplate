@@ -1,7 +1,5 @@
 <template>
-  <div v-if="notFound">
-    Not Found
-  </div>
+  <div v-if="notFound">Not Found</div>
   <div v-else>
     <!-- Header -->
     <div class="mx-6 mt-6 lg:flex lg:items-center">
@@ -44,10 +42,10 @@ export default defineComponent({
     const articleId = route.params.articleId as string;
     const article = articles[articleId];
 
-    const notFound = !article
-    
+    const notFound = !article;
+
     return {
-      md: new MarkdownIt({html: true}),
+      md: new MarkdownIt({ html: true }),
       article,
       notFound,
     };
@@ -75,7 +73,7 @@ export default defineComponent({
   @apply underline;
 }
 ::v-deep(img) {
-  @apply my-4
+  @apply my-4;
 }
 ::v-deep(ul) {
   @apply my-2 text-sm text-black text-opacity-60 list-disc;
