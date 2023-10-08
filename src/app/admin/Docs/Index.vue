@@ -104,8 +104,8 @@
           <router-link
             to="/admin/docs/articles/article230930_line_official_account/"
             class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
-            >おもちかえり.comと飲食店様LINE公式アカウントの連携方法</router-link
-          >
+            >おもちかえり.comと飲食店様LINE公式アカウントの連携方法</router-link>
+          <span class="text-xs opacity-50">(2023/09/30)</span>
         </div>
         <div>
           <router-link
@@ -113,7 +113,8 @@
             class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
             >売り切れ/本日売り切れについて</router-link
           >
-        </div>
+          <span class="text-xs opacity-50">(2023/10/07)</span>
+       </div>
       </div>
       
       
