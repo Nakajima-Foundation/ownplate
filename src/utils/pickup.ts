@@ -178,7 +178,7 @@ export const usePickupTime = (
         // console.log(b, shopInfo.lastOrderTime);
         if (shopInfo.lastOrderTime) {
           // console.log(shopInfo.lastOrderTime, b.time)
-          return shopInfo.lastOrderTime >= b.time;
+          return shopInfo.lastOrderTime + minimumTime >= b.time;
         }
         return true;
       });
@@ -190,6 +190,7 @@ export const usePickupTime = (
       return []; // it means shopInfo is empty (not yet loaded)
     }
     const now = store.state.date;
+    // const now = moment("2023-10-09T22:15:00+09:00").toDate()
     console.log(store.state.date); // never delete this line;
     const today = now.getDay();
     let suspendUntil = new Date(now);

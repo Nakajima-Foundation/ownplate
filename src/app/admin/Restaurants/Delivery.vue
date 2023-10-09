@@ -351,6 +351,7 @@ export default defineComponent({
       removeAllCircle();
       const map = await gMap.value.$mapPromise;
       map.setCenter(maplocation);
+      console.log(center.value);
       const circle = new google.maps.Circle({
         center: center.value,
         fillColor: fillColor.value,
@@ -387,9 +388,14 @@ export default defineComponent({
     };
 
     const mapLoaded = () => {
-      if (props.shopInfo && props.shopInfo.location) {
-        setCurrentLocation(props.shopInfo.location);
-      }
+      setTimeout(async () => {
+        if (typeof google !== "undefined") {
+          center.value = new google.maps.LatLng(location.lat, location.lng);
+        }
+        if (props.shopInfo && props.shopInfo.location) {
+          setCurrentLocation(props.shopInfo.location);
+        }
+      }, 100);
     };
 
     const location = props.shopInfo.location;
@@ -423,7 +429,6 @@ export default defineComponent({
           radius.value = data.radius;
           areaText.value = data.areaText;
         }
-        center.value = new google.maps.LatLng(location.lat, location.lng);
         mapLoaded();
         notFound.value = false;
       },

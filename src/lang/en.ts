@@ -837,6 +837,7 @@ const data = {
     backToOrderListPage: "View Orders",
     backToOrderPage: "View Order",
     backToDiscounts: "View Promotions",
+    backToDocument: "View Documents",
     backToSubaccounts: "View Subaccounts",
     backToSmaregi: "View Smaregi",
     addTitle: "Add Group Title",

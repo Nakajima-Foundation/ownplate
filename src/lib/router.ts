@@ -353,6 +353,11 @@ export const customRoutes: CustomRoute[] = [
     component: "admin/Docs/Index.vue",
   },
   {
+    name: "admin-articles",
+    path: "/admin/docs/articles/:articleId",
+    component: "admin/Docs/Article.vue",
+  },
+  {
     name: "admin-featureList",
     path: "/admin/docs/features",
     component: "admin/Docs/features.vue",
