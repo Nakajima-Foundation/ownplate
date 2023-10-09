@@ -516,7 +516,7 @@ export default defineComponent({
           return { ...itemsObj[itemId] };
         })
         .filter((item) => {
-          if (props.shopInfo.enableLunchDinner && item._dataType === "menu") {
+          if (props.shopInfo.enableLunchDinner) {
             const { availableLunch, availableDinner } =
               isAvailableLunchOrDinner(item);
             if (lunchOrDinner.value === "lunch") {

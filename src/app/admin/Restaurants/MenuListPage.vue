@@ -15,7 +15,6 @@
       />
 
       <!-- Toggle to View All or Public Only -->
-      <!-- Toggle to View All or Public Only -->
       <div class="mx-6 mt-6 lg:text-center">
         <ToggleSwitch2 v-model="toggleStatus" :toggleValues="toggleValues" />
       </div>
@@ -48,32 +47,20 @@
             "
             :id="itemsObj[menuList].id"
           >
-            <div v-if="editings[menuList] === true">
-              <title-input
-                :title="itemsObj[menuList]"
-                :position="
-                  index == 0 ? 'first' : menuLength - 1 === index ? 'last' : ''
-                "
-                @toEditMode="toEditMode($event)"
-                @positionUp="positionUp($event)"
-                @positionDown="positionDown($event)"
-                @forkItem="forkTitleItem($event)"
-                @updateTitle="updateTitle($event)"
-              ></title-input>
-            </div>
-            <div v-else>
-              <TitleView
-                :title="itemsObj[menuList]"
-                :position="
-                  index == 0 ? 'first' : menuLength - 1 === index ? 'last' : ''
-                "
-                @toEditMode="toEditMode($event)"
-                @positionUp="positionUp($event)"
-                @positionDown="positionDown($event)"
-                @forkItem="forkTitleItem($event)"
-                @deleteItem="deleteItem($event)"
-              />
-            </div>
+            <TitleView
+              :isEdit="editings[menuList] === true"
+              :title="itemsObj[menuList]"
+              :position="
+                index == 0 ? 'first' : menuLength - 1 === index ? 'last' : ''
+              "
+              @toEditMode="toEditMode($event)"
+              @positionUp="positionUp($event)"
+              @positionDown="positionDown($event)"
+              @forkItem="forkTitleItem($event)"
+              @deleteItem="deleteItem($event)"
+              @updateTitle="updateTitle($event)"
+              @updateTitleLunchDinner="updateTitleLunchDinner($event)"
+            />
           </div>
 
           <!-- Menu Item -->
@@ -317,6 +304,16 @@ export default defineComponent({
       );
       changeTitleMode(title.id, false);
     };
+    const updateTitleLunchDinner = async (title: {
+      id: string;
+      lunch: boolean;
+      dinner: boolean;
+    }) => {
+      await updateDoc(
+        doc(db, `restaurants/${restaurantId.value}/titles/${title.id}`),
+        { availableLunch: title.lunch, availableDinner: title.dinner },
+      );
+    };
     // edit title
     const toEditMode = (titleId: string) => {
       changeTitleMode(titleId, true);
@@ -523,6 +520,7 @@ export default defineComponent({
 
       // methods
       updateTitle,
+      updateTitleLunchDinner,
       toEditMode,
       addTitle,
       addMenu,

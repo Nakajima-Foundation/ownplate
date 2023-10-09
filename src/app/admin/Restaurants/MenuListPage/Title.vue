@@ -2,7 +2,14 @@
   <div class="lg:flex">
     <div class="lg:flex-1">
       <!-- Title Card -->
-      <div class="rounded-lg bg-black bg-opacity-5 p-4" @click="toEdit()">
+      <div class="rounded-lg bg-black bg-opacity-5 p-4" v-if="isEdit">
+        <TitleInput :title="title" @saveTitle="saveTitle" />
+      </div>
+      <div
+        class="rounded-lg bg-black bg-opacity-5 p-4"
+        @click="toEdit()"
+        v-else
+      >
         <div
           class="text-xl font-bold text-black text-opacity-30"
           if
@@ -10,8 +17,25 @@
         >
           {{ $t("editTitle.empty") }}
         </div>
-        <div class="text-xl font-bold text-black text-opacity-30" if v-else>
+        <div
+          class="text-sm font-bold text-black text-opacity-30 flex w-full"
+          v-else
+        >
           {{ title.name }}
+          <div class="text-right flex-1">
+            <o-checkbox
+              @click="(e) => updateTitleLunchDinner(e, 'lunch')"
+              v-model="title.availableLunch"
+            >
+              {{ $t("editMenu.lunch") }}
+            </o-checkbox>
+            <o-checkbox
+              @click="(e) => updateTitleLunchDinner(e, 'dinner')"
+              v-model="title.availableDinner"
+            >
+              {{ $t("editMenu.dinner") }}
+            </o-checkbox>
+          </div>
         </div>
       </div>
     </div>
@@ -24,7 +48,7 @@
       <div class="inline-flex space-x-2">
         <!-- Up -->
         <o-button
-          v-if="position !== 'first'"
+          :disabled="position === 'first' || isEdit"
           @click="positionUp"
           class="b-reset-tw"
         >
@@ -34,17 +58,10 @@
             <i class="material-icons text-lg text-op-teal">arrow_upward</i>
           </div>
         </o-button>
-        <o-button v-else disabled class="b-reset-tw">
-          <div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
-          >
-            <i class="material-icons text-lg text-op-teal">arrow_upward</i>
-          </div>
-        </o-button>
 
         <!-- Down -->
         <o-button
-          v-if="position !== 'last'"
+          :disabled="position === 'last' || isEdit"
           @click="positionDown"
           class="b-reset-tw"
         >
@@ -54,16 +71,9 @@
             <i class="material-icons text-lg text-op-teal">arrow_downward</i>
           </div>
         </o-button>
-        <o-button v-else disabled class="b-reset-tw">
-          <div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
-          >
-            <i class="material-icons text-lg text-op-teal">arrow_downward</i>
-          </div>
-        </o-button>
 
         <!-- Duplicate -->
-        <o-button @click="forkItem" class="b-reset-tw">
+        <o-button @click="forkItem" class="b-reset-tw" :disabled="isEdit">
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
           >
@@ -72,7 +82,7 @@
         </o-button>
 
         <!-- Delete -->
-        <o-button @click="deleteItem" class="b-reset-tw">
+        <o-button @click="deleteItem" class="b-reset-tw" :disabled="isEdit">
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
           >
@@ -85,13 +95,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref, computed, watch } from "vue";
 import { useAdminUids } from "@/utils/utils";
 
 import { useStore } from "vuex";
+import TitleInput from "@/app/admin/Restaurants/MenuListPage/TitleInput.vue";
 
 export default defineComponent({
+  components: {
+    TitleInput,
+  },
   props: {
+    isEdit: {
+      type: Boolean,
+      required: true,
+    },
     title: {
       type: Object,
       required: true,
@@ -109,6 +127,7 @@ export default defineComponent({
     const toEdit = () => {
       ctx.emit("toEditMode", props.title.id);
     };
+
     const positionUp = () => {
       ctx.emit("positionUp", props.title.id);
     };
@@ -126,6 +145,29 @@ export default defineComponent({
         },
       });
     };
+    const saveTitle = (name: string) => {
+      // save and update this.
+      ctx.emit("updateTitle", { id: props.title.id, name: name });
+    };
+    const updateTitleLunchDinner = (e: any, target: string) => {
+      const l =
+        target === "lunch"
+          ? !props.title.availableLunch
+          : !!props.title.availableLunch;
+      const d =
+        target === "dinner"
+          ? !props.title.availableDinner
+          : !!props.title.availableDinner;
+
+      ctx.emit("updateTitleLunchDinner", {
+        id: props.title.id,
+        lunch: l,
+        dinner: d,
+      });
+      e.stopPropagation();
+      return false;
+    };
+
     return {
       isOwner,
       toEdit,
@@ -133,6 +175,8 @@ export default defineComponent({
       positionDown,
       forkItem,
       deleteItem,
+      saveTitle,
+      updateTitleLunchDinner,
     };
   },
 });
