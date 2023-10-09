@@ -17,8 +17,25 @@
         >
           {{ $t("editTitle.empty") }}
         </div>
-        <div class="text-xl font-bold text-black text-opacity-30" if v-else>
+        <div
+          class="text-sm font-bold text-black text-opacity-30 flex w-full"
+          v-else
+        >
           {{ title.name }}
+          <div class="text-right flex-1">
+            <o-checkbox
+              @click="(e) => updateTitleLunchDinner(e, 'lunch')"
+              v-model="title.availableLunch"
+            >
+              {{ $t("editMenu.lunch") }}
+            </o-checkbox>
+            <o-checkbox
+              @click="(e) => updateTitleLunchDinner(e, 'dinner')"
+              v-model="title.availableDinner"
+            >
+              {{ $t("editMenu.dinner") }}
+            </o-checkbox>
+          </div>
         </div>
       </div>
     </div>
@@ -132,6 +149,25 @@ export default defineComponent({
       // save and update this.
       ctx.emit("updateTitle", { id: props.title.id, name: name });
     };
+    const updateTitleLunchDinner = (e: any, target: string) => {
+      const l =
+        target === "lunch"
+          ? !props.title.availableLunch
+          : !!props.title.availableLunch;
+      const d =
+        target === "dinner"
+          ? !props.title.availableDinner
+          : !!props.title.availableDinner;
+
+      ctx.emit("updateTitleLunchDinner", {
+        id: props.title.id,
+        lunch: l,
+        dinner: d,
+      });
+      e.stopPropagation();
+      return false;
+    };
+
     return {
       isOwner,
       toEdit,
@@ -140,6 +176,7 @@ export default defineComponent({
       forkItem,
       deleteItem,
       saveTitle,
+      updateTitleLunchDinner,
     };
   },
 });

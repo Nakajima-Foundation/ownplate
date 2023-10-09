@@ -59,6 +59,7 @@
               @forkItem="forkTitleItem($event)"
               @deleteItem="deleteItem($event)"
               @updateTitle="updateTitle($event)"
+              @updateTitleLunchDinner="updateTitleLunchDinner($event)"
             />
           </div>
 
@@ -303,6 +304,16 @@ export default defineComponent({
       );
       changeTitleMode(title.id, false);
     };
+    const updateTitleLunchDinner = async (title: {
+      id: string;
+      lunch: boolean;
+      dinner: boolean;
+    }) => {
+      await updateDoc(
+        doc(db, `restaurants/${restaurantId.value}/titles/${title.id}`),
+        { availableLunch: title.lunch, availableDinner: title.dinner },
+      );
+    };
     // edit title
     const toEditMode = (titleId: string) => {
       changeTitleMode(titleId, true);
@@ -509,6 +520,7 @@ export default defineComponent({
 
       // methods
       updateTitle,
+      updateTitleLunchDinner,
       toEditMode,
       addTitle,
       addMenu,
