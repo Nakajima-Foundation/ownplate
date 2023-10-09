@@ -15,7 +15,6 @@
       />
 
       <!-- Toggle to View All or Public Only -->
-      <!-- Toggle to View All or Public Only -->
       <div class="mx-6 mt-6 lg:text-center">
         <ToggleSwitch2 v-model="toggleStatus" :toggleValues="toggleValues" />
       </div>
@@ -48,32 +47,19 @@
             "
             :id="itemsObj[menuList].id"
           >
-            <div v-if="editings[menuList] === true">
-              <title-input
-                :title="itemsObj[menuList]"
-                :position="
-                  index == 0 ? 'first' : menuLength - 1 === index ? 'last' : ''
-                "
-                @toEditMode="toEditMode($event)"
-                @positionUp="positionUp($event)"
-                @positionDown="positionDown($event)"
-                @forkItem="forkTitleItem($event)"
-                @updateTitle="updateTitle($event)"
-              ></title-input>
-            </div>
-            <div v-else>
-              <TitleView
-                :title="itemsObj[menuList]"
-                :position="
-                  index == 0 ? 'first' : menuLength - 1 === index ? 'last' : ''
-                "
-                @toEditMode="toEditMode($event)"
-                @positionUp="positionUp($event)"
-                @positionDown="positionDown($event)"
-                @forkItem="forkTitleItem($event)"
-                @deleteItem="deleteItem($event)"
-              />
-            </div>
+            <TitleView
+              :isEdit="editings[menuList] === true"
+              :title="itemsObj[menuList]"
+              :position="
+                index == 0 ? 'first' : menuLength - 1 === index ? 'last' : ''
+              "
+              @toEditMode="toEditMode($event)"
+              @positionUp="positionUp($event)"
+              @positionDown="positionDown($event)"
+              @forkItem="forkTitleItem($event)"
+              @deleteItem="deleteItem($event)"
+              @updateTitle="updateTitle($event)"
+            />
           </div>
 
           <!-- Menu Item -->
