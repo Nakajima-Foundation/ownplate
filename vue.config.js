@@ -12,7 +12,7 @@ module.exports = {
       entry: 'src/main.ts',
       template: 'public/top/motest.html',
       filename: 'motest.html',
-    }
+    },
   },
   productionSourceMap: false,
   devServer: {
@@ -32,6 +32,14 @@ module.exports = {
       },
       extensions: ['.js', '.vue', '.json'],
       fallback: { "crypto": false }
+    },
+    module: {
+      rules: [
+        {
+          test: /\.md$/i,
+          loader: "raw-loader",
+        },
+      ],
     },
   }
 };

@@ -32,6 +32,7 @@ jobs:
       - run: npm install --save-dev firebase-tools
       - run: cp configs/.firebaserc ./
       - run: cp src/config/default/ownplate-dev.ts src/config/project.ts
+      - run: cp -ir docs/article* public/admin/docs/articles
       - run: npm install
       - name: npm build
         run: npm run build
