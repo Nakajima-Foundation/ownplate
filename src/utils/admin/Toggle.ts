@@ -1,6 +1,6 @@
 import { ref, onUnmounted, watch } from "vue";
 import { db } from "@/lib/firebase/firebase9";
-import { doc, onSnapshot, setDoc } from "firebase/firestore";
+import { doc, onSnapshot, getDoc, setDoc } from "firebase/firestore";
 
 export const useAdminConfigToggle = (
   key: string,
@@ -46,12 +46,9 @@ export const useAdminConfigToggle2 = (
     );
   };
 
-  const detacher = onSnapshot(doc(db, path), (res) => {
+  getDoc(doc(db, path)).then((res) => {
     const config = res.data() || {};
     toggle.value = config[key] === undefined ? defaultValue : config[key];
-  });
-  onUnmounted(() => {
-    detacher();
   });
 
   watch(toggle, () => {
