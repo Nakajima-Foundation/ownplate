@@ -32,19 +32,21 @@ export const useAdminConfigToggle = (
 export const useAdminConfigToggle2 = (
   key: string,
   uid: string,
+  restaurantId: string,
   defaultValue: number,
   enableSave: boolean,
 ) => {
   const toggle = ref(defaultValue);
+  const path = `adminConfigs/${uid}/restaurants/${restaurantId}`;
   const switchToggle = () => {
     setDoc(
-      doc(db, `adminConfigs/${uid}`),
+      doc(db, path),
       { [key]: toggle.value },
       { merge: true },
     );
   };
 
-  const detacher = onSnapshot(doc(db, `adminConfigs/${uid}`), (res) => {
+  const detacher = onSnapshot(doc(db, path), (res) => {
     const config = res.data() || {};
     toggle.value = config[key] === undefined ? defaultValue : config[key];
   });

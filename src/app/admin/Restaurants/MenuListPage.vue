@@ -264,6 +264,7 @@ export default defineComponent({
     const { toggle: toggleStatus } = useAdminConfigToggle2(
       "menuToggleSwitch",
       uid.value,
+      restaurantId.value,
       0,
       true,
     );
