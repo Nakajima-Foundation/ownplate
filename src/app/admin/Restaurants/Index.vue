@@ -915,7 +915,7 @@
               </div>
             </div>
 
-            <!-- Temporary Closure -->
+            <!-- Last order time -->
             <div class="mt-4">
               <div class="pb-2 text-sm font-bold">最終注文時間</div>
               <div class="text-xs">
