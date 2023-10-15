@@ -90,4 +90,7 @@ export default defineComponent({
   font-weight: normal;
   color: #333333;
 }
+::v-deep(a) {
+  @apply underline;
+}
 </style>

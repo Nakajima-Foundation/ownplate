@@ -23,7 +23,7 @@
             class="inline-flex h-16 items-center rounded-full bg-ownplate-yellow px-8 shadow hover:bg-opacity-80"
           >
             <span class="text-xl font-bold text-black opacity-90">
-              {{ $t("lp.signUpForFree") }}
+              {{ $t(isAdmin ? "admin.news.adminTop" : "lp.signUpForFree") }}
             </span>
           </div>
         </router-link>

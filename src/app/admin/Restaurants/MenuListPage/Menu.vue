@@ -95,7 +95,7 @@
       <div class="inline-flex space-x-2">
         <!-- Up -->
         <o-button
-          v-if="position !== 'first'"
+          :disabled="position === 'first'"
           @click="positionUp"
           class="b-reset-tw"
         >
@@ -105,27 +105,13 @@
             <i class="material-icons text-lg text-op-teal">arrow_upward</i>
           </div>
         </o-button>
-        <o-button v-else disabled class="b-reset-tw">
-          <div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
-          >
-            <i class="material-icons text-lg text-op-teal">arrow_upward</i>
-          </div>
-        </o-button>
 
         <!-- Down -->
         <o-button
-          v-if="position !== 'last'"
+          :disabled="position === 'last'"
           @click="positionDown"
           class="b-reset-tw"
         >
-          <div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
-          >
-            <i class="material-icons text-lg text-op-teal">arrow_downward</i>
-          </div>
-        </o-button>
-        <o-button v-else disabled class="b-reset-tw">
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
           >

@@ -844,6 +844,7 @@ const data = {
     backToOrderListPage: "注文確認に戻る",
     backToOrderPage: "注文に戻る",
     backToDiscounts: "割引設定一覧に戻る",
+    backToDocument: "文章一覧に戻る",
     backToSubaccounts: "サブアカウント一覧に戻る",
     backToSmaregi: "スマレジ設定に戻る",
     addTitle: "商品グループ名を追加",

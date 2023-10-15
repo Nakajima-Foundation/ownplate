@@ -915,7 +915,7 @@
               </div>
             </div>
 
-            <!-- Temporary Closure -->
+            <!-- Last order time -->
             <div class="mt-4">
               <div class="pb-2 text-sm font-bold">最終注文時間</div>
               <div class="text-xs">
@@ -951,7 +951,7 @@
                     icon="calendar-today"
                     v-model="newTemporaryClosure"
                     ref="datepicker"
-                    :min-date="new Date()"
+                    :min-date="now"
                     :max-date="maxDate"
                     expanded
                     :placeholder="$t('shopInfo.temporaryClosureSelect')"
@@ -977,7 +977,7 @@
                   <template
                     v-for="(day, key) in editShopInfo.temporaryClosure || []"
                   >
-                    <template v-if="day.getTime() > now.getTime()">
+                    <template v-if="day.getTime() >= now">
                       <div
                         :key="key"
                         class="flex items-center rounded bg-white bg-opacity-50 px-2"
@@ -1199,8 +1199,8 @@ export default defineComponent({
 
     const restaurantId = useRestaurantId();
     const maxDate = new Date();
-    const now = new Date();
     maxDate.setMonth(maxDate.getMonth() + 6);
+    const now = moment().subtract(1, 'days').toDate();
     const taxRateKeys = regionalSetting["taxRateKeys"];
     const region = ownPlateConfig.region;
 
@@ -1324,7 +1324,7 @@ export default defineComponent({
     });
 
     const isFuture = (day: Date) => {
-      return new Date().getTime() < day.getTime();
+      return now.getTime() < day.getTime();
     };
     const isNewTemporaryClosure = (day: Date) => {
       const func = (elem: Date) => {
