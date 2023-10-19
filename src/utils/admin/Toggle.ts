@@ -39,11 +39,7 @@ export const useAdminConfigToggle2 = (
   const toggle = ref(defaultValue);
   const path = `adminConfigs/${uid}/restaurants/${restaurantId}`;
   const switchToggle = () => {
-    setDoc(
-      doc(db, path),
-      { [key]: toggle.value },
-      { merge: true },
-    );
+    setDoc(doc(db, path), { [key]: toggle.value }, { merge: true });
   };
 
   getDoc(doc(db, path)).then((res) => {

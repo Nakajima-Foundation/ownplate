@@ -1200,7 +1200,7 @@ export default defineComponent({
     const restaurantId = useRestaurantId();
     const maxDate = new Date();
     maxDate.setMonth(maxDate.getMonth() + 6);
-    const now = moment().subtract(1, 'days').toDate();
+    const now = moment().subtract(1, "days").toDate();
     const taxRateKeys = regionalSetting["taxRateKeys"];
     const region = ownPlateConfig.region;
 
