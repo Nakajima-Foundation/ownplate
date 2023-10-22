@@ -61,9 +61,9 @@
             </div>
           </div>
           <div class="p-4">
-            <div class="text-xl font-bold text-black text-opacity-80 flex">
-              <span class="flex">{{ menuitem.itemName }}</span>
-              <span class="flex" v-if="shopInfo.enableLunchDinner">
+            <div class="text-xl font-bold text-black text-opacity-80">
+              <span>{{ menuitem.itemName }}</span>
+              <span v-if="shopInfo.enableLunchDinner">
                 / <LunchDinnerIcon :item="menuitem" />
               </span>
             </div>
