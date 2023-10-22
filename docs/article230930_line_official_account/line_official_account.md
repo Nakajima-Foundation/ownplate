@@ -6,7 +6,7 @@
 
 <img src="./images/line_users_screen_line_official_account.png" width="250px">
 
-この記事ではLINE公式アカウントをもっている飲食店様向けに設定方法を説明します。
+この記事では、既にLINE公式アカウントをお持ちの飲食店様向けに、設定方法を説明します。
 
 - [1. 飲食店様側の設定](#1-飲食店様側の設定)
 	- [1.1. LINE 公式アカウントの管理画面 での設定](#11-line-公式アカウントの管理画面-での設定)
@@ -27,34 +27,29 @@
 	- [2.2. 注文完了画面](#22-注文完了画面)
 	- [2.3. LINE](#23-line)
 
-**LINE公式アカウントと管理画面について**
-
-LINE公式アカウント（LINEビジネス）へは２種類の方法でログインすることができます。
-![](./images/line_account_description1.png)
-
-以降、本記事ではログインに使用するアカウントのことを「LINE個人アカウント」と呼びます。
-
-LINE公式アカウントの管理画面は「LINE Official Account Manager」と「LINE Developers」の２つがあり、いずれもLINE個人アカウントでログインすることができます。
-![](./images/line_account_description2.png)
-
 飲食店様のLINE公式アカウントからお客様へ おもちかえり.com の注文ステータス通知をおこなうためには、現在ご利用中の「LINE Official Manager」と「LINE Developers」が必要です。
-
-これら２つの管理画面について簡単にご説明いたします。
 
 **LINE Official Account Manager**
 - 公式アカウントの運用を目的とした管理画面です。
 - 公式アカウントのプロフィールやメッセージ配信、チャットなどができます。
 - LINE Official Account Managerでは複数の公式アカウントを管理することができます。
 - 飲食店様が復数の店舗をお持ちの場合は、各店舗用のLINE公式アカウントを作成できます。
-  ![](./images/line_account_description3.png)
 
 **LINE Developers**
 - LINE Developersでは、LINE公式アカウントに対しLINE Official Account Managerではできない細かいカスタマイズが可能です。
 - おもちかえり.comでは、LINE Developersを通し、飲食店様が持っている公式アカウントのチャット上で、注文ステータスを通知を送ることができるようにいたしました。
-- 飲食店様が本設定を導入するにあたり、LINE Developers上でプロバイダー（グループ設定よようなもの）を作成していただく必要があります。（プロバイダーの中にチャネルというものがあり、チャネルが公式アカウントと紐づいています。）
-  ![](./images/line_account_description4.png)
+- 飲食店様が本設定を導入するにあたり、LINE Developers上での設定が必要になります。
 
-以降、導入方法について説明いたします。LINE公式アカウントをまだお持ちでない方は新しくLINE公式アカウントを作成してください。
+**今回設定いただくもの**
+- MessagingAPI：LINE公式アカウントから設定をおこないます。
+- プロバイダー：LINE Developpers上に作成するグループ名のようなものです。MessagingAPIを設定する際に作成します。
+- チャネル；プロバイダー内に作成します。チャネルには種類がありますが、今回は「LINEログイン」というチャネルを作成します。
+
+上記の設定をすることにより、LINE Developers上に以下のふたつのチャネルが表示されます。
+- 公式アカウント MessagingAPI
+- LINEログイン
+
+それぞれのチャネルで おもちかえり.com との紐付けをおこないます。以降、設定方を詳しくご説明します。
 
 # 1. 飲食店様側の設定
 ## 1.1. LINE 公式アカウントの管理画面 での設定
@@ -82,11 +77,11 @@ LINE公式アカウントの管理画面は「LINE Official Account Manager」�
 
 ## 1.2. LINE Developers での設定
 ### 1.2.1. 新規チャネル作成
-ここでは LINE Developers 上での設定方法について説明します。  
+ここでは LINE Developers 上での設定方法について説明します。
 
 - LINE Developers にログインします。  
 	URL: [https://account.line.biz/login?redirectUri=https%3A%2F%2Fdevelopers.line.biz%2Fconsole%2F](https://account.line.biz/login?redirectUri=https%3A%2F%2Fdevelopers.line.biz%2Fconsole%2F)
-- ログインするとコンソール（LINE Developersの管理画面）が表示されます。  
+- ログインするとコンソール（LINE Developersの管理画面）が表示されます。
 - 項番1.1 で作成したプロバイダー名を選択します。  
   ![](./images/line_developers_console.png)
 - 項番1.1 で設定したLINE公式アカウント名が表示されていることを確認します。  
@@ -160,14 +155,14 @@ LINE公式アカウントの管理画面は「LINE Official Account Manager」�
 LINE Developers 側のチャネル名(LINEログイン)の
 
   - 上段: チャンネルID
-  - 下段: チャネルシークレット  
+  - 下段: チャネルシークレット 
 
-を、おもちかえり.com へコピー & ペーストします。（この時点で `保存` `しても問題ありませんが、最後にもおこないます）
+を、おもちかえり.com へコピー & ペーストします。（この時点で `保存` しても問題ありませんが、最後にもおこないます）
 ![](./images/line_developers_to_omochikaeri_line_login.png)
 
 - 次は LINE Developers側の作業です。
 
-### 1.3.4. LINE Messaging API 
+### 1.3.4. LINE Messaging API
 - 今回作成した `Provider 名` を選択します。  
   ![](./images/line_developers_console_select_provider.png)
 
