@@ -503,7 +503,6 @@ export default defineComponent({
     const { loadTitle, titles } = useTitles(restaurantId);
     loadTitle();
 
-
     const lunchOrDinnerFilter = (item: MenuData | TitleData) => {
       if (props.shopInfo.enableLunchDinner) {
         const { availableLunch, availableDinner } =
@@ -517,7 +516,7 @@ export default defineComponent({
       }
       return true;
     };
-    
+
     const itemLists = computed(() => {
       const menuLists = props.shopInfo.menuLists || [];
 
