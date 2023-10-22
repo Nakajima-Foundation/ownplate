@@ -131,7 +131,6 @@ import NotFound from "@/components/NotFound.vue";
 
 import MenuView from "@/app/admin/Restaurants/MenuListPage/Menu.vue";
 import TitleView from "@/app/admin/Restaurants/MenuListPage/Title.vue";
-import TitleInput from "@/app/admin/Restaurants/MenuListPage/TitleInput.vue";
 
 import ToggleSwitch2 from "@/components/ToggleSwitch2.vue";
 import AddButton from "@/app/admin/Restaurants/MenuListPage/AddButton.vue";
@@ -159,7 +158,6 @@ export default defineComponent({
   components: {
     MenuView,
     TitleView,
-    TitleInput,
     NotFound,
 
     AdminHeader,

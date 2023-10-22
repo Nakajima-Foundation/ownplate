@@ -95,7 +95,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watch } from "vue";
+import { defineComponent } from "vue";
 import { useAdminUids } from "@/utils/utils";
 
 import { useStore } from "vuex";
