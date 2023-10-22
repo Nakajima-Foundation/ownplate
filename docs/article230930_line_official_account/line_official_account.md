@@ -2,7 +2,7 @@
 
 2023/9/26 のバージョンアップにより、飲食店様のLINE公式アカウントからお客様に対して、注文の受理・注文の準備完了・キャンセルなどの通知ができるようになりました。(注意: LINE公式アカウントのメッセージ通数にカウントされます。
 
-参考URL LINE公式アカウント料金プラン https://www.lycbiz.com/jp/service/line-official-account/plan/ )
+参考URL [LINE公式アカウント料金プラン](https://www.lycbiz.com/jp/service/line-official-account/plan/)
 
 <img src="./images/line_users_screen_line_official_account.png" width="250px">
 
@@ -54,7 +54,7 @@
 # 1. 飲食店様側の設定
 ## 1.1. LINE 公式アカウントの管理画面 での設定
 - LINE 公式アカウントの管理画面にログインします。
-- `設定` を押します。  
+- `設定` を押します。
   ![](./images/line_official_account_setting.png)
 - `Messaging API` を押します。  
   ![](./images/line_official_account_setting_messagingapi.png)
