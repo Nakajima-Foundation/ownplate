@@ -503,6 +503,20 @@ export default defineComponent({
     const { loadTitle, titles } = useTitles(restaurantId);
     loadTitle();
 
+    const lunchOrDinnerFilter = (item: MenuData | TitleData) => {
+      if (props.shopInfo.enableLunchDinner) {
+        const { availableLunch, availableDinner } =
+          isAvailableLunchOrDinner(item);
+        if (lunchOrDinner.value === "lunch") {
+          return availableLunch;
+        }
+        if (lunchOrDinner.value === "dinner") {
+          return availableDinner;
+        }
+      }
+      return true;
+    };
+
     const itemLists = computed(() => {
       const menuLists = props.shopInfo.menuLists || [];
 
@@ -515,19 +529,7 @@ export default defineComponent({
         .map((itemId) => {
           return { ...itemsObj[itemId] };
         })
-        .filter((item) => {
-          if (props.shopInfo.enableLunchDinner && item._dataType === "menu") {
-            const { availableLunch, availableDinner } =
-              isAvailableLunchOrDinner(item);
-            if (lunchOrDinner.value === "lunch") {
-              return availableLunch;
-            }
-            if (lunchOrDinner.value === "dinner") {
-              return availableDinner;
-            }
-          }
-          return true;
-        })
+        .filter(lunchOrDinnerFilter)
         .filter((item) => {
           return !(item._dataType === "title" && item.name === "");
         });
@@ -784,7 +786,8 @@ export default defineComponent({
           .filter((item) => {
             return item && item.id;
           })
-          .filter((title) => title.name !== "") || []
+          .filter((title) => title.name !== "")
+          .filter(lunchOrDinnerFilter) || []
       );
     });
 

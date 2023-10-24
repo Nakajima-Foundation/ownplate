@@ -27,10 +27,12 @@ import { useRoute } from "vue-router";
 
 import linenews from "../../../../docs/article230930_line_official_account/line_official_account.md";
 import soldout from "../../../../docs/article231007_out_of_stock/out_of_stock.md";
+import lunch_n_dinner from "../../../../docs/article231019_lunch_n_dinner/lunch_n_dinner.md";
 
 const articles: { [key: string]: string } = {
   article230930_line_official_account: linenews,
   article231007_out_of_stock: soldout,
+  article231019_lunch_n_dinner: lunch_n_dinner,
 };
 
 export default defineComponent({
@@ -76,10 +78,13 @@ export default defineComponent({
   @apply my-4;
 }
 ::v-deep(ul) {
-  @apply my-2 text-sm text-black text-opacity-60 list-disc;
+  @apply my-1 text-sm text-black text-opacity-60 list-disc;
 }
 ::v-deep(ol) {
   @apply my-2 text-sm text-black text-opacity-60;
+}
+::v-deep(ul) > li {
+  @apply mx-4;
 }
 
 ::v-deep(table) {

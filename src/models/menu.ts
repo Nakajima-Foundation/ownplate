@@ -19,6 +19,9 @@ export interface TitleData {
   _dataType: "title";
   id: string;
   name: string;
+
+  availableLunch: boolean;
+  availableDinner: boolean;
 }
 
 export interface MenuData {
@@ -115,7 +118,7 @@ export const copyMenuData = (item: MenuData, isJP: boolean, uid: string) => {
   return data;
 };
 
-export const isAvailableLunchOrDinner = (item: MenuData) => {
+export const isAvailableLunchOrDinner = (item: MenuData | TitleData) => {
   const { availableLunch, availableDinner } = item;
   if (!availableLunch && !availableDinner) {
     return { availableLunch: true, availableDinner: true };

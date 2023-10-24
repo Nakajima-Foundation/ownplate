@@ -15,7 +15,6 @@
       />
 
       <!-- Toggle to View All or Public Only -->
-      <!-- Toggle to View All or Public Only -->
       <div class="mx-6 mt-6 lg:text-center">
         <ToggleSwitch2 v-model="toggleStatus" :toggleValues="toggleValues" />
       </div>
@@ -48,32 +47,20 @@
             "
             :id="itemsObj[menuList].id"
           >
-            <div v-if="editings[menuList] === true">
-              <title-input
-                :title="itemsObj[menuList]"
-                :position="
-                  index == 0 ? 'first' : menuLength - 1 === index ? 'last' : ''
-                "
-                @toEditMode="toEditMode($event)"
-                @positionUp="positionUp($event)"
-                @positionDown="positionDown($event)"
-                @forkItem="forkTitleItem($event)"
-                @updateTitle="updateTitle($event)"
-              ></title-input>
-            </div>
-            <div v-else>
-              <TitleView
-                :title="itemsObj[menuList]"
-                :position="
-                  index == 0 ? 'first' : menuLength - 1 === index ? 'last' : ''
-                "
-                @toEditMode="toEditMode($event)"
-                @positionUp="positionUp($event)"
-                @positionDown="positionDown($event)"
-                @forkItem="forkTitleItem($event)"
-                @deleteItem="deleteItem($event)"
-              />
-            </div>
+            <TitleView
+              :isEdit="editings[menuList] === true"
+              :title="itemsObj[menuList]"
+              :position="
+                index == 0 ? 'first' : menuLength - 1 === index ? 'last' : ''
+              "
+              @toEditMode="toEditMode($event)"
+              @positionUp="positionUp($event)"
+              @positionDown="positionDown($event)"
+              @forkItem="forkTitleItem($event)"
+              @deleteItem="deleteItem($event)"
+              @updateTitle="updateTitle($event)"
+              @updateTitleLunchDinner="updateTitleLunchDinner($event)"
+            />
           </div>
 
           <!-- Menu Item -->
@@ -144,7 +131,6 @@ import NotFound from "@/components/NotFound.vue";
 
 import MenuView from "@/app/admin/Restaurants/MenuListPage/Menu.vue";
 import TitleView from "@/app/admin/Restaurants/MenuListPage/Title.vue";
-import TitleInput from "@/app/admin/Restaurants/MenuListPage/TitleInput.vue";
 
 import ToggleSwitch2 from "@/components/ToggleSwitch2.vue";
 import AddButton from "@/app/admin/Restaurants/MenuListPage/AddButton.vue";
@@ -172,7 +158,6 @@ export default defineComponent({
   components: {
     MenuView,
     TitleView,
-    TitleInput,
     NotFound,
 
     AdminHeader,
@@ -277,6 +262,7 @@ export default defineComponent({
     const { toggle: toggleStatus } = useAdminConfigToggle2(
       "menuToggleSwitch",
       uid.value,
+      restaurantId.value,
       0,
       true,
     );
@@ -316,6 +302,16 @@ export default defineComponent({
         { name: title.name },
       );
       changeTitleMode(title.id, false);
+    };
+    const updateTitleLunchDinner = async (title: {
+      id: string;
+      lunch: boolean;
+      dinner: boolean;
+    }) => {
+      await updateDoc(
+        doc(db, `restaurants/${restaurantId.value}/titles/${title.id}`),
+        { availableLunch: title.lunch, availableDinner: title.dinner },
+      );
     };
     // edit title
     const toEditMode = (titleId: string) => {
@@ -523,6 +519,7 @@ export default defineComponent({
 
       // methods
       updateTitle,
+      updateTitleLunchDinner,
       toEditMode,
       addTitle,
       addMenu,

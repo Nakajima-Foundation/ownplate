@@ -1,6 +1,8 @@
 <template>
-  <i class="material-icons text-center" v-if="availableLunch"> lunch_dining </i>
-  <i class="material-icons text-center" v-if="availableDinner">
+  <i class="material-icons text-center align-middle" v-if="availableLunch">
+    lunch_dining
+  </i>
+  <i class="material-icons text-center align-middle" v-if="availableDinner">
     dinner_dining
   </i>
 </template>
