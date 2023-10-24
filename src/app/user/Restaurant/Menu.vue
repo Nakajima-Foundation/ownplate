@@ -53,7 +53,7 @@
         <div class="p-4">
           <!-- Item Name -->
           <a :id="`${item.id}`">
-            <div class="text-base font-bold flex">
+            <div class="text-base font-bold align-middle">
               {{ title }}
               <template v-if="shopInfo.enableLunchDinner">
                 /

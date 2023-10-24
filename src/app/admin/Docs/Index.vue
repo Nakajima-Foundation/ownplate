@@ -110,6 +110,14 @@
         </div>
         <div>
           <router-link
+            to="/admin/docs/articles/article231019_lunch_n_dinner/"
+            class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
+            >ランチ/ディナー切り替え</router-link
+          >
+          <span class="text-xs opacity-50">(2023/10/19)</span>
+        </div>
+        <div>
+          <router-link
             to="/admin/docs/articles/article231007_out_of_stock/"
             class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
             >売り切れ/本日売り切れについて</router-link
