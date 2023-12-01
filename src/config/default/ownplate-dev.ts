@@ -42,4 +42,3 @@ export const appCheckKey = "6LepU9whAAAAAJPu9PD7LfzB5uREF-fg9j1g5xLY";
 export const gtmID = "GTM-M8DN5VQ";
 export const GAPIKey = "AIzaSyBopNQwD1RT2k9dLqH6WYPWIkMZF3RWXMQ";
 export const fromEmail = "noreply@ownplate-dev.firebaseapp.com";
-
