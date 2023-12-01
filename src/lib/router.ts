@@ -156,7 +156,7 @@ export const customRoutes: CustomRoute[] = [
     component: "user/RestaurantWrapper.vue",
     children: getUserPages("normal"),
   },
-  ...mopath,
+  // ...mopath,
   {
     path: "/liff/:liffIndexId/pc",
     component: "liff/PC.vue",

@@ -83,9 +83,8 @@ import AudioPlay from "@/components/AudioPlay.vue";
 import { isDev, useUser, useRestaurantId } from "@/utils/utils";
 
 import * as Sentry from "@sentry/vue";
-import { ownPlateConfig, mo_prefixes } from "@/config/project";
+import { ownPlateConfig } from "@/config/project";
 import { defaultHeader } from "@/config/header";
-import { MoHeader } from "@/config/moHeader";
 
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
@@ -99,11 +98,7 @@ export default defineComponent({
     AppFooter,
     NotificationBanner,
   },
-  metaInfo: mo_prefixes.some((prefix) => {
-    return location.pathname.startsWith("/" + prefix);
-  })
-    ? MoHeader
-    : defaultHeader,
+  metaInfo: defaultHeader,
 
   setup() {
     let unregisterAuthObserver: null | Unsubscribe = null;

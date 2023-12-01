@@ -55,11 +55,7 @@ export default defineComponent({
       return "h-6";
     });
     const logo = computed(() => {
-      if (isInMo.value === null) {
-        return null;
-      } else if (isInMo.value) {
-        return "/images/mo_logo.png";
-      } else if (restaurantId.value && specialLogo[restaurantId.value]) {
+      if (restaurantId.value && specialLogo[restaurantId.value]) {
         return "/" + specialLogo[restaurantId.value].image;
       } else {
         return "/" + regionalSetting.Logo;
