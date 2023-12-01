@@ -6,7 +6,6 @@
       :paymentInfo="paymentInfo"
       :deliveryData="deliveryData"
       :mode="mode"
-      :moPrefix="moPrefix"
       :notFound="notFound"
       :promotions="promotions"
     />
@@ -19,7 +18,7 @@ import { defineComponent, ref, onUnmounted } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
 import { doc, onSnapshot, getDoc } from "firebase/firestore";
-import { routeMode, getMoPrefix, useUserData } from "@/utils/utils";
+import { routeMode, useUserData } from "@/utils/utils";
 
 import NotFound from "@/components/NotFound.vue";
 
@@ -34,7 +33,6 @@ export default defineComponent({
   },
   setup() {
     const mode = routeMode();
-    const moPrefix = getMoPrefix();
 
     const shopInfo = ref<RestaurantInfoData | { [key: string]: any }>({});
     const paymentInfo = ref({});
@@ -93,7 +91,6 @@ export default defineComponent({
     });
     return {
       mode,
-      moPrefix,
 
       shopInfo,
       paymentInfo,

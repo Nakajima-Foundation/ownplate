@@ -2,7 +2,6 @@
   <div class="flex h-12 items-center bg-white">
     <div class="w-12">
       <a
-        v-if="!isInMo"
         @click="handleOpen()"
         class="inline-flex h-12 w-12 items-center justify-center"
       >
@@ -29,7 +28,6 @@ import {
   useTopPath,
   regionalSetting,
   useRestaurantId,
-  useIsInMo,
 } from "@/utils/utils";
 
 export default defineComponent({
@@ -41,8 +39,6 @@ export default defineComponent({
         image: "TBP_logo.jpg",
       },
     };
-
-    const isInMo = useIsInMo();
 
     const topPath = useTopPath();
 
@@ -70,7 +66,6 @@ export default defineComponent({
       logo,
       logoClass,
       handleOpen,
-      isInMo,
     };
   },
 });

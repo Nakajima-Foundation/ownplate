@@ -1,7 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import { mo_prefixes } from "@/config/project";
-
 const getUserPages = (prefix: string) => {
   return [
     {
@@ -42,22 +40,6 @@ interface CustomRoute {
   children?: CustomRoute[];
   meta?: any;
 }
-
-const mopath = mo_prefixes
-  .map((prefix) => {
-    const prePath = "/" + prefix;
-    return [
-      {
-        path: prePath,
-        component: "user/Mo/MoClosed.vue",
-      },
-      {
-        path: prePath + "/:page(.*)",
-        component: "user/Mo/MoClosed.vue",
-      },
-    ];
-  })
-  .flat();
 
 export const customRoutes: CustomRoute[] = [
   {
@@ -156,7 +138,6 @@ export const customRoutes: CustomRoute[] = [
     component: "user/RestaurantWrapper.vue",
     children: getUserPages("normal"),
   },
-  // ...mopath,
   {
     path: "/liff/:liffIndexId/pc",
     component: "liff/PC.vue",
