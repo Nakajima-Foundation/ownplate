@@ -4,6 +4,14 @@
     "indexes": "firestore.indexes.json"
   },
   "functions": {
+    "ignore": [
+      "tests",
+      "batch",
+      "*.sh",
+      "*.md",
+      "*.txt",
+      "**/node_modules/**"
+    ],
     "predeploy": [
       "cp dist/index.html functions/templates/index.html",
       "cp src/config/constant.ts functions/src/common/constant.ts",

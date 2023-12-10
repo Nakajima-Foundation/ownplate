@@ -7,7 +7,7 @@
     "serve": "npm run build && firebase serve --only functions",
     "deploy": "firebase deploy --only functions",
     "coverage": "nyc npm run tests",
-    "tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/*_test.ts --timeout 30000", 
+    "tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/*_test.ts --timeout 30000",
     "svg_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/svg_test.ts --timeout 30000",
     "e_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/express_test.ts",
     "o_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/order_test.ts",
@@ -23,7 +23,7 @@
     "d_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/dl_test.ts"
   },
   "engines": {
-    "node": "16"
+    "node": "18"
   },
   "main": "lib/index.js",
   "dependencies": {
@@ -45,10 +45,10 @@
     "nodemailer": "^6.6.1",
     "nyc": "^15.1.0",
     "receiptline": "^1.15.0",
-    "sharp": "^0.31.0",
+    "sharp": "^0.32.6",
     "sitemap": "^6.1.5",
     "stripe": "^8.39.1",
-    "twilio": "^4.16.0",
+    "twilio": "^4.19.0",
     "uuid-v4": "^0.1.0",
     "validator": "^13.7.0",
     "xmlbuilder": "^15.1.1"

@@ -375,10 +375,6 @@ export default defineComponent({
       type: Array<Promotion>,
       required: true,
     },
-    moPrefix: {
-      type: String,
-      required: false,
-    },
   },
   metaInfo() {
     // TODO: add area to header
