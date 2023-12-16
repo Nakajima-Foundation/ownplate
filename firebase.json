@@ -4,14 +4,7 @@
     "indexes": "firestore.indexes.json"
   },
   "functions": {
-    "ignore": [
-      "tests",
-      "batch",
-      "*.sh",
-      "*.md",
-      "*.txt",
-      "**/node_modules/**"
-    ],
+    "ignore": ["tests", "batch", "*.sh", "*.md", "*.txt", "**/node_modules/**"],
     "predeploy": [
       "cp dist/index.html functions/templates/index.html",
       "cp src/config/constant.ts functions/src/common/constant.ts",
@@ -23,82 +16,85 @@
       "npm --prefix \"$RESOURCE_DIR\" run build"
     ]
   },
-  "hosting": [{
-    "target": "app",
-    "public": "dist",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
-    "headers": [{
-        "source": "**",
-        "headers": [
-          { "key" : "Content-Security-Policy", "value": "frame-ancestors 'none'"},
-          { "key" : "X-Frame-Options", "value" : "deny" },
-          { "key" : "X-Content-Type-Options", "value" : "nosniff" },
-          { "key" : "X-XSS-Protection", "value" : "1; mode=block" },
-          { "key" : "X-Permitted-Cross-Domain-Policies", "value" : "none" },
-          { "key" : "Referrer-Policy", "value": "no-referrer" }
-        ]
-    }],    
-    "appAssociation": "AUTO",
-    "rewrites": [
-      {
-        "source": "/r/*",
-        "function": "apiJP",
-        "region": "asia-northeast1"
-      },
-      {
-        "source": "/r/*/menus/*",
-        "function": "apiJP",
-        "region": "asia-northeast1"
-      },
-      {
-        "source": "/r/*/order/*",
-        "function": "apiJP",
-        "region": "asia-northeast1"
-      },
-      {
-        "source": "/o/*",
-        "function": "apiJP",
-        "region": "asia-northeast1"
-      },
-      {
-        "source": "/1.0/**",
-        "function": "apiJP",
-        "region": "asia-northeast1"
-      },
-      {
-        "source": "/api/1.0/**",
-        "function": "apiJP",
-        "region": "asia-northeast1"
-      },
-      {
-        "source": "/api/2.0/**",
-        "function": "apiJP",
-        "region": "asia-northeast1"
-      },
-      {
-        "source": "/smaregi/1.0/**",
-        "function": "apiJP",
-        "region": "asia-northeast1"
-      },
-      {
-        "source": "/sitemap.xml",
-        "function": "apiJP",
-        "region": "asia-northeast1"
-      },
-      {
-        "source": "/m/**",
-        "dynamicLinks": true
-      },
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ]
-  }],
+  "hosting": [
+    {
+      "target": "app",
+      "public": "dist",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+      "headers": [
+        {
+          "source": "**",
+          "headers": [
+            {
+              "key": "Content-Security-Policy",
+              "value": "frame-ancestors 'none'"
+            },
+            { "key": "X-Frame-Options", "value": "deny" },
+            { "key": "X-Content-Type-Options", "value": "nosniff" },
+            { "key": "X-XSS-Protection", "value": "1; mode=block" },
+            { "key": "X-Permitted-Cross-Domain-Policies", "value": "none" },
+            { "key": "Referrer-Policy", "value": "no-referrer" }
+          ]
+        }
+      ],
+      "appAssociation": "AUTO",
+      "rewrites": [
+        {
+          "source": "/r/*",
+          "function": "apiJP",
+          "region": "asia-northeast1"
+        },
+        {
+          "source": "/r/*/menus/*",
+          "function": "apiJP",
+          "region": "asia-northeast1"
+        },
+        {
+          "source": "/r/*/order/*",
+          "function": "apiJP",
+          "region": "asia-northeast1"
+        },
+        {
+          "source": "/o/*",
+          "function": "apiJP",
+          "region": "asia-northeast1"
+        },
+        {
+          "source": "/1.0/**",
+          "function": "apiJP",
+          "region": "asia-northeast1"
+        },
+        {
+          "source": "/api/1.0/**",
+          "function": "apiJP",
+          "region": "asia-northeast1"
+        },
+        {
+          "source": "/api/2.0/**",
+          "function": "apiJP",
+          "region": "asia-northeast1"
+        },
+        {
+          "source": "/smaregi/1.0/**",
+          "function": "apiJP",
+          "region": "asia-northeast1"
+        },
+        {
+          "source": "/sitemap.xml",
+          "function": "apiJP",
+          "region": "asia-northeast1"
+        },
+        {
+          "source": "/m/**",
+          "dynamicLinks": true
+        },
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    }
+  ],
   "storage": {
     "rules": "storage.rules"
   }

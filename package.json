@@ -8,7 +8,7 @@
     "build": "vue-cli-service build && cp dist/index.html functions/templates/index.html",
     "batch": "babel-node --presets @babel/env",
     "customclaims": "babel-node --presets @babel/env  ./batch/customclaims.js",
-    "format": "prettier --write '{src/**/*,*}.{js,ts,vue}'",
+    "format": "prettier --write '{src/**/*,*}.{js,ts,vue,json}'",
     "makenews": "babel-node --presets @babel/env  ./batch/news.js",
     "start": "vue-cli-service serve",
     "use_jp": "firebase use jp && cp src/config/default/ownplate-jp.js src/config/project.js",
