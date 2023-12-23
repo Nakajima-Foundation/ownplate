@@ -356,7 +356,6 @@
 import { defineComponent, computed, watch, ref, PropType } from "vue";
 
 import ShopHeader from "@/app/user/Restaurant/ShopHeader.vue";
-// import FavoriteButton from "@/app/user/Restaurant/FavoriteButton.vue";
 
 import OrderInfo from "@/app/user/OrderPage/OrderInfo.vue";
 import UserCustomerInfo from "@/app/user/OrderPage/UserCustomerInfo.vue";
@@ -397,7 +396,6 @@ export default defineComponent({
   name: "Order",
   components: {
     ShopHeader,
-    // FavoriteButton,
 
     OrderInfo,
     UserCustomerInfo,
