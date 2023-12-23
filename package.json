@@ -39,6 +39,7 @@
     "pdfmake": "0.3.0-beta.2",
     "qrcode": "^1.5.1",
     "query-string": "^8.1.0",
+    "unplugin-vue-markdown": "^0.25.2",
     "validator": "^13.7.0",
     "vue": "^3.3.4",
     "vue-chart-3": "^3.1.8",
