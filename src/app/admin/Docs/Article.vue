@@ -10,7 +10,7 @@
     </div>
 
     <div class="m-6">
-      <linenews v-if="articleId === 'article230930_line_official_account'"/>
+      <linenews v-if="articleId === 'article230930_line_official_account'" />
       <soldout v-if="articleId === 'article231007_out_of_stock'" />
       <lunch_n_dinner v-if="articleId === 'article231019_lunch_n_dinner'" />
     </div>

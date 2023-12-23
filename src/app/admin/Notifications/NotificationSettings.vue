@@ -202,7 +202,7 @@ export default defineComponent({
       required: false,
     },
   },
-  emits:["close"],
+  emits: ["close"],
   setup(props, ctx) {
     const notificationConfig = ref(props.notificationData);
     const soundIndex = ref(getSoundIndex(props.notificationData.nameKey));
