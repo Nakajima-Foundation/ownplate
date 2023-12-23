@@ -36,9 +36,6 @@ jobs:
       - run: npm install
       - name: npm build
         run: npm run build
-        env:
-          VUE_APP_MO_DATA_BASE_URL: '${{ secrets.VUE_APP_MO_DATA_BASE_URL }}'
-          VUE_APP_GTM_ID: '${{ secrets.VUE_APP_GTM_ID }}'
       - run: cp dist/index.html functions/templates/index.html
       - name: functions npm install, build
         working-directory: ./functions
