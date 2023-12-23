@@ -131,7 +131,7 @@
                   <div v-if="item._dataType === 'title'" :key="key">
                     <div
                       class="inline-flex items-center justify-center text-xl font-bold text-black text-opacity-30 cursor-pointer"
-                      :class="key === 0 ? '' : 'mt-6'"
+                      :class="key === 0 ? '' : 'mt-2'"
                       :id="item.id"
                       @click="openCategory"
                     >

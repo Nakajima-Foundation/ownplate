@@ -46,14 +46,14 @@
             </div>
 
             <!-- SNS Link -->
-            <div class="mt-6">
+            <div class="mt-2">
               <sharing-buttons :title="shopInfo.restaurantName" :url="url" />
             </div>
           </div>
         </div>
 
         <!-- Actions -->
-        <div class="mt-6 text-center">
+        <div class="mt-2 text-center">
           <a
             @click="closeShare()"
             class="inline-flex h-12 items-center justify-center rounded-full bg-black bg-opacity-5 px-6"

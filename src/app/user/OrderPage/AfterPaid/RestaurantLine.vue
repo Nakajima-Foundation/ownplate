@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-6 mt-6 rounded-lg bg-black bg-opacity-5 p-4 text-center">
+  <div class="mx-6 mt-2 rounded-lg bg-black bg-opacity-5 p-4 text-center">
     <a target="_blank" :href="shopInfo.lineUrl" rel="noopener noreferrer">
       <div
         class="inline-flex h-12 items-center justify-center rounded-full px-6"
