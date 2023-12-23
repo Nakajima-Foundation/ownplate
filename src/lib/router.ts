@@ -215,7 +215,8 @@ export const customRoutes: CustomRoute[] = [
           {
             name: "admin-orders",
             path: "orders",
-            component: () => import("@/app/admin/Restaurants/OrderListPage.vue"),
+            component: () =>
+              import("@/app/admin/Restaurants/OrderListPage.vue"),
           },
           {
             path: "history",
@@ -224,12 +225,14 @@ export const customRoutes: CustomRoute[] = [
           {
             name: "admin-suspend",
             path: "suspend",
-            component: () => import("@/app/admin/Restaurants/OrderSuspendPage.vue"),
+            component: () =>
+              import("@/app/admin/Restaurants/OrderSuspendPage.vue"),
           },
           {
             name: "admin-order-info",
             path: "orders/:orderId",
-            component: () => import("@/app/admin/Restaurants/OrderInfoPage.vue"),
+            component: () =>
+              import("@/app/admin/Restaurants/OrderInfoPage.vue"),
           },
           {
             name: "user-histories",
@@ -238,7 +241,8 @@ export const customRoutes: CustomRoute[] = [
           },
           {
             path: "analytics/index",
-            component: () => import("@/app/admin/Restaurants/Analytics/Index.vue"),
+            component: () =>
+              import("@/app/admin/Restaurants/Analytics/Index.vue"),
           },
           {
             path: "linelist",
@@ -262,19 +266,23 @@ export const customRoutes: CustomRoute[] = [
           },
           {
             path: "discounthistory",
-            component: () => import("@/app/admin/Restaurants/Discount/DiscountHistory.vue"),
+            component: () =>
+              import("@/app/admin/Restaurants/Discount/DiscountHistory.vue"),
           },
           {
             path: "discounts",
-            component: () => import("@/app/admin/Restaurants/Discount/Discounts.vue"),
+            component: () =>
+              import("@/app/admin/Restaurants/Discount/Discounts.vue"),
           },
           {
             path: "discounts/:discountId",
-            component: () => import("@/app/admin/Restaurants/Discount/Discount.vue"),
+            component: () =>
+              import("@/app/admin/Restaurants/Discount/Discount.vue"),
           },
           {
             path: "discounts/:discountId/history",
-            component: () => import("@/app/admin/Restaurants/Discount/DiscountHistory.vue"),
+            component: () =>
+              import("@/app/admin/Restaurants/Discount/DiscountHistory.vue"),
           },
           {
             path: "printer",

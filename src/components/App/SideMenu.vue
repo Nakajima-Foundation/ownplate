@@ -1,7 +1,7 @@
 <template>
   <o-sidebar
-    :fullheight="fullheight"
-    :fullwidth="fullwidth"
+    :fullheight="true"
+    :fullwidth="true"
     :overlay="overlay"
     :right="right"
     v-model:active="open"
