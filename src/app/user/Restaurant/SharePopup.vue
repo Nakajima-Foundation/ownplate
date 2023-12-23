@@ -13,7 +13,6 @@
       v-model:active="sharePopup"
       :width="488"
       scroll="keep"
-      style="text-align: initial"
     >
       <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
         <!-- Title -->
