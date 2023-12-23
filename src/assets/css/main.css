@@ -57,7 +57,7 @@ canvas {
 
 /* OwnPlate Dialog for b-model */
 .modal-background {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.5)!important;
 }
 .modal .animation-content {
   margin: 0;
@@ -68,7 +68,7 @@ canvas {
   position: absolute;
 }
 .b-sidebar .sidebar-background {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.5)!important;
 }
 .b-sidebar .sidebar-content.is-light {
   background: #ffffff;
