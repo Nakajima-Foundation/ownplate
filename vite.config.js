@@ -12,7 +12,12 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src')
     }
   },
+  optimizeDeps: {
+    include: [
+      "fast-deep-equal",
+    ],
+  },
   server: {
-    port: 8080,
+    port: 3000,
   },
 });
