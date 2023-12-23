@@ -29,6 +29,7 @@ import { sentryDsn, GAPIKey } from "@/config/project";
 // css
 import "@/assets/css/tailwind.css";
 import "@/assets/css/main.css";
+import '@oruga-ui/theme-bulma/dist/bulma.css'
 
 const app = createApp(App);
 
