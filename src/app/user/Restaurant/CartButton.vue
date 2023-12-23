@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div class="fixed left-1/2 bottom-3 z-30">
     <o-button
       v-if="0 != totalQuantities"
       :disabled="
         isCheckingOut || noPaymentMethod || noAvailableTime || cantDelivery
       "
       @click="handleCheckOut"
-      class="b-reset-tw fixed left-1/2 bottom-3 z-30 ml-[-9rem] w-[18rem] sm:bottom-8"
+      class="b-reset-tw ml-[-9rem] w-[18rem] sm:bottom-8"
     >
       <div
         class="inline-flex w-72 items-center justify-center rounded-full bg-op-teal shadow-lg"

@@ -9,12 +9,7 @@
     </a>
 
     <!-- Share Popup-->
-    <o-modal
-      v-model:active="sharePopup"
-      :width="488"
-      scroll="keep"
-      style="text-align: initial"
-    >
+    <o-modal v-model:active="sharePopup" :width="488" scroll="keep">
       <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
         <!-- Title -->
         <div class="text-xl font-bold text-black text-opacity-40">

@@ -64,6 +64,9 @@ canvas {
 }
 
 /* OwnPlate Side Bar */
+.b-sidebar {
+  position: absolute;
+}
 .b-sidebar .sidebar-background {
   background-color: rgba(0, 0, 0, 0.5);
 }
@@ -71,11 +74,11 @@ canvas {
   background: #ffffff;
 }
 .b-sidebar .sidebar-content {
+  position: fixed;
   background: #ffffff;
   box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
   width: 288px;
 }
-
 
 .validation_ok,
 .validation_ok:hover {
@@ -132,7 +135,7 @@ canvas {
   @apply text-red-700;
 }
 .animation-content {
-    z-index: 100;
-    max-height: 90%;
-    overflow: scroll;
+  z-index: 100;
+  max-height: 90%;
+  overflow: scroll;
 }

@@ -3,7 +3,7 @@
     :active="notificationSettingsPopup"
     :width="488"
     scroll="keep"
-    @onClose="closeNotificationSettings"
+    @close="closeNotificationSettings"
   >
     <div class="mx-2 my-6 rounded-lg bg-white p-6 text-left shadow-lg">
       <!-- Title -->
@@ -202,6 +202,7 @@ export default defineComponent({
       required: false,
     },
   },
+  emits: ["close"],
   setup(props, ctx) {
     const notificationConfig = ref(props.notificationData);
     const soundIndex = ref(getSoundIndex(props.notificationData.nameKey));

@@ -477,7 +477,7 @@ const loadComponent = (data: CustomRoute): any => {
 const routes = customRoutes.map(loadComponent);
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory(import.meta.env.BASE_URL),
   // base: "/",
   routes,
 });

@@ -1,10 +1,9 @@
 <template>
   <o-sidebar
-    :fullheight="fullheight"
-    :fullwidth="fullwidth"
-    :overlay="overlay"
-    :right="right"
-    v-model:open="open"
+    :fullheight="true"
+    :overlay="true"
+    position="left"
+    v-model:active="open"
   >
     <!-- Logo / Home -->
     <div class="mt-6 mb-4 text-center">
@@ -219,10 +218,6 @@ export default defineComponent({
     });
 
     return {
-      overlay: true,
-      fullheight: true,
-      fullwidth: false,
-      right: false,
       home_path,
 
       logo2,
