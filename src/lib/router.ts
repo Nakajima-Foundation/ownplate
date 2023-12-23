@@ -36,7 +36,7 @@ const getUserPages = (prefix: string) => {
 interface CustomRoute {
   name?: string;
   path: string;
-  component: Promise;
+  component: () => Promise<any>;
   children?: CustomRoute[];
   meta?: any;
 }
