@@ -70,13 +70,13 @@ canvas {
 .b-sidebar .sidebar-background {
   background-color: rgba(0, 0, 0, 0.5)!important;
 }
-.b-sidebar .sidebar-content.is-light {
-  background: #ffffff;
+.b-sidebar .sidebar-content.is-fullheight {
+  background: #ffffff!important;
 }
 .b-sidebar .sidebar-content {
   position: fixed;
-  background: #ffffff;
-  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
+  background: #ffffff!important;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1)!important;
   width: 288px;
 }
 
