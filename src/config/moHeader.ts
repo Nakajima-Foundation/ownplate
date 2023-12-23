@@ -35,7 +35,7 @@ const gtags = {
 };
 
 export const MoHeader = {
-  title: ownPlateConfig.siteName || process.env.npm_package_name,
+  title: ownPlateConfig.siteName || import.meta.env.npm_package_name,
   htmlAttrs: {
     lang: "ja",
   },
@@ -60,7 +60,7 @@ export const MoHeader = {
       name: "description",
       content:
         ownPlateConfig.siteDescription ||
-        process.env.npm_package_description ||
+        import.meta.env.npm_package_description ||
         "",
     },
   ],

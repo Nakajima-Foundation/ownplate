@@ -184,7 +184,7 @@ export default defineComponent({
       }
     });
 
-    console.log(process.env.VUE_APP_CIRCLE_SHA1);
+    console.log(import.meta.env.VUE_APP_CIRCLE_SHA1);
     const isInLine = /Line/.test(navigator.userAgent);
     const isInLIFF = /LIFF/.test(navigator.userAgent);
 

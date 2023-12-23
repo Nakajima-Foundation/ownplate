@@ -55,7 +55,7 @@ app.use(store);
 app.use(router);
 app.use(i18n);
 
-if (process.env.NODE_ENV !== "development") {
+if (import.meta.env.NODE_ENV !== "development") {
   if (sentryDsn) {
     Sentry.init({
       app,

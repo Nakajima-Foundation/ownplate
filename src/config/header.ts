@@ -76,7 +76,7 @@ const gtags = {
 };
 
 export const RestaurantHeader = {
-  title: ownPlateConfig.siteName || process.env.npm_package_name,
+  title: ownPlateConfig.siteName || import.meta.env.npm_package_name,
   script,
   noscript,
   meta: [
@@ -91,7 +91,7 @@ export const RestaurantHeader = {
 };
 
 export const defaultHeader = {
-  title: ownPlateConfig.siteName || process.env.npm_package_name,
+  title: ownPlateConfig.siteName || import.meta.env.npm_package_name,
   htmlAttrs: {
     lang: "ja",
   },
@@ -116,7 +116,7 @@ export const defaultHeader = {
       name: "description",
       content:
         ownPlateConfig.siteDescription ||
-        process.env.npm_package_description ||
+        import.meta.env.npm_package_description ||
         "",
     },
   ],
