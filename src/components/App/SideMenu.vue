@@ -60,7 +60,7 @@
     </div>
 
     <!-- Favorites -->
-    <div class="mt-2 text-center" v-if="isUser && !inLiff">
+    <div class="text-center" v-if="isUser && !inLiff">
       <SideMenuButton
         text="find.likes"
         icon="favorite"
