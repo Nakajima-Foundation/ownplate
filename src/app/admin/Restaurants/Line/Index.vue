@@ -7,7 +7,7 @@
     <div v-else>
       <!-- Header -->
       <AdminHeader
-        class="mx-6 mt-6 lg:flex lg:items-center"
+        class="mx-6 mt-4 lg:flex lg:items-center"
         :shopInfo="shopInfo"
         :backLink="`/admin/restaurants/#restaurant_` + shopInfo.restaurantId"
         :showSuspend="false"
@@ -15,7 +15,7 @@
       />
 
       <!-- Body -->
-      <div class="grid-col-1 mx-6 mt-6 space-y-4 lg:mx-auto lg:max-w-2xl">
+      <div class="grid-col-1 mx-6 mt-4 space-y-4 lg:mx-auto lg:max-w-2xl">
         <!-- Title -->
         <div class="text-xl font-bold text-black text-opacity-30">
           {{ $t("admin.line.settings") }}

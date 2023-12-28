@@ -5,7 +5,7 @@
     </div>
     <div v-else>
       <!-- Header -->
-      <div class="mx-6 mt-6 lg:flex lg:items-center">
+      <div class="mx-6 mt-4 lg:flex lg:items-center">
         <!-- Back and Preview -->
         <div class="flex space-x-4">
           <div class="flex-shrink-0">
@@ -31,7 +31,7 @@
       </div>
 
       <!-- Date -->
-      <div class="mx-6 mt-6">
+      <div class="mx-6 mt-4">
         <o-select v-model="monthIndex">
           <option
             v-for="day in lastSeveralMonths"
@@ -44,7 +44,7 @@
       </div>
 
       <!-- Table -->
-      <div class="mx-6 mt-6">
+      <div class="mx-6 mt-4">
         <table class="w-full rounded-lg bg-white shadow">
           <!-- Table Header -->
           <tr>
@@ -160,7 +160,7 @@
       </div>
 
       <!-- Download -->
-      <div class="mx-6 mt-6 text-center">
+      <div class="mx-6 mt-4 text-center">
         <download-csv
           :data="tableData"
           :fields="fields"
@@ -181,7 +181,7 @@
       </div>
 
       <!-- Report Details -->
-      <div class="mx-6 mt-6 text-center">
+      <div class="mx-6 mt-4 text-center">
         <report-details
           :orders="orders"
           :shopInfo="shopInfo"
