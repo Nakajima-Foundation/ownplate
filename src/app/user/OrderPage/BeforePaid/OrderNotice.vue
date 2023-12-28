@@ -2,7 +2,7 @@
   <div
     v-if="shopInfo && shopInfo.orderNotice && shopInfo.orderNotice.length > 0"
   >
-    <div class="mt-6">
+    <div class="mt-2">
       <div class="text-xl font-bold text-black text-opacity-30">
         {{ $t("order.orderNotice") }}
       </div>

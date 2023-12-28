@@ -26,7 +26,7 @@
           <!-- Left -->
           <div id="RestaurantLeftTop">
             <!-- Cover Image -->
-            <div class="lg:mt-6 cursor-pointer">
+            <div class="lg:mt-2 cursor-pointer">
               <img
                 @click.stop="openImage()"
                 :src="coverImage"
