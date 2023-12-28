@@ -2,7 +2,7 @@
   <div class="fixed top-0 h-screen w-full bg-black bg-opacity-50 z-30">
     <div class="h-1/5 w-full" @click="closeCart"></div>
     <div class="fixed h-4/5 w-full overflow-x-scroll bg-white pb-32">
-      <div class="mt-6 mb-4">
+      <div class="mt-2 mb-4">
         <div class="flex justify-center font-bold text-black">
           {{ shopInfo.restaurantName }}
         </div>
