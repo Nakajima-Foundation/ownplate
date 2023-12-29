@@ -10,7 +10,7 @@
         />
       </div>
 
-      <div class="mt-8 sm:mt-0">
+      <div class="mt-4 sm:mt-0">
         <router-link to="/home">
           <div
             class="md:ml-12 sm:ml-2 inline-flex h-16 items-center rounded-full bg-white px-8 shadow hover:bg-opacity-90"

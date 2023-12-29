@@ -7,7 +7,7 @@
     <template v-else>
       <!-- Header -->
       <AdminHeader
-        class="mx-6 mt-6 lg:flex lg:items-center"
+        class="mx-6 mt-4 lg:flex lg:items-center"
         :shopInfo="shopInfo"
         :backLink="parentUrl"
         :showSuspend="true"
@@ -19,14 +19,14 @@
       <!-- Body -->
       <div
         v-if="orderInfo.status === order_status.transaction_hide"
-        class="mx-6 mt-6"
+        class="mx-6 mt-2"
       >
         <div class="rounded-lg bg-white p-4 shadow">
           <div>{{ $t("order.status.transaction_hide") }}</div>
         </div>
       </div>
 
-      <div v-else class="mx-6 mt-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
+      <div v-else class="mx-6 mt-2 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
         <!-- Left -->
         <div>
           <div class="rounded-lg bg-white p-4 shadow">
@@ -134,7 +134,7 @@
 
             <!-- Cancel Button -->
             <div
-              class="mt-6 text-center"
+              class="mt-4 text-center"
               v-if="
                 isValidTransition('order_canceled') &&
                 (paymentIsNotCompleted || !hasStripe)
@@ -151,7 +151,7 @@
                 </div>
               </button>
             </div>
-            <div class="mt-6 text-center" v-if="cancelStatus">
+            <div class="mt-4 text-center" v-if="cancelStatus">
               <div
                 class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-red-700 bg-opacity-10 text-red-700"
               >
@@ -287,7 +287,7 @@
                 </div>
               </div>
             </div>
-            <div class="mt-6 text-center">
+            <div class="mt-2 text-center">
               <router-link
                 :to="
                   '/admin/restaurants/' +
@@ -384,7 +384,7 @@
             </div>
 
             <!-- Payment Cancel Button -->
-            <div class="mt-6 text-center">
+            <div class="mt-4 text-center">
               <o-button
                 v-if="paymentIsNotCompleted"
                 @click="openPaymentCancel"

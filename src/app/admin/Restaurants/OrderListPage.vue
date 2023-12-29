@@ -6,7 +6,7 @@
     <div v-else>
       <!-- Header -->
       <AdminHeader
-        class="mx-6 mt-6 lg:flex lg:items-center"
+        class="mx-6 mt-4 lg:flex lg:items-center"
         :shopInfo="shopInfo"
         :backLink="`/admin/restaurants/#restaurant_` + shopInfo.restaurantId"
         :showSuspend="true"
@@ -14,7 +14,7 @@
       />
 
       <div class="sm:flex">
-        <div class="mt-6 ml-6 sm:flex">
+        <div class="mt-4 ml-6 sm:flex">
           <ToggleSwitch
             :toggleState="queryIsPlacedDate"
             @toggleFunction="switchOrderQuery()"
@@ -24,7 +24,7 @@
         </div>
 
         <!-- Date -->
-        <div class="ml-6 mt-6 sm:ml-4">
+        <div class="ml-6 mt-4 sm:ml-4">
           <o-select v-model="dayIndex">
             <option
               v-for="day in lastSeveralDays"
@@ -43,7 +43,7 @@
 
       <!-- Orders -->
       <div
-        class="mx-6 mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+        class="mx-6 mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
       >
         <template v-for="order in orders" :key="order.id">
           <router-link
@@ -55,7 +55,7 @@
       </div>
 
       <!-- Go to History -->
-      <div class="mx-6 mt-6">
+      <div class="mx-6 mt-2">
         <router-link :to="`/admin/restaurants/${restaurantId}/history`"
           ><div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
