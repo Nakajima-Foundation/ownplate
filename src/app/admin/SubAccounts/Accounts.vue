@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Header -->
-    <div class="mx-6 mt-6 lg:flex lg:items-center">
+    <div class="mx-6 mt-4 lg:flex lg:items-center">
       <!-- Back and Preview -->
       <div class="flex space-x-4">
         <back-button url="/admin/restaurants/" />
@@ -16,7 +16,7 @@
     </div>
 
     <!-- Sub Account list -->
-    <div class="mx-6 mt-6">
+    <div class="mx-6 mt-4">
       <div class="mt-2 text-base font-bold">
         {{ $t("admin.subAccounts.subaccountlist") }}
       </div>
@@ -56,7 +56,7 @@
       </table>
     </div>
 
-    <div class="mx-6 mt-6">
+    <div class="mx-6 mt-2">
       <span class="text-base text-xl font-bold">
         {{ $t("admin.subAccounts.invite") }}
       </span>
@@ -95,7 +95,7 @@
         </div>
       </div>
     </div>
-    <div class="mx-6 mt-6">
+    <div class="mx-6 mt-2">
       <span class="text-base font-bold">
         {{ $t("admin.subAccounts.invitedList") }}
       </span>

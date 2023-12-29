@@ -2,7 +2,7 @@
   <div v-if="notFound">Not Found</div>
   <div v-else>
     <!-- Header -->
-    <div class="mx-6 mt-6 lg:flex lg:items-center">
+    <div class="mx-6 mt-4 lg:flex lg:items-center">
       <!-- Back and Preview -->
       <div class="flex space-x-4">
         <back-button url="/admin/docs/" backText="button.backToDocument" />

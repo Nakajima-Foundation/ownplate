@@ -493,7 +493,7 @@ section {
   @apply text-sm text-black text-opacity-60;
 }
 h6 {
-  @apply mt-6 text-base font-bold text-black text-opacity-40;
+  @apply mt-4 text-base font-bold text-black text-opacity-40;
 }
 p {
   @apply mt-4;

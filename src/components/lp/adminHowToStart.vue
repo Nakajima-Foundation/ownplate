@@ -63,7 +63,7 @@
         </div>
       </div>
 
-      <div class="text-center sm:mt-16 mt-12">
+      <div class="text-center sm:mt-12 mt-10">
         <router-link to="/admin/docs">
           <div class="inline-flex items-center justify-center">
             <span class="text-op-teal text-lg font-bold lg:text-xl">

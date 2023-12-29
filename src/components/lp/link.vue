@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-6 bg-ownplate-yellow p-4">
+  <div class="mt-2 bg-ownplate-yellow p-4">
     <div
       class="m-auto inline-flex w-full items-center justify-center text-center"
     >

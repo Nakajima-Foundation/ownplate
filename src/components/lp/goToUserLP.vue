@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-16 px-6">
+  <div class="pt-10 px-6">
     <div
       class="bg-op-teal rounded-lg px-5 sm:py-6 pb-12 pt-6 px-auto sm:flex items-center justify-center text-center"
     >
