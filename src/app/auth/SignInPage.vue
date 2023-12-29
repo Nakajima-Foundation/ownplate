@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-6 mt-6 lg:mx-auto lg:max-w-2xl">
+  <div class="mx-6 mt-2 lg:mx-auto lg:max-w-2xl">
     <!-- Note for the First User -->
     <div class="rounded-lg bg-green-600 bg-opacity-10 p-6">
       <div class="flex">
@@ -23,7 +23,7 @@
     </div>
 
     <!-- Sign In Card -->
-    <div class="mt-6 rounded-lg bg-white p-6 shadow">
+    <div class="mt-2 rounded-lg bg-white p-6 shadow">
       <form @submit.prevent="onSignin">
         <div class="text-xl font-bold text-black text-opacity-30">
           {{ $t("admin.pleaseSignIn") }}
@@ -41,6 +41,7 @@
               :message="errors.email && $t(errors.email[0])"
             >
               <o-input
+                class="whitespace-nowrap"
                 v-model="email"
                 type="email"
                 :placeholder="$t('admin.emailPlaceHolder')"
@@ -96,7 +97,7 @@
         </div>
 
         <!-- Forgot Password -->
-        <div class="mt-6 text-center">
+        <div class="mt-2 text-center">
           <router-link to="/admin/user/reset">
             <div class="inline-flex items-center justify-center">
               <i class="material-icons mr-2 text-lg text-op-teal">help</i>
@@ -115,7 +116,7 @@
         {{ $t("admin.forSignup") }}
       </div>
 
-      <div class="mt-6">
+      <div class="mt-2">
         <router-link to="/admin/user/signup">
           <div
             class="inline-flex h-16 items-center rounded-full bg-ownplate-yellow px-8 shadow hover:bg-opacity-80"
