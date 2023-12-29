@@ -460,15 +460,15 @@
         </p>
       </section>
 
-      <div class="mt-6 text-right text-black text-opacity-40">以上</div>
+      <div class="mt-4 text-right text-black text-opacity-40">以上</div>
 
-      <div class="mt-6 text-black text-opacity-40">
+      <div class="mt-4 text-black text-opacity-40">
         一般社団法人シンギュラリティ・ソサエティ
       </div>
       <div class="mt-1 text-black text-opacity-40">2022年7月12日</div>
       <div class="mt-1 text-black text-opacity-40">最終改定</div>
 
-      <div class="mt-6 text-black text-opacity-40">SS：有本/武藤</div>
+      <div class="mt-4 text-black text-opacity-40">SS：有本/武藤</div>
     </div>
   </div>
 </template>

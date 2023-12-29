@@ -42,6 +42,7 @@
             >
               <o-input
                 v-model="email"
+                type="email"
                 :placeholder="$t('admin.emailPlaceHolder')"
                 maxlength="256"
               />
