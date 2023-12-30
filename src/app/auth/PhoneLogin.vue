@@ -80,7 +80,7 @@
       </div>
 
       <!-- Terms of Use & Privacy Policy -->
-      <div class="mt-6 text-xs" v-if="!relogin">
+      <div class="mt-4 text-xs" v-if="!relogin">
         <TermsAndPolicy />
       </div>
     </form>
