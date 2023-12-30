@@ -139,3 +139,14 @@ canvas {
   max-height: 90%;
   overflow: scroll;
 }
+
+/* Workaround for Bulma and Oruga input field */
+/* https://oruga.io/components/Input.html */
+.control .icon.is-right {
+  display: flex;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: auto;
+  width: 40px;
+}
