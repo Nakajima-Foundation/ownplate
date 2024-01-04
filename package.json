@@ -24,7 +24,6 @@
     "@oruga-ui/theme-bulma": "^0.2.11",
     "@sentry/tracing": "^6.19.4",
     "@sentry/vue": "^6.19.4",
-    "@tailwindcss/line-clamp": "^0.4.4",
     "bulma": "^0.9.4",
     "caniuse-lite": "^1.0.30001520",
     "chart.js": "^3.9.1",
