@@ -1,7 +1,7 @@
 <template>
-  <div class="mt-12 h-52 bg-[#616161]">
+  <div class="mt-12 bg-[#616161]">
     <!-- Footer -->
-    <div class="mt-2 mx-4 inline-flex text-center">
+    <div class="mt-4 mx-4 inline-flex text-center">
       <!-- Facebook User Group -->
       <div class="inline-block px-1 pb-2" v-if="false">
         <a
@@ -54,7 +54,7 @@
       </div>
     </div>
 
-    <div class="mt-4 px-6">
+    <div class="my-4 px-4">
       <div class="text-right">
         <a
           class="inline-flex h-10 items-center justify-center rounded-full bg-white bg-opacity-10 pl-4 pr-2"
