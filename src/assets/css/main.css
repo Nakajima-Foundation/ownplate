@@ -152,3 +152,6 @@ canvas {
   height: auto;
   width: 40px;
 }
+.select .icon.is-right {
+  display: none;
+}
