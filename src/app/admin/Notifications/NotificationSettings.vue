@@ -3,7 +3,7 @@
     :active="notificationSettingsPopup"
     :width="488"
     scroll="keep"
-    @onClose="closeNotificationSettings"
+    @close="closeNotificationSettings"
   >
     <div class="mx-2 my-6 rounded-lg bg-white p-6 text-left shadow-lg">
       <!-- Title -->
@@ -12,7 +12,7 @@
       </div>
 
       <!-- Body -->
-      <div class="mt-6">
+      <div class="mt-2">
         <!-- Incomplete Orders -->
         <div>
           <incomplete-orders
@@ -23,7 +23,7 @@
         </div>
 
         <!-- Settings -->
-        <div class="mt-6">
+        <div class="mt-2">
           <div class="mb-2 text-sm font-bold text-black text-opacity-60">
             {{ $t("admin.order.notificationSettings") }}
           </div>
@@ -154,7 +154,7 @@
       </div>
 
       <!-- Action Buttons -->
-      <div class="mt-6 text-center">
+      <div class="mt-4 text-center">
         <a
           @click="closeNotificationSettings()"
           class="inline-flex h-12 items-center justify-center rounded-full bg-black bg-opacity-5 px-6"
@@ -202,6 +202,7 @@ export default defineComponent({
       required: false,
     },
   },
+  emits: ["close"],
   setup(props, ctx) {
     const notificationConfig = ref(props.notificationData);
     const soundIndex = ref(getSoundIndex(props.notificationData.nameKey));

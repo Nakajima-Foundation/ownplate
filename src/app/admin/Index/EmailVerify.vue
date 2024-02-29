@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-6 mt-6 rounded-lg bg-red-700 bg-opacity-10 p-6">
+  <div class="mx-6 mt-4 rounded-lg bg-red-700 bg-opacity-10 p-6">
     <div class="mb-3 text-center text-lg font-bold text-red-700">
       {{ $t("admin.needEmailVerification") }}
     </div>

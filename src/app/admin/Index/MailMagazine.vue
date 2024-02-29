@@ -1,6 +1,6 @@
 <template>
   <!-- Mail Magazine -->
-  <div class="mt-6">
+  <div class="mt-4">
     <div class="mb-2 text-xl font-bold text-black text-opacity-40">
       {{ $t("admin.mail.magazine.title") }}
     </div>

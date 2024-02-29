@@ -8,7 +8,7 @@
     <div v-else>
       <!-- Header -->
       <AdminHeader
-        class="mx-6 mt-6 lg:flex lg:items-center"
+        class="mx-6 mt-4 lg:flex lg:items-center"
         :shopInfo="shopInfo"
         :backLink="`/admin/restaurants/${shopInfo.restaurantId}/orders`"
         :showSuspend="false"
@@ -18,7 +18,7 @@
       />
 
       <!-- Title -->
-      <div class="mx-6 mt-6 text-xl font-bold text-black text-opacity-30">
+      <div class="mx-6 mt-4 text-xl font-bold text-black text-opacity-30">
         {{ $t("admin.order.suspendSettings") }}
       </div>
 
@@ -29,7 +29,7 @@
       </div>
 
       <!-- Suspend and Unsuspend  -->
-      <div class="mx-6 mt-6">
+      <div class="mx-6 mt-2">
         <div v-if="!suspendUntil">
           <div v-if="availableTimes.length === 0">
             {{ $t("admin.order.notSuspendAvailable") }}

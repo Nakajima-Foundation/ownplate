@@ -18,7 +18,7 @@
     <template v-else>
       <div class="mx-6 mt-4">
         <!-- Save and Cancel -->
-        <div class="mt-6 flex justify-center space-x-4">
+        <div class="mt-2 flex justify-center space-x-4">
           <!-- Cancel Button -->
           <router-link :to="`/admin/restaurants/#restaurant_` + restaurantId">
             <div
@@ -235,7 +235,7 @@
         </div>
 
         <!-- Save and Cancel -->
-        <div class="mt-6 flex justify-center space-x-4">
+        <div class="mt-2 flex justify-center space-x-4">
           <!-- Cancel Button -->
           <router-link :to="`/admin/restaurants/#restaurant_` + restaurantId">
             <div

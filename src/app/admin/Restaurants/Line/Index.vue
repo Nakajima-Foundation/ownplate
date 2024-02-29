@@ -7,7 +7,7 @@
     <div v-else>
       <!-- Header -->
       <AdminHeader
-        class="mx-6 mt-6 lg:flex lg:items-center"
+        class="mx-6 mt-4 lg:flex lg:items-center"
         :shopInfo="shopInfo"
         :backLink="`/admin/restaurants/#restaurant_` + shopInfo.restaurantId"
         :showSuspend="false"
@@ -15,7 +15,7 @@
       />
 
       <!-- Body -->
-      <div class="grid-col-1 mx-6 mt-6 space-y-4 lg:mx-auto lg:max-w-2xl">
+      <div class="grid-col-1 mx-6 mt-4 space-y-4 lg:mx-auto lg:max-w-2xl">
         <!-- Title -->
         <div class="text-xl font-bold text-black text-opacity-30">
           {{ $t("admin.line.settings") }}
@@ -102,31 +102,31 @@
             <div class="font-bold text-sm">
               LINEログインチャンネルのチャンネル基本設定のチャンネルIDをコピーして設定してください。
             </div>
-            <img src="/images/lines/lineLoginId.png" class="p-4" />
+            <img src="//images/lines/lineLoginId.png" class="p-4" />
           </div>
           <div v-if="iType == 'loginChannelSecret'">
             <div class="font-bold text-sm">
               LINEログインチャンネルのチャンネル基本設定のチャンネルシークレットをコピーして設定してください。
             </div>
-            <img src="/images/lines/lineLoginHeader.png" class="p-4" />
+            <img src="//images/lines/lineLoginHeader.png" class="p-4" />
             <div class="bg-gray-200">
               {{ $t("admin.line.showBelow") }}
             </div>
-            <img src="/images/lines/lineLoginSecret.png" class="p-4" />
+            <img src="//images/lines/lineLoginSecret.png" class="p-4" />
           </div>
           <div v-if="iType == 'messagingAccessToken'">
             <div class="font-bold text-sm">
               LINE Messaging APIのMessaging
               API設定のチャンネルアクセストークンをコピーして設定してください。
             </div>
-            <img src="/images/lines/lineMessageToken.png" class="p-4" />
-            <img src="/images/lines/lineMessageHeader.png" class="p-4" />
+            <img src="//images/lines/lineMessageToken.png" class="p-4" />
+            <img src="//images/lines/lineMessageHeader.png" class="p-4" />
           </div>
           <div v-if="iType == 'callback'">
             <div class="font-bold text-sm">
               この値をコピーして、LINEログインチャンネルのLINEログイン設定の「コールバックURL」に設定してください。
             </div>
-            <img src="/images/lines/lineLoginCallback.png" class="p-4" />
+            <img src="//images/lines/lineLoginCallback.png" class="p-4" />
           </div>
         </div>
       </o-modal>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Back -->
-    <div class="mx-6 mt-6">
+    <div class="mx-2 mt-2">
       <back-button
         :url="basePath + '/u/profile/'"
         backText="button.myPage"
@@ -10,13 +10,13 @@
     </div>
 
     <!-- Title -->
-    <div class="mx-6 mt-6 text-xl font-bold text-black text-opacity-30">
+    <div class="mx-2 mt-2 text-xl font-bold text-black text-opacity-30">
       {{ $t("order.history") }}
     </div>
 
     <!-- Orders -->
     <div
-      class="mx-6 mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+      class="mx-2 mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
     >
       <div v-if="loading" />
       <template v-else-if="orders.length > 0">

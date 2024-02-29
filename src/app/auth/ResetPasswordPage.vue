@@ -1,6 +1,6 @@
 <template>
-  <div class="mx-6 mt-6 lg:mx-auto lg:max-w-2xl">
-    <div class="mt-6 rounded-lg bg-white p-6 shadow">
+  <div class="mx-6 mt-4 lg:mx-auto lg:max-w-2xl">
+    <div class="mt-4 rounded-lg bg-white p-6 shadow">
       <form @submit.prevent="handleNext">
         <!-- Title -->
         <div class="text-xl font-bold text-black text-opacity-30">

@@ -26,7 +26,7 @@
           <!-- Left -->
           <div id="RestaurantLeftTop">
             <!-- Cover Image -->
-            <div class="lg:mt-6 cursor-pointer">
+            <div class="lg:mt-2 cursor-pointer">
               <img
                 @click.stop="openImage()"
                 :src="coverImage"
@@ -131,7 +131,7 @@
                   <div v-if="item._dataType === 'title'" :key="key">
                     <div
                       class="inline-flex items-center justify-center text-xl font-bold text-black text-opacity-30 cursor-pointer"
-                      :class="key === 0 ? '' : 'mt-6'"
+                      :class="key === 0 ? '' : 'mt-2'"
                       :id="item.id"
                       @click="openCategory"
                     >

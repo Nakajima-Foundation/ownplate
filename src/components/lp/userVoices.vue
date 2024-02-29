@@ -1,13 +1,13 @@
 <template>
   <div>
     <!-- User Voices Title -->
-    <div class="mt-16 text-black text-center text-op-90 text-2xl font-bold">
+    <div class="mt-10 text-black text-center text-op-90 text-2xl font-bold">
       {{ $t("lp.customerVoice1") }}
       <br />{{ $t("lp.customerVoice2") }}
     </div>
 
     <!-- User Voices Hero -->
-    <div class="mx-6 mt-6 rounded-2xl bg-white p-6 lg:flex lg:space-x-6">
+    <div class="mx-6 mt-4 rounded-2xl bg-white p-6 lg:flex lg:space-x-6">
       <!-- User Face -->
       <div class="text-center lg:flex-shrink-0">
         <img src="/LP-UserVoice-Face-1.jpg" class="rounded-full" />

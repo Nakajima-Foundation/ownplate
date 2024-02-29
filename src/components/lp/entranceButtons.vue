@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-6 mt-6 text-center lg:grid lg:grid-cols-3 lg:gap-4">
+  <div class="mx-6 mt-4 text-center lg:grid lg:grid-cols-3 lg:gap-4">
     <!-- For Restaurants -->
     <entrance-buttons-restaurants />
 

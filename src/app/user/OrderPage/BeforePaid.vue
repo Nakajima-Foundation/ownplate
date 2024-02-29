@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Back Button (Edit Order) -->
-    <div class="mx-6 mt-6">
+    <div class="mx-6 mt-4">
       <router-link :to="menuPagePath">
         <div
           class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 b-reset-tw"
@@ -15,7 +15,7 @@
     </div>
 
     <!-- Restaurant Profile Photo and Name -->
-    <div class="beforePaid mt-4">
+    <div class="beforePaid mt-2">
       <shop-header :shopInfo="shopInfo"></shop-header>
     </div>
 
@@ -34,7 +34,7 @@
     </div>
 
     <!-- Order Body -->
-    <div class="mx-6 mt-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
+    <div class="mx-6 mt-2 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
       <!-- Left -->
       <div>
         <!-- Title -->
@@ -158,7 +158,7 @@
           <!-- Message -->
           <template v-if="shopInfo && shopInfo.acceptUserMessage">
             <div
-              class="mt-6"
+              class="mt-2"
               :class="
                 userMessageError ? 'rounded border-4 border-red-700 p-2' : ''
               "
@@ -182,7 +182,7 @@
           </template>
 
           <!--Act on Specified Commercial Transactions -->
-          <div class="mt-6">
+          <div class="mt-2">
             <SpecifiedCommercialTransactions
               :shopInfo="shopInfo"
               @openTransactionsAct="openTransactionsAct()"
@@ -190,7 +190,7 @@
           </div>
 
           <!-- Payment -->
-          <div class="mt-6">
+          <div class="mt-2">
             <div class="text-xl font-bold text-black text-opacity-30">
               {{ $t("order.yourPayment") }}
             </div>
@@ -231,7 +231,7 @@
                 </div>
               </div>
 
-              <div class="mt-6 text-center">
+              <div class="mt-4 text-center">
                 <o-button
                   :disabled="
                     !cardState.complete ||
@@ -356,7 +356,6 @@
 import { defineComponent, computed, watch, ref, PropType } from "vue";
 
 import ShopHeader from "@/app/user/Restaurant/ShopHeader.vue";
-// import FavoriteButton from "@/app/user/Restaurant/FavoriteButton.vue";
 
 import OrderInfo from "@/app/user/OrderPage/OrderInfo.vue";
 import UserCustomerInfo from "@/app/user/OrderPage/UserCustomerInfo.vue";
@@ -397,7 +396,6 @@ export default defineComponent({
   name: "Order",
   components: {
     ShopHeader,
-    // FavoriteButton,
 
     OrderInfo,
     UserCustomerInfo,

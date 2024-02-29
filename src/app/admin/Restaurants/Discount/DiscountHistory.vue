@@ -10,7 +10,7 @@
         <!-- Nav Bar -->
         <!-- Back Button and Restaurant Profile -->
         <AdminHeader
-          class="mx-6 mt-6 lg:flex lg:items-center"
+          class="mx-6 mt-4 lg:flex lg:items-center"
           :shopInfo="shopInfo"
           :backLink="`/admin/restaurants/${shopInfo.restaurantId}/discounts`"
           :showSuspend="false"
@@ -22,7 +22,7 @@
       <!-- Right Gap -->
       <div class="column is-narrow w-6"></div>
     </div>
-    <div class="mx-6 mt-6 lg:flex lg:items-center" v-else>
+    <div class="mx-6 mt-4 lg:flex lg:items-center" v-else>
       <!-- Back and Preview -->
       <div class="flex space-x-4">
         <div class="flex-shrink-0">

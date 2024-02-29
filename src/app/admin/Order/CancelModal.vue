@@ -6,12 +6,12 @@
     </div>
 
     <!-- Message -->
-    <div class="mt-6 text-base">
+    <div class="mt-4 text-base">
       {{ $t("admin.order.cancelMessage") }}
     </div>
 
     <!-- Call -->
-    <div v-if="orderInfo.phoneNumber" class="mt-6 text-center">
+    <div v-if="orderInfo.phoneNumber" class="mt-4 text-center">
       <div>
         <a
           :href="nationalPhoneURI"
@@ -46,7 +46,7 @@
     </div>
 
     <!-- Close -->
-    <div class="mt-6 text-center">
+    <div class="mt-4 text-center">
       <a
         @click="closeCancel()"
         class="inline-flex h-12 items-center justify-center rounded-full bg-black bg-opacity-5 px-6"

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="mt-6 text-center text-xl font-bold text-black text-opacity-40">
+    <div class="mt-4 text-center text-xl font-bold text-black text-opacity-40">
       {{ $t("line.authenticating") }}
     </div>
     <o-loading :is-full-page="false" :active="isValidating"></o-loading>
