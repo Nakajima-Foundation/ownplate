@@ -88,11 +88,10 @@ export default defineComponent({
   metaInfo() {
     return {
       title:
-        this.shopInfo?.restaurantName && this.statusKey
+        this.shopInfo?.restaurantName
           ? [
               this.shopInfo ? this.shopInfo?.restaurantName : "--",
               "Order Page",
-              this.$t("order.status." + this.statusKey),
             ].join(" / ")
           : [this.defaultTitle, "Order Page"].join(" / "),
     };
@@ -153,6 +152,7 @@ export default defineComponent({
     const paid = computed(() => {
       return orderInfo.value.status >= order_status.order_placed;
     });
+
     const orderItems = computed(() => {
       return getOrderItems(orderInfo.value, menuObj.value as any);
     });
