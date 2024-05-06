@@ -72,10 +72,16 @@ export const usePickupTime = (
     return [7, 1, 2, 3, 4, 5, 6].map((day) => {
       const openTime = (() => {
         if (lunchOrDinner === "lunch") {
-          return [shopInfoOpenTimes.value[day][0]];
+          if (shopInfoOpenTimes.value[day][0]) {
+            return [shopInfoOpenTimes.value[day][0]];
+          }
+          return [];
         }
         if (lunchOrDinner === "dinner") {
-          return [shopInfoOpenTimes.value[day][1]];
+          if (shopInfoOpenTimes.value[day][1]) {
+            return [shopInfoOpenTimes.value[day][1]];
+          }
+          return [];
         }
         return shopInfoOpenTimes.value[day];
       })();
