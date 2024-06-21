@@ -11,7 +11,7 @@ export default defineComponent({
   setup() {
     const store = useStore();
 
-    const pleyedSilent = ref(false);
+    const playedSilent = ref(false);
     const audioRef = ref();
     const soundFile = computed(() => {
       return store.state.soundFile;
@@ -19,14 +19,14 @@ export default defineComponent({
 
     const enableSound = async () => {
       console.log("enableSound");
-      if (!pleyedSilent.value) {
+      if (!playedSilent.value) {
         console.log("silent play");
         try {
           audioRef.value.setAttribute("src", "/silence.mp3");
           audioRef.value.currentTime = 0;
           await audioRef.value.play();
 
-          pleyedSilent.value = true;
+          playedSilent.value = true;
           store.commit("soundEnable");
         } catch (e) {
           console.log(e);

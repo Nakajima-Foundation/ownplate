@@ -361,7 +361,7 @@
             />
           </div>
         </div>
-        <div class="mt-6 text-left text-xl font-bold text-black">
+        <div class="mt-2 text-left text-xl font-bold text-black">
           {{ title }}
         </div>
         <div class="mt-3 flex justify-between">

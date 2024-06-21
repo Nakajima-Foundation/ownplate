@@ -6,7 +6,7 @@
       <div class="column is-narrow w-6"></div>
       <!-- Center Column -->
       <div class="column">
-        <div class="ml-6 mr-6 mt-6">
+        <div class="mx-6 mt-2">
           <div class="rounded-lg bg-black bg-opacity-5 pl-6 pr-6 pt-6 pb-6">
             <!-- Go to Super Admin Page -->
             <div class="text-center">
@@ -31,7 +31,7 @@
       <div class="column is-narrow w-6"></div>
       <!-- Center Column -->
       <div class="column">
-        <div class="ml-6 mr-6 mt-6">
+        <div class="mx-6 mt-2">
           <div class="rounded-lg bg-black bg-opacity-5 pl-6 pr-6 pt-6 pb-6">
             <!-- Go to Super Admin Page -->
             <div class="text-center">

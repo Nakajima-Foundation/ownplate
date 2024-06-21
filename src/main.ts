@@ -29,6 +29,7 @@ import { sentryDsn, GAPIKey } from "@/config/project";
 // css
 import "@/assets/css/tailwind.css";
 import "@/assets/css/main.css";
+import "@oruga-ui/theme-bulma/dist/bulma.css";
 
 const app = createApp(App);
 
@@ -55,7 +56,7 @@ app.use(store);
 app.use(router);
 app.use(i18n);
 
-if (process.env.NODE_ENV !== "development") {
+if (import.meta.env.NODE_ENV !== "development") {
   if (sentryDsn) {
     Sentry.init({
       app,

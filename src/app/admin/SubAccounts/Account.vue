@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Header -->
-    <div class="mx-6 mt-6 lg:flex lg:items-center">
+    <div class="mx-6 mt-4 lg:flex lg:items-center">
       <!-- Back and Preview -->
       <div class="flex space-x-4">
         <back-button
@@ -12,8 +12,8 @@
       </div>
     </div>
 
-    <!-- Order Status -->
-    <div class="mx-6 mt-6">
+    <!-- Subaccount -->
+    <div class="mx-6 mt-2">
       <div class="mt-2">
         <span class="text-base font-bold">
           {{ $t("admin.subAccounts.name") }}

@@ -57,25 +57,30 @@ canvas {
 
 /* OwnPlate Dialog for b-model */
 .modal-background {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.5)!important;
 }
 .modal .animation-content {
   margin: 0;
 }
 
 /* OwnPlate Side Bar */
-.b-sidebar .sidebar-background {
-  background-color: rgba(0, 0, 0, 0.5);
+.b-sidebar {
+  position: absolute;
 }
-.b-sidebar .sidebar-content.is-light {
-  background: #ffffff;
+.b-sidebar .sidebar-background {
+  background-color: rgba(0, 0, 0, 0.5)!important;
+}
+.b-sidebar .sidebar-content.is-fullheight {
+  background: #ffffff!important;
 }
 .b-sidebar .sidebar-content {
-  background: #ffffff;
-  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  background: #ffffff!important;
+/*
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1)!important;
   width: 288px;
+*/
 }
-
 
 .validation_ok,
 .validation_ok:hover {
@@ -132,7 +137,21 @@ canvas {
   @apply text-red-700;
 }
 .animation-content {
-    z-index: 100;
-    max-height: 90%;
-    overflow: scroll;
+  z-index: 100;
+  max-height: 90%;
+  overflow: scroll;
+}
+
+/* Workaround for Bulma and Oruga input field */
+/* https://oruga.io/components/Input.html */
+.control .icon.is-right {
+  display: flex;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: auto;
+  width: 40px;
+}
+.select .icon.is-right {
+  display: none;
 }

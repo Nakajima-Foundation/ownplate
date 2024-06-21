@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="mx-6 mt-6">
+    <div class="mx-6 mt-4">
       <back-button
         :url="basePath + '/u/profile/'"
         backText="button.myPage"
@@ -8,7 +8,7 @@
       />
     </div>
 
-    <div class="mx-6 mt-6 lg:mx-auto lg:max-w-2xl">
+    <div class="mx-6 mt-4 lg:mx-auto lg:max-w-2xl">
       <!-- Title -->
       <div class="text-xl font-bold text-black text-opacity-30">
         {{ $t("profile.address") }}

@@ -19,7 +19,7 @@ import {
   stripe_regions,
   soundFiles,
 } from "@/config/constant";
-import { firebaseConfig, ownPlateConfig, mo_prefixes } from "@/config/project";
+import { firebaseConfig, ownPlateConfig } from "@/config/project";
 
 import { defaultHeader } from "@/config/header";
 
@@ -350,21 +350,6 @@ const optionPrice = (option: string) => {
   }
   return 0;
 };
-export const useIsInMo = () => {
-  const route = useRoute();
-
-  return computed(() => {
-    if (location.pathname !== route.path) {
-      return null;
-    }
-    return mo_prefixes.some((prefix) => {
-      return (
-        (route.fullPath || "").startsWith(`/${prefix}/`) ||
-        (route.fullPath || "") === `/${prefix}`
-      );
-    });
-  });
-};
 const useIsInLiff = () => {
   const route = useRoute();
 
@@ -372,26 +357,7 @@ const useIsInLiff = () => {
     return (route.fullPath || "").startsWith(`/liff/`);
   });
 };
-export const getMoPrefix = () => {
-  const route = useRoute();
-  return mo_prefixes.find((prefix) => {
-    return (
-      (route.fullPath || "").startsWith(`/${prefix}/`) ||
-      (route.fullPath || "") === `/${prefix}`
-    );
-  });
-};
-export const useMoPrefix = () => {
-  const route = useRoute();
-  return computed(() => {
-    return mo_prefixes.find((prefix) => {
-      return (
-        (route.fullPath || "").startsWith(`/${prefix}/`) ||
-        (route.fullPath || "") === `/${prefix}`
-      );
-    });
-  });
-};
+
 export const useLiffIndexId = () => {
   const route = useRoute();
 
@@ -436,13 +402,7 @@ export const useTopPath = () => {
   const inLiff = useIsInLiff();
   const liffBasePath = useLiffBasePath();
 
-  const isInMo = useIsInMo();
-  const moPrefix = useMoPrefix();
-
   return computed(() => {
-    if (isInMo.value) {
-      return "/" + moPrefix.value;
-    }
     if (inLiff.value) {
       return liffBasePath.value;
     }

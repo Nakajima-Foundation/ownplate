@@ -10,7 +10,7 @@
         <!-- Nav Bar -->
         <!-- Back Button and Restaurant Profile -->
         <AdminHeader
-          class="mt-6 lg:flex lg:items-center"
+          class="mt-4 lg:flex lg:items-center"
           :shopInfo="shopInfo"
           :backLink="`/admin/restaurants/${shopInfo.restaurantId}/discounts`"
           :showSuspend="false"
@@ -23,7 +23,7 @@
       <div class="column is-narrow w-6"></div>
     </div>
     <!-- Save -->
-    <div class="mt-12 flex justify-center space-x-4">
+    <div class="mt-4 flex justify-center space-x-4">
       <button
         @click="cancel"
         class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
@@ -44,7 +44,7 @@
     </div>
 
     <div v-if="promotion">
-      <div class="mt-6">
+      <div class="mt-2">
         <div class="pb-2 text-sm font-bold">
           {{ $t("admin.promotion.name") }}
         </div>
@@ -52,7 +52,7 @@
           <o-input type="text" v-model="promotion.promotionName" />
         </div>
       </div>
-      <div class="mt-6">
+      <div class="mt-2">
         <div class="pb-2 text-sm font-bold">
           {{ $t("admin.promotion.activation") }}
         </div>
@@ -66,7 +66,7 @@
           </option>
         </o-select>
       </div>
-      <div class="mt-6">
+      <div class="mt-2">
         <div class="pb-2 text-sm font-bold">
           {{ $t("admin.promotion.type") }}
         </div>
@@ -80,7 +80,7 @@
           </option>
         </o-select>
       </div>
-      <div class="mt-6">
+      <div class="mt-2">
         <div class="pb-2 text-sm font-bold">
           {{ $t("admin.promotion.period") }}
         </div>
@@ -116,7 +116,7 @@
           </o-datetimepicker>
         </o-field>
       </div>
-      <div class="mt-6 w-40">
+      <div class="mt-2 w-40">
         <div class="pb-2 text-sm font-bold">
           {{ $t("admin.promotion.minimumAmount") }}
         </div>
@@ -136,7 +136,7 @@
           </o-field>
         </div>
       </div>
-      <div class="mt-6">
+      <div class="mt-2">
         <div class="pb-2 text-sm font-bold">
           {{ $t("admin.promotion.limitation") }}
         </div>
@@ -150,7 +150,7 @@
           </option>
         </o-select>
       </div>
-      <div class="mt-6">
+      <div class="mt-2">
         <div class="pb-2 text-sm font-bold">
           {{ $t("admin.promotion.discounts") }}
         </div>
@@ -164,7 +164,7 @@
           </option>
         </o-select>
       </div>
-      <div class="mt-6 w-40">
+      <div class="mt-2 w-40">
         <div class="pb-2 text-sm font-bold">
           <template v-if="promotion.discountMethod === 'amount'">
             {{ $t("admin.promotion.amount") }}
@@ -183,7 +183,7 @@
           </span>
         </o-field>
       </div>
-      <div class="mt-6">
+      <div class="mt-2">
         <div class="pb-2 text-sm font-bold">
           {{ $t("admin.promotion.paymentMethod") }}
         </div>
@@ -198,7 +198,7 @@
         </o-select>
       </div>
       <!-- Save -->
-      <div class="mt-6 flex justify-center space-x-4">
+      <div class="mt-2 flex justify-center space-x-4">
         <button
           @click="cancel"
           class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"

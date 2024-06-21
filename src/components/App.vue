@@ -10,7 +10,7 @@
     <AppHeader @handleOpen="handleOpen" />
 
     <!-- Side Bar -->
-    <SideMenuWrapper ref="sideMenu" />
+    <SideMenu ref="sideMenu" />
 
     <!-- Main -->
     <div class="flex-1">
@@ -76,16 +76,15 @@ import { onAuthStateChanged, Unsubscribe, signOut } from "firebase/auth";
 import AppHeader from "@/components/App/Header.vue";
 import AppFooter from "@/components/App/Footer.vue";
 import NotificationBanner from "@/components/App/NotificationBanner.vue";
-import SideMenuWrapper from "@/components/App/SideMenuWrapper.vue";
+import SideMenu from "@/components/App/SideMenu.vue";
 import DialogBox from "@/components/DialogBox.vue";
 import AudioPlay from "@/components/AudioPlay.vue";
 
 import { isDev, useUser, useRestaurantId } from "@/utils/utils";
 
 import * as Sentry from "@sentry/vue";
-import { ownPlateConfig, mo_prefixes } from "@/config/project";
+import { ownPlateConfig } from "@/config/project";
 import { defaultHeader } from "@/config/header";
-import { MoHeader } from "@/config/moHeader";
 
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
@@ -94,16 +93,12 @@ export default defineComponent({
   components: {
     DialogBox,
     AudioPlay,
-    SideMenuWrapper,
+    SideMenu,
     AppHeader,
     AppFooter,
     NotificationBanner,
   },
-  metaInfo: mo_prefixes.some((prefix) => {
-    return location.pathname.startsWith("/" + prefix);
-  })
-    ? MoHeader
-    : defaultHeader,
+  metaInfo: defaultHeader,
 
   setup() {
     let unregisterAuthObserver: null | Unsubscribe = null;
@@ -189,7 +184,7 @@ export default defineComponent({
       }
     });
 
-    console.log(process.env.VUE_APP_CIRCLE_SHA1);
+    console.log(import.meta.env.VUE_APP_CIRCLE_SHA1);
     const isInLine = /Line/.test(navigator.userAgent);
     const isInLIFF = /LIFF/.test(navigator.userAgent);
 

@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Sign In as a User -->
-    <div class="mt-6 text-center">
+    <div class="mt-2 text-center">
       <a
         class="inline-flex h-16 items-center justify-center rounded-full border-2 border-op-teal px-6"
         @click.prevent="handleSignIn"
@@ -15,7 +15,7 @@
     </div>
 
     <!-- Sign In as a Restaurant -->
-    <div class="mt-6 text-center">
+    <div class="mt-4 text-center">
       <router-link to="/admin/user/signin">
         <div
           class="inline-flex h-16 items-center justify-center rounded-full border-2 border-op-teal px-6"

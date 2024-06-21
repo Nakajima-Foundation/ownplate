@@ -1,6 +1,6 @@
 <template>
   <div class="text-center">
-    <div class="mb-6">
+    <div class="mb-4">
       <div class="text-sm font-bold text-black text-opacity-50">
         {{ $t("order.orderStatus") }}
       </div>

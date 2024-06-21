@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Header -->
-    <div class="mx-6 mt-6 flex items-center space-x-4">
+    <div class="mx-6 mt-4 flex items-center space-x-4">
       <router-link :to="'/'">
         <div
           class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
@@ -15,11 +15,11 @@
     </div>
 
     <!-- Body -->
-    <div class="mx-auto mt-6 max-w-screen-md px-6 text-base">
-      <div class="mt-6" v-for="(news, key) in newsList" :key="key">
+    <div class="mx-auto mt-2 max-w-screen-md px-6 text-base">
+      <div class="mt-4" v-for="(news, key) in newsList" :key="key">
         <div class="rounded-lg bg-white p-4 shadow">
           <div class="mt-2">
-            <div class="article-list mt-6" v-html="md.render(news.markdown)" />
+            <div class="article-list mt-2" v-html="md.render(news.markdown)" />
           </div>
         </div>
       </div>

@@ -2,7 +2,7 @@
   <div>
     <div v-if="showRequest">
       <div
-        class="mt-6 text-center text-sm font-bold text-black text-opacity-50"
+        class="mt-2 text-center text-sm font-bold text-black text-opacity-50"
       >
         {{ $t("order.timeRequested") }}
       </div>
@@ -12,7 +12,7 @@
     </div>
     <div v-if="showEstimated">
       <div
-        class="mt-6 text-center text-sm font-bold text-black text-opacity-50"
+        class="mt-2 text-center text-sm font-bold text-black text-opacity-50"
       >
         {{ $t("order.timeToPickup") }}
       </div>

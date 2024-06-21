@@ -12,7 +12,6 @@
       </div>
 
       <div class="mr-1 font-bold text-red-700">{{ orderCounter }}</div>
-
       <div
         v-if="notificationData.soundOn"
         class="mt-1 inline-flex items-center justify-center space-x-1"
@@ -37,17 +36,28 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed, ref, onUnmounted } from "vue";
+import { doc, onSnapshot } from "firebase/firestore";
 
+import { db } from "@/lib/firebase/firebase9";
 import { useStore } from "vuex";
+import { useRestaurantId } from "@/utils/utils";
 
 export default defineComponent({
-  props: {
-    notificationData: Object,
-  },
-  setup(_, ctx) {
+  setup(props, ctx) {
     const store = useStore();
 
+    const restaurantId = useRestaurantId();
+    const notificationData = ref({});
+    const detacher = onSnapshot(
+      doc(db, `restaurants/${restaurantId.value}/private/notifications`),
+      (notification) => {
+        notificationData.value = notification.data() ?? {};
+      },
+    );
+    onUnmounted(() => {
+      detacher();
+    });
     const openNotificationSettings = () => {
       ctx.emit("openNotificationSettings");
     };
@@ -58,6 +68,7 @@ export default defineComponent({
       }, 0);
     });
     return {
+      notificationData,
       openNotificationSettings,
       orderCounter,
     };

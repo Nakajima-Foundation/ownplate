@@ -1,10 +1,11 @@
 <template>
-  <div class="pt-16 px-6">
+  <!-- admin feature -->
+  <div class="pt-10 px-6">
     <div class="text-black text-center text-op-90 text-2xl font-bold">
       {{ $t("lp.feature") }}
     </div>
 
-    <div class="grid grid-cols-2 gap-2 sm:gap-4 mt-6">
+    <div class="grid grid-cols-2 gap-2 sm:gap-4 mt-4">
       <div class="bg-white rounded-lg p-5 pt-2 text-center">
         <div>
           <img

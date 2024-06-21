@@ -7,7 +7,7 @@
     <div v-else-if="notFound === false">
       <!-- Header -->
       <AdminHeader
-        class="mx-6 mt-6 lg:flex lg:items-center"
+        class="mx-6 mt-4 lg:flex lg:items-center"
         :shopInfo="shopInfo"
         :backLink="`/admin/restaurants/#restaurant_` + shopInfo.restaurantId"
         :showSuspend="false"
@@ -15,13 +15,13 @@
       />
 
       <!-- Toggle to View All or Public Only -->
-      <div class="mx-6 mt-6 lg:text-center">
+      <div class="mx-6 mt-4 lg:text-center">
         <ToggleSwitch2 v-model="toggleStatus" :toggleValues="toggleValues" />
       </div>
       <!-- No Menu or Too Many Menu-->
       <div
         v-if="(!existsMenu || menuCounter > 5) && isOwner"
-        class="mx-6 mt-6 rounded-lg border-2 border-op-teal p-4 pb-2 lg:mx-auto lg:max-w-2xl"
+        class="mx-6 mt-4 rounded-lg border-2 border-op-teal p-4 pb-2 lg:mx-auto lg:max-w-2xl"
       >
         <div class="text-center text-sm font-bold text-op-teal">
           {{ $t("editMenu.pleaseAddItem") }}
@@ -37,7 +37,7 @@
       <!-- Category Titles / Menu Items -->
       <div
         v-if="existsMenu"
-        class="grid-col-1 mx-6 mt-6 space-y-4 lg:mx-auto lg:max-w-2xl"
+        class="grid-col-1 mx-6 mt-2 space-y-4 lg:mx-auto lg:max-w-2xl"
       >
         <div v-for="(menuList, index) in menuLists" :key="menuList">
           <!-- Category Title -->
@@ -62,7 +62,6 @@
               @updateTitleLunchDinner="updateTitleLunchDinner($event)"
             />
           </div>
-
           <!-- Menu Item -->
           <div
             v-else-if="
@@ -91,7 +90,7 @@
 
       <!-- Add Group Title, Menu Item, and Download Menu -->
       <div
-        class="mx-6 mt-6 rounded-lg border-2 border-op-teal p-4 pb-2 lg:mx-auto lg:max-w-2xl"
+        class="mx-6 mt-2 rounded-lg border-2 border-op-teal p-4 pb-2 lg:mx-auto lg:max-w-2xl"
         v-if="isOwner"
       >
         <AddButton

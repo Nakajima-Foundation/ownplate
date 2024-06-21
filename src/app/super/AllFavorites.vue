@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-6 mt-6">
+  <div class="mx-6 mt-4">
     <div>
       <div v-for="(review, key) in reviews" :key="key">
         <img

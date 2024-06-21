@@ -2,7 +2,7 @@
   <div v-if="dialog">
     <o-modal v-model:active="isVisible" :width="488">
       <div
-        class="op-dialog mt-6 mb-6 ml-2 mr-2 rounded-lg bg-white pt-6 pl-6 pr-6 pb-6 shadow-lg"
+        class="op-dialog my-6 mx-2 rounded-lg bg-white pt-6 pl-6 pr-6 pb-6 shadow-lg"
       >
         <div v-if="tips && tips.key">
           <DialogTips :tipsKey="tips.key" @close="close" />
@@ -23,7 +23,7 @@
               <div class="mt-2">{{ $t(errorMessage2) }}</div>
             </div>
             <!-- Buttons -->
-            <div class="mt-6 text-center">
+            <div class="mt-4 text-center">
               <div
                 class="inline-flex h-12 min-h-[36px] min-w-[128px] cursor-pointer items-center justify-center rounded-full bg-black bg-opacity-5 px-6 text-base font-bold text-black opacity-60"
                 @click="close"
@@ -47,7 +47,7 @@
               </div>
             </div>
             <!-- Buttons -->
-            <div class="mt-6 text-center">
+            <div class="mt-4 text-center">
               <div
                 class="mr-4 inline-flex h-12 min-h-[36px] min-w-[128px] cursor-pointer items-center justify-center rounded-full bg-black bg-opacity-5 px-6 text-base font-bold text-black opacity-60"
                 @click="close"

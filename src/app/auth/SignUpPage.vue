@@ -1,6 +1,6 @@
 <template>
-  <div class="mx-6 mt-6 lg:mx-auto lg:max-w-2xl">
-    <div class="mt-6 rounded-lg bg-white p-6 shadow">
+  <div class="mx-6 mt-2 lg:mx-auto lg:max-w-2xl">
+    <div class="mt-4 rounded-lg bg-white p-6 shadow">
       <form @submit.prevent="onSignup">
         <!-- Title -->
         <div v-if="partner">
@@ -125,7 +125,7 @@
         </div>
 
         <!-- Terms of Use & Privacy Policy -->
-        <div class="mt-6 text-xs">
+        <div class="mt-2 text-xs">
           <div v-if="!isLocaleJapan">
             <span>By submitting this form, you agree to the</span>
             <router-link to="/terms/admin" target="_blank">
@@ -152,7 +152,7 @@
         </div>
       </form>
       <!-- Sign Up as a New User -->
-      <div class="mt-6 text-center">
+      <div class="mt-2 text-center">
         <router-link to="/admin/user/signin">
           <div class="inline-flex items-center justify-center">
             <i class="material-icons mr-2 text-lg text-op-teal">store</i>

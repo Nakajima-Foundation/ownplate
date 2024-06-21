@@ -3,7 +3,7 @@
 
   <div v-else>
     <!-- Header -->
-    <div class="mx-6 mt-6 lg:flex lg:items-center">
+    <div class="mx-6 mt-4 lg:flex lg:items-center">
       <!-- Back and Preview -->
       <div class="flex space-x-4">
         <back-button
@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <div class="mx-6 mt-6">
+    <div class="mx-6 mt-4">
       <span class="text-base text-xl font-bold">
         {{ storeData.storeName }}
       </span>

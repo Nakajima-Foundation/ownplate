@@ -1,7 +1,7 @@
 
 # 1. Homebrewをsetupする
 
-[本家サイト](https://brew.sh/index_ja)
+[本家サイト](https://brew.sh/ja)
 
 ## 1.1. install する
 ```
@@ -64,15 +64,15 @@ nodebrew ls-remote
 ```
 で、インストール可能なバージョン一覧を調べる。
 
-## 3.2. **16系** の最新をダウンロードする
+## 3.2. **18系** の最新をダウンロードする
 
 ```
-nodebrew install v16.15.1 
+nodebrew install v18.18.2 
 ```
 
 ## 3.3. ダウンロードした Node を指定する
 ```
-nodebrew use v16.15.1
+nodebrew use v18.18.2
 ```
 
 # -- (参考) 4. yarn をインストール
