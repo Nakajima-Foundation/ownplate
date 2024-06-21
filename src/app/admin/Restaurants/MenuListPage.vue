@@ -62,7 +62,6 @@
               @updateTitleLunchDinner="updateTitleLunchDinner($event)"
             />
           </div>
-
           <!-- Menu Item -->
           <div
             v-else-if="
