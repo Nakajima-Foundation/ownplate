@@ -1,12 +1,12 @@
 <template>
-  <div class="mx-6 mt-6 lg:mx-auto lg:max-w-2xl">
+  <div class="mx-6 mt-4 lg:mx-auto lg:max-w-2xl">
     <!-- Title -->
     <div class="text-xl font-bold text-black text-opacity-30">
       {{ $t("profile.title") }}
     </div>
 
     <!-- Card -->
-    <div class="mt-2 rounded-lg bg-white p-6 shadow">
+    <div class="mt-2 rounded-lg bg-white p-4 shadow">
       <ProfileLoginStatus />
 
       <!-- Not Signed In -->

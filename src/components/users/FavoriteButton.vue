@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-6 text-center">
+  <div class="mt-2 text-center">
     <router-link :to="basePath + '/r/favorites'">
       <div
         class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal shadow"

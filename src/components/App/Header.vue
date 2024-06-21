@@ -2,7 +2,6 @@
   <div class="flex h-12 items-center bg-white">
     <div class="w-12">
       <a
-        v-if="!isInMo"
         @click="handleOpen()"
         class="inline-flex h-12 w-12 items-center justify-center"
       >
@@ -25,12 +24,7 @@
 
 <script lang="ts">
 import { defineComponent, computed } from "vue";
-import {
-  useTopPath,
-  regionalSetting,
-  useRestaurantId,
-  useIsInMo,
-} from "@/utils/utils";
+import { useTopPath, regionalSetting, useRestaurantId } from "@/utils/utils";
 
 export default defineComponent({
   emits: ["handleOpen"],
@@ -41,8 +35,6 @@ export default defineComponent({
         image: "TBP_logo.jpg",
       },
     };
-
-    const isInMo = useIsInMo();
 
     const topPath = useTopPath();
 
@@ -55,11 +47,7 @@ export default defineComponent({
       return "h-6";
     });
     const logo = computed(() => {
-      if (isInMo.value === null) {
-        return null;
-      } else if (isInMo.value) {
-        return "/images/mo_logo.png";
-      } else if (restaurantId.value && specialLogo[restaurantId.value]) {
+      if (restaurantId.value && specialLogo[restaurantId.value]) {
         return "/" + specialLogo[restaurantId.value].image;
       } else {
         return "/" + regionalSetting.Logo;
@@ -74,7 +62,6 @@ export default defineComponent({
       logo,
       logoClass,
       handleOpen,
-      isInMo,
     };
   },
 });

@@ -7,13 +7,13 @@
     <div v-else>
       <!-- Header -->
       <AdminHeader
-        class="mx-6 mt-6 lg:flex lg:items-center"
+        class="mx-6 mt-4 lg:flex lg:items-center"
         :shopInfo="shopInfo"
         :showSuspend="false"
       />
 
       <!-- Body -->
-      <div class="grid-col-1 mx-6 mt-6 space-y-4 lg:mx-auto lg:max-w-2xl">
+      <div class="grid-col-1 mx-6 mt-4 space-y-4 lg:mx-auto lg:max-w-2xl">
         <!-- Title -->
         <div
           v-if="lineUsers.length > 0"
@@ -23,7 +23,7 @@
         </div>
 
         <!-- LINE Users -->
-        <div class="mt-6 grid grid-cols-1 space-y-2">
+        <div class="mt-2 grid grid-cols-1 space-y-2">
           <div
             v-for="lineUser in lineUsers"
             :key="lineUser.id"
@@ -63,7 +63,7 @@
         </div>
 
         <!-- Add LINE User -->
-        <div class="mt-6 text-center">
+        <div class="mt-4 text-center">
           <o-button @click="handleLineAuth" class="b-reset-tw">
             <div
               class="inline-flex h-12 items-center justify-center rounded-full px-6"
@@ -78,7 +78,7 @@
         </div>
 
         <!-- Note for Safari Private Browsing Mode -->
-        <div class="mt-6 rounded-lg bg-black bg-opacity-5 p-4">
+        <div class="mt-4 rounded-lg bg-black bg-opacity-5 p-4">
           <span class="text-xs text-black opacity-60">
             {{ $t("admin.order.lineSafariPrivate") }}
           </span>

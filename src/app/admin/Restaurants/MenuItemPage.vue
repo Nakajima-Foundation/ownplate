@@ -6,7 +6,7 @@
     </template>
     <template v-else>
       <!-- Header -->
-      <div class="mx-6 mt-6 lg:flex lg:items-center">
+      <div class="mx-6 mt-4 lg:flex lg:items-center">
         <div class="flex-1"></div>
 
         <!-- Notifications -->
@@ -16,7 +16,7 @@
       </div>
 
       <!-- Save and Cancel -->
-      <div class="mt-6 flex justify-center space-x-4">
+      <div class="mt-2 flex justify-center space-x-4">
         <!-- Cancel Button -->
         <o-button
           class="b-reset-tw"
@@ -52,7 +52,7 @@
       </div>
 
       <!-- Publish Status -->
-      <div class="mx-6 mt-6 rounded-lg bg-black bg-opacity-5 p-4 text-center">
+      <div class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4 text-center">
         <o-checkbox
           v-model="menuInfo.publicFlag"
           :disabled="hasError"
@@ -75,12 +75,12 @@
       </div>
 
       <!-- Required Note -->
-      <div class="mx-6 mt-6 text-sm font-bold text-red-700">
+      <div class="mx-6 mt-2 text-sm font-bold text-red-700">
         * {{ $t("editRestaurant.required") }}
       </div>
 
       <!-- Settings -->
-      <div class="mx-6 mt-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
+      <div class="mx-6 mt-4 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
         <!-- Left -->
         <div>
           <!-- Item Name -->
@@ -100,7 +100,7 @@
           </div>
 
           <!-- Item Name -->
-          <div class="mt-6">
+          <div class="mt-4">
             <div class="pb-2 text-sm font-bold">
               {{ $t("editMenu.itemAliasesName") }}
             </div>
@@ -141,7 +141,7 @@
             </div>
 
             <!-- Item Tax -->
-            <div class="mt-6">
+            <div class="mt-4">
               <div class="pb-2 text-sm font-bold">
                 {{ $t("editMenu.tax") }}
                 <span class="text-red-700">*</span>
@@ -167,7 +167,7 @@
             <!-- Price Example -->
             <div
               v-if="requireTaxPriceDisplay"
-              class="mt-6 rounded-lg bg-black bg-opacity-5 p-4"
+              class="mt-2 rounded-lg bg-black bg-opacity-5 p-4"
             >
               <div class="inline text-sm font-bold">
                 {{ $t("editMenu.displayPrice") }}:
@@ -179,7 +179,7 @@
           </div>
 
           <!-- Allergens -->
-          <div class="mt-6">
+          <div class="mt-4">
             <div class="pb-2 text-sm font-bold">
               {{ $t("allergens.title") }}
             </div>
@@ -196,7 +196,7 @@
           </div>
 
           <!-- Item Description -->
-          <div class="mt-6">
+          <div class="mt-4">
             <div class="pb-2 text-sm font-bold">
               {{ $t("editMenu.itemDescription") }}
             </div>
@@ -216,7 +216,7 @@
           </div>
 
           <!-- Item Memo -->
-          <div class="mt-6">
+          <div class="mt-4">
             <div class="pb-2 text-sm font-bold">
               {{ $t("editMenu.itemMemo") }}
             </div>
@@ -307,7 +307,7 @@
         </div>
 
         <!-- Right -->
-        <div class="mt-6 lg:mt-0">
+        <div class="mt-4 lg:mt-0">
           <!-- Item Photo -->
           <div>
             <div class="pb-2 text-sm font-bold">
@@ -349,7 +349,7 @@
           </div>
 
           <!-- Additional Photos -->
-          <div v-if="false" class="mt-6">
+          <div v-if="false" class="mt-4">
             <div class="pb-2 text-sm font-bold">
               {{ $t("editMenu.additionalPhotos") }}
             </div>
@@ -400,7 +400,7 @@
           </div>
 
           <!-- Item Options -->
-          <div class="mt-6">
+          <div class="mt-4">
             <div class="pb-2 text-sm font-bold">
               {{ $t("editMenu.itemOptions") }}
             </div>
@@ -512,7 +512,7 @@
           </div>
 
           <!-- CSV Categories -->
-          <div class="mt-6">
+          <div class="mt-4">
             <div class="pb-2 text-sm font-bold">
               {{ $t("editMenu.csvCategories") }}
             </div>
@@ -612,7 +612,7 @@
       </div>
 
       <!-- Publish Status -->
-      <div class="mx-6 mt-6 rounded-lg bg-black bg-opacity-5 p-4 text-center">
+      <div class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4 text-center">
         <o-checkbox
           v-model="menuInfo.publicFlag"
           :disabled="hasError"
@@ -632,7 +632,7 @@
       </div>
 
       <!-- Save and Cancel -->
-      <div class="mt-6 flex justify-center space-x-4">
+      <div class="mt-4 flex justify-center space-x-4">
         <!-- Cancel Button -->
         <o-button
           class="b-reset-tw"
@@ -668,7 +668,7 @@
       </div>
 
       <!-- Copy -->
-      <div class="mx-6 mt-6 text-center lg:mx-auto lg:max-w-sm">
+      <div class="mx-6 mt-4 text-center lg:mx-auto lg:max-w-sm">
         <div>
           <o-button @click="copyItem" :disabled="submitting" class="b-reset-tw">
             <div

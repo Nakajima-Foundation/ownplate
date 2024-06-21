@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Header -->
-    <div class="mx-6 mt-6 lg:flex lg:items-center">
+    <div class="mx-6 mt-4 lg:flex lg:items-center">
       <!-- Back and Preview -->
       <div class="flex space-x-4" v-if="store.getters.isAdmin">
         <back-button url="/admin/restaurants" />
@@ -14,7 +14,7 @@
     <!-- PDF -->
 
     <div class="mx-6">
-      <div class="mt-6 text-sm font-bold">
+      <div class="mt-4 text-sm font-bold">
         説明書一覧
         <span class="font-normal text-xs">(別タブでPDFファイルが開きます)</span>
       </div>
@@ -90,7 +90,7 @@
       </div>
 
       <!-- Features -->
-      <div class="mt-6 text-sm font-bold">機能紹介</div>
+      <div class="mt-4 text-sm font-bold">機能紹介</div>
 
       <div class="mt-2 rounded-lg bg-black bg-opacity-5 p-4 font-bold">
         <div>
@@ -126,7 +126,7 @@
         </div>
       </div>
 
-      <div class="mt-6 text-sm font-bold">役立つリンク</div>
+      <div class="mt-4 text-sm font-bold">役立つリンク</div>
 
       <div class="mt-2 rounded-lg bg-black bg-opacity-5 p-4 font-bold">
         <div>

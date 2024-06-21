@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- QR Code -->
-    <div class="p-6">
+    <div class="p-2">
       <div class="text-center" @click="download">
         <vue-qrcode
           :value="urlMenu"

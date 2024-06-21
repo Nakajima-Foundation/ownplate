@@ -4,11 +4,11 @@
     <div class="columns is-gapless">
       <!-- Center Column -->
       <div class="column">
-        <div class="ml-6 mr-4 mt-6">
+        <div class="ml-6 mr-4 mt-4">
           <back-button :url="backUrl" />
 
           <h2>All Orders</h2>
-          <o-select v-model="orderState" class="mt-6">
+          <o-select v-model="orderState" class="mt-4">
             <option
               v-for="status in orderStatus"
               :value="status.index"
@@ -19,7 +19,7 @@
           </o-select>
           <!-- button -->
           <div>
-            <div class="mt-6 inline-flex">
+            <div class="mt-2 inline-flex">
               <div class="flex">
                 <o-select v-model="monthValue">
                   <option v-for="(month, k) in months" :value="month" :key="k">
@@ -36,7 +36,7 @@
 
           <!-- Orders -->
           <div
-            class="mx-6 mt-6 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
+            class="mx-6 mt-2 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
           >
             <div v-for="order in filteredOrders" :key="order.id">
               <ordered-info

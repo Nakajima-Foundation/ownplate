@@ -2,7 +2,7 @@
   <div v-if="notFound">Not Found</div>
   <div v-else>
     <!-- Header -->
-    <div class="mx-6 mt-6 lg:flex lg:items-center">
+    <div class="mx-6 mt-4 lg:flex lg:items-center">
       <!-- Back and Preview -->
       <div class="flex space-x-4">
         <back-button url="/admin/docs/" backText="button.backToDocument" />
@@ -10,17 +10,15 @@
     </div>
 
     <div class="m-6">
-      <div
-        class="article-list mt-6 text-base font-bold text-black text-opacity-30"
-        v-html="md.render(article)"
-      />
+      <linenews v-if="articleId === 'article230930_line_official_account'" />
+      <soldout v-if="articleId === 'article231007_out_of_stock'" />
+      <lunch_n_dinner v-if="articleId === 'article231019_lunch_n_dinner'" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import MarkdownIt from "markdown-it";
 import BackButton from "@/components/BackButton.vue";
 
 import { useRoute } from "vue-router";
@@ -38,18 +36,19 @@ const articles: { [key: string]: string } = {
 export default defineComponent({
   components: {
     BackButton,
+    linenews,
+    soldout,
+    lunch_n_dinner,
   },
   setup() {
     const route = useRoute();
     const articleId = route.params.articleId as string;
     const article = articles[articleId];
-
     const notFound = !article;
 
     return {
-      md: new MarkdownIt({ html: true }),
-      article,
       notFound,
+      articleId,
     };
   },
 });

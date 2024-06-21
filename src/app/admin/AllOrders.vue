@@ -5,7 +5,7 @@
     </template>
     <div v-else>
       <!-- Header -->
-      <div class="mx-6 mt-6 lg:flex lg:items-center">
+      <div class="mx-6 mt-4 lg:flex lg:items-center">
         <!-- Back and Preview -->
         <div class="flex space-x-4">
           <back-button url="/admin/restaurants/" />
@@ -20,7 +20,7 @@
       </div>
 
       <!-- Order Status -->
-      <div class="mx-6 mt-6">
+      <div class="mx-6 mt-4">
         <o-select v-model="orderState">
           <option
             v-for="status in orderStatus"
@@ -34,7 +34,7 @@
 
       <!-- Orders -->
       <div
-        class="mx-6 mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+        class="mx-6 mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
       >
         <ordered-info
           v-for="order in filteredOrders"
@@ -46,7 +46,7 @@
       </div>
 
       <!-- More -->
-      <div class="mx-6 mt-6 text-center">
+      <div class="mx-6 mt-2 text-center">
         <o-button @click="nextLoad" class="b-reset-tw">
           <div
             class="inline-flex h-9 w-48 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
@@ -59,7 +59,7 @@
       </div>
 
       <!-- Download -->
-      <div class="mx-6 mt-6 text-center">
+      <div class="mx-6 mt-2 text-center">
         <download-csv
           :data="tableData"
           :fields="fields"

@@ -17,7 +17,7 @@
     />
 
     <!-- Order Summary -->
-    <div class="mx-6 mt-6 rounded-lg bg-white px-2 pt-6 pb-1 shadow">
+    <div class="mx-6 mt-2 rounded-lg bg-white px-2 pt-4 pb-1 shadow">
       <!-- Order Status -->
       <OrderStatus :orderInfo="orderInfo" :orderName="orderName" />
 
@@ -33,7 +33,7 @@
       <StripeStatus v-if="hasStripe" :orderInfo="orderInfo" />
 
       <!-- Cancel Button -->
-      <div class="mt-8 mb-5 text-center">
+      <div class="mt-4 mb-2 text-center">
         <o-button
           v-if="just_paid"
           @click="handleCancelPayment"
@@ -54,7 +54,7 @@
     <!-- Canceled Message -->
     <div
       v-if="canceled"
-      class="mx-6 mt-6 rounded-lg bg-red-700 bg-opacity-10 p-4 text-center"
+      class="mx-6 mt-2 rounded-lg bg-red-700 bg-opacity-10 p-4 text-center"
     >
       <span class="text-base font-bold text-red-700">{{
         $t("order.cancelOrderComplete")
@@ -64,7 +64,7 @@
     <ThankYouFromRestaurant v-if="!canceled" :shopInfo="shopInfo" />
 
     <!-- Favorite Button -->
-    <div class="mt-6 text-center">
+    <div class="mt-4 text-center">
       <div>
         <favorite-button :shopInfo="shopInfo"></favorite-button>
       </div>
@@ -84,7 +84,7 @@
     </div>
 
     <!-- Order Body -->
-    <div class="mx-6 mt-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
+    <div class="mx-6 mt-2 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
       <!-- Left -->
       <div>
         <!-- Title -->
@@ -130,7 +130,7 @@
         <!-- Canceled Message -->
         <div
           v-if="canceled"
-          class="mt-6 rounded-lg bg-red-700 bg-opacity-10 p-4 text-center"
+          class="mt-2 rounded-lg bg-red-700 bg-opacity-10 p-4 text-center"
         >
           <span class="text-base font-bold text-red-700">{{
             $t("order.cancelOrderComplete")
@@ -145,7 +145,7 @@
         </template>
 
         <!-- View Menu Page Button -->
-        <div class="mt-6 text-center">
+        <div class="mt-2 text-center">
           <router-link :to="menuPagePath">
             <div
               class="inline-flex h-12 items-center justify-center rounded-full border-2 border-op-teal px-6 b-reset-tw"
@@ -181,7 +181,7 @@
         </div>
 
         <!-- QR Code -->
-        <div class="mt-6" v-if="!shopInfo.isEC">
+        <div class="mt-2" v-if="!shopInfo.isEC">
           <div class="text-xl font-bold text-black text-opacity-30">
             {{ $t("order.adminQRCode") }}
           </div>

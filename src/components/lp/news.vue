@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-6 mt-6 text-center">
+  <div class="mx-6 mt-2 text-center">
     <div class="mt-4 rounded-lg bg-white p-6 lg:mt-0">
       <router-link to="/news">
         <div

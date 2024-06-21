@@ -2,13 +2,13 @@ module.exports = {
   root: true,
   env: {
     browser: true,
-    node: true
+    node: true,
   },
   extends: [
-    'plugin:vue/vue3-essential',
-    'eslint:recommended',
-    'prettier',
-    '@vue/typescript/recommended'
+    "plugin:vue/vue3-essential",
+    "eslint:recommended",
+    "prettier",
+    "@vue/typescript/recommended",
   ],
   plugins: ["vue"],
   rules: {
@@ -27,5 +27,5 @@ module.exports = {
     "no-extra-semi": "error",
     "no-unexpected-multiline": "warn",
     "no-unreachable": "error",
-  }
+  },
 };

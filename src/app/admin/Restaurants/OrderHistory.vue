@@ -6,7 +6,7 @@
     <div v-else>
       <!-- Header -->
       <AdminHeader
-        class="mx-6 mt-6 lg:flex lg:items-center"
+        class="mx-6 mt-4 lg:flex lg:items-center"
         :shopInfo="shopInfo"
         :backLink="'/admin/restaurants/#restaurant_' + restaurantId"
         :showSuspend="true"
@@ -15,7 +15,7 @@
 
       <div class="sm:flex">
         <!-- filter -->
-        <div class="mx-6 mt-6 grid grid-cols-1 gap-2">
+        <div class="mx-6 mt-4 grid grid-cols-1 gap-2">
           <div class="text-sm font-bold text-black text-opacity-30">
             {{ $t("order.statusTitle") }}
           </div>
@@ -34,7 +34,7 @@
           </o-select>
         </div>
         <!-- sort -->
-        <div class="mx-6 mt-2 grid grid-cols-1 gap-2 sm:mt-6">
+        <div class="mx-6 mt-2 grid grid-cols-1 gap-2 sm:mt-4">
           <div class="text-sm font-bold text-black text-opacity-30">
             {{ $t("order.sortOrder") }}
           </div>
@@ -52,7 +52,7 @@
 
       <!-- Orders -->
       <div
-        class="mx-6 mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+        class="mx-6 mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
       >
         <template v-for="order in filteredOrders" :key="order.id">
           <router-link
@@ -64,7 +64,7 @@
       </div>
 
       <!-- More -->
-      <div class="mx-6 mt-6 text-center" v-if="last !== undefined">
+      <div class="mx-6 mt-2 text-center" v-if="last !== undefined">
         <o-button :disabled="last === null" @click="next" class="b-reset-tw">
           <div
             class="inline-flex h-9 w-48 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
@@ -77,7 +77,7 @@
       </div>
 
       <!-- More -->
-      <div class="mx-6 mt-6 text-center" v-if="last !== undefined">
+      <div class="mx-6 mt-2 text-center" v-if="last !== undefined">
         <o-button :disabled="last === null" @click="all" class="b-reset-tw">
           <div
             class="inline-flex h-9 w-48 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
@@ -91,12 +91,12 @@
 
       <div v-if="isOwner">
         <!-- Download Orders -->
-        <div class="mx-6 mt-6 text-center">
+        <div class="mx-6 mt-2 text-center">
           <download-orders :orders="filteredOrders" />
         </div>
 
         <!-- Download Report -->
-        <div class="mx-6 mt-6 text-center">
+        <div class="mx-6 mt-2 text-center">
           <report-details
             :orders="filteredOrders"
             :fileName="fileName"

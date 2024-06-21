@@ -1,9 +1,9 @@
 <template>
-  <div class="mx-6 mt-6 lg:mx-auto lg:max-w-2xl">
-    <div class="mt-6 rounded-lg bg-white p-6 shadow">
+  <div class="mx-6 mt-4 lg:mx-auto lg:max-w-2xl">
+    <div class="mt-4 rounded-lg bg-white p-6 shadow">
       <template v-if="isExpired === null"> </template>
       <template v-else-if="isExpired">
-        <div class="mt-6 text-center">
+        <div class="mt-4 text-center">
           <div>
             {{ $t("admin.mailIsExpired") }}
           </div>
@@ -21,7 +21,7 @@
       </template>
       <template v-else-if="isSuccess">
         <p>{{ $t("admin.passwordUpdated") }}</p>
-        <div class="mt-6 text-center">
+        <div class="mt-4 text-center">
           <router-link to="/admin/user/signin">
             <div
               class="inline-flex h-16 items-center justify-center rounded-full border-2 border-op-teal px-6"

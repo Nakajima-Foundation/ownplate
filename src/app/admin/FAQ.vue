@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="mx-6 mt-6 lg:mx-auto lg:max-w-2xl">
+    <div class="my-6 mt-4 lg:mx-auto lg:max-w-2xl">
       <!-- Title -->
-      <div class="mt-6 text-xl font-bold text-black text-opacity-30">
+      <div class="mt-4 text-xl font-bold text-black text-opacity-30">
         <a name="top">ご利用について</a>
       </div>
       <div v-for="(faq, k) in faqList" :key="k">
@@ -12,7 +12,7 @@
         </div>
       </div>
 
-      <div class="mt-6 rounded-lg bg-white px-4 py-2 shadow" ref="faq_box">
+      <div class="mt-4 rounded-lg bg-white px-4 py-2 shadow" ref="faq_box">
         <div v-for="(faq, k) in faqList" :key="'base_' + k" class="mb-6">
           <div class="my-1 inline-flex font-bold">
             <a :href="`#index_` + k">

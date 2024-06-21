@@ -15,7 +15,7 @@
     <Survey v-if="false" />
 
     <!-- Unset Warning -->
-    <div v-if="false" class="mx-6 mt-6 rounded-lg bg-red-700 bg-opacity-10 p-4">
+    <div v-if="false" class="mx-6 mt-4 rounded-lg bg-red-700 bg-opacity-10 p-4">
       <span class="text-sm text-red-700">{{
         $t("admin.payments.unsetWarning")
       }}</span>
@@ -24,7 +24,7 @@
     <!-- 5 steps warning -->
     <div
       v-if="isOwner && showFiveSteps"
-      class="mx-6 mt-6 rounded-lg bg-red-700 bg-opacity-10 p-4"
+      class="mx-6 mt-4 rounded-lg bg-red-700 bg-opacity-10 p-4"
     >
       <div>
         <span class="text-sm font-bold text-red-700">
@@ -68,7 +68,7 @@
 
     <!-- Messages -->
     <div
-      class="mx-6 mt-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12"
+      class="mx-6 mt-4 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12"
       v-if="messages.length > 0"
     >
       <div>
@@ -197,13 +197,13 @@
       </div>
 
       <!-- Right Section -->
-      <div class="mt-6 lg:mt-0" v-if="isOwner">
+      <div class="mt-2 lg:mt-0" v-if="isOwner">
         <a name="paymentSection" />
         <!-- Payment -->
         <payment-section @updateUnsetWarning="updateUnsetWarning($event)" />
 
         <!-- SubAccounts -->
-        <div class="mt-6">
+        <div class="mt-2">
           <SubAccount />
         </div>
 
@@ -218,7 +218,7 @@
       </div>
       <!-- End of Right Section -->
     </div>
-    <div class="mt-6 bg-ownplate-yellow p-4">
+    <div class="mt-2 bg-ownplate-yellow p-4">
       <!-- Footer -->
       <IndexFooter />
     </div>

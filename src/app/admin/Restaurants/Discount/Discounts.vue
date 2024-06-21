@@ -10,7 +10,7 @@
         <!-- Nav Bar -->
         <!-- Back Button and Restaurant Profile -->
         <AdminHeader
-          class="mt-6 lg:flex lg:items-center"
+          class="mt-4 lg:flex lg:items-center"
           :shopInfo="shopInfo"
           :backLink="`/admin/restaurants/#restaurant_` + shopInfo.restaurantId"
           :showSuspend="false"

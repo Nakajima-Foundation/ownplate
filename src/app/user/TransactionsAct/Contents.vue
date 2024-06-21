@@ -9,7 +9,7 @@
         </div>
 
         <!-- Body -->
-        <div class="mt-6">
+        <div class="mt-4">
           <!-- Seller Name -->
           <div>
             <div class="text-sm font-bold text-black text-opacity-30">
@@ -215,7 +215,7 @@
         </div>
 
         <!-- Actions -->
-        <div class="mt-6 text-center">
+        <div class="mt-4 text-center">
           <a
             @click="closeTransactionsAct()"
             class="inline-flex h-12 items-center justify-center rounded-full bg-black bg-opacity-5 px-6"

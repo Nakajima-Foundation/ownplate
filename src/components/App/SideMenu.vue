@@ -1,13 +1,12 @@
 <template>
   <o-sidebar
-    :fullheight="fullheight"
-    :fullwidth="fullwidth"
-    :overlay="overlay"
-    :right="right"
-    v-model:open="open"
+    :fullheight="true"
+    :overlay="true"
+    position="left"
+    v-model:active="open"
   >
     <!-- Logo / Home -->
-    <div class="mt-6 mb-4 text-center">
+    <div class="my-4 text-center">
       <router-link :to="home_path">
         <img class="m-auto w-48" :src="`/${logo2}`" @click="handleClose()" />
       </router-link>
@@ -61,7 +60,7 @@
     </div>
 
     <!-- Favorites -->
-    <div class="mt-2 text-center" v-if="isUser && !inLiff">
+    <div class="text-center" v-if="isUser && !inLiff">
       <SideMenuButton
         text="find.likes"
         icon="favorite"
@@ -106,7 +105,7 @@
     </div>
 
     <div v-if="isAnonymous">
-      <div class="mt-6 font-bold text-black text-opacity-40 text-center mb-2">
+      <div class="mt-4 font-bold text-black text-opacity-40 text-center mb-2">
         {{ $t("lp.forRestaurantOwner") }}
       </div>
 
@@ -132,7 +131,7 @@
 
     <!-- Links for Admin -->
     <div v-if="isAdmin">
-      <div class="mt-6 text-center">
+      <div class="mt-4 text-center">
         <!--Link to admin docs-->
         <SideMenuText
           to="/admin/docs"
@@ -154,8 +153,7 @@
     </div>
 
     <!-- Separater -->
-    <div class="mt-6" v-if="isAnonymous" />
-    <div class="mt-4" v-if="isUser" />
+    <div class="mt-4" v-if="isAnonymous || isUser" />
 
     <!-- Terms for users -->
     <div v-if="isAnonymous || isUser">
@@ -219,10 +217,6 @@ export default defineComponent({
     });
 
     return {
-      overlay: true,
-      fullheight: true,
-      fullwidth: false,
-      right: false,
       home_path,
 
       logo2,

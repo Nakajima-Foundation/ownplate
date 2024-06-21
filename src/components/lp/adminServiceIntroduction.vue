@@ -10,7 +10,7 @@
     </div>
 
     <!-- CTA Button -->
-    <div class="py-8 px-6 text-center lg:py-12">
+    <div class="py-4 px-6 text-center lg:py-12">
       <div class="text-lg font-bold text-[#F79108] lg:text-xl">
         {{ $t("lp.forRestaurantOwner") }}
       </div>
@@ -29,7 +29,7 @@
         </router-link>
       </div>
 
-      <div class="mt-8">
+      <div class="mt-4">
         <router-link to="/home">
           <div class="text-op-teal text-lg font-bold lg:text-xl">
             {{ $t("lp.clickHereToOrder") }}

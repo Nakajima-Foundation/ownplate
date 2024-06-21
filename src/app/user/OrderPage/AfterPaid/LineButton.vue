@@ -1,5 +1,5 @@
 <template>
-  <div v-if="showAddLine || isDev" class="mt-6 text-center">
+  <div v-if="showAddLine || isDev" class="mt-2 text-center">
     <div v-if="hasLine">
       <div
         class="mx-6 rounded-lg bg-black bg-opacity-5 p-4"

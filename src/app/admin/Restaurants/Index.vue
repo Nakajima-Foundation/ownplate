@@ -8,7 +8,7 @@
     <!-- Never show before load restaurant data -->
     <div v-else>
       <!-- Header -->
-      <div class="mx-6 mt-6 lg:flex lg:items-center">
+      <div class="mx-6 mt-4 lg:flex lg:items-center">
         <div class="flex-1"></div>
         <!-- Notifications -->
         <div class="mt-4 flex-shrink-0 text-right lg:mt-0">
@@ -17,7 +17,7 @@
       </div>
 
       <!-- Save and Cancel -->
-      <div class="mt-6 flex justify-center space-x-4">
+      <div class="mt-4 flex justify-center space-x-4">
         <!-- Cancel Button -->
         <router-link
           :to="`/admin/restaurants/#restaurant_` + editShopInfo.restaurantId"
@@ -55,7 +55,7 @@
       </div>
 
       <!-- Publish Status -->
-      <div class="mx-6 mt-6 rounded-lg bg-black bg-opacity-5 p-4 text-center">
+      <div class="mx-6 mt-2 rounded-lg bg-black bg-opacity-5 p-4 text-center">
         <o-checkbox
           v-model="editShopInfo.publicFlag"
           :disabled="hasError"
@@ -78,12 +78,12 @@
       </div>
 
       <!-- Required Note -->
-      <div class="mx-6 mt-6 text-sm font-bold text-red-700">
+      <div class="mx-6 mt-2 text-sm font-bold text-red-700">
         * {{ $t("editRestaurant.required") }}
       </div>
 
       <!-- Settings 1 -->
-      <div class="mx-6 mt-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
+      <div class="mx-6 mt-2 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
         <!-- Left -->
         <div>
           <!-- Restaurant Name -->
@@ -208,7 +208,7 @@
         </div>
 
         <!-- Right -->
-        <div class="mt-6 lg:mt-0">
+        <div class="mt-2 lg:mt-0">
           <!-- Phone -->
           <div>
             <div
@@ -326,7 +326,7 @@
 
       <!-- Settings 2 -->
       <div
-        class="mx-6 mt-6 grid grid-cols-1 border-t-2 border-solid border-black border-opacity-10 pt-6 lg:grid-cols-2 lg:gap-x-12"
+        class="mx-6 mt-2 grid grid-cols-1 border-t-2 border-solid border-black border-opacity-10 pt-6 lg:grid-cols-2 lg:gap-x-12"
       >
         <!-- Left -->
         <div>
@@ -351,7 +351,7 @@
               v-model="editShopInfo.introduction"
               type="textarea"
               :required="false"
-              :maxlength="300"
+              :maxlength="1200"
               titleKey="editRestaurant.introduction"
               placeholder="editRestaurant.enterIntroduction"
               :error="errors['introduction']"
@@ -369,7 +369,7 @@
                 v-model="editShopInfo.orderNotice"
                 type="textarea"
                 :required="false"
-                :maxlength="300"
+                :maxlength="1200"
                 titleKey="editRestaurant.orderNotice"
                 placeholder="editRestaurant.enterOrderNotice"
                 :error="errors['orderNotice']"
@@ -399,7 +399,7 @@
               v-model="editShopInfo.orderThanks"
               type="textarea"
               :required="false"
-              :maxlength="300"
+              :maxlength="1200"
               titleKey="editRestaurant.orderThanks"
               placeholder="editRestaurant.enterOrderThanks"
               :error="errors['orderThanks']"
@@ -1011,7 +1011,7 @@
       </div>
 
       <!-- Publish Status -->
-      <div class="mx-6 mt-6 rounded-lg bg-black bg-opacity-5 p-4 text-center">
+      <div class="mx-6 mt-2 rounded-lg bg-black bg-opacity-5 p-4 text-center">
         <o-checkbox
           v-model="editShopInfo.publicFlag"
           :disabled="hasError"
@@ -1034,7 +1034,7 @@
       </div>
 
       <!-- Save and Cancel -->
-      <div class="mt-6 flex justify-center space-x-4">
+      <div class="mt-4 flex justify-center space-x-4">
         <!-- Cancel Button -->
         <router-link
           :to="`/admin/restaurants/#restaurant_` + editShopInfo.restaurantId"
@@ -1072,7 +1072,7 @@
       </div>
 
       <!-- Copy -->
-      <div class="mt-6 text-center">
+      <div class="mt-4 text-center">
         <o-button
           @click="confirmCopy"
           :disabled="submitting"
@@ -1090,7 +1090,7 @@
       </div>
 
       <!-- QRCode -->
-      <div class="mx-6 mt-6 rounded-lg bg-black bg-opacity-5 p-4 text-center">
+      <div class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4 text-center">
         <QRCode :shopInfo="shopInfo" />
       </div>
     </div>

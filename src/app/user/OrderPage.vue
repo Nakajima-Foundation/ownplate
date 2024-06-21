@@ -87,14 +87,12 @@ export default defineComponent({
   name: "Order",
   metaInfo() {
     return {
-      title:
-        this.shopInfo?.restaurantName && this.statusKey
-          ? [
-              this.shopInfo ? this.shopInfo?.restaurantName : "--",
-              "Order Page",
-              this.$t("order.status." + this.statusKey),
-            ].join(" / ")
-          : [this.defaultTitle, "Order Page"].join(" / "),
+      title: this.shopInfo?.restaurantName
+        ? [
+            this.shopInfo ? this.shopInfo?.restaurantName : "--",
+            "Order Page",
+          ].join(" / ")
+        : [this.defaultTitle, "Order Page"].join(" / "),
     };
   },
   components: {
@@ -153,6 +151,7 @@ export default defineComponent({
     const paid = computed(() => {
       return orderInfo.value.status >= order_status.order_placed;
     });
+
     const orderItems = computed(() => {
       return getOrderItems(orderInfo.value, menuObj.value as any);
     });

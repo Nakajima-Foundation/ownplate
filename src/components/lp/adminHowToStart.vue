@@ -1,10 +1,10 @@
 <template>
-  <div class="pt-16 px-6">
+  <div class="pt-10 px-6">
     <div class="text-black text-center text-op-90 text-2xl font-bold">
       {{ $t("lp.howToStart") }}
     </div>
 
-    <div class="mt-6 bg-white rounded-lg p-6 sm:px-5 py-7">
+    <div class="mt-2 bg-white rounded-lg p-6 sm:px-5 py-7">
       <div class="grid sm:grid-cols-4 gap-y-4 sm:gap-8">
         <div class="sm:text-center flex sm:block items-center">
           <div>
@@ -63,7 +63,7 @@
         </div>
       </div>
 
-      <div class="text-center sm:mt-16 mt-12">
+      <div class="text-center sm:mt-12 mt-10">
         <router-link to="/admin/docs">
           <div class="inline-flex items-center justify-center">
             <span class="text-op-teal text-lg font-bold lg:text-xl">

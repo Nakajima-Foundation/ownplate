@@ -2,7 +2,7 @@
   <div>
     <!-- View All -->
     <div>
-      <div class="mx-6 mt-6 text-xl font-bold text-black text-opacity-40">
+      <div class="mx-6 mt-4 text-xl font-bold text-black text-opacity-40">
         {{ $t("find.area") }}
       </div>
       <div
@@ -14,7 +14,7 @@
 
     <!-- Areas -->
     <div v-for="(area, k) in areas" :key="k">
-      <div class="mx-6 mt-6 text-base font-bold text-black text-opacity-40">
+      <div class="mx-6 mt-4 text-base font-bold text-black text-opacity-40">
         {{ $t("find.areas." + area.name) }}
       </div>
       <div
@@ -31,7 +31,7 @@
 
     <!-- Likes -->
     <div v-if="likes.length > 0">
-      <div class="mx-6 mt-6 text-xl font-bold text-black text-opacity-40">
+      <div class="mx-6 mt-4 text-xl font-bold text-black text-opacity-40">
         {{ $t("find.likes") }}
       </div>
       <div

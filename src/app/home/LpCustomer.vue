@@ -2,7 +2,7 @@
   <div>
     <ownplate-service-image />
     <div class="mx-auto max-w-screen-xl">
-      <div class="mx-6 mt-6 text-center lg:grid lg:grid-cols-3 lg:gap-4">
+      <div class="mx-6 mt-4 text-center lg:grid lg:grid-cols-3 lg:gap-4">
         <!-- For Food Lovers -->
         <div class="mb-4 lg:mb-0">
           <entrance-buttons-food-lovers />

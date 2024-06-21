@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="mx-6 mt-6">
+    <div class="mx-6 mt-2">
       <back-button
         :url="basePath + '/u/profile/'"
         backText="button.myPage"
@@ -8,7 +8,7 @@
       />
     </div>
 
-    <div class="mx-6 mt-6 text-xl font-bold text-black text-opacity-40">
+    <div class="mx-6 mt-4 text-xl font-bold text-black text-opacity-40">
       {{ $t("find.likes") }}
     </div>
 
@@ -47,7 +47,7 @@
       </div>
     </div>
 
-    <div class="mx-6 mt-6" v-if="mode === 'normal'">
+    <div class="mx-6 mt-4" v-if="mode === 'normal'">
       <router-link :to="'/r'">
         <div
           class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"

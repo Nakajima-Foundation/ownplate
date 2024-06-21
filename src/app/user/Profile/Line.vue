@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- LINE -->
-    <div class="mt-6 rounded-lg bg-black bg-opacity-5 p-4">
+    <div class="mt-2 rounded-lg bg-black bg-opacity-5 p-4">
       <!-- LINE Status -->
       <div class="text-center">
         <div class="text-sm font-bold text-black text-opacity-30">
