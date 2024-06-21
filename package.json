@@ -10,7 +10,7 @@
     "batch": "babel-node --presets @babel/env",
     "customclaims": "babel-node --presets @babel/env  ./batch/customclaims.js",
     "format": "prettier --write '{src/**/*,*}.{js,ts,vue,json}'",
-    "makenews": "babel-node --presets @babel/env  ./batch/news.js",
+    "makenews": "npx tsx ./batch/news.js",
     "use_jp": "firebase use jp && cp src/config/default/ownplate-jp.js src/config/project.js",
     "use_production": "firebase use production && cp src/config/default/ownplate.js src/config/project.js",
     "use_staging": "firebase use staging && cp src/config/default/ownplate-dev.js src/config/project.js",
@@ -49,8 +49,6 @@
     "vuex": "^4.1.0"
   },
   "devDependencies": {
-    "@babel/node": "^7.22.19",
-    "@babel/plugin-transform-runtime": "^7.22.15",
     "@types/cookie": "^0.4.1",
     "@types/crypto-js": "^4.1.1",
     "@types/google-libphonenumber": "^7.4.27",
