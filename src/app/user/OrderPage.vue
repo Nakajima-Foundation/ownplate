@@ -87,13 +87,12 @@ export default defineComponent({
   name: "Order",
   metaInfo() {
     return {
-      title:
-        this.shopInfo?.restaurantName
-          ? [
-              this.shopInfo ? this.shopInfo?.restaurantName : "--",
-              "Order Page",
-            ].join(" / ")
-          : [this.defaultTitle, "Order Page"].join(" / "),
+      title: this.shopInfo?.restaurantName
+        ? [
+            this.shopInfo ? this.shopInfo?.restaurantName : "--",
+            "Order Page",
+          ].join(" / ")
+        : [this.defaultTitle, "Order Page"].join(" / "),
     };
   },
   components: {
