@@ -207,6 +207,7 @@ export default defineComponent({
 
     onMounted(() => {
       recaptchaVerifier = new RecaptchaVerifier(
+        auth,
         "signInButton",
         {
           size: "invisible",
@@ -216,7 +217,6 @@ export default defineComponent({
             console.log("verified");
           },
         },
-        auth,
       );
     });
 
