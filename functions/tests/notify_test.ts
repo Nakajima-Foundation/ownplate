@@ -3,8 +3,8 @@ import { should } from "chai";
 
 import * as test_db_helper from "./test_db_helper";
 import * as test_helper from "./test_helper";
-import * as order from "./../src/functions/order";
-import * as notify from "./../src/functions/notify";
+import * as order from "../src/functions/order/orderCreated";
+import * as notify from "../src/functions/notify";
 
 should();
 
@@ -25,7 +25,7 @@ describe("Order function", () => {
       {
         hoge1: 10,
       },
-      order.wasOrderCreated
+      order.createNewOrderData
     );
 
     const lineId = "U750ebba2d580597e722344ee20fec6d9";
@@ -73,6 +73,6 @@ describe("Order function", () => {
       id: 123,
     };
 
-    await notify.notifyRestaurant(adminDB, "msg_order_placed", restaurantId, orderData, "美味しいレストラン", "ja");
+    await notify.notifyRestaurant(adminDB, "msg_order_placed", restaurantId, orderData, "美味しいレストラン");
   });
 });

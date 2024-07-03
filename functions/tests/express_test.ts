@@ -2,7 +2,7 @@ import supertest from "supertest";
 import { should } from "chai";
 import { expect } from "chai";
 
-import * as express from "../src/functions/express";
+import * as express from "../src/functions/express/express";
 import * as test_helper from "./test_helper";
 import * as test_db_helper from "./test_db_helper";
 
