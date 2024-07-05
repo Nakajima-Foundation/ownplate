@@ -85,7 +85,7 @@ export const updateCustomer = async (db: admin.firestore.Firestore, data: stripe
             card,
             updatedAt: admin.firestore.FieldValue.serverTimestamp(),
           },
-          { merge: true }
+          { merge: true },
         );
       } else {
         // We need to delete the old card info (if exists). Otherwise, the new one will become the default and

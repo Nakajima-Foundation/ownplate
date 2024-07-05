@@ -20,38 +20,24 @@ export const dispatch = async (db: admin.firestore.Firestore, data: dispatchData
   let result: object = { result: false, message: "not processed" };
   try {
     switch (cmd) {
-      case "getCustomeClaims":
-        result = await getCustomClaims(db, uid);
-        break;
-      case "setCustomClaim": {
-        const userRecord = await admin.auth().getUser(uid);
-        if (key === "operator" && userRecord.email) {
-          result = await setCustomClaim(db, uid, key, value);
-          await db.collection(`admins/${uidSuper}/adminlogs`).add({
-            uid,
-            uidSuper,
-            cmd,
-            key,
-            value,
-            email: userRecord.email,
-            success: true,
-            createdAt: admin.firestore.FieldValue.serverTimestamp(),
-          });
-        } else {
-          await db.collection(`admins/${uidSuper}/adminlogs`).add({
-            uid,
-            uidSuper,
-            cmd,
-            key,
-            value,
-            success: false,
-            error: "invalid_parameters",
-            createdAt: admin.firestore.FieldValue.serverTimestamp(),
-          });
-        }
-        break;
-      }
-      default:
+    case "getCustomeClaims":
+      result = await getCustomClaims(db, uid);
+      break;
+    case "setCustomClaim": {
+      const userRecord = await admin.auth().getUser(uid);
+      if (key === "operator" && userRecord.email) {
+        result = await setCustomClaim(db, uid, key, value);
+        await db.collection(`admins/${uidSuper}/adminlogs`).add({
+          uid,
+          uidSuper,
+          cmd,
+          key,
+          value,
+          email: userRecord.email,
+          success: true,
+          createdAt: admin.firestore.FieldValue.serverTimestamp(),
+        });
+      } else {
         await db.collection(`admins/${uidSuper}/adminlogs`).add({
           uid,
           uidSuper,
@@ -59,10 +45,24 @@ export const dispatch = async (db: admin.firestore.Firestore, data: dispatchData
           key,
           value,
           success: false,
-          error: "invalid_cmd",
+          error: "invalid_parameters",
           createdAt: admin.firestore.FieldValue.serverTimestamp(),
         });
-        throw new functions.https.HttpsError("invalid-argument", "Invalid command.");
+      }
+      break;
+    }
+    default:
+      await db.collection(`admins/${uidSuper}/adminlogs`).add({
+        uid,
+        uidSuper,
+        cmd,
+        key,
+        value,
+        success: false,
+        error: "invalid_cmd",
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
+      throw new functions.https.HttpsError("invalid-argument", "Invalid command.");
     }
 
     return result;

@@ -54,7 +54,7 @@ export const capability_updated = async (db, event) => {
             await db.doc(`admins/${uid}/public/payment`).update({
               stripeJCB: true,
             });
-          })
+          }),
         );
       } else {
         console.error("capability_updated: no capabilities", capabilities);
@@ -107,6 +107,6 @@ export const callbackAdminLog = async (db, uids, action, log) => {
       };
       await db.collection(`/admins/${uid}/stripeLogs`).add(payload);
       return payload;
-    })
+    }),
   );
 };

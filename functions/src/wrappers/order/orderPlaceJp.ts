@@ -9,7 +9,7 @@ const db = admin.firestore();
 export default functions
   .region("asia-northeast1")
   .runWith({
-    memory: "1GB" as "1GB",
+    memory: "1GB" as const,
     enforceAppCheck,
     maxInstances: 50,
     secrets: secretKeys,

@@ -1,6 +1,8 @@
 import eslint from "@eslint/js";
 import globals from "globals";
 import tseslint from "typescript-eslint";
+import eslintConfigPrettier from "eslint-config-prettier";
+
 
 export default [
   {
@@ -11,6 +13,7 @@ export default [
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
+  eslintConfigPrettier,
   {
     languageOptions: {
       globals: {

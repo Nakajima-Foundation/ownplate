@@ -13,7 +13,7 @@ export const generateResizeImage = async (db, object) => {
       const toFileFullPath = imageUtil.getToFileFullPath(filePath, size);
       const resizedImage = await imageUtil.resizedImage(object, toFileFullPath, size);
       return (resizedImages[size] = resizedImage);
-    })
+    }),
   );
 
   const hasError = Object.values(resizedImages).some((a) => !a);
@@ -26,7 +26,7 @@ export const generateResizeImage = async (db, object) => {
           },
         },
       },
-      { merge: true }
+      { merge: true },
     );
     await imageUtil.removeFile(object);
     // await object.bucket.file(filePath).delete();
@@ -41,7 +41,7 @@ export const generateResizeImage = async (db, object) => {
             },
           },
         },
-        { merge: true }
+        { merge: true },
       );
     }
   }

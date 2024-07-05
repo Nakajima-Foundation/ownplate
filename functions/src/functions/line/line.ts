@@ -132,13 +132,13 @@ export const validate = async (db: admin.firestore.Firestore, data: lineValidate
           verified,
           profile,
         },
-        { merge: true }
+        { merge: true },
       );
       await db.doc(`/restaurants/${restaurantId}/lineUsersData/${uid}`).set(
         {
           profile,
         },
-        { merge: true }
+        { merge: true },
       );
     } else if (context.auth!.token.phone_number) {
       // For end-user, seet the custom claim
@@ -152,7 +152,7 @@ export const validate = async (db: admin.firestore.Firestore, data: lineValidate
           verified,
           profile,
         },
-        { merge: true }
+        { merge: true },
       );
     }
     // else {
@@ -185,7 +185,7 @@ export const sendMessageDirect = async (lineId: string, message: string, token: 
     {
       to: lineId,
       messages: [{ type: "text", text: message }],
-    }
+    },
   );
 };
 

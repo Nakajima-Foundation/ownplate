@@ -76,13 +76,13 @@ export const cancel = async (db: admin.firestore.Firestore, data: orderCancelDat
       const updateData = noPayment
         ? updateDataBase
         : {
-            ...updateDataBase,
-            ...{
-              payment: {
-                stripe: "canceled",
-              },
+          ...updateDataBase,
+          ...{
+            payment: {
+              stripe: "canceled",
             },
-          };
+          },
+        };
       transaction.set(orderRef, updateData, { merge: true });
       if (hasPayment) {
         // stripe
@@ -91,7 +91,7 @@ export const cancel = async (db: admin.firestore.Firestore, data: orderCancelDat
           {
             paymentIntent,
           },
-          { merge: true }
+          { merge: true },
         );
       }
       Object.assign(order, updateData);

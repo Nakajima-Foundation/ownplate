@@ -10,7 +10,7 @@ export const request = (_url: string, _options: any, postData?: any): Promise<an
       path: parsedURL.pathname,
       method: "GET",
     },
-    _options
+    _options,
   );
   return new Promise((resolve, reject) => {
     const req = https.request(options, (res) => {
@@ -49,7 +49,7 @@ export const postForm = (_url: string, params: any): Promise<any> => {
         "Content-Length": Buffer.byteLength(postData),
       },
     },
-    postData
+    postData,
   );
 };
 
@@ -68,7 +68,7 @@ export const postJson = (_url: string, _options: any, json: any): Promise<any> =
       method: "POST",
     },
     _options,
-    { headers }
+    { headers },
   );
   return request(_url, options, postData);
 };

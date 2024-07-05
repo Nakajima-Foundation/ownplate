@@ -56,20 +56,20 @@ describe("express function", () => {
 
     express.updateDb(adminDB);
 
-    await adminDB.doc(`restaurants/testbar`).set(good_cafe_data);
-    await adminDB.doc(`restaurants/testbar/menus/hoge`).set({
+    await adminDB.doc("restaurants/testbar").set(good_cafe_data);
+    await adminDB.doc("restaurants/testbar/menus/hoge").set({
       images: { item: { resizedImages: { "600": "123.jpg" } } },
       itemDescription: "hello from menu",
       price: 1000,
       itemName: "good menu",
     });
-    await adminDB.doc(`restaurants/testbar/menus/VbXMnx4wdTgh1VBpBRIr`).set({
+    await adminDB.doc("restaurants/testbar/menus/VbXMnx4wdTgh1VBpBRIr").set({
       images: { item: { resizedImages: { "600": "123.jpg" } } },
       itemDescription: "hello from menu",
       price: 1000,
       itemName: "good menu",
     });
-    await adminDB.doc(`restaurants/testbar/menus/DJHHNW17WqhT7O51lhxB`).set({
+    await adminDB.doc("restaurants/testbar/menus/DJHHNW17WqhT7O51lhxB").set({
       images: { item: { resizedImages: { "600": "123.jpg" } } },
       itemDescription: "hello from menu",
       price: 1000,
@@ -80,10 +80,10 @@ describe("express function", () => {
         "ひき肉 (+10),  チーズ, コーヒー",
       ],
     });
-    await adminDB.doc(`restaurants/testbar/private/apikey`).set({
+    await adminDB.doc("restaurants/testbar/private/apikey").set({
       apikey: "apiKeyMaster",
     });
-    await adminDB.doc(`restaurants/testbar/orders/1212`).set({
+    await adminDB.doc("restaurants/testbar/orders/1212").set({
       payment: { stripe: "confirmed" },
       timePlaced: { seconds: 1611631800, nanoseconds: 904000000 },
       totalCharge: 1080,
@@ -117,7 +117,7 @@ describe("express function", () => {
       total: 1080,
       sub_total: 1000,
     });
-    await adminDB.doc(`restaurants/testbar/orders/12123`).set({
+    await adminDB.doc("restaurants/testbar/orders/12123").set({
       sendSMS: true,
       tax: 84,
       sub_total: 1051,

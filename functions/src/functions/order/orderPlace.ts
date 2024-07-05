@@ -33,7 +33,7 @@ export const updateOrderTotalDataAndUserLog = async (
   restaurantId: string,
   ownerUid: string,
   timePlaced,
-  positive: boolean
+  positive: boolean,
 ) => {
   const menuIds = Object.keys(order);
   console.log(utils.timezone);
@@ -54,7 +54,7 @@ export const updateOrderTotalDataAndUserLog = async (
       const path = `restaurants/${restaurantId}/menus/${menuId}/orderTotal/${date}`;
       totalRef[menuId] = db.doc(path);
       totals[menuId] = (await transaction.get(totalRef[menuId])).data();
-    })
+    }),
   );
 
   const userLogPath = `restaurants/${restaurantId}/userLog/${customerUid}`;
@@ -82,7 +82,7 @@ export const updateOrderTotalDataAndUserLog = async (
         };
         await transaction.update(totalRef[menuId], updateData);
       }
-    })
+    }),
   );
   if (!userLog) {
     const data = {
@@ -285,7 +285,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
           {
             paymentIntent,
           },
-          { merge: true }
+          { merge: true },
         );
       } else {
         await transaction.update(orderRef, updateData);

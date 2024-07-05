@@ -194,7 +194,7 @@ export const getMenuObj = async (refRestaurant, menuIds) => {
           }
         });
         return;
-      })
+      }),
     );
     return menuObj;
   } else {
@@ -203,7 +203,7 @@ export const getMenuObj = async (refRestaurant, menuIds) => {
       menuIds.map(async (id) => {
         const m = await refRestaurant.collection("menus").doc(id).get();
         menuObj[m.id] = m.data();
-      })
+      }),
     );
     return menuObj;
   }

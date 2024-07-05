@@ -29,7 +29,7 @@ export const sendMessageToCustomer = async (
   restaurantId: string,
   orderId: string,
   params: object = {},
-  forceSMS: boolean = false
+  forceSMS: boolean = false,
 ) => {
   const orderNumber = utils.nameOfOrder(orderData.number);
 
@@ -160,7 +160,7 @@ const notifyRestaurantToLineUser = async (url: string, message: string, lineUser
         await line.sendMessageDirect(doc.id, `${message} ${url}?openExternalBrowser=1`, LINE_MESSAGE_TOKEN);
       }
       return lineUser;
-    })
+    }),
   );
   return results;
 };

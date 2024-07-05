@@ -25,7 +25,7 @@ describe("Order function", () => {
       {
         hoge1: 10,
       },
-      order.createNewOrderData
+      order.createNewOrderData,
     );
 
     const lineId = "U750ebba2d580597e722344ee20fec6d9";

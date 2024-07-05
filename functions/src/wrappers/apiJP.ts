@@ -7,7 +7,7 @@ export default functions
   .runWith({
     maxInstances: 100,
     timeoutSeconds: 10,
-    memory: "1GB" as "1GB",
+    memory: "1GB" as const,
     secrets: secretKeys,
   })
   .https.onRequest(express.app);

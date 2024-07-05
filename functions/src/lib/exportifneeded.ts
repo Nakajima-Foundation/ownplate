@@ -1,4 +1,4 @@
-function isFunctionCalled(functionName: string): Boolean {
+function isFunctionCalled(functionName: string): boolean {
   return !process.env.FUNCTION_NAME || process.env.FUNCTION_NAME === functionName;
 }
 

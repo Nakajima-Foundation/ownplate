@@ -81,7 +81,7 @@ export const userPromotionHistoryData = (
   orderId: string,
   totalCharge: number,
   discountPrice: number,
-  enableStripe: boolean
+  enableStripe: boolean,
 ) => {
   return {
     uid: customerUid,
