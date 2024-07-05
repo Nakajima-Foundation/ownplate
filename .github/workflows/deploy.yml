@@ -29,12 +29,12 @@ jobs:
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
-      - run: npm install --save-dev firebase-tools
+      - run: yarn add -D firebase-tools
       - run: cp configs/.firebaserc ./
       - run: cp src/config/default/ownplate-dev.ts src/config/project.ts
       - run: cp -ir docs/article* public/admin/docs/articles
       - run: yarn install
-      - name: npm build
+      - name: yarn build
         run: yarn run build
       - run: cp dist/index.html functions/templates/index.html
       - name: functions npm install, build
