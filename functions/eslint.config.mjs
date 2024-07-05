@@ -33,6 +33,7 @@ export default [
           varsIgnorePattern: "^__",
         },
       ],
+      "@typescript-eslint/no-var-requires": "off",
       "linebreak-style": ["error", "unix"],
       quotes: ["error", "double"],
       semi: ["error", "always"],

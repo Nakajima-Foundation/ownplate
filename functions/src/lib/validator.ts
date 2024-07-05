@@ -151,7 +151,7 @@ const validateArray = {
 };
 
 const validateData = (data, validator) => {
-  const errors = Object.keys(validator).reduce((tmp: Object[], key: string) => {
+  const errors = Object.keys(validator).reduce((tmp: unknown[], key: string) => {
     const rule = validator[key];
     if (rule.required && isEmpty(data[key])) {
       tmp.push({
