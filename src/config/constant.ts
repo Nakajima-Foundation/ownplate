@@ -485,7 +485,7 @@ export const promotionPaymentRestrictionsSelect = [
 ];
 
 export const twiml_neworder =
-  '<Response><Say language="ja-jp">こんにちは。わたしは、おもちかえりどっとこむです。あたらしいオーダーが入りました。かくにんをよろしくおねがいいたします。おもちかえりどっとこむでした。</Say></Response>';
+  "<Response><Say language=\"ja-jp\">こんにちは。わたしは、おもちかえりどっとこむです。あたらしいオーダーが入りました。かくにんをよろしくおねがいいたします。おもちかえりどっとこむでした。</Say></Response>";
 
 export const timeList = [
   null,
