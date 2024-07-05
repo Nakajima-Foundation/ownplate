@@ -37,10 +37,10 @@ jobs:
       - name: yarn build
         run: yarn run build
       - run: cp dist/index.html functions/templates/index.html
-      - name: functions npm install, build
+      - name: functions yarn install, build
         working-directory: ./functions
         run: |
-          npm install --arch=x64 --platform=linux
+          SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm_config_arch=x64 npm_config_platform=linux yarn install
       - name: 'Authenticate to Google Cloud'
         id: auth
         uses: 'google-github-actions/auth@v1'
