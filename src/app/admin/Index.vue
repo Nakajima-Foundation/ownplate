@@ -169,8 +169,8 @@
                   index == 0
                     ? 'first'
                     : restaurantLists.length - 1 === index
-                    ? 'last'
-                    : ''
+                      ? 'last'
+                      : ''
                 "
                 @positionUp="positionUp($event)"
                 @positionDown="positionDown($event)"

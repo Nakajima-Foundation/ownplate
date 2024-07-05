@@ -4,7 +4,7 @@ declare global {
   interface Window {
     FIREBASE_APPCHECK_DEBUG_TOKEN: boolean | undefined;
   }
-  
+
   namespace JSX {
     // tslint:disable no-empty-interface
     interface Element extends VNode {}

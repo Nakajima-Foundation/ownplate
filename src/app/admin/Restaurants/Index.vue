@@ -46,8 +46,8 @@
                 submitting
                   ? "editCommon.saving"
                   : editShopInfo.publicFlag
-                  ? "editCommon.save"
-                  : "editCommon.saveDraft",
+                    ? "editCommon.save"
+                    : "editCommon.saveDraft",
               )
             }}</span>
           </div>
@@ -1063,8 +1063,8 @@
                 submitting
                   ? "editCommon.saving"
                   : editShopInfo.publicFlag
-                  ? "editCommon.save"
-                  : "editCommon.saveDraft",
+                    ? "editCommon.save"
+                    : "editCommon.saveDraft",
               )
             }}</span>
           </div>

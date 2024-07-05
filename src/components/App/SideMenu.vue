@@ -195,8 +195,8 @@ export default defineComponent({
       return inLiff.value
         ? liffBasePath.value
         : isAdmin.value
-        ? "/admin/restaurants/"
-        : "/r";
+          ? "/admin/restaurants/"
+          : "/r";
     });
 
     const handleClose = () => {

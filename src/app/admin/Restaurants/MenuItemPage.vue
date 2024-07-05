@@ -43,8 +43,8 @@
                 submitting
                   ? "editCommon.saving"
                   : menuInfo.publicFlag
-                  ? "editCommon.save"
-                  : "editCommon.saveDraft",
+                    ? "editCommon.save"
+                    : "editCommon.saveDraft",
               )
             }}</span>
           </div>
@@ -659,8 +659,8 @@
                 submitting
                   ? "editCommon.saving"
                   : menuInfo.publicFlag
-                  ? "editCommon.save"
-                  : "editCommon.saveDraft",
+                    ? "editCommon.save"
+                    : "editCommon.saveDraft",
               )
             }}</span>
           </div>
