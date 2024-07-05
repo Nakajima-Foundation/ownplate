@@ -13,7 +13,7 @@
     "resolveJsonModule": true,
     "sourceMap": true,
     "baseUrl": ".",
-    "types": ["webpack-env", "@types/gtag.js"],
+    "types": ["vite/client", "@types/gtag.js"],
     "paths": {
       "@/*": ["src/*"]
     },
