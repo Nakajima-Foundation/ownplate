@@ -31,7 +31,7 @@ import "@/assets/css/tailwind.css";
 import "@/assets/css/main.css";
 import "@oruga-ui/theme-bulma/dist/bulma.css";
 
-const app = createApp(App);
+const app = createApp(App as any); // TODO fix
 
 // components
 app.component(VueQrcode.name, VueQrcode);
@@ -56,7 +56,7 @@ app.use(store);
 app.use(router);
 app.use(i18n);
 
-if (import.meta.env.NODE_ENV !== "development") {
+if (import.meta.env.PROD) {
   if (sentryDsn) {
     Sentry.init({
       app,

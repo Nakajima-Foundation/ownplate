@@ -33,9 +33,9 @@ jobs:
       - run: cp configs/.firebaserc ./
       - run: cp src/config/default/ownplate-dev.ts src/config/project.ts
       - run: cp -ir docs/article* public/admin/docs/articles
-      - run: npm install
+      - run: yarn install
       - name: npm build
-        run: npm run build
+        run: yarn run build
       - run: cp dist/index.html functions/templates/index.html
       - name: functions npm install, build
         working-directory: ./functions
