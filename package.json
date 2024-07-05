@@ -8,6 +8,7 @@
     "start": "vite",
     "build": "vite build && cp dist/index.html functions/templates/index.html",
     "batch": "babel-node --presets @babel/env",
+    "lint": "eslint --ext .js,.ts,.vue src",
     "customclaims": "babel-node --presets @babel/env  ./batch/customclaims.js",
     "format": "prettier --write '{src/**/*,*}.{js,ts,vue,json}'",
     "makenews": "npx tsx ./batch/news.js",
