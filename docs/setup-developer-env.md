@@ -92,7 +92,7 @@ git clone git@github.com:Nakajima-Foundation/ownplate.git
 # 7. npm package install
 
 ```
-npm install
+yarn install
 ```
 
 # 8. copy configs
