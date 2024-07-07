@@ -51,11 +51,11 @@
     "vuex": "^4.1.0"
   },
   "devDependencies": {
-    "@types/cookie": "^0.4.1",
+    "@types/cookie": "^0.6.0",
     "@types/crypto-js": "^4.1.1",
     "@types/google-libphonenumber": "^7.4.27",
     "@types/gtag.js": "^0.0.20",
-    "@types/pdfmake": "^0.1.21",
+    "@types/pdfmake": "^0.2.9",
     "@types/query-string": "^6.3.0",
     "@types/validator": "^13.7.6",
     "@typescript-eslint/eslint-plugin": "^7.15.0",
@@ -70,11 +70,11 @@
     "firebase-admin": "^12.1.1",
     "postcss": "^8.4.31",
     "prettier": "^3.0.3",
-    "prettier-plugin-tailwindcss": "^0.5.4",
+    "prettier-plugin-tailwindcss": "^0.6.5",
     "raw-loader": "^4.0.2",
     "sass": "^1.68.0",
     "tailwindcss": "^3.3.3",
-    "typescript": "~5.2.2",
+    "typescript": "~5.5.3",
     "typescript-eslint": "^7.15.0",
     "vite-plugin-checker": "^0.7.0",
     "vue-eslint-parser": "^9.4.3"
