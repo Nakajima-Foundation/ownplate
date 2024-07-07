@@ -18,13 +18,6 @@ import { defineComponent } from "vue";
 import { previewLink } from "@/utils/utils";
 
 export default defineComponent({
-  props: {
-    // eslint-disable-next-line
-    shopInfo: {
-      type: Object,
-      required: true,
-    },
-  },
   setup(props) {
     const link = previewLink(props);
     return {

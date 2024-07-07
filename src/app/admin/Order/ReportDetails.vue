@@ -181,10 +181,8 @@ export default defineComponent({
           const taxRate = menuItem.tax === "food" ? 8 : 10;
           Object.keys(orderItems).forEach((key) => {
             const opt = Array.isArray(options[key] || [])
-              ?
-                options[key]
-              :
-                [options[key]];
+              ? options[key]
+              : [options[key]];
             try {
               items.push({
                 id: `${order.id}/${menuId}`,

@@ -94,7 +94,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emits:["update"],
+  emits: ["update"],
   setup(props, context) {
     const { n } = useI18n({ useScope: "global" });
 

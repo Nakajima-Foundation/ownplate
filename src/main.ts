@@ -34,7 +34,7 @@ import "@oruga-ui/theme-bulma/dist/bulma.css";
 const app = createApp(App as any); // TODO fix
 
 // components
-app.component(VueQrcode.name ?? '', VueQrcode);
+app.component(VueQrcode.name ?? "", VueQrcode);
 
 app.use(VueGoogleMaps, {
   load: {
