@@ -70,7 +70,6 @@ export default defineComponent({
       cmd: "getCustomeClaims",
       uid: adminId,
     }).then(({ data }) => {
-      // @ts-ignore
       customClaims.value = data.result;
     });
     getDocs(
@@ -107,7 +106,6 @@ export default defineComponent({
             key: "operator",
             value: value,
           });
-          // @ts-ignore
           customClaims.value = data.result;
         } catch (error) {
           console.error(error);

@@ -174,7 +174,6 @@ export default defineComponent({
             const order = myDoc.data() as OrderInfoData;
             order.restaurantId = myDoc.ref.path.split("/")[1];
             order.id = myDoc.id;
-            // @ts-ignore
             order.timePlaced = order.timePlaced.toDate();
             if (!restaurants.value[order.restaurantId]) {
               const snapshot = await getDoc(
@@ -185,7 +184,6 @@ export default defineComponent({
             }
             order.restaurant = restaurants.value[order.restaurantId];
             if (order.timeEstimated) {
-              // @ts-ignore
               order.timeEstimated = order.timeEstimated.toDate();
             }
             orders.value.push(order);

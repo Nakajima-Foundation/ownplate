@@ -148,7 +148,6 @@ export default defineComponent({
     const pingAnalytics = () => {
       setCurrentScreen(analytics, document.title);
       logEvent(analytics, "page_view");
-      // @ts-ignore
       logEvent(analytics, "screen_view", {
         app_name: "web",
         screen_name: document.title,
@@ -205,7 +204,6 @@ export default defineComponent({
     }
 
     timerId = window.setInterval(() => {
-      // @ts-ignore
       const diff = (new Date() - store.state.openTime) / 1000; // second
       if (diff > 20 * 3600) {
         store.commit("resetOpenTime");

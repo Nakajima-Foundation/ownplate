@@ -164,7 +164,6 @@ export default defineComponent({
         const snapshot = await getDocs(myQuery);
         if (!snapshot.empty) {
           last.value = snapshot.docs[snapshot.docs.length - 1];
-          // @ts-ignore
           snapshot.docs.map(doc2data("resuatraut")).forEach((data) => {
             restaurants.value.push(data as RestaurantInfoData);
           });
@@ -199,7 +198,6 @@ export default defineComponent({
     const tableData = computed(() => {
       return restaurants.value.map((restaurant) => {
         return {
-          // @ts-ignore
           date: moment(restaurant.createdAt.toDate()).format("YYYY/MM/DD"),
           restaurantName: restaurant.restaurantName,
           state: restaurant.state,
