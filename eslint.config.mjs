@@ -6,14 +6,17 @@ import vueParser from "vue-eslint-parser";
 import eslintConfigPrettier from "eslint-config-prettier";
 
 export default [
-  {languageOptions: { globals: globals.browser }},
   {
     files: ["src/**/*.{vue,ts}"],
+  },
+  {
+    ignores: ['dist', 'build', 'node_modules', 'functions', 'holidays', 'patch', 'tailwind.config.js', "batchCustomer", "postcss.config.js", "batch", "vue.config.js", "vue.config.js", "zipcodeJP", "vite.config.js", "eslint.config.mjs"],
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   ...pluginVue.configs['flat/essential'],
   {
+    ignores: ['dist', 'build', 'node_modules', 'functions', 'holidays', 'patch', 'tailwind.config.js', "batchCustomer", "postcss.config.js", "batch", "vue.config.js", "vue.config.js", "zipcodeJP"],
     plugins: {
       'typescript-eslint': tseslint.plugin,
     },
@@ -24,9 +27,8 @@ export default [
         extraFileExtensions: ['.vue'],
         sourceType: 'module',
       },
+      globals: globals.browser,
     },
-  },
-  {
     rules: {
       //indent: ["error", 2],
       "@typescript-eslint/no-unused-vars": [
