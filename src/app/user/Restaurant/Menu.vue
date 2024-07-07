@@ -596,7 +596,6 @@ export default defineComponent({
       imagePopup.value = true;
 
       // TODO confirm 2023-01
-      // @ts-ignore
       const current = router.currentRoute.path;
 
       const to = basePath.value + "/r/" + restaurantId + (urlSuffix || "");
@@ -624,7 +623,6 @@ export default defineComponent({
     const setQuantities = (key: number, newValue: number) => {
       const newQuantities = [...props.quantities];
       newQuantities[key] = newValue;
-      // @ts-ignore
       const newSelectedOptions = [...props.selectedOptions];
       if (newQuantities[key] === 0 && newQuantities.length > 1) {
         newQuantities.splice(key, 1);

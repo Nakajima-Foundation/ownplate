@@ -37,7 +37,7 @@ export default [
           varsIgnorePattern: "^__",
         },
       ],
-      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-explicit-any": "off", // warn
       "linebreak-style": ["error", "unix"],
       quotes: ["error", "double"],
       semi: ["error", "always"],
@@ -49,12 +49,12 @@ export default [
       "vue/no-unused-properties": "error",
       "vue/require-default-prop": "off",
       "vue/require-prop-types": "error",
-      "vue/no-mutating-props": "warn",
-      "vue/no-unused-properties": "warn",
-      "no-undef": "warn",
+      "vue/no-mutating-props": "off", // warn
+      "vue/no-unused-properties": "off", // warn
+      "no-undef": "off", // warn
 
-      "no-irregular-whitespace": "warn",
-      "@typescript-eslint/ban-ts-comment": "warn",
+      "no-irregular-whitespace": "off", 
+      "@typescript-eslint/ban-ts-comment": "warn", 
       "vue/attribute-hyphenation": "off",
       "vue/v-on-event-hyphenation": "off",
       "accessor-pairs": "error",

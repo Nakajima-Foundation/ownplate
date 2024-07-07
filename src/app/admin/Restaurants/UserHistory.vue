@@ -245,7 +245,6 @@ export default defineComponent({
           return order as OrderInfoData;
         })
         .sort((a, b) => {
-          // @ts-ignore
           if (a.timePlaced.getTime() === b.timePlaced.getTime()) {
             return a.number > b.number ? -1 : 1;
           }
