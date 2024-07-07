@@ -247,10 +247,6 @@ export default defineComponent({
       type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
-    isDelivery: {
-      type: Boolean,
-      required: true,
-    },
     closeButton: {
       type: String,
       required: true,

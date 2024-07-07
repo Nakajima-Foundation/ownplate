@@ -45,10 +45,6 @@ import { useStore } from "vuex";
 
 export default defineComponent({
   props: {
-    shopInfo: {
-      type: Object,
-      required: true,
-    },
     modelValue: {
       type: String,
       required: true,

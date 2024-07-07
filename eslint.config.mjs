@@ -50,11 +50,11 @@ export default [
       "vue/require-default-prop": "off",
       "vue/require-prop-types": "error",
       "vue/no-mutating-props": "off", // warn
-      "vue/no-unused-properties": "off", // warn
-      "no-undef": "off", // warn
+      "vue/no-unused-properties": "warn", // warn
+      "no-undef": "off", // warn TODO
 
       "no-irregular-whitespace": "off", 
-      "@typescript-eslint/ban-ts-comment": "warn", 
+      "@typescript-eslint/ban-ts-comment": "off",  // TODO
       "vue/attribute-hyphenation": "off",
       "vue/v-on-event-hyphenation": "off",
       "accessor-pairs": "error",

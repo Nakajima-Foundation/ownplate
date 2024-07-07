@@ -445,10 +445,6 @@ export default defineComponent({
       type: Object,
       required: true,
     },
-    shopOwner: {
-      type: Object,
-      required: true,
-    },
     restaurantid: {
       type: String,
       required: true,

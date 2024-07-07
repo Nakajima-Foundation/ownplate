@@ -15,23 +15,6 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    data: {
-      type: Array,
-      required: true,
-    },
-    fields: {
-      type: Array,
-      required: true,
-    },
-    fieldNames: {
-      type: Array,
-      required: false,
-    },
-    formulas: {
-      type: Object,
-      required: false,
-      default: null,
-    },
   },
   emits: ["success"],
   setup(props, ctx) {
