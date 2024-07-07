@@ -46,11 +46,9 @@ export default [
       "vue/no-reserved-component-names": "error",
       "vue/multi-word-component-names": "off",
       "vue/v-bind-style": "error",
-      "vue/no-unused-properties": "error",
       "vue/require-default-prop": "off",
       "vue/require-prop-types": "error",
       "vue/no-mutating-props": "off", // warn
-      "vue/no-unused-properties": "warn", // warn
       "no-undef": "off", // warn TODO
 
       "no-irregular-whitespace": "off", 
