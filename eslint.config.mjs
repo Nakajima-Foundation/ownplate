@@ -32,7 +32,7 @@ export default [
     rules: {
       //indent: ["error", 2],
       "@typescript-eslint/no-unused-vars": [
-        "warn",
+        "error",
         {
           argsIgnorePattern: "^__",
           varsIgnorePattern: "^__",
