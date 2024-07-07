@@ -33,6 +33,7 @@ export default defineComponent({
       default: null,
     },
   },
+  emits: ["success"],
   setup(props, ctx) {
     const { t } = useI18n({ useScope: "global" });
     const content = computed(() => {

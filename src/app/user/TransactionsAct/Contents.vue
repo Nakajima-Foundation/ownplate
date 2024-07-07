@@ -256,6 +256,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ["closeTransactionsAct"],
   setup(props, ctx) {
     const restaurantsId = props.shopInfo.restaurantId;
     const days = daysOfWeek;

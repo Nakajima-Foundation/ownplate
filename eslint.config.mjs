@@ -46,7 +46,7 @@ export default [
       "vue/no-unused-vars": "error",
       "vue/no-reserved-component-names": "error",
       "vue/multi-word-component-names": "off",
-      "vue/require-explicit-emits": "warn",
+      "vue/require-explicit-emits": "error",
       "vue/v-bind-style": "error",
       "vue/no-unused-properties": "error",
       "vue/require-default-prop": "off",

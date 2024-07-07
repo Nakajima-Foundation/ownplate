@@ -44,6 +44,7 @@ import { useStore } from "vuex";
 import { useRestaurantId } from "@/utils/utils";
 
 export default defineComponent({
+  emits: ["openNotificationSettings"],
   setup(props, ctx) {
     const store = useStore();
 

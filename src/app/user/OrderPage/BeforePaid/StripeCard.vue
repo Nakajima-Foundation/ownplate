@@ -115,6 +115,7 @@ import { useUserData } from "@/utils/utils";
 import { useStore } from "vuex";
 
 export default defineComponent({
+  emits: ["change"],
   props: {
     stripeJCB: {
       type: Boolean,

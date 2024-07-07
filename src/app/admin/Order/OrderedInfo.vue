@@ -285,6 +285,7 @@ export default defineComponent({
       required: false,
     },
   },
+  emits: ["selected"],
   setup(props) {
     const { d } = useI18n({ useScope: "global" });
 

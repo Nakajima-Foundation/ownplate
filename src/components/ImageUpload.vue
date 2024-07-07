@@ -39,6 +39,7 @@ export default defineComponent({
       required: false,
     },
   },
+  emits: ["handler"],
   setup(props, context) {
     const handler = (e: any) => {
       if (e.dataTransfer) {

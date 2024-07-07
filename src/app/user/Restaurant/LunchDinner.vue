@@ -62,6 +62,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ["update:modelValue"],
   setup(props, ctx) {
     const store = useStore();
     const popup = ref(false);

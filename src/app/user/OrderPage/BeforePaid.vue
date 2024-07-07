@@ -445,6 +445,7 @@ export default defineComponent({
   data() {
     return {};
   },
+  emits:["handleOpenMenu", "openTransactionsAct"],
   setup(props, ctx) {
     const route = useRoute();
     const store = useStore();

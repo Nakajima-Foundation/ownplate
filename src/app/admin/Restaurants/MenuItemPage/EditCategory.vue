@@ -66,6 +66,7 @@ export default defineComponent({
       title: [this.defaultTitle, "Admin Edit Category"].join(" / "),
     };
   },
+  emits: ["dismissed", "updated"],
   setup(props, context) {
     const isVisible = ref(true);
     const newEntry = ref("");

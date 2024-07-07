@@ -35,6 +35,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ["update:modelValue"],
   setup(props, context) {
     const input = (value: string) => {
       context.emit("update:modelValue", value);
