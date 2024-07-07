@@ -16,7 +16,6 @@ export default [
   ...tseslint.configs.recommended,
   ...pluginVue.configs['flat/essential'],
   {
-    ignores: ['dist', 'build', 'node_modules', 'functions', 'holidays', 'patch', 'tailwind.config.js', "batchCustomer", "postcss.config.js", "batch", "vue.config.js", "vue.config.js", "zipcodeJP"],
     plugins: {
       'typescript-eslint': tseslint.plugin,
     },
@@ -46,7 +45,6 @@ export default [
       "vue/no-unused-vars": "error",
       "vue/no-reserved-component-names": "error",
       "vue/multi-word-component-names": "off",
-      "vue/require-explicit-emits": "error",
       "vue/v-bind-style": "error",
       "vue/no-unused-properties": "error",
       "vue/require-default-prop": "off",
@@ -54,7 +52,7 @@ export default [
       "vue/no-mutating-props": "warn",
       "vue/no-unused-properties": "warn",
       "no-undef": "warn",
-      
+
       "no-irregular-whitespace": "warn",
       "@typescript-eslint/ban-ts-comment": "warn",
       "vue/attribute-hyphenation": "off",
