@@ -38,6 +38,7 @@ export default [
         },
       ],
       "@typescript-eslint/no-explicit-any": "off", // warn
+      // "@typescript-eslint/no-unnecessary-type-assertion": "error",
       "linebreak-style": ["error", "unix"],
       quotes: ["error", "double"],
       semi: ["error", "always"],
