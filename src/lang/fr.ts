@@ -180,6 +180,7 @@ const data = {
     taxExcluded: "Taxe Exclue",
     about: "A Propos",
     required: "Requis",
+    personalInfoSaveMethods: "Méthodes de Sauvegarde des Infos Client",
     paymentMethods: "Payment methods",
     timeToPickup: "Temps de ramassage",
     preparationTime: "Temps de préparation du plat emporter",
@@ -216,6 +217,11 @@ const data = {
     withinfive: "Dans les 5 heures",
     withinaday: "Dans les 24 heures",
     withinFiveDays: "Within 6 days",
+    personalInfoSaveMethodChoices: {
+      notRequired: "Ne pas enregistrer le nom lors de la connexion",
+      optional: "Rendre la saisie du nom facultative lors de la connexion",
+      required: "Exiger la saisie du nom sur la page de confirmation de commande"
+    },
     paymentMethodChoices: {
       cache: "Cache",
       suica: "Suica/Pasmo",

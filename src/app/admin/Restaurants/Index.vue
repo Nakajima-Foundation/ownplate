@@ -650,21 +650,27 @@
           <!-- personalInfo -->
           <div class="mt-4">
             <div class="pb-2 text-sm font-bold cursor-pointer">
-              {{ $t("editRestaurant.personalInfo") }}
+              {{ $t("editRestaurant.personalInfoSaveMethods") }}
               <i class="material-icons">
                 <span class="text-sm">help</span>
               </i>
             </div>
-
             <div class="rounded-lg bg-black bg-opacity-5 p-4">
-              <div class="mt-2">
+              <div v-for="(personalInfoSaveMethod, k) in personalInfoSaveMethods" :key="k">
                 <o-radio
-                  v-for="choice in personalInfoSelect"
-                  v-model="editShopInfo.personalInfo"
-                  :native-value="choice.value"
-                  :key="choice.value"
-                  >{{ $t(choice.messageKey) }}</o-radio
+                  v-model="
+                    (editShopInfo.personalInfoSaveMethods || {})[personalInfoSaveMethod.key]
+                  "
                 >
+                  <div class="text-sm font-bold">
+                    {{
+                      $t(
+                        "editRestaurant.personalInfoSaveMethodChoices." +
+                        personalInfoSaveMethod.key,
+                      )
+                    }}
+                  </div>
+                </o-radio>
               </div>
             </div>
           </div>
@@ -1174,6 +1180,7 @@ import {
   daysOfWeek,
   reservationTheDayBefore,
   minimumCookTimeChoices,
+  personalInfoSaveMethods,
   paymentMethods,
 } from "@/config/constant";
 
@@ -1528,17 +1535,11 @@ export default defineComponent({
       });
     };
 
-    const personalInfoSelect = [
-      { messageKey: "personalInfoSelect.not_required", value: "not_required" },
-      { messageKey: "personalInfoSelect.optional", value: "optional" },
-      { messageKey: "personalInfoSelect.required", value: "required" },
-    ];
     return {
       maxDate,
       now,
       reservationTheDayBefore,
       minimumCookTimeChoices,
-      personalInfoSelect,
       taxRates,
       taxRateKeys,
       region,
@@ -1582,6 +1583,7 @@ export default defineComponent({
       gmapClick,
       gMap,
 
+      personalInfoSaveMethods,
       paymentMethods,
       openTips,
       restaurantId,
