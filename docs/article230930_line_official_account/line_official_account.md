@@ -166,7 +166,7 @@ LINE Developers 側のチャネル名(LINEログイン)の
 - 今回作成した `Provider 名` を選択します。  
   ![](./images/line_developers_console_select_provider.png)
 
-- `LINE公式アカウント名 (Messaging API)` を選択します。**※ 新しく作成したチャネル（開発中）ではなく公式アカウントのチャネルを選択します。**
+- `LINE公式アカウント名 (Messaging API)` を選択します。**※ 新しく作成したチャネル（開発中）ではなく公式アカウントのチャネルを選択します。**  
   ![](./images/line_developers_console_select_line-official-account.png)
 
 - `Messaging API設定` を選択します。  
