@@ -626,6 +626,7 @@ export default defineComponent({
         return user.value.displayName;
       })();
 
+      const isStoreUserName = props.shopInfo.personalInfo === "not_required";
       const order_data = {
         order: orders.value,
         options: convOptionArray2Obj(postOptions.value),
@@ -640,8 +641,8 @@ export default defineComponent({
           (props.shopInfo.enableDelivery && isDelivery.value) || false, // true, // for test
         isPickup: false,
         isLiff: isLiffUser.value,
-        phoneNumber: user.value.phoneNumber,
-        name: name,
+        phoneNumber: user.value.phoneNumber, 
+        name: isStoreUserName ? name : "",
         updatedAt: serverTimestamp(),
         timeCreated: serverTimestamp(),
         // price never set here.
