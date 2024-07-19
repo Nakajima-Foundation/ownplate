@@ -51,6 +51,7 @@ export const getEditShopInfo = (shopInfo: RestaurantInfoData) => {
     orderThanks: shopInfo.orderThanks,
     pickUpMinimumCookTime: shopInfo.pickUpMinimumCookTime,
     pickUpDaysInAdvance: shopInfo.pickUpDaysInAdvance,
+    personalInfo: shopInfo.personalInfo,
     paymentMethods: shopInfo.paymentMethods || {},
     foodTax: Number(shopInfo.foodTax),
     alcoholTax: Number(shopInfo.alcoholTax),
