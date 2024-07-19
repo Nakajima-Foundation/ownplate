@@ -28,6 +28,9 @@ export default defineConfig({
     include: ["fast-deep-equal"],
   },
   server: {
+    watch: {
+      usePolling: true
+    },
     port: 3000,
   },
 });
