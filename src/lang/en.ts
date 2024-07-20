@@ -180,7 +180,7 @@ const data = {
     taxExcluded: "Tax Excluded",
     about: "About",
     required: "Required",
-    personalInfo: "Methods for Saving Customer's Personal Information",
+    personalInfo: "Customer Name Saving Method",
     paymentMethods: "Payment methods",
     timeToPickup: "Time to pickup",
     preparationTime: "Takeaway preparation time",
@@ -218,9 +218,9 @@ const data = {
     withinaday: "Within 24 hours",
     withinFiveDays: "Within 6 days",
     personalInfoSaveMethodChoices: {
-      notRequired: "Do not save name upon login",
-      optional: "Make name entry optional upon login",
-      required: "Require name entry on order confirmation page"
+      notRequired: "Do Not Save",
+      optional: "Save Name If Provided",
+      required: "Save As Required"
     },
     paymentMethodChoices: {
       cache: "Cache",

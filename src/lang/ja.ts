@@ -188,7 +188,7 @@ const data = {
     taxExcluded: "外税",
     about: "飲食店情報",
     required: "必須",
-    personalInfo: "お客様氏名（個人情報）の保存方法",
+    personalInfo: "お客様氏名の保存方法",
     paymentMethods: "現地決済方法",
     timeToPickup: "受け渡し予定時刻設定",
     preparationTime: "受け渡し準備時間",
@@ -226,9 +226,9 @@ const data = {
     withinaday: "24時間以内",
     withinFiveDays: "6日以内の時間を指定してください",
     personalInfoSaveMethodChoices: {
-      notRequired: "ログイン時にお名前を保存しない",
-      optional: "ログイン時のお名前入力を任意にする",
-      required: "ご注文の確認画面でお名前の入力を必須にする",
+      notRequired: "保存しない",
+      optional: "任意で入力されたお名前を保存する",
+      required: "入力を必須にし保存する",
     },
     paymentMethodChoices: {
       cache: "現金",
