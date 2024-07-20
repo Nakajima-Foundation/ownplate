@@ -653,14 +653,15 @@
               {{ $t("editRestaurant.personalInfo") }}
             </div>
             <div class="rounded-lg bg-black bg-opacity-5 p-4">
-              <div v-for="(personalInfoSaveMethod, k) in personalInfoSaveMethods" :key="k">
-                <o-radio
-                  v-model="editShopInfo.personalInfo"
-                >
+              <div
+                v-for="(personalInfoSaveMethod, k) in personalInfoSaveMethods"
+                :key="k"
+              >
+                <o-radio v-model="editShopInfo.personalInfo">
                   {{
                     $t(
                       "editRestaurant.personalInfoSaveMethodChoices." +
-                      personalInfoSaveMethod.key,
+                        personalInfoSaveMethod.key,
                     )
                   }}
                 </o-radio>

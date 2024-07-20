@@ -220,7 +220,7 @@ const data = {
     personalInfoSaveMethodChoices: {
       notRequired: "Do Not Save",
       optional: "Save Name If Provided",
-      required: "Save As Required"
+      required: "Save As Required",
     },
     paymentMethodChoices: {
       cache: "Cache",

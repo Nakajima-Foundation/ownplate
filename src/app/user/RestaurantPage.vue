@@ -641,7 +641,7 @@ export default defineComponent({
           (props.shopInfo.enableDelivery && isDelivery.value) || false, // true, // for test
         isPickup: false,
         isLiff: isLiffUser.value,
-        phoneNumber: user.value.phoneNumber, 
+        phoneNumber: user.value.phoneNumber,
         name: isStoreUserName ? name : "",
         updatedAt: serverTimestamp(),
         timeCreated: serverTimestamp(),

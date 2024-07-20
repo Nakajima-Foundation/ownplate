@@ -220,7 +220,7 @@ const data = {
     personalInfoSaveMethodChoices: {
       notRequired: "Ne Pas Sauvegarder",
       optional: "Sauvegarder le Nom S'il Est Fournit",
-      required: "Sauvegarder Comme Requis"
+      required: "Sauvegarder Comme Requis",
     },
     paymentMethodChoices: {
       cache: "Cache",

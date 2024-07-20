@@ -270,7 +270,7 @@ export const personalInfoSaveMethods = [
   { key: "notRequired" },
   { key: "optional" },
   { key: "required" },
-]
+];
 
 export const paymentMethods = [
   { key: "cache" },
