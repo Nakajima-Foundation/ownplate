@@ -650,10 +650,7 @@
           <!-- personalInfo -->
           <div class="mt-4">
             <div class="pb-2 text-sm font-bold cursor-pointer">
-              {{ $t("editRestaurant.personalInfoSaveMethods") }}
-              <i class="material-icons">
-                <span class="text-sm">help</span>
-              </i>
+              {{ $t("editRestaurant.personalInfo") }}
             </div>
             <div class="rounded-lg bg-black bg-opacity-5 p-4">
               <div v-for="(personalInfoSaveMethod, k) in personalInfoSaveMethods" :key="k">

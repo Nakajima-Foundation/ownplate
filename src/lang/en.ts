@@ -180,7 +180,7 @@ const data = {
     taxExcluded: "Tax Excluded",
     about: "About",
     required: "Required",
-    personalInfoSaveMethods: "Methods for Saving Customer's Personal Information",
+    personalInfo: "Methods for Saving Customer's Personal Information",
     paymentMethods: "Payment methods",
     timeToPickup: "Time to pickup",
     preparationTime: "Takeaway preparation time",

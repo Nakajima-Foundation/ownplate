@@ -180,7 +180,7 @@ const data = {
     taxExcluded: "Taxe Exclue",
     about: "A Propos",
     required: "Requis",
-    personalInfoSaveMethods: "Méthodes de Sauvegarde des Infos Client",
+    personalInfo: "Méthodes de Sauvegarde des Infos Client",
     paymentMethods: "Payment methods",
     timeToPickup: "Temps de ramassage",
     preparationTime: "Temps de préparation du plat emporter",
