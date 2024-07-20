@@ -228,7 +228,7 @@ const data = {
     personalInfoSaveMethodChoices: {
       notRequired: "保存しない",
       optional: "任意で入力されたお名前を保存する",
-      required: "入力を必須にし保存する",
+      required: "入力/保存を必須にする",
     },
     paymentMethodChoices: {
       cache: "現金",
