@@ -657,14 +657,12 @@
                 <o-radio
                   v-model="editShopInfo.personalInfo"
                 >
-                  <div class="text-sm font-bold">
-                    {{
-                      $t(
-                        "editRestaurant.personalInfoSaveMethodChoices." +
-                        personalInfoSaveMethod.key,
-                      )
-                    }}
-                  </div>
+                  {{
+                    $t(
+                      "editRestaurant.personalInfoSaveMethodChoices." +
+                      personalInfoSaveMethod.key,
+                    )
+                  }}
                 </o-radio>
               </div>
             </div>
