@@ -188,6 +188,7 @@ const data = {
     taxExcluded: "外税",
     about: "飲食店情報",
     required: "必須",
+    personalInfo: "お客様の名前の保存方法",
     paymentMethods: "現地決済方法",
     timeToPickup: "受け渡し予定時刻設定",
     preparationTime: "受け渡し準備時間",
@@ -224,6 +225,11 @@ const data = {
     withinfive: "5時間以内",
     withinaday: "24時間以内",
     withinFiveDays: "6日以内の時間を指定してください",
+    personalInfoSaveMethodChoices: {
+      notRequired: "保存しない",
+      optional: "任意で入力されたお名前を保存する",
+      required: "入力/保存を必須にする",
+    },
     paymentMethodChoices: {
       cache: "現金",
       suica: "交通系電子マネー(Suicaなど)",
