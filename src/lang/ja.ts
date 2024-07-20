@@ -188,7 +188,7 @@ const data = {
     taxExcluded: "外税",
     about: "飲食店情報",
     required: "必須",
-    personalInfo: "お客様氏名の保存方法",
+    personalInfo: "お客様名前の保存方法",
     paymentMethods: "現地決済方法",
     timeToPickup: "受け渡し予定時刻設定",
     preparationTime: "受け渡し準備時間",
