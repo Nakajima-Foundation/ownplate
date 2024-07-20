@@ -655,9 +655,7 @@
             <div class="rounded-lg bg-black bg-opacity-5 p-4">
               <div v-for="(personalInfoSaveMethod, k) in personalInfoSaveMethods" :key="k">
                 <o-radio
-                  v-model="
-                    (editShopInfo.personalInfoSaveMethods || {})[personalInfoSaveMethod.key]
-                  "
+                  v-model="editShopInfo.personalInfo"
                 >
                   <div class="text-sm font-bold">
                     {{
