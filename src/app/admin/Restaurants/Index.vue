@@ -659,8 +659,8 @@
               >
                 <o-radio
                   v-model="editShopInfo.personalInfo"
-                  :native-value="k"
-                  :variant="k"
+                  :native-value="personalInfoSaveMethod.key"
+                  :variant="personalInfoSaveMethod.key"
                   >
                   {{
                     $t(
