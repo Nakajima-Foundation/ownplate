@@ -189,6 +189,29 @@
             />
           </div>
 
+          <!-- User name -->
+          <template v-if="shopInfo && shopInfo.personalInfo === 'required'">
+            <div
+              class="mt-2"
+              :class="
+                userNameError ? 'rounded border-4 border-red-700 p-2' : ''
+              "
+            >
+              <div class="text-xl font-bold text-black text-opacity-30">
+                {{ $t("order.requiredUserName") }}
+              </div>
+
+              <div class="mt-2 rounded-lg bg-white p-4 shadow">
+                <o-input
+                  v-model="userName"
+                  :placeholder="$t('order.enterUserName')"
+                  class="w-full"
+                ></o-input>
+              </div>
+            </div>
+          </template>
+          
+          
           <!-- Payment -->
           <div class="mt-2">
             <div class="text-xl font-bold text-black text-opacity-30">
@@ -238,6 +261,7 @@
                     notAvailable ||
                     notSubmitAddress ||
                     userMessageError ||
+                    userNameError ||
                     stripeSmallPayment ||
                     isPaying ||
                     isPlacing
@@ -287,6 +311,7 @@
                     notAvailable ||
                     notSubmitAddress ||
                     userMessageError ||
+                    userNameError ||
                     isPaying ||
                     isPlacing
                   "
@@ -458,7 +483,8 @@ export default defineComponent({
 
     const cardState = ref({});
     const memo = ref("");
-
+    const userName = ref(props.orderInfo.name);
+    
     let tip = 0;
 
     // ref for refs
@@ -518,6 +544,10 @@ export default defineComponent({
     });
     const userMessageError = computed(() => {
       return props.shopInfo.acceptUserMessage && memo.value.length > 500;
+    });
+
+    const userNameError = computed(() => {
+      return props.shopInfo.personalInfo === 'required' && (userName.value === "" || userName.value.length < 3);
     });
 
     const shopPaymentMethods = computed(() => {
@@ -610,6 +640,9 @@ export default defineComponent({
       if (userMessageError.value) {
         return;
       }
+      if (userNameError.value) {
+        return;
+      }
       if (requireAddress.value) {
         if (ecCustomerRef.value && ecCustomerRef.value.hasEcError) {
           return;
@@ -676,6 +709,7 @@ export default defineComponent({
       isPlacing,
       cardState,
       memo,
+      userName,
 
       // refs
       ecCustomerRef,
@@ -694,6 +728,7 @@ export default defineComponent({
       requireAddress,
       notSubmitAddress,
       userMessageError,
+      userNameError,
       hasPaymentMethods,
 
       selectedPromotion,
