@@ -674,6 +674,7 @@ export default defineComponent({
           promotionId,
           payStripe,
           memo: memo.value || "",
+          userName: userName.value || "",
           customerInfo: ecCustomerRef.value
             ? ecCustomerRef.value.customerInfo || {}
             : {},

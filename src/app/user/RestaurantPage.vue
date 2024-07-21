@@ -626,7 +626,7 @@ export default defineComponent({
         return user.value.displayName;
       })();
 
-      const isStoreUserName = props.shopInfo.personalInfo === "notRequired";
+      const isStoreUserName = props.shopInfo.personalInfo !== "notRequired";
       const order_data = {
         order: orders.value,
         options: convOptionArray2Obj(postOptions.value),
