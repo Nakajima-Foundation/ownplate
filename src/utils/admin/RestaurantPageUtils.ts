@@ -133,6 +133,7 @@ export const defaultShopInfo = {
   publicFlag: false,
   temporaryClosure: [],
   paymentMethods: {},
+  personalInfo: "optional",
 };
 
 type ShopInfoBussinessTimeError = { [key: string]: string[][] };
