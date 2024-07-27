@@ -174,7 +174,7 @@
     - ピーク時を避ける商品
       - 商品名: 指定なし
       - 販売除外日 / 時間
-        - 除外時間: 11:30 AM〜13:30 PM
+        - 除外時間: 11:30 AM〜13:30 PM  
 				![](./images/setting_sales-exlusion_lunchtime.png)
 
 - 特記事項
