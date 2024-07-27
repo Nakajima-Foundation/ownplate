@@ -175,7 +175,7 @@
       - 商品名: 指定なし
       - 販売除外日 / 時間
         - 除外時間: 11:30 AM〜13:30 PM
-				![](./images/setting_sales_only_weekday.png)
+				![](./images/setting_sales-exlusion_lunchtime.png)
 
 - 特記事項
   - 消費者からの見え方（商品選ぶ時）
