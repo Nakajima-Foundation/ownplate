@@ -32,12 +32,12 @@ import {
   limit,
 } from "firebase/firestore";
 
-import { useSuper } from "@/utils/utils";
+import { useSuper, defaultTitle } from "@/utils/utils";
 
 export default defineComponent({
   metaInfo() {
     return {
-      title: [this.defaultTitle, "Super All Log"].join(" / "),
+      title: [defaultTitle, "Super All Log"].join(" / "),
     };
   },
   components: {

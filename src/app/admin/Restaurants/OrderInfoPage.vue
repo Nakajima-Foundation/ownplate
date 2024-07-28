@@ -569,15 +569,13 @@ import {
   stripeRegion,
   convOrderStateForText,
   isDev,
-} from "@/utils/utils";
-
-import {
   isEmpty,
   isNull,
   getShopOwner,
   getOrderItems,
   arrayChunk,
   array2obj,
+  defaultTitle,
 } from "@/utils/utils";
 
 import { useStore } from "vuex";
@@ -608,12 +606,10 @@ export default defineComponent({
   metaInfo() {
     return {
       title: this.shopInfo.restaurantName
-        ? [
-            "Admin Order Info",
-            this.shopInfo.restaurantName,
-            this.defaultTitle,
-          ].join(" / ")
-        : this.defaultTitle,
+        ? ["Admin Order Info", this.shopInfo.restaurantName, defaultTitle].join(
+            " / ",
+          )
+        : defaultTitle,
     };
   },
   // if user is not signined, render login

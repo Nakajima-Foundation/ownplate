@@ -735,11 +735,12 @@ import {
   notFoundResponse,
   smallImageErrorHandler,
   displayOption,
+  defaultTitle,
 } from "@/utils/utils";
 
 import { uploadFile } from "@/lib/firebase/storage";
 
-import { getNewItemData } from "@/models/menu";
+import { getNewItemData, MenuData } from "@/models/menu";
 import { checkShopOwner } from "@/utils/userPermission";
 
 import { useStore } from "vuex";
@@ -747,7 +748,6 @@ import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
-import { MenuData } from "@/models/menu";
 
 export default defineComponent({
   name: "MenuItemPage",
@@ -759,9 +759,9 @@ export default defineComponent({
               "Admin Menu Item",
               this.menuInfo.itemName,
               this.shopInfo.restaurantName,
-              this.defaultTitle,
+              defaultTitle,
             ].join(" / ")
-          : this.defaultTitle,
+          : defaultTitle,
     };
   },
 

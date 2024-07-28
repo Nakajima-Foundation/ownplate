@@ -49,6 +49,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, watch, computed } from "vue";
+import { defaultTitle } from "@/utils/utils";
 
 export default defineComponent({
   props: {
@@ -63,7 +64,7 @@ export default defineComponent({
   },
   metaInfo() {
     return {
-      title: [this.defaultTitle, "Admin Edit Category"].join(" / "),
+      title: [defaultTitle, "Admin Edit Category"].join(" / "),
     };
   },
   emits: ["dismissed", "updated"],

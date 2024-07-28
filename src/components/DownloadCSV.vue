@@ -11,6 +11,18 @@ import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   props: {
+    data: {
+      type: Object,
+      required: true,
+    },
+    fields: {
+      type: Object,
+      required: true,
+    },
+    fieldNames: {
+      type: Object,
+      required: true,
+    },
     fileName: {
       type: String,
       required: true,

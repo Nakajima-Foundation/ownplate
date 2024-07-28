@@ -80,7 +80,7 @@ export const shareUrlAdmin = (props: { shopInfo: RestaurantInfoData }) => {
 };
 export const previewLink = (props: { shopInfo: RestaurantInfoData }) => {
   return computed(() => {
-    return "/r/" + props.shopInfo.restaurantId;
+    return "/r/" + props.shopInfo?.restaurantId;
   });
 };
 

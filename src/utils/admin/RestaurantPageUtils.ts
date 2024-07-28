@@ -1,10 +1,10 @@
-import { serverTimestamp } from "firebase/firestore";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
-import { isNull } from "@/utils/utils";
+import { isNull, cleanObject } from "@/utils/utils";
 import { reservationTheDayBefore, daysOfWeek } from "@/config/constant";
 
 import { db } from "@/lib/firebase/firebase9";
 import {
+  serverTimestamp,
   doc,
   collection,
   query,
@@ -15,8 +15,6 @@ import {
   getDocs,
   getDoc,
 } from "firebase/firestore";
-
-import { cleanObject } from "@/utils/utils";
 
 export const getEditShopInfo = (shopInfo: RestaurantInfoData) => {
   const restaurantData = {
@@ -133,6 +131,7 @@ export const defaultShopInfo = {
   publicFlag: false,
   temporaryClosure: [],
   paymentMethods: {},
+  personalInfo: "optional",
 };
 
 type ShopInfoBussinessTimeError = { [key: string]: string[][] };

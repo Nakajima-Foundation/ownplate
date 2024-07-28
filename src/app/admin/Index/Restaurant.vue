@@ -434,9 +434,7 @@ import {
 
 import { useStore } from "vuex";
 
-import { resizedProfileImage } from "@/utils/utils";
-
-import { isDev } from "@/utils/utils";
+import { resizedProfileImage, isDev } from "@/utils/utils";
 
 export default defineComponent({
   name: "RestaurantEditCard",

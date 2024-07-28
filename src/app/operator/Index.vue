@@ -15,12 +15,12 @@ import { defineComponent, onMounted, watch } from "vue";
 
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import { useIsNotSuperAdmin } from "@/utils/utils";
+import { useIsNotSuperAdmin, defaultTitle } from "@/utils/utils";
 
 export default defineComponent({
   metaInfo() {
     return {
-      title: [this.defaultTitle, "operator index"].join(" / "),
+      title: [defaultTitle, "operator index"].join(" / "),
     };
   },
   setup() {

@@ -117,7 +117,7 @@ const multiple = utils.stripeRegion.multiple; // 100 for USD, 1 for JPY
 export const place = async (db, data: orderPlacedData, context: functions.https.CallableContext | Context) => {
   const customerUid = utils.validate_customer_auth(context);
 
-  const { restaurantId, orderId, tip, timeToPickup, memo, customerInfo, payStripe } = data;
+  const { restaurantId, orderId, tip, timeToPickup, memo, userName, customerInfo, payStripe } = data;
   // const { promotionId, affiliateId } = data;
   const { promotionId } = data;
   utils.required_params({ restaurantId, orderId }); // tip is optinoal
@@ -269,7 +269,10 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
         timePickupForQuery: timePlaced,
         memo: memo || "",
         isEC: restaurantData.isEC || false,
-      };
+      } as any;
+      if (userName) {
+        updateData.name = userName;
+      }
       if (enableStripe) {
         const update = {
           ...updateData,

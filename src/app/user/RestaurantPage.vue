@@ -315,6 +315,7 @@ import {
   scrollToElementById,
   useUserData,
   useBasePath,
+  defaultTitle,
 } from "@/utils/utils";
 
 import { imageUtils } from "@/utils/RestaurantUtils";
@@ -384,7 +385,7 @@ export default defineComponent({
           ? document.title
           : [
               this.shopInfo?.restaurantName || "",
-              ownPlateConfig.restaurantPageTitle || this.defaultTitle,
+              ownPlateConfig.restaurantPageTitle || defaultTitle,
             ].join(" / "),
     };
   },
@@ -626,7 +627,7 @@ export default defineComponent({
         return user.value.displayName;
       })();
 
-      const isStoreUserName = props.shopInfo.personalInfo === "not_required";
+      const isStoreUserName = props.shopInfo.personalInfo !== "notRequired";
       const order_data = {
         order: orders.value,
         options: convOptionArray2Obj(postOptions.value),
@@ -641,7 +642,7 @@ export default defineComponent({
           (props.shopInfo.enableDelivery && isDelivery.value) || false, // true, // for test
         isPickup: false,
         isLiff: isLiffUser.value,
-        phoneNumber: user.value.phoneNumber, 
+        phoneNumber: user.value.phoneNumber,
         name: isStoreUserName ? name : "",
         updatedAt: serverTimestamp(),
         timeCreated: serverTimestamp(),
@@ -826,6 +827,15 @@ export default defineComponent({
       });
     });
 
+    const {
+      imagePopup,
+      openImage,
+      closeImage,
+      categoryPopup,
+      openCategory,
+      closeCategory,
+    } = imageUtils();
+
     return {
       itemLists,
       titleLists: filteredTitleLists,
@@ -861,7 +871,13 @@ export default defineComponent({
       isCheckingOut,
       noAvailableTime,
 
-      ...imageUtils(),
+      // imageUtils
+      imagePopup,
+      openImage,
+      closeImage,
+      categoryPopup,
+      openCategory,
+      closeCategory,
 
       isShowCart,
       cartButton,

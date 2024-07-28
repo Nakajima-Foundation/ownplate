@@ -266,6 +266,12 @@ export const minimumCookTimeChoices = [
   { messageKey: "editRestaurant.minimumCookTime.sixDays", value: 60 * 24 * 6 },
 ];
 
+export const personalInfoSaveMethods = [
+  { key: "notRequired" },
+  { key: "optional" },
+  { key: "required" },
+];
+
 export const paymentMethods = [
   { key: "cache" },
   { key: "suica" },

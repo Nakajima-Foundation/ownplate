@@ -651,20 +651,24 @@
           <div class="mt-4">
             <div class="pb-2 text-sm font-bold cursor-pointer">
               {{ $t("editRestaurant.personalInfo") }}
-              <i class="material-icons">
-                <span class="text-sm">help</span>
-              </i>
             </div>
-
             <div class="rounded-lg bg-black bg-opacity-5 p-4">
-              <div class="mt-2">
+              <div
+                v-for="(personalInfoSaveMethod, k) in personalInfoSaveMethods"
+                :key="k"
+              >
                 <o-radio
-                  v-for="choice in personalInfoSelect"
                   v-model="editShopInfo.personalInfo"
-                  :native-value="choice.value"
-                  :key="choice.value"
-                  >{{ $t(choice.messageKey) }}</o-radio
+                  :native-value="personalInfoSaveMethod.key"
+                  :variant="personalInfoSaveMethod.key"
                 >
+                  {{
+                    $t(
+                      "editRestaurant.personalInfoSaveMethodChoices." +
+                        personalInfoSaveMethod.key,
+                    )
+                  }}
+                </o-radio>
               </div>
             </div>
           </div>
@@ -1166,6 +1170,7 @@ import {
   notFoundResponse,
   num2time,
   useRestaurantId,
+  defaultTitle,
 } from "@/utils/utils";
 import { uploadFile } from "@/lib/firebase/storage";
 
@@ -1174,6 +1179,7 @@ import {
   daysOfWeek,
   reservationTheDayBefore,
   minimumCookTimeChoices,
+  personalInfoSaveMethods,
   paymentMethods,
 } from "@/config/constant";
 
@@ -1200,12 +1206,10 @@ export default defineComponent({
   metaInfo() {
     return {
       title: this.shopInfo.restaurantName
-        ? [
-            "Admin Restaurant",
-            this.shopInfo.restaurantName,
-            this.defaultTitle,
-          ].join(" / ")
-        : this.defaultTitle,
+        ? ["Admin Restaurant", this.shopInfo.restaurantName, defaultTitle].join(
+            " / ",
+          )
+        : defaultTitle,
     };
   },
   props: {
@@ -1528,17 +1532,11 @@ export default defineComponent({
       });
     };
 
-    const personalInfoSelect = [
-      { messageKey: "personalInfoSelect.not_required", value: "not_required" },
-      { messageKey: "personalInfoSelect.optional", value: "optional" },
-      { messageKey: "personalInfoSelect.required", value: "required" },
-    ];
     return {
       maxDate,
       now,
       reservationTheDayBefore,
       minimumCookTimeChoices,
-      personalInfoSelect,
       taxRates,
       taxRateKeys,
       region,
@@ -1582,6 +1580,7 @@ export default defineComponent({
       gmapClick,
       gMap,
 
+      personalInfoSaveMethods,
       paymentMethods,
       openTips,
       restaurantId,

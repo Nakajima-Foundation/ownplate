@@ -29,13 +29,13 @@ import {
   limit,
 } from "firebase/firestore";
 
-import { useSuper } from "@/utils/utils";
+import { useSuper, defaultTitle } from "@/utils/utils";
 import moment from "moment-timezone";
 
 export default defineComponent({
   metaInfo() {
     return {
-      title: [this.defaultTitle, "Super All Phone Logs"].join(" / "),
+      title: [defaultTitle, "Super All Phone Logs"].join(" / "),
     };
   },
   components: {
