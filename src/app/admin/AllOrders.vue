@@ -104,15 +104,14 @@ import {
 import { order_status, order_status_keys } from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
 import { revenueCSVHeader } from "@/utils/reportUtils";
-import { defaultTitle } from "@/utils/utils";
-import { order2ReportData } from "@/models/orderInfo";
+import { order2ReportData, OrderInfoData } from "@/models/orderInfo";
 import {
+  defaultTitle,
   arrayOrNumSum,
   useAdminUids,
   notFoundResponse,
   orderTypeKey,
 } from "@/utils/utils";
-import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import DownloadCsv from "@/components/DownloadCSV.vue";

@@ -116,7 +116,7 @@ import DownloadCsv from "@/components/DownloadCSV.vue";
 import DownloadMenu from "@/app/super/DownloadCSV.vue";
 
 import { useI18n } from "vue-i18n";
-import { getBackUrl, superPermissionCheck, doc2data } from "@/utils/utils";
+import { getBackUrl, superPermissionCheck, doc2data, defaultTitle } from "@/utils/utils";
 import moment from "moment-timezone";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
@@ -133,7 +133,7 @@ import {
 export default defineComponent({
   metaInfo() {
     return {
-      title: [this.defaultTitle, "Super All Restaurants"].join(" / "),
+      title: [defaultTitle, "Super All Restaurants"].join(" / "),
     };
   },
   components: {

@@ -170,12 +170,11 @@
 import { defineComponent, ref, watch, computed } from "vue";
 import { useStore } from "vuex";
 import isEmail from "validator/lib/isEmail";
-import { db } from "@/lib/firebase/firebase9";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { partners } from "@/config/constant";
 
 import { useIsLocaleJapan, useUserData, defaultTitle } from "@/utils/utils";
-import { auth } from "@/lib/firebase/firebase9";
+import { db, auth } from "@/lib/firebase/firebase9";
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,

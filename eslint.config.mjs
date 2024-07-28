@@ -59,7 +59,7 @@ export default [
       "vue/v-on-event-hyphenation": "off",
       "accessor-pairs": "error",
 
-      "no-duplicate-imports": "warn",
+      "no-duplicate-imports": "error",
       
       // "no-type-assertion/no-type-assertion": "warn",
       "no-unreachable": "error",
