@@ -96,7 +96,7 @@ import {
 } from "@/utils/utils";
 import {
   nameOfOrder,
-} "@/utils/strings";
+} from "@/utils/strings";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";

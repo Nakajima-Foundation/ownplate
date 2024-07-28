@@ -64,7 +64,23 @@ export default [
       // "no-type-assertion/no-type-assertion": "warn",
       "no-unreachable": "error",
       'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-      'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off'
+      'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+
+      "vue/require-explicit-emits": "warn",
+      "vue/no-unused-properties": "warn",
+      "@typescript-eslint/no-shadow": "warn",
+      "no-eq-null": "warn",
+      "no-use-before-define": "warn",
+      "no-empty-function": "warn",
+      "no-negated-condition": "warn",
+      "no-duplicate-imports": "warn",
+      "no-plusplus": ["warn", { "allowForLoopAfterthoughts": true }],
+      "no-useless-return": "warn",
+      "array-callback-return": "warn",
+      "require-await": "warn",
+      "eqeqeq": "warn",
+      "init-declarations": "warn",
+
       
     },
   },
