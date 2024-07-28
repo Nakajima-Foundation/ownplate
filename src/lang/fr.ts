@@ -595,6 +595,7 @@ const data = {
     foodTax: "Taxe alimentaire",
     inclusiveTax: "Taxe de vente (compris)",
     total: "Total",
+    requiredUserName: "Nom (Obligatoire)",
     yourPayment: "Votre Payment",
     details: "Details",
     print: "Print",
