@@ -641,6 +641,7 @@ const data = {
     menuPrice: "売価",
     taxRate: "税率",
     tax: "税額",
+    requiredUserName: "お名前（必須）",
     yourPayment: "お支払い",
     details: "明細",
     print: "印刷",
