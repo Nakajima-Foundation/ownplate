@@ -101,6 +101,7 @@ export default defineComponent({
   setup() {
     const notFound = ref(null);
     const printerConfig = ref();
+    const ipaddress = ref(""); // memo not implemented
 
     const restaurantId = useRestaurantId();
     const restaurantRef = doc(
@@ -138,6 +139,8 @@ export default defineComponent({
 
       reset,
       restaurantId,
+
+      ipaddress,
     };
   },
 });
