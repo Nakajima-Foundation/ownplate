@@ -642,6 +642,7 @@ const data = {
     taxRate: "税率",
     tax: "税額",
     requiredUserName: "お名前（必須）",
+    enterUserName: "お名前を入力してください",
     yourPayment: "お支払い",
     details: "明細",
     print: "印刷",
