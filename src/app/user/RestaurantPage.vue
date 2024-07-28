@@ -315,6 +315,7 @@ import {
   scrollToElementById,
   useUserData,
   useBasePath,
+  defaultTitle,
 } from "@/utils/utils";
 
 import { imageUtils } from "@/utils/RestaurantUtils";
@@ -384,7 +385,7 @@ export default defineComponent({
           ? document.title
           : [
               this.shopInfo?.restaurantName || "",
-              ownPlateConfig.restaurantPageTitle || this.defaultTitle,
+              ownPlateConfig.restaurantPageTitle || defaultTitle,
             ].join(" / "),
     };
   },
