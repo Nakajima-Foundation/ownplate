@@ -826,6 +826,17 @@ export default defineComponent({
       });
     });
 
+    const {
+      imagePopup,
+      openImage,
+      closeImage,
+      categoryPopup,
+      openCategory,
+      closeCategory,
+    } = imageUtils();
+
+
+    
     return {
       itemLists,
       titleLists: filteredTitleLists,
@@ -861,7 +872,13 @@ export default defineComponent({
       isCheckingOut,
       noAvailableTime,
 
-      ...imageUtils(),
+      // imageUtils
+      imagePopup,
+      openImage,
+      closeImage,
+      categoryPopup,
+      openCategory,
+      closeCategory,
 
       isShowCart,
       cartButton,

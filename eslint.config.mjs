@@ -50,6 +50,7 @@ export default [
       "vue/require-default-prop": "off",
       "vue/require-prop-types": "error",
       "vue/no-mutating-props": "off", // warn
+      "vue/no-undef-properties": "warn",
       "no-undef": "off", // warn TODO
 
       "no-irregular-whitespace": "off", 
