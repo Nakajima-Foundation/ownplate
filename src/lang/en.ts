@@ -632,6 +632,8 @@ const data = {
     menuPrice: "Price",
     taxRate: "Tax Rate",
     tax: "Tax",
+    requiredUserName: "Name (Required)",
+    enterUserName: "Please enter your name",
     yourPayment: "Your Payment",
     details: "Details",
     print: "Print",
