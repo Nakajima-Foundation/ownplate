@@ -5,7 +5,6 @@ import router from "@/lib/router";
 import store from "@/lib/store";
 
 // plugins
-import mixin from "@/lib/mixin";
 import i18n from "@/lib/vue-i18n";
 
 // library
@@ -41,9 +40,6 @@ app.use(VueGoogleMaps, {
     key: GAPIKey,
   },
 });
-
-// mixin
-app.mixin(mixin);
 
 app.use(VueSocialSharing);
 app.use(Oruga, bulmaConfig);
