@@ -273,6 +273,7 @@ export default defineComponent({
       openModal,
       loading,
       friendUrl,
+      user,
     };
   },
 });
