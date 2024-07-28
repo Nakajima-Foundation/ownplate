@@ -110,14 +110,13 @@
 // TODO: 通知の状況もわかるようにする
 //
 import { defineComponent, ref, computed } from "vue";
-import { doc2data } from "@/utils/utils";
 
 import BackButton from "@/components/BackButton.vue";
 import DownloadCsv from "@/components/DownloadCSV.vue";
 import DownloadMenu from "@/app/super/DownloadCSV.vue";
 
 import { useI18n } from "vue-i18n";
-import { getBackUrl, superPermissionCheck } from "@/utils/utils";
+import { getBackUrl, superPermissionCheck, doc2data } from "@/utils/utils";
 import moment from "moment-timezone";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 

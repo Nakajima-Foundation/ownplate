@@ -19,7 +19,9 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const { availableLunch, availableDinner } = isAvailableLunchOrDinner(props.item);
+    const { availableLunch, availableDinner } = isAvailableLunchOrDinner(
+      props.item,
+    );
     return {
       availableLunch,
       availableDinner,

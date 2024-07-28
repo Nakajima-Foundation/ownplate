@@ -33,10 +33,7 @@ import { defineComponent } from "vue";
 import MarkdownIt from "markdown-it";
 import newsList from "@/app/admin/News/data";
 
-import {
-  defaultTitle,
-} from "@/utils/utils";
-
+import { defaultTitle } from "@/utils/utils";
 
 export default defineComponent({
   metaInfo() {

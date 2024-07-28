@@ -661,7 +661,7 @@
                   v-model="editShopInfo.personalInfo"
                   :native-value="personalInfoSaveMethod.key"
                   :variant="personalInfoSaveMethod.key"
-                  >
+                >
                   {{
                     $t(
                       "editRestaurant.personalInfoSaveMethodChoices." +
@@ -1206,11 +1206,9 @@ export default defineComponent({
   metaInfo() {
     return {
       title: this.shopInfo.restaurantName
-        ? [
-            "Admin Restaurant",
-            this.shopInfo.restaurantName,
-            defaultTitle,
-          ].join(" / ")
+        ? ["Admin Restaurant", this.shopInfo.restaurantName, defaultTitle].join(
+            " / ",
+          )
         : defaultTitle,
     };
   },

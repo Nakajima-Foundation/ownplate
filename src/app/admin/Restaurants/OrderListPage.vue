@@ -114,11 +114,9 @@ export default defineComponent({
   metaInfo() {
     return {
       title: this.shopInfo.restaurantName
-        ? [
-            "Admin Order List",
-            this.shopInfo.restaurantName,
-            defaultTitle,
-          ].join(" / ")
+        ? ["Admin Order List", this.shopInfo.restaurantName, defaultTitle].join(
+            " / ",
+          )
         : defaultTitle,
     };
   },

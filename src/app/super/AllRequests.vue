@@ -54,7 +54,13 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { doc2data, array2obj, arrayChunk } from "@/utils/utils";
+import {
+  doc2data,
+  array2obj,
+  arrayChunk,
+  defaultTitle,
+  useSuper,
+} from "@/utils/utils";
 
 import BackButton from "@/components/BackButton.vue";
 
@@ -70,12 +76,11 @@ import {
   getDocs,
   documentId,
 } from "firebase/firestore";
-import { useSuper } from "@/utils/utils";
 
 export default defineComponent({
   metaInfo() {
     return {
-      title: [this.defaultTitle, "Super All Requests"].join(" / "),
+      title: [defaultTitle, "Super All Requests"].join(" / "),
     };
   },
   components: {

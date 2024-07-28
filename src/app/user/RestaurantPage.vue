@@ -836,8 +836,6 @@ export default defineComponent({
       closeCategory,
     } = imageUtils();
 
-
-    
     return {
       itemLists,
       titleLists: filteredTitleLists,

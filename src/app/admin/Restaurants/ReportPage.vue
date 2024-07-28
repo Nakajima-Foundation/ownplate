@@ -227,8 +227,7 @@ import {
   defaultTitle,
 } from "@/utils/utils";
 
-import { order2ReportData } from "@/models/orderInfo";
-import { OrderInfoData } from "@/models/orderInfo";
+import { order2ReportData, OrderInfoData } from "@/models/orderInfo";
 
 import { checkShopOwner } from "@/utils/userPermission";
 import { useI18n } from "vue-i18n";
@@ -250,11 +249,9 @@ export default defineComponent({
   metaInfo() {
     return {
       title: this.shopInfo.restaurantName
-        ? [
-            "Admin Report",
-            this.shopInfo.restaurantName,
-            defaultTitle,
-          ].join(" / ")
+        ? ["Admin Report", this.shopInfo.restaurantName, defaultTitle].join(
+            " / ",
+          )
         : defaultTitle,
     };
   },

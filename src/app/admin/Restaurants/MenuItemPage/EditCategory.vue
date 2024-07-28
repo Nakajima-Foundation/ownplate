@@ -49,9 +49,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, watch, computed } from "vue";
-import {
-  defaultTitle,
-} from "@/utils/utils";
+import { defaultTitle } from "@/utils/utils";
 
 export default defineComponent({
   props: {

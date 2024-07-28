@@ -569,9 +569,6 @@ import {
   stripeRegion,
   convOrderStateForText,
   isDev,
-} from "@/utils/utils";
-
-import {
   isEmpty,
   isNull,
   getShopOwner,
@@ -609,11 +606,9 @@ export default defineComponent({
   metaInfo() {
     return {
       title: this.shopInfo.restaurantName
-        ? [
-            "Admin Order Info",
-            this.shopInfo.restaurantName,
-            defaultTitle,
-          ].join(" / ")
+        ? ["Admin Order Info", this.shopInfo.restaurantName, defaultTitle].join(
+            " / ",
+          )
         : defaultTitle,
     };
   },

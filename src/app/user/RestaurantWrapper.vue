@@ -18,11 +18,10 @@ import { defineComponent, ref, onUnmounted } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
 import { doc, onSnapshot, getDoc } from "firebase/firestore";
-import { routeMode, useUserData } from "@/utils/utils";
+import { routeMode, useUserData, useRestaurantId } from "@/utils/utils";
 
 import NotFound from "@/components/NotFound.vue";
 
-import { useRestaurantId } from "@/utils/utils";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { usePromotions } from "@/utils/promotion";
 

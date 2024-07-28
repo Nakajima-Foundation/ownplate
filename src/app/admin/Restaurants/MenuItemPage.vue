@@ -740,7 +740,7 @@ import {
 
 import { uploadFile } from "@/lib/firebase/storage";
 
-import { getNewItemData } from "@/models/menu";
+import { getNewItemData, MenuData } from "@/models/menu";
 import { checkShopOwner } from "@/utils/userPermission";
 
 import { useStore } from "vuex";
@@ -748,7 +748,6 @@ import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
-import { MenuData } from "@/models/menu";
 
 export default defineComponent({
   name: "MenuItemPage",

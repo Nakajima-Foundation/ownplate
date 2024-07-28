@@ -76,11 +76,11 @@ import {
   itemOptionCheckbox2options,
   getPriceWithTax,
   smallImageErrorHandler,
+  useRestaurantId,
 } from "@/utils/utils";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import Price from "@/components/Price.vue";
-import { useRestaurantId } from "@/utils/utils";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { MenuData } from "@/models/menu";

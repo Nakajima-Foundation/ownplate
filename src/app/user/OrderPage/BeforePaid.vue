@@ -210,8 +210,7 @@
               </div>
             </div>
           </template>
-          
-          
+
           <!-- Payment -->
           <div class="mt-2">
             <div class="text-xl font-bold text-black text-opacity-30">
@@ -484,7 +483,7 @@ export default defineComponent({
     const cardState = ref({});
     const memo = ref("");
     const userName = ref(props.orderInfo.name);
-    
+
     let tip = 0;
 
     // ref for refs
@@ -547,7 +546,10 @@ export default defineComponent({
     });
 
     const userNameError = computed(() => {
-      return props.shopInfo.personalInfo === 'required' && (userName.value === "" || userName.value.length < 3);
+      return (
+        props.shopInfo.personalInfo === "required" &&
+        (userName.value === "" || userName.value.length < 3)
+      );
     });
 
     const shopPaymentMethods = computed(() => {
