@@ -1211,7 +1211,7 @@ export default defineComponent({
             this.shopInfo.restaurantName,
             defaultTitle,
           ].join(" / ")
-        : this.defaultTitle,
+        : defaultTitle,
     };
   },
   props: {

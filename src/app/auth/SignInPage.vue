@@ -135,7 +135,7 @@
 import { defineComponent, ref, watch } from "vue";
 import { auth } from "@/lib/firebase/firebase9";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { useUserData } from "@/utils/utils";
+import { useUserData, defaultTitle } from "@/utils/utils";
 
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
@@ -144,7 +144,7 @@ export default defineComponent({
   name: "Signin",
   metaInfo() {
     return {
-      title: [this.defaultTitle, "Signin Admin"].join(" / "),
+      title: [defaultTitle, "Signin Admin"].join(" / "),
     };
   },
   setup() {

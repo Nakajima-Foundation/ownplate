@@ -735,6 +735,7 @@ import {
   notFoundResponse,
   smallImageErrorHandler,
   displayOption,
+  defaultTitle,
 } from "@/utils/utils";
 
 import { uploadFile } from "@/lib/firebase/storage";
@@ -759,9 +760,9 @@ export default defineComponent({
               "Admin Menu Item",
               this.menuInfo.itemName,
               this.shopInfo.restaurantName,
-              this.defaultTitle,
+              defaultTitle,
             ].join(" / ")
-          : this.defaultTitle,
+          : defaultTitle,
     };
   },
 

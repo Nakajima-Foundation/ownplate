@@ -124,7 +124,7 @@ import AdminHeader from "@/app/admin/AdminHeader.vue";
 import NotFound from "@/components/NotFound.vue";
 
 import { checkShopAccount } from "@/utils/userPermission";
-import { useAdminUids, notFoundResponse, useRestaurantId } from "@/utils/utils";
+import { useAdminUids, notFoundResponse, useRestaurantId, defaultTitle } from "@/utils/utils";
 import { usePickupTime } from "@/utils/pickup";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
@@ -142,9 +142,9 @@ export default defineComponent({
         ? [
             "Admin Order Suspend",
             this.shopInfo.restaurantName,
-            this.defaultTitle,
+            defaultTitle,
           ].join(" / ")
-        : this.defaultTitle,
+        : defaultTitle,
     };
   },
   props: {

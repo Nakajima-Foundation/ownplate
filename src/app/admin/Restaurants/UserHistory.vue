@@ -130,6 +130,7 @@ import {
   useAdminUids,
   useRestaurantId,
   resizedProfileImage,
+  defaultTitle,
 } from "@/utils/utils";
 
 import BackButton from "@/components/BackButton.vue";
@@ -162,9 +163,9 @@ export default defineComponent({
         ? [
             "Admin Order History",
             this.shopInfo.restaurantName,
-            this.defaultTitle,
+            defaultTitle,
           ].join(" / ")
-        : this.defaultTitle,
+        : defaultTitle,
     };
   },
   setup(props) {

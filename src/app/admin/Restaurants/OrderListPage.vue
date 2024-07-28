@@ -96,6 +96,7 @@ import {
   useAdminUids,
   notFoundResponse,
   useRestaurantId,
+  defaultTitle,
 } from "@/utils/utils";
 import { checkShopAccount } from "@/utils/userPermission";
 import { useAdminConfigToggle } from "@/utils/admin/Toggle";
@@ -116,9 +117,9 @@ export default defineComponent({
         ? [
             "Admin Order List",
             this.shopInfo.restaurantName,
-            this.defaultTitle,
+            defaultTitle,
           ].join(" / ")
-        : this.defaultTitle,
+        : defaultTitle,
     };
   },
   props: {

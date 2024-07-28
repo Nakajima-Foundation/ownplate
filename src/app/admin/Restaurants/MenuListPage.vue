@@ -150,7 +150,7 @@ import { useRouter, useRoute } from "vue-router";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
-import { sleep, scrollToElementById } from "@/utils/utils";
+import { sleep, scrollToElementById, defaultTitle } from "@/utils/utils";
 
 export default defineComponent({
   name: "MenuList",
@@ -177,9 +177,9 @@ export default defineComponent({
         ? [
             "Admin Menu List",
             this.shopInfo.restaurantName,
-            this.defaultTitle,
+            defaultTitle,
           ].join(" / ")
-        : this.defaultTitle,
+        : defaultTitle,
     };
   },
   setup(props) {

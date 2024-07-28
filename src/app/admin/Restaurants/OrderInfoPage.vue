@@ -578,6 +578,7 @@ import {
   getOrderItems,
   arrayChunk,
   array2obj,
+  defaultTitle,
 } from "@/utils/utils";
 
 import { useStore } from "vuex";
@@ -611,9 +612,9 @@ export default defineComponent({
         ? [
             "Admin Order Info",
             this.shopInfo.restaurantName,
-            this.defaultTitle,
+            defaultTitle,
           ].join(" / ")
-        : this.defaultTitle,
+        : defaultTitle,
     };
   },
   // if user is not signined, render login

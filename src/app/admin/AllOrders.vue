@@ -104,6 +104,7 @@ import {
 import { order_status, order_status_keys } from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
 import { revenueCSVHeader } from "@/utils/reportUtils";
+import { defaultTitle } from "@/utils/utils";
 import { order2ReportData } from "@/models/orderInfo";
 import {
   arrayOrNumSum,
@@ -131,7 +132,7 @@ export default defineComponent({
   },
   metaInfo() {
     return {
-      title: ["Admin All Order", this.defaultTitle].join(" / "),
+      title: ["Admin All Order", defaultTitle].join(" / "),
     };
   },
   setup() {

@@ -174,7 +174,7 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { partners } from "@/config/constant";
 
-import { useIsLocaleJapan, useUserData } from "@/utils/utils";
+import { useIsLocaleJapan, useUserData, defaultTitle } from "@/utils/utils";
 import { auth } from "@/lib/firebase/firebase9";
 import {
   createUserWithEmailAndPassword,
@@ -187,7 +187,7 @@ export default defineComponent({
   name: "Signup",
   metaInfo() {
     return {
-      title: [this.defaultTitle, "Signup"].join(" / "),
+      title: [defaultTitle, "Signup"].join(" / "),
     };
   },
   setup() {
