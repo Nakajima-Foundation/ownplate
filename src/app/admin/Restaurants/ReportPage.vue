@@ -224,6 +224,7 @@ import {
   notFoundResponse,
   orderTypeKey,
   resizedProfileImage,
+  defaultTitle,
 } from "@/utils/utils";
 
 import { order2ReportData } from "@/models/orderInfo";
@@ -252,7 +253,7 @@ export default defineComponent({
         ? [
             "Admin Report",
             this.shopInfo.restaurantName,
-            this.defaultTitle,
+            defaultTitle,
           ].join(" / ")
         : this.defaultTitle,
     };

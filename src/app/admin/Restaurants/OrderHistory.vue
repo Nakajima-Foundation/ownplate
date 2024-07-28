@@ -143,6 +143,7 @@ import {
   notFoundResponse,
   orderType,
   useRestaurantId,
+  defaultTitle,
 } from "@/utils/utils";
 import { checkShopAccount } from "@/utils/userPermission";
 
@@ -166,7 +167,7 @@ export default defineComponent({
         ? [
             "Admin Order History",
             this.shopInfo.restaurantName,
-            this.defaultTitle,
+            defaultTitle,
           ].join(" / ")
         : this.defaultTitle,
     };

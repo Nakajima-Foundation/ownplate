@@ -1170,6 +1170,7 @@ import {
   notFoundResponse,
   num2time,
   useRestaurantId,
+  defaultTitle,
 } from "@/utils/utils";
 import { uploadFile } from "@/lib/firebase/storage";
 
@@ -1208,7 +1209,7 @@ export default defineComponent({
         ? [
             "Admin Restaurant",
             this.shopInfo.restaurantName,
-            this.defaultTitle,
+            defaultTitle,
           ].join(" / ")
         : this.defaultTitle,
     };
