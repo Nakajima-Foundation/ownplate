@@ -116,7 +116,12 @@ import DownloadCsv from "@/components/DownloadCSV.vue";
 import DownloadMenu from "@/app/super/DownloadCSV.vue";
 
 import { useI18n } from "vue-i18n";
-import { getBackUrl, superPermissionCheck, doc2data, defaultTitle } from "@/utils/utils";
+import {
+  getBackUrl,
+  superPermissionCheck,
+  doc2data,
+  defaultTitle,
+} from "@/utils/utils";
 import moment from "moment-timezone";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
