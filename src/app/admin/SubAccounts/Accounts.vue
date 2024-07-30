@@ -108,8 +108,8 @@
                   (message.accepted === true
                     ? "accepted"
                     : message.accepted === false
-                    ? "denied"
-                    : "waiting"),
+                      ? "denied"
+                      : "waiting"),
               )
             }}/{{
               moment(message.createdAt.toDate()).format("YYYY/MM/DD HH:mm")

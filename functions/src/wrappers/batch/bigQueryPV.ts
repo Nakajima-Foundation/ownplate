@@ -10,7 +10,7 @@ export default functions
   .runWith({
     timeoutSeconds: 540,
     maxInstances: 5,
-    memory: "1GB" as "1GB",
+    memory: "1GB" as const,
   })
   .pubsub.schedule("0 5 * * *")
   .timeZone("Asia/Tokyo")

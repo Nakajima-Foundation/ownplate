@@ -165,11 +165,9 @@ import { defineComponent, ref, computed, PropType } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { regionalSetting, countObj } from "@/utils/utils";
+import { regionalSetting, countObj, useUserData } from "@/utils/utils";
 import { CustomerInfo } from "@/models/customer";
 import isEmail from "validator/lib/isEmail";
-
-import { useUserData } from "@/utils/utils";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { OrderInfoData } from "@/models/orderInfo";

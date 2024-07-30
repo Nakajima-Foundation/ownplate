@@ -39,7 +39,7 @@ export const connect = async (db: admin.firestore.Firestore, data: { code: strin
       },
       {
         merge: true,
-      }
+      },
     );
     await batch.commit();
     return { result: true };

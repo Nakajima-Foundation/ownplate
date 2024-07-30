@@ -78,7 +78,7 @@ export const get_stripe = () => {
   if (!STRIPE_SECRET_KEY) {
     throw new functions.https.HttpsError("invalid-argument", "The functions requires STRIPE_SECRET_KEY.");
   }
-  return new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2020-03-02" });
+  return new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2020-08-27" });
 };
 
 export const required_params = (params) => {
@@ -194,7 +194,7 @@ export const getMenuObj = async (refRestaurant, menuIds) => {
           }
         });
         return;
-      })
+      }),
     );
     return menuObj;
   } else {
@@ -203,7 +203,7 @@ export const getMenuObj = async (refRestaurant, menuIds) => {
       menuIds.map(async (id) => {
         const m = await refRestaurant.collection("menus").doc(id).get();
         menuObj[m.id] = m.data();
-      })
+      }),
     );
     return menuObj;
   }

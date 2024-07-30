@@ -180,12 +180,9 @@ export default defineComponent({
           const menuItem = (order.menuItems || {})[menuId] || {};
           const taxRate = menuItem.tax === "food" ? 8 : 10;
           Object.keys(orderItems).forEach((key) => {
-            // @ts-ignore
             const opt = Array.isArray(options[key] || [])
-              ? // @ts-ignore
-                options[key]
-              : // @ts-ignore
-                [options[key]];
+              ? options[key]
+              : [options[key]];
             try {
               items.push({
                 id: `${order.id}/${menuId}`,
@@ -277,7 +274,6 @@ export default defineComponent({
                   key,
                   order?.isDelivery ? "1" : "",
                 ),
-                // @ts-ignore
                 count: orderItems[key],
                 options: opt.filter((a: string) => String(a) !== "").join("/"),
                 memo: writeonFirstLine(index, key, order.memo),

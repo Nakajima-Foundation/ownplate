@@ -19,7 +19,7 @@ const getLiffConfig = async (db: admin.firestore.Firestore, liffIndexId: string)
 
 // eslint-disable-next-line
 export const liffAuthenticate = async (db: admin.firestore.Firestore, data: liffAuthenticateData, context: functions.https.CallableContext) => {
-  // eslint-disable-line
+   
 
   const { liffIndexId, token } = data;
   utils.required_params({ liffIndexId, token });
@@ -63,7 +63,7 @@ export const liffAuthenticate = async (db: admin.firestore.Firestore, data: liff
           lineChannelId: liffConfig.clientId,
           createdAt: admin.firestore.FieldValue.serverTimestamp(),
         },
-        { merge: true }
+        { merge: true },
       );
     }
     const customToken = await admin.auth().createCustomToken(userId);

@@ -44,9 +44,9 @@ describe("Order function", () => {
     };
     const ret = getSVG(restaurantData, orderData);
 
-    await writeFile(`./order.svg`, ret, () => {});
+    await writeFile("./order.svg", ret, () => {});
     const png = await convert(ret, { background: "white" });
-    await writeFile(`./order.png`, png, () => {});
+    await writeFile("./order.png", png, () => {});
     console.log(ret);
   });
 
@@ -55,10 +55,10 @@ describe("Order function", () => {
       "^^テストカフェ8080 デリバリーss\n" +
       "おもちかえり.com\n" +
       "\n" +
-      '^^^"#535"\n' +
+      "^^^\"#535\"\n" +
       "\n" +
-      '|受渡方法："テイクアウト"\n' +
-      '|受渡希望時間："2023/04/09 11:40"\n' +
+      "|受渡方法：\"テイクアウト\"\n" +
+      "|受渡希望時間：\"2023/04/09 11:40\"\n" +
       "\n" +
       "テスト太郎さん|\n" +
       "{w:*,4;b:line}\n" +
@@ -75,7 +75,7 @@ describe("Order function", () => {
       "-\n" +
       "^^合計 | ^^^¥2000\n" +
       "{w:auto; b:space}\n" +
-      '支払方法："現地払い"|\n' +
+      "支払方法：\"現地払い\"|\n" +
       "\n" +
       "\n";
     const svg = receiptline.transform(text, { encoding: "cp932" });

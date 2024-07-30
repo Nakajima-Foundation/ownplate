@@ -96,6 +96,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ["close"],
   setup(props, ctx) {
     const router = useRouter();
     const store = useStore();

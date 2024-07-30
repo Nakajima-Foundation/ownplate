@@ -40,7 +40,7 @@ export const getPaymentMethodData = async (db: admin.firestore.Firestore, restau
     },
     {
       stripeAccount: stripeAccount,
-    }
+    },
   );
   const paymentMethodData = {
     type: "card",
@@ -60,7 +60,7 @@ export const cancelStripe = async (
   transaction: admin.firestore.Transaction,
   stripeRef: admin.firestore.DocumentReference,
   restaurantOwnerUid: string,
-  orderId: string
+  orderId: string,
 ) => {
   const stripeRecord = await getStripeOrderRecord(transaction, stripeRef);
   const paymentIntentId = stripeRecord.paymentIntent.id;

@@ -49,6 +49,7 @@ import { defineComponent, ref, onMounted } from "vue";
 import { haversine_distance } from "@/utils/utils";
 
 export default defineComponent({
+  emits: ["updateHome"],
   props: {
     shopInfo: {
       type: Object,

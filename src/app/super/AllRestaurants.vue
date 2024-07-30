@@ -110,14 +110,18 @@
 // TODO: 通知の状況もわかるようにする
 //
 import { defineComponent, ref, computed } from "vue";
-import { doc2data } from "@/utils/utils";
 
 import BackButton from "@/components/BackButton.vue";
 import DownloadCsv from "@/components/DownloadCSV.vue";
 import DownloadMenu from "@/app/super/DownloadCSV.vue";
 
 import { useI18n } from "vue-i18n";
-import { getBackUrl, superPermissionCheck } from "@/utils/utils";
+import {
+  getBackUrl,
+  superPermissionCheck,
+  doc2data,
+  defaultTitle,
+} from "@/utils/utils";
 import moment from "moment-timezone";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
@@ -134,7 +138,7 @@ import {
 export default defineComponent({
   metaInfo() {
     return {
-      title: [this.defaultTitle, "Super All Restaurants"].join(" / "),
+      title: [defaultTitle, "Super All Restaurants"].join(" / "),
     };
   },
   components: {
@@ -164,7 +168,6 @@ export default defineComponent({
         const snapshot = await getDocs(myQuery);
         if (!snapshot.empty) {
           last.value = snapshot.docs[snapshot.docs.length - 1];
-          // @ts-ignore
           snapshot.docs.map(doc2data("resuatraut")).forEach((data) => {
             restaurants.value.push(data as RestaurantInfoData);
           });
@@ -199,7 +202,6 @@ export default defineComponent({
     const tableData = computed(() => {
       return restaurants.value.map((restaurant) => {
         return {
-          // @ts-ignore
           date: moment(restaurant.createdAt.toDate()).format("YYYY/MM/DD"),
           restaurantName: restaurant.restaurantName,
           state: restaurant.state,

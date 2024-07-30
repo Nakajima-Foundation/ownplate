@@ -41,7 +41,7 @@ describe("Order function", () => {
       {
         hoge1: 10,
       },
-      order.wasOrderCreated
+      order.wasOrderCreated,
     );
 
     const updatedOrder = await adminDB.doc(`restaurants/${restaurantId}/orders/${orderId}`).get();
@@ -213,7 +213,7 @@ describe("Order function", () => {
         orderId,
         timeToPickup: { seconds: 1613986197, nanoseconds: 0 },
       },
-      context
+      context,
     );
 
     placed.success.should.equal(true);
@@ -231,7 +231,7 @@ describe("Order function", () => {
         orderId: newOrderRes13.orderId,
         timeToPickup: { seconds: 1613986197, nanoseconds: 0 },
       },
-      context
+      context,
     );
     placed2.success.should.equal(true);
     await checkOrderTotal(2);
@@ -249,7 +249,7 @@ describe("Order function", () => {
         orderId: newOrderRes14.orderId,
         timeToPickup: { seconds: 1613986197, nanoseconds: 0 },
       },
-      context
+      context,
     );
     placed14.success.should.equal(true);
     await checkOrderTotal(4);

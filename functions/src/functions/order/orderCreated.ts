@@ -273,7 +273,7 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
             tax: accountingResult.alcohol_tax,
           },
         },
-      })
+      }),
     );
     return { result: true };
   } catch (e) {

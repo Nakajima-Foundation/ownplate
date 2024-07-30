@@ -5,7 +5,6 @@ import router from "@/lib/router";
 import store from "@/lib/store";
 
 // plugins
-import mixin from "@/lib/mixin";
 import i18n from "@/lib/vue-i18n";
 
 // library
@@ -31,19 +30,16 @@ import "@/assets/css/tailwind.css";
 import "@/assets/css/main.css";
 import "@oruga-ui/theme-bulma/dist/bulma.css";
 
-const app = createApp(App);
+const app = createApp(App as any); // TODO fix
 
 // components
-app.component(VueQrcode.name, VueQrcode);
+app.component(VueQrcode.name ?? "", VueQrcode);
 
 app.use(VueGoogleMaps, {
   load: {
     key: GAPIKey,
   },
 });
-
-// mixin
-app.mixin(mixin);
 
 app.use(VueSocialSharing);
 app.use(Oruga, bulmaConfig);
@@ -56,7 +52,7 @@ app.use(store);
 app.use(router);
 app.use(i18n);
 
-if (import.meta.env.NODE_ENV !== "development") {
+if (import.meta.env.PROD) {
   if (sentryDsn) {
     Sentry.init({
       app,

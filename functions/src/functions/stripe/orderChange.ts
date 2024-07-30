@@ -167,7 +167,7 @@ export const orderChange = async (db: admin.firestore.Firestore, data: orderChan
           {
             paymentIntent,
           },
-          { merge: true }
+          { merge: true },
         );
         return {};
       });

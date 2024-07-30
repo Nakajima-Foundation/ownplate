@@ -35,7 +35,7 @@ const getPaymentIntent = async (
   restaurantOwnerUid: string,
   order: any,
   transaction: admin.firestore.Transaction,
-  stripeRef: admin.firestore.DocumentReference
+  stripeRef: admin.firestore.DocumentReference,
 ) => {
   const stripe = utils.get_stripe();
   const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);

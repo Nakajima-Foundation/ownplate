@@ -30,12 +30,12 @@ import {
   DocumentData,
 } from "firebase/firestore";
 
-import { useSuper } from "@/utils/utils";
+import { useSuper, defaultTitle } from "@/utils/utils";
 
 export default defineComponent({
   metaInfo() {
     return {
-      title: [this.defaultTitle, "Super All Profiles"].join(" / "),
+      title: [defaultTitle, "Super All Profiles"].join(" / "),
     };
   },
   components: {

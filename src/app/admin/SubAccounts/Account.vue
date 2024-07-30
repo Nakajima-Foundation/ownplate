@@ -70,7 +70,7 @@ import {
   DocumentData,
 } from "firebase/firestore";
 
-import { doc2data, array2obj, useAdminUids } from "@/utils/utils";
+import { doc2data, array2obj, useAdminUids, defaultTitle } from "@/utils/utils";
 
 import { useRouter, useRoute } from "vue-router";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
@@ -81,7 +81,7 @@ export default defineComponent({
   },
   metaInfo() {
     return {
-      title: [this.defaultTitle, "Admin Subaccount Account"].join(" / "),
+      title: [defaultTitle, "Admin Subaccount Account"].join(" / "),
     };
   },
   setup() {

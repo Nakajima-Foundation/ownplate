@@ -48,7 +48,7 @@ export const operationLog = (context: functions.https.CallableContext, params: a
   functions.logger.log(message, log);
 };
 
-// eslint-disable-next-line
+ 
 export const ping = async (db: admin.firestore.Firestore, data: pingData, context: functions.https.CallableContext) => {
   const { operationType, restaurantId, pathName } = data;
   utils.validate_admin_auth(context);

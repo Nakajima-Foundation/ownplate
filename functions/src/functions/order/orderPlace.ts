@@ -33,7 +33,7 @@ export const updateOrderTotalDataAndUserLog = async (
   restaurantId: string,
   ownerUid: string,
   timePlaced,
-  positive: boolean
+  positive: boolean,
 ) => {
   const menuIds = Object.keys(order);
   console.log(utils.timezone);
@@ -54,7 +54,7 @@ export const updateOrderTotalDataAndUserLog = async (
       const path = `restaurants/${restaurantId}/menus/${menuId}/orderTotal/${date}`;
       totalRef[menuId] = db.doc(path);
       totals[menuId] = (await transaction.get(totalRef[menuId])).data();
-    })
+    }),
   );
 
   const userLogPath = `restaurants/${restaurantId}/userLog/${customerUid}`;
@@ -82,7 +82,7 @@ export const updateOrderTotalDataAndUserLog = async (
         };
         await transaction.update(totalRef[menuId], updateData);
       }
-    })
+    }),
   );
   if (!userLog) {
     const data = {
@@ -117,7 +117,7 @@ const multiple = utils.stripeRegion.multiple; // 100 for USD, 1 for JPY
 export const place = async (db, data: orderPlacedData, context: functions.https.CallableContext | Context) => {
   const customerUid = utils.validate_customer_auth(context);
 
-  const { restaurantId, orderId, tip, timeToPickup, memo, customerInfo, payStripe } = data;
+  const { restaurantId, orderId, tip, timeToPickup, memo, userName, customerInfo, payStripe } = data;
   // const { promotionId, affiliateId } = data;
   const { promotionId } = data;
   utils.required_params({ restaurantId, orderId }); // tip is optinoal
@@ -269,7 +269,10 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
         timePickupForQuery: timePlaced,
         memo: memo || "",
         isEC: restaurantData.isEC || false,
-      };
+      } as any;
+      if (userName) {
+        updateData.name = userName;
+      }
       if (enableStripe) {
         const update = {
           ...updateData,
@@ -285,7 +288,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
           {
             paymentIntent,
           },
-          { merge: true }
+          { merge: true },
         );
       } else {
         await transaction.update(orderRef, updateData);

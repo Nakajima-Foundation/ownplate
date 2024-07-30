@@ -180,6 +180,7 @@ const data = {
     taxExcluded: "Taxe Exclue",
     about: "A Propos",
     required: "Requis",
+    personalInfo: "Méthode de Sauvegarde des Noms des Clients",
     paymentMethods: "Payment methods",
     timeToPickup: "Temps de ramassage",
     preparationTime: "Temps de préparation du plat emporter",
@@ -216,6 +217,11 @@ const data = {
     withinfive: "Dans les 5 heures",
     withinaday: "Dans les 24 heures",
     withinFiveDays: "Within 6 days",
+    personalInfoSaveMethodChoices: {
+      notRequired: "Ne Pas Sauvegarder",
+      optional: "Sauvegarder le Nom S'il Est Fournit",
+      required: "Sauvegarder Comme Requis",
+    },
     paymentMethodChoices: {
       cache: "Cache",
       suica: "Suica/Pasmo",
@@ -589,6 +595,8 @@ const data = {
     foodTax: "Taxe alimentaire",
     inclusiveTax: "Taxe de vente (compris)",
     total: "Total",
+    requiredUserName: "Nom (Obligatoire)",
+    enterUserName: "Veuillez entrer votre nom",
     yourPayment: "Votre Payment",
     details: "Details",
     print: "Print",

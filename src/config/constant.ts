@@ -266,6 +266,12 @@ export const minimumCookTimeChoices = [
   { messageKey: "editRestaurant.minimumCookTime.sixDays", value: 60 * 24 * 6 },
 ];
 
+export const personalInfoSaveMethods = [
+  { key: "notRequired" },
+  { key: "optional" },
+  { key: "required" },
+];
+
 export const paymentMethods = [
   { key: "cache" },
   { key: "suica" },
@@ -485,7 +491,7 @@ export const promotionPaymentRestrictionsSelect = [
 ];
 
 export const twiml_neworder =
-  '<Response><Say language="ja-jp">こんにちは。わたしは、おもちかえりどっとこむです。あたらしいオーダーが入りました。かくにんをよろしくおねがいいたします。おもちかえりどっとこむでした。</Say></Response>';
+  "<Response><Say language=\"ja-jp\">こんにちは。わたしは、おもちかえりどっとこむです。あたらしいオーダーが入りました。かくにんをよろしくおねがいいたします。おもちかえりどっとこむでした。</Say></Response>";
 
 export const timeList = [
   null,

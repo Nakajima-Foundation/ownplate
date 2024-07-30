@@ -72,15 +72,15 @@ export const arrayChunk = <T>(arr: T[], size = 1) => {
   }, []);
 };
 
-export const shareUrlAdmin = (props: any) => {
+export const shareUrlAdmin = (props: { shopInfo: RestaurantInfoData }) => {
   const link = previewLink(props);
   return computed(() => {
     return location.protocol + "//" + location.host + link.value;
   });
 };
-export const previewLink = (props: any) => {
+export const previewLink = (props: { shopInfo: RestaurantInfoData }) => {
   return computed(() => {
-    return "/r/" + props.shopInfo.restaurantId;
+    return "/r/" + props.shopInfo?.restaurantId;
   });
 };
 

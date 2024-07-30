@@ -267,13 +267,12 @@
 import { defineComponent, computed, ref, onMounted, watch } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
-import { notFoundResponse } from "@/utils/utils";
 import NotFound from "@/components/NotFound.vue";
 
 import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
 
 import { useRouter } from "vue-router";
-import { getRestaurantId, useAdminUids } from "@/utils/utils";
+import { getRestaurantId, useAdminUids, notFoundResponse } from "@/utils/utils";
 
 export default defineComponent({
   components: {

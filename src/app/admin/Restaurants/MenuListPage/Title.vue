@@ -119,7 +119,15 @@ export default defineComponent({
       required: true,
     },
   },
-  emit: ["toEditMode", "positionUp", "positionDown", "forkItem", "deleteItem"],
+  emits: [
+    "toEditMode",
+    "positionUp",
+    "positionDown",
+    "forkItem",
+    "deleteItem",
+    "updateTitle",
+    "updateTitleLunchDinner",
+  ],
   setup(props, ctx) {
     const store = useStore();
 

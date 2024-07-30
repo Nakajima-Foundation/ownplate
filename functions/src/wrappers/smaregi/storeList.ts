@@ -10,7 +10,7 @@ export default functions
   .region("asia-northeast1")
   .runWith({
     maxInstances: 10,
-    memory: "1GB" as "1GB",
+    memory: "1GB" as const,
     enforceAppCheck,
   })
   .https.onCall(async (data, context) => {

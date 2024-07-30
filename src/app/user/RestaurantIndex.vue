@@ -8,7 +8,6 @@
           <!-- Cover Image -->
           <div>
             <img
-              @click.stop="openImage()"
               :src="coverImage"
               class="h-48 w-full object-cover lg:rounded-lg"
             />

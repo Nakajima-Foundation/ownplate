@@ -32,12 +32,12 @@ import {
 } from "firebase/firestore";
 import moment from "moment";
 
-import { useSuper, resizedProfileImage } from "@/utils/utils";
+import { useSuper, resizedProfileImage, defaultTitle } from "@/utils/utils";
 
 export default defineComponent({
   metaInfo() {
     return {
-      title: [this.defaultTitle, "Super All Favorites"].join(" / "),
+      title: [defaultTitle, "Super All Favorites"].join(" / "),
     };
   },
   setup() {

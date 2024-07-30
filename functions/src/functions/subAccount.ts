@@ -71,7 +71,7 @@ export const invitationValidateProcess = async (
   db,
   data: subAccountInvitationAcceptDeny,
   context: functions.https.CallableContext | Context,
-  callback: (adminUid: string, messageData: admin.firestore.DocumentData, messageRef: admin.firestore.DocumentReference) => Promise<void> // eslint-disable-line
+  callback: (adminUid: string, messageData: admin.firestore.DocumentData, messageRef: admin.firestore.DocumentReference) => Promise<void>,  
 ) => {
   // check admin and is not child yet.
   const { messageId } = data;
@@ -91,7 +91,7 @@ const childInvitationProcess = async (
   db: any,
   data: subAccountInvitationAcceptDeny,
   context: functions.https.CallableContext | Context,
-  callback: (messageData: admin.firestore.DocumentData, messageRef: admin.firestore.DocumentReference) => Promise<void> // eslint-disable-line
+  callback: (messageData: admin.firestore.DocumentData, messageRef: admin.firestore.DocumentReference) => Promise<void>,  
 ) => {
   await invitationValidateProcess(db, data, context, async (adminUid: string, messageData: admin.firestore.DocumentData, messageRef: admin.firestore.DocumentReference) => {
     if (messageData.type === "childInvitation") {
@@ -129,7 +129,7 @@ export const accept = async (db, data: subAccountInvitationAcceptDeny, context: 
         const messageDoc = await tr.get(messageRef);
 
         if (!childDoc || !childDoc.exists || !messageDoc || !messageDoc.exists) {
-          throw new functions.https.HttpsError("invalid-argument", `The child or message does not exist.`);
+          throw new functions.https.HttpsError("invalid-argument", "The child or message does not exist.");
         }
         //  accepted
         await tr.update(childRef, { accepted: true });
@@ -158,7 +158,7 @@ export const deny = async (db, data: subAccountInvitationAcceptDeny, context: fu
         const messageDoc = await tr.get(messageRef);
 
         if (!childDoc || !childDoc.exists || !messageDoc || !messageDoc.exists) {
-          throw new functions.https.HttpsError("invalid-argument", `The child or message does not exist.`);
+          throw new functions.https.HttpsError("invalid-argument", "The child or message does not exist.");
         }
         //  deny
         await tr.delete(childRef);
@@ -191,7 +191,7 @@ export const deleteChild = async (db, data: subAccountDeleteChildData, context: 
       const messageDoc = await tr.get(messageRef);
 
       if (!childDoc || !childDoc.exists || !messageDoc || !messageDoc.exists) {
-        throw new functions.https.HttpsError("invalid-argument", `The child or message does not exist.`);
+        throw new functions.https.HttpsError("invalid-argument", "The child or message does not exist.");
       }
       // ok!!
       const customClaims = {};

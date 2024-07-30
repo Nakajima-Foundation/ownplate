@@ -54,6 +54,7 @@ import MarkdownIt from "markdown-it";
 import newsList from "@/app/admin/News/data";
 import NotFound from "@/components/NotFound.vue";
 import { useRoute } from "vue-router";
+import { defaultTitle } from "@/utils/utils";
 
 export default defineComponent({
   components: {
@@ -61,7 +62,7 @@ export default defineComponent({
   },
   metaInfo() {
     return {
-      title: [(this.news || {}).title, this.defaultTitle].join(" / "),
+      title: [(this.news || {}).title, defaultTitle].join(" / "),
     };
   },
   setup() {

@@ -104,14 +104,14 @@ import {
 import { order_status, order_status_keys } from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
 import { revenueCSVHeader } from "@/utils/reportUtils";
-import { order2ReportData } from "@/models/orderInfo";
+import { order2ReportData, OrderInfoData } from "@/models/orderInfo";
 import {
+  defaultTitle,
   arrayOrNumSum,
   useAdminUids,
   notFoundResponse,
   orderTypeKey,
 } from "@/utils/utils";
-import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import DownloadCsv from "@/components/DownloadCSV.vue";
@@ -131,7 +131,7 @@ export default defineComponent({
   },
   metaInfo() {
     return {
-      title: ["Admin All Order", this.defaultTitle].join(" / "),
+      title: ["Admin All Order", defaultTitle].join(" / "),
     };
   },
   setup() {

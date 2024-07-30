@@ -59,7 +59,7 @@ const i18nData = {
   numberFormats: {
     en: numberFormats,
     ja: numberFormats,
-  },
+  } as any,
   datetimeFormats: {
     en: datetimeFormats,
     ja: datetimeFormats,

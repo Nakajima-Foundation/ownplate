@@ -125,6 +125,7 @@ import { PaymentInfo } from "@/models/paymentInfo";
 const client_id = ownPlateConfig.stripe.clientId;
 
 export default defineComponent({
+  emits: ["updateUnsetWarning"],
   setup(_, context) {
     const store = useStore();
     const route = useRoute();

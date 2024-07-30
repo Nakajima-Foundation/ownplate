@@ -28,7 +28,6 @@ export const pushSMS = async (aws_key, aws_secret, subject, message, phone_numbe
       region: isMo ? "ap-northeast-1" : "us-east-1",
       credentials: new AWS.Credentials(aws_key, aws_secret),
     });
-    // @ts-ignore
     const publishTextPromise = await aws.publish(params).promise();
     if (!publishTextPromise) {
       console.log("ERROR");

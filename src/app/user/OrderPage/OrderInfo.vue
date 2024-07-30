@@ -307,6 +307,7 @@ export default defineComponent({
   components: {
     OrderItem,
   },
+  emits: ["update", "change"],
   setup(props, ctx) {
     const regionTip = stripeRegion.tip;
     const tipStep = 1.0 / stripeRegion.multiple;

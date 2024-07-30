@@ -18,14 +18,14 @@ import { stripeActionStrings } from "@/lib/stripe/stripe";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc } from "firebase/firestore";
 
-import { useSuper } from "@/utils/utils";
+import { useSuper, defaultTitle } from "@/utils/utils";
 import { useRoute } from "vue-router";
 import moment from "moment";
 
 export default defineComponent({
   metaInfo() {
     return {
-      title: [this.defaultTitle, "Super All Stripe Callback"].join(" / "),
+      title: [defaultTitle, "Super All Stripe Callback"].join(" / "),
     };
   },
   components: {

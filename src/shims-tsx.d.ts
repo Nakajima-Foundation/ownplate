@@ -1,7 +1,9 @@
 import Vue, { VNode } from "vue";
 
 declare global {
-  var FIREBASE_APPCHECK_DEBUG_TOKEN: boolean | string | undefined;
+  interface Window {
+    FIREBASE_APPCHECK_DEBUG_TOKEN: boolean | undefined;
+  }
 
   namespace JSX {
     // tslint:disable no-empty-interface

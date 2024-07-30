@@ -48,6 +48,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ["close"],
   setup(props, ctx) {
     const store = useStore();
     const restaurantId = useRestaurantId();

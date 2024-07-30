@@ -142,7 +142,6 @@ import { ownPlateConfig } from "@/config/project";
 
 import { copyMenuData, MenuData, TitleData } from "@/models/menu";
 
-import { useAdminUids, cleanObject, notFoundResponse } from "@/utils/utils";
 import { checkShopAccount } from "@/utils/userPermission";
 import { useAdminConfigToggle2 } from "@/utils/admin/Toggle";
 
@@ -150,7 +149,14 @@ import { useRouter, useRoute } from "vue-router";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
-import { sleep, scrollToElementById } from "@/utils/utils";
+import {
+  sleep,
+  scrollToElementById,
+  defaultTitle,
+  useAdminUids,
+  cleanObject,
+  notFoundResponse,
+} from "@/utils/utils";
 
 export default defineComponent({
   name: "MenuList",
@@ -174,12 +180,10 @@ export default defineComponent({
   metaInfo() {
     return {
       title: this.shopInfo.restaurantName
-        ? [
-            "Admin Menu List",
-            this.shopInfo.restaurantName,
-            this.defaultTitle,
-          ].join(" / ")
-        : this.defaultTitle,
+        ? ["Admin Menu List", this.shopInfo.restaurantName, defaultTitle].join(
+            " / ",
+          )
+        : defaultTitle,
     };
   },
   setup(props) {

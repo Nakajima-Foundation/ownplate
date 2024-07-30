@@ -247,15 +247,12 @@ export default defineComponent({
       type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
-    isDelivery: {
-      type: Boolean,
-      required: true,
-    },
     closeButton: {
       type: String,
       required: true,
     },
   },
+  emits: ["closeTransactionsAct"],
   setup(props, ctx) {
     const restaurantsId = props.shopInfo.restaurantId;
     const days = daysOfWeek;

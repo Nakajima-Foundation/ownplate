@@ -66,11 +66,10 @@ import {
 } from "firebase/firestore";
 
 import { stripeVerify } from "@/lib/stripe/stripe";
-import { doc2data } from "@/utils/utils";
 
 import BackButton from "@/components/BackButton.vue";
 
-import { useSuper } from "@/utils/utils";
+import { useSuper, doc2data, defaultTitle } from "@/utils/utils";
 import moment from "moment";
 
 const QUERY_LIMIT = 50;
@@ -81,7 +80,7 @@ export default defineComponent({
   },
   metaInfo() {
     return {
-      title: [this.defaultTitle, "Super All Admin"].join(" / "),
+      title: [defaultTitle, "Super All Admin"].join(" / "),
     };
   },
   setup() {
@@ -134,10 +133,8 @@ export default defineComponent({
         } else {
           last.value = null;
         }
-        // @ts-ignore
         const _admins = snapshot.docs.map(doc2data("admin"));
         _admins.forEach(async (admin) => {
-          // @ts-ignore
           admins.value.push(admin);
           // NOTE: We are getting extra data only once for each admin
           if (!infos.value[admin.id]) {
