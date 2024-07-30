@@ -1,7 +1,7 @@
 import { OrderInfoData } from "@/models/orderInfo";
 
 export const nameOfOrder = (order: OrderInfoData) => {
-  return order && order.number != undefined
+  return order && order.number !== undefined
     ? "#" + `00${order.number}`.slice(-3)
     : "";
 };
