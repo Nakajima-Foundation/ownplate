@@ -58,7 +58,6 @@ export default [
       "vue/attribute-hyphenation": "off",
       "vue/v-on-event-hyphenation": "off",
       "accessor-pairs": "error",
-
       "no-duplicate-imports": "error",
       
       // "no-type-assertion/no-type-assertion": "warn",
@@ -73,7 +72,6 @@ export default [
       "no-use-before-define": "warn",
       "no-empty-function": "warn",
       "no-negated-condition": "warn",
-      "no-duplicate-imports": "warn",
       "no-plusplus": ["warn", { "allowForLoopAfterthoughts": true }],
       "no-useless-return": "warn",
       "array-callback-return": "warn",

@@ -94,9 +94,7 @@ import {
   getBackUrl,
   superPermissionCheck,
 } from "@/utils/utils";
-import {
-  nameOfOrder,
-} from "@/utils/strings";
+import { nameOfOrder } from "@/utils/strings";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
