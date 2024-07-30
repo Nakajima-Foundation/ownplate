@@ -11,7 +11,7 @@ import i18n from "@/lib/vue-i18n";
 import Oruga from "@oruga-ui/oruga-next";
 import { bulmaConfig } from "@oruga-ui/theme-bulma";
 import VueSocialSharing from "vue-social-sharing";
-import { createMetaManager, plugin as metaPlugin } from "vue-meta";
+// import { createMetaManager, plugin as metaPlugin } from "vue-meta";
 import VueQrcode from "@chenfengyuan/vue-qrcode";
 import VueGoogleMaps from "@fawmi/vue-google-maps";
 
@@ -44,9 +44,9 @@ app.use(VueGoogleMaps, {
 app.use(VueSocialSharing);
 app.use(Oruga, bulmaConfig);
 
-const metaManager = createMetaManager();
-app.use(metaManager);
-app.use(metaPlugin);
+//const metaManager = createMetaManager();
+//app.use(metaManager);
+//app.use(metaPlugin);
 
 app.use(store);
 app.use(router);
