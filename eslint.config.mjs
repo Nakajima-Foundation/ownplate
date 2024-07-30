@@ -71,7 +71,7 @@ export default [
       "no-eq-null": "warn",
       "no-use-before-define": "warn",
       "no-empty-function": "warn",
-      "no-negated-condition": "warn",
+      "no-negated-condition": "error",
       "no-plusplus": ["warn", { "allowForLoopAfterthoughts": true }],
       "no-useless-return": "warn",
       "array-callback-return": "warn",

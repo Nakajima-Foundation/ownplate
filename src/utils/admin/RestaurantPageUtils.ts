@@ -167,11 +167,7 @@ export const shopInfoValidator = (
     err[name] = [];
   });
   // validate pickUpMinimumCookTime
-  if (!Number.isInteger(shopInfo["pickUpMinimumCookTime"])) {
-    (err["pickUpMinimumCookTime"] as string[]).push(
-      "validationError." + name + ".notNumbery",
-    );
-  } else {
+  if (Number.isInteger(shopInfo["pickUpMinimumCookTime"])) {
     if (shopInfo["pickUpMinimumCookTime"] > 24 * 60 * 7) {
       (err["pickUpMinimumCookTime"] as string[]).push(
         "validationError." + name + ".tooMuch",
@@ -182,7 +178,12 @@ export const shopInfoValidator = (
         "validationError." + name + ".negative",
       );
     }
+  } else {
+    (err["pickUpMinimumCookTime"] as string[]).push(
+      "validationError." + name + ".notNumbery",
+    );
   }
+
   if (
     !reservationTheDayBefore.some(
       (day: { messageKey: string; value: number }) =>

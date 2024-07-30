@@ -49,10 +49,10 @@ export const sku_item_data2 = (
 };
 
 const analyticsWrapper = (eventName: string, data: AnalyticsData) => {
-  if (location.hostname !== "localhost") {
-    logEvent(analytics, eventName, data);
-  } else {
+  if (location.hostname === "localhost") {
     console.log("log: ", eventName, data);
+  } else {
+    logEvent(analytics, eventName, data);
   }
 };
 

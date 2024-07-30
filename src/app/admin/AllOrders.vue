@@ -237,7 +237,9 @@ export default defineComponent({
           query(collectionGroup(db, "orders"), ...queryConditions),
         );
         const serviceTaxRate = 0.1;
-        if (!snapshot.empty) {
+        if (snapshot.empty) {
+          last = null;
+        } else {
           last = snapshot.docs[snapshot.docs.length - 1];
           let i = 0;
           for (; i < snapshot.docs.length; i++) {
@@ -258,8 +260,6 @@ export default defineComponent({
             order.restaurant = restaurants[order.restaurantId];
             orders.value.push(order);
           }
-        } else {
-          last = null;
         }
       }
       isLoading = false;
