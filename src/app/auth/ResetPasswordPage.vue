@@ -108,7 +108,7 @@ export default defineComponent({
     const handleCancel = () => {
       router.push("/admin/user/signin");
     };
-    const handleNext = async () => {
+    const handleNext = () => {
       submitted.value = true;
       if (Object.keys(errors.value).length > 0) {
         return;

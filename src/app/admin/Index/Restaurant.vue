@@ -479,11 +479,11 @@ export default defineComponent({
     const requestState = ref(0);
     let detacher: null | Unsubscribe = null;
 
-    onMounted(async () => {
+    onMounted(() => {
       if (props.isOwner) {
         detacher = onSnapshot(
           doc(db, `requestList/${props.restaurantid}`),
-          async (result) => {
+          (result) => {
             if (result.exists()) {
               requestState.value = result.data().status;
             } else {
@@ -501,7 +501,7 @@ export default defineComponent({
       store.commit("setAlert", {
         title: props.shopInfo.restaurantName,
         code: "editRestaurant.reallyDelete",
-        callback: async () => {
+        callback: () => {
           ctx.emit("deleteFromRestaurantLists", props.restaurantid);
 
           updateDoc(doc(db, `restaurants/${props.restaurantid}`), {

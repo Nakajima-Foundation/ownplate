@@ -166,7 +166,7 @@ export default defineComponent({
     const loadUserData = async () => {
       const order_detacher = onSnapshot(
         doc(db, `restaurants/${restaurantId.value}/orders/${orderId}`),
-        async (order) => {
+        (order) => {
           const order_data = order.exists() ? order.data() : {};
           orderInfo.value = order_data as OrderInfoData;
           menuObj.value = orderInfo.value.menuItems || {};

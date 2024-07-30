@@ -75,7 +75,7 @@ export default [
       "no-plusplus": ["warn", { "allowForLoopAfterthoughts": true }],
       "no-useless-return": "warn",
       "array-callback-return": "warn",
-      "require-await": "warn",
+      "require-await": "error",
       "eqeqeq": "warn",
       "init-declarations": "warn",
 

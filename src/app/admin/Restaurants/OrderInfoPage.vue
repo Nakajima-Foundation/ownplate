@@ -713,7 +713,7 @@ export default defineComponent({
       });
       const menuRestaurantId = restaurantId.value;
       const menuIds = Object.keys(orderInfo.value.menuItems);
-      arrayChunk(menuIds, 10).map(async (arr) => {
+      arrayChunk(menuIds, 10).map((arr) => {
         getDocs(
           query(
             collection(db, `restaurants/${menuRestaurantId}/menus`),
@@ -1072,7 +1072,7 @@ export default defineComponent({
         updating.value = "";
       }
     };
-    const handleOrderChange = async () => {
+    const handleOrderChange = () => {
       store.commit("setAlert", {
         title: "admin.order.confirmOrderChange",
         code: "admin.order.updateOrderMessage",

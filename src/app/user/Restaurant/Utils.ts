@@ -60,7 +60,7 @@ export const useMenu = (restaurantId: Ref<string>) => {
   const setCache = (cache: MenuData[]) => {
     menuCache.value = cache;
   };
-  const loadMenu = async (callback?: () => void) => {
+  const loadMenu = (callback?: () => void) => {
     detacheMenu();
     if (menuCache.value.length > 0) {
       return;

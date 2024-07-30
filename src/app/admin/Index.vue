@@ -401,7 +401,7 @@ export default defineComponent({
               where("deletedFlag", "==", false),
               orderBy("createdAt", "asc"),
             ),
-            async (result) => {
+            (result) => {
               try {
                 if (result.empty) {
                   restaurantItems.value = {}; // so that we present "No restaurant"
@@ -442,7 +442,7 @@ export default defineComponent({
                 where("deletedFlag", "==", false),
                 orderBy("createdAt", "asc"),
               ),
-              async (result) => {
+              (result) => {
                 try {
                   if (result.empty && restaurantItems.value === null) {
                     restaurantItems.value = {}; // so that we present "No restaurant"
@@ -485,7 +485,7 @@ export default defineComponent({
         onSnapshot(
           query(collectionGroup(db, "lines"), where("uid", "==", uid.value)),
           (result) => {
-            result.docs.map(async (res) => {
+            result.docs.map((res) => {
               const restaurantId = res.data().restaurantId;
               lines.value[restaurantId] = true;
             });

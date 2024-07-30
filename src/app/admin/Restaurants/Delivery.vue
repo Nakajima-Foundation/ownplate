@@ -387,7 +387,7 @@ export default defineComponent({
     };
 
     const mapLoaded = () => {
-      setTimeout(async () => {
+      setTimeout(() => {
         if (typeof google !== "undefined") {
           center.value = new google.maps.LatLng(location.lat, location.lng);
         }

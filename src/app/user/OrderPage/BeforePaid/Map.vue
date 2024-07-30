@@ -95,7 +95,7 @@ export default defineComponent({
         markers = [];
       }
     };
-    const updateMarker = async () => {
+    const updateMarker = () => {
       if (!map) {
         return;
       }
@@ -143,7 +143,7 @@ export default defineComponent({
       setHome(latLng.lat(), latLng.lng());
     };
 
-    const updateCircle = async () => {
+    const updateCircle = () => {
       if (!props.deliveryInfo.enableAreaMap) {
         return;
       }
@@ -165,7 +165,7 @@ export default defineComponent({
       setHomeLocation(pos.lat, pos.lng);
     };
 
-    const setCurrentLocation = async () => {
+    const setCurrentLocation = () => {
       if (location && location.lat && location.lng) {
         gCenter = new google.maps.LatLng(location.lat, location.lng);
         map.setCenter(location);
