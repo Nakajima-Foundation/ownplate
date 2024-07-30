@@ -11,28 +11,24 @@ import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   props: {
+    data: {
+      type: Object,
+      required: true,
+    },
+    fields: {
+      type: Object,
+      required: true,
+    },
+    fieldNames: {
+      type: Object,
+      required: true,
+    },
     fileName: {
       type: String,
       required: true,
     },
-    data: {
-      type: Array,
-      required: true,
-    },
-    fields: {
-      type: Array,
-      required: true,
-    },
-    fieldNames: {
-      type: Array,
-      required: false,
-    },
-    formulas: {
-      type: Object,
-      required: false,
-      default: null,
-    },
   },
+  emits: ["success"],
   setup(props, ctx) {
     const { t } = useI18n({ useScope: "global" });
     const content = computed(() => {

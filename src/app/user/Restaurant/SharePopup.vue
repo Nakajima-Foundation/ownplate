@@ -94,10 +94,6 @@ export default defineComponent({
       type: Boolean,
       required: false,
     },
-    mode: {
-      type: String,
-      required: true,
-    },
   },
   setup(props) {
     const sharePopup = ref(false);

@@ -107,7 +107,7 @@ import { smaregi } from "@/config/project";
 import { db } from "@/lib/firebase/firebase9";
 import { smaregiStoreList } from "@/lib/firebase/functions";
 
-import { doc2data, useAdminUids } from "@/utils/utils";
+import { doc2data, useAdminUids, defaultTitle } from "@/utils/utils";
 
 import BackButton from "@/components/BackButton.vue";
 
@@ -151,7 +151,7 @@ export default defineComponent({
   name: "Restaurant",
   metaInfo() {
     return {
-      title: [this.defaultTitle, "Admin Smaregi Index"].join(" / "),
+      title: [defaultTitle, "Admin Smaregi Index"].join(" / "),
     };
   },
   setup() {

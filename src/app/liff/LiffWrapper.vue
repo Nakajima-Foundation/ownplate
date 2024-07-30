@@ -27,10 +27,9 @@
 <script lang="ts">
 import { defineComponent, ref, computed, watch } from "vue";
 import liff from "@line/liff";
-import { db } from "@/lib/firebase/firebase9";
 import { getDoc, doc } from "firebase/firestore";
 
-import { auth } from "@/lib/firebase/firebase9";
+import { db, auth } from "@/lib/firebase/firebase9";
 import { signInWithCustomToken, signOut } from "firebase/auth";
 
 import { liffAuthenticate } from "@/lib/firebase/functions";
@@ -274,6 +273,7 @@ export default defineComponent({
       openModal,
       loading,
       friendUrl,
+      user,
     };
   },
 });

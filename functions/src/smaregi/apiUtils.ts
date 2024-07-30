@@ -19,12 +19,12 @@ export const generateBody = (obj) => {
       return obj[key] === undefined || obj[key] === null
         ? null
         : Array.isArray(obj[key])
-        ? obj[key]
+          ? obj[key]
             .map((ele) => {
               return key + "[]=" + ele;
             })
             .join("&")
-        : key + "=" + obj[key];
+          : key + "=" + obj[key];
     })
     .filter((str) => {
       return str !== null;

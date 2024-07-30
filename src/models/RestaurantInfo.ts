@@ -63,6 +63,8 @@ export interface RestaurantInfoData {
   pickUpMinimumCookTime: number;
   pickUpDaysInAdvance: number;
 
+  personalInfo: string;
+
   paymentMethods: { [key: string]: boolean };
 
   onTheList: boolean;

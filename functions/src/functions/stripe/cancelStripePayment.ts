@@ -61,7 +61,7 @@ export const cancelStripePayment = async (db: admin.firestore.Firestore, data: o
         {
           paymentIntent,
         },
-        { merge: true }
+        { merge: true },
       );
       Object.assign(order, updateData);
       return { success: true, payment: "stripe", order };

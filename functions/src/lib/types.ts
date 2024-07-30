@@ -27,6 +27,7 @@ export interface orderPlacedData {
   promotionId: string;
   affiliateId: string;
   memo: string;
+  userName: string;
   payStripe: boolean;
   customerInfo: customerInfoData;
 }

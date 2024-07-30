@@ -28,7 +28,7 @@ import {
 
 import { stripeActionStrings } from "@/lib/stripe/stripe";
 
-import { useSuper } from "@/utils/utils";
+import { useSuper, defaultTitle } from "@/utils/utils";
 import moment from "moment-timezone";
 
 export default defineComponent({
@@ -37,7 +37,7 @@ export default defineComponent({
   },
   metaInfo() {
     return {
-      title: [this.defaultTitle, "Super All Stripe Callback"].join(" / "),
+      title: [defaultTitle, "Super All Stripe Callback"].join(" / "),
     };
   },
   setup() {

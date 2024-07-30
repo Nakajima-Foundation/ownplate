@@ -35,19 +35,17 @@ import {
 } from "firebase/firestore";
 import { superDispatch } from "@/lib/firebase/functions";
 
-import { doc2data } from "@/utils/utils";
-
 import BackButton from "@/components/BackButton.vue";
 import Restaurant from "@/app/super/Components/Restaurant.vue";
 
-import { useSuper } from "@/utils/utils";
+import { useSuper, doc2data, defaultTitle } from "@/utils/utils";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 
 export default defineComponent({
   metaInfo() {
     return {
-      title: [this.defaultTitle, "Super Admin info"].join(" / "),
+      title: [defaultTitle, "Super Admin info"].join(" / "),
     };
   },
   components: {
@@ -70,7 +68,6 @@ export default defineComponent({
       cmd: "getCustomeClaims",
       uid: adminId,
     }).then(({ data }) => {
-      // @ts-ignore
       customClaims.value = data.result;
     });
     getDocs(
@@ -107,7 +104,6 @@ export default defineComponent({
             key: "operator",
             value: value,
           });
-          // @ts-ignore
           customClaims.value = data.result;
         } catch (error) {
           console.error(error);

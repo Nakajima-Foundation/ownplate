@@ -177,7 +177,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emit: ["toEditMode", "positionUp", "positionDown", "forkItem", "deleteItem"],
+  emits: ["toEditMode", "positionUp", "positionDown", "forkItem", "deleteItem"],
   setup(props, ctx) {
     const store = useStore();
     const router = useRouter();

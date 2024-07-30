@@ -39,13 +39,13 @@ describe("Image function", () => {
   it("should test getStorePath", function () {
     const uid = "123";
     const path1 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/${uid}/cover.jpg`;
-    imageUtil.getFirestorePath(path1).should.equal(`restaurants/0LHzyxxnKZ0eZs3bCaEx`);
+    imageUtil.getFirestorePath(path1).should.equal("restaurants/0LHzyxxnKZ0eZs3bCaEx");
 
     const path2 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/${uid}/profile.jpg`;
-    imageUtil.getFirestorePath(path2).should.equal(`restaurants/0LHzyxxnKZ0eZs3bCaEx`);
+    imageUtil.getFirestorePath(path2).should.equal("restaurants/0LHzyxxnKZ0eZs3bCaEx");
 
     const path3 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/menus/6cDoe8lyrn898YtwiQfg/${uid}/item.jpg`;
-    imageUtil.getFirestorePath(path3).should.equal(`restaurants/0LHzyxxnKZ0eZs3bCaEx/menus/6cDoe8lyrn898YtwiQfg`);
+    imageUtil.getFirestorePath(path3).should.equal("restaurants/0LHzyxxnKZ0eZs3bCaEx/menus/6cDoe8lyrn898YtwiQfg");
 
     const ngPath1 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/${uid}/cover1.jpg`;
     imageUtil.getFirestorePath(ngPath1).should.equal("");

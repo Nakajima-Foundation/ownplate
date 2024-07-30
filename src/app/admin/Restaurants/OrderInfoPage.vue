@@ -569,15 +569,13 @@ import {
   stripeRegion,
   convOrderStateForText,
   isDev,
-} from "@/utils/utils";
-
-import {
   isEmpty,
   isNull,
   getShopOwner,
   getOrderItems,
   arrayChunk,
   array2obj,
+  defaultTitle,
 } from "@/utils/utils";
 
 import { useStore } from "vuex";
@@ -608,12 +606,10 @@ export default defineComponent({
   metaInfo() {
     return {
       title: this.shopInfo.restaurantName
-        ? [
-            "Admin Order Info",
-            this.shopInfo.restaurantName,
-            this.defaultTitle,
-          ].join(" / ")
-        : this.defaultTitle,
+        ? ["Admin Order Info", this.shopInfo.restaurantName, defaultTitle].join(
+            " / ",
+          )
+        : defaultTitle,
     };
   },
   // if user is not signined, render login
@@ -735,7 +731,6 @@ export default defineComponent({
     const orderUpdateInterval = computed(() => {
       if (orderInfo.value.orderPlacedAt && userLog.value.lastUpdatedAt) {
         const intervalHour =
-          // @ts-ignore
           (orderInfo.value.orderPlacedAt - userLog.value.lastUpdatedAt) / 3600;
         return intervalHour;
       }
@@ -744,7 +739,6 @@ export default defineComponent({
     const orderPickupInterval = computed(() => {
       if (orderInfo.value.timeCreated && userLog.value.lastUpdatedAt) {
         const intervalHour =
-          // @ts-ignore
           (orderInfo.value.timeCreated - userLog.value.lastUpdatedAt) / 3600;
         return intervalHour;
       }
@@ -786,7 +780,6 @@ export default defineComponent({
     });
     watch(orderItems, () => {
       Object.keys(orderItems.value).map((key: string) => {
-        // @ts-ignore
         editedAvailableOrders.value[key] = true;
       });
     });
@@ -798,7 +791,6 @@ export default defineComponent({
     };
     const timeOfEvents = computed(() => {
       const mapping = Object.keys(timeEventMapping).reduce((tmp, key) => {
-        // @ts-ignore
         tmp[key] = timeStampToText(orderInfo.value[timeEventMapping[key]]);
         return tmp;
       }, {});
@@ -896,9 +888,7 @@ export default defineComponent({
     const edited_available_order_info = computed(() => {
       const ret: { menuId: string; index: number }[] = [];
       Object.keys(editedAvailableOrders.value).forEach((key: string) => {
-        // @ts-ignore
         if (editedAvailableOrders.value[key]) {
-          // @ts-ignore
           const indexes = orderItems.value[key]?.orderIndex;
           if (indexes) {
             ret.push({ menuId: indexes[0], index: Number(indexes[1]) });

@@ -88,10 +88,13 @@ import BackButton from "@/components/BackButton.vue";
 import DownloadCsv from "@/components/DownloadCSV.vue";
 
 import { order_status, order_status_keys } from "@/config/constant";
+import {
+  arrayOrNumSum,
+  defaultTitle,
+  getBackUrl,
+  superPermissionCheck,
+} from "@/utils/utils";
 import { nameOfOrder } from "@/utils/strings";
-import { arrayOrNumSum } from "@/utils/utils";
-
-import { getBackUrl, superPermissionCheck } from "@/utils/utils";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
@@ -112,7 +115,7 @@ import {
 export default defineComponent({
   metaInfo() {
     return {
-      title: [this.defaultTitle, "Super All Orders"].join(" / "),
+      title: [defaultTitle, "Super All Orders"].join(" / "),
     };
   },
   components: {
@@ -174,7 +177,6 @@ export default defineComponent({
             const order = myDoc.data() as OrderInfoData;
             order.restaurantId = myDoc.ref.path.split("/")[1];
             order.id = myDoc.id;
-            // @ts-ignore
             order.timePlaced = order.timePlaced.toDate();
             if (!restaurants.value[order.restaurantId]) {
               const snapshot = await getDoc(
@@ -185,7 +187,6 @@ export default defineComponent({
             }
             order.restaurant = restaurants.value[order.restaurantId];
             if (order.timeEstimated) {
-              // @ts-ignore
               order.timeEstimated = order.timeEstimated.toDate();
             }
             orders.value.push(order);

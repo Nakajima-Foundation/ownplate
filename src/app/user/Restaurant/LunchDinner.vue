@@ -45,10 +45,6 @@ import { useStore } from "vuex";
 
 export default defineComponent({
   props: {
-    shopInfo: {
-      type: Object,
-      required: true,
-    },
     modelValue: {
       type: String,
       required: true,
@@ -62,6 +58,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ["update:modelValue"],
   setup(props, ctx) {
     const store = useStore();
     const popup = ref(false);

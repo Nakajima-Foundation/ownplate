@@ -38,6 +38,7 @@
 import { defineComponent } from "vue";
 import ListItem from "@/app/admin/News/ListItem.vue";
 import newsList from "@/app/admin/News/data";
+import { defaultTitle } from "@/utils/utils";
 
 export default defineComponent({
   components: {
@@ -45,7 +46,7 @@ export default defineComponent({
   },
   metaInfo() {
     return {
-      title: ["News", this.defaultTitle].join(" / "),
+      title: ["News", defaultTitle].join(" / "),
     };
   },
   setup() {

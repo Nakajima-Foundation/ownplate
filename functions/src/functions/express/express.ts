@@ -71,7 +71,7 @@ export const sitemap_response = async (req, res) => {
         const url = urlset.ele("url");
         url.ele("loc", hostname + "/r/" + doc.id);
         url.ele("lastmod", lastmod(doc.data()));
-      })
+      }),
     );
 
     const xml = urlset.dec("1.0", "UTF-8").end({ pretty: true });
@@ -93,7 +93,7 @@ const escapeHtml = (str: string): string => {
     "&": "&amp;",
     "'": "&#x27;",
     "`": "&#x60;",
-    '"': "&quot;",
+    "\"": "&quot;",
     "<": "&lt;",
     ">": "&gt;",
   };
@@ -125,7 +125,7 @@ const ogpPage = async (req: any, res: any) => {
     encoding: "utf8",
   });
   // res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Content-Security-Policy", "frame-ancestors 'none'"),
+  res.setHeader("Content-Security-Policy", "frame-ancestors 'none'");
   res.setHeader("X-Frame-Options", "deny");
   res.setHeader("X-Content-Type-Options", "nosniff");
   res.setHeader("X-XSS-Protection", "1; mode=block");
@@ -159,8 +159,8 @@ const ogpPage = async (req: any, res: any) => {
     const title = menuData.exists
       ? [menuData.name, restaurant_data.restaurantName].join(" / ")
       : restaurant_data.restaurantName
-      ? [restaurant_data.restaurantName, ownPlateConfig.restaurantPageTitle].join(" / ")
-      : ownPlateConfig.siteName;
+        ? [restaurant_data.restaurantName, ownPlateConfig.restaurantPageTitle].join(" / ")
+        : ownPlateConfig.siteName;
     const image =
       menuData.image ||
       (restaurant_data?.images?.cover?.resizedImages || {})["600"] ||
@@ -176,34 +176,34 @@ const ogpPage = async (req: any, res: any) => {
 
     const metas = [
       `<title>${escapeHtml(title)}</title>`,
-      `<meta data-n-head="1" charset="utf-8">`,
-      `<meta data-n-head="1" name="viewport" content="width=device-width,initial-scale=1">`,
+      "<meta data-n-head=\"1\" charset=\"utf-8\">",
+      "<meta data-n-head=\"1\" name=\"viewport\" content=\"width=device-width,initial-scale=1\">",
       `<meta name="description" content="${escapeHtml(description)}"/>`,
       `<meta property="og:title" content="${escapeHtml(title)}" />`,
       `<meta property="og:site_name" content="${escapeHtml(siteName)}" />`,
-      `<meta property="og:type" content="website" />`,
+      "<meta property=\"og:type\" content=\"website\" />",
       `<meta property="og:url" content="${url}" />`,
       `<meta property="og:description" content="${escapeHtml(description)}" />`,
       `<meta property="og:image" content="${escapeHtml(image)}" />`,
-      `<meta name="twitter:card" content="summary_large_image" />`,
-      `<meta name="twitter:site" content="@omochikaericom" />`,
-      `<meta name="twitter:creator" content="@omochikaericom" />`,
+      "<meta name=\"twitter:card\" content=\"summary_large_image\" />",
+      "<meta name=\"twitter:site\" content=\"@omochikaericom\" />",
+      "<meta name=\"twitter:creator\" content=\"@omochikaericom\" />",
       `<meta name="twitter:description" content="${escapeHtml(description)}" />`,
       `<meta name="twitter:image" content="${escapeHtml(image)}" />`,
     ];
     if (ownerData.hidePrivacy) {
-      metas.push(`<meta name="robots" content="noindex" />`);
+      metas.push("<meta name=\"robots\" content=\"noindex\" />");
     }
     res.set("Cache-Control", "public, max-age=300, s-maxage=600");
 
     const regexBody = /<div id="app">/;
 
     const bodyString = [
-      '<div id="app">',
-      '<h1 style="font-size: 50px;">',
+      "<div id=\"app\">",
+      "<h1 style=\"font-size: 50px;\">",
       escapeHtml(title),
       "</h1>",
-      '<span style="font-size: 30px;">',
+      "<span style=\"font-size: 30px;\">",
       escapeHtml(restaurant_data.introduction),
       "</span>",
     ].join("\n");
@@ -212,7 +212,7 @@ const ogpPage = async (req: any, res: any) => {
       template_data
         .replace(/<meta[^>]*>/g, "")
         .replace(regexTitle, metas.join("\n"))
-        .replace(regexBody, bodyString)
+        .replace(regexBody, bodyString),
     );
   } catch (e) {
     console.log(e);
@@ -250,18 +250,18 @@ const ownerPage = async (req: any, res: any) => {
 
     const metas = [
       `<title>${escapeHtml(title)}</title>`,
-      `<meta data-n-head="1" charset="utf-8">`,
-      `<meta data-n-head="1" name="viewport" content="width=device-width,initial-scale=1">`,
+      "<meta data-n-head=\"1\" charset=\"utf-8\">",
+      "<meta data-n-head=\"1\" name=\"viewport\" content=\"width=device-width,initial-scale=1\">",
       `<meta name="description" content="${escapeHtml(description)}"/>`,
       `<meta property="og:title" content="${escapeHtml(title)}" />`,
       `<meta property="og:site_name" content="${escapeHtml(siteName)}" />`,
-      `<meta property="og:type" content="website" />`,
+      "<meta property=\"og:type\" content=\"website\" />",
       `<meta property="og:url" content="${url}" />`,
       `<meta property="og:description" content="${escapeHtml(description)}" />`,
       `<meta property="og:image" content="${escapeHtml(image)}" />`,
-      `<meta name="twitter:card" content="summary_large_image" />`,
-      `<meta name="twitter:site" content="@omochikaericom" />`,
-      `<meta name="twitter:creator" content="@omochikaericom" />`,
+      "<meta name=\"twitter:card\" content=\"summary_large_image\" />",
+      "<meta name=\"twitter:site\" content=\"@omochikaericom\" />",
+      "<meta name=\"twitter:creator\" content=\"@omochikaericom\" />",
       `<meta name="twitter:description" content="${escapeHtml(description)}" />`,
       `<meta name="twitter:image" content="${escapeHtml(image)}" />`,
     ];
@@ -270,11 +270,11 @@ const ownerPage = async (req: any, res: any) => {
     const regexBody = /<div id="app">/;
 
     const bodyString = [
-      '<div id="app">',
-      '<h1 style="font-size: 50px;">',
+      "<div id=\"app\">",
+      "<h1 style=\"font-size: 50px;\">",
       escapeHtml(title),
       "</h1>",
-      '<span style="font-size: 30px;">',
+      "<span style=\"font-size: 30px;\">",
       escapeHtml(ownerData.introduction),
       "</span>",
     ].join("\n");
@@ -283,7 +283,7 @@ const ownerPage = async (req: any, res: any) => {
       template_data
         .replace(/<meta[^>]*>/g, "")
         .replace(regexTitle, metas.join("\n"))
-        .replace(regexBody, bodyString)
+        .replace(regexBody, bodyString),
     );
   } catch (e) {
     console.log(e);
@@ -317,7 +317,7 @@ export const stripe_parser = async (req, res) => {
 
     // const {data:{object}} = event
     if (!event) {
-      return res.status(400).send(`Webhook Error: unknow error`);
+      return res.status(400).send("Webhook Error: unknow error");
     }
 
     if (event.type === "capability.updated") {
@@ -334,7 +334,7 @@ export const stripe_parser = async (req, res) => {
     res.json({});
   } catch (err) {
     Sentry.captureException(err);
-    res.status(400).send(`Webhook Error`);
+    res.status(400).send("Webhook Error");
   }
 };
 

@@ -24,7 +24,6 @@
             href="https://docs.omochikaeri.com/manuals/printer.pdf"
             target="_blank"
             class="font-bold text-op-teal"
-            @click="handleClose()"
           >
             {{ $t("menu.printerManualLink") }}
           </a>
@@ -102,6 +101,7 @@ export default defineComponent({
   setup() {
     const notFound = ref(null);
     const printerConfig = ref();
+    const ipaddress = ref(""); // memo not implemented
 
     const restaurantId = useRestaurantId();
     const restaurantRef = doc(
@@ -139,6 +139,8 @@ export default defineComponent({
 
       reset,
       restaurantId,
+
+      ipaddress,
     };
   },
 });

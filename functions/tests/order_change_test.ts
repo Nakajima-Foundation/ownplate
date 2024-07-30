@@ -52,7 +52,7 @@ describe("Order function", () => {
         timeToPickup: { seconds: 1613986197, nanoseconds: 0 },
         tip: 100,
       },
-      context
+      context,
     );
     console.log(JSON.stringify(placed, undefined, 4));
 
@@ -71,7 +71,7 @@ describe("Order function", () => {
           { menuId: "hoge2", index: 1 },
         ],
       },
-      ownerContext
+      ownerContext,
     );
     console.log(change);
   });

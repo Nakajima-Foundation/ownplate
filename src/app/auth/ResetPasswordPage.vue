@@ -72,12 +72,13 @@ import isEmail from "validator/lib/isEmail";
 import { auth } from "@/lib/firebase/firebase9";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { useRouter } from "vue-router";
+import { defaultTitle } from "@/utils/utils";
 
 export default defineComponent({
   name: "Reset",
   metaInfo() {
     return {
-      title: [this.defaultTitle, "Reset Password"].join(" / "),
+      title: [defaultTitle, "Reset Password"].join(" / "),
     };
   },
   setup() {

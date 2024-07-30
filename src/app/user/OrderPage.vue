@@ -76,6 +76,7 @@ import {
   useLiffBasePath,
   useRestaurantId,
   useUserData,
+  defaultTitle,
 } from "@/utils/utils";
 
 import { useRoute, onBeforeRouteLeave } from "vue-router";
@@ -92,7 +93,7 @@ export default defineComponent({
             this.shopInfo ? this.shopInfo?.restaurantName : "--",
             "Order Page",
           ].join(" / ")
-        : [this.defaultTitle, "Order Page"].join(" / "),
+        : [defaultTitle, "Order Page"].join(" / "),
     };
   },
   components: {

@@ -27,13 +27,13 @@ import BackButton from "@/components/BackButton.vue";
 import { db } from "@/lib/firebase/firebase9";
 import { getDoc, doc } from "firebase/firestore";
 
-import { superPermissionCheck, getBackUrl } from "@/utils/utils";
+import { superPermissionCheck, getBackUrl, defaultTitle } from "@/utils/utils";
 import { useRoute } from "vue-router";
 
 export default defineComponent({
   metaInfo() {
     return {
-      title: [this.defaultTitle, "Super All Restaurants"].join(" / "),
+      title: [defaultTitle, "Super All Restaurants"].join(" / "),
     };
   },
   components: {

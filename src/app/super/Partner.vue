@@ -22,7 +22,7 @@ import {
   DocumentData,
 } from "firebase/firestore";
 
-import { useSuper } from "@/utils/utils";
+import { useSuper, defaultTitle } from "@/utils/utils";
 
 export default defineComponent({
   components: {
@@ -30,7 +30,7 @@ export default defineComponent({
   },
   metaInfo() {
     return {
-      title: [this.defaultTitle, "Super Partners"].join(" / "),
+      title: [defaultTitle, "Super Partners"].join(" / "),
     };
   },
   setup() {

@@ -2,9 +2,9 @@ import {
   QueryDocumentSnapshot,
   DocumentSnapshot,
   DocumentData,
+  Timestamp,
 } from "firebase/firestore";
 import FirebaseModel from "./firebasemodel";
-import { Timestamp } from "firebase/firestore";
 
 export interface PromotionData extends DocumentData {
   promotionId: string;

@@ -285,6 +285,7 @@ export default defineComponent({
       required: false,
     },
   },
+  emits: ["selected"],
   setup(props) {
     const { d } = useI18n({ useScope: "global" });
 
@@ -309,10 +310,8 @@ export default defineComponent({
       const time = props.order.timeEstimated || props.order.timePlaced;
 
       if (props.isSuperView) {
-        // @ts-ignore
         return d(time, "long");
       } else {
-        // @ts-ignore
         return d(time, "time");
       }
     });

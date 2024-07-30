@@ -18,12 +18,6 @@ import { defineComponent } from "vue";
 import { previewLink } from "@/utils/utils";
 
 export default defineComponent({
-  props: {
-    shopInfo: {
-      type: Object,
-      required: true,
-    },
-  },
   setup(props) {
     const link = previewLink(props);
     return {

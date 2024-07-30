@@ -59,7 +59,6 @@ export default defineComponent({
           store.commit("setLoading", true);
           await subAccountInvitationAccept({ messageId: props.message.id });
           store.commit("setLoading", false);
-          // @ts-ignore
           router.go({
             path: route.path,
             force: true,

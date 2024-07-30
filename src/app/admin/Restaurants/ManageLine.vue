@@ -102,7 +102,12 @@ import {
 
 import { lineAuthURL, lineVerify } from "@/lib/line/line";
 import { checkShopAccount } from "@/utils/userPermission";
-import { useAdminUids, useRestaurantId, notFoundResponse } from "@/utils/utils";
+import {
+  useAdminUids,
+  useRestaurantId,
+  notFoundResponse,
+  defaultTitle,
+} from "@/utils/utils";
 
 import NotFound from "@/components/NotFound.vue";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
@@ -122,7 +127,7 @@ export default defineComponent({
   },
   metaInfo() {
     return {
-      title: ["Admin Manage Line", this.defaultTitle].join(" / "),
+      title: ["Admin Manage Line", defaultTitle].join(" / "),
     };
   },
   props: {

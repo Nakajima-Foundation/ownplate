@@ -169,8 +169,8 @@
                   index == 0
                     ? 'first'
                     : restaurantLists.length - 1 === index
-                    ? 'last'
-                    : ''
+                      ? 'last'
+                      : ''
                 "
                 @positionUp="positionUp($event)"
                 @positionDown="positionDown($event)"
@@ -274,6 +274,7 @@ import {
   scrollToElementById,
   arrayChunk,
   useAdminUids,
+  defaultTitle,
 } from "@/utils/utils";
 import { checkAdminPermission } from "@/utils/userPermission";
 
@@ -305,7 +306,7 @@ export default defineComponent({
   },
   metaInfo() {
     return {
-      title: ["Admin Index", this.defaultTitle].join(" / "),
+      title: ["Admin Index", defaultTitle].join(" / "),
     };
   },
   setup() {

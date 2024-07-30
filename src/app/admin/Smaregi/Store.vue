@@ -95,7 +95,7 @@ import {
 } from "firebase/firestore";
 import { smaregiProductList } from "@/lib/firebase/functions";
 
-import { doc2data, array2obj, useAdminUids } from "@/utils/utils";
+import { doc2data, array2obj, useAdminUids, defaultTitle } from "@/utils/utils";
 
 import BackButton from "@/components/BackButton.vue";
 
@@ -107,7 +107,7 @@ export default defineComponent({
   },
   metaInfo() {
     return {
-      title: [this.defaultTitle, "Admin Smaregi Store"].join(" / "),
+      title: [defaultTitle, "Admin Smaregi Store"].join(" / "),
     };
   },
   setup() {

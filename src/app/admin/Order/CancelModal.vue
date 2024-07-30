@@ -103,6 +103,7 @@ export default defineComponent({
   components: {
     ButtonLoading,
   },
+  emits: ["close"],
   setup(props, ctx) {
     const router = useRouter();
     const store = useStore();
