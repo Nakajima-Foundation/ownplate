@@ -72,7 +72,7 @@ export default [
       "no-use-before-define": "warn",
       "no-empty-function": "warn",
       "no-negated-condition": "error",
-      "no-plusplus": ["warn", { "allowForLoopAfterthoughts": true }],
+      "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
       "no-useless-return": "warn",
       "array-callback-return": "warn",
       "require-await": "error",

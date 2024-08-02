@@ -139,7 +139,7 @@ export default defineComponent({
           if (tmp[ele] === undefined) {
             tmp[ele] = 1;
           } else {
-            tmp[ele]++;
+            tmp[ele] += 1;
           }
           return tmp;
         },
