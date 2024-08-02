@@ -331,7 +331,7 @@ export default defineComponent({
 
     const removeAllMarker = () => {
       if (markers.value && markers.value.length > 0) {
-        markers.value.map((marker) => {
+        markers.value.forEach((marker) => {
           marker.setMap(null);
         });
         markers.value = [];
@@ -339,7 +339,7 @@ export default defineComponent({
     };
     const removeAllCircle = () => {
       if (circles.value && circles.value.length > 0) {
-        circles.value.map((circle) => {
+        circles.value.forEach((circle) => {
           circle.setMap(null);
         });
         circles.value = [];

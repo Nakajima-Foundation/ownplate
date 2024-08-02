@@ -713,7 +713,7 @@ export default defineComponent({
       });
       const menuRestaurantId = restaurantId.value;
       const menuIds = Object.keys(orderInfo.value.menuItems);
-      arrayChunk(menuIds, 10).map((arr) => {
+      arrayChunk(menuIds, 10).forEach((arr) => {
         getDocs(
           query(
             collection(db, `restaurants/${menuRestaurantId}/menus`),
@@ -779,7 +779,7 @@ export default defineComponent({
       return getOrderItems(orderInfo.value, menuObj.value);
     });
     watch(orderItems, () => {
-      Object.keys(orderItems.value).map((key: string) => {
+      Object.keys(orderItems.value).forEach((key: string) => {
         editedAvailableOrders.value[key] = true;
       });
     });

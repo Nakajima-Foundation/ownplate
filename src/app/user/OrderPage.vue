@@ -137,7 +137,7 @@ export default defineComponent({
     const orderInfo = ref<OrderInfoData>({} as OrderInfoData);
     const hasFriends = ref<boolean | null>(null);
     const menuObj = ref<{ [key: string]: OrderMenuItemData } | null>(null);
-    const detacher: Unsubscribe[] = [];
+    const detachers: Unsubscribe[] = [];
     const menuNotFound = ref<boolean | null>(null);
 
     const liffBasePath = useLiffBasePath();
@@ -186,7 +186,7 @@ export default defineComponent({
           menuNotFound.value = true;
         },
       );
-      detacher.push(order_detacher);
+      detachers.push(order_detacher);
 
       if (hasLine.value) {
         const ret = await lineVerifyFriend({
@@ -237,8 +237,8 @@ export default defineComponent({
     });
 
     onUnmounted(() => {
-      if (detacher) {
-        detacher.map((detacher) => {
+      if (detachers) {
+        detachers.forEach((detacher) => {
           detacher();
         });
       }

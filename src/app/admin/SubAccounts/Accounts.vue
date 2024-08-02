@@ -231,8 +231,8 @@ export default defineComponent({
         .map((r) => {
           return restaurantObj.value[r]?.restaurantName;
         })
-        .filter((name) => {
-          return !!name;
+        .filter((_name) => {
+          return !!_name;
         })
         .slice(0, 2);
     };

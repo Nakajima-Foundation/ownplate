@@ -124,7 +124,6 @@ export default defineComponent({
       (e) => {
         console.log(e);
         noRestaurant.value = true;
-        return;
       },
     );
 

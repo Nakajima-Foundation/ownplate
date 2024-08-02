@@ -143,7 +143,7 @@ export const usePromotions = (id: string, user: any) => {
       }
       const keys: string[] = [];
       const values: string[] = [];
-      promotionData.value.map((a) => {
+      promotionData.value.forEach((a) => {
         if (
           ["discount", "onetimeCoupon"].includes(a.type) &&
           a.usageRestrictions
@@ -173,7 +173,7 @@ export const usePromotions = (id: string, user: any) => {
                 const used = promotionUsed.value
                   ? { ...promotionUsed.value }
                   : {};
-                a.docs.map((b) => {
+                a.docs.forEach((b) => {
                   used[b.id] = b.data() as UserPromotionHistoryData;
                 });
                 promotionUsed.value = used;
@@ -194,7 +194,7 @@ export const usePromotions = (id: string, user: any) => {
                 const used = promotionUsed.value
                   ? { ...promotionUsed.value }
                   : {};
-                a.docs.map((b) => {
+                a.docs.forEach((b) => {
                   if (!used[b.id]) {
                     used[b.id] = [] as UserPromotionHistoryData[];
                   }
@@ -214,15 +214,14 @@ export const usePromotions = (id: string, user: any) => {
         if (!a.usageRestrictions) {
           return true;
         }
-        if (a.type == "multipletimesCoupon") {
+        if (a.type === "multipletimesCoupon") {
           // TODO
-        } else if (a.type == "onetimeCoupon") {
+        } else if (a.type === "onetimeCoupon") {
           return !((promotionUsed.value || {})[a?.data.promotionId] as any)
             .used;
-        } else {
-          // discount case.
-          return !(promotionUsed.value || {})[a?.data.promotionId];
         }
+        // discount case.
+        return !(promotionUsed.value || {})[a?.data.promotionId];
       });
       return ret;
     }
@@ -301,13 +300,13 @@ export const useUserPromotionHistory = (id: string, user: any) => {
               where(documentId(), "in", ids),
             ),
           );
-          ret.docs.map((a) => {
+          ret.docs.forEach((a) => {
             histories[a.id] = a.data();
           });
         }),
       );
 
-      userHistory.map((a) => {
+      userHistory.forEach((a) => {
         a.history = histories[a.userHistory.promotionId];
       });
       discountHistory.value = userHistory;

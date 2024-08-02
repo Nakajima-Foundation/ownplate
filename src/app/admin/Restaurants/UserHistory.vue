@@ -231,7 +231,7 @@ export default defineComponent({
           ),
         )
       ).docs;
-      last.value = docs.length == limitNum ? docs[limitNum - 1] : null;
+      last.value = docs.length === limitNum ? docs[limitNum - 1] : null;
       orders.value = docs
         .map(doc2data("order"))
         .filter((a) => a.status !== order_status.transaction_hide)

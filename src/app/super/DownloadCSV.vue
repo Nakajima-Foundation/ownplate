@@ -36,7 +36,7 @@ export default defineComponent({
       const collectionData = await getDocs(
         collection(db, `restaurants/${props.restaurantid}/menus`),
       );
-      collectionData.docs.map((doc) => {
+      collectionData.docs.forEach((doc) => {
         const menu = doc.data();
         const data = {
           productName: menu.itemName,

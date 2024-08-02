@@ -381,7 +381,7 @@ export default defineComponent({
     // TODO: add area to header
     return {
       title:
-        Object.keys(this.shopInfo).length == 0
+        Object.keys(this.shopInfo).length === 0
           ? document.title
           : [
               this.shopInfo?.restaurantName || "",

@@ -137,7 +137,7 @@ export const num2time = (num: number) => {
   if (num === 60 * 12) {
     return t("shopInfo.noon");
   }
-  const offsetTime = locale.value == "ja" ? 12 : 13;
+  const offsetTime = locale.value === "ja" ? 12 : 13;
   const isPm = num >= 60 * 12;
   if (num >= 60 * offsetTime) {
     num = num - 60 * 12;
@@ -247,7 +247,7 @@ export const getOrderItems = (
         const optArray = Array.isArray(orderInfo.order[menuId])
           ? orderInfo.options[menuId]
           : [orderInfo.options[menuId]];
-        Object.keys(numArray).map((numKey: string) => {
+        Object.keys(numArray).forEach((numKey: string) => {
           const item = orderInfo.menuItems[menuId] || menuObj[menuId] || {};
           item.images = (menuObj[menuId] || {}).images;
           item.itemPhoto = (menuObj[menuId] || {}).itemPhoto;
@@ -484,10 +484,10 @@ export const getPrices = (
 ) => {
   const ret: any = {};
 
-  Object.keys(orders).map((menuId) => {
+  Object.keys(orders).forEach((menuId) => {
     const menu = cartItems[menuId] || {};
     ret[menuId] = [];
-    orders[menuId].map((num, orderKey) => {
+    orders[menuId].forEach((num, orderKey) => {
       const selectedOptionsRaw = trimmedSelectedOptions[menuId][orderKey] || [];
       const price = selectedOptionsRaw.reduce(
         (tmpPrice: number, selectedOpt, key) => {
