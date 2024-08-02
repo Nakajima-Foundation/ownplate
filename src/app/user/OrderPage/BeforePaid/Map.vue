@@ -80,16 +80,9 @@ export default defineComponent({
     const estimatedDistance = ref<number | null>(null);
     const gMap = ref();
 
-    onMounted(async () => {
-      map = await gMap.value.$mapPromise;
-      if (location) {
-        setCurrentLocation();
-      }
-    });
-
     const removeAllMarker = () => {
       if (markers && markers.length > 0) {
-        markers.map((marker) => {
+        markers.forEach((marker) => {
           marker.setMap(null);
         });
         markers = [];
@@ -173,6 +166,13 @@ export default defineComponent({
         updateCircle();
       }
     };
+
+    onMounted(async () => {
+      map = await gMap.value.$mapPromise;
+      if (location) {
+        setCurrentLocation();
+      }
+    });
 
     const conv = () => {
       const geocoder = new google.maps.Geocoder();

@@ -210,7 +210,7 @@ export default defineComponent({
 
     onUnmounted(() => {
       if (detachers.length > 0) {
-        detachers.map((d) => {
+        detachers.forEach((d) => {
           d();
         });
       }
