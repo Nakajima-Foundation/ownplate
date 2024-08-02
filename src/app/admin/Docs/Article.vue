@@ -13,8 +13,10 @@
       <linenews v-if="articleId === 'article230930_line_official_account'" />
       <soldout v-if="articleId === 'article231007_out_of_stock'" />
       <lunch_n_dinner v-if="articleId === 'article231019_lunch_n_dinner'" />
-      <lead_time  v-if="articleId === 'article240725_lead_time_management'" />
-      <configurations_of_dishes  v-if="articleId === 'article240727_configurations_of_dishes'" />
+      <lead_time v-if="articleId === 'article240725_lead_time_management'" />
+      <configurations_of_dishes
+        v-if="articleId === 'article240727_configurations_of_dishes'"
+      />
     </div>
   </div>
 </template>

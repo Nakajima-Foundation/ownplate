@@ -376,7 +376,7 @@ export default defineComponent({
             // get now and compaire
             const res = openTimes.value[day].reduce((tmpOpen, time) => {
               const now = today.getHours() * 60 + today.getMinutes();
-              return tmpOpen || (now >= time.start && now <= time.end)
+              return tmpOpen || (now >= time.start && now <= time.end);
             }, false);
             tmpObj[day] = res;
           } else {
