@@ -165,7 +165,7 @@ export default defineComponent({
       try {
         await verifyPasswordResetCode(auth, code);
         isExpired.value = false;
-      } catch (e) {
+      } catch (__e) {
         isExpired.value = true;
       }
     })();

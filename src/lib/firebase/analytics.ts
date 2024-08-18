@@ -17,7 +17,7 @@ export interface AnalyticsMenuData extends MenuData {
   category: string;
   subCategory: string;
 }
-interface AnalyticsData {}
+type AnalyticsData = Record<string, unknown>;
 
 export const sku_item_data = (
   menu: AnalyticsMenuData,

@@ -620,7 +620,7 @@ export default defineComponent({
           try {
             const user = (await liff.getProfile()) || {};
             return user.displayName;
-          } catch (e) {
+          } catch (__e) {
             return "";
           }
         }

@@ -63,7 +63,7 @@ export default defineComponent({
       errors.value = [];
       try {
         parsePhoneNumber(countryCode.value + phoneNumber.value);
-      } catch (error) {
+      } catch (__error) {
         errors.value.push("sms.invalidPhoneNumber");
       }
       ctx.emit("change", {

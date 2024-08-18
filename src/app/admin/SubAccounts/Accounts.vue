@@ -250,7 +250,7 @@ export default defineComponent({
         } else {
           errors.value = ["admin.subAccounts.inviteInputError"];
         }
-      } catch (e) {
+      } catch (__e) {
         errors.value = ["admin.subAccounts.inviteInputError"];
       }
       sending.value = false;

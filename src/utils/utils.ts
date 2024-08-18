@@ -680,7 +680,7 @@ export const usePhoneNumber = (shopInfo: any) => {
     const countryCode = shopInfo.value.countryCode || countries.value[0].code;
     try {
       return parsePhoneNumber(countryCode + shopInfo.value.phoneNumber);
-    } catch (error) {
+    } catch (__error) {
       return null;
     }
   });
@@ -711,7 +711,7 @@ export const useNationalPhoneNumber = (shopInfo: RestaurantInfoData) => {
     const countryCode = shopInfo.countryCode || stripeRegion.countries[0].code;
     try {
       return parsePhoneNumber(countryCode + shopInfo.phoneNumber);
-    } catch (error) {
+    } catch (__error) {
       return null;
     }
   });

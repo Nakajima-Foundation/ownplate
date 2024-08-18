@@ -50,7 +50,7 @@ export default defineComponent({
           await sendEmailVerification(auth.currentUser);
           sent.value = true;
         }
-      } catch (e) {
+      } catch (__e) {
         isError.value = true;
       } finally {
         isLoading.value = false;

@@ -53,7 +53,7 @@ export default defineComponent({
           nationalPhoneNumber.value,
           url,
         );
-      } catch (e) {
+      } catch (__e) {
         alert("sorry error. ask omochikaeri administrator.");
       } finally {
         downloadSubmitting.value = false;
