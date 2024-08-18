@@ -1,7 +1,4 @@
 <template>
-  <metainfo>
-    <template v-slot:title="{ content }">{{ content }}</template>
-  </metainfo>
   <div class="flex min-h-screen flex-col" @click="enableSound()">
     <!-- Notification Banner -->
     <NotificationBanner />

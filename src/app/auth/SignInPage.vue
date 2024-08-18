@@ -139,14 +139,10 @@ import { useUserData, defaultTitle } from "@/utils/utils";
 
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
+import { useHead } from "@unhead/vue";
 
 export default defineComponent({
   name: "Signin",
-  metaInfo() {
-    return {
-      title: [defaultTitle, "Signin Admin"].join(" / "),
-    };
-  },
   setup() {
     const route = useRoute();
     const router = useRouter();
@@ -158,6 +154,10 @@ export default defineComponent({
 
     const { user, isAdmin } = useUserData();
 
+    useHead({
+      title: [defaultTitle, "Signin Admin"].join(" / "),
+    });
+    
     const redirectToAdminPage = () => {
       const redirect = route.query["to"] as string;
       const pathRegex = /^\/[a-zA-Z0-9-_/]+$/;

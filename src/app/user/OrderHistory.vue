@@ -67,13 +67,9 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
 import { OrderInfoData } from "@/models/orderInfo";
+import { useHead } from "@unhead/vue";
 
 export default defineComponent({
-  metaInfo() {
-    return {
-      title: [defaultHeader.title, "User Order History"].join(" / "),
-    };
-  },
   components: {
     OrderedInfo,
     PhoneLogin,
@@ -87,6 +83,10 @@ export default defineComponent({
 
     const basePath = useBasePath();
     const topPath = useTopPath();
+
+    useHead({
+      title: [defaultHeader.title, "User Order History"].join(" / "),
+    });
 
     const uid = computed(() => {
       return store.getters.uidUser || store.getters.uidLiff;

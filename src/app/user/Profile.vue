@@ -73,6 +73,7 @@ import AddressButton from "@/components/users/AddressButton.vue";
 import { defaultHeader } from "@/config/header";
 
 import { useUserData } from "@/utils/utils";
+import { useHead } from "@unhead/vue";
 
 export default defineComponent({
   components: {
@@ -85,12 +86,11 @@ export default defineComponent({
     ProfileStripe,
     ProfileLine,
   },
-  metaInfo() {
-    return {
-      title: [defaultHeader.title, "Profile"].join(" / "),
-    };
-  },
   setup() {
+    useHead({
+      title: [defaultHeader.title, "Profile"].join(" / "),
+    });
+    
     const handleSignOut = () => {
       signOut(auth);
     };
