@@ -140,6 +140,14 @@
           >
           <span class="text-xs opacity-50">(2024/07/31)</span>
         </div>
+        <div>
+          <router-link
+            to="/admin/docs/articles/article240817_stripe_payouts/"
+            class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
+            >オンライン決済(Stripe)利用時の入金スケジュールの確認と設定方法について</router-link
+          >
+          <span class="text-xs opacity-50">(2024/08/19)</span>
+        </div>
       </div>
 
       <div class="mt-4 text-sm font-bold">役立つリンク</div>
