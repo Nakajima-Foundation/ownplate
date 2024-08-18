@@ -48,7 +48,7 @@ export const liffAuthenticate = async (db: admin.firestore.Firestore, data: liff
 
     try {
       await admin.auth().getUser(userId);
-    } catch (e) {
+    } catch (__e) {
       // no user
       await admin.auth().createUser({ uid: userId });
       await admin.auth().setCustomUserClaims(userId, {

@@ -79,7 +79,7 @@ const convTime = (time: any) => {
   }
   try {
     return time && moment(time.toDate()).format("YYYY/MM/DD HH:mm");
-  } catch (e) {
+  } catch (__e) {
     return time && moment(time.seconds * 1000).format("YYYY/MM/DD HH:mm");
   }
 };
