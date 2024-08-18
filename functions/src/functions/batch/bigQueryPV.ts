@@ -5,7 +5,7 @@ import moment from "moment-timezone";
 import * as utils from "../../lib/utils";
 import { ownPlateConfig } from "../../common/project";
 
-const { BigQuery } = require("@google-cloud/bigquery");
+import { BigQuery } from "@google-cloud/bigquery";
 
 export const bigQueryPV = async (db: admin.firestore.Firestore) => {
   const bigquery = new BigQuery();

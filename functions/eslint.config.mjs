@@ -31,9 +31,11 @@ export default [
         {
           argsIgnorePattern: "^__",
           varsIgnorePattern: "^__",
+          caughtErrorsIgnorePattern: "^__",
         },
       ],
       "@typescript-eslint/no-var-requires": "off",
+      "@typescript-eslint/no-unused-expressions": "off",
       "linebreak-style": ["error", "unix"],
       quotes: ["error", "double"],
       semi: ["error", "always"],

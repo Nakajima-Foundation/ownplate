@@ -149,6 +149,7 @@ export interface smaregiAuthData {
   code: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface smaregiStoreListData {}
 export interface smaregiProductListData {
   store_id: string;
