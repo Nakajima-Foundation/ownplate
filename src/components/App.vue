@@ -85,6 +85,7 @@ import { defaultHeader } from "@/config/header";
 
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
+import { useHead } from "@unhead/vue";
 
 export default defineComponent({
   name: "App",
@@ -96,7 +97,6 @@ export default defineComponent({
     AppFooter,
     NotificationBanner,
   },
-  metaInfo: defaultHeader,
 
   setup() {
     let unregisterAuthObserver: null | Unsubscribe = null;
@@ -107,6 +107,8 @@ export default defineComponent({
     const user = useUser();
     const restaurantId = useRestaurantId();
 
+    useHead(defaultHeader);
+    
     onMounted(() => {
       window.addEventListener("focus", () => {
         store.commit("setActive", true);

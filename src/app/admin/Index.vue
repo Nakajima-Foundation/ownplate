@@ -285,6 +285,7 @@ import { useRouter } from "vue-router";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { ShopOwnerData } from "@/models/ShopOwner";
+import { useHead } from "@unhead/vue";
 
 export default defineComponent({
   name: "RestaurantIndex",
@@ -304,11 +305,6 @@ export default defineComponent({
     IndexFooter,
     ToggleSwitch,
   },
-  metaInfo() {
-    return {
-      title: ["Admin Index", defaultTitle].join(" / "),
-    };
-  },
   setup() {
     const store = useStore();
     const router = useRouter();
@@ -326,6 +322,11 @@ export default defineComponent({
     const restaurantLists = ref<string[]>([]);
     const numberOfOrderObj = ref<{ [key: string]: number }>({});
     const messages = ref<DocumentData[]>([]);
+
+    useHead({
+      title: ["Admin Index", defaultTitle].join(" / "),
+    });
+
     if (!checkAdminPermission()) {
       return;
     }

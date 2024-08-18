@@ -223,15 +223,19 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { defaultHeader } from "@/config/header";
+import { useHead } from "@unhead/vue";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
-  metaInfo() {
-    return {
+  setup() {
+    const { t } = useI18n();
+    useHead({
       title: [
-        this.$t("pageTitle.terms.privacy") || "",
+        t("pageTitle.terms.privacy") || "",
         defaultHeader.title,
       ].join(" / "),
-    };
+    });
+    return {};
   },
 });
 </script>
