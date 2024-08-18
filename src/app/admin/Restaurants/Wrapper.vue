@@ -98,7 +98,7 @@ export default defineComponent({
     const restaurant_detacher = ref();
     restaurant_detacher.value = onSnapshot(
       restaurantRef,
-      async (restaurant) => {
+      (restaurant) => {
         if (!restaurant.exists()) {
           noRestaurant.value = true;
           return;
@@ -124,7 +124,6 @@ export default defineComponent({
       (e) => {
         console.log(e);
         noRestaurant.value = true;
-        return;
       },
     );
 

@@ -1315,13 +1315,13 @@ export default defineComponent({
     });
     const removeAllMarker = () => {
       if (markers && markers.length > 0) {
-        markers.map((marker) => {
+        markers.forEach((marker) => {
           marker.setMap(null);
         });
         markers.splice(0);
       }
     };
-    const setCurrentLocation = async (
+    const setCurrentLocation = (
       location: { lat?: number; lng?: number },
       move = true,
     ) => {
@@ -1450,10 +1450,10 @@ export default defineComponent({
         });
       }
     };
-    const confirmCopy = async () => {
+    const confirmCopy = () => {
       store.commit("setAlert", {
         code: "editCommon.copyAlert",
-        callback: async () => {
+        callback: () => {
           copyRestaurantFunc();
         },
       });

@@ -52,7 +52,7 @@ export default defineComponent({
           // Check if the cached info is out of date, update them.
           if (
             review.value.restaurantName !== props.shopInfo.restaurantName ||
-            review.value.restProfilePhoto != props.shopInfo.restProfilePhoto
+            review.value.restProfilePhoto !== props.shopInfo.restProfilePhoto
           ) {
             setDoc(
               doc(db, path.value),

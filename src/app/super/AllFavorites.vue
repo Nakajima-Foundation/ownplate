@@ -60,7 +60,9 @@ export default defineComponent({
         }
         const snapshot = await getDocs(myQuery);
 
-        if (!snapshot.empty) {
+        if (snapshot.empty) {
+          last.value = null;
+        } else {
           last.value = snapshot.docs[snapshot.docs.length - 1];
           let i = 0;
           for (; i < snapshot.docs.length; i++) {
@@ -70,8 +72,6 @@ export default defineComponent({
             review.uid = userId;
             reviews.value.push(review);
           }
-        } else {
-          last.value = null;
         }
       }
       isLoading = false;

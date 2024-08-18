@@ -336,7 +336,7 @@ export default defineComponent({
     });
 
     const detachOrders = () => {
-      orderDetachers.value.map((detacher) => {
+      orderDetachers.value.forEach((detacher) => {
         detacher();
       });
       orderDetachers.value = [];
@@ -401,7 +401,7 @@ export default defineComponent({
               where("deletedFlag", "==", false),
               orderBy("createdAt", "asc"),
             ),
-            async (result) => {
+            (result) => {
               try {
                 if (result.empty) {
                   restaurantItems.value = {}; // so that we present "No restaurant"
@@ -433,7 +433,7 @@ export default defineComponent({
         }
         if (!isOwner.value && restaurantLists.value.length > 0) {
           // sub account
-          arrayChunk(restaurantLists.value, 10).map((restaurantIds) => {
+          arrayChunk(restaurantLists.value, 10).forEach((restaurantIds) => {
             restaurant_detacher.value = onSnapshot(
               query(
                 collection(db, "restaurants"),
@@ -442,7 +442,7 @@ export default defineComponent({
                 where("deletedFlag", "==", false),
                 orderBy("createdAt", "asc"),
               ),
-              async (result) => {
+              (result) => {
                 try {
                   if (result.empty && restaurantItems.value === null) {
                     restaurantItems.value = {}; // so that we present "No restaurant"
@@ -485,7 +485,7 @@ export default defineComponent({
         onSnapshot(
           query(collectionGroup(db, "lines"), where("uid", "==", uid.value)),
           (result) => {
-            result.docs.map(async (res) => {
+            result.docs.forEach((res) => {
               const restaurantId = res.data().restaurantId;
               lines.value[restaurantId] = true;
             });

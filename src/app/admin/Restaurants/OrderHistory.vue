@@ -216,7 +216,7 @@ export default defineComponent({
         dbQuery = query(dbQuery, startAfter(last.value));
       }
       const docs = (await getDocs(dbQuery)).docs;
-      last.value = docs.length == limitNum ? docs[limitNum - 1] : null;
+      last.value = docs.length === limitNum ? docs[limitNum - 1] : null;
       const tmpOrders = docs
         .map(doc2data("order"))
         .filter((a) => a.status !== order_status.transaction_hide);
@@ -233,7 +233,7 @@ export default defineComponent({
                   where("orderId", "in", arr),
                 ),
               );
-              cuss.docs.map((cus) => {
+              cuss.docs.forEach((cus) => {
                 const data = cus.data();
                 customers[data.orderId] = data;
               });

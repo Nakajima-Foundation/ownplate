@@ -139,7 +139,7 @@ export default defineComponent({
           if (tmp[ele] === undefined) {
             tmp[ele] = 1;
           } else {
-            tmp[ele]++;
+            tmp[ele] += 1;
           }
           return tmp;
         },
@@ -233,7 +233,7 @@ export default defineComponent({
           );
 
           const _selectedMenu: any = {};
-          (productList.value || []).map((product, key) => {
+          (productList.value || []).forEach((product, key) => {
             const productId = product.productId;
             if (productObj[productId]) {
               _selectedMenu[key] = productObj[productId].menuId;
@@ -250,7 +250,7 @@ export default defineComponent({
         console.log("error");
         return;
       }
-      (productList.value || []).map((product, key) => {
+      (productList.value || []).forEach((product, key) => {
         const menuId = selectedMenu.value[key];
         // check uniq.
         const path = `/smaregi/${contractId}/stores/${storeId}/products/${product.productId}`;

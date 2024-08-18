@@ -55,7 +55,7 @@ export default defineComponent({
     const handleDeleteAccount = () => {
       store.commit("setAlert", {
         code: "profile.reallyDeleteAccount",
-        callback: async () => {
+        callback: () => {
           window.scrollTo(0, 0);
           reLoginVisible.value = true;
         },

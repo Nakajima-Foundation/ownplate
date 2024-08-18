@@ -266,20 +266,20 @@ export default defineComponent({
     });
 
     const handleCheckOut = () => {
-      if (!isShowCart.value) {
-        isShowCart.value = true;
-      } else {
+      if (isShowCart.value) {
         ctx.emit("handleCheckOut");
+      } else {
+        isShowCart.value = true;
       }
     };
     const closeCart = () => {
       isShowCart.value = false;
     };
     const buttonText = computed(() => {
-      if (!isShowCart.value) {
-        return "sitemenu.confirmCart";
-      } else {
+      if (isShowCart.value) {
         return "sitemenu.checkout";
+      } else {
+        return "sitemenu.confirmCart";
       }
     });
     watch(totalQuantities, (value) => {

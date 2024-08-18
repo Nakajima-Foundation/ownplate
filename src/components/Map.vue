@@ -58,7 +58,7 @@ export default defineComponent({
 
     const selected = ref<null | number>(null);
 
-    props.restaurants.map((restaurant: RestaurantInfoData) => {
+    props.restaurants.forEach((restaurant: RestaurantInfoData) => {
       if (
         restaurant.location &&
         restaurant.location.lat &&

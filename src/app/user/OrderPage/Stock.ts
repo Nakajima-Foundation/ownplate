@@ -35,7 +35,7 @@ export const useHasSoldOutToday = (
         where(documentId(), "in", ids),
       ),
     );
-    ret.docs.map((a) => {
+    ret.docs.forEach((a) => {
       const d = a.data() as MenuData;
       menuData.value[a.id as string] = d;
       if (d.soldOutToday === today) {

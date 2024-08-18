@@ -381,7 +381,7 @@ export default defineComponent({
     // TODO: add area to header
     return {
       title:
-        Object.keys(this.shopInfo).length == 0
+        Object.keys(this.shopInfo).length === 0
           ? document.title
           : [
               this.shopInfo?.restaurantName || "",
@@ -703,7 +703,7 @@ export default defineComponent({
         }
       } catch (error: any) {
         if (error.code === "permission-denied" && retryCount.value < 3) {
-          retryCount.value++;
+          retryCount.value += 1;
           console.log("retrying:", retryCount.value);
           setTimeout(() => {
             goCheckout();

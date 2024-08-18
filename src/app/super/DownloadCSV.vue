@@ -36,7 +36,7 @@ export default defineComponent({
       const collectionData = await getDocs(
         collection(db, `restaurants/${props.restaurantid}/menus`),
       );
-      collectionData.docs.map((doc) => {
+      collectionData.docs.forEach((doc) => {
         const menu = doc.data();
         const data = {
           productName: menu.itemName,
@@ -49,7 +49,7 @@ export default defineComponent({
           productExplanation: menu.itemDescription,
           productNameAlias: menu.itemAliasesName,
           productImagePath: menu.images?.item?.path,
-          noPublish: !menu.publicFlag ? 1 : 0,
+          noPublish: menu.publicFlag ? 0 : 1,
           outofstock: menu.soldOut ? 1 : 0,
           delete: menu.deletedFlag ? 1 : 0,
           updateDate: menu.csvImportedAt

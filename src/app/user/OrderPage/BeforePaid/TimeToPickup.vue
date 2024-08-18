@@ -79,7 +79,7 @@ export default defineComponent({
       return (Object.values(props.orderInfo.menuItems) || []).reduce(
         (tmp: any, menu) => {
           const { exceptDay, exceptHour } = menu;
-          Object.keys(exceptDay || {}).map((key) => {
+          Object.keys(exceptDay || {}).forEach((key) => {
             if (exceptDay[key]) {
               tmp.exceptDay[key] = true;
             }

@@ -137,7 +137,7 @@ export default defineComponent({
     const orderInfo = ref<OrderInfoData>({} as OrderInfoData);
     const hasFriends = ref<boolean | null>(null);
     const menuObj = ref<{ [key: string]: OrderMenuItemData } | null>(null);
-    const detacher: Unsubscribe[] = [];
+    const detachers: Unsubscribe[] = [];
     const menuNotFound = ref<boolean | null>(null);
 
     const liffBasePath = useLiffBasePath();
@@ -166,7 +166,7 @@ export default defineComponent({
     const loadUserData = async () => {
       const order_detacher = onSnapshot(
         doc(db, `restaurants/${restaurantId.value}/orders/${orderId}`),
-        async (order) => {
+        (order) => {
           const order_data = order.exists() ? order.data() : {};
           orderInfo.value = order_data as OrderInfoData;
           menuObj.value = orderInfo.value.menuItems || {};
@@ -186,7 +186,7 @@ export default defineComponent({
           menuNotFound.value = true;
         },
       );
-      detacher.push(order_detacher);
+      detachers.push(order_detacher);
 
       if (hasLine.value) {
         const ret = await lineVerifyFriend({
@@ -237,8 +237,8 @@ export default defineComponent({
     });
 
     onUnmounted(() => {
-      if (detacher) {
-        detacher.map((detacher) => {
+      if (detachers) {
+        detachers.forEach((detacher) => {
           detacher();
         });
       }

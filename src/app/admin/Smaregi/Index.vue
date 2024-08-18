@@ -184,7 +184,7 @@ export default defineComponent({
           if (tmp[ele] === undefined) {
             tmp[ele] = 1;
           } else {
-            tmp[ele]++;
+            tmp[ele] += 1;
           }
           return tmp;
         },
@@ -257,7 +257,7 @@ export default defineComponent({
           }, {});
 
           const __selectedRestaurant: any = {};
-          (shopList.value || []).map((store, key) => {
+          (shopList.value || []).forEach((store, key) => {
             const storeId = store.storeId;
             if (storeObj[storeId]) {
               const { outOfStock, inStock } = storeObj[storeId];
@@ -279,7 +279,7 @@ export default defineComponent({
         return;
       }
 
-      (shopList.value || []).map((store, key) => {
+      (shopList.value || []).forEach((store, key) => {
         const restaurantId = selectedRestaurant.value[key];
         const outOfStock = outOfStockData.value[key];
         const inStock = inStockData.value[key];

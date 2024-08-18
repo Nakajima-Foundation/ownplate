@@ -17,7 +17,7 @@ export const uploadFile = (file: File, path: string): Promise<string> => {
       (err) => {
         rejected(err);
       },
-      async () => {
+      () => {
         // const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
         //resolve(downloadURL);
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {

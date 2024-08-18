@@ -128,7 +128,7 @@ export default defineComponent({
                   where("orderId", "in", arr),
                 ),
               );
-              cuss.docs.map((cus) => {
+              cuss.docs.forEach((cus) => {
                 const data = cus.data();
                 tmpCustomers[data.orderId] = data;
               });

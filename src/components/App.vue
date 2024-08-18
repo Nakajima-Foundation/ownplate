@@ -155,7 +155,7 @@ export default defineComponent({
     };
 
     store.commit("setServerConfig", { region: ownPlateConfig.region });
-    unregisterAuthObserver = onAuthStateChanged(auth, async (fUser) => {
+    unregisterAuthObserver = onAuthStateChanged(auth, (fUser) => {
       if (fUser) {
         fUser
           .getIdTokenResult(true)

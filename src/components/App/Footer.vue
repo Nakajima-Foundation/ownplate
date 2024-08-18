@@ -152,11 +152,11 @@ export default defineComponent({
       auth.languageCode = lang;
     };
     const saveLang = (lang: string) => {
-      if (!isNull(uid.value)) {
-        setDoc(doc(db, profile_path.value), { lang }, { merge: true });
-      } else {
+      if (isNull(uid.value)) {
         // save into store
         store.commit("setLang", lang);
+      } else {
+        setDoc(doc(db, profile_path.value), { lang }, { merge: true });
       }
     };
     const changeLang = (lang: string) => {

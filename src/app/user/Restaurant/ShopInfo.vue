@@ -371,20 +371,18 @@ export default defineComponent({
 
     const isOpen = computed(() => {
       return Object.keys(daysOfWeek).reduce(
-        (tmp: { [key: string]: boolean }, day) => {
+        (tmpObj: { [key: string]: boolean }, day) => {
           if (weekday === Number(day) && businessDay.value[day]) {
             // get now and compaire
-            const res = openTimes.value[day].reduce((tmp, time) => {
+            const res = openTimes.value[day].reduce((tmpOpen, time) => {
               const now = today.getHours() * 60 + today.getMinutes();
-              const ret = now >= time.start && now <= time.end;
-              tmp = tmp || ret;
-              return tmp;
+              return tmpOpen || (now >= time.start && now <= time.end);
             }, false);
-            tmp[day] = res;
+            tmpObj[day] = res;
           } else {
-            tmp[day] = false;
+            tmpObj[day] = false;
           }
-          return tmp;
+          return tmpObj;
         },
         {},
       );
