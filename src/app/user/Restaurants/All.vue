@@ -71,7 +71,7 @@ import { useHead } from "@unhead/vue";
 
 export default defineComponent({
   setup() {
-    useHead(RestaurantHeader)
+    useHead(RestaurantHeader);
     const allArea = JPPrefecture;
 
     const restaurantsObj = ref<{ [key: string]: RestaurantInfoData[] }>({});

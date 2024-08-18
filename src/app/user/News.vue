@@ -41,7 +41,7 @@ export default defineComponent({
     useHead({
       title: ["News", defaultTitle].join(" / "),
     });
-    
+
     return {
       md: new MarkdownIt(),
       newsList,

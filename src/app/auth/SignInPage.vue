@@ -157,7 +157,7 @@ export default defineComponent({
     useHead({
       title: [defaultTitle, "Signin Admin"].join(" / "),
     });
-    
+
     const redirectToAdminPage = () => {
       const redirect = route.query["to"] as string;
       const pathRegex = /^\/[a-zA-Z0-9-_/]+$/;

@@ -31,13 +31,9 @@ import {
 } from "firebase/firestore";
 
 import { useSuper, defaultTitle } from "@/utils/utils";
+import { useHead } from "@unhead/vue";
 
 export default defineComponent({
-  metaInfo() {
-    return {
-      title: [defaultTitle, "Super All Profiles"].join(" / "),
-    };
-  },
   components: {
     BackButton,
   },
@@ -46,6 +42,10 @@ export default defineComponent({
 
     const prefix = ref("");
     const profiles = ref<DocumentData[]>([]);
+
+    useHead({
+      title: [defaultTitle, "Super All Profiles"].join(" / "),
+    });
 
     const handleSearch = () => {
       getDocs(

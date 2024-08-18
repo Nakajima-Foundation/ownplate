@@ -108,7 +108,7 @@ export default defineComponent({
     const restaurantId = useRestaurantId();
 
     useHead(defaultHeader);
-    
+
     onMounted(() => {
       window.addEventListener("focus", () => {
         store.commit("setActive", true);

@@ -412,9 +412,7 @@ export default defineComponent({
   setup() {
     const { t } = useI18n();
     useHead({
-      title: [t("pageTitle.terms.user") || "", defaultHeader.title].join(
-        " / ",
-      ),
+      title: [t("pageTitle.terms.user") || "", defaultHeader.title].join(" / "),
     });
     return {};
   },

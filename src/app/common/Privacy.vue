@@ -230,10 +230,9 @@ export default defineComponent({
   setup() {
     const { t } = useI18n();
     useHead({
-      title: [
-        t("pageTitle.terms.privacy") || "",
-        defaultHeader.title,
-      ].join(" / "),
+      title: [t("pageTitle.terms.privacy") || "", defaultHeader.title].join(
+        " / ",
+      ),
     });
     return {};
   },

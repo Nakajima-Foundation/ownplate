@@ -146,6 +146,7 @@ import {
   defaultTitle,
 } from "@/utils/utils";
 import { checkShopAccount } from "@/utils/userPermission";
+import { useHead } from "@unhead/vue";
 
 export default defineComponent({
   components: {
@@ -160,17 +161,6 @@ export default defineComponent({
       type: Object,
       required: true,
     },
-  },
-  metaInfo() {
-    return {
-      title: this.shopInfo.restaurantName
-        ? [
-            "Admin Order History",
-            this.shopInfo.restaurantName,
-            defaultTitle,
-          ].join(" / ")
-        : defaultTitle,
-    };
   },
   setup(props) {
     const limitNum = 60;
@@ -198,6 +188,16 @@ export default defineComponent({
     ];
 
     const { isOwner, ownerUid } = useAdminUids();
+
+    useHead({
+      title: props.shopInfo.restaurantName
+        ? [
+            "Admin Order History",
+            props.shopInfo.restaurantName,
+            defaultTitle,
+          ].join(" / ")
+        : defaultTitle,
+    });
 
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
       return notFoundResponse;

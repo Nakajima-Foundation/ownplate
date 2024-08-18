@@ -149,15 +149,10 @@ import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-
+import { useHead } from "@unhead/vue";
 import moment from "moment";
 
 export default defineComponent({
-  metaInfo() {
-    return {
-      title: [defaultTitle, "Admin Subaccount Accounts"].join(" / "),
-    };
-  },
   components: {
     BackButton,
   },
@@ -175,6 +170,9 @@ export default defineComponent({
     const sending = ref(false);
 
     const { uid } = useAdminUids();
+    useHead({
+      title: [defaultTitle, "Admin Subaccount Accounts"].join(" / "),
+    });
 
     getDocs(
       query(

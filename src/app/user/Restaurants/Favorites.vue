@@ -109,12 +109,11 @@ export default defineComponent({
       return `users/${uid.value}/reviews`;
     });
 
-    const title = [
-      t("pageTitle.restaurantRoot"),
-      ownPlateConfig.siteName,
-    ].join(" / ");
-    useHead(Object.assign(RestaurantHeader, { title }))
-    
+    const title = [t("pageTitle.restaurantRoot"), ownPlateConfig.siteName].join(
+      " / ",
+    );
+    useHead(Object.assign(RestaurantHeader, { title }));
+
     if (isUser.value) {
       (async () => {
         const snapshot = await getDocs(

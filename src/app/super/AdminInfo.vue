@@ -41,13 +41,9 @@ import Restaurant from "@/app/super/Components/Restaurant.vue";
 import { useSuper, doc2data, defaultTitle } from "@/utils/utils";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
+import { useHead } from "@unhead/vue";
 
 export default defineComponent({
-  metaInfo() {
-    return {
-      title: [defaultTitle, "Super Admin info"].join(" / "),
-    };
-  },
   components: {
     BackButton,
     Restaurant,
@@ -63,6 +59,10 @@ export default defineComponent({
     const adminPrivate = ref<any>({});
 
     const adminId = route.params.adminId;
+
+    useHead({
+      title: [defaultTitle, "Super Admin info"].join(" / "),
+    });
 
     superDispatch({
       cmd: "getCustomeClaims",

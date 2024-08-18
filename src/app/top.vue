@@ -74,7 +74,7 @@ export default defineComponent({
     useHead({
       title: [defaultTitle, "Top"].join(" / "),
     });
-    
+
     const {
       isAdmin,
       // isUser,

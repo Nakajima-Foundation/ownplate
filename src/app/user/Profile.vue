@@ -90,7 +90,7 @@ export default defineComponent({
     useHead({
       title: [defaultHeader.title, "Profile"].join(" / "),
     });
-    
+
     const handleSignOut = () => {
       signOut(auth);
     };

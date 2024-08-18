@@ -79,11 +79,10 @@ export default defineComponent({
     const { isUser, uid } = useUserData();
 
     const { t } = useI18n();
-    const title = [
-      t("pageTitle.restaurantRoot"),
-      ownPlateConfig.siteName,
-    ].join(" / ");
-    useHead(Object.assign(RestaurantHeader, { title }))
+    const title = [t("pageTitle.restaurantRoot"), ownPlateConfig.siteName].join(
+      " / ",
+    );
+    useHead(Object.assign(RestaurantHeader, { title }));
 
     const likes = ref<any[]>([]);
     onMounted(async () => {
