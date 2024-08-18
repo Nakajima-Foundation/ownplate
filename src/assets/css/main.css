@@ -155,3 +155,8 @@ canvas {
 .select .icon.is-right {
   display: none;
 }
+
+
+.field .has-addons {
+    display: inherit !important;
+}
