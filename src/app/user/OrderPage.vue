@@ -212,7 +212,7 @@ export default defineComponent({
           doc(db, `restaurants/${restaurantId.value}/orders/${orderId}`),
         );
         console.log("suceeded");
-      } catch (error) {
+      } catch (__error) {
         console.log("failed");
       }
     };
