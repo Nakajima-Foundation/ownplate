@@ -25,6 +25,7 @@
     "@oruga-ui/theme-bulma": "^0.3.0",
     "@sentry/tracing": "^6.19.4",
     "@sentry/vue": "^6.19.4",
+    "@unhead/vue": "^1.9.16",
     "caniuse-lite": "^1.0.30001643",
     "chart.js": "^3.9.1",
     "cookie": "^0.4.2",
@@ -45,7 +46,6 @@
     "vue-chart-3": "^3.1.8",
     "vue-clipboard3": "^2.0.0",
     "vue-i18n": "^9.2.2",
-    "vue-meta": "^3.0.0-alpha.10",
     "vue-router": "^4.2.5",
     "vue-social-sharing": "^4.0.0-alpha4",
     "vuex": "^4.1.0"
