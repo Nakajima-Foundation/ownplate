@@ -54,6 +54,7 @@
     "@types/cookie": "^0.6.0",
     "@types/crypto-js": "^4.1.1",
     "@types/google-libphonenumber": "^7.4.27",
+    "@types/google.maps": "^3.55.12",
     "@types/gtag.js": "^0.0.20",
     "@types/pdfmake": "^0.2.9",
     "@types/query-string": "^6.3.0",
