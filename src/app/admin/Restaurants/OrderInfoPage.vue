@@ -1110,7 +1110,7 @@ export default defineComponent({
       // return orderInfo.value?.orderPlacedAt?.toDate();
     });
     const classOf = (statusKey: string) => {
-      if (order_status[statusKey] == orderInfo.value.status) {
+      if (order_status[statusKey] === orderInfo.value.status) {
         return statusKey;
       }
       return "bg-black bg-opacity-5";
