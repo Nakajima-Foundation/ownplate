@@ -78,7 +78,7 @@ export default [
       "no-useless-return": "warn",
       "array-callback-return": "error",
       "require-await": "error",
-      "eqeqeq": "warn",
+      "eqeqeq": "error",
       "init-declarations": "warn",
 
       
