@@ -27,7 +27,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const link = previewLink(props);
+    const link = previewLink({shopInfo: props.shopInfo});
     return {
       link,
     };

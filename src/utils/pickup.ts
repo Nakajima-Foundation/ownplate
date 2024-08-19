@@ -116,35 +116,6 @@ export const usePickupTime = (
     return tmp + 1;
   });
 
-  const isAvailableToday = computed(() => {
-    return (
-      availableDays.value.length > 0 && availableDays.value[0].offset === 0
-    );
-  });
-  const deliveryIsAvailableToday = computed(() => {
-    return (
-      deliveryAvailableDays.value.length > 0 &&
-      deliveryAvailableDays.value[0].offset === 0
-    );
-  });
-
-  // for last order
-  const availableDaysRaw = computed<AvailableDay[]>(() => {
-    return getAvailableDays(minimumCookTime.value);
-  });
-  const deliveryAvailableDaysRaw = computed<AvailableDay[]>(() => {
-    return getAvailableDays(minimumDeliveryTime.value);
-  });
-  const todaysLast = computed(() => {
-    return getTodaysLast(isAvailableToday, availableDaysRaw, minimumCookTime);
-  });
-  const deliveryTodaysLast = computed(() => {
-    return getTodaysLast(
-      deliveryIsAvailableToday,
-      deliveryAvailableDaysRaw,
-      minimumDeliveryTime,
-    );
-  });
 
   // just for display
   const getTodaysLast = (
@@ -177,20 +148,6 @@ export const usePickupTime = (
   };
 
   // for public days api.
-  const getAvailableDaysWithLastOrderTime = (minimumTime: number) => {
-    return getAvailableDays(minimumTime).map((a) => {
-      const { offset, date, times } = a;
-      const newTimes = times.filter((b: { time: number }) => {
-        // console.log(b, shopInfo.lastOrderTime);
-        if (shopInfo.lastOrderTime) {
-          // console.log(shopInfo.lastOrderTime, b.time)
-          return shopInfo.lastOrderTime + minimumTime >= b.time;
-        }
-        return true;
-      });
-      return { offset, date, times: newTimes };
-    });
-  };
   const getAvailableDays = (minimumTime: number) => {
     if (!shopInfoBusinessDay.value) {
       return []; // it means shopInfo is empty (not yet loaded)
@@ -236,14 +193,57 @@ export const usePickupTime = (
         return day.times.length > 0;
       });
   };
+  const getAvailableDaysWithLastOrderTime = (minimumTime: number) => {
+    return getAvailableDays(minimumTime).map((a) => {
+      const { offset, date, times } = a;
+      const newTimes = times.filter((b: { time: number }) => {
+        // console.log(b, shopInfo.lastOrderTime);
+        if (shopInfo.lastOrderTime) {
+          // console.log(shopInfo.lastOrderTime, b.time)
+          return shopInfo.lastOrderTime + minimumTime >= b.time;
+        }
+        return true;
+      });
+      return { offset, date, times: newTimes };
+    });
+  };
+
+  // for last order
+  const availableDaysRaw = computed<AvailableDay[]>(() => {
+    return getAvailableDays(minimumCookTime.value);
+  });
+  const deliveryAvailableDaysRaw = computed<AvailableDay[]>(() => {
+    return getAvailableDays(minimumDeliveryTime.value);
+  });
 
   // public
   const availableDays = computed<AvailableDay[]>(() => {
     return getAvailableDaysWithLastOrderTime(minimumCookTime.value);
   });
+  const isAvailableToday = computed(() => {
+    return (
+      availableDays.value.length > 0 && availableDays.value[0].offset === 0
+    );
+  });
+  const todaysLast = computed(() => {
+    return getTodaysLast(isAvailableToday, availableDaysRaw, minimumCookTime);
+  });
   // public
   const deliveryAvailableDays = computed<AvailableDay[]>(() => {
     return getAvailableDaysWithLastOrderTime(minimumDeliveryTime.value);
+  });
+  const deliveryIsAvailableToday = computed(() => {
+    return (
+      deliveryAvailableDays.value.length > 0 &&
+      deliveryAvailableDays.value[0].offset === 0
+    );
+  });
+  const deliveryTodaysLast = computed(() => {
+    return getTodaysLast(
+      deliveryIsAvailableToday,
+      deliveryAvailableDaysRaw,
+      minimumDeliveryTime,
+    );
   });
 
   // public

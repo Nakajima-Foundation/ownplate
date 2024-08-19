@@ -108,6 +108,10 @@ export default defineComponent({
       db,
       `restaurants/${restaurantId.value}/private/printer`,
     );
+    const reset = () => {
+      const newKey = doc(collection(db, "a")).id;
+      setDoc(restaurantRef, { key: newKey }, { merge: true });
+    };
     onSnapshot(restaurantRef, (doc) => {
       const data = doc.data();
       if (data === undefined) {
@@ -128,10 +132,6 @@ export default defineComponent({
       }
       return "";
     });
-    const reset = () => {
-      const newKey = doc(collection(db, "a")).id;
-      setDoc(restaurantRef, { key: newKey }, { merge: true });
-    };
     return {
       notFound,
       printerConfig,
