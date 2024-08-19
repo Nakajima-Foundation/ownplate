@@ -71,7 +71,7 @@ export default [
       "vue/no-unused-properties": "warn",
       "@typescript-eslint/no-shadow": "warn",
       "no-eq-null": "warn",
-      "no-use-before-define": "warn",
+      "no-use-before-define": "error",
       "no-empty-function": "warn",
       "no-negated-condition": "error",
       "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
