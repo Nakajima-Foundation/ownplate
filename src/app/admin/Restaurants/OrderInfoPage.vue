@@ -689,7 +689,6 @@ export default defineComponent({
       },
       () => {
         notFound.value = true;
-        return;
       },
     );
 

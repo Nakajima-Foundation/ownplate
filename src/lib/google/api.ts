@@ -32,7 +32,7 @@ export const google_geocode = async (keyword: string) => {
   const url = "https://maps.googleapis.com/maps/api/geocode/json?" + qs;
   const res: Response = await fetch(url);
   const result = await json_response(res);
-  if (result.status == "OK") {
+  if (result.status === "OK") {
     return result.results;
   } else {
     return false;

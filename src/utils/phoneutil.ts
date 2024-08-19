@@ -14,7 +14,7 @@ export const intenationalFormat = (parsedNumber: PhoneNumber): string => {
 };
 
 const localPrefix = (phoneNumber: PhoneNumber): string => {
-  return phoneNumber.getCountryCode() == 81 ? "0" : "";
+  return phoneNumber.getCountryCode() === 81 ? "0" : "";
 };
 
 export const formatNational = (phoneNumber: PhoneNumber): string => {
