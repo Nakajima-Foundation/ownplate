@@ -68,11 +68,11 @@ export default [
       'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
 
       "vue/require-explicit-emits": "error",
-      "vue/no-unused-properties": "warn",
+      "vue/no-unused-properties": "error",
       "@typescript-eslint/no-shadow": "warn",
       "no-eq-null": "error",
       "no-use-before-define": "error",
-      "no-empty-function": "warn",
+      "no-empty-function": "error",
       "no-negated-condition": "error",
       "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
       "no-useless-return": "error",
