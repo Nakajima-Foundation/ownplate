@@ -432,4 +432,3 @@ export const data2UrlSchema = (data: string, size: string): string => {
     size;
   return passprnt_uri;
 };
-

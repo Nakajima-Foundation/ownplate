@@ -116,7 +116,6 @@ export const usePickupTime = (
     return tmp + 1;
   });
 
-
   // just for display
   const getTodaysLast = (
     isAvailable: ComputedRef<boolean>,

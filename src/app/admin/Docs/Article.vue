@@ -16,7 +16,7 @@
       <lead_time v-if="articleId === 'article240725_lead_time_management'" />
       <configurations_of_dishes
         v-if="articleId === 'article240727_configurations_of_dishes'"
-        />
+      />
       <stripe_payouts v-if="articleId === 'article240817_stripe_payouts'" />
     </div>
   </div>

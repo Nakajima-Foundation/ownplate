@@ -32,11 +32,14 @@ export default defineComponent({
   setup(props, ctx) {
     const { t } = useI18n({ useScope: "global" });
     const content = computed(() => {
-      return data2csv({
-        data: props.data,
-        fields: props.fields,
-        fieldNames: props.fieldNames,
-      }, t);
+      return data2csv(
+        {
+          data: props.data,
+          fields: props.fields,
+          fieldNames: props.fieldNames,
+        },
+        t,
+      );
     });
 
     const handleDownload = () => {
