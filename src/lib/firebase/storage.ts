@@ -13,6 +13,7 @@ export const uploadFile = (file: File, path: string): Promise<string> => {
 
     uploadTask.on(
       "state_changed",
+      // eslint-disable-next-line no-empty-function
       () => {},
       (err) => {
         rejected(err);

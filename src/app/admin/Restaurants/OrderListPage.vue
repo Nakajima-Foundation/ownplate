@@ -135,6 +135,7 @@ export default defineComponent({
     const dayIndex = ref(0);
     const restaurantId = useRestaurantId();
 
+    // eslint-disable-next-line no-empty-function
     let order_detacher = () => {};
 
     const { ownerUid, uid } = useAdminUids();
