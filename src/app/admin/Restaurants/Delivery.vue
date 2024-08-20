@@ -386,6 +386,7 @@ export default defineComponent({
       }
     };
 
+    const location = props.shopInfo.location;
     const mapLoaded = () => {
       setTimeout(() => {
         if (typeof google !== "undefined") {
@@ -397,7 +398,6 @@ export default defineComponent({
       }, 100);
     };
 
-    const location = props.shopInfo.location;
     existLocation.value = Object.keys(location).length === 2;
     if (!existLocation.value) {
       return {

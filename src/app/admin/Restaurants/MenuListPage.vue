@@ -203,6 +203,9 @@ export default defineComponent({
     const restaurantId = computed(() => {
       return route.params.restaurantId as string;
     });
+    const { menuObj, itemsObj, numberOfMenus, loadMenu, isLoading } =
+      useMenuAndTitle(restaurantId);
+
     const menuCounter = computed(() => {
       return Object.keys(menuObj.value).length;
     });
@@ -231,9 +234,6 @@ export default defineComponent({
     onUnmounted(() => {
       restaurant_detacher();
     });
-
-    const { menuObj, itemsObj, numberOfMenus, loadMenu, isLoading } =
-      useMenuAndTitle(restaurantId);
 
     const menuLists = computed(() => {
       return (shopInfoSnapshot.value as RestaurantInfoData).menuLists || [];

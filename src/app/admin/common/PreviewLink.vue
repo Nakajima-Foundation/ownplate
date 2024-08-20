@@ -14,12 +14,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import { previewLink } from "@/utils/utils";
 
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
+
 export default defineComponent({
+  props: {
+    shopInfo: {
+      type: Object as PropType<RestaurantInfoData>,
+      required: true,
+    },
+  },
   setup(props) {
-    const link = previewLink(props);
+    const link = previewLink({ shopInfo: props.shopInfo });
     return {
       link,
     };

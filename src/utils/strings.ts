@@ -8,6 +8,10 @@ export const nameOfOrder = (order: OrderInfoData) => {
 
 export const regexOptionPrice = /\(((\+|-|＋|ー|−)[0-9.]+)\)/;
 
+export const convPrice = (priceStr: string) => {
+  return Number(priceStr.replace(/ー|−/g, "-").replace(/＋/g, "+"));
+};
+
 export const optionPrice = (option: string) => {
   const match = option.match(regexOptionPrice);
   if (match) {
@@ -32,9 +36,6 @@ export const formatOption = (
     );
   }
   return option;
-};
-export const convPrice = (priceStr: string) => {
-  return Number(priceStr.replace(/ー|−/g, "-").replace(/＋/g, "+"));
 };
 
 export const halfCharactors = (str: string) => {

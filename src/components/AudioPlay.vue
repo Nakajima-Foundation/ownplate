@@ -34,15 +34,13 @@ export default defineComponent({
         }
       }
     };
-    const play = async () => {
+    const play = () => {
       try {
         audioRef.value.setAttribute("src", soundFile.value);
         audioRef.value.currentTime = 0;
-        await audioRef.value.play();
       } catch (e) {
         console.log(e);
       }
-      return;
     };
     const event = computed(() => {
       return store.state.orderEvent;

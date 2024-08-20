@@ -132,7 +132,7 @@ export default defineComponent({
     watch(days, () => {
       if (
         !(days.value[dayIndex.value]?.times || []).some((t: any) => {
-          return time.value == t.time;
+          return time.value === t.time;
         })
       ) {
         time.value = days.value[dayIndex.value]?.times[0]?.time;

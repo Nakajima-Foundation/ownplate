@@ -53,7 +53,7 @@ export default defineComponent({
           return count + arrayOrNumSum(order.order[id]);
         }, 0);
         const status = Object.keys(order_status).reduce((result, key) => {
-          if (order_status[key] == order.status) {
+          if (order_status[key] === order.status) {
             return key;
           }
           return result;

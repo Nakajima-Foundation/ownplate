@@ -168,7 +168,7 @@ export default defineComponent({
       mergedOrder.value.forEach((order) => {
         const ids = Object.keys(order.order);
         const status = Object.keys(order_status).reduce((result, key) => {
-          if (order_status[key] == order.status) {
+          if (order_status[key] === order.status) {
             return key;
           }
           return result;

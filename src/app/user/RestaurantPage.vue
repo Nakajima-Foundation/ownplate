@@ -562,20 +562,12 @@ export default defineComponent({
     });
     //
 
-    const totalPrice = computed(() => {
-      const subTotal = prices2subtotal(prices.value);
-      const total = subtotal2total(subTotal, cartItems.value, props.shopInfo);
-      return { subTotal, total };
-    });
     const trimmedSelectedOptions = computed(() => {
       return getTrimmedSelectedOptions(
         orders.value,
         cartItems.value,
         selectedOptions.value,
       ) as any;
-    });
-    const postOptions = computed(() => {
-      return getPostOption(trimmedSelectedOptions.value, cartItems.value);
     });
     const prices = computed(() => {
       return getPrices(
@@ -584,6 +576,14 @@ export default defineComponent({
         cartItems.value,
         trimmedSelectedOptions.value,
       );
+    });
+    const totalPrice = computed(() => {
+      const subTotal = prices2subtotal(prices.value);
+      const total = subtotal2total(subTotal, cartItems.value, props.shopInfo);
+      return { subTotal, total };
+    });
+    const postOptions = computed(() => {
+      return getPostOption(trimmedSelectedOptions.value, cartItems.value);
     });
 
     const didOrderdChange = (eventArgs: {
