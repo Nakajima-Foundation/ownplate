@@ -93,98 +93,98 @@ export const state = () => ({
 });
 
 export const getters = {
-  uid: (state: State) => {
-    return state.user && (state.user as User).uid;
+  uid: (_state: State) => {
+    return _state.user && (_state.user as User).uid;
   },
-  uidAdmin: (state: State) => {
-    return state.user && (state.user as User).email && (state.user as User).uid;
+  uidAdmin: (_state: State) => {
+    return _state.user && (_state.user as User).email && (_state.user as User).uid;
   },
-  uidUser: (state: State) => {
+  uidUser: (_state: State) => {
     return (
-      state.user && (state.user as User).phoneNumber && (state.user as User).uid
+      _state.user && (_state.user as User).phoneNumber && (_state.user as User).uid
     );
   },
-  uidLiff: (state: State) => {
+  uidLiff: (_state: State) => {
     return (
-      state.user && (state.claims as Claims).liffId && (state.user as User).uid
+      _state.user && (_state.claims as Claims).liffId && (_state.user as User).uid
     );
   },
-  liffId: (state: State) => {
-    return state.user && state.claims?.liffId;
+  liffId: (_state: State) => {
+    return _state.user && _state.claims?.liffId;
   },
-  isAnonymous: (state: State) => {
-    return state.user === undefined || state.user === null;
+  isAnonymous: (_state: State) => {
+    return _state.user === undefined || _state.user === null;
   },
   // TODO: remove
-  stripeRegion: (state: State) => {
-    return stripe_regions[state.server.region || "US"];
+  stripeRegion: (_state: State) => {
+    return stripe_regions[_state.server.region || "US"];
   },
-  isSuperAdmin: (state: State) => {
-    return state.claims?.admin;
+  isSuperAdmin: (_state: State) => {
+    return _state.claims?.admin;
   },
-  isNotSuperAdmin: (state: State) => {
-    return !state.claims?.admin;
+  isNotSuperAdmin: (_state: State) => {
+    return !_state.claims?.admin;
   },
-  isOperator: (state: State) => {
-    return state.claims?.operator;
+  isOperator: (_state: State) => {
+    return _state.claims?.operator;
   },
-  isNotOperator: (state: State) => {
-    return !state.claims?.operator;
+  isNotOperator: (_state: State) => {
+    return !_state.claims?.operator;
   },
-  isAdmin: (state: State) => {
+  isAdmin: (_state: State) => {
     return !!(
-      state.user &&
-      (state.user as User).email &&
-      (state.user as User).uid
+      _state.user &&
+      (_state.user as User).email &&
+      (_state.user as User).uid
     );
   },
-  isSubAccount: (state: State) => {
-    return !!state.claims?.parentUid;
+  isSubAccount: (_state: State) => {
+    return !!_state.claims?.parentUid;
   },
-  parentId: (state: State) => {
-    return state.claims?.parentUid;
+  parentId: (_state: State) => {
+    return _state.claims?.parentUid;
   },
 };
 
 export const mutations = {
-  setActive(state: State, flag: boolean) {
-    state.isWindowActive = flag;
+  setActive(_state: State, flag: boolean) {
+    _state.isWindowActive = flag;
   },
-  setLoading(state: State, flag: boolean) {
-    state.isLoading = flag;
+  setLoading(_state: State, flag: boolean) {
+    _state.isLoading = flag;
   },
-  setUser(state: State, user: User) {
-    state.user = user;
+  setUser(_state: State, user: User) {
+    _state.user = user;
   },
-  updateDate(state: State) {
-    state.date = new Date();
+  updateDate(_state: State) {
+    _state.date = new Date();
   },
-  saveCart(state: State, payload: { id: string; cart: Cart }) {
+  saveCart(_state: State, payload: { id: string; cart: Cart }) {
     console.log("saving cart", payload.id, payload.cart);
-    // state.carts = {};
-    state.carts[payload.id as string] = payload.cart;
+    // _state.carts = {};
+    _state.carts[payload.id as string] = payload.cart;
   },
-  resetCart(state: State, restaurantId: string) {
+  resetCart(_state: State, restaurantId: string) {
     console.log("reset cart", restaurantId);
-    // state.carts = {};
-    state.carts[restaurantId] = null;
+    // _state.carts = {};
+    _state.carts[restaurantId] = null;
   },
-  setServerConfig(state: State, config: Server) {
-    state.server = config;
-    console.log("store:setServerConfig", state.server.region);
+  setServerConfig(_state: State, config: Server) {
+    _state.server = config;
+    console.log("store:setServerConfig", _state.server.region);
   },
-  setLang(state: State, lang: string) {
-    state.lang = lang;
+  setLang(_state: State, lang: string) {
+    _state.lang = lang;
   },
-  setCustomClaims(state: State, claims: Claims) {
+  setCustomClaims(_state: State, claims: Claims) {
     // Note: we can't copy user using Object.assign here
-    state.claims = claims;
+    _state.claims = claims;
   },
-  pingOrderEvent(state: State) {
-    state.orderEvent = state.orderEvent + 1;
+  pingOrderEvent(_state: State) {
+    _state.orderEvent = _state.orderEvent + 1;
   },
-  setOrders(state: State, orders: OrderInfoData[]) {
-    state.orderObj = orders.reduce(
+  setOrders(_state: State, orders: OrderInfoData[]) {
+    _state.orderObj = orders.reduce(
       (tmp: { [key: string]: OrderInfoData[] }, order: OrderInfoData) => {
         const day = moment(order.timePlaced.toDate()).format("YYYY-MM-DD");
         if (!tmp[day]) {
@@ -196,29 +196,29 @@ export const mutations = {
       {},
     );
   },
-  soundEnable(state: State) {
-    state.soundEnable = true;
+  soundEnable(_state: State) {
+    _state.soundEnable = true;
   },
-  setSoundOn(state: State, flag: boolean) {
-    state.soundOn = flag;
+  setSoundOn(_state: State, flag: boolean) {
+    _state.soundOn = flag;
   },
-  setSoundFile(state: State, file: string) {
-    state.soundFile = file;
+  setSoundFile(_state: State, file: string) {
+    _state.soundFile = file;
   },
-  resetDialog(state: State) {
-    state.dialog = null;
+  resetDialog(_state: State) {
+    _state.dialog = null;
   },
-  setAlert(state: State, params: DialogAlertData) {
-    state.dialog = { alert: params };
+  setAlert(_state: State, params: DialogAlertData) {
+    _state.dialog = { alert: params };
   },
-  setErrorMessage(state: State, params: DialogErrorData) {
-    state.dialog = { error: params };
+  setErrorMessage(_state: State, params: DialogErrorData) {
+    _state.dialog = { error: params };
   },
-  setTips(state: State, params: DialogTipsData) {
-    state.dialog = { tips: params };
+  setTips(_state: State, params: DialogTipsData) {
+    _state.dialog = { tips: params };
   },
-  resetOpenTime(state: State) {
-    state.openTime = new Date();
+  resetOpenTime(_state: State) {
+    _state.openTime = new Date();
   },
 };
 
