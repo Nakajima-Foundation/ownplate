@@ -72,9 +72,9 @@ export default defineComponent({
           console.log("deleteAccount", data);
 
           const auth = getAuth();
-          const user = auth.currentUser;
-          if (user) {
-            await deleteUser(user);
+          const _user = auth.currentUser;
+          if (_user) {
+            await deleteUser(_user);
           }
           console.log("deleted");
         } catch (error) {

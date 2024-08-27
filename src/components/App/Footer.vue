@@ -176,13 +176,13 @@ export default defineComponent({
           changeLang("en");
         }
       } else {
-        const language =
+        const __language =
           (window.navigator.languages && window.navigator.languages[0]) ||
           window.navigator.language;
         // window.navigator?.userLanguage ||  ie 11
         // window.navigator.browserLanguage;  || ie
-        console.log("browserlang:" + language);
-        const lang = (language || "").substr(0, 2);
+        console.log("browserlang:" + __language);
+        const lang = (__language || "").substr(0, 2);
         if (lang.length === 2) {
           setLang(lang);
         }

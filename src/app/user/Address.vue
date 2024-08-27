@@ -91,8 +91,8 @@ export default defineComponent({
     }
 
     if (docPath.value) {
-      getDoc(doc(db, docPath.value)).then((doc) => {
-        customerInfo.value = doc.data() || {};
+      getDoc(doc(db, docPath.value)).then((_doc) => {
+        customerInfo.value = _doc.data() || {};
       });
     }
     const resetAddress = async () => {

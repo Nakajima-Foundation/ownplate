@@ -202,13 +202,13 @@ export default defineComponent({
       });
       location.href = url;
     };
-    const handleDelete = (lineId: string) => {
+    const handleDelete = (_lineId: string) => {
       store.commit("setAlert", {
         code: "admin.order.lineDelete",
         callback: async () => {
-          console.log("handleDelete", lineId);
+          console.log("handleDelete", _lineId);
           await deleteDoc(
-            doc(db, `restaurants/${restaurantId.value}/lines/${lineId}`),
+            doc(db, `restaurants/${restaurantId.value}/lines/${_lineId}`),
           );
         },
       });

@@ -39,8 +39,8 @@ export default defineComponent({
 
     const logUid = route.params.uid;
     const logId = route.params.logId;
-    getDoc(doc(db, `admins/${logUid}/stripeLogs/${logId}`)).then((doc) => {
-      log.value = doc.data();
+    getDoc(doc(db, `admins/${logUid}/stripeLogs/${logId}`)).then((_doc) => {
+      log.value = _doc.data();
     });
     return {
       stripeActionStrings,

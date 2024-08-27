@@ -186,7 +186,6 @@ export default defineComponent({
     watch(inStorePayment, (newValue) => {
       if (newValue !== paymentInfo.value.inStore) {
         //console.log("************* inStorePayment change", newValue);
-        const refPayment = doc(db, `/admins/${uid.value}/public/payment`);
         setDoc(
           refPayment,
           {
