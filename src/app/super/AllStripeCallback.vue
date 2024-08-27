@@ -27,7 +27,6 @@ import {
 } from "firebase/firestore";
 
 import { stripeActionStrings } from "@/lib/stripe/stripe";
-import { useHead } from "@unhead/vue";
 import { useSuper, defaultTitle } from "@/utils/utils";
 import { useHead } from "@unhead/vue";
 import moment from "moment-timezone";
