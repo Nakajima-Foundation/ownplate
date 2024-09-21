@@ -358,7 +358,7 @@ export default defineComponent({
             (result) => {
               const newObj = { ...numberOfOrderObj.value };
               newObj[restaurantId] = result.docs
-                .map((doc) => doc.data())
+                .map((_doc) => _doc.data())
                 .filter((data) => {
                   // We need this filter here because Firebase does not allow us to do
                   return data.status < order_status.ready_to_pickup;
@@ -410,13 +410,13 @@ export default defineComponent({
                 restaurantItems.value = (result.docs || []).reduce(
                   (
                     tmp: { [key: string]: RestaurantInfoData },
-                    doc: DocumentSnapshot<DocumentData>,
+                    _doc: DocumentSnapshot<DocumentData>,
                   ) => {
-                    tmp[doc.id] = doc2data("restaurant")(
-                      doc,
+                    tmp[_doc.id] = doc2data("restaurant")(
+                      _doc,
                     ) as RestaurantInfoData;
-                    if (!restaurantLists.value.includes(doc.id)) {
-                      restaurantLists.value.push(doc.id);
+                    if (!restaurantLists.value.includes(_doc.id)) {
+                      restaurantLists.value.push(_doc.id);
                     }
                     return tmp;
                   },
@@ -452,10 +452,10 @@ export default defineComponent({
                   restaurantItems.value = (result.docs || []).reduce(
                     (
                       tmp: { [key: string]: RestaurantInfoData },
-                      doc: DocumentSnapshot<DocumentData>,
+                      _doc: DocumentSnapshot<DocumentData>,
                     ) => {
-                      tmp[doc.id] = doc2data("restaurant")(
-                        doc,
+                      tmp[_doc.id] = doc2data("restaurant")(
+                        _doc,
                       ) as RestaurantInfoData;
                       return tmp;
                     },

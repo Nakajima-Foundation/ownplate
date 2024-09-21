@@ -210,8 +210,8 @@ export default defineComponent({
           serviceTax: order.accounting?.service?.tax,
           shippingCost: order.shippingCost || order.deliveryFee || 0,
           total: order.totalCharge,
-          totalCount: Object.values(order.order).reduce((count, order) => {
-            return count + arrayOrNumSum(order);
+          totalCount: Object.values(order.order).reduce((count, _order) => {
+            return count + arrayOrNumSum(_order);
           }, 0),
           discountPrice: order.discountPrice,
           beforeDiscountPrice: order.totalCharge + (order.discountPrice || 0),
@@ -251,11 +251,11 @@ export default defineComponent({
             order.restaurantId = orderDoc.ref.path.split("/")[1];
             order.id = orderDoc.id;
             if (!restaurants[order.restaurantId]) {
-              const snapshot = await getDoc(
+              const _snapshot = await getDoc(
                 doc(db, `restaurants/${order.restaurantId}`),
               );
               restaurants[order.restaurantId] =
-                snapshot.data() as RestaurantInfoData;
+                _snapshot.data() as RestaurantInfoData;
             }
             order.restaurant = restaurants[order.restaurantId];
             orders.value.push(order);

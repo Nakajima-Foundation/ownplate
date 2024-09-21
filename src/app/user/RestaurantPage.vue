@@ -533,14 +533,14 @@ export default defineComponent({
     });
     // lunch or dinner
     const hasDinnerOnlyOrder = computed(() => {
-      return Object.keys(orders.value).some((menuId) => {
-        const item = menuObj.value[menuId];
+      return Object.keys(orders.value).some((_menuId) => {
+        const item = menuObj.value[_menuId];
         return item && onlyLunchOrDinner(item).onlyDinner;
       });
     });
     const hasLunchOnlyOrder = computed(() => {
-      return Object.keys(orders.value).some((menuId) => {
-        const item = menuObj.value[menuId];
+      return Object.keys(orders.value).some((_menuId) => {
+        const item = menuObj.value[_menuId];
         return item && onlyLunchOrDinner(item).onlyLunch;
       });
     });
@@ -618,8 +618,8 @@ export default defineComponent({
       const name = await (async () => {
         if (isLiffUser.value) {
           try {
-            const user = (await liff.getProfile()) || {};
-            return user.displayName;
+            const _user = (await liff.getProfile()) || {};
+            return _user.displayName;
           } catch (__e) {
             return "";
           }
@@ -675,9 +675,9 @@ export default defineComponent({
 
         try {
           const checkoutMenus: AnalyticsMenuData[] = [];
-          Object.keys(orders.value).forEach((menuId) => {
-            orders.value[menuId].forEach((quantity: number) => {
-              const menu = Object.assign({}, cartItems.value[menuId]);
+          Object.keys(orders.value).forEach((_menuId) => {
+            orders.value[_menuId].forEach((quantity: number) => {
+              const menu = Object.assign({}, cartItems.value[_menuId]);
               menu.quantity = quantity;
               checkoutMenus.push(menu);
             });

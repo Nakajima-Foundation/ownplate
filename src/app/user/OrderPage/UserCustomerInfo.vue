@@ -42,9 +42,9 @@ export default defineComponent({
         db,
         `restaurants/${restaurantId}/orders/${props.orderId}/customer/data`,
       ),
-    ).then((doc) => {
-      if (doc.exists()) {
-        customer.value = doc.data();
+    ).then((_doc) => {
+      if (_doc.exists()) {
+        customer.value = _doc.data();
       }
     });
     const phoneNumber = parsePhoneNumber(props.orderInfo?.phoneNumber || "");
