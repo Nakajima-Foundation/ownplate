@@ -38,6 +38,7 @@ export default defineComponent({
       try {
         audioRef.value.setAttribute("src", soundFile.value);
         audioRef.value.currentTime = 0;
+        audioRef.value.play();
       } catch (e) {
         console.log(e);
       }
