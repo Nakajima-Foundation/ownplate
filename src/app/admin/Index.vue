@@ -358,7 +358,7 @@ export default defineComponent({
             (result) => {
               const newObj = { ...numberOfOrderObj.value };
               newObj[restaurantId] = result.docs
-                .map((_doc) => _doc.data())
+                .map((orderDoc) => orderDoc.data())
                 .filter((data) => {
                   // We need this filter here because Firebase does not allow us to do
                   return data.status < order_status.ready_to_pickup;
@@ -410,13 +410,13 @@ export default defineComponent({
                 restaurantItems.value = (result.docs || []).reduce(
                   (
                     tmp: { [key: string]: RestaurantInfoData },
-                    _doc: DocumentSnapshot<DocumentData>,
+                    restaurantDoc: DocumentSnapshot<DocumentData>,
                   ) => {
-                    tmp[_doc.id] = doc2data("restaurant")(
-                      _doc,
+                    tmp[restaurantDoc.id] = doc2data("restaurant")(
+                      restaurantDoc,
                     ) as RestaurantInfoData;
-                    if (!restaurantLists.value.includes(_doc.id)) {
-                      restaurantLists.value.push(_doc.id);
+                    if (!restaurantLists.value.includes(restaurantDoc.id)) {
+                      restaurantLists.value.push(restaurantDoc.id);
                     }
                     return tmp;
                   },
@@ -452,10 +452,10 @@ export default defineComponent({
                   restaurantItems.value = (result.docs || []).reduce(
                     (
                       tmp: { [key: string]: RestaurantInfoData },
-                      _doc: DocumentSnapshot<DocumentData>,
+                      restaurantDoc: DocumentSnapshot<DocumentData>,
                     ) => {
-                      tmp[_doc.id] = doc2data("restaurant")(
-                        _doc,
+                      tmp[restaurantDoc.id] = doc2data("restaurant")(
+                        restaurantDoc,
                       ) as RestaurantInfoData;
                       return tmp;
                     },

@@ -45,8 +45,8 @@ export default defineComponent({
     superPermissionCheck();
 
     const restaurantData = ref<any>({});
-    getDoc(doc(db, `restaurants/${restaurantId}`)).then((_doc) => {
-      restaurantData.value = _doc.data();
+    getDoc(doc(db, `restaurants/${restaurantId}`)).then((restaurantDoc) => {
+      restaurantData.value = restaurantDoc.data();
     });
 
     const phone = async () => {

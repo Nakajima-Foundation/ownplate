@@ -175,8 +175,8 @@ export default defineComponent({
     // /restaurants/${restaurantId}/private/line
     getDoc(
       doc(db, `/restaurants/${props.shopInfo.restaurantId}/private/line`),
-    ).then((_doc) => {
-      const data = _doc.data();
+    ).then((shopDoc) => {
+      const data = shopDoc.data();
       if (data) {
         client_secret.value = data.client_secret;
         message_token.value = data.message_token;
