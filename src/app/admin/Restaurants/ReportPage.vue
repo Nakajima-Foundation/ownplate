@@ -309,8 +309,8 @@ export default defineComponent({
           serviceTax: order.accounting?.service?.tax,
           shippingCost: order.shippingCost || order.deliveryFee || 0,
           total: order.totalCharge,
-          totalCount: Object.values(order.order).reduce((count, order) => {
-            return count + arrayOrNumSum(order);
+          totalCount: Object.values(order.order).reduce((count, currentOrder) => {
+            return count + arrayOrNumSum(currentOrder);
           }, 0),
           discountPrice: order.discountPrice || 0,
           beforeDiscountPrice: order.totalCharge + (order.discountPrice || 0),
@@ -377,16 +377,16 @@ export default defineComponent({
               order2ReportData(order as OrderInfoData, serviceTaxRate),
             );
           total.value = orders.value.reduce(
-            (total, order) => {
+            (resultTotal, order) => {
               const accounting = order.accounting;
-              total.food.revenue += accounting?.food?.revenue || 0;
-              total.food.tax += accounting?.food?.tax || 0;
-              total.alcohol.revenue += accounting?.alcohol?.revenue || 0;
-              total.alcohol.tax += accounting?.alcohol?.tax || 0;
-              total.service.revenue += accounting?.service?.revenue || 0;
-              total.service.tax += accounting?.service?.tax || 0;
-              total.totalCharge += order.totalCharge;
-              return total;
+              resultTotal.food.revenue += accounting?.food?.revenue || 0;
+              resultTotal.food.tax += accounting?.food?.tax || 0;
+              resultTotal.alcohol.revenue += accounting?.alcohol?.revenue || 0;
+              resultTotal.alcohol.tax += accounting?.alcohol?.tax || 0;
+              resultTotal.service.revenue += accounting?.service?.revenue || 0;
+              resultTotal.service.tax += accounting?.service?.tax || 0;
+              resultTotal.totalCharge += order.totalCharge;
+              return resultTotal;
             },
             {
               food: {
