@@ -182,11 +182,11 @@ export default defineComponent({
             order.id = myDoc.id;
             order.timePlaced = order.timePlaced.toDate();
             if (!restaurants.value[order.restaurantId]) {
-              const snapshot = await getDoc(
+              const orderSnapshot = await getDoc(
                 doc(db, `restaurants/${order.restaurantId}`),
               );
               restaurants.value[order.restaurantId] =
-                snapshot.data() as RestaurantInfoData;
+                orderSnapshot.data() as RestaurantInfoData;
             }
             order.restaurant = restaurants.value[order.restaurantId];
             if (order.timeEstimated) {
@@ -207,11 +207,11 @@ export default defineComponent({
       if (isLoading.value) {
         return;
       }
-      const limit = moment(monthValue.value + "-01 00:00:00+09:00");
+      const orderLimit = moment(monthValue.value + "-01 00:00:00+09:00");
 
       while (
         moment(orders.value[orders.value.length - 1]?.timeCreated?.toDate()) >
-        limit
+        orderLimit
       ) {
         await loadData();
         console.log(orders.value.length);
@@ -250,11 +250,11 @@ export default defineComponent({
           restaurantName: order.restaurant.restaurantName,
           orderStatus: t("order.status." + order_status_keys[order.status]),
           revenue: order.totalCharge,
-          total: Object.values(order.order).reduce((count, order) => {
-            return count + arrayOrNumSum(order);
+          total: Object.values(order.order).reduce((count, currentOrder) => {
+            return count + arrayOrNumSum(currentOrder);
           }, 0),
-          name: nameOfOrder(order),
-          payment: order.payment?.stripe ? "stripe" : "",
+          name: nameOfOrder(currentOrder),
+          payment: currentOrder.payment?.stripe ? "stripe" : "",
         };
       });
     });

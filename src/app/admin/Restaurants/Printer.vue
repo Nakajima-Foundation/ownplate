@@ -112,8 +112,8 @@ export default defineComponent({
       const newKey = doc(collection(db, "a")).id;
       setDoc(restaurantRef, { key: newKey }, { merge: true });
     };
-    onSnapshot(restaurantRef, (doc) => {
-      const data = doc.data();
+    onSnapshot(restaurantRef, (_doc) => {
+      const data = _doc.data();
       if (data === undefined) {
         reset();
       }

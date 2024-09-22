@@ -45,8 +45,8 @@ export default defineComponent({
     });
 
     const restaurantData = ref<any>({});
-    getDoc(doc(db, `restaurants/${restaurantId}`)).then((a) => {
-      restaurantData.value = a.data();
+    getDoc(doc(db, `restaurants/${restaurantId}`)).then((restaurantDoc) => {
+      restaurantData.value = restaurantDoc.data();
     });
 
     const phone = async () => {

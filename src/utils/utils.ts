@@ -98,10 +98,10 @@ export const shareUrl = (prefix: string) => {
 
 export const doc2data = <T = DocumentData>(dataType: string) => {
   return (
-    doc: DocumentSnapshot<DocumentData> | QueryDocumentSnapshot<DocumentData>,
+    _doc: DocumentSnapshot<DocumentData> | QueryDocumentSnapshot<DocumentData>,
   ): T => {
-    const data = doc.data() || ({} as DocumentData);
-    data.id = doc.id;
+    const data = _doc.data() || ({} as DocumentData);
+    data.id = _doc.id;
     data._dataType = dataType;
     return data as T;
   };
