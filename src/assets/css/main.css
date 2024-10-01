@@ -160,3 +160,15 @@ canvas {
 .field .has-addons {
     display: inherit !important;
 }
+
+/* 2024/9/30
+ * 以下のバージョンへあげた際のスタイル崩れを修正
+ * @oruga-ui/theme-bulma”: “^0.4.1"
+ * 影響箇所：input、textarea
+ * 影響画面：ログイン、店情報の変更、
+ *    注文確認のお店へのメッセージ、自動印刷
+ *    商品登録、ディスカウント、デリバリー
+ */
+.control {
+  display: block !important;
+}
