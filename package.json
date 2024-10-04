@@ -23,7 +23,7 @@
     "@fawmi/vue-google-maps": "^0.9.79",
     "@line/liff": "^2.24.0",
     "@oruga-ui/oruga-next": "^0.9.0-pre.2",
-    "@oruga-ui/theme-bulma": "^0.4.1",
+    "@oruga-ui/theme-bulma": "^0.4.3",
     "@sentry/tracing": "^6.19.4",
     "@sentry/vue": "^6.19.4",
     "@unhead/vue": "^1.11.6",
