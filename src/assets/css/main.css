@@ -160,3 +160,7 @@ canvas {
 .field .has-addons {
     display: inherit !important;
 }
+
+.control {
+  display: block !important;
+}
