@@ -1480,7 +1480,7 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@oruga-ui/oruga-next@0.9.0-pre.2":
+"@oruga-ui/oruga-next@^0.9.0-pre.2":
   version "0.9.0-pre.2"
   resolved "https://registry.yarnpkg.com/@oruga-ui/oruga-next/-/oruga-next-0.9.0-pre.2.tgz#c05eb401655457e2d4ffd95887a73de2d87e3270"
   integrity sha512-jy0hO5Df9vNfnfLF9Pu/O1Gxf/NlNkJ6xuw1W4Uq2RA1L0dk5NwgLWN9sU+hDJrrLSFFan08fdm83LcANWEXnA==
