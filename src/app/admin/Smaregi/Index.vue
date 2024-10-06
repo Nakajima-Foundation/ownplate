@@ -31,46 +31,57 @@
           {{ $t("admin.smaregi.smaregiShopList") }}
         </span>
         <div v-if="isEdit">
-          <div v-for="(shop, k) in shopList" :key="k" class="border-2">
-            {{ shop.storeName }}
-            <o-select
-              v-model="selectedRestaurant[k]"
-              :class="
+          <div v-for="(shop, k) in shopList" :key="k" class="mt-4 rounded-lg bg-black bg-opacity-5">
+            <div class="pl-4 pt-4">
+              スマレジ登録店舗：{{ shop.storeName }}
+            </div>
+            <div class="pl-4 pt-2">
+              連携する店舗：
+              <o-select
+                v-model="selectedRestaurant[k]"
+                :class="
                 selectedRestaurant[k] && duplicateElement[selectedRestaurant[k]]
                   ? 'border-2 border-solid border-red-700'
                   : ''
               "
-            >
-              <option
-                v-for="restaurant in restaurants"
-                :value="restaurant.id"
-                :key="restaurant.id"
               >
-                {{ restaurant.restaurantName }}
-              </option>
-            </o-select>
+                <option
+                  v-for="restaurant in restaurants"
+                  :value="restaurant.id"
+                  :key="restaurant.id"
+                >
+                  {{ restaurant.restaurantName }}
+                </option>
+              </o-select>
+            </div>
 
-            在庫切れしきい値:
-            <o-select v-model="outOfStockData[k]">
-              <option
-                v-for="threshold in outOfStockThresholds"
-                :value="threshold.value"
-                :key="threshold.value"
-              >
-                {{ threshold.name }}
-              </option>
-            </o-select>
+            <div class="pl-4 pt-1">
+              在庫切れしきい値:
+              <o-select v-model="outOfStockData[k]">
+                <option
+                  v-for="threshold in outOfStockThresholds"
+                  :value="threshold.value"
+                  :key="threshold.value"
+                >
+                  {{ threshold.name }}
+                </option>
+              </o-select>
+            </div>
 
-            在庫復活しきい値:
-            <o-select v-model="inStockData[k]">
-              <option
-                v-for="threshold in inStockThresholds"
-                :value="threshold.value"
-                :key="threshold.value"
-              >
-                {{ threshold.name }}
-              </option>
-            </o-select>
+            <div class="pl-4 pt-1 pb-4">
+              在庫復活しきい値:
+              <o-select v-model="inStockData[k]">
+                <option
+                  v-for="threshold in inStockThresholds"
+                  :value="threshold.value"
+                  :key="threshold.value"
+                >
+                  {{ threshold.name }}
+                </option>
+              </o-select>
+            </div>
+
+
           </div>
           <div v-if="isDuplicateError">*お店の指定が重複しています</div>
           <div class="mt-4">
