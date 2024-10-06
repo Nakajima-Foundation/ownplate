@@ -92,7 +92,14 @@
             在庫復活しきい値: {{ showStockThreshold((inStockData || {})[k]) }}
           </div>
           <div class="mt-4">
-            <o-button @click="isEdit = true">編集</o-button>
+            <button @click="isEdit = true">
+              <div
+                class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
+                style="min-width: 8rem"
+              >
+                <span class="text-base font-bold text-white">編集</span>
+              </div>
+            </button>
           </div>
         </div>
       </div>
