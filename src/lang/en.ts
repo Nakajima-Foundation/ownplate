@@ -137,6 +137,7 @@ const data = {
     current: "Current",
     clickAndUpload: "Click and Upload",
     clickAndUploadDetail: "Click gray area to upload image(JPEG only)",
+    edit: "edit",
   },
   currency: {
     USD: "USD",
