@@ -79,7 +79,7 @@
                 class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
                 style="min-width: 8rem"
               >
-                <span class="text-base font-bold text-white">保存</span>
+                <span class="text-base font-bold text-white">{{$t("editCommon.save")}}</span>
               </div>
             </button>
           </div>
