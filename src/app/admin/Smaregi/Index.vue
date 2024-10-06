@@ -31,7 +31,7 @@
           {{ $t("admin.smaregi.smaregiShopList") }}
         </span>
         <div v-if="isEdit">
-          <div v-for="(shop, k) in shopList" :key="k" class="mt-4 rounded-lg bg-black bg-opacity-5">
+          <div v-for="(shop, k) in shopList" :key="k" class="mt-2 rounded-lg bg-black bg-opacity-5">
             <div class="pl-4 pt-4">
               スマレジ登録店舗：{{ shop.storeName }}
             </div>
@@ -80,8 +80,6 @@
                 </option>
               </o-select>
             </div>
-
-
           </div>
           <div v-if="isDuplicateError">*お店の指定が重複しています</div>
           <div class="mt-4">
@@ -97,17 +95,23 @@
         </div>
 
         <div v-else>
-          <div v-for="(shop, k) in shopList" :key="k">
-            <div class="mt-2 text-base font-bold">
-              <router-link :to="`/admin/smaregi/store/${shop.storeId}`">
-                {{ shop.storeName }}
-              </router-link>
+          <div v-for="(shop, k) in shopList" :key="k"  class="mt-2 rounded-lg bg-black bg-opacity-5">
+            <div class="pl-4 pt-4">
+              <div class="text-base">
+                スマレジ登録店舗：
+                <router-link :to="`/admin/smaregi/store/${shop.storeId}`">
+                  <span class="font-bold">{{ shop.storeName }}</span>
+                </router-link>
+              </div>
             </div>
-            {{ (restaurantObj[selectedRestaurant[k]] || {}).restaurantName
-            }}<br />
-            在庫切れしきい値:
-            {{ showStockThreshold((outOfStockData || {})[k]) }} /
-            在庫復活しきい値: {{ showStockThreshold((inStockData || {})[k]) }}
+            <div class="pl-4">
+              連携店舗：{{ (restaurantObj[selectedRestaurant[k]] || {}).restaurantName}}
+            </div>
+            <div class="pl-4 pb-4">
+              在庫切れしきい値：
+              {{ showStockThreshold((outOfStockData || {})[k]) }} /
+              在庫復活しきい値：{{ showStockThreshold((inStockData || {})[k]) }}
+            </div>
           </div>
           <div class="mt-4">
             <button @click="isEdit = true">
