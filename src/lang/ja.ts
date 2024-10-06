@@ -146,6 +146,7 @@ const data = {
     current: "変更前",
     clickAndUpload: "ここをクリック",
     clickAndUploadDetail: "グレー部分をクリックしてアップロード(JPEG形式)",
+    edit: "編集",
   },
   currency: {
     USD: "ドル",

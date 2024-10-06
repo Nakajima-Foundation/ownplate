@@ -135,12 +135,9 @@ import {
   collection,
 } from "firebase/firestore";
 
+import { useHead } from "@unhead/vue";
+
 export default defineComponent({
-  metaInfo() {
-    return {
-      title: [defaultTitle, "Super All Restaurants"].join(" / "),
-    };
-  },
   components: {
     BackButton,
     DownloadCsv,
@@ -151,6 +148,10 @@ export default defineComponent({
     let isLoading = false;
     const restaurants = ref<RestaurantInfoData[]>([]);
     const last = ref<any | null>(null);
+
+    useHead({
+      title: [defaultTitle, "Super All Restaurants"].join(" / "),
+    });
 
     superPermissionCheck();
 

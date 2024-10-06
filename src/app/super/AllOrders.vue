@@ -112,12 +112,9 @@ import {
   collectionGroup,
 } from "firebase/firestore";
 
+import { useHead } from "@unhead/vue";
+
 export default defineComponent({
-  metaInfo() {
-    return {
-      title: [defaultTitle, "Super All Orders"].join(" / "),
-    };
-  },
   components: {
     OrderedInfo,
     DownloadCsv,
@@ -127,6 +124,10 @@ export default defineComponent({
     const { t } = useI18n({ useScope: "global" });
     const router = useRouter();
     superPermissionCheck();
+
+    useHead({
+      title: [defaultTitle, "Super All Orders"].join(" / "),
+    });
 
     const months = [0, 1, 2, 3, 4, 5].map((a) => {
       return moment().subtract(a, "month").format("YYYY-MM");

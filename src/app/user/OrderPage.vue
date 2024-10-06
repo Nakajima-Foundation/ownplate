@@ -80,22 +80,13 @@ import {
 } from "@/utils/utils";
 
 import { useRoute, onBeforeRouteLeave } from "vue-router";
+import { useHead } from "@unhead/vue";
 
 import { OrderInfoData, OrderMenuItemData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 export default defineComponent({
   name: "Order",
-  metaInfo() {
-    return {
-      title: this.shopInfo?.restaurantName
-        ? [
-            this.shopInfo ? this.shopInfo?.restaurantName : "--",
-            "Order Page",
-          ].join(" / ")
-        : [defaultTitle, "Order Page"].join(" / "),
-    };
-  },
   components: {
     OrderPageBefore,
     OrderPageAfter,
@@ -141,6 +132,15 @@ export default defineComponent({
     const menuNotFound = ref<boolean | null>(null);
 
     const liffBasePath = useLiffBasePath();
+
+    useHead({
+      title: props.shopInfo?.restaurantName
+        ? [
+            props.shopInfo ? props.shopInfo?.restaurantName : "--",
+            "Order Page",
+          ].join(" / ")
+        : [defaultTitle, "Order Page"].join(" / "),
+    });
 
     const orderId = route.params.orderId as string;
     const orderError = computed(() => {

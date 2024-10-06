@@ -74,15 +74,11 @@ import { doc2data, array2obj, useAdminUids, defaultTitle } from "@/utils/utils";
 
 import { useRouter, useRoute } from "vue-router";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { useHead } from "@unhead/vue";
 
 export default defineComponent({
   components: {
     BackButton,
-  },
-  metaInfo() {
-    return {
-      title: [defaultTitle, "Admin Subaccount Account"].join(" / "),
-    };
   },
   setup() {
     const route = useRoute();
@@ -90,6 +86,9 @@ export default defineComponent({
 
     const subAccountId = computed(() => {
       return route.params.subAccountId;
+    });
+    useHead({
+      title: [defaultTitle, "Admin Subaccount Account"].join(" / "),
     });
 
     const restaurantObj = ref({});

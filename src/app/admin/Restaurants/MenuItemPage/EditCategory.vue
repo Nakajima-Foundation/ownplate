@@ -50,6 +50,7 @@
 <script lang="ts">
 import { defineComponent, ref, watch, computed } from "vue";
 import { defaultTitle } from "@/utils/utils";
+import { useHead } from "@unhead/vue";
 
 export default defineComponent({
   props: {
@@ -62,15 +63,14 @@ export default defineComponent({
       required: true,
     },
   },
-  metaInfo() {
-    return {
-      title: [defaultTitle, "Admin Edit Category"].join(" / "),
-    };
-  },
   emits: ["dismissed", "updated"],
   setup(props, context) {
     const isVisible = ref(true);
     const newEntry = ref("");
+
+    useHead({
+      title: [defaultTitle, "Admin Edit Category"].join(" / "),
+    });
 
     watch(isVisible, (newValue) => {
       if (!newValue) {

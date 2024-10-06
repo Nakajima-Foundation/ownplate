@@ -181,14 +181,10 @@ import {
 } from "firebase/auth";
 
 import { useRoute, useRouter } from "vue-router";
+import { useHead } from "@unhead/vue";
 
 export default defineComponent({
   name: "Signup",
-  metaInfo() {
-    return {
-      title: [defaultTitle, "Signup"].join(" / "),
-    };
-  },
   setup() {
     const router = useRouter();
     const route = useRoute();
@@ -203,6 +199,10 @@ export default defineComponent({
     const deferredPush = ref(false);
     const emailTaken = ref("---invalid---");
     const submitted = ref(false);
+
+    useHead({
+      title: [defaultTitle, "Signup"].join(" / "),
+    });
 
     const partner = computed(() => {
       if (route.params.partner) {

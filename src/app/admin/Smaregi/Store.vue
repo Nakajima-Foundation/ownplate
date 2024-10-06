@@ -100,15 +100,11 @@ import { doc2data, array2obj, useAdminUids, defaultTitle } from "@/utils/utils";
 import BackButton from "@/components/BackButton.vue";
 
 import { useRoute } from "vue-router";
+import { useHead } from "@unhead/vue";
 
 export default defineComponent({
   components: {
     BackButton,
-  },
-  metaInfo() {
-    return {
-      title: [defaultTitle, "Admin Smaregi Store"].join(" / "),
-    };
   },
   setup() {
     const route = useRoute();
@@ -129,6 +125,10 @@ export default defineComponent({
 
     const { uid } = useAdminUids();
     const storeId = route.params.storeId as string;
+
+    useHead({
+      title: [defaultTitle, "Admin Smaregi Store"].join(" / "),
+    });
 
     const duplicateElement = computed(() => {
       const counter = Object.values(selectedMenu.value).reduce(

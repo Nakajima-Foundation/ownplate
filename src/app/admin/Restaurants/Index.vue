@@ -855,7 +855,7 @@
                 {{ $t("editRestaurant.businessHourDescription") }}
               </div>
 
-              <div class="mt-2 grid grid-cols-1 space-y-2">
+              <div class="mt-2 space-y-2">
                 <div
                   v-for="(day, index) in days"
                   :key="index"
@@ -1185,6 +1185,7 @@ import {
 
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import { useHead } from "@unhead/vue";
 import moment from "moment";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
@@ -1202,15 +1203,6 @@ export default defineComponent({
     PhoneEntry,
     Price,
     ImageUpload,
-  },
-  metaInfo() {
-    return {
-      title: this.shopInfo.restaurantName
-        ? ["Admin Restaurant", this.shopInfo.restaurantName, defaultTitle].join(
-            " / ",
-          )
-        : defaultTitle,
-    };
   },
   props: {
     shopInfo: {
@@ -1252,6 +1244,16 @@ export default defineComponent({
     const selectedResult = ref(0);
 
     const editShopInfo = reactive(props.shopInfo);
+
+    useHead({
+      title: props.shopInfo.restaurantName
+        ? [
+            "Admin Restaurant",
+            props.shopInfo.restaurantName,
+            defaultTitle,
+          ].join(" / ")
+        : defaultTitle,
+    });
 
     // only owner
     const { uid } = useAdminUids();

@@ -85,14 +85,10 @@ import { defaultHeader } from "@/config/header";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { OwnerData } from "@/models/ownerData";
 import { useRoute } from "vue-router";
+import { useHead } from "@unhead/vue";
 
 export default defineComponent({
   name: "RestaurantIndex",
-  metaInfo() {
-    return {
-      title: [defaultHeader.title, "Restaurant Index"].join(" / "),
-    };
-  },
   components: {
     MapView,
   },
@@ -104,6 +100,10 @@ export default defineComponent({
     const restaurantsObj = ref({});
     const restaurants = ref<RestaurantInfoData[]>([]);
     const ownerData = ref<OwnerData>({});
+
+    useHead({
+      title: [defaultHeader.title, "Restaurant Index"].join(" / "),
+    });
 
     (async () => {
       const restaurantsCollection = await getDocs(

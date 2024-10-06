@@ -70,6 +70,7 @@ import { stripeVerify } from "@/lib/stripe/stripe";
 import BackButton from "@/components/BackButton.vue";
 
 import { useSuper, doc2data, defaultTitle } from "@/utils/utils";
+import { useHead } from "@unhead/vue";
 import moment from "moment";
 
 const QUERY_LIMIT = 50;
@@ -78,11 +79,6 @@ export default defineComponent({
   components: {
     BackButton,
   },
-  metaInfo() {
-    return {
-      title: [defaultTitle, "Super All Admin"].join(" / "),
-    };
-  },
   setup() {
     useSuper();
 
@@ -90,6 +86,10 @@ export default defineComponent({
     const infos = ref<{ [key: string]: any }>({});
     const last = ref<any>(null);
     let detacher: any = null;
+
+    useHead({
+      title: [defaultTitle, "Super All Admin"].join(" / "),
+    });
 
     const updateInfo = async (admin: any) => {
       const info: any = {};

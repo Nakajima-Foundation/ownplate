@@ -62,24 +62,27 @@ import { regionalSetting, resizedProfileImage } from "@/utils/utils";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { useRoute } from "vue-router";
+import { useHead } from "@unhead/vue";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   components: {
     AreaMap,
   },
-  metaInfo() {
-    return {
-      title: [
-        this.$t("pageTitle.restaurantArea", { area: this.areaName }, 0),
-        defaultHeader.title,
-      ].join(" / "),
-    };
-  },
   setup() {
     const route = useRoute();
+    const { t } = useI18n();
 
     const areaId = route.params.areaId as string;
     const areaName = regionalSetting.AddressStates[areaId];
+
+    useHead({
+      title: [
+        t("pageTitle.restaurantArea", { area: areaName }, 0),
+        defaultHeader.title,
+      ].join(" / "),
+    });
+
     const restaurants = ref<RestaurantInfoData[]>([]);
     if (areaName) {
       getDocs(

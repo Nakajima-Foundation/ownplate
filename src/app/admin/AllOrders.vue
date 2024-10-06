@@ -120,6 +120,7 @@ import BackButton from "@/components/BackButton.vue";
 import NotFound from "@/components/NotFound.vue";
 
 import { useRouter } from "vue-router";
+import { useHead } from "@unhead/vue";
 import { useI18n } from "vue-i18n";
 
 export default defineComponent({
@@ -128,11 +129,6 @@ export default defineComponent({
     DownloadCsv,
     BackButton,
     NotFound,
-  },
-  metaInfo() {
-    return {
-      title: ["Admin All Order", defaultTitle].join(" / "),
-    };
   },
   setup() {
     const router = useRouter();
@@ -143,6 +139,10 @@ export default defineComponent({
     const orders = ref<OrderInfoData[]>([]);
     const orderState = ref(0);
     const restaurants: { [key: string]: RestaurantInfoData } = {};
+
+    useHead({
+      title: ["Admin All Order", defaultTitle].join(" / "),
+    });
 
     let isLoading = false;
     let last: null | any = null;

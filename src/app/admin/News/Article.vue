@@ -55,20 +55,21 @@ import newsList from "@/app/admin/News/data";
 import NotFound from "@/components/NotFound.vue";
 import { useRoute } from "vue-router";
 import { defaultTitle } from "@/utils/utils";
+import { useHead } from "@unhead/vue";
 
 export default defineComponent({
   components: {
     NotFound,
   },
-  metaInfo() {
-    return {
-      title: [(this.news || {}).title, defaultTitle].join(" / "),
-    };
-  },
   setup() {
     const route = useRoute();
     const newsId = route.params.newsId;
     const news = newsList.find((element) => element.date === newsId);
+
+    useHead({
+      title: [(news || {}).title, defaultTitle].join(" / "),
+    });
+
     return {
       md: new MarkdownIt(),
       news,

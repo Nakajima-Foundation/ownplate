@@ -361,48 +361,32 @@
     >
       <!-- Up -->
       <div>
-        <template v-if="position !== 'first'">
-          <o-button @click="positionUp" class="b-reset-tw">
-            <div
-              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
-            >
-              <i class="material-icons text-lg text-op-teal">arrow_upward</i>
-            </div>
-          </o-button>
-        </template>
-
-        <template v-else>
-          <o-button disabled class="b-reset-tw">
-            <div
-              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
-            >
-              <i class="material-icons text-lg text-op-teal">arrow_upward</i>
-            </div>
-          </o-button>
-        </template>
+        <button
+          @click="positionUp"
+          :disabled="position === 'first'"
+          class="b-reset-tw disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <div
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+          >
+            <i class="material-icons text-lg text-op-teal">arrow_upward</i>
+          </div>
+        </button>
       </div>
 
       <!-- Down -->
       <div>
-        <template v-if="position !== 'last'">
-          <o-button @click="positionDown" class="b-reset-tw">
-            <div
-              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
-            >
-              <i class="material-icons text-lg text-op-teal">arrow_downward</i>
-            </div>
-          </o-button>
-        </template>
-
-        <template v-else>
-          <o-button disabled class="b-reset-tw">
-            <div
-              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
-            >
-              <i class="material-icons text-lg text-op-teal">arrow_downward</i>
-            </div>
-          </o-button>
-        </template>
+        <button
+          @click="positionDown"
+          :disabled="position === 'last'"
+          class="b-reset-tw disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <div
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+          >
+            <i class="material-icons text-lg text-op-teal">arrow_downward</i>
+          </div>
+        </button>
       </div>
 
       <!-- Delete -->

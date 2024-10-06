@@ -39,17 +39,17 @@ import { defineComponent } from "vue";
 import ListItem from "@/app/admin/News/ListItem.vue";
 import newsList from "@/app/admin/News/data";
 import { defaultTitle } from "@/utils/utils";
+import { useHead } from "@unhead/vue";
 
 export default defineComponent({
   components: {
     ListItem,
   },
-  metaInfo() {
-    return {
-      title: ["News", defaultTitle].join(" / "),
-    };
-  },
   setup() {
+    useHead({
+      title: ["News", defaultTitle].join(" / "),
+    });
+
     return {
       newsList,
     };

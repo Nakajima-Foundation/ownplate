@@ -122,6 +122,8 @@ import {
   getDoc,
 } from "firebase/firestore";
 
+import { useHead } from "@unhead/vue";
+
 const outOfStockThresholds = [
   { value: 999999, name: "なし" },
   { value: 0, name: "0" },
@@ -149,11 +151,6 @@ export default defineComponent({
     BackButton,
   },
   name: "Restaurant",
-  metaInfo() {
-    return {
-      title: [defaultTitle, "Admin Smaregi Index"].join(" / "),
-    };
-  },
   setup() {
     const authUrl = `${smaregi.authUrl}?response_type=code&client_id=${smaregi.clientId}&scope=openid+email+offline_access`;
     const enable = ref<boolean | null>(null);
@@ -172,6 +169,10 @@ export default defineComponent({
 
     // internal
     let contractId: string | null = null;
+
+    useHead({
+      title: [defaultTitle, "Admin Smaregi Index"].join(" / "),
+    });
 
     const { uid } = useAdminUids();
     // computed
