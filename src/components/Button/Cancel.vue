@@ -1,5 +1,9 @@
 <template>
-  <o-button @click="handleCancel" :disabled="disabled" class="b-reset-tw">
+  <button
+    @click="handleCancel"
+    :disabled="disabled"
+    class="b-reset-tw disabled:opacity-50 disabled:cursor-not-allowed"
+  >
     <div
       class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black bg-opacity-5"
     >
@@ -7,7 +11,7 @@
         <slot />
       </div>
     </div>
-  </o-button>
+  </button>
 </template>
 
 <script lang="ts">
