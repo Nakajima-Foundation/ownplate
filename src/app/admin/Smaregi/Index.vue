@@ -73,9 +73,16 @@
             </o-select>
           </div>
           <div v-if="isDuplicateError">*お店の指定が重複しています</div>
-          <o-button @click="saveShops" :disabled="isDuplicateError"
-            >保存</o-button
-          >
+          <div class="mt-4">
+            <button @click="saveShops" :disabled="isDuplicateError">
+              <div
+                class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
+                style="min-width: 8rem"
+              >
+                <span class="text-base font-bold text-white">保存</span>
+              </div>
+            </button>
+          </div>
         </div>
 
         <div v-else>
