@@ -855,7 +855,7 @@
                 {{ $t("editRestaurant.businessHourDescription") }}
               </div>
 
-              <div class="mt-2 grid grid-cols-1 space-y-2">
+              <div class="mt-2 space-y-2">
                 <div
                   v-for="(day, index) in days"
                   :key="index"
