@@ -137,6 +137,7 @@ const data = {
     clickAndUpload: "Cliquer et Télécharger",
     clickAndUploadDetail:
       "Cliquez sur la zone grise ou Glissez-déposez pour télécharger l'image (JPEG uniquement)",
+    edit: "Éditer",
   },
   currency: {
     USD: "USD",
