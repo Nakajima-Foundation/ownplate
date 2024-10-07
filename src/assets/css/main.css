@@ -179,3 +179,12 @@ canvas {
 .sidebar .sidebar-background {
   background-color: #00000080!important;
 }
+
+/*
+ * add for
+ * @oruga-ui/theme-bulma”: “^0.4.1"
+ * text color of success events
+*/
+.help.is-success {
+  color: #16a34aff!important;
+}
