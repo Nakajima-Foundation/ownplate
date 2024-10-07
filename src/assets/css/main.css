@@ -184,7 +184,8 @@ canvas {
  * add for
  * @oruga-ui/theme-bulma”: “^0.4.1"
  * text color of success events
-*/
+ * ref: PhoneLogin.vue, PhoneEntry.vue
+ */
 .help.is-success {
   color: #16a34aff!important;
 }
