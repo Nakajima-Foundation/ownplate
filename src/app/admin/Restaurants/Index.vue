@@ -767,7 +767,7 @@
             </div>
           </div>
 
-          <!-- notification -->border bg-white
+          <!-- notification -->
           <div class="rounded-lg  p-2 mt-4">
             <div class="pb-2 text-sm font-bold">
               {{ $t("editRestaurant.notificationConfig") }}

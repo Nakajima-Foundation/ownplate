@@ -84,10 +84,7 @@
           <div v-if="isDuplicateError">*お店の指定が重複しています</div>
           <div class="mt-4">
             <button @click="saveShops" :disabled="isDuplicateError">
-              <div
-                class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
-                style="min-width: 8rem"
-              >
+              <div class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow min-w-32">
                 <span class="text-base font-bold text-white">{{$t("editCommon.save")}}</span>
               </div>
             </button>
@@ -115,10 +112,7 @@
           </div>
           <div class="mt-4">
             <button @click="isEdit = true">
-              <div
-                class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
-                style="min-width: 8rem"
-              >
+              <div class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow min-w-32">
                 <span class="text-base font-bold text-white">編集</span>
               </div>
             </button>
