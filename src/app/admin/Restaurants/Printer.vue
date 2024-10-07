@@ -15,7 +15,7 @@
 
       <div>
         <div
-          class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4 text-center font-bold"
+          class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4 font-bold"
         >
           <div>
             注文が入ったときに、スター精密のレシートプリンターから自動的に注文内容を印刷する機能です。
@@ -28,20 +28,21 @@
             {{ $t("menu.printerManualLink") }}
           </a>
         </div>
-        <div class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4 text-center">
+        <div class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4">
           <div class="pb-2 text-sm font-bold">CloudPRNT Server URL</div>
           <o-input
             type="textarea"
             rows="2"
             readonly
             v-model="printerAddress"
+            rootClass="w-full"
           ></o-input>
           <div v-if="printerAddress">
             こちらのURLをプリンターに設定してください。
           </div>
         </div>
 
-        <div class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4 text-center">
+        <div class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4">
           <div class="pb-2 text-sm font-bold">Reset Server URL</div>
           <o-button @click="reset" class="b-reset-tw">
             <div
@@ -54,7 +55,7 @@
         </div>
 
         <div
-          class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4 text-center"
+          class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4"
           v-if="false"
         >
           <div class="pb-2 text-sm font-bold">
@@ -65,7 +66,7 @@
         </div>
 
         <div
-          class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4 text-center"
+          class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4"
           v-if="false"
         >
           <div class="pb-2 text-sm font-bold">Logs</div>
