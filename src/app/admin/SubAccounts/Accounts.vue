@@ -71,6 +71,7 @@
           <o-input
             v-model="name"
             :placeholder="$t('admin.subAccounts.enterName')"
+            rootClass="w-full"
           ></o-input>
         </div>
         <div class="mt-2 text-base font-bold">
@@ -80,6 +81,7 @@
           <o-input
             v-model="email"
             :placeholder="$t('admin.subAccounts.enterEmail')"
+            rootClass="w-full"
           ></o-input>
         </div>
 
