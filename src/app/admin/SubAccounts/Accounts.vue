@@ -20,7 +20,15 @@
       <div class="mt-2 text-base font-bold">
         {{ $t("admin.subAccounts.subaccountlist") }}
       </div>
-      <table class="w-full rounded-lg bg-white shadow">
+      <div class="w-full rounded-lg bg-white shadow">
+      <table>
+        <tr>
+          <th class="pt-2 pl-2">{{ $t("admin.subAccounts.name") }}</th>
+          <th class="pt-2 pl-2">{{ $t("admin.subAccounts.linkedStore") }}</th>
+          <th class="pt-2 pl-2">{{ $t("admin.subAccounts.NumberOfLinkedStores") }}</th>
+          <th class="pt-2 pl-2">{{ $t("admin.subAccounts.status") }}</th>
+          <th></th>
+        </tr>
         <tr v-for="(child, k) in children" :key="k" class="items-center">
           <td class="p-2">
             <router-link :to="`/admin/subaccounts/accounts/${child.id}`">
@@ -48,45 +56,63 @@
             }}
           </td>
           <td class="p-2">
-            <o-button @click="deleteChild(child.id)">
-              {{ $t("admin.subAccounts.deleteSubaccount") }}
-            </o-button>
+            <button @click="deleteChild(child.id)">
+              <div class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow min-w-32">
+                <span class="text-base font-bold text-white">
+                 {{ $t("admin.subAccounts.deleteSubaccount") }}
+                </span>
+              </div>
+            </button>
           </td>
         </tr>
       </table>
+      <div class="text-xs pl-2 pb-2"><span>{{ $t("admin.subAccounts.guidance") }}</span></div>
+      </div>
     </div>
-
     <div class="mx-6 mt-2">
       <span class="text-base text-xl font-bold">
         {{ $t("admin.subAccounts.invite") }}
       </span>
-
       <div class="mt-2 rounded-lg bg-white p-4 shadow">
-        <span class="text-base font-bold">
-          {{ $t("admin.subAccounts.name") }}
-        </span>
-        <o-input
-          v-model="name"
-          :placeholder="$t('admin.subAccounts.enterName')"
-        ></o-input>
-        {{ $t("admin.subAccounts.email") }} :
-        <o-input
-          v-model="email"
-          :placeholder="$t('admin.subAccounts.enterEmail')"
-        ></o-input>
+        <div>
+          <span class="text-base font-bold">
+            {{ $t("admin.subAccounts.name") }} :
+          </span>
+        </div>
+        <div>
+          <o-input
+            v-model="name"
+            :placeholder="$t('admin.subAccounts.enterName')"
+            rootClass="w-full"
+          ></o-input>
+        </div>
+        <div class="mt-2 text-base font-bold">
+          {{ $t("admin.subAccounts.email") }} :
+        </div>
+        <div>
+          <o-input
+            v-model="email"
+            :placeholder="$t('admin.subAccounts.enterEmail')"
+            rootClass="w-full"
+          ></o-input>
+        </div>
         <div class="text-xs font-bold text-red-700">
           * {{ $t("admin.subAccounts.accountNotice") }}
         </div>
         <div>
-          <o-button @click="invite" :disabled="sending">
-            {{
-              $t(
-                sending
-                  ? "admin.subAccounts.sending"
-                  : "admin.subAccounts.send",
-              )
-            }}
-          </o-button>
+          <button @click="invite" :disabled="sending">
+            <div class="mt-4 inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow min-w-32">
+              <span class="text-base font-bold text-white">
+               {{
+                  $t(
+                    sending
+                      ? "admin.subAccounts.sending"
+                      : "admin.subAccounts.send",
+                  )
+                }}
+              </span>
+            </div>
+          </button>
         </div>
       </div>
       <div v-if="errors.length > 0">
