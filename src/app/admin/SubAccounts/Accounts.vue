@@ -20,9 +20,10 @@
       <div class="mt-2 text-base font-bold">
         {{ $t("admin.subAccounts.subaccountlist") }}
       </div>
-      <table class="w-full rounded-lg bg-white shadow">
+      <div class="w-full rounded-lg bg-white shadow">
+      <table>
         <tr>
-          <th class="pt-2 pl-2">サブアカウント名</th>
+          <th class="pt-2 pl-2">{{ $t("admin.subAccounts.name") }}</th>
           <th class="pt-2 pl-2">連携店舗</th>
           <th class="pt-2 pl-2">連携店舗数</th>
           <th class="pt-2 pl-2">ステータス</th>
@@ -65,6 +66,8 @@
           </td>
         </tr>
       </table>
+      <div class="text-xs pl-2 pb-2"><span>サブアカウントにする店舗を設定するには、サブアカウント名をクリックしてください。</span></div>
+      </div>
     </div>
     <div class="mx-6 mt-2">
       <span class="text-base text-xl font-bold">
