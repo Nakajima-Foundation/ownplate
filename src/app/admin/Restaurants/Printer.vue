@@ -43,14 +43,14 @@
         </div>
 
         <div class="mx-6 mt-4 p-4 text-center">
-          <o-button @click="reset" class="b-reset-tw">
+          <button @click="reset" class="b-reset-tw">
             <div
               class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
               style="min-width: 8rem"
             >
               <span class="text-base font-bold text-white">{{ $t("printer.reset") }}</span>
             </div>
-          </o-button>
+          </button>
         </div>
 
         <div
