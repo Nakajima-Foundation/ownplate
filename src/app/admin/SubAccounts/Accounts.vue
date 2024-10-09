@@ -78,15 +78,19 @@
           * {{ $t("admin.subAccounts.accountNotice") }}
         </div>
         <div>
-          <o-button @click="invite" :disabled="sending">
-            {{
-              $t(
-                sending
-                  ? "admin.subAccounts.sending"
-                  : "admin.subAccounts.send",
-              )
-            }}
-          </o-button>
+          <button @click="invite" :disabled="sending">
+            <div class="mt-4 inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow min-w-32">
+              <span class="text-base font-bold text-white">
+               {{
+                  $t(
+                    sending
+                      ? "admin.subAccounts.sending"
+                      : "admin.subAccounts.send",
+                  )
+                }}
+              </span>
+            </div>
+          </button>
         </div>
       </div>
       <div v-if="errors.length > 0">
