@@ -13,6 +13,18 @@ const data = {
       privacy: "Politique de Confidentialité",
     },
   },
+  adminTitle: {
+    menuList: "Éléments du Menu",
+    orderList: "Liste des Commandes",
+    orderHistory: "Historique de Toutes les Commandes",
+    orderDetail: "Détails de la Commande",
+    orderSuspend: "Paramètres de Suspension des Commandes",
+    autoPrinter: "Impression Automatique",
+    lineAuth: "Paramètres d'Intégration LINE",
+    discountList: "Liste des Paramètres de Réduction",
+    discountDetail: "Paramètres de Réduction",
+    discountHistory: "Historique des Réductions",
+  },
   underConstruction:
     "ATTENTION: Ceci est un serveur de préproduction pour le dévelopement.",
   comma: ", ",
@@ -1308,6 +1320,12 @@ const data = {
       title: "Phone Number",
       body: "Displayed as a phone number for customers on the restaurant's page, and also notified by calling this number if phone notifications are turned on",
     },
+  },
+  printer: {
+    description: "Cette fonctionnalité imprime automatiquement les commandes sur une imprimante de reçus Star Micronics lorsqu'une commande est reçue.",
+    serverURL: "CloudPRNT URL du Serveur",
+    guidance: "Veuillez configurer cette URL sur votre imprimante.",
+    reset: "Réinitialiser l'URL du Serveur",
   },
   validationError: {
     zip: {

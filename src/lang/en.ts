@@ -12,6 +12,18 @@ const data = {
       privacy: "Privacy policy",
     },
   },
+  adminTitle: {
+    menuList: "Menu Items",
+    orderList: "Order List",
+    orderHistory: "All Order History",
+    orderDetail: "Order Details",
+    orderSuspend: "Order Suspension Settings",
+    autoPrinter: "Automatic Printing",
+    lineAuth: "LINE Integration Settings",
+    discountList: "Discount Settings List",
+    discountDetail: "Discount Settings",
+    discountHistory: "Discount History",
+  },
   underConstruction: "WARNING: This is a staging server for development.",
   comma: ", ",
   mobileOrder: {
@@ -1366,6 +1378,12 @@ const data = {
       title: "オプション",
       body: "",
     },
+  },
+  printer: {
+    description: "This feature automatically prints orders from a Star Micronics receipt printer when an order is received.",
+    serverURL: "CloudPRNT Server URL",
+    guidance: "Please set this URL on your printer.",
+    reset: "Reset Server URL",
   },
   validationError: {
     zip: {
