@@ -113,7 +113,7 @@
           <div class="mt-4">
             <button @click="isEdit = true">
               <div class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow min-w-32">
-                <span class="text-base font-bold text-white">編集</span>
+                <span class="text-base font-bold text-white">{{$t("editCommon.edit")}}</span>
               </div>
             </button>
           </div>
