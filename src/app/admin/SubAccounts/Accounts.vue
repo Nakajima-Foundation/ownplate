@@ -21,6 +21,13 @@
         {{ $t("admin.subAccounts.subaccountlist") }}
       </div>
       <table class="w-full rounded-lg bg-white shadow">
+        <tr>
+          <th class="pt-2 pl-2">サブアカウント名</th>
+          <th class="pt-2 pl-2">連携店舗</th>
+          <th class="pt-2 pl-2">連携店舗数</th>
+          <th class="pt-2 pl-2">ステータス</th>
+          <th></th>
+        </tr>
         <tr v-for="(child, k) in children" :key="k" class="items-center">
           <td class="p-2">
             <router-link :to="`/admin/subaccounts/accounts/${child.id}`">
