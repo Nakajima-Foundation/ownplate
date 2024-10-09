@@ -42,7 +42,7 @@
           </div>
         </div>
 
-        <div class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4">
+        <div class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4 text-center">
           <div class="pb-2 text-sm font-bold">Reset Server URL</div>
           <o-button @click="reset" class="b-reset-tw">
             <div
