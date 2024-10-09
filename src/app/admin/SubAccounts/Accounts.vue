@@ -62,21 +62,31 @@
       </span>
 
       <div class="mt-2 rounded-lg bg-white p-4 shadow">
-        <span class="text-base font-bold">
-          {{ $t("admin.subAccounts.name") }}
-        </span>
-        <o-input
-          v-model="name"
-          :placeholder="$t('admin.subAccounts.enterName')"
-        ></o-input>
-        {{ $t("admin.subAccounts.email") }} :
-        <o-input
-          v-model="email"
-          :placeholder="$t('admin.subAccounts.enterEmail')"
-        ></o-input>
+        <div>
+          <span class="text-base font-bold">
+            {{ $t("admin.subAccounts.name") }} :
+          </span>
+        </div>
+        <div>
+          <o-input
+            v-model="name"
+            :placeholder="$t('admin.subAccounts.enterName')"
+          ></o-input>
+        </div>
+        <div class="mt-2 text-base font-bold">
+          {{ $t("admin.subAccounts.email") }} :
+        </div>
+        <div>
+          <o-input
+            v-model="email"
+            :placeholder="$t('admin.subAccounts.enterEmail')"
+          ></o-input>
+        </div>
+
         <div class="text-xs font-bold text-red-700">
           * {{ $t("admin.subAccounts.accountNotice") }}
         </div>
+
         <div>
           <button @click="invite" :disabled="sending">
             <div class="mt-4 inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow min-w-32">
