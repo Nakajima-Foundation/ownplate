@@ -24,9 +24,9 @@
       <table>
         <tr>
           <th class="pt-2 pl-2">{{ $t("admin.subAccounts.name") }}</th>
-          <th class="pt-2 pl-2">連携店舗</th>
-          <th class="pt-2 pl-2">連携店舗数</th>
-          <th class="pt-2 pl-2">ステータス</th>
+          <th class="pt-2 pl-2">{{ $t("admin.subAccounts.linkedStore") }}</th>
+          <th class="pt-2 pl-2">{{ $t("admin.subAccounts.NumberOfLinkedStores") }}</th>
+          <th class="pt-2 pl-2">{{ $t("admin.subAccounts.status") }}</th>
           <th></th>
         </tr>
         <tr v-for="(child, k) in children" :key="k" class="items-center">
@@ -66,7 +66,7 @@
           </td>
         </tr>
       </table>
-      <div class="text-xs pl-2 pb-2"><span>サブアカウントにする店舗を設定するには、サブアカウント名をクリックしてください。</span></div>
+      <div class="text-xs pl-2 pb-2"><span>{{ $t("admin.subAccounts.guidance") }}</span></div>
       </div>
     </div>
     <div class="mx-6 mt-2">
