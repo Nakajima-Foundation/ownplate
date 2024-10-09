@@ -48,19 +48,21 @@
             }}
           </td>
           <td class="p-2">
-            <o-button @click="deleteChild(child.id)">
-              {{ $t("admin.subAccounts.deleteSubaccount") }}
-            </o-button>
+            <button @click="deleteChild(child.id)">
+              <div class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow min-w-32">
+                <span class="text-base font-bold text-white">
+                 {{ $t("admin.subAccounts.deleteSubaccount") }}
+                </span>
+              </div>
+            </button>
           </td>
         </tr>
       </table>
     </div>
-
     <div class="mx-6 mt-2">
       <span class="text-base text-xl font-bold">
         {{ $t("admin.subAccounts.invite") }}
       </span>
-
       <div class="mt-2 rounded-lg bg-white p-4 shadow">
         <div>
           <span class="text-base font-bold">
@@ -84,11 +86,9 @@
             rootClass="w-full"
           ></o-input>
         </div>
-
         <div class="text-xs font-bold text-red-700">
           * {{ $t("admin.subAccounts.accountNotice") }}
         </div>
-
         <div>
           <button @click="invite" :disabled="sending">
             <div class="mt-4 inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow min-w-32">
