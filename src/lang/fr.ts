@@ -1180,7 +1180,8 @@ const data = {
       invite: "Invite",
       invitedList: "Invited List",
       deleteSubaccount: "Delete Sub-account",
-      guidance:"Pour définir un magasin comme sous-compte, cliquez sur le nom du sous-compte.",
+      guidance:
+        "Pour définir un magasin comme sous-compte, cliquez sur le nom du sous-compte.",
       send: "Send",
       sending: "Sending",
       enterName: "Please enter the name you want to give to the sub-account",
@@ -1326,7 +1327,8 @@ const data = {
     },
   },
   printer: {
-    description: "Cette fonctionnalité imprime automatiquement les commandes sur une imprimante de reçus Star Micronics lorsqu'une commande est reçue.",
+    description:
+      "Cette fonctionnalité imprime automatiquement les commandes sur une imprimante de reçus Star Micronics lorsqu'une commande est reçue.",
     serverURL: "CloudPRNT URL du Serveur",
     guidance: "Veuillez configurer cette URL sur votre imprimante.",
     reset: "Réinitialiser l'URL du Serveur",

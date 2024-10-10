@@ -14,9 +14,7 @@
       />
 
       <div>
-        <div
-          class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4 font-bold"
-        >
+        <div class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4 font-bold">
           <div>
             {{ $t("printer.description") }}
           </div>
@@ -29,7 +27,9 @@
           </a>
         </div>
         <div class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4">
-          <div class="pb-2 text-sm font-bold">{{ $t("printer.serverURL") }}</div>
+          <div class="pb-2 text-sm font-bold">
+            {{ $t("printer.serverURL") }}
+          </div>
           <o-input
             type="textarea"
             rows="2"
@@ -48,7 +48,9 @@
               class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
               style="min-width: 8rem"
             >
-              <span class="text-base font-bold text-white">{{ $t("printer.reset") }}</span>
+              <span class="text-base font-bold text-white">{{
+                $t("printer.reset")
+              }}</span>
             </div>
           </button>
         </div>

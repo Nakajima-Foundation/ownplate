@@ -31,19 +31,22 @@
           {{ $t("admin.smaregi.smaregiShopList") }}
         </span>
         <div v-if="isEdit">
-          <div v-for="(shop, k) in shopList" :key="k" class="mt-2 rounded-lg bg-black bg-opacity-5">
-            <div class="pl-4 pt-4">
-              スマレジ登録店舗：{{ shop.storeName }}
-            </div>
+          <div
+            v-for="(shop, k) in shopList"
+            :key="k"
+            class="mt-2 rounded-lg bg-black bg-opacity-5"
+          >
+            <div class="pl-4 pt-4">スマレジ登録店舗：{{ shop.storeName }}</div>
             <div class="pl-4 pt-2">
               連携する店舗：
               <o-select
                 v-model="selectedRestaurant[k]"
                 :class="
-                selectedRestaurant[k] && duplicateElement[selectedRestaurant[k]]
-                  ? 'border-2 border-solid border-red-700'
-                  : ''
-              "
+                  selectedRestaurant[k] &&
+                  duplicateElement[selectedRestaurant[k]]
+                    ? 'border-2 border-solid border-red-700'
+                    : ''
+                "
               >
                 <option
                   v-for="restaurant in restaurants"
@@ -84,15 +87,23 @@
           <div v-if="isDuplicateError">*お店の指定が重複しています</div>
           <div class="mt-4">
             <button @click="saveShops" :disabled="isDuplicateError">
-              <div class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow min-w-32">
-                <span class="text-base font-bold text-white">{{$t("editCommon.save")}}</span>
+              <div
+                class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow min-w-32"
+              >
+                <span class="text-base font-bold text-white">{{
+                  $t("editCommon.save")
+                }}</span>
               </div>
             </button>
           </div>
         </div>
 
         <div v-else>
-          <div v-for="(shop, k) in shopList" :key="k"  class="mt-2 rounded-lg bg-black bg-opacity-5">
+          <div
+            v-for="(shop, k) in shopList"
+            :key="k"
+            class="mt-2 rounded-lg bg-black bg-opacity-5"
+          >
             <div class="pl-4 pt-4">
               <div class="text-base">
                 スマレジ登録店舗：
@@ -102,7 +113,9 @@
               </div>
             </div>
             <div class="pl-4">
-              連携店舗：{{ (restaurantObj[selectedRestaurant[k]] || {}).restaurantName}}
+              連携店舗：{{
+                (restaurantObj[selectedRestaurant[k]] || {}).restaurantName
+              }}
             </div>
             <div class="pl-4 pb-4">
               在庫切れしきい値：
@@ -112,8 +125,12 @@
           </div>
           <div class="mt-4">
             <button @click="isEdit = true">
-              <div class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow min-w-32">
-                <span class="text-base font-bold text-white">{{$t("editCommon.edit")}}</span>
+              <div
+                class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow min-w-32"
+              >
+                <span class="text-base font-bold text-white">{{
+                  $t("editCommon.edit")
+                }}</span>
               </div>
             </button>
           </div>

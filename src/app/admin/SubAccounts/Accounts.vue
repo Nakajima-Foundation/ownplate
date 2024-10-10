@@ -21,52 +21,58 @@
         {{ $t("admin.subAccounts.subaccountlist") }}
       </div>
       <div class="w-full rounded-lg bg-white shadow">
-      <table>
-        <tr>
-          <th class="pt-2 pl-2">{{ $t("admin.subAccounts.name") }}</th>
-          <th class="pt-2 pl-2">{{ $t("admin.subAccounts.linkedStore") }}</th>
-          <th class="pt-2 pl-2">{{ $t("admin.subAccounts.NumberOfLinkedStores") }}</th>
-          <th class="pt-2 pl-2">{{ $t("admin.subAccounts.status") }}</th>
-          <th></th>
-        </tr>
-        <tr v-for="(child, k) in children" :key="k" class="items-center">
-          <td class="p-2">
-            <router-link :to="`/admin/subaccounts/accounts/${child.id}`">
-              {{ child.name }}({{ child.email }})
-            </router-link>
-          </td>
-          <td class="p-2">
-            <div
-              v-for="(rname, k2) in rList(child.restaurantLists)"
-              :key="`${k}_${k2}`"
-            >
-              {{ rname }}
-            </div>
-          </td>
-          <td class="p-2">
-            {{ (child.restaurantLists || []).length
-            }}{{ $t("admin.subAccounts.numberOfShops") }}
-          </td>
-          <td class="p-2">
-            {{
-              $t(
-                "admin.subAccounts.messageResult." +
-                  (child.accepted === true ? "accepted" : "waiting"),
-              )
-            }}
-          </td>
-          <td class="p-2">
-            <button @click="deleteChild(child.id)">
-              <div class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow min-w-32">
-                <span class="text-base font-bold text-white">
-                 {{ $t("admin.subAccounts.deleteSubaccount") }}
-                </span>
+        <table>
+          <tr>
+            <th class="pt-2 pl-2">{{ $t("admin.subAccounts.name") }}</th>
+            <th class="pt-2 pl-2">{{ $t("admin.subAccounts.linkedStore") }}</th>
+            <th class="pt-2 pl-2">
+              {{ $t("admin.subAccounts.NumberOfLinkedStores") }}
+            </th>
+            <th class="pt-2 pl-2">{{ $t("admin.subAccounts.status") }}</th>
+            <th></th>
+          </tr>
+          <tr v-for="(child, k) in children" :key="k" class="items-center">
+            <td class="p-2">
+              <router-link :to="`/admin/subaccounts/accounts/${child.id}`">
+                {{ child.name }}({{ child.email }})
+              </router-link>
+            </td>
+            <td class="p-2">
+              <div
+                v-for="(rname, k2) in rList(child.restaurantLists)"
+                :key="`${k}_${k2}`"
+              >
+                {{ rname }}
               </div>
-            </button>
-          </td>
-        </tr>
-      </table>
-      <div class="text-xs pl-2 pb-2"><span>{{ $t("admin.subAccounts.guidance") }}</span></div>
+            </td>
+            <td class="p-2">
+              {{ (child.restaurantLists || []).length
+              }}{{ $t("admin.subAccounts.numberOfShops") }}
+            </td>
+            <td class="p-2">
+              {{
+                $t(
+                  "admin.subAccounts.messageResult." +
+                    (child.accepted === true ? "accepted" : "waiting"),
+                )
+              }}
+            </td>
+            <td class="p-2">
+              <button @click="deleteChild(child.id)">
+                <div
+                  class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow min-w-32"
+                >
+                  <span class="text-base font-bold text-white">
+                    {{ $t("admin.subAccounts.deleteSubaccount") }}
+                  </span>
+                </div>
+              </button>
+            </td>
+          </tr>
+        </table>
+        <div class="text-xs pl-2 pb-2">
+          <span>{{ $t("admin.subAccounts.guidance") }}</span>
+        </div>
       </div>
     </div>
     <div class="mx-6 mt-2">
@@ -101,9 +107,11 @@
         </div>
         <div>
           <button @click="invite" :disabled="sending">
-            <div class="mt-4 inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow min-w-32">
+            <div
+              class="mt-4 inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow min-w-32"
+            >
               <span class="text-base font-bold text-white">
-               {{
+                {{
                   $t(
                     sending
                       ? "admin.subAccounts.sending"

@@ -1224,7 +1224,8 @@ const data = {
       invite: "Invite",
       invitedList: "Invited List",
       deleteSubaccount: "Delete Sub-account",
-      guidance:"To set a store as a sub-account, please click on the sub-account name.",
+      guidance:
+        "To set a store as a sub-account, please click on the sub-account name.",
       send: "Send",
       sending: "Sending",
       enterName: "Please enter the name you want to give to the sub-account",
@@ -1384,7 +1385,8 @@ const data = {
     },
   },
   printer: {
-    description: "This feature automatically prints orders from a Star Micronics receipt printer when an order is received.",
+    description:
+      "This feature automatically prints orders from a Star Micronics receipt printer when an order is received.",
     serverURL: "CloudPRNT Server URL",
     guidance: "Please set this URL on your printer.",
     reset: "Reset Server URL",
