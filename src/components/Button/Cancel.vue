@@ -7,7 +7,7 @@
     <div
       class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black bg-opacity-5"
     >
-      <div class="text-base font-bold text-neutral-700">
+      <div class="text-base font-bold text-black text-opacity-60">
         <slot />
       </div>
     </div>
