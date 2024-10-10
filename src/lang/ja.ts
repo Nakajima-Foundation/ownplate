@@ -1376,6 +1376,12 @@ const data = {
       body: "",
     },
   },
+  printer: {
+    description: "注文が入ったときに、スター精密のレシートプリンターから自動的に注文内容を印刷する機能です。",
+    serverURL: "CloudPRNT サーバーURL",
+    guidance: "こちらのURLをプリンターに設定してください。",
+    reset: "サーバーURLリセット",
+  },
   validationError: {
     zip: {
       empty: "郵便番号を入力してください",
