@@ -75,7 +75,7 @@
 
         <!-- Submit Button -->
         <div class="mt-2 text-center">
-          <o-button @click="handleCancel" class="b-reset-tw mr-4 mb-2">
+          <button @click="handleCancel" class="b-reset-tw mr-4 mb-2">
             <div
               class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black bg-opacity-5"
             >
@@ -83,9 +83,9 @@
                 {{ $t("button.cancel") }}
               </div>
             </div>
-          </o-button>
+          </button>
 
-          <o-button @click="onSignin" class="b-reset-tw">
+          <button @click="onSignin" class="b-reset-tw">
             <div
               class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-op-teal shadow"
             >
@@ -93,7 +93,7 @@
                 {{ $t("button.next") }}
               </div>
             </div>
-          </o-button>
+          </button>
         </div>
 
         <!-- Forgot Password -->
