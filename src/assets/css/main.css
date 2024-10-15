@@ -63,25 +63,6 @@ canvas {
   margin: 0;
 }
 
-/* OwnPlate Side Bar */
-.b-sidebar {
-  position: absolute;
-}
-.b-sidebar .sidebar-background {
-  background-color: rgba(0, 0, 0, 0.5)!important;
-}
-.b-sidebar .sidebar-content.is-fullheight {
-  background: #ffffff!important;
-}
-.b-sidebar .sidebar-content {
-  position: fixed;
-  background: #ffffff!important;
-/*
-  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1)!important;
-  width: 288px;
-*/
-}
-
 .validation_ok,
 .validation_ok:hover {
   @apply bg-pink-500 bg-opacity-10 text-pink-500;
@@ -188,4 +169,9 @@ canvas {
  */
 .help.is-success {
   color: #16a34aff!important;
+}
+
+/* OwnPlate Side Bar */
+.sidebar .sidebar-content {
+  background-color: #ffffff!important;
 }
