@@ -169,7 +169,7 @@
             </div>
             <div v-if="searchResults.length > 0">
               <div class="mt-4">
-                <o-select v-model="selectedResult">
+                <select v-model="selectedResult">
                   <option
                     v-for="(result, key) in searchResults"
                     :value="key"
@@ -177,7 +177,7 @@
                   >
                     {{ result.formatted_address }}
                   </option>
-                </o-select>
+                </select>
               </div>
             </div>
             <div v-else class="mt-3 text-center text-sm">
