@@ -176,7 +176,13 @@ canvas {
   color: #16a34aff!important;
 }
 
+.has-text-success {
+  color: #48c78e!important;
+}
+
 /* OwnPlate Side Bar */
 .sidebar .sidebar-content {
   background-color: #ffffff!important;
 }
+
+
