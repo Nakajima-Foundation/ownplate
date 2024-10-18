@@ -123,12 +123,12 @@ canvas {
   overflow: scroll;
 }
 
+/* Workaround for Bulma and Oruga input field */
+/* https://oruga.io/components/Input.html */
 .control {
   position: relative;
 }
 
-/* Workaround for Bulma and Oruga input field */
-/* https://oruga.io/components/Input.html */
 .control .icon.is-right {
   display: flex;
   position: absolute;
