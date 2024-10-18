@@ -180,6 +180,10 @@ canvas {
   color: #48c78e!important;
 }
 
+.mdi-alert-circle {
+  color: #f14668!important;
+}
+
 /* OwnPlate Side Bar */
 .sidebar .sidebar-content {
   background-color: #ffffff!important;
