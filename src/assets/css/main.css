@@ -125,6 +125,10 @@ canvas {
 
 /* Workaround for Bulma and Oruga input field */
 /* https://oruga.io/components/Input.html */
+.control {
+  position: relative;
+}
+
 .control .icon.is-right {
   display: flex;
   position: absolute;
@@ -133,6 +137,7 @@ canvas {
   height: auto;
   width: 40px;
 }
+
 .select .icon.is-right {
   display: none;
 }
@@ -158,7 +163,7 @@ canvas {
  * 影響箇所：サイドバーを開いたときの背景色
  */
 .sidebar .sidebar-background {
-  background-color: #00000080!important;
+  background-color: #00000080 !important;
 }
 
 /*
@@ -168,10 +173,20 @@ canvas {
  * ref: PhoneLogin.vue, PhoneEntry.vue
  */
 .help.is-success {
-  color: #16a34aff!important;
+  color: #16a34aff !important;
+}
+
+.has-text-success {
+  color: #48c78e!important;
+}
+
+.mdi-alert-circle {
+  color: #f14668!important;
 }
 
 /* OwnPlate Side Bar */
 .sidebar .sidebar-content {
   background-color: #ffffff!important;
 }
+
+
