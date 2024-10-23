@@ -26,9 +26,11 @@
           rootClass="w-full"
         ></o-input>
         <div class="mt-2">
-          <span class="text-base font-bold">{{ $t("admin.subAccounts.email") }} </span>
+          <span class="text-base font-bold"
+            >{{ $t("admin.subAccounts.email") }}
+          </span>
         </div>
-        <div >
+        <div>
           {{ child.email }} /
           {{
             $t(
@@ -53,7 +55,9 @@
           <div
             class="mt-4 inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow min-w-32"
           >
-            <span class="text-base font-bold text-white">{{ $t("editCommon.save") }}</span>
+            <span class="text-base font-bold text-white">{{
+              $t("editCommon.save")
+            }}</span>
           </div>
         </button>
       </div>
