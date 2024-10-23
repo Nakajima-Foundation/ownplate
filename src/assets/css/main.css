@@ -57,7 +57,7 @@ canvas {
 
 /* OwnPlate Dialog for b-model */
 .modal-background {
-  background-color: rgba(0, 0, 0, 0.5)!important;
+  background-color: rgba(0, 0, 0, 0.5) !important;
 }
 .modal .animation-content {
   margin: 0;
@@ -142,9 +142,8 @@ canvas {
   display: none;
 }
 
-
 .field .has-addons {
-    display: inherit !important;
+  display: inherit !important;
 }
 
 /* 2024/10/04
@@ -177,16 +176,14 @@ canvas {
 }
 
 .has-text-success {
-  color: #48c78e!important;
+  color: #48c78e !important;
 }
 
 .mdi-alert-circle {
-  color: #f14668!important;
+  color: #f14668 !important;
 }
 
 /* OwnPlate Side Bar */
 .sidebar .sidebar-content {
-  background-color: #ffffff!important;
+  background-color: #ffffff !important;
 }
-
-
