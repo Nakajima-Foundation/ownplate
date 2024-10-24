@@ -252,8 +252,8 @@ export default defineComponent({
           total: Object.values(order.order).reduce((count, currentOrder) => {
             return count + arrayOrNumSum(currentOrder);
           }, 0),
-          name: nameOfOrder(currentOrder),
-          payment: currentOrder.payment?.stripe ? "stripe" : "",
+          name: nameOfOrder(order),
+          payment: order.payment?.stripe ? "stripe" : "",
         };
       });
     });
