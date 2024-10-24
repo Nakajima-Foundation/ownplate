@@ -140,7 +140,7 @@ import NotificationIndex from "@/app/admin/Notifications/Index.vue";
 import PreviewLink from "@/app/admin/common/PreviewLink.vue";
 
 import { useRouter, useRoute } from "vue-router";
-
+import { useHead } from "@unhead/vue";
 import moment from "moment-timezone";
 
 export default defineComponent({
@@ -156,17 +156,6 @@ export default defineComponent({
       type: Object,
       required: true,
     },
-  },
-  metaInfo() {
-    return {
-      title: this.shopInfo.restaurantName
-        ? [
-            "Admin Order History",
-            this.shopInfo.restaurantName,
-            defaultTitle,
-          ].join(" / ")
-        : defaultTitle,
-    };
   },
   setup(props) {
     const route = useRoute();
@@ -187,6 +176,16 @@ export default defineComponent({
         notFound: true,
       };
     }
+
+    useHead({
+      title: props.shopInfo.restaurantName
+        ? [
+            "Admin Order History",
+            props.shopInfo.restaurantName,
+            defaultTitle,
+          ].join(" / ")
+        : defaultTitle,
+    });
 
     const orderId = route.query.orderId;
 

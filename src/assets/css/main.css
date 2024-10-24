@@ -155,3 +155,37 @@ canvas {
 .select .icon.is-right {
   display: none;
 }
+
+
+.field .has-addons {
+    display: inherit !important;
+}
+
+/* 2024/10/04
+ * 以下のバージョンへあげた際のスタイル崩れを修正
+ * @oruga-ui/theme-bulma”: “^0.4.1"
+ * 影響箇所：input、textarea
+ * 対象画面：ログイン、店情報の変更、商品登録
+ */
+.field .control.has-icons-right {
+  display: block !important;
+}
+
+/* 2024/10/05
+ * 以下のバージョンへあげた際に色が黒っぽくなる現象を修正
+ * @oruga-ui/theme-bulma”: “^0.4.1"
+ * 影響箇所：サイドバーを開いたときの背景色
+ */
+.sidebar .sidebar-background {
+  background-color: #00000080!important;
+}
+
+/*
+ * add for
+ * @oruga-ui/theme-bulma”: “^0.4.1"
+ * text color of success events
+ * ref: PhoneLogin.vue, PhoneEntry.vue
+ */
+.help.is-success {
+  color: #16a34aff!important;
+}

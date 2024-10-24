@@ -16,17 +16,17 @@ import { defineComponent, onMounted, watch } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { useIsNotSuperAdmin, defaultTitle } from "@/utils/utils";
+import { useHead } from "@unhead/vue";
 
 export default defineComponent({
-  metaInfo() {
-    return {
-      title: [defaultTitle, "operator index"].join(" / "),
-    };
-  },
   setup() {
     const store = useStore();
     const router = useRouter();
     const { isNotSuperAdmin, isNotOperator } = useIsNotSuperAdmin();
+
+    useHead({
+      title: [defaultTitle, "operator index"].join(" / "),
+    });
 
     onMounted(() => {
       if (!store.state.user || (isNotSuperAdmin.value && isNotOperator.value)) {

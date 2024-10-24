@@ -53,17 +53,18 @@ import { defineComponent, onMounted, watch } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { useIsNotSuperAdmin, defaultTitle } from "@/utils/utils";
+import { useHead } from "@unhead/vue";
 
 export default defineComponent({
-  metaInfo() {
-    return {
-      title: [defaultTitle, "Super Index"].join(" / "),
-    };
-  },
   setup() {
     const store = useStore();
     const router = useRouter();
     const { isNotSuperAdmin } = useIsNotSuperAdmin();
+
+    useHead({
+      title: [defaultTitle, "Super Index"].join(" / "),
+    });
+
     onMounted(() => {
       if (!store.state.user || isNotSuperAdmin.value) {
         router.push("/");

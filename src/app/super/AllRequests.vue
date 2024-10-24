@@ -78,16 +78,15 @@ import {
 } from "firebase/firestore";
 
 export default defineComponent({
-  metaInfo() {
-    return {
-      title: [defaultTitle, "Super All Requests"].join(" / "),
-    };
-  },
   components: {
     BackButton,
   },
   setup() {
     useSuper();
+
+    useHead({
+      title: [defaultTitle, "Super All Requests"].join(" / "),
+    });
 
     const requests = ref<any[]>([]);
     const restaurantsObj = ref({});

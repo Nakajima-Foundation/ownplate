@@ -231,6 +231,7 @@ import { order2ReportData, OrderInfoData } from "@/models/orderInfo";
 
 import { checkShopOwner } from "@/utils/userPermission";
 import { useI18n } from "vue-i18n";
+import { useHead } from "@unhead/vue";
 
 export default defineComponent({
   components: {
@@ -245,15 +246,6 @@ export default defineComponent({
       type: Object,
       required: true,
     },
-  },
-  metaInfo() {
-    return {
-      title: this.shopInfo.restaurantName
-        ? ["Admin Report", this.shopInfo.restaurantName, defaultTitle].join(
-            " / ",
-          )
-        : defaultTitle,
-    };
   },
   setup(props) {
     const { t } = useI18n({ useScope: "global" });
@@ -275,6 +267,14 @@ export default defineComponent({
     });
     const monthIndex = ref(0);
     let detacher: any = null;
+
+    useHead({
+      title: props.shopInfo.restaurantName
+        ? ["Admin Report", props.shopInfo.restaurantName, defaultTitle].join(
+            " / ",
+          )
+        : defaultTitle,
+    });
 
     const { uid } = useAdminUids();
     if (!checkShopOwner(props.shopInfo, uid.value)) {
@@ -309,9 +309,12 @@ export default defineComponent({
           serviceTax: order.accounting?.service?.tax,
           shippingCost: order.shippingCost || order.deliveryFee || 0,
           total: order.totalCharge,
-          totalCount: Object.values(order.order).reduce((count, currentOrder) => {
-            return count + arrayOrNumSum(currentOrder);
-          }, 0),
+          totalCount: Object.values(order.order).reduce(
+            (count, currentOrder) => {
+              return count + arrayOrNumSum(currentOrder);
+            },
+            0,
+          ),
           discountPrice: order.discountPrice || 0,
           beforeDiscountPrice: order.totalCharge + (order.discountPrice || 0),
           name: nameOfOrder(order),

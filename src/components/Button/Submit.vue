@@ -1,5 +1,9 @@
 <template>
-  <o-button @click="handleSubmit" :disabled="disabled" class="b-reset-tw">
+  <button
+    @click="handleSubmit"
+    :disabled="disabled"
+    class="b-reset-tw disabled:opacity-50 disabled:cursor-not-allowed"
+  >
     <div
       class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-op-teal shadow"
     >
@@ -8,7 +12,7 @@
         <slot />
       </div>
     </div>
-  </o-button>
+  </button>
 </template>
 
 <script lang="ts">

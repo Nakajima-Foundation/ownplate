@@ -97,16 +97,22 @@ export const getters = {
     return _state.user && (_state.user as User).uid;
   },
   uidAdmin: (_state: State) => {
-    return _state.user && (_state.user as User).email && (_state.user as User).uid;
+    return (
+      _state.user && (_state.user as User).email && (_state.user as User).uid
+    );
   },
   uidUser: (_state: State) => {
     return (
-      _state.user && (_state.user as User).phoneNumber && (_state.user as User).uid
+      _state.user &&
+      (_state.user as User).phoneNumber &&
+      (_state.user as User).uid
     );
   },
   uidLiff: (_state: State) => {
     return (
-      _state.user && (_state.claims as Claims).liffId && (_state.user as User).uid
+      _state.user &&
+      (_state.claims as Claims).liffId &&
+      (_state.user as User).uid
     );
   },
   liffId: (_state: State) => {

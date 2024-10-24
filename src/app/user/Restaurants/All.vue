@@ -67,11 +67,11 @@ import { restaurant2AreaObj, sortRestaurantObj } from "@/utils/RestaurantUtils";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { resizedProfileImage } from "@/utils/utils";
 
+import { useHead } from "@unhead/vue";
+
 export default defineComponent({
-  metaInfo() {
-    return RestaurantHeader as any;
-  },
   setup() {
+    useHead(RestaurantHeader);
     const allArea = JPPrefecture;
 
     const restaurantsObj = ref<{ [key: string]: RestaurantInfoData[] }>({});

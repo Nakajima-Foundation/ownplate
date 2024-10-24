@@ -68,20 +68,21 @@ import AreaItem from "@/app/user/Restaurants/AreaItem.vue";
 import { ownPlateConfig } from "@/config/project";
 
 import { useUserData, resizedProfileImage } from "@/utils/utils";
+import { useHead } from "@unhead/vue";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   components: {
     AreaItem,
   },
-  metaInfo() {
-    const title = [
-      this.$t("pageTitle.restaurantRoot"),
-      ownPlateConfig.siteName,
-    ].join(" / ");
-    return Object.assign(RestaurantHeader, { title }) as any;
-  },
   setup() {
     const { isUser, uid } = useUserData();
+
+    const { t } = useI18n();
+    const title = [t("pageTitle.restaurantRoot"), ownPlateConfig.siteName].join(
+      " / ",
+    );
+    useHead(Object.assign(RestaurantHeader, { title }));
 
     const likes = ref<any[]>([]);
     onMounted(async () => {

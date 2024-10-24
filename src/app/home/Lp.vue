@@ -22,13 +22,9 @@ import operators from "@/components/lp/operators.vue";
 import aboutService from "@/components/lp/aboutService.vue";
 
 import { defaultTitle, sleep } from "@/utils/utils";
+import { useHead } from "@unhead/vue";
 
 export default defineComponent({
-  metaInfo() {
-    return {
-      title: [defaultTitle, "Top"].join(" / "),
-    };
-  },
   components: {
     adminServiceIntroduction,
     adminFeature,
@@ -50,6 +46,9 @@ export default defineComponent({
       await sleep(0.1);
       window.scrollTo(0, 0);
     })();
+    useHead({
+      title: [defaultTitle, "Top"].join(" / "),
+    });
     return {};
   },
 });

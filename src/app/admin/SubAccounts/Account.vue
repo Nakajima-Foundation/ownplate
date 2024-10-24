@@ -18,21 +18,27 @@
         <span class="text-base font-bold">
           {{ $t("admin.subAccounts.name") }}
         </span>
+      </div>
+      <div class="mt-2">
         <o-input
           v-model="name"
           :placeholder="$t('admin.subAccounts.enterName')"
+          rootClass="w-full"
         ></o-input>
-
-        <span class="text-base font-bold">
-          {{ $t("admin.subAccounts.email") }} </span
-        ><br />
-        {{ child.email }} /
-        {{
-          $t(
-            "admin.subAccounts.messageResult." +
-              (child.accepted === true ? "accepted" : "waiting"),
-          )
-        }}<br />
+        <div class="mt-2">
+          <span class="text-base font-bold"
+            >{{ $t("admin.subAccounts.email") }}
+          </span>
+        </div>
+        <div>
+          {{ child.email }} /
+          {{
+            $t(
+              "admin.subAccounts.messageResult." +
+                (child.accepted === true ? "accepted" : "waiting"),
+            )
+          }}
+        </div>
       </div>
       <div class="mt-2 rounded-lg bg-white p-4 shadow">
         <span class="font-bold">{{
@@ -44,10 +50,16 @@
           }}</o-checkbox>
         </div>
       </div>
-      <div class="mt-2">
-        <o-button @click="saveList">
-          {{ $t("editCommon.save") }}
-        </o-button>
+      <div class="text-center">
+        <button @click="saveList">
+          <div
+            class="mt-4 inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow min-w-32"
+          >
+            <span class="text-base font-bold text-white">{{
+              $t("editCommon.save")
+            }}</span>
+          </div>
+        </button>
       </div>
     </div>
   </div>
@@ -74,15 +86,11 @@ import { doc2data, array2obj, useAdminUids, defaultTitle } from "@/utils/utils";
 
 import { useRouter, useRoute } from "vue-router";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { useHead } from "@unhead/vue";
 
 export default defineComponent({
   components: {
     BackButton,
-  },
-  metaInfo() {
-    return {
-      title: [defaultTitle, "Admin Subaccount Account"].join(" / "),
-    };
   },
   setup() {
     const route = useRoute();
@@ -90,6 +98,9 @@ export default defineComponent({
 
     const subAccountId = computed(() => {
       return route.params.subAccountId;
+    });
+    useHead({
+      title: [defaultTitle, "Admin Subaccount Account"].join(" / "),
     });
 
     const restaurantObj = ref({});

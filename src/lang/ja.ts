@@ -146,6 +146,7 @@ const data = {
     current: "変更前",
     clickAndUpload: "ここをクリック",
     clickAndUploadDetail: "グレー部分をクリックしてアップロード(JPEG形式)",
+    edit: "編集",
   },
   currency: {
     USD: "ドル",
@@ -1211,11 +1212,16 @@ const data = {
         "招待されるサブアカウントは、事前にユーザ登録をする必要があります",
       title: "サブアカウント管理",
       subaccountlist: "サブアカウント一覧",
+      linkedStore: "連携店舗",
+      NumberOfLinkedStores: "連携店舗数",
+      status: "ステータス",
       email: "メールアドレス",
       name: "サブアカウント名",
       invite: "招待する",
       invitedList: "送信済み招待",
       deleteSubaccount: "サブアカウント解除",
+      guidance:
+        "サブアカウントにする店舗を設定するには、サブアカウント名をクリックしてください。",
       send: "送信",
       sending: "送信中",
       enterName: "サブアカウントに付ける名前を入力して下さい",
@@ -1370,6 +1376,13 @@ const data = {
       title: "オプション",
       body: "",
     },
+  },
+  printer: {
+    description:
+      "注文が入ったときに、スター精密のレシートプリンターから自動的に注文内容を印刷する機能です。",
+    serverURL: "CloudPRNT サーバーURL",
+    guidance: "こちらのURLをプリンターに設定してください。",
+    reset: "サーバーURLリセット",
   },
   validationError: {
     zip: {
