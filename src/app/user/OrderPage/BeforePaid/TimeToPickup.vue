@@ -13,7 +13,7 @@
             <span v-if="day.offset === 0">{{ $t("date.today") }}</span>
           </option>
         </o-select>
-        <o-select v-model="time" class="mt-2">
+        <o-select v-model="time">
           <option
             v-for="(time, index) in availableDays[dayIndex].times"
             :value="time.time"
