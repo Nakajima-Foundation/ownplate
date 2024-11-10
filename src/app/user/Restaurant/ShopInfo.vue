@@ -9,7 +9,7 @@
       </div>
       <div class="mx-4 mt-4 pb-2">
         <a target="_blank" :href="mapQuery">
-          <a class="inline-flex items-center justify-center">
+          <div class="inline-flex items-center justify-center">
             <i class="material-icons mr-2 text-lg text-op-teal">place</i>
             <div class="text-sm font-bold text-op-teal">
               <div v-if="region === 'JP'">
@@ -22,7 +22,7 @@
                 {{ shopInfo.state }} {{ shopInfo.zip }}
               </div>
             </div>
-          </a>
+          </div>
         </a>
       </div>
     </div>
