@@ -2,7 +2,7 @@
   <div>
     <!-- Date Picker -->
     <div v-if="availableDays.length > 0">
-      <div class="rounded-lg bg-white p-4 shadow">
+      <div class="rounded-lg bg-white p-4 shadow flex flex-wrap gap-2">
         <o-select v-model="dayIndex">
           <option
             v-for="(day, index) in availableDays"
