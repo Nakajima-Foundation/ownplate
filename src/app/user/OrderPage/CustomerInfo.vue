@@ -8,9 +8,11 @@
     </div>
     <div class="mt-1 text-base">
       <div>
-        <a :href="nationalPhoneURI" class="text-base font-bold">{{
-          nationalPhoneNumber
-        }}</a>
+        <a
+          :href="nationalPhoneURI"
+          class="text-base font-bold text-indigo-600"
+          >{{ nationalPhoneNumber }}</a
+        >
       </div>
       <div class="text-base">{{ orderInfo.name }}</div>
     </div>
