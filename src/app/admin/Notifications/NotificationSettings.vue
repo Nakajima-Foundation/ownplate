@@ -32,7 +32,7 @@
           <a @click="soundToggle()">
             <div
               v-if="notificationConfig.soundOn"
-              class="inline-flex h-9 items-center justify-center rounded-full bg-green-600 bg-opacity-10 px-4"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-green-600 bg-opacity-10 px-4 cursor-pointer"
             >
               <i class="material-icons mr-2 text-lg text-green-600"
                 >volume_up</i
