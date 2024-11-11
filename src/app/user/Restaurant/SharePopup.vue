@@ -1,7 +1,7 @@
 <template>
   <div class="is-inline-block">
     <!-- Share  Buttons -->
-    <a @click="openShare()" class="inline-flex items-center justify-center">
+    <a @click="openShare()" class="inline-flex items-center justify-center cursor-pointer">
       <i class="material-icons mr-2 text-lg text-op-teal">launch</i>
       <div class="text-sm font-bold text-op-teal">
         {{ $t("shopInfo.share") }}
