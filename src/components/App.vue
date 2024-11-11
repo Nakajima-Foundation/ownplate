@@ -32,13 +32,14 @@
       :full-page="true"
       :active="true"
       :can-cancel="false"
+      class="flex items-center justify-center h-screen"
     >
       <o-icon
         pack="fas"
         icon="circle-notch"
         customSize="fa-4x"
         spin
-        class="opacity-30"
+        class="flex items-center justify-center opacity-30 text-center"
       ></o-icon>
     </o-loading>
 
