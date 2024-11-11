@@ -512,6 +512,7 @@ const data = {
     add: "Ajouter",
     soldOut: "Complet",
     soldOutToday: "WIP",
+    pickupAvailableAfterToday: "WIP",
     options: "Options",
     subTotal: "Sous-total: ",
     quantity: "Quantité",

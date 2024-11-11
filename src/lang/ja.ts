@@ -537,6 +537,7 @@ const data = {
     add: "追加",
     soldOut: "売り切れ",
     soldOutToday: "本日売り切れ",
+    pickupAvailableAfterToday: "翌日以降の受け渡しとなります。",
     options: "オプション",
     subTotal: "小計: ",
     quantity: "数量",
