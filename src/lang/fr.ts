@@ -511,6 +511,7 @@ const data = {
     orderCounter: "{count} article | {count} artciles",
     add: "Ajouter",
     soldOut: "Complet",
+    soldOutToday: "WIP",
     options: "Options",
     subTotal: "Sous-total: ",
     quantity: "Quantité",
