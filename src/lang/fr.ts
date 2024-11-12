@@ -511,6 +511,8 @@ const data = {
     orderCounter: "{count} article | {count} artciles",
     add: "Ajouter",
     soldOut: "Complet",
+    soldOutToday: "Épuisé aujourd'hui",
+    pickupAvailableAfterToday: "Retrait disponible à partir de demain.",
     options: "Options",
     subTotal: "Sous-total: ",
     quantity: "Quantité",

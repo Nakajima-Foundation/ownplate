@@ -46,7 +46,7 @@
             </div>
           </div>
           <div v-if="false" class="text-xs mt-2">
-            翌日以降の受け渡しとなります。
+            {{ $t("sitemenu.pickupAvailableAfterToday") }}
           </div>
         </div>
 
