@@ -768,9 +768,9 @@ export default defineComponent({
       }
     });
     onUnmounted(() => {
-      if (isShowCart.value) {
-        document.body.style.position = "";
-      }
+      // if (isShowCart.value) {
+      document.body.style.position = "";
+      // }
     });
 
     const filteredTitleLists = computed(() => {
