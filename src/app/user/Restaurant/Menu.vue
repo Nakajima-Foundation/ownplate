@@ -80,7 +80,10 @@
           </div>
 
           <!-- Allergens -->
-          <div v-if="allergens.length > 0" class="mt-2 text-xs font-bold">
+          <div
+            v-if="allergens.length > 0"
+            class="mt-2 text-xs font-bold text-neutral-600"
+          >
             {{ allergensDescription }}
           </div>
         </div>
