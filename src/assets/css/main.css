@@ -187,3 +187,11 @@ canvas {
 .sidebar .sidebar-content {
   background-color: #ffffff !important;
 }
+
+a {
+  color: #485fc7;
+
+  &:hover {
+    color: #363636;
+  }
+}
