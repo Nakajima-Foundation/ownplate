@@ -4,7 +4,7 @@
       <!-- Transactions Act Button -->
       <a
         @click="openTransactionsAct()"
-        class="inline-flex items-center justify-center"
+        class="inline-flex items-center justify-center cursor-pointer"
       >
         <i class="material-icons mr-2 text-lg text-op-teal">account_balance</i>
         <div class="text-sm font-bold text-op-teal">
