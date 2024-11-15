@@ -3,7 +3,7 @@
     <!-- Sign In as a User -->
     <div class="mt-2 text-center">
       <a
-        class="inline-flex h-16 items-center justify-center rounded-full border-2 border-op-teal px-6"
+        class="inline-flex h-16 items-center justify-center rounded-full border-2 border-op-teal px-6 cursor-pointer"
         @click.prevent="handleSignIn"
       >
         <i class="material-icons mr-2 text-2xl text-op-teal">local_mall</i>
