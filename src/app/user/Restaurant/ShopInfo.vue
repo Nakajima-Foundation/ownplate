@@ -74,7 +74,7 @@
       <div class="mt-4 text-center">
         <a
           @click="toggleMoreInfo()"
-          class="inline-flex h-9 w-32 items-center justify-center rounded-full bg-black bg-opacity-5"
+          class="inline-flex h-9 w-32 items-center justify-center rounded-full bg-black bg-opacity-5 cursor-pointer"
         >
           <div class="text-sm font-bold text-op-teal">
             <template v-if="moreInfo">{{ $t("shopInfo.viewLess") }}</template>
