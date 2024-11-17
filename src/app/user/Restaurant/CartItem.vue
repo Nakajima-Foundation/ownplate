@@ -46,7 +46,7 @@
           :menu="{ price: subTotalWithTax }"
         />
       </div>
-      <div class="flex justify-end">
+      <div class="flex justify-end cursor-pointer">
         <span
           @click="decrease()"
           class="inline-flex h-9 w-16 items-center justify-center rounded-full bg-red-700 bg-opacity-10"
