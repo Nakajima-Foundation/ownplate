@@ -266,7 +266,7 @@
                   <div>
                     <a
                       @click="pullQuantities(quantityKey)"
-                      class="removeCart inline-flex h-9 w-24 items-center justify-center rounded-full bg-red-700 bg-opacity-10"
+                      class="removeCart inline-flex h-9 w-24 items-center justify-center rounded-full bg-red-700 bg-opacity-10 cursor-pointer"
                       :disabled="quantities[quantityKey] === 0"
                       :data-cart-product="item.id"
                     >
@@ -279,7 +279,7 @@
                   <div>
                     <a
                       @click="pushQuantities(quantityKey)"
-                      class="cardAdd inline-flex h-9 w-24 items-center justify-center rounded-full bg-op-teal bg-opacity-10"
+                      class="cardAdd inline-flex h-9 w-24 items-center justify-center rounded-full bg-op-teal bg-opacity-10 cursor-pointer"
                       :data-cart-product="item.id"
                     >
                       <i class="material-icons text-lg text-op-teal">add</i>
