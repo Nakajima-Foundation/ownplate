@@ -172,7 +172,7 @@
                   v-model="memo"
                   type="textarea"
                   :placeholder="$t('order.enterMessage')"
-                  class="w-full"
+                  rootClass="w-full"
                 ></o-input>
                 <div :class="userMessageError ? 'font-bold text-red-700' : ''">
                   {{ $t("validationError.memo.length") }}
