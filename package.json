@@ -29,7 +29,7 @@
     "@unhead/vue": "^1.11.11",
     "caniuse-lite": "^1.0.30001680",
     "chart.js": "^3.9.1",
-    "cookie": "^0.6.0",
+    "cookie": "^0.7.2",
     "crypto-js": "^4.1.1",
     "firebase": "11.0.2",
     "google-libphonenumber": "^3.2.38",
