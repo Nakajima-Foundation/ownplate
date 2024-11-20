@@ -103,8 +103,7 @@
             expanded
             :placeholder="$t('shopInfo.temporaryClosureSelect')"
             class="lg:w-96"
-          >
-          </o-datetimepicker>
+          />
           <o-datetimepicker
             icon="calendar-today"
             v-model="termToDate"
@@ -112,8 +111,7 @@
             expanded
             :placeholder="$t('shopInfo.temporaryClosureSelect')"
             class="lg:w-96"
-          >
-          </o-datetimepicker>
+          />
         </o-field>
       </div>
       <div class="mt-2 w-40">
