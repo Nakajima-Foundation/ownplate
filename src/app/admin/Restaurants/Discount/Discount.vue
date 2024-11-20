@@ -95,7 +95,7 @@
           </option>
         </o-select>
 
-        <o-field v-if="promotion.hasTerm">
+        <o-field v-if="promotion.hasTerm" class="has-addons">
           <o-datetimepicker
             icon="calendar-today"
             v-model="termFromDate"
@@ -335,6 +335,10 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.field.has-addons {
+  display: flex;
+}
+
 :deep(.control.has-icons-left) {
   border-radius: 4px;
   .icon.is-left {
