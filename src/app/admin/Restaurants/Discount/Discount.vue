@@ -335,3 +335,26 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+:deep(.control.has-icons-left) {
+  border-radius: 4px;
+  .icon.is-left {
+    left: 0;
+  }
+  .icon {
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+    color: #dbdbdb;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    width: 2.5em;
+    z-index: 4;
+  }
+  .input {
+    padding-left: 2.5em;
+  }
+}
+</style>
