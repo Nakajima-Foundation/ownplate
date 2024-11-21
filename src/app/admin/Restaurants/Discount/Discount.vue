@@ -119,18 +119,16 @@
           {{ $t("admin.promotion.minimumAmount") }}
         </div>
         <div>
-          <o-field>
+          <o-field class="has-addons">
             <o-input
               type="number"
               v-model="promotion.discountThreshold"
               :step="1"
               min="0"
             />
-            <div>
-              <span class="button is-static">
-                {{ $t("currency.JPY") }}
-              </span>
-            </div>
+            <span class="button is-static">
+              {{ $t("currency.JPY") }}
+            </span>
           </o-field>
         </div>
       </div>
@@ -171,7 +169,7 @@
             {{ $t("admin.promotion.ratio") }}
           </template>
         </div>
-        <o-field>
+        <o-field class="has-addons">
           <o-input type="text" v-model="promotion.discountValue" />
           <span class="button is-static">
             <template v-if="promotion.discountMethod === 'amount'">
@@ -357,6 +355,24 @@ export default defineComponent({
   }
   .input {
     padding-left: 2.5em;
+  }
+}
+
+.button {
+  border-width: 1px;
+  border-radius: 4px;
+  justify-content: center;
+  padding-bottom: calc(0.5em - 1px);
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: calc(0.5em - 1px);
+  text-align: center;
+  &.is-static {
+    background-color: #f5f5f5;
+    border-color: #dbdbdb;
+    color: #7a7a7a;
+    box-shadow: none;
+    pointer-events: none;
   }
 }
 </style>
