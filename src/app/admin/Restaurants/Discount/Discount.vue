@@ -333,8 +333,12 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.field.has-addons {
+:deep(.field.has-addons) {
   display: flex;
+  .control:first-child:not(:only-child) .input {
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+  }
 }
 
 :deep(.control.has-icons-left) {
