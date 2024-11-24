@@ -27,7 +27,7 @@
       <div class="mt-1">
         <!-- CVC Button -->
         <div class="text-right">
-          <a class="inline-flex items-center justify-center" @click="openCVC()">
+          <a class="inline-flex items-center justify-center cursor-pointer" @click="openCVC()">
             <i class="material-icons mr-1 text-lg text-op-teal">help_outline</i>
             <span class="text-sm font-bold text-op-teal">{{
               $t("order.whatsCVC")

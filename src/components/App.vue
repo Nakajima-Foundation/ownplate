@@ -1,7 +1,4 @@
 <template>
-  <metainfo>
-    <template v-slot:title="{ content }">{{ content }}</template>
-  </metainfo>
   <div class="flex min-h-screen flex-col" @click="enableSound()">
     <!-- Notification Banner -->
     <NotificationBanner />
@@ -35,13 +32,14 @@
       :full-page="true"
       :active="true"
       :can-cancel="false"
+      class="flex items-center justify-center h-screen"
     >
       <o-icon
         pack="fas"
         icon="circle-notch"
         customSize="fa-4x"
         spin
-        class="opacity-30"
+        class="flex items-center justify-center opacity-30 text-center"
       ></o-icon>
     </o-loading>
 
@@ -88,6 +86,7 @@ import { defaultHeader } from "@/config/header";
 
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
+import { useHead } from "@unhead/vue";
 
 export default defineComponent({
   name: "App",
@@ -99,7 +98,6 @@ export default defineComponent({
     AppFooter,
     NotificationBanner,
   },
-  metaInfo: defaultHeader,
 
   setup() {
     let unregisterAuthObserver: null | Unsubscribe = null;
@@ -109,6 +107,8 @@ export default defineComponent({
 
     const user = useUser();
     const restaurantId = useRestaurantId();
+
+    useHead(defaultHeader);
 
     onMounted(() => {
       window.addEventListener("focus", () => {

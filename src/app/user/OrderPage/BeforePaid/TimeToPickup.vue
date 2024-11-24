@@ -2,7 +2,7 @@
   <div>
     <!-- Date Picker -->
     <div v-if="availableDays.length > 0">
-      <div class="rounded-lg bg-white p-4 shadow">
+      <div class="rounded-lg bg-white p-4 shadow flex flex-wrap gap-2">
         <o-select v-model="dayIndex">
           <option
             v-for="(day, index) in availableDays"
@@ -13,7 +13,7 @@
             <span v-if="day.offset === 0">{{ $t("date.today") }}</span>
           </option>
         </o-select>
-        <o-select v-model="time" class="mt-2">
+        <o-select v-model="time">
           <option
             v-for="(time, index) in availableDays[dayIndex].times"
             :value="time.time"

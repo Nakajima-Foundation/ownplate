@@ -73,14 +73,10 @@ import { auth } from "@/lib/firebase/firebase9";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { useRouter } from "vue-router";
 import { defaultTitle } from "@/utils/utils";
+import { useHead } from "@unhead/vue";
 
 export default defineComponent({
   name: "Reset",
-  metaInfo() {
-    return {
-      title: [defaultTitle, "Reset Password"].join(" / "),
-    };
-  },
   setup() {
     const router = useRouter();
 
@@ -89,6 +85,10 @@ export default defineComponent({
     const apiError = ref(null);
     const emailSent = ref(false);
     const submitted = ref(false);
+
+    useHead({
+      title: [defaultTitle, "Reset Password"].join(" / "),
+    });
 
     const errors = computed(() => {
       if (!submitted.value) {

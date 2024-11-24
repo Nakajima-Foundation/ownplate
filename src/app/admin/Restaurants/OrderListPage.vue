@@ -103,6 +103,7 @@ import { useAdminConfigToggle } from "@/utils/admin/Toggle";
 
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
+import { useHead } from "@unhead/vue";
 
 export default defineComponent({
   components: {
@@ -110,15 +111,6 @@ export default defineComponent({
     ToggleSwitch,
     NotFound,
     AdminHeader,
-  },
-  metaInfo() {
-    return {
-      title: this.shopInfo.restaurantName
-        ? ["Admin Order List", this.shopInfo.restaurantName, defaultTitle].join(
-            " / ",
-          )
-        : defaultTitle,
-    };
   },
   props: {
     shopInfo: {
@@ -137,6 +129,16 @@ export default defineComponent({
 
     // eslint-disable-next-line no-empty-function
     let order_detacher = () => {};
+
+    useHead({
+      title: props.shopInfo.restaurantName
+        ? [
+            "Admin Order List",
+            props.shopInfo.restaurantName,
+            defaultTitle,
+          ].join(" / ")
+        : defaultTitle,
+    });
 
     const { ownerUid, uid } = useAdminUids();
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {

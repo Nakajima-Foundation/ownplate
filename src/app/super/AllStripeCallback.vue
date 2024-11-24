@@ -27,24 +27,23 @@ import {
 } from "firebase/firestore";
 
 import { stripeActionStrings } from "@/lib/stripe/stripe";
-
 import { useSuper, defaultTitle } from "@/utils/utils";
+import { useHead } from "@unhead/vue";
 import moment from "moment-timezone";
 
 export default defineComponent({
   components: {
     BackButton,
   },
-  metaInfo() {
-    return {
-      title: [defaultTitle, "Super All Stripe Callback"].join(" / "),
-    };
-  },
   setup() {
     useSuper();
 
     const logs = ref<any[]>([]);
     const last = ref<any>(null);
+
+    useHead({
+      title: [defaultTitle, "Super All Stripe Callback"].join(" / "),
+    });
 
     getDocs(
       query(

@@ -12,6 +12,18 @@ const data = {
       privacy: "Privacy policy",
     },
   },
+  adminTitle: {
+    menuList: "Menu Items",
+    orderList: "Order List",
+    orderHistory: "All Order History",
+    orderDetail: "Order Details",
+    orderSuspend: "Order Suspension Settings",
+    autoPrinter: "Automatic Printing",
+    lineAuth: "LINE Integration Settings",
+    discountList: "Discount Settings List",
+    discountDetail: "Discount Settings",
+    discountHistory: "Discount History",
+  },
   underConstruction: "WARNING: This is a staging server for development.",
   comma: ", ",
   mobileOrder: {
@@ -137,6 +149,7 @@ const data = {
     current: "Current",
     clickAndUpload: "Click and Upload",
     clickAndUploadDetail: "Click gray area to upload image(JPEG only)",
+    edit: "Edit",
   },
   currency: {
     USD: "USD",
@@ -527,6 +540,8 @@ const data = {
     orderCounter: "{count} item | {count} items",
     add: "Add",
     soldOut: "Sold Out",
+    soldOutToday: "Sold out today",
+    pickupAvailableAfterToday: "Pickup available starting tomorrow.",
     options: "Options",
     subTotal: "Subtotal: ",
     quantity: "Quantity",
@@ -1203,11 +1218,16 @@ const data = {
         "The sub-account to be invited must be registered as a user.",
       title: "Sub-account management",
       subaccountlist: "Sub-account list",
+      linkedStore: "Linked Store",
+      NumberOfLinkedStores: "Number of Linked Stores",
+      status: "Status",
       email: "Email",
       name: "Sub-account name",
       invite: "Invite",
       invitedList: "Invited List",
       deleteSubaccount: "Delete Sub-account",
+      guidance:
+        "To set a store as a sub-account, please click on the sub-account name.",
       send: "Send",
       sending: "Sending",
       enterName: "Please enter the name you want to give to the sub-account",
@@ -1365,6 +1385,13 @@ const data = {
       title: "オプション",
       body: "",
     },
+  },
+  printer: {
+    description:
+      "This feature automatically prints orders from a Star Micronics receipt printer when an order is received.",
+    serverURL: "CloudPRNT Server URL",
+    guidance: "Please set this URL on your printer.",
+    reset: "Reset Server URL",
   },
   validationError: {
     zip: {

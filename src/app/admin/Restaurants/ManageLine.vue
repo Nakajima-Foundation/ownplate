@@ -114,7 +114,7 @@ import AdminHeader from "@/app/admin/AdminHeader.vue";
 
 import { useStore } from "vuex";
 import { useRouter, useRoute } from "vue-router";
-
+import { useHead } from "@unhead/vue";
 interface LineUserData {
   id: string;
   notify?: boolean;
@@ -124,11 +124,6 @@ export default defineComponent({
   components: {
     AdminHeader,
     NotFound,
-  },
-  metaInfo() {
-    return {
-      title: ["Admin Manage Line", defaultTitle].join(" / "),
-    };
   },
   props: {
     shopInfo: {
@@ -142,6 +137,10 @@ export default defineComponent({
     const route = useRoute();
 
     const lineUsers = ref<LineUserData[]>([]);
+
+    useHead({
+      title: ["Admin Manage Line", defaultTitle].join(" / "),
+    });
 
     const { ownerUid, uid } = useAdminUids();
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {

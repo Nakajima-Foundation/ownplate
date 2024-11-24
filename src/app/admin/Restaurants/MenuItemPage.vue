@@ -746,25 +746,12 @@ import { checkShopOwner } from "@/utils/userPermission";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
+import { useHead } from "@unhead/vue";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 export default defineComponent({
   name: "MenuItemPage",
-  metaInfo() {
-    return {
-      title:
-        this.menuInfo && this.menuInfo.itemName
-          ? [
-              "Admin Menu Item",
-              this.menuInfo.itemName,
-              this.shopInfo.restaurantName,
-              defaultTitle,
-            ].join(" / ")
-          : defaultTitle,
-    };
-  },
-
   components: {
     Price,
     EditCategory,
@@ -805,6 +792,18 @@ export default defineComponent({
       category1: "",
       category2: "",
     } as MenuData);
+
+    useHead({
+      title:
+        menuInfo && menuInfo.itemName
+          ? [
+              "Admin Menu Item",
+              menuInfo.itemName,
+              props.shopInfo.restaurantName,
+              defaultTitle,
+            ].join(" / ")
+          : defaultTitle,
+    });
 
     const maxPrice = 1000000.0 / stripeRegion.multiple;
     const allergens = stripeRegion.allergens;

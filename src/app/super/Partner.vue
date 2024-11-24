@@ -21,6 +21,7 @@ import {
   limit,
   DocumentData,
 } from "firebase/firestore";
+import { useHead } from "@unhead/vue";
 
 import { useSuper, defaultTitle } from "@/utils/utils";
 
@@ -28,13 +29,12 @@ export default defineComponent({
   components: {
     BackButton,
   },
-  metaInfo() {
-    return {
-      title: [defaultTitle, "Super Partners"].join(" / "),
-    };
-  },
   setup() {
     useSuper();
+
+    useHead({
+      title: [defaultTitle, "Super Partners"].join(" / "),
+    });
 
     const admins = ref<DocumentData[]>([]);
 

@@ -36,7 +36,7 @@
         <div class="mt-12 text-center" v-if="!isLiffUser">
           <a
             @click.prevent="handleSignOut"
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 cursor-pointer"
           >
             <div class="text-sm font-bold text-op-teal">
               {{ $t("menu.signOut") }}
@@ -73,6 +73,7 @@ import AddressButton from "@/components/users/AddressButton.vue";
 import { defaultHeader } from "@/config/header";
 
 import { useUserData } from "@/utils/utils";
+import { useHead } from "@unhead/vue";
 
 export default defineComponent({
   components: {
@@ -85,12 +86,11 @@ export default defineComponent({
     ProfileStripe,
     ProfileLine,
   },
-  metaInfo() {
-    return {
-      title: [defaultHeader.title, "Profile"].join(" / "),
-    };
-  },
   setup() {
+    useHead({
+      title: [defaultHeader.title, "Profile"].join(" / "),
+    });
+
     const handleSignOut = () => {
       signOut(auth);
     };

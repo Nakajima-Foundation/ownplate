@@ -302,6 +302,8 @@ import {
 import { AnalyticsMenuData } from "@/lib/firebase/analytics";
 import Promotion from "@/models/promotion";
 
+import { useHead } from "@unhead/vue";
+
 import {
   array2obj,
   arraySum,
@@ -377,18 +379,6 @@ export default defineComponent({
       required: true,
     },
   },
-  metaInfo() {
-    // TODO: add area to header
-    return {
-      title:
-        Object.keys(this.shopInfo).length === 0
-          ? document.title
-          : [
-              this.shopInfo?.restaurantName || "",
-              ownPlateConfig.restaurantPageTitle || defaultTitle,
-            ].join(" / "),
-    };
-  },
   setup(props) {
     const store = useStore();
     const route = useRoute();
@@ -408,6 +398,16 @@ export default defineComponent({
     const multiple = store.getters.stripeRegion.multiple;
 
     const basePath = useBasePath();
+
+    useHead({
+      title:
+        Object.keys(props.shopInfo).length === 0
+          ? document.title
+          : [
+              props.shopInfo?.restaurantName || "",
+              ownPlateConfig.restaurantPageTitle || defaultTitle,
+            ].join(" / "),
+    });
 
     const defaultHowToReceive = (() => {
       // for 333
@@ -768,9 +768,9 @@ export default defineComponent({
       }
     });
     onUnmounted(() => {
-      if (isShowCart.value) {
-        document.body.style.position = "";
-      }
+      // if (isShowCart.value) {
+      document.body.style.position = "";
+      // }
     });
 
     const filteredTitleLists = computed(() => {

@@ -95,7 +95,7 @@
           </option>
         </o-select>
 
-        <o-field v-if="promotion.hasTerm">
+        <o-field v-if="promotion.hasTerm" class="has-addons">
           <o-datetimepicker
             icon="calendar-today"
             v-model="termFromDate"
@@ -103,8 +103,7 @@
             expanded
             :placeholder="$t('shopInfo.temporaryClosureSelect')"
             class="lg:w-96"
-          >
-          </o-datetimepicker>
+          />
           <o-datetimepicker
             icon="calendar-today"
             v-model="termToDate"
@@ -112,8 +111,7 @@
             expanded
             :placeholder="$t('shopInfo.temporaryClosureSelect')"
             class="lg:w-96"
-          >
-          </o-datetimepicker>
+          />
         </o-field>
       </div>
       <div class="mt-2 w-40">
@@ -121,18 +119,16 @@
           {{ $t("admin.promotion.minimumAmount") }}
         </div>
         <div>
-          <o-field>
+          <o-field class="has-addons">
             <o-input
               type="number"
               v-model="promotion.discountThreshold"
               :step="1"
               min="0"
             />
-            <div>
-              <span class="button is-static">
-                {{ $t("currency.JPY") }}
-              </span>
-            </div>
+            <span class="button is-static">
+              {{ $t("currency.JPY") }}
+            </span>
           </o-field>
         </div>
       </div>
@@ -173,7 +169,7 @@
             {{ $t("admin.promotion.ratio") }}
           </template>
         </div>
-        <o-field>
+        <o-field class="has-addons">
           <o-input type="text" v-model="promotion.discountValue" />
           <span class="button is-static">
             <template v-if="promotion.discountMethod === 'amount'">
@@ -335,3 +331,52 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+:deep(.field.has-addons) {
+  display: flex;
+  .control:first-child:not(:only-child) .input {
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+  }
+}
+
+:deep(.control.has-icons-left) {
+  border-radius: 4px;
+  .icon.is-left {
+    left: 0;
+  }
+  .icon {
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+    color: #dbdbdb;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    width: 2.5em;
+    z-index: 4;
+  }
+  .input {
+    padding-left: 2.5em;
+  }
+}
+
+.button {
+  border-width: 1px;
+  border-radius: 4px;
+  justify-content: center;
+  padding-bottom: calc(0.5em - 1px);
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: calc(0.5em - 1px);
+  text-align: center;
+  &.is-static {
+    background-color: #f5f5f5;
+    border-color: #dbdbdb;
+    color: #7a7a7a;
+    box-shadow: none;
+    pointer-events: none;
+  }
+}
+</style>

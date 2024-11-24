@@ -33,18 +33,18 @@ import {
 } from "firebase/firestore";
 
 import { useSuper, defaultTitle } from "@/utils/utils";
+import { useHead } from "@unhead/vue";
 
 export default defineComponent({
-  metaInfo() {
-    return {
-      title: [defaultTitle, "Super All Log"].join(" / "),
-    };
-  },
   components: {
     BackButton,
   },
   setup() {
     useSuper();
+
+    useHead({
+      title: [defaultTitle, "Super All Log"].join(" / "),
+    });
 
     const logs = ref<any[]>([]);
     let detacher: any = null;

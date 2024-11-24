@@ -146,6 +146,7 @@ import { checkShopAccount } from "@/utils/userPermission";
 import { useAdminConfigToggle2 } from "@/utils/admin/Toggle";
 
 import { useRouter, useRoute } from "vue-router";
+import { useHead } from "@unhead/vue";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
@@ -177,15 +178,6 @@ export default defineComponent({
       required: true,
     },
   },
-  metaInfo() {
-    return {
-      title: this.shopInfo.restaurantName
-        ? ["Admin Menu List", this.shopInfo.restaurantName, defaultTitle].join(
-            " / ",
-          )
-        : defaultTitle,
-    };
-  },
   setup(props) {
     const route = useRoute();
     const router = useRouter();
@@ -199,6 +191,14 @@ export default defineComponent({
     const notFound = ref<boolean | null>(null);
 
     const { isOwner, uid, ownerUid } = useAdminUids();
+
+    useHead({
+      title: props.shopInfo.restaurantName
+        ? ["Admin Menu List", props.shopInfo.restaurantName, defaultTitle].join(
+            " / ",
+          )
+        : defaultTitle,
+    });
 
     const restaurantId = computed(() => {
       return route.params.restaurantId as string;

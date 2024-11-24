@@ -13,6 +13,18 @@ const data = {
       privacy: "Politique de Confidentialité",
     },
   },
+  adminTitle: {
+    menuList: "Éléments du Menu",
+    orderList: "Liste des Commandes",
+    orderHistory: "Historique de Toutes les Commandes",
+    orderDetail: "Détails de la Commande",
+    orderSuspend: "Paramètres de Suspension des Commandes",
+    autoPrinter: "Impression Automatique",
+    lineAuth: "Paramètres d'Intégration LINE",
+    discountList: "Liste des Paramètres de Réduction",
+    discountDetail: "Paramètres de Réduction",
+    discountHistory: "Historique des Réductions",
+  },
   underConstruction:
     "ATTENTION: Ceci est un serveur de préproduction pour le dévelopement.",
   comma: ", ",
@@ -137,6 +149,7 @@ const data = {
     clickAndUpload: "Cliquer et Télécharger",
     clickAndUploadDetail:
       "Cliquez sur la zone grise ou Glissez-déposez pour télécharger l'image (JPEG uniquement)",
+    edit: "Éditer",
   },
   currency: {
     USD: "USD",
@@ -498,6 +511,8 @@ const data = {
     orderCounter: "{count} article | {count} artciles",
     add: "Ajouter",
     soldOut: "Complet",
+    soldOutToday: "Épuisé aujourd'hui",
+    pickupAvailableAfterToday: "Retrait disponible à partir de demain.",
     options: "Options",
     subTotal: "Sous-total: ",
     quantity: "Quantité",
@@ -1159,11 +1174,16 @@ const data = {
         "The sub-account to be invited must be registered as a user.",
       title: "Sub-account management",
       subaccountlist: "Sub-account list",
+      linkedStore: "Magasin Lié",
+      NumberOfLinkedStores: "Nombre de Magasins Liés",
+      status: "Statut",
       email: "Email",
       name: "Sub-account name",
       invite: "Invite",
       invitedList: "Invited List",
       deleteSubaccount: "Delete Sub-account",
+      guidance:
+        "Pour définir un magasin comme sous-compte, cliquez sur le nom du sous-compte.",
       send: "Send",
       sending: "Sending",
       enterName: "Please enter the name you want to give to the sub-account",
@@ -1307,6 +1327,13 @@ const data = {
       title: "Phone Number",
       body: "Displayed as a phone number for customers on the restaurant's page, and also notified by calling this number if phone notifications are turned on",
     },
+  },
+  printer: {
+    description:
+      "Cette fonctionnalité imprime automatiquement les commandes sur une imprimante de reçus Star Micronics lorsqu'une commande est reçue.",
+    serverURL: "CloudPRNT URL du Serveur",
+    guidance: "Veuillez configurer cette URL sur votre imprimante.",
+    reset: "Réinitialiser l'URL du Serveur",
   },
   validationError: {
     zip: {

@@ -582,6 +582,7 @@ import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 
 import { useI18n } from "vue-i18n";
+import { useHead } from "@unhead/vue";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { OrderInfoData } from "@/models/orderInfo";
@@ -602,15 +603,6 @@ export default defineComponent({
       type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
-  },
-  metaInfo() {
-    return {
-      title: this.shopInfo.restaurantName
-        ? ["Admin Order Info", this.shopInfo.restaurantName, defaultTitle].join(
-            " / ",
-          )
-        : defaultTitle,
-    };
   },
   // if user is not signined, render login
   // if user is not owner, render 404
@@ -642,6 +634,17 @@ export default defineComponent({
     const restaurantId = useRestaurantId();
 
     const { ownerUid, uid } = useAdminUids();
+
+    useHead({
+      title: props.shopInfo.restaurantName
+        ? [
+            "Admin Order Info",
+            props.shopInfo.restaurantName,
+            defaultTitle,
+          ].join(" / ")
+        : defaultTitle,
+    });
+
     if (
       !checkShopAccount(props.shopInfo, ownerUid.value) &&
       !store.getters.isSuperAdmin
