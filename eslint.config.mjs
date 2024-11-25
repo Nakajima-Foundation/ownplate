@@ -10,7 +10,7 @@ export default [
     files: ["src/**/*.{vue,ts}"],
   },
   {
-    ignores: ['dist', 'build', 'node_modules', 'functions', 'holidays', 'patch', 'tailwind.config.js', "batchCustomer", "postcss.config.js", "batch", "vue.config.js", "vue.config.js", "zipcodeJP", "vite.config.js", "eslint.config.mjs"],
+    ignores: ['dist', 'build', 'node_modules', 'functions', 'holidays', 'patch', 'tailwind.config.js', "batchCustomer", "postcss.config.js", "batch", "vue.config.js", "vue.config.js", "zipcodeJP", "vite.config.js", "eslint.config.mjs", "postcss.config.cjs"],
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommended,

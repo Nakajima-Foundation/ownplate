@@ -18,7 +18,7 @@ import VueGoogleMaps from "@fawmi/vue-google-maps";
 
 // sentry
 import * as Sentry from "@sentry/vue";
-import { BrowserTracing } from "@sentry/tracing";
+// import { BrowserTracing } from "@sentry/tracing";
 
 // components
 import App from "@/components/App.vue";
