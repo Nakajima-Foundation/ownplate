@@ -62,11 +62,10 @@ if (import.meta.env.PROD) {
       app,
       dsn: sentryDsn,
       integrations: [
-        new BrowserTracing({
-          routingInstrumentation: Sentry.vueRouterInstrumentation(router),
-          tracingOrigins: ["localhost"],
-        }),
+        Sentry.browserTracingIntegration({ router }),
+        Sentry.replayIntegration(),
       ],
+      tracePropagationTargets: ["localhost"],
       // Set tracesSampleRate to 1.0 to capture 100%
       // of transactions for performance monitoring.
       // We recommend adjusting this value in production
