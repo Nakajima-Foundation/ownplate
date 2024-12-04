@@ -6,7 +6,7 @@
     </div>
 
     <!-- Send SMS -->
-    <form v-show="confirmationResult === null" @submit.prevent="handleSubmit">
+    <div v-show="confirmationResult === null">
       <div v-if="!relogin" class="mt-4">
         <!-- Country Code -->
         <div v-if="countries.length > 1">
@@ -83,7 +83,7 @@
       <div class="mt-4 text-xs" v-if="!relogin">
         <TermsAndPolicy />
       </div>
-    </form>
+    </div>
 
     <!-- Verification Code -->
     <form v-if="confirmationResult !== null" @submit.prevent="handleCode">
