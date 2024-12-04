@@ -87,7 +87,7 @@
     </div>
 
     <!-- Verification Code -->
-    <form v-if="confirmationResult !== null" @submit.prevent="handleCode">
+    <div v-if="confirmationResult !== null">
       <div class="mt-4">
         <!-- Enter Code -->
         <div>
@@ -147,7 +147,7 @@
           {{ $t("sms.sendVerificationCode") }}
         </ButtonSubmit>
       </div>
-    </form>
+    </div>
   </div>
 </template>
 
