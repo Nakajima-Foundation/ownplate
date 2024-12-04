@@ -107,6 +107,7 @@
                 v-model="verificationCode"
                 maxlength="6"
                 :placeholder="$t('sms.typeVerificationCode')"
+                @keyup.enter="handleCode"
               />
             </o-field>
           </div>
@@ -125,6 +126,7 @@
                 v-model="name"
                 maxlength="32"
                 :placeholder="$t('sms.typeUserName')"
+                @keyup.enter="handleCode"
               />
             </o-field>
           </div>
