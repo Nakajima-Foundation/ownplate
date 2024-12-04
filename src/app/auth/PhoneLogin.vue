@@ -46,6 +46,7 @@
                 v-model="phoneNumber"
                 maxlength="20"
                 :placeholder="$t('sms.pleasetype')"
+                @keyup.enter="handleSubmit"
               />
             </o-field>
           </div>
