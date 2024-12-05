@@ -6,7 +6,7 @@
     </div>
 
     <!-- Send SMS -->
-    <div v-show="confirmationResult === null">
+    <form v-show="confirmationResult === null">
       <div v-if="!relogin" class="mt-4">
         <!-- Country Code -->
         <div v-if="countries.length > 1">
@@ -84,10 +84,10 @@
       <div class="mt-4 text-xs" v-if="!relogin">
         <TermsAndPolicy />
       </div>
-    </div>
+    </form>
 
     <!-- Verification Code -->
-    <div v-if="confirmationResult !== null">
+    <form v-if="confirmationResult !== null">
       <div class="mt-4">
         <!-- Enter Code -->
         <div>
@@ -149,7 +149,7 @@
           {{ $t("sms.sendVerificationCode") }}
         </ButtonSubmit>
       </div>
-    </div>
+    </form>
   </div>
 </template>
 
