@@ -6,7 +6,7 @@
     </div>
 
     <!-- Send SMS -->
-    <form v-show="confirmationResult === null">
+    <form v-show="confirmationResult === null" @submit.prevent="handleSubmit">
       <div v-if="!relogin" class="mt-4">
         <!-- Country Code -->
         <div v-if="countries.length > 1">
@@ -46,7 +46,6 @@
                 v-model="phoneNumber"
                 maxlength="20"
                 :placeholder="$t('sms.pleasetype')"
-                @keyup.enter="handleSubmit"
               />
             </o-field>
           </div>
