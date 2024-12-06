@@ -70,7 +70,6 @@
 
         <ButtonSubmit
           id="button-send-tel"
-          @submit="handleSubmit"
           :disabled="!readyToSendSMS"
           class="ml-4"
           :isLoading="isLoading"
