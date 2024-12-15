@@ -1,4 +1,4 @@
-import * as functions from "firebase-functions";
+import * as functions from "firebase-functions/v1";
 import * as utils from "../../lib/utils";
 import * as netutils from "../../lib/netutils";
 import * as admin from "firebase-admin";

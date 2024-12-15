@@ -1,4 +1,4 @@
-import * as functions from "firebase-functions";
+import * as functions from "firebase-functions/v1";
 import * as express from "../functions/express/express";
 import { secretKeys } from "./firebase";
 
