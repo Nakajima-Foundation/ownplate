@@ -94,14 +94,9 @@
         </o-modal>
       </div>
 
-      <!-- Save Card Info for Reuse -->
-      <div class="mt-2 text-center">
-        <o-checkbox v-model="reuse"
-          ><div class="text-sm font-bold">
-            {{ $t("order.reuseCard") }}
-          </div></o-checkbox
-        >
-      </div>
+      <button @click="hoge">
+        hoge
+      </button>
     </div>
   </div>
 </template>
@@ -124,12 +119,20 @@ export default defineComponent({
       type: Boolean,
       required: true,
     },
+    stripeAccount: {
+      type: String,
+      required: true,
+    },
+    clientSecret: {
+      type: String,
+      required: true,
+    },
   },
-  setup(_, ctx) {
+  setup(props, ctx) {
     const { user } = useUserData();
     const store = useStore();
-
-    const stripe = getStripeInstance();
+    
+    const stripe = getStripeInstance(props.stripeAccount);
     const cardElem = ref<any>(null);
     let elementStatus = { complete: false };
 
@@ -138,11 +141,13 @@ export default defineComponent({
     const CVCPopup = ref(false);
     const reuse = ref(true);
 
+    const elements = stripe.elements(
+      { clientSecret: props.clientSecret },
+    );
     const configureStripe = async () => {
-      const elements = stripe.elements();
       const stripeRegion = store.getters.stripeRegion;
-      const cardElement = elements.create("card", {
-        hidePostalCode: stripeRegion.hidePostalCode,
+      const cardElement = elements.create("payment", {
+        // hidePostalCode: stripeRegion.hidePostalCode,
         style: {
           base: {
             fontWeight: 600,
@@ -209,6 +214,17 @@ export default defineComponent({
       ctx.emit("change", newValue ? { complete: true } : elementStatus);
     });
 
+    const hoge = async () => {
+      const result = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          // return_url: window.location.href
+        },
+        redirect: "if_required"
+      });
+      console.log(result);
+    };
+    
     const createToken = async () => {
       if (!useStoredCard.value) {
         const { token } = await stripe.createToken(cardElem.value);
@@ -227,6 +243,7 @@ export default defineComponent({
       CVCPopup.value = false;
     };
     return {
+      hoge,
       useStoredCard,
       storedCard,
       CVCPopup,

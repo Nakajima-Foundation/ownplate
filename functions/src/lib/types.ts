@@ -26,6 +26,7 @@ export interface orderPlacedData {
   timeToPickup: admin.firestore.Timestamp;
   promotionId: string;
   affiliateId: string;
+  waitingPayment: boolean;
   memo: string;
   userName: string;
   payStripe: boolean;

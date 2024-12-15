@@ -25,7 +25,19 @@
         :menuPagePath="menuPagePath"
         @openTransactionsAct="openTransactionsAct"
         :promotions="promotions"
-      />
+        />
+      <OrderPagePay
+        v-else-if="waiting_payment"
+        :shopInfo="shopInfo"
+        :orderInfo="orderInfo"
+        :orderItems="orderItems"
+        :paymentInfo="paymentInfo"
+        :deliveryData="deliveryData"
+        :menuPagePath="menuPagePath"
+        @openTransactionsAct="openTransactionsAct"
+        :promotions="promotions"
+        />
+
       <OrderPageAfter
         v-else-if="paid"
         :shopInfo="shopInfo"
@@ -62,6 +74,7 @@ import TransactionsActModal from "@/app/user/TransactionsAct/Modal.vue";
 
 import OrderPageBefore from "@/app/user/OrderPage/BeforePaid.vue";
 import OrderPageAfter from "@/app/user/OrderPage/AfterPaid.vue";
+import OrderPagePay from "@/app/user/OrderPage/Pay.vue";
 
 import { db } from "@/lib/firebase/firebase9";
 import { onSnapshot, doc, deleteDoc, Unsubscribe } from "firebase/firestore";
@@ -90,7 +103,7 @@ export default defineComponent({
   components: {
     OrderPageBefore,
     OrderPageAfter,
-
+    OrderPagePay,
     NotFound,
     RequireLogin,
 
@@ -148,6 +161,9 @@ export default defineComponent({
     });
     const just_validated = computed(() => {
       return orderInfo.value.status === order_status.validation_ok;
+    });
+    const waiting_payment = computed(() => {
+      return orderInfo.value.status === order_status.waiting_payment;
     });
     const paid = computed(() => {
       return orderInfo.value.status >= order_status.order_placed;
@@ -253,6 +269,7 @@ export default defineComponent({
       menuNotFound,
       orderError,
       just_validated,
+      waiting_payment,
       paid,
 
       orderInfo,

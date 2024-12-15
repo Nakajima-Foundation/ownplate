@@ -21,17 +21,9 @@
 
     <!-- Before Paid -->
     <div class="mx-6 mt-4">
-      <BeforePaidAlert :orderInfo="orderInfo" :shopInfo="shopInfo" message="order.orderNotPlacedYet" />
+      <BeforePaidAlert :orderInfo="orderInfo" :shopInfo="shopInfo" message="決済待ち" />
     </div>
     <!-- end of Before Paid -->
-
-    <!-- customer info -->
-    <div
-      v-if="orderInfo.phoneNumber && !shopInfo.isEC"
-      class="mt-4 text-center"
-    >
-      <CustomerInfo :orderInfo="orderInfo" />
-    </div>
 
     <!-- Order Body -->
     <div class="mx-6 mt-2 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
@@ -79,138 +71,6 @@
       <!-- Right -->
       <div class="mt-4 lg:mt-0">
         <div>
-          <!-- For EC and Delivery -->
-          <div
-            v-if="shopInfo.isEC || orderInfo.isDelivery"
-            class="text-xl font-bold text-black text-opacity-30"
-          >
-            {{ $t("order.ec.formtitle") }}
-          </div>
-
-          <!-- For EC and Delivery -->
-          <div
-            v-if="shopInfo.isEC || orderInfo.isDelivery"
-            class="mb-4 mt-2 rounded-lg bg-white p-4 shadow"
-          >
-            <ECCustomer
-              ref="ecCustomerRef"
-              :shopInfo="shopInfo"
-              :orderInfo="orderInfo"
-              @updateLocation="updateLocation"
-            />
-          </div>
-          <!-- End of EC and Delivery -->
-
-          <!-- map for delivery -->
-          <div class="mt-4" v-if="orderInfo.isDelivery">
-            <span
-              v-if="
-                $refs.ecCustomerRef &&
-                $refs.ecCustomerRef.ecErrors['location'].length > 0
-              "
-              class="font-bold text-red-700"
-            >
-              <div
-                v-for="(error, key) in $refs.ecCustomerRef.ecErrors['location']"
-                :key="key"
-              >
-                {{ $t(error) }}
-              </div>
-            </span>
-            <OrderPageMap
-              ref="orderPageMapRef"
-              @updateHome="updateHome"
-              :shopInfo="shopInfo"
-              :fullAddress="
-                $refs.ecCustomerRef && $refs.ecCustomerRef.fullAddress
-              "
-              :deliveryInfo="deliveryData"
-            />
-          </div>
-
-          <!-- Time to Pickup -->
-          <div v-if="!shopInfo.isEC">
-            <div class="text-xl font-bold text-black text-opacity-30">
-              <span v-if="orderInfo.isDelivery">
-                {{ $t("order.deliveryTimeRequested") }}
-              </span>
-              <span v-else>
-                {{ $t("order.timeRequested") }}
-              </span>
-            </div>
-
-            <div class="mt-2">
-              <time-to-pickup
-                v-if="shopInfo.businessDay"
-                :shopInfo="shopInfo"
-                :orderInfo="orderInfo"
-                :isDelivery="orderInfo.isDelivery || false"
-                :hasSoldOutToday="hasSoldOutToday"
-                ref="timeToPickupRef"
-                @notAvailable="handleNotAvailable"
-              />
-            </div>
-          </div>
-
-          <!-- Order Notice -->
-          <OrderNotice :shopInfo="shopInfo" />
-
-          <!-- Message -->
-          <template v-if="shopInfo && shopInfo.acceptUserMessage">
-            <div
-              class="mt-2"
-              :class="
-                userMessageError ? 'rounded border-4 border-red-700 p-2' : ''
-              "
-            >
-              <div class="text-xl font-bold text-black text-opacity-30">
-                {{ $t("order.orderMessage") }}
-              </div>
-
-              <div class="mt-2 rounded-lg bg-white p-4 shadow">
-                <o-input
-                  v-model="memo"
-                  type="textarea"
-                  :placeholder="$t('order.enterMessage')"
-                  rootClass="w-full"
-                ></o-input>
-                <div :class="userMessageError ? 'font-bold text-red-700' : ''">
-                  {{ $t("validationError.memo.length") }}
-                </div>
-              </div>
-            </div>
-          </template>
-
-          <!--Act on Specified Commercial Transactions -->
-          <div class="mt-2">
-            <SpecifiedCommercialTransactions
-              :shopInfo="shopInfo"
-              @openTransactionsAct="openTransactionsAct()"
-            />
-          </div>
-
-          <!-- User name -->
-          <template v-if="shopInfo && shopInfo.personalInfo === 'required'">
-            <div
-              class="mt-2"
-              :class="
-                userNameError ? 'rounded border-4 border-red-700 p-2' : ''
-              "
-            >
-              <div class="text-xl font-bold text-black text-opacity-30">
-                {{ $t("order.requiredUserName") }}
-              </div>
-
-              <div class="mt-2 rounded-lg bg-white p-4 shadow">
-                <o-input
-                  v-model="userName"
-                  :placeholder="$t('order.enterUserName')"
-                  class="w-full"
-                ></o-input>
-              </div>
-            </div>
-          </template>
-
           <!-- Payment -->
           <div class="mt-2">
             <div class="text-xl font-bold text-black text-opacity-30">
@@ -219,10 +79,13 @@
 
             <!-- Pay Online -->
             <div v-if="showPayment" class="mt-2">
+              {{ stripeAccount }}
               <stripe-card
                 @change="handleCardStateChange"
                 ref="stripeRef"
                 :stripeJCB="stripeJCB"
+                :stripeAccount="stripeAccount"
+                :clientSecret="orderInfo.client_secret"
               ></stripe-card>
 
               <div
@@ -255,14 +118,6 @@
 
               <div class="mt-4 text-center">
                 <o-button
-                  :disabled="
-                    notSubmitAddress ||
-                    userMessageError ||
-                    userNameError ||
-                    stripeSmallPayment ||
-                    isPaying ||
-                    isPlacing
-                  "
                   @click="handlePayment(true)"
                   class="b-reset-tw"
                 >
@@ -384,7 +239,6 @@ import UserCustomerInfo from "@/app/user/OrderPage/UserCustomerInfo.vue";
 import CustomerInfo from "@/app/user/OrderPage/CustomerInfo.vue";
 
 import StripeCard from "@/app/user/OrderPage/BeforePaid/StripeCard.vue";
-import TimeToPickup from "@/app/user/OrderPage/BeforePaid/TimeToPickup.vue";
 import ECCustomer from "@/app/user/OrderPage/BeforePaid/ECCustomer.vue";
 import OrderNotice from "@/app/user/OrderPage/BeforePaid/OrderNotice.vue";
 import BeforePaidAlert from "@/app/user/OrderPage/BeforePaid/BeforePaidAlert.vue";
@@ -396,7 +250,7 @@ import ButtonLoading from "@/components/Button/Loading.vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc, Timestamp } from "firebase/firestore";
 
-import { orderPlace } from "@/lib/firebase/functions";
+import { orderPlace, orderPay } from "@/lib/firebase/functions";
 
 import { order_status, paymentMethods } from "@/config/constant";
 
@@ -427,7 +281,6 @@ export default defineComponent({
 
     // before paid
     StripeCard,
-    TimeToPickup,
     ECCustomer,
     OrderNotice,
     BeforePaidAlert,
@@ -487,7 +340,6 @@ export default defineComponent({
     // ref for refs
     const ecCustomerRef = ref();
     const orderPageMapRef = ref();
-    const timeToPickupRef = ref();
     const stripeRef = ref();
 
     const postageInfo = ref({});
@@ -503,6 +355,7 @@ export default defineComponent({
     setPostage();
 
     const stripeAccount = computed(() => {
+      console.log(props.paymentInfo);
       return props.paymentInfo.stripe;
     });
 
@@ -637,6 +490,10 @@ export default defineComponent({
     };
     */
     const handlePayment = async (payStripe: boolean) => {
+      await orderPay({
+        restaurantId,
+        orderId: orderId.value,
+      });
       if (userMessageError.value) {
         return;
       }
@@ -651,13 +508,10 @@ export default defineComponent({
           await ecCustomerRef.value.saveAddress();
         }
       }
-      const timeToPickup = props.shopInfo.isEC
-        ? Timestamp.now()
-        : timeToPickupRef.value.timeToPickup();
       try {
         if (payStripe) {
           isPaying.value = true;
-          // await stripeRef.value.createToken();
+          await stripeRef.value.createToken();
         } else {
           isPlacing.value = true;
         }
@@ -667,7 +521,6 @@ export default defineComponent({
             : null;
         // console.log( isEnablePaymentPromotion(payStripe), enablePromotion.value , promotionId)
         await orderPlace({
-          timeToPickup,
           restaurantId,
           orderId: orderId.value,
           tip: tip || 0,
@@ -716,7 +569,6 @@ export default defineComponent({
       // refs
       ecCustomerRef,
       orderPageMapRef,
-      timeToPickupRef,
       stripeRef,
 
       // computed
@@ -750,6 +602,7 @@ export default defineComponent({
       handlePayment,
       openTransactionsAct,
 
+      stripeAccount,
       //
       hasSoldOutToday,
       menuData,

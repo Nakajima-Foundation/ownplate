@@ -117,7 +117,7 @@ const multiple = utils.stripeRegion.multiple; // 100 for USD, 1 for JPY
 export const place = async (db, data: orderPlacedData, context: functions.https.CallableContext | Context) => {
   const customerUid = utils.validate_customer_auth(context);
 
-  const { restaurantId, orderId, tip, timeToPickup, memo, userName, customerInfo, payStripe } = data;
+  const { restaurantId, orderId, tip, timeToPickup, memo, userName, customerInfo, payStripe, waitingPayment } = data;
   // const { promotionId, affiliateId } = data;
   const { promotionId } = data;
   utils.required_params({ restaurantId, orderId }); // tip is optinoal
@@ -216,23 +216,26 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
           const description = `#${orderNumber} ${restaurantData.restaurantName} ${restaurantData.phoneNumber}`;
           const request = {
             setup_future_usage: "off_session",
+            capture_method: "manual",
             amount: totalChargeWithTipAndMultipled,
             description: `${description} ${orderId}`,
             currency: utils.stripeRegion.currency,
             metadata: { uid: customerUid, restaurantId, orderId },
-            payment_method_data,
+            // payment_method_data,
           } as Stripe.PaymentIntentCreateParams;
 
           const idempotencyKey = getHash([orderRef.path, payment_method_data.card.token].join("-"));
           const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
+          console.log(stripeAccount);
           const stripe = utils.get_stripe();
           return await stripe.paymentIntents.create(request, {
             idempotencyKey,
             stripeAccount,
           });
         }
-        return {};
+        return { client_secret: ""};
       })();
+      const { client_secret } = paymentIntent;
       // transaction for stock orderTotal
       await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, restaurantOwnerUid, timePlaced, true);
       // update customer
@@ -254,7 +257,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
       }
       // customerUid
       const updateData = {
-        status: order_status.order_placed,
+        status: waitingPayment ? 250 : order_status.order_placed,
         totalCharge,
         discountPrice,
         promotionName: promotionData?.promotionName || "",
@@ -267,6 +270,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
         orderPlacedAt: admin.firestore.FieldValue.serverTimestamp(),
         timePlaced,
         timePickupForQuery: timePlaced,
+        client_secret,
         memo: memo || "",
         isEC: restaurantData.isEC || false,
       } as any;
