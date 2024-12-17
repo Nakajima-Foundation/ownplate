@@ -63,6 +63,7 @@ import {
 } from "@/utils/utils";
 
 import BackButton from "@/components/BackButton.vue";
+import { useHead } from "@unhead/vue";
 
 import { db } from "@/lib/firebase/firebase9";
 import {
