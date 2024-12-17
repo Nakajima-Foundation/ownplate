@@ -121,6 +121,7 @@
               <div>
                 <o-field
                   :variant="errors['price'].length > 0 ? 'danger' : 'success'"
+                  class="has-addons"
                 >
                   <o-input
                     v-model="menuInfo.price"
@@ -131,11 +132,9 @@
                     min="0.00"
                     expanded
                   ></o-input>
-                  <div>
-                    <span class="button is-static">
-                      {{ $t("currency." + currencyKey) }}
-                    </span>
-                  </div>
+                  <span class="button is-static">
+                    {{ $t("currency." + currencyKey) }}
+                  </span>
                 </o-field>
               </div>
             </div>
@@ -1096,3 +1095,39 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+:deep(.field.has-addons) {
+  display: flex;
+  .control:first-child:not(:only-child) .input {
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+  }
+  .control.has-icons-right {
+    .icon.is-right {
+      justify-content: center;
+      pointer-events: none;
+    }
+    input[type="number"] {
+      padding-right: 40px;
+    }
+  }
+  .button {
+    border-width: 1px;
+    border-radius: 4px;
+    justify-content: center;
+    padding-bottom: calc(0.5em - 1px);
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-top: calc(0.5em - 1px);
+    text-align: center;
+    &.is-static {
+      background-color: #f5f5f5;
+      border-color: #dbdbdb;
+      color: #7a7a7a;
+      box-shadow: none;
+      pointer-events: none;
+    }
+  }
+}
+</style>
