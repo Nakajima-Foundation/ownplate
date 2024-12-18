@@ -1477,10 +1477,10 @@
   resolved "https://registry.yarnpkg.com/@opentelemetry/api/-/api-1.9.0.tgz#d03eba68273dc0f7509e2a3d5cba21eae10379fe"
   integrity sha512-3giAOQvZiH5F9bMlMiv8+GSPMeqg0dbaeo58/0SlA9sxSqZhnUtxzX9/2FzyhS9sWQf5S0GJE0AKBrFqjpeYcg==
 
-"@oruga-ui/oruga-next@^0.9.1":
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/@oruga-ui/oruga-next/-/oruga-next-0.9.1.tgz#5692e02cb7d57bdc35164687373cf61cce172baa"
-  integrity sha512-kpyS1lD7azvHoNPPil1QPo2SRj0thA5Udqf5dazrPwp2PCkdVvLRpQUvdSCYUKKOIfwiZn6S19U7J+wV5ipNbQ==
+"@oruga-ui/oruga-next@^0.9.2":
+  version "0.9.2"
+  resolved "https://registry.yarnpkg.com/@oruga-ui/oruga-next/-/oruga-next-0.9.2.tgz#64351b1e04a946c149a707f6eea6b0da1b9e1ce2"
+  integrity sha512-LjRCsv1BADW++4ZZcgJpuRC8dU5SFq0/juHpdP0Z0VQ7rQPWmZ2b1HWLvUMhzlFZTWutC55g1U4qIgHXA8vfVA==
   dependencies:
     vue-component-type-helpers "^2.1.10"
 
@@ -2003,10 +2003,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/pdfmake@^0.2.9":
-  version "0.2.9"
-  resolved "https://registry.yarnpkg.com/@types/pdfmake/-/pdfmake-0.2.9.tgz#241a4a1d00f2d5426383cd5410991c5587ce57f7"
-  integrity sha512-uLDKEH3A1fnCd/qXYJB2OnKkkjfdC1oc6HYVYBKxsyN1UsJL/8Lt67T6WFo3umkL+5Zd74M2IYcOf5kwwd9x9w==
+"@types/pdfmake@^0.2.10":
+  version "0.2.10"
+  resolved "https://registry.yarnpkg.com/@types/pdfmake/-/pdfmake-0.2.10.tgz#e6d461a9b5c94eb0cd15a49d35e4151ffdef1f94"
+  integrity sha512-6EV2+hiYqXO4/INnGObeXgTvzh2DuwiPkfjqYppHmKSgyVcXFvraLLNKFdvJEbrCoe0HqsKFDHc0I7M50hn4/g==
   dependencies:
     "@types/node" "*"
     "@types/pdfkit" "*"
@@ -2227,39 +2227,39 @@
     "@typescript-eslint/types" "8.18.1"
     eslint-visitor-keys "^4.2.0"
 
-"@unhead/dom@1.11.12":
-  version "1.11.12"
-  resolved "https://registry.yarnpkg.com/@unhead/dom/-/dom-1.11.12.tgz#2fe4bef2d0a97f7f445c47c36160f383fa164e4c"
-  integrity sha512-coPpA0xf9w3L2Dcvc3lqoSpqZV7SLNq0/RDrAixO2hGWpzpOsXGta8xba6ElogYOYJMq2lpElC450EML6XVsbg==
+"@unhead/dom@1.11.14":
+  version "1.11.14"
+  resolved "https://registry.yarnpkg.com/@unhead/dom/-/dom-1.11.14.tgz#30e39d9848c964e5038c98e2de0de8bd0737d77a"
+  integrity sha512-FaHCWo9JR4h7PCpSRaXuMC6ifXOuBzlI0PD1MmUcxND2ayDl1d6DauIbN8TUf9TDRxNkrK1Ehb0OCXjC1ZJtrg==
   dependencies:
-    "@unhead/schema" "1.11.12"
-    "@unhead/shared" "1.11.12"
+    "@unhead/schema" "1.11.14"
+    "@unhead/shared" "1.11.14"
 
-"@unhead/schema@1.11.12":
-  version "1.11.12"
-  resolved "https://registry.yarnpkg.com/@unhead/schema/-/schema-1.11.12.tgz#9678b853572728ea122cc2bee6d592319ed66053"
-  integrity sha512-roQiJNp/5Kp9YUDpQXLkNwGNFbgB4CmO7eQBb9n1tyRSDWChJcF+Ztos0yMMwlYZ3qMI4rNXAHNSAJUO27DFWQ==
+"@unhead/schema@1.11.14":
+  version "1.11.14"
+  resolved "https://registry.yarnpkg.com/@unhead/schema/-/schema-1.11.14.tgz#fec0c3947144001c12d68c96a8585abaa6771f1b"
+  integrity sha512-V9W9u5tF1/+TiLqxu+Qvh1ShoMDkPEwHoEo4DKdDG6ko7YlbzFfDxV6el9JwCren45U/4Vy/4Xi7j8OH02wsiA==
   dependencies:
     hookable "^5.5.3"
     zhead "^2.2.4"
 
-"@unhead/shared@1.11.12":
-  version "1.11.12"
-  resolved "https://registry.yarnpkg.com/@unhead/shared/-/shared-1.11.12.tgz#9bfba9d3d908e8a2a830f9e6cafbfeb6ea8f8787"
-  integrity sha512-RhpUexVrYiccmPQ/ckAr6xPql/89VmiNIqLjT+eIIiu4il3FeQ/Ac7Ix1TfcduArq56Ar70TFUDjO5SlnZxIxg==
+"@unhead/shared@1.11.14":
+  version "1.11.14"
+  resolved "https://registry.yarnpkg.com/@unhead/shared/-/shared-1.11.14.tgz#b001403cfbdb35c8a12a9231f0734a91d2460213"
+  integrity sha512-41Qt4PJKYVrEGOTXgBJLRYrEu3S7n5stoB4TFC6312CIBVedXqg7voHQurn32LVDjpfJftjLa2ggCjpqdqoRDw==
   dependencies:
-    "@unhead/schema" "1.11.12"
+    "@unhead/schema" "1.11.14"
 
-"@unhead/vue@^1.11.12":
-  version "1.11.12"
-  resolved "https://registry.yarnpkg.com/@unhead/vue/-/vue-1.11.12.tgz#268c2b6abb357d33a528d77f5085db88ac319c82"
-  integrity sha512-C5/qeaf21b353+YjkFAeM4StFuCdTa7hyx9wKDKLpD50w0fQEUp7HF//zz/1or3GnI4z1G596n8po9tRBWxCzg==
+"@unhead/vue@^1.11.14":
+  version "1.11.14"
+  resolved "https://registry.yarnpkg.com/@unhead/vue/-/vue-1.11.14.tgz#8d534bb7101882a70e2c0db1c49aefa3cea216d1"
+  integrity sha512-6nfi7FsZ936gscmj+1nUB1pybiFMFbnuEFo7B/OY2klpLWsYDUOVvpsJhbu7C3u7wkTlJXglmAk6jdd8I7WgZA==
   dependencies:
-    "@unhead/schema" "1.11.12"
-    "@unhead/shared" "1.11.12"
+    "@unhead/schema" "1.11.14"
+    "@unhead/shared" "1.11.14"
     defu "^6.1.4"
     hookable "^5.5.3"
-    unhead "1.11.12"
+    unhead "1.11.14"
 
 "@vitejs/plugin-vue@^5.2.1":
   version "5.2.1"
@@ -2689,10 +2689,10 @@ caniuse-lite@^1.0.30001646:
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001651.tgz#52de59529e8b02b1aedcaaf5c05d9e23c0c28138"
   integrity sha512-9Cf+Xv1jJNe1xPZLGuUXLNkE1BoDkqRqYyFJ9TDYSqhduqA4hu4oR9HluGoWYQC/aj8WHjsGVV+bwkh0+tegRg==
 
-caniuse-lite@^1.0.30001684:
-  version "1.0.30001684"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001684.tgz#0eca437bab7d5f03452ff0ef9de8299be6b08e16"
-  integrity sha512-G1LRwLIQjBQoyq0ZJGqGIJUXzJ8irpbjHLpVRXDvBEScFJ9b17sgK6vlx0GAJFE21okD7zXl08rRRUfq6HdoEQ==
+caniuse-lite@^1.0.30001689:
+  version "1.0.30001689"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001689.tgz#67ca960dd5f443903e19949aeacc9d28f6e10910"
+  integrity sha512-CmeR2VBycfa+5/jOfnp/NpWPGd06nf1XYiefUvhXFfZE4GkRc9jv+eGPS4nT558WS/8lYCzV8SlANCIPvbWP1g==
 
 chalk@^2.4.2:
   version "2.4.2"
@@ -3602,10 +3602,10 @@ google-gax@^4.3.3:
     retry-request "^7.0.0"
     uuid "^9.0.1"
 
-google-libphonenumber@^3.2.39:
-  version "3.2.39"
-  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.39.tgz#915fca5e75f6fb11b2cb7d5fe47eeb7ff65fe9f0"
-  integrity sha512-dpCbkY6ZxHXIHEFDwSir/gPBWkn22e2EixBv47guVs/NE8+qd35f1yu+fxQ8awRnHEXC60uhcPM9mbqmrD6nmw==
+google-libphonenumber@^3.2.40:
+  version "3.2.40"
+  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.40.tgz#ed57d0db67a8745e8e6db7983dda7f94717fb4c9"
+  integrity sha512-bzGxX/vfggcV80LVcibki+JvR91x6zHpBpovDXSfmZUGn6uLzhbYXsWll2a80EG6qTmvf8lt7KZZ/pkMml8ckw==
 
 gopd@^1.0.1:
   version "1.0.1"
@@ -5090,10 +5090,10 @@ supports-preserve-symlinks-flag@^1.0.0:
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
 
-tailwindcss@^3.4.16:
-  version "3.4.16"
-  resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-3.4.16.tgz#35a7c3030844d6000fc271878db4096b6a8d2ec9"
-  integrity sha512-TI4Cyx7gDiZ6r44ewaJmt0o6BrMCT5aK5e0rmJ/G9Xq3w7CX/5VXl/zIPEJZFUK5VEqwByyhqNPycPlvcK4ZNw==
+tailwindcss@^3.4.17:
+  version "3.4.17"
+  resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-3.4.17.tgz#ae8406c0f96696a631c790768ff319d46d5e5a63"
+  integrity sha512-w33E2aCvSDP0tW9RZuNXadXlkHXqFzSkQew/aIa2i/Sj8fThxwovwlXHSPXTbAHwEIhBFXAedUhP2tueAKP8Og==
   dependencies:
     "@alloc/quick-lru" "^5.2.0"
     arg "^5.0.2"
@@ -5271,14 +5271,14 @@ undici-types@~6.19.8:
   resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-6.19.8.tgz#35111c9d1437ab83a7cdc0abae2f26d88eda0a02"
   integrity sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==
 
-unhead@1.11.12:
-  version "1.11.12"
-  resolved "https://registry.yarnpkg.com/unhead/-/unhead-1.11.12.tgz#dfe980a3b3082d67271fc2f477720b6e3aea0c7e"
-  integrity sha512-O/yE2KfaqJW+4lpbPXBLlvHJksiYTgkTz0UZwvDbQHxjQhzBG4GbvmXU1rDUXax9aJYfoz6xx1Lr9f1lUmaMbQ==
+unhead@1.11.14:
+  version "1.11.14"
+  resolved "https://registry.yarnpkg.com/unhead/-/unhead-1.11.14.tgz#9be7c432a74fa299462d7e87b2a2c0b0e9c48e01"
+  integrity sha512-XmXW0aZyX9kGk9ejCKCSvv/J4T3Rt4hoAe2EofM+nhG+zwZ7AArUMK/0F/fj6FTkfgY0u0/JryE00qUDULgygA==
   dependencies:
-    "@unhead/dom" "1.11.12"
-    "@unhead/schema" "1.11.12"
-    "@unhead/shared" "1.11.12"
+    "@unhead/dom" "1.11.14"
+    "@unhead/schema" "1.11.14"
+    "@unhead/shared" "1.11.14"
     hookable "^5.5.3"
 
 unicode-properties@^1.2.2:
