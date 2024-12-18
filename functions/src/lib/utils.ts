@@ -1,4 +1,4 @@
-import * as functions from "firebase-functions";
+import * as functions from "firebase-functions/v1";
 import { stripe_regions } from "../common/constant";
 import Stripe from "stripe";
 import * as Sentry from "@sentry/node";
