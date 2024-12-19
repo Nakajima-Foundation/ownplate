@@ -1,36 +1,35 @@
 <template>
   <div class="mx-6 mt-2 h-3/5">
-    <GMapMap
-      style="height: 50vh"
-      ref="gMap"
-      :center="{ lat: center_lat, lng: center_lng }"
-      :options="{ fullscreenControl: false }"
+    <GoogleMap
+      api-key="AIzaSyBopNQwD1RT2k9dLqH6WYPWIkMZF3RWXMQ"
+      style="width: 100%; height: 50vh"
+      :center="center"
       :zoom="zoom"
     >
-      <template v-for="(restaurant, k) in restaurants" :key="restaurant.id">
-        <GMapMarker
-          v-if="restaurant.location && restaurant.location.lat"
-          :clickable="true"
-          @click="setStore(k)"
-          :position="{
-            lat: restaurant.location.lat,
-            lng: restaurant.location.lng,
-          }"
-        >
-          <GMapInfoWindow :opened="selected === k">
-            <div class="text-center">
-              <router-link :to="`/r/${restaurant.id}`">
-                {{ restaurant.restaurantName }}<br />
-                <img
-                  :src="resizedProfileImage(restaurant, '600')"
-                  class="h-12 w-12 rounded-full object-cover"
-                />
-              </router-link>
-            </div>
-          </GMapInfoWindow>
-        </GMapMarker>
-      </template>
-    </GMapMap>
+      <Marker2
+        v-for="restaurant in restaurants"
+        :key="restaurant.id"
+        :options="{
+          position: {
+            lat: restaurant.location.lat ?? 0,
+            lng: restaurant.location.lng ?? 0,
+          },
+        }"
+        @click="closeAllInfoWindows()"
+      >
+        <InfoWindow ref="info_windows">
+          <div class="text-center">
+            <router-link :to="`/r/${restaurant.id}`">
+              {{ restaurant.restaurantName }}<br />
+              <img
+                :src="resizedProfileImage(restaurant, '600')"
+                class="h-12 w-12 rounded-full object-cover"
+              />
+            </router-link>
+          </div>
+        </InfoWindow>
+      </Marker2>
+    </GoogleMap>
   </div>
 </template>
 
@@ -38,8 +37,10 @@
 import { defineComponent, ref } from "vue";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { resizedProfileImage } from "@/utils/utils";
+import { GoogleMap, Marker as Marker2, InfoWindow } from "vue3-google-map";
 
 export default defineComponent({
+  components: { GoogleMap, Marker2, InfoWindow },
   props: {
     restaurants: {
       type: Array<RestaurantInfoData>,
@@ -52,6 +53,8 @@ export default defineComponent({
     let min_lat = 1000;
     let min_lng = 1000;
 
+    const info_windows = ref(null);
+    const center = { lat: 44.933076, lng: 15.629058 };
     const center_lat = ref(44.933076);
     const center_lng = ref(15.629058);
     const zoom = ref(13);
@@ -85,6 +88,8 @@ export default defineComponent({
     }
     center_lng.value = (max_lng + min_lng) / 2;
     center_lat.value = (max_lat + min_lat) / 2;
+    center.lat = center_lat.value;
+    center.lng = center_lng.value;
 
     // https://easyramble.com/latitude-and-longitude-per-kilometer.html
     // lat 1 is 111km?
@@ -113,7 +118,16 @@ export default defineComponent({
       selected.value = key;
       console.log(key);
     };
+
+    const closeAllInfoWindows = () => {
+      for (let j = 0; j < info_windows.value.length; j++) {
+        info_windows.value[j].close();
+      }
+    };
+
     return {
+      info_windows,
+      center,
       center_lat,
       center_lng,
       zoom,
@@ -121,6 +135,7 @@ export default defineComponent({
       setStore,
       selected,
 
+      closeAllInfoWindows,
       resizedProfileImage,
     };
   },
