@@ -115,3 +115,6 @@ src/config/project.ts
 # copy image
 
 public/admin/docs/articles/
+
+batch/*
+**/*.sh

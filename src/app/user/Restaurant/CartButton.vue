@@ -1,12 +1,12 @@
 <template>
   <div class="fixed left-1/2 bottom-3 z-30">
-    <o-button
+    <button
       v-if="0 != totalQuantities"
       :disabled="
         isCheckingOut || noPaymentMethod || noAvailableTime || cantDelivery
       "
       @click="handleCheckOut"
-      class="b-reset-tw ml-[-9rem] w-[18rem] sm:bottom-8"
+      class="b-reset-tw ml-[-9rem] w-[18rem] sm:bottom-8 mb-8"
     >
       <div
         class="inline-flex w-72 items-center justify-center rounded-full bg-op-teal shadow-lg"
@@ -152,7 +152,7 @@
               </div>
 
               <div
-                class="is-inline-flex items-center justify-center text-white"
+                class="is-inline-flex items-center justify-center text-white inline-flex"
               >
                 <div class="mr-2 text-xl font-bold">
                   {{ $t(buttonText) }}
@@ -163,7 +163,7 @@
           </div>
         </template>
       </div>
-    </o-button>
+    </button>
   </div>
 </template>
 <script lang="ts">
