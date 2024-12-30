@@ -22,7 +22,7 @@
 
           <div class="mt-1">
             <o-field
-              :variant="errors.email ? 'danger' : 'success'"
+              :variant="!submitted ? '' : errors.email ? 'danger' : 'success'"
               :message="errors.email && $t(errors.email[0])"
             >
               <o-input
@@ -30,6 +30,7 @@
                 type="email"
                 :placeholder="$t('admin.emailPlaceHolder')"
                 maxlength="256"
+								expanded
               />
             </o-field>
           </div>
@@ -43,7 +44,7 @@
 
           <div class="mt-1">
             <o-field
-              :variant="errors.name ? 'danger' : 'success'"
+              :variant="!submitted ? '' : errors.name ? 'danger' : 'success'"
               :message="errors.name && $t(errors.name[0])"
 							>
               <o-input
@@ -51,6 +52,7 @@
                 type="text"
                 :placeholder="$t('admin.enterName')"
                 maxlength="100"
+								expanded
               />
             </o-field>
           </div>
@@ -64,7 +66,7 @@
 
           <div class="mt-1">
             <o-field
-              :variant="errors.password ? 'danger' : 'success'"
+              :variant="!submitted ? '' : errors.password ? 'danger' : 'success'"
               :message="errors.password && $t(errors.password[0])"
             >
               <o-input
@@ -73,6 +75,7 @@
                 :placeholder="$t('admin.passwordPlaceHolder')"
                 maxlength="30"
                 password-reveal
+								expanded
               />
             </o-field>
           </div>
@@ -86,7 +89,7 @@
 
           <div class="mt-1">
             <o-field
-              :variant="errors.confirm ? 'danger' : 'success'"
+              :variant="!submitted ? '' : errors.confirm ? 'danger' : 'success'"
               :message="errors.confirm && $t(errors.confirm[0])"
             >
               <o-input
@@ -95,6 +98,7 @@
                 :placeholder="$t('admin.confirmPasswordPlaceHolder')"
                 maxlength="30"
                 password-reveal
+								expanded
               />
             </o-field>
           </div>
