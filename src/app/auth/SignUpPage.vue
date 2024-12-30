@@ -42,7 +42,10 @@
           </div>
 
           <div class="mt-1">
-            <o-field>
+            <o-field
+              :variant="errors.name ? 'danger' : 'success'"
+              :message="errors.name && $t(errors.name[0])"
+							>
               <o-input
                 v-model="name"
                 type="text"
@@ -233,7 +236,10 @@ export default defineComponent({
         errs.email = ["admin.error.email.invalid"];
       } else if (email.value === emailTaken.value) {
         errs.email = ["admin.error.email.taken"];
-      }
+			}
+			if (name.value.length === 0) {
+				errs.name = ["admin.error.name.invalid"];
+			}
       return errs;
     });
     const hasError = computed(() => {

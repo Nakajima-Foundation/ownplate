@@ -1176,7 +1176,10 @@ const data = {
         tooshort: "Password should be at least 8 characters",
         invalid: "Please enter alphabets and numbers for the password.",
         mismatch: "Password mismatch",
-      },
+			},
+			name: {
+				invalid: "Please enter your name."
+			},
       code: {
         "auth/user-not-found":
           "There is no user record corresponding to this identifier.",
