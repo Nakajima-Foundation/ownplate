@@ -30,7 +30,7 @@
                 type="email"
                 :placeholder="$t('admin.emailPlaceHolder')"
                 maxlength="256"
-								expanded
+                expanded
               />
             </o-field>
           </div>
@@ -46,13 +46,13 @@
             <o-field
               :variant="!submitted ? '' : errors.name ? 'danger' : 'success'"
               :message="errors.name && $t(errors.name[0])"
-							>
+              >
               <o-input
                 v-model="name"
                 type="text"
                 :placeholder="$t('admin.enterName')"
                 maxlength="100"
-								expanded
+                expanded
               />
             </o-field>
           </div>
@@ -75,7 +75,7 @@
                 :placeholder="$t('admin.passwordPlaceHolder')"
                 maxlength="30"
                 password-reveal
-								expanded
+                expanded
               />
             </o-field>
           </div>
@@ -98,7 +98,7 @@
                 :placeholder="$t('admin.confirmPasswordPlaceHolder')"
                 maxlength="30"
                 password-reveal
-								expanded
+                expanded
               />
             </o-field>
           </div>
@@ -240,10 +240,10 @@ export default defineComponent({
         errs.email = ["admin.error.email.invalid"];
       } else if (email.value === emailTaken.value) {
         errs.email = ["admin.error.email.taken"];
-			}
-			if (name.value.length === 0) {
-				errs.name = ["admin.error.name.invalid"];
-			}
+      }
+      if (name.value.length === 0) {
+        errs.name = ["admin.error.name.invalid"];
+      }
       return errs;
     });
     const hasError = computed(() => {
