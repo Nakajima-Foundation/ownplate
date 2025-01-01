@@ -47,7 +47,7 @@ const getPaymentIntent = async (
   const paymentIntentId = stripeRecord.paymentIntent.id;
 
   const idempotencyKey = getHash([order.id, paymentIntentId].join("-"));
-  return await stripe.paymentIntents.confirm(paymentIntentId, {
+  return await stripe.paymentIntents.capture(paymentIntentId, {
     idempotencyKey,
     stripeAccount,
   });

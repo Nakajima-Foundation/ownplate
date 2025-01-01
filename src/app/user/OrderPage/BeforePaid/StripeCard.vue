@@ -5,7 +5,7 @@
     </div>
 
     <div
-      v-if="storedCard"
+      v-if="false"
       class="mt-2 flex items-center rounded-lg bg-white p-4 shadow"
     >
       <o-checkbox v-model="useStoredCard">
@@ -17,9 +17,9 @@
       </o-checkbox>
     </div>
 
-    <div v-show="!useStoredCard">
+    <div v-show="true">
       <!-- Enter New Card -->
-      <div class="mt-2 h-14 rounded-lg bg-white p-4 shadow">
+      <div class="mt-2 rounded-lg bg-white p-4 shadow">
         <div id="card-element"></div>
       </div>
 
@@ -94,9 +94,6 @@
         </o-modal>
       </div>
 
-      <button @click="hoge">
-        hoge
-      </button>
     </div>
   </div>
 </template>
@@ -105,12 +102,12 @@
 import { defineComponent, ref, watch, onMounted } from "vue";
 
 import { getStripeInstance, stripeUpdateCustomer } from "@/lib/stripe/stripe";
-import { db } from "@/lib/firebase/firebase9";
-import { doc, getDoc } from "firebase/firestore";
+// import { db } from "@/lib/firebase/firebase9";
+// import { doc, getDoc } from "firebase/firestore";
 import moment from "moment";
 
-import { useUserData } from "@/utils/utils";
-import { useStore } from "vuex";
+// import { useUserData } from "@/utils/utils";
+// import { useStore } from "vuex";
 
 export default defineComponent({
   emits: ["change"],
@@ -129,8 +126,8 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
-    const { user } = useUserData();
-    const store = useStore();
+//    const { user } = useUserData();
+//    const store = useStore();
     
     const stripe = getStripeInstance(props.stripeAccount);
     const cardElem = ref<any>(null);
@@ -144,10 +141,8 @@ export default defineComponent({
     const elements = stripe.elements(
       { clientSecret: props.clientSecret },
     );
-    const configureStripe = async () => {
-      const stripeRegion = store.getters.stripeRegion;
+    const configureStripe = () => {
       const cardElement = elements.create("payment", {
-        // hidePostalCode: stripeRegion.hidePostalCode,
         style: {
           base: {
             fontWeight: 600,
@@ -160,6 +155,7 @@ export default defineComponent({
             "::placeholder": {
               color: "#999",
             },
+            height: "100%",
           },
           invalid: {
             iconColor: "#FFC7EE",
@@ -176,9 +172,11 @@ export default defineComponent({
       });
 
       try {
-        const stripeInfo = (
+        /*
+          const striipeInfo = (
           await getDoc(doc(db, `/users/${user.value.uid}/readonly/stripe`))
-        ).data();
+          ).data();
+          */
 
         if (stripeInfo && stripeInfo.card) {
           const date = ("00" + String(stripeInfo.card.exp_month)).slice(-2);
@@ -222,7 +220,7 @@ export default defineComponent({
         },
         redirect: "if_required"
       });
-      console.log(result);
+      return result;
     };
     
     const createToken = async () => {
@@ -243,7 +241,6 @@ export default defineComponent({
       CVCPopup.value = false;
     };
     return {
-      hoge,
       useStoredCard,
       storedCard,
       CVCPopup,
@@ -253,6 +250,7 @@ export default defineComponent({
       closeCVC,
 
       createToken, // for parent component
+      hoge,
     };
   },
 });

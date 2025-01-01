@@ -47,7 +47,6 @@
             :promotion="selectedPromotion"
             :enablePromotion="enablePromotion"
             :discountPrice="discountPrice"
-            @change="handleTipChange"
           ></order-info>
         </div>
 
@@ -79,7 +78,6 @@
 
             <!-- Pay Online -->
             <div v-if="showPayment" class="mt-2">
-              {{ stripeAccount }}
               <stripe-card
                 @change="handleCardStateChange"
                 ref="stripeRef"
@@ -141,75 +139,7 @@
               </div>
             </div>
 
-            <!-- Pay at Restaurant -->
-            <div v-else class="mt-2">
-              <div class="rounded-lg bg-black bg-opacity-5 p-4">
-                <div class="text-sm">
-                  {{ $t("order.pleasePayAtRestaurant") }}
-                </div>
-              </div>
-            </div>
 
-            <!-- Pay Button -->
-            <div v-if="inStorePayment" class="mt-4 text-center">
-              <div class="text-sm font-bold text-black text-opacity-60">
-                {{ $t("order.or") }}
-              </div>
-
-              <div class="mt-4">
-                <o-button
-                  :loading="isPlacing"
-                  :disabled="
-                    notAvailable ||
-                    notSubmitAddress ||
-                    userMessageError ||
-                    userNameError ||
-                    isPaying ||
-                    isPlacing
-                  "
-                  @click="handlePayment(false)"
-                  class="b-reset-tw"
-                  :class="'takeout'"
-                >
-                  <div
-                    class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal px-6 shadow"
-                    style="min-width: 288px"
-                  >
-                    <ButtonLoading v-if="isPlacing" />
-                    <div class="text-xl font-bold text-white">
-                      {{ $t("order.placeOrderNoPayment") }}
-                    </div>
-                  </div>
-                </o-button>
-              </div>
-              <div>
-                <div class="mt-2 text-sm font-bold text-black text-opacity-60">
-                  {{ $t("order.placeOrderNoPaymentNote") }}
-                </div>
-
-                <div v-if="hasPaymentMethods">
-                  <div class="mt-4 text-left text-sm">
-                    {{ $t("shopInfo.paymentMethods") }}:
-                  </div>
-                  <div class="ml-2 text-left text-xs">
-                    <div v-for="(paymentMethod, k) in paymentMethods" :key="k">
-                      <div
-                        v-if="
-                          (shopInfo.paymentMethods || {})[paymentMethod.key]
-                        "
-                      >
-                        {{
-                          $t(
-                            "editRestaurant.paymentMethodChoices." +
-                              paymentMethod.key,
-                          )
-                        }}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
 
             <!-- Error message for ec and delivery -->
             <div
@@ -236,21 +166,21 @@ import ShopHeader from "@/app/user/Restaurant/ShopHeader.vue";
 
 import OrderInfo from "@/app/user/OrderPage/OrderInfo.vue";
 import UserCustomerInfo from "@/app/user/OrderPage/UserCustomerInfo.vue";
-import CustomerInfo from "@/app/user/OrderPage/CustomerInfo.vue";
+// import CustomerInfo from "@/app/user/OrderPage/CustomerInfo.vue";
 
 import StripeCard from "@/app/user/OrderPage/BeforePaid/StripeCard.vue";
-import ECCustomer from "@/app/user/OrderPage/BeforePaid/ECCustomer.vue";
-import OrderNotice from "@/app/user/OrderPage/BeforePaid/OrderNotice.vue";
+// import ECCustomer from "@/app/user/OrderPage/BeforePaid/ECCustomer.vue";
+// import OrderNotice from "@/app/user/OrderPage/BeforePaid/OrderNotice.vue";
 import BeforePaidAlert from "@/app/user/OrderPage/BeforePaid/BeforePaidAlert.vue";
-import SpecifiedCommercialTransactions from "@/app/user/OrderPage/BeforePaid/SpecifiedCommercialTransactions.vue";
-import OrderPageMap from "@/app/user/OrderPage/BeforePaid/Map.vue";
+// import SpecifiedCommercialTransactions from "@/app/user/OrderPage/BeforePaid/SpecifiedCommercialTransactions.vue";
+// import OrderPageMap from "@/app/user/OrderPage/BeforePaid/Map.vue";
 
 import ButtonLoading from "@/components/Button/Loading.vue";
 
 import { db } from "@/lib/firebase/firebase9";
-import { doc, getDoc, Timestamp } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 
-import { orderPlace, orderPay } from "@/lib/firebase/functions";
+import { orderPay } from "@/lib/firebase/functions";
 
 import { order_status, paymentMethods } from "@/config/constant";
 
@@ -275,17 +205,15 @@ export default defineComponent({
 
     OrderInfo,
     UserCustomerInfo,
-    CustomerInfo,
 
     ButtonLoading,
 
     // before paid
     StripeCard,
-    ECCustomer,
-    OrderNotice,
+//    OrderNotice,
     BeforePaidAlert,
-    SpecifiedCommercialTransactions,
-    OrderPageMap,
+//    SpecifiedCommercialTransactions,
+//    OrderPageMap,
   },
   props: {
     shopInfo: {
@@ -301,10 +229,6 @@ export default defineComponent({
       required: true,
     },
     paymentInfo: {
-      type: Object,
-      required: true,
-    },
-    deliveryData: {
       type: Object,
       required: true,
     },
@@ -335,7 +259,7 @@ export default defineComponent({
     const memo = ref("");
     const userName = ref(props.orderInfo.name);
 
-    let tip = 0;
+    // let tip = 0;
 
     // ref for refs
     const ecCustomerRef = ref();
@@ -425,7 +349,7 @@ export default defineComponent({
       return null;
     });
 
-    const { enablePromotion, discountPrice, isEnablePaymentPromotion } =
+    const { enablePromotion, discountPrice } =
       usePromotionData(props.orderInfo, selectedPromotion);
 
     const shopInfo = computed(() => {
@@ -469,9 +393,6 @@ export default defineComponent({
       console.log("handleNotAvailable", flag);
       notAvailable.value = flag;
     };
-    const handleTipChange = (_tip: number) => {
-      tip = _tip;
-    };
     const handleCardStateChange = (state: { [key: string]: boolean }) => {
       cardState.value = state;
     };
@@ -489,11 +410,7 @@ export default defineComponent({
       // TODO: not implemented yet.
     };
     */
-    const handlePayment = async (payStripe: boolean) => {
-      await orderPay({
-        restaurantId,
-        orderId: orderId.value,
-      });
+    const handlePayment = async () => {
       if (userMessageError.value) {
         return;
       }
@@ -509,6 +426,17 @@ export default defineComponent({
         }
       }
       try {
+        isPaying.value = true;
+        const pay = await stripeRef.value.hoge();
+        if (pay.error) {
+          isPaying.value = false;
+          return;
+        }
+        await orderPay({
+          restaurantId,
+          orderId: orderId.value,
+        });
+        /*
         if (payStripe) {
           isPaying.value = true;
           await stripeRef.value.createToken();
@@ -538,6 +466,7 @@ export default defineComponent({
           await saveLiffCustomer();
         }
         */
+
         sendPurchase();
         store.commit("resetCart", restaurantId);
         window.scrollTo(0, 0);
@@ -597,7 +526,6 @@ export default defineComponent({
       updateLocation,
       handleOpenMenu,
       handleNotAvailable,
-      handleTipChange,
       handleCardStateChange,
       handlePayment,
       openTransactionsAct,

@@ -69,7 +69,7 @@ export const orderPay = async (db: admin.firestore.Firestore, data: orderChangeD
       console.log(paymentIntent);
 
       if (paymentIntent.status !== "requires_capture") {
-        // some error;
+        throw new Error("paymentIntent is not requires_capture!");
       }
       await transaction.update(orderRef, {status: 300});
       //

@@ -9,7 +9,7 @@ import { notifyNewOrderToRestaurant } from "../notify";
 import { costCal } from "../../common/commonUtils";
 import { Context } from "../../models/TestType";
 
-import { getStripeAccount, getPaymentMethodData, getHash } from "../stripe/intent";
+import { getStripeAccount, /* getPaymentMethodData, */ getHash } from "../stripe/intent";
 import { orderPlacedData } from "../../lib/types";
 import { validateOrderPlaced, validateCustomer } from "../../lib/validator";
 
@@ -212,7 +212,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
       const paymentIntent = await (async () => {
         if (enableStripe) {
           // We expect that there is a customer Id associated with a token
-          const payment_method_data = await getPaymentMethodData(db, restaurantOwnerUid, customerUid);
+          // const payment_method_data = await getPaymentMethodData(db, restaurantOwnerUid, customerUid);
           const description = `#${orderNumber} ${restaurantData.restaurantName} ${restaurantData.phoneNumber}`;
           const request = {
             setup_future_usage: "off_session",
@@ -224,7 +224,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
             // payment_method_data,
           } as Stripe.PaymentIntentCreateParams;
 
-          const idempotencyKey = getHash([orderRef.path, payment_method_data.card.token].join("-"));
+          const idempotencyKey = getHash([orderRef.path, /* payment_method_data.card.token */ ].join("-"));
           const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
           console.log(stripeAccount);
           const stripe = utils.get_stripe();

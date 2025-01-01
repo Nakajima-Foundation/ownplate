@@ -223,6 +223,7 @@
                 @change="handleCardStateChange"
                 ref="stripeRef"
                 :stripeJCB="stripeJCB"
+                v-if="false"
               ></stripe-card>
 
               <div
