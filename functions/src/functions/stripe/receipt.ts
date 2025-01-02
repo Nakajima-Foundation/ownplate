@@ -46,7 +46,6 @@ export const receipt = async (db: admin.firestore.Firestore, data: stripeReceipt
     const paymentIntentId = stripeData.paymentIntent.id;
 
     const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId, { expand: ["latest_charge"]},{ stripeAccount });
-    // console.log(paymentIntent);
     if (paymentIntent?.latest_charge && typeof paymentIntent.latest_charge !== "string") {
       return {
         receipt_url: paymentIntent?.latest_charge?.receipt_url,

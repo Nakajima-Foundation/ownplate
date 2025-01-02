@@ -427,7 +427,7 @@ export default defineComponent({
       }
       try {
         isPaying.value = true;
-        const pay = await stripeRef.value.hoge();
+        const pay = await stripeRef.value.confirmPayment();
         if (pay.error) {
           isPaying.value = false;
           return;

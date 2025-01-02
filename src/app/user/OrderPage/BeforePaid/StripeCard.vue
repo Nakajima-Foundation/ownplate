@@ -212,7 +212,7 @@ export default defineComponent({
       ctx.emit("change", newValue ? { complete: true } : elementStatus);
     });
 
-    const hoge = async () => {
+    const confirmPayment = async () => {
       const result = await stripe.confirmPayment({
         elements,
         confirmParams: {
@@ -250,7 +250,7 @@ export default defineComponent({
       closeCVC,
 
       createToken, // for parent component
-      hoge,
+      confirmPayment,
     };
   },
 });
