@@ -2,11 +2,12 @@
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions/v1";
 
-//import { order_status } from "../../common/constant";
+import { order_status } from "../../common/constant";
 import * as utils from "../../lib/utils";
 // import { orderAccounting, createNewOrderData } from "../order/orderCreated";
 // import { sendMessageToCustomer } from "../notify";
 // import { costCal } from "../../common/commonUtils";
+import { notifyNewOrderToRestaurant } from "../notify";
 import { Context } from "../../models/TestType";
 import {  getStripeAccount, getStripeOrderRecord, /* getPaymentMethodData, getHash */ } from "./intent";
 
@@ -71,7 +72,10 @@ export const orderPay = async (db: admin.firestore.Firestore, data: orderChangeD
       if (paymentIntent.status !== "requires_capture") {
         throw new Error("paymentIntent is not requires_capture!");
       }
-      await transaction.update(orderRef, {status: 300});
+      await transaction.update(orderRef, {
+        status: order_status.order_placed,
+        orderPlacedAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
       //
       /*
       await transaction.set(
@@ -85,6 +89,7 @@ export const orderPay = async (db: admin.firestore.Firestore, data: orderChangeD
       */
     });
 
+    await notifyNewOrderToRestaurant(db, restaurantId, order, restaurantData.restaurantName);
     return { result: true };
   } catch (error) {
     throw utils.process_error(error);

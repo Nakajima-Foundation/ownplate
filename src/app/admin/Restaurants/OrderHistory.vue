@@ -219,7 +219,10 @@ export default defineComponent({
       last.value = docs.length === limitNum ? docs[limitNum - 1] : null;
       const tmpOrders = docs
         .map(doc2data("order"))
-        .filter((a) => a.status !== order_status.transaction_hide);
+        .filter((a) => ![
+          order_status.transaction_hide,
+          order_status.waiting_payment,
+        ].includes(a.status))
       const customers: { [key: string]: any } = {};
       if (props.shopInfo.isEC || props.shopInfo.enableDelivery) {
         const ids = tmpOrders.map((order) => order.id);

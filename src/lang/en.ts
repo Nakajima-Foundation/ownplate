@@ -740,6 +740,7 @@ const data = {
       ready_to_pickup: "Ready to Pickup",
       transaction_complete: "Pickup Complete",
       ready_to_shipping: "Ready to Shopping",
+      waiting_payment: "Waigint payment",
       shipping_complete: "Shipping complete",
       transaction_hide: "Transaction Complete",
       order_canceled: "Canceled",

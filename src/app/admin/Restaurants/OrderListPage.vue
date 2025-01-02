@@ -210,7 +210,10 @@ export default defineComponent({
         (result) => {
           orders.value = result.docs
             .map(doc2data("order"))
-            .filter((a) => a.status !== order_status.transaction_hide)
+            .filter((a) => ![
+              order_status.transaction_hide,
+              order_status.waiting_payment,
+            ].includes(a.status))
             .sort((order0, order1) => {
               if (order0.status === order1.status) {
                 const aTime = order0.timeEstimated || order0.timePlaced;

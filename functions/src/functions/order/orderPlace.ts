@@ -226,7 +226,6 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
 
           const idempotencyKey = getHash([orderRef.path, /* payment_method_data.card.token */ ].join("-"));
           const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
-          console.log(stripeAccount);
           const stripe = utils.get_stripe();
           return await stripe.paymentIntents.create(request, {
             idempotencyKey,
@@ -257,7 +256,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
       }
       // customerUid
       const updateData = {
-        status: waitingPayment ? 250 : order_status.order_placed,
+        status: waitingPayment ? order_status.waiting_payment : order_status.order_placed,
         totalCharge,
         discountPrice,
         promotionName: promotionData?.promotionName || "",
@@ -267,7 +266,6 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
         sendSMS: true,
         printed: false,
         updatedAt: admin.firestore.FieldValue.serverTimestamp(),
-        orderPlacedAt: admin.firestore.FieldValue.serverTimestamp(),
         timePlaced,
         timePickupForQuery: timePlaced,
         client_secret,
@@ -276,6 +274,9 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
       } as any;
       if (userName) {
         updateData.name = userName;
+      }
+      if (!waitingPayment) {
+        updateData.orderPlacedAt = admin.firestore.FieldValue.serverTimestamp();
       }
       if (enableStripe) {
         const update = {
@@ -310,8 +311,9 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
       Object.assign(order, { totalCharge, tip, shippingCost }, enableStripe ? { payment: true } : {});
       return { success: true, order };
     });
-    await notifyNewOrderToRestaurant(db, restaurantId, result.order, restaurantData.restaurantName);
-
+    if (!waitingPayment) {
+      await notifyNewOrderToRestaurant(db, restaurantId, result.order, restaurantData.restaurantName);
+    }
     return { result: true };
   } catch (error) {
     throw utils.process_error(error);

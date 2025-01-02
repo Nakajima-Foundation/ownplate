@@ -735,6 +735,7 @@ const data = {
       ready_to_pickup: "受け渡し準備完了",
       transaction_complete: "受け渡し完了",
       ready_to_shipping: "発送準備完了",
+      waiting_payment: "決済待",
       shipping_complete: "発送完了",
       transaction_hide: "受注処理完了",
       order_canceled: "キャンセル済み",
