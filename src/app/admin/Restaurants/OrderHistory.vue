@@ -167,7 +167,7 @@ export default defineComponent({
   setup(props) {
     const limitNum = 60;
     const last = ref<QueryDocumentSnapshot<DocumentData> | null>(null);
-    const orders = ref<any[]>([]);
+    const orders = ref<OrderInfoData[]>([]);
     const notFound = ref(null);
 
     const orderState = ref(0);
