@@ -128,6 +128,7 @@ import {
   DocumentData,
 } from "firebase/firestore";
 import { order_status, order_status_for_form } from "@/config/constant";
+import { OrderInfoData } from "@/models/orderInfo";
 
 import NotFound from "@/components/NotFound.vue";
 import OrderedInfo from "@/app/admin/Order/OrderedInfo.vue";
@@ -245,7 +246,7 @@ export default defineComponent({
         );
       }
 
-      tmpOrders.forEach((order: any) => {
+      tmpOrders.forEach((order: OrderInfoData) => {
         order.customerInfo = order.customerInfo || customers[order.id] || {};
         order.timePlaced = order.timePlaced.toDate();
         if (order.timeEstimated) {
@@ -274,7 +275,7 @@ export default defineComponent({
           return order.status === orderState.value;
         })
         .sort(
-          (a: any, b: any) =>
+          (a: OrderInfoData, b: OrderInfoData) =>
             (a.timePlaced > b.timePlaced ? -1 : 1) *
             (sortOrder.value === 0 ? 1 : -1),
         );
