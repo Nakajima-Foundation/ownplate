@@ -82,7 +82,6 @@ import {
 } from "firebase/firestore";
 
 import { midNight } from "@/utils/dateUtils";
-import { order_status } from "@/config/constant";
 import moment from "moment";
 
 import OrderedInfo from "@/app/admin/Order/OrderedInfo.vue";
@@ -97,6 +96,7 @@ import {
   notFoundResponse,
   useRestaurantId,
   defaultTitle,
+  orderFilter,
 } from "@/utils/utils";
 import { checkShopAccount } from "@/utils/userPermission";
 import { useAdminConfigToggle } from "@/utils/admin/Toggle";
@@ -210,10 +210,7 @@ export default defineComponent({
         (result) => {
           orders.value = result.docs
             .map(doc2data("order"))
-            .filter((a) => ![
-              order_status.transaction_hide,
-              order_status.waiting_payment,
-            ].includes(a.status))
+            .filter(orderFilter)
             .sort((order0, order1) => {
               if (order0.status === order1.status) {
                 const aTime = order0.timeEstimated || order0.timePlaced;

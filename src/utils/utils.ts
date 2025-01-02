@@ -14,6 +14,7 @@ import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { MenuData } from "@/models/menu";
 
 import {
+  order_status,
   regionalSettings,
   partners,
   stripe_regions,
@@ -835,6 +836,13 @@ export const useSuper = () => {
       router.push("/");
     }
   });
+};
+
+export const orderFilter = (order: OrderInfoData) => {
+  return ![
+    order_status.transaction_hide,
+    order_status.waiting_payment,
+  ].includes(order.status)
 };
 
 // for super
