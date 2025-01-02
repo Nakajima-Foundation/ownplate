@@ -1131,7 +1131,10 @@ const data = {
         tooshort: "Le mot de passe doit contenir au moins 8 caractères",
         invalid: "Please enter alphabets and numbers for the password.",
         mismatch: "Les mots de passe ne corespondent pas",
-      },
+			},
+			name: {
+				invalid: "Veuillez entrer votre nom."
+			},
       code: {
         "auth/user-not-found":
           "Il n'y a pas d'enregistrement d'utilisateur correspondant à cet identifiant.",
