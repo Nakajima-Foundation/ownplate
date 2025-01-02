@@ -44,7 +44,7 @@
     "receiptline": "^1.15.0",
     "sharp": "^0.32.6",
     "sitemap": "^6.1.5",
-    "stripe": "^8.39.1",
+    "stripe": "^17.5.0",
     "twilio": "^4.19.3",
     "uuid-v4": "^0.1.0",
     "validator": "^13.7.0",
