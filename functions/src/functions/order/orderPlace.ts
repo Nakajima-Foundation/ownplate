@@ -9,7 +9,7 @@ import { notifyNewOrderToRestaurant } from "../notify";
 import { costCal } from "../../common/commonUtils";
 import { Context } from "../../models/TestType";
 
-import { getStripeAccount, /* getPaymentMethodData, */ getHash } from "../stripe/intent";
+import { getStripeAccount, /* getPaymentMethodData, */ getHash, /* getCustomerStripeInfo2, saveCustomerStripeInfo2 */ } from "../stripe/intent";
 import { orderPlacedData } from "../../lib/types";
 import { validateOrderPlaced, validateCustomer } from "../../lib/validator";
 
@@ -213,6 +213,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
         if (enableStripe) {
           // We expect that there is a customer Id associated with a token
           // const payment_method_data = await getPaymentMethodData(db, restaurantOwnerUid, customerUid);
+
           const description = `#${orderNumber} ${restaurantData.restaurantName} ${restaurantData.phoneNumber}`;
           const request = {
             setup_future_usage: "off_session",
@@ -223,17 +224,35 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
             metadata: { uid: customerUid, restaurantId, orderId },
             // payment_method_data,
           } as Stripe.PaymentIntentCreateParams;
-
-          const idempotencyKey = getHash([orderRef.path, /* payment_method_data.card.token */ ].join("-"));
-          const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
+          // const stripeCustomer = await getCustomerStripeInfo2(db, customerUid, restaurantOwnerUid);
           const stripe = utils.get_stripe();
-          return await stripe.paymentIntents.create(request, {
+          const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
+          /*
+          if (stripeCustomer && stripeCustomer.customerId) {
+            request.customer = stripeCustomer.customerId;
+          } else {
+            const customer = await stripe.customers.create({}, {stripeAccount});
+            await saveCustomerStripeInfo2(db, customerUid, restaurantOwnerUid, { customerId: customer.id});
+          }
+          */
+          const idempotencyKey = getHash([orderRef.path, /* payment_method_data.card.token */ ].join("-"));
+          const ret = await stripe.paymentIntents.create(request, {
             idempotencyKey,
             stripeAccount,
           });
+          /*
+          if (stripeCustomer && stripeCustomer.customerId) {
+            await stripe.paymentIntents.capture(ret.id, {
+              stripeAccount,
+            });
+          }
+          */
+          return ret;
         }
         return { client_secret: ""};
       })();
+      
+      
       const { client_secret } = paymentIntent;
       // transaction for stock orderTotal
       await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, restaurantOwnerUid, timePlaced, true);

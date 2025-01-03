@@ -72,6 +72,19 @@ export const orderPay = async (db: admin.firestore.Firestore, data: orderChangeD
       if (paymentIntent.status !== "requires_capture") {
         throw new Error("paymentIntent is not requires_capture!");
       }
+
+      // if no customer and require customer then add customer.
+      /*
+      if (!paymentIntent.customer) {
+        const customer = await stripe.customers.create({
+          name: 'Jenny Rosen',
+          email: 'jennyrosen@example.com',
+        });
+        await stripe.paymentIntents.update(id, { customer: customer.id}, { stripeAccount })
+        
+      }
+      */
+      
       await transaction.update(orderRef, {
         status: order_status.order_placed,
         orderPlacedAt: admin.firestore.FieldValue.serverTimestamp(),

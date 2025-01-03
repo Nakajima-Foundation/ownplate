@@ -142,27 +142,7 @@ export default defineComponent({
       { clientSecret: props.clientSecret },
     );
     const configureStripe = () => {
-      const cardElement = elements.create("payment", {
-        style: {
-          base: {
-            fontWeight: 600,
-            fontFamily: "Roboto, Open Sans, Segoe UI, sans-serif",
-            fontSize: "16px",
-            fontSmoothing: "antialiased",
-            ":-webkit-autofill": {
-              color: "#333",
-            },
-            "::placeholder": {
-              color: "#999",
-            },
-            height: "100%",
-          },
-          invalid: {
-            iconColor: "#FFC7EE",
-            color: "#FFC7EE",
-          },
-        },
-      });
+      const cardElement = elements.create("payment", {});
       cardElement.mount("#card-element");
       cardElem.value = cardElement;
       // console.log(cardElem.value);
