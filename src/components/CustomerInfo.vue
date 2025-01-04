@@ -59,7 +59,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, PropType, onMounted } from "vue";
+import { defineComponent, ref, computed, PropType } from "vue";
 import { GoogleMap, Marker as Marker2 } from "vue3-google-map";
 
 export default defineComponent({
@@ -89,10 +89,6 @@ export default defineComponent({
       if (
         props.customer?.location &&
         props.shopInfo?.location // &&
-        // typeof props.customer.location.lat === 'number' &&
-        // typeof props.customer.location.lng === 'number' &&
-        // typeof props.shopInfo.location.lat === 'number' &&
-        // typeof props.shopInfo.location.lng === 'number'
       ) {
         return {
           lat: (props.customer.location.lat + props.shopInfo.location.lat) / 2,
@@ -100,19 +96,6 @@ export default defineComponent({
         };
       }
       return { lat: 35.6762, lng: 139.6503 };
-    });
-
-    // debug
-    onMounted(() => {
-      console.log("🍰 ========== CustomerInfo Mounted ==========");
-      console.log("🍰 customer object:", props.customer);
-      console.log("🍰 customer typeof:", typeof props.customer);
-      console.log("🍰 customer keys:", Object.keys(props.customer));
-      console.log("🍰 customer location:", props.customer?.location);
-      console.log("🍰 shopInfo object:", props.shopInfo);
-      console.log("🍰 shopInfo location:", props.shopInfo?.location);
-      console.log("🍰 computedCenter:", computedCenter.value);
-      console.log("🍰 =====================================");
     });
 
     return {
