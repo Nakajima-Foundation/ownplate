@@ -6,7 +6,6 @@
     <div class="mt-2 rounded-lg bg-white p-4 shadow">
       <div class="text-base font-bold">{{ $t("order.ec.zip") }}</div>
       <div class="mb-2">
-        ★★★★
         {{ customer.zip }}
       </div>
       <div class="text-base font-bold">{{ $t("order.ec.address") }}</div>
@@ -33,16 +32,16 @@
             :zoom="12"
           >
             <Marker2
-              :position="customer.location"
               :options="{
+                position: customer.location,
                 icon: {
                   url: 'http://maps.google.co.jp/mapfiles/ms/icons/blue-dot.png',
                 },
               }"
             />
             <Marker2
-              :position="shopInfo.location"
               :options="{
+                position: shopInfo.location,
                 icon: {
                   url: 'http://maps.google.co.jp/mapfiles/ms/icons/restaurant.png',
                 },
@@ -60,7 +59,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, PropType } from "vue";
+import { defineComponent, ref, computed, PropType, onMounted } from "vue";
 import { GoogleMap, Marker as Marker2 } from "vue3-google-map";
 
 export default defineComponent({
@@ -86,17 +85,34 @@ export default defineComponent({
   setup(props) {
     const info_windows = ref(null);
 
-    console.log("customer location:", props.customer.location);
-    console.log("shop location:", props.shopInfo.location);
-
     const computedCenter = computed(() => {
-      if(props.customer.location && props.shopInfo.location) {
+      if (
+        props.customer?.location &&
+        props.shopInfo?.location // &&
+        // typeof props.customer.location.lat === 'number' &&
+        // typeof props.customer.location.lng === 'number' &&
+        // typeof props.shopInfo.location.lat === 'number' &&
+        // typeof props.shopInfo.location.lng === 'number'
+      ) {
         return {
           lat: (props.customer.location.lat + props.shopInfo.location.lat) / 2,
           lng: (props.customer.location.lng + props.shopInfo.location.lng) / 2
         };
       }
       return { lat: 35.6762, lng: 139.6503 };
+    });
+
+    // debug
+    onMounted(() => {
+      console.log("🍰 ========== CustomerInfo Mounted ==========");
+      console.log("🍰 customer object:", props.customer);
+      console.log("🍰 customer typeof:", typeof props.customer);
+      console.log("🍰 customer keys:", Object.keys(props.customer));
+      console.log("🍰 customer location:", props.customer?.location);
+      console.log("🍰 shopInfo object:", props.shopInfo);
+      console.log("🍰 shopInfo location:", props.shopInfo?.location);
+      console.log("🍰 computedCenter:", computedCenter.value);
+      console.log("🍰 =====================================");
     });
 
     return {
