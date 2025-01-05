@@ -30,6 +30,7 @@
                 type="email"
                 :placeholder="$t('admin.emailPlaceHolder')"
                 maxlength="256"
+                expanded
               />
             </o-field>
           </div>
@@ -42,12 +43,15 @@
           </div>
 
           <div class="mt-1">
-            <o-field>
+            <o-field
+              variant="success"
+            >
               <o-input
                 v-model="name"
                 type="text"
                 :placeholder="$t('admin.enterName')"
                 maxlength="100"
+                expanded
               />
             </o-field>
           </div>
@@ -70,6 +74,7 @@
                 :placeholder="$t('admin.passwordPlaceHolder')"
                 maxlength="30"
                 password-reveal
+                expanded
               />
             </o-field>
           </div>
@@ -92,6 +97,7 @@
                 :placeholder="$t('admin.confirmPasswordPlaceHolder')"
                 maxlength="30"
                 password-reveal
+                expanded
               />
             </o-field>
           </div>
