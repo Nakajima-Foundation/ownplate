@@ -240,9 +240,6 @@ export default defineComponent({
       } else if (email.value === emailTaken.value) {
         errs.email = ["admin.error.email.taken"];
       }
-      if (name.value.length === 0) {
-        errs.name = ["admin.error.name.invalid"];
-      }
       return errs;
     });
     const hasError = computed(() => {
