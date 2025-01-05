@@ -1,7 +1,7 @@
 <template>
   <div class="mx-6 mt-2 h-3/5">
     <GoogleMap
-      api-key="AIzaSyBopNQwD1RT2k9dLqH6WYPWIkMZF3RWXMQ"
+      :api-key="apiKey"
       style="width: 100%; height: 50vh"
       :center="center"
       :zoom="zoom"
@@ -38,6 +38,7 @@ import { defineComponent, ref } from "vue";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { resizedProfileImage } from "@/utils/utils";
 import { GoogleMap, Marker as Marker2, InfoWindow } from "vue3-google-map";
+import { GAPIKey } from "@/config/project";
 
 export default defineComponent({
   components: { GoogleMap, Marker2, InfoWindow },
@@ -58,6 +59,7 @@ export default defineComponent({
     const center_lat = ref(44.933076);
     const center_lng = ref(15.629058);
     const zoom = ref(13);
+    const apiKey = GAPIKey;
 
     const selected = ref<null | number>(null);
 
@@ -131,6 +133,7 @@ export default defineComponent({
       center_lat,
       center_lng,
       zoom,
+      apiKey,
 
       setStore,
       selected,

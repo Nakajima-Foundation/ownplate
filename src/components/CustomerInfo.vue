@@ -26,7 +26,7 @@
         </div>
         <div class="mb-2">
           <GoogleMap
-            api-key="AIzaSyBopNQwD1RT2k9dLqH6WYPWIkMZF3RWXMQ"
+            :api-key="apiKey"
             style="width: 100%; height: 50vh"
             :center="computedCenter"
             :zoom="12"
@@ -61,6 +61,7 @@
 <script lang="ts">
 import { defineComponent, ref, computed, PropType } from "vue";
 import { GoogleMap, Marker as Marker2 } from "vue3-google-map";
+import { GAPIKey } from "@/config/project";
 
 export default defineComponent({
   components: { GoogleMap, Marker2 },
@@ -84,6 +85,7 @@ export default defineComponent({
   },
   setup(props) {
     const info_windows = ref(null);
+    const apiKey = GAPIKey;
 
     const computedCenter = computed(() => {
       if (
@@ -101,6 +103,7 @@ export default defineComponent({
     return {
       info_windows,
       computedCenter,
+      apiKey,
     };
   },
 });
