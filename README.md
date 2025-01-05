@@ -45,12 +45,12 @@ see CircleCI setting.
 
 ```
 # install dependencies
-$ npm install
+$ yarn install
 
-# copy and edit project.js file
-$ cp src/config/default/ownplate-dev.js src/config/project.js
+# copy and edit project.ts file
+$ cp src/config/default/ownplate-dev.ts src/config/project.ts
 
-$ npm run start
+$ yarn start
 ```
 
 ## Build Vue.js.

@@ -55,6 +55,14 @@ canvas {
   height: initial;
 }
 
+.button[disabled] {
+  background-color: transparent !important;
+}
+
+.button {
+  box-shadow: none !important;
+}
+
 /* OwnPlate Dialog for b-model */
 .modal-background {
   background-color: rgba(0, 0, 0, 0.5) !important;
