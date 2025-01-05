@@ -68,13 +68,13 @@ export default defineComponent({
   props: {
     shopInfo: {
       type: Object as PropType<{
-        location: { lat: number; lng: number }
+        location: { lat: number; lng: number };
       }>,
       required: true,
     },
     customer: {
       type: Object as PropType<{
-        location: { lat: number; lng: number }
+        location: { lat: number; lng: number };
       }>,
       required: true,
     },
@@ -94,7 +94,7 @@ export default defineComponent({
       ) {
         return {
           lat: (props.customer.location.lat + props.shopInfo.location.lat) / 2,
-          lng: (props.customer.location.lng + props.shopInfo.location.lng) / 2
+          lng: (props.customer.location.lng + props.shopInfo.location.lng) / 2,
         };
       }
       return { lat: 35.6762, lng: 139.6503 };
