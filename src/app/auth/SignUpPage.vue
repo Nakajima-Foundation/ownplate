@@ -22,7 +22,7 @@
 
           <div class="mt-1">
             <o-field
-              :variant="!submitted ? '' : errors.email ? 'danger' : 'success'"
+              :variant="errors.email ? 'danger' : 'success'"
               :message="errors.email && $t(errors.email[0])"
             >
               <o-input
@@ -44,9 +44,8 @@
 
           <div class="mt-1">
             <o-field
-              :variant="!submitted ? '' : errors.name ? 'danger' : 'success'"
-              :message="errors.name && $t(errors.name[0])"
-              >
+              variant="success"
+            >
               <o-input
                 v-model="name"
                 type="text"
@@ -66,7 +65,7 @@
 
           <div class="mt-1">
             <o-field
-              :variant="!submitted ? '' : errors.password ? 'danger' : 'success'"
+              :variant="errors.password ? 'danger' : 'success'"
               :message="errors.password && $t(errors.password[0])"
             >
               <o-input
@@ -89,7 +88,7 @@
 
           <div class="mt-1">
             <o-field
-              :variant="!submitted ? '' : errors.confirm ? 'danger' : 'success'"
+              :variant="errors.confirm ? 'danger' : 'success'"
               :message="errors.confirm && $t(errors.confirm[0])"
             >
               <o-input
