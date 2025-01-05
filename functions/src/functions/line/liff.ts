@@ -19,8 +19,6 @@ const getLiffConfig = async (db: admin.firestore.Firestore, liffIndexId: string)
 
 // eslint-disable-next-line
 export const liffAuthenticate = async (db: admin.firestore.Firestore, data: liffAuthenticateData, context: functions.https.CallableContext) => {
-   
-
   const { liffIndexId, token } = data;
   utils.required_params({ liffIndexId, token });
 
