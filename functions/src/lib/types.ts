@@ -93,6 +93,7 @@ export interface orderChangeData {
   restaurantId: string;
   orderId: string;
   newOrder: newOrderData[];
+  isSavePay: boolean;
 }
 
 export interface orderCancelPaymentData {

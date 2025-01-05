@@ -126,9 +126,6 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
-//    const { user } = useUserData();
-//    const store = useStore();
-    
     const stripe = getStripeInstance(props.stripeAccount);
     const cardElem = ref<any>(null);
     let elementStatus = { complete: false };
@@ -202,6 +199,11 @@ export default defineComponent({
       });
       return result;
     };
+
+    const confirmCardPayment = async () => {
+      const result = await stripe.confirmCardPayment(props.clientSecret);
+      return result;
+    };
     
     const createToken = async () => {
       if (!useStoredCard.value) {
@@ -231,6 +233,7 @@ export default defineComponent({
 
       createToken, // for parent component
       confirmPayment,
+      confirmCardPayment,
     };
   },
 });

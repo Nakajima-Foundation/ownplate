@@ -408,7 +408,7 @@ import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import Promotion from "@/models/promotion";
 
-import * as analyticsUtil from "@/lib/firebase/analytics";
+// import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import { useHasSoldOutToday } from "./Stock";
 
@@ -599,6 +599,7 @@ export default defineComponent({
       }
     };
     // internal
+    /*
     const sendPurchase = () => {
       analyticsUtil.sendPurchase(
         props.orderInfo,
@@ -610,6 +611,7 @@ export default defineComponent({
         restaurantId,
       );
     };
+    */
     const handleOpenMenu = () => {
       ctx.emit("handleOpenMenu");
     };
@@ -686,7 +688,7 @@ export default defineComponent({
           await saveLiffCustomer();
         }
         */
-        sendPurchase();
+        // sendPurchase();
         store.commit("resetCart", restaurantId);
         window.scrollTo(0, 0);
       } catch (error: any) {

@@ -86,6 +86,8 @@
                 :clientSecret="orderInfo.client_secret"
               ></stripe-card>
 
+              <input type="checkbox" v-model="reuse" />reuse
+              <input type="checkbox" v-model="save" />save
               <div
                 v-if="
                   selectedPromotion &&
@@ -258,6 +260,8 @@ export default defineComponent({
     const cardState = ref({});
     const memo = ref("");
     const userName = ref(props.orderInfo.name);
+    const reuse = ref(true);
+    const save = ref(true);
 
     // let tip = 0;
 
@@ -396,20 +400,7 @@ export default defineComponent({
     const handleCardStateChange = (state: { [key: string]: boolean }) => {
       cardState.value = state;
     };
-    // internal
-    /*
-    const saveLiffCustomer = async () => {
-      const uid = this.user.uid;
-      const data = {
-        uid,
-        restaurantId: restaurantId,
-        name: props.orderInfo.name || "",
-        orderId: orderId.value, //  (this is last)
-        updatedAt: serverTimestamp(),
-      };
-      // TODO: not implemented yet.
-    };
-    */
+
     const handlePayment = async () => {
       if (userMessageError.value) {
         return;
@@ -427,45 +418,18 @@ export default defineComponent({
       }
       try {
         isPaying.value = true;
-        const pay = await stripeRef.value.confirmPayment();
+        const isReuse = props.orderInfo.hasPayment && reuse.value;
+        const pay = await (isReuse ? stripeRef.value.confirmCardPayment() : stripeRef.value.confirmPayment());
         if (pay.error) {
           isPaying.value = false;
           return;
         }
+        const isSavePay = !isReuse && save.value;
         await orderPay({
           restaurantId,
           orderId: orderId.value,
+          isSavePay,
         });
-        /*
-        if (payStripe) {
-          isPaying.value = true;
-          await stripeRef.value.createToken();
-        } else {
-          isPlacing.value = true;
-        }
-        const promotionId =
-          isEnablePaymentPromotion(payStripe) && enablePromotion.value
-            ? selectedPromotion.value?.promotionId
-            : null;
-        // console.log( isEnablePaymentPromotion(payStripe), enablePromotion.value , promotionId)
-        await orderPlace({
-          restaurantId,
-          orderId: orderId.value,
-          tip: tip || 0,
-          promotionId,
-          payStripe,
-          memo: memo.value || "",
-          userName: userName.value || "",
-          waitingPayment: true,
-          customerInfo: ecCustomerRef.value
-            ? ecCustomerRef.value.customerInfo || {}
-            : {},
-        });
-        /*
-        if (isLiffUser) {
-          await saveLiffCustomer();
-        }
-        */
 
         sendPurchase();
         store.commit("resetCart", restaurantId);
@@ -534,6 +498,9 @@ export default defineComponent({
       //
       hasSoldOutToday,
       menuData,
+
+      reuse,
+      save,
     };
   },
 });

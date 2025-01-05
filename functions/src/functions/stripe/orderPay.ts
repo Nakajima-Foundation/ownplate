@@ -19,11 +19,9 @@ import { orderChangeData } from "../../lib/types";
 
 export const orderPay = async (db: admin.firestore.Firestore, data: orderChangeData, context: functions.https.CallableContext | Context) => {
   const customerUid = utils.validate_customer_auth(context);
-  const { restaurantId, orderId } = data;
+  const { restaurantId, orderId, isSavePay } = data;
   utils.required_params({ restaurantId, orderId });
 
-
-  // const restaurantRef = db.doc(`restaurants/${restaurantId}`);
   const restaurantData = await utils.get_restaurant(db, restaurantId);
   /*
   if (restaurantData.uid !== ownerUid) {
@@ -31,8 +29,6 @@ export const orderPay = async (db: admin.firestore.Firestore, data: orderChangeD
   }
   */
   
-  // const menuRestaurantRef = restaurantRef;
-
   try {
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
     const order = (await orderRef.get()).data();
@@ -66,26 +62,14 @@ export const orderPay = async (db: admin.firestore.Firestore, data: orderChangeD
       (await transaction.get(orderRef)).data();
       
       const stripe = utils.get_stripe();
-      const paymentIntent = await stripe.paymentIntents.retrieve(id, { stripeAccount });
-      console.log(paymentIntent);
+      const paymentIntent = await stripe.paymentIntents.retrieve(id, { expand: ["latest_charge"]}, { stripeAccount });
 
       if (paymentIntent.status !== "requires_capture") {
         throw new Error("paymentIntent is not requires_capture!");
       }
 
-      // if no customer and require customer then add customer.
-      /*
-      if (!paymentIntent.customer) {
-        const customer = await stripe.customers.create({
-          name: 'Jenny Rosen',
-          email: 'jennyrosen@example.com',
-        });
-        await stripe.paymentIntents.update(id, { customer: customer.id}, { stripeAccount })
-        
-      }
-      */
-      
       await transaction.update(orderRef, {
+        isSavePay,
         status: order_status.order_placed,
         orderPlacedAt: admin.firestore.FieldValue.serverTimestamp(),
       });

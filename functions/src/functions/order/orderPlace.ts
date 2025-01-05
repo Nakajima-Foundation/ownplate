@@ -9,7 +9,7 @@ import { notifyNewOrderToRestaurant } from "../notify";
 import { costCal } from "../../common/commonUtils";
 import { Context } from "../../models/TestType";
 
-import { getStripeAccount, /* getPaymentMethodData, */ getHash, /* getCustomerStripeInfo2, saveCustomerStripeInfo2 */ } from "../stripe/intent";
+import { getStripeAccount, getHash, getCustomerStripeInfo2, saveCustomerStripeInfo2  } from "../stripe/intent";
 import { orderPlacedData } from "../../lib/types";
 import { validateOrderPlaced, validateCustomer } from "../../lib/validator";
 
@@ -36,7 +36,6 @@ export const updateOrderTotalDataAndUserLog = async (
   positive: boolean,
 ) => {
   const menuIds = Object.keys(order);
-  console.log(utils.timezone);
   const date = moment(timePlaced.toDate()).tz(utils.timezone).format("YYYYMMDD");
 
   // Firestore transactions require all reads to be executed before all writes.
@@ -224,36 +223,30 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
             metadata: { uid: customerUid, restaurantId, orderId },
             // payment_method_data,
           } as Stripe.PaymentIntentCreateParams;
-          // const stripeCustomer = await getCustomerStripeInfo2(db, customerUid, restaurantOwnerUid);
+
+          const stripeCustomer = await getCustomerStripeInfo2(db, customerUid, restaurantOwnerUid);
           const stripe = utils.get_stripe();
           const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
-          /*
-          if (stripeCustomer && stripeCustomer.customerId) {
+          const hasPayment = !!(stripeCustomer && stripeCustomer.customerId && stripeCustomer.payment_method);
+          if (hasPayment) {
             request.customer = stripeCustomer.customerId;
+            request.payment_method = stripeCustomer.payment_method;
           } else {
             const customer = await stripe.customers.create({}, {stripeAccount});
             await saveCustomerStripeInfo2(db, customerUid, restaurantOwnerUid, { customerId: customer.id});
           }
-          */
-          const idempotencyKey = getHash([orderRef.path, /* payment_method_data.card.token */ ].join("-"));
+          const idempotencyKey = getHash([orderRef.path].join("-"));
           const ret = await stripe.paymentIntents.create(request, {
             idempotencyKey,
             stripeAccount,
           });
-          /*
-          if (stripeCustomer && stripeCustomer.customerId) {
-            await stripe.paymentIntents.capture(ret.id, {
-              stripeAccount,
-            });
-          }
-          */
-          return ret;
+          return {...ret, hasPayment };
         }
-        return { client_secret: ""};
+        return { client_secret: "", hasPayment: false};
       })();
       
       
-      const { client_secret } = paymentIntent;
+      const { client_secret, hasPayment } = paymentIntent;
       // transaction for stock orderTotal
       await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, restaurantOwnerUid, timePlaced, true);
       // update customer
@@ -288,6 +281,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
         timePlaced,
         timePickupForQuery: timePlaced,
         client_secret,
+        hasPayment,
         memo: memo || "",
         isEC: restaurantData.isEC || false,
       } as any;
@@ -323,7 +317,6 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
         await transaction.set(historyDocRef, data);
       } else if (historyCollectionRef) {
         const data = userPromotionHistoryData(promotionData, restaurantData, customerUid, orderId, totalCharge, discountPrice, enableStripe);
-        console.log(data);
         await transaction.set(historyCollectionRef.doc(), data);
       }
 

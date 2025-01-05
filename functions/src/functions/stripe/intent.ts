@@ -14,12 +14,10 @@ export const getCustomerStripeInfo = async (db: admin.firestore.Firestore, custo
 };
 
 export const getCustomerStripeInfo2 = async (db: admin.firestore.Firestore, customerUid: string, restaurantOwnerUid: string) => {
-  console.log(`/users/${customerUid}/owner/${restaurantOwnerUid}/system/stripe`);
+  // console.log(`/users/${customerUid}/owner/${restaurantOwnerUid}/system/stripe`);
   const refStripe = db.doc(`/users/${customerUid}/owner/${restaurantOwnerUid}/system/stripe`);
   const stripeInfo = (await refStripe.get()).data();
   if (!stripeInfo) {
-    console.log("no customer");
-    // throw new functions.https.HttpsError("aborted", "No stripeInfo.");
     return null;
   }
   return stripeInfo;

@@ -47,7 +47,7 @@ const getPaymentIntent = async (
   const paymentIntentId = stripeRecord.paymentIntent.id;
 
   const idempotencyKey = getHash([order.id, paymentIntentId].join("-"));
-  return await stripe.paymentIntents.capture(paymentIntentId, {
+  return await stripe.paymentIntents.capture(paymentIntentId, { expand: ["latest_charge"]}, {
     idempotencyKey,
     stripeAccount,
   });
@@ -104,8 +104,11 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
       }
 
       const customerUid = order.uid;
-      const stripeReadOnlyRef = db.doc(`/users/${customerUid}/readonly/stripe`);
+      const stripeReadOnlyRef = db.doc(`/users/${customerUid}/owner/${restaurantOwnerUid}/readonly/stripe`);
       const stripeReadOnly = (await transaction.get(stripeReadOnlyRef)).data();
+
+      const stripeSystemRef = db.doc(`/users/${customerUid}/owner/${restaurantOwnerUid}/system/stripe`);
+      const stripeSystem = (await transaction.get(stripeSystemRef)).data();
 
       // everything are ok
       const updateTimeKey = timeEventMapping[order_status_keys[status]];
@@ -130,6 +133,19 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
         if (stripeReadOnly) {
           await transaction.update(stripeReadOnlyRef, {
             updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+          });
+        }
+        // customer
+        const { payment_method } = (paymentIntent as any).latest_charge;
+        if (payment_method && order.isSavePay && stripeSystem) {
+          const stripe = utils.get_stripe();
+          const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
+          await stripe.paymentMethods.attach(payment_method,{
+            customer: stripeSystem.customerId,
+          }, {stripeAccount});
+          await transaction.set(stripeSystemRef, {
+            customerId: stripeSystem.customerId,
+            payment_method,
           });
         }
       }
