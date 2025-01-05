@@ -84,10 +84,11 @@
                 :stripeJCB="stripeJCB"
                 :stripeAccount="stripeAccount"
                 :clientSecret="orderInfo.client_secret"
+                :ownerUid="shopInfo.uid"
+                :uid="orderInfo.uid"
+                :hasPayment="orderInfo.hasPayment"
               ></stripe-card>
 
-              <input type="checkbox" v-model="reuse" />reuse
-              <input type="checkbox" v-model="save" />save
               <div
                 v-if="
                   selectedPromotion &&
@@ -118,7 +119,8 @@
 
               <div class="mt-4 text-center">
                 <o-button
-                  @click="handlePayment(true)"
+                  :disabled="isPaying || !cardState.complete"
+                  @click="handlePayment()"
                   class="b-reset-tw"
                 >
                   <div
@@ -146,7 +148,6 @@
             <!-- Error message for ec and delivery -->
             <div
               v-if="
-                requireAddress &&
                 $refs.ecCustomerRef &&
                 $refs.ecCustomerRef.hasEcError
               "
@@ -168,13 +169,10 @@ import ShopHeader from "@/app/user/Restaurant/ShopHeader.vue";
 
 import OrderInfo from "@/app/user/OrderPage/OrderInfo.vue";
 import UserCustomerInfo from "@/app/user/OrderPage/UserCustomerInfo.vue";
-// import CustomerInfo from "@/app/user/OrderPage/CustomerInfo.vue";
 
 import StripeCard from "@/app/user/OrderPage/BeforePaid/StripeCard.vue";
 // import ECCustomer from "@/app/user/OrderPage/BeforePaid/ECCustomer.vue";
-// import OrderNotice from "@/app/user/OrderPage/BeforePaid/OrderNotice.vue";
 import BeforePaidAlert from "@/app/user/OrderPage/BeforePaid/BeforePaidAlert.vue";
-// import SpecifiedCommercialTransactions from "@/app/user/OrderPage/BeforePaid/SpecifiedCommercialTransactions.vue";
 // import OrderPageMap from "@/app/user/OrderPage/BeforePaid/Map.vue";
 
 import ButtonLoading from "@/components/Button/Loading.vue";
@@ -184,7 +182,7 @@ import { doc, getDoc } from "firebase/firestore";
 
 import { orderPay } from "@/lib/firebase/functions";
 
-import { order_status, paymentMethods } from "@/config/constant";
+import { order_status } from "@/config/constant";
 
 import { costCal } from "@/utils/commonUtils";
 import { usePromotionData } from "@/utils/promotion";
@@ -212,9 +210,7 @@ export default defineComponent({
 
     // before paid
     StripeCard,
-//    OrderNotice,
     BeforePaidAlert,
-//    SpecifiedCommercialTransactions,
 //    OrderPageMap,
   },
   props: {
@@ -246,22 +242,15 @@ export default defineComponent({
   data() {
     return {};
   },
-  emits: ["handleOpenMenu", "openTransactionsAct"],
-  setup(props, ctx) {
+  setup(props) {
     const route = useRoute();
     const store = useStore();
 
     const restaurantId = route.params.restaurantId as string;
 
-    const notAvailable = ref(false);
     const isPaying = ref(false);
-    const isPlacing = ref(false);
 
     const cardState = ref({});
-    const memo = ref("");
-    const userName = ref(props.orderInfo.name);
-    const reuse = ref(true);
-    const save = ref(true);
 
     // let tip = 0;
 
@@ -283,7 +272,6 @@ export default defineComponent({
     setPostage();
 
     const stripeAccount = computed(() => {
-      console.log(props.paymentInfo);
       return props.paymentInfo.stripe;
     });
 
@@ -314,33 +302,6 @@ export default defineComponent({
         props.orderInfo.total,
       );
     });
-    const requireAddress = computed(() => {
-      return props.shopInfo.isEC || props.orderInfo.isDelivery;
-    });
-    const notSubmitAddress = computed(() => {
-      return requireAddress.value && ecCustomerRef.value?.hasEcError;
-    });
-    const userMessageError = computed(() => {
-      return props.shopInfo.acceptUserMessage && memo.value.length > 500;
-    });
-
-    const userNameError = computed(() => {
-      return (
-        props.shopInfo.personalInfo === "required" &&
-        (userName.value === "" || userName.value.length < 3)
-      );
-    });
-
-    const shopPaymentMethods = computed(() => {
-      return (
-        Object.keys(props.shopInfo.paymentMethods || {}).filter((key) => {
-          return !!props.shopInfo.paymentMethods[key];
-        }) || []
-      );
-    });
-    const hasPaymentMethods = computed(() => {
-      return shopPaymentMethods.value.length > 0;
-    });
     const selectedPromotion = computed<Promotion | null>(() => {
       if (props.promotions && props.promotions.length > 0) {
         const matched = props.promotions.filter((a) => {
@@ -357,6 +318,7 @@ export default defineComponent({
       usePromotionData(props.orderInfo, selectedPromotion);
 
     const shopInfo = computed(() => {
+      console.log(props.shopInfo);
       return props.shopInfo;
     });
     const { hasSoldOutToday, menuData } = useHasSoldOutToday(
@@ -370,14 +332,6 @@ export default defineComponent({
     });
 
     // methods
-    const updateHome = (pos: any) => {
-      ecCustomerRef.value.updateHome(pos);
-    };
-    const updateLocation = (pos: any) => {
-      if (orderPageMapRef.value) {
-        orderPageMapRef.value.updateLocation(pos);
-      }
-    };
     // internal
     const sendPurchase = () => {
       analyticsUtil.sendPurchase(
@@ -390,74 +344,42 @@ export default defineComponent({
         restaurantId,
       );
     };
-    const handleOpenMenu = () => {
-      ctx.emit("handleOpenMenu");
-    };
-    const handleNotAvailable = (flag: boolean) => {
-      console.log("handleNotAvailable", flag);
-      notAvailable.value = flag;
-    };
     const handleCardStateChange = (state: { [key: string]: boolean }) => {
       cardState.value = state;
     };
 
     const handlePayment = async () => {
-      if (userMessageError.value) {
-        return;
-      }
-      if (userNameError.value) {
-        return;
-      }
-      if (requireAddress.value) {
-        if (ecCustomerRef.value && ecCustomerRef.value.hasEcError) {
-          return;
-        }
-        if (ecCustomerRef.value.isSaveAddress) {
-          await ecCustomerRef.value.saveAddress();
-        }
-      }
       try {
         isPaying.value = true;
-        const isReuse = props.orderInfo.hasPayment && reuse.value;
-        const pay = await (isReuse ? stripeRef.value.confirmCardPayment() : stripeRef.value.confirmPayment());
+        const pay = await stripeRef.value.processPayment();
         if (pay.error) {
           isPaying.value = false;
           return;
         }
-        const isSavePay = !isReuse && save.value;
         await orderPay({
           restaurantId,
           orderId: orderId.value,
-          isSavePay,
+          isSavePay: stripeRef.value.isSavePay ,
         });
 
         sendPurchase();
         store.commit("resetCart", restaurantId);
         window.scrollTo(0, 0);
       } catch (error: any) {
-        // alert(JSON.stringify(error));
         console.error(error.message, error.details);
         store.commit("setErrorMessage", {
           code: "order.place",
           error,
         });
       } finally {
-        isPlacing.value = false;
         isPaying.value = false;
       }
-    };
-    const openTransactionsAct = () => {
-      ctx.emit("openTransactionsAct");
     };
 
     return {
       // ref
-      notAvailable,
       isPaying,
-      isPlacing,
       cardState,
-      memo,
-      userName,
 
       // refs
       ecCustomerRef,
@@ -472,35 +394,19 @@ export default defineComponent({
       orderId,
       stripeSmallPayment,
       shippingCost,
-      requireAddress,
-      notSubmitAddress,
-      userMessageError,
-      userNameError,
-      hasPaymentMethods,
 
       selectedPromotion,
       enablePromotion,
       discountPrice,
 
-      // const
-      paymentMethods,
-
       // methods
-      updateHome,
-      updateLocation,
-      handleOpenMenu,
-      handleNotAvailable,
       handleCardStateChange,
       handlePayment,
-      openTransactionsAct,
-
       stripeAccount,
       //
       hasSoldOutToday,
       menuData,
 
-      reuse,
-      save,
     };
   },
 });
