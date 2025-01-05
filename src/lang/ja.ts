@@ -1171,10 +1171,7 @@ const data = {
         tooshort: "パスワードは8文字以上にしてください。",
         invalid: "パスワードはアルファベットと数字を含めてください。",
         mismatch: "パスワードが違います。",
-			},
-			name: {
-				invalid: "名前を入力してください。"
-			},
+      },
       code: {
         "auth/user-not-found": "登録されていません。",
         "auth/wrong-password": "パスワードが無効です。",
