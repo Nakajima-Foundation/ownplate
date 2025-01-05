@@ -2,11 +2,12 @@
   <div class="mx-6 mt-2 h-3/5">
     <GoogleMap
       :api-key="apiKey"
+			:mapId="mapId"
       style="width: 100%; height: 50vh"
       :center="center"
       :zoom="zoom"
     >
-      <Marker2
+      <AdvancedMarker
         v-for="restaurant in restaurants"
         :key="restaurant.id"
         :options="{
@@ -28,7 +29,7 @@
             </router-link>
           </div>
         </InfoWindow>
-      </Marker2>
+      </AdvancedMarker>
     </GoogleMap>
   </div>
 </template>
@@ -37,11 +38,11 @@
 import { defineComponent, ref } from "vue";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { resizedProfileImage } from "@/utils/utils";
-import { GoogleMap, Marker as Marker2, InfoWindow } from "vue3-google-map";
-import { GAPIKey } from "@/config/project";
+import { GoogleMap, AdvancedMarker, InfoWindow } from "vue3-google-map";
+import { GAPIKey, GMAPId } from "@/config/project";
 
 export default defineComponent({
-  components: { GoogleMap, Marker2, InfoWindow },
+  components: { GoogleMap, AdvancedMarker, InfoWindow },
   props: {
     restaurants: {
       type: Array<RestaurantInfoData>,
@@ -59,7 +60,8 @@ export default defineComponent({
     const center_lat = ref(44.933076);
     const center_lng = ref(15.629058);
     const zoom = ref(13);
-    const apiKey = GAPIKey;
+		const apiKey = GAPIKey;
+		const mapId = GMAPId;
 
     const selected = ref<null | number>(null);
 
@@ -133,7 +135,8 @@ export default defineComponent({
       center_lat,
       center_lng,
       zoom,
-      apiKey,
+			apiKey,
+			mapId,
 
       setStore,
       selected,
