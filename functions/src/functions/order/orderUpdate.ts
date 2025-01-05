@@ -47,10 +47,14 @@ const getPaymentIntent = async (
   const paymentIntentId = stripeRecord.paymentIntent.id;
 
   const idempotencyKey = getHash([order.id, paymentIntentId].join("-"));
-  return await stripe.paymentIntents.capture(paymentIntentId, { expand: ["latest_charge"]}, {
-    idempotencyKey,
-    stripeAccount,
-  });
+  return await stripe.paymentIntents.capture(
+    paymentIntentId,
+    { expand: ["latest_charge"] },
+    {
+      idempotencyKey,
+      stripeAccount,
+    },
+  );
 };
 
 // This function is called by admins (restaurant operators) to update the status of order
@@ -140,9 +144,13 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
         if (payment_method && order.isSavePay && stripeSystem) {
           const stripe = utils.get_stripe();
           const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
-          await stripe.paymentMethods.attach(payment_method,{
-            customer: stripeSystem.customerId,
-          }, {stripeAccount});
+          await stripe.paymentMethods.attach(
+            payment_method,
+            {
+              customer: stripeSystem.customerId,
+            },
+            { stripeAccount },
+          );
           await transaction.set(stripeSystemRef, {
             customerId: stripeSystem.customerId,
             payment_method,

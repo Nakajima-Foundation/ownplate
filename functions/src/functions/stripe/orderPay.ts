@@ -9,13 +9,12 @@ import * as utils from "../../lib/utils";
 // import { costCal } from "../../common/commonUtils";
 import { notifyNewOrderToRestaurant } from "../notify";
 import { Context } from "../../models/TestType";
-import {  getStripeAccount, getStripeOrderRecord, /* getPaymentMethodData, getHash */ } from "./intent";
+import { getStripeAccount, getStripeOrderRecord /* getPaymentMethodData, getHash */ } from "./intent";
 
 import { orderChangeData } from "../../lib/types";
 //import { validateOrderChange } from "../../lib/validator";
 
 // const multiple = utils.stripeRegion.multiple; // 100 for USD, 1 for JPY
-
 
 export const orderPay = async (db: admin.firestore.Firestore, data: orderChangeData, context: functions.https.CallableContext | Context) => {
   const customerUid = utils.validate_customer_auth(context);
@@ -28,7 +27,7 @@ export const orderPay = async (db: admin.firestore.Firestore, data: orderChangeD
     throw new functions.https.HttpsError("permission-denied", "The user does not have an authority to perform this operation.");
   }
   */
-  
+
   try {
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
     const order = (await orderRef.get()).data();
@@ -45,7 +44,6 @@ export const orderPay = async (db: admin.firestore.Firestore, data: orderChangeD
     // generate new order
     order.id = orderId;
 
-
     // update stripe
     await db.runTransaction(async (transaction) => {
       console.log(customerUid);
@@ -60,9 +58,9 @@ export const orderPay = async (db: admin.firestore.Firestore, data: orderChangeD
       // console.log(stripeData.paymentIntent);
       // console.log(client_secret);
       (await transaction.get(orderRef)).data();
-      
+
       const stripe = utils.get_stripe();
-      const paymentIntent = await stripe.paymentIntents.retrieve(id, { expand: ["latest_charge"]}, { stripeAccount });
+      const paymentIntent = await stripe.paymentIntents.retrieve(id, { expand: ["latest_charge"] }, { stripeAccount });
 
       if (paymentIntent.status !== "requires_capture") {
         throw new Error("paymentIntent is not requires_capture!");

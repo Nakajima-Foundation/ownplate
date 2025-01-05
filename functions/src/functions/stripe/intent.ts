@@ -26,9 +26,8 @@ export const getCustomerStripeInfo2 = async (db: admin.firestore.Firestore, cust
 export const saveCustomerStripeInfo2 = async (db: admin.firestore.Firestore, customerUid: string, restaurantOwnerUid: string, data: any) => {
   const refStripe = db.doc(`/users/${customerUid}/owner/${restaurantOwnerUid}/system/stripe`);
   console.log(data);
-  await refStripe.update(data,  { merge: true });
+  await refStripe.update(data, { merge: true });
 };
-
 
 export const getStripeAccount = async (db: admin.firestore.Firestore, restaurantOwnerUid: string) => {
   const paymentSnapshot = await db.doc(`/admins/${restaurantOwnerUid}/public/payment`).get();

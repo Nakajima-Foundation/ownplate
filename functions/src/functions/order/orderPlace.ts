@@ -9,7 +9,7 @@ import { notifyNewOrderToRestaurant } from "../notify";
 import { costCal } from "../../common/commonUtils";
 import { Context } from "../../models/TestType";
 
-import { getStripeAccount, getHash, getCustomerStripeInfo2, saveCustomerStripeInfo2  } from "../stripe/intent";
+import { getStripeAccount, getHash, getCustomerStripeInfo2, saveCustomerStripeInfo2 } from "../stripe/intent";
 import { orderPlacedData } from "../../lib/types";
 import { validateOrderPlaced, validateCustomer } from "../../lib/validator";
 
@@ -232,20 +232,19 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
             request.customer = stripeCustomer.customerId;
             request.payment_method = stripeCustomer.payment_method;
           } else {
-            const customer = await stripe.customers.create({}, {stripeAccount});
-            await saveCustomerStripeInfo2(db, customerUid, restaurantOwnerUid, { customerId: customer.id});
+            const customer = await stripe.customers.create({}, { stripeAccount });
+            await saveCustomerStripeInfo2(db, customerUid, restaurantOwnerUid, { customerId: customer.id });
           }
           const idempotencyKey = getHash([orderRef.path].join("-"));
           const ret = await stripe.paymentIntents.create(request, {
             idempotencyKey,
             stripeAccount,
           });
-          return {...ret, hasPayment };
+          return { ...ret, hasPayment };
         }
-        return { client_secret: "", hasPayment: false};
+        return { client_secret: "", hasPayment: false };
       })();
-      
-      
+
       const { client_secret, hasPayment } = paymentIntent;
       // transaction for stock orderTotal
       await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, restaurantOwnerUid, timePlaced, true);
