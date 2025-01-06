@@ -79,9 +79,7 @@ export default [
       "array-callback-return": "error",
       "require-await": "error",
       "eqeqeq": "error",
-      "init-declarations": "warn",
-
-      
+      "init-declarations": "error",
     },
   },
   eslintConfigPrettier,
