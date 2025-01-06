@@ -42,29 +42,9 @@
             :shopInfo="shopInfo || {}"
             :orderItems="orderItems"
             :orderInfo="orderInfo || {}"
-            :menuData="menuData"
-            :shippingCost="shippingCost"
-            :promotion="selectedPromotion"
-            :enablePromotion="enablePromotion"
-            :discountPrice="discountPrice"
           ></order-info>
         </div>
 
-        <!-- Customer info -->
-        <div
-          class="mt-2"
-          v-if="
-            shopInfo &&
-            (shopInfo.isEC || orderInfo.isDelivery) &&
-            hasCustomerInfo
-          "
-        >
-          <UserCustomerInfo
-            :shopInfo="shopInfo"
-            :orderInfo="orderInfo"
-            :orderId="orderId"
-          />
-        </div>
       </div>
 
       <!-- Right -->
@@ -89,34 +69,6 @@
                 :hasPayment="orderInfo.hasPayment"
               ></stripe-card>
 
-              <div
-                v-if="
-                  selectedPromotion &&
-                  selectedPromotion.paymentRestrictions === 'stripe'
-                "
-              >
-                <div
-                  class="border-green-600 text-green-600 text-center font-bold mx-auto w-72 items-center mt-8 -mb-3 rounded-lg bg-green-600 bg-opacity-10 px-6 py-2"
-                >
-                  <div class="text-xs">{{ $t("order.promotionNoteCard") }}</div>
-                </div>
-              </div>
-
-              <div
-                v-if="
-                  selectedPromotion &&
-                  selectedPromotion.paymentRestrictions === 'instore'
-                "
-              >
-                <div
-                  class="border-green-600 text-green-600 text-center font-bold mx-auto w-72 items-center mt-8 -mb-3 rounded-lg bg-green-600 bg-opacity-10 px-6 py-2"
-                >
-                  <div class="text-xs">
-                    {{ $t("order.promotionNoteStore") }}
-                  </div>
-                </div>
-              </div>
-
               <div class="mt-4 text-center">
                 <o-button
                   :disabled="isPaying || !cardState.complete"
@@ -130,7 +82,6 @@
                     <ButtonLoading v-if="isPaying" />
                     <div class="text-xl font-bold text-white">
                       {{ $t("order.placeOrder") }}
-                      <!-- {{ $n(orderInfo.total + tip, "currency") }} -->
                     </div>
                   </div>
                 </o-button>
@@ -145,16 +96,6 @@
 
 
 
-            <!-- Error message for ec and delivery -->
-            <div
-              v-if="
-                $refs.ecCustomerRef &&
-                $refs.ecCustomerRef.hasEcError
-              "
-              class="mt-2 text-center font-bold text-red-700"
-            >
-              {{ $t("order.alertReqireAddress") }}
-            </div>
           </div>
         </div>
       </div>
@@ -163,37 +104,23 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, watch, ref, PropType } from "vue";
+import { defineComponent, computed, ref, PropType } from "vue";
 
 import ShopHeader from "@/app/user/Restaurant/ShopHeader.vue";
 
 import OrderInfo from "@/app/user/OrderPage/OrderInfo.vue";
-import UserCustomerInfo from "@/app/user/OrderPage/UserCustomerInfo.vue";
 
 import StripeCard from "@/app/user/OrderPage/BeforePaid/StripeCard.vue";
-// import ECCustomer from "@/app/user/OrderPage/BeforePaid/ECCustomer.vue";
 import BeforePaidAlert from "@/app/user/OrderPage/BeforePaid/BeforePaidAlert.vue";
-// import OrderPageMap from "@/app/user/OrderPage/BeforePaid/Map.vue";
 
 import ButtonLoading from "@/components/Button/Loading.vue";
 
-import { db } from "@/lib/firebase/firebase9";
-import { doc, getDoc } from "firebase/firestore";
-
 import { orderPay } from "@/lib/firebase/functions";
-
-import { order_status } from "@/config/constant";
-
-import { costCal } from "@/utils/commonUtils";
-import { usePromotionData } from "@/utils/promotion";
 
 import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
-import Promotion from "@/models/promotion";
 
 import * as analyticsUtil from "@/lib/firebase/analytics";
-
-import { useHasSoldOutToday } from "./Stock";
 
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
@@ -204,14 +131,12 @@ export default defineComponent({
     ShopHeader,
 
     OrderInfo,
-    UserCustomerInfo,
 
     ButtonLoading,
 
     // before paid
     StripeCard,
     BeforePaidAlert,
-//    OrderPageMap,
   },
   props: {
     shopInfo: {
@@ -228,10 +153,6 @@ export default defineComponent({
     },
     paymentInfo: {
       type: Object,
-      required: true,
-    },
-    promotions: {
-      type: Array<Promotion>,
       required: true,
     },
     menuPagePath: {
@@ -252,24 +173,8 @@ export default defineComponent({
 
     const cardState = ref({});
 
-    // let tip = 0;
-
     // ref for refs
-    const ecCustomerRef = ref();
-    const orderPageMapRef = ref();
     const stripeRef = ref();
-
-    const postageInfo = ref({});
-    const setPostage = () => {
-      if (props.shopInfo.isEC) {
-        getDoc(doc(db, `restaurants/${restaurantId}/ec/postage`)).then(
-          (snapshot) => {
-            postageInfo.value = snapshot.data() || {};
-          },
-        );
-      }
-    };
-    setPostage();
 
     const stripeAccount = computed(() => {
       return props.paymentInfo.stripe;
@@ -285,51 +190,14 @@ export default defineComponent({
       return stripeAccount.value;
     });
 
-    const hasCustomerInfo = computed(() => {
-      return props.orderInfo.status > order_status.validation_ok;
-    });
-
     const orderId = computed(() => {
       return route.params.orderId as string;
     });
     const stripeSmallPayment = computed(() => {
       return props.orderInfo.total <= 50;
     });
-    const shippingCost = computed(() => {
-      return costCal(
-        postageInfo.value,
-        ecCustomerRef.value?.customerInfo?.prefectureId,
-        props.orderInfo.total,
-      );
-    });
-    const selectedPromotion = computed<Promotion | null>(() => {
-      if (props.promotions && props.promotions.length > 0) {
-        const matched = props.promotions.filter((a) => {
-          return props.orderInfo.total >= a.discountThreshold;
-        });
-        if (matched && matched.length > 0) {
-          return matched[matched.length - 1];
-        }
-      }
-      return null;
-    });
-
-    const { enablePromotion, discountPrice } =
-      usePromotionData(props.orderInfo, selectedPromotion);
-
-    const shopInfo = computed(() => {
-      console.log(props.shopInfo);
-      return props.shopInfo;
-    });
-    const { hasSoldOutToday, menuData } = useHasSoldOutToday(
-      restaurantId,
-      props.orderInfo,
-    );
 
     // end of computed
-    watch(shopInfo, () => {
-      setPostage();
-    });
 
     // methods
     // internal
@@ -382,30 +250,20 @@ export default defineComponent({
       cardState,
 
       // refs
-      ecCustomerRef,
-      orderPageMapRef,
       stripeRef,
 
       // computed
       stripeJCB,
       inStorePayment,
       showPayment,
-      hasCustomerInfo,
       orderId,
       stripeSmallPayment,
-      shippingCost,
-
-      selectedPromotion,
-      enablePromotion,
-      discountPrice,
 
       // methods
       handleCardStateChange,
       handlePayment,
       stripeAccount,
       //
-      hasSoldOutToday,
-      menuData,
 
     };
   },

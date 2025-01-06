@@ -166,7 +166,9 @@ export default defineComponent({
       cardElem.value = cardElement;
       cardElem.value.addEventListener("change", (status: any) => {
         elementStatus = status;
-        ctx.emit("change", status);
+        if (!useStoredCard.value) {
+          ctx.emit("change", status);
+        }
       });
 
       try {

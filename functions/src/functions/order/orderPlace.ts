@@ -210,8 +210,6 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
       const orderNumber = utils.nameOfOrder(order.number);
       const paymentIntent = await (async () => {
         if (enableStripe) {
-          // We expect that there is a customer Id associated with a token
-          // const payment_method_data = await getPaymentMethodData(db, restaurantOwnerUid, customerUid);
 
           const description = `#${orderNumber} ${restaurantData.restaurantName} ${restaurantData.phoneNumber}`;
           const request = {
@@ -221,7 +219,6 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
             description: `${description} ${orderId}`,
             currency: utils.stripeRegion.currency,
             metadata: { uid: customerUid, restaurantId, orderId },
-            // payment_method_data,
           } as Stripe.PaymentIntentCreateParams;
 
           const stripeCustomer = await getCustomerStripeInfo2(db, customerUid, restaurantOwnerUid);
