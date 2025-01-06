@@ -123,6 +123,7 @@
                 v-model="name"
                 maxlength="32"
                 :placeholder="$t('sms.typeUserName')"
+                expanded
               />
             </o-field>
           </div>

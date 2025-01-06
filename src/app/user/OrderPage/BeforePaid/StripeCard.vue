@@ -4,13 +4,13 @@
       v-if="storedCard && hasPayment"
       class="mt-2 flex items-center rounded-lg bg-white p-4 shadow"
     >
-      <o-checkbox v-model="useStoredCard">
+      <t-checkbox v-model="useStoredCard">
         <div class="text-base">
           <span>{{ storedCard.brand }}</span>
           <span>**** **** **** {{ storedCard.last4 }}</span>
           <span>・{{ storedCard.exp_month }}/{{ storedCard.exp_year }}</span>
         </div>
-      </o-checkbox>
+      </t-checkbox>
     </div>
 
     <div v-show="!useStoredCard">
