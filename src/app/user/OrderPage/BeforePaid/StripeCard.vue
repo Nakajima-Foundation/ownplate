@@ -175,7 +175,6 @@ export default defineComponent({
         const stripeInfo = (
           await getDoc(doc(db, `/users/${props.uid}/owner/${props.ownerUid}/readonly/stripe`))
         ).data();
-        console.log(stripeInfo);
         if (stripeInfo && stripeInfo.card) {
           const date = ("00" + String(stripeInfo.card.exp_month)).slice(-2);
           const expire = moment(
@@ -211,17 +210,15 @@ export default defineComponent({
     });
 
     const confirmPayment = async () => {
-      const result = await stripe.confirmPayment({
+      return await stripe.confirmPayment({
         elements,
         confirmParams: {},
         redirect: "if_required"
       });
-      return result;
     };
 
     const confirmCardPayment = async () => {
-      const result = await stripe.confirmCardPayment(props.clientSecret);
-      return result;
+      return await stripe.confirmCardPayment(props.clientSecret);
     };
 
     const processPayment = async () => {
