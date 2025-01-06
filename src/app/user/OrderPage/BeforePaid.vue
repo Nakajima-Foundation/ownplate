@@ -290,11 +290,11 @@
 
               <div class="mt-4">
                 <t-button
-                  :loading="isPlacing"
-                  :disabled="disabledButton"
+                  :isLoading="isPlacing"
+                  :isDisabled="disabledButton"
                   :class="disabledButton ? 'bg-op-teal-disabled' : 'bg-op-teal'"
                   @click="handlePayment(false)"
-                  class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal px-6 shadow takeout"
+                  class="h-16 px-6 takeout"
                   style="min-width: 288px"
                 >
                   <div class="text-xl font-bold text-white">
