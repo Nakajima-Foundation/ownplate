@@ -250,6 +250,7 @@
 
               <div class="mt-4 text-center">
                 <o-button
+                  :loading="isPaying"
                   :disabled="
                     notSubmitAddress ||
                     userMessageError ||
@@ -661,7 +662,7 @@ export default defineComponent({
           payStripe,
           memo: memo.value || "",
           userName: userName.value || "",
-          waitingPayment: true,
+          waitingPayment: payStripe,
           customerInfo: ecCustomerRef.value
             ? ecCustomerRef.value.customerInfo || {}
             : {},
