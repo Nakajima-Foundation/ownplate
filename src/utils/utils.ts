@@ -31,7 +31,7 @@ import isLatLong from "validator/lib/isLatLong";
 
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
-import { useI18n } from "vue-i18n";
+import i18n from "@/lib/vue-i18n";
 
 export const isNull = <T>(value: T) => {
   return value === null || value === undefined;
@@ -130,7 +130,7 @@ export const num2simpleFormatedTime = (num: number) => {
 };
 
 export const num2time = (num: number) => {
-  const { locale, t } = useI18n({ useScope: "global" });
+  const { locale, t } = i18n.global;
 
   if (num === 0 || num === 60 * 24) {
     return t("shopInfo.midnight");
@@ -337,7 +337,7 @@ export const displayOption = (
   shopInfo: RestaurantInfoData,
   item: MenuData,
 ) => {
-  const { n } = useI18n({ useScope: "global" });
+  const { n } = i18n.global;
   return formatOption(option, (price) => {
     return n(roundPrice(price * taxRate(shopInfo, item)), "currency");
   });
@@ -765,7 +765,7 @@ export const isDev = firebaseConfig.projectId === "ownplate-dev";
 
 export const useIsLocaleJapan = () => {
   // for hack
-  const { locale } = useI18n({ useScope: "global" });
+  const { locale } = i18n.global;
   console.log(locale.value);
   return computed(() => {
     return locale.value !== "en" && locale.value !== "fr";

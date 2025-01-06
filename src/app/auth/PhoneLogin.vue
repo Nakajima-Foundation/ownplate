@@ -203,7 +203,6 @@ export default defineComponent({
     let recaptchaVerifier: ApplicationVerifier | null = null;
 
     const isLocaleJapan = useIsLocaleJapan();
-
     onMounted(() => {
       recaptchaVerifier = new RecaptchaVerifier(auth, "signInButton", {
         size: "invisible",
