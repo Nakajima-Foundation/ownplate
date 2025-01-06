@@ -22,14 +22,7 @@
       <div v-if="!stripeJCB" class="text-sm font-bold text-black text-opacity-60 mt-2">
         {{ $t("order.no_jcb") }}
       </div>
-
-      <div class="flex items-center">
-        <input type="checkbox" v-model="save"
-               id="saveCheckbox"
-               class="peer h-5 w-5 cursor-pointer rounded-md transition-all appearance-none rounded shadow hover:shadow-md border-2 border-gray-500 checked:bg-teal-400 checked:border-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-400 hover:border-teal-400 m-2"
-               />
-        <label for="saveCheckbox">{{ $t("order.reuseCard") }}</label>
-      </div>
+      <t-checkbox v-model="save">{{ $t("order.reuseCard") }}</t-checkbox>
 
       <!-- About CVC -->
       <div class="mt-1">
