@@ -11,7 +11,6 @@ import i18n from "@/lib/vue-i18n";
 import Oruga from "@oruga-ui/oruga-next";
 import { bulmaConfig } from "@oruga-ui/theme-bulma";
 import VueSocialSharing from "vue-social-sharing";
-// import { createMetaManager, plugin as metaPlugin } from "vue-meta";
 import { createHead } from "@unhead/vue";
 import VueQrcode from "@chenfengyuan/vue-qrcode";
 import VueGoogleMaps from "@fawmi/vue-google-maps";
@@ -32,7 +31,7 @@ import "@/assets/css/main.css";
 import "@/assets/scss/bulma.scss";
 //import "@oruga-ui/theme-bulma/dist/bulma.css";
 
-const app = createApp(App as any); // TODO fix
+const app = createApp(App);
 
 // components
 app.component(VueQrcode.name ?? "", VueQrcode);

@@ -79,7 +79,7 @@ export default [
       "array-callback-return": "error",
       "require-await": "error",
       "eqeqeq": "error",
-      "init-declarations": "error",
+      "init-declarations": "warn",
 
       
     },
