@@ -2,12 +2,11 @@ import { functions } from "@/lib/firebase/firebase9";
 import { httpsCallable } from "firebase/functions";
 import { ownPlateConfig } from "@/config/project";
 
-const apiKey = ownPlateConfig.stripe.apiKey;
-
-export const getStripeInstance = () => {
-  const stripeAPIToken = apiKey;
+export const getStripeInstance = (stripeAccount: string) => {
   // @ts-ignore
-  return Stripe(stripeAPIToken);
+  return Stripe(ownPlateConfig.stripe.apiKey, {
+    stripeAccount
+  });
 };
 
 export const stripeCancelIntent = httpsCallable(

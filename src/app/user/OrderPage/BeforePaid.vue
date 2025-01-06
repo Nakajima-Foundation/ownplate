@@ -21,7 +21,7 @@
 
     <!-- Before Paid -->
     <div class="mx-6 mt-4">
-      <BeforePaidAlert :orderInfo="orderInfo" :shopInfo="shopInfo" />
+      <BeforePaidAlert :orderInfo="orderInfo" :shopInfo="shopInfo" message="order.orderNotPlacedYet" />
     </div>
     <!-- end of Before Paid -->
 
@@ -219,11 +219,6 @@
 
             <!-- Pay Online -->
             <div v-if="showPayment" class="mt-2">
-              <stripe-card
-                @change="handleCardStateChange"
-                ref="stripeRef"
-                :stripeJCB="stripeJCB"
-              ></stripe-card>
 
               <div
                 v-if="
@@ -256,8 +251,6 @@
               <div class="mt-4 text-center">
                 <o-button
                   :disabled="
-                    !cardState.complete ||
-                    notAvailable ||
                     notSubmitAddress ||
                     userMessageError ||
                     userNameError ||
@@ -385,7 +378,6 @@ import OrderInfo from "@/app/user/OrderPage/OrderInfo.vue";
 import UserCustomerInfo from "@/app/user/OrderPage/UserCustomerInfo.vue";
 import CustomerInfo from "@/app/user/OrderPage/CustomerInfo.vue";
 
-import StripeCard from "@/app/user/OrderPage/BeforePaid/StripeCard.vue";
 import TimeToPickup from "@/app/user/OrderPage/BeforePaid/TimeToPickup.vue";
 import ECCustomer from "@/app/user/OrderPage/BeforePaid/ECCustomer.vue";
 import OrderNotice from "@/app/user/OrderPage/BeforePaid/OrderNotice.vue";
@@ -409,8 +401,6 @@ import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import Promotion from "@/models/promotion";
 
-import * as analyticsUtil from "@/lib/firebase/analytics";
-
 import { useHasSoldOutToday } from "./Stock";
 
 import { useStore } from "vuex";
@@ -428,7 +418,6 @@ export default defineComponent({
     ButtonLoading,
 
     // before paid
-    StripeCard,
     TimeToPickup,
     ECCustomer,
     OrderNotice,
@@ -504,18 +493,11 @@ export default defineComponent({
     };
     setPostage();
 
-    const stripeAccount = computed(() => {
-      return props.paymentInfo.stripe;
-    });
-
-    const stripeJCB = computed(() => {
-      return props.paymentInfo.stripeJCB === true;
-    });
     const inStorePayment = computed(() => {
       return props.paymentInfo.inStore;
     });
     const showPayment = computed(() => {
-      return stripeAccount.value;
+      return props.paymentInfo.stripe;
     });
 
     const hasCustomerInfo = computed(() => {
@@ -600,6 +582,7 @@ export default defineComponent({
       }
     };
     // internal
+    /*
     const sendPurchase = () => {
       analyticsUtil.sendPurchase(
         props.orderInfo,
@@ -611,6 +594,7 @@ export default defineComponent({
         restaurantId,
       );
     };
+    */
     const handleOpenMenu = () => {
       ctx.emit("handleOpenMenu");
     };
@@ -659,7 +643,7 @@ export default defineComponent({
       try {
         if (payStripe) {
           isPaying.value = true;
-          await stripeRef.value.createToken();
+          // await stripeRef.value.createToken();
         } else {
           isPlacing.value = true;
         }
@@ -677,6 +661,7 @@ export default defineComponent({
           payStripe,
           memo: memo.value || "",
           userName: userName.value || "",
+          waitingPayment: true,
           customerInfo: ecCustomerRef.value
             ? ecCustomerRef.value.customerInfo || {}
             : {},
@@ -686,7 +671,7 @@ export default defineComponent({
           await saveLiffCustomer();
         }
         */
-        sendPurchase();
+        // sendPurchase();
         store.commit("resetCart", restaurantId);
         window.scrollTo(0, 0);
       } catch (error: any) {
@@ -721,7 +706,6 @@ export default defineComponent({
       stripeRef,
 
       // computed
-      stripeJCB,
       inStorePayment,
       showPayment,
       hasCustomerInfo,

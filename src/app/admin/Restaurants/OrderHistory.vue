@@ -128,6 +128,7 @@ import {
   DocumentData,
 } from "firebase/firestore";
 import { order_status, order_status_for_form } from "@/config/constant";
+import { OrderInfoData } from "@/models/orderInfo";
 
 import NotFound from "@/components/NotFound.vue";
 import OrderedInfo from "@/app/admin/Order/OrderedInfo.vue";
@@ -144,6 +145,7 @@ import {
   orderType,
   useRestaurantId,
   defaultTitle,
+  orderFilter,
 } from "@/utils/utils";
 import { checkShopAccount } from "@/utils/userPermission";
 import { useHead } from "@unhead/vue";
@@ -165,7 +167,7 @@ export default defineComponent({
   setup(props) {
     const limitNum = 60;
     const last = ref<QueryDocumentSnapshot<DocumentData> | null>(null);
-    const orders = ref<any[]>([]);
+    const orders = ref<OrderInfoData[]>([]);
     const notFound = ref(null);
 
     const orderState = ref(0);
@@ -219,7 +221,7 @@ export default defineComponent({
       last.value = docs.length === limitNum ? docs[limitNum - 1] : null;
       const tmpOrders = docs
         .map(doc2data("order"))
-        .filter((a) => a.status !== order_status.transaction_hide);
+        .filter(orderFilter)
       const customers: { [key: string]: any } = {};
       if (props.shopInfo.isEC || props.shopInfo.enableDelivery) {
         const ids = tmpOrders.map((order) => order.id);
@@ -244,7 +246,7 @@ export default defineComponent({
         );
       }
 
-      tmpOrders.forEach((order: any) => {
+      tmpOrders.forEach((order: OrderInfoData) => {
         order.customerInfo = order.customerInfo || customers[order.id] || {};
         order.timePlaced = order.timePlaced.toDate();
         if (order.timeEstimated) {
@@ -273,7 +275,7 @@ export default defineComponent({
           return order.status === orderState.value;
         })
         .sort(
-          (a: any, b: any) =>
+          (a: OrderInfoData, b: OrderInfoData) =>
             (a.timePlaced > b.timePlaced ? -1 : 1) *
             (sortOrder.value === 0 ? 1 : -1),
         );
