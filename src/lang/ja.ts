@@ -667,6 +667,7 @@ const data = {
     or: "もしくは",
     placeOrderNoPayment: "受け取り払いで注文",
     placeOrderNoPaymentNote: "ここで決済せずに商品受け取り時に支払います",
+    waitingPayment: "決済待ち",
     validating: "処理しています...",
     thankyou: "ご注文、ありがとうございます",
     orderStatus: "ご注文状況",

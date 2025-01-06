@@ -672,6 +672,7 @@ const data = {
     placeOrderNoPayment: "Place Order - Pay Later",
     placeOrderNoPaymentMo: "Place Order - Pay Later",
     placeOrderNoPaymentNote: "Pay when get items",
+    waitingPayment: "Waiting Payment",
     validating: "Processing...",
     thankyou: "Thank you!",
     orderStatus: "Order Status",

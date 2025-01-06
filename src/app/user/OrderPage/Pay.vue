@@ -21,7 +21,7 @@
 
     <!-- Before Paid -->
     <div class="mx-6 mt-4">
-      <BeforePaidAlert :orderInfo="orderInfo" :shopInfo="shopInfo" message="決済待ち" />
+      <BeforePaidAlert :orderInfo="orderInfo" :shopInfo="shopInfo" message="order.waitingPayment" />
     </div>
     <!-- end of Before Paid -->
 
