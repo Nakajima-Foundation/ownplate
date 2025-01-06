@@ -252,24 +252,18 @@
               </div>
 
               <div class="mt-4 text-center">
-                <button
-                  class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal px-6 shadow"
+                <t-button
+                  class="h-16 px-6"
                   style="min-width: 288px"
-                  :loading="isPaying"
-                  :class="
-                    disabledButton || stripeSmallPayment
-                      ? 'bg-op-teal-disabled'
-                      : 'bg-op-teal'
-                  "
-                  :disabled="disabledButton || stripeSmallPayment"
+                  :isLoading="isPaying"
+                  :isDisabled="disabledButton || stripeSmallPayment"
                   @click="handlePayment(true)"
                 >
-                  <ButtonLoading v-if="isPaying" />
                   <div class="text-xl font-bold text-white">
                     {{ $t("order.placeOrder") }}
                     <!-- {{ $n(orderInfo.total + tip, "currency") }} -->
                   </div>
-                </button>
+                </t-button>
                 <div
                   v-if="stripeSmallPayment"
                   class="mt-2 text-sm font-bold text-red-700"
@@ -295,7 +289,7 @@
               </div>
 
               <div class="mt-4">
-                <button
+                <t-button
                   :loading="isPlacing"
                   :disabled="disabledButton"
                   :class="disabledButton ? 'bg-op-teal-disabled' : 'bg-op-teal'"
@@ -303,11 +297,10 @@
                   class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal px-6 shadow takeout"
                   style="min-width: 288px"
                 >
-                  <ButtonLoading v-if="isPlacing" />
                   <div class="text-xl font-bold text-white">
                     {{ $t("order.placeOrderNoPayment") }}
                   </div>
-                </button>
+                </t-button>
               </div>
               <div>
                 <div class="mt-2 text-sm font-bold text-black text-opacity-60">
@@ -372,8 +365,6 @@ import BeforePaidAlert from "@/app/user/OrderPage/BeforePaid/BeforePaidAlert.vue
 import SpecifiedCommercialTransactions from "@/app/user/OrderPage/BeforePaid/SpecifiedCommercialTransactions.vue";
 import OrderPageMap from "@/app/user/OrderPage/BeforePaid/Map.vue";
 
-import ButtonLoading from "@/components/Button/Loading.vue";
-
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc, Timestamp } from "firebase/firestore";
 
@@ -401,8 +392,6 @@ export default defineComponent({
     OrderInfo,
     UserCustomerInfo,
     CustomerInfo,
-
-    ButtonLoading,
 
     // before paid
     TimeToPickup,
