@@ -16,6 +16,7 @@ import VueQrcode from "@chenfengyuan/vue-qrcode";
 import VueGoogleMaps from "@fawmi/vue-google-maps";
 
 import Checkbox from "@/components/form/checkbox.vue";
+import Button from "@/components/form/button.vue";
 
 // sentry
 import * as Sentry from "@sentry/vue";
@@ -38,6 +39,7 @@ const app = createApp(App);
 // components
 app.component(VueQrcode.name ?? "", VueQrcode);
 app.component("t-checkbox", Checkbox);
+app.component("t-button", Button);
 
 app.use(VueGoogleMaps, {
   load: {
