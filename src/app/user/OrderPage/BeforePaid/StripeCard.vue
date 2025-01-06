@@ -19,7 +19,10 @@
         <div id="card-element"></div>
       </div>
 
-      <div v-if="!stripeJCB" class="text-sm font-bold text-black text-opacity-60 mt-2">
+      <div
+        v-if="!stripeJCB"
+        class="text-sm font-bold text-black text-opacity-60 mt-2"
+      >
         {{ $t("order.no_jcb") }}
       </div>
       <t-checkbox v-model="save">{{ $t("order.reuseCard") }}</t-checkbox>
@@ -94,9 +97,7 @@
           </div>
         </o-modal>
       </div>
-
     </div>
-
   </div>
 </template>
 
@@ -150,9 +151,7 @@ export default defineComponent({
 
     const CVCPopup = ref(false);
 
-    const elements = stripe.elements(
-      { clientSecret: props.clientSecret },
-    );
+    const elements = stripe.elements({ clientSecret: props.clientSecret });
     const configureStripe = async () => {
       const cardElement = elements.create("payment", {});
       cardElement.mount("#card-element");
@@ -166,7 +165,12 @@ export default defineComponent({
 
       try {
         const stripeInfo = (
-          await getDoc(doc(db, `/users/${props.uid}/owner/${props.ownerUid}/readonly/stripe`))
+          await getDoc(
+            doc(
+              db,
+              `/users/${props.uid}/owner/${props.ownerUid}/readonly/stripe`,
+            ),
+          )
         ).data();
         if (stripeInfo && stripeInfo.card) {
           const date = ("00" + String(stripeInfo.card.exp_month)).slice(-2);
@@ -206,7 +210,7 @@ export default defineComponent({
       return await stripe.confirmPayment({
         elements,
         confirmParams: {},
-        redirect: "if_required"
+        redirect: "if_required",
       });
     };
 
@@ -220,7 +224,7 @@ export default defineComponent({
       }
       return await confirmPayment();
     };
-    
+
     const openCVC = () => {
       CVCPopup.value = true;
     };

@@ -5,7 +5,7 @@ import { ownPlateConfig } from "@/config/project";
 export const getStripeInstance = (stripeAccount: string) => {
   // @ts-ignore
   return Stripe(ownPlateConfig.stripe.apiKey, {
-    stripeAccount
+    stripeAccount,
   });
 };
 

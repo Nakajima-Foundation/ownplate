@@ -6,6 +6,7 @@ module.exports = {
     extend: {
       colors: {
         "op-teal": "#0097a7",
+        "op-teal-disabled": "#7CC7D1",
         "ownplate-yellow": "#fbc02d",
       },
     },

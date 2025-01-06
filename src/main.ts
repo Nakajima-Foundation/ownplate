@@ -15,7 +15,7 @@ import { createHead } from "@unhead/vue";
 import VueQrcode from "@chenfengyuan/vue-qrcode";
 import VueGoogleMaps from "@fawmi/vue-google-maps";
 
-import Checkbox from "@/components/form/checkbox.vue"; 
+import Checkbox from "@/components/form/checkbox.vue";
 
 // sentry
 import * as Sentry from "@sentry/vue";

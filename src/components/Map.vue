@@ -2,7 +2,7 @@
   <div class="mx-6 mt-2 h-3/5">
     <GoogleMap
       :api-key="apiKey"
-			:mapId="mapId"
+      :mapId="mapId"
       style="width: 100%; height: 50vh"
       :center="center"
       :zoom="zoom"
@@ -60,8 +60,8 @@ export default defineComponent({
     const center_lat = ref(44.933076);
     const center_lng = ref(15.629058);
     const zoom = ref(13);
-		const apiKey = GAPIKey;
-		const mapId = GMAPId;
+    const apiKey = GAPIKey;
+    const mapId = GMAPId;
 
     const selected = ref<null | number>(null);
 
@@ -135,8 +135,8 @@ export default defineComponent({
       center_lat,
       center_lng,
       zoom,
-			apiKey,
-			mapId,
+      apiKey,
+      mapId,
 
       setStore,
       selected,

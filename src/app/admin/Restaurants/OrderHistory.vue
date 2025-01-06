@@ -219,9 +219,7 @@ export default defineComponent({
       }
       const docs = (await getDocs(dbQuery)).docs;
       last.value = docs.length === limitNum ? docs[limitNum - 1] : null;
-      const tmpOrders = docs
-        .map(doc2data("order"))
-        .filter(orderFilter)
+      const tmpOrders = docs.map(doc2data("order")).filter(orderFilter);
       const customers: { [key: string]: any } = {};
       if (props.shopInfo.isEC || props.shopInfo.enableDelivery) {
         const ids = tmpOrders.map((order) => order.id);

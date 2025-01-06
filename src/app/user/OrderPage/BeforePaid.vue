@@ -21,7 +21,11 @@
 
     <!-- Before Paid -->
     <div class="mx-6 mt-4">
-      <BeforePaidAlert :orderInfo="orderInfo" :shopInfo="shopInfo" message="order.orderNotPlacedYet" />
+      <BeforePaidAlert
+        :orderInfo="orderInfo"
+        :shopInfo="shopInfo"
+        message="order.orderNotPlacedYet"
+      />
     </div>
     <!-- end of Before Paid -->
 
@@ -219,7 +223,6 @@
 
             <!-- Pay Online -->
             <div v-if="showPayment" class="mt-2">
-
               <div
                 v-if="
                   selectedPromotion &&
@@ -249,30 +252,24 @@
               </div>
 
               <div class="mt-4 text-center">
-                <o-button
+                <button
+                  class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal px-6 shadow"
+                  style="min-width: 288px"
                   :loading="isPaying"
-                  :disabled="
-                    notSubmitAddress ||
-                    userMessageError ||
-                    userNameError ||
-                    stripeSmallPayment ||
-                    isPaying ||
-                    isPlacing
+                  :class="
+                    disabledButton || stripeSmallPayment
+                      ? 'bg-op-teal-disabled'
+                      : 'bg-op-teal'
                   "
+                  :disabled="disabledButton || stripeSmallPayment"
                   @click="handlePayment(true)"
-                  class="b-reset-tw"
                 >
-                  <div
-                    class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal px-6 shadow"
-                    style="min-width: 288px"
-                  >
-                    <ButtonLoading v-if="isPaying" />
-                    <div class="text-xl font-bold text-white">
-                      {{ $t("order.placeOrder") }}
-                      <!-- {{ $n(orderInfo.total + tip, "currency") }} -->
-                    </div>
+                  <ButtonLoading v-if="isPaying" />
+                  <div class="text-xl font-bold text-white">
+                    {{ $t("order.placeOrder") }}
+                    <!-- {{ $n(orderInfo.total + tip, "currency") }} -->
                   </div>
-                </o-button>
+                </button>
                 <div
                   v-if="stripeSmallPayment"
                   class="mt-2 text-sm font-bold text-red-700"
@@ -298,30 +295,19 @@
               </div>
 
               <div class="mt-4">
-                <o-button
+                <button
                   :loading="isPlacing"
-                  :disabled="
-                    notAvailable ||
-                    notSubmitAddress ||
-                    userMessageError ||
-                    userNameError ||
-                    isPaying ||
-                    isPlacing
-                  "
+                  :disabled="disabledButton"
+                  :class="disabledButton ? 'bg-op-teal-disabled' : 'bg-op-teal'"
                   @click="handlePayment(false)"
-                  class="b-reset-tw"
-                  :class="'takeout'"
+                  class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal px-6 shadow takeout"
+                  style="min-width: 288px"
                 >
-                  <div
-                    class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal px-6 shadow"
-                    style="min-width: 288px"
-                  >
-                    <ButtonLoading v-if="isPlacing" />
-                    <div class="text-xl font-bold text-white">
-                      {{ $t("order.placeOrderNoPayment") }}
-                    </div>
+                  <ButtonLoading v-if="isPlacing" />
+                  <div class="text-xl font-bold text-white">
+                    {{ $t("order.placeOrderNoPayment") }}
                   </div>
-                </o-button>
+                </button>
               </div>
               <div>
                 <div class="mt-2 text-sm font-bold text-black text-opacity-60">
@@ -583,19 +569,6 @@ export default defineComponent({
       }
     };
     // internal
-    /*
-    const sendPurchase = () => {
-      analyticsUtil.sendPurchase(
-        props.orderInfo,
-        orderId.value,
-        props.orderItems.map((or: any) => {
-          return { ...or.item, id: or.id, quantity: or.count };
-        }),
-        props.shopInfo,
-        restaurantId,
-      );
-    };
-    */
     const handleOpenMenu = () => {
       ctx.emit("handleOpenMenu");
     };
@@ -691,9 +664,19 @@ export default defineComponent({
       ctx.emit("openTransactionsAct");
     };
 
+    const disabledButton = computed(() => {
+      return (
+        notAvailable.value ||
+        notSubmitAddress.value ||
+        userMessageError.value ||
+        userNameError.value ||
+        isPaying.value ||
+        isPlacing.value
+      );
+    });
+
     return {
       // ref
-      notAvailable,
       isPaying,
       isPlacing,
       cardState,
@@ -722,6 +705,8 @@ export default defineComponent({
       selectedPromotion,
       enablePromotion,
       discountPrice,
+
+      disabledButton,
 
       // const
       paymentMethods,

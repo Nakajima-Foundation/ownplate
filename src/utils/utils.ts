@@ -842,7 +842,7 @@ export const orderFilter = (order: OrderInfoData) => {
   return ![
     order_status.transaction_hide,
     order_status.waiting_payment,
-  ].includes(order.status)
+  ].includes(order.status);
 };
 
 // for super

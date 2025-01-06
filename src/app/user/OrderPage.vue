@@ -25,7 +25,7 @@
         :menuPagePath="menuPagePath"
         @openTransactionsAct="openTransactionsAct"
         :promotions="promotions"
-        />
+      />
       <OrderPagePay
         v-else-if="waiting_payment"
         :shopInfo="shopInfo"
@@ -36,7 +36,7 @@
         :menuPagePath="menuPagePath"
         @openTransactionsAct="openTransactionsAct"
         :promotions="promotions"
-        />
+      />
 
       <OrderPageAfter
         v-else-if="paid"

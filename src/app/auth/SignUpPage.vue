@@ -43,9 +43,7 @@
           </div>
 
           <div class="mt-1">
-            <o-field
-              variant="success"
-            >
+            <o-field variant="success">
               <o-input
                 v-model="name"
                 type="text"

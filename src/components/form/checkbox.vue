@@ -26,9 +26,8 @@ export default defineComponent({
       ctx.emit("update:modelValue", e.target.checked);
     };
     return {
-      change
+      change,
     };
   },
-  
 });
 </script>

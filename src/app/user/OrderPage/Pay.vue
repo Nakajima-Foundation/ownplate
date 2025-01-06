@@ -21,7 +21,11 @@
 
     <!-- Before Paid -->
     <div class="mx-6 mt-4">
-      <BeforePaidAlert :orderInfo="orderInfo" :shopInfo="shopInfo" message="order.waitingPayment" />
+      <BeforePaidAlert
+        :orderInfo="orderInfo"
+        :shopInfo="shopInfo"
+        message="order.waitingPayment"
+      />
     </div>
     <!-- end of Before Paid -->
 
@@ -44,7 +48,6 @@
             :orderInfo="orderInfo || {}"
           ></order-info>
         </div>
-
       </div>
 
       <!-- Right -->
@@ -224,7 +227,7 @@ export default defineComponent({
         await orderPay({
           restaurantId,
           orderId: orderId.value,
-          isSavePay: stripeRef.value.isSavePay ,
+          isSavePay: stripeRef.value.isSavePay,
         });
 
         sendPurchase();
@@ -261,7 +264,6 @@ export default defineComponent({
       handlePayment,
       stripeAccount,
       //
-
     };
   },
 });
