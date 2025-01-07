@@ -40,7 +40,7 @@
           </o-button>
 
           <t-button
-            :disabled="Object.keys(errors).length > 0"
+            :isDisabled="Object.keys(errors).length > 0"
             @click="handleNext"
             class="h-12 w-32 shadow font-bold text-white"
           >
