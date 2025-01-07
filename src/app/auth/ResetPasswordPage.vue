@@ -39,19 +39,13 @@
             </div>
           </o-button>
 
-          <o-button
+          <t-button
             :disabled="Object.keys(errors).length > 0"
             @click="handleNext"
-            class="b-reset-tw"
+            class="h-12 w-32 shadow font-bold text-white"
           >
-            <div
-              class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-op-teal shadow"
-            >
-              <div class="text-base font-bold text-white">
-                {{ $t("button.next") }}
-              </div>
-            </div>
-          </o-button>
+            {{ $t("button.next") }}
+          </t-button>
         </div>
 
         <!-- Email Sent -->
