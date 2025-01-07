@@ -80,19 +80,13 @@
 
           <!-- Submit Button -->
           <div class="mt-2 text-center">
-            <o-button
-              :disabled="Object.keys(errors).length > 0 || submitting"
+            <t-button
+              :isDisabled="Object.keys(errors).length > 0 || submitting"
               @click="resetPassword"
-              class="b-reset-tw"
+              class="h-12 w-32 bg-op-teal text-base font-bold text-white"
             >
-              <div
-                class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-op-teal shadow"
-              >
-                <div class="text-base font-bold text-white">
-                  {{ $t("button.next") }}
-                </div>
-              </div>
-            </o-button>
+              {{ $t("button.next") }}
+            </t-button>
           </div>
         </div>
       </template>
