@@ -83,7 +83,7 @@
             <t-button
               :isDisabled="Object.keys(errors).length > 0 || submitting"
               @click="resetPassword"
-              class="h-12 w-32 bg-op-teal text-base font-bold text-white"
+              class="h-12 w-32 font-bold text-white"
             >
               {{ $t("button.next") }}
             </t-button>
