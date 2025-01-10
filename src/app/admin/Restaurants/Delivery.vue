@@ -30,16 +30,9 @@
             </div>
           </router-link>
 
-          <o-button @click="saveDeliveryArea" class="b-reset-tw">
-            <div
-              class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
-              style="min-width: 8rem"
-            >
-              <span class="text-base font-bold text-white">{{
-                $t("editCommon.save")
-              }}</span>
-            </div>
-          </o-button>
+          <t-button @click="saveDeliveryArea" class="h-12 w-32 font-bold text-white">
+            {{ $t("editCommon.save") }}
+          </t-button>
         </div>
 
         <div class="rounded-lg bg-black bg-opacity-5 p-4 mt-4">
@@ -247,16 +240,9 @@
             </div>
           </router-link>
 
-          <o-button @click="saveDeliveryArea" class="b-reset-tw">
-            <div
-              class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
-              style="min-width: 8rem"
-            >
-              <span class="text-base font-bold text-white">{{
-                $t("editCommon.save")
-              }}</span>
-            </div>
-          </o-button>
+          <t-button @click="saveDeliveryArea" class="h-12 w-32 font-bold text-white">
+            {{ $t("editCommon.save") }}
+          </t-button>
         </div>
       </div>
     </template>
