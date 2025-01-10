@@ -84,16 +84,9 @@
               </div>
             </div>
           </button>
-
-          <button @click="onSignin" class="b-reset-tw">
-            <div
-              class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-op-teal shadow"
-            >
-              <div class="text-base font-bold text-white">
-                {{ $t("button.next") }}
-              </div>
-            </div>
-          </button>
+          <t-button @click="onSignin" class="h-12 w-32 font-bold text-white">
+            {{ $t("button.next") }}
+          </t-button>
         </div>
 
         <!-- Forgot Password -->
