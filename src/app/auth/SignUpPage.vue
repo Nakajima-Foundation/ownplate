@@ -107,19 +107,13 @@
             {{ $t("button.cancel") }}
           </t-cancel-button>
 
-          <o-button
+          <t-button
             :disabled="submitted && Object.keys(errors).length > 0"
             @click="onSignup"
-            class="b-reset-tw"
+            class="h-12 w-32 font-bold text-white"
           >
-            <div
-              class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-op-teal shadow"
-            >
-              <div class="text-base font-bold text-white">
-                {{ $t("button.next") }}
-              </div>
-            </div>
-          </o-button>
+            {{ $t("button.next") }}
+          </t-button>
         </div>
 
         <!-- Terms of Use & Privacy Policy -->
