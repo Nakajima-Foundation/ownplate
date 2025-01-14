@@ -108,7 +108,7 @@
           </t-cancel-button>
 
           <t-button
-            :disabled="submitted && Object.keys(errors).length > 0"
+            :isDisabled="submitted && Object.keys(errors).length > 0"
             @click="onSignup"
             class="h-12 w-32 font-bold text-white"
           >
