@@ -1538,19 +1538,19 @@
   resolved "https://registry.yarnpkg.com/@opentelemetry/api/-/api-1.9.0.tgz#d03eba68273dc0f7509e2a3d5cba21eae10379fe"
   integrity sha512-3giAOQvZiH5F9bMlMiv8+GSPMeqg0dbaeo58/0SlA9sxSqZhnUtxzX9/2FzyhS9sWQf5S0GJE0AKBrFqjpeYcg==
 
-"@oruga-ui/oruga-next@^0.9.2":
-  version "0.9.2"
-  resolved "https://registry.yarnpkg.com/@oruga-ui/oruga-next/-/oruga-next-0.9.2.tgz#64351b1e04a946c149a707f6eea6b0da1b9e1ce2"
-  integrity sha512-LjRCsv1BADW++4ZZcgJpuRC8dU5SFq0/juHpdP0Z0VQ7rQPWmZ2b1HWLvUMhzlFZTWutC55g1U4qIgHXA8vfVA==
+"@oruga-ui/oruga-next@^0.9.3":
+  version "0.9.3"
+  resolved "https://registry.yarnpkg.com/@oruga-ui/oruga-next/-/oruga-next-0.9.3.tgz#3d537b680017366c19e2bb05ebc0cbe7cd15732c"
+  integrity sha512-XTO8tz9h62j+MQzW1oIsezxlToSMjOKvpSzzqpuxsDYa0x1MioESiBuwRcQVw8RfnKxmRLIPGyJCmWBJgICvWg==
   dependencies:
     vue-component-type-helpers "^2.1.10"
 
-"@oruga-ui/theme-bulma@^0.5.2":
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/@oruga-ui/theme-bulma/-/theme-bulma-0.5.2.tgz#8d288368668bfe313a70be7128592c6911db67b3"
-  integrity sha512-dhHaI/ES8l5NBfVy6j4JD8ShkSwviOnZrrn4dzqO63ZXpd64Kql+Z9S/7Y++D1JcQVgqwmTjB+UbeJJjiWVXpA==
+"@oruga-ui/theme-bulma@^0.5.3":
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/@oruga-ui/theme-bulma/-/theme-bulma-0.5.3.tgz#53b42f4a2e80aa406306eba69d7d48844629d9a7"
+  integrity sha512-TbqmJlEvO/qEJup6LQV3gvf8z3e96EKB3A+BF1PO2029c5+20uU0AOxWl3kB7rGa+/0b1KTE++qsNICjFv909A==
   dependencies:
-    bulma "1.0.2"
+    bulma "1.0.3"
 
 "@parcel/watcher-android-arm64@2.5.0":
   version "2.5.0"
@@ -2598,10 +2598,10 @@ buffer-equal-constant-time@1.0.1:
   resolved "https://registry.yarnpkg.com/buffer-equal-constant-time/-/buffer-equal-constant-time-1.0.1.tgz#f8e71132f7ffe6e01a5c9697a4c6f3e48d5cc819"
   integrity sha512-zRpUiDwd/xk6ADqPMATG8vc9VPrkck7T07OIx0gnjmJAnHnTVXNQG3vfvWNuiZIkwu9KrKdA1iJKfsfTVxE6NA==
 
-bulma@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/bulma/-/bulma-1.0.2.tgz#47395a660755c9566db3cf981fd4e3a2b637af19"
-  integrity sha512-D7GnDuF6seb6HkcnRMM9E739QpEY9chDzzeFrHMyEns/EXyDJuQ0XA0KxbBl/B2NTsKSoDomW61jFGFaAxhK5A==
+bulma@1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/bulma/-/bulma-1.0.3.tgz#313c4fec8c356158a1d8f665586957a0991e2892"
+  integrity sha512-9eVXBrXwlU337XUXBjIIq7i88A+tRbJYAjXQjT/21lwam+5tpvKF0R7dCesre9N+HV9c6pzCNEPKrtgvBBes2g==
 
 bytes@3.1.2:
   version "3.1.2"
