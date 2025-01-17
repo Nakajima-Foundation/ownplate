@@ -569,7 +569,7 @@ import {
   convOrderStateForText,
   isDev,
   isEmpty,
-  isNull,
+  // isNull,
   getShopOwner,
   getOrderItems,
   arrayChunk,
@@ -985,12 +985,15 @@ export default defineComponent({
       );
     });
     const availableOrderChange = computed(() => {
+      return false;
+      /*
       return (
         orderInfo.value &&
         orderInfo.value.status === order_status.order_placed &&
         isNull(orderInfo.value.orderUpdatedAt) &&
         editedAvailableOrders.value.length > 0
       );
+      */
     });
     const availableChangeButton = computed(() => {
       return (
