@@ -443,7 +443,7 @@
               :editable="isOrderChange"
               :editedAvailableOrders="editedAvailableOrders"
               @update="updateEnable"
-              ></order-info>
+            ></order-info>
 
             <!-- Order Changed -->
             <div v-if="orderInfo.orderUpdatedAt">
@@ -459,47 +459,41 @@
 
             <!-- Order Change -->
             <div
-              v-if="
-                editedAvailableOrders.length > 1
-              "
+              class="rounded-lg bg-white p-4 text-center shadow"
+              v-if="availableOrderChange"
             >
-              <div
-                class="rounded-lg bg-white p-4 text-center shadow"
-                v-if="availableOrderChange"
-              >
-                <div>{{ $t("admin.order.changeOrderDetail") }}</div>
-                <div class="mt-4">
-                  <o-button @click="toggleIsOrderChange" class="b-reset-tw">
-                    <div
-                      class="inline-flex h-12 items-center justify-center rounded-full bg-red-700 px-6"
-                    >
-                      <div class="text-base font-bold text-white">
-                        {{
-                          isOrderChange
-                            ? $t("admin.order.cancelOrderChange")
-                            : $t("admin.order.willOrderChange")
-                        }}
-                      </div>
-                    </div>
-                  </o-button>
-                </div>
-                <div class="mt-4">
-                  <o-button
-                    @click="handleOrderChange"
-                    :disabled="!availableChangeButton || changing"
-                    class="b-reset-tw"
-                    v-if="isOrderChange"
+              <div>{{ $t("admin.order.changeOrderDetail") }}</div>
+              <div class="mt-4">
+                <o-button @click="toggleIsOrderChange" class="b-reset-tw">
+                  <div
+                    class="inline-flex h-12 items-center justify-center rounded-full bg-red-700 px-6"
                   >
-                    <div
-                      class="inline-flex h-12 items-center justify-center rounded-full bg-red-700 px-6"
-                    >
-                      <ButtonLoading v-if="changing" />
-                      <div class="text-base font-bold text-white">
-                        {{ $t("admin.order.confirmOrderChange") }}
-                      </div>
+                    <div class="text-base font-bold text-white">
+                      {{
+                        isOrderChange
+                          ? $t("admin.order.cancelOrderChange")
+                          : $t("admin.order.willOrderChange")
+                      }}
                     </div>
-                  </o-button>
-                </div>
+                  </div>
+                </o-button>
+              </div>
+              <div class="mt-4">
+                <o-button
+                  @click="handleOrderChange"
+                  :disabled="!availableChangeButton || changing"
+                  class="b-reset-tw"
+                  v-if="isOrderChange"
+                >
+                  <div
+                    class="inline-flex h-12 items-center justify-center rounded-full bg-red-700 px-6"
+                  >
+                    <ButtonLoading v-if="changing" />
+                    <div class="text-base font-bold text-white">
+                      {{ $t("admin.order.confirmOrderChange") }}
+                    </div>
+                  </div>
+                </o-button>
               </div>
             </div>
 
@@ -994,7 +988,8 @@ export default defineComponent({
       return (
         orderInfo.value &&
         orderInfo.value.status === order_status.order_placed &&
-        isNull(orderInfo.value.orderUpdatedAt)
+        isNull(orderInfo.value.orderUpdatedAt) &&
+        editedAvailableOrders.value.length > 0
       );
     });
     const availableChangeButton = computed(() => {
