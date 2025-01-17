@@ -1,10 +1,7 @@
 <template>
   <div class="mt-2 text-center">
     <router-link :to="to">
-      <t-button
-        class="h-12 w-56 font-bold text-white"
-        @click="handleClose()"
-        >
+      <t-button class="h-12 w-56 font-bold text-white" @click="handleClose()">
         <i class="material-icons mr-2">{{ icon }}</i>
         <span>{{ $t(text) }}</span>
       </t-button>

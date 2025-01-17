@@ -30,7 +30,10 @@
             </div>
           </router-link>
 
-          <t-button @click="saveDeliveryArea" class="h-12 w-32 font-bold text-white">
+          <t-button
+            @click="saveDeliveryArea"
+            class="h-12 w-32 font-bold text-white"
+          >
             {{ $t("editCommon.save") }}
           </t-button>
         </div>
@@ -240,7 +243,10 @@
             </div>
           </router-link>
 
-          <t-button @click="saveDeliveryArea" class="h-12 w-32 font-bold text-white">
+          <t-button
+            @click="saveDeliveryArea"
+            class="h-12 w-32 font-bold text-white"
+          >
             {{ $t("editCommon.save") }}
           </t-button>
         </div>
