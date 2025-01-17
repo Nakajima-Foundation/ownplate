@@ -443,12 +443,10 @@
               :editable="isOrderChange"
               :editedAvailableOrders="editedAvailableOrders"
               @update="updateEnable"
-            ></order-info>
-            <div
-              v-if="
-                editedAvailableOrders.length > 1 || orderInfo.orderUpdatedAt
-              "
-            >
+              ></order-info>
+
+            <!-- Order Changed -->
+            <div v-if="orderInfo.orderUpdatedAt">
               <div
                 class="rounded-lg bg-white p-4 text-center shadow"
                 v-if="orderInfo.orderUpdatedAt"
@@ -457,7 +455,14 @@
                 {{ timeStampToText(orderInfo.orderUpdatedAt) }}
                 {{ $t("admin.order.alreadyChanged") }}
               </div>
+            </div>
 
+            <!-- Order Change -->
+            <div
+              v-if="
+                editedAvailableOrders.length > 1
+              "
+            >
               <div
                 class="rounded-lg bg-white p-4 text-center shadow"
                 v-if="availableOrderChange"
