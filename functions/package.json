@@ -28,14 +28,10 @@
     "node": "20"
   },
   "main": "lib/index.js",
-  "resolutions": {
-    "cheerio": "^1.0.0-rc.10"
-  },
   "dependencies": {
     "@aws-sdk/client-sns": "^3.731.0",
     "@google-cloud/bigquery": "^6.1.0",
     "@sentry/node": "^5.15.5",
-    "convert-svg-to-png": "^0.6.4",
     "cors": "^2.8.5",
     "express": "^4.17.12",
     "firebase-admin": "^13.0.1",

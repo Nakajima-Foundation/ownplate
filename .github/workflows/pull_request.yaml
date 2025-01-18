@@ -25,8 +25,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: sudo apt-get update
-    - run: sudo apt-get --only-upgrade install google-chrome-stable
     - run: cp ../src/config/constant.ts ./src/common/constant.ts
     - run: cp ../src/utils/phoneutil.ts ./src/common/phoneutil.ts
     - run: cp ../src/utils/commonUtils.ts ./src/common/commonUtils.ts

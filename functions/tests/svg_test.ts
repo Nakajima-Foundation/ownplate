@@ -3,13 +3,14 @@ import { should } from "chai";
 import { getSVG } from "../src/functions/express/apis";
 import { writeFile } from "fs";
 import * as receiptline from "receiptline";
-import { convert } from "convert-svg-to-png";
+// import { convert } from "convert-svg-to-png";
 import sharp from "sharp";
 
 should();
 
-describe("Order function", () => {
-  it("Order function, orderCounter test", async function () {
+describe("svg function", () => {
+  /*
+  it("svg convert", async function () {
     const restaurantData = {
       restaurantName: "テスト店舗",
     };
@@ -49,8 +50,9 @@ describe("Order function", () => {
     await writeFile("./order.png", png, () => {});
     console.log(ret);
   });
-
-  it("Order function, orderCounter test", async function () {
+  */
+  
+  it("shart test", async function () {
     const text =
       "^^テストカフェ8080 デリバリーss\n" +
       "おもちかえり.com\n" +
