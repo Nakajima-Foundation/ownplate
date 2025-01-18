@@ -27,7 +27,7 @@
           <!-- Address -->
           <address-button />
 
-          <ProfileStripe />
+          <!-- ProfileStripe -->
 
           <ProfileLine />
         </div>
@@ -63,7 +63,7 @@ import { signOut } from "firebase/auth";
 import ProfileLogin from "@/app/user/Profile/Login.vue";
 import ProfileDeleteAccount from "@/app/user/Profile/DeleteAccount.vue";
 import ProfileLoginStatus from "@/app/user/Profile/LoginStatus.vue";
-import ProfileStripe from "@/app/user/Profile/Stripe.vue";
+// import ProfileStripe from "@/app/user/Profile/Stripe.vue";
 import ProfileLine from "@/app/user/Profile/Line.vue";
 
 import HistoryButton from "@/components/users/HistoryButton.vue";
@@ -83,7 +83,7 @@ export default defineComponent({
     ProfileLogin,
     ProfileDeleteAccount,
     ProfileLoginStatus,
-    ProfileStripe,
+    // ProfileStripe,
     ProfileLine,
   },
   setup() {
