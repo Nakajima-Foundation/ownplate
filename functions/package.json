@@ -11,7 +11,6 @@
     "validator_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/validator_test.ts",
     "m_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/mail_template_test.ts",
     "ci_test": "yarn run i_tests && yarn run validator_tests && yarn run m_tests",
-    
     "tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/*_test.ts --timeout 30000",
     "svg_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/svg_test.ts --timeout 30000",
     "e_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/express_test.ts",
@@ -33,9 +32,9 @@
     "cheerio": "^1.0.0-rc.10"
   },
   "dependencies": {
+    "@aws-sdk/client-sns": "^3.731.0",
     "@google-cloud/bigquery": "^6.1.0",
     "@sentry/node": "^5.15.5",
-    "aws-sdk": "^2.1653.0",
     "convert-svg-to-png": "^0.6.4",
     "cors": "^2.8.5",
     "express": "^4.17.12",

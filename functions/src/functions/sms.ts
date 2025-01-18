@@ -1,12 +1,14 @@
-import * as AWS from "aws-sdk";
+import { SNSClient, PublishCommand } from "@aws-sdk/client-sns";
 import { enableNotification } from "./notificationConfig";
 
-export const pushSMS = async (aws_key, aws_secret, subject, message, phone_number) => {
+const aws_key = process.env.AWS_ID ?? "";
+const aws_secret = process.env.AWS_SECRET ?? "";
+
+export const pushSMS = async (subject, message, phone_number) => {
   if (!enableNotification) {
     return;
   }
 
-  // send sms
   const params = {
     MessageAttributes: {
       "AWS.SNS.SMS.SMSType": {
@@ -22,18 +24,24 @@ export const pushSMS = async (aws_key, aws_secret, subject, message, phone_numbe
     Message: message,
     PhoneNumber: phone_number,
   };
+
   if (aws_key) {
-    const aws = new AWS.SNS({
-      apiVersion: "2010-03-31",
+    const snsClient = new SNSClient({
       region: "us-east-1",
-      credentials: new AWS.Credentials(aws_key, aws_secret),
+      credentials: {
+        accessKeyId: aws_key,
+        secretAccessKey: aws_secret,
+      },
     });
-    const publishTextPromise = await aws.publish(params).promise();
-    if (!publishTextPromise) {
-      console.log("ERROR");
+
+    try {
+      const command = new PublishCommand(params);
+      const response = await snsClient.send(command);
+      console.log(response);
+    } catch (error) {
+      console.error("ERROR", error);
     }
-    console.log(publishTextPromise);
   } else {
-    console.log("SMS not push");
+    console.log("SMS not pushed");
   }
 };
