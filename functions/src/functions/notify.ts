@@ -25,7 +25,7 @@ export const sendMessageToCustomer = async (
   orderData: admin.firestore.DocumentData,
   restaurantId: string,
   orderId: string,
-  params: object = {},
+  params: Record<string, any> = {},
   forceSMS: boolean = false,
 ) => {
   const orderNumber = utils.nameOfOrder(orderData.number);
