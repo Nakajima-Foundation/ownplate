@@ -36,7 +36,7 @@
     "express": "^4.17.12",
     "firebase-admin": "^13.0.1",
     "firebase-functions": "^6.1.2",
-    "google-libphonenumber": "^3.2.10",
+    "google-libphonenumber": "^3.2.40",
     "i18next": "^24.2.1",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.37",
@@ -51,7 +51,6 @@
     "xmlbuilder": "^15.1.1"
   },
   "devDependencies": {
-    "@firebase/logger": "^0.2.6",
     "@firebase/rules-unit-testing": "^3.0.3",
     "@types/chai": "^4.3.16",
     "@types/mocha": "^10.0.7",
