@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [22.x]
+        node-version: [20.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     defaults:
       run:
@@ -25,5 +25,10 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: yarn install
+    - run: cp ../src/config/constant.ts ./src/common/constant.ts
+    - run: cp ../src/utils/phoneutil.ts ./src/common/phoneutil.ts
+    - run: cp ../src/utils/commonUtils.ts ./src/common/commonUtils.ts
+    - run: cp ../src/models/RestaurantInfo.ts ./src/models/RestaurantInfo.ts
+    - run: cp ../src/config/default/ownplate-dev.ts ./src/common/project.ts
+    - run: SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm_config_arch=x64 npm_config_platform=linux yarn install
     - run: yarn run ci_test
