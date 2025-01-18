@@ -1,7 +1,7 @@
-import * as admin from "firebase-admin";
+// import * as admin from "firebase-admin";
 import { should } from "chai";
-import { getSVG } from "../src/functions/express/apis";
-import { writeFile } from "fs";
+// import { getSVG } from "../src/functions/express/apis";
+// import { writeFile } from "fs";
 import * as receiptline from "receiptline";
 // import { convert } from "convert-svg-to-png";
 import sharp from "sharp";
