@@ -29,7 +29,6 @@
   "main": "lib/index.js",
   "dependencies": {
     "@aws-sdk/client-sns": "^3.731.0",
-    "@google-cloud/bigquery": "^6.1.0",
     "@sentry/node": "^8.50.0",
     "cors": "^2.8.5",
     "express": "^4.17.12",

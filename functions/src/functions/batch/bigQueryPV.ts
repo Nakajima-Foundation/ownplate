@@ -1,4 +1,5 @@
 // import * as functions from "firebase-functions";
+/*
 import * as admin from "firebase-admin";
 
 import moment from "moment-timezone";
@@ -66,3 +67,4 @@ limit 1000`;
   // }
   return {};
 };
+*/
