@@ -73,7 +73,7 @@ export const sendMessageToCustomer = async (
   }
   // force SMS ( for cancel and change order)
   if (forceSMS && orderData.phoneNumber) {
-    await sms.pushSMS(aws_key, aws_secret, "omochikaeri", getMessage(url), orderData.phoneNumber, false);
+    await sms.pushSMS(aws_key, aws_secret, "omochikaeri", getMessage(url), orderData.phoneNumber);
   }
 };
 
