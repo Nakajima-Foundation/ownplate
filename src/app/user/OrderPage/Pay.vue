@@ -84,7 +84,7 @@
                   >
                     <ButtonLoading v-if="isPaying" />
                     <div class="text-xl font-bold text-white">
-                      {{ $t("order.placeOrder") }}
+                      {{ $t("order.submitPayment") }}
                     </div>
                   </div>
                 </o-button>

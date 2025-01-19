@@ -632,6 +632,7 @@ const data = {
     placeOrderNoPaymentMo: "Passer la commande - payer plus tard",
     placeOrderNoPaymentNote: "Payer lorsque vous recevez les articles",
     waitingPayment: "Waiting Payment",
+    submitPayment: "Soumettre le paiement",
     validating: "Traitement en cours...",
     thankyou: "Merci!",
     orderStatus: "Statut de la commande",
