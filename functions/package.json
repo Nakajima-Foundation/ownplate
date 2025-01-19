@@ -28,7 +28,7 @@
   },
   "main": "lib/index.js",
   "dependencies": {
-    "@aws-sdk/client-sns": "^3.731.0",
+    "@aws-sdk/client-sns": "^3.731.1",
     "@sentry/node": "^8.50.0",
     "cors": "^2.8.5",
     "express": "^4.17.12",
