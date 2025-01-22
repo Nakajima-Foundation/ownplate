@@ -3,6 +3,7 @@ export const order_status = {
   error: 0,
   new_order: 100, // by user
   validation_ok: 200, // by functions
+  waiting_payment: 250,
   order_placed: 300, // by user and stripe
   order_accepted: 400, // by restaurant
   cooking_completed: 500, // by restaurant

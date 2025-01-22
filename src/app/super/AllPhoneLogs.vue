@@ -30,14 +30,10 @@ import {
 } from "firebase/firestore";
 
 import { useSuper, defaultTitle } from "@/utils/utils";
+import { useHead } from "@unhead/vue";
 import moment from "moment-timezone";
 
 export default defineComponent({
-  metaInfo() {
-    return {
-      title: [defaultTitle, "Super All Phone Logs"].join(" / "),
-    };
-  },
   components: {
     BackButton,
   },
@@ -46,6 +42,10 @@ export default defineComponent({
 
     const logs = ref<any[]>([]);
     let detacher: any = null;
+
+    useHead({
+      title: [defaultTitle, "Super All Phone Logs"].join(" / "),
+    });
 
     detacher = onSnapshot(
       query(

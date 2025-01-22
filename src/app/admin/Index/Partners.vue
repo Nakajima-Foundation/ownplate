@@ -8,7 +8,10 @@
             {{ partner.name }}
           </span>
         </div>
-        <div class="mr-4 text-right font-bold" v-if="partner.ask">
+        <div
+          class="mr-4 text-right font-bold cursor-pointer"
+          v-if="partner.ask"
+        >
           <a href="#" @click="openContact()">サポート問い合わせ</a>
         </div>
       </div>

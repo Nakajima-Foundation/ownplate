@@ -2,7 +2,7 @@
   <div>
     <!-- Date Picker -->
     <div v-if="availableDays.length > 0">
-      <div class="rounded-lg bg-white p-4 shadow">
+      <div class="rounded-lg bg-white p-4 shadow flex flex-wrap gap-2">
         <o-select v-model="dayIndex">
           <option
             v-for="(day, index) in availableDays"
@@ -13,7 +13,7 @@
             <span v-if="day.offset === 0">{{ $t("date.today") }}</span>
           </option>
         </o-select>
-        <o-select v-model="time" class="mt-2">
+        <o-select v-model="time">
           <option
             v-for="(time, index) in availableDays[dayIndex].times"
             :value="time.time"
@@ -79,7 +79,7 @@ export default defineComponent({
       return (Object.values(props.orderInfo.menuItems) || []).reduce(
         (tmp: any, menu) => {
           const { exceptDay, exceptHour } = menu;
-          Object.keys(exceptDay || {}).map((key) => {
+          Object.keys(exceptDay || {}).forEach((key) => {
             if (exceptDay[key]) {
               tmp.exceptDay[key] = true;
             }
@@ -132,7 +132,7 @@ export default defineComponent({
     watch(days, () => {
       if (
         !(days.value[dayIndex.value]?.times || []).some((t: any) => {
-          return time.value == t.time;
+          return time.value === t.time;
         })
       ) {
         time.value = days.value[dayIndex.value]?.times[0]?.time;

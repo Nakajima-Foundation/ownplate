@@ -104,6 +104,8 @@ export const orderPlace = httpsCallable(functionsJP, "orderPlaceJp");
 
 export const orderCreated = httpsCallable(functionsJP, "orderCreatedJp");
 
+export const orderPay = httpsCallable(functionsJP, "stripepay");
+
 export const liffAuthenticate = httpsCallable<
   {
     liffIndexId: string;

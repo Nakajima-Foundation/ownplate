@@ -48,7 +48,7 @@ export const getPromotion = async (id: string, promotionId: string) => {
 
 export const usePromotionsForAdmin = (id: string) => {
   const promotionDataSet = ref<Promotion[]>([]);
-  (async () => {
+  (() => {
     const promotionPath = getPromotionCollctionPath(id);
     onSnapshot(query(collection(db, promotionPath)), (ret1) => {
       promotionDataSet.value = ret1.docs
@@ -75,7 +75,7 @@ export const usePromotionsForAdmin = (id: string) => {
   };
 };
 
-const getUserHistoryPath = async (id: string, user: any) => {
+const getUserHistoryPath = (id: string, user: any) => {
   return `users/${user.value.uid}/promotionHistories`;
 };
 const getHistoryCondition = (id: string) => {
@@ -135,7 +135,7 @@ export const usePromotions = (id: string, user: any) => {
       detacher2();
     }
   });
-  watch([user, promotionData], async () => {
+  watch([user, promotionData], () => {
     if (promotionData.value.length > 0) {
       if (!user.value || !user.value.phoneNumber) {
         promotionUsed.value = {};
@@ -143,7 +143,7 @@ export const usePromotions = (id: string, user: any) => {
       }
       const keys: string[] = [];
       const values: string[] = [];
-      promotionData.value.map((a) => {
+      promotionData.value.forEach((a) => {
         if (
           ["discount", "onetimeCoupon"].includes(a.type) &&
           a.usageRestrictions
@@ -154,7 +154,7 @@ export const usePromotions = (id: string, user: any) => {
         }
       });
       // TODO set condition
-      const userHistoryPath = await getUserHistoryPath(id, user);
+      const userHistoryPath = getUserHistoryPath(id, user);
 
       // for onetime or discount
       if (keys.length === 0 && values.length === 0) {
@@ -173,7 +173,7 @@ export const usePromotions = (id: string, user: any) => {
                 const used = promotionUsed.value
                   ? { ...promotionUsed.value }
                   : {};
-                a.docs.map((b) => {
+                a.docs.forEach((b) => {
                   used[b.id] = b.data() as UserPromotionHistoryData;
                 });
                 promotionUsed.value = used;
@@ -194,7 +194,7 @@ export const usePromotions = (id: string, user: any) => {
                 const used = promotionUsed.value
                   ? { ...promotionUsed.value }
                   : {};
-                a.docs.map((b) => {
+                a.docs.forEach((b) => {
                   if (!used[b.id]) {
                     used[b.id] = [] as UserPromotionHistoryData[];
                   }
@@ -214,15 +214,14 @@ export const usePromotions = (id: string, user: any) => {
         if (!a.usageRestrictions) {
           return true;
         }
-        if (a.type == "multipletimesCoupon") {
+        if (a.type === "multipletimesCoupon") {
           // TODO
-        } else if (a.type == "onetimeCoupon") {
+        } else if (a.type === "onetimeCoupon") {
           return !((promotionUsed.value || {})[a?.data.promotionId] as any)
             .used;
-        } else {
-          // discount case.
-          return !(promotionUsed.value || {})[a?.data.promotionId];
         }
+        // discount case.
+        return !(promotionUsed.value || {})[a?.data.promotionId];
       });
       return ret;
     }
@@ -281,7 +280,7 @@ export const useUserPromotionHistory = (id: string, user: any) => {
     if (!user.value || !user.value.phoneNumber) {
       return;
     }
-    const userHistoryPath = await getUserHistoryPath(id, user);
+    const userHistoryPath = getUserHistoryPath(id, user);
     const historySnapShot = await getDocs(collection(db, userHistoryPath));
 
     const promotionPath = getPromotionCollctionPath(id);
@@ -301,13 +300,13 @@ export const useUserPromotionHistory = (id: string, user: any) => {
               where(documentId(), "in", ids),
             ),
           );
-          ret.docs.map((a) => {
+          ret.docs.forEach((a) => {
             histories[a.id] = a.data();
           });
         }),
       );
 
-      userHistory.map((a) => {
+      userHistory.forEach((a) => {
         a.history = histories[a.userHistory.promotionId];
       });
       discountHistory.value = userHistory;

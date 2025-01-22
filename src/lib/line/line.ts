@@ -1,21 +1,6 @@
 import { ownPlateConfig } from "@/config/project";
 import * as Cookie from "cookie";
 
-export const lineAuthRestaurantURL = (
-  path: string,
-  options: { [key: string]: string },
-  client_id: string,
-) => {
-  return lineAuthURLBase(path, options, client_id);
-};
-
-export const lineAuthURL = (
-  path: string,
-  options: { [key: string]: string },
-) => {
-  return lineAuthURLBase(path, options, ownPlateConfig.line.LOGIN_CHANNEL_ID);
-};
-
 export const lineAuthURLBase = (
   path: string,
   options: { [key: string]: string },
@@ -48,6 +33,21 @@ export const lineAuthURLBase = (
     })
     .join("&");
   return `https://access.line.me/oauth2/v2.1/authorize?${queryString}`;
+};
+
+export const lineAuthRestaurantURL = (
+  path: string,
+  options: { [key: string]: string },
+  client_id: string,
+) => {
+  return lineAuthURLBase(path, options, client_id);
+};
+
+export const lineAuthURL = (
+  path: string,
+  options: { [key: string]: string },
+) => {
+  return lineAuthURLBase(path, options, ownPlateConfig.line.LOGIN_CHANNEL_ID);
 };
 
 export const lineGuard = (nonce: string, state: string) => {

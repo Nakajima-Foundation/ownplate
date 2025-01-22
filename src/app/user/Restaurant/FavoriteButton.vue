@@ -1,14 +1,20 @@
 <template>
   <div class="inline-block" v-if="isUser">
     <a @click="handleLike">
-      <div v-if="likes" class="inline-flex items-center justify-center">
+      <div
+        v-if="likes"
+        class="inline-flex items-center justify-center cursor-pointer"
+      >
         <i class="material-icons mr-2 text-lg text-red-700">favorite</i>
         <div class="text-sm font-bold text-red-700">
           {{ $t("shopInfo.liked") }}
         </div>
       </div>
 
-      <div v-else class="inline-flex items-center justify-center">
+      <div
+        v-else
+        class="inline-flex items-center justify-center cursor-pointer"
+      >
         <i class="material-icons text-lg text-op-teal">favorite_border</i>
         <div class="text-sm font-bold text-op-teal">
           {{ $t("shopInfo.like") }}
@@ -52,7 +58,7 @@ export default defineComponent({
           // Check if the cached info is out of date, update them.
           if (
             review.value.restaurantName !== props.shopInfo.restaurantName ||
-            review.value.restProfilePhoto != props.shopInfo.restProfilePhoto
+            review.value.restProfilePhoto !== props.shopInfo.restProfilePhoto
           ) {
             setDoc(
               doc(db, path.value),

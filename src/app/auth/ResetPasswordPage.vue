@@ -39,19 +39,13 @@
             </div>
           </o-button>
 
-          <o-button
-            :disabled="Object.keys(errors).length > 0"
+          <t-button
+            :isDisabled="Object.keys(errors).length > 0"
             @click="handleNext"
-            class="b-reset-tw"
+            class="h-12 w-32 shadow font-bold text-white"
           >
-            <div
-              class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-op-teal shadow"
-            >
-              <div class="text-base font-bold text-white">
-                {{ $t("button.next") }}
-              </div>
-            </div>
-          </o-button>
+            {{ $t("button.next") }}
+          </t-button>
         </div>
 
         <!-- Email Sent -->
@@ -73,14 +67,10 @@ import { auth } from "@/lib/firebase/firebase9";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { useRouter } from "vue-router";
 import { defaultTitle } from "@/utils/utils";
+import { useHead } from "@unhead/vue";
 
 export default defineComponent({
   name: "Reset",
-  metaInfo() {
-    return {
-      title: [defaultTitle, "Reset Password"].join(" / "),
-    };
-  },
   setup() {
     const router = useRouter();
 
@@ -89,6 +79,10 @@ export default defineComponent({
     const apiError = ref(null);
     const emailSent = ref(false);
     const submitted = ref(false);
+
+    useHead({
+      title: [defaultTitle, "Reset Password"].join(" / "),
+    });
 
     const errors = computed(() => {
       if (!submitted.value) {
@@ -108,7 +102,7 @@ export default defineComponent({
     const handleCancel = () => {
       router.push("/admin/user/signin");
     };
-    const handleNext = async () => {
+    const handleNext = () => {
       submitted.value = true;
       if (Object.keys(errors.value).length > 0) {
         return;

@@ -22,7 +22,7 @@ export const restaurant2AreaObj = (restaurants: DocumentData[]) => {
 export const sortRestaurantObj = (restaurantsObj: {
   [key: string]: RestaurantInfoData[];
 }) => {
-  return Object.keys(restaurantsObj).map((key) => {
+  return Object.keys(restaurantsObj).forEach((key) => {
     restaurantsObj[key].sort((a: RestaurantInfoData, b: RestaurantInfoData) => {
       return a.restaurantName > b.restaurantName ? 1 : -1;
     });

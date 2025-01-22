@@ -14,6 +14,7 @@ import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { MenuData } from "@/models/menu";
 
 import {
+  order_status,
   regionalSettings,
   partners,
   stripe_regions,
@@ -30,7 +31,7 @@ import isLatLong from "validator/lib/isLatLong";
 
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
-import { useI18n } from "vue-i18n";
+import i18n from "@/lib/vue-i18n";
 
 export const isNull = <T>(value: T) => {
   return value === null || value === undefined;
@@ -72,15 +73,15 @@ export const arrayChunk = <T>(arr: T[], size = 1) => {
   }, []);
 };
 
+export const previewLink = (props: { shopInfo: RestaurantInfoData }) => {
+  return computed(() => {
+    return "/r/" + props.shopInfo?.restaurantId;
+  });
+};
 export const shareUrlAdmin = (props: { shopInfo: RestaurantInfoData }) => {
   const link = previewLink(props);
   return computed(() => {
     return location.protocol + "//" + location.host + link.value;
-  });
-};
-export const previewLink = (props: { shopInfo: RestaurantInfoData }) => {
-  return computed(() => {
-    return "/r/" + props.shopInfo?.restaurantId;
   });
 };
 
@@ -98,10 +99,10 @@ export const shareUrl = (prefix: string) => {
 
 export const doc2data = <T = DocumentData>(dataType: string) => {
   return (
-    doc: DocumentSnapshot<DocumentData> | QueryDocumentSnapshot<DocumentData>,
+    _doc: DocumentSnapshot<DocumentData> | QueryDocumentSnapshot<DocumentData>,
   ): T => {
-    const data = doc.data() || ({} as DocumentData);
-    data.id = doc.id;
+    const data = _doc.data() || ({} as DocumentData);
+    data.id = _doc.id;
     data._dataType = dataType;
     return data as T;
   };
@@ -129,7 +130,7 @@ export const num2simpleFormatedTime = (num: number) => {
 };
 
 export const num2time = (num: number) => {
-  const { locale, t } = useI18n({ useScope: "global" });
+  const { locale, t } = i18n.global;
 
   if (num === 0 || num === 60 * 24) {
     return t("shopInfo.midnight");
@@ -137,7 +138,7 @@ export const num2time = (num: number) => {
   if (num === 60 * 12) {
     return t("shopInfo.noon");
   }
-  const offsetTime = locale.value == "ja" ? 12 : 13;
+  const offsetTime = locale.value === "ja" ? 12 : 13;
   const isPm = num >= 60 * 12;
   if (num >= 60 * offsetTime) {
     num = num - 60 * 12;
@@ -247,7 +248,7 @@ export const getOrderItems = (
         const optArray = Array.isArray(orderInfo.order[menuId])
           ? orderInfo.options[menuId]
           : [orderInfo.options[menuId]];
-        Object.keys(numArray).map((numKey: string) => {
+        Object.keys(numArray).forEach((numKey: string) => {
           const item = orderInfo.menuItems[menuId] || menuObj[menuId] || {};
           item.images = (menuObj[menuId] || {}).images;
           item.itemPhoto = (menuObj[menuId] || {}).itemPhoto;
@@ -336,7 +337,7 @@ export const displayOption = (
   shopInfo: RestaurantInfoData,
   item: MenuData,
 ) => {
-  const { n } = useI18n({ useScope: "global" });
+  const { n } = i18n.global;
   return formatOption(option, (price) => {
     return n(roundPrice(price * taxRate(shopInfo, item)), "currency");
   });
@@ -484,10 +485,10 @@ export const getPrices = (
 ) => {
   const ret: any = {};
 
-  Object.keys(orders).map((menuId) => {
+  Object.keys(orders).forEach((menuId) => {
     const menu = cartItems[menuId] || {};
     ret[menuId] = [];
-    orders[menuId].map((num, orderKey) => {
+    orders[menuId].forEach((num, orderKey) => {
       const selectedOptionsRaw = trimmedSelectedOptions[menuId][orderKey] || [];
       const price = selectedOptionsRaw.reduce(
         (tmpPrice: number, selectedOpt, key) => {
@@ -680,7 +681,7 @@ export const usePhoneNumber = (shopInfo: any) => {
     const countryCode = shopInfo.value.countryCode || countries.value[0].code;
     try {
       return parsePhoneNumber(countryCode + shopInfo.value.phoneNumber);
-    } catch (error) {
+    } catch (__error) {
       return null;
     }
   });
@@ -711,7 +712,7 @@ export const useNationalPhoneNumber = (shopInfo: RestaurantInfoData) => {
     const countryCode = shopInfo.countryCode || stripeRegion.countries[0].code;
     try {
       return parsePhoneNumber(countryCode + shopInfo.phoneNumber);
-    } catch (error) {
+    } catch (__error) {
       return null;
     }
   });
@@ -764,7 +765,7 @@ export const isDev = firebaseConfig.projectId === "ownplate-dev";
 
 export const useIsLocaleJapan = () => {
   // for hack
-  const { locale } = useI18n({ useScope: "global" });
+  const { locale } = i18n.global;
   console.log(locale.value);
   return computed(() => {
     return locale.value !== "en" && locale.value !== "fr";
@@ -835,6 +836,13 @@ export const useSuper = () => {
       router.push("/");
     }
   });
+};
+
+export const orderFilter = (order: OrderInfoData) => {
+  return ![
+    order_status.transaction_hide,
+    order_status.waiting_payment,
+  ].includes(order.status);
 };
 
 // for super

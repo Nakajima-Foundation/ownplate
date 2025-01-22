@@ -444,11 +444,9 @@
               :editedAvailableOrders="editedAvailableOrders"
               @update="updateEnable"
             ></order-info>
-            <div
-              v-if="
-                editedAvailableOrders.length > 1 || orderInfo.orderUpdatedAt
-              "
-            >
+
+            <!-- Order Changed -->
+            <div v-if="orderInfo.orderUpdatedAt">
               <div
                 class="rounded-lg bg-white p-4 text-center shadow"
                 v-if="orderInfo.orderUpdatedAt"
@@ -457,44 +455,45 @@
                 {{ timeStampToText(orderInfo.orderUpdatedAt) }}
                 {{ $t("admin.order.alreadyChanged") }}
               </div>
+            </div>
 
-              <div
-                class="rounded-lg bg-white p-4 text-center shadow"
-                v-if="availableOrderChange"
-              >
-                <div>{{ $t("admin.order.changeOrderDetail") }}</div>
-                <div class="mt-4">
-                  <o-button @click="toggleIsOrderChange" class="b-reset-tw">
-                    <div
-                      class="inline-flex h-12 items-center justify-center rounded-full bg-red-700 px-6"
-                    >
-                      <div class="text-base font-bold text-white">
-                        {{
-                          isOrderChange
-                            ? $t("admin.order.cancelOrderChange")
-                            : $t("admin.order.willOrderChange")
-                        }}
-                      </div>
-                    </div>
-                  </o-button>
-                </div>
-                <div class="mt-4">
-                  <o-button
-                    @click="handleOrderChange"
-                    :disabled="!availableChangeButton || changing"
-                    class="b-reset-tw"
-                    v-if="isOrderChange"
+            <!-- Order Change -->
+            <div
+              class="rounded-lg bg-white p-4 text-center shadow"
+              v-if="availableOrderChange"
+            >
+              <div>{{ $t("admin.order.changeOrderDetail") }}</div>
+              <div class="mt-4">
+                <o-button @click="toggleIsOrderChange" class="b-reset-tw">
+                  <div
+                    class="inline-flex h-12 items-center justify-center rounded-full bg-red-700 px-6"
                   >
-                    <div
-                      class="inline-flex h-12 items-center justify-center rounded-full bg-red-700 px-6"
-                    >
-                      <ButtonLoading v-if="changing" />
-                      <div class="text-base font-bold text-white">
-                        {{ $t("admin.order.confirmOrderChange") }}
-                      </div>
+                    <div class="text-base font-bold text-white">
+                      {{
+                        isOrderChange
+                          ? $t("admin.order.cancelOrderChange")
+                          : $t("admin.order.willOrderChange")
+                      }}
                     </div>
-                  </o-button>
-                </div>
+                  </div>
+                </o-button>
+              </div>
+              <div class="mt-4">
+                <o-button
+                  @click="handleOrderChange"
+                  :disabled="!availableChangeButton || changing"
+                  class="b-reset-tw"
+                  v-if="isOrderChange"
+                >
+                  <div
+                    class="inline-flex h-12 items-center justify-center rounded-full bg-red-700 px-6"
+                  >
+                    <ButtonLoading v-if="changing" />
+                    <div class="text-base font-bold text-white">
+                      {{ $t("admin.order.confirmOrderChange") }}
+                    </div>
+                  </div>
+                </o-button>
               </div>
             </div>
 
@@ -570,7 +569,7 @@ import {
   convOrderStateForText,
   isDev,
   isEmpty,
-  isNull,
+  // isNull,
   getShopOwner,
   getOrderItems,
   arrayChunk,
@@ -582,6 +581,7 @@ import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 
 import { useI18n } from "vue-i18n";
+import { useHead } from "@unhead/vue";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { OrderInfoData } from "@/models/orderInfo";
@@ -602,15 +602,6 @@ export default defineComponent({
       type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
-  },
-  metaInfo() {
-    return {
-      title: this.shopInfo.restaurantName
-        ? ["Admin Order Info", this.shopInfo.restaurantName, defaultTitle].join(
-            " / ",
-          )
-        : defaultTitle,
-    };
   },
   // if user is not signined, render login
   // if user is not owner, render 404
@@ -642,6 +633,17 @@ export default defineComponent({
     const restaurantId = useRestaurantId();
 
     const { ownerUid, uid } = useAdminUids();
+
+    useHead({
+      title: props.shopInfo.restaurantName
+        ? [
+            "Admin Order Info",
+            props.shopInfo.restaurantName,
+            defaultTitle,
+          ].join(" / ")
+        : defaultTitle,
+    });
+
     if (
       !checkShopAccount(props.shopInfo, ownerUid.value) &&
       !store.getters.isSuperAdmin
@@ -689,7 +691,6 @@ export default defineComponent({
       },
       () => {
         notFound.value = true;
-        return;
       },
     );
 
@@ -713,7 +714,7 @@ export default defineComponent({
       });
       const menuRestaurantId = restaurantId.value;
       const menuIds = Object.keys(orderInfo.value.menuItems);
-      arrayChunk(menuIds, 10).map(async (arr) => {
+      arrayChunk(menuIds, 10).forEach((arr) => {
         getDocs(
           query(
             collection(db, `restaurants/${menuRestaurantId}/menus`),
@@ -779,7 +780,7 @@ export default defineComponent({
       return getOrderItems(orderInfo.value, menuObj.value);
     });
     watch(orderItems, () => {
-      Object.keys(orderItems.value).map((key: string) => {
+      Object.keys(orderItems.value).forEach((key: string) => {
         editedAvailableOrders.value[key] = true;
       });
     });
@@ -984,11 +985,15 @@ export default defineComponent({
       );
     });
     const availableOrderChange = computed(() => {
+      return false;
+      /*
       return (
         orderInfo.value &&
         orderInfo.value.status === order_status.order_placed &&
-        isNull(orderInfo.value.orderUpdatedAt)
+        isNull(orderInfo.value.orderUpdatedAt) &&
+        editedAvailableOrders.value.length > 0
       );
+      */
     });
     const availableChangeButton = computed(() => {
       return (
@@ -1072,7 +1077,7 @@ export default defineComponent({
         updating.value = "";
       }
     };
-    const handleOrderChange = async () => {
+    const handleOrderChange = () => {
       store.commit("setAlert", {
         title: "admin.order.confirmOrderChange",
         code: "admin.order.updateOrderMessage",
@@ -1111,7 +1116,7 @@ export default defineComponent({
       // return orderInfo.value?.orderPlacedAt?.toDate();
     });
     const classOf = (statusKey: string) => {
-      if (order_status[statusKey] == orderInfo.value.status) {
+      if (order_status[statusKey] === orderInfo.value.status) {
         return statusKey;
       }
       return "bg-black bg-opacity-5";

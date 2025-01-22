@@ -100,15 +100,11 @@ import { doc2data, array2obj, useAdminUids, defaultTitle } from "@/utils/utils";
 import BackButton from "@/components/BackButton.vue";
 
 import { useRoute } from "vue-router";
+import { useHead } from "@unhead/vue";
 
 export default defineComponent({
   components: {
     BackButton,
-  },
-  metaInfo() {
-    return {
-      title: [defaultTitle, "Admin Smaregi Store"].join(" / "),
-    };
   },
   setup() {
     const route = useRoute();
@@ -130,6 +126,10 @@ export default defineComponent({
     const { uid } = useAdminUids();
     const storeId = route.params.storeId as string;
 
+    useHead({
+      title: [defaultTitle, "Admin Smaregi Store"].join(" / "),
+    });
+
     const duplicateElement = computed(() => {
       const counter = Object.values(selectedMenu.value).reduce(
         (tmp: { [key: string]: number }, ele: any) => {
@@ -139,7 +139,7 @@ export default defineComponent({
           if (tmp[ele] === undefined) {
             tmp[ele] = 1;
           } else {
-            tmp[ele]++;
+            tmp[ele] += 1;
           }
           return tmp;
         },
@@ -233,7 +233,7 @@ export default defineComponent({
           );
 
           const _selectedMenu: any = {};
-          (productList.value || []).map((product, key) => {
+          (productList.value || []).forEach((product, key) => {
             const productId = product.productId;
             if (productObj[productId]) {
               _selectedMenu[key] = productObj[productId].menuId;
@@ -250,7 +250,7 @@ export default defineComponent({
         console.log("error");
         return;
       }
-      (productList.value || []).map((product, key) => {
+      (productList.value || []).forEach((product, key) => {
         const menuId = selectedMenu.value[key];
         // check uniq.
         const path = `/smaregi/${contractId}/stores/${storeId}/products/${product.productId}`;

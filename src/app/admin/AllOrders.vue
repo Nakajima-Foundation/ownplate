@@ -120,6 +120,7 @@ import BackButton from "@/components/BackButton.vue";
 import NotFound from "@/components/NotFound.vue";
 
 import { useRouter } from "vue-router";
+import { useHead } from "@unhead/vue";
 import { useI18n } from "vue-i18n";
 
 export default defineComponent({
@@ -128,11 +129,6 @@ export default defineComponent({
     DownloadCsv,
     BackButton,
     NotFound,
-  },
-  metaInfo() {
-    return {
-      title: ["Admin All Order", defaultTitle].join(" / "),
-    };
   },
   setup() {
     const router = useRouter();
@@ -143,6 +139,10 @@ export default defineComponent({
     const orders = ref<OrderInfoData[]>([]);
     const orderState = ref(0);
     const restaurants: { [key: string]: RestaurantInfoData } = {};
+
+    useHead({
+      title: ["Admin All Order", defaultTitle].join(" / "),
+    });
 
     let isLoading = false;
     let last: null | any = null;
@@ -210,9 +210,12 @@ export default defineComponent({
           serviceTax: order.accounting?.service?.tax,
           shippingCost: order.shippingCost || order.deliveryFee || 0,
           total: order.totalCharge,
-          totalCount: Object.values(order.order).reduce((count, order) => {
-            return count + arrayOrNumSum(order);
-          }, 0),
+          totalCount: Object.values(order.order).reduce(
+            (count, currentOrder) => {
+              return count + arrayOrNumSum(currentOrder);
+            },
+            0,
+          ),
           discountPrice: order.discountPrice,
           beforeDiscountPrice: order.totalCharge + (order.discountPrice || 0),
           name: nameOfOrder(order),
@@ -237,7 +240,9 @@ export default defineComponent({
           query(collectionGroup(db, "orders"), ...queryConditions),
         );
         const serviceTaxRate = 0.1;
-        if (!snapshot.empty) {
+        if (snapshot.empty) {
+          last = null;
+        } else {
           last = snapshot.docs[snapshot.docs.length - 1];
           let i = 0;
           for (; i < snapshot.docs.length; i++) {
@@ -249,17 +254,15 @@ export default defineComponent({
             order.restaurantId = orderDoc.ref.path.split("/")[1];
             order.id = orderDoc.id;
             if (!restaurants[order.restaurantId]) {
-              const snapshot = await getDoc(
+              const orderSnapshot = await getDoc(
                 doc(db, `restaurants/${order.restaurantId}`),
               );
               restaurants[order.restaurantId] =
-                snapshot.data() as RestaurantInfoData;
+                orderSnapshot.data() as RestaurantInfoData;
             }
             order.restaurant = restaurants[order.restaurantId];
             orders.value.push(order);
           }
-        } else {
-          last = null;
         }
       }
       isLoading = false;

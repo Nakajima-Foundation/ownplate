@@ -62,20 +62,19 @@ import Lp from "@/app/home/Lp.vue";
 //import LpCustomer from "@/app/home/LpCustomer.vue";
 
 import { defaultTitle, useUserData, sleep } from "@/utils/utils";
+import { useHead } from "@unhead/vue";
 
 export default defineComponent({
-  metaInfo() {
-    return {
-      title: [defaultTitle, "Top"].join(" / "),
-    };
-  },
-
   components: {
     Lp,
     // LpAdmin,
     // LpCustomer,
   },
   setup() {
+    useHead({
+      title: [defaultTitle, "Top"].join(" / "),
+    });
+
     const {
       isAdmin,
       // isUser,

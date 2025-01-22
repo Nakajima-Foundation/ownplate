@@ -29,13 +29,9 @@ import { getDoc, doc } from "firebase/firestore";
 
 import { superPermissionCheck, getBackUrl, defaultTitle } from "@/utils/utils";
 import { useRoute } from "vue-router";
+import { useHead } from "@unhead/vue";
 
 export default defineComponent({
-  metaInfo() {
-    return {
-      title: [defaultTitle, "Super All Restaurants"].join(" / "),
-    };
-  },
   components: {
     BackButton,
   },
@@ -44,9 +40,13 @@ export default defineComponent({
     const restaurantId = route.params.restaurantId;
     superPermissionCheck();
 
+    useHead({
+      title: [defaultTitle, "Super All Restaurants"].join(" / "),
+    });
+
     const restaurantData = ref<any>({});
-    getDoc(doc(db, `restaurants/${restaurantId}`)).then((a) => {
-      restaurantData.value = a.data();
+    getDoc(doc(db, `restaurants/${restaurantId}`)).then((restaurantDoc) => {
+      restaurantData.value = restaurantDoc.data();
     });
 
     const phone = async () => {

@@ -30,16 +30,12 @@
             </div>
           </router-link>
 
-          <o-button @click="saveDeliveryArea" class="b-reset-tw">
-            <div
-              class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
-              style="min-width: 8rem"
-            >
-              <span class="text-base font-bold text-white">{{
-                $t("editCommon.save")
-              }}</span>
-            </div>
-          </o-button>
+          <t-button
+            @click="saveDeliveryArea"
+            class="h-12 w-32 font-bold text-white"
+          >
+            {{ $t("editCommon.save") }}
+          </t-button>
         </div>
 
         <div class="rounded-lg bg-black bg-opacity-5 p-4 mt-4">
@@ -247,16 +243,12 @@
             </div>
           </router-link>
 
-          <o-button @click="saveDeliveryArea" class="b-reset-tw">
-            <div
-              class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
-              style="min-width: 8rem"
-            >
-              <span class="text-base font-bold text-white">{{
-                $t("editCommon.save")
-              }}</span>
-            </div>
-          </o-button>
+          <t-button
+            @click="saveDeliveryArea"
+            class="h-12 w-32 font-bold text-white"
+          >
+            {{ $t("editCommon.save") }}
+          </t-button>
         </div>
       </div>
     </template>
@@ -331,7 +323,7 @@ export default defineComponent({
 
     const removeAllMarker = () => {
       if (markers.value && markers.value.length > 0) {
-        markers.value.map((marker) => {
+        markers.value.forEach((marker) => {
           marker.setMap(null);
         });
         markers.value = [];
@@ -339,7 +331,7 @@ export default defineComponent({
     };
     const removeAllCircle = () => {
       if (circles.value && circles.value.length > 0) {
-        circles.value.map((circle) => {
+        circles.value.forEach((circle) => {
           circle.setMap(null);
         });
         circles.value = [];
@@ -386,8 +378,9 @@ export default defineComponent({
       }
     };
 
+    const location = props.shopInfo.location;
     const mapLoaded = () => {
-      setTimeout(async () => {
+      setTimeout(() => {
         if (typeof google !== "undefined") {
           center.value = new google.maps.LatLng(location.lat, location.lng);
         }
@@ -397,7 +390,6 @@ export default defineComponent({
       }, 100);
     };
 
-    const location = props.shopInfo.location;
     existLocation.value = Object.keys(location).length === 2;
     if (!existLocation.value) {
       return {

@@ -42,7 +42,7 @@ export default defineComponent({
 
     const restaurant_detacher = onSnapshot(
       doc(db, `restaurants/${restaurantId.value}`),
-      async (restaurant) => {
+      (restaurant) => {
         shopInfo.value = restaurant.data() || {};
         const exist_and_public =
           restaurant.exists() &&

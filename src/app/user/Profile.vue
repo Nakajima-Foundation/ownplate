@@ -27,7 +27,7 @@
           <!-- Address -->
           <address-button />
 
-          <ProfileStripe />
+          <!-- ProfileStripe -->
 
           <ProfileLine />
         </div>
@@ -36,7 +36,7 @@
         <div class="mt-12 text-center" v-if="!isLiffUser">
           <a
             @click.prevent="handleSignOut"
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 cursor-pointer"
           >
             <div class="text-sm font-bold text-op-teal">
               {{ $t("menu.signOut") }}
@@ -63,7 +63,7 @@ import { signOut } from "firebase/auth";
 import ProfileLogin from "@/app/user/Profile/Login.vue";
 import ProfileDeleteAccount from "@/app/user/Profile/DeleteAccount.vue";
 import ProfileLoginStatus from "@/app/user/Profile/LoginStatus.vue";
-import ProfileStripe from "@/app/user/Profile/Stripe.vue";
+// import ProfileStripe from "@/app/user/Profile/Stripe.vue";
 import ProfileLine from "@/app/user/Profile/Line.vue";
 
 import HistoryButton from "@/components/users/HistoryButton.vue";
@@ -73,6 +73,7 @@ import AddressButton from "@/components/users/AddressButton.vue";
 import { defaultHeader } from "@/config/header";
 
 import { useUserData } from "@/utils/utils";
+import { useHead } from "@unhead/vue";
 
 export default defineComponent({
   components: {
@@ -82,15 +83,14 @@ export default defineComponent({
     ProfileLogin,
     ProfileDeleteAccount,
     ProfileLoginStatus,
-    ProfileStripe,
+    // ProfileStripe,
     ProfileLine,
   },
-  metaInfo() {
-    return {
-      title: [defaultHeader.title, "Profile"].join(" / "),
-    };
-  },
   setup() {
+    useHead({
+      title: [defaultHeader.title, "Profile"].join(" / "),
+    });
+
     const handleSignOut = () => {
       signOut(auth);
     };

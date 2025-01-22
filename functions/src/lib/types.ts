@@ -26,6 +26,7 @@ export interface orderPlacedData {
   timeToPickup: admin.firestore.Timestamp;
   promotionId: string;
   affiliateId: string;
+  waitingPayment: boolean;
   memo: string;
   userName: string;
   payStripe: boolean;
@@ -92,6 +93,7 @@ export interface orderChangeData {
   restaurantId: string;
   orderId: string;
   newOrder: newOrderData[];
+  isSavePay: boolean;
 }
 
 export interface orderCancelPaymentData {
@@ -149,6 +151,7 @@ export interface smaregiAuthData {
   code: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface smaregiStoreListData {}
 export interface smaregiProductListData {
   store_id: string;

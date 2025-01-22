@@ -63,6 +63,7 @@ import {
 } from "@/utils/utils";
 
 import BackButton from "@/components/BackButton.vue";
+import { useHead } from "@unhead/vue";
 
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -78,16 +79,15 @@ import {
 } from "firebase/firestore";
 
 export default defineComponent({
-  metaInfo() {
-    return {
-      title: [defaultTitle, "Super All Requests"].join(" / "),
-    };
-  },
   components: {
     BackButton,
   },
   setup() {
     useSuper();
+
+    useHead({
+      title: [defaultTitle, "Super All Requests"].join(" / "),
+    });
 
     const requests = ref<any[]>([]);
     const restaurantsObj = ref({});

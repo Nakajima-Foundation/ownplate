@@ -11,13 +11,17 @@ import i18n from "@/lib/vue-i18n";
 import Oruga from "@oruga-ui/oruga-next";
 import { bulmaConfig } from "@oruga-ui/theme-bulma";
 import VueSocialSharing from "vue-social-sharing";
-import { createMetaManager, plugin as metaPlugin } from "vue-meta";
+import { createHead } from "@unhead/vue";
 import VueQrcode from "@chenfengyuan/vue-qrcode";
 import VueGoogleMaps from "@fawmi/vue-google-maps";
 
+import Checkbox from "@/components/form/checkbox.vue";
+import Button from "@/components/form/button.vue";
+import CancelButton from "@/components/form/cancel_button.vue";
+
 // sentry
 import * as Sentry from "@sentry/vue";
-import { BrowserTracing } from "@sentry/tracing";
+// import { BrowserTracing } from "@sentry/tracing";
 
 // components
 import App from "@/components/App.vue";
@@ -28,12 +32,16 @@ import { sentryDsn, GAPIKey } from "@/config/project";
 // css
 import "@/assets/css/tailwind.css";
 import "@/assets/css/main.css";
-import "@oruga-ui/theme-bulma/dist/bulma.css";
+import "@/assets/scss/bulma.scss";
+//import "@oruga-ui/theme-bulma/dist/bulma.css";
 
-const app = createApp(App as any); // TODO fix
+const app = createApp(App);
 
 // components
 app.component(VueQrcode.name ?? "", VueQrcode);
+app.component("t-checkbox", Checkbox);
+app.component("t-button", Button);
+app.component("t-cancel-button", CancelButton);
 
 app.use(VueGoogleMaps, {
   load: {
@@ -44,9 +52,11 @@ app.use(VueGoogleMaps, {
 app.use(VueSocialSharing);
 app.use(Oruga, bulmaConfig);
 
-const metaManager = createMetaManager();
-app.use(metaManager);
-app.use(metaPlugin);
+const head = createHead();
+app.use(head);
+//const metaManager = createMetaManager();
+//app.use(metaManager);
+//app.use(metaPlugin);
 
 app.use(store);
 app.use(router);
@@ -58,11 +68,10 @@ if (import.meta.env.PROD) {
       app,
       dsn: sentryDsn,
       integrations: [
-        new BrowserTracing({
-          routingInstrumentation: Sentry.vueRouterInstrumentation(router),
-          tracingOrigins: ["localhost"],
-        }),
+        Sentry.browserTracingIntegration({ router }),
+        Sentry.replayIntegration(),
       ],
+      tracePropagationTargets: ["localhost"],
       // Set tracesSampleRate to 1.0 to capture 100%
       // of transactions for performance monitoring.
       // We recommend adjusting this value in production

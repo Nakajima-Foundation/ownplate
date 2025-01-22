@@ -13,7 +13,7 @@
               {{ part.name }}
             </span>
           </div>
-          <div class="text-right font-bold" v-if="part.ask">
+          <div class="text-right font-bold cursor-pointer" v-if="part.ask">
             <a href="#" @click="openContact()">サポート問い合わせ</a>
           </div>
         </div>
@@ -36,7 +36,7 @@
 <script lang="ts">
 import { defineComponent, ref, onUnmounted } from "vue";
 import { db } from "@/lib/firebase/firebase9";
-import { doc, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot, getDoc } from "firebase/firestore";
 
 import NotificationWatcher from "@/app/admin/Watcher/NotificationWatcher.vue";
 import SoundConfigWatcher from "@/app/admin/Watcher/SoundConfigWatcher.vue";
@@ -96,37 +96,25 @@ export default defineComponent({
 
     const restaurantRef = doc(db, `restaurants/${restaurantId.value}`);
     const restaurant_detacher = ref();
-    restaurant_detacher.value = onSnapshot(
-      restaurantRef,
-      async (restaurant) => {
-        if (!restaurant.exists()) {
-          noRestaurant.value = true;
-          return;
-        }
-        const restaurant_data = restaurant.data();
-        const copy = JSON.parse(JSON.stringify(defaultShopInfo));
-        const loadShopInfo = Object.assign(
-          {},
-          copy,
-          restaurant_data,
-          defaultTax,
-        );
-        if (loadShopInfo.temporaryClosure) {
-          loadShopInfo.temporaryClosure = loadShopInfo.temporaryClosure.map(
-            (day: any) => {
-              return day.toDate();
-            },
-          );
-        }
-        shopInfo.value = loadShopInfo;
-        noRestaurant.value = false;
-      },
-      (e) => {
-        console.log(e);
+    (async () => {
+      const restaurant = await getDoc(restaurantRef);
+      if (!restaurant || !restaurant.exists()) {
         noRestaurant.value = true;
         return;
-      },
-    );
+      }
+      const restaurant_data = restaurant.data();
+      const copy = JSON.parse(JSON.stringify(defaultShopInfo));
+      const loadShopInfo = Object.assign({}, copy, restaurant_data, defaultTax);
+      if (loadShopInfo.temporaryClosure) {
+        loadShopInfo.temporaryClosure = loadShopInfo.temporaryClosure.map(
+          (day: any) => {
+            return day.toDate();
+          },
+        );
+      }
+      shopInfo.value = loadShopInfo;
+      noRestaurant.value = false;
+    })();
 
     const notification_detacher = ref();
     notification_detacher.value = onSnapshot(

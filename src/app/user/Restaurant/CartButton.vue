@@ -1,169 +1,164 @@
 <template>
   <div class="fixed left-1/2 bottom-3 z-30">
-    <o-button
+    <button
       v-if="0 != totalQuantities"
+      @click="handleCheckOut"
+      class="ml-[-9rem] w-[18rem] sm:bottom-8 mb-8 inline-flex w-72 items-center justify-center rounded-full shadow-lg"
+      :class="[
+        shopInfo.enableDelivery ? 'pt-2 pb-2' : 'h-20',
+        isCheckingOut || noPaymentMethod || noAvailableTime || cantDelivery
+          ? 'bg-op-teal-disabled'
+          : 'bg-op-teal',
+      ]"
       :disabled="
         isCheckingOut || noPaymentMethod || noAvailableTime || cantDelivery
       "
-      @click="handleCheckOut"
-      class="b-reset-tw ml-[-9rem] w-[18rem] sm:bottom-8"
     >
-      <div
-        class="inline-flex w-72 items-center justify-center rounded-full bg-op-teal shadow-lg"
-        :class="shopInfo.enableDelivery ? 'pt-2 pb-2' : 'h-20'"
-      >
-        <ButtonLoading v-if="isCheckingOut" />
-        <template v-if="noPaymentMethod">
-          <div
-            class="text-base font-bold text-white"
-            v-if="shopInfo.publicFlag"
-          >
-            {{ $t("shopInfo.noPaymentMethod") }}
-          </div>
-          <div class="text-base font-bold text-white" v-else>
-            {{ $t("shopInfo.notPublicShop") }}
-          </div>
-        </template>
+      <ButtonLoading v-if="isCheckingOut" />
+      <template v-if="noPaymentMethod">
+        <div class="text-base font-bold text-white" v-if="shopInfo.publicFlag">
+          {{ $t("shopInfo.noPaymentMethod") }}
+        </div>
+        <div class="text-base font-bold text-white" v-else>
+          {{ $t("shopInfo.notPublicShop") }}
+        </div>
+      </template>
 
-        <template v-else-if="noAvailableTime">
-          <div class="text-base font-bold text-white">
-            {{ $t("shopInfo.noAvailableTime") }}
-          </div>
-        </template>
+      <template v-else-if="noAvailableTime">
+        <div class="text-base font-bold text-white">
+          {{ $t("shopInfo.noAvailableTime") }}
+        </div>
+      </template>
 
-        <template v-else-if="!noPaymentMethod">
-          <div class="inline-flex flex-col items-center justify-center">
-            <!-- delivery -->
-            <template v-if="isDelivery">
-              <template
-                v-if="
-                  shopInfo.enableDelivery &&
-                  cantDelivery &&
-                  deliveryData.enableDeliveryThreshold
-                "
-              >
-                <div
-                  class="inline-flex items-center justify-center text-base font-bold text-white"
-                >
-                  {{
-                    $t(
-                      "shopInfo.buttonDeliveryFeeThreshold",
-                      {
-                        price: $n(deliveryData.deliveryThreshold, "currency"),
-                      },
-                      0,
-                    )
-                  }}
-                </div>
-                <div
-                  class="inline-flex items-center justify-center text-base font-bold text-white"
-                >
-                  {{
-                    $t(
-                      "shopInfo.buttonDeliveryFeeDiff",
-                      {
-                        price: $n(diffDeliveryThreshold, "currency"),
-                      },
-                      0,
-                    )
-                  }}
-                </div>
-              </template>
-              <template
-                v-else-if="deliveryData.enableDeliveryFree && !isDeliveryFree"
-              >
-                <div
-                  class="inline-flex items-center justify-center text-base font-bold text-white"
-                >
-                  {{
-                    $t(
-                      "shopInfo.deliveryFeeThresholdInfo",
-                      {
-                        price: $n(
-                          deliveryData.deliveryFreeThreshold,
-                          "currency",
-                        ),
-                      },
-                      0,
-                    )
-                  }}
-                </div>
-                <div
-                  class="inline-flex items-center justify-center text-base font-bold text-white"
-                >
-                  {{
-                    $t(
-                      "shopInfo.buttonDeliveryFeeDiff",
-                      {
-                        price: $n(diffDeliveryFreeThreshold, "currency"),
-                      },
-                      0,
-                    )
-                  }}
-                </div>
-              </template>
-              <div
-                class="inline-flex items-center justify-center text-base font-bold text-white"
-                v-if="shopInfo.enableDelivery"
-              >
-                <div class="mr-2">
-                  {{
-                    $t(
-                      "shopInfo.buttonDeliveryFee",
-                      {
-                        price: $n(
-                          isDeliveryFree ? 0 : deliveryData.deliveryFee,
-                          "currency",
-                        ),
-                      },
-                      0,
-                    )
-                  }}
-                  <span
-                    class="text-xs"
-                    v-if="!isDeliveryFree && deliveryData.deliveryFee > 0"
-                    >{{ $t("tax.include") }}</span
-                  >
-                </div>
-              </div>
-            </template>
-            <!-- total and price -->
-            <template v-if="!noPaymentMethod">
+      <template v-else-if="!noPaymentMethod">
+        <div class="inline-flex flex-col items-center justify-center">
+          <!-- delivery -->
+          <template v-if="isDelivery">
+            <template
+              v-if="
+                shopInfo.enableDelivery &&
+                cantDelivery &&
+                deliveryData.enableDeliveryThreshold
+              "
+            >
               <div
                 class="inline-flex items-center justify-center text-base font-bold text-white"
               >
-                <div class="mr-2">
-                  {{
-                    $t(
-                      "sitemenu.orderCounter",
-                      {
-                        count: totalQuantities,
-                      },
-                      totalQuantities,
-                    )
-                  }}
-                </div>
-                <div class="">
-                  <Price
-                    :shopInfo="{ inclusiveTax: true }"
-                    :menu="{ price: totalPrice.total }"
-                  />
-                </div>
+                {{
+                  $t(
+                    "shopInfo.buttonDeliveryFeeThreshold",
+                    {
+                      price: $n(deliveryData.deliveryThreshold, "currency"),
+                    },
+                    0,
+                  )
+                }}
               </div>
-
               <div
-                class="is-inline-flex items-center justify-center text-white"
+                class="inline-flex items-center justify-center text-base font-bold text-white"
               >
-                <div class="mr-2 text-xl font-bold">
-                  {{ $t(buttonText) }}
-                </div>
-                <i class="material-icons text-2xl">shopping_cart</i>
+                {{
+                  $t(
+                    "shopInfo.buttonDeliveryFeeDiff",
+                    {
+                      price: $n(diffDeliveryThreshold, "currency"),
+                    },
+                    0,
+                  )
+                }}
               </div>
             </template>
-          </div>
-        </template>
-      </div>
-    </o-button>
+            <template
+              v-else-if="deliveryData.enableDeliveryFree && !isDeliveryFree"
+            >
+              <div
+                class="inline-flex items-center justify-center text-base font-bold text-white"
+              >
+                {{
+                  $t(
+                    "shopInfo.deliveryFeeThresholdInfo",
+                    {
+                      price: $n(deliveryData.deliveryFreeThreshold, "currency"),
+                    },
+                    0,
+                  )
+                }}
+              </div>
+              <div
+                class="inline-flex items-center justify-center text-base font-bold text-white"
+              >
+                {{
+                  $t(
+                    "shopInfo.buttonDeliveryFeeDiff",
+                    {
+                      price: $n(diffDeliveryFreeThreshold, "currency"),
+                    },
+                    0,
+                  )
+                }}
+              </div>
+            </template>
+            <div
+              class="inline-flex items-center justify-center text-base font-bold text-white"
+              v-if="shopInfo.enableDelivery"
+            >
+              <div class="mr-2">
+                {{
+                  $t(
+                    "shopInfo.buttonDeliveryFee",
+                    {
+                      price: $n(
+                        isDeliveryFree ? 0 : deliveryData.deliveryFee,
+                        "currency",
+                      ),
+                    },
+                    0,
+                  )
+                }}
+                <span
+                  class="text-xs"
+                  v-if="!isDeliveryFree && deliveryData.deliveryFee > 0"
+                  >{{ $t("tax.include") }}</span
+                >
+              </div>
+            </div>
+          </template>
+          <!-- total and price -->
+          <template v-if="!noPaymentMethod">
+            <div
+              class="inline-flex items-center justify-center text-base font-bold text-white"
+            >
+              <div class="mr-2">
+                {{
+                  $t(
+                    "sitemenu.orderCounter",
+                    {
+                      count: totalQuantities,
+                    },
+                    totalQuantities,
+                  )
+                }}
+              </div>
+              <div class="">
+                <Price
+                  :shopInfo="{ inclusiveTax: true }"
+                  :menu="{ price: totalPrice.total }"
+                />
+              </div>
+            </div>
+
+            <div
+              class="is-inline-flex items-center justify-center text-white inline-flex"
+            >
+              <div class="mr-2 text-xl font-bold">
+                {{ $t(buttonText) }}
+              </div>
+              <i class="material-icons text-2xl">shopping_cart</i>
+            </div>
+          </template>
+        </div>
+      </template>
+    </button>
   </div>
 </template>
 <script lang="ts">
@@ -266,20 +261,20 @@ export default defineComponent({
     });
 
     const handleCheckOut = () => {
-      if (!isShowCart.value) {
-        isShowCart.value = true;
-      } else {
+      if (isShowCart.value) {
         ctx.emit("handleCheckOut");
+      } else {
+        isShowCart.value = true;
       }
     };
     const closeCart = () => {
       isShowCart.value = false;
     };
     const buttonText = computed(() => {
-      if (!isShowCart.value) {
-        return "sitemenu.confirmCart";
-      } else {
+      if (isShowCart.value) {
         return "sitemenu.checkout";
+      } else {
+        return "sitemenu.confirmCart";
       }
     });
     watch(totalQuantities, (value) => {

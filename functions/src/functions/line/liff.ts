@@ -1,5 +1,5 @@
 import * as admin from "firebase-admin";
-import * as functions from "firebase-functions";
+import * as functions from "firebase-functions/v1";
 import * as utils from "../../lib/utils";
 import * as netutils from "../../lib/netutils";
 import * as crypto from "crypto";
@@ -19,8 +19,6 @@ const getLiffConfig = async (db: admin.firestore.Firestore, liffIndexId: string)
 
 // eslint-disable-next-line
 export const liffAuthenticate = async (db: admin.firestore.Firestore, data: liffAuthenticateData, context: functions.https.CallableContext) => {
-   
-
   const { liffIndexId, token } = data;
   utils.required_params({ liffIndexId, token });
 
@@ -48,7 +46,7 @@ export const liffAuthenticate = async (db: admin.firestore.Firestore, data: liff
 
     try {
       await admin.auth().getUser(userId);
-    } catch (e) {
+    } catch (__e) {
       // no user
       await admin.auth().createUser({ uid: userId });
       await admin.auth().setCustomUserClaims(userId, {

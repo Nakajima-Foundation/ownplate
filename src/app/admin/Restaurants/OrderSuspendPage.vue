@@ -135,22 +135,12 @@ import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { useStore } from "vuex";
 import { useI18n } from "vue-i18n";
+import { useHead } from "@unhead/vue";
 
 export default defineComponent({
   components: {
     AdminHeader,
     NotFound,
-  },
-  metaInfo() {
-    return {
-      title: this.shopInfo.restaurantName
-        ? [
-            "Admin Order Suspend",
-            this.shopInfo.restaurantName,
-            defaultTitle,
-          ].join(" / ")
-        : defaultTitle,
-    };
   },
   props: {
     shopInfo: {
@@ -164,6 +154,17 @@ export default defineComponent({
 
     const restaurantId = useRestaurantId();
     const { ownerUid } = useAdminUids();
+
+    useHead({
+      title: props.shopInfo.restaurantName
+        ? [
+            "Admin Order Suspend",
+            props.shopInfo.restaurantName,
+            defaultTitle,
+          ].join(" / ")
+        : defaultTitle,
+    });
+
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
       return notFoundResponse;
     }

@@ -31,68 +31,108 @@
           {{ $t("admin.smaregi.smaregiShopList") }}
         </span>
         <div v-if="isEdit">
-          <div v-for="(shop, k) in shopList" :key="k" class="border-2">
-            {{ shop.storeName }}
-            <o-select
-              v-model="selectedRestaurant[k]"
-              :class="
-                selectedRestaurant[k] && duplicateElement[selectedRestaurant[k]]
-                  ? 'border-2 border-solid border-red-700'
-                  : ''
-              "
-            >
-              <option
-                v-for="restaurant in restaurants"
-                :value="restaurant.id"
-                :key="restaurant.id"
+          <div
+            v-for="(shop, k) in shopList"
+            :key="k"
+            class="mt-2 rounded-lg bg-black bg-opacity-5"
+          >
+            <div class="pl-4 pt-4">スマレジ登録店舗：{{ shop.storeName }}</div>
+            <div class="pl-4 pt-2">
+              連携する店舗：
+              <o-select
+                v-model="selectedRestaurant[k]"
+                :class="
+                  selectedRestaurant[k] &&
+                  duplicateElement[selectedRestaurant[k]]
+                    ? 'border-2 border-solid border-red-700'
+                    : ''
+                "
               >
-                {{ restaurant.restaurantName }}
-              </option>
-            </o-select>
+                <option
+                  v-for="restaurant in restaurants"
+                  :value="restaurant.id"
+                  :key="restaurant.id"
+                >
+                  {{ restaurant.restaurantName }}
+                </option>
+              </o-select>
+            </div>
 
-            在庫切れしきい値:
-            <o-select v-model="outOfStockData[k]">
-              <option
-                v-for="threshold in outOfStockThresholds"
-                :value="threshold.value"
-                :key="threshold.value"
-              >
-                {{ threshold.name }}
-              </option>
-            </o-select>
+            <div class="pl-4 pt-1">
+              在庫切れしきい値:
+              <o-select v-model="outOfStockData[k]">
+                <option
+                  v-for="threshold in outOfStockThresholds"
+                  :value="threshold.value"
+                  :key="threshold.value"
+                >
+                  {{ threshold.name }}
+                </option>
+              </o-select>
+            </div>
 
-            在庫復活しきい値:
-            <o-select v-model="inStockData[k]">
-              <option
-                v-for="threshold in inStockThresholds"
-                :value="threshold.value"
-                :key="threshold.value"
-              >
-                {{ threshold.name }}
-              </option>
-            </o-select>
+            <div class="pl-4 pt-1 pb-4">
+              在庫復活しきい値:
+              <o-select v-model="inStockData[k]">
+                <option
+                  v-for="threshold in inStockThresholds"
+                  :value="threshold.value"
+                  :key="threshold.value"
+                >
+                  {{ threshold.name }}
+                </option>
+              </o-select>
+            </div>
           </div>
           <div v-if="isDuplicateError">*お店の指定が重複しています</div>
-          <o-button @click="saveShops" :disabled="isDuplicateError"
-            >保存</o-button
-          >
+          <div class="mt-4">
+            <button @click="saveShops" :disabled="isDuplicateError">
+              <div
+                class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow min-w-32"
+              >
+                <span class="text-base font-bold text-white">{{
+                  $t("editCommon.save")
+                }}</span>
+              </div>
+            </button>
+          </div>
         </div>
 
         <div v-else>
-          <div v-for="(shop, k) in shopList" :key="k">
-            <div class="mt-2 text-base font-bold">
-              <router-link :to="`/admin/smaregi/store/${shop.storeId}`">
-                {{ shop.storeName }}
-              </router-link>
+          <div
+            v-for="(shop, k) in shopList"
+            :key="k"
+            class="mt-2 rounded-lg bg-black bg-opacity-5"
+          >
+            <div class="pl-4 pt-4">
+              <div class="text-base">
+                スマレジ登録店舗：
+                <router-link :to="`/admin/smaregi/store/${shop.storeId}`">
+                  <span class="font-bold">{{ shop.storeName }}</span>
+                </router-link>
+              </div>
             </div>
-            {{ (restaurantObj[selectedRestaurant[k]] || {}).restaurantName
-            }}<br />
-            在庫切れしきい値:
-            {{ showStockThreshold((outOfStockData || {})[k]) }} /
-            在庫復活しきい値: {{ showStockThreshold((inStockData || {})[k]) }}
+            <div class="pl-4">
+              連携店舗：{{
+                (restaurantObj[selectedRestaurant[k]] || {}).restaurantName
+              }}
+            </div>
+            <div class="pl-4 pb-4">
+              在庫切れしきい値：
+              {{ showStockThreshold((outOfStockData || {})[k]) }} /
+              在庫復活しきい値：{{ showStockThreshold((inStockData || {})[k]) }}
+            </div>
           </div>
           <div class="mt-4">
-            <o-button @click="isEdit = true">編集</o-button>
+            <button @click="isEdit = true">
+              <div
+                class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow min-w-32"
+              >
+                <span class="text-base font-bold text-white">{{
+                  $t("editCommon.edit")
+                }}</span>
+              </div>
+            </button>
           </div>
         </div>
       </div>
@@ -122,6 +162,8 @@ import {
   getDoc,
 } from "firebase/firestore";
 
+import { useHead } from "@unhead/vue";
+
 const outOfStockThresholds = [
   { value: 999999, name: "なし" },
   { value: 0, name: "0" },
@@ -149,11 +191,6 @@ export default defineComponent({
     BackButton,
   },
   name: "Restaurant",
-  metaInfo() {
-    return {
-      title: [defaultTitle, "Admin Smaregi Index"].join(" / "),
-    };
-  },
   setup() {
     const authUrl = `${smaregi.authUrl}?response_type=code&client_id=${smaregi.clientId}&scope=openid+email+offline_access`;
     const enable = ref<boolean | null>(null);
@@ -173,6 +210,10 @@ export default defineComponent({
     // internal
     let contractId: string | null = null;
 
+    useHead({
+      title: [defaultTitle, "Admin Smaregi Index"].join(" / "),
+    });
+
     const { uid } = useAdminUids();
     // computed
     const duplicateElement = computed(() => {
@@ -184,7 +225,7 @@ export default defineComponent({
           if (tmp[ele] === undefined) {
             tmp[ele] = 1;
           } else {
-            tmp[ele]++;
+            tmp[ele] += 1;
           }
           return tmp;
         },
@@ -257,7 +298,7 @@ export default defineComponent({
           }, {});
 
           const __selectedRestaurant: any = {};
-          (shopList.value || []).map((store, key) => {
+          (shopList.value || []).forEach((store, key) => {
             const storeId = store.storeId;
             if (storeObj[storeId]) {
               const { outOfStock, inStock } = storeObj[storeId];
@@ -279,7 +320,7 @@ export default defineComponent({
         return;
       }
 
-      (shopList.value || []).map((store, key) => {
+      (shopList.value || []).forEach((store, key) => {
         const restaurantId = selectedRestaurant.value[key];
         const outOfStock = outOfStockData.value[key];
         const inStock = inStockData.value[key];

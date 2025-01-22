@@ -1,4 +1,4 @@
-import * as functions from "firebase-functions";
+import * as functions from "firebase-functions/v1";
 import { stripe_regions } from "../common/constant";
 import Stripe from "stripe";
 import * as Sentry from "@sentry/node";
@@ -78,7 +78,7 @@ export const get_stripe = () => {
   if (!STRIPE_SECRET_KEY) {
     throw new functions.https.HttpsError("invalid-argument", "The functions requires STRIPE_SECRET_KEY.");
   }
-  return new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2020-08-27" });
+  return new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2024-12-18.acacia" });
 };
 
 export const required_params = (params) => {

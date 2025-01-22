@@ -302,6 +302,8 @@ import {
 import { AnalyticsMenuData } from "@/lib/firebase/analytics";
 import Promotion from "@/models/promotion";
 
+import { useHead } from "@unhead/vue";
+
 import {
   array2obj,
   arraySum,
@@ -377,18 +379,6 @@ export default defineComponent({
       required: true,
     },
   },
-  metaInfo() {
-    // TODO: add area to header
-    return {
-      title:
-        Object.keys(this.shopInfo).length == 0
-          ? document.title
-          : [
-              this.shopInfo?.restaurantName || "",
-              ownPlateConfig.restaurantPageTitle || defaultTitle,
-            ].join(" / "),
-    };
-  },
   setup(props) {
     const store = useStore();
     const route = useRoute();
@@ -408,6 +398,16 @@ export default defineComponent({
     const multiple = store.getters.stripeRegion.multiple;
 
     const basePath = useBasePath();
+
+    useHead({
+      title:
+        Object.keys(props.shopInfo).length === 0
+          ? document.title
+          : [
+              props.shopInfo?.restaurantName || "",
+              ownPlateConfig.restaurantPageTitle || defaultTitle,
+            ].join(" / "),
+    });
 
     const defaultHowToReceive = (() => {
       // for 333
@@ -533,14 +533,14 @@ export default defineComponent({
     });
     // lunch or dinner
     const hasDinnerOnlyOrder = computed(() => {
-      return Object.keys(orders.value).some((menuId) => {
-        const item = menuObj.value[menuId];
+      return Object.keys(orders.value).some((currentMenuId) => {
+        const item = menuObj.value[currentMenuId];
         return item && onlyLunchOrDinner(item).onlyDinner;
       });
     });
     const hasLunchOnlyOrder = computed(() => {
-      return Object.keys(orders.value).some((menuId) => {
-        const item = menuObj.value[menuId];
+      return Object.keys(orders.value).some((currentMenuId) => {
+        const item = menuObj.value[currentMenuId];
         return item && onlyLunchOrDinner(item).onlyLunch;
       });
     });
@@ -562,20 +562,12 @@ export default defineComponent({
     });
     //
 
-    const totalPrice = computed(() => {
-      const subTotal = prices2subtotal(prices.value);
-      const total = subtotal2total(subTotal, cartItems.value, props.shopInfo);
-      return { subTotal, total };
-    });
     const trimmedSelectedOptions = computed(() => {
       return getTrimmedSelectedOptions(
         orders.value,
         cartItems.value,
         selectedOptions.value,
       ) as any;
-    });
-    const postOptions = computed(() => {
-      return getPostOption(trimmedSelectedOptions.value, cartItems.value);
     });
     const prices = computed(() => {
       return getPrices(
@@ -584,6 +576,14 @@ export default defineComponent({
         cartItems.value,
         trimmedSelectedOptions.value,
       );
+    });
+    const totalPrice = computed(() => {
+      const subTotal = prices2subtotal(prices.value);
+      const total = subtotal2total(subTotal, cartItems.value, props.shopInfo);
+      return { subTotal, total };
+    });
+    const postOptions = computed(() => {
+      return getPostOption(trimmedSelectedOptions.value, cartItems.value);
     });
 
     const didOrderdChange = (eventArgs: {
@@ -618,9 +618,9 @@ export default defineComponent({
       const name = await (async () => {
         if (isLiffUser.value) {
           try {
-            const user = (await liff.getProfile()) || {};
-            return user.displayName;
-          } catch (e) {
+            const currentUser = (await liff.getProfile()) || {};
+            return currentUser.displayName;
+          } catch (__e) {
             return "";
           }
         }
@@ -675,9 +675,9 @@ export default defineComponent({
 
         try {
           const checkoutMenus: AnalyticsMenuData[] = [];
-          Object.keys(orders.value).forEach((menuId) => {
-            orders.value[menuId].forEach((quantity: number) => {
-              const menu = Object.assign({}, cartItems.value[menuId]);
+          Object.keys(orders.value).forEach((currentMenuId) => {
+            orders.value[currentMenuId].forEach((quantity: number) => {
+              const menu = Object.assign({}, cartItems.value[currentMenuId]);
               menu.quantity = quantity;
               checkoutMenus.push(menu);
             });
@@ -703,7 +703,7 @@ export default defineComponent({
         }
       } catch (error: any) {
         if (error.code === "permission-denied" && retryCount.value < 3) {
-          retryCount.value++;
+          retryCount.value += 1;
           console.log("retrying:", retryCount.value);
           setTimeout(() => {
             goCheckout();
@@ -768,9 +768,9 @@ export default defineComponent({
       }
     });
     onUnmounted(() => {
-      if (isShowCart.value) {
-        document.body.style.position = "";
-      }
+      // if (isShowCart.value) {
+      document.body.style.position = "";
+      // }
     });
 
     const filteredTitleLists = computed(() => {

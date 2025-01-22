@@ -14,11 +14,9 @@
       />
 
       <div>
-        <div
-          class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4 text-center font-bold"
-        >
+        <div class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4 font-bold">
           <div>
-            注文が入ったときに、スター精密のレシートプリンターから自動的に注文内容を印刷する機能です。
+            {{ $t("printer.description") }}
           </div>
           <a
             href="https://docs.omochikaeri.com/manuals/printer.pdf"
@@ -28,33 +26,37 @@
             {{ $t("menu.printerManualLink") }}
           </a>
         </div>
-        <div class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4 text-center">
-          <div class="pb-2 text-sm font-bold">CloudPRNT Server URL</div>
+        <div class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4">
+          <div class="pb-2 text-sm font-bold">
+            {{ $t("printer.serverURL") }}
+          </div>
           <o-input
             type="textarea"
             rows="2"
             readonly
             v-model="printerAddress"
+            rootClass="w-full"
           ></o-input>
           <div v-if="printerAddress">
-            こちらのURLをプリンターに設定してください。
+            {{ $t("printer.guidance") }}
           </div>
         </div>
 
-        <div class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4 text-center">
-          <div class="pb-2 text-sm font-bold">Reset Server URL</div>
-          <o-button @click="reset" class="b-reset-tw">
+        <div class="mx-6 mt-4 p-4 text-center">
+          <button @click="reset" class="b-reset-tw">
             <div
               class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
               style="min-width: 8rem"
             >
-              <span class="text-base font-bold text-white"> Reset </span>
+              <span class="text-base font-bold text-white">{{
+                $t("printer.reset")
+              }}</span>
             </div>
-          </o-button>
+          </button>
         </div>
 
         <div
-          class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4 text-center"
+          class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4"
           v-if="false"
         >
           <div class="pb-2 text-sm font-bold">
@@ -65,7 +67,7 @@
         </div>
 
         <div
-          class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4 text-center"
+          class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4"
           v-if="false"
         >
           <div class="pb-2 text-sm font-bold">Logs</div>
@@ -108,8 +110,12 @@ export default defineComponent({
       db,
       `restaurants/${restaurantId.value}/private/printer`,
     );
-    onSnapshot(restaurantRef, (doc) => {
-      const data = doc.data();
+    const reset = () => {
+      const newKey = doc(collection(db, "a")).id;
+      setDoc(restaurantRef, { key: newKey }, { merge: true });
+    };
+    onSnapshot(restaurantRef, (_doc) => {
+      const data = _doc.data();
       if (data === undefined) {
         reset();
       }
@@ -128,10 +134,6 @@ export default defineComponent({
       }
       return "";
     });
-    const reset = () => {
-      const newKey = doc(collection(db, "a")).id;
-      setDoc(restaurantRef, { key: newKey }, { merge: true });
-    };
     return {
       notFound,
       printerConfig,

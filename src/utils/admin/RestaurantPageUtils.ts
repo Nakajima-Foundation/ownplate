@@ -167,11 +167,7 @@ export const shopInfoValidator = (
     err[name] = [];
   });
   // validate pickUpMinimumCookTime
-  if (!Number.isInteger(shopInfo["pickUpMinimumCookTime"])) {
-    (err["pickUpMinimumCookTime"] as string[]).push(
-      "validationError." + name + ".notNumbery",
-    );
-  } else {
+  if (Number.isInteger(shopInfo["pickUpMinimumCookTime"])) {
     if (shopInfo["pickUpMinimumCookTime"] > 24 * 60 * 7) {
       (err["pickUpMinimumCookTime"] as string[]).push(
         "validationError." + name + ".tooMuch",
@@ -182,7 +178,12 @@ export const shopInfoValidator = (
         "validationError." + name + ".negative",
       );
     }
+  } else {
+    (err["pickUpMinimumCookTime"] as string[]).push(
+      "validationError." + name + ".notNumbery",
+    );
   }
+
   if (
     !reservationTheDayBefore.some(
       (day: { messageKey: string; value: number }) =>
@@ -229,7 +230,7 @@ export const shopInfoValidator = (
       : [];
 
   const errorTime: ShopInfoBussinessTimeError = {};
-  Object.keys(daysOfWeek).map((dayKey: string) => {
+  Object.keys(daysOfWeek).forEach((dayKey: string) => {
     errorTime[dayKey] = [] as string[][];
     [0, 1].forEach((key2) => {
       errorTime[dayKey].push([]);
@@ -305,7 +306,6 @@ export const copyRestaurant = async (
         a.data(),
       );
       menuListIds[a.id] = newMenu.id;
-      return;
     }),
   );
   // console.log(menus.docs);
@@ -323,7 +323,6 @@ export const copyRestaurant = async (
         a.data(),
       );
       menuListIds[a.id] = newMenu.id;
-      return;
     }),
   );
 

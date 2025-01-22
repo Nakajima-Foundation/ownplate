@@ -26,6 +26,18 @@
         @openTransactionsAct="openTransactionsAct"
         :promotions="promotions"
       />
+      <OrderPagePay
+        v-else-if="waiting_payment"
+        :shopInfo="shopInfo"
+        :orderInfo="orderInfo"
+        :orderItems="orderItems"
+        :paymentInfo="paymentInfo"
+        :deliveryData="deliveryData"
+        :menuPagePath="menuPagePath"
+        @openTransactionsAct="openTransactionsAct"
+        :promotions="promotions"
+      />
+
       <OrderPageAfter
         v-else-if="paid"
         :shopInfo="shopInfo"
@@ -62,6 +74,7 @@ import TransactionsActModal from "@/app/user/TransactionsAct/Modal.vue";
 
 import OrderPageBefore from "@/app/user/OrderPage/BeforePaid.vue";
 import OrderPageAfter from "@/app/user/OrderPage/AfterPaid.vue";
+import OrderPagePay from "@/app/user/OrderPage/Pay.vue";
 
 import { db } from "@/lib/firebase/firebase9";
 import { onSnapshot, doc, deleteDoc, Unsubscribe } from "firebase/firestore";
@@ -80,26 +93,17 @@ import {
 } from "@/utils/utils";
 
 import { useRoute, onBeforeRouteLeave } from "vue-router";
+import { useHead } from "@unhead/vue";
 
 import { OrderInfoData, OrderMenuItemData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 export default defineComponent({
   name: "Order",
-  metaInfo() {
-    return {
-      title: this.shopInfo?.restaurantName
-        ? [
-            this.shopInfo ? this.shopInfo?.restaurantName : "--",
-            "Order Page",
-          ].join(" / ")
-        : [defaultTitle, "Order Page"].join(" / "),
-    };
-  },
   components: {
     OrderPageBefore,
     OrderPageAfter,
-
+    OrderPagePay,
     NotFound,
     RequireLogin,
 
@@ -137,10 +141,19 @@ export default defineComponent({
     const orderInfo = ref<OrderInfoData>({} as OrderInfoData);
     const hasFriends = ref<boolean | null>(null);
     const menuObj = ref<{ [key: string]: OrderMenuItemData } | null>(null);
-    const detacher: Unsubscribe[] = [];
+    const detachers: Unsubscribe[] = [];
     const menuNotFound = ref<boolean | null>(null);
 
     const liffBasePath = useLiffBasePath();
+
+    useHead({
+      title: props.shopInfo?.restaurantName
+        ? [
+            props.shopInfo ? props.shopInfo?.restaurantName : "--",
+            "Order Page",
+          ].join(" / ")
+        : [defaultTitle, "Order Page"].join(" / "),
+    });
 
     const orderId = route.params.orderId as string;
     const orderError = computed(() => {
@@ -148,6 +161,9 @@ export default defineComponent({
     });
     const just_validated = computed(() => {
       return orderInfo.value.status === order_status.validation_ok;
+    });
+    const waiting_payment = computed(() => {
+      return orderInfo.value.status === order_status.waiting_payment;
     });
     const paid = computed(() => {
       return orderInfo.value.status >= order_status.order_placed;
@@ -166,7 +182,7 @@ export default defineComponent({
     const loadUserData = async () => {
       const order_detacher = onSnapshot(
         doc(db, `restaurants/${restaurantId.value}/orders/${orderId}`),
-        async (order) => {
+        (order) => {
           const order_data = order.exists() ? order.data() : {};
           orderInfo.value = order_data as OrderInfoData;
           menuObj.value = orderInfo.value.menuItems || {};
@@ -186,7 +202,7 @@ export default defineComponent({
           menuNotFound.value = true;
         },
       );
-      detacher.push(order_detacher);
+      detachers.push(order_detacher);
 
       if (hasLine.value) {
         const ret = await lineVerifyFriend({
@@ -212,7 +228,7 @@ export default defineComponent({
           doc(db, `restaurants/${restaurantId.value}/orders/${orderId}`),
         );
         console.log("suceeded");
-      } catch (error) {
+      } catch (__error) {
         console.log("failed");
       }
     };
@@ -237,8 +253,8 @@ export default defineComponent({
     });
 
     onUnmounted(() => {
-      if (detacher) {
-        detacher.map((detacher) => {
+      if (detachers) {
+        detachers.forEach((detacher) => {
           detacher();
         });
       }
@@ -253,6 +269,7 @@ export default defineComponent({
       menuNotFound,
       orderError,
       just_validated,
+      waiting_payment,
       paid,
 
       orderInfo,

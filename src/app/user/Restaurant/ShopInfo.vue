@@ -9,7 +9,7 @@
       </div>
       <div class="mx-4 mt-4 pb-2">
         <a target="_blank" :href="mapQuery">
-          <a class="inline-flex items-center justify-center">
+          <div class="inline-flex items-center justify-center">
             <i class="material-icons mr-2 text-lg text-op-teal">place</i>
             <div class="text-sm font-bold text-op-teal">
               <div v-if="region === 'JP'">
@@ -22,7 +22,7 @@
                 {{ shopInfo.state }} {{ shopInfo.zip }}
               </div>
             </div>
-          </a>
+          </div>
         </a>
       </div>
     </div>
@@ -74,7 +74,7 @@
       <div class="mt-4 text-center">
         <a
           @click="toggleMoreInfo()"
-          class="inline-flex h-9 w-32 items-center justify-center rounded-full bg-black bg-opacity-5"
+          class="inline-flex h-9 w-32 items-center justify-center rounded-full bg-black bg-opacity-5 cursor-pointer"
         >
           <div class="text-sm font-bold text-op-teal">
             <template v-if="moreInfo">{{ $t("shopInfo.viewLess") }}</template>
@@ -371,20 +371,18 @@ export default defineComponent({
 
     const isOpen = computed(() => {
       return Object.keys(daysOfWeek).reduce(
-        (tmp: { [key: string]: boolean }, day) => {
+        (tmpObj: { [key: string]: boolean }, day) => {
           if (weekday === Number(day) && businessDay.value[day]) {
             // get now and compaire
-            const res = openTimes.value[day].reduce((tmp, time) => {
+            const res = openTimes.value[day].reduce((tmpOpen, time) => {
               const now = today.getHours() * 60 + today.getMinutes();
-              const ret = now >= time.start && now <= time.end;
-              tmp = tmp || ret;
-              return tmp;
+              return tmpOpen || (now >= time.start && now <= time.end);
             }, false);
-            tmp[day] = res;
+            tmpObj[day] = res;
           } else {
-            tmp[day] = false;
+            tmpObj[day] = false;
           }
-          return tmp;
+          return tmpObj;
         },
         {},
       );

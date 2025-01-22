@@ -55,31 +55,20 @@ canvas {
   height: initial;
 }
 
+.button[disabled] {
+  background-color: transparent !important;
+}
+
+.button {
+  box-shadow: none !important;
+}
+
 /* OwnPlate Dialog for b-model */
 .modal-background {
-  background-color: rgba(0, 0, 0, 0.5)!important;
+  background-color: rgba(0, 0, 0, 0.5) !important;
 }
 .modal .animation-content {
   margin: 0;
-}
-
-/* OwnPlate Side Bar */
-.b-sidebar {
-  position: absolute;
-}
-.b-sidebar .sidebar-background {
-  background-color: rgba(0, 0, 0, 0.5)!important;
-}
-.b-sidebar .sidebar-content.is-fullheight {
-  background: #ffffff!important;
-}
-.b-sidebar .sidebar-content {
-  position: fixed;
-  background: #ffffff!important;
-/*
-  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1)!important;
-  width: 288px;
-*/
 }
 
 .validation_ok,
@@ -144,6 +133,10 @@ canvas {
 
 /* Workaround for Bulma and Oruga input field */
 /* https://oruga.io/components/Input.html */
+.control {
+  position: relative;
+}
+
 .control .icon.is-right {
   display: flex;
   position: absolute;
@@ -152,6 +145,61 @@ canvas {
   height: auto;
   width: 40px;
 }
+
 .select .icon.is-right {
   display: none;
+}
+
+.field .has-addons {
+  display: inherit !important;
+}
+
+/* 2024/10/04
+ * 以下のバージョンへあげた際のスタイル崩れを修正
+ * @oruga-ui/theme-bulma”: “^0.4.1"
+ * 影響箇所：input、textarea
+ * 対象画面：ログイン、店情報の変更、商品登録
+ */
+.field .control.has-icons-right {
+  display: block !important;
+}
+
+/* 2024/10/05
+ * 以下のバージョンへあげた際に色が黒っぽくなる現象を修正
+ * @oruga-ui/theme-bulma”: “^0.4.1"
+ * 影響箇所：サイドバーを開いたときの背景色
+ */
+.sidebar .sidebar-background {
+  background-color: #00000080 !important;
+}
+
+/*
+ * add for
+ * @oruga-ui/theme-bulma”: “^0.4.1"
+ * text color of success events
+ * ref: PhoneLogin.vue, PhoneEntry.vue
+ */
+.help.is-success {
+  color: #16a34aff !important;
+}
+
+.has-text-success {
+  color: #48c78e !important;
+}
+
+.mdi-alert-circle {
+  color: #f14668 !important;
+}
+
+/* OwnPlate Side Bar */
+.sidebar .sidebar-content {
+  background-color: #ffffff !important;
+}
+
+a {
+  color: #485fc7;
+
+  &:hover {
+    color: #363636;
+  }
 }

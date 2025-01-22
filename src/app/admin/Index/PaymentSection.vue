@@ -171,7 +171,7 @@ export default defineComponent({
     });
 
     const refPayment = doc(db, `/admins/${uid.value}/public/payment`);
-    stripe_connnect_detacher = onSnapshot(refPayment, async (snapshot) => {
+    stripe_connnect_detacher = onSnapshot(refPayment, (snapshot) => {
       if (snapshot.exists()) {
         paymentInfo.value = snapshot.data();
         inStorePayment.value = paymentInfo.value.inStore;
@@ -186,7 +186,6 @@ export default defineComponent({
     watch(inStorePayment, (newValue) => {
       if (newValue !== paymentInfo.value.inStore) {
         //console.log("************* inStorePayment change", newValue);
-        const refPayment = doc(db, `/admins/${uid.value}/public/payment`);
         setDoc(
           refPayment,
           {
@@ -226,7 +225,7 @@ export default defineComponent({
 
       location.href = `https://connect.stripe.com/oauth/authorize?${queryString}`;
     };
-    const handlePaymentAccountDisconnect = async () => {
+    const handlePaymentAccountDisconnect = () => {
       store.commit("setAlert", {
         code: "admin.payments.reallyDisconnectStripe",
         callback: async () => {
