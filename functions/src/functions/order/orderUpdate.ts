@@ -1,4 +1,4 @@
-import * as functions from "firebase-functions";
+import * as functions from "firebase-functions/v1";
 import * as admin from "firebase-admin";
 import moment from "moment-timezone";
 
@@ -47,10 +47,14 @@ const getPaymentIntent = async (
   const paymentIntentId = stripeRecord.paymentIntent.id;
 
   const idempotencyKey = getHash([order.id, paymentIntentId].join("-"));
-  return await stripe.paymentIntents.confirm(paymentIntentId, {
-    idempotencyKey,
-    stripeAccount,
-  });
+  return await stripe.paymentIntents.capture(
+    paymentIntentId,
+    { expand: ["latest_charge"] },
+    {
+      idempotencyKey,
+      stripeAccount,
+    },
+  );
 };
 
 // This function is called by admins (restaurant operators) to update the status of order
@@ -104,8 +108,11 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
       }
 
       const customerUid = order.uid;
-      const stripeReadOnlyRef = db.doc(`/users/${customerUid}/readonly/stripe`);
-      const stripeReadOnly = (await transaction.get(stripeReadOnlyRef)).data();
+      const stripeReadOnlyRef = db.doc(`/users/${customerUid}/owner/${restaurantOwnerUid}/readonly/stripe`);
+      (await transaction.get(stripeReadOnlyRef)).data();
+
+      const stripeSystemRef = db.doc(`/users/${customerUid}/owner/${restaurantOwnerUid}/system/stripe`);
+      const stripeSystem = (await transaction.get(stripeSystemRef)).data();
 
       // everything are ok
       const updateTimeKey = timeEventMapping[order_status_keys[status]];
@@ -126,10 +133,29 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
       }
       await transaction.update(orderRef, updateData as { [x: string]: any });
       if (isStripeProcess) {
+        const { payment_method, payment_method_details } = (paymentIntent as any).latest_charge;
+
         await transaction.set(stripeRef, { paymentIntent }, { merge: true });
-        if (stripeReadOnly) {
-          await transaction.update(stripeReadOnlyRef, {
+        // customer
+        if (payment_method && order.isSavePay && stripeSystem) {
+          const { card } = payment_method_details;
+          const { exp_month, exp_year, brand, last4 } = card;
+          await transaction.set(stripeReadOnlyRef, {
+            card: { exp_month, exp_year, brand, last4 },
             updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+          });
+          const stripe = utils.get_stripe();
+          const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
+          await stripe.paymentMethods.attach(
+            payment_method,
+            {
+              customer: stripeSystem.customerId,
+            },
+            { stripeAccount },
+          );
+          await transaction.set(stripeSystemRef, {
+            customerId: stripeSystem.customerId,
+            payment_method,
           });
         }
       }

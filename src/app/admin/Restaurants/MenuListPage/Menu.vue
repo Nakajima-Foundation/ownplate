@@ -51,7 +51,7 @@
 
         <!-- Item Details -->
         <a class="flow-root" @click="linkEdit">
-          <div class="float-right p-4">
+          <div class="float-right p-4 cursor-pointer">
             <div v-if="image">
               <img
                 :src="image"

@@ -1,6 +1,6 @@
 import * as admin from "firebase-admin";
 
-import * as functions from "firebase-functions";
+import * as functions from "firebase-functions/v1";
 // import * as admin from 'firebase-admin';
 import * as utils from "../lib/utils";
 import { subAccountInvitate, subAccountInvitationAcceptDeny, subAccountDeleteChildData } from "../lib/types";
@@ -71,7 +71,7 @@ export const invitationValidateProcess = async (
   db,
   data: subAccountInvitationAcceptDeny,
   context: functions.https.CallableContext | Context,
-  callback: (adminUid: string, messageData: admin.firestore.DocumentData, messageRef: admin.firestore.DocumentReference) => Promise<void>,  
+  callback: (adminUid: string, messageData: admin.firestore.DocumentData, messageRef: admin.firestore.DocumentReference) => Promise<void>,
 ) => {
   // check admin and is not child yet.
   const { messageId } = data;
@@ -91,7 +91,7 @@ const childInvitationProcess = async (
   db: any,
   data: subAccountInvitationAcceptDeny,
   context: functions.https.CallableContext | Context,
-  callback: (messageData: admin.firestore.DocumentData, messageRef: admin.firestore.DocumentReference) => Promise<void>,  
+  callback: (messageData: admin.firestore.DocumentData, messageRef: admin.firestore.DocumentReference) => Promise<void>,
 ) => {
   await invitationValidateProcess(db, data, context, async (adminUid: string, messageData: admin.firestore.DocumentData, messageRef: admin.firestore.DocumentReference) => {
     if (messageData.type === "childInvitation") {

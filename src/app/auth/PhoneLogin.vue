@@ -70,7 +70,6 @@
 
         <ButtonSubmit
           id="button-send-tel"
-          @submit="handleSubmit"
           :disabled="!readyToSendSMS"
           class="ml-4"
           :isLoading="isLoading"
@@ -124,6 +123,7 @@
                 v-model="name"
                 maxlength="32"
                 :placeholder="$t('sms.typeUserName')"
+                expanded
               />
             </o-field>
           </div>
@@ -138,7 +138,6 @@
 
         <ButtonSubmit
           id="button-send-code"
-          @submit="handleCode"
           :disabled="!readyToSendVerificationCode"
           class="ml-4"
           :isLoading="isLoading"
@@ -204,7 +203,6 @@ export default defineComponent({
     let recaptchaVerifier: ApplicationVerifier | null = null;
 
     const isLocaleJapan = useIsLocaleJapan();
-
     onMounted(() => {
       recaptchaVerifier = new RecaptchaVerifier(auth, "signInButton", {
         size: "invisible",

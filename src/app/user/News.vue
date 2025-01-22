@@ -34,14 +34,14 @@ import MarkdownIt from "markdown-it";
 import newsList from "@/app/admin/News/data";
 
 import { defaultTitle } from "@/utils/utils";
+import { useHead } from "@unhead/vue";
 
 export default defineComponent({
-  metaInfo() {
-    return {
-      title: ["News", defaultTitle].join(" / "),
-    };
-  },
   setup() {
+    useHead({
+      title: ["News", defaultTitle].join(" / "),
+    });
+
     return {
       md: new MarkdownIt(),
       newsList,

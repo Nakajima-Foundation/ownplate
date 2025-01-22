@@ -124,6 +124,30 @@
           >
           <span class="text-xs opacity-50">(2023/10/07)</span>
         </div>
+        <div>
+          <router-link
+            to="/admin/docs/articles/article240725_lead_time_management/"
+            class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
+            >営業時間、受け渡し準備時間等の設定ガイド：お弁当から給食まで、多様なビジネスモデルに対応</router-link
+          >
+          <span class="text-xs opacity-50">(2024/07/31)</span>
+        </div>
+        <div>
+          <router-link
+            to="/admin/docs/articles/article240727_configurations_of_dishes/"
+            class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
+            >商品設定の活用方法：オプション、ランチ/ディナー切り替え、販売除外日/時間</router-link
+          >
+          <span class="text-xs opacity-50">(2024/07/31)</span>
+        </div>
+        <div>
+          <router-link
+            to="/admin/docs/articles/article240817_stripe_payouts/"
+            class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
+            >オンライン決済(Stripe)利用時の入金スケジュールの確認と設定方法について</router-link
+          >
+          <span class="text-xs opacity-50">(2024/08/19)</span>
+        </div>
       </div>
 
       <div class="mt-4 text-sm font-bold">役立つリンク</div>

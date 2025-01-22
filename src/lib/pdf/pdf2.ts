@@ -188,6 +188,17 @@ const priceString = (price: number) => {
   return "¥" + Number(price).toLocaleString() + "";
 };
 
+export const displayOption = (options: string[]) => {
+  return options
+    .filter((choice: string) => choice)
+    .map((choice: string) => {
+      return formatOption(choice, (price: number) =>
+        Number(price).toLocaleString(),
+      );
+    })
+    .join(", ");
+};
+
 export const printOrderData = (
   restaurantInfo: RestaurantInfoData,
   orderInfo: OrderInfoData,
@@ -420,15 +431,4 @@ export const data2UrlSchema = (data: string, size: string): string => {
     "&size=" +
     size;
   return passprnt_uri;
-};
-
-export const displayOption = (options: string[]) => {
-  return options
-    .filter((choice: string) => choice)
-    .map((choice: string) => {
-      return formatOption(choice, (price: number) =>
-        Number(price).toLocaleString(),
-      );
-    })
-    .join(", ");
 };

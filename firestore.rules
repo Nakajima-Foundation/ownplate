@@ -106,7 +106,7 @@ service cloud.firestore {
         allow read, write: if request.auth.uid == userId; // Only the person can r/w.
         allow read, write: if false; // paranoia
       }
-      match /readonly/stripe {
+      match /owner/{ownerId}/readonly/stripe {
         allow read: if request.auth.uid == userId && (resource.data.updatedAt + duration.value(180, 'd')) > request.time;
       }
       match /system/{document=**} {

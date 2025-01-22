@@ -25,29 +25,29 @@
           {{ $t("delivery.deliveryLocation") }}
         </div>
         <div class="mb-2">
-          <GMapMap
-            :center="shopInfo.location"
-            :options="{ fullscreenControl: false }"
-            :zoom="15"
-            style="height: 500px"
+          <GoogleMap
+            :api-key="apiKey"
+            style="width: 100%; height: 50vh"
+            :center="computedCenter"
+            :zoom="12"
           >
-            <GMapMarker
-              :position="customer.location"
+            <Marker2
               :options="{
+                position: customer.location,
                 icon: {
                   url: 'http://maps.google.co.jp/mapfiles/ms/icons/blue-dot.png',
                 },
               }"
             />
-            <GMapMarker
-              :position="shopInfo.location"
+            <Marker2
               :options="{
+                position: shopInfo.location,
                 icon: {
                   url: 'http://maps.google.co.jp/mapfiles/ms/icons/restaurant.png',
                 },
               }"
             />
-          </GMapMap>
+          </GoogleMap>
         </div>
       </template>
       <div class="text-base font-bold">{{ $t("order.ec.phone") }}</div>
@@ -59,22 +59,52 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref, computed, PropType } from "vue";
+import { GoogleMap, Marker as Marker2 } from "vue3-google-map";
+import { GAPIKey } from "@/config/project";
 
 export default defineComponent({
+  components: { GoogleMap, Marker2 },
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<{
+        location: { lat: number; lng: number };
+      }>,
       required: true,
     },
     customer: {
-      type: Object,
+      type: Object as PropType<{
+        location: { lat: number; lng: number };
+      }>,
       required: true,
     },
     phoneNumber: {
       type: String,
       required: false,
     },
+  },
+  setup(props) {
+    const info_windows = ref(null);
+    const apiKey = GAPIKey;
+
+    const computedCenter = computed(() => {
+      if (
+        props.customer?.location &&
+        props.shopInfo?.location // &&
+      ) {
+        return {
+          lat: (props.customer.location.lat + props.shopInfo.location.lat) / 2,
+          lng: (props.customer.location.lng + props.shopInfo.location.lng) / 2,
+        };
+      }
+      return { lat: 35.6762, lng: 139.6503 };
+    });
+
+    return {
+      info_windows,
+      computedCenter,
+      apiKey,
+    };
   },
 });
 </script>

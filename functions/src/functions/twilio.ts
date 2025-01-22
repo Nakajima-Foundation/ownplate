@@ -12,7 +12,7 @@ export const parsedNumber = (restaurant) => {
   const countryCode = restaurant.countryCode;
   try {
     return parsePhoneNumber(countryCode + restaurant.phoneNumber);
-  } catch (error) {
+  } catch (__error) {
     return null;
   }
 };

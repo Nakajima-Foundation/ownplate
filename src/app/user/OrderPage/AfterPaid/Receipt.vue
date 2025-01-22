@@ -48,7 +48,7 @@ export default defineComponent({
         if (res.data && res.data.receipt_url) {
           window.open(res.data.receipt_url);
         }
-      } catch (e) {
+      } catch (__e) {
         console.log("error");
       }
       isLoadingReceipt.value = false;

@@ -82,7 +82,6 @@ import {
 } from "firebase/firestore";
 
 import { midNight } from "@/utils/dateUtils";
-import { order_status } from "@/config/constant";
 import moment from "moment";
 
 import OrderedInfo from "@/app/admin/Order/OrderedInfo.vue";
@@ -97,12 +96,14 @@ import {
   notFoundResponse,
   useRestaurantId,
   defaultTitle,
+  orderFilter,
 } from "@/utils/utils";
 import { checkShopAccount } from "@/utils/userPermission";
 import { useAdminConfigToggle } from "@/utils/admin/Toggle";
 
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
+import { useHead } from "@unhead/vue";
 
 export default defineComponent({
   components: {
@@ -110,15 +111,6 @@ export default defineComponent({
     ToggleSwitch,
     NotFound,
     AdminHeader,
-  },
-  metaInfo() {
-    return {
-      title: this.shopInfo.restaurantName
-        ? ["Admin Order List", this.shopInfo.restaurantName, defaultTitle].join(
-            " / ",
-          )
-        : defaultTitle,
-    };
   },
   props: {
     shopInfo: {
@@ -135,7 +127,18 @@ export default defineComponent({
     const dayIndex = ref(0);
     const restaurantId = useRestaurantId();
 
+    // eslint-disable-next-line no-empty-function
     let order_detacher = () => {};
+
+    useHead({
+      title: props.shopInfo.restaurantName
+        ? [
+            "Admin Order List",
+            props.shopInfo.restaurantName,
+            defaultTitle,
+          ].join(" / ")
+        : defaultTitle,
+    });
 
     const { ownerUid, uid } = useAdminUids();
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
@@ -207,7 +210,7 @@ export default defineComponent({
         (result) => {
           orders.value = result.docs
             .map(doc2data("order"))
-            .filter((a) => a.status !== order_status.transaction_hide)
+            .filter(orderFilter)
             .sort((order0, order1) => {
               if (order0.status === order1.status) {
                 const aTime = order0.timeEstimated || order0.timePlaced;

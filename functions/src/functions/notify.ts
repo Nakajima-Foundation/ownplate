@@ -16,9 +16,6 @@ import * as ses from "./ses";
 
 const LINE_MESSAGE_TOKEN = process.env.LINE_MESSAGE_TOKEN || "";
 
-const aws_key = process.env.AWS_ID;
-const aws_secret = process.env.AWS_SECRET;
-
 // for customer
 export const sendMessageToCustomer = async (
   db: admin.firestore.Firestore,
@@ -28,7 +25,7 @@ export const sendMessageToCustomer = async (
   orderData: admin.firestore.DocumentData,
   restaurantId: string,
   orderId: string,
-  params: object = {},
+  params: Record<string, any> = {},
   forceSMS: boolean = false,
 ) => {
   const orderNumber = utils.nameOfOrder(orderData.number);
@@ -73,7 +70,7 @@ export const sendMessageToCustomer = async (
   }
   // force SMS ( for cancel and change order)
   if (forceSMS && orderData.phoneNumber) {
-    await sms.pushSMS(aws_key, aws_secret, "omochikaeri", getMessage(url), orderData.phoneNumber, false);
+    await sms.pushSMS("omochikaeri", getMessage(url), orderData.phoneNumber);
   }
 };
 

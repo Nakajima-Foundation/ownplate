@@ -46,7 +46,7 @@
             </div>
           </div>
           <div v-if="false" class="text-xs mt-2">
-            翌日以降の受け渡しとなります。
+            {{ $t("sitemenu.pickupAvailableAfterToday") }}
           </div>
         </div>
 
@@ -80,7 +80,10 @@
           </div>
 
           <!-- Allergens -->
-          <div v-if="allergens.length > 0" class="mt-2 text-xs font-bold">
+          <div
+            v-if="allergens.length > 0"
+            class="mt-2 text-xs font-bold text-neutral-600"
+          >
             {{ allergensDescription }}
           </div>
         </div>
@@ -198,14 +201,14 @@
                   class="rounded-lg bg-black bg-opacity-5 p-4"
                 >
                   <div v-if="option.length === 1" class="field">
-                    <o-checkbox
+                    <t-checkbox
                       :modelValue="selectedOptions[quantityKey][index]"
                       @update:modelValue="
                         updateSelectedOptions(quantityKey, index, $event)
                       "
                       ><div class="text-sm font-bold">
                         {{ displayOption(option[0], shopInfo, item) }}
-                      </div></o-checkbox
+                      </div></t-checkbox
                     >
                   </div>
                   <div v-else class="field">
@@ -263,7 +266,7 @@
                   <div>
                     <a
                       @click="pullQuantities(quantityKey)"
-                      class="removeCart inline-flex h-9 w-24 items-center justify-center rounded-full bg-red-700 bg-opacity-10"
+                      class="removeCart inline-flex h-9 w-24 items-center justify-center rounded-full bg-red-700 bg-opacity-10 cursor-pointer"
                       :disabled="quantities[quantityKey] === 0"
                       :data-cart-product="item.id"
                     >
@@ -276,7 +279,7 @@
                   <div>
                     <a
                       @click="pushQuantities(quantityKey)"
-                      class="cardAdd inline-flex h-9 w-24 items-center justify-center rounded-full bg-op-teal bg-opacity-10"
+                      class="cardAdd inline-flex h-9 w-24 items-center justify-center rounded-full bg-op-teal bg-opacity-10 cursor-pointer"
                       :data-cart-product="item.id"
                     >
                       <i class="material-icons text-lg text-op-teal">add</i>

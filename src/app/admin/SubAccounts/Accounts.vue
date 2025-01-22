@@ -20,73 +20,107 @@
       <div class="mt-2 text-base font-bold">
         {{ $t("admin.subAccounts.subaccountlist") }}
       </div>
-      <table class="w-full rounded-lg bg-white shadow">
-        <tr v-for="(child, k) in children" :key="k" class="items-center">
-          <td class="p-2">
-            <router-link :to="`/admin/subaccounts/accounts/${child.id}`">
-              {{ child.name }}({{ child.email }})
-            </router-link>
-          </td>
-          <td class="p-2">
-            <div
-              v-for="(rname, k2) in rList(child.restaurantLists)"
-              :key="`${k}_${k2}`"
-            >
-              {{ rname }}
-            </div>
-          </td>
-          <td class="p-2">
-            {{ (child.restaurantLists || []).length
-            }}{{ $t("admin.subAccounts.numberOfShops") }}
-          </td>
-          <td class="p-2">
-            {{
-              $t(
-                "admin.subAccounts.messageResult." +
-                  (child.accepted === true ? "accepted" : "waiting"),
-              )
-            }}
-          </td>
-          <td class="p-2">
-            <o-button @click="deleteChild(child.id)">
-              {{ $t("admin.subAccounts.deleteSubaccount") }}
-            </o-button>
-          </td>
-        </tr>
-      </table>
+      <div class="w-full rounded-lg bg-white shadow">
+        <table>
+          <tr>
+            <th class="pt-2 pl-2">{{ $t("admin.subAccounts.name") }}</th>
+            <th class="pt-2 pl-2">{{ $t("admin.subAccounts.linkedStore") }}</th>
+            <th class="pt-2 pl-2">
+              {{ $t("admin.subAccounts.NumberOfLinkedStores") }}
+            </th>
+            <th class="pt-2 pl-2">{{ $t("admin.subAccounts.status") }}</th>
+            <th></th>
+          </tr>
+          <tr v-for="(child, k) in children" :key="k" class="items-center">
+            <td class="p-2">
+              <router-link :to="`/admin/subaccounts/accounts/${child.id}`">
+                {{ child.name }}({{ child.email }})
+              </router-link>
+            </td>
+            <td class="p-2">
+              <div
+                v-for="(rname, k2) in rList(child.restaurantLists)"
+                :key="`${k}_${k2}`"
+              >
+                {{ rname }}
+              </div>
+            </td>
+            <td class="p-2">
+              {{ (child.restaurantLists || []).length
+              }}{{ $t("admin.subAccounts.numberOfShops") }}
+            </td>
+            <td class="p-2">
+              {{
+                $t(
+                  "admin.subAccounts.messageResult." +
+                    (child.accepted === true ? "accepted" : "waiting"),
+                )
+              }}
+            </td>
+            <td class="p-2">
+              <button @click="deleteChild(child.id)">
+                <div
+                  class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow min-w-32"
+                >
+                  <span class="text-base font-bold text-white">
+                    {{ $t("admin.subAccounts.deleteSubaccount") }}
+                  </span>
+                </div>
+              </button>
+            </td>
+          </tr>
+        </table>
+        <div class="text-xs pl-2 pb-2">
+          <span>{{ $t("admin.subAccounts.guidance") }}</span>
+        </div>
+      </div>
     </div>
-
     <div class="mx-6 mt-2">
       <span class="text-base text-xl font-bold">
         {{ $t("admin.subAccounts.invite") }}
       </span>
-
       <div class="mt-2 rounded-lg bg-white p-4 shadow">
-        <span class="text-base font-bold">
-          {{ $t("admin.subAccounts.name") }}
-        </span>
-        <o-input
-          v-model="name"
-          :placeholder="$t('admin.subAccounts.enterName')"
-        ></o-input>
-        {{ $t("admin.subAccounts.email") }} :
-        <o-input
-          v-model="email"
-          :placeholder="$t('admin.subAccounts.enterEmail')"
-        ></o-input>
+        <div>
+          <span class="text-base font-bold">
+            {{ $t("admin.subAccounts.name") }} :
+          </span>
+        </div>
+        <div>
+          <o-input
+            v-model="name"
+            :placeholder="$t('admin.subAccounts.enterName')"
+            rootClass="w-full"
+          ></o-input>
+        </div>
+        <div class="mt-2 text-base font-bold">
+          {{ $t("admin.subAccounts.email") }} :
+        </div>
+        <div>
+          <o-input
+            v-model="email"
+            :placeholder="$t('admin.subAccounts.enterEmail')"
+            rootClass="w-full"
+          ></o-input>
+        </div>
         <div class="text-xs font-bold text-red-700">
           * {{ $t("admin.subAccounts.accountNotice") }}
         </div>
         <div>
-          <o-button @click="invite" :disabled="sending">
-            {{
-              $t(
-                sending
-                  ? "admin.subAccounts.sending"
-                  : "admin.subAccounts.send",
-              )
-            }}
-          </o-button>
+          <button @click="invite" :disabled="sending">
+            <div
+              class="mt-4 inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow min-w-32"
+            >
+              <span class="text-base font-bold text-white">
+                {{
+                  $t(
+                    sending
+                      ? "admin.subAccounts.sending"
+                      : "admin.subAccounts.send",
+                  )
+                }}
+              </span>
+            </div>
+          </button>
         </div>
       </div>
       <div v-if="errors.length > 0">
@@ -149,15 +183,10 @@ import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-
+import { useHead } from "@unhead/vue";
 import moment from "moment";
 
 export default defineComponent({
-  metaInfo() {
-    return {
-      title: [defaultTitle, "Admin Subaccount Accounts"].join(" / "),
-    };
-  },
   components: {
     BackButton,
   },
@@ -175,6 +204,9 @@ export default defineComponent({
     const sending = ref(false);
 
     const { uid } = useAdminUids();
+    useHead({
+      title: [defaultTitle, "Admin Subaccount Accounts"].join(" / "),
+    });
 
     getDocs(
       query(
@@ -210,7 +242,7 @@ export default defineComponent({
 
     onUnmounted(() => {
       if (detachers.length > 0) {
-        detachers.map((d) => {
+        detachers.forEach((d) => {
           d();
         });
       }
@@ -231,8 +263,8 @@ export default defineComponent({
         .map((r) => {
           return restaurantObj.value[r]?.restaurantName;
         })
-        .filter((name) => {
-          return !!name;
+        .filter((_name) => {
+          return !!_name;
         })
         .slice(0, 2);
     };
@@ -250,7 +282,7 @@ export default defineComponent({
         } else {
           errors.value = ["admin.subAccounts.inviteInputError"];
         }
-      } catch (e) {
+      } catch (__e) {
         errors.value = ["admin.subAccounts.inviteInputError"];
       }
       sending.value = false;

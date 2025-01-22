@@ -60,7 +60,7 @@ export const useMenu = (restaurantId: Ref<string>) => {
   const setCache = (cache: MenuData[]) => {
     menuCache.value = cache;
   };
-  const loadMenu = async (callback?: () => void) => {
+  const loadMenu = (callback?: () => void) => {
     detacheMenu();
     if (menuCache.value.length > 0) {
       return;
@@ -73,7 +73,9 @@ export const useMenu = (restaurantId: Ref<string>) => {
     );
 
     menuDetacher.value = onSnapshot(query(menuQuery), (menu) => {
-      if (!menu.empty) {
+      if (menu.empty) {
+        menuCache.value = [];
+      } else {
         const ret = menu.docs
           .filter((a) => {
             const data = a.data();
@@ -84,8 +86,6 @@ export const useMenu = (restaurantId: Ref<string>) => {
         if (callback) {
           callback();
         }
-      } else {
-        menuCache.value = [];
       }
     });
   };

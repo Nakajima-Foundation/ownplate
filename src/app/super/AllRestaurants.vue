@@ -135,12 +135,9 @@ import {
   collection,
 } from "firebase/firestore";
 
+import { useHead } from "@unhead/vue";
+
 export default defineComponent({
-  metaInfo() {
-    return {
-      title: [defaultTitle, "Super All Restaurants"].join(" / "),
-    };
-  },
   components: {
     BackButton,
     DownloadCsv,
@@ -151,6 +148,10 @@ export default defineComponent({
     let isLoading = false;
     const restaurants = ref<RestaurantInfoData[]>([]);
     const last = ref<any | null>(null);
+
+    useHead({
+      title: [defaultTitle, "Super All Restaurants"].join(" / "),
+    });
 
     superPermissionCheck();
 
@@ -166,13 +167,13 @@ export default defineComponent({
           myQuery = query(myQuery, startAfter(last.value));
         }
         const snapshot = await getDocs(myQuery);
-        if (!snapshot.empty) {
+        if (snapshot.empty) {
+          last.value = null;
+        } else {
           last.value = snapshot.docs[snapshot.docs.length - 1];
           snapshot.docs.map(doc2data("resuatraut")).forEach((data) => {
             restaurants.value.push(data as RestaurantInfoData);
           });
-        } else {
-          last.value = null;
         }
       }
       isLoading = false;

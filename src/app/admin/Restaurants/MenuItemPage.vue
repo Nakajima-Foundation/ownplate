@@ -121,6 +121,7 @@
               <div>
                 <o-field
                   :variant="errors['price'].length > 0 ? 'danger' : 'success'"
+                  class="has-addons"
                 >
                   <o-input
                     v-model="menuInfo.price"
@@ -131,11 +132,9 @@
                     min="0.00"
                     expanded
                   ></o-input>
-                  <div>
-                    <span class="button is-static">
-                      {{ $t("currency." + currencyKey) }}
-                    </span>
-                  </div>
+                  <span class="button is-static">
+                    {{ $t("currency." + currencyKey) }}
+                  </span>
                 </o-field>
               </div>
             </div>
@@ -746,25 +745,12 @@ import { checkShopOwner } from "@/utils/userPermission";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
+import { useHead } from "@unhead/vue";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 export default defineComponent({
   name: "MenuItemPage",
-  metaInfo() {
-    return {
-      title:
-        this.menuInfo && this.menuInfo.itemName
-          ? [
-              "Admin Menu Item",
-              this.menuInfo.itemName,
-              this.shopInfo.restaurantName,
-              defaultTitle,
-            ].join(" / ")
-          : defaultTitle,
-    };
-  },
-
   components: {
     Price,
     EditCategory,
@@ -805,6 +791,18 @@ export default defineComponent({
       category1: "",
       category2: "",
     } as MenuData);
+
+    useHead({
+      title:
+        menuInfo && menuInfo.itemName
+          ? [
+              "Admin Menu Item",
+              menuInfo.itemName,
+              props.shopInfo.restaurantName,
+              defaultTitle,
+            ].join(" / ")
+          : defaultTitle,
+    });
 
     const maxPrice = 1000000.0 / stripeRegion.multiple;
     const allergens = stripeRegion.allergens;
@@ -1097,3 +1095,39 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+:deep(.field.has-addons) {
+  display: flex;
+  .control:first-child:not(:only-child) .input {
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+  }
+  .control.has-icons-right {
+    .icon.is-right {
+      justify-content: center;
+      pointer-events: none;
+    }
+    input[type="number"] {
+      padding-right: 40px;
+    }
+  }
+  .button {
+    border-width: 1px;
+    border-radius: 4px;
+    justify-content: center;
+    padding-bottom: calc(0.5em - 1px);
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-top: calc(0.5em - 1px);
+    text-align: center;
+    &.is-static {
+      background-color: #f5f5f5;
+      border-color: #dbdbdb;
+      color: #7a7a7a;
+      box-shadow: none;
+      pointer-events: none;
+    }
+  }
+}
+</style>

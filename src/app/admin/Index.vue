@@ -285,6 +285,7 @@ import { useRouter } from "vue-router";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { ShopOwnerData } from "@/models/ShopOwner";
+import { useHead } from "@unhead/vue";
 
 export default defineComponent({
   name: "RestaurantIndex",
@@ -304,11 +305,6 @@ export default defineComponent({
     IndexFooter,
     ToggleSwitch,
   },
-  metaInfo() {
-    return {
-      title: ["Admin Index", defaultTitle].join(" / "),
-    };
-  },
   setup() {
     const store = useStore();
     const router = useRouter();
@@ -326,6 +322,11 @@ export default defineComponent({
     const restaurantLists = ref<string[]>([]);
     const numberOfOrderObj = ref<{ [key: string]: number }>({});
     const messages = ref<DocumentData[]>([]);
+
+    useHead({
+      title: ["Admin Index", defaultTitle].join(" / "),
+    });
+
     if (!checkAdminPermission()) {
       return;
     }
@@ -336,7 +337,7 @@ export default defineComponent({
     });
 
     const detachOrders = () => {
-      orderDetachers.value.map((detacher) => {
+      orderDetachers.value.forEach((detacher) => {
         detacher();
       });
       orderDetachers.value = [];
@@ -358,7 +359,7 @@ export default defineComponent({
             (result) => {
               const newObj = { ...numberOfOrderObj.value };
               newObj[restaurantId] = result.docs
-                .map((doc) => doc.data())
+                .map((orderDoc) => orderDoc.data())
                 .filter((data) => {
                   // We need this filter here because Firebase does not allow us to do
                   return data.status < order_status.ready_to_pickup;
@@ -401,7 +402,7 @@ export default defineComponent({
               where("deletedFlag", "==", false),
               orderBy("createdAt", "asc"),
             ),
-            async (result) => {
+            (result) => {
               try {
                 if (result.empty) {
                   restaurantItems.value = {}; // so that we present "No restaurant"
@@ -410,13 +411,13 @@ export default defineComponent({
                 restaurantItems.value = (result.docs || []).reduce(
                   (
                     tmp: { [key: string]: RestaurantInfoData },
-                    doc: DocumentSnapshot<DocumentData>,
+                    restaurantDoc: DocumentSnapshot<DocumentData>,
                   ) => {
-                    tmp[doc.id] = doc2data("restaurant")(
-                      doc,
+                    tmp[restaurantDoc.id] = doc2data("restaurant")(
+                      restaurantDoc,
                     ) as RestaurantInfoData;
-                    if (!restaurantLists.value.includes(doc.id)) {
-                      restaurantLists.value.push(doc.id);
+                    if (!restaurantLists.value.includes(restaurantDoc.id)) {
+                      restaurantLists.value.push(restaurantDoc.id);
                     }
                     return tmp;
                   },
@@ -433,7 +434,7 @@ export default defineComponent({
         }
         if (!isOwner.value && restaurantLists.value.length > 0) {
           // sub account
-          arrayChunk(restaurantLists.value, 10).map((restaurantIds) => {
+          arrayChunk(restaurantLists.value, 10).forEach((restaurantIds) => {
             restaurant_detacher.value = onSnapshot(
               query(
                 collection(db, "restaurants"),
@@ -442,7 +443,7 @@ export default defineComponent({
                 where("deletedFlag", "==", false),
                 orderBy("createdAt", "asc"),
               ),
-              async (result) => {
+              (result) => {
                 try {
                   if (result.empty && restaurantItems.value === null) {
                     restaurantItems.value = {}; // so that we present "No restaurant"
@@ -452,10 +453,10 @@ export default defineComponent({
                   restaurantItems.value = (result.docs || []).reduce(
                     (
                       tmp: { [key: string]: RestaurantInfoData },
-                      doc: DocumentSnapshot<DocumentData>,
+                      restaurantDoc: DocumentSnapshot<DocumentData>,
                     ) => {
-                      tmp[doc.id] = doc2data("restaurant")(
-                        doc,
+                      tmp[restaurantDoc.id] = doc2data("restaurant")(
+                        restaurantDoc,
                       ) as RestaurantInfoData;
                       return tmp;
                     },
@@ -485,7 +486,7 @@ export default defineComponent({
         onSnapshot(
           query(collectionGroup(db, "lines"), where("uid", "==", uid.value)),
           (result) => {
-            result.docs.map(async (res) => {
+            result.docs.forEach((res) => {
               const restaurantId = res.data().restaurantId;
               lines.value[restaurantId] = true;
             });

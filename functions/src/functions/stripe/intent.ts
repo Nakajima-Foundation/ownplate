@@ -7,9 +7,26 @@ export const getCustomerStripeInfo = async (db: admin.firestore.Firestore, custo
   const refStripe = db.doc(`/users/${customerUid}/system/stripe`);
   const stripeInfo = (await refStripe.get()).data();
   if (!stripeInfo) {
-    throw new functions.https.HttpsError("aborted", "No stripeInfo.");
+    // throw new functions.https.HttpsError("aborted", "No stripeInfo.");
+    return null;
   }
   return stripeInfo;
+};
+
+export const getCustomerStripeInfo2 = async (db: admin.firestore.Firestore, customerUid: string, restaurantOwnerUid: string) => {
+  // console.log(`/users/${customerUid}/owner/${restaurantOwnerUid}/system/stripe`);
+  const refStripe = db.doc(`/users/${customerUid}/owner/${restaurantOwnerUid}/system/stripe`);
+  const stripeInfo = (await refStripe.get()).data();
+  if (!stripeInfo) {
+    return null;
+  }
+  return stripeInfo;
+};
+
+export const saveCustomerStripeInfo2 = async (db: admin.firestore.Firestore, customerUid: string, restaurantOwnerUid: string, data: any) => {
+  const refStripe = db.doc(`/users/${customerUid}/owner/${restaurantOwnerUid}/system/stripe`);
+  console.log(data);
+  await refStripe.update(data, { merge: true });
 };
 
 export const getStripeAccount = async (db: admin.firestore.Firestore, restaurantOwnerUid: string) => {
@@ -33,6 +50,9 @@ export const getPaymentMethodData = async (db: admin.firestore.Firestore, restau
   const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
 
   const stripeInfo = await getCustomerStripeInfo(db, customerUid);
+  if (!stripeInfo) {
+    throw new functions.https.HttpsError("aborted", "No stripeInfo.");
+  }
   const stripe = utils.get_stripe();
   const token = await stripe.tokens.create(
     {

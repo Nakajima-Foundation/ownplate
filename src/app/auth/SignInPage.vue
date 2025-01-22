@@ -75,7 +75,7 @@
 
         <!-- Submit Button -->
         <div class="mt-2 text-center">
-          <o-button @click="handleCancel" class="b-reset-tw mr-4 mb-2">
+          <button @click="handleCancel" class="b-reset-tw mr-4 mb-2">
             <div
               class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black bg-opacity-5"
             >
@@ -83,17 +83,10 @@
                 {{ $t("button.cancel") }}
               </div>
             </div>
-          </o-button>
-
-          <o-button @click="onSignin" class="b-reset-tw">
-            <div
-              class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-op-teal shadow"
-            >
-              <div class="text-base font-bold text-white">
-                {{ $t("button.next") }}
-              </div>
-            </div>
-          </o-button>
+          </button>
+          <t-button @click="onSignin" class="h-12 w-32 font-bold text-white">
+            {{ $t("button.next") }}
+          </t-button>
         </div>
 
         <!-- Forgot Password -->
@@ -139,14 +132,10 @@ import { useUserData, defaultTitle } from "@/utils/utils";
 
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
+import { useHead } from "@unhead/vue";
 
 export default defineComponent({
   name: "Signin",
-  metaInfo() {
-    return {
-      title: [defaultTitle, "Signin Admin"].join(" / "),
-    };
-  },
   setup() {
     const route = useRoute();
     const router = useRouter();
@@ -157,6 +146,10 @@ export default defineComponent({
     const errors = ref({});
 
     const { user, isAdmin } = useUserData();
+
+    useHead({
+      title: [defaultTitle, "Signin Admin"].join(" / "),
+    });
 
     const redirectToAdminPage = () => {
       const redirect = route.query["to"] as string;

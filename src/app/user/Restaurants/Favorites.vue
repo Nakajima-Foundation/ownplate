@@ -87,21 +87,17 @@ import {
 import BackButton from "@/components/BackButton.vue";
 
 import { useRouter } from "vue-router";
+import { useHead } from "@unhead/vue";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   components: {
     // AreaItem,
     BackButton,
   },
-  metaInfo() {
-    const title = [
-      this.$t("pageTitle.restaurantRoot"),
-      ownPlateConfig.siteName,
-    ].join(" / ");
-    return Object.assign(RestaurantHeader, { title }) as any;
-  },
   setup() {
     const router = useRouter();
+    const { t } = useI18n();
     const basePath = useBasePath();
     const likes = ref<DocumentData[] | null>(null);
 
@@ -112,6 +108,11 @@ export default defineComponent({
     const path = computed(() => {
       return `users/${uid.value}/reviews`;
     });
+
+    const title = [t("pageTitle.restaurantRoot"), ownPlateConfig.siteName].join(
+      " / ",
+    );
+    useHead(Object.assign(RestaurantHeader, { title }));
 
     if (isUser.value) {
       (async () => {

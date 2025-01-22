@@ -21,7 +21,11 @@
 
     <!-- Before Paid -->
     <div class="mx-6 mt-4">
-      <BeforePaidAlert :orderInfo="orderInfo" :shopInfo="shopInfo" />
+      <BeforePaidAlert
+        :orderInfo="orderInfo"
+        :shopInfo="shopInfo"
+        message="order.orderNotPlacedYet"
+      />
     </div>
     <!-- end of Before Paid -->
 
@@ -172,7 +176,7 @@
                   v-model="memo"
                   type="textarea"
                   :placeholder="$t('order.enterMessage')"
-                  class="w-full"
+                  rootClass="w-full"
                 ></o-input>
                 <div :class="userMessageError ? 'font-bold text-red-700' : ''">
                   {{ $t("validationError.memo.length") }}
@@ -219,12 +223,6 @@
 
             <!-- Pay Online -->
             <div v-if="showPayment" class="mt-2">
-              <stripe-card
-                @change="handleCardStateChange"
-                ref="stripeRef"
-                :stripeJCB="stripeJCB"
-              ></stripe-card>
-
               <div
                 v-if="
                   selectedPromotion &&
@@ -254,31 +252,18 @@
               </div>
 
               <div class="mt-4 text-center">
-                <o-button
-                  :disabled="
-                    !cardState.complete ||
-                    notAvailable ||
-                    notSubmitAddress ||
-                    userMessageError ||
-                    userNameError ||
-                    stripeSmallPayment ||
-                    isPaying ||
-                    isPlacing
-                  "
+                <t-button
+                  class="h-16 px-6"
+                  style="min-width: 288px"
+                  :isLoading="isPaying"
+                  :isDisabled="disabledButton || stripeSmallPayment"
                   @click="handlePayment(true)"
-                  class="b-reset-tw"
                 >
-                  <div
-                    class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal px-6 shadow"
-                    style="min-width: 288px"
-                  >
-                    <ButtonLoading v-if="isPaying" />
-                    <div class="text-xl font-bold text-white">
-                      {{ $t("order.placeOrder") }}
-                      <!-- {{ $n(orderInfo.total + tip, "currency") }} -->
-                    </div>
+                  <div class="text-xl font-bold text-white">
+                    {{ $t("order.placeOrder") }}
+                    <!-- {{ $n(orderInfo.total + tip, "currency") }} -->
                   </div>
-                </o-button>
+                </t-button>
                 <div
                   v-if="stripeSmallPayment"
                   class="mt-2 text-sm font-bold text-red-700"
@@ -304,30 +289,18 @@
               </div>
 
               <div class="mt-4">
-                <o-button
-                  :loading="isPlacing"
-                  :disabled="
-                    notAvailable ||
-                    notSubmitAddress ||
-                    userMessageError ||
-                    userNameError ||
-                    isPaying ||
-                    isPlacing
-                  "
+                <t-button
+                  :isLoading="isPlacing"
+                  :isDisabled="disabledButton"
+                  :class="disabledButton ? 'bg-op-teal-disabled' : 'bg-op-teal'"
                   @click="handlePayment(false)"
-                  class="b-reset-tw"
-                  :class="'takeout'"
+                  class="h-16 px-6 takeout"
+                  style="min-width: 288px"
                 >
-                  <div
-                    class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal px-6 shadow"
-                    style="min-width: 288px"
-                  >
-                    <ButtonLoading v-if="isPlacing" />
-                    <div class="text-xl font-bold text-white">
-                      {{ $t("order.placeOrderNoPayment") }}
-                    </div>
+                  <div class="text-xl font-bold text-white">
+                    {{ $t("order.placeOrderNoPayment") }}
                   </div>
-                </o-button>
+                </t-button>
               </div>
               <div>
                 <div class="mt-2 text-sm font-bold text-black text-opacity-60">
@@ -385,15 +358,12 @@ import OrderInfo from "@/app/user/OrderPage/OrderInfo.vue";
 import UserCustomerInfo from "@/app/user/OrderPage/UserCustomerInfo.vue";
 import CustomerInfo from "@/app/user/OrderPage/CustomerInfo.vue";
 
-import StripeCard from "@/app/user/OrderPage/BeforePaid/StripeCard.vue";
 import TimeToPickup from "@/app/user/OrderPage/BeforePaid/TimeToPickup.vue";
 import ECCustomer from "@/app/user/OrderPage/BeforePaid/ECCustomer.vue";
 import OrderNotice from "@/app/user/OrderPage/BeforePaid/OrderNotice.vue";
 import BeforePaidAlert from "@/app/user/OrderPage/BeforePaid/BeforePaidAlert.vue";
 import SpecifiedCommercialTransactions from "@/app/user/OrderPage/BeforePaid/SpecifiedCommercialTransactions.vue";
 import OrderPageMap from "@/app/user/OrderPage/BeforePaid/Map.vue";
-
-import ButtonLoading from "@/components/Button/Loading.vue";
 
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc, Timestamp } from "firebase/firestore";
@@ -409,8 +379,6 @@ import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import Promotion from "@/models/promotion";
 
-import * as analyticsUtil from "@/lib/firebase/analytics";
-
 import { useHasSoldOutToday } from "./Stock";
 
 import { useStore } from "vuex";
@@ -425,10 +393,7 @@ export default defineComponent({
     UserCustomerInfo,
     CustomerInfo,
 
-    ButtonLoading,
-
     // before paid
-    StripeCard,
     TimeToPickup,
     ECCustomer,
     OrderNotice,
@@ -504,18 +469,11 @@ export default defineComponent({
     };
     setPostage();
 
-    const stripeAccount = computed(() => {
-      return props.paymentInfo.stripe;
-    });
-
-    const stripeJCB = computed(() => {
-      return props.paymentInfo.stripeJCB === true;
-    });
     const inStorePayment = computed(() => {
       return props.paymentInfo.inStore;
     });
     const showPayment = computed(() => {
-      return stripeAccount.value;
+      return props.paymentInfo.stripe;
     });
 
     const hasCustomerInfo = computed(() => {
@@ -600,17 +558,6 @@ export default defineComponent({
       }
     };
     // internal
-    const sendPurchase = () => {
-      analyticsUtil.sendPurchase(
-        props.orderInfo,
-        orderId.value,
-        props.orderItems.map((or: any) => {
-          return { ...or.item, id: or.id, quantity: or.count };
-        }),
-        props.shopInfo,
-        restaurantId,
-      );
-    };
     const handleOpenMenu = () => {
       ctx.emit("handleOpenMenu");
     };
@@ -659,7 +606,7 @@ export default defineComponent({
       try {
         if (payStripe) {
           isPaying.value = true;
-          await stripeRef.value.createToken();
+          // await stripeRef.value.createToken();
         } else {
           isPlacing.value = true;
         }
@@ -677,6 +624,7 @@ export default defineComponent({
           payStripe,
           memo: memo.value || "",
           userName: userName.value || "",
+          waitingPayment: payStripe,
           customerInfo: ecCustomerRef.value
             ? ecCustomerRef.value.customerInfo || {}
             : {},
@@ -686,7 +634,7 @@ export default defineComponent({
           await saveLiffCustomer();
         }
         */
-        sendPurchase();
+        // sendPurchase();
         store.commit("resetCart", restaurantId);
         window.scrollTo(0, 0);
       } catch (error: any) {
@@ -705,9 +653,19 @@ export default defineComponent({
       ctx.emit("openTransactionsAct");
     };
 
+    const disabledButton = computed(() => {
+      return (
+        notAvailable.value ||
+        notSubmitAddress.value ||
+        userMessageError.value ||
+        userNameError.value ||
+        isPaying.value ||
+        isPlacing.value
+      );
+    });
+
     return {
       // ref
-      notAvailable,
       isPaying,
       isPlacing,
       cardState,
@@ -721,7 +679,6 @@ export default defineComponent({
       stripeRef,
 
       // computed
-      stripeJCB,
       inStorePayment,
       showPayment,
       hasCustomerInfo,
@@ -737,6 +694,8 @@ export default defineComponent({
       selectedPromotion,
       enablePromotion,
       discountPrice,
+
+      disabledButton,
 
       // const
       paymentMethods,

@@ -13,11 +13,12 @@ export const uploadFile = (file: File, path: string): Promise<string> => {
 
     uploadTask.on(
       "state_changed",
+      // eslint-disable-next-line no-empty-function
       () => {},
       (err) => {
         rejected(err);
       },
-      async () => {
+      () => {
         // const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
         //resolve(downloadURL);
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {

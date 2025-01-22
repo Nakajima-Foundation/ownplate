@@ -60,7 +60,7 @@
     </div>
 
     <!-- Favorites -->
-    <div class="text-center" v-if="isUser && !inLiff">
+    <div v-if="isUser && !inLiff">
       <SideMenuButton
         text="find.likes"
         icon="favorite"
@@ -95,7 +95,7 @@
 
     <div v-if="isAnonymous">
       <!-- Go to User LP -->
-      <div class="mt-4 text-center">
+      <div class="mt-4">
         <SideMenuText
           to="/home"
           text="menu.clickHereToOrder"

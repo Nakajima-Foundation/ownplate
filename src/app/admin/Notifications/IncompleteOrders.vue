@@ -61,6 +61,14 @@ export default defineComponent({
       );
     });
 
+    const lastSeveralDays = computed(() => {
+      return Array.from(Array(pickUpDaysInAdvance.value).keys()).map(
+        (index) => {
+          const date = midNight(index);
+          return { index, date };
+        },
+      );
+    });
     const orderCounter = computed(() => {
       return lastSeveralDays.value.reduce(
         (tmp: { [key: string]: number }, day) => {
@@ -71,14 +79,6 @@ export default defineComponent({
           return tmp;
         },
         {},
-      );
-    });
-    const lastSeveralDays = computed(() => {
-      return Array.from(Array(pickUpDaysInAdvance.value).keys()).map(
-        (index) => {
-          const date = midNight(index);
-          return { index, date };
-        },
       );
     });
 

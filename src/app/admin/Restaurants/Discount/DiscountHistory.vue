@@ -197,7 +197,7 @@ export default defineComponent({
 
     onSnapshot(q, (docs) => {
       const tmp: any[] = [];
-      docs.docs.map((a) => {
+      docs.docs.forEach((a) => {
         const d = a.data();
         d.path = a.ref.path;
         tmp.push(d);

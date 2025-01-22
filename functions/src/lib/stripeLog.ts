@@ -59,7 +59,7 @@ export const capability_updated = async (db, event) => {
       } else {
         console.error("capability_updated: no capabilities", capabilities);
       }
-    } catch (error) {
+    } catch (__error) {
       console.error("capability_updated: failed to retrieve account info", account);
     }
   }

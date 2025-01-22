@@ -71,7 +71,7 @@ export default defineComponent({
         store.commit("setAlert", {
           title: "lunchOrDinner.alert." + value + ".title",
           code: "lunchOrDinner.alert." + value + ".body",
-          callback: async () => {
+          callback: () => {
             ctx.emit("update:modelValue", value);
           },
         });

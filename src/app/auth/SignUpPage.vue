@@ -30,6 +30,7 @@
                 type="email"
                 :placeholder="$t('admin.emailPlaceHolder')"
                 maxlength="256"
+                expanded
               />
             </o-field>
           </div>
@@ -42,12 +43,13 @@
           </div>
 
           <div class="mt-1">
-            <o-field>
+            <o-field variant="success">
               <o-input
                 v-model="name"
                 type="text"
                 :placeholder="$t('admin.enterName')"
                 maxlength="100"
+                expanded
               />
             </o-field>
           </div>
@@ -70,6 +72,7 @@
                 :placeholder="$t('admin.passwordPlaceHolder')"
                 maxlength="30"
                 password-reveal
+                expanded
               />
             </o-field>
           </div>
@@ -92,6 +95,7 @@
                 :placeholder="$t('admin.confirmPasswordPlaceHolder')"
                 maxlength="30"
                 password-reveal
+                expanded
               />
             </o-field>
           </div>
@@ -99,29 +103,17 @@
 
         <!-- Submit Button -->
         <div class="mt-2 text-center">
-          <o-button @click="handleCancel" class="b-reset-tw mr-4 mb-2">
-            <div
-              class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black bg-opacity-5"
-            >
-              <div class="text-base font-bold text-black text-opacity-60">
-                {{ $t("button.cancel") }}
-              </div>
-            </div>
-          </o-button>
+          <t-cancel-button @click="handleCancel" class="mr-4 mb-2 h-12 w-32">
+            {{ $t("button.cancel") }}
+          </t-cancel-button>
 
-          <o-button
-            :disabled="submitted && Object.keys(errors).length > 0"
+          <t-button
+            :isDisabled="submitted && Object.keys(errors).length > 0"
             @click="onSignup"
-            class="b-reset-tw"
+            class="h-12 w-32 font-bold text-white"
           >
-            <div
-              class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-op-teal shadow"
-            >
-              <div class="text-base font-bold text-white">
-                {{ $t("button.next") }}
-              </div>
-            </div>
-          </o-button>
+            {{ $t("button.next") }}
+          </t-button>
         </div>
 
         <!-- Terms of Use & Privacy Policy -->
@@ -181,14 +173,10 @@ import {
 } from "firebase/auth";
 
 import { useRoute, useRouter } from "vue-router";
+import { useHead } from "@unhead/vue";
 
 export default defineComponent({
   name: "Signup",
-  metaInfo() {
-    return {
-      title: [defaultTitle, "Signup"].join(" / "),
-    };
-  },
   setup() {
     const router = useRouter();
     const route = useRoute();
@@ -203,6 +191,10 @@ export default defineComponent({
     const deferredPush = ref(false);
     const emailTaken = ref("---invalid---");
     const submitted = ref(false);
+
+    useHead({
+      title: [defaultTitle, "Signup"].join(" / "),
+    });
 
     const partner = computed(() => {
       if (route.params.partner) {

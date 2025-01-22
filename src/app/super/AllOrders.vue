@@ -112,12 +112,9 @@ import {
   collectionGroup,
 } from "firebase/firestore";
 
+import { useHead } from "@unhead/vue";
+
 export default defineComponent({
-  metaInfo() {
-    return {
-      title: [defaultTitle, "Super All Orders"].join(" / "),
-    };
-  },
   components: {
     OrderedInfo,
     DownloadCsv,
@@ -127,6 +124,10 @@ export default defineComponent({
     const { t } = useI18n({ useScope: "global" });
     const router = useRouter();
     superPermissionCheck();
+
+    useHead({
+      title: [defaultTitle, "Super All Orders"].join(" / "),
+    });
 
     const months = [0, 1, 2, 3, 4, 5].map((a) => {
       return moment().subtract(a, "month").format("YYYY-MM");
@@ -169,7 +170,9 @@ export default defineComponent({
         }
         const snapshot = await getDocs(myQuery);
 
-        if (!snapshot.empty) {
+        if (snapshot.empty) {
+          last.value = null;
+        } else {
           last.value = snapshot.docs[snapshot.docs.length - 1];
           let i = 0;
           for (; i < snapshot.docs.length; i++) {
@@ -179,11 +182,11 @@ export default defineComponent({
             order.id = myDoc.id;
             order.timePlaced = order.timePlaced.toDate();
             if (!restaurants.value[order.restaurantId]) {
-              const snapshot = await getDoc(
+              const orderSnapshot = await getDoc(
                 doc(db, `restaurants/${order.restaurantId}`),
               );
               restaurants.value[order.restaurantId] =
-                snapshot.data() as RestaurantInfoData;
+                orderSnapshot.data() as RestaurantInfoData;
             }
             order.restaurant = restaurants.value[order.restaurantId];
             if (order.timeEstimated) {
@@ -191,8 +194,6 @@ export default defineComponent({
             }
             orders.value.push(order);
           }
-        } else {
-          last.value = null;
         }
       }
       isLoading.value = false;
@@ -206,11 +207,11 @@ export default defineComponent({
       if (isLoading.value) {
         return;
       }
-      const limit = moment(monthValue.value + "-01 00:00:00+09:00");
+      const orderLimit = moment(monthValue.value + "-01 00:00:00+09:00");
 
       while (
         moment(orders.value[orders.value.length - 1]?.timeCreated?.toDate()) >
-        limit
+        orderLimit
       ) {
         await loadData();
         console.log(orders.value.length);
@@ -249,8 +250,8 @@ export default defineComponent({
           restaurantName: order.restaurant.restaurantName,
           orderStatus: t("order.status." + order_status_keys[order.status]),
           revenue: order.totalCharge,
-          total: Object.values(order.order).reduce((count, order) => {
-            return count + arrayOrNumSum(order);
+          total: Object.values(order.order).reduce((count, currentOrder) => {
+            return count + arrayOrNumSum(currentOrder);
           }, 0),
           name: nameOfOrder(order),
           payment: order.payment?.stripe ? "stripe" : "",

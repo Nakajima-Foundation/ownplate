@@ -1,4 +1,4 @@
-import * as functions from "firebase-functions";
+import * as functions from "firebase-functions/v1";
 import * as admin from "firebase-admin";
 import { validatePing } from "../lib/validator";
 import { pingData } from "../lib/types";
@@ -48,7 +48,6 @@ export const operationLog = (context: functions.https.CallableContext, params: a
   functions.logger.log(message, log);
 };
 
- 
 export const ping = async (db: admin.firestore.Firestore, data: pingData, context: functions.https.CallableContext) => {
   const { operationType, restaurantId, pathName } = data;
   utils.validate_admin_auth(context);
