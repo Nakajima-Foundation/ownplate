@@ -16,7 +16,7 @@
         </div>
       </div>
     </div>
-    <o-modal :active="isOpen" :width="488">
+    <o-modal :active="isOpen" :width="488" @close="close">
       <PartnersContact :id="(partners[0] || {}).id" />
     </o-modal>
   </div>
@@ -46,9 +46,13 @@ export default defineComponent({
     const openContact = () => {
       isOpen.value = true;
     };
+    const close = () => {
+      isOpen.value = false;
+    };
     return {
       isOpen,
       openContact,
+      close,
       partners,
     };
   },
