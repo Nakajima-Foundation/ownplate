@@ -175,7 +175,7 @@ export default defineComponent({
     const restaurantId = useRestaurantId();
 
     const hasLine = computed(() => {
-      console.log(props.shopInfo.hasLine, props.shopInfo.lineClientId);
+      // console.log(props.shopInfo.hasLine, props.shopInfo.lineClientId);
       return !!(props.shopInfo.hasLine && props.shopInfo.lineClientId);
     });
 

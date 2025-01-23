@@ -660,6 +660,7 @@ const data = {
     order_canceled_by_restaurant: "キャンセル済み(店)",
     reuseCard: "今後の支払いのために保存する",
     whatsCVC: "CVC(セキュリティーコード)とは？",
+    card_error: "カード決済処理に失敗しました。カード情報を確認してください。",
     no_jcb: "＊このお店では、JCBカードは使えません",
     "3digitsCVC": "カードのうら面の右端3ケタ",
     "4digitsCVC": "カードのおもて面の4ケタ",
