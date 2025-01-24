@@ -26,6 +26,7 @@ exportIfNeeded("lineValidate", "line/lineValidate", exports); // callback, user 
 exportIfNeeded("liffAuthenticate", "line/liffAuthenticate", exports); // liff jp
 
 exportIfNeeded("orderCreatedJp", "order/orderCreatedJp", exports); // jp
+exportIfNeeded("orderCreatedJp2", "order/orderCreatedJp2", exports); // jp
 exportIfNeeded("orderUpdateJp", "order/orderUpdateJp", exports);
 exportIfNeeded("orderPlaceJp", "order/orderPlaceJp", exports);
 
