@@ -3,7 +3,7 @@ import * as Sentry from "@sentry/node";
 
 import exportIfNeeded from "./lib/exportifneeded";
 
-const senty_dsn = process.env.SENTY_DSN ?? '';
+const senty_dsn = process.env.SENTY_DSN ?? "";
 Sentry.init({ dsn: senty_dsn });
 
 if (!admin.apps.length) {
