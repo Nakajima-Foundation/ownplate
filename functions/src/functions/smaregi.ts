@@ -10,9 +10,9 @@ import { smaregi } from "../common/project";
 import { validateFirebaseId } from "../lib/validator";
 
 const clientSecrets = functions.config() && functions.config().smaregi && functions.config().smaregi.clientsecrets;
-const host = functions.config() && functions.config().smaregi && functions.config().smaregi.host; // https://id.smaregi.dev
-const apiHost = functions.config() && functions.config().smaregi && functions.config().smaregi.host_name; // like api.smaregi.dev
-const authHost = functions.config() && functions.config().smaregi && functions.config().smaregi.auth_host_name; // id.smaregi.dev
+const host = smaregi.host;
+const apiHost = smaregi.host_name;
+const authHost = smaregi.auth_host_name;
 const client_id = smaregi.clientId;
 
 export const auth = async (db: admin.firestore.Firestore, data: smaregiAuthData, context: functions.https.CallableContext) => {

@@ -9,8 +9,8 @@ import moment from "moment";
 const clientSecrets = (functions.config() && functions.config().smaregi && functions.config().smaregi.clientsecrets) || {
   [smaregi.clientId]: process.env.SmaregiClientSecret,
 };
-const apiHost = functions.config() && functions.config().smaregi && functions.config().smaregi.host_name; // like api.smaregi.dev
-const authHost = functions.config() && functions.config().smaregi && functions.config().smaregi.auth_host_name; // id.smaregi.dev
+const apiHost = smaregi.host_name;
+const authHost = smaregi.auth_host_name;
 
 export const smaregiRouter = express.Router();
 
