@@ -1,11 +1,9 @@
 import * as admin from "firebase-admin";
-import * as functions from "firebase-functions";
-
 import * as Sentry from "@sentry/node";
 
 import exportIfNeeded from "./lib/exportifneeded";
 
-const senty_dsn = (functions.config() && functions.config().senty && functions.config().senty.dsn) || process.env.SENTY_DSN;
+const senty_dsn = process.env.SENTY_DSN ?? "";
 Sentry.init({ dsn: senty_dsn });
 
 if (!admin.apps.length) {
@@ -28,6 +26,7 @@ exportIfNeeded("lineValidate", "line/lineValidate", exports); // callback, user 
 exportIfNeeded("liffAuthenticate", "line/liffAuthenticate", exports); // liff jp
 
 exportIfNeeded("orderCreatedJp", "order/orderCreatedJp", exports); // jp
+exportIfNeeded("orderCreatedJp2", "order/orderCreatedJp2", exports); // jp
 exportIfNeeded("orderUpdateJp", "order/orderUpdateJp", exports);
 exportIfNeeded("orderPlaceJp", "order/orderPlaceJp", exports);
 

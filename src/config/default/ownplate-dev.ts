@@ -35,6 +35,10 @@ export const sentryDsn =
 export const smaregi = {
   authUrl: "https://id.smaregi.dev/authorize",
   clientId: "cc470a5f488dcab4ce1f40bbf0838670",
+  //  for server
+  host: "https://id.smaregi.dev",
+  auth_host_name: "id.smaregi.dev",
+  host_name: "api.smaregi.dev",
 };
 
 export const appCheckKey = "6LepU9whAAAAAJPu9PD7LfzB5uREF-fg9j1g5xLY";
