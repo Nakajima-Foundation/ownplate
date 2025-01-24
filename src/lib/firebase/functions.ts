@@ -102,7 +102,7 @@ export const orderChange = httpsCallable(functionsJP, "orderChangeJp");
 
 export const orderPlace = httpsCallable(functionsJP, "orderPlaceJp");
 
-export const orderCreated = httpsCallable(functionsJP, "orderCreatedJp");
+export const orderCreated = httpsCallable(functionsJP, "orderCreatedJp2");
 
 export const orderPay = httpsCallable(functionsJP, "stripepay");
 
