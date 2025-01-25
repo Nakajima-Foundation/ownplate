@@ -60,5 +60,5 @@ exportIfNeeded("subAccountInvitationAccept", "subaccount/accept", exports);
 exportIfNeeded("subAccountInvitationDeny", "subaccount/deny", exports);
 exportIfNeeded("subAccountDeleteChild", "subaccount/delete", exports);
 
-exportIfNeeded("ping", "ping", exports);
+exportIfNeeded("ping2", "ping2", exports);
 exportIfNeeded("beforeSignIn", "auth/beforeSignIn", exports);

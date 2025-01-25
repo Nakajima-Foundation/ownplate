@@ -117,4 +117,4 @@ export const liffAuthenticate = httpsCallable<
   }
 >(functionsJP, "liffAuthenticate");
 
-export const ping = httpsCallable(functionsJP, "ping");
+export const ping = httpsCallable(functionsJP, "ping2");
