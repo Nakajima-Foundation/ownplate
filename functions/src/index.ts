@@ -55,10 +55,12 @@ exportIfNeeded("smaregiAuth2", "smaregi/auth2", exports);
 exportIfNeeded("smaregiStoreList2", "smaregi/storeList2", exports);
 exportIfNeeded("smaregiProductList2", "smaregi/productList2", exports);
 
-exportIfNeeded("subAccountInvite", "subaccount/invite", exports);
-exportIfNeeded("subAccountInvitationAccept", "subaccount/accept", exports);
-exportIfNeeded("subAccountInvitationDeny", "subaccount/deny", exports);
-exportIfNeeded("subAccountDeleteChild", "subaccount/delete", exports);
+exportIfNeeded("subAccountInvite2", "subaccount/invite", exports);
+exportIfNeeded("subAccountInvitationAccept2", "subaccount/accept", exports);
+exportIfNeeded("subAccountInvitationDeny2", "subaccount/deny", exports);
+exportIfNeeded("subAccountDeleteChild2", "subaccount/delete", exports);
+
+
 
 exportIfNeeded("ping2", "ping2", exports);
 exportIfNeeded("beforeSignIn", "auth/beforeSignIn", exports);
