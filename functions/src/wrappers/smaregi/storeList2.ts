@@ -16,10 +16,10 @@ export default onCall(
     maxInstances: 10,
     secrets: secretKeys,
   },
-  (async (context) => {
+  async (context) => {
     if (context.app == undefined) {
       throw new HttpsError("failed-precondition", "The function must be called from an App Check verified app.");
     }
     return await smaregi.storeList(db, context.data, context);
-  })
+  },
 );

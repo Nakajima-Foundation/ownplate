@@ -16,10 +16,10 @@ export default onCall(
     maxInstances: 50,
     secrets: secretKeys,
   },
-  (async (context) => {
+  async (context) => {
     if (context.app == undefined) {
       throw new HttpsError("failed-precondition", "The function must be called from an App Check verified app.");
     }
     await orderCreated(db, context.data, context);
-  })
+  },
 );

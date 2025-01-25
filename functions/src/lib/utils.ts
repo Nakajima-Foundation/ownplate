@@ -1,4 +1,6 @@
 import * as functions from "firebase-functions/v1";
+import { HttpsError } from "firebase-functions/v2/https";
+import { defineSecret } from "firebase-functions/params";
 import { stripe_regions } from "../common/constant";
 import Stripe from "stripe";
 import * as Sentry from "@sentry/node";
@@ -9,6 +11,7 @@ import * as admin from "firebase-admin";
 
 const region = "JP"; // config
 export const stripeRegion = stripe_regions[region];
+const stripe_wh_secret = defineSecret("STRIPE_WH_SECRET");
 
 export const timezone = "Asia/Tokyo"; // config
 
@@ -66,9 +69,9 @@ export const validate_sub_account_request = async (db: admin.firestore.Firestore
 };
 
 export const getStripeWebhookSecretKey = () => {
-  const SECRET = process.env.STRIPE_WH_SECRET;
+  const SECRET = stripe_wh_secret.value();
   if (!SECRET) {
-    throw new functions.https.HttpsError("invalid-argument", "The functions requires STRIPE_WH_SECRET.");
+    throw new HttpsError("invalid-argument", "The functions requires STRIPE_WH_SECRET.");
   }
   return SECRET;
 };
