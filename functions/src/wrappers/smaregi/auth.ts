@@ -2,7 +2,7 @@ import * as functions from "firebase-functions/v1";
 import * as admin from "firebase-admin";
 
 import * as smaregi from "../../functions/smaregi";
-import { enforceAppCheck } from "../firebase";
+import { enforceAppCheck, secretKeys } from "../firebase";
 
 const db = admin.firestore();
 
@@ -12,6 +12,7 @@ export default functions
     maxInstances: 10,
     memory: "1GB" as const,
     enforceAppCheck,
+    secrets: secretKeys,
   })
   .https.onCall(async (data, context) => {
     if (context.app == undefined) {
