@@ -1,5 +1,6 @@
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions/v1";
+import { defineSecret } from "firebase-functions/params";
 import fetch from "node-fetch";
 import SmaregiApi from "../smaregi/smaregiapi";
 import * as utils from "../lib/utils";
@@ -9,7 +10,7 @@ import { smaregiAuthData, smaregiStoreListData, smaregiProductListData } from ".
 import { smaregi } from "../common/project";
 import { validateFirebaseId } from "../lib/validator";
 
-const clientSecret = process.env.SMAREGI_SECRET;
+const clientSecret = defineSecret("SMAREGI_SECRET");
 const host = smaregi.host;
 const apiHost = smaregi.host_name;
 const authHost = smaregi.auth_host_name;
@@ -19,7 +20,7 @@ export const auth = async (db: admin.firestore.Firestore, data: smaregiAuthData,
   const { code } = data;
 
   const adminUid = utils.validate_admin_auth(context);
-  const authToken = [client_id, clientSecret].join(":");
+  const authToken = [client_id, clientSecret.value()].join(":");
 
   try {
     const res = await fetch(host + "/authorize/token", {
@@ -86,7 +87,7 @@ export const storeList = async (db: admin.firestore.Firestore, data: smaregiStor
   const config = {
     contractId: smaregiContractId,
     clientId: client_id,
-    clientSecret: clientSecret,
+    clientSecret: clientSecret.value(),
     hostName: apiHost,
     authHostName: authHost,
     scopes: ["pos.stock:read", "pos.stock:write", "pos.stores:read", "pos.stores:write", "pos.customers:read", "pos.customers:write", "pos.products:read", "pos.products:write"],
@@ -121,7 +122,7 @@ export const productList = async (db: admin.firestore.Firestore, data: smaregiPr
   const config = {
     contractId: smaregiContractId,
     clientId: client_id,
-    clientSecret: clientSecret,
+    clientSecret: clientSecret.value(),
     hostName: apiHost,
     authHostName: authHost,
     scopes: ["pos.stock:read", "pos.stock:write", "pos.stores:read", "pos.stores:write", "pos.customers:read", "pos.customers:write", "pos.products:read", "pos.products:write"],
