@@ -11,7 +11,7 @@ if (!admin.apps.length) {
 }
 
 // exportIfNeeded("api", "api", exports);
-exportIfNeeded("apiJP", "apiJP", exports);
+exportIfNeeded("apiJP2", "apiJP2", exports);
 
 exportIfNeeded("superDispatch", "super/superDispatch", exports);
 exportIfNeeded("superTwilio", "super/superTwilio", exports);
@@ -50,6 +50,11 @@ exportIfNeeded("imageProcessing", "image/imageProcessing", exports);
 exportIfNeeded("smaregiAuth", "smaregi/auth", exports);
 exportIfNeeded("smaregiStoreList", "smaregi/storeList", exports);
 exportIfNeeded("smaregiProductList", "smaregi/productList", exports);
+
+exportIfNeeded("smaregiAuth2", "smaregi/auth2", exports);
+exportIfNeeded("smaregiStoreList2", "smaregi/storeList2", exports);
+exportIfNeeded("smaregiProductList2", "smaregi/productList2", exports);
+
 exportIfNeeded("subAccountInvite", "subaccount/invite", exports);
 exportIfNeeded("subAccountInvitationAccept", "subaccount/accept", exports);
 exportIfNeeded("subAccountInvitationDeny", "subaccount/deny", exports);

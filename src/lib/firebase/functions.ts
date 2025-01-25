@@ -7,7 +7,7 @@ export const smaregiStoreList = httpsCallable<
   {
     res: any[];
   }
->(functionsJP, "smaregiStoreList");
+>(functionsJP, "smaregiStoreList2");
 
 export const smaregiProductList = httpsCallable<
   {
@@ -16,7 +16,7 @@ export const smaregiProductList = httpsCallable<
   {
     res: any[];
   }
->(functionsJP, "smaregiProductList");
+>(functionsJP, "smaregiProductList2");
 
 export const smaregiAuth = httpsCallable<
   {
@@ -25,7 +25,7 @@ export const smaregiAuth = httpsCallable<
   {
     result: boolean;
   }
->(functionsJP, "smaregiAuth");
+>(functionsJP, "smaregiAuth2");
 
 export const lineVerifyFriend = httpsCallable<
   {
