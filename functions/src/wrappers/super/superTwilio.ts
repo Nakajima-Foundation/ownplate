@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions/v1";
 import * as admin from "firebase-admin";
 
-import * as Super from "../../functions/super/super";
+import { superTwilioCall } from "../../functions/super/twilio";
 import { enforceAppCheck } from "../firebase";
 
 const db = admin.firestore();
@@ -17,5 +17,5 @@ export default functions
     if (context.app == undefined) {
       throw new functions.https.HttpsError("failed-precondition", "The function must be called from an App Check verified app.");
     }
-    return await Super.superTwilioCall(db, data, context);
+    return await superTwilioCall(db, data, context);
   });
