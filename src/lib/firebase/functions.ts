@@ -42,7 +42,7 @@ export const subAccountDeleteChild = httpsCallable<
     childUid: string;
   },
   Record<string, never>
->(functionsJP, "subAccountDeleteChild");
+>(functionsJP, "subAccountDeleteChild2");
 
 export const subAccountInvite = httpsCallable<
   {
@@ -52,15 +52,15 @@ export const subAccountInvite = httpsCallable<
   {
     result: boolean;
   }
->(functionsJP, "subAccountInvite");
+>(functionsJP, "subAccountInvite2");
 
 export const subAccountInvitationAccept = httpsCallable<{
   messageId: string;
-}>(functionsJP, "subAccountInvitationAccept");
+}>(functionsJP, "subAccountInvitationAccept2");
 
 export const subAccountInvitationDeny = httpsCallable<{
   messageId: string;
-}>(functionsJP, "subAccountInvitationDeny");
+}>(functionsJP, "subAccountInvitationDeny2");
 
 export const lineValidate = httpsCallable<
   {
