@@ -1,12 +1,12 @@
-import * as functions from "firebase-functions/v1";
+import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
 import * as utils from "../../lib/utils";
 import * as admin from "firebase-admin";
 
 import { dispatchData } from "../../lib/types";
 
-export const dispatch = async (db: admin.firestore.Firestore, data: dispatchData, context: functions.https.CallableContext) => {
+export const dispatch = async (db: admin.firestore.Firestore, data: dispatchData, context: CallableRequest) => {
   if (!context.auth?.token?.admin) {
-    throw new functions.https.HttpsError("permission-denied", "You do not have permission to confirm this request.");
+    throw new HttpsError("permission-denied", "You do not have permission to confirm this request.");
   }
   const uidSuper = utils.validate_auth(context);
   const { cmd, uid, key, value } = data;
@@ -57,7 +57,7 @@ export const dispatch = async (db: admin.firestore.Firestore, data: dispatchData
         error: "invalid_cmd",
         createdAt: admin.firestore.FieldValue.serverTimestamp(),
       });
-      throw new functions.https.HttpsError("invalid-argument", "Invalid command.");
+      throw new HttpsError("invalid-argument", "Invalid command.");
     }
 
     return result;

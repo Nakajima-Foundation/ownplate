@@ -77,7 +77,7 @@ export const lineValidate = httpsCallable<
   }
 >(functionsJP, "lineValidate");
 
-export const superDispatch = httpsCallable(functionsJP, "superDispatch");
+export const superDispatch = httpsCallable(functionsJP, "superDispatch2");
 
 export const superTwilio = httpsCallable(functionsJP, "superTwilio");
 

@@ -13,7 +13,7 @@ if (!admin.apps.length) {
 // exportIfNeeded("api", "api", exports);
 exportIfNeeded("apiJP2", "apiJP2", exports);
 
-exportIfNeeded("superDispatch", "super/superDispatch", exports);
+exportIfNeeded("superDispatch2", "super/superDispatch", exports);
 exportIfNeeded("superTwilio", "super/superTwilio", exports);
 
 // exportIfNeeded("batchBigQueryPV", "batch/bigQueryPV", exports);
