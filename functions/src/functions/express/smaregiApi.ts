@@ -1,11 +1,12 @@
 import express from "express";
 import * as admin from "firebase-admin";
+import { defineSecret } from "firebase-functions/params";
 import SmaregiApi from "../../smaregi/smaregiapi";
 import { smaregi } from "../../common/project";
 import { response200 } from "./apis";
 import moment from "moment";
 
-const clientSecret = process.env.SMAREGI_SECRET;
+const clientSecret = defineSecret("SMAREGI_SECRET");
 const apiHost = smaregi.host_name;
 const authHost = smaregi.auth_host_name;
 
@@ -34,7 +35,7 @@ export const processAction = async (data) => {
     const config = {
       contractId: contractId,
       clientId: smaregi.clientId,
-      clientSecret: clientSecret,
+      clientSecret: clientSecret.value(),
       hostName: apiHost,
       authHostName: authHost,
       scopes: ["pos.stock:read", "pos.stock:write", "pos.stores:read", "pos.stores:write", "pos.customers:read", "pos.customers:write", "pos.products:read", "pos.products:write"],
