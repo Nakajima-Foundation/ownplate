@@ -6,7 +6,7 @@ import { stripeUpdateCustomerData } from "../../lib/types";
 
 // called by order/orderCreated
 export const createCustomer = async (db: admin.firestore.Firestore, uid: string, phoneNumber: string) => {
-  const stripe = utils.get_stripe();
+  const stripe = utils.get_stripe_v2();
   await db.runTransaction(async (tr) => {
     const refStripe = db.doc(`/users/${uid}/system/stripe`);
     const stripeInfo = (await tr.get(refStripe)).data();
