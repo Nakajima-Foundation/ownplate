@@ -1,16 +1,14 @@
-// import Stripe from "stripe";
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions/v1";
 
 import { order_status } from "../../common/constant";
 import * as utils from "../../lib/utils";
 import { notifyNewOrderToRestaurant } from "../notify";
-import { Context } from "../../models/TestType";
-import { getStripeAccount, getStripeOrderRecord /* getPaymentMethodData, getHash */ } from "./intent";
+import { getStripeAccount, getStripeOrderRecord  } from "./intent";
 
 import { orderChangeData } from "../../lib/types";
 
-export const orderPay = async (db: admin.firestore.Firestore, data: orderChangeData, context: functions.https.CallableContext | Context) => {
+export const orderPay = async (db: admin.firestore.Firestore, data: orderChangeData, context: functions.https.CallableContext ) => {
   const customerUid = utils.validate_customer_auth(context);
   const { restaurantId, orderId, isSavePay } = data;
   utils.required_params({ restaurantId, orderId });
