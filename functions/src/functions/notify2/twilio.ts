@@ -1,8 +1,8 @@
 import twilio from "twilio";
 import { defineSecret } from "firebase-functions/params";
 
-import { twiml_neworder } from "../common/constant";
-import { parsePhoneNumber, formatNational, intenationalFormat } from "../common/phoneutil";
+import { twiml_neworder } from "../../common/constant";
+import { parsePhoneNumber, formatNational, intenationalFormat } from "../../common/phoneutil";
 import { enableNotification } from "../notificationConfig";
 
 const twilio_sid = defineSecret("TWILIO_SID");
@@ -55,7 +55,7 @@ export const phoneCall = async (restaurant) => {
       from: twilio_phone_from.value(),
     });
     console.log("PhoneCall: Success");
-    console.log(call.twilio_sid.value());
+    console.log(call.sid);
   } catch (e) {
     console.log("PhoneCall: Failed");
     console.log(e);
