@@ -308,7 +308,7 @@ const getOwnerData = async (uid) => {
 };
 
 export const stripe_parser = async (req, res) => {
-  const stripe = utils.get_stripe();
+  const stripe = utils.get_stripe_v2();
   const endpointSecret = utils.getStripeWebhookSecretKey();
 
   const sig = req.headers["stripe-signature"];
