@@ -104,7 +104,7 @@ export const orderPlace = httpsCallable(functionsJP, "orderPlaceJp");
 
 export const orderCreated = httpsCallable(functionsJP, "orderCreatedJp2");
 
-export const orderPay = httpsCallable(functionsJP, "stripepay");
+export const orderPay = httpsCallable(functionsJP, "stripepay2");
 
 export const liffAuthenticate = httpsCallable<
   {
