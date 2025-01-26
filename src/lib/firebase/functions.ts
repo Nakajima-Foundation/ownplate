@@ -79,7 +79,7 @@ export const lineValidate = httpsCallable<
 
 export const superDispatch = httpsCallable(functionsJP, "superDispatch2");
 
-export const superTwilio = httpsCallable(functionsJP, "superTwilio");
+export const superTwilio = httpsCallable(functionsJP, "superTwilio2");
 
 export const stripeDeleteCard = httpsCallable(functions, "stripeDeleteCard");
 
