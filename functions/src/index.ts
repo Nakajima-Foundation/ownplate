@@ -27,8 +27,8 @@ exportIfNeeded("liffAuthenticate", "line/liffAuthenticate", exports); // liff jp
 
 // exportIfNeeded("orderCreatedJp", "order/orderCreatedJp", exports); // jp
 exportIfNeeded("orderCreatedJp2", "order/orderCreatedJp2", exports); // jp
-exportIfNeeded("orderUpdateJp", "order/orderUpdateJp", exports);
-exportIfNeeded("orderPlaceJp", "order/orderPlaceJp", exports);
+exportIfNeeded("orderUpdateJp2", "order/orderUpdateJp", exports);
+exportIfNeeded("orderPlaceJp2", "order/orderPlaceJp", exports);
 
 exportIfNeeded("orderChangeJp", "stripe/orderChangeJp", exports);
 
