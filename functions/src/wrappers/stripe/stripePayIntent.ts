@@ -18,5 +18,5 @@ export default functions
     if (context.app == undefined) {
       throw new functions.https.HttpsError("failed-precondition", "The function must be called from an App Check verified app.");
     }
-    return await orderPay(db, data, context);
+    return await orderPay(db, data, context as any);
   });
