@@ -96,11 +96,11 @@ export const orderUpdate = httpsCallable<
     result: boolean;
     type: string;
   }
->(functionsJP, "orderUpdateJp");
+>(functionsJP, "orderUpdateJp2");
 
 export const orderChange = httpsCallable(functionsJP, "orderChangeJp");
 
-export const orderPlace = httpsCallable(functionsJP, "orderPlaceJp");
+export const orderPlace = httpsCallable(functionsJP, "orderPlaceJp2");
 
 export const orderCreated = httpsCallable(functionsJP, "orderCreatedJp2");
 
