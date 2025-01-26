@@ -30,16 +30,16 @@ exportIfNeeded("orderCreatedJp2", "order/orderCreatedJp2", exports); // jp
 exportIfNeeded("orderUpdateJp2", "order/orderUpdateJp", exports);
 exportIfNeeded("orderPlaceJp2", "order/orderPlaceJp", exports);
 
-exportIfNeeded("orderChangeJp", "stripe/orderChangeJp", exports);
+exportIfNeeded("orderChangeJp2", "stripe/orderChangeJp", exports);
 
 exportIfNeeded("stripeConnect", "stripe/stripeConnect", exports);
 exportIfNeeded("stripeDisconnect", "stripe/stripeDisconnect", exports);
 exportIfNeeded("stripeVerify", "stripe/stripeVerify", exports);
 
-exportIfNeeded("stripeCancelIntent", "stripe/stripeCancelIntent", exports);
-exportIfNeeded("stripePaymentCancelIntent", "stripe/stripePaymentCancelIntent", exports);
+exportIfNeeded("stripeCancelIntent2", "stripe/stripeCancelIntent", exports);
+exportIfNeeded("stripePaymentCancelIntent2", "stripe/stripePaymentCancelIntent", exports);
 
-exportIfNeeded("stripeUpdateCustomer", "stripe/stripeUpdateCustomer", exports);
+// exportIfNeeded("stripeUpdateCustomer", "stripe/stripeUpdateCustomer", exports);
 exportIfNeeded("stripeDeleteCard", "stripe/stripeDeleteCard", exports);
 // exportIfNeeded("stripepay", "stripe/stripePayIntent", exports);
 exportIfNeeded("stripepay2", "stripe/stripePayIntent2", exports);

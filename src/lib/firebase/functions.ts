@@ -98,7 +98,7 @@ export const orderUpdate = httpsCallable<
   }
 >(functionsJP, "orderUpdateJp2");
 
-export const orderChange = httpsCallable(functionsJP, "orderChangeJp");
+export const orderChange = httpsCallable(functionsJP, "orderChangeJp2");
 
 export const orderPlace = httpsCallable(functionsJP, "orderPlaceJp2");
 
@@ -118,3 +118,13 @@ export const liffAuthenticate = httpsCallable<
 >(functionsJP, "liffAuthenticate");
 
 export const ping = httpsCallable(functionsJP, "ping2");
+
+
+export const stripeCancelIntent = httpsCallable(
+  functionsJP,
+  "stripeCancelIntent2",
+);
+export const stripePaymentCancelIntent = httpsCallable(
+  functionsJP,
+  "stripePaymentCancelIntent2",
+);
