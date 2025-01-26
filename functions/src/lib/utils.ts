@@ -13,6 +13,8 @@ const region = "JP"; // config
 export const stripeRegion = stripe_regions[region];
 const stripe_wh_secret = defineSecret("STRIPE_WH_SECRET");
 
+const stripe_secret = defineSecret("STRIPE_SECRET");
+
 export const timezone = "Asia/Tokyo"; // config
 
 export const validate_auth = (context: functions.https.CallableContext | Context) => {
@@ -80,6 +82,14 @@ export const get_stripe = () => {
   const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET;
   if (!STRIPE_SECRET_KEY) {
     throw new functions.https.HttpsError("invalid-argument", "The functions requires STRIPE_SECRET_KEY.");
+  }
+  return new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2024-12-18.acacia" });
+};
+
+export const get_stripe_v2 = () => {
+  const STRIPE_SECRET_KEY = stripe_secret.value();
+  if (!STRIPE_SECRET_KEY) {
+    throw new HttpsError("invalid-argument", "The functions requires STRIPE_SECRET_KEY.");
   }
   return new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2024-12-18.acacia" });
 };
