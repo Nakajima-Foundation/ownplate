@@ -75,7 +75,7 @@ export const lineValidate = httpsCallable<
       displayName: string;
     };
   }
->(functionsJP, "lineValidate");
+>(functionsJP, "lineValidate2");
 
 export const superDispatch = httpsCallable(functionsJP, "superDispatch2");
 
