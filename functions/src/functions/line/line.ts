@@ -3,52 +3,9 @@ import * as utils from "../../lib/utils";
 import * as netutils from "../../lib/netutils";
 import * as admin from "firebase-admin";
 import { ownPlateConfig } from "../../common/project";
-import { enableNotification } from "../notificationConfig";
 
 import { lineValidateData } from "../../lib/types";
 import { validateLineValidate } from "../../lib/validator";
-
-const getUidLineAndToken = async (db: admin.firestore.Firestore, context: functions.https.CallableContext, customerUid: string, restaurantId?: string) => {
-  if (restaurantId) {
-    const config = await utils.get_restaurant_line_config(db, restaurantId);
-    const lineUser = await utils.get_restaurant_line_user(db, restaurantId, customerUid);
-
-    return {
-      uidLine: lineUser?.profile?.userId,
-      token: config?.message_token,
-    };
-  } else {
-    const isLine = customerUid.slice(0, 5) === "line:"; // is Liff user
-    const uidLine = isLine ? customerUid.slice(5) : context.auth?.token?.line?.slice(5);
-    return {
-      uidLine,
-      token: process.env.LINE_MESSAGE_TOKEN,
-    };
-  }
-};
-
-export const verifyFriend = async (db: admin.firestore.Firestore, data: { restaurantId?: string }, context: functions.https.CallableContext) => {
-  const customerUid = utils.validate_customer_auth(context);
-  const { restaurantId } = data;
-  const { uidLine, token } = await getUidLineAndToken(db, context, customerUid, restaurantId);
-  if (!uidLine || !token) {
-    return { result: false }; // restaurant line
-  }
-  try {
-    const profile = await netutils.request(`https://api.line.me/v2/bot/profile/${uidLine}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    if (profile.userId && profile.displayName) {
-      return { result: true, profile };
-    } else {
-      return { result: false };
-    }
-  } catch (error) {
-    throw utils.process_error(error);
-  }
-};
 
 const getLineConfig = async (db: admin.firestore.Firestore, restaurantId?: string) => {
   if (restaurantId) {
@@ -166,63 +123,3 @@ export const validate = async (db: admin.firestore.Firestore, data: lineValidate
   }
 };
 
-export const sendMessageDirect = async (lineId: string, message: string, token: string) => {
-  if (!enableNotification) {
-    return;
-  }
-  if (!token) {
-    console.log("no line message token");
-    return;
-  }
-  return netutils.postJson(
-    "https://api.line.me/v2/bot/message/push",
-    {
-      headers: {
-        //Authorization: `Bearer ${data.access.access_token}`
-        Authorization: `Bearer ${token}`,
-      },
-    },
-    {
-      to: lineId,
-      messages: [{ type: "text", text: message }],
-    },
-  );
-};
-
-export const getLiffPrivateConfig = async (db: admin.firestore.Firestore, liffIndexId: string) => {
-  const liffPrivateConfig = (await db.doc(`/liff/${liffIndexId}/liffPrivate/data`).get()).data();
-  if (!liffPrivateConfig) {
-    console.log("getLineId: no liffPrivateConfig");
-    return {};
-  }
-  const token = liffPrivateConfig.message_token;
-  return {
-    token,
-  };
-};
-export const getLineId = async (db: admin.firestore.Firestore, uid: string | null) => {
-  if (uid === null) {
-    return;
-  }
-  const data = (await db.doc(`/users/${uid}/system/line`).get()).data() || (await db.doc(`/admins/${uid}/system/line`).get()).data();
-  // liff case
-  if (data && data.liffIndexId) {
-    const sub = data?.verified?.sub;
-    return {
-      lineId: sub,
-      liffId: data.liffId,
-      liffIndexId: data.liffIndexId,
-    };
-  } else {
-    const sub = data && data.profile && data.profile.userId;
-    if (!sub) {
-      return {};
-    }
-
-    return {
-      lineId: sub,
-      liffId: null,
-      liffIndexId: null,
-    };
-  }
-};

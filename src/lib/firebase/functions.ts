@@ -35,7 +35,7 @@ export const lineVerifyFriend = httpsCallable<
   {
     result: boolean;
   }
->(functionsJP, "lineVerifyFriend");
+>(functionsJP, "lineVerifyFriend2");
 
 export const subAccountDeleteChild = httpsCallable<
   {
