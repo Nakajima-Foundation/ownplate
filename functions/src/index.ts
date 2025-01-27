@@ -18,7 +18,7 @@ exportIfNeeded("stripeVerify2", "super/stripeVerify", exports);
 
 // exportIfNeeded("batchBigQueryPV", "batch/bigQueryPV", exports);
 
-exportIfNeeded("accountDelete", "accountDelete", exports);
+exportIfNeeded("accountDelete2", "accountDelete", exports);
 
 exportIfNeeded("lineVerifyFriend2", "line/lineVerifyFriend", exports); // by user profile
 exportIfNeeded("lineValidate2", "line/lineValidate", exports); // callback, user and admin
