@@ -81,8 +81,6 @@ export const superDispatch = httpsCallable(functionsJP, "superDispatch2");
 
 export const superTwilio = httpsCallable(functionsJP, "superTwilio2");
 
-export const stripeDeleteCard = httpsCallable(functions, "stripeDeleteCard");
-
 export const accountDelete = httpsCallable(functionsJP, "accountDelete");
 
 export const orderUpdate = httpsCallable<
@@ -119,7 +117,6 @@ export const liffAuthenticate = httpsCallable<
 
 export const ping = httpsCallable(functionsJP, "ping2");
 
-
 export const stripeCancelIntent = httpsCallable(
   functionsJP,
   "stripeCancelIntent2",
@@ -129,7 +126,7 @@ export const stripePaymentCancelIntent = httpsCallable(
   "stripePaymentCancelIntent2",
 );
 
-
+export const stripeDeleteCard = httpsCallable(functions, "stripeDeleteCard");
 export const stripeConnect = httpsCallable(functions, "stripeConnect");
 export const stripeDisconnect = httpsCallable(functions, "stripeDisconnect");
 export const stripeVerify = httpsCallable(functions, "stripeVerify");
