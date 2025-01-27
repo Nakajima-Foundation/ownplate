@@ -1,5 +1,3 @@
-import { functions } from "@/lib/firebase/firebase9";
-import { httpsCallable } from "firebase/functions";
 import { ownPlateConfig } from "@/config/project";
 
 export const getStripeInstance = (stripeAccount: string) => {
@@ -8,11 +6,6 @@ export const getStripeInstance = (stripeAccount: string) => {
     stripeAccount,
   });
 };
-
-export const stripeConnect = httpsCallable(functions, "stripeConnect");
-export const stripeDisconnect = httpsCallable(functions, "stripeDisconnect");
-export const stripeVerify = httpsCallable(functions, "stripeVerify");
-export const stripeReceipt = httpsCallable(functions, "stripeReceipt");
 
 export const stripeActions = {
   capability_updated: 1,
