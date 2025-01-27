@@ -12,12 +12,6 @@ export const getStripeInstance = (stripeAccount: string) => {
 export const stripeConnect = httpsCallable(functions, "stripeConnect");
 export const stripeDisconnect = httpsCallable(functions, "stripeDisconnect");
 export const stripeVerify = httpsCallable(functions, "stripeVerify");
-/*
-export const stripeUpdateCustomer = httpsCallable(
-  functions,
-  "stripeUpdateCustomer",
-);
-*/
 export const stripeReceipt = httpsCallable(functions, "stripeReceipt");
 
 export const stripeActions = {
