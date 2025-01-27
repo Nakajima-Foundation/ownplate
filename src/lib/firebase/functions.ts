@@ -42,7 +42,7 @@ export const subAccountDeleteChild = httpsCallable<
     childUid: string;
   },
   Record<string, never>
->(functionsJP, "subAccountDeleteChild");
+>(functionsJP, "subAccountDeleteChild2");
 
 export const subAccountInvite = httpsCallable<
   {
@@ -52,15 +52,15 @@ export const subAccountInvite = httpsCallable<
   {
     result: boolean;
   }
->(functionsJP, "subAccountInvite");
+>(functionsJP, "subAccountInvite2");
 
 export const subAccountInvitationAccept = httpsCallable<{
   messageId: string;
-}>(functionsJP, "subAccountInvitationAccept");
+}>(functionsJP, "subAccountInvitationAccept2");
 
 export const subAccountInvitationDeny = httpsCallable<{
   messageId: string;
-}>(functionsJP, "subAccountInvitationDeny");
+}>(functionsJP, "subAccountInvitationDeny2");
 
 export const lineValidate = httpsCallable<
   {
@@ -77,9 +77,9 @@ export const lineValidate = httpsCallable<
   }
 >(functionsJP, "lineValidate");
 
-export const superDispatch = httpsCallable(functionsJP, "superDispatch");
+export const superDispatch = httpsCallable(functionsJP, "superDispatch2");
 
-export const superTwilio = httpsCallable(functionsJP, "superTwilio");
+export const superTwilio = httpsCallable(functionsJP, "superTwilio2");
 
 export const stripeDeleteCard = httpsCallable(functions, "stripeDeleteCard");
 
@@ -117,4 +117,4 @@ export const liffAuthenticate = httpsCallable<
   }
 >(functionsJP, "liffAuthenticate");
 
-export const ping = httpsCallable(functionsJP, "ping");
+export const ping = httpsCallable(functionsJP, "ping2");

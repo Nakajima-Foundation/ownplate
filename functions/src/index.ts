@@ -13,8 +13,8 @@ if (!admin.apps.length) {
 // exportIfNeeded("api", "api", exports);
 exportIfNeeded("apiJP2", "apiJP2", exports);
 
-exportIfNeeded("superDispatch", "super/superDispatch", exports);
-exportIfNeeded("superTwilio", "super/superTwilio", exports);
+exportIfNeeded("superDispatch2", "super/superDispatch", exports);
+exportIfNeeded("superTwilio2", "super/superTwilio", exports);
 
 // exportIfNeeded("batchBigQueryPV", "batch/bigQueryPV", exports);
 
@@ -55,10 +55,12 @@ exportIfNeeded("smaregiAuth2", "smaregi/auth2", exports);
 exportIfNeeded("smaregiStoreList2", "smaregi/storeList2", exports);
 exportIfNeeded("smaregiProductList2", "smaregi/productList2", exports);
 
-exportIfNeeded("subAccountInvite", "subaccount/invite", exports);
-exportIfNeeded("subAccountInvitationAccept", "subaccount/accept", exports);
-exportIfNeeded("subAccountInvitationDeny", "subaccount/deny", exports);
-exportIfNeeded("subAccountDeleteChild", "subaccount/delete", exports);
+exportIfNeeded("subAccountInvite2", "subaccount/invite", exports);
+exportIfNeeded("subAccountInvitationAccept2", "subaccount/accept", exports);
+exportIfNeeded("subAccountInvitationDeny2", "subaccount/deny", exports);
+exportIfNeeded("subAccountDeleteChild2", "subaccount/delete", exports);
 
-exportIfNeeded("ping", "ping", exports);
+
+
+exportIfNeeded("ping2", "ping2", exports);
 exportIfNeeded("beforeSignIn", "auth/beforeSignIn", exports);

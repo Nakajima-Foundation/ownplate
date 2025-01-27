@@ -1,8 +1,9 @@
-import * as admin from "firebase-admin";
 import { onCall, HttpsError } from "firebase-functions/v2/https";
 
-import { invite } from "../../functions/subAccount";
-import { enforceAppCheck } from "../firebase";
+import * as admin from "firebase-admin";
+
+import { ping } from "../functions/ping";
+import { enforceAppCheck } from "./firebase";
 
 const db = admin.firestore();
 
@@ -11,11 +12,11 @@ export default onCall(
     region: "asia-northeast1",
     memory: "1GiB",
     enforceAppCheck,
-    maxInstances: 5,
+    maxInstances: 100,
   },
   async (context) => {
     if (context.app == undefined) {
       throw new HttpsError("failed-precondition", "The function must be called from an App Check verified app.");
     }
-    return await invite(db, context.data, context);
+    return await ping(db, context.data, context);
   });
