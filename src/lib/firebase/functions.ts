@@ -81,7 +81,7 @@ export const superDispatch = httpsCallable(functionsJP, "superDispatch2");
 
 export const superTwilio = httpsCallable(functionsJP, "superTwilio2");
 
-export const accountDelete = httpsCallable(functionsJP, "accountDelete");
+export const accountDelete = httpsCallable(functionsJP, "accountDelete2");
 
 export const orderUpdate = httpsCallable<
   {
