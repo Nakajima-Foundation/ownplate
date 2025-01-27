@@ -47,3 +47,4 @@ export const gtmID = "GTM-M8DN5VQ";
 export const GAPIKey = "AIzaSyBopNQwD1RT2k9dLqH6WYPWIkMZF3RWXMQ";
 export const GMAPId = "DEMO_MAP_ID";
 export const fromEmail = "noreply@ownplate-dev.firebaseapp.com";
+export const bucketRegion = "us-central1";
