@@ -220,7 +220,7 @@ import Pickup from "@/app/user/OrderPage/AfterPaid/Pickup.vue";
 
 import { order_status } from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
-import { stripeCancelIntent } from "@/lib/stripe/stripe";
+import { stripeCancelIntent } from "@/lib/firebase/functions";
 
 import * as analyticsUtil from "@/lib/firebase/analytics";
 

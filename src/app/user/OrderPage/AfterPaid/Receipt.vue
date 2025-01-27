@@ -25,7 +25,7 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 
-import { stripeReceipt } from "@/lib/stripe/stripe";
+import { stripeReceipt } from "@/lib/firebase/functions";
 
 import { useRestaurantId } from "@/utils/utils";
 import { useRoute } from "vue-router";

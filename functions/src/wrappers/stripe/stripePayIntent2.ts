@@ -1,7 +1,7 @@
 import { onCall, HttpsError } from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
 
-import { place } from "../../functions/order/orderPlace";
+import { orderPay } from "../../functions/stripe/orderPay";
 import { enforceAppCheck, secretKeys } from "../firebase";
 
 const db = admin.firestore();
@@ -18,5 +18,5 @@ export default onCall(
     if (context.app == undefined) {
       throw new HttpsError("failed-precondition", "The function must be called from an App Check verified app.");
     }
-    return await place(db, context.data, context);
+    return await orderPay(db, context.data, context);
   });

@@ -62,7 +62,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, PropType } from "vue";
-import { stripeCancelIntent } from "@/lib/stripe/stripe";
+import { stripeCancelIntent } from "@/lib/firebase/functions";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import { OrderInfoData } from "@/models/orderInfo";

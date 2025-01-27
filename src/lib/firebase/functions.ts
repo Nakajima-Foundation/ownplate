@@ -81,8 +81,6 @@ export const superDispatch = httpsCallable(functionsJP, "superDispatch2");
 
 export const superTwilio = httpsCallable(functionsJP, "superTwilio2");
 
-export const stripeDeleteCard = httpsCallable(functions, "stripeDeleteCard");
-
 export const accountDelete = httpsCallable(functionsJP, "accountDelete");
 
 export const orderUpdate = httpsCallable<
@@ -96,15 +94,15 @@ export const orderUpdate = httpsCallable<
     result: boolean;
     type: string;
   }
->(functionsJP, "orderUpdateJp");
+>(functionsJP, "orderUpdateJp2");
 
-export const orderChange = httpsCallable(functionsJP, "orderChangeJp");
+export const orderChange = httpsCallable(functionsJP, "orderChangeJp2");
 
-export const orderPlace = httpsCallable(functionsJP, "orderPlaceJp");
+export const orderPlace = httpsCallable(functionsJP, "orderPlaceJp2");
 
 export const orderCreated = httpsCallable(functionsJP, "orderCreatedJp2");
 
-export const orderPay = httpsCallable(functionsJP, "stripepay");
+export const orderPay = httpsCallable(functionsJP, "stripepay2");
 
 export const liffAuthenticate = httpsCallable<
   {
@@ -118,3 +116,18 @@ export const liffAuthenticate = httpsCallable<
 >(functionsJP, "liffAuthenticate");
 
 export const ping = httpsCallable(functionsJP, "ping2");
+
+export const stripeCancelIntent = httpsCallable(
+  functionsJP,
+  "stripeCancelIntent2",
+);
+export const stripePaymentCancelIntent = httpsCallable(
+  functionsJP,
+  "stripePaymentCancelIntent2",
+);
+
+export const stripeDeleteCard = httpsCallable(functions, "stripeDeleteCard");
+export const stripeConnect = httpsCallable(functions, "stripeConnect");
+export const stripeDisconnect = httpsCallable(functions, "stripeDisconnect");
+export const stripeVerify = httpsCallable(functionsJP, "stripeVerify2");
+export const stripeReceipt = httpsCallable(functions, "stripeReceipt");

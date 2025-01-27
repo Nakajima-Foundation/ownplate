@@ -65,7 +65,7 @@ import {
   getDoc,
 } from "firebase/firestore";
 
-import { stripeVerify } from "@/lib/stripe/stripe";
+import { stripeVerify } from "@/lib/firebase/functions";
 
 import BackButton from "@/components/BackButton.vue";
 

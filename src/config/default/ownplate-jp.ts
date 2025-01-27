@@ -40,7 +40,7 @@ export const smaregi = {
   //  for server
   host: "https://id.smaregi.jp",
   auth_host_name: "id.smaregi.jp",
-  host_name: "api.smaregi.jp"
+  host_name: "api.smaregi.jp",
 };
 
 export const appCheckKey = "6LdsEOEhAAAAADBDU9ynD4TiDjf-RNOyOrjDNctg";
