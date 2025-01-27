@@ -362,7 +362,10 @@ export default defineComponent({
                 .map((orderDoc) => orderDoc.data())
                 .filter((data) => {
                   // We need this filter here because Firebase does not allow us to do
-                  return (data.status < order_status.ready_to_pickup) && (data.status !== order_status.waiting_payment);
+                  return (
+                    data.status < order_status.ready_to_pickup &&
+                    data.status !== order_status.waiting_payment
+                  );
                 }).length;
               numberOfOrderObj.value = newObj;
             },

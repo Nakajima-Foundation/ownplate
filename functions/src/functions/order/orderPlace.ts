@@ -1,13 +1,12 @@
 import Stripe from "stripe";
-import * as functions from "firebase-functions/v1";
+import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
 import moment from "moment-timezone";
 
 import { order_status } from "../../common/constant";
 import * as utils from "../../lib/utils";
-import { notifyNewOrderToRestaurant } from "../notify";
+import { notifyNewOrderToRestaurant } from "../notify2";
 import { costCal } from "../../common/commonUtils";
-import { Context } from "../../models/TestType";
 
 import { getStripeAccount, getHash, getCustomerStripeInfo2, saveCustomerStripeInfo2 } from "../stripe/intent";
 import { orderPlacedData } from "../../lib/types";
@@ -19,7 +18,7 @@ export const getOrderData = async (transaction: admin.firestore.Transaction, ord
   const orderDoc = await transaction.get(orderRef);
   const order = orderDoc.data();
   if (!order) {
-    throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
+    throw new HttpsError("invalid-argument", "This order does not exist.");
   }
   order.id = orderDoc.id;
   return order;
@@ -113,7 +112,7 @@ export const updateOrderTotalDataAndUserLog = async (
 const multiple = utils.stripeRegion.multiple; // 100 for USD, 1 for JPY
 
 // This function is called by users to place orders without paying
-export const place = async (db, data: orderPlacedData, context: functions.https.CallableContext | Context) => {
+export const place = async (db, data: orderPlacedData, context: CallableRequest) => {
   const customerUid = utils.validate_customer_auth(context);
 
   const { restaurantId, orderId, tip, timeToPickup, memo, userName, customerInfo, payStripe, waitingPayment } = data;
@@ -124,13 +123,13 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
   const validateResult = validateOrderPlaced(data);
   if (!validateResult.result) {
     console.error("orderPlace", validateResult.errors);
-    throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+    throw new HttpsError("invalid-argument", "Validation Error.");
   }
   const enableStripe = !!payStripe;
 
   const roundedTip = Math.round((Number(tip) || 0) * multiple) / multiple;
   if (roundedTip < 0) {
-    throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+    throw new HttpsError("invalid-argument", "Validation Error.");
   }
   // In isEC, timeToPickup is now. else time to pick
   const timePlaced = new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds);
@@ -142,12 +141,12 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
 
     // check tip
     if ((restaurantData.groupId || restaurantData.isEC) && roundedTip > 0) {
-      throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+      throw new HttpsError("invalid-argument", "Validation Error.");
     }
     // check time
     if (!restaurantData.isEC) {
       if (timePlaced.toDate() < new Date()) {
-        throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+        throw new HttpsError("invalid-argument", "Validation Error.");
       }
     }
 
@@ -157,13 +156,13 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
     const result = await db.runTransaction(async (transaction) => {
       const order = await getOrderData(transaction, orderRef);
       if (!order) {
-        throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
+        throw new HttpsError("invalid-argument", "This order does not exist.");
       }
       if (customerUid !== order.uid) {
-        throw new functions.https.HttpsError("permission-denied", "The user is not the owner of this order.");
+        throw new HttpsError("permission-denied", "The user is not the owner of this order.");
       }
       if (order.status !== order_status.validation_ok) {
-        throw new functions.https.HttpsError("failed-precondition", "The order has been already placed or canceled");
+        throw new HttpsError("failed-precondition", "The order has been already placed or canceled");
       }
       // promotion
       const { historyCollectionRef, historyDocRef, promotionData, discountPrice } = await (async () => {
@@ -173,7 +172,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
           if (promotionData.usageRestrictions) {
             const historyDocRef = await getUserHistoryDoc(db, promotionData, customerUid);
             if (!(await enableUserPromotion(transaction, promotionData, historyDocRef))) {
-              throw new functions.https.HttpsError("invalid-argument", "This promotion is used.");
+              throw new HttpsError("invalid-argument", "This promotion is used.");
             }
             return {
               historyDocRef,
@@ -199,7 +198,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
         const validateResult = validateCustomer(customerInfo || {});
         if (!validateResult.result) {
           console.error("orderPlace", validateResult.errors);
-          throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+          throw new HttpsError("invalid-argument", "Validation Error.");
         }
         // for transaction lock
         await transaction.get(customerRef);
@@ -222,7 +221,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
           } as Stripe.PaymentIntentCreateParams;
 
           const stripeCustomer = await getCustomerStripeInfo2(db, customerUid, restaurantOwnerUid);
-          const stripe = utils.get_stripe();
+          const stripe = utils.get_stripe_v2();
           const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
           const hasPayment = !!(stripeCustomer && stripeCustomer.customerId && stripeCustomer.payment_method);
           if (hasPayment) {

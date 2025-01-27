@@ -88,7 +88,7 @@ export const cancelStripe = async (
   const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
 
   const idempotencyKey = getHash([orderId, paymentIntentId].join("-"));
-  const stripe = utils.get_stripe();
+  const stripe = utils.get_stripe_v2();
   const paymentIntent = await stripe.paymentIntents.cancel(paymentIntentId, {
     idempotencyKey: `${idempotencyKey}-cancel`,
     stripeAccount,

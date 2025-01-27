@@ -1,8 +1,9 @@
 import * as nodemailer from "nodemailer";
-import { enableNotification } from "./notificationConfig";
+import { defineSecret } from "firebase-functions/params";
+import { enableNotification } from "../notificationConfig";
 
-const aws_key = process.env.AWS_SES_USER;
-const aws_secret = process.env.AWS_SES_PASS;
+const secret_aws_key = defineSecret("AWS_SES_USER");
+const secret_aws_secret = defineSecret("AWS_SES_PASS");
 
 export const sendMail = async (to, title, body) => {
   if (!enableNotification) {
@@ -15,6 +16,8 @@ export const sendMail = async (to, title, body) => {
     // html: html,
     subject: title,
   };
+  const aws_key = secret_aws_key.value();
+  const aws_secret = secret_aws_secret.value();
   if (aws_key && aws_secret) {
     const smtpTransporter = nodemailer.createTransport({
       port: 465,
