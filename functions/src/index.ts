@@ -56,4 +56,4 @@ exportIfNeeded("subAccountDeleteChild2", "subaccount/delete", exports);
 
 
 exportIfNeeded("ping2", "ping2", exports);
-exportIfNeeded("beforeSignIn", "auth/beforeSignIn", exports);
+exportIfNeeded("beforeSignIn2", "auth/beforeSignIn", exports);
