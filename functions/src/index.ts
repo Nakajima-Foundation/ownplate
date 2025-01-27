@@ -10,7 +10,7 @@ if (!admin.apps.length) {
   admin.initializeApp();
 }
 
-exportIfNeeded("apiJP2", "apiJP2", exports);
+exportIfNeeded("apiJP2", "apiJP", exports);
 
 exportIfNeeded("superDispatch2", "super/superDispatch", exports);
 exportIfNeeded("superTwilio2", "super/superTwilio", exports);
@@ -55,5 +55,5 @@ exportIfNeeded("subAccountDeleteChild2", "subaccount/delete", exports);
 
 
 
-exportIfNeeded("ping2", "ping2", exports);
+exportIfNeeded("ping2", "ping", exports);
 exportIfNeeded("beforeSignIn2", "auth/beforeSignIn", exports);

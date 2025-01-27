@@ -1,6 +1,6 @@
 import { onCall, HttpsError } from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
-import { validate } from "../../functions/line/line2";
+import { validate } from "../../functions/line/line";
 import { enforceAppCheck, secretKeys } from "../firebase";
 
 const db = admin.firestore();
