@@ -42,7 +42,7 @@ exportIfNeeded("stripepay2", "stripe/stripePayIntent2", exports);
 
 exportIfNeeded("stripeReceipt", "stripe/stripeReceipt", exports);
 
-exportIfNeeded("imageProcessing", "image/imageProcessing", exports);
+exportIfNeeded("imageProcessing2", "image/imageProcessing", exports);
 
 exportIfNeeded("smaregiAuth2", "smaregi/auth2", exports);
 exportIfNeeded("smaregiStoreList2", "smaregi/storeList2", exports);
