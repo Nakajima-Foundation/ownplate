@@ -6,7 +6,7 @@ import moment from "moment-timezone";
 
 import { superTwilioCallData } from "../../lib/types";
 
-import { phoneCall } from "../notify2/twilio";
+import { phoneCall } from "../notify/twilio";
 
 export const superTwilioCall = async (db: admin.firestore.Firestore, data: superTwilioCallData, context: CallableRequest) => {
   if (!context.auth?.token?.admin) {
