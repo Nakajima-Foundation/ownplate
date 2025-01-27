@@ -10,11 +10,11 @@ if (!admin.apps.length) {
   admin.initializeApp();
 }
 
-// exportIfNeeded("api", "api", exports);
 exportIfNeeded("apiJP2", "apiJP2", exports);
 
 exportIfNeeded("superDispatch2", "super/superDispatch", exports);
 exportIfNeeded("superTwilio2", "super/superTwilio", exports);
+exportIfNeeded("stripeVerify2", "super/stripeVerify", exports);
 
 // exportIfNeeded("batchBigQueryPV", "batch/bigQueryPV", exports);
 
@@ -25,7 +25,6 @@ exportIfNeeded("lineValidate", "line/lineValidate", exports); // callback, user 
 
 exportIfNeeded("liffAuthenticate", "line/liffAuthenticate", exports); // liff jp
 
-// exportIfNeeded("orderCreatedJp", "order/orderCreatedJp", exports); // jp
 exportIfNeeded("orderCreatedJp2", "order/orderCreatedJp2", exports); // jp
 exportIfNeeded("orderUpdateJp2", "order/orderUpdateJp", exports);
 exportIfNeeded("orderPlaceJp2", "order/orderPlaceJp", exports);
@@ -34,22 +33,16 @@ exportIfNeeded("orderChangeJp2", "stripe/orderChangeJp", exports);
 
 exportIfNeeded("stripeConnect", "stripe/stripeConnect", exports);
 exportIfNeeded("stripeDisconnect", "stripe/stripeDisconnect", exports);
-exportIfNeeded("stripeVerify", "stripe/stripeVerify", exports);
 
 exportIfNeeded("stripeCancelIntent2", "stripe/stripeCancelIntent", exports);
 exportIfNeeded("stripePaymentCancelIntent2", "stripe/stripePaymentCancelIntent", exports);
 
 exportIfNeeded("stripeDeleteCard", "stripe/stripeDeleteCard", exports);
-// exportIfNeeded("stripepay", "stripe/stripePayIntent", exports);
 exportIfNeeded("stripepay2", "stripe/stripePayIntent2", exports);
 
 exportIfNeeded("stripeReceipt", "stripe/stripeReceipt", exports);
 
 exportIfNeeded("imageProcessing", "image/imageProcessing", exports);
-
-// exportIfNeeded("smaregiAuth", "smaregi/auth", exports);
-// exportIfNeeded("smaregiStoreList", "smaregi/storeList", exports);
-// exportIfNeeded("smaregiProductList", "smaregi/productList", exports);
 
 exportIfNeeded("smaregiAuth2", "smaregi/auth2", exports);
 exportIfNeeded("smaregiStoreList2", "smaregi/storeList2", exports);

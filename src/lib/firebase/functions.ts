@@ -129,5 +129,5 @@ export const stripePaymentCancelIntent = httpsCallable(
 export const stripeDeleteCard = httpsCallable(functions, "stripeDeleteCard");
 export const stripeConnect = httpsCallable(functions, "stripeConnect");
 export const stripeDisconnect = httpsCallable(functions, "stripeDisconnect");
-export const stripeVerify = httpsCallable(functions, "stripeVerify");
+export const stripeVerify = httpsCallable(functionsJP, "stripeVerify2");
 export const stripeReceipt = httpsCallable(functions, "stripeReceipt");
