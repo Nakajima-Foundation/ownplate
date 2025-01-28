@@ -40,7 +40,7 @@ exportIfNeeded("stripePaymentCancelIntent2", "stripe/stripePaymentCancelIntent",
 exportIfNeeded("stripeDeleteCard", "stripe/stripeDeleteCard", exports);
 exportIfNeeded("stripepay2", "stripe/stripePayIntent2", exports);
 
-exportIfNeeded("stripeReceipt", "stripe/stripeReceipt", exports);
+exportIfNeeded("stripeReceipt2", "stripe/stripeReceipt", exports);
 
 exportIfNeeded("imageProcessing2", "image/imageProcessing", exports);
 
