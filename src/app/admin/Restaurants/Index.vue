@@ -874,7 +874,7 @@
                     <div>
                       <a
                         @click="copyPreviousDay(index)"
-                        class="inline-flex items-center justify-center"
+                        class="cursor-pointer inline-flex items-center justify-center"
                       >
                         <i class="material-icons mr-2 text-lg text-op-teal">
                           content_copy

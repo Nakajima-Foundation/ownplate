@@ -38,7 +38,7 @@
           <div class="mt-2 text-center">
             <a
               @click="handleLinkStripe"
-              class="inline-flex h-12 items-center rounded-full bg-op-teal px-8 shadow"
+              class="cursor-pointer inline-flex h-12 items-center rounded-full bg-op-teal px-8 shadow"
               ><span class="text-base font-bold text-white">{{
                 $t("admin.payments.connectStripe")
               }}</span></a
@@ -66,7 +66,7 @@
           <div class="mt-4 text-center">
             <a
               @click="handlePaymentAccountDisconnect"
-              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+              class="cursor-pointer inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
             >
               <i class="material-icons mr-2 text-lg text-red-700">link_off</i>
               <span class="text-sm font-bold text-red-700">{{
