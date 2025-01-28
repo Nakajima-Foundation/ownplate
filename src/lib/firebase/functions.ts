@@ -1,4 +1,4 @@
-import { functions, functionsJP } from "@/lib/firebase/firebase9";
+import { functionsJP } from "@/lib/firebase/firebase9";
 import { httpsCallable } from "firebase/functions";
 import { Timestamp } from "firebase/firestore";
 
@@ -126,7 +126,7 @@ export const stripePaymentCancelIntent = httpsCallable(
   "stripePaymentCancelIntent2",
 );
 
-export const stripeDeleteCard = httpsCallable(functions, "stripeDeleteCard");
+export const stripeDeleteCard = httpsCallable(functionsJP, "stripeDeleteCard2");
 export const stripeConnect = httpsCallable(functionsJP, "stripeConnect2");
 export const stripeDisconnect = httpsCallable(functionsJP, "stripeDisconnect2");
 export const stripeVerify = httpsCallable(functionsJP, "stripeVerify2");

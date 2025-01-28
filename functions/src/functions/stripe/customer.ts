@@ -23,7 +23,7 @@ export const createCustomer = async (db: admin.firestore.Firestore, uid: string,
 
 // called by delete account
 export const deleteCustomer = async (db: admin.firestore.Firestore, uid: string) => {
-  const stripe = utils.get_stripe();
+  const stripe = utils.get_stripe_v2();
   const refStripeSystem = db.doc(`/users/${uid}/system/stripe`);
   const refStripeReadOnly = db.doc(`/users/${uid}/readonly/stripe`);
   await db.runTransaction(async (tr) => {
