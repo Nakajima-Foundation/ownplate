@@ -31,8 +31,8 @@ exportIfNeeded("orderPlaceJp2", "order/orderPlaceJp", exports);
 
 exportIfNeeded("orderChangeJp2", "stripe/orderChangeJp", exports);
 
-exportIfNeeded("stripeConnect", "stripe/stripeConnect", exports);
-exportIfNeeded("stripeDisconnect", "stripe/stripeDisconnect", exports);
+exportIfNeeded("stripeConnect2", "stripe/stripeConnect", exports);
+exportIfNeeded("stripeDisconnect2", "stripe/stripeDisconnect", exports);
 
 exportIfNeeded("stripeCancelIntent2", "stripe/stripeCancelIntent", exports);
 exportIfNeeded("stripePaymentCancelIntent2", "stripe/stripePaymentCancelIntent", exports);

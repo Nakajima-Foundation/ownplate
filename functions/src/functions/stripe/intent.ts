@@ -46,6 +46,7 @@ export const getStripeOrderRecord = async (transaction: admin.firestore.Transact
   return stripeRecord;
 };
 
+// from order change
 export const getPaymentMethodData = async (db: admin.firestore.Firestore, restaurantOwnerUid: string, customerUid: string) => {
   const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
 
