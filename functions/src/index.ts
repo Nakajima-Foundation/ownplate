@@ -25,7 +25,7 @@ exportIfNeeded("lineValidate2", "line/lineValidate", exports); // callback, user
 
 exportIfNeeded("liffAuthenticate", "line/liffAuthenticate", exports); // liff jp
 
-exportIfNeeded("orderCreatedJp2", "order/orderCreatedJp2", exports); // jp
+exportIfNeeded("orderCreatedJp2", "order/orderCreatedJp", exports); // jp
 exportIfNeeded("orderUpdateJp2", "order/orderUpdateJp", exports);
 exportIfNeeded("orderPlaceJp2", "order/orderPlaceJp", exports);
 
@@ -44,9 +44,9 @@ exportIfNeeded("stripeReceipt2", "stripe/stripeReceipt", exports);
 
 exportIfNeeded("imageProcessing2", "image/imageProcessing", exports);
 
-exportIfNeeded("smaregiAuth2", "smaregi/auth2", exports);
-exportIfNeeded("smaregiStoreList2", "smaregi/storeList2", exports);
-exportIfNeeded("smaregiProductList2", "smaregi/productList2", exports);
+exportIfNeeded("smaregiAuth2", "smaregi/auth", exports);
+exportIfNeeded("smaregiStoreList2", "smaregi/storeList", exports);
+exportIfNeeded("smaregiProductList2", "smaregi/productList", exports);
 
 exportIfNeeded("subAccountInvite2", "subaccount/invite", exports);
 exportIfNeeded("subAccountInvitationAccept2", "subaccount/accept", exports);
