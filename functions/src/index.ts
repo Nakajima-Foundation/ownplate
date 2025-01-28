@@ -23,7 +23,7 @@ exportIfNeeded("accountDelete2", "accountDelete", exports);
 exportIfNeeded("lineVerifyFriend2", "line/lineVerifyFriend", exports); // by user profile
 exportIfNeeded("lineValidate2", "line/lineValidate", exports); // callback, user and admin
 
-exportIfNeeded("liffAuthenticate", "line/liffAuthenticate", exports); // liff jp
+exportIfNeeded("liffAuthenticate2", "line/liffAuthenticate", exports); // liff jp
 
 exportIfNeeded("orderCreatedJp2", "order/orderCreatedJp", exports); // jp
 exportIfNeeded("orderUpdateJp2", "order/orderUpdateJp", exports);

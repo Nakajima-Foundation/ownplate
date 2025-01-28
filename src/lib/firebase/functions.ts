@@ -113,7 +113,7 @@ export const liffAuthenticate = httpsCallable<
   {
     customToken: string;
   }
->(functionsJP, "liffAuthenticate");
+>(functionsJP, "liffAuthenticate2");
 
 export const ping = httpsCallable(functionsJP, "ping2");
 
