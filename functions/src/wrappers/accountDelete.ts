@@ -2,7 +2,7 @@ import { onCall, HttpsError } from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
 
 import { deleteAccount } from "../functions/account";
-import { enforceAppCheck, secretKeys } from "../firebase";
+import { enforceAppCheck, secretKeys } from "./firebase";
 
 const db = admin.firestore();
 
