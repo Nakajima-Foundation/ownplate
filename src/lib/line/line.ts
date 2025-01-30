@@ -1,5 +1,5 @@
 import { ownPlateConfig } from "@/config/project";
-import { parse, serialize } from "cookie";
+import { parse } from "cookie";
 
 export const lineAuthURLBase = (
   path: string,

@@ -116,7 +116,7 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, onSnapshot, Unsubscribe, setDoc } from "firebase/firestore";
 import { stripeConnect, stripeDisconnect } from "@/lib/firebase/functions";
 import { ownPlateConfig } from "@/config/project";
-import { parse, serialize } from "cookie";
+import { parse } from "cookie";
 
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
