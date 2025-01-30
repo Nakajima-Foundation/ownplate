@@ -116,7 +116,7 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, onSnapshot, Unsubscribe, setDoc } from "firebase/firestore";
 import { stripeConnect, stripeDisconnect } from "@/lib/firebase/functions";
 import { ownPlateConfig } from "@/config/project";
-import * as Cookie from "cookie";
+import { parse, serialize } from "cookie";
 
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
@@ -139,7 +139,7 @@ export default defineComponent({
       const code = route.query.code as string;
       if (code) {
         const state = route.query.state;
-        const cookies = Cookie.parse(document.cookie);
+        const cookies = parse(document.cookie);
         //console.log("mounted", code, state, cookies.stripe_state);
         if (state === cookies?.stripe_state) {
           store.commit("setLoading", true);
