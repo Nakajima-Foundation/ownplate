@@ -9,12 +9,12 @@ import { resources } from "./resources";
 import * as utils from "../lib/utils";
 
 import { ownPlateConfig } from "../common/project";
+import { getLineId, getLiffPrivateConfig } from "./line/line";
 
-import * as line from "./line/line";
-import { sendMessageDirect } from "./notify2/line";
-import * as sms from "./notify2/sms";
-import * as twilio from "./notify2/twilio";
-import * as ses from "./notify2/ses";
+import { sendMessageDirect } from "./notify/line";
+import * as sms from "./notify/sms";
+import * as twilio from "./notify/twilio";
+import * as ses from "./notify/ses";
 
 const LINE_MESSAGE_TOKEN = defineSecret("LINE_MESSAGE_TOKEN");
 
@@ -56,12 +56,12 @@ export const sendMessageToCustomer = async (
   }
 
   // for JP
-  const { lineId, liffIndexId, liffId } = (await line.getLineId(db, orderData.uid)) as any;
+  const { lineId, liffIndexId, liffId } = (await getLineId(db, orderData.uid)) as any;
 
   if (lineId) {
     if (liffIndexId) {
       // liff
-      const { token } = await line.getLiffPrivateConfig(db, liffIndexId);
+      const { token } = await getLiffPrivateConfig(db, liffIndexId);
       if (token) {
         const liffUrl = `https://liff.line.me/${liffId}/r/${restaurantId}/order/${orderId}`;
         await sendMessageDirect(lineId, getMessage(liffUrl), token);

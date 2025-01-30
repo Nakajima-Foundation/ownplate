@@ -3,7 +3,7 @@ import * as functions from "firebase-functions/v1";
 import { defineSecret } from "firebase-functions/params";
 import fetch from "node-fetch";
 import SmaregiApi from "../smaregi/smaregiapi";
-import * as utils from "../lib/utils";
+import { validate_admin_auth } from "../lib/utils";
 import { generateBody } from "../smaregi/apiUtils";
 
 import { smaregiAuthData, smaregiStoreListData, smaregiProductListData } from "../lib/types";
@@ -19,7 +19,7 @@ const client_id = smaregi.clientId;
 export const auth = async (db: admin.firestore.Firestore, data: smaregiAuthData, context: functions.https.CallableContext) => {
   const { code } = data;
 
-  const adminUid = utils.validate_admin_auth(context);
+  const adminUid = validate_admin_auth(context);
   const authToken = [client_id, clientSecret.value()].join(":");
 
   try {
@@ -72,7 +72,7 @@ export const auth = async (db: admin.firestore.Firestore, data: smaregiAuthData,
 };
 
 export const storeList = async (db: admin.firestore.Firestore, data: smaregiStoreListData, context: functions.https.CallableContext) => {
-  const adminUid = utils.validate_admin_auth(context);
+  const adminUid = validate_admin_auth(context);
 
   const smaregiDoc = await db.doc(`admins/${adminUid}/private/smaregi`).get();
   if (!smaregiDoc || !smaregiDoc.exists) {
@@ -107,7 +107,7 @@ export const productList = async (db: admin.firestore.Firestore, data: smaregiPr
     throw new functions.https.HttpsError("invalid-argument", "invalid args.");
   }
 
-  const adminUid = utils.validate_admin_auth(context);
+  const adminUid = validate_admin_auth(context);
 
   const smaregiDoc = await db.doc(`admins/${adminUid}/private/smaregi`).get();
   if (!smaregiDoc || !smaregiDoc.exists) {

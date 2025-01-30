@@ -1,10 +1,10 @@
-import * as functions from "firebase-functions/v1";
+import { CallableRequest } from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
-import * as utils from "../lib/utils";
+import { validate_customer_auth, process_error } from "../lib/utils";
 import { deleteCustomer } from "./stripe/customer";
 
-export const deleteAccount = async (db: admin.firestore.Firestore, context: functions.https.CallableContext) => {
-  const customerUid = utils.validate_customer_auth(context);
+export const deleteAccount = async (db: admin.firestore.Firestore, context: CallableRequest) => {
+  const customerUid = validate_customer_auth(context);
 
   try {
     const refCollection = db.collectionGroup("orders").where("uid", "==", customerUid).orderBy("timePlaced", "desc");
@@ -46,6 +46,6 @@ export const deleteAccount = async (db: admin.firestore.Firestore, context: func
 
     return { result: customerUid, count };
   } catch (error) {
-    throw utils.process_error(error);
+    throw process_error(error);
   }
 };

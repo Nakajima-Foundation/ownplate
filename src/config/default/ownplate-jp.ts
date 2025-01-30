@@ -49,3 +49,4 @@ export const gtmID = "GTM-WF3G3ZG";
 export const GAPIKey = "AIzaSyBopNQwD1RT2k9dLqH6WYPWIkMZF3RWXMQ";
 export const GMAPId = "DEMO_MAP_ID";
 export const fromEmail = "noreply@omochikaeri.com";
+export const bucketRegion = "asia-northeast1";

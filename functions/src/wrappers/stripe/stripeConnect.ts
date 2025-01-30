@@ -1,4 +1,4 @@
-import * as functions from "firebase-functions/v1";
+import { onCall, HttpsError } from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
 
 import { connect } from "../../functions/stripe/oauth/Connect";
@@ -6,16 +6,17 @@ import { enforceAppCheck, secretKeys } from "../firebase";
 
 const db = admin.firestore();
 
-export default functions
-  .runWith({
-    memory: "1GB" as const,
-    maxInstances: 10,
+export default onCall(
+  {
+    region: "asia-northeast1",
+    memory: "1GiB",
     enforceAppCheck,
+    maxInstances: 5,
     secrets: secretKeys,
-  })
-  .https.onCall(async (data, context) => {
+  },
+  async (context) => {
     if (context.app == undefined) {
-      throw new functions.https.HttpsError("failed-precondition", "The function must be called from an App Check verified app.");
+      throw new HttpsError("failed-precondition", "The function must be called from an App Check verified app.");
     }
-    return await connect(db, data, context);
+    return await connect(db, context.data, context);
   });

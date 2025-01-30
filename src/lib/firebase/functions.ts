@@ -1,4 +1,4 @@
-import { functions, functionsJP } from "@/lib/firebase/firebase9";
+import { functionsJP } from "@/lib/firebase/firebase9";
 import { httpsCallable } from "firebase/functions";
 import { Timestamp } from "firebase/firestore";
 
@@ -35,7 +35,7 @@ export const lineVerifyFriend = httpsCallable<
   {
     result: boolean;
   }
->(functionsJP, "lineVerifyFriend");
+>(functionsJP, "lineVerifyFriend2");
 
 export const subAccountDeleteChild = httpsCallable<
   {
@@ -75,13 +75,13 @@ export const lineValidate = httpsCallable<
       displayName: string;
     };
   }
->(functionsJP, "lineValidate");
+>(functionsJP, "lineValidate2");
 
 export const superDispatch = httpsCallable(functionsJP, "superDispatch2");
 
 export const superTwilio = httpsCallable(functionsJP, "superTwilio2");
 
-export const accountDelete = httpsCallable(functionsJP, "accountDelete");
+export const accountDelete = httpsCallable(functionsJP, "accountDelete2");
 
 export const orderUpdate = httpsCallable<
   {
@@ -113,7 +113,7 @@ export const liffAuthenticate = httpsCallable<
   {
     customToken: string;
   }
->(functionsJP, "liffAuthenticate");
+>(functionsJP, "liffAuthenticate2");
 
 export const ping = httpsCallable(functionsJP, "ping2");
 
@@ -126,8 +126,8 @@ export const stripePaymentCancelIntent = httpsCallable(
   "stripePaymentCancelIntent2",
 );
 
-export const stripeDeleteCard = httpsCallable(functions, "stripeDeleteCard");
-export const stripeConnect = httpsCallable(functions, "stripeConnect");
-export const stripeDisconnect = httpsCallable(functions, "stripeDisconnect");
+export const stripeDeleteCard = httpsCallable(functionsJP, "stripeDeleteCard2");
+export const stripeConnect = httpsCallable(functionsJP, "stripeConnect2");
+export const stripeDisconnect = httpsCallable(functionsJP, "stripeDisconnect2");
 export const stripeVerify = httpsCallable(functionsJP, "stripeVerify2");
-export const stripeReceipt = httpsCallable(functions, "stripeReceipt");
+export const stripeReceipt = httpsCallable(functionsJP, "stripeReceipt2");
