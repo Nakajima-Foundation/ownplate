@@ -2,7 +2,7 @@ import { onCall, HttpsError } from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
 
 import { deleteAccount } from "../functions/account";
-import { enforceAppCheck } from "./firebase";
+import { enforceAppCheck, secretKeys } from "../firebase";
 
 const db = admin.firestore();
 
@@ -12,6 +12,7 @@ export default onCall(
     memory: "1GiB",
     enforceAppCheck,
     maxInstances: 5,
+    secrets: secretKeys,
   },
   async (context) => {
     if (context.app == undefined) {
