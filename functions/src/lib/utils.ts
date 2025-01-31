@@ -83,7 +83,7 @@ export const get_stripe = () => {
   if (!STRIPE_SECRET_KEY) {
     throw new functions.https.HttpsError("invalid-argument", "The functions requires STRIPE_SECRET_KEY.");
   }
-  return new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2024-12-18.acacia" });
+  return new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2025-01-27.acacia" });
 };
 
 export const get_stripe_v2 = () => {
@@ -91,7 +91,7 @@ export const get_stripe_v2 = () => {
   if (!STRIPE_SECRET_KEY) {
     throw new HttpsError("invalid-argument", "The functions requires STRIPE_SECRET_KEY.");
   }
-  return new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2024-12-18.acacia" });
+  return new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2025-01-27.acacia" });
 };
 
 export const required_params = (params) => {
