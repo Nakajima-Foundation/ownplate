@@ -101,7 +101,7 @@
               </span>
               <t-button
                 class="h-12 px-6 font-bold text-white"
-                :disabled="!enableAreaMap || !enableDelivery"
+                :isDisabled="!enableAreaMap || !enableDelivery"
                 @click="updateCircle"
               >
                 {{ $t("delivery.updateDeliveryRange") }}
