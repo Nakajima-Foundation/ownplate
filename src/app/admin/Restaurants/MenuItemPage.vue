@@ -647,21 +647,20 @@
         </o-button>
 
         <!-- Save Button -->
-        <button @click="submitItem" :disabled="submitting">
-          <div
-            class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
-            style="min-width: 8rem"
-          >
-            <span class="text-base font-bold text-white">{{
-              $t(
-                submitting
-                  ? "editCommon.saving"
-                  : menuInfo.publicFlag
-                    ? "editCommon.save"
-                    : "editCommon.saveDraft",
-              )
-            }}</span>
-          </div>
+        <button
+          @click="submitItem"
+          :isDisabled="submitting"
+          class="h-12 px-8 font-bold text-white"
+        >
+          {{
+            $t(
+              submitting
+                ? "editCommon.saving"
+                : menuInfo.publicFlag
+                  ? "editCommon.save"
+                  : "editCommon.saveDraft",
+            )
+          }}
         </button>
       </div>
 
