@@ -647,7 +647,7 @@
         </o-button>
 
         <!-- Save Button -->
-        <button
+        <t-button
           @click="submitItem"
           :isDisabled="submitting"
           class="h-12 px-8 font-bold text-white"
@@ -661,7 +661,7 @@
                   : "editCommon.saveDraft",
             )
           }}
-        </button>
+        </t-button>
       </div>
 
       <!-- Copy -->
