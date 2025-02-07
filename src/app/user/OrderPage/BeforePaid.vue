@@ -379,6 +379,8 @@ import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import Promotion from "@/models/promotion";
 
+import * as analyticsUtil from "@/lib/firebase/analytics";
+
 import { useHasSoldOutToday } from "./Stock";
 
 import { useStore } from "vuex";
@@ -558,6 +560,18 @@ export default defineComponent({
       }
     };
     // internal
+    const sendPurchase = () => {
+      analyticsUtil.sendPurchase(
+        props.orderInfo,
+        orderId.value,
+        props.orderItems.map((or: any) => {
+          return { ...or.item, id: or.id, quantity: or.count };
+        }),
+        props.shopInfo,
+        restaurantId,
+      );
+    };
+    
     const handleOpenMenu = () => {
       ctx.emit("handleOpenMenu");
     };
@@ -634,7 +648,9 @@ export default defineComponent({
           await saveLiffCustomer();
         }
         */
-        // sendPurchase();
+        if (!payStripe) {
+          sendPurchase();
+        }
         store.commit("resetCart", restaurantId);
         window.scrollTo(0, 0);
       } catch (error: any) {
