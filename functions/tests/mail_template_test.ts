@@ -1,7 +1,7 @@
 import { should } from "chai";
 //import { expect } from 'chai';
 
-import { createNotifyRestaurantMailMessage } from "./../src/functions/notify";
+import { createNotifyRestaurantMailMessage } from "./../src/functions/notify2";
 
 should();
 

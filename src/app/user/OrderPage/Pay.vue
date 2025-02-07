@@ -70,8 +70,8 @@
                 :ownerUid="shopInfo.uid"
                 :uid="orderInfo.uid"
                 :hasPayment="orderInfo.hasPayment"
+                :isPayingError="isPayingError"
               ></stripe-card>
-
               <div class="mt-4 text-center">
                 <o-button
                   :disabled="isPaying || !cardState.complete"
@@ -170,6 +170,7 @@ export default defineComponent({
     const restaurantId = route.params.restaurantId as string;
 
     const isPaying = ref(false);
+    const isPayingError = ref(false);
 
     const cardState = ref({});
 
@@ -213,14 +214,19 @@ export default defineComponent({
       );
     };
     const handleCardStateChange = (state: { [key: string]: boolean }) => {
+      if (state.complete) {
+        isPayingError.value = false;
+      }
       cardState.value = state;
     };
 
     const handlePayment = async () => {
       try {
+        isPayingError.value = false;
         isPaying.value = true;
         const pay = await stripeRef.value.processPayment();
         if (pay.error) {
+          isPayingError.value = true;
           isPaying.value = false;
           return;
         }
@@ -247,6 +253,7 @@ export default defineComponent({
     return {
       // ref
       isPaying,
+      isPayingError,
       cardState,
 
       // refs

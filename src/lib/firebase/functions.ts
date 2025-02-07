@@ -1,4 +1,4 @@
-import { functions, functionsJP } from "@/lib/firebase/firebase9";
+import { functionsJP } from "@/lib/firebase/firebase9";
 import { httpsCallable } from "firebase/functions";
 import { Timestamp } from "firebase/firestore";
 
@@ -7,7 +7,7 @@ export const smaregiStoreList = httpsCallable<
   {
     res: any[];
   }
->(functionsJP, "smaregiStoreList");
+>(functionsJP, "smaregiStoreList2");
 
 export const smaregiProductList = httpsCallable<
   {
@@ -16,7 +16,7 @@ export const smaregiProductList = httpsCallable<
   {
     res: any[];
   }
->(functionsJP, "smaregiProductList");
+>(functionsJP, "smaregiProductList2");
 
 export const smaregiAuth = httpsCallable<
   {
@@ -25,7 +25,7 @@ export const smaregiAuth = httpsCallable<
   {
     result: boolean;
   }
->(functionsJP, "smaregiAuth");
+>(functionsJP, "smaregiAuth2");
 
 export const lineVerifyFriend = httpsCallable<
   {
@@ -35,14 +35,14 @@ export const lineVerifyFriend = httpsCallable<
   {
     result: boolean;
   }
->(functionsJP, "lineVerifyFriend");
+>(functionsJP, "lineVerifyFriend2");
 
 export const subAccountDeleteChild = httpsCallable<
   {
     childUid: string;
   },
   Record<string, never>
->(functionsJP, "subAccountDeleteChild");
+>(functionsJP, "subAccountDeleteChild2");
 
 export const subAccountInvite = httpsCallable<
   {
@@ -52,15 +52,15 @@ export const subAccountInvite = httpsCallable<
   {
     result: boolean;
   }
->(functionsJP, "subAccountInvite");
+>(functionsJP, "subAccountInvite2");
 
 export const subAccountInvitationAccept = httpsCallable<{
   messageId: string;
-}>(functionsJP, "subAccountInvitationAccept");
+}>(functionsJP, "subAccountInvitationAccept2");
 
 export const subAccountInvitationDeny = httpsCallable<{
   messageId: string;
-}>(functionsJP, "subAccountInvitationDeny");
+}>(functionsJP, "subAccountInvitationDeny2");
 
 export const lineValidate = httpsCallable<
   {
@@ -75,15 +75,13 @@ export const lineValidate = httpsCallable<
       displayName: string;
     };
   }
->(functionsJP, "lineValidate");
+>(functionsJP, "lineValidate2");
 
-export const superDispatch = httpsCallable(functionsJP, "superDispatch");
+export const superDispatch = httpsCallable(functionsJP, "superDispatch2");
 
-export const superTwilio = httpsCallable(functionsJP, "superTwilio");
+export const superTwilio = httpsCallable(functionsJP, "superTwilio2");
 
-export const stripeDeleteCard = httpsCallable(functions, "stripeDeleteCard");
-
-export const accountDelete = httpsCallable(functionsJP, "accountDelete");
+export const accountDelete = httpsCallable(functionsJP, "accountDelete2");
 
 export const orderUpdate = httpsCallable<
   {
@@ -96,15 +94,15 @@ export const orderUpdate = httpsCallable<
     result: boolean;
     type: string;
   }
->(functionsJP, "orderUpdateJp");
+>(functionsJP, "orderUpdateJp2");
 
-export const orderChange = httpsCallable(functionsJP, "orderChangeJp");
+export const orderChange = httpsCallable(functionsJP, "orderChangeJp2");
 
-export const orderPlace = httpsCallable(functionsJP, "orderPlaceJp");
+export const orderPlace = httpsCallable(functionsJP, "orderPlaceJp2");
 
-export const orderCreated = httpsCallable(functionsJP, "orderCreatedJp");
+export const orderCreated = httpsCallable(functionsJP, "orderCreatedJp2");
 
-export const orderPay = httpsCallable(functionsJP, "stripepay");
+export const orderPay = httpsCallable(functionsJP, "stripepay2");
 
 export const liffAuthenticate = httpsCallable<
   {
@@ -115,6 +113,21 @@ export const liffAuthenticate = httpsCallable<
   {
     customToken: string;
   }
->(functionsJP, "liffAuthenticate");
+>(functionsJP, "liffAuthenticate2");
 
-export const ping = httpsCallable(functionsJP, "ping");
+export const ping = httpsCallable(functionsJP, "ping2");
+
+export const stripeCancelIntent = httpsCallable(
+  functionsJP,
+  "stripeCancelIntent2",
+);
+export const stripePaymentCancelIntent = httpsCallable(
+  functionsJP,
+  "stripePaymentCancelIntent2",
+);
+
+export const stripeDeleteCard = httpsCallable(functionsJP, "stripeDeleteCard2");
+export const stripeConnect = httpsCallable(functionsJP, "stripeConnect2");
+export const stripeDisconnect = httpsCallable(functionsJP, "stripeDisconnect2");
+export const stripeVerify = httpsCallable(functionsJP, "stripeVerify2");
+export const stripeReceipt = httpsCallable(functionsJP, "stripeReceipt2");

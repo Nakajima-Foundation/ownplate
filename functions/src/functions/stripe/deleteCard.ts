@@ -1,9 +1,9 @@
 import * as admin from "firebase-admin";
-import * as functions from "firebase-functions/v1";
+import { CallableRequest } from "firebase-functions/v2/https";
 import * as utils from "../../lib/utils";
 
 // func
-export const deleteCard = async (db: admin.firestore.Firestore, context: functions.https.CallableContext) => {
+export const deleteCard = async (db: admin.firestore.Firestore, context: CallableRequest) => {
   const customerUid = utils.validate_customer_auth(context);
 
   try {
@@ -16,7 +16,7 @@ export const deleteCard = async (db: admin.firestore.Firestore, context: functio
     const customerId = stripeInfo.customerId;
 
     // retrieve the default cardId from the customerId and delete it
-    const stripe = utils.get_stripe();
+    const stripe = utils.get_stripe_v2();
     const customer = (await stripe.customers.retrieve(customerId)) as any;
     const sourcesData = customer?.sources?.data;
     let cardId = null;

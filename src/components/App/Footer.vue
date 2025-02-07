@@ -181,7 +181,7 @@ export default defineComponent({
           window.navigator.language;
         // window.navigator?.userLanguage ||  ie 11
         // window.navigator.browserLanguage;  || ie
-        console.log("browserlang:" + __language);
+        // console.log("browserlang:" + __language);
         const lang = (__language || "").substr(0, 2);
         if (lang.length === 2) {
           setLang(lang);

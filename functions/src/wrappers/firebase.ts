@@ -14,4 +14,7 @@ export const secretKeys = [
   "TWILIO_SID",
   "TWILIO_TOKEN",
   "TWILIO_PHONE",
+
+  "SENTY_DSN",
+  "SMAREGI_SECRET",
 ];

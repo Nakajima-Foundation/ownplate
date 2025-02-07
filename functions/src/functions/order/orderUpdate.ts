@@ -1,10 +1,10 @@
-import * as functions from "firebase-functions/v1";
+import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
 import moment from "moment-timezone";
 
 import * as utils from "../../lib/utils";
 import { order_status, next_transitions, order_status_keys, timeEventMapping } from "../../common/constant";
-import { sendMessageToCustomer } from "../notify";
+import { sendMessageToCustomer } from "../notify2";
 
 import { getStripeAccount, getStripeOrderRecord, getHash } from "../stripe/intent";
 import { orderUpdateData, updateDataOnorderUpdate } from "../../lib/types";
@@ -37,11 +37,11 @@ const getPaymentIntent = async (
   transaction: admin.firestore.Transaction,
   stripeRef: admin.firestore.DocumentReference,
 ) => {
-  const stripe = utils.get_stripe();
+  const stripe = utils.get_stripe_v2();
   const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
   // just for stripe payment
   if (order.payment.stripe !== "pending") {
-    throw new functions.https.HttpsError("failed-precondition", "Stripe process was done.");
+    throw new HttpsError("failed-precondition", "Stripe process was done.");
   }
   const stripeRecord = await getStripeOrderRecord(transaction, stripeRef);
   const paymentIntentId = stripeRecord.paymentIntent.id;
@@ -58,7 +58,7 @@ const getPaymentIntent = async (
 };
 
 // This function is called by admins (restaurant operators) to update the status of order
-export const update = async (db: admin.firestore.Firestore, data: orderUpdateData, context: functions.https.CallableContext) => {
+export const update = async (db: admin.firestore.Firestore, data: orderUpdateData, context: CallableRequest) => {
   const ownerUid = utils.validate_owner_admin_auth(context);
   const uid = utils.validate_auth(context);
   const { restaurantId, orderId, status, timeEstimated } = data;
@@ -67,7 +67,7 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
   const validateResult = validateOrderUpadte(data);
   if (!validateResult.result) {
     console.error("orderUpdate", validateResult.errors);
-    throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+    throw new HttpsError("invalid-argument", "Validation Error.");
   }
   if (utils.is_subAccount(context)) {
     await utils.validate_sub_account_request(db, uid, ownerUid, restaurantId);
@@ -76,7 +76,7 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
   try {
     const restaurantData = await utils.get_restaurant(db, restaurantId);
     if (restaurantData.uid !== ownerUid) {
-      throw new functions.https.HttpsError("permission-denied", "The user does not have an authority to perform this operation.");
+      throw new HttpsError("permission-denied", "The user does not have an authority to perform this operation.");
     }
     const restaurantOwnerUid = restaurantData.uid;
 
@@ -86,14 +86,14 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
     const result = await db.runTransaction(async (transaction) => {
       const order = (await transaction.get(orderRef)).data();
       if (!order) {
-        throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
+        throw new HttpsError("invalid-argument", "This order does not exist.");
       }
       order.id = orderId;
 
       const isStripeProcess = order.status === order_status.order_placed && order.payment && order.payment.stripe !== "canceled";
       const nextStatus = next_transitions[order.status];
       if (!nextStatus || nextStatus !== status) {
-        throw new functions.https.HttpsError("failed-precondition", "It is not possible to change state from the current state.", order.status);
+        throw new HttpsError("failed-precondition", "It is not possible to change state from the current state.", order.status);
       }
       const paymentIntent = isStripeProcess ? await getPaymentIntent(db, restaurantOwnerUid, order, transaction, stripeRef) : {};
 
@@ -104,7 +104,7 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
         order.payment.stripe &&
         order.payment.stripe === "pending"
       ) {
-        throw new functions.https.HttpsError("permission-denied", "Paid order can not be change like this", status);
+        throw new HttpsError("permission-denied", "Paid order can not be change like this", status);
       }
 
       const customerUid = order.uid;
@@ -144,7 +144,7 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
             card: { exp_month, exp_year, brand, last4 },
             updatedAt: admin.firestore.FieldValue.serverTimestamp(),
           });
-          const stripe = utils.get_stripe();
+          const stripe = utils.get_stripe_v2();
           const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
           await stripe.paymentMethods.attach(
             payment_method,

@@ -64,7 +64,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { stripePaymentCancelIntent } from "@/lib/stripe/stripe";
+import { stripePaymentCancelIntent } from "@/lib/firebase/functions";
 
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";

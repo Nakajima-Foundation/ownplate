@@ -664,6 +664,7 @@ const data = {
     order_canceled_by_restaurant: "Canceled by restaurant",
     reuseCard: "Save it for future use",
     whatsCVC: "What’s CVC?",
+    card_error: "Failed to confirm the payment.",
     no_jcb: "＊This restaurant does not accept JCB card",
     "3digitsCVC": "The final three digits on the back",
     "4digitsCVC": "The four digits on the front",

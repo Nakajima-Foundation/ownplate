@@ -1,8 +1,9 @@
 import { SNSClient, PublishCommand } from "@aws-sdk/client-sns";
-import { enableNotification } from "./notificationConfig";
+import { defineSecret } from "firebase-functions/params";
+import { enableNotification } from "../notificationConfig";
 
-const aws_key = process.env.AWS_ID ?? "";
-const aws_secret = process.env.AWS_SECRET ?? "";
+const secret_aws_key = defineSecret("AWS_ID");
+const secret_aws_secret = defineSecret("AWS_SECRET");
 
 export const pushSMS = async (subject, message, phone_number) => {
   if (!enableNotification) {
@@ -25,7 +26,9 @@ export const pushSMS = async (subject, message, phone_number) => {
     PhoneNumber: phone_number,
   };
 
-  if (aws_key) {
+  const aws_key =  secret_aws_key.value();
+  const aws_secret = secret_aws_secret.value();
+  if (aws_key && aws_secret) {
     const snsClient = new SNSClient({
       region: "us-east-1",
       credentials: {

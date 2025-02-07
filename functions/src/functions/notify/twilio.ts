@@ -1,12 +1,13 @@
 import twilio from "twilio";
-import { twiml_neworder } from "../common/constant";
+import { defineSecret } from "firebase-functions/params";
 
-import { parsePhoneNumber, formatNational, intenationalFormat } from "../common/phoneutil";
-import { enableNotification } from "./notificationConfig";
+import { twiml_neworder } from "../../common/constant";
+import { parsePhoneNumber, formatNational, intenationalFormat } from "../../common/phoneutil";
+import { enableNotification } from "../notificationConfig";
 
-const sid = process.env.TWILIO_SID;
-const token = process.env.TWILIO_TOKEN;
-const phone_from = process.env.TWILIO_PHONE;
+const twilio_sid = defineSecret("TWILIO_SID");
+const twilio_token = defineSecret("TWILIO_TOKEN");
+const twilio_phone_from = defineSecret("TWILIO_PHONE");
 
 export const parsedNumber = (restaurant) => {
   const countryCode = restaurant.countryCode;
@@ -38,11 +39,11 @@ export const phoneCall = async (restaurant) => {
     return;
   }
   const to = intenationalPhoneNumber(restaurant);
-  if (!sid || !token || !phone_from) {
+  if (!twilio_sid.value() || !twilio_token.value() || !twilio_phone_from.value()) {
     console.log("PhoneCall: no setting");
     return;
   }
-  const client = twilio(sid, token, {
+  const client = twilio(twilio_sid.value(), twilio_token.value(), {
     edge: "tokyo",
   });
   console.log("PhoneCall: start");
@@ -51,7 +52,7 @@ export const phoneCall = async (restaurant) => {
       twiml: twiml_neworder,
       to,
       timeout: 100,
-      from: phone_from,
+      from: twilio_phone_from.value(),
     });
     console.log("PhoneCall: Success");
     console.log(call.sid);

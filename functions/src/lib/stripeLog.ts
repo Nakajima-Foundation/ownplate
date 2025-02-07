@@ -41,7 +41,7 @@ export const capability_updated = async (db, event) => {
   const { account, status, id } = object;
   const uids = await accountIdToUIDs(db, account);
 
-  const stripe = utils.get_stripe();
+  const stripe = utils.get_stripe_v2();
   if (status === "active" && id === "jcb_payments") {
     try {
       // Check if JCB payments are really active (paranoia)
