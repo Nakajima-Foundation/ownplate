@@ -85,9 +85,7 @@
             :isDisabled="isSaving"
             class="h-12 px-8 font-bold text-white"
           >
-            {{
-              $t(isSaving ? "editCommon.saving" : "editCommon.save")
-            }}
+            {{ $t(isSaving ? "editCommon.saving" : "editCommon.save") }}
           </t-button>
         </div>
       </div>

@@ -571,7 +571,7 @@ export default defineComponent({
         restaurantId,
       );
     };
-    
+
     const handleOpenMenu = () => {
       ctx.emit("handleOpenMenu");
     };

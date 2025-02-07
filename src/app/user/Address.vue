@@ -37,8 +37,11 @@
           {{ customerInfo.name || "----" }}
         </div>
         <div class="text-center">
-          <t-button @click="resetAddress" class="h-16 px-12 text-xl font-bold text-white">
-                {{ $t("profile.resetAddress") }}
+          <t-button
+            @click="resetAddress"
+            class="h-16 px-12 text-xl font-bold text-white"
+          >
+            {{ $t("profile.resetAddress") }}
           </t-button>
         </div>
         <div class="mt-2 text-center font-bold">

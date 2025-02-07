@@ -157,10 +157,7 @@
     </div>
 
     <div>
-      <t-button
-        @click="newDiscount"
-        class="h-12 px-8 font-bold text-white"
-      >
+      <t-button @click="newDiscount" class="h-12 px-8 font-bold text-white">
         {{ $t("editCommon.new") }}
       </t-button>
     </div>
