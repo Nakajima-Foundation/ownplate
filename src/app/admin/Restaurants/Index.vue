@@ -32,26 +32,21 @@
         </router-link>
 
         <!-- Save Button -->
-        <o-button
+        <t-button
           @click="saveRestaurant"
-          :disabled="submitting || disableSave"
-          class="b-reset-tw"
+          :isDisabled="submitting || disableSave"
+          class="h-12 px-8 font-bold text-white"
         >
-          <div
-            class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
-            style="min-width: 8rem"
-          >
-            <span class="text-base font-bold text-white">{{
-              $t(
-                submitting
-                  ? "editCommon.saving"
-                  : editShopInfo.publicFlag
-                    ? "editCommon.save"
-                    : "editCommon.saveDraft",
-              )
-            }}</span>
-          </div>
-        </o-button>
+          {{
+            $t(
+              submitting
+                ? "editCommon.saving"
+                : editShopInfo.publicFlag
+                  ? "editCommon.save"
+                  : "editCommon.saveDraft",
+            )
+          }}
+        </t-button>
       </div>
 
       <!-- Publish Status -->
@@ -1074,26 +1069,21 @@
         </router-link>
 
         <!-- Save Button -->
-        <o-button
+        <t-button
           @click="saveRestaurant"
-          :disabled="submitting || disableSave"
-          class="b-reset-tw"
+          :isDisabled="submitting || disableSave"
+          class="h12 px-8 font-bold text-white"
         >
-          <div
-            class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
-            style="min-width: 8rem"
-          >
-            <span class="text-base font-bold text-white">{{
-              $t(
-                submitting
-                  ? "editCommon.saving"
-                  : editShopInfo.publicFlag
-                    ? "editCommon.save"
-                    : "editCommon.saveDraft",
-              )
-            }}</span>
-          </div>
-        </o-button>
+          {{
+            $t(
+              submitting
+                ? "editCommon.saving"
+                : editShopInfo.publicFlag
+                  ? "editCommon.save"
+                  : "editCommon.saveDraft",
+            )
+          }}
+        </t-button>
       </div>
 
       <!-- Copy -->
