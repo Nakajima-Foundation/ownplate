@@ -33,7 +33,7 @@
         </span>
       </button>
 
-      <t-button @click="save" class="h-12 px-6 font-bold text-white">
+      <t-button @click="save" class="h-12 px-8 font-bold text-white">
         {{ $t("editCommon.save") }}
       </t-button>
     </div>
@@ -199,7 +199,7 @@
           </span>
         </button>
 
-        <t-button @click="save" class="h-12 px-6 font-bold text-white">
+        <t-button @click="save" class="h-12 px-8 font-bold text-white">
           {{ $t("editCommon.save") }}
         </t-button>
       </div>

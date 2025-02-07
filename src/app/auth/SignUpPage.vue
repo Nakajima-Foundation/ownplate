@@ -257,7 +257,6 @@ export default defineComponent({
           email.value,
           password.value,
         );
-        await sendEmailVerification(result.user);
         console.log("signup success", result.user.uid, name.value);
         if (partner.value) {
           await setDoc(doc(db, `admins/${result.user.uid}`), {
@@ -275,6 +274,11 @@ export default defineComponent({
           email: result.user.email,
           updated: serverTimestamp(),
         });
+        try {
+          await sendEmailVerification(result.user);
+        } catch (e) {
+          console.log(e);
+        }
         store.commit("setLoading", false);
         if (user) {
           console.log("signup calling push");
