@@ -56,9 +56,10 @@ export default defineComponent({
     let min_lng = 1000;
 
     const info_windows = ref(null);
-    const center = { lat: 44.933076, lng: 15.629058 };
-    const center_lat = ref(44.933076);
-    const center_lng = ref(15.629058);
+    const INITIAL_CENTER = { lat: 44.933076, lng: 15.629058 };
+    const center = { ...INITIAL_CENTER };
+    const center_lat = ref(INITIAL_CENTER.lat);
+    const center_lng = ref(INITIAL_CENTER.lng);
     const zoom = ref(13);
     const apiKey = GAPIKey;
     const mapId = GMAPId;
