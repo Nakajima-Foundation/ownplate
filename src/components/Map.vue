@@ -3,9 +3,9 @@
     <GoogleMap
       :api-key="apiKey"
       :mapId="mapId"
-      style="width: 100%; height: 50vh"
-      :center="center"
+      :center="{ lat: center_lat, lng: center_lng }"
       :zoom="zoom"
+      class="w-full h-[50vh]"
     >
       <AdvancedMarker
         v-for="restaurant in restaurants"
@@ -56,9 +56,10 @@ export default defineComponent({
     let min_lng = 1000;
 
     const info_windows = ref(null);
-    const center = { lat: 44.933076, lng: 15.629058 };
-    const center_lat = ref(44.933076);
-    const center_lng = ref(15.629058);
+    const INITIAL_CENTER = { lat: 44.933076, lng: 15.629058 };
+    const center = { ...INITIAL_CENTER };
+    const center_lat = ref(INITIAL_CENTER.lat);
+    const center_lng = ref(INITIAL_CENTER.lng);
     const zoom = ref(13);
     const apiKey = GAPIKey;
     const mapId = GMAPId;
@@ -124,8 +125,9 @@ export default defineComponent({
     };
 
     const closeAllInfoWindows = () => {
-      for (let j = 0; j < info_windows.value.length; j++) {
-        info_windows.value[j].close();
+      const _info_windows: (typeof InfoWindow)[] = info_windows.value ?? [];
+      for (let i = 0; i < _info_windows.length; i++) {
+        _info_windows[i].close();
       }
     };
 

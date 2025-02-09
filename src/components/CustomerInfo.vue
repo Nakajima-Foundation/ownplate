@@ -27,11 +27,11 @@
         <div class="mb-2">
           <GoogleMap
             :api-key="apiKey"
-            style="width: 100%; height: 50vh"
             :center="computedCenter"
             :zoom="12"
+            class="w-full h-[50vh]"
           >
-            <Marker2
+            <AdvancedMarker
               :options="{
                 position: customer.location,
                 icon: {
@@ -39,7 +39,7 @@
                 },
               }"
             />
-            <Marker2
+            <AdvancedMarker
               :options="{
                 position: shopInfo.location,
                 icon: {
@@ -60,11 +60,11 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, PropType } from "vue";
-import { GoogleMap, Marker as Marker2 } from "vue3-google-map";
+import { GoogleMap, AdvancedMarker } from "vue3-google-map";
 import { GAPIKey } from "@/config/project";
 
 export default defineComponent({
-  components: { GoogleMap, Marker2 },
+  components: { GoogleMap, AdvancedMarker },
   props: {
     shopInfo: {
       type: Object as PropType<{
