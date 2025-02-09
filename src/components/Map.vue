@@ -3,7 +3,7 @@
     <GoogleMap
       :api-key="apiKey"
       :mapId="mapId"
-      :center="center"
+      :center="{ lat: center_lat, lng: center_lng }"
       :zoom="zoom"
       class="w-full h-[50vh]"
     >
