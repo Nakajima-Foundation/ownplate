@@ -64,8 +64,6 @@ export default defineComponent({
     const apiKey = GAPIKey;
     const mapId = GMAPId;
 
-    const selected = ref<null | number>(null);
-
     props.restaurants.forEach((restaurant: RestaurantInfoData) => {
       if (
         restaurant.location &&
@@ -119,11 +117,6 @@ export default defineComponent({
       zoom.value = 13;
     }
 
-    const setStore = (key: number) => {
-      selected.value = key;
-      console.log(key);
-    };
-
     const closeAllInfoWindows = () => {
       const _info_windows: (typeof InfoWindow)[] = info_windows.value ?? [];
       for (let i = 0; i < _info_windows.length; i++) {
@@ -139,9 +132,6 @@ export default defineComponent({
       zoom,
       apiKey,
       mapId,
-
-      setStore,
-      selected,
 
       closeAllInfoWindows,
       resizedProfileImage,
