@@ -40,6 +40,7 @@ import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { resizedProfileImage } from "@/utils/utils";
 import { GoogleMap, AdvancedMarker, InfoWindow } from "vue3-google-map";
 import { GAPIKey, GMAPId } from "@/config/project";
+import { GOOGLE_MAP_DEFAULT_CENTER } from "@/config/constant";
 
 export default defineComponent({
   components: { GoogleMap, AdvancedMarker, InfoWindow },
@@ -56,10 +57,9 @@ export default defineComponent({
     let min_lng = 1000;
 
     const info_windows = ref(null);
-    const INITIAL_CENTER = { lat: 44.933076, lng: 15.629058 };
-    const center = { ...INITIAL_CENTER };
-    const center_lat = ref(INITIAL_CENTER.lat);
-    const center_lng = ref(INITIAL_CENTER.lng);
+    const center = { ...GOOGLE_MAP_DEFAULT_CENTER };
+    const center_lat = ref(GOOGLE_MAP_DEFAULT_CENTER.lat);
+    const center_lng = ref(GOOGLE_MAP_DEFAULT_CENTER.lng);
     const zoom = ref(13);
     const mapId = GMAPId;
 
