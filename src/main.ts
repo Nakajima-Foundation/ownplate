@@ -26,7 +26,7 @@ import * as Sentry from "@sentry/vue";
 import App from "@/components/App.vue";
 
 // config
-import { sentryDsn, GAPIKey } from "@/config/project";
+import { sentryDsn } from "@/config/project";
 
 // css
 import "@/assets/css/tailwind.css";
