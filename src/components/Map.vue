@@ -57,7 +57,6 @@ export default defineComponent({
     let min_lng = 1000;
 
     const info_windows = ref(null);
-    const center = { ...GOOGLE_MAP_DEFAULT_CENTER };
     const center_lat = ref(GOOGLE_MAP_DEFAULT_CENTER.lat);
     const center_lng = ref(GOOGLE_MAP_DEFAULT_CENTER.lng);
     const zoom = ref(13);
@@ -90,8 +89,6 @@ export default defineComponent({
     }
     center_lng.value = (max_lng + min_lng) / 2;
     center_lat.value = (max_lat + min_lat) / 2;
-    center.lat = center_lat.value;
-    center.lng = center_lng.value;
 
     // https://easyramble.com/latitude-and-longitude-per-kilometer.html
     // lat 1 is 111km?
@@ -125,7 +122,6 @@ export default defineComponent({
 
     return {
       info_windows,
-      center,
       center_lat,
       center_lng,
       zoom,
