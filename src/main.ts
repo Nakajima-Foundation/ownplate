@@ -13,7 +13,6 @@ import { bulmaConfig } from "@oruga-ui/theme-bulma";
 import VueSocialSharing from "vue-social-sharing";
 import { createHead } from "@unhead/vue";
 import VueQrcode from "@chenfengyuan/vue-qrcode";
-import VueGoogleMaps from "@fawmi/vue-google-maps";
 
 import Checkbox from "@/components/form/checkbox.vue";
 import Button from "@/components/form/button.vue";
@@ -42,12 +41,6 @@ app.component(VueQrcode.name ?? "", VueQrcode);
 app.component("t-checkbox", Checkbox);
 app.component("t-button", Button);
 app.component("t-cancel-button", CancelButton);
-
-app.use(VueGoogleMaps, {
-  load: {
-    key: GAPIKey,
-  },
-});
 
 app.use(VueSocialSharing);
 app.use(Oruga, bulmaConfig);
