@@ -25,7 +25,7 @@
         text="button.login"
         icon="person"
         :to="base_path + '/u/profile'"
-        @handleClose="handleClose()"
+        @handle-close="handleClose()"
       />
     </div>
 
@@ -35,7 +35,7 @@
         text="profile.title"
         icon="person"
         :to="base_path + '/u/profile'"
-        @handleClose="handleClose()"
+        @handle-close="handleClose()"
       />
     </div>
 
@@ -45,7 +45,7 @@
         text="admin.news.adminTop"
         icon="home"
         to="/admin/restaurants"
-        @handleClose="handleClose()"
+        @handle-close="handleClose()"
       />
     </div>
 
@@ -55,7 +55,7 @@
         text="order.history"
         icon="history"
         :to="historyPage"
-        @handleClose="handleClose()"
+        @handle-close="handleClose()"
       />
     </div>
 
@@ -65,7 +65,7 @@
         text="find.likes"
         icon="favorite"
         to="/r/favorites"
-        @handleClose="handleClose()"
+        @handle-close="handleClose()"
       />
     </div>
 
@@ -75,7 +75,7 @@
         text="find.allRestaurants"
         icon="restaurant"
         to="/r"
-        @handleClose="handleClose()"
+        @handle-close="handleClose()"
       />
     </div>
 
