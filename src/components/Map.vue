@@ -57,8 +57,9 @@ export default defineComponent({
     let min_lng = 1000;
 
     const info_windows = ref(null);
-    const center_lat = ref(GOOGLE_MAP_DEFAULT_CENTER.lat);
-    const center_lng = ref(GOOGLE_MAP_DEFAULT_CENTER.lng);
+    const { lat, lng } = GOOGLE_MAP_DEFAULT_CENTER;
+    const center_lat = ref(lat);
+    const center_lng = ref(lng);
     const zoom = ref(13);
     const mapId = GMAPId;
 
