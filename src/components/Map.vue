@@ -56,7 +56,7 @@ export default defineComponent({
     let min_lat = 1000;
     let min_lng = 1000;
 
-    const info_windows = ref(null);
+    const info_windows = ref<(typeof InfoWindow)[]>([]);
     const { lat, lng } = GOOGLE_MAP_DEFAULT_CENTER;
     const center_lat = ref(lat);
     const center_lng = ref(lng);
@@ -115,9 +115,8 @@ export default defineComponent({
     }
 
     const closeAllInfoWindows = () => {
-      const _info_windows: (typeof InfoWindow)[] = info_windows.value ?? [];
-      for (let i = 0; i < _info_windows.length; i++) {
-        _info_windows[i].close();
+      for (const window of info_windows.value) {
+        window.close();
       }
     };
 
