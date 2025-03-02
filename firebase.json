@@ -85,10 +85,6 @@
           "region": "asia-northeast1"
         },
         {
-          "source": "/m/**",
-          "dynamicLinks": true
-        },
-        {
           "source": "**",
           "destination": "/index.html"
         }
