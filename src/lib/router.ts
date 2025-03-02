@@ -450,6 +450,18 @@ export const customRoutes: CustomRoute[] = [
     component: () => import("@/app/docs/link.vue"),
   },
   {
+		path: "/m/ask",
+		component: () => import("@/app/m/ask.vue"),
+	},
+  {
+		path: "/m/kyuuya",
+		component: () => import("@/app/m/kyuuya.vue"),
+	},
+  {
+		path: "/m/note",
+		component: () => import("@/app/m/note.vue"),
+	},
+  {
     path: "/:page(.*)",
     component: () => import("@/app/common/404.vue"),
   },
