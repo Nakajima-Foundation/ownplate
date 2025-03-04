@@ -451,15 +451,15 @@ export const customRoutes: CustomRoute[] = [
   },
   {
     path: "/m/ask",
-    component: () => import("@/app/m/ask.vue"),
+    component: () => import("@/app/redirect/ask.vue"),
   },
   {
     path: "/m/kyuuya",
-    component: () => import("@/app/m/kyuuya.vue"),
+    component: () => import("@/app/redirect/kyuuya.vue"),
   },
   {
     path: "/m/note",
-    component: () => import("@/app/m/note.vue"),
+    component: () => import("@/app/redirect/note.vue"),
   },
   {
     path: "/:page(.*)",
