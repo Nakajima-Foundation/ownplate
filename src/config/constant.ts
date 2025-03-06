@@ -695,3 +695,8 @@ export const timeList2 = [
   "11:50 PM",
   "12:00 AM",
 ];
+
+export const GOOGLE_MAP_DEFAULT_CENTER = {
+  lat: 44.933076,
+  lng: 15.629058
+};

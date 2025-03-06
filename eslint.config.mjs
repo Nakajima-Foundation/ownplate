@@ -53,12 +53,12 @@ export default [
       "vue/require-prop-types": "error",
       "vue/no-mutating-props": "off", // warn
       "vue/no-undef-properties": "error",
-      "no-undef": "off", // warn TODO
+      "no-undef": "warn", // warn TODO
 
       "no-irregular-whitespace": "off", 
-      "@typescript-eslint/ban-ts-comment": "off",  // TODO
+      "@typescript-eslint/ban-ts-comment": "warn",  // TODO
       "vue/attribute-hyphenation": "off",
-      "vue/v-on-event-hyphenation": "off",
+      "vue/v-on-event-hyphenation": "warn",
       "accessor-pairs": "error",
       "no-duplicate-imports": "error",
       
