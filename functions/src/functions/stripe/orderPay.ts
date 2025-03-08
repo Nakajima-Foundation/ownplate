@@ -1,16 +1,14 @@
-// import Stripe from "stripe";
 import * as admin from "firebase-admin";
-import * as functions from "firebase-functions/v1";
+import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
 
 import { order_status } from "../../common/constant";
 import * as utils from "../../lib/utils";
-import { notifyNewOrderToRestaurant } from "../notify";
-import { Context } from "../../models/TestType";
-import { getStripeAccount, getStripeOrderRecord /* getPaymentMethodData, getHash */ } from "./intent";
+import { notifyNewOrderToRestaurant } from "../notify2";
+import { getStripeAccount, getStripeOrderRecord  } from "./intent";
 
 import { orderChangeData } from "../../lib/types";
 
-export const orderPay = async (db: admin.firestore.Firestore, data: orderChangeData, context: functions.https.CallableContext | Context) => {
+export const orderPay = async (db: admin.firestore.Firestore, data: orderChangeData, context: CallableRequest ) => {
   const customerUid = utils.validate_customer_auth(context);
   const { restaurantId, orderId, isSavePay } = data;
   utils.required_params({ restaurantId, orderId });
@@ -21,14 +19,14 @@ export const orderPay = async (db: admin.firestore.Firestore, data: orderChangeD
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
     const order = (await orderRef.get()).data();
     if (!order) {
-      throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
+      throw new HttpsError("invalid-argument", "This order does not exist.");
     }
 
     if (order.uid !== customerUid) {
-      throw new functions.https.HttpsError("failed-precondition", "Invalid user IdIt is not possible to change the order.");
+      throw new HttpsError("failed-precondition", "Invalid user IdIt is not possible to change the order.");
     }
     if (order.status !== order_status.waiting_payment) {
-      throw new functions.https.HttpsError("failed-precondition", "It is not possible to change the order.");
+      throw new HttpsError("failed-precondition", "It is not possible to change the order.");
     }
 
     // generate new order
@@ -44,7 +42,7 @@ export const orderPay = async (db: admin.firestore.Firestore, data: orderChangeD
       const id = stripeData.paymentIntent.id;
       (await transaction.get(orderRef)).data();
 
-      const stripe = utils.get_stripe();
+      const stripe = utils.get_stripe_v2();
       const paymentIntent = await stripe.paymentIntents.retrieve(id, { expand: ["latest_charge"] }, { stripeAccount });
 
       if (paymentIntent.status !== "requires_capture") {

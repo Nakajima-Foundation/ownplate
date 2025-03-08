@@ -33,14 +33,9 @@
         </span>
       </button>
 
-      <button
-        @click="save"
-        class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
-      >
-        <span class="text-base font-bold text-white">
-          {{ $t("editCommon.save") }}
-        </span>
-      </button>
+      <t-button @click="save" class="h-12 px-8 font-bold text-white">
+        {{ $t("editCommon.save") }}
+      </t-button>
     </div>
 
     <div v-if="promotion">
@@ -204,14 +199,9 @@
           </span>
         </button>
 
-        <button
-          @click="save"
-          class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
-        >
-          <span class="text-base font-bold text-white">
-            {{ $t("editCommon.save") }}
-          </span>
-        </button>
+        <t-button @click="save" class="h-12 px-8 font-bold text-white">
+          {{ $t("editCommon.save") }}
+        </t-button>
       </div>
     </div>
   </div>

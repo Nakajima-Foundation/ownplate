@@ -39,28 +39,28 @@ const runSharp = async (bucket, fromFileFullPath, toFileFullPath, size, contentT
   }
   return false;
 };
-export const downloadFileFromBucket = async (object) => {
-  const bucketObj = admin.storage().bucket(object.bucket);
+export const downloadFileFromBucket = async (data) => {
+  const bucketObj = admin.storage().bucket(data.bucket);
   const tempFilePath = path.join(os.tmpdir(), UUID());
 
-  await bucketObj.file(object.name).download({ destination: tempFilePath });
+  await bucketObj.file(data.name).download({ destination: tempFilePath });
   console.log("Image downloaded locally to", tempFilePath);
   return tempFilePath;
 };
-export const resizedImage = async (object, toFileFullPath, size) => {
-  const bucketObj = admin.storage().bucket(object.bucket);
+export const resizedImage = async (data, toFileFullPath, size) => {
+  const bucketObj = admin.storage().bucket(data.bucket);
 
-  const fromTempFilePath = await downloadFileFromBucket(object);
-  const ret = await runSharp(bucketObj, fromTempFilePath, toFileFullPath, size, object.contentType);
+  const fromTempFilePath = await downloadFileFromBucket(data);
+  const ret = await runSharp(bucketObj, fromTempFilePath, toFileFullPath, size, data.contentType);
 
   // Once the thumbnail has been uploaded delete the local file to free up disk space.
   fs.unlinkSync(fromTempFilePath);
   return ret;
 };
 
-export const removeFile = async (object) => {
-  const bucket = admin.storage().bucket(object.bucket);
-  await bucket.file(object.name).delete();
+export const removeFile = async (data) => {
+  const bucket = admin.storage().bucket(data.bucket);
+  await bucket.file(data.name).delete();
 };
 
 export const validImagePath = (filePath, matchPaths) => {

@@ -1,20 +1,22 @@
 import * as admin from "firebase-admin";
-import * as utils from "../lib/utils";
+import { defineSecret } from "firebase-functions/params";
 import moment from "moment-timezone";
 
 import * as fs from "fs";
 
 import i18next from "i18next";
 import { resources } from "./resources";
+import * as utils from "../lib/utils";
 
 import { ownPlateConfig } from "../common/project";
+import { getLineId, getLiffPrivateConfig } from "./line/line";
 
-import * as line from "./line/line";
-import * as sms from "./sms";
-import * as twilio from "./twilio";
-import * as ses from "./ses";
+import { sendMessageDirect } from "./notify/line";
+import * as sms from "./notify/sms";
+import * as twilio from "./notify/twilio";
+import * as ses from "./notify/ses";
 
-const LINE_MESSAGE_TOKEN = process.env.LINE_MESSAGE_TOKEN || "";
+const LINE_MESSAGE_TOKEN = defineSecret("LINE_MESSAGE_TOKEN");
 
 // for customer
 export const sendMessageToCustomer = async (
@@ -48,24 +50,24 @@ export const sendMessageToCustomer = async (
     const uidLine = lineUser?.profile?.userId;
     const token = config?.message_token;
     if (uidLine && token) {
-      await line.sendMessageDirect(uidLine, getMessage(url), token);
+      await sendMessageDirect(uidLine, getMessage(url), token);
       return;
     }
   }
 
   // for JP
-  const { lineId, liffIndexId, liffId } = (await line.getLineId(db, orderData.uid)) as any;
+  const { lineId, liffIndexId, liffId } = (await getLineId(db, orderData.uid)) as any;
 
   if (lineId) {
     if (liffIndexId) {
       // liff
-      const { token } = await line.getLiffPrivateConfig(db, liffIndexId);
+      const { token } = await getLiffPrivateConfig(db, liffIndexId);
       if (token) {
         const liffUrl = `https://liff.line.me/${liffId}/r/${restaurantId}/order/${orderId}`;
-        await line.sendMessageDirect(lineId, getMessage(liffUrl), token);
+        await sendMessageDirect(lineId, getMessage(liffUrl), token);
       }
     } else {
-      await line.sendMessageDirect(lineId, getMessage(url), LINE_MESSAGE_TOKEN);
+      await sendMessageDirect(lineId, getMessage(url), LINE_MESSAGE_TOKEN.value());
     }
   }
   // force SMS ( for cancel and change order)
@@ -154,7 +156,7 @@ const notifyRestaurantToLineUser = async (url: string, message: string, lineUser
     lineUsers.map(async (doc) => {
       const lineUser = doc.data();
       if (lineUser && lineUser.notify) {
-        await line.sendMessageDirect(doc.id, `${message} ${url}?openExternalBrowser=1`, LINE_MESSAGE_TOKEN);
+        await sendMessageDirect(doc.id, `${message} ${url}?openExternalBrowser=1`, LINE_MESSAGE_TOKEN.value());
       }
       return lineUser;
     }),

@@ -1,22 +1,22 @@
-import * as functions from "firebase-functions/v1";
+import { onCall, HttpsError } from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
 
-import * as Account from "../functions/account";
+import { deleteAccount } from "../functions/account";
 import { enforceAppCheck, secretKeys } from "./firebase";
 
 const db = admin.firestore();
 
-export default functions
-  .region("asia-northeast1")
-  .runWith({
-    memory: "1GB" as const,
-    maxInstances: 5,
+export default onCall(
+  {
+    region: "asia-northeast1",
+    memory: "1GiB",
     enforceAppCheck,
+    maxInstances: 5,
     secrets: secretKeys,
-  })
-  .https.onCall(async (data, context) => {
+  },
+  async (context) => {
     if (context.app == undefined) {
-      throw new functions.https.HttpsError("failed-precondition", "The function must be called from an App Check verified app.");
+      throw new HttpsError("failed-precondition", "The function must be called from an App Check verified app.");
     }
-    return await Account.deleteAccount(db, context);
+    return await deleteAccount(db, context);
   });

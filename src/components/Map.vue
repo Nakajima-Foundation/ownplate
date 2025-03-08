@@ -1,11 +1,11 @@
 <template>
   <div class="mx-6 mt-2 h-3/5">
     <GoogleMap
-      :api-key="apiKey"
+      :api-key="GAPIKey"
       :mapId="mapId"
-      style="width: 100%; height: 50vh"
-      :center="center"
+      :center="{ lat: center_lat ?? 0, lng: center_lng ?? 0 }"
       :zoom="zoom"
+      class="w-full h-[50vh]"
     >
       <AdvancedMarker
         v-for="restaurant in restaurants"
@@ -40,6 +40,7 @@ import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { resizedProfileImage } from "@/utils/utils";
 import { GoogleMap, AdvancedMarker, InfoWindow } from "vue3-google-map";
 import { GAPIKey, GMAPId } from "@/config/project";
+import { GOOGLE_MAP_DEFAULT_CENTER } from "@/config/constant";
 
 export default defineComponent({
   components: { GoogleMap, AdvancedMarker, InfoWindow },
@@ -55,15 +56,12 @@ export default defineComponent({
     let min_lat = 1000;
     let min_lng = 1000;
 
-    const info_windows = ref(null);
-    const center = { lat: 44.933076, lng: 15.629058 };
-    const center_lat = ref(44.933076);
-    const center_lng = ref(15.629058);
+    const info_windows = ref<(typeof InfoWindow)[]>([]);
+    const { lat, lng } = GOOGLE_MAP_DEFAULT_CENTER;
+    const center_lat = ref(lat);
+    const center_lng = ref(lng);
     const zoom = ref(13);
-    const apiKey = GAPIKey;
     const mapId = GMAPId;
-
-    const selected = ref<null | number>(null);
 
     props.restaurants.forEach((restaurant: RestaurantInfoData) => {
       if (
@@ -92,8 +90,6 @@ export default defineComponent({
     }
     center_lng.value = (max_lng + min_lng) / 2;
     center_lat.value = (max_lat + min_lat) / 2;
-    center.lat = center_lat.value;
-    center.lng = center_lng.value;
 
     // https://easyramble.com/latitude-and-longitude-per-kilometer.html
     // lat 1 is 111km?
@@ -118,28 +114,19 @@ export default defineComponent({
       zoom.value = 13;
     }
 
-    const setStore = (key: number) => {
-      selected.value = key;
-      console.log(key);
-    };
-
     const closeAllInfoWindows = () => {
-      for (let j = 0; j < info_windows.value.length; j++) {
-        info_windows.value[j].close();
+      for (const window of info_windows.value) {
+        window.close();
       }
     };
 
     return {
       info_windows,
-      center,
       center_lat,
       center_lng,
       zoom,
-      apiKey,
+      GAPIKey,
       mapId,
-
-      setStore,
-      selected,
 
       closeAllInfoWindows,
       resizedProfileImage,

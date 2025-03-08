@@ -25,6 +25,11 @@
       >
         {{ $t("order.no_jcb") }}
       </div>
+
+      <div v-if="isPayingError" class="text-center font-bold text-red-600 mt-2">
+        {{ $t("order.card_error") }}
+      </div>
+
       <t-checkbox v-model="save">{{ $t("order.reuseCard") }}</t-checkbox>
 
       <!-- About CVC -->
@@ -136,6 +141,10 @@ export default defineComponent({
       required: true,
     },
     hasPayment: {
+      type: Boolean,
+      required: true,
+    },
+    isPayingError: {
       type: Boolean,
       required: true,
     },

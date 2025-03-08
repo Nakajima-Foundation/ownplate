@@ -80,15 +80,13 @@
 
         <!-- Save Button -->
         <div class="mt-4 text-center">
-          <button @click="save" :disabled="isSaving">
-            <div
-              class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
-            >
-              <span class="text-base font-bold text-white">{{
-                $t(isSaving ? "editCommon.saving" : "editCommon.save")
-              }}</span>
-            </div>
-          </button>
+          <t-button
+            @click="save"
+            :isDisabled="isSaving"
+            class="h-12 px-8 font-bold text-white"
+          >
+            {{ $t(isSaving ? "editCommon.saving" : "editCommon.save") }}
+          </t-button>
         </div>
       </div>
       <o-modal

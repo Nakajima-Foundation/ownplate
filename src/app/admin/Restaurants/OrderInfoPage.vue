@@ -125,11 +125,14 @@
             </div>
 
             <!-- Note for Payment Completion -->
-            <div
-              v-if="paymentIsNotCompleted"
-              class="mt-4 rounded-lg bg-yellow-500 bg-opacity-10 p-4 text-sm font-bold text-yellow-500"
-            >
-              {{ $t("admin.order.paymentIsNotCompleted") }}
+            <div v-if="paymentIsNotCompleted">
+              <div
+                class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-yellow-500 bg-opacity-10 px-4 py-1 font-bold text-yellow-500"
+              >
+                <span class="ml-1 mt-1 text-sm">
+                  {{ $t("admin.order.paymentIsNotCompleted") }}
+                </span>
+              </div>
             </div>
 
             <!-- Cancel Button -->

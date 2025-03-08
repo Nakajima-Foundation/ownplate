@@ -1,26 +1,26 @@
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions/v1";
+import { defineSecret } from "firebase-functions/params";
 import fetch from "node-fetch";
 import SmaregiApi from "../smaregi/smaregiapi";
-import * as utils from "../lib/utils";
+import { validate_admin_auth } from "../lib/utils";
 import { generateBody } from "../smaregi/apiUtils";
 
 import { smaregiAuthData, smaregiStoreListData, smaregiProductListData } from "../lib/types";
 import { smaregi } from "../common/project";
 import { validateFirebaseId } from "../lib/validator";
 
-const clientSecrets = functions.config() && functions.config().smaregi && functions.config().smaregi.clientsecrets;
-const host = functions.config() && functions.config().smaregi && functions.config().smaregi.host; // https://id.smaregi.dev
-const apiHost = functions.config() && functions.config().smaregi && functions.config().smaregi.host_name; // like api.smaregi.dev
-const authHost = functions.config() && functions.config().smaregi && functions.config().smaregi.auth_host_name; // id.smaregi.dev
+const clientSecret = defineSecret("SMAREGI_SECRET");
+const host = smaregi.host;
+const apiHost = smaregi.host_name;
+const authHost = smaregi.auth_host_name;
 const client_id = smaregi.clientId;
 
 export const auth = async (db: admin.firestore.Firestore, data: smaregiAuthData, context: functions.https.CallableContext) => {
   const { code } = data;
 
-  const adminUid = utils.validate_admin_auth(context);
-  const clientSecret = clientSecrets[client_id];
-  const authToken = [client_id, clientSecret].join(":");
+  const adminUid = validate_admin_auth(context);
+  const authToken = [client_id, clientSecret.value()].join(":");
 
   try {
     const res = await fetch(host + "/authorize/token", {
@@ -72,8 +72,7 @@ export const auth = async (db: admin.firestore.Firestore, data: smaregiAuthData,
 };
 
 export const storeList = async (db: admin.firestore.Firestore, data: smaregiStoreListData, context: functions.https.CallableContext) => {
-  const adminUid = utils.validate_admin_auth(context);
-  const clientSecret = clientSecrets[client_id];
+  const adminUid = validate_admin_auth(context);
 
   const smaregiDoc = await db.doc(`admins/${adminUid}/private/smaregi`).get();
   if (!smaregiDoc || !smaregiDoc.exists) {
@@ -88,7 +87,7 @@ export const storeList = async (db: admin.firestore.Firestore, data: smaregiStor
   const config = {
     contractId: smaregiContractId,
     clientId: client_id,
-    clientSecret: clientSecret,
+    clientSecret: clientSecret.value(),
     hostName: apiHost,
     authHostName: authHost,
     scopes: ["pos.stock:read", "pos.stock:write", "pos.stores:read", "pos.stores:write", "pos.customers:read", "pos.customers:write", "pos.products:read", "pos.products:write"],
@@ -108,8 +107,7 @@ export const productList = async (db: admin.firestore.Firestore, data: smaregiPr
     throw new functions.https.HttpsError("invalid-argument", "invalid args.");
   }
 
-  const adminUid = utils.validate_admin_auth(context);
-  const clientSecret = clientSecrets[client_id];
+  const adminUid = validate_admin_auth(context);
 
   const smaregiDoc = await db.doc(`admins/${adminUid}/private/smaregi`).get();
   if (!smaregiDoc || !smaregiDoc.exists) {
@@ -124,7 +122,7 @@ export const productList = async (db: admin.firestore.Firestore, data: smaregiPr
   const config = {
     contractId: smaregiContractId,
     clientId: client_id,
-    clientSecret: clientSecret,
+    clientSecret: clientSecret.value(),
     hostName: apiHost,
     authHostName: authHost,
     scopes: ["pos.stock:read", "pos.stock:write", "pos.stores:read", "pos.stores:write", "pos.customers:read", "pos.customers:write", "pos.products:read", "pos.products:write"],

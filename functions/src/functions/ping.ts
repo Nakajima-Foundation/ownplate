@@ -1,10 +1,12 @@
-import * as functions from "firebase-functions/v1";
 import * as admin from "firebase-admin";
+import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
+import { log } from "firebase-functions/logger";
+
 import { validatePing } from "../lib/validator";
 import { pingData } from "../lib/types";
 import * as utils from "../lib/utils";
 
-export const operationLog = (context: functions.https.CallableContext, params: any) => {
+export const operationLog = (context: CallableRequest, params: any) => {
   const uid = context.auth?.uid;
   const restaurantId = params.restaurantId || "-----";
   const operationType = params.operationType || "-----";
@@ -25,11 +27,11 @@ export const operationLog = (context: functions.https.CallableContext, params: a
 
   const signInIpAddress = context.auth?.token?.signInIpAddress || "";
   if (signInIpAddress && signInIpAddress !== ip) {
-    functions.logger.log("differentIP: " + uid, { signInIpAddress, ip });
+    log("differentIP: " + uid, { signInIpAddress, ip });
   }
 
   // path, restautantId, time, method, options
-  const log = {
+  const logData = {
     logType: "operationLog",
     operationType,
     referer,
@@ -45,17 +47,17 @@ export const operationLog = (context: functions.https.CallableContext, params: a
     signInIpAddress,
   };
   const message = [operationType, restaurantId, uid].join(":");
-  functions.logger.log(message, log);
+  log(message, logData);
 };
 
-export const ping = async (db: admin.firestore.Firestore, data: pingData, context: functions.https.CallableContext) => {
+export const ping = async (db: admin.firestore.Firestore, data: pingData, context: CallableRequest) => {
   const { operationType, restaurantId, pathName } = data;
   utils.validate_admin_auth(context);
 
   const validateResult = validatePing(data);
   if (!validateResult.result) {
     console.error("ping", validateResult.errors);
-    throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+    throw new HttpsError("invalid-argument", "Validation Error.");
   }
 
   operationLog(context, {
