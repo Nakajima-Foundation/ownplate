@@ -18,6 +18,7 @@
         v-if="articleId === 'article240727_configurations_of_dishes'"
       />
       <stripe_payouts v-if="articleId === 'article240817_stripe_payouts'" />
+      <discounts v-if="articleId === 'article250315_discounts'" />
     </div>
   </div>
 </template>
@@ -37,13 +38,16 @@ import configurations_of_dishes from "../../../../docs/article240727_configurati
 
 import stripe_payouts from "../../../../docs/article240817_stripe_payouts/stripe_payouts.md";
 
+import discounts from "../../../../docs/article250315_discounts/discounts.md";
+
 const articles: { [key: string]: string } = {
   article230930_line_official_account: linenews,
   article231007_out_of_stock: soldout,
   article231019_lunch_n_dinner: lunch_n_dinner,
   article240725_lead_time_management: lead_time,
   article240727_configurations_of_dishes: configurations_of_dishes,
-  article240817_stripe_payouts: stripe_payouts,
+	article240817_stripe_payouts: stripe_payouts,
+	article250315_discounts: discounts,	
 };
 
 export default defineComponent({
@@ -54,7 +58,7 @@ export default defineComponent({
     lunch_n_dinner,
     lead_time,
     configurations_of_dishes,
-    stripe_payouts,
+    discounts,
   },
   setup() {
     const route = useRoute();
