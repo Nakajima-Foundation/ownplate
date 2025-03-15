@@ -58,6 +58,8 @@ export default defineComponent({
     lunch_n_dinner,
     lead_time,
     configurations_of_dishes,
+		configurations_of_dishes,
+		stripe_payouts,
     discounts,
   },
   setup() {
