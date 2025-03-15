@@ -148,6 +148,14 @@
           >
           <span class="text-xs opacity-50">(2024/08/19)</span>
         </div>
+        <div>
+          <router-link
+            to="/admin/docs/articles/article250315_discounts/"
+            class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
+            >値引き機能</router-link
+          >
+          <span class="text-xs opacity-50">(2025/03/15)</span>
+        </div>
       </div>
 
       <div class="mt-4 text-sm font-bold">役立つリンク</div>
