@@ -26,7 +26,6 @@
     "@sentry/tracing": "^7.120.3",
     "@sentry/vue": "^8.52.1",
     "@unhead/vue": "^1.11.18",
-    "caniuse-lite": "^1.0.30001704",
     "chart.js": "^3.9.1",
     "cookie": "^1.0.2",
     "crypto-js": "^4.1.1",
