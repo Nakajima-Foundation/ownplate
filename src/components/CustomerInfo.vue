@@ -26,25 +26,23 @@
         </div>
         <div class="mb-2">
           <GoogleMap
-            :api-key="apiKey"
+            :api-key="GAPIKey"
+            :mapId="GMAPId"
             :center="computedCenter"
             :zoom="12"
             class="w-full h-[50vh]"
+            ref="mapRef"
           >
             <AdvancedMarker
+              v-if="mapRef?.ready && customer.location"
               :options="{
                 position: customer.location,
-                icon: {
-                  url: 'http://maps.google.co.jp/mapfiles/ms/icons/blue-dot.png',
-                },
               }"
             />
             <AdvancedMarker
+              v-if="mapRef?.ready && shopInfo.location"
               :options="{
-                position: shopInfo.location,
-                icon: {
-                  url: 'http://maps.google.co.jp/mapfiles/ms/icons/restaurant.png',
-                },
+                 position: shopInfo.location,
               }"
             />
           </GoogleMap>
@@ -61,7 +59,7 @@
 <script lang="ts">
 import { defineComponent, ref, computed, PropType } from "vue";
 import { GoogleMap, AdvancedMarker } from "vue3-google-map";
-import { GAPIKey } from "@/config/project";
+import { GAPIKey, GMAPId } from "@/config/project";
 
 export default defineComponent({
   components: { GoogleMap, AdvancedMarker },
@@ -85,8 +83,8 @@ export default defineComponent({
   },
   setup(props) {
     const info_windows = ref(null);
-    const apiKey = GAPIKey;
-
+    const mapRef = ref();
+    
     const computedCenter = computed(() => {
       if (
         props.customer?.location &&
@@ -103,7 +101,10 @@ export default defineComponent({
     return {
       info_windows,
       computedCenter,
-      apiKey,
+      mapRef,
+
+      GAPIKey,
+      GMAPId,
     };
   },
 });
