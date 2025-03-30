@@ -2,7 +2,7 @@
   <div class="mx-6 mt-2 h-3/5">
     <GoogleMap
       :api-key="GAPIKey"
-      :mapId="mapId"
+      :mapId="GMAPId"
       :center="{ lat: center_lat ?? 0, lng: center_lng ?? 0 }"
       :zoom="zoom"
       class="w-full h-[50vh]"
@@ -61,7 +61,6 @@ export default defineComponent({
     const center_lat = ref(lat);
     const center_lng = ref(lng);
     const zoom = ref(13);
-    const mapId = GMAPId;
 
     props.restaurants.forEach((restaurant: RestaurantInfoData) => {
       if (
@@ -126,7 +125,7 @@ export default defineComponent({
       center_lng,
       zoom,
       GAPIKey,
-      mapId,
+      GMAPId,
 
       closeAllInfoWindows,
       resizedProfileImage,
