@@ -25,8 +25,10 @@ import * as Sentry from "@sentry/vue";
 // components
 import App from "@/components/App.vue";
 
+import VueGoogleMaps from "@fawmi/vue-google-maps";
+
 // config
-import { sentryDsn } from "@/config/project";
+import { sentryDsn, GAPIKey } from "@/config/project";
 
 // css
 import "@/assets/css/tailwind.css";
@@ -41,6 +43,12 @@ app.component(VueQrcode.name ?? "", VueQrcode);
 app.component("t-checkbox", Checkbox);
 app.component("t-button", Button);
 app.component("t-cancel-button", CancelButton);
+
+app.use(VueGoogleMaps, {
+  load: {
+    key: GAPIKey,
+  },
+});
 
 app.use(VueSocialSharing);
 app.use(Oruga, bulmaConfig);

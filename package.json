@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@chenfengyuan/vue-qrcode": "^2.0.0",
+    "@fawmi/vue-google-maps": "^0.9.79",
     "@line/liff": "^2.25.1",
     "@oruga-ui/oruga-next": "^0.9.3",
     "@oruga-ui/theme-bulma": "^0.5.3",

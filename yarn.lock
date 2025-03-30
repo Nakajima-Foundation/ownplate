@@ -253,6 +253,13 @@
   resolved "https://registry.yarnpkg.com/@fastify/busboy/-/busboy-3.0.0.tgz#328a4639cdd9282c1d1f56aa84943f153df8839d"
   integrity sha512-83rnH2nCvclWaPQQKvkJ2pdOjG4TZyEVuFDnlOF6KP08lDaaceVyw/W63mDuafQT+MKHCvXIPpE5uYWeM0rT4w==
 
+"@fawmi/vue-google-maps@^0.9.79":
+  version "0.9.79"
+  resolved "https://registry.yarnpkg.com/@fawmi/vue-google-maps/-/vue-google-maps-0.9.79.tgz#0e43bd2a2d0e3309219d400bc06efad4134104a8"
+  integrity sha512-SnITonfrBfT/7uESF8SCs1DRWHSJyr/K0bPv9taONAUp/YiggmlwHOwAzA63UeDl8vP0bBmT56MYC1bZmAdUjQ==
+  dependencies:
+    "@googlemaps/markerclusterer" "^2.0.3"
+
 "@firebase/analytics-compat@0.2.18":
   version "0.2.18"
   resolved "https://registry.yarnpkg.com/@firebase/analytics-compat/-/analytics-compat-0.2.18.tgz#5ea9bdea188d4c91938f539af4c4414813ddc5c9"
@@ -784,7 +791,7 @@
   resolved "https://registry.yarnpkg.com/@googlemaps/js-api-loader/-/js-api-loader-1.16.8.tgz#1595a2af80ca07e551fc961d921a2437d1cb3643"
   integrity sha512-CROqqwfKotdO6EBjZO/gQGVTbeDps5V7Mt9+8+5Q+jTg5CRMi3Ii/L9PmV3USROrt2uWxtGzJHORmByxyo9pSQ==
 
-"@googlemaps/markerclusterer@^2.4.0":
+"@googlemaps/markerclusterer@^2.0.3", "@googlemaps/markerclusterer@^2.4.0":
   version "2.5.3"
   resolved "https://registry.yarnpkg.com/@googlemaps/markerclusterer/-/markerclusterer-2.5.3.tgz#9f891ce7e8e161775f3a3e2c9f66956810284591"
   integrity sha512-x7lX0R5yYOoiNectr10wLgCBasNcXFHiADIBdmn7jQllF2B5ENQw5XtZK+hIw4xnV0Df0xhN4LN98XqA5jaiOw==
