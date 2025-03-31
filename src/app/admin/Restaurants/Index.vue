@@ -186,8 +186,13 @@
             <div class="mt-4 border-red-700">
               <div
                 ref="gMap"
-                style="width: 100%; height: 280px; position: relative; overflow: hidden"
-                />
+                style="
+                  width: 100%;
+                  height: 280px;
+                  position: relative;
+                  overflow: hidden;
+                "
+              />
             </div>
           </div>
         </div>
@@ -1403,17 +1408,17 @@ export default defineComponent({
     };
     const setDefaultLocation = () => {
       if (typeof google === "undefined" || !gMap.value) return;
-      
+
       mapObj.value = new google.maps.Map(gMap.value, {
         center: { lat: 44.933076, lng: 15.629058 },
         zoom: 18,
         fullscreenControl: false,
       });
-      
+
       mapObj.value.addListener("click", (e: google.maps.MapMouseEvent) => {
         gmapClick(e);
       });
-      
+
       if (editShopInfo && editShopInfo.location) {
         setCurrentLocation(editShopInfo.location);
       }
@@ -1586,4 +1591,3 @@ export default defineComponent({
   },
 });
 </script>
-

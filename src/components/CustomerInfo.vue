@@ -25,27 +25,7 @@
           {{ $t("delivery.deliveryLocation") }}
         </div>
         <div class="mb-2">
-          <GoogleMap
-            :api-key="GAPIKey"
-            :mapId="GMAPId"
-            :center="computedCenter"
-            :zoom="12"
-            class="w-full h-[50vh]"
-            ref="mapRef"
-          >
-            <AdvancedMarker
-              v-if="mapRef?.ready && customer.location"
-              :options="{
-                position: customer.location,
-              }"
-            />
-            <AdvancedMarker
-              v-if="mapRef?.ready && shopInfo.location"
-              :options="{
-                position: shopInfo.location,
-              }"
-            />
-          </GoogleMap>
+          <div ref="mapRef" class="w-full h-[50vh]" />
         </div>
       </template>
       <div class="text-base font-bold">{{ $t("order.ec.phone") }}</div>
@@ -57,12 +37,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, PropType } from "vue";
-import { GoogleMap, AdvancedMarker } from "vue3-google-map";
-import { GAPIKey, GMAPId } from "@/config/project";
+import {
+  defineComponent,
+  ref,
+  computed,
+  PropType,
+  onMounted,
+  watch,
+} from "vue";
+import { GMAPId } from "@/config/project";
 
 export default defineComponent({
-  components: { GoogleMap, AdvancedMarker },
   props: {
     shopInfo: {
       type: Object as PropType<{
@@ -82,29 +67,62 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const info_windows = ref(null);
-    const mapRef = ref();
+    const mapRef = ref<HTMLElement | null>(null);
+    const mapObj = ref<google.maps.Map>();
+    const markers: google.maps.marker.AdvancedMarkerElement[] = [];
 
     const computedCenter = computed(() => {
-      if (
-        props.customer?.location &&
-        props.shopInfo?.location // &&
-      ) {
+      if (props.customer?.location && props.shopInfo?.location) {
         return {
           lat: (props.customer.location.lat + props.shopInfo.location.lat) / 2,
           lng: (props.customer.location.lng + props.shopInfo.location.lng) / 2,
         };
       }
-      return { lat: 35.6762, lng: 139.6503 };
+      return { lat: 35.6762, lng: 139.6503 }; // default center
     });
 
-    return {
-      info_windows,
-      computedCenter,
-      mapRef,
+    const drawMap = () => {
+      if (!mapRef.value || !props.customer.location || !props.shopInfo.location) {
+        return;
+      }
+      const map = new google.maps.Map(mapRef.value, {
+        center: computedCenter.value,
+        zoom: 12,
+        mapId: GMAPId || undefined,
+      });
 
-      GAPIKey,
-      GMAPId,
+      mapObj.value = map;
+
+      // Add markers using AdvancedMarkerElement
+      const customerMarker = new google.maps.marker.AdvancedMarkerElement({
+        map,
+        position: props.customer.location,
+      });
+      const shopMarker = new google.maps.marker.AdvancedMarkerElement({
+        map,
+        position: props.shopInfo.location,
+      });
+
+      markers.push(customerMarker, shopMarker);
+    };
+
+    onMounted(() => {
+      setTimeout(() => {
+        drawMap();
+      }, 100);
+    });
+
+    watch(
+      [() => props.customer.location, () => props.shopInfo.location],
+      () => {
+        if (mapObj.value) {
+          drawMap();
+        }
+      },
+    );
+
+    return {
+      mapRef,
     };
   },
 });

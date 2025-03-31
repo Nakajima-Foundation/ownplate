@@ -67,8 +67,8 @@ export default defineComponent({
     const radius = props.deliveryInfo?.radius || 1;
     const location = props.shopInfo.location;
 
-    let map: google.maps.Map |  null = null;
-    let gCenter: google.maps.LatLng |  null = null;
+    let map: google.maps.Map | null = null;
+    let gCenter: google.maps.LatLng | null = null;
     let gHome: google.maps.LatLng | null = null;
     const markers: google.maps.Marker[] = [];
     const circles: google.maps.Circle[] = [];

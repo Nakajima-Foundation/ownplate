@@ -74,7 +74,15 @@
               <span>{{ $t("delivery.setAreaMapNotice") }}</span>
             </div>
             <div>
-              <div ref="mapContainer" style="width: 100%; height: 480px; position: relative; overflow: hidden"></div>
+              <div
+                ref="mapContainer"
+                style="
+                  width: 100%;
+                  height: 480px;
+                  position: relative;
+                  overflow: hidden;
+                "
+              ></div>
             </div>
             <div class="mt-2 flex">
               <span class="flex-item mt-auto mb-auto mr-2 inline-block">
@@ -347,7 +355,7 @@ export default defineComponent({
     const mapLoaded = () => {
       setTimeout(() => {
         if (!mapContainer.value) return;
-      
+
         if (!map) {
           const loc = props.shopInfo.location;
           map = new google.maps.Map(mapContainer.value, {
@@ -376,24 +384,31 @@ export default defineComponent({
 
     enableDelivery.value = props.shopInfo.enableDelivery || false;
     deliveryOnlyStore.value = props.shopInfo.deliveryOnlyStore || false;
-    deliveryMinimumCookTime.value = props.shopInfo.deliveryMinimumCookTime || deliveryMinimumCookTime.value;
+    deliveryMinimumCookTime.value =
+      props.shopInfo.deliveryMinimumCookTime || deliveryMinimumCookTime.value;
 
-    getDoc(doc(db, `restaurants/${restaurantId}/delivery/area`)).then((deliveryDoc) => {
-      if (deliveryDoc.exists()) {
-        const data = deliveryDoc.data();
-        enableAreaMap.value = data.enableAreaMap;
-        enableAreaText.value = data.enableAreaText;
-        enableDeliveryFree.value = data.enableDeliveryFree || enableDeliveryFree.value;
-        enableDeliveryThreshold.value = data.enableDeliveryThreshold || enableDeliveryThreshold.value;
-        deliveryFee.value = data.deliveryFee || deliveryFee.value;
-        deliveryFreeThreshold.value = data.deliveryFreeThreshold || deliveryFreeThreshold.value;
-        deliveryThreshold.value = data.deliveryThreshold || deliveryThreshold.value;
-        radius.value = data.radius;
-        areaText.value = data.areaText;
-      }
-      mapLoaded();
-      notFound.value = false;
-    });
+    getDoc(doc(db, `restaurants/${restaurantId}/delivery/area`)).then(
+      (deliveryDoc) => {
+        if (deliveryDoc.exists()) {
+          const data = deliveryDoc.data();
+          enableAreaMap.value = data.enableAreaMap;
+          enableAreaText.value = data.enableAreaText;
+          enableDeliveryFree.value =
+            data.enableDeliveryFree || enableDeliveryFree.value;
+          enableDeliveryThreshold.value =
+            data.enableDeliveryThreshold || enableDeliveryThreshold.value;
+          deliveryFee.value = data.deliveryFee || deliveryFee.value;
+          deliveryFreeThreshold.value =
+            data.deliveryFreeThreshold || deliveryFreeThreshold.value;
+          deliveryThreshold.value =
+            data.deliveryThreshold || deliveryThreshold.value;
+          radius.value = data.radius;
+          areaText.value = data.areaText;
+        }
+        mapLoaded();
+        notFound.value = false;
+      },
+    );
 
     const saveDeliveryArea = async () => {
       await updateDoc(doc(db, `restaurants/${restaurantId}`), {
