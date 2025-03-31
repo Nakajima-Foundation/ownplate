@@ -184,20 +184,10 @@
             </div>
 
             <div class="mt-4 border-red-700">
-              <GMapMap
+              <div
                 ref="gMap"
-                :center="{ lat: 44.933076, lng: 15.629058 }"
-                :options="{ fullscreenControl: false }"
-                :zoom="18"
-                style="
-                  width: 100%;
-                  height: 280px;
-                  position: relative;
-                  overflow: hidden;
-                "
-                @loaded="setDefaultLocation"
-                @click="gmapClick"
-              ></GMapMap>
+                style="width: 100%; height: 280px; position: relative; overflow: hidden"
+                />
             </div>
           </div>
         </div>
@@ -1402,18 +1392,7 @@ export default defineComponent({
       editShopInfo.countryCode = payload.countryCode;
       errorsPhone.value = payload.errors;
     };
-    const setDefaultLocation = async () => {
-      // gMap.value &&
-      // gMap.value.$mapPromise &&
-      mapObj.value = await gMap.value.$mapPromise;
 
-      if (editShopInfo && editShopInfo.location) {
-        setCurrentLocation(editShopInfo.location);
-      }
-    };
-    onMounted(() => {
-      setDefaultLocation();
-    });
     const gmapClick = (arg: any) => {
       setCurrentLocation(
         { lat: arg.latLng.lat(), lng: arg.latLng.lng() },
@@ -1422,6 +1401,27 @@ export default defineComponent({
       // place_id.value = null;
       setLocation();
     };
+    const setDefaultLocation = () => {
+      if (typeof google === "undefined" || !gMap.value) return;
+      
+      mapObj.value = new google.maps.Map(gMap.value, {
+        center: { lat: 44.933076, lng: 15.629058 },
+        zoom: 18,
+        fullscreenControl: false,
+      });
+      
+      mapObj.value.addListener("click", (e: google.maps.MapMouseEvent) => {
+        gmapClick(e);
+      });
+      
+      if (editShopInfo && editShopInfo.location) {
+        setCurrentLocation(editShopInfo.location);
+      }
+    };
+
+    onMounted(() => {
+      setDefaultLocation();
+    });
     const copyRestaurantFunc = async () => {
       try {
         const id = await copyRestaurant(
@@ -1586,4 +1586,4 @@ export default defineComponent({
   },
 });
 </script>
-B
+
