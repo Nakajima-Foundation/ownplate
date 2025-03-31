@@ -107,15 +107,7 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      const wait = setInterval(() => {
-        if (
-          typeof google !== "undefined" &&
-          google.maps?.marker?.AdvancedMarkerElement
-        ) {
-          clearInterval(wait);
-          initMap();
-        }
-      }, 100);
+      initMap();
     });
 
     return {
