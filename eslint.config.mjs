@@ -58,7 +58,7 @@ export default [
       "no-irregular-whitespace": "off", 
       "@typescript-eslint/ban-ts-comment": "warn",  // TODO
       "vue/attribute-hyphenation": "off",
-      "vue/v-on-event-hyphenation": "warn",
+      "vue/v-on-event-hyphenation": "off",
       "accessor-pairs": "error",
       "no-duplicate-imports": "error",
       
