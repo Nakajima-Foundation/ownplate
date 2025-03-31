@@ -45,6 +45,7 @@ import {
   onMounted,
   watch,
 } from "vue";
+import { getShopIcon, getCustomerIcon } from "@/utils/map";
 import { GMAPId } from "@/config/project";
 import { GOOGLE_MAP_DEFAULT_CENTER } from "@/config/constant";
 
@@ -70,7 +71,6 @@ export default defineComponent({
   setup(props) {
     const mapRef = ref<HTMLElement | null>(null);
     const mapObj = ref<google.maps.Map>();
-    const markers: google.maps.marker.AdvancedMarkerElement[] = [];
 
     const computedCenter = computed(() => {
       if (props.customer?.location && props.shopInfo?.location) {
@@ -102,16 +102,17 @@ export default defineComponent({
       mapObj.value = map;
 
       // Add markers using AdvancedMarkerElement
-      const customerMarker = new google.maps.marker.AdvancedMarkerElement({
+      // shop marker
+      new google.maps.marker.AdvancedMarkerElement({
         map,
         position: props.customer.location,
+        content: getCustomerIcon(),
       });
-      const shopMarker = new google.maps.marker.AdvancedMarkerElement({
+      new google.maps.marker.AdvancedMarkerElement({
         map,
         position: props.shopInfo.location,
+        content: getShopIcon(),
       });
-
-      markers.push(customerMarker, shopMarker);
     };
 
     const isMount = ref(false);
