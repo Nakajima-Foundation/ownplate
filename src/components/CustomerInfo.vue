@@ -85,6 +85,9 @@ export default defineComponent({
       if (!mapRef.value || !props.customer.location || !props.shopInfo.location) {
         return;
       }
+      if (mapObj.value) {
+        return;
+      }
       const map = new google.maps.Map(mapRef.value, {
         center: computedCenter.value,
         zoom: 12,
@@ -106,18 +109,17 @@ export default defineComponent({
       markers.push(customerMarker, shopMarker);
     };
 
+    const isMount = ref(false);
     onMounted(() => {
-      setTimeout(() => {
-        drawMap();
-      }, 100);
+      isMount.value = true;
     });
-
+    
     watch(
-      [() => props.customer.location, () => props.shopInfo.location],
+      [() => props.customer.location, () => props.shopInfo.location, isMount],
       () => {
-        if (mapObj.value) {
+        setTimeout(() => {
           drawMap();
-        }
+        }, 100);
       },
     );
 
