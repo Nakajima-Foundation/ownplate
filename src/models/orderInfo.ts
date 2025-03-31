@@ -102,11 +102,11 @@ export const order2ReportData = (
   serviceTaxRate: number,
 ) => {
   const multiple = stripeRegion.multiple;
-  // @ts-ignore
+  // @ts-expect-error maybe different type or undefine
   order.timeConfirmed = order?.timeConfirmed?.toDate();
-  // @ts-ignore
+  // @ts-expect-error maybe different type or undefine
   order.timePlaced = order?.timePlaced?.toDate();
-  // @ts-ignore
+  // @ts-expect-error maybe different type or undefine
   order.timeEstimated = order?.timeEstimated?.toDate();
   if (!order.accounting) {
     order.accounting = {

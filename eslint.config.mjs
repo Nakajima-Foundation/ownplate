@@ -29,6 +29,7 @@ export default [
       globals: {
         ...globals.browser,
         google: 'readonly',
+        Stripe: 'readonly',
       },
     },
     rules: {
