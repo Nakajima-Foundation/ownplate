@@ -47,7 +47,6 @@
     "vue-i18n": "^11.1.1",
     "vue-router": "^4.5.0",
     "vue-social-sharing": "^4.0.0-alpha4",
-    "vue3-google-map": "^0.21.1",
     "vuex": "^4.1.0"
   },
   "devDependencies": {
