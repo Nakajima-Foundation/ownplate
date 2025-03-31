@@ -250,6 +250,7 @@ import { defineComponent, computed, ref, onMounted, watch } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
 import NotFound from "@/components/NotFound.vue";
+import { GMAPId } from "@/config/project";
 
 import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
 import { useRouter } from "vue-router";
@@ -343,7 +344,7 @@ export default defineComponent({
       map.setCenter(center.value);
 
       removeAllMarker();
-      const marker = new google.maps.Marker({
+      const marker = new google.maps.marker.AdvancedMarkerElement({
         position: center.value,
         map,
       });
@@ -362,6 +363,7 @@ export default defineComponent({
             center: { lat: loc.lat, lng: loc.lng },
             zoom: 15,
             fullscreenControl: false,
+            mapId: GMAPId || undefined,
           });
         }
         if (typeof google !== "undefined") {
