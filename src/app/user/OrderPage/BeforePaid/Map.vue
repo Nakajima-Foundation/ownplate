@@ -148,7 +148,7 @@ export default defineComponent({
     };
 
     const setCurrentLocation = () => {
-      if (location.lat && location.lng && gCenter) {
+      if (location.lat && location.lng) {
         gCenter = new google.maps.LatLng(location.lat, location.lng);
         map.setCenter(gCenter);
         updateMarker();
