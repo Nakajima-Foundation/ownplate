@@ -45,6 +45,8 @@
 import { defineComponent, ref, onMounted } from "vue";
 import { haversine_distance } from "@/utils/utils";
 import { GOOGLE_MAP_DEFAULT_CENTER } from "@/config/constant";
+import { GMAPId } from "@/config/project";
+import { getShopIcon, getCustomerIcon } from "@/utils/map";
 
 export default defineComponent({
   emits: ["updateHome"],
@@ -85,20 +87,20 @@ export default defineComponent({
 
       if (gCenter) {
         markers.push(
-          new google.maps.Marker({
+          new google.maps.marker.AdvancedMarkerElement({
             position: gCenter,
             map,
-            icon: "http://maps.google.co.jp/mapfiles/ms/icons/restaurant.png",
+            content: getShopIcon(),
           }),
         );
       }
 
       if (gHome) {
         markers.push(
-          new google.maps.Marker({
+          new google.maps.marker.AdvancedMarkerElement({
             position: gHome,
             map,
-            icon: "http://maps.google.co.jp/mapfiles/ms/icons/blue-dot.png",
+            content: getCustomerIcon(),
           }),
         );
       }
@@ -176,6 +178,7 @@ export default defineComponent({
       map = new google.maps.Map(mapContainer.value, {
         center: GOOGLE_MAP_DEFAULT_CENTER,
         zoom: 15,
+        mapId: GMAPId || undefined,
         fullscreenControl: false,
       });
 
