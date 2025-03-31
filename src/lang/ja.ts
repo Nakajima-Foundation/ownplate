@@ -260,6 +260,13 @@ const data = {
     businessHourOption: "別時間帯(オプション)",
     copyPreviousDay: "前日をコピー",
     copySunDay: "日曜をコピー",
+    lunch: "ランチ",
+    dinner: "ディナー",
+    lastOrderTime: {
+      title:"最終注文時間",
+      notes1: "「営業終了時間」と「受け渡し準備時間」を考慮した「最終注文可能な時間」よりも前に、注文を締め切る場合にはこちらを設定してください。",
+      notes2: "未設定の場合は「営業終了時間」と「受け渡し準備時間」を考慮した時間となります。",
+    },
     draftDescription:
       "下書きとして保存されます(お客様からお店のページは見えません)",
     publishDescription: "保存して公開",
