@@ -82,7 +82,11 @@ export default defineComponent({
     });
 
     const drawMap = () => {
-      if (!mapRef.value || !props.customer.location || !props.shopInfo.location) {
+      if (
+        !mapRef.value ||
+        !props.customer.location ||
+        !props.shopInfo.location
+      ) {
         return;
       }
       if (mapObj.value) {
@@ -113,7 +117,7 @@ export default defineComponent({
     onMounted(() => {
       isMount.value = true;
     });
-    
+
     watch(
       [() => props.customer.location, () => props.shopInfo.location, isMount],
       () => {
