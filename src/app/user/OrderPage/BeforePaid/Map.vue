@@ -67,8 +67,8 @@ export default defineComponent({
     const radius = props.deliveryInfo?.radius || 1;
     const location = props.shopInfo.location;
 
-    let map: google.maps.Map;
-    let gCenter: google.maps.LatLng;
+    let map: google.maps.Map |  null = null;
+    let gCenter: google.maps.LatLng |  null = null;
     let gHome: google.maps.LatLng | null = null;
     const markers: google.maps.Marker[] = [];
     const circles: google.maps.Circle[] = [];
@@ -148,7 +148,7 @@ export default defineComponent({
     };
 
     const setCurrentLocation = () => {
-      if (location.lat && location.lng) {
+      if (location.lat && location.lng && gCenter) {
         gCenter = new google.maps.LatLng(location.lat, location.lng);
         map.setCenter(gCenter);
         updateMarker();
@@ -191,7 +191,6 @@ export default defineComponent({
       radius,
       mapContainer,
       updateLocation,
-      deliveryInfo: props.deliveryInfo,
     };
   },
 });
