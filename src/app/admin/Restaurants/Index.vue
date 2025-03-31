@@ -1166,6 +1166,7 @@ import {
   minimumCookTimeChoices,
   personalInfoSaveMethods,
   paymentMethods,
+  GOOGLE_MAP_DEFAULT_CENTER,
 } from "@/config/constant";
 
 import { useStore } from "vuex";
@@ -1410,7 +1411,7 @@ export default defineComponent({
       if (typeof google === "undefined" || !gMap.value) return;
 
       mapObj.value = new google.maps.Map(gMap.value, {
-        center: { lat: 44.933076, lng: 15.629058 },
+        center: GOOGLE_MAP_DEFAULT_CENTER,
         zoom: 18,
         fullscreenControl: false,
       });

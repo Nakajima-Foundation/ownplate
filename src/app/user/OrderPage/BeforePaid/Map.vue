@@ -44,6 +44,7 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted } from "vue";
 import { haversine_distance } from "@/utils/utils";
+import { GOOGLE_MAP_DEFAULT_CENTER } from "@/config/constant";
 
 export default defineComponent({
   emits: ["updateHome"],
@@ -173,7 +174,7 @@ export default defineComponent({
       if (!mapContainer.value) return;
 
       map = new google.maps.Map(mapContainer.value, {
-        center: { lat: 35.6809591, lng: 139.7673068 },
+        center: GOOGLE_MAP_DEFAULT_CENTER,
         zoom: 15,
         fullscreenControl: false,
       });
