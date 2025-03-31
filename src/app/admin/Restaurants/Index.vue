@@ -184,6 +184,7 @@
             </div>
 
             <div class="mt-4 border-red-700">
+              aa
               <div
                 ref="gMap"
                 style="
@@ -1123,7 +1124,7 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, updateDoc } from "firebase/firestore";
 
 import { google_geocode } from "@/lib/google/api";
-import { ownPlateConfig } from "@/config/project";
+import { ownPlateConfig, GMAPId } from "@/config/project";
 
 import NotFound from "@/components/NotFound.vue";
 import PhoneEntry from "@/components/PhoneEntry.vue";
@@ -1212,7 +1213,7 @@ export default defineComponent({
 
     const notFound = ref<boolean | null>(null);
     const gMap = ref();
-    const mapObj = ref();
+    let mapObj: google.maps.Map | null = null;
 
     // internal ref;
     const maplocation = ref({});
@@ -1315,14 +1316,13 @@ export default defineComponent({
     ) => {
       if (location && location.lat && location.lng) {
         if (move) {
-          mapObj.value.setCenter(location);
+          mapObj.setCenter(location);
         }
         removeAllMarker();
         markers.push(
-          new google.maps.Marker({
+          new google.maps.marker.AdvancedMarkerElement({
             position: new google.maps.LatLng(location.lat, location.lng),
-            title: "hello",
-            map: mapObj.value,
+            map: mapObj,
           }),
         );
         maplocation.value = location;
@@ -1410,13 +1410,14 @@ export default defineComponent({
     const setDefaultLocation = () => {
       if (typeof google === "undefined" || !gMap.value) return;
 
-      mapObj.value = new google.maps.Map(gMap.value, {
+      mapObj = new google.maps.Map(gMap.value, {
         center: GOOGLE_MAP_DEFAULT_CENTER,
         zoom: 18,
+        mapId: GMAPId || undefined,
         fullscreenControl: false,
       });
 
-      mapObj.value.addListener("click", (e: google.maps.MapMouseEvent) => {
+      mapObj.addListener("click", (e: google.maps.MapMouseEvent) => {
         gmapClick(e);
       });
 
