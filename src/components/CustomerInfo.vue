@@ -42,7 +42,7 @@
             <AdvancedMarker
               v-if="mapRef?.ready && shopInfo.location"
               :options="{
-                 position: shopInfo.location,
+                position: shopInfo.location,
               }"
             />
           </GoogleMap>
@@ -84,7 +84,7 @@ export default defineComponent({
   setup(props) {
     const info_windows = ref(null);
     const mapRef = ref();
-    
+
     const computedCenter = computed(() => {
       if (
         props.customer?.location &&
