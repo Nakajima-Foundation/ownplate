@@ -8,7 +8,7 @@
 import { defineComponent, ref, onMounted, PropType } from "vue";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { resizedProfileImage } from "@/utils/utils";
-import { GAPIKey, GMAPId } from "@/config/project";
+import { GMAPId } from "@/config/project";
 import { GOOGLE_MAP_DEFAULT_CENTER } from "@/config/constant";
 
 export default defineComponent({
@@ -120,13 +120,6 @@ export default defineComponent({
 
     return {
       mapRef,
-      center_lat,
-      center_lng,
-      zoom,
-      closeAllInfoWindows,
-      GAPIKey,
-      GMAPId,
-      resizedProfileImage,
     };
   },
 });

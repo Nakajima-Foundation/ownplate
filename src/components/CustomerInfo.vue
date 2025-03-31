@@ -46,6 +46,7 @@ import {
   watch,
 } from "vue";
 import { GMAPId } from "@/config/project";
+import { GOOGLE_MAP_DEFAULT_CENTER } from "@/config/constant";
 
 export default defineComponent({
   props: {
@@ -78,7 +79,7 @@ export default defineComponent({
           lng: (props.customer.location.lng + props.shopInfo.location.lng) / 2,
         };
       }
-      return { lat: 35.6762, lng: 139.6503 }; // default center
+      return GOOGLE_MAP_DEFAULT_CENTER; // default center
     });
 
     const drawMap = () => {
