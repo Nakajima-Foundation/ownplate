@@ -26,7 +26,10 @@ export default [
         extraFileExtensions: ['.vue'],
         sourceType: 'module',
       },
-      globals: globals.browser,
+      globals: {
+        ...globals.browser,
+        google: 'readonly',
+      },
     },
     rules: {
       //indent: ["error", 2],
