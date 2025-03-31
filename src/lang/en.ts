@@ -264,6 +264,13 @@ const data = {
     businessHourOption: "Another Hours (optional)",
     copyPreviousDay: "Copy Previous Day",
     copySunDay: "Copy Sunday",
+    lunch: "Lunch",
+    dinner: "Dinner",
+    lastOrderTime: {
+      title: "Last Order Time",
+      notes1: "Configure this if you would like to close orders prior to the \"final order time,\" considering the \"business closing time\" and \"order preparation time.\"",
+      notes2: "If this is not configured, the time will be determined by considering the \"business closing time\" and \"order preparation time.\"",
+    },
     draftDescription: "Save as Draft.",
     publishDescription: "Save and publish your restaurant.",
     draftWarning: "You can publish this by correcting the red frame.",
