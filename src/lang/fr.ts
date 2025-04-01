@@ -264,6 +264,13 @@ const data = {
     businessHourOption: "Autres heures. (facultatif)",
     copyPreviousDay: "Copier le jour précédent",
     copySunDay: "Copier le jour précédent",
+    lunch: "Déjeuner",
+    dinner: "Dîner",
+    lastOrderTime: {
+      title: "Heure limite de commande",
+      notes1: "Configurez cette option si vous souhaitez clôturer les commandes avant « l'heure de commande finale », en tenant compte de « l'heure de fermeture de l'entreprise » et du « temps de préparation de la commande ».",
+      notes2: "Si cette option n'est pas configurée, l'heure sera déterminée en tenant compte de « l'heure de fermeture de l'entreprise » et du « temps de préparation de la commande ».",
+    },
     draftDescription: "Enregistrer comme brouillon.",
     publishDescription: "Enregistrez et publiez votre restaurant.",
     draftWarning: "Vous pouvez publier ceci en corrigeant le cadre rouge.",

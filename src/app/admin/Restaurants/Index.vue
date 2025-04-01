@@ -899,7 +899,7 @@
                         class="flex-item my-auto ml-2 font-bold"
                         v-if="editShopInfo.enableLunchDinner"
                       >
-                        :ランチ
+                        :{{ $t("editRestaurant.lunch") }}
                       </div>
                     </div>
                   </div>
@@ -923,7 +923,7 @@
                         class="flex-item my-auto ml-2 font-bold"
                         v-if="editShopInfo.enableLunchDinner"
                       >
-                        :ディナー
+                        :{{ $t("editRestaurant.dinner") }}
                       </div>
                     </div>
                   </div>
@@ -933,12 +933,12 @@
 
             <!-- Last order time -->
             <div class="mt-4">
-              <div class="pb-2 text-sm font-bold">最終注文時間</div>
+              <div class="pb-2 text-sm font-bold">{{ $t("editRestaurant.lastOrderTime.title") }}</div>
               <div class="text-xs">
-                「営業終了時間」と「受け渡し準備時間」を考慮した「最終注文可能な時間」よりも前に、注文を締め切る場合にはこちらを設定してください。
+                {{ $t("editRestaurant.lastOrderTime.notes1") }}
               </div>
               <div class="text-xs">
-                未設定の場合は「営業終了時間」と「受け渡し準備時間」を考慮した時間となります。
+                {{ $t("editRestaurant.lastOrderTime.notes2") }}
               </div>
               <div class="mt-2">
                 <hour-input
