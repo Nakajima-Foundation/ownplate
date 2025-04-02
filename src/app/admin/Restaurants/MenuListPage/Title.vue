@@ -27,13 +27,13 @@
               @click="(e) => updateTitleLunchDinner(e, 'lunch')"
               v-model="title.availableLunch"
             >
-              {{ $t("editMenu.lunch") }}
+              {{ $t("ShopInfo.lunch") }}
             </o-checkbox>
             <o-checkbox
               @click="(e) => updateTitleLunchDinner(e, 'dinner')"
               v-model="title.availableDinner"
             >
-              {{ $t("editMenu.dinner") }}
+              {{ $t("ShopInfo.dinner") }}
             </o-checkbox>
           </div>
         </div>

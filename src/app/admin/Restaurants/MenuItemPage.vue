@@ -249,14 +249,14 @@
                 <div>
                   <o-checkbox v-model="menuInfo.availableLunch">
                     <div class="text-sm font-bold text-black text-opacity-60">
-                      {{ $t("editMenu.lunch") }}
+                      {{ $t("ShopInfo.lunch") }}
                     </div>
                   </o-checkbox>
                 </div>
                 <div class="mt-2">
                   <o-checkbox v-model="menuInfo.availableDinner">
                     <div class="text-sm font-bold text-black text-opacity-60">
-                      {{ $t("editMenu.dinner") }}
+                      {{ $t("ShopInfo.dinner") }}
                     </div>
                   </o-checkbox>
                 </div>
