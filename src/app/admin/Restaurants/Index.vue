@@ -899,7 +899,7 @@
                         class="flex-item my-auto ml-2 font-bold"
                         v-if="editShopInfo.enableLunchDinner"
                       >
-                        :{{ $t("editRestaurant.lunch") }}
+                        :{{ $t("shopInfo.lunch") }}
                       </div>
                     </div>
                   </div>
@@ -923,7 +923,7 @@
                         class="flex-item my-auto ml-2 font-bold"
                         v-if="editShopInfo.enableLunchDinner"
                       >
-                        :{{ $t("editRestaurant.dinner") }}
+                        :{{ $t("shopInfo.dinner") }}
                       </div>
                     </div>
                   </div>

@@ -260,10 +260,8 @@ const data = {
     businessHourOption: "別時間帯(オプション)",
     copyPreviousDay: "前日をコピー",
     copySunDay: "日曜をコピー",
-    lunch: "ランチ",
-    dinner: "ディナー",
     lastOrderTime: {
-      title:"最終注文時間",
+      title: "最終注文時間",
       notes1: "「営業終了時間」と「受け渡し準備時間」を考慮した「最終注文可能な時間」よりも前に、注文を締め切る場合にはこちらを設定してください。",
       notes2: "未設定の場合は「営業終了時間」と「受け渡し準備時間」を考慮した時間となります。",
     },
@@ -353,8 +351,6 @@ const data = {
     deleteAllPhotos: "すべて削除",
     exclusionDateTime: "販売除外日/時間",
     lunchDinner: "ランチ/ディナー",
-    lunch: "ランチ",
-    dinner: "ディナー",
     itemOptions: "オプション",
     itemOptionsNote:
       "トッピングや、大盛りなどの商品のオプションを指定します。二択や三択の場合、半角カンマで区切ってください(例:「チキン, ポーク, 豆腐」)。有料オプションの場合には、最後に(+100)のように値段を指定してください(例：「普通盛り,大盛り (+150),特盛(+300)」)",

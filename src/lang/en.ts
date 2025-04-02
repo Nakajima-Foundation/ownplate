@@ -264,8 +264,6 @@ const data = {
     businessHourOption: "Another Hours (optional)",
     copyPreviousDay: "Copy Previous Day",
     copySunDay: "Copy Sunday",
-    lunch: "Lunch",
-    dinner: "Dinner",
     lastOrderTime: {
       title: "Last Order Time",
       notes1: "Configure this if you would like to close orders prior to the \"final order time,\" considering the \"business closing time\" and \"order preparation time.\"",
@@ -356,8 +354,6 @@ const data = {
     deleteAllPhotos: "Delete all photos",
     exclusionDateTime: "Exclusion date/time",
     lunchDinner: "Lunch/Dinner",
-    lunch: "Lunch",
-    dinner: "Dinner",
     itemOptions: "Item options",
     itemOptionsNote:
       'For altenatives, use comma to separate them (e.g., "Chicken, Pork, Tofu"). You may add a price to an option with (+N), where N is the price.',
