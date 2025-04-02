@@ -281,7 +281,7 @@ const data = {
       "自社デリバリーを管理することができます。配達可能エリアなどを設定すると、お客様が注文時にテイクアウトかデリバリーを選択できるようになります。(店舗設定を変更している場合は保存を忘れずに)",
     deliveryConfigLink: "デリバリー設定へ",
     printerConfigTitle: "手動印刷プリンター設定",
-    elablePrinter: "プリンターを有効にする",
+    enablePrinter: "プリンターを有効にする",
     printerDescription:
       "ブルートゥースで接続したスター精密製のプリンターを使って、注文情報を印刷できます",
     printerDescription2:

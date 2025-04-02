@@ -730,7 +730,7 @@
             <div class="rounded-lg bg-black bg-opacity-5 p-4">
               <o-checkbox v-model="editShopInfo.enablePrinter">
                 <div class="text-sm font-bold">
-                  {{ $t("editRestaurant.elablePrinter") }}
+                  {{ $t("editRestaurant.enablePrinter") }}
                 </div>
               </o-checkbox>
               <div class="pt-2 text-xs">
