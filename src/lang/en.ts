@@ -283,7 +283,7 @@ const data = {
       "You can manage your own delivery. By setting the delivery area etc., the customer can choose takeout or delivery when ordering. (Don't forget to save if you have changed the store settings)",
     deliveryConfigLink: "To delivery settings",
     printerConfigTitle: "Printer settings",
-    elablePrinter: "Enable print",
+    enablePrinter: "Enable print",
     printerDescription:
       "You can print your order information using a printer made by Star Seiki connected via Bluetooth.",
     printerDescription2:
