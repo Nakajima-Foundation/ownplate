@@ -260,6 +260,11 @@ const data = {
     businessHourOption: "別時間帯(オプション)",
     copyPreviousDay: "前日をコピー",
     copySunDay: "日曜をコピー",
+    lastOrderTime: {
+      title: "最終注文時間",
+      notes1: "「営業終了時間」と「受け渡し準備時間」を考慮した「最終注文可能な時間」よりも前に、注文を締め切る場合にはこちらを設定してください。",
+      notes2: "未設定の場合は「営業終了時間」と「受け渡し準備時間」を考慮した時間となります。",
+    },
     draftDescription:
       "下書きとして保存されます(お客様からお店のページは見えません)",
     publishDescription: "保存して公開",
@@ -276,7 +281,7 @@ const data = {
       "自社デリバリーを管理することができます。配達可能エリアなどを設定すると、お客様が注文時にテイクアウトかデリバリーを選択できるようになります。(店舗設定を変更している場合は保存を忘れずに)",
     deliveryConfigLink: "デリバリー設定へ",
     printerConfigTitle: "手動印刷プリンター設定",
-    elablePrinter: "プリンターを有効にする",
+    enablePrinter: "プリンターを有効にする",
     printerDescription:
       "ブルートゥースで接続したスター精密製のプリンターを使って、注文情報を印刷できます",
     printerDescription2:
@@ -346,8 +351,6 @@ const data = {
     deleteAllPhotos: "すべて削除",
     exclusionDateTime: "販売除外日/時間",
     lunchDinner: "ランチ/ディナー",
-    lunch: "ランチ",
-    dinner: "ディナー",
     itemOptions: "オプション",
     itemOptionsNote:
       "トッピングや、大盛りなどの商品のオプションを指定します。二択や三択の場合、半角カンマで区切ってください(例:「チキン, ポーク, 豆腐」)。有料オプションの場合には、最後に(+100)のように値段を指定してください(例：「普通盛り,大盛り (+150),特盛(+300)」)",

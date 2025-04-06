@@ -74,19 +74,15 @@
               <span>{{ $t("delivery.setAreaMapNotice") }}</span>
             </div>
             <div>
-              <GMapMap
-                ref="gMap"
-                :center="{ lat: 35.6809591, lng: 139.7673068 }"
-                :options="{ fullscreenControl: false }"
-                :zoom="15"
+              <div
+                ref="mapContainer"
                 style="
                   width: 100%;
                   height: 480px;
                   position: relative;
                   overflow: hidden;
                 "
-                @loaded="mapLoaded"
-              ></GMapMap>
+              ></div>
             </div>
             <div class="mt-2 flex">
               <span class="flex-item mt-auto mb-auto mr-2 inline-block">
@@ -254,9 +250,9 @@ import { defineComponent, computed, ref, onMounted, watch } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
 import NotFound from "@/components/NotFound.vue";
+import { GMAPId } from "@/config/project";
 
 import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
-
 import { useRouter } from "vue-router";
 import { getRestaurantId, useAdminUids, notFoundResponse } from "@/utils/utils";
 
@@ -276,7 +272,6 @@ export default defineComponent({
 
     const enableDelivery = ref(false);
     const deliveryOnlyStore = ref(false);
-
     const enableDeliveryFree = ref(false);
     const enableDeliveryThreshold = ref(false);
     const enableAreaMap = ref(true);
@@ -291,13 +286,13 @@ export default defineComponent({
     const areaText = ref("");
     const existLocation = ref<boolean | null>(null);
 
-    const markers = ref<any[]>([]); //
-    const circles = ref<any[]>([]); //
-    const center = ref(null); //
-    let maplocation: any = null;
-
+    const markers = ref<any[]>([]);
+    const circles = ref<any[]>([]);
+    const center = ref<google.maps.LatLng | null>(null);
     const notFound = ref<boolean | null>(null);
-    const gMap = ref();
+
+    const mapContainer = ref<HTMLDivElement | null>(null);
+    let map: google.maps.Map | null = null;
 
     const { ownerUid, uid } = useAdminUids();
 
@@ -316,32 +311,24 @@ export default defineComponent({
     });
 
     const removeAllMarker = () => {
-      if (markers.value && markers.value.length > 0) {
-        markers.value.forEach((marker) => {
-          marker.setMap(null);
-        });
-        markers.value = [];
-      }
-    };
-    const removeAllCircle = () => {
-      if (circles.value && circles.value.length > 0) {
-        circles.value.forEach((circle) => {
-          circle.setMap(null);
-        });
-        circles.value = [];
-      }
+      markers.value.forEach((marker) => marker.setMap(null));
+      markers.value = [];
     };
 
-    const updateCircle = async () => {
+    const removeAllCircle = () => {
+      circles.value.forEach((circle) => circle.setMap(null));
+      circles.value = [];
+    };
+
+    const updateCircle = () => {
+      if (!map || !center.value) return;
       removeAllCircle();
-      const map = await gMap.value.$mapPromise;
-      map.setCenter(maplocation);
-      console.log(center.value);
+      map.setCenter(center.value);
       const circle = new google.maps.Circle({
         center: center.value,
         fillColor: fillColor.value,
         fillOpacity: 0.3,
-        map: map,
+        map,
         radius: Number(radius.value),
         strokeColor: "#ff0000",
         strokeOpacity: 1,
@@ -350,47 +337,53 @@ export default defineComponent({
       circles.value.push(circle);
     };
 
-    const setCurrentLocation = async (location: any) => {
-      if (
-        gMap.value &&
-        gMap.value.$mapPromise &&
-        location &&
-        location.lat &&
-        location.lng
-      ) {
-        const map = await gMap.value.$mapPromise;
-        map.setCenter(location);
-        const marker = new google.maps.Marker({
-          position: center.value,
-          map,
-        });
-        removeAllMarker();
-        markers.value.push(marker);
+    const setCurrentLocation = (location: any) => {
+      if (!map || !location?.lat || !location?.lng) return;
 
-        maplocation = location;
-        updateCircle();
-      }
+      center.value = new google.maps.LatLng(location.lat, location.lng);
+      map.setCenter(center.value);
+
+      removeAllMarker();
+      const marker = new google.maps.marker.AdvancedMarkerElement({
+        position: center.value,
+        map,
+      });
+      markers.value.push(marker);
+
+      updateCircle();
     };
 
-    const location = props.shopInfo.location;
     const mapLoaded = () => {
       setTimeout(() => {
-        if (typeof google !== "undefined") {
-          center.value = new google.maps.LatLng(location.lat, location.lng);
+        if (!mapContainer.value) return;
+
+        if (!map) {
+          const loc = props.shopInfo.location;
+          map = new google.maps.Map(mapContainer.value, {
+            center: { lat: loc.lat, lng: loc.lng },
+            zoom: 15,
+            fullscreenControl: false,
+            mapId: GMAPId || undefined,
+          });
         }
-        if (props.shopInfo && props.shopInfo.location) {
-          setCurrentLocation(props.shopInfo.location);
+        if (typeof google !== "undefined") {
+          const loc = props.shopInfo.location;
+          center.value = new google.maps.LatLng(loc.lat, loc.lng);
+          setCurrentLocation(loc);
         }
       }, 100);
     };
 
+    onMounted(() => {
+      mapLoaded();
+    });
+
+    const location = props.shopInfo.location;
     existLocation.value = Object.keys(location).length === 2;
     if (!existLocation.value) {
-      return {
-        notFound: false,
-        existLocation,
-      };
+      return { notFound: false, existLocation };
     }
+
     enableDelivery.value = props.shopInfo.enableDelivery || false;
     deliveryOnlyStore.value = props.shopInfo.deliveryOnlyStore || false;
     deliveryMinimumCookTime.value =
@@ -418,9 +411,6 @@ export default defineComponent({
         notFound.value = false;
       },
     );
-    onMounted(() => {
-      mapLoaded();
-    });
 
     const saveDeliveryArea = async () => {
       await updateDoc(doc(db, `restaurants/${restaurantId}`), {
@@ -472,7 +462,7 @@ export default defineComponent({
       updateCircle,
       saveDeliveryArea,
 
-      gMap,
+      mapContainer,
     };
   },
 });

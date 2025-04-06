@@ -1,7 +1,7 @@
 import { ownPlateConfig } from "@/config/project";
 
 export const getStripeInstance = (stripeAccount: string) => {
-  // @ts-ignore
+  // @ts-expect-error import from index.html
   return Stripe(ownPlateConfig.stripe.apiKey, {
     stripeAccount,
   });

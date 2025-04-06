@@ -264,6 +264,11 @@ const data = {
     businessHourOption: "Another Hours (optional)",
     copyPreviousDay: "Copy Previous Day",
     copySunDay: "Copy Sunday",
+    lastOrderTime: {
+      title: "Last Order Time",
+      notes1: "Configure this if you would like to close orders prior to the \"final order time,\" considering the \"business closing time\" and \"order preparation time.\"",
+      notes2: "If this is not configured, the time will be determined by considering the \"business closing time\" and \"order preparation time.\"",
+    },
     draftDescription: "Save as Draft.",
     publishDescription: "Save and publish your restaurant.",
     draftWarning: "You can publish this by correcting the red frame.",
@@ -278,7 +283,7 @@ const data = {
       "You can manage your own delivery. By setting the delivery area etc., the customer can choose takeout or delivery when ordering. (Don't forget to save if you have changed the store settings)",
     deliveryConfigLink: "To delivery settings",
     printerConfigTitle: "Printer settings",
-    elablePrinter: "Enable print",
+    enablePrinter: "Enable print",
     printerDescription:
       "You can print your order information using a printer made by Star Seiki connected via Bluetooth.",
     printerDescription2:
@@ -349,8 +354,6 @@ const data = {
     deleteAllPhotos: "Delete all photos",
     exclusionDateTime: "Exclusion date/time",
     lunchDinner: "Lunch/Dinner",
-    lunch: "Lunch",
-    dinner: "Dinner",
     itemOptions: "Item options",
     itemOptionsNote:
       'For altenatives, use comma to separate them (e.g., "Chicken, Pork, Tofu"). You may add a price to an option with (+N), where N is the price.',

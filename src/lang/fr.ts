@@ -264,6 +264,11 @@ const data = {
     businessHourOption: "Autres heures. (facultatif)",
     copyPreviousDay: "Copier le jour précédent",
     copySunDay: "Copier le jour précédent",
+    lastOrderTime: {
+      title: "Heure limite de commande",
+      notes1: "Configurez cette option si vous souhaitez clôturer les commandes avant « l'heure de commande finale », en tenant compte de « l'heure de fermeture de l'entreprise » et du « temps de préparation de la commande ».",
+      notes2: "Si cette option n'est pas configurée, l'heure sera déterminée en tenant compte de « l'heure de fermeture de l'entreprise » et du « temps de préparation de la commande ».",
+    },
     draftDescription: "Enregistrer comme brouillon.",
     publishDescription: "Enregistrez et publiez votre restaurant.",
     draftWarning: "Vous pouvez publier ceci en corrigeant le cadre rouge.",
@@ -278,7 +283,7 @@ const data = {
       "You can manage your own delivery. By setting the delivery area etc., the customer can choose takeout or delivery when ordering. (Don't forget to save if you have changed the store settings)",
     deliveryConfigLink: "To delivery settings",
     printerConfigTitle: "Printer settings",
-    elablePrinter: "Enable print",
+    enablePrinter: "Activer l'impression",
     printerDescription:
       "You can print your order information using a printer made by Star Seiki connected via Bluetooth.",
     printerDescription2:
@@ -452,6 +457,9 @@ const data = {
     delivery: "Delivery",
     takeoutDescription: "Pick up at shop",
     deliveryDescription: "Delivery to home or work",
+    lunchOrDinner: "Déjeuner/Dîner",
+    lunch: "Déjeuner",
+    dinner: "Dîner",
     viewMore: "Voir plus",
     viewLess: "Proche",
     productCategory: "Catégories de produits",

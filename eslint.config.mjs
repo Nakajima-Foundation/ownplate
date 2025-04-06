@@ -26,7 +26,11 @@ export default [
         extraFileExtensions: ['.vue'],
         sourceType: 'module',
       },
-      globals: globals.browser,
+      globals: {
+        ...globals.browser,
+        google: 'readonly',
+        Stripe: 'readonly',
+      },
     },
     rules: {
       //indent: ["error", 2],
@@ -53,12 +57,13 @@ export default [
       "vue/require-prop-types": "error",
       "vue/no-mutating-props": "off", // warn
       "vue/no-undef-properties": "error",
-      "no-undef": "warn", // warn TODO
+      "no-undef": "error",
 
       "no-irregular-whitespace": "off", 
-      "@typescript-eslint/ban-ts-comment": "warn",  // TODO
+      "@typescript-eslint/ban-ts-comment": "error",
+      "@typescript-eslint/no-shadow": "error",
       "vue/attribute-hyphenation": "off",
-      "vue/v-on-event-hyphenation": "warn",
+      "vue/v-on-event-hyphenation": "off",
       "accessor-pairs": "error",
       "no-duplicate-imports": "error",
       
@@ -69,7 +74,6 @@ export default [
 
       "vue/require-explicit-emits": "error",
       "vue/no-unused-properties": "error",
-      "@typescript-eslint/no-shadow": "warn",
       "no-eq-null": "error",
       "no-use-before-define": "error",
       "no-empty-function": "error",

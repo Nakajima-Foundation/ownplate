@@ -184,20 +184,16 @@
             </div>
 
             <div class="mt-4 border-red-700">
-              <GMapMap
+              aa
+              <div
                 ref="gMap"
-                :center="{ lat: 44.933076, lng: 15.629058 }"
-                :options="{ fullscreenControl: false }"
-                :zoom="18"
                 style="
                   width: 100%;
                   height: 280px;
                   position: relative;
                   overflow: hidden;
                 "
-                @loaded="setDefaultLocation"
-                @click="gmapClick"
-              ></GMapMap>
+              />
             </div>
           </div>
         </div>
@@ -734,7 +730,7 @@
             <div class="rounded-lg bg-black bg-opacity-5 p-4">
               <o-checkbox v-model="editShopInfo.enablePrinter">
                 <div class="text-sm font-bold">
-                  {{ $t("editRestaurant.elablePrinter") }}
+                  {{ $t("editRestaurant.enablePrinter") }}
                 </div>
               </o-checkbox>
               <div class="pt-2 text-xs">
@@ -903,7 +899,7 @@
                         class="flex-item my-auto ml-2 font-bold"
                         v-if="editShopInfo.enableLunchDinner"
                       >
-                        :ランチ
+                        :{{ $t("shopInfo.lunch") }}
                       </div>
                     </div>
                   </div>
@@ -927,7 +923,7 @@
                         class="flex-item my-auto ml-2 font-bold"
                         v-if="editShopInfo.enableLunchDinner"
                       >
-                        :ディナー
+                        :{{ $t("shopInfo.dinner") }}
                       </div>
                     </div>
                   </div>
@@ -937,12 +933,12 @@
 
             <!-- Last order time -->
             <div class="mt-4">
-              <div class="pb-2 text-sm font-bold">最終注文時間</div>
+              <div class="pb-2 text-sm font-bold">{{ $t("editRestaurant.lastOrderTime.title") }}</div>
               <div class="text-xs">
-                「営業終了時間」と「受け渡し準備時間」を考慮した「最終注文可能な時間」よりも前に、注文を締め切る場合にはこちらを設定してください。
+                {{ $t("editRestaurant.lastOrderTime.notes1") }}
               </div>
               <div class="text-xs">
-                未設定の場合は「営業終了時間」と「受け渡し準備時間」を考慮した時間となります。
+                {{ $t("editRestaurant.lastOrderTime.notes2") }}
               </div>
               <div class="mt-2">
                 <hour-input
@@ -1128,7 +1124,7 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, updateDoc } from "firebase/firestore";
 
 import { google_geocode } from "@/lib/google/api";
-import { ownPlateConfig } from "@/config/project";
+import { ownPlateConfig, GMAPId } from "@/config/project";
 
 import NotFound from "@/components/NotFound.vue";
 import PhoneEntry from "@/components/PhoneEntry.vue";
@@ -1171,6 +1167,7 @@ import {
   minimumCookTimeChoices,
   personalInfoSaveMethods,
   paymentMethods,
+  GOOGLE_MAP_DEFAULT_CENTER,
 } from "@/config/constant";
 
 import { useStore } from "vuex";
@@ -1216,7 +1213,7 @@ export default defineComponent({
 
     const notFound = ref<boolean | null>(null);
     const gMap = ref();
-    const mapObj = ref();
+    let mapObj: google.maps.Map | null = null;
 
     // internal ref;
     const maplocation = ref({});
@@ -1319,14 +1316,13 @@ export default defineComponent({
     ) => {
       if (location && location.lat && location.lng) {
         if (move) {
-          mapObj.value.setCenter(location);
+          mapObj.setCenter(location);
         }
         removeAllMarker();
         markers.push(
-          new google.maps.Marker({
+          new google.maps.marker.AdvancedMarkerElement({
             position: new google.maps.LatLng(location.lat, location.lng),
-            title: "hello",
-            map: mapObj.value,
+            map: mapObj,
           }),
         );
         maplocation.value = location;
@@ -1402,18 +1398,7 @@ export default defineComponent({
       editShopInfo.countryCode = payload.countryCode;
       errorsPhone.value = payload.errors;
     };
-    const setDefaultLocation = async () => {
-      // gMap.value &&
-      // gMap.value.$mapPromise &&
-      mapObj.value = await gMap.value.$mapPromise;
 
-      if (editShopInfo && editShopInfo.location) {
-        setCurrentLocation(editShopInfo.location);
-      }
-    };
-    onMounted(() => {
-      setDefaultLocation();
-    });
     const gmapClick = (arg: any) => {
       setCurrentLocation(
         { lat: arg.latLng.lat(), lng: arg.latLng.lng() },
@@ -1422,6 +1407,28 @@ export default defineComponent({
       // place_id.value = null;
       setLocation();
     };
+    const setDefaultLocation = () => {
+      if (typeof google === "undefined" || !gMap.value) return;
+
+      mapObj = new google.maps.Map(gMap.value, {
+        center: GOOGLE_MAP_DEFAULT_CENTER,
+        zoom: 18,
+        mapId: GMAPId || undefined,
+        fullscreenControl: false,
+      });
+
+      mapObj.addListener("click", (e: google.maps.MapMouseEvent) => {
+        gmapClick(e);
+      });
+
+      if (editShopInfo && editShopInfo.location) {
+        setCurrentLocation(editShopInfo.location);
+      }
+    };
+
+    onMounted(() => {
+      setDefaultLocation();
+    });
     const copyRestaurantFunc = async () => {
       try {
         const id = await copyRestaurant(
@@ -1586,4 +1593,3 @@ export default defineComponent({
   },
 });
 </script>
-B

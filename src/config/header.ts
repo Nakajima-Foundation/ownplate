@@ -1,4 +1,4 @@
-import { ownPlateConfig, gtmID } from "@/config/project";
+import { ownPlateConfig, gtmID, GAPIKey } from "@/config/project";
 
 const hostName = ownPlateConfig.hostName;
 
@@ -60,6 +60,11 @@ const script = [
     hid: "gtmHead",
     innerHTML: gtmHeadTag,
   },
+  {
+    src: `https://maps.googleapis.com/maps/api/js?key=${GAPIKey}&language=ja&libraries=marker`,
+    async: true,
+    defer: true,
+  }
 ];
 
 const noscript = [

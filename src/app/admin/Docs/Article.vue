@@ -46,8 +46,8 @@ const articles: { [key: string]: string } = {
   article231019_lunch_n_dinner: lunch_n_dinner,
   article240725_lead_time_management: lead_time,
   article240727_configurations_of_dishes: configurations_of_dishes,
-	article240817_stripe_payouts: stripe_payouts,
-	article250315_discounts: discounts,	
+  article240817_stripe_payouts: stripe_payouts,
+  article250315_discounts: discounts,
 };
 
 export default defineComponent({
@@ -58,7 +58,7 @@ export default defineComponent({
     lunch_n_dinner,
     lead_time,
     configurations_of_dishes,
-		stripe_payouts,
+    stripe_payouts,
     discounts,
   },
   setup() {

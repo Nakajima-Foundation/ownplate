@@ -697,6 +697,6 @@ export const timeList2 = [
 ];
 
 export const GOOGLE_MAP_DEFAULT_CENTER = {
-  lat: 44.933076,
-  lng: 15.629058
+  lat: 35.6762,
+  lng: 139.6503
 };
