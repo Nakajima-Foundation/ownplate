@@ -21,8 +21,8 @@
   "dependencies": {
     "@chenfengyuan/vue-qrcode": "^2.0.0",
     "@line/liff": "^2.25.1",
-    "@oruga-ui/oruga-next": "^0.9.3",
-    "@oruga-ui/theme-bulma": "^0.5.3",
+    "@oruga-ui/oruga-next": "^0.10.4",
+    "@oruga-ui/theme-bulma": "^0.6.1",
     "@sentry/tracing": "^7.120.3",
     "@sentry/vue": "^8.52.1",
     "@unhead/vue": "^1.11.18",
