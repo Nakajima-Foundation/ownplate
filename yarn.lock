@@ -1515,17 +1515,17 @@
   resolved "https://registry.yarnpkg.com/@opentelemetry/api/-/api-1.9.0.tgz#d03eba68273dc0f7509e2a3d5cba21eae10379fe"
   integrity sha512-3giAOQvZiH5F9bMlMiv8+GSPMeqg0dbaeo58/0SlA9sxSqZhnUtxzX9/2FzyhS9sWQf5S0GJE0AKBrFqjpeYcg==
 
-"@oruga-ui/oruga-next@^0.9.3":
-  version "0.9.3"
-  resolved "https://registry.yarnpkg.com/@oruga-ui/oruga-next/-/oruga-next-0.9.3.tgz#3d537b680017366c19e2bb05ebc0cbe7cd15732c"
-  integrity sha512-XTO8tz9h62j+MQzW1oIsezxlToSMjOKvpSzzqpuxsDYa0x1MioESiBuwRcQVw8RfnKxmRLIPGyJCmWBJgICvWg==
+"@oruga-ui/oruga-next@^0.10.4":
+  version "0.10.4"
+  resolved "https://registry.yarnpkg.com/@oruga-ui/oruga-next/-/oruga-next-0.10.4.tgz#dd949fb9611a9b43f591fdebe02826fde94faaa6"
+  integrity sha512-g9wXuBmfB0mWLNBHw4QB6x22JHlt4flMQdf2AMEt/IunDQqC+g33Yv8tuzGgqyvVgMJQ2TO9TEDuyMg22tQfsQ==
   dependencies:
-    vue-component-type-helpers "^2.1.10"
+    vue-component-type-helpers "^2.2.8"
 
-"@oruga-ui/theme-bulma@^0.5.3":
-  version "0.5.3"
-  resolved "https://registry.yarnpkg.com/@oruga-ui/theme-bulma/-/theme-bulma-0.5.3.tgz#53b42f4a2e80aa406306eba69d7d48844629d9a7"
-  integrity sha512-TbqmJlEvO/qEJup6LQV3gvf8z3e96EKB3A+BF1PO2029c5+20uU0AOxWl3kB7rGa+/0b1KTE++qsNICjFv909A==
+"@oruga-ui/theme-bulma@^0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@oruga-ui/theme-bulma/-/theme-bulma-0.6.1.tgz#5c1e13158aa6f7e64ab78b3d854293e647b4f0dd"
+  integrity sha512-YhYnl2DUKUe/axTksZKY5uZ4/BaualHt8p2Cl7G1IxDee8wZuC96ExGxk1a7mbULwYnL9aUKeAvzq5enc0uMcA==
   dependencies:
     bulma "1.0.3"
 
@@ -5413,10 +5413,10 @@ vue-clipboard3@^2.0.0:
   dependencies:
     clipboard "^2.0.6"
 
-vue-component-type-helpers@^2.1.10:
-  version "2.1.10"
-  resolved "https://registry.yarnpkg.com/vue-component-type-helpers/-/vue-component-type-helpers-2.1.10.tgz#9f80c56a141e85ec577cf4f0b6965a61b6f1e1ef"
-  integrity sha512-lfgdSLQKrUmADiSV6PbBvYgQ33KF3Ztv6gP85MfGaGaSGMTXORVaHT1EHfsqCgzRNBstPKYDmvAV9Do5CmJ07A==
+vue-component-type-helpers@^2.2.8:
+  version "2.2.8"
+  resolved "https://registry.yarnpkg.com/vue-component-type-helpers/-/vue-component-type-helpers-2.2.8.tgz#66d25e4405a4bcc06a22aa4c01e35141343da580"
+  integrity sha512-4bjIsC284coDO9om4HPA62M7wfsTvcmZyzdfR0aUlFXqq4tXxM1APyXpNVxPC8QazKw9OhmZNHBVDA6ODaZsrA==
 
 vue-eslint-parser@^10.1.1:
   version "10.1.1"
