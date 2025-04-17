@@ -1,19 +1,24 @@
-@use "@oruga-ui/theme-bulma/dist/scss/components/utils/_all.scss";
-@use "@oruga-ui/theme-bulma/dist/scss/bulma.scss";
+// @use "@oruga-ui/theme-bulma/dist/scss/oruga-theme.scss";
 
 // @forward "components/utils/all";
 // @forward "bulma/sass";
 
-
 //@use "@oruga-ui/theme-bulma/dist/scss/bulma.scss";
 // @use "bulma/sass/utilities";
-@use "bulma/sass/themes";
+// @use "bulma/sass/themes";
 // @use "bulma/sass/base";
-@use "bulma/sass/elements";
-@use "bulma/sass/form/select";
+// @use "bulma/sass/elements";
+// @use "bulma/sass/form/select";
 // @use "bulma/sass/components";
 // @use "bulma/sass/grid";
 // @use "bulma/sass/layout";
 // @use "bulma/sass/base/skeleton";
 // @use "bulma/sass/helpers";
-@use "bulma/sass/components/modal";
+// @use "bulma/sass/components/modal";
+
+@forward "bulma/sass/components/modal";
+@forward "bulma/sass/elements";
+@forward "bulma/sass/form";
+@forward "bulma/sass/themes";
+
+@forward "@oruga-ui/theme-bulma/dist/scss/components/sidebar";
