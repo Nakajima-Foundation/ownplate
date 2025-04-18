@@ -30,8 +30,8 @@
           class="inline-flex items-center justify-center"
           style="color: #00acee"
         >
-          <i class="fab fa-twitter mr-2"></i>
-          <div class="text-sm font-bold">Twitter</div>
+          <i class="fab fa-x-twitter mr-2"></i>
+          <div class="text-sm font-bold">Post</div>
         </a>
       </ShareNetwork>
     </div>

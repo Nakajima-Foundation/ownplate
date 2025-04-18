@@ -52,14 +52,14 @@
         </a>
       </div>
 
-      <!-- Twitter -->
+      <!-- X -->
       <div class="inline-block px-1 pb-2" v-if="isJapan">
-        <a href="https://twitter.com/omochikaericom" target="_blank">
+        <a href="https://x.com/omochikaericom" target="_blank">
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-white bg-opacity-80 px-4"
           >
-            <i class="fab fa-twitter mr-2 text-lg text-op-teal"></i>
-            <span class="text-sm font-bold text-op-teal"> Twitter </span>
+            <i class="fab fa-x-twitter mr-2 text-lg text-op-teal"></i>
+            <span class="text-sm font-bold text-op-teal">Post</span>
           </div>
         </a>
       </div>
