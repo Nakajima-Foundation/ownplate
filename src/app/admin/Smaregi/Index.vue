@@ -88,7 +88,7 @@
           <div class="mt-4">
             <button @click="saveShops" :disabled="isDuplicateError">
               <div
-                class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow min-w-32"
+                class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow-sm min-w-32"
               >
                 <span class="text-base font-bold text-white">{{
                   $t("editCommon.save")
@@ -126,7 +126,7 @@
           <div class="mt-4">
             <button @click="isEdit = true">
               <div
-                class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow min-w-32"
+                class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow-sm min-w-32"
               >
                 <span class="text-base font-bold text-white">{{
                   $t("editCommon.edit")

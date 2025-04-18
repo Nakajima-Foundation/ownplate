@@ -4,12 +4,12 @@
     <div
       v-if="!order.restaurantId"
       @click="$emit('selected', order)"
-      class="cursor-pointer rounded-lg bg-white shadow"
+      class="cursor-pointer rounded-lg bg-white shadow-sm"
     >
       <!-- Order Status -->
       <div class="p-2">
         <div
-          class="rounded p-1 text-center text-xs font-bold"
+          class="rounded-sm p-1 text-center text-xs font-bold"
           :class="statusKey"
         >
           {{ $t("order.status." + convOrderStateForText(statusKey, order)) }}
@@ -115,12 +115,12 @@
     <div
       v-else-if="restaurant"
       @click="$emit('selected', order)"
-      class="cursor-pointer rounded-lg bg-white shadow"
+      class="cursor-pointer rounded-lg bg-white shadow-sm"
     >
       <!-- Order Status -->
       <div class="p-2">
         <div
-          class="rounded p-1 text-center text-xs font-bold"
+          class="rounded-sm p-1 text-center text-xs font-bold"
           :class="statusKey"
         >
           {{ $t("order.status." + convOrderStateForText(statusKey, order)) }}
@@ -190,11 +190,11 @@
         </div>
       </div>
     </div>
-    <div v-else class="rounded-lg bg-white shadow">
+    <div v-else class="rounded-lg bg-white shadow-sm">
       <!-- Order Status -->
       <div class="p-2">
         <div
-          class="rounded p-1 text-center text-xs font-bold"
+          class="rounded-sm p-1 text-center text-xs font-bold"
           :class="statusKey"
         >
           {{ $t("order.status." + convOrderStateForText(statusKey, order)) }}

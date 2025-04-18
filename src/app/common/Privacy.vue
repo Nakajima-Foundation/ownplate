@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-auto max-w-screen-md px-6 text-base">
+  <div class="mx-auto max-w-(--breakpoint-md) px-6 text-base">
     <!-- Title -->
     <div class="mt-12 text-xl font-bold text-black text-opacity-40">
       おもちかえり.com プライバシーポリシー

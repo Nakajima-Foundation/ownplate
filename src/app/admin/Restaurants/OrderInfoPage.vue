@@ -21,7 +21,7 @@
         v-if="orderInfo.status === order_status.transaction_hide"
         class="mx-6 mt-2"
       >
-        <div class="rounded-lg bg-white p-4 shadow">
+        <div class="rounded-lg bg-white p-4 shadow-sm">
           <div>{{ $t("order.status.transaction_hide") }}</div>
         </div>
       </div>
@@ -29,7 +29,7 @@
       <div v-else class="mx-6 mt-2 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
         <!-- Left -->
         <div>
-          <div class="rounded-lg bg-white p-4 shadow">
+          <div class="rounded-lg bg-white p-4 shadow-sm">
             <!-- Order ID, Total, Payment, and Tips -->
             <div class="text-center">
               <div class="inline-flex items-center justify-center">
@@ -217,7 +217,7 @@
             </div>
           </div>
 
-          <div class="mt-2 rounded-lg bg-white p-4 shadow">
+          <div class="mt-2 rounded-lg bg-white p-4 shadow-sm">
             <!-- Phone Number -->
             <div class="mt-2 text-center">
               <div class="text-xs font-bold" v-if="orderInfo.phoneNumber">
@@ -315,7 +315,7 @@
 
           <!-- Print for debug-->
           <div
-            class="mt-2 rounded-lg bg-white p-4 text-center shadow"
+            class="mt-2 rounded-lg bg-white p-4 text-center shadow-sm"
             v-if="isDev"
           >
             <div class="mt-2">
@@ -331,7 +331,7 @@
 
           <!-- Print for debug-->
           <div
-            class="mt-2 rounded-lg bg-white p-4 text-center shadow"
+            class="mt-2 rounded-lg bg-white p-4 text-center shadow-sm"
             v-if="
               orderInfo.status !== order_status.order_placed &&
               shopInfo.enablePrinter
@@ -348,7 +348,7 @@
             </div>
           </div>
 
-          <div class="mt-2 rounded-lg bg-white p-4 shadow">
+          <div class="mt-2 rounded-lg bg-white p-4 shadow-sm">
             <!-- Order Status -->
             <div>
               <div
@@ -429,7 +429,7 @@
         <div class="mt-4 lg:mt-0">
           <div class="grid grid-cols-1 space-y-4">
             <!-- Message from customer -->
-            <div v-if="hasMemo" class="rounded-lg bg-white p-4 shadow">
+            <div v-if="hasMemo" class="rounded-lg bg-white p-4 shadow-sm">
               <div class="text-xs font-bold text-black text-opacity-60">
                 {{ $t("admin.order.messageFromCustomer") }}
               </div>
@@ -451,7 +451,7 @@
             <!-- Order Changed -->
             <div v-if="orderInfo.orderUpdatedAt">
               <div
-                class="rounded-lg bg-white p-4 text-center shadow"
+                class="rounded-lg bg-white p-4 text-center shadow-sm"
                 v-if="orderInfo.orderUpdatedAt"
               >
                 <div>{{ $t("admin.order.changeOrderDetail") }}</div>
@@ -462,7 +462,7 @@
 
             <!-- Order Change -->
             <div
-              class="rounded-lg bg-white p-4 text-center shadow"
+              class="rounded-lg bg-white p-4 text-center shadow-sm"
               v-if="availableOrderChange"
             >
               <div>{{ $t("admin.order.changeOrderDetail") }}</div>

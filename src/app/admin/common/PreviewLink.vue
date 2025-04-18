@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-shrink-0">
+  <div class="shrink-0">
     <router-link :to="link">
       <div
         class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"

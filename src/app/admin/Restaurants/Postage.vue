@@ -49,7 +49,7 @@
         <div class="mt-4 text-center">
           <o-button @click="savePostage" class="b-reset-tw">
             <div
-              class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
+              class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow-sm"
               style="min-width: 8rem"
             >
               <span class="text-base font-bold text-white">{{

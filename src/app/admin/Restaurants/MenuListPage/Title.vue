@@ -41,7 +41,7 @@
     </div>
 
     <div
-      class="mt-2 text-right lg:mt-0 lg:ml-4 lg:flex-shrink-0"
+      class="mt-2 text-right lg:mt-0 lg:ml-4 lg:shrink-0"
       v-if="isOwner"
     >
       <!-- Card Actions -->

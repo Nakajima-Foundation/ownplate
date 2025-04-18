@@ -3,7 +3,7 @@
     <div class="text-xl font-bold text-black text-opacity-30">
       {{ $t("order.paymentAndCancellation") }}
     </div>
-    <div class="mt-2 rounded-lg bg-white p-4 shadow">
+    <div class="mt-2 rounded-lg bg-white p-4 shadow-sm">
       <div>
         <div class="text-sm font-bold text-black text-opacity-30">
           {{ $t("transactionsAct.phone") }}

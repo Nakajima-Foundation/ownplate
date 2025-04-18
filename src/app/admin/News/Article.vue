@@ -30,7 +30,7 @@
       </div>
 
       <!-- Body -->
-      <div class="mx-auto mt-4 max-w-screen-md px-6 text-base">
+      <div class="mx-auto mt-4 max-w-(--breakpoint-md) px-6 text-base">
         <div class="text-xl font-bold text-black text-opacity-30">
           {{ news.title }}
         </div>

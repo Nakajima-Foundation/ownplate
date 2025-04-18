@@ -1,6 +1,6 @@
 <template>
   <button
-    class="inline-flex items-center justify-center rounded-full shadow"
+    class="inline-flex items-center justify-center rounded-full shadow-sm"
     :loading="isLoading"
     :class="isLoading || isDisabled ? 'bg-op-teal-disabled' : 'bg-op-teal'"
     :disabled="isLoading || isDisabled"

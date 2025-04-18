@@ -11,7 +11,7 @@
       <div class="mx-6 mt-4 lg:flex lg:items-center">
         <div class="flex-1"></div>
         <!-- Notifications -->
-        <div class="mt-4 flex-shrink-0 text-right lg:mt-0">
+        <div class="mt-4 shrink-0 text-right lg:mt-0">
           <notification-index :shopInfo="editShopInfo" />
         </div>
       </div>
@@ -156,7 +156,7 @@
             <div class="text-center">
               <a
                 @click="updateAndUpdateMap"
-                class="inline-flex h-12 items-center rounded-full bg-op-teal px-6 shadow"
+                class="inline-flex h-12 items-center rounded-full bg-op-teal px-6 shadow-sm"
                 ><div class="text-base font-bold text-white">
                   {{ $t("editRestaurant.searchMap") }}
                 </div></a
@@ -230,7 +230,7 @@
             <div
               class="flex"
               :class="{
-                'rounded border border-red-700 p-2':
+                'rounded-sm border border-red-700 p-2':
                   errors['restProfilePhoto'].length !== 0,
               }"
             >
@@ -276,7 +276,7 @@
             <div
               class="flex"
               :class="{
-                'rounded border border-red-700 p-2':
+                'rounded-sm border border-red-700 p-2':
                   errors['restCoverPhoto'].length !== 0,
               }"
             >
@@ -284,7 +284,7 @@
               <div v-if="restCoverPhoto">
                 <div>
                   <img
-                    class="rounded object-cover"
+                    class="rounded-sm object-cover"
                     :src="restCoverPhoto"
                     style="width: 272px; height: 128px"
                   />
@@ -996,7 +996,7 @@
                     <template v-if="day.getTime() >= now">
                       <div
                         :key="key"
-                        class="flex items-center rounded bg-white bg-opacity-50 px-2"
+                        class="flex items-center rounded-sm bg-white bg-opacity-50 px-2"
                       >
                         <div class="flex-1 p-2">
                           {{ moment(day).format("YYYY/MM/DD") }}

@@ -5,7 +5,7 @@
     </div>
 
     <div
-      class="rounded-lg bg-white p-4 shadow"
+      class="rounded-lg bg-white p-4 shadow-sm"
       :class="unsetWarning ? 'border-2 border-solid border-red-700' : ''"
     >
       <!-- Warning Payment -->
@@ -38,7 +38,7 @@
           <div class="mt-2 text-center">
             <a
               @click="handleLinkStripe"
-              class="cursor-pointer inline-flex h-12 items-center rounded-full bg-op-teal px-8 shadow"
+              class="cursor-pointer inline-flex h-12 items-center rounded-full bg-op-teal px-8 shadow-sm"
               ><span class="text-base font-bold text-white">{{
                 $t("admin.payments.connectStripe")
               }}</span></a

@@ -15,7 +15,7 @@
       </div>
 
       <!-- Card -->
-      <div class="mt-2 rounded-lg bg-white p-6 shadow">
+      <div class="mt-2 rounded-lg bg-white p-6 shadow-sm">
         <div class="text-sm font-bold">
           {{ $t("order.ec.zip") }}
         </div>

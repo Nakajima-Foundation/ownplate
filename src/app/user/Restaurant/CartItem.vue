@@ -34,7 +34,7 @@
       >
         <img
           :src="image"
-          class="h-full w-full rounded object-cover lg:h-full lg:w-full"
+          class="h-full w-full rounded-sm object-cover lg:h-full lg:w-full"
           @error="smallImageErrorHandler"
         />
       </div>

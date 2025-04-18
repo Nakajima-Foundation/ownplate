@@ -1,6 +1,6 @@
 <template>
   <div class="mx-6 mt-4 lg:mx-auto lg:max-w-2xl">
-    <div class="mt-4 rounded-lg bg-white p-6 shadow">
+    <div class="mt-4 rounded-lg bg-white p-6 shadow-sm">
       <template v-if="isExpired === null"> </template>
       <template v-else-if="isExpired">
         <div class="mt-4 text-center">

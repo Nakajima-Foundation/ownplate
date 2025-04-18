@@ -13,7 +13,7 @@
       <div class="mt-8 sm:mt-0 md:ml-16 sm:ml-8">
         <router-link to="/r/area/all">
           <div
-            class="inline-flex h-16 items-center rounded-full bg-white px-12 sm:px-16 shadow hover:bg-opacity-90"
+            class="inline-flex h-16 items-center rounded-full bg-white px-12 sm:px-16 shadow-sm hover:bg-opacity-90"
           >
             <span class="text-xl font-bold text-op-teal">
               {{ $t("lp.searchRestaurant") }}

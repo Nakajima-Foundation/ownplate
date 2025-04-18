@@ -15,9 +15,9 @@
     </div>
 
     <!-- Body -->
-    <div class="mx-auto mt-2 max-w-screen-md px-6 text-base">
+    <div class="mx-auto mt-2 max-w-(--breakpoint-md) px-6 text-base">
       <div class="mt-4" v-for="(news, key) in newsList" :key="key">
-        <div class="rounded-lg bg-white p-4 shadow">
+        <div class="rounded-lg bg-white p-4 shadow-sm">
           <div class="mt-2">
             <div class="article-list mt-2" v-html="md.render(news.markdown)" />
           </div>

@@ -29,8 +29,8 @@
       :key="k"
       :class="
         !promotion.currentOpen
-          ? 'bg-opacity-10 bg-black rounded-lg p-4 shadow mb-2'
-          : 'rounded-lg bg-white p-4 shadow mb-2'
+          ? 'bg-opacity-10 bg-black rounded-lg p-4 shadow-sm mb-2'
+          : 'rounded-lg bg-white p-4 shadow-sm mb-2'
       "
     >
       <div

@@ -2,7 +2,7 @@
   <div>
     <!-- Item Card -->
     <div
-      class="rounded-lg bg-white shadow"
+      class="rounded-lg bg-white shadow-sm"
       :class="totalQuantity > 0 ? 'border-2 border-op-teal' : ''"
     >
       <div @click="toggleMenuFlag()" class="flow-root cursor-pointer">
@@ -12,7 +12,7 @@
             <img
               @click.stop="openImage()"
               :src="smallimage"
-              class="h-36 w-36 rounded object-cover"
+              class="h-36 w-36 rounded-sm object-cover"
               @error="smallImageErrorHandler"
             />
           </div>
@@ -134,7 +134,7 @@
               <img
                 @click.stop="openImage()"
                 :src="smallimage"
-                class="h-28 w-28 rounded object-cover sm:h-40 sm:w-40"
+                class="h-28 w-28 rounded-sm object-cover sm:h-40 sm:w-40"
                 @error="smallImageErrorHandler"
               />
             </div>
@@ -142,7 +142,7 @@
               <img
                 @click.stop="openImage()"
                 :src="smallimage"
-                class="h-28 w-28 rounded object-cover sm:h-40 sm:w-40"
+                class="h-28 w-28 rounded-sm object-cover sm:h-40 sm:w-40"
                 @error="smallImageErrorHandler"
               />
             </div>
@@ -150,7 +150,7 @@
               <img
                 @click.stop="openImage()"
                 :src="smallimage"
-                class="h-28 w-28 rounded object-cover sm:h-40 sm:w-40"
+                class="h-28 w-28 rounded-sm object-cover sm:h-40 sm:w-40"
                 @error="smallImageErrorHandler"
               />
             </div>
@@ -158,7 +158,7 @@
               <img
                 @click.stop="openImage()"
                 :src="smallimage"
-                class="h-28 w-28 rounded object-cover sm:h-40 sm:w-40"
+                class="h-28 w-28 rounded-sm object-cover sm:h-40 sm:w-40"
                 @error="smallImageErrorHandler"
               />
             </div>
@@ -166,7 +166,7 @@
               <img
                 @click.stop="openImage()"
                 :src="smallimage"
-                class="h-28 w-28 rounded object-cover sm:h-40 sm:w-40"
+                class="h-28 w-28 rounded-sm object-cover sm:h-40 sm:w-40"
                 @error="smallImageErrorHandler"
               />
             </div>
@@ -339,27 +339,27 @@
           <div class="mt-4 flex justify-center space-x-4">
             <img
               :src="image"
-              class="h-12 w-12 rounded object-cover shadow-lg"
+              class="h-12 w-12 rounded-sm object-cover shadow-lg"
               @error="imageErrorHandler"
             />
             <img
               :src="image"
-              class="h-12 w-12 rounded object-cover shadow-lg"
+              class="h-12 w-12 rounded-sm object-cover shadow-lg"
               @error="imageErrorHandler"
             />
             <img
               :src="image"
-              class="h-12 w-12 rounded object-cover shadow-lg"
+              class="h-12 w-12 rounded-sm object-cover shadow-lg"
               @error="imageErrorHandler"
             />
             <img
               :src="image"
-              class="h-12 w-12 rounded object-cover shadow-lg"
+              class="h-12 w-12 rounded-sm object-cover shadow-lg"
               @error="imageErrorHandler"
             />
             <img
               :src="image"
-              class="h-12 w-12 rounded object-cover shadow-lg"
+              class="h-12 w-12 rounded-sm object-cover shadow-lg"
               @error="imageErrorHandler"
             />
           </div>

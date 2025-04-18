@@ -1,6 +1,6 @@
 <template>
   <div class="mx-6 mt-2 lg:mx-auto lg:max-w-2xl">
-    <div class="mt-4 rounded-lg bg-white p-6 shadow">
+    <div class="mt-4 rounded-lg bg-white p-6 shadow-sm">
       <form @submit.prevent="onSignup">
         <!-- Title -->
         <div v-if="partner">

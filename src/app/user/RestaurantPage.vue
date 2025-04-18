@@ -97,7 +97,7 @@
           </div>
           <div v-else>
             <div class="mx-6 mt-2 lg:mx-0" v-if="shopInfo.enableDelivery">
-              <div class="rounded-lg bg-white shadow">
+              <div class="rounded-lg bg-white shadow-sm">
                 <!-- delivery toggle-->
                 <Delivery
                   :shopInfo="shopInfo"
@@ -113,7 +113,7 @@
 
             <!-- Lunch/Dinner -->
             <div class="mx-6 mt-4 lg:mx-0" v-if="shopInfo.enableLunchDinner">
-              <div class="rounded-lg bg-white shadow">
+              <div class="rounded-lg bg-white shadow-sm">
                 <LunchDinner
                   :shopInfo="shopInfo"
                   v-model="lunchOrDinner"
@@ -167,7 +167,7 @@
           </div>
         </div>
         <div class="mx-6 mt-8" v-if="!isTransactionAct">
-          <div class="rounded-lg bg-white shadow">
+          <div class="rounded-lg bg-white shadow-sm">
             <router-link :to="pageBase + '/transactions-act'">
               <div
                 class="p-4 inline-flex items-center justify-center"
