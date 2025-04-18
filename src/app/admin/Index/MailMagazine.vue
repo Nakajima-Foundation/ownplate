@@ -5,7 +5,7 @@
       {{ $t("admin.mail.magazine.title") }}
     </div>
 
-    <div class="rounded-lg bg-white p-4 shadow">
+    <div class="rounded-lg bg-white p-4 shadow-sm">
       <div class="text-base text-black text-opacity-60">
         {{ $t("admin.mail.magazine.body") }}
       </div>

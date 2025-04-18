@@ -1,6 +1,6 @@
 <template>
   <div class="mx-6 mt-4 lg:mx-auto lg:max-w-2xl">
-    <div class="mt-4 rounded-lg bg-white p-6 shadow">
+    <div class="mt-4 rounded-lg bg-white p-6 shadow-sm">
       <form @submit.prevent="handleNext">
         <!-- Title -->
         <div class="text-xl font-bold text-black text-opacity-30">
@@ -42,7 +42,7 @@
           <t-button
             :isDisabled="Object.keys(errors).length > 0"
             @click="handleNext"
-            class="h-12 w-32 shadow font-bold text-white"
+            class="h-12 w-32 shadow-sm font-bold text-white"
           >
             {{ $t("button.next") }}
           </t-button>

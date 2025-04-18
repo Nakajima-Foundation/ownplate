@@ -4,7 +4,7 @@
     <div class="rounded-lg bg-green-600 bg-opacity-10 p-6">
       <div class="flex">
         <div>
-          <i class="material-icons mr-4 flex-shrink-0 text-4xl text-green-600"
+          <i class="material-icons mr-4 shrink-0 text-4xl text-green-600"
             >info</i
           >
         </div>
@@ -23,7 +23,7 @@
     </div>
 
     <!-- Sign In Card -->
-    <div class="mt-2 rounded-lg bg-white p-6 shadow">
+    <div class="mt-2 rounded-lg bg-white p-6 shadow-sm">
       <form @submit.prevent="onSignin">
         <div class="text-xl font-bold text-black text-opacity-30">
           {{ $t("admin.pleaseSignIn") }}
@@ -112,7 +112,7 @@
       <div class="mt-2">
         <router-link to="/admin/user/signup">
           <div
-            class="inline-flex h-16 items-center rounded-full bg-ownplate-yellow px-8 shadow hover:bg-opacity-80"
+            class="inline-flex h-16 items-center rounded-full bg-ownplate-yellow px-8 shadow-sm hover:bg-opacity-80"
           >
             <span class="text-xl font-bold text-black opacity-90">
               {{ $t("lp.signUpForFree") }}

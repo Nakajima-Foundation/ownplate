@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="!hideTable" class="pb-6">
-      <table class="w-full rounded-lg bg-white shadow">
+      <table class="w-full rounded-lg bg-white shadow-sm">
         <tr>
           <th
             v-for="(field, index) in fields"

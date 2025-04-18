@@ -5,7 +5,7 @@
       {{ $t("admin.thirdPartyService.title") }}
     </div>
 
-    <div class="rounded-lg bg-white p-4 shadow">
+    <div class="rounded-lg bg-white p-4 shadow-sm">
       <div class="text-center">
         <router-link
           to="/admin/smaregi/index"

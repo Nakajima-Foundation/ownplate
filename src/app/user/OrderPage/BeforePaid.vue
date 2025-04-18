@@ -94,7 +94,7 @@
           <!-- For EC and Delivery -->
           <div
             v-if="shopInfo.isEC || orderInfo.isDelivery"
-            class="mb-4 mt-2 rounded-lg bg-white p-4 shadow"
+            class="mb-4 mt-2 rounded-lg bg-white p-4 shadow-sm"
           >
             <ECCustomer
               ref="ecCustomerRef"
@@ -164,14 +164,14 @@
             <div
               class="mt-2"
               :class="
-                userMessageError ? 'rounded border-4 border-red-700 p-2' : ''
+                userMessageError ? 'rounded-sm border-4 border-red-700 p-2' : ''
               "
             >
               <div class="text-xl font-bold text-black text-opacity-30">
                 {{ $t("order.orderMessage") }}
               </div>
 
-              <div class="mt-2 rounded-lg bg-white p-4 shadow">
+              <div class="mt-2 rounded-lg bg-white p-4 shadow-sm">
                 <o-input
                   v-model="memo"
                   type="textarea"
@@ -198,14 +198,14 @@
             <div
               class="mt-2"
               :class="
-                userNameError ? 'rounded border-4 border-red-700 p-2' : ''
+                userNameError ? 'rounded-sm border-4 border-red-700 p-2' : ''
               "
             >
               <div class="text-xl font-bold text-black text-opacity-30">
                 {{ $t("order.requiredUserName") }}
               </div>
 
-              <div class="mt-2 rounded-lg bg-white p-4 shadow">
+              <div class="mt-2 rounded-lg bg-white p-4 shadow-sm">
                 <o-input
                   v-model="userName"
                   :placeholder="$t('order.enterUserName')"

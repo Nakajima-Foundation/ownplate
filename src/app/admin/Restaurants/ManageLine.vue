@@ -31,7 +31,7 @@
           >
             <!-- User Name -->
             <div
-              class="flex-1 cursor-pointer rounded-lg bg-white p-4 shadow"
+              class="flex-1 cursor-pointer rounded-lg bg-white p-4 shadow-sm"
               @click="handleToggle(lineUser)"
               :class="
                 lineUser.notify

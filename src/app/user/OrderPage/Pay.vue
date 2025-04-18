@@ -79,7 +79,7 @@
                   class="b-reset-tw"
                 >
                   <div
-                    class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal px-6 shadow"
+                    class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal px-6 shadow-sm"
                     style="min-width: 288px"
                   >
                     <ButtonLoading v-if="isPaying" />

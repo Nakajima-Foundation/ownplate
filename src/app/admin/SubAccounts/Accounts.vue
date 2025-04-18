@@ -20,7 +20,7 @@
       <div class="mt-2 text-base font-bold">
         {{ $t("admin.subAccounts.subaccountlist") }}
       </div>
-      <div class="w-full rounded-lg bg-white shadow">
+      <div class="w-full rounded-lg bg-white shadow-sm">
         <table>
           <tr>
             <th class="pt-2 pl-2">{{ $t("admin.subAccounts.name") }}</th>
@@ -60,7 +60,7 @@
             <td class="p-2">
               <button @click="deleteChild(child.id)">
                 <div
-                  class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow min-w-32"
+                  class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow-sm min-w-32"
                 >
                   <span class="text-base font-bold text-white">
                     {{ $t("admin.subAccounts.deleteSubaccount") }}
@@ -79,7 +79,7 @@
       <span class="text-base text-xl font-bold">
         {{ $t("admin.subAccounts.invite") }}
       </span>
-      <div class="mt-2 rounded-lg bg-white p-4 shadow">
+      <div class="mt-2 rounded-lg bg-white p-4 shadow-sm">
         <div>
           <span class="text-base font-bold">
             {{ $t("admin.subAccounts.name") }} :
@@ -108,7 +108,7 @@
         <div>
           <button @click="invite" :disabled="sending">
             <div
-              class="mt-4 inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow min-w-32"
+              class="mt-4 inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow-sm min-w-32"
             >
               <span class="text-base font-bold text-white">
                 {{

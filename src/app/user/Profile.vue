@@ -6,7 +6,7 @@
     </div>
 
     <!-- Card -->
-    <div class="mt-2 rounded-lg bg-white p-4 shadow">
+    <div class="mt-2 rounded-lg bg-white p-4 shadow-sm">
       <ProfileLoginStatus />
 
       <!-- Not Signed In -->
