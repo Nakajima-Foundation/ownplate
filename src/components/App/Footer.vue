@@ -31,7 +31,7 @@
               class="fab fa-x-twitter mr-2 text-lg text-white text-opacity-50"
             />
             <span class="text-sm font-bold text-white text-opacity-80">
-              Post
+              (Twitter)
             </span>
           </div>
         </a>
@@ -43,9 +43,6 @@
           <div
             class="inline-flex h-10 items-center justify-center rounded-full bg-white bg-opacity-10 px-4"
           >
-            <i class="material-icons mr-2 text-lg text-white text-opacity-50"
-              >mail_outline</i
-            >
             <span class="text-sm font-bold text-white text-opacity-80">
               Note
             </span>

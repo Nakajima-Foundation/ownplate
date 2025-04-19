@@ -31,7 +31,7 @@
           style="color: #00acee"
         >
           <i class="fab fa-x-twitter mr-2"></i>
-          <div class="text-sm font-bold">Post</div>
+          <div class="text-sm font-bold">(Twitter)</div>
         </a>
       </ShareNetwork>
     </div>
