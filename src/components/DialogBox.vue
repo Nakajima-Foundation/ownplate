@@ -9,7 +9,7 @@
         </div>
         <div v-else>
           <div class="text-center">
-            <i class="material-icons !text-5xl text-red-700">warning</i>
+            <i class="material-icons text-5xl! text-red-700">warning</i>
           </div>
 
           <!-- Error Message -->

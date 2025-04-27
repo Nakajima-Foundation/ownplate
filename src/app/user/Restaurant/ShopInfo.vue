@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded-lg bg-white shadow">
+  <div class="rounded-lg bg-white shadow-sm">
     <!-- Location -->
     <div v-if="hasLocation">
       <div>
@@ -156,7 +156,7 @@
           <div class="mt-1">
             <template v-for="(day, key) in days" :key="key">
               <div
-                class="flex rounded px-2 py-1 text-sm"
+                class="flex rounded-sm px-2 py-1 text-sm"
                 :class="
                   weekday == key % 7
                     ? isTodayTemporaryClosure

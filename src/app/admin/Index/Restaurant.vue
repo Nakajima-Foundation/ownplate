@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="mb-2 rounded-lg bg-white p-4 shadow">
+    <div class="mb-2 rounded-lg bg-white p-4 shadow-sm">
       <!-- Restaurant Name -->
       <div class="inline-flex items-center justify-center text-lg font-bold">
         <span>{{
@@ -16,7 +16,7 @@
 
       <!-- Restaurant Photo and Details -->
       <div class="mt-4 flex items-center justify-center space-x-4">
-        <div class="flex-shrink-0">
+        <div class="shrink-0">
           <img
             class="h-20 w-20 rounded-full object-cover"
             :src="
@@ -75,7 +75,7 @@
           "
         >
           <div
-            class="inline-flex h-16 w-full items-center justify-center rounded-full px-8 shadow"
+            class="inline-flex h-16 w-full items-center justify-center rounded-full px-8 shadow-sm"
             :class="numberOfOrders > 0 ? 'bg-yellow-500' : 'bg-op-teal'"
           >
             <span class="text-lg font-bold text-white">

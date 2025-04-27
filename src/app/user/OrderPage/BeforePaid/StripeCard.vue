@@ -2,7 +2,7 @@
   <div>
     <div
       v-if="storedCard && hasPayment"
-      class="mt-2 flex items-center rounded-lg bg-white p-4 shadow"
+      class="mt-2 flex items-center rounded-lg bg-white p-4 shadow-sm"
     >
       <t-checkbox v-model="useStoredCard">
         <div class="text-base">
@@ -15,7 +15,7 @@
 
     <div v-show="!useStoredCard">
       <!-- Enter New Card -->
-      <div class="mt-2 rounded-lg bg-white p-4 shadow">
+      <div class="mt-2 rounded-lg bg-white p-4 shadow-sm">
         <div id="card-element"></div>
       </div>
 

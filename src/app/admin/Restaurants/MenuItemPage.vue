@@ -10,7 +10,7 @@
         <div class="flex-1"></div>
 
         <!-- Notifications -->
-        <div class="mt-4 flex-shrink-0 text-right lg:mt-0">
+        <div class="mt-4 shrink-0 text-right lg:mt-0">
           <notification-index :shopInfo="shopInfo" />
         </div>
       </div>
@@ -229,7 +229,7 @@
             </div>
           </div>
 
-          <div class="rounded border bg-white p-2 mt-4">
+          <div class="rounded-sm border bg-white p-2 mt-4">
             <span class="font-bold">{{
               $t("editMenu.availableDayTimeSettings")
             }}</span>
@@ -316,7 +316,7 @@
               <div v-if="itemPhoto" class="mr-4">
                 <div>
                   <img
-                    class="rounded object-cover"
+                    class="rounded-sm object-cover"
                     :src="itemPhoto"
                     style="width: 128px; height: 128px"
                     @error="smallImageErrorHandler"
@@ -356,7 +356,7 @@
               <!-- ToDo 写真が追加されると追加された分だけ(最大4枚)サムネイルを表示-->
               <div class="relative mr-2">
                 <img
-                  class="h-24 w-24 rounded"
+                  class="h-24 w-24 rounded-sm"
                   :src="itemPhoto"
                   @error="smallImageErrorHandler"
                 />

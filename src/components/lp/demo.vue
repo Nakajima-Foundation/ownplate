@@ -9,7 +9,7 @@
 
     <!-- Demo Videos -->
     <div class="mx-6 mt-2 rounded-2xl bg-white p-6 lg:flex lg:space-x-6">
-      <div class="mt-4 text-center lg:mt-0 lg:flex-shrink-0">
+      <div class="mt-4 text-center lg:mt-0 lg:shrink-0">
         <div>
           <iframe
             width="300"
@@ -27,7 +27,7 @@
           }}</span>
         </div>
       </div>
-      <div class="mt-4 text-center lg:mt-0 lg:flex-shrink-0">
+      <div class="mt-4 text-center lg:mt-0 lg:shrink-0">
         <div>
           <iframe
             width="300"
@@ -45,7 +45,7 @@
           }}</span>
         </div>
       </div>
-      <div class="mt-4 text-center lg:mt-0 lg:flex-shrink-0">
+      <div class="mt-4 text-center lg:mt-0 lg:shrink-0">
         <div>
           <iframe
             width="300"

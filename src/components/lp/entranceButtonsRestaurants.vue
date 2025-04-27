@@ -10,7 +10,7 @@
       <div class="mt-4">
         <router-link to="/admin/restaurants">
           <div
-            class="inline-flex h-16 items-center rounded-full bg-white px-8 shadow"
+            class="inline-flex h-16 items-center rounded-full bg-white px-8 shadow-sm"
           >
             <span class="text-xl font-bold text-black opacity-60">{{
               $t("lp.tryService")
@@ -25,7 +25,7 @@
           target="_blank"
         >
           <div
-            class="inline-flex h-16 items-center rounded-full bg-ownplate-yellow px-8 shadow hover:bg-opacity-30"
+            class="inline-flex h-16 items-center rounded-full bg-ownplate-yellow px-8 shadow-sm hover:bg-opacity-30"
           >
             <span class="text-xl font-bold text-black opacity-60">{{
               $t("lp.ask")

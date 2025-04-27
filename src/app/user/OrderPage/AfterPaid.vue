@@ -17,7 +17,7 @@
     />
 
     <!-- Order Summary -->
-    <div class="mx-6 mt-2 rounded-lg bg-white px-2 pt-4 pb-1 shadow">
+    <div class="mx-6 mt-2 rounded-lg bg-white px-2 pt-4 pb-1 shadow-sm">
       <!-- Order Status -->
       <OrderStatus :orderInfo="orderInfo" :orderName="orderName" />
 
@@ -119,7 +119,7 @@
 
         <!-- Your Message to the Restaurant -->
         <template v-if="hasMemo">
-          <div class="mt-4 rounded-lg bg-white p-4 shadow">
+          <div class="mt-4 rounded-lg bg-white p-4 shadow-sm">
             <div class="text-xs font-bold text-black text-opacity-60">
               {{ $t("order.orderMessage") }}
             </div>
@@ -186,7 +186,7 @@
             {{ $t("order.adminQRCode") }}
           </div>
 
-          <div class="mt-2 rounded-lg bg-white p-4 text-center shadow">
+          <div class="mt-2 rounded-lg bg-white p-4 text-center shadow-sm">
             <vue-qrcode
               :value="urlAdminOrderPage"
               :options="{ width: 160 }"

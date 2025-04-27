@@ -3,7 +3,7 @@
     <div class="text-center">
       <download-csv :data="tableData" :fields="fields" :fileName="fileName">
         <div
-          class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
+          class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow-sm"
         >
           <span class="text-base font-bold text-white"> CSV DOWNLOAD </span>
         </div>

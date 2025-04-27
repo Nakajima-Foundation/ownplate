@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded-lg bg-white p-4 shadow">
+  <div class="rounded-lg bg-white p-4 shadow-sm">
     <!-- Order Items -->
     <div class="grid grid-cols-1 space-y-4">
       <template v-for="(orderItem, key) in orderItems" :key="orderItem.key">
