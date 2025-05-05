@@ -4,9 +4,9 @@
     <div>
       <img
         src="/images/top/admin_hero_desktop.jpg"
-        class="hidden w-full lg:block"
+        class="hidden! w-full lg:block!"
       />
-      <img src="/images/top/admin_hero_tablet.jpg" class="lg:hidden w-full" />
+      <img src="/images/top/admin_hero_tablet.jpg" class="lg:hidden! w-full" />
     </div>
 
     <!-- CTA Button -->
