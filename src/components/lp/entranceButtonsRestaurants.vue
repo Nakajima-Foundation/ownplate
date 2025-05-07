@@ -35,7 +35,7 @@
       </div>
     </div>
     <!-- Go to Samples -->
-    <div class="rounded-b-lg bg-black bg-opacity-10 py-4">
+    <div class="rounded-b-lg bg-black/10 py-4">
       <div class="lg:inline-flex lg:items-center lg:space-x-4">
         <div class="mb-2 text-sm font-bold text-white lg:mb-0">
           {{ $t("lp.goToSampleRestaurant") }}
@@ -43,7 +43,7 @@
         <div class="inline-flex items-center space-x-4">
           <a
             href="https://omochikaeri.com/r/bYArBMUJBe4KdVzZijLH"
-            class="inline-flex h-10 items-center rounded-full bg-white bg-opacity-20 px-4 hover:bg-opacity-30"
+            class="inline-flex h-10 items-center rounded-full bg-white/20 px-4 hover:bg-opacity-30"
           >
             <span class="text-sm font-bold text-white">{{
               $t("lp.izakaya")
@@ -51,7 +51,7 @@
           </a>
           <a
             href="https://omochikaeri.com/r/wwCgtIEZQo6QnXRyxYYS"
-            class="inline-flex h-10 items-center rounded-full bg-white bg-opacity-20 px-4 hover:bg-opacity-30"
+            class="inline-flex h-10 items-center rounded-full bg-white/20 px-4 hover:bg-opacity-30"
           >
             <span class="text-sm font-bold text-white">{{
               $t("lp.patisserie")

@@ -67,7 +67,7 @@
           <div class="border mt-5"></div>
         </div>
 
-        <div class="bg-black bg-opacity-5 p-2 text-xs m-6 rounded-lg">
+        <div class="bg-black/5 p-2 text-xs m-6 rounded-lg">
           <div class="font-bold">
             {{ $t("promotion.notes") }}
           </div>

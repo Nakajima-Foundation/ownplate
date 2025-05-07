@@ -77,7 +77,7 @@
 
             <div v-if="hasStripe && orderInfo.payment.stripe !== 'canceled'">
               <div
-                class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-yellow-500 bg-opacity-10 px-4 py-1 font-bold text-yellow-500"
+                class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-yellow-500/10 px-4 py-1 font-bold text-yellow-500"
               >
                 <span class="ml-1 mt-1 text-sm">
                   {{ $t("admin.order.cardPaymentMessage") }}
@@ -86,7 +86,7 @@
             </div>
             <div v-else-if="orderInfo.status !== order_status.order_canceled">
               <div
-                class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-red-700 bg-opacity-10 px-4 py-1 font-bold text-red-700"
+                class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-red-700/10 px-4 py-1 font-bold text-red-700"
               >
                 <span class="ml-1 mt-1 text-sm">
                   {{ $t("admin.order.storePaymentMessage") }}
@@ -96,7 +96,7 @@
 
             <div v-if="orderInfo.promotionId">
               <div
-                class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-green-600 bg-opacity-10 px-4 py-1 font-bold text-green-600"
+                class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-green-600/10 px-4 py-1 font-bold text-green-600"
               >
                 <span class="ml-1 mt-1 text-sm">
                   {{ $n(orderInfo.discountPrice, "currency")
@@ -106,7 +106,7 @@
             </div>
             <div v-if="orderInfo.isPickup">
               <div
-                class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-green-600 bg-opacity-10 px-4 py-1 font-bold text-green-600"
+                class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-green-600/10 px-4 py-1 font-bold text-green-600"
               >
                 <i class="material-icons"> local_mall </i>
                 <span class="ml-1 mt-1 text-sm">
@@ -118,7 +118,7 @@
             <!-- Notice Delivery -->
             <div v-if="orderInfo.isDelivery" class="mt-2 text-center">
               <div
-                class="inline-flex rounded-lg bg-red-700 bg-opacity-10 p-4 text-base font-bold text-red-700"
+                class="inline-flex rounded-lg bg-red-700/10 p-4 text-base font-bold text-red-700"
               >
                 {{ $t("admin.order.deliveryOrder") }}
               </div>
@@ -127,7 +127,7 @@
             <!-- Note for Payment Completion -->
             <div v-if="paymentIsNotCompleted">
               <div
-                class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-yellow-500 bg-opacity-10 px-4 py-1 font-bold text-yellow-500"
+                class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-yellow-500/10 px-4 py-1 font-bold text-yellow-500"
               >
                 <span class="ml-1 mt-1 text-sm">
                   {{ $t("admin.order.paymentIsNotCompleted") }}
@@ -145,7 +145,7 @@
             >
               <button @click="openCancel()">
                 <div
-                  class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+                  class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                 >
                   <i class="material-icons mr-2 text-lg text-red-700">delete</i>
                   <div class="text-sm font-bold text-red-700">
@@ -156,7 +156,7 @@
             </div>
             <div class="mt-4 text-center" v-if="cancelStatus">
               <div
-                class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-red-700 bg-opacity-10 text-red-700"
+                class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-red-700/10 text-red-700"
               >
                 <div>
                   <div class="text-base font-extrabold">
@@ -256,7 +256,7 @@
               <div>
                 <div
                   v-if="isWarningOrder"
-                  class="inline-flex rounded-lg bg-red-700 bg-opacity-10 p-4 text-center"
+                  class="inline-flex rounded-lg bg-red-700/10 p-4 text-center"
                 >
                   <div class="text-base font-bold text-red-700">
                     {{ $t("order.continuousOrder") }}<br />
@@ -302,7 +302,7 @@
                 "
               >
                 <div
-                  class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+                  class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                 >
                   <i class="material-icons mr-2 text-lg text-op-teal">face</i>
                   <span class="text-sm font-bold text-op-teal">{{
@@ -321,7 +321,7 @@
             <div class="mt-2">
               <button @click="download()">
                 <div
-                  class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-black bg-opacity-5"
+                  class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-black/5"
                 >
                   Download
                 </div>
@@ -340,7 +340,7 @@
             <div>
               <button @click="print()">
                 <div
-                  class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-black bg-opacity-5"
+                  class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-black/5"
                 >
                   {{ $t("order.print") }}
                 </div>
@@ -394,7 +394,7 @@
                 class="b-reset-tw"
               >
                 <div
-                  class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+                  class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                 >
                   <i class="material-icons mr-2 text-lg text-red-700"
                     >credit_card</i
@@ -1122,7 +1122,7 @@ export default defineComponent({
       if (order_status[statusKey] === orderInfo.value.status) {
         return statusKey;
       }
-      return "bg-black bg-opacity-5";
+      return "bg-black/5";
     };
     const openCancel = () => {
       cancelPopup.value = true;

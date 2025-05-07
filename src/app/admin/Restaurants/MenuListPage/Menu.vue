@@ -8,13 +8,13 @@
           <div class="mx-2 mt-2 flex-1">
             <div
               v-if="menuitem.publicFlag"
-              class="rounded-sm bg-green-600 bg-opacity-10 p-2"
+              class="rounded-sm bg-green-600/10 p-2"
             >
               <div class="text-xs font-bold text-green-600">
                 {{ $t("admin.itemPublished") }}
               </div>
             </div>
-            <div v-else class="rounded-sm bg-red-700 bg-opacity-10 p-2">
+            <div v-else class="rounded-sm bg-red-700/10 p-2">
               <div class="text-xs font-bold text-red-700">
                 {{ $t("admin.itemNotPublished") }}
               </div>
@@ -80,7 +80,7 @@
 
         <!-- Owner Memo -->
         <div v-if="menuitem.itemMemo" class="mx-2 pb-2">
-          <div class="rounded-sm bg-black bg-opacity-5 p-2 text-xs">
+          <div class="rounded-sm bg-black/5 p-2 text-xs">
             {{ menuitem.itemMemo.split("\n")[0] }}
           </div>
         </div>
@@ -99,7 +99,7 @@
           class="b-reset-tw"
         >
           <div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
             <i class="material-icons text-lg text-op-teal">arrow_upward</i>
           </div>
@@ -112,7 +112,7 @@
           class="b-reset-tw"
         >
           <div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
             <i class="material-icons text-lg text-op-teal">arrow_downward</i>
           </div>
@@ -121,7 +121,7 @@
         <!-- Duplicate -->
         <o-button @click="forkItem" class="b-reset-tw">
           <div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
             <i class="material-icons text-lg text-op-teal">queue</i>
           </div>
@@ -130,7 +130,7 @@
         <!-- Delete -->
         <o-button @click="deleteItem" class="b-reset-tw">
           <div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
             <i class="material-icons text-lg text-red-700">delete</i>
           </div>

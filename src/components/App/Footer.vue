@@ -9,7 +9,7 @@
           target="_blank"
         >
           <div
-            class="inline-flex h-10 items-center justify-center rounded-full bg-white bg-opacity-10 px-4"
+            class="inline-flex h-10 items-center justify-center rounded-full bg-white/10 px-4"
           >
             <i
               class="fab fa-facebook mr-2 text-lg text-white text-opacity-50"
@@ -25,7 +25,7 @@
       <div class="inline-block px-1 pb-2">
         <a href="https://x.com/omochikaericom" target="_blank">
           <div
-            class="inline-flex h-10 items-center justify-center rounded-full bg-white bg-opacity-10 px-4"
+            class="inline-flex h-10 items-center justify-center rounded-full bg-white/10 px-4"
           >
             <i
               class="fab fa-x-twitter mr-2 text-lg text-white text-opacity-50"
@@ -41,7 +41,7 @@
       <div class="inline-block px-1 pb-2">
         <a href="https://note.com/singsoc/m/m19dd935e84e4" target="_blank">
           <div
-            class="inline-flex h-10 items-center justify-center rounded-full bg-white bg-opacity-10 px-4"
+            class="inline-flex h-10 items-center justify-center rounded-full bg-white/10 px-4"
           >
             <i class="material-icons mr-2 text-lg text-white text-opacity-50"
               >mail_outline</i
@@ -57,7 +57,7 @@
     <div class="my-4 px-4">
       <div class="text-right">
         <a
-          class="inline-flex h-10 items-center justify-center rounded-full bg-white bg-opacity-10 pl-4 pr-2 cursor-pointer"
+          class="inline-flex h-10 items-center justify-center rounded-full bg-white/10 pl-4 pr-2 cursor-pointer"
           @click="openLang()"
         >
           <i class="material-icons mr-2 text-lg text-white text-opacity-50"
@@ -86,7 +86,7 @@
         <!-- Languages -->
         <div class="mt-4" v-for="(lang, lang_key) in languages" :key="lang_key">
           <a
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 cursor-pointer"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4 cursor-pointer"
             @click="changeLangAndClose(lang_key)"
             ><i
               class="material-icons mr-2 text-lg text-black text-opacity-60"
@@ -99,7 +99,7 @@
         <!-- Close -->
         <div class="mt-4 text-center">
           <a
-            class="inline-flex h-12 items-center justify-center rounded-full bg-black bg-opacity-5 cursor-pointer"
+            class="inline-flex h-12 items-center justify-center rounded-full bg-black/5 cursor-pointer"
             style="min-width: 10rem"
             @click="closeLang()"
             ><span class="px-4 font-bold text-black text-opacity-60"

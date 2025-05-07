@@ -21,7 +21,7 @@
           <div class="w-full">
             <div
               v-if="isSoldOut"
-              class="flex h-9 w-24 items-center justify-center rounded-full bg-red-700 bg-opacity-10 m-auto"
+              class="flex h-9 w-24 items-center justify-center rounded-full bg-red-700/10 m-auto"
             >
               <div class="text-sm font-bold text-red-700">
                 {{ $t("sitemenu.soldOut") }}
@@ -30,7 +30,7 @@
             <div
               v-else
               @click.stop="pushQuantities(0)"
-              class="cardAdd flex h-9 w-36 items-center justify-center rounded-full bg-op-teal bg-opacity-10 m-auto"
+              class="cardAdd flex h-9 w-36 items-center justify-center rounded-full bg-op-teal/10 m-auto"
               :data-cart-product="item.id"
             >
               <div class="text-sm font-bold text-op-teal">
@@ -101,7 +101,7 @@
       </div>
 
       <div class="p-4" v-if="menuPickupData.hasExceptData">
-        <div class="rounded-lg bg-black bg-opacity-5 p-4">
+        <div class="rounded-lg bg-black/5 p-4">
           <div v-if="menuPickupData.hasExceptDay">
             &#8251;
             <span
@@ -198,7 +198,7 @@
                 <div
                   v-for="(option, index) in options"
                   :key="index"
-                  class="rounded-lg bg-black bg-opacity-5 p-4"
+                  class="rounded-lg bg-black/5 p-4"
                 >
                   <div v-if="option.length === 1" class="field">
                     <t-checkbox
@@ -234,7 +234,7 @@
             <div class="mt-4">
               <div v-if="isSoldOut">
                 <div
-                  class="flex h-9 items-center justify-center rounded-full bg-red-700 bg-opacity-10"
+                  class="flex h-9 items-center justify-center rounded-full bg-red-700/10"
                 >
                   <div class="text-sm font-bold text-red-700">
                     {{ $t("sitemenu.soldOut") }}
@@ -266,7 +266,7 @@
                   <div>
                     <a
                       @click="pullQuantities(quantityKey)"
-                      class="removeCart inline-flex h-9 w-24 items-center justify-center rounded-full bg-red-700 bg-opacity-10 cursor-pointer"
+                      class="removeCart inline-flex h-9 w-24 items-center justify-center rounded-full bg-red-700/10 cursor-pointer"
                       :disabled="quantities[quantityKey] === 0"
                       :data-cart-product="item.id"
                     >
@@ -279,7 +279,7 @@
                   <div>
                     <a
                       @click="pushQuantities(quantityKey)"
-                      class="cardAdd inline-flex h-9 w-24 items-center justify-center rounded-full bg-op-teal bg-opacity-10 cursor-pointer"
+                      class="cardAdd inline-flex h-9 w-24 items-center justify-center rounded-full bg-op-teal/10 cursor-pointer"
                       :data-cart-product="item.id"
                     >
                       <i class="material-icons text-lg text-op-teal">add</i>
@@ -306,7 +306,7 @@
               <div class="text-center">
                 <a
                   @click="pushItem"
-                  class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+                  class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                 >
                   <i class="material-icons mr-2 text-lg text-op-teal">add</i>
                   <span class="text-sm font-bold text-op-teal">{{
@@ -379,7 +379,7 @@
           <div>
             <a
               @click="pullQuantities(0)"
-              class="removeCart inline-flex h-9 w-24 items-center justify-center rounded-full bg-red-700 bg-opacity-10"
+              class="removeCart inline-flex h-9 w-24 items-center justify-center rounded-full bg-red-700/10"
               :disabled="quantities[0] === 0"
               :data-cart-product="item.id"
             >
@@ -392,7 +392,7 @@
           <div>
             <a
               @click="pushQuantities(0)"
-              class="cardAdd inline-flex h-9 w-24 items-center justify-center rounded-full bg-op-teal bg-opacity-10"
+              class="cardAdd inline-flex h-9 w-24 items-center justify-center rounded-full bg-op-teal/10"
               :data-cart-product="item.id"
             >
               <i class="material-icons text-lg text-op-teal">add</i>

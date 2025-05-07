@@ -199,7 +199,7 @@
           <li>第三者から当社が個人データの提供を受けた際の記録の開示</li>
           <li>保有個人データの安全管理のために当社が講じた措置</li>
         </ol>
-        <div class="mt-4 rounded-lg bg-black bg-opacity-5 p-4">
+        <div class="mt-4 rounded-lg bg-black/5 p-4">
           <div>【窓口】</div>
           <div class="mt-1">一般社団法人シンギュラリティ・ソサエティ</div>
           <div class="mt-1">個人情報取扱担当窓口</div>

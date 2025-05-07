@@ -25,7 +25,7 @@
       </div>
     </div>
     <!-- Not Available -->
-    <div v-else class="rounded-lg bg-red-700 bg-opacity-10 p-4">
+    <div v-else class="rounded-lg bg-red-700/10 p-4">
       <div class="text-base font-bold text-red-700">
         {{ $t("order.notAvailable") }}
       </div>

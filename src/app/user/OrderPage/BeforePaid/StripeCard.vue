@@ -56,7 +56,7 @@
             </div>
 
             <!-- 3 Digits -->
-            <div class="mt-2 rounded-lg bg-black bg-opacity-5 p-4 text-center">
+            <div class="mt-2 rounded-lg bg-black/5 p-4 text-center">
               <div class="text-xl font-bold">
                 Visa, MasterCard, JCB, Diners Club, DISCOVER
               </div>
@@ -75,7 +75,7 @@
             </div>
 
             <!-- 4 Digits -->
-            <div class="mt-2 rounded-lg bg-black bg-opacity-5 p-4 text-center">
+            <div class="mt-2 rounded-lg bg-black/5 p-4 text-center">
               <div class="text-xl font-bold">American Express</div>
 
               <div class="mt-2 text-center text-base font-bold text-blue-500">
@@ -91,7 +91,7 @@
             <div class="mt-4 text-center">
               <a
                 @click="closeCVC()"
-                class="inline-flex h-12 items-center justify-center rounded-full bg-black bg-opacity-5 px-6"
+                class="inline-flex h-12 items-center justify-center rounded-full bg-black/5 px-6"
                 style="min-width: 8rem"
               >
                 <div class="text-base font-bold text-black text-opacity-60">

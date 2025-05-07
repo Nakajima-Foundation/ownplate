@@ -1,6 +1,6 @@
 <template>
   <div
-    class="mx-2 mt-2 rounded-lg bg-black bg-opacity-5 px-1 pt-4 pb-4 text-center font-bold"
+    class="mx-2 mt-2 rounded-lg bg-black/5 px-1 pt-4 pb-4 text-center font-bold"
   >
     <div class="mb-1 text-center text-sm font-bold text-black text-opacity-50">
       {{ $t("order.onlinePaymentStatus") }}

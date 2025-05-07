@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed top-0 h-screen w-full bg-black bg-opacity-50 z-30">
+  <div class="fixed top-0 h-screen w-full bg-black/50 z-30">
     <div class="h-1/5 w-full" @click="closeCart"></div>
     <div class="fixed h-4/5 w-full overflow-x-scroll bg-white pb-32">
       <div class="mt-2 mb-4">
@@ -39,7 +39,7 @@
 
       <div v-if="promotions && promotions.length > 0">
         <div
-          class="border-green-600 text-green-600 text-center font-bold mt-1 mx-6 sm:mx-auto max-w-xl items-center mb-3 rounded-lg bg-green-600 bg-opacity-10 p-2"
+          class="border-green-600 text-green-600 text-center font-bold mt-1 mx-6 sm:mx-auto max-w-xl items-center mb-3 rounded-lg bg-green-600/10 p-2"
         >
           <div class="text-xs">
             <PromotionMessage6 :promotion="promotions[0]" />

@@ -24,7 +24,7 @@
           :to="`/admin/restaurants/${restaurantId}/menus`"
         >
           <div
-            class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
+            class="inline-flex h-12 items-center rounded-full bg-black/5 px-6"
           >
             <span class="text-base font-bold text-black text-opacity-60">{{
               $t("button.cancel")
@@ -51,7 +51,7 @@
       </div>
 
       <!-- Publish Status -->
-      <div class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4 text-center">
+      <div class="mx-6 mt-4 rounded-lg bg-black/5 p-4 text-center">
         <o-checkbox
           v-model="menuInfo.publicFlag"
           :disabled="hasError"
@@ -165,7 +165,7 @@
             <!-- Price Example -->
             <div
               v-if="requireTaxPriceDisplay"
-              class="mt-2 rounded-lg bg-black bg-opacity-5 p-4"
+              class="mt-2 rounded-lg bg-black/5 p-4"
             >
               <div class="inline text-sm font-bold">
                 {{ $t("editMenu.displayPrice") }}:
@@ -181,7 +181,7 @@
             <div class="pb-2 text-sm font-bold">
               {{ $t("allergens.title") }}
             </div>
-            <div class="mt-2 rounded-lg bg-black bg-opacity-5 px-4 py-4">
+            <div class="mt-2 rounded-lg bg-black/5 px-4 py-4">
               <div>
                 <o-checkbox
                   v-for="allergen in allergens"
@@ -245,7 +245,7 @@
               <span class="text-red-700">*</span>
             </div>
             <div class="mt-2">
-              <div class="rounded-lg bg-black bg-opacity-5 p-4">
+              <div class="rounded-lg bg-black/5 p-4">
                 <div>
                   <o-checkbox v-model="menuInfo.availableLunch">
                     <div class="text-sm font-bold text-black text-opacity-60">
@@ -276,7 +276,7 @@
               <span class="text-red-700">*</span>
             </div>
             <div class="mt-2">
-              <div class="rounded-lg bg-black bg-opacity-5 p-4">
+              <div class="rounded-lg bg-black/5 p-4">
                 <div class="pb-2 text-sm font-bold">
                   {{ $t("editMenu.exclusionDate") }}
                 </div>
@@ -362,7 +362,7 @@
                 />
                 <!-- ToDo 写真右上の ×アイコンを押すと写真を削除-->
                 <span
-                  class="material-icons absolute top-1 right-1 rounded-full bg-black bg-opacity-40 text-white"
+                  class="material-icons absolute top-1 right-1 rounded-full bg-black/40 text-white"
                 >
                   close
                 </span>
@@ -374,7 +374,7 @@
               <o-button class="b-reset-tw mr-2">
                 <!-- ToDo 写真が4枚アップロード済みの時はボタンをグレーアウト、"text-op-teal" → "text-black text-opacity-20" を適用 -->
                 <div
-                  class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 text-op-teal"
+                  class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4 text-op-teal"
                 >
                   <i class="material-icons mr-2 text-lg">add</i>
                   <div class="text-sm font-bold">
@@ -386,7 +386,7 @@
               <!-- ToDo 写真が1枚でもアップロードされたら以下の削除ボタンを表示させる-->
               <o-button class="b-reset-tw">
                 <div
-                  class="inline-flex h-9 items-center justify-center rounded-full bg-red-700 bg-opacity-10 px-4 text-red-700"
+                  class="inline-flex h-9 items-center justify-center rounded-full bg-red-700/10 px-4 text-red-700"
                 >
                   <i class="material-icons mr-2 text-lg">delete</i>
                   <div class="text-sm font-bold">
@@ -416,7 +416,7 @@
                 <div :key="key" class="mb-2 flex">
                   <o-button @click="positionDown(key)" class="b-reset-tw">
                     <div
-                      class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 mr-2"
+                      class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4 mr-2"
                       v-if="key !== menuInfo.itemOptionCheckbox.length - 1"
                     >
                       <i class="material-icons text-lg text-op-teal"
@@ -426,7 +426,7 @@
                   </o-button>
                   <o-button @click="positionUp(key)" class="b-reset-tw">
                     <div
-                      class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 mr-2"
+                      class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4 mr-2"
                       v-if="key !== 0"
                     >
                       <i class="material-icons text-lg text-op-teal"
@@ -442,7 +442,7 @@
                   </div>
                   <o-button class="b-reset-tw" @click="deleteOption(key)">
                     <div
-                      class="inline-flex h-9 items-center justify-center rounded-full bg-red-700 bg-opacity-10 px-4"
+                      class="inline-flex h-9 items-center justify-center rounded-full bg-red-700/10 px-4"
                     >
                       <i class="material-icons text-lg text-red-700">delete</i>
                     </div>
@@ -450,7 +450,7 @@
                 </div>
 
                 <!-- Option Preview -->
-                <div class="rounded-lg bg-black bg-opacity-5 p-4">
+                <div class="rounded-lg bg-black/5 p-4">
                   <div
                     class="mb-2 flex text-xs font-bold text-black text-opacity-30"
                   >
@@ -498,7 +498,7 @@
             <div class="mt-4">
               <o-button class="b-reset-tw" @click="addOption">
                 <div
-                  class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+                  class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                 >
                   <i class="material-icons mr-2 text-lg text-op-teal">add</i>
                   <div class="text-sm font-bold text-op-teal">
@@ -520,7 +520,7 @@
             </div>
 
             <div
-              class="grid-cols-1 space-y-4 rounded-lg bg-black bg-opacity-5 p-4"
+              class="grid-cols-1 space-y-4 rounded-lg bg-black/5 p-4"
             >
               <!-- Category 1 -->
               <div>
@@ -610,7 +610,7 @@
       </div>
 
       <!-- Publish Status -->
-      <div class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4 text-center">
+      <div class="mx-6 mt-4 rounded-lg bg-black/5 p-4 text-center">
         <o-checkbox
           v-model="menuInfo.publicFlag"
           :disabled="hasError"
@@ -638,7 +638,7 @@
           :to="`/admin/restaurants/${restaurantId}/menus`"
         >
           <div
-            class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
+            class="inline-flex h-12 items-center rounded-full bg-black/5 px-6"
           >
             <span class="text-base font-bold text-black text-opacity-60">{{
               $t("button.cancel")
@@ -669,7 +669,7 @@
         <div>
           <o-button @click="copyItem" :disabled="submitting" class="b-reset-tw">
             <div
-              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
             >
               <i class="material-icons mr-2 text-lg text-op-teal"> queue </i>
               <span class="text-sm font-bold text-op-teal">{{

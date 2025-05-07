@@ -54,7 +54,7 @@
     <!-- Canceled Message -->
     <div
       v-if="canceled"
-      class="mx-6 mt-2 rounded-lg bg-red-700 bg-opacity-10 p-4 text-center"
+      class="mx-6 mt-2 rounded-lg bg-red-700/10 p-4 text-center"
     >
       <span class="text-base font-bold text-red-700">{{
         $t("order.cancelOrderComplete")
@@ -130,7 +130,7 @@
         <!-- Canceled Message -->
         <div
           v-if="canceled"
-          class="mt-2 rounded-lg bg-red-700 bg-opacity-10 p-4 text-center"
+          class="mt-2 rounded-lg bg-red-700/10 p-4 text-center"
         >
           <span class="text-base font-bold text-red-700">{{
             $t("order.cancelOrderComplete")

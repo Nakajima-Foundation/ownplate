@@ -6,7 +6,7 @@
 
       <router-link :to="'/o/' + message.fromUid">
         <div
-          class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+          class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
         >
           <span class="text-sm font-bold text-op-teal">{{
             $t("admin.messages.childInvitationMessage2")

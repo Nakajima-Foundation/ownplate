@@ -1,7 +1,7 @@
 <template>
   <div class="mx-6 mt-2 lg:mx-auto lg:max-w-2xl">
     <!-- Note for the First User -->
-    <div class="rounded-lg bg-green-600 bg-opacity-10 p-6">
+    <div class="rounded-lg bg-green-600/10 p-6">
       <div class="flex">
         <div>
           <i class="material-icons mr-4 shrink-0 text-4xl text-green-600"
@@ -77,7 +77,7 @@
         <div class="mt-2 text-center">
           <button @click="handleCancel" class="b-reset-tw mr-4 mb-2">
             <div
-              class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black bg-opacity-5"
+              class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black/5"
             >
               <div class="text-base font-bold text-black text-opacity-60">
                 {{ $t("button.cancel") }}

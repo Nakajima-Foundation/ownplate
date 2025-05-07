@@ -30,7 +30,7 @@
           <div>
             <router-link :to="previewLink">
               <div
-                class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+                class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
               >
                 <i class="material-icons mr-2 text-lg text-op-teal">launch</i>
                 <span class="text-sm font-bold text-op-teal">{{
@@ -42,7 +42,7 @@
           <div class="mt-2" v-if="isOwner">
             <router-link :to="'/admin/restaurants/' + restaurantid">
               <div
-                class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+                class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
               >
                 <i class="material-icons mr-2 text-lg text-op-teal">edit</i>
                 <span class="text-sm font-bold text-op-teal">{{
@@ -58,7 +58,7 @@
       <div class="mt-4" v-if="!shopInfo.publicFlag">
         <router-link :to="'/admin/restaurants/' + restaurantid">
           <div
-            class="rounded-md bg-red-700 bg-opacity-10 px-4 py-2 text-sm font-bold text-red-700"
+            class="rounded-md bg-red-700/10 px-4 py-2 text-sm font-bold text-red-700"
           >
             {{ $t("admin.privateMode") }}: {{ $t("admin.pleaseChangePublic") }}
           </div>
@@ -81,7 +81,7 @@
             <span class="text-lg font-bold text-white">
               {{ $t("admin.viewOrders") }}</span
             ><span
-              class="ml-4 rounded-full bg-white bg-opacity-20 px-3 py-2 text-sm font-bold text-white"
+              class="ml-4 rounded-full bg-white/20 px-3 py-2 text-sm font-bold text-white"
               >{{
                 $t(
                   "admin.incompleteOrders",
@@ -108,7 +108,7 @@
                 {{ $t("admin.editMenuItems") }}</span
               >
               <span
-                class="ml-2 rounded-full bg-red-700 bg-opacity-10 px-2 text-base font-bold text-red-700"
+                class="ml-2 rounded-full bg-red-700/10 px-2 text-base font-bold text-red-700"
                 >{{ numberOfMenus }}</span
               >
             </div>
@@ -128,7 +128,7 @@
                 {{ $t("admin.editMenuItems") }}</span
               >
               <span
-                class="ml-2 rounded-full bg-black bg-opacity-5 px-2 text-base font-bold"
+                class="ml-2 rounded-full bg-black/5 px-2 text-base font-bold"
                 >{{ numberOfMenus }}</span
               >
             </div>
@@ -138,7 +138,7 @@
 
       <!-- Notifications Settings -->
       <div
-        class="mt-4 flex justify-evenly rounded-lg bg-black bg-opacity-5 pt-3 pb-2 text-center"
+        class="mt-4 flex justify-evenly rounded-lg bg-black/5 pt-3 pb-2 text-center"
         v-if="isOwner && !simpleMode"
       >
         <router-link
@@ -201,7 +201,7 @@
         <div>
           <router-link :to="`/admin/restaurants/${restaurantid}/delivery`">
             <div
-              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
             >
               <i class="material-icons mr-2 text-lg text-op-teal"
                 >delivery_dining</i
@@ -215,7 +215,7 @@
         <div>
           <router-link :to="`/admin/restaurants/${restaurantid}/printer`">
             <div
-              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
             >
               <i class="material-icons mr-2 text-lg text-op-teal">print</i>
               <span class="text-sm font-bold text-op-teal">{{
@@ -228,7 +228,7 @@
         <div v-if="isOwner">
           <router-link :to="`/admin/restaurants/${restaurantid}/discounts`">
             <div
-              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
             >
               <i class="material-icons mr-2 text-lg text-op-teal">sell</i>
               <span class="text-sm font-bold text-op-teal">{{
@@ -248,7 +248,7 @@
         <div>
           <router-link :to="`/admin/restaurants/${restaurantid}/line`">
             <div
-              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
             >
               <i class="fab fa-line mr-2 text-lg text-op-teal" />
               <span class="text-sm font-bold text-op-teal">{{
@@ -261,7 +261,7 @@
         <div v-if="isOwner">
           <router-link :to="`/admin/restaurants/${restaurantid}/report`">
             <div
-              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
             >
               <i class="material-icons mr-2 text-lg text-op-teal"
                 >description</i
@@ -289,7 +289,7 @@
           <div class="mt-2">
             <a
               @click="deleteFromList"
-              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
             >
               <span class="text-sm font-bold text-op-teal">{{
                 $t("admin.directory.unlist")
@@ -311,7 +311,7 @@
           <div class="mt-2">
             <a
               @click="requestDelete"
-              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
             >
               <span class="text-sm font-bold text-red-700">{{
                 $t("admin.directory.cancelRequest")
@@ -338,7 +338,7 @@
           <div class="mt-2">
             <a
               @click="requestList"
-              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
             >
               <span class="text-sm font-bold text-op-teal">
                 {{ $t("admin.directory.requestList") }}</span
@@ -367,7 +367,7 @@
           class="b-reset-tw disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
             <i class="material-icons text-lg text-op-teal">arrow_upward</i>
           </div>
@@ -382,7 +382,7 @@
           class="b-reset-tw disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
             <i class="material-icons text-lg text-op-teal">arrow_downward</i>
           </div>
@@ -393,7 +393,7 @@
       <div>
         <button @click="deleteRestaurant" class="b-reset-tw">
           <div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
             <i class="material-icons text-lg text-red-700">delete</i>
           </div>

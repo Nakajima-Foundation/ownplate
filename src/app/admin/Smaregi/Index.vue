@@ -34,7 +34,7 @@
           <div
             v-for="(shop, k) in shopList"
             :key="k"
-            class="mt-2 rounded-lg bg-black bg-opacity-5"
+            class="mt-2 rounded-lg bg-black/5"
           >
             <div class="pl-4 pt-4">スマレジ登録店舗：{{ shop.storeName }}</div>
             <div class="pl-4 pt-2">
@@ -102,7 +102,7 @@
           <div
             v-for="(shop, k) in shopList"
             :key="k"
-            class="mt-2 rounded-lg bg-black bg-opacity-5"
+            class="mt-2 rounded-lg bg-black/5"
           >
             <div class="pl-4 pt-4">
               <div class="text-base">

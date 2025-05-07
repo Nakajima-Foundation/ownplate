@@ -56,7 +56,7 @@
       <!-- Promotion discount for after pay -->
       <div
         v-if="orderInfo.promotionId"
-        class="-mx-2 mt-2 flex bg-green-600 bg-opacity-10 px-2 py-1 rounded-md"
+        class="-mx-2 mt-2 flex bg-green-600/10 px-2 py-1 rounded-md"
       >
         <div class="flex-1">
           <div class="text-base">
@@ -168,7 +168,7 @@
               ><div
                 class="inline-flex h-9 w-16 items-center justify-center rounded-full"
                 :class="
-                  isSameAmount(ratio) ? 'bg-op-teal' : 'bg-black bg-opacity-5'
+                  isSameAmount(ratio) ? 'bg-op-teal' : 'bg-black/5'
                 "
               >
                 <div
@@ -205,7 +205,7 @@
     <!-- promotion discount for before pay -->
     <div
       v-if="enablePromotion"
-      class="bg-green-600 bg-opacity-10 p-2 -mx-2 rounded-lg mt-2"
+      class="bg-green-600/10 p-2 -mx-2 rounded-lg mt-2"
     >
       <!-- promotion discount -->
       <template v-if="promotion?.paymentRestrictions">

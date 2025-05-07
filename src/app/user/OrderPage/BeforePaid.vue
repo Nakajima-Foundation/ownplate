@@ -4,7 +4,7 @@
     <div class="mx-6 mt-4">
       <router-link :to="menuPagePath">
         <div
-          class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 b-reset-tw"
+          class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4 b-reset-tw"
         >
           <i class="material-icons mr-2 text-lg text-op-teal">arrow_back</i>
           <div class="text-sm font-bold text-op-teal">
@@ -230,7 +230,7 @@
                 "
               >
                 <div
-                  class="border-green-600 text-green-600 text-center font-bold mx-auto w-72 items-center mt-8 -mb-3 rounded-lg bg-green-600 bg-opacity-10 px-6 py-2"
+                  class="border-green-600 text-green-600 text-center font-bold mx-auto w-72 items-center mt-8 -mb-3 rounded-lg bg-green-600/10 px-6 py-2"
                 >
                   <div class="text-xs">{{ $t("order.promotionNoteCard") }}</div>
                 </div>
@@ -243,7 +243,7 @@
                 "
               >
                 <div
-                  class="border-green-600 text-green-600 text-center font-bold mx-auto w-72 items-center mt-8 -mb-3 rounded-lg bg-green-600 bg-opacity-10 px-6 py-2"
+                  class="border-green-600 text-green-600 text-center font-bold mx-auto w-72 items-center mt-8 -mb-3 rounded-lg bg-green-600/10 px-6 py-2"
                 >
                   <div class="text-xs">
                     {{ $t("order.promotionNoteStore") }}
@@ -275,7 +275,7 @@
 
             <!-- Pay at Restaurant -->
             <div v-else class="mt-2">
-              <div class="rounded-lg bg-black bg-opacity-5 p-4">
+              <div class="rounded-lg bg-black/5 p-4">
                 <div class="text-sm">
                   {{ $t("order.pleasePayAtRestaurant") }}
                 </div>

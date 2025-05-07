@@ -29,13 +29,13 @@
       :key="k"
       :class="
         !promotion.currentOpen
-          ? 'bg-opacity-10 bg-black rounded-lg p-4 shadow-sm mb-2'
+          ? 'bg-black/10 rounded-lg p-4 shadow-sm mb-2'
           : 'rounded-lg bg-white p-4 shadow-sm mb-2'
       "
     >
       <div
         v-if="promotion.currentOpen"
-        class="font-bold text-green-600 mb-2 rounded-lg bg-green-600 bg-opacity-10 py-1 text-center"
+        class="font-bold text-green-600 mb-2 rounded-lg bg-green-600/10 py-1 text-center"
       >
         {{ $t("admin.promotion.activationState") }}
       </div>
@@ -149,7 +149,7 @@
         :to="`/admin/restaurants/${shopInfo.restaurantId}/discounts/${promotion.promotionId}/history`"
       >
         <div
-          class="flex items-center justify-center mt-3 h-9 w-24 rounded-full bg-black bg-opacity-5 font-bold text-op-teal"
+          class="flex items-center justify-center mt-3 h-9 w-24 rounded-full bg-black/5 font-bold text-op-teal"
         >
           {{ $t("admin.promotion.history") }}
         </div></router-link

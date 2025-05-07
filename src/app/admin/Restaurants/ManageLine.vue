@@ -53,7 +53,7 @@
             <!-- Delete -->
             <div>
               <a
-                class="ml-4 inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+                class="ml-4 inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                 @click.stop="handleDelete(lineUser.id)"
               >
                 <i class="material-icons text-lg text-red-700">delete</i>
@@ -78,7 +78,7 @@
         </div>
 
         <!-- Note for Safari Private Browsing Mode -->
-        <div class="mt-4 rounded-lg bg-black bg-opacity-5 p-4">
+        <div class="mt-4 rounded-lg bg-black/5 p-4">
           <span class="text-xs text-black opacity-60">
             {{ $t("admin.order.lineSafariPrivate") }}
           </span>

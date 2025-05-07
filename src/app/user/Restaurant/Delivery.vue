@@ -101,7 +101,7 @@
     </div>
     <div
       v-if="modelValue === 'delivery'"
-      class="mt-2 rounded-lg bg-blue-500 bg-opacity-10 px-4 py-2"
+      class="mt-2 rounded-lg bg-blue-500/10 px-4 py-2"
     >
       <span class="font-bold">{{ $t("shopInfo.deliveryArea") }}</span>
       <div v-if="deliveryData.enableAreaMap">

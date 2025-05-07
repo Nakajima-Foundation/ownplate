@@ -31,7 +31,7 @@
         <div class="mt-2 text-center">
           <o-button @click="handleCancel" class="b-reset-tw mr-4 mb-2">
             <div
-              class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black bg-opacity-5"
+              class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black/5"
             >
               <div class="text-base font-bold text-black text-opacity-60">
                 {{ $t("button.cancel") }}

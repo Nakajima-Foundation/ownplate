@@ -67,7 +67,7 @@
       <div class="mx-6 mt-2 text-center" v-if="last !== undefined">
         <o-button :disabled="last === null" @click="next" class="b-reset-tw">
           <div
-            class="inline-flex h-9 w-48 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+            class="inline-flex h-9 w-48 items-center justify-center rounded-full bg-black/5 px-4"
           >
             <div class="text-sm font-bold text-op-teal">
               {{ $t("admin.order.more") }}
@@ -80,7 +80,7 @@
       <div class="mx-6 mt-2 text-center" v-if="last !== undefined">
         <o-button :disabled="last === null" @click="all" class="b-reset-tw">
           <div
-            class="inline-flex h-9 w-48 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+            class="inline-flex h-9 w-48 items-center justify-center rounded-full bg-black/5 px-4"
           >
             <div class="text-sm font-bold text-op-teal">
               {{ $t("admin.order.all") }}

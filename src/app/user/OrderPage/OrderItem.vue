@@ -7,7 +7,7 @@
     />
     <div>
       <div
-        class="inline-flex h-9 w-12 shrink-0 items-center justify-center rounded-sm bg-blue-500 bg-opacity-10"
+        class="inline-flex h-9 w-12 shrink-0 items-center justify-center rounded-sm bg-blue-500/10"
       >
         <div class="text-lg font-bold text-blue-500">
           {{ "x " + String(count) }}

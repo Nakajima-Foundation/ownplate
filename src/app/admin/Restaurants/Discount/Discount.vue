@@ -26,7 +26,7 @@
     <div class="mt-4 flex justify-center space-x-4">
       <button
         @click="cancel"
-        class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
+        class="inline-flex h-12 items-center rounded-full bg-black/5 px-6"
       >
         <span class="text-base font-bold text-black text-opacity-60">
           {{ $t("button.cancel") }}
@@ -192,7 +192,7 @@
       <div class="mt-2 flex justify-center space-x-4">
         <button
           @click="cancel"
-          class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
+          class="inline-flex h-12 items-center rounded-full bg-black/5 px-6"
         >
           <span class="text-base font-bold text-black text-opacity-60">
             {{ $t("button.cancel") }}

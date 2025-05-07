@@ -51,7 +51,7 @@
 
       <!-- Minimum Available Time -->
       <div
-        class="mt-2 rounded-lg bg-blue-500 bg-opacity-10 px-4 py-2 text-sm"
+        class="mt-2 rounded-lg bg-blue-500/10 px-4 py-2 text-sm"
         v-if="!shopInfo.isEC"
       >
         <div class="text-sm font-bold">
@@ -74,7 +74,7 @@
       <div class="mt-4 text-center">
         <a
           @click="toggleMoreInfo()"
-          class="inline-flex h-9 w-32 items-center justify-center rounded-full bg-black bg-opacity-5 cursor-pointer"
+          class="inline-flex h-9 w-32 items-center justify-center rounded-full bg-black/5 cursor-pointer"
         >
           <div class="text-sm font-bold text-op-teal">
             <template v-if="moreInfo">{{ $t("shopInfo.viewLess") }}</template>
@@ -160,8 +160,8 @@
                 :class="
                   weekday == key % 7
                     ? isTodayTemporaryClosure
-                      ? 'bg-red-700 bg-opacity-10'
-                      : 'bg-green-600 bg-opacity-10'
+                      ? 'bg-red-700/10'
+                      : 'bg-green-600/10'
                     : ''
                 "
               >
