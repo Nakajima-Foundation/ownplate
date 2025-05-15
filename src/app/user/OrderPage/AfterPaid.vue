@@ -17,7 +17,7 @@
     />
 
     <!-- Order Summary -->
-    <div class="mx-6 mt-2 rounded-lg bg-white px-2 pt-4 pb-1 shadow">
+    <div class="mx-6 mt-2 rounded-lg bg-white px-2 pt-4 pb-1 shadow-sm">
       <!-- Order Status -->
       <OrderStatus :orderInfo="orderInfo" :orderName="orderName" />
 
@@ -54,7 +54,7 @@
     <!-- Canceled Message -->
     <div
       v-if="canceled"
-      class="mx-6 mt-2 rounded-lg bg-red-700 bg-opacity-10 p-4 text-center"
+      class="mx-6 mt-2 rounded-lg bg-red-700/10 p-4 text-center"
     >
       <span class="text-base font-bold text-red-700">{{
         $t("order.cancelOrderComplete")
@@ -119,7 +119,7 @@
 
         <!-- Your Message to the Restaurant -->
         <template v-if="hasMemo">
-          <div class="mt-4 rounded-lg bg-white p-4 shadow">
+          <div class="mt-4 rounded-lg bg-white p-4 shadow-sm">
             <div class="text-xs font-bold text-black text-opacity-60">
               {{ $t("order.orderMessage") }}
             </div>
@@ -130,7 +130,7 @@
         <!-- Canceled Message -->
         <div
           v-if="canceled"
-          class="mt-2 rounded-lg bg-red-700 bg-opacity-10 p-4 text-center"
+          class="mt-2 rounded-lg bg-red-700/10 p-4 text-center"
         >
           <span class="text-base font-bold text-red-700">{{
             $t("order.cancelOrderComplete")
@@ -186,7 +186,7 @@
             {{ $t("order.adminQRCode") }}
           </div>
 
-          <div class="mt-2 rounded-lg bg-white p-4 text-center shadow">
+          <div class="mt-2 rounded-lg bg-white p-4 text-center shadow-sm">
             <vue-qrcode
               :value="urlAdminOrderPage"
               :options="{ width: 160 }"

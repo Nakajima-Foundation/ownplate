@@ -17,7 +17,7 @@
 
         <router-link to="/">
           <div
-            class="mt-4 inline-flex h-16 items-center rounded-full bg-ownplate-yellow px-5 sm:px-6 shadow hover:bg-opacity-80"
+            class="mt-4 inline-flex h-16 items-center rounded-full bg-ownplate-yellow px-5 sm:px-6 shadow-sm hover:bg-opacity-80"
           >
             <span class="text-xl font-bold text-black opacity-90">
               {{ $t("lp.clickHereToSignup") }}

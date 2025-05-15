@@ -1,14 +1,14 @@
 <template>
   <div>
     <!-- not yet -->
-    <div class="rounded-lg bg-red-700 bg-opacity-10 p-4 text-center">
+    <div class="rounded-lg bg-red-700/10 p-4 text-center">
       <div class="text-base font-bold text-red-700">
         {{ $t(message) }}
       </div>
     </div>
     <!-- delivery or takeout -->
     <div
-      class="mt-4 rounded-lg bg-red-700 bg-opacity-10 p-4 text-center"
+      class="mt-4 rounded-lg bg-red-700/10 p-4 text-center"
       v-if="shopInfo.enableDelivery"
     >
       <div class="text-base font-bold text-red-700">
@@ -23,7 +23,7 @@
 
     <!-- lunch or dinner -->
     <div
-      class="mt-4 rounded-lg bg-red-700 bg-opacity-10 p-4 text-center"
+      class="mt-4 rounded-lg bg-red-700/10 p-4 text-center"
       v-if="shopInfo.enableLunchDinner"
     >
       <div class="text-base font-bold text-red-700">

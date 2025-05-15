@@ -5,7 +5,7 @@
     <div class="column">
       <div class="text-center">
         <o-button
-          class="b-reset-tw h-9 rounded-full bg-black bg-opacity-5"
+          class="b-reset-tw h-9 rounded-full bg-black/5"
           tag="router-link"
           to=""
         >

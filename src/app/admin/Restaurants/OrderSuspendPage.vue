@@ -42,7 +42,7 @@
               class="b-reset-tw mr-4 mb-4"
             >
               <div
-                class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+                class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
               >
                 <i class="material-icons mr-2 text-lg text-op-teal"
                   >alarm_off</i
@@ -67,7 +67,7 @@
                   @click="handleSuspend(day, 24 * 60)"
                 >
                   <div
-                    class="mr-4 mb-4 inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+                    class="mr-4 mb-4 inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                   >
                     <i class="material-icons mr-2 text-lg text-op-teal"
                       >alarm_off</i
@@ -88,7 +88,7 @@
         </div>
 
         <div v-else>
-          <div class="mt-4 rounded-lg bg-red-700 bg-opacity-10 p-4 text-center">
+          <div class="mt-4 rounded-lg bg-red-700/10 p-4 text-center">
             <div class="text-base font-bold text-red-700">
               {{ $t("admin.order.suspending") }}
             </div>
@@ -100,7 +100,7 @@
           <div class="mt-4">
             <o-button class="b-reset-tw" @click="handleRemove">
               <div
-                class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+                class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
               >
                 <i class="material-icons mr-2 text-lg text-op-teal">alarm_on</i>
                 <div class="text-sm font-bold text-op-teal">

@@ -6,7 +6,7 @@
     </div>
 
     <!-- Card -->
-    <div class="mt-2 rounded-lg bg-white p-4 shadow">
+    <div class="mt-2 rounded-lg bg-white p-4 shadow-sm">
       <ProfileLoginStatus />
 
       <!-- Not Signed In -->
@@ -36,7 +36,7 @@
         <div class="mt-12 text-center" v-if="!isLiffUser">
           <a
             @click.prevent="handleSignOut"
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 cursor-pointer"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4 cursor-pointer"
           >
             <div class="text-sm font-bold text-op-teal">
               {{ $t("menu.signOut") }}

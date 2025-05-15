@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isPreview" class="bg-red-700 bg-opacity-10 p-4 text-center">
+  <div v-if="isPreview" class="bg-red-700/10 p-4 text-center">
     <div class="text-base font-bold text-red-700">
       {{ $t("shopInfo.thisIsPreview") }}
     </div>

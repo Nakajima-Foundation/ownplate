@@ -7,7 +7,7 @@
     <div v-if="shopInfo.deliveryOnlyStore">
       <!-- delivery only -->
       <div
-        class="h-full w-full rounded-lg bg-white p-3 shadow"
+        class="h-full w-full rounded-lg bg-white p-3 shadow-sm"
         :class="
           modelValue === 'delivery'
             ? 'border-2 border-op-teal text-op-teal'
@@ -28,7 +28,7 @@
     <div class="mt2 grid grid-cols-2 gap-2" v-else>
       <!-- takeout -->
       <div
-        class="h-full w-full rounded-lg bg-white p-3 shadow"
+        class="h-full w-full rounded-lg bg-white p-3 shadow-sm"
         :class="
           modelValue === 'takeout'
             ? 'border-2 border-op-teal text-op-teal'
@@ -46,7 +46,7 @@
       </div>
       <!-- delivery -->
       <div
-        class="h-full w-full rounded-lg bg-white p-3 shadow"
+        class="h-full w-full rounded-lg bg-white p-3 shadow-sm"
         :class="
           modelValue === 'delivery'
             ? 'border-2 border-op-teal text-op-teal'
@@ -101,7 +101,7 @@
     </div>
     <div
       v-if="modelValue === 'delivery'"
-      class="mt-2 rounded-lg bg-blue-500 bg-opacity-10 px-4 py-2"
+      class="mt-2 rounded-lg bg-blue-500/10 px-4 py-2"
     >
       <span class="font-bold">{{ $t("shopInfo.deliveryArea") }}</span>
       <div v-if="deliveryData.enableAreaMap">

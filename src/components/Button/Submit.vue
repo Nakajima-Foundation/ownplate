@@ -5,7 +5,7 @@
     class="b-reset-tw disabled:opacity-50 disabled:cursor-not-allowed"
   >
     <div
-      class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-op-teal shadow"
+      class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-op-teal shadow-sm"
     >
       <ButtonLoading v-if="isLoading" />
       <div class="text-base font-bold text-white">

@@ -9,7 +9,7 @@
     <div class="mt-4">
       <router-link to="/r">
         <div
-          class="inline-flex h-12 items-center rounded-full bg-op-teal px-8 shadow hover:bg-opacity-30"
+          class="inline-flex h-12 items-center rounded-full bg-op-teal px-8 shadow-sm hover:bg-opacity-30"
         >
           <span class="text-base font-bold text-white">
             {{ $t("lp.searchRestaurant") }}</span

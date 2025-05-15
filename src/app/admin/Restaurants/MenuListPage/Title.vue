@@ -2,11 +2,11 @@
   <div class="lg:flex">
     <div class="lg:flex-1">
       <!-- Title Card -->
-      <div class="rounded-lg bg-black bg-opacity-5 p-4" v-if="isEdit">
+      <div class="rounded-lg bg-black/5 p-4" v-if="isEdit">
         <TitleInput :title="title" @saveTitle="saveTitle" />
       </div>
       <div
-        class="rounded-lg bg-black bg-opacity-5 p-4"
+        class="rounded-lg bg-black/5 p-4"
         @click="toEdit()"
         v-else
       >
@@ -41,7 +41,7 @@
     </div>
 
     <div
-      class="mt-2 text-right lg:mt-0 lg:ml-4 lg:flex-shrink-0"
+      class="mt-2 text-right lg:mt-0 lg:ml-4 lg:shrink-0"
       v-if="isOwner"
     >
       <!-- Card Actions -->
@@ -53,7 +53,7 @@
           class="b-reset-tw"
         >
           <div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
             <i class="material-icons text-lg text-op-teal">arrow_upward</i>
           </div>
@@ -66,7 +66,7 @@
           class="b-reset-tw"
         >
           <div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
             <i class="material-icons text-lg text-op-teal">arrow_downward</i>
           </div>
@@ -75,7 +75,7 @@
         <!-- Duplicate -->
         <o-button @click="forkItem" class="b-reset-tw" :disabled="isEdit">
           <div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
             <i class="material-icons text-lg text-op-teal">queue</i>
           </div>
@@ -84,7 +84,7 @@
         <!-- Delete -->
         <o-button @click="deleteItem" class="b-reset-tw" :disabled="isEdit">
           <div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
             <i class="material-icons text-lg text-red-700">delete</i>
           </div>

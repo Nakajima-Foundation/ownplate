@@ -40,7 +40,7 @@
           }}
         </div>
       </div>
-      <div class="mt-2 rounded-lg bg-white p-4 shadow">
+      <div class="mt-2 rounded-lg bg-white p-4 shadow-sm">
         <span class="font-bold">{{
           $t("admin.subAccounts.selectRestaurant")
         }}</span>
@@ -53,7 +53,7 @@
       <div class="text-center">
         <button @click="saveList">
           <div
-            class="mt-4 inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow min-w-32"
+            class="mt-4 inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow-sm min-w-32"
           >
             <span class="text-base font-bold text-white">{{
               $t("editCommon.save")

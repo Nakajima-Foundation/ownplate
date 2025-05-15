@@ -34,7 +34,7 @@
           <div
             v-for="(shop, k) in shopList"
             :key="k"
-            class="mt-2 rounded-lg bg-black bg-opacity-5"
+            class="mt-2 rounded-lg bg-black/5"
           >
             <div class="pl-4 pt-4">スマレジ登録店舗：{{ shop.storeName }}</div>
             <div class="pl-4 pt-2">
@@ -88,7 +88,7 @@
           <div class="mt-4">
             <button @click="saveShops" :disabled="isDuplicateError">
               <div
-                class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow min-w-32"
+                class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow-sm min-w-32"
               >
                 <span class="text-base font-bold text-white">{{
                   $t("editCommon.save")
@@ -102,7 +102,7 @@
           <div
             v-for="(shop, k) in shopList"
             :key="k"
-            class="mt-2 rounded-lg bg-black bg-opacity-5"
+            class="mt-2 rounded-lg bg-black/5"
           >
             <div class="pl-4 pt-4">
               <div class="text-base">
@@ -126,7 +126,7 @@
           <div class="mt-4">
             <button @click="isEdit = true">
               <div
-                class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow min-w-32"
+                class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow-sm min-w-32"
               >
                 <span class="text-base font-bold text-white">{{
                   $t("editCommon.edit")

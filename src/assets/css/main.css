@@ -1,3 +1,5 @@
+@reference "./tailwind.css";
+
 html {
   background-color: #f4f4f5;
 }
@@ -73,47 +75,47 @@ canvas {
 
 .validation_ok,
 .validation_ok:hover {
-  @apply bg-pink-500 bg-opacity-10 text-pink-500;
+  @apply bg-pink-500/10 text-pink-500;
 }
 
 .order_placed,
 .order_placed:hover {
-  @apply bg-yellow-500 bg-opacity-10 text-yellow-500;
+  @apply bg-yellow-500/10 text-yellow-500;
 }
 
 .order_accepted,
 .order_accepted:hover {
-  @apply bg-blue-500 bg-opacity-10 text-blue-500;
+  @apply bg-blue-500/10 text-blue-500;
 }
 
 .cooking_completed,
 .cooking_completed:hover {
-  @apply bg-green-600 bg-opacity-10 text-green-600;
+  @apply bg-green-600/10 text-green-600;
 }
 
 .ready_to_pickup,
 .ready_to_pickup:hover {
-  @apply bg-green-600 bg-opacity-10 text-green-600;
+  @apply bg-green-600/10 text-green-600;
 }
 
 .transaction_complete,
 .transaction_complete:hover {
-  @apply bg-purple-600 bg-opacity-10 text-purple-600;
+  @apply bg-purple-600/10 text-purple-600;
 }
 
 .transaction_hide,
 .transaction_hide:hover {
-  @apply bg-purple-600 bg-opacity-10 text-purple-600;
+  @apply bg-purple-600/10 text-purple-600;
 }
 
 .order_canceled,
 .order_canceled:hover {
-  @apply bg-black bg-opacity-5 text-black text-opacity-40;
+  @apply bg-black/5 text-black/40;
 }
 
 .order_refunded,
 .order_refunded:hover {
-  @apply bg-pink-500 bg-opacity-10 text-pink-500;
+  @apply bg-pink-500/10 text-pink-500;
 }
 
 .stripe_pending {

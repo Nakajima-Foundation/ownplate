@@ -1,7 +1,7 @@
 <template>
   <div>
     <a
-      class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-3"
+      class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-3"
       @click="openNotificationSettings()"
     >
       <i class="material-icons text-lg text-op-teal xs:mr-1">notifications</i>

@@ -5,7 +5,7 @@
     </div>
 
     <div
-      class="rounded-lg bg-white p-4 shadow"
+      class="rounded-lg bg-white p-4 shadow-sm"
       :class="unsetWarning ? 'border-2 border-solid border-red-700' : ''"
     >
       <!-- Warning Payment -->
@@ -13,7 +13,7 @@
         v-if="unsetWarning"
         class="mb-6 border-b-2 border-solid border-black border-opacity-10 pb-4"
       >
-        <div class="mt-2 rounded-lg bg-red-700 bg-opacity-5 px-4 py-2">
+        <div class="mt-2 rounded-lg bg-red-700/5 px-4 py-2">
           <span class="text-sm font-bold leading-none text-red-700">
             {{ $t("admin.payments.required") }}
           </span>
@@ -38,7 +38,7 @@
           <div class="mt-2 text-center">
             <a
               @click="handleLinkStripe"
-              class="cursor-pointer inline-flex h-12 items-center rounded-full bg-op-teal px-8 shadow"
+              class="cursor-pointer inline-flex h-12 items-center rounded-full bg-op-teal px-8 shadow-sm"
               ><span class="text-base font-bold text-white">{{
                 $t("admin.payments.connectStripe")
               }}</span></a
@@ -66,7 +66,7 @@
           <div class="mt-4 text-center">
             <a
               @click="handlePaymentAccountDisconnect"
-              class="cursor-pointer inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+              class="cursor-pointer inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
             >
               <i class="material-icons mr-2 text-lg text-red-700">link_off</i>
               <span class="text-sm font-bold text-red-700">{{
@@ -87,7 +87,7 @@
         <div class="text-base text-black text-opacity-60">
           {{ $t("admin.payments.pleaseCheck") }}
         </div>
-        <div class="mt-2 rounded-lg bg-red-700 bg-opacity-5 px-4 py-2">
+        <div class="mt-2 rounded-lg bg-red-700/5 px-4 py-2">
           <span class="text-sm leading-none text-red-700">{{
             $t("admin.payments.onsitePaymentNote")
           }}</span>

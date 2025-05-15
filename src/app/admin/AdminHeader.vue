@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex space-x-4">
-      <div class="flex-shrink-0">
+      <div class="shrink-0">
         <back-button
           :url="backLink"
           :iconText="iconText"
@@ -14,7 +14,7 @@
     <!-- Photo and Name -->
     <div class="mt-4 lg:mx-4 lg:mt-0 lg:flex lg:flex-1 lg:items-center">
       <div class="flex items-center">
-        <div class="mr-4 flex-shrink-0 rounded-full bg-black bg-opacity-10">
+        <div class="mr-4 shrink-0 rounded-full bg-black/10">
           <img
             :src="resizedProfileImage(shopInfo, '600')"
             class="h-9 w-9 rounded-full object-cover"
@@ -37,7 +37,7 @@
       >
         <div
           v-if="suspendUntil"
-          class="inline-flex h-9 items-center justify-center rounded-full bg-red-700 bg-opacity-5 px-4 mr-4"
+          class="inline-flex h-9 items-center justify-center rounded-full bg-red-700/5 px-4 mr-4"
         >
           <i class="material-icons mr-2 text-lg text-red-700"
             >remove_shopping_cart</i
@@ -49,7 +49,7 @@
 
         <div
           v-else
-          class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 mr-4"
+          class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4 mr-4"
         >
           <i class="material-icons mr-2 text-lg text-op-teal"
             >remove_shopping_cart</i

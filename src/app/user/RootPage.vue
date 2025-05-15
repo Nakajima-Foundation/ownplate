@@ -40,7 +40,7 @@
         <div v-for="like in likes" :key="like.restaurantId">
           <router-link :to="`/r/${like.restaurantId}`">
             <div class="flex items-center">
-              <div class="mr-4 h-12 w-12 rounded-full bg-black bg-opacity-10">
+              <div class="mr-4 h-12 w-12 rounded-full bg-black/10">
                 <img
                   :src="resizedProfileImage(like, '600')"
                   class="h-12 w-12 rounded-full object-cover"

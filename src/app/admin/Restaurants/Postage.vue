@@ -11,7 +11,7 @@
             {{ $t("editEC.postageList") }}
           </div>
 
-          <div class="rounded-lg bg-black bg-opacity-5 p-4">
+          <div class="rounded-lg bg-black/5 p-4">
             <div
               v-for="(state, key) in regionalSetting.AddressStates"
               class="flex"
@@ -30,7 +30,7 @@
           <div class="pb-2 text-sm font-bold">
             {{ $t("editEC.freeThreshold") }}
           </div>
-          <div class="rounded-lg bg-black bg-opacity-5 p-4">
+          <div class="rounded-lg bg-black/5 p-4">
             <div class="mb-2 flex">
               <o-checkbox v-model="enableFree" class="flex-item" />
               <span class="flex-item mt-auto mb-auto inline-block">
@@ -49,7 +49,7 @@
         <div class="mt-4 text-center">
           <o-button @click="savePostage" class="b-reset-tw">
             <div
-              class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
+              class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow-sm"
               style="min-width: 8rem"
             >
               <span class="text-base font-bold text-white">{{

@@ -9,7 +9,7 @@
         </div>
         <div v-else>
           <div class="text-center">
-            <i class="material-icons !text-5xl text-red-700">warning</i>
+            <i class="material-icons text-5xl! text-red-700">warning</i>
           </div>
 
           <!-- Error Message -->
@@ -25,7 +25,7 @@
             <!-- Buttons -->
             <div class="mt-4 text-center">
               <div
-                class="inline-flex h-12 min-h-[36px] min-w-[128px] cursor-pointer items-center justify-center rounded-full bg-black bg-opacity-5 px-6 text-base font-bold text-black opacity-60"
+                class="inline-flex h-12 min-h-[36px] min-w-[128px] cursor-pointer items-center justify-center rounded-full bg-black/5 px-6 text-base font-bold text-black opacity-60"
                 @click="close"
               >
                 {{ $t("menu.close") }}
@@ -49,7 +49,7 @@
             <!-- Buttons -->
             <div class="mt-4 text-center">
               <div
-                class="mr-4 inline-flex h-12 min-h-[36px] min-w-[128px] cursor-pointer items-center justify-center rounded-full bg-black bg-opacity-5 px-6 text-base font-bold text-black opacity-60"
+                class="mr-4 inline-flex h-12 min-h-[36px] min-w-[128px] cursor-pointer items-center justify-center rounded-full bg-black/5 px-6 text-base font-bold text-black opacity-60"
                 @click="close"
               >
                 {{ $t("menu.no") }}
