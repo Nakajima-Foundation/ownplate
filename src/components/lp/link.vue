@@ -20,26 +20,25 @@
         </a>
       </div>
 
-      <!-- Twitter -->
+      <!-- X -->
       <div class="inline-block px-1 pb-2">
-        <a href="https://twitter.com/omochikaericom" target="_blank">
+        <a href="https://x.com/omochikaericom" target="_blank">
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-white bg-opacity-80 px-4 hover:bg-opacity-100"
           >
-            <i class="fab fa-twitter mr-2 text-lg text-op-teal"></i>
-            <span class="text-sm font-bold text-op-teal"> Twitter </span>
+            <i class="fab fa-x-twitter mr-2 text-lg text-op-teal"></i>
+            <span class="text-sm font-bold text-op-teal">(Twitter)</span>
           </div>
         </a>
       </div>
 
-      <!-- Twitter -->
+      <!-- Note -->
       <div class="inline-block px-1 pb-2">
         <a href="https://note.com/singsoc/m/m19dd935e84e4" target="_blank">
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-white bg-opacity-80 px-4 hover:bg-opacity-100"
           >
-            <i class="material-icons mr-2 text-lg text-op-teal">mail_outline</i>
-            <span class="text-sm font-bold text-op-teal"> Note </span>
+            <span class="text-sm font-bold text-op-teal">Note</span>
           </div>
         </a>
       </div>

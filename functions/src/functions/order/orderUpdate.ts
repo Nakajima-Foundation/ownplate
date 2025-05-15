@@ -139,11 +139,13 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
         // customer
         if (payment_method && order.isSavePay && stripeSystem) {
           const { card } = payment_method_details;
-          const { exp_month, exp_year, brand, last4 } = card;
-          await transaction.set(stripeReadOnlyRef, {
-            card: { exp_month, exp_year, brand, last4 },
-            updatedAt: admin.firestore.FieldValue.serverTimestamp(),
-          });
+          if (card) {
+            const { exp_month, exp_year, brand, last4 } = card;
+            await transaction.set(stripeReadOnlyRef, {
+              card: { exp_month, exp_year, brand, last4 },
+              updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+            });
+          }
           const stripe = utils.get_stripe_v2();
           const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
           await stripe.paymentMethods.attach(
