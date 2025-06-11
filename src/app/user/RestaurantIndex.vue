@@ -31,7 +31,7 @@
     <template v-for="(state, k) in allArea" :key="k">
       <div v-if="restaurantsObj[state]">
         <div
-          class="mx-6 mt-2 mb-2 text-base font-bold text-black text-opacity-40"
+          class="mx-6 mt-2 mb-2 text-base font-bold text-black/40"
         >
           {{ state }}
         </div>

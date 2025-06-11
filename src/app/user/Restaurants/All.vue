@@ -13,7 +13,7 @@
       </router-link>
     </div>
 
-    <div class="mx-6 mt-4 text-xl font-bold text-black text-opacity-40">
+    <div class="mx-6 mt-4 text-xl font-bold text-black/40">
       {{ $t("find.areaAll") }}
     </div>
 
@@ -21,7 +21,7 @@
     <template v-for="(state, k) in allArea">
       <div v-if="restaurantsObj[state]" :key="k">
         <div
-          class="mx-6 mt-4 mb-2 text-base font-bold text-black text-opacity-40"
+          class="mx-6 mt-4 mb-2 text-base font-bold text-black/40"
         >
           {{ state }}
         </div>

@@ -8,7 +8,7 @@
       />
     </div>
 
-    <div class="mx-6 mt-4 text-xl font-bold text-black text-opacity-40">
+    <div class="mx-6 mt-4 text-xl font-bold text-black/40">
       {{ $t("find.likes") }}
     </div>
 
@@ -19,7 +19,7 @@
         <div
           class="mx-6 mt-2 rounded-xl border-2 border-dashed border-black border-opacity-10 p-4 text-center"
         >
-          <span class="text-base text-black text-opacity-40">
+          <span class="text-base text-black/40">
             {{ $t("find.noLikes") }}</span
           >
         </div>

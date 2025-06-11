@@ -1,7 +1,7 @@
 i
 <template>
   <div>
-    <div class="mb-2 text-sm font-bold text-black text-opacity-60">
+    <div class="mb-2 text-sm font-bold text-black/60">
       {{ $t("admin.order.incompleteOrders") }}
     </div>
 

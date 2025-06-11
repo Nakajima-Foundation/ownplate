@@ -49,7 +49,7 @@
     </div>
 
     <div class="shrink-0 text-right">
-      <span class="text-base font-bold text-black text-opacity-30">
+      <span class="text-base font-bold text-black/30">
         <s v-if="editable && !available">
           {{ $n(totalPrice, "currency") }}
         </s>

@@ -7,7 +7,7 @@
   >
     <div class="mx-2 my-6 rounded-lg bg-white p-6 text-left shadow-lg">
       <!-- Title -->
-      <div class="text-xl font-bold text-black text-opacity-40">
+      <div class="text-xl font-bold text-black/40">
         {{ $t("admin.order.notification") }}
       </div>
 
@@ -24,7 +24,7 @@
 
         <!-- Settings -->
         <div class="mt-2">
-          <div class="mb-2 text-sm font-bold text-black text-opacity-60">
+          <div class="mb-2 text-sm font-bold text-black/60">
             {{ $t("admin.order.notificationSettings") }}
           </div>
 
@@ -76,10 +76,10 @@
                   class="mr-2 mb-2 inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                 >
                   <i
-                    class="material-icons mr-2 text-lg text-black text-opacity-30"
+                    class="material-icons mr-2 text-lg text-black/30"
                     >looks_one</i
                   >
-                  <span class="text-sm font-bold text-black text-opacity-30">
+                  <span class="text-sm font-bold text-black/30">
                     {{ $t("admin.order.infinityNotificationOff") }}
                   </span>
                 </div>
@@ -90,10 +90,10 @@
                   class="mr-2 mb-2 inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                 >
                   <i
-                    class="material-icons mr-2 text-lg text-black text-opacity-30"
+                    class="material-icons mr-2 text-lg text-black/30"
                     >repeat</i
                   >
-                  <span class="text-sm font-bold text-black text-opacity-30">
+                  <span class="text-sm font-bold text-black/30">
                     {{ $t("admin.order.infinityNotificationOn") }}
                   </span>
                 </div>
@@ -160,7 +160,7 @@
           class="inline-flex h-12 items-center justify-center rounded-full bg-black/5 px-6"
           style="min-width: 8rem"
         >
-          <div class="text-base font-bold text-black text-opacity-60">
+          <div class="text-base font-bold text-black/60">
             {{ $t("menu.close") }}
           </div>
         </a>

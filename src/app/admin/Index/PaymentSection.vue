@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="mb-2 text-xl font-bold text-black text-opacity-40">
+    <div class="mb-2 text-xl font-bold text-black/40">
       {{ $t("admin.payment") }}
     </div>
 
@@ -22,10 +22,10 @@
 
       <!-- Online Payment -->
       <div>
-        <div class="pb-2 text-base font-bold text-black text-opacity-60">
+        <div class="pb-2 text-base font-bold text-black/60">
           {{ $t("admin.payments.onlinePayment") }}
         </div>
-        <div class="text-base text-black text-opacity-60">
+        <div class="text-base text-black/60">
           {{ $t("admin.payments.pleaseConnect") }}
         </div>
 
@@ -81,10 +81,10 @@
       <div
         class="mt-4 border-t-2 border-solid border-black border-opacity-10 pt-4"
       >
-        <div class="pb-2 text-base font-bold text-black text-opacity-60">
+        <div class="pb-2 text-base font-bold text-black/60">
           {{ $t("admin.payments.onsitePayment") }}
         </div>
-        <div class="text-base text-black text-opacity-60">
+        <div class="text-base text-black/60">
           {{ $t("admin.payments.pleaseCheck") }}
         </div>
         <div class="mt-2 rounded-lg bg-red-700/5 px-4 py-2">
@@ -93,7 +93,7 @@
           }}</span>
         </div>
 
-        <div class="mt-5 text-center font-bold text-black text-opacity-60">
+        <div class="mt-5 text-center font-bold text-black/60">
           <o-checkbox v-model="inStorePayment">
             {{ $t("admin.payments.enableOnsitePayment") }}
           </o-checkbox>

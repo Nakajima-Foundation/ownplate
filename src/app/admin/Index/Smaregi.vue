@@ -1,7 +1,7 @@
 <template>
   <!-- Smaregi -->
   <div class="mt-4">
-    <div class="mb-2 text-xl font-bold text-black text-opacity-40">
+    <div class="mb-2 text-xl font-bold text-black/40">
       {{ $t("admin.thirdPartyService.title") }}
     </div>
 

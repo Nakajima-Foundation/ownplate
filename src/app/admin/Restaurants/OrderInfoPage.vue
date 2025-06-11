@@ -430,7 +430,7 @@
           <div class="grid grid-cols-1 space-y-4">
             <!-- Message from customer -->
             <div v-if="hasMemo" class="rounded-lg bg-white p-4 shadow-sm">
-              <div class="text-xs font-bold text-black text-opacity-60">
+              <div class="text-xs font-bold text-black/60">
                 {{ $t("admin.order.messageFromCustomer") }}
               </div>
               <div class="mt-2 text-base">

@@ -210,7 +210,7 @@
       <!-- promotion discount -->
       <template v-if="promotion?.paymentRestrictions">
         <!-- おもちかえりの場合は以下のメッセージを表示-->
-        <span class="text-sm font-bold text-opacity-40 text-black">
+        <span class="text-sm font-bold text-black/40">
           {{ $t("order.discountAlert." + promotion.paymentRestrictions) }}
         </span>
       </template>

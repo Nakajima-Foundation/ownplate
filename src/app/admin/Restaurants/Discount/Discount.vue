@@ -28,7 +28,7 @@
         @click="cancel"
         class="inline-flex h-12 items-center rounded-full bg-black/5 px-6"
       >
-        <span class="text-base font-bold text-black text-opacity-60">
+        <span class="text-base font-bold text-black/60">
           {{ $t("button.cancel") }}
         </span>
       </button>
@@ -194,7 +194,7 @@
           @click="cancel"
           class="inline-flex h-12 items-center rounded-full bg-black/5 px-6"
         >
-          <span class="text-base font-bold text-black text-opacity-60">
+          <span class="text-base font-bold text-black/60">
             {{ $t("button.cancel") }}
           </span>
         </button>

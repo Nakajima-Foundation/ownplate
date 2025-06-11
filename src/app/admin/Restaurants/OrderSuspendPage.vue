@@ -18,12 +18,12 @@
       />
 
       <!-- Title -->
-      <div class="mx-6 mt-4 text-xl font-bold text-black text-opacity-30">
+      <div class="mx-6 mt-4 text-xl font-bold text-black/30">
         {{ $t("admin.order.suspendSettings") }}
       </div>
 
       <!-- Date -->
-      <div class="mx-6 mt-4 text-sm font-bold text-black text-opacity-60">
+      <div class="mx-6 mt-4 text-sm font-bold text-black/60">
         {{ $t("admin.order.suspendNewOrders") }}
         <span v-if="date">: {{ $d(date.date, "short") }}</span>
       </div>

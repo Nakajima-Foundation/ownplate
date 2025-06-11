@@ -11,10 +11,8 @@
           <div
             class="inline-flex h-10 items-center justify-center rounded-full bg-white/10 px-4"
           >
-            <i
-              class="fab fa-facebook mr-2 text-lg text-white text-opacity-50"
-            ></i>
-            <span class="text-sm font-bold text-white text-opacity-80">{{
+            <i class="fab fa-facebook mr-2 text-lg text-white/50"></i>
+            <span class="text-sm font-bold text-white/80">{{
               $t("admin.facebookUserGroup")
             }}</span>
           </div>
@@ -27,12 +25,8 @@
           <div
             class="inline-flex h-10 items-center justify-center rounded-full bg-white/10 px-4"
           >
-            <i
-              class="fab fa-x-twitter mr-2 text-lg text-white text-opacity-50"
-            />
-            <span class="text-sm font-bold text-white text-opacity-80">
-              Post
-            </span>
+            <i class="fab fa-x-twitter mr-2 text-lg text-white/50" />
+            <span class="text-sm font-bold text-white/80"> Post </span>
           </div>
         </a>
       </div>
@@ -43,12 +37,10 @@
           <div
             class="inline-flex h-10 items-center justify-center rounded-full bg-white/10 px-4"
           >
-            <i class="material-icons mr-2 text-lg text-white text-opacity-50"
+            <i class="material-icons mr-2 text-lg text-white/50"
               >mail_outline</i
             >
-            <span class="text-sm font-bold text-white text-opacity-80">
-              Note
-            </span>
+            <span class="text-sm font-bold text-white/80"> Note </span>
           </div>
         </a>
       </div>
@@ -60,16 +52,12 @@
           class="inline-flex h-10 items-center justify-center rounded-full bg-white/10 pl-4 pr-2 cursor-pointer"
           @click="openLang()"
         >
-          <i class="material-icons mr-2 text-lg text-white text-opacity-50"
-            >language</i
-          >
-          <span class="mr-2 text-sm font-bold text-white text-opacity-80">{{
+          <i class="material-icons mr-2 text-lg text-white/50">language</i>
+          <span class="mr-2 text-sm font-bold text-white/80">{{
             languages[language]
           }}</span>
 
-          <i class="material-icons text-lg text-white text-opacity-50"
-            >arrow_drop_down</i
-          >
+          <i class="material-icons text-lg text-white/50">arrow_drop_down</i>
         </a>
       </div>
       <div class="mt-2 text-right">
@@ -79,7 +67,7 @@
     <!-- Language Popup-->
     <o-modal v-model:active="langPopup" :width="488" scroll="keep">
       <div class="my-6 mx-2 rounded-lg bg-white p-6 shadow-lg">
-        <div class="text-xl font-bold text-black text-opacity-40">
+        <div class="text-xl font-bold text-black/40">
           {{ $t("menu.selectLanguage") }}
         </div>
 
@@ -89,7 +77,7 @@
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4 cursor-pointer"
             @click="changeLangAndClose(lang_key)"
             ><i
-              class="material-icons mr-2 text-lg text-black text-opacity-60"
+              class="material-icons mr-2 text-lg text-black/60"
               v-if="lang_key == language"
               >check</i
             ><span class="text-sm font-bold text-op-teal">{{ lang }}</span></a
@@ -102,7 +90,7 @@
             class="inline-flex h-12 items-center justify-center rounded-full bg-black/5 cursor-pointer"
             style="min-width: 10rem"
             @click="closeLang()"
-            ><span class="px-4 font-bold text-black text-opacity-60"
+            ><span class="px-4 font-bold text-black/60"
               >{{ $t("menu.close") }}
             </span></a
           >

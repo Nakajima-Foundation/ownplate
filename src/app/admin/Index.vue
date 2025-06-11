@@ -73,7 +73,7 @@
     >
       <div>
         <div class="pb-2">
-          <span class="mb-2 text-xl font-bold text-black text-opacity-40">
+          <span class="mb-2 text-xl font-bold text-black/40">
             {{ $t("admin.messages.title") }}
           </span>
         </div>
@@ -101,7 +101,7 @@
       <!-- Restaurants -->
       <div>
         <div class="pb-2">
-          <span class="mb-2 text-xl font-bold text-black text-opacity-40">
+          <span class="mb-2 text-xl font-bold text-black/40">
             {{ $t("admin.restaurant") }}
           </span>
         </div>

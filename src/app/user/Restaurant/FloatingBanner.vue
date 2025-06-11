@@ -36,7 +36,7 @@
           </div>
 
           <div v-if="v.hasTerm">
-            <div class="text-sm text-black text-opacity-40 font-bold mt-3">
+            <div class="text-sm text-black/40 font-bold mt-3">
               {{ $t("promotion.period") }}
             </div>
             <div class="mt-0.5">
@@ -48,7 +48,7 @@
             </div>
           </div>
 
-          <div class="text-sm text-black text-opacity-40 font-bold mt-2">
+          <div class="text-sm text-black/40 font-bold mt-2">
             {{ $t("promotion.terms") }}
           </div>
           <ul class="list-disc list-outside mt-0.5">

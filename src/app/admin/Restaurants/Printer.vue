@@ -54,7 +54,7 @@
         >
           <div class="pb-2 text-sm font-bold">
             IP Address
-            <span class="text-sx text-opacity-20 text-black">if need</span>
+            <span class="text-sx text-black/20">if need</span>
           </div>
           <o-input v-model="ipaddress"></o-input>
         </div>

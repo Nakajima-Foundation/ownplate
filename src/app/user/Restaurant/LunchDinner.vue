@@ -11,7 +11,7 @@
         :class="
           modelValue === 'lunch'
             ? 'border-2 border-op-teal text-op-teal'
-            : 'cursor-pointer text-black text-opacity-40'
+            : 'cursor-pointer text-black/40'
         "
         @click="input('lunch')"
       >
@@ -26,7 +26,7 @@
         :class="
           modelValue === 'dinner'
             ? 'border-2 border-op-teal text-op-teal'
-            : 'cursor-pointer text-black text-opacity-40'
+            : 'cursor-pointer text-black/40'
         "
         @click="input('dinner')"
       >

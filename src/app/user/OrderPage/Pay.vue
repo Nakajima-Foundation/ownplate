@@ -34,7 +34,7 @@
       <!-- Left -->
       <div>
         <!-- Title -->
-        <div class="text-xl font-bold text-black text-opacity-30">
+        <div class="text-xl font-bold text-black/30">
           <div>
             {{ $t("order.confirmOrder") }}
           </div>
@@ -55,7 +55,7 @@
         <div>
           <!-- Payment -->
           <div class="mt-2">
-            <div class="text-xl font-bold text-black text-opacity-30">
+            <div class="text-xl font-bold text-black/30">
               {{ $t("order.yourPayment") }}
             </div>
 

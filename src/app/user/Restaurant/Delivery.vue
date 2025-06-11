@@ -11,7 +11,7 @@
         :class="
           modelValue === 'delivery'
             ? 'border-2 border-op-teal text-op-teal'
-            : 'cursor-pointer text-black text-opacity-40'
+            : 'cursor-pointer text-black/40'
         "
         @click="$emit('update:modelValue', 'delivery')"
       >
@@ -32,7 +32,7 @@
         :class="
           modelValue === 'takeout'
             ? 'border-2 border-op-teal text-op-teal'
-            : 'cursor-pointer text-black text-opacity-40'
+            : 'cursor-pointer text-black/40'
         "
         @click="$emit('update:modelValue', 'takeout')"
       >
@@ -50,7 +50,7 @@
         :class="
           modelValue === 'delivery'
             ? 'border-2 border-op-teal text-op-teal'
-            : 'cursor-pointer text-black text-opacity-40'
+            : 'cursor-pointer text-black/40'
         "
         @click="$emit('update:modelValue', 'delivery')"
       >

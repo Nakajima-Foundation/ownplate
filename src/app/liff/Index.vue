@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="mx-6 mt-4 text-xl font-bold text-black text-opacity-40">
+    <div class="mx-6 mt-4 text-xl font-bold text-black/40">
       {{ $t("find.areaAll") }}
     </div>
     <!-- Restaurants -->

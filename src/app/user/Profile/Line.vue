@@ -4,7 +4,7 @@
     <div class="mt-2 rounded-lg bg-black/5 p-4">
       <!-- LINE Status -->
       <div class="text-center">
-        <div class="text-sm font-bold text-black text-opacity-30">
+        <div class="text-sm font-bold text-black/30">
           {{ $t("profile.lineConnection") }}
         </div>
 
@@ -19,7 +19,7 @@
       <div v-if="isLineUser || isLiffUser">
         <!-- Friend Status -->
         <div class="mt-4 text-center">
-          <div class="text-sm font-bold text-black text-opacity-30">
+          <div class="text-sm font-bold text-black/30">
             {{ $t("profile.lineFriend") }}
           </div>
 

@@ -15,7 +15,7 @@
     </div>
 
     <!-- Title -->
-    <div class="mx-6 mt-2 text-xl font-bold text-black text-opacity-40">
+    <div class="mx-6 mt-2 text-xl font-bold text-black/40">
       {{ $t("admin.news.title") }}
     </div>
 

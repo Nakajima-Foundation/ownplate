@@ -17,7 +17,7 @@
         <!-- Title -->
         <div
           v-if="lineUsers.length > 0"
-          class="text-xl font-bold text-black text-opacity-30"
+          class="text-xl font-bold text-black/30"
         >
           {{ $t("admin.order.lineUsers") }}
         </div>
@@ -36,7 +36,7 @@
               :class="
                 lineUser.notify
                   ? 'text-green-600'
-                  : 'text-black text-opacity-30'
+                  : 'text-black/30'
               "
             >
               <!-- Checkbox UI -->

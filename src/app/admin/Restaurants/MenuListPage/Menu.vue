@@ -29,7 +29,7 @@
               <div v-if="soldOut" class="text-sm font-bold text-red-700">
                 {{ $t("admin.itemSoldOut") }}
               </div>
-              <div v-else class="text-sm font-bold text-black text-opacity-30">
+              <div v-else class="text-sm font-bold text-black/30">
                 {{ $t("admin.itemSoldOut") }}
               </div>
             </o-checkbox>
@@ -42,7 +42,7 @@
               <div v-if="soldOut" class="text-sm font-bold text-red-700">
                 {{ $t("admin.itemSoldOutToday") }}
               </div>
-              <div v-else class="text-sm font-bold text-black text-opacity-30">
+              <div v-else class="text-sm font-bold text-black/30">
                 {{ $t("admin.itemSoldOutToday") }}
               </div>
             </o-checkbox>
@@ -61,18 +61,18 @@
             </div>
           </div>
           <div class="p-4">
-            <div class="text-xl font-bold text-black text-opacity-80">
+            <div class="text-xl font-bold text-black/80">
               <span>{{ menuitem.itemName }}</span>
               <span v-if="shopInfo.enableLunchDinner">
                 / <LunchDinnerIcon :item="menuitem" />
               </span>
             </div>
-            <div class="mt-2 text-base text-black text-opacity-80">
+            <div class="mt-2 text-base text-black/80">
               <Price :shopInfo="shopInfo" :menu="menuitem" />
             </div>
 
             <!-- # Remove the description part to make the list length shorter -->
-            <!-- <div class="mt-2 text-sm text-black text-opacity-60">
+            <!-- <div class="mt-2 text-sm text-black/60">
             {{ menuitem.itemDescription }}
            </div> -->
           </div>

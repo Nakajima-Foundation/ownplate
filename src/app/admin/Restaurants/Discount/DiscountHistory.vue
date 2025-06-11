@@ -38,7 +38,7 @@
     <div class="mx-6 mt-4">
       <div
         v-if="histories.length === 0"
-        class="mt-8 text-black text-opacity-30 font-bold"
+        class="mt-8 text-black/30 font-bold"
       >
         {{ $t("admin.promotion.noHistory") }}
       </div>
@@ -46,7 +46,7 @@
         <div v-for="(h, k) in histories" :key="k">
           <div class="rounded-lg bg-white p-4 shadow-sm mb-2">
             <div class="mt-1 flex items-center">
-              <div class="text-sm text-black text-opacity-40 font-bold">
+              <div class="text-sm text-black/40 font-bold">
                 {{ $t("admin.promotion.uid") }}:
               </div>
               <div class="ml-1">
@@ -60,7 +60,7 @@
             </div>
 
             <div class="mt-1 flex items-center" v-if="false">
-              <div class="text-sm text-black text-opacity-40 font-bold">
+              <div class="text-sm text-black/40 font-bold">
                 {{ $t("admin.promotion.rid") }}:
               </div>
               <div class="ml-1">
@@ -69,7 +69,7 @@
             </div>
 
             <div class="mt-1 flex items-center" v-if="false">
-              <div class="text-sm text-black text-opacity-40 font-bold">
+              <div class="text-sm text-black/40 font-bold">
                 {{ $t("admin.promotion.pid") }}:
               </div>
               <div class="ml-1">
@@ -78,7 +78,7 @@
             </div>
 
             <div class="mt-1 flex items-center">
-              <div class="text-sm text-black text-opacity-40 font-bold">
+              <div class="text-sm text-black/40 font-bold">
                 {{ $t("admin.promotion.oid") }}:
               </div>
               <div class="ml-1">
@@ -92,7 +92,7 @@
             </div>
 
             <div class="mt-1 flex items-center">
-              <div class="text-sm text-black text-opacity-40 font-bold">
+              <div class="text-sm text-black/40 font-bold">
                 {{ $t("admin.promotion.date") }}:
               </div>
               <div class="ml-1">
@@ -101,7 +101,7 @@
             </div>
 
             <div class="mt-1 flex items-center">
-              <div class="text-sm text-black text-opacity-40 font-bold">
+              <div class="text-sm text-black/40 font-bold">
                 {{ $t("admin.promotion.total") }}:
               </div>
               <div class="ml-1">
@@ -110,7 +110,7 @@
             </div>
 
             <div class="mt-1 flex items-center">
-              <div class="text-sm text-black text-opacity-40 font-bold">
+              <div class="text-sm text-black/40 font-bold">
                 {{ $t("admin.promotion.discountPrice") }}:
               </div>
               <div class="ml-1">

@@ -31,16 +31,16 @@
 
       <!-- Body -->
       <div class="mx-auto mt-4 max-w-(--breakpoint-md) px-6 text-base">
-        <div class="text-xl font-bold text-black text-opacity-30">
+        <div class="text-xl font-bold text-black/30">
           {{ news.title }}
         </div>
 
-        <div class="mt-2 text-base font-bold text-black text-opacity-30">
+        <div class="mt-2 text-base font-bold text-black/30">
           {{ news.date.replace(/\-/g, ".") }}
         </div>
 
         <div
-          class="article-list mt-2 text-base font-bold text-black text-opacity-30"
+          class="article-list mt-2 text-base font-bold text-black/30"
           v-html="md.render(news.markdown)"
         />
       </div>

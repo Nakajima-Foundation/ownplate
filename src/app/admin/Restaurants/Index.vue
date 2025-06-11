@@ -25,7 +25,7 @@
           <div
             class="inline-flex h-12 items-center rounded-full bg-black/5 px-6"
           >
-            <span class="text-base font-bold text-black text-opacity-60">{{
+            <span class="text-base font-bold text-black/60">{{
               $t("button.cancel")
             }}</span>
           </div>
@@ -262,7 +262,7 @@
             </div>
 
             <!-- Description -->
-            <div class="pt-2 text-sm text-black text-opacity-60">
+            <div class="pt-2 text-sm text-black/60">
               {{ $t("editCommon.clickAndUploadDetail") }}
             </div>
           </div>
@@ -308,7 +308,7 @@
               </div>
             </div>
             <!-- Description -->
-            <div class="pt-2 text-sm text-black text-opacity-60">
+            <div class="pt-2 text-sm text-black/60">
               {{ $t("editCommon.clickAndUploadDetail") }}
             </div>
           </div>
@@ -956,7 +956,7 @@
               </div>
 
               <div class="rounded-lg bg-black/5 p-4 pb-2">
-                <div class="mb-2 text-sm font-bold text-black text-opacity-40">
+                <div class="mb-2 text-sm font-bold text-black/40">
                   {{ $t("shopInfo.temporaryClosureDescription") }}
                 </div>
 
@@ -1058,7 +1058,7 @@
           <div
             class="inline-flex h-12 items-center rounded-full bg-black/5 px-6"
           >
-            <span class="text-base font-bold text-black text-opacity-60">{{
+            <span class="text-base font-bold text-black/60">{{
               $t("button.cancel")
             }}</span>
           </div>

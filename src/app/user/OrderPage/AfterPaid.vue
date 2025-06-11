@@ -88,7 +88,7 @@
       <!-- Left -->
       <div>
         <!-- Title -->
-        <div class="text-xl font-bold text-black text-opacity-30">
+        <div class="text-xl font-bold text-black/30">
           {{ $t("order.yourOrder") + ": " + orderName }}
         </div>
 
@@ -120,7 +120,7 @@
         <!-- Your Message to the Restaurant -->
         <template v-if="hasMemo">
           <div class="mt-4 rounded-lg bg-white p-4 shadow-sm">
-            <div class="text-xs font-bold text-black text-opacity-60">
+            <div class="text-xs font-bold text-black/60">
               {{ $t("order.orderMessage") }}
             </div>
             <div class="mt-1 text-base">{{ orderInfo.memo }}</div>
@@ -162,7 +162,7 @@
       <div class="mt-4 lg:mt-0">
         <!-- Restaurant Info -->
         <div>
-          <div class="text-xl font-bold text-black text-opacity-30">
+          <div class="text-xl font-bold text-black/30">
             {{
               shopInfo.isEC
                 ? $t("shopInfo.ecShopDetails")
@@ -182,7 +182,7 @@
 
         <!-- QR Code -->
         <div class="mt-2" v-if="!shopInfo.isEC">
-          <div class="text-xl font-bold text-black text-opacity-30">
+          <div class="text-xl font-bold text-black/30">
             {{ $t("order.adminQRCode") }}
           </div>
 

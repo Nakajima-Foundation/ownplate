@@ -26,7 +26,7 @@
           <div
             class="inline-flex h-12 items-center rounded-full bg-black/5 px-6"
           >
-            <span class="text-base font-bold text-black text-opacity-60">{{
+            <span class="text-base font-bold text-black/60">{{
               $t("button.cancel")
             }}</span>
           </div>
@@ -248,14 +248,14 @@
               <div class="rounded-lg bg-black/5 p-4">
                 <div>
                   <o-checkbox v-model="menuInfo.availableLunch">
-                    <div class="text-sm font-bold text-black text-opacity-60">
+                    <div class="text-sm font-bold text-black/60">
                       {{ $t("shopInfo.lunch") }}
                     </div>
                   </o-checkbox>
                 </div>
                 <div class="mt-2">
                   <o-checkbox v-model="menuInfo.availableDinner">
-                    <div class="text-sm font-bold text-black text-opacity-60">
+                    <div class="text-sm font-bold text-black/60">
                       {{ $t("shopInfo.dinner") }}
                     </div>
                   </o-checkbox>
@@ -341,7 +341,7 @@
             </div>
 
             <!-- Description -->
-            <div class="pt-2 text-sm text-black text-opacity-60">
+            <div class="pt-2 text-sm text-black/60">
               {{ $t("editCommon.clickAndUploadDetail") }}
             </div>
           </div>
@@ -372,7 +372,7 @@
             <div class="mt-4 flex">
               <!-- ToDo 以下のボタンを押すと写真選択のウィンドウが立ち上がり、複数選択&アップロードできる -->
               <o-button class="b-reset-tw mr-2">
-                <!-- ToDo 写真が4枚アップロード済みの時はボタンをグレーアウト、"text-op-teal" → "text-black text-opacity-20" を適用 -->
+                <!-- ToDo 写真が4枚アップロード済みの時はボタンをグレーアウト、"text-op-teal" → "text-black/20" を適用 -->
                 <div
                   class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4 text-op-teal"
                 >
@@ -452,7 +452,7 @@
                 <!-- Option Preview -->
                 <div class="rounded-lg bg-black/5 p-4">
                   <div
-                    class="mb-2 flex text-xs font-bold text-black text-opacity-30"
+                    class="mb-2 flex text-xs font-bold text-black/30"
                   >
                     <div class="flex-1">
                       {{ $t("editMenu.optionsPreview") }}
@@ -468,7 +468,7 @@
                     <div class="flex-1">
                       <o-checkbox v-if="itemOptions[key].length == 1" disabled>
                         <div
-                          class="text-sm font-bold text-black text-opacity-60"
+                          class="text-sm font-bold text-black/60"
                         >
                           {{ displayOption(opt, shopInfo, menuInfo) }}
                         </div>
@@ -480,13 +480,13 @@
                         disabled
                       >
                         <div
-                          class="text-sm font-bold text-black text-opacity-60"
+                          class="text-sm font-bold text-black/60"
                         >
                           {{ displayOption(opt, shopInfo, menuInfo) }}
                         </div>
                       </o-radio>
                     </div>
-                    <div class="text-sm font-bold text-black text-opacity-60">
+                    <div class="text-sm font-bold text-black/60">
                       {{ displayOptionPrice(opt) }}
                     </div>
                   </div>
@@ -526,7 +526,7 @@
               <div>
                 <div class="mb-2 flex items-center">
                   <div
-                    class="flex-1 text-sm font-bold text-black text-opacity-60"
+                    class="flex-1 text-sm font-bold text-black/60"
                   >
                     {{ $t("editMenu.category1") }}
                   </div>
@@ -563,7 +563,7 @@
               <div>
                 <div class="mb-2 flex items-center">
                   <div
-                    class="flex-1 text-sm font-bold text-black text-opacity-60"
+                    class="flex-1 text-sm font-bold text-black/60"
                   >
                     {{ $t("editMenu.category2") }}
                   </div>
@@ -640,7 +640,7 @@
           <div
             class="inline-flex h-12 items-center rounded-full bg-black/5 px-6"
           >
-            <span class="text-base font-bold text-black text-opacity-60">{{
+            <span class="text-base font-bold text-black/60">{{
               $t("button.cancel")
             }}</span>
           </div>

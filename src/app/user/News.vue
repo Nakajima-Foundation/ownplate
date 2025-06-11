@@ -83,7 +83,7 @@ export default defineComponent({
 
 /*
   /deep/ .article-list h2 {
-  @apply text-xl font-bold text-black text-opacity-30 mb-8;
+  @apply text-xl font-bold text-black/30 mb-8;
 }
 
 /deep/ .article-list ul {
@@ -95,7 +95,7 @@ export default defineComponent({
 }
 
 /deep/ .article-list > ul > li {
-  @apply text-xl font-bold text-black text-opacity-30;
+  @apply text-xl font-bold text-black/30;
 }
 
 /deep/ .article-list > ul > li:not(:first-child) {

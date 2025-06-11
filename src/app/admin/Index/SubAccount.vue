@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div class="mb-2 text-xl font-bold text-black text-opacity-40">
+    <div class="mb-2 text-xl font-bold text-black/40">
       {{ $t("admin.subAccounts.title") }}
     </div>
 
     <div class="rounded-lg bg-white p-4 shadow-sm">
-      <div class="text-base text-black text-opacity-60">
+      <div class="text-base text-black/60">
         {{ $t("admin.subAccounts.description") }}
       </div>
       <div class="mt-4 text-center">

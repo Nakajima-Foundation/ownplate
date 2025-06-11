@@ -148,7 +148,7 @@
             :class="
               shopInfo.emailNotification
                 ? 'text-green-600'
-                : 'text-black text-opacity-40'
+                : 'text-black/40'
             "
           >
             <div class="text-sm font-bold">
@@ -165,7 +165,7 @@
             :class="
               shopInfo.phoneCall
                 ? 'text-green-600'
-                : 'text-black text-opacity-40'
+                : 'text-black/40'
             "
           >
             <div class="text-sm font-bold">
@@ -180,7 +180,7 @@
         <router-link :to="'/admin/restaurants/' + restaurantid + '/linelist'">
           <div
             :class="
-              lineEnable ? 'text-green-600' : 'text-black text-opacity-40'
+              lineEnable ? 'text-green-600' : 'text-black/40'
             "
           >
             <div class="text-sm font-bold">
@@ -279,7 +279,7 @@
         <!-- On Directory -->
         <div v-if="shopInfo.onTheList" class="mt-4 text-center">
           <div>
-            <span class="text-sm font-bold text-black text-opacity-40"
+            <span class="text-sm font-bold text-black/40"
               >{{ $t("admin.directory.status") }}:</span
             >
             <span class="text-sm font-bold text-green-600">{{
@@ -301,7 +301,7 @@
         <!-- Requested -->
         <div v-else-if="requestState == 1" class="mt-4 text-center">
           <div>
-            <span class="text-sm font-bold text-black text-opacity-40"
+            <span class="text-sm font-bold text-black/40"
               >{{ $t("admin.directory.status") }}:</span
             >
             <span class="text-sm font-bold text-yellow-500">{{
@@ -328,10 +328,10 @@
         <!-- Off Directory -->
         <div v-else class="mt-4 text-center">
           <div>
-            <span class="text-sm font-bold text-black text-opacity-40"
+            <span class="text-sm font-bold text-black/40"
               >{{ $t("admin.directory.status") }}:</span
             >
-            <span class="text-sm font-bold text-black text-opacity-60">
+            <span class="text-sm font-bold text-black/60">
               {{ $t("admin.directory.notListed") }}</span
             >
           </div>

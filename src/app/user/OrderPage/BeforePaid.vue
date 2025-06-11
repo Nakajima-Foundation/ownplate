@@ -42,7 +42,7 @@
       <!-- Left -->
       <div>
         <!-- Title -->
-        <div class="text-xl font-bold text-black text-opacity-30">
+        <div class="text-xl font-bold text-black/30">
           <div>
             {{ $t("order.confirmOrder") }}
           </div>
@@ -86,7 +86,7 @@
           <!-- For EC and Delivery -->
           <div
             v-if="shopInfo.isEC || orderInfo.isDelivery"
-            class="text-xl font-bold text-black text-opacity-30"
+            class="text-xl font-bold text-black/30"
           >
             {{ $t("order.ec.formtitle") }}
           </div>
@@ -134,7 +134,7 @@
 
           <!-- Time to Pickup -->
           <div v-if="!shopInfo.isEC">
-            <div class="text-xl font-bold text-black text-opacity-30">
+            <div class="text-xl font-bold text-black/30">
               <span v-if="orderInfo.isDelivery">
                 {{ $t("order.deliveryTimeRequested") }}
               </span>
@@ -167,7 +167,7 @@
                 userMessageError ? 'rounded-sm border-4 border-red-700 p-2' : ''
               "
             >
-              <div class="text-xl font-bold text-black text-opacity-30">
+              <div class="text-xl font-bold text-black/30">
                 {{ $t("order.orderMessage") }}
               </div>
 
@@ -201,7 +201,7 @@
                 userNameError ? 'rounded-sm border-4 border-red-700 p-2' : ''
               "
             >
-              <div class="text-xl font-bold text-black text-opacity-30">
+              <div class="text-xl font-bold text-black/30">
                 {{ $t("order.requiredUserName") }}
               </div>
 
@@ -217,7 +217,7 @@
 
           <!-- Payment -->
           <div class="mt-2">
-            <div class="text-xl font-bold text-black text-opacity-30">
+            <div class="text-xl font-bold text-black/30">
               {{ $t("order.yourPayment") }}
             </div>
 
@@ -284,7 +284,7 @@
 
             <!-- Pay Button -->
             <div v-if="inStorePayment" class="mt-4 text-center">
-              <div class="text-sm font-bold text-black text-opacity-60">
+              <div class="text-sm font-bold text-black/60">
                 {{ $t("order.or") }}
               </div>
 
@@ -303,7 +303,7 @@
                 </t-button>
               </div>
               <div>
-                <div class="mt-2 text-sm font-bold text-black text-opacity-60">
+                <div class="mt-2 text-sm font-bold text-black/60">
                   {{ $t("order.placeOrderNoPaymentNote") }}
                 </div>
 

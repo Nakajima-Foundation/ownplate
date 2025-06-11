@@ -11,14 +11,14 @@
         v-else
       >
         <div
-          class="text-xl font-bold text-black text-opacity-30"
+          class="text-xl font-bold text-black/30"
           if
           v-if="title.name == ''"
         >
           {{ $t("editTitle.empty") }}
         </div>
         <div
-          class="text-sm font-bold text-black text-opacity-30 flex w-full"
+          class="text-sm font-bold text-black/30 flex w-full"
           v-else
         >
           {{ title.name }}

@@ -5,7 +5,7 @@
   >
     <div class="flex">
       <div class="flex-1">
-        <span class="text-sm font-bold text-black text-opacity-40">{{
+        <span class="text-sm font-bold text-black/40">{{
           news.date.replace(/\-/g, ".")
         }}</span>
       </div>

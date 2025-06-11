@@ -1,7 +1,7 @@
 <template>
   <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
     <!-- Title -->
-    <div class="text-xl font-bold text-black text-opacity-40">
+    <div class="text-xl font-bold text-black/40">
       {{ $t("admin.order.cancelTitle") }}
     </div>
 
@@ -52,7 +52,7 @@
         class="inline-flex h-12 items-center justify-center rounded-full bg-black/5 px-6"
         style="min-width: 8rem"
       >
-        <div class="text-base font-bold text-black text-opacity-60">
+        <div class="text-base font-bold text-black/60">
           {{ $t("menu.close") }}
         </div>
       </a>

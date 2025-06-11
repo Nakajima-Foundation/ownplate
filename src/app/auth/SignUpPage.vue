@@ -10,7 +10,7 @@
           </span>
           <hr />
         </div>
-        <div class="text-xl font-bold text-black text-opacity-30">
+        <div class="text-xl font-bold text-black/30">
           {{ $t("admin.registration") }}
         </div>
 

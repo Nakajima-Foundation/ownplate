@@ -16,7 +16,7 @@
       <div class="sm:flex">
         <!-- filter -->
         <div class="mx-6 mt-4 grid grid-cols-1 gap-2">
-          <div class="text-sm font-bold text-black text-opacity-30">
+          <div class="text-sm font-bold text-black/30">
             {{ $t("order.statusTitle") }}
           </div>
           <o-select v-model="orderState">
@@ -35,7 +35,7 @@
         </div>
         <!-- sort -->
         <div class="mx-6 mt-2 grid grid-cols-1 gap-2 sm:mt-4">
-          <div class="text-sm font-bold text-black text-opacity-30">
+          <div class="text-sm font-bold text-black/30">
             {{ $t("order.sortOrder") }}
           </div>
           <o-select v-model="sortOrder">

@@ -1,6 +1,6 @@
 <template>
   <button
-    class="inline-flex items-center justify-center rounded-full bg-black/5 text-black text-opacity-60 font-bold"
+    class="inline-flex items-center justify-center rounded-full bg-black/5 text-black/60 font-bold"
     :loading="isLoading"
     :disabled="isLoading || isDisabled"
     @click="handleClick"

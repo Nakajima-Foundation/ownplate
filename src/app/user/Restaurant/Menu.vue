@@ -92,7 +92,7 @@
         <div v-if="false">
           <div
             v-if="!openMenuFlag"
-            class="mb-4 flex items-center justify-center text-center text-xs font-bold text-black text-opacity-40"
+            class="mb-4 flex items-center justify-center text-center text-xs font-bold text-black/40"
           >
             {{ $t("sitemenu.openCollapse") }}
             <i class="material-icons">expand_more</i>

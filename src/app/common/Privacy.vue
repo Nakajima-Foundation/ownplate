@@ -1,7 +1,7 @@
 <template>
   <div class="mx-auto max-w-(--breakpoint-md) px-6 text-base">
     <!-- Title -->
-    <div class="mt-12 text-xl font-bold text-black text-opacity-40">
+    <div class="mt-12 text-xl font-bold text-black/40">
       おもちかえり.com プライバシーポリシー
     </div>
 
@@ -241,10 +241,10 @@ export default defineComponent({
 
 <style lang="css" scoped>
 section {
-  @apply text-sm text-black text-opacity-60;
+  @apply text-sm text-black/60;
 }
 h6 {
-  @apply mt-4 text-base font-bold text-black text-opacity-40;
+  @apply mt-4 text-base font-bold text-black/40;
 }
 p {
   @apply mt-4;

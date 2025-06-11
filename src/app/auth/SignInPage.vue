@@ -25,7 +25,7 @@
     <!-- Sign In Card -->
     <div class="mt-2 rounded-lg bg-white p-6 shadow-sm">
       <form @submit.prevent="onSignin">
-        <div class="text-xl font-bold text-black text-opacity-30">
+        <div class="text-xl font-bold text-black/30">
           {{ $t("admin.pleaseSignIn") }}
         </div>
 
@@ -79,7 +79,7 @@
             <div
               class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black/5"
             >
-              <div class="text-base font-bold text-black text-opacity-60">
+              <div class="text-base font-bold text-black/60">
                 {{ $t("button.cancel") }}
               </div>
             </div>
@@ -105,7 +105,7 @@
 
     <!-- Sign Up as a New User -->
     <div class="mt-12 text-center">
-      <div class="font-bold text-black text-opacity-40">
+      <div class="font-bold text-black/40">
         {{ $t("admin.forSignup") }}
       </div>
 

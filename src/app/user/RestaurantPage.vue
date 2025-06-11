@@ -64,7 +64,7 @@
 
               <!-- Restaurant Info -->
               <div class="mt-4" v-if="!isTransactionAct">
-                <div class="text-xl font-bold text-black text-opacity-30">
+                <div class="text-xl font-bold text-black/30">
                   {{
                     shopInfo.isEC
                       ? $t("shopInfo.ecShopDetails")
@@ -130,7 +130,7 @@
                   <!-- Title -->
                   <div v-if="item._dataType === 'title'" :key="key">
                     <div
-                      class="inline-flex items-center justify-center text-xl font-bold text-black text-opacity-30 cursor-pointer"
+                      class="inline-flex items-center justify-center text-xl font-bold text-black/30 cursor-pointer"
                       :class="key === 0 ? '' : 'mt-2'"
                       :id="item.id"
                       @click="openCategory"
