@@ -18,7 +18,7 @@
           {{ $t("promotion.heading") }}
         </div>
         <div v-for="(v, k) in possiblePromotions" :key="k" class="px-6">
-          <div class="mt-5 text-lg font-bold text-opacity-40">
+          <div class="mt-5 text-lg font-bold text-white/40">
             {{ v.promotionName }}
           </div>
 
