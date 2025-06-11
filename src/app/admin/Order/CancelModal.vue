@@ -32,7 +32,7 @@
       <button :disabled="updating" @click="handleCancel" class="b-reset-tw">
         <div
           class="inline-flex h-12 items-center justify-center rounded-full bg-red-700 px-6"
-          :class="updating ? 'bg-opacity-10' : ''"
+          :class="updating ? 'bg-red-700/10' : ''"
         >
           <ButtonLoading v-if="updating" />
           <div class="text-base font-bold text-white">

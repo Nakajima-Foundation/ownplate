@@ -25,7 +25,7 @@
           target="_blank"
         >
           <div
-            class="inline-flex h-16 items-center rounded-full bg-ownplate-yellow px-8 shadow-sm hover:bg-opacity-30"
+            class="inline-flex h-16 items-center rounded-full bg-ownplate-yellow px-8 shadow-sm hover:bg-ownplate-yellow/30"
           >
             <span class="text-xl font-bold text-black opacity-60">{{
               $t("lp.ask")
@@ -43,7 +43,7 @@
         <div class="inline-flex items-center space-x-4">
           <a
             href="https://omochikaeri.com/r/bYArBMUJBe4KdVzZijLH"
-            class="inline-flex h-10 items-center rounded-full bg-white/20 px-4 hover:bg-opacity-30"
+            class="inline-flex h-10 items-center rounded-full bg-white/20 px-4 hover:bg-white/30"
           >
             <span class="text-sm font-bold text-white">{{
               $t("lp.izakaya")
@@ -51,7 +51,7 @@
           </a>
           <a
             href="https://omochikaeri.com/r/wwCgtIEZQo6QnXRyxYYS"
-            class="inline-flex h-10 items-center rounded-full bg-white/20 px-4 hover:bg-opacity-30"
+            class="inline-flex h-10 items-center rounded-full bg-white/20 px-4 hover:bg-white/30"
           >
             <span class="text-sm font-bold text-white">{{
               $t("lp.patisserie")

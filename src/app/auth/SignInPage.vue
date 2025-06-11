@@ -112,7 +112,7 @@
       <div class="mt-2">
         <router-link to="/admin/user/signup">
           <div
-            class="inline-flex h-16 items-center rounded-full bg-ownplate-yellow px-8 shadow-sm hover:bg-opacity-80"
+            class="inline-flex h-16 items-center rounded-full bg-ownplate-yellow px-8 shadow-sm hover:bg-ownplate-yellow/80"
           >
             <span class="text-xl font-bold text-black opacity-90">
               {{ $t("lp.signUpForFree") }}
