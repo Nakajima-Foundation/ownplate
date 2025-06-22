@@ -221,7 +221,6 @@ export default defineComponent({
     };
 
     const handlePayment = async () => {
-      // 二重送信防止: 既に処理中の場合は早期リターン
       if (isPaying.value) {
         return;
       }
