@@ -221,6 +221,11 @@ export default defineComponent({
     };
 
     const handlePayment = async () => {
+      // 二重送信防止: 既に処理中の場合は早期リターン
+      if (isPaying.value) {
+        return;
+      }
+
       try {
         isPayingError.value = false;
         isPaying.value = true;
@@ -239,14 +244,14 @@ export default defineComponent({
         sendPurchase();
         store.commit("resetCart", restaurantId);
         window.scrollTo(0, 0);
+        isPaying.value = false;
       } catch (error: any) {
         console.error(error.message, error.details);
+        isPaying.value = false;
         store.commit("setErrorMessage", {
           code: "order.place",
           error,
         });
-      } finally {
-        isPaying.value = false;
       }
     };
 
