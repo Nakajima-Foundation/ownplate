@@ -17,7 +17,7 @@
       <div v-if="likes === null" />
       <div v-else-if="likes.length === 0">
         <div
-          class="mx-6 mt-2 rounded-xl border-2 border-dashed border-black border-opacity-10 p-4 text-center"
+          class="mx-6 mt-2 rounded-xl border-2 border-dashed border-black/10 p-4 text-center"
         >
           <span class="text-base text-black/40">
             {{ $t("find.noLikes") }}</span

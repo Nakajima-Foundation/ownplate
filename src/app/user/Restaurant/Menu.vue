@@ -173,7 +173,7 @@
           </div>
         </div>
         <div
-          class="mx-4 mt-0 border-t-2 border-solid border-black border-opacity-10 pb-4"
+          class="mx-4 mt-0 border-t-2 border-solid border-black/10 pb-4"
         >
           <!-- Share Button -->
           <div class="mt-2 text-center">
@@ -290,7 +290,7 @@
             </div>
 
             <div
-              class="mt-4 border-t-2 border-solid border-black border-opacity-10 pb-4"
+              class="mt-4 border-t-2 border-solid border-black/10 pb-4"
               v-if="showMoreOption"
             ></div>
           </template>

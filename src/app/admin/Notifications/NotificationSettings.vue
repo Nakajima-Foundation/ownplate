@@ -56,7 +56,7 @@
           <!-- Sound ON Settings -->
           <div
             v-if="notificationConfig.soundOn"
-            class="mt-2 ml-4 rounded-lg border-2 border-black border-opacity-10 p-4"
+            class="mt-2 ml-4 rounded-lg border-2 border-black/10 p-4"
           >
             <!-- Infinity Notification ON/OFF -->
             <a @click="infinityNotificationToggle()" class="inline-block">

@@ -17,7 +17,7 @@
     <!-- Totals -->
     <div
       v-if="verified"
-      class="mt-4 border-t-2 border-solid border-black border-opacity-10 pt-4"
+      class="mt-4 border-t-2 border-solid border-black/10 pt-4"
     >
       <!-- Sub Total -->
       <div class="flex">
@@ -74,7 +74,7 @@
       <!-- Postage for EC -->
       <div
         v-if="shopInfo.isEC"
-        class="mt-4 border-t-2 border-solid border-black border-opacity-10 pt-4"
+        class="mt-4 border-t-2 border-solid border-black/10 pt-4"
       >
         <div class="flex">
           <div class="flex-1">
@@ -94,7 +94,7 @@
       <!-- Postage for delivery -->
       <div
         v-if="orderInfo.isDelivery"
-        class="mt-4 border-t-2 border-solid border-black border-opacity-10 pt-4"
+        class="mt-4 border-t-2 border-solid border-black/10 pt-4"
       >
         <div class="flex">
           <div class="flex-1">
@@ -131,7 +131,7 @@
           (isTipEditable || previewTip) &&
           enableTip
         "
-        class="mt-4 border-t-2 border-solid border-black border-opacity-10 pt-4"
+        class="mt-4 border-t-2 border-solid border-black/10 pt-4"
       >
         <div class="flex">
           <div class="flex-1">
@@ -185,7 +185,7 @@
 
       <!-- Total Charge -->
       <div
-        class="mt-4 border-t-2 border-solid border-black border-opacity-10 pt-4"
+        class="mt-4 border-t-2 border-solid border-black/10 pt-4"
       >
         <div class="flex">
           <div class="flex-1">
@@ -227,7 +227,7 @@
         </div>
       </div>
       <div
-        class="mt-4 border-t-2 border-solid border-black border-opacity-10 pt-4 pb-2"
+        class="mt-4 border-t-2 border-solid border-black/10 pt-4 pb-2"
       >
         <div class="flex">
           <div class="flex-1">

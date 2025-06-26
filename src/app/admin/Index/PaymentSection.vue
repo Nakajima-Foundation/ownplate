@@ -11,7 +11,7 @@
       <!-- Warning Payment -->
       <div
         v-if="unsetWarning"
-        class="mb-6 border-b-2 border-solid border-black border-opacity-10 pb-4"
+        class="mb-6 border-b-2 border-solid border-black/10 pb-4"
       >
         <div class="mt-2 rounded-lg bg-red-700/5 px-4 py-2">
           <span class="text-sm font-bold leading-none text-red-700">
@@ -79,7 +79,7 @@
 
       <!-- On-site Payment -->
       <div
-        class="mt-4 border-t-2 border-solid border-black border-opacity-10 pt-4"
+        class="mt-4 border-t-2 border-solid border-black/10 pt-4"
       >
         <div class="pb-2 text-base font-bold text-black/60">
           {{ $t("admin.payments.onsitePayment") }}

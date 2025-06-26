@@ -66,7 +66,7 @@
         </span>
       </div>
     </div>
-    <hr class="mx-6 my-3 border border-solid border-black border-opacity-5" />
+    <hr class="mx-6 my-3 border border-solid border-black/5" />
   </div>
 </template>
 

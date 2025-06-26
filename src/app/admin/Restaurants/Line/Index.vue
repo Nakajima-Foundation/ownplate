@@ -31,7 +31,7 @@
         </ul>
       </div>
 
-      <hr class="my-4 border border-solid border-black border-opacity-5" />
+      <hr class="my-4 border border-solid border-black/5" />
 
       <div class="m-6">
         <div class="pb-2 text-sm font-bold">
@@ -62,7 +62,7 @@
           <o-input type="text" v-model="message_token" />
         </div>
 
-        <hr class="my-4 border border-solid border-black border-opacity-5" />
+        <hr class="my-4 border border-solid border-black/5" />
 
         <div class="pb-2 text-sm font-bold">
           {{ $t("admin.line.callbackUrl") }}

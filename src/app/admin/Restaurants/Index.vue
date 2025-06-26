@@ -317,7 +317,7 @@
 
       <!-- Settings 2 -->
       <div
-        class="mx-6 mt-2 grid grid-cols-1 border-t-2 border-solid border-black border-opacity-10 pt-6 lg:grid-cols-2 lg:gap-x-12"
+        class="mx-6 mt-2 grid grid-cols-1 border-t-2 border-solid border-black/10 pt-6 lg:grid-cols-2 lg:gap-x-12"
       >
         <!-- Left -->
         <div>
