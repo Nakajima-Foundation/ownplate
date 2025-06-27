@@ -86,10 +86,7 @@
         </div>
       </div>
     </div>
-    <div
-      class="mt-2 text-right lg:mt-0 lg:ml-4 lg:shrink-0"
-      v-if="isOwner"
-    >
+    <div class="mt-2 text-right lg:mt-0 lg:ml-4 lg:shrink-0" v-if="isOwner">
       <!-- Card Actions -->
       <div class="inline-flex space-x-2">
         <!-- Up -->

@@ -167,9 +167,7 @@
               :key="ratio"
               ><div
                 class="inline-flex h-9 w-16 items-center justify-center rounded-full"
-                :class="
-                  isSameAmount(ratio) ? 'bg-op-teal' : 'bg-black/5'
-                "
+                :class="isSameAmount(ratio) ? 'bg-op-teal' : 'bg-black/5'"
               >
                 <div
                   class="text-sm font-bold"
@@ -184,9 +182,7 @@
       </div>
 
       <!-- Total Charge -->
-      <div
-        class="mt-4 border-t-2 border-solid border-black/10 pt-4"
-      >
+      <div class="mt-4 border-t-2 border-solid border-black/10 pt-4">
         <div class="flex">
           <div class="flex-1">
             <div class="text-xl font-bold text-green-600">
@@ -226,9 +222,7 @@
           </div>
         </div>
       </div>
-      <div
-        class="mt-4 border-t-2 border-solid border-black/10 pt-4 pb-2"
-      >
+      <div class="mt-4 border-t-2 border-solid border-black/10 pt-4 pb-2">
         <div class="flex">
           <div class="flex-1">
             <div class="text-xl font-bold text-green-600">

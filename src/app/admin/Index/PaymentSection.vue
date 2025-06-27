@@ -78,9 +78,7 @@
       </div>
 
       <!-- On-site Payment -->
-      <div
-        class="mt-4 border-t-2 border-solid border-black/10 pt-4"
-      >
+      <div class="mt-4 border-t-2 border-solid border-black/10 pt-4">
         <div class="pb-2 text-base font-bold text-black/60">
           {{ $t("admin.payments.onsitePayment") }}
         </div>

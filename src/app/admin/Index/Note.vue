@@ -5,9 +5,7 @@
       {{ $t("admin.notes.title") }}
     </div>
 
-    <div
-      class="rounded-lg border-2 border-solid border-black/10 p-4"
-    >
+    <div class="rounded-lg border-2 border-solid border-black/10 p-4">
       <div>
         <div class="pb-2 text-base font-bold text-black/60">
           {{ $t("admin.notes.userRestaurantsTitle") }}
@@ -17,9 +15,7 @@
         </div>
       </div>
 
-      <div
-        class="mt-4 border-t-2 border-solid border-black/10 pt-4"
-      >
+      <div class="mt-4 border-t-2 border-solid border-black/10 pt-4">
         <div class="pb-2 text-base font-bold text-black/60">
           {{ $t("admin.notes.notificationSoundTitle") }}
         </div>

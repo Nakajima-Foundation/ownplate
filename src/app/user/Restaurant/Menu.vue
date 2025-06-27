@@ -172,9 +172,7 @@
             </div>
           </div>
         </div>
-        <div
-          class="mx-4 mt-0 border-t-2 border-solid border-black/10 pb-4"
-        >
+        <div class="mx-4 mt-0 border-t-2 border-solid border-black/10 pb-4">
           <!-- Share Button -->
           <div class="mt-2 text-center">
             <share-popup

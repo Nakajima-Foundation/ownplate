@@ -19,10 +19,7 @@
         <div id="card-element"></div>
       </div>
 
-      <div
-        v-if="!stripeJCB"
-        class="text-sm font-bold text-black/60 mt-2"
-      >
+      <div v-if="!stripeJCB" class="text-sm font-bold text-black/60 mt-2">
         {{ $t("order.no_jcb") }}
       </div>
 

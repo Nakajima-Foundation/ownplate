@@ -451,9 +451,7 @@
 
                 <!-- Option Preview -->
                 <div class="rounded-lg bg-black/5 p-4">
-                  <div
-                    class="mb-2 flex text-xs font-bold text-black/30"
-                  >
+                  <div class="mb-2 flex text-xs font-bold text-black/30">
                     <div class="flex-1">
                       {{ $t("editMenu.optionsPreview") }}
                     </div>
@@ -467,9 +465,7 @@
                   >
                     <div class="flex-1">
                       <o-checkbox v-if="itemOptions[key].length == 1" disabled>
-                        <div
-                          class="text-sm font-bold text-black/60"
-                        >
+                        <div class="text-sm font-bold text-black/60">
                           {{ displayOption(opt, shopInfo, menuInfo) }}
                         </div>
                       </o-checkbox>
@@ -479,9 +475,7 @@
                         :native-value="k"
                         disabled
                       >
-                        <div
-                          class="text-sm font-bold text-black/60"
-                        >
+                        <div class="text-sm font-bold text-black/60">
                           {{ displayOption(opt, shopInfo, menuInfo) }}
                         </div>
                       </o-radio>
@@ -519,15 +513,11 @@
               {{ $t("editMenu.csvCategoriesNote") }}
             </div>
 
-            <div
-              class="grid-cols-1 space-y-4 rounded-lg bg-black/5 p-4"
-            >
+            <div class="grid-cols-1 space-y-4 rounded-lg bg-black/5 p-4">
               <!-- Category 1 -->
               <div>
                 <div class="mb-2 flex items-center">
-                  <div
-                    class="flex-1 text-sm font-bold text-black/60"
-                  >
+                  <div class="flex-1 text-sm font-bold text-black/60">
                     {{ $t("editMenu.category1") }}
                   </div>
                   <div>
@@ -562,9 +552,7 @@
               <!-- Category 2 -->
               <div>
                 <div class="mb-2 flex items-center">
-                  <div
-                    class="flex-1 text-sm font-bold text-black/60"
-                  >
+                  <div class="flex-1 text-sm font-bold text-black/60">
                     {{ $t("editMenu.category2") }}
                   </div>
                   <div>

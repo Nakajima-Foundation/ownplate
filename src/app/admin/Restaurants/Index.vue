@@ -933,7 +933,9 @@
 
             <!-- Last order time -->
             <div class="mt-4">
-              <div class="pb-2 text-sm font-bold">{{ $t("editRestaurant.lastOrderTime.title") }}</div>
+              <div class="pb-2 text-sm font-bold">
+                {{ $t("editRestaurant.lastOrderTime.title") }}
+              </div>
               <div class="text-xs">
                 {{ $t("editRestaurant.lastOrderTime.notes1") }}
               </div>

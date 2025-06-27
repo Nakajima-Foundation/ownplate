@@ -146,9 +146,7 @@
         >
           <div
             :class="
-              shopInfo.emailNotification
-                ? 'text-green-600'
-                : 'text-black/40'
+              shopInfo.emailNotification ? 'text-green-600' : 'text-black/40'
             "
           >
             <div class="text-sm font-bold">
@@ -161,13 +159,7 @@
         </router-link>
 
         <router-link :to="'/admin/restaurants/' + restaurantid + '#phoneCall'">
-          <div
-            :class="
-              shopInfo.phoneCall
-                ? 'text-green-600'
-                : 'text-black/40'
-            "
-          >
+          <div :class="shopInfo.phoneCall ? 'text-green-600' : 'text-black/40'">
             <div class="text-sm font-bold">
               {{ $t("editRestaurant.phoneCallNotification") }}
             </div>
@@ -178,11 +170,7 @@
         </router-link>
 
         <router-link :to="'/admin/restaurants/' + restaurantid + '/linelist'">
-          <div
-            :class="
-              lineEnable ? 'text-green-600' : 'text-black/40'
-            "
-          >
+          <div :class="lineEnable ? 'text-green-600' : 'text-black/40'">
             <div class="text-sm font-bold">
               {{ $t("editRestaurant.lineNotification") }}
             </div>

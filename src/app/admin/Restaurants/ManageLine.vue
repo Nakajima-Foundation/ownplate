@@ -33,11 +33,7 @@
             <div
               class="flex-1 cursor-pointer rounded-lg bg-white p-4 shadow-sm"
               @click="handleToggle(lineUser)"
-              :class="
-                lineUser.notify
-                  ? 'text-green-600'
-                  : 'text-black/30'
-              "
+              :class="lineUser.notify ? 'text-green-600' : 'text-black/30'"
             >
               <!-- Checkbox UI -->
               <div class="flex items-center">

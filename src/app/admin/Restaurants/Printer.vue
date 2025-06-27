@@ -48,10 +48,7 @@
           </t-button>
         </div>
 
-        <div
-          class="mx-6 mt-4 rounded-lg bg-black/5 p-4"
-          v-if="false"
-        >
+        <div class="mx-6 mt-4 rounded-lg bg-black/5 p-4" v-if="false">
           <div class="pb-2 text-sm font-bold">
             IP Address
             <span class="text-sx text-black/20">if need</span>
@@ -59,10 +56,7 @@
           <o-input v-model="ipaddress"></o-input>
         </div>
 
-        <div
-          class="mx-6 mt-4 rounded-lg bg-black/5 p-4"
-          v-if="false"
-        >
+        <div class="mx-6 mt-4 rounded-lg bg-black/5 p-4" v-if="false">
           <div class="pb-2 text-sm font-bold">Logs</div>
         </div>
       </div>

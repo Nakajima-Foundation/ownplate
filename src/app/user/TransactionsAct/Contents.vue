@@ -172,9 +172,7 @@
                 <li>
                   {{ $t("transactionsAct.cancellationDescription2") }}
                   <ul class="mb-2 list-outside list-none">
-                    <div
-                      class="mt-2 text-sm font-bold text-black/30"
-                    >
+                    <div class="mt-2 text-sm font-bold text-black/30">
                       {{ $t("transactionsAct.takeoutTitle") }}
                     </div>
                     <li>
@@ -221,9 +219,7 @@
             class="inline-flex h-12 items-center justify-center rounded-full bg-black/5 px-6"
             style="min-width: 8rem"
           >
-            <div
-              class="text-base font-bold text-black/60 cursor-pointer"
-            >
+            <div class="text-base font-bold text-black/60 cursor-pointer">
               {{ $t(closeButton) }}
             </div>
           </a>

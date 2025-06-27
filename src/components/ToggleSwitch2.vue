@@ -1,7 +1,5 @@
 <template>
-  <a
-    class="inline-flex items-center rounded-full bg-green-600/10 p-1"
-  >
+  <a class="inline-flex items-center rounded-full bg-green-600/10 p-1">
     <div
       v-for="(v, k) in toggleValues"
       :key="k"

@@ -75,8 +75,7 @@
                 <div
                   class="mr-2 mb-2 inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                 >
-                  <i
-                    class="material-icons mr-2 text-lg text-black/30"
+                  <i class="material-icons mr-2 text-lg text-black/30"
                     >looks_one</i
                   >
                   <span class="text-sm font-bold text-black/30">
@@ -89,8 +88,7 @@
                 <div
                   class="mr-2 mb-2 inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                 >
-                  <i
-                    class="material-icons mr-2 text-lg text-black/30"
+                  <i class="material-icons mr-2 text-lg text-black/30"
                     >repeat</i
                   >
                   <span class="text-sm font-bold text-black/30">

@@ -20,9 +20,7 @@
     <!-- Restaurants -->
     <template v-for="(state, k) in allArea">
       <div v-if="restaurantsObj[state]" :key="k">
-        <div
-          class="mx-6 mt-4 mb-2 text-base font-bold text-black/40"
-        >
+        <div class="mx-6 mt-4 mb-2 text-base font-bold text-black/40">
           {{ state }}
         </div>
         <div

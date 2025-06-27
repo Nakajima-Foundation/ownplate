@@ -36,10 +36,7 @@
     </div>
 
     <div class="mx-6 mt-4">
-      <div
-        v-if="histories.length === 0"
-        class="mt-8 text-black/30 font-bold"
-      >
+      <div v-if="histories.length === 0" class="mt-8 text-black/30 font-bold">
         {{ $t("admin.promotion.noHistory") }}
       </div>
       <div v-else>
