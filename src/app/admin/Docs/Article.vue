@@ -76,6 +76,8 @@ export default defineComponent({
 </script>
 
 <style lang="css" scoped>
+@reference "../../../assets/css/main.css";
+
 ::v-deep(h1) {
   @apply my-4 text-xl font-bold text-black/60;
 }

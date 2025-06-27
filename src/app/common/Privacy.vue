@@ -240,6 +240,8 @@ export default defineComponent({
 </script>
 
 <style lang="css" scoped>
+@reference "../../assets/css/main.css";
+
 section {
   @apply text-sm text-black/60;
 }
