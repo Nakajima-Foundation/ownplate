@@ -114,7 +114,7 @@ export default defineComponent({
       window.addEventListener("focus", () => {
         store.commit("setActive", true);
       });
-      window.addEventListener("blur-sm", () => {
+      window.addEventListener("blur", () => {
         store.commit("setActive", false);
       });
     });
