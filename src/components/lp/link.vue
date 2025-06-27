@@ -27,7 +27,7 @@
             class="inline-flex h-9 items-center justify-center rounded-full bg-white/80 px-4 hover:bg-white"
           >
             <i class="fab fa-x-twitter mr-2 text-lg text-op-teal"></i>
-            <span class="text-sm font-bold text-op-teal">Post</span>
+            <span class="text-sm font-bold text-op-teal">(Twitter)</span>
           </div>
         </a>
       </div>
@@ -38,8 +38,7 @@
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-white/80 px-4 hover:bg-white"
           >
-            <i class="material-icons mr-2 text-lg text-op-teal">mail_outline</i>
-            <span class="text-sm font-bold text-op-teal"> Note </span>
+            <span class="text-sm font-bold text-op-teal">Note</span>
           </div>
         </a>
       </div>
