@@ -1,9 +1,9 @@
 <template>
   <div
-    class="mx-6 mt-4 rounded-lg bg-white p-4 shadow"
+    class="mx-6 mt-4 rounded-lg bg-white p-4 shadow-sm"
     v-if="shopInfo && shopInfo.orderThanks && shopInfo.orderThanks.length > 0"
   >
-    <div class="text-xs font-bold text-black text-opacity-60">
+    <div class="text-xs font-bold text-black/60">
       {{ $t("order.thanksMessage") }}
     </div>
     <div

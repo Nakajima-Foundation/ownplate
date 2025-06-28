@@ -1,7 +1,7 @@
 <template>
   <!-- Credit Card Info -->
   <div class="mt-2 text-center">
-    <div class="text-sm font-bold text-black text-opacity-30">
+    <div class="text-sm font-bold text-black/30">
       {{ $t("profile.stripeInfo") }}
     </div>
 

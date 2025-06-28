@@ -1,7 +1,7 @@
 <template>
   <div class="text-center">
     <div class="mb-4">
-      <div class="text-sm font-bold text-black text-opacity-50">
+      <div class="text-sm font-bold text-black/50">
         {{ $t("order.orderStatus") }}
       </div>
       <div
@@ -17,7 +17,7 @@
       </div>
     </div>
     <div>
-      <div class="text-sm font-bold text-black text-opacity-50">
+      <div class="text-sm font-bold text-black/50">
         {{ $t("order.orderId") }}
       </div>
       <div class="mt-1">

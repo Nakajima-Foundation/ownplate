@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Title -->
-    <div class="text-xl font-bold text-black text-opacity-40">
+    <div class="text-xl font-bold text-black/40">
       {{ $t("sms.signin") }}
     </div>
 

@@ -1,9 +1,9 @@
 <template>
   <div class="mx-6 mt-4 lg:mx-auto lg:max-w-2xl">
-    <div class="mt-4 rounded-lg bg-white p-6 shadow">
+    <div class="mt-4 rounded-lg bg-white p-6 shadow-sm">
       <form @submit.prevent="handleNext">
         <!-- Title -->
-        <div class="text-xl font-bold text-black text-opacity-30">
+        <div class="text-xl font-bold text-black/30">
           {{ $t("admin.passwordReset") }}
         </div>
 
@@ -31,9 +31,9 @@
         <div class="mt-2 text-center">
           <o-button @click="handleCancel" class="b-reset-tw mr-4 mb-2">
             <div
-              class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black bg-opacity-5"
+              class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black/5"
             >
-              <div class="text-base font-bold text-black text-opacity-60">
+              <div class="text-base font-bold text-black/60">
                 {{ $t("button.cancel") }}
               </div>
             </div>
@@ -42,7 +42,7 @@
           <t-button
             :isDisabled="Object.keys(errors).length > 0"
             @click="handleNext"
-            class="h-12 w-32 shadow font-bold text-white"
+            class="h-12 w-32 shadow-sm font-bold text-white"
           >
             {{ $t("button.next") }}
           </t-button>

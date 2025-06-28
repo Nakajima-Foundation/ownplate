@@ -1,11 +1,11 @@
 <template>
   <!-- Smaregi -->
   <div class="mt-4">
-    <div class="mb-2 text-xl font-bold text-black text-opacity-40">
+    <div class="mb-2 text-xl font-bold text-black/40">
       {{ $t("admin.thirdPartyService.title") }}
     </div>
 
-    <div class="rounded-lg bg-white p-4 shadow">
+    <div class="rounded-lg bg-white p-4 shadow-sm">
       <div class="text-center">
         <router-link
           to="/admin/smaregi/index"
@@ -21,7 +21,7 @@
         <a
           href="https://docs.omochikaeri.com/manuals/smaregi.pdf"
           target="_blank"
-          class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+          class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
         >
           <span class="text-sm font-bold text-op-teal">
             {{ $t("admin.thirdPartyService.smaregiManualLink") }}</span
@@ -33,7 +33,7 @@
         <a
           href="https://apps.smaregi.jp/apps/762"
           target="_blank"
-          class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+          class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
         >
           <span class="text-sm font-bold text-op-teal">
             {{ $t("admin.thirdPartyService.smaregiAppMarket") }}

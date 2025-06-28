@@ -14,7 +14,7 @@
       />
 
       <div>
-        <div class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4 font-bold">
+        <div class="mx-6 mt-4 rounded-lg bg-black/5 p-4 font-bold">
           <div>
             {{ $t("printer.description") }}
           </div>
@@ -26,7 +26,7 @@
             {{ $t("menu.printerManualLink") }}
           </a>
         </div>
-        <div class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4">
+        <div class="mx-6 mt-4 rounded-lg bg-black/5 p-4">
           <div class="pb-2 text-sm font-bold">
             {{ $t("printer.serverURL") }}
           </div>
@@ -48,21 +48,15 @@
           </t-button>
         </div>
 
-        <div
-          class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4"
-          v-if="false"
-        >
+        <div class="mx-6 mt-4 rounded-lg bg-black/5 p-4" v-if="false">
           <div class="pb-2 text-sm font-bold">
             IP Address
-            <span class="text-sx text-opacity-20 text-black">if need</span>
+            <span class="text-sx text-black/20">if need</span>
           </div>
           <o-input v-model="ipaddress"></o-input>
         </div>
 
-        <div
-          class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4"
-          v-if="false"
-        >
+        <div class="mx-6 mt-4 rounded-lg bg-black/5 p-4" v-if="false">
           <div class="pb-2 text-sm font-bold">Logs</div>
         </div>
       </div>

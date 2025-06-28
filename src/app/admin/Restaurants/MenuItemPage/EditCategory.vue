@@ -6,7 +6,7 @@
         <div
           v-for="(category, index) in categories"
           :key="category"
-          class="mb-2 flex items-center rounded bg-black bg-opacity-5"
+          class="mb-2 flex items-center rounded-sm bg-black/5"
         >
           <div class="flex-1 px-4 py-2">
             <span class="text-sm font-bold">{{ category }}</span>
@@ -34,7 +34,7 @@
           @click="handleAdd"
         >
           <div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
             <i class="material-icons mr-2 text-lg text-op-teal">add</i>
             <div class="text-sm font-bold text-op-teal">

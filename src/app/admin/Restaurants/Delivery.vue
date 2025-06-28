@@ -6,7 +6,7 @@
     </template>
     <template v-else-if="existLocation === false">
       <div class="mx-6 mt-4">
-        <div class="rounded-lg bg-black bg-opacity-5 p-4">
+        <div class="rounded-lg bg-black/5 p-4">
           <div class="text-xl font-bold text-red-600">
             <div>
               {{ $t("delivery.alert") }}
@@ -22,9 +22,9 @@
           <!-- Cancel Button -->
           <router-link :to="`/admin/restaurants/#restaurant_` + restaurantId">
             <div
-              class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
+              class="inline-flex h-12 items-center rounded-full bg-black/5 px-6"
             >
-              <span class="text-base font-bold text-black text-opacity-60">{{
+              <span class="text-base font-bold text-black/60">{{
                 $t("button.cancel")
               }}</span>
             </div>
@@ -38,7 +38,7 @@
           </t-button>
         </div>
 
-        <div class="rounded-lg bg-black bg-opacity-5 p-4 mt-4">
+        <div class="rounded-lg bg-black/5 p-4 mt-4">
           <div class="text-sm font-bold">
             <o-checkbox v-model="enableDelivery" />{{
               $t(
@@ -60,7 +60,7 @@
         </div>
 
         <!-- area map -->
-        <div class="mt-4 rounded-lg bg-black bg-opacity-5 p-4">
+        <div class="mt-4 rounded-lg bg-black/5 p-4">
           <div class="text-lm pb-2 font-bold">
             {{ $t("delivery.areaSetting") }}
           </div>
@@ -124,7 +124,7 @@
           </div>
         </div>
 
-        <div class="mt-4 rounded-lg bg-black bg-opacity-5 p-4">
+        <div class="mt-4 rounded-lg bg-black/5 p-4">
           <div class="text-lm pb-2 font-bold">
             {{ $t("delivery.deliveryThreshold") }}:
           </div>
@@ -147,7 +147,7 @@
           </div>
         </div>
 
-        <div class="mt-4 rounded-lg bg-black bg-opacity-5 p-4">
+        <div class="mt-4 rounded-lg bg-black/5 p-4">
           <div class="text-lm pb-2 font-bold">
             {{ $t("delivery.deliveryFeeSetting") }}
           </div>
@@ -190,7 +190,7 @@
           </div>
         </div>
 
-        <div class="mt-4 rounded-lg bg-black bg-opacity-5 p-4">
+        <div class="mt-4 rounded-lg bg-black/5 p-4">
           <div class="text-lm pb-2 font-bold">
             {{ $t("editRestaurant.deliveryPreparationTime") }}
           </div>
@@ -210,7 +210,7 @@
             {{ $t("editRestaurant.minutes") }}
           </div>
         </div>
-        <div class="mt-4 rounded-lg bg-black bg-opacity-5 p-4">
+        <div class="mt-4 rounded-lg bg-black/5 p-4">
           <a
             href="https://docs.omochikaeri.com/manuals/delivery.pdf"
             target="_blank"
@@ -225,9 +225,9 @@
           <!-- Cancel Button -->
           <router-link :to="`/admin/restaurants/#restaurant_` + restaurantId">
             <div
-              class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
+              class="inline-flex h-12 items-center rounded-full bg-black/5 px-6"
             >
-              <span class="text-base font-bold text-black text-opacity-60">{{
+              <span class="text-base font-bold text-black/60">{{
                 $t("button.cancel")
               }}</span>
             </div>

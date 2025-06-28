@@ -2,7 +2,7 @@
   <div>
     <!-- Login Status -->
     <div class="text-center">
-      <div class="text-sm font-bold text-black text-opacity-30">
+      <div class="text-sm font-bold text-black/30">
         {{ $t("profile.loginStatus") }}
       </div>
 

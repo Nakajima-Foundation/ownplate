@@ -4,7 +4,7 @@
     <div class="mx-6 mt-4">
       <router-link :to="menuPagePath">
         <div
-          class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 b-reset-tw"
+          class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4 b-reset-tw"
         >
           <i class="material-icons mr-2 text-lg text-op-teal">arrow_back</i>
           <div class="text-sm font-bold text-op-teal">
@@ -42,7 +42,7 @@
       <!-- Left -->
       <div>
         <!-- Title -->
-        <div class="text-xl font-bold text-black text-opacity-30">
+        <div class="text-xl font-bold text-black/30">
           <div>
             {{ $t("order.confirmOrder") }}
           </div>
@@ -86,7 +86,7 @@
           <!-- For EC and Delivery -->
           <div
             v-if="shopInfo.isEC || orderInfo.isDelivery"
-            class="text-xl font-bold text-black text-opacity-30"
+            class="text-xl font-bold text-black/30"
           >
             {{ $t("order.ec.formtitle") }}
           </div>
@@ -94,7 +94,7 @@
           <!-- For EC and Delivery -->
           <div
             v-if="shopInfo.isEC || orderInfo.isDelivery"
-            class="mb-4 mt-2 rounded-lg bg-white p-4 shadow"
+            class="mb-4 mt-2 rounded-lg bg-white p-4 shadow-sm"
           >
             <ECCustomer
               ref="ecCustomerRef"
@@ -134,7 +134,7 @@
 
           <!-- Time to Pickup -->
           <div v-if="!shopInfo.isEC">
-            <div class="text-xl font-bold text-black text-opacity-30">
+            <div class="text-xl font-bold text-black/30">
               <span v-if="orderInfo.isDelivery">
                 {{ $t("order.deliveryTimeRequested") }}
               </span>
@@ -164,14 +164,14 @@
             <div
               class="mt-2"
               :class="
-                userMessageError ? 'rounded border-4 border-red-700 p-2' : ''
+                userMessageError ? 'rounded-sm border-4 border-red-700 p-2' : ''
               "
             >
-              <div class="text-xl font-bold text-black text-opacity-30">
+              <div class="text-xl font-bold text-black/30">
                 {{ $t("order.orderMessage") }}
               </div>
 
-              <div class="mt-2 rounded-lg bg-white p-4 shadow">
+              <div class="mt-2 rounded-lg bg-white p-4 shadow-sm">
                 <o-input
                   v-model="memo"
                   type="textarea"
@@ -198,14 +198,14 @@
             <div
               class="mt-2"
               :class="
-                userNameError ? 'rounded border-4 border-red-700 p-2' : ''
+                userNameError ? 'rounded-sm border-4 border-red-700 p-2' : ''
               "
             >
-              <div class="text-xl font-bold text-black text-opacity-30">
+              <div class="text-xl font-bold text-black/30">
                 {{ $t("order.requiredUserName") }}
               </div>
 
-              <div class="mt-2 rounded-lg bg-white p-4 shadow">
+              <div class="mt-2 rounded-lg bg-white p-4 shadow-sm">
                 <o-input
                   v-model="userName"
                   :placeholder="$t('order.enterUserName')"
@@ -217,7 +217,7 @@
 
           <!-- Payment -->
           <div class="mt-2">
-            <div class="text-xl font-bold text-black text-opacity-30">
+            <div class="text-xl font-bold text-black/30">
               {{ $t("order.yourPayment") }}
             </div>
 
@@ -230,7 +230,7 @@
                 "
               >
                 <div
-                  class="border-green-600 text-green-600 text-center font-bold mx-auto w-72 items-center mt-8 -mb-3 rounded-lg bg-green-600 bg-opacity-10 px-6 py-2"
+                  class="border-green-600 text-green-600 text-center font-bold mx-auto w-72 items-center mt-8 -mb-3 rounded-lg bg-green-600/10 px-6 py-2"
                 >
                   <div class="text-xs">{{ $t("order.promotionNoteCard") }}</div>
                 </div>
@@ -243,7 +243,7 @@
                 "
               >
                 <div
-                  class="border-green-600 text-green-600 text-center font-bold mx-auto w-72 items-center mt-8 -mb-3 rounded-lg bg-green-600 bg-opacity-10 px-6 py-2"
+                  class="border-green-600 text-green-600 text-center font-bold mx-auto w-72 items-center mt-8 -mb-3 rounded-lg bg-green-600/10 px-6 py-2"
                 >
                   <div class="text-xs">
                     {{ $t("order.promotionNoteStore") }}
@@ -275,7 +275,7 @@
 
             <!-- Pay at Restaurant -->
             <div v-else class="mt-2">
-              <div class="rounded-lg bg-black bg-opacity-5 p-4">
+              <div class="rounded-lg bg-black/5 p-4">
                 <div class="text-sm">
                   {{ $t("order.pleasePayAtRestaurant") }}
                 </div>
@@ -284,7 +284,7 @@
 
             <!-- Pay Button -->
             <div v-if="inStorePayment" class="mt-4 text-center">
-              <div class="text-sm font-bold text-black text-opacity-60">
+              <div class="text-sm font-bold text-black/60">
                 {{ $t("order.or") }}
               </div>
 
@@ -303,7 +303,7 @@
                 </t-button>
               </div>
               <div>
-                <div class="mt-2 text-sm font-bold text-black text-opacity-60">
+                <div class="mt-2 text-sm font-bold text-black/60">
                   {{ $t("order.placeOrderNoPaymentNote") }}
                 </div>
 

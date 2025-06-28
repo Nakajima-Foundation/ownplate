@@ -63,7 +63,7 @@
           >
             <o-button class="mt-4 h-9 rounded-full">
               <span class="pl-4 pr-4">
-                <i class="material-icons mr-2 !text-2xl text-op-teal"
+                <i class="material-icons mr-2 text-2xl! text-op-teal"
                   >save_alt</i
                 >
                 <span class="font-bold text-op-teal">{{

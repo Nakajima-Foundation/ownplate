@@ -2,7 +2,7 @@
   <div class="mt-2 text-center">
     <router-link :to="basePath + '/r/favorites'">
       <div
-        class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal shadow"
+        class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal shadow-sm"
         style="min-width: 16rem"
       >
         <i class="material-icons mr-2 text-2xl text-white">favorite</i>
