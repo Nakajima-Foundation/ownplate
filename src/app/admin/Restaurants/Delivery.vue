@@ -90,6 +90,7 @@
               </span>
               <span class="flex-item mt-auto mb-auto mr-2 inline-block">
                 <input
+                  class="base-input"
                   v-model="radius"
                   :disabled="!enableAreaMap || !enableDelivery"
                 />
@@ -135,6 +136,7 @@
             />
             <span class="flex-item mt-auto mb-auto mr-2 inline-block">
               <input
+                class="base-input"
                 v-model="deliveryThreshold"
                 :disabled="!enableDelivery"
                 type="number"
@@ -157,6 +159,7 @@
             </span>
             <span class="flex-item mt-auto mb-auto mr-2 inline-block">
               <input
+                class="base-input"
                 v-model="deliveryFee"
                 :disabled="!enableDelivery"
                 type="number"
@@ -178,6 +181,7 @@
             </span>
             <span class="flex-item mt-auto mb-auto mr-2 inline-block">
               <input
+                class="base-input"
                 v-model="deliveryFreeThreshold"
                 :disabled="!enableDelivery"
                 type="number"
@@ -203,6 +207,7 @@
           <div>
             {{ $t("editRestaurant.deliveryPreparationTime") }}
             <input
+              class="base-input"
               v-model="deliveryMinimumCookTime"
               :disabled="!enableDelivery"
               type="number"
@@ -467,3 +472,11 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+@reference "../../../assets/css/main.css";
+
+.base-input {
+  @apply bg-white dark:bg-black dark:text-gray-200 rounded-lg border border-black/20 px-4 py-1;
+}
+</style>
