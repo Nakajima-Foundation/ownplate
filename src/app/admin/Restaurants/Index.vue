@@ -184,7 +184,6 @@
             </div>
 
             <div class="mt-4 border-red-700">
-              aa
               <div
                 ref="gMap"
                 style="
