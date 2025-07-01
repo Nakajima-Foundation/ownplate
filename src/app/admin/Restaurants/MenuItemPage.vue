@@ -247,17 +247,17 @@
             <div class="mt-2">
               <div class="rounded-lg bg-black/5 p-4">
                 <div>
-                  <o-checkbox v-model="menuInfo.availableLunch">
-                    <div class="text-sm font-bold text-black/60">
+                  <o-checkbox class="mr-2" v-model="menuInfo.availableLunch">
+                    <span class="text-sm font-bold text-black/60">
                       {{ $t("shopInfo.lunch") }}
-                    </div>
+                    </span>
                   </o-checkbox>
                 </div>
                 <div class="mt-2">
-                  <o-checkbox v-model="menuInfo.availableDinner">
-                    <div class="text-sm font-bold text-black/60">
+                  <o-checkbox class="mr-2" v-model="menuInfo.availableDinner">
+                    <span class="text-sm font-bold text-black/60">
                       {{ $t("shopInfo.dinner") }}
-                    </div>
+                    </span>
                   </o-checkbox>
                 </div>
               </div>
@@ -464,10 +464,14 @@
                     :key="k"
                   >
                     <div class="flex-1">
-                      <o-checkbox v-if="itemOptions[key].length == 1" disabled>
-                        <div class="text-sm font-bold text-black/60">
+                      <o-checkbox
+                        class="mr-2"
+                        v-if="itemOptions[key].length == 1"
+                        disabled
+                      >
+                        <span class="text-sm font-bold text-black/60">
                           {{ displayOption(opt, shopInfo, menuInfo) }}
-                        </div>
+                        </span>
                       </o-checkbox>
                       <o-radio
                         v-else
