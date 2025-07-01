@@ -1551,19 +1551,19 @@
   resolved "https://registry.yarnpkg.com/@opentelemetry/api/-/api-1.9.0.tgz#d03eba68273dc0f7509e2a3d5cba21eae10379fe"
   integrity sha512-3giAOQvZiH5F9bMlMiv8+GSPMeqg0dbaeo58/0SlA9sxSqZhnUtxzX9/2FzyhS9sWQf5S0GJE0AKBrFqjpeYcg==
 
-"@oruga-ui/oruga-next@^0.10.4":
-  version "0.10.4"
-  resolved "https://registry.yarnpkg.com/@oruga-ui/oruga-next/-/oruga-next-0.10.4.tgz#dd949fb9611a9b43f591fdebe02826fde94faaa6"
-  integrity sha512-g9wXuBmfB0mWLNBHw4QB6x22JHlt4flMQdf2AMEt/IunDQqC+g33Yv8tuzGgqyvVgMJQ2TO9TEDuyMg22tQfsQ==
+"@oruga-ui/oruga-next@^0.11.1":
+  version "0.11.1"
+  resolved "https://registry.yarnpkg.com/@oruga-ui/oruga-next/-/oruga-next-0.11.1.tgz#0ca024b65f31044912ec66337337945a3501a5ff"
+  integrity sha512-9+SmklBjFCz2oSxEVglU6o7hC1l6L4IUTvZ6kJCS6O9TS+rU42JalfSm0Vf67HMM5EpIFhsqombFAUegW7Oc0Q==
   dependencies:
-    vue-component-type-helpers "^2.2.8"
+    vue-component-type-helpers "^2.2.10"
 
-"@oruga-ui/theme-bulma@^0.6.1":
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/@oruga-ui/theme-bulma/-/theme-bulma-0.6.1.tgz#5c1e13158aa6f7e64ab78b3d854293e647b4f0dd"
-  integrity sha512-YhYnl2DUKUe/axTksZKY5uZ4/BaualHt8p2Cl7G1IxDee8wZuC96ExGxk1a7mbULwYnL9aUKeAvzq5enc0uMcA==
+"@oruga-ui/theme-bulma@^0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@oruga-ui/theme-bulma/-/theme-bulma-0.7.0.tgz#d41272f0726559e501af202dd50bd0d7d11d10f8"
+  integrity sha512-+93++LYpEs7iMYDq0fG4R/LF7AeZBKCki/Lp5ANMigrjzbhifQL1iScuUkgXvVvMAbn8pxMzd5Dp395c0XJIiA==
   dependencies:
-    bulma "1.0.3"
+    bulma "1.0.4"
 
 "@parcel/watcher-android-arm64@2.5.0":
   version "2.5.0"
@@ -2810,10 +2810,10 @@ buffer-equal-constant-time@1.0.1:
   resolved "https://registry.yarnpkg.com/buffer-equal-constant-time/-/buffer-equal-constant-time-1.0.1.tgz#f8e71132f7ffe6e01a5c9697a4c6f3e48d5cc819"
   integrity sha512-zRpUiDwd/xk6ADqPMATG8vc9VPrkck7T07OIx0gnjmJAnHnTVXNQG3vfvWNuiZIkwu9KrKdA1iJKfsfTVxE6NA==
 
-bulma@1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/bulma/-/bulma-1.0.3.tgz#313c4fec8c356158a1d8f665586957a0991e2892"
-  integrity sha512-9eVXBrXwlU337XUXBjIIq7i88A+tRbJYAjXQjT/21lwam+5tpvKF0R7dCesre9N+HV9c6pzCNEPKrtgvBBes2g==
+bulma@1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/bulma/-/bulma-1.0.4.tgz#942dc017a3a201fa9f0e0c8db3dd52f3cff86712"
+  integrity sha512-Ffb6YGXDiZYX3cqvSbHWqQ8+LkX6tVoTcZuVB3lm93sbAVXlO0D6QlOTMnV6g18gILpAXqkG2z9hf9z4hCjz2g==
 
 bytes@3.1.2:
   version "3.1.2"
@@ -5345,10 +5345,10 @@ vue-clipboard3@^2.0.0:
   dependencies:
     clipboard "^2.0.6"
 
-vue-component-type-helpers@^2.2.8:
-  version "2.2.8"
-  resolved "https://registry.yarnpkg.com/vue-component-type-helpers/-/vue-component-type-helpers-2.2.8.tgz#66d25e4405a4bcc06a22aa4c01e35141343da580"
-  integrity sha512-4bjIsC284coDO9om4HPA62M7wfsTvcmZyzdfR0aUlFXqq4tXxM1APyXpNVxPC8QazKw9OhmZNHBVDA6ODaZsrA==
+vue-component-type-helpers@^2.2.10:
+  version "2.2.10"
+  resolved "https://registry.yarnpkg.com/vue-component-type-helpers/-/vue-component-type-helpers-2.2.10.tgz#126a7d7258f7458c66dfe234a612500c90c4838c"
+  integrity sha512-iDUO7uQK+Sab2tYuiP9D1oLujCWlhHELHMgV/cB13cuGbG4qwkLHvtfWb6FzvxrIOPDnU0oHsz2MlQjhYDeaHA==
 
 vue-eslint-parser@^10.1.3:
   version "10.1.3"
