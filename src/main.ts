@@ -8,8 +8,7 @@ import store from "@/lib/store";
 import i18n from "@/lib/vue-i18n";
 
 // library
-import Oruga from "@oruga-ui/oruga-next";
-import { bulmaConfig } from "@oruga-ui/theme-bulma";
+import orugaCompat from "@/plugins/oruga-compat";
 import VueSocialSharing from "vue-social-sharing";
 import { createHead } from "@unhead/vue";
 import VueQrcode from "@chenfengyuan/vue-qrcode";
@@ -45,7 +44,7 @@ app.component("t-button", Button);
 app.component("t-cancel-button", CancelButton);
 
 app.use(VueSocialSharing);
-app.use(Oruga, bulmaConfig);
+app.use(orugaCompat);
 
 const head = createHead();
 app.use(head);

@@ -1514,19 +1514,6 @@
   resolved "https://registry.yarnpkg.com/@opentelemetry/api/-/api-1.9.0.tgz#d03eba68273dc0f7509e2a3d5cba21eae10379fe"
   integrity sha512-3giAOQvZiH5F9bMlMiv8+GSPMeqg0dbaeo58/0SlA9sxSqZhnUtxzX9/2FzyhS9sWQf5S0GJE0AKBrFqjpeYcg==
 
-"@oruga-ui/oruga-next@^0.10.4":
-  version "0.10.4"
-  resolved "https://registry.yarnpkg.com/@oruga-ui/oruga-next/-/oruga-next-0.10.4.tgz#dd949fb9611a9b43f591fdebe02826fde94faaa6"
-  integrity sha512-g9wXuBmfB0mWLNBHw4QB6x22JHlt4flMQdf2AMEt/IunDQqC+g33Yv8tuzGgqyvVgMJQ2TO9TEDuyMg22tQfsQ==
-  dependencies:
-    vue-component-type-helpers "^2.2.8"
-
-"@oruga-ui/theme-bulma@^0.6.1":
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/@oruga-ui/theme-bulma/-/theme-bulma-0.6.1.tgz#5c1e13158aa6f7e64ab78b3d854293e647b4f0dd"
-  integrity sha512-YhYnl2DUKUe/axTksZKY5uZ4/BaualHt8p2Cl7G1IxDee8wZuC96ExGxk1a7mbULwYnL9aUKeAvzq5enc0uMcA==
-  dependencies:
-    bulma "1.0.3"
 
 "@parcel/watcher-android-arm64@2.5.0":
   version "2.5.0"
