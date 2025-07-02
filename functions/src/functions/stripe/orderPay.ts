@@ -23,7 +23,7 @@ export const orderPay = async (db: admin.firestore.Firestore, data: orderChangeD
     }
 
     if (order.uid !== customerUid) {
-      throw new HttpsError("failed-precondition", "Invalid user IdIt is not possible to change the order.");
+      throw new HttpsError("failed-precondition", "Invalid user ID. It is not possible to change the order.");
     }
     if (order.status !== order_status.waiting_payment) {
       throw new HttpsError("failed-precondition", "It is not possible to change the order.");
