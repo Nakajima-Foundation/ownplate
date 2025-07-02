@@ -14,7 +14,7 @@ describe("validator function", () => {
       // lng?: string;
       //timeEstimated?: admin.firestore.Timestamp;
     };
-    const res = validator.validateOrderUpadte(data);
+    const res = validator.validateOrderUpdate(data);
     res.result.should.equal(true);
   });
 

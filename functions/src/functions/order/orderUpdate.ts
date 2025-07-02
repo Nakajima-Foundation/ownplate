@@ -8,7 +8,7 @@ import { sendMessageToCustomer } from "../notify2";
 
 import { getStripeAccount, getStripeOrderRecord, getHash } from "../stripe/intent";
 import { orderUpdateData, updateDataOnorderUpdate } from "../../lib/types";
-import { validateOrderUpadte } from "../../lib/validator";
+import { validateOrderUpdate } from "../../lib/validator";
 
 const getMgsKey = (status: number, isEC: boolean, timeEstimated?: admin.firestore.Timestamp) => {
   if (status === order_status.order_accepted) {
@@ -64,7 +64,7 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
   const { restaurantId, orderId, status, timeEstimated } = data;
   utils.required_params({ restaurantId, orderId, status });
 
-  const validateResult = validateOrderUpadte(data);
+  const validateResult = validateOrderUpdate(data);
   if (!validateResult.result) {
     console.error("orderUpdate", validateResult.errors);
     throw new HttpsError("invalid-argument", "Validation Error.");
