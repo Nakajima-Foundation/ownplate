@@ -8,7 +8,7 @@
       <div class="mx-6 mt-4 flex items-center space-x-4">
         <router-link :to="'/admin/restaurants'">
           <div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
             <i class="material-icons mr-2 text-lg text-op-teal">home</i>
             <div class="text-sm font-bold text-op-teal">
@@ -19,7 +19,7 @@
 
         <router-link :to="'/admin/news'">
           <div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
             <i class="material-icons mr-2 text-lg text-op-teal">list</i>
             <div class="text-sm font-bold text-op-teal">
@@ -30,17 +30,17 @@
       </div>
 
       <!-- Body -->
-      <div class="mx-auto mt-4 max-w-screen-md px-6 text-base">
-        <div class="text-xl font-bold text-black text-opacity-30">
+      <div class="mx-auto mt-4 max-w-(--breakpoint-md) px-6 text-base">
+        <div class="text-xl font-bold text-black/30">
           {{ news.title }}
         </div>
 
-        <div class="mt-2 text-base font-bold text-black text-opacity-30">
+        <div class="mt-2 text-base font-bold text-black/30">
           {{ news.date.replace(/\-/g, ".") }}
         </div>
 
         <div
-          class="article-list mt-2 text-base font-bold text-black text-opacity-30"
+          class="article-list mt-2 text-base font-bold text-black/30"
           v-html="md.render(news.markdown)"
         />
       </div>

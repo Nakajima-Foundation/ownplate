@@ -2,7 +2,7 @@
   <div>
     <div class="mx-6 mt-4 lg:mx-auto lg:max-w-2xl">
       <!-- Title -->
-      <div class="mt-4 text-xl font-bold text-black text-opacity-30">
+      <div class="mt-4 text-xl font-bold text-black/30">
         <a name="top">おもちかえり.com ご利用について</a>
       </div>
       <div v-for="(faq, k) in faqList" :key="k">
@@ -12,7 +12,7 @@
         </div>
       </div>
 
-      <div class="mt-2 rounded-lg bg-white px-4 py-2 shadow" ref="faq_box">
+      <div class="mt-2 rounded-lg bg-white px-4 py-2 shadow-sm" ref="faq_box">
         <div v-for="(faq, k) in faqList" :key="'base_' + k" class="mb-6">
           <div class="my-1 inline-flex font-bold">
             <a :href="`#index_` + k">
@@ -57,7 +57,7 @@
             <div
               v-for="(note, e) in faq.notes"
               :key="'note2_' + e"
-              class="mt-3 text-xs leading-relaxed text-black text-opacity-50"
+              class="mt-3 text-xs leading-relaxed text-black/50"
             >
               {{ note }}
             </div>

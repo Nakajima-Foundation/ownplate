@@ -266,8 +266,10 @@ const data = {
     copySunDay: "Copy Sunday",
     lastOrderTime: {
       title: "Last Order Time",
-      notes1: "Configure this if you would like to close orders prior to the \"final order time,\" considering the \"business closing time\" and \"order preparation time.\"",
-      notes2: "If this is not configured, the time will be determined by considering the \"business closing time\" and \"order preparation time.\"",
+      notes1:
+        'Configure this if you would like to close orders prior to the "final order time," considering the "business closing time" and "order preparation time."',
+      notes2:
+        'If this is not configured, the time will be determined by considering the "business closing time" and "order preparation time."',
     },
     draftDescription: "Save as Draft.",
     publishDescription: "Save and publish your restaurant.",

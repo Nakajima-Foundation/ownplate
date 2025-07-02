@@ -1,10 +1,10 @@
 <template>
   <div>
     <!-- LINE -->
-    <div class="mt-2 rounded-lg bg-black bg-opacity-5 p-4">
+    <div class="mt-2 rounded-lg bg-black/5 p-4">
       <!-- LINE Status -->
       <div class="text-center">
-        <div class="text-sm font-bold text-black text-opacity-30">
+        <div class="text-sm font-bold text-black/30">
           {{ $t("profile.lineConnection") }}
         </div>
 
@@ -19,7 +19,7 @@
       <div v-if="isLineUser || isLiffUser">
         <!-- Friend Status -->
         <div class="mt-4 text-center">
-          <div class="text-sm font-bold text-black text-opacity-30">
+          <div class="text-sm font-bold text-black/30">
             {{ $t("profile.lineFriend") }}
           </div>
 
@@ -33,7 +33,7 @@
           <!-- external Friend link -->
           <o-button tag="a" :href="friendLink" class="b-reset-tw">
             <div
-              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
               style="background: #18b900"
             >
               <i class="fab fa-line mr-2 text-2xl text-white" />
@@ -54,7 +54,7 @@
           </div>
           <o-button @click="handleLineAuth" class="b-reset-tw">
             <div
-              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
               style="background: #18b900"
             >
               <i class="fab fa-line mr-2 text-2xl text-white" />

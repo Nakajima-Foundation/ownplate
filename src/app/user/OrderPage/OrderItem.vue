@@ -7,17 +7,17 @@
     />
     <div>
       <div
-        class="inline-flex h-9 w-12 flex-shrink-0 items-center justify-center rounded bg-blue-500 bg-opacity-10"
+        class="inline-flex h-9 w-12 shrink-0 items-center justify-center rounded-sm bg-blue-500/10"
       >
         <div class="text-lg font-bold text-blue-500">
           {{ "x " + String(count) }}
         </div>
       </div>
-      <div v-if="image" class="mt-1 flex-shrink-0">
+      <div v-if="image" class="mt-1 shrink-0">
         <img
           :src="image"
           @error="FsmallImageErrorHandler"
-          class="h-12 w-12 rounded object-cover"
+          class="h-12 w-12 rounded-sm object-cover"
         />
       </div>
     </div>
@@ -48,8 +48,8 @@
       </div>
     </div>
 
-    <div class="flex-shrink-0 text-right">
-      <span class="text-base font-bold text-black text-opacity-30">
+    <div class="shrink-0 text-right">
+      <span class="text-base font-bold text-black/30">
         <s v-if="editable && !available">
           {{ $n(totalPrice, "currency") }}
         </s>

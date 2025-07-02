@@ -17,7 +17,7 @@
       <!-- Body -->
       <div class="grid-col-1 mx-6 mt-4 space-y-4 lg:mx-auto lg:max-w-2xl">
         <!-- Title -->
-        <div class="text-xl font-bold text-black text-opacity-30">
+        <div class="text-xl font-bold text-black/30">
           {{ $t("admin.line.settings") }}
         </div>
       </div>
@@ -31,7 +31,7 @@
         </ul>
       </div>
 
-      <hr class="my-4 border border-solid border-black border-opacity-5" />
+      <hr class="my-4 border border-solid border-black/5" />
 
       <div class="m-6">
         <div class="pb-2 text-sm font-bold">
@@ -62,7 +62,7 @@
           <o-input type="text" v-model="message_token" />
         </div>
 
-        <hr class="my-4 border border-solid border-black border-opacity-5" />
+        <hr class="my-4 border border-solid border-black/5" />
 
         <div class="pb-2 text-sm font-bold">
           {{ $t("admin.line.callbackUrl") }}

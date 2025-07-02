@@ -3,6 +3,7 @@ import vue from "@vitejs/plugin-vue";
 import path from "path";
 import checker from "vite-plugin-checker";
 import Markdown from "unplugin-vue-markdown/vite";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   plugins: [
@@ -18,6 +19,7 @@ export default defineConfig({
       },
     }),
     Markdown(),
+    tailwindcss(),
   ],
   resolve: {
     alias: {

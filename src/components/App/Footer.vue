@@ -9,12 +9,10 @@
           target="_blank"
         >
           <div
-            class="inline-flex h-10 items-center justify-center rounded-full bg-white bg-opacity-10 px-4"
+            class="inline-flex h-10 items-center justify-center rounded-full bg-white/10 px-4"
           >
-            <i
-              class="fab fa-facebook mr-2 text-lg text-white text-opacity-50"
-            ></i>
-            <span class="text-sm font-bold text-white text-opacity-80">{{
+            <i class="fab fa-facebook mr-2 text-lg text-white/50"></i>
+            <span class="text-sm font-bold text-white/80">{{
               $t("admin.facebookUserGroup")
             }}</span>
           </div>
@@ -25,14 +23,10 @@
       <div class="inline-block px-1 pb-2">
         <a href="https://x.com/omochikaericom" target="_blank">
           <div
-            class="inline-flex h-10 items-center justify-center rounded-full bg-white bg-opacity-10 px-4"
+            class="inline-flex h-10 items-center justify-center rounded-full bg-white/10 px-4"
           >
-            <i
-              class="fab fa-x-twitter mr-2 text-lg text-white text-opacity-50"
-            />
-            <span class="text-sm font-bold text-white text-opacity-80">
-              (Twitter)
-            </span>
+            <i class="fab fa-x-twitter mr-2 text-lg text-white/50" />
+            <span class="text-sm font-bold text-white/80"> (Twitter) </span>
           </div>
         </a>
       </div>
@@ -41,11 +35,9 @@
       <div class="inline-block px-1 pb-2">
         <a href="https://note.com/singsoc/m/m19dd935e84e4" target="_blank">
           <div
-            class="inline-flex h-10 items-center justify-center rounded-full bg-white bg-opacity-10 px-4"
+            class="inline-flex h-10 items-center justify-center rounded-full bg-white/10 px-4"
           >
-            <span class="text-sm font-bold text-white text-opacity-80">
-              Note
-            </span>
+            <span class="text-sm font-bold text-white/80"> Note </span>
           </div>
         </a>
       </div>
@@ -54,19 +46,15 @@
     <div class="my-4 px-4">
       <div class="text-right">
         <a
-          class="inline-flex h-10 items-center justify-center rounded-full bg-white bg-opacity-10 pl-4 pr-2 cursor-pointer"
+          class="inline-flex h-10 items-center justify-center rounded-full bg-white/10 pl-4 pr-2 cursor-pointer"
           @click="openLang()"
         >
-          <i class="material-icons mr-2 text-lg text-white text-opacity-50"
-            >language</i
-          >
-          <span class="mr-2 text-sm font-bold text-white text-opacity-80">{{
+          <i class="material-icons mr-2 text-lg text-white/50">language</i>
+          <span class="mr-2 text-sm font-bold text-white/80">{{
             languages[language]
           }}</span>
 
-          <i class="material-icons text-lg text-white text-opacity-50"
-            >arrow_drop_down</i
-          >
+          <i class="material-icons text-lg text-white/50">arrow_drop_down</i>
         </a>
       </div>
       <div class="mt-2 text-right">
@@ -76,17 +64,17 @@
     <!-- Language Popup-->
     <o-modal v-model:active="langPopup" :width="488" scroll="keep">
       <div class="my-6 mx-2 rounded-lg bg-white p-6 shadow-lg">
-        <div class="text-xl font-bold text-black text-opacity-40">
+        <div class="text-xl font-bold text-black/40">
           {{ $t("menu.selectLanguage") }}
         </div>
 
         <!-- Languages -->
         <div class="mt-4" v-for="(lang, lang_key) in languages" :key="lang_key">
           <a
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 cursor-pointer"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4 cursor-pointer"
             @click="changeLangAndClose(lang_key)"
             ><i
-              class="material-icons mr-2 text-lg text-black text-opacity-60"
+              class="material-icons mr-2 text-lg text-black/60"
               v-if="lang_key == language"
               >check</i
             ><span class="text-sm font-bold text-op-teal">{{ lang }}</span></a
@@ -96,10 +84,10 @@
         <!-- Close -->
         <div class="mt-4 text-center">
           <a
-            class="inline-flex h-12 items-center justify-center rounded-full bg-black bg-opacity-5 cursor-pointer"
+            class="inline-flex h-12 items-center justify-center rounded-full bg-black/5 cursor-pointer"
             style="min-width: 10rem"
             @click="closeLang()"
-            ><span class="px-4 font-bold text-black text-opacity-60"
+            ><span class="px-4 font-bold text-black/60"
               >{{ $t("menu.close") }}
             </span></a
           >

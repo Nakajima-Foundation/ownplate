@@ -17,7 +17,7 @@
     />
 
     <!-- Order Summary -->
-    <div class="mx-6 mt-2 rounded-lg bg-white px-2 pt-4 pb-1 shadow">
+    <div class="mx-6 mt-2 rounded-lg bg-white px-2 pt-4 pb-1 shadow-sm">
       <!-- Order Status -->
       <OrderStatus :orderInfo="orderInfo" :orderName="orderName" />
 
@@ -54,7 +54,7 @@
     <!-- Canceled Message -->
     <div
       v-if="canceled"
-      class="mx-6 mt-2 rounded-lg bg-red-700 bg-opacity-10 p-4 text-center"
+      class="mx-6 mt-2 rounded-lg bg-red-700/10 p-4 text-center"
     >
       <span class="text-base font-bold text-red-700">{{
         $t("order.cancelOrderComplete")
@@ -88,7 +88,7 @@
       <!-- Left -->
       <div>
         <!-- Title -->
-        <div class="text-xl font-bold text-black text-opacity-30">
+        <div class="text-xl font-bold text-black/30">
           {{ $t("order.yourOrder") + ": " + orderName }}
         </div>
 
@@ -119,8 +119,8 @@
 
         <!-- Your Message to the Restaurant -->
         <template v-if="hasMemo">
-          <div class="mt-4 rounded-lg bg-white p-4 shadow">
-            <div class="text-xs font-bold text-black text-opacity-60">
+          <div class="mt-4 rounded-lg bg-white p-4 shadow-sm">
+            <div class="text-xs font-bold text-black/60">
               {{ $t("order.orderMessage") }}
             </div>
             <div class="mt-1 text-base">{{ orderInfo.memo }}</div>
@@ -130,7 +130,7 @@
         <!-- Canceled Message -->
         <div
           v-if="canceled"
-          class="mt-2 rounded-lg bg-red-700 bg-opacity-10 p-4 text-center"
+          class="mt-2 rounded-lg bg-red-700/10 p-4 text-center"
         >
           <span class="text-base font-bold text-red-700">{{
             $t("order.cancelOrderComplete")
@@ -162,7 +162,7 @@
       <div class="mt-4 lg:mt-0">
         <!-- Restaurant Info -->
         <div>
-          <div class="text-xl font-bold text-black text-opacity-30">
+          <div class="text-xl font-bold text-black/30">
             {{
               shopInfo.isEC
                 ? $t("shopInfo.ecShopDetails")
@@ -182,11 +182,11 @@
 
         <!-- QR Code -->
         <div class="mt-2" v-if="!shopInfo.isEC">
-          <div class="text-xl font-bold text-black text-opacity-30">
+          <div class="text-xl font-bold text-black/30">
             {{ $t("order.adminQRCode") }}
           </div>
 
-          <div class="mt-2 rounded-lg bg-white p-4 text-center shadow">
+          <div class="mt-2 rounded-lg bg-white p-4 text-center shadow-sm">
             <vue-qrcode
               :value="urlAdminOrderPage"
               :options="{ width: 160 }"
