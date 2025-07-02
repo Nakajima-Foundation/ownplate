@@ -31,7 +31,7 @@ describe("twilio function", () => {
     };
 
     if (test_phone_number) {
-      const num3 = twilio.intenationalPhoneNumber(restaurantCall);
+      const num3 = twilio.internationalPhoneNumber(restaurantCall);
       num3.should.startWith("+81");
 
       await twilio.phoneCall(restaurantCall);

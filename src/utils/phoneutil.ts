@@ -9,7 +9,7 @@ const phoneUtil = PhoneNumberUtil.getInstance();
 export const parsePhoneNumber = (phoneNumber: string): PhoneNumber => {
   return phoneUtil.parse(phoneNumber);
 };
-export const intenationalFormat = (parsedNumber: PhoneNumber): string => {
+export const internationalFormat = (parsedNumber: PhoneNumber): string => {
   return phoneUtil.format(parsedNumber, PhoneNumberFormat.INTERNATIONAL);
 };
 

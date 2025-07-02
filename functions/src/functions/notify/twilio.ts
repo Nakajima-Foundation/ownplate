@@ -2,7 +2,7 @@ import twilio from "twilio";
 import { defineSecret } from "firebase-functions/params";
 
 import { twiml_neworder } from "../../common/constant";
-import { parsePhoneNumber, formatNational, intenationalFormat } from "../../common/phoneutil";
+import { parsePhoneNumber, formatNational, internationalFormat } from "../../common/phoneutil";
 import { enableNotification } from "../notificationConfig";
 
 const twilio_sid = defineSecret("TWILIO_SID");
@@ -18,10 +18,10 @@ export const parsedNumber = (restaurant) => {
   }
 };
 
-export const intenationalPhoneNumber = (restaurant) => {
+export const internationalPhoneNumber = (restaurant) => {
   const phoneNumber = parsedNumber(restaurant);
   if (phoneNumber) {
-    return intenationalFormat(phoneNumber);
+    return internationalFormat(phoneNumber);
   }
   return restaurant.phoneNumber;
 };
@@ -38,7 +38,7 @@ export const phoneCall = async (restaurant) => {
   if (!enableNotification) {
     return;
   }
-  const to = intenationalPhoneNumber(restaurant);
+  const to = internationalPhoneNumber(restaurant);
   if (!twilio_sid.value() || !twilio_token.value() || !twilio_phone_from.value()) {
     console.log("PhoneCall: no setting");
     return;
