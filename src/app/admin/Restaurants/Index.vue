@@ -762,12 +762,12 @@
           </div>
 
           <!-- notification -->
-          <div class="rounded-lg p-2 mt-4">
+          <div class="mt-4">
             <div class="pb-2 text-sm font-bold">
               {{ $t("editRestaurant.notificationConfig") }}
             </div>
             <!-- Email Notification -->
-            <div class="mt-2">
+            <div class="mt-2 ml-8">
               <a id="emailNotification" />
               <div class="pb-2 text-sm font-bold">
                 {{ $t("editRestaurant.emailNotificationTitle") }}
@@ -785,7 +785,7 @@
             </div>
 
             <!-- Phone Call -->
-            <div class="mt-4">
+            <div class="mt-4 ml-8">
               <a id="phoneCall" />
               <div class="pb-2 text-sm font-bold">
                 {{ $t("editRestaurant.phoneCall") }}
@@ -803,7 +803,7 @@
             </div>
 
             <!-- Line -->
-            <div class="mt-4">
+            <div class="mt-4 ml-8">
               <a id="phoneCall" />
               <div class="pb-2 text-sm font-bold">
                 {{ $t("editRestaurant.lineNotification") }}
