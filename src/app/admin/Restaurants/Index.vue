@@ -713,9 +713,10 @@
                 <a
                   href="https://docs.omochikaeri.com/manuals/delivery.pdf"
                   target="_blank"
-                  class="text-xs font-bold text-op-teal"
                 >
-                  {{ $t("menu.deliveryManualLink") }}
+                  <span class="font-bold text-op-teal">
+                    {{ $t("menu.deliveryManualLink") }}
+                  </span>
                 </a>
               </div>
             </div>
@@ -737,9 +738,11 @@
                 <a
                   href="https://docs.omochikaeri.com/manuals/printer.pdf"
                   target="_blank"
-                  class="inline-flex text-xs font-bold text-op-teal"
+                  class="inline-flex"
                 >
-                  {{ $t("menu.printerManualLink") }}
+                  <span class="font-bold text-op-teal">
+                    {{ $t("menu.printerManualLink") }}
+                  </span>
                 </a>
               </div>
               <div class="text-xs">
@@ -747,12 +750,13 @@
               </div>
               <div class="text-xs pt-2">
                 <router-link
-                  class="inline-flex text-xs font-bold text-op-teal"
+                  class="inline-flex"
                   :to="`/admin/restaurants/${restaurantId}/printer`"
-                  >{{
-                    $t("editRestaurant.printerDescriptionConfig")
-                  }}</router-link
                 >
+                  <span class="font-bold text-op-teal">
+                    {{ $t("editRestaurant.printerDescriptionConfig") }}
+                  </span>
+                </router-link>
               </div>
             </div>
           </div>
@@ -806,10 +810,11 @@
               </div>
               <div class="rounded-lg bg-black/5 p-4">
                 <router-link
-                  class="text-sm font-bold text-op-teal"
                   :to="`/admin/restaurants/${restaurantId}/linelist`"
                 >
-                  {{ $t("editRestaurant.moveToLineConfig") }}
+                  <span class="text-sm font-bold text-op-teal">
+                    {{ $t("editRestaurant.moveToLineConfig") }}
+                  </span>
                 </router-link>
               </div>
             </div>
