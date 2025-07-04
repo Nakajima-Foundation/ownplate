@@ -326,12 +326,14 @@
             <div class="pb-2 text-sm font-bold">
               {{ $t("editRestaurant.enablePrelineTitle") }}
             </div>
-            <div class="rounded-lg bg-black/5 p-4">
-              <o-checkbox v-model="editShopInfo.enablePreline">
-                <div class="text-sm font-bold">
-                  {{ $t("editRestaurant.enablePrelineDescription") }}
-                </div>
-              </o-checkbox>
+            <div class="flex gap-2 rounded-lg bg-black/5 p-4">
+              <o-checkbox
+                id="enablePreline"
+                v-model="editShopInfo.enablePreline"
+              />
+              <label for="enablePreline" class="text-sm font-bold">
+                {{ $t("editRestaurant.enablePrelineDescription") }}
+              </label>
             </div>
           </div>
 
@@ -372,11 +374,18 @@
                 {{ $t("editRestaurant.acceptUserMessage") }}
               </div>
               <div class="rounded-lg bg-black/5 p-4">
-                <o-checkbox v-model="editShopInfo.acceptUserMessage">
-                  <div class="text-sm font-bold">
+                <div class="flex gap-2">
+                  <o-checkbox
+                    id="acceptUserMessageDescription"
+                    v-model="editShopInfo.acceptUserMessage"
+                  />
+                  <label
+                    for="acceptUserMessageDescription"
+                    class="text-sm font-bold"
+                  >
                     {{ $t("editRestaurant.acceptUserMessageDescription") }}
-                  </div>
-                </o-checkbox>
+                  </label>
+                </div>
                 <div class="pt-2 text-xs">
                   {{ $t("editRestaurant.acceptUserMessageNotice") }}
                 </div>
@@ -523,10 +532,10 @@
               </div>
               <div class="rounded-lg bg-black/5 p-4">
                 <div>
-                  <o-checkbox v-model="editShopInfo.inclusiveTax">
-                    <div class="font-bold">
+                  <o-checkbox class="mr-2" v-model="editShopInfo.inclusiveTax">
+                    <span class="font-bold">
                       {{ $t("editRestaurant.taxIncluded") }}
-                    </div>
+                    </span>
                   </o-checkbox>
                 </div>
                 <div class="mt-2">
@@ -678,18 +687,19 @@
               <!-- Preparation Time -->
               <div v-for="(paymentMethod, k) in paymentMethods" :key="k">
                 <o-checkbox
+                  class="mr-2"
                   v-model="
                     (editShopInfo.paymentMethods || {})[paymentMethod.key]
                   "
                 >
-                  <div class="text-sm font-bold">
+                  <span class="text-sm font-bold">
                     {{
                       $t(
                         "editRestaurant.paymentMethodChoices." +
                           paymentMethod.key,
                       )
                     }}
-                  </div>
+                  </span>
                 </o-checkbox>
               </div>
             </div>
@@ -728,10 +738,10 @@
               {{ $t("editRestaurant.printerConfigTitle") }}
             </div>
             <div class="rounded-lg bg-black/5 p-4">
-              <o-checkbox v-model="editShopInfo.enablePrinter">
-                <div class="text-sm font-bold">
+              <o-checkbox class="mr-2" v-model="editShopInfo.enablePrinter">
+                <span class="text-sm font-bold">
                   {{ $t("editRestaurant.enablePrinter") }}
-                </div>
+                </span>
               </o-checkbox>
               <div class="pt-2 text-xs">
                 {{ $t("editRestaurant.printerDescription") }}
@@ -773,10 +783,13 @@
                 {{ $t("editRestaurant.emailNotificationTitle") }}
               </div>
               <div class="rounded-lg bg-black/5 p-4">
-                <o-checkbox v-model="editShopInfo.emailNotification">
-                  <div class="text-sm font-bold">
+                <o-checkbox
+                  class="mr-2"
+                  v-model="editShopInfo.emailNotification"
+                >
+                  <span class="text-sm font-bold">
                     {{ $t("editRestaurant.emailNotificationDescription") }}
-                  </div>
+                  </span>
                 </o-checkbox>
                 <div class="pt-2 text-xs">
                   {{ $t("editRestaurant.emailNotificationNotice") }}
@@ -791,10 +804,10 @@
                 {{ $t("editRestaurant.phoneCall") }}
               </div>
               <div class="rounded-lg bg-black/5 p-4">
-                <o-checkbox v-model="editShopInfo.phoneCall">
-                  <div class="text-sm font-bold">
+                <o-checkbox class="mr-2" v-model="editShopInfo.phoneCall">
+                  <span class="text-sm font-bold">
                     {{ $t("editRestaurant.phoneCallDescription") }}
-                  </div>
+                  </span>
                 </o-checkbox>
                 <div class="pt-2 text-xs">
                   {{ $t("editRestaurant.phoneCallNotice") }}
@@ -830,7 +843,7 @@
           </div>
           <div class="rounded-lg bg-black/5 p-4">
             <div>
-              <o-checkbox v-model="editShopInfo.enableLunchDinner">
+              <o-checkbox class="mr-2" v-model="editShopInfo.enableLunchDinner">
                 <span class="text-base font-bold">
                   {{ $t("editRestaurant.lunchOrDinnerToggle") }}
                 </span>
@@ -859,10 +872,13 @@
                   <!-- Enable/Disable Day and Copy Previous Day -->
                   <div class="flex items-center">
                     <div class="flex-1">
-                      <o-checkbox v-model="editShopInfo.businessDay[index]">
-                        <div class="text-base font-bold">
+                      <o-checkbox
+                        class="mr-2"
+                        v-model="editShopInfo.businessDay[index]"
+                      >
+                        <span class="text-base font-bold">
                           {{ $t("week.short." + day) }}
-                        </div>
+                        </span>
                       </o-checkbox>
                     </div>
 
