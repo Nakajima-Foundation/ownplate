@@ -713,9 +713,10 @@
                 <a
                   href="https://docs.omochikaeri.com/manuals/delivery.pdf"
                   target="_blank"
-                  class="text-xs font-bold text-op-teal"
                 >
-                  {{ $t("menu.deliveryManualLink") }}
+                  <span class="font-bold text-op-teal">
+                    {{ $t("menu.deliveryManualLink") }}
+                  </span>
                 </a>
               </div>
             </div>
@@ -737,9 +738,11 @@
                 <a
                   href="https://docs.omochikaeri.com/manuals/printer.pdf"
                   target="_blank"
-                  class="inline-flex text-xs font-bold text-op-teal"
+                  class="inline-flex"
                 >
-                  {{ $t("menu.printerManualLink") }}
+                  <span class="font-bold text-op-teal">
+                    {{ $t("menu.printerManualLink") }}
+                  </span>
                 </a>
               </div>
               <div class="text-xs">
@@ -747,23 +750,24 @@
               </div>
               <div class="text-xs pt-2">
                 <router-link
-                  class="inline-flex text-xs font-bold text-op-teal"
+                  class="inline-flex"
                   :to="`/admin/restaurants/${restaurantId}/printer`"
-                  >{{
-                    $t("editRestaurant.printerDescriptionConfig")
-                  }}</router-link
                 >
+                  <span class="font-bold text-op-teal">
+                    {{ $t("editRestaurant.printerDescriptionConfig") }}
+                  </span>
+                </router-link>
               </div>
             </div>
           </div>
 
           <!-- notification -->
-          <div class="rounded-lg p-2 mt-4">
+          <div class="mt-4">
             <div class="pb-2 text-sm font-bold">
               {{ $t("editRestaurant.notificationConfig") }}
             </div>
             <!-- Email Notification -->
-            <div class="mt-2">
+            <div class="mt-2 ml-8">
               <a id="emailNotification" />
               <div class="pb-2 text-sm font-bold">
                 {{ $t("editRestaurant.emailNotificationTitle") }}
@@ -781,7 +785,7 @@
             </div>
 
             <!-- Phone Call -->
-            <div class="mt-4">
+            <div class="mt-4 ml-8">
               <a id="phoneCall" />
               <div class="pb-2 text-sm font-bold">
                 {{ $t("editRestaurant.phoneCall") }}
@@ -799,17 +803,18 @@
             </div>
 
             <!-- Line -->
-            <div class="mt-4">
+            <div class="mt-4 ml-8">
               <a id="phoneCall" />
               <div class="pb-2 text-sm font-bold">
                 {{ $t("editRestaurant.lineNotification") }}
               </div>
               <div class="rounded-lg bg-black/5 p-4">
                 <router-link
-                  class="text-sm font-bold text-op-teal"
                   :to="`/admin/restaurants/${restaurantId}/linelist`"
                 >
-                  {{ $t("editRestaurant.moveToLineConfig") }}
+                  <span class="text-sm font-bold text-op-teal">
+                    {{ $t("editRestaurant.moveToLineConfig") }}
+                  </span>
                 </router-link>
               </div>
             </div>
