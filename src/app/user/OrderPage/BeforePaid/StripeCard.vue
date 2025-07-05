@@ -2,7 +2,7 @@
   <div>
     <div
       v-if="storedCard && hasPayment"
-      class="mt-2 flex items-center rounded-lg bg-white p-4 shadow"
+      class="mt-2 flex items-center rounded-lg bg-white p-4 shadow-sm"
     >
       <t-checkbox v-model="useStoredCard">
         <div class="text-base">
@@ -15,14 +15,11 @@
 
     <div v-show="!useStoredCard">
       <!-- Enter New Card -->
-      <div class="mt-2 rounded-lg bg-white p-4 shadow">
+      <div class="mt-2 rounded-lg bg-white p-4 shadow-sm">
         <div id="card-element"></div>
       </div>
 
-      <div
-        v-if="!stripeJCB"
-        class="text-sm font-bold text-black text-opacity-60 mt-2"
-      >
+      <div v-if="!stripeJCB" class="text-sm font-bold text-black/60 mt-2">
         {{ $t("order.no_jcb") }}
       </div>
 
@@ -51,12 +48,12 @@
         <o-modal v-model:active="CVCPopup" :width="488" scroll="keep">
           <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
             <!-- Title -->
-            <div class="text-xl font-bold text-black text-opacity-40">
+            <div class="text-xl font-bold text-black/40">
               {{ $t("order.whatsCVC") }}
             </div>
 
             <!-- 3 Digits -->
-            <div class="mt-2 rounded-lg bg-black bg-opacity-5 p-4 text-center">
+            <div class="mt-2 rounded-lg bg-black/5 p-4 text-center">
               <div class="text-xl font-bold">
                 Visa, MasterCard, JCB, Diners Club, DISCOVER
               </div>
@@ -75,7 +72,7 @@
             </div>
 
             <!-- 4 Digits -->
-            <div class="mt-2 rounded-lg bg-black bg-opacity-5 p-4 text-center">
+            <div class="mt-2 rounded-lg bg-black/5 p-4 text-center">
               <div class="text-xl font-bold">American Express</div>
 
               <div class="mt-2 text-center text-base font-bold text-blue-500">
@@ -91,10 +88,10 @@
             <div class="mt-4 text-center">
               <a
                 @click="closeCVC()"
-                class="inline-flex h-12 items-center justify-center rounded-full bg-black bg-opacity-5 px-6"
+                class="inline-flex h-12 items-center justify-center rounded-full bg-black/5 px-6"
                 style="min-width: 8rem"
               >
-                <div class="text-base font-bold text-black text-opacity-60">
+                <div class="text-base font-bold text-black/60">
                   {{ $t("menu.close") }}
                 </div>
               </a>

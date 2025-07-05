@@ -5,9 +5,9 @@
     class="b-reset-tw disabled:opacity-50 disabled:cursor-not-allowed"
   >
     <div
-      class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black bg-opacity-5"
+      class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black/5"
     >
-      <div class="text-base font-bold text-black text-opacity-60">
+      <div class="text-base font-bold text-black/60">
         <slot />
       </div>
     </div>

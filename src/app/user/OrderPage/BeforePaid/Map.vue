@@ -14,7 +14,7 @@
     <div class="mt-1 text-sm">
       {{ $t("delivery.setTheAddressInTheDeliveryLocationDescription") }}
     </div>
-    <div class="text-xm mt-2 font-bold text-black text-opacity-30">
+    <div class="text-xm mt-2 font-bold text-black/30">
       {{ $t("delivery.setDeliveryLocation") }}
     </div>
 
@@ -31,7 +31,7 @@
     </div>
 
     <div v-if="deliveryInfo.enableAreaText">
-      <div class="text-xm mt-2 font-bold text-black text-opacity-30">
+      <div class="text-xm mt-2 font-bold text-black/30">
         {{ $t("delivery.aboutDeliveryArea") }}
       </div>
       <pre class="mt-2 mb-2 bg-transparent p-0">{{

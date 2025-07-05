@@ -2,7 +2,7 @@
   <div v-if="showAddLine || isDev" class="mt-2 text-center">
     <div v-if="hasLine">
       <div
-        class="mx-6 rounded-lg bg-black bg-opacity-5 p-4"
+        class="mx-6 rounded-lg bg-black/5 p-4"
         v-if="hasFriends !== null || isDev"
       >
         <button @click="handleLineAuth">

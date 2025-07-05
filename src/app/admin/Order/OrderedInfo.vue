@@ -4,12 +4,12 @@
     <div
       v-if="!order.restaurantId"
       @click="$emit('selected', order)"
-      class="cursor-pointer rounded-lg bg-white shadow"
+      class="cursor-pointer rounded-lg bg-white shadow-sm"
     >
       <!-- Order Status -->
       <div class="p-2">
         <div
-          class="rounded p-1 text-center text-xs font-bold"
+          class="rounded-sm p-1 text-center text-xs font-bold"
           :class="statusKey"
         >
           {{ $t("order.status." + convOrderStateForText(statusKey, order)) }}
@@ -74,21 +74,21 @@
         </div>
 
         <div
-          class="mr-2 items-center justify-center rounded-md bg-yellow-500 bg-opacity-10 p-1 text-xs font-bold text-yellow-500"
+          class="mr-2 items-center justify-center rounded-md bg-yellow-500/10 p-1 text-xs font-bold text-yellow-500"
           v-if="hasStripe && order.payment.stripe !== 'canceled'"
         >
           {{ $t("admin.order.cardPayment") }}
         </div>
 
         <div
-          class="mr-2 items-center justify-center rounded-md bg-red-700 bg-opacity-10 p-1 text-xs font-bold text-red-700"
+          class="mr-2 items-center justify-center rounded-md bg-red-700/10 p-1 text-xs font-bold text-red-700"
           v-else
         >
           {{ $t("admin.order.storePayment") }}
         </div>
 
         <div
-          class="mr-2 items-center justify-center rounded-md bg-green-600 bg-opacity-10 p-1 text-xs font-bold text-green-600"
+          class="mr-2 items-center justify-center rounded-md bg-green-600/10 p-1 text-xs font-bold text-green-600"
           v-if="order.promotionId"
         >
           {{ $n(Number(order.discountPrice || 0), "currency")
@@ -115,12 +115,12 @@
     <div
       v-else-if="restaurant"
       @click="$emit('selected', order)"
-      class="cursor-pointer rounded-lg bg-white shadow"
+      class="cursor-pointer rounded-lg bg-white shadow-sm"
     >
       <!-- Order Status -->
       <div class="p-2">
         <div
-          class="rounded p-1 text-center text-xs font-bold"
+          class="rounded-sm p-1 text-center text-xs font-bold"
           :class="statusKey"
         >
           {{ $t("order.status." + convOrderStateForText(statusKey, order)) }}
@@ -173,7 +173,7 @@
               {{ $n(order.totalCharge, "currency") }}
             </div>
             <div
-              class="mr-2 items-center justify-center rounded-md bg-green-600 bg-opacity-10 p-1 text-xs font-bold text-green-600"
+              class="mr-2 items-center justify-center rounded-md bg-green-600/10 p-1 text-xs font-bold text-green-600"
               v-if="order.promotionId && isSuperView"
             >
               {{ $n(Number(order.discountPrice || 0), "currency")
@@ -190,11 +190,11 @@
         </div>
       </div>
     </div>
-    <div v-else class="rounded-lg bg-white shadow">
+    <div v-else class="rounded-lg bg-white shadow-sm">
       <!-- Order Status -->
       <div class="p-2">
         <div
-          class="rounded p-1 text-center text-xs font-bold"
+          class="rounded-sm p-1 text-center text-xs font-bold"
           :class="statusKey"
         >
           {{ $t("order.status." + convOrderStateForText(statusKey, order)) }}

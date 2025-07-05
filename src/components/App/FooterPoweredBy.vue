@@ -1,5 +1,5 @@
 <template>
-  <span class="text-xs text-white text-opacity-50">
+  <span class="text-xs text-white/50">
     <template> Operated by Singularity Society </template>
   </span>
 </template>

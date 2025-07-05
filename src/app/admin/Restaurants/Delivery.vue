@@ -6,7 +6,7 @@
     </template>
     <template v-else-if="existLocation === false">
       <div class="mx-6 mt-4">
-        <div class="rounded-lg bg-black bg-opacity-5 p-4">
+        <div class="rounded-lg bg-black/5 p-4">
           <div class="text-xl font-bold text-red-600">
             <div>
               {{ $t("delivery.alert") }}
@@ -22,9 +22,9 @@
           <!-- Cancel Button -->
           <router-link :to="`/admin/restaurants/#restaurant_` + restaurantId">
             <div
-              class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
+              class="inline-flex h-12 items-center rounded-full bg-black/5 px-6"
             >
-              <span class="text-base font-bold text-black text-opacity-60">{{
+              <span class="text-base font-bold text-black/60">{{
                 $t("button.cancel")
               }}</span>
             </div>
@@ -38,9 +38,12 @@
           </t-button>
         </div>
 
-        <div class="rounded-lg bg-black bg-opacity-5 p-4 mt-4">
+        <div class="rounded-lg bg-black/5 p-4 mt-4">
           <div class="text-sm font-bold">
-            <o-checkbox v-model="enableDelivery" />{{
+            <o-checkbox
+              rootClass="base-o-input-root"
+              v-model="enableDelivery"
+            />{{
               $t(
                 "delivery.enableDelivery",
                 { name: shopInfo.restaurantName },
@@ -49,7 +52,10 @@
             }}
           </div>
           <div class="text-sm font-bold">
-            <o-checkbox v-model="deliveryOnlyStore" />{{
+            <o-checkbox
+              rootClass="base-o-input-root"
+              v-model="deliveryOnlyStore"
+            />{{
               $t(
                 "delivery.deliveryOnlyStore",
                 { name: shopInfo.restaurantName },
@@ -60,14 +66,18 @@
         </div>
 
         <!-- area map -->
-        <div class="mt-4 rounded-lg bg-black bg-opacity-5 p-4">
+        <div class="mt-4 rounded-lg bg-black/5 p-4">
           <div class="text-lm pb-2 font-bold">
             {{ $t("delivery.areaSetting") }}
           </div>
 
           <div>
             <div class="flex pb-2 text-sm font-bold">
-              <o-checkbox v-model="enableAreaMap" :disabled="!enableDelivery" />
+              <o-checkbox
+                rootClass="base-o-input-root"
+                v-model="enableAreaMap"
+                :disabled="!enableDelivery"
+              />
               {{ $t("delivery.setAreaMap") }}
             </div>
             <div>
@@ -90,6 +100,7 @@
               </span>
               <span class="flex-item mt-auto mb-auto mr-2 inline-block">
                 <input
+                  class="base-input"
                   v-model="radius"
                   :disabled="!enableAreaMap || !enableDelivery"
                 />
@@ -108,6 +119,7 @@
           <div class="mt-4">
             <div class="flex pb-2 text-sm font-bold">
               <o-checkbox
+                rootClass="base-o-input-root"
                 v-model="enableAreaText"
                 :disabled="!enableDelivery"
               />
@@ -124,17 +136,19 @@
           </div>
         </div>
 
-        <div class="mt-4 rounded-lg bg-black bg-opacity-5 p-4">
+        <div class="mt-4 rounded-lg bg-black/5 p-4">
           <div class="text-lm pb-2 font-bold">
             {{ $t("delivery.deliveryThreshold") }}:
           </div>
           <div class="mt-2 flex">
             <o-checkbox
+              rootClass="base-o-input-root"
               v-model="enableDeliveryThreshold"
               :disabled="!enableDelivery"
             />
             <span class="flex-item mt-auto mb-auto mr-2 inline-block">
               <input
+                class="base-input"
                 v-model="deliveryThreshold"
                 :disabled="!enableDelivery"
                 type="number"
@@ -147,7 +161,7 @@
           </div>
         </div>
 
-        <div class="mt-4 rounded-lg bg-black bg-opacity-5 p-4">
+        <div class="mt-4 rounded-lg bg-black/5 p-4">
           <div class="text-lm pb-2 font-bold">
             {{ $t("delivery.deliveryFeeSetting") }}
           </div>
@@ -157,6 +171,7 @@
             </span>
             <span class="flex-item mt-auto mb-auto mr-2 inline-block">
               <input
+                class="base-input"
                 v-model="deliveryFee"
                 :disabled="!enableDelivery"
                 type="number"
@@ -170,6 +185,7 @@
 
           <div class="mt-2 flex">
             <o-checkbox
+              rootClass="base-o-input-root"
               v-model="enableDeliveryFree"
               :disabled="!enableDelivery"
             />
@@ -178,6 +194,7 @@
             </span>
             <span class="flex-item mt-auto mb-auto mr-2 inline-block">
               <input
+                class="base-input"
                 v-model="deliveryFreeThreshold"
                 :disabled="!enableDelivery"
                 type="number"
@@ -190,7 +207,7 @@
           </div>
         </div>
 
-        <div class="mt-4 rounded-lg bg-black bg-opacity-5 p-4">
+        <div class="mt-4 rounded-lg bg-black/5 p-4">
           <div class="text-lm pb-2 font-bold">
             {{ $t("editRestaurant.deliveryPreparationTime") }}
           </div>
@@ -203,6 +220,7 @@
           <div>
             {{ $t("editRestaurant.deliveryPreparationTime") }}
             <input
+              class="base-input"
               v-model="deliveryMinimumCookTime"
               :disabled="!enableDelivery"
               type="number"
@@ -210,7 +228,7 @@
             {{ $t("editRestaurant.minutes") }}
           </div>
         </div>
-        <div class="mt-4 rounded-lg bg-black bg-opacity-5 p-4">
+        <div class="mt-4 rounded-lg bg-black/5 p-4">
           <a
             href="https://docs.omochikaeri.com/manuals/delivery.pdf"
             target="_blank"
@@ -225,9 +243,9 @@
           <!-- Cancel Button -->
           <router-link :to="`/admin/restaurants/#restaurant_` + restaurantId">
             <div
-              class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
+              class="inline-flex h-12 items-center rounded-full bg-black/5 px-6"
             >
-              <span class="text-base font-bold text-black text-opacity-60">{{
+              <span class="text-base font-bold text-black/60">{{
                 $t("button.cancel")
               }}</span>
             </div>
@@ -467,3 +485,15 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+@reference "../../../assets/css/main.css";
+
+.base-input {
+  @apply bg-white dark:bg-black dark:text-gray-200 rounded-lg border border-black/20 px-4 py-1;
+}
+
+.base-o-input-root {
+  @apply content-center pr-2;
+}
+</style>

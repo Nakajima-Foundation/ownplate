@@ -2,7 +2,7 @@
   <div>
     <!-- Item Card -->
     <div
-      class="rounded-lg bg-white shadow"
+      class="rounded-lg bg-white shadow-sm"
       :class="totalQuantity > 0 ? 'border-2 border-op-teal' : ''"
     >
       <div @click="toggleMenuFlag()" class="flow-root cursor-pointer">
@@ -12,7 +12,7 @@
             <img
               @click.stop="openImage()"
               :src="smallimage"
-              class="h-36 w-36 rounded object-cover"
+              class="h-36 w-36 rounded-sm object-cover"
               @error="smallImageErrorHandler"
             />
           </div>
@@ -21,7 +21,7 @@
           <div class="w-full">
             <div
               v-if="isSoldOut"
-              class="flex h-9 w-24 items-center justify-center rounded-full bg-red-700 bg-opacity-10 m-auto"
+              class="flex h-9 w-24 items-center justify-center rounded-full bg-red-700/10 m-auto"
             >
               <div class="text-sm font-bold text-red-700">
                 {{ $t("sitemenu.soldOut") }}
@@ -30,7 +30,7 @@
             <div
               v-else
               @click.stop="pushQuantities(0)"
-              class="cardAdd flex h-9 w-36 items-center justify-center rounded-full bg-op-teal bg-opacity-10 m-auto"
+              class="cardAdd flex h-9 w-36 items-center justify-center rounded-full bg-op-teal/10 m-auto"
               :data-cart-product="item.id"
             >
               <div class="text-sm font-bold text-op-teal">
@@ -92,7 +92,7 @@
         <div v-if="false">
           <div
             v-if="!openMenuFlag"
-            class="mb-4 flex items-center justify-center text-center text-xs font-bold text-black text-opacity-40"
+            class="mb-4 flex items-center justify-center text-center text-xs font-bold text-black/40"
           >
             {{ $t("sitemenu.openCollapse") }}
             <i class="material-icons">expand_more</i>
@@ -101,7 +101,7 @@
       </div>
 
       <div class="p-4" v-if="menuPickupData.hasExceptData">
-        <div class="rounded-lg bg-black bg-opacity-5 p-4">
+        <div class="rounded-lg bg-black/5 p-4">
           <div v-if="menuPickupData.hasExceptDay">
             &#8251;
             <span
@@ -134,7 +134,7 @@
               <img
                 @click.stop="openImage()"
                 :src="smallimage"
-                class="h-28 w-28 rounded object-cover sm:h-40 sm:w-40"
+                class="h-28 w-28 rounded-sm object-cover sm:h-40 sm:w-40"
                 @error="smallImageErrorHandler"
               />
             </div>
@@ -142,7 +142,7 @@
               <img
                 @click.stop="openImage()"
                 :src="smallimage"
-                class="h-28 w-28 rounded object-cover sm:h-40 sm:w-40"
+                class="h-28 w-28 rounded-sm object-cover sm:h-40 sm:w-40"
                 @error="smallImageErrorHandler"
               />
             </div>
@@ -150,7 +150,7 @@
               <img
                 @click.stop="openImage()"
                 :src="smallimage"
-                class="h-28 w-28 rounded object-cover sm:h-40 sm:w-40"
+                class="h-28 w-28 rounded-sm object-cover sm:h-40 sm:w-40"
                 @error="smallImageErrorHandler"
               />
             </div>
@@ -158,7 +158,7 @@
               <img
                 @click.stop="openImage()"
                 :src="smallimage"
-                class="h-28 w-28 rounded object-cover sm:h-40 sm:w-40"
+                class="h-28 w-28 rounded-sm object-cover sm:h-40 sm:w-40"
                 @error="smallImageErrorHandler"
               />
             </div>
@@ -166,15 +166,13 @@
               <img
                 @click.stop="openImage()"
                 :src="smallimage"
-                class="h-28 w-28 rounded object-cover sm:h-40 sm:w-40"
+                class="h-28 w-28 rounded-sm object-cover sm:h-40 sm:w-40"
                 @error="smallImageErrorHandler"
               />
             </div>
           </div>
         </div>
-        <div
-          class="mx-4 mt-0 border-t-2 border-solid border-black border-opacity-10 pb-4"
-        >
+        <div class="mx-4 mt-0 border-t-2 border-solid border-black/10 pb-4">
           <!-- Share Button -->
           <div class="mt-2 text-center">
             <share-popup
@@ -198,7 +196,7 @@
                 <div
                   v-for="(option, index) in options"
                   :key="index"
-                  class="rounded-lg bg-black bg-opacity-5 p-4"
+                  class="rounded-lg bg-black/5 p-4"
                 >
                   <div v-if="option.length === 1" class="field">
                     <t-checkbox
@@ -234,7 +232,7 @@
             <div class="mt-4">
               <div v-if="isSoldOut">
                 <div
-                  class="flex h-9 items-center justify-center rounded-full bg-red-700 bg-opacity-10"
+                  class="flex h-9 items-center justify-center rounded-full bg-red-700/10"
                 >
                   <div class="text-sm font-bold text-red-700">
                     {{ $t("sitemenu.soldOut") }}
@@ -266,7 +264,7 @@
                   <div>
                     <a
                       @click="pullQuantities(quantityKey)"
-                      class="removeCart inline-flex h-9 w-24 items-center justify-center rounded-full bg-red-700 bg-opacity-10 cursor-pointer"
+                      class="removeCart inline-flex h-9 w-24 items-center justify-center rounded-full bg-red-700/10 cursor-pointer"
                       :disabled="quantities[quantityKey] === 0"
                       :data-cart-product="item.id"
                     >
@@ -279,7 +277,7 @@
                   <div>
                     <a
                       @click="pushQuantities(quantityKey)"
-                      class="cardAdd inline-flex h-9 w-24 items-center justify-center rounded-full bg-op-teal bg-opacity-10 cursor-pointer"
+                      class="cardAdd inline-flex h-9 w-24 items-center justify-center rounded-full bg-op-teal/10 cursor-pointer"
                       :data-cart-product="item.id"
                     >
                       <i class="material-icons text-lg text-op-teal">add</i>
@@ -290,7 +288,7 @@
             </div>
 
             <div
-              class="mt-4 border-t-2 border-solid border-black border-opacity-10 pb-4"
+              class="mt-4 border-t-2 border-solid border-black/10 pb-4"
               v-if="showMoreOption"
             ></div>
           </template>
@@ -306,7 +304,7 @@
               <div class="text-center">
                 <a
                   @click="pushItem"
-                  class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+                  class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                 >
                   <i class="material-icons mr-2 text-lg text-op-teal">add</i>
                   <span class="text-sm font-bold text-op-teal">{{
@@ -339,27 +337,27 @@
           <div class="mt-4 flex justify-center space-x-4">
             <img
               :src="image"
-              class="h-12 w-12 rounded object-cover shadow-lg"
+              class="h-12 w-12 rounded-sm object-cover shadow-lg"
               @error="imageErrorHandler"
             />
             <img
               :src="image"
-              class="h-12 w-12 rounded object-cover shadow-lg"
+              class="h-12 w-12 rounded-sm object-cover shadow-lg"
               @error="imageErrorHandler"
             />
             <img
               :src="image"
-              class="h-12 w-12 rounded object-cover shadow-lg"
+              class="h-12 w-12 rounded-sm object-cover shadow-lg"
               @error="imageErrorHandler"
             />
             <img
               :src="image"
-              class="h-12 w-12 rounded object-cover shadow-lg"
+              class="h-12 w-12 rounded-sm object-cover shadow-lg"
               @error="imageErrorHandler"
             />
             <img
               :src="image"
-              class="h-12 w-12 rounded object-cover shadow-lg"
+              class="h-12 w-12 rounded-sm object-cover shadow-lg"
               @error="imageErrorHandler"
             />
           </div>
@@ -379,7 +377,7 @@
           <div>
             <a
               @click="pullQuantities(0)"
-              class="removeCart inline-flex h-9 w-24 items-center justify-center rounded-full bg-red-700 bg-opacity-10"
+              class="removeCart inline-flex h-9 w-24 items-center justify-center rounded-full bg-red-700/10"
               :disabled="quantities[0] === 0"
               :data-cart-product="item.id"
             >
@@ -392,7 +390,7 @@
           <div>
             <a
               @click="pushQuantities(0)"
-              class="cardAdd inline-flex h-9 w-24 items-center justify-center rounded-full bg-op-teal bg-opacity-10"
+              class="cardAdd inline-flex h-9 w-24 items-center justify-center rounded-full bg-op-teal/10"
               :data-cart-product="item.id"
             >
               <i class="material-icons text-lg text-op-teal">add</i>

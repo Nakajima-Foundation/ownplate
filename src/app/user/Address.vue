@@ -10,12 +10,12 @@
 
     <div class="mx-6 mt-4 lg:mx-auto lg:max-w-2xl">
       <!-- Title -->
-      <div class="text-xl font-bold text-black text-opacity-30">
+      <div class="text-xl font-bold text-black/30">
         {{ $t("profile.address") }}
       </div>
 
       <!-- Card -->
-      <div class="mt-2 rounded-lg bg-white p-6 shadow">
+      <div class="mt-2 rounded-lg bg-white p-6 shadow-sm">
         <div class="text-sm font-bold">
           {{ $t("order.ec.zip") }}
         </div>

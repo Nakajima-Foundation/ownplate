@@ -8,7 +8,7 @@
       <div class="mx-6 mt-4 lg:flex lg:items-center">
         <!-- Back and Preview -->
         <div class="flex space-x-4">
-          <div class="flex-shrink-0">
+          <div class="shrink-0">
             <back-button url="/admin/restaurants/" />
           </div>
           <PreviewLink :shopInfo="shopInfo" />
@@ -17,7 +17,7 @@
         <!-- Photo and Name -->
         <div class="mt-4 lg:mx-4 lg:mt-0 lg:flex lg:flex-1 lg:items-center">
           <div class="flex items-center">
-            <div class="mr-4 flex-shrink-0 rounded-full bg-black bg-opacity-10">
+            <div class="mr-4 shrink-0 rounded-full bg-black/10">
               <img
                 :src="resizedProfileImage(shopInfo, '600')"
                 class="h-9 w-9 rounded-full object-cover"
@@ -45,7 +45,7 @@
 
       <!-- Table -->
       <div class="mx-6 mt-4">
-        <table class="w-full rounded-lg bg-white shadow">
+        <table class="w-full rounded-lg bg-white shadow-sm">
           <!-- Table Header -->
           <tr>
             <th
@@ -169,7 +169,7 @@
         >
           <o-button class="b-reset-tw">
             <div
-              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
             >
               <i class="material-icons mr-2 text-lg text-op-teal">save_alt</i>
               <div class="text-sm font-bold text-op-teal">

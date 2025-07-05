@@ -2,7 +2,7 @@
   <div>
     <!-- View All -->
     <div>
-      <div class="mx-6 mt-4 text-xl font-bold text-black text-opacity-40">
+      <div class="mx-6 mt-4 text-xl font-bold text-black/40">
         {{ $t("find.area") }}
       </div>
       <div
@@ -14,7 +14,7 @@
 
     <!-- Areas -->
     <div v-for="(area, k) in areas" :key="k">
-      <div class="mx-6 mt-4 text-base font-bold text-black text-opacity-40">
+      <div class="mx-6 mt-4 text-base font-bold text-black/40">
         {{ $t("find.areas." + area.name) }}
       </div>
       <div
@@ -31,7 +31,7 @@
 
     <!-- Likes -->
     <div v-if="likes.length > 0">
-      <div class="mx-6 mt-4 text-xl font-bold text-black text-opacity-40">
+      <div class="mx-6 mt-4 text-xl font-bold text-black/40">
         {{ $t("find.likes") }}
       </div>
       <div
@@ -40,7 +40,7 @@
         <div v-for="like in likes" :key="like.restaurantId">
           <router-link :to="`/r/${like.restaurantId}`">
             <div class="flex items-center">
-              <div class="mr-4 h-12 w-12 rounded-full bg-black bg-opacity-10">
+              <div class="mr-4 h-12 w-12 rounded-full bg-black/10">
                 <img
                   :src="resizedProfileImage(like, '600')"
                   class="h-12 w-12 rounded-full object-cover"

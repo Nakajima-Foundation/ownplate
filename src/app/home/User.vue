@@ -1,7 +1,7 @@
 <template>
   <div>
     <user-hero-image />
-    <div class="mx-auto max-w-screen-xl">
+    <div class="mx-auto max-w-(--breakpoint-xl)">
       <search-restaurant />
       <goToAdminLP />
       <operators />
