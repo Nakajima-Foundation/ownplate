@@ -76,12 +76,12 @@ export default defineComponent({
     const areaId = route.params.areaId as string;
     const areaName = regionalSetting.AddressStates[areaId];
 
-    useHead({
+    useHead(() => ({
       title: [
         t("pageTitle.restaurantArea", { area: areaName }, 0),
         defaultHeader.title,
       ].join(" / "),
-    });
+    }));
 
     const restaurants = ref<RestaurantInfoData[]>([]);
     if (areaName) {

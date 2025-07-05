@@ -126,9 +126,9 @@ export default defineComponent({
     const { uid } = useAdminUids();
     const storeId = route.params.storeId as string;
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Admin Smaregi Store"].join(" / "),
-    });
+    }));
 
     const duplicateElement = computed(() => {
       const counter = Object.values(selectedMenu.value).reduce(

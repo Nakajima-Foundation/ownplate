@@ -140,9 +140,9 @@ export default defineComponent({
     const orderState = ref(0);
     const restaurants: { [key: string]: RestaurantInfoData } = {};
 
-    useHead({
+    useHead(() => ({
       title: ["Admin All Order", defaultTitle].join(" / "),
-    });
+    }));
 
     let isLoading = false;
     let last: null | any = null;

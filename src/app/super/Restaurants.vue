@@ -40,9 +40,9 @@ export default defineComponent({
     const restaurantId = route.params.restaurantId;
     superPermissionCheck();
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Super All Restaurants"].join(" / "),
-    });
+    }));
 
     const restaurantData = ref<any>({});
     getDoc(doc(db, `restaurants/${restaurantId}`)).then((restaurantDoc) => {

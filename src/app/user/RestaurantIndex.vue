@@ -99,9 +99,9 @@ export default defineComponent({
     const restaurants = ref<RestaurantInfoData[]>([]);
     const ownerData = ref<OwnerData>({});
 
-    useHead({
+    useHead(() => ({
       title: [defaultHeader.title, "Restaurant Index"].join(" / "),
-    });
+    }));
 
     (async () => {
       const restaurantsCollection = await getDocs(

@@ -24,9 +24,9 @@ export default defineComponent({
     const router = useRouter();
     const { isNotSuperAdmin, isNotOperator } = useIsNotSuperAdmin();
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "operator index"].join(" / "),
-    });
+    }));
 
     onMounted(() => {
       if (!store.state.user || (isNotSuperAdmin.value && isNotOperator.value)) {

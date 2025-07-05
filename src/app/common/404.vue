@@ -10,9 +10,9 @@ import { useHead } from "@unhead/vue";
 
 export default defineComponent({
   setup() {
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "404"].join(" / "),
-    });
+    }));
   },
   components: {
     NotFound,

@@ -42,9 +42,9 @@ export default defineComponent({
   setup() {
     useSuper();
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Super All Log"].join(" / "),
-    });
+    }));
 
     const logs = ref<any[]>([]);
     let detacher: any = null;

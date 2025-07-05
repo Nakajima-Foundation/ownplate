@@ -43,9 +43,9 @@ export default defineComponent({
     const last = ref<any>(null);
     let isLoading = false;
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Super All Favorites"].join(" / "),
-    });
+    }));
 
     const loadData = async () => {
       if (!isLoading) {

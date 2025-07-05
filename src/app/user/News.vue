@@ -38,9 +38,9 @@ import { useHead } from "@unhead/vue";
 
 export default defineComponent({
   setup() {
-    useHead({
+    useHead(() => ({
       title: ["News", defaultTitle].join(" / "),
-    });
+    }));
 
     return {
       md: new MarkdownIt(),

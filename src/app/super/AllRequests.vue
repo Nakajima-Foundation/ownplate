@@ -85,9 +85,9 @@ export default defineComponent({
   setup() {
     useSuper();
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Super All Requests"].join(" / "),
-    });
+    }));
 
     const requests = ref<any[]>([]);
     const restaurantsObj = ref({});

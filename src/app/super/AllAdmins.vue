@@ -87,9 +87,9 @@ export default defineComponent({
     const last = ref<any>(null);
     let detacher: any = null;
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Super All Admin"].join(" / "),
-    });
+    }));
 
     const updateInfo = async (admin: any) => {
       const info: any = {};

@@ -32,9 +32,9 @@ export default defineComponent({
   setup() {
     useSuper();
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Super Partners"].join(" / "),
-    });
+    }));
 
     const admins = ref<DocumentData[]>([]);
 

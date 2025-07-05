@@ -43,9 +43,9 @@ export default defineComponent({
     const logs = ref<any[]>([]);
     let detacher: any = null;
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Super All Phone Logs"].join(" / "),
-    });
+    }));
 
     detacher = onSnapshot(
       query(

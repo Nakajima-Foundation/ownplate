@@ -399,7 +399,7 @@ export default defineComponent({
 
     const basePath = useBasePath();
 
-    useHead({
+    useHead(() => ({
       title:
         Object.keys(props.shopInfo).length === 0
           ? document.title
@@ -407,7 +407,7 @@ export default defineComponent({
               props.shopInfo?.restaurantName || "",
               ownPlateConfig.restaurantPageTitle || defaultTitle,
             ].join(" / "),
-    });
+    }));
 
     const defaultHowToReceive = (() => {
       // for 333

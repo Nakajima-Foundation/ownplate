@@ -71,9 +71,9 @@ export default defineComponent({
     // LpCustomer,
   },
   setup() {
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Top"].join(" / "),
-    });
+    }));
 
     const {
       isAdmin,

@@ -323,9 +323,9 @@ export default defineComponent({
     const numberOfOrderObj = ref<{ [key: string]: number }>({});
     const messages = ref<DocumentData[]>([]);
 
-    useHead({
+    useHead(() => ({
       title: ["Admin Index", defaultTitle].join(" / "),
-    });
+    }));
 
     if (!checkAdminPermission()) {
       return;

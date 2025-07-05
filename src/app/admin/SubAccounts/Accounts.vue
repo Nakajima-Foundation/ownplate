@@ -204,9 +204,9 @@ export default defineComponent({
     const sending = ref(false);
 
     const { uid } = useAdminUids();
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Admin Subaccount Accounts"].join(" / "),
-    });
+    }));
 
     getDocs(
       query(

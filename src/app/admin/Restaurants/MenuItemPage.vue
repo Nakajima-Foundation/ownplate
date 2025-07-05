@@ -783,7 +783,7 @@ export default defineComponent({
       category2: "",
     } as MenuData);
 
-    useHead({
+    useHead(() => ({
       title:
         menuInfo && menuInfo.itemName
           ? [
@@ -793,7 +793,7 @@ export default defineComponent({
               defaultTitle,
             ].join(" / ")
           : defaultTitle,
-    });
+    }));
 
     const maxPrice = 1000000.0 / stripeRegion.multiple;
     const allergens = stripeRegion.allergens;

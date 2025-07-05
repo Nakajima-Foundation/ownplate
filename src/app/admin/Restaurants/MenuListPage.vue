@@ -192,13 +192,13 @@ export default defineComponent({
 
     const { isOwner, uid, ownerUid } = useAdminUids();
 
-    useHead({
+    useHead(() => ({
       title: props.shopInfo.restaurantName
         ? ["Admin Menu List", props.shopInfo.restaurantName, defaultTitle].join(
             " / ",
           )
         : defaultTitle,
-    });
+    }));
 
     const restaurantId = computed(() => {
       return route.params.restaurantId as string;

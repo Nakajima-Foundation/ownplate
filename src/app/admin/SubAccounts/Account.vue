@@ -99,9 +99,9 @@ export default defineComponent({
     const subAccountId = computed(() => {
       return route.params.subAccountId;
     });
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Admin Subaccount Account"].join(" / "),
-    });
+    }));
 
     const restaurantObj = ref({});
     const restaurants = ref<RestaurantInfoData[]>([]);

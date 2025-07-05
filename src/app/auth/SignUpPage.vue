@@ -192,9 +192,9 @@ export default defineComponent({
     const emailTaken = ref("---invalid---");
     const submitted = ref(false);
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Signup"].join(" / "),
-    });
+    }));
 
     const partner = computed(() => {
       if (route.params.partner) {

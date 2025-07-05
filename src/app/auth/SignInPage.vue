@@ -147,9 +147,9 @@ export default defineComponent({
 
     const { user, isAdmin } = useUserData();
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Signin Admin"].join(" / "),
-    });
+    }));
 
     const redirectToAdminPage = () => {
       const redirect = route.query["to"] as string;
