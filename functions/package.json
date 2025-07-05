@@ -31,7 +31,7 @@
     "@aws-sdk/client-sns": "^3.782.0",
     "@sentry/node": "^8.54.0",
     "cors": "^2.8.5",
-    "express": "^4.17.12",
+    "express": "^5.0.2",
     "firebase-admin": "^13.4.0",
     "firebase-functions": "^6.3.2",
     "google-libphonenumber": "^3.2.42",
