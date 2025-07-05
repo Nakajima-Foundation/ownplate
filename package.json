@@ -40,11 +40,11 @@
     "query-string": "^9.1.1",
     "unplugin-vue-markdown": "^28.3.1",
     "validator": "^13.15.0",
-    "vite": "^7.0.0",
+    "vite": "^7.0.2",
     "vue": "^3.5.17",
     "vue-chart-3": "^3.1.8",
     "vue-clipboard3": "^2.0.0",
-    "vue-i18n": "^11.1.7",
+    "vue-i18n": "^11.1.9",
     "vue-router": "^4.5.1",
     "vue-social-sharing": "^4.0.0-alpha4",
     "vuex": "^4.1.0"
@@ -62,12 +62,12 @@
     "@types/validator": "^13.15.2",
     "@typescript-eslint/eslint-plugin": "^8.35.1",
     "@vitejs/plugin-vue": "^6.0.0",
-    "@vue/eslint-config-typescript": "^14.5.1",
+    "@vue/eslint-config-typescript": "^14.6.0",
     "csv-parse": "^5.6.0",
     "csv-stringify": "^6.5.2",
-    "eslint": "^9.30.0",
+    "eslint": "^9.30.1",
     "eslint-config-prettier": "^10.1.5",
-    "eslint-plugin-vue": "^10.2.0",
+    "eslint-plugin-vue": "^10.3.0",
     "firebase-admin": "^13.4.0",
     "postcss": "^8.5.6",
     "prettier": "^3.6.2",
@@ -78,6 +78,6 @@
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.35.1",
     "vite-plugin-checker": "^0.9.3",
-    "vue-eslint-parser": "^10.1.4"
+    "vue-eslint-parser": "^10.2.0"
   }
 }
