@@ -184,7 +184,6 @@
             </div>
 
             <div class="mt-4 border-red-700">
-              aa
               <div
                 ref="gMap"
                 style="
@@ -327,12 +326,14 @@
             <div class="pb-2 text-sm font-bold">
               {{ $t("editRestaurant.enablePrelineTitle") }}
             </div>
-            <div class="rounded-lg bg-black/5 p-4">
-              <o-checkbox v-model="editShopInfo.enablePreline">
-                <div class="text-sm font-bold">
-                  {{ $t("editRestaurant.enablePrelineDescription") }}
-                </div>
-              </o-checkbox>
+            <div class="flex gap-2 rounded-lg bg-black/5 p-4">
+              <o-checkbox
+                id="enablePreline"
+                v-model="editShopInfo.enablePreline"
+              />
+              <label for="enablePreline" class="text-sm font-bold">
+                {{ $t("editRestaurant.enablePrelineDescription") }}
+              </label>
             </div>
           </div>
 
@@ -373,11 +374,18 @@
                 {{ $t("editRestaurant.acceptUserMessage") }}
               </div>
               <div class="rounded-lg bg-black/5 p-4">
-                <o-checkbox v-model="editShopInfo.acceptUserMessage">
-                  <div class="text-sm font-bold">
+                <div class="flex gap-2">
+                  <o-checkbox
+                    id="acceptUserMessageDescription"
+                    v-model="editShopInfo.acceptUserMessage"
+                  />
+                  <label
+                    for="acceptUserMessageDescription"
+                    class="text-sm font-bold"
+                  >
                     {{ $t("editRestaurant.acceptUserMessageDescription") }}
-                  </div>
-                </o-checkbox>
+                  </label>
+                </div>
                 <div class="pt-2 text-xs">
                   {{ $t("editRestaurant.acceptUserMessageNotice") }}
                 </div>
@@ -524,10 +532,10 @@
               </div>
               <div class="rounded-lg bg-black/5 p-4">
                 <div>
-                  <o-checkbox v-model="editShopInfo.inclusiveTax">
-                    <div class="font-bold">
+                  <o-checkbox class="mr-2" v-model="editShopInfo.inclusiveTax">
+                    <span class="font-bold">
                       {{ $t("editRestaurant.taxIncluded") }}
-                    </div>
+                    </span>
                   </o-checkbox>
                 </div>
                 <div class="mt-2">
@@ -679,18 +687,19 @@
               <!-- Preparation Time -->
               <div v-for="(paymentMethod, k) in paymentMethods" :key="k">
                 <o-checkbox
+                  class="mr-2"
                   v-model="
                     (editShopInfo.paymentMethods || {})[paymentMethod.key]
                   "
                 >
-                  <div class="text-sm font-bold">
+                  <span class="text-sm font-bold">
                     {{
                       $t(
                         "editRestaurant.paymentMethodChoices." +
                           paymentMethod.key,
                       )
                     }}
-                  </div>
+                  </span>
                 </o-checkbox>
               </div>
             </div>
@@ -714,9 +723,10 @@
                 <a
                   href="https://docs.omochikaeri.com/manuals/delivery.pdf"
                   target="_blank"
-                  class="text-xs font-bold text-op-teal"
                 >
-                  {{ $t("menu.deliveryManualLink") }}
+                  <span class="font-bold text-op-teal">
+                    {{ $t("menu.deliveryManualLink") }}
+                  </span>
                 </a>
               </div>
             </div>
@@ -728,19 +738,21 @@
               {{ $t("editRestaurant.printerConfigTitle") }}
             </div>
             <div class="rounded-lg bg-black/5 p-4">
-              <o-checkbox v-model="editShopInfo.enablePrinter">
-                <div class="text-sm font-bold">
+              <o-checkbox class="mr-2" v-model="editShopInfo.enablePrinter">
+                <span class="text-sm font-bold">
                   {{ $t("editRestaurant.enablePrinter") }}
-                </div>
+                </span>
               </o-checkbox>
               <div class="pt-2 text-xs">
                 {{ $t("editRestaurant.printerDescription") }}
                 <a
                   href="https://docs.omochikaeri.com/manuals/printer.pdf"
                   target="_blank"
-                  class="inline-flex text-xs font-bold text-op-teal"
+                  class="inline-flex"
                 >
-                  {{ $t("menu.printerManualLink") }}
+                  <span class="font-bold text-op-teal">
+                    {{ $t("menu.printerManualLink") }}
+                  </span>
                 </a>
               </div>
               <div class="text-xs">
@@ -748,32 +760,36 @@
               </div>
               <div class="text-xs pt-2">
                 <router-link
-                  class="inline-flex text-xs font-bold text-op-teal"
+                  class="inline-flex"
                   :to="`/admin/restaurants/${restaurantId}/printer`"
-                  >{{
-                    $t("editRestaurant.printerDescriptionConfig")
-                  }}</router-link
                 >
+                  <span class="font-bold text-op-teal">
+                    {{ $t("editRestaurant.printerDescriptionConfig") }}
+                  </span>
+                </router-link>
               </div>
             </div>
           </div>
 
           <!-- notification -->
-          <div class="rounded-lg p-2 mt-4">
+          <div class="mt-4">
             <div class="pb-2 text-sm font-bold">
               {{ $t("editRestaurant.notificationConfig") }}
             </div>
             <!-- Email Notification -->
-            <div class="mt-2">
+            <div class="mt-2 ml-8">
               <a id="emailNotification" />
               <div class="pb-2 text-sm font-bold">
                 {{ $t("editRestaurant.emailNotificationTitle") }}
               </div>
               <div class="rounded-lg bg-black/5 p-4">
-                <o-checkbox v-model="editShopInfo.emailNotification">
-                  <div class="text-sm font-bold">
+                <o-checkbox
+                  class="mr-2"
+                  v-model="editShopInfo.emailNotification"
+                >
+                  <span class="text-sm font-bold">
                     {{ $t("editRestaurant.emailNotificationDescription") }}
-                  </div>
+                  </span>
                 </o-checkbox>
                 <div class="pt-2 text-xs">
                   {{ $t("editRestaurant.emailNotificationNotice") }}
@@ -782,16 +798,16 @@
             </div>
 
             <!-- Phone Call -->
-            <div class="mt-4">
+            <div class="mt-4 ml-8">
               <a id="phoneCall" />
               <div class="pb-2 text-sm font-bold">
                 {{ $t("editRestaurant.phoneCall") }}
               </div>
               <div class="rounded-lg bg-black/5 p-4">
-                <o-checkbox v-model="editShopInfo.phoneCall">
-                  <div class="text-sm font-bold">
+                <o-checkbox class="mr-2" v-model="editShopInfo.phoneCall">
+                  <span class="text-sm font-bold">
                     {{ $t("editRestaurant.phoneCallDescription") }}
-                  </div>
+                  </span>
                 </o-checkbox>
                 <div class="pt-2 text-xs">
                   {{ $t("editRestaurant.phoneCallNotice") }}
@@ -800,17 +816,18 @@
             </div>
 
             <!-- Line -->
-            <div class="mt-4">
+            <div class="mt-4 ml-8">
               <a id="phoneCall" />
               <div class="pb-2 text-sm font-bold">
                 {{ $t("editRestaurant.lineNotification") }}
               </div>
               <div class="rounded-lg bg-black/5 p-4">
                 <router-link
-                  class="text-sm font-bold text-op-teal"
                   :to="`/admin/restaurants/${restaurantId}/linelist`"
                 >
-                  {{ $t("editRestaurant.moveToLineConfig") }}
+                  <span class="text-sm font-bold text-op-teal">
+                    {{ $t("editRestaurant.moveToLineConfig") }}
+                  </span>
                 </router-link>
               </div>
             </div>
@@ -826,7 +843,7 @@
           </div>
           <div class="rounded-lg bg-black/5 p-4">
             <div>
-              <o-checkbox v-model="editShopInfo.enableLunchDinner">
+              <o-checkbox class="mr-2" v-model="editShopInfo.enableLunchDinner">
                 <span class="text-base font-bold">
                   {{ $t("editRestaurant.lunchOrDinnerToggle") }}
                 </span>
@@ -855,10 +872,13 @@
                   <!-- Enable/Disable Day and Copy Previous Day -->
                   <div class="flex items-center">
                     <div class="flex-1">
-                      <o-checkbox v-model="editShopInfo.businessDay[index]">
-                        <div class="text-base font-bold">
+                      <o-checkbox
+                        class="mr-2"
+                        v-model="editShopInfo.businessDay[index]"
+                      >
+                        <span class="text-base font-bold">
                           {{ $t("week.short." + day) }}
-                        </div>
+                        </span>
                       </o-checkbox>
                     </div>
 
