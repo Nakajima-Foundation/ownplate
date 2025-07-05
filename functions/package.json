@@ -56,7 +56,7 @@
     "@typescript-eslint/parser": "^8.35.1",
     "chai": "^4.3.4",
     "chai-string": "^1.6.0",
-    "eslint": "^9.30.0",
+    "eslint": "^9.30.1",
     "eslint-config-prettier": "^10.1.5",
     "firebase-functions-test": "^3.4.1",
     "mocha": "^11.7.1",
