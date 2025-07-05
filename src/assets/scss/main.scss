@@ -1,6 +1,3 @@
-// Import Bulma's core
-// @import "~bulma/sass/utilities/_all";
-
 // Set your colors
 $primary: #1197a7;
 $primary-invert: findColorInvert($primary);
@@ -35,7 +32,4 @@ $spacing-shortcuts: (
   "margin": "bulma-m",
   "padding": "bulma-p"
 );
-
-// @import "~bulma/bulma";
-// @import '~@oruga-ui/theme-bulma/dist/scss/bulma';
 
