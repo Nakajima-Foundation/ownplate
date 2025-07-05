@@ -78,6 +78,11 @@ canvas {
   @apply bg-pink-500/10 text-pink-500;
 }
 
+.waiting_payment,
+.waiting_payment:hover {
+  @apply bg-pink-700 bg-opacity-10 text-pink-700;
+}
+
 .order_placed,
 .order_placed:hover {
   @apply bg-yellow-500/10 text-yellow-500;
