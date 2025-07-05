@@ -149,9 +149,9 @@ export default defineComponent({
     const restaurants = ref<RestaurantInfoData[]>([]);
     const last = ref<any | null>(null);
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Super All Restaurants"].join(" / "),
-    });
+    }));
 
     superPermissionCheck();
 

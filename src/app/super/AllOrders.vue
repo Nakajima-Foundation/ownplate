@@ -125,9 +125,9 @@ export default defineComponent({
     const router = useRouter();
     superPermissionCheck();
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Super All Orders"].join(" / "),
-    });
+    }));
 
     const months = [0, 1, 2, 3, 4, 5].map((a) => {
       return moment().subtract(a, "month").format("YYYY-MM");

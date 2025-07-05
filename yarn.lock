@@ -2349,39 +2349,39 @@
     "@typescript-eslint/types" "8.35.1"
     eslint-visitor-keys "^4.2.1"
 
-"@unhead/dom@1.11.18":
-  version "1.11.18"
-  resolved "https://registry.yarnpkg.com/@unhead/dom/-/dom-1.11.18.tgz#2105b0afb567ee3f9c6b21771cfd2116bae8f37e"
+"@unhead/dom@2.0.11":
+  version "2.0.11"
+  resolved "https://registry.yarnpkg.com/@unhead/dom/-/dom-2.0.11.tgz#2105b0afb567ee3f9c6b21771cfd2116bae8f37e"
   integrity sha512-zQuJUw/et9zYEV0SZWTDX23IgurwMaXycAuxt4L6OgNL0T4TWP3a0J/Vm3Q02hmdNo/cPKeVBrwBdnFUXjGU4w==
   dependencies:
-    "@unhead/schema" "1.11.18"
-    "@unhead/shared" "1.11.18"
+    "@unhead/schema" "2.0.11"
+    "@unhead/shared" "2.0.11"
 
-"@unhead/schema@1.11.18":
-  version "1.11.18"
-  resolved "https://registry.yarnpkg.com/@unhead/schema/-/schema-1.11.18.tgz#bb8f861c0872e98b500038cb926ec3755d539d33"
+"@unhead/schema@2.0.11":
+  version "2.0.11"
+  resolved "https://registry.yarnpkg.com/@unhead/schema/-/schema-2.0.11.tgz#bb8f861c0872e98b500038cb926ec3755d539d33"
   integrity sha512-a3TA/OJCRdfbFhcA3Hq24k1ZU1o9szicESrw8DZcGyQFacHnh84mVgnyqSkMnwgCmfN4kvjSiTBlLEHS6+wATw==
   dependencies:
     hookable "^5.5.3"
     zhead "^2.2.4"
 
-"@unhead/shared@1.11.18":
-  version "1.11.18"
-  resolved "https://registry.yarnpkg.com/@unhead/shared/-/shared-1.11.18.tgz#e35a8adbf526ec640e96ec0c874df70f450d3a6c"
+"@unhead/shared@2.0.11":
+  version "2.0.11"
+  resolved "https://registry.yarnpkg.com/@unhead/shared/-/shared-2.0.11.tgz#e35a8adbf526ec640e96ec0c874df70f450d3a6c"
   integrity sha512-OsupRQRxJqqnuKiL1Guqipjbl7MndD5DofvmGa3PFGu2qNPmOmH2mxGFjRBBgq2XxY1KalIHl/2I9HV6gbK8cw==
   dependencies:
-    "@unhead/schema" "1.11.18"
+    "@unhead/schema" "2.0.11"
     packrup "^0.1.2"
 
-"@unhead/vue@^1.11.18":
-  version "1.11.18"
-  resolved "https://registry.yarnpkg.com/@unhead/vue/-/vue-1.11.18.tgz#dc872a775ea6f3b2e4a5fd81e77034fa71b246a8"
+"@unhead/vue@^2.0.11":
+  version "2.0.11"
+  resolved "https://registry.yarnpkg.com/@unhead/vue/-/vue-2.0.11.tgz#dc872a775ea6f3b2e4a5fd81e77034fa71b246a8"
   integrity sha512-Jfi7t/XNBnlcauP9UTH3VHBcS69G70ikFd2e5zdgULLDRWpOlLs1sSTH1V2juNptc93DOk9RQfC5jLWbLcivFw==
   dependencies:
-    "@unhead/schema" "1.11.18"
-    "@unhead/shared" "1.11.18"
+    "@unhead/schema" "2.0.11"
+    "@unhead/shared" "2.0.11"
     hookable "^5.5.3"
-    unhead "1.11.18"
+    unhead "2.0.11"
 
 "@vitejs/plugin-vue@^6.0.0":
   version "6.0.0"
@@ -5085,14 +5085,14 @@ undici-types@~6.19.8:
   resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-6.19.8.tgz#35111c9d1437ab83a7cdc0abae2f26d88eda0a02"
   integrity sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==
 
-unhead@1.11.18:
-  version "1.11.18"
-  resolved "https://registry.yarnpkg.com/unhead/-/unhead-1.11.18.tgz#a89b78262ac6aae3130cb64e3a93d0bd56c40115"
+unhead@2.0.11:
+  version "2.0.11"
+  resolved "https://registry.yarnpkg.com/unhead/-/unhead-2.0.11.tgz#a89b78262ac6aae3130cb64e3a93d0bd56c40115"
   integrity sha512-TWgGUoZMpYe2yJwY6jZ0/9kpQT18ygr2h5lI6cUXdfD9UzDc0ytM9jGaleSYkj9guJWXkk7izYBnzJvxl8mRvQ==
   dependencies:
-    "@unhead/dom" "1.11.18"
-    "@unhead/schema" "1.11.18"
-    "@unhead/shared" "1.11.18"
+    "@unhead/dom" "2.0.11"
+    "@unhead/schema" "2.0.11"
+    "@unhead/shared" "2.0.11"
     hookable "^5.5.3"
 
 unicode-properties@^1.2.2:

@@ -68,9 +68,9 @@ export default defineComponent({
     const isVisible = ref(true);
     const newEntry = ref("");
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Admin Edit Category"].join(" / "),
-    });
+    }));
 
     watch(isVisible, (newValue) => {
       if (!newValue) {

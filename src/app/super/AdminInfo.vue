@@ -60,9 +60,9 @@ export default defineComponent({
 
     const adminId = route.params.adminId;
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Super Admin info"].join(" / "),
-    });
+    }));
 
     superDispatch({
       cmd: "getCustomeClaims",

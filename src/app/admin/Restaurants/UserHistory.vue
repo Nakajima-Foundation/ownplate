@@ -177,7 +177,7 @@ export default defineComponent({
       };
     }
 
-    useHead({
+    useHead(() => ({
       title: props.shopInfo.restaurantName
         ? [
             "Admin Order History",
@@ -185,7 +185,7 @@ export default defineComponent({
             defaultTitle,
           ].join(" / ")
         : defaultTitle,
-    });
+    }));
 
     const orderId = route.query.orderId;
 

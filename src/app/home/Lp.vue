@@ -46,9 +46,9 @@ export default defineComponent({
       await sleep(0.1);
       window.scrollTo(0, 0);
     })();
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Top"].join(" / "),
-    });
+    }));
     return {};
   },
 });

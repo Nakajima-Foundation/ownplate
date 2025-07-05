@@ -1254,7 +1254,7 @@ export default defineComponent({
 
     const editShopInfo = reactive(props.shopInfo);
 
-    useHead({
+    useHead(() => ({
       title: props.shopInfo.restaurantName
         ? [
             "Admin Restaurant",
@@ -1262,7 +1262,7 @@ export default defineComponent({
             defaultTitle,
           ].join(" / ")
         : defaultTitle,
-    });
+    }));
 
     // only owner
     const { uid } = useAdminUids();
