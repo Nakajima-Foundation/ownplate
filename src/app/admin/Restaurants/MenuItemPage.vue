@@ -474,14 +474,15 @@
                         </span>
                       </o-checkbox>
                       <o-radio
+                        class="mr-2"
                         v-else
                         v-model="dummyCheckbox[key]"
                         :native-value="k"
                         disabled
                       >
-                        <div class="text-sm font-bold text-black/60">
+                        <span class="text-sm font-bold text-black/60">
                           {{ displayOption(opt, shopInfo, menuInfo) }}
-                        </div>
+                        </span>
                       </o-radio>
                     </div>
                     <div class="text-sm font-bold text-black/60">
