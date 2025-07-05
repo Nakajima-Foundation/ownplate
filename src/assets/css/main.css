@@ -80,7 +80,7 @@ canvas {
 
 .waiting_payment,
 .waiting_payment:hover {
-  @apply bg-pink-700 bg-opacity-10 text-pink-700;
+  @apply bg-pink-700/10 text-pink-700;
 }
 
 .order_placed,
