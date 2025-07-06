@@ -1,4 +1,3 @@
-// import * as functions from "firebase-functions/v1";
 import { onRequest } from "firebase-functions/v2/https";
 
 import * as express from "../functions/express/express";
