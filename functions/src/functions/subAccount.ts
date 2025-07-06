@@ -1,7 +1,6 @@
 import * as admin from "firebase-admin";
 
-import * as functions from "firebase-functions/v1";
-// import * as admin from 'firebase-admin';
+import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
 import * as utils from "../lib/utils";
 import { subAccountInvitate, subAccountInvitationAcceptDeny, subAccountDeleteChildData } from "../lib/types";
 
@@ -10,7 +9,7 @@ import { validateFirebaseId } from "../lib/validator";
 
 import { Context } from "../models/TestType";
 
-export const invite = async (db, data: subAccountInvitate, context: functions.https.CallableContext | Context) => {
+export const invite = async (db, data: subAccountInvitate, context: CallableRequest | Context) => {
   // check admin
   const adminUid = utils.validate_parent_admin_auth(context);
   const { email, name } = data;
@@ -18,25 +17,25 @@ export const invite = async (db, data: subAccountInvitate, context: functions.ht
   // get user
   try {
     if (!isEmail(email)) {
-      throw new functions.https.HttpsError("invalid-argument", "invalid email.");
+      throw new HttpsError("invalid-argument", "invalid email.");
     }
 
     const user = await admin.auth().getUserByEmail(email);
     if (!user) {
-      throw new functions.https.HttpsError("invalid-argument", "User does not exist.");
+      throw new HttpsError("invalid-argument", "User does not exist.");
     }
     if (user.customClaims?.parentUid) {
-      throw new functions.https.HttpsError("invalid-argument", "User is child.");
+      throw new HttpsError("invalid-argument", "User is child.");
     }
     const childUid = user.uid;
 
     if (childUid === adminUid) {
-      throw new functions.https.HttpsError("invalid-argument", "U called your self.");
+      throw new HttpsError("invalid-argument", "U called your self.");
     }
     const childRef = db.doc(`admins/${adminUid}/children/${childUid}`);
     const childDoc = await childRef.get();
     if (childDoc && childDoc.exists) {
-      throw new functions.https.HttpsError("invalid-argument", "Already invited.");
+      throw new HttpsError("invalid-argument", "Already invited.");
     }
 
     // ok
@@ -70,7 +69,7 @@ export const invite = async (db, data: subAccountInvitate, context: functions.ht
 export const invitationValidateProcess = async (
   db,
   data: subAccountInvitationAcceptDeny,
-  context: functions.https.CallableContext | Context,
+  context: CallableRequest | Context,
   callback: (adminUid: string, messageData: admin.firestore.DocumentData, messageRef: admin.firestore.DocumentReference) => Promise<void>,
 ) => {
   // check admin and is not child yet.
@@ -81,7 +80,7 @@ export const invitationValidateProcess = async (
   const messageRef = db.doc(`/admins/${adminUid}/messages/${messageId}`);
   const messageDoc = await messageRef.get();
   if (!messageDoc) {
-    throw new functions.https.HttpsError("invalid-argument", "This message does not exist.");
+    throw new HttpsError("invalid-argument", "This message does not exist.");
   }
   const messageData = messageDoc.data();
   await callback(adminUid, messageData, messageRef);
@@ -90,30 +89,30 @@ export const invitationValidateProcess = async (
 const childInvitationProcess = async (
   db: any,
   data: subAccountInvitationAcceptDeny,
-  context: functions.https.CallableContext | Context,
+  context: CallableRequest | Context,
   callback: (messageData: admin.firestore.DocumentData, messageRef: admin.firestore.DocumentReference) => Promise<void>,
 ) => {
   await invitationValidateProcess(db, data, context, async (adminUid: string, messageData: admin.firestore.DocumentData, messageRef: admin.firestore.DocumentReference) => {
     if (messageData.type === "childInvitation") {
       // validation
       if (messageData.toDisplay === false) {
-        throw new functions.https.HttpsError("invalid-argument", "This message is expired.");
+        throw new HttpsError("invalid-argument", "This message is expired.");
       }
       if (messageData.toUid !== adminUid) {
-        throw new functions.https.HttpsError("invalid-argument", "Invalid User access.");
+        throw new HttpsError("invalid-argument", "Invalid User access.");
       }
       // ok!!
       await callback(messageData, messageRef);
     } else {
-      throw new functions.https.HttpsError("invalid-argument", "Invalid invitation type.");
+      throw new HttpsError("invalid-argument", "Invalid invitation type.");
     }
   });
 };
-export const accept = async (db, data: subAccountInvitationAcceptDeny, context: functions.https.CallableContext | Context) => {
+export const accept = async (db, data: subAccountInvitationAcceptDeny, context: CallableRequest | Context) => {
   const { messageId } = data;
   if (!validateFirebaseId(messageId)) {
     console.log(messageId);
-    throw new functions.https.HttpsError("invalid-argument", "invalid args.");
+    throw new HttpsError("invalid-argument", "invalid args.");
   }
   try {
     await childInvitationProcess(db, data, context, async (messageData, messageRef) => {
@@ -129,7 +128,7 @@ export const accept = async (db, data: subAccountInvitationAcceptDeny, context: 
         const messageDoc = await tr.get(messageRef);
 
         if (!childDoc || !childDoc.exists || !messageDoc || !messageDoc.exists) {
-          throw new functions.https.HttpsError("invalid-argument", "The child or message does not exist.");
+          throw new HttpsError("invalid-argument", "The child or message does not exist.");
         }
         //  accepted
         await tr.update(childRef, { accepted: true });
@@ -144,11 +143,11 @@ export const accept = async (db, data: subAccountInvitationAcceptDeny, context: 
   }
   return {};
 };
-export const deny = async (db, data: subAccountInvitationAcceptDeny, context: functions.https.CallableContext | Context) => {
+export const deny = async (db, data: subAccountInvitationAcceptDeny, context: CallableRequest | Context) => {
   const { messageId } = data;
   if (!validateFirebaseId(messageId)) {
     console.log(messageId);
-    throw new functions.https.HttpsError("invalid-argument", "invalid args.");
+    throw new HttpsError("invalid-argument", "invalid args.");
   }
   try {
     await childInvitationProcess(db, data, context, async (messageData, messageRef) => {
@@ -158,7 +157,7 @@ export const deny = async (db, data: subAccountInvitationAcceptDeny, context: fu
         const messageDoc = await tr.get(messageRef);
 
         if (!childDoc || !childDoc.exists || !messageDoc || !messageDoc.exists) {
-          throw new functions.https.HttpsError("invalid-argument", "The child or message does not exist.");
+          throw new HttpsError("invalid-argument", "The child or message does not exist.");
         }
         //  deny
         await tr.delete(childRef);
@@ -174,12 +173,12 @@ export const deny = async (db, data: subAccountInvitationAcceptDeny, context: fu
   return {};
 };
 
-export const deleteChild = async (db, data: subAccountDeleteChildData, context: functions.https.CallableContext | Context) => {
+export const deleteChild = async (db, data: subAccountDeleteChildData, context: CallableRequest | Context) => {
   // check admin
   const adminUid = utils.validate_parent_admin_auth(context);
   const { childUid } = data;
   if (!validateFirebaseId(childUid)) {
-    throw new functions.https.HttpsError("invalid-argument", "invalid args.");
+    throw new HttpsError("invalid-argument", "invalid args.");
   }
 
   try {
@@ -191,7 +190,7 @@ export const deleteChild = async (db, data: subAccountDeleteChildData, context: 
       const messageDoc = await tr.get(messageRef);
 
       if (!childDoc || !childDoc.exists || !messageDoc || !messageDoc.exists) {
-        throw new functions.https.HttpsError("invalid-argument", "The child or message does not exist.");
+        throw new HttpsError("invalid-argument", "The child or message does not exist.");
       }
       // ok!!
       const customClaims = {};
