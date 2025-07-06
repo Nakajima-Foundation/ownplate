@@ -69,7 +69,7 @@ export default [
       
       // "no-type-assertion/no-type-assertion": "warn",
       "no-unreachable": "error",
-      'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+      'no-console': 'off',
       'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
 
       "vue/require-explicit-emits": "error",
