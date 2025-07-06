@@ -30,7 +30,7 @@
     "cookie": "^1.0.2",
     "crypto-js": "^4.1.1",
     "firebase": "11.10.0",
-    "google-libphonenumber": "^3.2.40",
+    "google-libphonenumber": "^3.2.42",
     "markdown-it": "^14.1.0",
     "moment": "^2.29.4",
     "moment-timezone": "^0.6.0",
