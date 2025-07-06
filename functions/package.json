@@ -42,7 +42,7 @@
     "nodemailer": "^7.0.4",
     "receiptline": "^1.16.2",
     "sharp": "^0.34.2",
-    "stripe": "^17.7.0",
+    "stripe": "^18.3.0",
     "twilio": "^5.7.2",
     "uuid-v4": "^0.1.0",
     "validator": "^13.15.15",
