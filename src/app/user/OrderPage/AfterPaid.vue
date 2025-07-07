@@ -38,6 +38,7 @@
           v-if="just_paid"
           @click="handleCancelPayment"
           class="b-reset-tw"
+          :disabled="isCancelling"
         >
           <div class="inline-flex items-center justify-center">
             <i class="material-icons mr-2 text-lg text-red-700"
@@ -199,7 +200,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, PropType } from "vue";
+import { defineComponent, computed, PropType, ref } from "vue";
 
 import ShopHeader from "@/app/user/Restaurant/ShopHeader.vue";
 import ShopInfo from "@/app/user/Restaurant/ShopInfo.vue";
@@ -300,6 +301,7 @@ export default defineComponent({
         props.orderInfo.payment && props.orderInfo.payment.stripe === "canceled"
       );
     });
+    const isCancelling = ref(false);
     const hasLineUrl = computed(() => {
       return props.shopInfo.lineUrl && validUrl(props.shopInfo.lineUrl);
     });
@@ -344,6 +346,7 @@ export default defineComponent({
         code: "order.cancelOrderConfirm",
         callback: async () => {
           try {
+            isCancelling.value = true;
             store.commit("setLoading", true);
             await stripeCancelIntent({
               restaurantId: restaurantId,
@@ -360,6 +363,7 @@ export default defineComponent({
             });
           } finally {
             store.commit("setLoading", false);
+            isCancelling.value = false;
           }
         },
       });
@@ -369,6 +373,7 @@ export default defineComponent({
       // computed
       hasStripe,
       cancelPayment,
+      isCancelling,
       hasLineUrl,
       urlAdminOrderPage,
       timeRequested,

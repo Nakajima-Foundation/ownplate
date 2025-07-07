@@ -10,6 +10,7 @@
         class="mx-6 mt-4 lg:flex lg:items-center"
         :shopInfo="shopInfo"
         :showSuspend="false"
+        backLink="/admin/restaurants"
       />
 
       <!-- Body -->
