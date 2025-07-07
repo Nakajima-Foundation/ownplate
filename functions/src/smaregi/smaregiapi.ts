@@ -1,4 +1,3 @@
-// import fetch from 'node-fetch';
 import * as apiUtils from "./apiUtils";
 
 class SmaregiApi {

@@ -10,7 +10,7 @@ import i18n from "@/lib/vue-i18n";
 // library
 import orugaCompat from "@/plugins/oruga-compat";
 import VueSocialSharing from "vue-social-sharing";
-import { createHead } from "@unhead/vue";
+import { createHead } from "@unhead/vue/client";
 import VueQrcode from "@chenfengyuan/vue-qrcode";
 
 import Checkbox from "@/components/form/checkbox.vue";

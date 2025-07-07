@@ -10,7 +10,6 @@ import * as utils from "../../lib/utils";
 import * as stripeLog from "../../lib/stripeLog";
 
 import * as apis from "./apis";
-import * as apis2 from "./apis2";
 
 import * as smaregi from "./smaregiApi";
 
@@ -33,7 +32,6 @@ let db = admin.firestore();
 export const updateDb = (_db) => {
   db = _db;
   apis.updateDb(db);
-  apis2.updateDb(db);
 };
 
 export const logger = async (req, res, next) => {
@@ -373,7 +371,6 @@ app.use(alogger);
 
 app.use("/1.0", router); // for stripe
 app.use("/api/1.0/", apis.apiRouter);
-// app.use("/api/2.0/", apis2.apiRouter);
 
 app.use("/smaregi/1.0", smaregi.smaregiRouter);
 

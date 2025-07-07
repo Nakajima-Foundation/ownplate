@@ -229,11 +229,11 @@ import { useI18n } from "vue-i18n";
 export default defineComponent({
   setup() {
     const { t } = useI18n();
-    useHead({
+    useHead(() => ({
       title: [t("pageTitle.terms.privacy") || "", defaultHeader.title].join(
         " / ",
       ),
-    });
+    }));
     return {};
   },
 });

@@ -54,7 +54,7 @@ export const getPaymentMethodData = async (db: admin.firestore.Firestore, restau
   if (!stripeInfo) {
     throw new functions.https.HttpsError("aborted", "No stripeInfo.");
   }
-  const stripe = utils.get_stripe();
+  const stripe = utils.get_stripe_v2();
   const token = await stripe.tokens.create(
     {
       customer: stripeInfo.customerId,

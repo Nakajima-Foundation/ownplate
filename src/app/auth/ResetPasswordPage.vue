@@ -80,9 +80,9 @@ export default defineComponent({
     const emailSent = ref(false);
     const submitted = ref(false);
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Reset Password"].join(" / "),
-    });
+    }));
 
     const errors = computed(() => {
       if (!submitted.value) {

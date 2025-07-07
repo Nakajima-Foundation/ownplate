@@ -43,7 +43,6 @@
       >
       <br />
     </div>
-    <o-loading v-else active />
   </section>
 </template>
 
@@ -61,9 +60,9 @@ export default defineComponent({
     const router = useRouter();
     const { isNotSuperAdmin } = useIsNotSuperAdmin();
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Super Index"].join(" / "),
-    });
+    }));
 
     onMounted(() => {
       if (!store.state.user || isNotSuperAdmin.value) {

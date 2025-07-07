@@ -1,5 +1,6 @@
 import * as admin from "firebase-admin";
-import * as functions from "firebase-functions/v1";
+import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
+// import * as functions from "firebase-functions/v1";
 import { defineSecret } from "firebase-functions/params";
 import fetch from "node-fetch";
 import SmaregiApi from "../smaregi/smaregiapi";
@@ -16,7 +17,7 @@ const apiHost = smaregi.host_name;
 const authHost = smaregi.auth_host_name;
 const client_id = smaregi.clientId;
 
-export const auth = async (db: admin.firestore.Firestore, data: smaregiAuthData, context: functions.https.CallableContext) => {
+export const auth = async (db: admin.firestore.Firestore, data: smaregiAuthData, context: CallableRequest) => {
   const { code } = data;
 
   const adminUid = validate_admin_auth(context);
@@ -51,14 +52,14 @@ export const auth = async (db: admin.firestore.Firestore, data: smaregiAuthData,
 
     const ret = await userRes.json();
     if (ret.is_owner!) {
-      throw new functions.https.HttpsError("invalid-argument", "You are not owner.");
+      throw new HttpsError("invalid-argument", "You are not owner.");
     }
     const contractId = ret.contract.id;
     const smaregiRef = db.doc(`/smaregi/${contractId}`);
     const smaregiDoc = await smaregiRef.get();
     const smaregiData = smaregiDoc.data();
     if (smaregiDoc && smaregiData && smaregiData.uid !== adminUid) {
-      throw new functions.https.HttpsError("invalid-argument", "This smaregi account already connected.");
+      throw new HttpsError("invalid-argument", "This smaregi account already connected.");
     }
     await smaregiRef.set({ contractId, uid: adminUid });
     await db.doc(`admins/${adminUid}/private/smaregi`).set({ smaregi: ret }, { merge: true });
@@ -71,17 +72,17 @@ export const auth = async (db: admin.firestore.Firestore, data: smaregiAuthData,
   }
 };
 
-export const storeList = async (db: admin.firestore.Firestore, data: smaregiStoreListData, context: functions.https.CallableContext) => {
+export const storeList = async (db: admin.firestore.Firestore, data: smaregiStoreListData, context: CallableRequest) => {
   const adminUid = validate_admin_auth(context);
 
   const smaregiDoc = await db.doc(`admins/${adminUid}/private/smaregi`).get();
   if (!smaregiDoc || !smaregiDoc.exists) {
-    throw new functions.https.HttpsError("invalid-argument", "This data does not exist.");
+    throw new HttpsError("invalid-argument", "This data does not exist.");
   }
   const smaregiData = smaregiDoc.data();
   const smaregiContractId = smaregiData?.smaregi?.contract?.id;
   if (!smaregiContractId) {
-    throw new functions.https.HttpsError("invalid-argument", "This data does not exist.");
+    throw new HttpsError("invalid-argument", "This data does not exist.");
   }
 
   const config = {
@@ -101,22 +102,22 @@ export const storeList = async (db: admin.firestore.Firestore, data: smaregiStor
   return { res: storeListData };
 };
 
-export const productList = async (db: admin.firestore.Firestore, data: smaregiProductListData, context: functions.https.CallableContext) => {
+export const productList = async (db: admin.firestore.Firestore, data: smaregiProductListData, context: CallableRequest) => {
   const { store_id } = data;
   if (!validateFirebaseId(store_id)) {
-    throw new functions.https.HttpsError("invalid-argument", "invalid args.");
+    throw new HttpsError("invalid-argument", "invalid args.");
   }
 
   const adminUid = validate_admin_auth(context);
 
   const smaregiDoc = await db.doc(`admins/${adminUid}/private/smaregi`).get();
   if (!smaregiDoc || !smaregiDoc.exists) {
-    throw new functions.https.HttpsError("invalid-argument", "This data does not exist.");
+    throw new HttpsError("invalid-argument", "This data does not exist.");
   }
   const smaregiData = smaregiDoc.data();
   const smaregiContractId = smaregiData?.smaregi?.contract?.id;
   if (!smaregiContractId) {
-    throw new functions.https.HttpsError("invalid-argument", "This data does not exist.");
+    throw new HttpsError("invalid-argument", "This data does not exist.");
   }
 
   const config = {

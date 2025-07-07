@@ -23,17 +23,14 @@
     </o-modal>
 
     <!-- Loading -->
-    <o-loading
-      :is-full-page="false"
-      :active="isDeletingAccount"
-      :can-cancel="true"
-    ></o-loading>
+    <Loading v-if="isDeletingAccount" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import PhoneLogin from "@/app/auth/PhoneLogin.vue";
+import Loading from "@/components/Loading.vue";
 import { getAuth, deleteUser } from "firebase/auth";
 
 import { accountDelete } from "@/lib/firebase/functions";
@@ -44,6 +41,7 @@ import { useStore } from "vuex";
 export default defineComponent({
   components: {
     PhoneLogin,
+    Loading,
   },
   setup() {
     const store = useStore();

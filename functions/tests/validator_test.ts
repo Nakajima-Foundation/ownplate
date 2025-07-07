@@ -1,8 +1,6 @@
-import { should } from "chai";
+import { expect } from "chai";
 
 import * as validator from "../src/lib/validator";
-
-should();
 
 describe("validator function", () => {
   it("validator function", async function () {
@@ -15,7 +13,7 @@ describe("validator function", () => {
       //timeEstimated?: admin.firestore.Timestamp;
     };
     const res = validator.validateOrderUpdate(data);
-    res.result.should.equal(true);
+    expect(res.result).to.equal(true);
   });
 
   it("validator function", async function () {

@@ -10,6 +10,7 @@
         class="mx-6 mt-4 lg:flex lg:items-center"
         :shopInfo="shopInfo"
         :showSuspend="false"
+        backLink="/admin/restaurants"
       />
 
       <!-- Body -->
@@ -134,9 +135,9 @@ export default defineComponent({
 
     const lineUsers = ref<LineUserData[]>([]);
 
-    useHead({
+    useHead(() => ({
       title: ["Admin Manage Line", defaultTitle].join(" / "),
-    });
+    }));
 
     const { ownerUid, uid } = useAdminUids();
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {

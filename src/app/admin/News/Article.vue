@@ -66,9 +66,9 @@ export default defineComponent({
     const newsId = route.params.newsId;
     const news = newsList.find((element) => element.date === newsId);
 
-    useHead({
+    useHead(() => ({
       title: [(news || {}).title, defaultTitle].join(" / "),
-    });
+    }));
 
     return {
       md: new MarkdownIt(),
