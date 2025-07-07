@@ -181,14 +181,10 @@ import moment from "moment";
 import * as Sentry from "@sentry/vue";
 
 import TermsAndPolicy from "@/app/auth/TermsAndPolicy.vue";
-import ButtonSubmit from "@/components/Button/Submit.vue";
-import ButtonCancel from "@/components/Button/Cancel.vue";
 
 export default defineComponent({
   components: {
     TermsAndPolicy,
-    ButtonSubmit,
-    ButtonCancel,
   },
   props: {
     relogin: {
