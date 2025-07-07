@@ -26,7 +26,7 @@
     "@sentry/tracing": "^7.120.3",
     "@sentry/vue": "^9.35.0",
     "@unhead/vue": "^2.0.12",
-    "chart.js": "^3.9.1",
+    "chart.js": "^4.5.0",
     "cookie": "^1.0.2",
     "crypto-js": "^4.1.1",
     "firebase": "11.10.0",
