@@ -7,7 +7,7 @@
       >
         <button @click="handleLineAuth">
           <div
-            class="inline-flex h-12 items-center justify-center rounded-full px-6"
+            class="inline-flex h-12 items-center justify-center rounded-full px-6 cursor-pointer"
             style="background: #18b900"
           >
             <i class="fab fa-line mr-2 text-2xl text-white" />
@@ -24,7 +24,7 @@
     <div v-else>
       <button @click="handleLineAuth">
         <div
-          class="inline-flex h-12 items-center justify-center rounded-full px-6"
+          class="inline-flex h-12 items-center justify-center rounded-full px-6 cursor-pointer"
           style="background: #18b900"
         >
           <i class="fab fa-line mr-2 text-2xl text-white" />
