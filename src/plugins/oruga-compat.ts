@@ -4,8 +4,6 @@ import OCheckbox from '@/components/oruga/OCheckbox.vue';
 import OInput from '@/components/oruga/OInput.vue';
 import OSelect from '@/components/oruga/OSelect.vue';
 import ORadio from '@/components/oruga/ORadio.vue';
-import OIcon from '@/components/oruga/OIcon.vue';
-import OLoading from '@/components/oruga/OLoading.vue';
 import OModal from '@/components/oruga/OModal.vue';
 import OSidebar from '@/components/oruga/OSidebar.vue';
 import OField from '@/components/oruga/OField.vue';
@@ -19,8 +17,6 @@ export default {
     app.component('o-input', OInput);
     app.component('o-select', OSelect);
     app.component('o-radio', ORadio);
-    app.component('o-icon', OIcon);
-    app.component('o-loading', OLoading);
     app.component('o-modal', OModal);
     app.component('o-sidebar', OSidebar);
     app.component('o-field', OField);
