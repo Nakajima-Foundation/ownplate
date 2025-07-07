@@ -95,7 +95,6 @@ export default defineComponent({
     const defaultTax = regionalSetting.defaultTax || {};
 
     const restaurantRef = doc(db, `restaurants/${restaurantId.value}`);
-    const restaurant_detacher = ref();
     (async () => {
       const restaurant = await getDoc(restaurantRef);
       if (!restaurant || !restaurant.exists()) {
@@ -140,9 +139,6 @@ export default defineComponent({
     onUnmounted(() => {
       if (notification_detacher.value) {
         notification_detacher.value();
-      }
-      if (restaurant_detacher.value) {
-        restaurant_detacher.value();
       }
     });
 
