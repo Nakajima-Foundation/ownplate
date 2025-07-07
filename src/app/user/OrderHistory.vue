@@ -84,9 +84,9 @@ export default defineComponent({
     const basePath = useBasePath();
     const topPath = useTopPath();
 
-    useHead({
+    useHead(() => ({
       title: [defaultHeader.title, "User Order History"].join(" / "),
-    });
+    }));
 
     const uid = computed(() => {
       return store.getters.uidUser || store.getters.uidLiff;

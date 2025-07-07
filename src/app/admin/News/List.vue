@@ -46,9 +46,9 @@ export default defineComponent({
     ListItem,
   },
   setup() {
-    useHead({
+    useHead(() => ({
       title: ["News", defaultTitle].join(" / "),
-    });
+    }));
 
     return {
       newsList,

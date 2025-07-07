@@ -87,9 +87,9 @@ export default defineComponent({
     ProfileLine,
   },
   setup() {
-    useHead({
+    useHead(() => ({
       title: [defaultHeader.title, "Profile"].join(" / "),
-    });
+    }));
 
     const handleSignOut = () => {
       signOut(auth);

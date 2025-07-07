@@ -210,9 +210,9 @@ export default defineComponent({
     // internal
     let contractId: string | null = null;
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Admin Smaregi Index"].join(" / "),
-    });
+    }));
 
     const { uid } = useAdminUids();
     // computed

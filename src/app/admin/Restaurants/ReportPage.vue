@@ -268,13 +268,13 @@ export default defineComponent({
     const monthIndex = ref(0);
     let detacher: any = null;
 
-    useHead({
+    useHead(() => ({
       title: props.shopInfo.restaurantName
         ? ["Admin Report", props.shopInfo.restaurantName, defaultTitle].join(
             " / ",
           )
         : defaultTitle,
-    });
+    }));
 
     const { uid } = useAdminUids();
     if (!checkShopOwner(props.shopInfo, uid.value)) {

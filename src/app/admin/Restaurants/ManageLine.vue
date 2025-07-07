@@ -135,9 +135,9 @@ export default defineComponent({
 
     const lineUsers = ref<LineUserData[]>([]);
 
-    useHead({
+    useHead(() => ({
       title: ["Admin Manage Line", defaultTitle].join(" / "),
-    });
+    }));
 
     const { ownerUid, uid } = useAdminUids();
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {

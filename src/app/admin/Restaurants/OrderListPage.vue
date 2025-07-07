@@ -130,7 +130,7 @@ export default defineComponent({
     // eslint-disable-next-line no-empty-function
     let order_detacher = () => {};
 
-    useHead({
+    useHead(() => ({
       title: props.shopInfo.restaurantName
         ? [
             "Admin Order List",
@@ -138,7 +138,7 @@ export default defineComponent({
             defaultTitle,
           ].join(" / ")
         : defaultTitle,
-    });
+    }));
 
     const { ownerUid, uid } = useAdminUids();
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {

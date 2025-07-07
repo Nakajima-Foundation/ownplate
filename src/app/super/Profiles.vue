@@ -43,9 +43,9 @@ export default defineComponent({
     const prefix = ref("");
     const profiles = ref<DocumentData[]>([]);
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Super All Profiles"].join(" / "),
-    });
+    }));
 
     const handleSearch = () => {
       getDocs(

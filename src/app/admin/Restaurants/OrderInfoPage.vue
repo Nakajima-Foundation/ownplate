@@ -637,7 +637,7 @@ export default defineComponent({
 
     const { ownerUid, uid } = useAdminUids();
 
-    useHead({
+    useHead(() => ({
       title: props.shopInfo.restaurantName
         ? [
             "Admin Order Info",
@@ -645,7 +645,7 @@ export default defineComponent({
             defaultTitle,
           ].join(" / ")
         : defaultTitle,
-    });
+    }));
 
     if (
       !checkShopAccount(props.shopInfo, ownerUid.value) &&
