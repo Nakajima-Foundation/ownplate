@@ -11,7 +11,7 @@ import i18n from "@/lib/vue-i18n";
 import Oruga from "@oruga-ui/oruga-next";
 import { bulmaConfig } from "@oruga-ui/theme-bulma";
 import VueSocialSharing from "vue-social-sharing";
-import { createHead } from "@unhead/vue";
+import { createHead } from "@unhead/vue/client";
 import VueQrcode from "@chenfengyuan/vue-qrcode";
 
 import Checkbox from "@/components/form/checkbox.vue";
