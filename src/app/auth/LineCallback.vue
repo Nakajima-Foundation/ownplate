@@ -3,7 +3,10 @@
     <div class="mt-4 text-center text-xl font-bold text-black/40">
       {{ $t("line.authenticating") }}
     </div>
-    <o-loading :is-full-page="false" :active="isValidating"></o-loading>
+    <Loading
+      v-if="isValidating"
+      />
+
   </div>
 </template>
 
@@ -17,8 +20,12 @@ import { lineValidate } from "@/lib/firebase/functions";
 import { useUserData } from "@/utils/utils";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
+import Loading from "@/components/Loading.vue";
 
 export default defineComponent({
+  components: {
+    Loading,
+  },
   setup() {
     const router = useRouter();
     const route = useRoute();

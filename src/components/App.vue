@@ -26,23 +26,9 @@
     </div>
 
     <!-- Loading -->
-    <o-loading
+    <Loading
       v-if="isLoading"
-      iconSize="large"
-      :full-page="true"
-      :active="true"
-      :can-cancel="false"
-      class="flex items-center justify-center h-screen"
-    >
-      <o-icon
-        pack="fas"
-        icon="circle-notch"
-        customSize="fa-4x"
-        spin
-        class="flex items-center justify-center opacity-30 text-center"
-      ></o-icon>
-    </o-loading>
-
+      />
     <AppFooter />
 
     <!-- Audio Play -->
@@ -77,7 +63,7 @@ import NotificationBanner from "@/components/App/NotificationBanner.vue";
 import SideMenu from "@/components/App/SideMenu.vue";
 import DialogBox from "@/components/DialogBox.vue";
 import AudioPlay from "@/components/AudioPlay.vue";
-
+import Loading from "@/components/Loading.vue";
 import { isDev, useUser, useRestaurantId } from "@/utils/utils";
 
 import * as Sentry from "@sentry/vue";
@@ -97,6 +83,7 @@ export default defineComponent({
     AppHeader,
     AppFooter,
     NotificationBanner,
+    Loading,
   },
 
   setup() {
