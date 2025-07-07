@@ -38,8 +38,8 @@ TBD.
 TBD.
 
 ## Deploy to firebase
-see CircleCI setting.
-[.circleci/config.yml](./.circleci/config.yml)
+see GitHub Actions setting.
+[.github/workflows/deploy.yml](./.github/workflows/deploy.yml)
 
 # Run the development server on localhost
 
