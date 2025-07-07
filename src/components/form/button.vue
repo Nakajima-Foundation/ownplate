@@ -2,7 +2,13 @@
   <button
     class="inline-flex items-center justify-center rounded-full shadow-sm"
     :loading="isLoading"
-    :class="isLoading || isDisabled ? 'bg-op-teal-disabled' : 'bg-op-teal'"
+    :class="
+      isCancel
+        ? ''
+        : isLoading || isDisabled
+          ? 'bg-op-teal-disabled'
+          : 'bg-op-teal'
+    "
     :disabled="isLoading || isDisabled"
     @click="handleClick"
   >
@@ -26,6 +32,10 @@ export default defineComponent({
       required: false,
     },
     isDisabled: {
+      type: Boolean,
+      required: false,
+    },
+    isCancel: {
       type: Boolean,
       required: false,
     },
