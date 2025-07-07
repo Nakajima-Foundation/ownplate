@@ -19,7 +19,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import ButtonLoading from "@/components/Button/Loading.vue";
+import ButtonLoading from "@/components/form/Loading.vue";
 export default defineComponent({
   emits: ["click"],
   name: "TButton",
