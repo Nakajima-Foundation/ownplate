@@ -16,7 +16,6 @@ import VueQrcode from "@chenfengyuan/vue-qrcode";
 
 import Checkbox from "@/components/form/checkbox.vue";
 import Button from "@/components/form/button.vue";
-import CancelButton from "@/components/form/cancel_button.vue";
 
 // sentry
 import * as Sentry from "@sentry/vue";
@@ -42,7 +41,6 @@ const app = createApp(App);
 app.component(VueQrcode.name ?? "", VueQrcode);
 app.component("t-checkbox", Checkbox);
 app.component("t-button", Button);
-app.component("t-cancel-button", CancelButton);
 
 app.use(VueSocialSharing);
 app.use(Oruga, bulmaConfig);
