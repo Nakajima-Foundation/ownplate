@@ -193,16 +193,17 @@ export default defineComponent({
       }
       return [];
     });
-    const suspendUntil = computed(() => {
-      if (props.shopInfo.suspendUntil) {
-        const time = props.shopInfo.suspendUntil.toDate();
+    const getSuspend = (suspendUntil) => {
+      if (suspendUntil) {
+        const time = suspendUntil.toDate();
         if (time < new Date()) {
           return false;
         }
         return d(time, "long");
       }
       return false;
-    });
+    };
+    const suspendUntil = ref(getSuspend(props.shopInfo.suspendUntil));
 
     const handleSuspend = async (day: number, time: number) => {
       const tmpDate = date.value?.date
@@ -213,12 +214,13 @@ export default defineComponent({
       if (day && day > 0) {
         tmpDate.setDate(tmpDate.getDate() + day);
       }
-      const ts = Timestamp.fromDate(tmpDate);
       store.commit("setLoading", true);
+      const timeStamp = Timestamp.fromDate(tmpDate);
       await updateDoc(doc(db, `restaurants/${restaurantId.value}`), {
-        suspendUntil: ts,
+        suspendUntil: timeStamp,
       });
       store.commit("setLoading", false);
+      suspendUntil.value = getSuspend(timeStamp)
     };
     const handleRemove = async () => {
       store.commit("setLoading", true);
@@ -226,6 +228,7 @@ export default defineComponent({
         suspendUntil: null,
       });
       store.commit("setLoading", false);
+      suspendUntil.value = null;
     };
     return {
       date,
