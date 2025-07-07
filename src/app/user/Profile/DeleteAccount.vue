@@ -23,9 +23,7 @@
     </o-modal>
 
     <!-- Loading -->
-    <Loading
-      v-if="isDeletingAccount"
-      />
+    <Loading v-if="isDeletingAccount" />
   </div>
 </template>
 

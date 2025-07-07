@@ -6,9 +6,7 @@
     >
       {{ $t("admin.smaregi.authenticating") }}
     </div>
-    <Loading
-      v-if="isValidating"
-      />
+    <Loading v-if="isValidating" />
     <div v-if="error">
       <div class="flex space-x-4 mt-4">
         <back-button url="/admin/restaurants/" />

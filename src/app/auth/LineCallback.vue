@@ -3,10 +3,7 @@
     <div class="mt-4 text-center text-xl font-bold text-black/40">
       {{ $t("line.authenticating") }}
     </div>
-    <Loading
-      v-if="isValidating"
-      />
-
+    <Loading v-if="isValidating" />
   </div>
 </template>
 

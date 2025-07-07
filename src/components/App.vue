@@ -26,9 +26,7 @@
     </div>
 
     <!-- Loading -->
-    <Loading
-      v-if="isLoading"
-      />
+    <Loading v-if="isLoading" />
     <AppFooter />
 
     <!-- Audio Play -->
