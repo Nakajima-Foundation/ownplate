@@ -6,7 +6,9 @@
     >
       {{ $t("admin.smaregi.authenticating") }}
     </div>
-    <o-loading :is-full-page="false" :active="isValidating"></o-loading>
+    <Loading
+      v-if="isValidating"
+      />
     <div v-if="error">
       <div class="flex space-x-4 mt-4">
         <back-button url="/admin/restaurants/" />
@@ -20,16 +22,17 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
 import { smaregiAuth } from "@/lib/firebase/functions";
 
 import BackButton from "@/components/BackButton.vue";
-
-import { useRoute, useRouter } from "vue-router";
+import Loading from "@/components/Loading.vue";
 
 export default defineComponent({
   components: {
     BackButton,
+    Loading,
   },
   setup() {
     const route = useRoute();
