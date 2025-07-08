@@ -67,7 +67,7 @@
         <t-button
           id="signInButton"
           @click="$emit('dismissed', false)"
-          isCancel="true"
+          :isCancel="true"
           class="mr-4 mb-2 inline-flex h-12 w-32 items-center justify-center rounded-full bg-black/5"
         >
           <div class="text-base font-bold text-black/60">
