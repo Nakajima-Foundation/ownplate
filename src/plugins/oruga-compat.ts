@@ -5,7 +5,6 @@ import OInput from '@/components/oruga/OInput.vue';
 import OSelect from '@/components/oruga/OSelect.vue';
 import ORadio from '@/components/oruga/ORadio.vue';
 import OModal from '@/components/oruga/OModal.vue';
-import OSidebar from '@/components/oruga/OSidebar.vue';
 import OField from '@/components/oruga/OField.vue';
 import ODatepicker from '@/components/oruga/ODatepicker.vue';
 import ODatetimepicker from '@/components/oruga/ODatetimepicker.vue';
@@ -18,7 +17,6 @@ export default {
     app.component('o-select', OSelect);
     app.component('o-radio', ORadio);
     app.component('o-modal', OModal);
-    app.component('o-sidebar', OSidebar);
     app.component('o-field', OField);
     app.component('o-datepicker', ODatepicker);
     app.component('o-datetimepicker', ODatetimepicker);

@@ -24,7 +24,7 @@ export default defineComponent({
     const handleBackdrop = (e: Event) => {
       if (e.target === e.currentTarget) close();
     };
-    return { isActive, width: props.width, handleBackdrop };
+    return { isActive, handleBackdrop };
   },
 });
 </script>

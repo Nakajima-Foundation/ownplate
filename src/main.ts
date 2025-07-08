@@ -28,7 +28,6 @@ import { sentryDsn } from "@/config/project";
 // css
 import "@/assets/css/tailwind.css";
 import "@/assets/css/main.css";
-import "@/assets/scss/bulma.scss";
 
 const app = createApp(App);
 
