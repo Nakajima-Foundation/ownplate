@@ -66,9 +66,9 @@ import ProfileLoginStatus from "@/app/user/Profile/LoginStatus.vue";
 // import ProfileStripe from "@/app/user/Profile/Stripe.vue";
 import ProfileLine from "@/app/user/Profile/Line.vue";
 
-import HistoryButton from "@/components/users/HistoryButton.vue";
-import FavoriteButton from "@/components/users/FavoriteButton.vue";
-import AddressButton from "@/components/users/AddressButton.vue";
+import HistoryButton from "@/components/form/HistoryButton.vue";
+import FavoriteButton from "@/components/form/FavoriteButton.vue";
+import AddressButton from "@/components/form/AddressButton.vue";
 
 import { defaultHeader } from "@/config/header";
 

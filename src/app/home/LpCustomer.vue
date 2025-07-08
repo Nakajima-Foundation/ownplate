@@ -50,8 +50,8 @@ import aboutService from "@/components/lp/aboutService.vue";
 import news from "@/components/lp/news.vue";
 import snslink from "@/components/lp/link.vue";
 
-import HistoryButton from "@/components/users/HistoryButton.vue";
-import FavoriteButton from "@/components/users/FavoriteButton.vue";
+import HistoryButton from "@/components/form/HistoryButton.vue";
+import FavoriteButton from "@/components/form/FavoriteButton.vue";
 
 export default defineComponent({
   components: {
