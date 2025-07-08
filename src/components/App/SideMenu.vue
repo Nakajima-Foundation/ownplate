@@ -1,8 +1,5 @@
 <template>
   <side-bar
-    :fullheight="true"
-    :overlay="true"
-    position="left"
     v-model:active="open"
   >
     <!-- Logo / Home -->
