@@ -209,7 +209,7 @@
                       </div></t-checkbox
                     >
                   </div>
-                  <div v-else class="field">
+                  <div v-else class="field grid grid-cols-1 gap-y-2">
                     <o-radio
                       v-for="(choice, index2) in option"
                       :modelValue="selectedOptions[quantityKey][index]"
@@ -219,9 +219,9 @@
                       :name="`${item.id}_${quantityKey}_${index}`"
                       :native-value="index2"
                       :key="`${quantityKey}_${index2}`"
-                      ><div class="text-sm font-bold">
+                      ><span class="ml-2 text-sm font-bold">
                         {{ displayOption(choice, shopInfo, item) }}
-                      </div></o-radio
+                      </span></o-radio
                     >
                   </div>
                 </div>
