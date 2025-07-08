@@ -22,6 +22,7 @@
       <router-view
         :shopInfo="shopInfo"
         v-if="noRestaurant === false"
+        @updateRestaurant="updateRestaurant"
       ></router-view>
       <NotificationWatcher :notificationConfig="notificationConfig" />
       <SoundConfigWatcher :notificationConfig="notificationConfig" />
@@ -95,7 +96,7 @@ export default defineComponent({
     const defaultTax = regionalSetting.defaultTax || {};
 
     const restaurantRef = doc(db, `restaurants/${restaurantId.value}`);
-    (async () => {
+    const updateRestaurant = async () => {
       const restaurant = await getDoc(restaurantRef);
       if (!restaurant || !restaurant.exists()) {
         noRestaurant.value = true;
@@ -113,7 +114,8 @@ export default defineComponent({
       }
       shopInfo.value = loadShopInfo;
       noRestaurant.value = false;
-    })();
+    }
+    updateRestaurant();
 
     const notification_detacher = ref();
     notification_detacher.value = onSnapshot(
@@ -160,6 +162,7 @@ export default defineComponent({
 
       shopInfo,
       noRestaurant,
+      updateRestaurant,
     };
   },
 });

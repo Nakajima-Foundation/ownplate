@@ -148,7 +148,8 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props) {
+  emits: ["updateRestaurant"],
+  setup(props, ctx) {
     const store = useStore();
     const { d } = useI18n({ useScope: "global" });
 
@@ -221,6 +222,7 @@ export default defineComponent({
       });
       store.commit("setLoading", false);
       suspendUntil.value = getSuspend(timeStamp);
+      ctx.emit("updateRestaurant");
     };
     const handleRemove = async () => {
       store.commit("setLoading", true);
@@ -229,6 +231,7 @@ export default defineComponent({
       });
       store.commit("setLoading", false);
       suspendUntil.value = null;
+      ctx.emit("updateRestaurant");
     };
     return {
       date,
