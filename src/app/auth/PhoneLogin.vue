@@ -139,18 +139,23 @@
 
       <!-- Submit Buttons -->
       <div class="mt-4 text-center">
-        <ButtonCancel @cancel="$emit('dismissed', false)">
-          {{ $t("button.cancel") }}
-        </ButtonCancel>
 
-        <ButtonSubmit
+        <t-button
+          @click="$emit('dismissed', false)"
+          isCancel="true"
+          class="mr-4 mb-2 inline-flex h-12 w-32 items-center justify-center rounded-full bg-black/5"
+        >
+          {{ $t("button.cancel") }}
+        </t-button>
+
+        <t-button
           id="button-send-code"
-          :disabled="!readyToSendVerificationCode"
-          class="ml-4"
+          :isDisabled="!readyToSendVerificationCode"
           :isLoading="isLoading"
+          class="h-12 w-32 shadow-sm font-bold text-white"
         >
           {{ $t("sms.sendVerificationCode") }}
-        </ButtonSubmit>
+        </t-button>
       </div>
     </form>
   </div>
