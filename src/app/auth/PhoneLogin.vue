@@ -139,7 +139,6 @@
 
       <!-- Submit Buttons -->
       <div class="mt-4 text-center">
-
         <t-button
           @click="$emit('dismissed', false)"
           isCancel="true"

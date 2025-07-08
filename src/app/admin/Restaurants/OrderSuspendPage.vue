@@ -220,7 +220,7 @@ export default defineComponent({
         suspendUntil: timeStamp,
       });
       store.commit("setLoading", false);
-      suspendUntil.value = getSuspend(timeStamp)
+      suspendUntil.value = getSuspend(timeStamp);
     };
     const handleRemove = async () => {
       store.commit("setLoading", true);
