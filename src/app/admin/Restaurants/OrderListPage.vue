@@ -58,7 +58,7 @@
       <div class="mx-6 mt-2">
         <router-link :to="`/admin/restaurants/${restaurantId}/history`"
           ><div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
             <div class="text-sm font-bold text-op-teal">
               {{ $t("admin.order.history") }}
@@ -130,7 +130,7 @@ export default defineComponent({
     // eslint-disable-next-line no-empty-function
     let order_detacher = () => {};
 
-    useHead({
+    useHead(() => ({
       title: props.shopInfo.restaurantName
         ? [
             "Admin Order List",
@@ -138,7 +138,7 @@ export default defineComponent({
             defaultTitle,
           ].join(" / ")
         : defaultTitle,
-    });
+    }));
 
     const { ownerUid, uid } = useAdminUids();
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {

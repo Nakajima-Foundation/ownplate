@@ -10,7 +10,7 @@
     </div>
 
     <!-- Title -->
-    <div class="mx-2 mt-2 text-xl font-bold text-black text-opacity-30">
+    <div class="mx-2 mt-2 text-xl font-bold text-black/30">
       {{ $t("order.history") }}
     </div>
 
@@ -29,7 +29,7 @@
         />
       </template>
       <div v-else>
-        <span class="text-base text-black text-opacity-40">
+        <span class="text-base text-black/40">
           {{ $t("order.noHistory") }}
         </span>
       </div>
@@ -84,9 +84,9 @@ export default defineComponent({
     const basePath = useBasePath();
     const topPath = useTopPath();
 
-    useHead({
+    useHead(() => ({
       title: [defaultHeader.title, "User Order History"].join(" / "),
-    });
+    }));
 
     const uid = computed(() => {
       return store.getters.uidUser || store.getters.uidLiff;

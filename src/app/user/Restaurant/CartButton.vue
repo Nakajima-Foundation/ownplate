@@ -167,7 +167,7 @@ import { defineComponent, computed, ref, watch } from "vue";
 import { arraySum } from "@/utils/utils";
 
 import Price from "@/components/Price.vue";
-import ButtonLoading from "@/components/Button/Loading.vue";
+import ButtonLoading from "@/components/form/Loading.vue";
 
 export default defineComponent({
   components: {

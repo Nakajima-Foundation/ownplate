@@ -17,7 +17,7 @@
     />
 
     <!-- Order Summary -->
-    <div class="mx-6 mt-2 rounded-lg bg-white px-2 pt-4 pb-1 shadow">
+    <div class="mx-6 mt-2 rounded-lg bg-white px-2 pt-4 pb-1 shadow-sm">
       <!-- Order Status -->
       <OrderStatus :orderInfo="orderInfo" :orderName="orderName" />
 
@@ -38,6 +38,7 @@
           v-if="just_paid"
           @click="handleCancelPayment"
           class="b-reset-tw"
+          :disabled="isCancelling"
         >
           <div class="inline-flex items-center justify-center">
             <i class="material-icons mr-2 text-lg text-red-700"
@@ -54,7 +55,7 @@
     <!-- Canceled Message -->
     <div
       v-if="canceled"
-      class="mx-6 mt-2 rounded-lg bg-red-700 bg-opacity-10 p-4 text-center"
+      class="mx-6 mt-2 rounded-lg bg-red-700/10 p-4 text-center"
     >
       <span class="text-base font-bold text-red-700">{{
         $t("order.cancelOrderComplete")
@@ -88,7 +89,7 @@
       <!-- Left -->
       <div>
         <!-- Title -->
-        <div class="text-xl font-bold text-black text-opacity-30">
+        <div class="text-xl font-bold text-black/30">
           {{ $t("order.yourOrder") + ": " + orderName }}
         </div>
 
@@ -119,8 +120,8 @@
 
         <!-- Your Message to the Restaurant -->
         <template v-if="hasMemo">
-          <div class="mt-4 rounded-lg bg-white p-4 shadow">
-            <div class="text-xs font-bold text-black text-opacity-60">
+          <div class="mt-4 rounded-lg bg-white p-4 shadow-sm">
+            <div class="text-xs font-bold text-black/60">
               {{ $t("order.orderMessage") }}
             </div>
             <div class="mt-1 text-base">{{ orderInfo.memo }}</div>
@@ -130,7 +131,7 @@
         <!-- Canceled Message -->
         <div
           v-if="canceled"
-          class="mt-2 rounded-lg bg-red-700 bg-opacity-10 p-4 text-center"
+          class="mt-2 rounded-lg bg-red-700/10 p-4 text-center"
         >
           <span class="text-base font-bold text-red-700">{{
             $t("order.cancelOrderComplete")
@@ -162,7 +163,7 @@
       <div class="mt-4 lg:mt-0">
         <!-- Restaurant Info -->
         <div>
-          <div class="text-xl font-bold text-black text-opacity-30">
+          <div class="text-xl font-bold text-black/30">
             {{
               shopInfo.isEC
                 ? $t("shopInfo.ecShopDetails")
@@ -182,11 +183,11 @@
 
         <!-- QR Code -->
         <div class="mt-2" v-if="!shopInfo.isEC">
-          <div class="text-xl font-bold text-black text-opacity-30">
+          <div class="text-xl font-bold text-black/30">
             {{ $t("order.adminQRCode") }}
           </div>
 
-          <div class="mt-2 rounded-lg bg-white p-4 text-center shadow">
+          <div class="mt-2 rounded-lg bg-white p-4 text-center shadow-sm">
             <vue-qrcode
               :value="urlAdminOrderPage"
               :options="{ width: 160 }"
@@ -199,7 +200,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, PropType } from "vue";
+import { defineComponent, computed, PropType, ref } from "vue";
 
 import ShopHeader from "@/app/user/Restaurant/ShopHeader.vue";
 import ShopInfo from "@/app/user/Restaurant/ShopInfo.vue";
@@ -300,6 +301,7 @@ export default defineComponent({
         props.orderInfo.payment && props.orderInfo.payment.stripe === "canceled"
       );
     });
+    const isCancelling = ref(false);
     const hasLineUrl = computed(() => {
       return props.shopInfo.lineUrl && validUrl(props.shopInfo.lineUrl);
     });
@@ -344,6 +346,7 @@ export default defineComponent({
         code: "order.cancelOrderConfirm",
         callback: async () => {
           try {
+            isCancelling.value = true;
             store.commit("setLoading", true);
             await stripeCancelIntent({
               restaurantId: restaurantId,
@@ -360,6 +363,7 @@ export default defineComponent({
             });
           } finally {
             store.commit("setLoading", false);
+            isCancelling.value = false;
           }
         },
       });
@@ -369,6 +373,7 @@ export default defineComponent({
       // computed
       hasStripe,
       cancelPayment,
+      isCancelling,
       hasLineUrl,
       urlAdminOrderPage,
       timeRequested,

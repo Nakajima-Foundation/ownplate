@@ -98,7 +98,7 @@
     >
       <o-button class="mt-2 ml-4 h-9 rounded-full">
         <span class="pl-4 pr-4">
-          <i class="material-icons mr-2 !text-2xl text-op-teal">save_alt</i>
+          <i class="material-icons mr-2 text-2xl! text-op-teal">save_alt</i>
           <span class="font-bold text-op-teal"> Download </span>
         </span>
       </o-button>
@@ -149,9 +149,9 @@ export default defineComponent({
     const restaurants = ref<RestaurantInfoData[]>([]);
     const last = ref<any | null>(null);
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Super All Restaurants"].join(" / "),
-    });
+    }));
 
     superPermissionCheck();
 

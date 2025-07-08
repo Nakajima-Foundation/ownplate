@@ -10,6 +10,7 @@
         class="mx-6 mt-4 lg:flex lg:items-center"
         :shopInfo="shopInfo"
         :showSuspend="false"
+        backLink="/admin/restaurants"
       />
 
       <!-- Body -->
@@ -17,7 +18,7 @@
         <!-- Title -->
         <div
           v-if="lineUsers.length > 0"
-          class="text-xl font-bold text-black text-opacity-30"
+          class="text-xl font-bold text-black/30"
         >
           {{ $t("admin.order.lineUsers") }}
         </div>
@@ -31,13 +32,9 @@
           >
             <!-- User Name -->
             <div
-              class="flex-1 cursor-pointer rounded-lg bg-white p-4 shadow"
+              class="flex-1 cursor-pointer rounded-lg bg-white p-4 shadow-sm"
               @click="handleToggle(lineUser)"
-              :class="
-                lineUser.notify
-                  ? 'text-green-600'
-                  : 'text-black text-opacity-30'
-              "
+              :class="lineUser.notify ? 'text-green-600' : 'text-black/30'"
             >
               <!-- Checkbox UI -->
               <div class="flex items-center">
@@ -53,7 +50,7 @@
             <!-- Delete -->
             <div>
               <a
-                class="ml-4 inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+                class="ml-4 inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                 @click.stop="handleDelete(lineUser.id)"
               >
                 <i class="material-icons text-lg text-red-700">delete</i>
@@ -78,7 +75,7 @@
         </div>
 
         <!-- Note for Safari Private Browsing Mode -->
-        <div class="mt-4 rounded-lg bg-black bg-opacity-5 p-4">
+        <div class="mt-4 rounded-lg bg-black/5 p-4">
           <span class="text-xs text-black opacity-60">
             {{ $t("admin.order.lineSafariPrivate") }}
           </span>
@@ -138,9 +135,9 @@ export default defineComponent({
 
     const lineUsers = ref<LineUserData[]>([]);
 
-    useHead({
+    useHead(() => ({
       title: ["Admin Manage Line", defaultTitle].join(" / "),
-    });
+    }));
 
     const { ownerUid, uid } = useAdminUids();
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {

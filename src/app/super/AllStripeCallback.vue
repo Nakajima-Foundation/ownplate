@@ -41,9 +41,9 @@ export default defineComponent({
     const logs = ref<any[]>([]);
     const last = ref<any>(null);
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Super All Stripe Callback"].join(" / "),
-    });
+    }));
 
     getDocs(
       query(

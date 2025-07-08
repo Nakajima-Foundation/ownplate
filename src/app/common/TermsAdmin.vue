@@ -1,7 +1,7 @@
 <template>
-  <div class="mx-auto max-w-screen-md px-6 text-base">
+  <div class="mx-auto max-w-(--breakpoint-md) px-6 text-base">
     <!-- Title -->
-    <div class="mt-12 text-xl font-bold text-black text-opacity-40">
+    <div class="mt-12 text-xl font-bold text-black/40">
       おもちかえり.com サービス利用規約（加盟店）
     </div>
 
@@ -460,15 +460,15 @@
         </p>
       </section>
 
-      <div class="mt-4 text-right text-black text-opacity-40">以上</div>
+      <div class="mt-4 text-right text-black/40">以上</div>
 
-      <div class="mt-4 text-black text-opacity-40">
+      <div class="mt-4 text-black/40">
         一般社団法人シンギュラリティ・ソサエティ
       </div>
-      <div class="mt-1 text-black text-opacity-40">2022年7月12日</div>
-      <div class="mt-1 text-black text-opacity-40">最終改定</div>
+      <div class="mt-1 text-black/40">2022年7月12日</div>
+      <div class="mt-1 text-black/40">最終改定</div>
 
-      <div class="mt-4 text-black text-opacity-40">SS：有本/武藤</div>
+      <div class="mt-4 text-black/40">SS：有本/武藤</div>
     </div>
   </div>
 </template>
@@ -482,22 +482,24 @@ import { useI18n } from "vue-i18n";
 export default defineComponent({
   setup() {
     const { t } = useI18n();
-    useHead({
+    useHead(() => ({
       title: [t("pageTitle.terms.admin") || "", defaultHeader.title].join(
         " / ",
       ),
-    });
+    }));
     return {};
   },
 });
 </script>
 
 <style lang="css" scoped>
+@reference "../../assets/css/main.css";
+
 section {
-  @apply text-sm text-black text-opacity-60;
+  @apply text-sm text-black/60;
 }
 h6 {
-  @apply mt-4 text-base font-bold text-black text-opacity-40;
+  @apply mt-4 text-base font-bold text-black/40;
 }
 p {
   @apply mt-4;

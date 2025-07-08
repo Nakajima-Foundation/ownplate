@@ -18,6 +18,7 @@
           {{ $t("promotion.heading") }}
         </div>
         <div v-for="(v, k) in possiblePromotions" :key="k" class="px-6">
+          <!-- TODO ys64 remove text-opacity-40 -->
           <div class="mt-5 text-lg font-bold text-opacity-40">
             {{ v.promotionName }}
           </div>
@@ -36,7 +37,7 @@
           </div>
 
           <div v-if="v.hasTerm">
-            <div class="text-sm text-black text-opacity-40 font-bold mt-3">
+            <div class="text-sm text-black/40 font-bold mt-3">
               {{ $t("promotion.period") }}
             </div>
             <div class="mt-0.5">
@@ -48,7 +49,7 @@
             </div>
           </div>
 
-          <div class="text-sm text-black text-opacity-40 font-bold mt-2">
+          <div class="text-sm text-black/40 font-bold mt-2">
             {{ $t("promotion.terms") }}
           </div>
           <ul class="list-disc list-outside mt-0.5">
@@ -67,7 +68,7 @@
           <div class="border mt-5"></div>
         </div>
 
-        <div class="bg-black bg-opacity-5 p-2 text-xs m-6 rounded-lg">
+        <div class="bg-black/5 p-2 text-xs m-6 rounded-lg">
           <div class="font-bold">
             {{ $t("promotion.notes") }}
           </div>

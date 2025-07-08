@@ -2,19 +2,19 @@
   <div class="lg:flex">
     <div class="lg:flex-1">
       <!-- Item Card -->
-      <div class="rounded-lg bg-white shadow">
+      <div class="rounded-lg bg-white shadow-sm">
         <!-- Published Status and Sold Out Checkbox -->
         <div class="flex items-center">
           <div class="mx-2 mt-2 flex-1">
             <div
               v-if="menuitem.publicFlag"
-              class="rounded bg-green-600 bg-opacity-10 p-2"
+              class="rounded-sm bg-green-600/10 p-2"
             >
               <div class="text-xs font-bold text-green-600">
                 {{ $t("admin.itemPublished") }}
               </div>
             </div>
-            <div v-else class="rounded bg-red-700 bg-opacity-10 p-2">
+            <div v-else class="rounded-sm bg-red-700/10 p-2">
               <div class="text-xs font-bold text-red-700">
                 {{ $t("admin.itemNotPublished") }}
               </div>
@@ -29,7 +29,7 @@
               <div v-if="soldOut" class="text-sm font-bold text-red-700">
                 {{ $t("admin.itemSoldOut") }}
               </div>
-              <div v-else class="text-sm font-bold text-black text-opacity-30">
+              <div v-else class="text-sm font-bold text-black/30">
                 {{ $t("admin.itemSoldOut") }}
               </div>
             </o-checkbox>
@@ -42,7 +42,7 @@
               <div v-if="soldOut" class="text-sm font-bold text-red-700">
                 {{ $t("admin.itemSoldOutToday") }}
               </div>
-              <div v-else class="text-sm font-bold text-black text-opacity-30">
+              <div v-else class="text-sm font-bold text-black/30">
                 {{ $t("admin.itemSoldOutToday") }}
               </div>
             </o-checkbox>
@@ -55,24 +55,24 @@
             <div v-if="image">
               <img
                 :src="image"
-                class="h-24 w-24 rounded object-cover"
+                class="h-24 w-24 rounded-sm object-cover"
                 @error="smallImageErrorHandler"
               />
             </div>
           </div>
           <div class="p-4">
-            <div class="text-xl font-bold text-black text-opacity-80">
+            <div class="text-xl font-bold text-black/80">
               <span>{{ menuitem.itemName }}</span>
               <span v-if="shopInfo.enableLunchDinner">
                 / <LunchDinnerIcon :item="menuitem" />
               </span>
             </div>
-            <div class="mt-2 text-base text-black text-opacity-80">
+            <div class="mt-2 text-base text-black/80">
               <Price :shopInfo="shopInfo" :menu="menuitem" />
             </div>
 
             <!-- # Remove the description part to make the list length shorter -->
-            <!-- <div class="mt-2 text-sm text-black text-opacity-60">
+            <!-- <div class="mt-2 text-sm text-black/60">
             {{ menuitem.itemDescription }}
            </div> -->
           </div>
@@ -80,16 +80,13 @@
 
         <!-- Owner Memo -->
         <div v-if="menuitem.itemMemo" class="mx-2 pb-2">
-          <div class="rounded bg-black bg-opacity-5 p-2 text-xs">
+          <div class="rounded-sm bg-black/5 p-2 text-xs">
             {{ menuitem.itemMemo.split("\n")[0] }}
           </div>
         </div>
       </div>
     </div>
-    <div
-      class="mt-2 text-right lg:mt-0 lg:ml-4 lg:flex-shrink-0"
-      v-if="isOwner"
-    >
+    <div class="mt-2 text-right lg:mt-0 lg:ml-4 lg:shrink-0" v-if="isOwner">
       <!-- Card Actions -->
       <div class="inline-flex space-x-2">
         <!-- Up -->
@@ -99,7 +96,7 @@
           class="b-reset-tw"
         >
           <div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
             <i class="material-icons text-lg text-op-teal">arrow_upward</i>
           </div>
@@ -112,7 +109,7 @@
           class="b-reset-tw"
         >
           <div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
             <i class="material-icons text-lg text-op-teal">arrow_downward</i>
           </div>
@@ -121,7 +118,7 @@
         <!-- Duplicate -->
         <o-button @click="forkItem" class="b-reset-tw">
           <div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
             <i class="material-icons text-lg text-op-teal">queue</i>
           </div>
@@ -130,7 +127,7 @@
         <!-- Delete -->
         <o-button @click="deleteItem" class="b-reset-tw">
           <div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
             <i class="material-icons text-lg text-red-700">delete</i>
           </div>

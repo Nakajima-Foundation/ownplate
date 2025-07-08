@@ -8,7 +8,7 @@
       <div class="mx-6 mt-4 lg:flex lg:items-center">
         <!-- Back and Preview -->
         <div class="flex space-x-4">
-          <div class="flex-shrink-0">
+          <div class="shrink-0">
             <back-button
               :url="
                 `/admin/restaurants/${shopInfo.restaurantId}/orders/` + orderId
@@ -23,7 +23,7 @@
         <!-- Photo and Name -->
         <div class="mt-4 lg:mx-4 lg:mt-0 lg:flex lg:flex-1 lg:items-center">
           <div class="flex items-center">
-            <div class="mr-4 flex-shrink-0 rounded-full bg-black bg-opacity-10">
+            <div class="mr-4 shrink-0 rounded-full bg-black/10">
               <img
                 :src="resizedProfileImage(shopInfo, '600')"
                 class="h-9 w-9 rounded-full object-cover"
@@ -36,7 +36,7 @@
         </div>
 
         <!-- Notifications -->
-        <div class="mt-4 flex-shrink-0 lg:mt-0">
+        <div class="mt-4 shrink-0 lg:mt-0">
           <notification-index :shopInfo="shopInfo" />
         </div>
       </div>
@@ -92,7 +92,7 @@
       <div class="mx-6 mt-2 text-center" v-if="last !== undefined">
         <o-button :disabled="last === null" @click="next" class="b-reset-tw">
           <div
-            class="inline-flex h-9 w-48 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+            class="inline-flex h-9 w-48 items-center justify-center rounded-full bg-black/5 px-4"
           >
             <div class="text-sm font-bold text-op-teal">
               {{ $t("admin.order.more") }}
@@ -177,7 +177,7 @@ export default defineComponent({
       };
     }
 
-    useHead({
+    useHead(() => ({
       title: props.shopInfo.restaurantName
         ? [
             "Admin Order History",
@@ -185,7 +185,7 @@ export default defineComponent({
             defaultTitle,
           ].join(" / ")
         : defaultTitle,
-    });
+    }));
 
     const orderId = route.query.orderId;
 

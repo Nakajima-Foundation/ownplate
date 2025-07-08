@@ -1,10 +1,10 @@
 <template>
   <div class="mx-6 mt-2 lg:mx-auto lg:max-w-2xl">
     <!-- Note for the First User -->
-    <div class="rounded-lg bg-green-600 bg-opacity-10 p-6">
+    <div class="rounded-lg bg-green-600/10 p-6">
       <div class="flex">
         <div>
-          <i class="material-icons mr-4 flex-shrink-0 text-4xl text-green-600"
+          <i class="material-icons mr-4 shrink-0 text-4xl text-green-600"
             >info</i
           >
         </div>
@@ -23,9 +23,9 @@
     </div>
 
     <!-- Sign In Card -->
-    <div class="mt-2 rounded-lg bg-white p-6 shadow">
+    <div class="mt-2 rounded-lg bg-white p-6 shadow-sm">
       <form @submit.prevent="onSignin">
-        <div class="text-xl font-bold text-black text-opacity-30">
+        <div class="text-xl font-bold text-black/30">
           {{ $t("admin.pleaseSignIn") }}
         </div>
 
@@ -77,9 +77,9 @@
         <div class="mt-2 text-center">
           <button @click="handleCancel" class="b-reset-tw mr-4 mb-2">
             <div
-              class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black bg-opacity-5"
+              class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black/5"
             >
-              <div class="text-base font-bold text-black text-opacity-60">
+              <div class="text-base font-bold text-black/60">
                 {{ $t("button.cancel") }}
               </div>
             </div>
@@ -105,14 +105,14 @@
 
     <!-- Sign Up as a New User -->
     <div class="mt-12 text-center">
-      <div class="font-bold text-black text-opacity-40">
+      <div class="font-bold text-black/40">
         {{ $t("admin.forSignup") }}
       </div>
 
       <div class="mt-2">
         <router-link to="/admin/user/signup">
           <div
-            class="inline-flex h-16 items-center rounded-full bg-ownplate-yellow px-8 shadow hover:bg-opacity-80"
+            class="inline-flex h-16 items-center rounded-full bg-ownplate-yellow px-8 shadow-sm hover:bg-ownplate-yellow/80"
           >
             <span class="text-xl font-bold text-black opacity-90">
               {{ $t("lp.signUpForFree") }}
@@ -147,9 +147,9 @@ export default defineComponent({
 
     const { user, isAdmin } = useUserData();
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Signin Admin"].join(" / "),
-    });
+    }));
 
     const redirectToAdminPage = () => {
       const redirect = route.query["to"] as string;

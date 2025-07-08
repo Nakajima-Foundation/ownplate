@@ -25,7 +25,7 @@
     <div class="mx-6 mt-4 lg:flex lg:items-center" v-else>
       <!-- Back and Preview -->
       <div class="flex space-x-4">
-        <div class="flex-shrink-0">
+        <div class="shrink-0">
           <back-button
             backText="button.backToDiscounts"
             iconText="arrow_back"
@@ -36,17 +36,14 @@
     </div>
 
     <div class="mx-6 mt-4">
-      <div
-        v-if="histories.length === 0"
-        class="mt-8 text-black text-opacity-30 font-bold"
-      >
+      <div v-if="histories.length === 0" class="mt-8 text-black/30 font-bold">
         {{ $t("admin.promotion.noHistory") }}
       </div>
       <div v-else>
         <div v-for="(h, k) in histories" :key="k">
-          <div class="rounded-lg bg-white p-4 shadow mb-2">
+          <div class="rounded-lg bg-white p-4 shadow-sm mb-2">
             <div class="mt-1 flex items-center">
-              <div class="text-sm text-black text-opacity-40 font-bold">
+              <div class="text-sm text-black/40 font-bold">
                 {{ $t("admin.promotion.uid") }}:
               </div>
               <div class="ml-1">
@@ -60,7 +57,7 @@
             </div>
 
             <div class="mt-1 flex items-center" v-if="false">
-              <div class="text-sm text-black text-opacity-40 font-bold">
+              <div class="text-sm text-black/40 font-bold">
                 {{ $t("admin.promotion.rid") }}:
               </div>
               <div class="ml-1">
@@ -69,7 +66,7 @@
             </div>
 
             <div class="mt-1 flex items-center" v-if="false">
-              <div class="text-sm text-black text-opacity-40 font-bold">
+              <div class="text-sm text-black/40 font-bold">
                 {{ $t("admin.promotion.pid") }}:
               </div>
               <div class="ml-1">
@@ -78,7 +75,7 @@
             </div>
 
             <div class="mt-1 flex items-center">
-              <div class="text-sm text-black text-opacity-40 font-bold">
+              <div class="text-sm text-black/40 font-bold">
                 {{ $t("admin.promotion.oid") }}:
               </div>
               <div class="ml-1">
@@ -92,7 +89,7 @@
             </div>
 
             <div class="mt-1 flex items-center">
-              <div class="text-sm text-black text-opacity-40 font-bold">
+              <div class="text-sm text-black/40 font-bold">
                 {{ $t("admin.promotion.date") }}:
               </div>
               <div class="ml-1">
@@ -101,7 +98,7 @@
             </div>
 
             <div class="mt-1 flex items-center">
-              <div class="text-sm text-black text-opacity-40 font-bold">
+              <div class="text-sm text-black/40 font-bold">
                 {{ $t("admin.promotion.total") }}:
               </div>
               <div class="ml-1">
@@ -110,7 +107,7 @@
             </div>
 
             <div class="mt-1 flex items-center">
-              <div class="text-sm text-black text-opacity-40 font-bold">
+              <div class="text-sm text-black/40 font-bold">
                 {{ $t("admin.promotion.discountPrice") }}:
               </div>
               <div class="ml-1">
@@ -121,7 +118,7 @@
             <o-button
               v-if="false"
               @click="deleteHistory(h)"
-              class="border-0 flex items-center justify-center mt-3 h-9 w-24 rounded-full bg-black bg-opacity-5 font-bold text-red-700"
+              class="border-0 flex items-center justify-center mt-3 h-9 w-24 rounded-full bg-black/5 font-bold text-red-700"
             >
               {{ $t("admin.promotion.delete") }}</o-button
             >

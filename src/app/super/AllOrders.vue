@@ -63,7 +63,7 @@
           >
             <o-button class="mt-4 h-9 rounded-full">
               <span class="pl-4 pr-4">
-                <i class="material-icons mr-2 !text-2xl text-op-teal"
+                <i class="material-icons mr-2 text-2xl! text-op-teal"
                   >save_alt</i
                 >
                 <span class="font-bold text-op-teal">{{
@@ -125,9 +125,9 @@ export default defineComponent({
     const router = useRouter();
     superPermissionCheck();
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Super All Orders"].join(" / "),
-    });
+    }));
 
     const months = [0, 1, 2, 3, 4, 5].map((a) => {
       return moment().subtract(a, "month").format("YYYY-MM");

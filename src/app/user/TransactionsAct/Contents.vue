@@ -4,7 +4,7 @@
     <div>
       <div class="omx-2 rounded-lg bg-white p-6 shadow-lg">
         <!-- Title -->
-        <div class="text-xl font-bold text-black text-opacity-40">
+        <div class="text-xl font-bold text-black/40">
           {{ $t("transactionsAct.title") }}
         </div>
 
@@ -12,7 +12,7 @@
         <div class="mt-4">
           <!-- Seller Name -->
           <div>
-            <div class="text-sm font-bold text-black text-opacity-30">
+            <div class="text-sm font-bold text-black/30">
               {{ $t("transactionsAct.sellerName") }}
             </div>
 
@@ -23,7 +23,7 @@
 
           <!-- Representative -->
           <div class="mt-4">
-            <div class="text-sm font-bold text-black text-opacity-30">
+            <div class="text-sm font-bold text-black/30">
               {{ $t("transactionsAct.representative") }}
             </div>
 
@@ -34,7 +34,7 @@
 
           <!-- Address -->
           <div class="mt-4">
-            <div class="text-sm font-bold text-black text-opacity-30">
+            <div class="text-sm font-bold text-black/30">
               {{ $t("transactionsAct.address") }}
             </div>
 
@@ -46,7 +46,7 @@
 
           <!-- Hours -->
           <div class="mt-4">
-            <div class="text-sm font-bold text-black text-opacity-30">
+            <div class="text-sm font-bold text-black/30">
               {{ $t("transactionsAct.hours") }}
             </div>
 
@@ -78,7 +78,7 @@
 
           <!-- Phone Number -->
           <div class="mt-4">
-            <div class="text-sm font-bold text-black text-opacity-30">
+            <div class="text-sm font-bold text-black/30">
               {{ $t("transactionsAct.phone") }}
             </div>
 
@@ -89,7 +89,7 @@
 
           <!-- Sales Price -->
           <div class="mt-4">
-            <div class="text-sm font-bold text-black text-opacity-30">
+            <div class="text-sm font-bold text-black/30">
               {{ $t("transactionsAct.price") }}
             </div>
 
@@ -100,11 +100,11 @@
 
           <!-- Other Required Fees -->
           <div class="mt-4">
-            <div class="text-sm font-bold text-black text-opacity-30">
+            <div class="text-sm font-bold text-black/30">
               {{ $t("transactionsAct.otherFees") }}
             </div>
 
-            <div class="mt-2 text-sm font-bold text-black text-opacity-30">
+            <div class="mt-2 text-sm font-bold text-black/30">
               {{ $t("transactionsAct.takeoutTitle") }}
             </div>
 
@@ -113,7 +113,7 @@
             </div>
 
             <template v-if="shopInfo.enableDelivery">
-              <div class="mt-2 text-sm font-bold text-black text-opacity-30">
+              <div class="mt-2 text-sm font-bold text-black/30">
                 {{ $t("transactionsAct.deliveryTitle") }}
               </div>
 
@@ -126,7 +126,7 @@
           <div class="mt-4">
             <!--for omochikaeri-->
             <div>
-              <div class="text-sm font-bold text-black text-opacity-30">
+              <div class="text-sm font-bold text-black/30">
                 {{ $t("transactionsAct.payment") }}
               </div>
               <ul class="ml-5 mt-1 list-outside list-disc">
@@ -147,7 +147,7 @@
           <div class="mt-4">
             <!--for omochikaeri-->
             <div>
-              <div class="text-sm font-bold text-black text-opacity-30">
+              <div class="text-sm font-bold text-black/30">
                 {{ $t("transactionsAct.delivery") }}
               </div>
 
@@ -161,7 +161,7 @@
           <div class="mt-4">
             <!--for omochikaeri-->
             <div>
-              <div class="text-sm font-bold text-black text-opacity-30">
+              <div class="text-sm font-bold text-black/30">
                 {{ $t("transactionsAct.cancellation") }}
               </div>
               <ul class="ml-5 mt-1 list-outside list-disc">
@@ -172,9 +172,7 @@
                 <li>
                   {{ $t("transactionsAct.cancellationDescription2") }}
                   <ul class="mb-2 list-outside list-none">
-                    <div
-                      class="mt-2 text-sm font-bold text-black text-opacity-30"
-                    >
+                    <div class="mt-2 text-sm font-bold text-black/30">
                       {{ $t("transactionsAct.takeoutTitle") }}
                     </div>
                     <li>
@@ -184,7 +182,7 @@
                     </li>
                     <div
                       v-if="shopInfo.enableDelivery"
-                      class="mt-2 text-sm font-bold text-black text-opacity-30"
+                      class="mt-2 text-sm font-bold text-black/30"
                     >
                       {{ $t("transactionsAct.deliveryTitle") }}
                     </div>
@@ -218,12 +216,10 @@
         <div class="mt-4 text-center">
           <a
             @click="closeTransactionsAct()"
-            class="inline-flex h-12 items-center justify-center rounded-full bg-black bg-opacity-5 px-6"
+            class="inline-flex h-12 items-center justify-center rounded-full bg-black/5 px-6"
             style="min-width: 8rem"
           >
-            <div
-              class="text-base font-bold text-black text-opacity-60 cursor-pointer"
-            >
+            <div class="text-base font-bold text-black/60 cursor-pointer">
               {{ $t(closeButton) }}
             </div>
           </a>

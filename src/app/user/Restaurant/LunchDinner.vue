@@ -7,11 +7,11 @@
     <div class="mt2 grid grid-cols-2 gap-2">
       <!-- lunch -->
       <div
-        class="h-full w-full rounded-lg bg-white p-3 shadow"
+        class="h-full w-full rounded-lg bg-white p-3 shadow-sm"
         :class="
           modelValue === 'lunch'
             ? 'border-2 border-op-teal text-op-teal'
-            : 'cursor-pointer text-black text-opacity-40'
+            : 'cursor-pointer text-black/40'
         "
         @click="input('lunch')"
       >
@@ -22,11 +22,11 @@
       </div>
       <!-- dinner -->
       <div
-        class="h-full w-full rounded-lg bg-white p-3 shadow"
+        class="h-full w-full rounded-lg bg-white p-3 shadow-sm"
         :class="
           modelValue === 'dinner'
             ? 'border-2 border-op-teal text-op-teal'
-            : 'cursor-pointer text-black text-opacity-40'
+            : 'cursor-pointer text-black/40'
         "
         @click="input('dinner')"
       >

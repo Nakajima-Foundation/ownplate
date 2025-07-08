@@ -64,7 +64,7 @@
 
               <!-- Restaurant Info -->
               <div class="mt-4" v-if="!isTransactionAct">
-                <div class="text-xl font-bold text-black text-opacity-30">
+                <div class="text-xl font-bold text-black/30">
                   {{
                     shopInfo.isEC
                       ? $t("shopInfo.ecShopDetails")
@@ -97,7 +97,7 @@
           </div>
           <div v-else>
             <div class="mx-6 mt-2 lg:mx-0" v-if="shopInfo.enableDelivery">
-              <div class="rounded-lg bg-white shadow">
+              <div class="rounded-lg bg-white shadow-sm">
                 <!-- delivery toggle-->
                 <Delivery
                   :shopInfo="shopInfo"
@@ -113,7 +113,7 @@
 
             <!-- Lunch/Dinner -->
             <div class="mx-6 mt-4 lg:mx-0" v-if="shopInfo.enableLunchDinner">
-              <div class="rounded-lg bg-white shadow">
+              <div class="rounded-lg bg-white shadow-sm">
                 <LunchDinner
                   :shopInfo="shopInfo"
                   v-model="lunchOrDinner"
@@ -130,7 +130,7 @@
                   <!-- Title -->
                   <div v-if="item._dataType === 'title'" :key="key">
                     <div
-                      class="inline-flex items-center justify-center text-xl font-bold text-black text-opacity-30 cursor-pointer"
+                      class="inline-flex items-center justify-center text-xl font-bold text-black/30 cursor-pointer"
                       :class="key === 0 ? '' : 'mt-2'"
                       :id="item.id"
                       @click="openCategory"
@@ -167,7 +167,7 @@
           </div>
         </div>
         <div class="mx-6 mt-8" v-if="!isTransactionAct">
-          <div class="rounded-lg bg-white shadow">
+          <div class="rounded-lg bg-white shadow-sm">
             <router-link :to="pageBase + '/transactions-act'">
               <div
                 class="p-4 inline-flex items-center justify-center"
@@ -236,7 +236,7 @@
           <template v-for="(title, key) in titleLists" :key="key">
             <a
               :href="`#${title.id}`"
-              class="mx-1 mt-2 inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5"
+              class="mx-1 mt-2 inline-flex h-9 items-center justify-center rounded-full bg-black/5"
               @click="closeCategory"
             >
               <div class="mx-2 text-sm font-bold text-op-teal">
@@ -399,7 +399,7 @@ export default defineComponent({
 
     const basePath = useBasePath();
 
-    useHead({
+    useHead(() => ({
       title:
         Object.keys(props.shopInfo).length === 0
           ? document.title
@@ -407,7 +407,7 @@ export default defineComponent({
               props.shopInfo?.restaurantName || "",
               ownPlateConfig.restaurantPageTitle || defaultTitle,
             ].join(" / "),
-    });
+    }));
 
     const defaultHowToReceive = (() => {
       // for 333

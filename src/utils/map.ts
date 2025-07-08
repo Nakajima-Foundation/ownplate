@@ -13,4 +13,3 @@ export const getShopIcon = () => {
 export const getCustomerIcon = () => {
   return getIcon("http://maps.google.co.jp/mapfiles/ms/icons/blue-dot.png");
 };
-

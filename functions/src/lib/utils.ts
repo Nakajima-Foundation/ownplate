@@ -78,20 +78,12 @@ export const getStripeWebhookSecretKey = () => {
   return SECRET;
 };
 
-export const get_stripe = () => {
-  const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET;
-  if (!STRIPE_SECRET_KEY) {
-    throw new functions.https.HttpsError("invalid-argument", "The functions requires STRIPE_SECRET_KEY.");
-  }
-  return new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2025-02-24.acacia" });
-};
-
 export const get_stripe_v2 = () => {
   const STRIPE_SECRET_KEY = stripe_secret.value();
   if (!STRIPE_SECRET_KEY) {
     throw new HttpsError("invalid-argument", "The functions requires STRIPE_SECRET_KEY.");
   }
-  return new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2025-02-24.acacia" });
+  return new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2025-06-30.basil" });
 };
 
 export const required_params = (params) => {

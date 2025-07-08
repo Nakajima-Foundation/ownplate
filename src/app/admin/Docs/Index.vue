@@ -19,7 +19,7 @@
         <span class="font-normal text-xs">(別タブでPDFファイルが開きます)</span>
       </div>
       <!-- Manual -->
-      <div class="mt-2 rounded-lg bg-black bg-opacity-5 p-4 font-bold">
+      <div class="mt-2 rounded-lg bg-black/5 p-4 font-bold">
         <div class="">
           <a
             href="https://docs.omochikaeri.com/manuals/manual.pdf"
@@ -92,7 +92,7 @@
       <!-- Features -->
       <div class="mt-4 text-sm font-bold">機能紹介</div>
 
-      <div class="mt-2 rounded-lg bg-black bg-opacity-5 p-4 font-bold">
+      <div class="mt-2 rounded-lg bg-black/5 p-4 font-bold">
         <div>
           <router-link
             to="/admin/docs/features/"
@@ -160,7 +160,7 @@
 
       <div class="mt-4 text-sm font-bold">役立つリンク</div>
 
-      <div class="mt-2 rounded-lg bg-black bg-opacity-5 p-4 font-bold">
+      <div class="mt-2 rounded-lg bg-black/5 p-4 font-bold">
         <div>
           <router-link
             to="/admin/news"

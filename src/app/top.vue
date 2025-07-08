@@ -7,7 +7,7 @@
       <!-- Center Column -->
       <div class="column">
         <div class="mx-6 mt-2">
-          <div class="rounded-lg bg-black bg-opacity-5 pl-6 pr-6 pt-6 pb-6">
+          <div class="rounded-lg bg-black/5 pl-6 pr-6 pt-6 pb-6">
             <!-- Go to Super Admin Page -->
             <div class="text-center">
               <router-link to="/s">
@@ -32,7 +32,7 @@
       <!-- Center Column -->
       <div class="column">
         <div class="mx-6 mt-2">
-          <div class="rounded-lg bg-black bg-opacity-5 pl-6 pr-6 pt-6 pb-6">
+          <div class="rounded-lg bg-black/5 pl-6 pr-6 pt-6 pb-6">
             <!-- Go to Super Admin Page -->
             <div class="text-center">
               <router-link to="/op">
@@ -71,9 +71,9 @@ export default defineComponent({
     // LpCustomer,
   },
   setup() {
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Top"].join(" / "),
-    });
+    }));
 
     const {
       isAdmin,

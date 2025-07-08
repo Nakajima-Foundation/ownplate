@@ -9,7 +9,7 @@
     <!-- User Voices Hero -->
     <div class="mx-6 mt-4 rounded-2xl bg-white p-6 lg:flex lg:space-x-6">
       <!-- User Face -->
-      <div class="text-center lg:flex-shrink-0">
+      <div class="text-center lg:shrink-0">
         <img src="/LP-UserVoice-Face-1.jpg" class="rounded-full" />
       </div>
       <!-- User Comment -->
@@ -29,7 +29,7 @@
         </div>
       </div>
       <!-- User Video -->
-      <div class="mt-4 text-center lg:mt-0 lg:flex-shrink-0">
+      <div class="mt-4 text-center lg:mt-0 lg:shrink-0">
         <a
           href="https://www.youtube.com/watch?v=4VUGm2v6B7E"
           target="_blank"

@@ -262,8 +262,10 @@ const data = {
     copySunDay: "日曜をコピー",
     lastOrderTime: {
       title: "最終注文時間",
-      notes1: "「営業終了時間」と「受け渡し準備時間」を考慮した「最終注文可能な時間」よりも前に、注文を締め切る場合にはこちらを設定してください。",
-      notes2: "未設定の場合は「営業終了時間」と「受け渡し準備時間」を考慮した時間となります。",
+      notes1:
+        "「営業終了時間」と「受け渡し準備時間」を考慮した「最終注文可能な時間」よりも前に、注文を締め切る場合にはこちらを設定してください。",
+      notes2:
+        "未設定の場合は「営業終了時間」と「受け渡し準備時間」を考慮した時間となります。",
     },
     draftDescription:
       "下書きとして保存されます(お客様からお店のページは見えません)",
@@ -741,7 +743,7 @@ const data = {
       ready_to_pickup: "受け渡し準備完了",
       transaction_complete: "受け渡し完了",
       ready_to_shipping: "発送準備完了",
-      waiting_payment: "決済待",
+      waiting_payment: "決済待ち",
       shipping_complete: "発送完了",
       transaction_hide: "受注処理完了",
       order_canceled: "キャンセル済み",

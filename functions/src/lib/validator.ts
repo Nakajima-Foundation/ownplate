@@ -197,7 +197,7 @@ export const validateOrderCreated = (data: orderCreatedData) => {
   return validateData(data, validator);
 };
 
-export const validateOrderUpadte = (data: orderUpdateData) => {
+export const validateOrderUpdate = (data: orderUpdateData) => {
   const validator = {
     restaurantId: {
       type: "firebaseId",

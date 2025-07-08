@@ -1,12 +1,12 @@
 <template>
   <div class="mx-6 mt-4 lg:mx-auto lg:max-w-2xl">
     <!-- Title -->
-    <div class="text-xl font-bold text-black text-opacity-30">
+    <div class="text-xl font-bold text-black/30">
       {{ $t("profile.title") }}
     </div>
 
     <!-- Card -->
-    <div class="mt-2 rounded-lg bg-white p-4 shadow">
+    <div class="mt-2 rounded-lg bg-white p-4 shadow-sm">
       <ProfileLoginStatus />
 
       <!-- Not Signed In -->
@@ -36,7 +36,7 @@
         <div class="mt-12 text-center" v-if="!isLiffUser">
           <a
             @click.prevent="handleSignOut"
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 cursor-pointer"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4 cursor-pointer"
           >
             <div class="text-sm font-bold text-op-teal">
               {{ $t("menu.signOut") }}
@@ -66,9 +66,9 @@ import ProfileLoginStatus from "@/app/user/Profile/LoginStatus.vue";
 // import ProfileStripe from "@/app/user/Profile/Stripe.vue";
 import ProfileLine from "@/app/user/Profile/Line.vue";
 
-import HistoryButton from "@/components/users/HistoryButton.vue";
-import FavoriteButton from "@/components/users/FavoriteButton.vue";
-import AddressButton from "@/components/users/AddressButton.vue";
+import HistoryButton from "@/components/form/HistoryButton.vue";
+import FavoriteButton from "@/components/form/FavoriteButton.vue";
+import AddressButton from "@/components/form/AddressButton.vue";
 
 import { defaultHeader } from "@/config/header";
 
@@ -87,9 +87,9 @@ export default defineComponent({
     ProfileLine,
   },
   setup() {
-    useHead({
+    useHead(() => ({
       title: [defaultHeader.title, "Profile"].join(" / "),
-    });
+    }));
 
     const handleSignOut = () => {
       signOut(auth);

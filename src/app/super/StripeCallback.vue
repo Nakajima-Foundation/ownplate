@@ -33,9 +33,9 @@ export default defineComponent({
 
     const log = ref<any>(null);
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Super All Stripe Callback"].join(" / "),
-    });
+    }));
 
     const logUid = route.params.uid;
     const logId = route.params.logId;

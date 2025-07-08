@@ -1,8 +1,14 @@
 <template>
   <button
-    class="inline-flex items-center justify-center rounded-full shadow"
+    class="inline-flex items-center justify-center rounded-full shadow-sm"
     :loading="isLoading"
-    :class="isLoading || isDisabled ? 'bg-op-teal-disabled' : 'bg-op-teal'"
+    :class="
+      isCancel
+        ? ''
+        : isLoading || isDisabled
+          ? 'bg-op-teal-disabled'
+          : 'bg-op-teal'
+    "
     :disabled="isLoading || isDisabled"
     @click="handleClick"
   >
@@ -13,7 +19,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import ButtonLoading from "@/components/Button/Loading.vue";
+import ButtonLoading from "@/components/form/Loading.vue";
 export default defineComponent({
   emits: ["click"],
   name: "TButton",
@@ -26,6 +32,10 @@ export default defineComponent({
       required: false,
     },
     isDisabled: {
+      type: Boolean,
+      required: false,
+    },
+    isCancel: {
       type: Boolean,
       required: false,
     },

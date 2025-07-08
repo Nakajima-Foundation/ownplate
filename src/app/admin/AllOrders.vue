@@ -49,7 +49,7 @@
       <div class="mx-6 mt-2 text-center">
         <o-button @click="nextLoad" class="b-reset-tw">
           <div
-            class="inline-flex h-9 w-48 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+            class="inline-flex h-9 w-48 items-center justify-center rounded-full bg-black/5 px-4"
           >
             <div class="text-sm font-bold text-op-teal">
               {{ $t("admin.order.more") }}
@@ -68,7 +68,7 @@
         >
           <o-button class="b-reset-tw">
             <div
-              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
             >
               <i class="material-icons mr-2 text-lg text-op-teal">save_alt</i>
               <div class="text-sm font-bold text-op-teal">
@@ -140,9 +140,9 @@ export default defineComponent({
     const orderState = ref(0);
     const restaurants: { [key: string]: RestaurantInfoData } = {};
 
-    useHead({
+    useHead(() => ({
       title: ["Admin All Order", defaultTitle].join(" / "),
-    });
+    }));
 
     let isLoading = false;
     let last: null | any = null;
