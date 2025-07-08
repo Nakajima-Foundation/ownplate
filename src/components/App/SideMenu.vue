@@ -1,8 +1,5 @@
 <template>
-  <o-sidebar
-    :fullheight="true"
-    :overlay="true"
-    position="left"
+  <side-bar
     v-model:active="open"
   >
     <!-- Logo / Home -->
@@ -170,7 +167,7 @@
       text="menu.privacy"
       @click="handleClose()"
     />
-  </o-sidebar>
+  </side-bar>
 </template>
 
 <script lang="ts">
@@ -178,11 +175,13 @@ import { defineComponent, ref, computed } from "vue";
 import { useLiffBasePath, regionalSetting, useUserData } from "@/utils/utils";
 import SideMenuButton from "@/components/App/SideMenuButton.vue";
 import SideMenuText from "@/components/App/SideMenuText.vue";
+import SideBar from "@/components/App/SideBar.vue";
 
 export default defineComponent({
   components: {
     SideMenuButton,
     SideMenuText,
+    SideBar,
   },
   setup() {
     const open = ref(false);

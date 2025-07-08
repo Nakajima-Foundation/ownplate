@@ -67,7 +67,7 @@ import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
-import ButtonLoading from "@/components/Button/Loading.vue";
+import ButtonLoading from "@/components/form/Loading.vue";
 
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";

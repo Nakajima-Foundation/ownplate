@@ -64,18 +64,25 @@
       </div>
       <!-- Submit Buttons -->
       <div class="mt-4 text-center">
-        <ButtonCancel id="signInButton" @cancel="$emit('dismissed', false)">
-          {{ $t("button.cancel") }}
-        </ButtonCancel>
+        <t-button
+          id="signInButton"
+          @click="$emit('dismissed', false)"
+          :isCancel="true"
+          class="mr-4 mb-2 inline-flex h-12 w-32 items-center justify-center rounded-full bg-black/5"
+        >
+          <div class="text-base font-bold text-black/60">
+            {{ $t("button.cancel") }}
+          </div>
+        </t-button>
 
-        <ButtonSubmit
+        <t-button
           id="button-send-tel"
-          :disabled="!readyToSendSMS"
-          class="ml-4"
+          :isDisabled="!readyToSendSMS"
           :isLoading="isLoading"
+          class="h-12 w-32 shadow-sm font-bold text-white"
         >
           {{ $t("sms.send") }}
-        </ButtonSubmit>
+        </t-button>
       </div>
 
       <!-- Terms of Use & Privacy Policy -->
@@ -132,18 +139,22 @@
 
       <!-- Submit Buttons -->
       <div class="mt-4 text-center">
-        <ButtonCancel @cancel="$emit('dismissed', false)">
+        <t-button
+          @click="$emit('dismissed', false)"
+          isCancel="true"
+          class="mr-4 mb-2 inline-flex h-12 w-32 items-center justify-center rounded-full bg-black/5"
+        >
           {{ $t("button.cancel") }}
-        </ButtonCancel>
+        </t-button>
 
-        <ButtonSubmit
+        <t-button
           id="button-send-code"
-          :disabled="!readyToSendVerificationCode"
-          class="ml-4"
+          :isDisabled="!readyToSendVerificationCode"
           :isLoading="isLoading"
+          class="h-12 w-32 shadow-sm font-bold text-white"
         >
           {{ $t("sms.sendVerificationCode") }}
-        </ButtonSubmit>
+        </t-button>
       </div>
     </form>
   </div>
@@ -174,14 +185,10 @@ import moment from "moment";
 import * as Sentry from "@sentry/vue";
 
 import TermsAndPolicy from "@/app/auth/TermsAndPolicy.vue";
-import ButtonSubmit from "@/components/Button/Submit.vue";
-import ButtonCancel from "@/components/Button/Cancel.vue";
 
 export default defineComponent({
   components: {
     TermsAndPolicy,
-    ButtonSubmit,
-    ButtonCancel,
   },
   props: {
     relogin: {

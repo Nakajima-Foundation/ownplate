@@ -113,7 +113,7 @@ import OrderInfo from "@/app/user/OrderPage/OrderInfo.vue";
 import StripeCard from "@/app/user/OrderPage/BeforePaid/StripeCard.vue";
 import BeforePaidAlert from "@/app/user/OrderPage/BeforePaid/BeforePaidAlert.vue";
 
-import ButtonLoading from "@/components/Button/Loading.vue";
+import ButtonLoading from "@/components/form/Loading.vue";
 
 import { orderPay } from "@/lib/firebase/functions";
 

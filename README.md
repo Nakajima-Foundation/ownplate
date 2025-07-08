@@ -38,8 +38,10 @@ TBD.
 TBD.
 
 ## Deploy to firebase
-see CircleCI setting.
-[.circleci/config.yml](./.circleci/config.yml)
+
+see GitHub Actions setting.
+
+[.github/workflows/deploy.yml](./.github/workflows/deploy.yml)
 
 # Run the development server on localhost
 
@@ -55,15 +57,16 @@ $ yarn start
 
 ## Build Vue.js.
 
-see CircleCI setting.
+see GitHub Actions setting.
 This file 
-[.circleci/config.yml](./.circleci/config.yml)
+
+[.github/workflows/deploy.yml](./.github/workflows/deploy.yml)
 
 This file contains the latest and valid information for the build.
 
 # Build for production
 ```
-$ npm run build
+$ yarn run build
 ```
 
 ## Function
@@ -71,7 +74,7 @@ $ npm run build
 You need to deploy Function for	develoment.
 
 ```
-cd functions && npm install
+cd functions && yarn install
 firebase deploy --only functions
 ```
 

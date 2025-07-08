@@ -555,7 +555,7 @@ import OrderInfo from "@/app/user/OrderPage/OrderInfo.vue";
 import CustomerInfo from "@/components/CustomerInfo.vue";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 
-import ButtonLoading from "@/components/Button/Loading.vue";
+import ButtonLoading from "@/components/form/Loading.vue";
 import CancelModal from "@/app/admin/Order/CancelModal.vue";
 import PaymentCancelModal from "@/app/admin/Order/PaymentCancelModal.vue";
 

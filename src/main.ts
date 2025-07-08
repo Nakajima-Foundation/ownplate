@@ -15,16 +15,12 @@ import VueQrcode from "@chenfengyuan/vue-qrcode";
 
 import Checkbox from "@/components/form/checkbox.vue";
 import Button from "@/components/form/button.vue";
-import CancelButton from "@/components/form/cancel_button.vue";
 
 // sentry
 import * as Sentry from "@sentry/vue";
-// import { BrowserTracing } from "@sentry/tracing";
 
 // components
 import App from "@/components/App.vue";
-
-// import VueGoogleMaps from "@fawmi/vue-google-maps";
 
 // config
 import { sentryDsn } from "@/config/project";
@@ -33,7 +29,6 @@ import { sentryDsn } from "@/config/project";
 import "@/assets/css/tailwind.css";
 import "@/assets/css/main.css";
 import "@/assets/scss/bulma.scss";
-//import "@oruga-ui/theme-bulma/dist/bulma.css";
 
 const app = createApp(App);
 
@@ -41,16 +36,12 @@ const app = createApp(App);
 app.component(VueQrcode.name ?? "", VueQrcode);
 app.component("t-checkbox", Checkbox);
 app.component("t-button", Button);
-app.component("t-cancel-button", CancelButton);
 
 app.use(VueSocialSharing);
 app.use(orugaCompat);
 
 const head = createHead();
 app.use(head);
-//const metaManager = createMetaManager();
-//app.use(metaManager);
-//app.use(metaPlugin);
 
 app.use(store);
 app.use(router);
