@@ -39,7 +39,7 @@ import queryString from "query-string";
 import PC from "@/app/liff/PC.vue";
 import NotFound from "@/components/NotFound.vue";
 
-import Modal from "@/components/Modal.vue";
+import Modal from "@/components/Modal2.vue";
 
 import { useUserData } from "@/utils/utils";
 
