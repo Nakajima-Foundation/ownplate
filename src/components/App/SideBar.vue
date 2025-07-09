@@ -12,8 +12,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineEmits, defineProps } from "vue";
-
 defineProps<{ active: boolean }>();
 const emit = defineEmits<{
   (e: "update:active", value: boolean): void;
