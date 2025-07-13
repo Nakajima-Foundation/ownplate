@@ -11,7 +11,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits } from "vue";
 
 defineProps<{ active: boolean; width: number }>();
 const emit = defineEmits<{ (e: "dismissed"): void }>();
