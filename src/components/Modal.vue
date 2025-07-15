@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 defineProps<{ active: boolean; width: string }>();
-const emit = defineEmits<{ (e: "close"): void }>();
+const emit = defineEmits<{ (e: "close"): void; (e: "dismissed"): void }>();
 
 const close = () => emit("dismissed");
 </script>
