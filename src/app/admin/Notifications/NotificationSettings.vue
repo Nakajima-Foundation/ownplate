@@ -1,7 +1,7 @@
 <template>
   <o-modal
     :active="notificationSettingsPopup"
-    :width="488"
+    width="488"
     scroll="keep"
     @close="closeNotificationSettings"
   >

@@ -321,7 +321,7 @@
     <!-- Image Popup-->
     <o-modal
       v-model:active="imagePopup"
-      :width="488"
+      width="488"
       scroll="keep"
       :on-cancel="closeImage"
     >
