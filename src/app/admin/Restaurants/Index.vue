@@ -984,7 +984,7 @@
 
                 <!-- Date Picker -->
                 <o-field>
-                  <o-datepicker
+                  <t-datepicker
                     class="w-full"
                     icon="calendar-today"
                     v-model="newTemporaryClosure"
@@ -994,7 +994,7 @@
                     expanded
                     :placeholder="$t('shopInfo.temporaryClosureSelect')"
                   >
-                  </o-datepicker>
+                  </t-datepicker>
 
                   <o-button @click="addNewTemporaryClosure" class="b-reset-tw">
                     <div
