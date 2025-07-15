@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Transactions Act Popup-->
-    <o-modal v-model:active="transactionsActPopup" :width="488" scroll="keep">
+    <o-modal v-model:active="transactionsActPopup" width="488" scroll="keep">
       <Contents
         :shopInfo="shopInfo"
         :isDelivery="isDelivery"

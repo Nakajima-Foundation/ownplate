@@ -1,6 +1,6 @@
 <template>
   <div v-if="dialog">
-    <o-modal v-model:active="isVisible" :width="488">
+    <o-modal v-model:active="isVisible" width="488">
       <div
         class="op-dialog my-6 mx-2 rounded-lg bg-white pt-6 pl-6 pr-6 pb-6 shadow-lg"
       >

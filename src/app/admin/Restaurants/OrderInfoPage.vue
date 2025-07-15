@@ -170,7 +170,7 @@
             </div>
 
             <!-- Cancel Popup-->
-            <o-modal v-model:active="cancelPopup" :width="488" scroll="keep">
+            <o-modal v-model:active="cancelPopup" width="488" scroll="keep">
               <CancelModal
                 :shopInfo="shopInfo"
                 :orderInfo="orderInfo"
@@ -409,7 +409,7 @@
             <!-- Payment Cancel Popup-->
             <o-modal
               v-model:active="paymentCancelPopup"
-              :width="488"
+              width="488"
               scroll="keep"
             >
               <PaymentCancelModal

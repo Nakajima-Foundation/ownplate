@@ -16,7 +16,7 @@
         </div>
       </div>
     </div>
-    <o-modal :active="isOpen" :width="488" @close="close">
+    <o-modal :active="isOpen" width="488" @close="close">
       <PartnersContact :id="(partners[0] || {}).id" />
     </o-modal>
   </div>

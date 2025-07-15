@@ -90,7 +90,7 @@
         </div>
       </div>
       <o-modal
-        :width="488"
+        width="488"
         scroll="keep"
         :on-cancel="closeImage"
         v-model:active="imagePopup"
