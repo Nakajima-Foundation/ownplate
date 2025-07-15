@@ -15,10 +15,8 @@
 </template>
 
 <script setup lang="ts">
-import { defineEmits } from "vue";
-
 defineProps<{ active: boolean; width: string }>();
-const emit = defineEmits<{ (e: "close"): void; (e: "dismissed"): void }>();
+const emit = defineEmits<{ (e: "close"): void }>();
 
 const close = () => emit("dismissed");
 </script>
