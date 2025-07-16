@@ -67,6 +67,14 @@
             class="w-16 rounded border border-gray-300 p-1 text-center dark:bg-black dark:border-gray-600 dark:text-white"
           />
         </div>
+        <div class="mt-4 flex justify-center">
+          <button
+            @click="closeCalendar"
+            class="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+          >
+            OK
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -146,7 +154,6 @@ const isSameMonth = (day: Date) => {
 const selectDate = (day: Date) => {
   const newDate = setMinutes(setHours(day, hours.value), minutes.value);
   emit("update:modelValue", newDate);
-  // Do not close calendar on date selection to allow time editing
 };
 
 watch([hours, minutes], () => {
