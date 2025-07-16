@@ -56,7 +56,7 @@
             v-model="hours"
             min="0"
             max="23"
-            class="w-16 rounded border border-gray-300 p-1 text-center"
+            class="w-16 rounded border border-gray-300 p-1 text-center dark:bg-black dark:border-gray-600 dark:text-white"
           />
           <span>:</span>
           <input
@@ -64,7 +64,7 @@
             v-model="minutes"
             min="0"
             max="59"
-            class="w-16 rounded border border-gray-300 p-1 text-center"
+            class="w-16 rounded border border-gray-300 p-1 text-center dark:bg-black dark:border-gray-600 dark:text-white"
           />
         </div>
       </div>
