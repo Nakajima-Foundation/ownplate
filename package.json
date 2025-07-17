@@ -43,7 +43,7 @@
     "vue": "^3.5.17",
     "vue-chart-3": "^3.1.8",
     "vue-clipboard3": "^2.0.0",
-    "vue-i18n": "^11.1.9",
+    "vue-i18n": "^11.1.10",
     "vue-router": "^4.5.1",
     "vue-social-sharing": "^4.0.0-alpha4",
     "vuex": "^4.1.0"
