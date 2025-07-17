@@ -170,7 +170,7 @@
             </div>
 
             <!-- Cancel Popup-->
-            <o-modal v-model:active="cancelPopup" width="488" scroll="keep">
+            <t-modal v-model:active="cancelPopup" width="488" scroll="keep">
               <CancelModal
                 :shopInfo="shopInfo"
                 :orderInfo="orderInfo"
@@ -180,7 +180,7 @@
                 :nationalPhoneNumber="nationalPhoneNumber"
                 @close="closeCancel()"
               />
-            </o-modal>
+            </t-modal>
 
             <!-- Pickup Time -->
             <div class="mt-2 text-center" v-if="!cancelStatus">
@@ -407,7 +407,7 @@
             </div>
 
             <!-- Payment Cancel Popup-->
-            <o-modal
+            <t-modal
               v-model:active="paymentCancelPopup"
               width="488"
               scroll="keep"
@@ -421,7 +421,7 @@
                 :nationalPhoneNumber="nationalPhoneNumber"
                 @close="closePaymentCancel()"
               />
-            </o-modal>
+            </t-modal>
           </div>
         </div>
 

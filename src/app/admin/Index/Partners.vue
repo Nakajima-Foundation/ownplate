@@ -16,9 +16,9 @@
         </div>
       </div>
     </div>
-    <o-modal :active="isOpen" width="488" @close="close">
+    <t-modal :active="isOpen" width="488" @close="close">
       <PartnersContact :id="(partners[0] || {}).id" />
-    </o-modal>
+    </t-modal>
   </div>
 </template>
 <script lang="ts">

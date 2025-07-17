@@ -27,9 +27,9 @@
       <NotificationWatcher :notificationConfig="notificationConfig" />
       <SoundConfigWatcher :notificationConfig="notificationConfig" />
       <NewOrderWatcher :notificationConfig="notificationConfig" />
-      <o-modal v-model:active="isOpen" width="488">
+      <t-modal v-model:active="isOpen" width="488">
         <PartnersContact :id="(partner[0] || {}).id" />
-      </o-modal>
+      </t-modal>
     </div>
   </div>
 </template>

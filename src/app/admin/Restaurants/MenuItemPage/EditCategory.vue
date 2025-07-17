@@ -1,5 +1,5 @@
 <template>
-  <o-modal v-model:active="isVisible" width="488">
+  <t-modal v-model:active="isVisible" width="488">
     <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
       <!-- Items List -->
       <div>
@@ -44,7 +44,7 @@
         </o-button>
       </div>
     </div>
-  </o-modal>
+  </t-modal>
 </template>
 
 <script lang="ts">
