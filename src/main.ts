@@ -17,6 +17,7 @@ import VueQrcode from "@chenfengyuan/vue-qrcode";
 import Checkbox from "@/components/form/checkbox.vue";
 import Button from "@/components/form/button.vue";
 
+import Datetimepicker from "@/components/DateTimePicker.vue";
 import Modal from "@/components/Modal.vue";
 
 // sentry
@@ -40,6 +41,7 @@ app.component(VueQrcode.name ?? "", VueQrcode);
 app.component("t-checkbox", Checkbox);
 app.component("t-button", Button);
 
+app.component("t-datetimepicker", Datetimepicker);
 app.component("t-modal", Modal);
 
 app.use(VueSocialSharing);
