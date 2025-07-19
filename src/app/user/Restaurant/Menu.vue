@@ -319,7 +319,7 @@
     </div>
 
     <!-- Image Popup-->
-    <o-modal
+    <t-modal
       v-model:active="imagePopup"
       width="488"
       scroll="keep"
@@ -398,7 +398,7 @@
           </div>
         </div>
       </div>
-    </o-modal>
+    </t-modal>
   </div>
 </template>
 
