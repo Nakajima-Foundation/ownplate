@@ -123,7 +123,20 @@ const formattedDate = computed(() => {
 const year = computed(() => currentMonth.value.getFullYear());
 const monthName = computed(() => format(currentMonth.value, "MMMM"));
 
-const daysOfWeek = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
+const daysOfWeek = computed(() => {
+  return [
+    t("week.short.sunday"),
+    t("week.short.monday"),
+    t("week.short.tuesday"),
+    t("week.short.wednesday"),
+    t("week.short.thursday"),
+    t("week.short.friday"),
+    t("week.short.saturday"),
+  ];
+});
 
 const calendarDays = computed(() => {
   const monthStart = startOfMonth(currentMonth.value);
