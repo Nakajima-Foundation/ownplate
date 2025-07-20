@@ -91,7 +91,7 @@
         </o-select>
 
         <o-field v-if="promotion.hasTerm" class="has-addons">
-          <t-datetimepicker
+          <DateTimePicker
             icon="calendar-today"
             v-model="termFromDate"
             :min-date="new Date()"
@@ -99,7 +99,7 @@
             :placeholder="$t('shopInfo.temporaryClosureSelect')"
             class="lg:w-96"
           />
-          <t-datetimepicker
+          <DateTimePicker
             icon="calendar-today"
             v-model="termToDate"
             :min-date="new Date()"
@@ -213,6 +213,8 @@ import { db } from "@/lib/firebase/firebase9";
 
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 
+import DateTimePicker from "@/components/DateTimePicker.vue";
+
 import { updateDoc, doc, Timestamp } from "firebase/firestore";
 
 import {
@@ -317,6 +319,7 @@ export default defineComponent({
       promotionPaymentRestrictionsSelect,
       cancel,
       notFound: false,
+      DateTimePicker,
     };
   },
 });
