@@ -82,49 +82,40 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
-import {
-  startOfMonth,
-  format,
-  addMonths,
-  subMonths,
-  startOfWeek,
-  addDays,
-  eachDayOfInterval,
-  isToday,
-  setHours,
-  setMinutes,
-} from "date-fns";
+import moment from "moment";
+import { useI18n } from "vue-i18n";
 
 const props = defineProps<{ modelValue: Date | null; placeholder: string }>();
 const emit = defineEmits<{ (e: "update:modelValue", value: Date): void }>();
 
+const { t } = useI18n();
+
 const isCalendarOpen = ref(false);
 const currentMonth = ref(
-  props.modelValue ? new Date(props.modelValue) : new Date(),
+  moment(props.modelValue ? props.modelValue : new Date()),
 );
-const hours = ref(props.modelValue ? props.modelValue.getHours() : 0);
-const minutes = ref(props.modelValue ? props.modelValue.getMinutes() : 0);
+const hours = ref(props.modelValue ? moment(props.modelValue).hour() : 0);
+const minutes = ref(props.modelValue ? moment(props.modelValue).minute() : 0);
 
 watch(
   () => props.modelValue,
   (newDate) => {
     if (newDate) {
-      currentMonth.value = new Date(newDate);
-      hours.value = newDate.getHours();
-      minutes.value = newDate.getMinutes();
+      currentMonth.value = moment(newDate);
+      hours.value = moment(newDate).hour();
+      minutes.value = moment(newDate).minute();
     }
   },
 );
 
 const formattedDate = computed(() => {
-  return props.modelValue ? format(props.modelValue, "yyyy/MM/dd HH:mm") : "";
+  return props.modelValue
+    ? moment(props.modelValue).format("YYYY/MM/DD HH:mm")
+    : "";
 });
 
-const year = computed(() => currentMonth.value.getFullYear());
-const monthName = computed(() => format(currentMonth.value, "MMMM"));
-
-import { useI18n } from "vue-i18n";
-const { t } = useI18n();
+const year = computed(() => currentMonth.value.year());
+const monthName = computed(() => currentMonth.value.format("MMMM"));
 
 const daysOfWeek = computed(() => {
   return [
@@ -139,10 +130,13 @@ const daysOfWeek = computed(() => {
 });
 
 const calendarDays = computed(() => {
-  const monthStart = startOfMonth(currentMonth.value);
-  const calendarGridStart = startOfWeek(monthStart);
-  const calendarGridEnd = addDays(calendarGridStart, 41); // 6 weeks for a consistent grid height
-  return eachDayOfInterval({ start: calendarGridStart, end: calendarGridEnd });
+  const monthStart = currentMonth.value.clone().startOf("month");
+  const calendarGridStart = monthStart.clone().startOf("week");
+  const days = [];
+  for (let i = 0; i < 42; i++) {
+    days.push(calendarGridStart.clone().add(i, "days").toDate());
+  }
+  return days;
 });
 
 const openCalendar = () => {
@@ -154,36 +148,40 @@ const closeCalendar = () => {
 };
 
 const isSelected = (day: Date) => {
-  return (
-    props.modelValue &&
-    format(day, "yyyy-MM-dd") === format(props.modelValue, "yyyy-MM-dd")
-  );
+  return props.modelValue && moment(day).isSame(props.modelValue, "day");
 };
 
 const isSameMonth = (day: Date) => {
-  return day.getMonth() === currentMonth.value.getMonth();
+  return moment(day).isSame(currentMonth.value, "month");
 };
 
 const selectDate = (day: Date) => {
-  const newDate = setMinutes(setHours(day, hours.value), minutes.value);
+  const newDate = moment(day)
+    .hour(hours.value)
+    .minute(minutes.value)
+    .toDate();
   emit("update:modelValue", newDate);
 };
 
 watch([hours, minutes], () => {
   if (props.modelValue) {
-    const newDate = setMinutes(
-      setHours(props.modelValue, hours.value),
-      minutes.value,
-    );
+    const newDate = moment(props.modelValue)
+      .hour(hours.value)
+      .minute(minutes.value)
+      .toDate();
     emit("update:modelValue", newDate);
   }
 });
 
 const prevMonth = () => {
-  currentMonth.value = subMonths(currentMonth.value, 1);
+  currentMonth.value = currentMonth.value.clone().subtract(1, "month");
 };
 
 const nextMonth = () => {
-  currentMonth.value = addMonths(currentMonth.value, 1);
+  currentMonth.value = currentMonth.value.clone().add(1, "month");
+};
+
+const isToday = (day: Date) => {
+  return moment(day).isSame(moment(), "day");
 };
 </script>
