@@ -57,48 +57,42 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
-import {
-  startOfMonth,
-  format,
-  addMonths,
-  subMonths,
-  startOfWeek,
-  addDays,
-  eachDayOfInterval,
-  isToday,
-} from "date-fns";
+import moment from "moment";
 
 const props = defineProps<{ modelValue: Date | null; placeholder: string }>();
 const emit = defineEmits<{ (e: "update:modelValue", value: Date): void }>();
 
 const isCalendarOpen = ref(false);
 const currentMonth = ref(
-  props.modelValue ? new Date(props.modelValue) : new Date(),
+  moment(props.modelValue ? props.modelValue : new Date()),
 );
 
 watch(
   () => props.modelValue,
   (newDate) => {
     if (newDate) {
-      currentMonth.value = new Date(newDate);
+      currentMonth.value = moment(newDate);
     }
   },
 );
 
 const formattedDate = computed(() => {
-  return props.modelValue ? format(props.modelValue, "yyyy/MM/dd") : "";
+  return props.modelValue ? moment(props.modelValue).format("YYYY/MM/DD") : "";
 });
 
-const year = computed(() => currentMonth.value.getFullYear());
-const monthName = computed(() => format(currentMonth.value, "MMMM"));
+const year = computed(() => currentMonth.value.year());
+const monthName = computed(() => currentMonth.value.format("MMMM"));
 
 const daysOfWeek = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
 const calendarDays = computed(() => {
-  const monthStart = startOfMonth(currentMonth.value);
-  const calendarGridStart = startOfWeek(monthStart);
-  const calendarGridEnd = addDays(calendarGridStart, 41); // 6 weeks for a consistent grid height
-  return eachDayOfInterval({ start: calendarGridStart, end: calendarGridEnd });
+  const monthStart = currentMonth.value.clone().startOf("month");
+  const calendarGridStart = monthStart.clone().startOf("week");
+  const days = [];
+  for (let i = 0; i <= 41; i++) {
+    days.push(calendarGridStart.clone().add(i, "days").toDate());
+  }
+  return days;
 });
 
 const openCalendar = () => {
@@ -110,14 +104,11 @@ const closeCalendar = () => {
 };
 
 const isSelected = (day: Date) => {
-  return (
-    props.modelValue &&
-    format(day, "yyyy-MM-dd") === format(props.modelValue, "yyyy-MM-dd")
-  );
+  return props.modelValue && moment(day).isSame(props.modelValue, "day");
 };
 
 const isSameMonth = (day: Date) => {
-  return day.getMonth() === currentMonth.value.getMonth();
+  return moment(day).isSame(currentMonth.value, "month");
 };
 
 const selectDate = (day: Date) => {
@@ -126,10 +117,14 @@ const selectDate = (day: Date) => {
 };
 
 const prevMonth = () => {
-  currentMonth.value = subMonths(currentMonth.value, 1);
+  currentMonth.value = currentMonth.value.clone().subtract(1, "month");
 };
 
 const nextMonth = () => {
-  currentMonth.value = addMonths(currentMonth.value, 1);
+  currentMonth.value = currentMonth.value.clone().add(1, "month");
+};
+
+const isToday = (day: Date) => {
+  return moment(day).isSame(moment(), "day");
 };
 </script>
