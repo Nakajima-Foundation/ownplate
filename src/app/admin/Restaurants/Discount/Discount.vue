@@ -92,18 +92,14 @@
 
         <o-field v-if="promotion.hasTerm" class="has-addons">
           <DateTimePicker
-            icon="calendar-today"
             v-model="termFromDate"
             :min-date="new Date()"
-            expanded
             :placeholder="$t('shopInfo.temporaryClosureSelect')"
             class="lg:w-96"
           />
           <DateTimePicker
-            icon="calendar-today"
             v-model="termToDate"
             :min-date="new Date()"
-            expanded
             :placeholder="$t('shopInfo.temporaryClosureSelect')"
             class="lg:w-96"
           />
