@@ -983,7 +983,6 @@
                 </div>
 
                 <!-- Date Picker -->
-                <o-field>
                   <DatePicker
                     class="w-full"
                     icon="calendar-today"
@@ -996,7 +995,7 @@
                   >
                   </DatePicker>
 
-                  <o-button @click="addNewTemporaryClosure" class="b-reset-tw">
+                  <button @click="addNewTemporaryClosure" class="cursor-pointer">
                     <div
                       class="inline-flex h-9 items-center justify-center rounded-r bg-black/5 px-4"
                     >
@@ -1007,8 +1006,7 @@
                         {{ $t("shopInfo.temporaryClosureAdd") }}
                       </div>
                     </div>
-                  </o-button>
-                </o-field>
+                  </button>
 
                 <!-- Saved Closure Days -->
                 <div class="mb-2 grid grid-cols-1 space-y-2">
@@ -1106,10 +1104,10 @@
 
       <!-- Copy -->
       <div class="mt-4 text-center">
-        <o-button
+        <button
           @click="confirmCopy"
           :disabled="submitting"
-          class="b-reset-tw"
+          class="cursor-pointer"
         >
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
@@ -1119,7 +1117,7 @@
               $t(submitting ? "editCommon.saving" : "editCommon.copy")
             }}</span>
           </div>
-        </o-button>
+        </button>
       </div>
 
       <!-- QRCode -->
