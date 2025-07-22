@@ -89,7 +89,7 @@
           </t-button>
         </div>
       </div>
-      <o-modal
+      <t-modal
         width="488"
         scroll="keep"
         :on-cancel="closeImage"
@@ -127,7 +127,7 @@
             <img src="//images/lines/lineLoginCallback.png" class="p-4" />
           </div>
         </div>
-      </o-modal>
+      </t-modal>
     </div>
   </div>
 </template>
