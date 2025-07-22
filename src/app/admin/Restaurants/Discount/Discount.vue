@@ -91,19 +91,15 @@
         </o-select>
 
         <o-field v-if="promotion.hasTerm" class="has-addons">
-          <o-datetimepicker
-            icon="calendar-today"
+          <DateTimePicker
             v-model="termFromDate"
             :min-date="new Date()"
-            expanded
             :placeholder="$t('shopInfo.temporaryClosureSelect')"
             class="lg:w-96"
           />
-          <o-datetimepicker
-            icon="calendar-today"
+          <DateTimePicker
             v-model="termToDate"
             :min-date="new Date()"
-            expanded
             :placeholder="$t('shopInfo.temporaryClosureSelect')"
             class="lg:w-96"
           />
@@ -213,6 +209,8 @@ import { db } from "@/lib/firebase/firebase9";
 
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 
+import DateTimePicker from "@/components/DateTimePicker.vue";
+
 import { updateDoc, doc, Timestamp } from "firebase/firestore";
 
 import {
@@ -234,6 +232,7 @@ import { checkShopAccount } from "@/utils/userPermission";
 export default defineComponent({
   components: {
     AdminHeader,
+    DateTimePicker,
   },
   props: {
     shopInfo: {
