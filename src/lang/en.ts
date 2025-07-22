@@ -1293,6 +1293,15 @@ const data = {
       saturday: "Sat",
       sunday: "Sun",
     },
+    shortest: {
+      monday: "M",
+      tuesday: "T",
+      wednesday: "W",
+      thursday: "T",
+      friday: "F",
+      saturday: "S",
+      sunday: "S",
+    },
   },
   allergens: {
     title: "Allergens",

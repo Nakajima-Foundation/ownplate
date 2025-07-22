@@ -1254,6 +1254,15 @@ const data = {
       saturday: "Sam",
       sunday: "Dim",
     },
+    shortest: {
+      monday: "Lun",
+      tuesday: "Mar",
+      wednesday: "Mer",
+      thursday: "Jeu",
+      friday: "Ven",
+      saturday: "Sam",
+      sunday: "Dim",
+    },
   },
   allergens: {
     title: "Les allergènes",
