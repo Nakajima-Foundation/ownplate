@@ -90,7 +90,6 @@ const props = defineProps<{
   placeholder: string;
   minDate?: Date;
   maxDate?: Date;
-  disabledDates?: Date[];
 }>();
 const emit = defineEmits<{ (e: "update:modelValue", value: Date): void }>();
 
