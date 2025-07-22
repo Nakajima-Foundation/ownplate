@@ -41,8 +41,8 @@
               !restaurantsObj[request.id].onTheList
             "
           >
-            <o-button @click="enableList(restaurantsObj[request.id].id)"
-              >Enable</o-button
+            <button @click="enableList(restaurantsObj[request.id].id)"
+              >Enable</button
             >
           </span>
           <span v-else> On the list </span>

@@ -34,17 +34,17 @@
         <td style="padding-right: 8px" v-else>{{ payment(admin).stripe }}</td>
         <td style="padding-right: 8px">
           {{ capabilities(admin).jcb_payments }}
-          <o-button v-if="showActivate(admin)" @click="activate(admin)"
-            >Activate</o-button
+          <button v-if="showActivate(admin)" @click="activate(admin)"
+            >Activate</button
           >
         </td>
       </tr>
     </table>
     <div>
-      <o-button @click="updateQuery">
+      <button @click="updateQuery">
         <span v-if="last">Next</span>
         <span v-else>Top</span>
-      </o-button>
+      </button>
     </div>
   </section>
 </template>

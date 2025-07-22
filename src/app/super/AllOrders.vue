@@ -28,7 +28,7 @@
                 </o-select>
               </div>
               <div class="flex">
-                <o-button @click="LoadTillMonth">Load</o-button>
+                <button @click="LoadTillMonth">Load</button>
                 {{ isLoading ? "Loading..." : "" }}
               </div>
             </div>
@@ -50,8 +50,8 @@
             </div>
           </div>
           <div>
-            <o-button @click="nextLoad" class="mt-4 rounded-full"
-              >more</o-button
+            <button @click="nextLoad" class="mt-4 rounded-full"
+              >more</button
             >
           </div>
 
@@ -61,7 +61,7 @@
             :fieldNames="fieldNames"
             :fileName="fileName"
           >
-            <o-button class="mt-4 h-9 rounded-full">
+            <button class="mt-4 h-9 rounded-full">
               <span class="pl-4 pr-4">
                 <i class="material-icons mr-2 text-2xl! text-op-teal"
                   >save_alt</i
@@ -70,7 +70,7 @@
                   $t("admin.report.download-csv-all")
                 }}</span>
               </span>
-            </o-button>
+            </button>
           </download-csv>
         </div>
       </div>
