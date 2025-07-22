@@ -114,8 +114,8 @@ const formattedDate = computed(() => {
     : "";
 });
 
-const year = computed(() => currentMonth.value.year());
-const monthName = computed(() => currentMonth.value.format("MMMM"));
+const year = currentMonth.value.year();
+const monthName = currentMonth.value.format("MMMM");
 
 const daysOfWeek = computed(() => {
   return [
