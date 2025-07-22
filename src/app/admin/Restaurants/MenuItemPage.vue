@@ -657,7 +657,11 @@
       <!-- Copy -->
       <div class="mx-6 mt-4 text-center lg:mx-auto lg:max-w-sm">
         <div>
-          <button @click="copyItem" :disabled="submitting" class="cursor-pointer">
+          <button
+            @click="copyItem"
+            :disabled="submitting"
+            class="cursor-pointer"
+          >
             <div
               class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
             >

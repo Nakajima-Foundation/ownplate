@@ -50,9 +50,7 @@
             </div>
           </div>
           <div>
-            <button @click="nextLoad" class="mt-4 rounded-full"
-              >more</button
-            >
+            <button @click="nextLoad" class="mt-4 rounded-full">more</button>
           </div>
 
           <download-csv

@@ -983,30 +983,28 @@
                 </div>
 
                 <!-- Date Picker -->
-                  <DatePicker
-                    class="w-full"
-                    icon="calendar-today"
-                    v-model="newTemporaryClosure"
-                    ref="datepicker"
-                    :min-date="now"
-                    :max-date="maxDate"
-                    expanded
-                    :placeholder="$t('shopInfo.temporaryClosureSelect')"
-                  >
-                  </DatePicker>
+                <DatePicker
+                  class="w-full"
+                  icon="calendar-today"
+                  v-model="newTemporaryClosure"
+                  ref="datepicker"
+                  :min-date="now"
+                  :max-date="maxDate"
+                  expanded
+                  :placeholder="$t('shopInfo.temporaryClosureSelect')"
+                >
+                </DatePicker>
 
-                  <button @click="addNewTemporaryClosure" class="cursor-pointer">
-                    <div
-                      class="inline-flex h-9 items-center justify-center rounded-r bg-black/5 px-4"
-                    >
-                      <i class="material-icons mr-2 text-lg text-op-teal"
-                        >add</i
-                      >
-                      <div class="text-sm font-bold text-op-teal">
-                        {{ $t("shopInfo.temporaryClosureAdd") }}
-                      </div>
+                <button @click="addNewTemporaryClosure" class="cursor-pointer">
+                  <div
+                    class="inline-flex h-9 items-center justify-center rounded-r bg-black/5 px-4"
+                  >
+                    <i class="material-icons mr-2 text-lg text-op-teal">add</i>
+                    <div class="text-sm font-bold text-op-teal">
+                      {{ $t("shopInfo.temporaryClosureAdd") }}
                     </div>
-                  </button>
+                  </div>
+                </button>
 
                 <!-- Saved Closure Days -->
                 <div class="mb-2 grid grid-cols-1 space-y-2">
