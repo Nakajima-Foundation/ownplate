@@ -170,7 +170,15 @@ const selectDate = (day: Date) => {
   emit("update:modelValue", newDate);
 };
 
+const validateTime = () => {
+  if (hours.value < 0) hours.value = 0;
+  if (23 < hours.value) hours.value = 23;
+  if (minutes.value < 0) minutes.value = 0;
+  if (59 < minutes.value) minutes.value = 59;
+};
+
 watch([hours, minutes], () => {
+  validateTime();
   if (props.modelValue) {
     const newDate = moment(props.modelValue)
       .hour(hours.value)
