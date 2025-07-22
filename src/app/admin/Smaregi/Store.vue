@@ -51,8 +51,8 @@
         <div v-if="isDuplicateError" class="text-red-700">
           * メニューの指定が重複しています
         </div>
-        <o-button @click="saveMenus" :disabled="isDuplicateError"
-          >保存</o-button
+        <button @click="saveMenus" :disabled="isDuplicateError" class="cursor-pointer"
+          >保存</button
         >
       </div>
       <div v-else>
@@ -72,7 +72,7 @@
               {{ menuObj[selectedMenu[key]].price }}円</span
             >
           </div>
-          <o-button @click="isEdit = true">編集</o-button>
+          <button @click="isEdit = true">編集</button>
         </div>
       </div>
     </div>
