@@ -236,6 +236,7 @@ import { checkShopAccount } from "@/utils/userPermission";
 export default defineComponent({
   components: {
     AdminHeader,
+    DateTimePicker,
   },
   props: {
     shopInfo: {
@@ -319,7 +320,6 @@ export default defineComponent({
       promotionPaymentRestrictionsSelect,
       cancel,
       notFound: false,
-      DateTimePicker,
     };
   },
 });
