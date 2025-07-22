@@ -18,9 +18,8 @@
       <!-- Save and Cancel -->
       <div class="mt-2 flex justify-center space-x-4">
         <!-- Cancel Button -->
-        <o-button
-          class="b-reset-tw"
-          tag="router-link"
+        <router-link
+          class="cursor-pointer"
           :to="`/admin/restaurants/${restaurantId}/menus`"
         >
           <div
@@ -30,7 +29,7 @@
               $t("button.cancel")
             }}</span>
           </div>
-        </o-button>
+        </router-link>
 
         <!-- Save Button -->
         <t-button
@@ -371,7 +370,7 @@
 
             <div class="mt-4 flex">
               <!-- ToDo 以下のボタンを押すと写真選択のウィンドウが立ち上がり、複数選択&アップロードできる -->
-              <o-button class="b-reset-tw mr-2">
+              <button class="cursor-pointer mr-2">
                 <!-- ToDo 写真が4枚アップロード済みの時はボタンをグレーアウト、"text-op-teal" → "text-black/20" を適用 -->
                 <div
                   class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4 text-op-teal"
@@ -381,10 +380,9 @@
                     {{ $t("editMenu.addPhotos") }}
                   </div>
                 </div>
-              </o-button>
-
+              </button>
               <!-- ToDo 写真が1枚でもアップロードされたら以下の削除ボタンを表示させる-->
-              <o-button class="b-reset-tw">
+              <button class="cursor-pointer">
                 <div
                   class="inline-flex h-9 items-center justify-center rounded-full bg-red-700/10 px-4 text-red-700"
                 >
@@ -393,7 +391,7 @@
                     {{ $t("editMenu.deleteAllPhotos") }}
                   </div>
                 </div>
-              </o-button>
+              </button>
             </div>
           </div>
 
@@ -414,7 +412,7 @@
                 :key="key"
               >
                 <div :key="key" class="mb-2 flex">
-                  <o-button @click="positionDown(key)" class="b-reset-tw">
+                  <button @click="positionDown(key)" class="cursor-pointer">
                     <div
                       class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4 mr-2"
                       v-if="key !== menuInfo.itemOptionCheckbox.length - 1"
@@ -423,8 +421,8 @@
                         >arrow_downward</i
                       >
                     </div>
-                  </o-button>
-                  <o-button @click="positionUp(key)" class="b-reset-tw">
+                  </button>
+                  <button @click="positionUp(key)" class="cursor-pointer">
                     <div
                       class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4 mr-2"
                       v-if="key !== 0"
@@ -433,20 +431,20 @@
                         >arrow_upward</i
                       >
                     </div>
-                  </o-button>
+                  </button>
                   <div class="flex-1 mr-2">
                     <o-input
                       v-model="menuInfo.itemOptionCheckbox[key]"
                       :placeholder="$t('editMenu.enterItemOption')"
                     />
                   </div>
-                  <o-button class="b-reset-tw" @click="deleteOption(key)">
+                  <button class="cursor-pointer" @click="deleteOption(key)">
                     <div
                       class="inline-flex h-9 items-center justify-center rounded-full bg-red-700/10 px-4"
                     >
                       <i class="material-icons text-lg text-red-700">delete</i>
                     </div>
-                  </o-button>
+                  </button>
                 </div>
 
                 <!-- Option Preview -->
@@ -495,7 +493,7 @@
 
             <!-- Add Option -->
             <div class="mt-4">
-              <o-button class="b-reset-tw" @click="addOption">
+              <button class="cursor-pointer" @click="addOption">
                 <div
                   class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                 >
@@ -504,7 +502,7 @@
                     {{ $t("editMenu.itemAddOption") }}
                   </div>
                 </div>
-              </o-button>
+              </button>
             </div>
           </div>
 
@@ -526,8 +524,8 @@
                     {{ $t("editMenu.category1") }}
                   </div>
                   <div>
-                    <o-button
-                      class="b-reset-tw"
+                    <button
+                      class="cursor-pointer"
                       @click="editCategory('category1')"
                     >
                       <div class="inline-flex items-center justify-center">
@@ -535,7 +533,7 @@
                           {{ $t("editMenu.editCategory1") }}
                         </div>
                       </div>
-                    </o-button>
+                    </button>
                   </div>
                 </div>
 
@@ -561,8 +559,8 @@
                     {{ $t("editMenu.category2") }}
                   </div>
                   <div>
-                    <o-button
-                      class="b-reset-tw"
+                    <button
+                      class="cursor-pointer"
                       @click="editCategory('category2')"
                     >
                       <div class="inline-flex items-center justify-center">
@@ -570,7 +568,7 @@
                           {{ $t("editMenu.editCategory2") }}
                         </div>
                       </div>
-                    </o-button>
+                    </button>
                   </div>
                 </div>
 
@@ -625,9 +623,8 @@
       <!-- Save and Cancel -->
       <div class="mt-4 flex justify-center space-x-4">
         <!-- Cancel Button -->
-        <o-button
-          class="b-reset-tw"
-          tag="router-link"
+        <router-link
+          class="cursor-pointer"
           :to="`/admin/restaurants/${restaurantId}/menus`"
         >
           <div
@@ -637,7 +634,7 @@
               $t("button.cancel")
             }}</span>
           </div>
-        </o-button>
+        </router-link>
 
         <!-- Save Button -->
         <t-button
@@ -660,7 +657,7 @@
       <!-- Copy -->
       <div class="mx-6 mt-4 text-center lg:mx-auto lg:max-w-sm">
         <div>
-          <o-button @click="copyItem" :disabled="submitting" class="b-reset-tw">
+          <button @click="copyItem" :disabled="submitting" class="cursor-pointer">
             <div
               class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
             >
@@ -669,7 +666,7 @@
                 $t("editCommon.copyMenu")
               }}</span>
             </div>
-          </o-button>
+          </button>
         </div>
 
         <div class="mt-4">
