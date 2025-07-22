@@ -388,10 +388,10 @@
 
             <!-- Payment Cancel Button -->
             <div class="mt-4 text-center">
-              <o-button
+              <button
                 v-if="paymentIsNotCompleted"
                 @click="openPaymentCancel"
-                class="b-reset-tw"
+                class="cursor-pointer"
               >
                 <div
                   class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
@@ -403,7 +403,7 @@
                     {{ $t("admin.order.paymentCancelButton") }}
                   </div>
                 </div>
-              </o-button>
+              </button>
             </div>
 
             <!-- Payment Cancel Popup-->
@@ -467,7 +467,7 @@
             >
               <div>{{ $t("admin.order.changeOrderDetail") }}</div>
               <div class="mt-4">
-                <o-button @click="toggleIsOrderChange" class="b-reset-tw">
+                <button @click="toggleIsOrderChange" class="cursor-pointer">
                   <div
                     class="inline-flex h-12 items-center justify-center rounded-full bg-red-700 px-6"
                   >
@@ -479,7 +479,7 @@
                       }}
                     </div>
                   </div>
-                </o-button>
+                </button>
               </div>
               <div class="mt-4">
                 <o-button
