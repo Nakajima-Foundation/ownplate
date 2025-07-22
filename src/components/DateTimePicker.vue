@@ -156,10 +156,7 @@ const isSameMonth = (day: Date) => {
 };
 
 const selectDate = (day: Date) => {
-  const newDate = moment(day)
-    .hour(hours.value)
-    .minute(minutes.value)
-    .toDate();
+  const newDate = moment(day).hour(hours.value).minute(minutes.value).toDate();
   emit("update:modelValue", newDate);
 };
 
