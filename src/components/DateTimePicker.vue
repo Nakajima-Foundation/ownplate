@@ -85,7 +85,13 @@ import { ref, computed, watch } from "vue";
 import moment from "moment";
 import { useI18n } from "vue-i18n";
 
-const props = defineProps<{ modelValue: Date | null; placeholder: string }>();
+const props = defineProps<{
+  modelValue: Date | null;
+  placeholder: string;
+  minDate?: Date;
+  maxDate?: Date;
+  disabledDates?: Date[];
+}>();
 const emit = defineEmits<{ (e: "update:modelValue", value: Date): void }>();
 
 const { t } = useI18n();
