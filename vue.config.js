@@ -13,13 +13,6 @@ module.exports = {
   devServer: {
     port: 3000,
   },
-  css: {
-    loaderOptions: {
-      scss: {
-        additionalData: '@import "./src/assets/scss/main.scss"',
-      },
-    },
-  },
   configureWebpack: {
     resolve: {
       alias: {

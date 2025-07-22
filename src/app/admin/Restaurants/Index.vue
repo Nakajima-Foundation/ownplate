@@ -984,7 +984,7 @@
 
                 <!-- Date Picker -->
                 <o-field>
-                  <o-datepicker
+                  <DatePicker
                     class="w-full"
                     icon="calendar-today"
                     v-model="newTemporaryClosure"
@@ -994,7 +994,7 @@
                     expanded
                     :placeholder="$t('shopInfo.temporaryClosureSelect')"
                   >
-                  </o-datepicker>
+                  </DatePicker>
 
                   <o-button @click="addNewTemporaryClosure" class="b-reset-tw">
                     <div
@@ -1148,6 +1148,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import { google_geocode } from "@/lib/google/api";
 import { ownPlateConfig, GMAPId } from "@/config/project";
 
+import DatePicker from "@/components/DatePicker.vue";
 import NotFound from "@/components/NotFound.vue";
 import PhoneEntry from "@/components/PhoneEntry.vue";
 import Price from "@/components/Price.vue";
@@ -1208,6 +1209,7 @@ export default defineComponent({
     State,
     NotificationIndex,
     QRCode,
+    DatePicker,
     NotFound,
     PhoneEntry,
     Price,

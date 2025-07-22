@@ -186,11 +186,11 @@
       </div>
 
       <!-- Phone Login-->
-      <o-modal v-model:active="loginVisible" width="488" scroll="keep">
+      <t-modal v-model:active="loginVisible" width="488" scroll="keep">
         <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
           <phone-login v-on:dismissed="handleDismissed" />
         </div>
-      </o-modal>
+      </t-modal>
       <Cart
         v-if="isShowCart"
         @closeCart="closeCart"
@@ -223,13 +223,13 @@
       />
     </template>
     <!-- Image Popup-->
-    <o-modal v-model:active="imagePopup" width="488" scroll="keep">
+    <t-modal v-model:active="imagePopup" width="488" scroll="keep">
       <div class="px-2 text-center" @click.stop="closeImage()">
         <img :src="coverImage" class="rounded-lg shadow-lg" />
       </div>
-    </o-modal>
+    </t-modal>
     <!-- Image Popup ??-->
-    <o-modal v-model:active="categoryPopup" width="488" scroll="keep">
+    <t-modal v-model:active="categoryPopup" width="488" scroll="keep">
       <div class="px-2 text-center">
         <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
           <div class="font-bold">{{ $t("order.category") }}</div>
@@ -246,7 +246,7 @@
           </template>
         </div>
       </div>
-    </o-modal>
+    </t-modal>
   </div>
 </template>
 
