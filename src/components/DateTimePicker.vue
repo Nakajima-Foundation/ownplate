@@ -162,6 +162,10 @@ const isSameMonth = (day: Date) => {
 };
 
 const selectDate = (day: Date) => {
+  // Add validation if min/max date props are implemented
+  if (props.minDate && day < props.minDate) return;
+  if (props.maxDate && day > props.maxDate) return;
+
   const newDate = moment(day).hour(hours.value).minute(minutes.value).toDate();
   emit("update:modelValue", newDate);
 };
