@@ -90,48 +90,48 @@
       <!-- Card Actions -->
       <div class="inline-flex space-x-2">
         <!-- Up -->
-        <o-button
+        <button
           :disabled="position === 'first'"
           @click="positionUp"
-          class="b-reset-tw"
+          class="cursor-pointer"
         >
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
             <i class="material-icons text-lg text-op-teal">arrow_upward</i>
           </div>
-        </o-button>
+        </button>
 
         <!-- Down -->
-        <o-button
+        <button
           :disabled="position === 'last'"
           @click="positionDown"
-          class="b-reset-tw"
+          class="cursor-pointer"
         >
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
             <i class="material-icons text-lg text-op-teal">arrow_downward</i>
           </div>
-        </o-button>
+        </button>
 
         <!-- Duplicate -->
-        <o-button @click="forkItem" class="b-reset-tw">
+        <button @click="forkItem" class="cursor-pointer">
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
             <i class="material-icons text-lg text-op-teal">queue</i>
           </div>
-        </o-button>
+        </button>
 
         <!-- Delete -->
-        <o-button @click="deleteItem" class="b-reset-tw">
+        <button @click="deleteItem" class="cursor-pointer">
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
             <i class="material-icons text-lg text-red-700">delete</i>
           </div>
-        </o-button>
+        </button>
       </div>
     </div>
   </div>
