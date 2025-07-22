@@ -72,7 +72,7 @@
             @click="closeCalendar"
             class="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
           >
-            OK
+            {{ t("shopInfo.temporaryClosureOkay") }}
           </button>
         </div>
       </div>

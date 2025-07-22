@@ -444,6 +444,7 @@ const data = {
     temporaryClosure: "Temporary Closure",
     temporaryClosureAdd: "Add",
     temporaryClosureDescription: "Please select a date and then press Add",
+    temporaryClosureOkay: "OK",
     temporaryClosureSelect: "Select a date",
     paymentMethod: "Payment Method",
     onlinePayment: "Online Payment",

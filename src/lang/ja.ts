@@ -440,6 +440,7 @@ const data = {
     temporaryClosure: "臨時休業",
     temporaryClosureAdd: "追加",
     temporaryClosureDescription: "日にちを選択してから追加を押してください",
+    temporaryClosureOkay: "OK",
     temporaryClosureSelect: "日にちを選択",
     paymentMethod: "支払い方法",
     onlinePayment: "オンライン決済",

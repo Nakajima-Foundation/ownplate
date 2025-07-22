@@ -433,6 +433,7 @@ const data = {
     temporaryClosureAdd: "Ajouter",
     temporaryClosureDescription:
       "Veuillez sélectionner une date et appuyer sur Ajouter.",
+    temporaryClosureOkay: "D'accord",
     temporaryClosureSelect: "Sélectionnez une date",
     paymentMethod: "Methode de Payment",
     onlinePayment: "Payment en Ligne",
