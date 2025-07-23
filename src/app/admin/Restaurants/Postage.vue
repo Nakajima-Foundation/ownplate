@@ -47,7 +47,7 @@
 
         <!-- Save Button -->
         <div class="mt-4 text-center">
-          <o-button @click="savePostage" class="b-reset-tw">
+          <button @click="savePostage" class="cursor-pointer">
             <div
               class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow-sm"
               style="min-width: 8rem"
@@ -56,7 +56,7 @@
                 $t("editCommon.save")
               }}</span>
             </div>
-          </o-button>
+          </button>
         </div>
       </div>
     </div>
