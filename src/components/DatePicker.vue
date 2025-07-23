@@ -37,7 +37,7 @@
             :key="day"
             class="text-sm font-medium text-gray-500"
           >
-            {{ day }}
+            {{ $t(day) }}
           </div>
           <div
             v-for="(day, index) in calendarDays"
@@ -92,7 +92,15 @@ const formattedDate = computed(() => {
 const year = computed(() => currentMonth.value.year());
 const monthName = computed(() => currentMonth.value.format("MMMM"));
 
-const daysOfWeek = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+const daysOfWeek = [
+  "week.shortest.sunday",
+  "week.shortest.monday",
+  "week.shortest.tuesday",
+  "week.shortest.wednesday",
+  "week.shortest.thursday",
+  "week.shortest.friday",
+  "week.shortest.saturday",
+];
 
 const calendarDays = computed(() => {
   const monthStart = currentMonth.value.clone().startOf("month");
