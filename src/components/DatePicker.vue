@@ -19,7 +19,11 @@
     >
       <div class="w-full max-w-xs rounded-lg bg-white p-4 shadow-lg">
         <div class="mb-4 flex items-center justify-between">
-          <button @click="prevMonth" class="rounded-full p-2 hover:bg-gray-100">
+          <button
+            @click="prevMonth"
+            :disabled="isPrevMonthDisabled"
+            class="rounded-full p-2 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
+          >
             &lt;
           </button>
           <div class="text-lg font-semibold">{{ monthName }} {{ year }}</div>
@@ -120,6 +124,14 @@ const isPast = (day: Date) => {
   return moment(day).isBefore(moment(), "day");
 };
 
+const isPrevMonthDisabled = computed(() => {
+  const today = moment();
+  return currentMonth.value
+    .clone()
+    .startOf("month")
+    .isSameOrBefore(today.clone().startOf("month"));
+});
+
 const selectDate = (day: Date) => {
   if (isPast(day)) return;
   emit("update:modelValue", day);
@@ -127,6 +139,9 @@ const selectDate = (day: Date) => {
 };
 
 const prevMonth = () => {
+  if (isPrevMonthDisabled.value) {
+    return;
+  }
   currentMonth.value = currentMonth.value.clone().subtract(1, "month");
 };
 
