@@ -34,10 +34,10 @@
 
       <!-- Cancel Button -->
       <div class="mt-4 mb-2 text-center">
-        <o-button
+        <button
           v-if="just_paid"
           @click="handleCancelPayment"
-          class="b-reset-tw"
+          class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           :disabled="isCancelling"
         >
           <div class="inline-flex items-center justify-center">
@@ -48,7 +48,7 @@
               {{ $t("order.cancelOrder") }}
             </div>
           </div>
-        </o-button>
+        </button>
       </div>
     </div>
 

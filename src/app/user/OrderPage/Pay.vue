@@ -73,10 +73,10 @@
                 :isPayingError="isPayingError"
               ></stripe-card>
               <div class="mt-4 text-center">
-                <o-button
+                <button
                   :disabled="isPaying || !cardState.complete"
                   @click="handlePayment()"
-                  class="b-reset-tw"
+                  class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <div
                     class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal px-6 shadow-sm"
@@ -87,7 +87,7 @@
                       {{ $t("order.submitPayment") }}
                     </div>
                   </div>
-                </o-button>
+                </button>
                 <div
                   v-if="stripeSmallPayment"
                   class="mt-2 text-sm font-bold text-red-700"
