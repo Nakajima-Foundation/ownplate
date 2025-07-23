@@ -19,7 +19,11 @@
     >
       <div class="w-full max-w-xs rounded-lg bg-white p-4 shadow-lg">
         <div class="mb-4 flex items-center justify-between">
-          <button @click="prevMonth" class="rounded-full p-2 hover:bg-gray-100">
+          <button
+            @click="prevMonth"
+            :disabled="isPrevMonthDisabled"
+            class="rounded-full p-2 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
+          >
             &lt;
           </button>
           <div class="text-lg font-semibold">{{ monthName }} {{ year }}</div>
@@ -33,18 +37,28 @@
             :key="day"
             class="text-sm font-medium text-gray-500"
           >
-            {{ day }}
+            {{ $t(day) }}
           </div>
           <div
             v-for="(day, index) in calendarDays"
             :key="index"
             @click="selectDate(day)"
             :class="[
-              'flex h-8 w-8 cursor-pointer items-center justify-center rounded-full',
-              { 'bg-blue-500 text-white hover:bg-blue-600': isSelected(day) },
-              { 'text-gray-400': !isSameMonth(day) },
-              { 'hover:bg-gray-200': !isSelected(day) },
-              { 'ring-2 ring-blue-500': isToday(day) && !isSelected(day) },
+              'flex h-8 w-8 items-center justify-center rounded-full',
+              isPast(day)
+                ? 'text-gray-300 cursor-not-allowed'
+                : [
+                    'cursor-pointer',
+                    {
+                      'bg-blue-500 text-white hover:bg-blue-600':
+                        isSelected(day),
+                    },
+                    { 'text-gray-400': !isSameMonth(day) },
+                    { 'hover:bg-gray-200': !isSelected(day) },
+                    {
+                      'ring-2 ring-blue-500': isToday(day) && !isSelected(day),
+                    },
+                  ],
             ]"
           >
             {{ day.getDate() }}
@@ -83,7 +97,15 @@ const formattedDate = computed(() => {
 const year = computed(() => currentMonth.value.year());
 const monthName = computed(() => currentMonth.value.format("MMMM"));
 
-const daysOfWeek = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+const daysOfWeek = [
+  "week.shortest.sunday",
+  "week.shortest.monday",
+  "week.shortest.tuesday",
+  "week.shortest.wednesday",
+  "week.shortest.thursday",
+  "week.shortest.friday",
+  "week.shortest.saturday",
+];
 
 const calendarDays = computed(() => {
   const monthStart = currentMonth.value.clone().startOf("month");
@@ -111,12 +133,28 @@ const isSameMonth = (day: Date) => {
   return moment(day).isSame(currentMonth.value, "month");
 };
 
+const isPast = (day: Date) => {
+  return moment(day).isBefore(moment(), "day");
+};
+
+const isPrevMonthDisabled = computed(() => {
+  const today = moment();
+  return currentMonth.value
+    .clone()
+    .startOf("month")
+    .isSameOrBefore(today.clone().startOf("month"));
+});
+
 const selectDate = (day: Date) => {
+  if (isPast(day)) return;
   emit("update:modelValue", day);
   closeCalendar();
 };
 
 const prevMonth = () => {
+  if (isPrevMonthDisabled.value) {
+    return;
+  }
   currentMonth.value = currentMonth.value.clone().subtract(1, "month");
 };
 
