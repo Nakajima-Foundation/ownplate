@@ -49,10 +49,15 @@
                 ? 'text-gray-300 cursor-not-allowed'
                 : [
                     'cursor-pointer',
-                    { 'bg-blue-500 text-white hover:bg-blue-600': isSelected(day) },
+                    {
+                      'bg-blue-500 text-white hover:bg-blue-600':
+                        isSelected(day),
+                    },
                     { 'text-gray-400': !isSameMonth(day) },
                     { 'hover:bg-gray-200': !isSelected(day) },
-                    { 'ring-2 ring-blue-500': isToday(day) && !isSelected(day) },
+                    {
+                      'ring-2 ring-blue-500': isToday(day) && !isSelected(day),
+                    },
                   ],
             ]"
           >

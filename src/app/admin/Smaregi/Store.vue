@@ -51,9 +51,13 @@
         <div v-if="isDuplicateError" class="text-red-700">
           * メニューの指定が重複しています
         </div>
-        <button @click="saveMenus" :disabled="isDuplicateError" class="cursor-pointer"
-          >保存</button
+        <button
+          @click="saveMenus"
+          :disabled="isDuplicateError"
+          class="cursor-pointer"
         >
+          保存
+        </button>
       </div>
       <div v-else>
         <div class="mt-4">
