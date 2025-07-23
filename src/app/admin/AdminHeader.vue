@@ -31,7 +31,7 @@
       <!-- Suspend Button -->
       <router-link
         :to="`/admin/restaurants/${restaurantId}/suspend`"
-        class="b-reset-tw"
+        class="cursor-pointer"
         v-if="showSuspend"
       >
         <div
