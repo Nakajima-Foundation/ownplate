@@ -149,7 +149,7 @@
         <div class="mt-2 text-center">
           <router-link :to="menuPagePath">
             <div
-              class="inline-flex h-12 items-center justify-center rounded-full border-2 border-op-teal px-6 b-reset-tw"
+              class="inline-flex h-12 items-center justify-center rounded-full border-2 border-op-teal px-6 cursor-pointer"
             >
               <div class="text-base font-bold text-op-teal">
                 {{ $t("order.menu") }}

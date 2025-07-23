@@ -50,13 +50,6 @@ canvas {
 }
 
 /* Keep this class for Tailwind CSS */
-.button.b-reset-tw {
-  padding: 0;
-  background-color: initial;
-  border: 0;
-  height: initial;
-}
-
 .button[disabled] {
   background-color: transparent !important;
 }
