@@ -40,11 +40,16 @@
             :key="index"
             @click="selectDate(day)"
             :class="[
-              'flex h-8 w-8 cursor-pointer items-center justify-center rounded-full',
-              { 'bg-blue-500 text-white hover:bg-blue-600': isSelected(day) },
-              { 'text-gray-400': !isSameMonth(day) },
-              { 'hover:bg-gray-200': !isSelected(day) },
-              { 'ring-2 ring-blue-500': isToday(day) && !isSelected(day) },
+              'flex h-8 w-8 items-center justify-center rounded-full',
+              isPast(day)
+                ? 'text-gray-300 cursor-not-allowed'
+                : [
+                    'cursor-pointer',
+                    { 'bg-blue-500 text-white hover:bg-blue-600': isSelected(day) },
+                    { 'text-gray-400': !isSameMonth(day) },
+                    { 'hover:bg-gray-200': !isSelected(day) },
+                    { 'ring-2 ring-blue-500': isToday(day) && !isSelected(day) },
+                  ],
             ]"
           >
             {{ day.getDate() }}
@@ -111,7 +116,12 @@ const isSameMonth = (day: Date) => {
   return moment(day).isSame(currentMonth.value, "month");
 };
 
+const isPast = (day: Date) => {
+  return moment(day).isBefore(moment(), "day");
+};
+
 const selectDate = (day: Date) => {
+  if (isPast(day)) return;
   emit("update:modelValue", day);
   closeCalendar();
 };
