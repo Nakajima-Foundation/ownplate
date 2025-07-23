@@ -29,7 +29,7 @@
 
         <!-- Submit Button -->
         <div class="mt-2 text-center">
-          <o-button @click="handleCancel" class="b-reset-tw mr-4 mb-2">
+          <button @click="handleCancel" class="cursor-pointer mr-4 mb-2">
             <div
               class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black/5"
             >
@@ -37,7 +37,7 @@
                 {{ $t("button.cancel") }}
               </div>
             </div>
-          </o-button>
+          </button>
 
           <t-button
             :isDisabled="Object.keys(errors).length > 0"

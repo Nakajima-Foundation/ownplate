@@ -31,7 +31,7 @@
         <!-- Not Friend -->
         <div v-if="isFriend === false" class="mt-4 text-center">
           <!-- external Friend link -->
-          <o-button tag="a" :href="friendLink" class="b-reset-tw">
+          <button tag="a" :href="friendLink" class="cursor-pointer">
             <div
               class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
               style="background: #18b900"
@@ -41,7 +41,7 @@
                 {{ $t("profile.friendLink") }}
               </div>
             </div>
-          </o-button>
+          </button>
         </div>
       </div>
 
@@ -52,7 +52,7 @@
           <div v-if="isLineUser && isDev" class="mb-2 text-base font-bold">
             再設定 for Dev
           </div>
-          <o-button @click="handleLineAuth" class="b-reset-tw">
+          <button @click="handleLineAuth" class="cursor-pointer">
             <div
               class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
               style="background: #18b900"
@@ -62,7 +62,7 @@
                 {{ $t("line.notifyMe") }}
               </div>
             </div>
-          </o-button>
+          </button>
         </div>
       </div>
     </div>
