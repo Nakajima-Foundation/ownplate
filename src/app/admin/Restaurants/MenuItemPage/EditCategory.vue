@@ -1,5 +1,5 @@
 <template>
-  <t-modal v-model:active="isVisible" width="488">
+  <t-modal v-model:active="isVisible" width="488" @dismissed="isVisible = false">
     <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
       <!-- Items List -->
       <div>
