@@ -16,14 +16,14 @@
     </div>
 
     <div v-if="storedCard" class="mt-2">
-      <o-button @click="handleDeleteCard" class="b-reset-tw">
+      <button @click="handleDeleteCard" class="cursor-pointer">
         <div class="inline-flex items-center justify-center">
           <i class="material-icons mr-2 text-lg text-red-700">delete</i>
           <div class="text-sm font-bold text-red-700">
             {{ $t("profile.deleteCard") }}
           </div>
         </div>
-      </o-button>
+      </button>
     </div>
   </div>
 </template>
