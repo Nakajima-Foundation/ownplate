@@ -93,7 +93,7 @@
         <button
           :disabled="position === 'first'"
           @click="positionUp"
-          class="cursor-pointer"
+          class="cursor-pointer disabled:cursor-not-allowed disabled:opacity-25"
         >
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
@@ -106,7 +106,7 @@
         <button
           :disabled="position === 'last'"
           @click="positionDown"
-          class="cursor-pointer"
+          class="cursor-pointer disabled:cursor-not-allowed disabled:opacity-25"
         >
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
