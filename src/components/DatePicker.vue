@@ -22,12 +22,15 @@
           <button
             @click="prevMonth"
             :disabled="isPrevMonthDisabled"
-            class="rounded-full p-2 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
+            class="rounded-full p-2 hover:bg-gray-100 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
           >
             &lt;
           </button>
           <div class="text-lg font-semibold">{{ monthName }} {{ year }}</div>
-          <button @click="nextMonth" class="rounded-full p-2 hover:bg-gray-100">
+          <button
+            @click="nextMonth"
+            class="rounded-full p-2 hover:bg-gray-100 cursor-pointer"
+          >
             &gt;
           </button>
         </div>
