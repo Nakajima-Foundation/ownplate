@@ -90,7 +90,11 @@
 
       <!-- More -->
       <div class="mx-6 mt-2 text-center" v-if="last !== undefined">
-        <o-button :disabled="last === null" @click="next" class="b-reset-tw">
+        <button
+          :disabled="last === null"
+          @click="next"
+          class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+        >
           <div
             class="inline-flex h-9 w-48 items-center justify-center rounded-full bg-black/5 px-4"
           >
@@ -98,7 +102,7 @@
               {{ $t("admin.order.more") }}
             </div>
           </div>
-        </o-button>
+        </button>
       </div>
     </div>
   </div>

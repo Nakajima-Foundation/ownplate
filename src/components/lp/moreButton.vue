@@ -4,10 +4,7 @@
     <!-- Center Column -->
     <div class="column">
       <div class="text-center">
-        <router-link
-          class="cursor-pointer h-9 rounded-full bg-black/5"
-          to=""
-        >
+        <router-link class="cursor-pointer h-9 rounded-full bg-black/5" to="">
           <span class="pl-4 pr-4">
             <span class="font-bold text-op-teal">{{
               $t("lp.moreDetails")

@@ -3,18 +3,12 @@
     <div class="column is-narrow w-6"></div>
     <div class="column">
       <div class="text-center">
-        <router-link
-          class="cursor-pointer h-9 rounded-full bg-black/5"
-          to=""
-        >
+        <router-link class="cursor-pointer h-9 rounded-full bg-black/5" to="">
           <span class="pl-4 pr-4">
             <span class="font-bold text-op-teal">お申し込み </span>
           </span>
         </router-link>
-        <router-link
-          class="cursor-pointer h-9 rounded-full bg-black/5"
-          to=""
-        >
+        <router-link class="cursor-pointer h-9 rounded-full bg-black/5" to="">
           <span class="pl-4 pr-4">
             <span class="font-bold text-op-teal">お問い合わせ </span>
           </span>

@@ -1,8 +1,8 @@
 <template>
-  <o-button
+  <button
     @click="downloadMenu()"
     :disabled="downloadSubmitting"
-    class="b-reset-tw mx-2 mb-2"
+    class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mx-2 mb-2"
   >
     <div
       class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
@@ -12,7 +12,7 @@
         {{ $t("button.downloadMenu") }}</span
       >
     </div>
-  </o-button>
+  </button>
 </template>
 
 <script lang="ts">

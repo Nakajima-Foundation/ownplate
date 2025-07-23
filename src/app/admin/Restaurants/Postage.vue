@@ -19,9 +19,13 @@
             >
               <span class="w-2/12">{{ state }}</span>
               <o-input class="w-4/12" v-model="postage[key]" />
-              <o-button @click="copy(key)" v-if="key !== 0">
+              <button
+                @click="copy(key)"
+                v-if="key !== 0"
+                class="cursor-pointer"
+              >
                 {{ $t("editEC.copy") }}
-              </o-button>
+              </button>
             </div>
           </div>
         </div>
