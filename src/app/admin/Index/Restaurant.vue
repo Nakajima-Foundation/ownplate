@@ -352,7 +352,7 @@
         <button
           @click="positionUp"
           :disabled="position === 'first'"
-          class="b-reset-tw disabled:opacity-50 disabled:cursor-not-allowed"
+          class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
@@ -367,7 +367,7 @@
         <button
           @click="positionDown"
           :disabled="position === 'last'"
-          class="b-reset-tw disabled:opacity-50 disabled:cursor-not-allowed"
+          class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
@@ -379,7 +379,7 @@
 
       <!-- Delete -->
       <div>
-        <button @click="deleteRestaurant" class="b-reset-tw">
+        <button @click="deleteRestaurant" class="cursor-pointer">
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
