@@ -122,17 +122,15 @@ const formattedDate = computed(() => {
 const year = currentMonth.value.year();
 const monthName = currentMonth.value.format("MMMM");
 
-const daysOfWeek = computed(() => {
-  return [
-    "week.shortest.sunday",
-    "week.shortest.monday",
-    "week.shortest.tuesday",
-    "week.shortest.wednesday",
-    "week.shortest.thursday",
-    "week.shortest.friday",
-    "week.shortest.saturday",
-  ];
-});
+const daysOfWeek = [
+  "week.shortest.sunday",
+  "week.shortest.monday",
+  "week.shortest.tuesday",
+  "week.shortest.wednesday",
+  "week.shortest.thursday",
+  "week.shortest.friday",
+  "week.shortest.saturday",
+];
 
 const calendarDays = computed(() => {
   const monthStart = currentMonth.value.clone().startOf("month");
