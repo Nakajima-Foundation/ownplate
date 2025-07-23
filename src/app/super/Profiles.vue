@@ -3,7 +3,7 @@
     <back-button url="/s" />
     <h2>Profiles</h2>
     <o-input v-model="prefix" placeholder="email prefix"></o-input>
-    <o-button @click="handleSearch">Search</o-button>
+    <button @click="handleSearch" class="cursor-pointer">Search</button>
     <table>
       <tr v-for="profile in profiles" :key="profile.uid">
         <td>{{ profile.email }}</td>
