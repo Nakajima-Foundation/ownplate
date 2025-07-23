@@ -92,7 +92,7 @@
       <t-modal
         width="488"
         scroll="keep"
-        :on-cancel="closeImage"
+        @dismissed="closeImage"
         v-model:active="imagePopup"
       >
         <div class="bg-white p-4">
