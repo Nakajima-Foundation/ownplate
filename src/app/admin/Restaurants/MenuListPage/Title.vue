@@ -33,48 +33,56 @@
       <!-- Card Actions -->
       <div class="inline-flex space-x-2">
         <!-- Up -->
-        <o-button
+        <button
           :disabled="position === 'first' || isEdit"
           @click="positionUp"
-          class="b-reset-tw"
+          class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
             <i class="material-icons text-lg text-op-teal">arrow_upward</i>
           </div>
-        </o-button>
+        </button>
 
         <!-- Down -->
-        <o-button
+        <button
           :disabled="position === 'last' || isEdit"
           @click="positionDown"
-          class="b-reset-tw"
+          class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
             <i class="material-icons text-lg text-op-teal">arrow_downward</i>
           </div>
-        </o-button>
+        </button>
 
         <!-- Duplicate -->
-        <o-button @click="forkItem" class="b-reset-tw" :disabled="isEdit">
+        <button
+          @click="forkItem"
+          class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          :disabled="isEdit"
+        >
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
             <i class="material-icons text-lg text-op-teal">queue</i>
           </div>
-        </o-button>
+        </button>
 
         <!-- Delete -->
-        <o-button @click="deleteItem" class="b-reset-tw" :disabled="isEdit">
+        <button
+          @click="deleteItem"
+          class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          :disabled="isEdit"
+        >
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
             <i class="material-icons text-lg text-red-700">delete</i>
           </div>
-        </o-button>
+        </button>
       </div>
     </div>
   </div>

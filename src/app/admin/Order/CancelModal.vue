@@ -29,7 +29,11 @@
 
     <!-- Cancel -->
     <div class="mt-4 text-center">
-      <button :disabled="updating" @click="handleCancel" class="b-reset-tw">
+      <button
+        :disabled="updating"
+        @click="handleCancel"
+        class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+      >
         <div
           class="inline-flex h-12 items-center justify-center rounded-full bg-red-700 px-6"
           :class="updating ? 'bg-red-700/10' : ''"

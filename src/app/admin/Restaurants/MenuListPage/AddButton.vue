@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="mt-4 text-center">
-      <o-button
+      <button
         @click="addTitle()"
         :disabled="submitting"
-        class="b-reset-tw mx-2 mb-2"
+        class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mx-2 mb-2"
       >
         <div
           class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
@@ -14,12 +14,12 @@
             $t("button.addTitle")
           }}</span>
         </div>
-      </o-button>
+      </button>
 
-      <o-button
+      <button
         @click="addMenu()"
         :disabled="submitting"
-        class="b-reset-tw mx-2 mb-2"
+        class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mx-2 mb-2"
       >
         <div
           class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
@@ -29,7 +29,7 @@
             {{ $t("button.addItem") }}</span
           >
         </div>
-      </o-button>
+      </button>
     </div>
   </div>
 </template>

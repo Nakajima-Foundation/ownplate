@@ -356,12 +356,12 @@
                 :key="orderState"
                 class="mt-4 text-center"
               >
-                <o-button
+                <button
                   :disabled="
                     !isValidTransition(orderState) || updating === orderState
                   "
                   @click="handleChangeStatus(orderState)"
-                  class="b-reset-tw"
+                  class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mx-2 mb-2"
                 >
                   <div
                     class="inline-flex h-16 w-64 items-center justify-center rounded-full"
@@ -382,7 +382,7 @@
                       </div>
                     </div>
                   </div>
-                </o-button>
+                </button>
               </div>
             </div>
 
@@ -482,10 +482,10 @@
                 </button>
               </div>
               <div class="mt-4">
-                <o-button
+                <button
                   @click="handleOrderChange"
                   :disabled="!availableChangeButton || changing"
-                  class="b-reset-tw"
+                  class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mx-2 mb-2"
                   v-if="isOrderChange"
                 >
                   <div
@@ -496,7 +496,7 @@
                       {{ $t("admin.order.confirmOrderChange") }}
                     </div>
                   </div>
-                </o-button>
+                </button>
               </div>
             </div>
 

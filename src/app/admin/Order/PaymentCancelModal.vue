@@ -29,10 +29,10 @@
 
     <!-- Cancel -->
     <div class="mt-4 text-center">
-      <o-button
-        :loading="updating"
+      <button
+        :disabled="updating"
         @click="handlePaymentCancel"
-        class="b-reset-tw"
+        class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ml-2"
       >
         <div
           class="inline-flex h-12 items-center justify-center rounded-full bg-red-700 px-6"
@@ -41,7 +41,7 @@
             {{ $t("admin.order.paymentCancel") }}
           </div>
         </div>
-      </o-button>
+      </button>
       <div class="mt-2 text-sm font-bold text-red-700">
         {{ $t("admin.order.paymentCancelConfirm") }}
       </div>
