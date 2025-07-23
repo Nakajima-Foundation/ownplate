@@ -14,12 +14,12 @@
         </div> </router-link
       ><br />
       {{ $t("admin.messages.childInvitationMessage3") }}<br />
-      <o-button @click="childInvitationAccept">{{
+      <button @click="childInvitationAccept">{{
         $t("admin.messages.accept")
-      }}</o-button>
-      <o-button @click="childInvitationDeny">{{
+      }}</button>
+      <button @click="childInvitationDeny">{{
         $t("admin.messages.deny")
-      }}</o-button>
+      }}</button>
     </div>
   </div>
 </template>

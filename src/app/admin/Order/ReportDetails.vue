@@ -30,7 +30,7 @@
       :fileName="fileName"
       :formulas="formulas"
     >
-      <o-button class="b-reset-tw">
+      <button class="cursor-pointer">
         <div
           class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
         >
@@ -39,7 +39,7 @@
             {{ $t(buttonTitle) }}
           </div>
         </div>
-      </o-button>
+      </button>
     </download-csv>
   </div>
 </template>
