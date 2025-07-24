@@ -12,7 +12,7 @@
         <PromotionMessage5 :promotion="promotion" />
       </div>
     </div>
-    <t-modal v-model:active="promotionVisible" width="80%" scroll="keep">
+    <t-modal v-model:active="promotionVisible" width="80%" scroll="keep" @dismissed="promotionVisible = false">
       <div class="my-6 rounded-lg bg-white shadow-lg border-op-teal border-2">
         <div class="text-center bg-op-teal text-white font-bold py-1">
           {{ $t("promotion.heading") }}

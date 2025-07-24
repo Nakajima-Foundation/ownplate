@@ -229,7 +229,7 @@
       </div>
     </t-modal>
     <!-- Image Popup ??-->
-    <t-modal v-model:active="categoryPopup" width="488" scroll="keep">
+    <t-modal v-model:active="categoryPopup" width="488" scroll="keep" @dismissed="categoryPopup = false">
       <div class="px-2 text-center">
         <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
           <div class="font-bold">{{ $t("order.category") }}</div>
