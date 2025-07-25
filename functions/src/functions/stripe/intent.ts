@@ -97,10 +97,11 @@ export const cancelStripe = async (
     });
     return paymentIntent;
   } catch (e) {
+    console.log(e);
     return {
       "id": "dummy",
       "object": "payment_intent",
-    }
+    };
   }
   
 };
