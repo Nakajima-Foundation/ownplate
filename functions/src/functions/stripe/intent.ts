@@ -83,16 +83,24 @@ export const cancelStripe = async (
   restaurantOwnerUid: string,
   orderId: string,
 ) => {
-  const stripeRecord = await getStripeOrderRecord(transaction, stripeRef);
-  const paymentIntentId = stripeRecord.paymentIntent.id;
+  try {
+    const stripeRecord = await getStripeOrderRecord(transaction, stripeRef);
+    const paymentIntentId = stripeRecord.paymentIntent.id;
 
-  const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
-
-  const idempotencyKey = getHash([orderId, paymentIntentId].join("-"));
-  const stripe = utils.get_stripe_v2();
-  const paymentIntent = await stripe.paymentIntents.cancel(paymentIntentId, {
-    idempotencyKey: `${idempotencyKey}-cancel`,
-    stripeAccount,
-  });
-  return paymentIntent;
+    const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
+    
+    const idempotencyKey = getHash([orderId, paymentIntentId].join("-"));
+    const stripe = utils.get_stripe_v2();
+    const paymentIntent = await stripe.paymentIntents.cancel(paymentIntentId, {
+      idempotencyKey: `${idempotencyKey}-cancel`,
+      stripeAccount,
+    });
+    return paymentIntent;
+  } catch (e) {
+    return {
+      "id": "dummy",
+      "object": "payment_intent",
+    }
+  }
+  
 };
