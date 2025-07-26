@@ -8,15 +8,32 @@
     aria-modal="true"
     tabindex="-1"
   >
-    <div :style="{ width: width || 'auto' }" class="w-full max-w-md">
+    <div
+      :style="{ width: width || 'auto' }"
+      class="w-full max-w-md h-[80vh] overflow-y-auto bg-white rounded-lg"
+    >
       <slot />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-defineProps<{ active: boolean; width: string }>();
-const emit = defineEmits<{ (e: "dismissed"): void }>();
+import { watch } from "vue";
+const props = defineProps<{ active: boolean; width: string }>();
+const emit = defineEmits<{
+  (e: "update:active", value: boolean): void;
+  (e: "dismissed"): void;
+}>();
 
-const close = () => emit("dismissed");
+const close = () => {
+  emit("update:active", false);
+  emit("dismissed");
+};
+
+watch(
+  () => props.active,
+  (val) => {
+    document.body.style.overflow = val ? "hidden" : "";
+  },
+);
 </script>
