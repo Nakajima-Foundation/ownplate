@@ -18,7 +18,7 @@
       scroll="keep"
       @dismissed="promotionVisible = false"
     >
-      <div class="my-6 rounded-lg bg-white shadow-lg border-op-teal border-2">
+      <div class="rounded-lg bg-white shadow-lg border-op-teal border-2 h-full">
         <div class="text-center bg-op-teal text-white font-bold py-1">
           {{ $t("promotion.heading") }}
         </div>
