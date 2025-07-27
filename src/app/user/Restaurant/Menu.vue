@@ -319,11 +319,11 @@
     </div>
 
     <!-- Image Popup-->
-    <o-modal
+    <t-modal
       v-model:active="imagePopup"
-      :width="488"
+      width="488"
       scroll="keep"
-      :on-cancel="closeImage"
+      @dismissed="closeImage"
     >
       <div class="sm:mx-6 rounded-lg bg-white p-5">
         <img
@@ -398,7 +398,7 @@
           </div>
         </div>
       </div>
-    </o-modal>
+    </t-modal>
   </div>
 </template>
 

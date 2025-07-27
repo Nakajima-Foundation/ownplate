@@ -89,10 +89,10 @@
           </t-button>
         </div>
       </div>
-      <o-modal
-        :width="488"
+      <t-modal
+        width="488"
         scroll="keep"
-        :on-cancel="closeImage"
+        @dismissed="closeImage"
         v-model:active="imagePopup"
       >
         <div class="bg-white p-4">
@@ -127,7 +127,7 @@
             <img src="//images/lines/lineLoginCallback.png" class="p-4" />
           </div>
         </div>
-      </o-modal>
+      </t-modal>
     </div>
   </div>
 </template>

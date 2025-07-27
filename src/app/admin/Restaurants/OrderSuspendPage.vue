@@ -35,11 +35,11 @@
             {{ $t("admin.order.notSuspendAvailable") }}
           </div>
           <div v-else>
-            <o-button
+            <button
               v-for="time in availableTimes"
               :key="time.time"
               @click="handleSuspend(0, time.time)"
-              class="b-reset-tw mr-4 mb-4"
+              class="cursor-pointer mr-4 mb-4"
             >
               <div
                 class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
@@ -53,7 +53,7 @@
                   }}
                 </div>
               </div>
-            </o-button>
+            </button>
 
             <div class="mt-4">
               <div
@@ -61,9 +61,9 @@
                 :key="k"
                 class="inline-flex"
               >
-                <o-button
+                <button
                   v-if="availableTimes.length > 0"
-                  class="b-reset-tw"
+                  class="cursor-pointer"
                   @click="handleSuspend(day, 24 * 60)"
                 >
                   <div
@@ -81,7 +81,7 @@
                       }}</span>
                     </div>
                   </div>
-                </o-button>
+                </button>
               </div>
             </div>
           </div>
@@ -98,7 +98,7 @@
           </div>
 
           <div class="mt-4">
-            <o-button class="b-reset-tw" @click="handleRemove">
+            <button class="cursor-pointer" @click="handleRemove">
               <div
                 class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
               >
@@ -107,7 +107,7 @@
                   {{ $t("admin.order.unsuspend") }}
                 </div>
               </div>
-            </o-button>
+            </button>
           </div>
         </div>
       </div>
@@ -148,7 +148,8 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props) {
+  emits: ["updateRestaurant"],
+  setup(props, ctx) {
     const store = useStore();
     const { d } = useI18n({ useScope: "global" });
 
@@ -221,6 +222,7 @@ export default defineComponent({
       });
       store.commit("setLoading", false);
       suspendUntil.value = getSuspend(timeStamp);
+      ctx.emit("updateRestaurant");
     };
     const handleRemove = async () => {
       store.commit("setLoading", true);
@@ -229,6 +231,7 @@ export default defineComponent({
       });
       store.commit("setLoading", false);
       suspendUntil.value = null;
+      ctx.emit("updateRestaurant");
     };
     return {
       date,

@@ -1,5 +1,9 @@
 <template>
-  <o-modal v-model:active="isVisible" :width="488">
+  <t-modal
+    v-model:active="isVisible"
+    width="488"
+    @dismissed="isVisible = false"
+  >
     <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
       <!-- Items List -->
       <div>
@@ -12,11 +16,11 @@
             <span class="text-sm font-bold">{{ category }}</span>
           </div>
           <div>
-            <o-button class="b-reset-tw" @click="handleDelete(index)">
+            <button class="cursor-pointer" @click="handleDelete(index)">
               <div class="inline-flex h-9 items-center justify-center px-4">
                 <i class="material-icons text-lg text-red-700">delete</i>
               </div>
-            </o-button>
+            </button>
           </div>
         </div>
       </div>
@@ -28,9 +32,9 @@
           :placeholder="$t('editMenu.newCategory')"
           v-model="newEntry"
         />
-        <o-button
+        <button
           :disabled="!isValidEntry"
-          class="b-reset-tw"
+          class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ml-2"
           @click="handleAdd"
         >
           <div
@@ -41,10 +45,10 @@
               {{ $t("editMenu.newCategoryAdd") }}
             </div>
           </div>
-        </o-button>
+        </button>
       </div>
     </div>
-  </o-modal>
+  </t-modal>
 </template>
 
 <script lang="ts">

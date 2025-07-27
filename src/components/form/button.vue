@@ -2,13 +2,11 @@
   <button
     class="inline-flex items-center justify-center rounded-full shadow-sm"
     :loading="isLoading"
-    :class="
-      isCancel
-        ? ''
-        : isLoading || isDisabled
-          ? 'bg-op-teal-disabled'
-          : 'bg-op-teal'
-    "
+    :class="{
+      'bg-op-teal': !isCancel && !isLoading && !isDisabled,
+      'bg-op-teal-disabled': !isCancel && (isLoading || isDisabled),
+      'cursor-pointer': !isDisabled,
+    }"
     :disabled="isLoading || isDisabled"
     @click="handleClick"
   >

@@ -14,7 +14,7 @@
       </div>
     </div>
     <div v-if="last">
-      <o-button @click="nextLoad">more</o-button>
+      <button @click="nextLoad">more</button>
     </div>
   </div>
 </template>

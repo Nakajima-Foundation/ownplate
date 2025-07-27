@@ -78,17 +78,17 @@
       </tr>
     </table>
     <hr />
-    <o-button class="mt-2 h-9 rounded-full" @click="nextLoad">
+    <button class="mt-2 h-9 rounded-full" @click="nextLoad">
       <span class="pl-4 pr-4">
         <span class="font-bold text-op-teal"> Next </span>
       </span>
-    </o-button>
+    </button>
 
-    <o-button class="mt-2 ml-4 h-9 rounded-full" @click="allLoad">
+    <button class="mt-2 ml-4 h-9 rounded-full" @click="allLoad">
       <span class="pl-4 pr-4">
         <span class="font-bold text-op-teal"> All </span>
       </span>
-    </o-button>
+    </button>
 
     <download-csv
       :data="tableData"
@@ -96,12 +96,12 @@
       :fieldNames="fieldNames"
       :fileName="fileName"
     >
-      <o-button class="mt-2 ml-4 h-9 rounded-full">
+      <button class="mt-2 ml-4 h-9 rounded-full">
         <span class="pl-4 pr-4">
           <i class="material-icons mr-2 text-2xl! text-op-teal">save_alt</i>
           <span class="font-bold text-op-teal"> Download </span>
         </span>
-      </o-button>
+      </button>
     </download-csv>
   </section>
 </template>

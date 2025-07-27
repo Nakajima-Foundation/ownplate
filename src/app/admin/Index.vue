@@ -119,7 +119,7 @@
               </div>
 
               <div class="mt-4 text-center">
-                <o-button @click="handleNew" class="b-reset-tw">
+                <button @click="handleNew" class="cursor-pointer">
                   <div
                     class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                   >
@@ -128,7 +128,7 @@
                       $t("admin.addNewRestaurant")
                     }}</span>
                   </div>
-                </o-button>
+                </button>
               </div>
             </div>
           </div>
@@ -181,7 +181,7 @@
 
             <!-- Add Restaurant -->
             <div v-if="existsRestaurant && isOwner" class="mt-4 text-center">
-              <o-button @click="handleNew" class="b-reset-tw">
+              <button @click="handleNew" class="cursor-pointer">
                 <div
                   class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                 >
@@ -190,7 +190,7 @@
                     $t("admin.addNewRestaurant")
                   }}</span>
                 </div>
-              </o-button>
+              </button>
             </div>
           </div>
         </div>

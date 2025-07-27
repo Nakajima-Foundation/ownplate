@@ -1,7 +1,7 @@
 <template>
-  <o-modal
+  <t-modal
     :active="notificationSettingsPopup"
-    :width="488"
+    width="488"
     scroll="keep"
     @close="closeNotificationSettings"
   >
@@ -164,7 +164,7 @@
         </a>
       </div>
     </div>
-  </o-modal>
+  </t-modal>
 </template>
 
 <script lang="ts">

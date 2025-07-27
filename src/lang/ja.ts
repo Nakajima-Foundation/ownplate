@@ -440,6 +440,7 @@ const data = {
     temporaryClosure: "臨時休業",
     temporaryClosureAdd: "追加",
     temporaryClosureDescription: "日にちを選択してから追加を押してください",
+    temporaryClosureOkay: "OK",
     temporaryClosureSelect: "日にちを選択",
     paymentMethod: "支払い方法",
     onlinePayment: "オンライン決済",
@@ -1283,6 +1284,15 @@ const data = {
       friday: "金曜",
       saturday: "土曜",
       sunday: "日曜",
+    },
+    shortest: {
+      monday: "月",
+      tuesday: "火",
+      wednesday: "水",
+      thursday: "木",
+      friday: "金",
+      saturday: "土",
+      sunday: "日",
     },
   },
   allergens: {

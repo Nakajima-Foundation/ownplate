@@ -983,32 +983,28 @@
                 </div>
 
                 <!-- Date Picker -->
-                <o-field>
-                  <o-datepicker
-                    class="w-full"
-                    icon="calendar-today"
-                    v-model="newTemporaryClosure"
-                    ref="datepicker"
-                    :min-date="now"
-                    :max-date="maxDate"
-                    expanded
-                    :placeholder="$t('shopInfo.temporaryClosureSelect')"
-                  >
-                  </o-datepicker>
+                <DatePicker
+                  class="w-full"
+                  icon="calendar-today"
+                  v-model="newTemporaryClosure"
+                  ref="datepicker"
+                  :min-date="now"
+                  :max-date="maxDate"
+                  expanded
+                  :placeholder="$t('shopInfo.temporaryClosureSelect')"
+                >
+                </DatePicker>
 
-                  <o-button @click="addNewTemporaryClosure" class="b-reset-tw">
-                    <div
-                      class="inline-flex h-9 items-center justify-center rounded-r bg-black/5 px-4"
-                    >
-                      <i class="material-icons mr-2 text-lg text-op-teal"
-                        >add</i
-                      >
-                      <div class="text-sm font-bold text-op-teal">
-                        {{ $t("shopInfo.temporaryClosureAdd") }}
-                      </div>
+                <button @click="addNewTemporaryClosure" class="cursor-pointer">
+                  <div
+                    class="inline-flex h-9 items-center justify-center rounded-r bg-black/5 px-4"
+                  >
+                    <i class="material-icons mr-2 text-lg text-op-teal">add</i>
+                    <div class="text-sm font-bold text-op-teal">
+                      {{ $t("shopInfo.temporaryClosureAdd") }}
                     </div>
-                  </o-button>
-                </o-field>
+                  </div>
+                </button>
 
                 <!-- Saved Closure Days -->
                 <div class="mb-2 grid grid-cols-1 space-y-2">
@@ -1106,10 +1102,10 @@
 
       <!-- Copy -->
       <div class="mt-4 text-center">
-        <o-button
+        <button
           @click="confirmCopy"
           :disabled="submitting"
-          class="b-reset-tw"
+          class="cursor-pointer"
         >
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
@@ -1119,7 +1115,7 @@
               $t(submitting ? "editCommon.saving" : "editCommon.copy")
             }}</span>
           </div>
-        </o-button>
+        </button>
       </div>
 
       <!-- QRCode -->
@@ -1148,6 +1144,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import { google_geocode } from "@/lib/google/api";
 import { ownPlateConfig, GMAPId } from "@/config/project";
 
+import DatePicker from "@/components/DatePicker.vue";
 import NotFound from "@/components/NotFound.vue";
 import PhoneEntry from "@/components/PhoneEntry.vue";
 import Price from "@/components/Price.vue";
@@ -1208,6 +1205,7 @@ export default defineComponent({
     State,
     NotificationIndex,
     QRCode,
+    DatePicker,
     NotFound,
     PhoneEntry,
     Price,

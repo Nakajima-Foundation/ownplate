@@ -170,7 +170,7 @@
             </div>
 
             <!-- Cancel Popup-->
-            <o-modal v-model:active="cancelPopup" :width="488" scroll="keep">
+            <t-modal v-model:active="cancelPopup" width="488" scroll="keep">
               <CancelModal
                 :shopInfo="shopInfo"
                 :orderInfo="orderInfo"
@@ -180,7 +180,7 @@
                 :nationalPhoneNumber="nationalPhoneNumber"
                 @close="closeCancel()"
               />
-            </o-modal>
+            </t-modal>
 
             <!-- Pickup Time -->
             <div class="mt-2 text-center" v-if="!cancelStatus">
@@ -356,12 +356,12 @@
                 :key="orderState"
                 class="mt-4 text-center"
               >
-                <o-button
+                <button
                   :disabled="
                     !isValidTransition(orderState) || updating === orderState
                   "
                   @click="handleChangeStatus(orderState)"
-                  class="b-reset-tw"
+                  class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mx-2 mb-2"
                 >
                   <div
                     class="inline-flex h-16 w-64 items-center justify-center rounded-full"
@@ -382,16 +382,16 @@
                       </div>
                     </div>
                   </div>
-                </o-button>
+                </button>
               </div>
             </div>
 
             <!-- Payment Cancel Button -->
             <div class="mt-4 text-center">
-              <o-button
+              <button
                 v-if="paymentIsNotCompleted"
                 @click="openPaymentCancel"
-                class="b-reset-tw"
+                class="cursor-pointer"
               >
                 <div
                   class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
@@ -403,13 +403,13 @@
                     {{ $t("admin.order.paymentCancelButton") }}
                   </div>
                 </div>
-              </o-button>
+              </button>
             </div>
 
             <!-- Payment Cancel Popup-->
-            <o-modal
+            <t-modal
               v-model:active="paymentCancelPopup"
-              :width="488"
+              width="488"
               scroll="keep"
             >
               <PaymentCancelModal
@@ -421,7 +421,7 @@
                 :nationalPhoneNumber="nationalPhoneNumber"
                 @close="closePaymentCancel()"
               />
-            </o-modal>
+            </t-modal>
           </div>
         </div>
 
@@ -467,7 +467,7 @@
             >
               <div>{{ $t("admin.order.changeOrderDetail") }}</div>
               <div class="mt-4">
-                <o-button @click="toggleIsOrderChange" class="b-reset-tw">
+                <button @click="toggleIsOrderChange" class="cursor-pointer">
                   <div
                     class="inline-flex h-12 items-center justify-center rounded-full bg-red-700 px-6"
                   >
@@ -479,13 +479,13 @@
                       }}
                     </div>
                   </div>
-                </o-button>
+                </button>
               </div>
               <div class="mt-4">
-                <o-button
+                <button
                   @click="handleOrderChange"
                   :disabled="!availableChangeButton || changing"
-                  class="b-reset-tw"
+                  class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mx-2 mb-2"
                   v-if="isOrderChange"
                 >
                   <div
@@ -496,7 +496,7 @@
                       {{ $t("admin.order.confirmOrderChange") }}
                     </div>
                   </div>
-                </o-button>
+                </button>
               </div>
             </div>
 

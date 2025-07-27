@@ -1,7 +1,5 @@
 <template>
-  <side-bar
-    v-model:active="open"
-  >
+  <side-bar v-model:active="open">
     <!-- Logo / Home -->
     <div class="my-4 text-center">
       <router-link :to="home_path">

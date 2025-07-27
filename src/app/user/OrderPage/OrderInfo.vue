@@ -160,12 +160,13 @@
           </div>
 
           <div class="mt-2">
-            <o-button
+            <button
               v-for="ratio in regionTip.choices"
-              class="b-reset-tw mr-2 mb-2"
+              class="cursor-pointer mr-2 mb-2"
               @click="updateTip(ratio)"
               :key="ratio"
-              ><div
+            >
+              <div
                 class="inline-flex h-9 w-16 items-center justify-center rounded-full"
                 :class="isSameAmount(ratio) ? 'bg-op-teal' : 'bg-black/5'"
               >
@@ -175,8 +176,8 @@
                 >
                   {{ ratio + "%" }}
                 </div>
-              </div></o-button
-            >
+              </div>
+            </button>
           </div>
         </div>
       </div>

@@ -50,7 +50,7 @@
             <!-- Delete -->
             <div>
               <a
-                class="ml-4 inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
+                class="ml-4 inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4 cursor-pointer"
                 @click.stop="handleDelete(lineUser.id)"
               >
                 <i class="material-icons text-lg text-red-700">delete</i>
@@ -61,7 +61,7 @@
 
         <!-- Add LINE User -->
         <div class="mt-4 text-center">
-          <o-button @click="handleLineAuth" class="b-reset-tw">
+          <button @click="handleLineAuth" class="cursor-pointer">
             <div
               class="inline-flex h-12 items-center justify-center rounded-full px-6"
               style="background: #18b900"
@@ -71,7 +71,7 @@
                 {{ $t("admin.order.lineAdd") }}
               </div>
             </div>
-          </o-button>
+          </button>
         </div>
 
         <!-- Note for Safari Private Browsing Mode -->

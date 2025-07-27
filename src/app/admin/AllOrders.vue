@@ -47,7 +47,7 @@
 
       <!-- More -->
       <div class="mx-6 mt-2 text-center">
-        <o-button @click="nextLoad" class="b-reset-tw">
+        <button @click="nextLoad" class="cursor-pointer">
           <div
             class="inline-flex h-9 w-48 items-center justify-center rounded-full bg-black/5 px-4"
           >
@@ -55,7 +55,7 @@
               {{ $t("admin.order.more") }}
             </div>
           </div>
-        </o-button>
+        </button>
       </div>
 
       <!-- Download -->
@@ -66,7 +66,7 @@
           :fieldNames="fieldNames"
           :fileName="fileName"
         >
-          <o-button class="b-reset-tw">
+          <button class="cursor-pointer">
             <div
               class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
             >
@@ -75,7 +75,7 @@
                 {{ $t("admin.report.download-csv-all") }}
               </div>
             </div>
-          </o-button>
+          </button>
         </download-csv>
       </div>
     </div>

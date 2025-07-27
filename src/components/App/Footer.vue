@@ -62,7 +62,7 @@
       </div>
     </div>
     <!-- Language Popup-->
-    <o-modal v-model:active="langPopup" :width="488" scroll="keep">
+    <t-modal v-model:active="langPopup" width="488" scroll="keep">
       <div class="my-6 mx-2 rounded-lg bg-white p-6 shadow-lg">
         <div class="text-xl font-bold text-black/40">
           {{ $t("menu.selectLanguage") }}
@@ -93,7 +93,7 @@
           >
         </div>
       </div>
-    </o-modal>
+    </t-modal>
   </div>
 </template>
 

@@ -5,7 +5,7 @@
     :fieldNames="fieldNames"
     :fileName="fileName"
   >
-    <o-button class="b-reset-tw">
+    <button class="cursor-pointer">
       <div
         class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
       >
@@ -14,7 +14,7 @@
           {{ $t("admin.report.download-csv-history") }}
         </div>
       </div>
-    </o-button>
+    </button>
   </download-csv>
 </template>
 

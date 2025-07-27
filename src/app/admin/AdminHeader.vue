@@ -29,10 +29,9 @@
 
     <div class="mt-4 flex lg:mt-0">
       <!-- Suspend Button -->
-      <o-button
-        tag="router-link"
+      <router-link
         :to="`/admin/restaurants/${restaurantId}/suspend`"
-        class="b-reset-tw"
+        class="cursor-pointer"
         v-if="showSuspend"
       >
         <div
@@ -58,7 +57,7 @@
             {{ $t("admin.order.suspendSettings") }}
           </div>
         </div>
-      </o-button>
+      </router-link>
       <!-- Notifications -->
       <div>
         <notification-index :shopInfo="shopInfo" />

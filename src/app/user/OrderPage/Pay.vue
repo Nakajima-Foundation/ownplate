@@ -4,7 +4,7 @@
     <div class="mx-6 mt-4">
       <router-link :to="menuPagePath">
         <div
-          class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4 b-reset-tw"
+          class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4 cursor-pointer"
         >
           <i class="material-icons mr-2 text-lg text-op-teal">arrow_back</i>
           <div class="text-sm font-bold text-op-teal">
@@ -73,10 +73,10 @@
                 :isPayingError="isPayingError"
               ></stripe-card>
               <div class="mt-4 text-center">
-                <o-button
+                <button
                   :disabled="isPaying || !cardState.complete"
                   @click="handlePayment()"
-                  class="b-reset-tw"
+                  class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <div
                     class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal px-6 shadow-sm"
@@ -87,7 +87,7 @@
                       {{ $t("order.submitPayment") }}
                     </div>
                   </div>
-                </o-button>
+                </button>
                 <div
                   v-if="stripeSmallPayment"
                   class="mt-2 text-sm font-bold text-red-700"

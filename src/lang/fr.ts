@@ -433,6 +433,7 @@ const data = {
     temporaryClosureAdd: "Ajouter",
     temporaryClosureDescription:
       "Veuillez sélectionner une date et appuyer sur Ajouter.",
+    temporaryClosureOkay: "D'accord",
     temporaryClosureSelect: "Sélectionnez une date",
     paymentMethod: "Methode de Payment",
     onlinePayment: "Payment en Ligne",
@@ -1245,6 +1246,15 @@ const data = {
   },
   week: {
     short: {
+      monday: "Lun",
+      tuesday: "Mar",
+      wednesday: "Mer",
+      thursday: "Jeu",
+      friday: "Ven",
+      saturday: "Sam",
+      sunday: "Dim",
+    },
+    shortest: {
       monday: "Lun",
       tuesday: "Mar",
       wednesday: "Mer",
