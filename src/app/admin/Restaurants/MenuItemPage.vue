@@ -471,17 +471,18 @@
                           {{ displayOption(opt, shopInfo, menuInfo) }}
                         </span>
                       </o-checkbox>
-                      <o-radio
-                        class="mr-2"
-                        v-else
-                        v-model="dummyCheckbox[key]"
-                        :native-value="k"
-                        disabled
-                      >
+                      <template v-else>
+                        <input
+                          type="radio"
+                          class="mr-2"
+                          v-model="dummyCheckbox[key]"
+                          :value="k"
+                          disabled
+                        />
                         <span class="text-sm font-bold text-black/60">
                           {{ displayOption(opt, shopInfo, menuInfo) }}
                         </span>
-                      </o-radio>
+                      </template>
                     </div>
                     <div class="text-sm font-bold text-black/60">
                       {{ displayOptionPrice(opt) }}
