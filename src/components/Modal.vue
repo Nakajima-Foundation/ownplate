@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { watch } from "vue";
+import { watch, onUnmounted } from "vue";
 const props = defineProps<{ active: boolean; width: string }>();
 const emit = defineEmits<{
   (e: "update:active", value: boolean): void;
@@ -29,6 +29,9 @@ const close = () => {
   emit("update:active", false);
   emit("dismissed");
 };
+onUnmounted(() => {
+  document.body.style.overflow = "";
+});
 
 watch(
   () => props.active,
