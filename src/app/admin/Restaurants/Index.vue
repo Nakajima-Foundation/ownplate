@@ -659,18 +659,17 @@
                 v-for="(personalInfoSaveMethod, k) in personalInfoSaveMethods"
                 :key="k"
               >
-                <o-radio
+                <input
+                  type="radio"
                   v-model="editShopInfo.personalInfo"
-                  :native-value="personalInfoSaveMethod.key"
-                  :variant="personalInfoSaveMethod.key"
-                >
-                  {{
-                    $t(
-                      "editRestaurant.personalInfoSaveMethodChoices." +
-                        personalInfoSaveMethod.key,
-                    )
-                  }}
-                </o-radio>
+                  :value="personalInfoSaveMethod.key"
+                />
+                {{
+                  $t(
+                    "editRestaurant.personalInfoSaveMethodChoices." +
+                      personalInfoSaveMethod.key,
+                  )
+                }}
               </div>
             </div>
           </div>
