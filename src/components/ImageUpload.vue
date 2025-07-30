@@ -1,7 +1,7 @@
 <template>
   <div
     @dragover.prevent
-    class="border-2 relative"
+    class="border-2 relative border-black/10"
     @drop.prevent="handler"
     :style="style"
   >

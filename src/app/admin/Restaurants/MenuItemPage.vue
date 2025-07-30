@@ -109,7 +109,7 @@
           </div>
 
           <!-- Item Price -->
-          <div class="rounded-lg border bg-white p-2 mt-4">
+          <div class="rounded-lg border border-black/10 bg-white p-2 mt-4">
             <span class="font-bold">{{ $t("editMenu.priceSettings") }}</span>
             <div class="mt-4">
               <div class="pb-2 text-sm font-bold">
@@ -228,7 +228,7 @@
             </div>
           </div>
 
-          <div class="rounded-sm border bg-white p-2 mt-4">
+          <div class="rounded-sm border border-black/10 bg-white p-2 mt-4">
             <span class="font-bold">{{
               $t("editMenu.availableDayTimeSettings")
             }}</span>
