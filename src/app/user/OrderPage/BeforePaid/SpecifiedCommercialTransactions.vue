@@ -20,14 +20,14 @@
             {{ $t("transactionsAct.cancellation") }}
           </div>
 
-          <ul class="ml-5 mt-1 list-outside list-disc text-sm">
+          <ul class="mt-1 ml-5 list-outside list-disc text-sm">
             <li>{{ $t("transactionsAct.cancellationDescription1") }}</li>
             <li>{{ $t("transactionsAct.cancellationDescription4") }}</li>
             <li>
               {{ $t("transactionsAct.cancellationDescription5") }}
               <a
                 @click="openTransactionsAct()"
-                class="text-sm font-bold text-op-teal underline"
+                class="text-op-teal text-sm font-bold underline"
                 >{{ $t("transactionsAct.link") }}</a
               >
               {{ $t("transactionsAct.cancellationDescription6") }}
@@ -42,7 +42,7 @@
           <div class="text-sm font-bold text-black/30">
             {{ $t("transactionsAct.payment") }}
           </div>
-          <ul class="ml-5 mt-1 list-outside list-disc text-sm">
+          <ul class="mt-1 ml-5 list-outside list-disc text-sm">
             <li>{{ $t("transactionsAct.paymentDescriptionCardNote") }}</li>
           </ul>
         </div>

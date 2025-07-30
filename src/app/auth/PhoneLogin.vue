@@ -79,7 +79,7 @@
           id="button-send-tel"
           :isDisabled="!readyToSendSMS"
           :isLoading="isLoading"
-          class="h-12 w-32 shadow-sm font-bold text-white"
+          class="h-12 w-32 font-bold text-white shadow-sm"
         >
           {{ $t("sms.send") }}
         </t-button>
@@ -151,7 +151,7 @@
           id="button-send-code"
           :isDisabled="!readyToSendVerificationCode"
           :isLoading="isLoading"
-          class="h-12 w-32 shadow-sm font-bold text-white"
+          class="h-12 w-32 font-bold text-white shadow-sm"
         >
           {{ $t("sms.sendVerificationCode") }}
         </t-button>

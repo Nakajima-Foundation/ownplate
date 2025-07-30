@@ -9,7 +9,7 @@
 
     <!-- for owner before login | not implemented -->
     <div v-if="isAnonymous && false">
-      <div class="font-bold text-black/40 text-center mb-2">
+      <div class="mb-2 text-center font-bold text-black/40">
         {{ $t("lp.forRestaurantOwner") }}
       </div>
     </div>
@@ -78,7 +78,7 @@
     <div class="mt-2 text-center" v-if="false">
       <router-link :to="base_path + '/admin/user/signup'">
         <div
-          class="inline-flex h-12 w-56 items-center justify-center rounded-full bg-ownplate-yellow font-bold text-black/90"
+          class="bg-ownplate-yellow inline-flex h-12 w-56 items-center justify-center rounded-full font-bold text-black/90"
           @click="handleClose()"
         >
           <span>{{ $t("lp.signUpForFree") }}</span>
@@ -100,7 +100,7 @@
     </div>
 
     <div v-if="isAnonymous">
-      <div class="mt-4 font-bold text-black/40 text-center mb-2">
+      <div class="mt-4 mb-2 text-center font-bold text-black/40">
         {{ $t("lp.forRestaurantOwner") }}
       </div>
 

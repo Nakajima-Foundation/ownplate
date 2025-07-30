@@ -4,9 +4,9 @@
     <!-- Center Column -->
     <div class="column">
       <div class="text-center">
-        <router-link class="cursor-pointer h-9 rounded-full bg-black/5" to="">
-          <span class="pl-4 pr-4">
-            <span class="font-bold text-op-teal">{{
+        <router-link class="h-9 cursor-pointer rounded-full bg-black/5" to="">
+          <span class="pr-4 pl-4">
+            <span class="text-op-teal font-bold">{{
               $t("lp.moreDetails")
             }}</span>
           </span>

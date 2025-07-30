@@ -2,7 +2,7 @@
   <div v-if="dialog">
     <t-modal v-model:active="isVisible" width="488">
       <div
-        class="op-dialog my-6 mx-2 rounded-lg bg-white pt-6 pl-6 pr-6 pb-6 shadow-lg"
+        class="op-dialog mx-2 my-6 rounded-lg bg-white pt-6 pr-6 pb-6 pl-6 shadow-lg"
       >
         <div v-if="tips && tips.key">
           <DialogTips :tipsKey="tips.key" @close="close" />

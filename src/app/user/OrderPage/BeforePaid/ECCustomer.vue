@@ -24,10 +24,10 @@
     </div>
 
     <!-- conv zip to address -->
-    <div class="mb-2 mt-2">
+    <div class="mt-2 mb-2">
       <button @click="getAddress()" class="">
         <div
-          class="inline-flex h-9 items-center justify-center rounded-full bg-op-teal px-4"
+          class="bg-op-teal inline-flex h-9 items-center justify-center rounded-full px-4"
         >
           <div class="text-sm font-bold text-white">
             {{ $t("order.ec.searchAddressFromZip") }}
@@ -42,7 +42,7 @@
     >
       <button @click="updateAddress(address)" class="flex-item mr-2">
         <div
-          class="inline-flex h-9 items-center justify-center rounded-full bg-op-teal px-4"
+          class="bg-op-teal inline-flex h-9 items-center justify-center rounded-full px-4"
         >
           <div class="text-sm font-bold text-white">
             {{ $t("order.ec.select") }}

@@ -13,7 +13,7 @@
       <div class="text-center">
         <a :href="urlMenu" target="_blank">
           <div
-            class="inline-flex min-h-[36px] cursor-pointer items-center justify-center px-2 font-bold text-op-teal"
+            class="text-op-teal inline-flex min-h-[36px] cursor-pointer items-center justify-center px-2 font-bold"
           >
             {{ shopInfo.restaurantName }}
           </div>
@@ -22,7 +22,7 @@
       <!-- Download -->
       <div class="text-center" @click="download">
         <div
-          class="inline-flex min-h-[36px] cursor-pointer items-center justify-center px-2 font-bold text-op-teal"
+          class="text-op-teal inline-flex min-h-[36px] cursor-pointer items-center justify-center px-2 font-bold"
         >
           {{ $t("admin.qrcode.download") }}
         </div>

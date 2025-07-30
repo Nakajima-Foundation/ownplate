@@ -9,7 +9,7 @@
           </span>
         </div>
         <div
-          class="mr-4 text-right font-bold cursor-pointer"
+          class="mr-4 cursor-pointer text-right font-bold"
           v-if="partner.ask"
         >
           <a href="#" @click="openContact()">サポート問い合わせ</a>

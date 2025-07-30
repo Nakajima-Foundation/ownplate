@@ -21,9 +21,9 @@
       <div v-if="enable === false">
         <a
           :href="authUrl"
-          class="inline-flex h-12 items-center rounded-full border-2 border-op-teal px-6"
+          class="border-op-teal inline-flex h-12 items-center rounded-full border-2 px-6"
         >
-          <span class="text-base font-bold text-op-teal">連携する</span>
+          <span class="text-op-teal text-base font-bold">連携する</span>
         </a>
       </div>
       <div v-if="enable === true">
@@ -36,8 +36,8 @@
             :key="k"
             class="mt-2 rounded-lg bg-black/5"
           >
-            <div class="pl-4 pt-4">スマレジ登録店舗：{{ shop.storeName }}</div>
-            <div class="pl-4 pt-2">
+            <div class="pt-4 pl-4">スマレジ登録店舗：{{ shop.storeName }}</div>
+            <div class="pt-2 pl-4">
               連携する店舗：
               <o-select
                 v-model="selectedRestaurant[k]"
@@ -58,7 +58,7 @@
               </o-select>
             </div>
 
-            <div class="pl-4 pt-1">
+            <div class="pt-1 pl-4">
               在庫切れしきい値:
               <o-select v-model="outOfStockData[k]">
                 <option
@@ -71,7 +71,7 @@
               </o-select>
             </div>
 
-            <div class="pl-4 pt-1 pb-4">
+            <div class="pt-1 pb-4 pl-4">
               在庫復活しきい値:
               <o-select v-model="inStockData[k]">
                 <option
@@ -88,7 +88,7 @@
           <div class="mt-4">
             <button @click="saveShops" :disabled="isDuplicateError">
               <div
-                class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow-sm min-w-32"
+                class="bg-op-teal inline-flex h-12 min-w-32 items-center justify-center rounded-full px-6 shadow-sm"
               >
                 <span class="text-base font-bold text-white">{{
                   $t("editCommon.save")
@@ -104,7 +104,7 @@
             :key="k"
             class="mt-2 rounded-lg bg-black/5"
           >
-            <div class="pl-4 pt-4">
+            <div class="pt-4 pl-4">
               <div class="text-base">
                 スマレジ登録店舗：
                 <router-link :to="`/admin/smaregi/store/${shop.storeId}`">
@@ -117,7 +117,7 @@
                 (restaurantObj[selectedRestaurant[k]] || {}).restaurantName
               }}
             </div>
-            <div class="pl-4 pb-4">
+            <div class="pb-4 pl-4">
               在庫切れしきい値：
               {{ showStockThreshold((outOfStockData || {})[k]) }} /
               在庫復活しきい値：{{ showStockThreshold((inStockData || {})[k]) }}
@@ -126,7 +126,7 @@
           <div class="mt-4">
             <button @click="isEdit = true">
               <div
-                class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow-sm min-w-32"
+                class="bg-op-teal inline-flex h-12 min-w-32 items-center justify-center rounded-full px-6 shadow-sm"
               >
                 <span class="text-base font-bold text-white">{{
                   $t("editCommon.edit")

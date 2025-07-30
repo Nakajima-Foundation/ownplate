@@ -50,7 +50,7 @@
             <!-- Delete -->
             <div>
               <a
-                class="ml-4 inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4 cursor-pointer"
+                class="ml-4 inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-black/5 px-4"
                 @click.stop="handleDelete(lineUser.id)"
               >
                 <i class="material-icons text-lg text-red-700">delete</i>

@@ -2,13 +2,13 @@
   <button
     @click="downloadMenu()"
     :disabled="downloadSubmitting"
-    class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mx-2 mb-2"
+    class="mx-2 mb-2 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
   >
     <div
       class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
     >
-      <i class="material-icons mr-2 text-lg text-op-teal">menu_book</i>
-      <span class="text-sm font-bold text-op-teal">
+      <i class="material-icons text-op-teal mr-2 text-lg">menu_book</i>
+      <span class="text-op-teal text-sm font-bold">
         {{ $t("button.downloadMenu") }}</span
       >
     </div>

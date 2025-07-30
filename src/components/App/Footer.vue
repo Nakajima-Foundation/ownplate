@@ -1,7 +1,7 @@
 <template>
   <div class="mt-12 bg-[#616161]">
     <!-- Footer -->
-    <div class="mt-4 mx-4 inline-flex text-center">
+    <div class="mx-4 mt-4 inline-flex text-center">
       <!-- Facebook User Group -->
       <div class="inline-block px-1 pb-2" v-if="false">
         <a
@@ -46,7 +46,7 @@
     <div class="my-4 px-4">
       <div class="text-right">
         <a
-          class="inline-flex h-10 items-center justify-center rounded-full bg-white/10 pl-4 pr-2 cursor-pointer"
+          class="inline-flex h-10 cursor-pointer items-center justify-center rounded-full bg-white/10 pr-2 pl-4"
           @click="openLang()"
         >
           <i class="material-icons mr-2 text-lg text-white/50">language</i>
@@ -63,7 +63,7 @@
     </div>
     <!-- Language Popup-->
     <t-modal v-model:active="langPopup" width="488" scroll="keep">
-      <div class="my-6 mx-2 rounded-lg bg-white p-6 shadow-lg">
+      <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
         <div class="text-xl font-bold text-black/40">
           {{ $t("menu.selectLanguage") }}
         </div>
@@ -71,20 +71,20 @@
         <!-- Languages -->
         <div class="mt-4" v-for="(lang, lang_key) in languages" :key="lang_key">
           <a
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4 cursor-pointer"
+            class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-black/5 px-4"
             @click="changeLangAndClose(lang_key)"
             ><i
               class="material-icons mr-2 text-lg text-black/60"
               v-if="lang_key == language"
               >check</i
-            ><span class="text-sm font-bold text-op-teal">{{ lang }}</span></a
+            ><span class="text-op-teal text-sm font-bold">{{ lang }}</span></a
           >
         </div>
 
         <!-- Close -->
         <div class="mt-4 text-center">
           <a
-            class="inline-flex h-12 items-center justify-center rounded-full bg-black/5 cursor-pointer"
+            class="inline-flex h-12 cursor-pointer items-center justify-center rounded-full bg-black/5"
             style="min-width: 10rem"
             @click="closeLang()"
             ><span class="px-4 font-bold text-black/60"

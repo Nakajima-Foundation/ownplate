@@ -10,7 +10,7 @@
   >
     <div
       :style="{ width: width || 'auto' }"
-      class="w-full max-w-md max-h-[80vh] overflow-y-auto rounded-lg"
+      class="max-h-[80vh] w-full max-w-md overflow-y-auto rounded-lg"
     >
       <slot />
     </div>

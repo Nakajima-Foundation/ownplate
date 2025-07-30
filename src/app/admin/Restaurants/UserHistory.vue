@@ -93,12 +93,12 @@
         <button
           :disabled="last === null"
           @click="next"
-          class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          class="cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
         >
           <div
             class="inline-flex h-9 w-48 items-center justify-center rounded-full bg-black/5 px-4"
           >
-            <div class="text-sm font-bold text-op-teal">
+            <div class="text-op-teal text-sm font-bold">
               {{ $t("admin.order.more") }}
             </div>
           </div>

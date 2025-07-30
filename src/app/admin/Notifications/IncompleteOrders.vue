@@ -8,7 +8,7 @@ i
     <!-- Links for Incomplete Orders Date -->
     <div @click="closeNotificationSettings">
       <router-link
-        :class="`mb-2 mr-2 inline-flex h-9 items-center justify-center rounded-full px-4 ${
+        :class="`mr-2 mb-2 inline-flex h-9 items-center justify-center rounded-full px-4 ${
           index === 0 ? 'bg-red-700/10' : 'bg-black/5'
         }`"
         :to="`/admin/restaurants/${restaurantId}/orders?day=${moment(

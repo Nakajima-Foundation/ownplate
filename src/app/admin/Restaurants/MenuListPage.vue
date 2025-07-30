@@ -21,9 +21,9 @@
       <!-- No Menu or Too Many Menu-->
       <div
         v-if="(!existsMenu || menuCounter > 5) && isOwner"
-        class="mx-6 mt-4 rounded-lg border-2 border-op-teal p-4 pb-2 lg:mx-auto lg:max-w-2xl"
+        class="border-op-teal mx-6 mt-4 rounded-lg border-2 p-4 pb-2 lg:mx-auto lg:max-w-2xl"
       >
-        <div class="text-center text-sm font-bold text-op-teal">
+        <div class="text-op-teal text-center text-sm font-bold">
           {{ $t("editMenu.pleaseAddItem") }}
         </div>
 
@@ -90,7 +90,7 @@
 
       <!-- Add Group Title, Menu Item, and Download Menu -->
       <div
-        class="mx-6 mt-2 rounded-lg border-2 border-op-teal p-4 pb-2 lg:mx-auto lg:max-w-2xl"
+        class="border-op-teal mx-6 mt-2 rounded-lg border-2 p-4 pb-2 lg:mx-auto lg:max-w-2xl"
         v-if="isOwner"
       >
         <AddButton

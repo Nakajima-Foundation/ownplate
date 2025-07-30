@@ -51,7 +51,7 @@
 
         <!-- Item Details -->
         <a class="flow-root" @click="linkEdit">
-          <div class="float-right p-4 cursor-pointer">
+          <div class="float-right cursor-pointer p-4">
             <div v-if="image">
               <img
                 :src="image"
@@ -98,7 +98,7 @@
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
-            <i class="material-icons text-lg text-op-teal">arrow_upward</i>
+            <i class="material-icons text-op-teal text-lg">arrow_upward</i>
           </div>
         </button>
 
@@ -111,7 +111,7 @@
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
-            <i class="material-icons text-lg text-op-teal">arrow_downward</i>
+            <i class="material-icons text-op-teal text-lg">arrow_downward</i>
           </div>
         </button>
 
@@ -120,7 +120,7 @@
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
-            <i class="material-icons text-lg text-op-teal">queue</i>
+            <i class="material-icons text-op-teal text-lg">queue</i>
           </div>
         </button>
 

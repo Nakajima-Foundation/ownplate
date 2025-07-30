@@ -1,6 +1,6 @@
 <template>
   <div class="mx-6 mt-2 h-3/5">
-    <div ref="mapRef" class="w-full h-[50vh]"></div>
+    <div ref="mapRef" class="h-[50vh] w-full"></div>
   </div>
 </template>
 

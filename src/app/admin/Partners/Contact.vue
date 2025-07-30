@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="id === 'legssystem'" class="bg-white p-10 rounded-md">
+    <div v-if="id === 'legssystem'" class="rounded-md bg-white p-10">
       <pre>
 レグセントジョイラー株式会社
 企業・店舗ITソリューション/電子マネー推進事業部

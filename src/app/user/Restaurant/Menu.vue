@@ -3,10 +3,10 @@
     <!-- Item Card -->
     <div
       class="rounded-lg bg-white shadow-sm"
-      :class="totalQuantity > 0 ? 'border-2 border-op-teal' : ''"
+      :class="totalQuantity > 0 ? 'border-op-teal border-2' : ''"
     >
       <div @click="toggleMenuFlag()" class="flow-root cursor-pointer">
-        <div class="float-right p-4 w-48">
+        <div class="float-right w-48 p-4">
           <!-- Image -->
           <div v-if="smallimage" class="pb-2 text-center">
             <img
@@ -21,7 +21,7 @@
           <div class="w-full">
             <div
               v-if="isSoldOut"
-              class="flex h-9 w-24 items-center justify-center rounded-full bg-red-700/10 m-auto"
+              class="m-auto flex h-9 w-24 items-center justify-center rounded-full bg-red-700/10"
             >
               <div class="text-sm font-bold text-red-700">
                 {{ $t("sitemenu.soldOut") }}
@@ -30,22 +30,22 @@
             <div
               v-else
               @click.stop="pushQuantities(0)"
-              class="cardAdd flex h-9 w-36 items-center justify-center rounded-full bg-op-teal/10 m-auto"
+              class="cardAdd bg-op-teal/10 m-auto flex h-9 w-36 items-center justify-center rounded-full"
               :data-cart-product="item.id"
             >
-              <div class="text-sm font-bold text-op-teal">
+              <div class="text-op-teal text-sm font-bold">
                 {{ $t("sitemenu.add") }}
               </div>
             </div>
           </div>
           <div v-if="isSoldOutToday && !isSoldOut" class="w-full">
             <div
-              class="text-center text-sm font-bold text-red-600 bg-red-100 rounded-full mt-2 w-36 mx-auto"
+              class="mx-auto mt-2 w-36 rounded-full bg-red-100 text-center text-sm font-bold text-red-600"
             >
               {{ $t("sitemenu.soldOutToday") }}
             </div>
           </div>
-          <div v-if="false" class="text-xs mt-2">
+          <div v-if="false" class="mt-2 text-xs">
             {{ $t("sitemenu.pickupAvailableAfterToday") }}
           </div>
         </div>
@@ -53,7 +53,7 @@
         <div class="p-4">
           <!-- Item Name -->
           <a :id="`${item.id}`">
-            <div class="text-base font-bold align-middle">
+            <div class="align-middle text-base font-bold">
               {{ title }}
               <template v-if="shopInfo.enableLunchDinner">
                 /
@@ -271,23 +271,23 @@
                   <div>
                     <a
                       @click="pullQuantities(quantityKey)"
-                      class="removeCart inline-flex h-9 w-24 items-center justify-center rounded-full bg-red-700/10 cursor-pointer"
+                      class="removeCart inline-flex h-9 w-24 cursor-pointer items-center justify-center rounded-full bg-red-700/10"
                       :disabled="quantities[quantityKey] === 0"
                       :data-cart-product="item.id"
                     >
                       <i class="material-icons text-lg text-red-700">remove</i>
                     </a>
                   </div>
-                  <div class="flex-1 text-center text-3xl text-op-teal">
+                  <div class="text-op-teal flex-1 text-center text-3xl">
                     {{ quantities[quantityKey] }}
                   </div>
                   <div>
                     <a
                       @click="pushQuantities(quantityKey)"
-                      class="cardAdd inline-flex h-9 w-24 items-center justify-center rounded-full bg-op-teal/10 cursor-pointer"
+                      class="cardAdd bg-op-teal/10 inline-flex h-9 w-24 cursor-pointer items-center justify-center rounded-full"
                       :data-cart-product="item.id"
                     >
-                      <i class="material-icons text-lg text-op-teal">add</i>
+                      <i class="material-icons text-op-teal text-lg">add</i>
                     </a>
                   </div>
                 </div>
@@ -313,8 +313,8 @@
                   @click="pushItem"
                   class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                 >
-                  <i class="material-icons mr-2 text-lg text-op-teal">add</i>
-                  <span class="text-sm font-bold text-op-teal">{{
+                  <i class="material-icons text-op-teal mr-2 text-lg">add</i>
+                  <span class="text-op-teal text-sm font-bold">{{
                     $t("sitemenu.addDifferentOptionsItem")
                   }}</span>
                 </a>
@@ -332,7 +332,7 @@
       scroll="keep"
       @dismissed="closeImage"
     >
-      <div class="sm:mx-6 rounded-lg bg-white p-5">
+      <div class="rounded-lg bg-white p-5 sm:mx-6">
         <img
           :src="image"
           class="rounded-lg shadow-lg"
@@ -391,16 +391,16 @@
               <i class="material-icons text-lg text-red-700">remove</i>
             </a>
           </div>
-          <div class="flex-1 text-center text-3xl text-op-teal">
+          <div class="text-op-teal flex-1 text-center text-3xl">
             {{ quantities[0] }}
           </div>
           <div>
             <a
               @click="pushQuantities(0)"
-              class="cardAdd inline-flex h-9 w-24 items-center justify-center rounded-full bg-op-teal/10"
+              class="cardAdd bg-op-teal/10 inline-flex h-9 w-24 items-center justify-center rounded-full"
               :data-cart-product="item.id"
             >
-              <i class="material-icons text-lg text-op-teal">add</i>
+              <i class="material-icons text-op-teal text-lg">add</i>
             </a>
           </div>
         </div>

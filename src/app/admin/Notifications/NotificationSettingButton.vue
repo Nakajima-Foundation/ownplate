@@ -1,12 +1,12 @@
 <template>
   <div>
     <a
-      class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-3 cursor-pointer"
+      class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-black/5 px-3"
       @click="openNotificationSettings()"
     >
-      <i class="material-icons text-lg text-op-teal xs:mr-1">notifications</i>
+      <i class="material-icons text-op-teal xs:mr-1 text-lg">notifications</i>
       <div
-        class="invisible -mr-2 text-sm font-bold text-op-teal xs:visible xs:mr-2"
+        class="text-op-teal xs:visible xs:mr-2 invisible -mr-2 text-sm font-bold"
       >
         {{ $t("admin.order.notification") }}
       </div>

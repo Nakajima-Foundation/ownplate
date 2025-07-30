@@ -100,7 +100,7 @@ export default defineComponent({
   @apply my-4;
 }
 ::v-deep(ul) {
-  @apply my-1 text-sm text-black/60 list-disc;
+  @apply my-1 list-disc text-sm text-black/60;
 }
 ::v-deep(ol) {
   @apply my-2 text-sm text-black/60;

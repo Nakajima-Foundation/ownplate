@@ -8,7 +8,7 @@
         <div
           class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
         >
-          <span class="text-sm font-bold text-op-teal">{{
+          <span class="text-op-teal text-sm font-bold">{{
             $t("admin.messages.childInvitationMessage2")
           }}</span>
         </div> </router-link

@@ -129,7 +129,7 @@
               <div class="text-sm font-bold text-black/30">
                 {{ $t("transactionsAct.payment") }}
               </div>
-              <ul class="ml-5 mt-1 list-outside list-disc">
+              <ul class="mt-1 ml-5 list-outside list-disc">
                 <li v-if="showPayment">
                   {{ $t("transactionsAct.paymentDescriptionCard") }}
                 </li>
@@ -164,7 +164,7 @@
               <div class="text-sm font-bold text-black/30">
                 {{ $t("transactionsAct.cancellation") }}
               </div>
-              <ul class="ml-5 mt-1 list-outside list-disc">
+              <ul class="mt-1 ml-5 list-outside list-disc">
                 <li>{{ $t("transactionsAct.cancellationDescription1") }}</li>
                 <li>
                   {{ $t("transactionsAct.cancellationDescription4") }}
@@ -219,7 +219,7 @@
             class="inline-flex h-12 items-center justify-center rounded-full bg-black/5 px-6"
             style="min-width: 8rem"
           >
-            <div class="text-base font-bold text-black/60 cursor-pointer">
+            <div class="cursor-pointer text-base font-bold text-black/60">
               {{ $t(closeButton) }}
             </div>
           </a>

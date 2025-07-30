@@ -4,7 +4,7 @@
     <div class="columns is-gapless">
       <!-- Center Column -->
       <div class="column">
-        <div class="ml-6 mr-4 mt-4">
+        <div class="mt-4 mr-4 ml-6">
           <back-button :url="backUrl" />
 
           <h2>All Orders</h2>
@@ -60,11 +60,11 @@
             :fileName="fileName"
           >
             <button class="mt-4 h-9 rounded-full">
-              <span class="pl-4 pr-4">
-                <i class="material-icons mr-2 text-2xl! text-op-teal"
+              <span class="pr-4 pl-4">
+                <i class="material-icons text-op-teal mr-2 text-2xl!"
                   >save_alt</i
                 >
-                <span class="font-bold text-op-teal">{{
+                <span class="text-op-teal font-bold">{{
                   $t("admin.report.download-csv-all")
                 }}</span>
               </span>

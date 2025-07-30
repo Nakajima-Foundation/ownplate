@@ -3,7 +3,7 @@
     <div>
       <button @click="conv">
         <div
-          class="inline-flex h-9 items-center justify-center rounded-full bg-op-teal px-4"
+          class="bg-op-teal inline-flex h-9 items-center justify-center rounded-full px-4"
         >
           <div class="text-sm font-bold text-white">
             {{ $t("delivery.setTheAddressInTheDeliveryLocation") }}

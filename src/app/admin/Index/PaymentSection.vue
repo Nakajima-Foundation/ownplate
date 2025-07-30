@@ -14,7 +14,7 @@
         class="mb-6 border-b-2 border-solid border-black/10 pb-4"
       >
         <div class="mt-2 rounded-lg bg-red-700/5 px-4 py-2">
-          <span class="text-sm font-bold leading-none text-red-700">
+          <span class="text-sm leading-none font-bold text-red-700">
             {{ $t("admin.payments.required") }}
           </span>
         </div>
@@ -38,7 +38,7 @@
           <div class="mt-2 text-center">
             <a
               @click="handleLinkStripe"
-              class="cursor-pointer inline-flex h-12 items-center rounded-full bg-op-teal px-8 shadow-sm"
+              class="bg-op-teal inline-flex h-12 cursor-pointer items-center rounded-full px-8 shadow-sm"
               ><span class="text-base font-bold text-white">{{
                 $t("admin.payments.connectStripe")
               }}</span></a
@@ -56,8 +56,8 @@
             <a
               :href="dashboard"
               target="stripe"
-              class="inline-flex h-12 items-center rounded-full border-2 border-op-teal px-6"
-              ><span class="text-base font-bold text-op-teal">{{
+              class="border-op-teal inline-flex h-12 items-center rounded-full border-2 px-6"
+              ><span class="text-op-teal text-base font-bold">{{
                 $t("admin.payments.openDashboard")
               }}</span></a
             >
@@ -66,7 +66,7 @@
           <div class="mt-4 text-center">
             <a
               @click="handlePaymentAccountDisconnect"
-              class="cursor-pointer inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
+              class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-black/5 px-4"
             >
               <i class="material-icons mr-2 text-lg text-red-700">link_off</i>
               <span class="text-sm font-bold text-red-700">{{

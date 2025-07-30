@@ -109,7 +109,7 @@
           </div>
 
           <!-- Item Price -->
-          <div class="rounded-lg border border-black/10 bg-white p-2 mt-4">
+          <div class="mt-4 rounded-lg border border-black/10 bg-white p-2">
             <span class="font-bold">{{ $t("editMenu.priceSettings") }}</span>
             <div class="mt-4">
               <div class="pb-2 text-sm font-bold">
@@ -228,13 +228,13 @@
             </div>
           </div>
 
-          <div class="rounded-sm border border-black/10 bg-white p-2 mt-4">
+          <div class="mt-4 rounded-sm border border-black/10 bg-white p-2">
             <span class="font-bold">{{
               $t("editMenu.availableDayTimeSettings")
             }}</span>
             <!-- Lunch  or Dinner -->
             <div
-              class="mt-4 text-sm font-bold cursor-pointer"
+              class="mt-4 cursor-pointer text-sm font-bold"
               @click="openTips('lunchDinner')"
             >
               {{ $t("editMenu.lunchDinner") }}
@@ -265,7 +265,7 @@
 
             <!-- exclusionDate/Time -->
             <div
-              class="mt-4 text-sm font-bold cursor-pointer"
+              class="mt-4 cursor-pointer text-sm font-bold"
               @click="openTips('exclusionDateTime')"
             >
               {{ $t("editMenu.exclusionDateTime") }}
@@ -370,10 +370,10 @@
 
             <div class="mt-4 flex">
               <!-- ToDo 以下のボタンを押すと写真選択のウィンドウが立ち上がり、複数選択&アップロードできる -->
-              <button class="cursor-pointer mr-2">
+              <button class="mr-2 cursor-pointer">
                 <!-- ToDo 写真が4枚アップロード済みの時はボタンをグレーアウト、"text-op-teal" → "text-black/20" を適用 -->
                 <div
-                  class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4 text-op-teal"
+                  class="text-op-teal inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                 >
                   <i class="material-icons mr-2 text-lg">add</i>
                   <div class="text-sm font-bold">
@@ -414,25 +414,25 @@
                 <div :key="key" class="mb-2 flex">
                   <button @click="positionDown(key)" class="cursor-pointer">
                     <div
-                      class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4 mr-2"
+                      class="mr-2 inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                       v-if="key !== menuInfo.itemOptionCheckbox.length - 1"
                     >
-                      <i class="material-icons text-lg text-op-teal"
+                      <i class="material-icons text-op-teal text-lg"
                         >arrow_downward</i
                       >
                     </div>
                   </button>
                   <button @click="positionUp(key)" class="cursor-pointer">
                     <div
-                      class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4 mr-2"
+                      class="mr-2 inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                       v-if="key !== 0"
                     >
-                      <i class="material-icons text-lg text-op-teal"
+                      <i class="material-icons text-op-teal text-lg"
                         >arrow_upward</i
                       >
                     </div>
                   </button>
-                  <div class="flex-1 mr-2">
+                  <div class="mr-2 flex-1">
                     <o-input
                       v-model="menuInfo.itemOptionCheckbox[key]"
                       :placeholder="$t('editMenu.enterItemOption')"
@@ -498,8 +498,8 @@
                 <div
                   class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                 >
-                  <i class="material-icons mr-2 text-lg text-op-teal">add</i>
-                  <div class="text-sm font-bold text-op-teal">
+                  <i class="material-icons text-op-teal mr-2 text-lg">add</i>
+                  <div class="text-op-teal text-sm font-bold">
                     {{ $t("editMenu.itemAddOption") }}
                   </div>
                 </div>
@@ -530,7 +530,7 @@
                       @click="editCategory('category1')"
                     >
                       <div class="inline-flex items-center justify-center">
-                        <div class="text-sm font-bold text-op-teal">
+                        <div class="text-op-teal text-sm font-bold">
                           {{ $t("editMenu.editCategory1") }}
                         </div>
                       </div>
@@ -565,7 +565,7 @@
                       @click="editCategory('category2')"
                     >
                       <div class="inline-flex items-center justify-center">
-                        <div class="text-sm font-bold text-op-teal">
+                        <div class="text-op-teal text-sm font-bold">
                           {{ $t("editMenu.editCategory2") }}
                         </div>
                       </div>
@@ -666,8 +666,8 @@
             <div
               class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
             >
-              <i class="material-icons mr-2 text-lg text-op-teal"> queue </i>
-              <span class="text-sm font-bold text-op-teal">{{
+              <i class="material-icons text-op-teal mr-2 text-lg"> queue </i>
+              <span class="text-op-teal text-sm font-bold">{{
                 $t("editCommon.copyMenu")
               }}</span>
             </div>

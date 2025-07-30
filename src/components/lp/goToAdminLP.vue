@@ -1,23 +1,23 @@
 <template>
-  <div class="pt-10 px-6">
+  <div class="px-6 pt-10">
     <div
-      class="bg-white rounded-lg px-5 sm:py-6 pb-12 pt-6 px-auto sm:flex items-center justify-center text-center"
+      class="px-auto items-center justify-center rounded-lg bg-white px-5 pt-6 pb-12 text-center sm:flex sm:py-6"
     >
       <div>
         <img
-          class="object-cover w-40 sm:w-56"
+          class="w-40 object-cover sm:w-56"
           src="/images/top/restaurant_icon.png"
         />
       </div>
 
-      <div class="mt-8 sm:mt-0 md:ml-16 sm:ml-8">
+      <div class="mt-8 sm:mt-0 sm:ml-8 md:ml-16">
         <div class="text-xl font-bold text-black opacity-90">
           {{ $t("lp.forOwnerToOpen") }}
         </div>
 
         <router-link to="/">
           <div
-            class="mt-4 inline-flex h-16 items-center rounded-full bg-ownplate-yellow px-5 sm:px-6 shadow-sm hover:bg-ownplate-yellow/80"
+            class="bg-ownplate-yellow hover:bg-ownplate-yellow/80 mt-4 inline-flex h-16 items-center rounded-full px-5 shadow-sm sm:px-6"
           >
             <span class="text-xl font-bold text-black opacity-90">
               {{ $t("lp.clickHereToSignup") }}

@@ -9,9 +9,9 @@
         <div class="text-xl font-bold text-black/30" if v-if="title.name == ''">
           {{ $t("editTitle.empty") }}
         </div>
-        <div class="text-sm font-bold text-black/30 flex w-full" v-else>
+        <div class="flex w-full text-sm font-bold text-black/30" v-else>
           {{ title.name }}
-          <div class="text-right flex-1">
+          <div class="flex-1 text-right">
             <o-checkbox
               @click="(e) => updateTitleLunchDinner(e, 'lunch')"
               v-model="title.availableLunch"
@@ -36,12 +36,12 @@
         <button
           :disabled="position === 'first' || isEdit"
           @click="positionUp"
-          class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          class="cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
         >
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
-            <i class="material-icons text-lg text-op-teal">arrow_upward</i>
+            <i class="material-icons text-op-teal text-lg">arrow_upward</i>
           </div>
         </button>
 
@@ -49,32 +49,32 @@
         <button
           :disabled="position === 'last' || isEdit"
           @click="positionDown"
-          class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          class="cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
         >
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
-            <i class="material-icons text-lg text-op-teal">arrow_downward</i>
+            <i class="material-icons text-op-teal text-lg">arrow_downward</i>
           </div>
         </button>
 
         <!-- Duplicate -->
         <button
           @click="forkItem"
-          class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          class="cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
           :disabled="isEdit"
         >
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
-            <i class="material-icons text-lg text-op-teal">queue</i>
+            <i class="material-icons text-op-teal text-lg">queue</i>
           </div>
         </button>
 
         <!-- Delete -->
         <button
           @click="deleteItem"
-          class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          class="cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
           :disabled="isEdit"
         >
           <div

@@ -69,7 +69,7 @@
           <div
             class="inline-flex h-9 w-48 items-center justify-center rounded-full bg-black/5 px-4"
           >
-            <div class="text-sm font-bold text-op-teal">
+            <div class="text-op-teal text-sm font-bold">
               {{ $t("admin.order.more") }}
             </div>
           </div>
@@ -82,7 +82,7 @@
           <div
             class="inline-flex h-9 w-48 items-center justify-center rounded-full bg-black/5 px-4"
           >
-            <div class="text-sm font-bold text-op-teal">
+            <div class="text-op-teal text-sm font-bold">
               {{ $t("admin.order.all") }}
             </div>
           </div>

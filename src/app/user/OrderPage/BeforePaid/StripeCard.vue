@@ -19,11 +19,11 @@
         <div id="card-element"></div>
       </div>
 
-      <div v-if="!stripeJCB" class="text-sm font-bold text-black/60 mt-2">
+      <div v-if="!stripeJCB" class="mt-2 text-sm font-bold text-black/60">
         {{ $t("order.no_jcb") }}
       </div>
 
-      <div v-if="isPayingError" class="text-center font-bold text-red-600 mt-2">
+      <div v-if="isPayingError" class="mt-2 text-center font-bold text-red-600">
         {{ $t("order.card_error") }}
       </div>
 
@@ -34,11 +34,11 @@
         <!-- CVC Button -->
         <div class="text-right">
           <a
-            class="inline-flex items-center justify-center cursor-pointer"
+            class="inline-flex cursor-pointer items-center justify-center"
             @click="openCVC()"
           >
-            <i class="material-icons mr-1 text-lg text-op-teal">help_outline</i>
-            <span class="text-sm font-bold text-op-teal">{{
+            <i class="material-icons text-op-teal mr-1 text-lg">help_outline</i>
+            <span class="text-op-teal text-sm font-bold">{{
               $t("order.whatsCVC")
             }}</span>
           </a>

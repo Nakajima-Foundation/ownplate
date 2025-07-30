@@ -3,11 +3,11 @@
     <!-- Sign In as a User -->
     <div class="mt-2 text-center">
       <a
-        class="inline-flex h-16 items-center justify-center rounded-full border-2 border-op-teal px-6 cursor-pointer"
+        class="border-op-teal inline-flex h-16 cursor-pointer items-center justify-center rounded-full border-2 px-6"
         @click.prevent="handleSignIn"
       >
-        <i class="material-icons mr-2 text-2xl text-op-teal">local_mall</i>
-        <div class="text-lg font-bold text-op-teal">
+        <i class="material-icons text-op-teal mr-2 text-2xl">local_mall</i>
+        <div class="text-op-teal text-lg font-bold">
           <!-- omochikaeri -->
           {{ $t("profile.signIn") }}
         </div>
@@ -18,10 +18,10 @@
     <div class="mt-4 text-center">
       <router-link to="/admin/user/signin">
         <div
-          class="inline-flex h-16 items-center justify-center rounded-full border-2 border-op-teal px-6"
+          class="border-op-teal inline-flex h-16 items-center justify-center rounded-full border-2 px-6"
         >
-          <i class="material-icons mr-2 text-2xl text-op-teal">store</i>
-          <div class="text-lg font-bold text-op-teal">
+          <i class="material-icons text-op-teal mr-2 text-2xl">store</i>
+          <div class="text-op-teal text-lg font-bold">
             {{ $t("profile.signInRestaurant") }}
           </div>
         </div>

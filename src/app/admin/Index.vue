@@ -80,7 +80,7 @@
         <div
           v-for="(message, k) in messages"
           :key="k"
-          class="rounded-lg border-2 border-solid border-op-teal p-6"
+          class="border-op-teal rounded-lg border-2 border-solid p-6"
         >
           <MessageCard :message="message" />
         </div>
@@ -114,7 +114,7 @@
               class="rounded-lg border-2 border-solid border-red-700 bg-white p-6"
             >
               <a name="addRestaurant" />
-              <div class="text-center text-base font-bold text-op-teal">
+              <div class="text-op-teal text-center text-base font-bold">
                 {{ $t("admin.addYourRestaurant") }}
               </div>
 
@@ -123,8 +123,8 @@
                   <div
                     class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                   >
-                    <i class="material-icons mr-2 text-lg text-op-teal">add</i>
-                    <span class="text-sm font-bold text-op-teal">{{
+                    <i class="material-icons text-op-teal mr-2 text-lg">add</i>
+                    <span class="text-op-teal text-sm font-bold">{{
                       $t("admin.addNewRestaurant")
                     }}</span>
                   </div>
@@ -139,7 +139,7 @@
             <div v-if="isOwner && restaurantLists.length > 1" class="mb-2">
               <router-link to="/admin/orders">
                 <div
-                  class="flex h-14 items-center justify-center rounded-full bg-black/5 px-4 text-op-teal"
+                  class="text-op-teal flex h-14 items-center justify-center rounded-full bg-black/5 px-4"
                 >
                   <span class="text-base font-bold">{{
                     $t("admin.viewAllOrders")
@@ -185,8 +185,8 @@
                 <div
                   class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                 >
-                  <i class="material-icons mr-2 text-lg text-op-teal">add</i>
-                  <span class="text-sm font-bold text-op-teal">{{
+                  <i class="material-icons text-op-teal mr-2 text-lg">add</i>
+                  <span class="text-op-teal text-sm font-bold">{{
                     $t("admin.addNewRestaurant")
                   }}</span>
                 </div>
@@ -218,7 +218,7 @@
       </div>
       <!-- End of Right Section -->
     </div>
-    <div class="mt-2 bg-ownplate-yellow p-4">
+    <div class="bg-ownplate-yellow mt-2 p-4">
       <!-- Footer -->
       <IndexFooter />
     </div>

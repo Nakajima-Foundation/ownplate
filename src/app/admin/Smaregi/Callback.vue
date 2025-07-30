@@ -8,7 +8,7 @@
     </div>
     <Loading v-if="isValidating" />
     <div v-if="error">
-      <div class="flex space-x-4 mt-4">
+      <div class="mt-4 flex space-x-4">
         <back-button url="/admin/restaurants/" />
       </div>
       <div class="mt-4 text-center text-xl font-bold text-black/40">

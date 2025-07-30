@@ -24,7 +24,7 @@
         </div>
 
         <!-- Date -->
-        <div class="ml-6 mt-4 sm:ml-4">
+        <div class="mt-4 ml-6 sm:ml-4">
           <o-select v-model="dayIndex">
             <option
               v-for="day in lastSeveralDays"
@@ -60,7 +60,7 @@
           ><div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
-            <div class="text-sm font-bold text-op-teal">
+            <div class="text-op-teal text-sm font-bold">
               {{ $t("admin.order.history") }}
             </div>
           </div></router-link

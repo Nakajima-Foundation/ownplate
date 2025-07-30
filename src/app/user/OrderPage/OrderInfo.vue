@@ -56,7 +56,7 @@
       <!-- Promotion discount for after pay -->
       <div
         v-if="orderInfo.promotionId"
-        class="-mx-2 mt-2 flex bg-green-600/10 px-2 py-1 rounded-md"
+        class="-mx-2 mt-2 flex rounded-md bg-green-600/10 px-2 py-1"
       >
         <div class="flex-1">
           <div class="text-base">
@@ -150,7 +150,7 @@
         <div v-if="isTipEditable">
           <div>
             <input
-              class="w-full p-2 border-inherit border-2 border-black/10 rounded-lg"
+              class="w-full rounded-lg border-2 border-black/10 border-inherit p-2"
               type="number"
               :placeholder="$t('order.maxTip', { max: regionTip.max })"
               :step="tipStep"
@@ -162,7 +162,7 @@
           <div class="mt-2">
             <button
               v-for="ratio in regionTip.choices"
-              class="cursor-pointer mr-2 mb-2"
+              class="mr-2 mb-2 cursor-pointer"
               @click="updateTip(ratio)"
               :key="ratio"
             >
@@ -202,7 +202,7 @@
     <!-- promotion discount for before pay -->
     <div
       v-if="enablePromotion"
-      class="bg-green-600/10 p-2 -mx-2 rounded-lg mt-2"
+      class="-mx-2 mt-2 rounded-lg bg-green-600/10 p-2"
     >
       <!-- promotion discount -->
       <template v-if="promotion?.paymentRestrictions">

@@ -3,10 +3,10 @@
     <!-- Share  Buttons -->
     <a
       @click="openShare()"
-      class="inline-flex items-center justify-center cursor-pointer"
+      class="inline-flex cursor-pointer items-center justify-center"
     >
-      <i class="material-icons mr-2 text-lg text-op-teal">launch</i>
-      <div class="text-sm font-bold text-op-teal">
+      <i class="material-icons text-op-teal mr-2 text-lg">launch</i>
+      <div class="text-op-teal text-sm font-bold">
         {{ $t("shopInfo.share") }}
       </div>
     </a>
@@ -28,10 +28,10 @@
           <div class="flex-1">
             <span @click="copyClipboard(url)" class="cursor-pointer">
               <div class="inline-flex items-center justify-center">
-                <i class="material-icons mr-2 text-lg text-op-teal"
+                <i class="material-icons text-op-teal mr-2 text-lg"
                   >file_copy</i
                 >
-                <div class="text-sm font-bold text-op-teal">
+                <div class="text-op-teal text-sm font-bold">
                   {{ $t(isMenu ? "shopInfo.copyMenuUrl" : "shopInfo.copyUrl") }}
                 </div>
               </div>

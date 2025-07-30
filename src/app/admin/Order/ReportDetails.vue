@@ -34,8 +34,8 @@
         <div
           class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
         >
-          <i class="material-icons mr-2 text-lg text-op-teal">save_alt</i>
-          <div class="text-sm font-bold text-op-teal">
+          <i class="material-icons text-op-teal mr-2 text-lg">save_alt</i>
+          <div class="text-op-teal text-sm font-bold">
             {{ $t(buttonTitle) }}
           </div>
         </div>

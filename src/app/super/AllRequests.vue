@@ -1,5 +1,5 @@
 <template>
-  <section class="mx-auto max-w-full px-6 pb-12 pt-4">
+  <section class="mx-auto max-w-full px-6 pt-4 pb-12">
     <back-button url="/s" />
     <h2>All Requests</h2>
     <table>
@@ -15,7 +15,7 @@
         <td style="width: 50%">
           <router-link
             :to="`/r/${request.id}`"
-            class="text-sm font-bold text-op-teal"
+            class="text-op-teal text-sm font-bold"
           >
             {{ (restaurantsObj[request.id] || {}).restaurantName }}
           </router-link>

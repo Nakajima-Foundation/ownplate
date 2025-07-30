@@ -37,7 +37,7 @@
         <button
           v-if="just_paid"
           @click="handleCancelPayment"
-          class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          class="cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
           :disabled="isCancelling"
         >
           <div class="inline-flex items-center justify-center">
@@ -149,9 +149,9 @@
         <div class="mt-2 text-center">
           <router-link :to="menuPagePath">
             <div
-              class="inline-flex h-12 items-center justify-center rounded-full border-2 border-op-teal px-6 cursor-pointer"
+              class="border-op-teal inline-flex h-12 cursor-pointer items-center justify-center rounded-full border-2 px-6"
             >
-              <div class="text-base font-bold text-op-teal">
+              <div class="text-op-teal text-base font-bold">
                 {{ $t("order.menu") }}
               </div>
             </div>

@@ -13,7 +13,7 @@
               {{ part.name }}
             </span>
           </div>
-          <div class="text-right font-bold cursor-pointer" v-if="part.ask">
+          <div class="cursor-pointer text-right font-bold" v-if="part.ask">
             <a href="#" @click="openContact()">サポート問い合わせ</a>
           </div>
         </div>

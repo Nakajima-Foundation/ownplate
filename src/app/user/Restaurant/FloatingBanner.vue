@@ -2,13 +2,13 @@
   <!-- for Promotion -->
   <div>
     <div
-      class="mb-2 border-4 border-op-teal text-op-teal text-center font-bold fixed left-4 right-4 mx-auto max-w-lg cursor-pointer items-center rounded-full bg-white p-3 shadow-lg bottom-3 z-30 sm:bottom-8"
+      class="border-op-teal text-op-teal fixed right-4 bottom-3 left-4 z-30 mx-auto mb-2 max-w-lg cursor-pointer items-center rounded-full border-4 bg-white p-3 text-center font-bold shadow-lg sm:bottom-8"
       @click="promotionVisible = true"
     >
       <div class="text-xs">
         <PromotionMessage6 :promotion="promotion" />
       </div>
-      <div class="text-lg mt-0.5 -mb-0.5">
+      <div class="mt-0.5 -mb-0.5 text-lg">
         <PromotionMessage5 :promotion="promotion" />
       </div>
     </div>
@@ -18,17 +18,17 @@
       scroll="keep"
       @dismissed="promotionVisible = false"
     >
-      <div class="rounded-lg bg-white shadow-lg border-op-teal border-2 h-full">
-        <div class="text-center bg-op-teal text-white font-bold py-1">
+      <div class="border-op-teal h-full rounded-lg border-2 bg-white shadow-lg">
+        <div class="bg-op-teal py-1 text-center font-bold text-white">
           {{ $t("promotion.heading") }}
         </div>
         <div v-for="(v, k) in possiblePromotions" :key="k" class="px-6">
           <!-- TODO ys64 remove text-opacity-40 -->
-          <div class="mt-5 text-lg font-bold text-opacity-40">
+          <div class="text-opacity-40 mt-5 text-lg font-bold">
             {{ v.promotionName }}
           </div>
 
-          <div class="font-bold mt-2 text-op-teal">
+          <div class="text-op-teal mt-2 font-bold">
             <template v-if="v.discountMethod === 'amount'"
               >{{ $t("promotion.fromAmountSpent") }}
               <span class="text-xl">¥{{ v.discountValue }}</span>
@@ -42,7 +42,7 @@
           </div>
 
           <div v-if="v.hasTerm">
-            <div class="text-sm text-black/40 font-bold mt-3">
+            <div class="mt-3 text-sm font-bold text-black/40">
               {{ $t("promotion.period") }}
             </div>
             <div class="mt-0.5">
@@ -54,10 +54,10 @@
             </div>
           </div>
 
-          <div class="text-sm text-black/40 font-bold mt-2">
+          <div class="mt-2 text-sm font-bold text-black/40">
             {{ $t("promotion.terms") }}
           </div>
-          <ul class="list-disc list-outside mt-0.5">
+          <ul class="mt-0.5 list-outside list-disc">
             <li class="ml-5">
               ¥{{ v.discountThreshold }}{{ $t("promotion.applied") }}
             </li>
@@ -70,18 +70,18 @@
             </li>
           </ul>
 
-          <div class="border border-black/10 mt-5"></div>
+          <div class="mt-5 border border-black/10"></div>
         </div>
 
-        <div class="bg-black/5 p-2 text-xs m-6 rounded-lg">
+        <div class="m-6 rounded-lg bg-black/5 p-2 text-xs">
           <div class="font-bold">
             {{ $t("promotion.notes") }}
           </div>
-          <ul class="list-disc list-outside">
-            <li class="ml-4 mt-0.5">
+          <ul class="list-outside list-disc">
+            <li class="mt-0.5 ml-4">
               {{ $t("promotion.notes1") }}
             </li>
-            <li class="ml-4 mt-0.5">
+            <li class="mt-0.5 ml-4">
               {{ $t("promotion.notes2") }}
             </li>
           </ul>

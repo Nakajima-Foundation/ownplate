@@ -38,7 +38,7 @@
           </t-button>
         </div>
 
-        <div class="rounded-lg bg-black/5 p-4 mt-4">
+        <div class="mt-4 rounded-lg bg-black/5 p-4">
           <div class="text-sm font-bold">
             <o-checkbox
               rootClass="base-o-input-root"
@@ -95,10 +95,10 @@
               ></div>
             </div>
             <div class="mt-2 flex">
-              <span class="flex-item mt-auto mb-auto mr-2 inline-block">
+              <span class="flex-item mt-auto mr-2 mb-auto inline-block">
                 {{ $t("delivery.deliveryRange") }}:
               </span>
-              <span class="flex-item mt-auto mb-auto mr-2 inline-block">
+              <span class="flex-item mt-auto mr-2 mb-auto inline-block">
                 <input
                   class="base-input"
                   v-model="radius"
@@ -146,7 +146,7 @@
               v-model="enableDeliveryThreshold"
               :disabled="!enableDelivery"
             />
-            <span class="flex-item mt-auto mb-auto mr-2 inline-block">
+            <span class="flex-item mt-auto mr-2 mb-auto inline-block">
               <input
                 class="base-input"
                 v-model="deliveryThreshold"
@@ -166,10 +166,10 @@
             {{ $t("delivery.deliveryFeeSetting") }}
           </div>
           <div class="mt-2 flex">
-            <span class="flex-item mt-auto mb-auto mr-2 inline-block font-bold">
+            <span class="flex-item mt-auto mr-2 mb-auto inline-block font-bold">
               {{ $t("delivery.deliveryFee") }}:
             </span>
-            <span class="flex-item mt-auto mb-auto mr-2 inline-block">
+            <span class="flex-item mt-auto mr-2 mb-auto inline-block">
               <input
                 class="base-input"
                 v-model="deliveryFee"
@@ -189,10 +189,10 @@
               v-model="enableDeliveryFree"
               :disabled="!enableDelivery"
             />
-            <span class="flex-item mt-auto mb-auto mr-2 inline-block font-bold">
+            <span class="flex-item mt-auto mr-2 mb-auto inline-block font-bold">
               {{ $t("delivery.deliveryFreeThreshold") }}:
             </span>
-            <span class="flex-item mt-auto mb-auto mr-2 inline-block">
+            <span class="flex-item mt-auto mr-2 mb-auto inline-block">
               <input
                 class="base-input"
                 v-model="deliveryFreeThreshold"
@@ -232,7 +232,7 @@
           <a
             href="https://docs.omochikaeri.com/manuals/delivery.pdf"
             target="_blank"
-            class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
+            class="text-op-teal inline-flex items-center justify-center text-sm font-bold"
           >
             {{ $t("menu.deliveryManualLink") }}
           </a>
@@ -490,7 +490,7 @@ export default defineComponent({
 @reference "../../../assets/css/main.css";
 
 .base-input {
-  @apply bg-white dark:bg-black dark:text-gray-200 rounded-lg border border-black/20 px-4 py-1;
+  @apply rounded-lg border border-black/20 bg-white px-4 py-1 dark:bg-black dark:text-gray-200;
 }
 
 .base-o-input-root {

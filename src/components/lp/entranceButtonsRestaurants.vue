@@ -1,6 +1,6 @@
 <template>
   <!-- For Restaurants -->
-  <div class="rounded-lg bg-op-teal pt-6 lg:col-span-2">
+  <div class="bg-op-teal rounded-lg pt-6 lg:col-span-2">
     <i class="material-icons text-7xl opacity-60">store</i>
     <div class="text-sm font-bold text-white">
       {{ $t("lp.forOwner") }}
@@ -25,7 +25,7 @@
           target="_blank"
         >
           <div
-            class="inline-flex h-16 items-center rounded-full bg-ownplate-yellow px-8 shadow-sm hover:bg-ownplate-yellow/30"
+            class="bg-ownplate-yellow hover:bg-ownplate-yellow/30 inline-flex h-16 items-center rounded-full px-8 shadow-sm"
           >
             <span class="text-xl font-bold text-black opacity-60">{{
               $t("lp.ask")

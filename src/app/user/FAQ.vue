@@ -6,7 +6,7 @@
         <a name="top">おもちかえり.com ご利用について</a>
       </div>
       <div v-for="(faq, k) in faqList" :key="k">
-        <div class="mt-2 text-sm font-bold text-op-teal">
+        <div class="text-op-teal mt-2 text-sm font-bold">
           <a :name="`index_` + k"></a>
           <a :href="`#faq_` + k"> ・ {{ faq.q }} </a>
         </div>
@@ -16,7 +16,7 @@
         <div v-for="(faq, k) in faqList" :key="'base_' + k" class="mb-6">
           <div class="my-1 inline-flex font-bold">
             <a :href="`#index_` + k">
-              <i class="material-icons text-lg text-op-teal">arrow_upward</i>
+              <i class="material-icons text-op-teal text-lg">arrow_upward</i>
             </a>
             <a :name="`faq_` + k">
               {{ faq.q }}

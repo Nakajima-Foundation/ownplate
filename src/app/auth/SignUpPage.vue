@@ -151,8 +151,8 @@
       <div class="mt-2 text-center">
         <router-link to="/admin/user/signin">
           <div class="inline-flex items-center justify-center">
-            <i class="material-icons mr-2 text-lg text-op-teal">store</i>
-            <div class="text-sm font-bold text-op-teal">
+            <i class="material-icons text-op-teal mr-2 text-lg">store</i>
+            <div class="text-op-teal text-sm font-bold">
               {{ $t("admin.goToSignIn") }}
             </div>
           </div>

@@ -10,7 +10,7 @@
         class="h-full w-full rounded-lg bg-white p-3 shadow-sm"
         :class="
           modelValue === 'lunch'
-            ? 'border-2 border-op-teal text-op-teal'
+            ? 'border-op-teal text-op-teal border-2'
             : 'cursor-pointer text-black/40'
         "
         @click="input('lunch')"
@@ -25,7 +25,7 @@
         class="h-full w-full rounded-lg bg-white p-3 shadow-sm"
         :class="
           modelValue === 'dinner'
-            ? 'border-2 border-op-teal text-op-teal'
+            ? 'border-op-teal text-op-teal border-2'
             : 'cursor-pointer text-black/40'
         "
         @click="input('dinner')"

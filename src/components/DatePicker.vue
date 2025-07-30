@@ -5,7 +5,7 @@
       :value="formattedDate"
       @click="openCalendar"
       readonly
-      class="w-full cursor-pointer rounded border border-gray-300 p-2 dark:bg-black dark:border-gray-600 dark:text-white"
+      class="w-full cursor-pointer rounded border border-gray-300 p-2 dark:border-gray-600 dark:bg-black dark:text-white"
       :placeholder="placeholder"
     />
     <div
@@ -22,14 +22,14 @@
           <button
             @click="prevMonth"
             :disabled="isPrevMonthDisabled"
-            class="rounded-full p-2 hover:bg-gray-100 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+            class="cursor-pointer rounded-full p-2 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
           >
             &lt;
           </button>
           <div class="text-lg font-semibold">{{ monthName }} {{ year }}</div>
           <button
             @click="nextMonth"
-            class="rounded-full p-2 hover:bg-gray-100 cursor-pointer"
+            class="cursor-pointer rounded-full p-2 hover:bg-gray-100"
           >
             &gt;
           </button>
@@ -49,7 +49,7 @@
             :class="[
               'flex h-8 w-8 items-center justify-center rounded-full',
               isPast(day)
-                ? 'text-gray-300 cursor-not-allowed'
+                ? 'cursor-not-allowed text-gray-300'
                 : [
                     'cursor-pointer',
                     {

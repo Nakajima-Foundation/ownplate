@@ -60,7 +60,7 @@
             <td class="p-2">
               <button @click="deleteChild(child.id)">
                 <div
-                  class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow-sm min-w-32"
+                  class="bg-op-teal inline-flex h-12 min-w-32 items-center justify-center rounded-full px-6 shadow-sm"
                 >
                   <span class="text-base font-bold text-white">
                     {{ $t("admin.subAccounts.deleteSubaccount") }}
@@ -70,7 +70,7 @@
             </td>
           </tr>
         </table>
-        <div class="text-xs pl-2 pb-2">
+        <div class="pb-2 pl-2 text-xs">
           <span>{{ $t("admin.subAccounts.guidance") }}</span>
         </div>
       </div>
@@ -108,7 +108,7 @@
         <div>
           <button @click="invite" :disabled="sending">
             <div
-              class="mt-4 inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow-sm min-w-32"
+              class="bg-op-teal mt-4 inline-flex h-12 min-w-32 items-center justify-center rounded-full px-6 shadow-sm"
             >
               <span class="text-base font-bold text-white">
                 {{

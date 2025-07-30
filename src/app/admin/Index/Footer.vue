@@ -7,8 +7,8 @@
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-white/80 px-4"
           >
-            <i class="material-icons mr-2 text-lg text-op-teal">help_outline</i>
-            <span class="text-sm font-bold text-op-teal">{{
+            <i class="material-icons text-op-teal mr-2 text-lg">help_outline</i>
+            <span class="text-op-teal text-sm font-bold">{{
               $t("admin.userManual")
             }}</span>
           </div>
@@ -24,8 +24,8 @@
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-white/80 px-4"
           >
-            <i class="material-icons mr-2 text-lg text-op-teal">mail_outline</i>
-            <span class="text-sm font-bold text-op-teal">{{
+            <i class="material-icons text-op-teal mr-2 text-lg">mail_outline</i>
+            <span class="text-op-teal text-sm font-bold">{{
               $t("admin.suportPage")
             }}</span>
           </div>
@@ -44,8 +44,8 @@
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-white/80 px-4"
           >
-            <i class="fab fa-facebook mr-2 text-lg text-op-teal"></i>
-            <span class="text-sm font-bold text-op-teal">{{
+            <i class="fab fa-facebook text-op-teal mr-2 text-lg"></i>
+            <span class="text-op-teal text-sm font-bold">{{
               $t("admin.facebookUserGroup")
             }}</span>
           </div>
@@ -58,8 +58,8 @@
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-white/80 px-4"
           >
-            <i class="fab fa-x-twitter mr-2 text-lg text-op-teal"></i>
-            <span class="text-sm font-bold text-op-teal">(Twitter)</span>
+            <i class="fab fa-x-twitter text-op-teal mr-2 text-lg"></i>
+            <span class="text-op-teal text-sm font-bold">(Twitter)</span>
           </div>
         </a>
       </div>
@@ -70,7 +70,7 @@
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-white/80 px-4"
           >
-            <span class="text-sm font-bold text-op-teal">Note</span>
+            <span class="text-op-teal text-sm font-bold">Note</span>
           </div>
         </a>
       </div>

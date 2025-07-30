@@ -32,7 +32,7 @@
           <a @click="soundToggle()">
             <div
               v-if="notificationConfig.soundOn"
-              class="inline-flex h-9 items-center justify-center rounded-full bg-green-600/10 px-4 cursor-pointer"
+              class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-green-600/10 px-4"
             >
               <i class="material-icons mr-2 text-lg text-green-600"
                 >volume_up</i
@@ -125,10 +125,10 @@
                 class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                 @click="delayedSoundPlay"
               >
-                <i class="material-icons mr-2 text-lg text-op-teal"
+                <i class="material-icons text-op-teal mr-2 text-lg"
                   >play_arrow</i
                 >
-                <span class="text-sm font-bold text-op-teal">
+                <span class="text-op-teal text-sm font-bold">
                   {{ $t("admin.order.soundTest") }}
                 </span>
               </a>
@@ -142,8 +142,8 @@
               class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
               :to="`/admin/restaurants/${restaurantId}/line`"
             >
-              <i class="fab fa-line mr-2 text-2xl text-op-teal" />
-              <span class="text-sm font-bold text-op-teal">
+              <i class="fab fa-line text-op-teal mr-2 text-2xl" />
+              <span class="text-op-teal text-sm font-bold">
                 {{ $t("admin.order.line") }}
               </span>
             </router-link>

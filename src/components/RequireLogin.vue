@@ -1,5 +1,5 @@
 <template>
-  <section class="mx-auto max-w-full px-6 pb-12 pt-4">
+  <section class="mx-auto max-w-full px-6 pt-4 pb-12">
     <div class="text-center text-xl font-bold text-black/30">
       {{ $t("errorPage.requireLogin.message1") }}
     </div>

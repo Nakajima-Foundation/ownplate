@@ -1,9 +1,9 @@
 <template>
-  <div class="fixed left-1/2 bottom-3 z-30">
+  <div class="fixed bottom-3 left-1/2 z-30">
     <button
       v-if="0 != totalQuantities"
       @click="handleCheckOut"
-      class="ml-[-9rem] w-[18rem] sm:bottom-8 mb-8 inline-flex w-72 items-center justify-center rounded-full shadow-lg"
+      class="mb-8 ml-[-9rem] inline-flex w-72 w-[18rem] items-center justify-center rounded-full shadow-lg sm:bottom-8"
       :class="[
         shopInfo.enableDelivery ? 'pt-2 pb-2' : 'h-20',
         isCheckingOut || noPaymentMethod || noAvailableTime || cantDelivery
@@ -148,7 +148,7 @@
             </div>
 
             <div
-              class="is-inline-flex items-center justify-center text-white inline-flex"
+              class="is-inline-flex inline-flex items-center justify-center text-white"
             >
               <div class="mr-2 text-xl font-bold">
                 {{ $t(buttonText) }}

@@ -42,7 +42,7 @@
           <o-input type="text" v-model="clientId" />
         </div>
 
-        <div class="pb-2 text-sm font-bold mt-2">
+        <div class="mt-2 pb-2 text-sm font-bold">
           {{ $t("admin.line.loginChannelSecret") }}
           <span class="cursor-pointer" @click="open('loginChannelSecret')"
             >?</span
@@ -52,7 +52,7 @@
           <o-input type="text" v-model="client_secret" />
         </div>
 
-        <div class="pb-2 text-sm font-bold mt-2">
+        <div class="mt-2 pb-2 text-sm font-bold">
           {{ $t("admin.line.messagingAccessToken") }}
           <span class="cursor-pointer" @click="open('messagingAccessToken')"
             >?</span
@@ -73,7 +73,7 @@
           <o-input type="text" :modelValue="callbackUrl" />
         </div>
 
-        <div class="pb-2 text-sm font-bold mt-4">
+        <div class="mt-4 pb-2 text-sm font-bold">
           <o-checkbox v-model="hasLine" :disabled="!ok" />
           {{ $t("admin.line.enabled") }}
         </div>
@@ -97,13 +97,13 @@
       >
         <div class="bg-white p-4">
           <div v-if="iType == 'loginClientId'">
-            <div class="font-bold text-sm">
+            <div class="text-sm font-bold">
               LINEログインチャンネルのチャンネル基本設定のチャンネルIDをコピーして設定してください。
             </div>
             <img src="//images/lines/lineLoginId.png" class="p-4" />
           </div>
           <div v-if="iType == 'loginChannelSecret'">
-            <div class="font-bold text-sm">
+            <div class="text-sm font-bold">
               LINEログインチャンネルのチャンネル基本設定のチャンネルシークレットをコピーして設定してください。
             </div>
             <img src="//images/lines/lineLoginHeader.png" class="p-4" />
@@ -113,7 +113,7 @@
             <img src="//images/lines/lineLoginSecret.png" class="p-4" />
           </div>
           <div v-if="iType == 'messagingAccessToken'">
-            <div class="font-bold text-sm">
+            <div class="text-sm font-bold">
               LINE Messaging APIのMessaging
               API設定のチャンネルアクセストークンをコピーして設定してください。
             </div>
@@ -121,7 +121,7 @@
             <img src="//images/lines/lineMessageHeader.png" class="p-4" />
           </div>
           <div v-if="iType == 'callback'">
-            <div class="font-bold text-sm">
+            <div class="text-sm font-bold">
               この値をコピーして、LINEログインチャンネルのLINEログイン設定の「コールバックURL」に設定してください。
             </div>
             <img src="//images/lines/lineLoginCallback.png" class="p-4" />

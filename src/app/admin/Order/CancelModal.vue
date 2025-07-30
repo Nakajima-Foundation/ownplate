@@ -15,9 +15,9 @@
       <div>
         <a
           :href="nationalPhoneURI"
-          class="inline-flex h-12 items-center justify-center rounded-full border-2 border-op-teal px-6"
+          class="border-op-teal inline-flex h-12 items-center justify-center rounded-full border-2 px-6"
         >
-          <div class="text-base font-bold text-op-teal">
+          <div class="text-op-teal text-base font-bold">
             {{ nationalPhoneNumber }}
           </div>
         </a>
@@ -32,7 +32,7 @@
       <button
         :disabled="updating"
         @click="handleCancel"
-        class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+        class="cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
       >
         <div
           class="inline-flex h-12 items-center justify-center rounded-full bg-red-700 px-6"

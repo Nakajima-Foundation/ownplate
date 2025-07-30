@@ -26,7 +26,7 @@
           <!-- Left -->
           <div id="RestaurantLeftTop">
             <!-- Cover Image -->
-            <div class="lg:mt-2 cursor-pointer">
+            <div class="cursor-pointer lg:mt-2">
               <img
                 @click.stop="openImage()"
                 :src="coverImage"
@@ -130,7 +130,7 @@
                   <!-- Title -->
                   <div v-if="item._dataType === 'title'" :key="key">
                     <div
-                      class="inline-flex items-center justify-center text-xl font-bold text-black/30 cursor-pointer"
+                      class="inline-flex cursor-pointer items-center justify-center text-xl font-bold text-black/30"
                       :class="key === 0 ? '' : 'mt-2'"
                       :id="item.id"
                       @click="openCategory"
@@ -170,13 +170,13 @@
           <div class="rounded-lg bg-white shadow-sm">
             <router-link :to="pageBase + '/transactions-act'">
               <div
-                class="p-4 inline-flex items-center justify-center"
+                class="inline-flex items-center justify-center p-4"
                 @click="scrollTop"
               >
-                <i class="material-icons mr-2 text-lg text-op-teal"
+                <i class="material-icons text-op-teal mr-2 text-lg"
                   >account_balance</i
                 >
-                <div class="text-sm font-bold text-op-teal">
+                <div class="text-op-teal text-sm font-bold">
                   {{ $t("transactionsAct.title") }}
                 </div>
               </div>
@@ -249,7 +249,7 @@
               class="mx-1 mt-2 inline-flex h-9 items-center justify-center rounded-full bg-black/5"
               @click="closeCategory"
             >
-              <div class="mx-2 text-sm font-bold text-op-teal">
+              <div class="text-op-teal mx-2 text-sm font-bold">
                 {{ title.name }}
               </div>
             </a>

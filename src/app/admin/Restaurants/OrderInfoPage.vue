@@ -79,7 +79,7 @@
               <div
                 class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-yellow-500/10 px-4 py-1 font-bold text-yellow-500"
               >
-                <span class="ml-1 mt-1 text-sm">
+                <span class="mt-1 ml-1 text-sm">
                   {{ $t("admin.order.cardPaymentMessage") }}
                 </span>
               </div>
@@ -88,7 +88,7 @@
               <div
                 class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-red-700/10 px-4 py-1 font-bold text-red-700"
               >
-                <span class="ml-1 mt-1 text-sm">
+                <span class="mt-1 ml-1 text-sm">
                   {{ $t("admin.order.storePaymentMessage") }}
                 </span>
               </div>
@@ -98,7 +98,7 @@
               <div
                 class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-green-600/10 px-4 py-1 font-bold text-green-600"
               >
-                <span class="ml-1 mt-1 text-sm">
+                <span class="mt-1 ml-1 text-sm">
                   {{ $n(orderInfo.discountPrice, "currency")
                   }}{{ $t("order.discountPriceMessage") }}
                 </span>
@@ -109,7 +109,7 @@
                 class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-green-600/10 px-4 py-1 font-bold text-green-600"
               >
                 <i class="material-icons"> local_mall </i>
-                <span class="ml-1 mt-1 text-sm">
+                <span class="mt-1 ml-1 text-sm">
                   {{ $t("admin.order.pickupOrder") }}</span
                 >
               </div>
@@ -129,7 +129,7 @@
               <div
                 class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-yellow-500/10 px-4 py-1 font-bold text-yellow-500"
               >
-                <span class="ml-1 mt-1 text-sm">
+                <span class="mt-1 ml-1 text-sm">
                   {{ $t("admin.order.paymentIsNotCompleted") }}
                 </span>
               </div>
@@ -304,8 +304,8 @@
                 <div
                   class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                 >
-                  <i class="material-icons mr-2 text-lg text-op-teal">face</i>
-                  <span class="text-sm font-bold text-op-teal">{{
+                  <i class="material-icons text-op-teal mr-2 text-lg">face</i>
+                  <span class="text-op-teal text-sm font-bold">{{
                     $t("order.customerOrderHistory")
                   }}</span>
                 </div>
@@ -361,7 +361,7 @@
                     !isValidTransition(orderState) || updating === orderState
                   "
                   @click="handleChangeStatus(orderState)"
-                  class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mx-2 mb-2"
+                  class="mx-2 mb-2 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   <div
                     class="inline-flex h-16 w-64 items-center justify-center rounded-full"
@@ -485,7 +485,7 @@
                 <button
                   @click="handleOrderChange"
                   :disabled="!availableChangeButton || changing"
-                  class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mx-2 mb-2"
+                  class="mx-2 mb-2 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
                   v-if="isOrderChange"
                 >
                   <div

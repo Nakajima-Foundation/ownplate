@@ -146,7 +146,7 @@
             :class="
               !(editShopInfo.location && editShopInfo.location.lat) ||
               !maplocation
-              ? 'border-2 border-red-700'
+                ? 'border-2 border-red-700'
                 : ''
             "
           >
@@ -156,7 +156,7 @@
             <div class="text-center">
               <a
                 @click="updateAndUpdateMap"
-                class="inline-flex h-12 items-center rounded-full bg-op-teal px-6 shadow-sm"
+                class="bg-op-teal inline-flex h-12 items-center rounded-full px-6 shadow-sm"
                 ><div class="text-base font-bold text-white">
                   {{ $t("editRestaurant.searchMap") }}
                 </div></a
@@ -202,7 +202,7 @@
           <!-- Phone -->
           <div>
             <div
-              class="pb-2 text-sm font-bold cursor-pointer"
+              class="cursor-pointer pb-2 text-sm font-bold"
               @click="openTips('phonenumber')"
             >
               {{ $t("shopInfo.phonenumber") }}
@@ -350,7 +350,7 @@
             />
           </div>
 
-          <div class="rounded-lg border border-black/10 bg-white p-2 mt-4">
+          <div class="mt-4 rounded-lg border border-black/10 bg-white p-2">
             <div class="pb-2 text-sm font-bold">
               {{ $t("editRestaurant.orderConfirmViewConfig") }}
             </div>
@@ -405,7 +405,7 @@
             />
           </div>
 
-          <div class="rounded-lg border border-black/10 bg-white p-2 mt-4">
+          <div class="mt-4 rounded-lg border border-black/10 bg-white p-2">
             <!-- URL -->
             <div>
               <text-form
@@ -651,7 +651,7 @@
 
           <!-- personalInfo -->
           <div class="mt-4">
-            <div class="pb-2 text-sm font-bold cursor-pointer">
+            <div class="cursor-pointer pb-2 text-sm font-bold">
               {{ $t("editRestaurant.personalInfo") }}
             </div>
             <div class="rounded-lg bg-black/5 p-4">
@@ -676,7 +676,7 @@
           <!-- Payment methods -->
           <div class="mt-4">
             <div
-              class="pb-2 text-sm font-bold cursor-pointer"
+              class="cursor-pointer pb-2 text-sm font-bold"
               @click="openTips('paymentMethods')"
             >
               {{ $t("editRestaurant.paymentMethods") }}
@@ -714,7 +714,7 @@
               {{ $t("editRestaurant.deliveryConfigTitle") }}
             </div>
             <div class="rounded-lg bg-black/5 p-4">
-              <div class="text-lg font-bold text-op-teal">
+              <div class="text-op-teal text-lg font-bold">
                 <router-link
                   :to="`/admin/restaurants/${restaurantId}/delivery`"
                   >{{ $t("editRestaurant.deliveryConfigLink") }}</router-link
@@ -726,7 +726,7 @@
                   href="https://docs.omochikaeri.com/manuals/delivery.pdf"
                   target="_blank"
                 >
-                  <span class="font-bold text-op-teal">
+                  <span class="text-op-teal font-bold">
                     {{ $t("menu.deliveryManualLink") }}
                   </span>
                 </a>
@@ -752,7 +752,7 @@
                   target="_blank"
                   class="inline-flex"
                 >
-                  <span class="font-bold text-op-teal">
+                  <span class="text-op-teal font-bold">
                     {{ $t("menu.printerManualLink") }}
                   </span>
                 </a>
@@ -760,12 +760,12 @@
               <div class="text-xs">
                 {{ $t("editRestaurant.printerDescription2") }}
               </div>
-              <div class="text-xs pt-2">
+              <div class="pt-2 text-xs">
                 <router-link
                   class="inline-flex"
                   :to="`/admin/restaurants/${restaurantId}/printer`"
                 >
-                  <span class="font-bold text-op-teal">
+                  <span class="text-op-teal font-bold">
                     {{ $t("editRestaurant.printerDescriptionConfig") }}
                   </span>
                 </router-link>
@@ -827,7 +827,7 @@
                 <router-link
                   :to="`/admin/restaurants/${restaurantId}/linelist`"
                 >
-                  <span class="text-sm font-bold text-op-teal">
+                  <span class="text-op-teal text-sm font-bold">
                     {{ $t("editRestaurant.moveToLineConfig") }}
                   </span>
                 </router-link>
@@ -839,7 +839,7 @@
 
         <!-- Right -->
 
-        <div class="rounded-lg border border-black/10 bg-white p-2 mt-4">
+        <div class="mt-4 rounded-lg border border-black/10 bg-white p-2">
           <div class="pb-2 text-sm font-bold">
             {{ $t("editRestaurant.openDaysConfig") }}
           </div>
@@ -887,12 +887,12 @@
                     <div>
                       <a
                         @click="copyPreviousDay(index)"
-                        class="cursor-pointer inline-flex items-center justify-center"
+                        class="inline-flex cursor-pointer items-center justify-center"
                       >
-                        <i class="material-icons mr-2 text-lg text-op-teal">
+                        <i class="material-icons text-op-teal mr-2 text-lg">
                           content_copy
                         </i>
-                        <div class="text-sm font-bold text-op-teal">
+                        <div class="text-op-teal text-sm font-bold">
                           {{
                             $t(
                               index === "1"
@@ -1001,8 +1001,8 @@
                   <div
                     class="inline-flex h-9 items-center justify-center rounded-r bg-black/5 px-4"
                   >
-                    <i class="material-icons mr-2 text-lg text-op-teal">add</i>
-                    <div class="text-sm font-bold text-op-teal">
+                    <i class="material-icons text-op-teal mr-2 text-lg">add</i>
+                    <div class="text-op-teal text-sm font-bold">
                       {{ $t("shopInfo.temporaryClosureAdd") }}
                     </div>
                   </div>
@@ -1112,8 +1112,8 @@
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
-            <i class="material-icons mr-2 text-lg text-op-teal"> queue </i>
-            <span class="text-sm font-bold text-op-teal">{{
+            <i class="material-icons text-op-teal mr-2 text-lg"> queue </i>
+            <span class="text-op-teal text-sm font-bold">{{
               $t(submitting ? "editCommon.saving" : "editCommon.copy")
             }}</span>
           </div>

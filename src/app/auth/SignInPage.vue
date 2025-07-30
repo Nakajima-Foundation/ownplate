@@ -75,7 +75,7 @@
 
         <!-- Submit Button -->
         <div class="mt-2 text-center">
-          <button @click="handleCancel" class="cursor-pointer mr-4 mb-2">
+          <button @click="handleCancel" class="mr-4 mb-2 cursor-pointer">
             <div
               class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black/5"
             >
@@ -93,8 +93,8 @@
         <div class="mt-2 text-center">
           <router-link to="/admin/user/reset">
             <div class="inline-flex items-center justify-center">
-              <i class="material-icons mr-2 text-lg text-op-teal">help</i>
-              <span class="text-sm font-bold text-op-teal">{{
+              <i class="material-icons text-op-teal mr-2 text-lg">help</i>
+              <span class="text-op-teal text-sm font-bold">{{
                 $t("admin.forgotPassword")
               }}</span>
             </div>
@@ -112,7 +112,7 @@
       <div class="mt-2">
         <router-link to="/admin/user/signup">
           <div
-            class="inline-flex h-16 items-center rounded-full bg-ownplate-yellow px-8 shadow-sm hover:bg-ownplate-yellow/80"
+            class="bg-ownplate-yellow hover:bg-ownplate-yellow/80 inline-flex h-16 items-center rounded-full px-8 shadow-sm"
           >
             <span class="text-xl font-bold text-black opacity-90">
               {{ $t("lp.signUpForFree") }}

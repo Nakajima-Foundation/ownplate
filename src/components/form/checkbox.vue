@@ -1,10 +1,10 @@
 <template>
-  <label class="flex items-center cursor-pointer">
+  <label class="flex cursor-pointer items-center">
     <input
       type="checkbox"
       :checked="modelValue"
       @change="change"
-      class="peer h-5 w-5 cursor-pointer rounded-md transition-all appearance-none rounded-sm shadow-sm hover:shadow-md border-2 border-gray-500 checked:bg-teal-400 checked:border-teal-400 focus:outline-hidden focus:ring-2 focus:ring-teal-400 hover:border-teal-400 m-2"
+      class="peer m-2 h-5 w-5 cursor-pointer appearance-none rounded-md rounded-sm border-2 border-gray-500 shadow-sm transition-all checked:border-teal-400 checked:bg-teal-400 hover:border-teal-400 hover:shadow-md focus:ring-2 focus:ring-teal-400 focus:outline-hidden"
     />
     <slot></slot>
   </label>

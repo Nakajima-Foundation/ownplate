@@ -49,20 +49,20 @@
       <div class="flex justify-end">
         <span
           @click="decrease()"
-          class="inline-flex h-9 w-16 items-center justify-center rounded-full bg-red-700/10 cursor-pointer"
+          class="inline-flex h-9 w-16 cursor-pointer items-center justify-center rounded-full bg-red-700/10"
         >
           <i class="material-icons text-lg text-red-700">remove</i>
         </span>
         <div
-          class="mx-5 mt-0.5 flex-1 text-center text-xl font-bold text-op-teal"
+          class="text-op-teal mx-5 mt-0.5 flex-1 text-center text-xl font-bold"
         >
           {{ quantity }}
         </div>
         <span
           @click="increase()"
-          class="inline-flex h-9 w-16 items-center justify-center rounded-full bg-op-teal/10 cursor-pointer"
+          class="bg-op-teal/10 inline-flex h-9 w-16 cursor-pointer items-center justify-center rounded-full"
         >
-          <i class="material-icons text-lg text-op-teal">add</i>
+          <i class="material-icons text-op-teal text-lg">add</i>
         </span>
       </div>
     </div>

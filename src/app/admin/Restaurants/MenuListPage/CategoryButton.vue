@@ -1,6 +1,6 @@
 <template>
   <div
-    class="mx-6 mt-4 flex h-14 items-center justify-between space-x-2 rounded-full bg-black/5 py-4 pl-4 pr-6 lg:mx-auto lg:max-w-2xl"
+    class="mx-6 mt-4 flex h-14 items-center justify-between space-x-2 rounded-full bg-black/5 py-4 pr-6 pl-4 lg:mx-auto lg:max-w-2xl"
   >
     <div class="flex items-center space-x-2">
       <i class="material-icons text-2xl text-black/50">tune</i>
@@ -8,7 +8,7 @@
         {{ selectedCategory.name }}
       </div>
     </div>
-    <div class="min-w-fit text-sm font-bold text-op-teal">
+    <div class="text-op-teal min-w-fit text-sm font-bold">
       <router-link :to="`/admin/restaurants/${shopInfo.restaurantId}/menus`">
         {{ $t("editMenu.selectCategory") }}
       </router-link>

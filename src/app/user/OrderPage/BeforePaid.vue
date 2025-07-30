@@ -4,10 +4,10 @@
     <div class="mx-6 mt-4">
       <router-link :to="menuPagePath">
         <div
-          class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4 cursor-pointer"
+          class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-black/5 px-4"
         >
-          <i class="material-icons mr-2 text-lg text-op-teal">arrow_back</i>
-          <div class="text-sm font-bold text-op-teal">
+          <i class="material-icons text-op-teal mr-2 text-lg">arrow_back</i>
+          <div class="text-op-teal text-sm font-bold">
             {{ $t("button.back") }}
           </div>
         </div>
@@ -94,7 +94,7 @@
           <!-- For EC and Delivery -->
           <div
             v-if="shopInfo.isEC || orderInfo.isDelivery"
-            class="mb-4 mt-2 rounded-lg bg-white p-4 shadow-sm"
+            class="mt-2 mb-4 rounded-lg bg-white p-4 shadow-sm"
           >
             <ECCustomer
               ref="ecCustomerRef"
@@ -230,7 +230,7 @@
                 "
               >
                 <div
-                  class="border-green-600 text-green-600 text-center font-bold mx-auto w-72 items-center mt-8 -mb-3 rounded-lg bg-green-600/10 px-6 py-2"
+                  class="mx-auto mt-8 -mb-3 w-72 items-center rounded-lg border-green-600 bg-green-600/10 px-6 py-2 text-center font-bold text-green-600"
                 >
                   <div class="text-xs">{{ $t("order.promotionNoteCard") }}</div>
                 </div>
@@ -243,7 +243,7 @@
                 "
               >
                 <div
-                  class="border-green-600 text-green-600 text-center font-bold mx-auto w-72 items-center mt-8 -mb-3 rounded-lg bg-green-600/10 px-6 py-2"
+                  class="mx-auto mt-8 -mb-3 w-72 items-center rounded-lg border-green-600 bg-green-600/10 px-6 py-2 text-center font-bold text-green-600"
                 >
                   <div class="text-xs">
                     {{ $t("order.promotionNoteStore") }}
@@ -294,7 +294,7 @@
                   :isDisabled="disabledButton"
                   :class="disabledButton ? 'bg-op-teal-disabled' : 'bg-op-teal'"
                   @click="handlePayment(false)"
-                  class="h-16 px-6 takeout"
+                  class="takeout h-16 px-6"
                   style="min-width: 288px"
                 >
                   <div class="text-xl font-bold text-white">

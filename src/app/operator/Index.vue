@@ -1,5 +1,5 @@
 <template>
-  <section class="mx-auto max-w-full px-6 pb-12 pt-4">
+  <section class="mx-auto max-w-full px-6 pt-4 pb-12">
     <div v-if="$store.getters.isSuperAdmin || $store.getters.isOperator">
       <h2>Operator Page</h2>
       <router-link to="/op/orders">All Orders</router-link>

@@ -4,10 +4,10 @@
     <div class="mx-6 mt-4">
       <router-link :to="menuPagePath">
         <div
-          class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4 cursor-pointer"
+          class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-black/5 px-4"
         >
-          <i class="material-icons mr-2 text-lg text-op-teal">arrow_back</i>
-          <div class="text-sm font-bold text-op-teal">
+          <i class="material-icons text-op-teal mr-2 text-lg">arrow_back</i>
+          <div class="text-op-teal text-sm font-bold">
             {{ $t("button.back") }}
           </div>
         </div>
@@ -76,10 +76,10 @@
                 <button
                   :disabled="isPaying || !cardState.complete"
                   @click="handlePayment()"
-                  class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                  class="cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   <div
-                    class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal px-6 shadow-sm"
+                    class="bg-op-teal inline-flex h-16 items-center justify-center rounded-full px-6 shadow-sm"
                     style="min-width: 288px"
                   >
                     <ButtonLoading v-if="isPaying" />

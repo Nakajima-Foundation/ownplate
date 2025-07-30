@@ -4,7 +4,7 @@
   </div>
   <transition name="slide">
     <div v-if="active" class="fixed inset-0 z-40 flex" @click="close">
-      <div class="bg-white shadow w-64 h-full overflow-y-auto" @click.stop>
+      <div class="h-full w-64 overflow-y-auto bg-white shadow" @click.stop>
         <slot />
       </div>
     </div>

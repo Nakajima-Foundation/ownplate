@@ -10,7 +10,7 @@
         class="h-full w-full rounded-lg bg-white p-3 shadow-sm"
         :class="
           modelValue === 'delivery'
-            ? 'border-2 border-op-teal text-op-teal'
+            ? 'border-op-teal text-op-teal border-2'
             : 'cursor-pointer text-black/40'
         "
         @click="$emit('update:modelValue', 'delivery')"
@@ -31,7 +31,7 @@
         class="h-full w-full rounded-lg bg-white p-3 shadow-sm"
         :class="
           modelValue === 'takeout'
-            ? 'border-2 border-op-teal text-op-teal'
+            ? 'border-op-teal text-op-teal border-2'
             : 'cursor-pointer text-black/40'
         "
         @click="$emit('update:modelValue', 'takeout')"
@@ -49,7 +49,7 @@
         class="h-full w-full rounded-lg bg-white p-3 shadow-sm"
         :class="
           modelValue === 'delivery'
-            ? 'border-2 border-op-teal text-op-teal'
+            ? 'border-op-teal text-op-teal border-2'
             : 'cursor-pointer text-black/40'
         "
         @click="$emit('update:modelValue', 'delivery')"

@@ -16,7 +16,7 @@
     <div class="text-center">
       <button
         @click="send"
-        class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+        class="cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
         :disabled="sent || isLoading"
       >
         <div

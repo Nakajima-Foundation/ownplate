@@ -21,7 +21,7 @@
           <a
             href="https://docs.omochikaeri.com/manuals/printer.pdf"
             target="_blank"
-            class="font-bold text-op-teal"
+            class="text-op-teal font-bold"
           >
             {{ $t("menu.printerManualLink") }}
           </a>

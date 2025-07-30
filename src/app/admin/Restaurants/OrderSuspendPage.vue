@@ -39,15 +39,15 @@
               v-for="time in availableTimes"
               :key="time.time"
               @click="handleSuspend(0, time.time)"
-              class="cursor-pointer mr-4 mb-4"
+              class="mr-4 mb-4 cursor-pointer"
             >
               <div
                 class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
               >
-                <i class="material-icons mr-2 text-lg text-op-teal"
+                <i class="material-icons text-op-teal mr-2 text-lg"
                   >alarm_off</i
                 >
-                <div class="text-sm font-bold text-op-teal">
+                <div class="text-op-teal text-sm font-bold">
                   {{
                     $t("admin.order.suspendUntil", { display: time.display })
                   }}
@@ -69,10 +69,10 @@
                   <div
                     class="mr-4 mb-4 inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                   >
-                    <i class="material-icons mr-2 text-lg text-op-teal"
+                    <i class="material-icons text-op-teal mr-2 text-lg"
                       >alarm_off</i
                     >
-                    <div class="text-sm font-bold text-op-teal">
+                    <div class="text-op-teal text-sm font-bold">
                       <span v-if="day > 0">{{
                         $t("admin.order.suspendDayUntil", { display: day })
                       }}</span>
@@ -102,8 +102,8 @@
               <div
                 class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
               >
-                <i class="material-icons mr-2 text-lg text-op-teal">alarm_on</i>
-                <div class="text-sm font-bold text-op-teal">
+                <i class="material-icons text-op-teal mr-2 text-lg">alarm_on</i>
+                <div class="text-op-teal text-sm font-bold">
                   {{ $t("admin.order.unsuspend") }}
                 </div>
               </div>

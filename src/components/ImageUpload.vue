@@ -1,11 +1,11 @@
 <template>
   <div
     @dragover.prevent
-    class="border-2 relative border-black/10"
+    class="relative border-2 border-black/10"
     @drop.prevent="handler"
     :style="style"
   >
-    <div class="absolute w-full h-full" :style="style">
+    <div class="absolute h-full w-full" :style="style">
       <img
         :src="preview"
         v-if="preview"
@@ -22,7 +22,7 @@
       multiple
       @change="handler"
       :accept="'image/jpeg'"
-      class="absolute h-full w-full opacity-0 z-100"
+      class="absolute z-100 h-full w-full opacity-0"
     />
   </div>
 </template>
