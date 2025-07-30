@@ -604,12 +604,15 @@
                 </o-field>
 
                 <div class="mt-2">
-                  <o-radio
+                  <template
                     v-for="choice in minimumCookTimeChoices"
-                    v-model="editShopInfo.pickUpMinimumCookTime"
-                    :native-value="choice.value"
                     :key="choice.value"
-                    >{{ $t(choice.messageKey) }}</o-radio
+                  >
+                    <input
+                      type="radio"
+                      v-model="editShopInfo.pickUpMinimumCookTime"
+                      :value="choice.value"
+                    />{{ $t(choice.messageKey) }}</template
                   >
                 </div>
               </div>
@@ -656,18 +659,17 @@
                 v-for="(personalInfoSaveMethod, k) in personalInfoSaveMethods"
                 :key="k"
               >
-                <o-radio
+                <input
+                  type="radio"
                   v-model="editShopInfo.personalInfo"
-                  :native-value="personalInfoSaveMethod.key"
-                  :variant="personalInfoSaveMethod.key"
-                >
-                  {{
-                    $t(
-                      "editRestaurant.personalInfoSaveMethodChoices." +
-                        personalInfoSaveMethod.key,
-                    )
-                  }}
-                </o-radio>
+                  :value="personalInfoSaveMethod.key"
+                />
+                {{
+                  $t(
+                    "editRestaurant.personalInfoSaveMethodChoices." +
+                      personalInfoSaveMethod.key,
+                  )
+                }}
               </div>
             </div>
           </div>

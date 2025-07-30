@@ -210,19 +210,26 @@
                     >
                   </div>
                   <div v-else class="field grid grid-cols-1 gap-y-2">
-                    <o-radio
+                    <div
                       v-for="(choice, index2) in option"
-                      :modelValue="selectedOptions[quantityKey][index]"
-                      @update:modelValue="
-                        updateSelectedOptions(quantityKey, index, $event)
-                      "
-                      :name="`${item.id}_${quantityKey}_${index}`"
-                      :native-value="index2"
                       :key="`${quantityKey}_${index2}`"
-                      ><span class="ml-2 text-sm font-bold">
-                        {{ displayOption(choice, shopInfo, item) }}
-                      </span></o-radio
                     >
+                      <input
+                        type="radio"
+                        :modelValue="selectedOptions[quantityKey][index]"
+                        @change="
+                          updateSelectedOptions(
+                            quantityKey,
+                            index,
+                            $event.target.value,
+                          )
+                        "
+                        :name="`${item.id}_${quantityKey}_${index}`"
+                        :value="index2"
+                      /><span class="ml-2 text-sm font-bold">
+                        {{ displayOption(choice, shopInfo, item) }}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
