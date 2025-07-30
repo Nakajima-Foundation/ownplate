@@ -263,7 +263,7 @@ import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc } from "firebase/firestore";
 
-import { order_status, order_status_keys } from "@/config/constant";
+import { order_status_keys } from "@/config/constant";
 import {
   arrayOrNumSum,
   convOrderStateForText,
@@ -310,7 +310,7 @@ export default defineComponent({
       return order_status_keys[props.order.status];
     });
     const hasStripe = computed(() => {
-      return props.order.payment && props.order.payment.stripe;
+      return props.order?.payment?.stripe;
     });
     const timestamp = computed(() => {
       const time = props.order.timeEstimated || props.order.timePlaced;
@@ -340,11 +340,6 @@ export default defineComponent({
       }
       return 0;
     });
-    const paymentIsNotCompleted = computed(() => {
-      return (
-        hasStripe.value && props.order.status < order_status.ready_to_pickup
-      );
-    });
 
     return {
       restaurant,
@@ -355,7 +350,6 @@ export default defineComponent({
       nationalPhoneNumber,
       orderName,
       totalCount,
-      paymentIsNotCompleted,
 
       convOrderStateForText,
       resizedProfileImage,
