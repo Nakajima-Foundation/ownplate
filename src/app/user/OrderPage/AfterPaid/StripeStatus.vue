@@ -35,19 +35,15 @@ export default defineComponent({
     StripeStatus,
   },
   setup(props) {
-    const hasStripe = computed(() => {
-      return props.orderInfo.payment && props.orderInfo.payment.stripe;
-    });
     const isJustCancelPayment = computed(() => {
       return (
-        hasStripe.value &&
+        props.orderInfo?.payment?.stripe &&
         props.orderInfo.payment.stripe === "canceled" &&
         props.orderInfo.status !== order_status.order_canceled
       );
     });
     return {
       isJustCancelPayment,
-      hasStripe,
     };
   },
 });
