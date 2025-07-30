@@ -8,12 +8,12 @@
     >
       <!-- Order Status -->
       <div class="p-2">
-        <div
+        <OrderState
+          :orderState="statusKey"
           class="rounded-sm p-1 text-center text-xs font-bold"
-          :class="statusKey"
         >
           {{ $t("order.status." + convOrderStateForText(statusKey, order)) }}
-        </div>
+        </OrderState>
       </div>
 
       <!-- Payment Status and Time Stamp -->
@@ -193,12 +193,12 @@
     <div v-else class="rounded-lg bg-white shadow-sm">
       <!-- Order Status -->
       <div class="p-2">
-        <div
+        <OrderState
+          :orderState="statusKey"
           class="rounded-sm p-1 text-center text-xs font-bold"
-          :class="statusKey"
         >
           {{ $t("order.status." + convOrderStateForText(statusKey, order)) }}
-        </div>
+        </OrderState>
       </div>
 
       <!-- Payment Status and Time Stamp -->
