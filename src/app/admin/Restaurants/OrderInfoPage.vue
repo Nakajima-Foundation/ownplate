@@ -32,19 +32,17 @@
                   <div class="text-xs">
                     {{ $t("order.totalCharge") }}
                   </div>
-
                   <div v-if="hasStripe" class="text-base">
                     <a :href="search" target="stripe">
                       <div>{{ $n(orderInfo.totalCharge, "currency") }}</div>
-                      <div
-                        :class="
-                          'stripe_ text-xs font-bold' + orderInfo.payment.stripe
-                        "
+                      <StripeStatus
+                        :stripeState="orderInfo.payment.stripe"
+                        class="stripe_ text-xs font-bold"
                       >
                         {{
                           $t("order.status.stripe_" + orderInfo.payment.stripe)
                         }}
-                      </div>
+                      </StripeStatus>
                     </a>
                   </div>
 
@@ -550,6 +548,7 @@ import OrderInfo from "@/app/user/OrderPage/OrderInfo.vue";
 import CustomerInfo from "@/components/CustomerInfo.vue";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 import OrderState from "@/components/OrderStatus.vue";
+import StripeStatus from "@/components/StripeStatus.vue";
 
 import ButtonLoading from "@/components/form/Loading.vue";
 import CancelModal from "@/app/admin/Order/CancelModal.vue";
@@ -596,6 +595,7 @@ export default defineComponent({
     CancelModal,
     PaymentCancelModal,
     OrderState,
+    StripeStatus,
   },
   props: {
     shopInfo: {
