@@ -1,4 +1,6 @@
-@reference "./tailwind.css";
+@import 'tailwindcss';
+
+@config '../../../tailwind.config.js';
 
 html {
   background-color: #f4f4f5;
