@@ -549,7 +549,7 @@ import NotFound from "@/components/NotFound.vue";
 import OrderInfo from "@/app/user/OrderPage/OrderInfo.vue";
 import CustomerInfo from "@/components/CustomerInfo.vue";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
-import OrderState from "./OrderStatus.vue";
+import OrderState from "@/components/OrderStatus.vue";
 
 import ButtonLoading from "@/components/form/Loading.vue";
 import CancelModal from "@/app/admin/Order/CancelModal.vue";

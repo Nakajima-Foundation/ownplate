@@ -119,12 +119,12 @@
     >
       <!-- Order Status -->
       <div class="p-2">
-        <div
+        <OrderState
+          :orderState="statusKey"
           class="rounded-sm p-1 text-center text-xs font-bold"
-          :class="statusKey"
         >
           {{ $t("order.status." + convOrderStateForText(statusKey, order)) }}
-        </div>
+        </OrderState>
       </div>
 
       <!-- Payment Status and Time Stamp -->
@@ -273,6 +273,7 @@ import { useI18n } from "vue-i18n";
 
 import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import OrderState from "@/components/OrderStatus.vue";
 
 export default defineComponent({
   props: {
@@ -284,6 +285,9 @@ export default defineComponent({
       type: Boolean,
       required: false,
     },
+  },
+  components: {
+    OrderState,
   },
   emits: ["selected"],
   setup(props) {
