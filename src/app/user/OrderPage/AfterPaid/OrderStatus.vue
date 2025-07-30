@@ -29,7 +29,7 @@
 
 <script lang="ts">
 import { defineComponent, computed } from "vue";
-import { order_status } from "@/config/constant";
+import { order_status_keys } from "@/config/constant";
 import { convOrderStateForText } from "@/utils/utils";
 import OrderState from "@/components/OrderStatus.vue";
 
@@ -49,17 +49,11 @@ export default defineComponent({
   },
   setup(props) {
     const orderStatusKey = computed(() => {
-      return Object.keys(order_status).reduce((result, key) => {
-        return order_status[key] === props.orderInfo.status ? key : result;
-      }, "unexpected");
-    });
-    const orderIsPlaced = computed(() => {
-      return props.orderInfo.status === order_status.order_placed;
+      return order_status_keys[props.orderInfo.status];
     });
     return {
       orderStatusKey,
       convOrderStateForTextFunc: convOrderStateForText,
-      orderIsPlaced,
     };
   },
 });
