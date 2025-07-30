@@ -7,6 +7,13 @@
   </div>
 
   <div
+    v-else-if="orderState === 'waiting_payment'"
+    class="rounded bg-pink-700/10 px-3 py-1 text-pink-700 transition-colors hover:bg-pink-700/20 hover:text-pink-800"
+  >
+    <slot />
+  </div>
+
+  <div
     v-else-if="orderState === 'order_accepted'"
     class="rounded bg-blue-500/10 px-3 py-1 text-blue-500 transition-colors hover:bg-blue-500/20 hover:text-blue-600"
   >
