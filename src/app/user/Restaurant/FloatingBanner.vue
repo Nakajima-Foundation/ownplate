@@ -70,7 +70,7 @@
             </li>
           </ul>
 
-          <div class="border mt-5"></div>
+          <div class="border border-black/10 mt-5"></div>
         </div>
 
         <div class="bg-black/5 p-2 text-xs m-6 rounded-lg">

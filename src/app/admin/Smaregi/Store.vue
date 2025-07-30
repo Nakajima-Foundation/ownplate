@@ -29,7 +29,7 @@
         <div
           v-for="(product, key) in productList"
           :key="key"
-          class="mt4 border-2"
+          class="mt4 border-2 border-black/10"
         >
           スマレジ: {{ product.productCode }} / {{ product.productName }} /
           {{ product.price }}円 / 在庫数
@@ -64,7 +64,7 @@
           <div
             v-for="(product, key) in productList"
             :key="key"
-            class="mt-2 border-2"
+            class="mt-2 border-2 border-black/10"
           >
             スマレジ:{{ product.productCode }} / {{ product.productName }} /
             {{ product.price }}円 / 在庫数

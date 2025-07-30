@@ -146,7 +146,7 @@
             :class="
               !(editShopInfo.location && editShopInfo.location.lat) ||
               !maplocation
-                ? 'border-2 border-red-700'
+              ? 'border-2 border-red-700'
                 : ''
             "
           >
@@ -350,7 +350,7 @@
             />
           </div>
 
-          <div class="rounded-lg border bg-white p-2 mt-4">
+          <div class="rounded-lg border border-black/10 bg-white p-2 mt-4">
             <div class="pb-2 text-sm font-bold">
               {{ $t("editRestaurant.orderConfirmViewConfig") }}
             </div>
@@ -405,7 +405,7 @@
             />
           </div>
 
-          <div class="rounded-lg border bg-white p-2 mt-4">
+          <div class="rounded-lg border border-black/10 bg-white p-2 mt-4">
             <!-- URL -->
             <div>
               <text-form
@@ -839,7 +839,7 @@
 
         <!-- Right -->
 
-        <div class="rounded-lg border bg-white p-2 mt-4">
+        <div class="rounded-lg border border-black/10 bg-white p-2 mt-4">
           <div class="pb-2 text-sm font-bold">
             {{ $t("editRestaurant.openDaysConfig") }}
           </div>

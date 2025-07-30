@@ -4,7 +4,7 @@
     <div class="mt-4 text-center">
       <button @click="handleDeleteAccount" class="cursor-pointer">
         <div
-          class="inline-flex items-center justify-center border-2 px-4 py-2 rounded-full mt-8"
+          class="inline-flex items-center justify-center border-2 border-black/10 px-4 py-2 rounded-full mt-8"
         >
           <i class="material-icons mr-2 text-lg text-red-700">delete</i>
           <div class="text-sm font-bold text-red-700">

@@ -150,7 +150,7 @@
         <div v-if="isTipEditable">
           <div>
             <input
-              class="w-full p-2 border-inherit border-2 rounded-lg"
+              class="w-full p-2 border-inherit border-2 border-black/10 rounded-lg"
               type="number"
               :placeholder="$t('order.maxTip', { max: regionTip.max })"
               :step="tipStep"
