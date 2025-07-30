@@ -48,14 +48,6 @@ canvas {
 }
 
 /* Keep this class for Tailwind CSS */
-.button[disabled] {
-  background-color: transparent !important;
-}
-
-.button {
-  box-shadow: none !important;
-}
-
 .animation-content {
   z-index: 100;
   max-height: 90%;
