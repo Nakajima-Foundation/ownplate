@@ -17,16 +17,7 @@
       />
 
       <!-- Body -->
-      <div
-        v-if="orderInfo.status === order_status.transaction_hide"
-        class="mx-6 mt-2"
-      >
-        <div class="rounded-lg bg-white p-4 shadow-sm">
-          <div>{{ $t("order.status.transaction_hide") }}</div>
-        </div>
-      </div>
-
-      <div v-else class="mx-6 mt-2 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
+      <div class="mx-6 mt-2 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
         <!-- Left -->
         <div>
           <div class="rounded-lg bg-white p-4 shadow-sm">
@@ -363,9 +354,13 @@
                   @click="handleChangeStatus(orderState)"
                   class="mx-2 mb-2 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  <div
+                  <OrderState
+                    :orderState="
+                      order_status[orderState] === orderInfo.status
+                        ? orderState
+                        : ''
+                    "
                     class="inline-flex h-16 w-64 items-center justify-center rounded-full"
-                    :class="classOf(orderState)"
                   >
                     <ButtonLoading v-if="updating === orderState" />
                     <div>
@@ -381,7 +376,7 @@
                         {{ timeOfEvents[orderState] }}
                       </div>
                     </div>
-                  </div>
+                  </OrderState>
                 </button>
               </div>
             </div>
@@ -554,6 +549,7 @@ import NotFound from "@/components/NotFound.vue";
 import OrderInfo from "@/app/user/OrderPage/OrderInfo.vue";
 import CustomerInfo from "@/components/CustomerInfo.vue";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
+import OrderState from "./OrderStatus.vue";
 
 import ButtonLoading from "@/components/form/Loading.vue";
 import CancelModal from "@/app/admin/Order/CancelModal.vue";
@@ -599,6 +595,7 @@ export default defineComponent({
     ButtonLoading,
     CancelModal,
     PaymentCancelModal,
+    OrderState,
   },
   props: {
     shopInfo: {
@@ -872,22 +869,13 @@ export default defineComponent({
         : null;
       return `/admin/restaurants/${restaurantId.value}/orders?day=${day}`;
     });
-    const orderStates = computed(() => {
-      return shopOwner.value && !!shopOwner.value.hidePrivacy
-        ? [
-            "order_placed",
-            "order_accepted",
-            "ready_to_pickup",
-            "transaction_complete",
-            "transaction_hide",
-          ]
-        : [
-            "order_placed",
-            "order_accepted",
-            "ready_to_pickup",
-            "transaction_complete",
-          ]; // no longer "cooking_completed"
-    });
+    const orderStates = [
+      "order_placed",
+      "order_accepted",
+      "ready_to_pickup",
+      "transaction_complete",
+    ];
+
     // for editable order
     const edited_available_order_info = computed(() => {
       const ret: { menuId: string; index: number }[] = [];
