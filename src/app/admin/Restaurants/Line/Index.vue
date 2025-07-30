@@ -100,25 +100,25 @@
             <div class="text-sm font-bold">
               LINEログインチャンネルのチャンネル基本設定のチャンネルIDをコピーして設定してください。
             </div>
-            <img src="//images/lines/lineLoginId.png" class="p-4" />
+            <img src="/images/lines/lineLoginId.png" class="p-4" />
           </div>
           <div v-if="iType == 'loginChannelSecret'">
             <div class="text-sm font-bold">
               LINEログインチャンネルのチャンネル基本設定のチャンネルシークレットをコピーして設定してください。
             </div>
-            <img src="//images/lines/lineLoginHeader.png" class="p-4" />
+            <img src="/images/lines/lineLoginHeader.png" class="p-4" />
             <div class="bg-gray-200">
               {{ $t("admin.line.showBelow") }}
             </div>
-            <img src="//images/lines/lineLoginSecret.png" class="p-4" />
+            <img src="/images/lines/lineLoginSecret.png" class="p-4" />
           </div>
           <div v-if="iType == 'messagingAccessToken'">
             <div class="text-sm font-bold">
               LINE Messaging APIのMessaging
               API設定のチャンネルアクセストークンをコピーして設定してください。
             </div>
-            <img src="//images/lines/lineMessageToken.png" class="p-4" />
-            <img src="//images/lines/lineMessageHeader.png" class="p-4" />
+            <img src="/images/lines/lineMessageToken.png" class="p-4" />
+            <img src="/images/lines/lineMessageHeader.png" class="p-4" />
           </div>
           <div v-if="iType == 'callback'">
             <div class="text-sm font-bold">
