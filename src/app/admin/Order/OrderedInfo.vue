@@ -19,9 +19,9 @@
       <!-- Payment Status and Time Stamp -->
       <div class="flex items-center px-2">
         <div class="flex-1 text-xs font-bold">
-          <div v-if="hasStripe" :class="'stripe_' + order.payment.stripe">
+          <StripeStatus :stripeState="order.payment.stripe" v-if="hasStripe">
             {{ $t("order.status.stripe_" + order.payment.stripe) }}
-          </div>
+          </StripeStatus>
           <div v-else class="text-yellow-500">
             {{ $t("order.status.onsitePayment") }}
           </div>
@@ -130,9 +130,9 @@
       <!-- Payment Status and Time Stamp -->
       <div class="flex items-center px-2">
         <div class="flex-1 text-xs font-bold">
-          <div v-if="hasStripe" :class="'stripe_' + order.payment.stripe">
+          <StripeStatus :stripeState="order.payment.stripe" v-if="hasStripe">
             {{ $t("order.status.stripe_" + order.payment.stripe) }}
-          </div>
+          </StripeStatus>
           <div v-else class="text-yellow-500">
             {{ $t("order.status.onsitePayment") }}
           </div>
@@ -204,9 +204,9 @@
       <!-- Payment Status and Time Stamp -->
       <div class="flex items-center px-2">
         <div class="flex-1 text-xs font-bold">
-          <div v-if="hasStripe" :class="'stripe_' + order.payment.stripe">
+          <StripeStatus :stripeState="order.payment.stripe" v-if="hasStripe">
             {{ $t("order.status.stripe_" + order.payment.stripe) }}
-          </div>
+          </StripeStatus>
           <div v-else class="text-yellow-500">
             {{ $t("order.status.onsitePayment") }}
           </div>
@@ -274,6 +274,7 @@ import { useI18n } from "vue-i18n";
 import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import OrderState from "@/components/OrderStatus.vue";
+import StripeStatus from "@/components/StripeStatus.vue";
 
 export default defineComponent({
   props: {
@@ -288,6 +289,7 @@ export default defineComponent({
   },
   components: {
     OrderState,
+    StripeStatus,
   },
   emits: ["selected"],
   setup(props) {
