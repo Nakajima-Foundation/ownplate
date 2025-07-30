@@ -40,8 +40,8 @@
               :variant="errors.email ? 'danger' : 'success'"
               :message="errors.email && $t(errors.email[0])"
             >
-              <o-input
-                class="whitespace-nowrap"
+              <input
+                class="w-full rounded border px-2 py-1 whitespace-nowrap"
                 v-model="email"
                 type="email"
                 :placeholder="$t('admin.emailPlaceHolder')"
@@ -62,7 +62,8 @@
               :variant="errors.password ? 'danger' : 'success'"
               :message="errors.password && $t(errors.password[0])"
             >
-              <o-input
+              <input
+                class="w-full rounded border px-2 py-1 whitespace-nowrap"
                 v-model="password"
                 type="password"
                 :placeholder="$t('admin.passwordPlaceHolder')"
