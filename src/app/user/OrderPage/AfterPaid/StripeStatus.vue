@@ -5,14 +5,14 @@
     <div class="mb-1 text-center text-sm font-bold text-black/50">
       {{ $t("order.onlinePaymentStatus") }}
     </div>
-    <div :class="'stripe_' + orderInfo.payment.stripe">
+    <StripeStatus :stripeState="orderInfo.payment.stripe">
       <div class="text-xl">
         {{ $t("order.status" + ".stripe_user_" + orderInfo.payment.stripe) }}
       </div>
       <div>
         {{ $t("order.status.stripe_user_message_" + orderInfo.payment.stripe) }}
       </div>
-    </div>
+    </StripeStatus>
     <div v-if="isJustCancelPayment">
       {{ $t("order.status.stripe_user_message_just_payment_canceled") }}
     </div>
@@ -22,6 +22,7 @@
 <script lang="ts">
 import { defineComponent, computed } from "vue";
 import { order_status } from "@/config/constant";
+import StripeStatus from "@/components/StripeStatus.vue";
 
 export default defineComponent({
   props: {
@@ -29,6 +30,9 @@ export default defineComponent({
       type: Object,
       required: true,
     },
+  },
+  components: {
+    StripeStatus,
   },
   setup(props) {
     const hasStripe = computed(() => {
