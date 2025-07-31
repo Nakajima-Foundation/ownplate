@@ -11,18 +11,20 @@
         </option>
       </o-select>
     </o-field>
-    <o-field
-      :variant="hasError ? 'danger' : 'success'"
-      :message="hasError ? $t(errors[0]) : notice"
-      :label="label"
-    >
-      <o-input
+    <div class="field" :class="hasError ? 'has-error' : 'has-success'">
+      <label v-if="label" class="label text-sm font-medium mb-1 block">{{ label }}</label>
+      <input
         type="text"
         v-model="phoneNumber"
-        @update:modelValue="validatePhoneNumber"
+        @input="validatePhoneNumber"
         :placeholder="placeholder"
+        class="input border rounded px-3 py-2 w-full"
+        :class="hasError ? 'border-red-500' : 'border-gray-300'"
       />
-    </o-field>
+      <p v-if="hasError || notice" class="help text-sm mt-1" :class="hasError ? 'text-red-500' : 'text-green-600'">
+        {{ hasError ? $t(errors[0]) : notice }}
+      </p>
+    </div>
   </div>
 </template>
 

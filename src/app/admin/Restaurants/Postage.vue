@@ -18,7 +18,7 @@
               :key="key"
             >
               <span class="w-2/12">{{ state }}</span>
-              <o-input class="w-4/12" v-model="postage[key]" />
+              <input class="w-4/12 border border-gray-300 rounded px-3 py-2" v-model="postage[key]" />
               <button
                 @click="copy(key)"
                 v-if="key !== 0"
@@ -41,10 +41,11 @@
                 {{ $t("editEC.setPostageFreeThreshold") }}
               </span>
             </div>
-            <o-input
-              class="w-4/12"
+            <input
+              class="w-4/12 border border-gray-300 rounded px-3 py-2"
               v-model="freeThreshold"
               :disabled="!enableFree"
+              :class="!enableFree ? 'bg-gray-100' : ''"
             />
           </div>
         </div>

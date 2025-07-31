@@ -2,7 +2,7 @@
   <section class="mx-auto max-w-full px-6 pt-4 pb-12">
     <back-button url="/s" />
     <h2>Profiles</h2>
-    <o-input v-model="prefix" placeholder="email prefix"></o-input>
+    <input v-model="prefix" placeholder="email prefix" class="border border-gray-300 rounded px-3 py-2" />
     <button @click="handleSearch" class="cursor-pointer">Search</button>
     <table>
       <tr v-for="profile in profiles" :key="profile.uid">

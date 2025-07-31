@@ -25,12 +25,13 @@
               :variant="errors.email ? 'danger' : 'success'"
               :message="errors.email && $t(errors.email[0])"
             >
-              <o-input
+              <input
                 v-model="email"
                 type="email"
                 :placeholder="$t('admin.emailPlaceHolder')"
                 maxlength="256"
-                expanded
+                class="w-full border border-gray-300 rounded px-3 py-2"
+                :class="errors.email ? 'border-red-500' : 'border-green-500'"
               />
             </o-field>
           </div>
@@ -44,12 +45,12 @@
 
           <div class="mt-1">
             <o-field variant="success">
-              <o-input
+              <input
                 v-model="name"
                 type="text"
                 :placeholder="$t('admin.enterName')"
                 maxlength="100"
-                expanded
+                class="w-full border border-gray-300 rounded px-3 py-2"
               />
             </o-field>
           </div>
@@ -66,13 +67,13 @@
               :variant="errors.password ? 'danger' : 'success'"
               :message="errors.password && $t(errors.password[0])"
             >
-              <o-input
+              <input
                 v-model="password"
                 type="password"
                 :placeholder="$t('admin.passwordPlaceHolder')"
                 maxlength="30"
-                password-reveal
-                expanded
+                class="w-full border border-gray-300 rounded px-3 py-2"
+                :class="errors.password ? 'border-red-500' : 'border-green-500'"
               />
             </o-field>
           </div>
@@ -89,13 +90,13 @@
               :variant="errors.confirm ? 'danger' : 'success'"
               :message="errors.confirm && $t(errors.confirm[0])"
             >
-              <o-input
+              <input
                 v-model="confirmPassword"
                 type="password"
                 :placeholder="$t('admin.confirmPasswordPlaceHolder')"
                 maxlength="30"
-                password-reveal
-                expanded
+                class="w-full border border-gray-300 rounded px-3 py-2"
+                :class="errors.confirm ? 'border-red-500' : 'border-green-500'"
               />
             </o-field>
           </div>
