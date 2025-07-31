@@ -34,29 +34,46 @@
       <hr class="my-4 border border-solid border-black/5" />
 
       <div class="m-6">
-        <div class="pb-2 text-sm font-bold">
-          {{ $t("admin.line.loginClientId") }}
-          <span class="cursor-pointer" @click="open('loginClientId')">?</span>
+        <div class="flex items-center pb-2">
+          <span class="text-sm font-bold">
+            {{ $t("admin.line.loginClientId") }}
+          </span>
+          <span
+            class="ml-2 cursor-pointer text-xl"
+            @click="open('loginClientId')"
+          >
+            <i class="material-icons text-op-teal">help_outline</i>
+          </span>
         </div>
         <div>
           <o-input type="text" v-model="clientId" />
         </div>
 
-        <div class="mt-2 pb-2 text-sm font-bold">
-          {{ $t("admin.line.loginChannelSecret") }}
-          <span class="cursor-pointer" @click="open('loginChannelSecret')"
-            >?</span
+        <div class="mt-2 flex items-center pb-2">
+          <span class="text-sm font-bold">
+            {{ $t("admin.line.loginChannelSecret") }}
+          </span>
+          <span
+            class="ml-2 cursor-pointer text-xl"
+            @click="open('loginChannelSecret')"
           >
+            <i class="material-icons text-op-teal">help_outline</i>
+          </span>
         </div>
         <div>
           <o-input type="text" v-model="client_secret" />
         </div>
 
-        <div class="mt-2 pb-2 text-sm font-bold">
-          {{ $t("admin.line.messagingAccessToken") }}
-          <span class="cursor-pointer" @click="open('messagingAccessToken')"
-            >?</span
+        <div class="mt-2 flex items-center pb-2">
+          <span class="text-sm font-bold">
+            {{ $t("admin.line.messagingAccessToken") }}
+          </span>
+          <span
+            class="ml-2 cursor-pointer text-xl"
+            @click="open('messagingAccessToken')"
           >
+            <i class="material-icons text-op-teal">help_outline</i>
+          </span>
         </div>
         <div>
           <o-input type="text" v-model="message_token" />
@@ -64,9 +81,16 @@
 
         <hr class="my-4 border border-solid border-black/5" />
 
-        <div class="pb-2 text-sm font-bold">
-          {{ $t("admin.line.callbackUrl") }}
-          <span class="cursor-pointer" @click="open('callback')">?</span>
+        <div class="pb-2">
+          <span class="text-sm font-bold">
+            {{ $t("admin.line.callbackUrl") }}
+          </span>
+          <span
+            class="ml-2 cursor-pointer align-middle text-lg"
+            @click="open('callback')"
+          >
+            <i class="material-icons text-op-teal">help_outline</i>
+          </span>
         </div>
 
         <div>
@@ -248,3 +272,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+.material-icons {
+  font-size: inherit;
+}
+</style>
