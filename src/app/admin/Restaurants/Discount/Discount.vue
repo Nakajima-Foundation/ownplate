@@ -44,7 +44,7 @@
           {{ $t("admin.promotion.name") }}
         </div>
         <div>
-          <o-input type="text" v-model="promotion.promotionName" />
+          <input type="text" v-model="promotion.promotionName" class="w-full border border-gray-300 rounded px-3 py-2" />
         </div>
       </div>
       <div class="mt-2">
@@ -111,11 +111,12 @@
         </div>
         <div>
           <o-field class="has-addons">
-            <o-input
+            <input
               type="number"
               v-model="promotion.discountThreshold"
               :step="1"
               min="0"
+              class="border border-gray-300 rounded px-3 py-2"
             />
             <span class="button is-static">
               {{ $t("currency.JPY") }}
@@ -161,7 +162,7 @@
           </template>
         </div>
         <o-field class="has-addons">
-          <o-input type="text" v-model="promotion.discountValue" />
+          <input type="text" v-model="promotion.discountValue" class="border border-gray-300 rounded px-3 py-2" />
           <span class="button is-static">
             <template v-if="promotion.discountMethod === 'amount'">
               {{ $t("currency.JPY") }}

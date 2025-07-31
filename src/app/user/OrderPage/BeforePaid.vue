@@ -172,12 +172,13 @@
               </div>
 
               <div class="mt-2 rounded-lg bg-white p-4 shadow-sm">
-                <o-input
+                <textarea
                   v-model="memo"
-                  type="textarea"
                   :placeholder="$t('order.enterMessage')"
-                  rootClass="w-full"
-                ></o-input>
+                  class="w-full border border-gray-300 rounded px-3 py-2 resize-vertical"
+                  :class="userMessageError ? 'border-red-500' : 'border-green-500'"
+                  rows="3"
+                ></textarea>
                 <div :class="userMessageError ? 'font-bold text-red-700' : ''">
                   {{ $t("validationError.memo.length") }}
                 </div>
@@ -206,11 +207,12 @@
               </div>
 
               <div class="mt-2 rounded-lg bg-white p-4 shadow-sm">
-                <o-input
+                <input
                   v-model="userName"
                   :placeholder="$t('order.enterUserName')"
-                  class="w-full"
-                ></o-input>
+                  class="w-full border border-gray-300 rounded px-3 py-2"
+                  :class="userNameError ? 'border-red-500' : 'border-green-500'"
+                />
               </div>
             </div>
           </template>
