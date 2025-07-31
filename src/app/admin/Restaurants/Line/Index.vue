@@ -124,7 +124,7 @@
             <div class="text-sm font-bold">
               この値をコピーして、LINEログインチャンネルのLINEログイン設定の「コールバックURL」に設定してください。
             </div>
-            <!-- <img src="//images/lines/lineLoginCallback.png" class="p-4" /> -->
+            <img src="/images/lines/lineLoginCallback.png" class="p-4" />
           </div>
         </div>
       </t-modal>
