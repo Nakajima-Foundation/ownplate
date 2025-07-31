@@ -1,14 +1,12 @@
 <template>
   <div>
-    <o-field>
-      <o-input
-        ref="textInput"
-        :modelValue="name"
-        @update:modelValue="updateTitle"
-        @blur="saveTitle"
-        :placeholder="$t('editTitle.enterCategory')"
-      ></o-input>
-    </o-field>
+    <input
+      ref="textInput"
+      v-model="name"
+      @blur="saveTitle"
+      :placeholder="$t('editTitle.enterCategory')"
+      class="w-full rounded-md px-2 py-1 whitespace-nowrap bg-white"
+    />
   </div>
 </template>
 
@@ -30,15 +28,11 @@ export default defineComponent({
     onMounted(() => {
       textInput.value.focus();
     });
-    const updateTitle = (e: string) => {
-      name.value = e;
-    };
     const saveTitle = () => {
       ctx.emit("saveTitle", name.value);
     };
 
     return {
-      updateTitle,
       textInput,
       saveTitle,
       name,
