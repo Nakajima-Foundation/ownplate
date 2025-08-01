@@ -38,7 +38,7 @@
       </t-button>
     </div>
 
-    <div v-if="promotion">
+    <div v-if="promotion" class="m-auto w-full md:w-2xl">
       <div class="mt-2">
         <div class="pb-2 text-sm font-bold">
           {{ $t("admin.promotion.name") }}
