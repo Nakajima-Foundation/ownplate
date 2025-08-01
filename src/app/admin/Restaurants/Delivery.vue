@@ -126,13 +126,14 @@
               {{ $t("delivery.setAreaText") }}
             </div>
 
-            <o-input
+            <textarea
               v-model="areaText"
-              type="textarea"
               :placeholder="$t('delivery.areaTextExample')"
               :disabled="!enableAreaText || !enableDelivery"
+              class="resize-vertical w-full rounded-lg border border-gray-300 px-3 py-2 dark:bg-black dark:text-gray-200"
+              rows="4"
             >
-            </o-input>
+            </textarea>
           </div>
         </div>
 
