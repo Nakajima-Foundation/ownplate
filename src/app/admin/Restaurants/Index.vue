@@ -475,8 +475,12 @@
                       placeholder="8.2"
                       type="text"
                       maxlength="5"
-                      class="w-24 border border-gray-300 rounded px-3 py-2"
-                      :class="errors['foodTax'].length > 0 ? 'border-red-500' : 'border-green-500'"
+                      class="w-24 rounded-lg border border-gray-300 px-3 py-2 dark:bg-black dark:text-gray-200"
+                      :class="
+                        errors['foodTax'].length > 0
+                          ? 'border-red-500'
+                          : 'border-green-500'
+                      "
                     />
                     <div class="ml-2">%</div>
                   </o-field>
@@ -497,8 +501,12 @@
                       placeholder="10.2"
                       type="text"
                       maxlength="5"
-                      class="w-24 border border-gray-300 rounded px-3 py-2"
-                      :class="errors['alcoholTax'].length > 0 ? 'border-red-500' : 'border-green-500'"
+                      class="w-24 rounded-lg border border-gray-300 px-3 py-2 dark:bg-black dark:text-gray-200"
+                      :class="
+                        errors['alcoholTax'].length > 0
+                          ? 'border-red-500'
+                          : 'border-green-500'
+                      "
                     />
                     <div class="ml-2">%</div>
                   </o-field>
@@ -595,8 +603,12 @@
                     v-model.number="editShopInfo.pickUpMinimumCookTime"
                     placeholder="10"
                     type="text"
-                    class="w-24 border border-gray-300 rounded px-3 py-2"
-                    :class="errors['pickUpMinimumCookTime'].length > 0 ? 'border-red-500' : 'border-green-500'"
+                    class="w-24 rounded-lg border border-gray-300 px-3 py-2 dark:bg-black dark:text-gray-200"
+                    :class="
+                      errors['pickUpMinimumCookTime'].length > 0
+                        ? 'border-red-500'
+                        : 'border-green-500'
+                    "
                   />
                   <div class="ml-2">
                     {{ $t("editRestaurant.minutes") }}
