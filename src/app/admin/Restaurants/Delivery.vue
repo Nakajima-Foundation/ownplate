@@ -130,7 +130,7 @@
               v-model="areaText"
               :placeholder="$t('delivery.areaTextExample')"
               :disabled="!enableAreaText || !enableDelivery"
-              class="w-full border border-gray-300 rounded px-3 py-2 resize-vertical"
+              class="resize-vertical w-full rounded-lg border border-gray-300 px-3 py-2 dark:bg-black dark:text-gray-200"
               rows="4"
             >
             </textarea>
