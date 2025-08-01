@@ -2,9 +2,25 @@
 
 @config '../../../tailwind.config.js';
 
+@layer base {
+  body {
+    @apply font-sans;
+  }
+  a {
+    @apply text-indigo-500 transition-colors;
+  }
 
-body {
-  font-family: sans-serif !important;
+  a:hover {
+    @apply text-gray-700;
+  }
+
+  a:visited {
+    @apply text-gray-700;
+  }
+
+  a:active {
+    @apply text-gray-700;
+  }
 }
 
 div,
@@ -99,10 +115,3 @@ canvas {
 }
 
 
-a {
-  color: #485fc7;
-
-  &:hover {
-    color: #363636;
-  }
-}
