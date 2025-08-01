@@ -87,17 +87,16 @@
               {{ $t("editMenu.itemName") }}
               <span class="text-red-700">*</span>
             </div>
-            <div>
-              <input
-                v-model="menuInfo.itemName"
-                :placeholder="$t('editMenu.enterItemName')"
-                class="border border-gray-300 rounded px-3 py-2 w-full"
-                :class="{
-                  'border-red-500': errors['itemName'].length > 0,
-                  'border-green-500': errors['itemName'].length === 0
-                }"
-              />
-            </div>
+            <input
+              v-model="menuInfo.itemName"
+              :placeholder="$t('editMenu.enterItemName')"
+              class="input"
+              :class="
+                errors['itemName'].length > 0
+                  ? 'border-red-500'
+                  : 'border-green-500'
+              "
+            />
           </div>
 
           <!-- Item Name -->
@@ -108,7 +107,7 @@
             <input
               v-model="menuInfo.itemAliasesName"
               :placeholder="$t('editMenu.enterItemAliasesName')"
-              class="border border-gray-300 rounded px-3 py-2 w-full"
+              class="input"
             />
           </div>
 
@@ -129,13 +128,16 @@
                     placeholder="00.00"
                     :max="maxPrice"
                     min="0.00"
-                    class="border border-gray-300 rounded-l px-3 py-2 flex-1"
-                    :class="{
-                      'border-red-500': errors['price'].length > 0,
-                      'border-green-500': errors['price'].length === 0
-                    }"
+                    class="flex-1 rounded-l-lg border border-gray-300 px-3 py-2 dark:bg-black dark:text-gray-200"
+                    :class="
+                      errors['price'].length > 0
+                        ? 'border-red-500'
+                        : 'border-green-500'
+                    "
                   />
-                  <span class="bg-gray-100 border border-l-0 border-gray-300 rounded-r px-3 py-2 text-gray-600">
+                  <span
+                    class="rounded-r border border-l-0 border-gray-300 bg-gray-100 px-3 py-2 text-gray-600"
+                  >
                     {{ $t("currency." + currencyKey) }}
                   </span>
                 </div>
@@ -207,11 +209,12 @@
                 <textarea
                   v-model="menuInfo.itemDescription"
                   :placeholder="$t('editMenu.enterItemDescription')"
-                  class="border border-gray-300 rounded px-3 py-2 w-full resize-vertical"
-                  :class="{
-                    'border-red-500': errors['itemDescription'].length > 0,
-                    'border-green-500': errors['itemDescription'].length === 0
-                  }"
+                  class="resize-vertical w-full rounded-lg border border-gray-300 px-3 py-2 dark:bg-black dark:text-gray-200"
+                  :class="
+                    errors['itemDescription'].length > 0
+                      ? 'border-red-500'
+                      : 'border-green-500'
+                  "
                   rows="4"
                 ></textarea>
               </div>
@@ -228,7 +231,7 @@
                 <textarea
                   v-model="menuInfo.itemMemo"
                   :placeholder="$t('editMenu.enterItemMemo')"
-                  class="border border-green-500 rounded px-3 py-2 w-full resize-vertical"
+                  class="resize-vertical w-full rounded border border-green-500 px-3 py-2 dark:bg-black dark:text-gray-200"
                   rows="4"
                 ></textarea>
               </div>
@@ -443,7 +446,7 @@
                     <input
                       v-model="menuInfo.itemOptionCheckbox[key]"
                       :placeholder="$t('editMenu.enterItemOption')"
-                      class="border border-gray-300 rounded px-3 py-2 w-full"
+                      class="input"
                     />
                   </div>
                   <button class="cursor-pointer" @click="deleteOption(key)">
