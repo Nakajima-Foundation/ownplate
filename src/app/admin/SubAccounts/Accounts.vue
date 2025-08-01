@@ -86,21 +86,21 @@
           </span>
         </div>
         <div>
-          <o-input
+          <input
             v-model="name"
             :placeholder="$t('admin.subAccounts.enterName')"
-            rootClass="w-full"
-          ></o-input>
+            class="w-full border border-gray-300 rounded px-3 py-2"
+          />
         </div>
         <div class="mt-2 text-base font-bold">
           {{ $t("admin.subAccounts.email") }} :
         </div>
         <div>
-          <o-input
+          <input
             v-model="email"
             :placeholder="$t('admin.subAccounts.enterEmail')"
-            rootClass="w-full"
-          ></o-input>
+            class="w-full border border-gray-300 rounded px-3 py-2"
+          />
         </div>
         <div class="text-xs font-bold text-red-700">
           * {{ $t("admin.subAccounts.accountNotice") }}
