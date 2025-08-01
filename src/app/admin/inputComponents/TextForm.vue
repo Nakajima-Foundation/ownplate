@@ -5,15 +5,18 @@
       <span v-else>{{ $t(titleKey) }}</span>
       <span class="text-red-700" v-if="required === true">*</span>
     </div>
-    <o-field :variant="error.length > 0 ? 'danger' : 'success'">
-      <o-input
-        :modelValue="modelValue"
+    <div class="field" :class="error.length > 0 ? 'has-error' : 'has-success'">
+      <input
+        :value="modelValue"
         :type="type"
         :placeholder="$t(placeholder)"
         @update:modelValue="input"
+        @input="input($event.target.value)"
         :maxlength="maxlength"
-      ></o-input>
-    </o-field>
+        class="input border rounded px-3 py-2 w-full"
+        :class="error.length > 0 ? 'border-red-500' : 'border-gray-300'"
+      />
+    </div>
   </div>
 </template>
 
@@ -62,8 +65,8 @@ export default defineComponent({
   emits: ["update:modelValue"],
   setup(_, context) {
     const store = useStore();
-    const input = (e: any) => {
-      context.emit("update:modelValue", e);
+    const input = (value: string) => {
+      context.emit("update:modelValue", value);
     };
     const open = (key: string) => {
       store.commit("setTips", {

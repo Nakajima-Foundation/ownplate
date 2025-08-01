@@ -20,11 +20,11 @@
         </span>
       </div>
       <div class="mt-2">
-        <o-input
+        <input
           v-model="name"
           :placeholder="$t('admin.subAccounts.enterName')"
-          rootClass="w-full"
-        ></o-input>
+          class="w-full border border-gray-300 rounded px-3 py-2"
+        />
         <div class="mt-2">
           <span class="text-base font-bold"
             >{{ $t("admin.subAccounts.email") }}
