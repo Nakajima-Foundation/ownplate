@@ -20,12 +20,13 @@
               <span class="w-2/12">{{ state }}</span>
               <input
                 class="w-4/12 rounded-lg border border-gray-300 px-3 py-2 dark:bg-black dark:text-gray-200"
+                :class="{ 'py-3': key === 0 }"
                 v-model="postage[key]"
               />
               <button
                 @click="copy(key)"
                 v-if="key !== 0"
-                class="cursor-pointer"
+                class="bg-op-teal my-1 ml-2 cursor-pointer rounded-lg px-3 py-2 text-white"
               >
                 {{ $t("editEC.copy") }}
               </button>
