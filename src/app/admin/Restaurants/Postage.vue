@@ -18,7 +18,10 @@
               :key="key"
             >
               <span class="w-2/12">{{ state }}</span>
-              <input class="w-4/12 border border-gray-300 rounded px-3 py-2" v-model="postage[key]" />
+              <input
+                class="w-4/12 rounded-lg border border-gray-300 px-3 py-2 dark:bg-black dark:text-gray-200"
+                v-model="postage[key]"
+              />
               <button
                 @click="copy(key)"
                 v-if="key !== 0"
@@ -42,7 +45,7 @@
               </span>
             </div>
             <input
-              class="w-4/12 border border-gray-300 rounded px-3 py-2"
+              class="w-4/12 rounded-lg border border-gray-300 px-3 py-2 dark:bg-black dark:text-gray-200"
               v-model="freeThreshold"
               :disabled="!enableFree"
               :class="!enableFree ? 'bg-gray-100' : ''"
