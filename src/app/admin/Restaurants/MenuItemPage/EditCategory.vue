@@ -27,8 +27,8 @@
 
       <!-- Add Item -->
       <div class="flex">
-        <o-input
-          class="mr-2 flex-1"
+        <input
+          class="input mr-2 flex-1"
           :placeholder="$t('editMenu.newCategory')"
           v-model="newEntry"
         />
