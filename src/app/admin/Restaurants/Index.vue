@@ -457,80 +457,20 @@
 
           <!-- Tax -->
           <div>
-            <!-- Tax Input Required -->
-            <div v-if="requireTaxInput">
-              <div class="mt-4 flex">
-                <div>
-                  <div class="pb-2 text-sm font-bold">
-                    {{ $t("editRestaurant.foodTax") }}
-                  </div>
-                  <o-field
-                    class="inline-flex items-center"
-                    :variant="
-                      errors['foodTax'].length > 0 ? 'danger' : 'success'
-                    "
-                  >
-                    <input
-                      v-model="editShopInfo.foodTax"
-                      placeholder="8.2"
-                      type="text"
-                      maxlength="5"
-                      class="w-24 rounded-lg border border-gray-300 px-3 py-2 dark:bg-black dark:text-gray-200"
-                      :class="
-                        errors['foodTax'].length > 0
-                          ? 'border-red-500'
-                          : 'border-green-500'
-                      "
-                    />
-                    <div class="ml-2">%</div>
-                  </o-field>
-                </div>
-
-                <div class="ml-4">
-                  <div class="pb-2 text-sm font-bold">
-                    {{ $t("editRestaurant.alcoholTax") }}
-                  </div>
-                  <o-field
-                    class="inline-flex items-center"
-                    :variant="
-                      errors['alcoholTax'].length > 0 ? 'danger' : 'success'
-                    "
-                  >
-                    <input
-                      v-model="editShopInfo.alcoholTax"
-                      placeholder="10.2"
-                      type="text"
-                      maxlength="5"
-                      class="w-24 rounded-lg border border-gray-300 px-3 py-2 dark:bg-black dark:text-gray-200"
-                      :class="
-                        errors['alcoholTax'].length > 0
-                          ? 'border-red-500'
-                          : 'border-green-500'
-                      "
-                    />
-                    <div class="ml-2">%</div>
-                  </o-field>
-                </div>
+            <div class="mt-4">
+              <div class="pb-2 text-sm font-bold">
+                {{ $t("editRestaurant.tax") }}
               </div>
-            </div>
-
-            <!-- Tax Input Not Required -->
-            <div v-if="!requireTaxInput">
-              <div class="mt-4">
-                <div class="pb-2 text-sm font-bold">
-                  {{ $t("editRestaurant.tax") }}
-                </div>
-                <div
-                  class="grid grid-cols-1 space-y-2 rounded-lg bg-black/5 p-4"
+              <div
+                class="grid grid-cols-1 space-y-2 rounded-lg bg-black/5 p-4"
                 >
-                  <div
-                    v-for="(taxItem, k) in taxRates"
-                    class="text-base"
-                    :key="k"
+                <div
+                  v-for="(taxItem, k) in taxRates"
+                  class="text-base"
+                  :key="k"
                   >
-                    {{ $t("editMenu." + taxRateKeys[taxItem]) }}
-                    {{ editShopInfo[taxItem + "Tax"] }}%
-                  </div>
+                  {{ $t("editMenu." + taxRateKeys[taxItem]) }}
+                  {{ editShopInfo[taxItem + "Tax"] }}%
                 </div>
               </div>
             </div>
