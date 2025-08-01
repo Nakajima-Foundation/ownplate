@@ -470,12 +470,17 @@
                       errors['foodTax'].length > 0 ? 'danger' : 'success'
                     "
                   >
-                    <o-input
+                    <input
                       v-model="editShopInfo.foodTax"
                       placeholder="8.2"
                       type="text"
                       maxlength="5"
-                      class="w-24"
+                      class="w-24 rounded-lg border border-gray-300 px-3 py-2 dark:bg-black dark:text-gray-200"
+                      :class="
+                        errors['foodTax'].length > 0
+                          ? 'border-red-500'
+                          : 'border-green-500'
+                      "
                     />
                     <div class="ml-2">%</div>
                   </o-field>
@@ -491,12 +496,17 @@
                       errors['alcoholTax'].length > 0 ? 'danger' : 'success'
                     "
                   >
-                    <o-input
+                    <input
                       v-model="editShopInfo.alcoholTax"
                       placeholder="10.2"
                       type="text"
                       maxlength="5"
-                      class="w-24"
+                      class="w-24 rounded-lg border border-gray-300 px-3 py-2 dark:bg-black dark:text-gray-200"
+                      :class="
+                        errors['alcoholTax'].length > 0
+                          ? 'border-red-500'
+                          : 'border-green-500'
+                      "
                     />
                     <div class="ml-2">%</div>
                   </o-field>
@@ -589,11 +599,16 @@
                       : 'success'
                   "
                 >
-                  <o-input
+                  <input
                     v-model.number="editShopInfo.pickUpMinimumCookTime"
                     placeholder="10"
                     type="text"
-                    class="w-24"
+                    class="w-24 rounded-lg border border-gray-300 px-3 py-2 dark:bg-black dark:text-gray-200"
+                    :class="
+                      errors['pickUpMinimumCookTime'].length > 0
+                        ? 'border-red-500'
+                        : 'border-green-500'
+                    "
                   />
                   <div class="ml-2">
                     {{ $t("editRestaurant.minutes") }}
