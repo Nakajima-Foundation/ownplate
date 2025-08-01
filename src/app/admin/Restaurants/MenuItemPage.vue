@@ -163,7 +163,6 @@
 
             <!-- Price Example -->
             <div
-              v-if="requireTaxPriceDisplay"
               class="mt-2 rounded-lg bg-black/5 p-4"
             >
               <div class="inline text-sm font-bold">
@@ -821,7 +820,6 @@ export default defineComponent({
     });
 
     const taxRateKeys = regionalSetting["taxRateKeys"];
-    const requireTaxPriceDisplay = regionalSetting.requireTaxPriceDisplay;
     const currencyKey = regionalSetting["CurrencyKey"];
 
     const { restaurantId } = props.shopInfo;
@@ -1040,7 +1038,6 @@ export default defineComponent({
 
       taxRates,
       taxRateKeys,
-      requireTaxPriceDisplay,
       currencyKey,
       maxPrice,
       notFound,

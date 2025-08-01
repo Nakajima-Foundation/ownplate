@@ -476,7 +476,7 @@
             </div>
 
             <!-- Tax Display -->
-            <div v-if="requireTaxPriceDisplay" class="mt-4">
+            <div class="mt-4">
               <div class="pb-2 text-sm font-bold">
                 {{ $t("editRestaurant.taxPriceDisplay") }}
               </div>
@@ -490,7 +490,6 @@
                 </div>
                 <div class="mt-2">
                   <div
-                    v-if="region === 'JP'"
                     class="mb-2 text-xs font-bold text-red-700"
                   >
                     {{ $t("editRestaurant.taxPriceDisplayJp") }}
@@ -1185,9 +1184,6 @@ export default defineComponent({
     const taxRateKeys = regionalSetting["taxRateKeys"];
     const region = ownPlateConfig.region;
 
-    const requireTaxInput = regionalSetting.requireTaxInput;
-    const requireTaxPriceDisplay = regionalSetting.requireTaxPriceDisplay;
-
     const notFound = ref<boolean | null>(null);
     const gMap = ref();
     let mapObj: google.maps.Map | null = null;
@@ -1257,7 +1253,6 @@ export default defineComponent({
     const errors = computed(() => {
       return shopInfoValidator(
         editShopInfo,
-        requireTaxInput,
         errorsPhone.value,
         files.value["profile"],
         files.value["cover"],
@@ -1518,9 +1513,6 @@ export default defineComponent({
       region,
 
       editShopInfo,
-
-      requireTaxInput,
-      requireTaxPriceDisplay,
 
       days: daysOfWeek,
 
