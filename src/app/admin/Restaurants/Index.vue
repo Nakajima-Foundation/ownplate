@@ -530,14 +530,7 @@
                   >
                 </div>
 
-                <o-field
-                  class="flex items-center"
-                  :variant="
-                    errors['pickUpMinimumCookTime'].length > 0
-                      ? 'danger'
-                      : 'success'
-                  "
-                >
+                <div class="flex items-center">
                   <input
                     v-model.number="editShopInfo.pickUpMinimumCookTime"
                     placeholder="10"
@@ -555,7 +548,7 @@
                       >({{ $t("editRestaurant.withinFiveDays") }})</span
                     >
                   </div>
-                </o-field>
+                </div>
 
                 <div class="mt-2">
                   <template
