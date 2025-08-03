@@ -167,9 +167,12 @@
         </div>
         <o-field class="has-addons">
           <input
-            type="text"
+            type="number"
+            :step="promotion.discountMethod === 'ratio' ? 0.1 : 1"
+            min="0"
+            inputmode="decimal"
             v-model="promotion.discountValue"
-            class="rounded-lg border border-gray-300 px-3 py-2 dark:bg-black dark:text-gray-200"
+            class="rounded-l-lg border border-gray-300 px-3 py-2 dark:bg-black dark:text-gray-200"
           />
           <span class="button is-static">
             <template v-if="promotion.discountMethod === 'amount'">
