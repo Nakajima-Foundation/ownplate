@@ -461,14 +461,12 @@
               <div class="pb-2 text-sm font-bold">
                 {{ $t("editRestaurant.tax") }}
               </div>
-              <div
-                class="grid grid-cols-1 space-y-2 rounded-lg bg-black/5 p-4"
-                >
+              <div class="grid grid-cols-1 space-y-2 rounded-lg bg-black/5 p-4">
                 <div
                   v-for="(taxItem, k) in taxRates"
                   class="text-base"
                   :key="k"
-                  >
+                >
                   {{ $t("editMenu." + taxRateKeys[taxItem]) }}
                   {{ editShopInfo[taxItem + "Tax"] }}%
                 </div>
@@ -489,9 +487,7 @@
                   </o-checkbox>
                 </div>
                 <div class="mt-2">
-                  <div
-                    class="mb-2 text-xs font-bold text-red-700"
-                  >
+                  <div class="mb-2 text-xs font-bold text-red-700">
                     {{ $t("editRestaurant.taxPriceDisplayJp") }}
                   </div>
                   <div>
