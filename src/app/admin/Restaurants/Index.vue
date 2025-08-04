@@ -531,7 +531,7 @@
                     v-model.number="editShopInfo.pickUpMinimumCookTime"
                     placeholder="10"
                     type="text"
-                    class="w-24 rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 dark:bg-black dark:text-gray-200"
+                    class="w-24 rounded-lg border border-gray-300 bg-white px-3 py-2 dark:bg-black dark:text-gray-200"
                     :class="
                       errors['pickUpMinimumCookTime'].length > 0
                         ? 'border-red-500'
