@@ -461,14 +461,12 @@
               <div class="pb-2 text-sm font-bold">
                 {{ $t("editRestaurant.tax") }}
               </div>
-              <div
-                class="grid grid-cols-1 space-y-2 rounded-lg bg-black/5 p-4"
-                >
+              <div class="grid grid-cols-1 space-y-2 rounded-lg bg-black/5 p-4">
                 <div
                   v-for="(taxItem, k) in taxRates"
                   class="text-base"
                   :key="k"
-                  >
+                >
                   {{ $t("editMenu." + taxRateKeys[taxItem]) }}
                   {{ editShopInfo[taxItem + "Tax"] }}%
                 </div>
@@ -489,9 +487,7 @@
                   </o-checkbox>
                 </div>
                 <div class="mt-2">
-                  <div
-                    class="mb-2 text-xs font-bold text-red-700"
-                  >
+                  <div class="mb-2 text-xs font-bold text-red-700">
                     {{ $t("editRestaurant.taxPriceDisplayJp") }}
                   </div>
                   <div>
@@ -530,19 +526,12 @@
                   >
                 </div>
 
-                <o-field
-                  class="flex items-center"
-                  :variant="
-                    errors['pickUpMinimumCookTime'].length > 0
-                      ? 'danger'
-                      : 'success'
-                  "
-                >
+                <div class="flex items-center">
                   <input
                     v-model.number="editShopInfo.pickUpMinimumCookTime"
                     placeholder="10"
                     type="text"
-                    class="w-24 rounded-lg border border-gray-300 px-3 py-2 dark:bg-black dark:text-gray-200"
+                    class="w-24 rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 dark:bg-black dark:text-gray-200"
                     :class="
                       errors['pickUpMinimumCookTime'].length > 0
                         ? 'border-red-500'
@@ -555,7 +544,7 @@
                       >({{ $t("editRestaurant.withinFiveDays") }})</span
                     >
                   </div>
-                </o-field>
+                </div>
 
                 <div class="mt-2">
                   <template
