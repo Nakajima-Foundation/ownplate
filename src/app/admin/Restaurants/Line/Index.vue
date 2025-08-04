@@ -46,7 +46,11 @@
           </span>
         </div>
         <div>
-          <input type="text" v-model="clientId" class="input" />
+          <input
+            type="text"
+            v-model="clientId"
+            class="w-full rounded-lg border border-gray-300 bg-gray-100 px-3 py-2 dark:border-gray-600 dark:bg-black dark:text-white"
+          />
         </div>
 
         <div class="mt-2 flex items-center pb-2">
@@ -61,7 +65,11 @@
           </span>
         </div>
         <div>
-          <input type="text" v-model="client_secret" class="input" />
+          <input
+            type="text"
+            v-model="client_secret"
+            class="w-full rounded-lg border border-gray-300 bg-gray-100 px-3 py-2 dark:border-gray-600 dark:bg-black dark:text-white"
+          />
         </div>
 
         <div class="mt-2 flex items-center pb-2">
@@ -76,7 +84,11 @@
           </span>
         </div>
         <div>
-          <input type="text" v-model="message_token" class="input" />
+          <input
+            type="text"
+            v-model="message_token"
+            class="w-full rounded-lg border border-gray-300 bg-gray-100 px-3 py-2 dark:border-gray-600 dark:bg-black dark:text-white"
+          />
         </div>
 
         <hr class="my-4 border border-solid border-black/5" />
@@ -94,7 +106,12 @@
         </div>
 
         <div>
-          <input type="text" :value="callbackUrl" readonly class="input" />
+          <input
+            type="text"
+            :value="callbackUrl"
+            readonly
+            class="w-full rounded-lg border border-gray-300 bg-gray-100 px-3 py-2 dark:border-gray-600 dark:bg-black dark:text-white"
+          />
         </div>
 
         <div class="mt-4 pb-2 text-sm font-bold">
