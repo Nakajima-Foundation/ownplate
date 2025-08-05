@@ -91,11 +91,12 @@
               <input
                 v-model="menuInfo.itemName"
                 :placeholder="$t('editMenu.enterItemName')"
-                class="w-full rounded border border-gray-300 px-3 py-2"
-                :class="{
-                  'border-red-500': errors['itemName'].length > 0,
-                  'border-green-500': errors['itemName'].length === 0,
-                }"
+                class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 dark:border-gray-600 dark:bg-black dark:text-white"
+                :class="
+                  errors['itemName'].length > 0
+                    ? 'border-red-500'
+                    : 'border-green-500'
+                "
               />
             </div>
           </div>
@@ -108,7 +109,7 @@
             <input
               v-model="menuInfo.itemAliasesName"
               :placeholder="$t('editMenu.enterItemAliasesName')"
-              class="w-full rounded border border-gray-300 px-3 py-2"
+              class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 dark:border-gray-600 dark:bg-black dark:text-white"
             />
           </div>
 
@@ -129,11 +130,12 @@
                     placeholder="00.00"
                     :max="maxPrice"
                     min="0.00"
-                    class="flex-1 rounded-l border border-gray-300 px-3 py-2"
-                    :class="{
-                      'border-red-500': errors['price'].length > 0,
-                      'border-green-500': errors['price'].length === 0,
-                    }"
+                    class="flex-1 rounded-l-lg border border-gray-300 px-3 py-2 dark:bg-black dark:text-gray-200"
+                    :class="
+                      errors['price'].length > 0
+                        ? 'border-red-500'
+                        : 'border-green-500'
+                    "
                   />
                   <span
                     class="rounded-r border border-l-0 border-gray-300 bg-gray-100 px-3 py-2 text-gray-600"
@@ -206,11 +208,12 @@
                 <textarea
                   v-model="menuInfo.itemDescription"
                   :placeholder="$t('editMenu.enterItemDescription')"
-                  class="resize-vertical w-full rounded border border-gray-300 px-3 py-2"
-                  :class="{
-                    'border-red-500': errors['itemDescription'].length > 0,
-                    'border-green-500': errors['itemDescription'].length === 0,
-                  }"
+                  class="resize-vertical w-full rounded-lg border border-gray-300 px-3 py-2 dark:bg-black dark:text-gray-200"
+                  :class="
+                    errors['itemDescription'].length > 0
+                      ? 'border-red-500'
+                      : 'border-green-500'
+                  "
                   rows="4"
                 ></textarea>
               </div>
@@ -227,7 +230,7 @@
                 <textarea
                   v-model="menuInfo.itemMemo"
                   :placeholder="$t('editMenu.enterItemMemo')"
-                  class="resize-vertical w-full rounded border border-green-500 px-3 py-2"
+                  class="resize-vertical w-full rounded border border-green-500 px-3 py-2 dark:bg-black dark:text-gray-200"
                   rows="4"
                 ></textarea>
               </div>
@@ -442,7 +445,7 @@
                     <input
                       v-model="menuInfo.itemOptionCheckbox[key]"
                       :placeholder="$t('editMenu.enterItemOption')"
-                      class="w-full rounded border border-gray-300 px-3 py-2"
+                      class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 dark:border-gray-600 dark:bg-black dark:text-white"
                     />
                   </div>
                   <button class="cursor-pointer" @click="deleteOption(key)">
