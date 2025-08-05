@@ -1101,31 +1101,5 @@ export default defineComponent({
     border-bottom-right-radius: 0;
     border-top-right-radius: 0;
   }
-  .control.has-icons-right {
-    .icon.is-right {
-      justify-content: center;
-      pointer-events: none;
-    }
-    input[type="number"] {
-      padding-right: 40px;
-    }
-  }
-  .button {
-    border-width: 1px;
-    border-radius: 4px;
-    justify-content: center;
-    padding-bottom: calc(0.5em - 1px);
-    padding-left: 1em;
-    padding-right: 1em;
-    padding-top: calc(0.5em - 1px);
-    text-align: center;
-    &.is-static {
-      background-color: #f5f5f5;
-      border-color: #dbdbdb;
-      color: #7a7a7a;
-      box-shadow: none;
-      pointer-events: none;
-    }
-  }
 }
 </style>
