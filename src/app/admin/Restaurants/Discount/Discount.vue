@@ -99,13 +99,14 @@
             v-model="termFromDate"
             :min-date="new Date()"
             :placeholder="$t('shopInfo.temporaryClosureSelect')"
-            class="lg:w-96"
-          />
+            class="lg:w-96 bg-white mr-4"
+            />
+          ~
           <DateTimePicker
             v-model="termToDate"
             :min-date="new Date()"
             :placeholder="$t('shopInfo.temporaryClosureSelect')"
-            class="lg:w-96"
+            class="lg:w-96 bg-white ml-4"
           />
         </o-field>
       </div>
@@ -120,7 +121,7 @@
               v-model="promotion.discountThreshold"
               :step="1"
               min="0"
-              class="rounded-lg border border-gray-300 px-3 py-2 dark:bg-black dark:text-gray-200"
+              class="rounded-lg border bg-white border-gray-300 px-3 py-2 dark:bg-black dark:text-gray-200"
             />
             <span class="button is-static">
               {{ $t("currency.JPY") }}
@@ -172,7 +173,7 @@
             min="0"
             inputmode="decimal"
             v-model="promotion.discountValue"
-            class="rounded-l-lg border border-gray-300 px-3 py-2 dark:bg-black dark:text-gray-200"
+            class="rounded-l-lg border border-gray-300 bg-white px-3 py-2 dark:bg-black dark:text-gray-200"
           />
           <span class="button is-static">
             <template v-if="promotion.discountMethod === 'amount'">
@@ -332,52 +333,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style scoped>
-:deep(.field.has-addons) {
-  display: flex;
-  .control:first-child:not(:only-child) .input {
-    border-bottom-right-radius: 0;
-    border-top-right-radius: 0;
-  }
-}
-
-:deep(.control.has-icons-left) {
-  border-radius: 4px;
-  .icon.is-left {
-    left: 0;
-  }
-  .icon {
-    align-items: center;
-    display: inline-flex;
-    justify-content: center;
-    color: #dbdbdb;
-    pointer-events: none;
-    position: absolute;
-    top: 0;
-    width: 2.5em;
-    z-index: 4;
-  }
-  .input {
-    padding-left: 2.5em;
-  }
-}
-
-.button {
-  border-width: 1px;
-  border-radius: 4px;
-  justify-content: center;
-  padding-bottom: calc(0.5em - 1px);
-  padding-left: 1em;
-  padding-right: 1em;
-  padding-top: calc(0.5em - 1px);
-  text-align: center;
-  &.is-static {
-    background-color: #f5f5f5;
-    border-color: #dbdbdb;
-    color: #7a7a7a;
-    box-shadow: none;
-    pointer-events: none;
-  }
-}
-</style>
