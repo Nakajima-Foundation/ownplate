@@ -175,8 +175,10 @@
                 <textarea
                   v-model="memo"
                   :placeholder="$t('order.enterMessage')"
-                  class="w-full border border-gray-300 rounded px-3 py-2 resize-vertical"
-                  :class="userMessageError ? 'border-red-500' : 'border-green-500'"
+                  class="resize-vertical w-full rounded border border-gray-300 px-3 py-2"
+                  :class="
+                    userMessageError ? 'border-red-500' : 'border-green-500'
+                  "
                   rows="3"
                 ></textarea>
                 <div :class="userMessageError ? 'font-bold text-red-700' : ''">
@@ -210,7 +212,7 @@
                 <input
                   v-model="userName"
                   :placeholder="$t('order.enterUserName')"
-                  class="w-full border border-gray-300 rounded px-3 py-2"
+                  class="w-full rounded border border-gray-300 px-3 py-2"
                   :class="userNameError ? 'border-red-500' : 'border-green-500'"
                 />
               </div>

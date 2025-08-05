@@ -2,24 +2,28 @@
   <div>
     <div v-if="!hideTable" class="pb-6">
       <table class="w-full rounded-lg bg-white shadow-sm">
-        <tr>
-          <th
-            v-for="(field, index) in fields"
-            :key="field"
-            class="p-2 text-xs font-bold"
-          >
-            {{ fieldNames[index] }}
-          </th>
-        </tr>
-        <tr v-for="(row, k) in tableData" :key="k">
-          <td
-            v-for="field in fields"
-            :key="`${row.id}_${field}`"
-            class="p-2 text-xs"
-          >
-            {{ row[field] }}
-          </td>
-        </tr>
+        <thead>
+          <tr>
+            <th
+              v-for="(field, index) in fields"
+              :key="field"
+              class="p-2 text-xs font-bold"
+            >
+              {{ fieldNames[index] }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(row, k) in tableData" :key="k">
+            <td
+              v-for="field in fields"
+              :key="`${row.id}_${field}`"
+              class="p-2 text-xs"
+            >
+              {{ row[field] }}
+            </td>
+          </tr>
+        </tbody>
       </table>
     </div>
 
