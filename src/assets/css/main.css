@@ -80,22 +80,3 @@ canvas {
 }
 
 
-/*
- * add for
- * @oruga-ui/theme-bulma”: “^0.4.1"
- * text color of success events
- * ref: PhoneLogin.vue, PhoneEntry.vue
- */
-.help.is-success {
-  color: #16a34aff !important;
-}
-
-.has-text-success {
-  color: #48c78e !important;
-}
-
-.mdi-alert-circle {
-  color: #f14668 !important;
-}
-
-
