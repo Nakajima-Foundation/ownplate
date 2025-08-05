@@ -87,14 +87,17 @@
               {{ $t("editMenu.itemName") }}
               <span class="text-red-700">*</span>
             </div>
-            <o-field
-              :variant="errors['itemName'].length > 0 ? 'danger' : 'success'"
-            >
-              <o-input
+            <div>
+              <input
                 v-model="menuInfo.itemName"
                 :placeholder="$t('editMenu.enterItemName')"
-              ></o-input>
-            </o-field>
+                class="border border-gray-300 rounded px-3 py-2 w-full"
+                :class="{
+                  'border-red-500': errors['itemName'].length > 0,
+                  'border-green-500': errors['itemName'].length === 0
+                }"
+              />
+            </div>
           </div>
 
           <!-- Item Name -->
@@ -102,10 +105,11 @@
             <div class="pb-2 text-sm font-bold">
               {{ $t("editMenu.itemAliasesName") }}
             </div>
-            <o-input
+            <input
               v-model="menuInfo.itemAliasesName"
               :placeholder="$t('editMenu.enterItemAliasesName')"
-            ></o-input>
+              class="border border-gray-300 rounded px-3 py-2 w-full"
+            />
           </div>
 
           <!-- Item Price -->
@@ -117,23 +121,24 @@
                 <span class="text-red-700">*</span>
               </div>
               <div>
-                <o-field
-                  :variant="errors['price'].length > 0 ? 'danger' : 'success'"
-                  class="has-addons"
-                >
-                  <o-input
+                <div class="flex">
+                  <input
                     v-model="menuInfo.price"
                     type="number"
                     :step="priceStep"
                     placeholder="00.00"
                     :max="maxPrice"
                     min="0.00"
-                    expanded
-                  ></o-input>
-                  <span class="button is-static">
+                    class="border border-gray-300 rounded-l px-3 py-2 flex-1"
+                    :class="{
+                      'border-red-500': errors['price'].length > 0,
+                      'border-green-500': errors['price'].length === 0
+                    }"
+                  />
+                  <span class="bg-gray-100 border border-l-0 border-gray-300 rounded-r px-3 py-2 text-gray-600">
                     {{ $t("currency." + currencyKey) }}
                   </span>
-                </o-field>
+                </div>
               </div>
             </div>
 
@@ -197,17 +202,18 @@
               {{ $t("editMenu.itemDescription") }}
             </div>
             <div>
-              <o-field
-                :variant="
-                  errors['itemDescription'].length > 0 ? 'danger' : 'success'
-                "
-              >
-                <o-input
+              <div>
+                <textarea
                   v-model="menuInfo.itemDescription"
-                  type="textarea"
                   :placeholder="$t('editMenu.enterItemDescription')"
-                ></o-input>
-              </o-field>
+                  class="border border-gray-300 rounded px-3 py-2 w-full resize-vertical"
+                  :class="{
+                    'border-red-500': errors['itemDescription'].length > 0,
+                    'border-green-500': errors['itemDescription'].length === 0
+                  }"
+                  rows="4"
+                ></textarea>
+              </div>
             </div>
           </div>
 
@@ -217,13 +223,14 @@
               {{ $t("editMenu.itemMemo") }}
             </div>
             <div>
-              <o-field variant="success">
-                <o-input
+              <div>
+                <textarea
                   v-model="menuInfo.itemMemo"
-                  type="textarea"
                   :placeholder="$t('editMenu.enterItemMemo')"
-                ></o-input>
-              </o-field>
+                  class="border border-green-500 rounded px-3 py-2 w-full resize-vertical"
+                  rows="4"
+                ></textarea>
+              </div>
             </div>
           </div>
 
@@ -432,9 +439,10 @@
                     </div>
                   </button>
                   <div class="mr-2 flex-1">
-                    <o-input
+                    <input
                       v-model="menuInfo.itemOptionCheckbox[key]"
                       :placeholder="$t('editMenu.enterItemOption')"
+                      class="border border-gray-300 rounded px-3 py-2 w-full"
                     />
                   </div>
                   <button class="cursor-pointer" @click="deleteOption(key)">
