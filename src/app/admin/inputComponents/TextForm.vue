@@ -13,7 +13,7 @@
         @update:modelValue="input"
         @input="input($event.target.value)"
         :maxlength="maxlength"
-        class="input border rounded px-3 py-2 w-full"
+        class="input w-full rounded border px-3 py-2"
         :class="error.length > 0 ? 'border-red-500' : 'border-gray-300'"
       />
     </div>

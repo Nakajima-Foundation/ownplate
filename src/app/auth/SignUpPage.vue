@@ -30,7 +30,7 @@
                 type="email"
                 :placeholder="$t('admin.emailPlaceHolder')"
                 maxlength="256"
-                class="w-full border border-gray-300 rounded px-3 py-2"
+                class="w-full rounded border border-gray-300 px-3 py-2"
                 :class="errors.email ? 'border-red-500' : 'border-green-500'"
               />
             </o-field>
@@ -50,7 +50,7 @@
                 type="text"
                 :placeholder="$t('admin.enterName')"
                 maxlength="100"
-                class="w-full border border-gray-300 rounded px-3 py-2"
+                class="w-full rounded border border-gray-300 px-3 py-2"
               />
             </o-field>
           </div>
@@ -72,7 +72,7 @@
                 type="password"
                 :placeholder="$t('admin.passwordPlaceHolder')"
                 maxlength="30"
-                class="w-full border border-gray-300 rounded px-3 py-2"
+                class="w-full rounded border border-gray-300 px-3 py-2"
                 :class="errors.password ? 'border-red-500' : 'border-green-500'"
               />
             </o-field>
@@ -95,7 +95,7 @@
                 type="password"
                 :placeholder="$t('admin.confirmPasswordPlaceHolder')"
                 maxlength="30"
-                class="w-full border border-gray-300 rounded px-3 py-2"
+                class="w-full rounded border border-gray-300 px-3 py-2"
                 :class="errors.confirm ? 'border-red-500' : 'border-green-500'"
               />
             </o-field>

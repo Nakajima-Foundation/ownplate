@@ -28,7 +28,7 @@
       <!-- Add Item -->
       <div class="flex">
         <input
-          class="mr-2 flex-1 border border-gray-300 rounded px-3 py-2"
+          class="mr-2 flex-1 rounded border border-gray-300 px-3 py-2"
           :placeholder="$t('editMenu.newCategory')"
           v-model="newEntry"
         />

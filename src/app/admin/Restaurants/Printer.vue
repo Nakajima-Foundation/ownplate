@@ -34,7 +34,7 @@
             rows="2"
             readonly
             v-model="printerAddress"
-            class="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100"
+            class="w-full rounded border border-gray-300 bg-gray-100 px-3 py-2"
           ></textarea>
           <div v-if="printerAddress">
             {{ $t("printer.guidance") }}
@@ -52,7 +52,10 @@
             IP Address
             <span class="text-sx text-black/20">if need</span>
           </div>
-          <input v-model="ipaddress" class="input border border-gray-300 rounded px-3 py-2 w-full" />
+          <input
+            v-model="ipaddress"
+            class="input w-full rounded border border-gray-300 px-3 py-2"
+          />
         </div>
 
         <div class="mx-6 mt-4 rounded-lg bg-black/5 p-4" v-if="false">

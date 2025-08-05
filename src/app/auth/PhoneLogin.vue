@@ -46,7 +46,7 @@
                 v-model="phoneNumber"
                 maxlength="20"
                 :placeholder="$t('sms.pleasetype')"
-                class="w-full border border-gray-300 rounded px-3 py-2"
+                class="w-full rounded border border-gray-300 px-3 py-2"
                 :class="hasError ? 'border-red-500' : 'border-green-500'"
               />
             </o-field>
@@ -114,7 +114,7 @@
                 v-model="verificationCode"
                 maxlength="6"
                 :placeholder="$t('sms.typeVerificationCode')"
-                class="w-full border border-gray-300 rounded px-3 py-2"
+                class="w-full rounded border border-gray-300 px-3 py-2"
                 :class="hasError ? 'border-red-500' : 'border-green-500'"
               />
             </o-field>
@@ -134,7 +134,7 @@
                 v-model="name"
                 maxlength="32"
                 :placeholder="$t('sms.typeUserName')"
-                class="w-full border border-gray-300 rounded px-3 py-2"
+                class="w-full rounded border border-gray-300 px-3 py-2"
                 expanded
               />
             </o-field>

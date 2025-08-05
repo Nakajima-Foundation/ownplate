@@ -8,8 +8,10 @@
     <div>
       <o-field :variant="ecErrors['zip'].length > 0 ? 'danger' : 'success'">
         <input
-          class="w-full border border-gray-300 rounded px-3 py-2"
-          :class="ecErrors['zip'].length > 0 ? 'border-red-500' : 'border-green-500'"
+          class="w-full rounded border border-gray-300 px-3 py-2"
+          :class="
+            ecErrors['zip'].length > 0 ? 'border-red-500' : 'border-green-500'
+          "
           type="text"
           :placeholder="$t('order.ec.zip')"
           v-model="customerInfo.zip"
@@ -85,8 +87,12 @@
     <div>
       <o-field :variant="ecErrors['address'].length > 0 ? 'danger' : 'success'">
         <input
-          class="w-full border border-gray-300 rounded px-3 py-2"
-          :class="ecErrors['address'].length > 0 ? 'border-red-500' : 'border-green-500'"
+          class="w-full rounded border border-gray-300 px-3 py-2"
+          :class="
+            ecErrors['address'].length > 0
+              ? 'border-red-500'
+              : 'border-green-500'
+          "
           type="text"
           :placeholder="$t('order.ec.address')"
           v-model="customerInfo.address"
@@ -111,8 +117,10 @@
     <div>
       <o-field :variant="ecErrors['name'].length > 0 ? 'danger' : 'success'">
         <input
-          class="w-full border border-gray-300 rounded px-3 py-2"
-          :class="ecErrors['name'].length > 0 ? 'border-red-500' : 'border-green-500'"
+          class="w-full rounded border border-gray-300 px-3 py-2"
+          :class="
+            ecErrors['name'].length > 0 ? 'border-red-500' : 'border-green-500'
+          "
           type="text"
           :placeholder="$t('order.ec.name')"
           v-model="customerInfo.name"
@@ -134,8 +142,12 @@
       <div>
         <o-field :variant="ecErrors['email'].length > 0 ? 'danger' : 'success'">
           <input
-            class="w-full border border-gray-300 rounded px-3 py-2"
-            :class="ecErrors['email'].length > 0 ? 'border-red-500' : 'border-green-500'"
+            class="w-full rounded border border-gray-300 px-3 py-2"
+            :class="
+              ecErrors['email'].length > 0
+                ? 'border-red-500'
+                : 'border-green-500'
+            "
             type="text"
             :placeholder="$t('order.ec.email')"
             v-model="customerInfo.email"

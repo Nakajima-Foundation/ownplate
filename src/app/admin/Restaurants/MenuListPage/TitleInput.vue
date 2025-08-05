@@ -5,7 +5,7 @@
       v-model="name"
       @blur="saveTitle"
       :placeholder="$t('editTitle.enterCategory')"
-      class="w-full rounded-md px-2 py-1 whitespace-nowrap bg-white"
+      class="w-full rounded-md bg-white px-2 py-1 whitespace-nowrap"
     />
   </div>
 </template>

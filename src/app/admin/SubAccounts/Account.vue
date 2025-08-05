@@ -23,7 +23,7 @@
         <input
           v-model="name"
           :placeholder="$t('admin.subAccounts.enterName')"
-          class="w-full border border-gray-300 rounded px-3 py-2"
+          class="w-full rounded border border-gray-300 px-3 py-2"
         />
         <div class="mt-2">
           <span class="text-base font-bold"

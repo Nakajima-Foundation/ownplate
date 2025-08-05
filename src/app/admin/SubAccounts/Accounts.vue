@@ -89,7 +89,7 @@
           <input
             v-model="name"
             :placeholder="$t('admin.subAccounts.enterName')"
-            class="w-full border border-gray-300 rounded px-3 py-2"
+            class="w-full rounded border border-gray-300 px-3 py-2"
           />
         </div>
         <div class="mt-2 text-base font-bold">
@@ -99,7 +99,7 @@
           <input
             v-model="email"
             :placeholder="$t('admin.subAccounts.enterEmail')"
-            class="w-full border border-gray-300 rounded px-3 py-2"
+            class="w-full rounded border border-gray-300 px-3 py-2"
           />
         </div>
         <div class="text-xs font-bold text-red-700">

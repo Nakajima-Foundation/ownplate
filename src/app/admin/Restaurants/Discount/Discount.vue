@@ -99,14 +99,14 @@
             v-model="termFromDate"
             :min-date="new Date()"
             :placeholder="$t('shopInfo.temporaryClosureSelect')"
-            class="lg:w-96 bg-white mr-4"
-            />
+            class="mr-4 bg-white lg:w-96"
+          />
           ~
           <DateTimePicker
             v-model="termToDate"
             :min-date="new Date()"
             :placeholder="$t('shopInfo.temporaryClosureSelect')"
-            class="lg:w-96 bg-white ml-4"
+            class="ml-4 bg-white lg:w-96"
           />
         </o-field>
       </div>
@@ -121,7 +121,7 @@
               v-model="promotion.discountThreshold"
               :step="1"
               min="0"
-              class="rounded-lg border bg-white border-gray-300 px-3 py-2 dark:bg-black dark:text-gray-200"
+              class="rounded-lg border border-gray-300 bg-white px-3 py-2 dark:bg-black dark:text-gray-200"
             />
             <span class="button is-static">
               {{ $t("currency.JPY") }}
