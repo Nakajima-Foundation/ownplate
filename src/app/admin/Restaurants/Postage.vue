@@ -19,9 +19,12 @@
             >
               <span class="w-2/12">{{ state }}</span>
               <input
-                class="w-4/12 rounded-lg border border-gray-300 px-3 py-2 dark:bg-black dark:text-gray-200"
+                type="number"
+                inputmode="decimal"
+                class="w-4/12 rounded-lg border border-gray-300 bg-white px-3 py-2 dark:bg-black dark:text-gray-200"
                 :class="{ 'py-3': key === 0 }"
-                v-model="postage[key]"
+                v-model.number="postage[key]"
+                min="0"
               />
               <button
                 @click="copy(key)"
@@ -46,10 +49,17 @@
               </span>
             </div>
             <input
-              class="w-4/12 rounded-lg border border-gray-300 px-3 py-2 dark:bg-black dark:text-gray-200"
-              v-model="freeThreshold"
+              type="number"
+              inputmode="decimal"
+              class="w-4/12 rounded-lg border border-gray-300 px-3 py-2 dark:text-gray-200"
+              v-model.number="freeThreshold"
               :disabled="!enableFree"
-              :class="!enableFree ? 'bg-gray-100' : ''"
+              :class="
+                !enableFree
+                  ? 'bg-gray-100 dark:bg-gray-300'
+                  : 'bg-white dark:bg-black'
+              "
+              min="0"
             />
           </div>
         </div>
