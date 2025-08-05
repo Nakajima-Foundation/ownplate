@@ -90,7 +90,7 @@
             <input
               v-model="menuInfo.itemName"
               :placeholder="$t('editMenu.enterItemName')"
-              class="input"
+              class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 dark:border-gray-600 dark:bg-black dark:text-white"
               :class="
                 errors['itemName'].length > 0
                   ? 'border-red-500'
@@ -107,7 +107,7 @@
             <input
               v-model="menuInfo.itemAliasesName"
               :placeholder="$t('editMenu.enterItemAliasesName')"
-              class="input"
+              class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 dark:border-gray-600 dark:bg-black dark:text-white"
             />
           </div>
 
@@ -446,7 +446,7 @@
                     <input
                       v-model="menuInfo.itemOptionCheckbox[key]"
                       :placeholder="$t('editMenu.enterItemOption')"
-                      class="input"
+                      class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 dark:border-gray-600 dark:bg-black dark:text-white"
                     />
                   </div>
                   <button class="cursor-pointer" @click="deleteOption(key)">
