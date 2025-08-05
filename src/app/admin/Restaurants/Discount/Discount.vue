@@ -47,7 +47,7 @@
           <input
             type="text"
             v-model="promotion.promotionName"
-            class="w-full rounded-lg border border-gray-300 px-3 py-2 dark:bg-black dark:text-gray-200"
+            class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 dark:bg-black dark:text-gray-200"
           />
         </div>
       </div>
