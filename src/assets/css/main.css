@@ -65,9 +65,6 @@ canvas {
 
 /* Workaround for Bulma and Oruga input field */
 /* https://oruga.io/components/Input.html */
-.control {
-  position: relative;
-}
 
 .control .icon.is-right {
   display: flex;
@@ -82,19 +79,6 @@ canvas {
   display: none;
 }
 
-.field .has-addons {
-  display: inherit !important;
-}
-
-/* 2024/10/04
- * 以下のバージョンへあげた際のスタイル崩れを修正
- * @oruga-ui/theme-bulma”: “^0.4.1"
- * 影響箇所：input、textarea
- * 対象画面：ログイン、店情報の変更、商品登録
- */
-.field .control.has-icons-right {
-  display: block !important;
-}
 
 /*
  * add for
