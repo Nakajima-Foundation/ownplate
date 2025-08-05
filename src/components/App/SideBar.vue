@@ -2,7 +2,14 @@
   <div v-if="active" class="fixed inset-0 z-40 flex">
     <div class="flex-1 bg-black/30"></div>
   </div>
-  <transition name="slide">
+  <transition
+    enter-from-class="-translate-x-full opacity-0"
+    enter-to-class="translate-x-0 opacity-100"
+    enter-active-class="transition duration-300 ease-in-out"
+    leave-from-class="translate-x-0 opacity-100"
+    leave-to-class="-translate-x-full opacity-0"
+    leave-active-class="transition duration-300 ease-in-out"
+  >
     <div v-if="active" class="fixed inset-0 z-40 flex" @click="close">
       <div class="h-full w-64 overflow-y-auto bg-white shadow" @click.stop>
         <slot />
@@ -19,28 +26,3 @@ const emit = defineEmits<{
 
 const close = () => emit("update:active", false);
 </script>
-
-<style scoped>
-.slide-enter-from {
-  transform: translateX(-100%);
-  opacity: 0;
-}
-.slide-enter-to {
-  transform: translateX(0%);
-  opacity: 1;
-}
-.slide-enter-active,
-.slide-leave-active {
-  transition:
-    transform 0.3s ease,
-    opacity 0.3s ease;
-}
-.slide-leave-from {
-  transform: translateX(0%);
-  opacity: 1;
-}
-.slide-leave-to {
-  transform: translateX(-100%);
-  opacity: 0;
-}
-</style>
