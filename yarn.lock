@@ -2450,13 +2450,13 @@
     "@typescript-eslint/types" "8.39.0"
     eslint-visitor-keys "^4.2.1"
 
-"@unhead/vue@^2.0.12":
-  version "2.0.12"
-  resolved "https://registry.yarnpkg.com/@unhead/vue/-/vue-2.0.12.tgz#65b4b3d61f928d6969ff33728d53311c5b31c8ee"
-  integrity sha512-WFaiCVbBd39FK6Bx3GQskhgT9s45Vjx6dRQegYheVwU1AnF+FAfJVgWbrl21p6fRJcLAFp0xDz6wE18JYBM0eQ==
+"@unhead/vue@^2.0.13":
+  version "2.0.13"
+  resolved "https://registry.yarnpkg.com/@unhead/vue/-/vue-2.0.13.tgz#3a628dd55783cb55e04ce2239eaa4d20797aed1f"
+  integrity sha512-+Oxzj4Rb1IJolLd6RAAYPDisKVGSnp2WC0KpFog0t3ZliiuZufRGwk8AWf2ntdn93x7WM9afnDAVNCipnPFxFg==
   dependencies:
     hookable "^5.5.3"
-    unhead "2.0.12"
+    unhead "2.0.13"
 
 "@vitejs/plugin-vue@^6.0.1":
   version "6.0.1"
@@ -5054,10 +5054,10 @@ undici-types@~6.21.0:
   resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-6.21.0.tgz#691d00af3909be93a7faa13be61b3a5b50ef12cb"
   integrity sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==
 
-unhead@2.0.12:
-  version "2.0.12"
-  resolved "https://registry.yarnpkg.com/unhead/-/unhead-2.0.12.tgz#70ad5a098890c8de493994b3ee354bc84f173264"
-  integrity sha512-5oo0lwz81XDXCmrHGzgmbaNOxM8R9MZ3FkEs2ROHeW8e16xsrv7qXykENlISrcxr3RLPHQEsD1b6js9P2Oj/Ow==
+unhead@2.0.13:
+  version "2.0.13"
+  resolved "https://registry.yarnpkg.com/unhead/-/unhead-2.0.13.tgz#661c64a71cb57568a085646af804b05abd463d22"
+  integrity sha512-Q3lMTJnoGj8zNsqP/GWIIAd8W/hKKeOgErbsMSXDWdkIICUeIg9p7J5/0uDFREa684cReRz1NFxbrDaS+5rGMw==
   dependencies:
     hookable "^5.5.3"
 

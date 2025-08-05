@@ -25,7 +25,7 @@
     "@oruga-ui/theme-bulma": "^0.7.0",
     "@sentry/tracing": "^7.120.4",
     "@sentry/vue": "^10.1.0",
-    "@unhead/vue": "^2.0.12",
+    "@unhead/vue": "^2.0.13",
     "chart.js": "^4.5.0",
     "cookie": "^1.0.2",
     "crypto-js": "^4.1.1",
