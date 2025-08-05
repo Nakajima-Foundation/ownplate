@@ -46,12 +46,13 @@
               :variant="errors.password ? 'danger' : 'success'"
               :message="errors.password && $t(errors.password[0])"
             >
-              <o-input
+              <input
                 v-model="password"
                 type="password"
                 :placeholder="$t('admin.passwordPlaceHolder')"
                 maxlength="30"
-                password-reveal
+                class="w-full rounded border border-gray-300 px-3 py-2"
+                :class="errors.password ? 'border-red-500' : 'border-green-500'"
               />
             </o-field>
           </div>
@@ -67,12 +68,15 @@
                 :variant="errors.confirm ? 'danger' : 'success'"
                 :message="errors.confirm && $t(errors.confirm[0])"
               >
-                <o-input
+                <input
                   v-model="confirmPassword"
                   type="password"
                   :placeholder="$t('admin.confirmPasswordPlaceHolder')"
                   maxlength="30"
-                  password-reveal
+                  class="w-full rounded border border-gray-300 px-3 py-2"
+                  :class="
+                    errors.confirm ? 'border-red-500' : 'border-green-500'
+                  "
                 />
               </o-field>
             </div>

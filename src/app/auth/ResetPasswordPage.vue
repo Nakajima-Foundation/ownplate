@@ -18,10 +18,12 @@
               :variant="errors.email ? 'danger' : 'success'"
               :message="errors.email && $t(errors.email[0])"
             >
-              <o-input
+              <input
                 v-model="email"
                 :placeholder="$t('admin.emailPlaceHolder')"
                 maxlength="256"
+                class="w-full rounded border border-gray-300 px-3 py-2"
+                :class="errors.email ? 'border-red-500' : 'border-green-500'"
               />
             </o-field>
           </div>
