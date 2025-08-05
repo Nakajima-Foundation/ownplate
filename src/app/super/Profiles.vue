@@ -2,7 +2,6 @@
   <section class="mx-auto max-w-full px-6 pt-4 pb-12">
     <back-button url="/s" />
     <h2>Profiles</h2>
-    {{ prefix }}
     <input v-model="prefix" placeholder="email prefix" class="border border-gray-300 rounded px-3 py-2" />
     <button @click="handleSearch" class="cursor-pointer border rounded rounded-full p-2 hover:bg-gray-100 ml-4">Search</button>
     <table>
