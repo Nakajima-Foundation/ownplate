@@ -12,16 +12,22 @@
       </o-select>
     </o-field>
     <div class="field" :class="hasError ? 'has-error' : 'has-success'">
-      <label v-if="label" class="label text-sm font-medium mb-1 block">{{ label }}</label>
+      <label v-if="label" class="label mb-1 block text-sm font-medium">{{
+        label
+      }}</label>
       <input
         type="text"
         v-model="phoneNumber"
         @input="validatePhoneNumber"
         :placeholder="placeholder"
-        class="input border rounded px-3 py-2 w-full"
+        class="input w-full rounded border px-3 py-2"
         :class="hasError ? 'border-red-500' : 'border-gray-300'"
       />
-      <p v-if="hasError || notice" class="help text-sm mt-1" :class="hasError ? 'text-red-500' : 'text-green-600'">
+      <p
+        v-if="hasError || notice"
+        class="help mt-1 text-sm"
+        :class="hasError ? 'text-red-500' : 'text-green-600'"
+      >
         {{ hasError ? $t(errors[0]) : notice }}
       </p>
     </div>
