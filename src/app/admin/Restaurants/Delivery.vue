@@ -41,7 +41,7 @@
         <div class="mt-4 rounded-lg bg-black/5 p-4">
           <div class="text-sm font-bold">
             <o-checkbox
-              rootClass="base-o-input-root"
+              rootClass="content-center pr-2"
               v-model="enableDelivery"
             />{{
               $t(
@@ -53,7 +53,7 @@
           </div>
           <div class="text-sm font-bold">
             <o-checkbox
-              rootClass="base-o-input-root"
+              rootClass="content-center pr-2"
               v-model="deliveryOnlyStore"
             />{{
               $t(
@@ -74,7 +74,7 @@
           <div>
             <div class="flex pb-2 text-sm font-bold">
               <o-checkbox
-                rootClass="base-o-input-root"
+                rootClass="content-center pr-2"
                 v-model="enableAreaMap"
                 :disabled="!enableDelivery"
               />
@@ -100,7 +100,7 @@
               </span>
               <span class="flex-item mt-auto mr-2 mb-auto inline-block">
                 <input
-                  class="base-input"
+                  class="rounded-lg border border-black/20 bg-white px-4 py-1 dark:bg-black dark:text-gray-200"
                   v-model="radius"
                   :disabled="!enableAreaMap || !enableDelivery"
                 />
@@ -119,7 +119,7 @@
           <div class="mt-4">
             <div class="flex pb-2 text-sm font-bold">
               <o-checkbox
-                rootClass="base-o-input-root"
+                rootClass="content-center pr-2"
                 v-model="enableAreaText"
                 :disabled="!enableDelivery"
               />
@@ -143,13 +143,13 @@
           </div>
           <div class="mt-2 flex">
             <o-checkbox
-              rootClass="base-o-input-root"
+              rootClass="content-center pr-2"
               v-model="enableDeliveryThreshold"
               :disabled="!enableDelivery"
             />
             <span class="flex-item mt-auto mr-2 mb-auto inline-block">
               <input
-                class="base-input"
+                class="rounded-lg border border-black/20 bg-white px-4 py-1 dark:bg-black dark:text-gray-200"
                 v-model="deliveryThreshold"
                 :disabled="!enableDelivery"
                 type="number"
@@ -172,7 +172,7 @@
             </span>
             <span class="flex-item mt-auto mr-2 mb-auto inline-block">
               <input
-                class="base-input"
+                class="rounded-lg border border-black/20 bg-white px-4 py-1 dark:bg-black dark:text-gray-200"
                 v-model="deliveryFee"
                 :disabled="!enableDelivery"
                 type="number"
@@ -186,7 +186,7 @@
 
           <div class="mt-2 flex">
             <o-checkbox
-              rootClass="base-o-input-root"
+              rootClass="content-center pr-2"
               v-model="enableDeliveryFree"
               :disabled="!enableDelivery"
             />
@@ -195,7 +195,7 @@
             </span>
             <span class="flex-item mt-auto mr-2 mb-auto inline-block">
               <input
-                class="base-input"
+                class="rounded-lg border border-black/20 bg-white px-4 py-1 dark:bg-black dark:text-gray-200"
                 v-model="deliveryFreeThreshold"
                 :disabled="!enableDelivery"
                 type="number"
@@ -221,7 +221,7 @@
           <div>
             {{ $t("editRestaurant.deliveryPreparationTime") }}
             <input
-              class="base-input"
+              class="rounded-lg border border-black/20 bg-white px-4 py-1 dark:bg-black dark:text-gray-200"
               v-model="deliveryMinimumCookTime"
               :disabled="!enableDelivery"
               type="number"
@@ -487,14 +487,3 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-@reference "../../../assets/css/main.css";
-
-.base-input {
-  @apply rounded-lg border border-black/20 bg-white px-4 py-1 dark:bg-black dark:text-gray-200;
-}
-
-.base-o-input-root {
-  @apply content-center pr-2;
-}
-</style>
