@@ -1097,12 +1097,3 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-:deep(.field.has-addons) {
-  display: flex;
-  .control:first-child:not(:only-child) .input {
-    border-bottom-right-radius: 0;
-    border-top-right-radius: 0;
-  }
-}
-</style>
