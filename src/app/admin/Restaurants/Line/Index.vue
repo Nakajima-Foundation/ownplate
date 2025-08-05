@@ -42,7 +42,7 @@
             class="ml-2 cursor-pointer text-xl"
             @click="open('loginClientId')"
           >
-            <i class="material-icons text-op-teal">help_outline</i>
+            <i class="material-icons text-op-teal !text-xs">help_outline</i>
           </span>
         </div>
         <div>
@@ -61,7 +61,7 @@
             class="ml-2 cursor-pointer text-xl"
             @click="open('loginChannelSecret')"
           >
-            <i class="material-icons text-op-teal">help_outline</i>
+            <i class="material-icons text-op-teal !text-xs">help_outline</i>
           </span>
         </div>
         <div>
@@ -80,7 +80,7 @@
             class="ml-2 cursor-pointer text-xl"
             @click="open('messagingAccessToken')"
           >
-            <i class="material-icons text-op-teal">help_outline</i>
+            <i class="material-icons text-op-teal !text-xs">help_outline</i>
           </span>
         </div>
         <div>
@@ -101,7 +101,7 @@
             class="ml-2 cursor-pointer align-middle text-lg"
             @click="open('callback')"
           >
-            <i class="material-icons text-op-teal">help_outline</i>
+            <i class="material-icons text-op-teal !text-xs">help_outline</i>
           </span>
         </div>
 
@@ -289,9 +289,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style scoped>
-.material-icons {
-  font-size: inherit;
-}
-</style>

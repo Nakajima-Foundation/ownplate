@@ -229,6 +229,3 @@ export default defineComponent({
   },
 });
 </script>
-<style lang="scss">
-// ### Need this commentout for CSS parser bug. Don't remove.
-</style>
