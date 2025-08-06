@@ -51,13 +51,13 @@
 
       <!-- Publish Status -->
       <div class="mx-6 mt-4 rounded-lg bg-black/5 p-4 text-center">
-        <t-checkbox
+        <Checkbox
           v-model="menuInfo.publicFlag"
           :disabled="hasError"
           :variant="!menuInfo.publicFlag ? 'danger' : ''"
         >
           <span class="font-bold">{{ $t("shopInfo.public") }}</span>
-        </t-checkbox>
+        </Checkbox>
 
         <div class="text-sm font-bold">
           <div v-if="hasError" class="mt-1 text-red-700">
@@ -720,6 +720,7 @@ import Price from "@/components/Price.vue";
 import EditCategory from "@/app/admin/Restaurants/MenuItemPage/EditCategory.vue";
 import NotificationIndex from "@/app/admin/Notifications/Index.vue";
 import HoursInput from "@/app/admin/inputComponents/HoursInput.vue";
+import Checkbox from "@/components/form/checkbox.vue";
 
 import ImageUpload from "@/components/ImageUpload.vue";
 
@@ -761,6 +762,7 @@ export default defineComponent({
     NotFound,
     HoursInput,
     ImageUpload,
+    Checkbox,
   },
   props: {
     shopInfo: {

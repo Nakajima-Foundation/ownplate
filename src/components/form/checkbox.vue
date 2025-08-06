@@ -5,13 +5,13 @@
       :checked="modelValue"
       :disabled="disabled"
       @change="change"
-      class="peer m-2 h-5 w-5 cursor-pointer appearance-none rounded-md border-2 shadow-sm transition-all hover:shadow-md focus:ring-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 disabled:checked:border-gray-400 disabled:checked:bg-gray-400"
+      class="peer m-2 h-5 w-5 cursor-pointer appearance-none rounded-md border-2 shadow-sm transition-all hover:shadow-md focus:ring-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
       :class="[
         {
           'border-red-500': variant === 'danger' && !modelValue,
-          'border-red-400 checked:border-red-500 checked:bg-red-400 hover:bg-red-400 focus:bg-red-400':
+          'border-red-400 checked:border-red-500 checked:bg-red-400 hover:bg-red-200 focus:bg-red-200 disabled:checked:border-red-400  disabled:checked:bg-red-400':
             variant === 'danger',
-          'border-teal-400 checked:border-teal-400 checked:bg-teal-400 hover:border-teal-400 focus:ring-teal-400':
+          'border-teal-400 checked:border-teal-400 checked:bg-teal-400 hover:border-teal-400 focus:ring-teal-400 disabled:checked:border-gray-400  disabled:checked:bg-gray-400':
             variant !== 'danger',
         },
       ]"
