@@ -61,23 +61,24 @@
       {{ $t("shopInfo.prefecture") }}
       <span class="text-red-700">*</span>
     </div>
-    <o-field
-      :variant="ecErrors['prefectureId'].length > 0 ? 'danger' : 'success'"
+    <select
+      :value="customerInfo.prefectureId"
+      @change="updatePrefecture"
+      class="rounded-lg border-2 bg-white px-3 py-2 dark:border-gray-600 dark:bg-black dark:text-white"
+      :class="
+        ecErrors['prefectureId'].length > 0
+          ? 'border-red-400 hover:border-red-400 focus:ring-red-400'
+          : 'border-teal-400 hover:border-teal-400 focus:ring-teal-400'
+      "
     >
-      <o-select
-        v-model="customerInfo.prefectureId"
-        placeholder="select"
-        @update:modelValue="updatePrefecture"
+      <option
+        v-for="(stateItem, key) in regionalSetting.AddressStates"
+        :value="key + 1"
+        :key="stateItem"
       >
-        <option
-          v-for="(stateItem, key) in regionalSetting.AddressStates"
-          :value="key + 1"
-          :key="stateItem"
-        >
-          {{ stateItem }}
-        </option>
-      </o-select>
-    </o-field>
+        {{ stateItem }}
+      </option>
+    </select>
 
     <!-- address -->
     <div class="pb-2 text-sm font-bold">
@@ -218,19 +219,14 @@ export default defineComponent({
       customerInfo.value = Object.assign({}, customerInfo.value, data);
       addressList.value = [];
     };
-    const getPrefecture = () => {
-      if (customerInfo.value?.prefectureId) {
-        return regionalSetting.AddressStates[
-          customerInfo.value?.prefectureId - 1
-        ];
-      }
-      return null;
-    };
-    const updatePrefecture = () => {
-      const prefecture = getPrefecture();
+    const updatePrefecture = (e) => {
+      const prefectureId = e.target.value;
+      const prefecture = regionalSetting.AddressStates[prefectureId - 1];
+
       if (prefecture) {
         customerInfo.value = Object.assign({}, customerInfo.value, {
           prefecture,
+          prefectureId,
         });
       }
     };
