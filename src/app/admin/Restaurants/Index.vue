@@ -375,15 +375,16 @@
               </div>
               <div class="rounded-lg bg-black/5 p-4">
                 <div class="flex gap-2">
-                  <Checkbox
-                    id="acceptUserMessageDescription"
-                    v-model="editShopInfo.acceptUserMessage"
-                  />
                   <label
                     for="acceptUserMessageDescription"
                     class="text-sm font-bold"
                   >
-                    {{ $t("editRestaurant.acceptUserMessageDescription") }}
+                    <Checkbox
+                      id="acceptUserMessageDescription"
+                      v-model="editShopInfo.acceptUserMessage"
+                    >
+                      {{ $t("editRestaurant.acceptUserMessageDescription") }}
+                    </Checkbox>
                   </label>
                 </div>
                 <div class="pt-2 text-xs">
@@ -599,17 +600,20 @@
                 v-for="(personalInfoSaveMethod, k) in personalInfoSaveMethods"
                 :key="k"
               >
-                <input
-                  type="radio"
-                  v-model="editShopInfo.personalInfo"
-                  :value="personalInfoSaveMethod.key"
-                />
-                {{
-                  $t(
-                    "editRestaurant.personalInfoSaveMethodChoices." +
-                      personalInfoSaveMethod.key,
-                  )
-                }}
+                <label class="mr-2 inline-flex cursor-pointer items-center">
+                  <input
+                    type="radio"
+                    class="m-auto mt-1 mr-1 h-4 w-4 cursor-pointer appearance-none rounded-full border border-teal-400 bg-white checked:border-teal-400 checked:bg-teal-400 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+                    v-model="editShopInfo.personalInfo"
+                    :value="personalInfoSaveMethod.key"
+                  />
+                  {{
+                    $t(
+                      "editRestaurant.personalInfoSaveMethodChoices." +
+                        personalInfoSaveMethod.key,
+                    )
+                  }}
+                </label>
               </div>
             </div>
           </div>
