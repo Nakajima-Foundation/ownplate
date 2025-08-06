@@ -188,11 +188,11 @@
             </div>
             <div class="mt-2 rounded-lg bg-black/5 px-4 py-4">
               <div>
-                <o-checkbox
+                <Checkbox
                   v-for="allergen in allergens"
                   v-model="menuInfo.allergens[allergen]"
                   :key="allergen"
-                  >{{ $t(`allergens.${allergen}`) }}</o-checkbox
+                  >{{ $t(`allergens.${allergen}`) }}</Checkbox
                 >
               </div>
             </div>
@@ -255,18 +255,18 @@
             <div class="mt-2">
               <div class="rounded-lg bg-black/5 p-4">
                 <div>
-                  <o-checkbox class="mr-2" v-model="menuInfo.availableLunch">
+                  <Checkbox class="mr-2" v-model="menuInfo.availableLunch">
                     <span class="text-sm font-bold text-black/60">
                       {{ $t("shopInfo.lunch") }}
                     </span>
-                  </o-checkbox>
+                  </Checkbox>
                 </div>
                 <div class="mt-2">
-                  <o-checkbox class="mr-2" v-model="menuInfo.availableDinner">
+                  <Checkbox class="mr-2" v-model="menuInfo.availableDinner">
                     <span class="text-sm font-bold text-black/60">
                       {{ $t("shopInfo.dinner") }}
                     </span>
-                  </o-checkbox>
+                  </Checkbox>
                 </div>
               </div>
             </div>
