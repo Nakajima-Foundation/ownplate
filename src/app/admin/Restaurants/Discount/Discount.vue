@@ -55,7 +55,10 @@
         <div class="pb-2 text-sm font-bold">
           {{ $t("admin.promotion.activation") }}
         </div>
-        <o-select v-model="promotion.enable">
+        <select
+          v-model="promotion.enable"
+          class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+        >
           <option
             v-for="(result, key) in toBeOrNotSelect"
             :value="result.value"
@@ -63,13 +66,16 @@
           >
             {{ $t("admin." + result.messageKey) }}
           </option>
-        </o-select>
+        </select>
       </div>
       <div class="mt-2">
         <div class="pb-2 text-sm font-bold">
           {{ $t("admin.promotion.type") }}
         </div>
-        <o-select v-model="promotion.type">
+        <select
+          v-model="promotion.type"
+          class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+        >
           <option
             v-for="(result, key) in discountTypeSelect"
             :value="result.value"
@@ -77,14 +83,17 @@
           >
             {{ $t("admin.promotion." + result.messageKey) }}
           </option>
-        </o-select>
+        </select>
       </div>
       <div class="mt-2">
         <div class="pb-2 text-sm font-bold">
           {{ $t("admin.promotion.period") }}
         </div>
 
-        <o-select v-model="promotion.hasTerm">
+        <select
+          v-model="promotion.hasTerm"
+          class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+        >
           <option
             v-for="(result, key) in toBeOrNotSelect"
             :value="result.value"
@@ -92,7 +101,7 @@
           >
             {{ $t("admin." + result.messageKey) }}
           </option>
-        </o-select>
+        </select>
 
         <o-field v-if="promotion.hasTerm" class="has-addons">
           <DateTimePicker
@@ -133,7 +142,10 @@
         <div class="pb-2 text-sm font-bold">
           {{ $t("admin.promotion.limitation") }}
         </div>
-        <o-select v-model="promotion.usageRestrictions">
+        <select
+          v-model="promotion.usageRestrictions"
+          class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+        >
           <option
             v-for="(result, key) in toBeOrNotSelect2"
             :value="result.value"
@@ -141,13 +153,16 @@
           >
             {{ result.message }}
           </option>
-        </o-select>
+        </select>
       </div>
       <div class="mt-2">
         <div class="pb-2 text-sm font-bold">
           {{ $t("admin.promotion.discounts") }}
         </div>
-        <o-select v-model="promotion.discountMethod">
+        <select
+          v-model="promotion.discountMethod"
+          class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+        >
           <option
             v-for="(result, key) in discountMethodSelect"
             :value="result.value"
@@ -155,7 +170,7 @@
           >
             {{ $t("admin.promotion." + result.messageKey) }}
           </option>
-        </o-select>
+        </select>
       </div>
       <div class="mt-2 w-40">
         <div class="pb-2 text-sm font-bold">
@@ -187,7 +202,10 @@
         <div class="pb-2 text-sm font-bold">
           {{ $t("admin.promotion.paymentMethod") }}
         </div>
-        <o-select v-model="promotion.paymentRestrictions">
+        <select
+          v-model="promotion.paymentRestrictions"
+          class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+        >
           <option
             v-for="(result, key) in promotionPaymentRestrictionsSelect"
             :value="result.value"
@@ -195,7 +213,7 @@
           >
             {{ result.message }}
           </option>
-        </o-select>
+        </select>
       </div>
       <!-- Save -->
       <div class="mt-2 flex justify-center space-x-4">
