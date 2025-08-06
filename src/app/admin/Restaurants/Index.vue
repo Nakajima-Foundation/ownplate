@@ -731,10 +731,7 @@
                 {{ $t("editRestaurant.emailNotificationTitle") }}
               </div>
               <div class="rounded-lg bg-black/5 p-4">
-                <Checkbox
-                  class="mr-2"
-                  v-model="editShopInfo.emailNotification"
-                >
+                <Checkbox class="mr-2" v-model="editShopInfo.emailNotification">
                   <span class="text-sm font-bold">
                     {{ $t("editRestaurant.emailNotificationDescription") }}
                   </span>

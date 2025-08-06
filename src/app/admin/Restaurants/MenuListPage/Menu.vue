@@ -22,10 +22,7 @@
           </div>
 
           <div class="mr-4 pt-4">
-            <Checkbox
-              :modelValue="soldOut"
-              @update:modelValue="soldOutToggle"
-            >
+            <Checkbox :modelValue="soldOut" @update:modelValue="soldOutToggle">
               <div v-if="soldOut" class="text-sm font-bold text-red-700">
                 {{ $t("admin.itemSoldOut") }}
               </div>
