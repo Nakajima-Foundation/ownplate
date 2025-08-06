@@ -51,7 +51,6 @@
 
       <!-- Publish Status -->
       <div class="mx-6 mt-4 rounded-lg bg-black/5 p-4 text-center">
-        {{ !menuInfo.publicFlag ? "danger" : "" }}
         <t-checkbox
           v-model="menuInfo.publicFlag"
           :disabled="hasError"
