@@ -115,7 +115,7 @@
         </div>
 
         <div class="mt-4 pb-2 text-sm font-bold">
-          <o-checkbox v-model="hasLine" :disabled="!ok" />
+          <Checkbox v-model="hasLine" :disabled="!ok" />
           {{ $t("admin.line.enabled") }}
         </div>
 
@@ -180,6 +180,7 @@ import { checkShopAccount } from "@/utils/userPermission";
 import { useAdminUids, notFoundResponse } from "@/utils/utils";
 
 import NotFound from "@/components/NotFound.vue";
+import Checkbox from "@/components/form/checkbox.vue";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 
 import { db } from "@/lib/firebase/firebase9";
@@ -190,6 +191,7 @@ export default defineComponent({
   components: {
     AdminHeader,
     NotFound,
+    Checkbox,
   },
   props: {
     shopInfo: {
