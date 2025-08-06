@@ -2,10 +2,11 @@
   <div class="flex items-center">
     <div>
       <o-field :variant="variant">
-        <o-select
-          :modelValue="modelValue.start"
+        <select
+          :value="modelValue.start"
           :disabled="disabled"
-          @update:modelValue="updateValueStart"
+          @change="updateValueStart"
+          class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
         >
           <option
             v-for="(timeItem, index) of timeList"
@@ -14,16 +15,17 @@
           >
             {{ timeItem }}
           </option>
-        </o-select>
+        </select>
       </o-field>
     </div>
     <div class="px-2">-</div>
     <div>
       <o-field :variant="variant">
-        <o-select
-          :modelValue="modelValue.end"
+        <select
+          :value="modelValue.end"
           :disabled="disabled"
-          @update:modelValue="updateValueEnd"
+          @change="updateValueEnd"
+          class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
         >
           <option
             v-for="(timeItem, index) of timeList"
@@ -32,7 +34,7 @@
           >
             {{ timeItem }}
           </option>
-        </o-select>
+        </select>
       </o-field>
     </div>
   </div>
@@ -64,12 +66,12 @@ export default defineComponent({
   setup(props, context) {
     const updateValueStart = (e: any) => {
       const a = { ...props.modelValue };
-      a.start = e;
+      a.start = e.target.value;
       context.emit("update:modelValue", a);
     };
     const updateValueEnd = (e: any) => {
       const a = { ...props.modelValue };
-      a.end = e;
+      a.end = e.target.value;
       context.emit("update:modelValue", a);
     };
 
