@@ -551,10 +551,10 @@
                   </div>
                 </div>
 
-                <o-select
+                <select
                   v-if="categories1.length > 0"
                   v-model="menuInfo.category1"
-                  expanded
+                  class="mt-1 mt-2 w-full rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
                 >
                   <option
                     v-for="category in categories1"
@@ -563,7 +563,7 @@
                   >
                     {{ category }}
                   </option>
-                </o-select>
+                </select>
               </div>
 
               <!-- Category 2 -->
@@ -586,10 +586,10 @@
                   </div>
                 </div>
 
-                <o-select
+                <select
                   v-if="categories2.length > 0"
                   v-model="menuInfo.category2"
-                  expanded
+                  class="mt-1 mt-2 w-full rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
                 >
                   <option
                     v-for="category in categories2"
@@ -598,7 +598,7 @@
                   >
                     {{ category }}
                   </option>
-                </o-select>
+                </select>
               </div>
 
               <!-- Category Edit Popup -->
@@ -688,7 +688,10 @@
         </div>
 
         <div class="mt-4">
-          <o-select v-model="copyRestaurantId" expanded>
+          <select
+            v-model="copyRestaurantId"
+            class="w-full rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+          >
             <option
               v-for="restaurant in restaurants"
               :key="restaurant.id"
@@ -696,7 +699,7 @@
             >
               {{ restaurant.restaurantName }}
             </option>
-          </o-select>
+          </select>
         </div>
       </div>
     </template>
