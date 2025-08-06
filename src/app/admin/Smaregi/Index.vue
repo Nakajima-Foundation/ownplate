@@ -60,7 +60,10 @@
 
             <div class="pt-1 pl-4">
               在庫切れしきい値:
-              <o-select v-model="outOfStockData[k]">
+              <select
+                v-model="outOfStockData[k]"
+                class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+              >
                 <option
                   v-for="threshold in outOfStockThresholds"
                   :value="threshold.value"
@@ -68,12 +71,15 @@
                 >
                   {{ threshold.name }}
                 </option>
-              </o-select>
+              </select>
             </div>
 
             <div class="pt-1 pb-4 pl-4">
               在庫復活しきい値:
-              <o-select v-model="inStockData[k]">
+              <select
+                v-model="inStockData[k]"
+                class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+              >
                 <option
                   v-for="threshold in inStockThresholds"
                   :value="threshold.value"
@@ -81,7 +87,7 @@
                 >
                   {{ threshold.name }}
                 </option>
-              </o-select>
+              </select>
             </div>
           </div>
           <div v-if="isDuplicateError">*お店の指定が重複しています</div>
