@@ -8,7 +8,10 @@
           <back-button :url="backUrl" />
 
           <h2>All Orders</h2>
-          <o-select v-model="orderState" class="mt-4">
+          <select
+            v-model="orderState"
+            class="mt-4 rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+          >
             <option
               v-for="status in orderStatus"
               :value="status.index"
@@ -16,19 +19,27 @@
             >
               {{ status.key ? $t("order.status." + status.key) : "----" }}
             </option>
-          </o-select>
+          </select>
           <!-- button -->
           <div>
             <div class="mt-2 inline-flex">
               <div class="flex">
-                <o-select v-model="monthValue">
+                <select
+                  v-model="monthValue"
+                  class="mt-1 rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+                >
                   <option v-for="(month, k) in months" :value="month" :key="k">
                     {{ month }}
                   </option>
-                </o-select>
+                </select>
               </div>
               <div class="flex">
-                <button @click="LoadTillMonth">Load</button>
+                <button
+                  @click="LoadTillMonth"
+                  class="ml-2 inline-flex h-12 items-center rounded-full bg-black/5 px-6"
+                >
+                  Load
+                </button>
                 {{ isLoading ? "Loading..." : "" }}
               </div>
             </div>
