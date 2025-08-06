@@ -51,13 +51,14 @@
 
       <!-- Publish Status -->
       <div class="mx-6 mt-4 rounded-lg bg-black/5 p-4 text-center">
-        <o-checkbox
+        {{ !menuInfo.publicFlag ? "danger" : "" }}
+        <t-checkbox
           v-model="menuInfo.publicFlag"
           :disabled="hasError"
           :variant="!menuInfo.publicFlag ? 'danger' : ''"
         >
-          <div class="font-bold">{{ $t("shopInfo.public") }}</div>
-        </o-checkbox>
+          <span class="font-bold">{{ $t("shopInfo.public") }}</span>
+        </t-checkbox>
 
         <div class="text-sm font-bold">
           <div v-if="hasError" class="mt-1 text-red-700">
@@ -1096,4 +1097,3 @@ export default defineComponent({
   },
 });
 </script>
-
