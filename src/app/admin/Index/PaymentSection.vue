@@ -92,9 +92,9 @@
         </div>
 
         <div class="mt-5 text-center font-bold text-black/60">
-          <o-checkbox v-model="inStorePayment">
+          <Checkbox v-model="inStorePayment">
             {{ $t("admin.payments.enableOnsitePayment") }}
-          </o-checkbox>
+          </Checkbox>
         </div>
       </div>
     </div>
@@ -110,19 +110,24 @@ import {
   watch,
   computed,
 } from "vue";
+import { useStore } from "vuex";
+import { useRoute, useRouter } from "vue-router";
+
 import { db } from "@/lib/firebase/firebase9";
 import { doc, onSnapshot, Unsubscribe, setDoc } from "firebase/firestore";
 import { stripeConnect, stripeDisconnect } from "@/lib/firebase/functions";
 import { ownPlateConfig } from "@/config/project";
 import { parse } from "cookie";
 
-import { useStore } from "vuex";
-import { useRoute, useRouter } from "vue-router";
 import { PaymentInfo } from "@/models/paymentInfo";
+import Checkbox from "@/components/form/checkbox.vue";
 
 const client_id = ownPlateConfig.stripe.clientId;
 
 export default defineComponent({
+  components: {
+    Checkbox,
+  },
   emits: ["updateUnsetWarning"],
   setup(_, context) {
     const store = useStore();

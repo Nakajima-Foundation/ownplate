@@ -11,9 +11,9 @@
       </div>
 
       <div class="mt-4 text-center font-bold text-black/60">
-        <o-checkbox v-model="opt_out">
+        <Checkbox v-model="opt_out">
           {{ $t("admin.mail.magazine.optout") }}
-        </o-checkbox>
+        </Checkbox>
       </div>
     </div>
   </div>
@@ -26,7 +26,12 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useStore } from "vuex";
 
+import Checkbox from "@/components/form/checkbox.vue";
+
 export default defineComponent({
+  components: {
+    Checkbox,
+  },
   setup() {
     const store = useStore();
 
