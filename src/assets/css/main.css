@@ -21,6 +21,9 @@
   a:active {
     @apply text-gray-700;
   }
+  input {
+    @apply bg-white
+  }
 }
 
 div,
