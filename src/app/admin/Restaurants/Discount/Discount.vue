@@ -103,28 +103,28 @@
           </option>
         </select>
 
-        <o-field v-if="promotion.hasTerm" class="has-addons">
+        <div v-if="promotion.hasTerm" class="mt-2 flex">
           <DateTimePicker
             v-model="termFromDate"
             :min-date="new Date()"
             :placeholder="$t('shopInfo.temporaryClosureSelect')"
-            class="mr-4 bg-white lg:w-96"
+            class="mr-4 lg:w-96"
           />
           ~
           <DateTimePicker
             v-model="termToDate"
             :min-date="new Date()"
             :placeholder="$t('shopInfo.temporaryClosureSelect')"
-            class="ml-4 bg-white lg:w-96"
+            class="ml-4 lg:w-96"
           />
-        </o-field>
+        </div>
       </div>
       <div class="mt-2 w-40">
         <div class="pb-2 text-sm font-bold">
           {{ $t("admin.promotion.minimumAmount") }}
         </div>
         <div>
-          <o-field class="has-addons">
+          <div class="flex">
             <input
               type="number"
               v-model="promotion.discountThreshold"
@@ -135,7 +135,7 @@
             <span class="button is-static">
               {{ $t("currency.JPY") }}
             </span>
-          </o-field>
+          </div>
         </div>
       </div>
       <div class="mt-2">
@@ -181,7 +181,7 @@
             {{ $t("admin.promotion.ratio") }}
           </template>
         </div>
-        <o-field class="has-addons">
+        <div class="flex">
           <input
             type="number"
             :step="promotion.discountMethod === 'ratio' ? 0.1 : 1"
@@ -196,7 +196,7 @@
             </template>
             <template v-else> % </template>
           </span>
-        </o-field>
+        </div>
       </div>
       <div class="mt-2">
         <div class="pb-2 text-sm font-bold">
