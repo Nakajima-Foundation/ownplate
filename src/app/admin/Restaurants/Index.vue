@@ -116,7 +116,7 @@
               />
             </div>
             <div class="pl-4">
-              <state :errors="errors" v-model="editShopInfo.state" />
+              <state v-model="editShopInfo.state" />
             </div>
           </div>
           <!-- City -->

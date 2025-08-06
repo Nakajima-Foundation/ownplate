@@ -75,7 +75,7 @@ import moment from "moment-timezone";
 
 export default defineComponent({
   components: {
-    Checkbox
+    Checkbox,
   },
   props: {
     orderItem: {
