@@ -40,7 +40,7 @@
 
         <div class="mt-4 rounded-lg bg-black/5 p-4">
           <div class="text-sm font-bold">
-            <Checkbox class="content-center pr-2" v-model="enableDelivery"
+            <Checkbox class="pr-2" v-model="enableDelivery"
               >{{
                 $t(
                   "delivery.enableDelivery",
@@ -51,7 +51,7 @@
             </Checkbox>
           </div>
           <div class="text-sm font-bold">
-            <Checkbox class="content-center pr-2" v-model="deliveryOnlyStore"
+            <Checkbox class="pr-2" v-model="deliveryOnlyStore"
               >{{
                 $t(
                   "delivery.deliveryOnlyStore",
@@ -72,7 +72,7 @@
           <div>
             <div class="flex pb-2 text-sm font-bold">
               <Checkbox
-                class="content-center pr-2"
+                class="pr-2"
                 v-model="enableAreaMap"
                 :disabled="!enableDelivery"
               >
@@ -118,7 +118,7 @@
           <div class="mt-4">
             <div class="flex pb-2 text-sm font-bold">
               <Checkbox
-                class="content-center pr-2"
+                class="pr-2"
                 v-model="enableAreaText"
                 :disabled="!enableDelivery"
               >
@@ -143,7 +143,7 @@
           </div>
           <div class="mt-2 flex">
             <Checkbox
-              class="content-center pr-2"
+              class="pr-2"
               v-model="enableDeliveryThreshold"
               :disabled="!enableDelivery"
             />
@@ -185,8 +185,7 @@
           </div>
 
           <div class="mt-2 flex">
-            <o-checkbox
-              rootClass="content-center pr-2"
+            <Checkbox
               v-model="enableDeliveryFree"
               :disabled="!enableDelivery"
             />
