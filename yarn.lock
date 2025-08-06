@@ -2450,13 +2450,13 @@
     "@typescript-eslint/types" "8.39.0"
     eslint-visitor-keys "^4.2.1"
 
-"@unhead/vue@^2.0.13":
-  version "2.0.13"
-  resolved "https://registry.yarnpkg.com/@unhead/vue/-/vue-2.0.13.tgz#3a628dd55783cb55e04ce2239eaa4d20797aed1f"
-  integrity sha512-+Oxzj4Rb1IJolLd6RAAYPDisKVGSnp2WC0KpFog0t3ZliiuZufRGwk8AWf2ntdn93x7WM9afnDAVNCipnPFxFg==
+"@unhead/vue@^2.0.14":
+  version "2.0.14"
+  resolved "https://registry.yarnpkg.com/@unhead/vue/-/vue-2.0.14.tgz#4cc6a1d244cb987ae2c5556c89e53d9d00700def"
+  integrity sha512-Ym9f+Kd2Afqek2FtUHvYvK+j2uZ2vbZ6Rr9NCnNGGBMdmafAuiZpT117YGyh0ARcueL6Znia0U8ySqPsnHOZIg==
   dependencies:
     hookable "^5.5.3"
-    unhead "2.0.13"
+    unhead "2.0.14"
 
 "@vitejs/plugin-vue@^6.0.1":
   version "6.0.1"
@@ -4739,10 +4739,10 @@ safe-buffer@>=5.1.0, safe-buffer@^5.0.1, safe-buffer@^5.2.1, safe-buffer@~5.2.0:
   resolved "https://registry.yarnpkg.com/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
 
-sass@^1.89.2:
-  version "1.89.2"
-  resolved "https://registry.yarnpkg.com/sass/-/sass-1.89.2.tgz#a771716aeae774e2b529f72c0ff2dfd46c9de10e"
-  integrity sha512-xCmtksBKd/jdJ9Bt9p7nPKiuqrlBMBuuGkQlkhZjjQk3Ty48lv93k5Dq6OPkKt4XwxDJ7tvlfrTa1MPA9bf+QA==
+sass@^1.90.0:
+  version "1.90.0"
+  resolved "https://registry.yarnpkg.com/sass/-/sass-1.90.0.tgz#d6fc2be49c7c086ce86ea0b231a35bf9e33cb84b"
+  integrity sha512-9GUyuksjw70uNpb1MTYWsH9MQHOHY6kwfnkafC24+7aOMZn9+rVMBxRbLvw756mrBFbIsFg6Xw9IkR2Fnn3k+Q==
   dependencies:
     chokidar "^4.0.0"
     immutable "^5.0.2"
@@ -5054,10 +5054,10 @@ undici-types@~6.21.0:
   resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-6.21.0.tgz#691d00af3909be93a7faa13be61b3a5b50ef12cb"
   integrity sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==
 
-unhead@2.0.13:
-  version "2.0.13"
-  resolved "https://registry.yarnpkg.com/unhead/-/unhead-2.0.13.tgz#661c64a71cb57568a085646af804b05abd463d22"
-  integrity sha512-Q3lMTJnoGj8zNsqP/GWIIAd8W/hKKeOgErbsMSXDWdkIICUeIg9p7J5/0uDFREa684cReRz1NFxbrDaS+5rGMw==
+unhead@2.0.14:
+  version "2.0.14"
+  resolved "https://registry.yarnpkg.com/unhead/-/unhead-2.0.14.tgz#5760900dad961d0611f66acb5cddb2d3ff2ac25e"
+  integrity sha512-dRP6OCqtShhMVZQe1F4wdt/WsYl2MskxKK+cvfSo0lQnrPJ4oAUQEkxRg7pPP+vJENabhlir31HwAyHUv7wfMg==
   dependencies:
     hookable "^5.5.3"
 
