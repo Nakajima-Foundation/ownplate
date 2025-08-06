@@ -2,7 +2,7 @@
   <label class="inline-flex cursor-pointer items-center">
     <input
       type="checkbox"
-      :checked="modelValue"
+      :checked="modelValue ?? false"
       :disabled="disabled"
       @change="change"
       class="peer m-2 h-5 w-5 cursor-pointer appearance-none rounded-md border-2 shadow-sm transition-all hover:shadow-md focus:ring-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
@@ -30,7 +30,7 @@ export default defineComponent({
   props: {
     modelValue: {
       type: Boolean,
-      required: true,
+      required: false,
     },
     disabled: {
       type: Boolean,
