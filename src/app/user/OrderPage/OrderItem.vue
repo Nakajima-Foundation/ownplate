@@ -1,6 +1,6 @@
 <template>
   <div class="flex space-x-2">
-    <o-checkbox
+    <Checkbox
       v-if="editable"
       :modelValue="available"
       @update:modelValue="update"
@@ -63,15 +63,20 @@
 
 <script lang="ts">
 import { defineComponent, computed, PropType } from "vue";
+import { useI18n } from "vue-i18n";
 
 import { formatOption, optionPrice } from "@/utils/strings";
 import { roundPrice, smallImageErrorHandler, useUserData } from "@/utils/utils";
-import { useI18n } from "vue-i18n";
 import { MenuData } from "@/models/menu";
+
+import Checkbox from "@/components/form/checkbox.vue";
 
 import moment from "moment-timezone";
 
 export default defineComponent({
+  components: {
+    Checkbox
+  },
   props: {
     orderItem: {
       type: Object,
