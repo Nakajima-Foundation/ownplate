@@ -111,7 +111,10 @@
 
             <!-- Sound Type and Test -->
             <div class="mt-2 flex items-center">
-              <o-select v-model="soundIndex" class="mr-2">
+              <select
+                v-model="soundIndex"
+                class="mt-1 mt-2 mr-2 rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+              >
                 <option
                   v-for="(soundFile, index) in soundFiles"
                   :value="index"
@@ -119,7 +122,7 @@
                 >
                   {{ $t(soundFile.nameKey) }}
                 </option>
-              </o-select>
+              </select>
 
               <a
                 class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
