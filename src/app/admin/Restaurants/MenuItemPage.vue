@@ -153,23 +153,19 @@
                 <span class="text-red-700">*</span>
               </div>
               <div>
-                <o-field
-                  :variant="errors['tax'].length > 0 ? 'danger' : 'success'"
+                <select
+                  v-model="menuInfo.tax"
+                  class="w-full rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
                 >
-                  <select
-                    v-model="menuInfo.tax"
-                    class="w-full rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+                  <option
+                    v-for="taxItem in taxRates"
+                    :value="taxItem"
+                    :key="taxItem"
                   >
-                    <option
-                      v-for="taxItem in taxRates"
-                      :value="taxItem"
-                      :key="taxItem"
-                    >
-                      {{ shopInfo && (shopInfo[taxItem + "Tax"] || 0) + "%" }}
-                      - {{ $t("editMenu." + taxRateKeys[taxItem]) }}
-                    </option>
-                  </select>
-                </o-field>
+                    {{ shopInfo && (shopInfo[taxItem + "Tax"] || 0) + "%" }}
+                    - {{ $t("editMenu." + taxRateKeys[taxItem]) }}
+                  </option>
+                </select>
               </div>
             </div>
 
