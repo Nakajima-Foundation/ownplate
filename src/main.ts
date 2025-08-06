@@ -8,7 +8,6 @@ import store from "@/lib/store";
 import i18n from "@/lib/vue-i18n";
 
 // library
-import Oruga from "@oruga-ui/oruga-next";
 import VueSocialSharing from "vue-social-sharing";
 import { createHead } from "@unhead/vue/client";
 import VueQrcode from "@chenfengyuan/vue-qrcode";
@@ -36,7 +35,6 @@ app.component("t-button", Button);
 app.component("t-modal", Modal);
 
 app.use(VueSocialSharing);
-app.use(Oruga);
 
 const head = createHead();
 app.use(head);

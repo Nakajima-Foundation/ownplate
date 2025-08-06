@@ -1570,13 +1570,6 @@
   resolved "https://registry.yarnpkg.com/@opentelemetry/api/-/api-1.9.0.tgz#d03eba68273dc0f7509e2a3d5cba21eae10379fe"
   integrity sha512-3giAOQvZiH5F9bMlMiv8+GSPMeqg0dbaeo58/0SlA9sxSqZhnUtxzX9/2FzyhS9sWQf5S0GJE0AKBrFqjpeYcg==
 
-"@oruga-ui/oruga-next@^0.11.2":
-  version "0.11.2"
-  resolved "https://registry.yarnpkg.com/@oruga-ui/oruga-next/-/oruga-next-0.11.2.tgz#e137bf5a78252e0ae0df421c272d405b19c7b67c"
-  integrity sha512-cmsvErakNBJ2MJbAs1tI9NjVmqWN2OIKJuooUSmGO//ZYNZQ07LTyuSiOOGFnemF9gYZ29/DhRPIo71dbV6v1g==
-  dependencies:
-    vue-component-type-helpers "^2.2.10"
-
 "@parcel/watcher-android-arm64@2.5.0":
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/@parcel/watcher-android-arm64/-/watcher-android-arm64-2.5.0.tgz#e32d3dda6647791ee930556aee206fcd5ea0fb7a"
@@ -5183,11 +5176,6 @@ vue-clipboard3@^2.0.0:
   integrity sha512-Q9S7dzWGax7LN5iiSPcu/K1GGm2gcBBlYwmMsUc5/16N6w90cbKow3FnPmPs95sungns4yvd9/+JhbAznECS2A==
   dependencies:
     clipboard "^2.0.6"
-
-vue-component-type-helpers@^2.2.10:
-  version "2.2.10"
-  resolved "https://registry.yarnpkg.com/vue-component-type-helpers/-/vue-component-type-helpers-2.2.10.tgz#126a7d7258f7458c66dfe234a612500c90c4838c"
-  integrity sha512-iDUO7uQK+Sab2tYuiP9D1oLujCWlhHELHMgV/cB13cuGbG4qwkLHvtfWb6FzvxrIOPDnU0oHsz2MlQjhYDeaHA==
 
 vue-eslint-parser@^10.2.0:
   version "10.2.0"
