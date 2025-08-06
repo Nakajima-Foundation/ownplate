@@ -43,7 +43,7 @@
           </div>
           <div class="rounded-lg bg-black/5 p-4">
             <div class="mb-2 flex">
-              <o-checkbox v-model="enableFree" class="flex-item" />
+              <Checkbox v-model="enableFree" class="flex-item" />
               <span class="flex-item mt-auto mb-auto inline-block">
                 {{ $t("editEC.setPostageFreeThreshold") }}
               </span>
@@ -96,10 +96,12 @@ import {
 import { checkShopAccount } from "@/utils/userPermission";
 
 import NotFound from "@/components/NotFound.vue";
+import Checkbox from "@/components/form/checkbox.vue";
 
 export default defineComponent({
   components: {
     NotFound,
+    Checkbox,
   },
   props: {
     shopInfo: {
