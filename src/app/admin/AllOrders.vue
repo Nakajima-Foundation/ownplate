@@ -21,7 +21,10 @@
 
       <!-- Order Status -->
       <div class="mx-6 mt-4">
-        <o-select v-model="orderState">
+        <select
+          v-model="orderState"
+          class="mt-1 rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+        >
           <option
             v-for="status in orderStatus"
             :value="status.index"
@@ -29,7 +32,7 @@
           >
             {{ status.key ? $t("order.status." + status.key) : "----" }}
           </option>
-        </o-select>
+        </select>
       </div>
 
       <!-- Orders -->
