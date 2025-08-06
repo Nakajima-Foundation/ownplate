@@ -292,12 +292,12 @@
                   {{ $t("editMenu.exclusionDate") }}
                 </div>
                 <span v-for="(day, index) in daysOfWeek" :key="index">
-                  <o-checkbox v-model="menuInfo.exceptDay[index]">
+                  <Checkbox v-model="menuInfo.exceptDay[index]">
                     <span class="text-base font-bold">
                       {{ $t("week.short." + day) }}
                       <span v-if="index !== '7'">/</span>
                     </span>
-                  </o-checkbox>
+                  </Checkbox>
                 </span>
                 <div class="mt-2 text-sm font-bold">
                   {{ $t("editMenu.exclusionTime") }}
@@ -475,15 +475,15 @@
                     :key="k"
                   >
                     <div class="flex-1">
-                      <o-checkbox
+                      <Checkbox
                         class="mr-2"
                         v-if="itemOptions[key].length == 1"
-                        disabled
+                        :disabled="true"
                       >
                         <span class="text-sm font-bold text-black/60">
                           {{ displayOption(opt, shopInfo, menuInfo) }}
                         </span>
-                      </o-checkbox>
+                      </Checkbox>
                       <template v-else>
                         <input
                           type="radio"
