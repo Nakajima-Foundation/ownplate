@@ -15,10 +15,7 @@
           </div>
 
           <div class="mt-2">
-            <o-field
-              :variant="hasError ? 'danger' : 'success'"
-              :message="hasError ? $t(errors[0]) : $t('sms.notice')"
-            >
+            <o-field :message="hasError ? $t(errors[0]) : $t('sms.notice')">
               <input
                 type="tel"
                 autocomplete="tel"
