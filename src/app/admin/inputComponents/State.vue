@@ -5,15 +5,16 @@
       <span class="text-red-700">*</span>
     </div>
     <o-field :variant="errors['state'].length > 0 ? 'danger' : 'success'">
-      <o-select
+      <select
         :modelValue="modelValue"
         placeholder="select"
         @update:modelValue="input"
+        class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
       >
         <option v-for="stateItem in states" :key="stateItem">
           {{ stateItem }}
         </option>
-      </o-select>
+      </select>
     </o-field>
   </div>
 </template>
