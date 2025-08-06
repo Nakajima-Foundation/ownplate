@@ -8,27 +8,6 @@
     <!-- Send SMS -->
     <form v-show="confirmationResult === null" @submit.prevent="handleSubmit">
       <div v-if="!relogin" class="mt-4">
-        <!-- Country Code -->
-        <div v-if="countries.length > 1">
-          <div class="text-sm font-bold">
-            {{ $t("sms.countryCode") }}
-          </div>
-
-          <div class="mt-2">
-            <o-field>
-              <o-select v-model="countryCode">
-                <option
-                  v-for="country in countries"
-                  :value="country.code"
-                  :key="country.code"
-                >
-                  {{ $t(country.name) }}
-                </option>
-              </o-select>
-            </o-field>
-          </div>
-        </div>
-
         <!-- Phone Number -->
         <div class="mt-2">
           <div class="text-sm font-bold">

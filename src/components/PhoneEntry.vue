@@ -1,16 +1,5 @@
 <template>
   <div style="margin-bottom: 1rem">
-    <o-field v-if="countries.length > 1">
-      <o-select v-model="countryCode">
-        <option
-          v-for="country in countries"
-          :value="country.code"
-          :key="country.code"
-        >
-          {{ $t(country.name) }}
-        </option>
-      </o-select>
-    </o-field>
     <div class="field" :class="hasError ? 'has-error' : 'has-success'">
       <label v-if="label" class="label mb-1 block text-sm font-medium">{{
         label
