@@ -45,9 +45,9 @@
           $t("admin.subAccounts.selectRestaurant")
         }}</span>
         <div v-for="(restaurant, k) in restaurants" :key="k">
-          <o-checkbox v-model="restaurantListObj[restaurant.id]">{{
+          <Checkbox v-model="restaurantListObj[restaurant.id]">{{
             restaurant.restaurantName
-          }}</o-checkbox>
+          }}</Checkbox>
         </div>
       </div>
       <div class="text-center">
@@ -67,8 +67,9 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { useHead } from "@unhead/vue";
 
-import BackButton from "@/components/BackButton.vue";
 import { db } from "@/lib/firebase/firebase9";
 import {
   doc,
@@ -83,14 +84,15 @@ import {
 } from "firebase/firestore";
 
 import { doc2data, array2obj, useAdminUids, defaultTitle } from "@/utils/utils";
-
-import { useRouter, useRoute } from "vue-router";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
-import { useHead } from "@unhead/vue";
+
+import Checkbox from "@/components/form/checkbox.vue";
+import BackButton from "@/components/BackButton.vue";
 
 export default defineComponent({
   components: {
     BackButton,
+    Checkbox,
   },
   setup() {
     const route = useRoute();
