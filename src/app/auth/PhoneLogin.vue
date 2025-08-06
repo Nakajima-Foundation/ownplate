@@ -125,7 +125,7 @@
       <div class="mt-4 text-center">
         <t-button
           @click="$emit('dismissed', false)"
-          isCancel="true"
+          :isCancel="true"
           class="mr-4 mb-2 inline-flex h-12 w-32 items-center justify-center rounded-full bg-black/5"
         >
           {{ $t("button.cancel") }}
