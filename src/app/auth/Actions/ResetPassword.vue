@@ -42,19 +42,22 @@
           </div>
 
           <div class="mt-1">
-            <o-field
-              :variant="errors.password ? 'danger' : 'success'"
-              :message="errors.password && $t(errors.password[0])"
+            <input
+              v-model="password"
+              type="password"
+              :placeholder="$t('admin.passwordPlaceHolder')"
+              maxlength="30"
+              class="w-full rounded border border-gray-300 px-3 py-2"
+              :class="errors.password ? 'border-red-500' : 'border-green-500'"
+            />
+            <div
+              v-if="errors.password && errors.password.length > 0"
+              class="mt-2 pl-2 font-bold text-red-600"
             >
-              <input
-                v-model="password"
-                type="password"
-                :placeholder="$t('admin.passwordPlaceHolder')"
-                maxlength="30"
-                class="w-full rounded border border-gray-300 px-3 py-2"
-                :class="errors.password ? 'border-red-500' : 'border-green-500'"
-              />
-            </o-field>
+              <div v-for="error in errors.password" :key="error">
+                {{ $t(error) }}
+              </div>
+            </div>
           </div>
 
           <!-- Confirm Password -->
@@ -64,21 +67,22 @@
             </div>
 
             <div class="mt-1">
-              <o-field
-                :variant="errors.confirm ? 'danger' : 'success'"
-                :message="errors.confirm && $t(errors.confirm[0])"
+              <input
+                v-model="confirmPassword"
+                type="password"
+                :placeholder="$t('admin.confirmPasswordPlaceHolder')"
+                maxlength="30"
+                class="w-full rounded border border-gray-300 px-3 py-2"
+                :class="errors.confirm ? 'border-red-500' : 'border-green-500'"
+              />
+              <div
+                v-if="errors.confirm && errors.confirm.length > 0"
+                class="mt-2 pl-2 font-bold text-red-600"
               >
-                <input
-                  v-model="confirmPassword"
-                  type="password"
-                  :placeholder="$t('admin.confirmPasswordPlaceHolder')"
-                  maxlength="30"
-                  class="w-full rounded border border-gray-300 px-3 py-2"
-                  :class="
-                    errors.confirm ? 'border-red-500' : 'border-green-500'
-                  "
-                />
-              </o-field>
+                <div v-for="error in errors.confirm" :key="error">
+                  {{ $t(error) }}
+                </div>
+              </div>
             </div>
           </div>
 
