@@ -51,13 +51,13 @@
 
       <!-- Publish Status -->
       <div class="mx-6 mt-2 rounded-lg bg-black/5 p-4 text-center">
-        <o-checkbox
+        <Checkbox
           v-model="editShopInfo.publicFlag"
           :disabled="hasError"
           :variant="!editShopInfo.publicFlag ? 'danger' : ''"
         >
-          <div class="font-bold">{{ $t("shopInfo.public") }}</div>
-        </o-checkbox>
+          <span class="font-bold">{{ $t("shopInfo.public") }}</span>
+        </Checkbox>
 
         <div class="mt-1 text-sm font-bold">
           <div v-if="editShopInfo.publicFlag">
@@ -991,13 +991,13 @@
 
       <!-- Publish Status -->
       <div class="mx-6 mt-2 rounded-lg bg-black/5 p-4 text-center">
-        <o-checkbox
+        <Checkbox
           v-model="editShopInfo.publicFlag"
           :disabled="hasError"
           :variant="!editShopInfo.publicFlag ? 'danger' : ''"
         >
           <div class="font-bold">{{ $t("shopInfo.public") }}</div>
-        </o-checkbox>
+        </Checkbox>
 
         <div class="mt-1 text-sm font-bold">
           <div v-if="editShopInfo.publicFlag">

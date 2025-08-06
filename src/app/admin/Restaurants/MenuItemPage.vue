@@ -616,13 +616,13 @@
 
       <!-- Publish Status -->
       <div class="mx-6 mt-4 rounded-lg bg-black/5 p-4 text-center">
-        <o-checkbox
+        <Checkbox
           v-model="menuInfo.publicFlag"
           :disabled="hasError"
           :variant="!menuInfo.publicFlag ? 'danger' : ''"
         >
           <div class="font-bold">{{ $t("shopInfo.public") }}</div>
-        </o-checkbox>
+        </Checkbox>
 
         <div class="mt-1 text-sm font-bold">
           <div v-if="hasError" class="text-red-700">
