@@ -1198,6 +1198,7 @@ const data = {
           "The email or the password is invalid.",
         "auth/unauthorized-continue-uri": "Domain not whitelisted by project",
         "auth/internal-error": "Password is invalid.",
+        "auth/invalid-credential": "Email or Password is invalid.",
       },
     },
     index: {

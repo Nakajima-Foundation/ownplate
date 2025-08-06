@@ -1193,6 +1193,7 @@ const data = {
         "auth/unauthorized-continue-uri":
           "ドメインがホワイトリストに登録されていません。",
         "auth/internal-error": "パスワードが無効です。",
+        "auth/invalid-credential": "Email or Password is invalid.",
       },
     },
     index: {

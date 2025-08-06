@@ -36,18 +36,26 @@
           </div>
 
           <div class="mt-1">
-            <o-field
-              :variant="errors.email ? 'danger' : 'success'"
-              :message="errors.email && $t(errors.email[0])"
+            <input
+              class="w-full rounded border px-2 py-1 whitespace-nowrap"
+              :class="
+                errors.email && errors.email.length > 0
+                  ? 'border-2 border-red-600'
+                  : ''
+              "
+              v-model="email"
+              type="email"
+              :placeholder="$t('admin.emailPlaceHolder')"
+              maxlength="256"
+            />
+            <div
+              v-if="errors.email && errors.email.length > 0"
+              class="mt-2 pl-2 font-bold text-red-600"
             >
-              <input
-                class="w-full rounded border px-2 py-1 whitespace-nowrap"
-                v-model="email"
-                type="email"
-                :placeholder="$t('admin.emailPlaceHolder')"
-                maxlength="256"
-              />
-            </o-field>
+              <div v-for="error in errors.email" :key="error">
+                {{ $t(error) }}
+              </div>
+            </div>
           </div>
         </div>
 
@@ -58,19 +66,27 @@
           </div>
 
           <div class="mt-1">
-            <o-field
-              :variant="errors.password ? 'danger' : 'success'"
-              :message="errors.password && $t(errors.password[0])"
+            <input
+              class="w-full rounded border px-2 py-1 whitespace-nowrap"
+              :class="
+                errors.password && errors.password.length > 0
+                  ? 'border-2 border-red-600'
+                  : ''
+              "
+              v-model="password"
+              type="password"
+              :placeholder="$t('admin.passwordPlaceHolder')"
+              maxlength="30"
+              password-reveal
+            />
+            <div
+              v-if="errors.password && errors.password.length > 0"
+              class="mt-2 pl-2 font-bold text-red-600"
             >
-              <input
-                class="w-full rounded border px-2 py-1 whitespace-nowrap"
-                v-model="password"
-                type="password"
-                :placeholder="$t('admin.passwordPlaceHolder')"
-                maxlength="30"
-                password-reveal
-              />
-            </o-field>
+              <div v-for="error in errors.password" :key="error">
+                {{ $t(error) }}
+              </div>
+            </div>
           </div>
         </div>
 
