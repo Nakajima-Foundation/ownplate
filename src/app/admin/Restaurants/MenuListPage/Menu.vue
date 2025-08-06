@@ -22,7 +22,7 @@
           </div>
 
           <div class="mr-4 pt-4">
-            <o-checkbox
+            <Checkbox
               :modelValue="soldOut"
               @update:modelValue="soldOutToggle"
             >
@@ -32,10 +32,10 @@
               <div v-else class="text-sm font-bold text-black/30">
                 {{ $t("admin.itemSoldOut") }}
               </div>
-            </o-checkbox>
+            </Checkbox>
           </div>
           <div class="mr-4 pt-4">
-            <o-checkbox
+            <Checkbox
               :modelValue="soldOutToday"
               @update:modelValue="soldOutTodayToggle"
             >
@@ -45,7 +45,7 @@
               <div v-else class="text-sm font-bold text-black/30">
                 {{ $t("admin.itemSoldOutToday") }}
               </div>
-            </o-checkbox>
+            </Checkbox>
           </div>
         </div>
 
@@ -143,6 +143,7 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, updateDoc } from "firebase/firestore";
 
 import Price from "@/components/Price.vue";
+import Checkbox from "@/components/form/checkbox.vue";
 import LunchDinnerIcon from "@/app/user/Restaurant/LunchDinnerIcon.vue";
 
 import {
@@ -158,6 +159,7 @@ import moment from "moment-timezone";
 export default defineComponent({
   components: {
     Price,
+    Checkbox,
     LunchDinnerIcon,
   },
   props: {

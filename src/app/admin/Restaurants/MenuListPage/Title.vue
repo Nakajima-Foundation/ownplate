@@ -12,18 +12,18 @@
         <div class="flex w-full text-sm font-bold text-black/30" v-else>
           {{ title.name }}
           <div class="flex-1 text-right">
-            <o-checkbox
+            <Checkbox
               @click="(e) => updateTitleLunchDinner(e, 'lunch')"
               v-model="title.availableLunch"
             >
               {{ $t("shopInfo.lunch") }}
-            </o-checkbox>
-            <o-checkbox
+            </Checkbox>
+            <Checkbox
               @click="(e) => updateTitleLunchDinner(e, 'dinner')"
               v-model="title.availableDinner"
             >
               {{ $t("shopInfo.dinner") }}
-            </o-checkbox>
+            </Checkbox>
           </div>
         </div>
       </div>
@@ -94,10 +94,12 @@ import { useAdminUids } from "@/utils/utils";
 
 import { useStore } from "vuex";
 import TitleInput from "@/app/admin/Restaurants/MenuListPage/TitleInput.vue";
+import Checkbox from "@/components/form/checkbox.vue";
 
 export default defineComponent({
   components: {
     TitleInput,
+    Checkbox,
   },
   props: {
     isEdit: {
