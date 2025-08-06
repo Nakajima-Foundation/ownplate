@@ -3,15 +3,15 @@
     <back-button url="/s/admins" />
     <h1>Admin</h1>
     <div>
-      <o-checkbox v-model="admin.opt_out" @update:modelValue="updateOpt"
-        >Opt out</o-checkbox
+      <Checkbox v-model="admin.opt_out" @update:modelValue="updateOpt"
+        >Opt out</Checkbox
       >
     </div>
     {{ admin.name }}, {{ adminPrivate.email }}
     <h1>Custome Claims</h1>
     <div>
-      <o-checkbox v-model="isAdmin" disabled>Admin</o-checkbox>
-      <o-checkbox v-model="isOperator">Operator</o-checkbox>
+      <Checkbox v-model="isAdmin" disabled>Admin</Checkbox>
+      <Checkbox v-model="isOperator">Operator</Checkbox>
     </div>
     <h1>Restaurants</h1>
     <div v-for="restaurant in restaurants" :key="restaurant.id">
@@ -36,6 +36,7 @@ import {
 import { superDispatch } from "@/lib/firebase/functions";
 
 import BackButton from "@/components/BackButton.vue";
+import Checkbox from "@/components/form/checkbox.vue";
 import Restaurant from "@/app/super/Components/Restaurant.vue";
 
 import { useSuper, doc2data, defaultTitle } from "@/utils/utils";
@@ -47,6 +48,7 @@ export default defineComponent({
   components: {
     BackButton,
     Restaurant,
+    Checkbox,
   },
   setup() {
     useSuper();
