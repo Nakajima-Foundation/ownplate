@@ -40,28 +40,26 @@
 
         <div class="mt-4 rounded-lg bg-black/5 p-4">
           <div class="text-sm font-bold">
-            <o-checkbox
-              rootClass="content-center pr-2"
-              v-model="enableDelivery"
-            />{{
-              $t(
-                "delivery.enableDelivery",
-                { name: shopInfo.restaurantName },
-                0,
-              )
-            }}
+            <Checkbox class="content-center pr-2" v-model="enableDelivery"
+              >{{
+                $t(
+                  "delivery.enableDelivery",
+                  { name: shopInfo.restaurantName },
+                  0,
+                )
+              }}
+            </Checkbox>
           </div>
           <div class="text-sm font-bold">
-            <o-checkbox
-              rootClass="content-center pr-2"
-              v-model="deliveryOnlyStore"
-            />{{
-              $t(
-                "delivery.deliveryOnlyStore",
-                { name: shopInfo.restaurantName },
-                0,
-              )
-            }}
+            <Checkbox class="content-center pr-2" v-model="deliveryOnlyStore"
+              >{{
+                $t(
+                  "delivery.deliveryOnlyStore",
+                  { name: shopInfo.restaurantName },
+                  0,
+                )
+              }}
+            </Checkbox>
           </div>
         </div>
 
@@ -268,16 +266,19 @@
 import { defineComponent, computed, ref, onMounted, watch } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
-import NotFound from "@/components/NotFound.vue";
 import { GMAPId } from "@/config/project";
 
 import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
 import { useRouter } from "vue-router";
 import { getRestaurantId, useAdminUids, notFoundResponse } from "@/utils/utils";
 
+import Checkbox from "@/components/form/checkbox.vue";
+import NotFound from "@/components/NotFound.vue";
+
 export default defineComponent({
   components: {
     NotFound,
+    Checkbox,
   },
   props: {
     shopInfo: {
