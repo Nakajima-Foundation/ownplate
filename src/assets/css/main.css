@@ -63,11 +63,4 @@ canvas {
   display: inline-block;
 }
 
-/* Workaround for Bulma and Oruga input field */
-/* https://oruga.io/components/Input.html */
-
-.select .icon.is-right {
-  display: none;
-}
-
 
