@@ -76,12 +76,12 @@ export default defineComponent({
   setup(props, context) {
     const updateValueStart = (e: any) => {
       const a = { ...props.modelValue };
-      a.start = e.target.value;
+      a.start = Number(e.target.value);
       context.emit("update:modelValue", a);
     };
     const updateValueEnd = (e: any) => {
       const a = { ...props.modelValue };
-      a.end = e.target.value;
+      a.end = Number(e.target.value);
       context.emit("update:modelValue", a);
     };
 
