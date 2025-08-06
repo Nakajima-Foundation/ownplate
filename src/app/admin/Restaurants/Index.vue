@@ -551,12 +551,15 @@
                     v-for="choice in minimumCookTimeChoices"
                     :key="choice.value"
                   >
-                    <input
-                      type="radio"
-                      v-model="editShopInfo.pickUpMinimumCookTime"
-                      :value="choice.value"
-                    />{{ $t(choice.messageKey) }}</template
-                  >
+                    <label class="mr-2 inline-flex cursor-pointer items-center">
+                      <input
+                        class="m-auto mt-1 mr-1 h-4 w-4 cursor-pointer appearance-none rounded-full border border-teal-400 bg-white checked:border-teal-400 checked:bg-teal-400 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+                        type="radio"
+                        v-model="editShopInfo.pickUpMinimumCookTime"
+                        :value="choice.value"
+                      />{{ $t(choice.messageKey) }}
+                    </label>
+                  </template>
                 </div>
               </div>
 
