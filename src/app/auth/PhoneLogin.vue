@@ -15,17 +15,21 @@
           </div>
 
           <div class="mt-2">
-            <o-field :message="hasError ? $t(errors[0]) : $t('sms.notice')">
-              <input
-                type="tel"
-                autocomplete="tel"
-                v-model="phoneNumber"
-                maxlength="20"
-                :placeholder="$t('sms.pleasetype')"
-                class="w-full rounded border border-gray-300 px-3 py-2"
-                :class="hasError ? 'border-red-500' : 'border-green-500'"
-              />
-            </o-field>
+            <input
+              type="tel"
+              autocomplete="tel"
+              v-model="phoneNumber"
+              maxlength="20"
+              :placeholder="$t('sms.pleasetype')"
+              class="w-full rounded border border-gray-300 px-3 py-2"
+              :class="hasError ? 'border-red-500' : 'border-green-500'"
+            />
+            <div v-if="hasError" class="mt-2 pl-2 font-bold text-red-600">
+              {{ $t(errors[0]) }}
+            </div>
+            <div v-else>
+              {{ $t("sms.notice") }}
+            </div>
           </div>
           <div v-if="!isLocaleJapan">
             <div class="mt-2 text-xs">
@@ -79,21 +83,21 @@
           </div>
 
           <div class="mt-2">
-            <o-field
-              :variant="hasError ? 'danger' : 'success'"
-              :message="hasError ? $t(errors[0]) : ''"
-            >
-              <input
-                inputmode="numeric"
-                pattern="[0-9]*"
-                autocomplete="one-time-code"
-                v-model="verificationCode"
-                maxlength="6"
-                :placeholder="$t('sms.typeVerificationCode')"
-                class="w-full rounded border border-gray-300 px-3 py-2"
-                :class="hasError ? 'border-red-500' : 'border-green-500'"
-              />
-            </o-field>
+            <input
+              inputmode="numeric"
+              pattern="[0-9]*"
+              autocomplete="one-time-code"
+              v-model="verificationCode"
+              maxlength="6"
+              :placeholder="$t('sms.typeVerificationCode')"
+              class="w-full rounded border border-gray-300 px-3 py-2"
+              :class="hasError ? 'border-red-500' : 'border-green-500'"
+            />
+            <div v-if="hasError" class="mt-2 pl-2 font-bold text-red-600">
+              <div v-for="error in errors" :key="error">
+                {{ $t(error) }}
+              </div>
+            </div>
           </div>
         </div>
 
@@ -104,16 +108,14 @@
           </div>
 
           <div class="mt-2">
-            <o-field>
-              <input
-                type="text"
-                v-model="name"
-                maxlength="32"
-                :placeholder="$t('sms.typeUserName')"
-                class="w-full rounded border border-gray-300 px-3 py-2"
-                expanded
-              />
-            </o-field>
+            <input
+              type="text"
+              v-model="name"
+              maxlength="32"
+              :placeholder="$t('sms.typeUserName')"
+              class="w-full rounded border border-gray-300 px-3 py-2"
+              expanded
+            />
           </div>
         </div>
       </div>
