@@ -39,8 +39,9 @@
             <div class="pt-4 pl-4">スマレジ登録店舗：{{ shop.storeName }}</div>
             <div class="pt-2 pl-4">
               連携する店舗：
-              <o-select
+              <select
                 v-model="selectedRestaurant[k]"
+                class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
                 :class="
                   selectedRestaurant[k] &&
                   duplicateElement[selectedRestaurant[k]]
@@ -55,7 +56,7 @@
                 >
                   {{ restaurant.restaurantName }}
                 </option>
-              </o-select>
+              </select>
             </div>
 
             <div class="pt-1 pl-4">

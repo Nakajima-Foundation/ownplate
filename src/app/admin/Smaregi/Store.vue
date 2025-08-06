@@ -35,8 +35,9 @@
           {{ product.price }}円 / 在庫数
           {{ (stockObj[product.productId] || {}).amount || 0 }} <br />
           おもちかえり:
-          <o-select
+          <select
             v-model="selectedMenu[key]"
+            class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
             :class="
               selectedMenu[key] && duplicateElement[selectedMenu[key]]
                 ? 'border-2 border-solid border-red-700'
@@ -46,7 +47,7 @@
             <option v-for="menu in menus" :value="menu.id" :key="menu.id">
               {{ menu.itemName }} / {{ menu.price }} 円
             </option>
-          </o-select>
+          </select>
         </div>
         <div v-if="isDuplicateError" class="text-red-700">
           * メニューの指定が重複しています
