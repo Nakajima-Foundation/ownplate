@@ -14,18 +14,19 @@
           </div>
 
           <div class="mt-1">
-            <o-field
-              :variant="errors.email ? 'danger' : 'success'"
-              :message="errors.email && $t(errors.email[0])"
-            >
-              <input
-                v-model="email"
-                :placeholder="$t('admin.emailPlaceHolder')"
-                maxlength="256"
-                class="w-full rounded border border-gray-300 px-3 py-2"
-                :class="errors.email ? 'border-red-500' : 'border-green-500'"
+            <input
+              v-model="email"
+              :placeholder="$t('admin.emailPlaceHolder')"
+              maxlength="256"
+              class="w-full rounded border border-gray-300 px-3 py-2"
+              :class="errors.email ? 'border-red-500' : 'border-green-500'"
               />
-            </o-field>
+            <div v-if="errors.email && errors.email.length > 0" class="mt-2 pl-2 font-bold text-red-600">
+              <div
+                v-for="(error) in errors.email" :key="error">
+                {{ $t(error) }}
+              </div>
+            </div>
           </div>
         </div>
 
