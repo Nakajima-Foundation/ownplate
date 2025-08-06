@@ -327,7 +327,7 @@
               {{ $t("editRestaurant.enablePrelineTitle") }}
             </div>
             <div class="flex gap-2 rounded-lg bg-black/5 p-4">
-              <o-checkbox
+              <Checkbox
                 id="enablePreline"
                 v-model="editShopInfo.enablePreline"
               />
@@ -375,7 +375,7 @@
               </div>
               <div class="rounded-lg bg-black/5 p-4">
                 <div class="flex gap-2">
-                  <o-checkbox
+                  <Checkbox
                     id="acceptUserMessageDescription"
                     v-model="editShopInfo.acceptUserMessage"
                   />
@@ -480,11 +480,11 @@
               </div>
               <div class="rounded-lg bg-black/5 p-4">
                 <div>
-                  <o-checkbox class="mr-2" v-model="editShopInfo.inclusiveTax">
+                  <Checkbox class="mr-2" v-model="editShopInfo.inclusiveTax">
                     <span class="font-bold">
                       {{ $t("editRestaurant.taxIncluded") }}
                     </span>
-                  </o-checkbox>
+                  </Checkbox>
                 </div>
                 <div class="mt-2">
                   <div class="mb-2 text-xs font-bold text-red-700">
@@ -634,7 +634,7 @@
             <div class="rounded-lg bg-black/5 p-4">
               <!-- Preparation Time -->
               <div v-for="(paymentMethod, k) in paymentMethods" :key="k">
-                <o-checkbox
+                <Checkbox
                   class="mr-2"
                   v-model="
                     (editShopInfo.paymentMethods || {})[paymentMethod.key]
@@ -648,7 +648,7 @@
                       )
                     }}
                   </span>
-                </o-checkbox>
+                </Checkbox>
               </div>
             </div>
           </div>
@@ -686,11 +686,11 @@
               {{ $t("editRestaurant.printerConfigTitle") }}
             </div>
             <div class="rounded-lg bg-black/5 p-4">
-              <o-checkbox class="mr-2" v-model="editShopInfo.enablePrinter">
+              <Checkbox class="mr-2" v-model="editShopInfo.enablePrinter">
                 <span class="text-sm font-bold">
                   {{ $t("editRestaurant.enablePrinter") }}
                 </span>
-              </o-checkbox>
+              </Checkbox>
               <div class="pt-2 text-xs">
                 {{ $t("editRestaurant.printerDescription") }}
                 <a
@@ -731,14 +731,14 @@
                 {{ $t("editRestaurant.emailNotificationTitle") }}
               </div>
               <div class="rounded-lg bg-black/5 p-4">
-                <o-checkbox
+                <Checkbox
                   class="mr-2"
                   v-model="editShopInfo.emailNotification"
                 >
                   <span class="text-sm font-bold">
                     {{ $t("editRestaurant.emailNotificationDescription") }}
                   </span>
-                </o-checkbox>
+                </Checkbox>
                 <div class="pt-2 text-xs">
                   {{ $t("editRestaurant.emailNotificationNotice") }}
                 </div>
@@ -752,11 +752,11 @@
                 {{ $t("editRestaurant.phoneCall") }}
               </div>
               <div class="rounded-lg bg-black/5 p-4">
-                <o-checkbox class="mr-2" v-model="editShopInfo.phoneCall">
+                <Checkbox class="mr-2" v-model="editShopInfo.phoneCall">
                   <span class="text-sm font-bold">
                     {{ $t("editRestaurant.phoneCallDescription") }}
                   </span>
-                </o-checkbox>
+                </Checkbox>
                 <div class="pt-2 text-xs">
                   {{ $t("editRestaurant.phoneCallNotice") }}
                 </div>
@@ -791,11 +791,11 @@
           </div>
           <div class="rounded-lg bg-black/5 p-4">
             <div>
-              <o-checkbox class="mr-2" v-model="editShopInfo.enableLunchDinner">
+              <Checkbox class="mr-2" v-model="editShopInfo.enableLunchDinner">
                 <span class="text-base font-bold">
                   {{ $t("editRestaurant.lunchOrDinnerToggle") }}
                 </span>
-              </o-checkbox>
+              </Checkbox>
             </div>
             <div class="text-sm">
               {{ $t("editRestaurant.lunchOrDinnerNotice") }}
@@ -820,14 +820,14 @@
                   <!-- Enable/Disable Day and Copy Previous Day -->
                   <div class="flex items-center">
                     <div class="flex-1">
-                      <o-checkbox
+                      <Checkbox
                         class="mr-2"
                         v-model="editShopInfo.businessDay[index]"
                       >
                         <span class="text-base font-bold">
                           {{ $t("week.short." + day) }}
                         </span>
-                      </o-checkbox>
+                      </Checkbox>
                     </div>
 
                     <div>
@@ -1096,6 +1096,7 @@ import DatePicker from "@/components/DatePicker.vue";
 import NotFound from "@/components/NotFound.vue";
 import PhoneEntry from "@/components/PhoneEntry.vue";
 import Price from "@/components/Price.vue";
+import Checkbox from "@/components/form/checkbox.vue";
 
 import HoursInput from "@/app/admin/inputComponents/HoursInput.vue";
 import HourInput from "@/app/admin/inputComponents/HourInput2.vue";
@@ -1157,6 +1158,7 @@ export default defineComponent({
     NotFound,
     PhoneEntry,
     Price,
+    Checkbox,
     ImageUpload,
   },
   props: {
