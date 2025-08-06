@@ -19,7 +19,10 @@
           <div class="text-sm font-bold text-black/30">
             {{ $t("order.statusTitle") }}
           </div>
-          <o-select v-model="orderState">
+          <select
+            v-model="orderState"
+            class="mt-1 mt-2 rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+          >
             <option
               v-for="status in orderStatus"
               :value="status.index"
@@ -31,14 +34,17 @@
                   : $t("order.status.all")
               }}
             </option>
-          </o-select>
+          </select>
         </div>
         <!-- sort -->
         <div class="mx-6 mt-2 grid grid-cols-1 gap-2 sm:mt-4">
           <div class="text-sm font-bold text-black/30">
             {{ $t("order.sortOrder") }}
           </div>
-          <o-select v-model="sortOrder">
+          <select
+            v-model="sortOrder"
+            class="mt-1 rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+          >
             <option
               v-for="status in orderSorts"
               :value="status.index"
@@ -46,7 +52,7 @@
             >
               {{ $t("order.sort." + status.key) }}
             </option>
-          </o-select>
+          </select>
         </div>
       </div>
 
