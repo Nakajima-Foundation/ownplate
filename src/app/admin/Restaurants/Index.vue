@@ -578,7 +578,10 @@
                       : 'success'
                   "
                 >
-                  <o-select v-model.number="editShopInfo.pickUpDaysInAdvance">
+                  <select
+                    v-model.number="editShopInfo.pickUpDaysInAdvance"
+                    class="mt-1 rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+                  >
                     <option
                       v-for="(day, index) in reservationTheDayBefore"
                       :key="index"
@@ -586,7 +589,7 @@
                     >
                       {{ $t(day.messageKey) }}
                     </option>
-                  </o-select>
+                  </select>
                 </o-field>
               </div>
             </div>
