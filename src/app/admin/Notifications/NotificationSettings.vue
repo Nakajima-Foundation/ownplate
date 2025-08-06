@@ -3,7 +3,7 @@
     :active="notificationSettingsPopup"
     width="488"
     scroll="keep"
-    @close="closeNotificationSettings"
+    @dismissed="closeNotificationSettings"
   >
     <div class="mx-2 my-6 rounded-lg bg-white p-6 text-left shadow-lg">
       <!-- Title -->
