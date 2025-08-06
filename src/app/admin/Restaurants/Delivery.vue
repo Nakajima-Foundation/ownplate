@@ -71,12 +71,13 @@
 
           <div>
             <div class="flex pb-2 text-sm font-bold">
-              <o-checkbox
-                rootClass="content-center pr-2"
+              <Checkbox
+                class="content-center pr-2"
                 v-model="enableAreaMap"
                 :disabled="!enableDelivery"
-              />
-              {{ $t("delivery.setAreaMap") }}
+              >
+                {{ $t("delivery.setAreaMap") }}
+              </Checkbox>
             </div>
             <div>
               <span>{{ $t("delivery.setAreaMapNotice") }}</span>
@@ -116,12 +117,13 @@
           <!-- area text -->
           <div class="mt-4">
             <div class="flex pb-2 text-sm font-bold">
-              <o-checkbox
-                rootClass="content-center pr-2"
+              <Checkbox
+                class="content-center pr-2"
                 v-model="enableAreaText"
                 :disabled="!enableDelivery"
-              />
-              {{ $t("delivery.setAreaText") }}
+              >
+                {{ $t("delivery.setAreaText") }}
+              </Checkbox>
             </div>
 
             <textarea
@@ -140,8 +142,8 @@
             {{ $t("delivery.deliveryThreshold") }}:
           </div>
           <div class="mt-2 flex">
-            <o-checkbox
-              rootClass="content-center pr-2"
+            <Checkbox
+              class="content-center pr-2"
               v-model="enableDeliveryThreshold"
               :disabled="!enableDelivery"
             />
