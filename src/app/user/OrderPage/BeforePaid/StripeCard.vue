@@ -4,13 +4,13 @@
       v-if="storedCard && hasPayment"
       class="mt-2 flex items-center rounded-lg bg-white p-4 shadow-sm"
     >
-      <t-checkbox v-model="useStoredCard">
+      <Checkbox v-model="useStoredCard">
         <div class="text-base">
           <span>{{ storedCard.brand }}</span>
           <span>**** **** **** {{ storedCard.last4 }}</span>
           <span>・{{ storedCard.exp_month }}/{{ storedCard.exp_year }}</span>
         </div>
-      </t-checkbox>
+      </Checkbox>
     </div>
 
     <div v-show="!useStoredCard">
@@ -27,7 +27,7 @@
         {{ $t("order.card_error") }}
       </div>
 
-      <t-checkbox v-model="save">{{ $t("order.reuseCard") }}</t-checkbox>
+      <Checkbox v-model="save">{{ $t("order.reuseCard") }}</Checkbox>
 
       <!-- About CVC -->
       <div class="mt-1">
@@ -111,10 +111,15 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc } from "firebase/firestore";
 import moment from "moment";
 
+import Checkbox from "@/components/form/checkbox.vue";
+
 // import { useUserData } from "@/utils/utils";
 // import { useStore } from "vuex";
 
 export default defineComponent({
+  components: {
+    Checkbox,
+  },
   emits: ["change"],
   props: {
     stripeJCB: {

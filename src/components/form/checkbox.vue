@@ -9,9 +9,9 @@
       :class="[
         {
           'border-red-500': variant === 'danger' && !modelValue,
-          'border-red-400 checked:border-red-500 checked:bg-red-400 hover:bg-red-200 focus:bg-red-200 disabled:checked:border-red-400  disabled:checked:bg-red-400':
+          'border-red-400 checked:border-red-500 checked:bg-red-400 hover:bg-red-200 focus:bg-red-200 disabled:checked:border-red-400 disabled:checked:bg-red-400':
             variant === 'danger',
-          'border-teal-400 checked:border-teal-400 checked:bg-teal-400 hover:border-teal-400 focus:ring-teal-400 disabled:checked:border-gray-400  disabled:checked:bg-gray-400':
+          'border-teal-400 checked:border-teal-400 checked:bg-teal-400 hover:border-teal-400 focus:ring-teal-400 disabled:checked:border-gray-400 disabled:checked:bg-gray-400':
             variant !== 'danger',
         },
       ]"

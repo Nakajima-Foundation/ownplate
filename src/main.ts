@@ -14,7 +14,6 @@ import VueSocialSharing from "vue-social-sharing";
 import { createHead } from "@unhead/vue/client";
 import VueQrcode from "@chenfengyuan/vue-qrcode";
 
-import Checkbox from "@/components/form/checkbox.vue";
 import Button from "@/components/form/button.vue";
 import Modal from "@/components/Modal.vue";
 
@@ -35,7 +34,6 @@ const app = createApp(App);
 
 // components
 app.component(VueQrcode.name ?? "", VueQrcode);
-app.component("t-checkbox", Checkbox);
 app.component("t-button", Button);
 app.component("t-modal", Modal);
 

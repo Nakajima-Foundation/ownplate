@@ -199,14 +199,14 @@
                   class="rounded-lg bg-black/5 p-4"
                 >
                   <div v-if="option.length === 1" class="field">
-                    <t-checkbox
+                    <Checkbox
                       :modelValue="selectedOptions[quantityKey][index]"
                       @update:modelValue="
                         updateSelectedOptions(quantityKey, index, $event)
                       "
                       ><div class="text-sm font-bold">
                         {{ displayOption(option[0], shopInfo, item) }}
-                      </div></t-checkbox
+                      </div></Checkbox
                     >
                   </div>
                   <div v-else class="field grid grid-cols-1 gap-y-2">
@@ -420,6 +420,8 @@ import {
 } from "vue";
 
 import Price from "@/components/Price.vue";
+import Checkbox from "@/components/form/checkbox.vue";
+
 import SharePopup from "@/app/user/Restaurant/SharePopup.vue";
 import LunchDinnerIcon from "@/app/user/Restaurant/LunchDinnerIcon.vue";
 
@@ -456,6 +458,7 @@ import { MenuData } from "@/models/menu";
 export default defineComponent({
   components: {
     Price,
+    Checkbox,
     SharePopup,
     LunchDinnerIcon,
   },
