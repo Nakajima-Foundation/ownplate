@@ -167,11 +167,11 @@
     </template>
 
     <div class="mt-2">
-      <o-checkbox v-model="isSaveAddress">
+      <Checkbox v-model="isSaveAddress">
         <div class="text-sm font-bold">
           {{ $t("order.saveAddress") }}
         </div>
-      </o-checkbox>
+      </Checkbox>
     </div>
   </div>
 </template>
@@ -182,13 +182,19 @@ import { defineComponent, ref, computed, PropType } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { regionalSetting, countObj, useUserData } from "@/utils/utils";
-import { CustomerInfo } from "@/models/customer";
-import isEmail from "validator/lib/isEmail";
 
+import { CustomerInfo } from "@/models/customer";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { OrderInfoData } from "@/models/orderInfo";
 
+import isEmail from "validator/lib/isEmail";
+
+import Checkbox from "@/components/form/checkbox.vue";
+
 export default defineComponent({
+  components: {
+    Checkbox,
+  },
   props: {
     shopInfo: {
       type: Object as PropType<RestaurantInfoData>,
