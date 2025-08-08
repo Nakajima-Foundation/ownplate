@@ -1,6 +1,7 @@
 import { createStore } from "vuex";
-
+import moment from "moment";
 import { User } from "firebase/auth";
+
 import { OrderInfoData } from "@/models/orderInfo";
 import { MenuData } from "@/models/menu";
 
@@ -9,10 +10,6 @@ import {
   CartItemsType,
   CartOptionType,
 } from "@/models/cartType";
-
-import moment from "moment";
-
-export const strict = false;
 
 interface Claims {
   admin: boolean;
