@@ -107,7 +107,6 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 
 import FooterPoweredBy from "@/components/App/FooterPoweredBy.vue";
 
-import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import { useI18n } from "vue-i18n";
 
@@ -116,7 +115,6 @@ export default defineComponent({
     FooterPoweredBy,
   },
   setup() {
-    const store = useStore();
     const route = useRoute();
     const { locale } = useI18n({ useScope: "global" });
 
@@ -131,6 +129,7 @@ export default defineComponent({
       return `${path_prefix}/${uid.value}/private/profile`;
     });
 
+    const currentLang = ref<undefined | string>(); // for anon user
     const setLang = (lang: string) => {
       language.value = lang;
       locale.value = lang;
@@ -138,8 +137,7 @@ export default defineComponent({
     };
     const saveLang = (lang: string) => {
       if (isNull(uid.value)) {
-        // save into store
-        store.commit("setLang", lang);
+        currentLang.value = lang;
       } else {
         setDoc(doc(db, profile_path.value), { lang }, { merge: true });
       }
@@ -196,8 +194,8 @@ export default defineComponent({
     watch(user, async () => {
       if (user.value) {
         // lang
-        if (store.state.lang) {
-          changeLang(store.state.lang);
+        if (currentLang.value) {
+          changeLang(currentLang.value);
         } else {
           const profileSnapshot = await getDoc(doc(db, profile_path.value));
           if (profileSnapshot.exists()) {

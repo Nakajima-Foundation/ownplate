@@ -40,10 +40,6 @@ interface Dialog {
   tips?: DialogTipsData;
 }
 
-interface Server {
-  region?: string;
-}
-
 type Cart = {
   orders: OrderDataType;
   options: CartOptionType;
@@ -57,10 +53,8 @@ interface State {
   user: undefined | boolean | User;
 
   claims: undefined | Claims;
-  lang: undefined | string;
   date: Date;
   carts: { [key: string]: Cart | null };
-  server: Server;
   orderEvent: number;
   orderObj: { [key: string]: OrderInfoData[] };
   soundEnable: boolean;
@@ -74,11 +68,9 @@ interface State {
 export const state = () => ({
   user: undefined, // undefined:not authorized, null:no user
   claims: undefined, // custom claims
-  lang: undefined,
   date: new Date(),
   // date: new Date("2023-08-05T22:10:00+09:00"),
   carts: {}, // for "Edit Order"
-  server: {}, // server configuration
   orderEvent: 0,
   orderObj: {},
   soundEnable: false, // after user touch/click event, this flag set true (for mobile browser)
@@ -169,9 +161,6 @@ export const mutations = {
     console.log("reset cart", restaurantId);
     // _state.carts = {};
     _state.carts[restaurantId] = null;
-  },
-  setLang(_state: State, lang: string) {
-    _state.lang = lang;
   },
   setCustomClaims(_state: State, claims: Claims) {
     // Note: we can't copy user using Object.assign here
