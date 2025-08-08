@@ -33,6 +33,7 @@
     "moment": "^2.29.4",
     "moment-timezone": "^0.6.0",
     "pdfmake": "0.3.0-beta.2",
+    "pinia": "^3.0.3",
     "qrcode": "^1.5.4",
     "query-string": "^9.2.2",
     "unplugin-vue-markdown": "^29.1.0",
