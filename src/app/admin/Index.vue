@@ -149,36 +149,47 @@
             </div>
 
             <a name="addMenu" />
-            <div
-              v-for="(restaurantId, index) in restaurantLists"
-              :key="restaurantId"
-            >
-              <a :id="'restaurant_' + restaurantId" />
-              <restaurant
-                v-if="restaurantItems[restaurantId]"
-                :simpleMode="simpleMode"
-                :shopInfo="restaurantItems[restaurantId]"
-                :restaurantid="restaurantId"
-                :numberOfMenus="
-                  restaurantItems[restaurantId].numberOfMenus || 0
-                "
-                :numberOfOrders="numberOfOrderObj[restaurantId] || 0"
-                :lineEnable="lines[restaurantId] || false"
-                :shopOwner="shopOwner"
-                :position="
-                  index == 0
-                    ? 'first'
-                    : restaurantLists.length - 1 === index
-                      ? 'last'
-                      : ''
-                "
-                @positionUp="positionUp($event)"
-                @positionDown="positionDown($event)"
-                @deleteFromRestaurantLists="deleteFromRestaurantLists($event)"
-                :isOwner="isOwner"
-              />
-            </div>
 
+            <TransitionGroup
+              name="restaurant-list"
+              tag="div"
+              class="space-y-2"
+              enter-active-class="transition-all duration-300 ease-out"
+              enter-from-class="opacity-0 translate-y-2 scale-95"
+              leave-active-class="transition-all duration-300 ease-in"
+              leave-to-class="opacity-0 translate-y-2 scale-95"
+              move-class="transition-all duration-300 ease-in-out"
+            >
+              <div
+                v-for="(restaurantId, index) in restaurantLists"
+                :key="restaurantId"
+              >
+                <a :id="'restaurant_' + restaurantId" />
+                <restaurant
+                  v-if="restaurantItems[restaurantId]"
+                  :simpleMode="simpleMode"
+                  :shopInfo="restaurantItems[restaurantId]"
+                  :restaurantid="restaurantId"
+                  :numberOfMenus="
+                    restaurantItems[restaurantId].numberOfMenus || 0
+                  "
+                  :numberOfOrders="numberOfOrderObj[restaurantId] || 0"
+                  :lineEnable="lines[restaurantId] || false"
+                  :shopOwner="shopOwner"
+                  :position="
+                    index == 0
+                      ? 'first'
+                      : restaurantLists.length - 1 === index
+                        ? 'last'
+                        : ''
+                  "
+                  @positionUp="positionUp($event)"
+                  @positionDown="positionDown($event)"
+                  @deleteFromRestaurantLists="deleteFromRestaurantLists($event)"
+                  :isOwner="isOwner"
+                />
+              </div>
+            </TransitionGroup>
             <!-- Add Restaurant -->
             <div v-if="existsRestaurant && isOwner" class="mt-4 text-center">
               <button @click="handleNew" class="cursor-pointer">
