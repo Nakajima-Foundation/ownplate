@@ -154,11 +154,11 @@
               name="restaurant-list"
               tag="div"
               class="space-y-2"
-              enter-active-class="transition-all duration-300 ease-out"
+              enter-active-class="transition-all duration-600 ease-out"
               enter-from-class="opacity-0 translate-y-2 scale-95"
-              leave-active-class="transition-all duration-300 ease-in"
+              leave-active-class="transition-all duration-600 ease-in"
               leave-to-class="opacity-0 translate-y-2 scale-95"
-              move-class="transition-all duration-300 ease-in-out"
+              move-class="transition-all duration-600 ease-in-out"
             >
               <div
                 v-for="(restaurantId, index) in restaurantLists"
