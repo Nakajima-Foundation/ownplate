@@ -17,7 +17,7 @@
     @apply bg-gray-100/70 font-sans;
   }
   a {
-    @apply text-indigo-500 transition-colors visited:text-gray-700 hover:text-gray-700 active:text-gray-700;
+    @apply text-indigo-500 transition-colors visited:text-indigo-500 hover:text-gray-700 active:text-gray-700;
   }
   input {
     @apply bg-white;
