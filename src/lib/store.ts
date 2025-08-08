@@ -63,7 +63,6 @@ interface State {
   isWindowActive: boolean;
   dialog: null | Dialog;
   isLoading: boolean;
-  openTime: Date;
 }
 export const state = () => ({
   user: undefined, // undefined:not authorized, null:no user
@@ -80,7 +79,6 @@ export const state = () => ({
   dialog: null, // for DialogBox
   // dialog: {alert: {}, error: {}}, // for DialogBox
   isLoading: false, // for full-page loading animation
-  openTime: new Date(),
 });
 
 export const getters = {
@@ -202,9 +200,6 @@ export const mutations = {
   },
   setTips(_state: State, params: DialogTipsData) {
     _state.dialog = { tips: params };
-  },
-  resetOpenTime(_state: State) {
-    _state.openTime = new Date();
   },
 };
 

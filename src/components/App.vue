@@ -114,7 +114,6 @@ export default defineComponent({
         return true; // Firebase has already identified the user (or non-user)
       }
       if (route.path === `/r/${restaurantId.value}` || route.path === "/") {
-        // console.log("isReadyToRender: quick render activated");
         return true; // We are opening the restaurant page
       }
       return false;
@@ -151,10 +150,8 @@ export default defineComponent({
               store.commit("setUser", fUser);
               store.commit("setCustomClaims", result.claims);
             }
-            // console.log(!!user.email ? "admin" : "customer");
           })
           .catch((error: any) => {
-            // console.error("getIdTokenResult", error);
             Sentry.captureException(error);
           });
         setUserProperties(analytics, {
@@ -163,7 +160,6 @@ export default defineComponent({
         setUserId(analytics, fUser.uid);
       } else {
         setUserProperties(analytics, { role: "anonymous" });
-        // console.log("authStateChanged: null");
         store.commit("setUser", null);
         store.commit("setCustomClaims", null);
       }
@@ -186,10 +182,11 @@ export default defineComponent({
       }
     }
 
+    let openTime = new Date();
     timerId = window.setInterval(() => {
-      const diff = (new Date() - store.state.openTime) / 1000; // second
+      const diff = (new Date() - openTime) / 1000; // second
       if (diff > 20 * 3600) {
-        store.commit("resetOpenTime");
+        openTime = new Date();
         location.reload();
       }
       store.commit("updateDate");
