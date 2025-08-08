@@ -1,25 +1,23 @@
 @import "tailwindcss";
 
-@config '../../../tailwind.config.js';
+@source "./public/**/*.html";
+@source "./src/**/*.{js,jsx,ts,tsx,vue}";
+
+@theme {
+  --color-op-teal: #0097a7;
+  --color-op-teal-disabled: #7cc7d1;
+  --color-ownplate-yellow: #fbc02d;
+
+  /* 375px = 23.4375rem */
+  --breakpoint-xs: 23.4375rem;
+}
 
 @layer base {
   body {
     @apply bg-gray-100/70 font-sans;
   }
   a {
-    @apply text-indigo-500 transition-colors;
-  }
-
-  a:hover {
-    @apply text-gray-700;
-  }
-
-  a:visited {
-    @apply text-gray-700;
-  }
-
-  a:active {
-    @apply text-gray-700;
+    @apply text-indigo-500 transition-colors visited:text-gray-700 hover:text-gray-700 active:text-gray-700;
   }
   input {
     @apply bg-white;
