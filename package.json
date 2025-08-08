@@ -11,7 +11,7 @@
     "batch": "babel-node --presets @babel/env",
     "lint": "eslint src",
     "customclaims": "babel-node --presets @babel/env  ./batch/customclaims.js",
-    "format": "prettier --write '{src/**/*,*}.{js,ts,vue,json}'",
+    "format": "prettier --write '{src/**/*,*}.{js,ts,vue,json,css}'",
     "makenews": "npx tsx ./batch/news.js",
     "use_jp": "firebase use jp && cp src/config/default/ownplate-jp.js src/config/project.js",
     "use_production": "firebase use production && cp src/config/default/ownplate.js src/config/project.js",

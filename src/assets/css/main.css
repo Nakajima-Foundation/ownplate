@@ -1,10 +1,10 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @config '../../../tailwind.config.js';
 
 @layer base {
   body {
-    @apply font-sans bg-gray-100/70;
+    @apply bg-gray-100/70 font-sans;
   }
   a {
     @apply text-indigo-500 transition-colors;
@@ -22,20 +22,15 @@
     @apply text-gray-700;
   }
   input {
-    @apply bg-white
+    @apply bg-white;
+  }
+  div,
+  span {
+    @apply break-words;
+  }
+  img,
+  svg,
+  canvas {
+    @apply inline-block;
   }
 }
-
-div,
-span {
-  word-break: break-word;
-}
-
-/* Overwrites for Tailwind CSS */
-img,
-svg,
-canvas {
-  display: inline-block;
-}
-
-
