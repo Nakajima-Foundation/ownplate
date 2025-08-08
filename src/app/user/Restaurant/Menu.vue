@@ -437,6 +437,7 @@ import {
   imageErrorHandler,
   num2time,
   displayOption,
+  stripeRegion,
 } from "@/utils/utils";
 
 import moment from "moment-timezone";
@@ -527,7 +528,7 @@ export default defineComponent({
     });
     const allergens = computed(() => {
       if (props.item.allergens) {
-        return store.getters.stripeRegion.allergens.filter(
+        return stripeRegion.allergens.filter(
           (allergen: string) => {
             return props.item.allergens[allergen];
           },

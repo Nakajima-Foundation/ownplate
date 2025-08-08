@@ -1,6 +1,5 @@
 import { createStore } from "vuex";
 
-import { stripe_regions } from "@/config/constant";
 import { User } from "firebase/auth";
 import { OrderInfoData } from "@/models/orderInfo";
 import { MenuData } from "@/models/menu";
@@ -121,10 +120,6 @@ export const getters = {
   isAnonymous: (_state: State) => {
     return _state.user === undefined || _state.user === null;
   },
-  // TODO: remove
-  stripeRegion: (_state: State) => {
-    return stripe_regions[_state.server.region || "US"];
-  },
   isSuperAdmin: (_state: State) => {
     return _state.claims?.admin;
   },
@@ -174,10 +169,6 @@ export const mutations = {
     console.log("reset cart", restaurantId);
     // _state.carts = {};
     _state.carts[restaurantId] = null;
-  },
-  setServerConfig(_state: State, config: Server) {
-    _state.server = config;
-    console.log("store:setServerConfig", _state.server.region);
   },
   setLang(_state: State, lang: string) {
     _state.lang = lang;

@@ -65,7 +65,6 @@ import Loading from "@/components/Loading.vue";
 import { isDev, useUser, useRestaurantId } from "@/utils/utils";
 
 import * as Sentry from "@sentry/vue";
-import { ownPlateConfig } from "@/config/project";
 import { defaultHeader } from "@/config/header";
 
 import { useStore } from "vuex";
@@ -139,7 +138,6 @@ export default defineComponent({
       });
     };
 
-    store.commit("setServerConfig", { region: ownPlateConfig.region });
     unregisterAuthObserver = onAuthStateChanged(auth, (fUser) => {
       if (fUser) {
         fUser
