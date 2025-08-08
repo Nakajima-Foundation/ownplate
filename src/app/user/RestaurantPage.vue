@@ -328,7 +328,7 @@ import {
   useUserData,
   useBasePath,
   defaultTitle,
-  stripeRegion
+  stripeRegion,
 } from "@/utils/utils";
 
 import { imageUtils } from "@/utils/RestaurantUtils";
@@ -407,7 +407,7 @@ export default defineComponent({
     const selectedOptions = ref<CartOptionType>({});
 
     const multiple = stripeRegion.multiple;
-    
+
     const basePath = useBasePath();
 
     useHead(() => ({

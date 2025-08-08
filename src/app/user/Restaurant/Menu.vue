@@ -528,11 +528,9 @@ export default defineComponent({
     });
     const allergens = computed(() => {
       if (props.item.allergens) {
-        return stripeRegion.allergens.filter(
-          (allergen: string) => {
-            return props.item.allergens[allergen];
-          },
-        );
+        return stripeRegion.allergens.filter((allergen: string) => {
+          return props.item.allergens[allergen];
+        });
       }
       return [];
     });
