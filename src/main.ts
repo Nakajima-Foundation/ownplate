@@ -1,6 +1,6 @@
 // core
 import { createApp } from "vue";
-import { createPinia } from 'pinia';
+import { createPinia } from "pinia";
 
 import router from "@/lib/router";
 import store from "@/lib/store";
@@ -44,7 +44,7 @@ app.use(store);
 app.use(router);
 app.use(i18n);
 
-const pinia = createPinia()
+const pinia = createPinia();
 app.use(pinia);
 
 if (import.meta.env.PROD) {

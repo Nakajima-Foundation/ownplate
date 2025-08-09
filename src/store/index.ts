@@ -10,6 +10,6 @@ export const useGeneralStore = defineStore("generalStore", () => {
 
   return {
     date,
-    updateDate
+    updateDate,
   };
 });
