@@ -71,6 +71,8 @@ import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import { useHead } from "@unhead/vue";
 
+import { useGeneralStore } from "../store";
+
 export default defineComponent({
   name: "App",
   components: {
@@ -87,6 +89,8 @@ export default defineComponent({
     let unregisterAuthObserver: null | Unsubscribe = null;
     let timerId: null | number = null;
     const store = useStore();
+    const generalStore = useGeneralStore();
+
     const route = useRoute();
 
     const user = useUser();
@@ -189,7 +193,8 @@ export default defineComponent({
         openTime = new Date();
         location.reload();
       }
-      store.commit("updateDate");
+      generalStore.updateDate();
+      store.commit("updateDate"); // TODO remove
     }, 60 * 1000);
 
     watch(
