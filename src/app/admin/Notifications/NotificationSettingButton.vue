@@ -40,13 +40,13 @@ import { defineComponent, computed, ref, onUnmounted } from "vue";
 import { doc, onSnapshot } from "firebase/firestore";
 
 import { db } from "@/lib/firebase/firebase9";
-import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
 import { useRestaurantId } from "@/utils/utils";
 
 export default defineComponent({
   emits: ["openNotificationSettings"],
   setup(props, ctx) {
-    const store = useStore();
+    const generalStore = useGeneralStore();
 
     const restaurantId = useRestaurantId();
     const notificationData = ref({});
@@ -63,8 +63,8 @@ export default defineComponent({
       ctx.emit("openNotificationSettings");
     };
     const orderCounter = computed(() => {
-      return Object.keys(store.state.orderObj).reduce((tmp, key) => {
-        const count = (store.state.orderObj[key] || []).length;
+      return Object.values(generalStore.orderObj).reduce((tmp, order) => {
+        const count = (order || []).length;
         return tmp + count;
       }, 0);
     });
