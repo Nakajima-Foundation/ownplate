@@ -86,12 +86,12 @@ import { lineVerifyFriend } from "@/lib/firebase/functions";
 import { lineAuthURL } from "@/lib/line/line";
 import { ownPlateConfig } from "@/config/project";
 
-import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
 import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   setup() {
-    const store = useStore();
+    const generalStore = useGeneralStore();
     const { t } = useI18n({ useScope: "global" });
 
     const { isLiffUser, isLineUser, inLiff } = useUserData();
@@ -101,7 +101,7 @@ export default defineComponent({
     const liffConfig = ref<null | any>(null);
 
     const isWindowActive = computed(() => {
-      return store.state.isWindowActive;
+      return generalStore.isWindowActive;
     });
 
     const friendLink = computed(() => {

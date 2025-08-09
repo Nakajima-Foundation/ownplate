@@ -1,8 +1,6 @@
 import { createStore } from "vuex";
-import moment from "moment";
 import { User } from "firebase/auth";
 
-import { OrderInfoData } from "@/models/orderInfo";
 import { MenuData } from "@/models/menu";
 
 import {
@@ -51,8 +49,6 @@ interface State {
 
   claims: undefined | Claims;
   carts: { [key: string]: Cart | null };
-  orderObj: { [key: string]: OrderInfoData[] };
-  isWindowActive: boolean;
   dialog: null | Dialog;
   isLoading: boolean;
 }
@@ -60,8 +56,6 @@ export const state = () => ({
   user: undefined, // undefined:not authorized, null:no user
   claims: undefined, // custom claims
   carts: {}, // for "Edit Order"
-  orderObj: {},
-  isWindowActive: false, // active status of browser window
   dialog: null, // for DialogBox
   // dialog: {alert: {}, error: {}}, // for DialogBox
   isLoading: false, // for full-page loading animation
@@ -124,9 +118,6 @@ export const getters = {
 };
 
 export const mutations = {
-  setActive(_state: State, flag: boolean) {
-    _state.isWindowActive = flag;
-  },
   setLoading(_state: State, flag: boolean) {
     _state.isLoading = flag;
   },
@@ -146,19 +137,6 @@ export const mutations = {
   setCustomClaims(_state: State, claims: Claims) {
     // Note: we can't copy user using Object.assign here
     _state.claims = claims;
-  },
-  setOrders(_state: State, orders: OrderInfoData[]) {
-    _state.orderObj = orders.reduce(
-      (tmp: { [key: string]: OrderInfoData[] }, order: OrderInfoData) => {
-        const day = moment(order.timePlaced.toDate()).format("YYYY-MM-DD");
-        if (!tmp[day]) {
-          tmp[day] = [];
-        }
-        tmp[day].push(order);
-        return tmp;
-      },
-      {},
-    );
   },
   resetDialog(_state: State) {
     _state.dialog = null;

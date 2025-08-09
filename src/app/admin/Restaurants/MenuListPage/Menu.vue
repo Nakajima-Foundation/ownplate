@@ -150,7 +150,7 @@ import {
 } from "@/utils/utils";
 
 import { useStore } from "vuex";
-import { useGeneralStore } from "../../../../store";
+import { useGeneralStore } from "@/store";
 
 import { useRouter } from "vue-router";
 import moment from "moment-timezone";

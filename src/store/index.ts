@@ -1,6 +1,9 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
 
+import { OrderInfoData } from "@/models/orderInfo";
+import moment from "moment";
+
 export const useGeneralStore = defineStore("generalStore", () => {
   const date = ref(new Date());
   const orderEvent = ref(0);
@@ -28,6 +31,26 @@ export const useGeneralStore = defineStore("generalStore", () => {
     soundFile.value = file;
   };
 
+  const isWindowActive = ref(false);
+  const setActive = (flag: boolean) => {
+    isWindowActive.value = flag;
+  };
+
+  const orderObj = ref<{ [key: string]: OrderInfoData[] }>({});
+  const setOrders = (orders: OrderInfoData[]) => {
+    orderObj.value = orders.reduce(
+      (tmp: { [key: string]: OrderInfoData[] }, order: OrderInfoData) => {
+        const day = moment(order.timePlaced.toDate()).format("YYYY-MM-DD");
+        if (!tmp[day]) {
+          tmp[day] = [];
+        }
+        tmp[day].push(order);
+        return tmp;
+      },
+      {},
+    );
+  };
+
   return {
     date,
     updateDate,
@@ -43,5 +66,11 @@ export const useGeneralStore = defineStore("generalStore", () => {
 
     soundFile,
     setSoundFile,
+
+    isWindowActive,
+    setActive,
+
+    orderObj,
+    setOrders,
   };
 });

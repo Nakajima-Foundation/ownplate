@@ -100,10 +100,10 @@ export default defineComponent({
 
     onMounted(() => {
       window.addEventListener("focus", () => {
-        store.commit("setActive", true);
+        generalStore.setActive(true);
       });
       window.addEventListener("blur", () => {
-        store.commit("setActive", false);
+        generalStore.setActive(false);
       });
     });
 

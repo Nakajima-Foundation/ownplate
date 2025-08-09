@@ -104,7 +104,7 @@ import {
 import { checkShopAccount } from "@/utils/userPermission";
 import { useAdminConfigToggle } from "@/utils/admin/Toggle";
 
-import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
 import { useRoute, useRouter } from "vue-router";
 import { useHead } from "@unhead/vue";
 
@@ -122,7 +122,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const store = useStore();
+    const generalStore = useGeneralStore();
     const route = useRoute();
     const router = useRouter();
 
@@ -249,7 +249,7 @@ export default defineComponent({
       return lastSeveralDays.value.reduce(
         (tmp: { [key: string]: string }, day) => {
           const count = (
-            store.state.orderObj[moment(day.date).format("YYYY-MM-DD")] || []
+            generalStore.orderObj[moment(day.date).format("YYYY-MM-DD")] || []
           ).length;
           if (count > 0) {
             tmp[moment(day.date).format("YYYY-MM-DD")] = "(" + count + ")";

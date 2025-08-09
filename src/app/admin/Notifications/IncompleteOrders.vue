@@ -37,7 +37,7 @@ import { isNull, useRestaurantId } from "@/utils/utils";
 import { midNight } from "@/utils/dateUtils";
 import moment from "moment";
 
-import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
@@ -50,7 +50,7 @@ export default defineComponent({
   },
   emits: ["close"],
   setup(props, ctx) {
-    const store = useStore();
+    const generalStore = useGeneralStore();
     const restaurantId = useRestaurantId();
 
     const pickUpDaysInAdvance = computed(() => {
@@ -73,7 +73,7 @@ export default defineComponent({
       return lastSeveralDays.value.reduce(
         (tmp: { [key: string]: number }, day) => {
           const count = (
-            store.state.orderObj[moment(day.date).format("YYYY-MM-DD")] || []
+            generalStore.orderObj[moment(day.date).format("YYYY-MM-DD")] || []
           ).length;
           tmp[moment(day.date).format("YYYY-MM-DD")] = count || 0;
           return tmp;
