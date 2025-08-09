@@ -150,6 +150,7 @@ import {
 } from "@/utils/utils";
 
 import { useStore } from "vuex";
+import { useGeneralStore } from "../store";
 
 import { useRouter } from "vue-router";
 import moment from "moment-timezone";
@@ -177,6 +178,7 @@ export default defineComponent({
   setup(props, ctx) {
     const store = useStore();
     const router = useRouter();
+    const generalStore = useGeneralStore();
 
     const restaurantId = useRestaurantId();
 
@@ -193,11 +195,11 @@ export default defineComponent({
     };
 
     const soldOutToday = computed(() => {
-      const today = moment(store.state.date).format("YYYY-MM-DD");
+      const today = moment(generalStore.date).format("YYYY-MM-DD");
       return props.menuitem.soldOutToday === today; // = !soldOut;
     });
     const soldOutTodayToggle = (e: boolean) => {
-      const today = moment(store.state.date).format("YYYY-MM-DD");
+      const today = moment(generalStore.date).format("YYYY-MM-DD");
       const path = `restaurants/${restaurantId.value}/menus/${props.menuitem.id}`;
       if (e) {
         updateDoc(doc(db, path), { soldOutToday: today });

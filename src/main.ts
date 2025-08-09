@@ -1,5 +1,6 @@
 // core
 import { createApp } from "vue";
+import { createPinia } from 'pinia';
 
 import router from "@/lib/router";
 import store from "@/lib/store";
@@ -42,6 +43,9 @@ app.use(head);
 app.use(store);
 app.use(router);
 app.use(i18n);
+
+const pinia = createPinia()
+app.use(pinia);
 
 if (import.meta.env.PROD) {
   if (sentryDsn) {

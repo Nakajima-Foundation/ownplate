@@ -85,7 +85,7 @@ import Price from "@/components/Price.vue";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { MenuData } from "@/models/menu";
 import { AnalyticsMenuData } from "@/lib/firebase/analytics";
-import { useStore } from "vuex";
+import { useGeneralStore } from "../store";
 
 import moment from "moment-timezone";
 
@@ -117,7 +117,8 @@ export default defineComponent({
   },
   emits: ["increase", "decrease"],
   setup(props, ctx) {
-    const store = useStore();
+    const generalStore = useGeneralStore();
+
     const restaurantId = useRestaurantId();
     const image = computed(() => {
       return (
@@ -150,7 +151,7 @@ export default defineComponent({
       );
     };
     const isSoldOutToday = computed(() => {
-      const today = moment(store.state.date).format("YYYY-MM-DD");
+      const today = moment(generalStore.date).format("YYYY-MM-DD");
       return props.item.soldOutToday === today;
     });
     return {

@@ -448,7 +448,7 @@ import moment from "moment-timezone";
 //   if button push, quantities.push(1)
 //   when update quantities, if there is 0 element in quantities and quantities.size > 0, filter 0 element in quantities.
 
-import { useStore } from "vuex";
+import { useGeneralStore } from "../store";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 
@@ -503,7 +503,7 @@ export default defineComponent({
   },
   emits: ["didOrderdChange", "updateSelectedOptions"],
   setup(props, ctx) {
-    const store = useStore();
+    const generalStore = useGeneralStore();
     const route = useRoute();
     const router = useRouter();
 
@@ -520,7 +520,7 @@ export default defineComponent({
       return !!props.item.soldOut;
     });
     const isSoldOutToday = computed(() => {
-      const today = moment(store.state.date).format("YYYY-MM-DD");
+      const today = moment(generalStore.date).format("YYYY-MM-DD");
       return props.item.soldOutToday === today;
     });
     const totalQuantity = computed(() => {
