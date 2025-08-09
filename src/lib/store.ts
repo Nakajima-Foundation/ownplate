@@ -50,11 +50,8 @@ interface State {
   user: undefined | boolean | User;
 
   claims: undefined | Claims;
-  date: Date;
   carts: { [key: string]: Cart | null };
-  orderEvent: number;
   orderObj: { [key: string]: OrderInfoData[] };
-  soundEnable: boolean;
   soundOn: boolean;
   soundFile: string;
   isWindowActive: boolean;
@@ -64,12 +61,8 @@ interface State {
 export const state = () => ({
   user: undefined, // undefined:not authorized, null:no user
   claims: undefined, // custom claims
-  date: new Date(),
-  // date: new Date("2023-08-05T22:10:00+09:00"),
   carts: {}, // for "Edit Order"
-  orderEvent: 0,
   orderObj: {},
-  soundEnable: false, // after user touch/click event, this flag set true (for mobile browser)
   soundOn: false, // for restaurant admin config
   soundFile: "",
   isWindowActive: false, // active status of browser window
@@ -144,9 +137,6 @@ export const mutations = {
   setUser(_state: State, user: User) {
     _state.user = user;
   },
-  updateDate(_state: State) {
-    _state.date = new Date();
-  },
   saveCart(_state: State, payload: { id: string; cart: Cart }) {
     console.log("saving cart", payload.id, payload.cart);
     // _state.carts = {};
@@ -161,9 +151,6 @@ export const mutations = {
     // Note: we can't copy user using Object.assign here
     _state.claims = claims;
   },
-  pingOrderEvent(_state: State) {
-    _state.orderEvent = _state.orderEvent + 1;
-  },
   setOrders(_state: State, orders: OrderInfoData[]) {
     _state.orderObj = orders.reduce(
       (tmp: { [key: string]: OrderInfoData[] }, order: OrderInfoData) => {
@@ -176,9 +163,6 @@ export const mutations = {
       },
       {},
     );
-  },
-  soundEnable(_state: State) {
-    _state.soundEnable = true;
   },
   setSoundOn(_state: State, flag: boolean) {
     _state.soundOn = flag;
