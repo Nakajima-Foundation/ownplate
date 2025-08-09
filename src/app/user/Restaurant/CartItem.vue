@@ -85,7 +85,7 @@ import Price from "@/components/Price.vue";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { MenuData } from "@/models/menu";
 import { AnalyticsMenuData } from "@/lib/firebase/analytics";
-import { useGeneralStore } from "../store";
+import { useGeneralStore } from "../../../store";
 
 import moment from "moment-timezone";
 
