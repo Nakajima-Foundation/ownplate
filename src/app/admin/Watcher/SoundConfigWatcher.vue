@@ -7,7 +7,7 @@ import { defineComponent, watch } from "vue";
 
 import { soundFiles } from "@/config/constant";
 import { getSoundIndex } from "@/utils/utils";
-import { useGeneralStore } from "../store";
+import { useGeneralStore } from "../../../store";
 
 export default defineComponent({
   props: {
