@@ -5,18 +5,16 @@
 </template>
 <script lang="ts">
 import { defineComponent, ref, computed, watch } from "vue";
-import { useStore } from "vuex";
 import { useGeneralStore } from "../store";
 
 export default defineComponent({
   setup() {
     const generalStore = useGeneralStore();
-    const store = useStore();
 
     const playedSilent = ref(false);
     const audioRef = ref();
     const soundFile = computed(() => {
-      return store.state.soundFile;
+      return generalStore.soundFile;
     });
 
     const enableSound = async () => {
@@ -51,7 +49,7 @@ export default defineComponent({
     watch(event, async () => {
       await play();
       console.log(
-        `soundEnable = ${generalStore.soundEnable}, soundOn=${store.state.soundOn}, soundFile=${store.state.soundFile}`,
+        `soundEnable = ${generalStore.soundEnable}, soundOn=${generalStore.soundOn}, soundFile=${generalStore.soundFile}`,
       );
     });
     return {

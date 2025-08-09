@@ -52,8 +52,6 @@ interface State {
   claims: undefined | Claims;
   carts: { [key: string]: Cart | null };
   orderObj: { [key: string]: OrderInfoData[] };
-  soundOn: boolean;
-  soundFile: string;
   isWindowActive: boolean;
   dialog: null | Dialog;
   isLoading: boolean;
@@ -63,8 +61,6 @@ export const state = () => ({
   claims: undefined, // custom claims
   carts: {}, // for "Edit Order"
   orderObj: {},
-  soundOn: false, // for restaurant admin config
-  soundFile: "",
   isWindowActive: false, // active status of browser window
   dialog: null, // for DialogBox
   // dialog: {alert: {}, error: {}}, // for DialogBox
@@ -163,12 +159,6 @@ export const mutations = {
       },
       {},
     );
-  },
-  setSoundOn(_state: State, flag: boolean) {
-    _state.soundOn = flag;
-  },
-  setSoundFile(_state: State, file: string) {
-    _state.soundFile = file;
   },
   resetDialog(_state: State) {
     _state.dialog = null;
