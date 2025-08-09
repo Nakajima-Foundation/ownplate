@@ -52,7 +52,6 @@ interface State {
   claims: undefined | Claims;
   carts: { [key: string]: Cart | null };
   orderObj: { [key: string]: OrderInfoData[] };
-  isWindowActive: boolean;
   dialog: null | Dialog;
   isLoading: boolean;
 }
@@ -61,7 +60,6 @@ export const state = () => ({
   claims: undefined, // custom claims
   carts: {}, // for "Edit Order"
   orderObj: {},
-  isWindowActive: false, // active status of browser window
   dialog: null, // for DialogBox
   // dialog: {alert: {}, error: {}}, // for DialogBox
   isLoading: false, // for full-page loading animation
@@ -124,9 +122,6 @@ export const getters = {
 };
 
 export const mutations = {
-  setActive(_state: State, flag: boolean) {
-    _state.isWindowActive = flag;
-  },
   setLoading(_state: State, flag: boolean) {
     _state.isLoading = flag;
   },

@@ -28,6 +28,11 @@ export const useGeneralStore = defineStore("generalStore", () => {
     soundFile.value = file;
   };
 
+  const isWindowActive = ref(false);
+  const setActive = (flag: boolean) => {
+    isWindowActive.value = flag;
+  };
+
   return {
     date,
     updateDate,
@@ -43,5 +48,8 @@ export const useGeneralStore = defineStore("generalStore", () => {
 
     soundFile,
     setSoundFile,
+
+    isWindowActive,
+    setActive,
   };
 });
