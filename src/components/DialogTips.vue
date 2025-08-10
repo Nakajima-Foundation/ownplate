@@ -35,18 +35,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, computed } from "vue";
 import { useStore } from "vuex";
 
 export default defineComponent({
-  props: {
-    dialog: {
-      type: Object,
-    },
-  },
   setup() {
     const store = useStore();
+    const dialog = computed(() => {
+      return store.state.dialog;
+    });
     return {
+      dialog,
       close: () => {
         store.commit("resetDialog");
       },
