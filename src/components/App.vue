@@ -22,6 +22,7 @@
         <!-- approproate component under pages will be displayed -->
         <router-view v-if="isReadyToRender" />
         <dialog-box :dialog="dialog" />
+        <dialog-tips :dialog="dialog" />
       </div>
     </div>
 
@@ -60,6 +61,7 @@ import AppFooter from "@/components/App/Footer.vue";
 import NotificationBanner from "@/components/App/NotificationBanner.vue";
 import SideMenu from "@/components/App/SideMenu.vue";
 import DialogBox from "@/components/DialogBox.vue";
+import DialogTips from "@/components/DialogTips.vue";
 import AudioPlay from "@/components/AudioPlay.vue";
 import Loading from "@/components/Loading.vue";
 import { isDev, useUser, useRestaurantId } from "@/utils/utils";
@@ -77,6 +79,7 @@ export default defineComponent({
   name: "App",
   components: {
     DialogBox,
+    DialogTips,
     AudioPlay,
     SideMenu,
     AppHeader,
