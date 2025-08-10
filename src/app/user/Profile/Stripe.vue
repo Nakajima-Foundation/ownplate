@@ -36,11 +36,13 @@ import { stripeDeleteCard } from "@/lib/firebase/functions";
 import { useUserData } from "@/utils/utils";
 
 import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
 import moment from "moment";
 
 export default defineComponent({
   setup() {
     const store = useStore();
+    const generalStore = useGeneralStore();
     const { isLiffUser, user } = useUserData();
 
     const storedCard = ref<{ brand: string; last4: string } | null>(null);
@@ -87,7 +89,7 @@ export default defineComponent({
         code: "profile.reallyDeleteCard",
         callback: async () => {
           console.log("handleDeleteCard");
-          store.commit("setLoading", true);
+          generalStore.setLoading(true);
           try {
             const { data } = await stripeDeleteCard();
             storedCard.value = null;
@@ -95,7 +97,7 @@ export default defineComponent({
           } catch (error) {
             console.error(error);
           } finally {
-            store.commit("setLoading", false);
+            generalStore.setLoading(false);
           }
         },
       });

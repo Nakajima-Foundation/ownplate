@@ -50,7 +50,6 @@ interface State {
   claims: undefined | Claims;
   carts: { [key: string]: Cart | null };
   dialog: null | Dialog;
-  isLoading: boolean;
 }
 export const state = () => ({
   user: undefined, // undefined:not authorized, null:no user
@@ -58,7 +57,6 @@ export const state = () => ({
   carts: {}, // for "Edit Order"
   dialog: null, // for DialogBox
   // dialog: {alert: {}, error: {}}, // for DialogBox
-  isLoading: false, // for full-page loading animation
 });
 
 export const getters = {
@@ -118,9 +116,6 @@ export const getters = {
 };
 
 export const mutations = {
-  setLoading(_state: State, flag: boolean) {
-    _state.isLoading = flag;
-  },
   setUser(_state: State, user: User) {
     _state.user = user;
   },

@@ -66,6 +66,7 @@
 import { defineComponent, ref } from "vue";
 import { stripePaymentCancelIntent } from "@/lib/firebase/functions";
 
+import { useGeneralStore } from "@/store";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
@@ -100,13 +101,14 @@ export default defineComponent({
   setup(props, ctx) {
     const router = useRouter();
     const store = useStore();
+    const generalStore = useGeneralStore();
 
     const updating = ref(false);
     const handlePaymentCancel = async () => {
       console.log("handlePaymentCancel");
 
       try {
-        store.commit("setLoading", true);
+        generalStore.setLoading(true);
         updating.value = true;
         const { data } = await stripePaymentCancelIntent({
           restaurantId: props.shopInfo.restaurantId,
@@ -122,7 +124,7 @@ export default defineComponent({
         });
       } finally {
         updating.value = false;
-        store.commit("setLoading", false);
+        generalStore.setLoading(false);
       }
     };
 

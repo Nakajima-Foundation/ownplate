@@ -33,6 +33,7 @@ import {
 } from "@/lib/firebase/functions";
 
 import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
 import { useRouter, useRoute } from "vue-router";
 
 import moment from "moment-timezone";
@@ -48,6 +49,7 @@ export default defineComponent({
 
   setup(props) {
     const store = useStore();
+    const generalStore = useGeneralStore();
     const router = useRouter();
     const route = useRoute();
 
@@ -56,9 +58,9 @@ export default defineComponent({
         title: "admin.messages.childInvitationAccept",
         code: "admin.messages.childInvitationAcceptMessage",
         callback: async () => {
-          store.commit("setLoading", true);
+          generalStore.setLoading(true);
           await subAccountInvitationAccept({ messageId: props.message.id });
-          store.commit("setLoading", false);
+          generalStore.setLoading(false);
           router.go({
             path: route.path,
             force: true,
@@ -71,9 +73,9 @@ export default defineComponent({
       store.commit("setAlert", {
         code: "admin.messages.childInvitationDeny",
         callback: async () => {
-          store.commit("setLoading", true);
+          generalStore.setLoading(true);
           await subAccountInvitationDeny({ messageId: props.message.id });
-          store.commit("setLoading", false);
+          generalStore.setLoading(false);
         },
       });
     };

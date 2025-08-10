@@ -51,6 +51,11 @@ export const useGeneralStore = defineStore("generalStore", () => {
     );
   };
 
+  const isLoading = ref(false);
+  const setLoading = (flag: boolean) => {
+    isLoading.value = flag;
+  };
+  
   return {
     date,
     updateDate,
@@ -72,5 +77,9 @@ export const useGeneralStore = defineStore("generalStore", () => {
 
     orderObj,
     setOrders,
+
+    isLoading,
+    setLoading,
+
   };
 });
