@@ -34,7 +34,11 @@
         <td style="padding-right: 8px" v-else>{{ payment(admin).stripe }}</td>
         <td style="padding-right: 8px">
           {{ capabilities(admin).jcb_payments }}
-          <button v-if="showActivate(admin)" @click="activate(admin)">
+          <button
+            v-if="showActivate(admin)"
+            @click="activate(admin)"
+            class="cursor-pointe cursor-pointer rounded border-2 border-black/40 bg-gray-200 p-1 hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-25"
+          >
             Activate
           </button>
         </td>

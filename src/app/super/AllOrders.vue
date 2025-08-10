@@ -61,7 +61,12 @@
             </div>
           </div>
           <div>
-            <button @click="nextLoad" class="mt-4 rounded-full">more</button>
+            <button
+              @click="nextLoad"
+              class="cursor-pointe cursor-pointer rounded border-2 border-black/40 bg-gray-200 p-1 hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-25"
+            >
+              more
+            </button>
           </div>
 
           <download-csv
