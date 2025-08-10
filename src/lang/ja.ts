@@ -614,7 +614,8 @@ const data = {
     allOrders: "全ての注文",
     menu: "メニューページを見る",
     orderNotPlacedYet:
-      "ご注文はまだ確定していません。内容を確認してページ下の注文ボタンを押してください。",
+    "ご注文はまだ確定していません。内容を確認してページ下の注文ボタンを押してください。",
+    waitingPayment: "ご注文はまだ確定していません。決済情報の入力し確定してください",
     yourOrder: "あなたの注文",
     confirmOrder: "ご注文の確認",
     editItems: "注文を変更する",
@@ -674,7 +675,6 @@ const data = {
     or: "もしくは",
     placeOrderNoPayment: "受け取り払いで注文",
     placeOrderNoPaymentNote: "ここで決済せずに商品受け取り時に支払います",
-    waitingPayment: "決済情報の入力・確認",
     submitPayment: "支払いを確定する",
     validating: "処理しています...",
     thankyou: "ご注文、ありがとうございます",
