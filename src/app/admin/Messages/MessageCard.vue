@@ -14,10 +14,16 @@
         </div> </router-link
       ><br />
       {{ $t("admin.messages.childInvitationMessage3") }}<br />
-      <button @click="childInvitationAccept">
+      <button
+        @click="childInvitationAccept"
+        class="text-op-teal inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4 text-sm font-bold"
+      >
         {{ $t("admin.messages.accept") }}
       </button>
-      <button @click="childInvitationDeny">
+      <button
+        @click="childInvitationDeny"
+        class="text-op-teal inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4 text-sm font-bold"
+      >
         {{ $t("admin.messages.deny") }}
       </button>
     </div>
