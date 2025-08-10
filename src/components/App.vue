@@ -21,8 +21,8 @@
 
         <!-- approproate component under pages will be displayed -->
         <router-view v-if="isReadyToRender" />
-        <dialog-box :dialog="dialog" />
-        <dialog-tips :dialog="dialog" />
+        <dialog-box />
+        <dialog-tips />
       </div>
     </div>
 
@@ -112,9 +112,6 @@ export default defineComponent({
 
     const isLoading = computed(() => {
       return generalStore.isLoading;
-    });
-    const dialog = computed(() => {
-      return store.state.dialog;
     });
     const isReadyToRender = computed(() => {
       if (user.value !== undefined) {
@@ -225,7 +222,6 @@ export default defineComponent({
       enableSound,
       handleOpen,
       isReadyToRender,
-      dialog,
       isLoading,
     };
   },

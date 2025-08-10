@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 import { watch, onUnmounted } from "vue";
-const props = defineProps<{ active: boolean; width: string }>();
+const props = defineProps<{ active: boolean; width?: string }>();
 const emit = defineEmits<{
   (e: "update:active", value: boolean): void;
   (e: "dismissed"): void;

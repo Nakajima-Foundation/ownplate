@@ -1,6 +1,6 @@
 <template>
   <div>
-    <t-modal :active="!!dialog?.tips" @update:active="close" width="488">
+    <t-modal :active="!!dialog?.tips" @update:active="close">
       <div
         class="op-dialog mx-2 my-6 rounded-lg bg-white pt-6 pr-6 pb-6 pl-6 shadow-lg"
       >
