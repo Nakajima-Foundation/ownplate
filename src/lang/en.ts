@@ -1118,6 +1118,8 @@ const data = {
       paymentCancelTitle: "Cancel only card payment",
       paymentCancelMessage:
         "It will be changed to payment in the restaurant. Please contact the customer and let them know that you will be paying in the restaurant. The order will not be cancelled.",
+      waitingPaymentWarninig:
+        "This order cannot be accepted as payment has not been completed.",
       paymentCancel: "Cancel only card payment",
       paymentCancelConfirm: "(This action is undoable)",
       placedDate: "Date of order",

@@ -64,6 +64,12 @@
               </div>
             </div>
 
+            <div
+              v-if="orderInfo.status === order_status.waiting_payment"
+              class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-red-700/10 px-4 py-1 font-bold text-red-700"
+            >
+              {{ $t("admin.order.waitingPaymentWarninig") }}
+            </div>
             <div v-if="hasStripe && orderInfo.payment.stripe !== 'canceled'">
               <div
                 class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-yellow-500/10 px-4 py-1 font-bold text-yellow-500"

@@ -614,8 +614,9 @@ const data = {
     allOrders: "全ての注文",
     menu: "メニューページを見る",
     orderNotPlacedYet:
-    "ご注文はまだ確定していません。内容を確認してページ下の注文ボタンを押してください。",
-    waitingPayment: "ご注文はまだ確定していません。決済情報の入力し確定してください",
+      "ご注文はまだ確定していません。内容を確認してページ下の注文ボタンを押してください。",
+    waitingPayment:
+      "ご注文はまだ確定していません。決済情報の入力し確定してください",
     yourOrder: "あなたの注文",
     confirmOrder: "ご注文の確認",
     editItems: "注文を変更する",
@@ -1113,6 +1114,7 @@ const data = {
       paymentCancelTitle: "カード決済のみキャンセル",
       paymentCancelMessage:
         "現地払いに変更となります。お客様にご連絡の上、現地払いになることをお伝え下さい。注文はキャンセルされません。",
+      waitingPaymentWarninig: "この注文は、決済未完了のため受付できません。",
       paymentCancel: "カード決済のみキャンセル",
       paymentCancelConfirm: "(キャンセルの取り消しは出来ません)",
       placedDate: "注文日",
