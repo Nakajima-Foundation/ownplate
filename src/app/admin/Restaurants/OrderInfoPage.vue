@@ -579,6 +579,7 @@ import {
 } from "@/utils/utils";
 
 import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
 import { useRoute, useRouter } from "vue-router";
 
 import { useI18n } from "vue-i18n";
@@ -612,6 +613,7 @@ export default defineComponent({
 
   setup(props) {
     const store = useStore();
+    const generalStore = useGeneralStore();
     const route = useRoute();
     const router = useRouter();
     const { d } = useI18n({ useScope: "global" });
@@ -1035,7 +1037,7 @@ export default defineComponent({
       }
       updating.value = statusKey;
       try {
-        store.commit("setLoading", true);
+        generalStore.setLoading(true);
         const params = {
           restaurantId: restaurantId.value,
           orderId: orderId.value,
@@ -1067,7 +1069,7 @@ export default defineComponent({
           error,
         });
       } finally {
-        store.commit("setLoading", false);
+        generalStore.setLoading(false);
         updating.value = "";
       }
     };
@@ -1078,7 +1080,7 @@ export default defineComponent({
         callback: async () => {
           try {
             changing.value = true;
-            store.commit("setLoading", true);
+            generalStore.setLoading(true);
             const params = {
               restaurantId: restaurantId.value,
               orderId: orderId.value,
@@ -1096,7 +1098,7 @@ export default defineComponent({
               error,
             });
           } finally {
-            store.commit("setLoading", false);
+            generalStore.setLoading(false);
             changing.value = false;
           }
         },

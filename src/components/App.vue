@@ -108,7 +108,7 @@ export default defineComponent({
     });
 
     const isLoading = computed(() => {
-      return store.state.isLoading;
+      return generalStore.isLoading;
     });
     const dialog = computed(() => {
       return store.state.dialog;

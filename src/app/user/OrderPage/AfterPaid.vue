@@ -232,6 +232,7 @@ import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
 import { useI18n } from "vue-i18n";
 
 export default defineComponent({
@@ -288,6 +289,7 @@ export default defineComponent({
   setup(props) {
     const route = useRoute();
     const store = useStore();
+    const generalStore = useGeneralStore();
     const { d } = useI18n({ useScope: "global" });
 
     const orderId = route.params.orderId as string;
@@ -347,7 +349,7 @@ export default defineComponent({
         callback: async () => {
           try {
             isCancelling.value = true;
-            store.commit("setLoading", true);
+            generalStore.setLoading(true);
             await stripeCancelIntent({
               restaurantId: restaurantId,
               orderId: orderId,
@@ -362,7 +364,7 @@ export default defineComponent({
               error,
             });
           } finally {
-            store.commit("setLoading", false);
+            generalStore.setLoading(false);
             isCancelling.value = false;
           }
         },

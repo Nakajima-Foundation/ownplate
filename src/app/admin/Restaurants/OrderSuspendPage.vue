@@ -133,7 +133,7 @@ import {
 import { usePickupTime } from "@/utils/pickup";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
-import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
 import { useI18n } from "vue-i18n";
 import { useHead } from "@unhead/vue";
 
@@ -150,7 +150,7 @@ export default defineComponent({
   },
   emits: ["updateRestaurant"],
   setup(props, ctx) {
-    const store = useStore();
+    const generalStore = useGeneralStore();
     const { d } = useI18n({ useScope: "global" });
 
     const restaurantId = useRestaurantId();
@@ -215,21 +215,21 @@ export default defineComponent({
       if (day && day > 0) {
         tmpDate.setDate(tmpDate.getDate() + day);
       }
-      store.commit("setLoading", true);
+      generalStore.setLoading(true);
       const timeStamp = Timestamp.fromDate(tmpDate);
       await updateDoc(doc(db, `restaurants/${restaurantId.value}`), {
         suspendUntil: timeStamp,
       });
-      store.commit("setLoading", false);
+      generalStore.setLoading(false);
       suspendUntil.value = getSuspend(timeStamp);
       ctx.emit("updateRestaurant");
     };
     const handleRemove = async () => {
-      store.commit("setLoading", true);
+      generalStore.setLoading(true);
       await updateDoc(doc(db, `restaurants/${restaurantId.value}`), {
         suspendUntil: null,
       });
-      store.commit("setLoading", false);
+      generalStore.setLoading(false);
       suspendUntil.value = null;
       ctx.emit("updateRestaurant");
     };

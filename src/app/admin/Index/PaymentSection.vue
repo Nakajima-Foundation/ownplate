@@ -111,6 +111,7 @@ import {
   computed,
 } from "vue";
 import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
 import { useRoute, useRouter } from "vue-router";
 
 import { db } from "@/lib/firebase/firebase9";
@@ -131,6 +132,7 @@ export default defineComponent({
   emits: ["updateUnsetWarning"],
   setup(_, context) {
     const store = useStore();
+    const generalStore = useGeneralStore();
     const route = useRoute();
     const router = useRouter();
 
@@ -145,7 +147,7 @@ export default defineComponent({
         const cookies = parse(document.cookie);
         //console.log("mounted", code, state, cookies.stripe_state);
         if (state === cookies?.stripe_state) {
-          store.commit("setLoading", true);
+          generalStore.setLoading(true);
           try {
             const { data } = await stripeConnect({ code });
             console.log(data);
@@ -156,7 +158,7 @@ export default defineComponent({
               error,
             });
           } finally {
-            store.commit("setLoading", false);
+            generalStore.setLoading(false);
             router.replace(location.pathname);
           }
         }
@@ -233,7 +235,7 @@ export default defineComponent({
         code: "admin.payments.reallyDisconnectStripe",
         callback: async () => {
           try {
-            store.commit("setLoading", true);
+            generalStore.setLoading(true);
             await stripeDisconnect();
             // TODO: show connected view
           } catch (error: any) {
@@ -243,7 +245,7 @@ export default defineComponent({
               error,
             });
           } finally {
-            store.commit("setLoading", false);
+            generalStore.setLoading(false);
           }
         },
       });

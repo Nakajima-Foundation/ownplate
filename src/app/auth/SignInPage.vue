@@ -148,7 +148,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { useUserData, defaultTitle } from "@/utils/utils";
 
 import { useRoute, useRouter } from "vue-router";
-import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
 import { useHead } from "@unhead/vue";
 
 export default defineComponent({
@@ -156,7 +156,7 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const router = useRouter();
-    const store = useStore();
+    const generalStore = useGeneralStore();
 
     const email = ref("");
     const password = ref("");
@@ -194,12 +194,12 @@ export default defineComponent({
       router.push("/");
     };
     const onSignin = () => {
-      store.commit("setLoading", true);
+      generalStore.setLoading(true);
       errors.value = {};
       signInWithEmailAndPassword(auth, email.value, password.value)
         .then(() => {
           console.log("onSignin success");
-          store.commit("setLoading", false);
+          generalStore.setLoading(false);
         })
         .catch((error) => {
           console.log("onSignin failed", error.code, error.message);
@@ -212,7 +212,7 @@ export default defineComponent({
           } else {
             errors.value = { email: [errorCode] };
           }
-          store.commit("setLoading", false);
+          generalStore.setLoading(false);
         });
     };
     return {

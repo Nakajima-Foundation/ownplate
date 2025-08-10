@@ -41,7 +41,7 @@ import Restaurant from "@/app/super/Components/Restaurant.vue";
 
 import { useSuper, doc2data, defaultTitle } from "@/utils/utils";
 import { useRoute } from "vue-router";
-import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
 import { useHead } from "@unhead/vue";
 
 export default defineComponent({
@@ -53,7 +53,7 @@ export default defineComponent({
   setup() {
     useSuper();
     const route = useRoute();
-    const store = useStore();
+    const generalStore = useGeneralStore();
 
     const customClaims = ref<any>({});
     const restaurants = ref<any[]>([]);
@@ -98,7 +98,7 @@ export default defineComponent({
         return customClaims.value.operator;
       },
       set: async (value) => {
-        store.commit("setLoading", true);
+        generalStore.setLoading(true);
         try {
           const { data } = await superDispatch({
             cmd: "setCustomClaim",
@@ -110,7 +110,7 @@ export default defineComponent({
         } catch (error) {
           console.error(error);
         } finally {
-          store.commit("setLoading", false);
+          generalStore.setLoading(false);
         }
       },
     });

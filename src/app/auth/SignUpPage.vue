@@ -172,7 +172,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, watch, computed } from "vue";
-import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
 import isEmail from "validator/lib/isEmail";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { partners } from "@/config/constant";
@@ -192,7 +192,7 @@ export default defineComponent({
   setup() {
     const router = useRouter();
     const route = useRoute();
-    const store = useStore();
+    const generalStore = useGeneralStore();
     const isLocaleJapan = useIsLocaleJapan();
     const { user } = useUserData();
 
@@ -262,7 +262,7 @@ export default defineComponent({
       if (hasError.value) {
         return;
       }
-      store.commit("setLoading", true);
+      generalStore.setLoading(true);
       try {
         const result = await createUserWithEmailAndPassword(
           auth,
@@ -291,7 +291,7 @@ export default defineComponent({
         } catch (e) {
           console.log(e);
         }
-        store.commit("setLoading", false);
+        generalStore.setLoading(false);
         if (user) {
           console.log("signup calling push");
           router.push("/admin/restaurants");
@@ -300,7 +300,7 @@ export default defineComponent({
           deferredPush.value = true;
         }
       } catch (error: any) {
-        store.commit("setLoading", false);
+        generalStore.setLoading(false);
 
         console.warn("onSignup failed", error.code, error.message);
         if (error.code === "auth/email-already-in-use") {

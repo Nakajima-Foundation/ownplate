@@ -182,6 +182,7 @@ import BackButton from "@/components/BackButton.vue";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
 import { useRouter } from "vue-router";
 import { useHead } from "@unhead/vue";
 import moment from "moment";
@@ -192,6 +193,7 @@ export default defineComponent({
   },
   setup() {
     const store = useStore();
+    const generalStore = useGeneralStore();
     const router = useRouter();
 
     const restaurantObj = ref<{ [key: string]: RestaurantInfoData }>({});
@@ -252,9 +254,9 @@ export default defineComponent({
       store.commit("setAlert", {
         code: "admin.subAccounts.confirmDeletechild",
         callback: async () => {
-          store.commit("setLoading", true);
+          generalStore.setLoading(true);
           await subAccountDeleteChild({ childUid: childId });
-          store.commit("setLoading", false);
+          generalStore.setLoading(false);
         },
       });
     };
