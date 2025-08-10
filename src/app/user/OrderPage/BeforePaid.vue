@@ -259,7 +259,6 @@
                 <t-button
                   class="h-16 px-6"
                   style="min-width: 288px"
-                  :isLoading="isPaying"
                   :isDisabled="disabledButton || stripeSmallPayment"
                   @click="handlePayment(true)"
                 >
@@ -294,7 +293,6 @@
 
               <div class="mt-4">
                 <t-button
-                  :isLoading="isPlacing"
                   :isDisabled="disabledButton"
                   :class="disabledButton ? 'bg-op-teal-disabled' : 'bg-op-teal'"
                   @click="handlePayment(false)"
@@ -388,6 +386,7 @@ import * as analyticsUtil from "@/lib/firebase/analytics";
 import { useHasSoldOutToday } from "./Stock";
 
 import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
 import { useRoute } from "vue-router";
 
 export default defineComponent({
@@ -444,12 +443,11 @@ export default defineComponent({
   setup(props, ctx) {
     const route = useRoute();
     const store = useStore();
+    const generalStore = useGeneralStore();
 
     const restaurantId = route.params.restaurantId as string;
 
     const notAvailable = ref(false);
-    const isPaying = ref(false);
-    const isPlacing = ref(false);
 
     const cardState = ref({});
     const memo = ref("");
@@ -622,12 +620,7 @@ export default defineComponent({
         ? Timestamp.now()
         : timeToPickupRef.value.timeToPickup();
       try {
-        if (payStripe) {
-          isPaying.value = true;
-          // await stripeRef.value.createToken();
-        } else {
-          isPlacing.value = true;
-        }
+        generalStore.setLoading(true);
         const promotionId =
           isEnablePaymentPromotion(payStripe) && enablePromotion.value
             ? selectedPromotion.value?.promotionId
@@ -665,8 +658,7 @@ export default defineComponent({
           error,
         });
       } finally {
-        isPlacing.value = false;
-        isPaying.value = false;
+        generalStore.setLoading(false);
       }
     };
     const openTransactionsAct = () => {
@@ -678,16 +670,12 @@ export default defineComponent({
         notAvailable.value ||
         notSubmitAddress.value ||
         userMessageError.value ||
-        userNameError.value ||
-        isPaying.value ||
-        isPlacing.value
+        userNameError.value
       );
     });
 
     return {
       // ref
-      isPaying,
-      isPlacing,
       cardState,
       memo,
       userName,
