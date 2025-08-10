@@ -93,16 +93,6 @@
                 </span>
               </div>
             </div>
-            <div v-if="orderInfo.isPickup">
-              <div
-                class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-green-600/10 px-4 py-1 font-bold text-green-600"
-              >
-                <i class="material-icons"> local_mall </i>
-                <span class="mt-1 ml-1 text-sm">
-                  {{ $t("admin.order.pickupOrder") }}</span
-                >
-              </div>
-            </div>
 
             <!-- Notice Delivery -->
             <div v-if="orderInfo.isDelivery" class="mt-2 text-center">
