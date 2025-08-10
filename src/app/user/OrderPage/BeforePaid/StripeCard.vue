@@ -13,6 +13,11 @@
       </Checkbox>
     </div>
 
+    <div v-show="useStoredCard">
+      <div v-if="isPayingError" class="mt-2 text-center font-bold text-red-600">
+        {{ $t("order.card_error") }}
+      </div>
+    </div>
     <div v-show="!useStoredCard">
       <!-- Enter New Card -->
       <div class="mt-2 rounded-lg bg-white p-4 shadow-sm">
@@ -114,7 +119,6 @@ import moment from "moment";
 import Checkbox from "@/components/form/checkbox.vue";
 
 // import { useUserData } from "@/utils/utils";
-// import { useStore } from "vuex";
 
 export default defineComponent({
   components: {
