@@ -1104,13 +1104,6 @@ export default defineComponent({
         },
       });
     };
-    const autoCancelTime = computed(() => {
-      const diffSecond = orderInfo.value?.isPickup ? 10 * 60 : 3600 * 24;
-      return new Date(
-        (orderInfo.value?.orderPlacedAt.seconds + diffSecond) * 1000,
-      );
-      // return orderInfo.value?.orderPlacedAt?.toDate();
-    });
     const classOf = (statusKey: string) => {
       if (order_status[statusKey] === orderInfo.value.status) {
         return statusKey;
@@ -1165,7 +1158,6 @@ export default defineComponent({
       timeEstimated,
       hasStripe,
       paymentIsNotCompleted,
-      autoCancelTime,
 
       nationalPhoneNumber,
       nationalPhoneURI,
