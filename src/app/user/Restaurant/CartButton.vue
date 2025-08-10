@@ -6,15 +6,12 @@
       class="mb-8 ml-[-9rem] inline-flex w-72 w-[18rem] items-center justify-center rounded-full shadow-lg sm:bottom-8"
       :class="[
         shopInfo.enableDelivery ? 'pt-2 pb-2' : 'h-20',
-        isCheckingOut || noPaymentMethod || noAvailableTime || cantDelivery
+        noPaymentMethod || noAvailableTime || cantDelivery
           ? 'bg-op-teal-disabled'
           : 'bg-op-teal',
       ]"
-      :disabled="
-        isCheckingOut || noPaymentMethod || noAvailableTime || cantDelivery
-      "
+      :disabled="noPaymentMethod || noAvailableTime || cantDelivery"
     >
-      <ButtonLoading v-if="isCheckingOut" />
       <template v-if="noPaymentMethod">
         <div class="text-base font-bold text-white" v-if="shopInfo.publicFlag">
           {{ $t("shopInfo.noPaymentMethod") }}
@@ -167,12 +164,10 @@ import { defineComponent, computed, ref, watch } from "vue";
 import { arraySum } from "@/utils/utils";
 
 import Price from "@/components/Price.vue";
-import ButtonLoading from "@/components/form/Loading.vue";
 
 export default defineComponent({
   components: {
     Price,
-    ButtonLoading,
   },
   props: {
     shopInfo: {
@@ -189,10 +184,6 @@ export default defineComponent({
     },
     deliveryData: {
       type: Object,
-      required: true,
-    },
-    isCheckingOut: {
-      type: Boolean,
       required: true,
     },
     noAvailableTime: {

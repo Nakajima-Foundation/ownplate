@@ -206,8 +206,6 @@
         :lunchOrDinner="lunchOrDinner"
       />
 
-      <!-- for disable all UI -->
-      <div v-if="isCheckingOut" class="fixed top-0 left-0 h-full w-full"></div>
       <!-- Cart Button -->
       <CartButton
         ref="cartButton"
@@ -216,7 +214,6 @@
         :orders="orders"
         :paymentInfo="paymentInfo"
         :deliveryData="deliveryData"
-        :isCheckingOut="isCheckingOut"
         :isDelivery="isDelivery"
         :noAvailableTime="noAvailableTime"
         :totalPrice="totalPrice"
@@ -336,6 +333,8 @@ import { imageUtils } from "@/utils/RestaurantUtils";
 import { useTitles, useMenu } from "./Restaurant/Utils";
 
 import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
+
 import { useRoute, useRouter } from "vue-router";
 
 import {
@@ -392,13 +391,13 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore();
+    const generalStore = useGeneralStore();
     const route = useRoute();
     const router = useRouter();
 
     const retryCount = ref(0);
 
     const loginVisible = ref(false);
-    const isCheckingOut = ref(false);
     const waitForUser = ref(false);
     const noAvailableTime = ref(false);
 
@@ -659,7 +658,7 @@ export default defineComponent({
         timeCreated: serverTimestamp(),
         // price never set here.
       };
-      isCheckingOut.value = true;
+      generalStore.setLoading(true);
       try {
         const res = await addDoc(
           collection(db, `restaurants/${restaurantId.value}/orders`),
@@ -727,7 +726,7 @@ export default defineComponent({
           });
         }
       } finally {
-        isCheckingOut.value = false;
+        generalStore.setLoading(false);
       }
     };
     const handleCheckOut = () => {
@@ -879,7 +878,6 @@ export default defineComponent({
       handleDismissed,
 
       loginVisible,
-      isCheckingOut,
       noAvailableTime,
 
       // imageUtils
