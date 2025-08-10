@@ -60,7 +60,6 @@
         <t-button
           id="button-send-tel"
           :isDisabled="!readyToSendSMS"
-          :isLoading="isLoading"
           class="h-12 w-32 font-bold text-white shadow-sm"
         >
           {{ $t("sms.send") }}
@@ -133,7 +132,6 @@
         <t-button
           id="button-send-code"
           :isDisabled="!readyToSendVerificationCode"
-          :isLoading="isLoading"
           class="h-12 w-32 font-bold text-white shadow-sm"
         >
           {{ $t("sms.sendVerificationCode") }}
@@ -168,6 +166,7 @@ import moment from "moment";
 import * as Sentry from "@sentry/vue";
 
 import TermsAndPolicy from "@/app/auth/TermsAndPolicy.vue";
+import { useGeneralStore } from "@/store";
 
 export default defineComponent({
   components: {
@@ -182,7 +181,7 @@ export default defineComponent({
   setup(props, ctx) {
     const countries = stripeRegion.countries;
 
-    const isLoading = ref(false);
+    const generalStore = useGeneralStore();
     const countryCode = countries[0].code || "+1";
     const phoneNumber = ref("");
     const errors = ref<string[]>([]);
@@ -239,7 +238,7 @@ export default defineComponent({
     const handleSubmit = async () => {
       console.log("submit");
       try {
-        isLoading.value = true;
+        generalStore.setLoading(true);
         confirmationResult.value = await signInWithPhoneNumber(
           auth,
           SMSPhoneNumber.value,
@@ -259,14 +258,14 @@ export default defineComponent({
         Sentry.captureException(error);
         errors.value = ["sms." + error.code];
       } finally {
-        isLoading.value = false;
+        generalStore.setLoading(false);
       }
     };
     const handleCode = async () => {
       console.log("handleCode");
       errors.value = [];
       try {
-        isLoading.value = true;
+        generalStore.setLoading(true);
         const result = await (
           confirmationResult.value as ConfirmationResult
         ).confirm(verificationCode.value);
@@ -304,12 +303,11 @@ export default defineComponent({
         }
         errors.value = ["sms." + error.code];
       } finally {
-        isLoading.value = false;
+        generalStore.setLoading(false);
       }
     };
     return {
       countries,
-      isLoading,
 
       countryCode,
       phoneNumber,
