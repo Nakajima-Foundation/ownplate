@@ -194,7 +194,6 @@ export default defineComponent({
         location.reload();
       }
       generalStore.updateDate();
-      store.commit("updateDate"); // TODO remove
     }, 60 * 1000);
 
     watch(
