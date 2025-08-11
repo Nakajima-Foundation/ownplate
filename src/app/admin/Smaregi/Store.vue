@@ -55,7 +55,7 @@
         <button
           @click="saveMenus"
           :disabled="isDuplicateError"
-          class="cursor-pointer"
+          class="bg-op-teal inline-flex h-12 min-w-32 cursor-pointer items-center justify-center rounded-full px-6 shadow-sm"
         >
           保存
         </button>
@@ -77,7 +77,12 @@
               {{ menuObj[selectedMenu[key]].price }}円</span
             >
           </div>
-          <button @click="isEdit = true">編集</button>
+          <button
+            class="bg-op-teal inline-flex h-12 min-w-32 cursor-pointer items-center justify-center rounded-full px-6 shadow-sm"
+            @click="isEdit = true"
+          >
+            編集
+          </button>
         </div>
       </div>
     </div>

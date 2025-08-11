@@ -32,7 +32,6 @@
               @increase="increase(itemId, key)"
               @decrease="decrease(itemId, key)"
             />
-            <hr />
           </div>
         </template>
       </div>

@@ -41,7 +41,10 @@
               !restaurantsObj[request.id].onTheList
             "
           >
-            <button @click="enableList(restaurantsObj[request.id].id)">
+            <button
+              @click="enableList(restaurantsObj[request.id].id)"
+              class="cursor-pointe cursor-pointer rounded border-2 border-black/40 bg-gray-200 p-1 hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-25"
+            >
               Enable
             </button>
           </span>

@@ -9,7 +9,12 @@
         }}/{{ stripeActionStrings[log.action] }}
       </router-link>
     </div>
-    <button @click="nextLoad">next</button>
+    <button
+      @click="nextLoad"
+      class="cursor-pointe cursor-pointer rounded border-2 border-black/40 bg-gray-200 p-1 hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-25"
+    >
+      next
+    </button>
   </section>
 </template>
 
