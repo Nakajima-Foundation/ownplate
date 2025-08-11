@@ -22,7 +22,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useStore } from "vuex";
+import { useDialogStore } from "@/store/dialog";
 
 export default defineComponent({
   name: "TextForm",
@@ -64,12 +64,12 @@ export default defineComponent({
   },
   emits: ["update:modelValue"],
   setup(_, context) {
-    const store = useStore();
+    const dialogStore = useDialogStore();
     const input = (value: string) => {
       context.emit("update:modelValue", value);
     };
     const open = (key: string) => {
-      store.commit("setTips", {
+      dialogStore.setTips({
         key,
       });
     };

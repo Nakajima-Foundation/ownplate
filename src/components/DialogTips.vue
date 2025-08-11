@@ -36,18 +36,18 @@
 
 <script lang="ts">
 import { defineComponent, computed } from "vue";
-import { useStore } from "vuex";
+import { useDialogStore } from "@/store/dialog";
 
 export default defineComponent({
   setup() {
-    const store = useStore();
+    const dialogStore = useDialogStore();
     const dialog = computed(() => {
-      return store.state.dialog;
+      return dialogStore.dialog;
     });
     return {
       dialog,
       close: () => {
-        store.commit("resetDialog");
+        dialogStore.resetDialog();
       },
     };
   },

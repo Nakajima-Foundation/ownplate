@@ -1134,6 +1134,7 @@ import {
 } from "@/config/constant";
 
 import { useStore } from "vuex";
+import { useDialogStore } from "@/store/dialog";
 import { useRouter } from "vue-router";
 import { useHead } from "@unhead/vue";
 import moment from "moment";
@@ -1164,6 +1165,7 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore();
+    const dialogStore = useDialogStore();
     const router = useRouter();
 
     const restaurantId = useRestaurantId();
@@ -1487,7 +1489,7 @@ export default defineComponent({
     });
 
     const openTips = (key: string) => {
-      store.commit("setTips", {
+      dialogStore.setTips({
         key,
       });
     };
