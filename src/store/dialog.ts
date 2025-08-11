@@ -43,5 +43,4 @@ export const useDialogStore = defineStore("dialogStore", () => {
     setErrorMessage,
     setTips,
   };
-  
 });

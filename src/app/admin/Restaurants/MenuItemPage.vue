@@ -749,6 +749,7 @@ import { getNewItemData, MenuData } from "@/models/menu";
 import { checkShopOwner } from "@/utils/userPermission";
 
 import { useStore } from "vuex";
+import { useDialogStore } from "@/store/dialog";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useHead } from "@unhead/vue";
@@ -775,6 +776,7 @@ export default defineComponent({
 
   setup(props) {
     const store = useStore();
+    const dialogStore = useDialogStore();
     const route = useRoute();
     const router = useRouter();
     const { t, n } = useI18n({ useScope: "global" });
@@ -1043,7 +1045,7 @@ export default defineComponent({
     };
 
     const openTips = (key: string) => {
-      store.commit("setTips", {
+      dialogStore.setTips({
         key,
       });
     };

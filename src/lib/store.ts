@@ -26,13 +26,9 @@ interface DialogErrorData {
   message2: string;
   code: string;
 }
-interface DialogTipsData {
-  key: string;
-}
 interface Dialog {
   alert?: DialogAlertData;
   error?: DialogErrorData;
-  tips?: DialogTipsData;
 }
 
 type Cart = {
@@ -141,9 +137,6 @@ export const mutations = {
   },
   setErrorMessage(_state: State, params: DialogErrorData) {
     _state.dialog = { error: params };
-  },
-  setTips(_state: State, params: DialogTipsData) {
-    _state.dialog = { tips: params };
   },
 };
 
