@@ -8,25 +8,14 @@ interface Claims {
   liffId: string;
 }
 
-interface DialogAlertData {
-  title: string;
-  code: string;
-  callback: () => void;
-}
-interface Dialog {
-  alert?: DialogAlertData;
-}
-
 interface State {
   user: undefined | boolean | User;
 
   claims: undefined | Claims;
-  dialog: null | Dialog;
 }
 export const state = () => ({
   user: undefined, // undefined:not authorized, null:no user
   claims: undefined, // custom claims
-  dialog: null, // for DialogBox
 });
 
 export const getters = {
@@ -92,12 +81,6 @@ export const mutations = {
   setCustomClaims(_state: State, claims: Claims) {
     // Note: we can't copy user using Object.assign here
     _state.claims = claims;
-  },
-  resetDialog(_state: State) {
-    _state.dialog = null;
-  },
-  setAlert(_state: State, params: DialogAlertData) {
-    _state.dialog = { alert: params };
   },
 };
 

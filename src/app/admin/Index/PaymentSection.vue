@@ -233,7 +233,7 @@ export default defineComponent({
       location.href = `https://connect.stripe.com/oauth/authorize?${queryString}`;
     };
     const handlePaymentAccountDisconnect = () => {
-      store.commit("setAlert", {
+      dialogStore.setAlert({
         code: "admin.payments.reallyDisconnectStripe",
         callback: async () => {
           try {

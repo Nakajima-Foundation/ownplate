@@ -41,7 +41,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { useStore } from "vuex";
+import { useDialogStore } from "@/store/dialog";
 
 export default defineComponent({
   props: {
@@ -60,7 +60,7 @@ export default defineComponent({
   },
   emits: ["update:modelValue"],
   setup(props, ctx) {
-    const store = useStore();
+    const dialogStore = useDialogStore();
     const popup = ref(false);
 
     const input = (value: string) => {
@@ -68,7 +68,7 @@ export default defineComponent({
         (value === "dinner" && props.hasLunchOnlyOrder) ||
         (value === "lunch" && props.hasDinnerOnlyOrder)
       ) {
-        store.commit("setAlert", {
+        dialogStore.setAlert({
           title: "lunchOrDinner.alert." + value + ".title",
           code: "lunchOrDinner.alert." + value + ".body",
           callback: () => {

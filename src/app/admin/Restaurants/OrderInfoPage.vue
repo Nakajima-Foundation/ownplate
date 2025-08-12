@@ -1072,7 +1072,7 @@ export default defineComponent({
       }
     };
     const handleOrderChange = () => {
-      store.commit("setAlert", {
+      dialogStore.setAlert({
         title: "admin.order.confirmOrderChange",
         code: "admin.order.updateOrderMessage",
         callback: async () => {

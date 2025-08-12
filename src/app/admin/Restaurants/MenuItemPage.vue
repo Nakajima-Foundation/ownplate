@@ -952,7 +952,7 @@ export default defineComponent({
           (r) => r.id === copyRestaurantId.value,
         );
         if (shop) {
-          store.commit("setAlert", {
+          dialogStore.setAlert({
             title: shop.restaurantName,
             code: "editCommon.copyMenuAlert",
             callback: async () => {

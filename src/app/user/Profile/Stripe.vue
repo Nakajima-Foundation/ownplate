@@ -35,14 +35,14 @@ import { doc, onSnapshot, Unsubscribe } from "firebase/firestore";
 import { stripeDeleteCard } from "@/lib/firebase/functions";
 import { useUserData } from "@/utils/utils";
 
-import { useStore } from "vuex";
 import { useGeneralStore } from "@/store";
+import { useDialogStore } from "@/store/dialog";
 import moment from "moment";
 
 export default defineComponent({
   setup() {
-    const store = useStore();
     const generalStore = useGeneralStore();
+    const dialogStore = useDialogStore();
     const { isLiffUser, user } = useUserData();
 
     const storedCard = ref<{ brand: string; last4: string } | null>(null);
@@ -85,7 +85,7 @@ export default defineComponent({
     };
 
     const handleDeleteCard = () => {
-      store.commit("setAlert", {
+      dialogStore.setAlert({
         code: "profile.reallyDeleteCard",
         callback: async () => {
           console.log("handleDeleteCard");
