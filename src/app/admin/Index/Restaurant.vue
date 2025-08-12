@@ -405,6 +405,7 @@ import {
 } from "firebase/firestore";
 
 import { useStore } from "vuex";
+import { useDialogStore } from "@/store/dialog";
 
 import { resizedProfileImage, isDev } from "@/utils/utils";
 
@@ -447,6 +448,7 @@ export default defineComponent({
   emits: ["positionUp", "positionDown", "deleteFromRestaurantLists"],
   setup(props, ctx) {
     const store = useStore();
+    const dialogStore = useDialogStore();
 
     const requestState = ref(0);
     let detacher: null | Unsubscribe = null;
@@ -470,7 +472,7 @@ export default defineComponent({
     });
 
     const deleteRestaurant = () => {
-      store.commit("setAlert", {
+      dialogStore.setAlert({
         title: props.shopInfo.restaurantName,
         code: "editRestaurant.reallyDelete",
         callback: () => {
@@ -483,7 +485,7 @@ export default defineComponent({
       });
     };
     const deleteFromList = () => {
-      store.commit("setAlert", {
+      dialogStore.setAlert({
         code: "editRestaurant.reallyOnListDelete",
         callback: () => {
           updateDoc(doc(db, `restaurants/${props.restaurantid}`), {

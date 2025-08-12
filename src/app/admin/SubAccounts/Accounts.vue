@@ -181,8 +181,8 @@ import { doc2data, array2obj, useAdminUids, defaultTitle } from "@/utils/utils";
 import BackButton from "@/components/BackButton.vue";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
-import { useStore } from "vuex";
 import { useGeneralStore } from "@/store";
+import { useDialogStore } from "@/store/dialog";
 import { useRouter } from "vue-router";
 import { useHead } from "@unhead/vue";
 import moment from "moment";
@@ -192,8 +192,8 @@ export default defineComponent({
     BackButton,
   },
   setup() {
-    const store = useStore();
     const generalStore = useGeneralStore();
+    const dialogStore = useDialogStore();
     const router = useRouter();
 
     const restaurantObj = ref<{ [key: string]: RestaurantInfoData }>({});
@@ -251,7 +251,7 @@ export default defineComponent({
     });
 
     const deleteChild = (childId: string) => {
-      store.commit("setAlert", {
+      dialogStore.setAlert({
         code: "admin.subAccounts.confirmDeletechild",
         callback: async () => {
           generalStore.setLoading(true);

@@ -1133,7 +1133,6 @@ import {
   GOOGLE_MAP_DEFAULT_CENTER,
 } from "@/config/constant";
 
-import { useStore } from "vuex";
 import { useDialogStore } from "@/store/dialog";
 import { useRouter } from "vue-router";
 import { useHead } from "@unhead/vue";
@@ -1164,7 +1163,6 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const store = useStore();
     const dialogStore = useDialogStore();
     const router = useRouter();
 
@@ -1413,7 +1411,7 @@ export default defineComponent({
       }
     };
     const confirmCopy = () => {
-      store.commit("setAlert", {
+      dialogStore.setAlert({
         code: "editCommon.copyAlert",
         callback: () => {
           copyRestaurantFunc();

@@ -109,7 +109,7 @@ import {
 import NotFound from "@/components/NotFound.vue";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 
-import { useStore } from "vuex";
+import { useDialogStore } from "@/store/dialog";
 import { useRouter, useRoute } from "vue-router";
 import { useHead } from "@unhead/vue";
 interface LineUserData {
@@ -129,7 +129,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const store = useStore();
+    const dialogStore = useDialogStore();
     const router = useRouter();
     const route = useRoute();
 
@@ -199,7 +199,7 @@ export default defineComponent({
       location.href = url;
     };
     const handleDelete = (_lineId: string) => {
-      store.commit("setAlert", {
+      dialogStore.setAlert({
         code: "admin.order.lineDelete",
         callback: async () => {
           console.log("handleDelete", _lineId);

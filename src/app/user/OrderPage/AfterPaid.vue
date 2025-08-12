@@ -231,7 +231,6 @@ import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { useRoute } from "vue-router";
-import { useStore } from "vuex";
 import { useGeneralStore } from "@/store";
 import { useDialogStore } from "@/store/dialog";
 import { useI18n } from "vue-i18n";
@@ -289,7 +288,6 @@ export default defineComponent({
   },
   setup(props) {
     const route = useRoute();
-    const store = useStore();
     const generalStore = useGeneralStore();
     const dialogStore = useDialogStore();
     const { d } = useI18n({ useScope: "global" });
@@ -346,7 +344,7 @@ export default defineComponent({
       analyticsUtil.sendRedunded(props.orderInfo, orderId, props.shopInfo);
     };
     const handleCancelPayment = () => {
-      store.commit("setAlert", {
+      dialogStore.setAlert({
         code: "order.cancelOrderConfirm",
         callback: async () => {
           try {

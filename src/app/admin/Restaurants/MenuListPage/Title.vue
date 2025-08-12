@@ -92,7 +92,7 @@
 import { defineComponent } from "vue";
 import { useAdminUids } from "@/utils/utils";
 
-import { useStore } from "vuex";
+import { useDialogStore } from "@/store/dialog";
 import TitleInput from "@/app/admin/Restaurants/MenuListPage/TitleInput.vue";
 import Checkbox from "@/components/form/checkbox.vue";
 
@@ -125,7 +125,7 @@ export default defineComponent({
     "updateTitleLunchDinner",
   ],
   setup(props, ctx) {
-    const store = useStore();
+    const dialogStore = useDialogStore();
 
     const { isOwner } = useAdminUids();
     const toEdit = () => {
@@ -142,7 +142,7 @@ export default defineComponent({
       ctx.emit("forkItem", props.title.id);
     };
     const deleteItem = () => {
-      store.commit("setAlert", {
+      dialogStore.setAlert({
         code: "editMenu.reallyDelete",
         callback: () => {
           ctx.emit("deleteItem", props.title.id);

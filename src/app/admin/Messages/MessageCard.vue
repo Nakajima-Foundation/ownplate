@@ -38,8 +38,8 @@ import {
   subAccountInvitationDeny,
 } from "@/lib/firebase/functions";
 
-import { useStore } from "vuex";
 import { useGeneralStore } from "@/store";
+import { useDialogStore } from "@/store/dialog";
 import { useRouter, useRoute } from "vue-router";
 
 import moment from "moment-timezone";
@@ -54,13 +54,13 @@ export default defineComponent({
   },
 
   setup(props) {
-    const store = useStore();
     const generalStore = useGeneralStore();
+    const dialogStore = useDialogStore();
     const router = useRouter();
     const route = useRoute();
 
     const childInvitationAccept = () => {
-      store.commit("setAlert", {
+      dialogStore.setAlert({
         title: "admin.messages.childInvitationAccept",
         code: "admin.messages.childInvitationAcceptMessage",
         callback: async () => {
@@ -76,7 +76,7 @@ export default defineComponent({
     };
     const childInvitationDeny = () => {
       console.log("deny");
-      store.commit("setAlert", {
+      dialogStore.setAlert({
         code: "admin.messages.childInvitationDeny",
         callback: async () => {
           generalStore.setLoading(true);

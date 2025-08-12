@@ -38,7 +38,7 @@ import { getAuth, deleteUser } from "firebase/auth";
 import { accountDelete } from "@/lib/firebase/functions";
 import { useUserData } from "@/utils/utils";
 
-import { useStore } from "vuex";
+import { useDialogStore } from "@/store/dialog";
 
 export default defineComponent({
   components: {
@@ -46,14 +46,14 @@ export default defineComponent({
     Loading,
   },
   setup() {
-    const store = useStore();
+    const dialogStore = useDialogStore();
     const { user } = useUserData();
 
     const isDeletingAccount = ref(false);
     const reLoginVisible = ref(false);
 
     const handleDeleteAccount = () => {
-      store.commit("setAlert", {
+      dialogStore.setAlert({
         code: "profile.reallyDeleteAccount",
         callback: () => {
           window.scrollTo(0, 0);

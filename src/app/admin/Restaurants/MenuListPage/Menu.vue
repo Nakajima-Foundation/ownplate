@@ -149,8 +149,8 @@ import {
   useRestaurantId,
 } from "@/utils/utils";
 
-import { useStore } from "vuex";
 import { useGeneralStore } from "@/store";
+import { useDialogStore } from "@/store/dialog";
 
 import { useRouter } from "vue-router";
 import moment from "moment-timezone";
@@ -176,9 +176,9 @@ export default defineComponent({
   },
   emits: ["toEditMode", "positionUp", "positionDown", "forkItem", "deleteItem"],
   setup(props, ctx) {
-    const store = useStore();
     const router = useRouter();
     const generalStore = useGeneralStore();
+    const dialogStore = useDialogStore();
 
     const restaurantId = useRestaurantId();
 
@@ -225,7 +225,7 @@ export default defineComponent({
       ctx.emit("forkItem", props.menuitem.id);
     };
     const deleteItem = () => {
-      store.commit("setAlert", {
+      dialogStore.setAlert({
         code: "editMenu.reallyDelete",
         callback: () => {
           ctx.emit("deleteItem", props.menuitem.id);
