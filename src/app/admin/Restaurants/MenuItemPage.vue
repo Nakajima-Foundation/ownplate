@@ -1021,10 +1021,10 @@ export default defineComponent({
         });
       } catch (error) {
         submitting.value = false;
-        store.commit("setErrorMessage", {
+        dialogStore.setErrorMessage({
           code: "menu.save",
           error,
-        });
+        } as any);
         console.log(error);
       }
     };

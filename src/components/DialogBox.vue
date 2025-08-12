@@ -65,16 +65,15 @@
 import { defineComponent, computed } from "vue";
 import * as Sentry from "@sentry/vue";
 
-import { useStore } from "vuex";
+import { useDialogStore } from "@/store/dialog";
 import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   setup() {
     const { t } = useI18n({ useScope: "global" });
-    const store = useStore();
-
+    const dialogStore = useDialogStore();
     const dialog = computed(() => {
-      return store.state.dialog;
+      return dialogStore.dialog;
     });
 
     const alert = computed(() => {
@@ -99,7 +98,7 @@ export default defineComponent({
       return error.value.message2 || "errorPage.message.generic";
     });
     const close = () => {
-      store.commit("resetDialog");
+      dialogStore.resetDialog();
     };
     const handleYes = () => {
       console.log("handleYes");

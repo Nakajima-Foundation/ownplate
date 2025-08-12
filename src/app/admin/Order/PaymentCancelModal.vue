@@ -67,8 +67,8 @@ import { defineComponent, ref } from "vue";
 import { stripePaymentCancelIntent } from "@/lib/firebase/functions";
 
 import { useGeneralStore } from "@/store";
-import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import { useDialogStore } from "@/store/dialog";
 
 export default defineComponent({
   props: {
@@ -100,8 +100,8 @@ export default defineComponent({
   emits: ["close"],
   setup(props, ctx) {
     const router = useRouter();
-    const store = useStore();
     const generalStore = useGeneralStore();
+    const dialogStore = useDialogStore();
 
     const updating = ref(false);
     const handlePaymentCancel = async () => {
@@ -118,10 +118,10 @@ export default defineComponent({
         router.push(props.parentUrl);
       } catch (error: any) {
         console.error(error.message, error.details);
-        store.commit("setErrorMessage", {
+        dialogStore.setErrorMessage({
           code: "stripe.cancel",
           error,
-        });
+        } as any);
       } finally {
         updating.value = false;
         generalStore.setLoading(false);

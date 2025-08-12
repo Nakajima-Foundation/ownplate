@@ -73,8 +73,8 @@ import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import ButtonLoading from "@/components/form/Loading.vue";
 
-import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import { useDialogStore } from "@/store/dialog";
 
 export default defineComponent({
   props: {
@@ -110,7 +110,7 @@ export default defineComponent({
   emits: ["close"],
   setup(props, ctx) {
     const router = useRouter();
-    const store = useStore();
+    const dialogStore = useDialogStore();
 
     const updating = ref(false);
 
@@ -133,10 +133,10 @@ export default defineComponent({
         router.push(props.parentUrl);
       } catch (error: any) {
         console.error(error.message, error.details);
-        store.commit("setErrorMessage", {
+        dialogStore.setErrorMessage({
           code: "order.cancel",
           error,
-        });
+        } as any);
       } finally {
         updating.value = false;
       }

@@ -1406,10 +1406,10 @@ export default defineComponent({
           location.reload();
         }, 200);
       } catch (error) {
-        store.commit("setErrorMessage", {
+        dialogStore.setErrorMessage({
           code: "restaurant.save",
           error,
-        });
+        } as any);
       }
     };
     const confirmCopy = () => {
@@ -1456,10 +1456,10 @@ export default defineComponent({
         router.push(`/admin/restaurants/#restaurant_` + restaurantId.value);
       } catch (error) {
         submitting.value = false;
-        store.commit("setErrorMessage", {
+        dialogStore.setErrorMessage({
           code: "restaurant.save",
           error,
-        });
+        } as any);
       }
     };
     const updateMap = async () => {

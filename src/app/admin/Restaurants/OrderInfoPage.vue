@@ -577,6 +577,7 @@ import {
 import { useStore } from "vuex";
 import { useGeneralStore } from "@/store";
 import { useRoute, useRouter } from "vue-router";
+import { useDialogStore } from "@/store/dialog";
 
 import { useI18n } from "vue-i18n";
 import { useHead } from "@unhead/vue";
@@ -610,6 +611,7 @@ export default defineComponent({
   setup(props) {
     const store = useStore();
     const generalStore = useGeneralStore();
+    const dialogStore = useDialogStore();
     const route = useRoute();
     const router = useRouter();
     const { d } = useI18n({ useScope: "global" });
@@ -1048,22 +1050,22 @@ export default defineComponent({
           router.push(parentUrl.value);
         } else {
           if (data.type === "StripeCardError") {
-            store.commit("setErrorMessage", {
+            dialogStore.setErrorMessage({
               code: "order.updateCard",
               message2: "errorPage.message.cardError",
-            });
+            } as any);
           } else {
-            store.commit("setErrorMessage", {
+            dialogStore.setErrorMessage({
               code: "order.update",
-            });
+            } as any);
           }
         }
       } catch (error: any) {
         console.error(error.message, error.details);
-        store.commit("setErrorMessage", {
+        dialogStore.setErrorMessage({
           code: "order.update",
           error,
-        });
+        } as any);
       } finally {
         generalStore.setLoading(false);
         updating.value = "";
@@ -1089,10 +1091,10 @@ export default defineComponent({
             // console.log("update", data);
           } catch (error: any) {
             console.error(error.message, error.details);
-            store.commit("setErrorMessage", {
+            dialogStore.setErrorMessage({
               code: "order.update",
               error,
-            });
+            } as any);
           } finally {
             generalStore.setLoading(false);
             changing.value = false;

@@ -113,6 +113,7 @@ import {
 import { useStore } from "vuex";
 import { useGeneralStore } from "@/store";
 import { useRoute, useRouter } from "vue-router";
+import { useDialogStore } from "@/store/dialog";
 
 import { db } from "@/lib/firebase/firebase9";
 import { doc, onSnapshot, Unsubscribe, setDoc } from "firebase/firestore";
@@ -135,6 +136,7 @@ export default defineComponent({
     const generalStore = useGeneralStore();
     const route = useRoute();
     const router = useRouter();
+    const dialogStore = useDialogStore();
 
     const paymentInfo = ref<PaymentInfo>({}); // { stripe, inStore, ... }
     let stripe_connnect_detacher: Unsubscribe | null = null;
@@ -153,10 +155,10 @@ export default defineComponent({
             console.log(data);
           } catch (error: any) {
             console.error(error);
-            store.commit("setErrorMessage", {
+            dialogStore.setErrorMessage({
               code: "stripe.connect",
               error,
-            });
+            } as any);
           } finally {
             generalStore.setLoading(false);
             router.replace(location.pathname);
@@ -240,10 +242,10 @@ export default defineComponent({
             // TODO: show connected view
           } catch (error: any) {
             console.error(error, error.details);
-            store.commit("setErrorMessage", {
+            dialogStore.setErrorMessage({
               code: "stripe.disconnect",
               error,
-            });
+            } as any);
           } finally {
             generalStore.setLoading(false);
           }

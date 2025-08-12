@@ -233,6 +233,7 @@ import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import { useGeneralStore } from "@/store";
+import { useDialogStore } from "@/store/dialog";
 import { useI18n } from "vue-i18n";
 
 export default defineComponent({
@@ -290,6 +291,7 @@ export default defineComponent({
     const route = useRoute();
     const store = useStore();
     const generalStore = useGeneralStore();
+    const dialogStore = useDialogStore();
     const { d } = useI18n({ useScope: "global" });
 
     const orderId = route.params.orderId as string;
@@ -359,10 +361,10 @@ export default defineComponent({
           } catch (error) {
             // BUGBUG: Implement the error handling code here
             // console.error(error.message, error.details);
-            store.commit("setErrorMessage", {
+            dialogStore.setErrorMessage({
               code: "order.cancel",
               error,
-            });
+            } as any);
           } finally {
             generalStore.setLoading(false);
             isCancelling.value = false;
