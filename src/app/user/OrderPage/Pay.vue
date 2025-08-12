@@ -121,6 +121,7 @@ import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import { useStore } from "vuex";
 import { useGeneralStore } from "@/store";
+import { useCartStore } from "@/store/cart";
 import { useRoute } from "vue-router";
 
 export default defineComponent({
@@ -163,6 +164,7 @@ export default defineComponent({
     const route = useRoute();
     const store = useStore();
     const generalStore = useGeneralStore();
+    const cartStore = useCartStore();
 
     const restaurantId = route.params.restaurantId as string;
 
@@ -233,7 +235,7 @@ export default defineComponent({
         });
 
         sendPurchase();
-        store.commit("resetCart", restaurantId);
+        cartStore.resetCart(restaurantId);
         window.scrollTo(0, 0);
       } catch (error: any) {
         console.error(error.message, error.details);

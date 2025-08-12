@@ -334,6 +334,7 @@ import { useTitles, useMenu } from "./Restaurant/Utils";
 
 import { useStore } from "vuex";
 import { useGeneralStore } from "@/store";
+import { useCartStore } from "@/store/cart";
 
 import { useRoute, useRouter } from "vue-router";
 
@@ -392,6 +393,7 @@ export default defineComponent({
   setup(props) {
     const store = useStore();
     const generalStore = useGeneralStore();
+    const cartStore = useCartStore();
     const route = useRoute();
     const router = useRouter();
 
@@ -422,8 +424,8 @@ export default defineComponent({
     const defaultHowToReceive = (() => {
       // for 333
       const rId = route.params.restaurantId as string;
-      if (store.state.carts[rId]) {
-        const cart = store.state.carts[rId] || {};
+      if (cartStore.carts[rId]) {
+        const cart = cartStore.carts[rId] || {};
         if (cart.howtoreceive) {
           return cart.howtoreceive;
         }
@@ -477,8 +479,9 @@ export default defineComponent({
     // avoid to reset cart when pickup or other not takeout
     onBeforeMount(() => {
       // Check if we came here as the result of "Edit Items"
-      if (store.state.carts[restaurantId.value]) {
-        const cart = store.state.carts[restaurantId.value] || {};
+      console.log(cartStore.carts[restaurantId.value]);
+      if (cartStore.carts[restaurantId.value]) {
+        const cart = cartStore.carts[restaurantId.value] || {};
         orders.value = cart.orders || {};
         cartItems.value = cart.cartItems || {};
         selectedOptions.value = cart.options || {};
@@ -667,7 +670,7 @@ export default defineComponent({
         // Store the current order associated with this order id, so that we can re-use it
         // when the user clicks the "Edit Items" on the next page.
         // In that case, we will come back here with #id so that we can retrieve it (see mounted).
-        store.commit("saveCart", {
+        cartStore.saveCart({
           id: restaurantId.value,
           cart: {
             orders: orders.value,
