@@ -1053,11 +1053,11 @@ export default defineComponent({
             dialogStore.setErrorMessage({
               code: "order.updateCard",
               message2: "errorPage.message.cardError",
-            } as any);
+            });
           } else {
             dialogStore.setErrorMessage({
               code: "order.update",
-            } as any);
+            });
           }
         }
       } catch (error: any) {

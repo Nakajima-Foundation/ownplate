@@ -728,7 +728,7 @@ export default defineComponent({
           dialogStore.setErrorMessage({
             code: "order.checkout",
             error,
-          } as any);
+          });
         }
       } finally {
         generalStore.setLoading(false);

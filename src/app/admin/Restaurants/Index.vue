@@ -1409,7 +1409,7 @@ export default defineComponent({
         dialogStore.setErrorMessage({
           code: "restaurant.save",
           error,
-        } as any);
+        });
       }
     };
     const confirmCopy = () => {

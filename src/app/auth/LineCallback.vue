@@ -84,7 +84,7 @@ export default defineComponent({
             code: "line.validation",
             message2: "errorPage.message.line",
             error,
-          } as any);
+          });
         } finally {
           isValidating.value = false;
         }

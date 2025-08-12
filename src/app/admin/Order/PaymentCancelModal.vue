@@ -121,7 +121,7 @@ export default defineComponent({
         dialogStore.setErrorMessage({
           code: "stripe.cancel",
           error,
-        } as any);
+        });
       } finally {
         updating.value = false;
         generalStore.setLoading(false);

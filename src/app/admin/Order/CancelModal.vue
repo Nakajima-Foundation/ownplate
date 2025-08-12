@@ -136,7 +136,7 @@ export default defineComponent({
         dialogStore.setErrorMessage({
           code: "order.cancel",
           error,
-        } as any);
+        });
       } finally {
         updating.value = false;
       }

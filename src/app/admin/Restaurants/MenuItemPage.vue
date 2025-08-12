@@ -1024,7 +1024,7 @@ export default defineComponent({
         dialogStore.setErrorMessage({
           code: "menu.save",
           error,
-        } as any);
+        });
         console.log(error);
       }
     };

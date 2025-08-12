@@ -158,7 +158,7 @@ export default defineComponent({
             dialogStore.setErrorMessage({
               code: "stripe.connect",
               error,
-            } as any);
+            });
           } finally {
             generalStore.setLoading(false);
             router.replace(location.pathname);

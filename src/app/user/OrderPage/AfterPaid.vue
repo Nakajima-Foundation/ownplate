@@ -364,7 +364,7 @@ export default defineComponent({
             dialogStore.setErrorMessage({
               code: "order.cancel",
               error,
-            } as any);
+            });
           } finally {
             generalStore.setLoading(false);
             isCancelling.value = false;
