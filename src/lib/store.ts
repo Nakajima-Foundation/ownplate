@@ -1,14 +1,6 @@
 import { createStore } from "vuex";
 import { User } from "firebase/auth";
 
-import { MenuData } from "@/models/menu";
-
-import {
-  OrderDataType,
-  CartItemsType,
-  CartOptionType,
-} from "@/models/cartType";
-
 interface Claims {
   admin: boolean;
   operator: boolean;
@@ -31,26 +23,15 @@ interface Dialog {
   error?: DialogErrorData;
 }
 
-type Cart = {
-  orders: OrderDataType;
-  options: CartOptionType;
-  cartItems: CartItemsType;
-  menuCache: MenuData[];
-  howtoreceive: string;
-  lunchOrDinner: string;
-};
-
 interface State {
   user: undefined | boolean | User;
 
   claims: undefined | Claims;
-  carts: { [key: string]: Cart | null };
   dialog: null | Dialog;
 }
 export const state = () => ({
   user: undefined, // undefined:not authorized, null:no user
   claims: undefined, // custom claims
-  carts: {}, // for "Edit Order"
   dialog: null, // for DialogBox
   // dialog: {alert: {}, error: {}}, // for DialogBox
 });
@@ -114,16 +95,6 @@ export const getters = {
 export const mutations = {
   setUser(_state: State, user: User) {
     _state.user = user;
-  },
-  saveCart(_state: State, payload: { id: string; cart: Cart }) {
-    console.log("saving cart", payload.id, payload.cart);
-    // _state.carts = {};
-    _state.carts[payload.id as string] = payload.cart;
-  },
-  resetCart(_state: State, restaurantId: string) {
-    console.log("reset cart", restaurantId);
-    // _state.carts = {};
-    _state.carts[restaurantId] = null;
   },
   setCustomClaims(_state: State, claims: Claims) {
     // Note: we can't copy user using Object.assign here
