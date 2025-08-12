@@ -335,6 +335,7 @@ import { useTitles, useMenu } from "./Restaurant/Utils";
 import { useStore } from "vuex";
 import { useGeneralStore } from "@/store";
 import { useCartStore } from "@/store/cart";
+import { useDialogStore } from "@/store/dialog";
 
 import { useRoute, useRouter } from "vue-router";
 
@@ -394,6 +395,7 @@ export default defineComponent({
     const store = useStore();
     const generalStore = useGeneralStore();
     const cartStore = useCartStore();
+    const dialogStore = useDialogStore();
     const route = useRoute();
     const router = useRouter();
 
@@ -723,7 +725,7 @@ export default defineComponent({
           }, 500);
         } else {
           console.error(error.message);
-          store.commit("setErrorMessage", {
+          dialogStore.setErrorMessage({
             code: "order.checkout",
             error,
           });

@@ -13,14 +13,8 @@ interface DialogAlertData {
   code: string;
   callback: () => void;
 }
-interface DialogErrorData {
-  message: string;
-  message2: string;
-  code: string;
-}
 interface Dialog {
   alert?: DialogAlertData;
-  error?: DialogErrorData;
 }
 
 interface State {
@@ -33,7 +27,6 @@ export const state = () => ({
   user: undefined, // undefined:not authorized, null:no user
   claims: undefined, // custom claims
   dialog: null, // for DialogBox
-  // dialog: {alert: {}, error: {}}, // for DialogBox
 });
 
 export const getters = {
@@ -105,9 +98,6 @@ export const mutations = {
   },
   setAlert(_state: State, params: DialogAlertData) {
     _state.dialog = { alert: params };
-  },
-  setErrorMessage(_state: State, params: DialogErrorData) {
-    _state.dialog = { error: params };
   },
 };
 

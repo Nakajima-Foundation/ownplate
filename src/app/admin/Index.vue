@@ -291,7 +291,7 @@ import { checkAdminPermission } from "@/utils/userPermission";
 
 import { useAdminConfigToggle } from "@/utils/admin/Toggle";
 
-import { useStore } from "vuex";
+import { useDialogStore } from "@/store/dialog";
 import { useRouter } from "vue-router";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
@@ -317,7 +317,7 @@ export default defineComponent({
     ToggleSwitch,
   },
   setup() {
-    const store = useStore();
+    const dialogStore = useDialogStore();
     const router = useRouter();
 
     const readyToDisplay = ref(false);
@@ -551,7 +551,7 @@ export default defineComponent({
 
           router.push(`/admin/restaurants/${newDoc.id}`);
         } catch (error) {
-          store.commit("setErrorMessage", {});
+          dialogStore.setErrorMessage({});
           console.log(error);
         }
       }

@@ -385,9 +385,9 @@ import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import { useHasSoldOutToday } from "./Stock";
 
-import { useStore } from "vuex";
 import { useGeneralStore } from "@/store";
 import { useCartStore } from "@/store/cart";
+import { useDialogStore } from "@/store/dialog";
 import { useRoute } from "vue-router";
 
 export default defineComponent({
@@ -443,9 +443,9 @@ export default defineComponent({
   emits: ["handleOpenMenu", "openTransactionsAct"],
   setup(props, ctx) {
     const route = useRoute();
-    const store = useStore();
     const generalStore = useGeneralStore();
     const cartStore = useCartStore();
+    const dialogStore = useDialogStore();
 
     const restaurantId = route.params.restaurantId as string;
 
@@ -655,10 +655,10 @@ export default defineComponent({
       } catch (error: any) {
         // alert(JSON.stringify(error));
         console.error(error.message, error.details);
-        store.commit("setErrorMessage", {
+        dialogStore.setErrorMessage({
           code: "order.place",
           error,
-        });
+        } as any);
       } finally {
         generalStore.setLoading(false);
       }

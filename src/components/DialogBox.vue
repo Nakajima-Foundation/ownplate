@@ -66,22 +66,21 @@ import { defineComponent, computed } from "vue";
 import * as Sentry from "@sentry/vue";
 
 import { useStore } from "vuex";
+import { useDialogStore } from "@/store/dialog";
 import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   setup() {
     const { t } = useI18n({ useScope: "global" });
-    const store = useStore();
 
-    const dialog = computed(() => {
-      return store.state.dialog;
-    });
+    const store = useStore();
+    const dialogStore = useDialogStore();
 
     const alert = computed(() => {
-      return dialog.value?.alert;
+      return store.state.dialog?.alert;
     });
     const error = computed(() => {
-      return dialog.value?.error;
+      return dialogStore.dialog?.error;
     });
     const isVisible = computed(() => {
       return !!(error.value || alert.value);
@@ -100,6 +99,7 @@ export default defineComponent({
     });
     const close = () => {
       store.commit("resetDialog");
+      dialogStore.resetDialog();
     };
     const handleYes = () => {
       console.log("handleYes");
@@ -108,7 +108,6 @@ export default defineComponent({
     };
     return {
       isVisible,
-      dialog,
       alert,
       error,
       errorMessage,

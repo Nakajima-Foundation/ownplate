@@ -7,9 +7,9 @@ interface DialogAlertData {
   callback: () => void;
 }
 interface DialogErrorData {
-  message: string;
-  message2: string;
-  code: string;
+  message?: string;
+  message2?: string;
+  code?: string;
 }
 interface DialogTipsData {
   key: string;
