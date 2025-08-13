@@ -63,7 +63,7 @@ import BackButton from "@/components/BackButton.vue";
 import { defaultHeader } from "@/config/header";
 import { useBasePath, useTopPath } from "@/utils/utils";
 
-import { useStore } from "vuex";
+import { useUserStore } from "@/store/user";
 import { useRouter } from "vue-router";
 
 import { OrderInfoData } from "@/models/orderInfo";
@@ -76,7 +76,7 @@ export default defineComponent({
     BackButton,
   },
   setup() {
-    const store = useStore();
+    const userStore = useUserStore();
     const router = useRouter();
 
     const orders = ref<OrderInfoData[]>([]);
@@ -89,7 +89,7 @@ export default defineComponent({
     }));
 
     const uid = computed(() => {
-      return store.getters.uidUser || store.getters.uidLiff;
+      return userStore.uidUser || userStore.uidLiff;
     });
 
     const loginVisible = computed(() => {
