@@ -46,19 +46,19 @@
 import { defineComponent, ref, computed, watch } from "vue";
 import PhoneLogin from "@/app/auth/PhoneLogin.vue";
 
-import { useStore } from "vuex";
+import { useUserStore } from "@/store/user";
 
 export default defineComponent({
   components: {
     PhoneLogin,
   },
   setup() {
-    const store = useStore();
+    const userStore = useUserStore();
 
     const loginVisible = ref(false);
 
     const user = computed(() => {
-      return store.state.user;
+      return userStore.user;
     });
     watch(user, (newValue) => {
       if (newValue) {
