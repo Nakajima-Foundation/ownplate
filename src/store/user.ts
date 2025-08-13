@@ -7,7 +7,8 @@ interface Claims {
   admin: boolean;
   operator: boolean;
   parentUid?: string;
-  liffId: string;
+  liffId?: string;
+  line?: string;
 }
 
 export const useUserStore = defineStore("userStore", () => {
