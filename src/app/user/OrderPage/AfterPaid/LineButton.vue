@@ -42,7 +42,7 @@ import { defineComponent, computed, PropType } from "vue";
 import { lineAuthURL, lineAuthRestaurantURL } from "@/lib/line/line";
 import { ownPlateConfig } from "@/config/project";
 
-import { useStore } from "vuex";
+import { useUserStore } from "@/store/user";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { isDev } from "@/utils/utils";
 
@@ -62,7 +62,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const store = useStore();
+    const userStore = useUserStore();
 
     const handleLineAuth = () => {
       const url = (() => {
@@ -86,7 +86,7 @@ export default defineComponent({
       if (props.hasLine) {
         return !props.hasFriends;
       }
-      return !!ownPlateConfig.line && !store.state.claims?.line;
+      return !!ownPlateConfig.line && !userStore.claims?.line;
     });
     return {
       handleLineAuth,

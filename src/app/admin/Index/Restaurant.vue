@@ -404,7 +404,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 
-import { useStore } from "vuex";
+import { useUserStore } from "@/store/user";
 import { useDialogStore } from "@/store/dialog";
 
 import { resizedProfileImage, isDev } from "@/utils/utils";
@@ -447,7 +447,7 @@ export default defineComponent({
   },
   emits: ["positionUp", "positionDown", "deleteFromRestaurantLists"],
   setup(props, ctx) {
-    const store = useStore();
+    const userStore = useUserStore();
     const dialogStore = useDialogStore();
 
     const requestState = ref(0);
@@ -497,7 +497,7 @@ export default defineComponent({
     const requestList = () => {
       setDoc(doc(db, `requestList/${props.restaurantid}`), {
         status: 1,
-        uid: store.getters.uidAdmin,
+        uid: userStore.uidAdmin,
         created: serverTimestamp(),
       });
     };
