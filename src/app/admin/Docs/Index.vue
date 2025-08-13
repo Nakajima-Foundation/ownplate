@@ -3,7 +3,7 @@
     <!-- Header -->
     <div class="mx-6 mt-4 lg:flex lg:items-center">
       <!-- Back and Preview -->
-      <div class="flex space-x-4" v-if="store.getters.isAdmin">
+      <div class="flex space-x-4" v-if="userStore.isAdmin">
         <back-button url="/admin/restaurants" />
       </div>
       <div class="flex space-x-4" v-else>
@@ -214,17 +214,17 @@ import { defineComponent } from "vue";
 
 import BackButton from "@/components/BackButton.vue";
 
-import { useStore } from "vuex";
+import { useUserStore } from "@/store/user";
 
 export default defineComponent({
   components: {
     BackButton,
   },
   setup() {
-    const store = useStore();
+    const userStore = useUserStore();
 
     return {
-      store,
+      userStore,
     };
   },
 });

@@ -70,6 +70,7 @@ import * as Sentry from "@sentry/vue";
 import { defaultHeader } from "@/config/header";
 
 import { useStore } from "vuex";
+import { useUserStore } from "@/store/user";
 import { useRoute } from "vue-router";
 import { useHead } from "@unhead/vue";
 
@@ -93,6 +94,7 @@ export default defineComponent({
     let timerId: null | number = null;
     const store = useStore();
     const generalStore = useGeneralStore();
+    const userStore = useUserStore();
 
     const route = useRoute();
 
@@ -153,6 +155,8 @@ export default defineComponent({
             } else {
               store.commit("setUser", fUser);
               store.commit("setCustomClaims", result.claims);
+              userStore.setUser(fUser);
+              userStore.setCustomClaims(result.claims);
             }
           })
           .catch((error: any) => {
@@ -166,6 +170,8 @@ export default defineComponent({
         setUserProperties(analytics, { role: "anonymous" });
         store.commit("setUser", null);
         store.commit("setCustomClaims", null);
+        userStore.setUser(null);
+        userStore.setCustomClaims(null);
       }
     });
 
