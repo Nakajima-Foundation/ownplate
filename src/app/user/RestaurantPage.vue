@@ -332,7 +332,7 @@ import { imageUtils } from "@/utils/RestaurantUtils";
 
 import { useTitles, useMenu } from "./Restaurant/Utils";
 
-import { useStore } from "vuex";
+import { useUserStore } from "@/store/user";
 import { useGeneralStore } from "@/store";
 import { useCartStore } from "@/store/cart";
 import { useDialogStore } from "@/store/dialog";
@@ -392,7 +392,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const store = useStore();
+    const userStore = useUserStore();
     const generalStore = useGeneralStore();
     const cartStore = useCartStore();
     const dialogStore = useDialogStore();
@@ -454,7 +454,7 @@ export default defineComponent({
     });
     const isSubAccount = computed(() => {
       return (
-        isAdmin.value && store.state?.claims?.parentUid === props.shopInfo.uid
+        isAdmin.value && userStore?.claims?.parentUid === props.shopInfo.uid
       );
     });
     const isPreview = computed(() => {
