@@ -37,9 +37,7 @@ export default defineComponent({
 
     const opt_out = ref(false);
     const ownerUid = computed(() => {
-      return userStore.isSubAccount
-        ? userStore.parentId
-        : userStore.uidAdmin;
+      return userStore.isSubAccount ? userStore.parentId : userStore.uidAdmin;
     });
 
     (async () => {
