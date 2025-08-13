@@ -574,11 +574,11 @@ import {
   defaultTitle,
 } from "@/utils/utils";
 
-import { useStore } from "vuex";
+import { useUserStore } from "@/store/user";
 import { useGeneralStore } from "@/store";
-import { useRoute, useRouter } from "vue-router";
 import { useDialogStore } from "@/store/dialog";
 
+import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useHead } from "@unhead/vue";
 
@@ -609,7 +609,7 @@ export default defineComponent({
   // if restaurant don't have order, render 404.
 
   setup(props) {
-    const store = useStore();
+    const userStore = useUserStore();
     const generalStore = useGeneralStore();
     const dialogStore = useDialogStore();
     const route = useRoute();
@@ -649,7 +649,7 @@ export default defineComponent({
 
     if (
       !checkShopAccount(props.shopInfo, ownerUid.value) &&
-      !store.getters.isSuperAdmin
+      !userStore.isSuperAdmin
     ) {
       return notFoundResponse;
     }
