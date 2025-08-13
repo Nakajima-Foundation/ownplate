@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- For Super Admin -->
-    <div v-if="$store.getters.isSuperAdmin" class="columns is-gapless">
+    <div v-if="userStore.isSuperAdmin" class="columns is-gapless">
       <!-- Left Gap -->
       <div class="column is-narrow w-6"></div>
       <!-- Center Column -->
@@ -26,7 +26,7 @@
     </div>
 
     <!-- For Operator -->
-    <div v-if="$store.getters.isOperator" class="columns is-gapless">
+    <div v-if="userStore.isOperator" class="columns is-gapless">
       <!-- Left Gap -->
       <div class="column is-narrow w-6"></div>
       <!-- Center Column -->
@@ -50,18 +50,19 @@
       <div class="column is-narrow w-6"></div>
     </div>
 
-    <lp :isAdmin="isAdmin" />
+    <lp :isAdmin="userStore.isAdmin" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { useUserStore } from "@/store/user";
 
 import Lp from "@/app/home/Lp.vue";
 // import LpAdmin from "@/app/home/LpAdmin.vue";
 //import LpCustomer from "@/app/home/LpCustomer.vue";
 
-import { defaultTitle, useUserData, sleep } from "@/utils/utils";
+import { defaultTitle, sleep } from "@/utils/utils";
 import { useHead } from "@unhead/vue";
 
 export default defineComponent({
@@ -74,19 +75,14 @@ export default defineComponent({
     useHead(() => ({
       title: [defaultTitle, "Top"].join(" / "),
     }));
-
-    const {
-      isAdmin,
-      // isUser,
-    } = useUserData();
+    const userStore = useUserStore();
 
     (async () => {
       await sleep(0.1);
       window.scrollTo(0, 0);
     })();
     return {
-      isAdmin,
-      // isUser,
+      userStore,
     };
   },
 });
