@@ -29,7 +29,7 @@
   "main": "lib/index.js",
   "dependencies": {
     "@aws-sdk/client-sns": "^3.864.0",
-    "@sentry/node": "^10.4.0",
+    "@sentry/node": "^10.5.0",
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "firebase-admin": "^13.4.0",
@@ -63,7 +63,7 @@
     "prettier": "^3.6.2",
     "supertest": "^7.1.4",
     "ts-node": "^10.9.2",
-    "tsx": "^4.20.3",
+    "tsx": "^4.20.4",
     "typescript": "^5.9.2"
   },
   "private": true
