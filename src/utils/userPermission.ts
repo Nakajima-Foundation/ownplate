@@ -19,11 +19,17 @@ export const checkAdminPermission = () => {
 };
 
 // allow subAccounts
-export const checkShopAccount = (shopInfo: RestaurantInfoData, ownerUid: string) => {
+export const checkShopAccount = (
+  shopInfo: RestaurantInfoData,
+  ownerUid: string,
+) => {
   return shopInfo.uid === ownerUid;
 };
 
 // only owner
-export const checkShopOwner = (shopInfo: RestaurantInfoData, uidAdmin: string) => {
+export const checkShopOwner = (
+  shopInfo: RestaurantInfoData,
+  uidAdmin: string,
+) => {
   return shopInfo.uid === uidAdmin;
 };

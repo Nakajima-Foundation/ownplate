@@ -652,9 +652,7 @@ export const useAdminUids = () => {
     return userStore.uidAdmin;
   });
   const ownerUid = computed(() => {
-    return userStore.isSubAccount
-      ? userStore.parentId
-      : userStore.uidAdmin;
+    return userStore.isSubAccount ? userStore.parentId : userStore.uidAdmin;
   });
   const emailVerified = computed(() => {
     return (userStore.user as User)?.emailVerified;
@@ -848,7 +846,7 @@ export const getBackUrl = () => {
 
 export const superPermissionCheck = () => {
   const userStore = useUserStore();
-    const router = useRouter();
+  const router = useRouter();
   if (isSuperPage()) {
     if (!userStore.user || userStore.isNotSuperAdmin) {
       router.push("/");
