@@ -24,7 +24,7 @@ import { defineComponent, ref, computed, watch } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { useStore } from "vuex";
+import { useUserStore } from "@/store/user";
 
 import Checkbox from "@/components/form/checkbox.vue";
 
@@ -33,13 +33,13 @@ export default defineComponent({
     Checkbox,
   },
   setup() {
-    const store = useStore();
+    const userStore = useUserStore();
 
     const opt_out = ref(false);
     const ownerUid = computed(() => {
-      return store.getters.isSubAccount
-        ? store.getters.parentId
-        : store.getters.uidAdmin;
+      return userStore.isSubAccount
+        ? userStore.parentId
+        : userStore.uidAdmin;
     });
 
     (async () => {
