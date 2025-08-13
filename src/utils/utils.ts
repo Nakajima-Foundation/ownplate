@@ -636,15 +636,6 @@ export const useToggle = (defaultValue = false) => {
   };
 };
 
-// do not use
-export const useUser = () => {
-  const store = useStore();
-  const user = computed(() => {
-    return store.state.user;
-  });
-  return user;
-};
-
 export const isJapan = ownPlateConfig.region === "JP";
 export const serviceKey = isJapan ? "omochikaeri" : "ownPlate";
 

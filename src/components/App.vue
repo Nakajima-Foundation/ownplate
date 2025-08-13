@@ -64,7 +64,7 @@ import DialogBox from "@/components/DialogBox.vue";
 import DialogTips from "@/components/DialogTips.vue";
 import AudioPlay from "@/components/AudioPlay.vue";
 import Loading from "@/components/Loading.vue";
-import { isDev, useUser, useRestaurantId } from "@/utils/utils";
+import { isDev, useRestaurantId } from "@/utils/utils";
 
 import * as Sentry from "@sentry/vue";
 import { defaultHeader } from "@/config/header";
@@ -98,7 +98,6 @@ export default defineComponent({
 
     const route = useRoute();
 
-    const user = useUser();
     const restaurantId = useRestaurantId();
 
     useHead(defaultHeader);
@@ -116,7 +115,7 @@ export default defineComponent({
       return generalStore.isLoading;
     });
     const isReadyToRender = computed(() => {
-      if (user.value !== undefined) {
+      if (userStore.user !== undefined) {
         return true; // Firebase has already identified the user (or non-user)
       }
       if (route.path === `/r/${restaurantId.value}` || route.path === "/") {

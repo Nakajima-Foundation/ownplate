@@ -1,5 +1,5 @@
 <template>
-  <div v-if="$store.getters.uidAdmin">
+  <div v-if="userStore.uidAdmin">
     <!-- Partnets -->
     <Partners :shopOwner="shopOwner" v-if="shopOwner" />
 
@@ -292,6 +292,7 @@ import { checkAdminPermission } from "@/utils/userPermission";
 import { useAdminConfigToggle } from "@/utils/admin/Toggle";
 
 import { useDialogStore } from "@/store/dialog";
+import { useUserStore } from "@/store/user";
 import { useRouter } from "vue-router";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
@@ -318,6 +319,7 @@ export default defineComponent({
   },
   setup() {
     const dialogStore = useDialogStore();
+    const userStore = useUserStore();
     const router = useRouter();
 
     const readyToDisplay = ref(false);
@@ -648,6 +650,7 @@ export default defineComponent({
     });
 
     return {
+      userStore,
       // ref
       readyToDisplay,
       restaurantItems,
