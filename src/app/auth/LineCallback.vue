@@ -16,7 +16,6 @@ import { lineValidate } from "@/lib/firebase/functions";
 
 import { useUserData } from "@/utils/utils";
 import { useRoute, useRouter } from "vue-router";
-import { useStore } from "vuex";
 import { useUserStore } from "@/store/user";
 import { useDialogStore } from "@/store/dialog";
 import Loading from "@/components/Loading.vue";
@@ -28,7 +27,6 @@ export default defineComponent({
   setup() {
     const router = useRouter();
     const route = useRoute();
-    const store = useStore();
     const dialogStore = useDialogStore();
     const userStore = useUserStore();
 
@@ -60,7 +58,6 @@ export default defineComponent({
             user.value
               .getIdTokenResult(true)
               .then((result: { claims: string }) => {
-                store.commit("setCustomClaims", result.claims);
                 userStore.setCustomClaims(result.claims);
                 console.log("isLineuser", isLineUser.value);
                 if (isLineUser.value) {

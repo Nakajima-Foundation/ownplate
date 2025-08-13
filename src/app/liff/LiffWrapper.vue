@@ -19,7 +19,7 @@
           </div>
         </div>
       </modal>
-      <router-view :config="config" v-if="user" />
+      <router-view :config="config" v-if="userStore.user" />
     </div>
   </div>
 </template>
@@ -33,6 +33,7 @@ import { db, auth } from "@/lib/firebase/firebase9";
 import { signInWithCustomToken, signOut } from "firebase/auth";
 
 import { liffAuthenticate } from "@/lib/firebase/functions";
+import { useUserStore } from "@/store/user";
 
 import queryString from "query-string";
 
@@ -41,9 +42,6 @@ import NotFound from "@/components/NotFound.vue";
 
 import Modal from "@/components/Modal2.vue";
 
-import { useUserData } from "@/utils/utils";
-
-import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 
 /*
@@ -97,8 +95,8 @@ export default defineComponent({
     NotFound,
   },
   setup() {
-    const store = useStore();
     const route = useRoute();
+    const userStore = useUserStore();
 
     const error = ref<string | null>(null);
     const config = ref();
@@ -108,11 +106,9 @@ export default defineComponent({
     const liffIdToken = ref("");
     const liffId = ref("");
 
-    const { user, isLiffUser } = useUserData();
-
     // computed
     const userLoad = computed(() => {
-      return [store.state.user, liffIdToken.value];
+      return [userStore.user, liffIdToken.value];
     });
     const friendUrl = computed(() => {
       if (config.value) {
@@ -124,13 +120,10 @@ export default defineComponent({
     const liffIndexId = computed(() => {
       return route.params.liffIndexId as string;
     });
-    const userLiffId = computed(() => {
-      return store.getters.liffId;
-    });
 
     watch(userLoad, () => {
-      if (store.state.user !== undefined && liffIdToken.value !== "") {
-        if (store.state.user === null) {
+      if (userStore.user !== undefined && liffIdToken.value !== "") {
+        if (userStore.user === null) {
           (async () => {
             const { data } = await liffAuthenticate({
               liffIndexId: liffIndexId.value,
@@ -144,7 +137,7 @@ export default defineComponent({
           })();
         } else {
           // force sign out if current user is not cuurrent liff user
-          if (config.value.liffId !== userLiffId.value) {
+          if (config.value.liffId !== userStore.liffId) {
             signOut(auth);
           }
           loading.value = false;
@@ -248,7 +241,7 @@ export default defineComponent({
 
       if (location.hostname !== "localhost") {
         // if not liff user, force sign out
-        if (user.value && !isLiffUser.value) {
+        if (userStore.user && !userStore.uidLiff) {
           signOut(auth);
         }
       }
@@ -273,7 +266,7 @@ export default defineComponent({
       openModal,
       loading,
       friendUrl,
-      user,
+      userStore,
     };
   },
 });

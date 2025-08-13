@@ -69,7 +69,6 @@ import { isDev, useRestaurantId } from "@/utils/utils";
 import * as Sentry from "@sentry/vue";
 import { defaultHeader } from "@/config/header";
 
-import { useStore } from "vuex";
 import { useUserStore } from "@/store/user";
 import { useRoute } from "vue-router";
 import { useHead } from "@unhead/vue";
@@ -92,7 +91,6 @@ export default defineComponent({
   setup() {
     let unregisterAuthObserver: null | Unsubscribe = null;
     let timerId: null | number = null;
-    const store = useStore();
     const generalStore = useGeneralStore();
     const userStore = useUserStore();
 
@@ -152,8 +150,6 @@ export default defineComponent({
             if (diff > 3600 * 24 * 30 * 1000) {
               signOut(auth);
             } else {
-              store.commit("setUser", fUser);
-              store.commit("setCustomClaims", result.claims);
               userStore.setUser(fUser);
               userStore.setCustomClaims(result.claims);
             }
@@ -167,8 +163,6 @@ export default defineComponent({
         setUserId(analytics, fUser.uid);
       } else {
         setUserProperties(analytics, { role: "anonymous" });
-        store.commit("setUser", null);
-        store.commit("setCustomClaims", null);
         userStore.setUser(null);
         userStore.setCustomClaims(null);
       }
