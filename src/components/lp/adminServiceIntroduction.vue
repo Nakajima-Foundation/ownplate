@@ -55,7 +55,7 @@ export default defineComponent({
   props: {
     isAdmin: {
       type: Boolean,
-      require: true,
+      required: true,
       default: false,
     },
   },
