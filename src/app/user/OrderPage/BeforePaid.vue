@@ -506,13 +506,13 @@ export default defineComponent({
       return requireAddress.value && ecCustomerRef.value?.hasEcError;
     });
     const userMessageError = computed(() => {
-      return props.shopInfo.acceptUserMessage && memo.value.length > 500;
+      return props.shopInfo.acceptUserMessage && memo.value?.length > 500;
     });
 
     const userNameError = computed(() => {
       return (
         props.shopInfo.personalInfo === "required" &&
-        (userName.value === "" || userName.value.length < 3)
+        (userName.value === "" || userName.value?.length < 3)
       );
     });
 
@@ -524,7 +524,7 @@ export default defineComponent({
       );
     });
     const hasPaymentMethods = computed(() => {
-      return shopPaymentMethods.value.length > 0;
+      return shopPaymentMethods.value?.length > 0;
     });
     const selectedPromotion = computed<Promotion | null>(() => {
       if (props.promotions && props.promotions.length > 0) {
