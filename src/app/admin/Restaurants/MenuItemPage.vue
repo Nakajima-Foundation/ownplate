@@ -18,9 +18,8 @@
       <!-- Save and Cancel -->
       <div class="mt-2 flex justify-center space-x-4">
         <!-- Cancel Button -->
-        <o-button
-          class="b-reset-tw"
-          tag="router-link"
+        <router-link
+          class="cursor-pointer"
           :to="`/admin/restaurants/${restaurantId}/menus`"
         >
           <div
@@ -30,7 +29,7 @@
               $t("button.cancel")
             }}</span>
           </div>
-        </o-button>
+        </router-link>
 
         <!-- Save Button -->
         <t-button
@@ -52,13 +51,13 @@
 
       <!-- Publish Status -->
       <div class="mx-6 mt-4 rounded-lg bg-black/5 p-4 text-center">
-        <o-checkbox
+        <Checkbox
           v-model="menuInfo.publicFlag"
           :disabled="hasError"
           :variant="!menuInfo.publicFlag ? 'danger' : ''"
         >
-          <div class="font-bold">{{ $t("shopInfo.public") }}</div>
-        </o-checkbox>
+          <span class="font-bold">{{ $t("shopInfo.public") }}</span>
+        </Checkbox>
 
         <div class="text-sm font-bold">
           <div v-if="hasError" class="mt-1 text-red-700">
@@ -88,14 +87,18 @@
               {{ $t("editMenu.itemName") }}
               <span class="text-red-700">*</span>
             </div>
-            <o-field
-              :variant="errors['itemName'].length > 0 ? 'danger' : 'success'"
-            >
-              <o-input
+            <div>
+              <input
                 v-model="menuInfo.itemName"
                 :placeholder="$t('editMenu.enterItemName')"
-              ></o-input>
-            </o-field>
+                class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 dark:border-gray-600 dark:bg-black dark:text-white"
+                :class="
+                  errors['itemName'].length > 0
+                    ? 'border-red-500'
+                    : 'border-green-500'
+                "
+              />
+            </div>
           </div>
 
           <!-- Item Name -->
@@ -103,14 +106,15 @@
             <div class="pb-2 text-sm font-bold">
               {{ $t("editMenu.itemAliasesName") }}
             </div>
-            <o-input
+            <input
               v-model="menuInfo.itemAliasesName"
               :placeholder="$t('editMenu.enterItemAliasesName')"
-            ></o-input>
+              class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 dark:border-gray-600 dark:bg-black dark:text-white"
+            />
           </div>
 
           <!-- Item Price -->
-          <div class="rounded-lg border bg-white p-2 mt-4">
+          <div class="mt-4 rounded-lg border border-black/10 bg-white p-2">
             <span class="font-bold">{{ $t("editMenu.priceSettings") }}</span>
             <div class="mt-4">
               <div class="pb-2 text-sm font-bold">
@@ -118,23 +122,27 @@
                 <span class="text-red-700">*</span>
               </div>
               <div>
-                <o-field
-                  :variant="errors['price'].length > 0 ? 'danger' : 'success'"
-                  class="has-addons"
-                >
-                  <o-input
+                <div class="flex">
+                  <input
                     v-model="menuInfo.price"
                     type="number"
                     :step="priceStep"
                     placeholder="00.00"
                     :max="maxPrice"
                     min="0.00"
-                    expanded
-                  ></o-input>
-                  <span class="button is-static">
+                    class="flex-1 rounded-l-lg border border-gray-300 px-3 py-2 dark:bg-black dark:text-gray-200"
+                    :class="
+                      errors['price'].length > 0
+                        ? 'border-red-500'
+                        : 'border-green-500'
+                    "
+                  />
+                  <span
+                    class="rounded-r border border-l-0 border-gray-300 bg-gray-100 px-3 py-2 text-gray-600"
+                  >
                     {{ $t("currency." + currencyKey) }}
                   </span>
-                </o-field>
+                </div>
               </div>
             </div>
 
@@ -145,28 +153,24 @@
                 <span class="text-red-700">*</span>
               </div>
               <div>
-                <o-field
-                  :variant="errors['tax'].length > 0 ? 'danger' : 'success'"
+                <select
+                  v-model="menuInfo.tax"
+                  class="w-full rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
                 >
-                  <o-select v-model="menuInfo.tax" placeholder="select">
-                    <option
-                      v-for="taxItem in taxRates"
-                      :value="taxItem"
-                      :key="taxItem"
-                    >
-                      {{ shopInfo && (shopInfo[taxItem + "Tax"] || 0) + "%" }}
-                      - {{ $t("editMenu." + taxRateKeys[taxItem]) }}
-                    </option>
-                  </o-select>
-                </o-field>
+                  <option
+                    v-for="taxItem in taxRates"
+                    :value="taxItem"
+                    :key="taxItem"
+                  >
+                    {{ shopInfo && (shopInfo[taxItem + "Tax"] || 0) + "%" }}
+                    - {{ $t("editMenu." + taxRateKeys[taxItem]) }}
+                  </option>
+                </select>
               </div>
             </div>
 
             <!-- Price Example -->
-            <div
-              v-if="requireTaxPriceDisplay"
-              class="mt-2 rounded-lg bg-black/5 p-4"
-            >
+            <div class="mt-2 rounded-lg bg-black/5 p-4">
               <div class="inline text-sm font-bold">
                 {{ $t("editMenu.displayPrice") }}:
               </div>
@@ -183,11 +187,11 @@
             </div>
             <div class="mt-2 rounded-lg bg-black/5 px-4 py-4">
               <div>
-                <o-checkbox
+                <Checkbox
                   v-for="allergen in allergens"
                   v-model="menuInfo.allergens[allergen]"
                   :key="allergen"
-                  >{{ $t(`allergens.${allergen}`) }}</o-checkbox
+                  >{{ $t(`allergens.${allergen}`) }}</Checkbox
                 >
               </div>
             </div>
@@ -199,17 +203,19 @@
               {{ $t("editMenu.itemDescription") }}
             </div>
             <div>
-              <o-field
-                :variant="
-                  errors['itemDescription'].length > 0 ? 'danger' : 'success'
-                "
-              >
-                <o-input
+              <div>
+                <textarea
                   v-model="menuInfo.itemDescription"
-                  type="textarea"
                   :placeholder="$t('editMenu.enterItemDescription')"
-                ></o-input>
-              </o-field>
+                  class="resize-vertical w-full rounded-lg border border-gray-300 px-3 py-2 dark:bg-black dark:text-gray-200"
+                  :class="
+                    errors['itemDescription'].length > 0
+                      ? 'border-red-500'
+                      : 'border-green-500'
+                  "
+                  rows="4"
+                ></textarea>
+              </div>
             </div>
           </div>
 
@@ -219,23 +225,24 @@
               {{ $t("editMenu.itemMemo") }}
             </div>
             <div>
-              <o-field variant="success">
-                <o-input
+              <div>
+                <textarea
                   v-model="menuInfo.itemMemo"
-                  type="textarea"
                   :placeholder="$t('editMenu.enterItemMemo')"
-                ></o-input>
-              </o-field>
+                  class="resize-vertical w-full rounded border border-green-500 px-3 py-2 dark:bg-black dark:text-gray-200"
+                  rows="4"
+                ></textarea>
+              </div>
             </div>
           </div>
 
-          <div class="rounded-sm border bg-white p-2 mt-4">
+          <div class="mt-4 rounded-sm border border-black/10 bg-white p-2">
             <span class="font-bold">{{
               $t("editMenu.availableDayTimeSettings")
             }}</span>
             <!-- Lunch  or Dinner -->
             <div
-              class="mt-4 text-sm font-bold cursor-pointer"
+              class="mt-4 cursor-pointer text-sm font-bold"
               @click="openTips('lunchDinner')"
             >
               {{ $t("editMenu.lunchDinner") }}
@@ -247,18 +254,18 @@
             <div class="mt-2">
               <div class="rounded-lg bg-black/5 p-4">
                 <div>
-                  <o-checkbox class="mr-2" v-model="menuInfo.availableLunch">
+                  <Checkbox class="mr-2" v-model="menuInfo.availableLunch">
                     <span class="text-sm font-bold text-black/60">
                       {{ $t("shopInfo.lunch") }}
                     </span>
-                  </o-checkbox>
+                  </Checkbox>
                 </div>
                 <div class="mt-2">
-                  <o-checkbox class="mr-2" v-model="menuInfo.availableDinner">
+                  <Checkbox class="mr-2" v-model="menuInfo.availableDinner">
                     <span class="text-sm font-bold text-black/60">
                       {{ $t("shopInfo.dinner") }}
                     </span>
-                  </o-checkbox>
+                  </Checkbox>
                 </div>
               </div>
             </div>
@@ -266,7 +273,7 @@
 
             <!-- exclusionDate/Time -->
             <div
-              class="mt-4 text-sm font-bold cursor-pointer"
+              class="mt-4 cursor-pointer text-sm font-bold"
               @click="openTips('exclusionDateTime')"
             >
               {{ $t("editMenu.exclusionDateTime") }}
@@ -281,12 +288,12 @@
                   {{ $t("editMenu.exclusionDate") }}
                 </div>
                 <span v-for="(day, index) in daysOfWeek" :key="index">
-                  <o-checkbox v-model="menuInfo.exceptDay[index]">
+                  <Checkbox v-model="menuInfo.exceptDay[index]">
                     <span class="text-base font-bold">
                       {{ $t("week.short." + day) }}
                       <span v-if="index !== '7'">/</span>
                     </span>
-                  </o-checkbox>
+                  </Checkbox>
                 </span>
                 <div class="mt-2 text-sm font-bold">
                   {{ $t("editMenu.exclusionTime") }}
@@ -371,20 +378,19 @@
 
             <div class="mt-4 flex">
               <!-- ToDo 以下のボタンを押すと写真選択のウィンドウが立ち上がり、複数選択&アップロードできる -->
-              <o-button class="b-reset-tw mr-2">
+              <button class="mr-2 cursor-pointer">
                 <!-- ToDo 写真が4枚アップロード済みの時はボタンをグレーアウト、"text-op-teal" → "text-black/20" を適用 -->
                 <div
-                  class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4 text-op-teal"
+                  class="text-op-teal inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                 >
                   <i class="material-icons mr-2 text-lg">add</i>
                   <div class="text-sm font-bold">
                     {{ $t("editMenu.addPhotos") }}
                   </div>
                 </div>
-              </o-button>
-
+              </button>
               <!-- ToDo 写真が1枚でもアップロードされたら以下の削除ボタンを表示させる-->
-              <o-button class="b-reset-tw">
+              <button class="cursor-pointer">
                 <div
                   class="inline-flex h-9 items-center justify-center rounded-full bg-red-700/10 px-4 text-red-700"
                 >
@@ -393,7 +399,7 @@
                     {{ $t("editMenu.deleteAllPhotos") }}
                   </div>
                 </div>
-              </o-button>
+              </button>
             </div>
           </div>
 
@@ -414,39 +420,40 @@
                 :key="key"
               >
                 <div :key="key" class="mb-2 flex">
-                  <o-button @click="positionDown(key)" class="b-reset-tw">
+                  <button @click="positionDown(key)" class="cursor-pointer">
                     <div
-                      class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4 mr-2"
+                      class="mr-2 inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                       v-if="key !== menuInfo.itemOptionCheckbox.length - 1"
                     >
-                      <i class="material-icons text-lg text-op-teal"
+                      <i class="material-icons text-op-teal text-lg"
                         >arrow_downward</i
                       >
                     </div>
-                  </o-button>
-                  <o-button @click="positionUp(key)" class="b-reset-tw">
+                  </button>
+                  <button @click="positionUp(key)" class="cursor-pointer">
                     <div
-                      class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4 mr-2"
+                      class="mr-2 inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                       v-if="key !== 0"
                     >
-                      <i class="material-icons text-lg text-op-teal"
+                      <i class="material-icons text-op-teal text-lg"
                         >arrow_upward</i
                       >
                     </div>
-                  </o-button>
-                  <div class="flex-1 mr-2">
-                    <o-input
+                  </button>
+                  <div class="mr-2 flex-1">
+                    <input
                       v-model="menuInfo.itemOptionCheckbox[key]"
                       :placeholder="$t('editMenu.enterItemOption')"
+                      class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 dark:border-gray-600 dark:bg-black dark:text-white"
                     />
                   </div>
-                  <o-button class="b-reset-tw" @click="deleteOption(key)">
+                  <button class="cursor-pointer" @click="deleteOption(key)">
                     <div
                       class="inline-flex h-9 items-center justify-center rounded-full bg-red-700/10 px-4"
                     >
                       <i class="material-icons text-lg text-red-700">delete</i>
                     </div>
-                  </o-button>
+                  </button>
                 </div>
 
                 <!-- Option Preview -->
@@ -464,26 +471,27 @@
                     :key="k"
                   >
                     <div class="flex-1">
-                      <o-checkbox
+                      <Checkbox
                         class="mr-2"
                         v-if="itemOptions[key].length == 1"
-                        disabled
+                        :disabled="true"
                       >
                         <span class="text-sm font-bold text-black/60">
                           {{ displayOption(opt, shopInfo, menuInfo) }}
                         </span>
-                      </o-checkbox>
-                      <o-radio
-                        class="mr-2"
-                        v-else
-                        v-model="dummyCheckbox[key]"
-                        :native-value="k"
-                        disabled
-                      >
+                      </Checkbox>
+                      <template v-else>
+                        <input
+                          type="radio"
+                          class="mr-2"
+                          v-model="dummyCheckbox[key]"
+                          :value="k"
+                          disabled
+                        />
                         <span class="text-sm font-bold text-black/60">
                           {{ displayOption(opt, shopInfo, menuInfo) }}
                         </span>
-                      </o-radio>
+                      </template>
                     </div>
                     <div class="text-sm font-bold text-black/60">
                       {{ displayOptionPrice(opt) }}
@@ -495,16 +503,16 @@
 
             <!-- Add Option -->
             <div class="mt-4">
-              <o-button class="b-reset-tw" @click="addOption">
+              <button class="cursor-pointer" @click="addOption">
                 <div
                   class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                 >
-                  <i class="material-icons mr-2 text-lg text-op-teal">add</i>
-                  <div class="text-sm font-bold text-op-teal">
+                  <i class="material-icons text-op-teal mr-2 text-lg">add</i>
+                  <div class="text-op-teal text-sm font-bold">
                     {{ $t("editMenu.itemAddOption") }}
                   </div>
                 </div>
-              </o-button>
+              </button>
             </div>
           </div>
 
@@ -526,23 +534,23 @@
                     {{ $t("editMenu.category1") }}
                   </div>
                   <div>
-                    <o-button
-                      class="b-reset-tw"
+                    <button
+                      class="cursor-pointer"
                       @click="editCategory('category1')"
                     >
                       <div class="inline-flex items-center justify-center">
-                        <div class="text-sm font-bold text-op-teal">
+                        <div class="text-op-teal text-sm font-bold">
                           {{ $t("editMenu.editCategory1") }}
                         </div>
                       </div>
-                    </o-button>
+                    </button>
                   </div>
                 </div>
 
-                <o-select
+                <select
                   v-if="categories1.length > 0"
                   v-model="menuInfo.category1"
-                  expanded
+                  class="mt-1 mt-2 w-full rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
                 >
                   <option
                     v-for="category in categories1"
@@ -551,7 +559,7 @@
                   >
                     {{ category }}
                   </option>
-                </o-select>
+                </select>
               </div>
 
               <!-- Category 2 -->
@@ -561,23 +569,23 @@
                     {{ $t("editMenu.category2") }}
                   </div>
                   <div>
-                    <o-button
-                      class="b-reset-tw"
+                    <button
+                      class="cursor-pointer"
                       @click="editCategory('category2')"
                     >
                       <div class="inline-flex items-center justify-center">
-                        <div class="text-sm font-bold text-op-teal">
+                        <div class="text-op-teal text-sm font-bold">
                           {{ $t("editMenu.editCategory2") }}
                         </div>
                       </div>
-                    </o-button>
+                    </button>
                   </div>
                 </div>
 
-                <o-select
+                <select
                   v-if="categories2.length > 0"
                   v-model="menuInfo.category2"
-                  expanded
+                  class="mt-1 mt-2 w-full rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
                 >
                   <option
                     v-for="category in categories2"
@@ -586,7 +594,7 @@
                   >
                     {{ category }}
                   </option>
-                </o-select>
+                </select>
               </div>
 
               <!-- Category Edit Popup -->
@@ -604,13 +612,13 @@
 
       <!-- Publish Status -->
       <div class="mx-6 mt-4 rounded-lg bg-black/5 p-4 text-center">
-        <o-checkbox
+        <Checkbox
           v-model="menuInfo.publicFlag"
           :disabled="hasError"
           :variant="!menuInfo.publicFlag ? 'danger' : ''"
         >
           <div class="font-bold">{{ $t("shopInfo.public") }}</div>
-        </o-checkbox>
+        </Checkbox>
 
         <div class="mt-1 text-sm font-bold">
           <div v-if="hasError" class="text-red-700">
@@ -625,9 +633,8 @@
       <!-- Save and Cancel -->
       <div class="mt-4 flex justify-center space-x-4">
         <!-- Cancel Button -->
-        <o-button
-          class="b-reset-tw"
-          tag="router-link"
+        <router-link
+          class="cursor-pointer"
           :to="`/admin/restaurants/${restaurantId}/menus`"
         >
           <div
@@ -637,7 +644,7 @@
               $t("button.cancel")
             }}</span>
           </div>
-        </o-button>
+        </router-link>
 
         <!-- Save Button -->
         <t-button
@@ -660,20 +667,27 @@
       <!-- Copy -->
       <div class="mx-6 mt-4 text-center lg:mx-auto lg:max-w-sm">
         <div>
-          <o-button @click="copyItem" :disabled="submitting" class="b-reset-tw">
+          <button
+            @click="copyItem"
+            :disabled="submitting"
+            class="cursor-pointer"
+          >
             <div
               class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
             >
-              <i class="material-icons mr-2 text-lg text-op-teal"> queue </i>
-              <span class="text-sm font-bold text-op-teal">{{
+              <i class="material-icons text-op-teal mr-2 text-lg"> queue </i>
+              <span class="text-op-teal text-sm font-bold">{{
                 $t("editCommon.copyMenu")
               }}</span>
             </div>
-          </o-button>
+          </button>
         </div>
 
         <div class="mt-4">
-          <o-select v-model="copyRestaurantId" expanded>
+          <select
+            v-model="copyRestaurantId"
+            class="w-full rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+          >
             <option
               v-for="restaurant in restaurants"
               :key="restaurant.id"
@@ -681,7 +695,7 @@
             >
               {{ restaurant.restaurantName }}
             </option>
-          </o-select>
+          </select>
         </div>
       </div>
     </template>
@@ -708,6 +722,7 @@ import Price from "@/components/Price.vue";
 import EditCategory from "@/app/admin/Restaurants/MenuItemPage/EditCategory.vue";
 import NotificationIndex from "@/app/admin/Notifications/Index.vue";
 import HoursInput from "@/app/admin/inputComponents/HoursInput.vue";
+import Checkbox from "@/components/form/checkbox.vue";
 
 import ImageUpload from "@/components/ImageUpload.vue";
 
@@ -734,6 +749,7 @@ import { getNewItemData, MenuData } from "@/models/menu";
 import { checkShopOwner } from "@/utils/userPermission";
 
 import { useStore } from "vuex";
+import { useDialogStore } from "@/store/dialog";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useHead } from "@unhead/vue";
@@ -749,6 +765,7 @@ export default defineComponent({
     NotFound,
     HoursInput,
     ImageUpload,
+    Checkbox,
   },
   props: {
     shopInfo: {
@@ -759,6 +776,7 @@ export default defineComponent({
 
   setup(props) {
     const store = useStore();
+    const dialogStore = useDialogStore();
     const route = useRoute();
     const router = useRouter();
     const { t, n } = useI18n({ useScope: "global" });
@@ -819,7 +837,6 @@ export default defineComponent({
     });
 
     const taxRateKeys = regionalSetting["taxRateKeys"];
-    const requireTaxPriceDisplay = regionalSetting.requireTaxPriceDisplay;
     const currencyKey = regionalSetting["CurrencyKey"];
 
     const { restaurantId } = props.shopInfo;
@@ -935,7 +952,7 @@ export default defineComponent({
           (r) => r.id === copyRestaurantId.value,
         );
         if (shop) {
-          store.commit("setAlert", {
+          dialogStore.setAlert({
             title: shop.restaurantName,
             code: "editCommon.copyMenuAlert",
             callback: async () => {
@@ -1004,7 +1021,7 @@ export default defineComponent({
         });
       } catch (error) {
         submitting.value = false;
-        store.commit("setErrorMessage", {
+        dialogStore.setErrorMessage({
           code: "menu.save",
           error,
         });
@@ -1028,7 +1045,7 @@ export default defineComponent({
     };
 
     const openTips = (key: string) => {
-      store.commit("setTips", {
+      dialogStore.setTips({
         key,
       });
     };
@@ -1038,7 +1055,6 @@ export default defineComponent({
 
       taxRates,
       taxRateKeys,
-      requireTaxPriceDisplay,
       currencyKey,
       maxPrice,
       notFound,
@@ -1086,39 +1102,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style scoped>
-:deep(.field.has-addons) {
-  display: flex;
-  .control:first-child:not(:only-child) .input {
-    border-bottom-right-radius: 0;
-    border-top-right-radius: 0;
-  }
-  .control.has-icons-right {
-    .icon.is-right {
-      justify-content: center;
-      pointer-events: none;
-    }
-    input[type="number"] {
-      padding-right: 40px;
-    }
-  }
-  .button {
-    border-width: 1px;
-    border-radius: 4px;
-    justify-content: center;
-    padding-bottom: calc(0.5em - 1px);
-    padding-left: 1em;
-    padding-right: 1em;
-    padding-top: calc(0.5em - 1px);
-    text-align: center;
-    &.is-static {
-      background-color: #f5f5f5;
-      border-color: #dbdbdb;
-      color: #7a7a7a;
-      box-shadow: none;
-      pointer-events: none;
-    }
-  }
-}
-</style>

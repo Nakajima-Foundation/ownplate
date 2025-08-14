@@ -34,47 +34,88 @@
       <hr class="my-4 border border-solid border-black/5" />
 
       <div class="m-6">
-        <div class="pb-2 text-sm font-bold">
-          {{ $t("admin.line.loginClientId") }}
-          <span class="cursor-pointer" @click="open('loginClientId')">?</span>
+        <div class="flex items-center pb-2">
+          <span class="text-sm font-bold">
+            {{ $t("admin.line.loginClientId") }}
+          </span>
+          <span
+            class="ml-2 cursor-pointer text-xl"
+            @click="open('loginClientId')"
+          >
+            <i class="material-icons text-op-teal !text-xs">help_outline</i>
+          </span>
         </div>
         <div>
-          <o-input type="text" v-model="clientId" />
+          <input
+            type="text"
+            v-model="clientId"
+            class="w-full rounded-lg border border-gray-300 bg-gray-100 px-3 py-2 dark:border-gray-600 dark:bg-black dark:text-white"
+          />
         </div>
 
-        <div class="pb-2 text-sm font-bold mt-2">
-          {{ $t("admin.line.loginChannelSecret") }}
-          <span class="cursor-pointer" @click="open('loginChannelSecret')"
-            >?</span
+        <div class="mt-2 flex items-center pb-2">
+          <span class="text-sm font-bold">
+            {{ $t("admin.line.loginChannelSecret") }}
+          </span>
+          <span
+            class="ml-2 cursor-pointer text-xl"
+            @click="open('loginChannelSecret')"
           >
+            <i class="material-icons text-op-teal !text-xs">help_outline</i>
+          </span>
         </div>
         <div>
-          <o-input type="text" v-model="client_secret" />
+          <input
+            type="text"
+            v-model="client_secret"
+            class="w-full rounded-lg border border-gray-300 bg-gray-100 px-3 py-2 dark:border-gray-600 dark:bg-black dark:text-white"
+          />
         </div>
 
-        <div class="pb-2 text-sm font-bold mt-2">
-          {{ $t("admin.line.messagingAccessToken") }}
-          <span class="cursor-pointer" @click="open('messagingAccessToken')"
-            >?</span
+        <div class="mt-2 flex items-center pb-2">
+          <span class="text-sm font-bold">
+            {{ $t("admin.line.messagingAccessToken") }}
+          </span>
+          <span
+            class="ml-2 cursor-pointer text-xl"
+            @click="open('messagingAccessToken')"
           >
+            <i class="material-icons text-op-teal !text-xs">help_outline</i>
+          </span>
         </div>
         <div>
-          <o-input type="text" v-model="message_token" />
+          <input
+            type="text"
+            v-model="message_token"
+            class="w-full rounded-lg border border-gray-300 bg-gray-100 px-3 py-2 dark:border-gray-600 dark:bg-black dark:text-white"
+          />
         </div>
 
         <hr class="my-4 border border-solid border-black/5" />
 
-        <div class="pb-2 text-sm font-bold">
-          {{ $t("admin.line.callbackUrl") }}
-          <span class="cursor-pointer" @click="open('callback')">?</span>
+        <div class="pb-2">
+          <span class="text-sm font-bold">
+            {{ $t("admin.line.callbackUrl") }}
+          </span>
+          <span
+            class="ml-2 cursor-pointer align-middle text-lg"
+            @click="open('callback')"
+          >
+            <i class="material-icons text-op-teal !text-xs">help_outline</i>
+          </span>
         </div>
 
         <div>
-          <o-input type="text" :modelValue="callbackUrl" />
+          <input
+            type="text"
+            :value="callbackUrl"
+            readonly
+            class="w-full rounded-lg border border-gray-300 bg-gray-100 px-3 py-2 dark:border-gray-600 dark:bg-black dark:text-white"
+          />
         </div>
 
-        <div class="pb-2 text-sm font-bold mt-4">
-          <o-checkbox v-model="hasLine" :disabled="!ok" />
+        <div class="mt-4 pb-2 text-sm font-bold">
+          <Checkbox v-model="hasLine" :disabled="!ok" />
           {{ $t("admin.line.enabled") }}
         </div>
 
@@ -89,45 +130,45 @@
           </t-button>
         </div>
       </div>
-      <o-modal
-        :width="488"
+      <t-modal
+        width="488"
         scroll="keep"
-        :on-cancel="closeImage"
+        @dismissed="closeImage"
         v-model:active="imagePopup"
       >
         <div class="bg-white p-4">
           <div v-if="iType == 'loginClientId'">
-            <div class="font-bold text-sm">
+            <div class="text-sm font-bold">
               LINEログインチャンネルのチャンネル基本設定のチャンネルIDをコピーして設定してください。
             </div>
-            <img src="//images/lines/lineLoginId.png" class="p-4" />
+            <img src="/images/lines/lineLoginId.png" class="p-4" />
           </div>
           <div v-if="iType == 'loginChannelSecret'">
-            <div class="font-bold text-sm">
+            <div class="text-sm font-bold">
               LINEログインチャンネルのチャンネル基本設定のチャンネルシークレットをコピーして設定してください。
             </div>
-            <img src="//images/lines/lineLoginHeader.png" class="p-4" />
+            <img src="/images/lines/lineLoginHeader.png" class="p-4" />
             <div class="bg-gray-200">
               {{ $t("admin.line.showBelow") }}
             </div>
-            <img src="//images/lines/lineLoginSecret.png" class="p-4" />
+            <img src="/images/lines/lineLoginSecret.png" class="p-4" />
           </div>
           <div v-if="iType == 'messagingAccessToken'">
-            <div class="font-bold text-sm">
+            <div class="text-sm font-bold">
               LINE Messaging APIのMessaging
               API設定のチャンネルアクセストークンをコピーして設定してください。
             </div>
-            <img src="//images/lines/lineMessageToken.png" class="p-4" />
-            <img src="//images/lines/lineMessageHeader.png" class="p-4" />
+            <img src="/images/lines/lineMessageToken.png" class="p-4" />
+            <img src="/images/lines/lineMessageHeader.png" class="p-4" />
           </div>
           <div v-if="iType == 'callback'">
-            <div class="font-bold text-sm">
+            <div class="text-sm font-bold">
               この値をコピーして、LINEログインチャンネルのLINEログイン設定の「コールバックURL」に設定してください。
             </div>
-            <img src="//images/lines/lineLoginCallback.png" class="p-4" />
+            <img src="/images/lines/lineLoginCallback.png" class="p-4" />
           </div>
         </div>
-      </o-modal>
+      </t-modal>
     </div>
   </div>
 </template>
@@ -139,6 +180,7 @@ import { checkShopAccount } from "@/utils/userPermission";
 import { useAdminUids, notFoundResponse } from "@/utils/utils";
 
 import NotFound from "@/components/NotFound.vue";
+import Checkbox from "@/components/form/checkbox.vue";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 
 import { db } from "@/lib/firebase/firebase9";
@@ -149,6 +191,7 @@ export default defineComponent({
   components: {
     AdminHeader,
     NotFound,
+    Checkbox,
   },
   props: {
     shopInfo: {

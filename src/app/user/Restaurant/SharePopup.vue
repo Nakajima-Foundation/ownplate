@@ -3,16 +3,16 @@
     <!-- Share  Buttons -->
     <a
       @click="openShare()"
-      class="inline-flex items-center justify-center cursor-pointer"
+      class="inline-flex cursor-pointer items-center justify-center"
     >
-      <i class="material-icons mr-2 text-lg text-op-teal">launch</i>
-      <div class="text-sm font-bold text-op-teal">
+      <i class="material-icons text-op-teal mr-2 text-lg">launch</i>
+      <div class="text-op-teal text-sm font-bold">
         {{ $t("shopInfo.share") }}
       </div>
     </a>
 
     <!-- Share Popup-->
-    <o-modal v-model:active="sharePopup" :width="488" scroll="keep">
+    <t-modal v-model:active="sharePopup" width="488" scroll="keep">
       <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
         <!-- Title -->
         <div class="text-xl font-bold text-black/40">
@@ -28,10 +28,10 @@
           <div class="flex-1">
             <span @click="copyClipboard(url)" class="cursor-pointer">
               <div class="inline-flex items-center justify-center">
-                <i class="material-icons mr-2 text-lg text-op-teal"
+                <i class="material-icons text-op-teal mr-2 text-lg"
                   >file_copy</i
                 >
-                <div class="text-sm font-bold text-op-teal">
+                <div class="text-op-teal text-sm font-bold">
                   {{ $t(isMenu ? "shopInfo.copyMenuUrl" : "shopInfo.copyUrl") }}
                 </div>
               </div>
@@ -68,7 +68,7 @@
           </a>
         </div>
       </div>
-    </o-modal>
+    </t-modal>
   </div>
 </template>
 

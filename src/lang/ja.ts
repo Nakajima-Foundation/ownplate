@@ -440,6 +440,7 @@ const data = {
     temporaryClosure: "臨時休業",
     temporaryClosureAdd: "追加",
     temporaryClosureDescription: "日にちを選択してから追加を押してください",
+    temporaryClosureOkay: "OK",
     temporaryClosureSelect: "日にちを選択",
     paymentMethod: "支払い方法",
     onlinePayment: "オンライン決済",
@@ -614,6 +615,8 @@ const data = {
     menu: "メニューページを見る",
     orderNotPlacedYet:
       "ご注文はまだ確定していません。内容を確認してページ下の注文ボタンを押してください。",
+    waitingPayment:
+      "ご注文はまだ確定していません。決済情報の入力し確定してください",
     yourOrder: "あなたの注文",
     confirmOrder: "ご注文の確認",
     editItems: "注文を変更する",
@@ -673,7 +676,6 @@ const data = {
     or: "もしくは",
     placeOrderNoPayment: "受け取り払いで注文",
     placeOrderNoPaymentNote: "ここで決済せずに商品受け取り時に支払います",
-    waitingPayment: "決済情報の入力・確認",
     submitPayment: "支払いを確定する",
     validating: "処理しています...",
     thankyou: "ご注文、ありがとうございます",
@@ -1112,6 +1114,7 @@ const data = {
       paymentCancelTitle: "カード決済のみキャンセル",
       paymentCancelMessage:
         "現地払いに変更となります。お客様にご連絡の上、現地払いになることをお伝え下さい。注文はキャンセルされません。",
+      waitingPaymentWarninig: "この注文は、決済未完了のため受付できません。",
       paymentCancel: "カード決済のみキャンセル",
       paymentCancelConfirm: "(キャンセルの取り消しは出来ません)",
       placedDate: "注文日",
@@ -1192,6 +1195,7 @@ const data = {
         "auth/unauthorized-continue-uri":
           "ドメインがホワイトリストに登録されていません。",
         "auth/internal-error": "パスワードが無効です。",
+        "auth/invalid-credential": "Email or Password is invalid.",
       },
     },
     index: {
@@ -1283,6 +1287,15 @@ const data = {
       friday: "金曜",
       saturday: "土曜",
       sunday: "日曜",
+    },
+    shortest: {
+      monday: "月",
+      tuesday: "火",
+      wednesday: "水",
+      thursday: "木",
+      friday: "金",
+      saturday: "土",
+      sunday: "日",
     },
   },
   allergens: {

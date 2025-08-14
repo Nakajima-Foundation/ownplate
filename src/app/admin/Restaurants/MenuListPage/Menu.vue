@@ -22,20 +22,17 @@
           </div>
 
           <div class="mr-4 pt-4">
-            <o-checkbox
-              :modelValue="soldOut"
-              @update:modelValue="soldOutToggle"
-            >
+            <Checkbox :modelValue="soldOut" @update:modelValue="soldOutToggle">
               <div v-if="soldOut" class="text-sm font-bold text-red-700">
                 {{ $t("admin.itemSoldOut") }}
               </div>
               <div v-else class="text-sm font-bold text-black/30">
                 {{ $t("admin.itemSoldOut") }}
               </div>
-            </o-checkbox>
+            </Checkbox>
           </div>
           <div class="mr-4 pt-4">
-            <o-checkbox
+            <Checkbox
               :modelValue="soldOutToday"
               @update:modelValue="soldOutTodayToggle"
             >
@@ -45,13 +42,13 @@
               <div v-else class="text-sm font-bold text-black/30">
                 {{ $t("admin.itemSoldOutToday") }}
               </div>
-            </o-checkbox>
+            </Checkbox>
           </div>
         </div>
 
         <!-- Item Details -->
         <a class="flow-root" @click="linkEdit">
-          <div class="float-right p-4 cursor-pointer">
+          <div class="float-right cursor-pointer p-4">
             <div v-if="image">
               <img
                 :src="image"
@@ -90,48 +87,48 @@
       <!-- Card Actions -->
       <div class="inline-flex space-x-2">
         <!-- Up -->
-        <o-button
+        <button
           :disabled="position === 'first'"
           @click="positionUp"
-          class="b-reset-tw"
+          class="cursor-pointer disabled:cursor-not-allowed disabled:opacity-25"
         >
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
-            <i class="material-icons text-lg text-op-teal">arrow_upward</i>
+            <i class="material-icons text-op-teal text-lg">arrow_upward</i>
           </div>
-        </o-button>
+        </button>
 
         <!-- Down -->
-        <o-button
+        <button
           :disabled="position === 'last'"
           @click="positionDown"
-          class="b-reset-tw"
+          class="cursor-pointer disabled:cursor-not-allowed disabled:opacity-25"
         >
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
-            <i class="material-icons text-lg text-op-teal">arrow_downward</i>
+            <i class="material-icons text-op-teal text-lg">arrow_downward</i>
           </div>
-        </o-button>
+        </button>
 
         <!-- Duplicate -->
-        <o-button @click="forkItem" class="b-reset-tw">
+        <button @click="forkItem" class="cursor-pointer">
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
-            <i class="material-icons text-lg text-op-teal">queue</i>
+            <i class="material-icons text-op-teal text-lg">queue</i>
           </div>
-        </o-button>
+        </button>
 
         <!-- Delete -->
-        <o-button @click="deleteItem" class="b-reset-tw">
+        <button @click="deleteItem" class="cursor-pointer">
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
             <i class="material-icons text-lg text-red-700">delete</i>
           </div>
-        </o-button>
+        </button>
       </div>
     </div>
   </div>
@@ -143,6 +140,7 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, updateDoc } from "firebase/firestore";
 
 import Price from "@/components/Price.vue";
+import Checkbox from "@/components/form/checkbox.vue";
 import LunchDinnerIcon from "@/app/user/Restaurant/LunchDinnerIcon.vue";
 
 import {
@@ -151,13 +149,15 @@ import {
   useRestaurantId,
 } from "@/utils/utils";
 
-import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
+import { useDialogStore } from "@/store/dialog";
 
 import { useRouter } from "vue-router";
 import moment from "moment-timezone";
 export default defineComponent({
   components: {
     Price,
+    Checkbox,
     LunchDinnerIcon,
   },
   props: {
@@ -176,8 +176,9 @@ export default defineComponent({
   },
   emits: ["toEditMode", "positionUp", "positionDown", "forkItem", "deleteItem"],
   setup(props, ctx) {
-    const store = useStore();
     const router = useRouter();
+    const generalStore = useGeneralStore();
+    const dialogStore = useDialogStore();
 
     const restaurantId = useRestaurantId();
 
@@ -194,11 +195,11 @@ export default defineComponent({
     };
 
     const soldOutToday = computed(() => {
-      const today = moment(store.state.date).format("YYYY-MM-DD");
+      const today = moment(generalStore.date).format("YYYY-MM-DD");
       return props.menuitem.soldOutToday === today; // = !soldOut;
     });
     const soldOutTodayToggle = (e: boolean) => {
-      const today = moment(store.state.date).format("YYYY-MM-DD");
+      const today = moment(generalStore.date).format("YYYY-MM-DD");
       const path = `restaurants/${restaurantId.value}/menus/${props.menuitem.id}`;
       if (e) {
         updateDoc(doc(db, path), { soldOutToday: today });
@@ -224,7 +225,7 @@ export default defineComponent({
       ctx.emit("forkItem", props.menuitem.id);
     };
     const deleteItem = () => {
-      store.commit("setAlert", {
+      dialogStore.setAlert({
         code: "editMenu.reallyDelete",
         callback: () => {
           ctx.emit("deleteItem", props.menuitem.id);

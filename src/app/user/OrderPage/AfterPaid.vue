@@ -34,10 +34,10 @@
 
       <!-- Cancel Button -->
       <div class="mt-4 mb-2 text-center">
-        <o-button
+        <button
           v-if="just_paid"
           @click="handleCancelPayment"
-          class="b-reset-tw"
+          class="cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
           :disabled="isCancelling"
         >
           <div class="inline-flex items-center justify-center">
@@ -48,7 +48,7 @@
               {{ $t("order.cancelOrder") }}
             </div>
           </div>
-        </o-button>
+        </button>
       </div>
     </div>
 
@@ -149,9 +149,9 @@
         <div class="mt-2 text-center">
           <router-link :to="menuPagePath">
             <div
-              class="inline-flex h-12 items-center justify-center rounded-full border-2 border-op-teal px-6 b-reset-tw"
+              class="border-op-teal inline-flex h-12 cursor-pointer items-center justify-center rounded-full border-2 px-6"
             >
-              <div class="text-base font-bold text-op-teal">
+              <div class="text-op-teal text-base font-bold">
                 {{ $t("order.menu") }}
               </div>
             </div>
@@ -231,7 +231,8 @@ import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { useRoute } from "vue-router";
-import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
+import { useDialogStore } from "@/store/dialog";
 import { useI18n } from "vue-i18n";
 
 export default defineComponent({
@@ -287,7 +288,8 @@ export default defineComponent({
   },
   setup(props) {
     const route = useRoute();
-    const store = useStore();
+    const generalStore = useGeneralStore();
+    const dialogStore = useDialogStore();
     const { d } = useI18n({ useScope: "global" });
 
     const orderId = route.params.orderId as string;
@@ -342,12 +344,12 @@ export default defineComponent({
       analyticsUtil.sendRedunded(props.orderInfo, orderId, props.shopInfo);
     };
     const handleCancelPayment = () => {
-      store.commit("setAlert", {
+      dialogStore.setAlert({
         code: "order.cancelOrderConfirm",
         callback: async () => {
           try {
             isCancelling.value = true;
-            store.commit("setLoading", true);
+            generalStore.setLoading(true);
             await stripeCancelIntent({
               restaurantId: restaurantId,
               orderId: orderId,
@@ -357,12 +359,12 @@ export default defineComponent({
           } catch (error) {
             // BUGBUG: Implement the error handling code here
             // console.error(error.message, error.details);
-            store.commit("setErrorMessage", {
+            dialogStore.setErrorMessage({
               code: "order.cancel",
               error,
             });
           } finally {
-            store.commit("setLoading", false);
+            generalStore.setLoading(false);
             isCancelling.value = false;
           }
         },

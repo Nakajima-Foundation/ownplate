@@ -29,15 +29,14 @@
 
     <div class="mt-4 flex lg:mt-0">
       <!-- Suspend Button -->
-      <o-button
-        tag="router-link"
+      <router-link
         :to="`/admin/restaurants/${restaurantId}/suspend`"
-        class="b-reset-tw"
+        class="cursor-pointer"
         v-if="showSuspend"
       >
         <div
           v-if="suspendUntil"
-          class="inline-flex h-9 items-center justify-center rounded-full bg-red-700/5 px-4 mr-4"
+          class="mr-4 inline-flex h-9 items-center justify-center rounded-full bg-red-700/5 px-4"
         >
           <i class="material-icons mr-2 text-lg text-red-700"
             >remove_shopping_cart</i
@@ -49,16 +48,16 @@
 
         <div
           v-else
-          class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4 mr-4"
+          class="mr-4 inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
         >
-          <i class="material-icons mr-2 text-lg text-op-teal"
+          <i class="material-icons text-op-teal mr-2 text-lg"
             >remove_shopping_cart</i
           >
-          <div class="text-sm font-bold text-op-teal">
+          <div class="text-op-teal text-sm font-bold">
             {{ $t("admin.order.suspendSettings") }}
           </div>
         </div>
-      </o-button>
+      </router-link>
       <!-- Notifications -->
       <div>
         <notification-index :shopInfo="shopInfo" />

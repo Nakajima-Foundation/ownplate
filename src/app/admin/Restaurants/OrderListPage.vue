@@ -24,8 +24,11 @@
         </div>
 
         <!-- Date -->
-        <div class="ml-6 mt-4 sm:ml-4">
-          <o-select v-model="dayIndex">
+        <div class="mt-4 ml-6 sm:ml-4">
+          <select
+            v-model="dayIndex"
+            class="mt-1 rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+          >
             <option
               v-for="day in lastSeveralDays"
               :value="day.index"
@@ -37,7 +40,7 @@
                 $t("date.today")
               }}</span>
             </option>
-          </o-select>
+          </select>
         </div>
       </div>
 
@@ -60,7 +63,7 @@
           ><div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
-            <div class="text-sm font-bold text-op-teal">
+            <div class="text-op-teal text-sm font-bold">
               {{ $t("admin.order.history") }}
             </div>
           </div></router-link
@@ -101,7 +104,7 @@ import {
 import { checkShopAccount } from "@/utils/userPermission";
 import { useAdminConfigToggle } from "@/utils/admin/Toggle";
 
-import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
 import { useRoute, useRouter } from "vue-router";
 import { useHead } from "@unhead/vue";
 
@@ -119,7 +122,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const store = useStore();
+    const generalStore = useGeneralStore();
     const route = useRoute();
     const router = useRouter();
 
@@ -246,7 +249,7 @@ export default defineComponent({
       return lastSeveralDays.value.reduce(
         (tmp: { [key: string]: string }, day) => {
           const count = (
-            store.state.orderObj[moment(day.date).format("YYYY-MM-DD")] || []
+            generalStore.orderObj[moment(day.date).format("YYYY-MM-DD")] || []
           ).length;
           if (count > 0) {
             tmp[moment(day.date).format("YYYY-MM-DD")] = "(" + count + ")";

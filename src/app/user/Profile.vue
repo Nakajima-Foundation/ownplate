@@ -36,9 +36,9 @@
         <div class="mt-12 text-center" v-if="!isLiffUser">
           <a
             @click.prevent="handleSignOut"
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4 cursor-pointer"
+            class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-black/5 px-4"
           >
-            <div class="text-sm font-bold text-op-teal">
+            <div class="text-op-teal text-sm font-bold">
               {{ $t("menu.signOut") }}
             </div>
           </a>

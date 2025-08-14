@@ -14,13 +14,17 @@
       </li>
     </ul>
     <div class="text-center">
-      <o-button @click="send" class="b-reset-tw" :disabled="sent || isLoading">
+      <button
+        @click="send"
+        class="cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+        :disabled="sent || isLoading"
+      >
         <div
           class="inline-flex h-9 items-center justify-center rounded-full border border-red-700 bg-white px-6 font-bold text-red-700"
         >
           {{ $t("admin.sendVerificationCode") }}
         </div>
-      </o-button>
+      </button>
     </div>
     <div class="mt-3 text-center text-sm font-bold text-red-700" v-if="sent">
       {{ $t("admin.verificationCodeSent") }}

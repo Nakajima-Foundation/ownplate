@@ -21,7 +21,8 @@
 
         <!-- approproate component under pages will be displayed -->
         <router-view v-if="isReadyToRender" />
-        <dialog-box :dialog="dialog" />
+        <dialog-box />
+        <dialog-tips />
       </div>
     </div>
 
@@ -60,22 +61,25 @@ import AppFooter from "@/components/App/Footer.vue";
 import NotificationBanner from "@/components/App/NotificationBanner.vue";
 import SideMenu from "@/components/App/SideMenu.vue";
 import DialogBox from "@/components/DialogBox.vue";
+import DialogTips from "@/components/DialogTips.vue";
 import AudioPlay from "@/components/AudioPlay.vue";
 import Loading from "@/components/Loading.vue";
 import { isDev, useUser, useRestaurantId } from "@/utils/utils";
 
 import * as Sentry from "@sentry/vue";
-import { ownPlateConfig } from "@/config/project";
 import { defaultHeader } from "@/config/header";
 
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import { useHead } from "@unhead/vue";
 
+import { useGeneralStore } from "../store";
+
 export default defineComponent({
   name: "App",
   components: {
     DialogBox,
+    DialogTips,
     AudioPlay,
     SideMenu,
     AppHeader,
@@ -88,6 +92,8 @@ export default defineComponent({
     let unregisterAuthObserver: null | Unsubscribe = null;
     let timerId: null | number = null;
     const store = useStore();
+    const generalStore = useGeneralStore();
+
     const route = useRoute();
 
     const user = useUser();
@@ -97,25 +103,21 @@ export default defineComponent({
 
     onMounted(() => {
       window.addEventListener("focus", () => {
-        store.commit("setActive", true);
+        generalStore.setActive(true);
       });
       window.addEventListener("blur", () => {
-        store.commit("setActive", false);
+        generalStore.setActive(false);
       });
     });
 
     const isLoading = computed(() => {
-      return store.state.isLoading;
-    });
-    const dialog = computed(() => {
-      return store.state.dialog;
+      return generalStore.isLoading;
     });
     const isReadyToRender = computed(() => {
       if (user.value !== undefined) {
         return true; // Firebase has already identified the user (or non-user)
       }
       if (route.path === `/r/${restaurantId.value}` || route.path === "/") {
-        // console.log("isReadyToRender: quick render activated");
         return true; // We are opening the restaurant page
       }
       return false;
@@ -139,7 +141,6 @@ export default defineComponent({
       });
     };
 
-    store.commit("setServerConfig", { region: ownPlateConfig.region });
     unregisterAuthObserver = onAuthStateChanged(auth, (fUser) => {
       if (fUser) {
         fUser
@@ -153,10 +154,8 @@ export default defineComponent({
               store.commit("setUser", fUser);
               store.commit("setCustomClaims", result.claims);
             }
-            // console.log(!!user.email ? "admin" : "customer");
           })
           .catch((error: any) => {
-            // console.error("getIdTokenResult", error);
             Sentry.captureException(error);
           });
         setUserProperties(analytics, {
@@ -165,7 +164,6 @@ export default defineComponent({
         setUserId(analytics, fUser.uid);
       } else {
         setUserProperties(analytics, { role: "anonymous" });
-        // console.log("authStateChanged: null");
         store.commit("setUser", null);
         store.commit("setCustomClaims", null);
       }
@@ -188,13 +186,14 @@ export default defineComponent({
       }
     }
 
+    let openTime = new Date();
     timerId = window.setInterval(() => {
-      const diff = (new Date() - store.state.openTime) / 1000; // second
+      const diff = (new Date() - openTime) / 1000; // second
       if (diff > 20 * 3600) {
-        store.commit("resetOpenTime");
+        openTime = new Date();
         location.reload();
       }
-      store.commit("updateDate");
+      generalStore.updateDate();
     }, 60 * 1000);
 
     watch(
@@ -223,12 +222,8 @@ export default defineComponent({
       enableSound,
       handleOpen,
       isReadyToRender,
-      dialog,
       isLoading,
     };
   },
 });
 </script>
-<style lang="scss">
-// ### Need this commentout for CSS parser bug. Don't remove.
-</style>

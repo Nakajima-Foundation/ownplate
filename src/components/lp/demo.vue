@@ -22,7 +22,7 @@
           ></iframe>
         </div>
         <div class="mt-2 inline-flex items-center">
-          <span class="ml-1 text-base font-bold text-op-teal">{{
+          <span class="text-op-teal ml-1 text-base font-bold">{{
             $t("lp.orderFlow")
           }}</span>
         </div>
@@ -40,7 +40,7 @@
           ></iframe>
         </div>
         <div class="mt-2 inline-flex items-center">
-          <span class="ml-1 text-base font-bold text-op-teal">{{
+          <span class="text-op-teal ml-1 text-base font-bold">{{
             $t("lp.flyerCreation")
           }}</span>
         </div>
@@ -58,7 +58,7 @@
           ></iframe>
         </div>
         <div class="mt-2 inline-flex items-center">
-          <span class="ml-1 text-base font-bold text-op-teal">{{
+          <span class="text-op-teal ml-1 text-base font-bold">{{
             $t("lp.cardPayment")
           }}</span>
         </div>

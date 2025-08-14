@@ -35,25 +35,25 @@
             {{ $t("admin.order.notSuspendAvailable") }}
           </div>
           <div v-else>
-            <o-button
+            <button
               v-for="time in availableTimes"
               :key="time.time"
               @click="handleSuspend(0, time.time)"
-              class="b-reset-tw mr-4 mb-4"
+              class="mr-4 mb-4 cursor-pointer"
             >
               <div
                 class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
               >
-                <i class="material-icons mr-2 text-lg text-op-teal"
+                <i class="material-icons text-op-teal mr-2 text-lg"
                   >alarm_off</i
                 >
-                <div class="text-sm font-bold text-op-teal">
+                <div class="text-op-teal text-sm font-bold">
                   {{
                     $t("admin.order.suspendUntil", { display: time.display })
                   }}
                 </div>
               </div>
-            </o-button>
+            </button>
 
             <div class="mt-4">
               <div
@@ -61,18 +61,18 @@
                 :key="k"
                 class="inline-flex"
               >
-                <o-button
+                <button
                   v-if="availableTimes.length > 0"
-                  class="b-reset-tw"
+                  class="cursor-pointer"
                   @click="handleSuspend(day, 24 * 60)"
                 >
                   <div
                     class="mr-4 mb-4 inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                   >
-                    <i class="material-icons mr-2 text-lg text-op-teal"
+                    <i class="material-icons text-op-teal mr-2 text-lg"
                       >alarm_off</i
                     >
-                    <div class="text-sm font-bold text-op-teal">
+                    <div class="text-op-teal text-sm font-bold">
                       <span v-if="day > 0">{{
                         $t("admin.order.suspendDayUntil", { display: day })
                       }}</span>
@@ -81,7 +81,7 @@
                       }}</span>
                     </div>
                   </div>
-                </o-button>
+                </button>
               </div>
             </div>
           </div>
@@ -98,16 +98,16 @@
           </div>
 
           <div class="mt-4">
-            <o-button class="b-reset-tw" @click="handleRemove">
+            <button class="cursor-pointer" @click="handleRemove">
               <div
                 class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
               >
-                <i class="material-icons mr-2 text-lg text-op-teal">alarm_on</i>
-                <div class="text-sm font-bold text-op-teal">
+                <i class="material-icons text-op-teal mr-2 text-lg">alarm_on</i>
+                <div class="text-op-teal text-sm font-bold">
                   {{ $t("admin.order.unsuspend") }}
                 </div>
               </div>
-            </o-button>
+            </button>
           </div>
         </div>
       </div>
@@ -133,7 +133,7 @@ import {
 import { usePickupTime } from "@/utils/pickup";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
-import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
 import { useI18n } from "vue-i18n";
 import { useHead } from "@unhead/vue";
 
@@ -148,8 +148,9 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props) {
-    const store = useStore();
+  emits: ["updateRestaurant"],
+  setup(props, ctx) {
+    const generalStore = useGeneralStore();
     const { d } = useI18n({ useScope: "global" });
 
     const restaurantId = useRestaurantId();
@@ -214,21 +215,23 @@ export default defineComponent({
       if (day && day > 0) {
         tmpDate.setDate(tmpDate.getDate() + day);
       }
-      store.commit("setLoading", true);
+      generalStore.setLoading(true);
       const timeStamp = Timestamp.fromDate(tmpDate);
       await updateDoc(doc(db, `restaurants/${restaurantId.value}`), {
         suspendUntil: timeStamp,
       });
-      store.commit("setLoading", false);
+      generalStore.setLoading(false);
       suspendUntil.value = getSuspend(timeStamp);
+      ctx.emit("updateRestaurant");
     };
     const handleRemove = async () => {
-      store.commit("setLoading", true);
+      generalStore.setLoading(true);
       await updateDoc(doc(db, `restaurants/${restaurantId.value}`), {
         suspendUntil: null,
       });
-      store.commit("setLoading", false);
+      generalStore.setLoading(false);
       suspendUntil.value = null;
+      ctx.emit("updateRestaurant");
     };
     return {
       date,

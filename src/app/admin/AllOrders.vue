@@ -21,7 +21,10 @@
 
       <!-- Order Status -->
       <div class="mx-6 mt-4">
-        <o-select v-model="orderState">
+        <select
+          v-model="orderState"
+          class="mt-1 rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+        >
           <option
             v-for="status in orderStatus"
             :value="status.index"
@@ -29,7 +32,7 @@
           >
             {{ status.key ? $t("order.status." + status.key) : "----" }}
           </option>
-        </o-select>
+        </select>
       </div>
 
       <!-- Orders -->
@@ -47,15 +50,15 @@
 
       <!-- More -->
       <div class="mx-6 mt-2 text-center">
-        <o-button @click="nextLoad" class="b-reset-tw">
+        <button @click="nextLoad" class="cursor-pointer">
           <div
             class="inline-flex h-9 w-48 items-center justify-center rounded-full bg-black/5 px-4"
           >
-            <div class="text-sm font-bold text-op-teal">
+            <div class="text-op-teal text-sm font-bold">
               {{ $t("admin.order.more") }}
             </div>
           </div>
-        </o-button>
+        </button>
       </div>
 
       <!-- Download -->
@@ -66,16 +69,16 @@
           :fieldNames="fieldNames"
           :fileName="fileName"
         >
-          <o-button class="b-reset-tw">
+          <button class="cursor-pointer">
             <div
               class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
             >
-              <i class="material-icons mr-2 text-lg text-op-teal">save_alt</i>
-              <div class="text-sm font-bold text-op-teal">
+              <i class="material-icons text-op-teal mr-2 text-lg">save_alt</i>
+              <div class="text-op-teal text-sm font-bold">
                 {{ $t("admin.report.download-csv-all") }}
               </div>
             </div>
-          </o-button>
+          </button>
         </download-csv>
       </div>
     </div>

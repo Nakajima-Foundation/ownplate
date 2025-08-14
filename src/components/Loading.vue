@@ -2,11 +2,11 @@
   <div class="fixed inset-0 z-50 flex items-center justify-center bg-white/70">
     <div
       role="status"
-      class="absolute -translate-x-1/2 -translate-y-1/2 top-2/4 left-1/2"
+      class="absolute top-2/4 left-1/2 -translate-x-1/2 -translate-y-1/2"
     >
       <svg
         aria-hidden="true"
-        class="w-20 h-20 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+        class="fill-op-teal/80 h-20 w-20 animate-spin text-gray-200 dark:text-gray-600"
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

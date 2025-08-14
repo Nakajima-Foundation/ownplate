@@ -32,7 +32,10 @@
 
       <!-- Date -->
       <div class="mx-6 mt-4">
-        <o-select v-model="monthIndex">
+        <select
+          v-model="monthIndex"
+          class="mt-1 mt-2 rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+        >
           <option
             v-for="day in lastSeveralMonths"
             :value="day.index"
@@ -40,7 +43,7 @@
           >
             {{ moment(day.date).format("YYYY-MM") }}
           </option>
-        </o-select>
+        </select>
       </div>
 
       <!-- Table -->
@@ -167,16 +170,16 @@
           :fieldNames="fieldNames"
           :fileName="fileNameSummary"
         >
-          <o-button class="b-reset-tw">
+          <button class="cursor-pointer">
             <div
               class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
             >
-              <i class="material-icons mr-2 text-lg text-op-teal">save_alt</i>
-              <div class="text-sm font-bold text-op-teal">
+              <i class="material-icons text-op-teal mr-2 text-lg">save_alt</i>
+              <div class="text-op-teal text-sm font-bold">
                 {{ $t("admin.report.download-csv") }}
               </div>
             </div>
-          </o-button>
+          </button>
         </download-csv>
       </div>
 

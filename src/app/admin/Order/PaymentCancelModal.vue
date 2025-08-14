@@ -15,9 +15,9 @@
       <div>
         <a
           :href="nationalPhoneURI"
-          class="inline-flex h-12 items-center justify-center rounded-full border-2 border-op-teal px-6"
+          class="border-op-teal inline-flex h-12 items-center justify-center rounded-full border-2 px-6"
         >
-          <div class="text-base font-bold text-op-teal">
+          <div class="text-op-teal text-base font-bold">
             {{ nationalPhoneNumber }}
           </div>
         </a>
@@ -29,10 +29,10 @@
 
     <!-- Cancel -->
     <div class="mt-4 text-center">
-      <o-button
-        :loading="updating"
+      <button
+        :disabled="updating"
         @click="handlePaymentCancel"
-        class="b-reset-tw"
+        class="ml-2 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
       >
         <div
           class="inline-flex h-12 items-center justify-center rounded-full bg-red-700 px-6"
@@ -41,7 +41,7 @@
             {{ $t("admin.order.paymentCancel") }}
           </div>
         </div>
-      </o-button>
+      </button>
       <div class="mt-2 text-sm font-bold text-red-700">
         {{ $t("admin.order.paymentCancelConfirm") }}
       </div>
@@ -66,8 +66,9 @@
 import { defineComponent, ref } from "vue";
 import { stripePaymentCancelIntent } from "@/lib/firebase/functions";
 
-import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
 import { useRouter } from "vue-router";
+import { useDialogStore } from "@/store/dialog";
 
 export default defineComponent({
   props: {
@@ -99,14 +100,15 @@ export default defineComponent({
   emits: ["close"],
   setup(props, ctx) {
     const router = useRouter();
-    const store = useStore();
+    const generalStore = useGeneralStore();
+    const dialogStore = useDialogStore();
 
     const updating = ref(false);
     const handlePaymentCancel = async () => {
       console.log("handlePaymentCancel");
 
       try {
-        store.commit("setLoading", true);
+        generalStore.setLoading(true);
         updating.value = true;
         const { data } = await stripePaymentCancelIntent({
           restaurantId: props.shopInfo.restaurantId,
@@ -116,13 +118,13 @@ export default defineComponent({
         router.push(props.parentUrl);
       } catch (error: any) {
         console.error(error.message, error.details);
-        store.commit("setErrorMessage", {
+        dialogStore.setErrorMessage({
           code: "stripe.cancel",
           error,
         });
       } finally {
         updating.value = false;
-        store.commit("setLoading", false);
+        generalStore.setLoading(false);
       }
     };
 

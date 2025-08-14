@@ -80,7 +80,7 @@
         <div
           v-for="(message, k) in messages"
           :key="k"
-          class="rounded-lg border-2 border-solid border-op-teal p-6"
+          class="border-op-teal rounded-lg border-2 border-solid p-6"
         >
           <MessageCard :message="message" />
         </div>
@@ -114,21 +114,21 @@
               class="rounded-lg border-2 border-solid border-red-700 bg-white p-6"
             >
               <a name="addRestaurant" />
-              <div class="text-center text-base font-bold text-op-teal">
+              <div class="text-op-teal text-center text-base font-bold">
                 {{ $t("admin.addYourRestaurant") }}
               </div>
 
               <div class="mt-4 text-center">
-                <o-button @click="handleNew" class="b-reset-tw">
+                <button @click="handleNew" class="cursor-pointer">
                   <div
                     class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                   >
-                    <i class="material-icons mr-2 text-lg text-op-teal">add</i>
-                    <span class="text-sm font-bold text-op-teal">{{
+                    <i class="material-icons text-op-teal mr-2 text-lg">add</i>
+                    <span class="text-op-teal text-sm font-bold">{{
                       $t("admin.addNewRestaurant")
                     }}</span>
                   </div>
-                </o-button>
+                </button>
               </div>
             </div>
           </div>
@@ -139,7 +139,7 @@
             <div v-if="isOwner && restaurantLists.length > 1" class="mb-2">
               <router-link to="/admin/orders">
                 <div
-                  class="flex h-14 items-center justify-center rounded-full bg-black/5 px-4 text-op-teal"
+                  class="text-op-teal flex h-14 items-center justify-center rounded-full bg-black/5 px-4"
                 >
                   <span class="text-base font-bold">{{
                     $t("admin.viewAllOrders")
@@ -149,48 +149,59 @@
             </div>
 
             <a name="addMenu" />
-            <div
-              v-for="(restaurantId, index) in restaurantLists"
-              :key="restaurantId"
-            >
-              <a :id="'restaurant_' + restaurantId" />
-              <restaurant
-                v-if="restaurantItems[restaurantId]"
-                :simpleMode="simpleMode"
-                :shopInfo="restaurantItems[restaurantId]"
-                :restaurantid="restaurantId"
-                :numberOfMenus="
-                  restaurantItems[restaurantId].numberOfMenus || 0
-                "
-                :numberOfOrders="numberOfOrderObj[restaurantId] || 0"
-                :lineEnable="lines[restaurantId] || false"
-                :shopOwner="shopOwner"
-                :position="
-                  index == 0
-                    ? 'first'
-                    : restaurantLists.length - 1 === index
-                      ? 'last'
-                      : ''
-                "
-                @positionUp="positionUp($event)"
-                @positionDown="positionDown($event)"
-                @deleteFromRestaurantLists="deleteFromRestaurantLists($event)"
-                :isOwner="isOwner"
-              />
-            </div>
 
+            <TransitionGroup
+              name="restaurant-list"
+              tag="div"
+              class="space-y-2"
+              enter-active-class="transition-all duration-600 ease-out"
+              enter-from-class="opacity-0 translate-y-2 scale-95"
+              leave-active-class="transition-all duration-600 ease-in"
+              leave-to-class="opacity-0 translate-y-2 scale-95"
+              move-class="transition-all duration-600 ease-in-out"
+            >
+              <div
+                v-for="(restaurantId, index) in restaurantLists"
+                :key="restaurantId"
+              >
+                <a :id="'restaurant_' + restaurantId" />
+                <restaurant
+                  v-if="restaurantItems[restaurantId]"
+                  :simpleMode="simpleMode"
+                  :shopInfo="restaurantItems[restaurantId]"
+                  :restaurantid="restaurantId"
+                  :numberOfMenus="
+                    restaurantItems[restaurantId].numberOfMenus || 0
+                  "
+                  :numberOfOrders="numberOfOrderObj[restaurantId] || 0"
+                  :lineEnable="lines[restaurantId] || false"
+                  :shopOwner="shopOwner"
+                  :position="
+                    index == 0
+                      ? 'first'
+                      : restaurantLists.length - 1 === index
+                        ? 'last'
+                        : ''
+                  "
+                  @positionUp="positionUp($event)"
+                  @positionDown="positionDown($event)"
+                  @deleteFromRestaurantLists="deleteFromRestaurantLists($event)"
+                  :isOwner="isOwner"
+                />
+              </div>
+            </TransitionGroup>
             <!-- Add Restaurant -->
             <div v-if="existsRestaurant && isOwner" class="mt-4 text-center">
-              <o-button @click="handleNew" class="b-reset-tw">
+              <button @click="handleNew" class="cursor-pointer">
                 <div
                   class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                 >
-                  <i class="material-icons mr-2 text-lg text-op-teal">add</i>
-                  <span class="text-sm font-bold text-op-teal">{{
+                  <i class="material-icons text-op-teal mr-2 text-lg">add</i>
+                  <span class="text-op-teal text-sm font-bold">{{
                     $t("admin.addNewRestaurant")
                   }}</span>
                 </div>
-              </o-button>
+              </button>
             </div>
           </div>
         </div>
@@ -218,7 +229,7 @@
       </div>
       <!-- End of Right Section -->
     </div>
-    <div class="mt-2 bg-ownplate-yellow p-4">
+    <div class="bg-ownplate-yellow mt-2 p-4">
       <!-- Footer -->
       <IndexFooter />
     </div>
@@ -280,7 +291,7 @@ import { checkAdminPermission } from "@/utils/userPermission";
 
 import { useAdminConfigToggle } from "@/utils/admin/Toggle";
 
-import { useStore } from "vuex";
+import { useDialogStore } from "@/store/dialog";
 import { useRouter } from "vue-router";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
@@ -306,7 +317,7 @@ export default defineComponent({
     ToggleSwitch,
   },
   setup() {
-    const store = useStore();
+    const dialogStore = useDialogStore();
     const router = useRouter();
 
     const readyToDisplay = ref(false);
@@ -540,7 +551,7 @@ export default defineComponent({
 
           router.push(`/admin/restaurants/${newDoc.id}`);
         } catch (error) {
-          store.commit("setErrorMessage", {});
+          dialogStore.setErrorMessage({});
           console.log(error);
         }
       }

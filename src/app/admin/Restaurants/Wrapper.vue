@@ -13,7 +13,7 @@
               {{ part.name }}
             </span>
           </div>
-          <div class="text-right font-bold cursor-pointer" v-if="part.ask">
+          <div class="cursor-pointer text-right font-bold" v-if="part.ask">
             <a href="#" @click="openContact()">サポート問い合わせ</a>
           </div>
         </div>
@@ -22,13 +22,14 @@
       <router-view
         :shopInfo="shopInfo"
         v-if="noRestaurant === false"
+        @updateRestaurant="updateRestaurant"
       ></router-view>
       <NotificationWatcher :notificationConfig="notificationConfig" />
       <SoundConfigWatcher :notificationConfig="notificationConfig" />
       <NewOrderWatcher :notificationConfig="notificationConfig" />
-      <o-modal v-model:active="isOpen" :width="488">
+      <t-modal v-model:active="isOpen" width="488">
         <PartnersContact :id="(partner[0] || {}).id" />
-      </o-modal>
+      </t-modal>
     </div>
   </div>
 </template>
@@ -95,7 +96,7 @@ export default defineComponent({
     const defaultTax = regionalSetting.defaultTax || {};
 
     const restaurantRef = doc(db, `restaurants/${restaurantId.value}`);
-    (async () => {
+    const updateRestaurant = async () => {
       const restaurant = await getDoc(restaurantRef);
       if (!restaurant || !restaurant.exists()) {
         noRestaurant.value = true;
@@ -113,7 +114,8 @@ export default defineComponent({
       }
       shopInfo.value = loadShopInfo;
       noRestaurant.value = false;
-    })();
+    };
+    updateRestaurant();
 
     const notification_detacher = ref();
     notification_detacher.value = onSnapshot(
@@ -160,6 +162,7 @@ export default defineComponent({
 
       shopInfo,
       noRestaurant,
+      updateRestaurant,
     };
   },
 });

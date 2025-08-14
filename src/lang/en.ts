@@ -444,6 +444,7 @@ const data = {
     temporaryClosure: "Temporary Closure",
     temporaryClosureAdd: "Add",
     temporaryClosureDescription: "Please select a date and then press Add",
+    temporaryClosureOkay: "OK",
     temporaryClosureSelect: "Select a date",
     paymentMethod: "Payment Method",
     onlinePayment: "Online Payment",
@@ -1117,6 +1118,8 @@ const data = {
       paymentCancelTitle: "Cancel only card payment",
       paymentCancelMessage:
         "It will be changed to payment in the restaurant. Please contact the customer and let them know that you will be paying in the restaurant. The order will not be cancelled.",
+      waitingPaymentWarninig:
+        "This order cannot be accepted as payment has not been completed.",
       paymentCancel: "Cancel only card payment",
       paymentCancelConfirm: "(This action is undoable)",
       placedDate: "Date of order",
@@ -1197,6 +1200,7 @@ const data = {
           "The email or the password is invalid.",
         "auth/unauthorized-continue-uri": "Domain not whitelisted by project",
         "auth/internal-error": "Password is invalid.",
+        "auth/invalid-credential": "Email or Password is invalid.",
       },
     },
     index: {
@@ -1291,6 +1295,15 @@ const data = {
       friday: "Fri",
       saturday: "Sat",
       sunday: "Sun",
+    },
+    shortest: {
+      monday: "M",
+      tuesday: "T",
+      wednesday: "W",
+      thursday: "T",
+      friday: "F",
+      saturday: "S",
+      sunday: "S",
     },
   },
   allergens: {

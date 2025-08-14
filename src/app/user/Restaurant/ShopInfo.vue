@@ -10,8 +10,8 @@
       <div class="mx-4 mt-4 pb-2">
         <a target="_blank" :href="mapQuery">
           <div class="inline-flex items-center justify-center">
-            <i class="material-icons mr-2 text-lg text-op-teal">place</i>
-            <div class="text-sm font-bold text-op-teal">
+            <i class="material-icons text-op-teal mr-2 text-lg">place</i>
+            <div class="text-op-teal text-sm font-bold">
               <div v-if="region === 'JP'">
                 〒{{ shopInfo.zip }} {{ shopInfo.state }}
                 {{ shopInfo.city }}
@@ -34,8 +34,8 @@
         <template v-if="phoneUrl">
           <a :href="phoneUrl">
             <div class="inline-flex items-center justify-center">
-              <i class="material-icons mr-2 text-lg text-op-teal">phone</i>
-              <div class="text-sm font-bold text-op-teal">
+              <i class="material-icons text-op-teal mr-2 text-lg">phone</i>
+              <div class="text-op-teal text-sm font-bold">
                 {{ nationalPhoneNumber }}
               </div>
             </div>
@@ -74,9 +74,9 @@
       <div class="mt-4 text-center">
         <a
           @click="toggleMoreInfo()"
-          class="inline-flex h-9 w-32 items-center justify-center rounded-full bg-black/5 cursor-pointer"
+          class="inline-flex h-9 w-32 cursor-pointer items-center justify-center rounded-full bg-black/5"
         >
-          <div class="text-sm font-bold text-op-teal">
+          <div class="text-op-teal text-sm font-bold">
             <template v-if="moreInfo">{{ $t("shopInfo.viewLess") }}</template>
             <template v-else>{{ $t("shopInfo.viewMore") }}</template>
           </div>
@@ -101,15 +101,15 @@
             class="inline-flex items-center justify-center"
             rel="noopener noreferrer"
           >
-            <div class="text-sm font-bold text-op-teal">
+            <div class="text-op-teal text-sm font-bold">
               {{ $t("shopInfo.visitWebsite") }}
             </div>
-            <i class="material-icons ml-1 text-lg text-op-teal">launch</i>
+            <i class="material-icons text-op-teal ml-1 text-lg">launch</i>
           </a>
         </div>
 
         <!-- Restaurant Social Link -->
-        <div class="inline-flex items-center justify-center my-2">
+        <div class="my-2 inline-flex items-center justify-center">
           <!-- Restaurant LINE -->
           <div v-if="hasLineUrl" class="mt-2">
             <a
@@ -142,7 +142,7 @@
               :href="shopInfo.uberEatsUrl"
               rel="noopener noreferrer"
             >
-              <i><img src="/uber_eats_icon.svg" class="w-14 -ml-2" /></i>
+              <i><img src="/uber_eats_icon.svg" class="-ml-2 w-14" /></i>
             </a>
           </div>
         </div>

@@ -10,11 +10,11 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, watch } from "vue";
-import { useStore } from "vuex";
+import { useGeneralStore } from "../../store";
 
 export default defineComponent({
   setup() {
-    const store = useStore();
+    const generalStore = useGeneralStore();
 
     const isFlash = ref(false);
 
@@ -30,7 +30,7 @@ export default defineComponent({
     };
 
     const event = computed(() => {
-      return store.state.orderEvent;
+      return generalStore.orderEvent;
     });
     watch(event, () => {
       flash();

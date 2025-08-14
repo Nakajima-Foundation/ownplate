@@ -4,10 +4,10 @@
     <div class="mx-6 mt-4">
       <router-link :to="menuPagePath">
         <div
-          class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4 b-reset-tw"
+          class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-black/5 px-4"
         >
-          <i class="material-icons mr-2 text-lg text-op-teal">arrow_back</i>
-          <div class="text-sm font-bold text-op-teal">
+          <i class="material-icons text-op-teal mr-2 text-lg">arrow_back</i>
+          <div class="text-op-teal text-sm font-bold">
             {{ $t("button.back") }}
           </div>
         </div>
@@ -73,21 +73,20 @@
                 :isPayingError="isPayingError"
               ></stripe-card>
               <div class="mt-4 text-center">
-                <o-button
-                  :disabled="isPaying || !cardState.complete"
+                <button
+                  :disabled="!cardState.complete"
                   @click="handlePayment()"
-                  class="b-reset-tw"
+                  class="cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   <div
-                    class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal px-6 shadow-sm"
+                    class="bg-op-teal inline-flex h-16 items-center justify-center rounded-full px-6 shadow-sm"
                     style="min-width: 288px"
                   >
-                    <ButtonLoading v-if="isPaying" />
                     <div class="text-xl font-bold text-white">
                       {{ $t("order.submitPayment") }}
                     </div>
                   </div>
-                </o-button>
+                </button>
                 <div
                   v-if="stripeSmallPayment"
                   class="mt-2 text-sm font-bold text-red-700"
@@ -113,8 +112,6 @@ import OrderInfo from "@/app/user/OrderPage/OrderInfo.vue";
 import StripeCard from "@/app/user/OrderPage/BeforePaid/StripeCard.vue";
 import BeforePaidAlert from "@/app/user/OrderPage/BeforePaid/BeforePaidAlert.vue";
 
-import ButtonLoading from "@/components/form/Loading.vue";
-
 import { orderPay } from "@/lib/firebase/functions";
 
 import { OrderInfoData } from "@/models/orderInfo";
@@ -122,7 +119,9 @@ import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
-import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
+import { useCartStore } from "@/store/cart";
+import { useDialogStore } from "@/store/dialog";
 import { useRoute } from "vue-router";
 
 export default defineComponent({
@@ -131,8 +130,6 @@ export default defineComponent({
     ShopHeader,
 
     OrderInfo,
-
-    ButtonLoading,
 
     // before paid
     StripeCard,
@@ -165,11 +162,12 @@ export default defineComponent({
   },
   setup(props) {
     const route = useRoute();
-    const store = useStore();
+    const generalStore = useGeneralStore();
+    const cartStore = useCartStore();
+    const dialogStore = useDialogStore();
 
     const restaurantId = route.params.restaurantId as string;
 
-    const isPaying = ref(false);
     const isPayingError = ref(false);
 
     const cardState = ref({});
@@ -223,11 +221,11 @@ export default defineComponent({
     const handlePayment = async () => {
       try {
         isPayingError.value = false;
-        isPaying.value = true;
+        generalStore.setLoading(true);
         const pay = await stripeRef.value.processPayment();
         if (pay.error) {
           isPayingError.value = true;
-          isPaying.value = false;
+          generalStore.setLoading(false);
           return;
         }
         await orderPay({
@@ -237,22 +235,21 @@ export default defineComponent({
         });
 
         sendPurchase();
-        store.commit("resetCart", restaurantId);
+        cartStore.resetCart(restaurantId);
         window.scrollTo(0, 0);
       } catch (error: any) {
         console.error(error.message, error.details);
-        store.commit("setErrorMessage", {
+        dialogStore.setErrorMessage({
           code: "order.place",
           error,
-        });
+        } as any);
       } finally {
-        isPaying.value = false;
+        generalStore.setLoading(false);
       }
     };
 
     return {
       // ref
-      isPaying,
       isPayingError,
       cardState,
 

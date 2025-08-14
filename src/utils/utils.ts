@@ -31,6 +31,7 @@ import isLatLong from "validator/lib/isLatLong";
 
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
+import { useGeneralStore } from "../store";
 import i18n from "@/lib/vue-i18n";
 
 export const isNull = <T>(value: T) => {
@@ -183,9 +184,9 @@ export const cleanObject = (obj: { [key: string]: any }) => {
 */
 
 export const useSoundPlay = () => {
-  const store = useStore();
+  const generalStore = useGeneralStore();
   return (reason?: string) => {
-    store.commit("pingOrderEvent");
+    generalStore.pingOrderEvent();
     if (reason) {
       console.log("order: call play: " + reason);
     } else {

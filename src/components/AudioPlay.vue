@@ -5,16 +5,16 @@
 </template>
 <script lang="ts">
 import { defineComponent, ref, computed, watch } from "vue";
-import { useStore } from "vuex";
+import { useGeneralStore } from "../store";
 
 export default defineComponent({
   setup() {
-    const store = useStore();
+    const generalStore = useGeneralStore();
 
     const playedSilent = ref(false);
     const audioRef = ref();
     const soundFile = computed(() => {
-      return store.state.soundFile;
+      return generalStore.soundFile;
     });
 
     const enableSound = async () => {
@@ -27,7 +27,7 @@ export default defineComponent({
           await audioRef.value.play();
 
           playedSilent.value = true;
-          store.commit("soundEnable");
+          generalStore.setSoundEnable();
         } catch (e) {
           console.log(e);
           console.log("error");
@@ -44,12 +44,12 @@ export default defineComponent({
       }
     };
     const event = computed(() => {
-      return store.state.orderEvent;
+      return generalStore.orderEvent;
     });
     watch(event, async () => {
       await play();
       console.log(
-        `soundEnable = ${store.state.soundEnable}, soundOn=${store.state.soundOn}, soundFile=${store.state.soundFile}`,
+        `soundEnable = ${generalStore.soundEnable}, soundOn=${generalStore.soundOn}, soundFile=${generalStore.soundFile}`,
       );
     });
     return {

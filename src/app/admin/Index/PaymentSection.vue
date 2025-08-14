@@ -14,7 +14,7 @@
         class="mb-6 border-b-2 border-solid border-black/10 pb-4"
       >
         <div class="mt-2 rounded-lg bg-red-700/5 px-4 py-2">
-          <span class="text-sm font-bold leading-none text-red-700">
+          <span class="text-sm leading-none font-bold text-red-700">
             {{ $t("admin.payments.required") }}
           </span>
         </div>
@@ -38,7 +38,7 @@
           <div class="mt-2 text-center">
             <a
               @click="handleLinkStripe"
-              class="cursor-pointer inline-flex h-12 items-center rounded-full bg-op-teal px-8 shadow-sm"
+              class="bg-op-teal inline-flex h-12 cursor-pointer items-center rounded-full px-8 shadow-sm"
               ><span class="text-base font-bold text-white">{{
                 $t("admin.payments.connectStripe")
               }}</span></a
@@ -56,8 +56,8 @@
             <a
               :href="dashboard"
               target="stripe"
-              class="inline-flex h-12 items-center rounded-full border-2 border-op-teal px-6"
-              ><span class="text-base font-bold text-op-teal">{{
+              class="border-op-teal inline-flex h-12 items-center rounded-full border-2 px-6"
+              ><span class="text-op-teal text-base font-bold">{{
                 $t("admin.payments.openDashboard")
               }}</span></a
             >
@@ -66,7 +66,7 @@
           <div class="mt-4 text-center">
             <a
               @click="handlePaymentAccountDisconnect"
-              class="cursor-pointer inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
+              class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-black/5 px-4"
             >
               <i class="material-icons mr-2 text-lg text-red-700">link_off</i>
               <span class="text-sm font-bold text-red-700">{{
@@ -92,9 +92,9 @@
         </div>
 
         <div class="mt-5 text-center font-bold text-black/60">
-          <o-checkbox v-model="inStorePayment">
+          <Checkbox v-model="inStorePayment">
             {{ $t("admin.payments.enableOnsitePayment") }}
-          </o-checkbox>
+          </Checkbox>
         </div>
       </div>
     </div>
@@ -110,24 +110,33 @@ import {
   watch,
   computed,
 } from "vue";
+import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
+import { useRoute, useRouter } from "vue-router";
+import { useDialogStore } from "@/store/dialog";
+
 import { db } from "@/lib/firebase/firebase9";
 import { doc, onSnapshot, Unsubscribe, setDoc } from "firebase/firestore";
 import { stripeConnect, stripeDisconnect } from "@/lib/firebase/functions";
 import { ownPlateConfig } from "@/config/project";
 import { parse } from "cookie";
 
-import { useStore } from "vuex";
-import { useRoute, useRouter } from "vue-router";
 import { PaymentInfo } from "@/models/paymentInfo";
+import Checkbox from "@/components/form/checkbox.vue";
 
 const client_id = ownPlateConfig.stripe.clientId;
 
 export default defineComponent({
+  components: {
+    Checkbox,
+  },
   emits: ["updateUnsetWarning"],
   setup(_, context) {
     const store = useStore();
+    const generalStore = useGeneralStore();
     const route = useRoute();
     const router = useRouter();
+    const dialogStore = useDialogStore();
 
     const paymentInfo = ref<PaymentInfo>({}); // { stripe, inStore, ... }
     let stripe_connnect_detacher: Unsubscribe | null = null;
@@ -140,18 +149,18 @@ export default defineComponent({
         const cookies = parse(document.cookie);
         //console.log("mounted", code, state, cookies.stripe_state);
         if (state === cookies?.stripe_state) {
-          store.commit("setLoading", true);
+          generalStore.setLoading(true);
           try {
             const { data } = await stripeConnect({ code });
             console.log(data);
           } catch (error: any) {
             console.error(error);
-            store.commit("setErrorMessage", {
+            dialogStore.setErrorMessage({
               code: "stripe.connect",
               error,
             });
           } finally {
-            store.commit("setLoading", false);
+            generalStore.setLoading(false);
             router.replace(location.pathname);
           }
         }
@@ -224,21 +233,21 @@ export default defineComponent({
       location.href = `https://connect.stripe.com/oauth/authorize?${queryString}`;
     };
     const handlePaymentAccountDisconnect = () => {
-      store.commit("setAlert", {
+      dialogStore.setAlert({
         code: "admin.payments.reallyDisconnectStripe",
         callback: async () => {
           try {
-            store.commit("setLoading", true);
+            generalStore.setLoading(true);
             await stripeDisconnect();
             // TODO: show connected view
           } catch (error: any) {
             console.error(error, error.details);
-            store.commit("setErrorMessage", {
+            dialogStore.setErrorMessage({
               code: "stripe.disconnect",
               error,
-            });
+            } as any);
           } finally {
-            store.commit("setLoading", false);
+            generalStore.setLoading(false);
           }
         },
       });

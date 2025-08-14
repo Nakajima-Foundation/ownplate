@@ -38,30 +38,28 @@
           </t-button>
         </div>
 
-        <div class="rounded-lg bg-black/5 p-4 mt-4">
+        <div class="mt-4 rounded-lg bg-black/5 p-4">
           <div class="text-sm font-bold">
-            <o-checkbox
-              rootClass="base-o-input-root"
-              v-model="enableDelivery"
-            />{{
-              $t(
-                "delivery.enableDelivery",
-                { name: shopInfo.restaurantName },
-                0,
-              )
-            }}
+            <Checkbox class="pr-2" v-model="enableDelivery"
+              >{{
+                $t(
+                  "delivery.enableDelivery",
+                  { name: shopInfo.restaurantName },
+                  0,
+                )
+              }}
+            </Checkbox>
           </div>
           <div class="text-sm font-bold">
-            <o-checkbox
-              rootClass="base-o-input-root"
-              v-model="deliveryOnlyStore"
-            />{{
-              $t(
-                "delivery.deliveryOnlyStore",
-                { name: shopInfo.restaurantName },
-                0,
-              )
-            }}
+            <Checkbox class="pr-2" v-model="deliveryOnlyStore"
+              >{{
+                $t(
+                  "delivery.deliveryOnlyStore",
+                  { name: shopInfo.restaurantName },
+                  0,
+                )
+              }}
+            </Checkbox>
           </div>
         </div>
 
@@ -73,12 +71,13 @@
 
           <div>
             <div class="flex pb-2 text-sm font-bold">
-              <o-checkbox
-                rootClass="base-o-input-root"
+              <Checkbox
+                class="pr-2"
                 v-model="enableAreaMap"
                 :disabled="!enableDelivery"
-              />
-              {{ $t("delivery.setAreaMap") }}
+              >
+                {{ $t("delivery.setAreaMap") }}
+              </Checkbox>
             </div>
             <div>
               <span>{{ $t("delivery.setAreaMapNotice") }}</span>
@@ -95,12 +94,12 @@
               ></div>
             </div>
             <div class="mt-2 flex">
-              <span class="flex-item mt-auto mb-auto mr-2 inline-block">
+              <span class="flex-item mt-auto mr-2 mb-auto inline-block">
                 {{ $t("delivery.deliveryRange") }}:
               </span>
-              <span class="flex-item mt-auto mb-auto mr-2 inline-block">
+              <span class="flex-item mt-auto mr-2 mb-auto inline-block">
                 <input
-                  class="base-input"
+                  class="rounded-lg border border-black/20 bg-white px-4 py-1 dark:bg-black dark:text-gray-200"
                   v-model="radius"
                   :disabled="!enableAreaMap || !enableDelivery"
                 />
@@ -118,21 +117,23 @@
           <!-- area text -->
           <div class="mt-4">
             <div class="flex pb-2 text-sm font-bold">
-              <o-checkbox
-                rootClass="base-o-input-root"
+              <Checkbox
+                class="pr-2"
                 v-model="enableAreaText"
                 :disabled="!enableDelivery"
-              />
-              {{ $t("delivery.setAreaText") }}
+              >
+                {{ $t("delivery.setAreaText") }}
+              </Checkbox>
             </div>
 
-            <o-input
+            <textarea
               v-model="areaText"
-              type="textarea"
               :placeholder="$t('delivery.areaTextExample')"
               :disabled="!enableAreaText || !enableDelivery"
+              class="resize-vertical w-full rounded-lg border border-gray-300 px-3 py-2 dark:bg-black dark:text-gray-200"
+              rows="4"
             >
-            </o-input>
+            </textarea>
           </div>
         </div>
 
@@ -141,14 +142,14 @@
             {{ $t("delivery.deliveryThreshold") }}:
           </div>
           <div class="mt-2 flex">
-            <o-checkbox
-              rootClass="base-o-input-root"
+            <Checkbox
+              class="pr-2"
               v-model="enableDeliveryThreshold"
               :disabled="!enableDelivery"
             />
-            <span class="flex-item mt-auto mb-auto mr-2 inline-block">
+            <span class="flex-item mt-auto mr-2 mb-auto inline-block">
               <input
-                class="base-input"
+                class="rounded-lg border border-black/20 bg-white px-4 py-1 dark:bg-black dark:text-gray-200"
                 v-model="deliveryThreshold"
                 :disabled="!enableDelivery"
                 type="number"
@@ -166,12 +167,12 @@
             {{ $t("delivery.deliveryFeeSetting") }}
           </div>
           <div class="mt-2 flex">
-            <span class="flex-item mt-auto mb-auto mr-2 inline-block font-bold">
+            <span class="flex-item mt-auto mr-2 mb-auto inline-block font-bold">
               {{ $t("delivery.deliveryFee") }}:
             </span>
-            <span class="flex-item mt-auto mb-auto mr-2 inline-block">
+            <span class="flex-item mt-auto mr-2 mb-auto inline-block">
               <input
-                class="base-input"
+                class="rounded-lg border border-black/20 bg-white px-4 py-1 dark:bg-black dark:text-gray-200"
                 v-model="deliveryFee"
                 :disabled="!enableDelivery"
                 type="number"
@@ -184,17 +185,16 @@
           </div>
 
           <div class="mt-2 flex">
-            <o-checkbox
-              rootClass="base-o-input-root"
+            <Checkbox
               v-model="enableDeliveryFree"
               :disabled="!enableDelivery"
             />
-            <span class="flex-item mt-auto mb-auto mr-2 inline-block font-bold">
+            <span class="flex-item mt-auto mr-2 mb-auto inline-block font-bold">
               {{ $t("delivery.deliveryFreeThreshold") }}:
             </span>
-            <span class="flex-item mt-auto mb-auto mr-2 inline-block">
+            <span class="flex-item mt-auto mr-2 mb-auto inline-block">
               <input
-                class="base-input"
+                class="rounded-lg border border-black/20 bg-white px-4 py-1 dark:bg-black dark:text-gray-200"
                 v-model="deliveryFreeThreshold"
                 :disabled="!enableDelivery"
                 type="number"
@@ -220,7 +220,7 @@
           <div>
             {{ $t("editRestaurant.deliveryPreparationTime") }}
             <input
-              class="base-input"
+              class="rounded-lg border border-black/20 bg-white px-4 py-1 dark:bg-black dark:text-gray-200"
               v-model="deliveryMinimumCookTime"
               :disabled="!enableDelivery"
               type="number"
@@ -232,7 +232,7 @@
           <a
             href="https://docs.omochikaeri.com/manuals/delivery.pdf"
             target="_blank"
-            class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
+            class="text-op-teal inline-flex items-center justify-center text-sm font-bold"
           >
             {{ $t("menu.deliveryManualLink") }}
           </a>
@@ -267,16 +267,19 @@
 import { defineComponent, computed, ref, onMounted, watch } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
-import NotFound from "@/components/NotFound.vue";
 import { GMAPId } from "@/config/project";
 
 import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
 import { useRouter } from "vue-router";
 import { getRestaurantId, useAdminUids, notFoundResponse } from "@/utils/utils";
 
+import Checkbox from "@/components/form/checkbox.vue";
+import NotFound from "@/components/NotFound.vue";
+
 export default defineComponent({
   components: {
     NotFound,
+    Checkbox,
   },
   props: {
     shopInfo: {
@@ -485,15 +488,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style scoped>
-@reference "../../../assets/css/main.css";
-
-.base-input {
-  @apply bg-white dark:bg-black dark:text-gray-200 rounded-lg border border-black/20 px-4 py-1;
-}
-
-.base-o-input-root {
-  @apply content-center pr-2;
-}
-</style>

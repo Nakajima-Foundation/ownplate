@@ -1,5 +1,9 @@
 <template>
-  <o-modal v-model:active="isVisible" :width="488">
+  <t-modal
+    v-model:active="isVisible"
+    width="488"
+    @dismissed="isVisible = false"
+  >
     <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
       <!-- Items List -->
       <div>
@@ -12,39 +16,39 @@
             <span class="text-sm font-bold">{{ category }}</span>
           </div>
           <div>
-            <o-button class="b-reset-tw" @click="handleDelete(index)">
+            <button class="cursor-pointer" @click="handleDelete(index)">
               <div class="inline-flex h-9 items-center justify-center px-4">
                 <i class="material-icons text-lg text-red-700">delete</i>
               </div>
-            </o-button>
+            </button>
           </div>
         </div>
       </div>
 
       <!-- Add Item -->
       <div class="flex">
-        <o-input
-          class="mr-2 flex-1"
+        <input
+          class="mr-2 w-full flex-1 rounded-lg border border-gray-300 bg-white px-3 py-2 dark:border-gray-600 dark:bg-black dark:text-white"
           :placeholder="$t('editMenu.newCategory')"
           v-model="newEntry"
         />
-        <o-button
+        <button
           :disabled="!isValidEntry"
-          class="b-reset-tw"
+          class="ml-2 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
           @click="handleAdd"
         >
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
-            <i class="material-icons mr-2 text-lg text-op-teal">add</i>
-            <div class="text-sm font-bold text-op-teal">
+            <i class="material-icons text-op-teal mr-2 text-lg">add</i>
+            <div class="text-op-teal text-sm font-bold">
               {{ $t("editMenu.newCategoryAdd") }}
             </div>
           </div>
-        </o-button>
+        </button>
       </div>
     </div>
-  </o-modal>
+  </t-modal>
 </template>
 
 <script lang="ts">

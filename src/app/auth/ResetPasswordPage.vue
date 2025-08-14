@@ -14,22 +14,27 @@
           </div>
 
           <div class="mt-1">
-            <o-field
-              :variant="errors.email ? 'danger' : 'success'"
-              :message="errors.email && $t(errors.email[0])"
+            <input
+              v-model="email"
+              :placeholder="$t('admin.emailPlaceHolder')"
+              maxlength="256"
+              class="w-full rounded border border-gray-300 px-3 py-2"
+              :class="errors.email ? 'border-red-500' : 'border-green-500'"
+            />
+            <div
+              v-if="errors.email && errors.email.length > 0"
+              class="mt-2 pl-2 font-bold text-red-600"
             >
-              <o-input
-                v-model="email"
-                :placeholder="$t('admin.emailPlaceHolder')"
-                maxlength="256"
-              />
-            </o-field>
+              <div v-for="error in errors.email" :key="error">
+                {{ $t(error) }}
+              </div>
+            </div>
           </div>
         </div>
 
         <!-- Submit Button -->
         <div class="mt-2 text-center">
-          <o-button @click="handleCancel" class="b-reset-tw mr-4 mb-2">
+          <button @click="handleCancel" class="mr-4 mb-2 cursor-pointer">
             <div
               class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black/5"
             >
@@ -37,12 +42,12 @@
                 {{ $t("button.cancel") }}
               </div>
             </div>
-          </o-button>
+          </button>
 
           <t-button
             :isDisabled="Object.keys(errors).length > 0"
             @click="handleNext"
-            class="h-12 w-32 shadow-sm font-bold text-white"
+            class="h-12 w-32 font-bold text-white shadow-sm"
           >
             {{ $t("button.next") }}
           </t-button>

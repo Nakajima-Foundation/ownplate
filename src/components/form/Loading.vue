@@ -1,7 +1,7 @@
 <template>
   <span class="absolute opacity-30">
     <svg
-      class="w-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+      class="w-8 animate-spin fill-blue-600 text-gray-200 dark:text-gray-600"
       viewBox="0 0 100 101"
       xmlns="http://www.w3.org/2000/svg"
     >

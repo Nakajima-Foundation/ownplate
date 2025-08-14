@@ -8,20 +8,20 @@
     >
       <!-- Order Status -->
       <div class="p-2">
-        <div
+        <OrderState
+          :orderState="statusKey"
           class="rounded-sm p-1 text-center text-xs font-bold"
-          :class="statusKey"
         >
           {{ $t("order.status." + convOrderStateForText(statusKey, order)) }}
-        </div>
+        </OrderState>
       </div>
 
       <!-- Payment Status and Time Stamp -->
       <div class="flex items-center px-2">
         <div class="flex-1 text-xs font-bold">
-          <div v-if="hasStripe" :class="'stripe_' + order.payment.stripe">
+          <StripeStatus :stripeState="order.payment.stripe" v-if="hasStripe">
             {{ $t("order.status.stripe_" + order.payment.stripe) }}
-          </div>
+          </StripeStatus>
           <div v-else class="text-yellow-500">
             {{ $t("order.status.onsitePayment") }}
           </div>
@@ -119,20 +119,20 @@
     >
       <!-- Order Status -->
       <div class="p-2">
-        <div
+        <OrderState
+          :orderState="statusKey"
           class="rounded-sm p-1 text-center text-xs font-bold"
-          :class="statusKey"
         >
           {{ $t("order.status." + convOrderStateForText(statusKey, order)) }}
-        </div>
+        </OrderState>
       </div>
 
       <!-- Payment Status and Time Stamp -->
       <div class="flex items-center px-2">
         <div class="flex-1 text-xs font-bold">
-          <div v-if="hasStripe" :class="'stripe_' + order.payment.stripe">
+          <StripeStatus :stripeState="order.payment.stripe" v-if="hasStripe">
             {{ $t("order.status.stripe_" + order.payment.stripe) }}
-          </div>
+          </StripeStatus>
           <div v-else class="text-yellow-500">
             {{ $t("order.status.onsitePayment") }}
           </div>
@@ -193,20 +193,20 @@
     <div v-else class="rounded-lg bg-white shadow-sm">
       <!-- Order Status -->
       <div class="p-2">
-        <div
+        <OrderState
+          :orderState="statusKey"
           class="rounded-sm p-1 text-center text-xs font-bold"
-          :class="statusKey"
         >
           {{ $t("order.status." + convOrderStateForText(statusKey, order)) }}
-        </div>
+        </OrderState>
       </div>
 
       <!-- Payment Status and Time Stamp -->
       <div class="flex items-center px-2">
         <div class="flex-1 text-xs font-bold">
-          <div v-if="hasStripe" :class="'stripe_' + order.payment.stripe">
+          <StripeStatus :stripeState="order.payment.stripe" v-if="hasStripe">
             {{ $t("order.status.stripe_" + order.payment.stripe) }}
-          </div>
+          </StripeStatus>
           <div v-else class="text-yellow-500">
             {{ $t("order.status.onsitePayment") }}
           </div>
@@ -263,7 +263,7 @@ import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc } from "firebase/firestore";
 
-import { order_status, order_status_keys } from "@/config/constant";
+import { order_status_keys } from "@/config/constant";
 import {
   arrayOrNumSum,
   convOrderStateForText,
@@ -273,6 +273,8 @@ import { useI18n } from "vue-i18n";
 
 import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import OrderState from "@/components/OrderStatus.vue";
+import StripeStatus from "@/components/StripeStatus.vue";
 
 export default defineComponent({
   props: {
@@ -284,6 +286,10 @@ export default defineComponent({
       type: Boolean,
       required: false,
     },
+  },
+  components: {
+    OrderState,
+    StripeStatus,
   },
   emits: ["selected"],
   setup(props) {
@@ -304,7 +310,7 @@ export default defineComponent({
       return order_status_keys[props.order.status];
     });
     const hasStripe = computed(() => {
-      return props.order.payment && props.order.payment.stripe;
+      return props.order?.payment?.stripe;
     });
     const timestamp = computed(() => {
       const time = props.order.timeEstimated || props.order.timePlaced;
@@ -334,11 +340,6 @@ export default defineComponent({
       }
       return 0;
     });
-    const paymentIsNotCompleted = computed(() => {
-      return (
-        hasStripe.value && props.order.status < order_status.ready_to_pickup
-      );
-    });
 
     return {
       restaurant,
@@ -349,7 +350,6 @@ export default defineComponent({
       nationalPhoneNumber,
       orderName,
       totalCount,
-      paymentIsNotCompleted,
 
       convOrderStateForText,
       resizedProfileImage,

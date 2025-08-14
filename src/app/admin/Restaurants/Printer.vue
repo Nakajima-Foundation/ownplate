@@ -21,7 +21,7 @@
           <a
             href="https://docs.omochikaeri.com/manuals/printer.pdf"
             target="_blank"
-            class="font-bold text-op-teal"
+            class="text-op-teal font-bold"
           >
             {{ $t("menu.printerManualLink") }}
           </a>
@@ -30,13 +30,12 @@
           <div class="pb-2 text-sm font-bold">
             {{ $t("printer.serverURL") }}
           </div>
-          <o-input
-            type="textarea"
+          <textarea
             rows="2"
             readonly
             v-model="printerAddress"
-            rootClass="w-full"
-          ></o-input>
+            class="w-full rounded border border-gray-300 bg-gray-100 px-3 py-2"
+          ></textarea>
           <div v-if="printerAddress">
             {{ $t("printer.guidance") }}
           </div>
@@ -53,7 +52,10 @@
             IP Address
             <span class="text-sx text-black/20">if need</span>
           </div>
-          <o-input v-model="ipaddress"></o-input>
+          <input
+            v-model="ipaddress"
+            class="input w-full rounded border border-gray-300 px-3 py-2"
+          />
         </div>
 
         <div class="mx-6 mt-4 rounded-lg bg-black/5 p-4" v-if="false">

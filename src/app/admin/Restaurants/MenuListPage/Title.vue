@@ -9,21 +9,21 @@
         <div class="text-xl font-bold text-black/30" if v-if="title.name == ''">
           {{ $t("editTitle.empty") }}
         </div>
-        <div class="text-sm font-bold text-black/30 flex w-full" v-else>
+        <div class="flex w-full text-sm font-bold text-black/30" v-else>
           {{ title.name }}
-          <div class="text-right flex-1">
-            <o-checkbox
+          <div class="flex-1 text-right">
+            <Checkbox
               @click="(e) => updateTitleLunchDinner(e, 'lunch')"
               v-model="title.availableLunch"
             >
               {{ $t("shopInfo.lunch") }}
-            </o-checkbox>
-            <o-checkbox
+            </Checkbox>
+            <Checkbox
               @click="(e) => updateTitleLunchDinner(e, 'dinner')"
               v-model="title.availableDinner"
             >
               {{ $t("shopInfo.dinner") }}
-            </o-checkbox>
+            </Checkbox>
           </div>
         </div>
       </div>
@@ -33,48 +33,56 @@
       <!-- Card Actions -->
       <div class="inline-flex space-x-2">
         <!-- Up -->
-        <o-button
+        <button
           :disabled="position === 'first' || isEdit"
           @click="positionUp"
-          class="b-reset-tw"
+          class="cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
         >
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
-            <i class="material-icons text-lg text-op-teal">arrow_upward</i>
+            <i class="material-icons text-op-teal text-lg">arrow_upward</i>
           </div>
-        </o-button>
+        </button>
 
         <!-- Down -->
-        <o-button
+        <button
           :disabled="position === 'last' || isEdit"
           @click="positionDown"
-          class="b-reset-tw"
+          class="cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
         >
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
-            <i class="material-icons text-lg text-op-teal">arrow_downward</i>
+            <i class="material-icons text-op-teal text-lg">arrow_downward</i>
           </div>
-        </o-button>
+        </button>
 
         <!-- Duplicate -->
-        <o-button @click="forkItem" class="b-reset-tw" :disabled="isEdit">
+        <button
+          @click="forkItem"
+          class="cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+          :disabled="isEdit"
+        >
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
-            <i class="material-icons text-lg text-op-teal">queue</i>
+            <i class="material-icons text-op-teal text-lg">queue</i>
           </div>
-        </o-button>
+        </button>
 
         <!-- Delete -->
-        <o-button @click="deleteItem" class="b-reset-tw" :disabled="isEdit">
+        <button
+          @click="deleteItem"
+          class="cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+          :disabled="isEdit"
+        >
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
             <i class="material-icons text-lg text-red-700">delete</i>
           </div>
-        </o-button>
+        </button>
       </div>
     </div>
   </div>
@@ -84,12 +92,14 @@
 import { defineComponent } from "vue";
 import { useAdminUids } from "@/utils/utils";
 
-import { useStore } from "vuex";
+import { useDialogStore } from "@/store/dialog";
 import TitleInput from "@/app/admin/Restaurants/MenuListPage/TitleInput.vue";
+import Checkbox from "@/components/form/checkbox.vue";
 
 export default defineComponent({
   components: {
     TitleInput,
+    Checkbox,
   },
   props: {
     isEdit: {
@@ -115,7 +125,7 @@ export default defineComponent({
     "updateTitleLunchDinner",
   ],
   setup(props, ctx) {
-    const store = useStore();
+    const dialogStore = useDialogStore();
 
     const { isOwner } = useAdminUids();
     const toEdit = () => {
@@ -132,7 +142,7 @@ export default defineComponent({
       ctx.emit("forkItem", props.title.id);
     };
     const deleteItem = () => {
-      store.commit("setAlert", {
+      dialogStore.setAlert({
         code: "editMenu.reallyDelete",
         callback: () => {
           ctx.emit("deleteItem", props.title.id);

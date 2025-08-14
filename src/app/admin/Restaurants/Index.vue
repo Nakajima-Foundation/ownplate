@@ -51,13 +51,13 @@
 
       <!-- Publish Status -->
       <div class="mx-6 mt-2 rounded-lg bg-black/5 p-4 text-center">
-        <o-checkbox
+        <Checkbox
           v-model="editShopInfo.publicFlag"
           :disabled="hasError"
           :variant="!editShopInfo.publicFlag ? 'danger' : ''"
         >
-          <div class="font-bold">{{ $t("shopInfo.public") }}</div>
-        </o-checkbox>
+          <span class="font-bold">{{ $t("shopInfo.public") }}</span>
+        </Checkbox>
 
         <div class="mt-1 text-sm font-bold">
           <div v-if="editShopInfo.publicFlag">
@@ -116,7 +116,7 @@
               />
             </div>
             <div class="pl-4">
-              <state :errors="errors" v-model="editShopInfo.state" />
+              <state v-model="editShopInfo.state" />
             </div>
           </div>
           <!-- City -->
@@ -156,7 +156,7 @@
             <div class="text-center">
               <a
                 @click="updateAndUpdateMap"
-                class="inline-flex h-12 items-center rounded-full bg-op-teal px-6 shadow-sm"
+                class="bg-op-teal inline-flex h-12 items-center rounded-full px-6 shadow-sm"
                 ><div class="text-base font-bold text-white">
                   {{ $t("editRestaurant.searchMap") }}
                 </div></a
@@ -202,7 +202,7 @@
           <!-- Phone -->
           <div>
             <div
-              class="pb-2 text-sm font-bold cursor-pointer"
+              class="cursor-pointer pb-2 text-sm font-bold"
               @click="openTips('phonenumber')"
             >
               {{ $t("shopInfo.phonenumber") }}
@@ -327,7 +327,7 @@
               {{ $t("editRestaurant.enablePrelineTitle") }}
             </div>
             <div class="flex gap-2 rounded-lg bg-black/5 p-4">
-              <o-checkbox
+              <Checkbox
                 id="enablePreline"
                 v-model="editShopInfo.enablePreline"
               />
@@ -350,7 +350,7 @@
             />
           </div>
 
-          <div class="rounded-lg border bg-white p-2 mt-4">
+          <div class="mt-4 rounded-lg border border-black/10 bg-white p-2">
             <div class="pb-2 text-sm font-bold">
               {{ $t("editRestaurant.orderConfirmViewConfig") }}
             </div>
@@ -375,15 +375,16 @@
               </div>
               <div class="rounded-lg bg-black/5 p-4">
                 <div class="flex gap-2">
-                  <o-checkbox
-                    id="acceptUserMessageDescription"
-                    v-model="editShopInfo.acceptUserMessage"
-                  />
                   <label
                     for="acceptUserMessageDescription"
                     class="text-sm font-bold"
                   >
-                    {{ $t("editRestaurant.acceptUserMessageDescription") }}
+                    <Checkbox
+                      id="acceptUserMessageDescription"
+                      v-model="editShopInfo.acceptUserMessage"
+                    >
+                      {{ $t("editRestaurant.acceptUserMessageDescription") }}
+                    </Checkbox>
                   </label>
                 </div>
                 <div class="pt-2 text-xs">
@@ -405,7 +406,7 @@
             />
           </div>
 
-          <div class="rounded-lg border bg-white p-2 mt-4">
+          <div class="mt-4 rounded-lg border border-black/10 bg-white p-2">
             <!-- URL -->
             <div>
               <text-form
@@ -457,92 +458,37 @@
 
           <!-- Tax -->
           <div>
-            <!-- Tax Input Required -->
-            <div v-if="requireTaxInput">
-              <div class="mt-4 flex">
-                <div>
-                  <div class="pb-2 text-sm font-bold">
-                    {{ $t("editRestaurant.foodTax") }}
-                  </div>
-                  <o-field
-                    class="inline-flex items-center"
-                    :variant="
-                      errors['foodTax'].length > 0 ? 'danger' : 'success'
-                    "
-                  >
-                    <o-input
-                      v-model="editShopInfo.foodTax"
-                      placeholder="8.2"
-                      type="text"
-                      maxlength="5"
-                      class="w-24"
-                    />
-                    <div class="ml-2">%</div>
-                  </o-field>
-                </div>
-
-                <div class="ml-4">
-                  <div class="pb-2 text-sm font-bold">
-                    {{ $t("editRestaurant.alcoholTax") }}
-                  </div>
-                  <o-field
-                    class="inline-flex items-center"
-                    :variant="
-                      errors['alcoholTax'].length > 0 ? 'danger' : 'success'
-                    "
-                  >
-                    <o-input
-                      v-model="editShopInfo.alcoholTax"
-                      placeholder="10.2"
-                      type="text"
-                      maxlength="5"
-                      class="w-24"
-                    />
-                    <div class="ml-2">%</div>
-                  </o-field>
-                </div>
+            <div class="mt-4">
+              <div class="pb-2 text-sm font-bold">
+                {{ $t("editRestaurant.tax") }}
               </div>
-            </div>
-
-            <!-- Tax Input Not Required -->
-            <div v-if="!requireTaxInput">
-              <div class="mt-4">
-                <div class="pb-2 text-sm font-bold">
-                  {{ $t("editRestaurant.tax") }}
-                </div>
+              <div class="grid grid-cols-1 space-y-2 rounded-lg bg-black/5 p-4">
                 <div
-                  class="grid grid-cols-1 space-y-2 rounded-lg bg-black/5 p-4"
+                  v-for="(taxItem, k) in taxRates"
+                  class="text-base"
+                  :key="k"
                 >
-                  <div
-                    v-for="(taxItem, k) in taxRates"
-                    class="text-base"
-                    :key="k"
-                  >
-                    {{ $t("editMenu." + taxRateKeys[taxItem]) }}
-                    {{ editShopInfo[taxItem + "Tax"] }}%
-                  </div>
+                  {{ $t("editMenu." + taxRateKeys[taxItem]) }}
+                  {{ editShopInfo[taxItem + "Tax"] }}%
                 </div>
               </div>
             </div>
 
             <!-- Tax Display -->
-            <div v-if="requireTaxPriceDisplay" class="mt-4">
+            <div class="mt-4">
               <div class="pb-2 text-sm font-bold">
                 {{ $t("editRestaurant.taxPriceDisplay") }}
               </div>
               <div class="rounded-lg bg-black/5 p-4">
                 <div>
-                  <o-checkbox class="mr-2" v-model="editShopInfo.inclusiveTax">
+                  <Checkbox class="mr-2" v-model="editShopInfo.inclusiveTax">
                     <span class="font-bold">
                       {{ $t("editRestaurant.taxIncluded") }}
                     </span>
-                  </o-checkbox>
+                  </Checkbox>
                 </div>
                 <div class="mt-2">
-                  <div
-                    v-if="region === 'JP'"
-                    class="mb-2 text-xs font-bold text-red-700"
-                  >
+                  <div class="mb-2 text-xs font-bold text-red-700">
                     {{ $t("editRestaurant.taxPriceDisplayJp") }}
                   </div>
                   <div>
@@ -581,19 +527,17 @@
                   >
                 </div>
 
-                <o-field
-                  class="flex items-center"
-                  :variant="
-                    errors['pickUpMinimumCookTime'].length > 0
-                      ? 'danger'
-                      : 'success'
-                  "
-                >
-                  <o-input
+                <div class="flex items-center">
+                  <input
                     v-model.number="editShopInfo.pickUpMinimumCookTime"
                     placeholder="10"
                     type="text"
-                    class="w-24"
+                    class="w-24 rounded-lg border border-gray-300 bg-white px-3 py-2 dark:bg-black dark:text-gray-200"
+                    :class="
+                      errors['pickUpMinimumCookTime'].length > 0
+                        ? 'border-red-500'
+                        : 'border-green-500'
+                    "
                   />
                   <div class="ml-2">
                     {{ $t("editRestaurant.minutes") }}
@@ -601,16 +545,22 @@
                       >({{ $t("editRestaurant.withinFiveDays") }})</span
                     >
                   </div>
-                </o-field>
+                </div>
 
                 <div class="mt-2">
-                  <o-radio
+                  <template
                     v-for="choice in minimumCookTimeChoices"
-                    v-model="editShopInfo.pickUpMinimumCookTime"
-                    :native-value="choice.value"
                     :key="choice.value"
-                    >{{ $t(choice.messageKey) }}</o-radio
                   >
+                    <label class="mr-2 inline-flex cursor-pointer items-center">
+                      <input
+                        class="m-auto mt-1 mr-1 h-4 w-4 cursor-pointer appearance-none rounded-full border border-teal-400 bg-white checked:border-teal-400 checked:bg-teal-400 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+                        type="radio"
+                        v-model="editShopInfo.pickUpMinimumCookTime"
+                        :value="choice.value"
+                      />{{ $t(choice.messageKey) }}
+                    </label>
+                  </template>
                 </div>
               </div>
 
@@ -624,31 +574,25 @@
                     }})</span
                   >
                 </div>
-                <o-field
-                  class="flex items-center"
-                  :variant="
-                    errors['pickUpDaysInAdvance'].length > 0
-                      ? 'danger'
-                      : 'success'
-                  "
+                <select
+                  v-model.number="editShopInfo.pickUpDaysInAdvance"
+                  class="mt-1 rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
                 >
-                  <o-select v-model.number="editShopInfo.pickUpDaysInAdvance">
-                    <option
-                      v-for="(day, index) in reservationTheDayBefore"
-                      :key="index"
-                      :value="day.value"
-                    >
-                      {{ $t(day.messageKey) }}
-                    </option>
-                  </o-select>
-                </o-field>
+                  <option
+                    v-for="(day, index) in reservationTheDayBefore"
+                    :key="index"
+                    :value="day.value"
+                  >
+                    {{ $t(day.messageKey) }}
+                  </option>
+                </select>
               </div>
             </div>
           </div>
 
           <!-- personalInfo -->
           <div class="mt-4">
-            <div class="pb-2 text-sm font-bold cursor-pointer">
+            <div class="cursor-pointer pb-2 text-sm font-bold">
               {{ $t("editRestaurant.personalInfo") }}
             </div>
             <div class="rounded-lg bg-black/5 p-4">
@@ -656,25 +600,27 @@
                 v-for="(personalInfoSaveMethod, k) in personalInfoSaveMethods"
                 :key="k"
               >
-                <o-radio
-                  v-model="editShopInfo.personalInfo"
-                  :native-value="personalInfoSaveMethod.key"
-                  :variant="personalInfoSaveMethod.key"
-                >
+                <label class="mr-2 inline-flex cursor-pointer items-center">
+                  <input
+                    type="radio"
+                    class="m-auto mt-1 mr-1 h-4 w-4 cursor-pointer appearance-none rounded-full border border-teal-400 bg-white checked:border-teal-400 checked:bg-teal-400 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+                    v-model="editShopInfo.personalInfo"
+                    :value="personalInfoSaveMethod.key"
+                  />
                   {{
                     $t(
                       "editRestaurant.personalInfoSaveMethodChoices." +
                         personalInfoSaveMethod.key,
                     )
                   }}
-                </o-radio>
+                </label>
               </div>
             </div>
           </div>
           <!-- Payment methods -->
           <div class="mt-4">
             <div
-              class="pb-2 text-sm font-bold cursor-pointer"
+              class="cursor-pointer pb-2 text-sm font-bold"
               @click="openTips('paymentMethods')"
             >
               {{ $t("editRestaurant.paymentMethods") }}
@@ -686,7 +632,7 @@
             <div class="rounded-lg bg-black/5 p-4">
               <!-- Preparation Time -->
               <div v-for="(paymentMethod, k) in paymentMethods" :key="k">
-                <o-checkbox
+                <Checkbox
                   class="mr-2"
                   v-model="
                     (editShopInfo.paymentMethods || {})[paymentMethod.key]
@@ -700,7 +646,7 @@
                       )
                     }}
                   </span>
-                </o-checkbox>
+                </Checkbox>
               </div>
             </div>
           </div>
@@ -712,7 +658,7 @@
               {{ $t("editRestaurant.deliveryConfigTitle") }}
             </div>
             <div class="rounded-lg bg-black/5 p-4">
-              <div class="text-lg font-bold text-op-teal">
+              <div class="text-op-teal text-lg font-bold">
                 <router-link
                   :to="`/admin/restaurants/${restaurantId}/delivery`"
                   >{{ $t("editRestaurant.deliveryConfigLink") }}</router-link
@@ -724,7 +670,7 @@
                   href="https://docs.omochikaeri.com/manuals/delivery.pdf"
                   target="_blank"
                 >
-                  <span class="font-bold text-op-teal">
+                  <span class="text-op-teal font-bold">
                     {{ $t("menu.deliveryManualLink") }}
                   </span>
                 </a>
@@ -738,11 +684,11 @@
               {{ $t("editRestaurant.printerConfigTitle") }}
             </div>
             <div class="rounded-lg bg-black/5 p-4">
-              <o-checkbox class="mr-2" v-model="editShopInfo.enablePrinter">
+              <Checkbox class="mr-2" v-model="editShopInfo.enablePrinter">
                 <span class="text-sm font-bold">
                   {{ $t("editRestaurant.enablePrinter") }}
                 </span>
-              </o-checkbox>
+              </Checkbox>
               <div class="pt-2 text-xs">
                 {{ $t("editRestaurant.printerDescription") }}
                 <a
@@ -750,7 +696,7 @@
                   target="_blank"
                   class="inline-flex"
                 >
-                  <span class="font-bold text-op-teal">
+                  <span class="text-op-teal font-bold">
                     {{ $t("menu.printerManualLink") }}
                   </span>
                 </a>
@@ -758,12 +704,12 @@
               <div class="text-xs">
                 {{ $t("editRestaurant.printerDescription2") }}
               </div>
-              <div class="text-xs pt-2">
+              <div class="pt-2 text-xs">
                 <router-link
                   class="inline-flex"
                   :to="`/admin/restaurants/${restaurantId}/printer`"
                 >
-                  <span class="font-bold text-op-teal">
+                  <span class="text-op-teal font-bold">
                     {{ $t("editRestaurant.printerDescriptionConfig") }}
                   </span>
                 </router-link>
@@ -783,14 +729,11 @@
                 {{ $t("editRestaurant.emailNotificationTitle") }}
               </div>
               <div class="rounded-lg bg-black/5 p-4">
-                <o-checkbox
-                  class="mr-2"
-                  v-model="editShopInfo.emailNotification"
-                >
+                <Checkbox class="mr-2" v-model="editShopInfo.emailNotification">
                   <span class="text-sm font-bold">
                     {{ $t("editRestaurant.emailNotificationDescription") }}
                   </span>
-                </o-checkbox>
+                </Checkbox>
                 <div class="pt-2 text-xs">
                   {{ $t("editRestaurant.emailNotificationNotice") }}
                 </div>
@@ -804,11 +747,11 @@
                 {{ $t("editRestaurant.phoneCall") }}
               </div>
               <div class="rounded-lg bg-black/5 p-4">
-                <o-checkbox class="mr-2" v-model="editShopInfo.phoneCall">
+                <Checkbox class="mr-2" v-model="editShopInfo.phoneCall">
                   <span class="text-sm font-bold">
                     {{ $t("editRestaurant.phoneCallDescription") }}
                   </span>
-                </o-checkbox>
+                </Checkbox>
                 <div class="pt-2 text-xs">
                   {{ $t("editRestaurant.phoneCallNotice") }}
                 </div>
@@ -825,7 +768,7 @@
                 <router-link
                   :to="`/admin/restaurants/${restaurantId}/linelist`"
                 >
-                  <span class="text-sm font-bold text-op-teal">
+                  <span class="text-op-teal text-sm font-bold">
                     {{ $t("editRestaurant.moveToLineConfig") }}
                   </span>
                 </router-link>
@@ -837,17 +780,17 @@
 
         <!-- Right -->
 
-        <div class="rounded-lg border bg-white p-2 mt-4">
+        <div class="mt-4 rounded-lg border border-black/10 bg-white p-2">
           <div class="pb-2 text-sm font-bold">
             {{ $t("editRestaurant.openDaysConfig") }}
           </div>
           <div class="rounded-lg bg-black/5 p-4">
             <div>
-              <o-checkbox class="mr-2" v-model="editShopInfo.enableLunchDinner">
+              <Checkbox class="mr-2" v-model="editShopInfo.enableLunchDinner">
                 <span class="text-base font-bold">
                   {{ $t("editRestaurant.lunchOrDinnerToggle") }}
                 </span>
-              </o-checkbox>
+              </Checkbox>
             </div>
             <div class="text-sm">
               {{ $t("editRestaurant.lunchOrDinnerNotice") }}
@@ -872,25 +815,25 @@
                   <!-- Enable/Disable Day and Copy Previous Day -->
                   <div class="flex items-center">
                     <div class="flex-1">
-                      <o-checkbox
+                      <Checkbox
                         class="mr-2"
                         v-model="editShopInfo.businessDay[index]"
                       >
                         <span class="text-base font-bold">
                           {{ $t("week.short." + day) }}
                         </span>
-                      </o-checkbox>
+                      </Checkbox>
                     </div>
 
                     <div>
                       <a
                         @click="copyPreviousDay(index)"
-                        class="cursor-pointer inline-flex items-center justify-center"
+                        class="inline-flex cursor-pointer items-center justify-center"
                       >
-                        <i class="material-icons mr-2 text-lg text-op-teal">
+                        <i class="material-icons text-op-teal mr-2 text-lg">
                           content_copy
                         </i>
-                        <div class="text-sm font-bold text-op-teal">
+                        <div class="text-op-teal text-sm font-bold">
                           {{
                             $t(
                               index === "1"
@@ -983,32 +926,28 @@
                 </div>
 
                 <!-- Date Picker -->
-                <o-field>
-                  <o-datepicker
-                    class="w-full"
-                    icon="calendar-today"
-                    v-model="newTemporaryClosure"
-                    ref="datepicker"
-                    :min-date="now"
-                    :max-date="maxDate"
-                    expanded
-                    :placeholder="$t('shopInfo.temporaryClosureSelect')"
-                  >
-                  </o-datepicker>
+                <DatePicker
+                  class="w-full"
+                  icon="calendar-today"
+                  v-model="newTemporaryClosure"
+                  ref="datepicker"
+                  :min-date="now"
+                  :max-date="maxDate"
+                  expanded
+                  :placeholder="$t('shopInfo.temporaryClosureSelect')"
+                >
+                </DatePicker>
 
-                  <o-button @click="addNewTemporaryClosure" class="b-reset-tw">
-                    <div
-                      class="inline-flex h-9 items-center justify-center rounded-r bg-black/5 px-4"
-                    >
-                      <i class="material-icons mr-2 text-lg text-op-teal"
-                        >add</i
-                      >
-                      <div class="text-sm font-bold text-op-teal">
-                        {{ $t("shopInfo.temporaryClosureAdd") }}
-                      </div>
+                <button @click="addNewTemporaryClosure" class="cursor-pointer">
+                  <div
+                    class="inline-flex h-9 items-center justify-center rounded-r bg-black/5 px-4"
+                  >
+                    <i class="material-icons text-op-teal mr-2 text-lg">add</i>
+                    <div class="text-op-teal text-sm font-bold">
+                      {{ $t("shopInfo.temporaryClosureAdd") }}
                     </div>
-                  </o-button>
-                </o-field>
+                  </div>
+                </button>
 
                 <!-- Saved Closure Days -->
                 <div class="mb-2 grid grid-cols-1 space-y-2">
@@ -1050,13 +989,13 @@
 
       <!-- Publish Status -->
       <div class="mx-6 mt-2 rounded-lg bg-black/5 p-4 text-center">
-        <o-checkbox
+        <Checkbox
           v-model="editShopInfo.publicFlag"
           :disabled="hasError"
           :variant="!editShopInfo.publicFlag ? 'danger' : ''"
         >
           <div class="font-bold">{{ $t("shopInfo.public") }}</div>
-        </o-checkbox>
+        </Checkbox>
 
         <div class="mt-1 text-sm font-bold">
           <div v-if="editShopInfo.publicFlag">
@@ -1106,20 +1045,20 @@
 
       <!-- Copy -->
       <div class="mt-4 text-center">
-        <o-button
+        <button
           @click="confirmCopy"
           :disabled="submitting"
-          class="b-reset-tw"
+          class="cursor-pointer"
         >
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
-            <i class="material-icons mr-2 text-lg text-op-teal"> queue </i>
-            <span class="text-sm font-bold text-op-teal">{{
+            <i class="material-icons text-op-teal mr-2 text-lg"> queue </i>
+            <span class="text-op-teal text-sm font-bold">{{
               $t(submitting ? "editCommon.saving" : "editCommon.copy")
             }}</span>
           </div>
-        </o-button>
+        </button>
       </div>
 
       <!-- QRCode -->
@@ -1148,9 +1087,11 @@ import { doc, updateDoc } from "firebase/firestore";
 import { google_geocode } from "@/lib/google/api";
 import { ownPlateConfig, GMAPId } from "@/config/project";
 
+import DatePicker from "@/components/DatePicker.vue";
 import NotFound from "@/components/NotFound.vue";
 import PhoneEntry from "@/components/PhoneEntry.vue";
 import Price from "@/components/Price.vue";
+import Checkbox from "@/components/form/checkbox.vue";
 
 import HoursInput from "@/app/admin/inputComponents/HoursInput.vue";
 import HourInput from "@/app/admin/inputComponents/HourInput2.vue";
@@ -1192,7 +1133,7 @@ import {
   GOOGLE_MAP_DEFAULT_CENTER,
 } from "@/config/constant";
 
-import { useStore } from "vuex";
+import { useDialogStore } from "@/store/dialog";
 import { useRouter } from "vue-router";
 import { useHead } from "@unhead/vue";
 import moment from "moment";
@@ -1208,9 +1149,11 @@ export default defineComponent({
     State,
     NotificationIndex,
     QRCode,
+    DatePicker,
     NotFound,
     PhoneEntry,
     Price,
+    Checkbox,
     ImageUpload,
   },
   props: {
@@ -1220,7 +1163,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const store = useStore();
+    const dialogStore = useDialogStore();
     const router = useRouter();
 
     const restaurantId = useRestaurantId();
@@ -1229,9 +1172,6 @@ export default defineComponent({
     const now = moment().subtract(1, "days").toDate();
     const taxRateKeys = regionalSetting["taxRateKeys"];
     const region = ownPlateConfig.region;
-
-    const requireTaxInput = regionalSetting.requireTaxInput;
-    const requireTaxPriceDisplay = regionalSetting.requireTaxPriceDisplay;
 
     const notFound = ref<boolean | null>(null);
     const gMap = ref();
@@ -1302,7 +1242,6 @@ export default defineComponent({
     const errors = computed(() => {
       return shopInfoValidator(
         editShopInfo,
-        requireTaxInput,
         errorsPhone.value,
         files.value["profile"],
         files.value["cover"],
@@ -1465,14 +1404,14 @@ export default defineComponent({
           location.reload();
         }, 200);
       } catch (error) {
-        store.commit("setErrorMessage", {
+        dialogStore.setErrorMessage({
           code: "restaurant.save",
           error,
         });
       }
     };
     const confirmCopy = () => {
-      store.commit("setAlert", {
+      dialogStore.setAlert({
         code: "editCommon.copyAlert",
         callback: () => {
           copyRestaurantFunc();
@@ -1515,10 +1454,10 @@ export default defineComponent({
         router.push(`/admin/restaurants/#restaurant_` + restaurantId.value);
       } catch (error) {
         submitting.value = false;
-        store.commit("setErrorMessage", {
+        dialogStore.setErrorMessage({
           code: "restaurant.save",
           error,
-        });
+        } as any);
       }
     };
     const updateMap = async () => {
@@ -1548,7 +1487,7 @@ export default defineComponent({
     });
 
     const openTips = (key: string) => {
-      store.commit("setTips", {
+      dialogStore.setTips({
         key,
       });
     };
@@ -1563,9 +1502,6 @@ export default defineComponent({
       region,
 
       editShopInfo,
-
-      requireTaxInput,
-      requireTaxPriceDisplay,
 
       days: daysOfWeek,
 

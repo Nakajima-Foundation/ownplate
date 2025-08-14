@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-2 bg-ownplate-yellow p-4">
+  <div class="bg-ownplate-yellow mt-2 p-4">
     <div
       class="m-auto inline-flex w-full items-center justify-center text-center"
     >
@@ -12,8 +12,8 @@
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-white/80 px-4"
           >
-            <i class="fab fa-facebook mr-2 text-lg text-op-teal"></i>
-            <span class="text-sm font-bold text-op-teal">{{
+            <i class="fab fa-facebook text-op-teal mr-2 text-lg"></i>
+            <span class="text-op-teal text-sm font-bold">{{
               $t("admin.facebookUserGroup")
             }}</span>
           </div>
@@ -26,8 +26,8 @@
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-white/80 px-4 hover:bg-white"
           >
-            <i class="fab fa-x-twitter mr-2 text-lg text-op-teal"></i>
-            <span class="text-sm font-bold text-op-teal">(Twitter)</span>
+            <i class="fab fa-x-twitter text-op-teal mr-2 text-lg"></i>
+            <span class="text-op-teal text-sm font-bold">(Twitter)</span>
           </div>
         </a>
       </div>
@@ -38,7 +38,7 @@
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-white/80 px-4 hover:bg-white"
           >
-            <span class="text-sm font-bold text-op-teal">Note</span>
+            <span class="text-op-teal text-sm font-bold">Note</span>
           </div>
         </a>
       </div>

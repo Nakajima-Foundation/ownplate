@@ -310,8 +310,6 @@ export const regionalSettings = {
       ja: "Feature-Hero-v01-ja.svg",
       en: "Feature-Hero-v01-en.svg",
     },
-    requireTaxInput: true,
-    requireTaxPriceDisplay: false,
     taxRateKeys: {
       food: "food",
       alcohol: "alcohol",
@@ -343,8 +341,6 @@ export const regionalSettings = {
       ja: "Feature-Hero-v01-ja.svg",
       en: "Feature-Hero-v01-en.svg",
     },
-    requireTaxInput: false,
-    requireTaxPriceDisplay: true,
     defaultTax: {
       foodTax: 8,
       alcoholTax: 10,

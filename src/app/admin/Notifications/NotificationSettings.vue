@@ -1,9 +1,9 @@
 <template>
-  <o-modal
+  <t-modal
     :active="notificationSettingsPopup"
-    :width="488"
+    width="488"
     scroll="keep"
-    @close="closeNotificationSettings"
+    @dismissed="closeNotificationSettings"
   >
     <div class="mx-2 my-6 rounded-lg bg-white p-6 text-left shadow-lg">
       <!-- Title -->
@@ -32,7 +32,7 @@
           <a @click="soundToggle()">
             <div
               v-if="notificationConfig.soundOn"
-              class="inline-flex h-9 items-center justify-center rounded-full bg-green-600/10 px-4 cursor-pointer"
+              class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-green-600/10 px-4"
             >
               <i class="material-icons mr-2 text-lg text-green-600"
                 >volume_up</i
@@ -111,7 +111,10 @@
 
             <!-- Sound Type and Test -->
             <div class="mt-2 flex items-center">
-              <o-select v-model="soundIndex" class="mr-2">
+              <select
+                v-model="soundIndex"
+                class="mt-1 mt-2 mr-2 rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+              >
                 <option
                   v-for="(soundFile, index) in soundFiles"
                   :value="index"
@@ -119,16 +122,16 @@
                 >
                   {{ $t(soundFile.nameKey) }}
                 </option>
-              </o-select>
+              </select>
 
               <a
                 class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                 @click="delayedSoundPlay"
               >
-                <i class="material-icons mr-2 text-lg text-op-teal"
+                <i class="material-icons text-op-teal mr-2 text-lg"
                   >play_arrow</i
                 >
-                <span class="text-sm font-bold text-op-teal">
+                <span class="text-op-teal text-sm font-bold">
                   {{ $t("admin.order.soundTest") }}
                 </span>
               </a>
@@ -142,8 +145,8 @@
               class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
               :to="`/admin/restaurants/${restaurantId}/line`"
             >
-              <i class="fab fa-line mr-2 text-2xl text-op-teal" />
-              <span class="text-sm font-bold text-op-teal">
+              <i class="fab fa-line text-op-teal mr-2 text-2xl" />
+              <span class="text-op-teal text-sm font-bold">
                 {{ $t("admin.order.line") }}
               </span>
             </router-link>
@@ -164,7 +167,7 @@
         </a>
       </div>
     </div>
-  </o-modal>
+  </t-modal>
 </template>
 
 <script lang="ts">

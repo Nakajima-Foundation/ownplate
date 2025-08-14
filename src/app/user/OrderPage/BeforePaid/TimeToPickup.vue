@@ -2,8 +2,11 @@
   <div>
     <!-- Date Picker -->
     <div v-if="availableDays.length > 0">
-      <div class="rounded-lg bg-white p-4 shadow-sm flex flex-wrap gap-2">
-        <o-select v-model="dayIndex">
+      <div class="flex flex-wrap gap-2 rounded-lg bg-white p-4 shadow-sm">
+        <select
+          v-model="dayIndex"
+          class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+        >
           <option
             v-for="(day, index) in availableDays"
             :value="index"
@@ -12,8 +15,11 @@
             {{ $d(day.date, "short") }}
             <span v-if="day.offset === 0">{{ $t("date.today") }}</span>
           </option>
-        </o-select>
-        <o-select v-model="time">
+        </select>
+        <select
+          v-model="time"
+          class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+        >
           <option
             v-for="(time, index) in availableDays[dayIndex].times"
             :value="time.time"
@@ -21,7 +27,7 @@
           >
             {{ time.display }}
           </option>
-        </o-select>
+        </select>
       </div>
     </div>
     <!-- Not Available -->

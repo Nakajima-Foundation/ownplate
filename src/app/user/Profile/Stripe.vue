@@ -16,14 +16,14 @@
     </div>
 
     <div v-if="storedCard" class="mt-2">
-      <o-button @click="handleDeleteCard" class="b-reset-tw">
+      <button @click="handleDeleteCard" class="cursor-pointer">
         <div class="inline-flex items-center justify-center">
           <i class="material-icons mr-2 text-lg text-red-700">delete</i>
           <div class="text-sm font-bold text-red-700">
             {{ $t("profile.deleteCard") }}
           </div>
         </div>
-      </o-button>
+      </button>
     </div>
   </div>
 </template>
@@ -35,12 +35,14 @@ import { doc, onSnapshot, Unsubscribe } from "firebase/firestore";
 import { stripeDeleteCard } from "@/lib/firebase/functions";
 import { useUserData } from "@/utils/utils";
 
-import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
+import { useDialogStore } from "@/store/dialog";
 import moment from "moment";
 
 export default defineComponent({
   setup() {
-    const store = useStore();
+    const generalStore = useGeneralStore();
+    const dialogStore = useDialogStore();
     const { isLiffUser, user } = useUserData();
 
     const storedCard = ref<{ brand: string; last4: string } | null>(null);
@@ -83,11 +85,11 @@ export default defineComponent({
     };
 
     const handleDeleteCard = () => {
-      store.commit("setAlert", {
+      dialogStore.setAlert({
         code: "profile.reallyDeleteCard",
         callback: async () => {
           console.log("handleDeleteCard");
-          store.commit("setLoading", true);
+          generalStore.setLoading(true);
           try {
             const { data } = await stripeDeleteCard();
             storedCard.value = null;
@@ -95,7 +97,7 @@ export default defineComponent({
           } catch (error) {
             console.error(error);
           } finally {
-            store.commit("setLoading", false);
+            generalStore.setLoading(false);
           }
         },
       });

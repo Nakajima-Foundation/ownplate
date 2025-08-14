@@ -7,7 +7,7 @@
           shopInfo.restaurantName || $t("editRestaurant.noRestaurant")
         }}</span>
         <i
-          class="material-icons text-xl text-op-teal"
+          class="material-icons text-op-teal text-xl"
           v-if="shopInfo.enableDelivery"
         >
           delivery_dining
@@ -32,8 +32,8 @@
               <div
                 class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
               >
-                <i class="material-icons mr-2 text-lg text-op-teal">launch</i>
-                <span class="text-sm font-bold text-op-teal">{{
+                <i class="material-icons text-op-teal mr-2 text-lg">launch</i>
+                <span class="text-op-teal text-sm font-bold">{{
                   $t("admin.viewPage")
                 }}</span>
               </div>
@@ -44,8 +44,8 @@
               <div
                 class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
               >
-                <i class="material-icons mr-2 text-lg text-op-teal">edit</i>
-                <span class="text-sm font-bold text-op-teal">{{
+                <i class="material-icons text-op-teal mr-2 text-lg">edit</i>
+                <span class="text-op-teal text-sm font-bold">{{
                   $t("admin.editAbout")
                 }}</span>
               </div>
@@ -122,9 +122,9 @@
         <div v-else>
           <router-link :to="'/admin/restaurants/' + restaurantid + '/menus'">
             <div
-              class="inline-flex h-12 w-full items-center justify-center rounded-full border-2 border-solid border-op-teal px-6"
+              class="border-op-teal inline-flex h-12 w-full items-center justify-center rounded-full border-2 border-solid px-6"
             >
-              <span class="text-base font-bold text-op-teal">
+              <span class="text-op-teal text-base font-bold">
                 {{ $t("admin.editMenuItems") }}</span
               >
               <span
@@ -191,10 +191,10 @@
             <div
               class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
             >
-              <i class="material-icons mr-2 text-lg text-op-teal"
+              <i class="material-icons text-op-teal mr-2 text-lg"
                 >delivery_dining</i
               >
-              <span class="text-sm font-bold text-op-teal">{{
+              <span class="text-op-teal text-sm font-bold">{{
                 $t("admin.menu.delivery")
               }}</span>
             </div>
@@ -205,8 +205,8 @@
             <div
               class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
             >
-              <i class="material-icons mr-2 text-lg text-op-teal">print</i>
-              <span class="text-sm font-bold text-op-teal">{{
+              <i class="material-icons text-op-teal mr-2 text-lg">print</i>
+              <span class="text-op-teal text-sm font-bold">{{
                 $t("admin.menu.printer")
               }}</span>
             </div>
@@ -218,8 +218,8 @@
             <div
               class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
             >
-              <i class="material-icons mr-2 text-lg text-op-teal">sell</i>
-              <span class="text-sm font-bold text-op-teal">{{
+              <i class="material-icons text-op-teal mr-2 text-lg">sell</i>
+              <span class="text-op-teal text-sm font-bold">{{
                 $t("admin.menu.discount")
               }}</span>
             </div>
@@ -238,8 +238,8 @@
             <div
               class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
             >
-              <i class="fab fa-line mr-2 text-lg text-op-teal" />
-              <span class="text-sm font-bold text-op-teal">{{
+              <i class="fab fa-line text-op-teal mr-2 text-lg" />
+              <span class="text-op-teal text-sm font-bold">{{
                 $t("admin.line.title")
               }}</span>
             </div>
@@ -251,10 +251,10 @@
             <div
               class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
             >
-              <i class="material-icons mr-2 text-lg text-op-teal"
+              <i class="material-icons text-op-teal mr-2 text-lg"
                 >description</i
               >
-              <span class="text-sm font-bold text-op-teal">{{
+              <span class="text-op-teal text-sm font-bold">{{
                 $t("admin.report.title")
               }}</span>
             </div>
@@ -279,7 +279,7 @@
               @click="deleteFromList"
               class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
             >
-              <span class="text-sm font-bold text-op-teal">{{
+              <span class="text-op-teal text-sm font-bold">{{
                 $t("admin.directory.unlist")
               }}</span>
             </a>
@@ -328,7 +328,7 @@
               @click="requestList"
               class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
             >
-              <span class="text-sm font-bold text-op-teal">
+              <span class="text-op-teal text-sm font-bold">
                 {{ $t("admin.directory.requestList") }}</span
               >
             </a>
@@ -352,12 +352,12 @@
         <button
           @click="positionUp"
           :disabled="position === 'first'"
-          class="b-reset-tw disabled:opacity-50 disabled:cursor-not-allowed"
+          class="cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
         >
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
-            <i class="material-icons text-lg text-op-teal">arrow_upward</i>
+            <i class="material-icons text-op-teal text-lg">arrow_upward</i>
           </div>
         </button>
       </div>
@@ -367,19 +367,19 @@
         <button
           @click="positionDown"
           :disabled="position === 'last'"
-          class="b-reset-tw disabled:opacity-50 disabled:cursor-not-allowed"
+          class="cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
         >
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
-            <i class="material-icons text-lg text-op-teal">arrow_downward</i>
+            <i class="material-icons text-op-teal text-lg">arrow_downward</i>
           </div>
         </button>
       </div>
 
       <!-- Delete -->
       <div>
-        <button @click="deleteRestaurant" class="b-reset-tw">
+        <button @click="deleteRestaurant" class="cursor-pointer">
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
@@ -405,6 +405,7 @@ import {
 } from "firebase/firestore";
 
 import { useStore } from "vuex";
+import { useDialogStore } from "@/store/dialog";
 
 import { resizedProfileImage, isDev } from "@/utils/utils";
 
@@ -447,6 +448,7 @@ export default defineComponent({
   emits: ["positionUp", "positionDown", "deleteFromRestaurantLists"],
   setup(props, ctx) {
     const store = useStore();
+    const dialogStore = useDialogStore();
 
     const requestState = ref(0);
     let detacher: null | Unsubscribe = null;
@@ -470,7 +472,7 @@ export default defineComponent({
     });
 
     const deleteRestaurant = () => {
-      store.commit("setAlert", {
+      dialogStore.setAlert({
         title: props.shopInfo.restaurantName,
         code: "editRestaurant.reallyDelete",
         callback: () => {
@@ -483,7 +485,7 @@ export default defineComponent({
       });
     };
     const deleteFromList = () => {
-      store.commit("setAlert", {
+      dialogStore.setAlert({
         code: "editRestaurant.reallyOnListDelete",
         callback: () => {
           updateDoc(doc(db, `restaurants/${props.restaurantid}`), {

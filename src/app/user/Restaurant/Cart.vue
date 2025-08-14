@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed top-0 h-screen w-full bg-black/50 z-30">
+  <div class="fixed top-0 z-30 h-screen w-full bg-black/50">
     <div class="h-1/5 w-full" @click="closeCart"></div>
     <div class="fixed h-4/5 w-full overflow-x-scroll bg-white pb-32">
       <div class="mt-2 mb-4">
@@ -32,24 +32,23 @@
               @increase="increase(itemId, key)"
               @decrease="decrease(itemId, key)"
             />
-            <hr />
           </div>
         </template>
       </div>
 
       <div v-if="promotions && promotions.length > 0">
         <div
-          class="border-green-600 text-green-600 text-center font-bold mt-1 mx-6 sm:mx-auto max-w-xl items-center mb-3 rounded-lg bg-green-600/10 p-2"
+          class="mx-6 mt-1 mb-3 max-w-xl items-center rounded-lg border-green-600 bg-green-600/10 p-2 text-center font-bold text-green-600 sm:mx-auto"
         >
           <div class="text-xs">
             <PromotionMessage6 :promotion="promotions[0]" />
           </div>
           <div v-for="(promotion, k) in promotions" :key="k">
-            <div class="flex items-end justify-center mt-0.5">
+            <div class="mt-0.5 flex items-end justify-center">
               <div class="text-sm">
                 <PromotionMessage4 :promotion="promotion" />
               </div>
-              <div class="text-lg -mb-1">
+              <div class="-mb-1 text-lg">
                 <PromotionMessage2 :promotion="promotion" />
               </div>
             </div>
@@ -59,7 +58,7 @@
       <div v-if="possiblePromotions && possiblePromotions.length > 0">
         <div
           v-for="(p, k) in [possiblePromotions[0]]"
-          class="flex mx-6 sm:mx-auto max-w-xl justify-center font-bold text-sm"
+          class="mx-6 flex max-w-xl justify-center text-sm font-bold sm:mx-auto"
           :key="k"
         >
           <PromotionMessage3 :promotion="p" :totalPrice="totalPrice" />

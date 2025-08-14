@@ -21,18 +21,22 @@
           </div>
 
           <div class="mt-1">
-            <o-field
-              :variant="errors.email ? 'danger' : 'success'"
-              :message="errors.email && $t(errors.email[0])"
+            <input
+              v-model="email"
+              type="email"
+              :placeholder="$t('admin.emailPlaceHolder')"
+              maxlength="256"
+              class="w-full rounded border border-gray-300 px-3 py-2"
+              :class="errors.email ? 'border-red-500' : 'border-green-500'"
+            />
+            <div
+              v-if="errors.email && errors.email.length > 0"
+              class="mt-2 pl-2 font-bold text-red-600"
             >
-              <o-input
-                v-model="email"
-                type="email"
-                :placeholder="$t('admin.emailPlaceHolder')"
-                maxlength="256"
-                expanded
-              />
-            </o-field>
+              <div v-for="error in errors.email" :key="error">
+                {{ $t(error) }}
+              </div>
+            </div>
           </div>
         </div>
 
@@ -43,15 +47,13 @@
           </div>
 
           <div class="mt-1">
-            <o-field variant="success">
-              <o-input
-                v-model="name"
-                type="text"
-                :placeholder="$t('admin.enterName')"
-                maxlength="100"
-                expanded
-              />
-            </o-field>
+            <input
+              v-model="name"
+              type="text"
+              :placeholder="$t('admin.enterName')"
+              maxlength="100"
+              class="w-full rounded border border-gray-300 px-3 py-2"
+            />
           </div>
         </div>
 
@@ -62,19 +64,22 @@
           </div>
 
           <div class="mt-1">
-            <o-field
-              :variant="errors.password ? 'danger' : 'success'"
-              :message="errors.password && $t(errors.password[0])"
+            <input
+              v-model="password"
+              type="password"
+              :placeholder="$t('admin.passwordPlaceHolder')"
+              maxlength="30"
+              class="w-full rounded border border-gray-300 px-3 py-2"
+              :class="errors.password ? 'border-red-500' : 'border-green-500'"
+            />
+            <div
+              v-if="errors.password && errors.password.length > 0"
+              class="mt-2 pl-2 font-bold text-red-600"
             >
-              <o-input
-                v-model="password"
-                type="password"
-                :placeholder="$t('admin.passwordPlaceHolder')"
-                maxlength="30"
-                password-reveal
-                expanded
-              />
-            </o-field>
+              <div v-for="error in errors.password" :key="error">
+                {{ $t(error) }}
+              </div>
+            </div>
           </div>
         </div>
 
@@ -85,27 +90,32 @@
           </div>
 
           <div class="mt-1">
-            <o-field
-              :variant="errors.confirm ? 'danger' : 'success'"
-              :message="errors.confirm && $t(errors.confirm[0])"
+            <input
+              v-model="confirmPassword"
+              type="password"
+              :placeholder="$t('admin.confirmPasswordPlaceHolder')"
+              maxlength="30"
+              class="w-full rounded border border-gray-300 px-3 py-2"
+              :class="errors.confirm ? 'border-red-500' : 'border-green-500'"
+            />
+            <div
+              v-if="errors.confirm && errors.confirm.length > 0"
+              class="mt-2 pl-2 font-bold text-red-600"
             >
-              <o-input
-                v-model="confirmPassword"
-                type="password"
-                :placeholder="$t('admin.confirmPasswordPlaceHolder')"
-                maxlength="30"
-                password-reveal
-                expanded
-              />
-            </o-field>
+              <div v-for="error in errors.confirm" :key="error">
+                {{ $t(error) }}
+              </div>
+            </div>
           </div>
         </div>
 
         <!-- Submit Button -->
         <div class="mt-2 text-center">
-          <t-button @click="handleCancel"
-                    :isCancel="true"
-                    class="mr-4 mb-2 h-12 w-32">
+          <t-button
+            @click="handleCancel"
+            :isCancel="true"
+            class="mr-4 mb-2 h-12 w-32"
+          >
             {{ $t("button.cancel") }}
           </t-button>
 
@@ -149,8 +159,8 @@
       <div class="mt-2 text-center">
         <router-link to="/admin/user/signin">
           <div class="inline-flex items-center justify-center">
-            <i class="material-icons mr-2 text-lg text-op-teal">store</i>
-            <div class="text-sm font-bold text-op-teal">
+            <i class="material-icons text-op-teal mr-2 text-lg">store</i>
+            <div class="text-op-teal text-sm font-bold">
               {{ $t("admin.goToSignIn") }}
             </div>
           </div>
@@ -162,7 +172,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, watch, computed } from "vue";
-import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
 import isEmail from "validator/lib/isEmail";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { partners } from "@/config/constant";
@@ -182,7 +192,7 @@ export default defineComponent({
   setup() {
     const router = useRouter();
     const route = useRoute();
-    const store = useStore();
+    const generalStore = useGeneralStore();
     const isLocaleJapan = useIsLocaleJapan();
     const { user } = useUserData();
 
@@ -252,7 +262,7 @@ export default defineComponent({
       if (hasError.value) {
         return;
       }
-      store.commit("setLoading", true);
+      generalStore.setLoading(true);
       try {
         const result = await createUserWithEmailAndPassword(
           auth,
@@ -281,7 +291,7 @@ export default defineComponent({
         } catch (e) {
           console.log(e);
         }
-        store.commit("setLoading", false);
+        generalStore.setLoading(false);
         if (user) {
           console.log("signup calling push");
           router.push("/admin/restaurants");
@@ -290,7 +300,7 @@ export default defineComponent({
           deferredPush.value = true;
         }
       } catch (error: any) {
-        store.commit("setLoading", false);
+        generalStore.setLoading(false);
 
         console.warn("onSignup failed", error.code, error.message);
         if (error.code === "auth/email-already-in-use") {

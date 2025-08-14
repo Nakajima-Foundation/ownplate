@@ -1,39 +1,51 @@
 <template>
   <div class="flex items-center">
     <div>
-      <o-field :variant="variant">
-        <o-select
-          :modelValue="modelValue.start"
-          :disabled="disabled"
-          @update:modelValue="updateValueStart"
+      <select
+        :value="modelValue.start"
+        :disabled="disabled"
+        @change="updateValueStart"
+        class="rounded-lg border-2 bg-white px-3 py-2 dark:border-gray-600 dark:bg-black dark:text-white"
+        :class="
+          variant === 'danger'
+            ? 'border-red-400 hover:border-red-400 focus:ring-red-400'
+            : disabled
+              ? 'border-gray-400 hover:border-gray-400 focus:ring-gray-400'
+              : 'border-teal-400 hover:border-teal-400 focus:ring-teal-400'
+        "
+      >
+        <option
+          v-for="(timeItem, index) of timeList"
+          :key="timeItem"
+          :value="index === 0 ? null : (index - 1) * 30"
         >
-          <option
-            v-for="(timeItem, index) of timeList"
-            :key="timeItem"
-            :value="index === 0 ? null : (index - 1) * 30"
-          >
-            {{ timeItem }}
-          </option>
-        </o-select>
-      </o-field>
+          {{ timeItem }}
+        </option>
+      </select>
     </div>
     <div class="px-2">-</div>
     <div>
-      <o-field :variant="variant">
-        <o-select
-          :modelValue="modelValue.end"
-          :disabled="disabled"
-          @update:modelValue="updateValueEnd"
+      <select
+        :value="modelValue.end"
+        :disabled="disabled"
+        @change="updateValueEnd"
+        class="rounded-lg border-2 bg-white px-3 py-2 dark:border-gray-600 dark:bg-black dark:text-white"
+        :class="
+          variant === 'danger'
+            ? 'border-red-400 hover:border-red-400 focus:ring-red-400'
+            : disabled
+              ? 'border-gray-400 hover:border-gray-400 focus:ring-gray-400'
+              : 'border-teal-400 hover:border-teal-400 focus:ring-teal-400'
+        "
+      >
+        <option
+          v-for="(timeItem, index) of timeList"
+          :key="timeItem"
+          :value="index === 0 ? null : (index - 1) * 30"
         >
-          <option
-            v-for="(timeItem, index) of timeList"
-            :key="timeItem"
-            :value="index === 0 ? null : (index - 1) * 30"
-          >
-            {{ timeItem }}
-          </option>
-        </o-select>
-      </o-field>
+          {{ timeItem }}
+        </option>
+      </select>
     </div>
   </div>
 </template>
@@ -64,12 +76,12 @@ export default defineComponent({
   setup(props, context) {
     const updateValueStart = (e: any) => {
       const a = { ...props.modelValue };
-      a.start = e;
+      a.start = Number(e.target.value);
       context.emit("update:modelValue", a);
     };
     const updateValueEnd = (e: any) => {
       const a = { ...props.modelValue };
-      a.end = e;
+      a.end = Number(e.target.value);
       context.emit("update:modelValue", a);
     };
 

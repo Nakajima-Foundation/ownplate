@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section class="mx-auto max-w-full px-6 pb-12 pt-4">
+    <section class="mx-auto max-w-full px-6 pt-4 pb-12">
       <back-button :url="backUrl" />
     </section>
     <div v-if="restaurantData === null">loading</div>

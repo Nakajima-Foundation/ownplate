@@ -8,27 +8,6 @@
     <!-- Send SMS -->
     <form v-show="confirmationResult === null" @submit.prevent="handleSubmit">
       <div v-if="!relogin" class="mt-4">
-        <!-- Country Code -->
-        <div v-if="countries.length > 1">
-          <div class="text-sm font-bold">
-            {{ $t("sms.countryCode") }}
-          </div>
-
-          <div class="mt-2">
-            <o-field>
-              <o-select v-model="countryCode">
-                <option
-                  v-for="country in countries"
-                  :value="country.code"
-                  :key="country.code"
-                >
-                  {{ $t(country.name) }}
-                </option>
-              </o-select>
-            </o-field>
-          </div>
-        </div>
-
         <!-- Phone Number -->
         <div class="mt-2">
           <div class="text-sm font-bold">
@@ -36,18 +15,21 @@
           </div>
 
           <div class="mt-2">
-            <o-field
-              :variant="hasError ? 'danger' : 'success'"
-              :message="hasError ? $t(errors[0]) : $t('sms.notice')"
-            >
-              <o-input
-                type="tel"
-                autocomplete="tel"
-                v-model="phoneNumber"
-                maxlength="20"
-                :placeholder="$t('sms.pleasetype')"
-              />
-            </o-field>
+            <input
+              type="tel"
+              autocomplete="tel"
+              v-model="phoneNumber"
+              maxlength="20"
+              :placeholder="$t('sms.pleasetype')"
+              class="w-full rounded border border-gray-300 px-3 py-2"
+              :class="hasError ? 'border-red-500' : 'border-green-500'"
+            />
+            <div v-if="hasError" class="mt-2 pl-2 font-bold text-red-600">
+              {{ $t(errors[0]) }}
+            </div>
+            <div v-else>
+              {{ $t("sms.notice") }}
+            </div>
           </div>
           <div v-if="!isLocaleJapan">
             <div class="mt-2 text-xs">
@@ -78,8 +60,7 @@
         <t-button
           id="button-send-tel"
           :isDisabled="!readyToSendSMS"
-          :isLoading="isLoading"
-          class="h-12 w-32 shadow-sm font-bold text-white"
+          class="h-12 w-32 font-bold text-white shadow-sm"
         >
           {{ $t("sms.send") }}
         </t-button>
@@ -101,19 +82,21 @@
           </div>
 
           <div class="mt-2">
-            <o-field
-              :variant="hasError ? 'danger' : 'success'"
-              :message="hasError ? $t(errors[0]) : ''"
-            >
-              <o-input
-                inputmode="numeric"
-                pattern="[0-9]*"
-                autocomplete="one-time-code"
-                v-model="verificationCode"
-                maxlength="6"
-                :placeholder="$t('sms.typeVerificationCode')"
-              />
-            </o-field>
+            <input
+              inputmode="numeric"
+              pattern="[0-9]*"
+              autocomplete="one-time-code"
+              v-model="verificationCode"
+              maxlength="6"
+              :placeholder="$t('sms.typeVerificationCode')"
+              class="w-full rounded border border-gray-300 px-3 py-2"
+              :class="hasError ? 'border-red-500' : 'border-green-500'"
+            />
+            <div v-if="hasError" class="mt-2 pl-2 font-bold text-red-600">
+              <div v-for="error in errors" :key="error">
+                {{ $t(error) }}
+              </div>
+            </div>
           </div>
         </div>
 
@@ -124,15 +107,14 @@
           </div>
 
           <div class="mt-2">
-            <o-field>
-              <o-input
-                type="text"
-                v-model="name"
-                maxlength="32"
-                :placeholder="$t('sms.typeUserName')"
-                expanded
-              />
-            </o-field>
+            <input
+              type="text"
+              v-model="name"
+              maxlength="32"
+              :placeholder="$t('sms.typeUserName')"
+              class="w-full rounded border border-gray-300 px-3 py-2"
+              expanded
+            />
           </div>
         </div>
       </div>
@@ -141,7 +123,7 @@
       <div class="mt-4 text-center">
         <t-button
           @click="$emit('dismissed', false)"
-          isCancel="true"
+          :isCancel="true"
           class="mr-4 mb-2 inline-flex h-12 w-32 items-center justify-center rounded-full bg-black/5"
         >
           {{ $t("button.cancel") }}
@@ -150,8 +132,7 @@
         <t-button
           id="button-send-code"
           :isDisabled="!readyToSendVerificationCode"
-          :isLoading="isLoading"
-          class="h-12 w-32 shadow-sm font-bold text-white"
+          class="h-12 w-32 font-bold text-white shadow-sm"
         >
           {{ $t("sms.sendVerificationCode") }}
         </t-button>
@@ -185,6 +166,7 @@ import moment from "moment";
 import * as Sentry from "@sentry/vue";
 
 import TermsAndPolicy from "@/app/auth/TermsAndPolicy.vue";
+import { useGeneralStore } from "@/store";
 
 export default defineComponent({
   components: {
@@ -199,7 +181,7 @@ export default defineComponent({
   setup(props, ctx) {
     const countries = stripeRegion.countries;
 
-    const isLoading = ref(false);
+    const generalStore = useGeneralStore();
     const countryCode = countries[0].code || "+1";
     const phoneNumber = ref("");
     const errors = ref<string[]>([]);
@@ -256,7 +238,7 @@ export default defineComponent({
     const handleSubmit = async () => {
       console.log("submit");
       try {
-        isLoading.value = true;
+        generalStore.setLoading(true);
         confirmationResult.value = await signInWithPhoneNumber(
           auth,
           SMSPhoneNumber.value,
@@ -276,14 +258,14 @@ export default defineComponent({
         Sentry.captureException(error);
         errors.value = ["sms." + error.code];
       } finally {
-        isLoading.value = false;
+        generalStore.setLoading(false);
       }
     };
     const handleCode = async () => {
       console.log("handleCode");
       errors.value = [];
       try {
-        isLoading.value = true;
+        generalStore.setLoading(true);
         const result = await (
           confirmationResult.value as ConfirmationResult
         ).confirm(verificationCode.value);
@@ -321,12 +303,11 @@ export default defineComponent({
         }
         errors.value = ["sms." + error.code];
       } finally {
-        isLoading.value = false;
+        generalStore.setLoading(false);
       }
     };
     return {
       countries,
-      isLoading,
 
       countryCode,
       phoneNumber,

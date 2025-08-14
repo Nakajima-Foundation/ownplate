@@ -1,5 +1,5 @@
 <template>
-  <section class="mx-auto max-w-full px-6 pb-12 pt-4">
+  <section class="mx-auto max-w-full px-6 pt-4 pb-12">
     <back-button url="/s" />
     <h2>All Requests</h2>
     <table>
@@ -15,7 +15,7 @@
         <td style="width: 50%">
           <router-link
             :to="`/r/${request.id}`"
-            class="text-sm font-bold text-op-teal"
+            class="text-op-teal text-sm font-bold"
           >
             {{ (restaurantsObj[request.id] || {}).restaurantName }}
           </router-link>
@@ -41,9 +41,12 @@
               !restaurantsObj[request.id].onTheList
             "
           >
-            <o-button @click="enableList(restaurantsObj[request.id].id)"
-              >Enable</o-button
+            <button
+              @click="enableList(restaurantsObj[request.id].id)"
+              class="cursor-pointe cursor-pointer rounded border-2 border-black/40 bg-gray-200 p-1 hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-25"
             >
+              Enable
+            </button>
           </span>
           <span v-else> On the list </span>
         </td>

@@ -1,14 +1,14 @@
 <template>
   <div>
     <!-- Transactions Act Popup-->
-    <o-modal v-model:active="transactionsActPopup" :width="488" scroll="keep">
+    <t-modal v-model:active="transactionsActPopup" width="488" scroll="keep">
       <Contents
         :shopInfo="shopInfo"
         :isDelivery="isDelivery"
         @closeTransactionsAct="closeTransactionsAct"
         closeButton="menu.close"
       />
-    </o-modal>
+    </t-modal>
   </div>
 </template>
 

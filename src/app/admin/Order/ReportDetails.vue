@@ -2,24 +2,28 @@
   <div>
     <div v-if="!hideTable" class="pb-6">
       <table class="w-full rounded-lg bg-white shadow-sm">
-        <tr>
-          <th
-            v-for="(field, index) in fields"
-            :key="field"
-            class="p-2 text-xs font-bold"
-          >
-            {{ fieldNames[index] }}
-          </th>
-        </tr>
-        <tr v-for="(row, k) in tableData" :key="k">
-          <td
-            v-for="field in fields"
-            :key="`${row.id}_${field}`"
-            class="p-2 text-xs"
-          >
-            {{ row[field] }}
-          </td>
-        </tr>
+        <thead>
+          <tr>
+            <th
+              v-for="(field, index) in fields"
+              :key="field"
+              class="p-2 text-xs font-bold"
+            >
+              {{ fieldNames[index] }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(row, k) in tableData" :key="k">
+            <td
+              v-for="field in fields"
+              :key="`${row.id}_${field}`"
+              class="p-2 text-xs"
+            >
+              {{ row[field] }}
+            </td>
+          </tr>
+        </tbody>
       </table>
     </div>
 
@@ -30,16 +34,16 @@
       :fileName="fileName"
       :formulas="formulas"
     >
-      <o-button class="b-reset-tw">
+      <button class="cursor-pointer">
         <div
           class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
         >
-          <i class="material-icons mr-2 text-lg text-op-teal">save_alt</i>
-          <div class="text-sm font-bold text-op-teal">
+          <i class="material-icons text-op-teal mr-2 text-lg">save_alt</i>
+          <div class="text-op-teal text-sm font-bold">
             {{ $t(buttonTitle) }}
           </div>
         </div>
-      </o-button>
+      </button>
     </download-csv>
   </div>
 </template>

@@ -50,7 +50,7 @@
             <!-- Delete -->
             <div>
               <a
-                class="ml-4 inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
+                class="ml-4 inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-black/5 px-4"
                 @click.stop="handleDelete(lineUser.id)"
               >
                 <i class="material-icons text-lg text-red-700">delete</i>
@@ -61,7 +61,7 @@
 
         <!-- Add LINE User -->
         <div class="mt-4 text-center">
-          <o-button @click="handleLineAuth" class="b-reset-tw">
+          <button @click="handleLineAuth" class="cursor-pointer">
             <div
               class="inline-flex h-12 items-center justify-center rounded-full px-6"
               style="background: #18b900"
@@ -71,7 +71,7 @@
                 {{ $t("admin.order.lineAdd") }}
               </div>
             </div>
-          </o-button>
+          </button>
         </div>
 
         <!-- Note for Safari Private Browsing Mode -->
@@ -109,7 +109,7 @@ import {
 import NotFound from "@/components/NotFound.vue";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 
-import { useStore } from "vuex";
+import { useDialogStore } from "@/store/dialog";
 import { useRouter, useRoute } from "vue-router";
 import { useHead } from "@unhead/vue";
 interface LineUserData {
@@ -129,7 +129,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const store = useStore();
+    const dialogStore = useDialogStore();
     const router = useRouter();
     const route = useRoute();
 
@@ -199,7 +199,7 @@ export default defineComponent({
       location.href = url;
     };
     const handleDelete = (_lineId: string) => {
-      store.commit("setAlert", {
+      dialogStore.setAlert({
         code: "admin.order.lineDelete",
         callback: async () => {
           console.log("handleDelete", _lineId);

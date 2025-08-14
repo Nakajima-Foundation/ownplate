@@ -25,7 +25,7 @@
           {{ $t("delivery.deliveryLocation") }}
         </div>
         <div class="mb-2">
-          <div ref="mapRef" class="w-full h-[50vh]" />
+          <div ref="mapRef" class="h-[50vh] w-full" />
         </div>
       </template>
       <div class="text-base font-bold">{{ $t("order.ec.phone") }}</div>

@@ -17,6 +17,7 @@ import { lineValidate } from "@/lib/firebase/functions";
 import { useUserData } from "@/utils/utils";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
+import { useDialogStore } from "@/store/dialog";
 import Loading from "@/components/Loading.vue";
 
 export default defineComponent({
@@ -27,6 +28,7 @@ export default defineComponent({
     const router = useRouter();
     const route = useRoute();
     const store = useStore();
+    const dialogStore = useDialogStore();
 
     const code = route.query.code as string;
     const restaurantId = route.params.restaurantId as string | undefined;
@@ -78,7 +80,7 @@ export default defineComponent({
           }
         } catch (error: any) {
           console.error(error.message, error.details);
-          store.commit("setErrorMessage", {
+          dialogStore.setErrorMessage({
             code: "line.validation",
             message2: "errorPage.message.line",
             error,

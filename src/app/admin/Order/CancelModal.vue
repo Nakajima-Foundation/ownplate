@@ -15,9 +15,9 @@
       <div>
         <a
           :href="nationalPhoneURI"
-          class="inline-flex h-12 items-center justify-center rounded-full border-2 border-op-teal px-6"
+          class="border-op-teal inline-flex h-12 items-center justify-center rounded-full border-2 px-6"
         >
-          <div class="text-base font-bold text-op-teal">
+          <div class="text-op-teal text-base font-bold">
             {{ nationalPhoneNumber }}
           </div>
         </a>
@@ -29,7 +29,11 @@
 
     <!-- Cancel -->
     <div class="mt-4 text-center">
-      <button :disabled="updating" @click="handleCancel" class="b-reset-tw">
+      <button
+        :disabled="updating"
+        @click="handleCancel"
+        class="cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+      >
         <div
           class="inline-flex h-12 items-center justify-center rounded-full bg-red-700 px-6"
           :class="updating ? 'bg-red-700/10' : ''"
@@ -69,8 +73,8 @@ import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import ButtonLoading from "@/components/form/Loading.vue";
 
-import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import { useDialogStore } from "@/store/dialog";
 
 export default defineComponent({
   props: {
@@ -106,7 +110,7 @@ export default defineComponent({
   emits: ["close"],
   setup(props, ctx) {
     const router = useRouter();
-    const store = useStore();
+    const dialogStore = useDialogStore();
 
     const updating = ref(false);
 
@@ -129,7 +133,7 @@ export default defineComponent({
         router.push(props.parentUrl);
       } catch (error: any) {
         console.error(error.message, error.details);
-        store.commit("setErrorMessage", {
+        dialogStore.setErrorMessage({
           code: "order.cancel",
           error,
         });

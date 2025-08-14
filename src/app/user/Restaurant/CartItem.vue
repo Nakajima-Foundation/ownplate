@@ -49,20 +49,20 @@
       <div class="flex justify-end">
         <span
           @click="decrease()"
-          class="inline-flex h-9 w-16 items-center justify-center rounded-full bg-red-700/10 cursor-pointer"
+          class="inline-flex h-9 w-16 cursor-pointer items-center justify-center rounded-full bg-red-700/10"
         >
           <i class="material-icons text-lg text-red-700">remove</i>
         </span>
         <div
-          class="mx-5 mt-0.5 flex-1 text-center text-xl font-bold text-op-teal"
+          class="text-op-teal mx-5 mt-0.5 flex-1 text-center text-xl font-bold"
         >
           {{ quantity }}
         </div>
         <span
           @click="increase()"
-          class="inline-flex h-9 w-16 items-center justify-center rounded-full bg-op-teal/10 cursor-pointer"
+          class="bg-op-teal/10 inline-flex h-9 w-16 cursor-pointer items-center justify-center rounded-full"
         >
-          <i class="material-icons text-lg text-op-teal">add</i>
+          <i class="material-icons text-op-teal text-lg">add</i>
         </span>
       </div>
     </div>
@@ -85,7 +85,7 @@ import Price from "@/components/Price.vue";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { MenuData } from "@/models/menu";
 import { AnalyticsMenuData } from "@/lib/firebase/analytics";
-import { useStore } from "vuex";
+import { useGeneralStore } from "../../../store";
 
 import moment from "moment-timezone";
 
@@ -117,7 +117,8 @@ export default defineComponent({
   },
   emits: ["increase", "decrease"],
   setup(props, ctx) {
-    const store = useStore();
+    const generalStore = useGeneralStore();
+
     const restaurantId = useRestaurantId();
     const image = computed(() => {
       return (
@@ -150,7 +151,7 @@ export default defineComponent({
       );
     };
     const isSoldOutToday = computed(() => {
-      const today = moment(store.state.date).format("YYYY-MM-DD");
+      const today = moment(generalStore.date).format("YYYY-MM-DD");
       return props.item.soldOutToday === today;
     });
     return {

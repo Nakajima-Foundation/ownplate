@@ -9,9 +9,9 @@
       <div class="text-center">
         <router-link
           to="/admin/smaregi/index"
-          class="inline-flex h-12 items-center rounded-full border-2 border-op-teal px-6"
+          class="border-op-teal inline-flex h-12 items-center rounded-full border-2 px-6"
         >
-          <span class="text-base font-bold text-op-teal">{{
+          <span class="text-op-teal text-base font-bold">{{
             $t("admin.thirdPartyService.openSmaregi")
           }}</span>
         </router-link>
@@ -23,7 +23,7 @@
           target="_blank"
           class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
         >
-          <span class="text-sm font-bold text-op-teal">
+          <span class="text-op-teal text-sm font-bold">
             {{ $t("admin.thirdPartyService.smaregiManualLink") }}</span
           >
         </a>
@@ -35,7 +35,7 @@
           target="_blank"
           class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
         >
-          <span class="text-sm font-bold text-op-teal">
+          <span class="text-op-teal text-sm font-bold">
             {{ $t("admin.thirdPartyService.smaregiAppMarket") }}
           </span>
         </a>

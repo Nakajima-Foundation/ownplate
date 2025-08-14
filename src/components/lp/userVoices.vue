@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- User Voices Title -->
-    <div class="mt-10 text-black text-center text-op-90 text-2xl font-bold">
+    <div class="text-op-90 mt-10 text-center text-2xl font-bold text-black">
       {{ $t("lp.customerVoice1") }}
       <br />{{ $t("lp.customerVoice2") }}
     </div>
@@ -42,10 +42,10 @@
             />
           </div>
           <div class="mt-2 inline-flex items-center">
-            <i class="material-icons text-2xl text-op-teal"
+            <i class="material-icons text-op-teal text-2xl"
               >play_circle_filled</i
             >
-            <span class="ml-1 text-base font-bold text-op-teal">{{
+            <span class="text-op-teal ml-1 text-base font-bold">{{
               $t("lp.playVideo")
             }}</span>
           </div>

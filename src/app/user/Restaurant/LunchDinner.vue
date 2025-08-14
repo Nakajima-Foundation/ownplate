@@ -10,7 +10,7 @@
         class="h-full w-full rounded-lg bg-white p-3 shadow-sm"
         :class="
           modelValue === 'lunch'
-            ? 'border-2 border-op-teal text-op-teal'
+            ? 'border-op-teal text-op-teal border-2'
             : 'cursor-pointer text-black/40'
         "
         @click="input('lunch')"
@@ -25,7 +25,7 @@
         class="h-full w-full rounded-lg bg-white p-3 shadow-sm"
         :class="
           modelValue === 'dinner'
-            ? 'border-2 border-op-teal text-op-teal'
+            ? 'border-op-teal text-op-teal border-2'
             : 'cursor-pointer text-black/40'
         "
         @click="input('dinner')"
@@ -41,7 +41,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { useStore } from "vuex";
+import { useDialogStore } from "@/store/dialog";
 
 export default defineComponent({
   props: {
@@ -60,7 +60,7 @@ export default defineComponent({
   },
   emits: ["update:modelValue"],
   setup(props, ctx) {
-    const store = useStore();
+    const dialogStore = useDialogStore();
     const popup = ref(false);
 
     const input = (value: string) => {
@@ -68,7 +68,7 @@ export default defineComponent({
         (value === "dinner" && props.hasLunchOnlyOrder) ||
         (value === "lunch" && props.hasDinnerOnlyOrder)
       ) {
-        store.commit("setAlert", {
+        dialogStore.setAlert({
           title: "lunchOrDinner.alert." + value + ".title",
           code: "lunchOrDinner.alert." + value + ".body",
           callback: () => {
