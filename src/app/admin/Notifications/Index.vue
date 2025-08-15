@@ -25,7 +25,7 @@ import { doc, getDoc, serverTimestamp } from "firebase/firestore";
 import NotificationSettings from "@/app/admin/Notifications/NotificationSettings.vue";
 import NotificationSettingButton from "@/app/admin/Notifications/NotificationSettingButton.vue";
 import { useRestaurantId } from "@/utils/utils";
-import { useStore } from "vuex";
+import { useUserStore } from "@/store/user";
 
 export default defineComponent({
   props: {
@@ -39,14 +39,14 @@ export default defineComponent({
     NotificationSettingButton,
   },
   setup() {
-    const store = useStore();
+    const userStore = useUserStore();
 
     const restaurantId = useRestaurantId();
     const notificationSettingsPopup = ref(false);
     const defaultNotificationData = {
       soundOn: null,
       infinityNotification: null,
-      uid: store.getters.uidAdmin,
+      uid: userStore.uidAdmin,
       createdAt: serverTimestamp(),
     };
     const notificationData = ref(defaultNotificationData);

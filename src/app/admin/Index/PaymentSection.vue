@@ -110,10 +110,10 @@ import {
   watch,
   computed,
 } from "vue";
-import { useStore } from "vuex";
-import { useGeneralStore } from "@/store";
 import { useRoute, useRouter } from "vue-router";
 import { useDialogStore } from "@/store/dialog";
+import { useGeneralStore } from "@/store";
+import { useUserStore } from "@/store/user";
 
 import { db } from "@/lib/firebase/firebase9";
 import { doc, onSnapshot, Unsubscribe, setDoc } from "firebase/firestore";
@@ -132,7 +132,7 @@ export default defineComponent({
   },
   emits: ["updateUnsetWarning"],
   setup(_, context) {
-    const store = useStore();
+    const userStore = useUserStore();
     const generalStore = useGeneralStore();
     const route = useRoute();
     const router = useRouter();
@@ -167,9 +167,6 @@ export default defineComponent({
       }
     });
 
-    const uid = computed(() => {
-      return store.getters.uidAdmin;
-    });
     const hasStripe = computed(() => {
       return !!paymentInfo.value.stripe;
     });
@@ -177,7 +174,7 @@ export default defineComponent({
       return !inStorePayment.value && !hasStripe.value;
     });
 
-    const refPayment = doc(db, `/admins/${uid.value}/public/payment`);
+    const refPayment = doc(db, `/admins/${userStore.uidAdmin}/public/payment`);
     stripe_connnect_detacher = onSnapshot(refPayment, (snapshot) => {
       if (snapshot.exists()) {
         paymentInfo.value = snapshot.data();

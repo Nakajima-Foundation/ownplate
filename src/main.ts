@@ -3,7 +3,6 @@ import { createApp } from "vue";
 import { createPinia } from "pinia";
 
 import router from "@/lib/router";
-import store from "@/lib/store";
 
 // plugins
 import i18n from "@/lib/vue-i18n";
@@ -40,7 +39,6 @@ app.use(VueSocialSharing);
 const head = createHead();
 app.use(head);
 
-app.use(store);
 app.use(router);
 app.use(i18n);
 

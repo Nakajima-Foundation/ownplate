@@ -44,8 +44,7 @@
     "vue-clipboard3": "^2.0.0",
     "vue-i18n": "^11.1.11",
     "vue-router": "^4.5.1",
-    "vue-social-sharing": "^4.0.0-alpha4",
-    "vuex": "^4.1.0"
+    "vue-social-sharing": "^4.0.0-alpha4"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.11",

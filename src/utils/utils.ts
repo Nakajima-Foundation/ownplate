@@ -1,4 +1,5 @@
 import { ref, computed, onMounted } from "vue";
+import { User } from "firebase/auth";
 import { db } from "@/lib/firebase/firebase9";
 import {
   DocumentData,
@@ -30,8 +31,8 @@ import isURL from "validator/lib/isURL";
 import isLatLong from "validator/lib/isLatLong";
 
 import { useRoute, useRouter } from "vue-router";
-import { useStore } from "vuex";
 import { useGeneralStore } from "../store";
+import { useUserStore } from "@/store/user";
 import i18n from "@/lib/vue-i18n";
 
 export const isNull = <T>(value: T) => {
@@ -570,38 +571,38 @@ export const getPostOption = (
 };
 
 export const useUserData = () => {
-  const store = useStore();
+  const userStore = useUserStore();
   const route = useRoute();
 
   const isAdmin = computed(() => {
-    return !!store.getters.uidAdmin;
+    return !!userStore.uidAdmin;
   });
   const uid = computed(() => {
-    return store.getters.uid;
+    return userStore.uid;
   });
   const isUser = computed(() => {
-    return !!store.getters.uidUser;
+    return !!userStore.uidUser;
   });
 
   const isLiffUser = computed(() => {
-    return !!store.getters.uidLiff;
+    return !!userStore.uidLiff;
   });
   const isLineUser = computed(() => {
-    const claims = store.state.claims;
+    const claims = userStore.claims;
     return !!claims?.line;
   });
   const claims = computed(() => {
-    return store.state.claims;
+    return userStore.claims;
   });
   const inLiff = computed(() => {
     return !!route.params.liffIndexId;
   });
   const user = computed(() => {
-    return store.state.user;
+    return userStore.user;
   });
 
   const isAnonymous = computed(() => {
-    return store.getters.isAnonymous;
+    return userStore.isAnonymous;
   });
 
   return {
@@ -636,36 +637,25 @@ export const useToggle = (defaultValue = false) => {
   };
 };
 
-// do not use
-export const useUser = () => {
-  const store = useStore();
-  const user = computed(() => {
-    return store.state.user;
-  });
-  return user;
-};
-
 export const isJapan = ownPlateConfig.region === "JP";
 export const serviceKey = isJapan ? "omochikaeri" : "ownPlate";
 
 export const defaultTitle = defaultHeader.title;
 
 export const useAdminUids = () => {
-  const store = useStore();
+  const userStore = useUserStore();
 
   const isOwner = computed(() => {
-    return !store.getters.isSubAccount;
+    return !userStore.isSubAccount;
   });
   const uid = computed(() => {
-    return store.getters.uidAdmin;
+    return userStore.uidAdmin;
   });
   const ownerUid = computed(() => {
-    return store.getters.isSubAccount
-      ? store.getters.parentId
-      : store.getters.uidAdmin;
+    return userStore.isSubAccount ? userStore.parentId : userStore.uidAdmin;
   });
   const emailVerified = computed(() => {
-    return store.state.user?.emailVerified;
+    return (userStore.user as User)?.emailVerified;
   });
   return {
     isOwner,
@@ -787,12 +777,12 @@ export const useFeatureHeroTablet = () => {
   });
 };
 export const useIsNotSuperAdmin = () => {
-  const store = useStore();
+  const userStore = useUserStore();
   const isNotSuperAdmin = computed(() => {
-    return store.getters.isNotSuperAdmin;
+    return userStore.isNotSuperAdmin;
   });
   const isNotOperator = computed(() => {
-    return store.getters.isNotOperator;
+    return userStore.isNotOperator;
   });
   return {
     isNotSuperAdmin,
@@ -829,11 +819,11 @@ export const haversine_distance = (
 };
 
 export const useSuper = () => {
-  const store = useStore();
+  const userStore = useUserStore();
   const router = useRouter();
 
   onMounted(() => {
-    if (!store.state.user || store.getters.isNotSuperAdmin) {
+    if (!userStore.user || userStore.isNotSuperAdmin) {
       router.push("/");
     }
   });
@@ -855,16 +845,16 @@ export const getBackUrl = () => {
 };
 
 export const superPermissionCheck = () => {
-  const store = useStore();
+  const userStore = useUserStore();
   const router = useRouter();
   if (isSuperPage()) {
-    if (!store.state.user || store.getters.isNotSuperAdmin) {
+    if (!userStore.user || userStore.isNotSuperAdmin) {
       router.push("/");
     }
   } else {
     if (
-      !store.state.user ||
-      (store.getters.isNotSuperAdmin && store.getters.isNotOperator)
+      !userStore.user ||
+      (userStore.isNotSuperAdmin && userStore.isNotOperator)
     ) {
       router.push("/");
     }

@@ -748,7 +748,7 @@ import { uploadFile } from "@/lib/firebase/storage";
 import { getNewItemData, MenuData } from "@/models/menu";
 import { checkShopOwner } from "@/utils/userPermission";
 
-import { useStore } from "vuex";
+import { useUserStore } from "@/store/user";
 import { useDialogStore } from "@/store/dialog";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
@@ -775,7 +775,7 @@ export default defineComponent({
   },
 
   setup(props) {
-    const store = useStore();
+    const userStore = useUserStore();
     const dialogStore = useDialogStore();
     const route = useRoute();
     const router = useRouter();
@@ -960,7 +960,7 @@ export default defineComponent({
               newItem.publicFlag = false;
               newItem.createdAt = serverTimestamp();
               newItem.deletedFlag = false;
-              newItem.uid = store.getters.uidAdmin;
+              newItem.uid = userStore.uidAdmin;
 
               const category1 = shop.category1 || [];
               const category2 = shop.category2 || [];
