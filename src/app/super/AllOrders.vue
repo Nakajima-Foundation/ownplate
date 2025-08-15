@@ -10,7 +10,7 @@
           <h2>All Orders</h2>
           <select
             v-model="orderState"
-            class="mt-4 rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+            class="mt-4 rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400"
           >
             <option
               v-for="status in orderStatus"
@@ -26,7 +26,7 @@
               <div class="flex">
                 <select
                   v-model="monthValue"
-                  class="mt-1 rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+                  class="mt-1 rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400"
                 >
                   <option v-for="(month, k) in months" :value="month" :key="k">
                     {{ month }}

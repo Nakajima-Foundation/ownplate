@@ -532,7 +532,7 @@
                     v-model.number="editShopInfo.pickUpMinimumCookTime"
                     placeholder="10"
                     type="text"
-                    class="w-24 rounded-lg border border-gray-300 bg-white px-3 py-2 dark:bg-black dark:text-gray-200"
+                    class="w-24 rounded-lg border border-gray-300 bg-white px-3 py-2"
                     :class="
                       errors['pickUpMinimumCookTime'].length > 0
                         ? 'border-red-500'
@@ -554,7 +554,7 @@
                   >
                     <label class="mr-2 inline-flex cursor-pointer items-center">
                       <input
-                        class="m-auto mt-1 mr-1 h-4 w-4 cursor-pointer appearance-none rounded-full border border-teal-400 bg-white checked:border-teal-400 checked:bg-teal-400 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+                        class="m-auto mt-1 mr-1 h-4 w-4 cursor-pointer appearance-none rounded-full border border-teal-400 bg-white checked:border-teal-400 checked:bg-teal-400 hover:border-teal-400 focus:ring-teal-400"
                         type="radio"
                         v-model="editShopInfo.pickUpMinimumCookTime"
                         :value="choice.value"
@@ -576,7 +576,7 @@
                 </div>
                 <select
                   v-model.number="editShopInfo.pickUpDaysInAdvance"
-                  class="mt-1 rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+                  class="mt-1 rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400"
                 >
                   <option
                     v-for="(day, index) in reservationTheDayBefore"
@@ -603,7 +603,7 @@
                 <label class="mr-2 inline-flex cursor-pointer items-center">
                   <input
                     type="radio"
-                    class="m-auto mt-1 mr-1 h-4 w-4 cursor-pointer appearance-none rounded-full border border-teal-400 bg-white checked:border-teal-400 checked:bg-teal-400 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+                    class="m-auto mt-1 mr-1 h-4 w-4 cursor-pointer appearance-none rounded-full border border-teal-400 bg-white checked:border-teal-400 checked:bg-teal-400 hover:border-teal-400 focus:ring-teal-400"
                     v-model="editShopInfo.personalInfo"
                     :value="personalInfoSaveMethod.key"
                   />

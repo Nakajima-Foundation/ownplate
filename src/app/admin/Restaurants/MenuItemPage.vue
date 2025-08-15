@@ -91,7 +91,7 @@
               <input
                 v-model="menuInfo.itemName"
                 :placeholder="$t('editMenu.enterItemName')"
-                class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 dark:border-gray-600 dark:bg-black dark:text-white"
+                class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2"
                 :class="
                   errors['itemName'].length > 0
                     ? 'border-red-500'
@@ -109,7 +109,7 @@
             <input
               v-model="menuInfo.itemAliasesName"
               :placeholder="$t('editMenu.enterItemAliasesName')"
-              class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 dark:border-gray-600 dark:bg-black dark:text-white"
+              class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2"
             />
           </div>
 
@@ -130,7 +130,7 @@
                     placeholder="00.00"
                     :max="maxPrice"
                     min="0.00"
-                    class="flex-1 rounded-l-lg border border-gray-300 px-3 py-2 dark:bg-black dark:text-gray-200"
+                    class="flex-1 rounded-l-lg border border-gray-300 px-3 py-2"
                     :class="
                       errors['price'].length > 0
                         ? 'border-red-500'
@@ -155,7 +155,7 @@
               <div>
                 <select
                   v-model="menuInfo.tax"
-                  class="w-full rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+                  class="w-full rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400"
                 >
                   <option
                     v-for="taxItem in taxRates"
@@ -207,7 +207,7 @@
                 <textarea
                   v-model="menuInfo.itemDescription"
                   :placeholder="$t('editMenu.enterItemDescription')"
-                  class="resize-vertical w-full rounded-lg border border-gray-300 px-3 py-2 dark:bg-black dark:text-gray-200"
+                  class="resize-vertical w-full rounded-lg border border-gray-300 px-3 py-2"
                   :class="
                     errors['itemDescription'].length > 0
                       ? 'border-red-500'
@@ -229,7 +229,7 @@
                 <textarea
                   v-model="menuInfo.itemMemo"
                   :placeholder="$t('editMenu.enterItemMemo')"
-                  class="resize-vertical w-full rounded border border-green-500 px-3 py-2 dark:bg-black dark:text-gray-200"
+                  class="resize-vertical w-full rounded border border-green-500 px-3 py-2"
                   rows="4"
                 ></textarea>
               </div>
@@ -444,7 +444,7 @@
                     <input
                       v-model="menuInfo.itemOptionCheckbox[key]"
                       :placeholder="$t('editMenu.enterItemOption')"
-                      class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 dark:border-gray-600 dark:bg-black dark:text-white"
+                      class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2"
                     />
                   </div>
                   <button class="cursor-pointer" @click="deleteOption(key)">
@@ -550,7 +550,7 @@
                 <select
                   v-if="categories1.length > 0"
                   v-model="menuInfo.category1"
-                  class="mt-1 mt-2 w-full rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+                  class="mt-1 mt-2 w-full rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400"
                 >
                   <option
                     v-for="category in categories1"
@@ -585,7 +585,7 @@
                 <select
                   v-if="categories2.length > 0"
                   v-model="menuInfo.category2"
-                  class="mt-1 mt-2 w-full rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+                  class="mt-1 mt-2 w-full rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400"
                 >
                   <option
                     v-for="category in categories2"
@@ -686,7 +686,7 @@
         <div class="mt-4">
           <select
             v-model="copyRestaurantId"
-            class="w-full rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+            class="w-full rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400"
           >
             <option
               v-for="restaurant in restaurants"
