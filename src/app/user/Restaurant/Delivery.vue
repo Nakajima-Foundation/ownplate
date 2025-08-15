@@ -116,7 +116,7 @@
         }}
       </div>
       <div v-if="deliveryData.enableAreaText">
-        <pre class="bg-transparent p-0">{{ deliveryData.areaText }}</pre>
+        <pre class="bg-transparent p-0 whitespace-pre-wrap break-words break-all">{{ deliveryData.areaText }}</pre>
       </div>
       {{ $t("shopInfo.deliveryAreaInfo") }}
     </div>
