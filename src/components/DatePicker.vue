@@ -5,7 +5,7 @@
       :value="formattedDate"
       @click="openCalendar"
       readonly
-      class="w-full cursor-pointer rounded border border-gray-300 p-2 dark:border-gray-600 dark:bg-black dark:text-white"
+      class="w-full cursor-pointer rounded border border-gray-300 p-2"
       :placeholder="placeholder"
     />
     <div

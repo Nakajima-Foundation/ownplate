@@ -99,7 +99,7 @@
               </span>
               <span class="flex-item mt-auto mr-2 mb-auto inline-block">
                 <input
-                  class="rounded-lg border border-black/20 bg-white px-4 py-1 dark:bg-black dark:text-gray-200"
+                  class="rounded-lg border border-black/20 bg-white px-4 py-1"
                   v-model="radius"
                   :disabled="!enableAreaMap || !enableDelivery"
                 />
@@ -130,7 +130,7 @@
               v-model="areaText"
               :placeholder="$t('delivery.areaTextExample')"
               :disabled="!enableAreaText || !enableDelivery"
-              class="resize-vertical w-full rounded-lg border border-gray-300 px-3 py-2 dark:bg-black dark:text-gray-200"
+              class="resize-vertical w-full rounded-lg border border-gray-300 px-3 py-2"
               rows="4"
             >
             </textarea>
@@ -149,7 +149,7 @@
             />
             <span class="flex-item mt-auto mr-2 mb-auto inline-block">
               <input
-                class="rounded-lg border border-black/20 bg-white px-4 py-1 dark:bg-black dark:text-gray-200"
+                class="rounded-lg border border-black/20 bg-white px-4 py-1"
                 v-model="deliveryThreshold"
                 :disabled="!enableDelivery"
                 type="number"
@@ -172,7 +172,7 @@
             </span>
             <span class="flex-item mt-auto mr-2 mb-auto inline-block">
               <input
-                class="rounded-lg border border-black/20 bg-white px-4 py-1 dark:bg-black dark:text-gray-200"
+                class="rounded-lg border border-black/20 bg-white px-4 py-1"
                 v-model="deliveryFee"
                 :disabled="!enableDelivery"
                 type="number"
@@ -194,7 +194,7 @@
             </span>
             <span class="flex-item mt-auto mr-2 mb-auto inline-block">
               <input
-                class="rounded-lg border border-black/20 bg-white px-4 py-1 dark:bg-black dark:text-gray-200"
+                class="rounded-lg border border-black/20 bg-white px-4 py-1"
                 v-model="deliveryFreeThreshold"
                 :disabled="!enableDelivery"
                 type="number"
@@ -220,7 +220,7 @@
           <div>
             {{ $t("editRestaurant.deliveryPreparationTime") }}
             <input
-              class="rounded-lg border border-black/20 bg-white px-4 py-1 dark:bg-black dark:text-gray-200"
+              class="rounded-lg border border-black/20 bg-white px-4 py-1"
               v-model="deliveryMinimumCookTime"
               :disabled="!enableDelivery"
               type="number"

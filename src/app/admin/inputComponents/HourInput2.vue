@@ -5,7 +5,7 @@
         :value="modelValue"
         :disabled="disabled"
         @change="updateValue"
-        class="rounded-lg border-2 bg-white px-3 py-2 dark:border-gray-600 dark:bg-black dark:text-white"
+        class="rounded-lg border-2 bg-white px-3 py-2"
         :class="
           variant === 'danger'
             ? 'border-red-400 hover:border-red-400 focus:ring-red-400'

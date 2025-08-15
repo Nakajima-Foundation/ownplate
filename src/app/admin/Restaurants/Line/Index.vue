@@ -49,7 +49,7 @@
           <input
             type="text"
             v-model="clientId"
-            class="w-full rounded-lg border border-gray-300 bg-gray-100 px-3 py-2 dark:border-gray-600 dark:bg-black dark:text-white"
+            class="w-full rounded-lg border border-gray-300 bg-gray-100 px-3 py-2"
           />
         </div>
 
@@ -68,7 +68,7 @@
           <input
             type="text"
             v-model="client_secret"
-            class="w-full rounded-lg border border-gray-300 bg-gray-100 px-3 py-2 dark:border-gray-600 dark:bg-black dark:text-white"
+            class="w-full rounded-lg border border-gray-300 bg-gray-100 px-3 py-2"
           />
         </div>
 
@@ -87,7 +87,7 @@
           <input
             type="text"
             v-model="message_token"
-            class="w-full rounded-lg border border-gray-300 bg-gray-100 px-3 py-2 dark:border-gray-600 dark:bg-black dark:text-white"
+            class="w-full rounded-lg border border-gray-300 bg-gray-100 px-3 py-2"
           />
         </div>
 
@@ -110,7 +110,7 @@
             type="text"
             :value="callbackUrl"
             readonly
-            class="w-full rounded-lg border border-gray-300 bg-gray-100 px-3 py-2 dark:border-gray-600 dark:bg-black dark:text-white"
+            class="w-full rounded-lg border border-gray-300 bg-gray-100 px-3 py-2"
           />
         </div>
 

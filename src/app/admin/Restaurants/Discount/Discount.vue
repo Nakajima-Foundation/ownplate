@@ -47,7 +47,7 @@
           <input
             type="text"
             v-model="promotion.promotionName"
-            class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 dark:bg-black dark:text-gray-200"
+            class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2"
           />
         </div>
       </div>
@@ -57,7 +57,7 @@
         </div>
         <select
           v-model="promotion.enable"
-          class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+          class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400"
         >
           <option
             v-for="(result, key) in toBeOrNotSelect"
@@ -74,7 +74,7 @@
         </div>
         <select
           v-model="promotion.type"
-          class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+          class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400"
         >
           <option
             v-for="(result, key) in discountTypeSelect"
@@ -92,7 +92,7 @@
 
         <select
           v-model="promotion.hasTerm"
-          class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+          class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400"
         >
           <option
             v-for="(result, key) in toBeOrNotSelect"
@@ -130,7 +130,7 @@
               v-model="promotion.discountThreshold"
               :step="1"
               min="0"
-              class="rounded-lg border border-gray-300 bg-white px-3 py-2 dark:bg-black dark:text-gray-200"
+              class="rounded-lg border border-gray-300 bg-white px-3 py-2"
             />
             <span class="button is-static">
               {{ $t("currency.JPY") }}
@@ -144,7 +144,7 @@
         </div>
         <select
           v-model="promotion.usageRestrictions"
-          class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+          class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400"
         >
           <option
             v-for="(result, key) in toBeOrNotSelect2"
@@ -161,7 +161,7 @@
         </div>
         <select
           v-model="promotion.discountMethod"
-          class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+          class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400"
         >
           <option
             v-for="(result, key) in discountMethodSelect"
@@ -188,7 +188,7 @@
             min="0"
             inputmode="decimal"
             v-model="promotion.discountValue"
-            class="rounded-l-lg border border-gray-300 bg-white px-3 py-2 dark:bg-black dark:text-gray-200"
+            class="rounded-l-lg border border-gray-300 bg-white px-3 py-2"
           />
           <span class="button is-static">
             <template v-if="promotion.discountMethod === 'amount'">
@@ -204,7 +204,7 @@
         </div>
         <select
           v-model="promotion.paymentRestrictions"
-          class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+          class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400"
         >
           <option
             v-for="(result, key) in promotionPaymentRestrictionsSelect"

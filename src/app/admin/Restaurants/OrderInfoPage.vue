@@ -192,7 +192,7 @@
               </div>
               <select
                 v-model="timeOffset"
-                class="mt-1 mt-2 rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+                class="mt-1 mt-2 rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400"
               >
                 <option
                   v-for="time in estimatedTimes"

@@ -41,7 +41,7 @@
               連携する店舗：
               <select
                 v-model="selectedRestaurant[k]"
-                class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+                class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400"
                 :class="
                   selectedRestaurant[k] &&
                   duplicateElement[selectedRestaurant[k]]
@@ -63,7 +63,7 @@
               在庫切れしきい値:
               <select
                 v-model="outOfStockData[k]"
-                class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+                class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400"
               >
                 <option
                   v-for="threshold in outOfStockThresholds"
@@ -79,7 +79,7 @@
               在庫復活しきい値:
               <select
                 v-model="inStockData[k]"
-                class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400 dark:border-gray-600 dark:bg-black dark:text-white"
+                class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400"
               >
                 <option
                   v-for="threshold in inStockThresholds"
