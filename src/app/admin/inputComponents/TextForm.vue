@@ -14,7 +14,7 @@
         @update:modelValue="input"
         @input="input($event.target.value)"
         :maxlength="maxlength"
-        class="input w-full rounded border px-3 py-2"
+        class="input w-full rounded border px-3 py-2 bg-white"
         :class="error.length > 0 ? 'border-red-500' : 'border-gray-300'"
         v-if="type==='textarea'"
       />
@@ -26,7 +26,7 @@
         @update:modelValue="input"
         @input="input($event.target.value)"
         :maxlength="maxlength"
-        class="input w-full rounded border px-3 py-2"
+        class="input w-full rounded border px-3 py-2 bg-white"
         :class="error.length > 0 ? 'border-red-500' : 'border-gray-300'"
       />
     </div>
