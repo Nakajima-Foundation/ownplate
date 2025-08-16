@@ -6,7 +6,20 @@
       <span class="text-red-700" v-if="required === true">*</span>
     </div>
     <div class="field" :class="error.length > 0 ? 'has-error' : 'has-success'">
+      <textarea
+        :value="modelValue"
+        rows="5"
+        :type="type"
+        :placeholder="$t(placeholder)"
+        @update:modelValue="input"
+        @input="input($event.target.value)"
+        :maxlength="maxlength"
+        class="input w-full rounded border px-3 py-2"
+        :class="error.length > 0 ? 'border-red-500' : 'border-gray-300'"
+        v-if="type==='textarea'"
+      />
       <input
+        v-else
         :value="modelValue"
         :type="type"
         :placeholder="$t(placeholder)"
