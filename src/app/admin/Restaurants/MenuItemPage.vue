@@ -773,8 +773,8 @@ export default defineComponent({
       required: true,
     },
   },
-
-  setup(props, {emit}) {
+  emits: ["updateRestaurant"],
+  setup(props, { emit }) {
     const userStore = useUserStore();
     const dialogStore = useDialogStore();
     const route = useRoute();
@@ -918,7 +918,7 @@ export default defineComponent({
       await updateDoc(doc(db, `restaurants/${menuRestaurantId.value}`), {
         [categoryKey.value || ""]: categories,
       });
-      emit("updateRestaurant")
+      emit("updateRestaurant");
     };
     const handleDismissed = () => {
       categoryKey.value = null;

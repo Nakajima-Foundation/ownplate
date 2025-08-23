@@ -54,11 +54,7 @@
               class="w-4/12 rounded-lg border border-gray-300 px-3 py-2"
               v-model.number="freeThreshold"
               :disabled="!enableFree"
-              :class="
-                !enableFree
-                  ? 'bg-gray-100'
-                  : 'bg-white'
-              "
+              :class="!enableFree ? 'bg-gray-100' : 'bg-white'"
               min="0"
             />
           </div>

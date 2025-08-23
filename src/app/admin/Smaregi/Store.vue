@@ -55,7 +55,7 @@
         <button
           @click="saveMenus"
           :disabled="isDuplicateError"
-          class="mt-2 bg-op-teal inline-flex h-12 min-w-32 cursor-pointer items-center justify-center rounded-full px-6 shadow-sm text-white"
+          class="bg-op-teal mt-2 inline-flex h-12 min-w-32 cursor-pointer items-center justify-center rounded-full px-6 text-white shadow-sm"
         >
           保存
         </button>
@@ -78,7 +78,7 @@
             >
           </div>
           <button
-            class="mt-2 bg-op-teal inline-flex h-12 min-w-32 cursor-pointer items-center justify-center rounded-full px-6 shadow-sm text-white"
+            class="bg-op-teal mt-2 inline-flex h-12 min-w-32 cursor-pointer items-center justify-center rounded-full px-6 text-white shadow-sm"
             @click="isEdit = true"
           >
             編集

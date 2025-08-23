@@ -94,7 +94,7 @@ export default [
       "eqeqeq": "error",
       "init-declarations": "error",
       "@intlify/vue-i18n/no-raw-text": [
-        "warn",
+        "off",
         {
           ignorePattern: "[\\-():<>/.]", 
         },
