@@ -1226,7 +1226,7 @@ const data = {
         "ご利用にはLINE開発者サイトで、LINEログインチャンネルとMessaging APIの設定が必要です。",
       notice3: "Messaging APIはLINE公式アカウントと同じものを使います。",
       notice4:
-        "LINEログインチャンネルにとMessaging APIを「リンクされたボット」として登録しておくことが必要です。",
+        "LINEログインチャンネルにMessaging APIを「リンクされたボット」として登録しておくことが必要です。",
       notice5:
         "また、LINEログインの「コールバックURL」におもちかえりで指定するURLの登録が必要です。",
       loginClientId: "LINEログイン:チャンネルID",
