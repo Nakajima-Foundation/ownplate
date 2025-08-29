@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded-lg bg-white p-4 shadow">
+  <div class="rounded-lg bg-white p-4 shadow-sm">
     <!-- Order Items -->
     <div class="grid grid-cols-1 space-y-4">
       <template v-for="(orderItem, key) in orderItems" :key="orderItem.key">
@@ -17,7 +17,7 @@
     <!-- Totals -->
     <div
       v-if="verified"
-      class="mt-4 border-t-2 border-solid border-black border-opacity-10 pt-4"
+      class="mt-4 border-t-2 border-solid border-black/10 pt-4"
     >
       <!-- Sub Total -->
       <div class="flex">
@@ -56,7 +56,7 @@
       <!-- Promotion discount for after pay -->
       <div
         v-if="orderInfo.promotionId"
-        class="-mx-2 mt-2 flex bg-green-600 bg-opacity-10 px-2 py-1 rounded-md"
+        class="-mx-2 mt-2 flex rounded-md bg-green-600/10 px-2 py-1"
       >
         <div class="flex-1">
           <div class="text-base">
@@ -74,7 +74,7 @@
       <!-- Postage for EC -->
       <div
         v-if="shopInfo.isEC"
-        class="mt-4 border-t-2 border-solid border-black border-opacity-10 pt-4"
+        class="mt-4 border-t-2 border-solid border-black/10 pt-4"
       >
         <div class="flex">
           <div class="flex-1">
@@ -94,7 +94,7 @@
       <!-- Postage for delivery -->
       <div
         v-if="orderInfo.isDelivery"
-        class="mt-4 border-t-2 border-solid border-black border-opacity-10 pt-4"
+        class="mt-4 border-t-2 border-solid border-black/10 pt-4"
       >
         <div class="flex">
           <div class="flex-1">
@@ -131,7 +131,7 @@
           (isTipEditable || previewTip) &&
           enableTip
         "
-        class="mt-4 border-t-2 border-solid border-black border-opacity-10 pt-4"
+        class="mt-4 border-t-2 border-solid border-black/10 pt-4"
       >
         <div class="flex">
           <div class="flex-1">
@@ -150,7 +150,7 @@
         <div v-if="isTipEditable">
           <div>
             <input
-              class="w-full p-2 border-inherit border-2 rounded-lg"
+              class="w-full rounded-lg border-2 border-black/10 border-inherit p-2"
               type="number"
               :placeholder="$t('order.maxTip', { max: regionTip.max })"
               :step="tipStep"
@@ -160,16 +160,15 @@
           </div>
 
           <div class="mt-2">
-            <o-button
+            <button
               v-for="ratio in regionTip.choices"
-              class="b-reset-tw mr-2 mb-2"
+              class="mr-2 mb-2 cursor-pointer"
               @click="updateTip(ratio)"
               :key="ratio"
-              ><div
+            >
+              <div
                 class="inline-flex h-9 w-16 items-center justify-center rounded-full"
-                :class="
-                  isSameAmount(ratio) ? 'bg-op-teal' : 'bg-black bg-opacity-5'
-                "
+                :class="isSameAmount(ratio) ? 'bg-op-teal' : 'bg-black/5'"
               >
                 <div
                   class="text-sm font-bold"
@@ -177,16 +176,14 @@
                 >
                   {{ ratio + "%" }}
                 </div>
-              </div></o-button
-            >
+              </div>
+            </button>
           </div>
         </div>
       </div>
 
       <!-- Total Charge -->
-      <div
-        class="mt-4 border-t-2 border-solid border-black border-opacity-10 pt-4"
-      >
+      <div class="mt-4 border-t-2 border-solid border-black/10 pt-4">
         <div class="flex">
           <div class="flex-1">
             <div class="text-xl font-bold text-green-600">
@@ -205,12 +202,12 @@
     <!-- promotion discount for before pay -->
     <div
       v-if="enablePromotion"
-      class="bg-green-600 bg-opacity-10 p-2 -mx-2 rounded-lg mt-2"
+      class="-mx-2 mt-2 rounded-lg bg-green-600/10 p-2"
     >
       <!-- promotion discount -->
       <template v-if="promotion?.paymentRestrictions">
         <!-- おもちかえりの場合は以下のメッセージを表示-->
-        <span class="text-sm font-bold text-opacity-40 text-black">
+        <span class="text-sm font-bold text-black/40">
           {{ $t("order.discountAlert." + promotion.paymentRestrictions) }}
         </span>
       </template>
@@ -226,9 +223,7 @@
           </div>
         </div>
       </div>
-      <div
-        class="mt-4 border-t-2 border-solid border-black border-opacity-10 pt-4 pb-2"
-      >
+      <div class="mt-4 border-t-2 border-solid border-black/10 pt-4 pb-2">
         <div class="flex">
           <div class="flex-1">
             <div class="text-xl font-bold text-green-600">

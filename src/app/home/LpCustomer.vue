@@ -1,7 +1,7 @@
 <template>
   <div>
     <ownplate-service-image />
-    <div class="mx-auto max-w-screen-xl">
+    <div class="mx-auto max-w-(--breakpoint-xl)">
       <div class="mx-6 mt-4 text-center lg:grid lg:grid-cols-3 lg:gap-4">
         <!-- For Food Lovers -->
         <div class="mb-4 lg:mb-0">
@@ -50,8 +50,8 @@ import aboutService from "@/components/lp/aboutService.vue";
 import news from "@/components/lp/news.vue";
 import snslink from "@/components/lp/link.vue";
 
-import HistoryButton from "@/components/users/HistoryButton.vue";
-import FavoriteButton from "@/components/users/FavoriteButton.vue";
+import HistoryButton from "@/components/form/HistoryButton.vue";
+import FavoriteButton from "@/components/form/FavoriteButton.vue";
 
 export default defineComponent({
   components: {

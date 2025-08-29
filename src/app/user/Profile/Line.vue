@@ -1,10 +1,10 @@
 <template>
   <div>
     <!-- LINE -->
-    <div class="mt-2 rounded-lg bg-black bg-opacity-5 p-4">
+    <div class="mt-2 rounded-lg bg-black/5 p-4">
       <!-- LINE Status -->
       <div class="text-center">
-        <div class="text-sm font-bold text-black text-opacity-30">
+        <div class="text-sm font-bold text-black/30">
           {{ $t("profile.lineConnection") }}
         </div>
 
@@ -19,7 +19,7 @@
       <div v-if="isLineUser || isLiffUser">
         <!-- Friend Status -->
         <div class="mt-4 text-center">
-          <div class="text-sm font-bold text-black text-opacity-30">
+          <div class="text-sm font-bold text-black/30">
             {{ $t("profile.lineFriend") }}
           </div>
 
@@ -31,9 +31,9 @@
         <!-- Not Friend -->
         <div v-if="isFriend === false" class="mt-4 text-center">
           <!-- external Friend link -->
-          <o-button tag="a" :href="friendLink" class="b-reset-tw">
+          <button tag="a" :href="friendLink" class="cursor-pointer">
             <div
-              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
               style="background: #18b900"
             >
               <i class="fab fa-line mr-2 text-2xl text-white" />
@@ -41,7 +41,7 @@
                 {{ $t("profile.friendLink") }}
               </div>
             </div>
-          </o-button>
+          </button>
         </div>
       </div>
 
@@ -52,9 +52,9 @@
           <div v-if="isLineUser && isDev" class="mb-2 text-base font-bold">
             再設定 for Dev
           </div>
-          <o-button @click="handleLineAuth" class="b-reset-tw">
+          <button @click="handleLineAuth" class="cursor-pointer">
             <div
-              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
               style="background: #18b900"
             >
               <i class="fab fa-line mr-2 text-2xl text-white" />
@@ -62,7 +62,7 @@
                 {{ $t("line.notifyMe") }}
               </div>
             </div>
-          </o-button>
+          </button>
         </div>
       </div>
     </div>
@@ -86,12 +86,12 @@ import { lineVerifyFriend } from "@/lib/firebase/functions";
 import { lineAuthURL } from "@/lib/line/line";
 import { ownPlateConfig } from "@/config/project";
 
-import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
 import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   setup() {
-    const store = useStore();
+    const generalStore = useGeneralStore();
     const { t } = useI18n({ useScope: "global" });
 
     const { isLiffUser, isLineUser, inLiff } = useUserData();
@@ -101,7 +101,7 @@ export default defineComponent({
     const liffConfig = ref<null | any>(null);
 
     const isWindowActive = computed(() => {
-      return store.state.isWindowActive;
+      return generalStore.isWindowActive;
     });
 
     const friendLink = computed(() => {

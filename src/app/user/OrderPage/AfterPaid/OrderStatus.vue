@@ -1,12 +1,12 @@
 <template>
   <div class="text-center">
     <div class="mb-4">
-      <div class="text-sm font-bold text-black text-opacity-50">
+      <div class="text-sm font-bold text-black/50">
         {{ $t("order.orderStatus") }}
       </div>
-      <div
+      <OrderState
+        :orderState="orderStatusKey"
         class="mx-2 mt-2 rounded-lg p-4 text-2xl font-bold"
-        :class="orderStatusKey"
       >
         {{
           $t(
@@ -14,10 +14,10 @@
               convOrderStateForTextFunc(orderStatusKey, orderInfo),
           )
         }}
-      </div>
+      </OrderState>
     </div>
     <div>
-      <div class="text-sm font-bold text-black text-opacity-50">
+      <div class="text-sm font-bold text-black/50">
         {{ $t("order.orderId") }}
       </div>
       <div class="mt-1">
@@ -29,8 +29,9 @@
 
 <script lang="ts">
 import { defineComponent, computed } from "vue";
-import { order_status } from "@/config/constant";
+import { order_status_keys } from "@/config/constant";
 import { convOrderStateForText } from "@/utils/utils";
+import OrderState from "@/components/OrderStatus.vue";
 
 export default defineComponent({
   props: {
@@ -43,19 +44,16 @@ export default defineComponent({
       required: true,
     },
   },
+  components: {
+    OrderState,
+  },
   setup(props) {
     const orderStatusKey = computed(() => {
-      return Object.keys(order_status).reduce((result, key) => {
-        return order_status[key] === props.orderInfo.status ? key : result;
-      }, "unexpected");
-    });
-    const orderIsPlaced = computed(() => {
-      return props.orderInfo.status === order_status.order_placed;
+      return order_status_keys[props.orderInfo.status];
     });
     return {
       orderStatusKey,
       convOrderStateForTextFunc: convOrderStateForText,
-      orderIsPlaced,
     };
   },
 });

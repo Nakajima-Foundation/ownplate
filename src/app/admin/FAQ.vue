@@ -2,21 +2,21 @@
   <div>
     <div class="my-6 mt-4 lg:mx-auto lg:max-w-2xl">
       <!-- Title -->
-      <div class="mt-4 text-xl font-bold text-black text-opacity-30">
+      <div class="mt-4 text-xl font-bold text-black/30">
         <a name="top">ご利用について</a>
       </div>
       <div v-for="(faq, k) in faqList" :key="k">
-        <div class="mt-4 text-sm font-bold text-op-teal">
+        <div class="text-op-teal mt-4 text-sm font-bold">
           <a :name="`index_` + k"></a>
           <a :href="`#faq_` + k"> ・ {{ faq.q }} </a>
         </div>
       </div>
 
-      <div class="mt-4 rounded-lg bg-white px-4 py-2 shadow" ref="faq_box">
+      <div class="mt-4 rounded-lg bg-white px-4 py-2 shadow-sm" ref="faq_box">
         <div v-for="(faq, k) in faqList" :key="'base_' + k" class="mb-6">
           <div class="my-1 inline-flex font-bold">
             <a :href="`#index_` + k">
-              <i class="material-icons text-lg text-op-teal">arrow_upward</i>
+              <i class="material-icons text-op-teal text-lg">arrow_upward</i>
             </a>
             <a :name="`faq_` + k">
               {{ faq.q }}
@@ -57,7 +57,7 @@
             <div
               v-for="(note, e) in faq.notes"
               :key="'note2_' + e"
-              class="mt-3 text-xs leading-relaxed text-black text-opacity-50"
+              class="mt-3 text-xs leading-relaxed text-black/50"
             >
               {{ note }}
             </div>

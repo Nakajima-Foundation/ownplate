@@ -1,32 +1,45 @@
 import eslint from "@eslint/js";
 import globals from "globals";
 import tseslint from "typescript-eslint";
-import pluginVue from 'eslint-plugin-vue';
+import pluginVue from "eslint-plugin-vue";
 import vueParser from "vue-eslint-parser";
 import eslintConfigPrettier from "eslint-config-prettier";
+import vueI18n from "@intlify/eslint-plugin-vue-i18n"
+
 
 export default [
   {
     files: ["src/**/*.{vue,ts}"],
   },
   {
-    ignores: ['dist', 'build', 'node_modules', 'functions', 'holidays', 'patch', 'tailwind.config.js', "batchCustomer", "postcss.config.js", "batch", "vue.config.js", "vue.config.js", "zipcodeJP", "vite.config.js", "eslint.config.mjs", "postcss.config.cjs"],
+    ignores: ["dist", "build", "node_modules", "functions", "holidays", "patch", "tailwind.config.js", "batchCustomer", "postcss.config.js", "batch", "vue.config.js", "vue.config.js", "zipcodeJP", "vite.config.js", "eslint.config.mjs", "postcss.config.cjs"],
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
-  ...pluginVue.configs['flat/essential'],
+  ...pluginVue.configs["flat/essential"],
+  ...vueI18n.configs.recommended,
   {
     plugins: {
-      'typescript-eslint': tseslint.plugin,
+      "typescript-eslint": tseslint.plugin,
+    },
+    settings: {
+      'vue-i18n': {
+        localeDir: ".i18n-cache/*.{json}",
+        messageSyntaxVersion: "^11.0.0",
+      },
     },
     languageOptions: {
       parserOptions: {
         parser: tseslint.parser,
-        project: './tsconfig.json',
-        extraFileExtensions: ['.vue'],
-        sourceType: 'module',
+        project: "./tsconfig.json",
+        extraFileExtensions: [".vue"],
+        sourceType: "module",
       },
-      globals: globals.browser,
+      globals: {
+        ...globals.browser,
+        google: "readonly",
+        Stripe: "readonly",
+      },
     },
     rules: {
       //indent: ["error", 2],
@@ -53,10 +66,11 @@ export default [
       "vue/require-prop-types": "error",
       "vue/no-mutating-props": "off", // warn
       "vue/no-undef-properties": "error",
-      "no-undef": "off", // warn TODO
+      "no-undef": "error",
 
       "no-irregular-whitespace": "off", 
-      "@typescript-eslint/ban-ts-comment": "off",  // TODO
+      "@typescript-eslint/ban-ts-comment": "error",
+      "@typescript-eslint/no-shadow": "error",
       "vue/attribute-hyphenation": "off",
       "vue/v-on-event-hyphenation": "off",
       "accessor-pairs": "error",
@@ -64,12 +78,11 @@ export default [
       
       // "no-type-assertion/no-type-assertion": "warn",
       "no-unreachable": "error",
-      'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-      'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+      "no-console": "off",
+      "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
 
       "vue/require-explicit-emits": "error",
       "vue/no-unused-properties": "error",
-      "@typescript-eslint/no-shadow": "warn",
       "no-eq-null": "error",
       "no-use-before-define": "error",
       "no-empty-function": "error",
@@ -80,6 +93,12 @@ export default [
       "require-await": "error",
       "eqeqeq": "error",
       "init-declarations": "error",
+      "@intlify/vue-i18n/no-raw-text": [
+        "off",
+        {
+          ignorePattern: "[\\-():<>/.]", 
+        },
+      ],
     },
   },
   eslintConfigPrettier,

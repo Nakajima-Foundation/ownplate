@@ -1,16 +1,14 @@
 import express from "express";
 import * as admin from "firebase-admin";
-import * as functions from "firebase-functions";
+import { defineSecret } from "firebase-functions/params";
 import SmaregiApi from "../../smaregi/smaregiapi";
 import { smaregi } from "../../common/project";
 import { response200 } from "./apis";
 import moment from "moment";
 
-const clientSecrets = (functions.config() && functions.config().smaregi && functions.config().smaregi.clientsecrets) || {
-  [smaregi.clientId]: process.env.SmaregiClientSecret,
-};
-const apiHost = functions.config() && functions.config().smaregi && functions.config().smaregi.host_name; // like api.smaregi.dev
-const authHost = functions.config() && functions.config().smaregi && functions.config().smaregi.auth_host_name; // id.smaregi.dev
+const clientSecret = defineSecret("SMAREGI_SECRET");
+const apiHost = smaregi.host_name;
+const authHost = smaregi.auth_host_name;
 
 export const smaregiRouter = express.Router();
 
@@ -32,13 +30,12 @@ const subscribe = async (req: any, res: any) => {
 export const processAction = async (data) => {
   console.log("processAction");
   const contractId = data.contractId;
-  const clientSecret = clientSecrets[smaregi.clientId];
   if (data.action === "edited" && data.event === "pos:stock") {
     // get data
     const config = {
       contractId: contractId,
       clientId: smaregi.clientId,
-      clientSecret: clientSecret,
+      clientSecret: clientSecret.value(),
       hostName: apiHost,
       authHostName: authHost,
       scopes: ["pos.stock:read", "pos.stock:write", "pos.stores:read", "pos.stores:write", "pos.customers:read", "pos.customers:write", "pos.products:read", "pos.products:write"],

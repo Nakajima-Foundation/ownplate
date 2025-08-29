@@ -37,6 +37,10 @@ export const sentryDsn =
 export const smaregi = {
   authUrl: "https://id.smaregi.jp/authorize",
   clientId: "17c5242c812b553976c4749e5808abb7",
+  //  for server
+  host: "https://id.smaregi.jp",
+  auth_host_name: "id.smaregi.jp",
+  host_name: "api.smaregi.jp",
 };
 
 export const appCheckKey = "6LdsEOEhAAAAADBDU9ynD4TiDjf-RNOyOrjDNctg";
@@ -45,3 +49,4 @@ export const gtmID = "GTM-WF3G3ZG";
 export const GAPIKey = "AIzaSyBopNQwD1RT2k9dLqH6WYPWIkMZF3RWXMQ";
 export const GMAPId = "DEMO_MAP_ID";
 export const fromEmail = "noreply@omochikaeri.com";
+export const bucketRegion = "asia-northeast1";

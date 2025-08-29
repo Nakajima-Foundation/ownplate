@@ -4,10 +4,10 @@
       <!-- Transactions Act Button -->
       <a
         @click="openTransactionsAct()"
-        class="inline-flex items-center justify-center cursor-pointer"
+        class="inline-flex cursor-pointer items-center justify-center"
       >
-        <i class="material-icons mr-2 text-lg text-op-teal">account_balance</i>
-        <div class="text-sm font-bold text-op-teal">
+        <i class="material-icons text-op-teal mr-2 text-lg">account_balance</i>
+        <div class="text-op-teal text-sm font-bold">
           {{ $t("transactionsAct.title") }}
         </div>
       </a>

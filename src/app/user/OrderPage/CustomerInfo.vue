@@ -3,7 +3,7 @@
     <div class="mb-2 text-base font-bold">
       {{ $t("order.customerInfo") }}
     </div>
-    <div class="text-xs font-bold text-black text-opacity-40">
+    <div class="text-xs font-bold text-black/40">
       {{ $t("sms.phonenumber") }}
     </div>
     <div class="mt-1 text-base">

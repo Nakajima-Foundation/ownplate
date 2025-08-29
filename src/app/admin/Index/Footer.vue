@@ -5,10 +5,10 @@
       <div class="inline-block px-1 pb-2" v-if="isJapan">
         <router-link to="/admin/docs">
           <div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-white bg-opacity-80 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-white/80 px-4"
           >
-            <i class="material-icons mr-2 text-lg text-op-teal">help_outline</i>
-            <span class="text-sm font-bold text-op-teal">{{
+            <i class="material-icons text-op-teal mr-2 text-lg">help_outline</i>
+            <span class="text-op-teal text-sm font-bold">{{
               $t("admin.userManual")
             }}</span>
           </div>
@@ -22,10 +22,10 @@
           target="_blank"
         >
           <div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-white bg-opacity-80 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-white/80 px-4"
           >
-            <i class="material-icons mr-2 text-lg text-op-teal">mail_outline</i>
-            <span class="text-sm font-bold text-op-teal">{{
+            <i class="material-icons text-op-teal mr-2 text-lg">mail_outline</i>
+            <span class="text-op-teal text-sm font-bold">{{
               $t("admin.suportPage")
             }}</span>
           </div>
@@ -42,24 +42,24 @@
           target="_blank"
         >
           <div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-white bg-opacity-80 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-white/80 px-4"
           >
-            <i class="fab fa-facebook mr-2 text-lg text-op-teal"></i>
-            <span class="text-sm font-bold text-op-teal">{{
+            <i class="fab fa-facebook text-op-teal mr-2 text-lg"></i>
+            <span class="text-op-teal text-sm font-bold">{{
               $t("admin.facebookUserGroup")
             }}</span>
           </div>
         </a>
       </div>
 
-      <!-- Twitter -->
+      <!-- X -->
       <div class="inline-block px-1 pb-2" v-if="isJapan">
-        <a href="https://twitter.com/omochikaericom" target="_blank">
+        <a href="https://x.com/omochikaericom" target="_blank">
           <div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-white bg-opacity-80 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-white/80 px-4"
           >
-            <i class="fab fa-twitter mr-2 text-lg text-op-teal"></i>
-            <span class="text-sm font-bold text-op-teal"> Twitter </span>
+            <i class="fab fa-x-twitter text-op-teal mr-2 text-lg"></i>
+            <span class="text-op-teal text-sm font-bold">(Twitter)</span>
           </div>
         </a>
       </div>
@@ -68,10 +68,9 @@
       <div class="inline-block px-1 pb-2" v-if="isJapan">
         <a href="https://note.com/singsoc/m/m19dd935e84e4" target="_blank">
           <div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-white bg-opacity-80 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-white/80 px-4"
           >
-            <i class="material-icons mr-2 text-lg text-op-teal">mail_outline</i>
-            <span class="text-sm font-bold text-op-teal"> Note </span>
+            <span class="text-op-teal text-sm font-bold">Note</span>
           </div>
         </a>
       </div>

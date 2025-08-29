@@ -3,9 +3,9 @@
     <template v-for="(title, key) in titleLists" :key="key">
       <a
         :href="`#${title.id}`"
-        class="mx-2 mt-2 inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5"
+        class="mx-2 mt-2 inline-flex h-9 items-center justify-center rounded-full bg-black/5"
       >
-        <div class="mx-2 text-sm font-bold text-op-teal">
+        <div class="text-op-teal mx-2 text-sm font-bold">
           {{ title.name }}
         </div>
       </a>

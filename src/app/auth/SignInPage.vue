@@ -1,10 +1,10 @@
 <template>
   <div class="mx-6 mt-2 lg:mx-auto lg:max-w-2xl">
     <!-- Note for the First User -->
-    <div class="rounded-lg bg-green-600 bg-opacity-10 p-6">
+    <div class="rounded-lg bg-green-600/10 p-6">
       <div class="flex">
         <div>
-          <i class="material-icons mr-4 flex-shrink-0 text-4xl text-green-600"
+          <i class="material-icons mr-4 shrink-0 text-4xl text-green-600"
             >info</i
           >
         </div>
@@ -23,9 +23,9 @@
     </div>
 
     <!-- Sign In Card -->
-    <div class="mt-2 rounded-lg bg-white p-6 shadow">
+    <div class="mt-2 rounded-lg bg-white p-6 shadow-sm">
       <form @submit.prevent="onSignin">
-        <div class="text-xl font-bold text-black text-opacity-30">
+        <div class="text-xl font-bold text-black/30">
           {{ $t("admin.pleaseSignIn") }}
         </div>
 
@@ -36,18 +36,26 @@
           </div>
 
           <div class="mt-1">
-            <o-field
-              :variant="errors.email ? 'danger' : 'success'"
-              :message="errors.email && $t(errors.email[0])"
+            <input
+              class="w-full rounded border px-2 py-1 whitespace-nowrap"
+              :class="
+                errors.email && errors.email.length > 0
+                  ? 'border-2 border-red-600'
+                  : ''
+              "
+              v-model="email"
+              type="email"
+              :placeholder="$t('admin.emailPlaceHolder')"
+              maxlength="256"
+            />
+            <div
+              v-if="errors.email && errors.email.length > 0"
+              class="mt-2 pl-2 font-bold text-red-600"
             >
-              <o-input
-                class="whitespace-nowrap"
-                v-model="email"
-                type="email"
-                :placeholder="$t('admin.emailPlaceHolder')"
-                maxlength="256"
-              />
-            </o-field>
+              <div v-for="error in errors.email" :key="error">
+                {{ $t(error) }}
+              </div>
+            </div>
           </div>
         </div>
 
@@ -58,28 +66,37 @@
           </div>
 
           <div class="mt-1">
-            <o-field
-              :variant="errors.password ? 'danger' : 'success'"
-              :message="errors.password && $t(errors.password[0])"
+            <input
+              class="w-full rounded border px-2 py-1 whitespace-nowrap"
+              :class="
+                errors.password && errors.password.length > 0
+                  ? 'border-2 border-red-600'
+                  : ''
+              "
+              v-model="password"
+              type="password"
+              :placeholder="$t('admin.passwordPlaceHolder')"
+              maxlength="30"
+              password-reveal
+            />
+            <div
+              v-if="errors.password && errors.password.length > 0"
+              class="mt-2 pl-2 font-bold text-red-600"
             >
-              <o-input
-                v-model="password"
-                type="password"
-                :placeholder="$t('admin.passwordPlaceHolder')"
-                maxlength="30"
-                password-reveal
-              />
-            </o-field>
+              <div v-for="error in errors.password" :key="error">
+                {{ $t(error) }}
+              </div>
+            </div>
           </div>
         </div>
 
         <!-- Submit Button -->
         <div class="mt-2 text-center">
-          <button @click="handleCancel" class="b-reset-tw mr-4 mb-2">
+          <button @click="handleCancel" class="mr-4 mb-2 cursor-pointer">
             <div
-              class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black bg-opacity-5"
+              class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black/5"
             >
-              <div class="text-base font-bold text-black text-opacity-60">
+              <div class="text-base font-bold text-black/60">
                 {{ $t("button.cancel") }}
               </div>
             </div>
@@ -93,8 +110,8 @@
         <div class="mt-2 text-center">
           <router-link to="/admin/user/reset">
             <div class="inline-flex items-center justify-center">
-              <i class="material-icons mr-2 text-lg text-op-teal">help</i>
-              <span class="text-sm font-bold text-op-teal">{{
+              <i class="material-icons text-op-teal mr-2 text-lg">help</i>
+              <span class="text-op-teal text-sm font-bold">{{
                 $t("admin.forgotPassword")
               }}</span>
             </div>
@@ -105,14 +122,14 @@
 
     <!-- Sign Up as a New User -->
     <div class="mt-12 text-center">
-      <div class="font-bold text-black text-opacity-40">
+      <div class="font-bold text-black/40">
         {{ $t("admin.forSignup") }}
       </div>
 
       <div class="mt-2">
         <router-link to="/admin/user/signup">
           <div
-            class="inline-flex h-16 items-center rounded-full bg-ownplate-yellow px-8 shadow hover:bg-opacity-80"
+            class="bg-ownplate-yellow hover:bg-ownplate-yellow/80 inline-flex h-16 items-center rounded-full px-8 shadow-sm"
           >
             <span class="text-xl font-bold text-black opacity-90">
               {{ $t("lp.signUpForFree") }}
@@ -131,7 +148,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { useUserData, defaultTitle } from "@/utils/utils";
 
 import { useRoute, useRouter } from "vue-router";
-import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
 import { useHead } from "@unhead/vue";
 
 export default defineComponent({
@@ -139,7 +156,7 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const router = useRouter();
-    const store = useStore();
+    const generalStore = useGeneralStore();
 
     const email = ref("");
     const password = ref("");
@@ -147,9 +164,9 @@ export default defineComponent({
 
     const { user, isAdmin } = useUserData();
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Signin Admin"].join(" / "),
-    });
+    }));
 
     const redirectToAdminPage = () => {
       const redirect = route.query["to"] as string;
@@ -177,12 +194,12 @@ export default defineComponent({
       router.push("/");
     };
     const onSignin = () => {
-      store.commit("setLoading", true);
+      generalStore.setLoading(true);
       errors.value = {};
       signInWithEmailAndPassword(auth, email.value, password.value)
         .then(() => {
           console.log("onSignin success");
-          store.commit("setLoading", false);
+          generalStore.setLoading(false);
         })
         .catch((error) => {
           console.log("onSignin failed", error.code, error.message);
@@ -195,7 +212,7 @@ export default defineComponent({
           } else {
             errors.value = { email: [errorCode] };
           }
-          store.commit("setLoading", false);
+          generalStore.setLoading(false);
         });
     };
     return {

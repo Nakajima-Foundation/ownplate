@@ -1,7 +1,7 @@
 <template>
   <div>
     <admin-service-introduction :isAdmin="isAdmin" />
-    <div class="mx-auto max-w-screen-xl">
+    <div class="mx-auto max-w-(--breakpoint-xl)">
       <admin-feature />
       <admin-how-to-start />
       <userVoices />
@@ -37,7 +37,7 @@ export default defineComponent({
   props: {
     isAdmin: {
       type: Boolean,
-      require: true,
+      required: true,
       default: false,
     },
   },
@@ -46,9 +46,9 @@ export default defineComponent({
       await sleep(0.1);
       window.scrollTo(0, 0);
     })();
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Top"].join(" / "),
-    });
+    }));
     return {};
   },
 });

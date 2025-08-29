@@ -8,7 +8,7 @@
       <div class="mx-6 mt-4 lg:flex lg:items-center">
         <!-- Back and Preview -->
         <div class="flex space-x-4">
-          <div class="flex-shrink-0">
+          <div class="shrink-0">
             <back-button url="/admin/restaurants/" />
           </div>
           <PreviewLink :shopInfo="shopInfo" />
@@ -17,7 +17,7 @@
         <!-- Photo and Name -->
         <div class="mt-4 lg:mx-4 lg:mt-0 lg:flex lg:flex-1 lg:items-center">
           <div class="flex items-center">
-            <div class="mr-4 flex-shrink-0 rounded-full bg-black bg-opacity-10">
+            <div class="mr-4 shrink-0 rounded-full bg-black/10">
               <img
                 :src="resizedProfileImage(shopInfo, '600')"
                 class="h-9 w-9 rounded-full object-cover"
@@ -32,7 +32,10 @@
 
       <!-- Date -->
       <div class="mx-6 mt-4">
-        <o-select v-model="monthIndex">
+        <select
+          v-model="monthIndex"
+          class="mt-1 mt-2 rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400"
+        >
           <option
             v-for="day in lastSeveralMonths"
             :value="day.index"
@@ -40,12 +43,12 @@
           >
             {{ moment(day.date).format("YYYY-MM") }}
           </option>
-        </o-select>
+        </select>
       </div>
 
       <!-- Table -->
       <div class="mx-6 mt-4">
-        <table class="w-full rounded-lg bg-white shadow">
+        <table class="w-full rounded-lg bg-white shadow-sm">
           <!-- Table Header -->
           <tr>
             <th
@@ -167,16 +170,16 @@
           :fieldNames="fieldNames"
           :fileName="fileNameSummary"
         >
-          <o-button class="b-reset-tw">
+          <button class="cursor-pointer">
             <div
-              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
             >
-              <i class="material-icons mr-2 text-lg text-op-teal">save_alt</i>
-              <div class="text-sm font-bold text-op-teal">
+              <i class="material-icons text-op-teal mr-2 text-lg">save_alt</i>
+              <div class="text-op-teal text-sm font-bold">
                 {{ $t("admin.report.download-csv") }}
               </div>
             </div>
-          </o-button>
+          </button>
         </download-csv>
       </div>
 
@@ -268,13 +271,13 @@ export default defineComponent({
     const monthIndex = ref(0);
     let detacher: any = null;
 
-    useHead({
+    useHead(() => ({
       title: props.shopInfo.restaurantName
         ? ["Admin Report", props.shopInfo.restaurantName, defaultTitle].join(
             " / ",
           )
         : defaultTitle,
-    });
+    }));
 
     const { uid } = useAdminUids();
     if (!checkShopOwner(props.shopInfo, uid.value)) {

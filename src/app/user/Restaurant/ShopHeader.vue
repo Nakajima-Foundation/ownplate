@@ -2,7 +2,7 @@
   <div>
     <!-- Restaurant Profile Photo -->
     <div class="text-center">
-      <div class="inline-block h-16 w-16 rounded-full bg-black bg-opacity-50">
+      <div class="inline-block h-16 w-16 rounded-full bg-black/50">
         <img :src="profileImage" class="h-16 w-16 rounded-full object-cover" />
       </div>
     </div>

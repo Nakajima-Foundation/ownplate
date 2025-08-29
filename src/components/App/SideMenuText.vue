@@ -7,15 +7,15 @@
       >
         <!-- with icon -->
         <template v-if="icon">
-          <span class="text-sm text-op-teal font-bold">
+          <span class="text-op-teal text-sm font-bold">
             {{ $t(text) }}
           </span>
-          <i class="material-icons ml-0.5 text-lg text-op-teal">{{ icon }}</i>
+          <i class="material-icons text-op-teal ml-0.5 text-lg">{{ icon }}</i>
         </template>
         <!-- without icon -->
         <div
           v-else
-          class="text-sm font-bold text-op-teal"
+          class="text-op-teal text-sm font-bold"
           @click="handleClose()"
         >
           {{ $t(text) }}

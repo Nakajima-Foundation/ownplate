@@ -2,12 +2,12 @@
   <div v-if="showAddLine || isDev" class="mt-2 text-center">
     <div v-if="hasLine">
       <div
-        class="mx-6 rounded-lg bg-black bg-opacity-5 p-4"
+        class="mx-6 rounded-lg bg-black/5 p-4"
         v-if="hasFriends !== null || isDev"
       >
         <button @click="handleLineAuth">
           <div
-            class="inline-flex h-12 items-center justify-center rounded-full px-6"
+            class="inline-flex h-12 cursor-pointer items-center justify-center rounded-full px-6"
             style="background: #18b900"
           >
             <i class="fab fa-line mr-2 text-2xl text-white" />
@@ -24,7 +24,7 @@
     <div v-else>
       <button @click="handleLineAuth">
         <div
-          class="inline-flex h-12 items-center justify-center rounded-full px-6"
+          class="inline-flex h-12 cursor-pointer items-center justify-center rounded-full px-6"
           style="background: #18b900"
         >
           <i class="fab fa-line mr-2 text-2xl text-white" />
@@ -42,7 +42,7 @@ import { defineComponent, computed, PropType } from "vue";
 import { lineAuthURL, lineAuthRestaurantURL } from "@/lib/line/line";
 import { ownPlateConfig } from "@/config/project";
 
-import { useStore } from "vuex";
+import { useUserStore } from "@/store/user";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { isDev } from "@/utils/utils";
 
@@ -62,7 +62,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const store = useStore();
+    const userStore = useUserStore();
 
     const handleLineAuth = () => {
       const url = (() => {
@@ -86,7 +86,7 @@ export default defineComponent({
       if (props.hasLine) {
         return !props.hasFriends;
       }
-      return !!ownPlateConfig.line && !store.state.claims?.line;
+      return !!ownPlateConfig.line && !userStore.claims?.line;
     });
     return {
       handleLineAuth,

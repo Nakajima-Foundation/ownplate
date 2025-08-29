@@ -46,6 +46,7 @@ export const getStripeOrderRecord = async (transaction: admin.firestore.Transact
   return stripeRecord;
 };
 
+// from order change
 export const getPaymentMethodData = async (db: admin.firestore.Firestore, restaurantOwnerUid: string, customerUid: string) => {
   const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
 
@@ -53,7 +54,7 @@ export const getPaymentMethodData = async (db: admin.firestore.Firestore, restau
   if (!stripeInfo) {
     throw new functions.https.HttpsError("aborted", "No stripeInfo.");
   }
-  const stripe = utils.get_stripe();
+  const stripe = utils.get_stripe_v2();
   const token = await stripe.tokens.create(
     {
       customer: stripeInfo.customerId,
@@ -82,16 +83,25 @@ export const cancelStripe = async (
   restaurantOwnerUid: string,
   orderId: string,
 ) => {
-  const stripeRecord = await getStripeOrderRecord(transaction, stripeRef);
-  const paymentIntentId = stripeRecord.paymentIntent.id;
+  try {
+    const stripeRecord = await getStripeOrderRecord(transaction, stripeRef);
+    const paymentIntentId = stripeRecord.paymentIntent.id;
 
-  const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
-
-  const idempotencyKey = getHash([orderId, paymentIntentId].join("-"));
-  const stripe = utils.get_stripe();
-  const paymentIntent = await stripe.paymentIntents.cancel(paymentIntentId, {
-    idempotencyKey: `${idempotencyKey}-cancel`,
-    stripeAccount,
-  });
-  return paymentIntent;
+    const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
+    
+    const idempotencyKey = getHash([orderId, paymentIntentId].join("-"));
+    const stripe = utils.get_stripe_v2();
+    const paymentIntent = await stripe.paymentIntents.cancel(paymentIntentId, {
+      idempotencyKey: `${idempotencyKey}-cancel`,
+      stripeAccount,
+    });
+    return paymentIntent;
+  } catch (e) {
+    console.log(e);
+    return {
+      "id": "dummy",
+      "object": "payment_intent",
+    };
+  }
+  
 };

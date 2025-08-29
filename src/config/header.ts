@@ -1,4 +1,4 @@
-import { ownPlateConfig, gtmID } from "@/config/project";
+import { ownPlateConfig, gtmID, GAPIKey } from "@/config/project";
 
 const hostName = ownPlateConfig.hostName;
 
@@ -42,7 +42,7 @@ const link = [
   },
   {
     rel: "stylesheet",
-    href: "https://use.fontawesome.com/releases/v5.2.0/css/all.css",
+    href: "https://use.fontawesome.com/releases/v6.7.2/css/all.css",
   },
   {
     rel: "stylesheet",
@@ -59,6 +59,11 @@ const script = [
   {
     hid: "gtmHead",
     innerHTML: gtmHeadTag,
+  },
+  {
+    src: `https://maps.googleapis.com/maps/api/js?key=${GAPIKey}&language=ja&libraries=marker`,
+    async: true,
+    defer: true,
   },
 ];
 

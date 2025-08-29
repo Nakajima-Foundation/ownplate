@@ -3,11 +3,11 @@
     <!-- Sign In as a User -->
     <div class="mt-2 text-center">
       <a
-        class="inline-flex h-16 items-center justify-center rounded-full border-2 border-op-teal px-6 cursor-pointer"
+        class="border-op-teal inline-flex h-16 cursor-pointer items-center justify-center rounded-full border-2 px-6"
         @click.prevent="handleSignIn"
       >
-        <i class="material-icons mr-2 text-2xl text-op-teal">local_mall</i>
-        <div class="text-lg font-bold text-op-teal">
+        <i class="material-icons text-op-teal mr-2 text-2xl">local_mall</i>
+        <div class="text-op-teal text-lg font-bold">
           <!-- omochikaeri -->
           {{ $t("profile.signIn") }}
         </div>
@@ -18,10 +18,10 @@
     <div class="mt-4 text-center">
       <router-link to="/admin/user/signin">
         <div
-          class="inline-flex h-16 items-center justify-center rounded-full border-2 border-op-teal px-6"
+          class="border-op-teal inline-flex h-16 items-center justify-center rounded-full border-2 px-6"
         >
-          <i class="material-icons mr-2 text-2xl text-op-teal">store</i>
-          <div class="text-lg font-bold text-op-teal">
+          <i class="material-icons text-op-teal mr-2 text-2xl">store</i>
+          <div class="text-op-teal text-lg font-bold">
             {{ $t("profile.signInRestaurant") }}
           </div>
         </div>
@@ -29,7 +29,7 @@
     </div>
 
     <!-- Phone Login-->
-    <o-modal
+    <t-modal
       :active="loginVisible"
       width="488"
       scroll="keep"
@@ -38,7 +38,7 @@
       <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
         <phone-login v-on:dismissed="handleDismissed" />
       </div>
-    </o-modal>
+    </t-modal>
   </div>
 </template>
 
@@ -46,19 +46,19 @@
 import { defineComponent, ref, computed, watch } from "vue";
 import PhoneLogin from "@/app/auth/PhoneLogin.vue";
 
-import { useStore } from "vuex";
+import { useUserStore } from "@/store/user";
 
 export default defineComponent({
   components: {
     PhoneLogin,
   },
   setup() {
-    const store = useStore();
+    const userStore = useUserStore();
 
     const loginVisible = ref(false);
 
     const user = computed(() => {
-      return store.state.user;
+      return userStore.user;
     });
     watch(user, (newValue) => {
       if (newValue) {

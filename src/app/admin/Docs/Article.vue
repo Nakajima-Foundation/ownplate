@@ -18,6 +18,7 @@
         v-if="articleId === 'article240727_configurations_of_dishes'"
       />
       <stripe_payouts v-if="articleId === 'article240817_stripe_payouts'" />
+      <discounts v-if="articleId === 'article250315_discounts'" />
     </div>
   </div>
 </template>
@@ -37,6 +38,8 @@ import configurations_of_dishes from "../../../../docs/article240727_configurati
 
 import stripe_payouts from "../../../../docs/article240817_stripe_payouts/stripe_payouts.md";
 
+import discounts from "../../../../docs/article250315_discounts/discounts.md";
+
 const articles: { [key: string]: string } = {
   article230930_line_official_account: linenews,
   article231007_out_of_stock: soldout,
@@ -44,6 +47,7 @@ const articles: { [key: string]: string } = {
   article240725_lead_time_management: lead_time,
   article240727_configurations_of_dishes: configurations_of_dishes,
   article240817_stripe_payouts: stripe_payouts,
+  article250315_discounts: discounts,
 };
 
 export default defineComponent({
@@ -55,6 +59,7 @@ export default defineComponent({
     lead_time,
     configurations_of_dishes,
     stripe_payouts,
+    discounts,
   },
   setup() {
     const route = useRoute();
@@ -71,20 +76,22 @@ export default defineComponent({
 </script>
 
 <style lang="css" scoped>
+@reference "../../../assets/css/main.css";
+
 ::v-deep(h1) {
-  @apply my-4 text-xl font-bold text-black text-opacity-60;
+  @apply my-4 text-xl font-bold text-black/60;
 }
 ::v-deep(h2) {
-  @apply my-4 text-base font-bold text-black text-opacity-60;
+  @apply my-4 text-base font-bold text-black/60;
 }
 ::v-deep(h3) {
-  @apply my-4 text-base font-bold text-black text-opacity-60;
+  @apply my-4 text-base font-bold text-black/60;
 }
 ::v-deep(h4) {
-  @apply my-4 text-base font-bold text-black text-opacity-60;
+  @apply my-4 text-base font-bold text-black/60;
 }
 ::v-deep(p) {
-  @apply my-2 text-sm text-black text-opacity-60;
+  @apply my-2 text-sm text-black/60;
 }
 ::v-deep(a) {
   @apply underline;
@@ -93,16 +100,16 @@ export default defineComponent({
   @apply my-4;
 }
 ::v-deep(ul) {
-  @apply my-1 text-sm text-black text-opacity-60 list-disc;
+  @apply my-1 list-disc text-sm text-black/60;
 }
 ::v-deep(ol) {
-  @apply my-2 text-sm text-black text-opacity-60;
+  @apply my-2 text-sm text-black/60;
 }
 ::v-deep(ul) > li {
   @apply mx-4;
 }
 
 ::v-deep(table) {
-  @apply my-2 text-base font-bold text-black text-opacity-60;
+  @apply my-2 text-base font-bold text-black/60;
 }
 </style>

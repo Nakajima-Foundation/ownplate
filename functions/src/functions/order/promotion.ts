@@ -1,4 +1,4 @@
-import * as functions from "firebase-functions/v1";
+import { HttpsError } from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
 
 export const getPromotion = async (db, transaction, promotionId, restaurantData, orderTotal, enableStripe) => {
@@ -7,32 +7,32 @@ export const getPromotion = async (db, transaction, promotionId, restaurantData,
   const promotionDoc = await transaction.get(db.doc(promotionPath));
 
   if (!promotionDoc) {
-    throw new functions.https.HttpsError("invalid-argument", "No promotion exist.");
+    throw new HttpsError("invalid-argument", "No promotion exist.");
   }
 
   const promotionData = promotionDoc.data();
 
   if (!promotionData.enable) {
-    throw new functions.https.HttpsError("invalid-argument", "No promotion exist.");
+    throw new HttpsError("invalid-argument", "No promotion exist.");
   }
   const now = new Date();
   if (promotionData.hasTerm) {
     if (promotionData.termFrom.toDate() > now) {
-      throw new functions.https.HttpsError("invalid-argument", "No promotion exist.");
+      throw new HttpsError("invalid-argument", "No promotion exist.");
     }
     if (now > promotionData.termTo.toDate()) {
-      throw new functions.https.HttpsError("invalid-argument", "No promotion exist.");
+      throw new HttpsError("invalid-argument", "No promotion exist.");
     }
   }
   if (promotionData.discountThreshold > orderTotal) {
-    throw new functions.https.HttpsError("invalid-argument", "No promotion exist.");
+    throw new HttpsError("invalid-argument", "No promotion exist.");
   }
   if (promotionData.paymentRestrictions) {
     if (promotionData.paymentRestrictions === "stripe" && !enableStripe) {
-      throw new functions.https.HttpsError("invalid-argument", "No promotion exist.");
+      throw new HttpsError("invalid-argument", "No promotion exist.");
     }
     if (promotionData.paymentRestrictions === "instore" && enableStripe) {
-      throw new functions.https.HttpsError("invalid-argument", "No promotion exist.");
+      throw new HttpsError("invalid-argument", "No promotion exist.");
     }
   }
   // coupon is ok
@@ -56,7 +56,7 @@ export const getUserHistoryDoc = async (db, promotionData, uid) => {
     const path = `${collectionPath}/${promotionData.promotionId}`;
     return db.doc(path);
   }
-  throw new functions.https.HttpsError("invalid-argument", "No promotion exist.");
+  throw new HttpsError("invalid-argument", "No promotion exist.");
 };
 
 export const enableUserPromotion = async (transaction: admin.firestore.Transaction, promotionData: any, userPromotionRef: admin.firestore.DocumentReference) => {
@@ -71,7 +71,7 @@ export const enableUserPromotion = async (transaction: admin.firestore.Transacti
   if (promotionData.type === "discount") {
     return !ret;
   }
-  throw new functions.https.HttpsError("invalid-argument", "No promotion exist.");
+  throw new HttpsError("invalid-argument", "No promotion exist.");
 };
 
 export const userPromotionHistoryData = (

@@ -12,7 +12,6 @@ import {
   stripeReceiptData,
   stripeOAuthConnectData,
   stripeOAuthVerifyData,
-  stripeUpdateCustomerData,
   pingData,
   lineValidateData,
   liffAuthenticateData,
@@ -198,7 +197,7 @@ export const validateOrderCreated = (data: orderCreatedData) => {
   return validateData(data, validator);
 };
 
-export const validateOrderUpadte = (data: orderUpdateData) => {
+export const validateOrderUpdate = (data: orderUpdateData) => {
   const validator = {
     restaurantId: {
       type: "firebaseId",
@@ -352,16 +351,6 @@ export const validateStripeReceipt = (data: stripeReceiptData) => {
     },
     orderId: {
       type: "firebaseId",
-      required: true,
-    },
-  };
-  return validateData(data, validator);
-};
-
-export const validateStripeUpdateCustomer = (data: stripeUpdateCustomerData) => {
-  const validator = {
-    tokenId: {
-      type: "numAlphaBar",
       required: true,
     },
   };

@@ -1,11 +1,11 @@
 <template>
-  <div class="pt-10 px-6">
+  <div class="px-6 pt-10">
     <div
-      class="bg-op-teal rounded-lg px-5 sm:py-6 pb-12 pt-6 px-auto sm:flex items-center justify-center text-center"
+      class="bg-op-teal px-auto items-center justify-center rounded-lg px-5 pt-6 pb-12 text-center sm:flex sm:py-6"
     >
       <div>
         <img
-          class="object-cover w-40 sm:w-56"
+          class="w-40 object-cover sm:w-56"
           src="/images/top/takeout_icon.png"
         />
       </div>
@@ -13,9 +13,9 @@
       <div class="mt-4 sm:mt-0">
         <router-link to="/home">
           <div
-            class="md:ml-12 sm:ml-2 inline-flex h-16 items-center rounded-full bg-white px-8 shadow hover:bg-opacity-90"
+            class="inline-flex h-16 items-center rounded-full bg-white px-8 shadow-sm hover:bg-white/90 sm:ml-2 md:ml-12"
           >
-            <span class="text-xl font-bold text-op-teal">
+            <span class="text-op-teal text-xl font-bold">
               {{ $t("lp.clickHereToOrder") }}
             </span>
           </div>

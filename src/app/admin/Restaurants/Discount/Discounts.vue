@@ -21,7 +21,7 @@
       <div class="column is-narrow w-6"></div>
     </div>
 
-    <div class="text-xl font-bold text-black text-opacity-30 mb-2 mt-4">
+    <div class="mt-4 mb-2 text-xl font-bold text-black/30">
       {{ $t("admin.promotion.list") }}
     </div>
     <div
@@ -29,31 +29,31 @@
       :key="k"
       :class="
         !promotion.currentOpen
-          ? 'bg-opacity-10 bg-black rounded-lg p-4 shadow mb-2'
-          : 'rounded-lg bg-white p-4 shadow mb-2'
+          ? 'mb-2 rounded-lg bg-black/10 p-4 shadow-sm'
+          : 'mb-2 rounded-lg bg-white p-4 shadow-sm'
       "
     >
       <div
         v-if="promotion.currentOpen"
-        class="font-bold text-green-600 mb-2 rounded-lg bg-green-600 bg-opacity-10 py-1 text-center"
+        class="mb-2 rounded-lg bg-green-600/10 py-1 text-center font-bold text-green-600"
       >
         {{ $t("admin.promotion.activationState") }}
       </div>
-      <div class="inline-flex mb-1 items-center">
-        <div class="text-sm text-black text-opacity-40 font-bold">
+      <div class="mb-1 inline-flex items-center">
+        <div class="text-sm font-bold text-black/40">
           {{ $t("admin.promotion.name") }}:
         </div>
         <router-link
           :to="`/admin/restaurants/${shopInfo.restaurantId}/discounts/${promotion.promotionId}`"
         >
-          <div class="inline-flex items-center ml-1 font-bold text-op-teal">
+          <div class="text-op-teal ml-1 inline-flex items-center font-bold">
             {{ promotion.promotionName }}<i class="material-icons ml-1">edit</i>
           </div></router-link
         >
       </div>
 
       <div class="mt-1 flex items-center">
-        <div class="text-sm text-black text-opacity-40 font-bold">
+        <div class="text-sm font-bold text-black/40">
           {{ $t("admin.promotion.activation") }}:
         </div>
         <div class="ml-1">
@@ -62,7 +62,7 @@
       </div>
 
       <div class="mt-1 flex items-center">
-        <div class="text-sm text-black text-opacity-40 font-bold">
+        <div class="text-sm font-bold text-black/40">
           {{ $t("admin.promotion.type") }}:
         </div>
         <div class="ml-1l">
@@ -79,7 +79,7 @@
       </div>
 
       <div class="mt-1 flex items-center">
-        <div class="text-sm text-black text-opacity-40 font-bold">
+        <div class="text-sm font-bold text-black/40">
           {{ $t("admin.promotion.period") }}:
         </div>
         <div class="ml-1">
@@ -95,7 +95,7 @@
       </div>
 
       <div class="mt-1 flex items-center">
-        <div class="text-sm text-black text-opacity-40 font-bold">
+        <div class="text-sm font-bold text-black/40">
           {{ $t("admin.promotion.minimumAmount") }}:
         </div>
         <div class="ml-1">
@@ -104,7 +104,7 @@
       </div>
 
       <div class="mt-1 flex items-center">
-        <div class="text-sm text-black text-opacity-40 font-bold">
+        <div class="text-sm font-bold text-black/40">
           {{ $t("admin.promotion.limitation") }}:
         </div>
         <div class="ml-1">
@@ -113,7 +113,7 @@
       </div>
 
       <div class="mt-1 flex items-center">
-        <div class="text-sm text-black text-opacity-40 font-bold">
+        <div class="text-sm font-bold text-black/40">
           {{ $t("admin.promotion.discounts") }}:
         </div>
         <div class="ml-1">
@@ -131,7 +131,7 @@
       </div>
 
       <div class="mt-1 flex items-center">
-        <div class="text-sm text-black text-opacity-40 font-bold">
+        <div class="text-sm font-bold text-black/40">
           {{ $t("admin.promotion.paymentMethod") }}:
         </div>
         <div class="ml-1">
@@ -149,7 +149,7 @@
         :to="`/admin/restaurants/${shopInfo.restaurantId}/discounts/${promotion.promotionId}/history`"
       >
         <div
-          class="flex items-center justify-center mt-3 h-9 w-24 rounded-full bg-black bg-opacity-5 font-bold text-op-teal"
+          class="text-op-teal mt-3 flex h-9 w-24 items-center justify-center rounded-full bg-black/5 font-bold"
         >
           {{ $t("admin.promotion.history") }}
         </div></router-link
@@ -157,14 +157,9 @@
     </div>
 
     <div>
-      <button
-        @click="newDiscount"
-        class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow mt-2"
-      >
-        <span class="text-base font-bold text-white">
-          {{ $t("editCommon.new") }}
-        </span>
-      </button>
+      <t-button @click="newDiscount" class="h-12 px-8 font-bold text-white">
+        {{ $t("editCommon.new") }}
+      </t-button>
     </div>
   </div>
 </template>

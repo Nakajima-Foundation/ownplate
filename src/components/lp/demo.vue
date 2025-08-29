@@ -9,7 +9,7 @@
 
     <!-- Demo Videos -->
     <div class="mx-6 mt-2 rounded-2xl bg-white p-6 lg:flex lg:space-x-6">
-      <div class="mt-4 text-center lg:mt-0 lg:flex-shrink-0">
+      <div class="mt-4 text-center lg:mt-0 lg:shrink-0">
         <div>
           <iframe
             width="300"
@@ -22,12 +22,12 @@
           ></iframe>
         </div>
         <div class="mt-2 inline-flex items-center">
-          <span class="ml-1 text-base font-bold text-op-teal">{{
+          <span class="text-op-teal ml-1 text-base font-bold">{{
             $t("lp.orderFlow")
           }}</span>
         </div>
       </div>
-      <div class="mt-4 text-center lg:mt-0 lg:flex-shrink-0">
+      <div class="mt-4 text-center lg:mt-0 lg:shrink-0">
         <div>
           <iframe
             width="300"
@@ -40,12 +40,12 @@
           ></iframe>
         </div>
         <div class="mt-2 inline-flex items-center">
-          <span class="ml-1 text-base font-bold text-op-teal">{{
+          <span class="text-op-teal ml-1 text-base font-bold">{{
             $t("lp.flyerCreation")
           }}</span>
         </div>
       </div>
-      <div class="mt-4 text-center lg:mt-0 lg:flex-shrink-0">
+      <div class="mt-4 text-center lg:mt-0 lg:shrink-0">
         <div>
           <iframe
             width="300"
@@ -58,7 +58,7 @@
           ></iframe>
         </div>
         <div class="mt-2 inline-flex items-center">
-          <span class="ml-1 text-base font-bold text-op-teal">{{
+          <span class="text-op-teal ml-1 text-base font-bold">{{
             $t("lp.cardPayment")
           }}</span>
         </div>

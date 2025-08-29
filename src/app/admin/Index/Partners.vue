@@ -9,16 +9,16 @@
           </span>
         </div>
         <div
-          class="mr-4 text-right font-bold cursor-pointer"
+          class="mr-4 cursor-pointer text-right font-bold"
           v-if="partner.ask"
         >
           <a href="#" @click="openContact()">サポート問い合わせ</a>
         </div>
       </div>
     </div>
-    <o-modal :active="isOpen" :width="488">
+    <t-modal :active="isOpen" width="488" @close="close">
       <PartnersContact :id="(partners[0] || {}).id" />
-    </o-modal>
+    </t-modal>
   </div>
 </template>
 <script lang="ts">
@@ -46,9 +46,13 @@ export default defineComponent({
     const openContact = () => {
       isOpen.value = true;
     };
+    const close = () => {
+      isOpen.value = false;
+    };
     return {
       isOpen,
       openContact,
+      close,
       partners,
     };
   },

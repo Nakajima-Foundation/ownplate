@@ -2,58 +2,58 @@
   <div>
     <!-- Delete Account -->
     <div class="mt-4 text-center">
-      <o-button @click="handleDeleteAccount" class="b-reset-tw">
-        <div class="inline-flex items-center justify-center">
+      <button @click="handleDeleteAccount" class="cursor-pointer">
+        <div
+          class="mt-8 inline-flex items-center justify-center rounded-full border-2 border-black/10 px-4 py-2"
+        >
           <i class="material-icons mr-2 text-lg text-red-700">delete</i>
           <div class="text-sm font-bold text-red-700">
             {{ $t("profile.deleteAccount") }}
           </div>
         </div>
-      </o-button>
+      </button>
     </div>
 
     <!-- Phone Login-->
-    <o-modal v-model:active="reLoginVisible" :width="488" scroll="keep">
+    <t-modal v-model:active="reLoginVisible" width="488" scroll="keep">
       <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
         <phone-login
           v-on:dismissed="continueDelete"
           :relogin="user.phoneNumber"
         />
       </div>
-    </o-modal>
+    </t-modal>
 
     <!-- Loading -->
-    <o-loading
-      :is-full-page="false"
-      :active="isDeletingAccount"
-      :can-cancel="true"
-    ></o-loading>
+    <Loading v-if="isDeletingAccount" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import PhoneLogin from "@/app/auth/PhoneLogin.vue";
+import Loading from "@/components/Loading.vue";
 import { getAuth, deleteUser } from "firebase/auth";
 
 import { accountDelete } from "@/lib/firebase/functions";
 import { useUserData } from "@/utils/utils";
 
-import { useStore } from "vuex";
+import { useDialogStore } from "@/store/dialog";
 
 export default defineComponent({
   components: {
     PhoneLogin,
+    Loading,
   },
   setup() {
-    const store = useStore();
+    const dialogStore = useDialogStore();
     const { user } = useUserData();
 
     const isDeletingAccount = ref(false);
     const reLoginVisible = ref(false);
 
     const handleDeleteAccount = () => {
-      store.commit("setAlert", {
+      dialogStore.setAlert({
         code: "profile.reallyDeleteAccount",
         callback: () => {
           window.scrollTo(0, 0);

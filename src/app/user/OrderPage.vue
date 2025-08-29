@@ -146,14 +146,14 @@ export default defineComponent({
 
     const liffBasePath = useLiffBasePath();
 
-    useHead({
+    useHead(() => ({
       title: props.shopInfo?.restaurantName
         ? [
             props.shopInfo ? props.shopInfo?.restaurantName : "--",
             "Order Page",
           ].join(" / ")
         : [defaultTitle, "Order Page"].join(" / "),
-    });
+    }));
 
     const orderId = route.params.orderId as string;
     const orderError = computed(() => {
@@ -175,7 +175,7 @@ export default defineComponent({
     const restaurantId = useRestaurantId();
 
     const hasLine = computed(() => {
-      console.log(props.shopInfo.hasLine, props.shopInfo.lineClientId);
+      // console.log(props.shopInfo.hasLine, props.shopInfo.lineClientId);
       return !!(props.shopInfo.hasLine && props.shopInfo.lineClientId);
     });
 

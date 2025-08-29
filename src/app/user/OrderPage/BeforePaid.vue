@@ -4,10 +4,10 @@
     <div class="mx-6 mt-4">
       <router-link :to="menuPagePath">
         <div
-          class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 b-reset-tw"
+          class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-black/5 px-4"
         >
-          <i class="material-icons mr-2 text-lg text-op-teal">arrow_back</i>
-          <div class="text-sm font-bold text-op-teal">
+          <i class="material-icons text-op-teal mr-2 text-lg">arrow_back</i>
+          <div class="text-op-teal text-sm font-bold">
             {{ $t("button.back") }}
           </div>
         </div>
@@ -42,7 +42,7 @@
       <!-- Left -->
       <div>
         <!-- Title -->
-        <div class="text-xl font-bold text-black text-opacity-30">
+        <div class="text-xl font-bold text-black/30">
           <div>
             {{ $t("order.confirmOrder") }}
           </div>
@@ -86,7 +86,7 @@
           <!-- For EC and Delivery -->
           <div
             v-if="shopInfo.isEC || orderInfo.isDelivery"
-            class="text-xl font-bold text-black text-opacity-30"
+            class="text-xl font-bold text-black/30"
           >
             {{ $t("order.ec.formtitle") }}
           </div>
@@ -94,7 +94,7 @@
           <!-- For EC and Delivery -->
           <div
             v-if="shopInfo.isEC || orderInfo.isDelivery"
-            class="mb-4 mt-2 rounded-lg bg-white p-4 shadow"
+            class="mt-2 mb-4 rounded-lg bg-white p-4 shadow-sm"
           >
             <ECCustomer
               ref="ecCustomerRef"
@@ -134,7 +134,7 @@
 
           <!-- Time to Pickup -->
           <div v-if="!shopInfo.isEC">
-            <div class="text-xl font-bold text-black text-opacity-30">
+            <div class="text-xl font-bold text-black/30">
               <span v-if="orderInfo.isDelivery">
                 {{ $t("order.deliveryTimeRequested") }}
               </span>
@@ -164,20 +164,23 @@
             <div
               class="mt-2"
               :class="
-                userMessageError ? 'rounded border-4 border-red-700 p-2' : ''
+                userMessageError ? 'rounded-sm border-4 border-red-700 p-2' : ''
               "
             >
-              <div class="text-xl font-bold text-black text-opacity-30">
+              <div class="text-xl font-bold text-black/30">
                 {{ $t("order.orderMessage") }}
               </div>
 
-              <div class="mt-2 rounded-lg bg-white p-4 shadow">
-                <o-input
+              <div class="mt-2 rounded-lg bg-white p-4 shadow-sm">
+                <textarea
                   v-model="memo"
-                  type="textarea"
                   :placeholder="$t('order.enterMessage')"
-                  rootClass="w-full"
-                ></o-input>
+                  class="resize-vertical w-full rounded border border-gray-300 px-3 py-2"
+                  :class="
+                    userMessageError ? 'border-red-500' : 'border-green-500'
+                  "
+                  rows="3"
+                ></textarea>
                 <div :class="userMessageError ? 'font-bold text-red-700' : ''">
                   {{ $t("validationError.memo.length") }}
                 </div>
@@ -198,26 +201,27 @@
             <div
               class="mt-2"
               :class="
-                userNameError ? 'rounded border-4 border-red-700 p-2' : ''
+                userNameError ? 'rounded-sm border-4 border-red-700 p-2' : ''
               "
             >
-              <div class="text-xl font-bold text-black text-opacity-30">
+              <div class="text-xl font-bold text-black/30">
                 {{ $t("order.requiredUserName") }}
               </div>
 
-              <div class="mt-2 rounded-lg bg-white p-4 shadow">
-                <o-input
+              <div class="mt-2 rounded-lg bg-white p-4 shadow-sm">
+                <input
                   v-model="userName"
                   :placeholder="$t('order.enterUserName')"
-                  class="w-full"
-                ></o-input>
+                  class="w-full rounded border border-gray-300 px-3 py-2"
+                  :class="userNameError ? 'border-red-500' : 'border-green-500'"
+                />
               </div>
             </div>
           </template>
 
           <!-- Payment -->
           <div class="mt-2">
-            <div class="text-xl font-bold text-black text-opacity-30">
+            <div class="text-xl font-bold text-black/30">
               {{ $t("order.yourPayment") }}
             </div>
 
@@ -230,7 +234,7 @@
                 "
               >
                 <div
-                  class="border-green-600 text-green-600 text-center font-bold mx-auto w-72 items-center mt-8 -mb-3 rounded-lg bg-green-600 bg-opacity-10 px-6 py-2"
+                  class="mx-auto mt-8 -mb-3 w-72 items-center rounded-lg border-green-600 bg-green-600/10 px-6 py-2 text-center font-bold text-green-600"
                 >
                   <div class="text-xs">{{ $t("order.promotionNoteCard") }}</div>
                 </div>
@@ -243,7 +247,7 @@
                 "
               >
                 <div
-                  class="border-green-600 text-green-600 text-center font-bold mx-auto w-72 items-center mt-8 -mb-3 rounded-lg bg-green-600 bg-opacity-10 px-6 py-2"
+                  class="mx-auto mt-8 -mb-3 w-72 items-center rounded-lg border-green-600 bg-green-600/10 px-6 py-2 text-center font-bold text-green-600"
                 >
                   <div class="text-xs">
                     {{ $t("order.promotionNoteStore") }}
@@ -255,7 +259,6 @@
                 <t-button
                   class="h-16 px-6"
                   style="min-width: 288px"
-                  :isLoading="isPaying"
                   :isDisabled="disabledButton || stripeSmallPayment"
                   @click="handlePayment(true)"
                 >
@@ -275,7 +278,7 @@
 
             <!-- Pay at Restaurant -->
             <div v-else class="mt-2">
-              <div class="rounded-lg bg-black bg-opacity-5 p-4">
+              <div class="rounded-lg bg-black/5 p-4">
                 <div class="text-sm">
                   {{ $t("order.pleasePayAtRestaurant") }}
                 </div>
@@ -284,17 +287,16 @@
 
             <!-- Pay Button -->
             <div v-if="inStorePayment" class="mt-4 text-center">
-              <div class="text-sm font-bold text-black text-opacity-60">
+              <div class="text-sm font-bold text-black/60">
                 {{ $t("order.or") }}
               </div>
 
               <div class="mt-4">
                 <t-button
-                  :isLoading="isPlacing"
                   :isDisabled="disabledButton"
                   :class="disabledButton ? 'bg-op-teal-disabled' : 'bg-op-teal'"
                   @click="handlePayment(false)"
-                  class="h-16 px-6 takeout"
+                  class="takeout h-16 px-6"
                   style="min-width: 288px"
                 >
                   <div class="text-xl font-bold text-white">
@@ -303,7 +305,7 @@
                 </t-button>
               </div>
               <div>
-                <div class="mt-2 text-sm font-bold text-black text-opacity-60">
+                <div class="mt-2 text-sm font-bold text-black/60">
                   {{ $t("order.placeOrderNoPaymentNote") }}
                 </div>
 
@@ -379,9 +381,13 @@ import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import Promotion from "@/models/promotion";
 
+import * as analyticsUtil from "@/lib/firebase/analytics";
+
 import { useHasSoldOutToday } from "./Stock";
 
-import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
+import { useCartStore } from "@/store/cart";
+import { useDialogStore } from "@/store/dialog";
 import { useRoute } from "vue-router";
 
 export default defineComponent({
@@ -437,13 +443,13 @@ export default defineComponent({
   emits: ["handleOpenMenu", "openTransactionsAct"],
   setup(props, ctx) {
     const route = useRoute();
-    const store = useStore();
+    const generalStore = useGeneralStore();
+    const cartStore = useCartStore();
+    const dialogStore = useDialogStore();
 
     const restaurantId = route.params.restaurantId as string;
 
     const notAvailable = ref(false);
-    const isPaying = ref(false);
-    const isPlacing = ref(false);
 
     const cardState = ref({});
     const memo = ref("");
@@ -500,13 +506,13 @@ export default defineComponent({
       return requireAddress.value && ecCustomerRef.value?.hasEcError;
     });
     const userMessageError = computed(() => {
-      return props.shopInfo.acceptUserMessage && memo.value.length > 500;
+      return props.shopInfo.acceptUserMessage && memo.value?.length > 500;
     });
 
     const userNameError = computed(() => {
       return (
         props.shopInfo.personalInfo === "required" &&
-        (userName.value === "" || userName.value.length < 3)
+        (userName.value === "" || userName.value?.length < 3)
       );
     });
 
@@ -518,7 +524,7 @@ export default defineComponent({
       );
     });
     const hasPaymentMethods = computed(() => {
-      return shopPaymentMethods.value.length > 0;
+      return shopPaymentMethods.value?.length > 0;
     });
     const selectedPromotion = computed<Promotion | null>(() => {
       if (props.promotions && props.promotions.length > 0) {
@@ -558,6 +564,18 @@ export default defineComponent({
       }
     };
     // internal
+    const sendPurchase = () => {
+      analyticsUtil.sendPurchase(
+        props.orderInfo,
+        orderId.value,
+        props.orderItems.map((or: any) => {
+          return { ...or.item, id: or.id, quantity: or.count };
+        }),
+        props.shopInfo,
+        restaurantId,
+      );
+    };
+
     const handleOpenMenu = () => {
       ctx.emit("handleOpenMenu");
     };
@@ -604,12 +622,7 @@ export default defineComponent({
         ? Timestamp.now()
         : timeToPickupRef.value.timeToPickup();
       try {
-        if (payStripe) {
-          isPaying.value = true;
-          // await stripeRef.value.createToken();
-        } else {
-          isPlacing.value = true;
-        }
+        generalStore.setLoading(true);
         const promotionId =
           isEnablePaymentPromotion(payStripe) && enablePromotion.value
             ? selectedPromotion.value?.promotionId
@@ -634,19 +647,20 @@ export default defineComponent({
           await saveLiffCustomer();
         }
         */
-        // sendPurchase();
-        store.commit("resetCart", restaurantId);
+        if (!payStripe) {
+          sendPurchase();
+        }
+        cartStore.resetCart(restaurantId);
         window.scrollTo(0, 0);
       } catch (error: any) {
         // alert(JSON.stringify(error));
         console.error(error.message, error.details);
-        store.commit("setErrorMessage", {
+        dialogStore.setErrorMessage({
           code: "order.place",
           error,
-        });
+        } as any);
       } finally {
-        isPlacing.value = false;
-        isPaying.value = false;
+        generalStore.setLoading(false);
       }
     };
     const openTransactionsAct = () => {
@@ -658,16 +672,12 @@ export default defineComponent({
         notAvailable.value ||
         notSubmitAddress.value ||
         userMessageError.value ||
-        userNameError.value ||
-        isPaying.value ||
-        isPlacing.value
+        userNameError.value
       );
     });
 
     return {
       // ref
-      isPaying,
-      isPlacing,
       cardState,
       memo,
       userName,

@@ -113,11 +113,6 @@ export interface stripeReceiptData {
   orderId: string;
 }
 
-export interface stripeUpdateCustomerData {
-  tokenId: string;
-  reuse: string; // ??
-}
-
 export interface lineValidateData {
   code: string;
   redirect_uri: string;

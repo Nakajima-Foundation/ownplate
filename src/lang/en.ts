@@ -264,6 +264,13 @@ const data = {
     businessHourOption: "Another Hours (optional)",
     copyPreviousDay: "Copy Previous Day",
     copySunDay: "Copy Sunday",
+    lastOrderTime: {
+      title: "Last Order Time",
+      notes1:
+        'Configure this if you would like to close orders prior to the "final order time," considering the "business closing time" and "order preparation time."',
+      notes2:
+        'If this is not configured, the time will be determined by considering the "business closing time" and "order preparation time."',
+    },
     draftDescription: "Save as Draft.",
     publishDescription: "Save and publish your restaurant.",
     draftWarning: "You can publish this by correcting the red frame.",
@@ -278,7 +285,7 @@ const data = {
       "You can manage your own delivery. By setting the delivery area etc., the customer can choose takeout or delivery when ordering. (Don't forget to save if you have changed the store settings)",
     deliveryConfigLink: "To delivery settings",
     printerConfigTitle: "Printer settings",
-    elablePrinter: "Enable print",
+    enablePrinter: "Enable print",
     printerDescription:
       "You can print your order information using a printer made by Star Seiki connected via Bluetooth.",
     printerDescription2:
@@ -349,8 +356,6 @@ const data = {
     deleteAllPhotos: "Delete all photos",
     exclusionDateTime: "Exclusion date/time",
     lunchDinner: "Lunch/Dinner",
-    lunch: "Lunch",
-    dinner: "Dinner",
     itemOptions: "Item options",
     itemOptionsNote:
       'For altenatives, use comma to separate them (e.g., "Chicken, Pork, Tofu"). You may add a price to an option with (+N), where N is the price.',
@@ -439,6 +444,7 @@ const data = {
     temporaryClosure: "Temporary Closure",
     temporaryClosureAdd: "Add",
     temporaryClosureDescription: "Please select a date and then press Add",
+    temporaryClosureOkay: "OK",
     temporaryClosureSelect: "Select a date",
     paymentMethod: "Payment Method",
     onlinePayment: "Online Payment",
@@ -664,6 +670,7 @@ const data = {
     order_canceled_by_restaurant: "Canceled by restaurant",
     reuseCard: "Save it for future use",
     whatsCVC: "What’s CVC?",
+    card_error: "Failed to confirm the payment.",
     no_jcb: "＊This restaurant does not accept JCB card",
     "3digitsCVC": "The final three digits on the back",
     "4digitsCVC": "The four digits on the front",
@@ -1111,6 +1118,8 @@ const data = {
       paymentCancelTitle: "Cancel only card payment",
       paymentCancelMessage:
         "It will be changed to payment in the restaurant. Please contact the customer and let them know that you will be paying in the restaurant. The order will not be cancelled.",
+      waitingPaymentWarninig:
+        "This order cannot be accepted as payment has not been completed.",
       paymentCancel: "Cancel only card payment",
       paymentCancelConfirm: "(This action is undoable)",
       placedDate: "Date of order",
@@ -1191,6 +1200,7 @@ const data = {
           "The email or the password is invalid.",
         "auth/unauthorized-continue-uri": "Domain not whitelisted by project",
         "auth/internal-error": "Password is invalid.",
+        "auth/invalid-credential": "Email or Password is invalid.",
       },
     },
     index: {
@@ -1285,6 +1295,15 @@ const data = {
       friday: "Fri",
       saturday: "Sat",
       sunday: "Sun",
+    },
+    shortest: {
+      monday: "M",
+      tuesday: "T",
+      wednesday: "W",
+      thursday: "T",
+      friday: "F",
+      saturday: "S",
+      sunday: "S",
     },
   },
   allergens: {

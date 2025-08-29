@@ -5,21 +5,37 @@
       <span v-else>{{ $t(titleKey) }}</span>
       <span class="text-red-700" v-if="required === true">*</span>
     </div>
-    <o-field :variant="error.length > 0 ? 'danger' : 'success'">
-      <o-input
-        :modelValue="modelValue"
+    <div class="field" :class="error.length > 0 ? 'has-error' : 'has-success'">
+      <textarea
+        :value="modelValue"
+        rows="5"
         :type="type"
         :placeholder="$t(placeholder)"
         @update:modelValue="input"
+        @input="input($event.target.value)"
         :maxlength="maxlength"
-      ></o-input>
-    </o-field>
+        class="input w-full rounded border bg-white px-3 py-2"
+        :class="error.length > 0 ? 'border-red-500' : 'border-gray-300'"
+        v-if="type === 'textarea'"
+      />
+      <input
+        v-else
+        :value="modelValue"
+        :type="type"
+        :placeholder="$t(placeholder)"
+        @update:modelValue="input"
+        @input="input($event.target.value)"
+        :maxlength="maxlength"
+        class="input w-full rounded border bg-white px-3 py-2"
+        :class="error.length > 0 ? 'border-red-500' : 'border-gray-300'"
+      />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useStore } from "vuex";
+import { useDialogStore } from "@/store/dialog";
 
 export default defineComponent({
   name: "TextForm",
@@ -61,12 +77,12 @@ export default defineComponent({
   },
   emits: ["update:modelValue"],
   setup(_, context) {
-    const store = useStore();
-    const input = (e: any) => {
-      context.emit("update:modelValue", e);
+    const dialogStore = useDialogStore();
+    const input = (value: string) => {
+      context.emit("update:modelValue", value);
     };
     const open = (key: string) => {
-      store.commit("setTips", {
+      dialogStore.setTips({
         key,
       });
     };

@@ -26,32 +26,39 @@
     <div class="mt-4 flex justify-center space-x-4">
       <button
         @click="cancel"
-        class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
+        class="inline-flex h-12 items-center rounded-full bg-black/5 px-6"
       >
-        <span class="text-base font-bold text-black text-opacity-60">
+        <span class="text-base font-bold text-black/60">
           {{ $t("button.cancel") }}
         </span>
       </button>
 
-      <t-button @click="save" class="h-12 px-6 font-bold text-white">
+      <t-button @click="save" class="h-12 px-8 font-bold text-white">
         {{ $t("editCommon.save") }}
       </t-button>
     </div>
 
-    <div v-if="promotion">
+    <div v-if="promotion" class="m-auto w-full md:w-2xl">
       <div class="mt-2">
         <div class="pb-2 text-sm font-bold">
           {{ $t("admin.promotion.name") }}
         </div>
         <div>
-          <o-input type="text" v-model="promotion.promotionName" />
+          <input
+            type="text"
+            v-model="promotion.promotionName"
+            class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2"
+          />
         </div>
       </div>
       <div class="mt-2">
         <div class="pb-2 text-sm font-bold">
           {{ $t("admin.promotion.activation") }}
         </div>
-        <o-select v-model="promotion.enable">
+        <select
+          v-model="promotion.enable"
+          class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400"
+        >
           <option
             v-for="(result, key) in toBeOrNotSelect"
             :value="result.value"
@@ -59,13 +66,16 @@
           >
             {{ $t("admin." + result.messageKey) }}
           </option>
-        </o-select>
+        </select>
       </div>
       <div class="mt-2">
         <div class="pb-2 text-sm font-bold">
           {{ $t("admin.promotion.type") }}
         </div>
-        <o-select v-model="promotion.type">
+        <select
+          v-model="promotion.type"
+          class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400"
+        >
           <option
             v-for="(result, key) in discountTypeSelect"
             :value="result.value"
@@ -73,14 +83,17 @@
           >
             {{ $t("admin.promotion." + result.messageKey) }}
           </option>
-        </o-select>
+        </select>
       </div>
       <div class="mt-2">
         <div class="pb-2 text-sm font-bold">
           {{ $t("admin.promotion.period") }}
         </div>
 
-        <o-select v-model="promotion.hasTerm">
+        <select
+          v-model="promotion.hasTerm"
+          class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400"
+        >
           <option
             v-for="(result, key) in toBeOrNotSelect"
             :value="result.value"
@@ -88,50 +101,51 @@
           >
             {{ $t("admin." + result.messageKey) }}
           </option>
-        </o-select>
+        </select>
 
-        <o-field v-if="promotion.hasTerm" class="has-addons">
-          <o-datetimepicker
-            icon="calendar-today"
+        <div v-if="promotion.hasTerm" class="mt-2 flex">
+          <DateTimePicker
             v-model="termFromDate"
             :min-date="new Date()"
-            expanded
             :placeholder="$t('shopInfo.temporaryClosureSelect')"
-            class="lg:w-96"
+            class="mr-4 lg:w-96"
           />
-          <o-datetimepicker
-            icon="calendar-today"
+          ~
+          <DateTimePicker
             v-model="termToDate"
             :min-date="new Date()"
-            expanded
             :placeholder="$t('shopInfo.temporaryClosureSelect')"
-            class="lg:w-96"
+            class="ml-4 lg:w-96"
           />
-        </o-field>
+        </div>
       </div>
       <div class="mt-2 w-40">
         <div class="pb-2 text-sm font-bold">
           {{ $t("admin.promotion.minimumAmount") }}
         </div>
         <div>
-          <o-field class="has-addons">
-            <o-input
+          <div class="flex">
+            <input
               type="number"
               v-model="promotion.discountThreshold"
               :step="1"
               min="0"
+              class="rounded-lg border border-gray-300 bg-white px-3 py-2"
             />
             <span class="button is-static">
               {{ $t("currency.JPY") }}
             </span>
-          </o-field>
+          </div>
         </div>
       </div>
       <div class="mt-2">
         <div class="pb-2 text-sm font-bold">
           {{ $t("admin.promotion.limitation") }}
         </div>
-        <o-select v-model="promotion.usageRestrictions">
+        <select
+          v-model="promotion.usageRestrictions"
+          class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400"
+        >
           <option
             v-for="(result, key) in toBeOrNotSelect2"
             :value="result.value"
@@ -139,13 +153,16 @@
           >
             {{ result.message }}
           </option>
-        </o-select>
+        </select>
       </div>
       <div class="mt-2">
         <div class="pb-2 text-sm font-bold">
           {{ $t("admin.promotion.discounts") }}
         </div>
-        <o-select v-model="promotion.discountMethod">
+        <select
+          v-model="promotion.discountMethod"
+          class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400"
+        >
           <option
             v-for="(result, key) in discountMethodSelect"
             :value="result.value"
@@ -153,7 +170,7 @@
           >
             {{ $t("admin.promotion." + result.messageKey) }}
           </option>
-        </o-select>
+        </select>
       </div>
       <div class="mt-2 w-40">
         <div class="pb-2 text-sm font-bold">
@@ -164,21 +181,31 @@
             {{ $t("admin.promotion.ratio") }}
           </template>
         </div>
-        <o-field class="has-addons">
-          <o-input type="text" v-model="promotion.discountValue" />
+        <div class="flex">
+          <input
+            type="number"
+            :step="promotion.discountMethod === 'ratio' ? 0.1 : 1"
+            min="0"
+            inputmode="decimal"
+            v-model="promotion.discountValue"
+            class="rounded-l-lg border border-gray-300 bg-white px-3 py-2"
+          />
           <span class="button is-static">
             <template v-if="promotion.discountMethod === 'amount'">
               {{ $t("currency.JPY") }}
             </template>
             <template v-else> % </template>
           </span>
-        </o-field>
+        </div>
       </div>
       <div class="mt-2">
         <div class="pb-2 text-sm font-bold">
           {{ $t("admin.promotion.paymentMethod") }}
         </div>
-        <o-select v-model="promotion.paymentRestrictions">
+        <select
+          v-model="promotion.paymentRestrictions"
+          class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400"
+        >
           <option
             v-for="(result, key) in promotionPaymentRestrictionsSelect"
             :value="result.value"
@@ -186,20 +213,20 @@
           >
             {{ result.message }}
           </option>
-        </o-select>
+        </select>
       </div>
       <!-- Save -->
       <div class="mt-2 flex justify-center space-x-4">
         <button
           @click="cancel"
-          class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
+          class="inline-flex h-12 items-center rounded-full bg-black/5 px-6"
         >
-          <span class="text-base font-bold text-black text-opacity-60">
+          <span class="text-base font-bold text-black/60">
             {{ $t("button.cancel") }}
           </span>
         </button>
 
-        <t-button @click="save" class="h-12 px-6 font-bold text-white">
+        <t-button @click="save" class="h-12 px-8 font-bold text-white">
           {{ $t("editCommon.save") }}
         </t-button>
       </div>
@@ -212,6 +239,8 @@ import { defineComponent, ref } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 
 import AdminHeader from "@/app/admin/AdminHeader.vue";
+
+import DateTimePicker from "@/components/DateTimePicker.vue";
 
 import { updateDoc, doc, Timestamp } from "firebase/firestore";
 
@@ -234,6 +263,7 @@ import { checkShopAccount } from "@/utils/userPermission";
 export default defineComponent({
   components: {
     AdminHeader,
+    DateTimePicker,
   },
   props: {
     shopInfo: {
@@ -321,52 +351,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style scoped>
-:deep(.field.has-addons) {
-  display: flex;
-  .control:first-child:not(:only-child) .input {
-    border-bottom-right-radius: 0;
-    border-top-right-radius: 0;
-  }
-}
-
-:deep(.control.has-icons-left) {
-  border-radius: 4px;
-  .icon.is-left {
-    left: 0;
-  }
-  .icon {
-    align-items: center;
-    display: inline-flex;
-    justify-content: center;
-    color: #dbdbdb;
-    pointer-events: none;
-    position: absolute;
-    top: 0;
-    width: 2.5em;
-    z-index: 4;
-  }
-  .input {
-    padding-left: 2.5em;
-  }
-}
-
-.button {
-  border-width: 1px;
-  border-radius: 4px;
-  justify-content: center;
-  padding-bottom: calc(0.5em - 1px);
-  padding-left: 1em;
-  padding-right: 1em;
-  padding-top: calc(0.5em - 1px);
-  text-align: center;
-  &.is-static {
-    background-color: #f5f5f5;
-    border-color: #dbdbdb;
-    color: #7a7a7a;
-    box-shadow: none;
-    pointer-events: none;
-  }
-}
-</style>

@@ -1,21 +1,22 @@
-import * as functions from "firebase-functions/v1";
+import { onCall, HttpsError } from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
 
-import * as StripeReceipt from "../../functions/stripe/receipt";
+import { receipt } from "../../functions/stripe/receipt";
 import { enforceAppCheck, secretKeys } from "../firebase";
 
 const db = admin.firestore();
 
-export default functions
-  .runWith({
-    memory: "1GB" as const,
-    maxInstances: 10,
+export default onCall(
+  {
+    region: "asia-northeast1",
+    memory: "1GiB",
     enforceAppCheck,
+    maxInstances: 10,
     secrets: secretKeys,
-  })
-  .https.onCall(async (data, context) => {
+  },
+  async (context) => {
     if (context.app == undefined) {
-      throw new functions.https.HttpsError("failed-precondition", "The function must be called from an App Check verified app.");
+      throw new HttpsError("failed-precondition", "The function must be called from an App Check verified app.");
     }
-    return await StripeReceipt.receipt(db, data, context);
+    return await receipt(db, context.data, context);
   });

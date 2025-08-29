@@ -1,26 +1,27 @@
 import * as admin from "firebase-admin";
-import * as functions from "firebase-functions/v1";
+import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
+// import * as functions from "firebase-functions/v1";
+import { defineSecret } from "firebase-functions/params";
 import fetch from "node-fetch";
 import SmaregiApi from "../smaregi/smaregiapi";
-import * as utils from "../lib/utils";
+import { validate_admin_auth } from "../lib/utils";
 import { generateBody } from "../smaregi/apiUtils";
 
 import { smaregiAuthData, smaregiStoreListData, smaregiProductListData } from "../lib/types";
 import { smaregi } from "../common/project";
 import { validateFirebaseId } from "../lib/validator";
 
-const clientSecrets = functions.config() && functions.config().smaregi && functions.config().smaregi.clientsecrets;
-const host = functions.config() && functions.config().smaregi && functions.config().smaregi.host; // https://id.smaregi.dev
-const apiHost = functions.config() && functions.config().smaregi && functions.config().smaregi.host_name; // like api.smaregi.dev
-const authHost = functions.config() && functions.config().smaregi && functions.config().smaregi.auth_host_name; // id.smaregi.dev
+const clientSecret = defineSecret("SMAREGI_SECRET");
+const host = smaregi.host;
+const apiHost = smaregi.host_name;
+const authHost = smaregi.auth_host_name;
 const client_id = smaregi.clientId;
 
-export const auth = async (db: admin.firestore.Firestore, data: smaregiAuthData, context: functions.https.CallableContext) => {
+export const auth = async (db: admin.firestore.Firestore, data: smaregiAuthData, context: CallableRequest) => {
   const { code } = data;
 
-  const adminUid = utils.validate_admin_auth(context);
-  const clientSecret = clientSecrets[client_id];
-  const authToken = [client_id, clientSecret].join(":");
+  const adminUid = validate_admin_auth(context);
+  const authToken = [client_id, clientSecret.value()].join(":");
 
   try {
     const res = await fetch(host + "/authorize/token", {
@@ -51,14 +52,14 @@ export const auth = async (db: admin.firestore.Firestore, data: smaregiAuthData,
 
     const ret = await userRes.json();
     if (ret.is_owner!) {
-      throw new functions.https.HttpsError("invalid-argument", "You are not owner.");
+      throw new HttpsError("invalid-argument", "You are not owner.");
     }
     const contractId = ret.contract.id;
     const smaregiRef = db.doc(`/smaregi/${contractId}`);
     const smaregiDoc = await smaregiRef.get();
     const smaregiData = smaregiDoc.data();
     if (smaregiDoc && smaregiData && smaregiData.uid !== adminUid) {
-      throw new functions.https.HttpsError("invalid-argument", "This smaregi account already connected.");
+      throw new HttpsError("invalid-argument", "This smaregi account already connected.");
     }
     await smaregiRef.set({ contractId, uid: adminUid });
     await db.doc(`admins/${adminUid}/private/smaregi`).set({ smaregi: ret }, { merge: true });
@@ -71,24 +72,23 @@ export const auth = async (db: admin.firestore.Firestore, data: smaregiAuthData,
   }
 };
 
-export const storeList = async (db: admin.firestore.Firestore, data: smaregiStoreListData, context: functions.https.CallableContext) => {
-  const adminUid = utils.validate_admin_auth(context);
-  const clientSecret = clientSecrets[client_id];
+export const storeList = async (db: admin.firestore.Firestore, data: smaregiStoreListData, context: CallableRequest) => {
+  const adminUid = validate_admin_auth(context);
 
   const smaregiDoc = await db.doc(`admins/${adminUid}/private/smaregi`).get();
   if (!smaregiDoc || !smaregiDoc.exists) {
-    throw new functions.https.HttpsError("invalid-argument", "This data does not exist.");
+    throw new HttpsError("invalid-argument", "This data does not exist.");
   }
   const smaregiData = smaregiDoc.data();
   const smaregiContractId = smaregiData?.smaregi?.contract?.id;
   if (!smaregiContractId) {
-    throw new functions.https.HttpsError("invalid-argument", "This data does not exist.");
+    throw new HttpsError("invalid-argument", "This data does not exist.");
   }
 
   const config = {
     contractId: smaregiContractId,
     clientId: client_id,
-    clientSecret: clientSecret,
+    clientSecret: clientSecret.value(),
     hostName: apiHost,
     authHostName: authHost,
     scopes: ["pos.stock:read", "pos.stock:write", "pos.stores:read", "pos.stores:write", "pos.customers:read", "pos.customers:write", "pos.products:read", "pos.products:write"],
@@ -102,29 +102,28 @@ export const storeList = async (db: admin.firestore.Firestore, data: smaregiStor
   return { res: storeListData };
 };
 
-export const productList = async (db: admin.firestore.Firestore, data: smaregiProductListData, context: functions.https.CallableContext) => {
+export const productList = async (db: admin.firestore.Firestore, data: smaregiProductListData, context: CallableRequest) => {
   const { store_id } = data;
   if (!validateFirebaseId(store_id)) {
-    throw new functions.https.HttpsError("invalid-argument", "invalid args.");
+    throw new HttpsError("invalid-argument", "invalid args.");
   }
 
-  const adminUid = utils.validate_admin_auth(context);
-  const clientSecret = clientSecrets[client_id];
+  const adminUid = validate_admin_auth(context);
 
   const smaregiDoc = await db.doc(`admins/${adminUid}/private/smaregi`).get();
   if (!smaregiDoc || !smaregiDoc.exists) {
-    throw new functions.https.HttpsError("invalid-argument", "This data does not exist.");
+    throw new HttpsError("invalid-argument", "This data does not exist.");
   }
   const smaregiData = smaregiDoc.data();
   const smaregiContractId = smaregiData?.smaregi?.contract?.id;
   if (!smaregiContractId) {
-    throw new functions.https.HttpsError("invalid-argument", "This data does not exist.");
+    throw new HttpsError("invalid-argument", "This data does not exist.");
   }
 
   const config = {
     contractId: smaregiContractId,
     clientId: client_id,
-    clientSecret: clientSecret,
+    clientSecret: clientSecret.value(),
     hostName: apiHost,
     authHostName: authHost,
     scopes: ["pos.stock:read", "pos.stock:write", "pos.stores:read", "pos.stores:write", "pos.customers:read", "pos.customers:write", "pos.products:read", "pos.products:write"],

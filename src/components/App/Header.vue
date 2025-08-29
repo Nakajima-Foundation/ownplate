@@ -5,7 +5,7 @@
         @click="handleOpen()"
         class="inline-flex h-12 w-12 items-center justify-center"
       >
-        <i class="material-icons text-2xl text-black opacity-50 cursor-pointer"
+        <i class="material-icons cursor-pointer text-2xl text-black opacity-50"
           >menu</i
         >
       </a>

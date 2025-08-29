@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="mt-4 text-center text-xl font-bold text-black text-opacity-40">
+    <div class="mt-4 text-center text-xl font-bold text-black/40">
       {{ $t("line.authenticating") }}
     </div>
-    <o-loading :is-full-page="false" :active="isValidating"></o-loading>
+    <Loading v-if="isValidating" />
   </div>
 </template>
 
@@ -16,13 +16,19 @@ import { lineValidate } from "@/lib/firebase/functions";
 
 import { useUserData } from "@/utils/utils";
 import { useRoute, useRouter } from "vue-router";
-import { useStore } from "vuex";
+import { useUserStore } from "@/store/user";
+import { useDialogStore } from "@/store/dialog";
+import Loading from "@/components/Loading.vue";
 
 export default defineComponent({
+  components: {
+    Loading,
+  },
   setup() {
     const router = useRouter();
     const route = useRoute();
-    const store = useStore();
+    const dialogStore = useDialogStore();
+    const userStore = useUserStore();
 
     const code = route.query.code as string;
     const restaurantId = route.params.restaurantId as string | undefined;
@@ -52,7 +58,7 @@ export default defineComponent({
             user.value
               .getIdTokenResult(true)
               .then((result: { claims: string }) => {
-                store.commit("setCustomClaims", result.claims);
+                userStore.setCustomClaims(result.claims);
                 console.log("isLineuser", isLineUser.value);
                 if (isLineUser.value) {
                   // End-user case
@@ -74,7 +80,7 @@ export default defineComponent({
           }
         } catch (error: any) {
           console.error(error.message, error.details);
-          store.commit("setErrorMessage", {
+          dialogStore.setErrorMessage({
             code: "line.validation",
             message2: "errorPage.message.line",
             error,

@@ -1,6 +1,6 @@
 <template>
-  <section class="mx-auto max-w-full px-6 pb-12 pt-4">
-    <div v-if="$store.getters.isSuperAdmin || $store.getters.isOperator">
+  <section class="mx-auto max-w-full px-6 pt-4 pb-12">
+    <div v-if="userStore.isSuperAdmin || userStore.isOperator">
       <h2>Operator Page</h2>
       <router-link to="/op/orders">All Orders</router-link>
       <br />
@@ -13,23 +13,23 @@
 <script lang="ts">
 import { defineComponent, onMounted, watch } from "vue";
 
-import { useStore } from "vuex";
+import { useUserStore } from "@/store/user";
 import { useRouter } from "vue-router";
 import { useIsNotSuperAdmin, defaultTitle } from "@/utils/utils";
 import { useHead } from "@unhead/vue";
 
 export default defineComponent({
   setup() {
-    const store = useStore();
+    const userStore = useUserStore();
     const router = useRouter();
     const { isNotSuperAdmin, isNotOperator } = useIsNotSuperAdmin();
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "operator index"].join(" / "),
-    });
+    }));
 
     onMounted(() => {
-      if (!store.state.user || (isNotSuperAdmin.value && isNotOperator.value)) {
+      if (!userStore.user || (isNotSuperAdmin.value && isNotOperator.value)) {
         router.push("/");
       }
     });
@@ -43,7 +43,9 @@ export default defineComponent({
         router.push("/");
       }
     });
-    return {};
+    return {
+      userStore,
+    };
   },
 });
 </script>
