@@ -5,12 +5,12 @@
       <span class="text-red-700">*</span>
     </div>
     <select
-      :modelValue="modelValue"
+      :value="modelValue"
       placeholder="select"
-      @update:modelValue="input"
+      @change="input"
       class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400"
     >
-      <option v-for="stateItem in states" :key="stateItem">
+      <option v-for="stateItem in states" :key="stateItem" :value="stateItem">
         {{ stateItem }}
       </option>
     </select>
@@ -32,8 +32,8 @@ export default defineComponent({
   },
   emits: ["update:modelValue"],
   setup(props, context) {
-    const input = (value: string) => {
-      context.emit("update:modelValue", value);
+    const input = (value: any) => {
+      context.emit("update:modelValue", value.target.value);
     };
 
     const states = regionalSetting.AddressStates;
