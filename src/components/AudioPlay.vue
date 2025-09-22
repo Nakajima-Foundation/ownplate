@@ -18,9 +18,7 @@ export default defineComponent({
     });
 
     const enableSound = async () => {
-      // console.log("enableSound");
       if (!playedSilent.value) {
-        // console.log("silent play");
         try {
           audioRef.value.setAttribute("src", "/silence.mp3");
           audioRef.value.currentTime = 0;

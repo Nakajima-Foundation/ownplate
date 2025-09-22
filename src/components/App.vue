@@ -124,7 +124,7 @@ export default defineComponent({
     const audioPlay = ref();
     const enableSound = () => {
       if (audioPlay.value?.enableSound) {
-        audioPlay.value.enableSound();
+        audioPlay.value?.enableSound();
       }
     };
     const sideMenu = ref();
