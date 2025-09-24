@@ -24,12 +24,12 @@
     "d_tests": "NODE_ENV=test tsx ./node_modules/mocha/bin/mocha --recursive tests/dl_test.ts"
   },
   "engines": {
-    "node": "20"
+    "node": "22"
   },
   "main": "lib/index.js",
   "dependencies": {
-    "@aws-sdk/client-sns": "^3.894.0",
-    "@sentry/node": "^10.13.0",
+    "@aws-sdk/client-sns": "^3.895.0",
+    "@sentry/node": "^10.14.0",
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "firebase-admin": "^13.5.0",
