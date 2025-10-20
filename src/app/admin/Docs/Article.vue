@@ -78,38 +78,38 @@ export default defineComponent({
 <style lang="css" scoped>
 @reference "../../../assets/css/main.css";
 
-::v-deep(h1) {
+:deep(h1) {
   @apply my-4 text-xl font-bold text-black/60;
 }
-::v-deep(h2) {
+:deep(h2) {
   @apply my-4 text-base font-bold text-black/60;
 }
-::v-deep(h3) {
+:deep(h3) {
   @apply my-4 text-base font-bold text-black/60;
 }
-::v-deep(h4) {
+:deep(h4) {
   @apply my-4 text-base font-bold text-black/60;
 }
-::v-deep(p) {
+:deep(p) {
   @apply my-2 text-sm text-black/60;
 }
-::v-deep(a) {
+:deep(a) {
   @apply underline;
 }
-::v-deep(img) {
+:deep(img) {
   @apply my-4;
 }
-::v-deep(ul) {
+:deep(ul) {
   @apply my-1 list-disc text-sm text-black/60;
 }
-::v-deep(ol) {
+:deep(ol) {
   @apply my-2 text-sm text-black/60;
 }
-::v-deep(ul) > li {
+:deep(ul > li) {
   @apply mx-4;
 }
 
-::v-deep(table) {
+:deep(table) {
   @apply my-2 text-base font-bold text-black/60;
 }
 </style>

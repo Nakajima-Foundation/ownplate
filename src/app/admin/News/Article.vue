@@ -79,20 +79,20 @@ export default defineComponent({
 </script>
 
 <style lang="css" scoped>
-::v-deep(.article-list) ul {
+:deep(.article-list ul) {
   list-style: none;
   margin-top: 8px;
   margin-bottom: 12px;
 }
 
-::v-deep(.article-list) > ul > li ul li {
+:deep(.article-list > ul > li ul li) {
   list-style: outside;
   margin-left: 36px;
   margin-bottom: 4px;
   font-weight: normal;
   color: #333333;
 }
-::v-deep(a) {
+:deep(a) {
   @apply underline;
 }
 </style>
