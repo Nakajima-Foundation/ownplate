@@ -32,6 +32,8 @@ jobs:
     - run: cp ../src/config/default/ownplate-dev.ts ./src/common/project.ts
     - run: SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm_config_arch=x64 npm_config_platform=linux yarn install
     - run: yarn run ci_test
+    - run: yarn run lint
+    - run: yarn run build
 
 
   build-vue:
