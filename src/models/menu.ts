@@ -33,7 +33,7 @@ export interface MenuData {
   images: MenuImages;
   price: number;
 
-  tax: string;
+  tax: number;
 
   uid: string;
   deletedFlag: boolean;
