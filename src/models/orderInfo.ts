@@ -82,7 +82,6 @@ export interface OrderInfoData {
 
   lunchOrDinner?: string;
 
-  groupId?: string; // mo
   cancelReason?: string; // mo
 }
 

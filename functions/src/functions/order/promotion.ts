@@ -86,7 +86,6 @@ export const userPromotionHistoryData = (
   return {
     uid: customerUid,
     restaurantId: restaurantData.restaurantId,
-    groupId: "",
     promotionId: promotionData.promotionId,
     orderId,
     totalCharge,

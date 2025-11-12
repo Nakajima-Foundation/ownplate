@@ -16,7 +16,6 @@
         <td>印刷</td>
         <td>EC</td>
         <td>P</td>
-        <td>G</td>
         <td>L</td>
       </tr>
       <tr v-for="restaurant in restaurants" :key="restaurant.id">
@@ -65,9 +64,6 @@
         </td>
         <td>
           {{ !!restaurant.isEC ? "o" : "-" }}
-        </td>
-        <td>
-          {{ restaurant.groupId }}
         </td>
         <td>
           {{ restaurant.supportLiff }}

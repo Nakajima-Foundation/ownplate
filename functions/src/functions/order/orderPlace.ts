@@ -140,7 +140,7 @@ export const place = async (db, data: orderPlacedData, context: CallableRequest)
     const postage = restaurantData.isEC ? await utils.get_restaurant_postage(db, restaurantId) : {};
 
     // check tip
-    if ((restaurantData.groupId || restaurantData.isEC) && roundedTip > 0) {
+    if (restaurantData.isEC && roundedTip > 0) {
       throw new HttpsError("invalid-argument", "Validation Error.");
     }
     // check time

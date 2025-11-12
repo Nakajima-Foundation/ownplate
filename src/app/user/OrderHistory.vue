@@ -128,10 +128,6 @@ export default defineComponent({
               }
               return order as OrderInfoData;
             })
-            .filter((data) => {
-              // filter mo order for safe // todo remove
-              return data.groupId === undefined;
-            });
           loading.value = false;
         });
       }
