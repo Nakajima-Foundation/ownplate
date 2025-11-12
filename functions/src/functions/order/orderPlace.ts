@@ -6,7 +6,7 @@ import moment from "moment-timezone";
 import { order_status } from "../../common/constant";
 import * as utils from "../../lib/utils";
 import { notifyNewOrderToRestaurant } from "../notify2";
-import { costCal } from "../../common/commonUtils";
+import { costCal } from "../../utils/commonUtils";
 
 import { getStripeAccount, getHash, getCustomerStripeInfo2, saveCustomerStripeInfo2 } from "../stripe/intent";
 import { orderPlacedData } from "../../lib/types";
