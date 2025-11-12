@@ -30,18 +30,14 @@ import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import isURL from "validator/lib/isURL";
 import isLatLong from "validator/lib/isLatLong";
 
+import { isNull, isEmpty } from "./commonUtils";
+
 import { useRoute, useRouter } from "vue-router";
 import { useGeneralStore } from "../store";
 import { useUserStore } from "@/store/user";
 import i18n from "@/lib/vue-i18n";
 
-export const isNull = <T>(value: T) => {
-  return value === null || value === undefined;
-};
-
-export const isEmpty = <T>(value: T) => {
-  return value === null || value === undefined || String(value) === "";
-};
+export { isNull, isEmpty };
 
 // from mixin
 export const useRestaurantId = () => {
