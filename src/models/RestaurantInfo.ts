@@ -4,7 +4,6 @@ export interface RestaurantInfoData {
   id: string;
 
   restaurantId: string; // mo
-  shopId: string; // mo
 
   restCoverPhoto: string;
   restProfilePhoto: string;
