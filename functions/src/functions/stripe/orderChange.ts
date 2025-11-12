@@ -6,7 +6,7 @@ import { order_status } from "../../common/constant";
 import * as utils from "../../lib/utils";
 import { orderAccounting, createNewOrderData } from "../order/orderCreated";
 import { sendMessageToCustomer } from "../notify2";
-import { costCal } from "../../common/commonUtils";
+import { costCal } from "../../utils/commonUtils";
 import { getStripeAccount, getStripeOrderRecord, getPaymentMethodData, getHash } from "./intent";
 
 import { orderChangeData, newOrderData } from "../../lib/types";

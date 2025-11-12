@@ -9,7 +9,7 @@
       "cp dist/index.html functions/templates/index.html",
       "cp src/config/constant.ts functions/src/common/constant.ts",
       "cp src/utils/phoneutil.ts functions/src/common/phoneutil.ts",
-      "cp src/utils/commonUtils.ts functions/src/common/commonUtils.ts",
+      "cp src/utils/commonUtils.ts functions/src/utils/commonUtils.ts",
       "cp src/models/RestaurantInfo.ts functions/src/models/RestaurantInfo.ts",
       "cp src/config/project.ts functions/src/common/project.ts",
       "npm --prefix \"$RESOURCE_DIR\" run lint",
