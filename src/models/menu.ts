@@ -1,4 +1,4 @@
-import { serverTimestamp, FieldValue } from "firebase/firestore";
+import { FieldValue } from "./firebaseUtils";
 import { isNull } from "../utils/commonUtils";
 
 export interface MenuImages {
@@ -105,17 +105,6 @@ export const getNewItemData = (
     exceptHour: newExceptHour(item.exceptHour || {}),
   } as MenuData;
   return itemData;
-};
-
-export const copyMenuData = (item: MenuData, isJP: boolean, uid: string) => {
-  const base = getNewItemData(item, isJP, item.validatedFlag);
-  const data = Object.assign({}, base, {
-    uid,
-    publicFlag: false,
-    deletedFlag: false,
-    createdAt: serverTimestamp(),
-  });
-  return data;
 };
 
 export const isAvailableLunchOrDinner = (item: MenuData | TitleData) => {
