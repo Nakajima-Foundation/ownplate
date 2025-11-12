@@ -64,12 +64,12 @@ export interface menuItem {
   itemAliasesName: string;
   category1: string;
   category2: string;
-  category: string;
-  subCategory: string;
+  // category: string;
+  // subCategory: string;
   exceptDay: object;
   exceptHour: object;
-  productId: string;
-  tax: number;
+  // productId: string;
+  tax: number; // TODO
 }
 
 export interface confirmIntentData {
