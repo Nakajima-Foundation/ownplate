@@ -69,7 +69,7 @@ export interface menuItem {
   exceptDay: object;
   exceptHour: object;
   // productId: string;
-  // tax: number;
+  tax: number; // TODO
 }
 
 export interface confirmIntentData {
