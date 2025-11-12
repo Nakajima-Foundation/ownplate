@@ -56,22 +56,6 @@ export interface updateDataOnorderUpdate {
   };
 }
 
-export interface menuItem {
-  price: number;
-  itemName: string;
-  itemPhoto: string;
-  images: object;
-  itemAliasesName: string;
-  category1: string;
-  category2: string;
-  // category: string;
-  // subCategory: string;
-  exceptDay: object;
-  exceptHour: object;
-  // productId: string;
-  tax: string;
-}
-
 export interface confirmIntentData {
   restaurantId: string;
   orderId: string;
