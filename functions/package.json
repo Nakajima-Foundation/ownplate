@@ -52,8 +52,6 @@
     "@firebase/rules-unit-testing": "^5.0.0",
     "@types/chai": "^5.2.2",
     "@types/mocha": "^10.0.10",
-    "@typescript-eslint/eslint-plugin": "^8.46.3",
-    "@typescript-eslint/parser": "^8.46.3",
     "chai": "^5.3.1",
     "chai-string": "^1.6.0",
     "eslint": "^9.39.1",
@@ -64,7 +62,8 @@
     "supertest": "^7.1.4",
     "ts-node": "^10.9.2",
     "tsx": "^4.20.6",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.4"
   },
   "private": true
 }
