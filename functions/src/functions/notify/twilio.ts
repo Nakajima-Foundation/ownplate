@@ -4,12 +4,13 @@ import { defineSecret } from "firebase-functions/params";
 import { twiml_neworder } from "../../common/constant";
 import { parsePhoneNumber, formatNational, internationalFormat } from "../../common/phoneutil";
 import { enableNotification } from "../notificationConfig";
+import { RestaurantData } from "../../lib/types";
 
 const twilio_sid = defineSecret("TWILIO_SID");
 const twilio_token = defineSecret("TWILIO_TOKEN");
 const twilio_phone_from = defineSecret("TWILIO_PHONE");
 
-export const parsedNumber = (restaurant) => {
+export const parsedNumber = (restaurant: RestaurantData) => {
   const countryCode = restaurant.countryCode;
   try {
     return parsePhoneNumber(countryCode + restaurant.phoneNumber);
@@ -18,7 +19,7 @@ export const parsedNumber = (restaurant) => {
   }
 };
 
-export const internationalPhoneNumber = (restaurant) => {
+export const internationalPhoneNumber = (restaurant: RestaurantData) => {
   const phoneNumber = parsedNumber(restaurant);
   if (phoneNumber) {
     return internationalFormat(phoneNumber);
@@ -26,7 +27,7 @@ export const internationalPhoneNumber = (restaurant) => {
   return restaurant.phoneNumber;
 };
 
-export const nationalPhoneNumber = (restaurant) => {
+export const nationalPhoneNumber = (restaurant: RestaurantData) => {
   const phoneNumber = parsedNumber(restaurant);
   if (phoneNumber) {
     return formatNational(phoneNumber);
@@ -34,7 +35,7 @@ export const nationalPhoneNumber = (restaurant) => {
   return restaurant.phoneNumber;
 };
 
-export const phoneCall = async (restaurant) => {
+export const phoneCall = async (restaurant: RestaurantData) => {
   if (!enableNotification) {
     return;
   }
