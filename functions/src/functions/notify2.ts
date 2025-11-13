@@ -8,6 +8,7 @@ import i18next from "i18next";
 import { resources } from "./resources";
 import * as utils from "../lib/utils";
 import { MenuItem } from "../models/menu";
+import { RestaurantInfoData } from "../models/RestaurantInfo";
 
 import { ownPlateConfig } from "../common/project";
 import { getLineId, getLiffPrivateConfig } from "./line/line";
@@ -168,7 +169,7 @@ const notifyRestaurantToLineUser = async (url: string, message: string, lineUser
 export const notifyRestaurant = async (db: admin.firestore.Firestore, messageId: string, restaurantId: string, order: admin.firestore.DocumentData, restaurantName: string) => {
   const lng = utils.stripeRegion.langs[0];
   const datestr = moment().format("YYYY-MM-DD");
-  const restaurant = (await db.doc(`/restaurants/${restaurantId}`).get()).data();
+  const restaurant = (await db.doc(`/restaurants/${restaurantId}`).get()).data() as RestaurantInfoData;
   if (!restaurant) {
     // paranoia
     return;
@@ -215,7 +216,7 @@ export const notifyRestaurant = async (db: admin.firestore.Firestore, messageId:
   // phone notify.
   if (messageId === "msg_order_placed") {
     if (restaurant.phoneCall) {
-      await twilio.phoneCall(restaurant as any);
+      await twilio.phoneCall(restaurant);
       await db.doc(`/restaurants/${restaurantId}/log/${datestr}/phoneLog/${orderId}`).set({
         restaurantId,
         date: datestr,

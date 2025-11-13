@@ -23,7 +23,7 @@ export const getCustomerStripeInfo2 = async (db: admin.firestore.Firestore, cust
   return stripeInfo;
 };
 
-export const saveCustomerStripeInfo2 = async (db: admin.firestore.Firestore, customerUid: string, restaurantOwnerUid: string, data: Record<string, any>) => {
+export const saveCustomerStripeInfo2 = async (db: admin.firestore.Firestore, customerUid: string, restaurantOwnerUid: string, data: Record<string, string>) => {
   const refStripe = db.doc(`/users/${customerUid}/owner/${restaurantOwnerUid}/system/stripe`);
   console.log(data);
   await refStripe.set(data, { merge: true });
