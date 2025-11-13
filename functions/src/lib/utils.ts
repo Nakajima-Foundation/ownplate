@@ -86,7 +86,7 @@ export const get_stripe_v2 = () => {
   return new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2025-07-30.basil" });
 };
 
-export const required_params = (params) => {
+export const required_params = (params: Record<string, any>) => {
   const errors = Object.keys(params).filter((key) => {
     return params[key] === undefined;
   });
@@ -164,7 +164,7 @@ export const process_error = (error: any) => {
 // const regex = /\((\+|\-)[0-9\.]+\)/
 const regex = /\(((\+|-|＋|ー|−)[0-9.]+)\)/;
 
-const convPrice = (priceStr) => {
+const convPrice = (priceStr: string) => {
   return Number(priceStr.replace(/ー|−/g, "-").replace(/＋/g, "+"));
 };
 
@@ -186,13 +186,13 @@ const chunk = (arr: string[], chunkSize: number) => {
   return ret;
 };
 
-export const getMenuObj = async (refRestaurant, menuIds) => {
-  const menuObj = {};
+export const getMenuObj = async (refRestaurant: admin.firestore.DocumentReference, menuIds: string[]) => {
+  const menuObj: Record<string, admin.firestore.DocumentData> = {};
   if (process.env.NODE_ENV !== "test") {
     await Promise.all(
       chunk(menuIds, 10).map(async (menuIdsChunk) => {
         const menusCollections = await refRestaurant.collection("menus").where(admin.firestore.FieldPath.documentId(), "in", menuIdsChunk).get();
-        menusCollections.forEach((m) => {
+        menusCollections.forEach((m: admin.firestore.QueryDocumentSnapshot) => {
           const data = m.data();
           if (data.publicFlag && !data.deletedFlag) {
             menuObj[m.id] = data;
@@ -205,9 +205,12 @@ export const getMenuObj = async (refRestaurant, menuIds) => {
   } else {
     // for test
     await Promise.all(
-      menuIds.map(async (id) => {
+      menuIds.map(async (id: string) => {
         const m = await refRestaurant.collection("menus").doc(id).get();
-        menuObj[m.id] = m.data();
+        const data = m.data();
+        if (data) {
+          menuObj[m.id] = data;
+        }
       }),
     );
     return menuObj;

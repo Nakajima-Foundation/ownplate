@@ -8,7 +8,7 @@ class SmaregiApi {
   clientId: string;
   clientSecret: string;
 
-  constructor(config) {
+  constructor(config: { scopes: string[]; contractId: string; clientId: string; clientSecret: string; hostName?: string; authHostName?: string }) {
     this.stacks = [];
     this.scopes = config.scopes;
     this.access_token = "";
@@ -18,11 +18,11 @@ class SmaregiApi {
     apiUtils.updateHost(config.hostName || "api.smaregi.dev");
     apiUtils.updateAuthHost(config.authHostName || "id.smaregi.dev");
   }
-  initApi(name) {
+  initApi(name: string) {
     this.stacks = [name];
     return this;
   }
-  stackParam(params) {
+  stackParam(params: string[]) {
     this.stacks = this.stacks.concat(params);
   }
 
@@ -48,7 +48,7 @@ class SmaregiApi {
     return this;
   }
   // coupons
-  id(value) {
+  id(value: string) {
     this.stackParam([value]);
     return this;
   }
@@ -56,7 +56,7 @@ class SmaregiApi {
     this.stackParam(["products"]);
     return this;
   }
-  type(value) {
+  type(value: string) {
     this.stackParam(["type", value]);
     return this;
   }
@@ -69,17 +69,17 @@ class SmaregiApi {
     const json = await apiUtils.get_func(this.contractId, path, this.access_token, params);
     return json;
   }
-  async create(data) {
+  async create(data: Record<string, any>) {
     const path = this.stacks.join("/");
     const json = await apiUtils.post_func(this.contractId, path, this.access_token, data);
     return json;
   }
-  async update(data) {
+  async update(data: Record<string, any>) {
     const path = this.stacks.join("/");
     const json = await apiUtils.patch_func(this.contractId, path, this.access_token, data);
     return json;
   }
-  async delete(data = {}) {
+  async delete(data: Record<string, any> = {}) {
     const path = this.stacks.join("/");
     const json = await apiUtils.delete_func(this.contractId, path, this.access_token, data);
     return json;
