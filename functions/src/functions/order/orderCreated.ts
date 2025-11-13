@@ -1,26 +1,24 @@
 import * as admin from "firebase-admin";
-import * as functions from "firebase-functions";
+import * as functions from "firebase-functions/v1";
 import * as utils from "../../lib/utils";
 import { order_status } from "../../common/constant";
 import { createCustomer } from "../stripe/customer";
 
-import { orderCreatedData, MenuItem, OrderData, RestaurantInfoData } from "../../lib/types";
+import { orderCreatedData, MenuItem, OrderData, RestaurantInfoData, OptionValue } from "../../lib/types";
 import { MenuData } from "../../models/menu";
 import { validateOrderCreated } from "../../lib/validator";
+import { Context } from "../../models/TestType";
 
-interface SelectedOption {
-  [key: string]: any;
-}
-
-const getOptionPrice = (selectedOptionsRaw: SelectedOption[], menu: MenuData, multiple: number) => {
-  return selectedOptionsRaw.reduce((tmpPrice: number, selectedOpt: any, key: number) => {
+const getOptionPrice = (selectedOptionsRaw: OptionValue[], menu: MenuData, multiple: number) => {
+  return selectedOptionsRaw.reduce((tmpPrice: number, selectedOpt: OptionValue, key: number) => {
     const opt = menu.itemOptionCheckbox[key].split(",");
     if (opt.length === 1) {
       if (selectedOpt) {
         return tmpPrice + Math.round(utils.optionPrice(opt[0]) * multiple) / multiple;
       }
     } else {
-      return tmpPrice + Math.round(utils.optionPrice(opt[selectedOpt]) * multiple) / multiple;
+      const optIndex = typeof selectedOpt === "number" ? selectedOpt : Number(selectedOpt);
+      return tmpPrice + Math.round(utils.optionPrice(opt[optIndex]) * multiple) / multiple;
     }
     return tmpPrice;
   }, 0);
@@ -74,7 +72,7 @@ export const orderAccounting = (restaurantData: RestaurantInfoData, food_sub_tot
 export const createNewOrderData = async (
   restaurantRef: admin.firestore.DocumentReference,
   orderRef: admin.firestore.DocumentReference,
-  orderData: Partial<OrderData> & { order: { [menuId: string]: number | number[] }; rawOptions?: { [menuId: string]: any[][] } },
+  orderData: Partial<OrderData> & { order: { [menuId: string]: number | number[] }; rawOptions?: { [menuId: string]: OptionValue[][] } },
   multiple: number,
 ): Promise<
   | { result: true, data: { newOrderData: { [menuId: string]: number[] }; newItems: { [menuId: string]: MenuItem }; newPrices: { [menuId: string]: number[] }; food_sub_total: number; alcohol_sub_total: number }}
@@ -124,7 +122,7 @@ export const createNewOrderData = async (
       if (num === 0) {
         return;
       }
-      const rawOptions = orderData.rawOptions && orderData.rawOptions[menuId] && orderData.rawOptions[menuId][orderKey];
+      const rawOptions = orderData.rawOptions?.[menuId]?.[orderKey];
       const price = menu.price + (rawOptions ? getOptionPrice(rawOptions, menu, multiple) : 0);
       newOrder.push(num);
       prices.push(price * num);
@@ -165,7 +163,7 @@ export const createNewOrderData = async (
   };
 };
 
-export const orderCreated = async (db: admin.firestore.Firestore, data: orderCreatedData, context: any) => {
+export const orderCreated = async (db: admin.firestore.Firestore, data: orderCreatedData, context: functions.https.CallableContext | Context) => {
   const customerUid = utils.validate_customer_auth(context);
 
   const { restaurantId, orderId } = data;

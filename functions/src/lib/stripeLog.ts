@@ -49,7 +49,7 @@ export const capability_updated = async (db: admin.firestore.Firestore, event: S
     try {
       // Check if JCB payments are really active (paranoia)
       const accountInfo = await stripe.accounts.retrieve(account);
-      const capabilities: any = accountInfo.capabilities;
+      const capabilities = accountInfo.capabilities as Record<string, string> | undefined;
       if (capabilities && capabilities.jcb_payments === "active") {
         await Promise.all(
           uids.map(async (uid: string) => {

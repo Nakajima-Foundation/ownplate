@@ -5,7 +5,7 @@ import * as utils from "../../lib/utils";
 import * as netutils from "../../lib/netutils";
 import * as crypto from "crypto";
 
-import { liffAuthenticateData } from "../../lib/types";
+import { liffAuthenticateData, LineVerifyResponse } from "../../lib/types";
 import { validateLiffAuthenticate } from "../../lib/validator";
 
 const LIFF_SALT = defineSecret("LIFF_SALT");
@@ -33,7 +33,7 @@ export const liffAuthenticate = async (db: admin.firestore.Firestore, data: liff
     const liffConfig = await getLiffConfig(db, liffIndexId);
 
     // We verify this code.
-    const verified = await netutils.postForm("https://api.line.me/oauth2/v2.1/verify", {
+    const verified = await netutils.postForm<LineVerifyResponse>("https://api.line.me/oauth2/v2.1/verify", {
       id_token: token,
       client_id: liffConfig.clientId,
     });

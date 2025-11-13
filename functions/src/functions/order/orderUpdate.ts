@@ -7,7 +7,7 @@ import { order_status, next_transitions, order_status_keys, timeEventMapping } f
 import { sendMessageToCustomer } from "../notify2";
 
 import { getStripeAccount, getStripeOrderRecord, getHash } from "../stripe/intent";
-import { orderUpdateData, updateDataOnorderUpdate, OrderData, RestaurantInfoData, StripeCustomerInfo } from "../../lib/types";
+import { orderUpdateData, updateDataOnorderUpdate, OrderData, RestaurantInfoData, StripeCustomerInfo, StripePaymentIntentWithCharge } from "../../lib/types";
 import { validateOrderUpdate } from "../../lib/validator";
 
 const getMgsKey = (status: number, isEC: boolean, timeEstimated?: admin.firestore.Timestamp) => {
@@ -131,9 +131,13 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
         updateData.timePickupForQuery = updateData.timeEstimated;
         order.timeEstimated = updateData.timeEstimated;
       }
-      await transaction.update(orderRef, updateData as { [x: string]: any });
+      await transaction.update(orderRef, updateData as any);
       if (isStripeProcess) {
-        const { payment_method, payment_method_details } = (paymentIntent as any).latest_charge;
+        const typedPaymentIntent = paymentIntent as StripePaymentIntentWithCharge;
+        if (!typedPaymentIntent.latest_charge) {
+          throw new HttpsError("internal", "Payment intent missing latest_charge");
+        }
+        const { payment_method, payment_method_details } = typedPaymentIntent.latest_charge;
 
         await transaction.set(stripeRef, { paymentIntent }, { merge: true });
         // customer
@@ -178,9 +182,9 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
     }
     return { result: true };
   } catch (error) {
-    const err = error as any;
+    const err = error as { type?: string; [key: string]: unknown } & Error;
     if (err.type && err.type === "StripeCardError") {
-      utils.log_error(err);
+      utils.log_error(err as Error);
       return {
         result: false,
         type: err.type,

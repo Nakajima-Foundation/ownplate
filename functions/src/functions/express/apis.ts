@@ -6,6 +6,7 @@ import * as admin from "firebase-admin";
 
 import { nameOfOrder, timezone } from "../../lib/utils";
 import { MenuItem } from "../../models/menu";
+import { RequestWithRestaurant } from "../../lib/types";
 
 import { validateFirebaseId } from "../../lib/validator";
 import { order_status } from "../../common/constant";
@@ -135,7 +136,7 @@ const common = async (req: express.Request, res: express.Response, next: express
   }
 
   // todo auth
-  (req as any).restaurant = restaurant_data;
+  (req as RequestWithRestaurant).restaurant = restaurant_data as any;
   next();
 };
 
@@ -180,8 +181,12 @@ const requestStar = async (req: express.Request, res: express.Response) => {
 
   if (token) {
     const doc = await db.doc(`restaurants/${restaurantId}/orders/` + token).get();
+    const restaurant = (req as RequestWithRestaurant).restaurant;
+    if (!restaurant) {
+      return res.status(400).json({ error: "Restaurant not found" });
+    }
 
-    const svg = getSVG((req as any).restaurant, doc.data()!);
+    const svg = getSVG(restaurant, doc.data()!);
     // const png = await convert(svg, {background: "white"});
     const png = await sharp(Buffer.from(svg))
       .flatten({ background: { r: 255, g: 255, b: 255 } })

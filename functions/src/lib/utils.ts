@@ -221,15 +221,16 @@ export const nameOfOrder = (orderNumber: number) => {
   return "#" + `00${orderNumber}`.slice(-3);
 };
 
-export const filterData = (data: { [key: string]: any }) => {
-  return Object.keys(data).reduce((tmp: { [key: string]: any }, key) => {
-    if (data[key] !== null && data[key] !== undefined) {
-      tmp[key] = data[key];
+export const filterData = <T extends Record<string, unknown>>(data: T): Partial<T> => {
+  return Object.keys(data).reduce((tmp: Partial<T>, key) => {
+    const value = data[key];
+    if (value !== null && value !== undefined) {
+      tmp[key as keyof T] = value as T[keyof T];
     }
     return tmp;
-  }, {});
+  }, {} as Partial<T>);
 };
 
-export const isEmpty = (value: any) => {
+export const isEmpty = (value: unknown): value is null | undefined | "" => {
   return value === null || value === undefined || value === "";
 };
