@@ -12,12 +12,20 @@ import { getStripeAccount, getStripeOrderRecord, getPaymentMethodData, getHash }
 import { orderChangeData, newOrderData } from "../../lib/types";
 import { validateOrderChange } from "../../lib/validator";
 
+type OrderQuantityMap = Record<string, number[]>;
+type OrderOptionsMap = Record<string, Record<number, unknown>>;
+
 const multiple = utils.stripeRegion.multiple; // 100 for USD, 1 for JPY
 
-const getUpdateOrder = (newOrders: newOrderData[], order, options, rawOptions) => {
-  const updateOrderData = {};
-  const updateOptions = {};
-  const updateRawOptions = {};
+const getUpdateOrder = (
+  newOrders: newOrderData[],
+  order: OrderQuantityMap,
+  options: OrderOptionsMap,
+  rawOptions: OrderOptionsMap,
+) => {
+  const updateOrderData: OrderQuantityMap = {};
+  const updateOptions: OrderOptionsMap = {};
+  const updateRawOptions: OrderOptionsMap = {};
 
   newOrders.forEach((data) => {
     const { menuId, index } = data;
@@ -69,7 +77,8 @@ export const orderChange = async (db: admin.firestore.Firestore, data: orderChan
 
   try {
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
-    const order = (await orderRef.get()).data();
+    const orderSnapshot = await orderRef.get();
+    const order = orderSnapshot.data();
     if (!order) {
       throw new HttpsError("invalid-argument", "This order does not exist.");
     }
@@ -80,7 +89,13 @@ export const orderChange = async (db: admin.firestore.Firestore, data: orderChan
 
     // generate new order
     order.id = orderId;
-    const { updateOrderData, updateOptions, updateRawOptions } = getUpdateOrder(newOrder, order.order, order.options, order.rawOptions);
+    const orderDetails = order as unknown as {
+      order: OrderQuantityMap;
+      options: OrderOptionsMap;
+      rawOptions: OrderOptionsMap;
+    };
+
+    const { updateOrderData, updateOptions, updateRawOptions } = getUpdateOrder(newOrder, orderDetails.order, orderDetails.options, orderDetails.rawOptions);
 
     // update price
     const baseData = {
