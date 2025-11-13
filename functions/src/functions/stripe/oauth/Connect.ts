@@ -44,6 +44,6 @@ export const connect = async (db: admin.firestore.Firestore, data: { code: strin
     await batch.commit();
     return { result: true };
   } catch (error) {
-    throw utils.process_error(error);
+    throw utils.process_error(error as Error);
   }
 };

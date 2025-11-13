@@ -69,6 +69,6 @@ export const liffAuthenticate = async (db: admin.firestore.Firestore, data: liff
 
     return { nonce: verified.nonce, customToken };
   } catch (error) {
-    throw utils.process_error(error);
+    throw utils.process_error(error as Error);
   }
 };

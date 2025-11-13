@@ -21,11 +21,11 @@ if (!admin.apps.length) {
 
 let db = admin.firestore();
 
-export const updateDb = (_db) => {
+export const updateDb = (_db: admin.firestore.Firestore) => {
   db = _db;
 };
 
-export const response200 = (res, payload) => {
+export const response200 = (res: express.Response, payload: unknown) => {
   return res.json({
     result: true,
     payload,
@@ -54,9 +54,9 @@ export const getSVG = (restaurantData: any, orderData: any) => {
 
       try {
         if (orderData.options && orderData.options[menuId] && orderData.options[menuId][key]) {
-          const opts = orderData.options[menuId][key].filter((o) => o);
+          const opts = orderData.options[menuId][key].filter((o: unknown) => o);
           if (opts.length > 0) {
-            opts.map((opt) => {
+            opts.map((opt: string) => {
               if (opt) {
                 messages.push("~~~*" + escapePrinterString(escapeOptionPrice(opt)) + "|");
               }

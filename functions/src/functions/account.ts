@@ -8,11 +8,11 @@ export const deleteAccount = async (db: admin.firestore.Firestore, context: Call
 
   try {
     const refCollection = db.collectionGroup("orders").where("uid", "==", customerUid).orderBy("timePlaced", "desc");
-    const next = async (_query) => {
+    const next = async (_query: admin.firestore.Query<admin.firestore.DocumentData>) => {
       const docs = (await _query.limit(100).get()).docs;
       if (docs.length > 0) {
         const batch = db.batch();
-        docs.map((doc) => {
+        docs.map((doc: admin.firestore.QueryDocumentSnapshot<admin.firestore.DocumentData>) => {
           batch.update(doc.ref, {
             accountDeleted: true,
             timeAccountDeleted: admin.firestore.FieldValue.serverTimestamp(),
@@ -46,6 +46,6 @@ export const deleteAccount = async (db: admin.firestore.Firestore, context: Call
 
     return { result: customerUid, count };
   } catch (error) {
-    throw process_error(error);
+    throw process_error(error as Error);
   }
 };

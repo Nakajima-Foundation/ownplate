@@ -110,6 +110,6 @@ export const cancel = async (db: admin.firestore.Firestore, data: orderCancelDat
     }
     return { result: true };
   } catch (error) {
-    throw utils.process_error(error);
+    throw utils.process_error(error as Error);
   }
 };

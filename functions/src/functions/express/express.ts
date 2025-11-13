@@ -29,19 +29,19 @@ if (!admin.apps.length) {
 
 let db = admin.firestore();
 
-export const updateDb = (_db) => {
+export const updateDb = (_db: admin.firestore.Firestore) => {
   db = _db;
   apis.updateDb(db);
 };
 
-export const logger = async (req, res, next) => {
+export const logger = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   next();
 };
-export const hello_response = async (req, res) => {
+export const hello_response = async (req: express.Request, res: express.Response) => {
   res.json({ message: "hello" });
 };
 
-const lastmod = (restaurant) => {
+const lastmod = (restaurant: { updatedAt?: admin.firestore.Timestamp; createdAt?: admin.firestore.Timestamp }) => {
   try {
     if (restaurant.updatedAt) {
       return moment(restaurant.updatedAt.toDate()).format("YYYY-MM-DD");
@@ -55,7 +55,7 @@ const lastmod = (restaurant) => {
   return "2020-07-01";
 };
 
-export const sitemap_response = async (req, res) => {
+export const sitemap_response = async (req: express.Request, res: express.Response) => {
   try {
     const hostname = "https://" + ownPlateConfig.hostName;
 
@@ -73,7 +73,7 @@ export const sitemap_response = async (req, res) => {
     const xml = urlset.dec("1.0", "UTF-8").end({ pretty: true });
 
     res.setHeader("Content-Type", "text/xml");
-    res.send(xml);
+    return res.send(xml);
   } catch (e) {
     console.error(e);
     Sentry.captureException(e);
@@ -98,7 +98,7 @@ const escapeHtml = (str: string): string => {
   });
 };
 
-const getMenuData = async (restaurantName, menuId) => {
+const getMenuData = async (restaurantName: string, menuId: string) => {
   if (menuId) {
     const menu = await db.doc(`restaurants/${restaurantName}/menus/${menuId}`).get();
     if (menu && menu.exists) {
@@ -287,7 +287,7 @@ const ownerPage = async (req: any, res: any) => {
     res.send(template_data);
   }
 };
-const getShopOwner = async (uid) => {
+const getShopOwner = async (uid: string) => {
   const owner = await db.doc(`/admins/${uid}`).get();
   if (owner && owner.exists) {
     return owner.data();
@@ -295,7 +295,7 @@ const getShopOwner = async (uid) => {
   return { hidePrivacy: false };
 };
 
-const getOwnerData = async (uid) => {
+const getOwnerData = async (uid: string) => {
   const owner = await db.doc(`/owners/${uid}`).get();
   if (owner && owner.exists) {
     return owner.data();
@@ -303,11 +303,14 @@ const getOwnerData = async (uid) => {
   return { hidePrivacy: false };
 };
 
-export const stripe_parser = async (req, res) => {
+export const stripe_parser = async (req: express.Request & { rawBody?: Buffer }, res: express.Response) => {
   const stripe = utils.get_stripe_v2();
   const endpointSecret = utils.getStripeWebhookSecretKey();
 
   const sig = req.headers["stripe-signature"];
+  if (!sig || !req.rawBody) {
+    return res.status(400).send("Webhook Error: missing signature or body");
+  }
   try {
     const event = stripe.webhooks.constructEvent(req.rawBody.toString(), sig, endpointSecret);
 
@@ -317,24 +320,24 @@ export const stripe_parser = async (req, res) => {
     }
 
     if (event.type === "capability.updated") {
-      await stripeLog.capability_updated(db, event);
+      await stripeLog.capability_updated(db, event as unknown as { data: { object: { account: string; status: string; id: string } } });
     } else if (event.type === "account.updated") {
-      await stripeLog.account_updated(db, event);
+      await stripeLog.account_updated(db, event as unknown as { data: { object: { id: string } } });
     } else if (event.type === "account.application.authorized") {
-      await stripeLog.account_authorized(db, event);
+      await stripeLog.account_authorized(db, event as unknown as { account: string });
     } else if (event.type === "account.application.deauthorized") {
-      await stripeLog.account_deauthorized(db, event);
+      await stripeLog.account_deauthorized(db, event as unknown as { account: string });
     } else {
-      await stripeLog.unknown_log(db, event);
+      await stripeLog.unknown_log(db, event as unknown as { account?: string; id?: string });
     }
-    res.json({});
+    return res.json({});
   } catch (err) {
     Sentry.captureException(err);
-    res.status(400).send("Webhook Error");
+    return res.status(400).send("Webhook Error");
   }
 };
 
-export const alogger = async (req, res, next) => {
+export const alogger = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   const message = "access " + req.path;
   const { path, method, originalUrl, params, query, headers } = req;
 
