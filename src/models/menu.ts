@@ -40,7 +40,6 @@ export interface MenuItem {
   tax: string;
 }
 
-
 export interface MenuData extends MenuItem {
   _dataType: "menu";
   id: string;

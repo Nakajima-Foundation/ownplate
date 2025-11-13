@@ -11,4 +11,3 @@ export const copyMenuData = (item: MenuData, isJP: boolean, uid: string) => {
   });
   return data;
 };
-

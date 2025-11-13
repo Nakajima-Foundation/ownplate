@@ -115,19 +115,18 @@ export default defineComponent({
         );
 
         detacher = onSnapshot(orderQuery, (snapshot) => {
-          orders.value = snapshot.docs
-            .map((doc) => {
-              const order = doc.data();
-              order.restaurantId = doc.ref.path.split("/")[1];
-              order.id = doc.id;
-              // HACK: Remove it later
-              order.timePlaced =
-                (order.timePlaced && order.timePlaced.toDate()) || new Date();
-              if (order.timeEstimated) {
-                order.timeEstimated = order.timeEstimated.toDate();
-              }
-              return order as OrderInfoData;
-            })
+          orders.value = snapshot.docs.map((doc) => {
+            const order = doc.data();
+            order.restaurantId = doc.ref.path.split("/")[1];
+            order.id = doc.id;
+            // HACK: Remove it later
+            order.timePlaced =
+              (order.timePlaced && order.timePlaced.toDate()) || new Date();
+            if (order.timeEstimated) {
+              order.timeEstimated = order.timeEstimated.toDate();
+            }
+            return order as OrderInfoData;
+          });
           loading.value = false;
         });
       }
