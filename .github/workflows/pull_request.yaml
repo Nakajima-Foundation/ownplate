@@ -30,6 +30,7 @@ jobs:
     - run: cp ../src/utils/commonUtils.ts ./src/utils/commonUtils.ts
     - run: cp ../src/models/RestaurantInfo.ts ./src/models/RestaurantInfo.ts
     - run: cp ../src/models/menu.ts ./src/models/menu.ts
+    - run: cp ../src/models/customer.ts ./src/models/customer.ts
     - run: cp ../src/config/default/ownplate-dev.ts ./src/common/project.ts
     - run: SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm_config_arch=x64 npm_config_platform=linux yarn install
     - run: yarn run ci_test

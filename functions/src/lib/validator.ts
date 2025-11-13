@@ -3,7 +3,6 @@ import {
   orderCreatedData,
   orderUpdateData,
   orderPlacedData,
-  customerInfoData,
   confirmIntentData,
   orderCancelData,
   orderCancelPaymentData,
@@ -16,6 +15,7 @@ import {
   lineValidateData,
   liffAuthenticateData,
 } from "./types";
+import { CustomerInfo } from "../models/customer";
 import { isEmpty } from "./utils";
 import isURL from "validator/lib/isURL";
 import isNumeric from "validator/lib/isNumeric";
@@ -250,7 +250,7 @@ export const validateOrderPlaced = (data: orderPlacedData) => {
   return validateData(data, validator);
 };
 
-export const validateCustomer = (data: customerInfoData) => {
+export const validateCustomer = (data: CustomerInfo) => {
   const validator = {};
   return validateData(data, validator);
 };

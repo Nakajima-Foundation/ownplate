@@ -1,24 +1,11 @@
 import * as admin from "firebase-admin";
+import { CustomerInfo } from "../models/customer";
 
 export interface orderCreatedData {
   restaurantId: string;
   orderId: string;
 }
 
-export interface locationData {
-  lat: number;
-  lng: number;
-}
-
-export interface customerInfoData {
-  zip: string;
-  prefectureId: number;
-  prefecture: string;
-  address: string;
-  name: string;
-  email: string;
-  location?: locationData;
-}
 export interface orderPlacedData {
   restaurantId: string;
   orderId: string;
@@ -30,7 +17,7 @@ export interface orderPlacedData {
   memo: string;
   userName: string;
   payStripe: boolean;
-  customerInfo: customerInfoData;
+  customerInfo: CustomerInfo;
 }
 
 export interface orderUpdateData {
