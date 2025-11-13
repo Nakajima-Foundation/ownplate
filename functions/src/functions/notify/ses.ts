@@ -33,5 +33,6 @@ export const sendMail = async (to: string, title: string, body: string) => {
   } else {
     console.log("no aws smtp config");
     console.log(mailOptions);
+    return;
   }
 };
