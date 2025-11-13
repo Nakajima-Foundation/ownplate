@@ -51,7 +51,11 @@
   "devDependencies": {
     "@firebase/rules-unit-testing": "^5.0.0",
     "@types/chai": "^5.2.3",
+    "@types/google-libphonenumber": "^7.4.30",
     "@types/mocha": "^10.0.10",
+    "@types/node-fetch": "^2.6.13",
+    "@types/nodemailer": "^7.0.3",
+    "@types/validator": "^13.15.8",
     "chai": "^5.3.1",
     "chai-string": "^1.6.0",
     "eslint": "^9.39.1",
