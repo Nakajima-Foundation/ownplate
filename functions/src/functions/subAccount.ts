@@ -9,7 +9,7 @@ import { validateFirebaseId } from "../lib/validator";
 
 import { Context } from "../models/TestType";
 
-export const invite = async (db, data: subAccountInvitate, context: CallableRequest | Context) => {
+export const invite = async (db: admin.firestore.Firestore, data: subAccountInvitate, context: CallableRequest | Context) => {
   // check admin
   const adminUid = utils.validate_parent_admin_auth(context);
   const { email, name } = data;
@@ -67,7 +67,7 @@ export const invite = async (db, data: subAccountInvitate, context: CallableRequ
 };
 
 export const invitationValidateProcess = async (
-  db,
+  db: admin.firestore.Firestore,
   data: subAccountInvitationAcceptDeny,
   context: CallableRequest | Context,
   callback: (adminUid: string, messageData: admin.firestore.DocumentData, messageRef: admin.firestore.DocumentReference) => Promise<void>,
@@ -87,7 +87,7 @@ export const invitationValidateProcess = async (
   return {};
 };
 const childInvitationProcess = async (
-  db: any,
+  db: admin.firestore.Firestore,
   data: subAccountInvitationAcceptDeny,
   context: CallableRequest | Context,
   callback: (messageData: admin.firestore.DocumentData, messageRef: admin.firestore.DocumentReference) => Promise<void>,
@@ -108,7 +108,7 @@ const childInvitationProcess = async (
     }
   });
 };
-export const accept = async (db, data: subAccountInvitationAcceptDeny, context: CallableRequest | Context) => {
+export const accept = async (db: admin.firestore.Firestore, data: subAccountInvitationAcceptDeny, context: CallableRequest | Context) => {
   const { messageId } = data;
   if (!validateFirebaseId(messageId)) {
     console.log(messageId);
@@ -143,7 +143,7 @@ export const accept = async (db, data: subAccountInvitationAcceptDeny, context: 
   }
   return {};
 };
-export const deny = async (db, data: subAccountInvitationAcceptDeny, context: CallableRequest | Context) => {
+export const deny = async (db: admin.firestore.Firestore, data: subAccountInvitationAcceptDeny, context: CallableRequest | Context) => {
   const { messageId } = data;
   if (!validateFirebaseId(messageId)) {
     console.log(messageId);
@@ -173,7 +173,7 @@ export const deny = async (db, data: subAccountInvitationAcceptDeny, context: Ca
   return {};
 };
 
-export const deleteChild = async (db, data: subAccountDeleteChildData, context: CallableRequest | Context) => {
+export const deleteChild = async (db: admin.firestore.Firestore, data: subAccountDeleteChildData, context: CallableRequest | Context) => {
   // check admin
   const adminUid = utils.validate_parent_admin_auth(context);
   const { childUid } = data;

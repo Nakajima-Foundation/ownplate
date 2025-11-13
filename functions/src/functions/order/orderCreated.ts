@@ -7,7 +7,7 @@ import { orderCreatedData } from "../../lib/types";
 import { MenuItem } from "../../models/menu";
 import { validateOrderCreated } from "../../lib/validator";
 
-const getOptionPrice = (selectedOptionsRaw, menu, multiple) => {
+const getOptionPrice = (selectedOptionsRaw: unknown[], menu: { itemOptionCheckbox: string[] }, multiple: number): number => {
   return selectedOptionsRaw.reduce((tmpPrice, selectedOpt, key) => {
     const opt = menu.itemOptionCheckbox[key].split(",");
     if (opt.length === 1) {
@@ -21,7 +21,7 @@ const getOptionPrice = (selectedOptionsRaw, menu, multiple) => {
   }, 0);
 };
 
-export const orderAccounting = (restaurantData, food_sub_total, alcohol_sub_total, multiple) => {
+export const orderAccounting = (restaurantData: { inclusiveTax?: boolean; alcoholTax?: number; foodTax?: number }, food_sub_total: number, alcohol_sub_total: number, multiple: number) => {
   // tax rate
   const inclusiveTax = restaurantData.inclusiveTax || false;
   const alcoholTax = restaurantData.alcoholTax || 0;
@@ -66,14 +66,19 @@ export const orderAccounting = (restaurantData, food_sub_total, alcohol_sub_tota
 };
 
 // restaurantData is for mo.
-export const createNewOrderData = async (restaurantRef, orderRef, orderData, multiple) => {
+export const createNewOrderData = async (
+  restaurantRef: FirebaseFirestore.DocumentReference,
+  orderRef: FirebaseFirestore.DocumentReference,
+  orderData: { order: Record<string, unknown>; rawOptions: Record<string, Record<number, unknown[]>> },
+  multiple: number
+) => {
   const menuIds = Object.keys(orderData.order);
   const menuObj = await utils.getMenuObj(restaurantRef, menuIds);
 
   // ret
-  const newOrderData = {};
-  const newItems = {};
-  const newPrices = {};
+  const newOrderData: Record<string, number[]> = {};
+  const newItems: Record<string, MenuItem> = {};
+  const newPrices: Record<string, number[]> = {};
 
   let food_sub_total = 0;
   let alcohol_sub_total = 0;
@@ -149,7 +154,7 @@ export const createNewOrderData = async (restaurantRef, orderRef, orderData, mul
   };
 };
 
-export const orderCreated = async (db, data: orderCreatedData, context) => {
+export const orderCreated = async (db: FirebaseFirestore.Firestore, data: orderCreatedData, context: { auth: { uid: string; token: { phone_number: string } } }) => {
   const customerUid = utils.validate_customer_auth(context);
 
   const { restaurantId, orderId } = data;
@@ -209,11 +214,11 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
 
     const multiple = utils.stripeRegion.multiple; //100 for USD, 1 for JPY
 
-    const { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total } = await createNewOrderData(restaurantRef, orderRef, orderData, multiple);
+    const { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total } = await createNewOrderData(restaurantRef, orderRef, orderData as { order: Record<string, unknown>; rawOptions: Record<string, Record<number, unknown[]>> }, multiple) as { newOrderData: Record<string, number[]>; newItems: Record<string, MenuItem>; newPrices: Record<string, number[]>; food_sub_total: number; alcohol_sub_total: number };
 
     // Atomically increment the orderCount of the restaurant
     let orderCount = 0;
-    await db.runTransaction(async (tr) => {
+    await db.runTransaction(async (tr: FirebaseFirestore.Transaction) => {
       // We need to read restaurantData again for this transaction
       const trRestaurantData = (await tr.get(restaurantRef)).data();
       if (trRestaurantData) {
@@ -224,7 +229,7 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
       }
     });
 
-    const accountingResult = orderAccounting(restaurantData, food_sub_total, alcohol_sub_total, multiple);
+    const accountingResult = orderAccounting(restaurantData as { inclusiveTax?: boolean; alcoholTax?: number; foodTax?: number }, food_sub_total, alcohol_sub_total, multiple);
 
     const deliveryData = orderData.isDelivery ? await utils.get_restaurant_delivery_area(db, restaurantId) : {};
     const deliveryFee = utils.get_delivery_cost(orderData, deliveryData, accountingResult.total);

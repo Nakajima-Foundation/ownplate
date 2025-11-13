@@ -69,7 +69,7 @@ export const validImagePath = (filePath: string, matchPaths: Array<{ path: strin
     const splitMatchPath = matchPath.path.split("/");
     return (
       ret ||
-      (Object.keys(splitMatchPath).reduce((match, key) => {
+      (Object.keys(splitMatchPath).reduce((match: boolean, key: string) => {
         if (match === false) {
           return false;
         }
