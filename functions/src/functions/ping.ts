@@ -12,7 +12,7 @@ export const operationLog = (context: CallableRequest, params: any) => {
   const operationType = params.operationType || "-----";
   const pathName = params.pathName || "";
 
-  const header = {};
+  const header: Record<string, string> = {};
   for (let i = 0; i < context.rawRequest.rawHeaders.length; i += 2) {
     header[context.rawRequest.rawHeaders[i]] = context.rawRequest.rawHeaders[i + 1];
   }
