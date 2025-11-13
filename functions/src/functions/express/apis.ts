@@ -6,6 +6,7 @@ import * as admin from "firebase-admin";
 
 import { nameOfOrder, timezone } from "../../lib/utils";
 import { MenuItem } from "../../models/menu";
+import { RestaurantInfoData } from "../../models/RestaurantInfo";
 import { RequestWithRestaurant } from "../../lib/types";
 
 import { validateFirebaseId } from "../../lib/validator";
@@ -136,7 +137,7 @@ const common = async (req: express.Request, res: express.Response, next: express
   }
 
   // todo auth
-  (req as RequestWithRestaurant).restaurant = restaurant_data as any;
+  (req as RequestWithRestaurant).restaurant = restaurant_data as RestaurantInfoData;
   next();
 };
 
