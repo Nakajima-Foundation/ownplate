@@ -5,7 +5,7 @@ import { enableNotification } from "../notificationConfig";
 const secret_aws_key = defineSecret("AWS_ID");
 const secret_aws_secret = defineSecret("AWS_SECRET");
 
-export const pushSMS = async (subject, message, phone_number) => {
+export const pushSMS = async (subject: string, message: string, phone_number: string) => {
   if (!enableNotification) {
     return;
   }

@@ -146,3 +146,8 @@ export interface dispatchData {
   key: string;
   value: boolean;
 }
+
+export interface RestaurantData {
+  countryCode: string;
+  phoneNumber: string;
+}
