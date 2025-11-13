@@ -30,7 +30,7 @@ export const account_updated = async (db: admin.firestore.Firestore, event: Stri
     data: { object },
   } = event;
   const id = ("id" in object ? object.id : "") as string;
-  const uids = await accountIdToUIDs(db, id);
+  const uids = await accountIdToUIDs(db, id ?? "");
 
   return await callbackAdminLog(db, uids, stripeActions.account_updated, event);
 };
@@ -73,13 +73,13 @@ export const capability_updated = async (db: admin.firestore.Firestore, event: S
 
 export const account_authorized = async (db: admin.firestore.Firestore, event: Stripe.Event) => {
   const id = event.account;
-  const uids = await accountIdToUIDs(db, id);
+  const uids = await accountIdToUIDs(db, id ?? "");
   return await callbackAdminLog(db, uids, stripeActions.account_authorized, event);
 };
 
 export const account_deauthorized = async (db: admin.firestore.Firestore, event: Stripe.Event) => {
   const id = event.account;
-  const uids = await accountIdToUIDs(db, id);
+  const uids = await accountIdToUIDs(db, id ?? "");
   return await callbackAdminLog(db, uids, stripeActions.account_deauthorized, event);
 };
 
