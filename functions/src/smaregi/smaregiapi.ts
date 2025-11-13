@@ -2,8 +2,8 @@ import * as apiUtils from "./apiUtils";
 
 class SmaregiApi {
   stacks: string[];
-  scopes: string;
-  access_token: string | null;
+  scopes: string[];
+  access_token: string;
   contractId: string;
   clientId: string;
   clientSecret: string;
@@ -11,7 +11,7 @@ class SmaregiApi {
   constructor(config) {
     this.stacks = [];
     this.scopes = config.scopes;
-    this.access_token = null;
+    this.access_token = "";
     this.contractId = config.contractId;
     this.clientId = config.clientId;
     this.clientSecret = config.clientSecret;

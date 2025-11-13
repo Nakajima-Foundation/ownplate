@@ -1,7 +1,7 @@
 import * as imageUtil from "./imageUtil";
 import * as constant from "./constant";
 
-export const generateResizeImage = async (db: FirebaseFirestore.Firestore, data: { name: string; bucket: string; contentType: string }) => {
+export const generateResizeImage = async (db: FirebaseFirestore.Firestore, data: { name: string; bucket: string; contentType?: string }) => {
   const filePath = data.name; // images/restaurants/0LHzyxxnKZ0eZs3bCaEx/cover.jpg
   const firestorePath = imageUtil.getFirestorePath(filePath);
 
