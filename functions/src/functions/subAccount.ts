@@ -62,7 +62,7 @@ export const invite = async (db: admin.firestore.Firestore, data: subAccountInvi
       childUid: childUid,
     };
   } catch (error) {
-    throw utils.process_error(error);
+    throw utils.process_error(error as Error);
   }
 };
 
@@ -142,7 +142,7 @@ export const accept = async (db: admin.firestore.Firestore, data: subAccountInvi
       });
     });
   } catch (error) {
-    throw utils.process_error(error);
+    throw utils.process_error(error as Error);
   }
   return {};
 };
@@ -171,7 +171,7 @@ export const deny = async (db: admin.firestore.Firestore, data: subAccountInvita
       });
     });
   } catch (error) {
-    throw utils.process_error(error);
+    throw utils.process_error(error as Error);
   }
   return {};
 };
@@ -203,7 +203,7 @@ export const deleteChild = async (db: admin.firestore.Firestore, data: subAccoun
       await tr.delete(messageRef);
     });
   } catch (error) {
-    throw utils.process_error(error);
+    throw utils.process_error(error as Error);
   }
   return { retult: true };
 };

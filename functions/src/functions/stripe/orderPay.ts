@@ -59,6 +59,6 @@ export const orderPay = async (db: admin.firestore.Firestore, data: orderChangeD
     await notifyNewOrderToRestaurant(db, restaurantId, order, restaurantData.restaurantName);
     return { result: true };
   } catch (error) {
-    throw utils.process_error(error);
+    throw utils.process_error(error as Error);
   }
 };

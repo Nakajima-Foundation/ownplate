@@ -75,7 +75,7 @@ const actual_call = async (requst_url: string, options: Record<string, unknown>)
 const api_call = async (contractId: string, path: string, access_token: string, method: string, data: Record<string, unknown> = {}) => {
   const full_path = `https://${hostName}/${contractId}/pos/`;
   let requst_url = full_path + path;
-  const options: any = {
+  const options: Record<string, unknown> = {
     method,
     headers: {
       Authorization: `Bearer ${access_token}`,

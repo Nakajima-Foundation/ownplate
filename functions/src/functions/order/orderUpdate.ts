@@ -33,7 +33,7 @@ const getMgsKey = (status: number, isEC: boolean, timeEstimated?: admin.firestor
 const getPaymentIntent = async (
   db: admin.firestore.Firestore,
   restaurantOwnerUid: string,
-  order: any,
+  order: admin.firestore.DocumentData,
   transaction: admin.firestore.Transaction,
   stripeRef: admin.firestore.DocumentReference,
 ) => {
@@ -175,14 +175,15 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
       await sendMessageToCustomer(db, msgKey, restaurantData.hasLine, restaurantData.restaurantName, orderData, restaurantId, orderId, params);
     }
     return { result: true };
-  } catch (error: any) {
-    if (error.type && error.type === "StripeCardError") {
-      utils.log_error(error);
+  } catch (error) {
+    const err = error as any;
+    if (err.type && err.type === "StripeCardError") {
+      utils.log_error(err);
       return {
         result: false,
-        type: error.type,
+        type: err.type,
       };
     }
-    throw utils.process_error(error);
+    throw utils.process_error(error as Error);
   }
 };
