@@ -4,12 +4,15 @@ import * as utils from "../../lib/utils";
 import { order_status } from "../../common/constant";
 import { createCustomer } from "../stripe/customer";
 
-import { orderCreatedData } from "../../lib/types";
-import { MenuItem, MenuData } from "../../models/menu";
-import { RestaurantInfoData } from "../../models/RestaurantInfo";
+import { orderCreatedData, MenuItem, OrderData, RestaurantInfoData } from "../../lib/types";
+import { MenuData } from "../../models/menu";
 import { validateOrderCreated } from "../../lib/validator";
 
-const getOptionPrice = (selectedOptionsRaw: any[], menu: MenuData, multiple: number) => {
+interface SelectedOption {
+  [key: string]: any;
+}
+
+const getOptionPrice = (selectedOptionsRaw: SelectedOption[], menu: MenuData, multiple: number) => {
   return selectedOptionsRaw.reduce((tmpPrice: number, selectedOpt: any, key: number) => {
     const opt = menu.itemOptionCheckbox[key].split(",");
     if (opt.length === 1) {
@@ -71,19 +74,19 @@ export const orderAccounting = (restaurantData: RestaurantInfoData, food_sub_tot
 export const createNewOrderData = async (
   restaurantRef: admin.firestore.DocumentReference,
   orderRef: admin.firestore.DocumentReference,
-  orderData: any,
+  orderData: Partial<OrderData> & { order: { [menuId: string]: number | number[] }; rawOptions?: { [menuId: string]: any[][] } },
   multiple: number,
 ): Promise<
-  | { result: true, data: { newOrderData: any; newItems: any; newPrices: any; food_sub_total: number; alcohol_sub_total: number }}
+  | { result: true, data: { newOrderData: { [menuId: string]: number[] }; newItems: { [menuId: string]: MenuItem }; newPrices: { [menuId: string]: number[] }; food_sub_total: number; alcohol_sub_total: number }}
   | { result: false }
 > => {
   const menuIds = Object.keys(orderData.order);
   const menuObj = await utils.getMenuObj(restaurantRef, menuIds);
 
   // ret
-  const newOrderData: any = {};
-  const newItems: any = {};
-  const newPrices: any = {};
+  const newOrderData: { [menuId: string]: number[] } = {};
+  const newItems: { [menuId: string]: MenuItem } = {};
+  const newPrices: { [menuId: string]: number[] } = {};
 
   let food_sub_total = 0;
   let alcohol_sub_total = 0;
@@ -109,7 +112,8 @@ export const createNewOrderData = async (
     const prices: number[] = [];
     const newOrder: number[] = [];
 
-    const numArray = Array.isArray(orderData.order[menuId]) ? orderData.order[menuId] : [orderData.order[menuId]];
+    const orderItem = orderData.order[menuId];
+    const numArray = Array.isArray(orderItem) ? orderItem : [orderItem];
     numArray.map((num, orderKey) => {
       if (!Number.isInteger(num)) {
         throw new Error("invalid number: not integer");
@@ -120,7 +124,8 @@ export const createNewOrderData = async (
       if (num === 0) {
         return;
       }
-      const price = menu.price + getOptionPrice(orderData.rawOptions[menuId][orderKey], menu, multiple);
+      const rawOptions = orderData.rawOptions && orderData.rawOptions[menuId] && orderData.rawOptions[menuId][orderKey];
+      const price = menu.price + (rawOptions ? getOptionPrice(rawOptions, menu, multiple) : 0);
       newOrder.push(num);
       prices.push(price * num);
     });
@@ -137,19 +142,16 @@ export const createNewOrderData = async (
       price: menu.price,
       itemName: menu.itemName,
       itemPhoto: menu.itemPhoto,
-      images: menu.images,
-      itemAliasesName: menu.itemAliasesName,
-      category1: menu.category1,
-      category2: menu.category2,
-      // category: menu.category,
-      // subCategory: menu.subCategory,
+      images: menu.images || {},
+      itemAliasesName: menu.itemAliasesName || "",
+      category1: menu.category1 || "",
+      category2: menu.category2 || "",
       exceptDay: menu.exceptDay || {},
       exceptHour: menu.exceptHour || {},
-      // productId: menu.productId,
-      tax: menu.tax,
+      tax: menu.tax || "",
     };
 
-    newItems[menuId] = utils.filterData(menuItem);
+    newItems[menuId] = menuItem;
   });
   return {
     result: true,
@@ -199,7 +201,7 @@ export const orderCreated = async (db: admin.firestore.Firestore, data: orderCre
     if (!order) {
       throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
     }
-    const orderData = order.data();
+    const orderData = order.data() as OrderData | undefined;
 
     if (!orderData || !orderData.status || orderData.status !== order_status.new_order || !orderData.uid || orderData.uid !== customerUid) {
       console.log("invalid order:" + String(orderId));
@@ -216,7 +218,7 @@ export const orderCreated = async (db: admin.firestore.Firestore, data: orderCre
       throw new functions.https.HttpsError("invalid-argument", "Invalid liff order.");
     }
     if (restaurantData.enableLunchDinner) {
-      if (!["lunch", "dinner"].includes(lunchOrDinner)) {
+      if (!lunchOrDinner || !["lunch", "dinner"].includes(lunchOrDinner)) {
         throw new functions.https.HttpsError("invalid-argument", "Invalid lunch dinner order.");
       }
     } else {
@@ -251,7 +253,7 @@ export const orderCreated = async (db: admin.firestore.Firestore, data: orderCre
     const deliveryData = orderData.isDelivery ? await utils.get_restaurant_delivery_area(db, restaurantId) : {};
     const deliveryFee = utils.get_delivery_cost(orderData, deliveryData, accountingResult.total);
 
-    await createCustomer(db, customerUid, context.auth.token.phone_number);
+    await createCustomer(db, customerUid, context.auth?.token?.phone_number || "");
 
     // just copy original data.
     const { options, rawOptions, uid, phoneNumber, name, updatedAt, timeCreated } = orderData;

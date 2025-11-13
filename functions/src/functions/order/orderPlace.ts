@@ -9,14 +9,14 @@ import { notifyNewOrderToRestaurant } from "../notify2";
 import { costCal } from "../../utils/commonUtils";
 
 import { getStripeAccount, getHash, getCustomerStripeInfo2, saveCustomerStripeInfo2 } from "../stripe/intent";
-import { orderPlacedData } from "../../lib/types";
+import { orderPlacedData, OrderData, RestaurantInfoData, PromotionData, PostageData, StripeCustomerInfo } from "../../lib/types";
 import { validateOrderPlaced, validateCustomer } from "../../lib/validator";
 
 import { getPromotion, enableUserPromotion, userPromotionHistoryData, getUserHistoryDoc, getUserHistoryCollectionPath, getDiscountPrice } from "./promotion";
 
-export const getOrderData = async (transaction: admin.firestore.Transaction, orderRef: admin.firestore.DocumentReference) => {
+export const getOrderData = async (transaction: admin.firestore.Transaction, orderRef: admin.firestore.DocumentReference): Promise<OrderData> => {
   const orderDoc = await transaction.get(orderRef);
-  const order = orderDoc.data();
+  const order = orderDoc.data() as OrderData | undefined;
   if (!order) {
     throw new HttpsError("invalid-argument", "This order does not exist.");
   }
@@ -28,7 +28,7 @@ export const updateOrderTotalDataAndUserLog = async (
   db: admin.firestore.Firestore,
   transaction: admin.firestore.Transaction,
   customerUid: string,
-  order: Record<string, any>,
+  order: { [menuId: string]: number | number[] },
   restaurantId: string,
   ownerUid: string,
   timePlaced: admin.firestore.Timestamp,
@@ -135,9 +135,9 @@ export const place = async (db: admin.firestore.Firestore, data: orderPlacedData
   const timePlaced = new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds);
 
   try {
-    const restaurantData = await utils.get_restaurant(db, restaurantId);
-    const restaurantOwnerUid = restaurantData["uid"];
-    const postage = restaurantData.isEC ? await utils.get_restaurant_postage(db, restaurantId) : {};
+    const restaurantData = await utils.get_restaurant(db, restaurantId) as RestaurantInfoData;
+    const restaurantOwnerUid = restaurantData.uid;
+    const postage = restaurantData.isEC ? await utils.get_restaurant_postage(db, restaurantId) : {} as PostageData;
 
     // check tip
     if (restaurantData.isEC && roundedTip > 0) {
@@ -168,7 +168,7 @@ export const place = async (db: admin.firestore.Firestore, data: orderPlacedData
       const { historyCollectionRef, historyDocRef, promotionData, discountPrice } = await (async (): Promise<{
         historyCollectionRef?: admin.firestore.CollectionReference;
         historyDocRef?: admin.firestore.DocumentReference;
-        promotionData?: admin.firestore.DocumentData;
+        promotionData?: PromotionData;
         discountPrice: number;
       }> => {
         if (promotionId) {
@@ -197,7 +197,7 @@ export const place = async (db: admin.firestore.Firestore, data: orderPlacedData
         };
       })();
 
-      const shippingCost = restaurantData.isEC ? costCal(postage, customerInfo?.prefectureId, order.total) : 0;
+      const shippingCost = restaurantData.isEC ? costCal(postage, customerInfo?.prefectureId || 0, order.total) : 0;
       const hasCustomer = restaurantData.isEC || order.isDelivery;
       if (hasCustomer) {
         const validateResult = validateCustomer(customerInfo || {});
@@ -211,7 +211,7 @@ export const place = async (db: admin.firestore.Firestore, data: orderPlacedData
 
       const totalCharge = order.total + roundedTip + (shippingCost || 0) + (order.deliveryFee || 0) - discountPrice;
       const totalChargeWithTipAndMultipled = totalCharge * multiple; // for US stripe price
-      const orderNumber = utils.nameOfOrder(order.number);
+      const orderNumber = utils.nameOfOrder(order.number || 0);
       const paymentIntent = await (async () => {
         if (enableStripe) {
 
@@ -225,7 +225,7 @@ export const place = async (db: admin.firestore.Firestore, data: orderPlacedData
             metadata: { uid: customerUid, restaurantId, orderId },
           } as Stripe.PaymentIntentCreateParams;
 
-          const stripeCustomer = await getCustomerStripeInfo2(db, customerUid, restaurantOwnerUid);
+          const stripeCustomer = await getCustomerStripeInfo2(db, customerUid, restaurantOwnerUid) as StripeCustomerInfo | null;
           const stripe = utils.get_stripe_v2();
           const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
           const hasPayment = !!(stripeCustomer && stripeCustomer.customerId && stripeCustomer.payment_method);
@@ -284,13 +284,9 @@ export const place = async (db: admin.firestore.Firestore, data: orderPlacedData
         hasPayment,
         memo: memo || "",
         isEC: restaurantData.isEC || false,
-      } as any;
-      if (userName) {
-        updateData.name = userName;
-      }
-      if (!waitingPayment) {
-        updateData.orderPlacedAt = admin.firestore.FieldValue.serverTimestamp();
-      }
+        name: userName,
+        orderPlacedAt: waitingPayment ? undefined : admin.firestore.FieldValue.serverTimestamp(),
+      };
       if (enableStripe) {
         const update = {
           ...updateData,

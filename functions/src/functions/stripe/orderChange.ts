@@ -99,8 +99,9 @@ export const orderChange = async (db: admin.firestore.Firestore, data: orderChan
 
     // update price
     const baseData = {
+      ...order,
       order: updateOrderData,
-      rawOptions: updateRawOptions,
+      rawOptions: updateRawOptions as { [menuId: string]: any[][] },
     };
     const res = await createNewOrderData(menuRestaurantRef, orderRef, baseData, multiple);
     if (!res.result) {
