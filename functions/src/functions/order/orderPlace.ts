@@ -31,7 +31,7 @@ export const updateOrderTotalDataAndUserLog = async (
   order: any,
   restaurantId: string,
   ownerUid: string,
-  timePlaced,
+  timePlaced: admin.firestore.Timestamp,
   positive: boolean,
 ) => {
   const menuIds = Object.keys(order);
@@ -112,7 +112,7 @@ export const updateOrderTotalDataAndUserLog = async (
 const multiple = utils.stripeRegion.multiple; // 100 for USD, 1 for JPY
 
 // This function is called by users to place orders without paying
-export const place = async (db, data: orderPlacedData, context: CallableRequest) => {
+export const place = async (db: admin.firestore.Firestore, data: orderPlacedData, context: CallableRequest) => {
   const customerUid = utils.validate_customer_auth(context);
 
   const { restaurantId, orderId, tip, timeToPickup, memo, userName, customerInfo, payStripe, waitingPayment } = data;
@@ -153,7 +153,7 @@ export const place = async (db, data: orderPlacedData, context: CallableRequest)
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
     const customerRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/customer/data`);
 
-    const result = await db.runTransaction(async (transaction) => {
+    const result = await db.runTransaction(async (transaction: admin.firestore.Transaction) => {
       const order = await getOrderData(transaction, orderRef);
       if (!order) {
         throw new HttpsError("invalid-argument", "This order does not exist.");
@@ -165,7 +165,12 @@ export const place = async (db, data: orderPlacedData, context: CallableRequest)
         throw new HttpsError("failed-precondition", "The order has been already placed or canceled");
       }
       // promotion
-      const { historyCollectionRef, historyDocRef, promotionData, discountPrice } = await (async () => {
+      const { historyCollectionRef, historyDocRef, promotionData, discountPrice } = await (async (): Promise<{
+        historyCollectionRef?: admin.firestore.CollectionReference;
+        historyDocRef?: admin.firestore.DocumentReference;
+        promotionData?: admin.firestore.DocumentData;
+        discountPrice: number;
+      }> => {
         if (promotionId) {
           const promotionData = await getPromotion(db, transaction, promotionId, restaurantData, order.total, enableStripe);
           const discountPrice = getDiscountPrice(promotionData, order.total);
@@ -307,10 +312,10 @@ export const place = async (db, data: orderPlacedData, context: CallableRequest)
         await transaction.update(orderRef, updateData);
       }
       // promotion
-      if (historyDocRef) {
+      if (historyDocRef && promotionData) {
         const data = userPromotionHistoryData(promotionData, restaurantData, customerUid, orderId, totalCharge, discountPrice, enableStripe);
         await transaction.set(historyDocRef, data);
-      } else if (historyCollectionRef) {
+      } else if (historyCollectionRef && promotionData) {
         const data = userPromotionHistoryData(promotionData, restaurantData, customerUid, orderId, totalCharge, discountPrice, enableStripe);
         await transaction.set(historyCollectionRef.doc(), data);
       }

@@ -1,7 +1,7 @@
 import { HttpsError } from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
 
-export const getPromotion = async (db, transaction, promotionId, restaurantData, orderTotal, enableStripe) => {
+export const getPromotion = async (db: admin.firestore.Firestore, transaction: admin.firestore.Transaction, promotionId: string, restaurantData: admin.firestore.DocumentData, orderTotal: number, enableStripe: boolean): Promise<admin.firestore.DocumentData> => {
   // get promotion
   const promotionPath = `restaurants/${restaurantData.restaurantId}/promotions/${promotionId}`;
   const promotionDoc = await transaction.get(db.doc(promotionPath));
@@ -11,6 +11,10 @@ export const getPromotion = async (db, transaction, promotionId, restaurantData,
   }
 
   const promotionData = promotionDoc.data();
+
+  if (!promotionData) {
+    throw new HttpsError("invalid-argument", "No promotion exist.");
+  }
 
   if (!promotionData.enable) {
     throw new HttpsError("invalid-argument", "No promotion exist.");
@@ -43,10 +47,10 @@ export const getUserHistoryCollectionPath = (uid: string) => {
   return `/users/${uid}/promotionHistories`;
 };
 
-export const getUserHistoryDoc = async (db, promotionData, uid) => {
+export const getUserHistoryDoc = async (db: admin.firestore.Firestore, promotionData: admin.firestore.DocumentData, uid: string) => {
   const collectionPath = getUserHistoryCollectionPath(uid);
   if (promotionData.type === "multipletimesCoupon") {
-    const ret = (await db.collection(collectionPath).where("promotionId", "===", promotionData.promotionId).where("used", "===", false).orderBy("createdAt", "asc").limit(1).get())
+    const ret = (await db.collection(collectionPath).where("promotionId", "==", promotionData.promotionId).where("used", "==", false).orderBy("createdAt", "asc").limit(1).get())
       .docs[0];
     if (ret) {
       const path = `${collectionPath}/${ret.id}`;
@@ -59,7 +63,7 @@ export const getUserHistoryDoc = async (db, promotionData, uid) => {
   throw new HttpsError("invalid-argument", "No promotion exist.");
 };
 
-export const enableUserPromotion = async (transaction: admin.firestore.Transaction, promotionData: any, userPromotionRef: admin.firestore.DocumentReference) => {
+export const enableUserPromotion = async (transaction: admin.firestore.Transaction, promotionData: admin.firestore.DocumentData, userPromotionRef: admin.firestore.DocumentReference) => {
   const ret = (await transaction.get(userPromotionRef)).data();
 
   if (promotionData.type === "multipletimesCoupon" || promotionData.type === "onetimeCoupon") {
@@ -75,8 +79,8 @@ export const enableUserPromotion = async (transaction: admin.firestore.Transacti
 };
 
 export const userPromotionHistoryData = (
-  promotionData: any,
-  restaurantData: any,
+  promotionData: admin.firestore.DocumentData,
+  restaurantData: admin.firestore.DocumentData,
   customerUid: string,
   orderId: string,
   totalCharge: number,
@@ -97,7 +101,7 @@ export const userPromotionHistoryData = (
   };
 };
 
-export const getDiscountPrice = (promotion: any, total: number) => {
+export const getDiscountPrice = (promotion: admin.firestore.DocumentData, total: number) => {
   if (promotion.discountMethod === "amount") {
     return promotion.discountValue;
   } else {
