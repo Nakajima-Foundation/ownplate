@@ -35,6 +35,6 @@ export const disconnect = async (db: admin.firestore.Firestore, context: Callabl
 
     return { result: true };
   } catch (error) {
-    throw utils.process_error(error);
+    throw utils.process_error(error as Error);
   }
 };

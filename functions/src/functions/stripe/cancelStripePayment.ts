@@ -71,6 +71,6 @@ export const cancelStripePayment = async (db: admin.firestore.Firestore, data: o
     }
     return { result: true };
   } catch (error) {
-    throw utils.process_error(error);
+    throw utils.process_error(error as Error);
   }
 };
