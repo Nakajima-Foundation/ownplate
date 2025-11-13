@@ -4,7 +4,7 @@ import * as path from "path";
 import * as os from "os";
 import * as fs from "fs";
 import sharp from "sharp";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 // import UUID from "uuid-v4";
 
 import * as constant from "./constant";
