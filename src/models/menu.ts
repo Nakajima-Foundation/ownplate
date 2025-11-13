@@ -24,16 +24,27 @@ export interface TitleData {
   availableDinner: boolean;
 }
 
-export interface MenuData {
-  _dataType: "menu";
-  id: string;
-  itemDescription: string;
+export interface MenuItem {
+  price: number;
   itemName: string;
   itemPhoto: string;
   images: MenuImages;
-  price: number;
-
+  itemAliasesName: string;
+  category1: string;
+  category2: string;
+  // category: string;
+  // subCategory: string;
+  exceptDay: { [key: string]: boolean };
+  exceptHour: ExceptHour;
+  // productId: string;
   tax: string;
+}
+
+
+export interface MenuData extends MenuItem {
+  _dataType: "menu";
+  id: string;
+  itemDescription: string;
 
   uid: string;
   deletedFlag: boolean;
@@ -41,19 +52,14 @@ export interface MenuData {
   soldOut: boolean;
   soldOutToday?: string;
 
-  itemAliasesName: string;
   itemMemo: string;
   itemOptionCheckbox: string[];
   publicFlag: boolean;
   allergens: { [key: string]: boolean };
-  category1: string;
-  category2: string;
 
   availableLunch: boolean;
   availableDinner: boolean;
 
-  exceptDay: { [key: string]: boolean };
-  exceptHour: ExceptHour;
   validatedFlag: boolean;
 
   createdAt: FieldValue;

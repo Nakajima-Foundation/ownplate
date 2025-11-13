@@ -1,25 +1,11 @@
 import { Timestamp } from "firebase/firestore";
 
-import { MenuImages } from "@/models/menu";
+import { MenuItem } from "@/models/menu";
 import { ownPlateConfig } from "@/config/project";
 import { stripeRegion, orderType } from "@/utils/utils";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { CustomerInfo } from "@/models/customer";
 
-export interface OrderMenuItemData {
-  category1: string;
-  category2: string;
-  itemName: string;
-  price: number;
-  images: MenuImages;
-  itemPhoto: string;
-  exceptDay: { [key: string]: boolean };
-  exceptHour: { start: number; end: number };
-  tax: string;
-  productId: string; //mo
-  category: string; //mo
-  subCategory: string; //mo
-}
 export interface OrderInfoData {
   id: string;
   name: string;
@@ -61,7 +47,7 @@ export interface OrderInfoData {
   isEC: boolean;
   isPickup: boolean;
   tip: number;
-  menuItems: { [key: string]: OrderMenuItemData };
+  menuItems: { [key: string]: MenuItem };
   phoneNumber: string;
   order: { [key: string]: [number] };
   options: { [key: string]: [string] };
@@ -86,7 +72,7 @@ export interface OrderInfoData {
 }
 
 export interface OrderItemData {
-  item: OrderMenuItemData;
+  item: MenuItem;
   count: number | number[];
   id: string;
   options: string | [string];

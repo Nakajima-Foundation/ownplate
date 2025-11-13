@@ -3,7 +3,8 @@ import * as utils from "../../lib/utils";
 import { order_status } from "../../common/constant";
 import { createCustomer } from "../stripe/customer";
 
-import { orderCreatedData, menuItem } from "../../lib/types";
+import { orderCreatedData } from "../../lib/types";
+import { MenuItem } from "../../models/menu";
 import { validateOrderCreated } from "../../lib/validator";
 
 const getOptionPrice = (selectedOptionsRaw, menu, multiple) => {
@@ -121,7 +122,7 @@ export const createNewOrderData = async (restaurantRef, orderRef, orderData, mul
     } else {
       food_sub_total += total;
     }
-    const menuItem: menuItem = {
+    const menuItem: MenuItem = {
       price: menu.price,
       itemName: menu.itemName,
       itemPhoto: menu.itemPhoto,
