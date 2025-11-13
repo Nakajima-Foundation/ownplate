@@ -64,22 +64,22 @@ class SmaregiApi {
   get() {
     return this.stacks.join("/");
   }
-  async list(params: any = {}) {
+  async list(params: Record<string, unknown> = {}) {
     const path = this.stacks.join("/");
     const json = await apiUtils.get_func(this.contractId, path, this.access_token, params);
     return json;
   }
-  async create(data: Record<string, any>) {
+  async create(data: Record<string, unknown>) {
     const path = this.stacks.join("/");
     const json = await apiUtils.post_func(this.contractId, path, this.access_token, data);
     return json;
   }
-  async update(data: Record<string, any>) {
+  async update(data: Record<string, unknown>) {
     const path = this.stacks.join("/");
     const json = await apiUtils.patch_func(this.contractId, path, this.access_token, data);
     return json;
   }
-  async delete(data: Record<string, any> = {}) {
+  async delete(data: Record<string, unknown> = {}) {
     const path = this.stacks.join("/");
     const json = await apiUtils.delete_func(this.contractId, path, this.access_token, data);
     return json;

@@ -86,7 +86,7 @@ export const get_stripe_v2 = () => {
   return new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2025-07-30.basil" });
 };
 
-export const required_params = (params: Record<string, any>) => {
+export const required_params = (params: Record<string, unknown>) => {
   const errors = Object.keys(params).filter((key) => {
     return params[key] === undefined;
   });
@@ -146,7 +146,7 @@ export const get_delivery_cost = (orderData: admin.firestore.DocumentData, deliv
 };
 
 export const log_error = (error: Error) => {
-  console.error((error as any).type);
+  // console.error((error as any).type);
   console.error(error);
   Sentry.captureException(error);
 };
