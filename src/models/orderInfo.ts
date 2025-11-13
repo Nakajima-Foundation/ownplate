@@ -1,21 +1,14 @@
 import { Timestamp } from "firebase/firestore";
 
-import { MenuImages } from "@/models/menu";
+import { MenuItem } from "@/models/menu";
 import { ownPlateConfig } from "@/config/project";
 import { stripeRegion, orderType } from "@/utils/utils";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { CustomerInfo } from "@/models/customer";
 
-export interface OrderMenuItemData {
-  category1: string;
-  category2: string;
-  itemName: string;
-  price: number;
-  images: MenuImages;
-  itemPhoto: string;
-  exceptDay: { [key: string]: boolean };
-  exceptHour: { start: number; end: number };
-  tax: string;
+export interface OrderMenuItemData extends MenuItem {
+  // alias
+
   productId: string; //mo
   category: string; //mo
   subCategory: string; //mo
