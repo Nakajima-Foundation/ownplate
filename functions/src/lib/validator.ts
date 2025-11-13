@@ -15,12 +15,14 @@ import {
   pingData,
   lineValidateData,
   liffAuthenticateData,
+  ValidatorNumberOption,
+  ValidatorStringOption,
 } from "./types";
 import { isEmpty } from "./utils";
 import isURL from "validator/lib/isURL";
 import isNumeric from "validator/lib/isNumeric";
 
-export const isNumber = (value: string, option: any = {}) => {
+export const isNumber = (value: string, option: ValidatorNumberOption = {}) => {
   if (!/^-?[0-9]+$/.test(value)) {
     return false;
   }
@@ -50,7 +52,7 @@ export const isNumber = (value: string, option: any = {}) => {
   return true;
 };
 
-export const isString = (value: string, option: any = {}) => {
+export const isString = (value: string, option: ValidatorStringOption = {}) => {
   if (option.type !== undefined) {
     if (option.type === "number") {
       if (!/^-?[0-9]+$/.test(value)) {
