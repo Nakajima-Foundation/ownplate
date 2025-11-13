@@ -7,7 +7,7 @@ on:
   pull_request
 
 jobs:
-  build:
+  build-functions:
 
     runs-on: ubuntu-latest
     strategy:

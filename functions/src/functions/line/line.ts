@@ -184,7 +184,7 @@ export const getLiffPrivateConfig = async (db: admin.firestore.Firestore, liffIn
 };
 export const getLineId = async (db: admin.firestore.Firestore, uid: string | null) => {
   if (uid === null) {
-    return;
+    return {};
   }
   const data = (await db.doc(`/users/${uid}/system/line`).get()).data() || (await db.doc(`/admins/${uid}/system/line`).get()).data();
   // liff case

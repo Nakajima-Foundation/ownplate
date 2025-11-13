@@ -3,8 +3,7 @@ import { Timestamp } from "firebase/firestore";
 import { MenuItem } from "@/models/menu";
 import { ownPlateConfig } from "@/config/project";
 import { stripeRegion, orderType } from "@/utils/utils";
-import { RestaurantInfoData } from "@/models/RestaurantInfo";
-import { CustomerInfo } from "@/models/customer";
+import { CustomerInfo } from "./customer";
 
 export interface OrderInfoData {
   id: string;
@@ -25,7 +24,6 @@ export interface OrderInfoData {
   transactionCompletedAt: Timestamp;
 
   status: number;
-  restaurant: RestaurantInfoData; // ?
   restaurantId: string; // ?
   description: string;
   accounting?: {
