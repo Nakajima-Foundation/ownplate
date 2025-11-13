@@ -186,7 +186,7 @@ const chunk = (arr: string[], chunkSize: number) => {
   return ret;
 };
 
-export const getMenuObj = async (refRestaurant: admin.firestore.DocumentReference, menuIds: string[]) => {
+export const getMenuObj = async (refRestaurant: admin.firestore.DocumentReference, menuIds: string[]): Promise<Record<string, admin.firestore.DocumentData>> => {
   const menuObj: Record<string, admin.firestore.DocumentData> = {};
   if (process.env.NODE_ENV !== "test") {
     await Promise.all(
