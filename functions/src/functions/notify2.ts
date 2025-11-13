@@ -28,7 +28,7 @@ export const sendMessageToCustomer = async (
   orderData: admin.firestore.DocumentData,
   restaurantId: string,
   orderId: string,
-  params: Record<string, any> = {},
+  params: Record<string, string | number> = {},
   forceSMS: boolean = false,
 ) => {
   const orderNumber = utils.nameOfOrder(orderData.number);
@@ -57,7 +57,7 @@ export const sendMessageToCustomer = async (
   }
 
   // for JP
-  const { lineId, liffIndexId, liffId } = (await getLineId(db, orderData.uid)) as any;
+  const { lineId, liffIndexId, liffId } = (await getLineId(db, orderData.uid));
 
   if (lineId) {
     if (liffIndexId) {
@@ -121,7 +121,7 @@ export const createNotifyRestaurantMailMessage = async (messageId: string, resta
 
           try {
             if (order.options && order.options[menuId] && order.options[menuId][key]) {
-              const opts = order.options[menuId][key].filter((o: any) => o);
+              const opts = order.options[menuId][key].filter((o: string) => o);
               if (opts.length > 0) {
                 messages.push(t("option") + ": " + opts.join("/"));
               }
