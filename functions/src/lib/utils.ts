@@ -135,7 +135,7 @@ export const get_restaurant_line_user = async (db: admin.firestore.Firestore, re
   return data;
 };
 
-export const get_delivery_cost = (orderData: any, deliveryData: any, total: number) => {
+export const get_delivery_cost = (orderData: admin.firestore.DocumentData, deliveryData: admin.firestore.DocumentData, total: number) => {
   if (orderData.isDelivery) {
     if (deliveryData.enableDeliveryFree && deliveryData.deliveryFreeThreshold <= total) {
       return 0;
@@ -145,13 +145,13 @@ export const get_delivery_cost = (orderData: any, deliveryData: any, total: numb
   return 0;
 };
 
-export const log_error = (error: any) => {
-  console.error(error.type);
+export const log_error = (error: Error) => {
+  console.error((error as any).type);
   console.error(error);
   Sentry.captureException(error);
 };
 
-export const process_error = (error: any) => {
+export const process_error = (error: Error) => {
   console.error(error);
   Sentry.captureException(error);
   if (error instanceof functions.https.HttpsError) {

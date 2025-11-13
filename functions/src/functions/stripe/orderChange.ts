@@ -195,6 +195,6 @@ export const orderChange = async (db: admin.firestore.Firestore, data: orderChan
     }
     return { result: true };
   } catch (error) {
-    throw utils.process_error(error);
+    throw utils.process_error(error as Error);
   }
 };

@@ -24,6 +24,6 @@ export const verify = async (db: admin.firestore.Firestore, data: stripeOAuthVer
     const account = await stripe.accounts.retrieve(account_id);
     return { result: true, account };
   } catch (error) {
-    throw utils.process_error(error);
+    throw utils.process_error(error as Error);
   }
 };

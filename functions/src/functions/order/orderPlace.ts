@@ -28,7 +28,7 @@ export const updateOrderTotalDataAndUserLog = async (
   db: admin.firestore.Firestore,
   transaction: admin.firestore.Transaction,
   customerUid: string,
-  order: any,
+  order: Record<string, any>,
   restaurantId: string,
   ownerUid: string,
   timePlaced: admin.firestore.Timestamp,
@@ -328,6 +328,6 @@ export const place = async (db: admin.firestore.Firestore, data: orderPlacedData
     }
     return { result: true };
   } catch (error) {
-    throw utils.process_error(error);
+    throw utils.process_error(error as Error);
   }
 };

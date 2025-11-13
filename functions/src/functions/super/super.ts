@@ -62,7 +62,7 @@ export const dispatch = async (db: admin.firestore.Firestore, data: dispatchData
 
     return result;
   } catch (error) {
-    throw utils.process_error(error);
+    throw utils.process_error(error as Error);
   }
 };
 
