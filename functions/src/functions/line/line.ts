@@ -6,7 +6,7 @@ import * as netutils from "../../lib/netutils";
 import * as admin from "firebase-admin";
 import { ownPlateConfig } from "../../common/project";
 
-import { lineValidateData } from "../../lib/types";
+import { lineValidateData, LineAccessTokenResponse, LineProfileResponse, LineVerifyResponse } from "../../lib/types";
 import { validateLineValidate } from "../../lib/validator";
 
 const line_message_token = defineSecret("LINE_MESSAGE_TOKEN");
@@ -39,7 +39,7 @@ export const verifyFriend = async (db: admin.firestore.Firestore, data: { restau
     return { result: false }; // restaurant line
   }
   try {
-    const profile = await netutils.request(`https://api.line.me/v2/bot/profile/${uidLine}`, {
+    const profile = await netutils.request<LineProfileResponse>(`https://api.line.me/v2/bot/profile/${uidLine}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -100,7 +100,7 @@ export const validate = async (db: admin.firestore.Firestore, data: lineValidate
   try {
     // We validate the OAuth token (code) given to the redirected page.
     // Result: access_token, id_token, expires_in, refresh_token, scope, token_type
-    const access = await netutils.postForm("https://api.line.me/oauth2/v2.1/token", {
+    const access = await netutils.postForm<LineAccessTokenResponse>("https://api.line.me/oauth2/v2.1/token", {
       grant_type: "authorization_code",
       code,
       redirect_uri,
@@ -113,16 +113,16 @@ export const validate = async (db: admin.firestore.Firestore, data: lineValidate
 
     // We verify this code.
     // amr, aud, exp, iat, iss, name, sub
-    const verified = await netutils.postForm("https://api.line.me/oauth2/v2.1/verify", {
+    const verified = await netutils.postForm<LineVerifyResponse>("https://api.line.me/oauth2/v2.1/verify", {
       id_token: access.id_token,
       client_id,
     });
     if (!verified.sub) {
-      throw new HttpsError("invalid-argument", "Verification failed.");
+      throw new HttpsError("invalid-argument", "Validation failed.");
     }
 
     // We get user's profile
-    const profile = await netutils.request("https://api.line.me/v2/profile", {
+    const profile = await netutils.request<LineProfileResponse>("https://api.line.me/v2/profile", {
       headers: {
         Authorization: `Bearer ${access.access_token}`,
       },
