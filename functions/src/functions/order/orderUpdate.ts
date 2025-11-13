@@ -115,7 +115,7 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
       const stripeSystem = (await transaction.get(stripeSystemRef)).data();
 
       // everything are ok
-      const updateTimeKey = timeEventMapping[order_status_keys[status]];
+      const updateTimeKey = timeEventMapping[order_status_keys[status] as keyof typeof timeEventMapping];
       const updateData: updateDataOnorderUpdate = {
         status,
         updatedAt: admin.firestore.FieldValue.serverTimestamp(),
@@ -167,7 +167,7 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
     const msgKey = getMgsKey(status, orderData.isEC, orderData && orderData.timeEstimated);
     // sendSMS is always true
     if (orderData.sendSMS && msgKey) {
-      const params = {};
+      const params: Record<string, any> = {};
       if (status === order_status.order_accepted || status === order_status.ready_to_pickup) {
         params["time"] = moment(orderData.timeEstimated.toDate()).tz(utils.timezone).locale("ja").format("LLL");
         console.log("timeEstimated", params["time"]);

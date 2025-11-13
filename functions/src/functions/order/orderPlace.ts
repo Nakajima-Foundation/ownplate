@@ -31,7 +31,7 @@ export const updateOrderTotalDataAndUserLog = async (
   order: any,
   restaurantId: string,
   ownerUid: string,
-  timePlaced,
+  timePlaced: admin.firestore.Timestamp,
   positive: boolean,
 ) => {
   const menuIds = Object.keys(order);

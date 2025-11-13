@@ -1,7 +1,7 @@
 import { HttpsError } from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
 
-export const getPromotion = async (db, transaction, promotionId, restaurantData, orderTotal, enableStripe) => {
+export const getPromotion = async (db: admin.firestore.Firestore, transaction: admin.firestore.Transaction, promotionId: string, restaurantData: any, orderTotal: number, enableStripe: boolean) => {
   // get promotion
   const promotionPath = `restaurants/${restaurantData.restaurantId}/promotions/${promotionId}`;
   const promotionDoc = await transaction.get(db.doc(promotionPath));
@@ -43,7 +43,7 @@ export const getUserHistoryCollectionPath = (uid: string) => {
   return `/users/${uid}/promotionHistories`;
 };
 
-export const getUserHistoryDoc = async (db, promotionData, uid) => {
+export const getUserHistoryDoc = async (db: admin.firestore.Firestore, promotionData: any, uid: string) => {
   const collectionPath = getUserHistoryCollectionPath(uid);
   if (promotionData.type === "multipletimesCoupon") {
     const ret = (await db.collection(collectionPath).where("promotionId", "===", promotionData.promotionId).where("used", "===", false).orderBy("createdAt", "asc").limit(1).get())
