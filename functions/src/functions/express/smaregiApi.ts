@@ -18,16 +18,16 @@ if (!admin.apps.length) {
 
 let db = admin.firestore();
 
-export const updateDb = (_db) => {
+export const updateDb = (_db: admin.firestore.Firestore) => {
   db = _db;
 };
 
-const subscribe = async (req: any, res: any) => {
+const subscribe = async (req: express.Request, res: express.Response) => {
   await db.collection("smaregiLog/log/subscribe").add({ data: req.body, createdAt: admin.firestore.FieldValue.serverTimestamp() });
   return response200(res, {});
 };
 
-export const processAction = async (data) => {
+export const processAction = async (data: { contractId: string; action: string; event: string; ids: Array<{ storeId: string; productId: string }> }) => {
   console.log("processAction");
   const contractId = data.contractId;
   if (data.action === "edited" && data.event === "pos:stock") {
@@ -41,7 +41,7 @@ export const processAction = async (data) => {
       scopes: ["pos.stock:read", "pos.stock:write", "pos.stores:read", "pos.stores:write", "pos.customers:read", "pos.customers:write", "pos.products:read", "pos.products:write"],
     };
 
-    data.ids.map(async (idData) => {
+    data.ids.map(async (idData: { storeId: string; productId: string }) => {
       const { storeId, productId } = idData;
       console.log({ storeId, productId });
 

@@ -8,7 +8,7 @@ import UUID from "uuid-v4";
 
 import * as constant from "./constant";
 
-const runSharp = async (bucket, fromFileFullPath, toFileFullPath, size, contentType) => {
+const runSharp = async (bucket: ReturnType<ReturnType<typeof admin.storage>["bucket"]>, fromFileFullPath: string, toFileFullPath: string, size: number, contentType: string) => {
   const tmpResizeFile = path.join(os.tmpdir(), UUID());
 
   try {
@@ -39,7 +39,7 @@ const runSharp = async (bucket, fromFileFullPath, toFileFullPath, size, contentT
   }
   return false;
 };
-export const downloadFileFromBucket = async (data) => {
+export const downloadFileFromBucket = async (data: { bucket: string; name: string }) => {
   const bucketObj = admin.storage().bucket(data.bucket);
   const tempFilePath = path.join(os.tmpdir(), UUID());
 
@@ -47,7 +47,7 @@ export const downloadFileFromBucket = async (data) => {
   console.log("Image downloaded locally to", tempFilePath);
   return tempFilePath;
 };
-export const resizedImage = async (data, toFileFullPath, size) => {
+export const resizedImage = async (data: { bucket: string; name: string; contentType: string }, toFileFullPath: string, size: number) => {
   const bucketObj = admin.storage().bucket(data.bucket);
 
   const fromTempFilePath = await downloadFileFromBucket(data);
@@ -58,14 +58,14 @@ export const resizedImage = async (data, toFileFullPath, size) => {
   return ret;
 };
 
-export const removeFile = async (data) => {
+export const removeFile = async (data: { bucket: string; name: string }) => {
   const bucket = admin.storage().bucket(data.bucket);
   await bucket.file(data.name).delete();
 };
 
-export const validImagePath = (filePath, matchPaths) => {
+export const validImagePath = (filePath: string, matchPaths: Array<{ path: string }>) => {
   const filePaths = filePath.split("/");
-  return matchPaths.reduce((ret, matchPath) => {
+  return matchPaths.reduce((ret: boolean, matchPath: { path: string }) => {
     const splitMatchPath = matchPath.path.split("/");
     return (
       ret ||
@@ -83,7 +83,7 @@ export const validImagePath = (filePath, matchPaths) => {
   }, false);
 };
 
-export const getFirestorePath = (filePath) => {
+export const getFirestorePath = (filePath: string) => {
   const paths = filePath.split("/");
   if (validImagePath(filePath, [constant.coverPath, constant.profilePath])) {
     return paths.slice(1, 3).join("/");
@@ -93,12 +93,12 @@ export const getFirestorePath = (filePath) => {
   return "";
 };
 
-export const getImageId = (filePath) => {
+export const getImageId = (filePath: string) => {
   const paths = filePath.split("/");
   return paths[paths.length - 1].split(".")[0];
 };
 
-export const getToFileFullPath = (filePath, size) => {
+export const getToFileFullPath = (filePath: string, size: number) => {
   // from aa/a.jpg -> to aa/resize/a_600.jpg
   const dirName = path.dirname(filePath) + "/resize";
   const fileName = path.basename(filePath);

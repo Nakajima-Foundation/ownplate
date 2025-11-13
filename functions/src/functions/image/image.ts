@@ -1,13 +1,13 @@
 import * as imageUtil from "./imageUtil";
 import * as constant from "./constant";
 
-export const generateResizeImage = async (db, data) => {
+export const generateResizeImage = async (db: FirebaseFirestore.Firestore, data: { name: string; bucket: string; contentType: string }) => {
   const filePath = data.name; // images/restaurants/0LHzyxxnKZ0eZs3bCaEx/cover.jpg
   const firestorePath = imageUtil.getFirestorePath(filePath);
 
   const imageId = imageUtil.getImageId(filePath);
 
-  const resizedImages = {};
+  const resizedImages: Record<number, string | false> = {};
   await Promise.all(
     constant.sizeOfResize.map(async (size) => {
       const toFileFullPath = imageUtil.getToFileFullPath(filePath, size);
@@ -48,7 +48,7 @@ export const generateResizeImage = async (db, data) => {
   return true;
 };
 
-export const imageProcessing = async (db, data) => {
+export const imageProcessing = async (db: FirebaseFirestore.Firestore, data: { name: string; bucket: string; contentType: string }) => {
   const filePath = data.name; // groups/PMVo9s1nCVoncEwju4P3/articles/6jInK0L8x16NYzh6touo/E42IMDbmuOAZHYkxhO1Q
   const contentType = data.contentType; // image/jpeg
 

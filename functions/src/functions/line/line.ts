@@ -50,7 +50,7 @@ export const verifyFriend = async (db: admin.firestore.Firestore, data: { restau
       return { result: false };
     }
   } catch (error) {
-    throw utils.process_error(error);
+    throw utils.process_error(error as Error);
   }
 };
 
@@ -166,7 +166,7 @@ export const validate = async (db: admin.firestore.Firestore, data: lineValidate
 
     return { profile, nonce: verified.nonce };
   } catch (error) {
-    throw utils.process_error(error);
+    throw utils.process_error(error as Error);
   }
 };
 
