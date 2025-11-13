@@ -4,12 +4,13 @@ import * as path from "path";
 import * as os from "os";
 import * as fs from "fs";
 import sharp from "sharp";
-import UUID from "uuid-v4";
+import { v4 as uuidv4 } from "uuid";
+// import UUID from "uuid-v4";
 
 import * as constant from "./constant";
 
 const runSharp = async (bucket: ReturnType<ReturnType<typeof admin.storage>["bucket"]>, fromFileFullPath: string, toFileFullPath: string, size: number, contentType: string) => {
-  const tmpResizeFile = path.join(os.tmpdir(), UUID());
+  const tmpResizeFile = path.join(os.tmpdir(), uuidv4());
 
   try {
     // resize
@@ -21,7 +22,7 @@ const runSharp = async (bucket: ReturnType<ReturnType<typeof admin.storage>["buc
       .toFile(tmpResizeFile);
 
     // upload
-    const uuid = UUID();
+    const uuid = uuidv4();
     const ret = await bucket.upload(tmpResizeFile, {
       destination: toFileFullPath,
       metadata: {
@@ -41,7 +42,7 @@ const runSharp = async (bucket: ReturnType<ReturnType<typeof admin.storage>["buc
 };
 export const downloadFileFromBucket = async (data: { bucket: string; name: string }) => {
   const bucketObj = admin.storage().bucket(data.bucket);
-  const tempFilePath = path.join(os.tmpdir(), UUID());
+  const tempFilePath = path.join(os.tmpdir(), uuidv4());
 
   await bucketObj.file(data.name).download({ destination: tempFilePath });
   console.log("Image downloaded locally to", tempFilePath);
