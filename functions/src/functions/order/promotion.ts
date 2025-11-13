@@ -1,7 +1,8 @@
 import { HttpsError } from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
+import { PromotionData, RestaurantInfoData } from "../../lib/types";
 
-export const getPromotion = async (db: admin.firestore.Firestore, transaction: admin.firestore.Transaction, promotionId: string, restaurantData: admin.firestore.DocumentData, orderTotal: number, enableStripe: boolean): Promise<admin.firestore.DocumentData> => {
+export const getPromotion = async (db: admin.firestore.Firestore, transaction: admin.firestore.Transaction, promotionId: string, restaurantData: RestaurantInfoData, orderTotal: number, enableStripe: boolean): Promise<PromotionData> => {
   // get promotion
   const promotionPath = `restaurants/${restaurantData.restaurantId}/promotions/${promotionId}`;
   const promotionDoc = await transaction.get(db.doc(promotionPath));
@@ -10,7 +11,7 @@ export const getPromotion = async (db: admin.firestore.Firestore, transaction: a
     throw new HttpsError("invalid-argument", "No promotion exist.");
   }
 
-  const promotionData = promotionDoc.data();
+  const promotionData = promotionDoc.data() as PromotionData | undefined;
 
   if (!promotionData) {
     throw new HttpsError("invalid-argument", "No promotion exist.");
@@ -21,10 +22,10 @@ export const getPromotion = async (db: admin.firestore.Firestore, transaction: a
   }
   const now = new Date();
   if (promotionData.hasTerm) {
-    if (promotionData.termFrom.toDate() > now) {
+    if (promotionData.termFrom && promotionData.termFrom.toDate() > now) {
       throw new HttpsError("invalid-argument", "No promotion exist.");
     }
-    if (now > promotionData.termTo.toDate()) {
+    if (promotionData.termTo && now > promotionData.termTo.toDate()) {
       throw new HttpsError("invalid-argument", "No promotion exist.");
     }
   }
@@ -47,7 +48,7 @@ export const getUserHistoryCollectionPath = (uid: string) => {
   return `/users/${uid}/promotionHistories`;
 };
 
-export const getUserHistoryDoc = async (db: admin.firestore.Firestore, promotionData: admin.firestore.DocumentData, uid: string) => {
+export const getUserHistoryDoc = async (db: admin.firestore.Firestore, promotionData: PromotionData, uid: string) => {
   const collectionPath = getUserHistoryCollectionPath(uid);
   if (promotionData.type === "multipletimesCoupon") {
     const ret = (await db.collection(collectionPath).where("promotionId", "==", promotionData.promotionId).where("used", "==", false).orderBy("createdAt", "asc").limit(1).get())
@@ -63,7 +64,7 @@ export const getUserHistoryDoc = async (db: admin.firestore.Firestore, promotion
   throw new HttpsError("invalid-argument", "No promotion exist.");
 };
 
-export const enableUserPromotion = async (transaction: admin.firestore.Transaction, promotionData: admin.firestore.DocumentData, userPromotionRef: admin.firestore.DocumentReference) => {
+export const enableUserPromotion = async (transaction: admin.firestore.Transaction, promotionData: PromotionData, userPromotionRef: admin.firestore.DocumentReference) => {
   const ret = (await transaction.get(userPromotionRef)).data();
 
   if (promotionData.type === "multipletimesCoupon" || promotionData.type === "onetimeCoupon") {
@@ -79,8 +80,8 @@ export const enableUserPromotion = async (transaction: admin.firestore.Transacti
 };
 
 export const userPromotionHistoryData = (
-  promotionData: admin.firestore.DocumentData,
-  restaurantData: admin.firestore.DocumentData,
+  promotionData: PromotionData,
+  restaurantData: RestaurantInfoData,
   customerUid: string,
   orderId: string,
   totalCharge: number,
@@ -101,7 +102,7 @@ export const userPromotionHistoryData = (
   };
 };
 
-export const getDiscountPrice = (promotion: admin.firestore.DocumentData, total: number) => {
+export const getDiscountPrice = (promotion: PromotionData, total: number) => {
   if (promotion.discountMethod === "amount") {
     return promotion.discountValue;
   } else {

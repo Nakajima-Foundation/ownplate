@@ -7,7 +7,7 @@ import { order_status, next_transitions, order_status_keys, timeEventMapping } f
 import { sendMessageToCustomer } from "../notify2";
 
 import { getStripeAccount, getStripeOrderRecord, getHash } from "../stripe/intent";
-import { orderUpdateData, updateDataOnorderUpdate } from "../../lib/types";
+import { orderUpdateData, updateDataOnorderUpdate, OrderData, RestaurantInfoData, StripeCustomerInfo } from "../../lib/types";
 import { validateOrderUpdate } from "../../lib/validator";
 
 const getMgsKey = (status: number, isEC: boolean, timeEstimated?: admin.firestore.Timestamp) => {
@@ -33,14 +33,14 @@ const getMgsKey = (status: number, isEC: boolean, timeEstimated?: admin.firestor
 const getPaymentIntent = async (
   db: admin.firestore.Firestore,
   restaurantOwnerUid: string,
-  order: admin.firestore.DocumentData,
+  order: OrderData,
   transaction: admin.firestore.Transaction,
   stripeRef: admin.firestore.DocumentReference,
 ) => {
   const stripe = utils.get_stripe_v2();
   const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
   // just for stripe payment
-  if (order.payment.stripe !== "pending") {
+  if (!order.payment || order.payment.stripe !== "pending") {
     throw new HttpsError("failed-precondition", "Stripe process was done.");
   }
   const stripeRecord = await getStripeOrderRecord(transaction, stripeRef);
@@ -74,7 +74,7 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
   }
 
   try {
-    const restaurantData = await utils.get_restaurant(db, restaurantId);
+    const restaurantData = await utils.get_restaurant(db, restaurantId) as RestaurantInfoData;
     if (restaurantData.uid !== ownerUid) {
       throw new HttpsError("permission-denied", "The user does not have an authority to perform this operation.");
     }
@@ -84,7 +84,7 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
     const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`);
 
     const result = await db.runTransaction(async (transaction) => {
-      const order = (await transaction.get(orderRef)).data();
+      const order = (await transaction.get(orderRef)).data() as OrderData | undefined;
       if (!order) {
         throw new HttpsError("invalid-argument", "This order does not exist.");
       }
@@ -112,7 +112,7 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
       (await transaction.get(stripeReadOnlyRef)).data();
 
       const stripeSystemRef = db.doc(`/users/${customerUid}/owner/${restaurantOwnerUid}/system/stripe`);
-      const stripeSystem = (await transaction.get(stripeSystemRef)).data();
+      const stripeSystem = (await transaction.get(stripeSystemRef)).data() as StripeCustomerInfo | undefined;
 
       // everything are ok
       const updateTimeKey = timeEventMapping[order_status_keys[status] as keyof typeof timeEventMapping];
@@ -164,15 +164,17 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
       return { success: true, order };
     });
     const orderData = result.order;
-    const msgKey = getMgsKey(status, orderData.isEC, orderData && orderData.timeEstimated);
+    const msgKey = getMgsKey(status, orderData.isEC || false, orderData.timeEstimated);
     // sendSMS is always true
     if (orderData.sendSMS && msgKey) {
       const params: Record<string, string> = {};
       if (status === order_status.order_accepted || status === order_status.ready_to_pickup) {
-        params["time"] = moment(orderData.timeEstimated.toDate()).tz(utils.timezone).locale("ja").format("LLL");
-        console.log("timeEstimated", params["time"]);
+        if (orderData.timeEstimated) {
+          params["time"] = moment(orderData.timeEstimated.toDate()).tz(utils.timezone).locale("ja").format("LLL");
+          console.log("timeEstimated", params["time"]);
+        }
       }
-      await sendMessageToCustomer(db, msgKey, restaurantData.hasLine, restaurantData.restaurantName, orderData, restaurantId, orderId, params);
+      await sendMessageToCustomer(db, msgKey, restaurantData.hasLine || false, restaurantData.restaurantName, orderData, restaurantId, orderId, params);
     }
     return { result: true };
   } catch (error) {
