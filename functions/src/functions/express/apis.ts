@@ -41,7 +41,7 @@ export const escapePrinterString = (text: string) => {
   return text.replace(/[{}+\-|"`^,;:]+/g, "");
 };
 
-export const getSVG = (restaurantData: any, orderData: any) => {
+export const getSVG = (restaurantData: admin.firestore.DocumentData, orderData: admin.firestore.DocumentData) => {
   const orderNumber = nameOfOrder(orderData.number);
 
   const messages: string[] = [];
@@ -103,37 +103,42 @@ ${orders}
   return svg;
 };
 
-const common = async (req: any, res: any, next: any) => {
+const common = async (req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> => {
   const { restaurantId, starKey } = req.params;
 
   if (!validateFirebaseId(restaurantId)) {
-    return res.status(404).send("");
+    res.status(404).send("");
+    return;
   }
 
   const restaurant = await db.doc(`restaurants/${restaurantId}`).get();
   if (!restaurant || !restaurant.exists) {
-    return res.status(404).send("");
+    res.status(404).send("");
+    return;
   }
-  const restaurant_data: any = restaurant.data();
-  if (!restaurant_data.publicFlag || restaurant_data.deletedFlag) {
-    return res.status(404).send("");
+  const restaurant_data = restaurant.data();
+  if (!restaurant_data || !restaurant_data.publicFlag || restaurant_data.deletedFlag) {
+    res.status(404).send("");
+    return;
   }
 
   const restaurantPrinter = await db.doc(`restaurants/${restaurantId}/private/printer`).get();
   if (!restaurantPrinter || !restaurantPrinter.exists) {
-    return res.status(400).send("");
+    res.status(400).send("");
+    return;
   }
   const restaurantPrinterData = restaurantPrinter.data();
   if (!restaurantPrinterData || restaurantPrinterData.key !== starKey) {
-    return res.status(400).send("");
+    res.status(400).send("");
+    return;
   }
 
   // todo auth
-  req.restaurant = restaurant_data;
+  (req as any).restaurant = restaurant_data;
   next();
 };
 
-const pollingStar = async (req: any, res: any) => {
+const pollingStar = async (req: express.Request, res: express.Response) => {
   const { restaurantId } = req.params;
   const { statusCode } = req.body;
   // console.log("POST", {statusCode}, req.body);
@@ -167,7 +172,7 @@ const pollingStar = async (req: any, res: any) => {
   });
 };
 
-const requestStar = async (req: any, res: any) => {
+const requestStar = async (req: express.Request, res: express.Response) => {
   const { token, type } = req.query;
   const { restaurantId } = req.params;
   console.log("GET", { type });
@@ -175,7 +180,7 @@ const requestStar = async (req: any, res: any) => {
   if (token) {
     const doc = await db.doc(`restaurants/${restaurantId}/orders/` + token).get();
 
-    const svg = getSVG(req.restaurant, doc.data());
+    const svg = getSVG((req as any).restaurant, doc.data()!);
     // const png = await convert(svg, {background: "white"});
     const png = await sharp(Buffer.from(svg))
       .flatten({ background: { r: 255, g: 255, b: 255 } })
@@ -187,7 +192,7 @@ const requestStar = async (req: any, res: any) => {
   return res.status(200).json({});
 };
 
-const deleteStar = async (req: any, res: any) => {
+const deleteStar = async (req: express.Request, res: express.Response) => {
   // const { uid, type, mac, token } = req.query;
   const { token, code, retry } = req.query;
   const { restaurantId } = req.params;

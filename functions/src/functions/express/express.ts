@@ -85,7 +85,7 @@ const escapeHtml = (str: string): string => {
   if (typeof str !== "string") {
     return "";
   }
-  const mapping: any = {
+  const mapping: Record<string, string> = {
     "&": "&amp;",
     "'": "&#x27;",
     "`": "&#x60;",
@@ -102,7 +102,10 @@ const getMenuData = async (restaurantName: string, menuId: string) => {
   if (menuId) {
     const menu = await db.doc(`restaurants/${restaurantName}/menus/${menuId}`).get();
     if (menu && menu.exists) {
-      const menu_data: any = menu.data();
+      const menu_data = menu.data();
+      if (!menu_data) {
+        return { exists: false };
+      }
       return {
         image: (menu_data?.images?.item?.resizedImages || {})["600"] || menu_data.itemPhoto,
         description: menu_data?.itemDescription,
@@ -115,7 +118,7 @@ const getMenuData = async (restaurantName: string, menuId: string) => {
     exists: false,
   };
 };
-const ogpPage = async (req: any, res: any) => {
+const ogpPage = async (req: express.Request, res: express.Response): Promise<void> => {
   const { restaurantName, menuId } = req.params;
   const template_data = fs.readFileSync("./templates/index.html", {
     encoding: "utf8",
@@ -129,26 +132,31 @@ const ogpPage = async (req: any, res: any) => {
   res.setHeader("Referrer-Policy", "no-referrer");
   try {
     if (!validateFirebaseId(restaurantName)) {
-      return res.status(404).send(template_data);
+      res.status(404).send(template_data);
+      return;
     }
     if (menuId && !validateFirebaseId(menuId)) {
-      return res.status(404).send(template_data);
+      res.status(404).send(template_data);
+      return;
     }
     const restaurant = await db.doc(`restaurants/${restaurantName}`).get();
 
     if (!restaurant || !restaurant.exists) {
-      return res.status(404).send(template_data);
+      res.status(404).send(template_data);
+      return;
     }
-    const restaurant_data: any = restaurant.data();
-    if (restaurant_data.deletedFlag || !restaurant_data.publicFlag) {
-      return res.status(404).send(template_data);
+    const restaurant_data = restaurant.data();
+    if (!restaurant_data || restaurant_data.deletedFlag || !restaurant_data.publicFlag) {
+      res.status(404).send(template_data);
+      return;
     }
 
     const menuData = await getMenuData(restaurantName, menuId);
 
     const ownerData = await getShopOwner(restaurant_data.uid);
     if (!ownerData) {
-      return res.status(404).send(template_data);
+      res.status(404).send(template_data);
+      return;
     }
 
     const siteName = ownPlateConfig.siteName;
@@ -217,7 +225,7 @@ const ogpPage = async (req: any, res: any) => {
   }
 };
 
-const ownerPage = async (req: any, res: any) => {
+const ownerPage = async (req: express.Request, res: express.Response): Promise<void> => {
   const { ownerId } = req.params;
   const template_data = fs.readFileSync("./templates/index.html", {
     encoding: "utf8",
@@ -230,11 +238,13 @@ const ownerPage = async (req: any, res: any) => {
   res.setHeader("Referrer-Policy", "no-referrer");
   try {
     if (!validateFirebaseId(ownerId)) {
-      return res.status(404).send(template_data);
+      res.status(404).send(template_data);
+      return;
     }
     const ownerData = await getOwnerData(ownerId);
     if (!ownerData) {
-      return res.send(template_data);
+      res.send(template_data);
+      return;
     }
 
     const siteName = ownPlateConfig.siteName;

@@ -103,7 +103,7 @@ export const processAction = async (data: { contractId: string; action: string; 
   }
 };
 
-const webhook = async (req: any, res: any) => {
+const webhook = async (req: express.Request, res: express.Response) => {
   const data = req.body;
 
   const contractId = req.body.contractId;
