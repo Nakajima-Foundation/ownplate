@@ -8,8 +8,8 @@ import { orderCreatedData } from "../../lib/types";
 import { MenuItem } from "../../models/menu";
 import { validateOrderCreated } from "../../lib/validator";
 
-const getOptionPrice = (selectedOptionsRaw, menu, multiple) => {
-  return selectedOptionsRaw.reduce((tmpPrice, selectedOpt, key) => {
+const getOptionPrice = (selectedOptionsRaw: any[], menu: any, multiple: number) => {
+  return selectedOptionsRaw.reduce((tmpPrice: number, selectedOpt: any, key: number) => {
     const opt = menu.itemOptionCheckbox[key].split(",");
     if (opt.length === 1) {
       if (selectedOpt) {
@@ -22,7 +22,7 @@ const getOptionPrice = (selectedOptionsRaw, menu, multiple) => {
   }, 0);
 };
 
-export const orderAccounting = (restaurantData, food_sub_total, alcohol_sub_total, multiple) => {
+export const orderAccounting = (restaurantData: any, food_sub_total: number, alcohol_sub_total: number, multiple: number) => {
   // tax rate
   const inclusiveTax = restaurantData.inclusiveTax || false;
   const alcoholTax = restaurantData.alcoholTax || 0;
@@ -67,14 +67,22 @@ export const orderAccounting = (restaurantData, food_sub_total, alcohol_sub_tota
 };
 
 // restaurantData is for mo.
-export const createNewOrderData = async (restaurantRef, orderRef, orderData, multiple) => {
+export const createNewOrderData = async (
+  restaurantRef: admin.firestore.DocumentReference,
+  orderRef: admin.firestore.DocumentReference,
+  orderData: any,
+  multiple: number,
+): Promise<
+  | { result: true, data: { newOrderData: any; newItems: any; newPrices: any; food_sub_total: number; alcohol_sub_total: number }}
+  | { result: false }
+> => {
   const menuIds = Object.keys(orderData.order);
   const menuObj = await utils.getMenuObj(restaurantRef, menuIds);
 
   // ret
-  const newOrderData = {};
-  const newItems = {};
-  const newPrices = {};
+  const newOrderData: any = {};
+  const newItems: any = {};
+  const newPrices: any = {};
 
   let food_sub_total = 0;
   let alcohol_sub_total = 0;
@@ -86,7 +94,8 @@ export const createNewOrderData = async (restaurantRef, orderRef, orderData, mul
     })
   ) {
     console.error("[createNewOrderData] menuError");
-    return orderRef.update("status", order_status.error);
+    await orderRef.update("status", order_status.error);
+    return { result: false };
   }
 
   menuIds.map((menuId) => {
@@ -142,15 +151,18 @@ export const createNewOrderData = async (restaurantRef, orderRef, orderData, mul
     newItems[menuId] = utils.filterData(menuItem);
   });
   return {
-    newOrderData,
-    newItems,
-    newPrices,
-    food_sub_total,
-    alcohol_sub_total,
+    result: true,
+    data: {
+      newOrderData,
+      newItems,
+      newPrices,
+      food_sub_total,
+      alcohol_sub_total,
+    },
   };
 };
 
-export const orderCreated = async (db: admin.firestore.Firestore, data: orderCreatedData, context) => {
+export const orderCreated = async (db: admin.firestore.Firestore, data: orderCreatedData, context: any) => {
   const customerUid = utils.validate_customer_auth(context);
 
   const { restaurantId, orderId } = data;
@@ -214,7 +226,11 @@ export const orderCreated = async (db: admin.firestore.Firestore, data: orderCre
 
     const multiple = utils.stripeRegion.multiple; //100 for USD, 1 for JPY
 
-    const { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total } = await createNewOrderData(restaurantRef, orderRef, orderData, multiple);
+    const res = await createNewOrderData(restaurantRef, orderRef, orderData, multiple);
+    if (!res.result) {
+      throw new functions.https.HttpsError("permission-denied", "unknown error.");
+    }
+    const { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total } = res.data;
 
     // Atomically increment the orderCount of the restaurant
     let orderCount = 0;
