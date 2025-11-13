@@ -95,7 +95,8 @@ import {
 import { useRoute, onBeforeRouteLeave } from "vue-router";
 import { useHead } from "@unhead/vue";
 
-import { OrderInfoData, OrderMenuItemData } from "@/models/orderInfo";
+import { OrderInfoData } from "@/models/orderInfo";
+import { MenuItem } from "@/models/menu";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 export default defineComponent({
@@ -140,7 +141,7 @@ export default defineComponent({
     const transactions = ref();
     const orderInfo = ref<OrderInfoData>({} as OrderInfoData);
     const hasFriends = ref<boolean | null>(null);
-    const menuObj = ref<{ [key: string]: OrderMenuItemData } | null>(null);
+    const menuObj = ref<{ [key: string]: MenuItem } | null>(null);
     const detachers: Unsubscribe[] = [];
     const menuNotFound = ref<boolean | null>(null);
 

@@ -6,13 +6,6 @@ import { stripeRegion, orderType } from "@/utils/utils";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { CustomerInfo } from "@/models/customer";
 
-export interface OrderMenuItemData extends MenuItem {
-  // alias
-
-  productId: string; //mo
-  category: string; //mo
-  subCategory: string; //mo
-}
 export interface OrderInfoData {
   id: string;
   name: string;
@@ -54,7 +47,7 @@ export interface OrderInfoData {
   isEC: boolean;
   isPickup: boolean;
   tip: number;
-  menuItems: { [key: string]: OrderMenuItemData };
+  menuItems: { [key: string]: MenuItem };
   phoneNumber: string;
   order: { [key: string]: [number] };
   options: { [key: string]: [string] };
@@ -79,7 +72,7 @@ export interface OrderInfoData {
 }
 
 export interface OrderItemData {
-  item: OrderMenuItemData;
+  item: MenuItem;
   count: number | number[];
   id: string;
   options: string | [string];
