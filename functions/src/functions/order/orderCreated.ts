@@ -17,7 +17,7 @@ const getOptionPrice = (selectedOptionsRaw: OptionValue[], menu: MenuData, multi
         return tmpPrice + Math.round(utils.optionPrice(opt[0]) * multiple) / multiple;
       }
     } else {
-      const optIndex = typeof selectedOpt === 'number' ? selectedOpt : Number(selectedOpt);
+      const optIndex = typeof selectedOpt === "number" ? selectedOpt : Number(selectedOpt);
       return tmpPrice + Math.round(utils.optionPrice(opt[optIndex]) * multiple) / multiple;
     }
     return tmpPrice;
