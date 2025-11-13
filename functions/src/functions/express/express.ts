@@ -320,15 +320,15 @@ export const stripe_parser = async (req: express.Request & { rawBody?: Buffer },
     }
 
     if (event.type === "capability.updated") {
-      await stripeLog.capability_updated(db, event as unknown as { data: { object: { account: string; status: string; id: string } } });
+      await stripeLog.capability_updated(db, event);
     } else if (event.type === "account.updated") {
-      await stripeLog.account_updated(db, event as unknown as { data: { object: { id: string } } });
+      await stripeLog.account_updated(db, event);
     } else if (event.type === "account.application.authorized") {
-      await stripeLog.account_authorized(db, event as unknown as { account: string });
+      await stripeLog.account_authorized(db, event);
     } else if (event.type === "account.application.deauthorized") {
-      await stripeLog.account_deauthorized(db, event as unknown as { account: string });
+      await stripeLog.account_deauthorized(db, event);
     } else {
-      await stripeLog.unknown_log(db, event as unknown as { account?: string; id?: string });
+      await stripeLog.unknown_log(db, event);
     }
     return res.json({});
   } catch (err) {
