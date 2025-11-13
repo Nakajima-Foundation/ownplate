@@ -149,7 +149,7 @@ const validateArray = {
   newOrder: validateNewOrder,
 };
 
-const validateData = (data, validator) => {
+const validateData = (data: Record<string, any>, validator: Record<string, any>) => {
   const errors = Object.keys(validator).reduce((tmp: unknown[], key: string) => {
     const rule = validator[key];
     if (rule.required && isEmpty(data[key])) {
@@ -160,7 +160,8 @@ const validateData = (data, validator) => {
       return tmp;
     }
     if (!isEmpty(data[key])) {
-      if (!validateArray[rule.type](data[key])) {
+      const validator = validateArray[rule.type as keyof typeof validateArray];
+      if (validator && !validator(data[key] as never)) {
         tmp.push({
           key,
           error: "invalid",
