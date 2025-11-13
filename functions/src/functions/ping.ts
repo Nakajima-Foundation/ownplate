@@ -6,7 +6,13 @@ import { validatePing } from "../lib/validator";
 import { pingData } from "../lib/types";
 import * as utils from "../lib/utils";
 
-export const operationLog = (context: CallableRequest, params: any) => {
+type OperationLogParams = {
+  restaurantId: string;
+  operationType: string;
+  pathName: string;
+};
+
+export const operationLog = (context: CallableRequest, params: OperationLogParams) => {
   const uid = context.auth?.uid;
   const restaurantId = params.restaurantId || "-----";
   const operationType = params.operationType || "-----";
