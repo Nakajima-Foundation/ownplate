@@ -7,6 +7,7 @@ import * as fs from "fs";
 import i18next from "i18next";
 import { resources } from "./resources";
 import * as utils from "../lib/utils";
+import { MenuItem } from "../models/menu";
 
 import { ownPlateConfig } from "../common/project";
 import { getLineId, getLiffPrivateConfig } from "./line/line";
@@ -110,7 +111,7 @@ export const createNotifyRestaurantMailMessage = async (messageId: string, resta
   const orderName = utils.nameOfOrder(orderNumber);
   const orders = Object.keys(order.order)
     .map((menuId) => {
-      const menu = order.menuItems[menuId];
+      const menu = order.menuItems[menuId] as MenuItem;
       const name = menu.itemName;
       return Object.keys(order.order[menuId])
         .map((key) => {

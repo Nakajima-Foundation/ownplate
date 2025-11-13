@@ -5,10 +5,11 @@ import { order_status } from "../../common/constant";
 import { createCustomer } from "../stripe/customer";
 
 import { orderCreatedData } from "../../lib/types";
-import { MenuItem } from "../../models/menu";
+import { MenuItem, MenuData } from "../../models/menu";
+import { RestaurantInfoData } from "../../models/RestaurantInfo";
 import { validateOrderCreated } from "../../lib/validator";
 
-const getOptionPrice = (selectedOptionsRaw: any[], menu: any, multiple: number) => {
+const getOptionPrice = (selectedOptionsRaw: any[], menu: MenuData, multiple: number) => {
   return selectedOptionsRaw.reduce((tmpPrice: number, selectedOpt: any, key: number) => {
     const opt = menu.itemOptionCheckbox[key].split(",");
     if (opt.length === 1) {
@@ -22,7 +23,7 @@ const getOptionPrice = (selectedOptionsRaw: any[], menu: any, multiple: number) 
   }, 0);
 };
 
-export const orderAccounting = (restaurantData: any, food_sub_total: number, alcohol_sub_total: number, multiple: number) => {
+export const orderAccounting = (restaurantData: RestaurantInfoData, food_sub_total: number, alcohol_sub_total: number, multiple: number) => {
   // tax rate
   const inclusiveTax = restaurantData.inclusiveTax || false;
   const alcoholTax = restaurantData.alcoholTax || 0;
@@ -99,7 +100,7 @@ export const createNewOrderData = async (
   }
 
   menuIds.map((menuId) => {
-    const menu = menuObj[menuId];
+    const menu = menuObj[menuId] as MenuData;
 
     if (menu.soldOut) {
       return;
@@ -183,7 +184,7 @@ export const orderCreated = async (db: admin.firestore.Firestore, data: orderCre
       console.error("[orderCreated] noRestaurant");
       return orderRef.update("status", order_status.error);
     }
-    const restaurantData = restaurantDoc.data();
+    const restaurantData = restaurantDoc.data() as RestaurantInfoData;
     if (!restaurantData) {
       console.error("[orderCreated] noRestaurant");
       return orderRef.update("status", order_status.error);
