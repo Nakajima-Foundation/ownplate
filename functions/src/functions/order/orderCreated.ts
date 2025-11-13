@@ -1,3 +1,4 @@
+import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 import * as utils from "../../lib/utils";
 import { order_status } from "../../common/constant";
@@ -149,7 +150,7 @@ export const createNewOrderData = async (restaurantRef, orderRef, orderData, mul
   };
 };
 
-export const orderCreated = async (db, data: orderCreatedData, context) => {
+export const orderCreated = async (db: admin.firestore.Firestore, data: orderCreatedData, context) => {
   const customerUid = utils.validate_customer_auth(context);
 
   const { restaurantId, orderId } = data;
@@ -171,6 +172,10 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
       return orderRef.update("status", order_status.error);
     }
     const restaurantData = restaurantDoc.data();
+    if (!restaurantData) {
+      console.error("[orderCreated] noRestaurant");
+      return orderRef.update("status", order_status.error);
+    }
 
     if (restaurantData.deletedFlag || !restaurantData.publicFlag) {
       console.error("[orderCreated] not exists");
