@@ -152,6 +152,11 @@ export interface RestaurantData {
   phoneNumber: string;
 }
 
+// Order option types
+export type OptionValue = string | number | boolean | null;
+export type OrderOptions = OptionValue[];
+export type OrderRawOption = OptionValue;
+
 // Order related types
 export interface OrderData {
   id?: string;
@@ -162,8 +167,8 @@ export interface OrderData {
   order: { [menuId: string]: number | number[] };
   menuItems?: { [menuId: string]: MenuItem };
   prices?: { [menuId: string]: number[] };
-  options?: { [menuId: string]: any[] };
-  rawOptions?: { [menuId: string]: any[][] };
+  options?: { [menuId: string]: OrderOptions[] };
+  rawOptions?: { [menuId: string]: OrderRawOption[] };
   total: number;
   sub_total?: number;
   tax?: number;
@@ -291,10 +296,74 @@ export interface StripeCustomerInfo {
   payment_method?: string;
 }
 
+export interface StripeLatestCharge {
+  payment_method: string;
+  payment_method_details: {
+    card?: {
+      exp_month: number;
+      exp_year: number;
+      brand: string;
+      last4: string;
+    };
+    type: string;
+  };
+}
+
+export interface StripePaymentIntentWithCharge {
+  latest_charge?: StripeLatestCharge;
+  [key: string]: unknown;
+}
+
 export interface PostageData {
-  [key: string]: any;
+  [prefectureId: string]: number;
 }
 
 export interface DeliveryData {
-  [key: string]: any;
+  [areaId: string]: {
+    fee?: number;
+    minAmount?: number;
+  };
+}
+
+// Validator option types
+export interface ValidatorNumberOption {
+  min?: number;
+  max?: number;
+  minDigits?: number;
+  maxDigits?: number;
+  required?: boolean;
+}
+
+export interface ValidatorStringOption {
+  minLength?: number;
+  maxLength?: number;
+  minLen?: number;
+  maxLen?: number;
+  required?: boolean;
+  pattern?: RegExp;
+  type?: "number" | "alpha" | "alphanumeric" | "url";
+}
+
+// Express extended request types
+export interface RequestWithRestaurant extends Express.Request {
+  restaurant?: RestaurantInfoData;
+}
+
+// LINE API response types
+export interface LineVerifyResponse {
+  sub: string;
+  nonce?: string;
+  [key: string]: unknown;
+}
+
+export interface LineAccessTokenResponse {
+  access_token: string;
+  id_token?: string;
+  [key: string]: unknown;
+}
+
+export interface LineProfileResponse {
+  userId: string;
+  displayName?: string;
+  [key: string]: unknown;
 }
