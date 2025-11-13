@@ -168,7 +168,7 @@ export interface OrderData {
   menuItems?: { [menuId: string]: MenuItem };
   prices?: { [menuId: string]: number[] };
   options?: { [menuId: string]: OrderOptions[] };
-  rawOptions?: { [menuId: string]: OrderRawOption[] };
+  rawOptions?: { [menuId: string]: OptionValue[][] };
   total: number;
   sub_total?: number;
   tax?: number;

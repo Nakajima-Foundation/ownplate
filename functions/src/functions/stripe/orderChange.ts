@@ -9,7 +9,7 @@ import { sendMessageToCustomer } from "../notify2";
 import { costCal } from "../../utils/commonUtils";
 import { getStripeAccount, getStripeOrderRecord, getPaymentMethodData, getHash } from "./intent";
 
-import { orderChangeData, newOrderData } from "../../lib/types";
+import { orderChangeData, newOrderData, OptionValue } from "../../lib/types";
 import { validateOrderChange } from "../../lib/validator";
 
 type OrderQuantityMap = Record<string, number[]>;
@@ -101,7 +101,7 @@ export const orderChange = async (db: admin.firestore.Firestore, data: orderChan
     const baseData = {
       ...order,
       order: updateOrderData,
-      rawOptions: updateRawOptions as { [menuId: string]: any[][] },
+      rawOptions: updateRawOptions as { [menuId: string]: OptionValue[][] },
     };
     const res = await createNewOrderData(menuRestaurantRef, orderRef, baseData, multiple);
     if (!res.result) {
