@@ -5,7 +5,7 @@ import { enableNotification } from "../notificationConfig";
 const secret_aws_key = defineSecret("AWS_SES_USER");
 const secret_aws_secret = defineSecret("AWS_SES_PASS");
 
-export const sendMail = async (to, title, body) => {
+export const sendMail = async (to: string, title: string, body: string) => {
   if (!enableNotification) {
     return;
   }
