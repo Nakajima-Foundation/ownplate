@@ -18,11 +18,11 @@ export type OrderStatus = (typeof order_status)[keyof typeof order_status];
 
 export const order_status_for_form: { [key: string]: number } = {
   error: 0,
-  order_placed: 300, // by user and stripe
-  order_accepted: 400, // by restaurant
-  ready_to_pickup: 600, // by restaurant and stripe
-  transaction_complete: 650, // by restaurant (optional)
-  order_canceled: 700, // by restaurant or user
+  order_placed: order_status.order_placed, // by user and stripe
+  order_accepted: order_status.order_accepted, // by restaurant
+  ready_to_pickup: order_status.ready_to_pickup, // by restaurant and stripe
+  transaction_complete: order_status.transaction_complete, // by restaurant (optional)
+  order_canceled: order_status.order_canceled, // by restaurant or user
 };
 
 export const order_status_keys = Object.keys(order_status).reduce(
@@ -100,59 +100,6 @@ export const daysOfWeek = {
   6: "saturday",
   7: "sunday",
 };
-
-export const USStates = [
-  "Alabama",
-  "Alaska",
-  "Arizona",
-  "Arkansas",
-  "California",
-  "Colorado",
-  "Connecticut",
-  "Delaware",
-  "Florida",
-  "Georgia",
-  "Hawaii",
-  "Idaho",
-  "Illinois",
-  "Indiana",
-  "Iowa",
-  "Kansas",
-  "Kentucky",
-  "Louisiana",
-  "Maine",
-  "Maryland",
-  "Massachusetts",
-  "Michigan",
-  "Minnesota",
-  "Mississippi",
-  "Missouri",
-  "Montana",
-  "Nebraska",
-  "Nevada",
-  "New Hampshire",
-  "New Jersey",
-  "New Mexico",
-  "New York",
-  "North Carolina",
-  "North Dakota",
-  "Ohio",
-  "Oklahoma",
-  "Oregon",
-  "Pennsylvania",
-  "Rhode Island",
-  "South Carolina",
-  "South Dakota",
-  "Tennessee",
-  "Texas",
-  "Utah",
-  "Vermont",
-  "Virginia",
-  "Washington",
-  "West Virginia",
-  "Wisconsin",
-  "Wyoming",
-];
 
 export const JPPrefecture = [
   "北海道",
@@ -269,73 +216,40 @@ export const paymentMethods = [
   { key: "unipay" },
 ];
 
-export const regionalSettings = {
-  US: {
-    CurrencyKey: "USD",
-    StateKey: "shopInfo.state",
-    AddressStates: USStates,
-    Logo: "OwnPlate-Logo-Horizontal-YellowBlack.svg",
-    Logo2: "OwnPlate-Logo-Stack-YellowBlack.svg",
-    FeatureHeroMobile: {
-      ja: "Feature-Hero-Mobile-ja.svg",
-      en: "Feature-Hero-Mobile-en.svg",
-    },
-    FeatureHeroTablet: {
-      ja: "Feature-Hero-Tablet-ja.svg",
-      en: "Feature-Hero-Tablet-en.svg",
-    },
-    FeatureHero: {
-      ja: "Feature-Hero-v01-ja.svg",
-      en: "Feature-Hero-v01-en.svg",
-    },
-    taxRateKeys: {
-      food: "food",
-      alcohol: "alcohol",
-    },
-    defaultLanguage: "en",
-    languages: {
-      en: "English (US)",
-      es: "Español",
-      ja: "日本語",
-    },
-    covid19trace: false,
-    hashTag: "ownplate",
+export const regionalSetting = {
+  CurrencyKey: "JPY",
+  StateKey: "shopInfo.prefecture",
+  AddressStates: JPPrefecture,
+  Logo: "Omochikaeri-Logo-Horizontal-Primary.png",
+  Logo2: "Omochikaeri-Logo-Stack-Primary.png",
+  FeatureHeroMobile: {
+    ja: "Feature-Hero-Mobile-ja.svg",
+    en: "Feature-Hero-Mobile-en.svg",
   },
-  JP: {
-    CurrencyKey: "JPY",
-    StateKey: "shopInfo.prefecture",
-    AddressStates: JPPrefecture,
-    Logo: "Omochikaeri-Logo-Horizontal-Primary.png",
-    Logo2: "Omochikaeri-Logo-Stack-Primary.png",
-    FeatureHeroMobile: {
-      ja: "Feature-Hero-Mobile-ja.svg",
-      en: "Feature-Hero-Mobile-en.svg",
-    },
-    FeatureHeroTablet: {
-      ja: "Feature-Hero-Tablet-ja.svg",
-      en: "Feature-Hero-Tablet-en.svg",
-    },
-    FeatureHero: {
-      ja: "Feature-Hero-v01-ja.svg",
-      en: "Feature-Hero-v01-en.svg",
-    },
-    defaultTax: {
-      foodTax: 8,
-      alcoholTax: 10,
-    },
-    taxRateKeys: {
-      food: "foodJP",
-      alcohol: "alcoholJP",
-    },
-    defaultLanguage: "ja",
-    languages: {
-      ja: "日本語",
-      en: "English (US)",
-      fr: "French",
-    },
-    covid19trace: true,
-    hashTag: "omochikaeri",
+  FeatureHeroTablet: {
+    ja: "Feature-Hero-Tablet-ja.svg",
+    en: "Feature-Hero-Tablet-en.svg",
   },
+  FeatureHero: {
+    ja: "Feature-Hero-v01-ja.svg",
+    en: "Feature-Hero-v01-en.svg",
+  },
+  defaultTax: {
+    foodTax: 8,
+    alcoholTax: 10,
+  },
+  taxRateKeys: {
+    food: "foodJP",
+    alcohol: "alcoholJP",
+  },
+  defaultLanguage: "ja",
+  languages: {
+    ja: "日本語",
+    en: "English (US)",
+    fr: "French",
+  },
+  covid19trace: true,
+  hashTag: "omochikaeri",
 };
 
 export const soundFiles = [

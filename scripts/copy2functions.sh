@@ -10,4 +10,5 @@ cp src/models/orderInfoData.ts functions/src/models/orderInfoData.ts
 cp src/models/functionTypes.ts functions/src/models/functionTypes.ts
 cp src/models/orderTypes.ts functions/src/models/orderTypes.ts
 cp src/models/promotionTypes.ts functions/src/models/promotionTypes.ts
+# Note: common.ts is NOT copied - it has different import paths for Vue vs Functions
 
