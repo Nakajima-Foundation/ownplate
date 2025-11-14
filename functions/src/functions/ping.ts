@@ -3,7 +3,7 @@ import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
 import { log } from "firebase-functions/logger";
 
 import { validatePing } from "../lib/validator";
-import { PingData } from "../lib/types";
+import { PingData } from "../models/functionTypes";
 import * as utils from "../lib/utils";
 
 type OperationLogParams = {

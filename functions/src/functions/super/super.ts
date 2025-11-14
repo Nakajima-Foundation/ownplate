@@ -2,7 +2,7 @@ import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
 import * as utils from "../../lib/utils";
 import * as admin from "firebase-admin";
 
-import { DispatchData } from "../../lib/types";
+import { DispatchData } from "../../models/functionTypes";
 
 export const dispatch = async (db: admin.firestore.Firestore, data: DispatchData, context: CallableRequest) => {
   if (!context.auth?.token?.admin) {

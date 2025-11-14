@@ -6,7 +6,8 @@ import * as netutils from "../../lib/netutils";
 import * as admin from "firebase-admin";
 import { ownPlateConfig } from "../../common/project";
 
-import { LineValidateData, LineAccessTokenResponse, LineProfileResponse, LineVerifyResponse } from "../../lib/types";
+import { LineValidateData } from "../../models/functionTypes";
+import { LineAccessTokenResponse, LineProfileResponse, LineVerifyResponse } from "../../lib/types";
 import { validateLineValidate } from "../../lib/validator";
 
 const line_message_token = defineSecret("LINE_MESSAGE_TOKEN");
