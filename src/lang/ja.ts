@@ -1173,6 +1173,22 @@ const data = {
       "download-csv-monthly-details":
         "エクセルデータダウンロード（月次報告 詳細）",
     },
+    totp: {
+      setup: "二要素認証の設定",
+      scanQrCode: "認証アプリでQRコードをスキャンしてください",
+      orEnterManually: "または手動で入力:",
+      enterCode: "認証コードを入力してください",
+      codePlaceholder: "6桁のコード",
+      enrollmentComplete: "二要素認証の設定が完了しました",
+      verification: "二要素認証",
+      verificationMessage: "認証アプリで生成された6桁のコードを入力してください",
+      error: {
+        generateFailed: "二要素認証の設定に失敗しました",
+        invalidCode: "無効なコードです",
+        enrollmentFailed: "認証に失敗しました。もう一度お試しください",
+        verificationFailed: "認証に失敗しました。コードを確認してください",
+      },
+    },
     error: {
       memoLength: "メッセージは500文字以内で入力してください。",
       email: {

@@ -1,6 +1,12 @@
 <template>
   <div class="mx-6 mt-2 lg:mx-auto lg:max-w-2xl">
-    <div class="mt-4 rounded-lg bg-white p-6 shadow-sm">
+    <!-- TOTP Enrollment -->
+    <div v-if="showTotpEnrollment" class="mt-4">
+      <TotpEnrollment @complete="handleTotpComplete" @skip="handleTotpSkip" />
+    </div>
+
+    <!-- Signup Form -->
+    <div v-else class="mt-4 rounded-lg bg-white p-6 shadow-sm">
       <form @submit.prevent="onSignup">
         <!-- Title -->
         <div v-if="partner">
@@ -186,9 +192,13 @@ import {
 
 import { useRoute, useRouter } from "vue-router";
 import { useHead } from "@unhead/vue";
+import TotpEnrollment from "@/components/Auth/TotpEnrollment.vue";
 
 export default defineComponent({
   name: "Signup",
+  components: {
+    TotpEnrollment,
+  },
   setup() {
     const router = useRouter();
     const route = useRoute();
@@ -203,6 +213,7 @@ export default defineComponent({
     const deferredPush = ref(false);
     const emailTaken = ref("---invalid---");
     const submitted = ref(false);
+    const showTotpEnrollment = ref(false);
 
     useHead(() => ({
       title: [defaultTitle, "Signup"].join(" / "),
@@ -257,6 +268,25 @@ export default defineComponent({
     const handleCancel = () => {
       router.push("/");
     };
+
+    const handleTotpComplete = () => {
+      // TOTP enrollment completed, redirect to admin page
+      if (user.value) {
+        router.push("/admin/restaurants");
+      } else {
+        deferredPush.value = true;
+      }
+    };
+
+    const handleTotpSkip = () => {
+      // User skipped TOTP enrollment, redirect to admin page
+      if (user.value) {
+        router.push("/admin/restaurants");
+      } else {
+        deferredPush.value = true;
+      }
+    };
+
     const onSignup = async () => {
       submitted.value = true;
       if (hasError.value) {
@@ -292,13 +322,9 @@ export default defineComponent({
           console.log(e);
         }
         generalStore.setLoading(false);
-        if (user) {
-          console.log("signup calling push");
-          router.push("/admin/restaurants");
-        } else {
-          console.log("signup deferred push");
-          deferredPush.value = true;
-        }
+
+        // Show TOTP enrollment (optional)
+        showTotpEnrollment.value = true;
       } catch (error: any) {
         generalStore.setLoading(false);
 
@@ -319,13 +345,16 @@ export default defineComponent({
       deferredPush,
       emailTaken,
       submitted,
+      showTotpEnrollment,
 
       // computed
       partner,
       errors,
       hasError,
-      // metho
+      // method
       handleCancel,
+      handleTotpComplete,
+      handleTotpSkip,
       onSignup,
 
       isLocaleJapan,

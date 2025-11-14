@@ -1178,6 +1178,22 @@ const data = {
       "download-csv-history-details": "Download Excel File (History Details)",
       "download-csv-monthly-details": "Download Excel File (Monthly Details)",
     },
+    totp: {
+      setup: "Two-Factor Authentication Setup",
+      scanQrCode: "Scan this QR code with your authenticator app",
+      orEnterManually: "Or enter manually:",
+      enterCode: "Enter verification code",
+      codePlaceholder: "6-digit code",
+      enrollmentComplete: "Two-factor authentication setup complete",
+      verification: "Two-Factor Authentication",
+      verificationMessage: "Please enter the 6-digit code from your authenticator app",
+      error: {
+        generateFailed: "Failed to generate two-factor authentication",
+        invalidCode: "Invalid code",
+        enrollmentFailed: "Failed to enroll. Please try again",
+        verificationFailed: "Verification failed. Please check your code",
+      },
+    },
     error: {
       memoLength: "Please enter your message within 500 characters.",
       email: {

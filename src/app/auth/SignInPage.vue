@@ -1,7 +1,18 @@
 <template>
   <div class="mx-6 mt-2 lg:mx-auto lg:max-w-2xl">
-    <!-- Note for the First User -->
-    <div class="rounded-lg bg-green-600/10 p-6">
+    <!-- TOTP Verification -->
+    <div v-if="showTotpVerification && mfaResolver">
+      <TotpVerification
+        :resolver="mfaResolver"
+        @complete="handleTotpComplete"
+        @cancel="handleTotpCancel"
+      />
+    </div>
+
+    <!-- Normal Sign-In Flow -->
+    <div v-else>
+      <!-- Note for the First User -->
+      <div class="rounded-lg bg-green-600/10 p-6">
       <div class="flex">
         <div>
           <i class="material-icons mr-4 shrink-0 text-4xl text-green-600"
@@ -120,22 +131,23 @@
       </form>
     </div>
 
-    <!-- Sign Up as a New User -->
-    <div class="mt-12 text-center">
-      <div class="font-bold text-black/40">
-        {{ $t("admin.forSignup") }}
-      </div>
+      <!-- Sign Up as a New User -->
+      <div class="mt-12 text-center">
+        <div class="font-bold text-black/40">
+          {{ $t("admin.forSignup") }}
+        </div>
 
-      <div class="mt-2">
-        <router-link to="/admin/user/signup">
-          <div
-            class="bg-ownplate-yellow hover:bg-ownplate-yellow/80 inline-flex h-16 items-center rounded-full px-8 shadow-sm"
-          >
-            <span class="text-xl font-bold text-black opacity-90">
-              {{ $t("lp.signUpForFree") }}
-            </span>
-          </div>
-        </router-link>
+        <div class="mt-2">
+          <router-link to="/admin/user/signup">
+            <div
+              class="bg-ownplate-yellow hover:bg-ownplate-yellow/80 inline-flex h-16 items-center rounded-full px-8 shadow-sm"
+            >
+              <span class="text-xl font-bold text-black opacity-90">
+                {{ $t("lp.signUpForFree") }}
+              </span>
+            </div>
+          </router-link>
+        </div>
       </div>
     </div>
   </div>
@@ -144,15 +156,23 @@
 <script lang="ts">
 import { defineComponent, ref, watch } from "vue";
 import { auth } from "@/lib/firebase/firebase9";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  MultiFactorResolver,
+  getMultiFactorResolver,
+} from "firebase/auth";
 import { useUserData, defaultTitle } from "@/utils/utils";
 
 import { useRoute, useRouter } from "vue-router";
 import { useGeneralStore } from "@/store";
 import { useHead } from "@unhead/vue";
+import TotpVerification from "@/components/Auth/TotpVerification.vue";
 
 export default defineComponent({
   name: "Signin",
+  components: {
+    TotpVerification,
+  },
   setup() {
     const route = useRoute();
     const router = useRouter();
@@ -161,6 +181,8 @@ export default defineComponent({
     const email = ref("");
     const password = ref("");
     const errors = ref({});
+    const showTotpVerification = ref(false);
+    const mfaResolver = ref<MultiFactorResolver | null>(null);
 
     const { user, isAdmin } = useUserData();
 
@@ -193,6 +215,22 @@ export default defineComponent({
     const handleCancel = () => {
       router.push("/");
     };
+
+    const handleTotpComplete = () => {
+      // TOTP verification completed, user is signed in
+      console.log("TOTP verification complete");
+      generalStore.setLoading(false);
+      showTotpVerification.value = false;
+      mfaResolver.value = null;
+    };
+
+    const handleTotpCancel = () => {
+      // User cancelled TOTP verification
+      showTotpVerification.value = false;
+      mfaResolver.value = null;
+      generalStore.setLoading(false);
+    };
+
     const onSignin = () => {
       generalStore.setLoading(true);
       errors.value = {};
@@ -203,6 +241,15 @@ export default defineComponent({
         })
         .catch((error) => {
           console.log("onSignin failed", error.code, error.message);
+
+          // Check if MFA is required
+          if (error.code === "auth/multi-factor-auth-required") {
+            // Get the multi-factor resolver
+            mfaResolver.value = getMultiFactorResolver(auth, error);
+            showTotpVerification.value = true;
+            return;
+          }
+
           const errorCode = "admin.error.code." + error.code;
           if (
             error.code === "auth/wrong-password" ||
@@ -219,8 +266,12 @@ export default defineComponent({
       email,
       password,
       errors,
+      showTotpVerification,
+      mfaResolver,
 
       handleCancel,
+      handleTotpComplete,
+      handleTotpCancel,
       onSignin,
     };
   },
