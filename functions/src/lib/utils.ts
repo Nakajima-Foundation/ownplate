@@ -217,7 +217,7 @@ export const getMenuObj = async (refRestaurant: admin.firestore.DocumentReferenc
   }
 };
 
-export const nameOfOrder = (orderNumber: number) => {
+export const nameOfOrder = (orderNumber: number | string) => {
   return "#" + `00${orderNumber}`.slice(-3);
 };
 

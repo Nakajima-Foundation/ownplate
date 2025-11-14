@@ -44,8 +44,8 @@ export interface OrderInfoData {
   tip: number;
   menuItems: { [key: string]: MenuItem };
   phoneNumber: string;
-  order: { [key: string]: [number] };
-  options: { [key: string]: [string] };
+  order: { [key: string]: number[] };
+  options: { [key: string]: string[] };
   payment?: {
     stripe?: string;
   };
@@ -71,7 +71,7 @@ export interface OrderItemData {
   item: MenuItem;
   count: number | number[];
   id: string;
-  options: string | [string];
+  options: string | string[];
   orderIndex: string[];
   price?: number;
 }
