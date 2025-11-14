@@ -1,7 +1,7 @@
 import { Timestamp } from "./firebaseUtils";
 import { MenuItem } from "./menu";
 import { CustomerInfo } from "./customer";
-import { OrderStatus } from "./orderTypes";
+import { OrderStatus } from "./common";
 
 export interface OrderInfoData {
   id: string;

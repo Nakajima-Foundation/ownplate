@@ -1,6 +1,6 @@
 import { Timestamp } from "./firebaseUtils";
 import { CustomerInfo } from "./customer";
-import { OrderStatus } from "./orderTypes";
+import { OrderStatus } from "./common";
 
 // Order related function call types
 export interface OrderCreatedData {

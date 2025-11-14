@@ -6,10 +6,12 @@ import {
 import FirebaseModel from "./firebasemodel";
 import {
   PromotionDataBase,
+} from "./promotionTypes";
+import {
   PromotionType,
   DiscountMethod,
   PaymentRestrictions,
-} from "./promotionTypes";
+} from "./common";
 
 export interface PromotionData extends PromotionDataBase, DocumentData {
   currentOpen?: boolean;

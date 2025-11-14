@@ -2,9 +2,6 @@ import { FieldValue, Timestamp } from "./firebaseUtils";
 import { OrderInfoData } from "./orderInfoData";
 import { OrderStatus } from "./common";
 
-// Re-export OrderStatus for convenience
-export type { OrderStatus };
-
 // Order option types (Firebase-independent)
 export type OptionValue = string | number | boolean | null;
 export type OrderOptions = OptionValue[];
