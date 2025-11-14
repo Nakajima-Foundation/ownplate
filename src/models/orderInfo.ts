@@ -1,5 +1,6 @@
 import { ownPlateConfig } from "@/config/project";
-import { stripeRegion, orderType } from "@/utils/utils";
+import { orderType } from "@/utils/utils";
+import { stripe_regions_jp } from "../config/constant";
 import { OrderInfoData } from "./orderInfoData";
 export { OrderInfoData } from "./orderInfoData"; 
 
@@ -7,7 +8,7 @@ export const order2ReportData = (
   order: OrderInfoData,
   serviceTaxRate: number,
 ) => {
-  const multiple = stripeRegion.multiple;
+  const multiple = stripe_regions_jp.multiple;
   // @ts-expect-error maybe different type or undefine
   order.timeConfirmed = order?.timeConfirmed?.toDate();
   // @ts-expect-error maybe different type or undefine
