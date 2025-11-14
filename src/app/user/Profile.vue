@@ -16,6 +16,12 @@
 
       <!-- Signed In -->
       <div v-if="user && claims">
+        <!-- For Email User -->
+        <div v-if="user.email">
+          <!-- TOTP Settings -->
+          <ProfileTotpSettings />
+        </div>
+
         <!-- For Takeout User -->
         <div v-if="user.phoneNumber">
           <!-- Order History -->
@@ -63,6 +69,7 @@ import { signOut } from "firebase/auth";
 import ProfileLogin from "@/app/user/Profile/Login.vue";
 import ProfileDeleteAccount from "@/app/user/Profile/DeleteAccount.vue";
 import ProfileLoginStatus from "@/app/user/Profile/LoginStatus.vue";
+import ProfileTotpSettings from "@/app/user/Profile/TotpSettings.vue";
 // import ProfileStripe from "@/app/user/Profile/Stripe.vue";
 import ProfileLine from "@/app/user/Profile/Line.vue";
 
@@ -83,6 +90,7 @@ export default defineComponent({
     ProfileLogin,
     ProfileDeleteAccount,
     ProfileLoginStatus,
+    ProfileTotpSettings,
     // ProfileStripe,
     ProfileLine,
   },

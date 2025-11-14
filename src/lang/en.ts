@@ -1,4 +1,14 @@
 const data = {
+  auth: {
+    reauthenticate: {
+      title: "Please re-enter your password",
+      message: "For security reasons, please confirm your password.",
+      error: {
+        noUser: "User not found",
+        failed: "Authentication failed",
+      },
+    },
+  },
   serviceName: {
     ownPlate: "OwnPlate",
     omochikaeri: "おもちかえり.com",
@@ -87,6 +97,22 @@ const data = {
       isFriend: "a friend",
       noFriend: "not a friend",
       none: "None",
+    },
+    totp: {
+      title: "Two-Factor Authentication",
+      status: {
+        enabled: "Enabled",
+        disabled: "Disabled",
+      },
+      enable: "Enable Two-Factor Authentication",
+      disable: "Disable Two-Factor Authentication",
+      emailVerificationRequired: "Email verification is required",
+      disableConfirmTitle: "Disable Two-Factor Authentication?",
+      disableConfirmMessage: "Disabling two-factor authentication will lower your account security. Are you sure?",
+      error: {
+        disableFailed: "Failed to disable two-factor authentication",
+        tokenExpired: "Session expired. Please re-enter your password.",
+      },
     },
   },
   menu: {
@@ -1177,6 +1203,22 @@ const data = {
       "download-csv-history": "Download Excel File (History Earnings)",
       "download-csv-history-details": "Download Excel File (History Details)",
       "download-csv-monthly-details": "Download Excel File (Monthly Details)",
+    },
+    totp: {
+      setup: "Two-Factor Authentication Setup",
+      scanQrCode: "Scan this QR code with your authenticator app",
+      orEnterManually: "Or enter manually:",
+      enterCode: "Enter verification code",
+      codePlaceholder: "6-digit code",
+      enrollmentComplete: "Two-factor authentication setup complete",
+      verification: "Two-Factor Authentication",
+      verificationMessage: "Please enter the 6-digit code from your authenticator app",
+      error: {
+        generateFailed: "Failed to generate two-factor authentication",
+        invalidCode: "Invalid code",
+        enrollmentFailed: "Failed to enroll. Please try again",
+        verificationFailed: "Verification failed. Please check your code",
+      },
     },
     error: {
       memoLength: "Please enter your message within 500 characters.",

@@ -1,4 +1,14 @@
 const data = {
+  auth: {
+    reauthenticate: {
+      title: "パスワードを再入力してください",
+      message: "セキュリティ上の理由から、パスワードの再入力が必要です。",
+      error: {
+        noUser: "ユーザーが見つかりません",
+        failed: "認証に失敗しました",
+      },
+    },
+  },
   serviceName: {
     ownPlate: "OwnPlate",
     omochikaeri: "おもちかえり.com",
@@ -85,6 +95,22 @@ const data = {
       isFriend: "友達設定済み",
       noFriend: "未設定",
       none: "なし",
+    },
+    totp: {
+      title: "二要素認証",
+      status: {
+        enabled: "有効",
+        disabled: "無効",
+      },
+      enable: "二要素認証を有効にする",
+      disable: "二要素認証を無効にする",
+      emailVerificationRequired: "メールアドレス認証が必要です",
+      disableConfirmTitle: "二要素認証を無効にしますか？",
+      disableConfirmMessage: "二要素認証を無効にすると、セキュリティレベルが下がります。本当に無効にしますか？",
+      error: {
+        disableFailed: "二要素認証の無効化に失敗しました",
+        tokenExpired: "セッションの有効期限が切れました。パスワードを再入力してください。",
+      },
     },
   },
   menu: {
@@ -873,9 +899,12 @@ const data = {
     downloadMenu: "チラシをダウンロード",
     cancel: "キャンセル",
     next: "次へ",
+    verify: "認証",
     category: "カテゴリ",
     myPage: "マイページ",
     backToTop: "トップへ",
+    enable: "有効にする",
+    disable: "無効にする",
     login: "ログイン",
     linkToAdminDocs: "ご利用の手引き",
     news: "運営からのお知らせ",
@@ -1172,6 +1201,22 @@ const data = {
         "エクセルデータダウンロード（注文履歴 詳細）",
       "download-csv-monthly-details":
         "エクセルデータダウンロード（月次報告 詳細）",
+    },
+    totp: {
+      setup: "二要素認証の設定",
+      scanQrCode: "認証アプリでQRコードをスキャンしてください",
+      orEnterManually: "または手動で入力:",
+      enterCode: "認証コードを入力してください",
+      codePlaceholder: "6桁のコード",
+      enrollmentComplete: "二要素認証の設定が完了しました",
+      verification: "二要素認証",
+      verificationMessage: "認証アプリで生成された6桁のコードを入力してください",
+      error: {
+        generateFailed: "二要素認証の設定に失敗しました",
+        invalidCode: "無効なコードです",
+        enrollmentFailed: "認証に失敗しました。もう一度お試しください",
+        verificationFailed: "認証に失敗しました。コードを確認してください",
+      },
     },
     error: {
       memoLength: "メッセージは500文字以内で入力してください。",
