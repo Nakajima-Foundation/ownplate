@@ -91,33 +91,6 @@ export const stripe_regions_jp = {
   allergens: ["shrimp", "crab", "gluten", "soba", "egg", "milk", "peanuts"],
 };
 
-export const stripe_regions: { [key: string]: any } = {
-  US: {
-    langs: ["en", "es"], // first one is default
-    currency: "USD",
-    multiple: 100,
-    hidePostalCode: false,
-    tip: {
-      default: 15,
-      max: 100,
-      choices: [10, 15, 18, 20],
-    },
-    countries: [{ code: "+1", name: "sms.country.US" }],
-    allergens: [
-      "gluten",
-      "crustacean",
-      "egg",
-      "milk",
-      "fish",
-      "peanuts",
-      "soybeans",
-      "shellfish",
-      "raw",
-    ],
-  },
-  JP: stripe_regions_jp,
-};
-
 export const daysOfWeek = {
   1: "monday",
   2: "tuesday",

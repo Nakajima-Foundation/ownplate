@@ -9,8 +9,6 @@ import { stripe_regions_jp } from "@/config/constant";
 
 import { ownPlateConfig } from "@/config/project";
 
-const region = ownPlateConfig.region || "US";
-
 const numberFormats = {
   currency: {
     style: "currency",
