@@ -738,10 +738,6 @@ export const orderType = (order: OrderInfoData) => {
   if (order.isDelivery) {
     return "Delivery";
   }
-  if (order.isPickup) {
-    // TODO: remove
-    return "Pickup";
-  }
   return "Takeout";
 };
 export const orderTypeKey = (order: OrderInfoData) => {

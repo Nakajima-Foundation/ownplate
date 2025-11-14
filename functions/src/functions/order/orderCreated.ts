@@ -260,7 +260,6 @@ export const orderCreated = async (db: admin.firestore.Firestore, data: orderCre
       utils.filterData({
         // copy and validate
         isDelivery,
-        isPickup: false, // TODO: remove for mo
         isLiff,
 
         lunchOrDinner,
