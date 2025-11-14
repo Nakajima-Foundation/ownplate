@@ -1,3 +1,3 @@
-import { FieldValue } from "firebase/firestore";
+import { FieldValue, Timestamp } from "firebase/firestore";
 
-export { FieldValue };
+export { FieldValue, Timestamp };

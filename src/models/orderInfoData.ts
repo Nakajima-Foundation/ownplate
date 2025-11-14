@@ -1,5 +1,5 @@
-import { Timestamp } from "firebase/firestore";
-import { MenuItem } from "@/models/menu";
+import { Timestamp } from "./firebaseUtils";
+import { MenuItem } from "./menu";
 import { CustomerInfo } from "./customer";
 
 export interface OrderInfoData {
