@@ -36,34 +36,6 @@ const data = {
   },
   underConstruction: "注意：これはテスト用のサーバーです。",
   comma: "、",
-  mobileOrder: {
-    name: "モバイルオーダー",
-    reportKeys: {
-      orderPlacedAt: "注文時刻",
-      orderAcceptedAt: "注文受付時刻",
-      timeConfirmed: "準備完了時刻",
-      transactionCompletedAt: "受渡完了時刻",
-    },
-    closing: {
-      notice: "重要",
-      heading: "サービス終了のお知らせ",
-      paragraph1:
-        "「ファミマのモバイルオーダー」は2023年8月18日(金)をもちましてサービスを終了いたします。これまでご愛顧いただきありがとうございました。",
-      paragraph2: "今後のサービス終了までのスケジュールは以下のとおりです。",
-      paragraph3: "新規注文の受付は終了しました。",
-      ordering: "【注文可能日時】",
-      orderingDate: "2023年8月10日(木)16:00まで",
-      acceptance: "【受取可能日時】",
-      acceptanceDate: "2023年8月18日(金)22:00まで",
-      closedMessage: "サービスは終了しました。",
-      closedParagraph:
-        "「ファミマのモバイルオーダー」は2023年8月18日(金)をもちましてサービスを終了いたしました。これまでご愛顧いただきありがとうございました。",
-    },
-  },
-  restaurantCard: {
-    title: "お店のカード情報",
-    description: "この店舗で保存されているカード情報を管理できます",
-  },
   profile: {
     title: "マイページ",
     address: "アドレス",

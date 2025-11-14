@@ -36,35 +36,6 @@ const data = {
   },
   underConstruction: "WARNING: This is a staging server for development.",
   comma: ", ",
-  mobileOrder: {
-    name: "Online ordering service",
-    reportKeys: {
-      orderPlacedAt: "注文時刻",
-      orderAcceptedAt: "注文受付時刻",
-      timeConfirmed: "準備完了時刻",
-      transactionCompletedAt: "受渡完了時刻",
-    },
-    closing: {
-      notice: "Notice",
-      heading: "End of Service Notice",
-      paragraph1:
-        "Thank you for your continuous support. Mobile Order will no longer be available on Friday, August 18, 2023. We apologize for any inconvenience and appreciate your understanding.",
-      paragraph2:
-        "Please check below for the schedule until the end of the service.",
-      paragraph3: "New orders are no longer being accepted.",
-      ordering: "[Date and time for ordering]",
-      orderingDate: "Until 16:00, Thursday, August 10, 2023",
-      acceptance: "[Date and time of receipt]",
-      acceptanceDate: "Until 22:00, Friday, August 18, 2023",
-      closedMessage: "End of Service Notice",
-      closedParagraph:
-        "Thank you for your continuous support. Mobile Order is no longer available on Friday, August 18, 2023. We apologize for any inconvenience and appreciate your understanding.",
-    },
-  },
-  restaurantCard: {
-    title: "Restaurant Card Info",
-    description: "Manage your saved card information for this restaurant",
-  },
   profile: {
     title: "My Page",
     address: "Personal Info",
