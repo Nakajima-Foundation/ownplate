@@ -75,7 +75,7 @@ import {
   where,
 } from "firebase/firestore";
 
-import { JPPrefecture, USStates } from "@/config/constant";
+import { JPPrefecture } from "@/config/constant";
 import { restaurant2AreaObj, sortRestaurantObj } from "@/utils/RestaurantUtils";
 import MapView from "@/components/Map.vue";
 import { defaultHeader } from "@/config/header";
@@ -124,7 +124,7 @@ export default defineComponent({
     })();
 
     const allArea = computed(() => {
-      return JPPrefecture.concat(USStates);
+      return JPPrefecture;
     });
     const coverImage = computed(() => {
       return (
