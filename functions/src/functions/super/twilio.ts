@@ -4,11 +4,11 @@ import * as admin from "firebase-admin";
 
 import moment from "moment-timezone";
 
-import { superTwilioCallData } from "../../lib/types";
+import { SuperTwilioCallData } from "../../lib/types";
 
 import { phoneCall } from "../notify/twilio";
 
-export const superTwilioCall = async (db: admin.firestore.Firestore, data: superTwilioCallData, context: CallableRequest) => {
+export const superTwilioCall = async (db: admin.firestore.Firestore, data: SuperTwilioCallData, context: CallableRequest) => {
   if (!context.auth?.token?.admin) {
     throw new HttpsError("permission-denied", "You do not have permission to confirm this request.");
   }

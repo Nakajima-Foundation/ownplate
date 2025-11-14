@@ -5,7 +5,7 @@ import * as utils from "../../lib/utils";
 import * as netutils from "../../lib/netutils";
 import * as crypto from "crypto";
 
-import { liffAuthenticateData, LineVerifyResponse } from "../../lib/types";
+import { LiffAuthenticateData, LineVerifyResponse } from "../../lib/types";
 import { validateLiffAuthenticate } from "../../lib/validator";
 
 const LIFF_SALT = defineSecret("LIFF_SALT");
@@ -19,7 +19,7 @@ const getLiffConfig = async (db: admin.firestore.Firestore, liffIndexId: string)
 };
 
 // eslint-disable-next-line
-export const liffAuthenticate = async (db: admin.firestore.Firestore, data: liffAuthenticateData, context: CallableRequest) => {
+export const liffAuthenticate = async (db: admin.firestore.Firestore, data: LiffAuthenticateData, context: CallableRequest) => {
   const { liffIndexId, token } = data;
   utils.required_params({ liffIndexId, token });
 

@@ -3,7 +3,7 @@ import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
 import { log } from "firebase-functions/logger";
 
 import { validatePing } from "../lib/validator";
-import { pingData } from "../lib/types";
+import { PingData } from "../lib/types";
 import * as utils from "../lib/utils";
 
 type OperationLogParams = {
@@ -56,7 +56,7 @@ export const operationLog = (context: CallableRequest, params: OperationLogParam
   log(message, logData);
 };
 
-export const ping = async (db: admin.firestore.Firestore, data: pingData, context: CallableRequest) => {
+export const ping = async (db: admin.firestore.Firestore, data: PingData, context: CallableRequest) => {
   const { operationType, restaurantId, pathName } = data;
   utils.validate_admin_auth(context);
 

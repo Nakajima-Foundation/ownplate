@@ -4,7 +4,7 @@ import * as utils from "../../lib/utils";
 import { order_status } from "../../common/constant";
 import { createCustomer } from "../stripe/customer";
 
-import { orderCreatedData, MenuItem, OrderData, RestaurantInfoData, OptionValue } from "../../lib/types";
+import { OrderCreatedData, MenuItem, OrderData, RestaurantInfoData, OptionValue } from "../../lib/types";
 import { MenuData } from "../../models/menu";
 import { validateOrderCreated } from "../../lib/validator";
 import { Context } from "../../models/TestType";
@@ -163,7 +163,7 @@ export const createNewOrderData = async (
   };
 };
 
-export const orderCreated = async (db: admin.firestore.Firestore, data: orderCreatedData, context: functions.https.CallableContext | Context) => {
+export const orderCreated = async (db: admin.firestore.Firestore, data: OrderCreatedData, context: functions.https.CallableContext | Context) => {
   const customerUid = utils.validate_customer_auth(context);
 
   const { restaurantId, orderId } = data;

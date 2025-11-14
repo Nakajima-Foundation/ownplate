@@ -9,7 +9,7 @@ import { notifyNewOrderToRestaurant } from "../notify2";
 import { costCal } from "../../utils/commonUtils";
 
 import { getStripeAccount, getHash, getCustomerStripeInfo2, saveCustomerStripeInfo2 } from "../stripe/intent";
-import { orderPlacedData, OrderData, RestaurantInfoData, PromotionData, PostageData, StripeCustomerInfo } from "../../lib/types";
+import { OrderPlacedData, OrderData, RestaurantInfoData, PromotionData, PostageData, StripeCustomerInfo } from "../../lib/types";
 import { validateOrderPlaced, validateCustomer } from "../../lib/validator";
 
 import { getPromotion, enableUserPromotion, userPromotionHistoryData, getUserHistoryDoc, getUserHistoryCollectionPath, getDiscountPrice } from "./promotion";
@@ -112,7 +112,7 @@ export const updateOrderTotalDataAndUserLog = async (
 const multiple = utils.stripeRegion.multiple; // 100 for USD, 1 for JPY
 
 // This function is called by users to place orders without paying
-export const place = async (db: admin.firestore.Firestore, data: orderPlacedData, context: CallableRequest) => {
+export const place = async (db: admin.firestore.Firestore, data: OrderPlacedData, context: CallableRequest) => {
   const customerUid = utils.validate_customer_auth(context);
 
   const { restaurantId, orderId, tip, timeToPickup, memo, userName, customerInfo, payStripe, waitingPayment } = data;

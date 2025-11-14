@@ -8,10 +8,10 @@ import { sendMessageToCustomer, notifyCanceledOrderToRestaurant } from "../notif
 
 import { cancelStripe } from "./intent";
 import { validateCancel } from "../../lib/validator";
-import { orderCancelData } from "../../lib/types";
+import { OrderCancelData } from "../../lib/types";
 
 // This function is called by user or admin to cancel an exsting order (before accepted by admin)
-export const cancel = async (db: admin.firestore.Firestore, data: orderCancelData, context: CallableRequest) => {
+export const cancel = async (db: admin.firestore.Firestore, data: OrderCancelData, context: CallableRequest) => {
   const isAdmin = utils.is_admin_auth(context);
 
   const uid = isAdmin ? utils.validate_owner_admin_auth(context) : utils.validate_customer_auth(context);

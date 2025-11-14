@@ -7,7 +7,7 @@ import SmaregiApi from "../smaregi/smaregiapi";
 import { validate_admin_auth } from "../lib/utils";
 import { generateBody } from "../smaregi/apiUtils";
 
-import { smaregiAuthData, smaregiStoreListData, smaregiProductListData } from "../lib/types";
+import { SmaregiAuthData, SmaregiStoreListData, SmaregiProductListData } from "../lib/types";
 import { smaregi } from "../common/project";
 import { validateFirebaseId } from "../lib/validator";
 
@@ -17,7 +17,7 @@ const apiHost = smaregi.host_name;
 const authHost = smaregi.auth_host_name;
 const client_id = smaregi.clientId;
 
-export const auth = async (db: admin.firestore.Firestore, data: smaregiAuthData, context: CallableRequest) => {
+export const auth = async (db: admin.firestore.Firestore, data: SmaregiAuthData, context: CallableRequest) => {
   const { code } = data;
 
   const adminUid = validate_admin_auth(context);
@@ -72,7 +72,7 @@ export const auth = async (db: admin.firestore.Firestore, data: smaregiAuthData,
   }
 };
 
-export const storeList = async (db: admin.firestore.Firestore, data: smaregiStoreListData, context: CallableRequest) => {
+export const storeList = async (db: admin.firestore.Firestore, data: SmaregiStoreListData, context: CallableRequest) => {
   const adminUid = validate_admin_auth(context);
 
   const smaregiDoc = await db.doc(`admins/${adminUid}/private/smaregi`).get();
@@ -102,7 +102,7 @@ export const storeList = async (db: admin.firestore.Firestore, data: smaregiStor
   return { res: storeListData };
 };
 
-export const productList = async (db: admin.firestore.Firestore, data: smaregiProductListData, context: CallableRequest) => {
+export const productList = async (db: admin.firestore.Firestore, data: SmaregiProductListData, context: CallableRequest) => {
   const { store_id } = data;
   if (!validateFirebaseId(store_id)) {
     throw new HttpsError("invalid-argument", "invalid args.");

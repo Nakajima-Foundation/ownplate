@@ -6,9 +6,9 @@ import * as utils from "../../lib/utils";
 import { notifyNewOrderToRestaurant } from "../notify2";
 import { getStripeAccount, getStripeOrderRecord  } from "./intent";
 
-import { orderChangeData } from "../../lib/types";
+import { OrderChangeData } from "../../lib/types";
 
-export const orderPay = async (db: admin.firestore.Firestore, data: orderChangeData, context: CallableRequest ) => {
+export const orderPay = async (db: admin.firestore.Firestore, data: OrderChangeData, context: CallableRequest ) => {
   const customerUid = utils.validate_customer_auth(context);
   const { restaurantId, orderId, isSavePay } = data;
   utils.required_params({ restaurantId, orderId });

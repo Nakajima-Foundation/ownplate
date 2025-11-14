@@ -6,7 +6,7 @@ import * as netutils from "../../lib/netutils";
 import * as admin from "firebase-admin";
 import { ownPlateConfig } from "../../common/project";
 
-import { lineValidateData, LineAccessTokenResponse, LineProfileResponse, LineVerifyResponse } from "../../lib/types";
+import { LineValidateData, LineAccessTokenResponse, LineProfileResponse, LineVerifyResponse } from "../../lib/types";
 import { validateLineValidate } from "../../lib/validator";
 
 const line_message_token = defineSecret("LINE_MESSAGE_TOKEN");
@@ -83,7 +83,7 @@ const getLineConfig = async (db: admin.firestore.Firestore, restaurantId?: strin
   }
 };
 
-export const validate = async (db: admin.firestore.Firestore, data: lineValidateData, context: CallableRequest) => {
+export const validate = async (db: admin.firestore.Firestore, data: LineValidateData, context: CallableRequest) => {
   const uid = utils.validate_auth(context);
 
   const { code, redirect_uri, restaurantId } = data;
