@@ -33,6 +33,8 @@ jobs:
     - run: cp ../src/models/customer.ts ./src/models/customer.ts
     - run: cp ../src/models/orderInfoData.ts ./src/models/orderInfoData.ts
     - run: cp ../src/models/functionTypes.ts ./src/models/functionTypes.ts
+    - run: cp ../src/models/orderTypes.ts ./src/models/orderTypes.ts
+    - run: cp ../src/models/promotionTypes.ts ./src/models/promotionTypes.ts
     - run: cp ../src/config/default/ownplate-dev.ts ./src/common/project.ts
     - run: SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm_config_arch=x64 npm_config_platform=linux yarn install
     - run: yarn run ci_test
