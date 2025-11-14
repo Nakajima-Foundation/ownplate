@@ -18,7 +18,7 @@ import {
   order_status,
   regionalSettings,
   partners,
-  stripe_regions,
+  stripe_regions_jp,
   soundFiles,
 } from "@/config/constant";
 import { firebaseConfig, ownPlateConfig } from "@/config/project";
@@ -35,10 +35,11 @@ import { isNull, isEmpty } from "./commonUtils";
 import { useRoute, useRouter } from "vue-router";
 import { useGeneralStore } from "../store";
 import { useUserStore } from "@/store/user";
-import i18n from "@/lib/vue-i18n";
+import { useI18n } from 'vue-i18n'
 
 export { isNull, isEmpty };
 
+export const stripeRegion = stripe_regions_jp; // TODO remove
 // from mixin
 export const useRestaurantId = () => {
   const route = useRoute();
@@ -128,8 +129,8 @@ export const num2simpleFormatedTime = (num: number) => {
 };
 
 export const num2time = (num: number) => {
-  const { locale, t } = i18n.global;
-
+  const { locale, t } = useI18n();
+  
   if (num === 0 || num === 60 * 24) {
     return t("shopInfo.midnight");
   }
@@ -321,12 +322,10 @@ export const regionalSetting = (regionalSettings as { [key: string]: any })[
   ownPlateConfig.region || "US"
 ];
 
-export const stripeRegion = stripe_regions[ownPlateConfig.region || "US"];
-
 export const isLineEnabled = !!ownPlateConfig.line;
 
 export const roundPrice = (price: number) => {
-  const m = stripeRegion.multiple;
+  const m = stripe_regions_jp.multiple;
   return Math.round(price * m) / m;
 };
 
@@ -335,7 +334,7 @@ export const displayOption = (
   shopInfo: RestaurantInfoData,
   item: MenuData,
 ) => {
-  const { n } = i18n.global;
+  const { n } = useI18n();
   return formatOption(option, (price) => {
     return n(roundPrice(price * taxRate(shopInfo, item)), "currency");
   });
@@ -662,10 +661,10 @@ export const useAdminUids = () => {
 };
 
 export const usePhoneNumber = (shopInfo: any) => {
-  const countries = stripeRegion.countries;
+  const countries = stripe_regions_jp.countries;
 
   const parsedNumber = computed(() => {
-    const countryCode = shopInfo.value.countryCode || countries.value[0].code;
+    const countryCode = shopInfo.value.countryCode || countries[0].code;
     try {
       return parsePhoneNumber(countryCode + shopInfo.value.phoneNumber);
     } catch (__error) {
@@ -696,7 +695,7 @@ export const scrollToElementById = (id: string) => {
 export const useNationalPhoneNumber = (shopInfo: RestaurantInfoData) => {
   // BUGBUG: We need to determine what we want to diplay for EU
   const parsedNumber = computed(() => {
-    const countryCode = shopInfo.countryCode || stripeRegion.countries[0].code;
+    const countryCode = shopInfo.countryCode || stripe_regions_jp.countries[0].code;
     try {
       return parsePhoneNumber(countryCode + shopInfo.phoneNumber);
     } catch (__error) {
@@ -748,7 +747,7 @@ export const isDev = firebaseConfig.projectId === "ownplate-dev";
 
 export const useIsLocaleJapan = () => {
   // for hack
-  const { locale } = i18n.global;
+  const { locale } = useI18n();
   console.log(locale.value);
   return computed(() => {
     return locale.value !== "en" && locale.value !== "fr";

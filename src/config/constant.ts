@@ -77,43 +77,18 @@ export const timeEventMapping = {
   transaction_hide: "transactionHideAt", // special condition
 };
 
-export const stripe_regions: { [key: string]: any } = {
-  US: {
-    langs: ["en", "es"], // first one is default
-    currency: "USD",
-    multiple: 100,
-    hidePostalCode: false,
-    tip: {
-      default: 15,
-      max: 100,
-      choices: [10, 15, 18, 20],
-    },
-    countries: [{ code: "+1", name: "sms.country.US" }],
-    allergens: [
-      "gluten",
-      "crustacean",
-      "egg",
-      "milk",
-      "fish",
-      "peanuts",
-      "soybeans",
-      "shellfish",
-      "raw",
-    ],
+export const stripe_regions_jp = {
+  langs: ["ja"],
+  currency: "JPY",
+  multiple: 1,
+  tip: {
+    default: 0,
+    max: 30,
+    choices: [0, 5, 10, 20],
   },
-  JP: {
-    langs: ["ja"],
-    currency: "JPY",
-    multiple: 1,
-    tip: {
-      default: 0,
-      max: 30,
-      choices: [0, 5, 10, 20],
-    },
-    countries: [{ code: "+81", name: "sms.country.JP" }],
-    hidePostalCode: true,
-    allergens: ["shrimp", "crab", "gluten", "soba", "egg", "milk", "peanuts"],
-  },
+  countries: [{ code: "+81", name: "sms.country.JP" }],
+  hidePostalCode: true,
+  allergens: ["shrimp", "crab", "gluten", "soba", "egg", "milk", "peanuts"],
 };
 
 export const daysOfWeek = {

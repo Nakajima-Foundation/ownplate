@@ -3,7 +3,7 @@
     <admin-service-introduction :isAdmin="isAdmin" />
     <div class="mx-auto max-w-(--breakpoint-xl)">
       <admin-feature />
-      <admin-how-to-start />
+      <admin-how-to-start :isAdmin="isAdmin" />
       <userVoices />
       <operators />
       <aboutService />

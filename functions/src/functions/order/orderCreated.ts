@@ -1,7 +1,7 @@
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions/v1";
 import * as utils from "../../lib/utils";
-import { order_status } from "../../common/constant";
+import { order_status, stripe_regions_jp } from "../../common/constant";
 import { createCustomer } from "../stripe/customer";
 
 import { OrderCreatedData } from "../../models/functionTypes";
@@ -227,7 +227,7 @@ export const orderCreated = async (db: admin.firestore.Firestore, data: OrderCre
       }
     }
 
-    const multiple = utils.stripeRegion.multiple; //100 for USD, 1 for JPY
+    const multiple = stripe_regions_jp.multiple; //100 for USD, 1 for JPY
 
     const res = await createNewOrderData(restaurantRef, orderRef, orderData, multiple);
     if (!res.result) {
