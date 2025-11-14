@@ -22,11 +22,31 @@
             class="w-full rounded border px-3 py-2"
             :class="error ? 'border-red-500' : 'border-gray-300'"
             @keyup.enter="handleReauthenticate"
+            :disabled="needsTotpCode"
           />
-          <div v-if="error" class="mt-2 text-sm text-red-600">
-            {{ $t(error) }}
-          </div>
         </div>
+      </div>
+
+      <!-- TOTP Code Input (shown if MFA is required) -->
+      <div v-if="needsTotpCode" class="mt-4">
+        <div class="text-sm font-bold">
+          {{ $t('admin.totp.enterCode') }}
+        </div>
+        <div class="mt-1">
+          <input
+            v-model="totpCode"
+            type="text"
+            :placeholder="$t('admin.totp.codePlaceholder')"
+            maxlength="6"
+            class="w-full rounded border px-3 py-2"
+            :class="error ? 'border-red-500' : 'border-gray-300'"
+            @keyup.enter="handleTotpReauth"
+          />
+        </div>
+      </div>
+
+      <div v-if="error" class="mt-2 text-sm text-red-600">
+        {{ $t(error) }}
       </div>
 
       <!-- Buttons -->
@@ -40,7 +60,7 @@
           </div>
         </button>
         <button
-          @click="handleReauthenticate"
+          @click="needsTotpCode ? handleTotpReauth() : handleReauthenticate()"
           class="inline-flex h-12 w-32 cursor-pointer items-center justify-center rounded-full bg-op-teal"
         >
           <div class="text-base font-bold text-white">
@@ -55,7 +75,13 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import { auth } from '@/lib/firebase/firebase9';
-import { EmailAuthProvider, reauthenticateWithCredential } from 'firebase/auth';
+import {
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  getMultiFactorResolver,
+  TotpMultiFactorGenerator,
+  MultiFactorResolver,
+} from 'firebase/auth';
 import { useGeneralStore } from '@/store';
 
 export default defineComponent({
@@ -64,7 +90,10 @@ export default defineComponent({
   setup(_props, { emit }) {
     const generalStore = useGeneralStore();
     const password = ref('');
+    const totpCode = ref('');
     const error = ref('');
+    const needsTotpCode = ref(false);
+    const mfaResolver = ref<MultiFactorResolver | null>(null);
 
     const handleReauthenticate = async () => {
       if (!password.value) {
@@ -82,18 +111,31 @@ export default defineComponent({
       error.value = '';
 
       try {
+        console.log('Starting reauthentication for:', user.email);
         const credential = EmailAuthProvider.credential(
           user.email,
           password.value
         );
-        await reauthenticateWithCredential(user, credential);
-
-        // Force token refresh after reauthentication
-        await user.getIdToken(true);
+        console.log('Credential created, calling reauthenticateWithCredential');
+        const result = await reauthenticateWithCredential(user, credential);
+        console.log('Reauthentication successful:', result);
 
         emit('success');
       } catch (e: any) {
         console.error('Reauthentication failed:', e);
+        console.error('Error code:', e.code);
+        console.error('Error message:', e.message);
+
+        // Check if MFA is required
+        if (e.code === 'auth/multi-factor-auth-required') {
+          console.log('MFA required, showing TOTP input');
+          mfaResolver.value = getMultiFactorResolver(auth, e);
+          needsTotpCode.value = true;
+          error.value = '';
+          generalStore.setLoading(false);
+          return;
+        }
+
         if (e.code === 'auth/wrong-password' || e.code === 'auth/invalid-credential') {
           error.value = 'admin.error.code.auth/wrong-password';
         } else {
@@ -104,10 +146,62 @@ export default defineComponent({
       }
     };
 
+    const handleTotpReauth = async () => {
+      if (!totpCode.value || totpCode.value.length !== 6) {
+        error.value = 'admin.totp.error.invalidCode';
+        return;
+      }
+
+      if (!mfaResolver.value) {
+        error.value = 'auth.reauthenticate.error.failed';
+        return;
+      }
+
+      generalStore.setLoading(true);
+      error.value = '';
+
+      try {
+        console.log('Resolving MFA for reauthentication');
+
+        // Find TOTP factor
+        const totpFactorInfo = mfaResolver.value.hints.find(
+          (hint) => hint.factorId === TotpMultiFactorGenerator.FACTOR_ID
+        );
+
+        if (!totpFactorInfo) {
+          throw new Error('TOTP factor not found');
+        }
+
+        // Create TOTP assertion for sign-in
+        const multiFactorAssertion = TotpMultiFactorGenerator.assertionForSignIn(
+          totpFactorInfo.uid,
+          totpCode.value
+        );
+
+        // Complete reauthentication with multi-factor
+        await mfaResolver.value.resolveSignIn(multiFactorAssertion);
+
+        console.log('MFA reauthentication successful');
+        emit('success');
+      } catch (e: any) {
+        console.error('TOTP reauthentication failed:', e);
+        if (e.code === 'auth/invalid-verification-code') {
+          error.value = 'admin.totp.error.invalidCode';
+        } else {
+          error.value = 'auth.reauthenticate.error.failed';
+        }
+      } finally {
+        generalStore.setLoading(false);
+      }
+    };
+
     return {
       password,
+      totpCode,
       error,
+      needsTotpCode,
       handleReauthenticate,
+      handleTotpReauth,
     };
   },
 });

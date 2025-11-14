@@ -6,11 +6,11 @@
 
     <div v-if="!enrollmentComplete" class="mt-4">
       <!-- QR Code Display -->
-      <div v-if="qrCodeUrl" class="text-center">
+      <div v-if="qrCodeDataUrl" class="text-center">
         <div class="text-sm font-bold mb-2">
           {{ $t('admin.totp.scanQrCode') }}
         </div>
-        <img :src="qrCodeUrl" alt="QR Code" class="mx-auto max-w-xs" />
+        <img :src="qrCodeDataUrl" alt="QR Code" class="mx-auto max-w-xs" />
 
         <div class="mt-4 text-sm">
           <div class="font-bold">{{ $t('admin.totp.orEnterManually') }}</div>
@@ -67,13 +67,14 @@ import {
   TotpSecret,
 } from 'firebase/auth';
 import { useGeneralStore } from '@/store';
+import QRCode from 'qrcode';
 
 export default defineComponent({
   name: 'TotpEnrollment',
-  emits: ['complete', 'skip'],
+  emits: ['complete', 'skip', 'needsReauth'],
   setup(_props, { emit }) {
     const generalStore = useGeneralStore();
-    const qrCodeUrl = ref('');
+    const qrCodeDataUrl = ref('');
     const secret = ref('');
     const verificationCode = ref('');
     const error = ref('');
@@ -87,10 +88,7 @@ export default defineComponent({
           throw new Error('No user signed in');
         }
 
-        // Force token refresh to ensure we have a valid token
-        await user.getIdToken(true);
-
-        // Get multi-factor session
+        // Get multi-factor session (per Firebase documentation)
         const multiFactorSession = await multiFactor(user).getSession();
 
         // Generate TOTP secret using the session
@@ -98,14 +96,26 @@ export default defineComponent({
           multiFactorSession
         );
 
-        // Generate QR code URL
-        qrCodeUrl.value = totpSecret.value.generateQrCodeUrl(
+        // Generate QR code URL (otpauth:// URI)
+        const qrCodeUrl = totpSecret.value.generateQrCodeUrl(
           user.email || 'user@example.com',
           'OwnPlate'
         );
+
+        // Convert URI to QR code image (Data URL)
+        qrCodeDataUrl.value = await QRCode.toDataURL(qrCodeUrl);
+
         secret.value = totpSecret.value.secretKey;
       } catch (e: any) {
         console.error('Failed to generate TOTP secret:', e);
+
+        // Check if reauthentication is required
+        if (e.code === 'auth/requires-recent-login') {
+          console.log('Reauthentication required for TOTP enrollment');
+          emit('needsReauth');
+          return;
+        }
+
         error.value = 'admin.totp.error.generateFailed';
       }
     });
@@ -151,7 +161,7 @@ export default defineComponent({
     };
 
     return {
-      qrCodeUrl,
+      qrCodeDataUrl,
       secret,
       verificationCode,
       error,

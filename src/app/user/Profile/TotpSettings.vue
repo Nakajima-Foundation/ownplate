@@ -58,7 +58,11 @@
     <!-- Enrollment Modal -->
     <div v-if="showEnrollment" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <div class="mx-4 w-full max-w-lg">
-        <TotpEnrollment @complete="handleEnrollmentComplete" @skip="handleEnrollmentSkip" />
+        <TotpEnrollment
+          @complete="handleEnrollmentComplete"
+          @skip="handleEnrollmentSkip"
+          @needsReauth="handleEnrollmentNeedsReauth"
+        />
       </div>
     </div>
 
@@ -140,8 +144,8 @@ export default defineComponent({
     });
 
     const startEnrollment = () => {
-      // Require reauthentication before enrollment
-      showReauthenticate.value = true;
+      // Show enrollment modal directly (no reauthentication needed per Firebase docs)
+      showEnrollment.value = true;
     };
 
     const disableTotp = async () => {
@@ -158,8 +162,8 @@ export default defineComponent({
       } catch (e: any) {
         console.error('Failed to disable TOTP:', e);
 
-        // Handle token expired error
-        if (e.code === 'auth/user-token-expired') {
+        // Handle reauthentication required errors
+        if (e.code === 'auth/user-token-expired' || e.code === 'auth/requires-recent-login') {
           // User needs to re-authenticate
           showUnenrollmentConfirm.value = false;
           pendingUnenroll.value = true;
@@ -175,14 +179,17 @@ export default defineComponent({
 
     const handleReauthSuccess = async () => {
       // Reauthentication successful
+      console.log('handleReauthSuccess called, pendingUnenroll:', pendingUnenroll.value);
       showReauthenticate.value = false;
 
-      // If we were trying to unenroll, retry the unenroll operation
+      // Retry the unenroll operation after reauthentication
       if (pendingUnenroll.value) {
+        console.log('Retrying unenroll after reauthentication');
         pendingUnenroll.value = false;
         await disableTotp();
       } else {
-        // Otherwise, proceed to enrollment
+        // Proceed to enrollment after reauthentication
+        console.log('Proceeding to enrollment after reauthentication');
         showEnrollment.value = true;
       }
     };
@@ -194,6 +201,12 @@ export default defineComponent({
 
     const handleEnrollmentSkip = () => {
       showEnrollment.value = false;
+    };
+
+    const handleEnrollmentNeedsReauth = () => {
+      // Close enrollment modal and show reauthentication modal
+      showEnrollment.value = false;
+      showReauthenticate.value = true;
     };
 
     const startUnenrollment = () => {
@@ -211,6 +224,7 @@ export default defineComponent({
       handleReauthSuccess,
       handleEnrollmentComplete,
       handleEnrollmentSkip,
+      handleEnrollmentNeedsReauth,
       startUnenrollment,
       disableTotp,
     };
