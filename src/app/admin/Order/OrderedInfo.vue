@@ -98,10 +98,6 @@
         <div class="mr-2 text-sm" v-if="order.isDelivery">
           <i class="material-icons"> delivery_dining </i>
         </div>
-        <div class="mr-2 text-sm text-green-600" v-if="order.isPickup">
-          <i class="material-icons"> local_mall </i>
-        </div>
-
         <div
           v-if="order.tip"
           class="flex-1 text-right text-xs font-bold text-blue-500"

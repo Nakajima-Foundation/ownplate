@@ -13,9 +13,8 @@ export interface OrderInfoData {
   inclusiveTax: boolean;
   deliveryFee: number;
   tax: number;
-  // options: {[key: string]: [[key: string]: string]}
   timeCreated: Timestamp;
-  timeEstimated: Timestamp; // TODO firestore timestamp
+  timeEstimated: Timestamp;
   timeConfirmed: Timestamp;
   timePlaced: Timestamp;
   transactionCompletedAt: Timestamp;
@@ -40,7 +39,6 @@ export interface OrderInfoData {
   shippingCost: number;
   isDelivery: boolean;
   isEC: boolean;
-  isPickup: boolean; // TODO remove
   tip: number;
   menuItems: { [key: string]: MenuItem };
   phoneNumber: string;
