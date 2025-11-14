@@ -87,9 +87,15 @@ export default defineComponent({
           throw new Error('No user signed in');
         }
 
-        // Generate TOTP secret
+        // Force token refresh to ensure we have a valid token
+        await user.getIdToken(true);
+
+        // Get multi-factor session
+        const multiFactorSession = await multiFactor(user).getSession();
+
+        // Generate TOTP secret using the session
         totpSecret.value = await TotpMultiFactorGenerator.generateSecret(
-          multiFactor(user)
+          multiFactorSession
         );
 
         // Generate QR code URL

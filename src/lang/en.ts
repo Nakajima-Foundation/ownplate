@@ -1,4 +1,14 @@
 const data = {
+  auth: {
+    reauthenticate: {
+      title: "Please re-enter your password",
+      message: "For security reasons, please confirm your password.",
+      error: {
+        noUser: "User not found",
+        failed: "Authentication failed",
+      },
+    },
+  },
   serviceName: {
     ownPlate: "OwnPlate",
     omochikaeri: "おもちかえり.com",
@@ -87,6 +97,22 @@ const data = {
       isFriend: "a friend",
       noFriend: "not a friend",
       none: "None",
+    },
+    totp: {
+      title: "Two-Factor Authentication",
+      status: {
+        enabled: "Enabled",
+        disabled: "Disabled",
+      },
+      enable: "Enable Two-Factor Authentication",
+      disable: "Disable Two-Factor Authentication",
+      emailVerificationRequired: "Email verification is required",
+      disableConfirmTitle: "Disable Two-Factor Authentication?",
+      disableConfirmMessage: "Disabling two-factor authentication will lower your account security. Are you sure?",
+      error: {
+        disableFailed: "Failed to disable two-factor authentication",
+        tokenExpired: "Session expired. Please re-enter your password.",
+      },
     },
   },
   menu: {

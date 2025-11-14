@@ -1,4 +1,14 @@
 const data = {
+  auth: {
+    reauthenticate: {
+      title: "パスワードを再入力してください",
+      message: "セキュリティ上の理由から、パスワードの再入力が必要です。",
+      error: {
+        noUser: "ユーザーが見つかりません",
+        failed: "認証に失敗しました",
+      },
+    },
+  },
   serviceName: {
     ownPlate: "OwnPlate",
     omochikaeri: "おもちかえり.com",
@@ -85,6 +95,22 @@ const data = {
       isFriend: "友達設定済み",
       noFriend: "未設定",
       none: "なし",
+    },
+    totp: {
+      title: "二要素認証",
+      status: {
+        enabled: "有効",
+        disabled: "無効",
+      },
+      enable: "二要素認証を有効にする",
+      disable: "二要素認証を無効にする",
+      emailVerificationRequired: "メールアドレス認証が必要です",
+      disableConfirmTitle: "二要素認証を無効にしますか？",
+      disableConfirmMessage: "二要素認証を無効にすると、セキュリティレベルが下がります。本当に無効にしますか？",
+      error: {
+        disableFailed: "二要素認証の無効化に失敗しました",
+        tokenExpired: "セッションの有効期限が切れました。パスワードを再入力してください。",
+      },
     },
   },
   menu: {

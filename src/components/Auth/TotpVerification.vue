@@ -81,8 +81,11 @@ export default defineComponent({
         );
 
         if (!totpFactorInfo) {
+          console.error('TOTP factor not found in hints:', props.resolver.hints);
           throw new Error('TOTP factor not found');
         }
+
+        console.log('Creating TOTP assertion with factorId:', totpFactorInfo.uid);
 
         // Create TOTP assertion for sign-in
         const multiFactorAssertion = TotpMultiFactorGenerator.assertionForSignIn(
@@ -90,12 +93,18 @@ export default defineComponent({
           verificationCode.value
         );
 
+        console.log('Resolving sign-in with TOTP assertion');
+
         // Complete sign-in with multi-factor
         await props.resolver.resolveSignIn(multiFactorAssertion);
 
+        console.log('TOTP verification successful');
         emit('complete');
       } catch (e: any) {
         console.error('Failed to verify TOTP:', e);
+        console.error('Error code:', e.code);
+        console.error('Error message:', e.message);
+
         if (e.code === 'auth/invalid-verification-code') {
           error.value = 'admin.totp.error.invalidCode';
         } else {

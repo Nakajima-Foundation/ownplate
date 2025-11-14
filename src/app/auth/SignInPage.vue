@@ -247,6 +247,7 @@ export default defineComponent({
             // Get the multi-factor resolver
             mfaResolver.value = getMultiFactorResolver(auth, error);
             showTotpVerification.value = true;
+            generalStore.setLoading(false);
             return;
           }
 
