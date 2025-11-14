@@ -1,9 +1,7 @@
 import { ownPlateConfig } from "@/config/project";
 import { stripeRegion, orderType } from "@/utils/utils";
 import { OrderInfoData } from "./orderInfoData";
-export { OrderInfoData, OrderItemData } from "./orderInfoData"; 
-
-export class OrderInfo {}
+export { OrderInfoData } from "./orderInfoData"; 
 
 export const order2ReportData = (
   order: OrderInfoData,

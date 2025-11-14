@@ -4,7 +4,7 @@ import moment from "moment";
 import { nameOfOrder, formatOption, optionPrice } from "@/utils/strings";
 import { roundPrice, useNationalPhoneNumber } from "@/utils/utils";
 
-import { OrderInfoData, OrderItemData } from "@/models/orderInfo";
+import { OrderInfoData, OrderItemData } from "@/models/orderInfoData";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 const fontHost = location.protocol + "//" + location.host + "/fonts/";
 
