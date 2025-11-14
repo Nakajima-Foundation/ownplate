@@ -8,6 +8,7 @@
     "predeploy": [
       "cp dist/index.html functions/templates/index.html",
       "cp src/config/project.ts functions/src/common/project.ts",
+      "sh scripts/copy2functions.sh",
       "npm --prefix \"$RESOURCE_DIR\" run lint",
       "npm --prefix \"$RESOURCE_DIR\" run build"
     ]
