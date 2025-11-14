@@ -1,32 +1,55 @@
 import * as admin from "firebase-admin";
-import { CustomerInfo } from "../models/customer";
 import { OrderInfoData } from "../models/orderInfoData";
 
-export interface orderCreatedData {
-  restaurantId: string;
-  orderId: string;
-}
+// Re-export function call types from shared models
+export type {
+  OrderCreatedData,
+  OrderPlacedData,
+  OrderUpdateData,
+  ConfirmIntentData,
+  OrderCancelData,
+  NewOrderData,
+  OrderChangeData,
+  OrderCancelPaymentData,
+  StripeOAuthConnectData,
+  StripeOAuthVerifyData,
+  StripeReceiptData,
+  LineValidateData,
+  LiffAuthenticateData,
+  SubAccountInvitateData,
+  SubAccountInvitationAcceptDenyData,
+  SubAccountDeleteChildData,
+  SmaregiAuthData,
+  SmaregiStoreListData,
+  SmaregiProductListData,
+  PingData,
+  SuperTwilioCallData,
+  DispatchData,
+} from "../models/functionTypes";
 
-export interface orderPlacedData {
-  restaurantId: string;
-  orderId: string;
-  tip: number;
-  timeToPickup: admin.firestore.Timestamp;
-  promotionId: string;
-  affiliateId: string;
-  waitingPayment: boolean;
-  memo: string;
-  userName: string;
-  payStripe: boolean;
-  customerInfo: CustomerInfo;
-}
-
-export interface orderUpdateData {
-  restaurantId: string;
-  orderId: string;
-  status: number;
-  timeEstimated?: admin.firestore.Timestamp;
-}
+// Legacy aliases for backward compatibility (lowercase versions)
+export type { OrderCreatedData as orderCreatedData } from "../models/functionTypes";
+export type { OrderPlacedData as orderPlacedData } from "../models/functionTypes";
+export type { OrderUpdateData as orderUpdateData } from "../models/functionTypes";
+export type { ConfirmIntentData as confirmIntentData } from "../models/functionTypes";
+export type { OrderCancelData as orderCancelData } from "../models/functionTypes";
+export type { NewOrderData as newOrderData } from "../models/functionTypes";
+export type { OrderChangeData as orderChangeData } from "../models/functionTypes";
+export type { OrderCancelPaymentData as orderCancelPaymentData } from "../models/functionTypes";
+export type { StripeOAuthConnectData as stripeOAuthConnectData } from "../models/functionTypes";
+export type { StripeOAuthVerifyData as stripeOAuthVerifyData } from "../models/functionTypes";
+export type { StripeReceiptData as stripeReceiptData } from "../models/functionTypes";
+export type { LineValidateData as lineValidateData } from "../models/functionTypes";
+export type { LiffAuthenticateData as liffAuthenticateData } from "../models/functionTypes";
+export type { PingData as pingData } from "../models/functionTypes";
+export type { SubAccountInvitateData as subAccountInvitate } from "../models/functionTypes";
+export type { SubAccountInvitationAcceptDenyData as subAccountInvitationAcceptDeny } from "../models/functionTypes";
+export type { SubAccountDeleteChildData as subAccountDeleteChildData } from "../models/functionTypes";
+export type { SmaregiAuthData as smaregiAuthData } from "../models/functionTypes";
+export type { SmaregiStoreListData as smaregiStoreListData } from "../models/functionTypes";
+export type { SmaregiProductListData as smaregiProductListData } from "../models/functionTypes";
+export type { SuperTwilioCallData as superTwilioCallData } from "../models/functionTypes";
+export type { DispatchData as dispatchData } from "../models/functionTypes";
 
 export interface updateDataOnorderUpdate {
   status: number;
@@ -42,97 +65,6 @@ export interface updateDataOnorderUpdate {
   payment?: {
     stripe: string;
   };
-}
-
-export interface confirmIntentData {
-  restaurantId: string;
-  orderId: string;
-  timeEstimated?: admin.firestore.Timestamp;
-}
-
-export interface orderCancelData {
-  restaurantId: string;
-  orderId: string;
-  cancelReason: string;
-}
-
-export interface newOrderData {
-  menuId: string;
-  index: number;
-}
-
-export interface orderChangeData {
-  restaurantId: string;
-  orderId: string;
-  newOrder: newOrderData[];
-  isSavePay: boolean;
-}
-
-export interface orderCancelPaymentData {
-  restaurantId: string;
-  orderId: string;
-}
-
-export interface stripeOAuthConnectData {
-  code: string;
-}
-export interface stripeOAuthVerifyData {
-  account_id: string;
-}
-
-export interface stripeReceiptData {
-  restaurantId: string;
-  orderId: string;
-}
-
-export interface lineValidateData {
-  code: string;
-  redirect_uri: string;
-  restaurantId?: string;
-}
-export interface liffAuthenticateData {
-  token: string;
-  liffIndexId: string;
-}
-
-export interface pingData {
-  restaurantId: string;
-  operationType: string;
-  pathName: string;
-}
-
-export interface subAccountInvitate {
-  email: string;
-  name: string;
-}
-
-export interface subAccountInvitationAcceptDeny {
-  messageId: string;
-}
-
-export interface subAccountDeleteChildData {
-  childUid: string;
-}
-
-export interface smaregiAuthData {
-  code: string;
-}
-
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface smaregiStoreListData {}
-export interface smaregiProductListData {
-  store_id: string;
-}
-
-export interface superTwilioCallData {
-  restaurantId: string;
-}
-
-export interface dispatchData {
-  cmd: string;
-  uid: string;
-  key: string;
-  value: boolean;
 }
 
 export interface RestaurantData {

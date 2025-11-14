@@ -1,73 +1,72 @@
 import { functionsJP } from "@/lib/firebase/firebase9";
 import { httpsCallable } from "firebase/functions";
-import { Timestamp } from "firebase/firestore";
+import type {
+  SmaregiStoreListData,
+  SmaregiProductListData,
+  SmaregiAuthData,
+  LineVerifyFriendData,
+  SubAccountDeleteChildData,
+  SubAccountInvitateData,
+  SubAccountInvitationAcceptDenyData,
+  LineValidateData,
+  OrderUpdateData,
+  OrderCreatedData,
+  LiffAuthenticateData,
+  PingData,
+} from "@/models/functionTypes";
 
 export const smaregiStoreList = httpsCallable<
-  Record<string, never>,
+  SmaregiStoreListData,
   {
     res: any[];
   }
 >(functionsJP, "smaregiStoreList2");
 
 export const smaregiProductList = httpsCallable<
-  {
-    store_id: string;
-  },
+  SmaregiProductListData,
   {
     res: any[];
   }
 >(functionsJP, "smaregiProductList2");
 
 export const smaregiAuth = httpsCallable<
-  {
-    code: string;
-  },
+  SmaregiAuthData,
   {
     result: boolean;
   }
 >(functionsJP, "smaregiAuth2");
 
 export const lineVerifyFriend = httpsCallable<
-  {
-    liffIndexId?: string;
-    restaurantId?: string;
-  },
+  LineVerifyFriendData,
   {
     result: boolean;
   }
 >(functionsJP, "lineVerifyFriend2");
 
 export const subAccountDeleteChild = httpsCallable<
-  {
-    childUid: string;
-  },
+  SubAccountDeleteChildData,
   Record<string, never>
 >(functionsJP, "subAccountDeleteChild2");
 
 export const subAccountInvite = httpsCallable<
-  {
-    email: string;
-    name: string;
-  },
+  SubAccountInvitateData,
   {
     result: boolean;
   }
 >(functionsJP, "subAccountInvite2");
 
-export const subAccountInvitationAccept = httpsCallable<{
-  messageId: string;
-}>(functionsJP, "subAccountInvitationAccept2");
+export const subAccountInvitationAccept = httpsCallable<SubAccountInvitationAcceptDenyData>(
+  functionsJP,
+  "subAccountInvitationAccept2",
+);
 
-export const subAccountInvitationDeny = httpsCallable<{
-  messageId: string;
-}>(functionsJP, "subAccountInvitationDeny2");
+export const subAccountInvitationDeny = httpsCallable<SubAccountInvitationAcceptDenyData>(
+  functionsJP,
+  "subAccountInvitationDeny2",
+);
 
 export const lineValidate = httpsCallable<
-  {
-    code: string;
-    redirect_uri: string;
-    restaurantId?: string;
-  },
+  LineValidateData,
   {
     nonce: string;
     profile: {
@@ -84,12 +83,7 @@ export const superTwilio = httpsCallable(functionsJP, "superTwilio2");
 export const accountDelete = httpsCallable(functionsJP, "accountDelete2");
 
 export const orderUpdate = httpsCallable<
-  {
-    restaurantId: string;
-    orderId: string;
-    status: number;
-    timeEstimated?: Timestamp;
-  },
+  OrderUpdateData,
   {
     result: boolean;
     type: string;
@@ -100,22 +94,18 @@ export const orderChange = httpsCallable(functionsJP, "orderChangeJp2");
 
 export const orderPlace = httpsCallable(functionsJP, "orderPlaceJp2");
 
-export const orderCreated = httpsCallable(functionsJP, "orderCreatedJp2");
+export const orderCreated = httpsCallable<OrderCreatedData>(functionsJP, "orderCreatedJp2");
 
 export const orderPay = httpsCallable(functionsJP, "stripepay2");
 
 export const liffAuthenticate = httpsCallable<
-  {
-    liffIndexId: string;
-    liffId: string;
-    token: string;
-  },
+  LiffAuthenticateData,
   {
     customToken: string;
   }
 >(functionsJP, "liffAuthenticate2");
 
-export const ping = httpsCallable(functionsJP, "ping2");
+export const ping = httpsCallable<PingData>(functionsJP, "ping2");
 
 export const stripeCancelIntent = httpsCallable(
   functionsJP,

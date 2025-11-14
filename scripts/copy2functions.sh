@@ -7,4 +7,5 @@ cp src/models/RestaurantInfo.ts functions/src/models/RestaurantInfo.ts
 cp src/models/menu.ts functions/src/models/menu.ts
 cp src/models/customer.ts functions/src/models/customer.ts
 cp src/models/orderInfoData.ts functions/src/models/orderInfoData.ts
+cp src/models/functionTypes.ts functions/src/models/functionTypes.ts
 
