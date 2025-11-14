@@ -117,6 +117,10 @@ export const stripePaymentCancelIntent = httpsCallable(
 );
 
 export const stripeDeleteCard = httpsCallable(functionsJP, "stripeDeleteCard2");
+export const stripeDeleteRestaurantCard = httpsCallable<{ ownerUid: string }, { result: boolean }>(
+  functionsJP,
+  "stripeDeleteRestaurantCard2"
+);
 export const stripeConnect = httpsCallable(functionsJP, "stripeConnect2");
 export const stripeDisconnect = httpsCallable(functionsJP, "stripeDisconnect2");
 export const stripeVerify = httpsCallable(functionsJP, "stripeVerify2");

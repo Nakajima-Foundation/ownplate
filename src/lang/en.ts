@@ -61,6 +61,10 @@ const data = {
         "Thank you for your continuous support. Mobile Order is no longer available on Friday, August 18, 2023. We apologize for any inconvenience and appreciate your understanding.",
     },
   },
+  restaurantCard: {
+    title: "Restaurant Card Info",
+    description: "Manage your saved card information for this restaurant",
+  },
   profile: {
     title: "My Page",
     address: "Personal Info",
