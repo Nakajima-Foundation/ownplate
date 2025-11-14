@@ -9,7 +9,7 @@ import { sendMessageToCustomer } from "../notify2";
 import { costCal } from "../../utils/commonUtils";
 import { getStripeAccount, getStripeOrderRecord, getPaymentMethodData, getHash } from "./intent";
 
-import { orderChangeData, newOrderData, OptionValue } from "../../lib/types";
+import { OrderChangeData, NewOrderData, OptionValue } from "../../lib/types";
 import { validateOrderChange } from "../../lib/validator";
 
 type OrderQuantityMap = Record<string, number[]>;
@@ -18,7 +18,7 @@ type OrderOptionsMap = Record<string, Record<number, unknown>>;
 const multiple = utils.stripeRegion.multiple; // 100 for USD, 1 for JPY
 
 const getUpdateOrder = (
-  newOrders: newOrderData[],
+  newOrders: NewOrderData[],
   order: OrderQuantityMap,
   options: OrderOptionsMap,
   rawOptions: OrderOptionsMap,
@@ -49,7 +49,7 @@ const getUpdateOrder = (
   };
 };
 
-export const orderChange = async (db: admin.firestore.Firestore, data: orderChangeData, context: CallableRequest) => {
+export const orderChange = async (db: admin.firestore.Firestore, data: OrderChangeData, context: CallableRequest) => {
   const ownerUid = utils.validate_owner_admin_auth(context);
   const uid = utils.validate_auth(context);
   const { restaurantId, orderId, newOrder } = data;

@@ -7,7 +7,7 @@ import { order_status, next_transitions, order_status_keys, timeEventMapping } f
 import { sendMessageToCustomer } from "../notify2";
 
 import { getStripeAccount, getStripeOrderRecord, getHash } from "../stripe/intent";
-import { orderUpdateData, updateDataOnorderUpdate, OrderData, RestaurantInfoData, StripeCustomerInfo, StripePaymentIntentWithCharge } from "../../lib/types";
+import { OrderUpdateData, updateDataOnorderUpdate, OrderData, RestaurantInfoData, StripeCustomerInfo, StripePaymentIntentWithCharge } from "../../lib/types";
 import { validateOrderUpdate } from "../../lib/validator";
 
 const getMgsKey = (status: number, isEC: boolean, timeEstimated?: admin.firestore.Timestamp) => {
@@ -58,7 +58,7 @@ const getPaymentIntent = async (
 };
 
 // This function is called by admins (restaurant operators) to update the status of order
-export const update = async (db: admin.firestore.Firestore, data: orderUpdateData, context: CallableRequest) => {
+export const update = async (db: admin.firestore.Firestore, data: OrderUpdateData, context: CallableRequest) => {
   const ownerUid = utils.validate_owner_admin_auth(context);
   const uid = utils.validate_auth(context);
   const { restaurantId, orderId, status, timeEstimated } = data;

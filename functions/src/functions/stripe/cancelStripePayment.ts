@@ -6,10 +6,10 @@ import { sendMessageToCustomer } from "../notify2";
 
 import { cancelStripe } from "./intent";
 import { validateCancelPayment } from "../../lib/validator";
-import { orderCancelPaymentData } from "../../lib/types";
+import { OrderCancelPaymentData } from "../../lib/types";
 
 // This function is called by admin to cancel an exsting order
-export const cancelStripePayment = async (db: admin.firestore.Firestore, data: orderCancelPaymentData, context: CallableRequest) => {
+export const cancelStripePayment = async (db: admin.firestore.Firestore, data: OrderCancelPaymentData, context: CallableRequest) => {
   const ownerUid = utils.validate_owner_admin_auth(context);
   const uid = utils.validate_auth(context);
 

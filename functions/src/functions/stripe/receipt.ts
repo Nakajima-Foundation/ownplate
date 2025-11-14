@@ -7,9 +7,9 @@ import { order_status } from "../../common/constant";
 
 import * as utils from "../../lib/utils";
 import { validateStripeReceipt } from "../../lib/validator";
-import { stripeReceiptData } from "../../lib/types";
+import { StripeReceiptData } from "../../lib/types";
 
-export const receipt = async (db: admin.firestore.Firestore, data: stripeReceiptData, context: CallableRequest) => {
+export const receipt = async (db: admin.firestore.Firestore, data: StripeReceiptData, context: CallableRequest) => {
   const stripe = utils.get_stripe_v2();
 
   const customerUid = utils.validate_customer_auth(context);

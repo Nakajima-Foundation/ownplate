@@ -2,9 +2,9 @@ import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
 import * as utils from "../../lib/utils";
 import * as admin from "firebase-admin";
 
-import { dispatchData } from "../../lib/types";
+import { DispatchData } from "../../lib/types";
 
-export const dispatch = async (db: admin.firestore.Firestore, data: dispatchData, context: CallableRequest) => {
+export const dispatch = async (db: admin.firestore.Firestore, data: DispatchData, context: CallableRequest) => {
   if (!context.auth?.token?.admin) {
     throw new HttpsError("permission-denied", "You do not have permission to confirm this request.");
   }

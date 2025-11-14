@@ -2,14 +2,14 @@ import * as admin from "firebase-admin";
 
 import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
 import * as utils from "../lib/utils";
-import { subAccountInvitate, subAccountInvitationAcceptDeny, subAccountDeleteChildData } from "../lib/types";
+import { SubAccountInvitateData, SubAccountInvitationAcceptDenyData, SubAccountDeleteChildData } from "../lib/types";
 
 import isEmail from "validator/lib/isEmail";
 import { validateFirebaseId } from "../lib/validator";
 
 import { Context } from "../models/TestType";
 
-export const invite = async (db: admin.firestore.Firestore, data: subAccountInvitate, context: CallableRequest | Context) => {
+export const invite = async (db: admin.firestore.Firestore, data: SubAccountInvitateData, context: CallableRequest | Context) => {
   // check admin
   const adminUid = utils.validate_parent_admin_auth(context);
   const { email, name } = data;
@@ -68,7 +68,7 @@ export const invite = async (db: admin.firestore.Firestore, data: subAccountInvi
 
 export const invitationValidateProcess = async (
   db: admin.firestore.Firestore,
-  data: subAccountInvitationAcceptDeny,
+  data: SubAccountInvitationAcceptDenyData,
   context: CallableRequest | Context,
   callback: (adminUid: string, messageData: admin.firestore.DocumentData, messageRef: admin.firestore.DocumentReference) => Promise<void>,
 ) => {
@@ -91,7 +91,7 @@ export const invitationValidateProcess = async (
 };
 const childInvitationProcess = async (
   db: admin.firestore.Firestore,
-  data: subAccountInvitationAcceptDeny,
+  data: SubAccountInvitationAcceptDenyData,
   context: CallableRequest | Context,
   callback: (messageData: admin.firestore.DocumentData, messageRef: admin.firestore.DocumentReference) => Promise<void>,
 ) => {
@@ -111,7 +111,7 @@ const childInvitationProcess = async (
     }
   });
 };
-export const accept = async (db: admin.firestore.Firestore, data: subAccountInvitationAcceptDeny, context: CallableRequest | Context) => {
+export const accept = async (db: admin.firestore.Firestore, data: SubAccountInvitationAcceptDenyData, context: CallableRequest | Context) => {
   const { messageId } = data;
   if (!validateFirebaseId(messageId)) {
     console.log(messageId);
@@ -146,7 +146,7 @@ export const accept = async (db: admin.firestore.Firestore, data: subAccountInvi
   }
   return {};
 };
-export const deny = async (db: admin.firestore.Firestore, data: subAccountInvitationAcceptDeny, context: CallableRequest | Context) => {
+export const deny = async (db: admin.firestore.Firestore, data: SubAccountInvitationAcceptDenyData, context: CallableRequest | Context) => {
   const { messageId } = data;
   if (!validateFirebaseId(messageId)) {
     console.log(messageId);
@@ -176,7 +176,7 @@ export const deny = async (db: admin.firestore.Firestore, data: subAccountInvita
   return {};
 };
 
-export const deleteChild = async (db: admin.firestore.Firestore, data: subAccountDeleteChildData, context: CallableRequest | Context) => {
+export const deleteChild = async (db: admin.firestore.Firestore, data: SubAccountDeleteChildData, context: CallableRequest | Context) => {
   // check admin
   const adminUid = utils.validate_parent_admin_auth(context);
   const { childUid } = data;

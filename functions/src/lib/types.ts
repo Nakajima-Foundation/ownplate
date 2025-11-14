@@ -25,31 +25,8 @@ export type {
   PingData,
   SuperTwilioCallData,
   DispatchData,
+  LineVerifyFriendData,
 } from "../models/functionTypes";
-
-// Legacy aliases for backward compatibility (lowercase versions)
-export type { OrderCreatedData as orderCreatedData } from "../models/functionTypes";
-export type { OrderPlacedData as orderPlacedData } from "../models/functionTypes";
-export type { OrderUpdateData as orderUpdateData } from "../models/functionTypes";
-export type { ConfirmIntentData as confirmIntentData } from "../models/functionTypes";
-export type { OrderCancelData as orderCancelData } from "../models/functionTypes";
-export type { NewOrderData as newOrderData } from "../models/functionTypes";
-export type { OrderChangeData as orderChangeData } from "../models/functionTypes";
-export type { OrderCancelPaymentData as orderCancelPaymentData } from "../models/functionTypes";
-export type { StripeOAuthConnectData as stripeOAuthConnectData } from "../models/functionTypes";
-export type { StripeOAuthVerifyData as stripeOAuthVerifyData } from "../models/functionTypes";
-export type { StripeReceiptData as stripeReceiptData } from "../models/functionTypes";
-export type { LineValidateData as lineValidateData } from "../models/functionTypes";
-export type { LiffAuthenticateData as liffAuthenticateData } from "../models/functionTypes";
-export type { PingData as pingData } from "../models/functionTypes";
-export type { SubAccountInvitateData as subAccountInvitate } from "../models/functionTypes";
-export type { SubAccountInvitationAcceptDenyData as subAccountInvitationAcceptDeny } from "../models/functionTypes";
-export type { SubAccountDeleteChildData as subAccountDeleteChildData } from "../models/functionTypes";
-export type { SmaregiAuthData as smaregiAuthData } from "../models/functionTypes";
-export type { SmaregiStoreListData as smaregiStoreListData } from "../models/functionTypes";
-export type { SmaregiProductListData as smaregiProductListData } from "../models/functionTypes";
-export type { SuperTwilioCallData as superTwilioCallData } from "../models/functionTypes";
-export type { DispatchData as dispatchData } from "../models/functionTypes";
 
 export interface updateDataOnorderUpdate {
   status: number;

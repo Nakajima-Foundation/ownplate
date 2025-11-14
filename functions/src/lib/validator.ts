@@ -1,19 +1,19 @@
 import * as admin from "firebase-admin";
 import {
-  orderCreatedData,
-  orderUpdateData,
-  orderPlacedData,
-  confirmIntentData,
-  orderCancelData,
-  orderCancelPaymentData,
-  orderChangeData,
-  newOrderData,
-  stripeReceiptData,
-  stripeOAuthConnectData,
-  stripeOAuthVerifyData,
-  pingData,
-  lineValidateData,
-  liffAuthenticateData,
+  OrderCreatedData,
+  OrderUpdateData,
+  OrderPlacedData,
+  ConfirmIntentData,
+  OrderCancelData,
+  OrderCancelPaymentData,
+  OrderChangeData,
+  NewOrderData,
+  StripeReceiptData,
+  StripeOAuthConnectData,
+  StripeOAuthVerifyData,
+  PingData,
+  LineValidateData,
+  LiffAuthenticateData,
   ValidatorNumberOption,
   ValidatorStringOption,
 } from "./types";
@@ -128,7 +128,7 @@ const validateTimestamp = (timestamp: admin.firestore.Timestamp) => {
 const validateBoolean = (value: boolean) => {
   return value === true || value === false;
 };
-const validateNewOrder = (values: newOrderData[]) => {
+const validateNewOrder = (values: NewOrderData[]) => {
   return values.every((data) => {
     return validateFirebaseId(data.menuId) && validateInteger(data.index);
   });
@@ -186,7 +186,7 @@ const validateData = (data: Record<string, any>, validator: Record<string, any>)
   };
 };
 
-export const validateOrderCreated = (data: orderCreatedData) => {
+export const validateOrderCreated = (data: OrderCreatedData) => {
   const validator = {
     restaurantId: {
       type: "firebaseId",
@@ -200,7 +200,7 @@ export const validateOrderCreated = (data: orderCreatedData) => {
   return validateData(data, validator);
 };
 
-export const validateOrderUpdate = (data: orderUpdateData) => {
+export const validateOrderUpdate = (data: OrderUpdateData) => {
   const validator = {
     restaurantId: {
       type: "firebaseId",
@@ -221,7 +221,7 @@ export const validateOrderUpdate = (data: orderUpdateData) => {
   };
   return validateData(data, validator);
 };
-export const validateOrderPlaced = (data: orderPlacedData) => {
+export const validateOrderPlaced = (data: OrderPlacedData) => {
   const validator = {
     restaurantId: {
       type: "firebaseId",
@@ -258,7 +258,7 @@ export const validateCustomer = (data: CustomerInfo) => {
 };
 
 // stripe
-export const validateConfirmIntent = (data: confirmIntentData) => {
+export const validateConfirmIntent = (data: ConfirmIntentData) => {
   const validator = {
     restaurantId: {
       type: "firebaseId",
@@ -276,7 +276,7 @@ export const validateConfirmIntent = (data: confirmIntentData) => {
   return validateData(data, validator);
 };
 
-export const validateCancel = (data: orderCancelData) => {
+export const validateCancel = (data: OrderCancelData) => {
   const validator = {
     restaurantId: {
       type: "firebaseId",
@@ -294,7 +294,7 @@ export const validateCancel = (data: orderCancelData) => {
   return validateData(data, validator);
 };
 
-export const validateCancelPayment = (data: orderCancelPaymentData) => {
+export const validateCancelPayment = (data: OrderCancelPaymentData) => {
   const validator = {
     restaurantId: {
       type: "firebaseId",
@@ -308,7 +308,7 @@ export const validateCancelPayment = (data: orderCancelPaymentData) => {
   return validateData(data, validator);
 };
 
-export const validateOrderChange = (data: orderChangeData) => {
+export const validateOrderChange = (data: OrderChangeData) => {
   const validator = {
     restaurantId: {
       type: "firebaseId",
@@ -326,7 +326,7 @@ export const validateOrderChange = (data: orderChangeData) => {
   return validateData(data, validator);
 };
 
-export const validatorStripeOAuthConnect = (data: stripeOAuthConnectData) => {
+export const validatorStripeOAuthConnect = (data: StripeOAuthConnectData) => {
   const validator = {
     code: {
       type: "numAlphaBar",
@@ -336,7 +336,7 @@ export const validatorStripeOAuthConnect = (data: stripeOAuthConnectData) => {
   return validateData(data, validator);
 };
 
-export const validatorStripeOAuthVerify = (data: stripeOAuthVerifyData) => {
+export const validatorStripeOAuthVerify = (data: StripeOAuthVerifyData) => {
   const validator = {
     account_id: {
       type: "numAlphaBar",
@@ -346,7 +346,7 @@ export const validatorStripeOAuthVerify = (data: stripeOAuthVerifyData) => {
   return validateData(data, validator);
 };
 
-export const validateStripeReceipt = (data: stripeReceiptData) => {
+export const validateStripeReceipt = (data: StripeReceiptData) => {
   const validator = {
     restaurantId: {
       type: "firebaseId",
@@ -360,7 +360,7 @@ export const validateStripeReceipt = (data: stripeReceiptData) => {
   return validateData(data, validator);
 };
 
-export const validatePing = (data: pingData) => {
+export const validatePing = (data: PingData) => {
   const validator = {
     restaurantId: {
       type: "firebaseId",
@@ -374,7 +374,7 @@ export const validatePing = (data: pingData) => {
   return validateData(data, validator);
 };
 
-export const validateLineValidate = (data: lineValidateData) => {
+export const validateLineValidate = (data: LineValidateData) => {
   const validator = {
     code: {
       type: "numAlpha",
@@ -392,7 +392,7 @@ export const validateLineValidate = (data: lineValidateData) => {
   return validateData(data, validator);
 };
 
-export const validateLiffAuthenticate = (data: liffAuthenticateData) => {
+export const validateLiffAuthenticate = (data: LiffAuthenticateData) => {
   const validator = {
     token: {
       type: "numAlpha",
