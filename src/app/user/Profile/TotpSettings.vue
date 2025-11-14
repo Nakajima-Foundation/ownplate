@@ -89,7 +89,7 @@
             class="inline-flex h-12 w-32 cursor-pointer items-center justify-center rounded-full bg-red-600"
           >
             <div class="text-base font-bold text-white">
-              {{ $t("profile.totp.disable") }}
+              {{ $t("button.disable") }}
             </div>
           </button>
         </div>

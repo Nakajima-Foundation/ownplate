@@ -99,7 +99,7 @@ export default defineComponent({
         // Generate QR code URL (otpauth:// URI)
         const qrCodeUrl = totpSecret.value.generateQrCodeUrl(
           user.email || 'user@example.com',
-          'OwnPlate'
+          'おもちかえり.com'
         );
 
         // Convert URI to QR code image (Data URL)
