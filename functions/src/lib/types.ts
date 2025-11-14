@@ -147,51 +147,25 @@ export type OrderRawOption = OptionValue;
 // Order related types
 export interface OrderData {
   id?: string;
+  name?: string;
+  number?: number;
   uid: string;
-  restaurantId?: string;
-  ownerUid?: string;
-  status: number;
-  order: { [menuId: string]: number | number[] };
-  menuItems?: { [menuId: string]: MenuItem };
-  prices?: { [menuId: string]: number[] };
-  options?: { [menuId: string]: OrderOptions[] };
-  rawOptions?: { [menuId: string]: OptionValue[][] };
+  totalCharge?: number;
   total: number;
   sub_total?: number;
-  tax?: number;
   inclusiveTax?: boolean;
-  totalCharge?: number;
-  discountPrice?: number;
-  promotionName?: string;
-  promotionId?: string;
-  tip?: number;
-  shippingCost?: number;
   deliveryFee?: number;
-  number?: number;
-  phoneNumber?: string;
-  name?: string;
-  sendSMS?: boolean;
-  printed?: boolean;
-  timePlaced?: admin.firestore.Timestamp;
-  timeEstimated?: admin.firestore.Timestamp;
-  timePickupForQuery?: admin.firestore.Timestamp;
+  tax?: number;
+
   timeCreated?: admin.firestore.Timestamp;
-  updatedAt?: admin.firestore.FieldValue | admin.firestore.Timestamp;
-  orderPlacedAt?: admin.firestore.FieldValue | admin.firestore.Timestamp;
-  orderAcceptedAt?: admin.firestore.Timestamp;
-  transactionCompletedAt?: admin.firestore.Timestamp;
+  timeEstimated?: admin.firestore.Timestamp;
   timeConfirmed?: admin.firestore.Timestamp;
-  client_secret?: string;
-  hasPayment?: boolean;
-  memo?: string;
-  isEC?: boolean;
-  isDelivery?: boolean;
-  isLiff?: boolean;
-  lunchOrDinner?: string;
-  isSavePay?: boolean;
-  payment?: {
-    stripe?: string;
-  };
+  timePlaced?: admin.firestore.Timestamp;
+  transactionCompletedAt?: admin.firestore.Timestamp;
+
+  status: number;
+  restaurantId?: string;
+  description?: string;
   accounting?: {
     food: {
       revenue: number;
@@ -201,7 +175,53 @@ export interface OrderData {
       revenue: number;
       tax: number;
     };
+    service?: {
+      revenue: number;
+      tax: number;
+    };
   };
+  shippingCost?: number;
+  isDelivery?: boolean;
+  isEC?: boolean;
+
+  tip?: number;
+  menuItems?: { [menuId: string]: MenuItem };
+  phoneNumber?: string;
+  order: { [menuId: string]: number | number[] };
+  options?: { [menuId: string]: OrderOptions[] };
+  payment?: {
+    stripe?: string;
+  };
+  type: string;
+
+  prices?: { [menuId: string]: number[] };
+  orderPlacedAt?: admin.firestore.FieldValue | admin.firestore.Timestamp;
+  orderUpdatedAt?: admin.firestore.Timestamp;
+  orderAcceptedAt?: admin.firestore.Timestamp;
+  lastUpdatedAt: admin.firestore.Timestamp;
+  orderCustomerCanceledAt: admin.firestore.Timestamp;
+  uidPaymentCanceledBy: boolean;
+  discountPrice?: number;
+
+  customerInfo: CustomerInfo;
+  memo?: string;
+  lunchOrDinner?: string;
+
+  cancelReason?: string; // mo
+  // for server
+  ownerUid?: string;
+  rawOptions?: { [menuId: string]: OptionValue[][] };
+  promotionName?: string;
+  promotionId?: string;
+  sendSMS?: boolean;
+  printed?: boolean;
+
+  timePickupForQuery?: admin.firestore.Timestamp;
+  updatedAt?: admin.firestore.FieldValue | admin.firestore.Timestamp;
+  client_secret?: string;
+  hasPayment?: boolean;
+  isLiff?: boolean;
+  isSavePay?: boolean;
 }
 
 export interface MenuImages {

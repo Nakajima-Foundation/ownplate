@@ -43,13 +43,15 @@ export interface OrderInfoData {
   shippingCost: number;
   isDelivery: boolean;
   isEC: boolean;
-  isPickup: boolean;
+  // isPickup: boolean;
   tip: number;
   menuItems: { [key: string]: MenuItem };
   phoneNumber: string;
   order: { [key: string]: [number] };
   options: { [key: string]: [string] };
-  payment?: { [key: string]: string };
+  payment?: {
+    stripe?: string;
+  };
   type: string;
 
   prices: { [key: string]: { [key: string]: number } };
@@ -63,7 +65,6 @@ export interface OrderInfoData {
 
   customerInfo: CustomerInfo;
   memo: string;
-
   lunchOrDinner?: string;
 
   cancelReason?: string; // mo
