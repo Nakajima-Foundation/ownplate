@@ -272,7 +272,7 @@ export const place = async (db: admin.firestore.Firestore, data: OrderPlacedData
         });
       }
       // customerUid
-      const updateData = {
+      const updateData: Record<string, unknown> = {
         status: waitingPayment ? order_status.waiting_payment : order_status.order_placed,
         totalCharge,
         discountPrice,
@@ -290,8 +290,10 @@ export const place = async (db: admin.firestore.Firestore, data: OrderPlacedData
         memo: memo || "",
         isEC: restaurantData.isEC || false,
         name: userName,
-        orderPlacedAt: waitingPayment ? undefined : admin.firestore.FieldValue.serverTimestamp(),
       };
+      if (!waitingPayment) {
+        updateData.orderPlacedAt = admin.firestore.FieldValue.serverTimestamp();
+      }
       if (enableStripe) {
         const update = {
           ...updateData,
