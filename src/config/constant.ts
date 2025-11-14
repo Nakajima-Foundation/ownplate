@@ -1,4 +1,4 @@
-export const order_status: { [key: string]: number } = {
+export const order_status = {
   error: 0,
   new_order: 100, // by user
   validation_ok: 200, // by functions
@@ -11,7 +11,10 @@ export const order_status: { [key: string]: number } = {
   order_canceled: 700, // by restaurant or user
   order_refunded: 800, // by restaurant
   transaction_hide: 1000, // special status
-};
+} as const;
+
+// Type for order status values
+export type OrderStatus = (typeof order_status)[keyof typeof order_status];
 
 export const order_status_for_form: { [key: string]: number } = {
   error: 0,
@@ -24,7 +27,7 @@ export const order_status_for_form: { [key: string]: number } = {
 
 export const order_status_keys = Object.keys(order_status).reduce(
   (tmp: { [key: string]: string }, key: string) => {
-    tmp[String(order_status[key])] = key;
+    tmp[String(order_status[key as keyof typeof order_status])] = key;
     return tmp;
   },
   {},
@@ -48,7 +51,7 @@ export const possible_transitions = {
   },
 };
 
-export const next_transitions = {
+export const next_transitions: { [key: number]: number } = {
   [order_status.order_placed]: order_status.order_accepted,
   [order_status.order_accepted]: order_status.ready_to_pickup,
   [order_status.ready_to_pickup]: order_status.transaction_complete,
@@ -486,6 +489,11 @@ export const promotionPaymentRestrictionsSelect = [
   { value: "instore", message: "受け取り払い" },
   { value: null, message: "なし" },
 ];
+
+// Types for promotion fields
+export type DiscountMethod = "amount" | "ratio";
+export type PromotionType = "discount" | "onetimeCoupon" | "multipletimesCoupon";
+export type PaymentRestrictions = "stripe" | "instore" | null;
 
 export const twiml_neworder =
   "<Response><Say language=\"ja-jp\">こんにちは。わたしは、おもちかえりどっとこむです。あたらしいオーダーが入りました。かくにんをよろしくおねがいいたします。おもちかえりどっとこむでした。</Say></Response>";
