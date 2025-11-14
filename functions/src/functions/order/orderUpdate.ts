@@ -8,7 +8,7 @@ import { sendMessageToCustomer } from "../notify2";
 
 import { getStripeAccount, getStripeOrderRecord, getHash } from "../stripe/intent";
 import { OrderUpdateData } from "../../models/functionTypes";
-import { updateDataOnorderUpdate, OrderData, StripeCustomerInfo, StripePaymentIntentWithCharge } from "../../lib/types";
+import { UpdateDataOnOrderUpdate, OrderData, StripeCustomerInfo, StripePaymentIntentWithCharge } from "../../lib/types";
 import { RestaurantInfoData } from "../../models/RestaurantInfo";
 import { validateOrderUpdate } from "../../lib/validator";
 
@@ -118,7 +118,7 @@ export const update = async (db: admin.firestore.Firestore, data: OrderUpdateDat
 
       // everything are ok
       const updateTimeKey = timeEventMapping[order_status_keys[status] as keyof typeof timeEventMapping];
-      const updateData: updateDataOnorderUpdate = {
+      const updateData: UpdateDataOnOrderUpdate = {
         status,
         updatedAt: admin.firestore.FieldValue.serverTimestamp(),
         [updateTimeKey]: admin.firestore.FieldValue.serverTimestamp(),
