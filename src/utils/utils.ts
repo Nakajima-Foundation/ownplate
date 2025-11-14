@@ -822,10 +822,11 @@ export const useSuper = () => {
 };
 
 export const orderFilter = (order: OrderInfoData) => {
-  return ![
+  const excludeStatuses: number[] = [
     order_status.transaction_hide,
     order_status.waiting_payment,
-  ].includes(order.status);
+  ];
+  return !excludeStatuses.includes(order.status);
 };
 
 // for super

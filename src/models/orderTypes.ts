@@ -1,5 +1,6 @@
 import { FieldValue, Timestamp } from "./firebaseUtils";
 import { OrderInfoData } from "./orderInfoData";
+import { OrderStatus } from "./common";
 
 // Order option types (Firebase-independent)
 export type OptionValue = string | number | boolean | null;
@@ -31,7 +32,7 @@ export interface OrderDataBase extends OrderInfoData {
 
 // Order update data structure (with generic Firebase types)
 export interface UpdateDataOnOrderUpdateBase {
-  status: number;
+  status: OrderStatus;
   updatedAt: FieldValue;
   orderAcceptedAt?: Timestamp;
 

@@ -1,6 +1,7 @@
 import { Timestamp } from "./firebaseUtils";
 import { MenuItem } from "./menu";
 import { CustomerInfo } from "./customer";
+import { OrderStatus } from "./common";
 
 export interface OrderInfoData {
   id: string;
@@ -19,7 +20,7 @@ export interface OrderInfoData {
   timePlaced: Timestamp;
   transactionCompletedAt: Timestamp;
 
-  status: number;
+  status: OrderStatus;
   restaurantId: string; // ?
   description: string;
   accounting?: {

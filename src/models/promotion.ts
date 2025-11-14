@@ -4,7 +4,14 @@ import {
   DocumentData,
 } from "firebase/firestore";
 import FirebaseModel from "./firebasemodel";
-import { PromotionDataBase } from "./promotionTypes";
+import {
+  PromotionDataBase,
+} from "./promotionTypes";
+import {
+  PromotionType,
+  DiscountMethod,
+  PaymentRestrictions,
+} from "./common";
 
 export interface PromotionData extends PromotionDataBase, DocumentData {
   currentOpen?: boolean;
@@ -18,11 +25,11 @@ export default class Promotion extends FirebaseModel<PromotionData> {
   promotionId: string;
   promotionName: string;
   enable: boolean;
-  type: string;
+  type: PromotionType;
   discountThreshold: number;
-  paymentRestrictions: string;
+  paymentRestrictions: PaymentRestrictions;
   usageRestrictions: boolean;
-  discountMethod: string;
+  discountMethod: DiscountMethod;
   discountValue: number;
   hasTerm: boolean;
   termFrom: Date;

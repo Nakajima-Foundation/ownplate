@@ -1,18 +1,19 @@
 import { FieldValue, Timestamp } from "./firebaseUtils";
+import { PromotionType, DiscountMethod, PaymentRestrictions } from "./common";
 
 // Promotion data (with generic Firebase types)
 export interface PromotionDataBase {
   promotionId: string;
   promotionName: string;
   enable: boolean;
-  type: string;
+  type: PromotionType;
   hasTerm: boolean;
   termFrom: Timestamp;
   termTo: Timestamp;
   discountThreshold: number;
-  discountMethod: string;
+  discountMethod: DiscountMethod;
   discountValue: number;
-  paymentRestrictions: string;
+  paymentRestrictions: PaymentRestrictions;
   usageRestrictions: boolean;
 }
 

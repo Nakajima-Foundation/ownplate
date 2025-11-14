@@ -1,5 +1,6 @@
 import { Timestamp } from "./firebaseUtils";
 import { CustomerInfo } from "./customer";
+import { OrderStatus } from "./common";
 
 // Order related function call types
 export interface OrderCreatedData {
@@ -24,7 +25,7 @@ export interface OrderPlacedData {
 export interface OrderUpdateData {
   restaurantId: string;
   orderId: string;
-  status: number;
+  status: OrderStatus;
   timeEstimated?: Timestamp;
 }
 
