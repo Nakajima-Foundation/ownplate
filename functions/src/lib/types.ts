@@ -25,7 +25,6 @@ export type {
   PingData,
   SuperTwilioCallData,
   DispatchData,
-  LineVerifyFriendData,
 } from "../models/functionTypes";
 
 export interface updateDataOnorderUpdate {
