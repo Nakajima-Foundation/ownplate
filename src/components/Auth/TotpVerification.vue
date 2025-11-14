@@ -18,6 +18,8 @@
           <input
             v-model="verificationCode"
             type="text"
+            inputmode="numeric"
+            pattern="\d*"
             :placeholder="$t('admin.totp.codePlaceholder')"
             maxlength="6"
             class="w-full rounded border px-3 py-2"
@@ -100,7 +102,7 @@ export default defineComponent({
 
         console.log('TOTP verification successful');
         emit('complete');
-      } catch (e: any) {
+      } catch (e: unknown) {
         console.error('Failed to verify TOTP:', e);
         console.error('Error code:', e.code);
         console.error('Error message:', e.message);
