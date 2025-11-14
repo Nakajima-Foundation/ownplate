@@ -5,18 +5,16 @@ import i18nES from "@/lang/es";
 import i18nJA from "@/lang/ja";
 import i18nFR from "@/lang/fr";
 
-import * as constant from "@/config/constant";
+import { stripe_regions_jp } from "@/config/constant";
 
 import { ownPlateConfig } from "@/config/project";
 
 const region = ownPlateConfig.region || "US";
 
-const region_data = constant.stripe_regions[region];
-
 const numberFormats = {
   currency: {
     style: "currency",
-    currency: region_data.currency,
+    currency: stripe_regions_jp.currency,
   },
 };
 
@@ -43,7 +41,7 @@ const datetimeFormats = {
   },
 };
 
-const locale = region_data.langs[0] || "en";
+const locale = stripe_regions_jp.langs[0] || "en";
 
 const i18nData = {
   // locales: ['en', 'es', 'ja'],

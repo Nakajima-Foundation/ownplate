@@ -18,7 +18,7 @@ import {
   order_status,
   regionalSettings,
   partners,
-  stripe_regions,
+  stripe_regions_jp,
   soundFiles,
 } from "@/config/constant";
 import { firebaseConfig, ownPlateConfig } from "@/config/project";
@@ -321,12 +321,10 @@ export const regionalSetting = (regionalSettings as { [key: string]: any })[
   ownPlateConfig.region || "US"
 ];
 
-export const stripeRegion = stripe_regions[ownPlateConfig.region || "US"];
-
 export const isLineEnabled = !!ownPlateConfig.line;
 
 export const roundPrice = (price: number) => {
-  const m = stripeRegion.multiple;
+  const m = stripe_regions_jp.multiple;
   return Math.round(price * m) / m;
 };
 
@@ -662,7 +660,7 @@ export const useAdminUids = () => {
 };
 
 export const usePhoneNumber = (shopInfo: any) => {
-  const countries = stripeRegion.countries;
+  const countries = stripe_regions_jp.countries;
 
   const parsedNumber = computed(() => {
     const countryCode = shopInfo.value.countryCode || countries.value[0].code;
@@ -696,7 +694,7 @@ export const scrollToElementById = (id: string) => {
 export const useNationalPhoneNumber = (shopInfo: RestaurantInfoData) => {
   // BUGBUG: We need to determine what we want to diplay for EU
   const parsedNumber = computed(() => {
-    const countryCode = shopInfo.countryCode || stripeRegion.countries[0].code;
+    const countryCode = shopInfo.countryCode || stripe_regions_jp.countries[0].code;
     try {
       return parsePhoneNumber(countryCode + shopInfo.phoneNumber);
     } catch (__error) {
