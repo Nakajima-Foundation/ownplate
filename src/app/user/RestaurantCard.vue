@@ -97,21 +97,6 @@ export default defineComponent({
 
     let detachStripe: Unsubscribe | null = null;
 
-    // Fetch shop info to get owner UID
-    const fetchShopInfo = async () => {
-      try {
-        const shopDoc = await getDoc(doc(db, `restaurants/${restaurantId.value}`));
-        if (shopDoc.exists()) {
-          shopInfo.value = shopDoc.data();
-          ownerUid.value = shopInfo.value.uid;
-          // Start monitoring card info once we have owner UID
-          checkStripe();
-        }
-      } catch (e) {
-        console.error("Failed to fetch shop info:", e);
-      }
-    };
-
     const checkStripe = () => {
       if (detachStripe) {
         detachStripe();
@@ -147,6 +132,21 @@ export default defineComponent({
             console.log("stripe expired");
           },
         );
+      }
+    };
+
+    // Fetch shop info to get owner UID
+    const fetchShopInfo = async () => {
+      try {
+        const shopDoc = await getDoc(doc(db, `restaurants/${restaurantId.value}`));
+        if (shopDoc.exists()) {
+          shopInfo.value = shopDoc.data();
+          ownerUid.value = shopInfo.value.uid;
+          // Start monitoring card info once we have owner UID
+          checkStripe();
+        }
+      } catch (e) {
+        console.error("Failed to fetch shop info:", e);
       }
     };
 
