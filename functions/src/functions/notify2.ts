@@ -9,7 +9,7 @@ import { resources } from "./resources";
 import * as utils from "../lib/utils";
 import { MenuItem } from "../models/menu";
 import { RestaurantInfoData } from "../models/RestaurantInfo";
-
+import { stripe_regions_jp } from "../common/constant";
 import { ownPlateConfig } from "../common/project";
 import { getLineId, getLiffPrivateConfig } from "./line/line";
 
@@ -35,7 +35,7 @@ export const sendMessageToCustomer = async (
   const orderNumber = utils.nameOfOrder(orderData.number);
 
   const t = await i18next.init({
-    lng: utils.stripeRegion.langs[0],
+    lng: stripe_regions_jp.langs[0],
     resources,
   });
   const getMessage = (_url: string) => {
@@ -81,7 +81,7 @@ export const sendMessageToCustomer = async (
 // for restaurant
 const createNotifyRestaurantLineMessage = async (messageId: string, restaurantName: string, orderNumber: number, lng: string) => {
   const t = await i18next.init({
-    lng: lng || utils.stripeRegion.langs[0],
+    lng: lng || stripe_regions_jp.langs[0],
     resources,
   });
   const orderName = utils.nameOfOrder(orderNumber);
@@ -91,7 +91,7 @@ const createNotifyRestaurantLineMessage = async (messageId: string, restaurantNa
 
 const createNotifyRestaurantMailTitle = async (messageId: string, restaurantName: string, orderNumber: number, lng: string) => {
   const t = await i18next.init({
-    lng: lng || utils.stripeRegion.langs[0],
+    lng: lng || stripe_regions_jp.langs[0],
     resources,
   });
   const orderName = utils.nameOfOrder(orderNumber);
@@ -100,7 +100,7 @@ const createNotifyRestaurantMailTitle = async (messageId: string, restaurantName
 };
 
 export const createNotifyRestaurantMailMessage = async (messageId: string, restaurantName: string, order: admin.firestore.DocumentData, orderNumber: number, _lng: string, url: string) => {
-  const lng = _lng || utils.stripeRegion.langs[0];
+  const lng = _lng || stripe_regions_jp.langs[0];
   const path = `./mail_templates/${messageId}/${lng}.html`;
   const template_data = fs.readFileSync(path, { encoding: "utf8" });
 
@@ -167,7 +167,7 @@ const notifyRestaurantToLineUser = async (url: string, message: string, lineUser
 };
 
 export const notifyRestaurant = async (db: admin.firestore.Firestore, messageId: string, restaurantId: string, order: admin.firestore.DocumentData, restaurantName: string) => {
-  const lng = utils.stripeRegion.langs[0];
+  const lng = stripe_regions_jp.langs[0];
   const datestr = moment().format("YYYY-MM-DD");
   const restaurant = (await db.doc(`/restaurants/${restaurantId}`).get()).data() as RestaurantInfoData;
   if (!restaurant) {

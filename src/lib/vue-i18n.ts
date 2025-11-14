@@ -7,8 +7,6 @@ import i18nFR from "@/lang/fr";
 
 import { stripe_regions_jp } from "@/config/constant";
 
-import { ownPlateConfig } from "@/config/project";
-
 const numberFormats = {
   currency: {
     style: "currency",

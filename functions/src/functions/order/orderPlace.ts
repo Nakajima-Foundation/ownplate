@@ -3,7 +3,7 @@ import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
 import moment from "moment-timezone";
 
-import { order_status } from "../../common/constant";
+import { order_status, stripe_regions_jp } from "../../common/constant";
 import * as utils from "../../lib/utils";
 import { notifyNewOrderToRestaurant } from "../notify2";
 import { costCal } from "../../utils/commonUtils";
@@ -114,7 +114,7 @@ export const updateOrderTotalDataAndUserLog = async (
   }
 };
 
-const multiple = utils.stripeRegion.multiple; // 100 for USD, 1 for JPY
+const multiple = stripe_regions_jp.multiple; // 100 for USD, 1 for JPY
 
 // This function is called by users to place orders without paying
 export const place = async (db: admin.firestore.Firestore, data: OrderPlacedData, context: CallableRequest) => {
@@ -226,7 +226,7 @@ export const place = async (db: admin.firestore.Firestore, data: OrderPlacedData
             capture_method: "manual",
             amount: totalChargeWithTipAndMultipled,
             description: `${description} ${orderId}`,
-            currency: utils.stripeRegion.currency,
+            currency: stripe_regions_jp.currency,
             metadata: { uid: customerUid, restaurantId, orderId },
           } as Stripe.PaymentIntentCreateParams;
 
