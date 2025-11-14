@@ -1,5 +1,6 @@
 import * as admin from "firebase-admin";
 import { OrderInfoData } from "../models/orderInfoData";
+import { RestaurantInfoData } from "../models/RestaurantInfo";
 
 // Re-export function call types from shared models
 export type {
@@ -84,24 +85,6 @@ export interface PromotionData {
   discountValue: number;
   paymentRestrictions?: string;
   usageRestrictions?: boolean;
-}
-
-export interface RestaurantInfoData {
-  restaurantId: string;
-  restaurantName: string;
-  uid: string;
-  phoneNumber: string;
-  publicFlag: boolean;
-  deletedFlag?: boolean;
-  isEC?: boolean;
-  hasLine?: boolean;
-  inclusiveTax?: boolean;
-  alcoholTax?: number;
-  foodTax?: number;
-  orderCount?: number;
-  enableDelivery?: boolean;
-  supportLiff?: boolean;
-  enableLunchDinner?: boolean;
 }
 
 export interface UserPromotionHistoryData {

@@ -7,7 +7,8 @@ import { order_status, next_transitions, order_status_keys, timeEventMapping } f
 import { sendMessageToCustomer } from "../notify2";
 
 import { getStripeAccount, getStripeOrderRecord, getHash } from "../stripe/intent";
-import { OrderUpdateData, updateDataOnorderUpdate, OrderData, RestaurantInfoData, StripeCustomerInfo, StripePaymentIntentWithCharge } from "../../lib/types";
+import { OrderUpdateData, updateDataOnorderUpdate, OrderData, StripeCustomerInfo, StripePaymentIntentWithCharge } from "../../lib/types";
+import { RestaurantInfoData } from "../../models/RestaurantInfo";
 import { validateOrderUpdate } from "../../lib/validator";
 
 const getMgsKey = (status: number, isEC: boolean, timeEstimated?: admin.firestore.Timestamp) => {

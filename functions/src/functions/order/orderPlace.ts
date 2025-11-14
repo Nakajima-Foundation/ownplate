@@ -9,7 +9,8 @@ import { notifyNewOrderToRestaurant } from "../notify2";
 import { costCal } from "../../utils/commonUtils";
 
 import { getStripeAccount, getHash, getCustomerStripeInfo2, saveCustomerStripeInfo2 } from "../stripe/intent";
-import { OrderPlacedData, OrderData, RestaurantInfoData, PromotionData, PostageData, StripeCustomerInfo } from "../../lib/types";
+import { OrderPlacedData, OrderData, PromotionData, PostageData, StripeCustomerInfo } from "../../lib/types";
+import { RestaurantInfoData } from "../../models/RestaurantInfo";
 import { validateOrderPlaced, validateCustomer } from "../../lib/validator";
 
 import { getPromotion, enableUserPromotion, userPromotionHistoryData, getUserHistoryDoc, getUserHistoryCollectionPath, getDiscountPrice } from "./promotion";
