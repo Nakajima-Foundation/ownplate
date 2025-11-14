@@ -2,7 +2,7 @@ import * as admin from "firebase-admin";
 import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
 import * as utils from "../../lib/utils";
 import { validatorStripeOAuthVerify } from "../../lib/validator";
-import { StripeOAuthVerifyData } from "../../lib/types";
+import { StripeOAuthVerifyData } from "../../models/functionTypes";
 
 export const verify = async (db: admin.firestore.Firestore, data: StripeOAuthVerifyData, context: CallableRequest) => {
   // just

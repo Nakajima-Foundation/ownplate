@@ -4,7 +4,7 @@ import * as admin from "firebase-admin";
 
 import moment from "moment-timezone";
 
-import { SuperTwilioCallData } from "../../lib/types";
+import { SuperTwilioCallData } from "../../models/functionTypes";
 
 import { phoneCall } from "../notify/twilio";
 

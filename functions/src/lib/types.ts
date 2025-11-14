@@ -2,32 +2,6 @@ import * as admin from "firebase-admin";
 import { OrderInfoData } from "../models/orderInfoData";
 import { RestaurantInfoData } from "../models/RestaurantInfo";
 
-// Re-export function call types from shared models
-export type {
-  OrderCreatedData,
-  OrderPlacedData,
-  OrderUpdateData,
-  ConfirmIntentData,
-  OrderCancelData,
-  NewOrderData,
-  OrderChangeData,
-  OrderCancelPaymentData,
-  StripeOAuthConnectData,
-  StripeOAuthVerifyData,
-  StripeReceiptData,
-  LineValidateData,
-  LiffAuthenticateData,
-  SubAccountInvitateData,
-  SubAccountInvitationAcceptDenyData,
-  SubAccountDeleteChildData,
-  SmaregiAuthData,
-  SmaregiStoreListData,
-  SmaregiProductListData,
-  PingData,
-  SuperTwilioCallData,
-  DispatchData,
-} from "../models/functionTypes";
-
 export interface updateDataOnorderUpdate {
   status: number;
   updatedAt: admin.firestore.FieldValue;

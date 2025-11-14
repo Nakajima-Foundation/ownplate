@@ -4,7 +4,8 @@ import * as utils from "../../lib/utils";
 import { order_status } from "../../common/constant";
 import { createCustomer } from "../stripe/customer";
 
-import { OrderCreatedData, OrderData, OptionValue } from "../../lib/types";
+import { OrderCreatedData } from "../../models/functionTypes";
+import { OrderData, OptionValue } from "../../lib/types";
 import { RestaurantInfoData } from "../../models/RestaurantInfo";
 import { MenuData, MenuItem } from "../../models/menu";
 import { validateOrderCreated } from "../../lib/validator";

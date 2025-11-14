@@ -2,7 +2,7 @@ import * as admin from "firebase-admin";
 
 import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
 import * as utils from "../lib/utils";
-import { SubAccountInvitateData, SubAccountInvitationAcceptDenyData, SubAccountDeleteChildData } from "../lib/types";
+import { SubAccountInvitateData, SubAccountInvitationAcceptDenyData, SubAccountDeleteChildData } from "../models/functionTypes";
 
 import isEmail from "validator/lib/isEmail";
 import { validateFirebaseId } from "../lib/validator";

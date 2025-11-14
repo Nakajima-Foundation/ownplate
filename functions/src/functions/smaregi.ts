@@ -7,7 +7,7 @@ import SmaregiApi from "../smaregi/smaregiapi";
 import { validate_admin_auth } from "../lib/utils";
 import { generateBody } from "../smaregi/apiUtils";
 
-import { SmaregiAuthData, SmaregiStoreListData, SmaregiProductListData } from "../lib/types";
+import { SmaregiAuthData, SmaregiStoreListData, SmaregiProductListData } from "../models/functionTypes";
 import { smaregi } from "../common/project";
 import { validateFirebaseId } from "../lib/validator";
 

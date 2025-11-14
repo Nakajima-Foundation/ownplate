@@ -14,6 +14,8 @@ import {
   PingData,
   LineValidateData,
   LiffAuthenticateData,
+} from "../models/functionTypes";
+import {
   ValidatorNumberOption,
   ValidatorStringOption,
 } from "./types";
