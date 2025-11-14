@@ -16,7 +16,7 @@ import { MenuData } from "@/models/menu";
 
 import {
   order_status,
-  regionalSettings,
+  regionalSetting,
   partners,
   stripe_regions_jp,
   soundFiles,
@@ -37,7 +37,7 @@ import { useGeneralStore } from "../store";
 import { useUserStore } from "@/store/user";
 import { useI18n } from 'vue-i18n'
 
-export { isNull, isEmpty };
+export { isNull, isEmpty, regionalSetting };
 
 export const stripeRegion = stripe_regions_jp; // TODO remove
 // from mixin
@@ -317,10 +317,6 @@ export const getPartner = (shopOwner: ShopOwnerData) => {
     return match;
   });
 };
-
-export const regionalSetting = (regionalSettings as { [key: string]: any })[
-  ownPlateConfig.region || "US"
-];
 
 export const isLineEnabled = !!ownPlateConfig.line;
 

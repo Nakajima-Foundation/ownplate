@@ -269,73 +269,40 @@ export const paymentMethods = [
   { key: "unipay" },
 ];
 
-export const regionalSettings = {
-  US: {
-    CurrencyKey: "USD",
-    StateKey: "shopInfo.state",
-    AddressStates: USStates,
-    Logo: "OwnPlate-Logo-Horizontal-YellowBlack.svg",
-    Logo2: "OwnPlate-Logo-Stack-YellowBlack.svg",
-    FeatureHeroMobile: {
-      ja: "Feature-Hero-Mobile-ja.svg",
-      en: "Feature-Hero-Mobile-en.svg",
-    },
-    FeatureHeroTablet: {
-      ja: "Feature-Hero-Tablet-ja.svg",
-      en: "Feature-Hero-Tablet-en.svg",
-    },
-    FeatureHero: {
-      ja: "Feature-Hero-v01-ja.svg",
-      en: "Feature-Hero-v01-en.svg",
-    },
-    taxRateKeys: {
-      food: "food",
-      alcohol: "alcohol",
-    },
-    defaultLanguage: "en",
-    languages: {
-      en: "English (US)",
-      es: "Español",
-      ja: "日本語",
-    },
-    covid19trace: false,
-    hashTag: "ownplate",
+export const regionalSetting = {
+  CurrencyKey: "JPY",
+  StateKey: "shopInfo.prefecture",
+  AddressStates: JPPrefecture,
+  Logo: "Omochikaeri-Logo-Horizontal-Primary.png",
+  Logo2: "Omochikaeri-Logo-Stack-Primary.png",
+  FeatureHeroMobile: {
+    ja: "Feature-Hero-Mobile-ja.svg",
+    en: "Feature-Hero-Mobile-en.svg",
   },
-  JP: {
-    CurrencyKey: "JPY",
-    StateKey: "shopInfo.prefecture",
-    AddressStates: JPPrefecture,
-    Logo: "Omochikaeri-Logo-Horizontal-Primary.png",
-    Logo2: "Omochikaeri-Logo-Stack-Primary.png",
-    FeatureHeroMobile: {
-      ja: "Feature-Hero-Mobile-ja.svg",
-      en: "Feature-Hero-Mobile-en.svg",
-    },
-    FeatureHeroTablet: {
-      ja: "Feature-Hero-Tablet-ja.svg",
-      en: "Feature-Hero-Tablet-en.svg",
-    },
-    FeatureHero: {
-      ja: "Feature-Hero-v01-ja.svg",
-      en: "Feature-Hero-v01-en.svg",
-    },
-    defaultTax: {
-      foodTax: 8,
-      alcoholTax: 10,
-    },
-    taxRateKeys: {
-      food: "foodJP",
-      alcohol: "alcoholJP",
-    },
-    defaultLanguage: "ja",
-    languages: {
-      ja: "日本語",
-      en: "English (US)",
-      fr: "French",
-    },
-    covid19trace: true,
-    hashTag: "omochikaeri",
+  FeatureHeroTablet: {
+    ja: "Feature-Hero-Tablet-ja.svg",
+    en: "Feature-Hero-Tablet-en.svg",
   },
+  FeatureHero: {
+    ja: "Feature-Hero-v01-ja.svg",
+    en: "Feature-Hero-v01-en.svg",
+  },
+  defaultTax: {
+    foodTax: 8,
+    alcoholTax: 10,
+  },
+  taxRateKeys: {
+    food: "foodJP",
+    alcohol: "alcoholJP",
+  },
+  defaultLanguage: "ja",
+  languages: {
+    ja: "日本語",
+    en: "English (US)",
+    fr: "French",
+  },
+  covid19trace: true,
+  hashTag: "omochikaeri",
 };
 
 export const soundFiles = [
