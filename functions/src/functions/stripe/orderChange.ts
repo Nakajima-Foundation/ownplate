@@ -10,7 +10,7 @@ import { costCal } from "../../utils/commonUtils";
 import { getStripeAccount, getStripeOrderRecord, getPaymentMethodData, getHash } from "./intent";
 
 import { OrderChangeData, NewOrderData } from "../../models/functionTypes";
-import { OptionValue } from "../../lib/types";
+import { OptionValue } from "../../lib/types/order";
 import { validateOrderChange } from "../../lib/validator";
 
 type OrderQuantityMap = Record<string, number[]>;

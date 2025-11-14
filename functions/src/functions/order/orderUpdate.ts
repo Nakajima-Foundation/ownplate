@@ -8,7 +8,8 @@ import { sendMessageToCustomer } from "../notify2";
 
 import { getStripeAccount, getStripeOrderRecord, getHash } from "../stripe/intent";
 import { OrderUpdateData } from "../../models/functionTypes";
-import { UpdateDataOnOrderUpdate, OrderData, StripeCustomerInfo, StripePaymentIntentWithCharge } from "../../lib/types";
+import { UpdateDataOnOrderUpdate, OrderData } from "../../lib/types/order";
+import { StripeCustomerInfo, StripePaymentIntentWithCharge } from "../../lib/types/stripe";
 import { RestaurantInfoData } from "../../models/RestaurantInfo";
 import { validateOrderUpdate } from "../../lib/validator";
 

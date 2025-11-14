@@ -1,6 +1,6 @@
 import { HttpsError } from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
-import { PromotionData } from "../../lib/types";
+import { PromotionData } from "../../lib/types/promotion";
 import { RestaurantInfoData } from "../../models/RestaurantInfo";
 
 export const getPromotion = async (db: admin.firestore.Firestore, transaction: admin.firestore.Transaction, promotionId: string, restaurantData: RestaurantInfoData, orderTotal: number, enableStripe: boolean): Promise<PromotionData> => {

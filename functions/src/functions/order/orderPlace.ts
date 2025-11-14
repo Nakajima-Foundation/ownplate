@@ -10,7 +10,10 @@ import { costCal } from "../../utils/commonUtils";
 
 import { getStripeAccount, getHash, getCustomerStripeInfo2, saveCustomerStripeInfo2 } from "../stripe/intent";
 import { OrderPlacedData } from "../../models/functionTypes";
-import { OrderData, PromotionData, PostageData, StripeCustomerInfo } from "../../lib/types";
+import { OrderData } from "../../lib/types/order";
+import { PromotionData } from "../../lib/types/promotion";
+import { PostageData } from "../../lib/types/delivery";
+import { StripeCustomerInfo } from "../../lib/types/stripe";
 import { RestaurantInfoData } from "../../models/RestaurantInfo";
 import { validateOrderPlaced, validateCustomer } from "../../lib/validator";
 
