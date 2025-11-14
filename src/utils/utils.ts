@@ -35,10 +35,11 @@ import { isNull, isEmpty } from "./commonUtils";
 import { useRoute, useRouter } from "vue-router";
 import { useGeneralStore } from "../store";
 import { useUserStore } from "@/store/user";
-import i18n from "@/lib/vue-i18n";
+import { useI18n } from 'vue-i18n'
 
 export { isNull, isEmpty };
 
+export const stripeRegion = stripe_regions_jp; // TODO remove
 // from mixin
 export const useRestaurantId = () => {
   const route = useRoute();
@@ -128,8 +129,8 @@ export const num2simpleFormatedTime = (num: number) => {
 };
 
 export const num2time = (num: number) => {
-  const { locale, t } = i18n.global;
-
+  const { locale, t } = useI18n();
+  
   if (num === 0 || num === 60 * 24) {
     return t("shopInfo.midnight");
   }
@@ -333,7 +334,7 @@ export const displayOption = (
   shopInfo: RestaurantInfoData,
   item: MenuData,
 ) => {
-  const { n } = i18n.global;
+  const { n } = useI18n();
   return formatOption(option, (price) => {
     return n(roundPrice(price * taxRate(shopInfo, item)), "currency");
   });
@@ -663,7 +664,7 @@ export const usePhoneNumber = (shopInfo: any) => {
   const countries = stripe_regions_jp.countries;
 
   const parsedNumber = computed(() => {
-    const countryCode = shopInfo.value.countryCode || countries.value[0].code;
+    const countryCode = shopInfo.value.countryCode || countries[0].code;
     try {
       return parsePhoneNumber(countryCode + shopInfo.value.phoneNumber);
     } catch (__error) {
@@ -746,7 +747,7 @@ export const isDev = firebaseConfig.projectId === "ownplate-dev";
 
 export const useIsLocaleJapan = () => {
   // for hack
-  const { locale } = i18n.global;
+  const { locale } = useI18n();
   console.log(locale.value);
   return computed(() => {
     return locale.value !== "en" && locale.value !== "fr";
