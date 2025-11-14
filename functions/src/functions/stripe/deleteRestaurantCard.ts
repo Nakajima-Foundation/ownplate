@@ -1,11 +1,12 @@
 import * as admin from "firebase-admin";
 import { CallableRequest } from "firebase-functions/v2/https";
 import * as utils from "../../lib/utils";
+import { StripeDeleteRestaurantCardData } from "../../models/functionTypes";
 
 // Delete card information for a specific restaurant
 export const deleteRestaurantCard = async (
   db: admin.firestore.Firestore,
-  data: { ownerUid: string },
+  data: StripeDeleteRestaurantCardData,
   context: CallableRequest
 ) => {
   const customerUid = utils.validate_customer_auth(context);
