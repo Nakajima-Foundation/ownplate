@@ -1,5 +1,6 @@
 import * as admin from "firebase-admin";
 import { CustomerInfo } from "../models/customer";
+import { OrderInfoData } from "../models/orderInfoData";
 
 export interface orderCreatedData {
   restaurantId: string;
@@ -145,69 +146,7 @@ export type OrderOptions = OptionValue[];
 export type OrderRawOption = OptionValue;
 
 // Order related types
-export interface OrderData {
-  id?: string;
-  name?: string;
-  number?: number;
-  uid: string;
-  totalCharge?: number;
-  total: number;
-  sub_total?: number;
-  inclusiveTax?: boolean;
-  deliveryFee?: number;
-  tax?: number;
-
-  timeCreated?: admin.firestore.Timestamp;
-  timeEstimated?: admin.firestore.Timestamp;
-  timeConfirmed?: admin.firestore.Timestamp;
-  timePlaced?: admin.firestore.Timestamp;
-  transactionCompletedAt?: admin.firestore.Timestamp;
-
-  status: number;
-  restaurantId?: string;
-  description?: string;
-  accounting?: {
-    food: {
-      revenue: number;
-      tax: number;
-    };
-    alcohol: {
-      revenue: number;
-      tax: number;
-    };
-    service?: {
-      revenue: number;
-      tax: number;
-    };
-  };
-  shippingCost?: number;
-  isDelivery?: boolean;
-  isEC?: boolean;
-
-  tip?: number;
-  menuItems?: { [menuId: string]: MenuItem };
-  phoneNumber?: string;
-  order: { [menuId: string]: number | number[] };
-  options?: { [menuId: string]: OrderOptions[] };
-  payment?: {
-    stripe?: string;
-  };
-  type: string;
-
-  prices?: { [menuId: string]: number[] };
-  orderPlacedAt?: admin.firestore.FieldValue | admin.firestore.Timestamp;
-  orderUpdatedAt?: admin.firestore.Timestamp;
-  orderAcceptedAt?: admin.firestore.Timestamp;
-  lastUpdatedAt: admin.firestore.Timestamp;
-  orderCustomerCanceledAt: admin.firestore.Timestamp;
-  uidPaymentCanceledBy: boolean;
-  discountPrice?: number;
-
-  customerInfo: CustomerInfo;
-  memo?: string;
-  lunchOrDinner?: string;
-
-  cancelReason?: string; // mo
+export interface OrderData extends OrderInfoData {
   // for server
   ownerUid?: string;
   rawOptions?: { [menuId: string]: OptionValue[][] };
