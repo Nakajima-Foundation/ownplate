@@ -43,7 +43,7 @@ export interface OrderInfoData {
   shippingCost: number;
   isDelivery: boolean;
   isEC: boolean;
-  // isPickup: boolean;
+  isPickup: boolean; // TODO remove
   tip: number;
   menuItems: { [key: string]: MenuItem };
   phoneNumber: string;
