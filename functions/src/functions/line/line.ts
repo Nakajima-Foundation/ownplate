@@ -7,7 +7,7 @@ import * as admin from "firebase-admin";
 import { ownPlateConfig } from "../../common/project";
 
 import { LineValidateData } from "../../models/functionTypes";
-import { LineAccessTokenResponse, LineProfileResponse, LineVerifyResponse } from "../../lib/types";
+import { LineAccessTokenResponse, LineProfileResponse, LineVerifyResponse } from "../../lib/types/line";
 import { validateLineValidate } from "../../lib/validator";
 
 const line_message_token = defineSecret("LINE_MESSAGE_TOKEN");

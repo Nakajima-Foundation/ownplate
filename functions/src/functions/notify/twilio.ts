@@ -4,7 +4,7 @@ import { defineSecret } from "firebase-functions/params";
 import { twiml_neworder } from "../../common/constant";
 import { parsePhoneNumber, formatNational, internationalFormat } from "../../common/phoneutil";
 import { enableNotification } from "../notificationConfig";
-import { RestaurantPhoneData } from "../../lib/types";
+import { RestaurantPhoneData } from "../../lib/types/restaurant";
 
 const twilio_sid = defineSecret("TWILIO_SID");
 const twilio_token = defineSecret("TWILIO_TOKEN");

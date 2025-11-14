@@ -6,7 +6,7 @@ import * as netutils from "../../lib/netutils";
 import * as crypto from "crypto";
 
 import { LiffAuthenticateData } from "../../models/functionTypes";
-import { LineVerifyResponse } from "../../lib/types";
+import { LineVerifyResponse } from "../../lib/types/line";
 import { validateLiffAuthenticate } from "../../lib/validator";
 
 const LIFF_SALT = defineSecret("LIFF_SALT");

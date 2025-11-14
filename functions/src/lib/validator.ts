@@ -18,7 +18,7 @@ import {
 import {
   ValidatorNumberOption,
   ValidatorStringOption,
-} from "./types";
+} from "./types/validator";
 import { CustomerInfo } from "../models/customer";
 import { isEmpty } from "./utils";
 import isURL from "validator/lib/isURL";
