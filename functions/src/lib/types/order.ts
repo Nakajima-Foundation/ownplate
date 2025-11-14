@@ -1,4 +1,3 @@
-import * as admin from "firebase-admin";
 import {
   OptionValue,
   OrderOptions,
@@ -11,5 +10,5 @@ import {
 export type { OptionValue, OrderOptions, OrderRawOption };
 
 // Functions-specific types using firebase-admin
-export type OrderData = OrderDataBase<admin.firestore.Timestamp, admin.firestore.FieldValue>;
-export type UpdateDataOnOrderUpdate = UpdateDataOnOrderUpdateBase<admin.firestore.Timestamp, admin.firestore.FieldValue>;
+export type OrderData = OrderDataBase;
+export type UpdateDataOnOrderUpdate = UpdateDataOnOrderUpdateBase;

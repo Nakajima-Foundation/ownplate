@@ -1,3 +1,4 @@
+import { FieldValue, Timestamp } from "./firebaseUtils";
 import { OrderInfoData } from "./orderInfoData";
 
 // Order option types (Firebase-independent)
@@ -10,18 +11,8 @@ export interface PaymentInfo {
   stripe: string;
 }
 
-// Generic Timestamp type to be compatible with both firebase and firebase-admin
-export type GenericTimestamp = {
-  seconds: number;
-  nanoseconds: number;
-  toDate(): Date;
-};
-
-// Generic FieldValue type to be compatible with both firebase and firebase-admin
-export type GenericFieldValue = unknown;
-
 // Server-side extended order data (with generic Firebase types)
-export interface OrderDataBase<TTimestamp = GenericTimestamp, TFieldValue = GenericFieldValue> extends OrderInfoData {
+export interface OrderDataBase extends OrderInfoData {
   // for server
   ownerUid?: string;
   rawOptions?: { [menuId: string]: OptionValue[][] };
@@ -30,8 +21,8 @@ export interface OrderDataBase<TTimestamp = GenericTimestamp, TFieldValue = Gene
   sendSMS?: boolean;
   printed?: boolean;
 
-  timePickupForQuery?: TTimestamp;
-  updatedAt?: TFieldValue | TTimestamp;
+  timePickupForQuery?: Timestamp;
+  updatedAt?: FieldValue | Timestamp;
   client_secret?: string;
   hasPayment?: boolean;
   isLiff?: boolean;
@@ -39,16 +30,16 @@ export interface OrderDataBase<TTimestamp = GenericTimestamp, TFieldValue = Gene
 }
 
 // Order update data structure (with generic Firebase types)
-export interface UpdateDataOnOrderUpdateBase<TTimestamp = GenericTimestamp, TFieldValue = GenericFieldValue> {
+export interface UpdateDataOnOrderUpdateBase {
   status: number;
-  updatedAt: TFieldValue;
-  orderAcceptedAt?: TTimestamp;
+  updatedAt: FieldValue;
+  orderAcceptedAt?: Timestamp;
 
-  timeConfirmed?: TTimestamp;
-  transactionCompletedAt?: TTimestamp;
+  timeConfirmed?: Timestamp;
+  transactionCompletedAt?: Timestamp;
 
-  timeEstimated?: TTimestamp;
-  timePickupForQuery?: TTimestamp;
+  timeEstimated?: Timestamp;
+  timePickupForQuery?: Timestamp;
 
   payment?: PaymentInfo;
 }
