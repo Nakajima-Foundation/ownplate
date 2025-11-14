@@ -71,34 +71,6 @@ export interface OrderData extends OrderInfoData {
   isSavePay?: boolean;
 }
 
-export interface MenuImages {
-  item?: {
-    resizedImages: {
-      [key: string]: string;
-    };
-    original: string;
-    path?: string;
-  };
-}
-
-export interface ExceptHour {
-  start?: number;
-  end?: number;
-}
-
-export interface MenuItem {
-  price: number;
-  itemName: string;
-  itemPhoto: string;
-  images: MenuImages;
-  itemAliasesName: string;
-  category1: string;
-  category2: string;
-  exceptDay: { [key: string]: boolean };
-  exceptHour: ExceptHour;
-  tax: string;
-}
-
 export interface PromotionData {
   promotionId: string;
   promotionName: string;
