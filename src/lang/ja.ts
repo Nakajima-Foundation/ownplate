@@ -900,6 +900,7 @@ const data = {
     cancel: "キャンセル",
     next: "次へ",
     verify: "認証",
+    skip: "スキップ",
     category: "カテゴリ",
     myPage: "マイページ",
     backToTop: "トップへ",
