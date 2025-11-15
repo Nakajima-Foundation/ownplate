@@ -86,7 +86,7 @@ export const cleanupOldCards = async (db: admin.firestore.Firestore) => {
                 console.log(`  Detached payment method ${systemData.payment_method} from Stripe`);
               } catch (stripeError) {
                 // Log error but continue with Firestore deletion
-                console.error(`  Failed to detach payment method from Stripe:`, stripeError);
+                console.error("  Failed to detach payment method from Stripe:", stripeError);
                 totalErrors++;
               }
             } else {
@@ -106,7 +106,7 @@ export const cleanupOldCards = async (db: admin.firestore.Firestore) => {
                   }
                 }
               } catch (stripeError) {
-                console.error(`  Failed to delete card source from Stripe:`, stripeError);
+                console.error("  Failed to delete card source from Stripe:", stripeError);
                 totalErrors++;
               }
             }
