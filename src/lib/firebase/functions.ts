@@ -122,7 +122,6 @@ export const stripePaymentCancelIntent = httpsCallable(
   "stripePaymentCancelIntent2",
 );
 
-export const stripeDeleteCard = httpsCallable(functionsJP, "stripeDeleteCard2");
 export const stripeDeleteRestaurantCard = httpsCallable<
   StripeDeleteRestaurantCardData,
   { result: boolean }
