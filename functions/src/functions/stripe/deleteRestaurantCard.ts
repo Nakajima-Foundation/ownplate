@@ -44,8 +44,10 @@ export const deleteRestaurantCard = async (
         const stripe = utils.get_stripe_v2();
 
         // Detach the payment method from the customer
+        // In Stripe SDK v18, detach takes (id, params, options) where params can be {} or undefined
         await stripe.paymentMethods.detach(
           stripeInfo.payment_method,
+          {},
           { stripeAccount }
         );
         console.log(`Payment method ${stripeInfo.payment_method} detached successfully`);
