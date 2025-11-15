@@ -54,6 +54,16 @@
       />
     </div>
 
+    <!-- Card Management (Restaurant-specific) -->
+    <div v-if="isUser && restaurantId">
+      <SideMenuButton
+        text="restaurantCard.title"
+        icon="credit_card"
+        :to="`/r/${restaurantId}/card`"
+        @handle-close="handleClose()"
+      />
+    </div>
+
     <!-- Favorites -->
     <div v-if="isUser && !inLiff">
       <SideMenuButton
@@ -170,6 +180,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
+import { useRoute } from "vue-router";
 import { useLiffBasePath, regionalSetting, useUserData } from "@/utils/utils";
 import SideMenuButton from "@/components/App/SideMenuButton.vue";
 import SideMenuText from "@/components/App/SideMenuText.vue";
@@ -183,9 +194,18 @@ export default defineComponent({
   },
   setup() {
     const open = ref(false);
+    const route = useRoute();
 
     const liffBasePath = useLiffBasePath();
     const { inLiff, isAnonymous, isAdmin, isUser } = useUserData();
+
+    const restaurantId = computed(() => {
+      // Check if current route is a restaurant page (/r/:restaurantId/...)
+      if (route.path.startsWith("/r/") && route.params.restaurantId) {
+        return route.params.restaurantId as string;
+      }
+      return null;
+    });
 
     const home_path = computed(() => {
       // /liff/hoge or /admin/restaurants or /r
@@ -219,6 +239,7 @@ export default defineComponent({
       logo2,
       base_path,
       historyPage,
+      restaurantId,
 
       open,
       handleClose,

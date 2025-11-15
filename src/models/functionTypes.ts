@@ -122,6 +122,11 @@ export interface PingData {
   pathName: string;
 }
 
+// Stripe function call types
+export interface StripeDeleteRestaurantCardData {
+  ownerUid: string;
+}
+
 // Super admin function call types
 export interface SuperTwilioCallData {
   restaurantId: string;

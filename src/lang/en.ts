@@ -36,6 +36,10 @@ const data = {
   },
   underConstruction: "WARNING: This is a staging server for development.",
   comma: ", ",
+  restaurantCard: {
+    title: "Restaurant Card Info",
+    description: "Manage your saved card information for this restaurant",
+  },
   profile: {
     title: "My Page",
     address: "Personal Info",

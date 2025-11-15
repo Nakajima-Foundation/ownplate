@@ -30,6 +30,11 @@ const getUserPages = (prefix: string) => {
       path: "order/:orderId",
       component: () => import("@/app/user/OrderPage.vue"),
     },
+    {
+      name: "r-restaurantId-card_" + prefix,
+      path: "card",
+      component: () => import("@/app/user/RestaurantCard.vue"),
+    },
   ];
 };
 
