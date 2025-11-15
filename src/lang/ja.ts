@@ -36,6 +36,10 @@ const data = {
   },
   underConstruction: "注意：これはテスト用のサーバーです。",
   comma: "、",
+  restaurantCard: {
+    title: "カード情報",
+    description: "この店舗で保存されているカード情報を管理できます",
+  },
   profile: {
     title: "マイページ",
     address: "アドレス",
