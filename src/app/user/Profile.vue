@@ -33,8 +33,6 @@
           <!-- Address -->
           <address-button />
 
-          <!-- ProfileStripe -->
-
           <ProfileLine />
         </div>
 
@@ -70,7 +68,6 @@ import ProfileLogin from "@/app/user/Profile/Login.vue";
 import ProfileDeleteAccount from "@/app/user/Profile/DeleteAccount.vue";
 import ProfileLoginStatus from "@/app/user/Profile/LoginStatus.vue";
 import ProfileTotpSettings from "@/app/user/Profile/TotpSettings.vue";
-// import ProfileStripe from "@/app/user/Profile/Stripe.vue";
 import ProfileLine from "@/app/user/Profile/Line.vue";
 
 import HistoryButton from "@/components/form/HistoryButton.vue";
@@ -91,7 +88,6 @@ export default defineComponent({
     ProfileDeleteAccount,
     ProfileLoginStatus,
     ProfileTotpSettings,
-    // ProfileStripe,
     ProfileLine,
   },
   setup() {

@@ -37,7 +37,6 @@ exportIfNeeded("stripeDisconnect2", "stripe/stripeDisconnect", exports);
 exportIfNeeded("stripeCancelIntent2", "stripe/stripeCancelIntent", exports);
 exportIfNeeded("stripePaymentCancelIntent2", "stripe/stripePaymentCancelIntent", exports);
 
-exportIfNeeded("stripeDeleteCard2", "stripe/stripeDeleteCard", exports);
 exportIfNeeded("stripeDeleteRestaurantCard2", "stripe/stripeDeleteRestaurantCard", exports);
 exportIfNeeded("stripepay2", "stripe/stripePayIntent", exports);
 
