@@ -214,7 +214,12 @@ export const place = async (db: admin.firestore.Firestore, data: OrderPlacedData
         await transaction.get(customerRef);
       }
 
-      const totalCharge = order.total + roundedTip + (shippingCost || 0) + (order.deliveryFee || 0) - discountPrice;
+      // Recalculate deliveryFee server-side (don't trust order.deliveryFee from Firestore)
+      // Users could manipulate order.deliveryFee to pay arbitrary prices
+      const deliveryData = order.isDelivery ? await utils.get_restaurant_delivery_area(db, restaurantId) : {};
+      const deliveryFee = order.isDelivery ? utils.get_delivery_cost(order, deliveryData, order.total) : 0;
+
+      const totalCharge = order.total + roundedTip + (shippingCost || 0) + deliveryFee - discountPrice;
       const totalChargeWithTipAndMultipled = totalCharge * multiple; // for US stripe price
       const orderNumber = utils.nameOfOrder(order.number || 0);
       const paymentIntent = await (async () => {
@@ -280,6 +285,7 @@ export const place = async (db: admin.firestore.Firestore, data: OrderPlacedData
         promotionId: promotionId || "",
         tip: roundedTip,
         shippingCost,
+        deliveryFee, // Store the server-side recalculated deliveryFee
         sendSMS: true,
         printed: false,
         updatedAt: admin.firestore.FieldValue.serverTimestamp(),
@@ -323,7 +329,7 @@ export const place = async (db: admin.firestore.Firestore, data: OrderPlacedData
         await transaction.set(historyCollectionRef.doc(), data);
       }
 
-      Object.assign(order, { totalCharge, tip, shippingCost }, enableStripe ? { payment: true } : {});
+      Object.assign(order, { totalCharge, tip, shippingCost, deliveryFee }, enableStripe ? { payment: true } : {});
       return { success: true, order };
     });
     if (!waitingPayment) {
