@@ -1,5 +1,5 @@
 import * as admin from "firebase-admin";
-import { CallableRequest } from "firebase-functions/v2/https";
+import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
 import * as utils from "../../lib/utils";
 import { StripeDeleteRestaurantCardData } from "../../models/functionTypes";
 import { getStripeAccount } from "./intent";
@@ -14,7 +14,19 @@ export const deleteRestaurantCard = async (
   const { ownerUid } = data;
 
   if (!ownerUid) {
-    throw new functions.https.HttpsError("invalid-argument", "ownerUid is required");
+    throw new HttpsError("invalid-argument", "ownerUid is required");
+  }
+
+  // Validate ownerUid format (Firebase UID: alphanumeric characters only)
+  const uidRegex = /^[a-zA-Z0-9]+$/;
+  if (!uidRegex.test(ownerUid)) {
+    throw new HttpsError("invalid-argument", "Invalid ownerUid format");
+  }
+
+  // Validate that ownerUid corresponds to a valid restaurant owner (admin user)
+  const adminDoc = await db.doc(`/admins/${ownerUid}`).get();
+  if (!adminDoc.exists) {
+    throw new HttpsError("invalid-argument", "Invalid ownerUid: not a valid restaurant owner");
   }
 
   try {
