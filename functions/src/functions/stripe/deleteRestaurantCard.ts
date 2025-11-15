@@ -14,7 +14,7 @@ export const deleteRestaurantCard = async (
   const { ownerUid } = data;
 
   if (!ownerUid) {
-    throw new Error("ownerUid is required");
+    throw new functions.https.HttpsError("invalid-argument", "ownerUid is required");
   }
 
   try {
