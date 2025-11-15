@@ -1,4 +1,5 @@
-import { expect } from "chai";
+import { describe, it } from "node:test";
+import assert from "node:assert";
 
 // import * as image from '../src/functions/image/image'
 import * as imageUtil from "../src/functions/image/imageUtil";
@@ -10,68 +11,68 @@ import * as constant from "../src/functions/image/constant";
 // const adminDB = test_db_helper.adminDB();
 
 describe("Image function", () => {
-  it("Image function, orderCounter test", async function () {
+  it("Image function, orderCounter test", async () => {
     const uid = "123";
     // cover
     const okPath11 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/${uid}/cover.jpg`;
-    expect(imageUtil.validImagePath(okPath11, constant.matchImagePaths)).to.equal(true);
+    assert.strictEqual(imageUtil.validImagePath(okPath11, constant.matchImagePaths), true);
 
     const ngPath11 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/${uid}/cover1.jpg`;
-    expect(imageUtil.validImagePath(ngPath11, constant.matchImagePaths)).to.equal(false);
+    assert.strictEqual(imageUtil.validImagePath(ngPath11, constant.matchImagePaths), false);
 
     // profile
     const okPath12 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/${uid}/profile.jpg`;
-    expect(imageUtil.validImagePath(okPath12, constant.matchImagePaths)).to.equal(true);
+    assert.strictEqual(imageUtil.validImagePath(okPath12, constant.matchImagePaths), true);
 
     const ngPath12 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/${uid}/profile1.jpg`;
-    expect(imageUtil.validImagePath(ngPath12, constant.matchImagePaths)).to.equal(false);
+    assert.strictEqual(imageUtil.validImagePath(ngPath12, constant.matchImagePaths), false);
 
     const okPath13 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/menus/6cDoe8lyrn898YtwiQfg/${uid}/item.jpg`;
-    expect(imageUtil.validImagePath(okPath13, constant.matchImagePaths)).to.equal(true);
+    assert.strictEqual(imageUtil.validImagePath(okPath13, constant.matchImagePaths), true);
 
     const ngPath13 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/menus/6cDoe8lyrn898YtwiQfg/${uid}/item2.jpg`;
-    expect(imageUtil.validImagePath(ngPath13, constant.matchImagePaths)).to.equal(false);
+    assert.strictEqual(imageUtil.validImagePath(ngPath13, constant.matchImagePaths), false);
   });
 
-  it("should test getStorePath", function () {
+  it("should test getStorePath", () => {
     const uid = "123";
     const path1 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/${uid}/cover.jpg`;
-    expect(imageUtil.getFirestorePath(path1)).to.equal("restaurants/0LHzyxxnKZ0eZs3bCaEx");
+    assert.strictEqual(imageUtil.getFirestorePath(path1), "restaurants/0LHzyxxnKZ0eZs3bCaEx");
 
     const path2 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/${uid}/profile.jpg`;
-    expect(imageUtil.getFirestorePath(path2)).to.equal("restaurants/0LHzyxxnKZ0eZs3bCaEx");
+    assert.strictEqual(imageUtil.getFirestorePath(path2), "restaurants/0LHzyxxnKZ0eZs3bCaEx");
 
     const path3 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/menus/6cDoe8lyrn898YtwiQfg/${uid}/item.jpg`;
-    expect(imageUtil.getFirestorePath(path3)).to.equal("restaurants/0LHzyxxnKZ0eZs3bCaEx/menus/6cDoe8lyrn898YtwiQfg");
+    assert.strictEqual(imageUtil.getFirestorePath(path3), "restaurants/0LHzyxxnKZ0eZs3bCaEx/menus/6cDoe8lyrn898YtwiQfg");
 
     const ngPath1 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/${uid}/cover1.jpg`;
-    expect(imageUtil.getFirestorePath(ngPath1)).to.equal("");
+    assert.strictEqual(imageUtil.getFirestorePath(ngPath1), "");
 
     const ngPath2 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/${uid}/profile2.jpg`;
-    expect(imageUtil.getFirestorePath(ngPath2)).to.equal("");
+    assert.strictEqual(imageUtil.getFirestorePath(ngPath2), "");
   });
 
-  it("should test getStorePath", function () {
+  it("should test getImageId", () => {
     const uid = "123";
     const path1 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/${uid}/cover.jpg`;
-    expect(imageUtil.getImageId(path1)).to.equal("cover");
+    assert.strictEqual(imageUtil.getImageId(path1), "cover");
 
     const path2 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/${uid}/profile.jpg`;
-    expect(imageUtil.getImageId(path2)).to.equal("profile");
+    assert.strictEqual(imageUtil.getImageId(path2), "profile");
 
     const path3 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/menus/6cDoe8lyrn898YtwiQfg/${uid}/item.jpg`;
-    expect(imageUtil.getImageId(path3)).to.equal("item");
+    assert.strictEqual(imageUtil.getImageId(path3), "item");
   });
 
-  it("should test getToFileFullPath", function () {
+  it("should test getToFileFullPath", () => {
     const uid = "123";
     const path1 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/${uid}/cover.jpg`;
-    expect(imageUtil.getToFileFullPath(path1, 100)).to.equal("images/restaurants/0LHzyxxnKZ0eZs3bCaEx/123/resize/100/cover.jpg");
+    assert.strictEqual(imageUtil.getToFileFullPath(path1, 100), "images/restaurants/0LHzyxxnKZ0eZs3bCaEx/123/resize/100/cover.jpg");
 
     const path2 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/${uid}/profile.jpg`;
-    expect(imageUtil.getToFileFullPath(path2, 200)).to.equal("images/restaurants/0LHzyxxnKZ0eZs3bCaEx/123/resize/200/profile.jpg");
+    assert.strictEqual(imageUtil.getToFileFullPath(path2, 200), "images/restaurants/0LHzyxxnKZ0eZs3bCaEx/123/resize/200/profile.jpg");
 
     const path3 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/menus/6cDoe8lyrn898YtwiQfg/${uid}/item.jpg`;
-    expect(imageUtil.getToFileFullPath(path3, 300)).to.equal("images/restaurants/0LHzyxxnKZ0eZs3bCaEx/menus/6cDoe8lyrn898YtwiQfg/123/resize/300/item.jpg");
+    assert.strictEqual(imageUtil.getToFileFullPath(path3, 300), "images/restaurants/0LHzyxxnKZ0eZs3bCaEx/menus/6cDoe8lyrn898YtwiQfg/123/resize/300/item.jpg");
   });
 });

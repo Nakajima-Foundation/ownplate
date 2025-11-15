@@ -82,7 +82,7 @@ export const get_stripe_v2 = () => {
   if (!STRIPE_SECRET_KEY) {
     throw new HttpsError("invalid-argument", "The functions requires STRIPE_SECRET_KEY.");
   }
-  return new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2025-07-30.basil" });
+  return new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2025-10-29.clover" });
 };
 
 export const required_params = (params: Record<string, unknown>) => {
