@@ -35,7 +35,7 @@ import { isNull, isEmpty } from "./commonUtils";
 import { useRoute, useRouter } from "vue-router";
 import { useGeneralStore } from "../store";
 import { useUserStore } from "@/store/user";
-import { useI18n } from 'vue-i18n'
+import { useI18n } from "vue-i18n";
 
 export { isNull, isEmpty, regionalSetting };
 
@@ -130,7 +130,7 @@ export const num2simpleFormatedTime = (num: number) => {
 
 export const num2time = (num: number) => {
   const { locale, t } = useI18n();
-  
+
   if (num === 0 || num === 60 * 24) {
     return t("shopInfo.midnight");
   }
@@ -691,7 +691,8 @@ export const scrollToElementById = (id: string) => {
 export const useNationalPhoneNumber = (shopInfo: RestaurantInfoData) => {
   // BUGBUG: We need to determine what we want to diplay for EU
   const parsedNumber = computed(() => {
-    const countryCode = shopInfo.countryCode || stripe_regions_jp.countries[0].code;
+    const countryCode =
+      shopInfo.countryCode || stripe_regions_jp.countries[0].code;
     try {
       return parsePhoneNumber(countryCode + shopInfo.phoneNumber);
     } catch (__error) {

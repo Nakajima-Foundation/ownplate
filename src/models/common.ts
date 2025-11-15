@@ -1,1 +1,6 @@
-export type { OrderStatus, PromotionType, DiscountMethod, PaymentRestrictions } from "../config/constant";
+export type {
+  OrderStatus,
+  PromotionType,
+  DiscountMethod,
+  PaymentRestrictions,
+} from "../config/constant";

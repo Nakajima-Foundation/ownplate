@@ -4,14 +4,8 @@ import {
   DocumentData,
 } from "firebase/firestore";
 import FirebaseModel from "./firebasemodel";
-import {
-  PromotionDataBase,
-} from "./promotionTypes";
-import {
-  PromotionType,
-  DiscountMethod,
-  PaymentRestrictions,
-} from "./common";
+import { PromotionDataBase } from "./promotionTypes";
+import { PromotionType, DiscountMethod, PaymentRestrictions } from "./common";
 
 export interface PromotionData extends PromotionDataBase, DocumentData {
   currentOpen?: boolean;

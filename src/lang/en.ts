@@ -87,7 +87,8 @@ const data = {
       disable: "Disable Two-Factor Authentication",
       emailVerificationRequired: "Email verification is required",
       disableConfirmTitle: "Disable Two-Factor Authentication?",
-      disableConfirmMessage: "Disabling two-factor authentication will lower your account security. Are you sure?",
+      disableConfirmMessage:
+        "Disabling two-factor authentication will lower your account security. Are you sure?",
       error: {
         disableFailed: "Failed to disable two-factor authentication",
         tokenExpired: "Session expired. Please re-enter your password.",
@@ -1195,7 +1196,8 @@ const data = {
       codePlaceholder: "6-digit code",
       enrollmentComplete: "Two-factor authentication setup complete",
       verification: "Two-Factor Authentication",
-      verificationMessage: "Please enter the 6-digit code from your authenticator app",
+      verificationMessage:
+        "Please enter the 6-digit code from your authenticator app",
       error: {
         generateFailed: "Failed to generate two-factor authentication",
         invalidCode: "Invalid code",

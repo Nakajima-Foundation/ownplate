@@ -56,15 +56,17 @@ export const subAccountInvite = httpsCallable<
   }
 >(functionsJP, "subAccountInvite2");
 
-export const subAccountInvitationAccept = httpsCallable<SubAccountInvitationAcceptDenyData>(
-  functionsJP,
-  "subAccountInvitationAccept2",
-);
+export const subAccountInvitationAccept =
+  httpsCallable<SubAccountInvitationAcceptDenyData>(
+    functionsJP,
+    "subAccountInvitationAccept2",
+  );
 
-export const subAccountInvitationDeny = httpsCallable<SubAccountInvitationAcceptDenyData>(
-  functionsJP,
-  "subAccountInvitationDeny2",
-);
+export const subAccountInvitationDeny =
+  httpsCallable<SubAccountInvitationAcceptDenyData>(
+    functionsJP,
+    "subAccountInvitationDeny2",
+  );
 
 export const lineValidate = httpsCallable<
   LineValidateData,
@@ -95,7 +97,10 @@ export const orderChange = httpsCallable(functionsJP, "orderChangeJp2");
 
 export const orderPlace = httpsCallable(functionsJP, "orderPlaceJp2");
 
-export const orderCreated = httpsCallable<OrderCreatedData>(functionsJP, "orderCreatedJp2");
+export const orderCreated = httpsCallable<OrderCreatedData>(
+  functionsJP,
+  "orderCreatedJp2",
+);
 
 export const orderPay = httpsCallable(functionsJP, "stripepay2");
 

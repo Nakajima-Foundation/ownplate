@@ -86,10 +86,12 @@ const data = {
       disable: "二要素認証を無効にする",
       emailVerificationRequired: "メールアドレス認証が必要です",
       disableConfirmTitle: "二要素認証を無効にしますか？",
-      disableConfirmMessage: "二要素認証を無効にすると、セキュリティレベルが下がります。本当に無効にしますか？",
+      disableConfirmMessage:
+        "二要素認証を無効にすると、セキュリティレベルが下がります。本当に無効にしますか？",
       error: {
         disableFailed: "二要素認証の無効化に失敗しました",
-        tokenExpired: "セッションの有効期限が切れました。パスワードを再入力してください。",
+        tokenExpired:
+          "セッションの有効期限が切れました。パスワードを再入力してください。",
       },
     },
   },
@@ -1191,7 +1193,8 @@ const data = {
       codePlaceholder: "6桁のコード",
       enrollmentComplete: "二要素認証の設定が完了しました",
       verification: "二要素認証",
-      verificationMessage: "認証アプリで生成された6桁のコードを入力してください",
+      verificationMessage:
+        "認証アプリで生成された6桁のコードを入力してください",
       error: {
         generateFailed: "二要素認証の設定に失敗しました",
         invalidCode: "無効なコードです",

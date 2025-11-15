@@ -27,7 +27,7 @@
       <div v-if="!isTotpEnrolled">
         <button
           @click="startEnrollment"
-          class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-op-teal px-4"
+          class="bg-op-teal inline-flex h-9 cursor-pointer items-center justify-center rounded-full px-4"
         >
           <div class="text-sm font-bold text-white">
             {{ $t("profile.totp.enable") }}
@@ -56,7 +56,10 @@
     />
 
     <!-- Enrollment Modal -->
-    <div v-if="showEnrollment" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+    <div
+      v-if="showEnrollment"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+    >
       <div class="mx-4 w-full max-w-lg">
         <TotpEnrollment
           @complete="handleEnrollmentComplete"
@@ -67,7 +70,10 @@
     </div>
 
     <!-- Unenrollment Confirmation Modal -->
-    <div v-if="showUnenrollmentConfirm" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+    <div
+      v-if="showUnenrollmentConfirm"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+    >
       <div class="mx-4 w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
         <div class="text-xl font-bold text-black/30">
           {{ $t("profile.totp.disableConfirmTitle") }}
@@ -99,22 +105,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted } from 'vue';
-import { auth } from '@/lib/firebase/firebase9';
-import { multiFactor } from 'firebase/auth';
-import { useI18n } from 'vue-i18n';
-import { useGeneralStore } from '@/store';
-import TotpEnrollment from '@/components/Auth/TotpEnrollment.vue';
-import ReauthenticateModal from '@/components/Auth/ReauthenticateModal.vue';
+import { defineComponent, ref, computed, onMounted } from "vue";
+import { auth } from "@/lib/firebase/firebase9";
+import { multiFactor } from "firebase/auth";
+import { useI18n } from "vue-i18n";
+import { useGeneralStore } from "@/store";
+import TotpEnrollment from "@/components/Auth/TotpEnrollment.vue";
+import ReauthenticateModal from "@/components/Auth/ReauthenticateModal.vue";
 
 export default defineComponent({
-  name: 'TotpSettings',
+  name: "TotpSettings",
   components: {
     TotpEnrollment,
     ReauthenticateModal,
   },
   setup() {
-    const { t } = useI18n({ useScope: 'global' });
+    const { t } = useI18n({ useScope: "global" });
     const generalStore = useGeneralStore();
     const user = computed(() => auth.currentUser);
     const isTotpEnrolled = ref(false);
@@ -125,11 +131,11 @@ export default defineComponent({
 
     const totpStatus = computed(() => {
       if (!user.value) {
-        return t('profile.status.none');
+        return t("profile.status.none");
       }
       return isTotpEnrolled.value
-        ? t('profile.totp.status.enabled')
-        : t('profile.totp.status.disabled');
+        ? t("profile.totp.status.enabled")
+        : t("profile.totp.status.disabled");
     });
 
     const checkTotpEnrollment = () => {
@@ -160,17 +166,20 @@ export default defineComponent({
         }
         showUnenrollmentConfirm.value = false;
       } catch (e: any) {
-        console.error('Failed to disable TOTP:', e);
+        console.error("Failed to disable TOTP:", e);
 
         // Handle reauthentication required errors
-        if (e.code === 'auth/user-token-expired' || e.code === 'auth/requires-recent-login') {
+        if (
+          e.code === "auth/user-token-expired" ||
+          e.code === "auth/requires-recent-login"
+        ) {
           // User needs to re-authenticate
           showUnenrollmentConfirm.value = false;
           pendingUnenroll.value = true;
           showReauthenticate.value = true;
-          alert(t('profile.totp.error.tokenExpired'));
+          alert(t("profile.totp.error.tokenExpired"));
         } else {
-          alert(t('profile.totp.error.disableFailed'));
+          alert(t("profile.totp.error.disableFailed"));
         }
       } finally {
         generalStore.setLoading(false);
@@ -179,17 +188,20 @@ export default defineComponent({
 
     const handleReauthSuccess = async () => {
       // Reauthentication successful
-      console.log('handleReauthSuccess called, pendingUnenroll:', pendingUnenroll.value);
+      console.log(
+        "handleReauthSuccess called, pendingUnenroll:",
+        pendingUnenroll.value,
+      );
       showReauthenticate.value = false;
 
       // Retry the unenroll operation after reauthentication
       if (pendingUnenroll.value) {
-        console.log('Retrying unenroll after reauthentication');
+        console.log("Retrying unenroll after reauthentication");
         pendingUnenroll.value = false;
         await disableTotp();
       } else {
         // Proceed to enrollment after reauthentication
-        console.log('Proceeding to enrollment after reauthentication');
+        console.log("Proceeding to enrollment after reauthentication");
         showEnrollment.value = true;
       }
     };

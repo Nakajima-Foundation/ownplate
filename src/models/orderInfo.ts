@@ -2,7 +2,7 @@ import { ownPlateConfig } from "@/config/project";
 import { orderType } from "@/utils/utils";
 import { stripe_regions_jp } from "../config/constant";
 import { OrderInfoData } from "./orderInfoData";
-export { OrderInfoData } from "./orderInfoData"; 
+export { OrderInfoData } from "./orderInfoData";
 
 export const order2ReportData = (
   order: OrderInfoData,
