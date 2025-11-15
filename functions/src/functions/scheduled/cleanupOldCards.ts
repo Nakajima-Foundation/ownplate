@@ -1,5 +1,6 @@
 import * as admin from "firebase-admin";
 import * as utils from "../../lib/utils";
+import { getStripeAccount } from "../stripe/intent";
 
 /**
  * Cleanup old card information that hasn't been updated in 180 days
@@ -72,32 +73,42 @@ export const cleanupOldCards = async (db: admin.firestore.Firestore) => {
         if (systemStripeDoc.exists) {
           const systemData = systemStripeDoc.data();
           if (systemData?.payment_method) {
-            try {
-              // Get stripe account
-              // For restaurant-specific cards, use owner's account
-              // For global cards, payment_method should be detached from default account
-              let stripeAccount: string | undefined;
-
-              if (ownerId) {
-                const adminDoc = await db.doc(`/admins/${ownerId}`).get();
-                if (adminDoc.exists) {
-                  const adminData = adminDoc.data();
-                  stripeAccount = adminData?.stripeAccount;
-                }
-              }
-
-              if (stripeAccount || !ownerId) {
+            // For restaurant-specific cards, use owner's account
+            // For global cards, detach from default account (no stripeAccount)
+            if (ownerId) {
+              try {
+                const stripeAccount = await getStripeAccount(db, ownerId);
                 await stripe.paymentMethods.detach(
                   systemData.payment_method,
                   {},
-                  stripeAccount ? { stripeAccount } : {}
+                  { stripeAccount }
                 );
                 console.log(`  Detached payment method ${systemData.payment_method} from Stripe`);
+              } catch (stripeError) {
+                // Log error but continue with Firestore deletion
+                console.error("  Failed to detach payment method from Stripe:", stripeError);
+                totalErrors++;
               }
-            } catch (stripeError) {
-              // Log error but continue with Firestore deletion
-              console.error("  Failed to detach payment method from Stripe:", stripeError);
-              totalErrors++;
+            } else {
+              // Global card - uses old Stripe API (sources instead of payment methods)
+              try {
+                // Retrieve the customerId and delete the card source
+                const customerId = systemData.customerId;
+                if (customerId) {
+                  const customer = await stripe.customers.retrieve(customerId);
+                  if ("sources" in customer && customer.sources && customer.sources.data) {
+                    const sourcesData = customer.sources.data;
+                    if (sourcesData.length > 0) {
+                      const cardId = sourcesData[0].id;
+                      await stripe.customers.deleteSource(customerId, cardId);
+                      console.log(`  Deleted card source ${cardId} from Stripe customer ${customerId}`);
+                    }
+                  }
+                }
+              } catch (stripeError) {
+                console.error("  Failed to delete card source from Stripe:", stripeError);
+                totalErrors++;
+              }
             }
           }
 
