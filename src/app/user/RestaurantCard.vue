@@ -93,7 +93,12 @@ export default defineComponent({
     const restaurantId = computed(() => route.params.restaurantId as string);
     const shopInfo = ref<any>(null);
     const ownerUid = ref<string>("");
-    const storedCard = ref<{ brand: string; last4: string; exp_month: number; exp_year: number } | null>(null);
+    const storedCard = ref<{
+      brand: string;
+      last4: string;
+      exp_month: number;
+      exp_year: number;
+    } | null>(null);
 
     let detachStripe: Unsubscribe | null = null;
 
@@ -104,7 +109,10 @@ export default defineComponent({
       }
       if (user.value && ownerUid.value) {
         detachStripe = onSnapshot(
-          doc(db, `/users/${user.value.uid}/owner/${ownerUid.value}/readonly/stripe`),
+          doc(
+            db,
+            `/users/${user.value.uid}/owner/${ownerUid.value}/readonly/stripe`,
+          ),
           (snapshot) => {
             const stripeInfo = snapshot.data();
             if (stripeInfo && stripeInfo.card) {
@@ -117,15 +125,14 @@ export default defineComponent({
               if (
                 stripeInfo.updatedAt &&
                 stripeInfo.updatedAt.toDate() >
-                  moment().subtract(180, "days").toDate()
+                  moment().subtract(180, "days").toDate() &&
+                expire > new Date()
               ) {
-                if (expire > new Date()) {
-                  storedCard.value = stripeInfo.card;
-                }
+                storedCard.value = stripeInfo.card;
               }
-            } else {
-              storedCard.value = null;
+              return;
             }
+            storedCard.value = null;
           },
           (e) => {
             console.log(e);
@@ -138,7 +145,9 @@ export default defineComponent({
     // Fetch shop info to get owner UID
     const fetchShopInfo = async () => {
       try {
-        const shopDoc = await getDoc(doc(db, `restaurants/${restaurantId.value}`));
+        const shopDoc = await getDoc(
+          doc(db, `restaurants/${restaurantId.value}`),
+        );
         if (shopDoc.exists()) {
           shopInfo.value = shopDoc.data();
           ownerUid.value = shopInfo.value.uid;
