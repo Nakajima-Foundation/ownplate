@@ -57,3 +57,6 @@ exportIfNeeded("subAccountDeleteChild2", "subaccount/delete", exports);
 
 exportIfNeeded("ping2", "ping", exports);
 exportIfNeeded("beforeSignIn2", "auth/beforeSignIn", exports);
+
+// Scheduled functions
+exportIfNeeded("cleanupOldCards2", "scheduled/cleanupOldCards", exports);
