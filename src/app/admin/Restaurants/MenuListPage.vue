@@ -152,7 +152,11 @@ import { useMenuAndTitle } from "@/app/admin/Restaurants/MenuListPage/Utils";
 import { ownPlateConfig } from "@/config/project";
 
 import { MenuData, TitleData } from "@/models/menu";
-import { copyMenuData, getBlankMenuItem, getBlankTitleItem } from "@/models/menuUtils";
+import {
+  copyMenuData,
+  getBlankMenuItem,
+  getBlankTitleItem,
+} from "@/models/menuUtils";
 
 import { checkShopAccount } from "@/utils/userPermission";
 import { useAdminConfigToggle2 } from "@/utils/admin/Toggle";

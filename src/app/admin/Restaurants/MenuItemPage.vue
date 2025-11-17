@@ -714,7 +714,6 @@ import {
   where,
   addDoc,
   updateDoc,
-  serverTimestamp,
 } from "firebase/firestore";
 
 import NotFound from "@/components/NotFound.vue";
@@ -746,6 +745,7 @@ import {
 import { uploadFile } from "@/lib/firebase/storage";
 
 import { getNewItemData, MenuData } from "@/models/menu";
+import { copyMenuData } from "@/models/menuUtils";
 import { checkShopOwner } from "@/utils/userPermission";
 
 import { useUserStore } from "@/store/user";
@@ -948,15 +948,12 @@ export default defineComponent({
             title: shop.restaurantName,
             code: "editCommon.copyMenuAlert",
             callback: async () => {
-              const newItem = getNewItemData(
+              const newItem = copyMenuData(
                 menuInfo,
                 ownPlateConfig.region === "JP",
-                !hasError.value,
+                userStore.uidAdmin,
               );
-              newItem.uid = userStore.uidAdmin;
-              newItem.publicFlag = false;
-              newItem.deletedFlag = false;
-              newItem.createdAt = serverTimestamp();
+              newItem.validatedFlag = !hasError.value;
 
               const category1 = shop.category1 || [];
               const category2 = shop.category2 || [];

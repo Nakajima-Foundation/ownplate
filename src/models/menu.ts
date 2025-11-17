@@ -3,10 +3,10 @@ import { isNull } from "../utils/commonUtils";
 
 export interface MenuImages {
   item?: {
-    resizedImages?: {
+    resizedImages: {
       [key: string]: string;
     };
-    original?: string;
+    original: string;
     path?: string;
   };
 }
@@ -111,8 +111,6 @@ export const getNewItemData = (
   };
   return itemData;
 };
-
-
 
 export const isAvailableLunchOrDinner = (item: MenuData | TitleData) => {
   const { availableLunch, availableDinner } = item;
