@@ -18,7 +18,6 @@ export const copyMenuData = (
 
 export const getBlankMenuItem = (uid: string): MenuData => {
   const itemData = {
-    _dataType: "menu" as const,
     itemName: "",
     itemAliasesName: "",
     price: 0,
@@ -40,9 +39,12 @@ export const getBlankMenuItem = (uid: string): MenuData => {
 };
 export const getBlankTitleItem = (uid: string): TitleData => {
   const data = {
-    _dataType: "title" as const,
     name: "",
     uid,
+
+    availableLunch: true,
+    availableDinner: true,
+
     createdAt: serverTimestamp(),
     deletedFlag: false,
   };

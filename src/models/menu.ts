@@ -16,13 +16,17 @@ export interface ExceptHour {
   end?: number;
 }
 export interface TitleData {
-  _dataType: "title";
-  id?: string;
+  _dataType?: "title"; // set by doc2data. not need to store in db.
+  id?: string; // set by doc2data. not need to store in db.
   name: string;
   uid?: string;
 
-  availableLunch?: boolean;
-  availableDinner?: boolean;
+  availableLunch: boolean;
+  availableDinner: boolean;
+
+  createdAt?: FieldValue;
+  deletedFlag: boolean;
+  
 }
 
 export interface MenuItem {
@@ -39,8 +43,8 @@ export interface MenuItem {
 }
 
 export interface MenuData extends MenuItem {
-  _dataType: "menu";
-  id?: string;
+  _dataType?: "menu"; // set by doc2data. not need to store in db.
+  id?: string; // set by doc2data. not need to store in db.
   itemDescription: string;
 
   uid?: string;
@@ -86,7 +90,6 @@ export const getNewItemData = (
   validatedFlag: boolean,
 ): MenuData => {
   const itemData = {
-    _dataType: "menu" as const,
     itemName: item.itemName,
     itemAliasesName: item.itemAliasesName || "",
     price: isJP ? Math.round(Number(item.price)) : Number(item.price),
