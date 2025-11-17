@@ -1,4 +1,4 @@
-import { FieldValue } from "./firebaseUtils";
+import { Timestamp } from "./firebaseUtils";
 import { isNull } from "../utils/commonUtils";
 
 export interface MenuImages {
@@ -24,7 +24,7 @@ export interface TitleData {
   availableLunch: boolean;
   availableDinner: boolean;
 
-  createdAt?: FieldValue;
+  createdAt?: Timestamp;
   deletedFlag: boolean;
   
 }
@@ -63,7 +63,7 @@ export interface MenuData extends MenuItem {
 
   validatedFlag: boolean;
 
-  createdAt?: FieldValue;
+  createdAt?: Timestamp;
 }
 
 // for util function
