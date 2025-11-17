@@ -462,7 +462,7 @@ export default defineComponent({
     const forkMenuItem = async (itemKey: string) => {
       const item = itemsObj.value[itemKey];
       const data = copyMenuData(
-        item as MenuData,
+        item,
         ownPlateConfig.region === "JP",
         uid.value,
       );

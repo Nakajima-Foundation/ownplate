@@ -1010,7 +1010,7 @@ export default defineComponent({
 
         await updateDoc(
           doc(db, `restaurants/${menuRestaurantId.value}/menus/${menuId}`),
-          itemData as any,
+          itemData,
         );
 
         router.push({
