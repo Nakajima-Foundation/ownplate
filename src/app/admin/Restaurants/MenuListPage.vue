@@ -381,7 +381,7 @@ export default defineComponent({
           deletedFlag: false,
           publicFlag: true,
           validatedFlag: false,
-          createdAt: new Date(),
+          createdAt: serverTimestamp(),
         };
         const newData = await addDoc(
           collection(db, `restaurants/${restaurantId.value}/menus`),
