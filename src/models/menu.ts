@@ -2,7 +2,7 @@ import { FieldValue } from "./firebaseUtils";
 import { isNull } from "../utils/commonUtils";
 
 export interface MenuImages {
-  item?: {
+  item: {
     resizedImages: {
       [key: string]: string;
     };
@@ -28,7 +28,7 @@ export interface MenuItem {
   price: number;
   itemName: string;
   itemPhoto: string;
-  images: MenuImages;
+  images?: MenuImages;
   itemAliasesName: string;
   category1: string;
   category2: string;
@@ -93,9 +93,9 @@ export const getNewItemData = (
     itemDescription: item.itemDescription,
     itemMemo: item.itemMemo,
     itemPhoto: item.itemPhoto,
-    images: {
-      item: item?.images?.item || {},
-    },
+    images: item?.images?.item ? {
+      item: item.images.item,
+    } : undefined,
     itemOptionCheckbox: item.itemOptionCheckbox || [],
     publicFlag: validatedFlag ? item.publicFlag || false : false,
     deletedFlag: false,
