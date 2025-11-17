@@ -714,7 +714,6 @@ import {
   where,
   addDoc,
   updateDoc,
-  serverTimestamp,
 } from "firebase/firestore";
 
 import NotFound from "@/components/NotFound.vue";
@@ -746,6 +745,7 @@ import {
 import { uploadFile } from "@/lib/firebase/storage";
 
 import { getNewItemData, MenuData } from "@/models/menu";
+import { copyMenuData } from "@/models/menuUtils";
 import { checkShopOwner } from "@/utils/userPermission";
 
 import { useUserStore } from "@/store/user";
@@ -938,15 +938,6 @@ export default defineComponent({
     const addOption = () => {
       menuInfo.itemOptionCheckbox.push("");
     };
-    const newItemData = () => {
-      console.log(menuInfo);
-      const itemData = getNewItemData(
-        menuInfo,
-        ownPlateConfig.region === "JP",
-        !hasError.value,
-      );
-      return itemData;
-    };
     const copyItem = () => {
       if (copyRestaurantId.value !== null) {
         const shop = restaurants.value.find(
@@ -957,11 +948,12 @@ export default defineComponent({
             title: shop.restaurantName,
             code: "editCommon.copyMenuAlert",
             callback: async () => {
-              const newItem = newItemData();
-              newItem.publicFlag = false;
-              newItem.createdAt = serverTimestamp();
-              newItem.deletedFlag = false;
-              newItem.uid = userStore.uidAdmin;
+              const newItem = copyMenuData(
+                menuInfo,
+                ownPlateConfig.region === "JP",
+                userStore.uidAdmin,
+              );
+              newItem.validatedFlag = !hasError.value;
 
               const category1 = shop.category1 || [];
               const category2 = shop.category2 || [];
@@ -1002,7 +994,11 @@ export default defineComponent({
             resizedImages: {},
           };
         }
-        const itemData = newItemData();
+        const itemData = getNewItemData(
+          menuInfo,
+          ownPlateConfig.region === "JP",
+          !hasError.value,
+        );
 
         // Convert double-width characters with half-width characters in options
         // We also convert Japanse commas with alphabet commas
@@ -1014,7 +1010,7 @@ export default defineComponent({
 
         await updateDoc(
           doc(db, `restaurants/${menuRestaurantId.value}/menus/${menuId}`),
-          itemData as any,
+          itemData,
         );
 
         router.push({

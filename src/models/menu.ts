@@ -1,8 +1,8 @@
-import { FieldValue } from "./firebaseUtils";
+import { Timestamp, FieldValue } from "./firebaseUtils";
 import { isNull } from "../utils/commonUtils";
 
 export interface MenuImages {
-  item?: {
+  item: {
     resizedImages: {
       [key: string]: string;
     };
@@ -16,36 +16,38 @@ export interface ExceptHour {
   end?: number;
 }
 export interface TitleData {
-  _dataType: "title";
-  id: string;
+  _dataType?: "title"; // set by doc2data. not need to store in db.
+  id?: string; // set by doc2data. not need to store in db.
   name: string;
+  uid?: string;
 
   availableLunch: boolean;
   availableDinner: boolean;
+
+  createdAt?: Timestamp | FieldValue;
+  deletedFlag: boolean;
+  
 }
 
 export interface MenuItem {
   price: number;
   itemName: string;
-  itemPhoto: string;
-  images: MenuImages;
+  itemPhoto?: string;
+  images?: MenuImages;
   itemAliasesName: string;
-  category1: string;
-  category2: string;
-  // category: string;
-  // subCategory: string;
-  exceptDay: { [key: string]: boolean };
-  exceptHour: ExceptHour;
-  // productId: string;
+  category1?: string;
+  category2?: string;
+  exceptDay?: { [key: string]: boolean };
+  exceptHour?: ExceptHour;
   tax: string;
 }
 
 export interface MenuData extends MenuItem {
-  _dataType: "menu";
-  id: string;
+  _dataType?: "menu"; // set by doc2data. not need to store in db.
+  id?: string; // set by doc2data. not need to store in db.
   itemDescription: string;
 
-  uid: string;
+  uid?: string;
   deletedFlag: boolean;
 
   soldOut: boolean;
@@ -61,7 +63,7 @@ export interface MenuData extends MenuItem {
 
   validatedFlag: boolean;
 
-  createdAt: FieldValue;
+  createdAt?: Timestamp | FieldValue;
 }
 
 // for util function
@@ -86,7 +88,7 @@ export const getNewItemData = (
   item: MenuData,
   isJP: boolean,
   validatedFlag: boolean,
-) => {
+): MenuData => {
   const itemData = {
     itemName: item.itemName,
     itemAliasesName: item.itemAliasesName || "",
@@ -95,11 +97,13 @@ export const getNewItemData = (
     itemDescription: item.itemDescription,
     itemMemo: item.itemMemo,
     itemPhoto: item.itemPhoto,
-    images: {
-      item: item?.images?.item || {},
-    },
+    images: item?.images?.item ? {
+      item: item.images.item,
+    } : undefined,
     itemOptionCheckbox: item.itemOptionCheckbox || [],
     publicFlag: validatedFlag ? item.publicFlag || false : false,
+    deletedFlag: false,
+    soldOut: false,
     allergens: item.allergens,
     validatedFlag,
     category1: item.category1,
@@ -108,7 +112,7 @@ export const getNewItemData = (
     availableDinner: item.availableDinner || false,
     exceptDay: item.exceptDay || {},
     exceptHour: newExceptHour(item.exceptHour || {}),
-  } as MenuData;
+  };
   return itemData;
 };
 

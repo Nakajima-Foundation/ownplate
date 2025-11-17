@@ -152,7 +152,11 @@ import { useMenuAndTitle } from "@/app/admin/Restaurants/MenuListPage/Utils";
 import { ownPlateConfig } from "@/config/project";
 
 import { MenuData, TitleData } from "@/models/menu";
-import { copyMenuData } from "@/models/menuUtils";
+import {
+  copyMenuData,
+  getBlankMenuItem,
+  getBlankTitleItem,
+} from "@/models/menuUtils";
 
 import { checkShopAccount } from "@/utils/userPermission";
 import { useAdminConfigToggle2 } from "@/utils/admin/Toggle";
@@ -342,12 +346,7 @@ export default defineComponent({
     const addTitle = async (operation: string) => {
       submitting.value = true;
       try {
-        const data = {
-          name: "",
-          uid: uid.value,
-          createdAt: serverTimestamp(),
-          deletedFlag: false,
-        };
+        const data = getBlankTitleItem(uid.value);
         const newTitle = await addDoc(
           collection(db, `restaurants/${restaurantId.value}/titles`),
           data,
@@ -368,21 +367,7 @@ export default defineComponent({
     const addMenu = async (operation: string) => {
       submitting.value = true;
       try {
-        const itemData = {
-          itemName: "",
-          itemAliasesName: "",
-          price: 0,
-          tax: "food",
-          itemDescription: "",
-          itemMemo: "",
-          uid: uid.value,
-          availableLunch: true,
-          availableDinner: true,
-          deletedFlag: false,
-          publicFlag: true,
-          validatedFlag: false,
-          createdAt: new Date(),
-        };
+        const itemData = getBlankMenuItem(uid.value);
         const newData = await addDoc(
           collection(db, `restaurants/${restaurantId.value}/menus`),
           itemData,
@@ -470,14 +455,14 @@ export default defineComponent({
         collection(db, `restaurants/${restaurantId.value}/titles`),
         data,
       );
-      await forkItem(itemKey, newTitle as any);
+      await forkItem(itemKey, newTitle);
       await scroll(newTitle.id);
     };
 
     const forkMenuItem = async (itemKey: string) => {
       const item = itemsObj.value[itemKey];
       const data = copyMenuData(
-        item as MenuData,
+        item,
         ownPlateConfig.region === "JP",
         uid.value,
       );
@@ -485,7 +470,7 @@ export default defineComponent({
         collection(db, `restaurants/${restaurantId.value}/menus`),
         cleanObject(data),
       );
-      await forkItem(itemKey, newData as any);
+      await forkItem(itemKey, newData);
       await scroll(newData.id);
     };
 

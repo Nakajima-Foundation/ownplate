@@ -142,7 +142,7 @@ export const createNewOrderData = async (
       price: menu.price,
       itemName: menu.itemName,
       itemPhoto: menu.itemPhoto,
-      images: menu.images || {},
+      images: menu.images,
       itemAliasesName: menu.itemAliasesName || "",
       category1: menu.category1 || "",
       category2: menu.category2 || "",
