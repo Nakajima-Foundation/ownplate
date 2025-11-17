@@ -11,3 +11,31 @@ export const copyMenuData = (item: MenuData, isJP: boolean, uid: string) => {
   });
   return data;
 };
+
+export const getBlankMenuItem = (uid: string) => {
+  const itemData = {
+    itemName: "",
+    itemAliasesName: "",
+    price: 0,
+    tax: "food",
+    itemDescription: "",
+    itemMemo: "",
+    uid,
+    availableLunch: true,
+    availableDinner: true,
+    deletedFlag: false,
+    publicFlag: true,
+    validatedFlag: false,
+    createdAt: serverTimestamp(),
+  };
+  return itemData;
+};
+export const getBlankTitleItem = (uid: string) => {
+  const data = {
+    name: "",
+    uid,
+    createdAt: serverTimestamp(),
+    deletedFlag: false,
+  };
+  return data;
+};

@@ -152,7 +152,7 @@ import { useMenuAndTitle } from "@/app/admin/Restaurants/MenuListPage/Utils";
 import { ownPlateConfig } from "@/config/project";
 
 import { MenuData, TitleData } from "@/models/menu";
-import { copyMenuData } from "@/models/menuUtils";
+import { copyMenuData, getBlankMenuItem, getBlankTitleItem } from "@/models/menuUtils";
 
 import { checkShopAccount } from "@/utils/userPermission";
 import { useAdminConfigToggle2 } from "@/utils/admin/Toggle";
@@ -342,12 +342,7 @@ export default defineComponent({
     const addTitle = async (operation: string) => {
       submitting.value = true;
       try {
-        const data = {
-          name: "",
-          uid: uid.value,
-          createdAt: serverTimestamp(),
-          deletedFlag: false,
-        };
+        const data = getBlankTitleItem(uid.value);
         const newTitle = await addDoc(
           collection(db, `restaurants/${restaurantId.value}/titles`),
           data,
@@ -368,21 +363,7 @@ export default defineComponent({
     const addMenu = async (operation: string) => {
       submitting.value = true;
       try {
-        const itemData = {
-          itemName: "",
-          itemAliasesName: "",
-          price: 0,
-          tax: "food",
-          itemDescription: "",
-          itemMemo: "",
-          uid: uid.value,
-          availableLunch: true,
-          availableDinner: true,
-          deletedFlag: false,
-          publicFlag: true,
-          validatedFlag: false,
-          createdAt: serverTimestamp(),
-        };
+        const itemData = getBlankMenuItem(uid.value);
         const newData = await addDoc(
           collection(db, `restaurants/${restaurantId.value}/menus`),
           itemData,
