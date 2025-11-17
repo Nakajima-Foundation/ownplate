@@ -3,10 +3,10 @@ import { isNull } from "../utils/commonUtils";
 
 export interface MenuImages {
   item?: {
-    resizedImages: {
+    resizedImages?: {
       [key: string]: string;
     };
-    original: string;
+    original?: string;
     path?: string;
   };
 }
@@ -17,7 +17,7 @@ export interface ExceptHour {
 }
 export interface TitleData {
   _dataType: "title";
-  id: string;
+  id?: string;
   name: string;
 
   availableLunch: boolean;
@@ -32,20 +32,17 @@ export interface MenuItem {
   itemAliasesName: string;
   category1: string;
   category2: string;
-  // category: string;
-  // subCategory: string;
   exceptDay: { [key: string]: boolean };
   exceptHour: ExceptHour;
-  // productId: string;
   tax: string;
 }
 
 export interface MenuData extends MenuItem {
   _dataType: "menu";
-  id: string;
+  id?: string;
   itemDescription: string;
 
-  uid: string;
+  uid?: string;
   deletedFlag: boolean;
 
   soldOut: boolean;
@@ -61,7 +58,7 @@ export interface MenuData extends MenuItem {
 
   validatedFlag: boolean;
 
-  createdAt: FieldValue;
+  createdAt?: FieldValue;
 }
 
 // for util function
@@ -86,8 +83,9 @@ export const getNewItemData = (
   item: MenuData,
   isJP: boolean,
   validatedFlag: boolean,
-) => {
+): MenuData => {
   const itemData = {
+    _dataType: "menu" as const,
     itemName: item.itemName,
     itemAliasesName: item.itemAliasesName || "",
     price: isJP ? Math.round(Number(item.price)) : Number(item.price),
@@ -100,6 +98,8 @@ export const getNewItemData = (
     },
     itemOptionCheckbox: item.itemOptionCheckbox || [],
     publicFlag: validatedFlag ? item.publicFlag || false : false,
+    deletedFlag: false,
+    soldOut: false,
     allergens: item.allergens,
     validatedFlag,
     category1: item.category1,
@@ -108,9 +108,11 @@ export const getNewItemData = (
     availableDinner: item.availableDinner || false,
     exceptDay: item.exceptDay || {},
     exceptHour: newExceptHour(item.exceptHour || {}),
-  } as MenuData;
+  };
   return itemData;
 };
+
+
 
 export const isAvailableLunchOrDinner = (item: MenuData | TitleData) => {
   const { availableLunch, availableDinner } = item;
