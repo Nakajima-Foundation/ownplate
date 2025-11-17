@@ -5,7 +5,7 @@ import * as admin from "firebase-admin";
 // import * as Sentry from "@sentry/node";
 
 import { nameOfOrder, timezone } from "../../lib/utils";
-import { MenuItem } from "../../models/menu";
+import { MenuData } from "../../models/menu";
 import { RestaurantInfoData } from "../../models/RestaurantInfo";
 import { RequestWithRestaurant } from "../../lib/types/restaurant";
 
@@ -49,7 +49,7 @@ export const getSVG = (restaurantData: admin.firestore.DocumentData, orderData: 
 
   const messages: string[] = [];
   Object.keys(orderData.order).map((menuId) => {
-    const menu = orderData.menuItems[menuId] as MenuItem;
+    const menu = orderData.menuItems[menuId] as MenuData;
     const name = menu.itemName;
     return Object.keys(orderData.order[menuId]).map((key) => {
       const count = orderData.order[menuId][key];
