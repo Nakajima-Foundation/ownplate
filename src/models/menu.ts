@@ -19,9 +19,10 @@ export interface TitleData {
   _dataType: "title";
   id?: string;
   name: string;
+  uid?: string;
 
-  availableLunch: boolean;
-  availableDinner: boolean;
+  availableLunch?: boolean;
+  availableDinner?: boolean;
 }
 
 export interface MenuItem {
