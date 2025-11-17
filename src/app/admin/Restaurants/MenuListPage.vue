@@ -455,7 +455,7 @@ export default defineComponent({
         collection(db, `restaurants/${restaurantId.value}/titles`),
         data,
       );
-      await forkItem(itemKey, newTitle as any);
+      await forkItem(itemKey, newTitle);
       await scroll(newTitle.id);
     };
 
@@ -470,7 +470,7 @@ export default defineComponent({
         collection(db, `restaurants/${restaurantId.value}/menus`),
         cleanObject(data),
       );
-      await forkItem(itemKey, newData as any);
+      await forkItem(itemKey, newData);
       await scroll(newData.id);
     };
 
