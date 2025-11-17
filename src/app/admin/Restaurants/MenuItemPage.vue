@@ -938,15 +938,6 @@ export default defineComponent({
     const addOption = () => {
       menuInfo.itemOptionCheckbox.push("");
     };
-    const newItemData = () => {
-      console.log(menuInfo);
-      const itemData = getNewItemData(
-        menuInfo,
-        ownPlateConfig.region === "JP",
-        !hasError.value,
-      );
-      return itemData;
-    };
     const copyItem = () => {
       if (copyRestaurantId.value !== null) {
         const shop = restaurants.value.find(
@@ -957,11 +948,15 @@ export default defineComponent({
             title: shop.restaurantName,
             code: "editCommon.copyMenuAlert",
             callback: async () => {
-              const newItem = newItemData();
-              newItem.publicFlag = false;
-              newItem.createdAt = serverTimestamp();
-              newItem.deletedFlag = false;
+              const newItem = getNewItemData(
+                menuInfo,
+                ownPlateConfig.region === "JP",
+                !hasError.value,
+              );
               newItem.uid = userStore.uidAdmin;
+              newItem.publicFlag = false;
+              newItem.deletedFlag = false;
+              newItem.createdAt = serverTimestamp();
 
               const category1 = shop.category1 || [];
               const category2 = shop.category2 || [];
@@ -1002,7 +997,11 @@ export default defineComponent({
             resizedImages: {},
           };
         }
-        const itemData = newItemData();
+        const itemData = getNewItemData(
+          menuInfo,
+          ownPlateConfig.region === "JP",
+          !hasError.value,
+        );
 
         // Convert double-width characters with half-width characters in options
         // We also convert Japanse commas with alphabet commas

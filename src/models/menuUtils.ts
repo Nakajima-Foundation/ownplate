@@ -1,7 +1,7 @@
 import { serverTimestamp } from "firebase/firestore";
 import { type MenuData, getNewItemData } from "./menu";
 
-export const copyMenuData = (item: MenuData, isJP: boolean, uid: string) => {
+export const copyMenuData = (item: MenuData, isJP: boolean, uid: string): MenuData => {
   const base = getNewItemData(item, isJP, item.validatedFlag);
   const data = Object.assign({}, base, {
     uid,
