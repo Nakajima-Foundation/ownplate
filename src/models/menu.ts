@@ -27,13 +27,13 @@ export interface TitleData {
 export interface MenuItem {
   price: number;
   itemName: string;
-  itemPhoto: string;
+  itemPhoto?: string;
   images?: MenuImages;
   itemAliasesName: string;
-  category1: string;
-  category2: string;
-  exceptDay: { [key: string]: boolean };
-  exceptHour: ExceptHour;
+  category1?: string;
+  category2?: string;
+  exceptDay?: { [key: string]: boolean };
+  exceptHour?: ExceptHour;
   tax: string;
 }
 

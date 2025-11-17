@@ -16,8 +16,9 @@ export const copyMenuData = (
   return data;
 };
 
-export const getBlankMenuItem = (uid: string) => {
+export const getBlankMenuItem = (uid: string): MenuData => {
   const itemData = {
+    _dataType: "menu" as const,
     itemName: "",
     itemAliasesName: "",
     price: 0,
@@ -28,6 +29,9 @@ export const getBlankMenuItem = (uid: string) => {
     availableLunch: true,
     availableDinner: true,
     deletedFlag: false,
+    soldOut: false,
+    allergens: {},
+    itemOptionCheckbox: [],
     publicFlag: true,
     validatedFlag: false,
     createdAt: serverTimestamp(),

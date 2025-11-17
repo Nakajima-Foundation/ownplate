@@ -251,8 +251,8 @@ export const usePickupTime = (
         const { exceptDay, exceptHour } = menu;
         const hasExceptHour =
           !isNull(exceptHour) &&
-          !isNull(exceptHour.start) &&
-          !isNull(exceptHour.end);
+          !isNull(exceptHour?.start) &&
+          !isNull(exceptHour?.end);
         const hasExceptDay =
           (Object.values(exceptDay || {}) || []).filter((a) => a).length > 0;
         const menuAvailableDays = Object.keys(
