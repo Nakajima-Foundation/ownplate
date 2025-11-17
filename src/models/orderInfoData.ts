@@ -1,5 +1,5 @@
 import { Timestamp } from "./firebaseUtils";
-import { MenuItem } from "./menu";
+import { MenuData } from "./menu";
 import { CustomerInfo } from "./customer";
 import { OrderStatus } from "./common";
 
@@ -41,7 +41,7 @@ export interface OrderInfoData {
   isDelivery: boolean;
   isEC: boolean;
   tip: number;
-  menuItems: { [key: string]: MenuItem };
+  menuItems: { [key: string]: MenuData };
   phoneNumber: string;
   order: { [key: string]: number[] };
   options: { [key: string]: string[] };
@@ -67,7 +67,7 @@ export interface OrderInfoData {
 }
 
 export interface OrderItemData {
-  item: MenuItem;
+  item: MenuData;
   count: number | number[];
   id: string;
   options: string | string[];

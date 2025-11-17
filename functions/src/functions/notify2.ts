@@ -7,7 +7,7 @@ import * as fs from "fs";
 import i18next from "i18next";
 import { resources } from "./resources";
 import * as utils from "../lib/utils";
-import { MenuItem } from "../models/menu";
+import { MenuData } from "../models/menu";
 import { RestaurantInfoData } from "../models/RestaurantInfo";
 import { stripe_regions_jp } from "../common/constant";
 import { ownPlateConfig } from "../common/project";
@@ -112,7 +112,7 @@ export const createNotifyRestaurantMailMessage = async (messageId: string, resta
   const orderName = utils.nameOfOrder(orderNumber);
   const orders = Object.keys(order.order)
     .map((menuId) => {
-      const menu = order.menuItems[menuId] as MenuItem;
+      const menu = order.menuItems[menuId] as MenuData;
       const name = menu.itemName;
       return Object.keys(order.order[menuId])
         .map((key) => {
