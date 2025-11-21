@@ -38,19 +38,19 @@
         </a>
       </div>
 
-      <!-- Facebook User Group -->
-      <div class="inline-block px-1 pb-2" v-if="false">
+      <!-- Discord -->
+      <div class="inline-block px-1 pb-2" v-if="true">
         <a
-          href="https://www.facebook.com/groups/278028420106364/"
+          href="https://discord.com/invite/XqmAYxm2Xf"
           target="_blank"
         >
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-white/80 px-4"
           >
-            <i class="fab fa-facebook text-op-teal mr-2 text-lg"></i>
-            <span class="text-op-teal text-sm font-bold">{{
-              $t("admin.facebookUserGroup")
-            }}</span>
+            <i class="fab fa-discord text-op-teal mr-2 text-lg"></i>
+            <span class="text-op-teal text-sm font-bold">
+              Discord
+            </span>
           </div>
         </a>
       </div>
