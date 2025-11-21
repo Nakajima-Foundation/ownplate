@@ -16,7 +16,7 @@
         </div>
       </div>
     </div>
-    <t-modal :active="isOpen" width="488" @close="close">
+    <t-modal :active="isOpen" width="488" @dismissed="close">
       <PartnersContact :id="(partners[0] || {}).id" />
     </t-modal>
   </div>
