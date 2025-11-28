@@ -26,7 +26,6 @@ export interface TitleData {
 
   createdAt?: Timestamp | FieldValue;
   deletedFlag: boolean;
-  
 }
 
 export interface MenuItem {
@@ -97,9 +96,11 @@ export const getNewItemData = (
     itemDescription: item.itemDescription,
     itemMemo: item.itemMemo,
     itemPhoto: item.itemPhoto,
-    images: item?.images?.item ? {
-      item: item.images.item,
-    } : undefined,
+    images: item?.images?.item
+      ? {
+          item: item.images.item,
+        }
+      : undefined,
     itemOptionCheckbox: item.itemOptionCheckbox || [],
     publicFlag: validatedFlag ? item.publicFlag || false : false,
     deletedFlag: false,

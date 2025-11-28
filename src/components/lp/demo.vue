@@ -16,7 +16,13 @@
             height="145"
             src="https://www.youtube.com/embed/lt3iVMj2vfI"
             frameborder="0"
-            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+            allow="
+              accelerometer;
+              autoplay;
+              encrypted-media;
+              gyroscope;
+              picture-in-picture;
+            "
             allowfullscreen
             class="inline-block w-64 cursor-pointer rounded-lg"
           ></iframe>
@@ -34,7 +40,13 @@
             height="145"
             src="https://www.youtube.com/embed/B2nMqFC0ssA"
             frameborder="0"
-            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+            allow="
+              accelerometer;
+              autoplay;
+              encrypted-media;
+              gyroscope;
+              picture-in-picture;
+            "
             allowfullscreen
             class="inline-block w-64 cursor-pointer rounded-lg"
           ></iframe>
@@ -52,7 +64,13 @@
             height="145"
             src="https://www.youtube.com/embed/ATvzuL8nJlk"
             frameborder="0"
-            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+            allow="
+              accelerometer;
+              autoplay;
+              encrypted-media;
+              gyroscope;
+              picture-in-picture;
+            "
             allowfullscreen
             class="inline-block w-64 cursor-pointer rounded-lg"
           ></iframe>

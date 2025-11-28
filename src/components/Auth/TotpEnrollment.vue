@@ -6,11 +6,16 @@
 
     <div v-if="!enrollmentComplete" class="mt-4">
       <!-- Warning for new signups without email verification -->
-      <div v-if="!qrCodeDataUrl" class="mb-4 rounded-lg bg-yellow-50 p-4 text-sm">
+      <div
+        v-if="!qrCodeDataUrl"
+        class="mb-4 rounded-lg bg-yellow-50 p-4 text-sm"
+      >
         <div class="flex items-start">
           <i class="material-icons mr-2 text-yellow-600">info</i>
           <div class="text-gray-700">
-            <div class="font-bold mb-2">{{ $t("admin.totp.signupWarning.title") }}</div>
+            <div class="mb-2 font-bold">
+              {{ $t("admin.totp.signupWarning.title") }}
+            </div>
             <div class="mb-2">{{ $t("admin.totp.signupWarning.message") }}</div>
           </div>
         </div>
