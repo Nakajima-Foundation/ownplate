@@ -2,12 +2,12 @@
   <div>
     <router-link :to="url">
       <div
-        class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+        class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
       >
-        <i class="material-icons mr-2 text-lg text-op-teal"
+        <i class="material-icons text-op-teal mr-2 text-lg"
           >{{ iconText ? iconText : "home" }}
         </i>
-        <span class="text-sm font-bold text-op-teal">{{
+        <span class="text-op-teal text-sm font-bold">{{
           $t(backText ? backText : "button.adminTop")
         }}</span>
       </div>

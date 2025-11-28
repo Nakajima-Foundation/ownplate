@@ -4,8 +4,6 @@ export interface RestaurantInfoData {
   id: string;
 
   restaurantId: string; // mo
-  shopId: string; // mo
-  moLastPickupTime: string; // mo
 
   restCoverPhoto: string;
   restProfilePhoto: string;
@@ -47,7 +45,6 @@ export interface RestaurantInfoData {
   isEC: boolean; // set by system
   enableDelivery: boolean;
   deliveryOnlyStore: boolean;
-  groupId: string; // set by sys // TODO remove
   supportLiff: boolean;
 
   enableLunchDinner: boolean;

@@ -26,7 +26,7 @@
           <!-- Left -->
           <div id="RestaurantLeftTop">
             <!-- Cover Image -->
-            <div class="lg:mt-2 cursor-pointer">
+            <div class="cursor-pointer lg:mt-2">
               <img
                 @click.stop="openImage()"
                 :src="coverImage"
@@ -64,7 +64,7 @@
 
               <!-- Restaurant Info -->
               <div class="mt-4" v-if="!isTransactionAct">
-                <div class="text-xl font-bold text-black text-opacity-30">
+                <div class="text-xl font-bold text-black/30">
                   {{
                     shopInfo.isEC
                       ? $t("shopInfo.ecShopDetails")
@@ -97,7 +97,7 @@
           </div>
           <div v-else>
             <div class="mx-6 mt-2 lg:mx-0" v-if="shopInfo.enableDelivery">
-              <div class="rounded-lg bg-white shadow">
+              <div class="rounded-lg bg-white shadow-sm">
                 <!-- delivery toggle-->
                 <Delivery
                   :shopInfo="shopInfo"
@@ -113,7 +113,7 @@
 
             <!-- Lunch/Dinner -->
             <div class="mx-6 mt-4 lg:mx-0" v-if="shopInfo.enableLunchDinner">
-              <div class="rounded-lg bg-white shadow">
+              <div class="rounded-lg bg-white shadow-sm">
                 <LunchDinner
                   :shopInfo="shopInfo"
                   v-model="lunchOrDinner"
@@ -130,7 +130,7 @@
                   <!-- Title -->
                   <div v-if="item._dataType === 'title'" :key="key">
                     <div
-                      class="inline-flex items-center justify-center text-xl font-bold text-black text-opacity-30 cursor-pointer"
+                      class="inline-flex cursor-pointer items-center justify-center text-xl font-bold text-black/30"
                       :class="key === 0 ? '' : 'mt-2'"
                       :id="item.id"
                       @click="openCategory"
@@ -167,16 +167,16 @@
           </div>
         </div>
         <div class="mx-6 mt-8" v-if="!isTransactionAct">
-          <div class="rounded-lg bg-white shadow">
+          <div class="rounded-lg bg-white shadow-sm">
             <router-link :to="pageBase + '/transactions-act'">
               <div
-                class="p-4 inline-flex items-center justify-center"
+                class="inline-flex items-center justify-center p-4"
                 @click="scrollTop"
               >
-                <i class="material-icons mr-2 text-lg text-op-teal"
+                <i class="material-icons text-op-teal mr-2 text-lg"
                   >account_balance</i
                 >
-                <div class="text-sm font-bold text-op-teal">
+                <div class="text-op-teal text-sm font-bold">
                   {{ $t("transactionsAct.title") }}
                 </div>
               </div>
@@ -186,11 +186,11 @@
       </div>
 
       <!-- Phone Login-->
-      <o-modal v-model:active="loginVisible" :width="488" scroll="keep">
+      <t-modal v-model:active="loginVisible" width="488" scroll="keep">
         <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
           <phone-login v-on:dismissed="handleDismissed" />
         </div>
-      </o-modal>
+      </t-modal>
       <Cart
         v-if="isShowCart"
         @closeCart="closeCart"
@@ -206,8 +206,6 @@
         :lunchOrDinner="lunchOrDinner"
       />
 
-      <!-- for disable all UI -->
-      <div v-if="isCheckingOut" class="fixed top-0 left-0 h-full w-full"></div>
       <!-- Cart Button -->
       <CartButton
         ref="cartButton"
@@ -216,37 +214,46 @@
         :orders="orders"
         :paymentInfo="paymentInfo"
         :deliveryData="deliveryData"
-        :isCheckingOut="isCheckingOut"
         :isDelivery="isDelivery"
         :noAvailableTime="noAvailableTime"
         :totalPrice="totalPrice"
       />
     </template>
     <!-- Image Popup-->
-    <o-modal v-model:active="imagePopup" :width="488" scroll="keep">
+    <t-modal
+      v-model:active="imagePopup"
+      width="488"
+      scroll="keep"
+      @dismissed="imagePopup = false"
+    >
       <div class="px-2 text-center" @click.stop="closeImage()">
         <img :src="coverImage" class="rounded-lg shadow-lg" />
       </div>
-    </o-modal>
+    </t-modal>
     <!-- Image Popup ??-->
-    <o-modal v-model:active="categoryPopup" :width="488" scroll="keep">
+    <t-modal
+      v-model:active="categoryPopup"
+      width="488"
+      scroll="keep"
+      @dismissed="categoryPopup = false"
+    >
       <div class="px-2 text-center">
         <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
           <div class="font-bold">{{ $t("order.category") }}</div>
           <template v-for="(title, key) in titleLists" :key="key">
             <a
               :href="`#${title.id}`"
-              class="mx-1 mt-2 inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5"
+              class="mx-1 mt-2 inline-flex h-9 items-center justify-center rounded-full bg-black/5"
               @click="closeCategory"
             >
-              <div class="mx-2 text-sm font-bold text-op-teal">
+              <div class="text-op-teal mx-2 text-sm font-bold">
                 {{ title.name }}
               </div>
             </a>
           </template>
         </div>
       </div>
-    </o-modal>
+    </t-modal>
   </div>
 </template>
 
@@ -318,13 +325,18 @@ import {
   useUserData,
   useBasePath,
   defaultTitle,
+  stripeRegion,
 } from "@/utils/utils";
 
 import { imageUtils } from "@/utils/RestaurantUtils";
 
 import { useTitles, useMenu } from "./Restaurant/Utils";
 
-import { useStore } from "vuex";
+import { useUserStore } from "@/store/user";
+import { useGeneralStore } from "@/store";
+import { useCartStore } from "@/store/cart";
+import { useDialogStore } from "@/store/dialog";
+
 import { useRoute, useRouter } from "vue-router";
 
 import {
@@ -380,14 +392,16 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const store = useStore();
+    const userStore = useUserStore();
+    const generalStore = useGeneralStore();
+    const cartStore = useCartStore();
+    const dialogStore = useDialogStore();
     const route = useRoute();
     const router = useRouter();
 
     const retryCount = ref(0);
 
     const loginVisible = ref(false);
-    const isCheckingOut = ref(false);
     const waitForUser = ref(false);
     const noAvailableTime = ref(false);
 
@@ -395,11 +409,11 @@ export default defineComponent({
     const cartItems = ref<CartItemsType>({});
     const selectedOptions = ref<CartOptionType>({});
 
-    const multiple = store.getters.stripeRegion.multiple;
+    const multiple = stripeRegion.multiple;
 
     const basePath = useBasePath();
 
-    useHead({
+    useHead(() => ({
       title:
         Object.keys(props.shopInfo).length === 0
           ? document.title
@@ -407,13 +421,13 @@ export default defineComponent({
               props.shopInfo?.restaurantName || "",
               ownPlateConfig.restaurantPageTitle || defaultTitle,
             ].join(" / "),
-    });
+    }));
 
     const defaultHowToReceive = (() => {
       // for 333
       const rId = route.params.restaurantId as string;
-      if (store.state.carts[rId]) {
-        const cart = store.state.carts[rId] || {};
+      if (cartStore.carts[rId]) {
+        const cart = cartStore.carts[rId] || {};
         if (cart.howtoreceive) {
           return cart.howtoreceive;
         }
@@ -440,7 +454,7 @@ export default defineComponent({
     });
     const isSubAccount = computed(() => {
       return (
-        isAdmin.value && store.state?.claims?.parentUid === props.shopInfo.uid
+        isAdmin.value && userStore?.claims?.parentUid === props.shopInfo.uid
       );
     });
     const isPreview = computed(() => {
@@ -467,8 +481,9 @@ export default defineComponent({
     // avoid to reset cart when pickup or other not takeout
     onBeforeMount(() => {
       // Check if we came here as the result of "Edit Items"
-      if (store.state.carts[restaurantId.value]) {
-        const cart = store.state.carts[restaurantId.value] || {};
+      console.log(cartStore.carts[restaurantId.value]);
+      if (cartStore.carts[restaurantId.value]) {
+        const cart = cartStore.carts[restaurantId.value] || {};
         orders.value = cart.orders || {};
         cartItems.value = cart.cartItems || {};
         selectedOptions.value = cart.options || {};
@@ -640,7 +655,6 @@ export default defineComponent({
           : null,
         isDelivery:
           (props.shopInfo.enableDelivery && isDelivery.value) || false, // true, // for test
-        isPickup: false,
         isLiff: isLiffUser.value,
         phoneNumber: user.value.phoneNumber,
         name: isStoreUserName ? name : "",
@@ -648,7 +662,7 @@ export default defineComponent({
         timeCreated: serverTimestamp(),
         // price never set here.
       };
-      isCheckingOut.value = true;
+      generalStore.setLoading(true);
       try {
         const res = await addDoc(
           collection(db, `restaurants/${restaurantId.value}/orders`),
@@ -657,7 +671,7 @@ export default defineComponent({
         // Store the current order associated with this order id, so that we can re-use it
         // when the user clicks the "Edit Items" on the next page.
         // In that case, we will come back here with #id so that we can retrieve it (see mounted).
-        store.commit("saveCart", {
+        cartStore.saveCart({
           id: restaurantId.value,
           cart: {
             orders: orders.value,
@@ -710,13 +724,13 @@ export default defineComponent({
           }, 500);
         } else {
           console.error(error.message);
-          store.commit("setErrorMessage", {
+          dialogStore.setErrorMessage({
             code: "order.checkout",
             error,
           });
         }
       } finally {
-        isCheckingOut.value = false;
+        generalStore.setLoading(false);
       }
     };
     const handleCheckOut = () => {
@@ -868,7 +882,6 @@ export default defineComponent({
       handleDismissed,
 
       loginVisible,
-      isCheckingOut,
       noAvailableTime,
 
       // imageUtils

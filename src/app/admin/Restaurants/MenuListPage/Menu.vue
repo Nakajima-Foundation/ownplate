@@ -2,19 +2,19 @@
   <div class="lg:flex">
     <div class="lg:flex-1">
       <!-- Item Card -->
-      <div class="rounded-lg bg-white shadow">
+      <div class="rounded-lg bg-white shadow-sm">
         <!-- Published Status and Sold Out Checkbox -->
         <div class="flex items-center">
           <div class="mx-2 mt-2 flex-1">
             <div
               v-if="menuitem.publicFlag"
-              class="rounded bg-green-600 bg-opacity-10 p-2"
+              class="rounded-sm bg-green-600/10 p-2"
             >
               <div class="text-xs font-bold text-green-600">
                 {{ $t("admin.itemPublished") }}
               </div>
             </div>
-            <div v-else class="rounded bg-red-700 bg-opacity-10 p-2">
+            <div v-else class="rounded-sm bg-red-700/10 p-2">
               <div class="text-xs font-bold text-red-700">
                 {{ $t("admin.itemNotPublished") }}
               </div>
@@ -22,57 +22,54 @@
           </div>
 
           <div class="mr-4 pt-4">
-            <o-checkbox
-              :modelValue="soldOut"
-              @update:modelValue="soldOutToggle"
-            >
+            <Checkbox :modelValue="soldOut" @update:modelValue="soldOutToggle">
               <div v-if="soldOut" class="text-sm font-bold text-red-700">
                 {{ $t("admin.itemSoldOut") }}
               </div>
-              <div v-else class="text-sm font-bold text-black text-opacity-30">
+              <div v-else class="text-sm font-bold text-black/30">
                 {{ $t("admin.itemSoldOut") }}
               </div>
-            </o-checkbox>
+            </Checkbox>
           </div>
           <div class="mr-4 pt-4">
-            <o-checkbox
+            <Checkbox
               :modelValue="soldOutToday"
               @update:modelValue="soldOutTodayToggle"
             >
               <div v-if="soldOut" class="text-sm font-bold text-red-700">
                 {{ $t("admin.itemSoldOutToday") }}
               </div>
-              <div v-else class="text-sm font-bold text-black text-opacity-30">
+              <div v-else class="text-sm font-bold text-black/30">
                 {{ $t("admin.itemSoldOutToday") }}
               </div>
-            </o-checkbox>
+            </Checkbox>
           </div>
         </div>
 
         <!-- Item Details -->
         <a class="flow-root" @click="linkEdit">
-          <div class="float-right p-4 cursor-pointer">
+          <div class="float-right cursor-pointer p-4">
             <div v-if="image">
               <img
                 :src="image"
-                class="h-24 w-24 rounded object-cover"
+                class="h-24 w-24 rounded-sm object-cover"
                 @error="smallImageErrorHandler"
               />
             </div>
           </div>
           <div class="p-4">
-            <div class="text-xl font-bold text-black text-opacity-80">
+            <div class="text-xl font-bold text-black/80">
               <span>{{ menuitem.itemName }}</span>
               <span v-if="shopInfo.enableLunchDinner">
                 / <LunchDinnerIcon :item="menuitem" />
               </span>
             </div>
-            <div class="mt-2 text-base text-black text-opacity-80">
+            <div class="mt-2 text-base text-black/80">
               <Price :shopInfo="shopInfo" :menu="menuitem" />
             </div>
 
             <!-- # Remove the description part to make the list length shorter -->
-            <!-- <div class="mt-2 text-sm text-black text-opacity-60">
+            <!-- <div class="mt-2 text-sm text-black/60">
             {{ menuitem.itemDescription }}
            </div> -->
           </div>
@@ -80,61 +77,58 @@
 
         <!-- Owner Memo -->
         <div v-if="menuitem.itemMemo" class="mx-2 pb-2">
-          <div class="rounded bg-black bg-opacity-5 p-2 text-xs">
+          <div class="rounded-sm bg-black/5 p-2 text-xs">
             {{ menuitem.itemMemo.split("\n")[0] }}
           </div>
         </div>
       </div>
     </div>
-    <div
-      class="mt-2 text-right lg:mt-0 lg:ml-4 lg:flex-shrink-0"
-      v-if="isOwner"
-    >
+    <div class="mt-2 text-right lg:mt-0 lg:ml-4 lg:shrink-0" v-if="isOwner">
       <!-- Card Actions -->
       <div class="inline-flex space-x-2">
         <!-- Up -->
-        <o-button
+        <button
           :disabled="position === 'first'"
           @click="positionUp"
-          class="b-reset-tw"
+          class="cursor-pointer disabled:cursor-not-allowed disabled:opacity-25"
         >
           <div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
-            <i class="material-icons text-lg text-op-teal">arrow_upward</i>
+            <i class="material-icons text-op-teal text-lg">arrow_upward</i>
           </div>
-        </o-button>
+        </button>
 
         <!-- Down -->
-        <o-button
+        <button
           :disabled="position === 'last'"
           @click="positionDown"
-          class="b-reset-tw"
+          class="cursor-pointer disabled:cursor-not-allowed disabled:opacity-25"
         >
           <div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
-            <i class="material-icons text-lg text-op-teal">arrow_downward</i>
+            <i class="material-icons text-op-teal text-lg">arrow_downward</i>
           </div>
-        </o-button>
+        </button>
 
         <!-- Duplicate -->
-        <o-button @click="forkItem" class="b-reset-tw">
+        <button @click="forkItem" class="cursor-pointer">
           <div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
-            <i class="material-icons text-lg text-op-teal">queue</i>
+            <i class="material-icons text-op-teal text-lg">queue</i>
           </div>
-        </o-button>
+        </button>
 
         <!-- Delete -->
-        <o-button @click="deleteItem" class="b-reset-tw">
+        <button @click="deleteItem" class="cursor-pointer">
           <div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
             <i class="material-icons text-lg text-red-700">delete</i>
           </div>
-        </o-button>
+        </button>
       </div>
     </div>
   </div>
@@ -146,6 +140,7 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, updateDoc } from "firebase/firestore";
 
 import Price from "@/components/Price.vue";
+import Checkbox from "@/components/form/checkbox.vue";
 import LunchDinnerIcon from "@/app/user/Restaurant/LunchDinnerIcon.vue";
 
 import {
@@ -154,13 +149,15 @@ import {
   useRestaurantId,
 } from "@/utils/utils";
 
-import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
+import { useDialogStore } from "@/store/dialog";
 
 import { useRouter } from "vue-router";
 import moment from "moment-timezone";
 export default defineComponent({
   components: {
     Price,
+    Checkbox,
     LunchDinnerIcon,
   },
   props: {
@@ -179,8 +176,9 @@ export default defineComponent({
   },
   emits: ["toEditMode", "positionUp", "positionDown", "forkItem", "deleteItem"],
   setup(props, ctx) {
-    const store = useStore();
     const router = useRouter();
+    const generalStore = useGeneralStore();
+    const dialogStore = useDialogStore();
 
     const restaurantId = useRestaurantId();
 
@@ -197,11 +195,11 @@ export default defineComponent({
     };
 
     const soldOutToday = computed(() => {
-      const today = moment(store.state.date).format("YYYY-MM-DD");
+      const today = moment(generalStore.date).format("YYYY-MM-DD");
       return props.menuitem.soldOutToday === today; // = !soldOut;
     });
     const soldOutTodayToggle = (e: boolean) => {
-      const today = moment(store.state.date).format("YYYY-MM-DD");
+      const today = moment(generalStore.date).format("YYYY-MM-DD");
       const path = `restaurants/${restaurantId.value}/menus/${props.menuitem.id}`;
       if (e) {
         updateDoc(doc(db, path), { soldOutToday: today });
@@ -227,7 +225,7 @@ export default defineComponent({
       ctx.emit("forkItem", props.menuitem.id);
     };
     const deleteItem = () => {
-      store.commit("setAlert", {
+      dialogStore.setAlert({
         code: "editMenu.reallyDelete",
         callback: () => {
           ctx.emit("deleteItem", props.menuitem.id);

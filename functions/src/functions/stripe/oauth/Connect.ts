@@ -1,11 +1,11 @@
 import * as admin from "firebase-admin";
-import * as functions from "firebase-functions/v1";
+import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
 import * as utils from "../../../lib/utils";
 import { validatorStripeOAuthConnect } from "../../../lib/validator";
 
-export const connect = async (db: admin.firestore.Firestore, data: { code: string }, context: functions.https.CallableContext) => {
+export const connect = async (db: admin.firestore.Firestore, data: { code: string }, context: CallableRequest) => {
   const uid = utils.validate_admin_auth(context);
-  const stripe = utils.get_stripe();
+  const stripe = utils.get_stripe_v2();
 
   const { code } = data;
   utils.required_params({ code });
@@ -13,7 +13,7 @@ export const connect = async (db: admin.firestore.Firestore, data: { code: strin
   const validateResult = validatorStripeOAuthConnect(data);
   if (!validateResult.result) {
     console.error("connect", validateResult.errors);
-    throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+    throw new HttpsError("invalid-argument", "Validation Error.");
   }
 
   try {
@@ -44,6 +44,6 @@ export const connect = async (db: admin.firestore.Firestore, data: { code: strin
     await batch.commit();
     return { result: true };
   } catch (error) {
-    throw utils.process_error(error);
+    throw utils.process_error(error as Error);
   }
 };

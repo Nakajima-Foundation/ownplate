@@ -1,8 +1,8 @@
-import { serverTimestamp, FieldValue } from "firebase/firestore";
-import { isNull } from "@/utils/utils";
+import { Timestamp, FieldValue } from "./firebaseUtils";
+import { isNull } from "../utils/commonUtils";
 
 export interface MenuImages {
-  item?: {
+  item: {
     resizedImages: {
       [key: string]: string;
     };
@@ -16,47 +16,53 @@ export interface ExceptHour {
   end?: number;
 }
 export interface TitleData {
-  _dataType: "title";
-  id: string;
+  _dataType?: "title"; // set by doc2data. not need to store in db.
+  id?: string; // set by doc2data. not need to store in db.
   name: string;
+  uid?: string;
 
   availableLunch: boolean;
   availableDinner: boolean;
+
+  createdAt?: Timestamp | FieldValue;
+  deletedFlag: boolean;
 }
 
-export interface MenuData {
-  _dataType: "menu";
-  id: string;
-  itemDescription: string;
-  itemName: string;
-  itemPhoto: string;
-  images: MenuImages;
+export interface MenuItem {
   price: number;
-
+  itemName: string;
+  itemPhoto?: string;
+  images?: MenuImages;
+  itemAliasesName: string;
+  category1?: string;
+  category2?: string;
+  exceptDay?: { [key: string]: boolean };
+  exceptHour?: ExceptHour;
   tax: string;
+}
 
-  uid: string;
+export interface MenuData extends MenuItem {
+  _dataType?: "menu"; // set by doc2data. not need to store in db.
+  id?: string; // set by doc2data. not need to store in db.
+  itemDescription: string;
+
+  uid?: string;
   deletedFlag: boolean;
 
   soldOut: boolean;
   soldOutToday?: string;
 
-  itemAliasesName: string;
   itemMemo: string;
   itemOptionCheckbox: string[];
   publicFlag: boolean;
   allergens: { [key: string]: boolean };
-  category1: string;
-  category2: string;
 
   availableLunch: boolean;
   availableDinner: boolean;
 
-  exceptDay: { [key: string]: boolean };
-  exceptHour: ExceptHour;
   validatedFlag: boolean;
 
-  createdAt: FieldValue;
+  createdAt?: Timestamp | FieldValue;
 }
 
 // for util function
@@ -81,7 +87,7 @@ export const getNewItemData = (
   item: MenuData,
   isJP: boolean,
   validatedFlag: boolean,
-) => {
+): MenuData => {
   const itemData = {
     itemName: item.itemName,
     itemAliasesName: item.itemAliasesName || "",
@@ -90,11 +96,15 @@ export const getNewItemData = (
     itemDescription: item.itemDescription,
     itemMemo: item.itemMemo,
     itemPhoto: item.itemPhoto,
-    images: {
-      item: item?.images?.item || {},
-    },
+    images: item?.images?.item
+      ? {
+          item: item.images.item,
+        }
+      : undefined,
     itemOptionCheckbox: item.itemOptionCheckbox || [],
     publicFlag: validatedFlag ? item.publicFlag || false : false,
+    deletedFlag: false,
+    soldOut: false,
     allergens: item.allergens,
     validatedFlag,
     category1: item.category1,
@@ -103,19 +113,8 @@ export const getNewItemData = (
     availableDinner: item.availableDinner || false,
     exceptDay: item.exceptDay || {},
     exceptHour: newExceptHour(item.exceptHour || {}),
-  } as MenuData;
+  };
   return itemData;
-};
-
-export const copyMenuData = (item: MenuData, isJP: boolean, uid: string) => {
-  const base = getNewItemData(item, isJP, item.validatedFlag);
-  const data = Object.assign({}, base, {
-    uid,
-    publicFlag: false,
-    deletedFlag: false,
-    createdAt: serverTimestamp(),
-  });
-  return data;
 };
 
 export const isAvailableLunchOrDinner = (item: MenuData | TitleData) => {

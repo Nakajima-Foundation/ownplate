@@ -29,14 +29,15 @@
         <div
           v-for="(product, key) in productList"
           :key="key"
-          class="mt4 border-2"
+          class="mt4 border-2 border-black/10"
         >
           スマレジ: {{ product.productCode }} / {{ product.productName }} /
           {{ product.price }}円 / 在庫数
           {{ (stockObj[product.productId] || {}).amount || 0 }} <br />
           おもちかえり:
-          <o-select
+          <select
             v-model="selectedMenu[key]"
+            class="rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400"
             :class="
               selectedMenu[key] && duplicateElement[selectedMenu[key]]
                 ? 'border-2 border-solid border-red-700'
@@ -46,21 +47,25 @@
             <option v-for="menu in menus" :value="menu.id" :key="menu.id">
               {{ menu.itemName }} / {{ menu.price }} 円
             </option>
-          </o-select>
+          </select>
         </div>
         <div v-if="isDuplicateError" class="text-red-700">
           * メニューの指定が重複しています
         </div>
-        <o-button @click="saveMenus" :disabled="isDuplicateError"
-          >保存</o-button
+        <button
+          @click="saveMenus"
+          :disabled="isDuplicateError"
+          class="bg-op-teal mt-2 inline-flex h-12 min-w-32 cursor-pointer items-center justify-center rounded-full px-6 text-white shadow-sm"
         >
+          保存
+        </button>
       </div>
       <div v-else>
         <div class="mt-4">
           <div
             v-for="(product, key) in productList"
             :key="key"
-            class="mt-2 border-2"
+            class="mt-2 border-2 border-black/10"
           >
             スマレジ:{{ product.productCode }} / {{ product.productName }} /
             {{ product.price }}円 / 在庫数
@@ -72,7 +77,12 @@
               {{ menuObj[selectedMenu[key]].price }}円</span
             >
           </div>
-          <o-button @click="isEdit = true">編集</o-button>
+          <button
+            class="bg-op-teal mt-2 inline-flex h-12 min-w-32 cursor-pointer items-center justify-center rounded-full px-6 text-white shadow-sm"
+            @click="isEdit = true"
+          >
+            編集
+          </button>
         </div>
       </div>
     </div>
@@ -126,9 +136,9 @@ export default defineComponent({
     const { uid } = useAdminUids();
     const storeId = route.params.storeId as string;
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Admin Smaregi Store"].join(" / "),
-    });
+    }));
 
     const duplicateElement = computed(() => {
       const counter = Object.values(selectedMenu.value).reduce(

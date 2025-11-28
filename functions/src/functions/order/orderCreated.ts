@@ -1,26 +1,32 @@
-import * as functions from "firebase-functions";
+import * as admin from "firebase-admin";
+import * as functions from "firebase-functions/v1";
 import * as utils from "../../lib/utils";
-import { order_status } from "../../common/constant";
+import { order_status, stripe_regions_jp } from "../../common/constant";
 import { createCustomer } from "../stripe/customer";
 
-import { orderCreatedData, menuItem } from "../../lib/types";
+import { OrderCreatedData } from "../../models/functionTypes";
+import { OrderData, OptionValue } from "../../lib/types/order";
+import { RestaurantInfoData } from "../../models/RestaurantInfo";
+import { MenuData, MenuItem } from "../../models/menu";
 import { validateOrderCreated } from "../../lib/validator";
+import { Context } from "../../models/TestType";
 
-const getOptionPrice = (selectedOptionsRaw, menu, multiple) => {
-  return selectedOptionsRaw.reduce((tmpPrice, selectedOpt, key) => {
+const getOptionPrice = (selectedOptionsRaw: OptionValue[], menu: MenuData, multiple: number) => {
+  return selectedOptionsRaw.reduce((tmpPrice: number, selectedOpt: OptionValue, key: number) => {
     const opt = menu.itemOptionCheckbox[key].split(",");
     if (opt.length === 1) {
       if (selectedOpt) {
         return tmpPrice + Math.round(utils.optionPrice(opt[0]) * multiple) / multiple;
       }
     } else {
-      return tmpPrice + Math.round(utils.optionPrice(opt[selectedOpt]) * multiple) / multiple;
+      const optIndex = typeof selectedOpt === "number" ? selectedOpt : Number(selectedOpt);
+      return tmpPrice + Math.round(utils.optionPrice(opt[optIndex]) * multiple) / multiple;
     }
     return tmpPrice;
   }, 0);
 };
 
-export const orderAccounting = (restaurantData, food_sub_total, alcohol_sub_total, multiple) => {
+export const orderAccounting = (restaurantData: RestaurantInfoData, food_sub_total: number, alcohol_sub_total: number, multiple: number) => {
   // tax rate
   const inclusiveTax = restaurantData.inclusiveTax || false;
   const alcoholTax = restaurantData.alcoholTax || 0;
@@ -65,14 +71,22 @@ export const orderAccounting = (restaurantData, food_sub_total, alcohol_sub_tota
 };
 
 // restaurantData is for mo.
-export const createNewOrderData = async (restaurantRef, orderRef, orderData, multiple) => {
+export const createNewOrderData = async (
+  restaurantRef: admin.firestore.DocumentReference,
+  orderRef: admin.firestore.DocumentReference,
+  orderData: Partial<OrderData> & { order: { [menuId: string]: number | number[] }; rawOptions?: { [menuId: string]: OptionValue[][] } },
+  multiple: number,
+): Promise<
+  | { result: true, data: { newOrderData: { [menuId: string]: number[] }; newItems: { [menuId: string]: MenuItem }; newPrices: { [menuId: string]: number[] }; food_sub_total: number; alcohol_sub_total: number }}
+  | { result: false }
+> => {
   const menuIds = Object.keys(orderData.order);
   const menuObj = await utils.getMenuObj(restaurantRef, menuIds);
 
   // ret
-  const newOrderData = {};
-  const newItems = {};
-  const newPrices = {};
+  const newOrderData: { [menuId: string]: number[] } = {};
+  const newItems: { [menuId: string]: MenuItem } = {};
+  const newPrices: { [menuId: string]: number[] } = {};
 
   let food_sub_total = 0;
   let alcohol_sub_total = 0;
@@ -84,11 +98,12 @@ export const createNewOrderData = async (restaurantRef, orderRef, orderData, mul
     })
   ) {
     console.error("[createNewOrderData] menuError");
-    return orderRef.update("status", order_status.error);
+    await orderRef.update("status", order_status.error);
+    return { result: false };
   }
 
   menuIds.map((menuId) => {
-    const menu = menuObj[menuId];
+    const menu = menuObj[menuId] as MenuData;
 
     if (menu.soldOut) {
       return;
@@ -97,7 +112,8 @@ export const createNewOrderData = async (restaurantRef, orderRef, orderData, mul
     const prices: number[] = [];
     const newOrder: number[] = [];
 
-    const numArray = Array.isArray(orderData.order[menuId]) ? orderData.order[menuId] : [orderData.order[menuId]];
+    const orderItem = orderData.order[menuId];
+    const numArray = Array.isArray(orderItem) ? orderItem : [orderItem];
     numArray.map((num, orderKey) => {
       if (!Number.isInteger(num)) {
         throw new Error("invalid number: not integer");
@@ -108,7 +124,8 @@ export const createNewOrderData = async (restaurantRef, orderRef, orderData, mul
       if (num === 0) {
         return;
       }
-      const price = menu.price + getOptionPrice(orderData.rawOptions[menuId][orderKey], menu, multiple);
+      const rawOptions = orderData.rawOptions?.[menuId]?.[orderKey];
+      const price = menu.price + (rawOptions ? getOptionPrice(rawOptions, menu, multiple) : 0);
       newOrder.push(num);
       prices.push(price * num);
     });
@@ -121,34 +138,34 @@ export const createNewOrderData = async (restaurantRef, orderRef, orderData, mul
     } else {
       food_sub_total += total;
     }
-    const menuItem: menuItem = {
+    const menuItem: MenuItem = {
       price: menu.price,
       itemName: menu.itemName,
       itemPhoto: menu.itemPhoto,
       images: menu.images,
-      itemAliasesName: menu.itemAliasesName,
-      category1: menu.category1,
-      category2: menu.category2,
-      category: menu.category,
-      subCategory: menu.subCategory,
+      itemAliasesName: menu.itemAliasesName || "",
+      category1: menu.category1 || "",
+      category2: menu.category2 || "",
       exceptDay: menu.exceptDay || {},
       exceptHour: menu.exceptHour || {},
-      productId: menu.productId,
-      tax: menu.tax,
+      tax: menu.tax || "",
     };
 
-    newItems[menuId] = utils.filterData(menuItem);
+    newItems[menuId] = menuItem;
   });
   return {
-    newOrderData,
-    newItems,
-    newPrices,
-    food_sub_total,
-    alcohol_sub_total,
+    result: true,
+    data: {
+      newOrderData,
+      newItems,
+      newPrices,
+      food_sub_total,
+      alcohol_sub_total,
+    },
   };
 };
 
-export const orderCreated = async (db, data: orderCreatedData, context) => {
+export const orderCreated = async (db: admin.firestore.Firestore, data: OrderCreatedData, context: functions.https.CallableContext | Context) => {
   const customerUid = utils.validate_customer_auth(context);
 
   const { restaurantId, orderId } = data;
@@ -169,7 +186,11 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
       console.error("[orderCreated] noRestaurant");
       return orderRef.update("status", order_status.error);
     }
-    const restaurantData = restaurantDoc.data();
+    const restaurantData = restaurantDoc.data() as RestaurantInfoData;
+    if (!restaurantData) {
+      console.error("[orderCreated] noRestaurant");
+      return orderRef.update("status", order_status.error);
+    }
 
     if (restaurantData.deletedFlag || !restaurantData.publicFlag) {
       console.error("[orderCreated] not exists");
@@ -180,7 +201,7 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
     if (!order) {
       throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
     }
-    const orderData = order.data();
+    const orderData = order.data() as OrderData | undefined;
 
     if (!orderData || !orderData.status || orderData.status !== order_status.new_order || !orderData.uid || orderData.uid !== customerUid) {
       console.log("invalid order:" + String(orderId));
@@ -197,7 +218,7 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
       throw new functions.https.HttpsError("invalid-argument", "Invalid liff order.");
     }
     if (restaurantData.enableLunchDinner) {
-      if (!["lunch", "dinner"].includes(lunchOrDinner)) {
+      if (!lunchOrDinner || !["lunch", "dinner"].includes(lunchOrDinner)) {
         throw new functions.https.HttpsError("invalid-argument", "Invalid lunch dinner order.");
       }
     } else {
@@ -206,9 +227,13 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
       }
     }
 
-    const multiple = utils.stripeRegion.multiple; //100 for USD, 1 for JPY
+    const multiple = stripe_regions_jp.multiple; //100 for USD, 1 for JPY
 
-    const { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total } = await createNewOrderData(restaurantRef, orderRef, orderData, multiple);
+    const res = await createNewOrderData(restaurantRef, orderRef, orderData, multiple);
+    if (!res.result) {
+      throw new functions.https.HttpsError("permission-denied", "unknown error.");
+    }
+    const { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total } = res.data;
 
     // Atomically increment the orderCount of the restaurant
     let orderCount = 0;
@@ -228,7 +253,7 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
     const deliveryData = orderData.isDelivery ? await utils.get_restaurant_delivery_area(db, restaurantId) : {};
     const deliveryFee = utils.get_delivery_cost(orderData, deliveryData, accountingResult.total);
 
-    await createCustomer(db, customerUid, context.auth.token.phone_number);
+    await createCustomer(db, customerUid, context.auth?.token?.phone_number || "");
 
     // just copy original data.
     const { options, rawOptions, uid, phoneNumber, name, updatedAt, timeCreated } = orderData;
@@ -237,7 +262,6 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
       utils.filterData({
         // copy and validate
         isDelivery,
-        isPickup: false, // TODO: remove for mo
         isLiff,
 
         lunchOrDinner,

@@ -1,15 +1,15 @@
 i
 <template>
   <div>
-    <div class="mb-2 text-sm font-bold text-black text-opacity-60">
+    <div class="mb-2 text-sm font-bold text-black/60">
       {{ $t("admin.order.incompleteOrders") }}
     </div>
 
     <!-- Links for Incomplete Orders Date -->
     <div @click="closeNotificationSettings">
       <router-link
-        :class="`mb-2 mr-2 inline-flex h-9 items-center justify-center rounded-full px-4 ${
-          index === 0 ? 'bg-red-700 bg-opacity-10' : 'bg-black bg-opacity-5'
+        :class="`mr-2 mb-2 inline-flex h-9 items-center justify-center rounded-full px-4 ${
+          index === 0 ? 'bg-red-700/10' : 'bg-black/5'
         }`"
         :to="`/admin/restaurants/${restaurantId}/orders?day=${moment(
           day.date,
@@ -37,7 +37,7 @@ import { isNull, useRestaurantId } from "@/utils/utils";
 import { midNight } from "@/utils/dateUtils";
 import moment from "moment";
 
-import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
@@ -50,7 +50,7 @@ export default defineComponent({
   },
   emits: ["close"],
   setup(props, ctx) {
-    const store = useStore();
+    const generalStore = useGeneralStore();
     const restaurantId = useRestaurantId();
 
     const pickUpDaysInAdvance = computed(() => {
@@ -73,7 +73,7 @@ export default defineComponent({
       return lastSeveralDays.value.reduce(
         (tmp: { [key: string]: number }, day) => {
           const count = (
-            store.state.orderObj[moment(day.date).format("YYYY-MM-DD")] || []
+            generalStore.orderObj[moment(day.date).format("YYYY-MM-DD")] || []
           ).length;
           tmp[moment(day.date).format("YYYY-MM-DD")] = count || 0;
           return tmp;

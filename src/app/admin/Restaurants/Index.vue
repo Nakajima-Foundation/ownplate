@@ -11,7 +11,7 @@
       <div class="mx-6 mt-4 lg:flex lg:items-center">
         <div class="flex-1"></div>
         <!-- Notifications -->
-        <div class="mt-4 flex-shrink-0 text-right lg:mt-0">
+        <div class="mt-4 shrink-0 text-right lg:mt-0">
           <notification-index :shopInfo="editShopInfo" />
         </div>
       </div>
@@ -23,46 +23,41 @@
           :to="`/admin/restaurants/#restaurant_` + editShopInfo.restaurantId"
         >
           <div
-            class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
+            class="inline-flex h-12 items-center rounded-full bg-black/5 px-6"
           >
-            <span class="text-base font-bold text-black text-opacity-60">{{
+            <span class="text-base font-bold text-black/60">{{
               $t("button.cancel")
             }}</span>
           </div>
         </router-link>
 
         <!-- Save Button -->
-        <o-button
+        <t-button
           @click="saveRestaurant"
-          :disabled="submitting || disableSave"
-          class="b-reset-tw"
+          :isDisabled="submitting || disableSave"
+          class="h-12 px-8 font-bold text-white"
         >
-          <div
-            class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
-            style="min-width: 8rem"
-          >
-            <span class="text-base font-bold text-white">{{
-              $t(
-                submitting
-                  ? "editCommon.saving"
-                  : editShopInfo.publicFlag
-                    ? "editCommon.save"
-                    : "editCommon.saveDraft",
-              )
-            }}</span>
-          </div>
-        </o-button>
+          {{
+            $t(
+              submitting
+                ? "editCommon.saving"
+                : editShopInfo.publicFlag
+                  ? "editCommon.save"
+                  : "editCommon.saveDraft",
+            )
+          }}
+        </t-button>
       </div>
 
       <!-- Publish Status -->
-      <div class="mx-6 mt-2 rounded-lg bg-black bg-opacity-5 p-4 text-center">
-        <o-checkbox
+      <div class="mx-6 mt-2 rounded-lg bg-black/5 p-4 text-center">
+        <Checkbox
           v-model="editShopInfo.publicFlag"
           :disabled="hasError"
           :variant="!editShopInfo.publicFlag ? 'danger' : ''"
         >
-          <div class="font-bold">{{ $t("shopInfo.public") }}</div>
-        </o-checkbox>
+          <span class="font-bold">{{ $t("shopInfo.public") }}</span>
+        </Checkbox>
 
         <div class="mt-1 text-sm font-bold">
           <div v-if="editShopInfo.publicFlag">
@@ -121,7 +116,7 @@
               />
             </div>
             <div class="pl-4">
-              <state :errors="errors" v-model="editShopInfo.state" />
+              <state v-model="editShopInfo.state" />
             </div>
           </div>
           <!-- City -->
@@ -161,7 +156,7 @@
             <div class="text-center">
               <a
                 @click="updateAndUpdateMap"
-                class="inline-flex h-12 items-center rounded-full bg-op-teal px-6 shadow"
+                class="bg-op-teal inline-flex h-12 items-center rounded-full px-6 shadow-sm"
                 ><div class="text-base font-bold text-white">
                   {{ $t("editRestaurant.searchMap") }}
                 </div></a
@@ -189,20 +184,15 @@
             </div>
 
             <div class="mt-4 border-red-700">
-              <GMapMap
+              <div
                 ref="gMap"
-                :center="{ lat: 44.933076, lng: 15.629058 }"
-                :options="{ fullscreenControl: false }"
-                :zoom="18"
                 style="
                   width: 100%;
                   height: 280px;
                   position: relative;
                   overflow: hidden;
                 "
-                @loaded="setDefaultLocation"
-                @click="gmapClick"
-              ></GMapMap>
+              />
             </div>
           </div>
         </div>
@@ -212,7 +202,7 @@
           <!-- Phone -->
           <div>
             <div
-              class="pb-2 text-sm font-bold cursor-pointer"
+              class="cursor-pointer pb-2 text-sm font-bold"
               @click="openTips('phonenumber')"
             >
               {{ $t("shopInfo.phonenumber") }}
@@ -239,7 +229,7 @@
             <div
               class="flex"
               :class="{
-                'rounded border border-red-700 p-2':
+                'rounded-sm border border-red-700 p-2':
                   errors['restProfilePhoto'].length !== 0,
               }"
             >
@@ -271,7 +261,7 @@
             </div>
 
             <!-- Description -->
-            <div class="pt-2 text-sm text-black text-opacity-60">
+            <div class="pt-2 text-sm text-black/60">
               {{ $t("editCommon.clickAndUploadDetail") }}
             </div>
           </div>
@@ -285,7 +275,7 @@
             <div
               class="flex"
               :class="{
-                'rounded border border-red-700 p-2':
+                'rounded-sm border border-red-700 p-2':
                   errors['restCoverPhoto'].length !== 0,
               }"
             >
@@ -293,7 +283,7 @@
               <div v-if="restCoverPhoto">
                 <div>
                   <img
-                    class="rounded object-cover"
+                    class="rounded-sm object-cover"
                     :src="restCoverPhoto"
                     style="width: 272px; height: 128px"
                   />
@@ -317,7 +307,7 @@
               </div>
             </div>
             <!-- Description -->
-            <div class="pt-2 text-sm text-black text-opacity-60">
+            <div class="pt-2 text-sm text-black/60">
               {{ $t("editCommon.clickAndUploadDetail") }}
             </div>
           </div>
@@ -326,7 +316,7 @@
 
       <!-- Settings 2 -->
       <div
-        class="mx-6 mt-2 grid grid-cols-1 border-t-2 border-solid border-black border-opacity-10 pt-6 lg:grid-cols-2 lg:gap-x-12"
+        class="mx-6 mt-2 grid grid-cols-1 border-t-2 border-solid border-black/10 pt-6 lg:grid-cols-2 lg:gap-x-12"
       >
         <!-- Left -->
         <div>
@@ -336,12 +326,14 @@
             <div class="pb-2 text-sm font-bold">
               {{ $t("editRestaurant.enablePrelineTitle") }}
             </div>
-            <div class="rounded-lg bg-black bg-opacity-5 p-4">
-              <o-checkbox v-model="editShopInfo.enablePreline">
-                <div class="text-sm font-bold">
-                  {{ $t("editRestaurant.enablePrelineDescription") }}
-                </div>
-              </o-checkbox>
+            <div class="flex gap-2 rounded-lg bg-black/5 p-4">
+              <Checkbox
+                id="enablePreline"
+                v-model="editShopInfo.enablePreline"
+              />
+              <label for="enablePreline" class="text-sm font-bold">
+                {{ $t("editRestaurant.enablePrelineDescription") }}
+              </label>
             </div>
           </div>
 
@@ -358,7 +350,7 @@
             />
           </div>
 
-          <div class="rounded-lg border bg-white p-2 mt-4">
+          <div class="mt-4 rounded-lg border border-black/10 bg-white p-2">
             <div class="pb-2 text-sm font-bold">
               {{ $t("editRestaurant.orderConfirmViewConfig") }}
             </div>
@@ -381,12 +373,20 @@
               <div class="pb-2 text-sm font-bold">
                 {{ $t("editRestaurant.acceptUserMessage") }}
               </div>
-              <div class="rounded-lg bg-black bg-opacity-5 p-4">
-                <o-checkbox v-model="editShopInfo.acceptUserMessage">
-                  <div class="text-sm font-bold">
-                    {{ $t("editRestaurant.acceptUserMessageDescription") }}
-                  </div>
-                </o-checkbox>
+              <div class="rounded-lg bg-black/5 p-4">
+                <div class="flex gap-2">
+                  <label
+                    for="acceptUserMessageDescription"
+                    class="text-sm font-bold"
+                  >
+                    <Checkbox
+                      id="acceptUserMessageDescription"
+                      v-model="editShopInfo.acceptUserMessage"
+                    >
+                      {{ $t("editRestaurant.acceptUserMessageDescription") }}
+                    </Checkbox>
+                  </label>
+                </div>
                 <div class="pt-2 text-xs">
                   {{ $t("editRestaurant.acceptUserMessageNotice") }}
                 </div>
@@ -406,7 +406,7 @@
             />
           </div>
 
-          <div class="rounded-lg border bg-white p-2 mt-4">
+          <div class="mt-4 rounded-lg border border-black/10 bg-white p-2">
             <!-- URL -->
             <div>
               <text-form
@@ -458,92 +458,37 @@
 
           <!-- Tax -->
           <div>
-            <!-- Tax Input Required -->
-            <div v-if="requireTaxInput">
-              <div class="mt-4 flex">
-                <div>
-                  <div class="pb-2 text-sm font-bold">
-                    {{ $t("editRestaurant.foodTax") }}
-                  </div>
-                  <o-field
-                    class="inline-flex items-center"
-                    :variant="
-                      errors['foodTax'].length > 0 ? 'danger' : 'success'
-                    "
-                  >
-                    <o-input
-                      v-model="editShopInfo.foodTax"
-                      placeholder="8.2"
-                      type="text"
-                      maxlength="5"
-                      class="w-24"
-                    />
-                    <div class="ml-2">%</div>
-                  </o-field>
-                </div>
-
-                <div class="ml-4">
-                  <div class="pb-2 text-sm font-bold">
-                    {{ $t("editRestaurant.alcoholTax") }}
-                  </div>
-                  <o-field
-                    class="inline-flex items-center"
-                    :variant="
-                      errors['alcoholTax'].length > 0 ? 'danger' : 'success'
-                    "
-                  >
-                    <o-input
-                      v-model="editShopInfo.alcoholTax"
-                      placeholder="10.2"
-                      type="text"
-                      maxlength="5"
-                      class="w-24"
-                    />
-                    <div class="ml-2">%</div>
-                  </o-field>
-                </div>
+            <div class="mt-4">
+              <div class="pb-2 text-sm font-bold">
+                {{ $t("editRestaurant.tax") }}
               </div>
-            </div>
-
-            <!-- Tax Input Not Required -->
-            <div v-if="!requireTaxInput">
-              <div class="mt-4">
-                <div class="pb-2 text-sm font-bold">
-                  {{ $t("editRestaurant.tax") }}
-                </div>
+              <div class="grid grid-cols-1 space-y-2 rounded-lg bg-black/5 p-4">
                 <div
-                  class="grid grid-cols-1 space-y-2 rounded-lg bg-black bg-opacity-5 p-4"
+                  v-for="(taxItem, k) in taxRates"
+                  class="text-base"
+                  :key="k"
                 >
-                  <div
-                    v-for="(taxItem, k) in taxRates"
-                    class="text-base"
-                    :key="k"
-                  >
-                    {{ $t("editMenu." + taxRateKeys[taxItem]) }}
-                    {{ editShopInfo[taxItem + "Tax"] }}%
-                  </div>
+                  {{ $t("editMenu." + taxRateKeys[taxItem]) }}
+                  {{ editShopInfo[taxItem + "Tax"] }}%
                 </div>
               </div>
             </div>
 
             <!-- Tax Display -->
-            <div v-if="requireTaxPriceDisplay" class="mt-4">
+            <div class="mt-4">
               <div class="pb-2 text-sm font-bold">
                 {{ $t("editRestaurant.taxPriceDisplay") }}
               </div>
-              <div class="rounded-lg bg-black bg-opacity-5 p-4">
+              <div class="rounded-lg bg-black/5 p-4">
                 <div>
-                  <o-checkbox v-model="editShopInfo.inclusiveTax">
-                    <div class="font-bold">
+                  <Checkbox class="mr-2" v-model="editShopInfo.inclusiveTax">
+                    <span class="font-bold">
                       {{ $t("editRestaurant.taxIncluded") }}
-                    </div>
-                  </o-checkbox>
+                    </span>
+                  </Checkbox>
                 </div>
                 <div class="mt-2">
-                  <div
-                    v-if="region === 'JP'"
-                    class="mb-2 text-xs font-bold text-red-700"
-                  >
+                  <div class="mb-2 text-xs font-bold text-red-700">
                     {{ $t("editRestaurant.taxPriceDisplayJp") }}
                   </div>
                   <div>
@@ -570,7 +515,7 @@
               {{ $t("editRestaurant.timeToPickup") }}
             </div>
 
-            <div class="rounded-lg bg-black bg-opacity-5 p-4">
+            <div class="rounded-lg bg-black/5 p-4">
               <!-- Preparation Time -->
               <div>
                 <div class="mb-1">
@@ -582,19 +527,17 @@
                   >
                 </div>
 
-                <o-field
-                  class="flex items-center"
-                  :variant="
-                    errors['pickUpMinimumCookTime'].length > 0
-                      ? 'danger'
-                      : 'success'
-                  "
-                >
-                  <o-input
+                <div class="flex items-center">
+                  <input
                     v-model.number="editShopInfo.pickUpMinimumCookTime"
                     placeholder="10"
                     type="text"
-                    class="w-24"
+                    class="w-24 rounded-lg border border-gray-300 bg-white px-3 py-2"
+                    :class="
+                      errors['pickUpMinimumCookTime'].length > 0
+                        ? 'border-red-500'
+                        : 'border-green-500'
+                    "
                   />
                   <div class="ml-2">
                     {{ $t("editRestaurant.minutes") }}
@@ -602,16 +545,22 @@
                       >({{ $t("editRestaurant.withinFiveDays") }})</span
                     >
                   </div>
-                </o-field>
+                </div>
 
                 <div class="mt-2">
-                  <o-radio
+                  <template
                     v-for="choice in minimumCookTimeChoices"
-                    v-model="editShopInfo.pickUpMinimumCookTime"
-                    :native-value="choice.value"
                     :key="choice.value"
-                    >{{ $t(choice.messageKey) }}</o-radio
                   >
+                    <label class="mr-2 inline-flex cursor-pointer items-center">
+                      <input
+                        class="m-auto mt-1 mr-1 h-4 w-4 cursor-pointer appearance-none rounded-full border border-teal-400 bg-white checked:border-teal-400 checked:bg-teal-400 hover:border-teal-400 focus:ring-teal-400"
+                        type="radio"
+                        v-model="editShopInfo.pickUpMinimumCookTime"
+                        :value="choice.value"
+                      />{{ $t(choice.messageKey) }}
+                    </label>
+                  </template>
                 </div>
               </div>
 
@@ -625,57 +574,53 @@
                     }})</span
                   >
                 </div>
-                <o-field
-                  class="flex items-center"
-                  :variant="
-                    errors['pickUpDaysInAdvance'].length > 0
-                      ? 'danger'
-                      : 'success'
-                  "
+                <select
+                  v-model.number="editShopInfo.pickUpDaysInAdvance"
+                  class="mt-1 rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400"
                 >
-                  <o-select v-model.number="editShopInfo.pickUpDaysInAdvance">
-                    <option
-                      v-for="(day, index) in reservationTheDayBefore"
-                      :key="index"
-                      :value="day.value"
-                    >
-                      {{ $t(day.messageKey) }}
-                    </option>
-                  </o-select>
-                </o-field>
+                  <option
+                    v-for="(day, index) in reservationTheDayBefore"
+                    :key="index"
+                    :value="day.value"
+                  >
+                    {{ $t(day.messageKey) }}
+                  </option>
+                </select>
               </div>
             </div>
           </div>
 
           <!-- personalInfo -->
           <div class="mt-4">
-            <div class="pb-2 text-sm font-bold cursor-pointer">
+            <div class="cursor-pointer pb-2 text-sm font-bold">
               {{ $t("editRestaurant.personalInfo") }}
             </div>
-            <div class="rounded-lg bg-black bg-opacity-5 p-4">
+            <div class="rounded-lg bg-black/5 p-4">
               <div
                 v-for="(personalInfoSaveMethod, k) in personalInfoSaveMethods"
                 :key="k"
               >
-                <o-radio
-                  v-model="editShopInfo.personalInfo"
-                  :native-value="personalInfoSaveMethod.key"
-                  :variant="personalInfoSaveMethod.key"
-                >
+                <label class="mr-2 inline-flex cursor-pointer items-center">
+                  <input
+                    type="radio"
+                    class="m-auto mt-1 mr-1 h-4 w-4 cursor-pointer appearance-none rounded-full border border-teal-400 bg-white checked:border-teal-400 checked:bg-teal-400 hover:border-teal-400 focus:ring-teal-400"
+                    v-model="editShopInfo.personalInfo"
+                    :value="personalInfoSaveMethod.key"
+                  />
                   {{
                     $t(
                       "editRestaurant.personalInfoSaveMethodChoices." +
                         personalInfoSaveMethod.key,
                     )
                   }}
-                </o-radio>
+                </label>
               </div>
             </div>
           </div>
           <!-- Payment methods -->
           <div class="mt-4">
             <div
-              class="pb-2 text-sm font-bold cursor-pointer"
+              class="cursor-pointer pb-2 text-sm font-bold"
               @click="openTips('paymentMethods')"
             >
               {{ $t("editRestaurant.paymentMethods") }}
@@ -684,23 +629,24 @@
               </i>
             </div>
 
-            <div class="rounded-lg bg-black bg-opacity-5 p-4">
+            <div class="rounded-lg bg-black/5 p-4">
               <!-- Preparation Time -->
               <div v-for="(paymentMethod, k) in paymentMethods" :key="k">
-                <o-checkbox
+                <Checkbox
+                  class="mr-2"
                   v-model="
                     (editShopInfo.paymentMethods || {})[paymentMethod.key]
                   "
                 >
-                  <div class="text-sm font-bold">
+                  <span class="text-sm font-bold">
                     {{
                       $t(
                         "editRestaurant.paymentMethodChoices." +
                           paymentMethod.key,
                       )
                     }}
-                  </div>
-                </o-checkbox>
+                  </span>
+                </Checkbox>
               </div>
             </div>
           </div>
@@ -711,8 +657,8 @@
             <div class="pb-2 text-sm font-bold">
               {{ $t("editRestaurant.deliveryConfigTitle") }}
             </div>
-            <div class="rounded-lg bg-black bg-opacity-5 p-4">
-              <div class="text-lg font-bold text-op-teal">
+            <div class="rounded-lg bg-black/5 p-4">
+              <div class="text-op-teal text-lg font-bold">
                 <router-link
                   :to="`/admin/restaurants/${restaurantId}/delivery`"
                   >{{ $t("editRestaurant.deliveryConfigLink") }}</router-link
@@ -723,9 +669,10 @@
                 <a
                   href="https://docs.omochikaeri.com/manuals/delivery.pdf"
                   target="_blank"
-                  class="text-xs font-bold text-op-teal"
                 >
-                  {{ $t("menu.deliveryManualLink") }}
+                  <span class="text-op-teal font-bold">
+                    {{ $t("menu.deliveryManualLink") }}
+                  </span>
                 </a>
               </div>
             </div>
@@ -736,54 +683,57 @@
             <div class="pb-2 text-sm font-bold">
               {{ $t("editRestaurant.printerConfigTitle") }}
             </div>
-            <div class="rounded-lg bg-black bg-opacity-5 p-4">
-              <o-checkbox v-model="editShopInfo.enablePrinter">
-                <div class="text-sm font-bold">
-                  {{ $t("editRestaurant.elablePrinter") }}
-                </div>
-              </o-checkbox>
+            <div class="rounded-lg bg-black/5 p-4">
+              <Checkbox class="mr-2" v-model="editShopInfo.enablePrinter">
+                <span class="text-sm font-bold">
+                  {{ $t("editRestaurant.enablePrinter") }}
+                </span>
+              </Checkbox>
               <div class="pt-2 text-xs">
                 {{ $t("editRestaurant.printerDescription") }}
                 <a
                   href="https://docs.omochikaeri.com/manuals/printer.pdf"
                   target="_blank"
-                  class="inline-flex text-xs font-bold text-op-teal"
+                  class="inline-flex"
                 >
-                  {{ $t("menu.printerManualLink") }}
+                  <span class="text-op-teal font-bold">
+                    {{ $t("menu.printerManualLink") }}
+                  </span>
                 </a>
               </div>
               <div class="text-xs">
                 {{ $t("editRestaurant.printerDescription2") }}
               </div>
-              <div class="text-xs pt-2">
+              <div class="pt-2 text-xs">
                 <router-link
-                  class="inline-flex text-xs font-bold text-op-teal"
+                  class="inline-flex"
                   :to="`/admin/restaurants/${restaurantId}/printer`"
-                  >{{
-                    $t("editRestaurant.printerDescriptionConfig")
-                  }}</router-link
                 >
+                  <span class="text-op-teal font-bold">
+                    {{ $t("editRestaurant.printerDescriptionConfig") }}
+                  </span>
+                </router-link>
               </div>
             </div>
           </div>
 
           <!-- notification -->
-          <div class="rounded-lg p-2 mt-4">
+          <div class="mt-4">
             <div class="pb-2 text-sm font-bold">
               {{ $t("editRestaurant.notificationConfig") }}
             </div>
             <!-- Email Notification -->
-            <div class="mt-2">
+            <div class="mt-2 ml-8">
               <a id="emailNotification" />
               <div class="pb-2 text-sm font-bold">
                 {{ $t("editRestaurant.emailNotificationTitle") }}
               </div>
-              <div class="rounded-lg bg-black bg-opacity-5 p-4">
-                <o-checkbox v-model="editShopInfo.emailNotification">
-                  <div class="text-sm font-bold">
+              <div class="rounded-lg bg-black/5 p-4">
+                <Checkbox class="mr-2" v-model="editShopInfo.emailNotification">
+                  <span class="text-sm font-bold">
                     {{ $t("editRestaurant.emailNotificationDescription") }}
-                  </div>
-                </o-checkbox>
+                  </span>
+                </Checkbox>
                 <div class="pt-2 text-xs">
                   {{ $t("editRestaurant.emailNotificationNotice") }}
                 </div>
@@ -791,17 +741,17 @@
             </div>
 
             <!-- Phone Call -->
-            <div class="mt-4">
+            <div class="mt-4 ml-8">
               <a id="phoneCall" />
               <div class="pb-2 text-sm font-bold">
                 {{ $t("editRestaurant.phoneCall") }}
               </div>
-              <div class="rounded-lg bg-black bg-opacity-5 p-4">
-                <o-checkbox v-model="editShopInfo.phoneCall">
-                  <div class="text-sm font-bold">
+              <div class="rounded-lg bg-black/5 p-4">
+                <Checkbox class="mr-2" v-model="editShopInfo.phoneCall">
+                  <span class="text-sm font-bold">
                     {{ $t("editRestaurant.phoneCallDescription") }}
-                  </div>
-                </o-checkbox>
+                  </span>
+                </Checkbox>
                 <div class="pt-2 text-xs">
                   {{ $t("editRestaurant.phoneCallNotice") }}
                 </div>
@@ -809,17 +759,18 @@
             </div>
 
             <!-- Line -->
-            <div class="mt-4">
+            <div class="mt-4 ml-8">
               <a id="phoneCall" />
               <div class="pb-2 text-sm font-bold">
                 {{ $t("editRestaurant.lineNotification") }}
               </div>
-              <div class="rounded-lg bg-black bg-opacity-5 p-4">
+              <div class="rounded-lg bg-black/5 p-4">
                 <router-link
-                  class="text-sm font-bold text-op-teal"
                   :to="`/admin/restaurants/${restaurantId}/linelist`"
                 >
-                  {{ $t("editRestaurant.moveToLineConfig") }}
+                  <span class="text-op-teal text-sm font-bold">
+                    {{ $t("editRestaurant.moveToLineConfig") }}
+                  </span>
                 </router-link>
               </div>
             </div>
@@ -829,17 +780,17 @@
 
         <!-- Right -->
 
-        <div class="rounded-lg border bg-white p-2 mt-4">
+        <div class="mt-4 rounded-lg border border-black/10 bg-white p-2">
           <div class="pb-2 text-sm font-bold">
             {{ $t("editRestaurant.openDaysConfig") }}
           </div>
-          <div class="rounded-lg bg-black bg-opacity-5 p-4">
+          <div class="rounded-lg bg-black/5 p-4">
             <div>
-              <o-checkbox v-model="editShopInfo.enableLunchDinner">
+              <Checkbox class="mr-2" v-model="editShopInfo.enableLunchDinner">
                 <span class="text-base font-bold">
                   {{ $t("editRestaurant.lunchOrDinnerToggle") }}
                 </span>
-              </o-checkbox>
+              </Checkbox>
             </div>
             <div class="text-sm">
               {{ $t("editRestaurant.lunchOrDinnerNotice") }}
@@ -859,27 +810,30 @@
                 <div
                   v-for="(day, index) in days"
                   :key="index"
-                  class="rounded-lg bg-black bg-opacity-5 p-4"
+                  class="rounded-lg bg-black/5 p-4"
                 >
                   <!-- Enable/Disable Day and Copy Previous Day -->
                   <div class="flex items-center">
                     <div class="flex-1">
-                      <o-checkbox v-model="editShopInfo.businessDay[index]">
-                        <div class="text-base font-bold">
+                      <Checkbox
+                        class="mr-2"
+                        v-model="editShopInfo.businessDay[index]"
+                      >
+                        <span class="text-base font-bold">
                           {{ $t("week.short." + day) }}
-                        </div>
-                      </o-checkbox>
+                        </span>
+                      </Checkbox>
                     </div>
 
                     <div>
                       <a
                         @click="copyPreviousDay(index)"
-                        class="inline-flex items-center justify-center"
+                        class="inline-flex cursor-pointer items-center justify-center"
                       >
-                        <i class="material-icons mr-2 text-lg text-op-teal">
+                        <i class="material-icons text-op-teal mr-2 text-lg">
                           content_copy
                         </i>
-                        <div class="text-sm font-bold text-op-teal">
+                        <div class="text-op-teal text-sm font-bold">
                           {{
                             $t(
                               index === "1"
@@ -908,7 +862,7 @@
                         class="flex-item my-auto ml-2 font-bold"
                         v-if="editShopInfo.enableLunchDinner"
                       >
-                        :ランチ
+                        :{{ $t("shopInfo.lunch") }}
                       </div>
                     </div>
                   </div>
@@ -932,7 +886,7 @@
                         class="flex-item my-auto ml-2 font-bold"
                         v-if="editShopInfo.enableLunchDinner"
                       >
-                        :ディナー
+                        :{{ $t("shopInfo.dinner") }}
                       </div>
                     </div>
                   </div>
@@ -942,12 +896,14 @@
 
             <!-- Last order time -->
             <div class="mt-4">
-              <div class="pb-2 text-sm font-bold">最終注文時間</div>
-              <div class="text-xs">
-                「営業終了時間」と「受け渡し準備時間」を考慮した「最終注文可能な時間」よりも前に、注文を締め切る場合にはこちらを設定してください。
+              <div class="pb-2 text-sm font-bold">
+                {{ $t("editRestaurant.lastOrderTime.title") }}
               </div>
               <div class="text-xs">
-                未設定の場合は「営業終了時間」と「受け渡し準備時間」を考慮した時間となります。
+                {{ $t("editRestaurant.lastOrderTime.notes1") }}
+              </div>
+              <div class="text-xs">
+                {{ $t("editRestaurant.lastOrderTime.notes2") }}
               </div>
               <div class="mt-2">
                 <hour-input
@@ -964,38 +920,34 @@
                 {{ $t("shopInfo.temporaryClosure") }}
               </div>
 
-              <div class="rounded-lg bg-black bg-opacity-5 p-4 pb-2">
-                <div class="mb-2 text-sm font-bold text-black text-opacity-40">
+              <div class="rounded-lg bg-black/5 p-4 pb-2">
+                <div class="mb-2 text-sm font-bold text-black/40">
                   {{ $t("shopInfo.temporaryClosureDescription") }}
                 </div>
 
                 <!-- Date Picker -->
-                <o-field>
-                  <o-datepicker
-                    class="w-full"
-                    icon="calendar-today"
-                    v-model="newTemporaryClosure"
-                    ref="datepicker"
-                    :min-date="now"
-                    :max-date="maxDate"
-                    expanded
-                    :placeholder="$t('shopInfo.temporaryClosureSelect')"
-                  >
-                  </o-datepicker>
+                <DatePicker
+                  class="w-full"
+                  icon="calendar-today"
+                  v-model="newTemporaryClosure"
+                  ref="datepicker"
+                  :min-date="now"
+                  :max-date="maxDate"
+                  expanded
+                  :placeholder="$t('shopInfo.temporaryClosureSelect')"
+                >
+                </DatePicker>
 
-                  <o-button @click="addNewTemporaryClosure" class="b-reset-tw">
-                    <div
-                      class="inline-flex h-9 items-center justify-center rounded-r bg-black bg-opacity-5 px-4"
-                    >
-                      <i class="material-icons mr-2 text-lg text-op-teal"
-                        >add</i
-                      >
-                      <div class="text-sm font-bold text-op-teal">
-                        {{ $t("shopInfo.temporaryClosureAdd") }}
-                      </div>
+                <button @click="addNewTemporaryClosure" class="cursor-pointer">
+                  <div
+                    class="inline-flex h-9 items-center justify-center rounded-r bg-black/5 px-4"
+                  >
+                    <i class="material-icons text-op-teal mr-2 text-lg">add</i>
+                    <div class="text-op-teal text-sm font-bold">
+                      {{ $t("shopInfo.temporaryClosureAdd") }}
                     </div>
-                  </o-button>
-                </o-field>
+                  </div>
+                </button>
 
                 <!-- Saved Closure Days -->
                 <div class="mb-2 grid grid-cols-1 space-y-2">
@@ -1005,7 +957,7 @@
                     <template v-if="day.getTime() >= now">
                       <div
                         :key="key"
-                        class="flex items-center rounded bg-white bg-opacity-50 px-2"
+                        class="flex items-center rounded-sm bg-white/50 px-2"
                       >
                         <div class="flex-1 p-2">
                           {{ moment(day).format("YYYY/MM/DD") }}
@@ -1036,14 +988,14 @@
       </div>
 
       <!-- Publish Status -->
-      <div class="mx-6 mt-2 rounded-lg bg-black bg-opacity-5 p-4 text-center">
-        <o-checkbox
+      <div class="mx-6 mt-2 rounded-lg bg-black/5 p-4 text-center">
+        <Checkbox
           v-model="editShopInfo.publicFlag"
           :disabled="hasError"
           :variant="!editShopInfo.publicFlag ? 'danger' : ''"
         >
           <div class="font-bold">{{ $t("shopInfo.public") }}</div>
-        </o-checkbox>
+        </Checkbox>
 
         <div class="mt-1 text-sm font-bold">
           <div v-if="editShopInfo.publicFlag">
@@ -1065,57 +1017,52 @@
           :to="`/admin/restaurants/#restaurant_` + editShopInfo.restaurantId"
         >
           <div
-            class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
+            class="inline-flex h-12 items-center rounded-full bg-black/5 px-6"
           >
-            <span class="text-base font-bold text-black text-opacity-60">{{
+            <span class="text-base font-bold text-black/60">{{
               $t("button.cancel")
             }}</span>
           </div>
         </router-link>
 
         <!-- Save Button -->
-        <o-button
+        <t-button
           @click="saveRestaurant"
-          :disabled="submitting || disableSave"
-          class="b-reset-tw"
+          :isDisabled="submitting || disableSave"
+          class="h12 px-8 font-bold text-white"
         >
-          <div
-            class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
-            style="min-width: 8rem"
-          >
-            <span class="text-base font-bold text-white">{{
-              $t(
-                submitting
-                  ? "editCommon.saving"
-                  : editShopInfo.publicFlag
-                    ? "editCommon.save"
-                    : "editCommon.saveDraft",
-              )
-            }}</span>
-          </div>
-        </o-button>
+          {{
+            $t(
+              submitting
+                ? "editCommon.saving"
+                : editShopInfo.publicFlag
+                  ? "editCommon.save"
+                  : "editCommon.saveDraft",
+            )
+          }}
+        </t-button>
       </div>
 
       <!-- Copy -->
       <div class="mt-4 text-center">
-        <o-button
+        <button
           @click="confirmCopy"
           :disabled="submitting"
-          class="b-reset-tw"
+          class="cursor-pointer"
         >
           <div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
-            <i class="material-icons mr-2 text-lg text-op-teal"> queue </i>
-            <span class="text-sm font-bold text-op-teal">{{
+            <i class="material-icons text-op-teal mr-2 text-lg"> queue </i>
+            <span class="text-op-teal text-sm font-bold">{{
               $t(submitting ? "editCommon.saving" : "editCommon.copy")
             }}</span>
           </div>
-        </o-button>
+        </button>
       </div>
 
       <!-- QRCode -->
-      <div class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4 text-center">
+      <div class="mx-6 mt-4 rounded-lg bg-black/5 p-4 text-center">
         <QRCode :shopInfo="shopInfo" />
       </div>
     </div>
@@ -1138,11 +1085,13 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, updateDoc } from "firebase/firestore";
 
 import { google_geocode } from "@/lib/google/api";
-import { ownPlateConfig } from "@/config/project";
+import { ownPlateConfig, GMAPId } from "@/config/project";
 
+import DatePicker from "@/components/DatePicker.vue";
 import NotFound from "@/components/NotFound.vue";
 import PhoneEntry from "@/components/PhoneEntry.vue";
 import Price from "@/components/Price.vue";
+import Checkbox from "@/components/form/checkbox.vue";
 
 import HoursInput from "@/app/admin/inputComponents/HoursInput.vue";
 import HourInput from "@/app/admin/inputComponents/HourInput2.vue";
@@ -1181,9 +1130,10 @@ import {
   minimumCookTimeChoices,
   personalInfoSaveMethods,
   paymentMethods,
+  GOOGLE_MAP_DEFAULT_CENTER,
 } from "@/config/constant";
 
-import { useStore } from "vuex";
+import { useDialogStore } from "@/store/dialog";
 import { useRouter } from "vue-router";
 import { useHead } from "@unhead/vue";
 import moment from "moment";
@@ -1199,9 +1149,11 @@ export default defineComponent({
     State,
     NotificationIndex,
     QRCode,
+    DatePicker,
     NotFound,
     PhoneEntry,
     Price,
+    Checkbox,
     ImageUpload,
   },
   props: {
@@ -1211,7 +1163,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const store = useStore();
+    const dialogStore = useDialogStore();
     const router = useRouter();
 
     const restaurantId = useRestaurantId();
@@ -1221,12 +1173,9 @@ export default defineComponent({
     const taxRateKeys = regionalSetting["taxRateKeys"];
     const region = ownPlateConfig.region;
 
-    const requireTaxInput = regionalSetting.requireTaxInput;
-    const requireTaxPriceDisplay = regionalSetting.requireTaxPriceDisplay;
-
     const notFound = ref<boolean | null>(null);
     const gMap = ref();
-    const mapObj = ref();
+    let mapObj: google.maps.Map | null = null;
 
     // internal ref;
     const maplocation = ref({});
@@ -1245,7 +1194,7 @@ export default defineComponent({
 
     const editShopInfo = reactive(props.shopInfo);
 
-    useHead({
+    useHead(() => ({
       title: props.shopInfo.restaurantName
         ? [
             "Admin Restaurant",
@@ -1253,7 +1202,7 @@ export default defineComponent({
             defaultTitle,
           ].join(" / ")
         : defaultTitle,
-    });
+    }));
 
     // only owner
     const { uid } = useAdminUids();
@@ -1293,7 +1242,6 @@ export default defineComponent({
     const errors = computed(() => {
       return shopInfoValidator(
         editShopInfo,
-        requireTaxInput,
         errorsPhone.value,
         files.value["profile"],
         files.value["cover"],
@@ -1329,14 +1277,13 @@ export default defineComponent({
     ) => {
       if (location && location.lat && location.lng) {
         if (move) {
-          mapObj.value.setCenter(location);
+          mapObj.setCenter(location);
         }
         removeAllMarker();
         markers.push(
-          new google.maps.Marker({
+          new google.maps.marker.AdvancedMarkerElement({
             position: new google.maps.LatLng(location.lat, location.lng),
-            title: "hello",
-            map: mapObj.value,
+            map: mapObj,
           }),
         );
         maplocation.value = location;
@@ -1412,18 +1359,7 @@ export default defineComponent({
       editShopInfo.countryCode = payload.countryCode;
       errorsPhone.value = payload.errors;
     };
-    const setDefaultLocation = async () => {
-      // gMap.value &&
-      // gMap.value.$mapPromise &&
-      mapObj.value = await gMap.value.$mapPromise;
 
-      if (editShopInfo && editShopInfo.location) {
-        setCurrentLocation(editShopInfo.location);
-      }
-    };
-    onMounted(() => {
-      setDefaultLocation();
-    });
     const gmapClick = (arg: any) => {
       setCurrentLocation(
         { lat: arg.latLng.lat(), lng: arg.latLng.lng() },
@@ -1432,6 +1368,28 @@ export default defineComponent({
       // place_id.value = null;
       setLocation();
     };
+    const setDefaultLocation = () => {
+      if (typeof google === "undefined" || !gMap.value) return;
+
+      mapObj = new google.maps.Map(gMap.value, {
+        center: GOOGLE_MAP_DEFAULT_CENTER,
+        zoom: 18,
+        mapId: GMAPId || undefined,
+        fullscreenControl: false,
+      });
+
+      mapObj.addListener("click", (e: google.maps.MapMouseEvent) => {
+        gmapClick(e);
+      });
+
+      if (editShopInfo && editShopInfo.location) {
+        setCurrentLocation(editShopInfo.location);
+      }
+    };
+
+    onMounted(() => {
+      setDefaultLocation();
+    });
     const copyRestaurantFunc = async () => {
       try {
         const id = await copyRestaurant(
@@ -1446,14 +1404,14 @@ export default defineComponent({
           location.reload();
         }, 200);
       } catch (error) {
-        store.commit("setErrorMessage", {
+        dialogStore.setErrorMessage({
           code: "restaurant.save",
           error,
         });
       }
     };
     const confirmCopy = () => {
-      store.commit("setAlert", {
+      dialogStore.setAlert({
         code: "editCommon.copyAlert",
         callback: () => {
           copyRestaurantFunc();
@@ -1496,10 +1454,10 @@ export default defineComponent({
         router.push(`/admin/restaurants/#restaurant_` + restaurantId.value);
       } catch (error) {
         submitting.value = false;
-        store.commit("setErrorMessage", {
+        dialogStore.setErrorMessage({
           code: "restaurant.save",
           error,
-        });
+        } as any);
       }
     };
     const updateMap = async () => {
@@ -1529,7 +1487,7 @@ export default defineComponent({
     });
 
     const openTips = (key: string) => {
-      store.commit("setTips", {
+      dialogStore.setTips({
         key,
       });
     };
@@ -1544,9 +1502,6 @@ export default defineComponent({
       region,
 
       editShopInfo,
-
-      requireTaxInput,
-      requireTaxPriceDisplay,
 
       days: daysOfWeek,
 
@@ -1596,4 +1551,3 @@ export default defineComponent({
   },
 });
 </script>
-B

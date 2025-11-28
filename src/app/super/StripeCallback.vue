@@ -1,5 +1,5 @@
 <template>
-  <section class="mx-auto max-w-full px-6 pb-12 pt-4">
+  <section class="mx-auto max-w-full px-6 pt-4 pb-12">
     <back-button url="/s" />
     <h2>Callback</h2>
     <div v-if="log">
@@ -33,9 +33,9 @@ export default defineComponent({
 
     const log = ref<any>(null);
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Super All Stripe Callback"].join(" / "),
-    });
+    }));
 
     const logUid = route.params.uid;
     const logId = route.params.logId;

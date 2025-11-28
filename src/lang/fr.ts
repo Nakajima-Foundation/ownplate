@@ -264,6 +264,13 @@ const data = {
     businessHourOption: "Autres heures. (facultatif)",
     copyPreviousDay: "Copier le jour précédent",
     copySunDay: "Copier le jour précédent",
+    lastOrderTime: {
+      title: "Heure limite de commande",
+      notes1:
+        "Configurez cette option si vous souhaitez clôturer les commandes avant « l'heure de commande finale », en tenant compte de « l'heure de fermeture de l'entreprise » et du « temps de préparation de la commande ».",
+      notes2:
+        "Si cette option n'est pas configurée, l'heure sera déterminée en tenant compte de « l'heure de fermeture de l'entreprise » et du « temps de préparation de la commande ».",
+    },
     draftDescription: "Enregistrer comme brouillon.",
     publishDescription: "Enregistrez et publiez votre restaurant.",
     draftWarning: "Vous pouvez publier ceci en corrigeant le cadre rouge.",
@@ -278,7 +285,7 @@ const data = {
       "You can manage your own delivery. By setting the delivery area etc., the customer can choose takeout or delivery when ordering. (Don't forget to save if you have changed the store settings)",
     deliveryConfigLink: "To delivery settings",
     printerConfigTitle: "Printer settings",
-    elablePrinter: "Enable print",
+    enablePrinter: "Activer l'impression",
     printerDescription:
       "You can print your order information using a printer made by Star Seiki connected via Bluetooth.",
     printerDescription2:
@@ -426,6 +433,7 @@ const data = {
     temporaryClosureAdd: "Ajouter",
     temporaryClosureDescription:
       "Veuillez sélectionner une date et appuyer sur Ajouter.",
+    temporaryClosureOkay: "D'accord",
     temporaryClosureSelect: "Sélectionnez une date",
     paymentMethod: "Methode de Payment",
     onlinePayment: "Payment en Ligne",
@@ -452,6 +460,9 @@ const data = {
     delivery: "Delivery",
     takeoutDescription: "Pick up at shop",
     deliveryDescription: "Delivery to home or work",
+    lunchOrDinner: "Déjeuner/Dîner",
+    lunch: "Déjeuner",
+    dinner: "Dîner",
     viewMore: "Voir plus",
     viewLess: "Proche",
     productCategory: "Catégories de produits",
@@ -623,6 +634,7 @@ const data = {
     order_canceled_by_restaurant: "Canceled by restaurant",
     reuseCard: "Conservez-le pour une utilisation future",
     whatsCVC: "C'est quoi le CVC?",
+    card_error: "Échec de la confirmation du paiement.",
     no_jcb: "＊Ce restaurant n'accepte pas la carte JCB",
     "3digitsCVC": "Les trois derniers chiffres au dos",
     "4digitsCVC": "Les quatre chiffres sur le devant",
@@ -1214,7 +1226,7 @@ const data = {
         "ご利用にはLINE開発者サイトで、LINEログインチャンネルとMessaging APIの設定が必要です。",
       notice3: "Messaging APIはLINE公式アカウントと同じものを使います。",
       notice4:
-        "LINEログインチャンネルにとMessaging APIを「リンクされたボット」として登録しておくことが必要です。",
+        "LINEログインチャンネルにMessaging APIを「リンクされたボット」として登録しておくことが必要です。",
       notice5:
         "また、LINEログインの「コールバックURL」におもちかえりで指定するURLの登録が必要です。",
       loginClientId: "LINEログイン:チャンネルID",
@@ -1234,6 +1246,15 @@ const data = {
   },
   week: {
     short: {
+      monday: "Lun",
+      tuesday: "Mar",
+      wednesday: "Mer",
+      thursday: "Jeu",
+      friday: "Ven",
+      saturday: "Sam",
+      sunday: "Dim",
+    },
+    shortest: {
       monday: "Lun",
       tuesday: "Mar",
       wednesday: "Mer",

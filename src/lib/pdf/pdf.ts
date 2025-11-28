@@ -253,9 +253,9 @@ export const menuDownload = (
 
   const menu2colum = (
     menu: MenuData,
-    image: string,
     key1: string | number,
     key2: number,
+    image?: string,
   ) => {
     return [
       {
@@ -304,7 +304,7 @@ export const menuDownload = (
       if (image1) {
         images["menu_" + key + "_" + key2] = image1;
       }
-      menu2colum(m, image1, key, key2).forEach((elem) => {
+      menu2colum(m, key, key2, image1).forEach((elem) => {
         columns.push(elem);
       });
     });

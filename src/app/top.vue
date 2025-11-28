@@ -1,18 +1,18 @@
 <template>
   <div>
     <!-- For Super Admin -->
-    <div v-if="$store.getters.isSuperAdmin" class="columns is-gapless">
+    <div v-if="userStore.isSuperAdmin" class="columns is-gapless">
       <!-- Left Gap -->
       <div class="column is-narrow w-6"></div>
       <!-- Center Column -->
       <div class="column">
         <div class="mx-6 mt-2">
-          <div class="rounded-lg bg-black bg-opacity-5 pl-6 pr-6 pt-6 pb-6">
+          <div class="rounded-lg bg-black/5 pt-6 pr-6 pb-6 pl-6">
             <!-- Go to Super Admin Page -->
             <div class="text-center">
               <router-link to="/s">
                 <div
-                  class="inline-flex h-12 min-h-[36px] min-w-[256px] cursor-pointer items-center justify-center rounded-full bg-op-teal px-6 text-base font-bold shadow-lg"
+                  class="bg-op-teal inline-flex h-12 min-h-[36px] min-w-[256px] cursor-pointer items-center justify-center rounded-full px-6 text-base font-bold shadow-lg"
                 >
                   <span class="text-white">Super Admin Page</span>
                 </div>
@@ -26,18 +26,18 @@
     </div>
 
     <!-- For Operator -->
-    <div v-if="$store.getters.isOperator" class="columns is-gapless">
+    <div v-if="userStore.isOperator" class="columns is-gapless">
       <!-- Left Gap -->
       <div class="column is-narrow w-6"></div>
       <!-- Center Column -->
       <div class="column">
         <div class="mx-6 mt-2">
-          <div class="rounded-lg bg-black bg-opacity-5 pl-6 pr-6 pt-6 pb-6">
+          <div class="rounded-lg bg-black/5 pt-6 pr-6 pb-6 pl-6">
             <!-- Go to Super Admin Page -->
             <div class="text-center">
               <router-link to="/op">
                 <div
-                  class="inline-flex h-12 min-h-[36px] min-w-[256px] cursor-pointer items-center justify-center rounded-full bg-op-teal px-6 text-base font-bold shadow-lg"
+                  class="bg-op-teal inline-flex h-12 min-h-[36px] min-w-[256px] cursor-pointer items-center justify-center rounded-full px-6 text-base font-bold shadow-lg"
                 >
                   <span class="text-white">Operator Page</span>
                 </div>
@@ -50,18 +50,19 @@
       <div class="column is-narrow w-6"></div>
     </div>
 
-    <lp :isAdmin="isAdmin" />
+    <lp :isAdmin="userStore.isAdmin" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { useUserStore } from "@/store/user";
 
 import Lp from "@/app/home/Lp.vue";
 // import LpAdmin from "@/app/home/LpAdmin.vue";
 //import LpCustomer from "@/app/home/LpCustomer.vue";
 
-import { defaultTitle, useUserData, sleep } from "@/utils/utils";
+import { defaultTitle, sleep } from "@/utils/utils";
 import { useHead } from "@unhead/vue";
 
 export default defineComponent({
@@ -71,22 +72,17 @@ export default defineComponent({
     // LpCustomer,
   },
   setup() {
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Top"].join(" / "),
-    });
-
-    const {
-      isAdmin,
-      // isUser,
-    } = useUserData();
+    }));
+    const userStore = useUserStore();
 
     (async () => {
       await sleep(0.1);
       window.scrollTo(0, 0);
     })();
     return {
-      isAdmin,
-      // isUser,
+      userStore,
     };
   },
 });

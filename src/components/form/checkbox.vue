@@ -1,12 +1,24 @@
 <template>
-  <label class="flex items-center cursor-pointer">
+  <label class="inline-flex cursor-pointer items-center">
     <input
       type="checkbox"
-      :checked="modelValue"
+      :checked="modelValue ?? false"
+      :disabled="disabled"
       @change="change"
-      class="peer h-5 w-5 cursor-pointer rounded-md transition-all appearance-none rounded shadow hover:shadow-md border-2 border-gray-500 checked:bg-teal-400 checked:border-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-400 hover:border-teal-400 m-2"
+      class="peer m-2 h-5 w-5 cursor-pointer appearance-none rounded-md border-2 shadow-sm transition-all hover:shadow-md focus:ring-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+      :class="[
+        {
+          'border-red-500': variant === 'danger' && !modelValue,
+          'border-red-400 checked:border-red-500 checked:bg-red-400 hover:bg-red-200 focus:bg-red-200 disabled:checked:border-red-400 disabled:checked:bg-red-400':
+            variant === 'danger',
+          'border-teal-400 checked:border-teal-400 checked:bg-teal-400 hover:border-teal-400 focus:ring-teal-400 disabled:checked:border-gray-400 disabled:checked:bg-gray-400':
+            variant !== 'danger',
+        },
+      ]"
     />
-    <slot></slot>
+    <span class="inline-block align-middle">
+      <slot></slot>
+    </span>
   </label>
 </template>
 
@@ -18,7 +30,15 @@ export default defineComponent({
   props: {
     modelValue: {
       type: Boolean,
-      required: true,
+      required: false,
+    },
+    disabled: {
+      type: Boolean,
+      required: false,
+    },
+    variant: {
+      type: String,
+      required: false,
     },
   },
   setup(props, ctx) {

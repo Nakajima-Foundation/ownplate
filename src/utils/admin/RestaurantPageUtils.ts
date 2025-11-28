@@ -141,7 +141,6 @@ type shopInfoValidatorError = {
 
 export const shopInfoValidator = (
   shopInfo: RestaurantInfoData,
-  requireTaxInput: boolean,
   errorsPhone: string[],
   files_profile?: File,
   files_cover?: File,
@@ -193,22 +192,6 @@ export const shopInfoValidator = (
     (err["pickUpDaysInAdvance"] as string[]).push(
       "validationError." + name + ".invalid",
     );
-  }
-
-  if (requireTaxInput) {
-    ["foodTax", "alcoholTax"].forEach((name) => {
-      err[name] = [];
-      if (shopInfo[name as keyof RestaurantInfoData] === "") {
-        (err[name] as string[]).push("validationError." + name + ".empty");
-      }
-      if (shopInfo[name as keyof RestaurantInfoData] !== "") {
-        if (isNaN(shopInfo[name as keyof RestaurantInfoData])) {
-          (err[name] as string[]).push(
-            "validationError." + name + ".invalidNumber",
-          );
-        }
-      }
-    });
   }
 
   const ex = new RegExp("^(https?)://[^\\s]+$");

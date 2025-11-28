@@ -20,7 +20,7 @@
       <div class="mt-2 text-base font-bold">
         {{ $t("admin.subAccounts.subaccountlist") }}
       </div>
-      <div class="w-full rounded-lg bg-white shadow">
+      <div class="w-full rounded-lg bg-white shadow-sm">
         <table>
           <tr>
             <th class="pt-2 pl-2">{{ $t("admin.subAccounts.name") }}</th>
@@ -60,7 +60,7 @@
             <td class="p-2">
               <button @click="deleteChild(child.id)">
                 <div
-                  class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow min-w-32"
+                  class="bg-op-teal inline-flex h-12 min-w-32 items-center justify-center rounded-full px-6 shadow-sm"
                 >
                   <span class="text-base font-bold text-white">
                     {{ $t("admin.subAccounts.deleteSubaccount") }}
@@ -70,7 +70,7 @@
             </td>
           </tr>
         </table>
-        <div class="text-xs pl-2 pb-2">
+        <div class="pb-2 pl-2 text-xs">
           <span>{{ $t("admin.subAccounts.guidance") }}</span>
         </div>
       </div>
@@ -79,28 +79,28 @@
       <span class="text-base text-xl font-bold">
         {{ $t("admin.subAccounts.invite") }}
       </span>
-      <div class="mt-2 rounded-lg bg-white p-4 shadow">
+      <div class="mt-2 rounded-lg bg-white p-4 shadow-sm">
         <div>
           <span class="text-base font-bold">
             {{ $t("admin.subAccounts.name") }} :
           </span>
         </div>
         <div>
-          <o-input
+          <input
             v-model="name"
             :placeholder="$t('admin.subAccounts.enterName')"
-            rootClass="w-full"
-          ></o-input>
+            class="w-full rounded border border-gray-300 px-3 py-2"
+          />
         </div>
         <div class="mt-2 text-base font-bold">
           {{ $t("admin.subAccounts.email") }} :
         </div>
         <div>
-          <o-input
+          <input
             v-model="email"
             :placeholder="$t('admin.subAccounts.enterEmail')"
-            rootClass="w-full"
-          ></o-input>
+            class="w-full rounded border border-gray-300 px-3 py-2"
+          />
         </div>
         <div class="text-xs font-bold text-red-700">
           * {{ $t("admin.subAccounts.accountNotice") }}
@@ -108,7 +108,7 @@
         <div>
           <button @click="invite" :disabled="sending">
             <div
-              class="mt-4 inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow min-w-32"
+              class="bg-op-teal mt-4 inline-flex h-12 min-w-32 items-center justify-center rounded-full px-6 shadow-sm"
             >
               <span class="text-base font-bold text-white">
                 {{
@@ -181,7 +181,8 @@ import { doc2data, array2obj, useAdminUids, defaultTitle } from "@/utils/utils";
 import BackButton from "@/components/BackButton.vue";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
-import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
+import { useDialogStore } from "@/store/dialog";
 import { useRouter } from "vue-router";
 import { useHead } from "@unhead/vue";
 import moment from "moment";
@@ -191,7 +192,8 @@ export default defineComponent({
     BackButton,
   },
   setup() {
-    const store = useStore();
+    const generalStore = useGeneralStore();
+    const dialogStore = useDialogStore();
     const router = useRouter();
 
     const restaurantObj = ref<{ [key: string]: RestaurantInfoData }>({});
@@ -204,9 +206,9 @@ export default defineComponent({
     const sending = ref(false);
 
     const { uid } = useAdminUids();
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Admin Subaccount Accounts"].join(" / "),
-    });
+    }));
 
     getDocs(
       query(
@@ -249,12 +251,12 @@ export default defineComponent({
     });
 
     const deleteChild = (childId: string) => {
-      store.commit("setAlert", {
+      dialogStore.setAlert({
         code: "admin.subAccounts.confirmDeletechild",
         callback: async () => {
-          store.commit("setLoading", true);
+          generalStore.setLoading(true);
           await subAccountDeleteChild({ childUid: childId });
-          store.commit("setLoading", false);
+          generalStore.setLoading(false);
         },
       });
     };

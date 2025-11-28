@@ -1,5 +1,5 @@
 <template>
-  <section class="mx-auto max-w-full px-6 pb-12 pt-4">
+  <section class="mx-auto max-w-full px-6 pt-4 pb-12">
     <back-button url="/s" />
     <h2>All Logs</h2>
     <table>
@@ -43,9 +43,9 @@ export default defineComponent({
     const logs = ref<any[]>([]);
     let detacher: any = null;
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Super All Phone Logs"].join(" / "),
-    });
+    }));
 
     detacher = onSnapshot(
       query(

@@ -97,6 +97,10 @@ sw.*
 # fuction template
 functions/templates/index.html
 
+# copy from vue
+functions/src/common/
+functions/src/models/
+
 # firebase files
 /.firebaserc
 src/config/firebase.js #Obsolete

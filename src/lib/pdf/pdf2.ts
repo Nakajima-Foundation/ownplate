@@ -4,7 +4,7 @@ import moment from "moment";
 import { nameOfOrder, formatOption, optionPrice } from "@/utils/strings";
 import { roundPrice, useNationalPhoneNumber } from "@/utils/utils";
 
-import { OrderInfoData, OrderItemData } from "@/models/orderInfo";
+import { OrderInfoData, OrderItemData } from "@/models/orderInfoData";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 const fontHost = location.protocol + "//" + location.host + "/fonts/";
 
@@ -111,7 +111,7 @@ export const orderPdfDownload = () => {
 };
 export const orderPrintData = (): string => {
   const pdfDoc = orderDownloadData();
-  // @ts-ignore
+  // @ts-expect-error unknown
   return pdfDoc.getBase64(); // Promise<string>;
 };
 
@@ -179,7 +179,7 @@ export const testDownload = (): string => {
     styles,
     defaultStyle,
   } as any;
-  // @ts-ignore
+  // @ts-expect-error unknown
   const pdfDoc: string = pdfMake.createPdf(docDefinition).getBase64();
   return pdfDoc;
 };
@@ -409,7 +409,7 @@ export const printOrder = (
   orderItems: OrderItemData[],
 ): string => {
   const pdfDoc = printOrderData(restaurantInfo, orderInfo, orderItems);
-  // @ts-ignore
+  // @ts-expect-error unknown
   return pdfDoc.getBase64();
 };
 export const downloadOrderPdf = (

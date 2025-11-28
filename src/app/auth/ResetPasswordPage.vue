@@ -1,9 +1,9 @@
 <template>
   <div class="mx-6 mt-4 lg:mx-auto lg:max-w-2xl">
-    <div class="mt-4 rounded-lg bg-white p-6 shadow">
+    <div class="mt-4 rounded-lg bg-white p-6 shadow-sm">
       <form @submit.prevent="handleNext">
         <!-- Title -->
-        <div class="text-xl font-bold text-black text-opacity-30">
+        <div class="text-xl font-bold text-black/30">
           {{ $t("admin.passwordReset") }}
         </div>
 
@@ -14,35 +14,40 @@
           </div>
 
           <div class="mt-1">
-            <o-field
-              :variant="errors.email ? 'danger' : 'success'"
-              :message="errors.email && $t(errors.email[0])"
+            <input
+              v-model="email"
+              :placeholder="$t('admin.emailPlaceHolder')"
+              maxlength="256"
+              class="w-full rounded border border-gray-300 px-3 py-2"
+              :class="errors.email ? 'border-red-500' : 'border-green-500'"
+            />
+            <div
+              v-if="errors.email && errors.email.length > 0"
+              class="mt-2 pl-2 font-bold text-red-600"
             >
-              <o-input
-                v-model="email"
-                :placeholder="$t('admin.emailPlaceHolder')"
-                maxlength="256"
-              />
-            </o-field>
+              <div v-for="error in errors.email" :key="error">
+                {{ $t(error) }}
+              </div>
+            </div>
           </div>
         </div>
 
         <!-- Submit Button -->
         <div class="mt-2 text-center">
-          <o-button @click="handleCancel" class="b-reset-tw mr-4 mb-2">
+          <button @click="handleCancel" class="mr-4 mb-2 cursor-pointer">
             <div
-              class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black bg-opacity-5"
+              class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black/5"
             >
-              <div class="text-base font-bold text-black text-opacity-60">
+              <div class="text-base font-bold text-black/60">
                 {{ $t("button.cancel") }}
               </div>
             </div>
-          </o-button>
+          </button>
 
           <t-button
             :isDisabled="Object.keys(errors).length > 0"
             @click="handleNext"
-            class="h-12 w-32 shadow font-bold text-white"
+            class="h-12 w-32 font-bold text-white shadow-sm"
           >
             {{ $t("button.next") }}
           </t-button>
@@ -80,9 +85,9 @@ export default defineComponent({
     const emailSent = ref(false);
     const submitted = ref(false);
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Reset Password"].join(" / "),
-    });
+    }));
 
     const errors = computed(() => {
       if (!submitted.value) {

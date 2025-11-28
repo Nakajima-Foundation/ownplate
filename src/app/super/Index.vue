@@ -1,72 +1,71 @@
 <template>
-  <section class="mx-auto max-w-full px-6 pb-12 pt-4">
-    <div v-if="$store.getters.isSuperAdmin">
+  <section class="mx-auto max-w-full px-6 pt-4 pb-12">
+    <div v-if="userStore.isSuperAdmin">
       <h2>Admin Page</h2>
-      <router-link to="/s/orders" class="text-sm font-bold text-op-teal"
+      <router-link to="/s/orders" class="text-op-teal text-sm font-bold"
         >All Orders</router-link
       >
       <br />
-      <router-link to="/s/callbacks" class="text-sm font-bold text-op-teal"
+      <router-link to="/s/callbacks" class="text-op-teal text-sm font-bold"
         >All Callbacks</router-link
       >
       <br />
-      <router-link to="/s/restaurants" class="text-sm font-bold text-op-teal"
+      <router-link to="/s/restaurants" class="text-op-teal text-sm font-bold"
         >All Restaurants</router-link
       >
       <br />
-      <router-link to="/s/requests" class="text-sm font-bold text-op-teal"
+      <router-link to="/s/requests" class="text-op-teal text-sm font-bold"
         >All Requests</router-link
       >
       <br />
-      <router-link to="/s/admins" class="text-sm font-bold text-op-teal"
+      <router-link to="/s/admins" class="text-op-teal text-sm font-bold"
         >All Admins</router-link
       >
       <br />
-      <router-link to="/s/favorites" class="text-sm font-bold text-op-teal"
+      <router-link to="/s/favorites" class="text-op-teal text-sm font-bold"
         >All Favorites</router-link
       >
       <br />
-      <router-link to="/s/profiles" class="text-sm font-bold text-op-teal"
+      <router-link to="/s/profiles" class="text-op-teal text-sm font-bold"
         >All Profiles</router-link
       >
       <br />
-      <router-link to="/s/logs" class="text-sm font-bold text-op-teal"
+      <router-link to="/s/logs" class="text-op-teal text-sm font-bold"
         >All Logs</router-link
       >
       <br />
-      <router-link to="/s/phonelogs" class="text-sm font-bold text-op-teal"
+      <router-link to="/s/phonelogs" class="text-op-teal text-sm font-bold"
         >All Phone Logs</router-link
       >
       <br />
-      <router-link to="/s/partners" class="text-sm font-bold text-op-teal"
+      <router-link to="/s/partners" class="text-op-teal text-sm font-bold"
         >All Partners</router-link
       >
       <br />
     </div>
-    <o-loading v-else active />
   </section>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, watch } from "vue";
 
-import { useStore } from "vuex";
+import { useUserStore } from "@/store/user";
 import { useRouter } from "vue-router";
 import { useIsNotSuperAdmin, defaultTitle } from "@/utils/utils";
 import { useHead } from "@unhead/vue";
 
 export default defineComponent({
   setup() {
-    const store = useStore();
+    const userStore = useUserStore();
     const router = useRouter();
     const { isNotSuperAdmin } = useIsNotSuperAdmin();
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Super Index"].join(" / "),
-    });
+    }));
 
     onMounted(() => {
-      if (!store.state.user || isNotSuperAdmin.value) {
+      if (!userStore.user || isNotSuperAdmin.value) {
         router.push("/");
       }
     });
@@ -75,7 +74,9 @@ export default defineComponent({
         router.push("/");
       }
     });
-    return {};
+    return {
+      userStore,
+    };
   },
 });
 </script>

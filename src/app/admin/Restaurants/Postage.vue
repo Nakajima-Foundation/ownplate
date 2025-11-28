@@ -11,17 +11,28 @@
             {{ $t("editEC.postageList") }}
           </div>
 
-          <div class="rounded-lg bg-black bg-opacity-5 p-4">
+          <div class="rounded-lg bg-black/5 p-4">
             <div
               v-for="(state, key) in regionalSetting.AddressStates"
               class="flex"
               :key="key"
             >
               <span class="w-2/12">{{ state }}</span>
-              <o-input class="w-4/12" v-model="postage[key]" />
-              <o-button @click="copy(key)" v-if="key !== 0">
+              <input
+                type="number"
+                inputmode="decimal"
+                class="w-4/12 rounded-lg border border-gray-300 bg-white px-3 py-2"
+                :class="{ 'py-3': key === 0 }"
+                v-model.number="postage[key]"
+                min="0"
+              />
+              <button
+                @click="copy(key)"
+                v-if="key !== 0"
+                class="bg-op-teal my-1 ml-2 cursor-pointer rounded-lg px-3 py-2 text-white"
+              >
                 {{ $t("editEC.copy") }}
-              </o-button>
+              </button>
             </div>
           </div>
         </div>
@@ -30,33 +41,37 @@
           <div class="pb-2 text-sm font-bold">
             {{ $t("editEC.freeThreshold") }}
           </div>
-          <div class="rounded-lg bg-black bg-opacity-5 p-4">
+          <div class="rounded-lg bg-black/5 p-4">
             <div class="mb-2 flex">
-              <o-checkbox v-model="enableFree" class="flex-item" />
+              <Checkbox v-model="enableFree" class="flex-item" />
               <span class="flex-item mt-auto mb-auto inline-block">
                 {{ $t("editEC.setPostageFreeThreshold") }}
               </span>
             </div>
-            <o-input
-              class="w-4/12"
-              v-model="freeThreshold"
+            <input
+              type="number"
+              inputmode="decimal"
+              class="w-4/12 rounded-lg border border-gray-300 px-3 py-2"
+              v-model.number="freeThreshold"
               :disabled="!enableFree"
+              :class="!enableFree ? 'bg-gray-100' : 'bg-white'"
+              min="0"
             />
           </div>
         </div>
 
         <!-- Save Button -->
         <div class="mt-4 text-center">
-          <o-button @click="savePostage" class="b-reset-tw">
+          <button @click="savePostage" class="cursor-pointer">
             <div
-              class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
+              class="bg-op-teal inline-flex h-12 items-center justify-center rounded-full px-6 shadow-sm"
               style="min-width: 8rem"
             >
               <span class="text-base font-bold text-white">{{
                 $t("editCommon.save")
               }}</span>
             </div>
-          </o-button>
+          </button>
         </div>
       </div>
     </div>
@@ -77,10 +92,12 @@ import {
 import { checkShopAccount } from "@/utils/userPermission";
 
 import NotFound from "@/components/NotFound.vue";
+import Checkbox from "@/components/form/checkbox.vue";
 
 export default defineComponent({
   components: {
     NotFound,
+    Checkbox,
   },
   props: {
     shopInfo: {

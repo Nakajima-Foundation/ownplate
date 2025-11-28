@@ -21,9 +21,9 @@
       <!-- No Menu or Too Many Menu-->
       <div
         v-if="(!existsMenu || menuCounter > 5) && isOwner"
-        class="mx-6 mt-4 rounded-lg border-2 border-op-teal p-4 pb-2 lg:mx-auto lg:max-w-2xl"
+        class="border-op-teal mx-6 mt-4 rounded-lg border-2 p-4 pb-2 lg:mx-auto lg:max-w-2xl"
       >
-        <div class="text-center text-sm font-bold text-op-teal">
+        <div class="text-op-teal text-center text-sm font-bold">
           {{ $t("editMenu.pleaseAddItem") }}
         </div>
 
@@ -39,58 +39,69 @@
         v-if="existsMenu"
         class="grid-col-1 mx-6 mt-2 space-y-4 lg:mx-auto lg:max-w-2xl"
       >
-        <div v-for="(menuList, index) in menuLists" :key="menuList">
-          <!-- Category Title -->
-          <div
-            v-if="
-              itemsObj[menuList] && itemsObj[menuList]._dataType === 'title'
-            "
-            :id="itemsObj[menuList].id"
-          >
-            <TitleView
-              :isEdit="editings[menuList] === true"
-              :title="itemsObj[menuList]"
-              :position="
-                index == 0 ? 'first' : menuLength - 1 === index ? 'last' : ''
+        <TransitionGroup
+          name="menu-list"
+          tag="div"
+          class="space-y-2"
+          enter-active-class="transition-all duration-300 ease-out"
+          enter-from-class="opacity-0 translate-y-2 scale-95"
+          leave-active-class="transition-all duration-300 ease-in"
+          leave-to-class="opacity-0 translate-y-2 scale-95"
+          move-class="transition-all duration-300 ease-in-out"
+        >
+          <div v-for="(menuList, index) in menuLists" :key="menuList">
+            <!-- Category Title -->
+            <div
+              v-if="
+                itemsObj[menuList] && itemsObj[menuList]._dataType === 'title'
               "
-              @toEditMode="toEditMode($event)"
-              @positionUp="positionUp($event)"
-              @positionDown="positionDown($event)"
-              @forkItem="forkTitleItem($event)"
-              @deleteItem="deleteItem($event)"
-              @updateTitle="updateTitle($event)"
-              @updateTitleLunchDinner="updateTitleLunchDinner($event)"
-            />
-          </div>
-          <!-- Menu Item -->
-          <div
-            v-else-if="
-              itemsObj[menuList] &&
-              itemsObj[menuList]._dataType === 'menu' &&
-              (showAllItems ||
-                (showPublicItems && itemsObj[menuList].publicFlag) ||
-                (showSoldOutItems && itemsObj[menuList].soldOut))
-            "
-            :id="itemsObj[menuList].id"
-          >
-            <MenuView
-              :menuitem="itemsObj[menuList]"
-              :position="
-                index == 0 ? 'first' : menuLength - 1 === index ? 'last' : ''
+              :id="itemsObj[menuList].id"
+            >
+              <TitleView
+                :isEdit="editings[menuList] === true"
+                :title="itemsObj[menuList]"
+                :position="
+                  index == 0 ? 'first' : menuLength - 1 === index ? 'last' : ''
+                "
+                @toEditMode="toEditMode($event)"
+                @positionUp="positionUp($event)"
+                @positionDown="positionDown($event)"
+                @forkItem="forkTitleItem($event)"
+                @deleteItem="deleteItem($event)"
+                @updateTitle="updateTitle($event)"
+                @updateTitleLunchDinner="updateTitleLunchDinner($event)"
+              />
+            </div>
+            <!-- Menu Item -->
+            <div
+              v-else-if="
+                itemsObj[menuList] &&
+                itemsObj[menuList]._dataType === 'menu' &&
+                (showAllItems ||
+                  (showPublicItems && itemsObj[menuList].publicFlag) ||
+                  (showSoldOutItems && itemsObj[menuList].soldOut))
               "
-              :shopInfo="shopInfo"
-              @positionUp="positionUp($event)"
-              @positionDown="positionDown($event)"
-              @forkItem="forkMenuItem($event)"
-              @deleteItem="deleteItem($event)"
-            />
+              :id="itemsObj[menuList].id"
+            >
+              <MenuView
+                :menuitem="itemsObj[menuList]"
+                :position="
+                  index == 0 ? 'first' : menuLength - 1 === index ? 'last' : ''
+                "
+                :shopInfo="shopInfo"
+                @positionUp="positionUp($event)"
+                @positionDown="positionDown($event)"
+                @forkItem="forkMenuItem($event)"
+                @deleteItem="deleteItem($event)"
+              />
+            </div>
           </div>
-        </div>
+        </TransitionGroup>
       </div>
 
       <!-- Add Group Title, Menu Item, and Download Menu -->
       <div
-        class="mx-6 mt-2 rounded-lg border-2 border-op-teal p-4 pb-2 lg:mx-auto lg:max-w-2xl"
+        class="border-op-teal mx-6 mt-2 rounded-lg border-2 p-4 pb-2 lg:mx-auto lg:max-w-2xl"
         v-if="isOwner"
       >
         <AddButton
@@ -140,7 +151,12 @@ import { useMenuAndTitle } from "@/app/admin/Restaurants/MenuListPage/Utils";
 
 import { ownPlateConfig } from "@/config/project";
 
-import { copyMenuData, MenuData, TitleData } from "@/models/menu";
+import { MenuData, TitleData } from "@/models/menu";
+import {
+  copyMenuData,
+  getBlankMenuItem,
+  getBlankTitleItem,
+} from "@/models/menuUtils";
 
 import { checkShopAccount } from "@/utils/userPermission";
 import { useAdminConfigToggle2 } from "@/utils/admin/Toggle";
@@ -192,13 +208,13 @@ export default defineComponent({
 
     const { isOwner, uid, ownerUid } = useAdminUids();
 
-    useHead({
+    useHead(() => ({
       title: props.shopInfo.restaurantName
         ? ["Admin Menu List", props.shopInfo.restaurantName, defaultTitle].join(
             " / ",
           )
         : defaultTitle,
-    });
+    }));
 
     const restaurantId = computed(() => {
       return route.params.restaurantId as string;
@@ -330,12 +346,7 @@ export default defineComponent({
     const addTitle = async (operation: string) => {
       submitting.value = true;
       try {
-        const data = {
-          name: "",
-          uid: uid.value,
-          createdAt: serverTimestamp(),
-          deletedFlag: false,
-        };
+        const data = getBlankTitleItem(uid.value);
         const newTitle = await addDoc(
           collection(db, `restaurants/${restaurantId.value}/titles`),
           data,
@@ -356,21 +367,7 @@ export default defineComponent({
     const addMenu = async (operation: string) => {
       submitting.value = true;
       try {
-        const itemData = {
-          itemName: "",
-          itemAliasesName: "",
-          price: 0,
-          tax: "food",
-          itemDescription: "",
-          itemMemo: "",
-          uid: uid.value,
-          availableLunch: true,
-          availableDinner: true,
-          deletedFlag: false,
-          publicFlag: true,
-          validatedFlag: false,
-          createdAt: new Date(),
-        };
+        const itemData = getBlankMenuItem(uid.value);
         const newData = await addDoc(
           collection(db, `restaurants/${restaurantId.value}/menus`),
           itemData,
@@ -458,14 +455,14 @@ export default defineComponent({
         collection(db, `restaurants/${restaurantId.value}/titles`),
         data,
       );
-      await forkItem(itemKey, newTitle as any);
+      await forkItem(itemKey, newTitle);
       await scroll(newTitle.id);
     };
 
     const forkMenuItem = async (itemKey: string) => {
       const item = itemsObj.value[itemKey];
       const data = copyMenuData(
-        item as MenuData,
+        item,
         ownPlateConfig.region === "JP",
         uid.value,
       );
@@ -473,7 +470,7 @@ export default defineComponent({
         collection(db, `restaurants/${restaurantId.value}/menus`),
         cleanObject(data),
       );
-      await forkItem(itemKey, newData as any);
+      await forkItem(itemKey, newData);
       await scroll(newData.id);
     };
 

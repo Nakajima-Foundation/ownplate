@@ -14,7 +14,12 @@
       </div>
     </div>
     <div v-if="last">
-      <o-button @click="nextLoad">more</o-button>
+      <button
+        @click="nextLoad"
+        class="cursor-pointe cursor-pointer rounded border-2 border-black/40 bg-gray-200 p-1 hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-25"
+      >
+        more
+      </button>
     </div>
   </div>
 </template>
@@ -43,9 +48,9 @@ export default defineComponent({
     const last = ref<any>(null);
     let isLoading = false;
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Super All Favorites"].join(" / "),
-    });
+    }));
 
     const loadData = async () => {
       if (!isLoading) {

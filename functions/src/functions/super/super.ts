@@ -1,17 +1,12 @@
-import * as functions from "firebase-functions/v1";
+import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
 import * as utils from "../../lib/utils";
 import * as admin from "firebase-admin";
 
-import moment from "moment-timezone";
+import { DispatchData } from "../../models/functionTypes";
 
-import { Context } from "../../models/TestType";
-import { superTwilioCallData, dispatchData } from "../../lib/types";
-
-import * as twilio from "../twilio";
-
-export const dispatch = async (db: admin.firestore.Firestore, data: dispatchData, context: functions.https.CallableContext) => {
+export const dispatch = async (db: admin.firestore.Firestore, data: DispatchData, context: CallableRequest) => {
   if (!context.auth?.token?.admin) {
-    throw new functions.https.HttpsError("permission-denied", "You do not have permission to confirm this request.");
+    throw new HttpsError("permission-denied", "You do not have permission to confirm this request.");
   }
   const uidSuper = utils.validate_auth(context);
   const { cmd, uid, key, value } = data;
@@ -62,12 +57,12 @@ export const dispatch = async (db: admin.firestore.Firestore, data: dispatchData
         error: "invalid_cmd",
         createdAt: admin.firestore.FieldValue.serverTimestamp(),
       });
-      throw new functions.https.HttpsError("invalid-argument", "Invalid command.");
+      throw new HttpsError("invalid-argument", "Invalid command.");
     }
 
     return result;
   } catch (error) {
-    throw utils.process_error(error);
+    throw utils.process_error(error as Error);
   }
 };
 
@@ -84,23 +79,3 @@ const setCustomClaim = async (db: admin.firestore.Firestore, uid: string, key: s
   return await getCustomClaims(db, uid);
 };
 
-export const superTwilioCall = async (db: admin.firestore.Firestore, data: superTwilioCallData, context: functions.https.CallableContext | Context) => {
-  if (!context.auth?.token?.admin) {
-    throw new functions.https.HttpsError("permission-denied", "You do not have permission to confirm this request.");
-  }
-  const { restaurantId } = data;
-  utils.required_params({ restaurantId });
-
-  const restaurantData = await utils.get_restaurant(db, restaurantId);
-  if (restaurantData) {
-    const datestr = moment().format("YYYY-MM-DD");
-    await twilio.phoneCall(restaurantData);
-    await db.collection(`/restaurants/${restaurantId}/log/${datestr}/phoneLog`).add({
-      restaurantId,
-      date: datestr,
-      phoneNumber: restaurantData.phoneNumber,
-      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
-    });
-  }
-  return {};
-};

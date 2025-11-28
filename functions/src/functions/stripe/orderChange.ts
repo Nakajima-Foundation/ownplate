@@ -1,24 +1,32 @@
 import Stripe from "stripe";
 import * as admin from "firebase-admin";
-import * as functions from "firebase-functions/v1";
+import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
 
-import { order_status } from "../../common/constant";
+import { order_status, stripe_regions_jp } from "../../common/constant";
 import * as utils from "../../lib/utils";
 import { orderAccounting, createNewOrderData } from "../order/orderCreated";
-import { sendMessageToCustomer } from "../notify";
-import { costCal } from "../../common/commonUtils";
-import { Context } from "../../models/TestType";
+import { sendMessageToCustomer } from "../notify2";
+import { costCal } from "../../utils/commonUtils";
 import { getStripeAccount, getStripeOrderRecord, getPaymentMethodData, getHash } from "./intent";
 
-import { orderChangeData, newOrderData } from "../../lib/types";
+import { OrderChangeData, NewOrderData } from "../../models/functionTypes";
+import { OptionValue } from "../../lib/types/order";
 import { validateOrderChange } from "../../lib/validator";
 
-const multiple = utils.stripeRegion.multiple; // 100 for USD, 1 for JPY
+type OrderQuantityMap = Record<string, number[]>;
+type OrderOptionsMap = Record<string, Record<number, unknown>>;
 
-const getUpdateOrder = (newOrders: newOrderData[], order, options, rawOptions) => {
-  const updateOrderData = {};
-  const updateOptions = {};
-  const updateRawOptions = {};
+const multiple = stripe_regions_jp.multiple; // 100 for USD, 1 for JPY
+
+const getUpdateOrder = (
+  newOrders: NewOrderData[],
+  order: OrderQuantityMap,
+  options: OrderOptionsMap,
+  rawOptions: OrderOptionsMap,
+) => {
+  const updateOrderData: OrderQuantityMap = {};
+  const updateOptions: OrderOptionsMap = {};
+  const updateRawOptions: OrderOptionsMap = {};
 
   newOrders.forEach((data) => {
     const { menuId, index } = data;
@@ -42,7 +50,7 @@ const getUpdateOrder = (newOrders: newOrderData[], order, options, rawOptions) =
   };
 };
 
-export const orderChange = async (db: admin.firestore.Firestore, data: orderChangeData, context: functions.https.CallableContext | Context) => {
+export const orderChange = async (db: admin.firestore.Firestore, data: OrderChangeData, context: CallableRequest) => {
   const ownerUid = utils.validate_owner_admin_auth(context);
   const uid = utils.validate_auth(context);
   const { restaurantId, orderId, newOrder } = data;
@@ -51,7 +59,7 @@ export const orderChange = async (db: admin.firestore.Firestore, data: orderChan
   const validateResult = validateOrderChange(data);
   if (!validateResult.result) {
     console.error("createIntent", validateResult.errors);
-    throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+    throw new HttpsError("invalid-argument", "Validation Error.");
   }
 
   if (utils.is_subAccount(context)) {
@@ -60,35 +68,47 @@ export const orderChange = async (db: admin.firestore.Firestore, data: orderChan
   const restaurantRef = db.doc(`restaurants/${restaurantId}`);
   const restaurantData = await utils.get_restaurant(db, restaurantId);
   if (restaurantData.uid !== ownerUid) {
-    throw new functions.https.HttpsError("permission-denied", "The user does not have an authority to perform this operation.");
+    throw new HttpsError("permission-denied", "The user does not have an authority to perform this operation.");
   }
   if (newOrder.length === 0) {
-    throw new functions.https.HttpsError("permission-denied", "Cannot be changed to an empty order.");
+    throw new HttpsError("permission-denied", "Cannot be changed to an empty order.");
   }
   // check mo
   const menuRestaurantRef = restaurantRef;
 
   try {
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
-    const order = (await orderRef.get()).data();
+    const orderSnapshot = await orderRef.get();
+    const order = orderSnapshot.data();
     if (!order) {
-      throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
+      throw new HttpsError("invalid-argument", "This order does not exist.");
     }
 
     if (!utils.isEmpty(order.orderUpdatedAt) || order.status !== order_status.order_placed) {
-      throw new functions.https.HttpsError("failed-precondition", "It is not possible to change the order.");
+      throw new HttpsError("failed-precondition", "It is not possible to change the order.");
     }
 
     // generate new order
     order.id = orderId;
-    const { updateOrderData, updateOptions, updateRawOptions } = getUpdateOrder(newOrder, order.order, order.options, order.rawOptions);
+    const orderDetails = order as unknown as {
+      order: OrderQuantityMap;
+      options: OrderOptionsMap;
+      rawOptions: OrderOptionsMap;
+    };
+
+    const { updateOrderData, updateOptions, updateRawOptions } = getUpdateOrder(newOrder, orderDetails.order, orderDetails.options, orderDetails.rawOptions);
 
     // update price
     const baseData = {
+      ...order,
       order: updateOrderData,
-      rawOptions: updateRawOptions,
+      rawOptions: updateRawOptions as { [menuId: string]: OptionValue[][] },
     };
-    const { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total } = await createNewOrderData(menuRestaurantRef, orderRef, baseData, multiple);
+    const res = await createNewOrderData(menuRestaurantRef, orderRef, baseData, multiple);
+    if (!res.result) {
+      throw new HttpsError("permission-denied", "unknown error.");
+    }
+    const { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total } = res.data;
 
     const accountingResult = orderAccounting(restaurantData, food_sub_total, alcohol_sub_total, multiple);
     // was created new order data
@@ -148,13 +168,13 @@ export const orderChange = async (db: admin.firestore.Firestore, data: orderChan
           setup_future_usage: "off_session",
           amount: orderUpdateData.totalCharge * multiple,
           description: `${description} ${orderId} orderChange`,
-          currency: utils.stripeRegion.currency,
+          currency: stripe_regions_jp.currency,
           metadata: { uid: customerUid, restaurantId, orderId },
           payment_method_data,
         } as Stripe.PaymentIntentCreateParams;
         const hash = getHash(JSON.stringify(newOrderData));
 
-        const stripe = utils.get_stripe();
+        const stripe = utils.get_stripe_v2();
         const paymentIntent = await stripe.paymentIntents.create(request, {
           idempotencyKey: orderRef.path + hash,
           stripeAccount,
@@ -177,6 +197,6 @@ export const orderChange = async (db: admin.firestore.Firestore, data: orderChan
     }
     return { result: true };
   } catch (error) {
-    throw utils.process_error(error);
+    throw utils.process_error(error as Error);
   }
 };

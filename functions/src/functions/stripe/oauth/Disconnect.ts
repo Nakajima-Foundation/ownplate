@@ -1,15 +1,15 @@
 import * as admin from "firebase-admin";
-import * as functions from "firebase-functions/v1";
+import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
 import * as utils from "../../../lib/utils";
 import { ownPlateConfig } from "../../../common/project";
 
-export const disconnect = async (db: admin.firestore.Firestore, context: functions.https.CallableContext) => {
+export const disconnect = async (db: admin.firestore.Firestore, context: CallableRequest) => {
   const uid = utils.validate_admin_auth(context);
-  const stripe = utils.get_stripe();
+  const stripe = utils.get_stripe_v2();
 
   const client_id = ownPlateConfig.stripe.clientId;
   if (!client_id) {
-    throw new functions.https.HttpsError("invalid-argument", "No Stripe client.");
+    throw new HttpsError("invalid-argument", "No Stripe client.");
   }
 
   try {
@@ -17,7 +17,7 @@ export const disconnect = async (db: admin.firestore.Firestore, context: functio
     const payment = (await refPayment.get()).data();
     const stripe_user_id = payment?.stripe;
     if (!stripe_user_id) {
-      throw new functions.https.HttpsError("invalid-argument", "This account is not connected to Stripe.");
+      throw new HttpsError("invalid-argument", "This account is not connected to Stripe.");
     }
 
     // We remove it from the database first, so that the operator can attempt to re-connect
@@ -35,6 +35,6 @@ export const disconnect = async (db: admin.firestore.Firestore, context: functio
 
     return { result: true };
   } catch (error) {
-    throw utils.process_error(error);
+    throw utils.process_error(error as Error);
   }
 };

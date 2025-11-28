@@ -9,56 +9,74 @@
 
     <!-- Demo Videos -->
     <div class="mx-6 mt-2 rounded-2xl bg-white p-6 lg:flex lg:space-x-6">
-      <div class="mt-4 text-center lg:mt-0 lg:flex-shrink-0">
+      <div class="mt-4 text-center lg:mt-0 lg:shrink-0">
         <div>
           <iframe
             width="300"
             height="145"
             src="https://www.youtube.com/embed/lt3iVMj2vfI"
             frameborder="0"
-            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+            allow="
+              accelerometer;
+              autoplay;
+              encrypted-media;
+              gyroscope;
+              picture-in-picture;
+            "
             allowfullscreen
             class="inline-block w-64 cursor-pointer rounded-lg"
           ></iframe>
         </div>
         <div class="mt-2 inline-flex items-center">
-          <span class="ml-1 text-base font-bold text-op-teal">{{
+          <span class="text-op-teal ml-1 text-base font-bold">{{
             $t("lp.orderFlow")
           }}</span>
         </div>
       </div>
-      <div class="mt-4 text-center lg:mt-0 lg:flex-shrink-0">
+      <div class="mt-4 text-center lg:mt-0 lg:shrink-0">
         <div>
           <iframe
             width="300"
             height="145"
             src="https://www.youtube.com/embed/B2nMqFC0ssA"
             frameborder="0"
-            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+            allow="
+              accelerometer;
+              autoplay;
+              encrypted-media;
+              gyroscope;
+              picture-in-picture;
+            "
             allowfullscreen
             class="inline-block w-64 cursor-pointer rounded-lg"
           ></iframe>
         </div>
         <div class="mt-2 inline-flex items-center">
-          <span class="ml-1 text-base font-bold text-op-teal">{{
+          <span class="text-op-teal ml-1 text-base font-bold">{{
             $t("lp.flyerCreation")
           }}</span>
         </div>
       </div>
-      <div class="mt-4 text-center lg:mt-0 lg:flex-shrink-0">
+      <div class="mt-4 text-center lg:mt-0 lg:shrink-0">
         <div>
           <iframe
             width="300"
             height="145"
             src="https://www.youtube.com/embed/ATvzuL8nJlk"
             frameborder="0"
-            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+            allow="
+              accelerometer;
+              autoplay;
+              encrypted-media;
+              gyroscope;
+              picture-in-picture;
+            "
             allowfullscreen
             class="inline-block w-64 cursor-pointer rounded-lg"
           ></iframe>
         </div>
         <div class="mt-2 inline-flex items-center">
-          <span class="ml-1 text-base font-bold text-op-teal">{{
+          <span class="text-op-teal ml-1 text-base font-bold">{{
             $t("lp.cardPayment")
           }}</span>
         </div>

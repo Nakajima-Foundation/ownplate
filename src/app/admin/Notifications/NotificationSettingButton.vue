@@ -1,12 +1,12 @@
 <template>
   <div>
     <a
-      class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-3"
+      class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-black/5 px-3"
       @click="openNotificationSettings()"
     >
-      <i class="material-icons text-lg text-op-teal xs:mr-1">notifications</i>
+      <i class="material-icons text-op-teal xs:mr-1 text-lg">notifications</i>
       <div
-        class="invisible -mr-2 text-sm font-bold text-op-teal xs:visible xs:mr-2"
+        class="text-op-teal xs:visible xs:mr-2 invisible -mr-2 text-sm font-bold"
       >
         {{ $t("admin.order.notification") }}
       </div>
@@ -40,13 +40,13 @@ import { defineComponent, computed, ref, onUnmounted } from "vue";
 import { doc, onSnapshot } from "firebase/firestore";
 
 import { db } from "@/lib/firebase/firebase9";
-import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
 import { useRestaurantId } from "@/utils/utils";
 
 export default defineComponent({
   emits: ["openNotificationSettings"],
   setup(props, ctx) {
-    const store = useStore();
+    const generalStore = useGeneralStore();
 
     const restaurantId = useRestaurantId();
     const notificationData = ref({});
@@ -63,8 +63,8 @@ export default defineComponent({
       ctx.emit("openNotificationSettings");
     };
     const orderCounter = computed(() => {
-      return Object.keys(store.state.orderObj).reduce((tmp, key) => {
-        const count = (store.state.orderObj[key] || []).length;
+      return Object.values(generalStore.orderObj).reduce((tmp, order) => {
+        const count = (order || []).length;
         return tmp + count;
       }, 0);
     });

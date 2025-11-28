@@ -1,16 +1,16 @@
 import fetch from "node-fetch";
 
-let hostName = null;
-let authHostName = null;
+let hostName: string | null = null;
+let authHostName: string | null = null;
 
-export const updateHost = (name) => {
+export const updateHost = (name: string) => {
   hostName = name;
 };
-export const updateAuthHost = (name) => {
+export const updateAuthHost = (name: string) => {
   authHostName = name;
 };
 
-export const generateBody = (obj) => {
+export const generateBody = (obj: Record<string, unknown> | null | undefined) => {
   if (obj === null || obj === undefined) {
     return "";
   }
@@ -32,7 +32,7 @@ export const generateBody = (obj) => {
     .join("&");
 };
 
-export const authentication = async (clientId, clientSecret, contractId, scopes) => {
+export const authentication = async (clientId: string, clientSecret: string, contractId: string, scopes: string[]) => {
   const buff = Buffer.from([clientId, clientSecret].join(":"));
   const base64str = buff.toString("base64");
 
@@ -53,7 +53,7 @@ export const authentication = async (clientId, clientSecret, contractId, scopes)
   return await res.json();
 };
 
-const actual_call = async (requst_url, options) => {
+const actual_call = async (requst_url: string, options: Record<string, unknown>) => {
   const res = await fetch(requst_url, options);
   if (res.status === 200) {
     try {
@@ -72,10 +72,10 @@ const actual_call = async (requst_url, options) => {
   };
 };
 
-const api_call = async (contractId, path, access_token, method, data = {}) => {
+const api_call = async (contractId: string, path: string, access_token: string, method: string, data: Record<string, unknown> = {}) => {
   const full_path = `https://${hostName}/${contractId}/pos/`;
   let requst_url = full_path + path;
-  const options: any = {
+  const options: Record<string, unknown> = {
     method,
     headers: {
       Authorization: `Bearer ${access_token}`,
@@ -86,8 +86,13 @@ const api_call = async (contractId, path, access_token, method, data = {}) => {
   if (method === "GET") {
     const query = Object.keys(data)
       .map((k) => {
-        return encodeURIComponent(k) + "=" + encodeURIComponent(data[k]);
+        const value = data[k];
+        if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
+          return encodeURIComponent(k) + "=" + encodeURIComponent(value);
+        }
+        return "";
       })
+      .filter((s) => s !== "")
       .join("&");
     requst_url = requst_url + "?" + query;
   } else {
@@ -96,18 +101,18 @@ const api_call = async (contractId, path, access_token, method, data = {}) => {
   return await actual_call(requst_url, options);
 };
 
-export const get_func = async (contractId, path, access_token, data) => {
+export const get_func = async (contractId: string, path: string, access_token: string, data: Record<string, unknown>) => {
   return await api_call(contractId, path, access_token, "GET", data);
 };
 
-export const post_func = async (contractId, path, access_token, data) => {
+export const post_func = async (contractId: string, path: string, access_token: string, data: Record<string, unknown>) => {
   return await api_call(contractId, path, access_token, "POST", data);
 };
 
-export const patch_func = async (contractId, path, access_token, data) => {
+export const patch_func = async (contractId: string, path: string, access_token: string, data: Record<string, unknown>) => {
   return await api_call(contractId, path, access_token, "PATCH", data);
 };
 
-export const delete_func = async (contractId, path, access_token, data) => {
+export const delete_func = async (contractId: string, path: string, access_token: string, data: Record<string, unknown>) => {
   return await api_call(contractId, path, access_token, "DELETE", data);
 };

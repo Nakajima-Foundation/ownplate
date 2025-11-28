@@ -21,28 +21,13 @@
 
         <!-- approproate component under pages will be displayed -->
         <router-view v-if="isReadyToRender" />
-        <dialog-box :dialog="dialog" />
+        <dialog-box />
+        <dialog-tips />
       </div>
     </div>
 
     <!-- Loading -->
-    <o-loading
-      v-if="isLoading"
-      iconSize="large"
-      :full-page="true"
-      :active="true"
-      :can-cancel="false"
-      class="flex items-center justify-center h-screen"
-    >
-      <o-icon
-        pack="fas"
-        icon="circle-notch"
-        customSize="fa-4x"
-        spin
-        class="flex items-center justify-center opacity-30 text-center"
-      ></o-icon>
-    </o-loading>
-
+    <Loading v-if="isLoading" />
     <AppFooter />
 
     <!-- Audio Play -->
@@ -76,61 +61,62 @@ import AppFooter from "@/components/App/Footer.vue";
 import NotificationBanner from "@/components/App/NotificationBanner.vue";
 import SideMenu from "@/components/App/SideMenu.vue";
 import DialogBox from "@/components/DialogBox.vue";
+import DialogTips from "@/components/DialogTips.vue";
 import AudioPlay from "@/components/AudioPlay.vue";
-
-import { isDev, useUser, useRestaurantId } from "@/utils/utils";
+import Loading from "@/components/Loading.vue";
+import { isDev, useRestaurantId } from "@/utils/utils";
 
 import * as Sentry from "@sentry/vue";
-import { ownPlateConfig } from "@/config/project";
 import { defaultHeader } from "@/config/header";
 
-import { useStore } from "vuex";
+import { useUserStore } from "@/store/user";
 import { useRoute } from "vue-router";
 import { useHead } from "@unhead/vue";
+
+import { useGeneralStore } from "../store";
 
 export default defineComponent({
   name: "App",
   components: {
     DialogBox,
+    DialogTips,
     AudioPlay,
     SideMenu,
     AppHeader,
     AppFooter,
     NotificationBanner,
+    Loading,
   },
 
   setup() {
     let unregisterAuthObserver: null | Unsubscribe = null;
     let timerId: null | number = null;
-    const store = useStore();
+    const generalStore = useGeneralStore();
+    const userStore = useUserStore();
+
     const route = useRoute();
 
-    const user = useUser();
     const restaurantId = useRestaurantId();
 
     useHead(defaultHeader);
 
     onMounted(() => {
       window.addEventListener("focus", () => {
-        store.commit("setActive", true);
+        generalStore.setActive(true);
       });
       window.addEventListener("blur", () => {
-        store.commit("setActive", false);
+        generalStore.setActive(false);
       });
     });
 
     const isLoading = computed(() => {
-      return store.state.isLoading;
-    });
-    const dialog = computed(() => {
-      return store.state.dialog;
+      return generalStore.isLoading;
     });
     const isReadyToRender = computed(() => {
-      if (user.value !== undefined) {
+      if (userStore.user !== undefined) {
         return true; // Firebase has already identified the user (or non-user)
       }
       if (route.path === `/r/${restaurantId.value}` || route.path === "/") {
-        // console.log("isReadyToRender: quick render activated");
         return true; // We are opening the restaurant page
       }
       return false;
@@ -138,7 +124,7 @@ export default defineComponent({
     const audioPlay = ref();
     const enableSound = () => {
       if (audioPlay.value?.enableSound) {
-        audioPlay.value.enableSound();
+        audioPlay.value?.enableSound();
       }
     };
     const sideMenu = ref();
@@ -154,7 +140,6 @@ export default defineComponent({
       });
     };
 
-    store.commit("setServerConfig", { region: ownPlateConfig.region });
     unregisterAuthObserver = onAuthStateChanged(auth, (fUser) => {
       if (fUser) {
         fUser
@@ -165,13 +150,11 @@ export default defineComponent({
             if (diff > 3600 * 24 * 30 * 1000) {
               signOut(auth);
             } else {
-              store.commit("setUser", fUser);
-              store.commit("setCustomClaims", result.claims);
+              userStore.setUser(fUser);
+              userStore.setCustomClaims(result.claims);
             }
-            // console.log(!!user.email ? "admin" : "customer");
           })
           .catch((error: any) => {
-            // console.error("getIdTokenResult", error);
             Sentry.captureException(error);
           });
         setUserProperties(analytics, {
@@ -180,9 +163,8 @@ export default defineComponent({
         setUserId(analytics, fUser.uid);
       } else {
         setUserProperties(analytics, { role: "anonymous" });
-        // console.log("authStateChanged: null");
-        store.commit("setUser", null);
-        store.commit("setCustomClaims", null);
+        userStore.setUser(null);
+        userStore.setCustomClaims(null);
       }
     });
 
@@ -203,13 +185,14 @@ export default defineComponent({
       }
     }
 
+    let openTime = new Date();
     timerId = window.setInterval(() => {
-      const diff = (new Date() - store.state.openTime) / 1000; // second
+      const diff = (new Date() - openTime) / 1000; // second
       if (diff > 20 * 3600) {
-        store.commit("resetOpenTime");
+        openTime = new Date();
         location.reload();
       }
-      store.commit("updateDate");
+      generalStore.updateDate();
     }, 60 * 1000);
 
     watch(
@@ -238,12 +221,8 @@ export default defineComponent({
       enableSound,
       handleOpen,
       isReadyToRender,
-      dialog,
       isLoading,
     };
   },
 });
 </script>
-<style lang="scss">
-// ### Need this commentout for CSS parser bug. Don't remove.
-</style>

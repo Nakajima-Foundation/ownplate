@@ -7,11 +7,11 @@
     <div v-if="shopInfo.deliveryOnlyStore">
       <!-- delivery only -->
       <div
-        class="h-full w-full rounded-lg bg-white p-3 shadow"
+        class="h-full w-full rounded-lg bg-white p-3 shadow-sm"
         :class="
           modelValue === 'delivery'
-            ? 'border-2 border-op-teal text-op-teal'
-            : 'cursor-pointer text-black text-opacity-40'
+            ? 'border-op-teal text-op-teal border-2'
+            : 'cursor-pointer text-black/40'
         "
         @click="$emit('update:modelValue', 'delivery')"
       >
@@ -28,11 +28,11 @@
     <div class="mt2 grid grid-cols-2 gap-2" v-else>
       <!-- takeout -->
       <div
-        class="h-full w-full rounded-lg bg-white p-3 shadow"
+        class="h-full w-full rounded-lg bg-white p-3 shadow-sm"
         :class="
           modelValue === 'takeout'
-            ? 'border-2 border-op-teal text-op-teal'
-            : 'cursor-pointer text-black text-opacity-40'
+            ? 'border-op-teal text-op-teal border-2'
+            : 'cursor-pointer text-black/40'
         "
         @click="$emit('update:modelValue', 'takeout')"
       >
@@ -46,11 +46,11 @@
       </div>
       <!-- delivery -->
       <div
-        class="h-full w-full rounded-lg bg-white p-3 shadow"
+        class="h-full w-full rounded-lg bg-white p-3 shadow-sm"
         :class="
           modelValue === 'delivery'
-            ? 'border-2 border-op-teal text-op-teal'
-            : 'cursor-pointer text-black text-opacity-40'
+            ? 'border-op-teal text-op-teal border-2'
+            : 'cursor-pointer text-black/40'
         "
         @click="$emit('update:modelValue', 'delivery')"
       >
@@ -101,7 +101,7 @@
     </div>
     <div
       v-if="modelValue === 'delivery'"
-      class="mt-2 rounded-lg bg-blue-500 bg-opacity-10 px-4 py-2"
+      class="mt-2 rounded-lg bg-blue-500/10 px-4 py-2"
     >
       <span class="font-bold">{{ $t("shopInfo.deliveryArea") }}</span>
       <div v-if="deliveryData.enableAreaMap">
@@ -116,7 +116,10 @@
         }}
       </div>
       <div v-if="deliveryData.enableAreaText">
-        <pre class="bg-transparent p-0">{{ deliveryData.areaText }}</pre>
+        <pre
+          class="bg-transparent p-0 break-words break-all whitespace-pre-wrap"
+          >{{ deliveryData.areaText }}</pre
+        >
       </div>
       {{ $t("shopInfo.deliveryAreaInfo") }}
     </div>

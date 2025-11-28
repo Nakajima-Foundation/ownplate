@@ -9,7 +9,7 @@
     </div>
 
     <!-- About -->
-    <div class="mx-auto max-w-screen-md px-6 text-base">
+    <div class="mx-auto max-w-(--breakpoint-md) px-6 text-base">
       <!-- English -->
       <div v-if="!isLocaleJapan">
         <div class="mt-4">

@@ -1,27 +1,30 @@
 import * as admin from "firebase-admin";
 import {
-  orderCreatedData,
-  orderUpdateData,
-  orderPlacedData,
-  customerInfoData,
-  confirmIntentData,
-  orderCancelData,
-  orderCancelPaymentData,
-  orderChangeData,
-  newOrderData,
-  stripeReceiptData,
-  stripeOAuthConnectData,
-  stripeOAuthVerifyData,
-  stripeUpdateCustomerData,
-  pingData,
-  lineValidateData,
-  liffAuthenticateData,
-} from "./types";
+  OrderCreatedData,
+  OrderUpdateData,
+  OrderPlacedData,
+  ConfirmIntentData,
+  OrderCancelData,
+  OrderCancelPaymentData,
+  OrderChangeData,
+  NewOrderData,
+  StripeReceiptData,
+  StripeOAuthConnectData,
+  StripeOAuthVerifyData,
+  PingData,
+  LineValidateData,
+  LiffAuthenticateData,
+} from "../models/functionTypes";
+import {
+  ValidatorNumberOption,
+  ValidatorStringOption,
+} from "./types/validator";
+import { CustomerInfo } from "../models/customer";
 import { isEmpty } from "./utils";
 import isURL from "validator/lib/isURL";
 import isNumeric from "validator/lib/isNumeric";
 
-export const isNumber = (value: string, option: any = {}) => {
+export const isNumber = (value: string, option: ValidatorNumberOption = {}) => {
   if (!/^-?[0-9]+$/.test(value)) {
     return false;
   }
@@ -51,7 +54,7 @@ export const isNumber = (value: string, option: any = {}) => {
   return true;
 };
 
-export const isString = (value: string, option: any = {}) => {
+export const isString = (value: string, option: ValidatorStringOption = {}) => {
   if (option.type !== undefined) {
     if (option.type === "number") {
       if (!/^-?[0-9]+$/.test(value)) {
@@ -127,7 +130,7 @@ const validateTimestamp = (timestamp: admin.firestore.Timestamp) => {
 const validateBoolean = (value: boolean) => {
   return value === true || value === false;
 };
-const validateNewOrder = (values: newOrderData[]) => {
+const validateNewOrder = (values: NewOrderData[]) => {
   return values.every((data) => {
     return validateFirebaseId(data.menuId) && validateInteger(data.index);
   });
@@ -150,7 +153,7 @@ const validateArray = {
   newOrder: validateNewOrder,
 };
 
-const validateData = (data, validator) => {
+const validateData = (data: Record<string, any>, validator: Record<string, any>) => {
   const errors = Object.keys(validator).reduce((tmp: unknown[], key: string) => {
     const rule = validator[key];
     if (rule.required && isEmpty(data[key])) {
@@ -161,7 +164,8 @@ const validateData = (data, validator) => {
       return tmp;
     }
     if (!isEmpty(data[key])) {
-      if (!validateArray[rule.type](data[key])) {
+      const validator = validateArray[rule.type as keyof typeof validateArray];
+      if (validator && !validator(data[key] as never)) {
         tmp.push({
           key,
           error: "invalid",
@@ -184,7 +188,7 @@ const validateData = (data, validator) => {
   };
 };
 
-export const validateOrderCreated = (data: orderCreatedData) => {
+export const validateOrderCreated = (data: OrderCreatedData) => {
   const validator = {
     restaurantId: {
       type: "firebaseId",
@@ -198,7 +202,7 @@ export const validateOrderCreated = (data: orderCreatedData) => {
   return validateData(data, validator);
 };
 
-export const validateOrderUpadte = (data: orderUpdateData) => {
+export const validateOrderUpdate = (data: OrderUpdateData) => {
   const validator = {
     restaurantId: {
       type: "firebaseId",
@@ -219,7 +223,7 @@ export const validateOrderUpadte = (data: orderUpdateData) => {
   };
   return validateData(data, validator);
 };
-export const validateOrderPlaced = (data: orderPlacedData) => {
+export const validateOrderPlaced = (data: OrderPlacedData) => {
   const validator = {
     restaurantId: {
       type: "firebaseId",
@@ -250,13 +254,13 @@ export const validateOrderPlaced = (data: orderPlacedData) => {
   return validateData(data, validator);
 };
 
-export const validateCustomer = (data: customerInfoData) => {
+export const validateCustomer = (data: CustomerInfo) => {
   const validator = {};
   return validateData(data, validator);
 };
 
 // stripe
-export const validateConfirmIntent = (data: confirmIntentData) => {
+export const validateConfirmIntent = (data: ConfirmIntentData) => {
   const validator = {
     restaurantId: {
       type: "firebaseId",
@@ -274,7 +278,7 @@ export const validateConfirmIntent = (data: confirmIntentData) => {
   return validateData(data, validator);
 };
 
-export const validateCancel = (data: orderCancelData) => {
+export const validateCancel = (data: OrderCancelData) => {
   const validator = {
     restaurantId: {
       type: "firebaseId",
@@ -292,7 +296,7 @@ export const validateCancel = (data: orderCancelData) => {
   return validateData(data, validator);
 };
 
-export const validateCancelPayment = (data: orderCancelPaymentData) => {
+export const validateCancelPayment = (data: OrderCancelPaymentData) => {
   const validator = {
     restaurantId: {
       type: "firebaseId",
@@ -306,7 +310,7 @@ export const validateCancelPayment = (data: orderCancelPaymentData) => {
   return validateData(data, validator);
 };
 
-export const validateOrderChange = (data: orderChangeData) => {
+export const validateOrderChange = (data: OrderChangeData) => {
   const validator = {
     restaurantId: {
       type: "firebaseId",
@@ -324,7 +328,7 @@ export const validateOrderChange = (data: orderChangeData) => {
   return validateData(data, validator);
 };
 
-export const validatorStripeOAuthConnect = (data: stripeOAuthConnectData) => {
+export const validatorStripeOAuthConnect = (data: StripeOAuthConnectData) => {
   const validator = {
     code: {
       type: "numAlphaBar",
@@ -334,7 +338,7 @@ export const validatorStripeOAuthConnect = (data: stripeOAuthConnectData) => {
   return validateData(data, validator);
 };
 
-export const validatorStripeOAuthVerify = (data: stripeOAuthVerifyData) => {
+export const validatorStripeOAuthVerify = (data: StripeOAuthVerifyData) => {
   const validator = {
     account_id: {
       type: "numAlphaBar",
@@ -344,7 +348,7 @@ export const validatorStripeOAuthVerify = (data: stripeOAuthVerifyData) => {
   return validateData(data, validator);
 };
 
-export const validateStripeReceipt = (data: stripeReceiptData) => {
+export const validateStripeReceipt = (data: StripeReceiptData) => {
   const validator = {
     restaurantId: {
       type: "firebaseId",
@@ -358,17 +362,7 @@ export const validateStripeReceipt = (data: stripeReceiptData) => {
   return validateData(data, validator);
 };
 
-export const validateStripeUpdateCustomer = (data: stripeUpdateCustomerData) => {
-  const validator = {
-    tokenId: {
-      type: "numAlphaBar",
-      required: true,
-    },
-  };
-  return validateData(data, validator);
-};
-
-export const validatePing = (data: pingData) => {
+export const validatePing = (data: PingData) => {
   const validator = {
     restaurantId: {
       type: "firebaseId",
@@ -382,7 +376,7 @@ export const validatePing = (data: pingData) => {
   return validateData(data, validator);
 };
 
-export const validateLineValidate = (data: lineValidateData) => {
+export const validateLineValidate = (data: LineValidateData) => {
   const validator = {
     code: {
       type: "numAlpha",
@@ -400,7 +394,7 @@ export const validateLineValidate = (data: lineValidateData) => {
   return validateData(data, validator);
 };
 
-export const validateLiffAuthenticate = (data: liffAuthenticateData) => {
+export const validateLiffAuthenticate = (data: LiffAuthenticateData) => {
   const validator = {
     token: {
       type: "numAlpha",

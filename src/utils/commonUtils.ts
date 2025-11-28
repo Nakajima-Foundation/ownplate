@@ -20,3 +20,11 @@ export const costCal = (
   }
   return 0;
 };
+
+export const isNull = <T>(value: T) => {
+  return value === null || value === undefined;
+};
+
+export const isEmpty = <T>(value: T) => {
+  return value === null || value === undefined || String(value) === "";
+};

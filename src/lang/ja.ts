@@ -1,4 +1,14 @@
 const data = {
+  auth: {
+    reauthenticate: {
+      title: "パスワードを再入力してください",
+      message: "セキュリティ上の理由から、パスワードの再入力が必要です。",
+      error: {
+        noUser: "ユーザーが見つかりません",
+        failed: "認証に失敗しました",
+      },
+    },
+  },
   serviceName: {
     ownPlate: "OwnPlate",
     omochikaeri: "おもちかえり.com",
@@ -26,29 +36,9 @@ const data = {
   },
   underConstruction: "注意：これはテスト用のサーバーです。",
   comma: "、",
-  mobileOrder: {
-    name: "モバイルオーダー",
-    reportKeys: {
-      orderPlacedAt: "注文時刻",
-      orderAcceptedAt: "注文受付時刻",
-      timeConfirmed: "準備完了時刻",
-      transactionCompletedAt: "受渡完了時刻",
-    },
-    closing: {
-      notice: "重要",
-      heading: "サービス終了のお知らせ",
-      paragraph1:
-        "「ファミマのモバイルオーダー」は2023年8月18日(金)をもちましてサービスを終了いたします。これまでご愛顧いただきありがとうございました。",
-      paragraph2: "今後のサービス終了までのスケジュールは以下のとおりです。",
-      paragraph3: "新規注文の受付は終了しました。",
-      ordering: "【注文可能日時】",
-      orderingDate: "2023年8月10日(木)16:00まで",
-      acceptance: "【受取可能日時】",
-      acceptanceDate: "2023年8月18日(金)22:00まで",
-      closedMessage: "サービスは終了しました。",
-      closedParagraph:
-        "「ファミマのモバイルオーダー」は2023年8月18日(金)をもちましてサービスを終了いたしました。これまでご愛顧いただきありがとうございました。",
-    },
+  restaurantCard: {
+    title: "カード情報",
+    description: "この店舗で保存されているカード情報を管理できます",
   },
   profile: {
     title: "マイページ",
@@ -85,6 +75,24 @@ const data = {
       isFriend: "友達設定済み",
       noFriend: "未設定",
       none: "なし",
+    },
+    totp: {
+      title: "二要素認証",
+      status: {
+        enabled: "有効",
+        disabled: "無効",
+      },
+      enable: "二要素認証を有効にする",
+      disable: "二要素認証を無効にする",
+      emailVerificationRequired: "メールアドレス認証が必要です",
+      disableConfirmTitle: "二要素認証を無効にしますか？",
+      disableConfirmMessage:
+        "二要素認証を無効にすると、セキュリティレベルが下がります。本当に無効にしますか？",
+      error: {
+        disableFailed: "二要素認証の無効化に失敗しました",
+        tokenExpired:
+          "セッションの有効期限が切れました。パスワードを再入力してください。",
+      },
     },
   },
   menu: {
@@ -260,6 +268,13 @@ const data = {
     businessHourOption: "別時間帯(オプション)",
     copyPreviousDay: "前日をコピー",
     copySunDay: "日曜をコピー",
+    lastOrderTime: {
+      title: "最終注文時間",
+      notes1:
+        "「営業終了時間」と「受け渡し準備時間」を考慮した「最終注文可能な時間」よりも前に、注文を締め切る場合にはこちらを設定してください。",
+      notes2:
+        "未設定の場合は「営業終了時間」と「受け渡し準備時間」を考慮した時間となります。",
+    },
     draftDescription:
       "下書きとして保存されます(お客様からお店のページは見えません)",
     publishDescription: "保存して公開",
@@ -276,7 +291,7 @@ const data = {
       "自社デリバリーを管理することができます。配達可能エリアなどを設定すると、お客様が注文時にテイクアウトかデリバリーを選択できるようになります。(店舗設定を変更している場合は保存を忘れずに)",
     deliveryConfigLink: "デリバリー設定へ",
     printerConfigTitle: "手動印刷プリンター設定",
-    elablePrinter: "プリンターを有効にする",
+    enablePrinter: "プリンターを有効にする",
     printerDescription:
       "ブルートゥースで接続したスター精密製のプリンターを使って、注文情報を印刷できます",
     printerDescription2:
@@ -346,8 +361,6 @@ const data = {
     deleteAllPhotos: "すべて削除",
     exclusionDateTime: "販売除外日/時間",
     lunchDinner: "ランチ/ディナー",
-    lunch: "ランチ",
-    dinner: "ディナー",
     itemOptions: "オプション",
     itemOptionsNote:
       "トッピングや、大盛りなどの商品のオプションを指定します。二択や三択の場合、半角カンマで区切ってください(例:「チキン, ポーク, 豆腐」)。有料オプションの場合には、最後に(+100)のように値段を指定してください(例：「普通盛り,大盛り (+150),特盛(+300)」)",
@@ -435,6 +448,7 @@ const data = {
     temporaryClosure: "臨時休業",
     temporaryClosureAdd: "追加",
     temporaryClosureDescription: "日にちを選択してから追加を押してください",
+    temporaryClosureOkay: "OK",
     temporaryClosureSelect: "日にちを選択",
     paymentMethod: "支払い方法",
     onlinePayment: "オンライン決済",
@@ -609,6 +623,8 @@ const data = {
     menu: "メニューページを見る",
     orderNotPlacedYet:
       "ご注文はまだ確定していません。内容を確認してページ下の注文ボタンを押してください。",
+    waitingPayment:
+      "ご注文はまだ確定していません。決済情報の入力し確定してください",
     yourOrder: "あなたの注文",
     confirmOrder: "ご注文の確認",
     editItems: "注文を変更する",
@@ -660,6 +676,7 @@ const data = {
     order_canceled_by_restaurant: "キャンセル済み(店)",
     reuseCard: "今後の支払いのために保存する",
     whatsCVC: "CVC(セキュリティーコード)とは？",
+    card_error: "カード決済処理に失敗しました。カード情報を確認してください。",
     no_jcb: "＊このお店では、JCBカードは使えません",
     "3digitsCVC": "カードのうら面の右端3ケタ",
     "4digitsCVC": "カードのおもて面の4ケタ",
@@ -667,7 +684,6 @@ const data = {
     or: "もしくは",
     placeOrderNoPayment: "受け取り払いで注文",
     placeOrderNoPaymentNote: "ここで決済せずに商品受け取り時に支払います",
-    waitingPayment: "決済情報の入力・確認",
     submitPayment: "支払いを確定する",
     validating: "処理しています...",
     thankyou: "ご注文、ありがとうございます",
@@ -737,7 +753,7 @@ const data = {
       ready_to_pickup: "受け渡し準備完了",
       transaction_complete: "受け渡し完了",
       ready_to_shipping: "発送準備完了",
-      waiting_payment: "決済待",
+      waiting_payment: "決済待ち",
       shipping_complete: "発送完了",
       transaction_hide: "受注処理完了",
       order_canceled: "キャンセル済み",
@@ -865,9 +881,13 @@ const data = {
     downloadMenu: "チラシをダウンロード",
     cancel: "キャンセル",
     next: "次へ",
+    verify: "認証",
+    skip: "スキップ",
     category: "カテゴリ",
     myPage: "マイページ",
     backToTop: "トップへ",
+    enable: "有効にする",
+    disable: "無効にする",
     login: "ログイン",
     linkToAdminDocs: "ご利用の手引き",
     news: "運営からのお知らせ",
@@ -1106,6 +1126,7 @@ const data = {
       paymentCancelTitle: "カード決済のみキャンセル",
       paymentCancelMessage:
         "現地払いに変更となります。お客様にご連絡の上、現地払いになることをお伝え下さい。注文はキャンセルされません。",
+      waitingPaymentWarninig: "この注文は、決済未完了のため受付できません。",
       paymentCancel: "カード決済のみキャンセル",
       paymentCancelConfirm: "(キャンセルの取り消しは出来ません)",
       placedDate: "注文日",
@@ -1164,6 +1185,28 @@ const data = {
       "download-csv-monthly-details":
         "エクセルデータダウンロード（月次報告 詳細）",
     },
+    totp: {
+      setup: "二要素認証の設定",
+      scanQrCode: "認証アプリでQRコードをスキャンしてください",
+      orEnterManually: "または手動で入力:",
+      enterCode: "認証コードを入力してください",
+      codePlaceholder: "6桁のコード",
+      enrollmentComplete: "二要素認証の設定が完了しました",
+      verification: "二要素認証",
+      verificationMessage:
+        "認証アプリで生成された6桁のコードを入力してください",
+      signupWarning: {
+        title: "QRコードが表示されない場合は",
+        message:
+          "二要素認証の設定は、メールアドレス認証後にマイページから行えます。QRコードが表示されない場合は「スキップ」を押して次へ進んでください。",
+      },
+      error: {
+        generateFailed: "二要素認証の設定に失敗しました",
+        invalidCode: "無効なコードです",
+        enrollmentFailed: "認証に失敗しました。もう一度お試しください",
+        verificationFailed: "認証に失敗しました。コードを確認してください",
+      },
+    },
     error: {
       memoLength: "メッセージは500文字以内で入力してください。",
       email: {
@@ -1186,6 +1229,7 @@ const data = {
         "auth/unauthorized-continue-uri":
           "ドメインがホワイトリストに登録されていません。",
         "auth/internal-error": "パスワードが無効です。",
+        "auth/invalid-credential": "Email or Password is invalid.",
       },
     },
     index: {
@@ -1250,7 +1294,7 @@ const data = {
         "ご利用にはLINE開発者サイトで、LINEログインチャンネルとMessaging APIの設定が必要です。",
       notice3: "Messaging APIはLINE公式アカウントと同じものを使います。",
       notice4:
-        "LINEログインチャンネルにとMessaging APIを「リンクされたボット」として登録しておくことが必要です。",
+        "LINEログインチャンネルにMessaging APIを「リンクされたボット」として登録しておくことが必要です。",
       notice5:
         "また、LINEログインの「コールバックURL」におもちかえりで指定するURLの登録が必要です。",
       loginClientId: "LINEログイン:チャンネルID",
@@ -1277,6 +1321,15 @@ const data = {
       friday: "金曜",
       saturday: "土曜",
       sunday: "日曜",
+    },
+    shortest: {
+      monday: "月",
+      tuesday: "火",
+      wednesday: "水",
+      thursday: "木",
+      friday: "金",
+      saturday: "土",
+      sunday: "日",
     },
   },
   allergens: {

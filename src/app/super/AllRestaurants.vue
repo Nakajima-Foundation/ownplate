@@ -1,5 +1,5 @@
 <template>
-  <section class="mx-auto max-w-full px-6 pb-12 pt-4">
+  <section class="mx-auto max-w-full px-6 pt-4 pb-12">
     <back-button :url="backUrl" />
     <h2>All Restaurants</h2>
     <table>
@@ -16,13 +16,12 @@
         <td>印刷</td>
         <td>EC</td>
         <td>P</td>
-        <td>G</td>
         <td>L</td>
       </tr>
       <tr v-for="restaurant in restaurants" :key="restaurant.id">
         <td style="width: 50%">
           <router-link
-            class="text-sm font-bold text-op-teal"
+            class="text-op-teal text-sm font-bold"
             :to="`/r/${restaurant.id}`"
             v-if="restaurant.publicFlag && !restaurant.deletedFlag"
           >
@@ -35,7 +34,7 @@
         <td>
           <router-link
             :to="`/s/admins/${restaurant.uid}`"
-            class="text-sm font-bold text-op-teal"
+            class="text-op-teal text-sm font-bold"
             >管理人</router-link
           >
         </td>
@@ -67,9 +66,6 @@
           {{ !!restaurant.isEC ? "o" : "-" }}
         </td>
         <td>
-          {{ restaurant.groupId }}
-        </td>
-        <td>
           {{ restaurant.supportLiff }}
         </td>
         <td>
@@ -78,17 +74,17 @@
       </tr>
     </table>
     <hr />
-    <o-button class="mt-2 h-9 rounded-full" @click="nextLoad">
-      <span class="pl-4 pr-4">
-        <span class="font-bold text-op-teal"> Next </span>
+    <button class="mt-2 h-9 rounded-full" @click="nextLoad">
+      <span class="pr-4 pl-4">
+        <span class="text-op-teal font-bold"> Next </span>
       </span>
-    </o-button>
+    </button>
 
-    <o-button class="mt-2 ml-4 h-9 rounded-full" @click="allLoad">
-      <span class="pl-4 pr-4">
-        <span class="font-bold text-op-teal"> All </span>
+    <button class="mt-2 ml-4 h-9 rounded-full" @click="allLoad">
+      <span class="pr-4 pl-4">
+        <span class="text-op-teal font-bold"> All </span>
       </span>
-    </o-button>
+    </button>
 
     <download-csv
       :data="tableData"
@@ -96,12 +92,12 @@
       :fieldNames="fieldNames"
       :fileName="fileName"
     >
-      <o-button class="mt-2 ml-4 h-9 rounded-full">
-        <span class="pl-4 pr-4">
-          <i class="material-icons mr-2 !text-2xl text-op-teal">save_alt</i>
-          <span class="font-bold text-op-teal"> Download </span>
+      <button class="mt-2 ml-4 h-9 rounded-full">
+        <span class="pr-4 pl-4">
+          <i class="material-icons text-op-teal mr-2 text-2xl!">save_alt</i>
+          <span class="text-op-teal font-bold"> Download </span>
         </span>
-      </o-button>
+      </button>
     </download-csv>
   </section>
 </template>
@@ -149,9 +145,9 @@ export default defineComponent({
     const restaurants = ref<RestaurantInfoData[]>([]);
     const last = ref<any | null>(null);
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Super All Restaurants"].join(" / "),
-    });
+    }));
 
     superPermissionCheck();
 

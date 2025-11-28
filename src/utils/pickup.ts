@@ -9,7 +9,7 @@ import {
 } from "@/utils/utils";
 import moment from "moment";
 import { MenuData } from "@/models/menu";
-import { useStore } from "vuex";
+import { useGeneralStore } from "../store";
 
 type AvailableDay = {
   offset: number;
@@ -24,7 +24,7 @@ export const usePickupTime = (
   lunchOrDinner?: string,
   skipToday?: ComputedRef<boolean>,
 ) => {
-  const store = useStore();
+  const generalStore = useGeneralStore();
 
   // public
   const temporaryClosure = computed(() => {
@@ -122,8 +122,7 @@ export const usePickupTime = (
     days: ComputedRef<AvailableDay[]>,
     minTime: ComputedRef<number>,
   ) => {
-    // const now = store.state.date;
-    console.log(store.state.date); // never delete this line;
+    console.log(generalStore.date); // never delete this line;
     if (isAvailable.value) {
       const lastTime = days.value[0].times[days.value[0].times.length - 1];
       const { time } = lastTime;
@@ -151,9 +150,8 @@ export const usePickupTime = (
     if (!shopInfoBusinessDay.value) {
       return []; // it means shopInfo is empty (not yet loaded)
     }
-    const now = store.state.date;
-    // const now = moment("2023-10-09T22:15:00+09:00").toDate()
-    console.log(store.state.date); // never delete this line;
+    const now = generalStore.date;
+    console.log(generalStore.date); // never delete this line;
     const today = now.getDay();
     let suspendUntil = new Date(now);
     suspendUntil.setMinutes(now.getMinutes() + minimumTime);
@@ -253,8 +251,8 @@ export const usePickupTime = (
         const { exceptDay, exceptHour } = menu;
         const hasExceptHour =
           !isNull(exceptHour) &&
-          !isNull(exceptHour.start) &&
-          !isNull(exceptHour.end);
+          !isNull(exceptHour?.start) &&
+          !isNull(exceptHour?.end);
         const hasExceptDay =
           (Object.values(exceptDay || {}) || []).filter((a) => a).length > 0;
         const menuAvailableDays = Object.keys(
@@ -266,7 +264,7 @@ export const usePickupTime = (
           return arr;
         }, []);
 
-        tmp[menu.id] = {
+        tmp[menu.id!] = {
           hasExceptData: hasExceptDay || hasExceptHour,
           hasExceptDay,
           hasExceptHour,

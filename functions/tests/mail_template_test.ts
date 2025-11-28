@@ -1,9 +1,7 @@
-import { should } from "chai";
-//import { expect } from 'chai';
+import { describe, it } from "node:test";
+import assert from "node:assert";
 
-import { createNotifyRestaurantMailMessage } from "./../src/functions/notify";
-
-should();
+import { createNotifyRestaurantMailMessage } from "./../src/functions/notify2";
 
 const order = {
   prices: {
@@ -45,7 +43,7 @@ const order = {
 };
 
 describe("mail template function", () => {
-  it("ja mail template function", async function () {
+  it("ja mail template function", async () => {
     const mail = await createNotifyRestaurantMailMessage("msg_order_placed", "レストランA", order, 123, "ja", "https://example.com");
     const bodys = mail.split("\n");
     const expectBodys = [
@@ -74,11 +72,11 @@ describe("mail template function", () => {
       "https://example.com",
       "",
     ];
-    Object.keys(bodys).map((key) => {
-      bodys[key].should.equal(expectBodys[key]);
+    Object.keys(bodys).forEach((key) => {
+      assert.strictEqual(bodys[key], expectBodys[key]);
     });
   });
-  it("en mail template function", async function () {
+  it("en mail template function", async () => {
     const mail = await createNotifyRestaurantMailMessage("msg_order_placed", "レストランA", order, 123, "en", "https://example.com");
     const bodys = mail.split("\n");
 
@@ -107,8 +105,8 @@ describe("mail template function", () => {
       "https://example.com",
       "",
     ];
-    Object.keys(bodys).map((key) => {
-      bodys[key].should.equal(expectBodys[key]);
+    Object.keys(bodys).forEach((key) => {
+      assert.strictEqual(bodys[key], expectBodys[key]);
     });
   });
 });

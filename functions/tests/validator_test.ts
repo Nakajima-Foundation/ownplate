@@ -1,11 +1,10 @@
-import { should } from "chai";
+import { describe, it } from "node:test";
+import assert from "node:assert";
 
 import * as validator from "../src/lib/validator";
 
-should();
-
 describe("validator function", () => {
-  it("validator function", async function () {
+  it("should validate order update data correctly", async () => {
     const data = {
       restaurantId: "123123",
       orderId: "aaabb",
@@ -14,14 +13,16 @@ describe("validator function", () => {
       // lng?: string;
       //timeEstimated?: admin.firestore.Timestamp;
     };
-    const res = validator.validateOrderUpadte(data);
-    res.result.should.equal(true);
+    const res = validator.validateOrderUpdate(data);
+    assert.strictEqual(res.result, true);
   });
 
-  it("validator function", async function () {
+  it("should validate URL correctly", async () => {
     const url = "http://localhost:3000/callback/line";
     // const url = "http://example.com/callback/line";
     const res = validator.validateUrl(url);
     console.log(res);
+    // Add assertion to make the test meaningful
+    assert.ok(res);
   });
 });
