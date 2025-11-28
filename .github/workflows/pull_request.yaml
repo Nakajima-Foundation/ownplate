@@ -7,12 +7,12 @@ on:
   pull_request
 
 jobs:
-  build:
+  build-functions:
 
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [20.x]
+        node-version: [22.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     defaults:
       run:
@@ -27,8 +27,38 @@ jobs:
         cache: 'npm'
     - run: cp ../src/config/constant.ts ./src/common/constant.ts
     - run: cp ../src/utils/phoneutil.ts ./src/common/phoneutil.ts
-    - run: cp ../src/utils/commonUtils.ts ./src/common/commonUtils.ts
+    - run: cp ../src/utils/commonUtils.ts ./src/utils/commonUtils.ts
     - run: cp ../src/models/RestaurantInfo.ts ./src/models/RestaurantInfo.ts
+    - run: cp ../src/models/menu.ts ./src/models/menu.ts
+    - run: cp ../src/models/customer.ts ./src/models/customer.ts
+    - run: cp ../src/models/orderInfoData.ts ./src/models/orderInfoData.ts
+    - run: cp ../src/models/functionTypes.ts ./src/models/functionTypes.ts
+    - run: cp ../src/models/orderTypes.ts ./src/models/orderTypes.ts
+    - run: cp ../src/models/promotionTypes.ts ./src/models/promotionTypes.ts
     - run: cp ../src/config/default/ownplate-dev.ts ./src/common/project.ts
     - run: SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm_config_arch=x64 npm_config_platform=linux yarn install
     - run: yarn run ci_test
+    - run: yarn run lint
+    - run: yarn run build
+
+
+  build-vue:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [22.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: cp src/config/default/ownplate-dev.ts src/config/project.ts
+    - run: yarn install
+    - run: yarn run lint
+    - name: yarn build
+      run: yarn run build
+      

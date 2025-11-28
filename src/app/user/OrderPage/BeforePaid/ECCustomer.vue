@@ -6,16 +6,16 @@
       <span class="text-red-700">*</span>
     </div>
     <div>
-      <o-field :variant="ecErrors['zip'].length > 0 ? 'danger' : 'success'">
-        <o-input
-          class="w-full"
-          type="text"
-          :placeholder="$t('order.ec.zip')"
-          v-model="customerInfo.zip"
-          :error="ecErrors['zip']"
-          maxlength="10"
-        />
-      </o-field>
+      <input
+        class="w-full rounded border border-gray-300 px-3 py-2"
+        :class="
+          ecErrors['zip'].length > 0 ? 'border-red-500' : 'border-green-500'
+        "
+        type="text"
+        :placeholder="$t('order.ec.zip')"
+        v-model="customerInfo.zip"
+        maxlength="10"
+      />
     </div>
     <div v-if="ecErrors['zip'].length > 0" class="mb-2 font-bold text-red-700">
       <div v-for="(error, key) in ecErrors['zip']" :key="key">
@@ -24,10 +24,10 @@
     </div>
 
     <!-- conv zip to address -->
-    <div class="mb-2 mt-2">
+    <div class="mt-2 mb-2">
       <button @click="getAddress()" class="">
         <div
-          class="inline-flex h-9 items-center justify-center rounded-full bg-op-teal px-4"
+          class="bg-op-teal inline-flex h-9 items-center justify-center rounded-full px-4"
         >
           <div class="text-sm font-bold text-white">
             {{ $t("order.ec.searchAddressFromZip") }}
@@ -42,7 +42,7 @@
     >
       <button @click="updateAddress(address)" class="flex-item mr-2">
         <div
-          class="inline-flex h-9 items-center justify-center rounded-full bg-op-teal px-4"
+          class="bg-op-teal inline-flex h-9 items-center justify-center rounded-full px-4"
         >
           <div class="text-sm font-bold text-white">
             {{ $t("order.ec.select") }}
@@ -59,23 +59,24 @@
       {{ $t("shopInfo.prefecture") }}
       <span class="text-red-700">*</span>
     </div>
-    <o-field
-      :variant="ecErrors['prefectureId'].length > 0 ? 'danger' : 'success'"
+    <select
+      :value="customerInfo.prefectureId"
+      @change="updatePrefecture"
+      class="rounded-lg border-2 bg-white px-3 py-2"
+      :class="
+        ecErrors['prefectureId'].length > 0
+          ? 'border-red-400 hover:border-red-400 focus:ring-red-400'
+          : 'border-teal-400 hover:border-teal-400 focus:ring-teal-400'
+      "
     >
-      <o-select
-        v-model="customerInfo.prefectureId"
-        placeholder="select"
-        @update:modelValue="updatePrefecture"
+      <option
+        v-for="(stateItem, key) in regionalSetting.AddressStates"
+        :value="key + 1"
+        :key="stateItem"
       >
-        <option
-          v-for="(stateItem, key) in regionalSetting.AddressStates"
-          :value="key + 1"
-          :key="stateItem"
-        >
-          {{ stateItem }}
-        </option>
-      </o-select>
-    </o-field>
+        {{ stateItem }}
+      </option>
+    </select>
 
     <!-- address -->
     <div class="pb-2 text-sm font-bold">
@@ -83,15 +84,16 @@
       <span class="text-red-700">*{{ $t("order.ec.addressNotice") }}</span>
     </div>
     <div>
-      <o-field :variant="ecErrors['address'].length > 0 ? 'danger' : 'success'">
-        <o-input
-          class="w-full"
-          type="text"
-          :placeholder="$t('order.ec.address')"
-          v-model="customerInfo.address"
-          maxlength="150"
-        />
-      </o-field>
+      <input
+        class="w-full rounded border border-gray-300 px-3 py-2"
+        :class="
+          ecErrors['address'].length > 0 ? 'border-red-500' : 'border-green-500'
+        "
+        type="text"
+        :placeholder="$t('order.ec.address')"
+        v-model="customerInfo.address"
+        maxlength="150"
+      />
     </div>
     <div
       v-if="ecErrors['address'].length > 0"
@@ -108,15 +110,16 @@
       <span class="text-red-700">*</span>
     </div>
     <div>
-      <o-field :variant="ecErrors['name'].length > 0 ? 'danger' : 'success'">
-        <o-input
-          class="w-full"
-          type="text"
-          :placeholder="$t('order.ec.name')"
-          v-model="customerInfo.name"
-          maxlength="50"
-        />
-      </o-field>
+      <input
+        class="w-full rounded border border-gray-300 px-3 py-2"
+        :class="
+          ecErrors['name'].length > 0 ? 'border-red-500' : 'border-green-500'
+        "
+        type="text"
+        :placeholder="$t('order.ec.name')"
+        v-model="customerInfo.name"
+        maxlength="50"
+      />
     </div>
     <div v-if="ecErrors['name'].length > 0" class="mb-2 font-bold text-red-700">
       <div v-for="(error, key) in ecErrors['name']" :key="key">
@@ -130,15 +133,16 @@
         <span class="text-red-700">*</span>
       </div>
       <div>
-        <o-field :variant="ecErrors['email'].length > 0 ? 'danger' : 'success'">
-          <o-input
-            class="w-full"
-            type="text"
-            :placeholder="$t('order.ec.email')"
-            v-model="customerInfo.email"
-            maxlength="100"
-          />
-        </o-field>
+        <input
+          class="w-full rounded border border-gray-300 px-3 py-2"
+          :class="
+            ecErrors['email'].length > 0 ? 'border-red-500' : 'border-green-500'
+          "
+          type="text"
+          :placeholder="$t('order.ec.email')"
+          v-model="customerInfo.email"
+          maxlength="100"
+        />
       </div>
       <div
         v-if="ecErrors['email'].length > 0"
@@ -151,11 +155,11 @@
     </template>
 
     <div class="mt-2">
-      <o-checkbox v-model="isSaveAddress">
+      <Checkbox v-model="isSaveAddress">
         <div class="text-sm font-bold">
           {{ $t("order.saveAddress") }}
         </div>
-      </o-checkbox>
+      </Checkbox>
     </div>
   </div>
 </template>
@@ -166,13 +170,19 @@ import { defineComponent, ref, computed, PropType } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { regionalSetting, countObj, useUserData } from "@/utils/utils";
-import { CustomerInfo } from "@/models/customer";
-import isEmail from "validator/lib/isEmail";
 
+import { CustomerInfo } from "@/models/customer";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { OrderInfoData } from "@/models/orderInfo";
 
+import isEmail from "validator/lib/isEmail";
+
+import Checkbox from "@/components/form/checkbox.vue";
+
 export default defineComponent({
+  components: {
+    Checkbox,
+  },
   props: {
     shopInfo: {
       type: Object as PropType<RestaurantInfoData>,
@@ -203,19 +213,14 @@ export default defineComponent({
       customerInfo.value = Object.assign({}, customerInfo.value, data);
       addressList.value = [];
     };
-    const getPrefecture = () => {
-      if (customerInfo.value?.prefectureId) {
-        return regionalSetting.AddressStates[
-          customerInfo.value?.prefectureId - 1
-        ];
-      }
-      return null;
-    };
-    const updatePrefecture = () => {
-      const prefecture = getPrefecture();
+    const updatePrefecture = (e) => {
+      const prefectureId = e.target.value;
+      const prefecture = regionalSetting.AddressStates[prefectureId - 1];
+
       if (prefecture) {
         customerInfo.value = Object.assign({}, customerInfo.value, {
           prefecture,
+          prefectureId,
         });
       }
     };

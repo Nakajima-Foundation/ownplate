@@ -1,112 +1,19 @@
-import { Timestamp } from "firebase/firestore";
-
-import { MenuImages } from "@/models/menu";
 import { ownPlateConfig } from "@/config/project";
-import { stripeRegion, orderType } from "@/utils/utils";
-import { RestaurantInfoData } from "@/models/RestaurantInfo";
-import { CustomerInfo } from "@/models/customer";
-
-export interface OrderMenuItemData {
-  category1: string;
-  category2: string;
-  itemName: string;
-  price: number;
-  images: MenuImages;
-  itemPhoto: string;
-  exceptDay: { [key: string]: boolean };
-  exceptHour: { start: number; end: number };
-  tax: string;
-  productId: string; //mo
-  category: string; //mo
-  subCategory: string; //mo
-}
-export interface OrderInfoData {
-  id: string;
-  name: string;
-  number: string;
-  uid: string;
-  totalCharge: number;
-  total: number;
-  sub_total: number;
-  inclusiveTax: boolean;
-  deliveryFee: number;
-  tax: number;
-  // options: {[key: string]: [[key: string]: string]}
-  timeCreated: Timestamp;
-  timeEstimated: Timestamp; // TODO firestore timestamp
-  timeConfirmed: Timestamp;
-  timePlaced: Timestamp;
-  transactionCompletedAt: Timestamp;
-
-  status: number;
-  restaurant: RestaurantInfoData; // ?
-  restaurantId: string; // ?
-  description: string;
-  accounting?: {
-    food: {
-      revenue: number;
-      tax: number;
-    };
-    alcohol: {
-      revenue: number;
-      tax: number;
-    };
-    service?: {
-      revenue: number;
-      tax: number;
-    };
-  };
-  shippingCost: number;
-  isDelivery: boolean;
-  isEC: boolean;
-  isPickup: boolean;
-  tip: number;
-  menuItems: { [key: string]: OrderMenuItemData };
-  phoneNumber: string;
-  order: { [key: string]: [number] };
-  options: { [key: string]: [string] };
-  payment?: { [key: string]: string };
-  type: string;
-
-  prices: { [key: string]: { [key: string]: number } };
-  orderPlacedAt: Timestamp;
-  orderUpdatedAt: Timestamp;
-  orderAcceptedAt: Timestamp;
-  lastUpdatedAt: Timestamp;
-  orderCustomerCanceledAt: Timestamp;
-  uidPaymentCanceledBy: boolean;
-  discountPrice: number;
-
-  customerInfo: CustomerInfo;
-  memo: string;
-
-  lunchOrDinner?: string;
-
-  groupId?: string; // mo
-  cancelReason?: string; // mo
-}
-
-export interface OrderItemData {
-  item: OrderMenuItemData;
-  count: number | number[];
-  id: string;
-  options: string | [string];
-  orderIndex: string[];
-  price?: number;
-}
-
-export class OrderInfo {}
+import { orderType } from "@/utils/utils";
+import { stripe_regions_jp } from "../config/constant";
+import { OrderInfoData } from "./orderInfoData";
+export { OrderInfoData } from "./orderInfoData";
 
 export const order2ReportData = (
   order: OrderInfoData,
   serviceTaxRate: number,
 ) => {
-  const multiple = stripeRegion.multiple;
-  // @ts-ignore
+  const multiple = stripe_regions_jp.multiple;
+  // @ts-expect-error maybe different type or undefine
   order.timeConfirmed = order?.timeConfirmed?.toDate();
-  // @ts-ignore
+  // @ts-expect-error maybe different type or undefine
   order.timePlaced = order?.timePlaced?.toDate();
-  // @ts-ignore
+  // @ts-expect-error maybe different type or undefine
   order.timeEstimated = order?.timeEstimated?.toDate();
   if (!order.accounting) {
     order.accounting = {

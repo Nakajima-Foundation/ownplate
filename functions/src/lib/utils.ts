@@ -1,5 +1,7 @@
 import * as functions from "firebase-functions/v1";
-import { stripe_regions } from "../common/constant";
+import { HttpsError } from "firebase-functions/v2/https";
+import { defineSecret } from "firebase-functions/params";
+import { stripe_regions_jp } from "../common/constant";
 import Stripe from "stripe";
 import * as Sentry from "@sentry/node";
 
@@ -7,8 +9,10 @@ import { Context } from "../models/TestType";
 import { RestaurantInfoData } from "../models/RestaurantInfo";
 import * as admin from "firebase-admin";
 
-const region = "JP"; // config
-export const stripeRegion = stripe_regions[region];
+export const stripeRegion = stripe_regions_jp;
+const stripe_wh_secret = defineSecret("STRIPE_WH_SECRET");
+
+const stripe_secret = defineSecret("STRIPE_SECRET");
 
 export const timezone = "Asia/Tokyo"; // config
 
@@ -66,22 +70,22 @@ export const validate_sub_account_request = async (db: admin.firestore.Firestore
 };
 
 export const getStripeWebhookSecretKey = () => {
-  const SECRET = process.env.STRIPE_WH_SECRET;
+  const SECRET = stripe_wh_secret.value();
   if (!SECRET) {
-    throw new functions.https.HttpsError("invalid-argument", "The functions requires STRIPE_WH_SECRET.");
+    throw new HttpsError("invalid-argument", "The functions requires STRIPE_WH_SECRET.");
   }
   return SECRET;
 };
 
-export const get_stripe = () => {
-  const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET;
+export const get_stripe_v2 = () => {
+  const STRIPE_SECRET_KEY = stripe_secret.value();
   if (!STRIPE_SECRET_KEY) {
-    throw new functions.https.HttpsError("invalid-argument", "The functions requires STRIPE_SECRET_KEY.");
+    throw new HttpsError("invalid-argument", "The functions requires STRIPE_SECRET_KEY.");
   }
-  return new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2024-12-18.acacia" });
+  return new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2025-10-29.clover" });
 };
 
-export const required_params = (params) => {
+export const required_params = (params: Record<string, unknown>) => {
   const errors = Object.keys(params).filter((key) => {
     return params[key] === undefined;
   });
@@ -130,7 +134,7 @@ export const get_restaurant_line_user = async (db: admin.firestore.Firestore, re
   return data;
 };
 
-export const get_delivery_cost = (orderData: any, deliveryData: any, total: number) => {
+export const get_delivery_cost = (orderData: admin.firestore.DocumentData, deliveryData: admin.firestore.DocumentData, total: number) => {
   if (orderData.isDelivery) {
     if (deliveryData.enableDeliveryFree && deliveryData.deliveryFreeThreshold <= total) {
       return 0;
@@ -140,13 +144,13 @@ export const get_delivery_cost = (orderData: any, deliveryData: any, total: numb
   return 0;
 };
 
-export const log_error = (error: any) => {
-  console.error(error.type);
+export const log_error = (error: Error) => {
+  // console.error((error as any).type);
   console.error(error);
   Sentry.captureException(error);
 };
 
-export const process_error = (error: any) => {
+export const process_error = (error: Error) => {
   console.error(error);
   Sentry.captureException(error);
   if (error instanceof functions.https.HttpsError) {
@@ -159,7 +163,7 @@ export const process_error = (error: any) => {
 // const regex = /\((\+|\-)[0-9\.]+\)/
 const regex = /\(((\+|-|＋|ー|−)[0-9.]+)\)/;
 
-const convPrice = (priceStr) => {
+const convPrice = (priceStr: string) => {
   return Number(priceStr.replace(/ー|−/g, "-").replace(/＋/g, "+"));
 };
 
@@ -181,13 +185,13 @@ const chunk = (arr: string[], chunkSize: number) => {
   return ret;
 };
 
-export const getMenuObj = async (refRestaurant, menuIds) => {
-  const menuObj = {};
+export const getMenuObj = async (refRestaurant: admin.firestore.DocumentReference, menuIds: string[]): Promise<Record<string, admin.firestore.DocumentData>> => {
+  const menuObj: Record<string, admin.firestore.DocumentData> = {};
   if (process.env.NODE_ENV !== "test") {
     await Promise.all(
       chunk(menuIds, 10).map(async (menuIdsChunk) => {
         const menusCollections = await refRestaurant.collection("menus").where(admin.firestore.FieldPath.documentId(), "in", menuIdsChunk).get();
-        menusCollections.forEach((m) => {
+        menusCollections.forEach((m: admin.firestore.QueryDocumentSnapshot) => {
           const data = m.data();
           if (data.publicFlag && !data.deletedFlag) {
             menuObj[m.id] = data;
@@ -200,28 +204,32 @@ export const getMenuObj = async (refRestaurant, menuIds) => {
   } else {
     // for test
     await Promise.all(
-      menuIds.map(async (id) => {
+      menuIds.map(async (id: string) => {
         const m = await refRestaurant.collection("menus").doc(id).get();
-        menuObj[m.id] = m.data();
+        const data = m.data();
+        if (data) {
+          menuObj[m.id] = data;
+        }
       }),
     );
     return menuObj;
   }
 };
 
-export const nameOfOrder = (orderNumber: number) => {
+export const nameOfOrder = (orderNumber: number | string) => {
   return "#" + `00${orderNumber}`.slice(-3);
 };
 
-export const filterData = (data: { [key: string]: any }) => {
-  return Object.keys(data).reduce((tmp: { [key: string]: any }, key) => {
-    if (data[key] !== null && data[key] !== undefined) {
-      tmp[key] = data[key];
+export const filterData = <T extends Record<string, unknown>>(data: T): Partial<T> => {
+  return Object.keys(data).reduce((tmp: Partial<T>, key) => {
+    const value = data[key];
+    if (value !== null && value !== undefined) {
+      tmp[key as keyof T] = value as T[keyof T];
     }
     return tmp;
-  }, {});
+  }, {} as Partial<T>);
 };
 
-export const isEmpty = (value: any) => {
+export const isEmpty = (value: unknown): value is null | undefined | "" => {
   return value === null || value === undefined || value === "";
 };

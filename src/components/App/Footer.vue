@@ -1,7 +1,7 @@
 <template>
   <div class="mt-12 bg-[#616161]">
     <!-- Footer -->
-    <div class="mt-4 mx-4 inline-flex text-center">
+    <div class="mx-4 mt-4 inline-flex text-center">
       <!-- Facebook User Group -->
       <div class="inline-block px-1 pb-2" v-if="false">
         <a
@@ -9,30 +9,24 @@
           target="_blank"
         >
           <div
-            class="inline-flex h-10 items-center justify-center rounded-full bg-white bg-opacity-10 px-4"
+            class="inline-flex h-10 items-center justify-center rounded-full bg-white/10 px-4"
           >
-            <i
-              class="fab fa-facebook mr-2 text-lg text-white text-opacity-50"
-            ></i>
-            <span class="text-sm font-bold text-white text-opacity-80">{{
+            <i class="fab fa-facebook mr-2 text-lg text-white/50"></i>
+            <span class="text-sm font-bold text-white/80">{{
               $t("admin.facebookUserGroup")
             }}</span>
           </div>
         </a>
       </div>
 
-      <!-- Twitter -->
+      <!-- X -->
       <div class="inline-block px-1 pb-2">
-        <a href="https://twitter.com/omochikaericom" target="_blank">
+        <a href="https://x.com/omochikaericom" target="_blank">
           <div
-            class="inline-flex h-10 items-center justify-center rounded-full bg-white bg-opacity-10 px-4"
+            class="inline-flex h-10 items-center justify-center rounded-full bg-white/10 px-4"
           >
-            <i
-              class="fab fa-twitter mr-2 text-lg text-white text-opacity-50"
-            ></i>
-            <span class="text-sm font-bold text-white text-opacity-80">
-              Twitter
-            </span>
+            <i class="fab fa-x-twitter mr-2 text-lg text-white/50" />
+            <span class="text-sm font-bold text-white/80"> (Twitter) </span>
           </div>
         </a>
       </div>
@@ -41,14 +35,9 @@
       <div class="inline-block px-1 pb-2">
         <a href="https://note.com/singsoc/m/m19dd935e84e4" target="_blank">
           <div
-            class="inline-flex h-10 items-center justify-center rounded-full bg-white bg-opacity-10 px-4"
+            class="inline-flex h-10 items-center justify-center rounded-full bg-white/10 px-4"
           >
-            <i class="material-icons mr-2 text-lg text-white text-opacity-50"
-              >mail_outline</i
-            >
-            <span class="text-sm font-bold text-white text-opacity-80">
-              Note
-            </span>
+            <span class="text-sm font-bold text-white/80"> Note </span>
           </div>
         </a>
       </div>
@@ -57,19 +46,15 @@
     <div class="my-4 px-4">
       <div class="text-right">
         <a
-          class="inline-flex h-10 items-center justify-center rounded-full bg-white bg-opacity-10 pl-4 pr-2 cursor-pointer"
+          class="inline-flex h-10 cursor-pointer items-center justify-center rounded-full bg-white/10 pr-2 pl-4"
           @click="openLang()"
         >
-          <i class="material-icons mr-2 text-lg text-white text-opacity-50"
-            >language</i
-          >
-          <span class="mr-2 text-sm font-bold text-white text-opacity-80">{{
+          <i class="material-icons mr-2 text-lg text-white/50">language</i>
+          <span class="mr-2 text-sm font-bold text-white/80">{{
             languages[language]
           }}</span>
 
-          <i class="material-icons text-lg text-white text-opacity-50"
-            >arrow_drop_down</i
-          >
+          <i class="material-icons text-lg text-white/50">arrow_drop_down</i>
         </a>
       </div>
       <div class="mt-2 text-right">
@@ -77,38 +62,38 @@
       </div>
     </div>
     <!-- Language Popup-->
-    <o-modal v-model:active="langPopup" :width="488" scroll="keep">
-      <div class="my-6 mx-2 rounded-lg bg-white p-6 shadow-lg">
-        <div class="text-xl font-bold text-black text-opacity-40">
+    <t-modal v-model:active="langPopup" width="488" scroll="keep">
+      <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
+        <div class="text-xl font-bold text-black/40">
           {{ $t("menu.selectLanguage") }}
         </div>
 
         <!-- Languages -->
         <div class="mt-4" v-for="(lang, lang_key) in languages" :key="lang_key">
           <a
-            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4 cursor-pointer"
+            class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-black/5 px-4"
             @click="changeLangAndClose(lang_key)"
             ><i
-              class="material-icons mr-2 text-lg text-black text-opacity-60"
+              class="material-icons mr-2 text-lg text-black/60"
               v-if="lang_key == language"
               >check</i
-            ><span class="text-sm font-bold text-op-teal">{{ lang }}</span></a
+            ><span class="text-op-teal text-sm font-bold">{{ lang }}</span></a
           >
         </div>
 
         <!-- Close -->
         <div class="mt-4 text-center">
           <a
-            class="inline-flex h-12 items-center justify-center rounded-full bg-black bg-opacity-5 cursor-pointer"
+            class="inline-flex h-12 cursor-pointer items-center justify-center rounded-full bg-black/5"
             style="min-width: 10rem"
             @click="closeLang()"
-            ><span class="px-4 font-bold text-black text-opacity-60"
+            ><span class="px-4 font-bold text-black/60"
               >{{ $t("menu.close") }}
             </span></a
           >
         </div>
       </div>
-    </o-modal>
+    </t-modal>
   </div>
 </template>
 
@@ -122,7 +107,6 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 
 import FooterPoweredBy from "@/components/App/FooterPoweredBy.vue";
 
-import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import { useI18n } from "vue-i18n";
 
@@ -131,7 +115,6 @@ export default defineComponent({
     FooterPoweredBy,
   },
   setup() {
-    const store = useStore();
     const route = useRoute();
     const { locale } = useI18n({ useScope: "global" });
 
@@ -146,6 +129,7 @@ export default defineComponent({
       return `${path_prefix}/${uid.value}/private/profile`;
     });
 
+    const currentLang = ref<undefined | string>(); // for anon user
     const setLang = (lang: string) => {
       language.value = lang;
       locale.value = lang;
@@ -153,8 +137,7 @@ export default defineComponent({
     };
     const saveLang = (lang: string) => {
       if (isNull(uid.value)) {
-        // save into store
-        store.commit("setLang", lang);
+        currentLang.value = lang;
       } else {
         setDoc(doc(db, profile_path.value), { lang }, { merge: true });
       }
@@ -181,7 +164,7 @@ export default defineComponent({
           window.navigator.language;
         // window.navigator?.userLanguage ||  ie 11
         // window.navigator.browserLanguage;  || ie
-        console.log("browserlang:" + __language);
+        // console.log("browserlang:" + __language);
         const lang = (__language || "").substr(0, 2);
         if (lang.length === 2) {
           setLang(lang);
@@ -211,8 +194,8 @@ export default defineComponent({
     watch(user, async () => {
       if (user.value) {
         // lang
-        if (store.state.lang) {
-          changeLang(store.state.lang);
+        if (currentLang.value) {
+          changeLang(currentLang.value);
         } else {
           const profileSnapshot = await getDoc(doc(db, profile_path.value));
           if (profileSnapshot.exists()) {

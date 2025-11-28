@@ -4,10 +4,10 @@
     <div class="mx-6 mt-4 flex items-center space-x-4">
       <router-link :to="'/'">
         <div
-          class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+          class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
         >
-          <i class="material-icons mr-2 text-lg text-op-teal">arrow_back</i>
-          <div class="text-sm font-bold text-op-teal">
+          <i class="material-icons text-op-teal mr-2 text-lg">arrow_back</i>
+          <div class="text-op-teal text-sm font-bold">
             {{ $t("button.back") }}
           </div>
         </div>
@@ -15,9 +15,9 @@
     </div>
 
     <!-- Body -->
-    <div class="mx-auto mt-2 max-w-screen-md px-6 text-base">
+    <div class="mx-auto mt-2 max-w-(--breakpoint-md) px-6 text-base">
       <div class="mt-4" v-for="(news, key) in newsList" :key="key">
-        <div class="rounded-lg bg-white p-4 shadow">
+        <div class="rounded-lg bg-white p-4 shadow-sm">
           <div class="mt-2">
             <div class="article-list mt-2" v-html="md.render(news.markdown)" />
           </div>
@@ -38,9 +38,9 @@ import { useHead } from "@unhead/vue";
 
 export default defineComponent({
   setup() {
-    useHead({
+    useHead(() => ({
       title: ["News", defaultTitle].join(" / "),
-    });
+    }));
 
     return {
       md: new MarkdownIt(),
@@ -51,39 +51,39 @@ export default defineComponent({
 </script>
 
 <style lang="css" scoped>
-::v-deep(.article-list) h2 {
+:deep(.article-list h2) {
   font-weight: bold;
 }
-::v-deep(.article-list) ul {
+:deep(.article-list ul) {
   list-style: none;
   margin-top: 8px;
   margin-bottom: 12px;
   font-weight: bold;
 }
 
-::v-deep(.article-list) > ul > li ul li {
+:deep(.article-list > ul > li ul li) {
   list-style: outside;
   margin-left: 36px;
   margin-bottom: 4px;
   font-weight: normal;
   color: #333333;
 }
-::v-deep(.article-list) > ul > li ul li a:link {
+:deep(.article-list > ul > li ul li a:link) {
   color: #1197a7 !important;
 }
-::v-deep(.article-list) > ul > li ul li a:visited {
+:deep(.article-list > ul > li ul li a:visited) {
   color: #1197a7 !important;
 }
-::v-deep(.article-list) > ul > li ul li a:hover {
+:deep(.article-list > ul > li ul li a:hover) {
   color: #1197a7 !important;
 }
-::v-deep(.article-list) > ul > li ul li a:active {
+:deep(.article-list > ul > li ul li a:active) {
   color: #1197a7 !important;
 }
 
 /*
   /deep/ .article-list h2 {
-  @apply text-xl font-bold text-black text-opacity-30 mb-8;
+  @apply text-xl font-bold text-black/30 mb-8;
 }
 
 /deep/ .article-list ul {
@@ -95,7 +95,7 @@ export default defineComponent({
 }
 
 /deep/ .article-list > ul > li {
-  @apply text-xl font-bold text-black text-opacity-30;
+  @apply text-xl font-bold text-black/30;
 }
 
 /deep/ .article-list > ul > li:not(:first-child) {

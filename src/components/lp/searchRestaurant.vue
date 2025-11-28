@@ -1,21 +1,21 @@
 <template>
-  <div class="pt-10 px-6">
+  <div class="px-6 pt-10">
     <div
-      class="bg-op-teal rounded-lg px-5 sm:py-6 pb-12 pt-6 px-auto sm:flex items-center justify-center text-center"
+      class="bg-op-teal px-auto items-center justify-center rounded-lg px-5 pt-6 pb-12 text-center sm:flex sm:py-6"
     >
       <div>
         <img
-          class="object-cover w-40 sm:w-56"
+          class="w-40 object-cover sm:w-56"
           src="/images/top/takeout_icon.png"
         />
       </div>
 
-      <div class="mt-8 sm:mt-0 md:ml-16 sm:ml-8">
+      <div class="mt-8 sm:mt-0 sm:ml-8 md:ml-16">
         <router-link to="/r/area/all">
           <div
-            class="inline-flex h-16 items-center rounded-full bg-white px-12 sm:px-16 shadow hover:bg-opacity-90"
+            class="inline-flex h-16 items-center rounded-full bg-white px-12 shadow-sm hover:bg-white/90 sm:px-16"
           >
-            <span class="text-xl font-bold text-op-teal">
+            <span class="text-op-teal text-xl font-bold">
               {{ $t("lp.searchRestaurant") }}
             </span>
           </div>
@@ -25,17 +25,17 @@
           <div class="inline-flex items-center space-x-4">
             <router-link
               to="/r/area/12"
-              class="inline-flex h-16 items-center rounded-full bg-ownplate-yellow px-10 sm:px-12 hover:bg-opacity-80"
+              class="bg-ownplate-yellow hover:bg-ownplate-yellow/80 inline-flex h-16 items-center rounded-full px-10 sm:px-12"
             >
-              <span class="text-xl font-bold text-black text-op-90">{{
+              <span class="text-op-90 text-xl font-bold text-black">{{
                 $t("lp.tokyo")
               }}</span>
             </router-link>
             <router-link
               to="/r/area/26"
-              class="inline-flex h-16 items-center rounded-full bg-ownplate-yellow px-10 sm:px-12 hover:bg-opacity-80"
+              class="bg-ownplate-yellow hover:bg-ownplate-yellow/80 inline-flex h-16 items-center rounded-full px-10 sm:px-12"
             >
-              <span class="text-xl font-bold text-black text-op-90">{{
+              <span class="text-op-90 text-xl font-bold text-black">{{
                 $t("lp.osaka")
               }}</span>
             </router-link>

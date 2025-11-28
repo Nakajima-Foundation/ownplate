@@ -4,11 +4,14 @@
     <div class="columns is-gapless">
       <!-- Center Column -->
       <div class="column">
-        <div class="ml-6 mr-4 mt-4">
+        <div class="mt-4 mr-4 ml-6">
           <back-button :url="backUrl" />
 
           <h2>All Orders</h2>
-          <o-select v-model="orderState" class="mt-4">
+          <select
+            v-model="orderState"
+            class="mt-4 rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400"
+          >
             <option
               v-for="status in orderStatus"
               :value="status.index"
@@ -16,19 +19,27 @@
             >
               {{ status.key ? $t("order.status." + status.key) : "----" }}
             </option>
-          </o-select>
+          </select>
           <!-- button -->
           <div>
             <div class="mt-2 inline-flex">
               <div class="flex">
-                <o-select v-model="monthValue">
+                <select
+                  v-model="monthValue"
+                  class="mt-1 rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400"
+                >
                   <option v-for="(month, k) in months" :value="month" :key="k">
                     {{ month }}
                   </option>
-                </o-select>
+                </select>
               </div>
               <div class="flex">
-                <o-button @click="LoadTillMonth">Load</o-button>
+                <button
+                  @click="LoadTillMonth"
+                  class="ml-2 inline-flex h-12 items-center rounded-full bg-black/5 px-6"
+                >
+                  Load
+                </button>
                 {{ isLoading ? "Loading..." : "" }}
               </div>
             </div>
@@ -50,9 +61,12 @@
             </div>
           </div>
           <div>
-            <o-button @click="nextLoad" class="mt-4 rounded-full"
-              >more</o-button
+            <button
+              @click="nextLoad"
+              class="cursor-pointe cursor-pointer rounded border-2 border-black/40 bg-gray-200 p-1 hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-25"
             >
+              more
+            </button>
           </div>
 
           <download-csv
@@ -61,16 +75,16 @@
             :fieldNames="fieldNames"
             :fileName="fileName"
           >
-            <o-button class="mt-4 h-9 rounded-full">
-              <span class="pl-4 pr-4">
-                <i class="material-icons mr-2 !text-2xl text-op-teal"
+            <button class="mt-4 h-9 rounded-full">
+              <span class="pr-4 pl-4">
+                <i class="material-icons text-op-teal mr-2 text-2xl!"
                   >save_alt</i
                 >
-                <span class="font-bold text-op-teal">{{
+                <span class="text-op-teal font-bold">{{
                   $t("admin.report.download-csv-all")
                 }}</span>
               </span>
-            </o-button>
+            </button>
           </download-csv>
         </div>
       </div>
@@ -125,9 +139,9 @@ export default defineComponent({
     const router = useRouter();
     superPermissionCheck();
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Super All Orders"].join(" / "),
-    });
+    }));
 
     const months = [0, 1, 2, 3, 4, 5].map((a) => {
       return moment().subtract(a, "month").format("YYYY-MM");

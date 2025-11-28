@@ -1,7 +1,7 @@
 <template>
   <div>
     <user-hero-image />
-    <div class="mx-auto max-w-screen-xl">
+    <div class="mx-auto max-w-(--breakpoint-xl)">
       <search-restaurant />
       <goToAdminLP />
       <operators />
@@ -34,9 +34,9 @@ export default defineComponent({
       window.scrollTo(0, 0);
     })();
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Top"].join(" / "),
-    });
+    }));
 
     return {};
   },

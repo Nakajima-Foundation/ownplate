@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="mx-6 mt-4 text-xl font-bold text-black text-opacity-40">
+    <div class="mx-6 mt-4 text-xl font-bold text-black/40">
       {{ $t("find.areaAll") }}
     </div>
     <!-- Restaurants -->
@@ -10,7 +10,7 @@
       <div v-for="(restaurant, k) in restaurants" :key="k">
         <router-link :to="`/liff/${liffIndexId}/r/${restaurant.id}`">
           <div class="flex items-center">
-            <div class="mr-4 h-12 w-12 rounded-full bg-black bg-opacity-10">
+            <div class="mr-4 h-12 w-12 rounded-full bg-black/10">
               <img
                 :src="resizedProfileImage(restaurant, '600')"
                 class="h-12 w-12 rounded-full object-cover"

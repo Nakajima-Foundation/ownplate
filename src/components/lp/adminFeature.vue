@@ -1,62 +1,62 @@
 <template>
   <!-- admin feature -->
-  <div class="pt-10 px-6">
-    <div class="text-black text-center text-op-90 text-2xl font-bold">
+  <div class="px-6 pt-10">
+    <div class="text-op-90 text-center text-2xl font-bold text-black">
       {{ $t("lp.feature") }}
     </div>
 
-    <div class="grid grid-cols-2 gap-2 sm:gap-4 mt-4">
-      <div class="bg-white rounded-lg p-5 pt-2 text-center">
+    <div class="mt-4 grid grid-cols-2 gap-2 sm:gap-4">
+      <div class="rounded-lg bg-white p-5 pt-2 text-center">
         <div>
           <img
-            class="object-cover w-2/3 sm:w-2/4 lg:w-1/3"
+            class="w-2/3 object-cover sm:w-2/4 lg:w-1/3"
             src="/images/top/admin_icon1.png"
           />
         </div>
         <div
-          class="text-black text-center text-op-90 text-sm sm:text-base font-bold mt-3"
+          class="text-op-90 mt-3 text-center text-sm font-bold text-black sm:text-base"
         >
           {{ $t("lp.feature1") }}
         </div>
       </div>
 
-      <div class="bg-white rounded-lg p-5 pt-2 text-center">
+      <div class="rounded-lg bg-white p-5 pt-2 text-center">
         <div>
           <img
-            class="object-cover w-2/3 sm:w-2/4 lg:w-1/3"
+            class="w-2/3 object-cover sm:w-2/4 lg:w-1/3"
             src="/images/top/admin_icon2.png"
           />
         </div>
         <div
-          class="text-black text-center text-op-90 text-sm sm:text-base font-bold mt-3"
+          class="text-op-90 mt-3 text-center text-sm font-bold text-black sm:text-base"
         >
           {{ $t("lp.feature2") }}
         </div>
       </div>
 
-      <div class="bg-white rounded-lg p-5 pt-2 text-center">
+      <div class="rounded-lg bg-white p-5 pt-2 text-center">
         <div>
           <img
-            class="object-cover w-2/3 sm:w-2/4 lg:w-1/3"
+            class="w-2/3 object-cover sm:w-2/4 lg:w-1/3"
             src="/images/top/admin_icon3.png"
           />
         </div>
         <div
-          class="text-black text-center text-op-90 text-sm sm:text-base font-bold mt-3"
+          class="text-op-90 mt-3 text-center text-sm font-bold text-black sm:text-base"
         >
           {{ $t("lp.feature3") }}
         </div>
       </div>
 
-      <div class="bg-white rounded-lg p-5 pt-2 text-center">
+      <div class="rounded-lg bg-white p-5 pt-2 text-center">
         <div>
           <img
-            class="object-cover w-2/3 sm:w-2/4 lg:w-1/3"
+            class="w-2/3 object-cover sm:w-2/4 lg:w-1/3"
             src="/images/top/admin_icon4.png"
           />
         </div>
         <div
-          class="text-black text-center text-op-90 text-sm sm:text-base font-bold mt-3"
+          class="text-op-90 mt-3 text-center text-sm font-bold text-black sm:text-base"
         >
           {{ $t("lp.feature4") }}
         </div>

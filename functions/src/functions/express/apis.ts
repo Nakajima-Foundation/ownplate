@@ -5,6 +5,9 @@ import * as admin from "firebase-admin";
 // import * as Sentry from "@sentry/node";
 
 import { nameOfOrder, timezone } from "../../lib/utils";
+import { MenuData } from "../../models/menu";
+import { RestaurantInfoData } from "../../models/RestaurantInfo";
+import { RequestWithRestaurant } from "../../lib/types/restaurant";
 
 import { validateFirebaseId } from "../../lib/validator";
 import { order_status } from "../../common/constant";
@@ -21,144 +24,16 @@ if (!admin.apps.length) {
 
 let db = admin.firestore();
 
-export const updateDb = (_db) => {
+export const updateDb = (_db: admin.firestore.Firestore) => {
   db = _db;
 };
 
-export const response200 = (res, payload) => {
+export const response200 = (res: express.Response, payload: unknown) => {
   return res.json({
     result: true,
     payload,
   });
 };
-/*
-const hostname = "https://" + ownPlateConfig.hostName;
-
-const num2time = (num) => {
-  return [String(Math.floor(num / 60)).padStart(2, "0"), ":", String(num % 60).padStart(2, "0")].join("");
-};
-
-const week = {
-  "7": "日曜",
-  "1": "月曜",
-  "2": "火曜",
-  "3": "水曜",
-  "4": "木曜",
-  "5": "金曜",
-  "6": "土曜",
-};
-
-const getRestaurants = async (req: any, res: any) => {
-  try {
-    const docs = (await db.collection("restaurants").where("publicFlag", "==", true).where("deletedFlag", "==", false).orderBy("updatedAt", "desc").limit(20).get()).docs;
-    const restaurants = await Promise.all(
-      docs.map(async (doc) => {
-        const { restaurantName, ownerName, introduction, location, url, phoneNumber, zip, state, city, streetAddress, images, businessDay, openTimes } = doc.data();
-
-        const converBusinessDay = Object.keys(week).map((key) => {
-          const openTime = businessDay[key]
-            ? openTimes[key]
-                .sort((a, b) => {
-                  return a["start"] > b["start"];
-                })
-                .map((a) => {
-                  return {
-                    start: num2time(a["start"]),
-                    end: num2time(a["end"]),
-                  };
-                })
-            : [];
-
-          return {
-            day: Number(key),
-            name: week[key],
-            isOpen: businessDay[key],
-            openTime,
-          };
-        });
-        const ret = {
-          id: doc.id,
-          url: hostname + "/r/" + doc.id,
-          info: {
-            name: restaurantName,
-            ownerName,
-            introduction,
-            location,
-            url,
-            phoneNumber,
-          },
-          address: {
-            zip,
-            state,
-            city,
-            streetAddress,
-          },
-          images: {
-            cover: (images?.cover?.resizedImages || {})["600"] || null,
-            profile: (images?.profile?.resizedImages || {})["600"] || null,
-          },
-          businessDay: converBusinessDay,
-        };
-        return ret;
-      })
-    );
-    return response200(res, { restaurants });
-  } catch (e) {
-    console.log(e);
-    Sentry.captureException(e);
-    return res.status(500).end();
-  }
-};
-
-const getMenus = async (req: any, res: any) => {
-  const { restaurantId } = req.params;
-
-  if (!validateFirebaseId(restaurantId)) {
-    return res.status(404).send("");
-  }
-
-  const restaurant = await db.doc(`restaurants/${restaurantId}`).get();
-  if (!restaurant || !restaurant.exists) {
-    return res.status(404).send("");
-  }
-  const restaurant_data: any = restaurant.data();
-  if (!restaurant_data.publicFlag || restaurant_data.deletedFlag) {
-    return res.status(404).send("");
-  }
-  const docs = (await db.collection(`restaurants/${restaurantId}/menus`).where("publicFlag", "==", true).where("deletedFlag", "==", false).limit(20).get()).docs;
-  const menus = await Promise.all(
-    docs.map(async (doc) => {
-      const { itemName, itemDescription, images, itemPhoto, price, tax, allergens, itemOptionCheckbox } = doc.data();
-      return {
-        id: doc.id,
-        url: hostname + "/r/" + restaurantId + "/menus/" + doc.id,
-        itemInfo: {
-          name: itemName,
-          description: itemDescription,
-          image: (images?.item?.resizedImages || {})["600"] || itemPhoto || null,
-        },
-        price: {
-          price,
-          tax,
-        },
-        allergens,
-        itemOptionCheckbox,
-      };
-    })
-  );
-  return response200(res, { menus });
-};
-
-const corsOptionsDelegate = (req, callback) => {
-  // firebaseapp.com, web.app, localhost:3000/*
-  const pattern = /(http:\/\/localhost:\d+)$|(https:\/\/[a-zA-Z0-9-]+\.firebaseapp\.com)$|(https:\/\/[a-zA-Z0-9-]+\.web\.app)$/;
-  const corsOptions = (req.header("Origin") || "").match(pattern) ? { origin: true } : { origin: false };
-  callback(null, corsOptions); // callback expects two parameters: error and options
-};
-
-apiRouter.get("/restaurants", cors(corsOptionsDelegate), getRestaurants);
-apiRouter.get("/restaurants/:restaurantId/menus", cors(corsOptionsDelegate), getMenus);
-*/
 
 export const escapeOptionPrice = (text: string) => {
   const optionPriceRegex = /\(((\+|＋|ー|−)[0-9.]+)\)/g;
@@ -169,12 +44,12 @@ export const escapePrinterString = (text: string) => {
   return text.replace(/[{}+\-|"`^,;:]+/g, "");
 };
 
-export const getSVG = (restaurantData: any, orderData: any) => {
+export const getSVG = (restaurantData: admin.firestore.DocumentData, orderData: admin.firestore.DocumentData) => {
   const orderNumber = nameOfOrder(orderData.number);
 
   const messages: string[] = [];
   Object.keys(orderData.order).map((menuId) => {
-    const menu = orderData.menuItems[menuId];
+    const menu = orderData.menuItems[menuId] as MenuData;
     const name = menu.itemName;
     return Object.keys(orderData.order[menuId]).map((key) => {
       const count = orderData.order[menuId][key];
@@ -182,9 +57,9 @@ export const getSVG = (restaurantData: any, orderData: any) => {
 
       try {
         if (orderData.options && orderData.options[menuId] && orderData.options[menuId][key]) {
-          const opts = orderData.options[menuId][key].filter((o) => o);
+          const opts = orderData.options[menuId][key].filter((o: unknown) => o);
           if (opts.length > 0) {
-            opts.map((opt) => {
+            opts.map((opt: string) => {
               if (opt) {
                 messages.push("~~~*" + escapePrinterString(escapeOptionPrice(opt)) + "|");
               }
@@ -231,37 +106,42 @@ ${orders}
   return svg;
 };
 
-const common = async (req: any, res: any, next: any) => {
+const common = async (req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> => {
   const { restaurantId, starKey } = req.params;
 
   if (!validateFirebaseId(restaurantId)) {
-    return res.status(404).send("");
+    res.status(404).send("");
+    return;
   }
 
   const restaurant = await db.doc(`restaurants/${restaurantId}`).get();
   if (!restaurant || !restaurant.exists) {
-    return res.status(404).send("");
+    res.status(404).send("");
+    return;
   }
-  const restaurant_data: any = restaurant.data();
-  if (!restaurant_data.publicFlag || restaurant_data.deletedFlag) {
-    return res.status(404).send("");
+  const restaurant_data = restaurant.data();
+  if (!restaurant_data || !restaurant_data.publicFlag || restaurant_data.deletedFlag) {
+    res.status(404).send("");
+    return;
   }
 
   const restaurantPrinter = await db.doc(`restaurants/${restaurantId}/private/printer`).get();
   if (!restaurantPrinter || !restaurantPrinter.exists) {
-    return res.status(400).send("");
+    res.status(400).send("");
+    return;
   }
   const restaurantPrinterData = restaurantPrinter.data();
   if (!restaurantPrinterData || restaurantPrinterData.key !== starKey) {
-    return res.status(400).send("");
+    res.status(400).send("");
+    return;
   }
 
   // todo auth
-  req.restaurant = restaurant_data;
+  (req as RequestWithRestaurant).restaurant = restaurant_data as RestaurantInfoData;
   next();
 };
 
-const pollingStar = async (req: any, res: any) => {
+const pollingStar = async (req: express.Request, res: express.Response) => {
   const { restaurantId } = req.params;
   const { statusCode } = req.body;
   // console.log("POST", {statusCode}, req.body);
@@ -295,17 +175,19 @@ const pollingStar = async (req: any, res: any) => {
   });
 };
 
-const requestStar = async (req: any, res: any) => {
+const requestStar = async (req: express.Request, res: express.Response) => {
   const { token, type } = req.query;
   const { restaurantId } = req.params;
   console.log("GET", { type });
 
   if (token) {
     const doc = await db.doc(`restaurants/${restaurantId}/orders/` + token).get();
+    const restaurant = (req as RequestWithRestaurant).restaurant;
+    if (!restaurant) {
+      return res.status(400).json({ error: "Restaurant not found" });
+    }
 
-    // console.log("print", token);
-
-    const svg = getSVG(req.restaurant, doc.data());
+    const svg = getSVG(restaurant, doc.data()!);
     // const png = await convert(svg, {background: "white"});
     const png = await sharp(Buffer.from(svg))
       .flatten({ background: { r: 255, g: 255, b: 255 } })
@@ -317,7 +199,7 @@ const requestStar = async (req: any, res: any) => {
   return res.status(200).json({});
 };
 
-const deleteStar = async (req: any, res: any) => {
+const deleteStar = async (req: express.Request, res: express.Response) => {
   // const { uid, type, mac, token } = req.query;
   const { token, code, retry } = req.query;
   const { restaurantId } = req.params;

@@ -1,16 +1,15 @@
 // import * as admin from "firebase-admin";
-import { should } from "chai";
+import { describe, it } from "node:test";
+import assert from "node:assert";
 // import { getSVG } from "../src/functions/express/apis";
 // import { writeFile } from "fs";
 import * as receiptline from "receiptline";
 // import { convert } from "convert-svg-to-png";
 import sharp from "sharp";
 
-should();
-
 describe("svg function", () => {
   /*
-  it("svg convert", async function () {
+  it("svg convert", async () => {
     const restaurantData = {
       restaurantName: "テスト店舗",
     };
@@ -51,8 +50,8 @@ describe("svg function", () => {
     console.log(ret);
   });
   */
-  
-  it("shart test", async function () {
+
+  it("sharp test", async () => {
     const text =
       "^^テストカフェ8080 デリバリーss\n" +
       "おもちかえり.com\n" +
@@ -88,6 +87,8 @@ describe("svg function", () => {
       .toFile("./order2.png");
     // .toBuffer()
 
+    // Verify that the conversion succeeded
+    assert.ok(svg);
     // console.log(res);
   });
 });

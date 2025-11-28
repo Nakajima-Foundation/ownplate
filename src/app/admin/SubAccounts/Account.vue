@@ -20,11 +20,11 @@
         </span>
       </div>
       <div class="mt-2">
-        <o-input
+        <input
           v-model="name"
           :placeholder="$t('admin.subAccounts.enterName')"
-          rootClass="w-full"
-        ></o-input>
+          class="w-full rounded border border-gray-300 px-3 py-2"
+        />
         <div class="mt-2">
           <span class="text-base font-bold"
             >{{ $t("admin.subAccounts.email") }}
@@ -40,20 +40,20 @@
           }}
         </div>
       </div>
-      <div class="mt-2 rounded-lg bg-white p-4 shadow">
+      <div class="mt-2 rounded-lg bg-white p-4 shadow-sm">
         <span class="font-bold">{{
           $t("admin.subAccounts.selectRestaurant")
         }}</span>
         <div v-for="(restaurant, k) in restaurants" :key="k">
-          <o-checkbox v-model="restaurantListObj[restaurant.id]">{{
+          <Checkbox v-model="restaurantListObj[restaurant.id]">{{
             restaurant.restaurantName
-          }}</o-checkbox>
+          }}</Checkbox>
         </div>
       </div>
       <div class="text-center">
         <button @click="saveList">
           <div
-            class="mt-4 inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow min-w-32"
+            class="bg-op-teal mt-4 inline-flex h-12 min-w-32 items-center justify-center rounded-full px-6 shadow-sm"
           >
             <span class="text-base font-bold text-white">{{
               $t("editCommon.save")
@@ -67,8 +67,9 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { useHead } from "@unhead/vue";
 
-import BackButton from "@/components/BackButton.vue";
 import { db } from "@/lib/firebase/firebase9";
 import {
   doc,
@@ -83,14 +84,15 @@ import {
 } from "firebase/firestore";
 
 import { doc2data, array2obj, useAdminUids, defaultTitle } from "@/utils/utils";
-
-import { useRouter, useRoute } from "vue-router";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
-import { useHead } from "@unhead/vue";
+
+import Checkbox from "@/components/form/checkbox.vue";
+import BackButton from "@/components/BackButton.vue";
 
 export default defineComponent({
   components: {
     BackButton,
+    Checkbox,
   },
   setup() {
     const route = useRoute();
@@ -99,9 +101,9 @@ export default defineComponent({
     const subAccountId = computed(() => {
       return route.params.subAccountId;
     });
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Admin Subaccount Account"].join(" / "),
-    });
+    }));
 
     const restaurantObj = ref({});
     const restaurants = ref<RestaurantInfoData[]>([]);

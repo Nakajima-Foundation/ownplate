@@ -1,11 +1,12 @@
 import { useRouter, useRoute } from "vue-router";
-import { useStore } from "vuex";
+import { useUserStore } from "@/store/user";
+import { RestaurantInfoData } from "../models/RestaurantInfo";
 
 export const checkAdminPermission = () => {
-  const store = useStore();
+  const userStore = useUserStore();
   const router = useRouter();
   const route = useRoute();
-  if (!store.getters.uidAdmin) {
+  if (!userStore.uidAdmin) {
     const redirectUrl = encodeURIComponent(route.path);
     if (redirectUrl) {
       router.replace("/admin/user/signin?to=" + redirectUrl);
@@ -18,11 +19,17 @@ export const checkAdminPermission = () => {
 };
 
 // allow subAccounts
-export const checkShopAccount = (shopInfo: any, ownerUid: string) => {
+export const checkShopAccount = (
+  shopInfo: RestaurantInfoData,
+  ownerUid: string,
+) => {
   return shopInfo.uid === ownerUid;
 };
 
 // only owner
-export const checkShopOwner = (shopInfo: any, uidAdmin: string) => {
+export const checkShopOwner = (
+  shopInfo: RestaurantInfoData,
+  uidAdmin: string,
+) => {
   return shopInfo.uid === uidAdmin;
 };

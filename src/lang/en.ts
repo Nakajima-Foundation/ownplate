@@ -1,4 +1,14 @@
 const data = {
+  auth: {
+    reauthenticate: {
+      title: "Please re-enter your password",
+      message: "For security reasons, please confirm your password.",
+      error: {
+        noUser: "User not found",
+        failed: "Authentication failed",
+      },
+    },
+  },
   serviceName: {
     ownPlate: "OwnPlate",
     omochikaeri: "おもちかえり.com",
@@ -26,30 +36,9 @@ const data = {
   },
   underConstruction: "WARNING: This is a staging server for development.",
   comma: ", ",
-  mobileOrder: {
-    name: "Online ordering service",
-    reportKeys: {
-      orderPlacedAt: "注文時刻",
-      orderAcceptedAt: "注文受付時刻",
-      timeConfirmed: "準備完了時刻",
-      transactionCompletedAt: "受渡完了時刻",
-    },
-    closing: {
-      notice: "Notice",
-      heading: "End of Service Notice",
-      paragraph1:
-        "Thank you for your continuous support. Mobile Order will no longer be available on Friday, August 18, 2023. We apologize for any inconvenience and appreciate your understanding.",
-      paragraph2:
-        "Please check below for the schedule until the end of the service.",
-      paragraph3: "New orders are no longer being accepted.",
-      ordering: "[Date and time for ordering]",
-      orderingDate: "Until 16:00, Thursday, August 10, 2023",
-      acceptance: "[Date and time of receipt]",
-      acceptanceDate: "Until 22:00, Friday, August 18, 2023",
-      closedMessage: "End of Service Notice",
-      closedParagraph:
-        "Thank you for your continuous support. Mobile Order is no longer available on Friday, August 18, 2023. We apologize for any inconvenience and appreciate your understanding.",
-    },
+  restaurantCard: {
+    title: "Restaurant Card Info",
+    description: "Manage your saved card information for this restaurant",
   },
   profile: {
     title: "My Page",
@@ -87,6 +76,23 @@ const data = {
       isFriend: "a friend",
       noFriend: "not a friend",
       none: "None",
+    },
+    totp: {
+      title: "Two-Factor Authentication",
+      status: {
+        enabled: "Enabled",
+        disabled: "Disabled",
+      },
+      enable: "Enable Two-Factor Authentication",
+      disable: "Disable Two-Factor Authentication",
+      emailVerificationRequired: "Email verification is required",
+      disableConfirmTitle: "Disable Two-Factor Authentication?",
+      disableConfirmMessage:
+        "Disabling two-factor authentication will lower your account security. Are you sure?",
+      error: {
+        disableFailed: "Failed to disable two-factor authentication",
+        tokenExpired: "Session expired. Please re-enter your password.",
+      },
     },
   },
   menu: {
@@ -264,6 +270,13 @@ const data = {
     businessHourOption: "Another Hours (optional)",
     copyPreviousDay: "Copy Previous Day",
     copySunDay: "Copy Sunday",
+    lastOrderTime: {
+      title: "Last Order Time",
+      notes1:
+        'Configure this if you would like to close orders prior to the "final order time," considering the "business closing time" and "order preparation time."',
+      notes2:
+        'If this is not configured, the time will be determined by considering the "business closing time" and "order preparation time."',
+    },
     draftDescription: "Save as Draft.",
     publishDescription: "Save and publish your restaurant.",
     draftWarning: "You can publish this by correcting the red frame.",
@@ -278,7 +291,7 @@ const data = {
       "You can manage your own delivery. By setting the delivery area etc., the customer can choose takeout or delivery when ordering. (Don't forget to save if you have changed the store settings)",
     deliveryConfigLink: "To delivery settings",
     printerConfigTitle: "Printer settings",
-    elablePrinter: "Enable print",
+    enablePrinter: "Enable print",
     printerDescription:
       "You can print your order information using a printer made by Star Seiki connected via Bluetooth.",
     printerDescription2:
@@ -349,8 +362,6 @@ const data = {
     deleteAllPhotos: "Delete all photos",
     exclusionDateTime: "Exclusion date/time",
     lunchDinner: "Lunch/Dinner",
-    lunch: "Lunch",
-    dinner: "Dinner",
     itemOptions: "Item options",
     itemOptionsNote:
       'For altenatives, use comma to separate them (e.g., "Chicken, Pork, Tofu"). You may add a price to an option with (+N), where N is the price.',
@@ -439,6 +450,7 @@ const data = {
     temporaryClosure: "Temporary Closure",
     temporaryClosureAdd: "Add",
     temporaryClosureDescription: "Please select a date and then press Add",
+    temporaryClosureOkay: "OK",
     temporaryClosureSelect: "Select a date",
     paymentMethod: "Payment Method",
     onlinePayment: "Online Payment",
@@ -664,6 +676,7 @@ const data = {
     order_canceled_by_restaurant: "Canceled by restaurant",
     reuseCard: "Save it for future use",
     whatsCVC: "What’s CVC?",
+    card_error: "Failed to confirm the payment.",
     no_jcb: "＊This restaurant does not accept JCB card",
     "3digitsCVC": "The final three digits on the back",
     "4digitsCVC": "The four digits on the front",
@@ -871,9 +884,13 @@ const data = {
     downloadMenu: "Download menu",
     cancel: "Cancel",
     next: "Next",
+    verify: "Verify",
+    skip: "Skip",
     category: "Category",
     myPage: "My Page",
     backToTop: "Top",
+    enable: "Enable",
+    disable: "Disable",
     login: "Sign in",
     linkToAdminDocs: "Detailed instructions",
     news: "News",
@@ -1111,6 +1128,8 @@ const data = {
       paymentCancelTitle: "Cancel only card payment",
       paymentCancelMessage:
         "It will be changed to payment in the restaurant. Please contact the customer and let them know that you will be paying in the restaurant. The order will not be cancelled.",
+      waitingPaymentWarninig:
+        "This order cannot be accepted as payment has not been completed.",
       paymentCancel: "Cancel only card payment",
       paymentCancelConfirm: "(This action is undoable)",
       placedDate: "Date of order",
@@ -1169,6 +1188,28 @@ const data = {
       "download-csv-history-details": "Download Excel File (History Details)",
       "download-csv-monthly-details": "Download Excel File (Monthly Details)",
     },
+    totp: {
+      setup: "Two-Factor Authentication Setup",
+      scanQrCode: "Scan this QR code with your authenticator app",
+      orEnterManually: "Or enter manually:",
+      enterCode: "Enter verification code",
+      codePlaceholder: "6-digit code",
+      enrollmentComplete: "Two-factor authentication setup complete",
+      verification: "Two-Factor Authentication",
+      verificationMessage:
+        "Please enter the 6-digit code from your authenticator app",
+      signupWarning: {
+        title: "If QR code is not displayed",
+        message:
+          "Two-factor authentication can be set up from My Page after email verification. If the QR code is not displayed, please press 'Skip' to continue.",
+      },
+      error: {
+        generateFailed: "Failed to generate two-factor authentication",
+        invalidCode: "Invalid code",
+        enrollmentFailed: "Failed to enroll. Please try again",
+        verificationFailed: "Verification failed. Please check your code",
+      },
+    },
     error: {
       memoLength: "Please enter your message within 500 characters.",
       email: {
@@ -1191,6 +1232,7 @@ const data = {
           "The email or the password is invalid.",
         "auth/unauthorized-continue-uri": "Domain not whitelisted by project",
         "auth/internal-error": "Password is invalid.",
+        "auth/invalid-credential": "Email or Password is invalid.",
       },
     },
     index: {
@@ -1285,6 +1327,15 @@ const data = {
       friday: "Fri",
       saturday: "Sat",
       sunday: "Sun",
+    },
+    shortest: {
+      monday: "M",
+      tuesday: "T",
+      wednesday: "W",
+      thursday: "T",
+      friday: "F",
+      saturday: "S",
+      sunday: "S",
     },
   },
   allergens: {

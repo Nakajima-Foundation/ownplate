@@ -18,12 +18,12 @@
       />
 
       <!-- Title -->
-      <div class="mx-6 mt-4 text-xl font-bold text-black text-opacity-30">
+      <div class="mx-6 mt-4 text-xl font-bold text-black/30">
         {{ $t("admin.order.suspendSettings") }}
       </div>
 
       <!-- Date -->
-      <div class="mx-6 mt-4 text-sm font-bold text-black text-opacity-60">
+      <div class="mx-6 mt-4 text-sm font-bold text-black/60">
         {{ $t("admin.order.suspendNewOrders") }}
         <span v-if="date">: {{ $d(date.date, "short") }}</span>
       </div>
@@ -35,25 +35,25 @@
             {{ $t("admin.order.notSuspendAvailable") }}
           </div>
           <div v-else>
-            <o-button
+            <button
               v-for="time in availableTimes"
               :key="time.time"
               @click="handleSuspend(0, time.time)"
-              class="b-reset-tw mr-4 mb-4"
+              class="mr-4 mb-4 cursor-pointer"
             >
               <div
-                class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+                class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
               >
-                <i class="material-icons mr-2 text-lg text-op-teal"
+                <i class="material-icons text-op-teal mr-2 text-lg"
                   >alarm_off</i
                 >
-                <div class="text-sm font-bold text-op-teal">
+                <div class="text-op-teal text-sm font-bold">
                   {{
                     $t("admin.order.suspendUntil", { display: time.display })
                   }}
                 </div>
               </div>
-            </o-button>
+            </button>
 
             <div class="mt-4">
               <div
@@ -61,18 +61,18 @@
                 :key="k"
                 class="inline-flex"
               >
-                <o-button
+                <button
                   v-if="availableTimes.length > 0"
-                  class="b-reset-tw"
+                  class="cursor-pointer"
                   @click="handleSuspend(day, 24 * 60)"
                 >
                   <div
-                    class="mr-4 mb-4 inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+                    class="mr-4 mb-4 inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                   >
-                    <i class="material-icons mr-2 text-lg text-op-teal"
+                    <i class="material-icons text-op-teal mr-2 text-lg"
                       >alarm_off</i
                     >
-                    <div class="text-sm font-bold text-op-teal">
+                    <div class="text-op-teal text-sm font-bold">
                       <span v-if="day > 0">{{
                         $t("admin.order.suspendDayUntil", { display: day })
                       }}</span>
@@ -81,14 +81,14 @@
                       }}</span>
                     </div>
                   </div>
-                </o-button>
+                </button>
               </div>
             </div>
           </div>
         </div>
 
         <div v-else>
-          <div class="mt-4 rounded-lg bg-red-700 bg-opacity-10 p-4 text-center">
+          <div class="mt-4 rounded-lg bg-red-700/10 p-4 text-center">
             <div class="text-base font-bold text-red-700">
               {{ $t("admin.order.suspending") }}
             </div>
@@ -98,16 +98,16 @@
           </div>
 
           <div class="mt-4">
-            <o-button class="b-reset-tw" @click="handleRemove">
+            <button class="cursor-pointer" @click="handleRemove">
               <div
-                class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+                class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
               >
-                <i class="material-icons mr-2 text-lg text-op-teal">alarm_on</i>
-                <div class="text-sm font-bold text-op-teal">
+                <i class="material-icons text-op-teal mr-2 text-lg">alarm_on</i>
+                <div class="text-op-teal text-sm font-bold">
                   {{ $t("admin.order.unsuspend") }}
                 </div>
               </div>
-            </o-button>
+            </button>
           </div>
         </div>
       </div>
@@ -133,7 +133,7 @@ import {
 import { usePickupTime } from "@/utils/pickup";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
-import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
 import { useI18n } from "vue-i18n";
 import { useHead } from "@unhead/vue";
 
@@ -148,14 +148,15 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props) {
-    const store = useStore();
+  emits: ["updateRestaurant"],
+  setup(props, ctx) {
+    const generalStore = useGeneralStore();
     const { d } = useI18n({ useScope: "global" });
 
     const restaurantId = useRestaurantId();
     const { ownerUid } = useAdminUids();
 
-    useHead({
+    useHead(() => ({
       title: props.shopInfo.restaurantName
         ? [
             "Admin Order Suspend",
@@ -163,7 +164,7 @@ export default defineComponent({
             defaultTitle,
           ].join(" / ")
         : defaultTitle,
-    });
+    }));
 
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
       return notFoundResponse;
@@ -193,16 +194,17 @@ export default defineComponent({
       }
       return [];
     });
-    const suspendUntil = computed(() => {
-      if (props.shopInfo.suspendUntil) {
-        const time = props.shopInfo.suspendUntil.toDate();
+    const getSuspend = (suspendUntil) => {
+      if (suspendUntil) {
+        const time = suspendUntil.toDate();
         if (time < new Date()) {
           return false;
         }
         return d(time, "long");
       }
       return false;
-    });
+    };
+    const suspendUntil = ref(getSuspend(props.shopInfo.suspendUntil));
 
     const handleSuspend = async (day: number, time: number) => {
       const tmpDate = date.value?.date
@@ -213,19 +215,23 @@ export default defineComponent({
       if (day && day > 0) {
         tmpDate.setDate(tmpDate.getDate() + day);
       }
-      const ts = Timestamp.fromDate(tmpDate);
-      store.commit("setLoading", true);
+      generalStore.setLoading(true);
+      const timeStamp = Timestamp.fromDate(tmpDate);
       await updateDoc(doc(db, `restaurants/${restaurantId.value}`), {
-        suspendUntil: ts,
+        suspendUntil: timeStamp,
       });
-      store.commit("setLoading", false);
+      generalStore.setLoading(false);
+      suspendUntil.value = getSuspend(timeStamp);
+      ctx.emit("updateRestaurant");
     };
     const handleRemove = async () => {
-      store.commit("setLoading", true);
+      generalStore.setLoading(true);
       await updateDoc(doc(db, `restaurants/${restaurantId.value}`), {
         suspendUntil: null,
       });
-      store.commit("setLoading", false);
+      generalStore.setLoading(false);
+      suspendUntil.value = null;
+      ctx.emit("updateRestaurant");
     };
     return {
       date,

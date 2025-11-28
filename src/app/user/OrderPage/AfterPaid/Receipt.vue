@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-4 rounded-lg bg-white p-4 shadow">
+  <div class="mt-4 rounded-lg bg-white p-4 shadow-sm">
     <!-- Details -->
     <div class="mt-2 text-xl font-bold text-black">
       {{ $t("order.receipt.receipt") }}
@@ -25,7 +25,7 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 
-import { stripeReceipt } from "@/lib/stripe/stripe";
+import { stripeReceipt } from "@/lib/firebase/functions";
 
 import { useRestaurantId } from "@/utils/utils";
 import { useRoute } from "vue-router";

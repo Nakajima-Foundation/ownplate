@@ -1,7 +1,7 @@
 <template>
   <a
     @click="toggleFunction()"
-    class="inline-flex items-center rounded-full bg-green-600 bg-opacity-10 p-1"
+    class="inline-flex items-center rounded-full bg-green-600/10 p-1"
   >
     <div
       class="inline-flex h-9 items-center rounded-full px-4"

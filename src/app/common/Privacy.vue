@@ -1,7 +1,7 @@
 <template>
-  <div class="mx-auto max-w-screen-md px-6 text-base">
+  <div class="mx-auto max-w-(--breakpoint-md) px-6 text-base">
     <!-- Title -->
-    <div class="mt-12 text-xl font-bold text-black text-opacity-40">
+    <div class="mt-12 text-xl font-bold text-black/40">
       おもちかえり.com プライバシーポリシー
     </div>
 
@@ -199,7 +199,7 @@
           <li>第三者から当社が個人データの提供を受けた際の記録の開示</li>
           <li>保有個人データの安全管理のために当社が講じた措置</li>
         </ol>
-        <div class="mt-4 rounded-lg bg-black bg-opacity-5 p-4">
+        <div class="mt-4 rounded-lg bg-black/5 p-4">
           <div>【窓口】</div>
           <div class="mt-1">一般社団法人シンギュラリティ・ソサエティ</div>
           <div class="mt-1">個人情報取扱担当窓口</div>
@@ -229,22 +229,24 @@ import { useI18n } from "vue-i18n";
 export default defineComponent({
   setup() {
     const { t } = useI18n();
-    useHead({
+    useHead(() => ({
       title: [t("pageTitle.terms.privacy") || "", defaultHeader.title].join(
         " / ",
       ),
-    });
+    }));
     return {};
   },
 });
 </script>
 
 <style lang="css" scoped>
+@reference "../../assets/css/main.css";
+
 section {
-  @apply text-sm text-black text-opacity-60;
+  @apply text-sm text-black/60;
 }
 h6 {
-  @apply mt-4 text-base font-bold text-black text-opacity-40;
+  @apply mt-4 text-base font-bold text-black/40;
 }
 p {
   @apply mt-4;

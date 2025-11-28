@@ -1,4 +1,5 @@
 import { ref, computed, onMounted } from "vue";
+import { User } from "firebase/auth";
 import { db } from "@/lib/firebase/firebase9";
 import {
   DocumentData,
@@ -9,15 +10,15 @@ import {
 } from "firebase/firestore";
 
 import { ShopOwnerData, PartnerData } from "@/models/ShopOwner";
-import { OrderInfoData, OrderItemData } from "@/models/orderInfo";
+import { OrderInfoData, OrderItemData } from "@/models/orderInfoData";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { MenuData } from "@/models/menu";
 
 import {
   order_status,
-  regionalSettings,
+  regionalSetting,
   partners,
-  stripe_regions,
+  stripe_regions_jp,
   soundFiles,
 } from "@/config/constant";
 import { firebaseConfig, ownPlateConfig } from "@/config/project";
@@ -29,18 +30,16 @@ import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import isURL from "validator/lib/isURL";
 import isLatLong from "validator/lib/isLatLong";
 
+import { isNull, isEmpty } from "./commonUtils";
+
 import { useRoute, useRouter } from "vue-router";
-import { useStore } from "vuex";
-import i18n from "@/lib/vue-i18n";
+import { useGeneralStore } from "../store";
+import { useUserStore } from "@/store/user";
+import { useI18n } from "vue-i18n";
 
-export const isNull = <T>(value: T) => {
-  return value === null || value === undefined;
-};
+export { isNull, isEmpty, regionalSetting };
 
-export const isEmpty = <T>(value: T) => {
-  return value === null || value === undefined || String(value) === "";
-};
-
+export const stripeRegion = stripe_regions_jp; // TODO remove
 // from mixin
 export const useRestaurantId = () => {
   const route = useRoute();
@@ -130,7 +129,7 @@ export const num2simpleFormatedTime = (num: number) => {
 };
 
 export const num2time = (num: number) => {
-  const { locale, t } = i18n.global;
+  const { locale, t } = useI18n();
 
   if (num === 0 || num === 60 * 24) {
     return t("shopInfo.midnight");
@@ -183,9 +182,9 @@ export const cleanObject = (obj: { [key: string]: any }) => {
 */
 
 export const useSoundPlay = () => {
-  const store = useStore();
+  const generalStore = useGeneralStore();
   return (reason?: string) => {
-    store.commit("pingOrderEvent");
+    generalStore.pingOrderEvent();
     if (reason) {
       console.log("order: call play: " + reason);
     } else {
@@ -319,16 +318,10 @@ export const getPartner = (shopOwner: ShopOwnerData) => {
   });
 };
 
-export const regionalSetting = (regionalSettings as { [key: string]: any })[
-  ownPlateConfig.region || "US"
-];
-
-export const stripeRegion = stripe_regions[ownPlateConfig.region || "US"];
-
 export const isLineEnabled = !!ownPlateConfig.line;
 
 export const roundPrice = (price: number) => {
-  const m = stripeRegion.multiple;
+  const m = stripe_regions_jp.multiple;
   return Math.round(price * m) / m;
 };
 
@@ -337,7 +330,7 @@ export const displayOption = (
   shopInfo: RestaurantInfoData,
   item: MenuData,
 ) => {
-  const { n } = i18n.global;
+  const { n } = useI18n();
   return formatOption(option, (price) => {
     return n(roundPrice(price * taxRate(shopInfo, item)), "currency");
   });
@@ -569,38 +562,38 @@ export const getPostOption = (
 };
 
 export const useUserData = () => {
-  const store = useStore();
+  const userStore = useUserStore();
   const route = useRoute();
 
   const isAdmin = computed(() => {
-    return !!store.getters.uidAdmin;
+    return !!userStore.uidAdmin;
   });
   const uid = computed(() => {
-    return store.getters.uid;
+    return userStore.uid;
   });
   const isUser = computed(() => {
-    return !!store.getters.uidUser;
+    return !!userStore.uidUser;
   });
 
   const isLiffUser = computed(() => {
-    return !!store.getters.uidLiff;
+    return !!userStore.uidLiff;
   });
   const isLineUser = computed(() => {
-    const claims = store.state.claims;
+    const claims = userStore.claims;
     return !!claims?.line;
   });
   const claims = computed(() => {
-    return store.state.claims;
+    return userStore.claims;
   });
   const inLiff = computed(() => {
     return !!route.params.liffIndexId;
   });
   const user = computed(() => {
-    return store.state.user;
+    return userStore.user;
   });
 
   const isAnonymous = computed(() => {
-    return store.getters.isAnonymous;
+    return userStore.isAnonymous;
   });
 
   return {
@@ -635,36 +628,25 @@ export const useToggle = (defaultValue = false) => {
   };
 };
 
-// do not use
-export const useUser = () => {
-  const store = useStore();
-  const user = computed(() => {
-    return store.state.user;
-  });
-  return user;
-};
-
 export const isJapan = ownPlateConfig.region === "JP";
 export const serviceKey = isJapan ? "omochikaeri" : "ownPlate";
 
 export const defaultTitle = defaultHeader.title;
 
 export const useAdminUids = () => {
-  const store = useStore();
+  const userStore = useUserStore();
 
   const isOwner = computed(() => {
-    return !store.getters.isSubAccount;
+    return !userStore.isSubAccount;
   });
   const uid = computed(() => {
-    return store.getters.uidAdmin;
+    return userStore.uidAdmin;
   });
   const ownerUid = computed(() => {
-    return store.getters.isSubAccount
-      ? store.getters.parentId
-      : store.getters.uidAdmin;
+    return userStore.isSubAccount ? userStore.parentId : userStore.uidAdmin;
   });
   const emailVerified = computed(() => {
-    return store.state.user?.emailVerified;
+    return (userStore.user as User)?.emailVerified;
   });
   return {
     isOwner,
@@ -675,10 +657,10 @@ export const useAdminUids = () => {
 };
 
 export const usePhoneNumber = (shopInfo: any) => {
-  const countries = stripeRegion.countries;
+  const countries = stripe_regions_jp.countries;
 
   const parsedNumber = computed(() => {
-    const countryCode = shopInfo.value.countryCode || countries.value[0].code;
+    const countryCode = shopInfo.value.countryCode || countries[0].code;
     try {
       return parsePhoneNumber(countryCode + shopInfo.value.phoneNumber);
     } catch (__error) {
@@ -709,7 +691,8 @@ export const scrollToElementById = (id: string) => {
 export const useNationalPhoneNumber = (shopInfo: RestaurantInfoData) => {
   // BUGBUG: We need to determine what we want to diplay for EU
   const parsedNumber = computed(() => {
-    const countryCode = shopInfo.countryCode || stripeRegion.countries[0].code;
+    const countryCode =
+      shopInfo.countryCode || stripe_regions_jp.countries[0].code;
     try {
       return parsePhoneNumber(countryCode + shopInfo.phoneNumber);
     } catch (__error) {
@@ -751,10 +734,6 @@ export const orderType = (order: OrderInfoData) => {
   if (order.isDelivery) {
     return "Delivery";
   }
-  if (order.isPickup) {
-    // TODO: remove
-    return "Pickup";
-  }
   return "Takeout";
 };
 export const orderTypeKey = (order: OrderInfoData) => {
@@ -765,7 +744,7 @@ export const isDev = firebaseConfig.projectId === "ownplate-dev";
 
 export const useIsLocaleJapan = () => {
   // for hack
-  const { locale } = i18n.global;
+  const { locale } = useI18n();
   console.log(locale.value);
   return computed(() => {
     return locale.value !== "en" && locale.value !== "fr";
@@ -786,12 +765,12 @@ export const useFeatureHeroTablet = () => {
   });
 };
 export const useIsNotSuperAdmin = () => {
-  const store = useStore();
+  const userStore = useUserStore();
   const isNotSuperAdmin = computed(() => {
-    return store.getters.isNotSuperAdmin;
+    return userStore.isNotSuperAdmin;
   });
   const isNotOperator = computed(() => {
-    return store.getters.isNotOperator;
+    return userStore.isNotOperator;
   });
   return {
     isNotSuperAdmin,
@@ -828,21 +807,22 @@ export const haversine_distance = (
 };
 
 export const useSuper = () => {
-  const store = useStore();
+  const userStore = useUserStore();
   const router = useRouter();
 
   onMounted(() => {
-    if (!store.state.user || store.getters.isNotSuperAdmin) {
+    if (!userStore.user || userStore.isNotSuperAdmin) {
       router.push("/");
     }
   });
 };
 
 export const orderFilter = (order: OrderInfoData) => {
-  return ![
+  const excludeStatuses: number[] = [
     order_status.transaction_hide,
     order_status.waiting_payment,
-  ].includes(order.status);
+  ];
+  return !excludeStatuses.includes(order.status);
 };
 
 // for super
@@ -854,16 +834,16 @@ export const getBackUrl = () => {
 };
 
 export const superPermissionCheck = () => {
-  const store = useStore();
+  const userStore = useUserStore();
   const router = useRouter();
   if (isSuperPage()) {
-    if (!store.state.user || store.getters.isNotSuperAdmin) {
+    if (!userStore.user || userStore.isNotSuperAdmin) {
       router.push("/");
     }
   } else {
     if (
-      !store.state.user ||
-      (store.getters.isNotSuperAdmin && store.getters.isNotOperator)
+      !userStore.user ||
+      (userStore.isNotSuperAdmin && userStore.isNotOperator)
     ) {
       router.push("/");
     }

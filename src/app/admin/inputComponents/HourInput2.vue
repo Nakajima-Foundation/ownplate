@@ -1,21 +1,27 @@
 <template>
   <div class="flex items-center">
     <div>
-      <o-field :variant="variant">
-        <o-select
-          :modelValue="modelValue"
-          :disabled="disabled"
-          @update:modelValue="updateValue"
+      <select
+        :value="modelValue"
+        :disabled="disabled"
+        @change="updateValue"
+        class="rounded-lg border-2 bg-white px-3 py-2"
+        :class="
+          variant === 'danger'
+            ? 'border-red-400 hover:border-red-400 focus:ring-red-400'
+            : disabled
+              ? 'border-gray-400 hover:border-gray-400 focus:ring-gray-400'
+              : 'border-teal-400 hover:border-teal-400 focus:ring-teal-400'
+        "
+      >
+        <option
+          v-for="(timeItem, index) of timeList"
+          :key="timeItem"
+          :value="index === 0 ? null : (index - 1) * 10"
         >
-          <option
-            v-for="(timeItem, index) of timeList"
-            :key="timeItem"
-            :value="index === 0 ? null : (index - 1) * 10"
-          >
-            {{ timeItem }}
-          </option>
-        </o-select>
-      </o-field>
+          {{ timeItem }}
+        </option>
+      </select>
     </div>
   </div>
 </template>
@@ -44,8 +50,8 @@ export default defineComponent({
   },
   emits: ["update:modelValue"],
   setup(props, context) {
-    const updateValue = (e: number) => {
-      context.emit("update:modelValue", e);
+    const updateValue = (e) => {
+      context.emit("update:modelValue", Number(e.target.value));
     };
 
     return {

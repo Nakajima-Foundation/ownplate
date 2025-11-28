@@ -10,7 +10,6 @@ import * as utils from "../../lib/utils";
 import * as stripeLog from "../../lib/stripeLog";
 
 import * as apis from "./apis";
-import * as apis2 from "./apis2";
 
 import * as smaregi from "./smaregiApi";
 
@@ -30,20 +29,19 @@ if (!admin.apps.length) {
 
 let db = admin.firestore();
 
-export const updateDb = (_db) => {
+export const updateDb = (_db: admin.firestore.Firestore) => {
   db = _db;
   apis.updateDb(db);
-  apis2.updateDb(db);
 };
 
-export const logger = async (req, res, next) => {
+export const logger = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   next();
 };
-export const hello_response = async (req, res) => {
+export const hello_response = async (req: express.Request, res: express.Response) => {
   res.json({ message: "hello" });
 };
 
-const lastmod = (restaurant) => {
+const lastmod = (restaurant: { updatedAt?: admin.firestore.Timestamp; createdAt?: admin.firestore.Timestamp }) => {
   try {
     if (restaurant.updatedAt) {
       return moment(restaurant.updatedAt.toDate()).format("YYYY-MM-DD");
@@ -57,15 +55,13 @@ const lastmod = (restaurant) => {
   return "2020-07-01";
 };
 
-export const sitemap_response = async (req, res) => {
+export const sitemap_response = async (req: express.Request, res: express.Response) => {
   try {
     const hostname = "https://" + ownPlateConfig.hostName;
 
     const urlset = xmlbuilder.create("urlset").att("xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9");
 
-    const docs = (await db.collection("restaurants").where("publicFlag", "==", true).where("deletedFlag", "==", false).orderBy("updatedAt", "desc").get()).docs.filter((doc) => {
-      return !doc.data().groupId;
-    });
+    const docs = (await db.collection("restaurants").where("publicFlag", "==", true).where("deletedFlag", "==", false).orderBy("updatedAt", "desc").get()).docs;
     await Promise.all(
       docs.map(async (doc) => {
         const url = urlset.ele("url");
@@ -77,7 +73,7 @@ export const sitemap_response = async (req, res) => {
     const xml = urlset.dec("1.0", "UTF-8").end({ pretty: true });
 
     res.setHeader("Content-Type", "text/xml");
-    res.send(xml);
+    return res.send(xml);
   } catch (e) {
     console.error(e);
     Sentry.captureException(e);
@@ -89,7 +85,7 @@ const escapeHtml = (str: string): string => {
   if (typeof str !== "string") {
     return "";
   }
-  const mapping: any = {
+  const mapping: Record<string, string> = {
     "&": "&amp;",
     "'": "&#x27;",
     "`": "&#x60;",
@@ -102,11 +98,14 @@ const escapeHtml = (str: string): string => {
   });
 };
 
-const getMenuData = async (restaurantName, menuId) => {
+const getMenuData = async (restaurantName: string, menuId: string) => {
   if (menuId) {
     const menu = await db.doc(`restaurants/${restaurantName}/menus/${menuId}`).get();
     if (menu && menu.exists) {
-      const menu_data: any = menu.data();
+      const menu_data = menu.data();
+      if (!menu_data) {
+        return { exists: false };
+      }
       return {
         image: (menu_data?.images?.item?.resizedImages || {})["600"] || menu_data.itemPhoto,
         description: menu_data?.itemDescription,
@@ -119,7 +118,7 @@ const getMenuData = async (restaurantName, menuId) => {
     exists: false,
   };
 };
-const ogpPage = async (req: any, res: any) => {
+const ogpPage = async (req: express.Request, res: express.Response): Promise<void> => {
   const { restaurantName, menuId } = req.params;
   const template_data = fs.readFileSync("./templates/index.html", {
     encoding: "utf8",
@@ -133,26 +132,31 @@ const ogpPage = async (req: any, res: any) => {
   res.setHeader("Referrer-Policy", "no-referrer");
   try {
     if (!validateFirebaseId(restaurantName)) {
-      return res.status(404).send(template_data);
+      res.status(404).send(template_data);
+      return;
     }
     if (menuId && !validateFirebaseId(menuId)) {
-      return res.status(404).send(template_data);
+      res.status(404).send(template_data);
+      return;
     }
     const restaurant = await db.doc(`restaurants/${restaurantName}`).get();
 
     if (!restaurant || !restaurant.exists) {
-      return res.status(404).send(template_data);
+      res.status(404).send(template_data);
+      return;
     }
-    const restaurant_data: any = restaurant.data();
-    if (restaurant_data.deletedFlag || !restaurant_data.publicFlag) {
-      return res.status(404).send(template_data);
+    const restaurant_data = restaurant.data();
+    if (!restaurant_data || restaurant_data.deletedFlag || !restaurant_data.publicFlag) {
+      res.status(404).send(template_data);
+      return;
     }
 
     const menuData = await getMenuData(restaurantName, menuId);
 
     const ownerData = await getShopOwner(restaurant_data.uid);
     if (!ownerData) {
-      return res.status(404).send(template_data);
+      res.status(404).send(template_data);
+      return;
     }
 
     const siteName = ownPlateConfig.siteName;
@@ -221,7 +225,7 @@ const ogpPage = async (req: any, res: any) => {
   }
 };
 
-const ownerPage = async (req: any, res: any) => {
+const ownerPage = async (req: express.Request, res: express.Response): Promise<void> => {
   const { ownerId } = req.params;
   const template_data = fs.readFileSync("./templates/index.html", {
     encoding: "utf8",
@@ -234,11 +238,13 @@ const ownerPage = async (req: any, res: any) => {
   res.setHeader("Referrer-Policy", "no-referrer");
   try {
     if (!validateFirebaseId(ownerId)) {
-      return res.status(404).send(template_data);
+      res.status(404).send(template_data);
+      return;
     }
     const ownerData = await getOwnerData(ownerId);
     if (!ownerData) {
-      return res.send(template_data);
+      res.send(template_data);
+      return;
     }
 
     const siteName = ownPlateConfig.siteName;
@@ -291,7 +297,7 @@ const ownerPage = async (req: any, res: any) => {
     res.send(template_data);
   }
 };
-const getShopOwner = async (uid) => {
+const getShopOwner = async (uid: string) => {
   const owner = await db.doc(`/admins/${uid}`).get();
   if (owner && owner.exists) {
     return owner.data();
@@ -299,7 +305,7 @@ const getShopOwner = async (uid) => {
   return { hidePrivacy: false };
 };
 
-const getOwnerData = async (uid) => {
+const getOwnerData = async (uid: string) => {
   const owner = await db.doc(`/owners/${uid}`).get();
   if (owner && owner.exists) {
     return owner.data();
@@ -307,11 +313,14 @@ const getOwnerData = async (uid) => {
   return { hidePrivacy: false };
 };
 
-export const stripe_parser = async (req, res) => {
-  const stripe = utils.get_stripe();
+export const stripe_parser = async (req: express.Request & { rawBody?: Buffer }, res: express.Response) => {
+  const stripe = utils.get_stripe_v2();
   const endpointSecret = utils.getStripeWebhookSecretKey();
 
   const sig = req.headers["stripe-signature"];
+  if (!sig || !req.rawBody) {
+    return res.status(400).send("Webhook Error: missing signature or body");
+  }
   try {
     const event = stripe.webhooks.constructEvent(req.rawBody.toString(), sig, endpointSecret);
 
@@ -331,14 +340,14 @@ export const stripe_parser = async (req, res) => {
     } else {
       await stripeLog.unknown_log(db, event);
     }
-    res.json({});
+    return res.json({});
   } catch (err) {
     Sentry.captureException(err);
-    res.status(400).send("Webhook Error");
+    return res.status(400).send("Webhook Error");
   }
 };
 
-export const alogger = async (req, res, next) => {
+export const alogger = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   const message = "access " + req.path;
   const { path, method, originalUrl, params, query, headers } = req;
 
@@ -373,7 +382,6 @@ app.use(alogger);
 
 app.use("/1.0", router); // for stripe
 app.use("/api/1.0/", apis.apiRouter);
-// app.use("/api/2.0/", apis2.apiRouter);
 
 app.use("/smaregi/1.0", smaregi.smaregiRouter);
 

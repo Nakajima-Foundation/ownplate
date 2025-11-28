@@ -11,10 +11,10 @@
       <div class="inline-block px-1 pb-2" v-if="isJapan">
         <router-link to="/admin/docs/">
           <div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-white bg-opacity-80 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-white/80 px-4"
           >
-            <i class="material-icons mr-2 text-lg text-op-teal">help_outline</i>
-            <span class="text-sm font-bold text-op-teal">{{
+            <i class="material-icons text-op-teal mr-2 text-lg">help_outline</i>
+            <span class="text-op-teal text-sm font-bold">{{
               $t("admin.userManual")
             }}</span>
           </div>
@@ -28,29 +28,24 @@
           target="_blank"
         >
           <div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-white bg-opacity-80 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-white/80 px-4"
           >
-            <i class="material-icons mr-2 text-lg text-op-teal">mail_outline</i>
-            <span class="text-sm font-bold text-op-teal">{{
+            <i class="material-icons text-op-teal mr-2 text-lg">mail_outline</i>
+            <span class="text-op-teal text-sm font-bold">{{
               $t("admin.suportPage")
             }}</span>
           </div>
         </a>
       </div>
 
-      <!-- Facebook User Group -->
-      <div class="inline-block px-1 pb-2" v-if="false">
-        <a
-          href="https://www.facebook.com/groups/278028420106364/"
-          target="_blank"
-        >
+      <!-- Discord -->
+      <div class="inline-block px-1 pb-2" v-if="true">
+        <a href="https://discord.com/invite/XqmAYxm2Xf" target="_blank">
           <div
-            class="inline-flex h-9 items-center justify-center rounded-full bg-white bg-opacity-80 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-white/80 px-4"
           >
-            <i class="fab fa-facebook mr-2 text-lg text-op-teal"></i>
-            <span class="text-sm font-bold text-op-teal">{{
-              $t("admin.facebookUserGroup")
-            }}</span>
+            <i class="fab fa-discord text-op-teal mr-2 text-lg"></i>
+            <span class="text-op-teal text-sm font-bold"> Discord </span>
           </div>
         </a>
       </div>

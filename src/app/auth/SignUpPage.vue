@@ -1,6 +1,12 @@
 <template>
   <div class="mx-6 mt-2 lg:mx-auto lg:max-w-2xl">
-    <div class="mt-4 rounded-lg bg-white p-6 shadow">
+    <!-- TOTP Enrollment -->
+    <div v-if="showTotpEnrollment" class="mt-4">
+      <TotpEnrollment @complete="handleTotpComplete" @skip="handleTotpSkip" />
+    </div>
+
+    <!-- Signup Form -->
+    <div v-else class="mt-4 rounded-lg bg-white p-6 shadow-sm">
       <form @submit.prevent="onSignup">
         <!-- Title -->
         <div v-if="partner">
@@ -10,7 +16,7 @@
           </span>
           <hr />
         </div>
-        <div class="text-xl font-bold text-black text-opacity-30">
+        <div class="text-xl font-bold text-black/30">
           {{ $t("admin.registration") }}
         </div>
 
@@ -21,18 +27,22 @@
           </div>
 
           <div class="mt-1">
-            <o-field
-              :variant="errors.email ? 'danger' : 'success'"
-              :message="errors.email && $t(errors.email[0])"
+            <input
+              v-model="email"
+              type="email"
+              :placeholder="$t('admin.emailPlaceHolder')"
+              maxlength="256"
+              class="w-full rounded border border-gray-300 px-3 py-2"
+              :class="errors.email ? 'border-red-500' : 'border-green-500'"
+            />
+            <div
+              v-if="errors.email && errors.email.length > 0"
+              class="mt-2 pl-2 font-bold text-red-600"
             >
-              <o-input
-                v-model="email"
-                type="email"
-                :placeholder="$t('admin.emailPlaceHolder')"
-                maxlength="256"
-                expanded
-              />
-            </o-field>
+              <div v-for="error in errors.email" :key="error">
+                {{ $t(error) }}
+              </div>
+            </div>
           </div>
         </div>
 
@@ -43,15 +53,13 @@
           </div>
 
           <div class="mt-1">
-            <o-field variant="success">
-              <o-input
-                v-model="name"
-                type="text"
-                :placeholder="$t('admin.enterName')"
-                maxlength="100"
-                expanded
-              />
-            </o-field>
+            <input
+              v-model="name"
+              type="text"
+              :placeholder="$t('admin.enterName')"
+              maxlength="100"
+              class="w-full rounded border border-gray-300 px-3 py-2"
+            />
           </div>
         </div>
 
@@ -62,19 +70,22 @@
           </div>
 
           <div class="mt-1">
-            <o-field
-              :variant="errors.password ? 'danger' : 'success'"
-              :message="errors.password && $t(errors.password[0])"
+            <input
+              v-model="password"
+              type="password"
+              :placeholder="$t('admin.passwordPlaceHolder')"
+              maxlength="30"
+              class="w-full rounded border border-gray-300 px-3 py-2"
+              :class="errors.password ? 'border-red-500' : 'border-green-500'"
+            />
+            <div
+              v-if="errors.password && errors.password.length > 0"
+              class="mt-2 pl-2 font-bold text-red-600"
             >
-              <o-input
-                v-model="password"
-                type="password"
-                :placeholder="$t('admin.passwordPlaceHolder')"
-                maxlength="30"
-                password-reveal
-                expanded
-              />
-            </o-field>
+              <div v-for="error in errors.password" :key="error">
+                {{ $t(error) }}
+              </div>
+            </div>
           </div>
         </div>
 
@@ -85,27 +96,34 @@
           </div>
 
           <div class="mt-1">
-            <o-field
-              :variant="errors.confirm ? 'danger' : 'success'"
-              :message="errors.confirm && $t(errors.confirm[0])"
+            <input
+              v-model="confirmPassword"
+              type="password"
+              :placeholder="$t('admin.confirmPasswordPlaceHolder')"
+              maxlength="30"
+              class="w-full rounded border border-gray-300 px-3 py-2"
+              :class="errors.confirm ? 'border-red-500' : 'border-green-500'"
+            />
+            <div
+              v-if="errors.confirm && errors.confirm.length > 0"
+              class="mt-2 pl-2 font-bold text-red-600"
             >
-              <o-input
-                v-model="confirmPassword"
-                type="password"
-                :placeholder="$t('admin.confirmPasswordPlaceHolder')"
-                maxlength="30"
-                password-reveal
-                expanded
-              />
-            </o-field>
+              <div v-for="error in errors.confirm" :key="error">
+                {{ $t(error) }}
+              </div>
+            </div>
           </div>
         </div>
 
         <!-- Submit Button -->
         <div class="mt-2 text-center">
-          <t-cancel-button @click="handleCancel" class="mr-4 mb-2 h-12 w-32">
+          <t-button
+            @click="handleCancel"
+            :isCancel="true"
+            class="mr-4 mb-2 h-12 w-32"
+          >
             {{ $t("button.cancel") }}
-          </t-cancel-button>
+          </t-button>
 
           <t-button
             :isDisabled="submitted && Object.keys(errors).length > 0"
@@ -147,8 +165,8 @@
       <div class="mt-2 text-center">
         <router-link to="/admin/user/signin">
           <div class="inline-flex items-center justify-center">
-            <i class="material-icons mr-2 text-lg text-op-teal">store</i>
-            <div class="text-sm font-bold text-op-teal">
+            <i class="material-icons text-op-teal mr-2 text-lg">store</i>
+            <div class="text-op-teal text-sm font-bold">
               {{ $t("admin.goToSignIn") }}
             </div>
           </div>
@@ -160,7 +178,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, watch, computed } from "vue";
-import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
 import isEmail from "validator/lib/isEmail";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { partners } from "@/config/constant";
@@ -174,13 +192,17 @@ import {
 
 import { useRoute, useRouter } from "vue-router";
 import { useHead } from "@unhead/vue";
+import TotpEnrollment from "@/components/Auth/TotpEnrollment.vue";
 
 export default defineComponent({
   name: "Signup",
+  components: {
+    TotpEnrollment,
+  },
   setup() {
     const router = useRouter();
     const route = useRoute();
-    const store = useStore();
+    const generalStore = useGeneralStore();
     const isLocaleJapan = useIsLocaleJapan();
     const { user } = useUserData();
 
@@ -191,10 +213,11 @@ export default defineComponent({
     const deferredPush = ref(false);
     const emailTaken = ref("---invalid---");
     const submitted = ref(false);
+    const showTotpEnrollment = ref(false);
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Signup"].join(" / "),
-    });
+    }));
 
     const partner = computed(() => {
       if (route.params.partner) {
@@ -245,19 +268,37 @@ export default defineComponent({
     const handleCancel = () => {
       router.push("/");
     };
+
+    const handleTotpComplete = () => {
+      // TOTP enrollment completed, redirect to admin page
+      if (user.value) {
+        router.push("/admin/restaurants");
+      } else {
+        deferredPush.value = true;
+      }
+    };
+
+    const handleTotpSkip = () => {
+      // User skipped TOTP enrollment, redirect to admin page
+      if (user.value) {
+        router.push("/admin/restaurants");
+      } else {
+        deferredPush.value = true;
+      }
+    };
+
     const onSignup = async () => {
       submitted.value = true;
       if (hasError.value) {
         return;
       }
-      store.commit("setLoading", true);
+      generalStore.setLoading(true);
       try {
         const result = await createUserWithEmailAndPassword(
           auth,
           email.value,
           password.value,
         );
-        await sendEmailVerification(result.user);
         console.log("signup success", result.user.uid, name.value);
         if (partner.value) {
           await setDoc(doc(db, `admins/${result.user.uid}`), {
@@ -275,16 +316,17 @@ export default defineComponent({
           email: result.user.email,
           updated: serverTimestamp(),
         });
-        store.commit("setLoading", false);
-        if (user) {
-          console.log("signup calling push");
-          router.push("/admin/restaurants");
-        } else {
-          console.log("signup deferred push");
-          deferredPush.value = true;
+        try {
+          await sendEmailVerification(result.user);
+        } catch (e) {
+          console.log(e);
         }
+        generalStore.setLoading(false);
+
+        // Show TOTP enrollment (optional)
+        showTotpEnrollment.value = true;
       } catch (error: any) {
-        store.commit("setLoading", false);
+        generalStore.setLoading(false);
 
         console.warn("onSignup failed", error.code, error.message);
         if (error.code === "auth/email-already-in-use") {
@@ -303,13 +345,16 @@ export default defineComponent({
       deferredPush,
       emailTaken,
       submitted,
+      showTotpEnrollment,
 
       // computed
       partner,
       errors,
       hasError,
-      // metho
+      // method
       handleCancel,
+      handleTotpComplete,
+      handleTotpSkip,
       onSignup,
 
       isLocaleJapan,

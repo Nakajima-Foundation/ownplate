@@ -1,16 +1,15 @@
 import * as admin from "firebase-admin";
-import * as functions from "firebase-functions/v1";
+import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
 
 import * as utils from "../../lib/utils";
-import { sendMessageToCustomer } from "../notify";
-import { Context } from "../../models/TestType";
+import { sendMessageToCustomer } from "../notify2";
 
 import { cancelStripe } from "./intent";
 import { validateCancelPayment } from "../../lib/validator";
-import { orderCancelPaymentData } from "../../lib/types";
+import { OrderCancelPaymentData } from "../../models/functionTypes";
 
 // This function is called by admin to cancel an exsting order
-export const cancelStripePayment = async (db: admin.firestore.Firestore, data: orderCancelPaymentData, context: functions.https.CallableContext | Context) => {
+export const cancelStripePayment = async (db: admin.firestore.Firestore, data: OrderCancelPaymentData, context: CallableRequest) => {
   const ownerUid = utils.validate_owner_admin_auth(context);
   const uid = utils.validate_auth(context);
 
@@ -20,7 +19,7 @@ export const cancelStripePayment = async (db: admin.firestore.Firestore, data: o
   const validateResult = validateCancelPayment(data);
   if (!validateResult.result) {
     console.error("cancelStripePayment", validateResult.errors);
-    throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+    throw new HttpsError("invalid-argument", "Validation Error.");
   }
   if (utils.is_subAccount(context)) {
     await utils.validate_sub_account_request(db, uid, ownerUid, restaurantId);
@@ -32,18 +31,18 @@ export const cancelStripePayment = async (db: admin.firestore.Firestore, data: o
   const restaurantOwnerUid = restaurantData.uid;
   if (restaurantOwnerUid !== ownerUid) {
     console.error("cancelStripePayment: invalid operator:", uid);
-    throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+    throw new HttpsError("invalid-argument", "Validation Error.");
   }
 
   try {
     const result = await db.runTransaction(async (transaction) => {
       const order = (await transaction.get(orderRef)).data();
       if (!order) {
-        throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
+        throw new HttpsError("invalid-argument", "This order does not exist.");
       }
 
       if (!order.payment || !order.payment.stripe || order.payment.stripe !== "pending") {
-        throw new functions.https.HttpsError("permission-denied", "Invalid order state to cancel payment.");
+        throw new HttpsError("permission-denied", "Invalid order state to cancel payment.");
       }
 
       const paymentIntent = await cancelStripe(db, transaction, stripeRef, restaurantOwnerUid, order.id);
@@ -72,6 +71,6 @@ export const cancelStripePayment = async (db: admin.firestore.Firestore, data: o
     }
     return { result: true };
   } catch (error) {
-    throw utils.process_error(error);
+    throw utils.process_error(error as Error);
   }
 };

@@ -10,7 +10,7 @@
     </div>
 
     <!-- Title -->
-    <div class="mx-2 mt-2 text-xl font-bold text-black text-opacity-30">
+    <div class="mx-2 mt-2 text-xl font-bold text-black/30">
       {{ $t("order.history") }}
     </div>
 
@@ -29,17 +29,17 @@
         />
       </template>
       <div v-else>
-        <span class="text-base text-black text-opacity-40">
+        <span class="text-base text-black/40">
           {{ $t("order.noHistory") }}
         </span>
       </div>
     </div>
     <!-- Phone Login-->
-    <o-modal v-model:active="loginVisible" :width="488" scroll="keep">
+    <t-modal v-model:active="loginVisible" width="488" scroll="keep">
       <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
         <phone-login v-on:dismissed="handleDismissed" />
       </div>
-    </o-modal>
+    </t-modal>
   </div>
 </template>
 
@@ -63,7 +63,7 @@ import BackButton from "@/components/BackButton.vue";
 import { defaultHeader } from "@/config/header";
 import { useBasePath, useTopPath } from "@/utils/utils";
 
-import { useStore } from "vuex";
+import { useUserStore } from "@/store/user";
 import { useRouter } from "vue-router";
 
 import { OrderInfoData } from "@/models/orderInfo";
@@ -76,7 +76,7 @@ export default defineComponent({
     BackButton,
   },
   setup() {
-    const store = useStore();
+    const userStore = useUserStore();
     const router = useRouter();
 
     const orders = ref<OrderInfoData[]>([]);
@@ -84,12 +84,12 @@ export default defineComponent({
     const basePath = useBasePath();
     const topPath = useTopPath();
 
-    useHead({
+    useHead(() => ({
       title: [defaultHeader.title, "User Order History"].join(" / "),
-    });
+    }));
 
     const uid = computed(() => {
-      return store.getters.uidUser || store.getters.uidLiff;
+      return userStore.uidUser || userStore.uidLiff;
     });
 
     const loginVisible = computed(() => {
@@ -115,23 +115,18 @@ export default defineComponent({
         );
 
         detacher = onSnapshot(orderQuery, (snapshot) => {
-          orders.value = snapshot.docs
-            .map((doc) => {
-              const order = doc.data();
-              order.restaurantId = doc.ref.path.split("/")[1];
-              order.id = doc.id;
-              // HACK: Remove it later
-              order.timePlaced =
-                (order.timePlaced && order.timePlaced.toDate()) || new Date();
-              if (order.timeEstimated) {
-                order.timeEstimated = order.timeEstimated.toDate();
-              }
-              return order as OrderInfoData;
-            })
-            .filter((data) => {
-              // filter mo order for safe // todo remove
-              return data.groupId === undefined;
-            });
+          orders.value = snapshot.docs.map((doc) => {
+            const order = doc.data();
+            order.restaurantId = doc.ref.path.split("/")[1];
+            order.id = doc.id;
+            // HACK: Remove it later
+            order.timePlaced =
+              (order.timePlaced && order.timePlaced.toDate()) || new Date();
+            if (order.timeEstimated) {
+              order.timeEstimated = order.timeEstimated.toDate();
+            }
+            return order as OrderInfoData;
+          });
           loading.value = false;
         });
       }

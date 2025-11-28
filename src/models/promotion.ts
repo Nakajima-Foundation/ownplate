@@ -2,24 +2,12 @@ import {
   QueryDocumentSnapshot,
   DocumentSnapshot,
   DocumentData,
-  Timestamp,
 } from "firebase/firestore";
 import FirebaseModel from "./firebasemodel";
+import { PromotionDataBase } from "./promotionTypes";
+import { PromotionType, DiscountMethod, PaymentRestrictions } from "./common";
 
-export interface PromotionData extends DocumentData {
-  promotionId: string;
-  promotionName: string;
-  enable: boolean;
-  type: string;
-  discountThreshold: number;
-  paymentRestrictions: string;
-  usageRestrictions: boolean;
-  discountMethod: string;
-  discountValue: number;
-  hasTerm: boolean;
-  termFrom: Timestamp;
-  termTo: Timestamp;
-
+export interface PromotionData extends PromotionDataBase, DocumentData {
   currentOpen?: boolean;
 }
 
@@ -31,11 +19,11 @@ export default class Promotion extends FirebaseModel<PromotionData> {
   promotionId: string;
   promotionName: string;
   enable: boolean;
-  type: string;
+  type: PromotionType;
   discountThreshold: number;
-  paymentRestrictions: string;
+  paymentRestrictions: PaymentRestrictions;
   usageRestrictions: boolean;
-  discountMethod: string;
+  discountMethod: DiscountMethod;
   discountValue: number;
   hasTerm: boolean;
   termFrom: Date;

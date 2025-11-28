@@ -17,7 +17,7 @@
     />
 
     <!-- Order Summary -->
-    <div class="mx-6 mt-2 rounded-lg bg-white px-2 pt-4 pb-1 shadow">
+    <div class="mx-6 mt-2 rounded-lg bg-white px-2 pt-4 pb-1 shadow-sm">
       <!-- Order Status -->
       <OrderStatus :orderInfo="orderInfo" :orderName="orderName" />
 
@@ -34,10 +34,11 @@
 
       <!-- Cancel Button -->
       <div class="mt-4 mb-2 text-center">
-        <o-button
+        <button
           v-if="just_paid"
           @click="handleCancelPayment"
-          class="b-reset-tw"
+          class="cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+          :disabled="isCancelling"
         >
           <div class="inline-flex items-center justify-center">
             <i class="material-icons mr-2 text-lg text-red-700"
@@ -47,14 +48,14 @@
               {{ $t("order.cancelOrder") }}
             </div>
           </div>
-        </o-button>
+        </button>
       </div>
     </div>
 
     <!-- Canceled Message -->
     <div
       v-if="canceled"
-      class="mx-6 mt-2 rounded-lg bg-red-700 bg-opacity-10 p-4 text-center"
+      class="mx-6 mt-2 rounded-lg bg-red-700/10 p-4 text-center"
     >
       <span class="text-base font-bold text-red-700">{{
         $t("order.cancelOrderComplete")
@@ -88,7 +89,7 @@
       <!-- Left -->
       <div>
         <!-- Title -->
-        <div class="text-xl font-bold text-black text-opacity-30">
+        <div class="text-xl font-bold text-black/30">
           {{ $t("order.yourOrder") + ": " + orderName }}
         </div>
 
@@ -119,8 +120,8 @@
 
         <!-- Your Message to the Restaurant -->
         <template v-if="hasMemo">
-          <div class="mt-4 rounded-lg bg-white p-4 shadow">
-            <div class="text-xs font-bold text-black text-opacity-60">
+          <div class="mt-4 rounded-lg bg-white p-4 shadow-sm">
+            <div class="text-xs font-bold text-black/60">
               {{ $t("order.orderMessage") }}
             </div>
             <div class="mt-1 text-base">{{ orderInfo.memo }}</div>
@@ -130,7 +131,7 @@
         <!-- Canceled Message -->
         <div
           v-if="canceled"
-          class="mt-2 rounded-lg bg-red-700 bg-opacity-10 p-4 text-center"
+          class="mt-2 rounded-lg bg-red-700/10 p-4 text-center"
         >
           <span class="text-base font-bold text-red-700">{{
             $t("order.cancelOrderComplete")
@@ -148,9 +149,9 @@
         <div class="mt-2 text-center">
           <router-link :to="menuPagePath">
             <div
-              class="inline-flex h-12 items-center justify-center rounded-full border-2 border-op-teal px-6 b-reset-tw"
+              class="border-op-teal inline-flex h-12 cursor-pointer items-center justify-center rounded-full border-2 px-6"
             >
-              <div class="text-base font-bold text-op-teal">
+              <div class="text-op-teal text-base font-bold">
                 {{ $t("order.menu") }}
               </div>
             </div>
@@ -162,7 +163,7 @@
       <div class="mt-4 lg:mt-0">
         <!-- Restaurant Info -->
         <div>
-          <div class="text-xl font-bold text-black text-opacity-30">
+          <div class="text-xl font-bold text-black/30">
             {{
               shopInfo.isEC
                 ? $t("shopInfo.ecShopDetails")
@@ -182,11 +183,11 @@
 
         <!-- QR Code -->
         <div class="mt-2" v-if="!shopInfo.isEC">
-          <div class="text-xl font-bold text-black text-opacity-30">
+          <div class="text-xl font-bold text-black/30">
             {{ $t("order.adminQRCode") }}
           </div>
 
-          <div class="mt-2 rounded-lg bg-white p-4 text-center shadow">
+          <div class="mt-2 rounded-lg bg-white p-4 text-center shadow-sm">
             <vue-qrcode
               :value="urlAdminOrderPage"
               :options="{ width: 160 }"
@@ -199,7 +200,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, PropType } from "vue";
+import { defineComponent, computed, PropType, ref } from "vue";
 
 import ShopHeader from "@/app/user/Restaurant/ShopHeader.vue";
 import ShopInfo from "@/app/user/Restaurant/ShopInfo.vue";
@@ -220,7 +221,7 @@ import Pickup from "@/app/user/OrderPage/AfterPaid/Pickup.vue";
 
 import { order_status } from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
-import { stripeCancelIntent } from "@/lib/stripe/stripe";
+import { stripeCancelIntent } from "@/lib/firebase/functions";
 
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
@@ -230,7 +231,8 @@ import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { useRoute } from "vue-router";
-import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
+import { useDialogStore } from "@/store/dialog";
 import { useI18n } from "vue-i18n";
 
 export default defineComponent({
@@ -286,7 +288,8 @@ export default defineComponent({
   },
   setup(props) {
     const route = useRoute();
-    const store = useStore();
+    const generalStore = useGeneralStore();
+    const dialogStore = useDialogStore();
     const { d } = useI18n({ useScope: "global" });
 
     const orderId = route.params.orderId as string;
@@ -300,6 +303,7 @@ export default defineComponent({
         props.orderInfo.payment && props.orderInfo.payment.stripe === "canceled"
       );
     });
+    const isCancelling = ref(false);
     const hasLineUrl = computed(() => {
       return props.shopInfo.lineUrl && validUrl(props.shopInfo.lineUrl);
     });
@@ -340,11 +344,12 @@ export default defineComponent({
       analyticsUtil.sendRedunded(props.orderInfo, orderId, props.shopInfo);
     };
     const handleCancelPayment = () => {
-      store.commit("setAlert", {
+      dialogStore.setAlert({
         code: "order.cancelOrderConfirm",
         callback: async () => {
           try {
-            store.commit("setLoading", true);
+            isCancelling.value = true;
+            generalStore.setLoading(true);
             await stripeCancelIntent({
               restaurantId: restaurantId,
               orderId: orderId,
@@ -354,12 +359,13 @@ export default defineComponent({
           } catch (error) {
             // BUGBUG: Implement the error handling code here
             // console.error(error.message, error.details);
-            store.commit("setErrorMessage", {
+            dialogStore.setErrorMessage({
               code: "order.cancel",
               error,
             });
           } finally {
-            store.commit("setLoading", false);
+            generalStore.setLoading(false);
+            isCancelling.value = false;
           }
         },
       });
@@ -369,6 +375,7 @@ export default defineComponent({
       // computed
       hasStripe,
       cancelPayment,
+      isCancelling,
       hasLineUrl,
       urlAdminOrderPage,
       timeRequested,

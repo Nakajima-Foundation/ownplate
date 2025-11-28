@@ -1,18 +1,17 @@
 import * as admin from "firebase-admin";
-import * as functions from "firebase-functions/v1";
+import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
 
 import { order_status } from "../../common/constant";
 import * as utils from "../../lib/utils";
 import { updateOrderTotalDataAndUserLog } from "../order/orderPlace";
-import { sendMessageToCustomer, notifyCanceledOrderToRestaurant } from "../notify";
-import { Context } from "../../models/TestType";
+import { sendMessageToCustomer, notifyCanceledOrderToRestaurant } from "../notify2";
 
 import { cancelStripe } from "./intent";
 import { validateCancel } from "../../lib/validator";
-import { orderCancelData } from "../../lib/types";
+import { OrderCancelData } from "../../models/functionTypes";
 
 // This function is called by user or admin to cancel an exsting order (before accepted by admin)
-export const cancel = async (db: admin.firestore.Firestore, data: orderCancelData, context: functions.https.CallableContext | Context) => {
+export const cancel = async (db: admin.firestore.Firestore, data: OrderCancelData, context: CallableRequest) => {
   const isAdmin = utils.is_admin_auth(context);
 
   const uid = isAdmin ? utils.validate_owner_admin_auth(context) : utils.validate_customer_auth(context);
@@ -23,7 +22,7 @@ export const cancel = async (db: admin.firestore.Firestore, data: orderCancelDat
   const validateResult = validateCancel(data);
   if (!validateResult.result) {
     console.error("cancel", validateResult.errors);
-    throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+    throw new HttpsError("invalid-argument", "Validation Error.");
   }
 
   if (utils.is_subAccount(context)) {
@@ -41,18 +40,18 @@ export const cancel = async (db: admin.firestore.Firestore, data: orderCancelDat
       const orderDoc = await transaction.get(orderRef);
       const order = orderDoc.data();
       if (!order) {
-        throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
+        throw new HttpsError("invalid-argument", "This order does not exist.");
       }
       order.id = orderDoc.id;
       if (isAdmin) {
         // Admin can cancel it before confirmed
         if (uid !== restaurantOwnerUid || order.status >= order_status.ready_to_pickup) {
-          throw new functions.https.HttpsError("permission-denied", "Invalid order state to cancel.");
+          throw new HttpsError("permission-denied", "Invalid order state to cancel.");
         }
       } else {
         // User can cancel an order before accepted
         if (uid !== order.uid || order.status !== order_status.order_placed) {
-          throw new functions.https.HttpsError("permission-denied", "Invalid order state to cancel.");
+          throw new HttpsError("permission-denied", "Invalid order state to cancel.");
         }
       }
       const cancelTimeKey = uid === order.uid ? "orderCustomerCanceledAt" : "orderRestaurantCanceledAt";
@@ -69,7 +68,7 @@ export const cancel = async (db: admin.firestore.Firestore, data: orderCancelDat
       const noPayment = !order.payment || !order.payment.stripe || (!isAdmin && order.payment.stripe === "canceled");
       const hasPayment = !noPayment;
       if (hasPayment && order.payment.stripe !== "pending") {
-        throw new functions.https.HttpsError("permission-denied", "Invalid payment state to cancel."); // stripe
+        throw new HttpsError("permission-denied", "Invalid payment state to cancel."); // stripe
       }
       const paymentIntent = hasPayment ? await cancelStripe(db, transaction, stripeRef, restaurantOwnerUid, order.id) : {}; // stripe
       await updateOrderTotalDataAndUserLog(db, transaction, order.uid, order.order, restaurantId, restaurantOwnerUid, order.timePlaced, false);
@@ -111,6 +110,6 @@ export const cancel = async (db: admin.firestore.Firestore, data: orderCancelDat
     }
     return { result: true };
   } catch (error) {
-    throw utils.process_error(error);
+    throw utils.process_error(error as Error);
   }
 };

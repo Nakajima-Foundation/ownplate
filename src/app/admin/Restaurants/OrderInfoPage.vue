@@ -17,19 +17,10 @@
       />
 
       <!-- Body -->
-      <div
-        v-if="orderInfo.status === order_status.transaction_hide"
-        class="mx-6 mt-2"
-      >
-        <div class="rounded-lg bg-white p-4 shadow">
-          <div>{{ $t("order.status.transaction_hide") }}</div>
-        </div>
-      </div>
-
-      <div v-else class="mx-6 mt-2 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
+      <div class="mx-6 mt-2 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
         <!-- Left -->
         <div>
-          <div class="rounded-lg bg-white p-4 shadow">
+          <div class="rounded-lg bg-white p-4 shadow-sm">
             <!-- Order ID, Total, Payment, and Tips -->
             <div class="text-center">
               <div class="inline-flex items-center justify-center">
@@ -41,19 +32,17 @@
                   <div class="text-xs">
                     {{ $t("order.totalCharge") }}
                   </div>
-
                   <div v-if="hasStripe" class="text-base">
                     <a :href="search" target="stripe">
                       <div>{{ $n(orderInfo.totalCharge, "currency") }}</div>
-                      <div
-                        :class="
-                          'stripe_ text-xs font-bold' + orderInfo.payment.stripe
-                        "
+                      <StripeStatus
+                        :stripeState="orderInfo.payment.stripe"
+                        class="stripe_ text-xs font-bold"
                       >
                         {{
                           $t("order.status.stripe_" + orderInfo.payment.stripe)
                         }}
-                      </div>
+                      </StripeStatus>
                     </a>
                   </div>
 
@@ -75,20 +64,26 @@
               </div>
             </div>
 
+            <div
+              v-if="orderInfo.status === order_status.waiting_payment"
+              class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-red-700/10 px-4 py-1 font-bold text-red-700"
+            >
+              {{ $t("admin.order.waitingPaymentWarninig") }}
+            </div>
             <div v-if="hasStripe && orderInfo.payment.stripe !== 'canceled'">
               <div
-                class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-yellow-500 bg-opacity-10 px-4 py-1 font-bold text-yellow-500"
+                class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-yellow-500/10 px-4 py-1 font-bold text-yellow-500"
               >
-                <span class="ml-1 mt-1 text-sm">
+                <span class="mt-1 ml-1 text-sm">
                   {{ $t("admin.order.cardPaymentMessage") }}
                 </span>
               </div>
             </div>
             <div v-else-if="orderInfo.status !== order_status.order_canceled">
               <div
-                class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-red-700 bg-opacity-10 px-4 py-1 font-bold text-red-700"
+                class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-red-700/10 px-4 py-1 font-bold text-red-700"
               >
-                <span class="ml-1 mt-1 text-sm">
+                <span class="mt-1 ml-1 text-sm">
                   {{ $t("admin.order.storePaymentMessage") }}
                 </span>
               </div>
@@ -96,40 +91,33 @@
 
             <div v-if="orderInfo.promotionId">
               <div
-                class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-green-600 bg-opacity-10 px-4 py-1 font-bold text-green-600"
+                class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-green-600/10 px-4 py-1 font-bold text-green-600"
               >
-                <span class="ml-1 mt-1 text-sm">
+                <span class="mt-1 ml-1 text-sm">
                   {{ $n(orderInfo.discountPrice, "currency")
                   }}{{ $t("order.discountPriceMessage") }}
                 </span>
-              </div>
-            </div>
-            <div v-if="orderInfo.isPickup">
-              <div
-                class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-green-600 bg-opacity-10 px-4 py-1 font-bold text-green-600"
-              >
-                <i class="material-icons"> local_mall </i>
-                <span class="ml-1 mt-1 text-sm">
-                  {{ $t("admin.order.pickupOrder") }}</span
-                >
               </div>
             </div>
 
             <!-- Notice Delivery -->
             <div v-if="orderInfo.isDelivery" class="mt-2 text-center">
               <div
-                class="inline-flex rounded-lg bg-red-700 bg-opacity-10 p-4 text-base font-bold text-red-700"
+                class="inline-flex rounded-lg bg-red-700/10 p-4 text-base font-bold text-red-700"
               >
                 {{ $t("admin.order.deliveryOrder") }}
               </div>
             </div>
 
             <!-- Note for Payment Completion -->
-            <div
-              v-if="paymentIsNotCompleted"
-              class="mt-4 rounded-lg bg-yellow-500 bg-opacity-10 p-4 text-sm font-bold text-yellow-500"
-            >
-              {{ $t("admin.order.paymentIsNotCompleted") }}
+            <div v-if="paymentIsNotCompleted">
+              <div
+                class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-yellow-500/10 px-4 py-1 font-bold text-yellow-500"
+              >
+                <span class="mt-1 ml-1 text-sm">
+                  {{ $t("admin.order.paymentIsNotCompleted") }}
+                </span>
+              </div>
             </div>
 
             <!-- Cancel Button -->
@@ -142,7 +130,7 @@
             >
               <button @click="openCancel()">
                 <div
-                  class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+                  class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                 >
                   <i class="material-icons mr-2 text-lg text-red-700">delete</i>
                   <div class="text-sm font-bold text-red-700">
@@ -153,7 +141,7 @@
             </div>
             <div class="mt-4 text-center" v-if="cancelStatus">
               <div
-                class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-red-700 bg-opacity-10 text-red-700"
+                class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-red-700/10 text-red-700"
               >
                 <div>
                   <div class="text-base font-extrabold">
@@ -167,7 +155,7 @@
             </div>
 
             <!-- Cancel Popup-->
-            <o-modal v-model:active="cancelPopup" :width="488" scroll="keep">
+            <t-modal v-model:active="cancelPopup" width="488" scroll="keep">
               <CancelModal
                 :shopInfo="shopInfo"
                 :orderInfo="orderInfo"
@@ -177,7 +165,7 @@
                 :nationalPhoneNumber="nationalPhoneNumber"
                 @close="closeCancel()"
               />
-            </o-modal>
+            </t-modal>
 
             <!-- Pickup Time -->
             <div class="mt-2 text-center" v-if="!cancelStatus">
@@ -202,7 +190,10 @@
               <div class="text-xs font-bold">
                 {{ $t("order.timeToPickup") }}
               </div>
-              <o-select class="mt-2" v-model="timeOffset">
+              <select
+                v-model="timeOffset"
+                class="mt-1 mt-2 rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400"
+              >
                 <option
                   v-for="time in estimatedTimes"
                   :value="time.offset"
@@ -210,11 +201,11 @@
                 >
                   {{ time.display }}
                 </option>
-              </o-select>
+              </select>
             </div>
           </div>
 
-          <div class="mt-2 rounded-lg bg-white p-4 shadow">
+          <div class="mt-2 rounded-lg bg-white p-4 shadow-sm">
             <!-- Phone Number -->
             <div class="mt-2 text-center">
               <div class="text-xs font-bold" v-if="orderInfo.phoneNumber">
@@ -253,7 +244,7 @@
               <div>
                 <div
                   v-if="isWarningOrder"
-                  class="inline-flex rounded-lg bg-red-700 bg-opacity-10 p-4 text-center"
+                  class="inline-flex rounded-lg bg-red-700/10 p-4 text-center"
                 >
                   <div class="text-base font-bold text-red-700">
                     {{ $t("order.continuousOrder") }}<br />
@@ -299,10 +290,10 @@
                 "
               >
                 <div
-                  class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+                  class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                 >
-                  <i class="material-icons mr-2 text-lg text-op-teal">face</i>
-                  <span class="text-sm font-bold text-op-teal">{{
+                  <i class="material-icons text-op-teal mr-2 text-lg">face</i>
+                  <span class="text-op-teal text-sm font-bold">{{
                     $t("order.customerOrderHistory")
                   }}</span>
                 </div>
@@ -312,13 +303,13 @@
 
           <!-- Print for debug-->
           <div
-            class="mt-2 rounded-lg bg-white p-4 text-center shadow"
+            class="mt-2 rounded-lg bg-white p-4 text-center shadow-sm"
             v-if="isDev"
           >
             <div class="mt-2">
               <button @click="download()">
                 <div
-                  class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-black bg-opacity-5"
+                  class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-black/5"
                 >
                   Download
                 </div>
@@ -328,7 +319,7 @@
 
           <!-- Print for debug-->
           <div
-            class="mt-2 rounded-lg bg-white p-4 text-center shadow"
+            class="mt-2 rounded-lg bg-white p-4 text-center shadow-sm"
             v-if="
               orderInfo.status !== order_status.order_placed &&
               shopInfo.enablePrinter
@@ -337,7 +328,7 @@
             <div>
               <button @click="print()">
                 <div
-                  class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-black bg-opacity-5"
+                  class="inline-flex h-16 w-64 items-center justify-center rounded-full bg-black/5"
                 >
                   {{ $t("order.print") }}
                 </div>
@@ -345,7 +336,7 @@
             </div>
           </div>
 
-          <div class="mt-2 rounded-lg bg-white p-4 shadow">
+          <div class="mt-2 rounded-lg bg-white p-4 shadow-sm">
             <!-- Order Status -->
             <div>
               <div
@@ -353,16 +344,20 @@
                 :key="orderState"
                 class="mt-4 text-center"
               >
-                <o-button
+                <button
                   :disabled="
                     !isValidTransition(orderState) || updating === orderState
                   "
                   @click="handleChangeStatus(orderState)"
-                  class="b-reset-tw"
+                  class="mx-2 mb-2 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  <div
+                  <OrderState
+                    :orderState="
+                      order_status[orderState] === orderInfo.status
+                        ? orderState
+                        : ''
+                    "
                     class="inline-flex h-16 w-64 items-center justify-center rounded-full"
-                    :class="classOf(orderState)"
                   >
                     <ButtonLoading v-if="updating === orderState" />
                     <div>
@@ -378,20 +373,20 @@
                         {{ timeOfEvents[orderState] }}
                       </div>
                     </div>
-                  </div>
-                </o-button>
+                  </OrderState>
+                </button>
               </div>
             </div>
 
             <!-- Payment Cancel Button -->
             <div class="mt-4 text-center">
-              <o-button
+              <button
                 v-if="paymentIsNotCompleted"
                 @click="openPaymentCancel"
-                class="b-reset-tw"
+                class="cursor-pointer"
               >
                 <div
-                  class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+                  class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                 >
                   <i class="material-icons mr-2 text-lg text-red-700"
                     >credit_card</i
@@ -400,13 +395,13 @@
                     {{ $t("admin.order.paymentCancelButton") }}
                   </div>
                 </div>
-              </o-button>
+              </button>
             </div>
 
             <!-- Payment Cancel Popup-->
-            <o-modal
+            <t-modal
               v-model:active="paymentCancelPopup"
-              :width="488"
+              width="488"
               scroll="keep"
             >
               <PaymentCancelModal
@@ -418,7 +413,7 @@
                 :nationalPhoneNumber="nationalPhoneNumber"
                 @close="closePaymentCancel()"
               />
-            </o-modal>
+            </t-modal>
           </div>
         </div>
 
@@ -426,8 +421,8 @@
         <div class="mt-4 lg:mt-0">
           <div class="grid grid-cols-1 space-y-4">
             <!-- Message from customer -->
-            <div v-if="hasMemo" class="rounded-lg bg-white p-4 shadow">
-              <div class="text-xs font-bold text-black text-opacity-60">
+            <div v-if="hasMemo" class="rounded-lg bg-white p-4 shadow-sm">
+              <div class="text-xs font-bold text-black/60">
                 {{ $t("admin.order.messageFromCustomer") }}
               </div>
               <div class="mt-2 text-base">
@@ -448,7 +443,7 @@
             <!-- Order Changed -->
             <div v-if="orderInfo.orderUpdatedAt">
               <div
-                class="rounded-lg bg-white p-4 text-center shadow"
+                class="rounded-lg bg-white p-4 text-center shadow-sm"
                 v-if="orderInfo.orderUpdatedAt"
               >
                 <div>{{ $t("admin.order.changeOrderDetail") }}</div>
@@ -459,12 +454,12 @@
 
             <!-- Order Change -->
             <div
-              class="rounded-lg bg-white p-4 text-center shadow"
+              class="rounded-lg bg-white p-4 text-center shadow-sm"
               v-if="availableOrderChange"
             >
               <div>{{ $t("admin.order.changeOrderDetail") }}</div>
               <div class="mt-4">
-                <o-button @click="toggleIsOrderChange" class="b-reset-tw">
+                <button @click="toggleIsOrderChange" class="cursor-pointer">
                   <div
                     class="inline-flex h-12 items-center justify-center rounded-full bg-red-700 px-6"
                   >
@@ -476,13 +471,13 @@
                       }}
                     </div>
                   </div>
-                </o-button>
+                </button>
               </div>
               <div class="mt-4">
-                <o-button
+                <button
                   @click="handleOrderChange"
                   :disabled="!availableChangeButton || changing"
-                  class="b-reset-tw"
+                  class="mx-2 mb-2 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
                   v-if="isOrderChange"
                 >
                   <div
@@ -493,7 +488,7 @@
                       {{ $t("admin.order.confirmOrderChange") }}
                     </div>
                   </div>
-                </o-button>
+                </button>
               </div>
             </div>
 
@@ -551,8 +546,10 @@ import NotFound from "@/components/NotFound.vue";
 import OrderInfo from "@/app/user/OrderPage/OrderInfo.vue";
 import CustomerInfo from "@/components/CustomerInfo.vue";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
+import OrderState from "@/components/OrderStatus.vue";
+import StripeStatus from "@/components/StripeStatus.vue";
 
-import ButtonLoading from "@/components/Button/Loading.vue";
+import ButtonLoading from "@/components/form/Loading.vue";
 import CancelModal from "@/app/admin/Order/CancelModal.vue";
 import PaymentCancelModal from "@/app/admin/Order/PaymentCancelModal.vue";
 
@@ -577,9 +574,11 @@ import {
   defaultTitle,
 } from "@/utils/utils";
 
-import { useStore } from "vuex";
-import { useRoute, useRouter } from "vue-router";
+import { useUserStore } from "@/store/user";
+import { useGeneralStore } from "@/store";
+import { useDialogStore } from "@/store/dialog";
 
+import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useHead } from "@unhead/vue";
 
@@ -596,6 +595,8 @@ export default defineComponent({
     ButtonLoading,
     CancelModal,
     PaymentCancelModal,
+    OrderState,
+    StripeStatus,
   },
   props: {
     shopInfo: {
@@ -608,7 +609,9 @@ export default defineComponent({
   // if restaurant don't have order, render 404.
 
   setup(props) {
-    const store = useStore();
+    const userStore = useUserStore();
+    const generalStore = useGeneralStore();
+    const dialogStore = useDialogStore();
     const route = useRoute();
     const router = useRouter();
     const { d } = useI18n({ useScope: "global" });
@@ -634,7 +637,7 @@ export default defineComponent({
 
     const { ownerUid, uid } = useAdminUids();
 
-    useHead({
+    useHead(() => ({
       title: props.shopInfo.restaurantName
         ? [
             "Admin Order Info",
@@ -642,11 +645,11 @@ export default defineComponent({
             defaultTitle,
           ].join(" / ")
         : defaultTitle,
-    });
+    }));
 
     if (
       !checkShopAccount(props.shopInfo, ownerUid.value) &&
-      !store.getters.isSuperAdmin
+      !userStore.isSuperAdmin
     ) {
       return notFoundResponse;
     }
@@ -869,22 +872,13 @@ export default defineComponent({
         : null;
       return `/admin/restaurants/${restaurantId.value}/orders?day=${day}`;
     });
-    const orderStates = computed(() => {
-      return shopOwner.value && !!shopOwner.value.hidePrivacy
-        ? [
-            "order_placed",
-            "order_accepted",
-            "ready_to_pickup",
-            "transaction_complete",
-            "transaction_hide",
-          ]
-        : [
-            "order_placed",
-            "order_accepted",
-            "ready_to_pickup",
-            "transaction_complete",
-          ]; // no longer "cooking_completed"
-    });
+    const orderStates = [
+      "order_placed",
+      "order_accepted",
+      "ready_to_pickup",
+      "transaction_complete",
+    ];
+
     // for editable order
     const edited_available_order_info = computed(() => {
       const ret: { menuId: string; index: number }[] = [];
@@ -1041,7 +1035,7 @@ export default defineComponent({
       }
       updating.value = statusKey;
       try {
-        store.commit("setLoading", true);
+        generalStore.setLoading(true);
         const params = {
           restaurantId: restaurantId.value,
           orderId: orderId.value,
@@ -1056,35 +1050,35 @@ export default defineComponent({
           router.push(parentUrl.value);
         } else {
           if (data.type === "StripeCardError") {
-            store.commit("setErrorMessage", {
+            dialogStore.setErrorMessage({
               code: "order.updateCard",
               message2: "errorPage.message.cardError",
             });
           } else {
-            store.commit("setErrorMessage", {
+            dialogStore.setErrorMessage({
               code: "order.update",
             });
           }
         }
       } catch (error: any) {
         console.error(error.message, error.details);
-        store.commit("setErrorMessage", {
+        dialogStore.setErrorMessage({
           code: "order.update",
           error,
-        });
+        } as any);
       } finally {
-        store.commit("setLoading", false);
+        generalStore.setLoading(false);
         updating.value = "";
       }
     };
     const handleOrderChange = () => {
-      store.commit("setAlert", {
+      dialogStore.setAlert({
         title: "admin.order.confirmOrderChange",
         code: "admin.order.updateOrderMessage",
         callback: async () => {
           try {
             changing.value = true;
-            store.commit("setLoading", true);
+            generalStore.setLoading(true);
             const params = {
               restaurantId: restaurantId.value,
               orderId: orderId.value,
@@ -1097,29 +1091,22 @@ export default defineComponent({
             // console.log("update", data);
           } catch (error: any) {
             console.error(error.message, error.details);
-            store.commit("setErrorMessage", {
+            dialogStore.setErrorMessage({
               code: "order.update",
               error,
-            });
+            } as any);
           } finally {
-            store.commit("setLoading", false);
+            generalStore.setLoading(false);
             changing.value = false;
           }
         },
       });
     };
-    const autoCancelTime = computed(() => {
-      const diffSecond = orderInfo.value?.isPickup ? 10 * 60 : 3600 * 24;
-      return new Date(
-        (orderInfo.value?.orderPlacedAt.seconds + diffSecond) * 1000,
-      );
-      // return orderInfo.value?.orderPlacedAt?.toDate();
-    });
     const classOf = (statusKey: string) => {
       if (order_status[statusKey] === orderInfo.value.status) {
         return statusKey;
       }
-      return "bg-black bg-opacity-5";
+      return "bg-black/5";
     };
     const openCancel = () => {
       cancelPopup.value = true;
@@ -1169,7 +1156,6 @@ export default defineComponent({
       timeEstimated,
       hasStripe,
       paymentIsNotCompleted,
-      autoCancelTime,
 
       nationalPhoneNumber,
       nationalPhoneURI,

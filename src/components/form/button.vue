@@ -1,31 +1,29 @@
 <template>
   <button
-    class="inline-flex items-center justify-center rounded-full shadow"
-    :loading="isLoading"
-    :class="isLoading || isDisabled ? 'bg-op-teal-disabled' : 'bg-op-teal'"
-    :disabled="isLoading || isDisabled"
+    class="inline-flex items-center justify-center rounded-full shadow-sm"
+    :class="{
+      'bg-op-teal': !isCancel && !isDisabled,
+      'bg-op-teal-disabled': !isCancel && isDisabled,
+      'cursor-pointer': !isDisabled,
+    }"
+    :disabled="isDisabled"
     @click="handleClick"
   >
-    <ButtonLoading v-if="isLoading" />
     <slot></slot>
   </button>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import ButtonLoading from "@/components/Button/Loading.vue";
 export default defineComponent({
   emits: ["click"],
   name: "TButton",
-  components: {
-    ButtonLoading,
-  },
   props: {
-    isLoading: {
+    isDisabled: {
       type: Boolean,
       required: false,
     },
-    isDisabled: {
+    isCancel: {
       type: Boolean,
       required: false,
     },

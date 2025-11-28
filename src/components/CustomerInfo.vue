@@ -3,7 +3,7 @@
     <div class="text-center text-xl font-bold text-green-600">
       {{ $t("order.ec.customerInfo") }}
     </div>
-    <div class="mt-2 rounded-lg bg-white p-4 shadow">
+    <div class="mt-2 rounded-lg bg-white p-4 shadow-sm">
       <div class="text-base font-bold">{{ $t("order.ec.zip") }}</div>
       <div class="mb-2">
         {{ customer.zip }}
@@ -25,29 +25,7 @@
           {{ $t("delivery.deliveryLocation") }}
         </div>
         <div class="mb-2">
-          <GoogleMap
-            :api-key="apiKey"
-            style="width: 100%; height: 50vh"
-            :center="computedCenter"
-            :zoom="12"
-          >
-            <Marker2
-              :options="{
-                position: customer.location,
-                icon: {
-                  url: 'http://maps.google.co.jp/mapfiles/ms/icons/blue-dot.png',
-                },
-              }"
-            />
-            <Marker2
-              :options="{
-                position: shopInfo.location,
-                icon: {
-                  url: 'http://maps.google.co.jp/mapfiles/ms/icons/restaurant.png',
-                },
-              }"
-            />
-          </GoogleMap>
+          <div ref="mapRef" class="h-[50vh] w-full" />
         </div>
       </template>
       <div class="text-base font-bold">{{ $t("order.ec.phone") }}</div>
@@ -59,12 +37,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, PropType } from "vue";
-import { GoogleMap, Marker as Marker2 } from "vue3-google-map";
-import { GAPIKey } from "@/config/project";
+import {
+  defineComponent,
+  ref,
+  computed,
+  PropType,
+  onMounted,
+  watch,
+} from "vue";
+import { getShopIcon, getCustomerIcon } from "@/utils/map";
+import { GMAPId } from "@/config/project";
+import { GOOGLE_MAP_DEFAULT_CENTER } from "@/config/constant";
 
 export default defineComponent({
-  components: { GoogleMap, Marker2 },
   props: {
     shopInfo: {
       type: Object as PropType<{
@@ -84,26 +69,68 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const info_windows = ref(null);
-    const apiKey = GAPIKey;
+    const mapRef = ref<HTMLElement | null>(null);
+    const mapObj = ref<google.maps.Map>();
 
     const computedCenter = computed(() => {
-      if (
-        props.customer?.location &&
-        props.shopInfo?.location // &&
-      ) {
+      if (props.customer?.location && props.shopInfo?.location) {
         return {
           lat: (props.customer.location.lat + props.shopInfo.location.lat) / 2,
           lng: (props.customer.location.lng + props.shopInfo.location.lng) / 2,
         };
       }
-      return { lat: 35.6762, lng: 139.6503 };
+      return GOOGLE_MAP_DEFAULT_CENTER; // default center
     });
 
+    const drawMap = () => {
+      if (
+        !mapRef.value ||
+        !props.customer.location ||
+        !props.shopInfo.location
+      ) {
+        return;
+      }
+      if (mapObj.value) {
+        return;
+      }
+      const map = new google.maps.Map(mapRef.value, {
+        center: computedCenter.value,
+        zoom: 12,
+        mapId: GMAPId || undefined,
+      });
+
+      mapObj.value = map;
+
+      // Add markers using AdvancedMarkerElement
+      // shop marker
+      new google.maps.marker.AdvancedMarkerElement({
+        map,
+        position: props.customer.location,
+        content: getCustomerIcon(),
+      });
+      new google.maps.marker.AdvancedMarkerElement({
+        map,
+        position: props.shopInfo.location,
+        content: getShopIcon(),
+      });
+    };
+
+    const isMount = ref(false);
+    onMounted(() => {
+      isMount.value = true;
+    });
+
+    watch(
+      [() => props.customer.location, () => props.shopInfo.location, isMount],
+      () => {
+        setTimeout(() => {
+          drawMap();
+        }, 100);
+      },
+    );
+
     return {
-      info_windows,
-      computedCenter,
-      apiKey,
+      mapRef,
     };
   },
 });

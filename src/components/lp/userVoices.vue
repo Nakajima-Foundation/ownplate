@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- User Voices Title -->
-    <div class="mt-10 text-black text-center text-op-90 text-2xl font-bold">
+    <div class="text-op-90 mt-10 text-center text-2xl font-bold text-black">
       {{ $t("lp.customerVoice1") }}
       <br />{{ $t("lp.customerVoice2") }}
     </div>
@@ -9,7 +9,7 @@
     <!-- User Voices Hero -->
     <div class="mx-6 mt-4 rounded-2xl bg-white p-6 lg:flex lg:space-x-6">
       <!-- User Face -->
-      <div class="text-center lg:flex-shrink-0">
+      <div class="text-center lg:shrink-0">
         <img src="/LP-UserVoice-Face-1.jpg" class="rounded-full" />
       </div>
       <!-- User Comment -->
@@ -29,7 +29,7 @@
         </div>
       </div>
       <!-- User Video -->
-      <div class="mt-4 text-center lg:mt-0 lg:flex-shrink-0">
+      <div class="mt-4 text-center lg:mt-0 lg:shrink-0">
         <a
           href="https://www.youtube.com/watch?v=4VUGm2v6B7E"
           target="_blank"
@@ -42,10 +42,10 @@
             />
           </div>
           <div class="mt-2 inline-flex items-center">
-            <i class="material-icons text-2xl text-op-teal"
+            <i class="material-icons text-op-teal text-2xl"
               >play_circle_filled</i
             >
-            <span class="ml-1 text-base font-bold text-op-teal">{{
+            <span class="text-op-teal ml-1 text-base font-bold">{{
               $t("lp.playVideo")
             }}</span>
           </div>

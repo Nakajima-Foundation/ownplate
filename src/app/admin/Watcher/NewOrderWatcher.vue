@@ -13,14 +13,14 @@ import { order_status } from "@/config/constant";
 
 import { doc2data, useRestaurantId, useSoundPlay } from "@/utils/utils";
 import { OrderInfoData } from "@/models/orderInfo";
-import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
 
 export default defineComponent({
   props: {
     notificationConfig: Object,
   },
   setup(props) {
-    const store = useStore();
+    const generalStore = useGeneralStore();
 
     // intervalTime was 60
     const restaurantId = useRestaurantId();
@@ -55,7 +55,7 @@ export default defineComponent({
         ),
         (result) => {
           orders.value = result.docs.map(doc2data("order")) as OrderInfoData[];
-          store.commit("setOrders", orders.value);
+          generalStore.setOrders(orders.value);
         },
         (error) => {
           if (error.code === "permission-denied") {

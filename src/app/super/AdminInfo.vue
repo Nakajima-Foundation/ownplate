@@ -1,17 +1,17 @@
 <template>
-  <section class="mx-auto max-w-full px-6 pb-12 pt-4">
+  <section class="mx-auto max-w-full px-6 pt-4 pb-12">
     <back-button url="/s/admins" />
     <h1>Admin</h1>
     <div>
-      <o-checkbox v-model="admin.opt_out" @update:modelValue="updateOpt"
-        >Opt out</o-checkbox
+      <Checkbox v-model="admin.opt_out" @update:modelValue="updateOpt"
+        >Opt out</Checkbox
       >
     </div>
     {{ admin.name }}, {{ adminPrivate.email }}
     <h1>Custome Claims</h1>
     <div>
-      <o-checkbox v-model="isAdmin" disabled>Admin</o-checkbox>
-      <o-checkbox v-model="isOperator">Operator</o-checkbox>
+      <Checkbox v-model="isAdmin" disabled>Admin</Checkbox>
+      <Checkbox v-model="isOperator">Operator</Checkbox>
     </div>
     <h1>Restaurants</h1>
     <div v-for="restaurant in restaurants" :key="restaurant.id">
@@ -36,22 +36,24 @@ import {
 import { superDispatch } from "@/lib/firebase/functions";
 
 import BackButton from "@/components/BackButton.vue";
+import Checkbox from "@/components/form/checkbox.vue";
 import Restaurant from "@/app/super/Components/Restaurant.vue";
 
 import { useSuper, doc2data, defaultTitle } from "@/utils/utils";
 import { useRoute } from "vue-router";
-import { useStore } from "vuex";
+import { useGeneralStore } from "@/store";
 import { useHead } from "@unhead/vue";
 
 export default defineComponent({
   components: {
     BackButton,
     Restaurant,
+    Checkbox,
   },
   setup() {
     useSuper();
     const route = useRoute();
-    const store = useStore();
+    const generalStore = useGeneralStore();
 
     const customClaims = ref<any>({});
     const restaurants = ref<any[]>([]);
@@ -60,9 +62,9 @@ export default defineComponent({
 
     const adminId = route.params.adminId;
 
-    useHead({
+    useHead(() => ({
       title: [defaultTitle, "Super Admin info"].join(" / "),
-    });
+    }));
 
     superDispatch({
       cmd: "getCustomeClaims",
@@ -96,7 +98,7 @@ export default defineComponent({
         return customClaims.value.operator;
       },
       set: async (value) => {
-        store.commit("setLoading", true);
+        generalStore.setLoading(true);
         try {
           const { data } = await superDispatch({
             cmd: "setCustomClaim",
@@ -108,7 +110,7 @@ export default defineComponent({
         } catch (error) {
           console.error(error);
         } finally {
-          store.commit("setLoading", false);
+          generalStore.setLoading(false);
         }
       },
     });

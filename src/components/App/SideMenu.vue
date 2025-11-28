@@ -1,10 +1,5 @@
 <template>
-  <o-sidebar
-    :fullheight="true"
-    :overlay="true"
-    position="left"
-    v-model:active="open"
-  >
+  <side-bar v-model:active="open">
     <!-- Logo / Home -->
     <div class="my-4 text-center">
       <router-link :to="home_path">
@@ -14,7 +9,7 @@
 
     <!-- for owner before login | not implemented -->
     <div v-if="isAnonymous && false">
-      <div class="font-bold text-black text-opacity-40 text-center mb-2">
+      <div class="mb-2 text-center font-bold text-black/40">
         {{ $t("lp.forRestaurantOwner") }}
       </div>
     </div>
@@ -25,7 +20,7 @@
         text="button.login"
         icon="person"
         :to="base_path + '/u/profile'"
-        @handleClose="handleClose()"
+        @handle-close="handleClose()"
       />
     </div>
 
@@ -35,7 +30,7 @@
         text="profile.title"
         icon="person"
         :to="base_path + '/u/profile'"
-        @handleClose="handleClose()"
+        @handle-close="handleClose()"
       />
     </div>
 
@@ -45,7 +40,7 @@
         text="admin.news.adminTop"
         icon="home"
         to="/admin/restaurants"
-        @handleClose="handleClose()"
+        @handle-close="handleClose()"
       />
     </div>
 
@@ -55,7 +50,17 @@
         text="order.history"
         icon="history"
         :to="historyPage"
-        @handleClose="handleClose()"
+        @handle-close="handleClose()"
+      />
+    </div>
+
+    <!-- Card Management (Restaurant-specific) -->
+    <div v-if="isUser && restaurantId">
+      <SideMenuButton
+        text="restaurantCard.title"
+        icon="credit_card"
+        :to="`/r/${restaurantId}/card`"
+        @handle-close="handleClose()"
       />
     </div>
 
@@ -65,7 +70,7 @@
         text="find.likes"
         icon="favorite"
         to="/r/favorites"
-        @handleClose="handleClose()"
+        @handle-close="handleClose()"
       />
     </div>
 
@@ -75,7 +80,7 @@
         text="find.allRestaurants"
         icon="restaurant"
         to="/r"
-        @handleClose="handleClose()"
+        @handle-close="handleClose()"
       />
     </div>
 
@@ -83,7 +88,7 @@
     <div class="mt-2 text-center" v-if="false">
       <router-link :to="base_path + '/admin/user/signup'">
         <div
-          class="inline-flex h-12 w-56 items-center justify-center rounded-full bg-ownplate-yellow font-bold text-black text-opacity-90"
+          class="bg-ownplate-yellow inline-flex h-12 w-56 items-center justify-center rounded-full font-bold text-black/90"
           @click="handleClose()"
         >
           <span>{{ $t("lp.signUpForFree") }}</span>
@@ -105,7 +110,7 @@
     </div>
 
     <div v-if="isAnonymous">
-      <div class="mt-4 font-bold text-black text-opacity-40 text-center mb-2">
+      <div class="mt-4 mb-2 text-center font-bold text-black/40">
         {{ $t("lp.forRestaurantOwner") }}
       </div>
 
@@ -170,25 +175,37 @@
       text="menu.privacy"
       @click="handleClose()"
     />
-  </o-sidebar>
+  </side-bar>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
+import { useRoute } from "vue-router";
 import { useLiffBasePath, regionalSetting, useUserData } from "@/utils/utils";
 import SideMenuButton from "@/components/App/SideMenuButton.vue";
 import SideMenuText from "@/components/App/SideMenuText.vue";
+import SideBar from "@/components/App/SideBar.vue";
 
 export default defineComponent({
   components: {
     SideMenuButton,
     SideMenuText,
+    SideBar,
   },
   setup() {
     const open = ref(false);
+    const route = useRoute();
 
     const liffBasePath = useLiffBasePath();
     const { inLiff, isAnonymous, isAdmin, isUser } = useUserData();
+
+    const restaurantId = computed(() => {
+      // Check if current route is a restaurant page (/r/:restaurantId/...)
+      if (route.path.startsWith("/r/") && route.params.restaurantId) {
+        return route.params.restaurantId as string;
+      }
+      return null;
+    });
 
     const home_path = computed(() => {
       // /liff/hoge or /admin/restaurants or /r
@@ -222,6 +239,7 @@ export default defineComponent({
       logo2,
       base_path,
       historyPage,
+      restaurantId,
 
       open,
       handleClose,

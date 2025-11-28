@@ -4,12 +4,13 @@ import * as path from "path";
 import * as os from "os";
 import * as fs from "fs";
 import sharp from "sharp";
-import UUID from "uuid-v4";
+import { v4 as uuidv4 } from "uuid";
+// import UUID from "uuid-v4";
 
 import * as constant from "./constant";
 
-const runSharp = async (bucket, fromFileFullPath, toFileFullPath, size, contentType) => {
-  const tmpResizeFile = path.join(os.tmpdir(), UUID());
+const runSharp = async (bucket: ReturnType<ReturnType<typeof admin.storage>["bucket"]>, fromFileFullPath: string, toFileFullPath: string, size: number, contentType: string) => {
+  const tmpResizeFile = path.join(os.tmpdir(), uuidv4());
 
   try {
     // resize
@@ -21,7 +22,7 @@ const runSharp = async (bucket, fromFileFullPath, toFileFullPath, size, contentT
       .toFile(tmpResizeFile);
 
     // upload
-    const uuid = UUID();
+    const uuid = uuidv4();
     const ret = await bucket.upload(tmpResizeFile, {
       destination: toFileFullPath,
       metadata: {
@@ -39,33 +40,33 @@ const runSharp = async (bucket, fromFileFullPath, toFileFullPath, size, contentT
   }
   return false;
 };
-export const downloadFileFromBucket = async (object) => {
-  const bucketObj = admin.storage().bucket(object.bucket);
-  const tempFilePath = path.join(os.tmpdir(), UUID());
+export const downloadFileFromBucket = async (data: { bucket: string; name: string }) => {
+  const bucketObj = admin.storage().bucket(data.bucket);
+  const tempFilePath = path.join(os.tmpdir(), uuidv4());
 
-  await bucketObj.file(object.name).download({ destination: tempFilePath });
+  await bucketObj.file(data.name).download({ destination: tempFilePath });
   console.log("Image downloaded locally to", tempFilePath);
   return tempFilePath;
 };
-export const resizedImage = async (object, toFileFullPath, size) => {
-  const bucketObj = admin.storage().bucket(object.bucket);
+export const resizedImage = async (data: { bucket: string; name: string; contentType?: string }, toFileFullPath: string, size: number) => {
+  const bucketObj = admin.storage().bucket(data.bucket);
 
-  const fromTempFilePath = await downloadFileFromBucket(object);
-  const ret = await runSharp(bucketObj, fromTempFilePath, toFileFullPath, size, object.contentType);
+  const fromTempFilePath = await downloadFileFromBucket(data);
+  const ret = await runSharp(bucketObj, fromTempFilePath, toFileFullPath, size, data.contentType ?? "");
 
   // Once the thumbnail has been uploaded delete the local file to free up disk space.
   fs.unlinkSync(fromTempFilePath);
   return ret;
 };
 
-export const removeFile = async (object) => {
-  const bucket = admin.storage().bucket(object.bucket);
-  await bucket.file(object.name).delete();
+export const removeFile = async (data: { bucket: string; name: string }) => {
+  const bucket = admin.storage().bucket(data.bucket);
+  await bucket.file(data.name).delete();
 };
 
-export const validImagePath = (filePath, matchPaths) => {
+export const validImagePath = (filePath: string, matchPaths: Array<{ path: string }>) => {
   const filePaths = filePath.split("/");
-  return matchPaths.reduce((ret, matchPath) => {
+  return matchPaths.reduce((ret: boolean, matchPath: { path: string }) => {
     const splitMatchPath = matchPath.path.split("/");
     return (
       ret ||
@@ -73,17 +74,17 @@ export const validImagePath = (filePath, matchPaths) => {
         if (match === false) {
           return false;
         }
-        if (splitMatchPath[key] === "*") {
+        if (splitMatchPath[key as any] === "*") {
           return true;
         }
-        return filePaths[Number(key)] === splitMatchPath[key];
+        return filePaths[Number(key)] === splitMatchPath[key as any];
       }, true) &&
         filePaths.length === splitMatchPath.length)
     );
   }, false);
 };
 
-export const getFirestorePath = (filePath) => {
+export const getFirestorePath = (filePath: string) => {
   const paths = filePath.split("/");
   if (validImagePath(filePath, [constant.coverPath, constant.profilePath])) {
     return paths.slice(1, 3).join("/");
@@ -93,12 +94,12 @@ export const getFirestorePath = (filePath) => {
   return "";
 };
 
-export const getImageId = (filePath) => {
+export const getImageId = (filePath: string) => {
   const paths = filePath.split("/");
   return paths[paths.length - 1].split(".")[0];
 };
 
-export const getToFileFullPath = (filePath, size) => {
+export const getToFileFullPath = (filePath: string, size: number) => {
   // from aa/a.jpg -> to aa/resize/a_600.jpg
   const dirName = path.dirname(filePath) + "/resize";
   const fileName = path.basename(filePath);

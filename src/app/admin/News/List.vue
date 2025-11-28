@@ -4,10 +4,10 @@
     <div class="mx-6 mt-4">
       <router-link :to="'/admin/restaurants'">
         <div
-          class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+          class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
         >
-          <i class="material-icons mr-2 text-lg text-op-teal">home</i>
-          <div class="text-sm font-bold text-op-teal">
+          <i class="material-icons text-op-teal mr-2 text-lg">home</i>
+          <div class="text-op-teal text-sm font-bold">
             {{ $t("button.adminTop") }}
           </div>
         </div>
@@ -15,7 +15,7 @@
     </div>
 
     <!-- Title -->
-    <div class="mx-6 mt-2 text-xl font-bold text-black text-opacity-40">
+    <div class="mx-6 mt-2 text-xl font-bold text-black/40">
       {{ $t("admin.news.title") }}
     </div>
 
@@ -46,9 +46,9 @@ export default defineComponent({
     ListItem,
   },
   setup() {
-    useHead({
+    useHead(() => ({
       title: ["News", defaultTitle].join(" / "),
-    });
+    }));
 
     return {
       newsList,

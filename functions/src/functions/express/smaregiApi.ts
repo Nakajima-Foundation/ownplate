@@ -1,16 +1,14 @@
 import express from "express";
 import * as admin from "firebase-admin";
-import * as functions from "firebase-functions";
+import { defineSecret } from "firebase-functions/params";
 import SmaregiApi from "../../smaregi/smaregiapi";
 import { smaregi } from "../../common/project";
 import { response200 } from "./apis";
 import moment from "moment";
 
-const clientSecrets = (functions.config() && functions.config().smaregi && functions.config().smaregi.clientsecrets) || {
-  [smaregi.clientId]: process.env.SmaregiClientSecret,
-};
-const apiHost = functions.config() && functions.config().smaregi && functions.config().smaregi.host_name; // like api.smaregi.dev
-const authHost = functions.config() && functions.config().smaregi && functions.config().smaregi.auth_host_name; // id.smaregi.dev
+const clientSecret = defineSecret("SMAREGI_SECRET");
+const apiHost = smaregi.host_name;
+const authHost = smaregi.auth_host_name;
 
 export const smaregiRouter = express.Router();
 
@@ -20,31 +18,30 @@ if (!admin.apps.length) {
 
 let db = admin.firestore();
 
-export const updateDb = (_db) => {
+export const updateDb = (_db: admin.firestore.Firestore) => {
   db = _db;
 };
 
-const subscribe = async (req: any, res: any) => {
+const subscribe = async (req: express.Request, res: express.Response) => {
   await db.collection("smaregiLog/log/subscribe").add({ data: req.body, createdAt: admin.firestore.FieldValue.serverTimestamp() });
   return response200(res, {});
 };
 
-export const processAction = async (data) => {
+export const processAction = async (data: { contractId: string; action: string; event: string; ids: Array<{ storeId: string; productId: string }> }) => {
   console.log("processAction");
   const contractId = data.contractId;
-  const clientSecret = clientSecrets[smaregi.clientId];
   if (data.action === "edited" && data.event === "pos:stock") {
     // get data
     const config = {
       contractId: contractId,
       clientId: smaregi.clientId,
-      clientSecret: clientSecret,
+      clientSecret: clientSecret.value(),
       hostName: apiHost,
       authHostName: authHost,
       scopes: ["pos.stock:read", "pos.stock:write", "pos.stores:read", "pos.stores:write", "pos.customers:read", "pos.customers:write", "pos.products:read", "pos.products:write"],
     };
 
-    data.ids.map(async (idData) => {
+    data.ids.map(async (idData: { storeId: string; productId: string }) => {
       const { storeId, productId } = idData;
       console.log({ storeId, productId });
 
@@ -106,7 +103,7 @@ export const processAction = async (data) => {
   }
 };
 
-const webhook = async (req: any, res: any) => {
+const webhook = async (req: express.Request, res: express.Response) => {
   const data = req.body;
 
   const contractId = req.body.contractId;

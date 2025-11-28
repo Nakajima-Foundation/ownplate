@@ -1,47 +1,49 @@
 import * as admin from "firebase-admin";
-import * as functions from "firebase-functions/v1";
+import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
+import { defineSecret } from "firebase-functions/params";
 import * as utils from "../../lib/utils";
 import * as netutils from "../../lib/netutils";
 import * as crypto from "crypto";
 
-import { liffAuthenticateData } from "../../lib/types";
+import { LiffAuthenticateData } from "../../models/functionTypes";
+import { LineVerifyResponse } from "../../lib/types/line";
 import { validateLiffAuthenticate } from "../../lib/validator";
 
-const LIFF_SALT = process.env.LIFF_SALT;
+const LIFF_SALT = defineSecret("LIFF_SALT");
 
 const getLiffConfig = async (db: admin.firestore.Firestore, liffIndexId: string) => {
   const liffConfig = (await db.doc(`/liff/${liffIndexId}`).get()).data();
   if (!liffConfig) {
-    throw new functions.https.HttpsError("invalid-argument", "Verification failed.");
+    throw new HttpsError("invalid-argument", "Verification failed.");
   }
   return liffConfig;
 };
 
 // eslint-disable-next-line
-export const liffAuthenticate = async (db: admin.firestore.Firestore, data: liffAuthenticateData, context: functions.https.CallableContext) => {
+export const liffAuthenticate = async (db: admin.firestore.Firestore, data: LiffAuthenticateData, context: CallableRequest) => {
   const { liffIndexId, token } = data;
   utils.required_params({ liffIndexId, token });
 
   const validateResult = validateLiffAuthenticate(data);
   if (!validateResult.result) {
     console.error("validate", validateResult.errors);
-    throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+    throw new HttpsError("invalid-argument", "Validation Error.");
   }
 
   try {
     const liffConfig = await getLiffConfig(db, liffIndexId);
 
     // We verify this code.
-    const verified = await netutils.postForm("https://api.line.me/oauth2/v2.1/verify", {
+    const verified = await netutils.postForm<LineVerifyResponse>("https://api.line.me/oauth2/v2.1/verify", {
       id_token: token,
       client_id: liffConfig.clientId,
     });
     if (!verified.sub) {
-      throw new functions.https.HttpsError("invalid-argument", "Verification failed.");
+      throw new HttpsError("invalid-argument", "Verification failed.");
     }
 
     const lineUid = verified.sub;
-    const uidBase = [LIFF_SALT, liffConfig.clientId, lineUid].join(":");
+    const uidBase = [LIFF_SALT.value(), liffConfig.clientId, lineUid].join(":");
     const userId = "liff:" + crypto.createHash("sha256").update(uidBase).digest("hex");
 
     try {
@@ -68,6 +70,6 @@ export const liffAuthenticate = async (db: admin.firestore.Firestore, data: liff
 
     return { nonce: verified.nonce, customToken };
   } catch (error) {
-    throw utils.process_error(error);
+    throw utils.process_error(error as Error);
   }
 };

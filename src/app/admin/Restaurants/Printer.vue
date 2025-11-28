@@ -14,62 +14,51 @@
       />
 
       <div>
-        <div class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4 font-bold">
+        <div class="mx-6 mt-4 rounded-lg bg-black/5 p-4 font-bold">
           <div>
             {{ $t("printer.description") }}
           </div>
           <a
             href="https://docs.omochikaeri.com/manuals/printer.pdf"
             target="_blank"
-            class="font-bold text-op-teal"
+            class="text-op-teal font-bold"
           >
             {{ $t("menu.printerManualLink") }}
           </a>
         </div>
-        <div class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4">
+        <div class="mx-6 mt-4 rounded-lg bg-black/5 p-4">
           <div class="pb-2 text-sm font-bold">
             {{ $t("printer.serverURL") }}
           </div>
-          <o-input
-            type="textarea"
+          <textarea
             rows="2"
             readonly
             v-model="printerAddress"
-            rootClass="w-full"
-          ></o-input>
+            class="w-full rounded border border-gray-300 bg-gray-100 px-3 py-2"
+          ></textarea>
           <div v-if="printerAddress">
             {{ $t("printer.guidance") }}
           </div>
         </div>
 
         <div class="mx-6 mt-4 p-4 text-center">
-          <button @click="reset" class="b-reset-tw">
-            <div
-              class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
-              style="min-width: 8rem"
-            >
-              <span class="text-base font-bold text-white">{{
-                $t("printer.reset")
-              }}</span>
-            </div>
-          </button>
+          <t-button @click="reset" class="h-12 px-8 font-bold text-white">
+            {{ $t("printer.reset") }}
+          </t-button>
         </div>
 
-        <div
-          class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4"
-          v-if="false"
-        >
+        <div class="mx-6 mt-4 rounded-lg bg-black/5 p-4" v-if="false">
           <div class="pb-2 text-sm font-bold">
             IP Address
-            <span class="text-sx text-opacity-20 text-black">if need</span>
+            <span class="text-sx text-black/20">if need</span>
           </div>
-          <o-input v-model="ipaddress"></o-input>
+          <input
+            v-model="ipaddress"
+            class="input w-full rounded border border-gray-300 px-3 py-2"
+          />
         </div>
 
-        <div
-          class="mx-6 mt-4 rounded-lg bg-black bg-opacity-5 p-4"
-          v-if="false"
-        >
+        <div class="mx-6 mt-4 rounded-lg bg-black/5 p-4" v-if="false">
           <div class="pb-2 text-sm font-bold">Logs</div>
         </div>
       </div>

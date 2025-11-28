@@ -1,22 +1,23 @@
 import * as admin from "firebase-admin";
 import * as utils from "../lib/utils";
+import Stripe from "stripe";
 
-const accountIdToUIDs = async (db, accountId) => {
+const accountIdToUIDs = async (db: admin.firestore.Firestore, accountId: string) => {
   if (accountId) {
     // current
     const pubSnapshot = await db.collectionGroup("public").where("stripe", "==", accountId).get();
     if (!pubSnapshot.empty) {
       return pubSnapshot.docs.map((doc) => {
-        const uid = doc.ref.parent.parent.id;
-        return uid;
+        const uid = doc.ref.parent?.parent?.id;
+        return uid ?? "";
       });
     }
     // ---- Backward compatibility
     const pubSnapshot2 = await db.collectionGroup("public").where("stripeAccount", "==", accountId).get();
     if (!pubSnapshot2.empty) {
       return pubSnapshot2.docs.map((doc) => {
-        const uid = doc.ref.parent.parent.id;
-        return uid;
+        const uid = doc.ref.parent?.parent?.id;
+        return uid ?? "";
       });
     }
   }
@@ -24,29 +25,31 @@ const accountIdToUIDs = async (db, accountId) => {
   return [];
 };
 
-export const account_updated = async (db, event) => {
+export const account_updated = async (db: admin.firestore.Firestore, event: Stripe.Event) => {
   const {
     data: { object },
   } = event;
-  const { id } = object;
-  const uids = await accountIdToUIDs(db, id);
+  const id = ("id" in object ? object.id : "") as string;
+  const uids = await accountIdToUIDs(db, id ?? "");
 
   return await callbackAdminLog(db, uids, stripeActions.account_updated, event);
 };
 
-export const capability_updated = async (db, event) => {
+export const capability_updated = async (db: admin.firestore.Firestore, event: Stripe.Event) => {
   const {
     data: { object },
   } = event;
-  const { account, status, id } = object;
+  const account = ("account" in object ? object.account : "") as string;
+  const status = ("status" in object ? object.status : "") as string;
+  const id = ("id" in object ? object.id : "") as string;
   const uids = await accountIdToUIDs(db, account);
 
-  const stripe = utils.get_stripe();
+  const stripe = utils.get_stripe_v2();
   if (status === "active" && id === "jcb_payments") {
     try {
       // Check if JCB payments are really active (paranoia)
       const accountInfo = await stripe.accounts.retrieve(account);
-      const capabilities: any = accountInfo.capabilities;
+      const capabilities = accountInfo.capabilities as Record<string, string> | undefined;
       if (capabilities && capabilities.jcb_payments === "active") {
         await Promise.all(
           uids.map(async (uid: string) => {
@@ -68,19 +71,19 @@ export const capability_updated = async (db, event) => {
   return await callbackAdminLog(db, uids, stripeActions.capability_updated, event);
 };
 
-export const account_authorized = async (db, event) => {
+export const account_authorized = async (db: admin.firestore.Firestore, event: Stripe.Event) => {
   const id = event.account;
-  const uids = await accountIdToUIDs(db, id);
+  const uids = await accountIdToUIDs(db, id ?? "");
   return await callbackAdminLog(db, uids, stripeActions.account_authorized, event);
 };
 
-export const account_deauthorized = async (db, event) => {
+export const account_deauthorized = async (db: admin.firestore.Firestore, event: Stripe.Event) => {
   const id = event.account;
-  const uids = await accountIdToUIDs(db, id);
+  const uids = await accountIdToUIDs(db, id ?? "");
   return await callbackAdminLog(db, uids, stripeActions.account_deauthorized, event);
 };
 
-export const unknown_log = async (db, event) => {
+export const unknown_log = async (db: admin.firestore.Firestore, event: Stripe.Event) => {
   const id = event.account || event.id;
   const uids = await accountIdToUIDs(db, id);
   return await callbackAdminLog(db, uids, stripeActions.unknow, event);
@@ -94,11 +97,17 @@ export const stripeActions = {
   unknow: 1000,
 };
 
-export const callbackAdminLog = async (db, uids, action, log) => {
+export const callbackAdminLog = async (db: admin.firestore.Firestore, uids: string[], action: number, log: Stripe.Event) => {
   return await Promise.all(
     (uids.length > 0 ? uids : ["unknown"]).map(async (uid) => {
       console.log(uid, action);
-      const payload: any = {
+      const payload: {
+        data: { log: Stripe.Event };
+        action: number;
+        uid: string;
+        type: string;
+        created: admin.firestore.Timestamp | number;
+      } = {
         data: { log: log },
         action,
         uid,

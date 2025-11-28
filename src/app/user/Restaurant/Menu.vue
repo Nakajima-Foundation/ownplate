@@ -2,17 +2,17 @@
   <div>
     <!-- Item Card -->
     <div
-      class="rounded-lg bg-white shadow"
-      :class="totalQuantity > 0 ? 'border-2 border-op-teal' : ''"
+      class="rounded-lg bg-white shadow-sm"
+      :class="totalQuantity > 0 ? 'border-op-teal border-2' : ''"
     >
       <div @click="toggleMenuFlag()" class="flow-root cursor-pointer">
-        <div class="float-right p-4 w-48">
+        <div class="float-right w-48 p-4">
           <!-- Image -->
           <div v-if="smallimage" class="pb-2 text-center">
             <img
               @click.stop="openImage()"
               :src="smallimage"
-              class="h-36 w-36 rounded object-cover"
+              class="h-36 w-36 rounded-sm object-cover"
               @error="smallImageErrorHandler"
             />
           </div>
@@ -21,7 +21,7 @@
           <div class="w-full">
             <div
               v-if="isSoldOut"
-              class="flex h-9 w-24 items-center justify-center rounded-full bg-red-700 bg-opacity-10 m-auto"
+              class="m-auto flex h-9 w-24 items-center justify-center rounded-full bg-red-700/10"
             >
               <div class="text-sm font-bold text-red-700">
                 {{ $t("sitemenu.soldOut") }}
@@ -30,22 +30,22 @@
             <div
               v-else
               @click.stop="pushQuantities(0)"
-              class="cardAdd flex h-9 w-36 items-center justify-center rounded-full bg-op-teal bg-opacity-10 m-auto"
+              class="cardAdd bg-op-teal/10 m-auto flex h-9 w-36 items-center justify-center rounded-full"
               :data-cart-product="item.id"
             >
-              <div class="text-sm font-bold text-op-teal">
+              <div class="text-op-teal text-sm font-bold">
                 {{ $t("sitemenu.add") }}
               </div>
             </div>
           </div>
           <div v-if="isSoldOutToday && !isSoldOut" class="w-full">
             <div
-              class="text-center text-sm font-bold text-red-600 bg-red-100 rounded-full mt-2 w-36 mx-auto"
+              class="mx-auto mt-2 w-36 rounded-full bg-red-100 text-center text-sm font-bold text-red-600"
             >
               {{ $t("sitemenu.soldOutToday") }}
             </div>
           </div>
-          <div v-if="false" class="text-xs mt-2">
+          <div v-if="false" class="mt-2 text-xs">
             {{ $t("sitemenu.pickupAvailableAfterToday") }}
           </div>
         </div>
@@ -53,7 +53,7 @@
         <div class="p-4">
           <!-- Item Name -->
           <a :id="`${item.id}`">
-            <div class="text-base font-bold align-middle">
+            <div class="align-middle text-base font-bold">
               {{ title }}
               <template v-if="shopInfo.enableLunchDinner">
                 /
@@ -92,7 +92,7 @@
         <div v-if="false">
           <div
             v-if="!openMenuFlag"
-            class="mb-4 flex items-center justify-center text-center text-xs font-bold text-black text-opacity-40"
+            class="mb-4 flex items-center justify-center text-center text-xs font-bold text-black/40"
           >
             {{ $t("sitemenu.openCollapse") }}
             <i class="material-icons">expand_more</i>
@@ -101,7 +101,7 @@
       </div>
 
       <div class="p-4" v-if="menuPickupData.hasExceptData">
-        <div class="rounded-lg bg-black bg-opacity-5 p-4">
+        <div class="rounded-lg bg-black/5 p-4">
           <div v-if="menuPickupData.hasExceptDay">
             &#8251;
             <span
@@ -134,7 +134,7 @@
               <img
                 @click.stop="openImage()"
                 :src="smallimage"
-                class="h-28 w-28 rounded object-cover sm:h-40 sm:w-40"
+                class="h-28 w-28 rounded-sm object-cover sm:h-40 sm:w-40"
                 @error="smallImageErrorHandler"
               />
             </div>
@@ -142,7 +142,7 @@
               <img
                 @click.stop="openImage()"
                 :src="smallimage"
-                class="h-28 w-28 rounded object-cover sm:h-40 sm:w-40"
+                class="h-28 w-28 rounded-sm object-cover sm:h-40 sm:w-40"
                 @error="smallImageErrorHandler"
               />
             </div>
@@ -150,7 +150,7 @@
               <img
                 @click.stop="openImage()"
                 :src="smallimage"
-                class="h-28 w-28 rounded object-cover sm:h-40 sm:w-40"
+                class="h-28 w-28 rounded-sm object-cover sm:h-40 sm:w-40"
                 @error="smallImageErrorHandler"
               />
             </div>
@@ -158,7 +158,7 @@
               <img
                 @click.stop="openImage()"
                 :src="smallimage"
-                class="h-28 w-28 rounded object-cover sm:h-40 sm:w-40"
+                class="h-28 w-28 rounded-sm object-cover sm:h-40 sm:w-40"
                 @error="smallImageErrorHandler"
               />
             </div>
@@ -166,15 +166,13 @@
               <img
                 @click.stop="openImage()"
                 :src="smallimage"
-                class="h-28 w-28 rounded object-cover sm:h-40 sm:w-40"
+                class="h-28 w-28 rounded-sm object-cover sm:h-40 sm:w-40"
                 @error="smallImageErrorHandler"
               />
             </div>
           </div>
         </div>
-        <div
-          class="mx-4 mt-0 border-t-2 border-solid border-black border-opacity-10 pb-4"
-        >
+        <div class="mx-4 mt-0 border-t-2 border-solid border-black/10 pb-4">
           <!-- Share Button -->
           <div class="mt-2 text-center">
             <share-popup
@@ -198,33 +196,40 @@
                 <div
                   v-for="(option, index) in options"
                   :key="index"
-                  class="rounded-lg bg-black bg-opacity-5 p-4"
+                  class="rounded-lg bg-black/5 p-4"
                 >
                   <div v-if="option.length === 1" class="field">
-                    <t-checkbox
+                    <Checkbox
                       :modelValue="selectedOptions[quantityKey][index]"
                       @update:modelValue="
                         updateSelectedOptions(quantityKey, index, $event)
                       "
                       ><div class="text-sm font-bold">
                         {{ displayOption(option[0], shopInfo, item) }}
-                      </div></t-checkbox
+                      </div></Checkbox
                     >
                   </div>
-                  <div v-else class="field">
-                    <o-radio
+                  <div v-else class="field grid grid-cols-1 gap-y-2">
+                    <div
                       v-for="(choice, index2) in option"
-                      :modelValue="selectedOptions[quantityKey][index]"
-                      @update:modelValue="
-                        updateSelectedOptions(quantityKey, index, $event)
-                      "
-                      :name="`${item.id}_${quantityKey}_${index}`"
-                      :native-value="index2"
                       :key="`${quantityKey}_${index2}`"
-                      ><div class="text-sm font-bold">
-                        {{ displayOption(choice, shopInfo, item) }}
-                      </div></o-radio
                     >
+                      <input
+                        type="radio"
+                        :modelValue="selectedOptions[quantityKey][index]"
+                        @change="
+                          updateSelectedOptions(
+                            quantityKey,
+                            index,
+                            $event.target.value,
+                          )
+                        "
+                        :name="`${item.id}_${quantityKey}_${index}`"
+                        :value="index2"
+                      /><span class="ml-2 text-sm font-bold">
+                        {{ displayOption(choice, shopInfo, item) }}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -234,7 +239,7 @@
             <div class="mt-4">
               <div v-if="isSoldOut">
                 <div
-                  class="flex h-9 items-center justify-center rounded-full bg-red-700 bg-opacity-10"
+                  class="flex h-9 items-center justify-center rounded-full bg-red-700/10"
                 >
                   <div class="text-sm font-bold text-red-700">
                     {{ $t("sitemenu.soldOut") }}
@@ -266,23 +271,23 @@
                   <div>
                     <a
                       @click="pullQuantities(quantityKey)"
-                      class="removeCart inline-flex h-9 w-24 items-center justify-center rounded-full bg-red-700 bg-opacity-10 cursor-pointer"
+                      class="removeCart inline-flex h-9 w-24 cursor-pointer items-center justify-center rounded-full bg-red-700/10"
                       :disabled="quantities[quantityKey] === 0"
                       :data-cart-product="item.id"
                     >
                       <i class="material-icons text-lg text-red-700">remove</i>
                     </a>
                   </div>
-                  <div class="flex-1 text-center text-3xl text-op-teal">
+                  <div class="text-op-teal flex-1 text-center text-3xl">
                     {{ quantities[quantityKey] }}
                   </div>
                   <div>
                     <a
                       @click="pushQuantities(quantityKey)"
-                      class="cardAdd inline-flex h-9 w-24 items-center justify-center rounded-full bg-op-teal bg-opacity-10 cursor-pointer"
+                      class="cardAdd bg-op-teal/10 inline-flex h-9 w-24 cursor-pointer items-center justify-center rounded-full"
                       :data-cart-product="item.id"
                     >
-                      <i class="material-icons text-lg text-op-teal">add</i>
+                      <i class="material-icons text-op-teal text-lg">add</i>
                     </a>
                   </div>
                 </div>
@@ -290,7 +295,7 @@
             </div>
 
             <div
-              class="mt-4 border-t-2 border-solid border-black border-opacity-10 pb-4"
+              class="mt-4 border-t-2 border-solid border-black/10 pb-4"
               v-if="showMoreOption"
             ></div>
           </template>
@@ -306,10 +311,10 @@
               <div class="text-center">
                 <a
                   @click="pushItem"
-                  class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
+                  class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
                 >
-                  <i class="material-icons mr-2 text-lg text-op-teal">add</i>
-                  <span class="text-sm font-bold text-op-teal">{{
+                  <i class="material-icons text-op-teal mr-2 text-lg">add</i>
+                  <span class="text-op-teal text-sm font-bold">{{
                     $t("sitemenu.addDifferentOptionsItem")
                   }}</span>
                 </a>
@@ -321,13 +326,13 @@
     </div>
 
     <!-- Image Popup-->
-    <o-modal
+    <t-modal
       v-model:active="imagePopup"
-      :width="488"
+      width="488"
       scroll="keep"
-      :on-cancel="closeImage"
+      @dismissed="closeImage"
     >
-      <div class="sm:mx-6 rounded-lg bg-white p-5">
+      <div class="rounded-lg bg-white p-5 sm:mx-6">
         <img
           :src="image"
           class="rounded-lg shadow-lg"
@@ -339,27 +344,27 @@
           <div class="mt-4 flex justify-center space-x-4">
             <img
               :src="image"
-              class="h-12 w-12 rounded object-cover shadow-lg"
+              class="h-12 w-12 rounded-sm object-cover shadow-lg"
               @error="imageErrorHandler"
             />
             <img
               :src="image"
-              class="h-12 w-12 rounded object-cover shadow-lg"
+              class="h-12 w-12 rounded-sm object-cover shadow-lg"
               @error="imageErrorHandler"
             />
             <img
               :src="image"
-              class="h-12 w-12 rounded object-cover shadow-lg"
+              class="h-12 w-12 rounded-sm object-cover shadow-lg"
               @error="imageErrorHandler"
             />
             <img
               :src="image"
-              class="h-12 w-12 rounded object-cover shadow-lg"
+              class="h-12 w-12 rounded-sm object-cover shadow-lg"
               @error="imageErrorHandler"
             />
             <img
               :src="image"
-              class="h-12 w-12 rounded object-cover shadow-lg"
+              class="h-12 w-12 rounded-sm object-cover shadow-lg"
               @error="imageErrorHandler"
             />
           </div>
@@ -379,28 +384,28 @@
           <div>
             <a
               @click="pullQuantities(0)"
-              class="removeCart inline-flex h-9 w-24 items-center justify-center rounded-full bg-red-700 bg-opacity-10"
+              class="removeCart inline-flex h-9 w-24 items-center justify-center rounded-full bg-red-700/10"
               :disabled="quantities[0] === 0"
               :data-cart-product="item.id"
             >
               <i class="material-icons text-lg text-red-700">remove</i>
             </a>
           </div>
-          <div class="flex-1 text-center text-3xl text-op-teal">
+          <div class="text-op-teal flex-1 text-center text-3xl">
             {{ quantities[0] }}
           </div>
           <div>
             <a
               @click="pushQuantities(0)"
-              class="cardAdd inline-flex h-9 w-24 items-center justify-center rounded-full bg-op-teal bg-opacity-10"
+              class="cardAdd bg-op-teal/10 inline-flex h-9 w-24 items-center justify-center rounded-full"
               :data-cart-product="item.id"
             >
-              <i class="material-icons text-lg text-op-teal">add</i>
+              <i class="material-icons text-op-teal text-lg">add</i>
             </a>
           </div>
         </div>
       </div>
-    </o-modal>
+    </t-modal>
   </div>
 </template>
 
@@ -415,6 +420,8 @@ import {
 } from "vue";
 
 import Price from "@/components/Price.vue";
+import Checkbox from "@/components/form/checkbox.vue";
+
 import SharePopup from "@/app/user/Restaurant/SharePopup.vue";
 import LunchDinnerIcon from "@/app/user/Restaurant/LunchDinnerIcon.vue";
 
@@ -430,6 +437,7 @@ import {
   imageErrorHandler,
   num2time,
   displayOption,
+  stripeRegion,
 } from "@/utils/utils";
 
 import moment from "moment-timezone";
@@ -440,7 +448,7 @@ import moment from "moment-timezone";
 //   if button push, quantities.push(1)
 //   when update quantities, if there is 0 element in quantities and quantities.size > 0, filter 0 element in quantities.
 
-import { useStore } from "vuex";
+import { useGeneralStore } from "../../../store";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 
@@ -451,6 +459,7 @@ import { MenuData } from "@/models/menu";
 export default defineComponent({
   components: {
     Price,
+    Checkbox,
     SharePopup,
     LunchDinnerIcon,
   },
@@ -494,7 +503,7 @@ export default defineComponent({
   },
   emits: ["didOrderdChange", "updateSelectedOptions"],
   setup(props, ctx) {
-    const store = useStore();
+    const generalStore = useGeneralStore();
     const route = useRoute();
     const router = useRouter();
 
@@ -511,7 +520,7 @@ export default defineComponent({
       return !!props.item.soldOut;
     });
     const isSoldOutToday = computed(() => {
-      const today = moment(store.state.date).format("YYYY-MM-DD");
+      const today = moment(generalStore.date).format("YYYY-MM-DD");
       return props.item.soldOutToday === today;
     });
     const totalQuantity = computed(() => {
@@ -519,11 +528,9 @@ export default defineComponent({
     });
     const allergens = computed(() => {
       if (props.item.allergens) {
-        return store.getters.stripeRegion.allergens.filter(
-          (allergen: string) => {
-            return props.item.allergens[allergen];
-          },
-        );
+        return stripeRegion.allergens.filter((allergen: string) => {
+          return props.item.allergens[allergen];
+        });
       }
       return [];
     });

@@ -3,7 +3,7 @@
     <a @click="handleLike">
       <div
         v-if="likes"
-        class="inline-flex items-center justify-center cursor-pointer"
+        class="inline-flex cursor-pointer items-center justify-center"
       >
         <i class="material-icons mr-2 text-lg text-red-700">favorite</i>
         <div class="text-sm font-bold text-red-700">
@@ -13,10 +13,10 @@
 
       <div
         v-else
-        class="inline-flex items-center justify-center cursor-pointer"
+        class="inline-flex cursor-pointer items-center justify-center"
       >
-        <i class="material-icons text-lg text-op-teal">favorite_border</i>
-        <div class="text-sm font-bold text-op-teal">
+        <i class="material-icons text-op-teal text-lg">favorite_border</i>
+        <div class="text-op-teal text-sm font-bold">
           {{ $t("shopInfo.like") }}
         </div>
       </div>

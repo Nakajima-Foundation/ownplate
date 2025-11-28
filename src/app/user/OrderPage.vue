@@ -95,7 +95,8 @@ import {
 import { useRoute, onBeforeRouteLeave } from "vue-router";
 import { useHead } from "@unhead/vue";
 
-import { OrderInfoData, OrderMenuItemData } from "@/models/orderInfo";
+import { OrderInfoData } from "@/models/orderInfo";
+import { MenuData } from "@/models/menu";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 export default defineComponent({
@@ -140,20 +141,20 @@ export default defineComponent({
     const transactions = ref();
     const orderInfo = ref<OrderInfoData>({} as OrderInfoData);
     const hasFriends = ref<boolean | null>(null);
-    const menuObj = ref<{ [key: string]: OrderMenuItemData } | null>(null);
+    const menuObj = ref<{ [key: string]: MenuData } | null>(null);
     const detachers: Unsubscribe[] = [];
     const menuNotFound = ref<boolean | null>(null);
 
     const liffBasePath = useLiffBasePath();
 
-    useHead({
+    useHead(() => ({
       title: props.shopInfo?.restaurantName
         ? [
             props.shopInfo ? props.shopInfo?.restaurantName : "--",
             "Order Page",
           ].join(" / ")
         : [defaultTitle, "Order Page"].join(" / "),
-    });
+    }));
 
     const orderId = route.params.orderId as string;
     const orderError = computed(() => {
@@ -175,7 +176,7 @@ export default defineComponent({
     const restaurantId = useRestaurantId();
 
     const hasLine = computed(() => {
-      console.log(props.shopInfo.hasLine, props.shopInfo.lineClientId);
+      // console.log(props.shopInfo.hasLine, props.shopInfo.lineClientId);
       return !!(props.shopInfo.hasLine && props.shopInfo.lineClientId);
     });
 

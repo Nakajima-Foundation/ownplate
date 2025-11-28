@@ -1,21 +1,22 @@
-import * as functions from "firebase-functions/v1";
 import * as admin from "firebase-admin";
+import { onCall, HttpsError } from "firebase-functions/v2/https";
 
-import * as Super from "../../functions/super/super";
-import { enforceAppCheck } from "../firebase";
+import { superTwilioCall } from "../../functions/super/twilio";
+import { enforceAppCheck, secretKeys } from "../firebase";
 
 const db = admin.firestore();
 
-export default functions
-  .region("asia-northeast1")
-  .runWith({
-    maxInstances: 5,
-    memory: "1GB" as const,
+export default onCall(
+  {
+    region: "asia-northeast1",
+    memory: "1GiB",
     enforceAppCheck,
-  })
-  .https.onCall(async (data, context) => {
+    maxInstances: 5,
+    secrets: secretKeys,
+  },
+  async (context) => {
     if (context.app == undefined) {
-      throw new functions.https.HttpsError("failed-precondition", "The function must be called from an App Check verified app.");
+      throw new HttpsError("failed-precondition", "The function must be called from an App Check verified app.");
     }
-    return await Super.superTwilioCall(db, data, context);
+    return await superTwilioCall(db, context.data, context);
   });

@@ -1,6 +1,6 @@
 <template>
   <div class="mx-6 mt-4 lg:mx-auto lg:max-w-2xl">
-    <div class="mt-4 rounded-lg bg-white p-6 shadow">
+    <div class="mt-4 rounded-lg bg-white p-6 shadow-sm">
       <template v-if="isExpired === null"> </template>
       <template v-else-if="isExpired">
         <div class="mt-4 text-center">
@@ -9,10 +9,10 @@
           </div>
           <router-link to="/admin/user/reset">
             <div
-              class="inline-flex h-16 items-center justify-center rounded-full border-2 border-op-teal px-6"
+              class="border-op-teal inline-flex h-16 items-center justify-center rounded-full border-2 px-6"
             >
-              <i class="material-icons mr-2 text-2xl text-op-teal">store</i>
-              <div class="text-lg font-bold text-op-teal">
+              <i class="material-icons text-op-teal mr-2 text-2xl">store</i>
+              <div class="text-op-teal text-lg font-bold">
                 {{ $t("admin.reSend") }}
               </div>
             </div>
@@ -24,10 +24,10 @@
         <div class="mt-4 text-center">
           <router-link to="/admin/user/signin">
             <div
-              class="inline-flex h-16 items-center justify-center rounded-full border-2 border-op-teal px-6"
+              class="border-op-teal inline-flex h-16 items-center justify-center rounded-full border-2 px-6"
             >
-              <i class="material-icons mr-2 text-2xl text-op-teal">store</i>
-              <div class="text-lg font-bold text-op-teal">
+              <i class="material-icons text-op-teal mr-2 text-2xl">store</i>
+              <div class="text-op-teal text-lg font-bold">
                 {{ $t("admin.goToSignIn") }}
               </div>
             </div>
@@ -42,18 +42,22 @@
           </div>
 
           <div class="mt-1">
-            <o-field
-              :variant="errors.password ? 'danger' : 'success'"
-              :message="errors.password && $t(errors.password[0])"
+            <input
+              v-model="password"
+              type="password"
+              :placeholder="$t('admin.passwordPlaceHolder')"
+              maxlength="30"
+              class="w-full rounded border border-gray-300 px-3 py-2"
+              :class="errors.password ? 'border-red-500' : 'border-green-500'"
+            />
+            <div
+              v-if="errors.password && errors.password.length > 0"
+              class="mt-2 pl-2 font-bold text-red-600"
             >
-              <o-input
-                v-model="password"
-                type="password"
-                :placeholder="$t('admin.passwordPlaceHolder')"
-                maxlength="30"
-                password-reveal
-              />
-            </o-field>
+              <div v-for="error in errors.password" :key="error">
+                {{ $t(error) }}
+              </div>
+            </div>
           </div>
 
           <!-- Confirm Password -->
@@ -63,18 +67,22 @@
             </div>
 
             <div class="mt-1">
-              <o-field
-                :variant="errors.confirm ? 'danger' : 'success'"
-                :message="errors.confirm && $t(errors.confirm[0])"
+              <input
+                v-model="confirmPassword"
+                type="password"
+                :placeholder="$t('admin.confirmPasswordPlaceHolder')"
+                maxlength="30"
+                class="w-full rounded border border-gray-300 px-3 py-2"
+                :class="errors.confirm ? 'border-red-500' : 'border-green-500'"
+              />
+              <div
+                v-if="errors.confirm && errors.confirm.length > 0"
+                class="mt-2 pl-2 font-bold text-red-600"
               >
-                <o-input
-                  v-model="confirmPassword"
-                  type="password"
-                  :placeholder="$t('admin.confirmPasswordPlaceHolder')"
-                  maxlength="30"
-                  password-reveal
-                />
-              </o-field>
+                <div v-for="error in errors.confirm" :key="error">
+                  {{ $t(error) }}
+                </div>
+              </div>
             </div>
           </div>
 

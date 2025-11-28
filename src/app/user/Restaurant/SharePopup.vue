@@ -3,35 +3,35 @@
     <!-- Share  Buttons -->
     <a
       @click="openShare()"
-      class="inline-flex items-center justify-center cursor-pointer"
+      class="inline-flex cursor-pointer items-center justify-center"
     >
-      <i class="material-icons mr-2 text-lg text-op-teal">launch</i>
-      <div class="text-sm font-bold text-op-teal">
+      <i class="material-icons text-op-teal mr-2 text-lg">launch</i>
+      <div class="text-op-teal text-sm font-bold">
         {{ $t("shopInfo.share") }}
       </div>
     </a>
 
     <!-- Share Popup-->
-    <o-modal v-model:active="sharePopup" :width="488" scroll="keep">
+    <t-modal v-model:active="sharePopup" width="488" scroll="keep">
       <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
         <!-- Title -->
-        <div class="text-xl font-bold text-black text-opacity-40">
+        <div class="text-xl font-bold text-black/40">
           {{ $t("shopInfo.share") }}
         </div>
 
         <!-- Body -->
         <div class="flex">
-          <div class="mr-2 flex-shrink-0">
+          <div class="mr-2 shrink-0">
             <vue-qrcode :value="url" :options="{ width: 160 }"></vue-qrcode>
           </div>
 
           <div class="flex-1">
             <span @click="copyClipboard(url)" class="cursor-pointer">
               <div class="inline-flex items-center justify-center">
-                <i class="material-icons mr-2 text-lg text-op-teal"
+                <i class="material-icons text-op-teal mr-2 text-lg"
                   >file_copy</i
                 >
-                <div class="text-sm font-bold text-op-teal">
+                <div class="text-op-teal text-sm font-bold">
                   {{ $t(isMenu ? "shopInfo.copyMenuUrl" : "shopInfo.copyUrl") }}
                 </div>
               </div>
@@ -44,7 +44,7 @@
                 {{ $t("shopInfo.UrlCopyFailed") }}
               </span>
             </div>
-            <div class="text-sm text-black text-opacity-30">
+            <div class="text-sm text-black/30">
               {{ url }}
             </div>
 
@@ -59,16 +59,16 @@
         <div class="mt-2 text-center">
           <a
             @click="closeShare()"
-            class="inline-flex h-12 items-center justify-center rounded-full bg-black bg-opacity-5 px-6"
+            class="inline-flex h-12 items-center justify-center rounded-full bg-black/5 px-6"
             style="min-width: 8rem"
           >
-            <div class="text-base font-bold text-black text-opacity-60">
+            <div class="text-base font-bold text-black/60">
               {{ $t("menu.close") }}
             </div>
           </a>
         </div>
       </div>
-    </o-modal>
+    </t-modal>
   </div>
 </template>
 

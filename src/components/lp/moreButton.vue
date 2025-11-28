@@ -4,17 +4,13 @@
     <!-- Center Column -->
     <div class="column">
       <div class="text-center">
-        <o-button
-          class="b-reset-tw h-9 rounded-full bg-black bg-opacity-5"
-          tag="router-link"
-          to=""
-        >
-          <span class="pl-4 pr-4">
-            <span class="font-bold text-op-teal">{{
+        <router-link class="h-9 cursor-pointer rounded-full bg-black/5" to="">
+          <span class="pr-4 pl-4">
+            <span class="text-op-teal font-bold">{{
               $t("lp.moreDetails")
             }}</span>
           </span>
-        </o-button>
+        </router-link>
       </div>
     </div>
     <div class="column is-narrow w-6"></div>

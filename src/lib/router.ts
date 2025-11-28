@@ -30,6 +30,11 @@ const getUserPages = (prefix: string) => {
       path: "order/:orderId",
       component: () => import("@/app/user/OrderPage.vue"),
     },
+    {
+      name: "r-restaurantId-card_" + prefix,
+      path: "card",
+      component: () => import("@/app/user/RestaurantCard.vue"),
+    },
   ];
 };
 
@@ -448,6 +453,18 @@ export const customRoutes: CustomRoute[] = [
   {
     path: "/l/:urlKey",
     component: () => import("@/app/docs/link.vue"),
+  },
+  {
+    path: "/m/ask",
+    component: () => import("@/app/redirect/ask.vue"),
+  },
+  {
+    path: "/m/kuuya",
+    component: () => import("@/app/redirect/kuuya.vue"),
+  },
+  {
+    path: "/m/note",
+    component: () => import("@/app/redirect/note.vue"),
   },
   {
     path: "/:page(.*)",

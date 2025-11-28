@@ -2,56 +2,63 @@
   <div>
     <div
       v-if="storedCard && hasPayment"
-      class="mt-2 flex items-center rounded-lg bg-white p-4 shadow"
+      class="mt-2 flex items-center rounded-lg bg-white p-4 shadow-sm"
     >
-      <t-checkbox v-model="useStoredCard">
+      <Checkbox v-model="useStoredCard">
         <div class="text-base">
           <span>{{ storedCard.brand }}</span>
           <span>**** **** **** {{ storedCard.last4 }}</span>
           <span>・{{ storedCard.exp_month }}/{{ storedCard.exp_year }}</span>
         </div>
-      </t-checkbox>
+      </Checkbox>
     </div>
 
+    <div v-show="useStoredCard">
+      <div v-if="isPayingError" class="mt-2 text-center font-bold text-red-600">
+        {{ $t("order.card_error") }}
+      </div>
+    </div>
     <div v-show="!useStoredCard">
       <!-- Enter New Card -->
-      <div class="mt-2 rounded-lg bg-white p-4 shadow">
+      <div class="mt-2 rounded-lg bg-white p-4 shadow-sm">
         <div id="card-element"></div>
       </div>
 
-      <div
-        v-if="!stripeJCB"
-        class="text-sm font-bold text-black text-opacity-60 mt-2"
-      >
+      <div v-if="!stripeJCB" class="mt-2 text-sm font-bold text-black/60">
         {{ $t("order.no_jcb") }}
       </div>
-      <t-checkbox v-model="save">{{ $t("order.reuseCard") }}</t-checkbox>
+
+      <div v-if="isPayingError" class="mt-2 text-center font-bold text-red-600">
+        {{ $t("order.card_error") }}
+      </div>
+
+      <Checkbox v-model="save">{{ $t("order.reuseCard") }}</Checkbox>
 
       <!-- About CVC -->
       <div class="mt-1">
         <!-- CVC Button -->
         <div class="text-right">
           <a
-            class="inline-flex items-center justify-center cursor-pointer"
+            class="inline-flex cursor-pointer items-center justify-center"
             @click="openCVC()"
           >
-            <i class="material-icons mr-1 text-lg text-op-teal">help_outline</i>
-            <span class="text-sm font-bold text-op-teal">{{
+            <i class="material-icons text-op-teal mr-1 text-lg">help_outline</i>
+            <span class="text-op-teal text-sm font-bold">{{
               $t("order.whatsCVC")
             }}</span>
           </a>
         </div>
 
         <!-- CVC Popup-->
-        <o-modal v-model:active="CVCPopup" :width="488" scroll="keep">
+        <t-modal v-model:active="CVCPopup" width="488" scroll="keep">
           <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
             <!-- Title -->
-            <div class="text-xl font-bold text-black text-opacity-40">
+            <div class="text-xl font-bold text-black/40">
               {{ $t("order.whatsCVC") }}
             </div>
 
             <!-- 3 Digits -->
-            <div class="mt-2 rounded-lg bg-black bg-opacity-5 p-4 text-center">
+            <div class="mt-2 rounded-lg bg-black/5 p-4 text-center">
               <div class="text-xl font-bold">
                 Visa, MasterCard, JCB, Diners Club, DISCOVER
               </div>
@@ -70,7 +77,7 @@
             </div>
 
             <!-- 4 Digits -->
-            <div class="mt-2 rounded-lg bg-black bg-opacity-5 p-4 text-center">
+            <div class="mt-2 rounded-lg bg-black/5 p-4 text-center">
               <div class="text-xl font-bold">American Express</div>
 
               <div class="mt-2 text-center text-base font-bold text-blue-500">
@@ -86,16 +93,16 @@
             <div class="mt-4 text-center">
               <a
                 @click="closeCVC()"
-                class="inline-flex h-12 items-center justify-center rounded-full bg-black bg-opacity-5 px-6"
+                class="inline-flex h-12 items-center justify-center rounded-full bg-black/5 px-6"
                 style="min-width: 8rem"
               >
-                <div class="text-base font-bold text-black text-opacity-60">
+                <div class="text-base font-bold text-black/60">
                   {{ $t("menu.close") }}
                 </div>
               </a>
             </div>
           </div>
-        </o-modal>
+        </t-modal>
       </div>
     </div>
   </div>
@@ -109,10 +116,14 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc } from "firebase/firestore";
 import moment from "moment";
 
+import Checkbox from "@/components/form/checkbox.vue";
+
 // import { useUserData } from "@/utils/utils";
-// import { useStore } from "vuex";
 
 export default defineComponent({
+  components: {
+    Checkbox,
+  },
   emits: ["change"],
   props: {
     stripeJCB: {
@@ -136,6 +147,10 @@ export default defineComponent({
       required: true,
     },
     hasPayment: {
+      type: Boolean,
+      required: true,
+    },
+    isPayingError: {
       type: Boolean,
       required: true,
     },
