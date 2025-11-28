@@ -156,6 +156,14 @@
           >
           <span class="text-xs opacity-50">(2025/03/15)</span>
         </div>
+        <div>
+          <router-link
+            to="/admin/docs/articles/totp_2fa_user_guide/"
+            class="text-op-teal inline-flex items-center justify-center text-sm font-bold"
+            >二段階認証（TOTP 2FA）ユーザーガイド</router-link
+          >
+          <span class="text-xs opacity-50">(2025/11/29)</span>
+        </div>
       </div>
 
       <div class="mt-4 text-sm font-bold">役立つリンク</div>
