@@ -1198,6 +1198,11 @@ const data = {
       verification: "Two-Factor Authentication",
       verificationMessage:
         "Please enter the 6-digit code from your authenticator app",
+      signupWarning: {
+        title: "If QR code is not displayed",
+        message:
+          "Two-factor authentication can be set up from My Page after email verification. If the QR code is not displayed, please press 'Skip' to continue.",
+      },
       error: {
         generateFailed: "Failed to generate two-factor authentication",
         invalidCode: "Invalid code",

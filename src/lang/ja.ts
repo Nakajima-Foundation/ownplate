@@ -1195,6 +1195,11 @@ const data = {
       verification: "二要素認証",
       verificationMessage:
         "認証アプリで生成された6桁のコードを入力してください",
+      signupWarning: {
+        title: "QRコードが表示されない場合は",
+        message:
+          "二要素認証の設定は、メールアドレス認証後にマイページから行えます。QRコードが表示されない場合は「スキップ」を押して次へ進んでください。",
+      },
       error: {
         generateFailed: "二要素認証の設定に失敗しました",
         invalidCode: "無効なコードです",
