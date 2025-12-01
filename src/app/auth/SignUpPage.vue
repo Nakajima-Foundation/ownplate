@@ -127,7 +127,7 @@
 
           <t-button
             :isDisabled="submitted && Object.keys(errors).length > 0"
-            @click="onSignup"
+            type="submit"
             class="h-12 w-32 font-bold text-white"
           >
             {{ $t("button.next") }}
