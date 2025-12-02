@@ -46,7 +46,7 @@
 
           <t-button
             :isDisabled="Object.keys(errors).length > 0"
-            @click="handleNext"
+            type="submit"
             class="h-12 w-32 font-bold text-white shadow-sm"
           >
             {{ $t("button.next") }}
