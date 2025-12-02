@@ -6,6 +6,7 @@
       'bg-op-teal-disabled': !isCancel && isDisabled,
       'cursor-pointer': !isDisabled,
     }"
+    :type="type"
     :disabled="isDisabled"
     @click="handleClick"
   >
@@ -26,6 +27,10 @@ export default defineComponent({
     isCancel: {
       type: Boolean,
       required: false,
+    },
+    type: {
+      type: String,
+      default: "button",
     },
   },
   setup(props, ctx) {
