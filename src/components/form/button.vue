@@ -30,7 +30,6 @@ export default defineComponent({
     },
     type: {
       type: String,
-      default: "button",
     },
   },
   setup(props, ctx) {
