@@ -6,6 +6,7 @@
       'bg-op-teal-disabled': !isCancel && isDisabled,
       'cursor-pointer': !isDisabled,
     }"
+    type="submit"
     :disabled="isDisabled"
     @click="handleClick"
   >
@@ -17,7 +18,7 @@
 import { defineComponent } from "vue";
 export default defineComponent({
   emits: ["click"],
-  name: "TButton",
+  name: "TSubmit",
   props: {
     isDisabled: {
       type: Boolean,
