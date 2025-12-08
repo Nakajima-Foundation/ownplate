@@ -44,13 +44,12 @@
             </div>
           </button>
 
-          <t-button
+          <t-submit
             :isDisabled="Object.keys(errors).length > 0"
-            type="submit"
             class="h-12 w-32 font-bold text-white shadow-sm"
           >
             {{ $t("button.next") }}
-          </t-button>
+          </t-submit>
         </div>
 
         <!-- Email Sent -->

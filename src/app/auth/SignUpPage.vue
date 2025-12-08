@@ -125,13 +125,12 @@
             {{ $t("button.cancel") }}
           </t-button>
 
-          <t-button
+          <t-submit
             :isDisabled="submitted && Object.keys(errors).length > 0"
-            type="submit"
             class="h-12 w-32 font-bold text-white"
           >
             {{ $t("button.next") }}
-          </t-button>
+          </t-submit>
         </div>
 
         <!-- Terms of Use & Privacy Policy -->
