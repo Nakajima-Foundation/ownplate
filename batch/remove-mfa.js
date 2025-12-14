@@ -1,6 +1,6 @@
 // Remove MFA enrollment for a user
 // Usage: PROJECT=ownplate-jp npm run batch -- ./batch/remove-mfa.js W0jwRp9e2LDSDDR8BEVs [--doit]
-import * as admin from "firebase-admin";
+import admin from "firebase-admin";
 
 const project = process.env.PROJECT || "ownplate-dev";
 console.log(`project: ${project}`);
@@ -20,7 +20,7 @@ const main = async () => {
 
   const serviceAccount = await import(`./keys/${project}-firebase-adminsdk.json`);
   admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
+    credential: admin.credential.cert(serviceAccount.default),
     databaseURL: `https://${project}.firebaseio.com`
   });
   const db = admin.firestore();
@@ -64,12 +64,12 @@ const main = async () => {
   if (fRun) {
     console.log("\nRemoving all MFA enrollments...");
 
-    // Remove all enrolled factors
-    for (const factor of enrolledFactors) {
-      await admin.auth().deleteMultiFactorInfo(ownerUid, factor.uid);
-      console.log(`  Removed factor: ${factor.uid}`);
-    }
-
+    await admin.auth().updateUser(ownerUid, {
+      multiFactor: {
+        enrolledFactors: [], // これで全削除
+      },
+    });
+    
     console.log("✓ MFA enrollments removed successfully");
 
     // Verify removal
