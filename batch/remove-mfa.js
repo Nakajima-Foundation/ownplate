@@ -1,5 +1,5 @@
 // Remove MFA enrollment for a user
-// Usage: PROJECT=ownplate-jp npm run batch -- ./batch/remove-mfa.js W0jwRp9e2LDSDDR8BEVs [--doit]
+// Usage: PROJECT=ownplate-jp npm tsx ./batch/remove-mfa.js xxxx [--doit]
 import admin from "firebase-admin";
 
 const project = process.env.PROJECT || "ownplate-dev";
