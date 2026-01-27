@@ -58,7 +58,7 @@
     "@types/pdfmake": "^0.2.12",
     "@types/query-string": "^6.3.0",
     "@types/validator": "^13.15.10",
-    "@typescript-eslint/eslint-plugin": "^8.53.1",
+    "@typescript-eslint/eslint-plugin": "^8.54.0",
     "@vitejs/plugin-vue": "^6.0.3",
     "@vue/eslint-config-typescript": "^14.6.0",
     "eslint": "^9.39.2",
@@ -71,7 +71,7 @@
     "raw-loader": "^4.0.2",
     "tailwindcss": "^4.1.18",
     "typescript": "~5.9.3",
-    "typescript-eslint": "^8.53.1",
+    "typescript-eslint": "^8.54.0",
     "vite-plugin-checker": "^0.12.0",
     "vue-eslint-parser": "^10.2.0",
     "yaml-eslint-parser": "^2.0.0"
