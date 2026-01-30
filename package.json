@@ -7,6 +7,8 @@
   "type": "module",
   "scripts": {
     "start": "vite",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
     "build": "vite build && cp dist/index.html functions/templates/index.html",
     "batch": "babel-node --presets @babel/env",
     "lint": "yarn run dumpi18n && eslint src",
@@ -49,6 +51,7 @@
   },
   "devDependencies": {
     "@intlify/eslint-plugin-vue-i18n": "^4.1.1",
+    "@playwright/test": "^1.58.0",
     "@tailwindcss/vite": "^4.1.18",
     "@types/cookie": "^1.0.0",
     "@types/crypto-js": "^4.1.1",
