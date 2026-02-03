@@ -46,7 +46,7 @@
     "vue-chart-3": "^3.1.8",
     "vue-clipboard3": "^2.0.0",
     "vue-i18n": "^11.2.8",
-    "vue-router": "^5.0.1",
+    "vue-router": "^5.0.2",
     "vue-social-sharing": "^4.0.0-alpha4"
   },
   "devDependencies": {
@@ -62,7 +62,7 @@
     "@types/query-string": "^6.3.0",
     "@types/validator": "^13.15.10",
     "@typescript-eslint/eslint-plugin": "^8.54.0",
-    "@vitejs/plugin-vue": "^6.0.3",
+    "@vitejs/plugin-vue": "^6.0.4",
     "@vue/eslint-config-typescript": "^14.6.0",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
