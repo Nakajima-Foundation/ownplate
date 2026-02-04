@@ -797,7 +797,7 @@ const data = {
     areaSetting: "Delivery area setting",
     deliveryRange: "Delivery range radius",
     updateDeliveryRange: "Update range",
-    areaTextExample: "港区北青山　１〜３丁目、南青山１〜７丁目",
+    areaTextExample: "港区北青山１〜３丁目、南青山１〜７丁目",
     enableDelivery: "Enable delivery",
     deliveryLocation: "Delivery destination",
     deliveryFeeSetting: "Delivery Fee Settings",
