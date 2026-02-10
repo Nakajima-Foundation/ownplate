@@ -58,6 +58,7 @@
     "eslint": "^10.0.0",
     "eslint-config-prettier": "^10.1.8",
     "firebase-functions-test": "^3.4.1",
+    "globals": "^17.3.0",
     "prettier": "^3.8.1",
     "supertest": "^7.2.2",
     "ts-node": "^10.9.2",
