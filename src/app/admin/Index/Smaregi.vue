@@ -6,6 +6,16 @@
     </div>
 
     <div class="rounded-lg bg-white p-4 shadow-sm">
+      <!-- サポート終了告知 -->
+      <div class="mb-4 rounded-lg border-2 border-red-700 bg-red-700/10 p-4">
+        <div class="text-center text-base font-bold text-red-700">
+          スマレジ連携サポート終了のお知らせ
+        </div>
+        <div class="mt-2 text-center text-sm text-red-700">
+          スマレジ連携のサポートは 2026年5月31日 をもって終了いたします。
+        </div>
+      </div>
+
       <div class="text-center">
         <router-link
           to="/admin/smaregi/index"
@@ -29,17 +39,6 @@
         </a>
       </div>
 
-      <div class="mt-4 text-center">
-        <a
-          href="https://apps.smaregi.jp/apps/762"
-          target="_blank"
-          class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
-        >
-          <span class="text-op-teal text-sm font-bold">
-            {{ $t("admin.thirdPartyService.smaregiAppMarket") }}
-          </span>
-        </a>
-      </div>
     </div>
   </div>
 </template>
