@@ -837,7 +837,7 @@ const data = {
     areaSetting: "配達エリア設定",
     deliveryRange: "配達可能範囲半径",
     updateDeliveryRange: "範囲を更新",
-    areaTextExample: "港区北青山　１〜３丁目、南青山１〜７丁目",
+    areaTextExample: "港区北青山１〜３丁目、南青山１〜７丁目",
     enableDelivery: "{name}のデリバリーを有効にする",
     deliveryOnlyStore: "受け取り方法をデリバリーのみにする",
     deliveryLocation: "配送先",
