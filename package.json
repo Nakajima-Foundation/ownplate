@@ -32,10 +32,10 @@
     "crypto-js": "^4.1.1",
     "firebase": "12.9.0",
     "google-libphonenumber": "^3.2.44",
-    "markdown-it": "^14.1.0",
+    "markdown-it": "^14.1.1",
     "moment": "^2.29.4",
     "moment-timezone": "^0.6.0",
-    "pdfmake": "0.3.3",
+    "pdfmake": "0.3.4",
     "pinia": "^3.0.4",
     "qrcode": "^1.5.4",
     "query-string": "^9.3.1",
@@ -66,7 +66,7 @@
     "@vue/eslint-config-typescript": "^14.6.0",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-vue": "^10.7.0",
+    "eslint-plugin-vue": "^10.8.0",
     "firebase-admin": "^13.6.1",
     "jsonc-eslint-parser": "^2.4.2",
     "prettier": "^3.8.1",
@@ -76,7 +76,7 @@
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.55.0",
     "vite-plugin-checker": "^0.12.0",
-    "vue-eslint-parser": "^10.2.0",
+    "vue-eslint-parser": "^10.4.0",
     "yaml-eslint-parser": "^2.0.0"
   }
 }
