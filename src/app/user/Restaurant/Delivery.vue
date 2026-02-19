@@ -117,7 +117,7 @@
       </div>
       <div v-if="deliveryData.enableAreaText">
         <pre
-          class="bg-transparent p-0 break-words break-all whitespace-pre-wrap"
+          class="bg-transparent p-0 break-all whitespace-pre-wrap"
           >{{ deliveryData.areaText }}</pre
         >
       </div>
