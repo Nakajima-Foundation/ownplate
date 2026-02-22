@@ -27,6 +27,9 @@
     "node": "22"
   },
   "main": "lib/index.js",
+  "resolutions": {
+    "minimatch": "^10.2.2"
+  },
   "dependencies": {
     "@aws-sdk/client-sns": "^3.995.0",
     "@sentry/node": "^10.39.0",
