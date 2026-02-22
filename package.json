@@ -46,7 +46,7 @@
     "vue-chart-3": "^3.1.8",
     "vue-clipboard3": "^2.0.0",
     "vue-i18n": "^11.2.8",
-    "vue-router": "^5.0.2",
+    "vue-router": "^5.0.3",
     "vue-social-sharing": "^4.0.0-alpha4"
   },
   "devDependencies": {
@@ -68,7 +68,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-vue": "^10.8.0",
     "firebase-admin": "^13.6.1",
-    "jsonc-eslint-parser": "^2.4.2",
+    "jsonc-eslint-parser": "^3.1.0",
     "prettier": "^3.8.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "raw-loader": "^4.0.2",
