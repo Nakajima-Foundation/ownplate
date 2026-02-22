@@ -21,6 +21,9 @@
     "use_staging": "firebase use staging && cp src/config/default/ownplate-dev.js src/config/project.js",
     "user": "babel-node --presets @babel/env  ./batch/user.js"
   },
+  "resolutions": {
+    "minimatch": "^10.2.2"
+  },
   "dependencies": {
     "@chenfengyuan/vue-qrcode": "^2.0.0",
     "@line/liff": "^2.27.3",
