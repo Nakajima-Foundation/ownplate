@@ -67,7 +67,8 @@ export default [
       "vue/no-mutating-props": "off", // warn
       "vue/no-undef-properties": "error",
       "no-undef": "error",
-
+      "no-useless-assignment": "off",
+      
       "no-irregular-whitespace": "off", 
       "@typescript-eslint/ban-ts-comment": "error",
       "@typescript-eslint/no-shadow": "error",
