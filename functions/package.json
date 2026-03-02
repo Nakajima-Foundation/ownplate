@@ -28,7 +28,7 @@
   },
   "main": "lib/index.js",
   "resolutions": {
-    "minimatch": "^10.2.2"
+    "minimatch": "^10.2.4"
   },
   "dependencies": {
     "@aws-sdk/client-sns": "^3.1000.0",
