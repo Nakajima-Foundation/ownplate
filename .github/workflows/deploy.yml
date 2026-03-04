@@ -28,7 +28,7 @@ jobs:
       - uses: actions/cache@v4
         with:
           path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - run: yarn add -D firebase-tools
       - run: cp configs/.firebaserc ./
       - run: cp src/config/default/ownplate-dev.ts src/config/project.ts
