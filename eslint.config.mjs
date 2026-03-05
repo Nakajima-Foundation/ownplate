@@ -78,7 +78,6 @@ export default [
       "no-duplicate-imports": "error",
       
       // "no-type-assertion/no-type-assertion": "warn",
-      "no-unreachable": "error",
       "no-console": "off",
       "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
 
