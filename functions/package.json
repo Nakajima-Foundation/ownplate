@@ -31,12 +31,12 @@
     "minimatch": "^10.2.4"
   },
   "dependencies": {
-    "@aws-sdk/client-sns": "^3.1000.0",
-    "@sentry/node": "^10.41.0",
+    "@aws-sdk/client-sns": "^3.1023.0",
+    "@sentry/node": "^10.47.0",
     "cors": "^2.8.6",
     "express": "^5.2.1",
     "firebase-admin": "^13.7.0",
-    "firebase-functions": "^7.0.6",
+    "firebase-functions": "^7.2.2",
     "google-libphonenumber": "^3.2.44",
     "i18next": "^25.8.13",
     "moment": "^2.29.4",
