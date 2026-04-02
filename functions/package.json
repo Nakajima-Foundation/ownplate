@@ -31,12 +31,12 @@
     "minimatch": "^10.2.4"
   },
   "dependencies": {
-    "@aws-sdk/client-sns": "^3.1000.0",
-    "@sentry/node": "^10.41.0",
+    "@aws-sdk/client-sns": "^3.1023.0",
+    "@sentry/node": "^10.47.0",
     "cors": "^2.8.6",
     "express": "^5.2.1",
     "firebase-admin": "^13.7.0",
-    "firebase-functions": "^7.0.6",
+    "firebase-functions": "^7.2.2",
     "google-libphonenumber": "^3.2.44",
     "i18next": "^25.8.13",
     "moment": "^2.29.4",
@@ -48,7 +48,7 @@
     "stripe": "^19.3.1",
     "twilio": "^5.12.2",
     "uuid": "^13.0.0",
-    "validator": "^13.15.26",
+    "validator": "^13.15.35",
     "xmlbuilder": "^15.1.1"
   },
   "devDependencies": {
@@ -58,7 +58,7 @@
     "@types/node-fetch": "^2.6.13",
     "@types/nodemailer": "^7.0.11",
     "@types/validator": "^13.15.10",
-    "eslint": "^10.0.2",
+    "eslint": "^10.1.0",
     "eslint-config-prettier": "^10.1.8",
     "firebase-functions-test": "^3.4.1",
     "globals": "^17.4.0",
@@ -66,8 +66,8 @@
     "supertest": "^7.2.2",
     "ts-node": "^10.9.2",
     "tsx": "^4.21.0",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.56.1"
+    "typescript": "^6.0.2",
+    "typescript-eslint": "^8.58.0"
   },
   "private": true
 }
