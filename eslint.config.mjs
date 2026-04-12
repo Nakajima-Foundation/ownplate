@@ -51,7 +51,7 @@ export default [
           caughtErrorsIgnorePattern: "^__",
         },
       ],
-      "@typescript-eslint/no-explicit-any": "off", // warn
+      "@typescript-eslint/no-explicit-any": "warn",
       "@typescript-eslint/no-unused-expressions": "off",
       // "@typescript-eslint/no-unnecessary-type-assertion": "error",
       "linebreak-style": ["error", "unix"],
@@ -64,7 +64,7 @@ export default [
       "vue/v-bind-style": "error",
       "vue/require-default-prop": "off",
       "vue/require-prop-types": "error",
-      "vue/no-mutating-props": "off", // warn
+      "vue/no-mutating-props": "warn",
       "vue/no-undef-properties": "error",
       "no-undef": "error",
       "no-useless-assignment": "off",
