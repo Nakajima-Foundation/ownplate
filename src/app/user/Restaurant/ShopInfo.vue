@@ -478,7 +478,7 @@ export default defineComponent({
     const toggleMoreInfo = () => {
       moreInfo.value = !moreInfo.value;
     };
-    const validDate = (date: any) => {
+    const validDate = (date: { start: number | null; end: number | null }) => {
       return !isNull(date.start) && !isNull(date.end);
     };
 

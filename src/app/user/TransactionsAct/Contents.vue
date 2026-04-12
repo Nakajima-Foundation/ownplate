@@ -270,7 +270,7 @@ export default defineComponent({
     const showPayment = computed(() => {
       return paymentInfo.value.stripe;
     });
-    const validDate = (date: any) => {
+    const validDate = (date: { start: number | null; end: number | null }) => {
       return !isNull(date.start) && !isNull(date.end);
     };
     const closeTransactionsAct = () => {

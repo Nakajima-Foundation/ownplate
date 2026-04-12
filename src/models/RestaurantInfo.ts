@@ -54,7 +54,7 @@ export interface RestaurantInfoData {
   foodTax: number;
   alcoholTax: number;
   inclusiveTax: boolean;
-  openTimes: { [key: string]: { start: any; end: any }[] };
+  openTimes: { [key: string]: { start: number; end: number }[] };
   businessDay: { [key: string]: string[] };
 
   pickUpMinimumCookTime: number;
@@ -67,12 +67,15 @@ export interface RestaurantInfoData {
   onTheList: boolean;
 
   deliveryMinimumCookTime: number;
-  suspendUntil: any;
+  suspendUntil: { toDate: () => Date } | null;
 
-  images: any;
+  images: {
+    cover?: { path?: string; resizedImages?: { [key: string]: string } };
+    profile?: { path?: string; resizedImages?: { [key: string]: string } };
+  };
   publicFlag: boolean;
   deletedFlag: boolean;
-  temporaryClosure: any[];
+  temporaryClosure: { toDate: () => Date; seconds?: number }[];
   lastOrderTime?: number;
   category1: string[];
   category2: string[];

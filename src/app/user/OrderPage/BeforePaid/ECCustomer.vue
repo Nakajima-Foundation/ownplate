@@ -201,7 +201,12 @@ export default defineComponent({
 
     const { uid } = useUserData();
 
-    const updateAddress = (address: any) => {
+    const updateAddress = (address: {
+      address2: string;
+      address3: string;
+      prefectureId: number;
+      prefecture: string;
+    }) => {
       const { address2, address3, prefectureId, prefecture } = address;
 
       const data = {
@@ -309,7 +314,7 @@ export default defineComponent({
       }
     })();
 
-    const updateHome = (pos: any) => {
+    const updateHome = (pos: { lat?: number; lng?: number }) => {
       const customer = { ...customerInfo.value };
       customer.location = pos;
       customerInfo.value = customer;

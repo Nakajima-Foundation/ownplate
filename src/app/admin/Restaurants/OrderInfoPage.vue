@@ -527,6 +527,7 @@ import {
   where,
   documentId,
   Timestamp,
+  DocumentData,
 } from "firebase/firestore";
 
 import { orderUpdate, orderChange } from "@/lib/firebase/functions";
@@ -620,9 +621,9 @@ export default defineComponent({
     const orderInfo = ref<OrderInfoData>({} as OrderInfoData);
     const customer = ref({});
     const postageInfo = ref({});
-    const deliveryData = ref<any>({});
+    const deliveryData = ref<DocumentData>({});
     const shopOwner = ref<ShopOwnerData | null>(null);
-    const userLog = ref<any>({});
+    const userLog = ref<DocumentData>({});
 
     const updating = ref("");
     const changing = ref(false);
@@ -1037,11 +1038,16 @@ export default defineComponent({
       updating.value = statusKey;
       try {
         generalStore.setLoading(true);
-        const params = {
+        const params: {
+          restaurantId: string;
+          orderId: string;
+          status: number;
+          timeEstimated?: Date;
+        } = {
           restaurantId: restaurantId.value,
           orderId: orderId.value,
           status: newStatus,
-        } as any;
+        };
         if (timeOffset.value > 0) {
           params.timeEstimated = getEestimateTime();
         }

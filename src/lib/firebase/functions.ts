@@ -19,14 +19,14 @@ import type {
 export const smaregiStoreList = httpsCallable<
   SmaregiStoreListData,
   {
-    res: any[];
+    res: { storeId: string; storeName: string }[];
   }
 >(functionsJP, "smaregiStoreList2");
 
 export const smaregiProductList = httpsCallable<
   SmaregiProductListData,
   {
-    res: any[];
+    res: { productId: string; productName: string; price: number }[];
   }
 >(functionsJP, "smaregiProductList2");
 
