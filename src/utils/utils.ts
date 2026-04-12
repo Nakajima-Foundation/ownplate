@@ -39,6 +39,22 @@ import { useI18n } from "vue-i18n";
 
 export { isNull, isEmpty, regionalSetting };
 
+export const errorCode = (error: unknown): string | undefined => {
+  if (error !== null && typeof error === "object" && "code" in error) {
+    const code = error.code;
+    return typeof code === "string" ? code : undefined;
+  }
+  return undefined;
+};
+
+export const errorMessage = (error: unknown): string | undefined => {
+  if (error !== null && typeof error === "object" && "message" in error) {
+    const message = error.message;
+    return typeof message === "string" ? message : undefined;
+  }
+  return undefined;
+};
+
 export const stripeRegion = stripe_regions_jp; // TODO remove
 // from mixin
 export const useRestaurantId = () => {

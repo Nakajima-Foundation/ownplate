@@ -31,7 +31,23 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const tableData = ref<any[]>([]);
+    type MenuRow = {
+      productName: string;
+      productPriceWithTax: number;
+      productId: string;
+      taxPercentage: number;
+      categoryId: string;
+      subcategoryCd: string;
+      subcategoryId: string;
+      productExplanation: string;
+      productNameAlias: string;
+      productImagePath: string;
+      noPublish: number;
+      outofstock: number;
+      delete: number;
+      updateDate: string;
+    };
+    const tableData = ref<MenuRow[]>([]);
     const loadData = async () => {
       const collectionData = await getDocs(
         collection(db, `restaurants/${props.restaurantid}/menus`),

@@ -107,7 +107,7 @@ export default defineComponent({
       const loadShopInfo = Object.assign({}, copy, restaurant_data, defaultTax);
       if (loadShopInfo.temporaryClosure) {
         loadShopInfo.temporaryClosure = loadShopInfo.temporaryClosure.map(
-          (day: any) => {
+          (day: { toDate: () => Date }) => {
             return day.toDate();
           },
         );

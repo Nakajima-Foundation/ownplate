@@ -32,8 +32,10 @@ export default defineComponent({
   },
   emits: ["update:modelValue"],
   setup(props, context) {
-    const input = (value: any) => {
-      context.emit("update:modelValue", value.target.value);
+    const input = (value: Event) => {
+      if (value.target instanceof HTMLSelectElement) {
+        context.emit("update:modelValue", value.target.value);
+      }
     };
 
     const states = regionalSetting.AddressStates;

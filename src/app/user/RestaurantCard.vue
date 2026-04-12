@@ -77,6 +77,7 @@ import { useRoute } from "vue-router";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, onSnapshot, getDoc, Unsubscribe } from "firebase/firestore";
 import { stripeDeleteRestaurantCard } from "@/lib/firebase/functions";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { useUserData } from "@/utils/utils";
 import { useGeneralStore } from "@/store";
 import { useDialogStore } from "@/store/dialog";
@@ -91,7 +92,7 @@ export default defineComponent({
     const { user } = useUserData();
 
     const restaurantId = computed(() => route.params.restaurantId as string);
-    const shopInfo = ref<any>(null);
+    const shopInfo = ref<RestaurantInfoData | null>(null);
     const ownerUid = ref<string>("");
     const storedCard = ref<{
       brand: string;

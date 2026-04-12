@@ -120,6 +120,7 @@ import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import { useGeneralStore } from "@/store";
+import { errorMessage } from "@/utils/utils";
 import { useCartStore } from "@/store/cart";
 import { useDialogStore } from "@/store/dialog";
 import { useRoute } from "vue-router";
@@ -237,12 +238,11 @@ export default defineComponent({
         sendPurchase();
         cartStore.resetCart(restaurantId);
         window.scrollTo(0, 0);
-      } catch (error: any) {
-        console.error(error.message, error.details);
+      } catch (error) {
+        console.error(errorMessage(error), error);
         dialogStore.setErrorMessage({
           code: "order.place",
-          error,
-        } as any);
+        });
       } finally {
         generalStore.setLoading(false);
       }

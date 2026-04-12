@@ -161,7 +161,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 
-import { stripeRegion, useIsLocaleJapan } from "@/utils/utils";
+import { stripeRegion, useIsLocaleJapan, errorCode } from "@/utils/utils";
 import moment from "moment";
 import * as Sentry from "@sentry/vue";
 
@@ -252,11 +252,12 @@ export default defineComponent({
           phoneNumber: SMSPhoneNumber.value,
           updated: serverTimestamp(),
         });
-      } catch (error: any) {
+      } catch (error) {
         console.log(JSON.stringify(error));
-        console.log("error", error.code);
+        const code = errorCode(error);
+        console.log("error", code);
         Sentry.captureException(error);
-        errors.value = ["sms." + error.code];
+        errors.value = ["sms." + code];
       } finally {
         generalStore.setLoading(false);
       }
@@ -291,17 +292,18 @@ export default defineComponent({
         confirmationResult.value = null; // so that we can re-use this
         verificationCode.value = "";
         ctx.emit("dismissed", true);
-      } catch (error: any) {
+      } catch (error) {
         // console.log(JSON.stringify(error));
         // console.log("error", error.code);
+        const code = errorCode(error);
         if (
           !["auth/code-expired", "auth/invalid-verification-code"].includes(
-            error.code,
+            code ?? "",
           )
         ) {
           Sentry.captureException(error);
         }
-        errors.value = ["sms." + error.code];
+        errors.value = ["sms." + code];
       } finally {
         generalStore.setLoading(false);
       }

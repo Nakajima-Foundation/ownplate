@@ -572,6 +572,7 @@ import {
   arrayChunk,
   array2obj,
   defaultTitle,
+  errorMessage,
 } from "@/utils/utils";
 
 import { useUserStore } from "@/store/user";
@@ -1060,12 +1061,11 @@ export default defineComponent({
             });
           }
         }
-      } catch (error: any) {
-        console.error(error.message, error.details);
+      } catch (error) {
+        console.error(errorMessage(error), error);
         dialogStore.setErrorMessage({
           code: "order.update",
-          error,
-        } as any);
+        });
       } finally {
         generalStore.setLoading(false);
         updating.value = "";
@@ -1089,12 +1089,11 @@ export default defineComponent({
             isOrderChange.value = false;
 
             // console.log("update", data);
-          } catch (error: any) {
-            console.error(error.message, error.details);
+          } catch (error) {
+            console.error(errorMessage(error), error);
             dialogStore.setErrorMessage({
               code: "order.update",
-              error,
-            } as any);
+            });
           } finally {
             generalStore.setLoading(false);
             changing.value = false;

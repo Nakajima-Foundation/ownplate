@@ -141,6 +141,7 @@ import {
   orderBy,
   deleteDoc,
   doc,
+  DocumentData,
 } from "firebase/firestore";
 
 import { useAdminUids, notFoundResponse } from "@/utils/utils";
@@ -179,7 +180,8 @@ export default defineComponent({
       return notFoundResponse;
     }
 
-    const histories = ref<any[]>([]);
+    type HistoryItem = DocumentData & { path: string };
+    const histories = ref<HistoryItem[]>([]);
     const cond = discountId
       ? query(
           collectionGroup(db, "promotionHistories"),
@@ -193,16 +195,16 @@ export default defineComponent({
     const q = query(cond, orderBy("createdAt", "desc"));
 
     onSnapshot(q, (docs) => {
-      const tmp: any[] = [];
+      const tmp: HistoryItem[] = [];
       docs.docs.forEach((a) => {
         const d = a.data();
         d.path = a.ref.path;
-        tmp.push(d);
+        tmp.push(d as HistoryItem);
       });
       histories.value = tmp;
     });
 
-    const deleteHistory = (history: any) => {
+    const deleteHistory = (history: HistoryItem) => {
       deleteDoc(doc(db, history.path));
       // console.log(history);
     };

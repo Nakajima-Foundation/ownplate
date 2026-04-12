@@ -129,6 +129,7 @@ import {
   startAfter,
   getDocs,
   collection,
+  QueryDocumentSnapshot,
 } from "firebase/firestore";
 
 import { useHead } from "@unhead/vue";
@@ -143,7 +144,7 @@ export default defineComponent({
     const { t } = useI18n({ useScope: "global" });
     let isLoading = false;
     const restaurants = ref<RestaurantInfoData[]>([]);
-    const last = ref<any | null>(null);
+    const last = ref<QueryDocumentSnapshot | null>(null);
 
     useHead(() => ({
       title: [defaultTitle, "Super All Restaurants"].join(" / "),

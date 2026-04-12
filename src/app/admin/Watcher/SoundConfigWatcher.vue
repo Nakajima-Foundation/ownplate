@@ -19,7 +19,7 @@ export default defineComponent({
   setup(props) {
     const generalStore = useGeneralStore();
 
-    const update = (newData: any) => {
+    const update = (newData: { nameKey: string; soundOn: boolean }) => {
       const soundIndex = getSoundIndex(newData.nameKey);
       generalStore.setSoundOn(newData.soundOn);
       generalStore.setSoundFile(soundFiles[soundIndex].file);

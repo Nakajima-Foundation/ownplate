@@ -153,11 +153,10 @@ export default defineComponent({
           try {
             const { data } = await stripeConnect({ code });
             console.log(data);
-          } catch (error: any) {
+          } catch (error) {
             console.error(error);
             dialogStore.setErrorMessage({
               code: "stripe.connect",
-              error,
             });
           } finally {
             generalStore.setLoading(false);
@@ -237,12 +236,11 @@ export default defineComponent({
             generalStore.setLoading(true);
             await stripeDisconnect();
             // TODO: show connected view
-          } catch (error: any) {
-            console.error(error, error.details);
+          } catch (error) {
+            console.error(error);
             dialogStore.setErrorMessage({
               code: "stripe.disconnect",
-              error,
-            } as any);
+            });
           } finally {
             generalStore.setLoading(false);
           }

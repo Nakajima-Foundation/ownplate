@@ -92,7 +92,7 @@ export default defineComponent({
       if (!submitted.value) {
         return {};
       }
-      const err: any = {};
+      const err: { email?: string[] } = {};
       if (!isEmail(email.value)) {
         err.email = ["admin.error.email.invalid"];
       } else if (email.value === badEmail) {

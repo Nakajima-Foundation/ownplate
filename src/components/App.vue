@@ -154,7 +154,7 @@ export default defineComponent({
               userStore.setCustomClaims(result.claims);
             }
           })
-          .catch((error: any) => {
+          .catch((error: unknown) => {
             Sentry.captureException(error);
           });
         setUserProperties(analytics, {

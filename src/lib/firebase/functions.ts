@@ -53,6 +53,7 @@ export const subAccountInvite = httpsCallable<
   SubAccountInvitateData,
   {
     result: boolean;
+    childUid: string;
   }
 >(functionsJP, "subAccountInvite2");
 
@@ -129,4 +130,7 @@ export const stripeDeleteRestaurantCard = httpsCallable<
 export const stripeConnect = httpsCallable(functionsJP, "stripeConnect2");
 export const stripeDisconnect = httpsCallable(functionsJP, "stripeDisconnect2");
 export const stripeVerify = httpsCallable(functionsJP, "stripeVerify2");
-export const stripeReceipt = httpsCallable(functionsJP, "stripeReceipt2");
+export const stripeReceipt = httpsCallable<
+  { restaurantId: string; orderId: string | string[] },
+  { receipt_url?: string }
+>(functionsJP, "stripeReceipt2");

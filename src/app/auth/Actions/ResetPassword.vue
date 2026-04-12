@@ -106,6 +106,7 @@ import { defineComponent, ref, computed } from "vue";
 
 import { auth } from "@/lib/firebase/firebase9";
 import { verifyPasswordResetCode, confirmPasswordReset } from "firebase/auth";
+import { errorCode } from "@/utils/utils";
 
 import { useRoute } from "vue-router";
 
@@ -157,8 +158,8 @@ export default defineComponent({
       try {
         await confirmPasswordReset(auth, code, password.value);
         isSuccess.value = true;
-      } catch (e: any) {
-        error.value = e.code;
+      } catch (e) {
+        error.value = errorCode(e) ?? "";
       }
       submitting.value = true;
     };
