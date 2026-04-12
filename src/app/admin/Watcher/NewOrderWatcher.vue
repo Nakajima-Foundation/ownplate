@@ -6,7 +6,13 @@
 import { defineComponent, watch, computed, ref, onUnmounted } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
-import { collection, onSnapshot, where, query } from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  where,
+  query,
+  Unsubscribe,
+} from "firebase/firestore";
 
 import { midNight } from "@/utils/dateUtils";
 import { order_status } from "@/config/constant";
@@ -41,7 +47,7 @@ export default defineComponent({
       return orders.value.length > 0;
     });
 
-    let order_detacher: any = null;
+    let order_detacher: Unsubscribe | null = null;
     const dateWasUpdated = () => {
       if (order_detacher) {
         order_detacher();

@@ -51,7 +51,7 @@ export default [
           caughtErrorsIgnorePattern: "^__",
         },
       ],
-      "@typescript-eslint/no-explicit-any": "off", // warn
+      "@typescript-eslint/no-explicit-any": "warn",
       "@typescript-eslint/no-unused-expressions": "off",
       // "@typescript-eslint/no-unnecessary-type-assertion": "error",
       "linebreak-style": ["error", "unix"],

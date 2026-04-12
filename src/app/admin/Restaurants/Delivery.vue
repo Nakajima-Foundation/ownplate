@@ -307,8 +307,8 @@ export default defineComponent({
     const areaText = ref("");
     const existLocation = ref<boolean | null>(null);
 
-    const markers = ref<any[]>([]);
-    const circles = ref<any[]>([]);
+    const markers = ref<google.maps.marker.AdvancedMarkerElement[]>([]);
+    const circles = ref<google.maps.Circle[]>([]);
     const center = ref<google.maps.LatLng | null>(null);
     const notFound = ref<boolean | null>(null);
 
@@ -358,7 +358,7 @@ export default defineComponent({
       circles.value.push(circle);
     };
 
-    const setCurrentLocation = (location: any) => {
+    const setCurrentLocation = (location: { lat?: number; lng?: number }) => {
       if (!map || !location?.lat || !location?.lng) return;
 
       center.value = new google.maps.LatLng(location.lat, location.lng);

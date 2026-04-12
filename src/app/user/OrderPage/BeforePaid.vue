@@ -375,6 +375,7 @@ import { orderPlace } from "@/lib/firebase/functions";
 import { order_status, paymentMethods } from "@/config/constant";
 
 import { costCal } from "@/utils/commonUtils";
+import { errorMessage } from "@/utils/utils";
 import { usePromotionData } from "@/utils/promotion";
 
 import { OrderInfoData } from "@/models/orderInfo";
@@ -652,13 +653,12 @@ export default defineComponent({
         }
         cartStore.resetCart(restaurantId);
         window.scrollTo(0, 0);
-      } catch (error: any) {
+      } catch (error) {
         // alert(JSON.stringify(error));
-        console.error(error.message, error.details);
+        console.error(errorMessage(error), error);
         dialogStore.setErrorMessage({
           code: "order.place",
-          error,
-        } as any);
+        });
       } finally {
         generalStore.setLoading(false);
       }

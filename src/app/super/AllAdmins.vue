@@ -73,7 +73,12 @@ import { stripeVerify } from "@/lib/firebase/functions";
 
 import BackButton from "@/components/BackButton.vue";
 
-import { useSuper, doc2data, defaultTitle } from "@/utils/utils";
+import {
+  useSuper,
+  doc2data,
+  defaultTitle,
+  errorMessage,
+} from "@/utils/utils";
 import { useHead } from "@unhead/vue";
 import moment from "moment";
 
@@ -110,8 +115,8 @@ export default defineComponent({
           if ((data as any).account) {
             info.account = (data as any).account;
           }
-        } catch (error: any) {
-          console.error(error.message);
+        } catch (error) {
+          console.error(errorMessage(error));
           payment.verified = false;
         }
       }

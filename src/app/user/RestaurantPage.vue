@@ -326,6 +326,7 @@ import {
   useBasePath,
   defaultTitle,
   stripeRegion,
+  errorCode,
 } from "@/utils/utils";
 
 import { imageUtils } from "@/utils/RestaurantUtils";
@@ -582,7 +583,7 @@ export default defineComponent({
         orders.value,
         cartItems.value,
         selectedOptions.value,
-      ) as any;
+      );
     });
     const prices = computed(() => {
       return getPrices(
@@ -715,8 +716,8 @@ export default defineComponent({
             path: `/r/${restaurantId.value}/order/${res.id}`,
           });
         }
-      } catch (error: any) {
-        if (error.code === "permission-denied" && retryCount.value < 3) {
+      } catch (error) {
+        if (errorCode(error) === "permission-denied" && retryCount.value < 3) {
           retryCount.value += 1;
           console.log("retrying:", retryCount.value);
           setTimeout(() => {

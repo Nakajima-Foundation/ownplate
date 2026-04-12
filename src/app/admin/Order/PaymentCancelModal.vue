@@ -69,6 +69,7 @@ import { stripePaymentCancelIntent } from "@/lib/firebase/functions";
 import { useGeneralStore } from "@/store";
 import { useRouter } from "vue-router";
 import { useDialogStore } from "@/store/dialog";
+import { errorMessage } from "@/utils/utils";
 
 export default defineComponent({
   props: {
@@ -116,11 +117,10 @@ export default defineComponent({
         });
         console.log("paymentCancel", data);
         router.push(props.parentUrl);
-      } catch (error: any) {
-        console.error(error.message, error.details);
+      } catch (error) {
+        console.error(errorMessage(error), error);
         dialogStore.setErrorMessage({
           code: "stripe.cancel",
-          error,
         });
       } finally {
         updating.value = false;

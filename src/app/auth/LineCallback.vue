@@ -14,7 +14,7 @@ import { defineComponent, ref } from "vue";
 import { lineGuard } from "@/lib/line/line";
 import { lineValidate } from "@/lib/firebase/functions";
 
-import { useUserData } from "@/utils/utils";
+import { useUserData, errorMessage } from "@/utils/utils";
 import { useRoute, useRouter } from "vue-router";
 import { useUserStore } from "@/store/user";
 import { useDialogStore } from "@/store/dialog";
@@ -78,12 +78,11 @@ export default defineComponent({
             console.error("validatin failed", data);
             throw new Error("something is wrong");
           }
-        } catch (error: any) {
-          console.error(error.message, error.details);
+        } catch (error) {
+          console.error(errorMessage(error), error);
           dialogStore.setErrorMessage({
             code: "line.validation",
             message2: "errorPage.message.line",
-            error,
           });
         } finally {
           isValidating.value = false;

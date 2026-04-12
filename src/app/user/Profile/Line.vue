@@ -98,7 +98,7 @@ export default defineComponent({
     const liffIndexId = useLiffIndexId();
 
     const isFriend = ref<undefined | boolean>(undefined);
-    const liffConfig = ref<null | any>(null);
+    const liffConfig = ref<null | { friendUrl: string }>(null);
 
     const isWindowActive = computed(() => {
       return generalStore.isWindowActive;
@@ -132,9 +132,9 @@ export default defineComponent({
         }
       } else {
         try {
-          const { data } = (await lineVerifyFriend(
+          const { data } = await lineVerifyFriend(
             isLiffUser.value ? { liffIndexId: liffIndexId.value } : {},
-          )) as any;
+          );
           isFriend.value = data.result;
         } catch (error) {
           console.error(error);

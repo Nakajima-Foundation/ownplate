@@ -34,6 +34,8 @@ import {
   startAfter,
   limit,
   getDocs,
+  DocumentData,
+  QueryDocumentSnapshot,
 } from "firebase/firestore";
 import moment from "moment";
 
@@ -44,8 +46,8 @@ export default defineComponent({
   setup() {
     useSuper();
 
-    const reviews = ref<any[]>([]);
-    const last = ref<any>(null);
+    const reviews = ref<DocumentData[]>([]);
+    const last = ref<QueryDocumentSnapshot | null>(null);
     let isLoading = false;
 
     useHead(() => ({

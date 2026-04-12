@@ -110,6 +110,7 @@ import { auth } from "@/lib/firebase/firebase9";
 import { multiFactor } from "firebase/auth";
 import { useI18n } from "vue-i18n";
 import { useGeneralStore } from "@/store";
+import { errorCode } from "@/utils/utils";
 import TotpEnrollment from "@/components/Auth/TotpEnrollment.vue";
 import ReauthenticateModal from "@/components/Auth/ReauthenticateModal.vue";
 
@@ -165,13 +166,14 @@ export default defineComponent({
           checkTotpEnrollment();
         }
         showUnenrollmentConfirm.value = false;
-      } catch (e: any) {
+      } catch (e) {
         console.error("Failed to disable TOTP:", e);
 
         // Handle reauthentication required errors
+        const code = errorCode(e);
         if (
-          e.code === "auth/user-token-expired" ||
-          e.code === "auth/requires-recent-login"
+          code === "auth/user-token-expired" ||
+          code === "auth/requires-recent-login"
         ) {
           // User needs to re-authenticate
           showUnenrollmentConfirm.value = false;
