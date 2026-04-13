@@ -112,6 +112,7 @@
 import { defineComponent, ref, watch, onMounted, computed } from "vue";
 
 import { getStripeInstance } from "@/lib/stripe/stripe";
+import type { StripePaymentElement, StripePaymentElementChangeEvent } from "@stripe/stripe-js";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc } from "firebase/firestore";
 import moment from "moment";
@@ -157,7 +158,7 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const stripe = getStripeInstance(props.stripeAccount);
-    const cardElem = ref<any>(null);
+    const cardElem = ref<StripePaymentElement | null>(null);
     let elementStatus = { complete: false };
 
     const storedCard = ref(null);
@@ -171,12 +172,15 @@ export default defineComponent({
       const cardElement = elements.create("payment", {});
       cardElement.mount("#card-element");
       cardElem.value = cardElement;
-      cardElem.value.addEventListener("change", (status: any) => {
-        elementStatus = status;
-        if (!useStoredCard.value) {
-          ctx.emit("change", status);
-        }
-      });
+      cardElem.value.addEventListener(
+        "change",
+        (status: StripePaymentElementChangeEvent) => {
+          elementStatus = status;
+          if (!useStoredCard.value) {
+            ctx.emit("change", status);
+          }
+        },
+      );
 
       try {
         const stripeInfo = (

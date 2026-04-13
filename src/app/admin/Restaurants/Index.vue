@@ -1181,7 +1181,7 @@ export default defineComponent({
     const maplocation = ref({});
     const place_id = ref<string | null>(null);
     // const markers = ref([]);
-    const markers: any[] = []; // for google map
+    const markers: google.maps.marker.AdvancedMarkerElement[] = []; // for google map
     const errorsPhone = ref<string[]>([]);
     const files = ref<{ [key: string]: File }>({});
     const updateFirstCall = ref(true);
@@ -1189,7 +1189,9 @@ export default defineComponent({
     // external ref
     const submitting = ref(false);
     const newTemporaryClosure = ref<Date | null>(null);
-    const searchResults = ref<{ place_id: string; geometry: any }[]>([]);
+    const searchResults = ref<
+      { place_id: string; geometry: google.maps.places.PlaceGeometry }[]
+    >([]);
     const selectedResult = ref(0);
 
     const editShopInfo = reactive(props.shopInfo);
@@ -1360,7 +1362,8 @@ export default defineComponent({
       errorsPhone.value = payload.errors;
     };
 
-    const gmapClick = (arg: any) => {
+    const gmapClick = (arg: google.maps.MapMouseEvent) => {
+      if (!arg.latLng) return;
       setCurrentLocation(
         { lat: arg.latLng.lat(), lng: arg.latLng.lng() },
         false,
@@ -1418,7 +1421,9 @@ export default defineComponent({
         },
       });
     };
-    const updateRestaurantData = async (restaurantData: any) => {
+    const updateRestaurantData = async (
+      restaurantData: { [key: string]: unknown },
+    ) => {
       const cleanData = cleanObject(restaurantData);
       if (!cleanData.lastOrderTime) {
         cleanData.lastOrderTime = null;
@@ -1453,11 +1458,11 @@ export default defineComponent({
 
         router.push(`/admin/restaurants/#restaurant_` + restaurantId.value);
       } catch (error) {
+        console.error(error);
         submitting.value = false;
         dialogStore.setErrorMessage({
           code: "restaurant.save",
-          error,
-        } as any);
+        });
       }
     };
     const updateMap = async () => {

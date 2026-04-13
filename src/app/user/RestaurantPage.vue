@@ -625,7 +625,10 @@ export default defineComponent({
         });
       }
     };
-    const updateSelectedOptions = (id: string, e: any) => {
+    const updateSelectedOptions = (
+      id: string,
+      e: (number | boolean)[][],
+    ) => {
       const newSelectedOptions = Object.assign({}, selectedOptions.value);
       newSelectedOptions[id] = e;
       selectedOptions.value = newSelectedOptions;

@@ -2,8 +2,10 @@ export type OrderDataType = {
   [key: string]: number[];
 };
 
+import { MenuData } from "./menu";
+
 export type CartItemsType = {
-  [key: string]: any;
+  [key: string]: MenuData;
 };
 
 export type CartOptionType = {

@@ -176,15 +176,16 @@ export default defineComponent({
 
     const { availableDays } = usePickupTime(props.shopInfo, {}, ref({}));
 
-    // const date = ref<{ offset: number; date: Date; times: any; } | null>(null);
-    const date = computed<{ offset: number; date: Date; times: any } | null>(
-      () => {
-        if (availableDays.value.length > 0) {
-          return availableDays.value[0];
-        }
-        return null;
-      },
-    );
+    const date = computed<{
+      offset: number;
+      date: Date;
+      times: { time: number; display: string }[];
+    } | null>(() => {
+      if (availableDays.value.length > 0) {
+        return availableDays.value[0];
+      }
+      return null;
+    });
     const availableTimes = computed(() => {
       // Note: availableDays will change if we change shopInfo.suspendUntil.
       // This logic works because we use availableDays when suspendUntil is not set or too old.

@@ -67,6 +67,9 @@ import {
   startAfter,
   limit,
   getDoc,
+  DocumentData,
+  QueryDocumentSnapshot,
+  Unsubscribe,
 } from "firebase/firestore";
 
 import { stripeVerify } from "@/lib/firebase/functions";
@@ -91,17 +94,23 @@ export default defineComponent({
   setup() {
     useSuper();
 
-    const admins = ref([]);
-    const infos = ref<{ [key: string]: any }>({});
-    const last = ref<any>(null);
-    let detacher: any = null;
+    type AdminData = DocumentData & { id: string };
+    type AdminInfo = {
+      payment?: DocumentData;
+      profile?: DocumentData;
+      account?: { capabilities?: { [key: string]: string } };
+    };
+    const admins = ref<AdminData[]>([]);
+    const infos = ref<{ [key: string]: AdminInfo }>({});
+    const last = ref<QueryDocumentSnapshot | null>(null);
+    let detacher: Unsubscribe | null = null;
 
     useHead(() => ({
       title: [defaultTitle, "Super All Admin"].join(" / "),
     }));
 
-    const updateInfo = async (admin: any) => {
-      const info: any = {};
+    const updateInfo = async (admin: AdminData) => {
+      const info: AdminInfo = {};
       const payment = (
         await getDoc(doc(db, `admins/${admin.id}/public/payment`))
       ).data();
@@ -110,10 +119,13 @@ export default defineComponent({
           const { data } = await stripeVerify({
             account_id: payment?.stripe,
           });
-          // console.log("data", payment?.stripe, data);
-          payment.verified = (data as any).result;
-          if ((data as any).account) {
-            info.account = (data as any).account;
+          const verifyData = data as {
+            result?: boolean;
+            account?: { capabilities?: { [key: string]: string } };
+          };
+          payment.verified = verifyData.result;
+          if (verifyData.account) {
+            info.account = verifyData.account;
           }
         } catch (error) {
           console.error(errorMessage(error));
@@ -152,25 +164,25 @@ export default defineComponent({
         });
       });
     };
-    const profile = (admin: any) => {
+    const profile = (admin: AdminData) => {
       return infos.value[admin.id]?.profile || {};
     };
-    const payment = (admin: any) => {
+    const payment = (admin: AdminData) => {
       return infos.value[admin.id]?.payment || {};
     };
-    const account = (admin: any) => {
+    const account = (admin: AdminData) => {
       return infos.value[admin.id]?.account || {};
     };
-    const capabilities = (admin: any) => {
+    const capabilities = (admin: AdminData) => {
       return account(admin)?.capabilities || {};
     };
-    const showActivate = (admin: any) => {
+    const showActivate = (admin: AdminData) => {
       return (
         capabilities(admin).jcb_payments === "active" &&
         !payment(admin).stripeJCB
       );
     };
-    const activate = async (admin: any) => {
+    const activate = async (admin: AdminData) => {
       await updateDoc(doc(db, `admins/${admin.id}/public/payment`), {
         stripeJCB: true,
       });
