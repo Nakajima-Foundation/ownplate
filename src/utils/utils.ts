@@ -526,7 +526,7 @@ export const getPrices = (
   return ret;
 };
 
-type SelectedOption = (number | boolean)[];
+type SelectedOption = (boolean | string)[];
 
 export const getTrimmedSelectedOptions = (
   orders: { [key: string]: number[] },

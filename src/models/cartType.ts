@@ -4,10 +4,8 @@ export type OrderDataType = {
 
 import { MenuData } from "./menu";
 
-export type CartItemsType = {
-  [key: string]: MenuData;
-};
+export type CartItemsType = Partial<Record<string, MenuData>>;
 
 export type CartOptionType = {
-  [key: string]: (number | boolean)[][];
+  [key: string]: (boolean | string)[][];
 };
