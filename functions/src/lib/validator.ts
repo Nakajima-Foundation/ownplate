@@ -153,19 +153,29 @@ const validateArray = {
   newOrder: validateNewOrder,
 };
 
-const validateData = (data: Record<string, any>, validator: Record<string, any>) => {
+type ValidatorRule = {
+  type?: string;
+  required?: boolean;
+  regex?: RegExp;
+};
+
+const validateData = (
+  data: object,
+  validator: Record<string, ValidatorRule>,
+) => {
+  const record = data as Record<string, unknown>;
   const errors = Object.keys(validator).reduce((tmp: unknown[], key: string) => {
     const rule = validator[key];
-    if (rule.required && isEmpty(data[key])) {
+    if (rule.required && isEmpty(record[key])) {
       tmp.push({
         key,
         empty: true,
       });
       return tmp;
     }
-    if (!isEmpty(data[key])) {
+    if (!isEmpty(record[key])) {
       const validator = validateArray[rule.type as keyof typeof validateArray];
-      if (validator && !validator(data[key] as never)) {
+      if (validator && !validator(record[key] as never)) {
         tmp.push({
           key,
           error: "invalid",
@@ -173,7 +183,7 @@ const validateData = (data: Record<string, any>, validator: Record<string, any>)
       }
     }
     if (rule.regex) {
-      if (!rule.regex.test(data[key])) {
+      if (!rule.regex.test(String(record[key]))) {
         tmp.push({
           key,
           error: "regexError",
