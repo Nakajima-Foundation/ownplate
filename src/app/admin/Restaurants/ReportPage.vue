@@ -353,7 +353,7 @@ export default defineComponent({
     });
 
     const updateQuery = () => {
-      detacher && detacher();
+      detacher?.();
       let myQuery = query(
         collection(db, `restaurants/${props.shopInfo.restaurantId}/orders`),
         where(
@@ -423,7 +423,7 @@ export default defineComponent({
     updateQuery();
 
     onUnmounted(() => {
-      detacher && detacher();
+      detacher?.();
     });
 
     watch(monthIndex, () => {

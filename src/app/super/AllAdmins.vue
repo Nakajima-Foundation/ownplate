@@ -76,12 +76,7 @@ import { stripeVerify } from "@/lib/firebase/functions";
 
 import BackButton from "@/components/BackButton.vue";
 
-import {
-  useSuper,
-  doc2data,
-  defaultTitle,
-  errorMessage,
-} from "@/utils/utils";
+import { useSuper, doc2data, defaultTitle, errorMessage } from "@/utils/utils";
 import { useHead } from "@unhead/vue";
 import moment from "moment";
 
@@ -141,7 +136,7 @@ export default defineComponent({
       infos.value = Object.assign({}, infos.value);
     };
     const updateQuery = () => {
-      detacher && detacher();
+      detacher?.();
       let myQuery = query(
         collection(db, "admins"),
         limit(QUERY_LIMIT),

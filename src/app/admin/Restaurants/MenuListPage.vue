@@ -394,6 +394,7 @@ export default defineComponent({
       let pos = menuLists.value.indexOf(itemKey);
       if (pos !== 0 && pos !== -1) {
         const newMenuLists = [...menuLists.value];
+        // eslint-disable-next-line no-useless-assignment
         let tmp = null;
         do {
           tmp = newMenuLists[pos - 1];
@@ -413,6 +414,7 @@ export default defineComponent({
       let pos = menuLists.value.indexOf(itemKey);
       if (pos < menuLength.value - 1 && pos !== -1) {
         const newMenuLists = [...menuLists.value];
+        // eslint-disable-next-line no-useless-assignment
         let tmp = null;
         do {
           tmp = newMenuLists[pos + 1];

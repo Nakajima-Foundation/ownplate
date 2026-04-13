@@ -156,10 +156,8 @@ export default defineComponent({
       ctx.emit("updateTitle", { id: props.title.id, name: name });
     };
     const updateTitleLunchDinner = (newValue: boolean, target: string) => {
-      const l =
-        target === "lunch" ? newValue : !!props.title.availableLunch;
-      const d =
-        target === "dinner" ? newValue : !!props.title.availableDinner;
+      const l = target === "lunch" ? newValue : !!props.title.availableLunch;
+      const d = target === "dinner" ? newValue : !!props.title.availableDinner;
 
       ctx.emit("updateTitleLunchDinner", {
         id: props.title.id,

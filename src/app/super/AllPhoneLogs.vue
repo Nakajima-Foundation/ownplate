@@ -66,7 +66,7 @@ export default defineComponent({
     );
 
     onUnmounted(() => {
-      detacher && detacher();
+      detacher?.();
     });
 
     return {

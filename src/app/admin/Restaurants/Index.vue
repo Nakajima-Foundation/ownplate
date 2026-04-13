@@ -1424,9 +1424,9 @@ export default defineComponent({
         },
       });
     };
-    const updateRestaurantData = async (
-      restaurantData: { [key: string]: unknown },
-    ) => {
+    const updateRestaurantData = async (restaurantData: {
+      [key: string]: unknown;
+    }) => {
       const cleanData = cleanObject(restaurantData);
       if (!cleanData.lastOrderTime) {
         cleanData.lastOrderTime = null;

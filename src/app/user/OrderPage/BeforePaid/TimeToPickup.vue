@@ -87,9 +87,9 @@ export default defineComponent({
       exceptHours: ExceptHour[];
     };
     const exceptData = computed(() => {
-      return (Object.values(props.orderInfo.menuItems) || []).reduce<
-        ExceptDataValue
-      >(
+      return (
+        Object.values(props.orderInfo.menuItems) || []
+      ).reduce<ExceptDataValue>(
         (tmp, menu) => {
           const { exceptDay, exceptHour } = menu;
           Object.keys(exceptDay || {}).forEach((key) => {

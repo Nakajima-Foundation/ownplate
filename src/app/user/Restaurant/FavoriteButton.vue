@@ -80,7 +80,7 @@ export default defineComponent({
     }
 
     onUnmounted(() => {
-      detacher && detacher();
+      detacher?.();
     });
 
     const likes = computed(() => {

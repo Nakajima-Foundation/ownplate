@@ -271,7 +271,10 @@ export const usePickupTime = (
       const menuAvailableDays = Object.keys(
         availableBusinessDays.value || {},
       ).reduce<string[]>((arr, day) => {
-        if (availableBusinessDays.value[Number(day)] && !(exceptDay || {})[day]) {
+        if (
+          availableBusinessDays.value[Number(day)] &&
+          !(exceptDay || {})[day]
+        ) {
           arr.push(day);
         }
         return arr;
