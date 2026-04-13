@@ -21,10 +21,10 @@ export const costCal = (
   return 0;
 };
 
-export const isNull = <T>(value: T) => {
+export const isNull = (value: unknown): value is null | undefined => {
   return value === null || value === undefined;
 };
 
-export const isEmpty = <T>(value: T) => {
+export const isEmpty = (value: unknown): boolean => {
   return value === null || value === undefined || String(value) === "";
 };
