@@ -52,7 +52,7 @@ export default [
         },
       ],
       "@typescript-eslint/no-explicit-any": "error",
-      "@typescript-eslint/no-unused-expressions": "off",
+      "@typescript-eslint/no-unused-expressions": "error",
       // "@typescript-eslint/no-unnecessary-type-assertion": "error",
       "linebreak-style": ["error", "unix"],
       quotes: ["error", "double"],
@@ -67,9 +67,9 @@ export default [
       "vue/no-mutating-props": "warn",
       "vue/no-undef-properties": "error",
       "no-undef": "error",
-      "no-useless-assignment": "off",
+      "no-useless-assignment": "error",
       
-      "no-irregular-whitespace": "off", 
+      "no-irregular-whitespace": "error",
       "@typescript-eslint/ban-ts-comment": "error",
       "@typescript-eslint/no-shadow": "error",
       "vue/attribute-hyphenation": "off",
@@ -96,7 +96,7 @@ export default [
       "@intlify/vue-i18n/no-raw-text": [
         "off",
         {
-          ignorePattern: "[\\-():<>/.]", 
+          ignorePattern: "[\\-():<>/.]",
         },
       ],
     },

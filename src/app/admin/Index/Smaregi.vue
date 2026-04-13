@@ -38,7 +38,6 @@
           >
         </a>
       </div>
-
     </div>
   </div>
 </template>

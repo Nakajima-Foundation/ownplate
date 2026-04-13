@@ -46,7 +46,7 @@ export const convChar = (val: string) => {
     .replace(/[‐－―]/g, "-")
     .replace(/[～〜]/g, "~")
     .replace(/−/g, "-")
-    .replace(/　/g, " ");
+    .replace(/\u3000/g, " ");
 
   return value.normalize("NFKC");
 };
