@@ -173,15 +173,12 @@ export default defineComponent({
       const cardElement = elements.create("payment", {});
       cardElement.mount("#card-element");
       cardElem.value = cardElement;
-      cardElem.value.addEventListener(
-        "change",
-        (status: { complete: boolean }) => {
-          elementStatus = status;
-          if (!useStoredCard.value) {
-            ctx.emit("change", status);
-          }
-        },
-      );
+      cardElem.value.on("change", (status: { complete: boolean }) => {
+        elementStatus = status;
+        if (!useStoredCard.value) {
+          ctx.emit("change", status);
+        }
+      });
 
       try {
         const stripeInfo = (
