@@ -102,6 +102,7 @@ import {
   startAfter,
   orderBy,
   QueryConstraint,
+  QueryDocumentSnapshot,
 } from "firebase/firestore";
 
 import { order_status, order_status_keys } from "@/config/constant";
@@ -148,7 +149,7 @@ export default defineComponent({
     }));
 
     let isLoading = false;
-    let last: null | any = null;
+    let last: QueryDocumentSnapshot | null = null;
 
     if (!isOwner.value) {
       return notFoundResponse;

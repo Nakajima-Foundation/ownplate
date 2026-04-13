@@ -4,7 +4,7 @@ interface PostageInfo {
 }
 
 export const costCal = (
-  postageInfo: PostageInfo | any,
+  postageInfo: Partial<PostageInfo> | null | undefined,
   prefectureId: number,
   total: number,
 ) => {

@@ -100,6 +100,7 @@ export const orderDownloadData = () => {
     images,
     styles,
     defaultStyle,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } as any;
   const pdfDoc = pdfMake.createPdf(docDefinition);
   return pdfDoc;
@@ -178,6 +179,7 @@ export const testDownload = (): string => {
     images,
     styles,
     defaultStyle,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } as any;
   // @ts-expect-error unknown
   const pdfDoc: string = pdfMake.createPdf(docDefinition).getBase64();
@@ -399,6 +401,7 @@ export const printOrderData = (
     content,
     styles,
     defaultStyle,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } as any;
   const pdfDoc = pdfMake.createPdf(docDefinition);
   return pdfDoc;

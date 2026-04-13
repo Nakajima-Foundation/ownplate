@@ -53,11 +53,13 @@ const i18nData = {
   numberFormats: {
     en: numberFormats,
     ja: numberFormats,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } as any,
   datetimeFormats: {
     en: datetimeFormats,
     ja: datetimeFormats,
     "ja-JP": datetimeFormats,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } as any,
 };
 const i18n = createI18n(i18nData);

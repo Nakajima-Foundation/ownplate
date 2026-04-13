@@ -157,6 +157,8 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const stripe = getStripeInstance(props.stripeAccount);
+    // Stripe is loaded via script tag (window.Stripe), so no dedicated types are available.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const cardElem = ref<any>(null);
     let elementStatus = { complete: false };
 
@@ -171,12 +173,15 @@ export default defineComponent({
       const cardElement = elements.create("payment", {});
       cardElement.mount("#card-element");
       cardElem.value = cardElement;
-      cardElem.value.addEventListener("change", (status: any) => {
-        elementStatus = status;
-        if (!useStoredCard.value) {
-          ctx.emit("change", status);
-        }
-      });
+      cardElem.value.addEventListener(
+        "change",
+        (status: { complete: boolean }) => {
+          elementStatus = status;
+          if (!useStoredCard.value) {
+            ctx.emit("change", status);
+          }
+        },
+      );
 
       try {
         const stripeInfo = (
