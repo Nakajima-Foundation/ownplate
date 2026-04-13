@@ -79,9 +79,9 @@ export const resizedProfileImage = (
   );
 };
 
-export const arrayChunk = <T>(arr: T[], size = 1) => {
+export const arrayChunk = <T>(arr: T[], size = 1): T[][] => {
   const array = [...arr];
-  return array.reduce((current: T[][], value: T, index: number) => {
+  return array.reduce<T[][]>((current, _value, index) => {
     return index % size
       ? current
       : [...current, array.slice(index, index + size)];
@@ -232,7 +232,7 @@ export const arrayOrNumSum = (arr: number | number[]) => {
   return Array.isArray(arr) ? arraySum(arr) : arr || 0;
 };
 
-export const forceArray = <T>(arr: T) => {
+export const forceArray = <T>(arr: T | T[]): T[] => {
   return Array.isArray(arr) ? arr : [arr];
 };
 
@@ -437,10 +437,10 @@ export const validPlaceId = (placeId: string) => {
 };
 
 export const convOptionArray2Obj = <T>(obj: { [key: string]: T[] }) => {
-  return Object.keys(obj).reduce(
-    (newObj: { [key: string]: { [key: string]: T } }, objKey: string) => {
-      newObj[objKey] = obj[objKey].reduce(
-        (tmp: { [key: string]: T }, value: T, key: number) => {
+  return Object.keys(obj).reduce<{ [key: string]: { [key: string]: T } }>(
+    (newObj, objKey) => {
+      newObj[objKey] = obj[objKey].reduce<{ [key: string]: T }>(
+        (tmp, value, key) => {
           tmp[key] = value;
           return tmp;
         },
@@ -453,8 +453,8 @@ export const convOptionArray2Obj = <T>(obj: { [key: string]: T[] }) => {
 };
 
 export const prices2subtotal = (prices: { [key: string]: number[] }) => {
-  return Object.keys(prices).reduce(
-    (tmp: { [key: string]: number }, menuId) => {
+  return Object.keys(prices).reduce<{ [key: string]: number }>(
+    (tmp, menuId) => {
       tmp[menuId] = prices[menuId].reduce((a, b) => a + b, 0);
       return tmp;
     },
