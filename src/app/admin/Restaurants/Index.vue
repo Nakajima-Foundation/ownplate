@@ -1189,9 +1189,12 @@ export default defineComponent({
     // external ref
     const submitting = ref(false);
     const newTemporaryClosure = ref<Date | null>(null);
-    const searchResults = ref<
-      { place_id: string; geometry: google.maps.places.PlaceGeometry }[]
-    >([]);
+    type GeocodeResult = {
+      place_id: string;
+      formatted_address: string;
+      geometry: { location: { lat: number; lng: number } };
+    };
+    const searchResults = ref<GeocodeResult[]>([]);
     const selectedResult = ref(0);
 
     const editShopInfo = reactive(props.shopInfo);

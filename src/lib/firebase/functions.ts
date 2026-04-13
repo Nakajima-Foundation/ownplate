@@ -26,7 +26,12 @@ export const smaregiStoreList = httpsCallable<
 export const smaregiProductList = httpsCallable<
   SmaregiProductListData,
   {
-    res: { productId: string; productName: string; price: number }[];
+    res: {
+      productId: string;
+      productCode: string;
+      productName: string;
+      price: number;
+    }[];
   }
 >(functionsJP, "smaregiProductList2");
 
