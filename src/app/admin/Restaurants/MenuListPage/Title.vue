@@ -13,14 +13,16 @@
           {{ title.name }}
           <div class="flex-1 text-right">
             <Checkbox
-              @click="(e) => updateTitleLunchDinner(e, 'lunch')"
-              v-model="title.availableLunch"
+              @click.stop
+              :modelValue="title.availableLunch"
+              @update:modelValue="(v) => updateTitleLunchDinner(v, 'lunch')"
             >
               {{ $t("shopInfo.lunch") }}
             </Checkbox>
             <Checkbox
-              @click="(e) => updateTitleLunchDinner(e, 'dinner')"
-              v-model="title.availableDinner"
+              @click.stop
+              :modelValue="title.availableDinner"
+              @update:modelValue="(v) => updateTitleLunchDinner(v, 'dinner')"
             >
               {{ $t("shopInfo.dinner") }}
             </Checkbox>
@@ -153,23 +155,17 @@ export default defineComponent({
       // save and update this.
       ctx.emit("updateTitle", { id: props.title.id, name: name });
     };
-    const updateTitleLunchDinner = (e: Event, target: string) => {
+    const updateTitleLunchDinner = (newValue: boolean, target: string) => {
       const l =
-        target === "lunch"
-          ? !props.title.availableLunch
-          : !!props.title.availableLunch;
+        target === "lunch" ? newValue : !!props.title.availableLunch;
       const d =
-        target === "dinner"
-          ? !props.title.availableDinner
-          : !!props.title.availableDinner;
+        target === "dinner" ? newValue : !!props.title.availableDinner;
 
       ctx.emit("updateTitleLunchDinner", {
         id: props.title.id,
         lunch: l,
         dinner: d,
       });
-      e.stopPropagation();
-      return false;
     };
 
     return {
