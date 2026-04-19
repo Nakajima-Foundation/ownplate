@@ -17,7 +17,6 @@
     "format": "prettier --write '{src/**/*,*}.{js,ts,vue,json,css}'",
     "makenews": "npx tsx ./batch/news.js",
     "use_jp": "firebase use jp && cp src/config/default/ownplate-jp.js src/config/project.js",
-    "use_production": "firebase use production && cp src/config/default/ownplate.js src/config/project.js",
     "use_staging": "firebase use staging && cp src/config/default/ownplate-dev.js src/config/project.js",
     "user": "babel-node --presets @babel/env  ./batch/user.js"
   },
