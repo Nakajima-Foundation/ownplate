@@ -29,11 +29,10 @@ yarn start                                                     # Vite dev server
 
 ## 環境切り替え
 
-`src/config/project.ts` は環境ごとに差し替える。以下のスクリプトは `firebase use <alias>` と `cp src/config/default/<name>.js src/config/project.js` をまとめて行う:
+`src/config/project.ts` は環境ごとに差し替える。以下のスクリプトは `firebase use <alias>` と `cp src/config/default/<name>.ts src/config/project.ts` をまとめて行う:
 
 - `yarn use_staging`
 - `yarn use_jp`
-- `yarn use_production`
 
 ## ビルド / Lint / テスト
 
