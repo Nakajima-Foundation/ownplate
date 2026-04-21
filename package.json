@@ -11,7 +11,7 @@
     "test:e2e:ui": "playwright test --ui",
     "build": "vite build && cp dist/index.html functions/templates/index.html",
     "batch": "babel-node --presets @babel/env",
-    "lint": "yarn run dumpi18n && eslint src",
+    "lint": "yarn run dumpi18n && eslint src --cache --cache-location node_modules/.cache/eslint/",
     "dumpi18n": "npx tsx batch/i18n-dump.ts",
     "customclaims": "babel-node --presets @babel/env  ./batch/customclaims.js",
     "format": "prettier --write '{src/**/*,*}.{js,ts,vue,json,css}'",
