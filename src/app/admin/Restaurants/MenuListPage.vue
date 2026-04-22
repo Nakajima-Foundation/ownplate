@@ -68,103 +68,132 @@
         v-if="existsMenu"
         class="grid-col-1 mx-6 mt-2 space-y-4 lg:mx-auto lg:max-w-2xl"
       >
+        <!-- Move Mode: vuedraggable でドラッグ可能、全件表示（フィルタ解除） -->
         <draggable
-          :modelValue="menuLists"
+          v-if="isMoveMode"
+          :modelValue="localMenuLists"
           @update:modelValue="onMenuListsReorder"
           :item-key="(key: string) => key"
-          :disabled="!isMoveMode"
           handle=".drag-handle"
           animation="300"
           ghost-class="opacity-50"
-          tag="transition-group"
-          :component-data="{
-            type: 'transition-group',
-            tag: 'div',
-            name: 'menu-list',
-            class: 'space-y-2',
-            'enter-active-class': 'transition-all duration-300 ease-out',
-            'enter-from-class': 'opacity-0 translate-y-2 scale-95',
-            'leave-active-class': 'transition-all duration-300 ease-in',
-            'leave-to-class': 'opacity-0 translate-y-2 scale-95',
-            'move-class': 'transition-all duration-300 ease-in-out',
-          }"
+          tag="div"
+          class="space-y-2"
         >
           <template #item="{ element: menuList, index }">
-            <div>
-              <!-- Category Title -->
-              <div
-                v-if="
-                  itemsObj[menuList] && itemsObj[menuList]._dataType === 'title'
-                "
-                :id="itemsObj[menuList].id"
-                class="flex items-center"
+            <div class="flex items-center">
+              <i
+                class="material-icons drag-handle mr-2 cursor-move text-2xl text-black/40"
+                >drag_indicator</i
               >
-                <i
-                  v-if="isMoveMode"
-                  class="material-icons drag-handle mr-2 cursor-move text-2xl text-black/40"
-                  >drag_indicator</i
-                >
-                <div class="flex-1">
-                  <TitleView
-                    :isEdit="editings[menuList] === true"
-                    :title="itemsObj[menuList]"
-                    :position="
-                      index == 0
-                        ? 'first'
-                        : menuLength - 1 === index
-                          ? 'last'
-                          : ''
-                    "
-                    :isMoveMode="isMoveMode"
-                    @toEditMode="toEditMode($event)"
-                    @positionUp="positionUp($event)"
-                    @positionDown="positionDown($event)"
-                    @forkItem="forkTitleItem($event)"
-                    @deleteItem="deleteItem($event)"
-                    @updateTitle="updateTitle($event)"
-                    @updateTitleLunchDinner="updateTitleLunchDinner($event)"
-                  />
-                </div>
-              </div>
-              <!-- Menu Item -->
-              <div
-                v-else-if="
-                  itemsObj[menuList] &&
-                  itemsObj[menuList]._dataType === 'menu' &&
-                  (showAllItems ||
-                    (showPublicItems && itemsObj[menuList].publicFlag) ||
-                    (showSoldOutItems && itemsObj[menuList].soldOut))
-                "
-                :id="itemsObj[menuList].id"
-                class="flex items-center"
-              >
-                <i
-                  v-if="isMoveMode"
-                  class="material-icons drag-handle mr-2 cursor-move text-2xl text-black/40"
-                  >drag_indicator</i
-                >
-                <div class="flex-1">
-                  <MenuView
-                    :menuitem="itemsObj[menuList]"
-                    :position="
-                      index == 0
-                        ? 'first'
-                        : menuLength - 1 === index
-                          ? 'last'
-                          : ''
-                    "
-                    :shopInfo="shopInfo"
-                    :isMoveMode="isMoveMode"
-                    @positionUp="positionUp($event)"
-                    @positionDown="positionDown($event)"
-                    @forkItem="forkMenuItem($event)"
-                    @deleteItem="deleteItem($event)"
-                  />
-                </div>
+              <div class="flex-1">
+                <TitleView
+                  v-if="
+                    itemsObj[menuList] &&
+                    itemsObj[menuList]._dataType === 'title'
+                  "
+                  :isEdit="editings[menuList] === true"
+                  :title="itemsObj[menuList]"
+                  :position="
+                    index == 0
+                      ? 'first'
+                      : menuLength - 1 === index
+                        ? 'last'
+                        : ''
+                  "
+                  :isMoveMode="isMoveMode"
+                  @toEditMode="toEditMode($event)"
+                  @positionUp="positionUp($event)"
+                  @positionDown="positionDown($event)"
+                  @forkItem="forkTitleItem($event)"
+                  @deleteItem="deleteItem($event)"
+                  @updateTitle="updateTitle($event)"
+                  @updateTitleLunchDinner="updateTitleLunchDinner($event)"
+                />
+                <MenuView
+                  v-else-if="
+                    itemsObj[menuList] &&
+                    itemsObj[menuList]._dataType === 'menu'
+                  "
+                  :menuitem="itemsObj[menuList]"
+                  :position="
+                    index == 0
+                      ? 'first'
+                      : menuLength - 1 === index
+                        ? 'last'
+                        : ''
+                  "
+                  :shopInfo="shopInfo"
+                  :isMoveMode="isMoveMode"
+                  @positionUp="positionUp($event)"
+                  @positionDown="positionDown($event)"
+                  @forkItem="forkMenuItem($event)"
+                  @deleteItem="deleteItem($event)"
+                />
               </div>
             </div>
           </template>
         </draggable>
+        <!-- Normal Mode: 既存の TransitionGroup（挙動そのまま） -->
+        <TransitionGroup
+          v-else
+          name="menu-list"
+          tag="div"
+          class="space-y-2"
+          enter-active-class="transition-all duration-300 ease-out"
+          enter-from-class="opacity-0 translate-y-2 scale-95"
+          leave-active-class="transition-all duration-300 ease-in"
+          leave-to-class="opacity-0 translate-y-2 scale-95"
+          move-class="transition-all duration-300 ease-in-out"
+        >
+          <div v-for="(menuList, index) in menuLists" :key="menuList">
+            <!-- Category Title -->
+            <div
+              v-if="
+                itemsObj[menuList] && itemsObj[menuList]._dataType === 'title'
+              "
+              :id="itemsObj[menuList].id"
+            >
+              <TitleView
+                :isEdit="editings[menuList] === true"
+                :title="itemsObj[menuList]"
+                :position="
+                  index == 0 ? 'first' : menuLength - 1 === index ? 'last' : ''
+                "
+                @toEditMode="toEditMode($event)"
+                @positionUp="positionUp($event)"
+                @positionDown="positionDown($event)"
+                @forkItem="forkTitleItem($event)"
+                @deleteItem="deleteItem($event)"
+                @updateTitle="updateTitle($event)"
+                @updateTitleLunchDinner="updateTitleLunchDinner($event)"
+              />
+            </div>
+            <!-- Menu Item -->
+            <div
+              v-else-if="
+                itemsObj[menuList] &&
+                itemsObj[menuList]._dataType === 'menu' &&
+                (showAllItems ||
+                  (showPublicItems && itemsObj[menuList].publicFlag) ||
+                  (showSoldOutItems && itemsObj[menuList].soldOut))
+              "
+              :id="itemsObj[menuList].id"
+            >
+              <MenuView
+                :menuitem="itemsObj[menuList]"
+                :position="
+                  index == 0 ? 'first' : menuLength - 1 === index ? 'last' : ''
+                "
+                :shopInfo="shopInfo"
+                @positionUp="positionUp($event)"
+                @positionDown="positionDown($event)"
+                @forkItem="forkMenuItem($event)"
+                @deleteItem="deleteItem($event)"
+              />
+            </div>
+          </div>
+        </TransitionGroup>
       </div>
 
       <!-- Add Group Title, Menu Item, and Download Menu -->
@@ -417,6 +446,16 @@ export default defineComponent({
 
     // Move mode (drag & drop reorder)
     const isMoveMode = ref(false);
+    // 楽観的更新用のローカル配列。Firestore 反映を待たずに UI を即更新する。
+    // Firestore onSnapshot → menuLists 更新 を watch で反映させることで整合を保つ。
+    const localMenuLists = ref<string[]>([]);
+    watch(
+      menuLists,
+      (newVal) => {
+        localMenuLists.value = [...newVal];
+      },
+      { immediate: true },
+    );
     const toggleMoveMode = () => {
       if (!isMoveMode.value) {
         // 移動モード ON 時はフィルタ解除（表示中アイテムだけで並べ替えると
@@ -424,14 +463,20 @@ export default defineComponent({
         if (toggleStatus.value !== 0) {
           toggleStatus.value = 0;
         }
+        // ドラッグ開始前に最新で再同期
+        localMenuLists.value = [...menuLists.value];
       }
       isMoveMode.value = !isMoveMode.value;
     };
     const onMenuListsReorder = async (newMenuLists: string[]) => {
+      // 楽観的に UI を更新（vuedraggable が古い順序に戻らないように）
+      localMenuLists.value = newMenuLists;
       try {
         await saveMenuList(newMenuLists);
       } catch (e) {
         console.error(e);
+        // 失敗時は Firestore 側の値に戻す
+        localMenuLists.value = [...menuLists.value];
       }
     };
 
@@ -598,6 +643,7 @@ export default defineComponent({
       editings,
       notFound,
       isMoveMode,
+      localMenuLists,
 
       showPublicItems,
       showAllItems,
