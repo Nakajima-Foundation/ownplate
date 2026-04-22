@@ -324,6 +324,8 @@ const data = {
     item: "Article",
     noItem: "Aucun Article",
     pleaseAddItem: "Veuillez créer votre menu à partir du bouton du bas.",
+    reorder: "Réorganiser",
+    doneReorder: "Terminé",
     required: "Requis",
     itemName: "Nom de l'article",
     itemAliasesName:

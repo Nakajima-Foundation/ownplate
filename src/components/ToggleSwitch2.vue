@@ -1,5 +1,8 @@
 <template>
-  <a class="inline-flex items-center rounded-full bg-green-600/10 p-1">
+  <a
+    class="inline-flex items-center rounded-full bg-green-600/10 p-1"
+    :class="disabled ? 'pointer-events-none opacity-50' : ''"
+  >
     <div
       v-for="(v, k) in toggleValues"
       :key="k"
@@ -31,9 +34,14 @@ export default defineComponent({
       type: Array,
       required: true,
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props, ctx) {
     const toggleFunction = (e: number) => {
+      if (props.disabled) return;
       ctx.emit("update:modelValue", e);
     };
     return {

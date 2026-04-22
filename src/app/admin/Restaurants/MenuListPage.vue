@@ -16,7 +16,36 @@
 
       <!-- Toggle to View All or Public Only -->
       <div class="mx-6 mt-4 lg:text-center">
-        <ToggleSwitch2 v-model="toggleStatus" :toggleValues="toggleValues" />
+        <ToggleSwitch2
+          v-model="toggleStatus"
+          :toggleValues="toggleValues"
+          :disabled="isMoveMode"
+        />
+      </div>
+
+      <!-- Move Mode Toggle -->
+      <div
+        v-if="isOwner && existsMenu"
+        class="mx-6 mt-2 text-center lg:mx-auto lg:max-w-2xl"
+      >
+        <button
+          @click="toggleMoveMode"
+          class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full px-4"
+          :class="isMoveMode ? 'bg-op-teal' : 'bg-black/5'"
+        >
+          <i
+            class="material-icons mr-2 text-lg"
+            :class="isMoveMode ? 'text-white' : 'text-op-teal'"
+            >{{ isMoveMode ? "check" : "swap_vert" }}</i
+          >
+          <span
+            class="text-sm font-bold"
+            :class="isMoveMode ? 'text-white' : 'text-op-teal'"
+            >{{
+              isMoveMode ? $t("editMenu.doneReorder") : $t("editMenu.reorder")
+            }}</span
+          >
+        </button>
       </div>
       <!-- No Menu or Too Many Menu-->
       <div
@@ -39,64 +68,103 @@
         v-if="existsMenu"
         class="grid-col-1 mx-6 mt-2 space-y-4 lg:mx-auto lg:max-w-2xl"
       >
-        <TransitionGroup
-          name="menu-list"
-          tag="div"
-          class="space-y-2"
-          enter-active-class="transition-all duration-300 ease-out"
-          enter-from-class="opacity-0 translate-y-2 scale-95"
-          leave-active-class="transition-all duration-300 ease-in"
-          leave-to-class="opacity-0 translate-y-2 scale-95"
-          move-class="transition-all duration-300 ease-in-out"
+        <draggable
+          :modelValue="menuLists"
+          @update:modelValue="onMenuListsReorder"
+          :item-key="(key: string) => key"
+          :disabled="!isMoveMode"
+          handle=".drag-handle"
+          animation="300"
+          ghost-class="opacity-50"
+          tag="transition-group"
+          :component-data="{
+            type: 'transition-group',
+            tag: 'div',
+            name: 'menu-list',
+            class: 'space-y-2',
+            'enter-active-class': 'transition-all duration-300 ease-out',
+            'enter-from-class': 'opacity-0 translate-y-2 scale-95',
+            'leave-active-class': 'transition-all duration-300 ease-in',
+            'leave-to-class': 'opacity-0 translate-y-2 scale-95',
+            'move-class': 'transition-all duration-300 ease-in-out',
+          }"
         >
-          <div v-for="(menuList, index) in menuLists" :key="menuList">
-            <!-- Category Title -->
-            <div
-              v-if="
-                itemsObj[menuList] && itemsObj[menuList]._dataType === 'title'
-              "
-              :id="itemsObj[menuList].id"
-            >
-              <TitleView
-                :isEdit="editings[menuList] === true"
-                :title="itemsObj[menuList]"
-                :position="
-                  index == 0 ? 'first' : menuLength - 1 === index ? 'last' : ''
+          <template #item="{ element: menuList, index }">
+            <div>
+              <!-- Category Title -->
+              <div
+                v-if="
+                  itemsObj[menuList] && itemsObj[menuList]._dataType === 'title'
                 "
-                @toEditMode="toEditMode($event)"
-                @positionUp="positionUp($event)"
-                @positionDown="positionDown($event)"
-                @forkItem="forkTitleItem($event)"
-                @deleteItem="deleteItem($event)"
-                @updateTitle="updateTitle($event)"
-                @updateTitleLunchDinner="updateTitleLunchDinner($event)"
-              />
-            </div>
-            <!-- Menu Item -->
-            <div
-              v-else-if="
-                itemsObj[menuList] &&
-                itemsObj[menuList]._dataType === 'menu' &&
-                (showAllItems ||
-                  (showPublicItems && itemsObj[menuList].publicFlag) ||
-                  (showSoldOutItems && itemsObj[menuList].soldOut))
-              "
-              :id="itemsObj[menuList].id"
-            >
-              <MenuView
-                :menuitem="itemsObj[menuList]"
-                :position="
-                  index == 0 ? 'first' : menuLength - 1 === index ? 'last' : ''
+                :id="itemsObj[menuList].id"
+                class="flex items-center"
+              >
+                <i
+                  v-if="isMoveMode"
+                  class="material-icons drag-handle mr-2 cursor-move text-2xl text-black/40"
+                  >drag_indicator</i
+                >
+                <div class="flex-1">
+                  <TitleView
+                    :isEdit="editings[menuList] === true"
+                    :title="itemsObj[menuList]"
+                    :position="
+                      index == 0
+                        ? 'first'
+                        : menuLength - 1 === index
+                          ? 'last'
+                          : ''
+                    "
+                    :isMoveMode="isMoveMode"
+                    @toEditMode="toEditMode($event)"
+                    @positionUp="positionUp($event)"
+                    @positionDown="positionDown($event)"
+                    @forkItem="forkTitleItem($event)"
+                    @deleteItem="deleteItem($event)"
+                    @updateTitle="updateTitle($event)"
+                    @updateTitleLunchDinner="updateTitleLunchDinner($event)"
+                  />
+                </div>
+              </div>
+              <!-- Menu Item -->
+              <div
+                v-else-if="
+                  itemsObj[menuList] &&
+                  itemsObj[menuList]._dataType === 'menu' &&
+                  (showAllItems ||
+                    (showPublicItems && itemsObj[menuList].publicFlag) ||
+                    (showSoldOutItems && itemsObj[menuList].soldOut))
                 "
-                :shopInfo="shopInfo"
-                @positionUp="positionUp($event)"
-                @positionDown="positionDown($event)"
-                @forkItem="forkMenuItem($event)"
-                @deleteItem="deleteItem($event)"
-              />
+                :id="itemsObj[menuList].id"
+                class="flex items-center"
+              >
+                <i
+                  v-if="isMoveMode"
+                  class="material-icons drag-handle mr-2 cursor-move text-2xl text-black/40"
+                  >drag_indicator</i
+                >
+                <div class="flex-1">
+                  <MenuView
+                    :menuitem="itemsObj[menuList]"
+                    :position="
+                      index == 0
+                        ? 'first'
+                        : menuLength - 1 === index
+                          ? 'last'
+                          : ''
+                    "
+                    :shopInfo="shopInfo"
+                    :isMoveMode="isMoveMode"
+                    @positionUp="positionUp($event)"
+                    @positionDown="positionDown($event)"
+                    @forkItem="forkMenuItem($event)"
+                    @deleteItem="deleteItem($event)"
+                  />
+                </div>
+              </div>
             </div>
-          </div>
-        </TransitionGroup>
+          </template>
+        </draggable>
       </div>
 
       <!-- Add Group Title, Menu Item, and Download Menu -->
@@ -136,6 +204,8 @@ import {
   onSnapshot,
   serverTimestamp,
 } from "firebase/firestore";
+
+import draggable from "vuedraggable";
 
 import NotFound from "@/components/NotFound.vue";
 
@@ -187,6 +257,7 @@ export default defineComponent({
     ToggleSwitch2,
     AddButton,
     DownloadButton,
+    draggable,
   },
   props: {
     shopInfo: {
@@ -343,6 +414,27 @@ export default defineComponent({
         numberOfMenus: numberOfMenus.value,
       });
     };
+
+    // Move mode (drag & drop reorder)
+    const isMoveMode = ref(false);
+    const toggleMoveMode = () => {
+      if (!isMoveMode.value) {
+        // 移動モード ON 時はフィルタ解除（表示中アイテムだけで並べ替えると
+        // 非表示アイテムの位置がずれるため）。OFF 時はユーザ操作で戻す。
+        if (toggleStatus.value !== 0) {
+          toggleStatus.value = 0;
+        }
+      }
+      isMoveMode.value = !isMoveMode.value;
+    };
+    const onMenuListsReorder = async (newMenuLists: string[]) => {
+      try {
+        await saveMenuList(newMenuLists);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
     const addTitle = async (operation: string) => {
       submitting.value = true;
       try {
@@ -505,6 +597,7 @@ export default defineComponent({
       submitting,
       editings,
       notFound,
+      isMoveMode,
 
       showPublicItems,
       showAllItems,
@@ -530,6 +623,8 @@ export default defineComponent({
       forkTitleItem,
       forkMenuItem,
       deleteItem,
+      toggleMoveMode,
+      onMenuListsReorder,
     };
   },
 });

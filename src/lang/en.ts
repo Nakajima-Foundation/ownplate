@@ -337,6 +337,8 @@ const data = {
     item: "Item",
     noItem: "No Item",
     pleaseAddItem: "Please create your menu from the bottom button.",
+    reorder: "Reorder",
+    doneReorder: "Done",
     required: "Required",
     itemName: "Item name",
     itemAliasesName:
