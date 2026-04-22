@@ -73,7 +73,7 @@
           v-if="isMoveMode"
           :modelValue="localMenuLists"
           @update:modelValue="onMenuListsReorder"
-          :item-key="(key: string) => key"
+          :item-key="menuListItemKey"
           handle=".drag-handle"
           animation="300"
           ghost-class="opacity-50"
@@ -479,6 +479,9 @@ export default defineComponent({
         localMenuLists.value = [...menuLists.value];
       }
     };
+    // vuedraggable は文字列配列のときも item-key 関数を要求するので、
+    // 値そのものを key として使う identity 関数を渡す。
+    const menuListItemKey = (key: string) => key;
 
     const addTitle = async (operation: string) => {
       submitting.value = true;
@@ -671,6 +674,7 @@ export default defineComponent({
       deleteItem,
       toggleMoveMode,
       onMenuListsReorder,
+      menuListItemKey,
     };
   },
 });
