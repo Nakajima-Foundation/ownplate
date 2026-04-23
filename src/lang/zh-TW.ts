@@ -1362,6 +1362,15 @@ const data = {
       invalidEmail: "請輸入有效的郵箱地址",
     },
   },
+  aboutService: {
+    title: "關於本服務",
+    paragraph1: "新冠病毒不僅奪去了許多人的生命，也對經濟造成了巨大打擊。尤其是提供「人群聚集場所」的餐廳和酒吧，因封城和居家隔離而受到直接衝擊，不僅產生了大量失業者，被迫歇業的經營者也為數不少。",
+    paragraph2: "我們為了支援這樣的餐廳和酒吧，創建了「{serviceName}」。使用「{serviceName}」，餐廳可以無需額外手續費開始外帶服務。餐廳建立專屬頁面，在上面登記菜單（無需雇用網路顧問）。顧客在該頁面下單、完成支付，然後配合烹飪時間到店取餐。",
+    paragraph3: "Singularity Society是一家NPO（非營利型一般社團法人），致力於面向因技術進步而發生巨大變化的世界開展活動。",
+    sincerely: "",
+    profileName: "中島聰",
+    profileTitle: "Singularity Society 代表理事",
+  },
 };
 
 export default data;

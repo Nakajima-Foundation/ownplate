@@ -1142,5 +1142,12 @@
   "admin.promotion.pid": "pid",
   "order.status.unexpected": "(意外)",
   "profile.status.line": "LINE",
-  "profile.status.liff": "LINE"
+  "profile.status.liff": "LINE",
+  "aboutService.title": "关于本服务",
+  "aboutService.paragraph1": "新冠病毒不仅夺去了许多人的生命，也对经济造成了巨大打击。尤其是提供「人群聚集场所」的餐厅和酒吧，因封城和居家隔离而受到直接冲击，不仅产生了大量失业者，被迫歇业的经营者也为数不少。",
+  "aboutService.paragraph2": "我们为了支援这样的餐厅和酒吧，创建了「{serviceName}」。使用「{serviceName}」，餐厅可以无需额外手续费开始外带服务。餐厅创建专属页面，在上面登记菜单（无需雇用网络顾问）。顾客在该页面下单、完成支付，然后配合烹饪时间到店取餐。",
+  "aboutService.paragraph3": "Singularity Society是一家NPO（非营利型一般社团法人），致力于面向因技术进步而发生巨大变化的世界开展活动。",
+  "aboutService.sincerely": "",
+  "aboutService.profileName": "中岛聪",
+  "aboutService.profileTitle": "Singularity Society 代表理事"
 }

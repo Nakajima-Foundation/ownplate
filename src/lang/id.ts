@@ -1362,6 +1362,15 @@ const data = {
       invalidEmail: "Silakan masukkan email yang benar",
     },
   },
+  aboutService: {
+    title: "Tentang layanan ini",
+    paragraph1: "COVID-19 tidak hanya merenggut nyawa banyak orang, tetapi juga menimbulkan kerusakan besar pada ekonomi. Khususnya restoran dan bar yang menyediakan \"tempat berkumpulnya orang\" menderita dampak langsung dari lockdown dan kebijakan tetap di rumah, menyebabkan jutaan orang kehilangan pekerjaan dan banyak pemilik restoran terpaksa menutup usaha mereka.",
+    paragraph2: "Kami menciptakan {serviceName} untuk mendukung restoran dan bar tersebut. Dengan {serviceName}, restoran dapat memulai layanan take-away tanpa biaya tambahan (hanya biaya kartu kredit yang dikenakan). Pemilik restoran membuat halaman khusus dan mendaftarkan menu di sana (tidak memerlukan keterampilan khusus), pelanggan memesan dan membayar dari halaman tersebut, lalu mengambil pesanan di restoran sesuai waktu memasak.",
+    paragraph3: "Singularity Society adalah organisasi nirlaba (NPO) yang menjalankan kegiatan untuk dunia yang sedang berubah besar karena kemajuan teknologi.",
+    sincerely: "",
+    profileName: "Satoshi Nakajima",
+    profileTitle: "Ketua Singularity Society",
+  },
 };
 
 export default data;

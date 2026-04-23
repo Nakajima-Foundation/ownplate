@@ -482,5 +482,12 @@
   "admin.sendVerificationCode": "Renvoyer l'e-mail de vérification",
   "admin.verificationCodeSent": "Envoyé",
   "admin.verificationCodeError": "Envoi impossible. Veuillez réessayer plus tard.",
-  "admin.editMenuItems": "Menu"
+  "admin.editMenuItems": "Menu",
+  "aboutService.title": "À propos",
+  "aboutService.paragraph1": "La COVID-19 n'a pas seulement coûté la vie à de nombreuses personnes, elle a également causé d'importants dégâts à l'économie. En particulier, les restaurants et bars qui offrent des « lieux de rassemblement » ont directement souffert des mesures de confinement. En conséquence, des millions de personnes ont été licenciées et des milliers de restaurateurs ont dû fermer leurs établissements.",
+  "aboutService.paragraph2": "Nous avons créé {serviceName} pour aider ces restaurants et bars. Avec {serviceName}, les restaurants peuvent lancer un service de vente à emporter sans frais supplémentaires (seuls les frais de carte bancaire s'appliquent). Les restaurateurs peuvent créer des pages dédiées et y enregistrer leur menu (aucune compétence particulière requise), où les clients peuvent commander et payer, puis récupérer leur commande au restaurant.",
+  "aboutService.paragraph3": "Singularity Society est une organisation à but non lucratif composée d'ingénieurs logiciels, de designers et de professionnels du monde des affaires.",
+  "aboutService.sincerely": "Cordialement,",
+  "aboutService.profileName": "Satoshi Nakajima",
+  "aboutService.profileTitle": "Président de Singularity Society"
 }
