@@ -57,7 +57,7 @@ const gtmBodyTag = `<iframe src="https://www.googletagmanager.com/ns.html?id=${g
 const script = [
   { src: "https://js.stripe.com/v3/" },
   {
-    hid: "gtmHead",
+    key: "gtmHead",
     innerHTML: gtmHeadTag,
   },
   {
@@ -69,16 +69,11 @@ const script = [
 
 const noscript = [
   {
-    hid: "gtmBody",
+    key: "gtmBody",
     innerHTML: gtmBodyTag,
-    pbody: true,
+    tagPosition: "bodyClose" as const,
   },
 ];
-
-const gtags = {
-  gtmHead: ["innerHTML"],
-  gtmBody: ["innerHTML"],
-};
 
 export const RestaurantHeader = {
   title: ownPlateConfig.siteName,
@@ -87,12 +82,9 @@ export const RestaurantHeader = {
   meta: [
     { charset: "utf-8" },
     { name: "viewport", content: "width=device-width, initial-scale=1" },
-    { hid: "description" },
-    { hid: "og:image" },
     { name: "google", content: "notranslate" },
   ],
   link,
-  __dangerouslyDisableSanitizersByTagID: gtags,
 };
 
 export const defaultHeader = {
@@ -104,7 +96,7 @@ export const defaultHeader = {
   noscript,
   meta: [
     {
-      hid: "og:image",
+      key: "og:image",
       property: "og:image",
       content:
         "https://" +
@@ -117,11 +109,10 @@ export const defaultHeader = {
     { charset: "utf-8" },
     { name: "viewport", content: "width=device-width, initial-scale=1" },
     {
-      hid: "description",
+      key: "description",
       name: "description",
       content: ownPlateConfig.siteDescription || "",
     },
   ],
   link,
-  __dangerouslyDisableSanitizersByTagID: gtags,
 };
