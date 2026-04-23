@@ -1362,6 +1362,15 @@ const data = {
       invalidEmail: "Vui lòng nhập email chính xác",
     },
   },
+  aboutService: {
+    title: "Giới thiệu dịch vụ",
+    paragraph1: "COVID-19 không chỉ cướp đi sinh mạng của nhiều người mà còn gây tổn thất lớn cho nền kinh tế. Đặc biệt, các nhà hàng và quán bar - nơi cung cấp \"địa điểm tụ họp\" - đã chịu thiệt hại trực tiếp từ phong tỏa và lệnh ở nhà, khiến hàng triệu người mất việc và nhiều chủ nhà hàng buộc phải đóng cửa.",
+    paragraph2: "Chúng tôi đã tạo ra {serviceName} để hỗ trợ các nhà hàng và quán bar đó. Với {serviceName}, các nhà hàng có thể bắt đầu dịch vụ mua mang về mà không mất thêm phí (chỉ tính phí xử lý thẻ tín dụng). Chủ nhà hàng tạo trang riêng và đăng ký menu tại đó (không cần kỹ năng đặc biệt), khách hàng đặt hàng và thanh toán rồi đến nhận tại nhà hàng đúng giờ nấu xong.",
+    paragraph3: "Singularity Society là một tổ chức phi lợi nhuận (NPO) hoạt động hướng đến một thế giới đang thay đổi lớn nhờ tiến bộ công nghệ.",
+    sincerely: "",
+    profileName: "Satoshi Nakajima",
+    profileTitle: "Chủ tịch Singularity Society",
+  },
 };
 
 export default data;
