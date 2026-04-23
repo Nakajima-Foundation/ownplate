@@ -4002,7 +4002,7 @@ punycode@^2.1.0:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.3.1.tgz#027422e2faec0b25e1549c3e1bd8309b9133b6e5"
   integrity sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==
 
-qs@^6.11.0, qs@^6.14.0, qs@^6.14.1, qs@~6.14.0:
+qs@^6.14.0, qs@^6.14.1, qs@~6.14.0:
   version "6.14.2"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.14.2.tgz#b5634cf9d9ad9898e31fba3504e866e8efb6798c"
   integrity sha512-V/yCWTTF7VJ9hIh18Ugr2zhJMP01MY7c5kh4J870L7imm6/DIzBsNLTXzMwUA3yZ5b/KBqLx8Kp3uRvd7xSe3Q==
@@ -4345,12 +4345,10 @@ strip-ansi@^7.0.1:
   dependencies:
     ansi-regex "^6.2.2"
 
-stripe@^19.3.1:
-  version "19.3.1"
-  resolved "https://registry.yarnpkg.com/stripe/-/stripe-19.3.1.tgz#6ee207d294db0d6b390515d6469c2e0124670159"
-  integrity sha512-5NXhLxTZ+4uO1wnsmNysILVuyeZ1Xia7niz/8ykBkGJkCcrY2WyQZwcfYuWZmZEJtWr2+0j49JXwNC6y9CHL7Q==
-  dependencies:
-    qs "^6.11.0"
+stripe@^21:
+  version "21.0.1"
+  resolved "https://registry.yarnpkg.com/stripe/-/stripe-21.0.1.tgz#e26d90051442ef7d0d1aa79b6346f1c941d8dc63"
+  integrity sha512-ocv0j7dWttswDWV2XL/kb6+yiLpDXNXL3RQAOB5OB2kr49z0cEatdQc12+zP/j5nrXk6rAsT4N3y/NUvBbK7Pw==
 
 strnum@^2.2.0:
   version "2.2.2"
