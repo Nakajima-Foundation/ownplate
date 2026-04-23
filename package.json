@@ -23,7 +23,7 @@
     "@line/liff": "^2.28.0",
     "@sentry/tracing": "^7.120.4",
     "@sentry/vue": "^10.49.0",
-    "@unhead/vue": "^2.1.12",
+    "@unhead/vue": "^3.0.5",
     "chart.js": "^4.5.1",
     "cookie": "^1.1.1",
     "crypto-js": "^4.1.1",
