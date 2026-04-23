@@ -13,6 +13,7 @@ import { createHead } from "@unhead/vue/client";
 import VueQrcode from "@chenfengyuan/vue-qrcode";
 
 import Button from "@/components/form/button.vue";
+import Submit from "@/components/form/submit.vue";
 import Modal from "@/components/Modal.vue";
 
 // sentry
@@ -32,6 +33,7 @@ const app = createApp(App);
 // components
 app.component(VueQrcode.name ?? "", VueQrcode);
 app.component("t-button", Button);
+app.component("t-submit", Submit);
 app.component("t-modal", Modal);
 
 app.use(VueSocialSharing);

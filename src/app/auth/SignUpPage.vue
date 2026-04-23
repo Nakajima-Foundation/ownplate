@@ -125,13 +125,12 @@
             {{ $t("button.cancel") }}
           </t-button>
 
-          <t-button
+          <t-submit
             :isDisabled="submitted && Object.keys(errors).length > 0"
-            @click="onSignup"
             class="h-12 w-32 font-bold text-white"
           >
             {{ $t("button.next") }}
-          </t-button>
+          </t-submit>
         </div>
 
         <!-- Terms of Use & Privacy Policy -->
@@ -183,7 +182,13 @@ import isEmail from "validator/lib/isEmail";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { partners } from "@/config/constant";
 
-import { useIsLocaleJapan, useUserData, defaultTitle } from "@/utils/utils";
+import {
+  useIsLocaleJapan,
+  useUserData,
+  defaultTitle,
+  errorCode,
+  errorMessage,
+} from "@/utils/utils";
 import { db, auth } from "@/lib/firebase/firebase9";
 import {
   createUserWithEmailAndPassword,
@@ -325,11 +330,12 @@ export default defineComponent({
 
         // Show TOTP enrollment (optional)
         showTotpEnrollment.value = true;
-      } catch (error: any) {
+      } catch (error) {
         generalStore.setLoading(false);
 
-        console.warn("onSignup failed", error.code, error.message);
-        if (error.code === "auth/email-already-in-use") {
+        const code = errorCode(error);
+        console.warn("onSignup failed", code, errorMessage(error));
+        if (code === "auth/email-already-in-use") {
           emailTaken.value = email.value;
         } else {
           // BUGBUG: Not processing other type of errors

@@ -11,6 +11,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "noUnusedLocals": true,
+    "rootDir": "src",
     "outDir": "lib",
     "sourceMap": true,
     "skipLibCheck": true,

@@ -1,4 +1,5 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import type { Component } from "vue";
 
 const getUserPages = (prefix: string) => {
   return [
@@ -41,9 +42,9 @@ const getUserPages = (prefix: string) => {
 interface CustomRoute {
   name?: string;
   path: string;
-  component: () => Promise<any>;
+  component: () => Promise<{ default: Component }>;
   children?: CustomRoute[];
-  meta?: any;
+  meta?: Record<string, unknown>;
 }
 
 export const customRoutes: CustomRoute[] = [
@@ -472,7 +473,7 @@ export const customRoutes: CustomRoute[] = [
   },
 ];
 
-const loadComponent = (data: CustomRoute): any => {
+const loadComponent = (data: CustomRoute): RouteRecordRaw => {
   if (data.children) {
     return {
       path: data.path,

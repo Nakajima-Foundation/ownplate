@@ -46,7 +46,7 @@ export const convChar = (val: string) => {
     .replace(/[‐－―]/g, "-")
     .replace(/[～〜]/g, "~")
     .replace(/−/g, "-")
-    .replace(/　/g, " ");
+    .replace(/\u3000/g, " ");
 
   return value.normalize("NFKC");
 };
@@ -295,7 +295,7 @@ export const menuDownload = (
     ];
   };
   menus.forEach((menuPair, key) => {
-    const columns = [] as any[];
+    const columns: ReturnType<typeof menu2colum>[number][] = [];
     menuPair.forEach((m, key2) => {
       const image1 =
         (m?.images?.item?.resizedImages || {})["600"] ||
@@ -310,10 +310,11 @@ export const menuDownload = (
     });
 
     content.push({
-      columns: columns as any,
+      columns,
       columnGap: 10,
-      width: "50%" as any,
+      width: "50%",
       height: 200,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
   });
 
@@ -326,6 +327,7 @@ export const menuDownload = (
       font: "NotoSans",
       fontSize: 14,
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } as any;
   return pdfMake.createPdf(docDefinition).download();
 };

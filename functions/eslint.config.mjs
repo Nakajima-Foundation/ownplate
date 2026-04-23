@@ -41,7 +41,7 @@ export default [
       "@typescript-eslint/no-var-requires": "off",
       "@typescript-eslint/no-unused-expressions": "off",
       "linebreak-style": ["error", "unix"],
-      quotes: ["error", "double"],
+      quotes: ["warn", "double"],
       semi: ["error", "always"],
     },
   },

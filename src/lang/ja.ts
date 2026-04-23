@@ -170,8 +170,8 @@ const data = {
   editRestaurant: {
     enterRestaurantName: "飲食店名を入力して下さい",
     enterOwnerName: "責任者氏名を入力してください",
-    enterStreetAddress: "番地以下の住所を入力して下さい",
-    enterCity: "市町村名を入力して下さい",
+    enterStreetAddress: "番地以下（例: 丸の内1丁目9-1）を入力して下さい",
+    enterCity: "市区町村名（例: 千代田区）を入力して下さい",
     enterZip: "郵便番号を入力して下さい",
     enterPhone: "電話番号を入力して下さい",
     enterWebsite: "ホームページのURLを入力して下さい",
@@ -426,8 +426,8 @@ const data = {
     ownerName: "責任者氏名",
     restaurantDetails: "飲食店情報",
     ecShopDetails: "店舗情報",
-    streetAddress: "番地以下",
-    city: "市区町村",
+    streetAddress: "番地以下（例: 丸の内1丁目9-1）",
+    city: "市区町村（例: 千代田区）",
     state: "州",
     prefecture: "都道府県",
     zip: "郵便番号",
@@ -837,7 +837,7 @@ const data = {
     areaSetting: "配達エリア設定",
     deliveryRange: "配達可能範囲半径",
     updateDeliveryRange: "範囲を更新",
-    areaTextExample: "港区北青山　１〜３丁目、南青山１〜７丁目",
+    areaTextExample: "港区北青山１〜３丁目、南青山１〜７丁目",
     enableDelivery: "{name}のデリバリーを有効にする",
     deliveryOnlyStore: "受け取り方法をデリバリーのみにする",
     deliveryLocation: "配送先",
@@ -909,11 +909,11 @@ const data = {
       US: "米国 (+1)",
       UK: "英国 (+44)",
       FR: "フランス (+33)",
-      BF: "ブルキナファソ (+235)",
+      BF: "ブルキナファソ (+226)",
       TG: "トーゴ (+228)",
       BN: "ベナン (+229)",
       CI: "コートジボワール (+225)",
-      SE: "セネガル (+335)",
+      SE: "セネガル (+221)",
       ES: "スペイン (+34)",
       DE: "ドイツ (+49)",
       JP: "日本 (+81)",
@@ -1463,6 +1463,18 @@ const data = {
       empty: "メールアドレスを入力してください",
       invalidEmail: "正しいメールアドレスを入力してください",
     },
+  },
+  aboutService: {
+    title: "このサービスについて",
+    paragraph1:
+      "新型コロナウィルスは、多くの人の命を奪っただけではなく、経済にも大きなダメージを与えました。特に、「人の集まる場所」を提供するレストランやバーは、都市封鎖や自宅待機により直接的な被害を被り、多くの失業者を生み出したし、閉業へと追い込まれた経営者も少なくありません。",
+    paragraph2:
+      "私たちは、そんなレストランやバーを支援するために、「{serviceName}」を作りました。「{serviceName}」を使えば、レストランは、余計な手数料なしでテイクアウトサービスを始める事ができます。レストランは、専用のページを作り、そこにメニューを登録します（ウェブ・コンサルタントを雇う必要はありません）。顧客はそのページから注文し、支払いを済ませ、調理時間に合わせて店に取りに行くのです。",
+    paragraph3:
+      "シンギュラリティ・ソサエティは、技術の進歩により大きく変わろうとしている世の中に向けた活動をするNPO（非営利型一般社団法人）です。",
+    sincerely: "",
+    profileName: "中島 聡",
+    profileTitle: "シンギュラリティ・ソサエティ 代表理事",
   },
 };
 

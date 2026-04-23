@@ -24,7 +24,7 @@
   }
   div,
   span {
-    @apply break-words;
+    @apply wrap-break-word;
   }
   img,
   svg,

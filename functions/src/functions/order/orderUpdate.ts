@@ -134,7 +134,10 @@ export const update = async (db: admin.firestore.Firestore, data: OrderUpdateDat
         updateData.timePickupForQuery = updateData.timeEstimated;
         order.timeEstimated = updateData.timeEstimated;
       }
-      await transaction.update(orderRef, updateData as any);
+      await transaction.update(
+        orderRef,
+        updateData as admin.firestore.UpdateData<OrderData>,
+      );
       if (isStripeProcess) {
         const typedPaymentIntent = paymentIntent as StripePaymentIntentWithCharge;
         if (!typedPaymentIntent.latest_charge) {

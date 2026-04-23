@@ -100,7 +100,7 @@ export const getNewItemData = (
       ? {
           item: item.images.item,
         }
-      : undefined,
+      : {},
     itemOptionCheckbox: item.itemOptionCheckbox || [],
     publicFlag: validatedFlag ? item.publicFlag || false : false,
     deletedFlag: false,
@@ -114,6 +114,7 @@ export const getNewItemData = (
     exceptDay: item.exceptDay || {},
     exceptHour: newExceptHour(item.exceptHour || {}),
   };
+  // @ts-expect-error - Firestore does not allow undefined in images field, using empty object causes type mismatch
   return itemData;
 };
 

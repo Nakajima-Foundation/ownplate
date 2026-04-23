@@ -32,6 +32,7 @@ import {
   where,
   query,
   getDocs,
+  DocumentData,
 } from "firebase/firestore";
 import { superDispatch } from "@/lib/firebase/functions";
 
@@ -55,10 +56,10 @@ export default defineComponent({
     const route = useRoute();
     const generalStore = useGeneralStore();
 
-    const customClaims = ref<any>({});
-    const restaurants = ref<any[]>([]);
-    const admin = ref<any>({});
-    const adminPrivate = ref<any>({});
+    const customClaims = ref<DocumentData>({});
+    const restaurants = ref<DocumentData[]>([]);
+    const admin = ref<DocumentData>({});
+    const adminPrivate = ref<DocumentData>({});
 
     const adminId = route.params.adminId;
 

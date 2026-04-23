@@ -31,7 +31,7 @@ import { useTopPath, regionalSetting, useRestaurantId } from "@/utils/utils";
 export default defineComponent({
   emits: ["handleOpen"],
   setup(_, ctx) {
-    const specialLogo: any = {
+    const specialLogo: { [key: string]: { class: string; image: string } } = {
       "5OInKqrhlpe7LHYNYXuU": {
         class: "h-8",
         image: "TBP_logo.jpg",

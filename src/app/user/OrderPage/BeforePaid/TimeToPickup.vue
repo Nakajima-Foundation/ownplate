@@ -81,9 +81,16 @@ export default defineComponent({
     const dayIndex = ref(0);
     const time = ref(0);
 
+    type ExceptHour = { start: number; end: number };
+    type ExceptDataValue = {
+      exceptDay: { [key: string]: boolean };
+      exceptHours: ExceptHour[];
+    };
     const exceptData = computed(() => {
-      return (Object.values(props.orderInfo.menuItems) || []).reduce(
-        (tmp: any, menu) => {
+      return (
+        Object.values(props.orderInfo.menuItems) || []
+      ).reduce<ExceptDataValue>(
+        (tmp, menu) => {
           const { exceptDay, exceptHour } = menu;
           Object.keys(exceptDay || {}).forEach((key) => {
             if (exceptDay[key]) {
@@ -137,7 +144,7 @@ export default defineComponent({
 
     watch(days, () => {
       if (
-        !(days.value[dayIndex.value]?.times || []).some((t: any) => {
+        !(days.value[dayIndex.value]?.times || []).some((t) => {
           return time.value === t.time;
         })
       ) {

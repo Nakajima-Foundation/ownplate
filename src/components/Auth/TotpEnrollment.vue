@@ -86,6 +86,7 @@ import {
   TotpSecret,
 } from "firebase/auth";
 import { useGeneralStore } from "@/store";
+import { errorCode } from "@/utils/utils";
 import QRCode from "qrcode";
 
 export default defineComponent({
@@ -124,11 +125,11 @@ export default defineComponent({
         qrCodeDataUrl.value = await QRCode.toDataURL(qrCodeUrl);
 
         secret.value = totpSecret.value.secretKey;
-      } catch (e: any) {
+      } catch (e) {
         console.error("Failed to generate TOTP secret:", e);
 
         // Check if reauthentication is required
-        if (e.code === "auth/requires-recent-login") {
+        if (errorCode(e) === "auth/requires-recent-login") {
           console.log("Reauthentication required for TOTP enrollment");
           emit("needsReauth");
           return;
@@ -167,7 +168,7 @@ export default defineComponent({
         setTimeout(() => {
           emit("complete");
         }, 2000);
-      } catch (e: any) {
+      } catch (e) {
         console.error("Failed to enroll TOTP:", e);
         error.value = "admin.totp.error.enrollmentFailed";
       } finally {

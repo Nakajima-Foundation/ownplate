@@ -81,7 +81,9 @@ import {
   getMultiFactorResolver,
   TotpMultiFactorGenerator,
   MultiFactorResolver,
+  MultiFactorError,
 } from "firebase/auth";
+import { errorCode } from "@/utils/utils";
 import { useGeneralStore } from "@/store";
 
 export default defineComponent({
@@ -121,15 +123,18 @@ export default defineComponent({
         console.log("Reauthentication successful:", result);
 
         emit("success");
-      } catch (e: any) {
+      } catch (e) {
         console.error("Reauthentication failed:", e);
-        console.error("Error code:", e.code);
-        console.error("Error message:", e.message);
+        const code = errorCode(e);
+        console.error("Error code:", code);
 
         // Check if MFA is required
-        if (e.code === "auth/multi-factor-auth-required") {
+        if (code === "auth/multi-factor-auth-required") {
           console.log("MFA required, showing TOTP input");
-          mfaResolver.value = getMultiFactorResolver(auth, e);
+          mfaResolver.value = getMultiFactorResolver(
+            auth,
+            e as MultiFactorError,
+          );
           needsTotpCode.value = true;
           error.value = "";
           generalStore.setLoading(false);
@@ -137,8 +142,8 @@ export default defineComponent({
         }
 
         if (
-          e.code === "auth/wrong-password" ||
-          e.code === "auth/invalid-credential"
+          code === "auth/wrong-password" ||
+          code === "auth/invalid-credential"
         ) {
           error.value = "admin.error.code.auth/wrong-password";
         } else {
@@ -187,9 +192,9 @@ export default defineComponent({
 
         console.log("MFA reauthentication successful");
         emit("success");
-      } catch (e: any) {
+      } catch (e) {
         console.error("TOTP reauthentication failed:", e);
-        if (e.code === "auth/invalid-verification-code") {
+        if (errorCode(e) === "auth/invalid-verification-code") {
           error.value = "admin.totp.error.invalidCode";
         } else {
           error.value = "auth.reauthenticate.error.failed";

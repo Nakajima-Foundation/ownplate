@@ -41,10 +41,10 @@ export default defineComponent({
   },
   emits: ["handler"],
   setup(props, context) {
-    const handler = (e: any) => {
-      if (e.dataTransfer) {
+    const handler = (e: DragEvent | Event) => {
+      if (e instanceof DragEvent && e.dataTransfer) {
         context.emit("handler", e.dataTransfer.files[0]); // drag
-      } else if (e.target) {
+      } else if (e.target instanceof HTMLInputElement && e.target.files) {
         context.emit("handler", e.target.files[0]); // input
       }
     };

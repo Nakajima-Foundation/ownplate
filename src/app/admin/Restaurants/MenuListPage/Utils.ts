@@ -12,7 +12,7 @@ import { doc2data, array2obj } from "@/utils/utils";
 
 export const useMenuAndTitle = (menuRestaurantId: Ref<string>) => {
   const menus = ref<DocumentData[] | null>(null);
-  const menuCache: { [key: string]: any } = ref({});
+  const menuCache = ref<{ [key: string]: DocumentData[] }>({});
   const menuDetacher = ref<Unsubscribe | null>(null);
   const detacheMenu = () => {
     if (menuDetacher.value) {

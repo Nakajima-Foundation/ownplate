@@ -204,6 +204,7 @@ import {
   where,
   orderBy,
   onSnapshot,
+  Unsubscribe,
 } from "firebase/firestore";
 
 import { defineComponent, ref, computed, watch, onUnmounted } from "vue";
@@ -269,7 +270,7 @@ export default defineComponent({
       totalCharge: 0,
     });
     const monthIndex = ref(0);
-    let detacher: any = null;
+    let detacher: Unsubscribe | null = null;
 
     useHead(() => ({
       title: props.shopInfo.restaurantName
@@ -352,7 +353,7 @@ export default defineComponent({
     });
 
     const updateQuery = () => {
-      detacher && detacher();
+      detacher?.();
       let myQuery = query(
         collection(db, `restaurants/${props.shopInfo.restaurantId}/orders`),
         where(
@@ -376,8 +377,7 @@ export default defineComponent({
         (snapshot) => {
           const serviceTaxRate = props.shopInfo.alcoholTax / 100;
           orders.value = snapshot.docs
-            .map((a) => doc2data("order")(a as any))
-            // .map(doc2data("order")) // fix after firebase 9
+            .map(doc2data("order"))
             .map((order) =>
               order2ReportData(order as OrderInfoData, serviceTaxRate),
             );
@@ -423,7 +423,7 @@ export default defineComponent({
     updateQuery();
 
     onUnmounted(() => {
-      detacher && detacher();
+      detacher?.();
     });
 
     watch(monthIndex, () => {

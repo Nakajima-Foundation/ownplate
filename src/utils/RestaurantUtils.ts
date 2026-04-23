@@ -1,13 +1,13 @@
 import { ref } from "vue";
 
-import { DocumentData } from "firebase/firestore";
+import { QueryDocumentSnapshot } from "firebase/firestore";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
-export const restaurant2AreaObj = (restaurants: DocumentData[]) => {
-  return restaurants.reduce(
-    (tmp: { [key: string]: RestaurantInfoData[] }, doc) => {
-      const data = doc.data();
+export const restaurant2AreaObj = (restaurants: QueryDocumentSnapshot[]) => {
+  return restaurants.reduce<{ [key: string]: RestaurantInfoData[] }>(
+    (tmp, doc) => {
+      const data = doc.data() as RestaurantInfoData;
       data.id = doc.id;
       if (!tmp[data.state]) {
         tmp[data.state] = [];

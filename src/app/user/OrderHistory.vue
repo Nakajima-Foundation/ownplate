@@ -98,7 +98,7 @@ export default defineComponent({
 
     let detacher: Unsubscribe | null = null;
     const detach = () => {
-      detacher && detacher();
+      detacher?.();
       detacher = null;
     };
 

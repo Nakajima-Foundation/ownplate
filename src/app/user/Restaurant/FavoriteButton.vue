@@ -28,7 +28,13 @@
 import { defineComponent, ref, computed, onUnmounted } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
-import { doc, onSnapshot, serverTimestamp, setDoc } from "firebase/firestore";
+import {
+  doc,
+  onSnapshot,
+  serverTimestamp,
+  setDoc,
+  Unsubscribe,
+} from "firebase/firestore";
 
 import { useRestaurantId, useUserData } from "@/utils/utils";
 import { ReviewData } from "@/models/reviewData";
@@ -42,7 +48,7 @@ export default defineComponent({
   },
   setup(props) {
     const review = ref<ReviewData>({});
-    let detacher: any = null;
+    let detacher: Unsubscribe | null = null;
     const restaurantId = useRestaurantId();
 
     const { isUser, uid } = useUserData();
@@ -74,7 +80,7 @@ export default defineComponent({
     }
 
     onUnmounted(() => {
-      detacher && detacher();
+      detacher?.();
     });
 
     const likes = computed(() => {

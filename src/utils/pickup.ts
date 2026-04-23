@@ -17,9 +17,16 @@ type AvailableDay = {
   times: { time: number; display: string }[];
 };
 
+type ExceptData = {
+  value?: {
+    exceptDay?: { [key: string]: boolean };
+    exceptHours?: { start: number; end: number }[];
+  };
+};
+
 export const usePickupTime = (
   shopInfo: RestaurantInfoData,
-  exceptData: any,
+  exceptData: ExceptData,
   menuObj: Ref<{ [key: string]: MenuData }>,
   lunchOrDinner?: string,
   skipToday?: ComputedRef<boolean>,
@@ -61,11 +68,9 @@ export const usePickupTime = (
     return 10; // LATER: Make it customizable
   });
   const withinExceptTime = (time: number) => {
-    return ((exceptData.value || {}).exceptHours || []).some(
-      (hour: { start: number; end: number }) => {
-        return hour.start <= time && time <= hour.end;
-      },
-    );
+    return ((exceptData.value || {}).exceptHours || []).some((hour) => {
+      return hour.start <= time && time <= hour.end;
+    });
   };
   // just for open time not consider with cooking time.
   const openSlots = computed(() => {
@@ -244,37 +249,46 @@ export const usePickupTime = (
   });
 
   // public
+  type MenuPickupEntry = {
+    hasExceptData: boolean;
+    hasExceptDay: boolean;
+    hasExceptHour: boolean;
+    menuAvailableDays: string[];
+    exceptHour: MenuData["exceptHour"];
+  };
   const menuPickupData = computed(() => {
-    return Object.keys(menuObj.value || {}).reduce(
-      (tmp: { [key: string]: any }, key) => {
-        const menu = menuObj.value[key];
-        const { exceptDay, exceptHour } = menu;
-        const hasExceptHour =
-          !isNull(exceptHour) &&
-          !isNull(exceptHour?.start) &&
-          !isNull(exceptHour?.end);
-        const hasExceptDay =
-          (Object.values(exceptDay || {}) || []).filter((a) => a).length > 0;
-        const menuAvailableDays = Object.keys(
-          availableBusinessDays.value || {},
-        ).reduce((arr: string[], day: any) => {
-          if (availableBusinessDays.value[day] && !(exceptDay || {})[day]) {
-            arr.push(day);
-          }
-          return arr;
-        }, []);
+    return Object.keys(menuObj.value || {}).reduce<{
+      [key: string]: MenuPickupEntry;
+    }>((tmp, key) => {
+      const menu = menuObj.value[key];
+      const { exceptDay, exceptHour } = menu;
+      const hasExceptHour =
+        !isNull(exceptHour) &&
+        !isNull(exceptHour?.start) &&
+        !isNull(exceptHour?.end);
+      const hasExceptDay =
+        (Object.values(exceptDay || {}) || []).filter((a) => a).length > 0;
+      const menuAvailableDays = Object.keys(
+        availableBusinessDays.value || {},
+      ).reduce<string[]>((arr, day) => {
+        if (
+          availableBusinessDays.value[Number(day)] &&
+          !(exceptDay || {})[day]
+        ) {
+          arr.push(day);
+        }
+        return arr;
+      }, []);
 
-        tmp[menu.id!] = {
-          hasExceptData: hasExceptDay || hasExceptHour,
-          hasExceptDay,
-          hasExceptHour,
-          menuAvailableDays,
-          exceptHour,
-        };
-        return tmp;
-      },
-      {},
-    );
+      tmp[menu.id!] = {
+        hasExceptData: hasExceptDay || hasExceptHour,
+        hasExceptDay,
+        hasExceptHour,
+        menuAvailableDays,
+        exceptHour,
+      };
+      return tmp;
+    }, {});
   });
 
   return {

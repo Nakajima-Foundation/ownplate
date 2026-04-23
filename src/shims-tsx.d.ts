@@ -11,6 +11,7 @@ declare global {
     // eslint-disable-next-line @typescript-eslint/no-empty-object-type
     interface ElementClass extends Vue {}
     interface IntrinsicElements {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       [elem: string]: any;
     }
   }

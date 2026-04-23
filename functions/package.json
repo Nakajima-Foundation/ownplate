@@ -24,45 +24,50 @@
     "d_tests": "NODE_ENV=test tsx ./node_modules/mocha/bin/mocha --recursive tests/dl_test.ts"
   },
   "engines": {
-    "node": "22"
+    "node": "24"
   },
   "main": "lib/index.js",
+  "resolutions": {
+    "minimatch": "^10.2.4"
+  },
   "dependencies": {
-    "@aws-sdk/client-sns": "^3.932.0",
-    "@sentry/node": "^10.27.0",
-    "cors": "^2.8.5",
-    "express": "^5.1.0",
-    "firebase-admin": "^13.6.0",
-    "firebase-functions": "^7.0.0",
-    "google-libphonenumber": "^3.2.43",
-    "i18next": "^25.6.2",
+    "@aws-sdk/client-sns": "^3.1035.0",
+    "@sentry/node": "^10.49.0",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "firebase-admin": "^13.8.0",
+    "firebase-functions": "^7.2.5",
+    "google-libphonenumber": "^3.2.44",
+    "i18next": "^25.8.13",
     "moment": "^2.29.4",
-    "moment-timezone": "^0.6.0",
+    "moment-timezone": "^0.6.1",
     "node-fetch": "^2.6.1",
-    "nodemailer": "^7.0.10",
+    "nodemailer": "^7.0.13",
     "receiptline": "^1.16.2",
     "sharp": "^0.34.5",
     "stripe": "^19.3.1",
-    "twilio": "^5.10.5",
-    "uuid": "^13.0.0",
-    "validator": "^13.15.23",
+    "twilio": "^5.12.2",
+    "uuid": "^14.0.0",
+    "validator": "^13.15.35",
     "xmlbuilder": "^15.1.1"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@firebase/rules-unit-testing": "^5.0.0",
     "@types/google-libphonenumber": "^7.4.30",
     "@types/node-fetch": "^2.6.13",
-    "@types/nodemailer": "^7.0.3",
+    "@types/nodemailer": "^7.0.11",
     "@types/validator": "^13.15.10",
-    "eslint": "^9.39.1",
+    "eslint": "^10.2.1",
     "eslint-config-prettier": "^10.1.8",
     "firebase-functions-test": "^3.4.1",
-    "prettier": "^3.7.2",
-    "supertest": "^7.1.4",
+    "globals": "^17.5.0",
+    "prettier": "^3.8.3",
+    "supertest": "^7.2.2",
     "ts-node": "^10.9.2",
-    "tsx": "^4.20.6",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.48.0"
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.59.0"
   },
   "private": true
 }

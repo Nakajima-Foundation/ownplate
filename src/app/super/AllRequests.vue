@@ -79,7 +79,9 @@ import {
   orderBy,
   getDocs,
   documentId,
+  DocumentData,
 } from "firebase/firestore";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 export default defineComponent({
   components: {
@@ -92,8 +94,8 @@ export default defineComponent({
       title: [defaultTitle, "Super All Requests"].join(" / "),
     }));
 
-    const requests = ref<any[]>([]);
-    const restaurantsObj = ref({});
+    const requests = ref<DocumentData[]>([]);
+    const restaurantsObj = ref<{ [key: string]: RestaurantInfoData }>({});
 
     getDocs(
       query(
@@ -120,7 +122,7 @@ export default defineComponent({
 
     const enableList = (id: string) => {
       updateDoc(doc(db, `restaurants/${id}`), { onTheList: true });
-      const tmp = Object.assign({}, restaurantsObj.value) as any;
+      const tmp = { ...restaurantsObj.value };
       tmp[id].onTheList = true;
       restaurantsObj.value = tmp;
     };

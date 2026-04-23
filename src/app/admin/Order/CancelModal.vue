@@ -75,6 +75,7 @@ import ButtonLoading from "@/components/form/Loading.vue";
 
 import { useRouter } from "vue-router";
 import { useDialogStore } from "@/store/dialog";
+import { errorMessage } from "@/utils/utils";
 
 export default defineComponent({
   props: {
@@ -131,11 +132,10 @@ export default defineComponent({
         });
         sendRedunded();
         router.push(props.parentUrl);
-      } catch (error: any) {
-        console.error(error.message, error.details);
+      } catch (error) {
+        console.error(errorMessage(error), error);
         dialogStore.setErrorMessage({
           code: "order.cancel",
-          error,
         });
       } finally {
         updating.value = false;

@@ -19,6 +19,7 @@
       />
       <stripe_payouts v-if="articleId === 'article240817_stripe_payouts'" />
       <discounts v-if="articleId === 'article250315_discounts'" />
+      <totp_2fa_user_guide v-if="articleId === 'totp_2fa_user_guide'" />
     </div>
   </div>
 </template>
@@ -39,6 +40,7 @@ import configurations_of_dishes from "../../../../docs/article240727_configurati
 import stripe_payouts from "../../../../docs/article240817_stripe_payouts/stripe_payouts.md";
 
 import discounts from "../../../../docs/article250315_discounts/discounts.md";
+import totp_2fa_user_guide from "../../../../docs/totp_2fa_user_guide.md";
 
 const articles: { [key: string]: string } = {
   article230930_line_official_account: linenews,
@@ -48,6 +50,7 @@ const articles: { [key: string]: string } = {
   article240727_configurations_of_dishes: configurations_of_dishes,
   article240817_stripe_payouts: stripe_payouts,
   article250315_discounts: discounts,
+  totp_2fa_user_guide: totp_2fa_user_guide,
 };
 
 export default defineComponent({
@@ -60,6 +63,7 @@ export default defineComponent({
     configurations_of_dishes,
     stripe_payouts,
     discounts,
+    totp_2fa_user_guide,
   },
   setup() {
     const route = useRoute();
