@@ -18,7 +18,7 @@
  */
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import ja from "../src/lang/ja";
 import en from "../src/lang/en";
 
@@ -47,11 +47,15 @@ const existingLangPath = path.join(
 let existingLang: Record<string, unknown> = {};
 if (fs.existsSync(existingLangPath)) {
   try {
-    const mod = (await import(existingLangPath)) as {
+    const mod = (await import(pathToFileURL(existingLangPath).href)) as {
       default: Record<string, unknown>;
     };
     existingLang = mod.default;
-  } catch {
+  } catch (err) {
+    console.error(
+      `Warning: failed to load existing lang file ${existingLangPath}:`,
+      err instanceof Error ? err.message : err,
+    );
     existingLang = {};
   }
 }
@@ -101,7 +105,9 @@ const serialize = (obj: unknown, indent = 0): string => {
     });
     return `{\n${lines.join(",\n")},\n${padClose}}`;
   }
-  return "undefined";
+  throw new Error(
+    `serialize: unsupported value type "${typeof obj}" — only string/number/boolean/null/array/object are supported`,
+  );
 };
 
 const build = (jaObj: unknown, prefix = ""): unknown => {
@@ -129,7 +135,11 @@ const build = (jaObj: unknown, prefix = ""): unknown => {
     return jaObj;
   }
   if (Array.isArray(jaObj)) {
-    return jaObj.map((v, i) => build(v, `${prefix}[${i}]`));
+    // ja.ts has no array leaves today; if added later, getPath/translations lookup
+    // would need to handle bracket notation consistently. Fail loudly until then.
+    throw new Error(
+      `Unsupported array at path "${prefix}". Arrays in ja.ts are not yet supported by regen_lang.ts; update getPath and the translations JSON convention before introducing arrays.`,
+    );
   }
   const result: Record<string, unknown> = {};
   for (const key of Object.keys(jaObj as Record<string, unknown>)) {

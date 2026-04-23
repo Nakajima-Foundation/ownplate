@@ -41,9 +41,10 @@ const flattenJa = (obj: unknown, prefix = ""): Entry[] => {
 // Heuristics for things we don't want to send to a translator
 const shouldSkip = (entry: Entry): boolean => {
   const { value } = entry;
-  // Empty / purely ASCII symbols
+  // Empty values
   if (!value) return true;
-  // No Japanese characters AND no letters → likely placeholder like "{count}"
+  // No Japanese characters → brand names, URLs, identifiers, placeholders;
+  // safer to keep as-is than to round-trip through a translator.
   const hasJa = /[぀-ヿ㐀-鿿]/.test(value);
   if (!hasJa) return true;
   return false;
@@ -151,10 +152,17 @@ const googleTranslate = async (
 
 // Protect placeholders like {count}, {price} by wrapping with tags.
 // DeepL respects XML tags with ignore_tags=x.
+// When tag_handling=xml is on, DeepL parses the input as XML so any literal
+// <, >, & in the source must be entity-escaped; otherwise the request fails
+// with "Tag handling parsing failed".
+const escapeXml = (s: string): string =>
+  s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const unescapeXml = (s: string): string =>
+  s.replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&amp;/g, "&");
 const protectPlaceholders = (s: string): string =>
-  s.replace(/\{([^}]+)\}/g, "<x>{$1}</x>");
+  escapeXml(s).replace(/\{([^}]+)\}/g, "<x>{$1}</x>");
 const unprotectPlaceholders = (s: string): string =>
-  s.replace(/<\/?x>/g, "");
+  unescapeXml(s.replace(/<\/?x>/g, ""));
 
 const chunk = <T,>(arr: T[], size: number): T[][] => {
   const chunks: T[][] = [];
@@ -180,6 +188,11 @@ const chunk = <T,>(arr: T[], size: number): T[][] => {
   for (const group of chunk(texts, batchSize)) {
     const fn = provider === "deepl" ? deeplTranslate : googleTranslate;
     const res = await fn(group, targetLang);
+    if (res.length !== group.length) {
+      throw new Error(
+        `${provider} returned ${res.length} translations for a batch of ${group.length} (target=${targetLang}, batch starting at index ${translated.length}). Aborting to avoid misaligned output.`,
+      );
+    }
     translated.push(...res);
     console.error(`  ${translated.length}/${texts.length}`);
   }

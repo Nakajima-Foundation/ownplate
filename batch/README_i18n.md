@@ -51,6 +51,11 @@ Add to `src/lib/vue-i18n.ts`:
 - Import the lang module
 - Add to `messages`, `numberFormats`, `datetimeFormats`
 
+Note: `fallbackLocale` is set to `"en"`, so any keys missing in a new locale
+(or temporarily left untranslated) fall through to English rather than Japanese.
+Verify that any new locale has a complete-enough translation before exposing it
+in the language selector.
+
 ## API providers and supported languages
 
 | Locale | DeepL | Google Translate |
