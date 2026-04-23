@@ -63,7 +63,7 @@ export default defineComponent({
     };
     // To avoid to auth/requires-recent-login error, user need reLogin.
     // see https://stackoverflow.com/questions/56617518/
-    const continueDelete = async (result: any) => {
+    const continueDelete = async (result: boolean) => {
       reLoginVisible.value = false;
       if (result) {
         isDeletingAccount.value = true;

@@ -375,9 +375,11 @@ import { orderPlace } from "@/lib/firebase/functions";
 import { order_status, paymentMethods } from "@/config/constant";
 
 import { costCal } from "@/utils/commonUtils";
+import { errorMessage } from "@/utils/utils";
 import { usePromotionData } from "@/utils/promotion";
 
 import { OrderInfoData } from "@/models/orderInfo";
+import { OrderItemData } from "@/models/orderInfoData";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import Promotion from "@/models/promotion";
 
@@ -417,7 +419,7 @@ export default defineComponent({
       required: true,
     },
     orderItems: {
-      type: Array,
+      type: Array as PropType<OrderItemData[]>,
       required: true,
     },
     paymentInfo: {
@@ -555,10 +557,11 @@ export default defineComponent({
     });
 
     // methods
-    const updateHome = (pos: any) => {
+    type LatLng = { lat?: number; lng?: number };
+    const updateHome = (pos: LatLng) => {
       ecCustomerRef.value.updateHome(pos);
     };
-    const updateLocation = (pos: any) => {
+    const updateLocation = (pos: LatLng) => {
       if (orderPageMapRef.value) {
         orderPageMapRef.value.updateLocation(pos);
       }
@@ -568,8 +571,14 @@ export default defineComponent({
       analyticsUtil.sendPurchase(
         props.orderInfo,
         orderId.value,
-        props.orderItems.map((or: any) => {
-          return { ...or.item, id: or.id, quantity: or.count };
+        props.orderItems.map((or) => {
+          return {
+            ...or.item,
+            id: or.id,
+            quantity: Array.isArray(or.count)
+              ? or.count.reduce((a, b) => a + b, 0)
+              : or.count,
+          } as analyticsUtil.AnalyticsMenuData;
         }),
         props.shopInfo,
         restaurantId,
@@ -652,13 +661,12 @@ export default defineComponent({
         }
         cartStore.resetCart(restaurantId);
         window.scrollTo(0, 0);
-      } catch (error: any) {
+      } catch (error) {
         // alert(JSON.stringify(error));
-        console.error(error.message, error.details);
+        console.error(errorMessage(error), error);
         dialogStore.setErrorMessage({
           code: "order.place",
-          error,
-        } as any);
+        });
       } finally {
         generalStore.setLoading(false);
       }

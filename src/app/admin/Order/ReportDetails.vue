@@ -96,18 +96,20 @@ export default defineComponent({
     const { t } = useI18n({ useScope: "global" });
 
     const customers = ref<{ [key: string]: CustomerInfo }>({});
-    const writeonFirstLine = (
+    const writeonFirstLine = <T,>(
       index: number,
       key: number | string,
-      text: any,
-    ) => {
+      text: T,
+    ): T | string => {
       return index === 0 && Number(key) === 0 ? text : "-";
     };
-    const timeConvert = (timeData: any) => {
+    const timeConvert = (
+      timeData: Date | { seconds: number; toDate: () => Date } | null,
+    ) => {
       if (!timeData) {
         return null;
       }
-      if (timeData.seconds) {
+      if ("seconds" in timeData) {
         return moment(timeData.toDate()).format("YYYY/MM/DD HH:mm");
       }
       return moment(timeData).format("YYYY/MM/DD HH:mm");
@@ -168,7 +170,7 @@ export default defineComponent({
       });
     });
     const tableData = computed(() => {
-      const items: any[] = [];
+      const items: { [key: string]: string | number | null }[] = [];
       mergedOrder.value.forEach((order) => {
         const ids = Object.keys(order.order);
         const status = Object.keys(order_status).reduce((result, key) => {

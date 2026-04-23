@@ -102,6 +102,7 @@ import {
   collection,
   query,
   where,
+  DocumentData,
 } from "firebase/firestore";
 import { smaregiProductList } from "@/lib/firebase/functions";
 
@@ -121,13 +122,13 @@ export default defineComponent({
 
     const enable = ref<boolean | null>(null);
     const isLoading = ref(false);
-    const productList = ref<any[]>([]);
-    const storeData = ref<any>({});
-    const menus = ref<any[]>([]);
-    const menuObj = ref<any>({});
+    const productList = ref<DocumentData[]>([]);
+    const storeData = ref<DocumentData>({});
+    const menus = ref<DocumentData[]>([]);
+    const menuObj = ref<{ [key: string]: DocumentData }>({});
 
-    const stockObj = ref<any>({});
-    const selectedMenu = ref<any>({});
+    const stockObj = ref<{ [key: string]: DocumentData }>({});
+    const selectedMenu = ref<{ [key: string]: string }>({});
     const isEdit = ref(false);
 
     let contractId: string | null = null;
@@ -141,22 +142,21 @@ export default defineComponent({
     }));
 
     const duplicateElement = computed(() => {
-      const counter = Object.values(selectedMenu.value).reduce(
-        (tmp: { [key: string]: number }, ele: any) => {
-          if (ele === "00000") {
-            return tmp;
-          }
-          if (tmp[ele] === undefined) {
-            tmp[ele] = 1;
-          } else {
-            tmp[ele] += 1;
-          }
+      const counter = Object.values(selectedMenu.value).reduce<{
+        [key: string]: number;
+      }>((tmp, ele) => {
+        if (ele === "00000") {
           return tmp;
-        },
-        {},
-      );
-      return Object.keys(counter).reduce(
-        (tmp: { [key: string]: boolean }, key: any) => {
+        }
+        if (tmp[ele] === undefined) {
+          tmp[ele] = 1;
+        } else {
+          tmp[ele] += 1;
+        }
+        return tmp;
+      }, {});
+      return Object.keys(counter).reduce<{ [key: string]: boolean }>(
+        (tmp, key) => {
           if (counter[key] > 1) {
             tmp[key] = true;
           }
@@ -242,7 +242,7 @@ export default defineComponent({
             stockCollection.docs.map(doc2data("stock")),
           );
 
-          const _selectedMenu: any = {};
+          const _selectedMenu: { [key: string]: string } = {};
           (productList.value || []).forEach((product, key) => {
             const productId = product.productId;
             if (productObj[productId]) {

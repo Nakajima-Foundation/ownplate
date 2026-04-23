@@ -19,14 +19,19 @@ import type {
 export const smaregiStoreList = httpsCallable<
   SmaregiStoreListData,
   {
-    res: any[];
+    res: { storeId: string; storeName: string }[];
   }
 >(functionsJP, "smaregiStoreList2");
 
 export const smaregiProductList = httpsCallable<
   SmaregiProductListData,
   {
-    res: any[];
+    res: {
+      productId: string;
+      productCode: string;
+      productName: string;
+      price: number;
+    }[];
   }
 >(functionsJP, "smaregiProductList2");
 
@@ -53,6 +58,7 @@ export const subAccountInvite = httpsCallable<
   SubAccountInvitateData,
   {
     result: boolean;
+    childUid: string;
   }
 >(functionsJP, "subAccountInvite2");
 
@@ -129,4 +135,7 @@ export const stripeDeleteRestaurantCard = httpsCallable<
 export const stripeConnect = httpsCallable(functionsJP, "stripeConnect2");
 export const stripeDisconnect = httpsCallable(functionsJP, "stripeDisconnect2");
 export const stripeVerify = httpsCallable(functionsJP, "stripeVerify2");
-export const stripeReceipt = httpsCallable(functionsJP, "stripeReceipt2");
+export const stripeReceipt = httpsCallable<
+  { restaurantId: string; orderId: string | string[] },
+  { receipt_url?: string }
+>(functionsJP, "stripeReceipt2");

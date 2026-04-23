@@ -61,7 +61,14 @@
 import { defineComponent, onMounted, ref } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
-import { getDocs, collection, orderBy, limit, query } from "firebase/firestore";
+import {
+  getDocs,
+  collection,
+  orderBy,
+  limit,
+  query,
+  DocumentData,
+} from "firebase/firestore";
 
 import { RestaurantHeader } from "@/config/header";
 import AreaItem from "@/app/user/Restaurants/AreaItem.vue";
@@ -84,7 +91,7 @@ export default defineComponent({
     );
     useHead(Object.assign(RestaurantHeader, { title }));
 
-    const likes = ref<any[]>([]);
+    const likes = ref<DocumentData[]>([]);
     onMounted(async () => {
       if (isUser.value) {
         const snapshot = await getDocs(

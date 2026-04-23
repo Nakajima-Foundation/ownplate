@@ -1,4 +1,4 @@
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, Ref } from "vue";
 import { User } from "firebase/auth";
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -39,6 +39,22 @@ import { useI18n } from "vue-i18n";
 
 export { isNull, isEmpty, regionalSetting };
 
+export const errorCode = (error: unknown): string | undefined => {
+  if (error !== null && typeof error === "object" && "code" in error) {
+    const code = error.code;
+    return typeof code === "string" ? code : undefined;
+  }
+  return undefined;
+};
+
+export const errorMessage = (error: unknown): string | undefined => {
+  if (error !== null && typeof error === "object" && "message" in error) {
+    const message = error.message;
+    return typeof message === "string" ? message : undefined;
+  }
+  return undefined;
+};
+
 export const stripeRegion = stripe_regions_jp; // TODO remove
 // from mixin
 export const useRestaurantId = () => {
@@ -63,9 +79,9 @@ export const resizedProfileImage = (
   );
 };
 
-export const arrayChunk = <T>(arr: T[], size = 1) => {
+export const arrayChunk = <T>(arr: T[], size = 1): T[][] => {
   const array = [...arr];
-  return array.reduce((current: T[][], value: T, index: number) => {
+  return array.reduce<T[][]>((current, _value, index) => {
     return index % size
       ? current
       : [...current, array.slice(index, index + size)];
@@ -107,9 +123,11 @@ export const doc2data = <T = DocumentData>(dataType: string) => {
   };
 };
 
-export const array2obj = <T>(array: T[]) => {
-  return array.reduce((tmp: { [key: string]: T }, current: T) => {
-    tmp[(current as any).id] = current;
+export const array2obj = <T extends { id?: string }>(array: T[]) => {
+  return array.reduce<{ [key: string]: T }>((tmp, current) => {
+    if (current.id !== undefined) {
+      tmp[current.id] = current;
+    }
     return tmp;
   }, {});
 };
@@ -150,9 +168,9 @@ export const num2time = (num: number) => {
   return t("shopInfo.am", { formatedTime }, 0);
 };
 
-export const countObj = (obj: any): number => {
+export const countObj = (obj: unknown): number => {
   if (Array.isArray(obj)) {
-    return obj.reduce((tmp, value) => {
+    return obj.reduce<number>((tmp, value) => {
       // nested array
       if (Array.isArray(value)) {
         return tmp + countObj(value);
@@ -160,26 +178,22 @@ export const countObj = (obj: any): number => {
       return tmp + 1;
     }, 0);
   }
-  return Object.keys(obj).reduce((tmp, key) => {
-    return countObj(obj[key]) + tmp;
-  }, 0);
+  if (obj !== null && typeof obj === "object") {
+    return Object.keys(obj).reduce<number>((tmp, key) => {
+      return countObj((obj as { [key: string]: unknown })[key]) + tmp;
+    }, 0);
+  }
+  return 0;
 };
 
-export const cleanObject = (obj: { [key: string]: any }) => {
-  return Object.keys(obj).reduce((tmp: { [key: string]: any }, key) => {
+export const cleanObject = <T>(obj: { [key: string]: T }) => {
+  return Object.keys(obj).reduce<{ [key: string]: T }>((tmp, key) => {
     if (!isNull(obj[key])) {
       tmp[key] = obj[key];
     }
     return tmp;
   }, {});
 };
-
-/*
-    },
-    moment(value) {
-      return moment(value);
-      },
-*/
 
 export const useSoundPlay = () => {
   const generalStore = useGeneralStore();
@@ -218,11 +232,14 @@ export const arrayOrNumSum = (arr: number | number[]) => {
   return Array.isArray(arr) ? arraySum(arr) : arr || 0;
 };
 
-export const forceArray = <T>(arr: T) => {
+export const forceArray = <T>(arr: T | T[]): T[] => {
   return Array.isArray(arr) ? arr : [arr];
 };
 
-export const convOrderStateForText = (orderState: string, orderInfo: any) => {
+export const convOrderStateForText = (
+  orderState: string,
+  orderInfo: { isEC?: boolean } | null | undefined,
+) => {
   if (orderInfo?.isEC) {
     if (orderState === "ready_to_pickup") {
       return "ready_to_shipping";
@@ -268,8 +285,8 @@ export const getOrderItems = (
 };
 
 export const itemOptionCheckbox2options = (
-  itemOptionCheckbox: any,
-): string[] => {
+  itemOptionCheckbox: string[] | null | undefined,
+): string[][] => {
   // HACK: Dealing with a special case (probalby a bug in the menu editor)
   if (
     itemOptionCheckbox &&
@@ -420,10 +437,10 @@ export const validPlaceId = (placeId: string) => {
 };
 
 export const convOptionArray2Obj = <T>(obj: { [key: string]: T[] }) => {
-  return Object.keys(obj).reduce(
-    (newObj: { [key: string]: { [key: string]: T } }, objKey: string) => {
-      newObj[objKey] = obj[objKey].reduce(
-        (tmp: { [key: string]: T }, value: T, key: number) => {
+  return Object.keys(obj).reduce<{ [key: string]: { [key: string]: T } }>(
+    (newObj, objKey) => {
+      newObj[objKey] = obj[objKey].reduce<{ [key: string]: T }>(
+        (tmp, value, key) => {
           tmp[key] = value;
           return tmp;
         },
@@ -436,8 +453,8 @@ export const convOptionArray2Obj = <T>(obj: { [key: string]: T[] }) => {
 };
 
 export const prices2subtotal = (prices: { [key: string]: number[] }) => {
-  return Object.keys(prices).reduce(
-    (tmp: { [key: string]: number }, menuId) => {
+  return Object.keys(prices).reduce<{ [key: string]: number }>(
+    (tmp, menuId) => {
       tmp[menuId] = prices[menuId].reduce((a, b) => a + b, 0);
       return tmp;
     },
@@ -474,9 +491,9 @@ export const getPrices = (
   multiple: number,
   orders: { [key: string]: number[] },
   cartItems: { [key: string]: MenuData },
-  trimmedSelectedOptions: { [key: string]: { [key: string]: number[] } },
+  trimmedSelectedOptions: { [key: string]: SelectedOption[] },
 ) => {
-  const ret: any = {};
+  const ret: { [key: string]: number[] } = {};
 
   Object.keys(orders).forEach((menuId) => {
     const menu = cartItems[menuId] || {};
@@ -495,7 +512,8 @@ export const getPrices = (
           } else {
             return (
               tmpPrice +
-              Math.round(optionPrice(opt[selectedOpt]) * multiple) / multiple
+              Math.round(optionPrice(opt[Number(selectedOpt)]) * multiple) /
+                multiple
             );
           }
           return tmpPrice;
@@ -508,17 +526,19 @@ export const getPrices = (
   return ret;
 };
 
+type SelectedOption = (boolean | string)[];
+
 export const getTrimmedSelectedOptions = (
   orders: { [key: string]: number[] },
   cartItems: { [key: string]: MenuData },
-  selectedOptions: { [key: string]: any },
+  selectedOptions: { [key: string]: SelectedOption[] },
 ) => {
-  return Object.keys(orders).reduce(
-    (ret: { [key: string]: { [key: string]: number[] } }, id) => {
+  return Object.keys(orders).reduce<{ [key: string]: SelectedOption[] }>(
+    (ret, id) => {
       const options = itemOptionCheckbox2options(
         (cartItems[id] || {}).itemOptionCheckbox,
       );
-      const selectedOption = selectedOptions[id].map((selected: any[]) => {
+      const selectedOption = selectedOptions[id].map((selected) => {
         if (Array.isArray(selected) && selected.length > options.length) {
           const newopt = [...selected];
           return newopt.slice(0, options.length);
@@ -533,32 +553,29 @@ export const getTrimmedSelectedOptions = (
 };
 
 export const getPostOption = (
-  trimmedSelectedOptions: { [key: string]: any[][] },
+  trimmedSelectedOptions: { [key: string]: SelectedOption[] },
   cartItems: { [key: string]: MenuData },
 ) => {
-  return Object.keys(trimmedSelectedOptions).reduce(
-    (ret: { [key: string]: any }, id) => {
-      ret[id] = (trimmedSelectedOptions[id] || []).map((item) => {
-        return item
-          .map((selectedOpt: any, key) => {
-            const opt = (cartItems[id] || {}).itemOptionCheckbox[key].split(
-              ",",
-            );
-            if (opt.length === 1) {
-              if (selectedOpt) {
-                return opt[0];
-              }
-            } else {
-              return opt[selectedOpt];
+  return Object.keys(trimmedSelectedOptions).reduce<{
+    [key: string]: string[][];
+  }>((ret, id) => {
+    ret[id] = (trimmedSelectedOptions[id] || []).map((item) => {
+      return item
+        .map((selectedOpt, key) => {
+          const opt = (cartItems[id] || {}).itemOptionCheckbox[key].split(",");
+          if (opt.length === 1) {
+            if (selectedOpt) {
+              return opt[0];
             }
-            return "";
-          })
-          .map((s) => s.trim());
-      });
-      return ret;
-    },
-    {},
-  );
+          } else {
+            return opt[Number(selectedOpt)];
+          }
+          return "";
+        })
+        .map((s) => s.trim());
+    });
+    return ret;
+  }, {});
 };
 
 export const useUserData = () => {
@@ -656,7 +673,7 @@ export const useAdminUids = () => {
   };
 };
 
-export const usePhoneNumber = (shopInfo: any) => {
+export const usePhoneNumber = (shopInfo: Ref<RestaurantInfoData>) => {
   const countries = stripe_regions_jp.countries;
 
   const parsedNumber = computed(() => {
@@ -720,11 +737,16 @@ export const notFoundResponse = {
   notFound: true,
 };
 
-export const smallImageErrorHandler = (e: any) => {
-  e.target.src = "/images/noimage_small.png";
+const setImageFallbackSrc = (e: Event, src: string) => {
+  if (e.target instanceof HTMLImageElement) {
+    e.target.src = src;
+  }
 };
-export const imageErrorHandler = (e: any) => {
-  e.target.src = "/images/noimage.png";
+export const smallImageErrorHandler = (e: Event) => {
+  setImageFallbackSrc(e, "/images/noimage_small.png");
+};
+export const imageErrorHandler = (e: Event) => {
+  setImageFallbackSrc(e, "/images/noimage.png");
 };
 
 export const orderType = (order: OrderInfoData) => {

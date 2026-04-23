@@ -115,11 +115,13 @@ import BeforePaidAlert from "@/app/user/OrderPage/BeforePaid/BeforePaidAlert.vue
 import { orderPay } from "@/lib/firebase/functions";
 
 import { OrderInfoData } from "@/models/orderInfo";
+import { OrderItemData } from "@/models/orderInfoData";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import { useGeneralStore } from "@/store";
+import { errorMessage } from "@/utils/utils";
 import { useCartStore } from "@/store/cart";
 import { useDialogStore } from "@/store/dialog";
 import { useRoute } from "vue-router";
@@ -145,7 +147,7 @@ export default defineComponent({
       required: true,
     },
     orderItems: {
-      type: Array,
+      type: Array as PropType<OrderItemData[]>,
       required: true,
     },
     paymentInfo: {
@@ -204,8 +206,14 @@ export default defineComponent({
       analyticsUtil.sendPurchase(
         props.orderInfo,
         orderId.value,
-        props.orderItems.map((or: any) => {
-          return { ...or.item, id: or.id, quantity: or.count };
+        props.orderItems.map((or) => {
+          return {
+            ...or.item,
+            id: or.id,
+            quantity: Array.isArray(or.count)
+              ? or.count.reduce((a, b) => a + b, 0)
+              : or.count,
+          } as analyticsUtil.AnalyticsMenuData;
         }),
         props.shopInfo,
         restaurantId,
@@ -237,12 +245,11 @@ export default defineComponent({
         sendPurchase();
         cartStore.resetCart(restaurantId);
         window.scrollTo(0, 0);
-      } catch (error: any) {
-        console.error(error.message, error.details);
+      } catch (error) {
+        console.error(errorMessage(error), error);
         dialogStore.setErrorMessage({
           code: "order.place",
-          error,
-        } as any);
+        });
       } finally {
         generalStore.setLoading(false);
       }

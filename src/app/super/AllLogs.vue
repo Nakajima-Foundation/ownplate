@@ -30,6 +30,8 @@ import {
   collectionGroup,
   orderBy,
   limit,
+  DocumentData,
+  Unsubscribe,
 } from "firebase/firestore";
 
 import { useSuper, defaultTitle } from "@/utils/utils";
@@ -46,8 +48,8 @@ export default defineComponent({
       title: [defaultTitle, "Super All Log"].join(" / "),
     }));
 
-    const logs = ref<any[]>([]);
-    let detacher: any = null;
+    const logs = ref<DocumentData[]>([]);
+    let detacher: Unsubscribe | null = null;
 
     detacher = onSnapshot(
       query(
@@ -66,7 +68,7 @@ export default defineComponent({
     );
 
     onUnmounted(() => {
-      detacher && detacher();
+      detacher?.();
     });
 
     return {

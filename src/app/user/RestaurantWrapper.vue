@@ -33,7 +33,7 @@ export default defineComponent({
   setup() {
     const mode = routeMode();
 
-    const shopInfo = ref<RestaurantInfoData | { [key: string]: any }>({});
+    const shopInfo = ref<RestaurantInfoData | Record<string, never>>({});
     const paymentInfo = ref({});
     const deliveryData = ref({});
     const notFound = ref<boolean | null>(null);

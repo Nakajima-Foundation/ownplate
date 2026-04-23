@@ -167,6 +167,7 @@ import {
   setDoc,
   deleteDoc,
   getDoc,
+  DocumentData,
 } from "firebase/firestore";
 
 import { useHead } from "@unhead/vue";
@@ -202,13 +203,13 @@ export default defineComponent({
     const authUrl = `${smaregi.authUrl}?response_type=code&client_id=${smaregi.clientId}&scope=openid+email+offline_access`;
     const enable = ref<boolean | null>(null);
 
-    const shopList = ref<any[]>([]);
+    const shopList = ref<DocumentData[]>([]);
     const isLoading = ref(false);
 
-    const selectedRestaurant = ref<any>({});
-    const restaurants = ref<any[]>([]);
+    const selectedRestaurant = ref<{ [key: string]: string }>({});
+    const restaurants = ref<DocumentData[]>([]);
 
-    const restaurantObj = ref<any>({});
+    const restaurantObj = ref<{ [key: string]: DocumentData }>({});
     const isEdit = ref(false);
 
     const inStockData = ref<{ [key: string]: number }>({});
@@ -224,22 +225,21 @@ export default defineComponent({
     const { uid } = useAdminUids();
     // computed
     const duplicateElement = computed(() => {
-      const counter = Object.values(selectedRestaurant.value).reduce(
-        (tmp: { [key: string]: number }, ele: any) => {
-          if (ele === "00000") {
-            return tmp;
-          }
-          if (tmp[ele] === undefined) {
-            tmp[ele] = 1;
-          } else {
-            tmp[ele] += 1;
-          }
+      const counter = Object.values(selectedRestaurant.value).reduce<{
+        [key: string]: number;
+      }>((tmp, ele) => {
+        if (ele === "00000") {
           return tmp;
-        },
-        {},
-      );
-      return Object.keys(counter).reduce(
-        (tmp: { [key: string]: boolean }, key: any) => {
+        }
+        if (tmp[ele] === undefined) {
+          tmp[ele] = 1;
+        } else {
+          tmp[ele] += 1;
+        }
+        return tmp;
+      }, {});
+      return Object.keys(counter).reduce<{ [key: string]: boolean }>(
+        (tmp, key) => {
           if (counter[key] > 1) {
             tmp[key] = true;
           }
@@ -304,7 +304,7 @@ export default defineComponent({
             return tmp;
           }, {});
 
-          const __selectedRestaurant: any = {};
+          const __selectedRestaurant: { [key: string]: string } = {};
           (shopList.value || []).forEach((store, key) => {
             const storeId = store.storeId;
             if (storeObj[storeId]) {
@@ -336,13 +336,21 @@ export default defineComponent({
         const path = `/smaregi/${contractId}/stores/${storeId}`;
 
         if (restaurantId && restaurantId !== "00000") {
-          const data = {
+          const data: {
+            storeName: string;
+            contractId: string | null;
+            storeId: string;
+            uid: string;
+            restaurantId: string;
+            outOfStock?: number;
+            inStock?: number;
+          } = {
             storeName: store.storeName,
             contractId,
             storeId,
             uid: uid.value,
             restaurantId,
-          } as any;
+          };
           if (outOfStock !== 999999 && outOfStock !== undefined) {
             data.outOfStock = outOfStock;
           }
@@ -358,7 +366,7 @@ export default defineComponent({
       });
       isEdit.value = false;
     };
-    const showStockThreshold = (value: any) => {
+    const showStockThreshold = (value: number | undefined) => {
       if (value === undefined || value === 999999) {
         return "----";
       }

@@ -29,6 +29,8 @@ import {
   startAfter,
   getDocs,
   collectionGroup,
+  DocumentData,
+  QueryDocumentSnapshot,
 } from "firebase/firestore";
 
 import { stripeActionStrings } from "@/lib/stripe/stripe";
@@ -43,8 +45,8 @@ export default defineComponent({
   setup() {
     useSuper();
 
-    const logs = ref<any[]>([]);
-    const last = ref<any>(null);
+    const logs = ref<DocumentData[]>([]);
+    const last = ref<QueryDocumentSnapshot | null>(null);
 
     useHead(() => ({
       title: [defaultTitle, "Super All Stripe Callback"].join(" / "),

@@ -44,13 +44,12 @@
             </div>
           </button>
 
-          <t-button
+          <t-submit
             :isDisabled="Object.keys(errors).length > 0"
-            @click="handleNext"
             class="h-12 w-32 font-bold text-white shadow-sm"
           >
             {{ $t("button.next") }}
-          </t-button>
+          </t-submit>
         </div>
 
         <!-- Email Sent -->
@@ -93,7 +92,7 @@ export default defineComponent({
       if (!submitted.value) {
         return {};
       }
-      const err: any = {};
+      const err: { email?: string[] } = {};
       if (!isEmail(email.value)) {
         err.email = ["admin.error.email.invalid"];
       } else if (email.value === badEmail) {

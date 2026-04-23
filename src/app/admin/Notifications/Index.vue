@@ -24,7 +24,7 @@ import { doc, getDoc, serverTimestamp } from "firebase/firestore";
 
 import NotificationSettings from "@/app/admin/Notifications/NotificationSettings.vue";
 import NotificationSettingButton from "@/app/admin/Notifications/NotificationSettingButton.vue";
-import { useRestaurantId } from "@/utils/utils";
+import { useRestaurantId, errorCode } from "@/utils/utils";
 import { useUserStore } from "@/store/user";
 
 export default defineComponent({
@@ -60,10 +60,11 @@ export default defineComponent({
           ? Object.assign(defaultNotificationData, notification.data())
           : defaultNotificationData;
         loaded.value = true;
-      } catch (error: any) {
-        if (error.code === "permission-denied") {
+      } catch (error) {
+        const code = errorCode(error);
+        if (code === "permission-denied") {
           // We can ignore this type of error here
-          console.warn("Ignoring", error.code);
+          console.warn("Ignoring", code);
         } else {
           throw error;
         }

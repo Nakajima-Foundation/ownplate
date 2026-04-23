@@ -13,6 +13,7 @@ export interface PromotionData extends PromotionDataBase, DocumentData {
 
 export interface UserPromotionHistoryData {
   promotionId: string;
+  used?: boolean;
 }
 
 export default class Promotion extends FirebaseModel<PromotionData> {

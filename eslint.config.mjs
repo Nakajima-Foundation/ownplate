@@ -51,8 +51,8 @@ export default [
           caughtErrorsIgnorePattern: "^__",
         },
       ],
-      "@typescript-eslint/no-explicit-any": "off", // warn
-      "@typescript-eslint/no-unused-expressions": "off",
+      "@typescript-eslint/no-explicit-any": "error",
+      "@typescript-eslint/no-unused-expressions": "error",
       // "@typescript-eslint/no-unnecessary-type-assertion": "error",
       "linebreak-style": ["error", "unix"],
       quotes: ["error", "double"],
@@ -64,11 +64,12 @@ export default [
       "vue/v-bind-style": "error",
       "vue/require-default-prop": "off",
       "vue/require-prop-types": "error",
-      "vue/no-mutating-props": "off", // warn
+      "vue/no-mutating-props": "warn",
       "vue/no-undef-properties": "error",
       "no-undef": "error",
-
-      "no-irregular-whitespace": "off", 
+      "no-useless-assignment": "error",
+      
+      "no-irregular-whitespace": "error",
       "@typescript-eslint/ban-ts-comment": "error",
       "@typescript-eslint/no-shadow": "error",
       "vue/attribute-hyphenation": "off",
@@ -77,7 +78,6 @@ export default [
       "no-duplicate-imports": "error",
       
       // "no-type-assertion/no-type-assertion": "warn",
-      "no-unreachable": "error",
       "no-console": "off",
       "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
 
@@ -96,7 +96,7 @@ export default [
       "@intlify/vue-i18n/no-raw-text": [
         "off",
         {
-          ignorePattern: "[\\-():<>/.]", 
+          ignorePattern: "[\\-():<>/.]",
         },
       ],
     },

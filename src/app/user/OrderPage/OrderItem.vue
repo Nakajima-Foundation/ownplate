@@ -137,7 +137,7 @@ export default defineComponent({
     const update = (value: boolean) => {
       context.emit("update", [props.mkey, value]);
     };
-    const FsmallImageErrorHandler = (e: any) => {
+    const FsmallImageErrorHandler = (e: Event) => {
       smallImageErrorHandler(e);
     };
 

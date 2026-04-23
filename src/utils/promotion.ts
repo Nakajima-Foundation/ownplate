@@ -7,6 +7,8 @@ import {
   onUnmounted,
 } from "vue";
 
+import { User } from "firebase/auth";
+
 import {
   getDoc,
   getDocs,
@@ -75,14 +77,23 @@ export const usePromotionsForAdmin = (id: string) => {
   };
 };
 
-const getUserHistoryPath = (id: string, user: any) => {
+type UserRef = ComputedRef<undefined | boolean | User>;
+
+const isUser = (v: undefined | boolean | User): v is User => {
+  return typeof v === "object" && v !== null;
+};
+
+const getUserHistoryPath = (id: string, user: UserRef) => {
+  if (!isUser(user.value)) {
+    throw new Error("user is not authenticated");
+  }
   return `users/${user.value.uid}/promotionHistories`;
 };
 const getHistoryCondition = (id: string) => {
   return where("restaurantId", "==", id);
 };
 
-export const usePromotions = (id: string, user: any) => {
+export const usePromotions = (id: string, user: UserRef) => {
   const promotionData = ref<Promotion[]>([]);
 
   (async () => {
@@ -137,7 +148,7 @@ export const usePromotions = (id: string, user: any) => {
   });
   watch([user, promotionData], () => {
     if (promotionData.value.length > 0) {
-      if (!user.value || !user.value.phoneNumber) {
+      if (!isUser(user.value) || !user.value.phoneNumber) {
         promotionUsed.value = {};
         return;
       }
@@ -195,12 +206,14 @@ export const usePromotions = (id: string, user: any) => {
                   ? { ...promotionUsed.value }
                   : {};
                 a.docs.forEach((b) => {
-                  if (!used[b.id]) {
-                    used[b.id] = [] as UserPromotionHistoryData[];
-                  }
-                  (used[b.id] as UserPromotionHistoryData[]).push(
-                    b.data() as UserPromotionHistoryData,
-                  );
+                  const existing = used[b.id];
+                  const list: UserPromotionHistoryData[] = Array.isArray(
+                    existing,
+                  )
+                    ? existing
+                    : [];
+                  list.push(b.data() as UserPromotionHistoryData);
+                  used[b.id] = list;
                 });
                 promotionUsed.value = used;
               },
@@ -217,8 +230,11 @@ export const usePromotions = (id: string, user: any) => {
         if (a.type === "multipletimesCoupon") {
           // TODO
         } else if (a.type === "onetimeCoupon") {
-          return !((promotionUsed.value || {})[a?.data.promotionId] as any)
-            .used;
+          const used = (promotionUsed.value || {})[a?.data.promotionId];
+          if (Array.isArray(used)) {
+            return true;
+          }
+          return !used?.used;
         }
         // discount case.
         return !(promotionUsed.value || {})[a?.data.promotionId];
@@ -274,10 +290,15 @@ export const usePromotionData = (
   };
 };
 
-export const useUserPromotionHistory = (id: string, user: any) => {
-  const discountHistory = ref<any[]>([]);
+type DiscountHistoryItem = {
+  userHistory: UserPromotionHistoryData;
+  history: PromotionData | Record<string, never>;
+};
+
+export const useUserPromotionHistory = (id: string, user: UserRef) => {
+  const discountHistory = ref<DiscountHistoryItem[]>([]);
   (async () => {
-    if (!user.value || !user.value.phoneNumber) {
+    if (!isUser(user.value) || !user.value.phoneNumber) {
       return;
     }
     const userHistoryPath = getUserHistoryPath(id, user);
@@ -285,13 +306,18 @@ export const useUserPromotionHistory = (id: string, user: any) => {
 
     const promotionPath = getPromotionCollctionPath(id);
     if (historySnapShot.docs && historySnapShot.docs.length > 0) {
-      const userHistory = historySnapShot.docs.map((a) => {
-        return { userHistory: a.data(), history: {} };
-      });
+      const userHistory: DiscountHistoryItem[] = historySnapShot.docs.map(
+        (a) => {
+          return {
+            userHistory: a.data() as UserPromotionHistoryData,
+            history: {},
+          };
+        },
+      );
       const promotionIds = Array.from(
         new Set(userHistory.map((a) => a.userHistory.promotionId)),
       );
-      const histories: { [key: string]: any } = {};
+      const histories: { [key: string]: PromotionData } = {};
       await Promise.all(
         arrayChunk(promotionIds, 10).map(async (ids) => {
           const ret = await getDocs(
@@ -301,7 +327,7 @@ export const useUserPromotionHistory = (id: string, user: any) => {
             ),
           );
           ret.docs.forEach((a) => {
-            histories[a.id] = a.data();
+            histories[a.id] = a.data() as PromotionData;
           });
         }),
       );

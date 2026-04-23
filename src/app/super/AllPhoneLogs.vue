@@ -27,6 +27,8 @@ import {
   collectionGroup,
   orderBy,
   limit,
+  DocumentData,
+  Unsubscribe,
 } from "firebase/firestore";
 
 import { useSuper, defaultTitle } from "@/utils/utils";
@@ -40,8 +42,8 @@ export default defineComponent({
   setup() {
     useSuper();
 
-    const logs = ref<any[]>([]);
-    let detacher: any = null;
+    const logs = ref<DocumentData[]>([]);
+    let detacher: Unsubscribe | null = null;
 
     useHead(() => ({
       title: [defaultTitle, "Super All Phone Logs"].join(" / "),
@@ -64,7 +66,7 @@ export default defineComponent({
     );
 
     onUnmounted(() => {
-      detacher && detacher();
+      detacher?.();
     });
 
     return {

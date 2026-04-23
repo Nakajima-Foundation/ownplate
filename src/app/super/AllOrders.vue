@@ -124,6 +124,7 @@ import {
   getDoc,
   doc,
   collectionGroup,
+  QueryDocumentSnapshot,
 } from "firebase/firestore";
 
 import { useHead } from "@unhead/vue";
@@ -151,7 +152,7 @@ export default defineComponent({
     const orderState = ref(0);
     const monthValue = ref(months[0]);
     const isLoading = ref(false);
-    const last = ref<any | null>(null);
+    const last = ref<QueryDocumentSnapshot | null>(null);
     const restaurants = ref<{ [key: string]: RestaurantInfoData }>({});
 
     const orderStatus = (() => {

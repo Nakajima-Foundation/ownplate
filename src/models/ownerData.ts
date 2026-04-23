@@ -1,4 +1,7 @@
 export interface OwnerData {
-  images?: any;
+  images?: {
+    cover?: { path?: string; resizedImages?: { [key: string]: string } };
+    profile?: { path?: string; resizedImages?: { [key: string]: string } };
+  };
   restCoverPhoto?: string;
 }

@@ -171,7 +171,7 @@ export default defineComponent({
     });
 
     const orderItems = computed(() => {
-      return getOrderItems(orderInfo.value, menuObj.value as any);
+      return getOrderItems(orderInfo.value, menuObj.value ?? {});
     });
     const restaurantId = useRestaurantId();
 
@@ -192,7 +192,13 @@ export default defineComponent({
               orderInfo.value,
               orderId,
               orderItems.value.map((or) => {
-                return { ...or.item, id: or.id, quantity: or.count } as any;
+                return {
+                  ...or.item,
+                  id: or.id,
+                  quantity: Array.isArray(or.count)
+                    ? or.count.reduce((a, b) => a + b, 0)
+                    : or.count,
+                } as analyticsUtil.AnalyticsMenuData;
               }),
               props.shopInfo,
               restaurantId.value,

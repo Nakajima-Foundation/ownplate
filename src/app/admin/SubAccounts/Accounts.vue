@@ -273,10 +273,10 @@ export default defineComponent({
     const invite = async () => {
       sending.value = true;
       try {
-        const res = (await subAccountInvite({
+        const res = await subAccountInvite({
           email: email.value,
           name: name.value,
-        })) as any;
+        });
         if (res.data.result) {
           router.push("/admin/subAccounts/accounts/" + res.data.childUid);
           email.value = "";

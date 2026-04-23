@@ -53,19 +53,18 @@ export const getEditShopInfo = (shopInfo: RestaurantInfoData) => {
     paymentMethods: shopInfo.paymentMethods || {},
     foodTax: Number(shopInfo.foodTax),
     alcoholTax: Number(shopInfo.alcoholTax),
-    openTimes: Object.keys(shopInfo.openTimes).reduce(
-      (tmp: { [key: string]: any }, key) => {
-        tmp[key] = shopInfo.openTimes[key]
-          .filter((el: any) => {
-            return el !== null && el?.end !== null && el?.start !== null;
-          })
-          .sort((a: any, b: any) => {
-            return a.start < b.start ? -1 : 1;
-          });
-        return tmp;
-      },
-      {},
-    ),
+    openTimes: Object.keys(shopInfo.openTimes).reduce<{
+      [key: string]: { start: number; end: number }[];
+    }>((tmp, key) => {
+      tmp[key] = shopInfo.openTimes[key]
+        .filter((el): el is { start: number; end: number } => {
+          return el !== null && el?.end !== null && el?.start !== null;
+        })
+        .sort((a, b) => {
+          return a.start < b.start ? -1 : 1;
+        });
+      return tmp;
+    }, {}),
     businessDay: shopInfo.businessDay,
     temporaryClosure: shopInfo.temporaryClosure,
     lastOrderTime: shopInfo.lastOrderTime || null,

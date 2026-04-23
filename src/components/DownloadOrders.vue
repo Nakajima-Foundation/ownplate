@@ -19,12 +19,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed, PropType } from "vue";
 import DownloadCsv from "@/components/DownloadCSV.vue";
 import moment from "moment";
 import { nameOfOrder } from "@/utils/strings";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import { order_status } from "@/config/constant";
+import { OrderInfoData } from "@/models/orderInfo";
 import { arrayOrNumSum, orderTypeKey, getRestaurantId } from "@/utils/utils";
 
 import { useI18n } from "vue-i18n";
@@ -36,7 +37,7 @@ export default defineComponent({
   },
   props: {
     orders: {
-      type: Array,
+      type: Array as PropType<OrderInfoData[]>,
       required: true,
     },
   },
@@ -48,7 +49,7 @@ export default defineComponent({
     });
 
     const tableData = computed(() => {
-      return props.orders.map((order: any) => {
+      return props.orders.map((order) => {
         const totalCount = Object.keys(order.order).reduce((count, id) => {
           return count + arrayOrNumSum(order.order[id]);
         }, 0);
