@@ -678,6 +678,15 @@
     "@intlify/message-compiler" "11.3.2"
     "@intlify/shared" "11.3.2"
 
+"@intlify/core-base@11.4.0":
+  version "11.4.0"
+  resolved "https://registry.yarnpkg.com/@intlify/core-base/-/core-base-11.4.0.tgz#0567e52e7c2f5a129e71cd0e980fe185e9eae1cf"
+  integrity sha512-nlxFOnmjJgVkL1PsuSMagyh3qIHTwc2KlO2R3qQQV1ydrcwh1XpM7opWUGqvGaLlktttopDzbLBpr/k5tvbNmA==
+  dependencies:
+    "@intlify/devtools-types" "11.4.0"
+    "@intlify/message-compiler" "11.4.0"
+    "@intlify/shared" "11.4.0"
+
 "@intlify/devtools-types@11.3.2":
   version "11.3.2"
   resolved "https://registry.yarnpkg.com/@intlify/devtools-types/-/devtools-types-11.3.2.tgz#983e3c12340b36a41648fda451aeebc4f3ade812"
@@ -685,6 +694,14 @@
   dependencies:
     "@intlify/core-base" "11.3.2"
     "@intlify/shared" "11.3.2"
+
+"@intlify/devtools-types@11.4.0":
+  version "11.4.0"
+  resolved "https://registry.yarnpkg.com/@intlify/devtools-types/-/devtools-types-11.4.0.tgz#b0fb14c5e8c35ac0af4b50e81317d2de240dad84"
+  integrity sha512-LtQ04kG8/2Nv6AbuINpkjODuhKHdd+MGLlXKW3I0GTCeDsDIBZUot82nnyK7D6+qersF08FqSvoN/eGPcL3c7Q==
+  dependencies:
+    "@intlify/core-base" "11.4.0"
+    "@intlify/shared" "11.4.0"
 
 "@intlify/eslint-plugin-vue-i18n@^4.3.0":
   version "4.3.0"
@@ -716,10 +733,23 @@
     "@intlify/shared" "11.3.2"
     source-map-js "^1.0.2"
 
+"@intlify/message-compiler@11.4.0":
+  version "11.4.0"
+  resolved "https://registry.yarnpkg.com/@intlify/message-compiler/-/message-compiler-11.4.0.tgz#0ff074213dd73fee2a7930863ef5f2f9e00a04b1"
+  integrity sha512-v455gVZqMb0er63Wd/akX8DXTnwSubgrgQaRigLB60V3xpnq3B99oPvGXW+N4G/5QFt8Ls84FJ8qHJUVnRCs1A==
+  dependencies:
+    "@intlify/shared" "11.4.0"
+    source-map-js "^1.0.2"
+
 "@intlify/shared@11.3.2":
   version "11.3.2"
   resolved "https://registry.yarnpkg.com/@intlify/shared/-/shared-11.3.2.tgz#589d0a7d5448fb042b9553be28aca4467898368d"
   integrity sha512-x66fjdH6i+lNYPae5URSQGTjBL68Av6hi09jvC5Ci96iTkwfqrPhCj46aylQZmgMaG89rOZCIKqS7ApC8ZDVjg==
+
+"@intlify/shared@11.4.0":
+  version "11.4.0"
+  resolved "https://registry.yarnpkg.com/@intlify/shared/-/shared-11.4.0.tgz#4aeec3e2004404345f3a9b0540fe25376f24798a"
+  integrity sha512-r9qUeLeO0TMZmUZ+mXS6IGQ6xwzZJaVMK6j4CdoA3eQP8xp3JtCfwkZ30gB4+knlN40pmBdDXgx85SWhMCzHng==
 
 "@isaacs/cliui@^8.0.2":
   version "8.0.2"
@@ -1819,35 +1849,35 @@
   resolved "https://registry.yarnpkg.com/@rolldown/pluginutils/-/pluginutils-1.0.0-rc.17.tgz#a89b30833fb628bc834fe2e89fea93a2da9fa69a"
   integrity sha512-n8iosDOt6Ig1UhJ2AYqoIhHWh/isz0xpicHTzpKBeotdVsTEcxsSA/i3EVM7gQAj0rU27OLAxCjzlj15IWY7bg==
 
-"@sentry-internal/browser-utils@10.49.0":
-  version "10.49.0"
-  resolved "https://registry.yarnpkg.com/@sentry-internal/browser-utils/-/browser-utils-10.49.0.tgz#77abc10883e3a9f6e9d7dd3f59ba949f42b9d60f"
-  integrity sha512-n0QRx0Ysx6mPfIydTkz7VP0FmwM+/EqMZiRqdsU3aTYsngE9GmEDV0OL1bAy6a8N/C1xf9vntkuAtj6N/8Z51w==
+"@sentry-internal/browser-utils@10.50.0":
+  version "10.50.0"
+  resolved "https://registry.yarnpkg.com/@sentry-internal/browser-utils/-/browser-utils-10.50.0.tgz#57a6c01ff61c0bf7c4b4ab88ecaf067f3b73ca1c"
+  integrity sha512-42bxyRTxnCmYlWnvz4CxikuQNanw8UNma2WJrtxJ0f1MAJV2GhQGSHDLnA+lvFlmiz6qct3pfen/NXGyOTegTA==
   dependencies:
-    "@sentry/core" "10.49.0"
+    "@sentry/core" "10.50.0"
 
-"@sentry-internal/feedback@10.49.0":
-  version "10.49.0"
-  resolved "https://registry.yarnpkg.com/@sentry-internal/feedback/-/feedback-10.49.0.tgz#1abba6895df74e9b49b8257df0e1802693d85322"
-  integrity sha512-JNsUBGv0faCFE7MeZUH99Y9lU9qq3LBALbLxpE1x7ngNrQnVYRlcFgdqaD/btNBKr8awjYL8gmcSkHBWskGqLQ==
+"@sentry-internal/feedback@10.50.0":
+  version "10.50.0"
+  resolved "https://registry.yarnpkg.com/@sentry-internal/feedback/-/feedback-10.50.0.tgz#a8b61c419c7c6a40e0ac9a11fdcff1f6a970b040"
+  integrity sha512-0k9XZF0wn86f77mIO2U3gNNyDZooy139CnEanRzHinrN106vVzvBZ6TUEQoHtoO1fqQxr+nWWVrqV/PXUqk47w==
   dependencies:
-    "@sentry/core" "10.49.0"
+    "@sentry/core" "10.50.0"
 
-"@sentry-internal/replay-canvas@10.49.0":
-  version "10.49.0"
-  resolved "https://registry.yarnpkg.com/@sentry-internal/replay-canvas/-/replay-canvas-10.49.0.tgz#c2d7fe15603888399d02fe03fe5b7f771f7e424c"
-  integrity sha512-7D/NrgH1Qwx5trDYaaTSSJmCb1yVQQLqFG4G/S9x2ltzl9876lSGJL8UeW8ReNQgF3CDAcwbmm/9aXaVSBUNZA==
+"@sentry-internal/replay-canvas@10.50.0":
+  version "10.50.0"
+  resolved "https://registry.yarnpkg.com/@sentry-internal/replay-canvas/-/replay-canvas-10.50.0.tgz#e5523e8bd7ba30d77175c39df58c1c1dc1fde051"
+  integrity sha512-jx6RKBmcJSWdI92qDGS/sBv1w+7Cww879Z/moX7bw7ipHa/Ts3iDcB3rgZwvhmi17U+mvYsbJeL2DXkPo3TjPw==
   dependencies:
-    "@sentry-internal/replay" "10.49.0"
-    "@sentry/core" "10.49.0"
+    "@sentry-internal/replay" "10.50.0"
+    "@sentry/core" "10.50.0"
 
-"@sentry-internal/replay@10.49.0":
-  version "10.49.0"
-  resolved "https://registry.yarnpkg.com/@sentry-internal/replay/-/replay-10.49.0.tgz#8a91bc55d02c38ba60aed8271dedbd034519fe47"
-  integrity sha512-IEy4lwHVMiRE3JAcn+kFKjsTgalDOCSTf20SoFd+nkt6rN/k1RDyr4xpdfF//Kj3UdeTmbuibYjK5H/FLhhnGg==
+"@sentry-internal/replay@10.50.0":
+  version "10.50.0"
+  resolved "https://registry.yarnpkg.com/@sentry-internal/replay/-/replay-10.50.0.tgz#0d7af824c71004d31b84b213f754de346ac2f487"
+  integrity sha512-51FYNfnvVLAWw1rrEWPFfwHuMRb9mkVCFGA4J9/un7SpeGBsQDziGB0Di4fsCxI7+EdSBpfLHPF0csKtCCw0oQ==
   dependencies:
-    "@sentry-internal/browser-utils" "10.49.0"
-    "@sentry/core" "10.49.0"
+    "@sentry-internal/browser-utils" "10.50.0"
+    "@sentry/core" "10.50.0"
 
 "@sentry-internal/tracing@7.120.4":
   version "7.120.4"
@@ -1858,21 +1888,21 @@
     "@sentry/types" "7.120.4"
     "@sentry/utils" "7.120.4"
 
-"@sentry/browser@10.49.0":
-  version "10.49.0"
-  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-10.49.0.tgz#75ff0cc4b149dfbff78a14218208122fe3a68ba1"
-  integrity sha512-bGCHc+wK2Dx67YoSbmtlt04alqWfQ+dasD/GVipVOq50gvw/BBIDHTEWRJEjACl+LrvszeY54V+24p8z4IgysA==
+"@sentry/browser@10.50.0":
+  version "10.50.0"
+  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-10.50.0.tgz#f06f6554cd0d87e6033b31d91d78bc0d53154071"
+  integrity sha512-1f6rAvET6myiTaSeYqvaaBwvq1LfxqWjAPIoAW/NVC9bPMkeEcuvgDajHrnZMrBeWoJ81NMyoLkyX+iOc7MoFA==
   dependencies:
-    "@sentry-internal/browser-utils" "10.49.0"
-    "@sentry-internal/feedback" "10.49.0"
-    "@sentry-internal/replay" "10.49.0"
-    "@sentry-internal/replay-canvas" "10.49.0"
-    "@sentry/core" "10.49.0"
+    "@sentry-internal/browser-utils" "10.50.0"
+    "@sentry-internal/feedback" "10.50.0"
+    "@sentry-internal/replay" "10.50.0"
+    "@sentry-internal/replay-canvas" "10.50.0"
+    "@sentry/core" "10.50.0"
 
-"@sentry/core@10.49.0":
-  version "10.49.0"
-  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-10.49.0.tgz#4e9389973917e8ddd2d825040a03b298457d061f"
-  integrity sha512-UaFeum3LUM1mB0d67jvKnqId1yWQjyqmaDV6kWngG03x+jqXb08tJdGpSoxjXZe13jFBbiBL/wKDDYIK7rCK4g==
+"@sentry/core@10.50.0":
+  version "10.50.0"
+  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-10.50.0.tgz#55d5e19863e4f6246536c78530b8ce10420471b5"
+  integrity sha512-J4A+vzUO3adl0TkFCjaN1+4miamrjHiEIYuLHiuu1lmAjq5WIVw32ObvAh4yMwNtxyaEMosTrrh5M6f12XSJFg==
 
 "@sentry/core@7.120.4":
   version "7.120.4"
@@ -1901,13 +1931,13 @@
   dependencies:
     "@sentry/types" "7.120.4"
 
-"@sentry/vue@^10.49.0":
-  version "10.49.0"
-  resolved "https://registry.yarnpkg.com/@sentry/vue/-/vue-10.49.0.tgz#d8934a5580d66e08a45ca98144ddfb3ff212d51a"
-  integrity sha512-xxJ3Phh1Rgb3iIrWBJC4qepUVZL2XH+2eCpXWBAd8tvGSIWGSdP8RpwIj22pKsgDO/m8e1eoD43KwVWUX3AH5g==
+"@sentry/vue@^10.50.0":
+  version "10.50.0"
+  resolved "https://registry.yarnpkg.com/@sentry/vue/-/vue-10.50.0.tgz#a6c24b7b4121376d6cfb5052b9d5b9567295a40d"
+  integrity sha512-xo2Nq+74KRh3OuZBVnejDiRZaqbnuUKUi6h2hRefFLnbsN3aU76NR0CekWzaabpczWvQRhLn7DC0s0m+pXeDAQ==
   dependencies:
-    "@sentry/browser" "10.49.0"
-    "@sentry/core" "10.49.0"
+    "@sentry/browser" "10.50.0"
+    "@sentry/core" "10.50.0"
 
 "@swc/helpers@^0.5.12":
   version "0.5.17"
@@ -2129,7 +2159,7 @@
   dependencies:
     "@types/node" "*"
 
-"@types/linkify-it@^5":
+"@types/linkify-it@^5", "@types/linkify-it@^5.0.0":
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/@types/linkify-it/-/linkify-it-5.0.0.tgz#21413001973106cda1c3a9b91eedd4ccd5469d76"
   integrity sha512-sVDA58zAw4eWAffKOaQH5/5j3XeayukzDk+ewSsnv3p4yJEZHCCzMDiZM8e0OUrRvmpGZ85jf4yDHkHsgBNr9Q==
@@ -2147,7 +2177,7 @@
     "@types/linkify-it" "^5"
     "@types/mdurl" "^2"
 
-"@types/mdurl@^2":
+"@types/mdurl@^2", "@types/mdurl@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@types/mdurl/-/mdurl-2.0.0.tgz#d43878b5b20222682163ae6f897b20447233bdfd"
   integrity sha512-RGdgjQUZba5p6QEFAVx2OGb8rQDL/cPRG7GiedRzMcJ1tYnUANBncjbSB1NRGwbvjcPeikRABz2nshyPk1bhWg==
@@ -3049,7 +3079,7 @@ entities@^6.0.0:
   resolved "https://registry.yarnpkg.com/entities/-/entities-6.0.1.tgz#c28c34a43379ca7f61d074130b2f5f7020a30694"
   integrity sha512-aN97NXWF6AWBTahfVOIrB/NShkzi5H7F9r1s9mD3cDj4Ko5f2qhhVoYMibXF7GlLveb/D2ioWay8lxI97Ven3g==
 
-entities@^7.0.1:
+entities@^7.0.0, entities@^7.0.1:
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/entities/-/entities-7.0.1.tgz#26e8a88889db63417dcb9a1e79a3f1bc92b5976b"
   integrity sha512-TWrgLOFUQTH994YUyl1yT4uyavY5nNB5muff+RtWaqNVCAK408b5ZnnbNAUEWLTCpum9w6arT70i1XdQ4UeOPA==
@@ -4262,13 +4292,18 @@ magic-string@^0.30.12, magic-string@^0.30.19, magic-string@^0.30.21:
   dependencies:
     "@jridgewell/sourcemap-codec" "^1.5.5"
 
-markdown-it-async@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/markdown-it-async/-/markdown-it-async-2.2.0.tgz#c45bf13e1253f1b46811b1fa3aa738a41933fcd2"
-  integrity sha512-sITME+kf799vMeO/ww/CjH6q+c05f6TLpn6VOmmWCGNqPJzSh+uFgZoMB9s0plNtW6afy63qglNAC3MhrhP/gg==
+markdown-exit@^1.0.0-beta.8:
+  version "1.0.0-beta.9"
+  resolved "https://registry.yarnpkg.com/markdown-exit/-/markdown-exit-1.0.0-beta.9.tgz#b115322e9957d6f6628a6348292f2871a7c10530"
+  integrity sha512-5tzrMKMF367amyBly131vm6eGuWRL2DjBqWaFmPzPbLyuxP0XOmyyyroOAIXuBAMF/3kZbbfqOxvW/SotqKqbQ==
   dependencies:
-    "@types/markdown-it" "^14.1.2"
-    markdown-it "^14.1.0"
+    "@types/linkify-it" "^5.0.0"
+    "@types/mdurl" "^2.0.0"
+    entities "^7.0.0"
+    linkify-it "^5.0.0"
+    mdurl "^2.0.0"
+    punycode.js "^2.3.1"
+    uc.micro "^2.1.0"
 
 markdown-it@^14.1.0, markdown-it@^14.1.1:
   version "14.1.1"
@@ -4757,10 +4792,10 @@ prelude-ls@^1.2.1:
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.2.1.tgz#debc6489d7a6e6b0e7611888cec880337d316396"
   integrity sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==
 
-prettier-plugin-tailwindcss@^0.7.2:
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/prettier-plugin-tailwindcss/-/prettier-plugin-tailwindcss-0.7.2.tgz#8de2039fc0363b8532ef5a2d3fc9e2c1b6ca3bd4"
-  integrity sha512-LkphyK3Fw+q2HdMOoiEHWf93fNtYJwfamoKPl7UwtjFQdei/iIBoX11G6j706FzN3ymX9mPVi97qIY8328vdnA==
+prettier-plugin-tailwindcss@^0.0.0-insiders.f7d2598:
+  version "0.0.0-insiders.f7d2598"
+  resolved "https://registry.yarnpkg.com/prettier-plugin-tailwindcss/-/prettier-plugin-tailwindcss-0.0.0-insiders.f7d2598.tgz#eea9889f2bc68598f59791ddeb0ae5b1349143b7"
+  integrity sha512-mLD3JnrHeUZ83H1qSp1z6DNWxesGmC/vrGgPpCcEU0KFJsrj6tW+kv0NLR5beQcqaUpFtexG/dqYsWmwObY3gQ==
 
 prettier@^3.8.3:
   version "3.8.3"
@@ -5307,17 +5342,15 @@ unplugin-utils@^0.3.0, unplugin-utils@^0.3.1:
     pathe "^2.0.3"
     picomatch "^4.0.3"
 
-unplugin-vue-markdown@^29.2.0:
-  version "29.2.0"
-  resolved "https://registry.yarnpkg.com/unplugin-vue-markdown/-/unplugin-vue-markdown-29.2.0.tgz#1da088b7e1ee0a3c5d3438608857708ec5718d3e"
-  integrity sha512-/x2hFgQ6cWN1Kls+yK5mAI9YDmeTofftynVGgOy1llBlDX1ifaXsQBls/bpORaiwn7cxA7HkOo0wn/xKcrXBHA==
+unplugin-vue-markdown@^30.0.0:
+  version "30.0.0"
+  resolved "https://registry.yarnpkg.com/unplugin-vue-markdown/-/unplugin-vue-markdown-30.0.0.tgz#8f1dbf1cbb9276cf4527169268eb0483598aa3c2"
+  integrity sha512-FVdKAb7jmZslfdkOCfm6jxHaUafltBpOXdoLvKY+0I0EeMmhxXTSzeDldwXFJeV0IH8LyIXIiU29E6gv02WJFQ==
   dependencies:
     "@mdit-vue/plugin-component" "^3.0.2"
     "@mdit-vue/plugin-frontmatter" "^3.0.2"
     "@mdit-vue/types" "^3.0.2"
-    "@types/markdown-it" "^14.1.2"
-    markdown-it "^14.1.0"
-    markdown-it-async "^2.2.0"
+    markdown-exit "^1.0.0-beta.8"
     unplugin "^2.3.10"
     unplugin-utils "^0.3.0"
 
@@ -5449,14 +5482,14 @@ vue-eslint-parser@^10.4.0:
     esquery "^1.6.0"
     semver "^7.6.3"
 
-vue-i18n@11.3.2:
-  version "11.3.2"
-  resolved "https://registry.yarnpkg.com/vue-i18n/-/vue-i18n-11.3.2.tgz#8f774a4e680be7e0c7a939ff04663cf26886fb85"
-  integrity sha512-gmFrvM+iuf2AH4ygligw/pC7PRJ63AdRNE68E0GPlQ83Mzfyck6g6cRQC3KzkYXr+ZidR91wq+5YBmAMpkgE1A==
+vue-i18n@11.4.0:
+  version "11.4.0"
+  resolved "https://registry.yarnpkg.com/vue-i18n/-/vue-i18n-11.4.0.tgz#a33085ddbb10b4ed13f9fb0e37119f6cacdcdaa9"
+  integrity sha512-gxLVtcwdvOgwKSzkdb7nHKlW0N85A6aDNmHLnq6V+3w2/BXy/os5l71P7TIlgIQTxX0zJjiz89iImoHi51GieQ==
   dependencies:
-    "@intlify/core-base" "11.3.2"
-    "@intlify/devtools-types" "11.3.2"
-    "@intlify/shared" "11.3.2"
+    "@intlify/core-base" "11.4.0"
+    "@intlify/devtools-types" "11.4.0"
+    "@intlify/shared" "11.4.0"
     "@vue/devtools-api" "^6.5.0"
 
 vue-router@^5.0.6:
