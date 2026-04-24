@@ -2159,7 +2159,7 @@
   dependencies:
     "@types/node" "*"
 
-"@types/linkify-it@^5":
+"@types/linkify-it@^5", "@types/linkify-it@^5.0.0":
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/@types/linkify-it/-/linkify-it-5.0.0.tgz#21413001973106cda1c3a9b91eedd4ccd5469d76"
   integrity sha512-sVDA58zAw4eWAffKOaQH5/5j3XeayukzDk+ewSsnv3p4yJEZHCCzMDiZM8e0OUrRvmpGZ85jf4yDHkHsgBNr9Q==
@@ -2177,7 +2177,7 @@
     "@types/linkify-it" "^5"
     "@types/mdurl" "^2"
 
-"@types/mdurl@^2":
+"@types/mdurl@^2", "@types/mdurl@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@types/mdurl/-/mdurl-2.0.0.tgz#d43878b5b20222682163ae6f897b20447233bdfd"
   integrity sha512-RGdgjQUZba5p6QEFAVx2OGb8rQDL/cPRG7GiedRzMcJ1tYnUANBncjbSB1NRGwbvjcPeikRABz2nshyPk1bhWg==
@@ -3079,7 +3079,7 @@ entities@^6.0.0:
   resolved "https://registry.yarnpkg.com/entities/-/entities-6.0.1.tgz#c28c34a43379ca7f61d074130b2f5f7020a30694"
   integrity sha512-aN97NXWF6AWBTahfVOIrB/NShkzi5H7F9r1s9mD3cDj4Ko5f2qhhVoYMibXF7GlLveb/D2ioWay8lxI97Ven3g==
 
-entities@^7.0.1:
+entities@^7.0.0, entities@^7.0.1:
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/entities/-/entities-7.0.1.tgz#26e8a88889db63417dcb9a1e79a3f1bc92b5976b"
   integrity sha512-TWrgLOFUQTH994YUyl1yT4uyavY5nNB5muff+RtWaqNVCAK408b5ZnnbNAUEWLTCpum9w6arT70i1XdQ4UeOPA==
@@ -4292,13 +4292,18 @@ magic-string@^0.30.12, magic-string@^0.30.19, magic-string@^0.30.21:
   dependencies:
     "@jridgewell/sourcemap-codec" "^1.5.5"
 
-markdown-it-async@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/markdown-it-async/-/markdown-it-async-2.2.0.tgz#c45bf13e1253f1b46811b1fa3aa738a41933fcd2"
-  integrity sha512-sITME+kf799vMeO/ww/CjH6q+c05f6TLpn6VOmmWCGNqPJzSh+uFgZoMB9s0plNtW6afy63qglNAC3MhrhP/gg==
+markdown-exit@^1.0.0-beta.8:
+  version "1.0.0-beta.9"
+  resolved "https://registry.yarnpkg.com/markdown-exit/-/markdown-exit-1.0.0-beta.9.tgz#b115322e9957d6f6628a6348292f2871a7c10530"
+  integrity sha512-5tzrMKMF367amyBly131vm6eGuWRL2DjBqWaFmPzPbLyuxP0XOmyyyroOAIXuBAMF/3kZbbfqOxvW/SotqKqbQ==
   dependencies:
-    "@types/markdown-it" "^14.1.2"
-    markdown-it "^14.1.0"
+    "@types/linkify-it" "^5.0.0"
+    "@types/mdurl" "^2.0.0"
+    entities "^7.0.0"
+    linkify-it "^5.0.0"
+    mdurl "^2.0.0"
+    punycode.js "^2.3.1"
+    uc.micro "^2.1.0"
 
 markdown-it@^14.1.0, markdown-it@^14.1.1:
   version "14.1.1"
@@ -5337,17 +5342,15 @@ unplugin-utils@^0.3.0, unplugin-utils@^0.3.1:
     pathe "^2.0.3"
     picomatch "^4.0.3"
 
-unplugin-vue-markdown@^29.2.0:
-  version "29.2.0"
-  resolved "https://registry.yarnpkg.com/unplugin-vue-markdown/-/unplugin-vue-markdown-29.2.0.tgz#1da088b7e1ee0a3c5d3438608857708ec5718d3e"
-  integrity sha512-/x2hFgQ6cWN1Kls+yK5mAI9YDmeTofftynVGgOy1llBlDX1ifaXsQBls/bpORaiwn7cxA7HkOo0wn/xKcrXBHA==
+unplugin-vue-markdown@^30.0.0:
+  version "30.0.0"
+  resolved "https://registry.yarnpkg.com/unplugin-vue-markdown/-/unplugin-vue-markdown-30.0.0.tgz#8f1dbf1cbb9276cf4527169268eb0483598aa3c2"
+  integrity sha512-FVdKAb7jmZslfdkOCfm6jxHaUafltBpOXdoLvKY+0I0EeMmhxXTSzeDldwXFJeV0IH8LyIXIiU29E6gv02WJFQ==
   dependencies:
     "@mdit-vue/plugin-component" "^3.0.2"
     "@mdit-vue/plugin-frontmatter" "^3.0.2"
     "@mdit-vue/types" "^3.0.2"
-    "@types/markdown-it" "^14.1.2"
-    markdown-it "^14.1.0"
-    markdown-it-async "^2.2.0"
+    markdown-exit "^1.0.0-beta.8"
     unplugin "^2.3.10"
     unplugin-utils "^0.3.0"
 
