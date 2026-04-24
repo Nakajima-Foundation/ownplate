@@ -28,11 +28,11 @@
   },
   "main": "lib/index.js",
   "resolutions": {
-    "minimatch": "^10.2.4"
+    "minimatch": "^10.2.5"
   },
   "dependencies": {
-    "@aws-sdk/client-sns": "^3.1035.0",
-    "@sentry/node": "^10.49.0",
+    "@aws-sdk/client-sns": "^3.1036.0",
+    "@sentry/node": "^10.50.0",
     "cors": "^2.8.6",
     "express": "^5.2.1",
     "firebase-admin": "^13.8.0",

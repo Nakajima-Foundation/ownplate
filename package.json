@@ -22,7 +22,7 @@
     "@chenfengyuan/vue-qrcode": "^2.0.0",
     "@line/liff": "^2.28.0",
     "@sentry/tracing": "^7.120.4",
-    "@sentry/vue": "^10.49.0",
+    "@sentry/vue": "^10.50.0",
     "@unhead/vue": "^3.0.5",
     "chart.js": "^4.5.1",
     "cookie": "^1.1.1",
@@ -42,7 +42,7 @@
     "vue": "^3.5.33",
     "vue-chart-3": "^3.1.8",
     "vue-clipboard3": "^2.0.0",
-    "vue-i18n": "11.3.2",
+    "vue-i18n": "11.4.0",
     "vue-router": "^5.0.6",
     "vue-social-sharing": "^4.0.0-alpha4"
   },
