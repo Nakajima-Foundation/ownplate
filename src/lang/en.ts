@@ -685,7 +685,6 @@ const data = {
     placeOrder: "Place Order - Pay Now",
     or: "OR",
     placeOrderNoPayment: "Place Order - Pay Later",
-    placeOrderNoPaymentMo: "Place Order - Pay Later",
     placeOrderNoPaymentNote: "Pay when get items",
     waitingPayment: "Waiting Payment",
     submitPayment: "Submit Payment",
@@ -915,11 +914,11 @@ const data = {
       US: "United States (+1)",
       UK: "United Kingdom (+44)",
       FR: "France (+33)",
-      BF: "Burkina Faso (+235)",
+      BF: "Burkina Faso (+226)",
       TG: "TOGO (+228)",
       BN: "Bénin (+229)",
       CI: "Cote d'ivoire (+225)",
-      SE: "Senegal (+335)",
+      SE: "Senegal (+221)",
       ES: "Spain (+34)",
       DE: "Germany (+49)",
       JP: "Japan (+81)",
@@ -1186,7 +1185,7 @@ const data = {
       title: "Reports",
       "download-csv": "Download Excel File (Monthly Earnings)",
       "download-csv-details": "Download Excel File (Details)",
-      "download-all-csv": "Download Excel File (Earnings)",
+      "download-csv-all": "Download Excel File (Earnings)",
       "download-csv-history": "Download Excel File (History Earnings)",
       "download-csv-history-details": "Download Excel File (History Details)",
       "download-csv-monthly-details": "Download Excel File (Monthly Details)",
@@ -1472,6 +1471,18 @@ const data = {
       empty: "Please enter your email address",
       invalidEmail: "Please enter your valid email address",
     },
+  },
+  aboutService: {
+    title: "About",
+    paragraph1:
+      "The COVID-19 has not only claimed the lives of many people, but it has also caused significant damage to the economy. In particular, restaurants and bars that offer \"places for people to gather\" have suffered directly from lockdown and shelter-in-place measures. At the result, millions of people were layed off, and thousands of restaurant owners have been forced to close their businesses.",
+    paragraph2:
+      "We've created {serviceName} to help those restaurants and bars. With {serviceName}, restaurants can start take-out service with no extra fees (only credit card charges are required). The restaurant owners can create dedicated pages and register menu items there (no special skill is required), where customers can order and pay, then pick them up at restaurants.",
+    paragraph3:
+      "We, Singularity Society, is a non-profit organization, consists of software engineers, designers and business people.",
+    sincerely: "Sincerely,",
+    profileName: "Satoshi Nakajima",
+    profileTitle: "Chairman of Singularity Society",
   },
 };
 
