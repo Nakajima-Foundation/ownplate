@@ -337,7 +337,7 @@ const data = {
     item: "商品",
     noItem: "何も登録されていません",
     pleaseAddItem: "下のボタンを押して商品を追加して下さい。",
-    reorder: "並び替え",
+    reorder: "ドラッグで並び替え",
     doneReorder: "完了",
     required: "必須",
     itemName: "商品名",
