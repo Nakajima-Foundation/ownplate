@@ -22,7 +22,7 @@
       >
         <area-item
           v-for="item in area.items"
-          :name="item.name"
+          :name="$t('find.prefecture.' + item.key)"
           :id="String(item.id)"
           :key="item.id"
         />
@@ -118,74 +118,74 @@ export default defineComponent({
       areas: [
         {
           name: "hokkaido",
-          items: [{ name: "北海道", id: 0 }],
+          items: [{ key: "hokkaido", id: 0 }],
         },
         {
           name: "tohoku",
           items: [
-            { name: "宮城県", id: 3 },
-            { name: "秋田県", id: 4 },
+            { key: "miyagi", id: 3 },
+            { key: "akita", id: 4 },
           ],
         },
         {
           name: "kanto",
           items: [
-            { name: "東京都", id: 12 },
-            { name: "神奈川県", id: 13 },
-            { name: "千葉県", id: 11 },
-            { name: "群馬県", id: 9 },
-            { name: "埼玉県", id: 10 },
-            { name: "栃木県", id: 8 },
-            { name: "茨城県", id: 7 },
+            { key: "tokyo", id: 12 },
+            { key: "kanagawa", id: 13 },
+            { key: "chiba", id: 11 },
+            { key: "gunma", id: 9 },
+            { key: "saitama", id: 10 },
+            { key: "tochigi", id: 8 },
+            { key: "ibaraki", id: 7 },
           ],
         },
         {
           name: "chubu",
           items: [
-            { name: "愛知県", id: 22 },
-            { name: "静岡県", id: 21 },
-            { name: "山梨県", id: 18 },
-            { name: "長野県", id: 19 },
-            { name: "岐阜県", id: 20 },
+            { key: "aichi", id: 22 },
+            { key: "shizuoka", id: 21 },
+            { key: "yamanashi", id: 18 },
+            { key: "nagano", id: 19 },
+            { key: "gifu", id: 20 },
           ],
         },
         {
           name: "hokuriku",
           items: [
-            { name: "新潟県", id: 14 },
-            { name: "富山県", id: 15 },
-            { name: "石川県", id: 16 },
-            { name: "福井県", id: 17 },
+            { key: "niigata", id: 14 },
+            { key: "toyama", id: 15 },
+            { key: "ishikawa", id: 16 },
+            { key: "fukui", id: 17 },
           ],
         },
         {
           name: "kansai",
           items: [
-            { name: "京都府", id: 25 },
-            { name: "大阪府", id: 26 },
-            { name: "兵庫県", id: 27 },
-            { name: "滋賀県", id: 24 },
-            { name: "和歌山県", id: 29 },
-            // { name: "奈良県", id: 28 },
+            { key: "kyoto", id: 25 },
+            { key: "osaka", id: 26 },
+            { key: "hyogo", id: 27 },
+            { key: "shiga", id: 24 },
+            { key: "wakayama", id: 29 },
+            // { key: "nara", id: 28 },
           ],
         },
         {
           name: "chugoku",
           items: [
-            { name: "広島県", id: 33 },
-            { name: "山口県", id: 34 },
-            { name: "徳島県", id: 35 },
-            { name: "愛媛県", id: 37 },
+            { key: "hiroshima", id: 33 },
+            { key: "yamaguchi", id: 34 },
+            { key: "tokushima", id: 35 },
+            { key: "ehime", id: 37 },
           ],
         },
         {
           name: "kyusyu",
           items: [
-            { name: "福岡県", id: 39 },
-            { name: "長崎県", id: 41 },
-            { name: "大分県", id: 43 },
-            { name: "鹿児島県", id: 45 },
-            { name: "沖縄県", id: 46 },
+            { key: "fukuoka", id: 39 },
+            { key: "nagasaki", id: 41 },
+            { key: "oita", id: 43 },
+            { key: "kagoshima", id: 45 },
+            { key: "okinawa", id: 46 },
           ],
         },
       ],
