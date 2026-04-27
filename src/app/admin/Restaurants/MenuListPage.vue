@@ -16,7 +16,36 @@
 
       <!-- Toggle to View All or Public Only -->
       <div class="mx-6 mt-4 lg:text-center">
-        <ToggleSwitch2 v-model="toggleStatus" :toggleValues="toggleValues" />
+        <ToggleSwitch2
+          v-model="toggleStatus"
+          :toggleValues="toggleValues"
+          :disabled="isMoveMode"
+        />
+      </div>
+
+      <!-- Move Mode Toggle -->
+      <div
+        v-if="isOwner && existsMenu"
+        class="mx-6 mt-2 text-center lg:mx-auto lg:max-w-2xl"
+      >
+        <button
+          @click="toggleMoveMode"
+          class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full px-4"
+          :class="isMoveMode ? 'bg-op-teal' : 'bg-black/5'"
+        >
+          <i
+            class="material-icons mr-2 text-lg"
+            :class="isMoveMode ? 'text-white' : 'text-op-teal'"
+            >{{ isMoveMode ? "check" : "swap_vert" }}</i
+          >
+          <span
+            class="text-sm font-bold"
+            :class="isMoveMode ? 'text-white' : 'text-op-teal'"
+            >{{
+              isMoveMode ? $t("editMenu.doneReorder") : $t("editMenu.reorder")
+            }}</span
+          >
+        </button>
       </div>
       <!-- No Menu or Too Many Menu-->
       <div
@@ -39,7 +68,75 @@
         v-if="existsMenu"
         class="grid-col-1 mx-6 mt-2 space-y-4 lg:mx-auto lg:max-w-2xl"
       >
+        <!-- Move Mode: vuedraggable でドラッグ可能、全件表示（フィルタ解除） -->
+        <draggable
+          v-if="isMoveMode"
+          :modelValue="localMenuLists"
+          @update:modelValue="onMenuListsReorder"
+          :item-key="menuListItemKey"
+          handle=".drag-handle"
+          animation="300"
+          ghost-class="opacity-50"
+          tag="div"
+          class="space-y-2"
+        >
+          <template #item="{ element: menuList, index }">
+            <div class="flex items-center">
+              <i
+                class="material-icons drag-handle mr-2 cursor-move text-2xl text-black/40"
+                >drag_indicator</i
+              >
+              <div class="flex-1">
+                <TitleView
+                  v-if="
+                    itemsObj[menuList] &&
+                    itemsObj[menuList]._dataType === 'title'
+                  "
+                  :isEdit="editings[menuList] === true"
+                  :title="itemsObj[menuList]"
+                  :position="
+                    index == 0
+                      ? 'first'
+                      : menuLength - 1 === index
+                        ? 'last'
+                        : ''
+                  "
+                  :isMoveMode="isMoveMode"
+                  @toEditMode="toEditMode($event)"
+                  @positionUp="positionUp($event)"
+                  @positionDown="positionDown($event)"
+                  @forkItem="forkTitleItem($event)"
+                  @deleteItem="deleteItem($event)"
+                  @updateTitle="updateTitle($event)"
+                  @updateTitleLunchDinner="updateTitleLunchDinner($event)"
+                />
+                <MenuView
+                  v-else-if="
+                    itemsObj[menuList] &&
+                    itemsObj[menuList]._dataType === 'menu'
+                  "
+                  :menuitem="itemsObj[menuList]"
+                  :position="
+                    index == 0
+                      ? 'first'
+                      : menuLength - 1 === index
+                        ? 'last'
+                        : ''
+                  "
+                  :shopInfo="shopInfo"
+                  :isMoveMode="isMoveMode"
+                  @positionUp="positionUp($event)"
+                  @positionDown="positionDown($event)"
+                  @forkItem="forkMenuItem($event)"
+                  @deleteItem="deleteItem($event)"
+                />
+              </div>
+            </div>
+          </template>
+        </draggable>
+        <!-- Normal Mode: 既存の TransitionGroup（挙動そのまま） -->
         <TransitionGroup
+          v-else
           name="menu-list"
           tag="div"
           class="space-y-2"
@@ -137,6 +234,8 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 
+import draggable from "vuedraggable";
+
 import NotFound from "@/components/NotFound.vue";
 
 import MenuView from "@/app/admin/Restaurants/MenuListPage/Menu.vue";
@@ -187,6 +286,7 @@ export default defineComponent({
     ToggleSwitch2,
     AddButton,
     DownloadButton,
+    draggable,
   },
   props: {
     shopInfo: {
@@ -343,6 +443,46 @@ export default defineComponent({
         numberOfMenus: numberOfMenus.value,
       });
     };
+
+    // Move mode (drag & drop reorder)
+    const isMoveMode = ref(false);
+    // 楽観的更新用のローカル配列。Firestore 反映を待たずに UI を即更新する。
+    // Firestore onSnapshot → menuLists 更新 を watch で反映させることで整合を保つ。
+    const localMenuLists = ref<string[]>([]);
+    watch(
+      menuLists,
+      (newVal) => {
+        localMenuLists.value = [...newVal];
+      },
+      { immediate: true },
+    );
+    const toggleMoveMode = () => {
+      if (!isMoveMode.value) {
+        // 移動モード ON 時はフィルタ解除（表示中アイテムだけで並べ替えると
+        // 非表示アイテムの位置がずれるため）。OFF 時はユーザ操作で戻す。
+        if (toggleStatus.value !== 0) {
+          toggleStatus.value = 0;
+        }
+        // ドラッグ開始前に最新で再同期
+        localMenuLists.value = [...menuLists.value];
+      }
+      isMoveMode.value = !isMoveMode.value;
+    };
+    const onMenuListsReorder = async (newMenuLists: string[]) => {
+      // 楽観的に UI を更新（vuedraggable が古い順序に戻らないように）
+      localMenuLists.value = newMenuLists;
+      try {
+        await saveMenuList(newMenuLists);
+      } catch (e) {
+        console.error(e);
+        // 失敗時は Firestore 側の値に戻す
+        localMenuLists.value = [...menuLists.value];
+      }
+    };
+    // vuedraggable は文字列配列のときも item-key 関数を要求するので、
+    // 値そのものを key として使う identity 関数を渡す。
+    const menuListItemKey = (key: string) => key;
+
     const addTitle = async (operation: string) => {
       submitting.value = true;
       try {
@@ -505,6 +645,8 @@ export default defineComponent({
       submitting,
       editings,
       notFound,
+      isMoveMode,
+      localMenuLists,
 
       showPublicItems,
       showAllItems,
@@ -530,6 +672,9 @@ export default defineComponent({
       forkTitleItem,
       forkMenuItem,
       deleteItem,
+      toggleMoveMode,
+      onMenuListsReorder,
+      menuListItemKey,
     };
   },
 });

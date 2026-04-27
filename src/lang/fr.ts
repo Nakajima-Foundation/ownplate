@@ -315,6 +315,8 @@ const data = {
     item: "Item",
     noItem: "No Item",
     pleaseAddItem: "Please create your menu from the bottom button.",
+    reorder: "Réorganiser",
+    doneReorder: "Terminé",
     required: "Required",
     itemName: "Item name",
     itemAliasesName: "Item Alias (This information is only displayed in the admin page.)",

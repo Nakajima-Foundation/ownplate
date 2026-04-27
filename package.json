@@ -44,7 +44,8 @@
     "vue-clipboard3": "^2.0.0",
     "vue-i18n": "11.4.0",
     "vue-router": "^5.0.6",
-    "vue-social-sharing": "^4.0.0-alpha4"
+    "vue-social-sharing": "^4.0.0-alpha4",
+    "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
