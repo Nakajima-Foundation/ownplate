@@ -396,7 +396,7 @@ const data = {
       yamagata: "山形縣",
       fukushima: "福島縣",
       ibaraki: "茨城縣",
-      tochigi: "櫔木縣",
+      tochigi: "栃木縣",
       gunma: "群馬縣",
       saitama: "埼玉縣",
       chiba: "千葉縣",
