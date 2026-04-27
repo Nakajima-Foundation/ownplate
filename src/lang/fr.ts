@@ -315,7 +315,7 @@ const data = {
     item: "Item",
     noItem: "No Item",
     pleaseAddItem: "Please create your menu from the bottom button.",
-    reorder: "Réorganiser",
+    reorder: "Glisser pour réorganiser",
     doneReorder: "Terminé",
     required: "Required",
     itemName: "Item name",
