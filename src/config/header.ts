@@ -82,7 +82,8 @@ export const RestaurantHeader = {
   meta: [
     { charset: "utf-8" },
     { name: "viewport", content: "width=device-width, initial-scale=1" },
-    { name: "google", content: "notranslate" },
+    // notranslate is set globally in index.html so all pages opt out of
+    // browser auto-translation, not just RestaurantHeader-using ones.
   ],
   link,
 };
