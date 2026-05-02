@@ -33,10 +33,8 @@
           </div>
           <div v-if="!isLocaleJapan">
             <div class="mt-2 text-xs">
-              For foreign customers:<br />
-              For mobile phones contracted in countries other than Japan, please
-              add the country code to the phone number like +1(555)555-111. You
-              need to be able to receive SMS while roaming. <br />
+              {{ $t("sms.foreignCustomer.title") }}<br />
+              {{ $t("sms.foreignCustomer.body") }}
             </div>
           </div>
         </div>

@@ -890,6 +890,10 @@ const data = {
     phonenumber: "휴대폰 번호",
     pleasetype: "010-1111-1111",
     notice: "확인용 SMS가 전송됩니다",
+    foreignCustomer: {
+      title: "해외 고객 안내:",
+      body: "일본 이외의 국가에서 계약한 휴대폰의 경우, +1(555)555-1111처럼 국가 코드를 추가해서 입력해 주세요. 로밍 중에 SMS를 수신할 수 있어야 합니다.",
+    },
     send: "전송",
     resend: "재전송",
     verificationCode: "SMS 인증 코드",

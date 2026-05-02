@@ -890,6 +890,10 @@ const data = {
     phonenumber: "手機號",
     pleasetype: "138-0000-0000",
     notice: "將傳送確認 SMS",
+    foreignCustomer: {
+      title: "海外客戶須知：",
+      body: "在日本以外的國家簽約的手機，請加上國家代碼，例如 +1(555)555-1111。您需要能在漫遊時接收簡訊。",
+    },
     send: "傳送",
     resend: "重新傳送",
     verificationCode: "SMS 驗證碼",

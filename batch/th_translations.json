@@ -1198,5 +1198,7 @@
   "find.prefecture.miyazaki": "มิยาซากิ",
   "find.prefecture.kagoshima": "คาโงชิมะ",
   "find.prefecture.okinawa": "โอกินาวะ",
-  "errorPage.code.auth.signupFailed": "การสมัครสมาชิกล้มเหลว"
+  "errorPage.code.auth.signupFailed": "การสมัครสมาชิกล้มเหลว",
+  "sms.foreignCustomer.title": "สำหรับลูกค้าต่างประเทศ:",
+  "sms.foreignCustomer.body": "สำหรับโทรศัพท์มือถือที่ทำสัญญานอกประเทศญี่ปุ่น กรุณาเพิ่มรหัสประเทศที่หมายเลขโทรศัพท์ เช่น +1(555)555-1111 และต้องสามารถรับ SMS ในขณะใช้บริการโรมมิ่งได้"
 }

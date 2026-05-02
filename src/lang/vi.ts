@@ -890,6 +890,10 @@ const data = {
     phonenumber: "Số điện thoại di động",
     pleasetype: "090-1111-1111",
     notice: "SMS xác nhận sẽ được gửi đến bạn",
+    foreignCustomer: {
+      title: "Đối với khách hàng nước ngoài:",
+      body: "Đối với điện thoại di động đăng ký tại các quốc gia khác Nhật Bản, vui lòng thêm mã quốc gia vào số điện thoại như +1(555)555-1111. Bạn cần có khả năng nhận SMS khi roaming.",
+    },
     send: "Gửi",
     resend: "Gửi lại",
     verificationCode: "Mã xác thực SMS",

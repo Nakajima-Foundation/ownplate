@@ -1197,5 +1197,7 @@
   "find.prefecture.miyazaki": "宮崎縣",
   "find.prefecture.kagoshima": "鹿兒島縣",
   "find.prefecture.okinawa": "沖繩縣",
-  "errorPage.code.auth.signupFailed": "註冊失敗。"
+  "errorPage.code.auth.signupFailed": "註冊失敗。",
+  "sms.foreignCustomer.title": "海外客戶須知：",
+  "sms.foreignCustomer.body": "在日本以外的國家簽約的手機，請加上國家代碼，例如 +1(555)555-1111。您需要能在漫遊時接收簡訊。"
 }

@@ -890,6 +890,10 @@ const data = {
     phonenumber: "Nomor telepon seluler",
     pleasetype: "090-1111-1111",
     notice: "SMS untuk konfirmasi akan dikirim",
+    foreignCustomer: {
+      title: "Untuk pelanggan dari luar negeri:",
+      body: "Untuk ponsel yang dikontrak di negara selain Jepang, harap tambahkan kode negara ke nomor telepon seperti +1(555)555-1111. Anda harus dapat menerima SMS saat roaming.",
+    },
     send: "Kirim",
     resend: "Kirim ulang",
     verificationCode: "Kode verifikasi SMS",
