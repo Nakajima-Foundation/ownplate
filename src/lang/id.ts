@@ -9,7 +9,8 @@ const data = {
       },
     },
     signupTerms: {
-      message: "Dengan mengirimkan formulir ini, Anda menyetujui {terms} dan {privacy}.",
+      message:
+        "Dengan mengirimkan formulir ini, Anda menyetujui {terms} dan {privacy}.",
       terms: "Syarat Layanan",
       privacy: "Kebijakan Privasi",
     },
@@ -60,8 +61,10 @@ const data = {
     signIn: "Pelanggan take-away",
     signInRestaurant: "Pengelola restoran",
     deleteAccount: "Hapus akun",
-    reallyDeleteAccount: "Riwayat sebelumnya akan dihapus. Apakah Anda yakin ingin menghapus akun?",
-    reSendSMSforDeleteAccount: "Untuk konfirmasi akhir, kode verifikasi SMS akan dikirim ke nomor telepon yang terdaftar.",
+    reallyDeleteAccount:
+      "Riwayat sebelumnya akan dihapus. Apakah Anda yakin ingin menghapus akun?",
+    reSendSMSforDeleteAccount:
+      "Untuk konfirmasi akhir, kode verifikasi SMS akan dikirim ke nomor telepon yang terdaftar.",
     stripeInfo: "Informasi kartu kredit",
     noCard: "Tidak ada",
     deleteCard: "Hapus informasi kartu",
@@ -89,10 +92,12 @@ const data = {
       disable: "Nonaktifkan autentikasi dua faktor",
       emailVerificationRequired: "Verifikasi email diperlukan",
       disableConfirmTitle: "Nonaktifkan autentikasi dua faktor?",
-      disableConfirmMessage: "Jika autentikasi dua faktor dinonaktifkan, tingkat keamanan akan menurun. Apakah Anda yakin ingin menonaktifkan?",
+      disableConfirmMessage:
+        "Jika autentikasi dua faktor dinonaktifkan, tingkat keamanan akan menurun. Apakah Anda yakin ingin menonaktifkan?",
       error: {
         disableFailed: "Tidak dapat menonaktifkan autentikasi dua faktor",
-        tokenExpired: "Sesi telah kedaluwarsa. Silakan masukkan kata sandi lagi.",
+        tokenExpired:
+          "Sesi telah kedaluwarsa. Silakan masukkan kata sandi lagi.",
       },
     },
   },
@@ -151,7 +156,8 @@ const data = {
     copy: "Salin restoran ini",
     copyAlert: "Salin restoran ini dan buat restoran baru sebagai privat.",
     copyMenu: "Salin produk ini ke restoran berikut",
-    copyMenuAlert: "Akan menyalin produk ini ke restoran di atas sebagai privat.",
+    copyMenuAlert:
+      "Akan menyalin produk ini ke restoran di atas sebagai privat.",
     current: "Sebelum perubahan",
     clickAndUpload: "Klik di sini",
     clickAndUploadDetail: "Klik area abu-abu untuk mengunggah (format JPEG)",
@@ -171,7 +177,8 @@ const data = {
   editRestaurant: {
     enterRestaurantName: "Silakan masukkan nama restoran",
     enterOwnerName: "Silakan masukkan nama penanggung jawab",
-    enterStreetAddress: "Silakan masukkan alamat detail (contoh: Marunouchi 1-9-1)",
+    enterStreetAddress:
+      "Silakan masukkan alamat detail (contoh: Marunouchi 1-9-1)",
     enterCity: "Silakan masukkan nama distrik/kota (contoh: Chiyoda-ku)",
     enterZip: "Silakan masukkan kode pos",
     enterPhone: "Silakan masukkan nomor telepon",
@@ -183,7 +190,8 @@ const data = {
     enterOrderNotice: "Silakan masukkan catatan pemesanan",
     enterOrderThanks: "Silakan masukkan pesan terima kasih setelah pemesanan",
     enablePrelineTitle: "Tampilkan baris baru",
-    enablePrelineDescription: "Tampilkan baris baru yang dimasukkan dalam pengenalan toko, catatan pemesanan, pesan dari toko, dan deskripsi menu",
+    enablePrelineDescription:
+      "Tampilkan baris baru yang dimasukkan dalam pengenalan toko, catatan pemesanan, pesan dari toko, dan deskripsi menu",
     introduction: "Pengenalan toko",
     orderNotice: "Catatan saat pemesanan",
     orderThanks: "Pesan terima kasih setelah pemesanan",
@@ -201,7 +209,8 @@ const data = {
     paymentMethods: "Metode pembayaran di tempat",
     timeToPickup: "Pengaturan waktu pengambilan",
     preparationTime: "Waktu persiapan pengambilan",
-    preparationTimeDescription: "Waktu tersingkat dari penerimaan pesanan hingga pengambilan",
+    preparationTimeDescription:
+      "Waktu tersingkat dari penerimaan pesanan hingga pengambilan",
     deliveryPreparationTime: "Waktu yang tersedia untuk pengiriman",
     reservationTheDayBefore: "Pemesanan di muka",
     reservationTheDayBeforeDescription: "Mulai menerima pesanan dari kapan",
@@ -263,48 +272,65 @@ const data = {
     searchMap: "Cari peta dari alamat",
     enterAddress: "Silakan masukkan alamat untuk mencari",
     updateMap: "Tetapkan lokasi",
-    businessHourDescription: "Centang hari beroperasi dan atur waktunya. Jika perlu membagi waktu operasi (istirahat siang, dll.), silakan atur waktu kedua di formulir slot waktu lain.",
+    businessHourDescription:
+      "Centang hari beroperasi dan atur waktunya. Jika perlu membagi waktu operasi (istirahat siang, dll.), silakan atur waktu kedua di formulir slot waktu lain.",
     businessHourOption: "Slot waktu lain (opsional)",
     copyPreviousDay: "Salin hari sebelumnya",
     copySunDay: "Salin Minggu",
     lastOrderTime: {
       title: "Waktu pemesanan terakhir",
-      notes1: "Silakan atur jika ingin menutup penerimaan pesanan sebelum \"waktu pemesanan terakhir yang memungkinkan\" yang dihitung dari \"waktu tutup\" dan \"waktu persiapan pengambilan\".",
-      notes2: "Jika tidak diatur, akan menggunakan waktu yang dihitung dari \"waktu tutup\" dan \"waktu persiapan pengambilan\".",
+      notes1:
+        'Silakan atur jika ingin menutup penerimaan pesanan sebelum "waktu pemesanan terakhir yang memungkinkan" yang dihitung dari "waktu tutup" dan "waktu persiapan pengambilan".',
+      notes2:
+        'Jika tidak diatur, akan menggunakan waktu yang dihitung dari "waktu tutup" dan "waktu persiapan pengambilan".',
     },
-    draftDescription: "Disimpan sebagai draf (pelanggan tidak akan melihat halaman toko)",
+    draftDescription:
+      "Disimpan sebagai draf (pelanggan tidak akan melihat halaman toko)",
     publishDescription: "Simpan dan terbitkan",
-    draftWarning: "Jika item wajib (*) diisi dengan benar, opsi terbitkan dapat dipilih",
+    draftWarning:
+      "Jika item wajib (*) diisi dengan benar, opsi terbitkan dapat dipilih",
     updateMapDescription: "Perbarui peta dari nama restoran dan alamat",
-    noRestaurant: "Nama restoran belum diatur. Silakan masukkan informasi toko di \"Ubah informasi toko\".",
+    noRestaurant:
+      'Nama restoran belum diatur. Silakan masukkan informasi toko di "Ubah informasi toko".',
     noStreetAddress: "Alamat belum diisi",
-    reallyDelete: "Apakah Anda yakin ingin menghapus restoran ini? Jika dihapus, semua informasi toko/menu akan hilang.",
+    reallyDelete:
+      "Apakah Anda yakin ingin menghapus restoran ini? Jika dihapus, semua informasi toko/menu akan hilang.",
     reallyOnListDelete: "Apakah Anda yakin ingin membatalkan pencantuman?",
     deliveryConfigTitle: "Pengiriman",
-    deliveryDescription: "Mengelola pengiriman mandiri. Setelah mengatur area yang dapat dijangkau, pelanggan dapat memilih take-away atau pengiriman saat memesan. (Jangan lupa simpan jika mengubah pengaturan toko)",
+    deliveryDescription:
+      "Mengelola pengiriman mandiri. Setelah mengatur area yang dapat dijangkau, pelanggan dapat memilih take-away atau pengiriman saat memesan. (Jangan lupa simpan jika mengubah pengaturan toko)",
     deliveryConfigLink: "Ke pengaturan pengiriman",
     printerConfigTitle: "Pengaturan printer manual",
     enablePrinter: "Aktifkan printer",
-    printerDescription: "Cetak informasi pesanan menggunakan printer Star Micronics yang terhubung melalui Bluetooth",
-    printerDescription2: "Saat diaktifkan, tombol cetak akan muncul di halaman detail pesanan setelah penerimaan pesanan",
+    printerDescription:
+      "Cetak informasi pesanan menggunakan printer Star Micronics yang terhubung melalui Bluetooth",
+    printerDescription2:
+      "Saat diaktifkan, tombol cetak akan muncul di halaman detail pesanan setelah penerimaan pesanan",
     printerDescriptionConfig: "Pengaturan cetak otomatis di sini",
     phoneCall: "Notifikasi pesanan melalui telepon",
-    phoneCallDescription: "Notifikasi melalui telepon toko saat ada pesanan online",
-    phoneCallNotice: "Saat ini disediakan gratis, tetapi karena ada biaya panggilan telepon, fitur ini mungkin menjadi fitur berbayar di masa depan. Dalam kasus tersebut, tidak akan ada biaya tiba-tiba meskipun Anda mengaktifkan fitur ini.",
+    phoneCallDescription:
+      "Notifikasi melalui telepon toko saat ada pesanan online",
+    phoneCallNotice:
+      "Saat ini disediakan gratis, tetapi karena ada biaya panggilan telepon, fitur ini mungkin menjadi fitur berbayar di masa depan. Dalam kasus tersebut, tidak akan ada biaya tiba-tiba meskipun Anda mengaktifkan fitur ini.",
     phoneCallNotification: "Notifikasi telepon",
     emailNotification: "Notifikasi email",
     emailNotificationTitle: "Notifikasi pesanan melalui email",
-    emailNotificationDescription: "Notifikasi melalui email saat ada pesanan online",
-    emailNotificationNotice: "Jika tidak menemukannya di kotak masuk email, silakan periksa folder spam.",
+    emailNotificationDescription:
+      "Notifikasi melalui email saat ada pesanan online",
+    emailNotificationNotice:
+      "Jika tidak menemukannya di kotak masuk email, silakan periksa folder spam.",
     orderConfirmViewConfig: "Pengaturan halaman konfirmasi pesanan",
     notificationConfig: "Pengaturan notifikasi",
-    moveToLineConfig: "Akan beralih ke halaman pengaturan notifikasi LINE. Jangan lupa simpan halaman ini sebelum beralih.",
+    moveToLineConfig:
+      "Akan beralih ke halaman pengaturan notifikasi LINE. Jangan lupa simpan halaman ini sebelum beralih.",
     openDaysConfig: "Pengaturan hari/jam operasi",
     lunchOrDinnerToggle: "Beralih otomatis menu makan siang/makan malam",
-    lunchOrDinnerNotice: "Silakan masukkan 2 slot waktu operasi untuk setiap hari. Slot atas adalah jam makan siang, slot bawah (slot waktu lain (opsional)) adalah jam makan malam.",
+    lunchOrDinnerNotice:
+      "Silakan masukkan 2 slot waktu operasi untuk setiap hari. Slot atas adalah jam makan siang, slot bawah (slot waktu lain (opsional)) adalah jam makan malam.",
     acceptUserMessage: "Terima pesan",
     acceptUserMessageDescription: "Terima pesan dari pelanggan",
-    acceptUserMessageNotice: "Memungkinkan pelanggan memasukkan pesan singkat di halaman konfirmasi pesanan. Kolom pesan akan ditampilkan setelah catatan pemesanan, silakan tulis isi yang diinginkan di \"Catatan saat pemesanan\" (contoh: silakan masukkan email untuk pemberitahuan diskon spesial. / silakan beri tahu jika sedang bulan ulang tahun Anda. Kami akan menyiapkan hadiah).",
+    acceptUserMessageNotice:
+      'Memungkinkan pelanggan memasukkan pesan singkat di halaman konfirmasi pesanan. Kolom pesan akan ditampilkan setelah catatan pemesanan, silakan tulis isi yang diinginkan di "Catatan saat pemesanan" (contoh: silakan masukkan email untuk pemberitahuan diskon spesial. / silakan beri tahu jika sedang bulan ulang tahun Anda. Kami akan menyiapkan hadiah).',
     lineNotification: "Notifikasi LINE",
     city: "Kota/distrik",
     zip: "Kode pos",
@@ -313,9 +339,11 @@ const data = {
   editMenu: {
     menu: "Menu",
     enterItemName: "Silakan masukkan nama produk",
-    enterItemAliasesName: "Silakan masukkan nama alternatif produk (bahasa asing, dll.)",
+    enterItemAliasesName:
+      "Silakan masukkan nama alternatif produk (bahasa asing, dll.)",
     enterItemDescription: "Silakan masukkan deskripsi",
-    enterItemMemo: "Catatan (tidak ditampilkan di layar pelanggan. Hanya baris pertama yang ditampilkan dalam daftar menu. Jangan tulis informasi rahasia)",
+    enterItemMemo:
+      "Catatan (tidak ditampilkan di layar pelanggan. Hanya baris pertama yang ditampilkan dalam daftar menu. Jangan tulis informasi rahasia)",
     enterItemOption: "Silakan masukkan opsi",
     item: "Produk",
     noItem: "Belum ada yang terdaftar",
@@ -324,7 +352,8 @@ const data = {
     doneReorder: "Done",
     required: "Wajib",
     itemName: "Nama produk",
-    itemAliasesName: "Nama alternatif produk (hanya ditampilkan di halaman admin)",
+    itemAliasesName:
+      "Nama alternatif produk (hanya ditampilkan di halaman admin)",
     price: "Harga",
     priceSettings: "Pengaturan harga",
     availableDayTimeSettings: "Pengaturan waktu produk dapat dipesan",
@@ -347,13 +376,16 @@ const data = {
     exclusionDateTime: "Tanggal/waktu pengecualian penjualan",
     lunchDinner: "Makan siang/makan malam",
     itemOptions: "Opsi",
-    itemOptionsNote: "Tentukan opsi produk seperti topping, ukuran besar, dll. Jika ada 2 atau 3 opsi, pisahkan dengan koma (contoh: \"Ayam, Babi, Tahu\"). Untuk opsi berbayar, tentukan harga di akhir seperti (+100) (contoh: \"Biasa, Ukuran besar (+150), Ukuran spesial (+300)\")",
+    itemOptionsNote:
+      'Tentukan opsi produk seperti topping, ukuran besar, dll. Jika ada 2 atau 3 opsi, pisahkan dengan koma (contoh: "Ayam, Babi, Tahu"). Untuk opsi berbayar, tentukan harga di akhir seperti (+100) (contoh: "Biasa, Ukuran besar (+150), Ukuran spesial (+300)")',
     itemAddOption: "Tambah opsi",
-    itemInvalidMessage: "Data tidak dimasukkan dengan benar, sehingga tidak dapat diterbitkan",
+    itemInvalidMessage:
+      "Data tidak dimasukkan dengan benar, sehingga tidak dapat diterbitkan",
     saveAsDraft: "Disimpan sebagai draf (tidak ditampilkan di menu)",
     reallyDelete: "Apakah Anda yakin ingin menghapus?",
     csvCategories: "Pengaturan kategori untuk data Excel (opsional)",
-    csvCategoriesNote: "Pengaturan kategori untuk digunakan dalam data Excel yang dapat diunduh dari riwayat pesanan",
+    csvCategoriesNote:
+      "Pengaturan kategori untuk digunakan dalam data Excel yang dapat diunduh dari riwayat pesanan",
     newCategory: "Item baru",
     newCategoryAdd: "Tambah",
     category1: "Kategori 1",
@@ -493,13 +525,15 @@ const data = {
     lastOrder: "Penerimaan terakhir hari ini",
     todayNotAvailable: "Akan diterima mulai hari berikutnya",
     noAvailableTime: "Di luar jam penerimaan",
-    deliveryThresholdNotice: "Pengiriman tersedia dari pesanan total {price} ke atas.",
+    deliveryThresholdNotice:
+      "Pengiriman tersedia dari pesanan total {price} ke atas.",
     deliveryArea: "Area pengiriman",
     deliveryAreaInfo: "Detail akan ditampilkan di halaman pemesanan berikutnya",
     deliveryFeeInfo: "Biaya pengiriman {price}.",
     deliveryFeeThresholdInfo: "Pengiriman gratis untuk pesanan {price} ke atas",
     deliveryAreaRadius: "Sekitar dalam radius {radius}m dari toko",
-    buttonDeliveryFeeThreshold: "Pengiriman tersedia untuk pesanan {price} ke atas",
+    buttonDeliveryFeeThreshold:
+      "Pengiriman tersedia untuk pesanan {price} ke atas",
     buttonDeliveryFeeDiff: "Kurang {price}",
     buttonDeliveryFee: "Biaya pengiriman: {price}",
     takeout: "Take-away",
@@ -535,28 +569,41 @@ const data = {
     price: "Harga jual",
     priceDescription: "Silakan periksa di halaman produk.",
     otherFees: "Biaya selain harga produk",
-    otherFeesDescription: "Biaya transportasi ke toko dan biaya yang terkait dengan perjalanan ditanggung oleh pelanggan.",
-    otherFeesDescriptionDelivery: "Biaya pengiriman dikenakan terpisah. Silakan periksa biaya pengiriman di halaman masing-masing toko.",
+    otherFeesDescription:
+      "Biaya transportasi ke toko dan biaya yang terkait dengan perjalanan ditanggung oleh pelanggan.",
+    otherFeesDescriptionDelivery:
+      "Biaya pengiriman dikenakan terpisah. Silakan periksa biaya pengiriman di halaman masing-masing toko.",
     payment: "Waktu dan metode pembayaran",
     paymentDescription: "Pembayaran kartu kredit/Pembayaran di toko",
     paymentDescriptionCard: "Pembayaran kartu kredit",
     paymentDescriptionStore: "Pembayaran di toko",
-    paymentDescriptionCardNote: "Meskipun memilih pembayaran kartu kredit online, jika terjadi kesalahan saat toko memproses pembayaran, akan diubah menjadi pembayaran di tempat.",
+    paymentDescriptionCardNote:
+      "Meskipun memilih pembayaran kartu kredit online, jika terjadi kesalahan saat toko memproses pembayaran, akan diubah menjadi pembayaran di tempat.",
     delivery: "Waktu dan metode pengiriman barang",
-    deliveryDescription: "Tanggal yang ditentukan pelanggan dan pengambilan di toko.",
+    deliveryDescription:
+      "Tanggal yang ditentukan pelanggan dan pengambilan di toko.",
     cancellation: "Syarat pembatalan dan pengakhiran",
-    cancellationDescription1: "Pembatalan melalui Internet dapat dilakukan sampai toko menandai pesanan sebagai \"Diterima\".",
-    cancellationDescription2: "Dalam kasus berikut, toko mungkin membatalkan transaksi terkait pesanan produk. Bahkan dalam kasus pembatalan karena alasan berikut, pada prinsipnya pelanggan tetap harus membayar jumlah setara nilai transaksi.",
-    cancellationDescription3: "Selain itu, bahkan produk yang sudah diterima, dapat dibatalkan karena bahan baku tidak cukup, habis terjual, terlalu banyak pesanan, kesalahan saat menerima pesanan, atau alasan lain dari toko. Jika pembayaran sudah dilakukan, dapat meminta pengembalian dana dari toko, tetapi kecuali toko sengaja atau lalai berat, tidak dapat menuntut ganti rugi melebihi pengembalian dana.",
-    cancellationDescription4: "Pembatalan produk tidak dapat dilakukan setelah ditampilkan \"Diterima\".",
-    cancellationDescription5: "Toko mungkin membatalkan transaksi terkait pesanan produk. Untuk detailnya silakan lihat",
+    cancellationDescription1:
+      'Pembatalan melalui Internet dapat dilakukan sampai toko menandai pesanan sebagai "Diterima".',
+    cancellationDescription2:
+      "Dalam kasus berikut, toko mungkin membatalkan transaksi terkait pesanan produk. Bahkan dalam kasus pembatalan karena alasan berikut, pada prinsipnya pelanggan tetap harus membayar jumlah setara nilai transaksi.",
+    cancellationDescription3:
+      "Selain itu, bahkan produk yang sudah diterima, dapat dibatalkan karena bahan baku tidak cukup, habis terjual, terlalu banyak pesanan, kesalahan saat menerima pesanan, atau alasan lain dari toko. Jika pembayaran sudah dilakukan, dapat meminta pengembalian dana dari toko, tetapi kecuali toko sengaja atau lalai berat, tidak dapat menuntut ganti rugi melebihi pengembalian dana.",
+    cancellationDescription4:
+      'Pembatalan produk tidak dapat dilakukan setelah ditampilkan "Diterima".',
+    cancellationDescription5:
+      "Toko mungkin membatalkan transaksi terkait pesanan produk. Untuk detailnya silakan lihat",
     cancellationDescription6: "di sini.",
     takeoutTitle: "Take-away",
-    cancellationTakeoutDescription1: "Telah berlalu 2 jam setelah ditampilkan \"Siap diberikan\"",
+    cancellationTakeoutDescription1:
+      'Telah berlalu 2 jam setelah ditampilkan "Siap diberikan"',
     deliveryTitle: "Pengiriman",
-    cancellationDeliveryDescription1: "Telah berlalu lebih dari 5 menit setelah tiba di lokasi pengiriman yang ditentukan dan tidak dapat dihubungi",
-    cancellationDeliveryDescription2: "Telah berlalu lebih dari 15 menit setelah tiba di lokasi pengiriman yang ditentukan",
-    cancellationDeliveryDescription3: "Menentukan lokasi pengiriman yang melanggar ketentuan dalam syarat ini",
+    cancellationDeliveryDescription1:
+      "Telah berlalu lebih dari 5 menit setelah tiba di lokasi pengiriman yang ditentukan dan tidak dapat dihubungi",
+    cancellationDeliveryDescription2:
+      "Telah berlalu lebih dari 15 menit setelah tiba di lokasi pengiriman yang ditentukan",
+    cancellationDeliveryDescription3:
+      "Menentukan lokasi pengiriman yang melanggar ketentuan dalam syarat ini",
     link: "di sini",
   },
   sitemenu: {
@@ -632,14 +679,18 @@ const data = {
     fromAmountSpent: "Dari jumlah pembelian",
     discount: "Diskon",
     notes: "Catatan penggunaan",
-    notes1: "Diskon kampanye akan otomatis diterapkan saat melebihi jumlah yang tertulis dalam syarat penggunaan. Silakan periksa total di halaman konfirmasi pesanan setelah menekan tombol pembayaran.",
-    notes2: "Hanya 1 kampanye yang dapat digunakan. Jika memenuhi syarat untuk beberapa kampanye, kampanye dengan diskon maksimum akan diterapkan.",
+    notes1:
+      "Diskon kampanye akan otomatis diterapkan saat melebihi jumlah yang tertulis dalam syarat penggunaan. Silakan periksa total di halaman konfirmasi pesanan setelah menekan tombol pembayaran.",
+    notes2:
+      "Hanya 1 kampanye yang dapat digunakan. Jika memenuhi syarat untuk beberapa kampanye, kampanye dengan diskon maksimum akan diterapkan.",
   },
   order: {
     allOrders: "Semua pesanan",
     menu: "Lihat halaman menu",
-    orderNotPlacedYet: "Pesanan belum dikonfirmasi. Silakan periksa isinya dan tekan tombol pesan di bagian bawah halaman.",
-    waitingPayment: "Pesanan belum dikonfirmasi. Silakan masukkan informasi pembayaran dan konfirmasikan",
+    orderNotPlacedYet:
+      "Pesanan belum dikonfirmasi. Silakan periksa isinya dan tekan tombol pesan di bagian bawah halaman.",
+    waitingPayment:
+      "Pesanan belum dikonfirmasi. Silakan masukkan informasi pembayaran dan konfirmasikan",
     yourOrder: "Pesanan Anda",
     confirmOrder: "Konfirmasi pesanan",
     editItems: "Ubah pesanan",
@@ -684,20 +735,23 @@ const data = {
     thisIsLunchOrder: "Ini adalah pesanan makan siang",
     thisIsDinnerOrder: "Ini adalah pesanan makan malam",
     alertReqireAddress: "Pengisian belum lengkap. Silakan periksa.",
-    orderErrorMessage: "Pesanan tidak dapat diproses. Mungkin produk dalam keranjang sudah habis. Silakan kembali ke halaman sebelumnya dan pesan lagi.",
+    orderErrorMessage:
+      "Pesanan tidak dapat diproses. Mungkin produk dalam keranjang sudah habis. Silakan kembali ke halaman sebelumnya dan pesan lagi.",
     saveAddress: "Simpan alamat pengiriman",
     order_canceled_by_customer: "Dibatalkan (pelanggan)",
     order_canceled_by_restaurant: "Dibatalkan (toko)",
     reuseCard: "Simpan untuk pembayaran selanjutnya",
     whatsCVC: "Apa itu CVC (kode keamanan)?",
-    card_error: "Pemrosesan pembayaran kartu gagal. Silakan periksa informasi kartu.",
+    card_error:
+      "Pemrosesan pembayaran kartu gagal. Silakan periksa informasi kartu.",
     no_jcb: "* Toko ini tidak menerima kartu JCB",
     "3digitsCVC": "3 digit kanan di belakang kartu",
     "4digitsCVC": "4 digit di depan kartu",
     placeOrder: "Pesan dengan pembayaran online",
     or: "atau",
     placeOrderNoPayment: "Pesan dengan bayar saat penerimaan",
-    placeOrderNoPaymentNote: "Tidak membayar di sini melainkan saat menerima produk",
+    placeOrderNoPaymentNote:
+      "Tidak membayar di sini melainkan saat menerima produk",
     submitPayment: "Konfirmasi pembayaran",
     validating: "Memproses...",
     thankyou: "Terima kasih atas pesanan Anda",
@@ -706,7 +760,8 @@ const data = {
     cancelOrder: "Batalkan pesanan di sini",
     cancelOrderConfirm: "Apakah Anda yakin ingin membatalkan pesanan?",
     cancelOrderComplete: "Pesanan ini telah dibatalkan",
-    pleaseStay: "Jika halaman ini tetap dibuka, Anda dapat mengetahui status dari pemesanan hingga penerimaan.",
+    pleaseStay:
+      "Jika halaman ini tetap dibuka, Anda dapat mengetahui status dari pemesanan hingga penerimaan.",
     thanksMessage: "Pesan dari toko",
     tip: "Tip (termasuk biaya layanan dan pajak konsumsi)",
     maxTip: "Jumlah hingga {max}% (opsional)",
@@ -719,10 +774,12 @@ const data = {
     timeToPickup: "Waktu penerimaan yang dijadwalkan",
     deliveryTimeRequested: "Waktu pengiriman yang diinginkan",
     deliveryTimeToPickup: "Waktu pengiriman yang dijadwalkan",
-    notAvailable: "Tidak ada hari operasional yang dapat dipesan, sehingga saat ini tidak menerima pesanan.",
+    notAvailable:
+      "Tidak ada hari operasional yang dapat dipesan, sehingga saat ini tidak menerima pesanan.",
     orderNotice: "Catatan saat pemesanan",
     orderMessage: "Pesan untuk toko",
-    enterMessage: "Anda dapat mengirim pesan ke toko. Jika ada permintaan dalam \"Catatan saat pemesanan\", silakan gunakan sebagai referensi untuk membuat pesan.",
+    enterMessage:
+      'Anda dapat mengirim pesan ke toko. Jika ada permintaan dalam "Catatan saat pemesanan", silakan gunakan sebagai referensi untuk membuat pesan.',
     datePlaced: "Waktu pemesanan",
     dateAccepted: "Waktu penerimaan pesanan",
     dateEstimated: "Waktu penyelesaian yang diperkirakan",
@@ -744,8 +801,10 @@ const data = {
     paymentAndCancellation: "Tentang pembatalan dan pembayaran",
     statusTitle: "Status pesanan",
     sortOrder: "Urutan tampilan",
-    promotionNoteCard: "Jumlah kampanye akan diterapkan saat membayar dengan \"Pesan dengan pembayaran online\"",
-    promotionNoteStore: "Jumlah kampanye akan diterapkan saat membeli dengan \"Pesan dengan bayar saat penerimaan\"",
+    promotionNoteCard:
+      'Jumlah kampanye akan diterapkan saat membayar dengan "Pesan dengan pembayaran online"',
+    promotionNoteStore:
+      'Jumlah kampanye akan diterapkan saat membeli dengan "Pesan dengan bayar saat penerimaan"',
     sort: {
       newest: "Pesanan terbaru",
       oldest: "Pesanan terlama",
@@ -772,12 +831,14 @@ const data = {
       stripe_canceled: "Pembayaran dibatalkan",
       onsitePayment: "Bayar saat penerimaan",
       stripe_user_pending: "Pembayaran kartu belum selesai",
-      stripe_user_message_pending: "(Pemrosesan pembayaran belum selesai di pihak toko)",
+      stripe_user_message_pending:
+        "(Pemrosesan pembayaran belum selesai di pihak toko)",
       stripe_user_confirmed: "Pembayaran kartu selesai",
       stripe_user_message_confirmed: "Sudah dibayar dengan kartu kredit.",
       stripe_user_canceled: "Pembayaran dibatalkan",
       stripe_user_message_canceled: "Pembayaran kartu telah dibatalkan",
-      stripe_user_message_just_payment_canceled: "Silakan bayar di toko saat penerimaan",
+      stripe_user_message_just_payment_canceled:
+        "Silakan bayar di toko saat penerimaan",
     },
     receipt: {
       receipt: "Tanda terima",
@@ -788,7 +849,8 @@ const data = {
     },
     onlinePaymentStatus: "Status pembayaran kartu",
     lineLink: "Akun resmi LINE toko",
-    lineMessage: "Saat menambahkan akun resmi LINE sebagai teman, informasi dari toko akan langsung sampai ke Anda.",
+    lineMessage:
+      "Saat menambahkan akun resmi LINE sebagai teman, informasi dari toko akan langsung sampai ke Anda.",
     customerOrderHistory: "Riwayat pesanan",
     orderTimes: "Pesanan",
     orderTimesUnit: "{count} kali",
@@ -816,8 +878,10 @@ const data = {
     discount: "Diskon",
     discountString: "Diskon",
     discountAlert: {
-      stripe: "Jumlah kampanye berikut akan diterapkan saat membayar dengan \"Pesan dengan pembayaran online\".",
-      instore: "Jumlah kampanye berikut akan diterapkan saat membeli dengan \"Pesan dengan bayar saat penerimaan\".",
+      stripe:
+        'Jumlah kampanye berikut akan diterapkan saat membayar dengan "Pesan dengan pembayaran online".',
+      instore:
+        'Jumlah kampanye berikut akan diterapkan saat membeli dengan "Pesan dengan bayar saat penerimaan".',
     },
     discountPriceSuffix: "Diskon",
     discountPriceMessage: "Ada diskon",
@@ -834,10 +898,12 @@ const data = {
     postageList: "Daftar biaya pengiriman",
     freeThreshold: "Pengaturan pengiriman gratis",
     copy: "Salin biaya di atas",
-    setPostageFreeThreshold: "Atur jumlah uang yang akan menjadi pengiriman gratis",
+    setPostageFreeThreshold:
+      "Atur jumlah uang yang akan menjadi pengiriman gratis",
   },
   delivery: {
-    alert: "Saat mengatur pengiriman, terlebih dahulu silakan tentukan lokasi toko di peta dalam pengaturan toko.",
+    alert:
+      "Saat mengatur pengiriman, terlebih dahulu silakan tentukan lokasi toko di peta dalam pengaturan toko.",
     areaSetting: "Pengaturan area pengiriman",
     deliveryRange: "Radius area pengiriman",
     updateDeliveryRange: "Perbarui area",
@@ -853,17 +919,23 @@ const data = {
     setAreaText: "Tentukan area pengiriman dengan teks",
     setDeliveryLocation: "Tentukan lokasi pengiriman",
     estimatedDistance: "Perkiraan jarak",
-    preparationTimeNotice: "Silakan masukkan waktu tersingkat dari pelanggan memesan hingga pengiriman selesai.",
+    preparationTimeNotice:
+      "Silakan masukkan waktu tersingkat dari pelanggan memesan hingga pengiriman selesai.",
     setTheAddressInTheDeliveryLocation: "Cerminkan alamat pada peta",
-    setTheAddressInTheDeliveryLocationDescription: "* Menghitung jarak antara toko dan tujuan pengiriman.",
+    setTheAddressInTheDeliveryLocationDescription:
+      "* Menghitung jarak antara toko dan tujuan pengiriman.",
     availableDeliveryDistance: "Jarak pengiriman yang tersedia",
     reference: "(Referensi)",
     aboutDeliveryArea: "Tentang area pengiriman yang tersedia",
     yen: "yen",
-    deliveryFreeThresholdNotice: "Jika jumlah total produk melebihi harga ini, biaya pengiriman akan otomatis menjadi 0 yen.",
-    deliveryFeeSettingNotice: "Jika tidak memerlukan biaya pengiriman, silakan atur menjadi 0 yen.",
-    deliveryThresholdNotice: "Jika jumlah total produk melebihi harga ini, dapat menerima pesanan pengiriman.",
-    setAreaMapNotice: "Tentukan perkiraan area pengiriman sebagai lingkaran berpusat pada toko. Area ini hanya panduan, silakan putuskan apakah dapat dikirim saat menerima pesanan.",
+    deliveryFreeThresholdNotice:
+      "Jika jumlah total produk melebihi harga ini, biaya pengiriman akan otomatis menjadi 0 yen.",
+    deliveryFeeSettingNotice:
+      "Jika tidak memerlukan biaya pengiriman, silakan atur menjadi 0 yen.",
+    deliveryThresholdNotice:
+      "Jika jumlah total produk melebihi harga ini, dapat menerima pesanan pengiriman.",
+    setAreaMapNotice:
+      "Tentukan perkiraan area pengiriman sebagai lingkaran berpusat pada toko. Area ini hanya panduan, silakan putuskan apakah dapat dikirim saat menerima pesanan.",
   },
   button: {
     adminTop: "Halaman utama admin",
@@ -922,11 +994,14 @@ const data = {
     },
     invalidPhoneNumber: "Silakan masukkan nomor telepon",
     invalidValidationCode: "Mengandung karakter yang tidak benar",
-    "auth/too-many-requests": "Verifikasi gagal berturut-turut. Silakan tunggu sejenak dan coba verifikasi lagi.",
+    "auth/too-many-requests":
+      "Verifikasi gagal berturut-turut. Silakan tunggu sejenak dan coba verifikasi lagi.",
     "auth/invalid-phone-number": "Silakan masukkan nomor telepon yang benar",
-    "auth/invalid-verification-code": "Kode verifikasi SMS tidak valid. Silakan kirim ulang kode verifikasi SMS dan masukkan lagi",
+    "auth/invalid-verification-code":
+      "Kode verifikasi SMS tidak valid. Silakan kirim ulang kode verifikasi SMS dan masukkan lagi",
     "auth/missing-verification-code": "Kode verifikasi SMS belum dimasukkan",
-    "auth/code-expired": "Kode verifikasi SMS sudah kedaluwarsa. Silakan kirim ulang kode verifikasi SMS dan masukkan lagi",
+    "auth/code-expired":
+      "Kode verifikasi SMS sudah kedaluwarsa. Silakan kirim ulang kode verifikasi SMS dan masukkan lagi",
   },
   admin: {
     welcomeMessage: "Selamat datang!",
@@ -977,14 +1052,18 @@ const data = {
     notes: {
       title: "Perhatian",
       userRestaurantsTitle: "Tentang daftar restoran untuk pelanggan",
-      userRestaurantsBody: "Restoran yang terdaftar tidak akan otomatis ditampilkan di daftar restoran untuk pelanggan. Setelah mengatur toko, informasi menu, metode pembayaran, dan mempublikasikan toko, silakan ajukan dengan tombol \"Ajukan untuk pencantuman\". Akan dicantumkan di daftar restoran untuk pelanggan setelah lulus pemeriksaan operator.",
+      userRestaurantsBody:
+        'Restoran yang terdaftar tidak akan otomatis ditampilkan di daftar restoran untuk pelanggan. Setelah mengatur toko, informasi menu, metode pembayaran, dan mempublikasikan toko, silakan ajukan dengan tombol "Ajukan untuk pencantuman". Akan dicantumkan di daftar restoran untuk pelanggan setelah lulus pemeriksaan operator.',
       notificationSoundTitle: "Tentang suara notifikasi",
-      notificationSoundBody: "Suara notifikasi terkait pesanan akan diputar saat menampilkan halaman daftar pesanan (tidak diputar di halaman ini). Jika ingin memutar suara notifikasi beberapa toko secara bersamaan, silakan siapkan lingkungan yang dapat menampilkan halaman daftar pesanan masing-masing. Komputer memerlukan jendela terpisah, tablet memerlukan perangkat terpisah.",
+      notificationSoundBody:
+        "Suara notifikasi terkait pesanan akan diputar saat menampilkan halaman daftar pesanan (tidak diputar di halaman ini). Jika ingin memutar suara notifikasi beberapa toko secara bersamaan, silakan siapkan lingkungan yang dapat menampilkan halaman daftar pesanan masing-masing. Komputer memerlukan jendela terpisah, tablet memerlukan perangkat terpisah.",
     },
-    hidePayment: "Mekanisme penagihan akan segera tersedia. Mohon tunggu sebentar.",
+    hidePayment:
+      "Mekanisme penagihan akan segera tersedia. Mohon tunggu sebentar.",
     encourageToReadManual: {
-      before: "Bagi yang belum mendaftar di Omochikaeri.com, terlebih dahulu silakan baca",
-      manualName: "\"Panduan penggunaan\"",
+      before:
+        "Bagi yang belum mendaftar di Omochikaeri.com, terlebih dahulu silakan baca",
+      manualName: '"Panduan penggunaan"',
       after: "kemudian lanjutkan pendaftaran.",
     },
     forSignup: "Untuk restoran yang belum terdaftar",
@@ -1010,19 +1089,25 @@ const data = {
     addNewRestaurant: "Tambah restoran",
     noPaymentAccount: "Belum ada akun pembayaran terdaftar",
     payments: {
-      unsetWarning: "Pengaturan metode pembayaran diperlukan untuk menerima pesanan. Silakan atur \"Metode pembayaran\" di bagian bawah halaman ini.",
-      required: "Silakan atur setidaknya satu dari \"Pembayaran online\" atau \"Bayar saat penerimaan\".",
+      unsetWarning:
+        'Pengaturan metode pembayaran diperlukan untuk menerima pesanan. Silakan atur "Metode pembayaran" di bagian bawah halaman ini.',
+      required:
+        'Silakan atur setidaknya satu dari "Pembayaran online" atau "Bayar saat penerimaan".',
       onlinePayment: "Pembayaran online",
       statusNotConnected: "Akun Stripe belum terhubung",
       statusConnected: "Akun Stripe sudah terhubung",
-      pleaseConnect: "Untuk mengaktifkan pembayaran kartu kredit online, koneksi dengan layanan pembayaran Stripe diperlukan.",
+      pleaseConnect:
+        "Untuk mengaktifkan pembayaran kartu kredit online, koneksi dengan layanan pembayaran Stripe diperlukan.",
       connectStripe: "Hubungkan akun Stripe",
       disconnectStripe: "Putuskan koneksi akun Stripe",
-      reallyDisconnectStripe: "Apakah Anda yakin ingin memutuskan koneksi akun Stripe?",
+      reallyDisconnectStripe:
+        "Apakah Anda yakin ingin memutuskan koneksi akun Stripe?",
       openDashboard: "Buka dasbor Stripe",
       onsitePayment: "Bayar saat penerimaan",
-      pleaseCheck: "Jika mengizinkan pembayaran di tempat, silakan aktifkan kotak centang di bawah.",
-      onsitePaymentNote: "Mohon perhatikan biaya yang tidak terkumpul karena pembatalan tiba-tiba atau lelucon.",
+      pleaseCheck:
+        "Jika mengizinkan pembayaran di tempat, silakan aktifkan kotak centang di bawah.",
+      onsitePaymentNote:
+        "Mohon perhatikan biaya yang tidak terkumpul karena pembatalan tiba-tiba atau lelucon.",
       enableOnsitePayment: "Izinkan pembayaran saat penerimaan",
     },
     mail: {
@@ -1040,11 +1125,14 @@ const data = {
       smaregiManualLink: "Cara menggunakan integrasi Smaregi",
     },
     needEmailVerification: "Silakan selesaikan verifikasi email.",
-    noteEmailVerification1: "Silakan periksa email yang dikirim dari {email} dan klik URL dalam email untuk menyelesaikan verifikasi.",
-    noteEmailVerification2: "Jika belum menerima email verifikasi, silakan periksa folder spam dan pengaturan filter, kemudian kirim ulang email verifikasi.",
+    noteEmailVerification1:
+      "Silakan periksa email yang dikirim dari {email} dan klik URL dalam email untuk menyelesaikan verifikasi.",
+    noteEmailVerification2:
+      "Jika belum menerima email verifikasi, silakan periksa folder spam dan pengaturan filter, kemudian kirim ulang email verifikasi.",
     sendVerificationCode: "Kirim ulang email verifikasi",
     verificationCodeSent: "Sudah terkirim",
-    verificationCodeError: "Tidak dapat mengirim. Silakan tunggu sejenak dan coba lagi",
+    verificationCodeError:
+      "Tidak dapat mengirim. Silakan tunggu sejenak dan coba lagi",
     viewAllOrders: "Periksa pesanan dari semua restoran sekaligus",
     viewPage: "Periksa halaman",
     viewOrders: "Periksa pesanan",
@@ -1057,11 +1145,14 @@ const data = {
     itemNotPublished: "Tidak publik",
     editAbout: "Ubah informasi toko",
     privateMode: "Sedang mode privat",
-    pleaseChangePublic: "Setelah memasukkan informasi toko, silakan ubah ke publik. Saat ini halaman toko tidak terlihat oleh pelanggan.",
+    pleaseChangePublic:
+      "Setelah memasukkan informasi toko, silakan ubah ke publik. Saat ini halaman toko tidak terlihat oleh pelanggan.",
     directory: {
       status: "Status pencantuman di daftar restoran untuk pelanggan",
-      requestWarning: "Silakan ajukan setelah pengaturan pembayaran dan publikasi toko",
-      requestingWarning: "Jika pengaturan pembayaran dan publikasi toko belum selesai, silakan atur",
+      requestWarning:
+        "Silakan ajukan setelah pengaturan pembayaran dan publikasi toko",
+      requestingWarning:
+        "Jika pengaturan pembayaran dan publikasi toko belum selesai, silakan atur",
       notListed: "Belum dicantumkan",
       requestList: "Ajukan untuk pencantuman",
       waiting: "Sedang mengajukan",
@@ -1081,7 +1172,8 @@ const data = {
       suspendUntil: "Jeda hingga {display}",
       suspendDayUntil: "Jeda hingga akhir hari {display}",
       suspendNewOrders: "Penerimaan pesanan baru",
-      notSuspendAvailable: "Jam operasi hari ini sudah berakhir, sehingga tidak dapat mengatur jeda.",
+      notSuspendAvailable:
+        "Jam operasi hari ini sudah berakhir, sehingga tidak dapat mengatur jeda.",
       suspendForAllDay: "Jeda sehari penuh",
       suspending: "Sedang menjeda penerimaan pesanan",
       unsuspendAt: "Waktu pelepasan ",
@@ -1097,17 +1189,22 @@ const data = {
       infinityNotificationOn: "Notifikasi ulang setiap 1 menit",
       infinityNotificationOff: "Notifikasi hanya saat menerima pesanan",
       soundTest: "Tes",
-      paymentIsNotCompleted: "Perhatian: Saat menekan tombol \"Diterima\", pembayaran kartu akan diproses.",
+      paymentIsNotCompleted:
+        'Perhatian: Saat menekan tombol "Diterima", pembayaran kartu akan diproses.',
       cancelButton: "Batalkan pesanan",
       cancelTitle: "Batalkan pesanan",
-      cancelMessage: "Silakan hubungi pelanggan dan beritahu bahwa pesanan dibatalkan.",
-      updateOrderMessage: "Silakan hubungi pelanggan dan konfirmasikan perubahan pesanan.",
+      cancelMessage:
+        "Silakan hubungi pelanggan dan beritahu bahwa pesanan dibatalkan.",
+      updateOrderMessage:
+        "Silakan hubungi pelanggan dan konfirmasikan perubahan pesanan.",
       paymentCancelButton: "Hanya batalkan pembayaran kartu",
       delete: "Batalkan pesanan ini",
       deleteConfirm: "(Pembatalan tidak dapat dibatalkan)",
       paymentCancelTitle: "Hanya batalkan pembayaran kartu",
-      paymentCancelMessage: "Akan diubah menjadi pembayaran di tempat. Silakan hubungi pelanggan dan beritahu bahwa akan menjadi pembayaran di tempat. Pesanan tidak dibatalkan.",
-      waitingPaymentWarninig: "Pesanan ini tidak dapat diterima karena pembayaran belum selesai.",
+      paymentCancelMessage:
+        "Akan diubah menjadi pembayaran di tempat. Silakan hubungi pelanggan dan beritahu bahwa akan menjadi pembayaran di tempat. Pesanan tidak dibatalkan.",
+      waitingPaymentWarninig:
+        "Pesanan ini tidak dapat diterima karena pembayaran belum selesai.",
       paymentCancel: "Hanya batalkan pembayaran kartu",
       paymentCancelConfirm: "(Pembatalan tidak dapat dibatalkan)",
       placedDate: "Tanggal pemesanan",
@@ -1116,7 +1213,8 @@ const data = {
       lineAdd: "Tambah akun LINE",
       lineUsers: "Akun LINE yang terdaftar",
       lineDelete: "Apakah Anda yakin ingin menghapus?",
-      lineSafariPrivate: "Catatan: Tidak dapat menghubungkan LINE jika menggunakan mode penjelajahan pribadi Safari.",
+      lineSafariPrivate:
+        "Catatan: Tidak dapat menghubungkan LINE jika menggunakan mode penjelajahan pribadi Safari.",
       history: "Semua riwayat pesanan",
       more: "Tampilkan lebih banyak",
       all: "Tampilkan semua",
@@ -1128,8 +1226,10 @@ const data = {
       willOrderChange: "Ubah pesanan",
       cancelOrderChange: "Batalkan perubahan pesanan",
       confirmOrderChange: "Konfirmasi perubahan pesanan",
-      cardPaymentMessage: "Pembayaran di muka. Tidak perlu menerima pembayaran di toko",
-      storePaymentMessage: "Bayar saat penerimaan. Silakan terima pembayaran di toko",
+      cardPaymentMessage:
+        "Pembayaran di muka. Tidak perlu menerima pembayaran di toko",
+      storePaymentMessage:
+        "Bayar saat penerimaan. Silakan terima pembayaran di toko",
       cardPayment: "Pembayaran di muka",
       storePayment: "Bayar saat penerimaan",
     },
@@ -1160,8 +1260,10 @@ const data = {
       "download-csv-details": "Unduh data Excel (detail)",
       "download-csv-all": "Unduh data Excel (penjualan)",
       "download-csv-history": "Unduh data Excel (ringkasan riwayat pesanan)",
-      "download-csv-history-details": "Unduh data Excel (detail riwayat pesanan)",
-      "download-csv-monthly-details": "Unduh data Excel (detail laporan bulanan)",
+      "download-csv-history-details":
+        "Unduh data Excel (detail riwayat pesanan)",
+      "download-csv-monthly-details":
+        "Unduh data Excel (detail laporan bulanan)",
     },
     totp: {
       setup: "Pengaturan autentikasi dua faktor",
@@ -1171,10 +1273,12 @@ const data = {
       codePlaceholder: "Kode 6 digit",
       enrollmentComplete: "Pengaturan autentikasi dua faktor selesai",
       verification: "Autentikasi dua faktor",
-      verificationMessage: "Silakan masukkan kode 6 digit yang dihasilkan oleh aplikasi autentikasi",
+      verificationMessage:
+        "Silakan masukkan kode 6 digit yang dihasilkan oleh aplikasi autentikasi",
       signupWarning: {
         title: "Jika QR Code tidak ditampilkan",
-        message: "Pengaturan autentikasi dua faktor dapat dilakukan dari halaman saya setelah verifikasi email. Jika QR Code tidak ditampilkan, silakan tekan \"Lewati\" untuk melanjutkan.",
+        message:
+          'Pengaturan autentikasi dua faktor dapat dilakukan dari halaman saya setelah verifikasi email. Jika QR Code tidak ditampilkan, silakan tekan "Lewati" untuk melanjutkan.',
       },
       error: {
         generateFailed: "Pengaturan autentikasi dua faktor gagal",
@@ -1197,10 +1301,12 @@ const data = {
       code: {
         "auth/user-not-found": "Belum terdaftar.",
         "auth/wrong-password": "Kata sandi tidak valid.",
-        "auth/too-many-requests": "Terlalu banyak percobaan login gagal. Silakan tunggu sejenak dan coba login lagi.",
+        "auth/too-many-requests":
+          "Terlalu banyak percobaan login gagal. Silakan tunggu sejenak dan coba login lagi.",
         "auth/invalid-email": "Email tidak valid.",
         "auth/invalid-login-credentials": "Email atau kata sandi salah.",
-        "auth/unauthorized-continue-uri": "Domain belum terdaftar di daftar putih.",
+        "auth/unauthorized-continue-uri":
+          "Domain belum terdaftar di daftar putih.",
         "auth/internal-error": "Kata sandi tidak valid.",
         "auth/invalid-credential": "Email or Password is invalid.",
       },
@@ -1212,20 +1318,25 @@ const data = {
     messages: {
       title: "Pesan",
       childInvitationAccept: "Terima undangan dan menjadi subakun",
-      childInvitationAcceptMessage: "Saat menjadi subakun, restoran yang ditambahkan dengan akun ini tidak dapat dioperasikan",
+      childInvitationAcceptMessage:
+        "Saat menjadi subakun, restoran yang ditambahkan dengan akun ini tidak dapat dioperasikan",
       childInvitationDeny: "Tolak undangan",
       accept: "Terima",
       deny: "Tolak",
-      childInvitationMessage1: "Telah menerima undangan dari pemilik yang mengelola toko berikut",
+      childInvitationMessage1:
+        "Telah menerima undangan dari pemilik yang mengelola toko berikut",
       childInvitationMessage2: "Toko ini",
-      childInvitationMessage3: "Jika ingin berubah menjadi subakun yang mengelola toko ini, silakan tekan terima. Jika menolak, silakan tekan tolak.",
+      childInvitationMessage3:
+        "Jika ingin berubah menjadi subakun yang mengelola toko ini, silakan tekan terima. Jika menolak, silakan tekan tolak.",
     },
     subAccounts: {
       index: "Manajemen subakun",
       openDashboard: "Halaman manajemen subakun",
       manualLink: "Cara menggunakan subakun",
-      description: "Dapat mengatur/mengelola subakun yang hanya dapat mengoperasikan toko tertentu.",
-      accountNotice: "Subakun yang diundang harus mendaftar pengguna terlebih dahulu",
+      description:
+        "Dapat mengatur/mengelola subakun yang hanya dapat mengoperasikan toko tertentu.",
+      accountNotice:
+        "Subakun yang diundang harus mendaftar pengguna terlebih dahulu",
       title: "Manajemen subakun",
       subaccountlist: "Daftar subakun",
       linkedStore: "Toko terhubung",
@@ -1236,7 +1347,8 @@ const data = {
       invite: "Undang",
       invitedList: "Undangan terkirim",
       deleteSubaccount: "Lepaskan subakun",
-      guidance: "Untuk mengatur toko menjadi subakun, silakan klik nama subakun.",
+      guidance:
+        "Untuk mengatur toko menjadi subakun, silakan klik nama subakun.",
       send: "Kirim",
       sending: "Mengirim",
       enterName: "Silakan masukkan nama untuk subakun",
@@ -1248,18 +1360,23 @@ const data = {
         denied: "Telah ditolak",
       },
       numberOfShops: "toko",
-      selectRestaurant: "Silakan pilih toko yang dapat dioperasikan oleh akun ini.",
+      selectRestaurant:
+        "Silakan pilih toko yang dapat dioperasikan oleh akun ini.",
       confirmDeletechild: "Akan melepaskan subakun",
     },
     line: {
       title: "Koneksi LINE",
       settings: "Pengaturan saluran LINE",
       users: "Daftar pengguna LINE",
-      notice1: "Anda dapat menghubungkan akun resmi LINE toko dengan Omochikaeri.com dan memberitahu status pesanan kepada pelanggan melalui obrolan akun resmi LINE toko.",
-      notice2: "Untuk penggunaan, pengaturan saluran LINE Login dan Messaging API di situs pengembang LINE diperlukan.",
+      notice1:
+        "Anda dapat menghubungkan akun resmi LINE toko dengan Omochikaeri.com dan memberitahu status pesanan kepada pelanggan melalui obrolan akun resmi LINE toko.",
+      notice2:
+        "Untuk penggunaan, pengaturan saluran LINE Login dan Messaging API di situs pengembang LINE diperlukan.",
       notice3: "Messaging API menggunakan yang sama dengan akun resmi LINE.",
-      notice4: "Diperlukan untuk mendaftarkan Messaging API sebagai \"Bot terhubung\" di saluran LINE Login.",
-      notice5: "Selain itu, pendaftaran URL yang ditentukan oleh Omochikaeri di \"Callback URL\" LINE Login diperlukan.",
+      notice4:
+        'Diperlukan untuk mendaftarkan Messaging API sebagai "Bot terhubung" di saluran LINE Login.',
+      notice5:
+        'Selain itu, pendaftaran URL yang ditentukan oleh Omochikaeri di "Callback URL" LINE Login diperlukan.',
       loginClientId: "LINE Login: Channel ID",
       loginChannelSecret: "LINE Login: Channel Secret",
       messagingAccessToken: "Messaging API: Channel Access Token",
@@ -1318,7 +1435,8 @@ const data = {
     notifyMe: "Terima notifikasi melalui LINE",
     notifyMeFromFriend: "Terima notifikasi dari LINE toko",
     addFriend: "Tambah teman",
-    addFriendDescription: "Untuk menerima notifikasi status pesanan, Anda perlu menambahkan \"Akun Resmi Omochikaeri.com\" sebagai teman.",
+    addFriendDescription:
+      'Untuk menerima notifikasi status pesanan, Anda perlu menambahkan "Akun Resmi Omochikaeri.com" sebagai teman.',
   },
   trace: {
     thankyou: "Terima kasih atas kerja sama Anda",
@@ -1334,7 +1452,8 @@ const data = {
     message: {
       generic: "Silakan periksa lagi dan akses.",
       line: "Silakan hubungkan ulang LINE dari awal.",
-      cardError: "Jika kesalahan berulang, silakan \"Hanya batalkan pembayaran kartu\" dan proses pesanan.",
+      cardError:
+        'Jika kesalahan berulang, silakan "Hanya batalkan pembayaran kartu" dan proses pesanan.',
     },
     code: {
       auth: {
@@ -1352,14 +1471,16 @@ const data = {
       },
       stripe: {
         confirm: "Pemrosesan pembayaran kartu gagal.",
-        confirm2: "Jika terus gagal, silakan batalkan pembayaran kartu dan ubah ke pembayaran di tempat",
+        confirm2:
+          "Jika terus gagal, silakan batalkan pembayaran kartu dan ubah ke pembayaran di tempat",
         cancel: "Pembatalan pembayaran kartu gagal",
         connect: "Koneksi dengan Stripe gagal.",
         disconnect: "Pemutusan koneksi dengan Stripe gagal.",
         intent: "Pembayaran kartu melalui Stripe gagal.",
         NoJCB: "Toko ini tidak menerima kartu JCB.",
       },
-      smallPayment: "Pembayaran online tidak dapat dilakukan untuk jumlah di bawah 50 yen",
+      smallPayment:
+        "Pembayaran online tidak dapat dilakukan untuk jumlah di bawah 50 yen",
       menu: {
         save: "Penyimpanan menu gagal.",
       },
@@ -1378,7 +1499,7 @@ const data = {
   dialogTips: {
     paymentMethods: {
       title: "Metode pembayaran di tempat",
-      body: "Fitur untuk memandu metode pembayaran yang dapat digunakan di toko bagi pelanggan yang memilih \"Bayar saat penerimaan\".",
+      body: 'Fitur untuk memandu metode pembayaran yang dapat digunakan di toko bagi pelanggan yang memilih "Bayar saat penerimaan".',
     },
     phonenumber: {
       title: "Nomor telepon",
@@ -1398,7 +1519,8 @@ const data = {
     },
   },
   printer: {
-    description: "Fitur untuk mencetak isi pesanan secara otomatis dari printer struk Star Micronics saat pesanan masuk.",
+    description:
+      "Fitur untuk mencetak isi pesanan secara otomatis dari printer struk Star Micronics saat pesanan masuk.",
     serverURL: "URL server CloudPRNT",
     guidance: "Silakan atur URL ini di printer.",
     reset: "Reset URL server",
@@ -1418,7 +1540,8 @@ const data = {
       length: "Silakan masukkan pesan tidak lebih dari 500 karakter.",
     },
     location: {
-      noLocation: "Setelah memasukkan alamat, silakan cerminkan lokasi pengiriman pada peta. Juga dapat dimasukkan dengan ketuk",
+      noLocation:
+        "Setelah memasukkan alamat, silakan cerminkan lokasi pengiriman pada peta. Juga dapat dimasukkan dengan ketuk",
     },
     email: {
       empty: "Silakan masukkan email",
@@ -1427,9 +1550,12 @@ const data = {
   },
   aboutService: {
     title: "Tentang layanan ini",
-    paragraph1: "COVID-19 tidak hanya merenggut nyawa banyak orang, tetapi juga menimbulkan kerusakan besar pada ekonomi. Khususnya restoran dan bar yang menyediakan \"tempat berkumpulnya orang\" menderita dampak langsung dari lockdown dan kebijakan tetap di rumah, menyebabkan jutaan orang kehilangan pekerjaan dan banyak pemilik restoran terpaksa menutup usaha mereka.",
-    paragraph2: "Kami menciptakan {serviceName} untuk mendukung restoran dan bar tersebut. Dengan {serviceName}, restoran dapat memulai layanan take-away tanpa biaya tambahan (hanya biaya kartu kredit yang dikenakan). Pemilik restoran membuat halaman khusus dan mendaftarkan menu di sana (tidak memerlukan keterampilan khusus), pelanggan memesan dan membayar dari halaman tersebut, lalu mengambil pesanan di restoran sesuai waktu memasak.",
-    paragraph3: "Singularity Society adalah organisasi nirlaba (NPO) yang menjalankan kegiatan untuk dunia yang sedang berubah besar karena kemajuan teknologi.",
+    paragraph1:
+      'COVID-19 tidak hanya merenggut nyawa banyak orang, tetapi juga menimbulkan kerusakan besar pada ekonomi. Khususnya restoran dan bar yang menyediakan "tempat berkumpulnya orang" menderita dampak langsung dari lockdown dan kebijakan tetap di rumah, menyebabkan jutaan orang kehilangan pekerjaan dan banyak pemilik restoran terpaksa menutup usaha mereka.',
+    paragraph2:
+      "Kami menciptakan {serviceName} untuk mendukung restoran dan bar tersebut. Dengan {serviceName}, restoran dapat memulai layanan take-away tanpa biaya tambahan (hanya biaya kartu kredit yang dikenakan). Pemilik restoran membuat halaman khusus dan mendaftarkan menu di sana (tidak memerlukan keterampilan khusus), pelanggan memesan dan membayar dari halaman tersebut, lalu mengambil pesanan di restoran sesuai waktu memasak.",
+    paragraph3:
+      "Singularity Society adalah organisasi nirlaba (NPO) yang menjalankan kegiatan untuk dunia yang sedang berubah besar karena kemajuan teknologi.",
     sincerely: "",
     profileName: "Satoshi Nakajima",
     profileTitle: "Ketua Singularity Society",

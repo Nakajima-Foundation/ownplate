@@ -9,7 +9,8 @@ const data = {
       },
     },
     signupTerms: {
-      message: "By submitting this form, you agree to the {terms} and {privacy}.",
+      message:
+        "By submitting this form, you agree to the {terms} and {privacy}.",
       terms: "Terms of Service",
       privacy: "Privacy Policy",
     },
@@ -1536,7 +1537,7 @@ const data = {
   aboutService: {
     title: "About",
     paragraph1:
-      "The COVID-19 has not only claimed the lives of many people, but it has also caused significant damage to the economy. In particular, restaurants and bars that offer \"places for people to gather\" have suffered directly from lockdown and shelter-in-place measures. At the result, millions of people were layed off, and thousands of restaurant owners have been forced to close their businesses.",
+      'The COVID-19 has not only claimed the lives of many people, but it has also caused significant damage to the economy. In particular, restaurants and bars that offer "places for people to gather" have suffered directly from lockdown and shelter-in-place measures. At the result, millions of people were layed off, and thousands of restaurant owners have been forced to close their businesses.',
     paragraph2:
       "We've created {serviceName} to help those restaurants and bars. With {serviceName}, restaurants can start take-out service with no extra fees (only credit card charges are required). The restaurant owners can create dedicated pages and register menu items there (no special skill is required), where customers can order and pay, then pick them up at restaurants.",
     paragraph3:

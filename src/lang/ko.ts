@@ -60,8 +60,10 @@ const data = {
     signIn: "테이크아웃 이용자",
     signInRestaurant: "매장 관리자",
     deleteAccount: "계정 삭제",
-    reallyDeleteAccount: "과거 내역이 모두 사라집니다. 정말 계정을 삭제하시겠습니까？",
-    reSendSMSforDeleteAccount: "최종 확인을 위해 등록된 전화번호로 SMS 인증 코드를 보냅니다.",
+    reallyDeleteAccount:
+      "과거 내역이 모두 사라집니다. 정말 계정을 삭제하시겠습니까？",
+    reSendSMSforDeleteAccount:
+      "최종 확인을 위해 등록된 전화번호로 SMS 인증 코드를 보냅니다.",
     stripeInfo: "신용카드 정보",
     noCard: "없음",
     deleteCard: "카드 정보 삭제",
@@ -89,7 +91,8 @@ const data = {
       disable: "2단계 인증 비활성화",
       emailVerificationRequired: "이메일 인증이 필요합니다",
       disableConfirmTitle: "2단계 인증을 비활성화하시겠습니까？",
-      disableConfirmMessage: "2단계 인증을 비활성화하면 보안 수준이 낮아집니다. 정말 비활성화하시겠습니까？",
+      disableConfirmMessage:
+        "2단계 인증을 비활성화하면 보안 수준이 낮아집니다. 정말 비활성화하시겠습니까？",
       error: {
         disableFailed: "2단계 인증 비활성화에 실패했습니다",
         tokenExpired: "세션이 만료되었습니다. 비밀번호를 다시 입력해 주세요.",
@@ -183,7 +186,8 @@ const data = {
     enterOrderNotice: "주문 주의사항을 입력해 주세요",
     enterOrderThanks: "주문 후 감사 메시지를 입력해 주세요",
     enablePrelineTitle: "줄 바꿈 반영",
-    enablePrelineDescription: "매장 소개문, 주문 주의사항, 매장 메시지, 메뉴 설명문에 입력한 줄 바꿈을 반영합니다",
+    enablePrelineDescription:
+      "매장 소개문, 주문 주의사항, 매장 메시지, 메뉴 설명문에 입력한 줄 바꿈을 반영합니다",
     introduction: "매장 소개문",
     orderNotice: "주문 시 주의사항",
     orderThanks: "주문 후 감사 메시지",
@@ -192,7 +196,8 @@ const data = {
     foodTax: "소비세율 (식품)",
     alcoholTax: "소비세율 (주류)",
     taxPriceDisplay: "세금 계산 방법",
-    taxPriceDisplayJp: "일본에서는 의무화에 따라 세금 포함 금액으로 표시됩니다.",
+    taxPriceDisplayJp:
+      "일본에서는 의무화에 따라 세금 포함 금액으로 표시됩니다.",
     taxIncluded: "내부세 (세금 포함)",
     taxExcluded: "외부세 (세금 별도)",
     about: "매장 정보",
@@ -263,48 +268,61 @@ const data = {
     searchMap: "주소로 지도 검색",
     enterAddress: "주소를 입력하여 검색해 주세요",
     updateMap: "위치 설정",
-    businessHourDescription: "영업하는 요일을 체크하고 시간을 설정해 주세요. 휴식 등으로 영업 시간을 나눠야 할 경우에는 별도 시간대 양식에 후반 시간을 설정해 주세요.",
+    businessHourDescription:
+      "영업하는 요일을 체크하고 시간을 설정해 주세요. 휴식 등으로 영업 시간을 나눠야 할 경우에는 별도 시간대 양식에 후반 시간을 설정해 주세요.",
     businessHourOption: "별도 시간대 (옵션)",
     copyPreviousDay: "전날 복사",
     copySunDay: "일요일 복사",
     lastOrderTime: {
       title: "최종 주문 시간",
-      notes1: "「영업 종료 시간」과 「수령 준비 시간」을 고려한 「최종 주문 가능 시간」보다 일찍 주문을 마감할 경우 설정해 주세요.",
-      notes2: "설정하지 않으면 「영업 종료 시간」과 「수령 준비 시간」을 고려한 시간이 됩니다.",
+      notes1:
+        "「영업 종료 시간」과 「수령 준비 시간」을 고려한 「최종 주문 가능 시간」보다 일찍 주문을 마감할 경우 설정해 주세요.",
+      notes2:
+        "설정하지 않으면 「영업 종료 시간」과 「수령 준비 시간」을 고려한 시간이 됩니다.",
     },
     draftDescription: "임시 저장됩니다 (고객에게 매장 페이지가 보이지 않음)",
     publishDescription: "저장 후 공개",
     draftWarning: "필수 항목 (*)을 올바르게 입력하면 공개를 선택할 수 있습니다",
     updateMapDescription: "매장명이나 주소를 기준으로 지도 업데이트",
-    noRestaurant: "매장명이 설정되지 않았습니다. 「매장 정보 변경」에서 매장 정보를 입력해 주세요.",
+    noRestaurant:
+      "매장명이 설정되지 않았습니다. 「매장 정보 변경」에서 매장 정보를 입력해 주세요.",
     noStreetAddress: "주소가 입력되지 않았습니다",
-    reallyDelete: "정말 이 매장을 삭제하시겠습니까？ 삭제하면 매장/메뉴 정보가 모두 사라집니다",
+    reallyDelete:
+      "정말 이 매장을 삭제하시겠습니까？ 삭제하면 매장/메뉴 정보가 모두 사라집니다",
     reallyOnListDelete: "정말 게재를 취소하시겠습니까？",
     deliveryConfigTitle: "배송",
-    deliveryDescription: "자체 배송을 관리할 수 있습니다. 배송 가능 지역 등을 설정하면 고객이 주문 시 테이크아웃 또는 배송을 선택할 수 있게 됩니다. (매장 설정을 변경한 경우 저장을 잊지 마세요)",
+    deliveryDescription:
+      "자체 배송을 관리할 수 있습니다. 배송 가능 지역 등을 설정하면 고객이 주문 시 테이크아웃 또는 배송을 선택할 수 있게 됩니다. (매장 설정을 변경한 경우 저장을 잊지 마세요)",
     deliveryConfigLink: "배송 설정으로 이동",
     printerConfigTitle: "수동 인쇄 프린터 설정",
     enablePrinter: "프린터 활성화",
-    printerDescription: "블루투스로 연결된 Star 정밀 제품 프린터를 사용하여 주문 정보를 인쇄할 수 있습니다",
-    printerDescription2: "활성화하면 주문 상세 페이지에서 주문 접수 후 인쇄 버튼이 표시됩니다",
+    printerDescription:
+      "블루투스로 연결된 Star 정밀 제품 프린터를 사용하여 주문 정보를 인쇄할 수 있습니다",
+    printerDescription2:
+      "활성화하면 주문 상세 페이지에서 주문 접수 후 인쇄 버튼이 표시됩니다",
     printerDescriptionConfig: "자동 인쇄 설정은 여기",
     phoneCall: "주문을 전화로 알림",
     phoneCallDescription: "온라인 주문이 들어오면 매장 전화로 알립니다",
-    phoneCallNotice: "현재는 무료로 제공되지만, 전화 통화료가 발생하므로 이 기능은 향후 유료가 될 수 있습니다. 그러한 경우에도 이 기능을 켠 채로 두어도 갑자기 비용이 발생하지는 않습니다.",
+    phoneCallNotice:
+      "현재는 무료로 제공되지만, 전화 통화료가 발생하므로 이 기능은 향후 유료가 될 수 있습니다. 그러한 경우에도 이 기능을 켠 채로 두어도 갑자기 비용이 발생하지는 않습니다.",
     phoneCallNotification: "전화 알림",
     emailNotification: "이메일 알림",
     emailNotificationTitle: "주문을 이메일로 알림",
     emailNotificationDescription: "온라인 주문이 들어오면 이메일로 알립니다",
-    emailNotificationNotice: "이메일 수신함에서 찾을 수 없는 경우 스팸 메일 폴더를 확인해 주세요.",
+    emailNotificationNotice:
+      "이메일 수신함에서 찾을 수 없는 경우 스팸 메일 폴더를 확인해 주세요.",
     orderConfirmViewConfig: "주문 확인 화면 설정",
     notificationConfig: "알림 설정",
-    moveToLineConfig: "LINE 알림 설정 화면으로 이동합니다. 이동하기 전에 이 페이지 저장을 잊지 마세요.",
+    moveToLineConfig:
+      "LINE 알림 설정 화면으로 이동합니다. 이동하기 전에 이 페이지 저장을 잊지 마세요.",
     openDaysConfig: "영업일시 설정",
     lunchOrDinnerToggle: "런치/디너 자동 전환",
-    lunchOrDinnerNotice: "각 영업일의 영업 시간을 반드시 2개 입력해 주세요. 위가 런치, 아래(별도 시간대(옵션))가 디너의 영업 시간이 됩니다.",
+    lunchOrDinnerNotice:
+      "각 영업일의 영업 시간을 반드시 2개 입력해 주세요. 위가 런치, 아래(별도 시간대(옵션))가 디너의 영업 시간이 됩니다.",
     acceptUserMessage: "메시지 수신",
     acceptUserMessageDescription: "고객으로부터의 메시지를 수신",
-    acceptUserMessageNotice: "주문 확인 화면에서 고객이 한마디 메시지를 입력할 수 있게 합니다. 주문 시 주의사항 뒤에 메시지 란이 표시되므로 「주문 시 주의사항」에 메시지에 기재할 내용을 적어 주세요. (예: 할인 정보 연락을 위한 이메일 주소를 입력해 주세요. / 생일 달이면 알려주세요. 선물을 준비해 드립니다.)",
+    acceptUserMessageNotice:
+      "주문 확인 화면에서 고객이 한마디 메시지를 입력할 수 있게 합니다. 주문 시 주의사항 뒤에 메시지 란이 표시되므로 「주문 시 주의사항」에 메시지에 기재할 내용을 적어 주세요. (예: 할인 정보 연락을 위한 이메일 주소를 입력해 주세요. / 생일 달이면 알려주세요. 선물을 준비해 드립니다.)",
     lineNotification: "LINE 알림",
     city: "시구정촌",
     zip: "우편번호",
@@ -315,7 +333,8 @@ const data = {
     enterItemName: "상품명을 입력해 주세요",
     enterItemAliasesName: "상품의 별칭 (외국어 등)을 입력해 주세요",
     enterItemDescription: "설명문을 입력해 주세요",
-    enterItemMemo: "메모 (고객 화면에는 표시되지 않습니다. 첫 줄만 메뉴 목록에 표시됩니다. 비밀 정보는 적지 마세요)",
+    enterItemMemo:
+      "메모 (고객 화면에는 표시되지 않습니다. 첫 줄만 메뉴 목록에 표시됩니다. 비밀 정보는 적지 마세요)",
     enterItemOption: "옵션을 입력해 주세요",
     item: "상품",
     noItem: "아무것도 등록되지 않았습니다",
@@ -347,13 +366,15 @@ const data = {
     exclusionDateTime: "판매 제외일/시간",
     lunchDinner: "런치/디너",
     itemOptions: "옵션",
-    itemOptionsNote: "토핑이나 곱빼기 등의 상품 옵션을 지정합니다. 2개 이상의 선택지인 경우 반각 쉼표로 구분해 주세요 (예: 「치킨, 포크, 두부」). 유료 옵션인 경우 마지막에 (+100)처럼 가격을 지정해 주세요 (예: 「보통,곱빼기 (+150),특곱빼기(+300)」)",
+    itemOptionsNote:
+      "토핑이나 곱빼기 등의 상품 옵션을 지정합니다. 2개 이상의 선택지인 경우 반각 쉼표로 구분해 주세요 (예: 「치킨, 포크, 두부」). 유료 옵션인 경우 마지막에 (+100)처럼 가격을 지정해 주세요 (예: 「보통,곱빼기 (+150),특곱빼기(+300)」)",
     itemAddOption: "옵션 추가",
     itemInvalidMessage: "데이터가 올바르게 입력되지 않아 공개되지 않습니다",
     saveAsDraft: "임시 저장됩니다 (메뉴에 표시되지 않음)",
     reallyDelete: "정말 삭제하시겠습니까？",
     csvCategories: "엑셀 데이터용 카테고리 설정 (선택)",
-    csvCategoriesNote: "주문 내역에서 다운로드할 수 있는 엑셀 데이터 내에서 사용하는 카테고리 설정입니다",
+    csvCategoriesNote:
+      "주문 내역에서 다운로드할 수 있는 엑셀 데이터 내에서 사용하는 카테고리 설정입니다",
     newCategory: "새 항목",
     newCategoryAdd: "추가",
     category1: "카테고리 1",
@@ -535,28 +556,40 @@ const data = {
     price: "판매 가격",
     priceDescription: "상품 페이지를 확인해 주세요.",
     otherFees: "상품 대금 외 필요한 비용",
-    otherFeesDescription: "매장까지의 교통비 등 이동 관련 비용은 부담해 주세요.",
-    otherFeesDescriptionDelivery: "배송비가 별도로 부과됩니다. 배송비는 각 매장 페이지를 확인해 주세요.",
+    otherFeesDescription:
+      "매장까지의 교통비 등 이동 관련 비용은 부담해 주세요.",
+    otherFeesDescriptionDelivery:
+      "배송비가 별도로 부과됩니다. 배송비는 각 매장 페이지를 확인해 주세요.",
     payment: "대금 지불 시기 및 방법",
     paymentDescription: "신용카드 결제/매장 결제",
     paymentDescriptionCard: "신용카드 결제",
     paymentDescriptionStore: "매장 결제",
-    paymentDescriptionCardNote: "온라인 신용카드 결제를 선택하더라도, 매장 측에서 결제 실행 시 오류가 발생하는 경우 현장 결제로 변경됩니다.",
+    paymentDescriptionCardNote:
+      "온라인 신용카드 결제를 선택하더라도, 매장 측에서 결제 실행 시 오류가 발생하는 경우 현장 결제로 변경됩니다.",
     delivery: "상품 인도 시기 및 방법",
     deliveryDescription: "고객 지정일 및 매장 수령.",
     cancellation: "취소 처리 조건, 해약 조건",
-    cancellationDescription1: "매장이 주문을 「수령 완료」로 처리하기 전까지는 인터넷상에서 취소가 가능합니다.",
-    cancellationDescription2: "다음과 같은 경우 매장 측에서 상품 주문 관련 거래를 해제할 수 있습니다. 또한 다음 사유로 해제가 이루어진 경우에도 원칙적으로 거래 대금에 상응하는 금액을 지불해야 합니다.",
-    cancellationDescription3: "위 사항 외에도, 수령 완료된 상품이라도 재료 부족, 품절, 주문 과다 집중, 주문 접수 시의 오류, 기타 가맹점 사정에 따라 취소될 수 있습니다. 이미 대금을 지불한 경우 가맹점에 환불 처리를 요청할 수 있으나, 가맹점에 고의 또는 중대한 과실이 없는 한 환불을 초과하는 손해 배상은 청구할 수 없습니다.",
-    cancellationDescription4: "「수령 완료」 표시 후에는 상품의 취소가 불가능합니다.",
-    cancellationDescription5: "매장 측에서 상품 주문 관련 거래를 해제할 수 있습니다. 자세한 내용은",
+    cancellationDescription1:
+      "매장이 주문을 「수령 완료」로 처리하기 전까지는 인터넷상에서 취소가 가능합니다.",
+    cancellationDescription2:
+      "다음과 같은 경우 매장 측에서 상품 주문 관련 거래를 해제할 수 있습니다. 또한 다음 사유로 해제가 이루어진 경우에도 원칙적으로 거래 대금에 상응하는 금액을 지불해야 합니다.",
+    cancellationDescription3:
+      "위 사항 외에도, 수령 완료된 상품이라도 재료 부족, 품절, 주문 과다 집중, 주문 접수 시의 오류, 기타 가맹점 사정에 따라 취소될 수 있습니다. 이미 대금을 지불한 경우 가맹점에 환불 처리를 요청할 수 있으나, 가맹점에 고의 또는 중대한 과실이 없는 한 환불을 초과하는 손해 배상은 청구할 수 없습니다.",
+    cancellationDescription4:
+      "「수령 완료」 표시 후에는 상품의 취소가 불가능합니다.",
+    cancellationDescription5:
+      "매장 측에서 상품 주문 관련 거래를 해제할 수 있습니다. 자세한 내용은",
     cancellationDescription6: "를 참조해 주세요.",
     takeoutTitle: "테이크아웃",
-    cancellationTakeoutDescription1: "「수령 준비 완료」 표시로부터 2시간이 경과한 경우",
+    cancellationTakeoutDescription1:
+      "「수령 준비 완료」 표시로부터 2시간이 경과한 경우",
     deliveryTitle: "배송",
-    cancellationDeliveryDescription1: "지정된 배송 장소에 도착한 지 5분이 경과하고 연락이 닿지 않는 경우",
-    cancellationDeliveryDescription2: "지정된 배송 장소에 도착한 지 15분 이상이 경과한 경우",
-    cancellationDeliveryDescription3: "본 약관 규정을 위반한 장소를 배송 장소로 지정한 경우",
+    cancellationDeliveryDescription1:
+      "지정된 배송 장소에 도착한 지 5분이 경과하고 연락이 닿지 않는 경우",
+    cancellationDeliveryDescription2:
+      "지정된 배송 장소에 도착한 지 15분 이상이 경과한 경우",
+    cancellationDeliveryDescription3:
+      "본 약관 규정을 위반한 장소를 배송 장소로 지정한 경우",
     link: "여기",
   },
   sitemenu: {
@@ -632,14 +665,18 @@ const data = {
     fromAmountSpent: "이용 금액에서",
     discount: "할인",
     notes: "이용 시 주의사항",
-    notes1: "캠페인에 의한 할인은 이용 조건에 명시된 금액을 초과하면 자동으로 적용됩니다. 결제 버튼을 누른 후 주문 확인 화면에서 합계 금액을 확인해 주세요.",
-    notes2: "캠페인은 하나만 이용할 수 있습니다. 여러 캠페인에 해당하는 경우 할인액이 최대인 캠페인이 적용됩니다.",
+    notes1:
+      "캠페인에 의한 할인은 이용 조건에 명시된 금액을 초과하면 자동으로 적용됩니다. 결제 버튼을 누른 후 주문 확인 화면에서 합계 금액을 확인해 주세요.",
+    notes2:
+      "캠페인은 하나만 이용할 수 있습니다. 여러 캠페인에 해당하는 경우 할인액이 최대인 캠페인이 적용됩니다.",
   },
   order: {
     allOrders: "모든 주문",
     menu: "메뉴 페이지 보기",
-    orderNotPlacedYet: "주문이 아직 확정되지 않았습니다. 내용을 확인하고 페이지 하단의 주문 버튼을 눌러 주세요.",
-    waitingPayment: "주문이 아직 확정되지 않았습니다. 결제 정보를 입력하고 확정해 주세요",
+    orderNotPlacedYet:
+      "주문이 아직 확정되지 않았습니다. 내용을 확인하고 페이지 하단의 주문 버튼을 눌러 주세요.",
+    waitingPayment:
+      "주문이 아직 확정되지 않았습니다. 결제 정보를 입력하고 확정해 주세요",
     yourOrder: "귀하의 주문",
     confirmOrder: "주문 확인",
     editItems: "주문 변경",
@@ -684,7 +721,8 @@ const data = {
     thisIsLunchOrder: "이것은 런치 주문입니다",
     thisIsDinnerOrder: "이것은 디너 주문입니다",
     alertReqireAddress: "입력이 완료되지 않았습니다. 확인해 주세요.",
-    orderErrorMessage: "주문 처리를 할 수 없었습니다. 장바구니에 넣은 상품이 품절되었을 가능성이 있습니다. 페이지를 되돌아가 다시 주문해 주세요.",
+    orderErrorMessage:
+      "주문 처리를 할 수 없었습니다. 장바구니에 넣은 상품이 품절되었을 가능성이 있습니다. 페이지를 되돌아가 다시 주문해 주세요.",
     saveAddress: "배송지 저장",
     order_canceled_by_customer: "취소됨 (고객)",
     order_canceled_by_restaurant: "취소됨 (매장)",
@@ -706,7 +744,8 @@ const data = {
     cancelOrder: "주문 취소는 여기",
     cancelOrderConfirm: "정말 주문을 취소하시겠습니까？",
     cancelOrderComplete: "이 주문은 취소되었습니다",
-    pleaseStay: "이 페이지를 표시한 채로 두면 주문부터 수령까지의 상황을 알 수 있습니다.",
+    pleaseStay:
+      "이 페이지를 표시한 채로 두면 주문부터 수령까지의 상황을 알 수 있습니다.",
     thanksMessage: "매장으로부터의 메시지",
     tip: "팁 (서비스료·소비세 포함)",
     maxTip: "{max}%까지의 금액 (선택)",
@@ -722,7 +761,8 @@ const data = {
     notAvailable: "주문 가능한 영업일이 없어 현재 주문을 받지 않습니다.",
     orderNotice: "주문 시 주의사항",
     orderMessage: "매장으로 메시지",
-    enterMessage: "매장으로 메시지를 전달할 수 있습니다. 「주문 시 주의사항」에 요청이 있는 경우 이를 참고하여 메시지를 작성해 주세요.",
+    enterMessage:
+      "매장으로 메시지를 전달할 수 있습니다. 「주문 시 주의사항」에 요청이 있는 경우 이를 참고하여 메시지를 작성해 주세요.",
     datePlaced: "주문 시각",
     dateAccepted: "주문 접수 시각",
     dateEstimated: "완료 예정 시각",
@@ -744,8 +784,10 @@ const data = {
     paymentAndCancellation: "취소·결제에 대하여",
     statusTitle: "주문 상태",
     sortOrder: "표시 순서",
-    promotionNoteCard: "「온라인 결제로 주문」으로 결제한 경우 캠페인 금액이 적용됩니다",
-    promotionNoteStore: "「현장 결제로 주문」으로 구매한 경우 캠페인 금액이 적용됩니다",
+    promotionNoteCard:
+      "「온라인 결제로 주문」으로 결제한 경우 캠페인 금액이 적용됩니다",
+    promotionNoteStore:
+      "「현장 결제로 주문」으로 구매한 경우 캠페인 금액이 적용됩니다",
     sort: {
       newest: "주문이 새로운 순",
       oldest: "주문이 오래된 순",
@@ -772,12 +814,14 @@ const data = {
       stripe_canceled: "결제 취소",
       onsitePayment: "현장 결제",
       stripe_user_pending: "카드 결제 미완료",
-      stripe_user_message_pending: "(매장 측에서 결제 처리가 완료되지 않았습니다)",
+      stripe_user_message_pending:
+        "(매장 측에서 결제 처리가 완료되지 않았습니다)",
       stripe_user_confirmed: "카드 결제 완료",
       stripe_user_message_confirmed: "신용카드로 결제 완료되었습니다.",
       stripe_user_canceled: "결제 취소",
       stripe_user_message_canceled: "카드 결제가 취소되었습니다",
-      stripe_user_message_just_payment_canceled: "수령 시 매장에서 결제 부탁드립니다",
+      stripe_user_message_just_payment_canceled:
+        "수령 시 매장에서 결제 부탁드립니다",
     },
     receipt: {
       receipt: "영수증",
@@ -788,7 +832,8 @@ const data = {
     },
     onlinePaymentStatus: "카드 결제 상태",
     lineLink: "매장의 LINE 공식 계정",
-    lineMessage: "LINE 공식 계정을 친구 등록하면 매장으로부터 정보가 직접 도착합니다.",
+    lineMessage:
+      "LINE 공식 계정을 친구 등록하면 매장으로부터 정보가 직접 도착합니다.",
     customerOrderHistory: "주문 내역",
     orderTimes: "주문",
     orderTimesUnit: "{count}회",
@@ -816,8 +861,10 @@ const data = {
     discount: "할인",
     discountString: "할인",
     discountAlert: {
-      stripe: "「온라인 결제로 주문」으로 결제한 경우 아래 캠페인 금액이 적용됩니다.",
-      instore: "「현장 결제로 주문」으로 구매한 경우 아래 캠페인 금액이 적용됩니다.",
+      stripe:
+        "「온라인 결제로 주문」으로 결제한 경우 아래 캠페인 금액이 적용됩니다.",
+      instore:
+        "「현장 결제로 주문」으로 구매한 경우 아래 캠페인 금액이 적용됩니다.",
     },
     discountPriceSuffix: "할인",
     discountPriceMessage: "할인이 있습니다",
@@ -837,7 +884,8 @@ const data = {
     setPostageFreeThreshold: "배송비 무료가 되는 금액 설정",
   },
   delivery: {
-    alert: "배송을 설정할 때는 먼저 매장 설정에서 매장 위치를 지도에 지정해 주세요.",
+    alert:
+      "배송을 설정할 때는 먼저 매장 설정에서 매장 위치를 지도에 지정해 주세요.",
     areaSetting: "배송 지역 설정",
     deliveryRange: "배송 가능 범위 반경",
     updateDeliveryRange: "범위 업데이트",
@@ -853,17 +901,23 @@ const data = {
     setAreaText: "배송 지역을 텍스트로 지정",
     setDeliveryLocation: "배송 위치 지정",
     estimatedDistance: "예상 거리",
-    preparationTimeNotice: "고객이 주문 후 배송 완료까지 걸리는 최단 시간을 입력해 주세요.",
+    preparationTimeNotice:
+      "고객이 주문 후 배송 완료까지 걸리는 최단 시간을 입력해 주세요.",
     setTheAddressInTheDeliveryLocation: "지도에 주소 반영",
-    setTheAddressInTheDeliveryLocationDescription: "* 매장과 배송지의 거리를 계산합니다.",
+    setTheAddressInTheDeliveryLocationDescription:
+      "* 매장과 배송지의 거리를 계산합니다.",
     availableDeliveryDistance: "배송 가능 거리",
     reference: "(참고)",
     aboutDeliveryArea: "배송 가능 지역에 대하여",
     yen: "엔",
-    deliveryFreeThresholdNotice: "상품 합계 금액이 이 가격을 초과하는 경우 자동으로 배송 요금을 0엔으로 설정합니다.",
-    deliveryFeeSettingNotice: "배송 요금을 필요로 하지 않는 경우 0엔으로 설정해 주세요.",
-    deliveryThresholdNotice: "상품 합계 금액이 이 가격을 초과하는 경우 배송 접수를 가능하게 합니다.",
-    setAreaMapNotice: "대략적인 배송 가능 범위를 매장을 중심으로 한 원으로 지정합니다. 이 범위는 기준이므로, 주문 시 배송 가능한지 판단하여 주문을 접수해 주세요.",
+    deliveryFreeThresholdNotice:
+      "상품 합계 금액이 이 가격을 초과하는 경우 자동으로 배송 요금을 0엔으로 설정합니다.",
+    deliveryFeeSettingNotice:
+      "배송 요금을 필요로 하지 않는 경우 0엔으로 설정해 주세요.",
+    deliveryThresholdNotice:
+      "상품 합계 금액이 이 가격을 초과하는 경우 배송 접수를 가능하게 합니다.",
+    setAreaMapNotice:
+      "대략적인 배송 가능 범위를 매장을 중심으로 한 원으로 지정합니다. 이 범위는 기준이므로, 주문 시 배송 가능한지 판단하여 주문을 접수해 주세요.",
   },
   button: {
     adminTop: "관리 화면 홈",
@@ -922,11 +976,14 @@ const data = {
     },
     invalidPhoneNumber: "전화번호를 입력해 주세요",
     invalidValidationCode: "올바르지 않은 문자가 포함되어 있습니다",
-    "auth/too-many-requests": "연속적인 인증 실패가 발생했습니다. 잠시 후 다시 인증해 주세요",
+    "auth/too-many-requests":
+      "연속적인 인증 실패가 발생했습니다. 잠시 후 다시 인증해 주세요",
     "auth/invalid-phone-number": "올바른 전화번호를 입력해 주세요",
-    "auth/invalid-verification-code": "SMS 인증 코드가 유효하지 않습니다. SMS 인증 코드를 재전송하여 다시 입력해 주세요",
+    "auth/invalid-verification-code":
+      "SMS 인증 코드가 유효하지 않습니다. SMS 인증 코드를 재전송하여 다시 입력해 주세요",
     "auth/missing-verification-code": "SMS 인증 코드가 입력되지 않았습니다",
-    "auth/code-expired": "SMS 인증 코드가 만료되었습니다. SMS 인증 코드를 재전송하여 다시 입력해 주세요",
+    "auth/code-expired":
+      "SMS 인증 코드가 만료되었습니다. SMS 인증 코드를 재전송하여 다시 입력해 주세요",
   },
   admin: {
     welcomeMessage: "어서 오세요!",
@@ -977,9 +1034,11 @@ const data = {
     notes: {
       title: "주의",
       userRestaurantsTitle: "고객용 매장 목록에 대하여",
-      userRestaurantsBody: "등록한 매장은 자동으로 고객용 매장 목록에 표시되지 않습니다. 매장, 메뉴 정보, 결제 방법을 설정하고 매장을 공개한 후 「게재 신청」 버튼으로 신청해 주세요. 운영 측 심사를 거쳐 고객용 매장 목록에 게재됩니다.",
+      userRestaurantsBody:
+        "등록한 매장은 자동으로 고객용 매장 목록에 표시되지 않습니다. 매장, 메뉴 정보, 결제 방법을 설정하고 매장을 공개한 후 「게재 신청」 버튼으로 신청해 주세요. 운영 측 심사를 거쳐 고객용 매장 목록에 게재됩니다.",
       notificationSoundTitle: "알림음에 대하여",
-      notificationSoundBody: "주문 관련 알림음은 주문 목록 페이지를 표시 중에 재생됩니다 (이 페이지에서는 재생되지 않습니다). 여러 매장의 알림음을 동시에 재생하려면 각각의 주문 목록 페이지를 표시할 수 있는 환경을 준비해 주세요. PC에서는 다른 창, 태블릿에서는 다른 단말이 필요합니다.",
+      notificationSoundBody:
+        "주문 관련 알림음은 주문 목록 페이지를 표시 중에 재생됩니다 (이 페이지에서는 재생되지 않습니다). 여러 매장의 알림음을 동시에 재생하려면 각각의 주문 목록 페이지를 표시할 수 있는 환경을 준비해 주세요. PC에서는 다른 창, 태블릿에서는 다른 단말이 필요합니다.",
     },
     hidePayment: "과금 구조는 곧 제공될 예정입니다. 잠시 기다려 주세요.",
     encourageToReadManual: {
@@ -1010,19 +1069,23 @@ const data = {
     addNewRestaurant: "매장 추가",
     noPaymentAccount: "결제 계정이 등록되지 않았습니다",
     payments: {
-      unsetWarning: "주문을 접수하려면 결제 방법 설정이 필요합니다. 이 페이지 하단의 「결제 방법」을 설정해 주세요.",
-      required: "「온라인 결제」나 「현장 결제」 중 한 가지는 반드시 설정해 주세요.",
+      unsetWarning:
+        "주문을 접수하려면 결제 방법 설정이 필요합니다. 이 페이지 하단의 「결제 방법」을 설정해 주세요.",
+      required:
+        "「온라인 결제」나 「현장 결제」 중 한 가지는 반드시 설정해 주세요.",
       onlinePayment: "온라인 결제",
       statusNotConnected: "Stripe 계정 미연결",
       statusConnected: "Stripe 계정 연결 완료",
-      pleaseConnect: "온라인 신용카드 결제를 활성화하려면 결제 서비스 Stripe와의 연결이 필요합니다.",
+      pleaseConnect:
+        "온라인 신용카드 결제를 활성화하려면 결제 서비스 Stripe와의 연결이 필요합니다.",
       connectStripe: "Stripe 계정 연결",
       disconnectStripe: "Stripe 계정 연결 해제",
       reallyDisconnectStripe: "정말 Stripe 계정 연결을 해제하시겠습니까？",
       openDashboard: "Stripe 대시보드 열기",
       onsitePayment: "현장 결제",
       pleaseCheck: "현장 결제를 허용하는 경우 아래 체크박스를 활성화해 주세요.",
-      onsitePaymentNote: "갑작스러운 취소나 장난 등으로 인한 대금 미회수에 주의해 주세요.",
+      onsitePaymentNote:
+        "갑작스러운 취소나 장난 등으로 인한 대금 미회수에 주의해 주세요.",
       enableOnsitePayment: "현장 결제 허용",
     },
     mail: {
@@ -1040,8 +1103,10 @@ const data = {
       smaregiManualLink: "Smaregi 연동 사용 방법",
     },
     needEmailVerification: "이메일 주소 인증을 완료해 주세요.",
-    noteEmailVerification1: "{email}에서 보낸 이메일을 확인하고 이메일 내의 URL을 클릭하여 인증을 완료해 주세요.",
-    noteEmailVerification2: "인증 이메일을 아직 받지 못한 경우 스팸 메일 폴더나 필터 설정 등을 확인하신 후 인증 메일 재전송을 요청해 주세요.",
+    noteEmailVerification1:
+      "{email}에서 보낸 이메일을 확인하고 이메일 내의 URL을 클릭하여 인증을 완료해 주세요.",
+    noteEmailVerification2:
+      "인증 이메일을 아직 받지 못한 경우 스팸 메일 폴더나 필터 설정 등을 확인하신 후 인증 메일 재전송을 요청해 주세요.",
     sendVerificationCode: "인증 이메일 재전송",
     verificationCodeSent: "전송했습니다",
     verificationCodeError: "전송하지 못했습니다. 잠시 후 다시 시도해 주세요",
@@ -1057,7 +1122,8 @@ const data = {
     itemNotPublished: "비공개",
     editAbout: "매장 정보 변경",
     privateMode: "비공개 중",
-    pleaseChangePublic: "매장 정보 입력 후 공개로 변경해 주세요. 현재는 고객에게 매장 페이지가 보이지 않습니다",
+    pleaseChangePublic:
+      "매장 정보 입력 후 공개로 변경해 주세요. 현재는 고객에게 매장 페이지가 보이지 않습니다",
     directory: {
       status: "고객용 매장 목록 게재 상태",
       requestWarning: "결제 설정 후 매장을 공개하고 신청해 주세요",
@@ -1097,7 +1163,8 @@ const data = {
       infinityNotificationOn: "1분마다 재알림",
       infinityNotificationOff: "수주 시에만 알림",
       soundTest: "테스트",
-      paymentIsNotCompleted: "주의: 「접수 완료」버튼을 누르면 카드 결제가 처리됩니다.",
+      paymentIsNotCompleted:
+        "주의: 「접수 완료」버튼을 누르면 카드 결제가 처리됩니다.",
       cancelButton: "주문 취소",
       cancelTitle: "주문 취소",
       cancelMessage: "고객에게 연락하여 주문이 취소됨을 알려 주세요.",
@@ -1106,7 +1173,8 @@ const data = {
       delete: "이 주문 취소",
       deleteConfirm: "(취소 철회는 불가능합니다)",
       paymentCancelTitle: "카드 결제만 취소",
-      paymentCancelMessage: "매장 결제로 변경됩니다. 고객에게 연락하여 매장 결제임을 알려 주세요. 주문은 취소되지 않습니다.",
+      paymentCancelMessage:
+        "매장 결제로 변경됩니다. 고객에게 연락하여 매장 결제임을 알려 주세요. 주문은 취소되지 않습니다.",
       waitingPaymentWarninig: "이 주문은 결제 미완료로 접수할 수 없습니다.",
       paymentCancel: "카드 결제만 취소",
       paymentCancelConfirm: "(이 작업은 되돌릴 수 없습니다)",
@@ -1116,7 +1184,8 @@ const data = {
       lineAdd: "LINE 계정 추가",
       lineUsers: "등록된 LINE 계정",
       lineDelete: "정말 삭제하시겠습니까？",
-      lineSafariPrivate: "주의: Safari의 개인 정보 보호 모드를 사용하면 LINE 연동이 불가능합니다.",
+      lineSafariPrivate:
+        "주의: Safari의 개인 정보 보호 모드를 사용하면 LINE 연동이 불가능합니다.",
       history: "모든 주문 내역",
       more: "더 표시",
       all: "전체 표시",
@@ -1128,8 +1197,10 @@ const data = {
       willOrderChange: "주문 변경",
       cancelOrderChange: "주문 변경 취소",
       confirmOrderChange: "주문 변경",
-      cardPaymentMessage: "결제가 완료되었습니다. 매장에서 결제를 받을 필요 없습니다.",
-      storePaymentMessage: "결제가 완료되지 않았습니다. 매장에서 결제를 받아 주세요.",
+      cardPaymentMessage:
+        "결제가 완료되었습니다. 매장에서 결제를 받을 필요 없습니다.",
+      storePaymentMessage:
+        "결제가 완료되지 않았습니다. 매장에서 결제를 받아 주세요.",
       cardPayment: "신용카드 결제",
       storePayment: "매장 결제",
     },
@@ -1174,7 +1245,8 @@ const data = {
       verificationMessage: "인증 앱에서 생성된 6자리 코드를 입력해 주세요",
       signupWarning: {
         title: "QR 코드가 표시되지 않는 경우",
-        message: "2단계 인증 설정은 이메일 인증 후 마이페이지에서 할 수 있습니다. QR 코드가 표시되지 않는 경우 「건너뛰기」를 눌러 다음으로 진행해 주세요.",
+        message:
+          "2단계 인증 설정은 이메일 인증 후 마이페이지에서 할 수 있습니다. QR 코드가 표시되지 않는 경우 「건너뛰기」를 눌러 다음으로 진행해 주세요.",
       },
       error: {
         generateFailed: "2단계 인증 설정에 실패했습니다",
@@ -1197,10 +1269,13 @@ const data = {
       code: {
         "auth/user-not-found": "등록되지 않았습니다.",
         "auth/wrong-password": "비밀번호가 유효하지 않습니다.",
-        "auth/too-many-requests": "로그인 실패 횟수가 너무 많습니다. 잠시 후 다시 로그인해 주세요.",
+        "auth/too-many-requests":
+          "로그인 실패 횟수가 너무 많습니다. 잠시 후 다시 로그인해 주세요.",
         "auth/invalid-email": "유효하지 않은 이메일 주소입니다.",
-        "auth/invalid-login-credentials": "이메일 또는 비밀번호가 유효하지 않습니다.",
-        "auth/unauthorized-continue-uri": "도메인이 화이트리스트에 등록되지 않았습니다.",
+        "auth/invalid-login-credentials":
+          "이메일 또는 비밀번호가 유효하지 않습니다.",
+        "auth/unauthorized-continue-uri":
+          "도메인이 화이트리스트에 등록되지 않았습니다.",
         "auth/internal-error": "비밀번호가 유효하지 않습니다.",
         "auth/invalid-credential": "이메일 또는 비밀번호가 유효하지 않습니다.",
       },
@@ -1212,19 +1287,23 @@ const data = {
     messages: {
       title: "메시지",
       childInvitationAccept: "초대를 수락하고 서브 계정이 되기",
-      childInvitationAcceptMessage: "서브 계정이 되면 이 계정으로 추가한 매장은 운영할 수 없게 됩니다.",
+      childInvitationAcceptMessage:
+        "서브 계정이 되면 이 계정으로 추가한 매장은 운영할 수 없게 됩니다.",
       childInvitationDeny: "초대 거부",
       accept: "수락",
       deny: "거부",
-      childInvitationMessage1: "다음 매장을 관리하는 오너로부터 초대를 받았습니다",
+      childInvitationMessage1:
+        "다음 매장을 관리하는 오너로부터 초대를 받았습니다",
       childInvitationMessage2: "이 매장들",
-      childInvitationMessage3: "이 매장을 관리하는 서브 계정으로 변경할 경우 수락을 눌러 주세요. 거부할 경우 거부를 눌러 주세요.",
+      childInvitationMessage3:
+        "이 매장을 관리하는 서브 계정으로 변경할 경우 수락을 눌러 주세요. 거부할 경우 거부를 눌러 주세요.",
     },
     subAccounts: {
       index: "서브 계정 관리",
       openDashboard: "서브 계정 관리 열기",
       manualLink: "서브 계정 사용 방법",
-      description: "특정 매장만 조작할 수 있는 서브 계정을 설정/관리할 수 있습니다.",
+      description:
+        "특정 매장만 조작할 수 있는 서브 계정을 설정/관리할 수 있습니다.",
       accountNotice: "초대할 서브 계정은 사용자로 등록되어 있어야 합니다.",
       title: "서브 계정 관리",
       subaccountlist: "서브 계정 목록",
@@ -1236,7 +1315,8 @@ const data = {
       invite: "초대",
       invitedList: "초대 목록",
       deleteSubaccount: "서브 계정 삭제",
-      guidance: "서브 계정으로 사용할 매장을 설정하려면 서브 계정명을 클릭해 주세요.",
+      guidance:
+        "서브 계정으로 사용할 매장을 설정하려면 서브 계정명을 클릭해 주세요.",
       send: "전송",
       sending: "전송 중",
       enterName: "서브 계정에 부여할 이름을 입력해 주세요",
@@ -1255,11 +1335,15 @@ const data = {
       title: "LINE 연동",
       settings: "LINE 채널 설정",
       users: "LINE 사용자 목록",
-      notice1: "매장의 LINE 공식 계정과 Omochikaeri.com을 연동하여 매장의 LINE 공식 계정 대화에서 고객에게 주문 상태를 알릴 수 있습니다.",
-      notice2: "이용하려면 LINE 개발자 사이트에서 LINE 로그인 채널과 Messaging API 설정이 필요합니다.",
+      notice1:
+        "매장의 LINE 공식 계정과 Omochikaeri.com을 연동하여 매장의 LINE 공식 계정 대화에서 고객에게 주문 상태를 알릴 수 있습니다.",
+      notice2:
+        "이용하려면 LINE 개발자 사이트에서 LINE 로그인 채널과 Messaging API 설정이 필요합니다.",
       notice3: "Messaging API는 LINE 공식 계정과 동일한 것을 사용합니다.",
-      notice4: "LINE 로그인 채널에 Messaging API를 「연결된 봇」으로 등록해야 합니다.",
-      notice5: "또한 LINE 로그인의 「콜백 URL」에 Omochikaeri에서 지정하는 URL을 등록해야 합니다.",
+      notice4:
+        "LINE 로그인 채널에 Messaging API를 「연결된 봇」으로 등록해야 합니다.",
+      notice5:
+        "또한 LINE 로그인의 「콜백 URL」에 Omochikaeri에서 지정하는 URL을 등록해야 합니다.",
       loginClientId: "LINE 로그인: 채널 ID",
       loginChannelSecret: "LINE 로그인: 채널 시크릿",
       messagingAccessToken: "Messaging API: 채널 액세스 토큰",
@@ -1318,7 +1402,8 @@ const data = {
     notifyMe: "LINE으로 알림 받기",
     notifyMeFromFriend: "매장으로부터 LINE 받기",
     addFriend: "친구 추가",
-    addFriendDescription: "주문 상태 알림을 받으려면 「Omochikaeri.com 공식 계정」을 친구로 추가해야 합니다.",
+    addFriendDescription:
+      "주문 상태 알림을 받으려면 「Omochikaeri.com 공식 계정」을 친구로 추가해야 합니다.",
   },
   trace: {
     thankyou: "협조해 주셔서 감사합니다",
@@ -1334,7 +1419,8 @@ const data = {
     message: {
       generic: "다시 확인하고 접속해 주세요.",
       line: "처음부터 LINE 연동을 다시 시도해 주세요.",
-      cardError: "오류가 반복될 경우 카드 결제만 취소하고 주문을 처리해 주세요.",
+      cardError:
+        "오류가 반복될 경우 카드 결제만 취소하고 주문을 처리해 주세요.",
     },
     code: {
       auth: {
@@ -1352,7 +1438,8 @@ const data = {
       },
       stripe: {
         confirm: "카드 결제 처리에 실패했습니다.",
-        confirm2: "실패가 계속될 경우 카드 결제를 취소하고 매장 결제로 변경해 주세요.",
+        confirm2:
+          "실패가 계속될 경우 카드 결제를 취소하고 매장 결제로 변경해 주세요.",
         cancel: "카드 결제 취소에 실패했습니다",
         connect: "Stripe 연결에 실패했습니다.",
         disconnect: "Stripe 연결 해제에 실패했습니다.",
@@ -1398,7 +1485,8 @@ const data = {
     },
   },
   printer: {
-    description: "주문이 들어오면 Star 정밀 영수증 프린터로 주문 내용을 자동 인쇄하는 기능입니다.",
+    description:
+      "주문이 들어오면 Star 정밀 영수증 프린터로 주문 내용을 자동 인쇄하는 기능입니다.",
     serverURL: "CloudPRNT 서버 URL",
     guidance: "이 URL을 프린터에 설정해 주세요.",
     reset: "서버 URL 재설정",
@@ -1418,7 +1506,8 @@ const data = {
       length: "메시지는 500자 이내로 입력해 주세요.",
     },
     location: {
-      noLocation: "주소 입력 후 지도에 배송지를 업데이트해 주세요. 탭으로도 업데이트할 수 있습니다.",
+      noLocation:
+        "주소 입력 후 지도에 배송지를 업데이트해 주세요. 탭으로도 업데이트할 수 있습니다.",
     },
     email: {
       empty: "이메일 주소를 입력해 주세요",
@@ -1427,9 +1516,12 @@ const data = {
   },
   aboutService: {
     title: "이 서비스에 대해",
-    paragraph1: "코로나19는 많은 사람들의 생명을 앗아갔을 뿐만 아니라 경제에도 큰 타격을 주었습니다. 특히 「사람이 모이는 장소」를 제공하는 레스토랑과 바는 도시 봉쇄와 자택 대기로 인해 직접적인 피해를 입었으며, 많은 실업자가 발생했고 폐업으로 내몰린 경영자도 적지 않습니다.",
-    paragraph2: "우리는 그런 레스토랑과 바를 지원하기 위해 「{serviceName}」를 만들었습니다. 「{serviceName}」를 이용하면 레스토랑은 추가 수수료 없이 테이크아웃 서비스를 시작할 수 있습니다. 레스토랑은 전용 페이지를 만들고 거기에 메뉴를 등록합니다(웹 컨설턴트를 고용할 필요는 없습니다). 고객은 그 페이지에서 주문하고 결제를 마친 후, 조리 시간에 맞춰 매장으로 찾으러 갑니다.",
-    paragraph3: "싱귤래리티 소사이어티는 기술의 발전으로 크게 변화하려는 세상을 위한 활동을 하는 NPO(비영리형 일반사단법인)입니다.",
+    paragraph1:
+      "코로나19는 많은 사람들의 생명을 앗아갔을 뿐만 아니라 경제에도 큰 타격을 주었습니다. 특히 「사람이 모이는 장소」를 제공하는 레스토랑과 바는 도시 봉쇄와 자택 대기로 인해 직접적인 피해를 입었으며, 많은 실업자가 발생했고 폐업으로 내몰린 경영자도 적지 않습니다.",
+    paragraph2:
+      "우리는 그런 레스토랑과 바를 지원하기 위해 「{serviceName}」를 만들었습니다. 「{serviceName}」를 이용하면 레스토랑은 추가 수수료 없이 테이크아웃 서비스를 시작할 수 있습니다. 레스토랑은 전용 페이지를 만들고 거기에 메뉴를 등록합니다(웹 컨설턴트를 고용할 필요는 없습니다). 고객은 그 페이지에서 주문하고 결제를 마친 후, 조리 시간에 맞춰 매장으로 찾으러 갑니다.",
+    paragraph3:
+      "싱귤래리티 소사이어티는 기술의 발전으로 크게 변화하려는 세상을 위한 활동을 하는 NPO(비영리형 일반사단법인)입니다.",
     sincerely: "",
     profileName: "나카지마 사토시",
     profileTitle: "싱귤래리티 소사이어티 대표이사",

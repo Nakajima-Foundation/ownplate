@@ -60,8 +60,10 @@ const data = {
     signIn: "Khách hàng mua mang về",
     signInRestaurant: "Người quản lý nhà hàng",
     deleteAccount: "Xóa tài khoản",
-    reallyDeleteAccount: "Lịch sử trước đây sẽ bị xóa. Bạn có chắc muốn xóa tài khoản này?",
-    reSendSMSforDeleteAccount: "Để xác nhận cuối cùng, mã xác thực SMS sẽ được gửi đến số điện thoại đã đăng ký.",
+    reallyDeleteAccount:
+      "Lịch sử trước đây sẽ bị xóa. Bạn có chắc muốn xóa tài khoản này?",
+    reSendSMSforDeleteAccount:
+      "Để xác nhận cuối cùng, mã xác thực SMS sẽ được gửi đến số điện thoại đã đăng ký.",
     stripeInfo: "Thông tin thẻ tín dụng",
     noCard: "Không có",
     deleteCard: "Xóa thông tin thẻ",
@@ -89,7 +91,8 @@ const data = {
       disable: "Tắt xác thực hai yếu tố",
       emailVerificationRequired: "Cần xác thực email",
       disableConfirmTitle: "Tắt xác thực hai yếu tố?",
-      disableConfirmMessage: "Nếu tắt xác thực hai yếu tố, mức độ bảo mật sẽ giảm. Bạn có chắc muốn tắt?",
+      disableConfirmMessage:
+        "Nếu tắt xác thực hai yếu tố, mức độ bảo mật sẽ giảm. Bạn có chắc muốn tắt?",
       error: {
         disableFailed: "Không thể tắt xác thực hai yếu tố",
         tokenExpired: "Phiên đã hết hạn. Vui lòng nhập lại mật khẩu.",
@@ -151,7 +154,8 @@ const data = {
     copy: "Sao chép nhà hàng này",
     copyAlert: "Sao chép nhà hàng này và tạo nhà hàng mới ở chế độ riêng tư.",
     copyMenu: "Sao chép sản phẩm này sang các nhà hàng sau",
-    copyMenuAlert: "Sẽ sao chép sản phẩm này sang nhà hàng trên ở chế độ riêng tư.",
+    copyMenuAlert:
+      "Sẽ sao chép sản phẩm này sang nhà hàng trên ở chế độ riêng tư.",
     current: "Trước khi thay đổi",
     clickAndUpload: "Nhấp vào đây",
     clickAndUploadDetail: "Nhấp vào vùng xám để tải lên (định dạng JPEG)",
@@ -171,7 +175,8 @@ const data = {
   editRestaurant: {
     enterRestaurantName: "Vui lòng nhập tên nhà hàng",
     enterOwnerName: "Vui lòng nhập tên người chịu trách nhiệm",
-    enterStreetAddress: "Vui lòng nhập địa chỉ chi tiết (ví dụ: Marunouchi 1-9-1)",
+    enterStreetAddress:
+      "Vui lòng nhập địa chỉ chi tiết (ví dụ: Marunouchi 1-9-1)",
     enterCity: "Vui lòng nhập tên quận/thành phố (ví dụ: Chiyoda-ku)",
     enterZip: "Vui lòng nhập mã bưu điện",
     enterPhone: "Vui lòng nhập số điện thoại",
@@ -183,7 +188,8 @@ const data = {
     enterOrderNotice: "Vui lòng nhập lưu ý khi đặt hàng",
     enterOrderThanks: "Vui lòng nhập lời cảm ơn sau khi đặt hàng",
     enablePrelineTitle: "Hiển thị xuống dòng",
-    enablePrelineDescription: "Hiển thị xuống dòng đã nhập trong giới thiệu cửa hàng, lưu ý khi đặt hàng, tin nhắn từ cửa hàng và mô tả menu",
+    enablePrelineDescription:
+      "Hiển thị xuống dòng đã nhập trong giới thiệu cửa hàng, lưu ý khi đặt hàng, tin nhắn từ cửa hàng và mô tả menu",
     introduction: "Giới thiệu cửa hàng",
     orderNotice: "Lưu ý khi đặt hàng",
     orderThanks: "Lời cảm ơn sau khi đặt hàng",
@@ -192,7 +198,8 @@ const data = {
     foodTax: "Tỷ lệ thuế (thực phẩm)",
     alcoholTax: "Tỷ lệ thuế (đồ uống có cồn)",
     taxPriceDisplay: "Phương pháp tính thuế",
-    taxPriceDisplayJp: "Tại Nhật Bản bắt buộc phải hiển thị giá đã bao gồm thuế.",
+    taxPriceDisplayJp:
+      "Tại Nhật Bản bắt buộc phải hiển thị giá đã bao gồm thuế.",
     taxIncluded: "Đã bao gồm thuế",
     taxExcluded: "Chưa bao gồm thuế",
     about: "Thông tin nhà hàng",
@@ -201,7 +208,8 @@ const data = {
     paymentMethods: "Phương thức thanh toán tại cửa hàng",
     timeToPickup: "Cài đặt thời gian nhận hàng",
     preparationTime: "Thời gian chuẩn bị giao hàng",
-    preparationTimeDescription: "Thời gian ngắn nhất từ lúc nhận đơn đến lúc giao hàng",
+    preparationTimeDescription:
+      "Thời gian ngắn nhất từ lúc nhận đơn đến lúc giao hàng",
     deliveryPreparationTime: "Thời gian có thể giao hàng",
     reservationTheDayBefore: "Nhận đặt trước",
     reservationTheDayBeforeDescription: "Bắt đầu nhận đơn từ khi nào",
@@ -263,48 +271,65 @@ const data = {
     searchMap: "Tìm bản đồ từ địa chỉ",
     enterAddress: "Vui lòng nhập địa chỉ để tìm kiếm",
     updateMap: "Đặt vị trí",
-    businessHourDescription: "Chọn ngày hoạt động và cài đặt thời gian. Nếu cần chia giờ hoạt động (nghỉ trưa, v.v.), vui lòng cài đặt giờ sau ở phần khung giờ khác.",
+    businessHourDescription:
+      "Chọn ngày hoạt động và cài đặt thời gian. Nếu cần chia giờ hoạt động (nghỉ trưa, v.v.), vui lòng cài đặt giờ sau ở phần khung giờ khác.",
     businessHourOption: "Khung giờ khác (tùy chọn)",
     copyPreviousDay: "Sao chép ngày trước",
     copySunDay: "Sao chép Chủ Nhật",
     lastOrderTime: {
       title: "Thời gian đặt hàng cuối cùng",
-      notes1: "Vui lòng cài đặt nếu muốn đóng nhận đơn trước \"thời gian đặt hàng cuối cùng\" được tính từ \"giờ đóng cửa\" và \"thời gian chuẩn bị giao hàng\".",
-      notes2: "Nếu không cài đặt, sẽ sử dụng thời gian tính từ \"giờ đóng cửa\" và \"thời gian chuẩn bị giao hàng\".",
+      notes1:
+        'Vui lòng cài đặt nếu muốn đóng nhận đơn trước "thời gian đặt hàng cuối cùng" được tính từ "giờ đóng cửa" và "thời gian chuẩn bị giao hàng".',
+      notes2:
+        'Nếu không cài đặt, sẽ sử dụng thời gian tính từ "giờ đóng cửa" và "thời gian chuẩn bị giao hàng".',
     },
-    draftDescription: "Lưu dưới dạng bản nháp (khách hàng sẽ không thấy trang cửa hàng)",
+    draftDescription:
+      "Lưu dưới dạng bản nháp (khách hàng sẽ không thấy trang cửa hàng)",
     publishDescription: "Lưu và công khai",
-    draftWarning: "Khi các mục bắt buộc (*) được điền đúng, có thể chọn công khai",
+    draftWarning:
+      "Khi các mục bắt buộc (*) được điền đúng, có thể chọn công khai",
     updateMapDescription: "Cập nhật bản đồ từ tên nhà hàng và địa chỉ",
-    noRestaurant: "Chưa cài đặt tên nhà hàng. Vui lòng nhập thông tin cửa hàng trong \"Thay đổi thông tin cửa hàng\".",
+    noRestaurant:
+      'Chưa cài đặt tên nhà hàng. Vui lòng nhập thông tin cửa hàng trong "Thay đổi thông tin cửa hàng".',
     noStreetAddress: "Chưa nhập địa chỉ",
-    reallyDelete: "Bạn có chắc muốn xóa nhà hàng này? Khi xóa, tất cả thông tin cửa hàng/menu sẽ biến mất.",
+    reallyDelete:
+      "Bạn có chắc muốn xóa nhà hàng này? Khi xóa, tất cả thông tin cửa hàng/menu sẽ biến mất.",
     reallyOnListDelete: "Bạn có chắc muốn hủy đăng tin?",
     deliveryConfigTitle: "Giao hàng",
-    deliveryDescription: "Quản lý giao hàng tự vận. Khi cài đặt khu vực có thể giao, khách hàng sẽ có thể chọn mua mang về hoặc giao hàng khi đặt. (Đừng quên lưu nếu thay đổi cài đặt cửa hàng)",
+    deliveryDescription:
+      "Quản lý giao hàng tự vận. Khi cài đặt khu vực có thể giao, khách hàng sẽ có thể chọn mua mang về hoặc giao hàng khi đặt. (Đừng quên lưu nếu thay đổi cài đặt cửa hàng)",
     deliveryConfigLink: "Đến cài đặt giao hàng",
     printerConfigTitle: "Cài đặt máy in thủ công",
     enablePrinter: "Bật máy in",
-    printerDescription: "In thông tin đơn hàng bằng máy in Star Micronics kết nối qua Bluetooth",
-    printerDescription2: "Khi bật, nút in sẽ hiển thị ở trang chi tiết đơn hàng sau khi nhận đơn",
+    printerDescription:
+      "In thông tin đơn hàng bằng máy in Star Micronics kết nối qua Bluetooth",
+    printerDescription2:
+      "Khi bật, nút in sẽ hiển thị ở trang chi tiết đơn hàng sau khi nhận đơn",
     printerDescriptionConfig: "Cài đặt in tự động tại đây",
     phoneCall: "Thông báo đơn hàng qua điện thoại",
-    phoneCallDescription: "Thông báo qua điện thoại cửa hàng khi có đơn hàng trực tuyến",
-    phoneCallNotice: "Hiện tại cung cấp miễn phí, nhưng do phát sinh phí gọi, chức năng này có thể trở thành tính năng trả phí trong tương lai. Trong trường hợp đó, sẽ không phát sinh phí đột ngột dù bạn đã bật chức năng này.",
+    phoneCallDescription:
+      "Thông báo qua điện thoại cửa hàng khi có đơn hàng trực tuyến",
+    phoneCallNotice:
+      "Hiện tại cung cấp miễn phí, nhưng do phát sinh phí gọi, chức năng này có thể trở thành tính năng trả phí trong tương lai. Trong trường hợp đó, sẽ không phát sinh phí đột ngột dù bạn đã bật chức năng này.",
     phoneCallNotification: "Thông báo điện thoại",
     emailNotification: "Thông báo email",
     emailNotificationTitle: "Thông báo đơn hàng qua email",
-    emailNotificationDescription: "Thông báo qua email khi có đơn hàng trực tuyến",
-    emailNotificationNotice: "Nếu không thấy trong hộp thư đến, vui lòng kiểm tra thư mục thư rác.",
+    emailNotificationDescription:
+      "Thông báo qua email khi có đơn hàng trực tuyến",
+    emailNotificationNotice:
+      "Nếu không thấy trong hộp thư đến, vui lòng kiểm tra thư mục thư rác.",
     orderConfirmViewConfig: "Cài đặt trang xác nhận đơn hàng",
     notificationConfig: "Cài đặt thông báo",
-    moveToLineConfig: "Sẽ chuyển đến trang cài đặt thông báo LINE. Đừng quên lưu trang này trước khi chuyển.",
+    moveToLineConfig:
+      "Sẽ chuyển đến trang cài đặt thông báo LINE. Đừng quên lưu trang này trước khi chuyển.",
     openDaysConfig: "Cài đặt ngày/giờ hoạt động",
     lunchOrDinnerToggle: "Tự động chuyển đổi menu trưa/tối",
-    lunchOrDinnerNotice: "Vui lòng nhập 2 khung giờ hoạt động cho mỗi ngày. Khung trên là giờ trưa, khung dưới (khung giờ khác (tùy chọn)) là giờ tối.",
+    lunchOrDinnerNotice:
+      "Vui lòng nhập 2 khung giờ hoạt động cho mỗi ngày. Khung trên là giờ trưa, khung dưới (khung giờ khác (tùy chọn)) là giờ tối.",
     acceptUserMessage: "Nhận tin nhắn",
     acceptUserMessageDescription: "Nhận tin nhắn từ khách hàng",
-    acceptUserMessageNotice: "Cho phép khách hàng nhập tin nhắn ngắn trong trang xác nhận đơn hàng. Trường tin nhắn hiển thị sau lưu ý khi đặt hàng, vui lòng ghi nội dung bạn muốn trong \"Lưu ý khi đặt hàng\" (ví dụ: vui lòng nhập email để nhận thông tin giảm giá / vui lòng cho biết nếu là tháng sinh nhật của bạn. Chúng tôi sẽ chuẩn bị quà).",
+    acceptUserMessageNotice:
+      'Cho phép khách hàng nhập tin nhắn ngắn trong trang xác nhận đơn hàng. Trường tin nhắn hiển thị sau lưu ý khi đặt hàng, vui lòng ghi nội dung bạn muốn trong "Lưu ý khi đặt hàng" (ví dụ: vui lòng nhập email để nhận thông tin giảm giá / vui lòng cho biết nếu là tháng sinh nhật của bạn. Chúng tôi sẽ chuẩn bị quà).',
     lineNotification: "Thông báo LINE",
     city: "Quận/huyện",
     zip: "Mã bưu điện",
@@ -313,9 +338,11 @@ const data = {
   editMenu: {
     menu: "Menu",
     enterItemName: "Vui lòng nhập tên sản phẩm",
-    enterItemAliasesName: "Vui lòng nhập tên khác của sản phẩm (ngoại ngữ, v.v.)",
+    enterItemAliasesName:
+      "Vui lòng nhập tên khác của sản phẩm (ngoại ngữ, v.v.)",
     enterItemDescription: "Vui lòng nhập mô tả",
-    enterItemMemo: "Ghi chú (không hiển thị trên màn hình khách hàng. Chỉ dòng đầu tiên hiển thị trong danh sách menu. Vui lòng không viết thông tin mật)",
+    enterItemMemo:
+      "Ghi chú (không hiển thị trên màn hình khách hàng. Chỉ dòng đầu tiên hiển thị trong danh sách menu. Vui lòng không viết thông tin mật)",
     enterItemOption: "Vui lòng nhập tùy chọn",
     item: "Sản phẩm",
     noItem: "Chưa đăng ký gì",
@@ -347,13 +374,15 @@ const data = {
     exclusionDateTime: "Ngày/giờ loại trừ bán",
     lunchDinner: "Trưa/Tối",
     itemOptions: "Tùy chọn",
-    itemOptionsNote: "Chỉ định tùy chọn của sản phẩm như topping, cỡ lớn, v.v. Nếu có 2 hoặc 3 tùy chọn, vui lòng phân cách bằng dấu phẩy (ví dụ: \"Gà, Lợn, Đậu phụ\"). Đối với tùy chọn có phí, vui lòng chỉ định giá ở cuối như (+100) (ví dụ: \"Thường, Cỡ lớn (+150), Cỡ đặc biệt (+300)\")",
+    itemOptionsNote:
+      'Chỉ định tùy chọn của sản phẩm như topping, cỡ lớn, v.v. Nếu có 2 hoặc 3 tùy chọn, vui lòng phân cách bằng dấu phẩy (ví dụ: "Gà, Lợn, Đậu phụ"). Đối với tùy chọn có phí, vui lòng chỉ định giá ở cuối như (+100) (ví dụ: "Thường, Cỡ lớn (+150), Cỡ đặc biệt (+300)")',
     itemAddOption: "Thêm tùy chọn",
     itemInvalidMessage: "Dữ liệu không đúng nên không thể công khai",
     saveAsDraft: "Lưu dưới dạng bản nháp (không hiển thị trong menu)",
     reallyDelete: "Bạn có chắc muốn xóa?",
     csvCategories: "Cài đặt danh mục cho dữ liệu Excel (tùy chọn)",
-    csvCategoriesNote: "Cài đặt danh mục để sử dụng trong dữ liệu Excel có thể tải xuống từ lịch sử đơn hàng",
+    csvCategoriesNote:
+      "Cài đặt danh mục để sử dụng trong dữ liệu Excel có thể tải xuống từ lịch sử đơn hàng",
     newCategory: "Mục mới",
     newCategoryAdd: "Thêm",
     category1: "Danh mục 1",
@@ -535,28 +564,40 @@ const data = {
     price: "Giá bán",
     priceDescription: "Vui lòng kiểm tra ở trang sản phẩm.",
     otherFees: "Chi phí khác ngoài giá sản phẩm",
-    otherFeesDescription: "Chi phí đi lại để đến cửa hàng và các chi phí liên quan đến di chuyển do khách hàng chịu.",
-    otherFeesDescriptionDelivery: "Phí giao hàng được tính riêng. Vui lòng kiểm tra phí giao hàng ở trang của từng cửa hàng.",
+    otherFeesDescription:
+      "Chi phí đi lại để đến cửa hàng và các chi phí liên quan đến di chuyển do khách hàng chịu.",
+    otherFeesDescriptionDelivery:
+      "Phí giao hàng được tính riêng. Vui lòng kiểm tra phí giao hàng ở trang của từng cửa hàng.",
     payment: "Thời điểm và phương thức thanh toán",
     paymentDescription: "Thanh toán thẻ tín dụng/Thanh toán tại cửa hàng",
     paymentDescriptionCard: "Thanh toán thẻ tín dụng",
     paymentDescriptionStore: "Thanh toán tại cửa hàng",
-    paymentDescriptionCardNote: "Ngay cả khi chọn thanh toán thẻ tín dụng trực tuyến, nếu xảy ra lỗi khi cửa hàng thực hiện thanh toán, sẽ được đổi thành thanh toán tại cửa hàng.",
+    paymentDescriptionCardNote:
+      "Ngay cả khi chọn thanh toán thẻ tín dụng trực tuyến, nếu xảy ra lỗi khi cửa hàng thực hiện thanh toán, sẽ được đổi thành thanh toán tại cửa hàng.",
     delivery: "Thời điểm và phương thức giao hàng",
     deliveryDescription: "Ngày chỉ định của khách hàng và nhận tại cửa hàng.",
     cancellation: "Điều kiện xử lý hủy và hủy hợp đồng",
-    cancellationDescription1: "Có thể hủy qua Internet cho đến khi cửa hàng đánh dấu đơn hàng là \"Đã nhận đơn\".",
-    cancellationDescription2: "Trong các trường hợp sau, cửa hàng có thể hủy giao dịch liên quan đến đơn đặt hàng. Ngay cả trong trường hợp hủy vì các lý do sau, về nguyên tắc khách hàng vẫn phải thanh toán số tiền tương đương giá trị giao dịch.",
-    cancellationDescription3: "Ngoài những điều trên, ngay cả sản phẩm đã được nhận đơn, có thể bị hủy do thiếu nguyên liệu, hết hàng, tập trung quá nhiều đơn đặt hàng, lỗi khi nhận đơn, hoặc các lý do khác của cửa hàng. Nếu đã thanh toán, có thể yêu cầu xử lý hoàn tiền từ cửa hàng, nhưng trừ khi cửa hàng cố ý hoặc sơ suất nghiêm trọng, không thể yêu cầu bồi thường thiệt hại vượt quá việc hoàn tiền.",
-    cancellationDescription4: "Không thể hủy sản phẩm sau khi hiển thị \"Đã nhận đơn\".",
-    cancellationDescription5: "Cửa hàng có thể hủy giao dịch liên quan đến đơn đặt hàng. Để biết chi tiết vui lòng tham khảo",
+    cancellationDescription1:
+      'Có thể hủy qua Internet cho đến khi cửa hàng đánh dấu đơn hàng là "Đã nhận đơn".',
+    cancellationDescription2:
+      "Trong các trường hợp sau, cửa hàng có thể hủy giao dịch liên quan đến đơn đặt hàng. Ngay cả trong trường hợp hủy vì các lý do sau, về nguyên tắc khách hàng vẫn phải thanh toán số tiền tương đương giá trị giao dịch.",
+    cancellationDescription3:
+      "Ngoài những điều trên, ngay cả sản phẩm đã được nhận đơn, có thể bị hủy do thiếu nguyên liệu, hết hàng, tập trung quá nhiều đơn đặt hàng, lỗi khi nhận đơn, hoặc các lý do khác của cửa hàng. Nếu đã thanh toán, có thể yêu cầu xử lý hoàn tiền từ cửa hàng, nhưng trừ khi cửa hàng cố ý hoặc sơ suất nghiêm trọng, không thể yêu cầu bồi thường thiệt hại vượt quá việc hoàn tiền.",
+    cancellationDescription4:
+      'Không thể hủy sản phẩm sau khi hiển thị "Đã nhận đơn".',
+    cancellationDescription5:
+      "Cửa hàng có thể hủy giao dịch liên quan đến đơn đặt hàng. Để biết chi tiết vui lòng tham khảo",
     cancellationDescription6: "tại đây.",
     takeoutTitle: "Mua mang về",
-    cancellationTakeoutDescription1: "Đã trôi qua 2 giờ kể từ khi hiển thị \"Sẵn sàng giao\"",
+    cancellationTakeoutDescription1:
+      'Đã trôi qua 2 giờ kể từ khi hiển thị "Sẵn sàng giao"',
     deliveryTitle: "Giao hàng",
-    cancellationDeliveryDescription1: "Đã trôi qua hơn 5 phút kể từ khi đến địa điểm giao hàng được chỉ định và không liên lạc được",
-    cancellationDeliveryDescription2: "Đã trôi qua hơn 15 phút kể từ khi đến địa điểm giao hàng được chỉ định",
-    cancellationDeliveryDescription3: "Chỉ định địa điểm giao hàng vi phạm quy định của điều khoản này",
+    cancellationDeliveryDescription1:
+      "Đã trôi qua hơn 5 phút kể từ khi đến địa điểm giao hàng được chỉ định và không liên lạc được",
+    cancellationDeliveryDescription2:
+      "Đã trôi qua hơn 15 phút kể từ khi đến địa điểm giao hàng được chỉ định",
+    cancellationDeliveryDescription3:
+      "Chỉ định địa điểm giao hàng vi phạm quy định của điều khoản này",
     link: "tại đây",
   },
   sitemenu: {
@@ -632,14 +673,18 @@ const data = {
     fromAmountSpent: "Từ số tiền chi tiêu",
     discount: "Giảm giá",
     notes: "Lưu ý khi sử dụng",
-    notes1: "Giảm giá từ chiến dịch sẽ tự động áp dụng khi vượt số tiền ghi trong điều kiện sử dụng. Vui lòng kiểm tra tổng số tiền ở trang xác nhận đơn hàng sau khi nhấn nút thanh toán.",
-    notes2: "Chỉ có thể sử dụng 1 chiến dịch. Nếu thuộc nhiều chiến dịch, chiến dịch có mức giảm giá tối đa sẽ được áp dụng.",
+    notes1:
+      "Giảm giá từ chiến dịch sẽ tự động áp dụng khi vượt số tiền ghi trong điều kiện sử dụng. Vui lòng kiểm tra tổng số tiền ở trang xác nhận đơn hàng sau khi nhấn nút thanh toán.",
+    notes2:
+      "Chỉ có thể sử dụng 1 chiến dịch. Nếu thuộc nhiều chiến dịch, chiến dịch có mức giảm giá tối đa sẽ được áp dụng.",
   },
   order: {
     allOrders: "Tất cả đơn hàng",
     menu: "Xem trang menu",
-    orderNotPlacedYet: "Đơn hàng chưa được xác nhận. Vui lòng kiểm tra nội dung và nhấn nút đặt hàng ở cuối trang.",
-    waitingPayment: "Đơn hàng chưa được xác nhận. Vui lòng nhập thông tin thanh toán và xác nhận",
+    orderNotPlacedYet:
+      "Đơn hàng chưa được xác nhận. Vui lòng kiểm tra nội dung và nhấn nút đặt hàng ở cuối trang.",
+    waitingPayment:
+      "Đơn hàng chưa được xác nhận. Vui lòng nhập thông tin thanh toán và xác nhận",
     yourOrder: "Đơn hàng của bạn",
     confirmOrder: "Xác nhận đơn hàng",
     editItems: "Chỉnh sửa đơn hàng",
@@ -684,7 +729,8 @@ const data = {
     thisIsLunchOrder: "Đây là đơn bữa trưa",
     thisIsDinnerOrder: "Đây là đơn bữa tối",
     alertReqireAddress: "Nhập chưa hoàn tất. Vui lòng kiểm tra.",
-    orderErrorMessage: "Không thể xử lý đơn hàng. Có thể sản phẩm trong giỏ hàng đã hết. Vui lòng quay lại trang trước và đặt lại.",
+    orderErrorMessage:
+      "Không thể xử lý đơn hàng. Có thể sản phẩm trong giỏ hàng đã hết. Vui lòng quay lại trang trước và đặt lại.",
     saveAddress: "Lưu địa chỉ giao hàng",
     order_canceled_by_customer: "Đã hủy (khách)",
     order_canceled_by_restaurant: "Đã hủy (cửa hàng)",
@@ -697,7 +743,8 @@ const data = {
     placeOrder: "Đặt hàng với thanh toán trực tuyến",
     or: "hoặc",
     placeOrderNoPayment: "Đặt hàng và thanh toán khi nhận",
-    placeOrderNoPaymentNote: "Không thanh toán tại đây mà thanh toán khi nhận hàng",
+    placeOrderNoPaymentNote:
+      "Không thanh toán tại đây mà thanh toán khi nhận hàng",
     submitPayment: "Xác nhận thanh toán",
     validating: "Đang xử lý...",
     thankyou: "Cảm ơn đơn hàng của bạn",
@@ -706,7 +753,8 @@ const data = {
     cancelOrder: "Hủy đơn hàng tại đây",
     cancelOrderConfirm: "Bạn có chắc muốn hủy đơn hàng?",
     cancelOrderComplete: "Đơn hàng này đã được hủy",
-    pleaseStay: "Nếu để trang này mở, bạn có thể biết trạng thái từ khi đặt đến khi nhận hàng.",
+    pleaseStay:
+      "Nếu để trang này mở, bạn có thể biết trạng thái từ khi đặt đến khi nhận hàng.",
     thanksMessage: "Tin nhắn từ cửa hàng",
     tip: "Tiền tip (đã bao gồm phí dịch vụ và thuế)",
     maxTip: "Số tiền tối đa {max}% (tùy chọn)",
@@ -719,10 +767,12 @@ const data = {
     timeToPickup: "Thời gian nhận hàng dự kiến",
     deliveryTimeRequested: "Thời gian giao hàng mong muốn",
     deliveryTimeToPickup: "Thời gian giao hàng dự kiến",
-    notAvailable: "Không có ngày hoạt động có thể đặt hàng, nên hiện tại không nhận đơn.",
+    notAvailable:
+      "Không có ngày hoạt động có thể đặt hàng, nên hiện tại không nhận đơn.",
     orderNotice: "Lưu ý khi đặt hàng",
     orderMessage: "Tin nhắn cho cửa hàng",
-    enterMessage: "Bạn có thể gửi tin nhắn cho cửa hàng. Nếu có yêu cầu trong \"Lưu ý khi đặt hàng\", vui lòng tham khảo để tạo tin nhắn.",
+    enterMessage:
+      'Bạn có thể gửi tin nhắn cho cửa hàng. Nếu có yêu cầu trong "Lưu ý khi đặt hàng", vui lòng tham khảo để tạo tin nhắn.',
     datePlaced: "Thời gian đặt hàng",
     dateAccepted: "Thời gian nhận đơn",
     dateEstimated: "Thời gian hoàn thành dự kiến",
@@ -744,8 +794,10 @@ const data = {
     paymentAndCancellation: "Về hủy và thanh toán",
     statusTitle: "Trạng thái đơn hàng",
     sortOrder: "Thứ tự hiển thị",
-    promotionNoteCard: "Số tiền chiến dịch được áp dụng khi thanh toán bằng \"Đặt hàng với thanh toán trực tuyến\"",
-    promotionNoteStore: "Số tiền chiến dịch được áp dụng khi mua bằng \"Đặt hàng và thanh toán khi nhận\"",
+    promotionNoteCard:
+      'Số tiền chiến dịch được áp dụng khi thanh toán bằng "Đặt hàng với thanh toán trực tuyến"',
+    promotionNoteStore:
+      'Số tiền chiến dịch được áp dụng khi mua bằng "Đặt hàng và thanh toán khi nhận"',
     sort: {
       newest: "Đơn hàng mới nhất",
       oldest: "Đơn hàng cũ nhất",
@@ -777,7 +829,8 @@ const data = {
       stripe_user_message_confirmed: "Đã thanh toán bằng thẻ tín dụng.",
       stripe_user_canceled: "Hủy thanh toán",
       stripe_user_message_canceled: "Thanh toán thẻ đã bị hủy",
-      stripe_user_message_just_payment_canceled: "Vui lòng thanh toán tại cửa hàng khi nhận",
+      stripe_user_message_just_payment_canceled:
+        "Vui lòng thanh toán tại cửa hàng khi nhận",
     },
     receipt: {
       receipt: "Biên lai",
@@ -788,7 +841,8 @@ const data = {
     },
     onlinePaymentStatus: "Trạng thái thanh toán thẻ",
     lineLink: "Tài khoản LINE chính thức của cửa hàng",
-    lineMessage: "Khi thêm tài khoản LINE chính thức làm bạn, thông tin từ cửa hàng sẽ được gửi trực tiếp đến bạn.",
+    lineMessage:
+      "Khi thêm tài khoản LINE chính thức làm bạn, thông tin từ cửa hàng sẽ được gửi trực tiếp đến bạn.",
     customerOrderHistory: "Lịch sử đơn hàng",
     orderTimes: "Đơn hàng",
     orderTimesUnit: "{count} lần",
@@ -816,8 +870,10 @@ const data = {
     discount: "Giảm giá",
     discountString: "Giảm giá",
     discountAlert: {
-      stripe: "Số tiền chiến dịch sau sẽ được áp dụng khi thanh toán bằng \"Đặt hàng với thanh toán trực tuyến\".",
-      instore: "Số tiền chiến dịch sau sẽ được áp dụng khi mua bằng \"Đặt hàng và thanh toán khi nhận\".",
+      stripe:
+        'Số tiền chiến dịch sau sẽ được áp dụng khi thanh toán bằng "Đặt hàng với thanh toán trực tuyến".',
+      instore:
+        'Số tiền chiến dịch sau sẽ được áp dụng khi mua bằng "Đặt hàng và thanh toán khi nhận".',
     },
     discountPriceSuffix: "Giảm giá",
     discountPriceMessage: "Có giảm giá",
@@ -837,7 +893,8 @@ const data = {
     setPostageFreeThreshold: "Cài đặt số tiền được miễn phí vận chuyển",
   },
   delivery: {
-    alert: "Khi cài đặt giao hàng, trước tiên vui lòng chỉ định vị trí cửa hàng trên bản đồ trong cài đặt cửa hàng.",
+    alert:
+      "Khi cài đặt giao hàng, trước tiên vui lòng chỉ định vị trí cửa hàng trên bản đồ trong cài đặt cửa hàng.",
     areaSetting: "Cài đặt khu vực giao hàng",
     deliveryRange: "Bán kính khu vực giao hàng",
     updateDeliveryRange: "Cập nhật phạm vi",
@@ -853,17 +910,23 @@ const data = {
     setAreaText: "Chỉ định khu vực giao hàng bằng văn bản",
     setDeliveryLocation: "Chỉ định vị trí giao hàng",
     estimatedDistance: "Khoảng cách ước tính",
-    preparationTimeNotice: "Vui lòng nhập thời gian ngắn nhất từ khi khách hàng đặt đến khi giao hàng xong.",
+    preparationTimeNotice:
+      "Vui lòng nhập thời gian ngắn nhất từ khi khách hàng đặt đến khi giao hàng xong.",
     setTheAddressInTheDeliveryLocation: "Phản ánh địa chỉ lên bản đồ",
-    setTheAddressInTheDeliveryLocationDescription: "* Tính khoảng cách giữa cửa hàng và địa chỉ giao.",
+    setTheAddressInTheDeliveryLocationDescription:
+      "* Tính khoảng cách giữa cửa hàng và địa chỉ giao.",
     availableDeliveryDistance: "Khoảng cách có thể giao hàng",
     reference: "(Tham khảo)",
     aboutDeliveryArea: "Về khu vực có thể giao hàng",
     yen: "yên",
-    deliveryFreeThresholdNotice: "Nếu tổng số tiền sản phẩm vượt giá này, phí giao hàng sẽ tự động là 0 yên.",
-    deliveryFeeSettingNotice: "Nếu không cần phí giao hàng, vui lòng đặt là 0 yên.",
-    deliveryThresholdNotice: "Nếu tổng số tiền sản phẩm vượt giá này, có thể nhận đơn giao hàng.",
-    setAreaMapNotice: "Chỉ định phạm vi có thể giao hàng đại khái bằng vòng tròn lấy cửa hàng làm tâm. Phạm vi này chỉ mang tính tham khảo, vui lòng quyết định xem có thể giao hàng không khi nhận đơn.",
+    deliveryFreeThresholdNotice:
+      "Nếu tổng số tiền sản phẩm vượt giá này, phí giao hàng sẽ tự động là 0 yên.",
+    deliveryFeeSettingNotice:
+      "Nếu không cần phí giao hàng, vui lòng đặt là 0 yên.",
+    deliveryThresholdNotice:
+      "Nếu tổng số tiền sản phẩm vượt giá này, có thể nhận đơn giao hàng.",
+    setAreaMapNotice:
+      "Chỉ định phạm vi có thể giao hàng đại khái bằng vòng tròn lấy cửa hàng làm tâm. Phạm vi này chỉ mang tính tham khảo, vui lòng quyết định xem có thể giao hàng không khi nhận đơn.",
   },
   button: {
     adminTop: "Trang quản lý chính",
@@ -922,11 +985,14 @@ const data = {
     },
     invalidPhoneNumber: "Vui lòng nhập số điện thoại",
     invalidValidationCode: "Có chứa ký tự không đúng",
-    "auth/too-many-requests": "Xác thực thất bại liên tiếp. Vui lòng chờ một lúc rồi thử lại.",
+    "auth/too-many-requests":
+      "Xác thực thất bại liên tiếp. Vui lòng chờ một lúc rồi thử lại.",
     "auth/invalid-phone-number": "Vui lòng nhập số điện thoại chính xác",
-    "auth/invalid-verification-code": "Mã xác thực SMS không hợp lệ. Vui lòng gửi lại mã xác thực SMS và nhập lại",
+    "auth/invalid-verification-code":
+      "Mã xác thực SMS không hợp lệ. Vui lòng gửi lại mã xác thực SMS và nhập lại",
     "auth/missing-verification-code": "Chưa nhập mã xác thực SMS",
-    "auth/code-expired": "Mã xác thực SMS đã hết hạn. Vui lòng gửi lại mã xác thực SMS và nhập lại",
+    "auth/code-expired":
+      "Mã xác thực SMS đã hết hạn. Vui lòng gửi lại mã xác thực SMS và nhập lại",
   },
   admin: {
     welcomeMessage: "Chào mừng!",
@@ -977,14 +1043,18 @@ const data = {
     notes: {
       title: "Lưu ý",
       userRestaurantsTitle: "Về danh sách nhà hàng dành cho khách hàng",
-      userRestaurantsBody: "Nhà hàng đã đăng ký sẽ không tự động hiển thị trong danh sách nhà hàng dành cho khách hàng. Sau khi cài đặt cửa hàng, thông tin menu, phương thức thanh toán và công khai cửa hàng, vui lòng nộp đơn bằng nút \"Đăng ký đăng tin\". Sẽ được đăng tin trong danh sách nhà hàng dành cho khách hàng sau khi ban vận hành thẩm định.",
+      userRestaurantsBody:
+        'Nhà hàng đã đăng ký sẽ không tự động hiển thị trong danh sách nhà hàng dành cho khách hàng. Sau khi cài đặt cửa hàng, thông tin menu, phương thức thanh toán và công khai cửa hàng, vui lòng nộp đơn bằng nút "Đăng ký đăng tin". Sẽ được đăng tin trong danh sách nhà hàng dành cho khách hàng sau khi ban vận hành thẩm định.',
       notificationSoundTitle: "Về âm thanh thông báo",
-      notificationSoundBody: "Âm thanh thông báo liên quan đến đơn hàng sẽ phát khi hiển thị trang danh sách đơn hàng (không phát trên trang này). Nếu muốn phát âm thanh thông báo của nhiều cửa hàng đồng thời, vui lòng chuẩn bị môi trường có thể hiển thị trang danh sách đơn hàng của từng cửa hàng. Máy tính cần cửa sổ riêng, máy tính bảng cần thiết bị riêng.",
+      notificationSoundBody:
+        "Âm thanh thông báo liên quan đến đơn hàng sẽ phát khi hiển thị trang danh sách đơn hàng (không phát trên trang này). Nếu muốn phát âm thanh thông báo của nhiều cửa hàng đồng thời, vui lòng chuẩn bị môi trường có thể hiển thị trang danh sách đơn hàng của từng cửa hàng. Máy tính cần cửa sổ riêng, máy tính bảng cần thiết bị riêng.",
     },
-    hidePayment: "Cơ chế tính phí sẽ sớm được cung cấp. Vui lòng chờ trong giây lát.",
+    hidePayment:
+      "Cơ chế tính phí sẽ sớm được cung cấp. Vui lòng chờ trong giây lát.",
     encourageToReadManual: {
-      before: "Đối với những người chưa đăng ký với Omochikaeri.com, trước tiên vui lòng xem qua",
-      manualName: "\"Hướng dẫn sử dụng\"",
+      before:
+        "Đối với những người chưa đăng ký với Omochikaeri.com, trước tiên vui lòng xem qua",
+      manualName: '"Hướng dẫn sử dụng"',
       after: "sau đó tiến hành đăng ký.",
     },
     forSignup: "Dành cho nhà hàng chưa đăng ký",
@@ -1010,19 +1080,24 @@ const data = {
     addNewRestaurant: "Thêm nhà hàng",
     noPaymentAccount: "Chưa đăng ký tài khoản thanh toán",
     payments: {
-      unsetWarning: "Cần cài đặt phương thức thanh toán để nhận đơn hàng. Vui lòng cài đặt \"Phương thức thanh toán\" ở cuối trang này.",
-      required: "Vui lòng cài đặt ít nhất một trong \"Thanh toán trực tuyến\" hoặc \"Thanh toán khi nhận hàng\".",
+      unsetWarning:
+        'Cần cài đặt phương thức thanh toán để nhận đơn hàng. Vui lòng cài đặt "Phương thức thanh toán" ở cuối trang này.',
+      required:
+        'Vui lòng cài đặt ít nhất một trong "Thanh toán trực tuyến" hoặc "Thanh toán khi nhận hàng".',
       onlinePayment: "Thanh toán trực tuyến",
       statusNotConnected: "Tài khoản Stripe chưa kết nối",
       statusConnected: "Tài khoản Stripe đã kết nối",
-      pleaseConnect: "Để kích hoạt thanh toán thẻ tín dụng trực tuyến, cần kết nối với dịch vụ thanh toán Stripe.",
+      pleaseConnect:
+        "Để kích hoạt thanh toán thẻ tín dụng trực tuyến, cần kết nối với dịch vụ thanh toán Stripe.",
       connectStripe: "Kết nối tài khoản Stripe",
       disconnectStripe: "Ngắt kết nối tài khoản Stripe",
       reallyDisconnectStripe: "Bạn có chắc muốn ngắt kết nối tài khoản Stripe?",
       openDashboard: "Mở bảng điều khiển Stripe",
       onsitePayment: "Thanh toán khi nhận hàng",
-      pleaseCheck: "Nếu cho phép thanh toán tại cửa hàng, vui lòng bật hộp kiểm dưới đây.",
-      onsitePaymentNote: "Vui lòng lưu ý về việc không thu được tiền do hủy đột ngột hoặc đùa giỡn.",
+      pleaseCheck:
+        "Nếu cho phép thanh toán tại cửa hàng, vui lòng bật hộp kiểm dưới đây.",
+      onsitePaymentNote:
+        "Vui lòng lưu ý về việc không thu được tiền do hủy đột ngột hoặc đùa giỡn.",
       enableOnsitePayment: "Cho phép thanh toán khi nhận hàng",
     },
     mail: {
@@ -1040,8 +1115,10 @@ const data = {
       smaregiManualLink: "Cách sử dụng kết nối Smaregi",
     },
     needEmailVerification: "Vui lòng hoàn tất xác thực email.",
-    noteEmailVerification1: "Vui lòng kiểm tra email được gửi từ {email} và nhấp URL trong email để hoàn tất xác thực.",
-    noteEmailVerification2: "Nếu chưa nhận email xác thực, vui lòng kiểm tra thư mục thư rác và cài đặt bộ lọc, sau đó gửi lại email xác thực.",
+    noteEmailVerification1:
+      "Vui lòng kiểm tra email được gửi từ {email} và nhấp URL trong email để hoàn tất xác thực.",
+    noteEmailVerification2:
+      "Nếu chưa nhận email xác thực, vui lòng kiểm tra thư mục thư rác và cài đặt bộ lọc, sau đó gửi lại email xác thực.",
     sendVerificationCode: "Gửi lại email xác thực",
     verificationCodeSent: "Đã gửi",
     verificationCodeError: "Không thể gửi. Vui lòng chờ một lúc và thử lại",
@@ -1057,11 +1134,15 @@ const data = {
     itemNotPublished: "Chưa công khai",
     editAbout: "Thay đổi thông tin cửa hàng",
     privateMode: "Ở chế độ riêng tư",
-    pleaseChangePublic: "Sau khi nhập thông tin cửa hàng, vui lòng chuyển sang công khai. Hiện tại khách hàng không thấy trang cửa hàng.",
+    pleaseChangePublic:
+      "Sau khi nhập thông tin cửa hàng, vui lòng chuyển sang công khai. Hiện tại khách hàng không thấy trang cửa hàng.",
     directory: {
-      status: "Trạng thái đăng tin trong danh sách nhà hàng dành cho khách hàng",
-      requestWarning: "Sau khi cài đặt thanh toán và công khai cửa hàng, vui lòng nộp đơn",
-      requestingWarning: "Nếu chưa cài đặt thanh toán và công khai cửa hàng, vui lòng cài đặt",
+      status:
+        "Trạng thái đăng tin trong danh sách nhà hàng dành cho khách hàng",
+      requestWarning:
+        "Sau khi cài đặt thanh toán và công khai cửa hàng, vui lòng nộp đơn",
+      requestingWarning:
+        "Nếu chưa cài đặt thanh toán và công khai cửa hàng, vui lòng cài đặt",
       notListed: "Chưa đăng tin",
       requestList: "Đăng ký đăng tin",
       waiting: "Đang xin",
@@ -1081,7 +1162,8 @@ const data = {
       suspendUntil: "Ngừng đến {display}",
       suspendDayUntil: "Ngừng đến hết ngày {display}",
       suspendNewOrders: "Nhận đơn mới",
-      notSuspendAvailable: "Giờ hoạt động hôm nay đã hết, không thể cài đặt ngừng.",
+      notSuspendAvailable:
+        "Giờ hoạt động hôm nay đã hết, không thể cài đặt ngừng.",
       suspendForAllDay: "Ngừng cả ngày",
       suspending: "Đang tạm ngừng nhận đơn",
       unsuspendAt: "Thời gian bỏ ngừng ",
@@ -1097,17 +1179,22 @@ const data = {
       infinityNotificationOn: "Thông báo lại mỗi 1 phút",
       infinityNotificationOff: "Chỉ thông báo khi nhận đơn",
       soundTest: "Thử",
-      paymentIsNotCompleted: "Lưu ý: Khi nhấn nút \"Đã nhận đơn\", thanh toán thẻ sẽ được xử lý.",
+      paymentIsNotCompleted:
+        'Lưu ý: Khi nhấn nút "Đã nhận đơn", thanh toán thẻ sẽ được xử lý.',
       cancelButton: "Hủy đơn hàng",
       cancelTitle: "Hủy đơn hàng",
-      cancelMessage: "Vui lòng liên hệ khách hàng và thông báo rằng đơn hàng bị hủy.",
-      updateOrderMessage: "Vui lòng liên hệ khách hàng và xác nhận thay đổi đơn hàng.",
+      cancelMessage:
+        "Vui lòng liên hệ khách hàng và thông báo rằng đơn hàng bị hủy.",
+      updateOrderMessage:
+        "Vui lòng liên hệ khách hàng và xác nhận thay đổi đơn hàng.",
       paymentCancelButton: "Chỉ hủy thanh toán thẻ",
       delete: "Hủy đơn hàng này",
       deleteConfirm: "(Không thể hoàn tác hủy)",
       paymentCancelTitle: "Chỉ hủy thanh toán thẻ",
-      paymentCancelMessage: "Sẽ đổi thành thanh toán tại cửa hàng. Vui lòng liên hệ khách hàng và thông báo rằng sẽ là thanh toán tại cửa hàng. Đơn hàng không bị hủy.",
-      waitingPaymentWarninig: "Đơn hàng này chưa hoàn tất thanh toán nên không thể nhận.",
+      paymentCancelMessage:
+        "Sẽ đổi thành thanh toán tại cửa hàng. Vui lòng liên hệ khách hàng và thông báo rằng sẽ là thanh toán tại cửa hàng. Đơn hàng không bị hủy.",
+      waitingPaymentWarninig:
+        "Đơn hàng này chưa hoàn tất thanh toán nên không thể nhận.",
       paymentCancel: "Chỉ hủy thanh toán thẻ",
       paymentCancelConfirm: "(Không thể hoàn tác hủy)",
       placedDate: "Ngày đặt hàng",
@@ -1116,7 +1203,8 @@ const data = {
       lineAdd: "Thêm tài khoản LINE",
       lineUsers: "Tài khoản LINE đã đăng ký",
       lineDelete: "Bạn có chắc muốn xóa?",
-      lineSafariPrivate: "Lưu ý: Không thể liên kết LINE khi sử dụng chế độ duyệt riêng tư của Safari.",
+      lineSafariPrivate:
+        "Lưu ý: Không thể liên kết LINE khi sử dụng chế độ duyệt riêng tư của Safari.",
       history: "Tất cả lịch sử đơn hàng",
       more: "Xem thêm",
       all: "Xem tất cả",
@@ -1129,7 +1217,8 @@ const data = {
       cancelOrderChange: "Hủy thay đổi đơn hàng",
       confirmOrderChange: "Xác nhận thay đổi đơn hàng",
       cardPaymentMessage: "Thanh toán trước. Không cần nhận tiền tại cửa hàng",
-      storePaymentMessage: "Thanh toán khi nhận hàng. Vui lòng nhận tiền tại cửa hàng",
+      storePaymentMessage:
+        "Thanh toán khi nhận hàng. Vui lòng nhận tiền tại cửa hàng",
       cardPayment: "Thanh toán trước",
       storePayment: "Thanh toán khi nhận hàng",
     },
@@ -1159,9 +1248,12 @@ const data = {
       "download-csv": "Tải xuống dữ liệu Excel (tóm tắt báo cáo hàng tháng)",
       "download-csv-details": "Tải xuống dữ liệu Excel (chi tiết)",
       "download-csv-all": "Tải xuống dữ liệu Excel (doanh thu)",
-      "download-csv-history": "Tải xuống dữ liệu Excel (tóm tắt lịch sử đơn hàng)",
-      "download-csv-history-details": "Tải xuống dữ liệu Excel (chi tiết lịch sử đơn hàng)",
-      "download-csv-monthly-details": "Tải xuống dữ liệu Excel (chi tiết báo cáo hàng tháng)",
+      "download-csv-history":
+        "Tải xuống dữ liệu Excel (tóm tắt lịch sử đơn hàng)",
+      "download-csv-history-details":
+        "Tải xuống dữ liệu Excel (chi tiết lịch sử đơn hàng)",
+      "download-csv-monthly-details":
+        "Tải xuống dữ liệu Excel (chi tiết báo cáo hàng tháng)",
     },
     totp: {
       setup: "Cài đặt xác thực hai yếu tố",
@@ -1171,10 +1263,12 @@ const data = {
       codePlaceholder: "Mã 6 chữ số",
       enrollmentComplete: "Đã hoàn tất cài đặt xác thực hai yếu tố",
       verification: "Xác thực hai yếu tố",
-      verificationMessage: "Vui lòng nhập mã 6 chữ số được tạo bởi ứng dụng xác thực",
+      verificationMessage:
+        "Vui lòng nhập mã 6 chữ số được tạo bởi ứng dụng xác thực",
       signupWarning: {
         title: "Nếu QR Code không hiển thị",
-        message: "Cài đặt xác thực hai yếu tố có thể thực hiện từ trang của tôi sau khi xác thực email. Nếu QR Code không hiển thị, vui lòng nhấn \"Bỏ qua\" để tiếp tục.",
+        message:
+          'Cài đặt xác thực hai yếu tố có thể thực hiện từ trang của tôi sau khi xác thực email. Nếu QR Code không hiển thị, vui lòng nhấn "Bỏ qua" để tiếp tục.',
       },
       error: {
         generateFailed: "Cài đặt xác thực hai yếu tố thất bại",
@@ -1197,10 +1291,12 @@ const data = {
       code: {
         "auth/user-not-found": "Chưa đăng ký.",
         "auth/wrong-password": "Mật khẩu không hợp lệ.",
-        "auth/too-many-requests": "Quá nhiều lần đăng nhập thất bại. Vui lòng chờ một lúc và đăng nhập lại.",
+        "auth/too-many-requests":
+          "Quá nhiều lần đăng nhập thất bại. Vui lòng chờ một lúc và đăng nhập lại.",
         "auth/invalid-email": "Email không hợp lệ.",
         "auth/invalid-login-credentials": "Email hoặc mật khẩu không đúng.",
-        "auth/unauthorized-continue-uri": "Tên miền chưa được đăng ký trong danh sách trắng.",
+        "auth/unauthorized-continue-uri":
+          "Tên miền chưa được đăng ký trong danh sách trắng.",
         "auth/internal-error": "Mật khẩu không hợp lệ.",
         "auth/invalid-credential": "Email or Password is invalid.",
       },
@@ -1212,19 +1308,23 @@ const data = {
     messages: {
       title: "Tin nhắn",
       childInvitationAccept: "Chấp nhận lời mời và trở thành tài khoản phụ",
-      childInvitationAcceptMessage: "Khi trở thành tài khoản phụ, nhà hàng đã thêm với tài khoản này sẽ không thể thao tác được",
+      childInvitationAcceptMessage:
+        "Khi trở thành tài khoản phụ, nhà hàng đã thêm với tài khoản này sẽ không thể thao tác được",
       childInvitationDeny: "Từ chối lời mời",
       accept: "Chấp nhận",
       deny: "Từ chối",
-      childInvitationMessage1: "Đã nhận lời mời từ chủ sở hữu quản lý các cửa hàng sau",
+      childInvitationMessage1:
+        "Đã nhận lời mời từ chủ sở hữu quản lý các cửa hàng sau",
       childInvitationMessage2: "Cửa hàng này",
-      childInvitationMessage3: "Nếu muốn chuyển thành tài khoản phụ quản lý cửa hàng này, vui lòng nhấn chấp nhận. Nếu từ chối, vui lòng nhấn từ chối.",
+      childInvitationMessage3:
+        "Nếu muốn chuyển thành tài khoản phụ quản lý cửa hàng này, vui lòng nhấn chấp nhận. Nếu từ chối, vui lòng nhấn từ chối.",
     },
     subAccounts: {
       index: "Quản lý tài khoản phụ",
       openDashboard: "Trang quản lý tài khoản phụ",
       manualLink: "Cách sử dụng tài khoản phụ",
-      description: "Có thể cài đặt/quản lý tài khoản phụ chỉ có thể thao tác một số cửa hàng nhất định.",
+      description:
+        "Có thể cài đặt/quản lý tài khoản phụ chỉ có thể thao tác một số cửa hàng nhất định.",
       accountNotice: "Tài khoản phụ được mời cần đăng ký người dùng trước",
       title: "Quản lý tài khoản phụ",
       subaccountlist: "Danh sách tài khoản phụ",
@@ -1236,7 +1336,8 @@ const data = {
       invite: "Mời",
       invitedList: "Lời mời đã gửi",
       deleteSubaccount: "Hủy tài khoản phụ",
-      guidance: "Để cài đặt cửa hàng thành tài khoản phụ, vui lòng nhấp vào tên tài khoản phụ.",
+      guidance:
+        "Để cài đặt cửa hàng thành tài khoản phụ, vui lòng nhấp vào tên tài khoản phụ.",
       send: "Gửi",
       sending: "Đang gửi",
       enterName: "Vui lòng nhập tên cho tài khoản phụ",
@@ -1248,25 +1349,32 @@ const data = {
         denied: "Đã bị từ chối",
       },
       numberOfShops: "cửa hàng",
-      selectRestaurant: "Vui lòng chọn cửa hàng mà tài khoản này có thể thao tác.",
+      selectRestaurant:
+        "Vui lòng chọn cửa hàng mà tài khoản này có thể thao tác.",
       confirmDeletechild: "Sẽ hủy tài khoản phụ",
     },
     line: {
       title: "Kết nối LINE",
       settings: "Cài đặt kênh LINE",
       users: "Danh sách người dùng LINE",
-      notice1: "Có thể kết nối tài khoản LINE chính thức của cửa hàng với Omochikaeri.com và thông báo trạng thái đơn hàng cho khách hàng qua cuộc trò chuyện của tài khoản LINE chính thức của cửa hàng.",
-      notice2: "Để sử dụng, cần cài đặt kênh LINE Login và Messaging API trên trang nhà phát triển LINE.",
-      notice3: "Messaging API sử dụng cùng một cái với tài khoản LINE chính thức.",
-      notice4: "Cần đăng ký Messaging API là \"Bot được liên kết\" trong kênh LINE Login.",
-      notice5: "Ngoài ra, cần đăng ký URL do Omochikaeri chỉ định vào \"Callback URL\" của LINE Login.",
+      notice1:
+        "Có thể kết nối tài khoản LINE chính thức của cửa hàng với Omochikaeri.com và thông báo trạng thái đơn hàng cho khách hàng qua cuộc trò chuyện của tài khoản LINE chính thức của cửa hàng.",
+      notice2:
+        "Để sử dụng, cần cài đặt kênh LINE Login và Messaging API trên trang nhà phát triển LINE.",
+      notice3:
+        "Messaging API sử dụng cùng một cái với tài khoản LINE chính thức.",
+      notice4:
+        'Cần đăng ký Messaging API là "Bot được liên kết" trong kênh LINE Login.',
+      notice5:
+        'Ngoài ra, cần đăng ký URL do Omochikaeri chỉ định vào "Callback URL" của LINE Login.',
       loginClientId: "LINE Login: Channel ID",
       loginChannelSecret: "LINE Login: Channel Secret",
       messagingAccessToken: "Messaging API: Channel Access Token",
       callbackUrl: "LINE Login: Callback URL",
       showBelow: "Nằm ở phần dưới của cài đặt",
       enabled: "Kích hoạt",
-      callbackURLCopyToLine: "Vui lòng sao chép giá trị này và cài đặt trong LINE.",
+      callbackURLCopyToLine:
+        "Vui lòng sao chép giá trị này và cài đặt trong LINE.",
     },
     smaregi: {
       index: "Kết nối Smaregi",
@@ -1318,7 +1426,8 @@ const data = {
     notifyMe: "Nhận thông báo qua LINE",
     notifyMeFromFriend: "Nhận thông báo từ LINE cửa hàng",
     addFriend: "Thêm bạn",
-    addFriendDescription: "Để nhận thông báo trạng thái đơn hàng, bạn cần thêm \"Tài khoản chính thức Omochikaeri.com\" làm bạn bè.",
+    addFriendDescription:
+      'Để nhận thông báo trạng thái đơn hàng, bạn cần thêm "Tài khoản chính thức Omochikaeri.com" làm bạn bè.',
   },
   trace: {
     thankyou: "Cảm ơn sự hợp tác của bạn",
@@ -1334,7 +1443,8 @@ const data = {
     message: {
       generic: "Vui lòng kiểm tra lại và truy cập.",
       line: "Vui lòng kết nối lại LINE từ đầu.",
-      cardError: "Nếu lỗi lặp lại, vui lòng \"Chỉ hủy thanh toán thẻ\" và xử lý đơn hàng.",
+      cardError:
+        'Nếu lỗi lặp lại, vui lòng "Chỉ hủy thanh toán thẻ" và xử lý đơn hàng.',
     },
     code: {
       auth: {
@@ -1352,7 +1462,8 @@ const data = {
       },
       stripe: {
         confirm: "Xử lý thanh toán thẻ thất bại.",
-        confirm2: "Nếu tiếp tục thất bại, vui lòng hủy thanh toán thẻ và đổi sang thanh toán tại cửa hàng",
+        confirm2:
+          "Nếu tiếp tục thất bại, vui lòng hủy thanh toán thẻ và đổi sang thanh toán tại cửa hàng",
         cancel: "Hủy thanh toán thẻ thất bại",
         connect: "Kết nối với Stripe thất bại.",
         disconnect: "Ngắt kết nối với Stripe thất bại.",
@@ -1378,7 +1489,7 @@ const data = {
   dialogTips: {
     paymentMethods: {
       title: "Phương thức thanh toán tại cửa hàng",
-      body: "Chức năng hướng dẫn phương thức thanh toán có thể sử dụng tại cửa hàng cho khách hàng chọn \"Thanh toán khi nhận hàng\".",
+      body: 'Chức năng hướng dẫn phương thức thanh toán có thể sử dụng tại cửa hàng cho khách hàng chọn "Thanh toán khi nhận hàng".',
     },
     phonenumber: {
       title: "Số điện thoại",
@@ -1398,7 +1509,8 @@ const data = {
     },
   },
   printer: {
-    description: "Chức năng in tự động nội dung đơn hàng từ máy in biên lai Star Micronics khi có đơn hàng.",
+    description:
+      "Chức năng in tự động nội dung đơn hàng từ máy in biên lai Star Micronics khi có đơn hàng.",
     serverURL: "URL máy chủ CloudPRNT",
     guidance: "Vui lòng cài đặt URL này trong máy in.",
     reset: "Đặt lại URL máy chủ",
@@ -1418,7 +1530,8 @@ const data = {
       length: "Vui lòng nhập tin nhắn không quá 500 ký tự.",
     },
     location: {
-      noLocation: "Sau khi nhập địa chỉ, vui lòng phản ánh vị trí giao hàng lên bản đồ. Cũng có thể nhập bằng cách chạm.",
+      noLocation:
+        "Sau khi nhập địa chỉ, vui lòng phản ánh vị trí giao hàng lên bản đồ. Cũng có thể nhập bằng cách chạm.",
     },
     email: {
       empty: "Vui lòng nhập email",
@@ -1427,9 +1540,12 @@ const data = {
   },
   aboutService: {
     title: "Giới thiệu dịch vụ",
-    paragraph1: "COVID-19 không chỉ cướp đi sinh mạng của nhiều người mà còn gây tổn thất lớn cho nền kinh tế. Đặc biệt, các nhà hàng và quán bar - nơi cung cấp \"địa điểm tụ họp\" - đã chịu thiệt hại trực tiếp từ phong tỏa và lệnh ở nhà, khiến hàng triệu người mất việc và nhiều chủ nhà hàng buộc phải đóng cửa.",
-    paragraph2: "Chúng tôi đã tạo ra {serviceName} để hỗ trợ các nhà hàng và quán bar đó. Với {serviceName}, các nhà hàng có thể bắt đầu dịch vụ mua mang về mà không mất thêm phí (chỉ tính phí xử lý thẻ tín dụng). Chủ nhà hàng tạo trang riêng và đăng ký menu tại đó (không cần kỹ năng đặc biệt), khách hàng đặt hàng và thanh toán rồi đến nhận tại nhà hàng đúng giờ nấu xong.",
-    paragraph3: "Singularity Society là một tổ chức phi lợi nhuận (NPO) hoạt động hướng đến một thế giới đang thay đổi lớn nhờ tiến bộ công nghệ.",
+    paragraph1:
+      'COVID-19 không chỉ cướp đi sinh mạng của nhiều người mà còn gây tổn thất lớn cho nền kinh tế. Đặc biệt, các nhà hàng và quán bar - nơi cung cấp "địa điểm tụ họp" - đã chịu thiệt hại trực tiếp từ phong tỏa và lệnh ở nhà, khiến hàng triệu người mất việc và nhiều chủ nhà hàng buộc phải đóng cửa.',
+    paragraph2:
+      "Chúng tôi đã tạo ra {serviceName} để hỗ trợ các nhà hàng và quán bar đó. Với {serviceName}, các nhà hàng có thể bắt đầu dịch vụ mua mang về mà không mất thêm phí (chỉ tính phí xử lý thẻ tín dụng). Chủ nhà hàng tạo trang riêng và đăng ký menu tại đó (không cần kỹ năng đặc biệt), khách hàng đặt hàng và thanh toán rồi đến nhận tại nhà hàng đúng giờ nấu xong.",
+    paragraph3:
+      "Singularity Society là một tổ chức phi lợi nhuận (NPO) hoạt động hướng đến một thế giới đang thay đổi lớn nhờ tiến bộ công nghệ.",
     sincerely: "",
     profileName: "Satoshi Nakajima",
     profileTitle: "Chủ tịch Singularity Society",
