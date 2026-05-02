@@ -8,7 +8,7 @@
       <div
         class="mx-6 mt-2 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
       >
-        <area-item :name="$t('find.areaAll')" :id="'all'" />
+        <area-item :name="$t('find.areaAll')" id="all" />
       </div>
     </div>
 

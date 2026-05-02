@@ -111,11 +111,10 @@ export default defineComponent({
           query(collection(db, "restaurants"), where(documentId(), "in", arr)),
         );
         if (!resCols.empty) {
-          restaurantsObj.value = Object.assign(
-            {},
-            restaurantsObj.value,
-            array2obj(resCols.docs.map(doc2data("restaurant"))),
-          );
+          restaurantsObj.value = {
+            ...restaurantsObj.value,
+            ...array2obj(resCols.docs.map(doc2data("restaurant"))),
+          };
         }
       }
     });

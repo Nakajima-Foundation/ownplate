@@ -160,7 +160,7 @@ export default defineComponent({
     };
     const saveTitle = (name: string) => {
       // save and update this.
-      ctx.emit("updateTitle", { id: props.title.id, name: name });
+      ctx.emit("updateTitle", { id: props.title.id, name });
     };
     const updateTitleLunchDinner = (newValue: boolean, target: string) => {
       const l = target === "lunch" ? newValue : !!props.title.availableLunch;

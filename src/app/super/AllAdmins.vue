@@ -133,7 +133,7 @@ export default defineComponent({
       ).data();
       info.profile = profile || {};
       infos.value[admin.id] = info;
-      infos.value = Object.assign({}, infos.value);
+      infos.value = { ...infos.value };
     };
     const updateQuery = () => {
       detacher?.();

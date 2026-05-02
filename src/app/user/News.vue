@@ -2,7 +2,7 @@
   <div>
     <!-- Header -->
     <div class="mx-6 mt-4 flex items-center space-x-4">
-      <router-link :to="'/'">
+      <router-link to="/">
         <div
           class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
         >

@@ -69,7 +69,7 @@ export default defineComponent({
             order.timeConfirmed &&
             moment(order.timeConfirmed).format("YYYY/MM/DD HH:mm"),
           statusName: t(`order.status.${status}`),
-          totalCount: totalCount,
+          totalCount,
           total: order.totalCharge,
           discountPrice: order.discountPrice || 0,
           beforeDiscountPrice: order.totalCharge + (order.discountPrice || 0),

@@ -11,7 +11,7 @@
       </div>
 
       <div>
-        <router-link :to="'/admin/news/'">
+        <router-link to="/admin/news/">
           <span class="text-sm font-bold">{{ $t("admin.news.newsTop") }}</span>
         </router-link>
       </div>

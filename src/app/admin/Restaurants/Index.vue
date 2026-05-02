@@ -1340,7 +1340,7 @@ export default defineComponent({
     };
     const previewProfile = ref<string | null>(null);
     const handleProfileImage = (file: File) => {
-      const newFile = Object.assign({}, files.value);
+      const newFile = { ...files.value };
       previewProfile.value = URL.createObjectURL(file);
 
       newFile["profile"] = file;
@@ -1348,7 +1348,7 @@ export default defineComponent({
     };
     const previewCover = ref<string | null>(null);
     const handleCoverImage = (file: File) => {
-      const newFile = Object.assign({}, files.value);
+      const newFile = { ...files.value };
       previewCover.value = URL.createObjectURL(file);
 
       newFile["cover"] = file;

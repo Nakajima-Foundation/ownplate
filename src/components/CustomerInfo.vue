@@ -102,12 +102,16 @@ export default defineComponent({
       mapObj.value = map;
 
       // Add markers using AdvancedMarkerElement
+      // Google Maps API mounts the marker via the `map` option in the constructor;
+      // the returned reference is intentionally discarded.
       // shop marker
+      // eslint-disable-next-line no-new
       new google.maps.marker.AdvancedMarkerElement({
         map,
         position: props.customer.location,
         content: getCustomerIcon(),
       });
+      // eslint-disable-next-line no-new
       new google.maps.marker.AdvancedMarkerElement({
         map,
         position: props.shopInfo.location,
