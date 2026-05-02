@@ -61,7 +61,8 @@ const data = {
     signInRestaurant: "店铺管理员",
     deleteAccount: "删除账户",
     reallyDeleteAccount: "过去的记录将被删除。确定要删除账户吗？",
-    reSendSMSforDeleteAccount: "为最终确认，将向注册的电话号码发送 SMS 验证码。",
+    reSendSMSforDeleteAccount:
+      "为最终确认，将向注册的电话号码发送 SMS 验证码。",
     stripeInfo: "信用卡信息",
     noCard: "无",
     deleteCard: "删除卡片信息",
@@ -183,7 +184,8 @@ const data = {
     enterOrderNotice: "请输入下单注意事项",
     enterOrderThanks: "请输入下单后感谢信息",
     enablePrelineTitle: "启用换行",
-    enablePrelineDescription: "在店铺介绍、下单注意事项、店铺留言、菜单说明中反映输入的换行",
+    enablePrelineDescription:
+      "在店铺介绍、下单注意事项、店铺留言、菜单说明中反映输入的换行",
     introduction: "店铺介绍",
     orderNotice: "下单时注意事项",
     orderThanks: "下单后感谢信息",
@@ -263,13 +265,15 @@ const data = {
     searchMap: "从地址搜索地图",
     enterAddress: "请输入地址搜索",
     updateMap: "设置位置",
-    businessHourDescription: "请勾选营业日并设置时间。如需因休息等拆分营业时间，请在另一时段表单设置后半段时间。",
+    businessHourDescription:
+      "请勾选营业日并设置时间。如需因休息等拆分营业时间，请在另一时段表单设置后半段时间。",
     businessHourOption: "另一时段 (可选)",
     copyPreviousDay: "复制前一天",
     copySunDay: "复制周日",
     lastOrderTime: {
       title: "最后下单时间",
-      notes1: "如需在考虑了「营业结束时间」和「取餐准备时间」的「最后可下单时间」之前截单，请在此设置。",
+      notes1:
+        "如需在考虑了「营业结束时间」和「取餐准备时间」的「最后可下单时间」之前截单，请在此设置。",
       notes2: "未设置时将采用考虑了「营业结束时间」和「取餐准备时间」的时间。",
     },
     draftDescription: "保存为草稿 (客户无法查看店铺页面)",
@@ -281,7 +285,8 @@ const data = {
     reallyDelete: "确定要删除此店铺吗？删除后，店铺/菜单信息全部消失",
     reallyOnListDelete: "确定要取消刊登吗？",
     deliveryConfigTitle: "配送",
-    deliveryDescription: "可管理自营配送。设置可配送区域等后，客户下单时可选择外带或配送。(修改店铺设置后请记得保存)",
+    deliveryDescription:
+      "可管理自营配送。设置可配送区域等后，客户下单时可选择外带或配送。(修改店铺设置后请记得保存)",
     deliveryConfigLink: "前往配送设置",
     printerConfigTitle: "手动打印设置",
     enablePrinter: "启用打印机",
@@ -290,7 +295,8 @@ const data = {
     printerDescriptionConfig: "自动打印设置在此",
     phoneCall: "通过电话通知订单",
     phoneCallDescription: "在线下单时通过店铺电话通知",
-    phoneCallNotice: "目前免费提供，但因电话通话产生费用，此功能将来可能收费。届时即使开启此功能，也不会突然产生费用。",
+    phoneCallNotice:
+      "目前免费提供，但因电话通话产生费用，此功能将来可能收费。届时即使开启此功能，也不会突然产生费用。",
     phoneCallNotification: "电话通知",
     emailNotification: "邮件通知",
     emailNotificationTitle: "通过邮件通知订单",
@@ -301,10 +307,12 @@ const data = {
     moveToLineConfig: "跳转至 LINE 通知设置界面。跳转前请记得保存此页。",
     openDaysConfig: "营业日时设置",
     lunchOrDinnerToggle: "午餐/晚餐自动切换",
-    lunchOrDinnerNotice: "请务必在每个营业日输入两段营业时间。上方为午餐，下方 (另一时段 (可选)) 为晚餐营业时间。",
+    lunchOrDinnerNotice:
+      "请务必在每个营业日输入两段营业时间。上方为午餐，下方 (另一时段 (可选)) 为晚餐营业时间。",
     acceptUserMessage: "接收留言",
     acceptUserMessageDescription: "接收客户留言",
-    acceptUserMessageNotice: "在订单确认界面允许客户输入一句留言。下单注意事项下方显示留言栏，请在「下单注意事项」中填写留言内容。(例: 为联系优惠请输入邮箱。/ 如为生日月请告知。我们会准备礼物。)",
+    acceptUserMessageNotice:
+      "在订单确认界面允许客户输入一句留言。下单注意事项下方显示留言栏，请在「下单注意事项」中填写留言内容。(例: 为联系优惠请输入邮箱。/ 如为生日月请告知。我们会准备礼物。)",
     lineNotification: "LINE 通知",
     city: "市町村",
     zip: "邮政编码",
@@ -315,7 +323,8 @@ const data = {
     enterItemName: "请输入商品名",
     enterItemAliasesName: "请输入商品别名 (外语等)",
     enterItemDescription: "请输入描述",
-    enterItemMemo: "备注 (客户界面不显示。仅第一行显示在菜单列表上。请勿记录机密信息)",
+    enterItemMemo:
+      "备注 (客户界面不显示。仅第一行显示在菜单列表上。请勿记录机密信息)",
     enterItemOption: "请输入选项",
     item: "商品",
     noItem: "没有注册任何内容",
@@ -347,7 +356,8 @@ const data = {
     exclusionDateTime: "销售排除日/时间",
     lunchDinner: "午餐/晚餐",
     itemOptions: "选项",
-    itemOptionsNote: "设置配料、大份等商品选项。二选一或三选一时，请用半角逗号分隔(例:「鸡，猪，豆腐」)。有偿选项时，最后用 (+100) 形式指定价格 (例:「普通，大份 (+150)，特大 (+300)」)",
+    itemOptionsNote:
+      "设置配料、大份等商品选项。二选一或三选一时，请用半角逗号分隔(例:「鸡，猪，豆腐」)。有偿选项时，最后用 (+100) 形式指定价格 (例:「普通，大份 (+150)，特大 (+300)」)",
     itemAddOption: "添加选项",
     itemInvalidMessage: "因数据未正确输入，不予公开",
     saveAsDraft: "保存为草稿 (不显示在菜单中)",
@@ -541,21 +551,26 @@ const data = {
     paymentDescription: "信用卡支付/店铺支付",
     paymentDescriptionCard: "信用卡支付",
     paymentDescriptionStore: "店铺支付",
-    paymentDescriptionCardNote: "即使选择在线信用卡支付，若店铺执行结算时出错，将改为现场支付。",
+    paymentDescriptionCardNote:
+      "即使选择在线信用卡支付，若店铺执行结算时出错，将改为现场支付。",
     delivery: "商品交付时间及方式",
     deliveryDescription: "客户指定日期于店铺取餐。",
     cancellation: "取消处理条件、解约条件",
     cancellationDescription1: "店铺将订单改为「已受理」前，可在网上取消。",
-    cancellationDescription2: "以下情况下店铺可能解除商品订单相关交易。即使因以下原因解除，原则上仍需支付相应交易金额。",
-    cancellationDescription3: "除上述外，即使已受理的商品，也可能因材料不足、售罄、订单过多集中、接单错误、其他加盟店原因而取消。若已付款，可向加盟店申请退款，但除加盟店有故意或重大过失外，不得要求退款之外的损害赔偿。",
+    cancellationDescription2:
+      "以下情况下店铺可能解除商品订单相关交易。即使因以下原因解除，原则上仍需支付相应交易金额。",
+    cancellationDescription3:
+      "除上述外，即使已受理的商品，也可能因材料不足、售罄、订单过多集中、接单错误、其他加盟店原因而取消。若已付款，可向加盟店申请退款，但除加盟店有故意或重大过失外，不得要求退款之外的损害赔偿。",
     cancellationDescription4: "「已受理」显示后不可取消商品。",
     cancellationDescription5: "店铺可能解除商品订单相关交易。详情请参见",
     cancellationDescription6: "请参考。",
     takeoutTitle: "外带",
     cancellationTakeoutDescription1: "「取餐准备完成」显示后经过 2 小时的情况",
     deliveryTitle: "配送",
-    cancellationDeliveryDescription1: "到达指定配送地点后经过 5 分钟以上且无法联系的情况",
-    cancellationDeliveryDescription2: "到达指定配送地点后经过 15 分钟以上的情况",
+    cancellationDeliveryDescription1:
+      "到达指定配送地点后经过 5 分钟以上且无法联系的情况",
+    cancellationDeliveryDescription2:
+      "到达指定配送地点后经过 15 分钟以上的情况",
     cancellationDeliveryDescription3: "指定违反本约定的场所为配送地点的情况",
     link: "此处",
   },
@@ -632,7 +647,8 @@ const data = {
     fromAmountSpent: "从使用金额",
     discount: "折扣",
     notes: "使用注意事项",
-    notes1: "活动折扣在超过使用条件中的金额时自动应用。按结账按钮后，请在订单确认界面确认合计金额。",
+    notes1:
+      "活动折扣在超过使用条件中的金额时自动应用。按结账按钮后，请在订单确认界面确认合计金额。",
     notes2: "仅可使用 1 个活动。符合多个活动时适用折扣额最大的活动。",
   },
   order: {
@@ -684,7 +700,8 @@ const data = {
     thisIsLunchOrder: "这是午餐订单",
     thisIsDinnerOrder: "这是晚餐订单",
     alertReqireAddress: "输入未完成。请确认。",
-    orderErrorMessage: "订单处理失败。购物车中的商品可能已售罄。请返回页面重新下单。",
+    orderErrorMessage:
+      "订单处理失败。购物车中的商品可能已售罄。请返回页面重新下单。",
     saveAddress: "保存配送地址",
     order_canceled_by_customer: "已取消 (客户)",
     order_canceled_by_restaurant: "已取消 (店铺)",
@@ -722,7 +739,8 @@ const data = {
     notAvailable: "无可下单的营业日，目前不接受订单。",
     orderNotice: "下单注意事项",
     orderMessage: "给店铺留言",
-    enterMessage: "可向店铺留言。若「下单注意事项」中有请求，请参考后撰写留言。",
+    enterMessage:
+      "可向店铺留言。若「下单注意事项」中有请求，请参考后撰写留言。",
     datePlaced: "下单时间",
     dateAccepted: "接单时间",
     dateEstimated: "完成预定时间",
@@ -855,15 +873,18 @@ const data = {
     estimatedDistance: "预计距离",
     preparationTimeNotice: "请输入客户下单后至配送完成所需的最短时间。",
     setTheAddressInTheDeliveryLocation: "在地图上反映地址",
-    setTheAddressInTheDeliveryLocationDescription: "* 计算店铺与配送地址的距离。",
+    setTheAddressInTheDeliveryLocationDescription:
+      "* 计算店铺与配送地址的距离。",
     availableDeliveryDistance: "可配送距离",
     reference: "(参考)",
     aboutDeliveryArea: "关于可配送区域",
     yen: "日元",
-    deliveryFreeThresholdNotice: "商品合计金额超过此价格时，自动将配送费设为 0 日元。",
+    deliveryFreeThresholdNotice:
+      "商品合计金额超过此价格时，自动将配送费设为 0 日元。",
     deliveryFeeSettingNotice: "不需要配送费时请设为 0 日元。",
     deliveryThresholdNotice: "商品合计金额超过此价格时，可接受配送。",
-    setAreaMapNotice: "以店铺为中心用圆圈指定大致可配送范围。此范围仅作参考，请在下单时判断是否可配送后接单。",
+    setAreaMapNotice:
+      "以店铺为中心用圆圈指定大致可配送范围。此范围仅作参考，请在下单时判断是否可配送后接单。",
   },
   button: {
     adminTop: "管理界面首页",
@@ -924,7 +945,8 @@ const data = {
     invalidValidationCode: "包含不正确的字符",
     "auth/too-many-requests": "连续验证失败。请稍后再验证",
     "auth/invalid-phone-number": "请输入正确的电话号码",
-    "auth/invalid-verification-code": "SMS 验证码无效。请重新发送 SMS 验证码并输入",
+    "auth/invalid-verification-code":
+      "SMS 验证码无效。请重新发送 SMS 验证码并输入",
     "auth/missing-verification-code": "未输入 SMS 验证码",
     "auth/code-expired": "SMS 验证码已过期。请重新发送 SMS 验证码并输入",
   },
@@ -977,9 +999,11 @@ const data = {
     notes: {
       title: "注意",
       userRestaurantsTitle: "关于客户用店铺列表",
-      userRestaurantsBody: "注册的店铺不会自动显示在客户用店铺列表中。请设置店铺、菜单信息、支付方式，公开店铺后按「申请刊登」按钮申请。经运营审核后将刊登在客户用店铺列表中。",
+      userRestaurantsBody:
+        "注册的店铺不会自动显示在客户用店铺列表中。请设置店铺、菜单信息、支付方式，公开店铺后按「申请刊登」按钮申请。经运营审核后将刊登在客户用店铺列表中。",
       notificationSoundTitle: "关于通知声音",
-      notificationSoundBody: "与订单相关的通知声音在订单列表页显示时播放 (本页不播放)。如需同时播放多个店铺的通知声音，请准备可显示各店铺订单列表页的环境。电脑上需要其他窗口，平板上需要其他设备。",
+      notificationSoundBody:
+        "与订单相关的通知声音在订单列表页显示时播放 (本页不播放)。如需同时播放多个店铺的通知声音，请准备可显示各店铺订单列表页的环境。电脑上需要其他窗口，平板上需要其他设备。",
     },
     hidePayment: "收费机制即将提供。请稍候。",
     encourageToReadManual: {
@@ -1040,8 +1064,10 @@ const data = {
       smaregiManualLink: "Smaregi 联动使用方法",
     },
     needEmailVerification: "请完成邮箱地址验证。",
-    noteEmailVerification1: "请查收从 {email} 发送的邮件，点击邮件中的 URL 完成验证。",
-    noteEmailVerification2: "若尚未收到验证邮件，请检查垃圾邮件文件夹或过滤设置等，然后重新发送验证邮件。",
+    noteEmailVerification1:
+      "请查收从 {email} 发送的邮件，点击邮件中的 URL 完成验证。",
+    noteEmailVerification2:
+      "若尚未收到验证邮件，请检查垃圾邮件文件夹或过滤设置等，然后重新发送验证邮件。",
     sendVerificationCode: "重新发送验证邮件",
     verificationCodeSent: "已发送",
     verificationCodeError: "发送失败。请稍后再试",
@@ -1106,7 +1132,8 @@ const data = {
       delete: "取消此订单",
       deleteConfirm: "(取消后不可撤销)",
       paymentCancelTitle: "仅取消卡片支付",
-      paymentCancelMessage: "将改为店铺支付。请联系客户告知店铺支付。订单不会被取消。",
+      paymentCancelMessage:
+        "将改为店铺支付。请联系客户告知店铺支付。订单不会被取消。",
       waitingPaymentWarninig: "此订单因支付未完成无法接受。",
       paymentCancel: "仅取消卡片支付",
       paymentCancelConfirm: "(此操作不可撤销)",
@@ -1174,7 +1201,8 @@ const data = {
       verificationMessage: "请输入认证 App 生成的 6 位数验证码",
       signupWarning: {
         title: "二维码未显示时",
-        message: "两步验证可在邮箱验证后从个人中心设置。如二维码未显示，请按「跳过」继续。",
+        message:
+          "两步验证可在邮箱验证后从个人中心设置。如二维码未显示，请按「跳过」继续。",
       },
       error: {
         generateFailed: "两步验证设置失败",
@@ -1212,13 +1240,15 @@ const data = {
     messages: {
       title: "消息",
       childInvitationAccept: "接受邀请成为子账号",
-      childInvitationAcceptMessage: "成为子账号后，将无法操作使用此账号添加的店铺。",
+      childInvitationAcceptMessage:
+        "成为子账号后，将无法操作使用此账号添加的店铺。",
       childInvitationDeny: "拒绝邀请",
       accept: "接受",
       deny: "拒绝",
       childInvitationMessage1: "收到管理以下店铺的业主邀请",
       childInvitationMessage2: "这些店铺",
-      childInvitationMessage3: "若要变更为管理此店铺的子账号，请按接受。若要拒绝，请按拒绝。",
+      childInvitationMessage3:
+        "若要变更为管理此店铺的子账号，请按接受。若要拒绝，请按拒绝。",
     },
     subAccounts: {
       index: "子账号管理",
@@ -1255,11 +1285,14 @@ const data = {
       title: "LINE 联动",
       settings: "LINE 频道设置",
       users: "LINE 用户列表",
-      notice1: "将店铺的 LINE 官方账号与 Omochikaeri.com 联动，可在店铺的 LINE 官方账号聊天中向客户通知订单状态。",
+      notice1:
+        "将店铺的 LINE 官方账号与 Omochikaeri.com 联动，可在店铺的 LINE 官方账号聊天中向客户通知订单状态。",
       notice2: "使用需要在 LINE 开发者网站设置 LINE 登录频道和 Messaging API。",
       notice3: "Messaging API 使用与 LINE 官方账号相同的。",
-      notice4: "需要将 Messaging API 作为「链接的机器人」注册到 LINE 登录频道。",
-      notice5: "此外，需要在 LINE 登录的「回调 URL」中注册 Omochikaeri 指定的 URL。",
+      notice4:
+        "需要将 Messaging API 作为「链接的机器人」注册到 LINE 登录频道。",
+      notice5:
+        "此外，需要在 LINE 登录的「回调 URL」中注册 Omochikaeri 指定的 URL。",
       loginClientId: "LINE 登录: 频道 ID",
       loginChannelSecret: "LINE 登录: 频道密钥",
       messagingAccessToken: "Messaging API: 频道访问令牌",
@@ -1318,7 +1351,8 @@ const data = {
     notifyMe: "通过 LINE 接收通知",
     notifyMeFromFriend: "从店铺接收 LINE",
     addFriend: "添加好友",
-    addFriendDescription: "要接收订单状态通知，需要将「Omochikaeri.com 官方账号」添加为好友。",
+    addFriendDescription:
+      "要接收订单状态通知，需要将「Omochikaeri.com 官方账号」添加为好友。",
   },
   trace: {
     thankyou: "感谢您的配合",
@@ -1427,9 +1461,12 @@ const data = {
   },
   aboutService: {
     title: "关于本服务",
-    paragraph1: "新冠病毒不仅夺去了许多人的生命，也对经济造成了巨大打击。尤其是提供「人群聚集场所」的餐厅和酒吧，因封城和居家隔离而受到直接冲击，不仅产生了大量失业者，被迫歇业的经营者也为数不少。",
-    paragraph2: "我们为了支援这样的餐厅和酒吧，创建了「{serviceName}」。使用「{serviceName}」，餐厅可以无需额外手续费开始外带服务。餐厅创建专属页面，在上面登记菜单（无需雇用网络顾问）。顾客在该页面下单、完成支付，然后配合烹饪时间到店取餐。",
-    paragraph3: "Singularity Society是一家NPO（非营利型一般社团法人），致力于面向因技术进步而发生巨大变化的世界开展活动。",
+    paragraph1:
+      "新冠病毒不仅夺去了许多人的生命，也对经济造成了巨大打击。尤其是提供「人群聚集场所」的餐厅和酒吧，因封城和居家隔离而受到直接冲击，不仅产生了大量失业者，被迫歇业的经营者也为数不少。",
+    paragraph2:
+      "我们为了支援这样的餐厅和酒吧，创建了「{serviceName}」。使用「{serviceName}」，餐厅可以无需额外手续费开始外带服务。餐厅创建专属页面，在上面登记菜单（无需雇用网络顾问）。顾客在该页面下单、完成支付，然后配合烹饪时间到店取餐。",
+    paragraph3:
+      "Singularity Society是一家NPO（非营利型一般社团法人），致力于面向因技术进步而发生巨大变化的世界开展活动。",
     sincerely: "",
     profileName: "中岛聪",
     profileTitle: "Singularity Society 代表理事",

@@ -1090,8 +1090,7 @@ export default defineComponent({
 
             await orderChange(params);
             isOrderChange.value = false;
-
-              } catch (error) {
+          } catch (error) {
             console.error(errorMessage(error), error);
             dialogStore.setErrorMessage({
               code: "order.update",

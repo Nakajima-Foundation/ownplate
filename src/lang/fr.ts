@@ -2,14 +2,16 @@ const data = {
   auth: {
     reauthenticate: {
       title: "Veuillez saisir à nouveau votre mot de passe",
-      message: "Pour des raisons de sécurité, veuillez confirmer votre mot de passe.",
+      message:
+        "Pour des raisons de sécurité, veuillez confirmer votre mot de passe.",
       error: {
         noUser: "Utilisateur introuvable",
         failed: "Échec de l'authentification",
       },
     },
     signupTerms: {
-      message: "En soumettant ce formulaire, vous acceptez les {terms} et la {privacy}.",
+      message:
+        "En soumettant ce formulaire, vous acceptez les {terms} et la {privacy}.",
       terms: "Conditions d'utilisation",
       privacy: "Politique de confidentialité",
     },
@@ -43,14 +45,16 @@ const data = {
   comma: ", ",
   restaurantCard: {
     title: "Informations de la carte",
-    description: "Gérer les informations de carte enregistrées pour ce restaurant",
+    description:
+      "Gérer les informations de carte enregistrées pour ce restaurant",
   },
   profile: {
     title: "My Page",
     address: "Informations personnelles",
     resetAddress: "Réinitialiser les informations",
     resetAddressMessage: "Réinitialiser les informations personnelles",
-    resetAddressModify: "Vous pouvez modifier vos informations personnelles lors d'une commande de livraison",
+    resetAddressModify:
+      "Vous pouvez modifier vos informations personnelles lors d'une commande de livraison",
     loginStatus: "Sign-in Status",
     displayName: "Name",
     lineConnection: "LINE connnection",
@@ -60,8 +64,10 @@ const data = {
     signIn: "Sign In as a User",
     signInRestaurant: "Sign In as a Restaurant",
     deleteAccount: "Delete Account",
-    reallyDeleteAccount: "Do you really want to delete this account? All the data will be deleted.",
-    reSendSMSforDeleteAccount: "Nous enverrons un code de vérification SMS au numéro de téléphone enregistré pour la confirmation finale.",
+    reallyDeleteAccount:
+      "Do you really want to delete this account? All the data will be deleted.",
+    reSendSMSforDeleteAccount:
+      "Nous enverrons un code de vérification SMS au numéro de téléphone enregistré pour la confirmation finale.",
     stripeInfo: "Associated Credit Card",
     noCard: "Not saved",
     deleteCard: "Delete Card Info",
@@ -87,12 +93,16 @@ const data = {
       },
       enable: "Activer l'authentification à deux facteurs",
       disable: "Désactiver l'authentification à deux facteurs",
-      emailVerificationRequired: "La vérification de l'adresse e-mail est requise",
+      emailVerificationRequired:
+        "La vérification de l'adresse e-mail est requise",
       disableConfirmTitle: "Désactiver l'authentification à deux facteurs ?",
-      disableConfirmMessage: "Désactiver l'authentification à deux facteurs réduira le niveau de sécurité de votre compte. Êtes-vous sûr ?",
+      disableConfirmMessage:
+        "Désactiver l'authentification à deux facteurs réduira le niveau de sécurité de votre compte. Êtes-vous sûr ?",
       error: {
-        disableFailed: "Échec de la désactivation de l'authentification à deux facteurs",
-        tokenExpired: "Session expirée. Veuillez saisir à nouveau votre mot de passe.",
+        disableFailed:
+          "Échec de la désactivation de l'authentification à deux facteurs",
+        tokenExpired:
+          "Session expirée. Veuillez saisir à nouveau votre mot de passe.",
       },
     },
   },
@@ -149,7 +159,8 @@ const data = {
     saveDraft: "Save as Draft",
     new: "New",
     copy: "Copy This Restaurant",
-    copyAlert: "Copy this restaurant and create it as a new private restaurant.",
+    copyAlert:
+      "Copy this restaurant and create it as a new private restaurant.",
     copyMenu: "Copy this item to the following restaurant",
     copyMenuAlert: "Copy this item to the restaurant as a new private item.",
     current: "Current",
@@ -166,7 +177,8 @@ const data = {
     price: "{count}",
     include: " (TVA incluse)",
     exclude: " (+ TVA)",
-    taxExample: "If set the price as {count} in the settings, will be shown as: ",
+    taxExample:
+      "If set the price as {count} in the settings, will be shown as: ",
   },
   editRestaurant: {
     enterRestaurantName: "Enter restaurant name",
@@ -183,7 +195,8 @@ const data = {
     enterOrderNotice: "Enter order notifications",
     enterOrderThanks: "Enter order thanks message",
     enablePrelineTitle: "Activer les sauts de ligne",
-    enablePrelineDescription: "Active les sauts de ligne saisis dans la présentation du restaurant, les notes de commande, les remerciements de commande et la description des menus.",
+    enablePrelineDescription:
+      "Active les sauts de ligne saisis dans la présentation du restaurant, les notes de commande, les remerciements de commande et la description des menus.",
     introduction: "Shop Introduction",
     orderNotice: "Order notifications",
     orderThanks: "Order thanks message",
@@ -201,10 +214,12 @@ const data = {
     paymentMethods: "Moyens de paiement sur place",
     timeToPickup: "Time to pickup",
     preparationTime: "Takeaway preparation time",
-    preparationTimeDescription: "Délai le plus court entre la prise de commande et le retrait",
+    preparationTimeDescription:
+      "Délai le plus court entre la prise de commande et le retrait",
     deliveryPreparationTime: "Délai de préparation pour livraison",
     reservationTheDayBefore: "Reservation the day before",
-    reservationTheDayBeforeDescription: "À partir de quand acceptez-vous les commandes ?",
+    reservationTheDayBeforeDescription:
+      "À partir de quand acceptez-vous les commandes ?",
     reservationTheDaysBefore: {
       zero: "Only on the day",
       one: "From 1 day in advance",
@@ -263,48 +278,61 @@ const data = {
     searchMap: "Rechercher la carte depuis l'adresse",
     enterAddress: "Please enter an address to search",
     updateMap: "Update Map",
-    businessHourDescription: "Check the business day of the week and set the business hours. If you need to split your business hours, such as a break, please enter the latter time in the Another Hours form.",
+    businessHourDescription:
+      "Check the business day of the week and set the business hours. If you need to split your business hours, such as a break, please enter the latter time in the Another Hours form.",
     businessHourOption: "Another Hours (optional)",
     copyPreviousDay: "Copy Previous Day",
     copySunDay: "Copy Sunday",
     lastOrderTime: {
       title: "Last Order Time",
-      notes1: "Configure this if you would like to close orders prior to the \"final order time,\" considering the \"business closing time\" and \"order preparation time.\"",
-      notes2: "If this is not configured, the time will be determined by considering the \"business closing time\" and \"order preparation time.\"",
+      notes1:
+        'Configure this if you would like to close orders prior to the "final order time," considering the "business closing time" and "order preparation time."',
+      notes2:
+        'If this is not configured, the time will be determined by considering the "business closing time" and "order preparation time."',
     },
     draftDescription: "Save as Draft.",
     publishDescription: "Save and publish your restaurant.",
     draftWarning: "You can publish this by correcting the red frame.",
-    updateMapDescription: "Set restaurant location from your restaurant name and address.",
+    updateMapDescription:
+      "Set restaurant location from your restaurant name and address.",
     noRestaurant: "No restaurant name",
     noStreetAddress: "No street address",
     reallyDelete: "Do you really want to delete this?",
     reallyOnListDelete: "Voulez-vous vraiment retirer cette fiche ?",
     deliveryConfigTitle: "Livraison",
-    deliveryDescription: "Vous pouvez gérer votre propre livraison. En définissant la zone de livraison, les clients peuvent choisir entre retrait ou livraison lors de la commande. (N'oubliez pas d'enregistrer si vous avez modifié les paramètres du magasin.)",
+    deliveryDescription:
+      "Vous pouvez gérer votre propre livraison. En définissant la zone de livraison, les clients peuvent choisir entre retrait ou livraison lors de la commande. (N'oubliez pas d'enregistrer si vous avez modifié les paramètres du magasin.)",
     deliveryConfigLink: "Vers les paramètres de livraison",
     printerConfigTitle: "Paramètres d'impression manuelle",
     enablePrinter: "Enable print",
-    printerDescription: "Vous pouvez imprimer les informations de commande à l'aide d'une imprimante Star Micronics connectée en Bluetooth.",
-    printerDescription2: "Si activé, un bouton d'impression s'affichera sur la page de détails de la commande après acceptation.",
+    printerDescription:
+      "Vous pouvez imprimer les informations de commande à l'aide d'une imprimante Star Micronics connectée en Bluetooth.",
+    printerDescription2:
+      "Si activé, un bouton d'impression s'affichera sur la page de détails de la commande après acceptation.",
     printerDescriptionConfig: "Paramètres d'impression automatique ici",
     phoneCall: "Phone Notification",
-    phoneCallDescription: "Notifie le magasin par téléphone lorsqu'une nouvelle commande en ligne arrive.",
-    phoneCallNotice: "Actuellement fourni gratuitement, cette fonctionnalité pourra devenir payante à l'avenir en raison des frais d'appel. Dans ce cas, même si cette fonction est activée, aucun coût ne s'appliquera soudainement.",
+    phoneCallDescription:
+      "Notifie le magasin par téléphone lorsqu'une nouvelle commande en ligne arrive.",
+    phoneCallNotice:
+      "Actuellement fourni gratuitement, cette fonctionnalité pourra devenir payante à l'avenir en raison des frais d'appel. Dans ce cas, même si cette fonction est activée, aucun coût ne s'appliquera soudainement.",
     phoneCallNotification: "Notification téléphonique",
     emailNotification: "Email Notification",
     emailNotificationTitle: "Email Notification",
     emailNotificationDescription: "Send an email when a new order comes in",
-    emailNotificationNotice: "If you can't find it in your inbox, please check your spam folder.",
+    emailNotificationNotice:
+      "If you can't find it in your inbox, please check your spam folder.",
     orderConfirmViewConfig: "Paramètres de l'écran de confirmation de commande",
     notificationConfig: "Paramètres de notification",
-    moveToLineConfig: "Accéder à l'écran des paramètres de notification LINE. N'oubliez pas d'enregistrer cette page avant de vous déplacer.",
+    moveToLineConfig:
+      "Accéder à l'écran des paramètres de notification LINE. N'oubliez pas d'enregistrer cette page avant de vous déplacer.",
     openDaysConfig: "Paramètres des jours et heures d'ouverture",
     lunchOrDinnerToggle: "Basculement automatique déjeuner/dîner",
-    lunchOrDinnerNotice: "Veuillez saisir deux créneaux d'ouverture pour chaque jour. Le premier est pour le déjeuner, le second (autre plage horaire, optionnel) est pour le dîner.",
+    lunchOrDinnerNotice:
+      "Veuillez saisir deux créneaux d'ouverture pour chaque jour. Le premier est pour le déjeuner, le second (autre plage horaire, optionnel) est pour le dîner.",
     acceptUserMessage: "Accepter les messages",
     acceptUserMessageDescription: "Accepter les messages des clients",
-    acceptUserMessageNotice: "Permet au client de saisir un court message sur l'écran de confirmation de commande. Le champ message s'affiche après les notes de commande : veuillez indiquer le contenu attendu dans les « notes de commande » (ex. : « Entrez votre adresse e-mail pour recevoir des offres », « Indiquez si c'est votre mois d'anniversaire pour recevoir un cadeau »).",
+    acceptUserMessageNotice:
+      "Permet au client de saisir un court message sur l'écran de confirmation de commande. Le champ message s'affiche après les notes de commande : veuillez indiquer le contenu attendu dans les « notes de commande » (ex. : « Entrez votre adresse e-mail pour recevoir des offres », « Indiquez si c'est votre mois d'anniversaire pour recevoir un cadeau »).",
     lineNotification: "Notification LINE",
     city: "city",
     zip: "zip",
@@ -313,9 +341,11 @@ const data = {
   editMenu: {
     menu: "Menu",
     enterItemName: "Enter item name",
-    enterItemAliasesName: "Please enter an alias for the item (e.g. foreign language)",
+    enterItemAliasesName:
+      "Please enter an alias for the item (e.g. foreign language)",
     enterItemDescription: "Enter item description",
-    enterItemMemo: "Mémo (non affiché côté client. Seule la première ligne apparaît dans la liste de menus. N'y inscrivez pas d'informations confidentielles.)",
+    enterItemMemo:
+      "Mémo (non affiché côté client. Seule la première ligne apparaît dans la liste de menus. N'y inscrivez pas d'informations confidentielles.)",
     enterItemOption: "Enter item option",
     item: "Item",
     noItem: "No Item",
@@ -324,10 +354,12 @@ const data = {
     doneReorder: "Done",
     required: "Required",
     itemName: "Item name",
-    itemAliasesName: "Item Alias (This information is only displayed in the admin page.)",
+    itemAliasesName:
+      "Item Alias (This information is only displayed in the admin page.)",
     price: "Price",
     priceSettings: "Paramètre de prix",
-    availableDayTimeSettings: "Paramètres des horaires de commande de l'article",
+    availableDayTimeSettings:
+      "Paramètres des horaires de commande de l'article",
     free: "Gratuit",
     optionsPreview: "Options Preview",
     priceChange: "Price Change",
@@ -347,13 +379,16 @@ const data = {
     exclusionDateTime: "Date/heure d'exclusion",
     lunchDinner: "Déjeuner/Dîner",
     itemOptions: "Item options",
-    itemOptionsNote: "For altenatives, use comma to separate them (e.g., \"Chicken, Pork, Tofu\"). You may add a price to an option with (+N), where N is the price.",
+    itemOptionsNote:
+      'For altenatives, use comma to separate them (e.g., "Chicken, Pork, Tofu"). You may add a price to an option with (+N), where N is the price.',
     itemAddOption: "Add Option",
-    itemInvalidMessage: "This item is not on your menu because data is invalid.",
+    itemInvalidMessage:
+      "This item is not on your menu because data is invalid.",
     saveAsDraft: "Save as draft. This item is not on your menus.",
     reallyDelete: "Do you really want to delete this?",
     csvCategories: "Category settings for Excel file (optional)",
-    csvCategoriesNote: "This is a category setting for use within the Excel file that can be downloaded from the Order History.",
+    csvCategoriesNote:
+      "This is a category setting for use within the Excel file that can be downloaded from the Order History.",
     newCategory: "New Item",
     newCategoryAdd: "Add",
     category1: "Category 1",
@@ -493,12 +528,15 @@ const data = {
     lastOrder: "Last order for today",
     todayNotAvailable: "Not available today",
     noAvailableTime: "No orderable time",
-    deliveryThresholdNotice: "La livraison est possible à partir de {price} de commande.",
+    deliveryThresholdNotice:
+      "La livraison est possible à partir de {price} de commande.",
     deliveryArea: "Zone de livraison",
-    deliveryAreaInfo: "Les détails seront affichés sur la page de commande suivante.",
+    deliveryAreaInfo:
+      "Les détails seront affichés sur la page de commande suivante.",
     deliveryFeeInfo: "Frais de livraison : {price}.",
     deliveryFeeThresholdInfo: "Livraison gratuite à partir de {price}",
-    deliveryAreaRadius: "Environ dans un rayon de {radius} m autour du restaurant",
+    deliveryAreaRadius:
+      "Environ dans un rayon de {radius} m autour du restaurant",
     buttonDeliveryFeeThreshold: "Livraison possible à partir de {price}",
     buttonDeliveryFeeDiff: "Encore {price}",
     buttonDeliveryFee: "Frais de livraison : {price}",
@@ -535,28 +573,40 @@ const data = {
     price: "Selling Price",
     priceDescription: "Please check the product page.",
     otherFees: "Other Expenses",
-    otherFeesDescription: "You are responsible for any expenses related to transportation to and from the restaurant.",
-    otherFeesDescriptionDelivery: "Des frais de livraison s'ajoutent. Veuillez consulter la page de chaque magasin pour les frais de livraison.",
+    otherFeesDescription:
+      "You are responsible for any expenses related to transportation to and from the restaurant.",
+    otherFeesDescriptionDelivery:
+      "Des frais de livraison s'ajoutent. Veuillez consulter la page de chaque magasin pour les frais de livraison.",
     payment: "Time and Method of Payment",
     paymentDescription: "Credit Card Payment / Store Payment",
     paymentDescriptionCard: "Credit Card Payment",
     paymentDescriptionStore: "Store Payment",
-    paymentDescriptionCardNote: "Même si vous choisissez le paiement en ligne par carte, en cas d'erreur lors du traitement par le magasin, le paiement sera basculé en paiement sur place.",
+    paymentDescriptionCardNote:
+      "Même si vous choisissez le paiement en ligne par carte, en cas d'erreur lors du traitement par le magasin, le paiement sera basculé en paiement sur place.",
     delivery: "Time and Method of Delivery",
     deliveryDescription: "Customer's specified date and store pickup.",
     cancellation: "Cancellation",
-    cancellationDescription1: "You can cancel your order on the Internet before the order state is Order Placed; After the state has changed, please contact the restaurant.",
-    cancellationDescription2: "Dans les cas suivants, le magasin peut annuler la transaction liée à votre commande. Même en cas d'annulation, vous devrez en principe payer le montant équivalent à la transaction.",
-    cancellationDescription3: "Outre ce qui précède, même les commandes acceptées peuvent être annulées en raison de pénuries de matières, ruptures de stock, surcharge de commandes, erreurs lors de la prise de commande ou autres raisons propres au magasin. Si le paiement a déjà été effectué, un remboursement peut être demandé au magasin, mais aucune indemnisation au-delà du remboursement ne peut être exigée sauf faute intentionnelle ou négligence grave du magasin.",
-    cancellationDescription4: "Une commande ne peut plus être annulée après l'affichage du statut « Acceptée ».",
-    cancellationDescription5: "Le magasin peut annuler la transaction liée à votre commande. Consultez",
+    cancellationDescription1:
+      "You can cancel your order on the Internet before the order state is Order Placed; After the state has changed, please contact the restaurant.",
+    cancellationDescription2:
+      "Dans les cas suivants, le magasin peut annuler la transaction liée à votre commande. Même en cas d'annulation, vous devrez en principe payer le montant équivalent à la transaction.",
+    cancellationDescription3:
+      "Outre ce qui précède, même les commandes acceptées peuvent être annulées en raison de pénuries de matières, ruptures de stock, surcharge de commandes, erreurs lors de la prise de commande ou autres raisons propres au magasin. Si le paiement a déjà été effectué, un remboursement peut être demandé au magasin, mais aucune indemnisation au-delà du remboursement ne peut être exigée sauf faute intentionnelle ou négligence grave du magasin.",
+    cancellationDescription4:
+      "Une commande ne peut plus être annulée après l'affichage du statut « Acceptée ».",
+    cancellationDescription5:
+      "Le magasin peut annuler la transaction liée à votre commande. Consultez",
     cancellationDescription6: "pour plus de détails.",
     takeoutTitle: "À emporter",
-    cancellationTakeoutDescription1: "Lorsque 2 heures se sont écoulées après l'affichage de « Prêt à être retiré ».",
+    cancellationTakeoutDescription1:
+      "Lorsque 2 heures se sont écoulées après l'affichage de « Prêt à être retiré ».",
     deliveryTitle: "Livraison",
-    cancellationDeliveryDescription1: "Si plus de 5 minutes se sont écoulées depuis l'arrivée sur le lieu de livraison désigné et que le client est injoignable.",
-    cancellationDeliveryDescription2: "Si plus de 15 minutes se sont écoulées depuis l'arrivée sur le lieu de livraison désigné.",
-    cancellationDeliveryDescription3: "Si un lieu de livraison violant les présentes conditions a été désigné comme adresse de livraison.",
+    cancellationDeliveryDescription1:
+      "Si plus de 5 minutes se sont écoulées depuis l'arrivée sur le lieu de livraison désigné et que le client est injoignable.",
+    cancellationDeliveryDescription2:
+      "Si plus de 15 minutes se sont écoulées depuis l'arrivée sur le lieu de livraison désigné.",
+    cancellationDeliveryDescription3:
+      "Si un lieu de livraison violant les présentes conditions a été désigné comme adresse de livraison.",
     link: "ici",
   },
   sitemenu: {
@@ -632,14 +682,18 @@ const data = {
     fromAmountSpent: "",
     discount: "discount on the amount spent",
     notes: "Notes on use",
-    notes1: "The promotional discount will be applied automatically when the amount exceeds the amount stated in the Terms of Use. Please check the total amount on the order confirmation screen after you click the checkout button.",
-    notes2: "Only one promotion is available per order, therefore the promotion with the largest discount will be applied.",
+    notes1:
+      "The promotional discount will be applied automatically when the amount exceeds the amount stated in the Terms of Use. Please check the total amount on the order confirmation screen after you click the checkout button.",
+    notes2:
+      "Only one promotion is available per order, therefore the promotion with the largest discount will be applied.",
   },
   order: {
     allOrders: "All Orders",
     menu: "View Menu Page",
-    orderNotPlacedYet: "The order hasn't been placed yet. Please confirm the order and press the Place Order button at the bottom.",
-    waitingPayment: "Votre commande n'est pas encore confirmée. Veuillez saisir vos informations de paiement pour la confirmer.",
+    orderNotPlacedYet:
+      "The order hasn't been placed yet. Please confirm the order and press the Place Order button at the bottom.",
+    waitingPayment:
+      "Votre commande n'est pas encore confirmée. Veuillez saisir vos informations de paiement pour la confirmer.",
     yourOrder: "Your Order",
     confirmOrder: "Confirm Order",
     editItems: "Edit Items",
@@ -684,7 +738,8 @@ const data = {
     thisIsLunchOrder: "Ceci est une commande pour le déjeuner",
     thisIsDinnerOrder: "Ceci est une commande pour le dîner",
     alertReqireAddress: "La saisie n'est pas terminée. Veuillez vérifier.",
-    orderErrorMessage: "La commande n'a pas pu être traitée. L'article a peut-être été épuisé. Veuillez revenir à la page et passer à nouveau votre commande.",
+    orderErrorMessage:
+      "La commande n'a pas pu être traitée. L'article a peut-être été épuisé. Veuillez revenir à la page et passer à nouveau votre commande.",
     saveAddress: "Enregistrer l'adresse de livraison",
     order_canceled_by_customer: "Annulée (client)",
     order_canceled_by_restaurant: "Annulée (restaurant)",
@@ -706,12 +761,14 @@ const data = {
     cancelOrder: "Cancel Order",
     cancelOrderConfirm: "Do you really want to cancel this order?",
     cancelOrderComplete: "Order has been canceled",
-    pleaseStay: "Please stay on this page. The order status will be updated below.",
+    pleaseStay:
+      "Please stay on this page. The order status will be updated below.",
     thanksMessage: "Message from restaurant",
     tip: "Gratuity",
     maxTip: "Amount up to {max}% (optional)",
     totalCharge: "Total Charge",
-    pleasePayAtRestaurant: "Online payment was not enabled yet. Please pay at the time of pickup.",
+    pleasePayAtRestaurant:
+      "Online payment was not enabled yet. Please pay at the time of pickup.",
     sendSMS: "Receive Text Messages (standard telco fee may apply)",
     history: "Order History",
     noHistory: "Aucun historique de commande",
@@ -719,10 +776,12 @@ const data = {
     timeToPickup: "Estimated Pickup Time",
     deliveryTimeRequested: "Heure de livraison souhaitée",
     deliveryTimeToPickup: "Heure de livraison estimée",
-    notAvailable: "This restaurant is not available at this time. Please try again later",
+    notAvailable:
+      "This restaurant is not available at this time. Please try again later",
     orderNotice: "Order Notice",
     orderMessage: "Message pour le restaurant",
-    enterMessage: "Vous pouvez envoyer un message au restaurant. Si des demandes sont précisées dans les « Notes de commande », veuillez les prendre en compte.",
+    enterMessage:
+      "Vous pouvez envoyer un message au restaurant. Si des demandes sont précisées dans les « Notes de commande », veuillez les prendre en compte.",
     datePlaced: "Heure de commande",
     dateAccepted: "Heure d'acceptation",
     dateEstimated: "Heure de fin estimée",
@@ -744,8 +803,10 @@ const data = {
     paymentAndCancellation: "Payment and Cancellation",
     statusTitle: "Statut de la commande",
     sortOrder: "Ordre d'affichage",
-    promotionNoteCard: "Le montant promotionnel s'applique pour les commandes payées en ligne.",
-    promotionNoteStore: "Le montant promotionnel s'applique pour les commandes payées sur place.",
+    promotionNoteCard:
+      "Le montant promotionnel s'applique pour les commandes payées en ligne.",
+    promotionNoteStore:
+      "Le montant promotionnel s'applique pour les commandes payées sur place.",
     sort: {
       newest: "Plus récentes en premier",
       oldest: "Plus anciennes en premier",
@@ -772,23 +833,27 @@ const data = {
       stripe_canceled: "Payment Canceled",
       onsitePayment: "Onsite Payment",
       stripe_user_pending: "Paiement par carte non terminé",
-      stripe_user_message_pending: "(Le traitement du paiement n'est pas terminé côté magasin)",
+      stripe_user_message_pending:
+        "(Le traitement du paiement n'est pas terminé côté magasin)",
       stripe_user_confirmed: "Paiement par carte terminé",
       stripe_user_message_confirmed: "Paiement effectué par carte de crédit.",
       stripe_user_canceled: "Paiement annulé",
       stripe_user_message_canceled: "Le paiement par carte a été annulé",
-      stripe_user_message_just_payment_canceled: "Veuillez régler en magasin lors du retrait",
+      stripe_user_message_just_payment_canceled:
+        "Veuillez régler en magasin lors du retrait",
     },
     receipt: {
       receipt: "Reçu",
       loading: "Chargement...",
       getReceipt: "Afficher le reçu",
       explain1: "Vous pouvez afficher le reçu du paiement par carte Stripe.",
-      explain2: "Un nouvel onglet s'ouvrira. S'il ne s'ouvre pas, veuillez l'autoriser.",
+      explain2:
+        "Un nouvel onglet s'ouvrira. S'il ne s'ouvre pas, veuillez l'autoriser.",
     },
     onlinePaymentStatus: "Statut du paiement par carte",
     lineLink: "Compte officiel LINE du restaurant",
-    lineMessage: "En ajoutant le compte officiel LINE en ami, vous recevrez les informations directement du restaurant.",
+    lineMessage:
+      "En ajoutant le compte officiel LINE en ami, vous recevrez les informations directement du restaurant.",
     customerOrderHistory: "Historique des commandes",
     orderTimes: "Commandes",
     orderTimesUnit: "{count} fois",
@@ -806,7 +871,8 @@ const data = {
       zip: "Code postal",
       prefecture: "Préfecture / Région",
       address: "Adresse",
-      addressNotice: "Veuillez saisir toutes les informations d'adresse (ville, rue, numéro d'appartement).",
+      addressNotice:
+        "Veuillez saisir toutes les informations d'adresse (ville, rue, numéro d'appartement).",
       name: "Nom complet",
       searchAddressFromZip: "Rechercher l'adresse par code postal",
       select: "Sélectionner",
@@ -816,8 +882,10 @@ const data = {
     discount: "Remise",
     discountString: "Réduction",
     discountAlert: {
-      stripe: "Le montant promotionnel ci-dessous s'applique si vous payez en ligne par carte.",
-      instore: "Le montant promotionnel ci-dessous s'applique si vous payez sur place lors du retrait.",
+      stripe:
+        "Le montant promotionnel ci-dessous s'applique si vous payez en ligne par carte.",
+      instore:
+        "Le montant promotionnel ci-dessous s'applique si vous payez sur place lors du retrait.",
     },
     discountPriceSuffix: "Remise",
     discountPriceMessage: "There is a discount",
@@ -837,11 +905,13 @@ const data = {
     setPostageFreeThreshold: "Définir le seuil de gratuité des frais de port",
   },
   delivery: {
-    alert: "Avant de configurer la livraison, veuillez d'abord indiquer l'emplacement du magasin sur la carte dans les paramètres du magasin.",
+    alert:
+      "Avant de configurer la livraison, veuillez d'abord indiquer l'emplacement du magasin sur la carte dans les paramètres du magasin.",
     areaSetting: "Paramètres de la zone de livraison",
     deliveryRange: "Rayon de la zone de livraison",
     updateDeliveryRange: "Mettre à jour le rayon",
-    areaTextExample: "1-3 chome Kita-Aoyama, 1-7 chome Minami-Aoyama, Minato-ku",
+    areaTextExample:
+      "1-3 chome Kita-Aoyama, 1-7 chome Minami-Aoyama, Minato-ku",
     enableDelivery: "Enable delivery of {name}",
     deliveryOnlyStore: "Définir ce magasin comme livraison uniquement",
     deliveryLocation: "Adresse de livraison",
@@ -853,17 +923,23 @@ const data = {
     setAreaText: "Définir la zone de livraison en texte",
     setDeliveryLocation: "Définir l'adresse de livraison",
     estimatedDistance: "Distance estimée",
-    preparationTimeNotice: "Veuillez saisir le délai le plus court entre la prise de commande et la livraison au client.",
+    preparationTimeNotice:
+      "Veuillez saisir le délai le plus court entre la prise de commande et la livraison au client.",
     setTheAddressInTheDeliveryLocation: "Appliquer l'adresse à la carte",
-    setTheAddressInTheDeliveryLocationDescription: "* La distance entre le magasin et le lieu de livraison sera calculée.",
+    setTheAddressInTheDeliveryLocationDescription:
+      "* La distance entre le magasin et le lieu de livraison sera calculée.",
     availableDeliveryDistance: "Distance maximale de livraison",
     reference: "(Référence)",
     aboutDeliveryArea: "À propos de la zone de livraison",
     yen: "yen",
-    deliveryFreeThresholdNotice: "Si le total de la commande dépasse ce montant, les frais de livraison passent automatiquement à 0.",
-    deliveryFeeSettingNotice: "Si vous ne facturez pas de frais de livraison, saisissez 0.",
-    deliveryThresholdNotice: "La livraison est acceptée si le total de la commande dépasse ce montant.",
-    setAreaMapNotice: "Spécifiez la zone de livraison approximative par un cercle centré sur le magasin. Cette zone est indicative : veuillez vérifier la faisabilité de chaque livraison au moment de la commande avant d'accepter.",
+    deliveryFreeThresholdNotice:
+      "Si le total de la commande dépasse ce montant, les frais de livraison passent automatiquement à 0.",
+    deliveryFeeSettingNotice:
+      "Si vous ne facturez pas de frais de livraison, saisissez 0.",
+    deliveryThresholdNotice:
+      "La livraison est acceptée si le total de la commande dépasse ce montant.",
+    setAreaMapNotice:
+      "Spécifiez la zone de livraison approximative par un cercle centré sur le magasin. Cette zone est indicative : veuillez vérifier la faisabilité de chaque livraison au moment de la commande avant d'accepter.",
   },
   button: {
     adminTop: "Admin Top",
@@ -922,11 +998,14 @@ const data = {
     },
     invalidPhoneNumber: "Invalid Phone Number",
     invalidValidationCode: "Invalid Validation Code",
-    "auth/too-many-requests": "Plusieurs échecs d'authentification consécutifs. Veuillez réessayer dans quelques instants.",
+    "auth/too-many-requests":
+      "Plusieurs échecs d'authentification consécutifs. Veuillez réessayer dans quelques instants.",
     "auth/invalid-phone-number": "Invalid Phone Number",
-    "auth/invalid-verification-code": "The SMS verification code used to create the phone auth credential is invalid. Please resend the verification code sms and be sure use the verification code provided by the user.",
+    "auth/invalid-verification-code":
+      "The SMS verification code used to create the phone auth credential is invalid. Please resend the verification code sms and be sure use the verification code provided by the user.",
     "auth/missing-verification-code": "SMS verification code is missing.",
-    "auth/code-expired": "Le code de vérification SMS a expiré. Veuillez demander un nouveau code et le saisir à nouveau.",
+    "auth/code-expired":
+      "Le code de vérification SMS a expiré. Veuillez demander un nouveau code et le saisir à nouveau.",
   },
   admin: {
     welcomeMessage: "Welcome!",
@@ -977,14 +1056,17 @@ const data = {
     notes: {
       title: "À noter",
       userRestaurantsTitle: "About Restaurants List for User",
-      userRestaurantsBody: "The restaurants you have added will not automatically appear on the list of restaurants for users. Please click the [Request to be Listed] button and your restaurant will be added to the list after approved. ",
+      userRestaurantsBody:
+        "The restaurants you have added will not automatically appear on the list of restaurants for users. Please click the [Request to be Listed] button and your restaurant will be added to the list after approved. ",
       notificationSoundTitle: "About Notification Sound",
-      notificationSoundBody: "Order notification sound will be played while viewing the order list page (not on this page). If you want to have multiple restaurant notifications playing at the same time, you need to be able to view the order list pages for each one. To do so, you will need a separate window on your computer and a separate device for your tablet.",
+      notificationSoundBody:
+        "Order notification sound will be played while viewing the order list page (not on this page). If you want to have multiple restaurant notifications playing at the same time, you need to be able to view the order list pages for each one. To do so, you will need a separate window on your computer and a separate device for your tablet.",
     },
     hidePayment: "Payment feature is coming soon. Please stay tuned.",
     encourageToReadManual: {
-      before: "If you haven't registered with OwnPlate.com yet, please follow this",
-      manualName: "\"Usage Guide\"",
+      before:
+        "If you haven't registered with OwnPlate.com yet, please follow this",
+      manualName: '"Usage Guide"',
       after: "and register first before proceeding.",
     },
     forSignup: "For restaurants that have not yet signed up",
@@ -1010,19 +1092,24 @@ const data = {
     addNewRestaurant: "Add New Restaurant",
     noPaymentAccount: "No Payment account",
     payments: {
-      unsetWarning: "You will need to set up a payment method in order to accept orders.",
-      required: "Le « paiement en ligne » ou le « paiement sur place » doit être configuré.",
+      unsetWarning:
+        "You will need to set up a payment method in order to accept orders.",
+      required:
+        "Le « paiement en ligne » ou le « paiement sur place » doit être configuré.",
       onlinePayment: "Online Payment",
       statusNotConnected: "Not Connected",
       statusConnected: "Connected",
-      pleaseConnect: "In order to receive online payments, you need to connect your Stripe account.",
+      pleaseConnect:
+        "In order to receive online payments, you need to connect your Stripe account.",
       connectStripe: "Connect Stripe Account",
       disconnectStripe: "Disconnect Stripe Account",
-      reallyDisconnectStripe: "Do you really want to disconnect Stripe Account?",
+      reallyDisconnectStripe:
+        "Do you really want to disconnect Stripe Account?",
       openDashboard: "Open Stripe Dashboard",
       onsitePayment: "On-site Payment",
       pleaseCheck: "Please enable the checkbox below to allow on-site payment.",
-      onsitePaymentNote: "Please be aware of uncollected payments due to sudden cancellations or mischief.",
+      onsitePaymentNote:
+        "Please be aware of uncollected payments due to sudden cancellations or mischief.",
       enableOnsitePayment: "Allow On-site Payment",
     },
     mail: {
@@ -1039,9 +1126,12 @@ const data = {
       smaregiAppMarket: "Accéder à l'App Market Smaregi",
       smaregiManualLink: "Comment utiliser l'intégration Smaregi",
     },
-    needEmailVerification: "Veuillez terminer la vérification de votre adresse e-mail.",
-    noteEmailVerification1: "Veuillez vérifier l'e-mail envoyé depuis {email} et cliquer sur l'URL qu'il contient pour terminer la vérification.",
-    noteEmailVerification2: "Si vous n'avez pas encore reçu l'e-mail de vérification, veuillez vérifier vos dossiers spam et vos filtres, puis renvoyer le code de vérification.",
+    needEmailVerification:
+      "Veuillez terminer la vérification de votre adresse e-mail.",
+    noteEmailVerification1:
+      "Veuillez vérifier l'e-mail envoyé depuis {email} et cliquer sur l'URL qu'il contient pour terminer la vérification.",
+    noteEmailVerification2:
+      "Si vous n'avez pas encore reçu l'e-mail de vérification, veuillez vérifier vos dossiers spam et vos filtres, puis renvoyer le code de vérification.",
     sendVerificationCode: "Renvoyer l'e-mail de vérification",
     verificationCodeSent: "Envoyé",
     verificationCodeError: "Envoi impossible. Veuillez réessayer plus tard.",
@@ -1057,11 +1147,14 @@ const data = {
     itemNotPublished: "Non publié",
     editAbout: "Edit Info",
     privateMode: "Private mode",
-    pleaseChangePublic: "Please change to public mode after entered restaurant details.",
+    pleaseChangePublic:
+      "Please change to public mode after entered restaurant details.",
     directory: {
       status: "Restaurant Directory",
-      requestWarning: "Veuillez postuler après avoir configuré le paiement et ouvert le restaurant au public.",
-      requestingWarning: "Veuillez configurer vos paramètres de paiement et la fiche du magasin si ce n'est pas déjà fait.",
+      requestWarning:
+        "Veuillez postuler après avoir configuré le paiement et ouvert le restaurant au public.",
+      requestingWarning:
+        "Veuillez configurer vos paramètres de paiement et la fiche du magasin si ce n'est pas déjà fait.",
       notListed: "Not Listed",
       requestList: "Request to be Listed",
       waiting: "Waiting for Approval",
@@ -1081,7 +1174,8 @@ const data = {
       suspendUntil: "Suspend until {display}",
       suspendDayUntil: "Suspendre jusqu'à la fin de {display} jours",
       suspendNewOrders: "Suspend New Orders",
-      notSuspendAvailable: "Les heures d'ouverture sont terminées aujourd'hui, impossible de mettre en pause",
+      notSuspendAvailable:
+        "Les heures d'ouverture sont terminées aujourd'hui, impossible de mettre en pause",
       suspendForAllDay: "For All Day",
       suspending: "Suspendinding",
       unsuspendAt: "Unsuspend at ",
@@ -1097,17 +1191,22 @@ const data = {
       infinityNotificationOn: "Remind Every Minute",
       infinityNotificationOff: "Notify One Time",
       soundTest: "Test",
-      paymentIsNotCompleted: "Note: Please complete the credit card payment process by clicking the 'Accepted' button before giving the items to the customer.",
+      paymentIsNotCompleted:
+        "Note: Please complete the credit card payment process by clicking the 'Accepted' button before giving the items to the customer.",
       cancelButton: "Cancel this order",
       cancelTitle: "Order Canceling",
-      cancelMessage: "Please contact to the customer and tell the order will be canceled.",
-      updateOrderMessage: "Veuillez contacter le client pour confirmer la modification de la commande.",
+      cancelMessage:
+        "Please contact to the customer and tell the order will be canceled.",
+      updateOrderMessage:
+        "Veuillez contacter le client pour confirmer la modification de la commande.",
       paymentCancelButton: "Annuler uniquement le paiement par carte",
       delete: "Cancel this order",
       deleteConfirm: "(This action is undoable)",
       paymentCancelTitle: "Annuler uniquement le paiement par carte",
-      paymentCancelMessage: "Le mode de paiement sera changé en paiement au restaurant. Veuillez contacter le client pour l'informer qu'il paiera au restaurant. La commande ne sera pas annulée.",
-      waitingPaymentWarninig: "Cette commande ne peut pas être acceptée car le paiement n'est pas terminé.",
+      paymentCancelMessage:
+        "Le mode de paiement sera changé en paiement au restaurant. Veuillez contacter le client pour l'informer qu'il paiera au restaurant. La commande ne sera pas annulée.",
+      waitingPaymentWarninig:
+        "Cette commande ne peut pas être acceptée car le paiement n'est pas terminé.",
       paymentCancel: "Annuler uniquement le paiement par carte",
       paymentCancelConfirm: "(Cette action est irréversible)",
       placedDate: "Date de commande",
@@ -1116,7 +1215,8 @@ const data = {
       lineAdd: "Add a LINE account",
       lineUsers: "Connected LINE Accounts",
       lineDelete: "Do you really want to delete this account？",
-      lineSafariPrivate: "Note: If you are using Safari's Private Browsing Mode, you will not be able to connect to LINE.",
+      lineSafariPrivate:
+        "Note: If you are using Safari's Private Browsing Mode, you will not be able to connect to LINE.",
       history: "All Order History",
       more: "View More",
       all: "Tout afficher",
@@ -1128,8 +1228,10 @@ const data = {
       willOrderChange: "Modifier la commande",
       cancelOrderChange: "Annuler la modification de commande",
       confirmOrderChange: "Modifier la commande",
-      cardPaymentMessage: "Le paiement a été effectué. Inutile d'encaisser au magasin.",
-      storePaymentMessage: "Le paiement n'a pas été effectué. Veuillez encaisser au magasin.",
+      cardPaymentMessage:
+        "Le paiement a été effectué. Inutile d'encaisser au magasin.",
+      storePaymentMessage:
+        "Le paiement n'a pas été effectué. Veuillez encaisser au magasin.",
       cardPayment: "Paiement par carte",
       storePayment: "Paiement sur place",
     },
@@ -1159,28 +1261,37 @@ const data = {
       "download-csv": "Download Excel File (Monthly Earnings)",
       "download-csv-details": "Download Excel File (Details)",
       "download-csv-all": "Télécharger le fichier Excel (Ventes)",
-      "download-csv-history": "Télécharger le fichier Excel (Historique des ventes)",
-      "download-csv-history-details": "Télécharger le fichier Excel (Détails de l'historique)",
-      "download-csv-monthly-details": "Télécharger le fichier Excel (Détails mensuels)",
+      "download-csv-history":
+        "Télécharger le fichier Excel (Historique des ventes)",
+      "download-csv-history-details":
+        "Télécharger le fichier Excel (Détails de l'historique)",
+      "download-csv-monthly-details":
+        "Télécharger le fichier Excel (Détails mensuels)",
     },
     totp: {
       setup: "Configuration de l'authentification à deux facteurs",
-      scanQrCode: "Scannez ce code QR avec votre application d'authentification",
+      scanQrCode:
+        "Scannez ce code QR avec votre application d'authentification",
       orEnterManually: "Ou saisissez manuellement :",
       enterCode: "Saisissez le code de vérification",
       codePlaceholder: "Code à 6 chiffres",
-      enrollmentComplete: "La configuration de l'authentification à deux facteurs est terminée",
+      enrollmentComplete:
+        "La configuration de l'authentification à deux facteurs est terminée",
       verification: "Authentification à deux facteurs",
-      verificationMessage: "Veuillez saisir le code à 6 chiffres de votre application d'authentification",
+      verificationMessage:
+        "Veuillez saisir le code à 6 chiffres de votre application d'authentification",
       signupWarning: {
         title: "Si le code QR ne s'affiche pas",
-        message: "L'authentification à deux facteurs peut être configurée depuis Ma Page après la vérification de l'adresse e-mail. Si le code QR n'apparaît pas, appuyez sur « Passer » pour continuer.",
+        message:
+          "L'authentification à deux facteurs peut être configurée depuis Ma Page après la vérification de l'adresse e-mail. Si le code QR n'apparaît pas, appuyez sur « Passer » pour continuer.",
       },
       error: {
-        generateFailed: "Échec de la génération de l'authentification à deux facteurs",
+        generateFailed:
+          "Échec de la génération de l'authentification à deux facteurs",
         invalidCode: "Code invalide",
         enrollmentFailed: "Échec de l'enregistrement. Veuillez réessayer",
-        verificationFailed: "Échec de la vérification. Veuillez vérifier votre code",
+        verificationFailed:
+          "Échec de la vérification. Veuillez vérifier votre code",
       },
     },
     error: {
@@ -1191,18 +1302,23 @@ const data = {
       },
       password: {
         tooshort: "Password should be at least 8 characters",
-        invalid: "Veuillez saisir des lettres et des chiffres pour le mot de passe.",
+        invalid:
+          "Veuillez saisir des lettres et des chiffres pour le mot de passe.",
         mismatch: "Password mismatch",
       },
       code: {
-        "auth/user-not-found": "There is no user record corresponding to this identifier.",
+        "auth/user-not-found":
+          "There is no user record corresponding to this identifier.",
         "auth/wrong-password": "The password is invalid.",
-        "auth/too-many-requests": "Too many unsuccessful login attempts. Please try again later.",
+        "auth/too-many-requests":
+          "Too many unsuccessful login attempts. Please try again later.",
         "auth/invalid-email": "The email address is badly formatted.",
-        "auth/invalid-login-credentials": "L'adresse e-mail ou le mot de passe est invalide.",
+        "auth/invalid-login-credentials":
+          "L'adresse e-mail ou le mot de passe est invalide.",
         "auth/unauthorized-continue-uri": "Domain not whitelisted by project",
         "auth/internal-error": "Le mot de passe est invalide.",
-        "auth/invalid-credential": "L'adresse e-mail ou le mot de passe est invalide.",
+        "auth/invalid-credential":
+          "L'adresse e-mail ou le mot de passe est invalide.",
       },
     },
     index: {
@@ -1212,20 +1328,25 @@ const data = {
     messages: {
       title: "Message",
       childInvitationAccept: "Accepter l'invitation et devenir un sous-compte",
-      childInvitationAcceptMessage: "Si vous devenez un sous-compte, vous ne pourrez pas gérer les restaurants ajoutés avec ce compte.",
+      childInvitationAcceptMessage:
+        "Si vous devenez un sous-compte, vous ne pourrez pas gérer les restaurants ajoutés avec ce compte.",
       childInvitationDeny: "Refuser l'invitation",
       accept: "Accepter",
       deny: "Refuser",
-      childInvitationMessage1: "J'ai reçu une invitation du propriétaire qui gère les restaurants suivants",
+      childInvitationMessage1:
+        "J'ai reçu une invitation du propriétaire qui gère les restaurants suivants",
       childInvitationMessage2: "Ces restaurants",
-      childInvitationMessage3: "If you want to change to a sub-account that manages this restaurant, press Accept. If you want to decline, press Reject.",
+      childInvitationMessage3:
+        "If you want to change to a sub-account that manages this restaurant, press Accept. If you want to decline, press Reject.",
     },
     subAccounts: {
       index: "Gestion des sous-comptes",
       openDashboard: "Ouvrir la gestion des sous-comptes",
       manualLink: "Comment utiliser les sous-comptes",
-      description: "You can set / manage sub-accounts that can only be operated at specific restaurants.",
-      accountNotice: "Le sous-compte invité doit être enregistré en tant qu'utilisateur.",
+      description:
+        "You can set / manage sub-accounts that can only be operated at specific restaurants.",
+      accountNotice:
+        "Le sous-compte invité doit être enregistré en tant qu'utilisateur.",
       title: "Gestion des sous-comptes",
       subaccountlist: "Liste des sous-comptes",
       linkedStore: "Linked Store",
@@ -1236,7 +1357,8 @@ const data = {
       invite: "Inviter",
       invitedList: "Liste des invitations",
       deleteSubaccount: "Supprimer le sous-compte",
-      guidance: "To set a store as a sub-account, please click on the sub-account name.",
+      guidance:
+        "To set a store as a sub-account, please click on the sub-account name.",
       send: "Envoyer",
       sending: "Envoi en cours",
       enterName: "Veuillez saisir le nom à donner au sous-compte",
@@ -1248,18 +1370,24 @@ const data = {
         denied: "Refusé",
       },
       numberOfShops: "restaurants",
-      selectRestaurant: "Please select a restaurant that can operate this account.",
+      selectRestaurant:
+        "Please select a restaurant that can operate this account.",
       confirmDeletechild: "Annuler le sous-compte",
     },
     line: {
       title: "LINE integration",
       settings: "LINE Channel Config",
       users: "LINE User List",
-      notice1: "By linking the store's official LINE account with omochikaeri.com, customers can be notified of the order status through the chat on the store's official LINE account.",
-      notice2: "To use it, you need to set up the LINE login channel and Messaging API on the LINE developer site.",
-      notice3: "The Messaging API uses the same one as the LINE Official Account.",
-      notice4: "It is necessary to register the LINE Login channel and the Messaging API as a 'linked bot'.",
-      notice5: "Also, you need to register the URL that you specify in the 'Callback URL' of LINE Login.",
+      notice1:
+        "By linking the store's official LINE account with omochikaeri.com, customers can be notified of the order status through the chat on the store's official LINE account.",
+      notice2:
+        "To use it, you need to set up the LINE login channel and Messaging API on the LINE developer site.",
+      notice3:
+        "The Messaging API uses the same one as the LINE Official Account.",
+      notice4:
+        "It is necessary to register the LINE Login channel and the Messaging API as a 'linked bot'.",
+      notice5:
+        "Also, you need to register the URL that you specify in the 'Callback URL' of LINE Login.",
       loginClientId: "LINE Login: Channel ID",
       loginChannelSecret: "LINE Login: Channel Secret",
       messagingAccessToken: "Messaging API: Channel Access Token",
@@ -1318,7 +1446,8 @@ const data = {
     notifyMe: "Receive LINE notification",
     notifyMeFromFriend: "Recevoir LINE du restaurant",
     addFriend: "Follow",
-    addFriendDescription: "In order to receive LINE notifications, you need to follow the official channel",
+    addFriendDescription:
+      "In order to receive LINE notifications, you need to follow the official channel",
   },
   trace: {
     thankyou: "Thank you for participating.",
@@ -1334,7 +1463,8 @@ const data = {
     message: {
       generic: "Please try this operation later.",
       line: "Plase try to connect LINE again.",
-      cardError: "Si l'erreur se reproduit, veuillez annuler uniquement le paiement par carte et traiter la commande.",
+      cardError:
+        "Si l'erreur se reproduit, veuillez annuler uniquement le paiement par carte et traiter la commande.",
     },
     code: {
       auth: {
@@ -1352,14 +1482,16 @@ const data = {
       },
       stripe: {
         confirm: "Failed to confirm the payment.",
-        confirm2: "Si l'échec persiste, veuillez annuler le paiement par carte et passer au paiement au restaurant.",
+        confirm2:
+          "Si l'échec persiste, veuillez annuler le paiement par carte et passer au paiement au restaurant.",
         cancel: "Échec de l'annulation du paiement par carte",
         connect: "Failed to connect the Stripe account.",
         disconnect: "Failed to disconnect the Stripe account.",
         intent: "Failed to process the payment.",
         NoJCB: "This restaurant does not accept JCB card.",
       },
-      smallPayment: "Les paiements par carte inférieurs à 50 yens ne peuvent pas être acceptés.",
+      smallPayment:
+        "Les paiements par carte inférieurs à 50 yens ne peuvent pas être acceptés.",
       menu: {
         save: "Failed to update the menu.",
       },
@@ -1398,7 +1530,8 @@ const data = {
     },
   },
   printer: {
-    description: "This feature automatically prints orders from a Star Micronics receipt printer when an order is received.",
+    description:
+      "This feature automatically prints orders from a Star Micronics receipt printer when an order is received.",
     serverURL: "CloudPRNT Server URL",
     guidance: "Please set this URL on your printer.",
     reset: "Reset Server URL",
@@ -1418,7 +1551,8 @@ const data = {
       length: "Veuillez saisir votre message en 500 caractères maximum.",
     },
     location: {
-      noLocation: "Après avoir saisi l'adresse, veuillez mettre à jour la destination de livraison sur la carte. Vous pouvez également mettre à jour en touchant ",
+      noLocation:
+        "Après avoir saisi l'adresse, veuillez mettre à jour la destination de livraison sur la carte. Vous pouvez également mettre à jour en touchant ",
     },
     email: {
       empty: "Veuillez saisir votre adresse e-mail",
@@ -1427,9 +1561,12 @@ const data = {
   },
   aboutService: {
     title: "À propos",
-    paragraph1: "La COVID-19 n'a pas seulement coûté la vie à de nombreuses personnes, elle a également causé d'importants dégâts à l'économie. En particulier, les restaurants et bars qui offrent des « lieux de rassemblement » ont directement souffert des mesures de confinement. En conséquence, des millions de personnes ont été licenciées et des milliers de restaurateurs ont dû fermer leurs établissements.",
-    paragraph2: "Nous avons créé {serviceName} pour aider ces restaurants et bars. Avec {serviceName}, les restaurants peuvent lancer un service de vente à emporter sans frais supplémentaires (seuls les frais de carte bancaire s'appliquent). Les restaurateurs peuvent créer des pages dédiées et y enregistrer leur menu (aucune compétence particulière requise), où les clients peuvent commander et payer, puis récupérer leur commande au restaurant.",
-    paragraph3: "Singularity Society est une organisation à but non lucratif composée d'ingénieurs logiciels, de designers et de professionnels du monde des affaires.",
+    paragraph1:
+      "La COVID-19 n'a pas seulement coûté la vie à de nombreuses personnes, elle a également causé d'importants dégâts à l'économie. En particulier, les restaurants et bars qui offrent des « lieux de rassemblement » ont directement souffert des mesures de confinement. En conséquence, des millions de personnes ont été licenciées et des milliers de restaurateurs ont dû fermer leurs établissements.",
+    paragraph2:
+      "Nous avons créé {serviceName} pour aider ces restaurants et bars. Avec {serviceName}, les restaurants peuvent lancer un service de vente à emporter sans frais supplémentaires (seuls les frais de carte bancaire s'appliquent). Les restaurateurs peuvent créer des pages dédiées et y enregistrer leur menu (aucune compétence particulière requise), où les clients peuvent commander et payer, puis récupérer leur commande au restaurant.",
+    paragraph3:
+      "Singularity Society est une organisation à but non lucratif composée d'ingénieurs logiciels, de designers et de professionnels du monde des affaires.",
     sincerely: "Cordialement,",
     profileName: "Satoshi Nakajima",
     profileTitle: "Président de Singularity Society",

@@ -61,7 +61,8 @@ const data = {
     signInRestaurant: "店鋪管理員",
     deleteAccount: "刪除賬戶",
     reallyDeleteAccount: "過去的記錄將被刪除。確定要刪除賬戶嗎？",
-    reSendSMSforDeleteAccount: "為最終確認，將向註冊的電話號碼傳送 SMS 驗證碼。",
+    reSendSMSforDeleteAccount:
+      "為最終確認，將向註冊的電話號碼傳送 SMS 驗證碼。",
     stripeInfo: "信用卡資訊",
     noCard: "無",
     deleteCard: "刪除卡片資訊",
@@ -183,7 +184,8 @@ const data = {
     enterOrderNotice: "請輸入下單注意事項",
     enterOrderThanks: "請輸入下單後感謝資訊",
     enablePrelineTitle: "啟用換行",
-    enablePrelineDescription: "在店鋪介紹、下單注意事項、店鋪留言、選單說明中反映輸入的換行",
+    enablePrelineDescription:
+      "在店鋪介紹、下單注意事項、店鋪留言、選單說明中反映輸入的換行",
     introduction: "店鋪介紹",
     orderNotice: "下單時注意事項",
     orderThanks: "下單後感謝資訊",
@@ -263,13 +265,15 @@ const data = {
     searchMap: "從地址搜尋地圖",
     enterAddress: "請輸入地址搜尋",
     updateMap: "設定位置",
-    businessHourDescription: "請勾選營業日並設定時間。如需因休息等拆分營業時間，請在另一時段表單設定後半段時間。",
+    businessHourDescription:
+      "請勾選營業日並設定時間。如需因休息等拆分營業時間，請在另一時段表單設定後半段時間。",
     businessHourOption: "另一時段 (可選)",
     copyPreviousDay: "複製前一天",
     copySunDay: "複製週日",
     lastOrderTime: {
       title: "最後下單時間",
-      notes1: "如需在考慮了「營業結束時間」和「取餐準備時間」的「最後可下單時間」之前截單，請在此設定。",
+      notes1:
+        "如需在考慮了「營業結束時間」和「取餐準備時間」的「最後可下單時間」之前截單，請在此設定。",
       notes2: "未設定時將採用考慮了「營業結束時間」和「取餐準備時間」的時間。",
     },
     draftDescription: "儲存為草稿 (客戶無法檢視店鋪頁面)",
@@ -281,7 +285,8 @@ const data = {
     reallyDelete: "確定要刪除此店鋪嗎？刪除後，店鋪/選單資訊全部消失",
     reallyOnListDelete: "確定要取消刊登嗎？",
     deliveryConfigTitle: "配送",
-    deliveryDescription: "可管理自營配送。設定可配送區域等後，客戶下單時可選擇外帶或配送。(修改店鋪設定後請記得儲存)",
+    deliveryDescription:
+      "可管理自營配送。設定可配送區域等後，客戶下單時可選擇外帶或配送。(修改店鋪設定後請記得儲存)",
     deliveryConfigLink: "前往配送設定",
     printerConfigTitle: "手動列印設定",
     enablePrinter: "啟用印表機",
@@ -290,7 +295,8 @@ const data = {
     printerDescriptionConfig: "自動列印設定在此",
     phoneCall: "透過電話通知訂單",
     phoneCallDescription: "線上下單時透過店鋪電話通知",
-    phoneCallNotice: "目前免費提供，但因電話通話產生費用，此功能將來可能收費。屆時即使開啟此功能，也不會突然產生費用。",
+    phoneCallNotice:
+      "目前免費提供，但因電話通話產生費用，此功能將來可能收費。屆時即使開啟此功能，也不會突然產生費用。",
     phoneCallNotification: "電話通知",
     emailNotification: "郵件通知",
     emailNotificationTitle: "透過郵件通知訂單",
@@ -301,10 +307,12 @@ const data = {
     moveToLineConfig: "跳轉至 LINE 通知設定介面。跳轉前請記得儲存此頁。",
     openDaysConfig: "營業日時設定",
     lunchOrDinnerToggle: "午餐/晚餐自動切換",
-    lunchOrDinnerNotice: "請務必在每個營業日輸入兩段營業時間。上方為午餐，下方 (另一時段 (可選)) 為晚餐營業時間。",
+    lunchOrDinnerNotice:
+      "請務必在每個營業日輸入兩段營業時間。上方為午餐，下方 (另一時段 (可選)) 為晚餐營業時間。",
     acceptUserMessage: "接收留言",
     acceptUserMessageDescription: "接收客戶留言",
-    acceptUserMessageNotice: "在訂單確認介面允許客戶輸入一句留言。下單注意事項下方顯示留言欄，請在「下單注意事項」中填寫留言內容。(例: 為聯絡優惠請輸入郵箱。/ 如為生日月請告知。我們會準備禮物。)",
+    acceptUserMessageNotice:
+      "在訂單確認介面允許客戶輸入一句留言。下單注意事項下方顯示留言欄，請在「下單注意事項」中填寫留言內容。(例: 為聯絡優惠請輸入郵箱。/ 如為生日月請告知。我們會準備禮物。)",
     lineNotification: "LINE 通知",
     city: "市町村",
     zip: "郵政編碼",
@@ -315,7 +323,8 @@ const data = {
     enterItemName: "請輸入商品名",
     enterItemAliasesName: "請輸入商品別名 (外語等)",
     enterItemDescription: "請輸入描述",
-    enterItemMemo: "備註 (客戶介面不顯示。僅第一行顯示在選單列表上。請勿記錄機密資訊)",
+    enterItemMemo:
+      "備註 (客戶介面不顯示。僅第一行顯示在選單列表上。請勿記錄機密資訊)",
     enterItemOption: "請輸入選項",
     item: "商品",
     noItem: "沒有註冊任何內容",
@@ -347,7 +356,8 @@ const data = {
     exclusionDateTime: "銷售排除日/時間",
     lunchDinner: "午餐/晚餐",
     itemOptions: "選項",
-    itemOptionsNote: "設定配料、大份等商品選項。二選一或三選一時，請用半形逗號分隔(例:「雞，豬，豆腐」)。有償選項時，最後用 (+100) 形式指定價格 (例:「普通，大份 (+150)，特大 (+300)」)",
+    itemOptionsNote:
+      "設定配料、大份等商品選項。二選一或三選一時，請用半形逗號分隔(例:「雞，豬，豆腐」)。有償選項時，最後用 (+100) 形式指定價格 (例:「普通，大份 (+150)，特大 (+300)」)",
     itemAddOption: "新增選項",
     itemInvalidMessage: "因資料未正確輸入，不予公開",
     saveAsDraft: "儲存為草稿 (不顯示在選單中)",
@@ -541,21 +551,26 @@ const data = {
     paymentDescription: "信用卡支付/店鋪支付",
     paymentDescriptionCard: "信用卡支付",
     paymentDescriptionStore: "店鋪支付",
-    paymentDescriptionCardNote: "即使選擇線上信用卡支付，若店鋪執行結算時出錯，將改為現場支付。",
+    paymentDescriptionCardNote:
+      "即使選擇線上信用卡支付，若店鋪執行結算時出錯，將改為現場支付。",
     delivery: "商品交付時間及方式",
     deliveryDescription: "客戶指定日期於店鋪取餐。",
     cancellation: "取消處理條件、解約條件",
     cancellationDescription1: "店鋪將訂單改為「已受理」前，可在網上取消。",
-    cancellationDescription2: "以下情況下店鋪可能解除商品訂單相關交易。即使因以下原因解除，原則上仍需支付相應交易金額。",
-    cancellationDescription3: "除上述外，即使已受理的商品，也可能因材料不足、售罄、訂單過多集中、接單錯誤、其他加盟店原因而取消。若已付款，可向加盟店申請退款，但除加盟店有故意或重大過失外，不得要求退款之外的損害賠償。",
+    cancellationDescription2:
+      "以下情況下店鋪可能解除商品訂單相關交易。即使因以下原因解除，原則上仍需支付相應交易金額。",
+    cancellationDescription3:
+      "除上述外，即使已受理的商品，也可能因材料不足、售罄、訂單過多集中、接單錯誤、其他加盟店原因而取消。若已付款，可向加盟店申請退款，但除加盟店有故意或重大過失外，不得要求退款之外的損害賠償。",
     cancellationDescription4: "「已受理」顯示後不可取消商品。",
     cancellationDescription5: "店鋪可能解除商品訂單相關交易。詳情請參見",
     cancellationDescription6: "請參考。",
     takeoutTitle: "外帶",
     cancellationTakeoutDescription1: "「取餐準備完成」顯示後經過 2 小時的情況",
     deliveryTitle: "配送",
-    cancellationDeliveryDescription1: "到達指定配送地點後經過 5 分鐘以上且無法聯絡的情況",
-    cancellationDeliveryDescription2: "到達指定配送地點後經過 15 分鐘以上的情況",
+    cancellationDeliveryDescription1:
+      "到達指定配送地點後經過 5 分鐘以上且無法聯絡的情況",
+    cancellationDeliveryDescription2:
+      "到達指定配送地點後經過 15 分鐘以上的情況",
     cancellationDeliveryDescription3: "指定違反本約定的場所為配送地點的情況",
     link: "此處",
   },
@@ -632,7 +647,8 @@ const data = {
     fromAmountSpent: "從使用金額",
     discount: "折扣",
     notes: "使用注意事項",
-    notes1: "活動折扣在超過使用條件中的金額時自動應用。按結賬按鈕後，請在訂單確認介面確認合計金額。",
+    notes1:
+      "活動折扣在超過使用條件中的金額時自動應用。按結賬按鈕後，請在訂單確認介面確認合計金額。",
     notes2: "僅可使用 1 個活動。符合多個活動時適用折扣額最大的活動。",
   },
   order: {
@@ -684,7 +700,8 @@ const data = {
     thisIsLunchOrder: "這是午餐訂單",
     thisIsDinnerOrder: "這是晚餐訂單",
     alertReqireAddress: "輸入未完成。請確認。",
-    orderErrorMessage: "訂單處理失敗。購物車中的商品可能已售罄。請返回頁面重新下單。",
+    orderErrorMessage:
+      "訂單處理失敗。購物車中的商品可能已售罄。請返回頁面重新下單。",
     saveAddress: "儲存配送地址",
     order_canceled_by_customer: "已取消 (客戶)",
     order_canceled_by_restaurant: "已取消 (店鋪)",
@@ -722,7 +739,8 @@ const data = {
     notAvailable: "無可下單的營業日，目前不接受訂單。",
     orderNotice: "下單注意事項",
     orderMessage: "給店鋪留言",
-    enterMessage: "可向店鋪留言。若「下單注意事項」中有請求，請參考後撰寫留言。",
+    enterMessage:
+      "可向店鋪留言。若「下單注意事項」中有請求，請參考後撰寫留言。",
     datePlaced: "下單時間",
     dateAccepted: "接單時間",
     dateEstimated: "完成預定時間",
@@ -855,15 +873,18 @@ const data = {
     estimatedDistance: "預計距離",
     preparationTimeNotice: "請輸入客戶下單後至配送完成所需的最短時間。",
     setTheAddressInTheDeliveryLocation: "在地圖上反映地址",
-    setTheAddressInTheDeliveryLocationDescription: "* 計算店鋪與配送地址的距離。",
+    setTheAddressInTheDeliveryLocationDescription:
+      "* 計算店鋪與配送地址的距離。",
     availableDeliveryDistance: "可配送距離",
     reference: "(參考)",
     aboutDeliveryArea: "關於可配送區域",
     yen: "日元",
-    deliveryFreeThresholdNotice: "商品合計金額超過此價格時，自動將配送費設為 0 日元。",
+    deliveryFreeThresholdNotice:
+      "商品合計金額超過此價格時，自動將配送費設為 0 日元。",
     deliveryFeeSettingNotice: "不需要配送費時請設為 0 日元。",
     deliveryThresholdNotice: "商品合計金額超過此價格時，可接受配送。",
-    setAreaMapNotice: "以店鋪為中心用圓圈指定大致可配送範圍。此範圍僅作參考，請在下單時判斷是否可配送後接單。",
+    setAreaMapNotice:
+      "以店鋪為中心用圓圈指定大致可配送範圍。此範圍僅作參考，請在下單時判斷是否可配送後接單。",
   },
   button: {
     adminTop: "管理介面首頁",
@@ -924,7 +945,8 @@ const data = {
     invalidValidationCode: "包含不正確的字元",
     "auth/too-many-requests": "連續驗證失敗。請稍後再驗證",
     "auth/invalid-phone-number": "請輸入正確的電話號碼",
-    "auth/invalid-verification-code": "SMS 驗證碼無效。請重新傳送 SMS 驗證碼並輸入",
+    "auth/invalid-verification-code":
+      "SMS 驗證碼無效。請重新傳送 SMS 驗證碼並輸入",
     "auth/missing-verification-code": "未輸入 SMS 驗證碼",
     "auth/code-expired": "SMS 驗證碼已過期。請重新傳送 SMS 驗證碼並輸入",
   },
@@ -977,9 +999,11 @@ const data = {
     notes: {
       title: "注意",
       userRestaurantsTitle: "關於客戶用店鋪列表",
-      userRestaurantsBody: "註冊的店鋪不會自動顯示在客戶用店鋪列表中。請設定店鋪、選單資訊、支付方式，公開店鋪後按「申請刊登」按鈕申請。經運營稽覈後將刊登在客戶用店鋪列表中。",
+      userRestaurantsBody:
+        "註冊的店鋪不會自動顯示在客戶用店鋪列表中。請設定店鋪、選單資訊、支付方式，公開店鋪後按「申請刊登」按鈕申請。經運營稽覈後將刊登在客戶用店鋪列表中。",
       notificationSoundTitle: "關於通知聲音",
-      notificationSoundBody: "與訂單相關的通知聲音在訂單列表頁顯示時播放 (本頁不播放)。如需同時播放多個店鋪的通知聲音，請準備可顯示各店鋪訂單列表頁的環境。電腦上需要其他視窗，平板上需要其他裝置。",
+      notificationSoundBody:
+        "與訂單相關的通知聲音在訂單列表頁顯示時播放 (本頁不播放)。如需同時播放多個店鋪的通知聲音，請準備可顯示各店鋪訂單列表頁的環境。電腦上需要其他視窗，平板上需要其他裝置。",
     },
     hidePayment: "收費機制即將提供。請稍候。",
     encourageToReadManual: {
@@ -1040,8 +1064,10 @@ const data = {
       smaregiManualLink: "Smaregi 聯動使用方法",
     },
     needEmailVerification: "請完成郵箱地址驗證。",
-    noteEmailVerification1: "請查收從 {email} 傳送的郵件，點選郵件中的 URL 完成驗證。",
-    noteEmailVerification2: "若尚未收到驗證郵件，請檢查垃圾郵件資料夾或過濾設定等，然後重新傳送驗證郵件。",
+    noteEmailVerification1:
+      "請查收從 {email} 傳送的郵件，點選郵件中的 URL 完成驗證。",
+    noteEmailVerification2:
+      "若尚未收到驗證郵件，請檢查垃圾郵件資料夾或過濾設定等，然後重新傳送驗證郵件。",
     sendVerificationCode: "重新傳送驗證郵件",
     verificationCodeSent: "已傳送",
     verificationCodeError: "傳送失敗。請稍後再試",
@@ -1106,7 +1132,8 @@ const data = {
       delete: "取消此訂單",
       deleteConfirm: "(取消後不可撤銷)",
       paymentCancelTitle: "僅取消卡片支付",
-      paymentCancelMessage: "將改為店鋪支付。請聯絡客戶告知店鋪支付。訂單不會被取消。",
+      paymentCancelMessage:
+        "將改為店鋪支付。請聯絡客戶告知店鋪支付。訂單不會被取消。",
       waitingPaymentWarninig: "此訂單因支付未完成無法接受。",
       paymentCancel: "僅取消卡片支付",
       paymentCancelConfirm: "(此操作不可撤銷)",
@@ -1174,7 +1201,8 @@ const data = {
       verificationMessage: "請輸入認證 App 生成的 6 位數驗證碼",
       signupWarning: {
         title: "二維碼未顯示時",
-        message: "兩步驗證可在郵箱驗證後從個人中心設定。如二維碼未顯示，請按「跳過」繼續。",
+        message:
+          "兩步驗證可在郵箱驗證後從個人中心設定。如二維碼未顯示，請按「跳過」繼續。",
       },
       error: {
         generateFailed: "兩步驗證設定失敗",
@@ -1212,13 +1240,15 @@ const data = {
     messages: {
       title: "訊息",
       childInvitationAccept: "接受邀請成為子賬號",
-      childInvitationAcceptMessage: "成為子賬號後，將無法操作使用此賬號新增的店鋪。",
+      childInvitationAcceptMessage:
+        "成為子賬號後，將無法操作使用此賬號新增的店鋪。",
       childInvitationDeny: "拒絕邀請",
       accept: "接受",
       deny: "拒絕",
       childInvitationMessage1: "收到管理以下店鋪的業主邀請",
       childInvitationMessage2: "這些店鋪",
-      childInvitationMessage3: "若要變更為管理此店鋪的子賬號，請按接受。若要拒絕，請按拒絕。",
+      childInvitationMessage3:
+        "若要變更為管理此店鋪的子賬號，請按接受。若要拒絕，請按拒絕。",
     },
     subAccounts: {
       index: "子賬號管理",
@@ -1255,11 +1285,14 @@ const data = {
       title: "LINE 聯動",
       settings: "LINE 頻道設定",
       users: "LINE 使用者列表",
-      notice1: "將店鋪的 LINE 官方賬號與 Omochikaeri.com 聯動，可在店鋪的 LINE 官方賬號聊天中向客戶通知訂單狀態。",
+      notice1:
+        "將店鋪的 LINE 官方賬號與 Omochikaeri.com 聯動，可在店鋪的 LINE 官方賬號聊天中向客戶通知訂單狀態。",
       notice2: "使用需要在 LINE 開發者網站設定 LINE 登入頻道和 Messaging API。",
       notice3: "Messaging API 使用與 LINE 官方賬號相同的。",
-      notice4: "需要將 Messaging API 作為「連結的機器人」註冊到 LINE 登入頻道。",
-      notice5: "此外，需要在 LINE 登入的「回撥 URL」中註冊 Omochikaeri 指定的 URL。",
+      notice4:
+        "需要將 Messaging API 作為「連結的機器人」註冊到 LINE 登入頻道。",
+      notice5:
+        "此外，需要在 LINE 登入的「回撥 URL」中註冊 Omochikaeri 指定的 URL。",
       loginClientId: "LINE 登入: 頻道 ID",
       loginChannelSecret: "LINE 登入: 頻道金鑰",
       messagingAccessToken: "Messaging API: 頻道訪問令牌",
@@ -1318,7 +1351,8 @@ const data = {
     notifyMe: "透過 LINE 接收通知",
     notifyMeFromFriend: "從店鋪接收 LINE",
     addFriend: "新增好友",
-    addFriendDescription: "要接收訂單狀態通知，需要將「Omochikaeri.com 官方賬號」新增為好友。",
+    addFriendDescription:
+      "要接收訂單狀態通知，需要將「Omochikaeri.com 官方賬號」新增為好友。",
   },
   trace: {
     thankyou: "感謝您的配合",
@@ -1427,9 +1461,12 @@ const data = {
   },
   aboutService: {
     title: "關於本服務",
-    paragraph1: "新冠病毒不僅奪去了許多人的生命，也對經濟造成了巨大打擊。尤其是提供「人群聚集場所」的餐廳和酒吧，因封城和居家隔離而受到直接衝擊，不僅產生了大量失業者，被迫歇業的經營者也為數不少。",
-    paragraph2: "我們為了支援這樣的餐廳和酒吧，創建了「{serviceName}」。使用「{serviceName}」，餐廳可以無需額外手續費開始外帶服務。餐廳建立專屬頁面，在上面登記菜單（無需雇用網路顧問）。顧客在該頁面下單、完成支付，然後配合烹飪時間到店取餐。",
-    paragraph3: "Singularity Society是一家NPO（非營利型一般社團法人），致力於面向因技術進步而發生巨大變化的世界開展活動。",
+    paragraph1:
+      "新冠病毒不僅奪去了許多人的生命，也對經濟造成了巨大打擊。尤其是提供「人群聚集場所」的餐廳和酒吧，因封城和居家隔離而受到直接衝擊，不僅產生了大量失業者，被迫歇業的經營者也為數不少。",
+    paragraph2:
+      "我們為了支援這樣的餐廳和酒吧，創建了「{serviceName}」。使用「{serviceName}」，餐廳可以無需額外手續費開始外帶服務。餐廳建立專屬頁面，在上面登記菜單（無需雇用網路顧問）。顧客在該頁面下單、完成支付，然後配合烹飪時間到店取餐。",
+    paragraph3:
+      "Singularity Society是一家NPO（非營利型一般社團法人），致力於面向因技術進步而發生巨大變化的世界開展活動。",
     sincerely: "",
     profileName: "中島聰",
     profileTitle: "Singularity Society 代表理事",

@@ -264,7 +264,7 @@ export default defineComponent({
             isLoading.value = true;
             const { data } = await smaregiStoreList({});
             shopList.value = data.res;
-            } finally {
+          } finally {
             isLoading.value = false;
           }
           const restaurantColleciton = await getDocs(

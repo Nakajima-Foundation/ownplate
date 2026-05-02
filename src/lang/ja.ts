@@ -9,7 +9,8 @@ const data = {
       },
     },
     signupTerms: {
-      message: "送信することで、{terms}と{privacy}に同意したものとみなされます。",
+      message:
+        "送信することで、{terms}と{privacy}に同意したものとみなされます。",
       terms: "利用規約",
       privacy: "プライバシーポリシー",
     },
