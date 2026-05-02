@@ -58,14 +58,6 @@ export const next_transitions: { [key: number]: number } = {
   [order_status.transaction_complete]: order_status.transaction_hide,
 };
 
-export const order_error = {
-  validation_error: 100,
-  order_canceled_by_customer: 200,
-  payment_error: 300,
-  order_canceled_by_restaurant: 400,
-  unknow_error: 900,
-};
-
 export const timeEventMapping = {
   order_placed: "orderPlacedAt",
   order_accepted: "orderAcceptedAt",
