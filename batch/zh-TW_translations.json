@@ -1196,5 +1196,6 @@
   "find.prefecture.oita": "大分縣",
   "find.prefecture.miyazaki": "宮崎縣",
   "find.prefecture.kagoshima": "鹿兒島縣",
-  "find.prefecture.okinawa": "沖繩縣"
+  "find.prefecture.okinawa": "沖繩縣",
+  "errorPage.code.auth.signupFailed": "註冊失敗。"
 }

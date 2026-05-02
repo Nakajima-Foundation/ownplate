@@ -1328,6 +1328,9 @@ const data = {
       cardError: "Jika kesalahan berulang, silakan \"Hanya batalkan pembayaran kartu\" dan proses pesanan.",
     },
     code: {
+      auth: {
+        signupFailed: "Pendaftaran gagal.",
+      },
       line: {
         validation: "Autentikasi melalui LINE gagal.",
       },

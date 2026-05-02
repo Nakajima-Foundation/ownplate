@@ -1328,6 +1328,9 @@ const data = {
       cardError: "如錯誤反覆出現，請僅取消卡片支付並處理訂單。",
     },
     code: {
+      auth: {
+        signupFailed: "註冊失敗。",
+      },
       line: {
         validation: "LINE 認證失敗。",
       },

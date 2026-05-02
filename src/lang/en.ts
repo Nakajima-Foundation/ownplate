@@ -1433,6 +1433,9 @@ const data = {
         "If the error occurs repeatedly, please cancel the card payment only and process the order.",
     },
     code: {
+      auth: {
+        signupFailed: "Sign-up failed.",
+      },
       line: {
         validation: "LINE authentication failed.",
       },
