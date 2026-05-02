@@ -130,7 +130,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, onUnmounted } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -194,7 +194,7 @@ export default defineComponent({
         );
     const q = query(cond, orderBy("createdAt", "desc"));
 
-    onSnapshot(q, (docs) => {
+    const detachHistories = onSnapshot(q, (docs) => {
       const tmp: HistoryItem[] = [];
       docs.docs.forEach((a) => {
         const d = a.data();
@@ -203,6 +203,7 @@ export default defineComponent({
       });
       histories.value = tmp;
     });
+    onUnmounted(() => detachHistories());
 
     const deleteHistory = (history: HistoryItem) => {
       deleteDoc(doc(db, history.path));
