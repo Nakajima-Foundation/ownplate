@@ -43,7 +43,7 @@ export default defineComponent({
     }));
 
     return {
-      md: new MarkdownIt(),
+      md: new MarkdownIt({ html: false }),
       newsList,
     };
   },
