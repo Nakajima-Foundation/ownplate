@@ -7,12 +7,13 @@ export const copyMenuData = (
   uid: string,
 ): MenuData => {
   const base = getNewItemData(item, isJP, item.validatedFlag);
-  const data = Object.assign({}, base, {
+  const data = {
+    ...base,
     uid,
     publicFlag: false,
     deletedFlag: false,
     createdAt: serverTimestamp(),
-  });
+  };
   return data;
 };
 

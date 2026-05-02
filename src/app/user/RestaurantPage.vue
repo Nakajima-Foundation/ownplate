@@ -619,13 +619,14 @@ export default defineComponent({
         orders.value = newObject;
       }
       if (eventArgs.optionValues) {
-        selectedOptions.value = Object.assign({}, selectedOptions.value, {
+        selectedOptions.value = {
+          ...selectedOptions.value,
           [eventArgs.itemId]: eventArgs.optionValues,
-        });
+        };
       }
     };
     const updateSelectedOptions = (id: string, e: (boolean | string)[][]) => {
-      const newSelectedOptions = Object.assign({}, selectedOptions.value);
+      const newSelectedOptions = { ...selectedOptions.value };
       newSelectedOptions[id] = e;
       selectedOptions.value = newSelectedOptions;
     };
@@ -691,7 +692,7 @@ export default defineComponent({
           const checkoutMenus: AnalyticsMenuData[] = [];
           Object.keys(orders.value).forEach((currentMenuId) => {
             orders.value[currentMenuId].forEach((quantity: number) => {
-              const menu = Object.assign({}, cartItems.value[currentMenuId]);
+              const menu = { ...cartItems.value[currentMenuId] };
               menu.quantity = quantity;
               checkoutMenus.push(menu);
             });

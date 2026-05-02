@@ -9,7 +9,7 @@
       <AdminHeader
         class="mx-6 mt-4 lg:flex lg:items-center"
         :shopInfo="shopInfo"
-        :backLink="`/admin/restaurants`"
+        backLink="/admin/restaurants"
         :showSuspend="false"
       />
 

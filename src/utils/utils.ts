@@ -862,12 +862,10 @@ export const superPermissionCheck = () => {
     if (!userStore.user || userStore.isNotSuperAdmin) {
       router.push("/");
     }
-  } else {
-    if (
-      !userStore.user ||
-      (userStore.isNotSuperAdmin && userStore.isNotOperator)
-    ) {
-      router.push("/");
-    }
+  } else if (
+    !userStore.user ||
+    (userStore.isNotSuperAdmin && userStore.isNotOperator)
+  ) {
+    router.push("/");
   }
 };

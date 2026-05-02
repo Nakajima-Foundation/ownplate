@@ -210,7 +210,7 @@ export default defineComponent({
       const params = {
         response_type: "code",
         scope: "read_write",
-        client_id: client_id,
+        client_id,
         state: "s" + Math.random(),
         redirect_uri: encodeURI(redirectURI),
       };

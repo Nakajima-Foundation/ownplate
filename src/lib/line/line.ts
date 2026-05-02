@@ -17,9 +17,7 @@ export const lineAuthURLBase = (
     state,
     nonce,
   } as { [key: string]: string };
-  const params = JSON.stringify(
-    Object.assign({}, options || {}, { state, nonce }),
-  );
+  const params = JSON.stringify({ ...(options || {}), state, nonce });
   const date = new Date();
   date.setTime(date.getTime() + 5 * 60 * 1000); // five minutes
   const cookie = `line_params=${encodeURIComponent(

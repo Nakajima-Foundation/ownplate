@@ -6,7 +6,7 @@
     <template v-else>
       <!-- Header -->
       <div class="mx-6 mt-4 flex items-center space-x-4">
-        <router-link :to="'/admin/restaurants'">
+        <router-link to="/admin/restaurants">
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >
@@ -17,7 +17,7 @@
           </div>
         </router-link>
 
-        <router-link :to="'/admin/news'">
+        <router-link to="/admin/news">
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
           >

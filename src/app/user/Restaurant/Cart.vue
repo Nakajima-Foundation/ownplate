@@ -135,7 +135,7 @@ export default defineComponent({
         newOP.splice(key, 1);
       }
       ctx.emit("didOrderdChange", {
-        itemId: itemId,
+        itemId,
         quantities: newQuantities,
         optionValues: newOP,
       });

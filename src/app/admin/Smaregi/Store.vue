@@ -266,7 +266,7 @@ export default defineComponent({
         const path = `/smaregi/${contractId}/stores/${storeId}/products/${product.productId}`;
         if (menuId && menuId !== "00000") {
           const data = {
-            contractId: contractId,
+            contractId,
             storeId,
             productId: product.productId,
 

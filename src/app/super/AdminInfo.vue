@@ -105,7 +105,7 @@ export default defineComponent({
             cmd: "setCustomClaim",
             uid: adminId,
             key: "operator",
-            value: value,
+            value,
           });
           customClaims.value = data.result;
         } catch (error) {
