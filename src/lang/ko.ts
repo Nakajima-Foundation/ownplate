@@ -1328,6 +1328,9 @@ const data = {
       cardError: "오류가 반복될 경우 카드 결제만 취소하고 주문을 처리해 주세요.",
     },
     code: {
+      auth: {
+        signupFailed: "회원 가입에 실패했습니다.",
+      },
       line: {
         validation: "LINE 인증에 실패했습니다.",
       },

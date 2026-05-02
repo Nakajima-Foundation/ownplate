@@ -1194,5 +1194,6 @@
   "find.prefecture.oita": "오이타현",
   "find.prefecture.miyazaki": "미야자키현",
   "find.prefecture.kagoshima": "가고시마현",
-  "find.prefecture.okinawa": "오키나와현"
+  "find.prefecture.okinawa": "오키나와현",
+  "errorPage.code.auth.signupFailed": "회원 가입에 실패했습니다."
 }

@@ -1328,6 +1328,9 @@ const data = {
       cardError: "Nếu lỗi lặp lại, vui lòng \"Chỉ hủy thanh toán thẻ\" và xử lý đơn hàng.",
     },
     code: {
+      auth: {
+        signupFailed: "Đăng ký thất bại.",
+      },
       line: {
         validation: "Xác thực qua LINE thất bại.",
       },

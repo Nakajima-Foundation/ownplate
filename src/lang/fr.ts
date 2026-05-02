@@ -1328,6 +1328,9 @@ const data = {
       cardError: "Si l'erreur se reproduit, veuillez annuler uniquement le paiement par carte et traiter la commande.",
     },
     code: {
+      auth: {
+        signupFailed: "L'inscription a échoué.",
+      },
       line: {
         validation: "LINE authentication failed.",
       },

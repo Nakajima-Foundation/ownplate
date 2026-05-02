@@ -178,6 +178,7 @@
 <script lang="ts">
 import { defineComponent, ref, watch, computed } from "vue";
 import { useGeneralStore } from "@/store";
+import { useDialogStore } from "@/store/dialog";
 import isEmail from "validator/lib/isEmail";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { partners } from "@/config/constant";
@@ -208,6 +209,7 @@ export default defineComponent({
     const router = useRouter();
     const route = useRoute();
     const generalStore = useGeneralStore();
+    const dialogStore = useDialogStore();
     const isLocaleJapan = useIsLocaleJapan();
     const { user } = useUserData();
 
@@ -338,7 +340,7 @@ export default defineComponent({
         if (code === "auth/email-already-in-use") {
           emailTaken.value = email.value;
         } else {
-          // BUGBUG: Not processing other type of errors
+          dialogStore.setErrorMessage({ code: "auth.signupFailed" });
         }
       }
     };

@@ -1197,5 +1197,6 @@
   "find.prefecture.oita": "โออิตะ",
   "find.prefecture.miyazaki": "มิยาซากิ",
   "find.prefecture.kagoshima": "คาโงชิมะ",
-  "find.prefecture.okinawa": "โอกินาวะ"
+  "find.prefecture.okinawa": "โอกินาวะ",
+  "errorPage.code.auth.signupFailed": "การสมัครสมาชิกล้มเหลว"
 }
