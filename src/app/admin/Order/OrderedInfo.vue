@@ -298,7 +298,7 @@ export default defineComponent({
           restaurant.value = snapshot.data() as RestaurantInfoData;
         })
         .catch(() => {
-          console.log("no restaurant");
+          console.error("no restaurant");
         });
     }
 

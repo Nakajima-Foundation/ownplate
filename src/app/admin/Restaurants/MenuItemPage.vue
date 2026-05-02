@@ -1022,7 +1022,7 @@ export default defineComponent({
           code: "menu.save",
           error,
         });
-        console.log(error);
+        console.error(error);
       }
     };
 
