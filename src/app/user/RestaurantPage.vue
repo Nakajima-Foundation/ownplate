@@ -320,7 +320,6 @@ import {
   getPrices,
   getTrimmedSelectedOptions,
   getPostOption,
-  // useToggle,
   scrollToElementById,
   useUserData,
   useBasePath,
