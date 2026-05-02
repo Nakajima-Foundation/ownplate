@@ -126,7 +126,9 @@
           </t-button>
 
           <t-submit
-            :isDisabled="submitted && Object.keys(errors).length > 0"
+            :isDisabled="
+              submitting || (submitted && Object.keys(errors).length > 0)
+            "
             class="h-12 w-32 font-bold text-white"
           >
             {{ $t("button.next") }}
@@ -134,7 +136,11 @@
         </div>
 
         <!-- Terms of Use & Privacy Policy -->
-        <I18nT keypath="auth.signupTerms.message" tag="div" class="mt-2 text-xs">
+        <I18nT
+          keypath="auth.signupTerms.message"
+          tag="div"
+          class="mt-2 text-xs"
+        >
           <template #terms>
             <router-link to="/terms/admin" target="_blank">
               <span class="text-op-teal">{{
@@ -211,6 +217,7 @@ export default defineComponent({
     const deferredPush = ref(false);
     const emailTaken = ref("---invalid---");
     const submitted = ref(false);
+    const submitting = ref(false);
     const showTotpEnrollment = ref(false);
 
     useHead(() => ({
@@ -290,6 +297,10 @@ export default defineComponent({
       if (hasError.value) {
         return;
       }
+      if (submitting.value) {
+        return;
+      }
+      submitting.value = true;
       generalStore.setLoading(true);
       try {
         const result = await createUserWithEmailAndPassword(
@@ -319,13 +330,10 @@ export default defineComponent({
         } catch (e) {
           console.log(e);
         }
-        generalStore.setLoading(false);
 
         // Show TOTP enrollment (optional)
         showTotpEnrollment.value = true;
       } catch (error) {
-        generalStore.setLoading(false);
-
         const code = errorCode(error);
         console.warn("onSignup failed", code, errorMessage(error));
         if (code === "auth/email-already-in-use") {
@@ -333,6 +341,9 @@ export default defineComponent({
         } else {
           dialogStore.setErrorMessage({ code: "auth.signupFailed" });
         }
+      } finally {
+        generalStore.setLoading(false);
+        submitting.value = false;
       }
     };
     return {
@@ -344,6 +355,7 @@ export default defineComponent({
       deferredPush,
       emailTaken,
       submitted,
+      submitting,
       showTotpEnrollment,
 
       // computed
