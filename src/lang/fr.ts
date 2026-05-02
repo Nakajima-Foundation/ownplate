@@ -890,6 +890,10 @@ const data = {
     phonenumber: "Phone Number",
     pleasetype: "+1(555)555-1111",
     notice: "A SMS message will be sent for the verification.",
+    foreignCustomer: {
+      title: "Pour les clients étrangers :",
+      body: "Pour les téléphones portables sous contrat dans des pays autres que le Japon, veuillez ajouter l'indicatif du pays au numéro de téléphone, par exemple +1(555)555-1111. Vous devez pouvoir recevoir des SMS en itinérance.",
+    },
     send: "Send SMS",
     resend: "Re-send SMS",
     verificationCode: "Verification Code",

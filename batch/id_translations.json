@@ -1198,5 +1198,7 @@
   "find.prefecture.miyazaki": "Miyazaki",
   "find.prefecture.kagoshima": "Kagoshima",
   "find.prefecture.okinawa": "Okinawa",
-  "errorPage.code.auth.signupFailed": "Pendaftaran gagal."
+  "errorPage.code.auth.signupFailed": "Pendaftaran gagal.",
+  "sms.foreignCustomer.title": "Untuk pelanggan dari luar negeri:",
+  "sms.foreignCustomer.body": "Untuk ponsel yang dikontrak di negara selain Jepang, harap tambahkan kode negara ke nomor telepon seperti +1(555)555-1111. Anda harus dapat menerima SMS saat roaming."
 }

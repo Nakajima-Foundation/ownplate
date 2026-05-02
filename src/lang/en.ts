@@ -951,6 +951,10 @@ const data = {
     phonenumber: "Phone Number",
     pleasetype: "+1(555)555-1111",
     notice: "A SMS message will be sent for the verification.",
+    foreignCustomer: {
+      title: "For foreign customers:",
+      body: "For mobile phones contracted in countries other than Japan, please add the country code to the phone number like +1(555)555-1111. You need to be able to receive SMS while roaming.",
+    },
     send: "Send SMS",
     resend: "Re-send SMS",
     verificationCode: "Verification Code",

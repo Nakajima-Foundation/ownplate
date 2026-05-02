@@ -948,6 +948,10 @@ const data = {
     phonenumber: "携帯電話番号",
     pleasetype: "090-1111-1111",
     notice: "確認のためのSMSが送られてきます",
+    foreignCustomer: {
+      title: "海外のお客様へ：",
+      body: "日本以外の国で契約された携帯電話の場合、+1(555)555-111のように国番号を付けて入力してください。ローミング中のSMS受信ができる必要があります。",
+    },
     send: "送信",
     resend: "再送信",
     verificationCode: "SMS確認コード",
