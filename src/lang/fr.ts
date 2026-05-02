@@ -8,6 +8,11 @@ const data = {
         failed: "Échec de l'authentification",
       },
     },
+    signupTerms: {
+      message: "En soumettant ce formulaire, vous acceptez les {terms} et la {privacy}.",
+      terms: "Conditions d'utilisation",
+      privacy: "Politique de confidentialité",
+    },
   },
   serviceName: {
     ownPlate: "OwnPlate",

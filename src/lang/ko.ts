@@ -8,6 +8,11 @@ const data = {
         failed: "인증에 실패했습니다",
       },
     },
+    signupTerms: {
+      message: "제출하시면 {terms}과 {privacy}에 동의한 것으로 간주됩니다.",
+      terms: "이용약관",
+      privacy: "개인정보처리방침",
+    },
   },
   serviceName: {
     ownPlate: "OwnPlate",

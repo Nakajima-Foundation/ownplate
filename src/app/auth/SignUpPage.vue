@@ -134,31 +134,22 @@
         </div>
 
         <!-- Terms of Use & Privacy Policy -->
-        <div class="mt-2 text-xs">
-          <div v-if="!isLocaleJapan">
-            <span>By submitting this form, you agree to the</span>
+        <I18nT keypath="auth.signupTerms.message" tag="div" class="mt-2 text-xs">
+          <template #terms>
             <router-link to="/terms/admin" target="_blank">
-              <span class="text-op-teal">Terms of Service</span>
+              <span class="text-op-teal">{{
+                $t("auth.signupTerms.terms")
+              }}</span>
             </router-link>
-            <span>and</span>
+          </template>
+          <template #privacy>
             <router-link to="/privacy" target="_blank">
-              <span class="text-op-teal">Privacy Policy</span>
+              <span class="text-op-teal">{{
+                $t("auth.signupTerms.privacy")
+              }}</span>
             </router-link>
-            <span>.</span>
-          </div>
-
-          <div v-else>
-            <span>送信することで、</span>
-            <router-link to="/terms/admin" target="_blank">
-              <span class="text-op-teal">利用規約</span>
-            </router-link>
-            <span>と</span>
-            <router-link to="/privacy" target="_blank">
-              <span class="text-op-teal">プライバシーポリシー</span>
-            </router-link>
-            <span>に同意したものとみなされます。</span>
-          </div>
-        </div>
+          </template>
+        </I18nT>
       </form>
       <!-- Sign Up as a New User -->
       <div class="mt-2 text-center">
@@ -184,7 +175,6 @@ import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { partners } from "@/config/constant";
 
 import {
-  useIsLocaleJapan,
   useUserData,
   defaultTitle,
   errorCode,
@@ -198,19 +188,20 @@ import {
 
 import { useRoute, useRouter } from "vue-router";
 import { useHead } from "@unhead/vue";
+import { I18nT } from "vue-i18n";
 import TotpEnrollment from "@/components/Auth/TotpEnrollment.vue";
 
 export default defineComponent({
   name: "Signup",
   components: {
     TotpEnrollment,
+    I18nT,
   },
   setup() {
     const router = useRouter();
     const route = useRoute();
     const generalStore = useGeneralStore();
     const dialogStore = useDialogStore();
-    const isLocaleJapan = useIsLocaleJapan();
     const { user } = useUserData();
 
     const email = ref("");
@@ -364,8 +355,6 @@ export default defineComponent({
       handleTotpComplete,
       handleTotpSkip,
       onSignup,
-
-      isLocaleJapan,
     };
   },
 });

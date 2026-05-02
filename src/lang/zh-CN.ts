@@ -8,6 +8,11 @@ const data = {
         failed: "认证失败",
       },
     },
+    signupTerms: {
+      message: "提交后即视为同意{terms}和{privacy}。",
+      terms: "服务条款",
+      privacy: "隐私政策",
+    },
   },
   serviceName: {
     ownPlate: "OwnPlate",

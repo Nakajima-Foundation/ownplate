@@ -8,6 +8,11 @@ const data = {
         failed: "認証に失敗しました",
       },
     },
+    signupTerms: {
+      message: "送信することで、{terms}と{privacy}に同意したものとみなされます。",
+      terms: "利用規約",
+      privacy: "プライバシーポリシー",
+    },
   },
   serviceName: {
     ownPlate: "OwnPlate",
