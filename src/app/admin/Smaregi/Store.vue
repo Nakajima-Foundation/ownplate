@@ -251,13 +251,13 @@ export default defineComponent({
           });
           selectedMenu.value = _selectedMenu;
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
       },
     );
     const saveMenus = () => {
       if (isDuplicateError.value) {
-        console.log("error");
+        console.error("error");
         return;
       }
       (productList.value || []).forEach((product, key) => {

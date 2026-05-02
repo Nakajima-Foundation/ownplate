@@ -952,7 +952,6 @@ export default defineComponent({
       );
 
       const deliveryFee = (() => {
-        // console.log(deliveryData.value.enableDeliveryFree, ret.total , deliveryData.value.deliveryThreshold);
         if (!props.shopInfo.enableDelivery) {
           return 0;
         }
@@ -1032,7 +1031,6 @@ export default defineComponent({
     const handleChangeStatus = async (statusKey: string) => {
       const newStatus = order_status[statusKey];
       if (newStatus === orderInfo.value.status) {
-        console.log("same status - no need to process");
         return;
       }
       updating.value = statusKey;
@@ -1052,7 +1050,6 @@ export default defineComponent({
           params.timeEstimated = getEestimateTime();
         }
         const { data } = await orderUpdate(params);
-        // console.log("update", data);
         if (data.result) {
           router.push(parentUrl.value);
         } else {
@@ -1094,8 +1091,7 @@ export default defineComponent({
             await orderChange(params);
             isOrderChange.value = false;
 
-            // console.log("update", data);
-          } catch (error) {
+              } catch (error) {
             console.error(errorMessage(error), error);
             dialogStore.setErrorMessage({
               code: "order.update",
@@ -1120,7 +1116,6 @@ export default defineComponent({
       cancelPopup.value = false;
     };
     const openPaymentCancel = () => {
-      console.log("openPaymentCancel");
       paymentCancelPopup.value = true;
     };
     const closePaymentCancel = () => {

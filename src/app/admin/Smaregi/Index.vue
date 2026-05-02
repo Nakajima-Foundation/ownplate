@@ -264,8 +264,7 @@ export default defineComponent({
             isLoading.value = true;
             const { data } = await smaregiStoreList({});
             shopList.value = data.res;
-            // console.log("smaregiStoreList", data);
-          } finally {
+            } finally {
             isLoading.value = false;
           }
           const restaurantColleciton = await getDocs(
@@ -323,7 +322,7 @@ export default defineComponent({
 
     const saveShops = () => {
       if (isDuplicateError.value) {
-        console.log("error");
+        console.error("error");
         return;
       }
 
@@ -358,10 +357,8 @@ export default defineComponent({
             data.inStock = inStock;
           }
           setDoc(doc(db, path), data);
-          // console.log(selectedRestaurant.value[key]);
         } else {
           deleteDoc(doc(db, path));
-          console.log("TODO DELETE");
         }
       });
       isEdit.value = false;

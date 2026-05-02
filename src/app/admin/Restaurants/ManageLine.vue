@@ -150,7 +150,6 @@ export default defineComponent({
     const state = route.query.state as string;
     if (lineId && displayName && state) {
       if (lineVerify(state)) {
-        console.log(displayName, uid.value, restaurantId.value);
         setDoc(
           doc(db, `restaurants/${restaurantId.value}/lines/${lineId}`),
           {
@@ -160,9 +159,7 @@ export default defineComponent({
             restaurantId: restaurantId.value,
           },
           { merge: true },
-        ).then(() => {
-          console.log("registered lineId", lineId);
-        });
+        );
       } else {
         console.error("invalid state", state);
       }
@@ -202,7 +199,6 @@ export default defineComponent({
       dialogStore.setAlert({
         code: "admin.order.lineDelete",
         callback: async () => {
-          console.log("handleDelete", _lineId);
           await deleteDoc(
             doc(db, `restaurants/${restaurantId.value}/lines/${_lineId}`),
           );

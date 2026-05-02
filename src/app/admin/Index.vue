@@ -441,7 +441,7 @@ export default defineComponent({
                 );
                 watchOrder();
               } catch (error) {
-                console.log("Error fetch doc,", error);
+                console.error("Error fetch doc,", error);
               } finally {
                 readyToDisplay.value = true;
               }
@@ -481,7 +481,7 @@ export default defineComponent({
                   // if subAccounts has more than 11 restaurant, this will call multiple. TODO: optimize.
                   watchOrder();
                 } catch (error) {
-                  console.log("Error fetch doc,", error);
+                  console.error("Error fetch doc,", error);
                 } finally {
                   readyToDisplay.value = true;
                 }
@@ -494,7 +494,7 @@ export default defineComponent({
           scrollToElementById(location.hash.replace("#", ""));
         }
       } catch (error) {
-        console.log("Error fetch doc,", error);
+        console.error("Error fetch doc,", error);
       } finally {
         readyToDisplay.value = true;
       }
@@ -533,7 +533,6 @@ export default defineComponent({
       }
     };
     const handleNew = async () => {
-      console.log("handleNew");
       if (isOwner.value) {
         try {
           const newDoc = doc(collection(db, "restaurants"));
@@ -554,7 +553,7 @@ export default defineComponent({
           router.push(`/admin/restaurants/${newDoc.id}`);
         } catch (error) {
           dialogStore.setErrorMessage({});
-          console.log(error);
+          console.error(error);
         }
       }
     };

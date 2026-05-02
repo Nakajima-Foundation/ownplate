@@ -48,7 +48,6 @@ export default defineComponent({
           const { data } = await smaregiAuth({
             code: code,
           });
-          console.log("smaregiAuth", data);
           if (data.result) {
             router.push("/admin/smaregi/index");
           } else {

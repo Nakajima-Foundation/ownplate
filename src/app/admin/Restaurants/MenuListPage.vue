@@ -343,7 +343,7 @@ export default defineComponent({
         } else {
           notFound.value = true;
           // 404
-          console.log("Error fetch shopInfoSnapshot.");
+          console.error("Error fetch shopInfoSnapshot.");
         }
       },
     );

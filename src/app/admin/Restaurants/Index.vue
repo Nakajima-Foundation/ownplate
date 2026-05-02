@@ -1359,7 +1359,6 @@ export default defineComponent({
       countryCode: string;
       errors: string[];
     }) => {
-      //console.log(payload)
       editShopInfo.phoneNumber = payload.phoneNumber;
       editShopInfo.countryCode = payload.countryCode;
       errorsPhone.value = payload.errors;
