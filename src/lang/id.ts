@@ -8,6 +8,11 @@ const data = {
         failed: "Autentikasi gagal",
       },
     },
+    signupTerms: {
+      message: "Dengan mengirimkan formulir ini, Anda menyetujui {terms} dan {privacy}.",
+      terms: "Syarat Layanan",
+      privacy: "Kebijakan Privasi",
+    },
   },
   serviceName: {
     ownPlate: "OwnPlate",

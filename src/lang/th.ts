@@ -8,6 +8,11 @@ const data = {
         failed: "การยืนยันตัวตนล้มเหลว",
       },
     },
+    signupTerms: {
+      message: "การส่งฟอร์มนี้ถือว่าคุณยอมรับ{terms}และ{privacy}",
+      terms: "ข้อกำหนดการใช้บริการ",
+      privacy: "นโยบายความเป็นส่วนตัว",
+    },
   },
   serviceName: {
     ownPlate: "OwnPlate",

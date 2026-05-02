@@ -8,6 +8,11 @@ const data = {
         failed: "Authentication failed",
       },
     },
+    signupTerms: {
+      message: "By submitting this form, you agree to the {terms} and {privacy}.",
+      terms: "Terms of Service",
+      privacy: "Privacy Policy",
+    },
   },
   serviceName: {
     ownPlate: "OwnPlate",

@@ -8,6 +8,11 @@ const data = {
         failed: "Xác thực thất bại",
       },
     },
+    signupTerms: {
+      message: "Khi gửi biểu mẫu, bạn đồng ý với {terms} và {privacy}.",
+      terms: "Điều khoản dịch vụ",
+      privacy: "Chính sách bảo mật",
+    },
   },
   serviceName: {
     ownPlate: "OwnPlate",

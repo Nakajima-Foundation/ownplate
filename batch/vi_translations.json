@@ -1200,5 +1200,8 @@
   "find.prefecture.okinawa": "Okinawa",
   "errorPage.code.auth.signupFailed": "Đăng ký thất bại.",
   "sms.foreignCustomer.title": "Đối với khách hàng nước ngoài:",
-  "sms.foreignCustomer.body": "Đối với điện thoại di động đăng ký tại các quốc gia khác Nhật Bản, vui lòng thêm mã quốc gia vào số điện thoại như +1(555)555-1111. Bạn cần có khả năng nhận SMS khi roaming."
+  "sms.foreignCustomer.body": "Đối với điện thoại di động đăng ký tại các quốc gia khác Nhật Bản, vui lòng thêm mã quốc gia vào số điện thoại như +1(555)555-1111. Bạn cần có khả năng nhận SMS khi roaming.",
+  "auth.signupTerms.message": "Khi gửi biểu mẫu, bạn đồng ý với {terms} và {privacy}.",
+  "auth.signupTerms.terms": "Điều khoản dịch vụ",
+  "auth.signupTerms.privacy": "Chính sách bảo mật"
 }

@@ -539,5 +539,8 @@
   "find.prefecture.okinawa": "Okinawa",
   "errorPage.code.auth.signupFailed": "L'inscription a échoué.",
   "sms.foreignCustomer.title": "Pour les clients étrangers :",
-  "sms.foreignCustomer.body": "Pour les téléphones portables sous contrat dans des pays autres que le Japon, veuillez ajouter l'indicatif du pays au numéro de téléphone, par exemple +1(555)555-1111. Vous devez pouvoir recevoir des SMS en itinérance."
+  "sms.foreignCustomer.body": "Pour les téléphones portables sous contrat dans des pays autres que le Japon, veuillez ajouter l'indicatif du pays au numéro de téléphone, par exemple +1(555)555-1111. Vous devez pouvoir recevoir des SMS en itinérance.",
+  "auth.signupTerms.message": "En soumettant ce formulaire, vous acceptez les {terms} et la {privacy}.",
+  "auth.signupTerms.terms": "Conditions d'utilisation",
+  "auth.signupTerms.privacy": "Politique de confidentialité"
 }

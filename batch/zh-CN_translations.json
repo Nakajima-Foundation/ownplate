@@ -1199,5 +1199,8 @@
   "find.prefecture.okinawa": "冲绳县",
   "errorPage.code.auth.signupFailed": "注册失败。",
   "sms.foreignCustomer.title": "海外客户须知：",
-  "sms.foreignCustomer.body": "在日本以外的国家签约的手机，请加上国家代码，例如 +1(555)555-1111。您需要能在漫游时接收短信。"
+  "sms.foreignCustomer.body": "在日本以外的国家签约的手机，请加上国家代码，例如 +1(555)555-1111。您需要能在漫游时接收短信。",
+  "auth.signupTerms.message": "提交后即视为同意{terms}和{privacy}。",
+  "auth.signupTerms.terms": "服务条款",
+  "auth.signupTerms.privacy": "隐私政策"
 }
