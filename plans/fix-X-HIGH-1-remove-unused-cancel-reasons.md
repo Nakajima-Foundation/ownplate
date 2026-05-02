@@ -27,4 +27,4 @@ grep -rn 'placedCancelReasons\|acceptedCancelReasons' src/ functions/src/
 
 ## 残作業 (X-HIGH-1 全体)
 
-本 PR は X-HIGH-1 の一部のみ。残り（`toBeOrNotSelect` / `partners.name` / Twilio TWIML 等）は別 PR で。
+本 PR は X-HIGH-1 の一部のみ。残り（`toBeOrNotSelect` / `partners.name` / Twilio TwiML 等）は別 PR で。
