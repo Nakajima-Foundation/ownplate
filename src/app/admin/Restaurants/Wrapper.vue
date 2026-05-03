@@ -8,7 +8,7 @@
       <div v-if="partner && partner.length > 0" class="mx-6 mt-3 items-center">
         <div v-for="(part, k) in partner" :key="k" class="flex">
           <div class="flex-1">
-            <img :src="`/partners/${part.logo}`" class="w-12" />
+            <img :src="`/partners/${part.logo}`" alt="" class="w-12" />
             <span class="font-bold">
               {{ part.name }}
             </span>
