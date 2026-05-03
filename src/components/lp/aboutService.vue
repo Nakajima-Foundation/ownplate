@@ -24,7 +24,7 @@
 
       <!-- Profile -->
       <div class="mt-4 inline-flex items-center">
-        <img src="/Profile-SNakajima.jpg" class="w-16 rounded-full" />
+        <img src="/Profile-SNakajima.jpg" alt="" class="w-16 rounded-full" />
         <div class="ml-4">
           {{ $t("aboutService.profileName") }}<br />{{
             $t("aboutService.profileTitle")
