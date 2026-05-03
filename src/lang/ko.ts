@@ -990,6 +990,7 @@ const data = {
     userManual: "사용 방법",
     suportPage: "문의",
     facebookUserGroup: "사용자 그룹",
+    completed: "완료",
     news: {
       title: "알림",
       newsTop: "알림 목록",

@@ -37,28 +37,48 @@
           <a href="#paymentSection" v-if="unsetPaymentWarning" class="underline"
             >支払い方法の設定はこちら。</a
           >
-          <img src="@/assets/images/sumi-1.svg" class="w-6" v-else />
+          <img
+            src="@/assets/images/sumi-1.svg"
+            :alt="$t('admin.completed')"
+            class="w-6"
+            v-else
+          />
         </ol>
         <ol>
           2.飲食店を追加して、店舗の情報を入力してください。
           <a href="#addRestaurant" v-if="!existsRestaurant" class="underline"
             >飲食店の追加はこちら。</a
           >
-          <img src="@/assets/images/sumi-1.svg" class="w-6" v-else />
+          <img
+            src="@/assets/images/sumi-1.svg"
+            :alt="$t('admin.completed')"
+            class="w-6"
+            v-else
+          />
         </ol>
         <ol>
           3.メニューを２つ以上登録してください。
           <a href="#addMenu" v-if="!existMenu" class="underline"
             >メニュー追加はこちらの「メニュー」から。</a
           >
-          <img src="@/assets/images/sumi-1.svg" class="w-6" v-else />
+          <img
+            src="@/assets/images/sumi-1.svg"
+            :alt="$t('admin.completed')"
+            class="w-6"
+            v-else
+          />
         </ol>
         <ol>
           4.店舗を「公開」にしてください。
           <a href="#addMenu" v-if="!existPublicRestaurant" class="underline"
             >公開への設定変更は「店情報の変更」から。</a
           >
-          <img src="@/assets/images/sumi-1.svg" class="w-6" v-else />
+          <img
+            src="@/assets/images/sumi-1.svg"
+            :alt="$t('admin.completed')"
+            class="w-6"
+            v-else
+          />
         </ol>
         <ol>
           5.リストの掲載の申請をしてください。(オプション)

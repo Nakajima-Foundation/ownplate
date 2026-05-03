@@ -999,6 +999,7 @@ const data = {
     userManual: "Hướng dẫn sử dụng",
     suportPage: "Liên hệ",
     facebookUserGroup: "Nhóm người dùng",
+    completed: "Hoàn thành",
     news: {
       title: "Thông báo",
       newsTop: "Danh sách thông báo",
