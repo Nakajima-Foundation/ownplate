@@ -239,6 +239,7 @@
                   <img
                     class="object-cover"
                     :src="restProfilePhoto"
+                    alt=""
                     style="width: 128px; height: 128px"
                   />
                 </div>
@@ -285,6 +286,7 @@
                   <img
                     class="rounded-sm object-cover"
                     :src="restCoverPhoto"
+                    alt=""
                     style="width: 272px; height: 128px"
                   />
                 </div>

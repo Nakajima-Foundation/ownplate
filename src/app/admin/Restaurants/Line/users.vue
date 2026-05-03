@@ -22,7 +22,7 @@
       </div>
       <div class="m-6">
         <div v-for="(user, k) in users" :key="k">
-          <img :src="user.profile.pictureUrl" class="w-12" />
+          <img :src="user.profile.pictureUrl" alt="" class="w-12" />
           {{ user.profile.displayName }}
         </div>
       </div>

@@ -16,6 +16,7 @@
         <img
           v-if="shopInfo.restaurantProfilePhoto"
           :src="shopInfo.restaurantProfilePhoto"
+          alt=""
           class="h-12 w-12 rounded-full object-cover"
         />
         <div class="ml-3">

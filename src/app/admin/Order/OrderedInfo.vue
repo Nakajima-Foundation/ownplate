@@ -144,6 +144,7 @@
         <div class="mr-2">
           <img
             :src="resizedProfileImage(restaurant, '600')"
+            alt=""
             class="h-12 w-12 rounded-full object-cover"
           />
         </div>
