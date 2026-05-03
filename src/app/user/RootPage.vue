@@ -43,6 +43,7 @@
               <div class="mr-4 h-12 w-12 rounded-full bg-black/10">
                 <img
                   :src="resizedProfileImage(like, '600')"
+                  alt=""
                   class="h-12 w-12 rounded-full object-cover"
                 />
               </div>

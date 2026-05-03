@@ -3,7 +3,7 @@
     <div v-if="partners.length > 0" class="mt-2 mb-1">
       <div v-for="(partner, k) in partners" :key="k" class="flex">
         <div class="ml-4 flex-1">
-          <img :src="`/partners/${partner.logo}`" class="w-12" />
+          <img :src="`/partners/${partner.logo}`" alt="" class="w-12" />
           <span class="font-bold">
             {{ partner.name }}
           </span>

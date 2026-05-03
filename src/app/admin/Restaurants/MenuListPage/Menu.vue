@@ -52,6 +52,7 @@
             <div v-if="image">
               <img
                 :src="image"
+                :alt="menuitem.itemName"
                 class="h-24 w-24 rounded-sm object-cover"
                 @error="smallImageErrorHandler"
               />

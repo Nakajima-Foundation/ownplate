@@ -10,7 +10,7 @@
       <form @submit.prevent="onSignup">
         <!-- Title -->
         <div v-if="partner">
-          <img :src="`/partners/${partner.logo}`" class="w-12" />
+          <img :src="`/partners/${partner.logo}`" alt="" class="w-12" />
           <span class="font-bold">
             {{ partner.name }}
           </span>

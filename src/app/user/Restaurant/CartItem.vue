@@ -34,6 +34,7 @@
       >
         <img
           :src="image"
+          :alt="item.itemName"
           class="h-full w-full rounded-sm object-cover lg:h-full lg:w-full"
           @error="smallImageErrorHandler"
         />

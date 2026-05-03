@@ -955,6 +955,7 @@ const data = {
     userManual: "使用说明",
     suportPage: "咨询",
     facebookUserGroup: "用户群组",
+    completed: "已完成",
     news: {
       title: "通知",
       newsTop: "通知列表",

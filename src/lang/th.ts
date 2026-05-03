@@ -991,6 +991,7 @@ const data = {
     userManual: "คู่มือการใช้งาน",
     suportPage: "ติดต่อสอบถาม",
     facebookUserGroup: "กลุ่มผู้ใช้",
+    completed: "เสร็จสิ้น",
     news: {
       title: "ประกาศ",
       newsTop: "รายการประกาศ",

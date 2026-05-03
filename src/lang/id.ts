@@ -1008,6 +1008,7 @@ const data = {
     userManual: "Panduan penggunaan",
     suportPage: "Hubungi kami",
     facebookUserGroup: "Grup pengguna",
+    completed: "Selesai",
     news: {
       title: "Pemberitahuan",
       newsTop: "Daftar pemberitahuan",

@@ -12,6 +12,7 @@
             <img
               @click.stop="openImage()"
               :src="smallimage"
+              :alt="title"
               class="h-36 w-36 rounded-sm object-cover"
               @error="smallImageErrorHandler"
             />

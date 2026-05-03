@@ -1012,6 +1012,7 @@ const data = {
     userManual: "User Manual",
     suportPage: "Support",
     facebookUserGroup: "User Group",
+    completed: "Terminé",
     news: {
       title: "News",
       newsTop: "News Top",
