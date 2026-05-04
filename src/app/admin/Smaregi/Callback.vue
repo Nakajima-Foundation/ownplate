@@ -46,9 +46,8 @@ export default defineComponent({
         try {
           isValidating.value = true;
           const { data } = await smaregiAuth({
-            code: code,
+            code,
           });
-          console.log("smaregiAuth", data);
           if (data.result) {
             router.push("/admin/smaregi/index");
           } else {

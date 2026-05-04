@@ -10,7 +10,7 @@
       <form @submit.prevent="onSignup">
         <!-- Title -->
         <div v-if="partner">
-          <img :src="`/partners/${partner.logo}`" class="w-12" />
+          <img :src="`/partners/${partner.logo}`" alt="" class="w-12" />
           <span class="font-bold">
             {{ partner.name }}
           </span>
@@ -126,7 +126,9 @@
           </t-button>
 
           <t-submit
-            :isDisabled="submitted && Object.keys(errors).length > 0"
+            :isDisabled="
+              submitting || (submitted && Object.keys(errors).length > 0)
+            "
             class="h-12 w-32 font-bold text-white"
           >
             {{ $t("button.next") }}
@@ -134,31 +136,26 @@
         </div>
 
         <!-- Terms of Use & Privacy Policy -->
-        <div class="mt-2 text-xs">
-          <div v-if="!isLocaleJapan">
-            <span>By submitting this form, you agree to the</span>
+        <I18nT
+          keypath="auth.signupTerms.message"
+          tag="div"
+          class="mt-2 text-xs"
+        >
+          <template #terms>
             <router-link to="/terms/admin" target="_blank">
-              <span class="text-op-teal">Terms of Service</span>
+              <span class="text-op-teal">{{
+                $t("auth.signupTerms.terms")
+              }}</span>
             </router-link>
-            <span>and</span>
+          </template>
+          <template #privacy>
             <router-link to="/privacy" target="_blank">
-              <span class="text-op-teal">Privacy Policy</span>
+              <span class="text-op-teal">{{
+                $t("auth.signupTerms.privacy")
+              }}</span>
             </router-link>
-            <span>.</span>
-          </div>
-
-          <div v-else>
-            <span>送信することで、</span>
-            <router-link to="/terms/admin" target="_blank">
-              <span class="text-op-teal">利用規約</span>
-            </router-link>
-            <span>と</span>
-            <router-link to="/privacy" target="_blank">
-              <span class="text-op-teal">プライバシーポリシー</span>
-            </router-link>
-            <span>に同意したものとみなされます。</span>
-          </div>
-        </div>
+          </template>
+        </I18nT>
       </form>
       <!-- Sign Up as a New User -->
       <div class="mt-2 text-center">
@@ -178,12 +175,12 @@
 <script lang="ts">
 import { defineComponent, ref, watch, computed } from "vue";
 import { useGeneralStore } from "@/store";
+import { useDialogStore } from "@/store/dialog";
 import isEmail from "validator/lib/isEmail";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { partners } from "@/config/constant";
 
 import {
-  useIsLocaleJapan,
   useUserData,
   defaultTitle,
   errorCode,
@@ -197,18 +194,20 @@ import {
 
 import { useRoute, useRouter } from "vue-router";
 import { useHead } from "@unhead/vue";
+import { I18nT } from "vue-i18n";
 import TotpEnrollment from "@/components/Auth/TotpEnrollment.vue";
 
 export default defineComponent({
   name: "Signup",
   components: {
     TotpEnrollment,
+    I18nT,
   },
   setup() {
     const router = useRouter();
     const route = useRoute();
     const generalStore = useGeneralStore();
-    const isLocaleJapan = useIsLocaleJapan();
+    const dialogStore = useDialogStore();
     const { user } = useUserData();
 
     const email = ref("");
@@ -218,6 +217,7 @@ export default defineComponent({
     const deferredPush = ref(false);
     const emailTaken = ref("---invalid---");
     const submitted = ref(false);
+    const submitting = ref(false);
     const showTotpEnrollment = ref(false);
 
     useHead(() => ({
@@ -297,6 +297,10 @@ export default defineComponent({
       if (hasError.value) {
         return;
       }
+      if (submitting.value) {
+        return;
+      }
+      submitting.value = true;
       generalStore.setLoading(true);
       try {
         const result = await createUserWithEmailAndPassword(
@@ -326,20 +330,20 @@ export default defineComponent({
         } catch (e) {
           console.log(e);
         }
-        generalStore.setLoading(false);
 
         // Show TOTP enrollment (optional)
         showTotpEnrollment.value = true;
       } catch (error) {
-        generalStore.setLoading(false);
-
         const code = errorCode(error);
         console.warn("onSignup failed", code, errorMessage(error));
         if (code === "auth/email-already-in-use") {
           emailTaken.value = email.value;
         } else {
-          // BUGBUG: Not processing other type of errors
+          dialogStore.setErrorMessage({ code: "auth.signupFailed" });
         }
+      } finally {
+        generalStore.setLoading(false);
+        submitting.value = false;
       }
     };
     return {
@@ -351,6 +355,7 @@ export default defineComponent({
       deferredPush,
       emailTaken,
       submitted,
+      submitting,
       showTotpEnrollment,
 
       // computed
@@ -362,8 +367,6 @@ export default defineComponent({
       handleTotpComplete,
       handleTotpSkip,
       onSignup,
-
-      isLocaleJapan,
     };
   },
 });

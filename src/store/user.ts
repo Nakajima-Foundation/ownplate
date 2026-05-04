@@ -12,62 +12,37 @@ interface Claims {
 }
 
 export const useUserStore = defineStore("userStore", () => {
-  const user = ref<undefined | boolean | User>(undefined);
+  const user = ref<User | null | undefined>(undefined);
+  const claims = ref<Claims | null | undefined>(undefined);
 
-  const claims = ref<undefined | Claims>(undefined);
+  const uid = computed(() => user.value?.uid);
+  const uidAdmin = computed(() =>
+    user.value?.email ? user.value.uid : undefined,
+  );
+  const uidUser = computed(() =>
+    user.value?.phoneNumber ? user.value.uid : undefined,
+  );
+  const uidLiff = computed(() =>
+    user.value && claims.value?.liffId ? user.value.uid : undefined,
+  );
+  const liffId = computed(() =>
+    user.value ? claims.value?.liffId : undefined,
+  );
+  const isAnonymous = computed(
+    () => user.value === undefined || user.value === null,
+  );
+  const isSuperAdmin = computed(() => claims.value?.admin);
+  const isNotSuperAdmin = computed(() => !claims.value?.admin);
+  const isOperator = computed(() => claims.value?.operator);
+  const isNotOperator = computed(() => !claims.value?.operator);
+  const isAdmin = computed(() => !!(user.value?.email && user.value?.uid));
+  const isSubAccount = computed(() => !!claims.value?.parentUid);
+  const parentId = computed(() => claims.value?.parentUid);
 
-  const uid = computed(() => {
-    return user.value && (user.value as User).uid;
-  });
-  const uidAdmin = computed(() => {
-    return user.value && (user.value as User).email && (user.value as User).uid;
-  });
-  const uidUser = computed(() => {
-    return (
-      user.value && (user.value as User).phoneNumber && (user.value as User).uid
-    );
-  });
-  const uidLiff = computed(() => {
-    return (
-      user.value && (claims.value as Claims).liffId && (user.value as User).uid
-    );
-  });
-  const liffId = computed(() => {
-    return user.value && claims.value?.liffId;
-  });
-  const isAnonymous = computed(() => {
-    return user.value === undefined || user.value === null;
-  });
-  const isSuperAdmin = computed(() => {
-    return claims.value?.admin;
-  });
-  const isNotSuperAdmin = computed(() => {
-    return !claims.value?.admin;
-  });
-  const isOperator = computed(() => {
-    return claims.value?.operator;
-  });
-  const isNotOperator = computed(() => {
-    return !claims.value?.operator;
-  });
-  const isAdmin = computed(() => {
-    return !!(
-      user.value &&
-      (user.value as User).email &&
-      (user.value as User).uid
-    );
-  });
-  const isSubAccount = computed(() => {
-    return !!claims.value?.parentUid;
-  });
-  const parentId = computed(() => {
-    return claims.value?.parentUid;
-  });
-
-  const setUser = (_user: User) => {
+  const setUser = (_user: User | null) => {
     user.value = _user;
   };
-  const setCustomClaims = (_claims: Claims) => {
+  const setCustomClaims = (_claims: Claims | null) => {
     // Note: we can't copy user using Object.assign here
     claims.value = _claims;
   };

@@ -51,7 +51,7 @@ export default defineComponent({
 
     const phone = async () => {
       if (confirm("ok")) {
-        await superTwilio({ restaurantId: restaurantId });
+        await superTwilio({ restaurantId });
       }
     };
     return {

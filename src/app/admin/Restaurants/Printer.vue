@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed } from "vue";
+import { defineComponent, ref, computed, onUnmounted } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, collection, onSnapshot, setDoc } from "firebase/firestore";
 
@@ -103,7 +103,7 @@ export default defineComponent({
       const newKey = doc(collection(db, "a")).id;
       setDoc(restaurantRef, { key: newKey }, { merge: true });
     };
-    onSnapshot(restaurantRef, (_doc) => {
+    const detachPrinter = onSnapshot(restaurantRef, (_doc) => {
       const data = _doc.data();
       if (data === undefined) {
         reset();
@@ -111,6 +111,7 @@ export default defineComponent({
       printerConfig.value = data || {};
       notFound.value = false;
     });
+    onUnmounted(() => detachPrinter());
 
     const printerAddress = computed(() => {
       if (printerConfig.value?.key) {

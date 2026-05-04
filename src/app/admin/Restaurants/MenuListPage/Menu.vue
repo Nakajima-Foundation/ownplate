@@ -52,6 +52,7 @@
             <div v-if="image">
               <img
                 :src="image"
+                :alt="menuitem.itemName"
                 class="h-24 w-24 rounded-sm object-cover"
                 @error="smallImageErrorHandler"
               />
@@ -83,7 +84,10 @@
         </div>
       </div>
     </div>
-    <div class="mt-2 text-right lg:mt-0 lg:ml-4 lg:shrink-0" v-if="isOwner">
+    <div
+      class="mt-2 text-right lg:mt-0 lg:ml-4 lg:shrink-0"
+      v-if="isOwner && !isMoveMode"
+    >
       <!-- Card Actions -->
       <div class="inline-flex space-x-2">
         <!-- Up -->
@@ -172,6 +176,10 @@ export default defineComponent({
     position: {
       type: String,
       required: true,
+    },
+    isMoveMode: {
+      type: Boolean,
+      default: false,
     },
   },
   emits: ["toEditMode", "positionUp", "positionDown", "forkItem", "deleteItem"],

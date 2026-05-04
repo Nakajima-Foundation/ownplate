@@ -31,7 +31,10 @@
       </div>
     </div>
 
-    <div class="mt-2 text-right lg:mt-0 lg:ml-4 lg:shrink-0" v-if="isOwner">
+    <div
+      class="mt-2 text-right lg:mt-0 lg:ml-4 lg:shrink-0"
+      v-if="isOwner && !isMoveMode"
+    >
       <!-- Card Actions -->
       <div class="inline-flex space-x-2">
         <!-- Up -->
@@ -116,6 +119,10 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    isMoveMode: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: [
     "toEditMode",
@@ -153,7 +160,7 @@ export default defineComponent({
     };
     const saveTitle = (name: string) => {
       // save and update this.
-      ctx.emit("updateTitle", { id: props.title.id, name: name });
+      ctx.emit("updateTitle", { id: props.title.id, name });
     };
     const updateTitleLunchDinner = (newValue: boolean, target: string) => {
       const l = target === "lunch" ? newValue : !!props.title.availableLunch;

@@ -215,7 +215,7 @@ export default defineComponent({
         prefecture,
       };
 
-      customerInfo.value = Object.assign({}, customerInfo.value, data);
+      customerInfo.value = { ...customerInfo.value, ...data };
       addressList.value = [];
     };
     const updatePrefecture = (e) => {
@@ -223,10 +223,11 @@ export default defineComponent({
       const prefecture = regionalSetting.AddressStates[prefectureId - 1];
 
       if (prefecture) {
-        customerInfo.value = Object.assign({}, customerInfo.value, {
+        customerInfo.value = {
+          ...customerInfo.value,
           prefecture,
           prefectureId,
-        });
+        };
       }
     };
     const saveAddress = async () => {

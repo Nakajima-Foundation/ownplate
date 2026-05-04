@@ -325,6 +325,7 @@
                   <img
                     class="rounded-sm object-cover"
                     :src="itemPhoto"
+                    alt=""
                     style="width: 128px; height: 128px"
                     @error="smallImageErrorHandler"
                   />
@@ -365,6 +366,7 @@
                 <img
                   class="h-24 w-24 rounded-sm"
                   :src="itemPhoto"
+                  alt=""
                   @error="smallImageErrorHandler"
                 />
                 <!-- ToDo 写真右上の ×アイコンを押すと写真を削除-->
@@ -1022,7 +1024,7 @@ export default defineComponent({
           code: "menu.save",
           error,
         });
-        console.log(error);
+        console.error(error);
       }
     };
 

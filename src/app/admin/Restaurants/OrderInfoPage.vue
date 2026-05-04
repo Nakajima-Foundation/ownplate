@@ -728,7 +728,7 @@ export default defineComponent({
         ).then((menu) => {
           if (!menu.empty) {
             const tmpMenuObj = array2obj(menu.docs.map(doc2data("menu")));
-            menuObj.value = Object.assign({}, { ...menuObj.value }, tmpMenuObj);
+            menuObj.value = { ...menuObj.value, ...tmpMenuObj };
           }
         });
       });
@@ -752,7 +752,7 @@ export default defineComponent({
     });
     const isWarningOrder = computed(() => {
       if (orderUpdateInterval.value < 4 && orderUpdateInterval.value > -4) {
-        if (orderUpdateInterval.value !== orderUpdateInterval.value) {
+        if (Number.isNaN(orderUpdateInterval.value)) {
           return true;
         }
       }
@@ -952,7 +952,6 @@ export default defineComponent({
       );
 
       const deliveryFee = (() => {
-        // console.log(deliveryData.value.enableDeliveryFree, ret.total , deliveryData.value.deliveryThreshold);
         if (!props.shopInfo.enableDelivery) {
           return 0;
         }
@@ -967,10 +966,7 @@ export default defineComponent({
         }
         return deliveryData.value.deliveryFee;
       })();
-      return Object.assign({}, orderInfo.value, ret, {
-        shippingCost,
-        deliveryFee,
-      });
+      return { ...orderInfo.value, ...ret, shippingCost, deliveryFee };
     });
     const notDeliveryOrTotalCanDelivery = computed(() => {
       if (!orderInfo.value.isDelivery) {
@@ -1032,7 +1028,6 @@ export default defineComponent({
     const handleChangeStatus = async (statusKey: string) => {
       const newStatus = order_status[statusKey];
       if (newStatus === orderInfo.value.status) {
-        console.log("same status - no need to process");
         return;
       }
       updating.value = statusKey;
@@ -1052,20 +1047,17 @@ export default defineComponent({
           params.timeEstimated = getEestimateTime();
         }
         const { data } = await orderUpdate(params);
-        // console.log("update", data);
         if (data.result) {
           router.push(parentUrl.value);
+        } else if (data.type === "StripeCardError") {
+          dialogStore.setErrorMessage({
+            code: "order.updateCard",
+            message2: "errorPage.message.cardError",
+          });
         } else {
-          if (data.type === "StripeCardError") {
-            dialogStore.setErrorMessage({
-              code: "order.updateCard",
-              message2: "errorPage.message.cardError",
-            });
-          } else {
-            dialogStore.setErrorMessage({
-              code: "order.update",
-            });
-          }
+          dialogStore.setErrorMessage({
+            code: "order.update",
+          });
         }
       } catch (error) {
         console.error(errorMessage(error), error);
@@ -1093,8 +1085,6 @@ export default defineComponent({
 
             await orderChange(params);
             isOrderChange.value = false;
-
-            // console.log("update", data);
           } catch (error) {
             console.error(errorMessage(error), error);
             dialogStore.setErrorMessage({
@@ -1120,7 +1110,6 @@ export default defineComponent({
       cancelPopup.value = false;
     };
     const openPaymentCancel = () => {
-      console.log("openPaymentCancel");
       paymentCancelPopup.value = true;
     };
     const closePaymentCancel = () => {

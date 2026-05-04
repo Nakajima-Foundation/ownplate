@@ -5,7 +5,7 @@ import { firebaseConfig, appCheckKey } from "@/config/project";
 
 const firebaseApp = initializeApp(firebaseConfig);
 
-if (location.hostname === "localhost") {
+if (import.meta.env.DEV && location.hostname === "localhost") {
   self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
 }
 

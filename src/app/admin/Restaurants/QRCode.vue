@@ -48,7 +48,6 @@ export default defineComponent({
 
     const download = () => {
       const a = document.createElement("a");
-      console.log(qrcodeRef);
       a.href = qrcodeRef.value.$el.toDataURL("image/png");
       a.download = "qrcode.png";
       a.click();

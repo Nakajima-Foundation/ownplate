@@ -46,7 +46,7 @@
     </div>
 
     <div class="mx-6 mt-4" v-if="mode === 'normal'">
-      <router-link :to="'/r'">
+      <router-link to="/r">
         <div
           class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
         >

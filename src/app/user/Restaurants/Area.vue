@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="mx-6 mt-4">
-      <router-link :to="'/r'">
+      <router-link to="/r">
         <div
           class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
         >
@@ -27,6 +27,7 @@
             <div class="mr-4 h-12 w-12 rounded-full bg-black/10">
               <img
                 :src="resizedProfileImage(restaurant, '600')"
+                alt=""
                 class="h-12 w-12 rounded-full object-cover"
               />
             </div>

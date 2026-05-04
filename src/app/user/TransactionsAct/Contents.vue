@@ -229,7 +229,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, computed, PropType } from "vue";
+import { defineComponent, ref, computed, onUnmounted, PropType } from "vue";
 
 import { daysOfWeek } from "@/config/constant";
 import { db } from "@/lib/firebase/firebase9";
@@ -258,9 +258,13 @@ export default defineComponent({
 
     const uid = props.shopInfo.uid;
 
-    onSnapshot(doc(db, `/admins/${uid}/public/payment`), (snapshot) => {
-      paymentInfo.value = snapshot.data() || {};
-    });
+    const detachPayment = onSnapshot(
+      doc(db, `/admins/${uid}/public/payment`),
+      (snapshot) => {
+        paymentInfo.value = snapshot.data() || {};
+      },
+    );
+    onUnmounted(() => detachPayment());
 
     const { nationalPhoneNumber } = useNationalPhoneNumber(props.shopInfo);
 

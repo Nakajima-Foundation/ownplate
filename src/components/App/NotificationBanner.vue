@@ -10,7 +10,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, watch } from "vue";
-import { useGeneralStore } from "../../store";
+import { useGeneralStore } from "@/store";
 
 export default defineComponent({
   setup() {
