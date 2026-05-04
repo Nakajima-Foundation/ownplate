@@ -50,7 +50,7 @@ const articles: { [key: string]: string } = {
   article240727_configurations_of_dishes: configurations_of_dishes,
   article240817_stripe_payouts: stripe_payouts,
   article250315_discounts: discounts,
-  totp_2fa_user_guide: totp_2fa_user_guide,
+  totp_2fa_user_guide,
 };
 
 export default defineComponent({

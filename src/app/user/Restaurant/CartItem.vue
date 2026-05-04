@@ -34,6 +34,7 @@
       >
         <img
           :src="image"
+          :alt="item.itemName"
           class="h-full w-full rounded-sm object-cover lg:h-full lg:w-full"
           @error="smallImageErrorHandler"
         />
@@ -85,7 +86,7 @@ import Price from "@/components/Price.vue";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { MenuData } from "@/models/menu";
 import { AnalyticsMenuData } from "@/lib/firebase/analytics";
-import { useGeneralStore } from "../../../store";
+import { useGeneralStore } from "@/store";
 
 import moment from "moment-timezone";
 

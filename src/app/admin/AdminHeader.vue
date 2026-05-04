@@ -17,6 +17,7 @@
         <div class="mr-4 shrink-0 rounded-full bg-black/10">
           <img
             :src="resizedProfileImage(shopInfo, '600')"
+            alt=""
             class="h-9 w-9 rounded-full object-cover"
           />
         </div>

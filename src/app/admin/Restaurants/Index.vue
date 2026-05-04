@@ -239,6 +239,7 @@
                   <img
                     class="object-cover"
                     :src="restProfilePhoto"
+                    alt=""
                     style="width: 128px; height: 128px"
                   />
                 </div>
@@ -285,6 +286,7 @@
                   <img
                     class="rounded-sm object-cover"
                     :src="restCoverPhoto"
+                    alt=""
                     style="width: 272px; height: 128px"
                   />
                 </div>
@@ -1340,7 +1342,7 @@ export default defineComponent({
     };
     const previewProfile = ref<string | null>(null);
     const handleProfileImage = (file: File) => {
-      const newFile = Object.assign({}, files.value);
+      const newFile = { ...files.value };
       previewProfile.value = URL.createObjectURL(file);
 
       newFile["profile"] = file;
@@ -1348,7 +1350,7 @@ export default defineComponent({
     };
     const previewCover = ref<string | null>(null);
     const handleCoverImage = (file: File) => {
-      const newFile = Object.assign({}, files.value);
+      const newFile = { ...files.value };
       previewCover.value = URL.createObjectURL(file);
 
       newFile["cover"] = file;
@@ -1359,7 +1361,6 @@ export default defineComponent({
       countryCode: string;
       errors: string[];
     }) => {
-      //console.log(payload)
       editShopInfo.phoneNumber = payload.phoneNumber;
       editShopInfo.countryCode = payload.countryCode;
       errorsPhone.value = payload.errors;

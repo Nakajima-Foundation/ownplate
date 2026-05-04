@@ -75,7 +75,6 @@ export default defineComponent({
       });
     };
     const childInvitationDeny = () => {
-      console.log("deny");
       dialogStore.setAlert({
         code: "admin.messages.childInvitationDeny",
         callback: async () => {

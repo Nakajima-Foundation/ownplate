@@ -106,16 +106,13 @@ export default defineComponent({
 
     const updating = ref(false);
     const handlePaymentCancel = async () => {
-      console.log("handlePaymentCancel");
-
       try {
         generalStore.setLoading(true);
         updating.value = true;
-        const { data } = await stripePaymentCancelIntent({
+        await stripePaymentCancelIntent({
           restaurantId: props.shopInfo.restaurantId,
           orderId: props.orderId,
         });
-        console.log("paymentCancel", data);
         router.push(props.parentUrl);
       } catch (error) {
         console.error(errorMessage(error), error);

@@ -280,7 +280,7 @@ export const usePickupTime = (
         return arr;
       }, []);
 
-      tmp[menu.id!] = {
+      tmp[key] = {
         hasExceptData: hasExceptDay || hasExceptHour,
         hasExceptDay,
         hasExceptHour,

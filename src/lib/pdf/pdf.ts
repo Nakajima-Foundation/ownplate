@@ -40,7 +40,7 @@ export const convChar = (val: string) => {
     /[Ａ-Ｚａ-ｚ０-９！＂＃＄％＆＇（）＊＋，－．／：；＜＝＞？＠［＼］＾＿｀｛｜｝]/g;
 
   const value = (val || "")
-    .replace(regex, function (s) {
+    .replace(regex, (s) => {
       return String.fromCharCode(s.charCodeAt(0) - 0xfee0);
     })
     .replace(/[‐－―]/g, "-")

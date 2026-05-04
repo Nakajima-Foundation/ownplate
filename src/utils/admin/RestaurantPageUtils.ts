@@ -193,7 +193,7 @@ export const shopInfoValidator = (
     );
   }
 
-  const ex = new RegExp("^(https?)://[^\\s]+$");
+  const ex = /^(https?):\/\/[^\s]+$/;
   err["url"] =
     shopInfo.url && !ex.test(shopInfo.url)
       ? ["validationError.url.invalidUrl"]
@@ -228,10 +228,8 @@ export const shopInfoValidator = (
               errorTime[dayKey][key2].push("validationError.validBusinessTime");
             }
           }
-        } else {
-          if (key2 === 0) {
-            errorTime[dayKey][key2].push("validationError.noSelect");
-          }
+        } else if (key2 === 0) {
+          errorTime[dayKey][key2].push("validationError.noSelect");
         }
       }
     });
@@ -261,11 +259,12 @@ export const copyRestaurant = async (
 ) => {
   const restaurantData = getEditShopInfo(shopInfo);
   restaurantData.restaurantName = restaurantData.restaurantName + " - COPY";
-  const newRestaurantData = Object.assign({}, restaurantData, {
+  const newRestaurantData = {
+    ...restaurantData,
     publicFlag: false,
     deletedFlag: false,
     createdAt: serverTimestamp(),
-  });
+  };
 
   const restaurantDoc = await addDoc(
     collection(db, "restaurants"),

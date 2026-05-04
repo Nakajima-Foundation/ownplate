@@ -18,6 +18,7 @@
       <div class="mt-4 flex items-center justify-center space-x-4">
         <div class="shrink-0">
           <img
+            alt=""
             class="h-20 w-20 rounded-full object-cover"
             :src="
               resizedProfileImage(shopInfo, '600') ||

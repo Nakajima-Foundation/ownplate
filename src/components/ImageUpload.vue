@@ -21,7 +21,7 @@
       :style="style"
       multiple
       @change="handler"
-      :accept="'image/jpeg'"
+      accept="image/jpeg"
       class="absolute z-100 h-full w-full opacity-0"
     />
   </div>

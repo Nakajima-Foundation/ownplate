@@ -22,13 +22,11 @@ export const useCartStore = defineStore("cartStore", () => {
   const carts = ref<{ [key: string]: Cart | null }>({});
 
   const saveCart = (payload: { id: string; cart: Cart }) => {
-    console.log("saving cart", payload.id, payload.cart);
     const __carts = { ...carts.value };
     __carts[payload.id] = payload.cart;
     carts.value = __carts;
   };
   const resetCart = (restaurantId: string) => {
-    console.log("reset cart", restaurantId);
     const { [restaurantId]: __, ...__carts } = { ...carts.value };
     carts.value = __carts;
   };

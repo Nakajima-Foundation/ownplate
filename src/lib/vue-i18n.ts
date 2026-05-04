@@ -1,4 +1,8 @@
-import { createI18n } from "vue-i18n";
+import {
+  createI18n,
+  type IntlDateTimeFormat,
+  type IntlNumberFormat,
+} from "vue-i18n";
 
 import i18nEN from "@/lang/en";
 import i18nES from "@/lang/es";
@@ -13,14 +17,14 @@ import i18nID from "@/lang/id";
 
 import { stripe_regions_jp } from "@/config/constant";
 
-const numberFormats = {
+const numberFormats: IntlNumberFormat = {
   currency: {
     style: "currency",
     currency: stripe_regions_jp.currency,
   },
 };
 
-const datetimeFormats = {
+const datetimeFormats: IntlDateTimeFormat = {
   short: {
     year: "numeric",
     month: "short",
@@ -70,8 +74,7 @@ const i18nData = {
     th: numberFormats,
     vi: numberFormats,
     id: numberFormats,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } as any,
+  },
   datetimeFormats: {
     en: datetimeFormats,
     ja: datetimeFormats,
@@ -82,8 +85,7 @@ const i18nData = {
     th: datetimeFormats,
     vi: datetimeFormats,
     id: datetimeFormats,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } as any,
+  },
 };
 const i18n = createI18n(i18nData);
 

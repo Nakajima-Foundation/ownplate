@@ -351,8 +351,8 @@ export default defineComponent({
             isCancelling.value = true;
             generalStore.setLoading(true);
             await stripeCancelIntent({
-              restaurantId: restaurantId,
-              orderId: orderId,
+              restaurantId,
+              orderId,
             });
             sendRedunded();
             // console.log("cancel", data);

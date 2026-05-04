@@ -9,7 +9,7 @@
       <AdminHeader
         class="mx-6 mt-4 lg:flex lg:items-center"
         :shopInfo="shopInfo"
-        :backLink="`/admin/restaurants`"
+        backLink="/admin/restaurants"
         :showSuspend="false"
       />
 
@@ -22,7 +22,7 @@
       </div>
       <div class="m-6">
         <div v-for="(user, k) in users" :key="k">
-          <img :src="user.profile.pictureUrl" class="w-12" />
+          <img :src="user.profile.pictureUrl" alt="" class="w-12" />
           {{ user.profile.displayName }}
         </div>
       </div>
