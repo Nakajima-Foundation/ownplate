@@ -40,16 +40,11 @@
             :key="index"
             @click="selectDate(day)"
             :class="[
-              'flex h-8 w-8 items-center justify-center rounded-full',
-              isDisabled(day)
-                ? 'cursor-not-allowed text-gray-300'
-                : 'cursor-pointer',
-              {
-                'bg-blue-500 text-white hover:bg-blue-600':
-                  isSelected(day) && !isDisabled(day),
-              },
+              'flex h-8 w-8 cursor-pointer items-center justify-center rounded-full',
+              { 'text-gray-300': isDisabled(day) && !isSelected(day) },
+              { 'bg-blue-500 text-white hover:bg-blue-600': isSelected(day) },
               { 'text-gray-400': !isSameMonth(day) && !isDisabled(day) },
-              { 'hover:bg-gray-200': !isSelected(day) && !isDisabled(day) },
+              { 'hover:bg-gray-200': !isSelected(day) },
               { 'ring-2 ring-blue-500': isToday(day) && !isSelected(day) },
             ]"
           >
@@ -173,7 +168,6 @@ const isDisabled = (day: Date) => {
 };
 
 const selectDate = (day: Date) => {
-  if (isDisabled(day)) return;
   const newDate = moment(day).hour(hours.value).minute(minutes.value).toDate();
   emit("update:modelValue", newDate);
 };
