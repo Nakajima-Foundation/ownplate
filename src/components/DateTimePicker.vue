@@ -19,11 +19,19 @@
     >
       <div class="w-full max-w-xs rounded-lg bg-white p-4 shadow-lg">
         <div class="mb-4 flex items-center justify-between">
-          <button @click="prevMonth" class="rounded-full p-2 hover:bg-gray-100">
+          <button
+            @click="prevMonth"
+            :disabled="!canPrevMonth"
+            class="rounded-full p-2 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent"
+          >
             &lt;
           </button>
           <div class="text-lg font-semibold">{{ monthName }} {{ year }}</div>
-          <button @click="nextMonth" class="rounded-full p-2 hover:bg-gray-100">
+          <button
+            @click="nextMonth"
+            :disabled="!canNextMonth"
+            class="rounded-full p-2 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent"
+          >
             &gt;
           </button>
         </div>
@@ -40,10 +48,16 @@
             :key="index"
             @click="selectDate(day)"
             :class="[
-              'flex h-8 w-8 cursor-pointer items-center justify-center rounded-full',
-              { 'bg-blue-500 text-white hover:bg-blue-600': isSelected(day) },
-              { 'text-gray-400': !isSameMonth(day) },
-              { 'hover:bg-gray-200': !isSelected(day) },
+              'flex h-8 w-8 items-center justify-center rounded-full',
+              isDisabled(day)
+                ? 'cursor-not-allowed text-gray-300'
+                : 'cursor-pointer',
+              {
+                'bg-blue-500 text-white hover:bg-blue-600':
+                  isSelected(day) && !isDisabled(day),
+              },
+              { 'text-gray-400': !isSameMonth(day) && !isDisabled(day) },
+              { 'hover:bg-gray-200': !isSelected(day) && !isDisabled(day) },
               { 'ring-2 ring-blue-500': isToday(day) && !isSelected(day) },
             ]"
           >
@@ -119,8 +133,8 @@ const formattedDate = computed(() => {
     : "";
 });
 
-const year = currentMonth.value.year();
-const monthName = currentMonth.value.format("MMMM");
+const year = computed(() => currentMonth.value.year());
+const monthName = computed(() => currentMonth.value.format("MMMM"));
 
 const daysOfWeek = [
   "week.shortest.sunday",
@@ -158,11 +172,16 @@ const isSameMonth = (day: Date) => {
   return moment(day).isSame(currentMonth.value, "month");
 };
 
-const selectDate = (day: Date) => {
-  // Add validation if min/max date props are implemented
-  if (props.minDate && day < props.minDate) return;
-  if (props.maxDate && day > props.maxDate) return;
+const isDisabled = (day: Date) => {
+  if (props.minDate && moment(day).isBefore(moment(props.minDate), "day"))
+    return true;
+  if (props.maxDate && moment(day).isAfter(moment(props.maxDate), "day"))
+    return true;
+  return false;
+};
 
+const selectDate = (day: Date) => {
+  if (isDisabled(day)) return;
   const newDate = moment(day).hour(hours.value).minute(minutes.value).toDate();
   emit("update:modelValue", newDate);
 };
@@ -185,11 +204,31 @@ watch([hours, minutes], () => {
   }
 });
 
+const canPrevMonth = computed(() => {
+  if (!props.minDate) return true;
+  return currentMonth.value
+    .clone()
+    .subtract(1, "month")
+    .endOf("month")
+    .isSameOrAfter(moment(props.minDate).startOf("day"));
+});
+
+const canNextMonth = computed(() => {
+  if (!props.maxDate) return true;
+  return currentMonth.value
+    .clone()
+    .add(1, "month")
+    .startOf("month")
+    .isSameOrBefore(moment(props.maxDate).endOf("day"));
+});
+
 const prevMonth = () => {
+  if (!canPrevMonth.value) return;
   currentMonth.value = currentMonth.value.clone().subtract(1, "month");
 };
 
 const nextMonth = () => {
+  if (!canNextMonth.value) return;
   currentMonth.value = currentMonth.value.clone().add(1, "month");
 };
 
