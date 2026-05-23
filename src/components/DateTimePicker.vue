@@ -19,19 +19,11 @@
     >
       <div class="w-full max-w-xs rounded-lg bg-white p-4 shadow-lg">
         <div class="mb-4 flex items-center justify-between">
-          <button
-            @click="prevMonth"
-            :disabled="!canPrevMonth"
-            class="rounded-full p-2 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent"
-          >
+          <button @click="prevMonth" class="rounded-full p-2 hover:bg-gray-100">
             &lt;
           </button>
           <div class="text-lg font-semibold">{{ monthName }} {{ year }}</div>
-          <button
-            @click="nextMonth"
-            :disabled="!canNextMonth"
-            class="rounded-full p-2 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent"
-          >
+          <button @click="nextMonth" class="rounded-full p-2 hover:bg-gray-100">
             &gt;
           </button>
         </div>
@@ -204,31 +196,11 @@ watch([hours, minutes], () => {
   }
 });
 
-const canPrevMonth = computed(() => {
-  if (!props.minDate) return true;
-  return currentMonth.value
-    .clone()
-    .subtract(1, "month")
-    .endOf("month")
-    .isSameOrAfter(moment(props.minDate).startOf("day"));
-});
-
-const canNextMonth = computed(() => {
-  if (!props.maxDate) return true;
-  return currentMonth.value
-    .clone()
-    .add(1, "month")
-    .startOf("month")
-    .isSameOrBefore(moment(props.maxDate).endOf("day"));
-});
-
 const prevMonth = () => {
-  if (!canPrevMonth.value) return;
   currentMonth.value = currentMonth.value.clone().subtract(1, "month");
 };
 
 const nextMonth = () => {
-  if (!canNextMonth.value) return;
   currentMonth.value = currentMonth.value.clone().add(1, "month");
 };
 
