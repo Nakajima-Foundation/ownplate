@@ -41,8 +41,9 @@
             @click="selectDate(day)"
             :class="[
               'flex h-8 w-8 cursor-pointer items-center justify-center rounded-full',
+              { 'text-gray-300': isDisabled(day) && !isSelected(day) },
               { 'bg-blue-500 text-white hover:bg-blue-600': isSelected(day) },
-              { 'text-gray-400': !isSameMonth(day) },
+              { 'text-gray-400': !isSameMonth(day) && !isDisabled(day) },
               { 'hover:bg-gray-200': !isSelected(day) },
               { 'ring-2 ring-blue-500': isToday(day) && !isSelected(day) },
             ]"
@@ -119,8 +120,8 @@ const formattedDate = computed(() => {
     : "";
 });
 
-const year = currentMonth.value.year();
-const monthName = currentMonth.value.format("MMMM");
+const year = computed(() => currentMonth.value.year());
+const monthName = computed(() => currentMonth.value.format("MMMM"));
 
 const daysOfWeek = [
   "week.shortest.sunday",
@@ -158,11 +159,15 @@ const isSameMonth = (day: Date) => {
   return moment(day).isSame(currentMonth.value, "month");
 };
 
-const selectDate = (day: Date) => {
-  // Add validation if min/max date props are implemented
-  if (props.minDate && day < props.minDate) return;
-  if (props.maxDate && day > props.maxDate) return;
+const isDisabled = (day: Date) => {
+  if (props.minDate && moment(day).isBefore(moment(props.minDate), "day"))
+    return true;
+  if (props.maxDate && moment(day).isAfter(moment(props.maxDate), "day"))
+    return true;
+  return false;
+};
 
+const selectDate = (day: Date) => {
   const newDate = moment(day).hour(hours.value).minute(minutes.value).toDate();
   emit("update:modelValue", newDate);
 };

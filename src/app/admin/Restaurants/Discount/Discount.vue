@@ -113,7 +113,7 @@
           ~
           <DateTimePicker
             v-model="termToDate"
-            :min-date="new Date()"
+            :min-date="termFromDate"
             :placeholder="$t('shopInfo.temporaryClosureSelect')"
             class="ml-4 lg:w-96"
           />
