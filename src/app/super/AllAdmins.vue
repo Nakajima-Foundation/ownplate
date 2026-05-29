@@ -45,7 +45,10 @@
       </tr>
     </table>
     <div>
-      <button @click="updateQuery">
+      <button
+        @click="updateQuery"
+        class="mt-2 cursor-pointer rounded border-2 border-black/40 bg-gray-200 p-1 hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-25"
+      >
         <span v-if="last">Next</span>
         <span v-else>Top</span>
       </button>

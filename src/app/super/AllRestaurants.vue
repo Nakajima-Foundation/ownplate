@@ -74,16 +74,18 @@
       </tr>
     </table>
     <hr />
-    <button class="mt-2 h-9 rounded-full" @click="nextLoad">
-      <span class="pr-4 pl-4">
-        <span class="text-op-teal font-bold"> Next </span>
-      </span>
+    <button
+      @click="nextLoad"
+      class="mt-2 cursor-pointer rounded border-2 border-black/40 bg-gray-200 p-1 hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-25"
+    >
+      Next
     </button>
 
-    <button class="mt-2 ml-4 h-9 rounded-full" @click="allLoad">
-      <span class="pr-4 pl-4">
-        <span class="text-op-teal font-bold"> All </span>
-      </span>
+    <button
+      @click="allLoad"
+      class="mt-2 ml-2 cursor-pointer rounded border-2 border-black/40 bg-gray-200 p-1 hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-25"
+    >
+      All
     </button>
 
     <download-csv
