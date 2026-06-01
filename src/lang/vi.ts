@@ -1526,6 +1526,7 @@ const data = {
     },
     name: {
       empty: "Vui lòng nhập họ tên",
+      length: "Vui lòng nhập tên (ít nhất 3 ký tự).",
     },
     memo: {
       length: "Vui lòng nhập tin nhắn không quá 500 ký tự.",

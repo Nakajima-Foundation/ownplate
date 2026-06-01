@@ -1547,6 +1547,7 @@ const data = {
     },
     name: {
       empty: "Veuillez saisir votre nom complet",
+      length: "Veuillez saisir votre nom (au moins 3 caractères).",
     },
     memo: {
       length: "Veuillez saisir votre message en 500 caractères maximum.",

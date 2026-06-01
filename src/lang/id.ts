@@ -1536,6 +1536,7 @@ const data = {
     },
     name: {
       empty: "Silakan masukkan nama lengkap",
+      length: "Silakan masukkan nama (minimal 3 karakter).",
     },
     memo: {
       length: "Silakan masukkan pesan tidak lebih dari 500 karakter.",

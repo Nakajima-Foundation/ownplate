@@ -42,6 +42,8 @@ yarn start                                                     # Vite dev server
 
 `yarn lint` は先に i18n キーをダンプする（`@intlify/eslint-plugin-vue-i18n` が参照する）。i18n リソースを変更したら lint を通してから commit する。
 
+i18n キー（特に新規キー）を追加・変更するときは、 **`src/lang/` 配下の対象ファイル一覧を都度確認してから全言語に反映する**。言語ファイルは将来増減しうるので、固定のリストを前提にせず `ls src/lang/` で実体を確認する。各言語の文言・句読点は、その言語の既存キー（例: 同じ階層の `empty` や `memo.length`）の語調に合わせる。
+
 ### Functions（`functions/` 配下で実行）
 
 | コマンド | 用途 |
