@@ -215,6 +215,9 @@
                   class="w-full rounded border border-gray-300 px-3 py-2"
                   :class="userNameError ? 'border-red-500' : 'border-green-500'"
                 />
+                <div :class="userNameError ? 'font-bold text-red-700' : ''">
+                  {{ $t("validationError.name.length") }}
+                </div>
               </div>
             </div>
           </template>

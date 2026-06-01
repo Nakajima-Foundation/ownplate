@@ -1522,6 +1522,7 @@ const data = {
     },
     name: {
       empty: "Please enter your full name",
+      length: "Please enter your name (at least 3 characters).",
     },
     memo: {
       length: "Please enter your message within 500 characters.",
