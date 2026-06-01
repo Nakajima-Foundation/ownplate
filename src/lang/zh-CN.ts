@@ -1448,6 +1448,7 @@ const data = {
     },
     name: {
       empty: "请输入姓名",
+      length: "请输入至少 3 个字的姓名。",
     },
     memo: {
       length: "请在 500 字以内输入消息。",
