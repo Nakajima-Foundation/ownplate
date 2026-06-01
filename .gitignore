@@ -122,3 +122,9 @@ public/admin/docs/articles/
 
 batch/*
 **/*.sh
+
+# Claude Code / local tooling
+.claude/worktrees/
+.i18n-cache/
+.mcp.json
+.playwright-mcp/
