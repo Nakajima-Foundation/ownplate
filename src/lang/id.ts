@@ -945,7 +945,6 @@ const data = {
     backToDiscounts: "Kembali ke daftar pengaturan diskon",
     backToDocument: "Kembali ke daftar dokumen",
     backToSubaccounts: "Kembali ke daftar subakun",
-    backToSmaregi: "Kembali ke pengaturan Smaregi",
     addTitle: "Tambah nama grup produk",
     addItem: "Tambah produk",
     downloadMenu: "Unduh brosur",
@@ -1117,13 +1116,6 @@ const data = {
         body: "Omochikaeri.com akan mengirimkan buletin email kepada Anda.",
         optout: "Tidak menerima",
       },
-    },
-    thirdPartyService: {
-      title: "Integrasi sistem",
-      openSmaregi: "Pengaturan integrasi Smaregi",
-      smaregiManual: "Panduan Smaregi",
-      smaregiAppMarket: "Ke pasar aplikasi Smaregi",
-      smaregiManualLink: "Cara menggunakan integrasi Smaregi",
     },
     needEmailVerification: "Silakan selesaikan verifikasi email.",
     noteEmailVerification1:
@@ -1385,12 +1377,6 @@ const data = {
       showBelow: "Berada di bagian bawah pengaturan",
       enabled: "Aktifkan",
       callbackURLCopyToLine: "Silakan salin nilai ini dan atur di sisi LINE.",
-    },
-    smaregi: {
-      index: "Koneksi Smaregi",
-      authenticating: "Sedang menghubungkan",
-      authenticationError: "Koneksi gagal",
-      smaregiShopList: "Daftar toko Smaregi",
     },
   },
   week: {

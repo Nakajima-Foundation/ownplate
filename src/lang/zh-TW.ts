@@ -894,7 +894,6 @@ const data = {
     backToDiscounts: "返回折扣設定列表",
     backToDocument: "返回文件列表",
     backToSubaccounts: "返回子賬號列表",
-    backToSmaregi: "返回 Smaregi 設定",
     addTitle: "新增商品組名",
     addItem: "新增商品",
     downloadMenu: "下載傳單",
@@ -1056,13 +1055,6 @@ const data = {
         body: "Omochikaeri.com 將向您傳送郵件通訊。",
         optout: "不接收",
       },
-    },
-    thirdPartyService: {
-      title: "系統聯動",
-      openSmaregi: "Smaregi 聯動設定",
-      smaregiManual: "Smaregi 手冊",
-      smaregiAppMarket: "前往 Smaregi 應用市場",
-      smaregiManualLink: "Smaregi 聯動使用方法",
     },
     needEmailVerification: "請完成郵箱地址驗證。",
     noteEmailVerification1:
@@ -1301,12 +1293,6 @@ const data = {
       showBelow: "在設定的下方",
       enabled: "啟用",
       callbackURLCopyToLine: "請複製此值並設定到 LINE。",
-    },
-    smaregi: {
-      index: "Smaregi 聯動",
-      authenticating: "認證中",
-      authenticationError: "認證失敗",
-      smaregiShopList: "Smaregi 店鋪列表",
     },
   },
   week: {

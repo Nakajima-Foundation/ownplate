@@ -928,7 +928,6 @@ const data = {
     backToDiscounts: "กลับไปที่รายการตั้งค่าส่วนลด",
     backToDocument: "กลับไปที่รายการเอกสาร",
     backToSubaccounts: "กลับไปที่รายการบัญชีย่อย",
-    backToSmaregi: "กลับไปที่การตั้งค่า Smaregi",
     addTitle: "เพิ่มชื่อกลุ่มสินค้า",
     addItem: "เพิ่มสินค้า",
     downloadMenu: "ดาวน์โหลดใบปลิว",
@@ -1098,13 +1097,6 @@ const data = {
         body: "Omochikaeri.com จะส่งจดหมายข่าวถึงคุณ",
         optout: "ไม่รับ",
       },
-    },
-    thirdPartyService: {
-      title: "เชื่อมต่อระบบ",
-      openSmaregi: "ตั้งค่าเชื่อมต่อ Smaregi",
-      smaregiManual: "คู่มือ Smaregi",
-      smaregiAppMarket: "ไปที่ตลาดแอป Smaregi",
-      smaregiManualLink: "วิธีใช้การเชื่อมต่อ Smaregi",
     },
     needEmailVerification: "กรุณายืนยันอีเมลให้เสร็จสิ้น",
     noteEmailVerification1:
@@ -1354,12 +1346,6 @@ const data = {
       showBelow: "อยู่ด้านล่างของการตั้งค่า",
       enabled: "เปิดใช้งาน",
       callbackURLCopyToLine: "กรุณาคัดลอกค่านี้และตั้งค่าใน LINE",
-    },
-    smaregi: {
-      index: "เชื่อมต่อ Smaregi",
-      authenticating: "กำลังเชื่อมต่อ",
-      authenticationError: "การเชื่อมต่อล้มเหลว",
-      smaregiShopList: "รายการร้าน Smaregi",
     },
   },
   week: {

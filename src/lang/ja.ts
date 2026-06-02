@@ -932,7 +932,6 @@ const data = {
     backToDiscounts: "割引設定一覧に戻る",
     backToDocument: "文章一覧に戻る",
     backToSubaccounts: "サブアカウント一覧に戻る",
-    backToSmaregi: "スマレジ設定に戻る",
     addTitle: "商品グループ名を追加",
     addItem: "商品を追加",
     downloadMenu: "チラシをダウンロード",
@@ -1103,13 +1102,6 @@ const data = {
         body: "おもちかえり.comからメルマガをお送りします。",
         optout: "受け取らない",
       },
-    },
-    thirdPartyService: {
-      title: "システム連携",
-      openSmaregi: "スマレジ連携設定",
-      smaregiManual: "スマレジマニュアル",
-      smaregiAppMarket: "スマレジアプリマーケットへ",
-      smaregiManualLink: "スマレジ連携の使い方",
     },
     needEmailVerification: "メールアドレスの認証を完了させてください。",
     noteEmailVerification1:
@@ -1366,12 +1358,6 @@ const data = {
       showBelow: "設定の下のほうにあります",
       enabled: "有効にする",
       callbackURLCopyToLine: "この値をコピーしてLINE側に設定をしてください。",
-    },
-    smaregi: {
-      index: "スマレジ連携",
-      authenticating: "連携中",
-      authenticationError: "連携に失敗しました",
-      smaregiShopList: "スマレジ店舗一覧",
     },
   },
   week: {

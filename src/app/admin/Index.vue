@@ -243,9 +243,6 @@
 
         <!-- Mail Magazine-->
         <MailMagazine />
-
-        <!-- Smaregi-->
-        <Smaregi />
       </div>
       <!-- End of Right Section -->
     </div>
@@ -291,7 +288,6 @@ import News from "@/app/admin/Index/News.vue";
 import Survey from "@/app/admin/Index/Survey.vue";
 import Note from "@/app/admin/Index/Note.vue";
 import MailMagazine from "@/app/admin/Index/MailMagazine.vue";
-import Smaregi from "@/app/admin/Index/Smaregi.vue";
 import IndexFooter from "@/app/admin/Index/Footer.vue";
 import Partners from "@/app/admin/Index/Partners.vue";
 import SubAccount from "@/app/admin/Index/SubAccount.vue";
@@ -330,7 +326,6 @@ export default defineComponent({
     Survey,
     Partners,
     EmailVerify,
-    Smaregi,
     SubAccount,
     MailMagazine,
     Note,

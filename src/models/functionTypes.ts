@@ -103,18 +103,6 @@ export interface SubAccountDeleteChildData {
   childUid: string;
 }
 
-// Smaregi related function call types
-export interface SmaregiAuthData {
-  code: string;
-}
-
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface SmaregiStoreListData {}
-
-export interface SmaregiProductListData {
-  store_id: string;
-}
-
 // Ping function call types
 export interface PingData {
   restaurantId: string;

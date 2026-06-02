@@ -315,21 +315,6 @@ export const customRoutes: CustomRoute[] = [
         path: "subaccounts/accounts/:subAccountId",
         component: () => import("@/app/admin/SubAccounts/Account.vue"),
       },
-      {
-        name: "admin-smaregi-index",
-        path: "smaregi/index",
-        component: () => import("@/app/admin/Smaregi/Index.vue"),
-      },
-      {
-        name: "admin-smaregi-callback",
-        path: "smaregi/callback",
-        component: () => import("@/app/admin/Smaregi/Callback.vue"),
-      },
-      {
-        name: "admin-smaregi-store",
-        path: "smaregi/store/:storeId",
-        component: () => import("@/app/admin/Smaregi/Store.vue"),
-      },
     ],
   },
   {
