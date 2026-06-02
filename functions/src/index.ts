@@ -44,10 +44,6 @@ exportIfNeeded("stripeReceipt2", "stripe/stripeReceipt", exports);
 
 exportIfNeeded("imageProcessing2", "image/imageProcessing", exports);
 
-exportIfNeeded("smaregiAuth2", "smaregi/auth", exports);
-exportIfNeeded("smaregiStoreList2", "smaregi/storeList", exports);
-exportIfNeeded("smaregiProductList2", "smaregi/productList", exports);
-
 exportIfNeeded("subAccountInvite2", "subaccount/invite", exports);
 exportIfNeeded("subAccountInvitationAccept2", "subaccount/accept", exports);
 exportIfNeeded("subAccountInvitationDeny2", "subaccount/deny", exports);

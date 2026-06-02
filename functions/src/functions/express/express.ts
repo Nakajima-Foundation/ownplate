@@ -11,8 +11,6 @@ import * as stripeLog from "../../lib/stripeLog";
 
 import * as apis from "./apis";
 
-import * as smaregi from "./smaregiApi";
-
 import * as xmlbuilder from "xmlbuilder";
 
 import { validateFirebaseId } from "../../lib/validator";
@@ -382,8 +380,6 @@ app.use(alogger);
 
 app.use("/1.0", router); // for stripe
 app.use("/api/1.0/", apis.apiRouter);
-
-app.use("/smaregi/1.0", smaregi.smaregiRouter);
 
 app.get("/r/:restaurantName", ogpPage);
 app.get("/r/:restaurantName/menus/:menuId", ogpPage);
