@@ -949,7 +949,6 @@ const data = {
     backToDiscounts: "View Promotions",
     backToDocument: "Retour à la liste des documents",
     backToSubaccounts: "Retour à la liste des sous-comptes",
-    backToSmaregi: "Retour aux paramètres Smaregi",
     addTitle: "Add Group Title",
     addItem: "Add Item",
     downloadMenu: "Download menu",
@@ -1119,13 +1118,6 @@ const data = {
         body: "Receive emails about news, tips, and features.",
         optout: "Don't Receive",
       },
-    },
-    thirdPartyService: {
-      title: "Intégration de systèmes",
-      openSmaregi: "Paramètres d'intégration Smaregi",
-      smaregiManual: "Manuel Smaregi",
-      smaregiAppMarket: "Accéder à l'App Market Smaregi",
-      smaregiManualLink: "Comment utiliser l'intégration Smaregi",
     },
     needEmailVerification:
       "Veuillez terminer la vérification de votre adresse e-mail.",
@@ -1396,12 +1388,6 @@ const data = {
       showBelow: "it's at the bottom of the settings",
       enabled: "Enabled",
       callbackURLCopyToLine: "Copy this value and set it on the LINE side.",
-    },
-    smaregi: {
-      index: "Intégration Smaregi",
-      authenticating: "Authentification en cours",
-      authenticationError: "Échec de l'authentification",
-      smaregiShopList: "Liste des magasins Smaregi",
     },
   },
   week: {

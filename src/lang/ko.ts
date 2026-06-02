@@ -927,7 +927,6 @@ const data = {
     backToDiscounts: "할인 설정 목록으로 돌아가기",
     backToDocument: "문서 목록으로 돌아가기",
     backToSubaccounts: "서브 계정 목록으로 돌아가기",
-    backToSmaregi: "Smaregi 설정으로 돌아가기",
     addTitle: "상품 그룹명 추가",
     addItem: "상품 추가",
     downloadMenu: "전단지 다운로드",
@@ -1095,13 +1094,6 @@ const data = {
         body: "Omochikaeri.com에서 메일 매거진을 보내드립니다.",
         optout: "받지 않음",
       },
-    },
-    thirdPartyService: {
-      title: "시스템 연동",
-      openSmaregi: "Smaregi 연동 설정",
-      smaregiManual: "Smaregi 매뉴얼",
-      smaregiAppMarket: "Smaregi 앱 마켓으로",
-      smaregiManualLink: "Smaregi 연동 사용 방법",
     },
     needEmailVerification: "이메일 주소 인증을 완료해 주세요.",
     noteEmailVerification1:
@@ -1352,12 +1344,6 @@ const data = {
       showBelow: "설정 아래쪽에 있습니다",
       enabled: "활성화",
       callbackURLCopyToLine: "이 값을 복사하여 LINE에 설정해 주세요.",
-    },
-    smaregi: {
-      index: "Smaregi 연동",
-      authenticating: "인증 중",
-      authenticationError: "인증 실패",
-      smaregiShopList: "Smaregi 매장 목록",
     },
   },
   week: {

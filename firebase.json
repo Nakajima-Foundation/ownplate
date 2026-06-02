@@ -72,11 +72,6 @@
           "region": "asia-northeast1"
         },
         {
-          "source": "/smaregi/1.0/**",
-          "function": "apiJP2",
-          "region": "asia-northeast1"
-        },
-        {
           "source": "/sitemap.xml",
           "function": "apiJP2",
           "region": "asia-northeast1"

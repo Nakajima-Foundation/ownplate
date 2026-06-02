@@ -936,7 +936,6 @@ const data = {
     backToDiscounts: "Quay lại danh sách cài đặt giảm giá",
     backToDocument: "Quay lại danh sách tài liệu",
     backToSubaccounts: "Quay lại danh sách tài khoản phụ",
-    backToSmaregi: "Quay lại cài đặt Smaregi",
     addTitle: "Thêm tên nhóm sản phẩm",
     addItem: "Thêm sản phẩm",
     downloadMenu: "Tải xuống tờ rơi",
@@ -1107,13 +1106,6 @@ const data = {
         body: "Omochikaeri.com sẽ gửi bản tin cho bạn.",
         optout: "Không nhận",
       },
-    },
-    thirdPartyService: {
-      title: "Kết nối hệ thống",
-      openSmaregi: "Cài đặt kết nối Smaregi",
-      smaregiManual: "Hướng dẫn Smaregi",
-      smaregiAppMarket: "Đến chợ ứng dụng Smaregi",
-      smaregiManualLink: "Cách sử dụng kết nối Smaregi",
     },
     needEmailVerification: "Vui lòng hoàn tất xác thực email.",
     noteEmailVerification1:
@@ -1376,12 +1368,6 @@ const data = {
       enabled: "Kích hoạt",
       callbackURLCopyToLine:
         "Vui lòng sao chép giá trị này và cài đặt trong LINE.",
-    },
-    smaregi: {
-      index: "Kết nối Smaregi",
-      authenticating: "Đang kết nối",
-      authenticationError: "Kết nối thất bại",
-      smaregiShopList: "Danh sách cửa hàng Smaregi",
     },
   },
   week: {

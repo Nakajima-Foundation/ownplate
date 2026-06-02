@@ -1,9 +1,6 @@
 import { functionsJP } from "@/lib/firebase/firebase9";
 import { httpsCallable } from "firebase/functions";
 import type {
-  SmaregiStoreListData,
-  SmaregiProductListData,
-  SmaregiAuthData,
   LineVerifyFriendData,
   SubAccountDeleteChildData,
   SubAccountInvitateData,
@@ -15,32 +12,6 @@ import type {
   PingData,
   StripeDeleteRestaurantCardData,
 } from "@/models/functionTypes";
-
-export const smaregiStoreList = httpsCallable<
-  SmaregiStoreListData,
-  {
-    res: { storeId: string; storeName: string }[];
-  }
->(functionsJP, "smaregiStoreList2");
-
-export const smaregiProductList = httpsCallable<
-  SmaregiProductListData,
-  {
-    res: {
-      productId: string;
-      productCode: string;
-      productName: string;
-      price: number;
-    }[];
-  }
->(functionsJP, "smaregiProductList2");
-
-export const smaregiAuth = httpsCallable<
-  SmaregiAuthData,
-  {
-    result: boolean;
-  }
->(functionsJP, "smaregiAuth2");
 
 export const lineVerifyFriend = httpsCallable<
   LineVerifyFriendData,

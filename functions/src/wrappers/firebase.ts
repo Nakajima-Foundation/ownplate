@@ -16,5 +16,4 @@ export const secretKeys = [
   "TWILIO_PHONE",
 
   "SENTY_DSN",
-  "SMAREGI_SECRET",
 ];

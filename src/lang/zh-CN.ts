@@ -894,7 +894,6 @@ const data = {
     backToDiscounts: "返回折扣设置列表",
     backToDocument: "返回文档列表",
     backToSubaccounts: "返回子账号列表",
-    backToSmaregi: "返回 Smaregi 设置",
     addTitle: "添加商品组名",
     addItem: "添加商品",
     downloadMenu: "下载传单",
@@ -1056,13 +1055,6 @@ const data = {
         body: "Omochikaeri.com 将向您发送邮件通讯。",
         optout: "不接收",
       },
-    },
-    thirdPartyService: {
-      title: "系统联动",
-      openSmaregi: "Smaregi 联动设置",
-      smaregiManual: "Smaregi 手册",
-      smaregiAppMarket: "前往 Smaregi 应用市场",
-      smaregiManualLink: "Smaregi 联动使用方法",
     },
     needEmailVerification: "请完成邮箱地址验证。",
     noteEmailVerification1:
@@ -1301,12 +1293,6 @@ const data = {
       showBelow: "在设置的下方",
       enabled: "启用",
       callbackURLCopyToLine: "请复制此值并设置到 LINE。",
-    },
-    smaregi: {
-      index: "Smaregi 联动",
-      authenticating: "认证中",
-      authenticationError: "认证失败",
-      smaregiShopList: "Smaregi 店铺列表",
     },
   },
   week: {
