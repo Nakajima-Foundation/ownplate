@@ -103,7 +103,7 @@ export default defineComponent({
         });
         marker.addListener("click", () => {
           closeAllInfoWindows();
-          infoWindow.open(map.value, marker);
+          infoWindow.open(map, marker);
         });
       });
     };
