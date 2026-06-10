@@ -80,17 +80,19 @@ export default defineComponent({
         if (!position?.lat || !position?.lng) return;
 
         const content = document.createElement("div");
-        content.innerHTML = `
-          <div class="text-center">
-            <a href="/r/${restaurant.id}">
-              ${restaurant.restaurantName}<br />
-              <img src="${resizedProfileImage(
-                restaurant,
-                "600",
-              )}" class="h-12 w-12 rounded-full object-cover" />
-            </a>
-          </div>
-        `;
+        content.className = "text-center";
+
+        const anchor = document.createElement("a");
+        anchor.href = `/r/${restaurant.id}`;
+        anchor.textContent = restaurant.restaurantName;
+        anchor.appendChild(document.createElement("br"));
+
+        const image = document.createElement("img");
+        image.src = resizedProfileImage(restaurant, "600");
+        image.className = "h-12 w-12 rounded-full object-cover";
+        anchor.appendChild(image);
+
+        content.appendChild(anchor);
 
         const infoWindow = new google.maps.InfoWindow({ content });
         info_windows.push(infoWindow);

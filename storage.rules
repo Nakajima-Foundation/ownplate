@@ -3,16 +3,28 @@ rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
 
+    function isImageWithinLimit() {
+      return request.resource.size < 5 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+    }
+
+    function canEditRestaurant(restaurantId) {
+      let ownerUid = firestore.get(/databases/(default)/documents/restaurants/$(restaurantId)).data.uid;
+      return ownerUid == request.auth.uid
+        || (ownerUid == request.auth.token.parentUid
+            && restaurantId in firestore.get(/databases/(default)/documents/admins/$(ownerUid)/children/$(request.auth.uid)).data.restaurantLists);
+    }
+
     match /images/restaurants/{restaurantId}/{userId}/cover.jpg {
-      allow write: if request.auth.uid == userId;
+      allow write: if request.auth.uid == userId && isImageWithinLimit() && canEditRestaurant(restaurantId);
       allow read;
     }
     match /images/restaurants/{restaurantId}/{userId}/profile.jpg {
-      allow write: if request.auth.uid == userId;
+      allow write: if request.auth.uid == userId && isImageWithinLimit() && canEditRestaurant(restaurantId);
       allow read;
     }
     match /images/restaurants/{restaurantId}/menus/{menuId}/{userId}/item.jpg {
-      allow write: if request.auth.uid == userId;
+      allow write: if request.auth.uid == userId && isImageWithinLimit() && canEditRestaurant(restaurantId);
       allow read;
     }
 
