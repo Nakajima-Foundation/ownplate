@@ -4,8 +4,10 @@ service firebase.storage {
   match /b/{bucket}/o {
 
     function isImageWithinLimit() {
-      return request.resource.size < 5 * 1024 * 1024
-        && request.resource.contentType.matches('image/.*');
+      // request.resource is null on delete; size/type only apply to uploads.
+      return request.resource == null
+        || (request.resource.size <= 5 * 1024 * 1024
+            && request.resource.contentType.matches('image/.*'));
     }
 
     function canEditRestaurant(restaurantId) {

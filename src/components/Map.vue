@@ -89,6 +89,7 @@ export default defineComponent({
 
         const image = document.createElement("img");
         image.src = resizedProfileImage(restaurant, "600");
+        image.alt = restaurant.restaurantName;
         image.className = "h-12 w-12 rounded-full object-cover";
         anchor.appendChild(image);
 
