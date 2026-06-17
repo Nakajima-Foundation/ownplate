@@ -29,7 +29,7 @@
     "crypto-js": "^4.1.1",
     "firebase": "12.14.0",
     "google-libphonenumber": "^3.2.44",
-    "markdown-it": "^14.1.1",
+    "markdown-it": "^14.2.0",
     "moment": "^2.29.4",
     "moment-timezone": "0.6.1",
     "pdfmake": "0.3.7",
