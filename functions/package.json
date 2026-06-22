@@ -42,7 +42,7 @@
     "moment": "^2.29.4",
     "moment-timezone": "^0.6.2",
     "node-fetch": "^2.6.1",
-    "nodemailer": "^8.0.10",
+    "nodemailer": "^9.0.1",
     "receiptline": "^1.16.2",
     "sharp": "^0.34.5",
     "stripe": "^21",
