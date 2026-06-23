@@ -1130,6 +1130,8 @@ const data = {
       status: "Restaurant Directory",
       requestWarning:
         "Please apply after setting up payment and opening the restaurant to the public.",
+      requestOptionalNote:
+        "Listing your restaurant is optional. You can open your restaurant to the public without applying. If you do apply, please open your restaurant to the public first.",
       requestingWarning:
         "Please set up your payment settings and store listing if you have not already done so.",
       notListed: "Not Listed",

@@ -1146,6 +1146,8 @@ const data = {
       status: "Restaurant Directory",
       requestWarning:
         "Veuillez postuler après avoir configuré le paiement et ouvert le restaurant au public.",
+      requestOptionalNote:
+        "L'inscription à l'annuaire est facultative : vous pouvez ouvrir votre restaurant au public sans postuler. Si vous postulez, veuillez d'abord ouvrir votre restaurant au public.",
       requestingWarning:
         "Veuillez configurer vos paramètres de paiement et la fiche du magasin si ce n'est pas déjà fait.",
       notListed: "Not Listed",

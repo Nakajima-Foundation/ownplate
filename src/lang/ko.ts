@@ -1120,6 +1120,8 @@ const data = {
     directory: {
       status: "고객용 매장 목록 게재 상태",
       requestWarning: "결제 설정 후 매장을 공개하고 신청해 주세요",
+      requestOptionalNote:
+        "※ 게재 신청은 선택 사항입니다. 신청하지 않아도 매장을 공개할 수 있습니다. 신청하는 경우 먼저 매장을 공개해 주세요.",
       requestingWarning: "결제 설정과 매장 공개가 아직인 경우 설정해 주세요",
       notListed: "미게재",
       requestList: "게재 신청",

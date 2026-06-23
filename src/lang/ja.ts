@@ -1129,6 +1129,8 @@ const data = {
     directory: {
       status: "お客様向け飲食店一覧への掲載状況",
       requestWarning: "お支払い設定、店舗公開後に申請をお願いします",
+      requestOptionalNote:
+        "※ 掲載の申請は任意です。申請しなくても店舗は公開できます。申請する場合は、先に店舗を公開してください。",
       requestingWarning:
         "お支払い設定、店舗公開がまだの場合は設定をお願いします",
       notListed: "未掲載",

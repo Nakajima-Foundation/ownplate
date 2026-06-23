@@ -1134,6 +1134,8 @@ const data = {
         "Trạng thái đăng tin trong danh sách nhà hàng dành cho khách hàng",
       requestWarning:
         "Sau khi cài đặt thanh toán và công khai cửa hàng, vui lòng nộp đơn",
+      requestOptionalNote:
+        "Việc đăng ký đăng tin là tùy chọn. Bạn có thể công khai cửa hàng mà không cần nộp đơn. Nếu nộp đơn, vui lòng công khai cửa hàng trước.",
       requestingWarning:
         "Nếu chưa cài đặt thanh toán và công khai cửa hàng, vui lòng cài đặt",
       notListed: "Chưa đăng tin",

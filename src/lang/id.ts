@@ -1144,6 +1144,8 @@ const data = {
       status: "Status pencantuman di daftar restoran untuk pelanggan",
       requestWarning:
         "Silakan ajukan setelah pengaturan pembayaran dan publikasi toko",
+      requestOptionalNote:
+        "Pengajuan pencantuman bersifat opsional. Anda dapat mempublikasikan toko tanpa mengajukan. Jika ingin mengajukan, silakan publikasikan toko terlebih dahulu.",
       requestingWarning:
         "Jika pengaturan pembayaran dan publikasi toko belum selesai, silakan atur",
       notListed: "Belum dicantumkan",
