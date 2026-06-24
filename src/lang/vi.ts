@@ -1138,6 +1138,8 @@ const data = {
         "Việc đăng ký đăng tin là tùy chọn. Bạn có thể công khai cửa hàng mà không cần nộp đơn. Nếu nộp đơn, vui lòng công khai cửa hàng trước.",
       requestingWarning:
         "Nếu chưa cài đặt thanh toán và công khai cửa hàng, vui lòng cài đặt",
+      requestingPublicNote:
+        "Nếu cửa hàng của bạn chưa được công khai, cửa hàng sẽ không thể được đăng trong danh sách hoặc được đội ngũ của chúng tôi kiểm tra. Nếu chưa, vui lòng công khai cửa hàng của bạn.",
       notListed: "Chưa đăng tin",
       requestList: "Đăng ký đăng tin",
       waiting: "Đang xin",

@@ -1134,6 +1134,8 @@ const data = {
         "Listing your restaurant is optional. You can open your restaurant to the public without applying. If you do apply, please open your restaurant to the public first.",
       requestingWarning:
         "Please set up your payment settings and store listing if you have not already done so.",
+      requestingPublicNote:
+        "If your restaurant is not open to the public, it cannot be listed in the directory or reviewed by our team. Please open your restaurant to the public if you have not done so.",
       notListed: "Not Listed",
       requestList: "Request to be Listed",
       waiting: "Waiting for Approval",

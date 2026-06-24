@@ -1148,6 +1148,8 @@ const data = {
         "Pengajuan pencantuman bersifat opsional. Anda dapat mempublikasikan toko tanpa mengajukan. Jika ingin mengajukan, silakan publikasikan toko terlebih dahulu.",
       requestingWarning:
         "Jika pengaturan pembayaran dan publikasi toko belum selesai, silakan atur",
+      requestingPublicNote:
+        "Jika toko Anda belum dipublikasikan, toko tidak dapat dicantumkan di daftar atau diperiksa oleh tim kami. Silakan publikasikan toko Anda jika belum.",
       notListed: "Belum dicantumkan",
       requestList: "Ajukan untuk pencantuman",
       waiting: "Sedang mengajukan",
