@@ -1493,6 +1493,12 @@ const data = {
     reset: "サーバーURLリセット",
   },
   validationError: {
+    itemName: {
+      empty: "商品名を入力してください",
+    },
+    price: {
+      empty: "値段を入力してください",
+    },
     restaurantName: {
       empty: "飲食店名を入力してください",
     },

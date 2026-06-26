@@ -1425,6 +1425,12 @@ const data = {
     reset: "重置服务器 URL",
   },
   validationError: {
+    itemName: {
+      empty: "请输入商品名称",
+    },
+    price: {
+      empty: "请输入价格",
+    },
     restaurantName: {
       empty: "请输入餐厅名称",
     },

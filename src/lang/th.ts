@@ -1481,6 +1481,12 @@ const data = {
     reset: "รีเซ็ต URL เซิร์ฟเวอร์",
   },
   validationError: {
+    itemName: {
+      empty: "กรุณาป้อนชื่อสินค้า",
+    },
+    price: {
+      empty: "กรุณาป้อนราคา",
+    },
     restaurantName: {
       empty: "กรุณาป้อนชื่อร้านอาหาร",
     },
