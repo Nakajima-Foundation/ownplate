@@ -31,8 +31,8 @@
     "minimatch": "^10.2.5"
   },
   "dependencies": {
-    "@aws-sdk/client-sns": "^3.1043.0",
-    "@sentry/node": "^10.59.0",
+    "@aws-sdk/client-sns": "^3.1075.0",
+    "@sentry/node": "^10.62.0",
     "cors": "^2.8.6",
     "express": "^5.2.1",
     "firebase-admin": "^13.8.0",
@@ -62,7 +62,7 @@
     "eslint-config-prettier": "^10.1.8",
     "firebase-functions-test": "^3.5.0",
     "globals": "^17.7.0",
-    "prettier": "^3.8.4",
+    "prettier": "^3.8.5",
     "supertest": "^7.2.2",
     "ts-node": "^10.9.2",
     "tsx": "^4.22.4",
