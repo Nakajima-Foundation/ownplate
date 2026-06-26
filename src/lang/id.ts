@@ -1513,6 +1513,12 @@ const data = {
     reset: "Reset URL server",
   },
   validationError: {
+    itemName: {
+      empty: "Silakan masukkan nama item",
+    },
+    price: {
+      empty: "Silakan masukkan harga",
+    },
     restaurantName: {
       empty: "Silakan masukkan nama restoran",
     },

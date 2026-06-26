@@ -1503,6 +1503,12 @@ const data = {
     reset: "Đặt lại URL máy chủ",
   },
   validationError: {
+    itemName: {
+      empty: "Vui lòng nhập tên món",
+    },
+    price: {
+      empty: "Vui lòng nhập giá",
+    },
     restaurantName: {
       empty: "Vui lòng nhập tên nhà hàng",
     },

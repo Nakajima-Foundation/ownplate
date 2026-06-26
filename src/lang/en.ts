@@ -1499,6 +1499,12 @@ const data = {
     reset: "Reset Server URL",
   },
   validationError: {
+    itemName: {
+      empty: "Please enter the item name",
+    },
+    price: {
+      empty: "Please enter the price",
+    },
     restaurantName: {
       empty: "Please enter the restaurant name",
     },

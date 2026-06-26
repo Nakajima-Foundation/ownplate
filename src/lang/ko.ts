@@ -1479,6 +1479,12 @@ const data = {
     reset: "서버 URL 재설정",
   },
   validationError: {
+    itemName: {
+      empty: "상품명을 입력해 주세요",
+    },
+    price: {
+      empty: "가격을 입력해 주세요",
+    },
     restaurantName: {
       empty: "음식점명을 입력해 주세요",
     },

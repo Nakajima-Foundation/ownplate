@@ -98,6 +98,12 @@
                     : 'border-green-500'
                 "
               />
+              <p
+                v-if="errors['itemName'].length > 0"
+                class="mt-1 text-sm font-bold text-red-700"
+              >
+                {{ $t(errors["itemName"][0]) }}
+              </p>
             </div>
           </div>
 
@@ -143,6 +149,12 @@
                     {{ $t("currency." + currencyKey) }}
                   </span>
                 </div>
+                <p
+                  v-if="errors['price'].length > 0"
+                  class="mt-1 text-sm font-bold text-red-700"
+                >
+                  {{ $t(errors["price"][0]) }}
+                </p>
               </div>
             </div>
 
