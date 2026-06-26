@@ -50,7 +50,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@intlify/eslint-plugin-vue-i18n": "^4.5.1",
-    "@playwright/test": "1.61.0",
+    "@playwright/test": "1.61.1",
     "@tailwindcss/vite": "^4.3.1",
     "@types/cookie": "^1.0.0",
     "@types/crypto-js": "^4.1.1",
@@ -68,7 +68,7 @@
     "eslint-plugin-vue": "^10.9.2",
     "firebase-admin": "^14.1.0",
     "jsonc-eslint-parser": "^3.1.0",
-    "prettier": "^3.8.4",
+    "prettier": "^3.8.5",
     "prettier-plugin-tailwindcss": "^0.8.0",
     "raw-loader": "^4.0.2",
     "tailwindcss": "^4.3.1",
