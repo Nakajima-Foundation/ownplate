@@ -1425,6 +1425,50 @@ const data = {
     reset: "重置伺服器 URL",
   },
   validationError: {
+    restaurantName: {
+      empty: "請輸入餐廳名稱",
+    },
+    ownerName: {
+      empty: "請輸入負責人姓名",
+    },
+    streetAddress: {
+      empty: "請輸入門牌號及以下地址",
+    },
+    city: {
+      empty: "請輸入市區町村",
+    },
+    state: {
+      empty: "請選擇都道府縣",
+    },
+    url: {
+      invalidUrl: "請輸入有效的URL（以 http:// 或 https:// 開頭）",
+    },
+    lineUrl: {
+      invalidUrl: "請輸入有效的URL（以 http:// 或 https:// 開頭）",
+    },
+    instagramUrl: {
+      invalidUrl: "請輸入有效的URL（以 http:// 或 https:// 開頭）",
+    },
+    uberEatsUrl: {
+      invalidUrl: "請輸入有效的URL（以 http:// 或 https:// 開頭）",
+    },
+    pickUpMinimumCookTime: {
+      tooMuch: "準備時間過長（最多7天）",
+      negative: "準備時間不能為負數",
+      notNumbery: "請以數字輸入準備時間",
+    },
+    pickUpDaysInAdvance: {
+      invalid: "預約受理開始日的設定不正確",
+    },
+    restProfilePhoto: {
+      empty: "請設定大頭貼圖片",
+    },
+    restCoverPhoto: {
+      empty: "請設定封面圖片",
+    },
+    oneInEmpty: "請同時輸入開始時間和結束時間",
+    validBusinessTime: "結束時間必須晚於開始時間",
+    noSelect: "請設定營業時間",
     zip: {
       empty: "請輸入郵政編碼",
       invalidZip: "請輸入有效的郵政編碼",

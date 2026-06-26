@@ -1481,6 +1481,54 @@ const data = {
     reset: "รีเซ็ต URL เซิร์ฟเวอร์",
   },
   validationError: {
+    restaurantName: {
+      empty: "กรุณาป้อนชื่อร้านอาหาร",
+    },
+    ownerName: {
+      empty: "กรุณาป้อนชื่อผู้รับผิดชอบ",
+    },
+    streetAddress: {
+      empty: "กรุณาป้อนที่อยู่ (บ้านเลขที่และถนน)",
+    },
+    city: {
+      empty: "กรุณาป้อนเขต/อำเภอ",
+    },
+    state: {
+      empty: "กรุณาเลือกจังหวัด",
+    },
+    url: {
+      invalidUrl:
+        "กรุณาป้อน URL ที่ถูกต้อง (ขึ้นต้นด้วย http:// หรือ https://)",
+    },
+    lineUrl: {
+      invalidUrl:
+        "กรุณาป้อน URL ที่ถูกต้อง (ขึ้นต้นด้วย http:// หรือ https://)",
+    },
+    instagramUrl: {
+      invalidUrl:
+        "กรุณาป้อน URL ที่ถูกต้อง (ขึ้นต้นด้วย http:// หรือ https://)",
+    },
+    uberEatsUrl: {
+      invalidUrl:
+        "กรุณาป้อน URL ที่ถูกต้อง (ขึ้นต้นด้วย http:// หรือ https://)",
+    },
+    pickUpMinimumCookTime: {
+      tooMuch: "เวลาเตรียมนานเกินไป (สูงสุด 7 วัน)",
+      negative: "เวลาเตรียมต้องไม่เป็นค่าติดลบ",
+      notNumbery: "กรุณาป้อนเวลาเตรียมเป็นตัวเลข",
+    },
+    pickUpDaysInAdvance: {
+      invalid: "การตั้งค่าวันเริ่มรับการจองไม่ถูกต้อง",
+    },
+    restProfilePhoto: {
+      empty: "กรุณาตั้งค่ารูปโปรไฟล์",
+    },
+    restCoverPhoto: {
+      empty: "กรุณาตั้งค่ารูปหน้าปก",
+    },
+    oneInEmpty: "กรุณาป้อนทั้งเวลาเริ่มและเวลาสิ้นสุด",
+    validBusinessTime: "เวลาสิ้นสุดต้องอยู่หลังเวลาเริ่ม",
+    noSelect: "กรุณาตั้งค่าเวลาทำการ",
     zip: {
       empty: "กรุณาป้อนรหัสไปรษณีย์",
       invalidZip: "กรุณาป้อนรหัสไปรษณีย์ 7 หลักที่ถูกต้อง",

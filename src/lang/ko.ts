@@ -1479,6 +1479,50 @@ const data = {
     reset: "서버 URL 재설정",
   },
   validationError: {
+    restaurantName: {
+      empty: "음식점명을 입력해 주세요",
+    },
+    ownerName: {
+      empty: "책임자 성명을 입력해 주세요",
+    },
+    streetAddress: {
+      empty: "번지 이하를 입력해 주세요",
+    },
+    city: {
+      empty: "시·구·정촌을 입력해 주세요",
+    },
+    state: {
+      empty: "도도부현을 선택해 주세요",
+    },
+    url: {
+      invalidUrl: "올바른 URL(http:// 또는 https://)을 입력해 주세요",
+    },
+    lineUrl: {
+      invalidUrl: "올바른 URL(http:// 또는 https://)을 입력해 주세요",
+    },
+    instagramUrl: {
+      invalidUrl: "올바른 URL(http:// 또는 https://)을 입력해 주세요",
+    },
+    uberEatsUrl: {
+      invalidUrl: "올바른 URL(http:// 또는 https://)을 입력해 주세요",
+    },
+    pickUpMinimumCookTime: {
+      tooMuch: "준비 시간이 너무 깁니다(최대 7일까지)",
+      negative: "준비 시간에 음수는 지정할 수 없습니다",
+      notNumbery: "준비 시간은 숫자로 입력해 주세요",
+    },
+    pickUpDaysInAdvance: {
+      invalid: "예약 접수 시작일 설정이 올바르지 않습니다",
+    },
+    restProfilePhoto: {
+      empty: "프로필 이미지를 설정해 주세요",
+    },
+    restCoverPhoto: {
+      empty: "커버 이미지를 설정해 주세요",
+    },
+    oneInEmpty: "시작 시각과 종료 시각을 모두 입력해 주세요",
+    validBusinessTime: "종료 시각은 시작 시각보다 뒤여야 합니다",
+    noSelect: "영업시간을 설정해 주세요",
     zip: {
       empty: "우편번호를 입력해 주세요",
       invalidZip: "올바른 우편번호를 입력해 주세요",

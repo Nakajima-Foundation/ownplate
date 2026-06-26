@@ -1493,6 +1493,50 @@ const data = {
     reset: "サーバーURLリセット",
   },
   validationError: {
+    restaurantName: {
+      empty: "飲食店名を入力してください",
+    },
+    ownerName: {
+      empty: "責任者氏名を入力してください",
+    },
+    streetAddress: {
+      empty: "番地以下を入力してください",
+    },
+    city: {
+      empty: "市区町村を入力してください",
+    },
+    state: {
+      empty: "都道府県を選択してください",
+    },
+    url: {
+      invalidUrl: "正しいURL（http:// または https://）を入力してください",
+    },
+    lineUrl: {
+      invalidUrl: "正しいURL（http:// または https://）を入力してください",
+    },
+    instagramUrl: {
+      invalidUrl: "正しいURL（http:// または https://）を入力してください",
+    },
+    uberEatsUrl: {
+      invalidUrl: "正しいURL（http:// または https://）を入力してください",
+    },
+    pickUpMinimumCookTime: {
+      tooMuch: "準備時間が長すぎます（最大7日まで）",
+      negative: "準備時間に負の値は指定できません",
+      notNumbery: "準備時間は数値で入力してください",
+    },
+    pickUpDaysInAdvance: {
+      invalid: "予約受付開始日の設定が正しくありません",
+    },
+    restProfilePhoto: {
+      empty: "プロフィール画像を設定してください",
+    },
+    restCoverPhoto: {
+      empty: "カバー画像を設定してください",
+    },
+    oneInEmpty: "開始時刻と終了時刻の両方を入力してください",
+    validBusinessTime: "終了時刻は開始時刻より後にしてください",
+    noSelect: "営業時間を設定してください",
     zip: {
       empty: "郵便番号を入力してください",
       invalidZip: "正しい7桁の郵便番号を入力してください",
