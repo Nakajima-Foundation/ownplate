@@ -1499,6 +1499,54 @@ const data = {
     reset: "Reset Server URL",
   },
   validationError: {
+    restaurantName: {
+      empty: "Please enter the restaurant name",
+    },
+    ownerName: {
+      empty: "Please enter the owner's name",
+    },
+    streetAddress: {
+      empty: "Please enter the street address",
+    },
+    city: {
+      empty: "Please enter the city",
+    },
+    state: {
+      empty: "Please select the prefecture",
+    },
+    url: {
+      invalidUrl:
+        "Please enter a valid URL (starting with http:// or https://)",
+    },
+    lineUrl: {
+      invalidUrl:
+        "Please enter a valid URL (starting with http:// or https://)",
+    },
+    instagramUrl: {
+      invalidUrl:
+        "Please enter a valid URL (starting with http:// or https://)",
+    },
+    uberEatsUrl: {
+      invalidUrl:
+        "Please enter a valid URL (starting with http:// or https://)",
+    },
+    pickUpMinimumCookTime: {
+      tooMuch: "Preparation time is too long (up to 7 days)",
+      negative: "Preparation time cannot be negative",
+      notNumbery: "Please enter the preparation time as a number",
+    },
+    pickUpDaysInAdvance: {
+      invalid: "The reservation start day setting is invalid",
+    },
+    restProfilePhoto: {
+      empty: "Please set a profile photo",
+    },
+    restCoverPhoto: {
+      empty: "Please set a cover photo",
+    },
+    oneInEmpty: "Please enter both the start and end times",
+    validBusinessTime: "The end time must be later than the start time",
+    noSelect: "Please set the business hours",
     zip: {
       empty: "Please enter your zip code",
       invalidZip: "Please enter your valid zip code",

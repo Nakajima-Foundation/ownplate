@@ -29,6 +29,9 @@
         class="input w-full rounded border bg-white px-3 py-2"
         :class="error.length > 0 ? 'border-red-500' : 'border-gray-300'"
       />
+      <p v-if="error.length > 0" class="mt-1 text-sm font-bold text-red-700">
+        {{ $t(error[0]) }}
+      </p>
     </div>
   </div>
 </template>

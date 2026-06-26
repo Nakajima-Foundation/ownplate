@@ -1503,6 +1503,54 @@ const data = {
     reset: "Đặt lại URL máy chủ",
   },
   validationError: {
+    restaurantName: {
+      empty: "Vui lòng nhập tên nhà hàng",
+    },
+    ownerName: {
+      empty: "Vui lòng nhập tên người phụ trách",
+    },
+    streetAddress: {
+      empty: "Vui lòng nhập địa chỉ (số nhà và đường)",
+    },
+    city: {
+      empty: "Vui lòng nhập quận/huyện",
+    },
+    state: {
+      empty: "Vui lòng chọn tỉnh",
+    },
+    url: {
+      invalidUrl:
+        "Vui lòng nhập URL hợp lệ (bắt đầu bằng http:// hoặc https://)",
+    },
+    lineUrl: {
+      invalidUrl:
+        "Vui lòng nhập URL hợp lệ (bắt đầu bằng http:// hoặc https://)",
+    },
+    instagramUrl: {
+      invalidUrl:
+        "Vui lòng nhập URL hợp lệ (bắt đầu bằng http:// hoặc https://)",
+    },
+    uberEatsUrl: {
+      invalidUrl:
+        "Vui lòng nhập URL hợp lệ (bắt đầu bằng http:// hoặc https://)",
+    },
+    pickUpMinimumCookTime: {
+      tooMuch: "Thời gian chuẩn bị quá dài (tối đa 7 ngày)",
+      negative: "Thời gian chuẩn bị không được là số âm",
+      notNumbery: "Vui lòng nhập thời gian chuẩn bị dưới dạng số",
+    },
+    pickUpDaysInAdvance: {
+      invalid: "Cài đặt ngày bắt đầu nhận đặt chỗ không hợp lệ",
+    },
+    restProfilePhoto: {
+      empty: "Vui lòng đặt ảnh hồ sơ",
+    },
+    restCoverPhoto: {
+      empty: "Vui lòng đặt ảnh bìa",
+    },
+    oneInEmpty: "Vui lòng nhập cả thời gian bắt đầu và kết thúc",
+    validBusinessTime: "Thời gian kết thúc phải sau thời gian bắt đầu",
+    noSelect: "Vui lòng đặt giờ mở cửa",
     zip: {
       empty: "Vui lòng nhập mã bưu điện",
       invalidZip: "Vui lòng nhập mã bưu điện 7 chữ số chính xác",

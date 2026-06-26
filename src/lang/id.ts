@@ -1513,6 +1513,54 @@ const data = {
     reset: "Reset URL server",
   },
   validationError: {
+    restaurantName: {
+      empty: "Silakan masukkan nama restoran",
+    },
+    ownerName: {
+      empty: "Silakan masukkan nama penanggung jawab",
+    },
+    streetAddress: {
+      empty: "Silakan masukkan alamat (nomor dan jalan)",
+    },
+    city: {
+      empty: "Silakan masukkan kota/kabupaten",
+    },
+    state: {
+      empty: "Silakan pilih prefektur",
+    },
+    url: {
+      invalidUrl:
+        "Silakan masukkan URL yang valid (diawali dengan http:// atau https://)",
+    },
+    lineUrl: {
+      invalidUrl:
+        "Silakan masukkan URL yang valid (diawali dengan http:// atau https://)",
+    },
+    instagramUrl: {
+      invalidUrl:
+        "Silakan masukkan URL yang valid (diawali dengan http:// atau https://)",
+    },
+    uberEatsUrl: {
+      invalidUrl:
+        "Silakan masukkan URL yang valid (diawali dengan http:// atau https://)",
+    },
+    pickUpMinimumCookTime: {
+      tooMuch: "Waktu persiapan terlalu lama (maksimal 7 hari)",
+      negative: "Waktu persiapan tidak boleh negatif",
+      notNumbery: "Silakan masukkan waktu persiapan dalam bentuk angka",
+    },
+    pickUpDaysInAdvance: {
+      invalid: "Pengaturan hari mulai pemesanan tidak valid",
+    },
+    restProfilePhoto: {
+      empty: "Silakan atur foto profil",
+    },
+    restCoverPhoto: {
+      empty: "Silakan atur foto sampul",
+    },
+    oneInEmpty: "Silakan masukkan waktu mulai dan waktu selesai",
+    validBusinessTime: "Waktu selesai harus lebih lambat dari waktu mulai",
+    noSelect: "Silakan atur jam buka",
     zip: {
       empty: "Silakan masukkan kode pos",
       invalidZip: "Silakan masukkan kode pos 7 digit yang benar",

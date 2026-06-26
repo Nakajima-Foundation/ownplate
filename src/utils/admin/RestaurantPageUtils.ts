@@ -168,17 +168,17 @@ export const shopInfoValidator = (
   if (Number.isInteger(shopInfo["pickUpMinimumCookTime"])) {
     if (shopInfo["pickUpMinimumCookTime"] > 24 * 60 * 7) {
       (err["pickUpMinimumCookTime"] as string[]).push(
-        "validationError." + name + ".tooMuch",
+        "validationError.pickUpMinimumCookTime.tooMuch",
       );
     }
     if (shopInfo["pickUpMinimumCookTime"] < 0) {
       (err["pickUpMinimumCookTime"] as string[]).push(
-        "validationError." + name + ".negative",
+        "validationError.pickUpMinimumCookTime.negative",
       );
     }
   } else {
     (err["pickUpMinimumCookTime"] as string[]).push(
-      "validationError." + name + ".notNumbery",
+      "validationError.pickUpMinimumCookTime.notNumbery",
     );
   }
 
@@ -189,7 +189,7 @@ export const shopInfoValidator = (
     )
   ) {
     (err["pickUpDaysInAdvance"] as string[]).push(
-      "validationError." + name + ".invalid",
+      "validationError.pickUpDaysInAdvance.invalid",
     );
   }
 

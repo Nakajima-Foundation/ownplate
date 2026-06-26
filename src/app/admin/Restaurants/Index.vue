@@ -116,7 +116,7 @@
               />
             </div>
             <div class="pl-4">
-              <state v-model="editShopInfo.state" />
+              <state v-model="editShopInfo.state" :error="errors['state']" />
             </div>
           </div>
           <!-- City -->
@@ -260,6 +260,12 @@
                 </div>
               </div>
             </div>
+            <p
+              v-if="errors['restProfilePhoto'].length > 0"
+              class="mt-1 text-sm font-bold text-red-700"
+            >
+              {{ $t(errors["restProfilePhoto"][0]) }}
+            </p>
 
             <!-- Description -->
             <div class="pt-2 text-sm text-black/60">
@@ -308,6 +314,12 @@
                 </div>
               </div>
             </div>
+            <p
+              v-if="errors['restCoverPhoto'].length > 0"
+              class="mt-1 text-sm font-bold text-red-700"
+            >
+              {{ $t(errors["restCoverPhoto"][0]) }}
+            </p>
             <!-- Description -->
             <div class="pt-2 text-sm text-black/60">
               {{ $t("editCommon.clickAndUploadDetail") }}
@@ -548,6 +560,12 @@
                     >
                   </div>
                 </div>
+                <p
+                  v-if="errors['pickUpMinimumCookTime'].length > 0"
+                  class="mt-1 text-sm font-bold text-red-700"
+                >
+                  {{ $t(errors["pickUpMinimumCookTime"][0]) }}
+                </p>
 
                 <div class="mt-2">
                   <template
@@ -578,7 +596,12 @@
                 </div>
                 <select
                   v-model.number="editShopInfo.pickUpDaysInAdvance"
-                  class="mt-1 rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400"
+                  class="mt-1 rounded-lg border bg-white px-3 py-2 focus:ring-teal-400"
+                  :class="
+                    errors['pickUpDaysInAdvance'].length > 0
+                      ? 'border-red-500 hover:border-red-500'
+                      : 'border-teal-400 hover:border-teal-400'
+                  "
                 >
                   <option
                     v-for="(day, index) in reservationTheDayBefore"
@@ -588,6 +611,12 @@
                     {{ $t(day.messageKey) }}
                   </option>
                 </select>
+                <p
+                  v-if="errors['pickUpDaysInAdvance'].length > 0"
+                  class="mt-1 text-sm font-bold text-red-700"
+                >
+                  {{ $t(errors["pickUpDaysInAdvance"][0]) }}
+                </p>
               </div>
             </div>
           </div>
@@ -867,6 +896,12 @@
                         :{{ $t("shopInfo.lunch") }}
                       </div>
                     </div>
+                    <p
+                      v-if="errors['time'][index][0].length > 0"
+                      class="mt-1 text-sm font-bold text-red-700"
+                    >
+                      {{ $t(errors["time"][index][0][0]) }}
+                    </p>
                   </div>
 
                   <!-- Another Hours -->
@@ -891,6 +926,12 @@
                         :{{ $t("shopInfo.dinner") }}
                       </div>
                     </div>
+                    <p
+                      v-if="errors['time'][index][1].length > 0"
+                      class="mt-1 text-sm font-bold text-red-700"
+                    >
+                      {{ $t(errors["time"][index][1][0]) }}
+                    </p>
                   </div>
                 </div>
               </div>

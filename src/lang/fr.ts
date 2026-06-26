@@ -1524,6 +1524,56 @@ const data = {
     reset: "Reset Server URL",
   },
   validationError: {
+    restaurantName: {
+      empty: "Veuillez saisir le nom du restaurant",
+    },
+    ownerName: {
+      empty: "Veuillez saisir le nom du responsable",
+    },
+    streetAddress: {
+      empty: "Veuillez saisir l'adresse (numéro et rue)",
+    },
+    city: {
+      empty: "Veuillez saisir la ville",
+    },
+    state: {
+      empty: "Veuillez sélectionner la préfecture",
+    },
+    url: {
+      invalidUrl:
+        "Veuillez saisir une URL valide (commençant par http:// ou https://)",
+    },
+    lineUrl: {
+      invalidUrl:
+        "Veuillez saisir une URL valide (commençant par http:// ou https://)",
+    },
+    instagramUrl: {
+      invalidUrl:
+        "Veuillez saisir une URL valide (commençant par http:// ou https://)",
+    },
+    uberEatsUrl: {
+      invalidUrl:
+        "Veuillez saisir une URL valide (commençant par http:// ou https://)",
+    },
+    pickUpMinimumCookTime: {
+      tooMuch: "Le temps de préparation est trop long (7 jours maximum)",
+      negative: "Le temps de préparation ne peut pas être négatif",
+      notNumbery:
+        "Veuillez saisir le temps de préparation sous forme de nombre",
+    },
+    pickUpDaysInAdvance: {
+      invalid: "Le réglage du jour de début des réservations est invalide",
+    },
+    restProfilePhoto: {
+      empty: "Veuillez définir une photo de profil",
+    },
+    restCoverPhoto: {
+      empty: "Veuillez définir une photo de couverture",
+    },
+    oneInEmpty: "Veuillez saisir l'heure de début et l'heure de fin",
+    validBusinessTime:
+      "L'heure de fin doit être postérieure à l'heure de début",
+    noSelect: "Veuillez définir les horaires d'ouverture",
     zip: {
       empty: "Veuillez saisir votre code postal",
       invalidZip: "Veuillez saisir un code postal valide",
