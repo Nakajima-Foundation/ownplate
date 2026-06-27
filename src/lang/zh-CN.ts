@@ -1080,7 +1080,11 @@ const data = {
     directory: {
       status: "客户用店铺列表的刊登状态",
       requestWarning: "请在支付设置、店铺公开后申请",
+      requestOptionalNote:
+        "※ 刊登申请为可选项。即使不申请也可以公开店铺。如需申请，请先公开店铺。",
       requestingWarning: "如支付设置、店铺公开尚未完成请先设置",
+      requestingPublicNote:
+        "※ 店铺未公开时，将无法在列表中刊登或由运营方确认。如尚未公开，请先公开店铺。",
       notListed: "未刊登",
       requestList: "申请刊登",
       waiting: "申请中",

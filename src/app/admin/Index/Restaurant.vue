@@ -312,6 +312,11 @@
               {{ $t("admin.directory.requestingWarning") }}
             </span>
           </div>
+          <div class="mt-2">
+            <span class="text-sm text-black/60">
+              {{ $t("admin.directory.requestingPublicNote") }}
+            </span>
+          </div>
         </div>
 
         <!-- Off Directory -->
@@ -337,6 +342,11 @@
           <div class="mt-2">
             <span class="text-sm">
               {{ $t("admin.directory.requestWarning") }}
+            </span>
+          </div>
+          <div class="mt-2">
+            <span class="text-sm text-black/60">
+              {{ $t("admin.directory.requestOptionalNote") }}
             </span>
           </div>
         </div>
