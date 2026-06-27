@@ -17,7 +17,9 @@ jobs:
       id-token: write
     strategy:
       matrix:
-        node-version: [24.x]
+        # Pin Node: 24.17.0 has a keep-alive regression (CVE-2026-48931) that breaks
+        # the WIF STS token exchange in `firebase deploy`. Fixed in 24.18.0.
+        node-version: [24.18.0]
 
     steps:
       - uses: actions/checkout@v6
