@@ -1466,9 +1466,11 @@ const data = {
       tooMuch: "準備時間過長（最多7天）",
       negative: "準備時間不能為負數",
       notNumbery: "請以數字輸入準備時間",
+      empty: "請輸入準備時間",
     },
     pickUpDaysInAdvance: {
       invalid: "預約受理開始日的設定不正確",
+      empty: "請選擇預約受理開始日",
     },
     restProfilePhoto: {
       empty: "請設定大頭貼圖片",

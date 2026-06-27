@@ -1548,9 +1548,11 @@ const data = {
       tooMuch: "Thời gian chuẩn bị quá dài (tối đa 7 ngày)",
       negative: "Thời gian chuẩn bị không được là số âm",
       notNumbery: "Vui lòng nhập thời gian chuẩn bị dưới dạng số",
+      empty: "Vui lòng nhập thời gian chuẩn bị",
     },
     pickUpDaysInAdvance: {
       invalid: "Cài đặt ngày bắt đầu nhận đặt chỗ không hợp lệ",
+      empty: "Vui lòng chọn ngày bắt đầu nhận đặt chỗ",
     },
     restProfilePhoto: {
       empty: "Vui lòng đặt ảnh hồ sơ",
