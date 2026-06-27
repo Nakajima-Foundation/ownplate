@@ -15,7 +15,7 @@
       <p
         v-if="hasError || notice"
         class="help mt-1 text-sm"
-        :class="hasError ? 'text-red-500' : 'text-green-600'"
+        :class="hasError ? 'font-bold text-red-700' : 'text-green-600'"
       >
         {{ hasError ? $t(errors[0]) : notice }}
       </p>
