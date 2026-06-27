@@ -1570,9 +1570,11 @@ const data = {
       negative: "Le temps de préparation ne peut pas être négatif",
       notNumbery:
         "Veuillez saisir le temps de préparation sous forme de nombre",
+      empty: "Veuillez saisir le temps de préparation",
     },
     pickUpDaysInAdvance: {
       invalid: "Le réglage du jour de début des réservations est invalide",
+      empty: "Veuillez sélectionner le jour de début des réservations",
     },
     restProfilePhoto: {
       empty: "Veuillez définir une photo de profil",

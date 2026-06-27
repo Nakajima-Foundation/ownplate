@@ -1558,9 +1558,11 @@ const data = {
       tooMuch: "Waktu persiapan terlalu lama (maksimal 7 hari)",
       negative: "Waktu persiapan tidak boleh negatif",
       notNumbery: "Silakan masukkan waktu persiapan dalam bentuk angka",
+      empty: "Silakan masukkan waktu persiapan",
     },
     pickUpDaysInAdvance: {
       invalid: "Pengaturan hari mulai pemesanan tidak valid",
+      empty: "Silakan pilih hari mulai pemesanan",
     },
     restProfilePhoto: {
       empty: "Silakan atur foto profil",

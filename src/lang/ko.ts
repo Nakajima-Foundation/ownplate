@@ -1520,9 +1520,11 @@ const data = {
       tooMuch: "준비 시간이 너무 깁니다(최대 7일까지)",
       negative: "준비 시간에 음수는 지정할 수 없습니다",
       notNumbery: "준비 시간은 숫자로 입력해 주세요",
+      empty: "준비 시간을 입력해 주세요",
     },
     pickUpDaysInAdvance: {
       invalid: "예약 접수 시작일 설정이 올바르지 않습니다",
+      empty: "예약 접수 시작일을 선택해 주세요",
     },
     restProfilePhoto: {
       empty: "프로필 이미지를 설정해 주세요",

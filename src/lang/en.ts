@@ -1544,9 +1544,11 @@ const data = {
       tooMuch: "Preparation time is too long (up to 7 days)",
       negative: "Preparation time cannot be negative",
       notNumbery: "Please enter the preparation time as a number",
+      empty: "Please enter the preparation time",
     },
     pickUpDaysInAdvance: {
       invalid: "The reservation start day setting is invalid",
+      empty: "Please select the reservation start day",
     },
     restProfilePhoto: {
       empty: "Please set a profile photo",
