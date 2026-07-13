@@ -1,5 +1,5 @@
 import { ownPlateConfig } from "@/config/project";
-import { parse } from "cookie";
+import { parseCookie } from "cookie";
 
 export const lineAuthURLBase = (
   path: string,
@@ -49,7 +49,7 @@ export const lineAuthURL = (
 };
 
 export const lineGuard = (nonce: string, state: string) => {
-  const cookies = parse(document.cookie);
+  const cookies = parseCookie(document.cookie);
   const params = JSON.parse(cookies.line_params ?? "");
 
   //console.log("lineGuard", state, params.state);
@@ -61,7 +61,7 @@ export const lineGuard = (nonce: string, state: string) => {
 };
 
 export const lineVerify = (state: string) => {
-  const cookies = parse(document.cookie);
+  const cookies = parseCookie(document.cookie);
   const params = JSON.parse(cookies.line_params ?? "");
   //console.log("lineVerify", state, params.state);
   return state === params.state;
