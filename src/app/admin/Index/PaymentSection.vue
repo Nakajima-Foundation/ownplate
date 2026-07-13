@@ -119,7 +119,7 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, onSnapshot, Unsubscribe, setDoc } from "firebase/firestore";
 import { stripeConnect, stripeDisconnect } from "@/lib/firebase/functions";
 import { ownPlateConfig } from "@/config/project";
-import { parse } from "cookie";
+import { parseCookie } from "cookie";
 
 import { PaymentInfo } from "@/models/paymentInfo";
 import Checkbox from "@/components/form/checkbox.vue";
@@ -146,7 +146,7 @@ export default defineComponent({
       const code = route.query.code as string;
       if (code) {
         const state = route.query.state;
-        const cookies = parse(document.cookie);
+        const cookies = parseCookie(document.cookie);
         //console.log("mounted", code, state, cookies.stripe_state);
         if (state === cookies?.stripe_state) {
           generalStore.setLoading(true);
