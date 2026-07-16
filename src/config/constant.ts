@@ -43,7 +43,6 @@ export const possible_transitions = {
     [order_status.ready_to_pickup]: true, // both paid and unpaid
   },
   [order_status.ready_to_pickup]: {
-    [order_status.order_refunded]: true,
     [order_status.transaction_complete]: true,
   },
   [order_status.transaction_complete]: {
