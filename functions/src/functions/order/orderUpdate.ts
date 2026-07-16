@@ -140,34 +140,37 @@ export const update = async (db: admin.firestore.Firestore, data: OrderUpdateDat
       );
       if (isStripeProcess) {
         const typedPaymentIntent = paymentIntent as StripePaymentIntentWithCharge;
-        if (!typedPaymentIntent.latest_charge) {
-          throw new HttpsError("internal", "Payment intent missing latest_charge");
-        }
-        const { payment_method, payment_method_details } = typedPaymentIntent.latest_charge;
-
         await transaction.set(stripeRef, { paymentIntent }, { merge: true });
-        // customer
-        if (payment_method && order.isSavePay && stripeSystem) {
-          const { card } = payment_method_details;
-          if (card) {
-            const { exp_month, exp_year, brand, last4 } = card;
-            await transaction.set(stripeReadOnlyRef, {
-              card: { exp_month, exp_year, brand, last4 },
-              updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        if (typedPaymentIntent.latest_charge) {
+          const { payment_method, payment_method_details } = typedPaymentIntent.latest_charge;
+          // customer
+          if (payment_method && order.isSavePay && stripeSystem) {
+            const { card } = payment_method_details;
+            if (card) {
+              const { exp_month, exp_year, brand, last4 } = card;
+              await transaction.set(stripeReadOnlyRef, {
+                card: { exp_month, exp_year, brand, last4 },
+                updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+              });
+            }
+            const stripe = utils.get_stripe_v2();
+            const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
+            await stripe.paymentMethods.attach(
+              payment_method,
+              {
+                customer: stripeSystem.customerId,
+              },
+              { stripeAccount },
+            );
+            await transaction.set(stripeSystemRef, {
+              customerId: stripeSystem.customerId,
+              payment_method,
             });
           }
-          const stripe = utils.get_stripe_v2();
-          const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
-          await stripe.paymentMethods.attach(
-            payment_method,
-            {
-              customer: stripeSystem.customerId,
-            },
-            { stripeAccount },
-          );
-          await transaction.set(stripeSystemRef, {
-            customerId: stripeSystem.customerId,
-            payment_method,
+        } else {
+          console.error("missing latest_charge after capture", {
+            orderId,
+            paymentIntentId: typedPaymentIntent.id,
           });
         }
       }
