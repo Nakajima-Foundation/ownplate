@@ -238,7 +238,15 @@ export const place = async (db: admin.firestore.Firestore, data: OrderPlacedData
             request.customer = stripeCustomer.customerId;
             request.payment_method = stripeCustomer.payment_method;
           } else {
-            const customer = await stripe.customers.create({}, { stripeAccount });
+            const customer = await stripe.customers.create(
+              {},
+              {
+                idempotencyKey: getHash(
+                  ["customer", customerUid, restaurantOwnerUid].join("-"),
+                ),
+                stripeAccount,
+              },
+            );
             await saveCustomerStripeInfo2(db, customerUid, restaurantOwnerUid, { customerId: customer.id });
           }
           const idempotencyKey = getHash([orderRef.path].join("-"));
