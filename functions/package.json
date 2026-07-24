@@ -44,7 +44,7 @@
     "node-fetch": "^2.6.1",
     "nodemailer": "^8.0.10",
     "receiptline": "^1.16.2",
-    "sharp": "^0.34.5",
+    "sharp": "^0.35.0",
     "stripe": "^21",
     "twilio": "^6.0.2",
     "uuid": "^14.0.1",
