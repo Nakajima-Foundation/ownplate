@@ -1,0 +1,11 @@
+{
+  "name": "ownplate",
+  "icon": "public/apple-touch-icon.png",
+  "badgeColor": "#dca009",
+  "headerColor": "#fbc02d",
+  "headerTextColor": "#1b2430",
+  "cellColor": "#fefaf1",
+  "cellBorderColor": "#fac642",
+  "dotColor": "#fac642",
+  "buttonColor": "#fdedc4"
+}
