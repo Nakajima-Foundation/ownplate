@@ -15,7 +15,7 @@ OwnPlate は飲食店向けのテイクアウト注文サービス。Firebase + 
 - バックエンド: Firebase Functions / Express / Firestore
 - 決済: Stripe Connect（OAuth で店舗オーナーが自分の Stripe アカウントを連携するマーケットプレイス型）+ PaymentIntent API（注文ごとに各オーナーの Stripe アカウント上で決済）
 - 監視: Sentry（フロント・バックエンド両方）
-- 通知: Twilio (SMS・電話) / Nodemailer (メール) / LINE (LIFF)
+- 通知: Twilio (SMS・電話) / Nodemailer (メール) / LINE (LIFF) / Web Push (VAPID, `web-push`)
 - E2E: Playwright
 - パッケージ管理: yarn（ルート・`functions/` 独立）
 
@@ -52,7 +52,7 @@ i18n キー（特に新規キー）を追加・変更するときは、 **`src/l
 | `yarn lint` / `yarn format` | ESLint / Prettier |
 | `yarn serve` | `firebase serve --only functions` |
 | `yarn deploy` | `firebase deploy --only functions` |
-| `yarn ci_test` | CI 相当（image / validator / mail_template / svg） |
+| `yarn ci_test` | CI 相当（image / validator / mail_template / svg / webpush） |
 | `yarn tests` | mocha で全 `tests/*_test.ts` を再帰実行 |
 
 個別 mocha テストは頭文字で呼び分ける: `o_tests`（order）/ `oc_tests`（order_change）/ `n_tests`（notify）/ `t_tests`・`t2_tests`（twilio）/ `s_tests`（subaccount）/ `d_tests`（dl）/ `e_tests`（express）/ `smaregitests` ほか。
@@ -130,6 +130,7 @@ NODE_ENV=test node --import tsx --test tests/validator_test.ts
 - [docs/SPEC.md](./docs/SPEC.md) — サービス仕様
 - [docs/DATABASE.md](./docs/DATABASE.md) — Firestore スキーマ
 - [docs/NOTIFICATION.md](./docs/NOTIFICATION.md) — LINE / メール / 電話通知
+- [docs/WEBPUSH.md](./docs/WEBPUSH.md) — Web Push (PWA) の設定とハマりどころ
 - [docs/ORDER_STATE.md](./docs/ORDER_STATE.md), [docs/STATE_TIME.md](./docs/STATE_TIME.md) — 注文ステート
 - [docs/NEWS.md](./docs/NEWS.md) — ChangeLog 仕様（`yarn makenews` で生成）
 - [docs/CONFIGURATIONS.md](./docs/CONFIGURATIONS.md) — LIFF / Storage CORS 設定

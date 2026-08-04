@@ -1176,6 +1176,14 @@ const data = {
       infinityNotificationOn: "Thông báo lại mỗi 1 phút",
       infinityNotificationOff: "Chỉ thông báo khi nhận đơn",
       soundTest: "Thử",
+      webPushOn: "Thông báo đẩy: Bật",
+      webPushOff: "Thông báo đẩy: Tắt",
+      webPushDescription:
+        "Thông báo đơn hàng mới đến thiết bị này ngay cả khi đã đóng trang quản trị.",
+      webPushIosHint:
+        "Trên iPhone và iPad, chỉ dùng được khi mở từ biểu tượng đã thêm vào Màn hình chính.",
+      webPushError:
+        "Không thể bật thông báo đẩy. Vui lòng kiểm tra cài đặt thông báo của trình duyệt.",
       paymentIsNotCompleted:
         'Lưu ý: Khi nhấn nút "Đã nhận đơn", thanh toán thẻ sẽ được xử lý.',
       cancelButton: "Hủy đơn hàng",

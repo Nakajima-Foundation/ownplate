@@ -32,6 +32,10 @@
             { "key": "X-Permitted-Cross-Domain-Policies", "value": "none" },
             { "key": "Referrer-Policy", "value": "no-referrer" }
           ]
+        },
+        {
+          "source": "/sw.js",
+          "headers": [{ "key": "Cache-Control", "value": "no-cache" }]
         }
       ],
       "appAssociation": "AUTO",

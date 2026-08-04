@@ -126,3 +126,14 @@ export interface DispatchData {
   key: string;
   value: boolean;
 }
+
+// Web Push function call types
+export interface RegisterWebPushData {
+  endpoint: string;
+  p256dh: string;
+  auth: string;
+}
+
+export interface UnregisterWebPushData {
+  endpoint: string;
+}

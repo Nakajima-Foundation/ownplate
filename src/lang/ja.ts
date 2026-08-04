@@ -1170,6 +1170,14 @@ const data = {
       infinityNotificationOn: "1分おきに再通知",
       infinityNotificationOff: "受注時のみ通知",
       soundTest: "テスト",
+      webPushOn: "プッシュ通知：オン",
+      webPushOff: "プッシュ通知：オフ",
+      webPushDescription:
+        "管理画面を閉じていても、この端末に新しい注文をお知らせします。",
+      webPushIosHint:
+        "iPhone・iPadでは、ホーム画面に追加したアイコンから開いた場合のみ利用できます。",
+      webPushError:
+        "プッシュ通知を設定できませんでした。ブラウザの通知設定をご確認ください。",
       paymentIsNotCompleted:
         "ご注意：「受付済み」ボタンを押すとカード決済が処理されます。",
       cancelButton: "注文をキャンセル",

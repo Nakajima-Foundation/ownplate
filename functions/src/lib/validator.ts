@@ -14,6 +14,8 @@ import {
   PingData,
   LineValidateData,
   LiffAuthenticateData,
+  RegisterWebPushData,
+  UnregisterWebPushData,
 } from "../models/functionTypes";
 import {
   ValidatorNumberOption,
@@ -380,6 +382,37 @@ export const validatePing = (data: PingData) => {
     },
     operationType: {
       type: "numAlphaBar",
+      required: true,
+    },
+  };
+  return validateData(data, validator);
+};
+
+// PushSubscription の鍵は base64url。パディングを付けるブラウザもあるので許容する
+const webPushKeyRegex = /^[A-Za-z0-9\-_]+=*$/;
+
+export const validateRegisterWebPush = (data: RegisterWebPushData) => {
+  const validator = {
+    endpoint: {
+      type: "url",
+      required: true,
+    },
+    p256dh: {
+      regex: webPushKeyRegex,
+      required: true,
+    },
+    auth: {
+      regex: webPushKeyRegex,
+      required: true,
+    },
+  };
+  return validateData(data, validator);
+};
+
+export const validateUnregisterWebPush = (data: UnregisterWebPushData) => {
+  const validator = {
+    endpoint: {
+      type: "url",
       required: true,
     },
   };
