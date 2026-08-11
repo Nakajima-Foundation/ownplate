@@ -138,6 +138,48 @@
             </div>
           </div>
 
+          <!-- Web Push -->
+          <div v-if="webPushConfigured" class="mt-4">
+            <a v-if="webPushSupported" @click="toggleWebPush()">
+              <div
+                v-if="webPushEnabled"
+                class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-green-600/10 px-4"
+              >
+                <i class="material-icons mr-2 text-lg text-green-600"
+                  >notifications_active</i
+                >
+                <div class="text-sm font-bold text-green-600">
+                  {{ $t("admin.order.webPushOn") }}
+                </div>
+              </div>
+
+              <div
+                v-else
+                class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-black/5 px-4"
+              >
+                <i class="material-icons mr-2 text-lg text-black/30"
+                  >notifications_off</i
+                >
+                <div class="text-sm font-bold text-black/30">
+                  {{ $t("admin.order.webPushOff") }}
+                </div>
+              </div>
+            </a>
+
+            <div class="mt-2 text-xs text-black/60">
+              {{ $t("admin.order.webPushDescription") }}
+            </div>
+            <div class="text-xs text-black/60">
+              {{ $t("admin.order.webPushIosHint") }}
+            </div>
+            <div
+              v-if="webPushError"
+              class="mt-1 text-xs font-bold text-red-700"
+            >
+              {{ $t("admin.order.webPushError") }}
+            </div>
+          </div>
+
           <!-- LINE Connection -->
           <div class="mt-4" @click="closeNotificationSettings()">
             <router-link
@@ -182,6 +224,7 @@ import {
   useSoundPlay,
   isLineEnabled,
 } from "@/utils/utils";
+import { useWebPushToggle } from "@/utils/useWebPushToggle";
 
 import IncompleteOrders from "@/app/admin/Notifications/IncompleteOrders.vue";
 
@@ -234,6 +277,14 @@ export default defineComponent({
     const closeNotificationSettings = () => {
       ctx.emit("close");
     };
+    const {
+      webPushConfigured,
+      webPushSupported,
+      webPushEnabled,
+      webPushError,
+      toggleWebPush,
+    } = useWebPushToggle();
+
     const soundPlay = useSoundPlay();
     const delayedSoundPlay = () => {
       // We need to add a delay so that it won't interrupt the very first silent sound.
@@ -251,6 +302,12 @@ export default defineComponent({
       closeNotificationSettings,
       delayedSoundPlay,
       isLineEnabled,
+
+      webPushConfigured,
+      webPushSupported,
+      webPushEnabled,
+      webPushError,
+      toggleWebPush,
 
       restaurantId,
     };

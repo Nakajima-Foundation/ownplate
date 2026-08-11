@@ -17,6 +17,8 @@ import { sendMessageDirect } from "./notify/line";
 import * as sms from "./notify/sms";
 import * as twilio from "./notify/twilio";
 import * as ses from "./notify/ses";
+import { isWebPushConfigured, restaurantNotifyUids, sendWebPush } from "./notify/webpush";
+import { createWebPushPayload } from "./notify/webpushFormat";
 
 const LINE_MESSAGE_TOKEN = defineSecret("LINE_MESSAGE_TOKEN");
 
@@ -79,24 +81,13 @@ export const sendMessageToCustomer = async (
 };
 
 // for restaurant
-const createNotifyRestaurantLineMessage = async (messageId: string, restaurantName: string, orderNumber: number, lng: string) => {
+const createNotifyRestaurantSubject = async (messageId: string, orderNumber: number, lng: string) => {
   const t = await i18next.init({
     lng: lng || stripe_regions_jp.langs[0],
     resources,
   });
   const orderName = utils.nameOfOrder(orderNumber);
-  const message = `${t(messageId)} ${orderName} ${restaurantName}`;
-  return message;
-};
-
-const createNotifyRestaurantMailTitle = async (messageId: string, restaurantName: string, orderNumber: number, lng: string) => {
-  const t = await i18next.init({
-    lng: lng || stripe_regions_jp.langs[0],
-    resources,
-  });
-  const orderName = utils.nameOfOrder(orderNumber);
-  const message = `${t(messageId)} ${orderName} ${restaurantName}`;
-  return message;
+  return `${t(messageId)} ${orderName}`;
 };
 
 export const createNotifyRestaurantMailMessage = async (messageId: string, restaurantName: string, order: admin.firestore.DocumentData, orderNumber: number, _lng: string, url: string) => {
@@ -153,6 +144,47 @@ export const createNotifyRestaurantMailMessage = async (messageId: string, resta
   return replacedTemp;
 };
 
+type WebPushParams = {
+  restaurantId: string;
+  ownerUid: string;
+  orderId: string;
+  messageId: string;
+  restaurantName: string;
+  subject: string;
+  datestr: string;
+};
+
+const sendRestaurantWebPush = async (db: admin.firestore.Firestore, params: WebPushParams) => {
+  const { restaurantId, ownerUid, orderId, messageId, restaurantName, subject, datestr } = params;
+  const uids = await restaurantNotifyUids(db, ownerUid, restaurantId);
+  const payload = createWebPushPayload(subject, restaurantName, restaurantId, orderId);
+  const result = await sendWebPush(db, uids, payload);
+  if (result.total === 0) {
+    return;
+  }
+  await db.doc(`/restaurants/${restaurantId}/log/${datestr}/webPushLog/${orderId}-${messageId}`).set({
+    restaurantId,
+    date: datestr,
+    orderId,
+    messageId,
+    sent: result.sent,
+    total: result.total,
+    updatedAt: process.env.NODE_ENV !== "test" ? admin.firestore.FieldValue.serverTimestamp() : Date.now(),
+  });
+};
+
+// push の失敗が LINE / メール / 電話の通知や注文処理そのものを巻き込まないようにする
+const notifyRestaurantByWebPush = async (db: admin.firestore.Firestore, params: WebPushParams) => {
+  if (!isWebPushConfigured()) {
+    return;
+  }
+  try {
+    await sendRestaurantWebPush(db, params);
+  } catch (e) {
+    console.error("notifyRestaurantByWebPush failed", e);
+  }
+};
+
 const notifyRestaurantToLineUser = async (url: string, message: string, lineUsers: admin.firestore.DocumentSnapshot[]) => {
   const results = await Promise.all(
     lineUsers.map(async (doc) => {
@@ -178,14 +210,14 @@ export const notifyRestaurant = async (db: admin.firestore.Firestore, messageId:
   const orderNumber = order.number;
 
   const url = `https://${ownPlateConfig.hostName}/admin/restaurants/${restaurantId}/orders/${orderId}`;
-  const lineMessage = await createNotifyRestaurantLineMessage(messageId, restaurantName, orderNumber, lng);
-  const mailTitle = await createNotifyRestaurantMailTitle(messageId, restaurantName, orderNumber, lng);
+  const subject = await createNotifyRestaurantSubject(messageId, orderNumber, lng);
+  const notifyMessage = `${subject} ${restaurantName}`;
   const mailMessage = await createNotifyRestaurantMailMessage(messageId, restaurantName, order, orderNumber, lng, url);
 
   // line push.
   const lineUsers = (await db.collection(`/restaurants/${restaurantId}/lines`).get()).docs;
   if (lineUsers.length > 0) {
-    const results = await notifyRestaurantToLineUser(url, lineMessage, lineUsers);
+    const results = await notifyRestaurantToLineUser(url, notifyMessage, lineUsers);
     await db.doc(`/restaurants/${restaurantId}/log/${datestr}/lineLog/${orderId}-${messageId}`).set({
       restaurantId,
       date: datestr,
@@ -200,17 +232,28 @@ export const notifyRestaurant = async (db: admin.firestore.Firestore, messageId:
     const adminUser = process.env.NODE_ENV === "test" ? { email: process.env.TESTMAIL } : await admin.auth().getUser(restaurant.uid);
     console.log(adminUser.email);
     if (adminUser.email) {
-      await ses.sendMail(adminUser.email, mailTitle, mailMessage);
+      await ses.sendMail(adminUser.email, notifyMessage, mailMessage);
       // console.log(res);
     }
   }
   // notify to web.
   await db.doc(`/admins/${restaurant.uid}/private/notification`).set({
-    lineMessage,
+    lineMessage: notifyMessage,
     sound: true,
     path: `/admin/restaurants/${restaurantId}`,
     updatedAt: process.env.NODE_ENV !== "test" ? admin.firestore.FieldValue.serverTimestamp() : Date.now(),
     url,
+  });
+
+  // web push. (管理画面を閉じている端末向け)
+  await notifyRestaurantByWebPush(db, {
+    restaurantId,
+    ownerUid: restaurant.uid,
+    orderId,
+    messageId,
+    restaurantName,
+    subject,
+    datestr,
   });
 
   // phone notify.

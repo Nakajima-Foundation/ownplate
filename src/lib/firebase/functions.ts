@@ -11,6 +11,8 @@ import type {
   LiffAuthenticateData,
   PingData,
   StripeDeleteRestaurantCardData,
+  RegisterWebPushData,
+  UnregisterWebPushData,
 } from "@/models/functionTypes";
 
 export const lineVerifyFriend = httpsCallable<
@@ -110,3 +112,12 @@ export const stripeReceipt = httpsCallable<
   { restaurantId: string; orderId: string | string[] },
   { receipt_url?: string }
 >(functionsJP, "stripeReceipt2");
+
+export const registerWebPush = httpsCallable<
+  RegisterWebPushData,
+  { result: boolean }
+>(functionsJP, "registerWebPush2");
+export const unregisterWebPush = httpsCallable<
+  UnregisterWebPushData,
+  { result: boolean }
+>(functionsJP, "unregisterWebPush2");

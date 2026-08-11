@@ -85,8 +85,9 @@ dist
 # IDE / Editor
 .idea
 
-# Service worker
+# Service worker (dist に生成されるもの。public/sw.js は Web Push 用の実体なので追跡する)
 sw.*
+!public/sw.js
 
 # macOS
 .DS_Store

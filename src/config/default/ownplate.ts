@@ -23,3 +23,6 @@ export const ownPlateConfig = {
 
 export const sentryDsn =
   "https://370e22db44d64d028df9d40829999274@o391740.ingest.sentry.io/5238405";
+
+// web-push generate-vapid-keys で生成した公開鍵。空の間は管理画面の Web Push 設定が無効になる
+export const webPushVapidPublicKey = "";

@@ -49,7 +49,8 @@ exportIfNeeded("subAccountInvitationAccept2", "subaccount/accept", exports);
 exportIfNeeded("subAccountInvitationDeny2", "subaccount/deny", exports);
 exportIfNeeded("subAccountDeleteChild2", "subaccount/delete", exports);
 
-
+exportIfNeeded("registerWebPush2", "webPush/register", exports);
+exportIfNeeded("unregisterWebPush2", "webPush/unregister", exports);
 
 exportIfNeeded("ping2", "ping", exports);
 exportIfNeeded("beforeSignIn2", "auth/beforeSignIn", exports);

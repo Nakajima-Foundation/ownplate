@@ -25,6 +25,9 @@ import App from "@/components/App.vue";
 // config
 import { sentryDsn } from "@/config/project";
 
+// web push
+import { registerServiceWorker } from "@/utils/webPush";
+
 // css
 import "@/assets/css/main.css";
 
@@ -66,3 +69,5 @@ if (import.meta.env.PROD) {
 }
 
 app.mount("#app");
+
+registerServiceWorker();

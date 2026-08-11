@@ -1172,6 +1172,14 @@ const data = {
       infinityNotificationOn: "Remind Every Minute",
       infinityNotificationOff: "Notify One Time",
       soundTest: "Test",
+      webPushOn: "Push notifications: On",
+      webPushOff: "Push notifications: Off",
+      webPushDescription:
+        "Notifies this device of new orders even when the admin page is closed.",
+      webPushIosHint:
+        "On iPhone and iPad, this works only when opened from the icon added to the Home Screen.",
+      webPushError:
+        "Could not enable push notifications. Please check your browser's notification settings.",
       paymentIsNotCompleted:
         "Note: Please complete the credit card payment process by clicking the 'Accepted' button before giving the items to the customer.",
       cancelButton: "Cancel this order",

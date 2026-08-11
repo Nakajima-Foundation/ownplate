@@ -1186,6 +1186,14 @@ const data = {
       infinityNotificationOn: "Notifikasi ulang setiap 1 menit",
       infinityNotificationOff: "Notifikasi hanya saat menerima pesanan",
       soundTest: "Tes",
+      webPushOn: "Notifikasi push: Aktif",
+      webPushOff: "Notifikasi push: Nonaktif",
+      webPushDescription:
+        "Memberi tahu perangkat ini tentang pesanan baru meskipun halaman admin ditutup.",
+      webPushIosHint:
+        "Di iPhone dan iPad, fitur ini hanya berfungsi jika dibuka dari ikon yang ditambahkan ke Layar Utama.",
+      webPushError:
+        "Tidak dapat mengaktifkan notifikasi push. Silakan periksa pengaturan notifikasi peramban Anda.",
       paymentIsNotCompleted:
         'Perhatian: Saat menekan tombol "Diterima", pembayaran kartu akan diproses.',
       cancelButton: "Batalkan pesanan",

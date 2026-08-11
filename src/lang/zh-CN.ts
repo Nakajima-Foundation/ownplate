@@ -1120,6 +1120,12 @@ const data = {
       infinityNotificationOn: "每分钟重新通知",
       infinityNotificationOff: "仅接单时通知",
       soundTest: "测试",
+      webPushOn: "推送通知：开启",
+      webPushOff: "推送通知：关闭",
+      webPushDescription: "即使关闭管理页面，也会将新订单通知到此设备。",
+      webPushIosHint:
+        "在 iPhone、iPad 上，仅能从添加到主屏幕的图标打开时使用。",
+      webPushError: "无法设置推送通知。请检查浏览器的通知设置。",
       paymentIsNotCompleted: "注意: 按「已受理」按钮将处理卡片支付。",
       cancelButton: "取消订单",
       cancelTitle: "取消订单",

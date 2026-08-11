@@ -39,3 +39,6 @@ export const GAPIKey = "AIzaSyBopNQwD1RT2k9dLqH6WYPWIkMZF3RWXMQ";
 export const GMAPId = "DEMO_MAP_ID";
 export const fromEmail = "noreply@ownplate-dev.firebaseapp.com";
 export const bucketRegion = "us-central1";
+
+// web-push generate-vapid-keys で生成した公開鍵。空の間は管理画面の Web Push 設定が無効になる
+export const webPushVapidPublicKey = "";

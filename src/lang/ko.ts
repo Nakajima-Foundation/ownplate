@@ -1160,6 +1160,14 @@ const data = {
       infinityNotificationOn: "1분마다 재알림",
       infinityNotificationOff: "수주 시에만 알림",
       soundTest: "테스트",
+      webPushOn: "푸시 알림: 켜기",
+      webPushOff: "푸시 알림: 끄기",
+      webPushDescription:
+        "관리 화면을 닫아도 이 기기로 새 주문을 알려 드립니다.",
+      webPushIosHint:
+        "iPhone・iPad에서는 홈 화면에 추가한 아이콘으로 열었을 때만 사용할 수 있습니다.",
+      webPushError:
+        "푸시 알림을 설정할 수 없습니다. 브라우저의 알림 설정을 확인해 주세요.",
       paymentIsNotCompleted:
         "주의: 「접수 완료」버튼을 누르면 카드 결제가 처리됩니다.",
       cancelButton: "주문 취소",
