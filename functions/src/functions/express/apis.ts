@@ -106,7 +106,11 @@ ${orders}
   return svg;
 };
 
-const common = async (req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> => {
+// Express 5 の params は wildcard ルート用に string[] も取りうる。ここは名前付き
+// パラメータだけのルートなので、実際に受け取る形を型で明示する。
+type StarPrinterParams = { restaurantId: string; starKey: string };
+
+const common = async (req: express.Request<StarPrinterParams>, res: express.Response, next: express.NextFunction): Promise<void> => {
   const { restaurantId, starKey } = req.params;
 
   if (!validateFirebaseId(restaurantId)) {

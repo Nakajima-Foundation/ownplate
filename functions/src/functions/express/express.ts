@@ -116,7 +116,11 @@ const getMenuData = async (restaurantName: string, menuId: string) => {
     exists: false,
   };
 };
-const ogpPage = async (req: express.Request, res: express.Response): Promise<void> => {
+// Express 5 の params は wildcard ルート用に string[] も取りうる。ここは名前付き
+// パラメータだけのルートなので、実際に受け取る形を型で明示する。
+type OgpParams = { restaurantName: string; menuId: string };
+
+const ogpPage = async (req: express.Request<OgpParams>, res: express.Response): Promise<void> => {
   const { restaurantName, menuId } = req.params;
   const template_data = fs.readFileSync("./templates/index.html", {
     encoding: "utf8",
@@ -223,7 +227,9 @@ const ogpPage = async (req: express.Request, res: express.Response): Promise<voi
   }
 };
 
-const ownerPage = async (req: express.Request, res: express.Response): Promise<void> => {
+type OwnerParams = { ownerId: string };
+
+const ownerPage = async (req: express.Request<OwnerParams>, res: express.Response): Promise<void> => {
   const { ownerId } = req.params;
   const template_data = fs.readFileSync("./templates/index.html", {
     encoding: "utf8",
