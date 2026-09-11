@@ -61,4 +61,8 @@ jobs:
     - run: yarn run lint
     - name: yarn build
       run: yarn run build
+
+    # Reports code quality scores and findings. Report-only: it never fails the build.
+    - name: scoria
+      run: npx -y scoria
       
