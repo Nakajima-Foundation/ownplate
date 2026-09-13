@@ -195,11 +195,6 @@
   resolved "https://registry.yarnpkg.com/@aws/lambda-invoke-store/-/lambda-invoke-store-0.3.0.tgz#708802d987f8e17bdf4af4de1031660ce1cdd65f"
   integrity sha512-sl4Bm6yiMNYrZKkqqDFWN0UfnWhlS8ivKxrYl+6t0gCLrqr8y3B2IqZZbFRkfaVVp7C/baApyh71P+LeE1A2sQ==
 
-"@babel/runtime@^7.28.4":
-  version "7.28.4"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.28.4.tgz#a70226016fabe25c5783b2f22d3e1c9bc5ca3326"
-  integrity sha512-Q/N6JNWvIvPnLDvjlE1OUBLPQHH6l3CltCEsHIujp45zQUSSh8K+gHnaEX45yAT1nyngnINhvWtzN+Nb9D8RAQ==
-
 "@cacheable/memory@^2.2.0":
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/@cacheable/memory/-/memory-2.2.0.tgz#72aeb8b051f6d597d10ac8595b94ad8302bd2239"
@@ -1162,13 +1157,6 @@
   integrity sha512-DifAyw4BkrufCILvD3ucnuN8eydUfc/C1GlyrnI+LK6543w5/L3VeVgf05o3B4fqSXP1dKYLOZsKfutpxPzZrw==
   dependencies:
     undici-types "~6.20.0"
-
-"@types/nodemailer@^8.0.1":
-  version "8.0.1"
-  resolved "https://npm.flatt.tech/@types/nodemailer/-/nodemailer-8.0.1.tgz#4ef2b4e62c819225a0b8a6384bf750c0c664d465"
-  integrity sha512-PxpaInm8V1JQDd4j0ds5HfvWQk8JupS1C0Picb96QJsrrRDjBH+DlK7L4ZdNSqNULhiZRQHc40nLVShaGxXAMw==
-  dependencies:
-    "@types/node" "*"
 
 "@types/qs@*":
   version "6.9.15"
@@ -2382,12 +2370,10 @@ https-proxy-agent@^7.0.1:
     agent-base "^7.0.2"
     debug "4"
 
-i18next@^25.8.13:
-  version "25.8.13"
-  resolved "https://registry.yarnpkg.com/i18next/-/i18next-25.8.13.tgz#1f9df59329f1706f02b2b58b5d1f75196ddb6e4a"
-  integrity sha512-E0vzjBY1yM+nsFrtgkjLhST2NBkirkvOVoQa0MSldhsuZ3jUge7ZNpuwG0Cfc74zwo5ZwRzg3uOgT+McBn32iA==
-  dependencies:
-    "@babel/runtime" "^7.28.4"
+i18next@^26.4.2:
+  version "26.4.2"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-26.4.2.tgz#824233630f147359296bcaddf1404945d2b211bf"
+  integrity sha512-RX+R0VLg13IbvRuJSxnqykUFS9vQZTl8wYpWPCIUDWVrSGjsQywB5Y+pjzrkboxGAuYfJZVH1InFTdgBdxq6ug==
 
 iconv-lite@^0.6.0:
   version "0.6.3"
@@ -2776,10 +2762,10 @@ node-forge@^1.4.0:
   resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-1.4.0.tgz#1c7b7d8bdc2d078739f58287d589d903a11b2fc2"
   integrity sha512-LarFH0+6VfriEhqMMcLX2F7SwSXeWwnEAJEsYm5QKWchiVYVvJyV9v7UDvUv+w5HO23ZpQTXDv/GxdDdMyOuoQ==
 
-nodemailer@^8.0.10:
-  version "8.0.10"
-  resolved "https://npm.flatt.tech/nodemailer/-/nodemailer-8.0.10.tgz#009d4deaa06f54b6bd7ddc6cac1bf78e3bcb0bf2"
-  integrity sha512-BLFuSth7QtHOkBzyqTehWWyub0NTRDuK2Q2SQfnGLsrJnzyU+Yeh4WpV1eZGuARFj1xQJHIdnTuJZLP+b9R1GQ==
+nodemailer@^10.0.9:
+  version "10.0.9"
+  resolved "https://registry.yarnpkg.com/nodemailer/-/nodemailer-10.0.9.tgz#1860325627921b3c6e160d941f5d525ff9a8ca1e"
+  integrity sha512-BF0qcyplCwp+jMk6HCjFykBz/YhhZSsxrARhOldLwFWH+8kGjQsd2WIMIZhqEuyXRoGFi0ONbDeWDMDoL8MhLw==
 
 object-assign@^4:
   version "4.1.1"
