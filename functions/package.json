@@ -43,7 +43,7 @@
     "moment-timezone": "^0.6.3",
     "nodemailer": "^10.0.9",
     "receiptline": "^1.16.2",
-    "sharp": "^0.34.5",
+    "sharp": "^0.35.4",
     "stripe": "^21",
     "twilio": "^6.1.1",
     "uuid": "^14.0.2",
