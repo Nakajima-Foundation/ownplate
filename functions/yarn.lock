@@ -2975,10 +2975,10 @@ readable-stream@^3.1.1:
     string_decoder "^1.1.1"
     util-deprecate "^1.0.1"
 
-receiptline@^1.16.2:
-  version "1.16.2"
-  resolved "https://registry.yarnpkg.com/receiptline/-/receiptline-1.16.2.tgz#dc9ff0f2d5544a1ceee9330ccc0737f0e8e54793"
-  integrity sha512-0ilpHMrm9lM9RH4DgeGvPYxasS35KIuoIPHsH8kuIbxY85jXZY7YXW7DkhvDwkpOFWiYjUBFOg/Yl6vtiznWhA==
+receiptline@^4.0.4:
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/receiptline/-/receiptline-4.0.4.tgz#54969900f1b9446ae5a9717e849d20c4e197ba91"
+  integrity sha512-SLdFIoRw73cBPsHgAY9UFQvTmU9jYTmebpxykhBExkbJKAas6+KnhlIDgbq1Ig4PMi2TvFmOjkFNtokjGNrXqg==
   dependencies:
     iconv-lite "^0.6.0"
     pngjs "^5.0.0"
