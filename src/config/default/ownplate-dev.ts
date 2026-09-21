@@ -40,5 +40,6 @@ export const GMAPId = "DEMO_MAP_ID";
 export const fromEmail = "noreply@ownplate-dev.firebaseapp.com";
 export const bucketRegion = "us-central1";
 
-// web-push generate-vapid-keys で生成した公開鍵。空の間は管理画面の Web Push 設定が無効になる
-export const webPushVapidPublicKey = "";
+// Firebase Console → プロジェクト設定 → Cloud Messaging → ウェブプッシュ証明書 の公開鍵。
+// 空の間は Web Push の UI が無効になるので、鍵が無くてもビルドと実行はできる
+export const webPushVapidPublicKey = "BHY7mVg05JGKhbk3he-WV09wQcHqNwRRAmm1nssYAkcKk3FNOwmgC595zyk1Eoe3PuHlBUo3_c5yu2nblhqSTYg";

@@ -169,8 +169,8 @@ service cloud.firestore {
         allow read: if request.auth.uid == childId;
       }
 
-      // Web Push の購読は Functions からのみ読み書きする
-      match /webPushSubscriptions/{subscriptionId} {
+      // Web Push の端末登録 (FID) は Functions からのみ読み書きする
+      match /pushRegistrations/{fid} {
         allow read, write: if false;
       }
 

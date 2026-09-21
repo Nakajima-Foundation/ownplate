@@ -18,7 +18,7 @@ import * as sms from "./notify/sms";
 import * as twilio from "./notify/twilio";
 import * as ses from "./notify/ses";
 import { isWebPushConfigured, restaurantNotifyUids, sendWebPush } from "./notify/webpush";
-import { createWebPushPayload } from "./notify/webpushFormat";
+import { createOrderPushData } from "./notify/webpushFormat";
 
 const LINE_MESSAGE_TOKEN = defineSecret("LINE_MESSAGE_TOKEN");
 
@@ -157,9 +157,9 @@ type WebPushParams = {
 const sendRestaurantWebPush = async (db: admin.firestore.Firestore, params: WebPushParams) => {
   const { restaurantId, ownerUid, orderId, messageId, restaurantName, subject, datestr } = params;
   const uids = await restaurantNotifyUids(db, ownerUid, restaurantId);
-  const payload = createWebPushPayload(subject, restaurantName, restaurantId, orderId);
+  const payload = createOrderPushData(subject, restaurantName, restaurantId, orderId);
   const result = await sendWebPush(db, uids, payload);
-  if (result.total === 0) {
+  if (result.targets === 0) {
     return;
   }
   await db.doc(`/restaurants/${restaurantId}/log/${datestr}/webPushLog/${orderId}-${messageId}`).set({
@@ -168,7 +168,7 @@ const sendRestaurantWebPush = async (db: admin.firestore.Firestore, params: WebP
     orderId,
     messageId,
     sent: result.sent,
-    total: result.total,
+    targets: result.targets,
     updatedAt: process.env.NODE_ENV !== "test" ? admin.firestore.FieldValue.serverTimestamp() : Date.now(),
   });
 };

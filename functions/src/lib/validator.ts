@@ -388,21 +388,15 @@ export const validatePing = (data: PingData) => {
   return validateData(data, validator);
 };
 
-// PushSubscription の鍵は base64url。パディングを付けるブラウザもあるので許容する
-const webPushKeyRegex = /^[A-Za-z0-9\-_]+=*$/;
-
+// FID (Firebase Installation ID) は base64url 相当の固定長文字列
 export const validateRegisterWebPush = (data: RegisterWebPushData) => {
   const validator = {
-    endpoint: {
-      type: "url",
+    fid: {
+      type: "numAlphaBar",
       required: true,
     },
-    p256dh: {
-      regex: webPushKeyRegex,
-      required: true,
-    },
-    auth: {
-      regex: webPushKeyRegex,
+    platform: {
+      type: "alphabet",
       required: true,
     },
   };
@@ -411,8 +405,8 @@ export const validateRegisterWebPush = (data: RegisterWebPushData) => {
 
 export const validateUnregisterWebPush = (data: UnregisterWebPushData) => {
   const validator = {
-    endpoint: {
-      type: "url",
+    fid: {
+      type: "numAlphaBar",
       required: true,
     },
   };

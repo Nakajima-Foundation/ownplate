@@ -24,5 +24,6 @@ export const ownPlateConfig = {
 export const sentryDsn =
   "https://370e22db44d64d028df9d40829999274@o391740.ingest.sentry.io/5238405";
 
-// web-push generate-vapid-keys で生成した公開鍵。空の間は管理画面の Web Push 設定が無効になる
+// Firebase Console → プロジェクト設定 → Cloud Messaging → ウェブプッシュ証明書 の公開鍵。
+// 空の間は Web Push の UI が無効になるので、鍵が無くてもビルドと実行はできる
 export const webPushVapidPublicKey = "";

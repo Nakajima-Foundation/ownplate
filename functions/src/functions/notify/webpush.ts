@@ -1,40 +1,22 @@
-import * as crypto from "crypto";
 import * as admin from "firebase-admin";
-import * as webpush from "web-push";
-import { defineSecret } from "firebase-functions/params";
+import { SendResponse, getMessaging } from "firebase-admin/messaging";
 
-import { ownPlateConfig, webPushVapidPublicKey } from "../../common/project";
-import { WebPushChild, notifyTargetUids } from "./webpushFormat";
+import { webPushVapidPublicKey } from "../../common/project";
+import { INVALID_TARGET_CODES, MULTICAST_LIMIT, WebPushChild, chunk, notifyTargetUids } from "./webpushFormat";
 
-const VAPID_PRIVATE_KEY = defineSecret("VAPID_PRIVATE_KEY");
-
-// push サービスはこの2つで「この購読にはもう届かない」ことを示す
-const EXPIRED_STATUS_CODES = [404, 410];
-
-type StoredSubscription = {
-  uid: string;
-  subscriptionId: string;
-  subscription: webpush.PushSubscription;
+export type WebPushResult = {
+  sent: number;
+  failed: number;
+  targets: number;
 };
 
-export const subscriptionCollectionPath = (uid: string) => {
-  return `admins/${uid}/webPushSubscriptions`;
+export const registrationsCollection = (db: admin.firestore.Firestore, uid: string) => {
+  return db.collection("admins").doc(uid).collection("pushRegistrations");
 };
 
-export const subscriptionIdOf = (endpoint: string) => {
-  return crypto.createHash("sha256").update(endpoint).digest("hex");
-};
-
+// 鍵が無い環境では購読自体が発生しないので、Firestore を読む前に打ち切る
 export const isWebPushConfigured = () => {
   return webPushVapidPublicKey !== "";
-};
-
-const toPushSubscription = (data: admin.firestore.DocumentData): webpush.PushSubscription | null => {
-  const { endpoint, keys } = data;
-  if (typeof endpoint !== "string" || typeof keys?.p256dh !== "string" || typeof keys?.auth !== "string") {
-    return null;
-  }
-  return { endpoint, keys: { p256dh: keys.p256dh, auth: keys.auth } };
 };
 
 const getChildren = async (db: admin.firestore.Firestore, ownerUid: string): Promise<WebPushChild[]> => {
@@ -49,50 +31,50 @@ export const restaurantNotifyUids = async (db: admin.firestore.Firestore, ownerU
   return notifyTargetUids(ownerUid, await getChildren(db, ownerUid), restaurantId);
 };
 
-const isStored = (stored: StoredSubscription | null): stored is StoredSubscription => {
-  return stored !== null;
+// 端末は FID で識別し、それをそのまま doc id にしている
+export const loadFids = async (db: admin.firestore.Firestore, uid: string) => {
+  const snapshot = await registrationsCollection(db, uid).get();
+  return snapshot.docs.map((doc) => doc.id);
 };
 
-const getSubscriptions = async (db: admin.firestore.Firestore, uids: string[]): Promise<StoredSubscription[]> => {
-  const perUid = await Promise.all(
-    uids.map(async (uid) => {
-      const snapshot = await db.collection(subscriptionCollectionPath(uid)).get();
-      return snapshot.docs.map((doc) => {
-        const subscription = toPushSubscription(doc.data());
-        return subscription ? { uid, subscriptionId: doc.id, subscription } : null;
-      });
-    }),
-  );
-  return perUid.flat().filter(isStored);
+const pruneInvalidFids = async (db: admin.firestore.Firestore, uid: string, fids: string[], responses: SendResponse[]) => {
+  const invalid = fids.filter((_fid, index) => {
+    const code = responses[index]?.error?.code;
+    return code !== undefined && INVALID_TARGET_CODES.includes(code);
+  });
+  await Promise.all(invalid.map((fid) => registrationsCollection(db, uid).doc(fid).delete()));
 };
 
-const isExpired = (error: unknown) => {
-  return error instanceof webpush.WebPushError && EXPIRED_STATUS_CODES.includes(error.statusCode);
-};
-
-const sendToSubscription = async (db: admin.firestore.Firestore, stored: StoredSubscription, payload: string) => {
-  try {
-    await webpush.sendNotification(stored.subscription, payload);
-    return true;
-  } catch (e) {
-    if (isExpired(e)) {
-      await db.doc(`${subscriptionCollectionPath(stored.uid)}/${stored.subscriptionId}`).delete();
-      return false;
+const deliverBatch = async (db: admin.firestore.Firestore, uid: string, data: Record<string, string>, fids: string[]) => {
+  const response = await getMessaging().sendEachForMulticast({ fids, data });
+  response.responses.forEach((result, index) => {
+    if (!result.success) {
+      console.error("webPush: delivery failed", { fid: fids[index], code: result.error?.code });
     }
-    console.error("webPush: failed to send", e);
-    return false;
-  }
+  });
+  await pruneInvalidFids(db, uid, fids, response.responses);
+  return { sent: response.successCount, failed: response.failureCount };
 };
 
-export const sendWebPush = async (db: admin.firestore.Firestore, uids: string[], payload: string) => {
-  const privateKey = VAPID_PRIVATE_KEY.value();
-  if (!isWebPushConfigured() || !privateKey) {
-    console.warn("webPush: VAPID key is not configured");
-    return { sent: 0, total: 0 };
+// 500 宛先を超える分もまとめて配信する
+const deliverToUid = async (db: admin.firestore.Firestore, uid: string, data: Record<string, string>): Promise<WebPushResult> => {
+  const fids = await loadFids(db, uid);
+  if (fids.length === 0) {
+    return { sent: 0, failed: 0, targets: 0 };
   }
-  webpush.setVapidDetails(`https://${ownPlateConfig.hostName}`, webPushVapidPublicKey, privateKey);
+  const batches = await Promise.all(chunk(fids, MULTICAST_LIMIT).map((batch) => deliverBatch(db, uid, data, batch)));
+  return {
+    sent: batches.reduce((total, batch) => total + batch.sent, 0),
+    failed: batches.reduce((total, batch) => total + batch.failed, 0),
+    targets: fids.length,
+  };
+};
 
-  const subscriptions = await getSubscriptions(db, uids);
-  const results = await Promise.all(subscriptions.map((stored) => sendToSubscription(db, stored, payload)));
-  return { sent: results.filter(Boolean).length, total: results.length };
+export const sendWebPush = async (db: admin.firestore.Firestore, uids: string[], data: Record<string, string>): Promise<WebPushResult> => {
+  const results = await Promise.all(uids.map((uid) => deliverToUid(db, uid, data)));
+  return {
+    sent: results.reduce((total, result) => total + result.sent, 0),
+    failed: results.reduce((total, result) => total + result.failed, 0),
+    targets: results.reduce((total, result) => total + result.targets, 0),
+  };
 };
