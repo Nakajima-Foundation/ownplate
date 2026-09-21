@@ -1194,6 +1194,9 @@ const data = {
     passwordReset: "Reset kata sandi",
     pleaseCheckInbox: "Email telah dikirim. Silakan periksa kotak masuk.",
     push: {
+      rename: "Ubah nama perangkat",
+      save: "Simpan",
+      delete: "Hapus",
       registeredAt: "Terdaftar",
       namePlaceholder: "mis. iPad di kasir",
       devices: "Perangkat yang diberi notifikasi",

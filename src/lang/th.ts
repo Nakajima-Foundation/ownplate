@@ -1170,6 +1170,9 @@ const data = {
     passwordReset: "รีเซ็ตรหัสผ่าน",
     pleaseCheckInbox: "ส่งอีเมลแล้ว กรุณาตรวจสอบกล่องจดหมาย",
     push: {
+      rename: "เปลี่ยนชื่ออุปกรณ์",
+      save: "บันทึก",
+      delete: "ลบ",
       registeredAt: "ลงทะเบียน",
       namePlaceholder: "เช่น iPad ที่เคาน์เตอร์",
       devices: "อุปกรณ์ที่จะแจ้งเตือน",

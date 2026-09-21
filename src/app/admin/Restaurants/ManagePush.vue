@@ -74,6 +74,7 @@
                 <button
                   type="button"
                   class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-green-600/10 px-4"
+                  :aria-label="$t('admin.push.save')"
                   @click.stop="handleRename(device)"
                 >
                   <i class="material-icons text-lg text-green-600">check</i>
@@ -81,6 +82,7 @@
                 <button
                   type="button"
                   class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-black/5 px-4"
+                  :aria-label="$t('button.cancel')"
                   @click.stop="editingId = ''"
                 >
                   <i class="material-icons text-lg text-black/40">close</i>
@@ -90,6 +92,7 @@
                 <button
                   type="button"
                   class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-black/5 px-4"
+                  :aria-label="$t('admin.push.rename')"
                   @click.stop="startRename(device)"
                 >
                   <i class="material-icons text-op-teal text-lg">edit</i>
@@ -97,6 +100,7 @@
                 <button
                   type="button"
                   class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-black/5 px-4"
+                  :aria-label="$t('admin.push.delete')"
                   @click.stop="handleDelete(device.id)"
                 >
                   <i class="material-icons text-lg text-red-700">delete</i>
@@ -265,6 +269,9 @@ export default defineComponent({
       detacher();
     });
 
+    // ここと handleRename は updatedAt を書かないこと。registeredAt が足される前に
+    // 登録された端末は、一覧の登録日を updatedAt から取っている。触ると、その端末の
+    // 登録日が「最後に操作した日」に黙って変わる。
     const handleToggle = async (device: PushDeviceData) => {
       await updateDoc(
         doc(

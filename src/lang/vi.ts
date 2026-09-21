@@ -1185,6 +1185,9 @@ const data = {
     passwordReset: "Đặt lại mật khẩu",
     pleaseCheckInbox: "Đã gửi email. Vui lòng kiểm tra hộp thư đến.",
     push: {
+      rename: "Đổi tên thiết bị",
+      save: "Lưu",
+      delete: "Xoá",
       registeredAt: "Đã đăng ký",
       namePlaceholder: "ví dụ: iPad ở quầy thu ngân",
       devices: "Thiết bị nhận thông báo",
