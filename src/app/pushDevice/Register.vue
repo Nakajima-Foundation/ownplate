@@ -59,6 +59,9 @@
         {{ $t("pushDevice.doneHint") }}
       </div>
     </div>
+
+    <!-- Loading -->
+    <Loading v-if="working" />
   </div>
 </template>
 
@@ -68,6 +71,7 @@ import { useI18n } from "vue-i18n";
 import { useRoute } from "vue-router";
 import { useHead } from "@unhead/vue";
 
+import Loading from "@/components/Loading.vue";
 import { redeemPushInvite } from "@/lib/firebase/functions";
 import {
   PUSH_DEVICE_SCOPE,
@@ -78,6 +82,9 @@ import {
 import { MAX_DEVICE_NAME_LENGTH } from "@/utils/pushFormat";
 
 export default defineComponent({
+  components: {
+    Loading,
+  },
   setup() {
     const route = useRoute();
     const { t } = useI18n({ useScope: "global" });
