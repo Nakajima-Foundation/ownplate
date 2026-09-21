@@ -4,6 +4,7 @@ import assert from "node:assert";
 import {
   describeSendResult,
   detectPlatform,
+  registeredAtSeconds,
 } from "../../src/utils/pushFormat.ts";
 
 describe("detectPlatform", () => {
@@ -30,5 +31,34 @@ describe("describeSendResult", () => {
 
   it("reports the delivered fraction", () => {
     assert.strictEqual(describeSendResult(2, 3), "sent 2/3");
+  });
+});
+
+describe("registeredAtSeconds", () => {
+  it("prefers the registration time when it is there", () => {
+    assert.strictEqual(
+      registeredAtSeconds({ seconds: 100 }, { seconds: 200 }),
+      100,
+    );
+  });
+
+  // registeredAt は後から足したので、それ以前の登録には無い。updatedAt は
+  // 引き換え時にしか書かれていないので、そちらが登録日時になる。
+  it("falls back for a device registered before the field existed", () => {
+    assert.strictEqual(registeredAtSeconds(undefined, { seconds: 200 }), 200);
+    assert.strictEqual(registeredAtSeconds(null, { seconds: 200 }), 200);
+  });
+
+  // serverTimestamp() は書き込み直後のローカルスナップショットでは null になる
+  it("returns nothing rather than throwing when neither has landed", () => {
+    assert.strictEqual(registeredAtSeconds(null, null), null);
+    assert.strictEqual(registeredAtSeconds(undefined, undefined), null);
+  });
+
+  it("keeps a zero timestamp rather than treating it as missing", () => {
+    assert.strictEqual(
+      registeredAtSeconds({ seconds: 0 }, { seconds: 200 }),
+      0,
+    );
   });
 });

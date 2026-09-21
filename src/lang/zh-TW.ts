@@ -1127,6 +1127,8 @@ const data = {
     passwordReset: "重置密碼",
     pleaseCheckInbox: "郵件已傳送。請檢視收件箱。",
     push: {
+      registeredAt: "註冊",
+      namePlaceholder: "例如：收銀台的 iPad",
       devices: "接收通知的裝置",
       empty: "尚未註冊任何裝置。",
       addDevice: "新增裝置",

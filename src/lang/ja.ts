@@ -1181,6 +1181,8 @@ const data = {
     passwordReset: "パスワードのリセット",
     pleaseCheckInbox: "メールを送信しました。受信箱をご確認ください。",
     push: {
+      registeredAt: "登録",
+      namePlaceholder: "例：レジの iPad",
       devices: "通知する端末",
       empty: "まだ端末が登録されていません。",
       addDevice: "端末を追加",

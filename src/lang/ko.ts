@@ -1169,6 +1169,8 @@ const data = {
     passwordReset: "비밀번호 재설정",
     pleaseCheckInbox: "이메일을 전송했습니다. 받은 편지함을 확인해 주세요.",
     push: {
+      registeredAt: "등록",
+      namePlaceholder: "예: 계산대의 iPad",
       devices: "알림을 받을 기기",
       empty: "아직 등록된 기기가 없습니다.",
       addDevice: "기기 추가",

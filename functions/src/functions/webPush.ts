@@ -98,6 +98,7 @@ export const redeemPushInvite = async (db: Firestore, data: RedeemPushInviteData
         notify: true,
         platform: asPlatform(data.platform),
         invitedBy: invite.createdBy,
+        registeredAt: FieldValue.serverTimestamp(),
         updatedAt: FieldValue.serverTimestamp(),
       },
       { merge: true },
