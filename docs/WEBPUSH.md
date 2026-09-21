@@ -86,10 +86,24 @@ cd functions && yarn deploy
 
 ### 4. 店舗側の操作
 
-1. スマホのブラウザで管理画面を開く
-2. iOS のみ: 共有 → 「ホーム画面に追加」→ **追加したアイコンから起動する**（Safari のタブのままでは不可）
-3. サインインして注文画面の「通知設定」を開く
-4. 「プッシュ通知：オフ」をタップして許可する
+**管理者**（サインイン済み）
+
+1. 注文画面の「通知設定」→「プッシュ通知の端末」、または
+   `/admin/restaurants/{店舗ID}/pushlist` を開く
+2. 「端末を追加」を押すとワンタイム URL と QR が出る
+3. 通知を受け取りたい端末にその URL を渡す
+
+URL は**その場で一度しか表示されない**。サーバはハッシュしか持たないので、
+閉じたら作り直す。
+
+**端末を登録する人**（サインイン不要）
+
+1. 受け取った URL を開く
+2. iOS のみ: 共有 → 「ホーム画面に追加」→ **追加したアイコンから開き直す**
+   （Safari のタブのままでは通知を受け取れない。トークンは URL に載るのでアイコンに引き継がれる）
+3. 端末の名前を入れて「通知を受け取る」を押し、通知を許可する
+
+登録後は管理者の一覧に名前が並び、そこで ON/OFF と削除ができる。
 
 ### 5. 動作確認
 
@@ -102,8 +116,9 @@ FCM の失敗コード・Service Worker の scope / state・通知許可の状�
 
 ### 1. iOS はホーム画面に追加した PWA のみ
 
-iOS Safari のタブでは `window.Notification` 自体が存在しない。管理画面では
-`isWebPushSupported()` が false になるので ON/OFF ボタンを出さず、案内文だけを表示している。
+iOS Safari のタブでは `window.Notification` 自体が存在しない。登録ページでは
+`isWebPushSupported()` が false になるので、登録の導線を出さずに
+「ホーム画面に追加して開き直す」手順だけを表示する。
 
 ### 2. 通知許可はタップ操作が起点でないと出せない
 
@@ -111,7 +126,19 @@ iOS Safari のタブでは `window.Notification` 自体が存在しない。管�
 `isSupported()` は IndexedDB を開いてクリックの transient activation を使い切るので、
 **permission を先に取ってから** `isSupported()` を待つ（`checkPreconditions()`）。
 
-### 3. 登録の前に installation id を回す
+### 3. 招待が使えることを確かめてから installation id を回す
+
+`register()` の前に installation id を回すのは下の理由で必要だが、**回す前に招待が使えるか
+確かめないといけない**。`checkPushInvite2`（未認証・状態を変えない）を、画面を開いた時と
+破壊的な手順の直前の2回呼んでいる。
+
+確かめずに回すと、招待が弾かれたときに Firestore に残った古い FID が死に、端末は新しい FID を
+持ったまま登録先が無い状態になる。招待は使い切りなので、その端末は自力で戻れない。
+**PWA の `start_url` が招待 URL そのもの**なので、これはホーム画面から起動してボタンを
+押すだけで起きる。登録済みの端末には「この端末は登録済みです」と出し、ボタンを出さない
+（招待に `usedByFid` を残して見分けている）。
+
+### 4. なぜ installation id を回すのか
 
 `register()` は自前のキャッシュから成功を返す（保存済み FID が一致し更新期限内なら FCM に問い合わせない）。
 FCM 側で既に落とされた登録はここから見えず、送信して初めて分かる。そのときサーバは prune 済みなので、
@@ -122,19 +149,19 @@ FCM 側で既に落とされた登録はここから見えず、送信して初�
 そこで登録前に **購読の破棄と installation id の回転** を両方走らせる（`resetBeforeRegistering()`）。
 2つは独立していて、直列に繋ぐと片方の失敗でもう片方がスキップされるので `allSettled` で並べる。
 
-### 4. onRegistered のハンドラは外さない
+### 5. onRegistered のハンドラは外さない
 
 SDK の `register()` は通知を送った**あと**にもハンドラの存在を確認し、installation id が変わると
 SDK 自身が `register()` をもう一本キューに積む。FID を受け取った時点で解除すると後続が
 `messaging/invalid-on-registered-handler` で落ちる。ハンドラは一度張ったまま、
 待ち受けリスト（`fidWaiters`）側で解決する。
 
-### 5. payload に tag を付けない
+### 6. payload に tag を付けない
 
 同じ tag の通知は既存を置き換えるだけで、`renotify` が無い限り再通知されない。
 実機で「1通目だけ出て以降沈黙する」状態になったため、SW・前面ハンドラ・payload のいずれにも tag は持たせない。
 
-### 6. Service Worker のキャッシュと scope
+### 7. Service Worker のキャッシュと scope
 
 `public/sw.js` は何もキャッシュしない（`caches` 不使用、`fetch` ハンドラは `respondWith` を呼ばない空実装。
 Chrome がインストール導線を出す条件を満たすためだけに置いてある）。
@@ -146,18 +173,18 @@ scope は2つある。管理画面が `/admin/`、ワンタイム URL の登録�
 
 firebaseConfig は環境ごとに違うため、登録 URL のクエリで SW に渡す（`sw.js` を環境別に作らずに済む）。
 
-### 7. 通知タップ時のタブ選択
+### 8. 通知タップ時のタブ選択
 
 `clients.matchAll({ includeUncontrolled: true })` は scope の外にある同一オリジンのページ
 （注文者が開いている店舗ページなど）も返す。絞らないと注文者のタブを管理画面へ飛ばしてしまうので、
 URL が `/admin/` で始まるものだけを再利用対象にする。
 
-### 8. サインアウトでは端末を外さない
+### 9. サインアウトでは端末を外さない
 
 登録は店舗に紐づくので、誰かがサインアウトしても店舗の通知端末は残る。LINE と同じ扱い。
 端末を外すのは一覧画面からの削除（または OFF）だけ。
 
-### 9. macOS / Windows で通知が出ない
+### 10. macOS / Windows で通知が出ない
 
 `Notification.permission === "granted"` でも、OS 側の通知設定でブラウザが OFF だったり
 集中モードだと表示されない。切り分けは開発者コンソールで

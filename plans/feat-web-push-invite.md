@@ -71,6 +71,10 @@ LINE は既に店舗紐付けで、名前付きの一覧を持っている（`re
 ### 認証の考え方
 
 - `createPushInvite2` … 管理者のみ。`validate_admin_auth` + 対象店舗へのアクセス確認。
+- `checkPushInvite2` … **認証不要・状態を変えない。** 招待が使えるかだけを返す。
+  登録手順は先に installation id を回すので、回す前にこれで確かめないと、
+  弾かれたときに動いていた端末の登録が死んで自力で戻せなくなる。
+  PWA の `start_url` が招待 URL なので、ホーム画面から起動して押すだけで起きる。
 - `redeemPushInvite2` … **認証不要**。App Check は掛ける。
   登録できる先はトークンが指す店舗だけで、トークンは推測できない。
 - 一覧・ON/OFF・削除 … クライアントから直接 Firestore。rules は `lines` と同じ
