@@ -56,18 +56,27 @@ self.addEventListener("activate", (event) => {
   event.waitUntil(self.clients.claim());
 });
 
-const ADMIN_PREFIX = "/admin/";
+// 再利用するタブは、その通知の行き先と同じ区画のものだけに絞る。
+// includeUncontrolled は scope の外にある同一オリジンのページも返すので、絞らないと
+// 管理画面の通知が、注文者の開いている店舗ページを奪ってしまう。
+//
+// 区画は通知自身の url の先頭セグメントから取る。/admin/ を定数で持たないのは、
+// 注文者向けの通知（/u/... など）を足すときにこのファイルを直さずに済ませるため。
+// 行き先が "/" のように区画を持たない場合は、既存のタブを触らず新しく開く。
+const reuseScope = (url) => {
+  const segment = new URL(url).pathname.split("/")[1];
+  return segment ? `${self.location.origin}/${segment}/` : null;
+};
 
-// 再利用するタブは管理画面のものだけに絞る。includeUncontrolled は scope の外にある
-// 同一オリジンのページ（注文者が開いている店舗ページなど）も返すため、絞らないと
-// 通知のタップで注文者のタブを管理画面へ飛ばしてしまう。
 const focusOrOpen = async (url) => {
   const clients = await self.clients.matchAll({
     type: "window",
     includeUncontrolled: true,
   });
-  const adminOrigin = `${self.location.origin}${ADMIN_PREFIX}`;
-  const opened = clients.find((client) => client.url.startsWith(adminOrigin));
+  const prefix = reuseScope(url);
+  const opened = prefix
+    ? clients.find((client) => client.url.startsWith(prefix))
+    : undefined;
   if (!opened) {
     await self.clients.openWindow(url);
     return;

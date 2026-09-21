@@ -190,6 +190,25 @@ URL が `/admin/` で始まるものだけを再利用対象にする。
 集中モードだと表示されない。切り分けは開発者コンソールで
 `navigator.serviceWorker.ready.then(r => r.showNotification("test", { body: "hi" }))` を直接実行する。
 
+## 注文者側に広げるとき
+
+いまは店舗運営者向けだけだが、注文者への LINE 通知を置き換える計画がある。
+**Service Worker は既にどちらでも使える形にしてある**（通知タップ時のタブ再利用は、
+`/admin/` 固定ではなく通知自身の行き先から決める）。残りは足すだけで、既存を直す必要は無い。
+
+足りないもの:
+
+| | 内容 |
+| --- | --- |
+| manifest | 注文者用をもう1枚。`scope` / `start_url` を注文者側の区画にして、注文者側の wrapper から `useHead` で差す |
+| SW の登録 | `registerServiceWorker(scope)` は scope を引数に取るので、注文者側の scope 定数を1つ足すだけ |
+| 登録の保存先 | `restaurants/{id}/pushRegistrations` は店舗固定。注文者は `users/{uid}/pushRegistrations` になるので、`registrationsCollection()` と `sendWebPush()` の引数を「所有者のパス」に一般化する |
+| rules | `users/{uid}/pushRegistrations` を足す |
+| payload | `createWebPushData(title, body, url)` は汎用。`createOrderPushData()` が `/admin/...` を作るので、注文者向けの組み立てを1本足す |
+
+**ワンタイム URL は要らない。** あれは「サインインできない端末」のための仕組みで、
+注文者はサインインしている。自分の uid 配下に書くだけなので、callable で直接登録できる。
+
 ## データ
 
 `restaurants/{restaurantId}/pushRegistrations/{fid}`
