@@ -1,4 +1,4 @@
-import * as admin from "firebase-admin";
+import { DocumentReference, Firestore } from "firebase-admin/firestore";
 import * as functions from "firebase-functions/v1";
 import * as utils from "../../lib/utils";
 import { order_status, stripe_regions_jp } from "../../common/constant";
@@ -72,8 +72,8 @@ export const orderAccounting = (restaurantData: RestaurantInfoData, food_sub_tot
 
 // restaurantData is for mo.
 export const createNewOrderData = async (
-  restaurantRef: admin.firestore.DocumentReference,
-  orderRef: admin.firestore.DocumentReference,
+  restaurantRef: DocumentReference,
+  orderRef: DocumentReference,
   orderData: Partial<OrderData> & { order: { [menuId: string]: number | number[] }; rawOptions?: { [menuId: string]: OptionValue[][] } },
   multiple: number,
 ): Promise<
@@ -165,7 +165,7 @@ export const createNewOrderData = async (
   };
 };
 
-export const orderCreated = async (db: admin.firestore.Firestore, data: OrderCreatedData, context: functions.https.CallableContext | Context) => {
+export const orderCreated = async (db: Firestore, data: OrderCreatedData, context: functions.https.CallableContext | Context) => {
   const customerUid = utils.validate_customer_auth(context);
 
   const { restaurantId, orderId } = data;

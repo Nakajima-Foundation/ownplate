@@ -1,6 +1,7 @@
 import express from "express";
 import * as functions from "firebase-functions";
-import * as admin from "firebase-admin";
+import { getApps, initializeApp } from "firebase-admin/app";
+import { Firestore, Timestamp, getFirestore } from "firebase-admin/firestore";
 import * as fs from "fs";
 import { ownPlateConfig } from "../../common/project";
 
@@ -21,13 +22,13 @@ export const app = express();
 export const router = express.Router();
 
 // for test, db is not immutable
-if (!admin.apps.length) {
-  admin.initializeApp();
+if (!getApps().some((app) => app.name === "[DEFAULT]")) {
+  initializeApp();
 }
 
-let db = admin.firestore();
+let db = getFirestore();
 
-export const updateDb = (_db: admin.firestore.Firestore) => {
+export const updateDb = (_db: Firestore) => {
   db = _db;
   apis.updateDb(db);
 };
@@ -39,7 +40,7 @@ export const hello_response = async (req: express.Request, res: express.Response
   res.json({ message: "hello" });
 };
 
-const lastmod = (restaurant: { updatedAt?: admin.firestore.Timestamp; createdAt?: admin.firestore.Timestamp }) => {
+const lastmod = (restaurant: { updatedAt?: Timestamp; createdAt?: Timestamp }) => {
   try {
     if (restaurant.updatedAt) {
       return moment(restaurant.updatedAt.toDate()).format("YYYY-MM-DD");

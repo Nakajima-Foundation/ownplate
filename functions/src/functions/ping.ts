@@ -1,4 +1,4 @@
-import * as admin from "firebase-admin";
+import { Firestore } from "firebase-admin/firestore";
 import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
 import { log } from "firebase-functions/logger";
 
@@ -56,7 +56,7 @@ export const operationLog = (context: CallableRequest, params: OperationLogParam
   log(message, logData);
 };
 
-export const ping = async (db: admin.firestore.Firestore, data: PingData, context: CallableRequest) => {
+export const ping = async (db: Firestore, data: PingData, context: CallableRequest) => {
   const { operationType, restaurantId, pathName } = data;
   utils.validate_admin_auth(context);
 

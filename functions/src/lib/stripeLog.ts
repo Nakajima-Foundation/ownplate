@@ -1,8 +1,8 @@
-import * as admin from "firebase-admin";
+import { Firestore, Timestamp } from "firebase-admin/firestore";
 import * as utils from "../lib/utils";
 import Stripe from "stripe";
 
-const accountIdToUIDs = async (db: admin.firestore.Firestore, accountId: string) => {
+const accountIdToUIDs = async (db: Firestore, accountId: string) => {
   if (accountId) {
     // current
     const pubSnapshot = await db.collectionGroup("public").where("stripe", "==", accountId).get();
@@ -29,11 +29,7 @@ const accountIdToUIDs = async (db: admin.firestore.Firestore, accountId: string)
 // connected account, after re-confirming with Stripe that JCB is really active.
 // Shared by capability.updated and account.updated handlers — Stripe sends one
 // or the other depending on the account / event, so both paths need this.
-const activateJCBIfActive = async (
-  db: admin.firestore.Firestore,
-  uids: string[],
-  accountId: string,
-) => {
+const activateJCBIfActive = async (db: Firestore, uids: string[], accountId: string) => {
   if (uids.length === 0 || !accountId) {
     return;
   }
@@ -58,7 +54,7 @@ const activateJCBIfActive = async (
   }
 };
 
-export const account_updated = async (db: admin.firestore.Firestore, event: Stripe.Event) => {
+export const account_updated = async (db: Firestore, event: Stripe.Event) => {
   const {
     data: { object, previous_attributes },
   } = event;
@@ -70,22 +66,16 @@ export const account_updated = async (db: admin.firestore.Firestore, event: Stri
   // as account.updated with the change reflected in previous_attributes. Only
   // act on a real transition: `jcb_payments` must be present in
   // previous_attributes.capabilities AND currently "active".
-  const previousCapabilities =
-    (previous_attributes as { capabilities?: Record<string, string> } | undefined)?.capabilities;
-  const currentCapabilities =
-    ("capabilities" in object ? (object.capabilities as Record<string, string> | undefined) : undefined);
-  if (
-    previousCapabilities &&
-    "jcb_payments" in previousCapabilities &&
-    currentCapabilities?.jcb_payments === "active"
-  ) {
+  const previousCapabilities = (previous_attributes as { capabilities?: Record<string, string> } | undefined)?.capabilities;
+  const currentCapabilities = "capabilities" in object ? (object.capabilities as Record<string, string> | undefined) : undefined;
+  if (previousCapabilities && "jcb_payments" in previousCapabilities && currentCapabilities?.jcb_payments === "active") {
     await activateJCBIfActive(db, uids, id);
   }
 
   return await callbackAdminLog(db, uids, stripeActions.account_updated, event);
 };
 
-export const capability_updated = async (db: admin.firestore.Firestore, event: Stripe.Event) => {
+export const capability_updated = async (db: Firestore, event: Stripe.Event) => {
   const {
     data: { object },
   } = event;
@@ -102,19 +92,19 @@ export const capability_updated = async (db: admin.firestore.Firestore, event: S
   return await callbackAdminLog(db, uids, stripeActions.capability_updated, event);
 };
 
-export const account_authorized = async (db: admin.firestore.Firestore, event: Stripe.Event) => {
+export const account_authorized = async (db: Firestore, event: Stripe.Event) => {
   const id = event.account;
   const uids = await accountIdToUIDs(db, id ?? "");
   return await callbackAdminLog(db, uids, stripeActions.account_authorized, event);
 };
 
-export const account_deauthorized = async (db: admin.firestore.Firestore, event: Stripe.Event) => {
+export const account_deauthorized = async (db: Firestore, event: Stripe.Event) => {
   const id = event.account;
   const uids = await accountIdToUIDs(db, id ?? "");
   return await callbackAdminLog(db, uids, stripeActions.account_deauthorized, event);
 };
 
-export const unknown_log = async (db: admin.firestore.Firestore, event: Stripe.Event) => {
+export const unknown_log = async (db: Firestore, event: Stripe.Event) => {
   const id = event.account || event.id;
   const uids = await accountIdToUIDs(db, id);
   return await callbackAdminLog(db, uids, stripeActions.unknow, event);
@@ -128,7 +118,7 @@ export const stripeActions = {
   unknow: 1000,
 };
 
-export const callbackAdminLog = async (db: admin.firestore.Firestore, uids: string[], action: number, log: Stripe.Event) => {
+export const callbackAdminLog = async (db: Firestore, uids: string[], action: number, log: Stripe.Event) => {
   return await Promise.all(
     (uids.length > 0 ? uids : ["unknown"]).map(async (uid) => {
       console.log(uid, action);
@@ -137,13 +127,13 @@ export const callbackAdminLog = async (db: admin.firestore.Firestore, uids: stri
         action: number;
         uid: string;
         type: string;
-        created: admin.firestore.Timestamp | number;
+        created: Timestamp | number;
       } = {
         data: { log: log },
         action,
         uid,
         type: "callback",
-        created: process.env.NODE_ENV !== "test" ? admin.firestore.Timestamp.now() : Date.now(),
+        created: process.env.NODE_ENV !== "test" ? Timestamp.now() : Date.now(),
       };
       await db.collection(`/admins/${uid}/stripeLogs`).add(payload);
       return payload;

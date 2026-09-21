@@ -1,10 +1,10 @@
-import * as admin from "firebase-admin";
+import { Firestore } from "firebase-admin/firestore";
 import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
 import * as utils from "../../lib/utils";
 import { validatorStripeOAuthVerify } from "../../lib/validator";
 import { StripeOAuthVerifyData } from "../../models/functionTypes";
 
-export const verify = async (db: admin.firestore.Firestore, data: StripeOAuthVerifyData, context: CallableRequest) => {
+export const verify = async (db: Firestore, data: StripeOAuthVerifyData, context: CallableRequest) => {
   // just
   if (!context.auth?.token?.admin) {
     throw new HttpsError("permission-denied", "You do not have permission to confirm this request.");

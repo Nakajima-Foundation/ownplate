@@ -1,9 +1,9 @@
 import { HttpsError } from "firebase-functions/v2/https";
-import * as admin from "firebase-admin";
+import { DocumentReference, FieldValue, Firestore, Transaction } from "firebase-admin/firestore";
 import { PromotionData } from "../../lib/types/promotion";
 import { RestaurantInfoData } from "../../models/RestaurantInfo";
 
-export const getPromotion = async (db: admin.firestore.Firestore, transaction: admin.firestore.Transaction, promotionId: string, restaurantData: RestaurantInfoData, orderTotal: number, enableStripe: boolean): Promise<PromotionData> => {
+export const getPromotion = async (db: Firestore, transaction: Transaction, promotionId: string, restaurantData: RestaurantInfoData, orderTotal: number, enableStripe: boolean): Promise<PromotionData> => {
   // get promotion
   const promotionPath = `restaurants/${restaurantData.restaurantId}/promotions/${promotionId}`;
   const promotionDoc = await transaction.get(db.doc(promotionPath));
@@ -49,7 +49,7 @@ export const getUserHistoryCollectionPath = (uid: string) => {
   return `/users/${uid}/promotionHistories`;
 };
 
-export const getUserHistoryDoc = async (db: admin.firestore.Firestore, promotionData: PromotionData, uid: string) => {
+export const getUserHistoryDoc = async (db: Firestore, promotionData: PromotionData, uid: string) => {
   const collectionPath = getUserHistoryCollectionPath(uid);
   if (promotionData.type === "multipletimesCoupon") {
     const ret = (await db.collection(collectionPath).where("promotionId", "==", promotionData.promotionId).where("used", "==", false).orderBy("createdAt", "asc").limit(1).get())
@@ -65,7 +65,7 @@ export const getUserHistoryDoc = async (db: admin.firestore.Firestore, promotion
   throw new HttpsError("invalid-argument", "No promotion exist.");
 };
 
-export const enableUserPromotion = async (transaction: admin.firestore.Transaction, promotionData: PromotionData, userPromotionRef: admin.firestore.DocumentReference) => {
+export const enableUserPromotion = async (transaction: Transaction, promotionData: PromotionData, userPromotionRef: DocumentReference) => {
   const ret = (await transaction.get(userPromotionRef)).data();
 
   if (promotionData.type === "multipletimesCoupon" || promotionData.type === "onetimeCoupon") {
@@ -98,8 +98,8 @@ export const userPromotionHistoryData = (
     discountPrice,
     isStripe: enableStripe,
     used: true,
-    createdAt: admin.firestore.FieldValue.serverTimestamp(),
-    usedAt: admin.firestore.FieldValue.serverTimestamp(),
+    createdAt: FieldValue.serverTimestamp(),
+    usedAt: FieldValue.serverTimestamp(),
   };
 };
 

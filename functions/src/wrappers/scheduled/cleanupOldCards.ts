@@ -1,5 +1,5 @@
 import { onSchedule } from "firebase-functions/v2/scheduler";
-import * as admin from "firebase-admin";
+import { getFirestore } from "firebase-admin/firestore";
 import { cleanupOldCards } from "../../functions/scheduled/cleanupOldCards";
 
 /**
@@ -16,7 +16,7 @@ export default onSchedule(
   },
   async (event) => {
     console.log("Starting scheduled cleanup of old cards", event);
-    const db = admin.firestore();
+    const db = getFirestore();
     try {
       await cleanupOldCards(db);
       console.log("Cleanup completed successfully");
@@ -24,5 +24,5 @@ export default onSchedule(
       console.error("Cleanup failed", error);
       throw error;
     }
-  }
+  },
 );

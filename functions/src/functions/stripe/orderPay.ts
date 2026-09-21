@@ -1,4 +1,4 @@
-import * as admin from "firebase-admin";
+import { FieldValue, Firestore } from "firebase-admin/firestore";
 import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
 
 import { order_status } from "../../common/constant";
@@ -8,7 +8,7 @@ import { getStripeAccount, getStripeOrderRecord  } from "./intent";
 
 import { OrderChangeData } from "../../models/functionTypes";
 
-export const orderPay = async (db: admin.firestore.Firestore, data: OrderChangeData, context: CallableRequest ) => {
+export const orderPay = async (db: Firestore, data: OrderChangeData, context: CallableRequest ) => {
   const customerUid = utils.validate_customer_auth(context);
   const { restaurantId, orderId, isSavePay } = data;
   utils.required_params({ restaurantId, orderId });
@@ -52,7 +52,7 @@ export const orderPay = async (db: admin.firestore.Firestore, data: OrderChangeD
       await transaction.update(orderRef, {
         isSavePay,
         status: order_status.order_placed,
-        orderPlacedAt: admin.firestore.FieldValue.serverTimestamp(),
+        orderPlacedAt: FieldValue.serverTimestamp(),
       });
     });
 
