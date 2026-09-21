@@ -7,7 +7,7 @@ import * as Sentry from "@sentry/node";
 
 import { Context } from "../models/TestType";
 import { RestaurantInfoData } from "../models/RestaurantInfo";
-import * as admin from "firebase-admin";
+import { DocumentData, DocumentReference, FieldPath, Firestore, QueryDocumentSnapshot } from "firebase-admin/firestore";
 
 export const stripeRegion = stripe_regions_jp;
 const stripe_wh_secret = defineSecret("STRIPE_WH_SECRET");
@@ -61,7 +61,7 @@ export const is_admin_auth = (context: functions.https.CallableContext | Context
 export const is_subAccount = (context: functions.https.CallableContext | Context) => {
   return !!context.auth?.token?.parentUid;
 };
-export const validate_sub_account_request = async (db: admin.firestore.Firestore, uid: string, ownerUid: string, restaurantId: string) => {
+export const validate_sub_account_request = async (db: Firestore, uid: string, ownerUid: string, restaurantId: string) => {
   const rList = ((await db.doc(`admins/${ownerUid}/children/${uid}`).get()).data() || {}).restaurantLists || [];
   if (!rList.includes(restaurantId)) {
     throw new functions.https.HttpsError("permission-denied", "The user does not have an authority to perform this operation.");
@@ -94,7 +94,7 @@ export const required_params = (params: Record<string, unknown>) => {
   }
 };
 
-export const get_restaurant = async (db: admin.firestore.Firestore, restaurantId: string) => {
+export const get_restaurant = async (db: Firestore, restaurantId: string) => {
   const snapshot = await db.doc(`/restaurants/${restaurantId}`).get();
   const data = snapshot.data() as RestaurantInfoData;
   if (!data) {
@@ -103,19 +103,19 @@ export const get_restaurant = async (db: admin.firestore.Firestore, restaurantId
   return data;
 };
 
-export const get_restaurant_postage = async (db: admin.firestore.Firestore, restaurantId: string) => {
+export const get_restaurant_postage = async (db: Firestore, restaurantId: string) => {
   const snapshot = await db.doc(`/restaurants/${restaurantId}/ec/postage`).get();
   const data = snapshot.data() || {};
   return data;
 };
 
-export const get_restaurant_delivery_area = async (db: admin.firestore.Firestore, restaurantId: string) => {
+export const get_restaurant_delivery_area = async (db: Firestore, restaurantId: string) => {
   const snapshot = await db.doc(`/restaurants/${restaurantId}/delivery/area`).get();
   const data = snapshot.data() || {};
   return data;
 };
 
-export const get_restaurant_line_config = async (db: admin.firestore.Firestore, restaurantId: string) => {
+export const get_restaurant_line_config = async (db: Firestore, restaurantId: string) => {
   const snapshot = await db.doc(`/restaurants/${restaurantId}/private/line`).get();
   const data = snapshot.data() as { client_secret: string; message_token: string };
   if (!data) {
@@ -124,7 +124,7 @@ export const get_restaurant_line_config = async (db: admin.firestore.Firestore, 
   return data;
 };
 
-export const get_restaurant_line_user = async (db: admin.firestore.Firestore, restaurantId: string, uid: string) => {
+export const get_restaurant_line_user = async (db: Firestore, restaurantId: string, uid: string) => {
   const snapshot = await db.doc(`/restaurants/${restaurantId}/lineUsers/${uid}`).get();
   const data = snapshot.data();
   if (!data) {
@@ -134,7 +134,7 @@ export const get_restaurant_line_user = async (db: admin.firestore.Firestore, re
   return data;
 };
 
-export const get_delivery_cost = (orderData: admin.firestore.DocumentData, deliveryData: admin.firestore.DocumentData, total: number) => {
+export const get_delivery_cost = (orderData: DocumentData, deliveryData: DocumentData, total: number) => {
   if (orderData.isDelivery) {
     if (deliveryData.enableDeliveryFree && deliveryData.deliveryFreeThreshold <= total) {
       return 0;
@@ -185,13 +185,13 @@ const chunk = (arr: string[], chunkSize: number) => {
   return ret;
 };
 
-export const getMenuObj = async (refRestaurant: admin.firestore.DocumentReference, menuIds: string[]): Promise<Record<string, admin.firestore.DocumentData>> => {
-  const menuObj: Record<string, admin.firestore.DocumentData> = {};
+export const getMenuObj = async (refRestaurant: DocumentReference, menuIds: string[]): Promise<Record<string, DocumentData>> => {
+  const menuObj: Record<string, DocumentData> = {};
   if (process.env.NODE_ENV !== "test") {
     await Promise.all(
       chunk(menuIds, 10).map(async (menuIdsChunk) => {
-        const menusCollections = await refRestaurant.collection("menus").where(admin.firestore.FieldPath.documentId(), "in", menuIdsChunk).get();
-        menusCollections.forEach((m: admin.firestore.QueryDocumentSnapshot) => {
+        const menusCollections = await refRestaurant.collection("menus").where(FieldPath.documentId(), "in", menuIdsChunk).get();
+        menusCollections.forEach((m: QueryDocumentSnapshot) => {
           const data = m.data();
           if (data.publicFlag && !data.deletedFlag) {
             menuObj[m.id] = data;

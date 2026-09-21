@@ -1,4 +1,5 @@
-import * as admin from "firebase-admin";
+import { getAuth } from "firebase-admin/auth";
+import { FieldValue, Firestore } from "firebase-admin/firestore";
 import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
 import { defineSecret } from "firebase-functions/params";
 import * as utils from "../../lib/utils";
@@ -11,7 +12,7 @@ import { validateLiffAuthenticate } from "../../lib/validator";
 
 const LIFF_SALT = defineSecret("LIFF_SALT");
 
-const getLiffConfig = async (db: admin.firestore.Firestore, liffIndexId: string) => {
+const getLiffConfig = async (db: Firestore, liffIndexId: string) => {
   const liffConfig = (await db.doc(`/liff/${liffIndexId}`).get()).data();
   if (!liffConfig) {
     throw new HttpsError("invalid-argument", "Verification failed.");
@@ -20,7 +21,7 @@ const getLiffConfig = async (db: admin.firestore.Firestore, liffIndexId: string)
 };
 
 // eslint-disable-next-line
-export const liffAuthenticate = async (db: admin.firestore.Firestore, data: LiffAuthenticateData, context: CallableRequest) => {
+export const liffAuthenticate = async (db: Firestore, data: LiffAuthenticateData, context: CallableRequest) => {
   const { liffIndexId, token } = data;
   utils.required_params({ liffIndexId, token });
 
@@ -47,11 +48,11 @@ export const liffAuthenticate = async (db: admin.firestore.Firestore, data: Liff
     const userId = "liff:" + crypto.createHash("sha256").update(uidBase).digest("hex");
 
     try {
-      await admin.auth().getUser(userId);
+      await getAuth().getUser(userId);
     } catch (__e) {
       // no user
-      await admin.auth().createUser({ uid: userId });
-      await admin.auth().setCustomUserClaims(userId, {
+      await getAuth().createUser({ uid: userId });
+      await getAuth().setCustomUserClaims(userId, {
         line: lineUid,
         liffId: liffConfig.liffId,
       });
@@ -61,12 +62,12 @@ export const liffAuthenticate = async (db: admin.firestore.Firestore, data: Liff
           liffIndexId,
           liffId: liffConfig.liffId,
           lineChannelId: liffConfig.clientId,
-          createdAt: admin.firestore.FieldValue.serverTimestamp(),
+          createdAt: FieldValue.serverTimestamp(),
         },
         { merge: true },
       );
     }
-    const customToken = await admin.auth().createCustomToken(userId);
+    const customToken = await getAuth().createCustomToken(userId);
 
     return { nonce: verified.nonce, customToken };
   } catch (error) {

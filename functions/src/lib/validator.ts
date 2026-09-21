@@ -1,4 +1,4 @@
-import * as admin from "firebase-admin";
+import { Timestamp } from "firebase-admin/firestore";
 import {
   OrderCreatedData,
   OrderUpdateData,
@@ -15,10 +15,7 @@ import {
   LineValidateData,
   LiffAuthenticateData,
 } from "../models/functionTypes";
-import {
-  ValidatorNumberOption,
-  ValidatorStringOption,
-} from "./types/validator";
+import { ValidatorNumberOption, ValidatorStringOption } from "./types/validator";
 import { CustomerInfo } from "../models/customer";
 import { isEmpty } from "./utils";
 import isURL from "validator/lib/isURL";
@@ -124,7 +121,7 @@ const validateString = (text: string) => {
 const validateAlphabet = (text: string) => {
   return /^[a-zA-Z]+$/.test(text);
 };
-const validateTimestamp = (timestamp: admin.firestore.Timestamp) => {
+const validateTimestamp = (timestamp: Timestamp) => {
   return validateInteger(timestamp.seconds) && validateInteger(timestamp.nanoseconds);
 };
 const validateBoolean = (value: boolean) => {
@@ -159,10 +156,7 @@ type ValidatorRule = {
   regex?: RegExp;
 };
 
-const validateData = (
-  data: object,
-  validator: Record<string, ValidatorRule>,
-) => {
+const validateData = (data: object, validator: Record<string, ValidatorRule>) => {
   const record = data as Record<string, unknown>;
   const errors = Object.keys(validator).reduce((tmp: unknown[], key: string) => {
     const rule = validator[key];

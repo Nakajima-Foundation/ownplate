@@ -1,9 +1,9 @@
 import { onObjectFinalized } from "firebase-functions/v2/storage";
-import * as admin from "firebase-admin";
+import { getFirestore } from "firebase-admin/firestore";
 
 import * as imageFunctions from "../../functions/image/image";
-import { bucketRegion }  from "../../common/project";
-const db = admin.firestore();
+import { bucketRegion } from "../../common/project";
+const db = getFirestore();
 
 export default onObjectFinalized(
   {
@@ -13,5 +13,5 @@ export default onObjectFinalized(
   async (event) => {
     console.log("RUN");
     return imageFunctions.imageProcessing(db, event.data);
-  }
+  },
 );

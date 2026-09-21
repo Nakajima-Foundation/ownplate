@@ -1,4 +1,4 @@
-import * as admin from "firebase-admin";
+import { Firestore, Timestamp } from "firebase-admin/firestore";
 import * as utils from "../../lib/utils";
 import { getStripeAccount } from "../stripe/intent";
 
@@ -6,12 +6,12 @@ import { getStripeAccount } from "../stripe/intent";
  * Cleanup old card information that hasn't been updated in 180 days
  * This runs daily to remove expired card data from Firestore and Stripe
  */
-export const cleanupOldCards = async (db: admin.firestore.Firestore) => {
+export const cleanupOldCards = async (db: Firestore) => {
   const stripe = utils.get_stripe_v2();
-  const now = admin.firestore.Timestamp.now();
+  const now = Timestamp.now();
   const expirationDays = 180;
   const expirationMs = expirationDays * 24 * 60 * 60 * 1000;
-  const cutoffTime = new admin.firestore.Timestamp(
+  const cutoffTime = new Timestamp(
     now.seconds - expirationMs / 1000,
     now.nanoseconds
   );
@@ -60,7 +60,7 @@ export const cleanupOldCards = async (db: admin.firestore.Firestore) => {
         }
 
         const data = doc.data();
-        const updatedAt = data.updatedAt as admin.firestore.Timestamp | undefined;
+        const updatedAt = data.updatedAt as Timestamp | undefined;
 
         const cardType = ownerId ? `restaurant (owner: ${ownerId})` : "global";
         console.log(`Deleting old ${cardType} card for user ${userId} (updated: ${updatedAt?.toDate().toISOString()})`);

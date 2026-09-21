@@ -1,5 +1,5 @@
 import Stripe from "stripe";
-import * as admin from "firebase-admin";
+import { FieldValue, Firestore } from "firebase-admin/firestore";
 import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
 
 import { order_status, stripe_regions_jp } from "../../common/constant";
@@ -50,7 +50,7 @@ const getUpdateOrder = (
   };
 };
 
-export const orderChange = async (db: admin.firestore.Firestore, data: OrderChangeData, context: CallableRequest) => {
+export const orderChange = async (db: Firestore, data: OrderChangeData, context: CallableRequest) => {
   const ownerUid = utils.validate_owner_admin_auth(context);
   const uid = utils.validate_auth(context);
   const { restaurantId, orderId, newOrder } = data;
@@ -142,7 +142,7 @@ export const orderChange = async (db: admin.firestore.Firestore, data: OrderChan
           tax: accountingResult.alcohol_tax,
         },
       },
-      orderUpdatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      orderUpdatedAt: FieldValue.serverTimestamp(),
     };
 
     if (!order.payment) {

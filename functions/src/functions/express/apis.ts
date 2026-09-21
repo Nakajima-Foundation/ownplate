@@ -1,5 +1,6 @@
 import express from "express";
-import * as admin from "firebase-admin";
+import { getApps, initializeApp } from "firebase-admin/app";
+import { DocumentData, FieldValue, Firestore, getFirestore } from "firebase-admin/firestore";
 // import { ownPlateConfig } from "../../common/project";
 // import cors from "cors";
 // import * as Sentry from "@sentry/node";
@@ -18,13 +19,13 @@ import sharp from "sharp";
 
 export const apiRouter = express.Router();
 
-if (!admin.apps.length) {
-  admin.initializeApp();
+if (!getApps().some((app) => app.name === "[DEFAULT]")) {
+  initializeApp();
 }
 
-let db = admin.firestore();
+let db = getFirestore();
 
-export const updateDb = (_db: admin.firestore.Firestore) => {
+export const updateDb = (_db: Firestore) => {
   db = _db;
 };
 
@@ -44,7 +45,7 @@ export const escapePrinterString = (text: string) => {
   return text.replace(/[{}+\-|"`^,;:]+/g, "");
 };
 
-export const getSVG = (restaurantData: admin.firestore.DocumentData, orderData: admin.firestore.DocumentData) => {
+export const getSVG = (restaurantData: DocumentData, orderData: DocumentData) => {
   const orderNumber = nameOfOrder(orderData.number);
 
   const messages: string[] = [];
@@ -165,7 +166,7 @@ const pollingStar = async (req: express.Request, res: express.Response) => {
     await db.collection(`restaurants/${restaurantId}/printLog`).add({
       restaurantId,
       orderId: orders.docs[0].id,
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      createdAt: FieldValue.serverTimestamp(),
     });
     return res.json({
       jobReady: true,

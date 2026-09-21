@@ -1,9 +1,9 @@
-import * as admin from "firebase-admin";
+import { DocumentReference, Firestore, Transaction } from "firebase-admin/firestore";
 import * as functions from "firebase-functions";
 import * as crypto from "crypto";
 import * as utils from "../../lib/utils";
 
-export const getCustomerStripeInfo = async (db: admin.firestore.Firestore, customerUid: string) => {
+export const getCustomerStripeInfo = async (db: Firestore, customerUid: string) => {
   const refStripe = db.doc(`/users/${customerUid}/system/stripe`);
   const stripeInfo = (await refStripe.get()).data();
   if (!stripeInfo) {
@@ -13,7 +13,7 @@ export const getCustomerStripeInfo = async (db: admin.firestore.Firestore, custo
   return stripeInfo;
 };
 
-export const getCustomerStripeInfo2 = async (db: admin.firestore.Firestore, customerUid: string, restaurantOwnerUid: string) => {
+export const getCustomerStripeInfo2 = async (db: Firestore, customerUid: string, restaurantOwnerUid: string) => {
   // console.log(`/users/${customerUid}/owner/${restaurantOwnerUid}/system/stripe`);
   const refStripe = db.doc(`/users/${customerUid}/owner/${restaurantOwnerUid}/system/stripe`);
   const stripeInfo = (await refStripe.get()).data();
@@ -23,13 +23,13 @@ export const getCustomerStripeInfo2 = async (db: admin.firestore.Firestore, cust
   return stripeInfo;
 };
 
-export const saveCustomerStripeInfo2 = async (db: admin.firestore.Firestore, customerUid: string, restaurantOwnerUid: string, data: Record<string, string>) => {
+export const saveCustomerStripeInfo2 = async (db: Firestore, customerUid: string, restaurantOwnerUid: string, data: Record<string, string>) => {
   const refStripe = db.doc(`/users/${customerUid}/owner/${restaurantOwnerUid}/system/stripe`);
   console.log(data);
   await refStripe.set(data, { merge: true });
 };
 
-export const getStripeAccount = async (db: admin.firestore.Firestore, restaurantOwnerUid: string) => {
+export const getStripeAccount = async (db: Firestore, restaurantOwnerUid: string) => {
   const paymentSnapshot = await db.doc(`/admins/${restaurantOwnerUid}/public/payment`).get();
   const stripeAccount = paymentSnapshot.data()?.stripe;
   if (!stripeAccount) {
@@ -38,7 +38,7 @@ export const getStripeAccount = async (db: admin.firestore.Firestore, restaurant
   return stripeAccount;
 };
 
-export const getStripeOrderRecord = async (transaction: admin.firestore.Transaction, stripeRef: admin.firestore.DocumentReference) => {
+export const getStripeOrderRecord = async (transaction: Transaction, stripeRef: DocumentReference) => {
   const stripeRecord = (await transaction.get(stripeRef)).data();
   if (!stripeRecord || !stripeRecord.paymentIntent || !stripeRecord.paymentIntent.id) {
     throw new functions.https.HttpsError("failed-precondition", "This order has no paymentIntendId.");
@@ -47,7 +47,7 @@ export const getStripeOrderRecord = async (transaction: admin.firestore.Transact
 };
 
 // from order change
-export const getPaymentMethodData = async (db: admin.firestore.Firestore, restaurantOwnerUid: string, customerUid: string) => {
+export const getPaymentMethodData = async (db: Firestore, restaurantOwnerUid: string, customerUid: string) => {
   const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
 
   const stripeInfo = await getCustomerStripeInfo(db, customerUid);
@@ -77,9 +77,9 @@ export const getHash = (message: string) => {
 };
 
 export const cancelStripe = async (
-  db: admin.firestore.Firestore,
-  transaction: admin.firestore.Transaction,
-  stripeRef: admin.firestore.DocumentReference,
+  db: Firestore,
+  transaction: Transaction,
+  stripeRef: DocumentReference,
   restaurantOwnerUid: string,
   orderId: string,
 ) => {
