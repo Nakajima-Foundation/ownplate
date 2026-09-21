@@ -1,3 +1,4 @@
+import { FirebaseApp, getApps, initializeApp } from "firebase/app";
 import {
   deleteInstallations,
   getId,
@@ -13,7 +14,6 @@ import {
 } from "firebase/messaging";
 
 import { firebaseConfig, webPushVapidPublicKey } from "@/config/project";
-import firebaseApp from "@/lib/firebase/firebase9";
 import { detectPlatform } from "@/utils/pushFormat";
 import { resetRegistrationState } from "@/utils/pushReset";
 
@@ -27,6 +27,21 @@ export type PushFailure =
   "unconfigured" | "unsupported" | "denied" | "dismissed" | "no-fid";
 export type PushResult =
   { ok: true; fid: string } | { ok: false; reason: PushFailure };
+
+// push は専用の Firebase app インスタンスで扱う。
+//
+// installation id は `${app.name}!${appId}` をキーに保存される（@firebase/installations の
+// getKey）。つまりアプリ名が違えば FID も別物になる。これが必要なのは、
+// @firebase/functions の httpsCallable() が呼び出しのたびに「デフォルトアプリの」
+// messaging.getToken() を実行し、legacy 登録を作って FID を送信先として無効化するため。
+// push をデフォルトアプリから切り離すことで、管理画面が callable を何度叩いても
+// この FID は巻き込まれない。
+const PUSH_APP_NAME = "push";
+
+const pushApp = (): FirebaseApp => {
+  const existing = getApps().find((app) => app.name === PUSH_APP_NAME);
+  return existing ?? initializeApp(firebaseConfig, PUSH_APP_NAME);
+};
 
 export const isWebPushConfigured = () => webPushVapidPublicKey.length > 0;
 
@@ -138,14 +153,13 @@ const resetBeforeRegistering = (registration: ServiceWorkerRegistration) =>
       const subscription = await registration.pushManager.getSubscription();
       return subscription?.unsubscribe();
     },
-    rotateInstallation: () =>
-      deleteInstallations(getInstallations(firebaseApp)),
+    rotateInstallation: () => deleteInstallations(getInstallations(pushApp())),
     onFailure: (reason) =>
       console.warn("push registration reset failed", reason),
   });
 
 const acquireFid = async (registration: ServiceWorkerRegistration) => {
-  const messaging = getMessaging(firebaseApp);
+  const messaging = getMessaging(pushApp());
   const pending = nextFid(messaging);
   try {
     await register(messaging, {
@@ -180,7 +194,7 @@ export const currentDeviceFid = async () => {
     return "";
   }
   try {
-    return await getId(getInstallations(firebaseApp));
+    return await getId(getInstallations(pushApp()));
   } catch (e) {
     console.error("failed to read the installation id", e);
     return "";
@@ -195,7 +209,7 @@ export const listenForegroundPush = async () => {
   if (!isWebPushConfigured() || !(await isSupported())) {
     return;
   }
-  onMessage(getMessaging(firebaseApp), (payload) => {
+  onMessage(getMessaging(pushApp()), (payload) => {
     const data = payload.data ?? {};
     navigator.serviceWorker.ready.then((registration) => {
       registration.showNotification(data.title || DEFAULT_NOTIFICATION_TITLE, {
