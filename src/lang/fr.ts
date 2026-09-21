@@ -1007,6 +1007,8 @@ const data = {
       "Le code de vérification SMS a expiré. Veuillez demander un nouveau code et le saisir à nouveau.",
   },
   pushDevice: {
+    appName: "おもちかえり.com Alertes commandes",
+    appShortName: "Alertes commandes",
     title: "Enregistrer un appareil pour les notifications",
     installHeading: "Sur iPhone ou iPad",
     installStep1: "Appuyez sur le bouton de partage en bas de l'écran",

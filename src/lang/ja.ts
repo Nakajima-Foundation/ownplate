@@ -990,6 +990,8 @@ const data = {
       "SMS確認コードが有効期限切れです。SMS確認コードを再送信して再度入力してください",
   },
   pushDevice: {
+    appName: "おもちかえり.com 注文通知",
+    appShortName: "おもちかえり通知",
     title: "通知を受け取る端末の登録",
     installHeading: "iPhone・iPad をお使いの場合",
     installStep1: "画面下の共有ボタンを押します",

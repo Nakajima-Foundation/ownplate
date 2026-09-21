@@ -985,6 +985,8 @@ const data = {
       "SMS 인증 코드가 만료되었습니다. SMS 인증 코드를 재전송하여 다시 입력해 주세요",
   },
   pushDevice: {
+    appName: "おもちかえり.com 주문 알림",
+    appShortName: "주문 알림",
     title: "알림을 받을 기기 등록",
     installHeading: "iPhone·iPad를 사용하는 경우",
     installStep1: "화면 아래의 공유 버튼을 누릅니다",

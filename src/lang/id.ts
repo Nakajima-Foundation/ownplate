@@ -1003,6 +1003,8 @@ const data = {
       "Kode verifikasi SMS sudah kedaluwarsa. Silakan kirim ulang kode verifikasi SMS dan masukkan lagi",
   },
   pushDevice: {
+    appName: "おもちかえり.com Notifikasi Pesanan",
+    appShortName: "Notifikasi Pesanan",
     title: "Daftarkan perangkat untuk notifikasi",
     installHeading: "Untuk iPhone atau iPad",
     installStep1: "Ketuk tombol bagikan di bagian bawah layar",

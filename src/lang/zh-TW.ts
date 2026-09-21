@@ -950,6 +950,8 @@ const data = {
     "auth/code-expired": "SMS 驗證碼已過期。請重新傳送 SMS 驗證碼並輸入",
   },
   pushDevice: {
+    appName: "おもちかえり.com 訂單通知",
+    appShortName: "訂單通知",
     title: "註冊接收通知的裝置",
     installHeading: "使用 iPhone 或 iPad 時",
     installStep1: "點按螢幕下方的分享按鈕",

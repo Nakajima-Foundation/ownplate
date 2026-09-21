@@ -992,6 +992,8 @@ const data = {
       "The SMS verification code has expired. Please resend the SMS verification code and enter it again",
   },
   pushDevice: {
+    appName: "おもちかえり.com Order Alerts",
+    appShortName: "Order Alerts",
     title: "Register a device for notifications",
     installHeading: "On iPhone or iPad",
     installStep1: "Tap the share button at the bottom of the screen",

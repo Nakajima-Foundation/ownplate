@@ -994,6 +994,8 @@ const data = {
       "Mã xác thực SMS đã hết hạn. Vui lòng gửi lại mã xác thực SMS và nhập lại",
   },
   pushDevice: {
+    appName: "おもちかえり.com Thông báo đơn hàng",
+    appShortName: "Thông báo đơn hàng",
     title: "Đăng ký thiết bị nhận thông báo",
     installHeading: "Với iPhone hoặc iPad",
     installStep1: "Chạm nút chia sẻ ở dưới màn hình",

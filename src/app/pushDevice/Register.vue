@@ -104,8 +104,10 @@ export default defineComponent({
     // ならない。start_url にトークンが要るので、静的ファイルではなくその場で作る。
     const manifestHref = computed(() => {
       const manifest = {
-        name: t("pushDevice.title"),
-        short_name: t("pushDevice.title"),
+        // iOS は通知に「from <ここ>」を出し、ホーム画面のアイコン名にも使う。
+        // ページのタイトルを入れると「from 通知を受け取る端末の登録」になる。
+        name: t("pushDevice.appName"),
+        short_name: t("pushDevice.appShortName"),
         start_url: `${PUSH_DEVICE_SCOPE}${token.value}`,
         scope: PUSH_DEVICE_SCOPE,
         display: "standalone",
