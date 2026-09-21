@@ -56,18 +56,31 @@ self.addEventListener("activate", (event) => {
   event.waitUntil(self.clients.claim());
 });
 
-const ADMIN_PREFIX = "/admin/";
+// 再利用するタブは、その通知の行き先と同じ区画のものだけに絞る。
+// includeUncontrolled は scope の外にある同一オリジンのページも返すので、絞らないと
+// 管理画面の通知が、注文者の開いている店舗ページを奪ってしまう。
+//
+// 区画は通知自身の url の先頭セグメントから取る。/admin/ を定数で持たないのは、
+// 注文者向けの通知（/u/... など）を足すときにこのファイルを直さずに済ませるため。
+// 行き先が "/" のように区画を持たない場合は、既存のタブを触らず新しく開く。
+const reuseScope = (url) => {
+  const target = new URL(url);
+  const segment = target.pathname.split("/")[1];
+  // 接頭辞は「行き先自身の」オリジンから組む。自分のオリジンを当てはめると、
+  // 別オリジンの path が自分のタブを指してしまう。こうしておけば、万一
+  // 別オリジンが入口をすり抜けても、どのタブにも一致せず新規に開くだけで済む。
+  return segment ? `${target.origin}/${segment}/` : null;
+};
 
-// 再利用するタブは管理画面のものだけに絞る。includeUncontrolled は scope の外にある
-// 同一オリジンのページ（注文者が開いている店舗ページなど）も返すため、絞らないと
-// 通知のタップで注文者のタブを管理画面へ飛ばしてしまう。
 const focusOrOpen = async (url) => {
   const clients = await self.clients.matchAll({
     type: "window",
     includeUncontrolled: true,
   });
-  const adminOrigin = `${self.location.origin}${ADMIN_PREFIX}`;
-  const opened = clients.find((client) => client.url.startsWith(adminOrigin));
+  const prefix = reuseScope(url);
+  const opened = prefix
+    ? clients.find((client) => client.url.startsWith(prefix))
+    : undefined;
   if (!opened) {
     await self.clients.openWindow(url);
     return;
@@ -81,8 +94,25 @@ const focusOrOpen = async (url) => {
   }
 };
 
+// 行き先は自分のオリジンだけ。data.url は自分たちの payload 組み立てからしか
+// 来ないが、ここは通知のデータをそのまま信じて遷移する唯一の場所なので、
+// 別オリジンは入口で落とす。
+const ownOriginTarget = (path) => {
+  try {
+    const target = new URL(path, self.location.origin);
+    return target.origin === self.location.origin ? target.href : null;
+  } catch (e) {
+    console.error("sw: unreadable notification target", e);
+    return null;
+  }
+};
+
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();
-  const path = event.notification.data?.url || "/";
-  event.waitUntil(focusOrOpen(new URL(path, self.location.origin).href));
+  const target = ownOriginTarget(event.notification.data?.url || "/");
+  if (!target) {
+    console.error("sw: ignored a notification target outside this origin");
+    return;
+  }
+  event.waitUntil(focusOrOpen(target));
 });

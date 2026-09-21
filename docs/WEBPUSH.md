@@ -176,8 +176,17 @@ firebaseConfig は環境ごとに違うため、登録 URL のクエリで SW �
 ### 8. 通知タップ時のタブ選択
 
 `clients.matchAll({ includeUncontrolled: true })` は scope の外にある同一オリジンのページ
-（注文者が開いている店舗ページなど）も返す。絞らないと注文者のタブを管理画面へ飛ばしてしまうので、
-URL が `/admin/` で始まるものだけを再利用対象にする。
+（注文者が開いている店舗ページなど）も返す。絞らないと、管理画面の通知が注文者のタブを
+奪って管理画面へ飛ばしてしまう。
+
+再利用するタブは、**その通知の行き先の先頭セグメントと同じ区画のもの**だけに絞る。
+`/admin/restaurants/…` なら `/admin/` のタブ、`/u/…` なら `/u/` のタブ。`/admin/` を定数で
+持たないのは、注文者向けの通知を足すときにこのファイルを直さずに済ませるため。
+
+行き先が別オリジンなら**入口で落とす**（`ownOriginTarget()`）。落とさないと、別オリジンの
+path から自分のオリジンの区画を割り出し、無関係なタブを掴んでそちらへ飛ばそうとする。
+接頭辞を行き先自身のオリジンから組んでいるのも同じ理由で、万一すり抜けてもどのタブにも
+一致しない。
 
 ### 9. サインアウトでは端末を外さない
 
@@ -189,6 +198,25 @@ URL が `/admin/` で始まるものだけを再利用対象にする。
 `Notification.permission === "granted"` でも、OS 側の通知設定でブラウザが OFF だったり
 集中モードだと表示されない。切り分けは開発者コンソールで
 `navigator.serviceWorker.ready.then(r => r.showNotification("test", { body: "hi" }))` を直接実行する。
+
+## 注文者側に広げるとき
+
+いまは店舗運営者向けだけだが、注文者への LINE 通知を置き換える計画がある。
+**Service Worker は既にどちらでも使える形にしてある**（通知タップ時のタブ再利用は、
+`/admin/` 固定ではなく通知自身の行き先から決める）。残りは足すだけで、既存を直す必要は無い。
+
+足りないもの:
+
+| | 内容 |
+| --- | --- |
+| manifest | 注文者用をもう1枚。`scope` / `start_url` を注文者側の区画にして、注文者側の wrapper から `useHead` で差す |
+| SW の登録 | `registerServiceWorker(scope)` は scope を引数に取るので、注文者側の scope 定数を1つ足すだけ |
+| 登録の保存先 | `restaurants/{id}/pushRegistrations` は店舗固定。注文者は `users/{uid}/pushRegistrations` になるので、`registrationsCollection()` と `sendWebPush()` の引数を「所有者のパス」に一般化する |
+| rules | `users/{uid}/pushRegistrations` を足す |
+| payload | `createWebPushData(title, body, url)` は汎用。`createOrderPushData()` が `/admin/...` を作るので、注文者向けの組み立てを1本足す |
+
+**ワンタイム URL は要らない。** あれは「サインインできない端末」のための仕組みで、
+注文者はサインインしている。自分の uid 配下に書くだけなので、callable で直接登録できる。
 
 ## データ
 
