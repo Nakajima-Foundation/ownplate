@@ -64,8 +64,12 @@ self.addEventListener("activate", (event) => {
 // 注文者向けの通知（/u/... など）を足すときにこのファイルを直さずに済ませるため。
 // 行き先が "/" のように区画を持たない場合は、既存のタブを触らず新しく開く。
 const reuseScope = (url) => {
-  const segment = new URL(url).pathname.split("/")[1];
-  return segment ? `${self.location.origin}/${segment}/` : null;
+  const target = new URL(url);
+  const segment = target.pathname.split("/")[1];
+  // 接頭辞は「行き先自身の」オリジンから組む。自分のオリジンを当てはめると、
+  // 別オリジンの path が自分のタブを指してしまう。こうしておけば、万一
+  // 別オリジンが入口をすり抜けても、どのタブにも一致せず新規に開くだけで済む。
+  return segment ? `${target.origin}/${segment}/` : null;
 };
 
 const focusOrOpen = async (url) => {
@@ -90,8 +94,25 @@ const focusOrOpen = async (url) => {
   }
 };
 
+// 行き先は自分のオリジンだけ。data.url は自分たちの payload 組み立てからしか
+// 来ないが、ここは通知のデータをそのまま信じて遷移する唯一の場所なので、
+// 別オリジンは入口で落とす。
+const ownOriginTarget = (path) => {
+  try {
+    const target = new URL(path, self.location.origin);
+    return target.origin === self.location.origin ? target.href : null;
+  } catch (e) {
+    console.error("sw: unreadable notification target", e);
+    return null;
+  }
+};
+
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();
-  const path = event.notification.data?.url || "/";
-  event.waitUntil(focusOrOpen(new URL(path, self.location.origin).href));
+  const target = ownOriginTarget(event.notification.data?.url || "/");
+  if (!target) {
+    console.error("sw: ignored a notification target outside this origin");
+    return;
+  }
+  event.waitUntil(focusOrOpen(target));
 });
