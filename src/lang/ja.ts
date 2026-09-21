@@ -989,6 +989,38 @@ const data = {
     "auth/code-expired":
       "SMS確認コードが有効期限切れです。SMS確認コードを再送信して再度入力してください",
   },
+  pushDevice: {
+    appName: "おもちかえり.com 注文通知",
+    appShortName: "おもちかえり通知",
+    title: "通知を受け取る端末の登録",
+    installHeading: "iPhone・iPad をお使いの場合",
+    installStep1: "画面下の共有ボタンを押します",
+    installStep2: "「ホーム画面に追加」を選びます",
+    installStep3: "追加されたアイコンから、このページを開き直します",
+    nameHint: "どの端末かわかる名前を入れてください。",
+    namePlaceholder: "例：レジの iPad",
+    register: "通知を受け取る",
+    done: "登録しました",
+    doneHint: "新しい注文が入ると、この端末に通知が届きます。",
+    status: {
+      "registered-here": "この端末は登録済みです",
+      used: "この URL は使用済みです。お店に新しい URL を発行してもらってください。",
+      expired:
+        "この URL は期限切れです。お店に新しい URL を発行してもらってください。",
+      "not-found":
+        "この URL は無効です。お店に新しい URL を発行してもらってください。",
+    },
+    failure: {
+      unconfigured: "この店舗ではプッシュ通知を利用できません。",
+      unsupported: "この端末またはブラウザではプッシュ通知を利用できません。",
+      denied: "通知がブロックされています。ブラウザの設定で許可してください。",
+      dismissed: "通知が許可されませんでした。もう一度お試しください。",
+      "no-fid":
+        "登録できませんでした。しばらくしてからもう一度お試しください。",
+      invite:
+        "この URL は使用済みか、期限が切れています。お店にお問い合わせください。",
+    },
+  },
   admin: {
     welcomeMessage: "いらっしゃいませ！",
     userManual: "使い方説明",
@@ -1148,6 +1180,44 @@ const data = {
     forgotPassword: "パスワードを忘れた場合",
     passwordReset: "パスワードのリセット",
     pleaseCheckInbox: "メールを送信しました。受信箱をご確認ください。",
+    push: {
+      devices: "通知する端末",
+      empty: "まだ端末が登録されていません。",
+      addDevice: "端末を追加",
+      inviteHeading: "この URL を端末で開いてください",
+      inviteHint:
+        "URL は一度きりです。開いた端末で通知を許可すると登録されます。閉じると再表示できないので、必要なら作り直してください。",
+      copy: "URL をコピー",
+      copied: "コピーしました",
+      test: "テスト送信",
+      deleteConfirm: "この端末への通知を消去しますか？",
+    },
+    webpush: {
+      restaurantId: "店舗 ID",
+      title: "Web Push テスト",
+      statusHeading: "状態",
+      configured: "VAPID 鍵",
+      notConfigured: "未設定",
+      supported: "この端末の対応",
+      notSupported: "非対応",
+      permission: "通知の許可",
+      currentDevice: "この端末の FID",
+      noDevice: "未登録",
+      iosHint:
+        "iPhone・iPad ではホーム画面に追加したアイコンから開いた場合のみ利用できます。",
+      registrationHeading: "端末の登録",
+      register: "この端末を登録",
+      unregister: "この端末を解除",
+      sendHeading: "テスト送信",
+      sendTitle: "タイトル",
+      sendBody: "本文",
+      send: "自分の端末に送信",
+      probeHeading: "callable の影響確認",
+      probeHint:
+        "通常の callable を1回呼びます。この後に送信して届けば、callable が FID を壊す問題は解消しています。",
+      probe: "callable を呼ぶ",
+      logHeading: "ログ",
+    },
     order: {
       suspend: "受付休止",
       suspendSettings: "受付休止設定",
@@ -1170,6 +1240,9 @@ const data = {
       infinityNotificationOn: "1分おきに再通知",
       infinityNotificationOff: "受注時のみ通知",
       soundTest: "テスト",
+      webPushDescription:
+        "管理画面を閉じていても、この端末に新しい注文をお知らせします。",
+      webPushDevices: "プッシュ通知の端末",
       paymentIsNotCompleted:
         "ご注意：「受付済み」ボタンを押すとカード決済が処理されます。",
       cancelButton: "注文をキャンセル",

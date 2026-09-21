@@ -993,6 +993,37 @@ const data = {
     "auth/code-expired":
       "Mã xác thực SMS đã hết hạn. Vui lòng gửi lại mã xác thực SMS và nhập lại",
   },
+  pushDevice: {
+    appName: "おもちかえり.com Thông báo đơn hàng",
+    appShortName: "Thông báo đơn hàng",
+    title: "Đăng ký thiết bị nhận thông báo",
+    installHeading: "Với iPhone hoặc iPad",
+    installStep1: "Chạm nút chia sẻ ở dưới màn hình",
+    installStep2: 'Chọn "Thêm vào Màn hình chính"',
+    installStep3: "Mở lại trang này từ biểu tượng vừa thêm",
+    nameHint: "Hãy đặt tên dễ nhận biết cho thiết bị này.",
+    namePlaceholder: "ví dụ: iPad ở quầy thu ngân",
+    register: "Nhận thông báo",
+    done: "Đã đăng ký",
+    doneHint: "Thiết bị này sẽ được thông báo khi có đơn hàng mới.",
+    status: {
+      "registered-here": "Thiết bị này đã được đăng ký",
+      used: "URL này đã được dùng. Vui lòng xin URL mới từ nhà hàng.",
+      expired: "URL này đã hết hạn. Vui lòng xin URL mới từ nhà hàng.",
+      "not-found": "URL này không hợp lệ. Vui lòng xin URL mới từ nhà hàng.",
+    },
+    failure: {
+      unconfigured: "Nhà hàng này không sử dụng được thông báo đẩy.",
+      unsupported:
+        "Thiết bị hoặc trình duyệt này không nhận được thông báo đẩy.",
+      denied:
+        "Thông báo đang bị chặn. Vui lòng cho phép trong cài đặt trình duyệt.",
+      dismissed: "Thông báo chưa được cho phép. Vui lòng thử lại.",
+      "no-fid": "Đăng ký không thành công. Vui lòng thử lại sau giây lát.",
+      invite:
+        "URL này đã được dùng hoặc đã hết hạn. Vui lòng liên hệ nhà hàng.",
+    },
+  },
   admin: {
     welcomeMessage: "Chào mừng!",
     userManual: "Hướng dẫn sử dụng",
@@ -1153,6 +1184,44 @@ const data = {
     forgotPassword: "Quên mật khẩu",
     passwordReset: "Đặt lại mật khẩu",
     pleaseCheckInbox: "Đã gửi email. Vui lòng kiểm tra hộp thư đến.",
+    push: {
+      devices: "Thiết bị nhận thông báo",
+      empty: "Chưa có thiết bị nào được đăng ký.",
+      addDevice: "Thêm thiết bị",
+      inviteHeading: "Hãy mở URL này trên thiết bị",
+      inviteHint:
+        "URL này chỉ dùng được một lần. Cho phép thông báo trên thiết bị đó để hoàn tất. Không thể hiển thị lại, nếu cần hãy tạo URL mới.",
+      copy: "Sao chép URL",
+      copied: "Đã sao chép",
+      test: "Gửi thử",
+      deleteConfirm: "Ngừng thông báo tới thiết bị này?",
+    },
+    webpush: {
+      restaurantId: "ID nhà hàng",
+      title: "Web Push test",
+      statusHeading: "Status",
+      configured: "VAPID key",
+      notConfigured: "not set",
+      supported: "Supported here",
+      notSupported: "not supported",
+      permission: "Notification permission",
+      currentDevice: "FID of this device",
+      noDevice: "not registered",
+      iosHint:
+        "On iPhone and iPad this works only when opened from the icon added to the Home Screen.",
+      registrationHeading: "Device registration",
+      register: "Register this device",
+      unregister: "Unregister this device",
+      sendHeading: "Test send",
+      sendTitle: "Title",
+      sendBody: "Body",
+      send: "Send to my devices",
+      probeHeading: "Callable interference probe",
+      probeHint:
+        "Calls a normal callable once. If a send still arrives afterwards, the callable no longer breaks the FID.",
+      probe: "Call a callable",
+      logHeading: "Log",
+    },
     order: {
       suspend: "Tạm ngừng nhận đơn",
       suspendSettings: "Cài đặt tạm ngừng nhận đơn",
@@ -1176,6 +1245,9 @@ const data = {
       infinityNotificationOn: "Thông báo lại mỗi 1 phút",
       infinityNotificationOff: "Chỉ thông báo khi nhận đơn",
       soundTest: "Thử",
+      webPushDescription:
+        "Thông báo đơn hàng mới đến thiết bị này ngay cả khi đã đóng trang quản trị.",
+      webPushDevices: "Thiết bị nhận thông báo đẩy",
       paymentIsNotCompleted:
         'Lưu ý: Khi nhấn nút "Đã nhận đơn", thanh toán thẻ sẽ được xử lý.',
       cancelButton: "Hủy đơn hàng",

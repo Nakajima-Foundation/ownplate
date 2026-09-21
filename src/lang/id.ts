@@ -1002,6 +1002,36 @@ const data = {
     "auth/code-expired":
       "Kode verifikasi SMS sudah kedaluwarsa. Silakan kirim ulang kode verifikasi SMS dan masukkan lagi",
   },
+  pushDevice: {
+    appName: "おもちかえり.com Notifikasi Pesanan",
+    appShortName: "Notifikasi Pesanan",
+    title: "Daftarkan perangkat untuk notifikasi",
+    installHeading: "Untuk iPhone atau iPad",
+    installStep1: "Ketuk tombol bagikan di bagian bawah layar",
+    installStep2: 'Pilih "Tambahkan ke Layar Utama"',
+    installStep3: "Buka kembali halaman ini dari ikon yang ditambahkan",
+    nameHint: "Beri nama yang mudah dikenali untuk perangkat ini.",
+    namePlaceholder: "mis. iPad di kasir",
+    register: "Terima notifikasi",
+    done: "Terdaftar",
+    doneHint: "Perangkat ini akan diberi tahu saat ada pesanan baru.",
+    status: {
+      "registered-here": "Perangkat ini sudah terdaftar",
+      used: "URL ini sudah digunakan. Mintalah yang baru ke restoran.",
+      expired: "URL ini telah kedaluwarsa. Mintalah yang baru ke restoran.",
+      "not-found": "URL ini tidak valid. Mintalah yang baru ke restoran.",
+    },
+    failure: {
+      unconfigured: "Notifikasi push tidak tersedia untuk restoran ini.",
+      unsupported:
+        "Perangkat atau peramban ini tidak dapat menerima notifikasi push.",
+      denied: "Notifikasi diblokir. Izinkan melalui pengaturan peramban.",
+      dismissed: "Notifikasi tidak diizinkan. Silakan coba lagi.",
+      "no-fid": "Pendaftaran gagal. Silakan coba lagi sebentar lagi.",
+      invite:
+        "URL ini sudah digunakan atau telah kedaluwarsa. Mintalah yang baru ke restoran.",
+    },
+  },
   admin: {
     welcomeMessage: "Selamat datang!",
     userManual: "Panduan penggunaan",
@@ -1163,6 +1193,44 @@ const data = {
     forgotPassword: "Lupa kata sandi",
     passwordReset: "Reset kata sandi",
     pleaseCheckInbox: "Email telah dikirim. Silakan periksa kotak masuk.",
+    push: {
+      devices: "Perangkat yang diberi notifikasi",
+      empty: "Belum ada perangkat yang terdaftar.",
+      addDevice: "Tambah perangkat",
+      inviteHeading: "Buka URL ini di perangkat tersebut",
+      inviteHint:
+        "URL ini hanya berlaku sekali. Izinkan notifikasi di perangkat itu untuk menyelesaikan. URL tidak dapat ditampilkan lagi, jadi buat yang baru bila perlu.",
+      copy: "Salin URL",
+      copied: "Tersalin",
+      test: "Kirim uji coba",
+      deleteConfirm: "Hentikan notifikasi ke perangkat ini?",
+    },
+    webpush: {
+      restaurantId: "ID restoran",
+      title: "Web Push test",
+      statusHeading: "Status",
+      configured: "VAPID key",
+      notConfigured: "not set",
+      supported: "Supported here",
+      notSupported: "not supported",
+      permission: "Notification permission",
+      currentDevice: "FID of this device",
+      noDevice: "not registered",
+      iosHint:
+        "On iPhone and iPad this works only when opened from the icon added to the Home Screen.",
+      registrationHeading: "Device registration",
+      register: "Register this device",
+      unregister: "Unregister this device",
+      sendHeading: "Test send",
+      sendTitle: "Title",
+      sendBody: "Body",
+      send: "Send to my devices",
+      probeHeading: "Callable interference probe",
+      probeHint:
+        "Calls a normal callable once. If a send still arrives afterwards, the callable no longer breaks the FID.",
+      probe: "Call a callable",
+      logHeading: "Log",
+    },
     order: {
       suspend: "Jeda penerimaan pesanan",
       suspendSettings: "Pengaturan jeda penerimaan pesanan",
@@ -1186,6 +1254,9 @@ const data = {
       infinityNotificationOn: "Notifikasi ulang setiap 1 menit",
       infinityNotificationOff: "Notifikasi hanya saat menerima pesanan",
       soundTest: "Tes",
+      webPushDescription:
+        "Memberi tahu perangkat ini tentang pesanan baru meskipun halaman admin ditutup.",
+      webPushDevices: "Perangkat notifikasi push",
       paymentIsNotCompleted:
         'Perhatian: Saat menekan tombol "Diterima", pembayaran kartu akan diproses.',
       cancelButton: "Batalkan pesanan",

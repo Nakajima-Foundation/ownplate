@@ -991,6 +991,37 @@ const data = {
     "auth/code-expired":
       "The SMS verification code has expired. Please resend the SMS verification code and enter it again",
   },
+  pushDevice: {
+    appName: "おもちかえり.com Order Alerts",
+    appShortName: "Order Alerts",
+    title: "Register a device for notifications",
+    installHeading: "On iPhone or iPad",
+    installStep1: "Tap the share button at the bottom of the screen",
+    installStep2: 'Choose "Add to Home Screen"',
+    installStep3: "Open this page again from the icon that was added",
+    nameHint: "Give this device a name you will recognize.",
+    namePlaceholder: "e.g. iPad at the register",
+    register: "Receive notifications",
+    done: "Registered",
+    doneHint: "This device will be notified when a new order arrives.",
+    status: {
+      "registered-here": "This device is already registered",
+      used: "This URL has already been used. Please ask the restaurant for a new one.",
+      expired: "This URL has expired. Please ask the restaurant for a new one.",
+      "not-found":
+        "This URL is not valid. Please ask the restaurant for a new one.",
+    },
+    failure: {
+      unconfigured: "Push notifications are not available for this restaurant.",
+      unsupported: "This device or browser cannot receive push notifications.",
+      denied:
+        "Notifications are blocked. Please allow them in your browser settings.",
+      dismissed: "Notifications were not allowed. Please try again.",
+      "no-fid": "Registration failed. Please try again in a moment.",
+      invite:
+        "This URL has already been used or has expired. Please ask the restaurant for a new one.",
+    },
+  },
   admin: {
     welcomeMessage: "Welcome!",
     userManual: "User Manual",
@@ -1149,6 +1180,44 @@ const data = {
     forgotPassword: "Forgot Password？",
     passwordReset: "Reset Password",
     pleaseCheckInbox: "Please check your inbox, an email is on the way.",
+    push: {
+      devices: "Devices to notify",
+      empty: "No device has been registered yet.",
+      addDevice: "Add a device",
+      inviteHeading: "Open this URL on the device",
+      inviteHint:
+        "This URL works only once. Allow notifications on that device to finish. It cannot be shown again, so create a new one if you need it.",
+      copy: "Copy URL",
+      copied: "Copied",
+      test: "Send a test",
+      deleteConfirm: "Stop notifying this device?",
+    },
+    webpush: {
+      restaurantId: "Restaurant ID",
+      title: "Web Push test",
+      statusHeading: "Status",
+      configured: "VAPID key",
+      notConfigured: "not set",
+      supported: "Supported here",
+      notSupported: "not supported",
+      permission: "Notification permission",
+      currentDevice: "FID of this device",
+      noDevice: "not registered",
+      iosHint:
+        "On iPhone and iPad this works only when opened from the icon added to the Home Screen.",
+      registrationHeading: "Device registration",
+      register: "Register this device",
+      unregister: "Unregister this device",
+      sendHeading: "Test send",
+      sendTitle: "Title",
+      sendBody: "Body",
+      send: "Send to my devices",
+      probeHeading: "Callable interference probe",
+      probeHint:
+        "Calls a normal callable once. If a send still arrives afterwards, the callable no longer breaks the FID.",
+      probe: "Call a callable",
+      logHeading: "Log",
+    },
     order: {
       suspend: "Suspend",
       suspendSettings: "Suspension Settings",
@@ -1172,6 +1241,9 @@ const data = {
       infinityNotificationOn: "Remind Every Minute",
       infinityNotificationOff: "Notify One Time",
       soundTest: "Test",
+      webPushDescription:
+        "Notifies this device of new orders even when the admin page is closed.",
+      webPushDevices: "Push notification devices",
       paymentIsNotCompleted:
         "Note: Please complete the credit card payment process by clicking the 'Accepted' button before giving the items to the customer.",
       cancelButton: "Cancel this order",

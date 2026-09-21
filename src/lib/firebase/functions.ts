@@ -11,6 +11,14 @@ import type {
   LiffAuthenticateData,
   PingData,
   StripeDeleteRestaurantCardData,
+  CheckPushInviteData,
+  CheckPushInviteResult,
+  CreatePushInviteData,
+  CreatePushInviteResult,
+  RedeemPushInviteData,
+  RedeemPushInviteResult,
+  SendTestWebPushData,
+  SendTestWebPushResult,
 } from "@/models/functionTypes";
 
 export const lineVerifyFriend = httpsCallable<
@@ -110,3 +118,23 @@ export const stripeReceipt = httpsCallable<
   { restaurantId: string; orderId: string | string[] },
   { receipt_url?: string }
 >(functionsJP, "stripeReceipt2");
+
+export const createPushInvite = httpsCallable<
+  CreatePushInviteData,
+  CreatePushInviteResult
+>(functionsJP, "createPushInvite2");
+// 押す前に招待が使えるか確かめる。状態は変えないので、何度呼んでも安全。
+export const checkPushInvite = httpsCallable<
+  CheckPushInviteData,
+  CheckPushInviteResult
+>(functionsJP, "checkPushInvite2");
+// 登録する端末はサインインしていない。トークンを知っていることが唯一の資格。
+export const redeemPushInvite = httpsCallable<
+  RedeemPushInviteData,
+  RedeemPushInviteResult
+>(functionsJP, "redeemPushInvite2");
+export const sendTestWebPush = httpsCallable<
+  SendTestWebPushData,
+  SendTestWebPushResult,
+  { result: boolean; sent: number; failed: number; targets: number }
+>(functionsJP, "sendTestWebPush2");

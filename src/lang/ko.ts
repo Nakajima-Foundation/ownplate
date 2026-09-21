@@ -984,6 +984,36 @@ const data = {
     "auth/code-expired":
       "SMS 인증 코드가 만료되었습니다. SMS 인증 코드를 재전송하여 다시 입력해 주세요",
   },
+  pushDevice: {
+    appName: "おもちかえり.com 주문 알림",
+    appShortName: "주문 알림",
+    title: "알림을 받을 기기 등록",
+    installHeading: "iPhone·iPad를 사용하는 경우",
+    installStep1: "화면 아래의 공유 버튼을 누릅니다",
+    installStep2: '"홈 화면에 추가"를 선택합니다',
+    installStep3: "추가된 아이콘에서 이 페이지를 다시 엽니다",
+    nameHint: "어떤 기기인지 알 수 있는 이름을 입력해 주세요.",
+    namePlaceholder: "예: 계산대의 iPad",
+    register: "알림 받기",
+    done: "등록했습니다",
+    doneHint: "새 주문이 들어오면 이 기기로 알림이 전송됩니다.",
+    status: {
+      "registered-here": "이 기기는 등록되어 있습니다",
+      used: "이 URL은 이미 사용되었습니다. 매장에 새 URL을 요청해 주세요.",
+      expired: "이 URL은 기한이 지났습니다. 매장에 새 URL을 요청해 주세요.",
+      "not-found": "이 URL은 유효하지 않습니다. 매장에 새 URL을 요청해 주세요.",
+    },
+    failure: {
+      unconfigured: "이 매장에서는 푸시 알림을 사용할 수 없습니다.",
+      unsupported:
+        "이 기기 또는 브라우저에서는 푸시 알림을 사용할 수 없습니다.",
+      denied: "알림이 차단되어 있습니다. 브라우저 설정에서 허용해 주세요.",
+      dismissed: "알림이 허용되지 않았습니다. 다시 시도해 주세요.",
+      "no-fid": "등록하지 못했습니다. 잠시 후 다시 시도해 주세요.",
+      invite:
+        "이 URL은 이미 사용되었거나 기한이 지났습니다. 매장에 문의해 주세요.",
+    },
+  },
   admin: {
     welcomeMessage: "어서 오세요!",
     userManual: "사용 방법",
@@ -1138,6 +1168,44 @@ const data = {
     forgotPassword: "비밀번호를 잊으신 경우",
     passwordReset: "비밀번호 재설정",
     pleaseCheckInbox: "이메일을 전송했습니다. 받은 편지함을 확인해 주세요.",
+    push: {
+      devices: "알림을 받을 기기",
+      empty: "아직 등록된 기기가 없습니다.",
+      addDevice: "기기 추가",
+      inviteHeading: "이 URL을 기기에서 열어 주세요",
+      inviteHint:
+        "이 URL은 한 번만 사용할 수 있습니다. 해당 기기에서 알림을 허용하면 등록됩니다. 다시 표시할 수 없으니 필요하면 새로 만들어 주세요.",
+      copy: "URL 복사",
+      copied: "복사했습니다",
+      test: "테스트 전송",
+      deleteConfirm: "이 기기로의 알림을 삭제할까요?",
+    },
+    webpush: {
+      restaurantId: "매장 ID",
+      title: "Web Push test",
+      statusHeading: "Status",
+      configured: "VAPID key",
+      notConfigured: "not set",
+      supported: "Supported here",
+      notSupported: "not supported",
+      permission: "Notification permission",
+      currentDevice: "FID of this device",
+      noDevice: "not registered",
+      iosHint:
+        "On iPhone and iPad this works only when opened from the icon added to the Home Screen.",
+      registrationHeading: "Device registration",
+      register: "Register this device",
+      unregister: "Unregister this device",
+      sendHeading: "Test send",
+      sendTitle: "Title",
+      sendBody: "Body",
+      send: "Send to my devices",
+      probeHeading: "Callable interference probe",
+      probeHint:
+        "Calls a normal callable once. If a send still arrives afterwards, the callable no longer breaks the FID.",
+      probe: "Call a callable",
+      logHeading: "Log",
+    },
     order: {
       suspend: "접수 중지",
       suspendSettings: "접수 중지 설정",
@@ -1160,6 +1228,9 @@ const data = {
       infinityNotificationOn: "1분마다 재알림",
       infinityNotificationOff: "수주 시에만 알림",
       soundTest: "테스트",
+      webPushDescription:
+        "관리 화면을 닫아도 이 기기로 새 주문을 알려 드립니다.",
+      webPushDevices: "푸시 알림 기기",
       paymentIsNotCompleted:
         "주의: 「접수 완료」버튼을 누르면 카드 결제가 처리됩니다.",
       cancelButton: "주문 취소",

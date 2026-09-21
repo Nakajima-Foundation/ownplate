@@ -10,6 +10,7 @@
 # 仕様
 - [Database](./DATABASE.md)
 - [Line, メール, 電話通知の挙動](./NOTIFICATION.md)
+- [Web Push (PWA) の設定](./WEBPUSH.md)
 - [更新履歴(ChangeLog)の仕様](./NEWS.md)
 - [Order Stateの仕様メモ](./ORDER_STATE.md)
 - [Orderの時間についての仕様メモ](./STATE_TIME.md)

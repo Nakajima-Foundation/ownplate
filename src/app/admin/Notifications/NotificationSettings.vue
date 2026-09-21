@@ -138,6 +138,28 @@
             </div>
           </div>
 
+          <!-- Web Push -->
+          <div
+            v-if="webPushConfigured"
+            class="mt-4"
+            @click="closeNotificationSettings()"
+          >
+            <router-link
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
+              :to="`/admin/restaurants/${restaurantId}/pushlist`"
+            >
+              <i class="material-icons text-op-teal mr-2 text-lg"
+                >notifications_active</i
+              >
+              <span class="text-op-teal text-sm font-bold">
+                {{ $t("admin.order.webPushDevices") }}
+              </span>
+            </router-link>
+            <div class="mt-2 text-xs text-black/60">
+              {{ $t("admin.order.webPushDescription") }}
+            </div>
+          </div>
+
           <!-- LINE Connection -->
           <div class="mt-4" @click="closeNotificationSettings()">
             <router-link
@@ -182,6 +204,7 @@ import {
   useSoundPlay,
   isLineEnabled,
 } from "@/utils/utils";
+import { isWebPushConfigured } from "@/utils/webPush";
 
 import IncompleteOrders from "@/app/admin/Notifications/IncompleteOrders.vue";
 
@@ -234,6 +257,8 @@ export default defineComponent({
     const closeNotificationSettings = () => {
       ctx.emit("close");
     };
+    const webPushConfigured = isWebPushConfigured();
+
     const soundPlay = useSoundPlay();
     const delayedSoundPlay = () => {
       // We need to add a delay so that it won't interrupt the very first silent sound.
@@ -251,6 +276,8 @@ export default defineComponent({
       closeNotificationSettings,
       delayedSoundPlay,
       isLineEnabled,
+
+      webPushConfigured,
 
       restaurantId,
     };

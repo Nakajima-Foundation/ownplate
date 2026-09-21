@@ -1006,6 +1006,41 @@ const data = {
     "auth/code-expired":
       "Le code de vérification SMS a expiré. Veuillez demander un nouveau code et le saisir à nouveau.",
   },
+  pushDevice: {
+    appName: "おもちかえり.com Alertes commandes",
+    appShortName: "Alertes commandes",
+    title: "Enregistrer un appareil pour les notifications",
+    installHeading: "Sur iPhone ou iPad",
+    installStep1: "Appuyez sur le bouton de partage en bas de l'écran",
+    installStep2: "Choisissez « Sur l'écran d'accueil »",
+    installStep3: "Rouvrez cette page depuis l'icône ajoutée",
+    nameHint: "Donnez à cet appareil un nom reconnaissable.",
+    namePlaceholder: "ex. iPad de la caisse",
+    register: "Recevoir les notifications",
+    done: "Enregistré",
+    doneHint: "Cet appareil sera notifié à l'arrivée d'une nouvelle commande.",
+    status: {
+      "registered-here": "Cet appareil est déjà enregistré",
+      used: "Cette URL a déjà été utilisée. Demandez-en une nouvelle au restaurant.",
+      expired: "Cette URL a expiré. Demandez-en une nouvelle au restaurant.",
+      "not-found":
+        "Cette URL n'est pas valide. Demandez-en une nouvelle au restaurant.",
+    },
+    failure: {
+      unconfigured:
+        "Les notifications push ne sont pas disponibles pour ce restaurant.",
+      unsupported:
+        "Cet appareil ou ce navigateur ne peut pas recevoir de notifications push.",
+      denied:
+        "Les notifications sont bloquées. Autorisez-les dans les réglages du navigateur.",
+      dismissed:
+        "Les notifications n'ont pas été autorisées. Veuillez réessayer.",
+      "no-fid":
+        "L'enregistrement a échoué. Veuillez réessayer dans un instant.",
+      invite:
+        "Cette URL a déjà été utilisée ou a expiré. Demandez-en une nouvelle au restaurant.",
+    },
+  },
   admin: {
     welcomeMessage: "Welcome!",
     userManual: "User Manual",
@@ -1165,6 +1200,44 @@ const data = {
     forgotPassword: "Forgot Password？",
     passwordReset: "Reset Password",
     pleaseCheckInbox: "Please check your inbox, an email is on the way.",
+    push: {
+      devices: "Appareils à notifier",
+      empty: "Aucun appareil n'est encore enregistré.",
+      addDevice: "Ajouter un appareil",
+      inviteHeading: "Ouvrez cette URL sur l'appareil",
+      inviteHint:
+        "Cette URL ne fonctionne qu'une fois. Autorisez les notifications sur cet appareil pour terminer. Elle ne peut pas être réaffichée : créez-en une nouvelle si besoin.",
+      copy: "Copier l'URL",
+      copied: "Copié",
+      test: "Envoyer un test",
+      deleteConfirm: "Arrêter de notifier cet appareil ?",
+    },
+    webpush: {
+      restaurantId: "ID du restaurant",
+      title: "Web Push test",
+      statusHeading: "Status",
+      configured: "VAPID key",
+      notConfigured: "not set",
+      supported: "Supported here",
+      notSupported: "not supported",
+      permission: "Notification permission",
+      currentDevice: "FID of this device",
+      noDevice: "not registered",
+      iosHint:
+        "On iPhone and iPad this works only when opened from the icon added to the Home Screen.",
+      registrationHeading: "Device registration",
+      register: "Register this device",
+      unregister: "Unregister this device",
+      sendHeading: "Test send",
+      sendTitle: "Title",
+      sendBody: "Body",
+      send: "Send to my devices",
+      probeHeading: "Callable interference probe",
+      probeHint:
+        "Calls a normal callable once. If a send still arrives afterwards, the callable no longer breaks the FID.",
+      probe: "Call a callable",
+      logHeading: "Log",
+    },
     order: {
       suspend: "Suspend",
       suspendSettings: "Suspension Settings",
@@ -1188,6 +1261,9 @@ const data = {
       infinityNotificationOn: "Remind Every Minute",
       infinityNotificationOff: "Notify One Time",
       soundTest: "Test",
+      webPushDescription:
+        "Notifies this device of new orders even when the admin page is closed.",
+      webPushDevices: "Appareils de notification push",
       paymentIsNotCompleted:
         "Note: Please complete the credit card payment process by clicking the 'Accepted' button before giving the items to the customer.",
       cancelButton: "Cancel this order",

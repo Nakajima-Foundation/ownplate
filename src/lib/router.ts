@@ -145,6 +145,10 @@ export const customRoutes: CustomRoute[] = [
     children: getUserPages("normal"),
   },
   {
+    path: "/pushdevice/:token",
+    component: () => import("@/app/pushDevice/Register.vue"),
+  },
+  {
     path: "/liff/:liffIndexId/pc",
     component: () => import("@/app/liff/PC.vue"),
   },
@@ -194,6 +198,11 @@ export const customRoutes: CustomRoute[] = [
       {
         path: "restaurants",
         component: () => import("@/app/admin/Index.vue"),
+      },
+      {
+        name: "admin-webpush",
+        path: "webpush",
+        component: () => import("@/app/admin/WebPush/Index.vue"),
       },
       {
         path: "restaurants/:restaurantId",
@@ -253,6 +262,10 @@ export const customRoutes: CustomRoute[] = [
           {
             path: "linelist",
             component: () => import("@/app/admin/Restaurants/ManageLine.vue"),
+          },
+          {
+            path: "pushlist",
+            component: () => import("@/app/admin/Restaurants/ManagePush.vue"),
           },
           {
             path: "line",

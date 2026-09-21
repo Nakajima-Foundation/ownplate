@@ -126,3 +126,55 @@ export interface DispatchData {
   key: string;
   value: boolean;
 }
+
+// Web Push function call types
+export interface CreatePushInviteData {
+  restaurantId: string;
+}
+
+export interface CreatePushInviteResult {
+  result: boolean;
+  url: string;
+  expiresAt: number;
+}
+
+// 押す前に招待が使えるか確かめる。状態は変えない。
+export interface CheckPushInviteData {
+  token: string;
+  fid?: string;
+}
+
+export type PushInviteStatus =
+  "usable" | "registered-here" | "not-found" | "used" | "expired";
+
+export interface CheckPushInviteResult {
+  result: boolean;
+  status: PushInviteStatus;
+}
+
+// 登録するのは非ログインの端末なので、uid ではなくトークンが唯一の資格になる
+export interface RedeemPushInviteData {
+  token: string;
+  fid: string;
+  platform: string;
+  name: string;
+}
+
+export interface RedeemPushInviteResult {
+  result: boolean;
+  restaurantId: string;
+}
+
+export interface SendTestWebPushData {
+  restaurantId: string;
+  title: string;
+  body: string;
+}
+
+export interface SendTestWebPushResult {
+  result: boolean;
+  sent: number;
+  failed: number;
+  targets: number;
+  codes: string[];
+}
