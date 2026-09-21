@@ -14,6 +14,7 @@ import type {
   RegisterWebPushData,
   UnregisterWebPushData,
   SendTestWebPushData,
+  SendTestWebPushResult,
 } from "@/models/functionTypes";
 
 export const lineVerifyFriend = httpsCallable<
@@ -124,5 +125,6 @@ export const unregisterWebPush = httpsCallable<
 >(functionsJP, "unregisterWebPush2");
 export const sendTestWebPush = httpsCallable<
   SendTestWebPushData,
+  SendTestWebPushResult,
   { result: boolean; sent: number; failed: number; targets: number }
 >(functionsJP, "sendTestWebPush2");

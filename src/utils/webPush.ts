@@ -1,5 +1,9 @@
 import { FirebaseApp, getApps, initializeApp } from "firebase/app";
-import { getId, getInstallations } from "firebase/installations";
+import {
+  deleteInstallations,
+  getId,
+  getInstallations,
+} from "firebase/installations";
 import {
   Messaging,
   getMessaging,
@@ -139,18 +143,23 @@ const nextFid = (messaging: Messaging): Promise<string | null> =>
     }, REGISTER_TIMEOUT_MS);
   });
 
-// 購読だけ捨てて、新しい endpoint で登録し直させる。
+// FCM が既に落とした登録はここからは見えない。register() は自前のキャッシュ
+// (stored.fid === fid かつ更新期限内なら FCM に問い合わせない) から成功を返すため、
+// 送信して初めて判明する。そのときにはサーバ側が prune 済みで、押し直しても同じ
+// キャッシュに当たり、端末は登録できないまま何日も戻らない (mulmoserver#148)。
 //
-// installation id の回転はここでは行わない。回すと押すたびに別の FID が発行され、
-// 前の登録が配信先として残り続ける（実測で 1 回の送信に対し死んだ宛先が 4 件溜まった）。
-// 失効した登録はサーバ側が送信失敗コードを見て自動削除する。
+// unregister()/deleteToken() では直せない。どちらもサーバ側の削除を先に行い、
+// 落ちた登録が返す 404 で throw してローカルの掃除まで到達しないため。
+// そこでキャッシュの鍵になっている2つの入力を落とす。installation id の回転が
+// stored.fid !== fid を成立させて再登録を強制し、購読の破棄で新しい endpoint に
+// 対して登録させる。
 const resetBeforeRegistering = (registration: ServiceWorkerRegistration) =>
   resetRegistrationState({
     dropSubscription: async () => {
       const subscription = await registration.pushManager.getSubscription();
       return subscription?.unsubscribe();
     },
-    rotateInstallation: () => Promise.resolve(),
+    rotateInstallation: () => deleteInstallations(getInstallations(pushApp())),
     onFailure: (reason) =>
       console.warn("push registration reset failed", reason),
   });

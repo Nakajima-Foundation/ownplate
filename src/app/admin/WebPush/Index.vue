@@ -165,7 +165,13 @@ export default defineComponent({
 
     onMounted(async () => {
       await refresh();
-      note(`configured=${configured} supported=${supported.value}`);
+      note(
+        `configured=${configured} supported=${supported.value} permission=${permission.value}`,
+      );
+      const swReg = await navigator.serviceWorker?.getRegistration();
+      note(
+        `sw scope=${swReg?.scope ?? "none"} active=${swReg?.active?.state ?? "none"}`,
+      );
     });
 
     const onRegister = async () => {
@@ -207,8 +213,11 @@ export default defineComponent({
           title: title.value,
           body: body.value,
         });
+        const codes = data.codes.length
+          ? ` codes=[${data.codes.join(", ")}]`
+          : "";
         note(
-          `${describeSendResult(data.sent, data.targets)} failed=${data.failed}`,
+          `${describeSendResult(data.sent, data.targets)} failed=${data.failed}${codes}`,
         );
       } catch (e) {
         note(`send error: ${e}`);

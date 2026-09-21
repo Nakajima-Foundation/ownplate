@@ -141,3 +141,11 @@ export interface SendTestWebPushData {
   title: string;
   body: string;
 }
+
+export interface SendTestWebPushResult {
+  result: boolean;
+  sent: number;
+  failed: number;
+  targets: number;
+  codes: string[];
+}
