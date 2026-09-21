@@ -139,50 +139,24 @@
           </div>
 
           <!-- Web Push -->
-          <div v-if="webPushConfigured" class="mt-4">
-            <button
-              v-if="webPushSupported"
-              type="button"
-              class="cursor-pointer"
-              :aria-pressed="webPushEnabled"
-              @click="toggleWebPush()"
+          <div
+            v-if="webPushConfigured"
+            class="mt-4"
+            @click="closeNotificationSettings()"
+          >
+            <router-link
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
+              :to="`/admin/restaurants/${restaurantId}/pushlist`"
             >
-              <div
-                v-if="webPushEnabled"
-                class="inline-flex h-9 items-center justify-center rounded-full bg-green-600/10 px-4"
+              <i class="material-icons text-op-teal mr-2 text-lg"
+                >notifications_active</i
               >
-                <i class="material-icons mr-2 text-lg text-green-600"
-                  >notifications_active</i
-                >
-                <div class="text-sm font-bold text-green-600">
-                  {{ $t("admin.order.webPushOn") }}
-                </div>
-              </div>
-
-              <div
-                v-else
-                class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
-              >
-                <i class="material-icons mr-2 text-lg text-black/30"
-                  >notifications_off</i
-                >
-                <div class="text-sm font-bold text-black/30">
-                  {{ $t("admin.order.webPushOff") }}
-                </div>
-              </div>
-            </button>
-
+              <span class="text-op-teal text-sm font-bold">
+                {{ $t("admin.order.webPushDevices") }}
+              </span>
+            </router-link>
             <div class="mt-2 text-xs text-black/60">
               {{ $t("admin.order.webPushDescription") }}
-            </div>
-            <div class="text-xs text-black/60">
-              {{ $t("admin.order.webPushIosHint") }}
-            </div>
-            <div
-              v-if="webPushError"
-              class="mt-1 text-xs font-bold text-red-700"
-            >
-              {{ $t("admin.order.webPushError") }}
             </div>
           </div>
 
@@ -230,7 +204,7 @@ import {
   useSoundPlay,
   isLineEnabled,
 } from "@/utils/utils";
-import { useWebPushToggle } from "@/utils/useWebPushToggle";
+import { isWebPushConfigured } from "@/utils/webPush";
 
 import IncompleteOrders from "@/app/admin/Notifications/IncompleteOrders.vue";
 
@@ -283,13 +257,7 @@ export default defineComponent({
     const closeNotificationSettings = () => {
       ctx.emit("close");
     };
-    const {
-      webPushConfigured,
-      webPushSupported,
-      webPushEnabled,
-      webPushError,
-      toggleWebPush,
-    } = useWebPushToggle();
+    const webPushConfigured = isWebPushConfigured();
 
     const soundPlay = useSoundPlay();
     const delayedSoundPlay = () => {
@@ -310,10 +278,6 @@ export default defineComponent({
       isLineEnabled,
 
       webPushConfigured,
-      webPushSupported,
-      webPushEnabled,
-      webPushError,
-      toggleWebPush,
 
       restaurantId,
     };

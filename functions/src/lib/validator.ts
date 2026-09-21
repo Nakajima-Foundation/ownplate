@@ -14,8 +14,8 @@ import {
   PingData,
   LineValidateData,
   LiffAuthenticateData,
-  RegisterWebPushData,
-  UnregisterWebPushData,
+  CreatePushInviteData,
+  RedeemPushInviteData,
 } from "../models/functionTypes";
 import { ValidatorNumberOption, ValidatorStringOption } from "./types/validator";
 import { CustomerInfo } from "../models/customer";
@@ -382,9 +382,25 @@ export const validatePing = (data: PingData) => {
   return validateData(data, validator);
 };
 
-// FID (Firebase Installation ID) は base64url 相当の固定長文字列
-export const validateRegisterWebPush = (data: RegisterWebPushData) => {
+export const validateCreatePushInvite = (data: CreatePushInviteData) => {
   const validator = {
+    restaurantId: {
+      type: "firebaseId",
+      required: true,
+    },
+  };
+  return validateData(data, validator);
+};
+
+// FID (Firebase Installation ID) は base64url 相当の固定長文字列。
+// name は端末の呼び名で、日本語が入るので形は見ず、長さだけ呼び出し側で詰める。
+export const validateRedeemPushInvite = (data: RedeemPushInviteData) => {
+  const validator = {
+    token: {
+      type: "string",
+      required: true,
+      regex: /^[A-Za-z0-9_-]{22,128}$/,
+    },
     fid: {
       type: "numAlphaBar",
       required: true,
@@ -393,14 +409,8 @@ export const validateRegisterWebPush = (data: RegisterWebPushData) => {
       type: "alphabet",
       required: true,
     },
-  };
-  return validateData(data, validator);
-};
-
-export const validateUnregisterWebPush = (data: UnregisterWebPushData) => {
-  const validator = {
-    fid: {
-      type: "numAlphaBar",
+    name: {
+      type: "string",
       required: true,
     },
   };

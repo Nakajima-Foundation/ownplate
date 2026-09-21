@@ -3,18 +3,9 @@
 
 export type PushDevicePlatform = "ios" | "android" | "other";
 
-export type PushDevice = {
-  fid: string;
-  platform: PushDevicePlatform;
-  updatedAtMs: number | null;
-};
-
-const PLATFORMS: readonly PushDevicePlatform[] = ["ios", "android", "other"];
-
-export const asPlatform = (value: unknown): PushDevicePlatform => {
-  const known = PLATFORMS.find((platform) => platform === value);
-  return known ?? "other";
-};
+// 入力欄の上限。実際に詰めるのはサーバ側（functions の MAX_DEVICE_NAME_LENGTH）で、
+// ここは打ちすぎを止めるだけ。
+export const MAX_DEVICE_NAME_LENGTH = 40;
 
 export const detectPlatform = (userAgent: string): PushDevicePlatform => {
   if (/iphone|ipad|ipod/iu.test(userAgent)) {
@@ -25,34 +16,6 @@ export const detectPlatform = (userAgent: string): PushDevicePlatform => {
   }
   return "other";
 };
-
-// 端末が最後に使われた順。updatedAt はサーバ値が届くまで null になりうるので、
-// その端末は末尾に寄せる。fid で同点を崩さないと並びが毎回揺れる。
-export const sortDevices = (devices: PushDevice[]): PushDevice[] =>
-  [...devices].sort((left, right) => {
-    if (left.updatedAtMs !== right.updatedAtMs) {
-      return (right.updatedAtMs ?? -1) - (left.updatedAtMs ?? -1);
-    }
-    return left.fid.localeCompare(right.fid);
-  });
-
-// push が実際に届くのは「サーバに登録済み」かつ「ブラウザが許可している」端末だけ。
-// 許可だけ取り消された状態を「有効」と表示すると、直す手段のボタンが消えてしまう。
-export const isPushEnabledHere = (
-  devices: PushDevice[],
-  currentFid: string,
-  permission: string,
-): boolean => {
-  if (permission !== "granted" || currentFid === "") {
-    return false;
-  }
-  return devices.some((device) => device.fid === currentFid);
-};
-
-// ブラウザ設定で拒否されている状態。requestPermission() は問い合わせずに denied を
-// 返すため、押しても動かないボタンではなく設定を見るよう案内する必要がある。
-export const isBlockedByBrowser = (permission: string): boolean =>
-  permission === "denied";
 
 export const describeSendResult = (sent: number, targets: number): string => {
   if (targets === 0) {

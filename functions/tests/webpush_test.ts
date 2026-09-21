@@ -10,48 +10,45 @@ import {
   createOrderPushData,
   createWebPushData,
   detectPlatform,
-  notifyTargetUids,
+  truncate,
 } from "../src/functions/notify/webpushFormat";
 import {
-  validateRegisterWebPush,
-  validateUnregisterWebPush,
-} from "../src/lib/validator";
+  DEFAULT_DEVICE_NAME,
+  MAX_DEVICE_NAME_LENGTH,
+  createInviteToken,
+  deviceName,
+  hashInviteToken,
+  inviteExpiry,
+  inviteRejection,
+  inviteUrl,
+  isInviteToken,
+} from "../src/functions/notify/pushInviteFormat";
+import { validateCreatePushInvite, validateRedeemPushInvite } from "../src/lib/validator";
 
 // Firebase Installation ID は base64url 相当の固定長文字列
 const fid = "dGVzdEZpZFZhbHVlMDAx";
 
 describe("webPushFormat", () => {
   it("builds the admin order path", () => {
-    assert.strictEqual(
-      adminOrderPath("rest1", "order1"),
-      "/admin/restaurants/rest1/orders/order1",
-    );
+    assert.strictEqual(adminOrderPath("rest1", "order1"), "/admin/restaurants/rest1/orders/order1");
   });
 
   it("builds a data-only payload the service worker can read", () => {
-    assert.deepStrictEqual(
-      createOrderPushData("新しい注文 #12", "テスト店", "rest1", "order1"),
-      {
-        title: "新しい注文 #12",
-        body: "テスト店",
-        url: "/admin/restaurants/rest1/orders/order1",
-      },
-    );
+    assert.deepStrictEqual(createOrderPushData("新しい注文 #12", "テスト店", "rest1", "order1"), {
+      title: "新しい注文 #12",
+      body: "テスト店",
+      url: "/admin/restaurants/rest1/orders/order1",
+    });
   });
 
   it("keeps the url host-free so the service worker can resolve it", () => {
-    assert.ok(
-      createOrderPushData("t", "n", "rest1", "order1").url.startsWith("/"),
-    );
+    assert.ok(createOrderPushData("t", "n", "rest1", "order1").url.startsWith("/"));
   });
 
   // tag を付けると同じ tag の通知は置き換えになり、renotify が無い限り再通知されない。
   // 実機で「1通目だけ出て以降沈黙する」状態になったため、payload に tag は持たせない。
   it("carries no tag", () => {
-    assert.strictEqual(
-      createOrderPushData("t", "n", "rest1", "order9").tag,
-      undefined,
-    );
+    assert.strictEqual(createOrderPushData("t", "n", "rest1", "order9").tag, undefined);
   });
 
   it("truncates long title and body", () => {
@@ -63,13 +60,8 @@ describe("webPushFormat", () => {
 
   // slice は UTF-16 の単位で切るため、絵文字の途中で切ると孤立サロゲートが残る
   it("never splits a surrogate pair", () => {
-    const data = createWebPushData(
-      "\u{1F363}".repeat(300),
-      "\u{1F363}".repeat(500),
-      "/x",
-    );
-    const lonely =
-      /[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/u;
+    const data = createWebPushData("\u{1F363}".repeat(300), "\u{1F363}".repeat(500), "/x");
+    const lonely = /[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/u;
     assert.ok(!lonely.test(data.title));
     assert.ok(!lonely.test(data.body));
   });
@@ -109,41 +101,9 @@ describe("asPlatform", () => {
   });
 });
 
-describe("notifyTargetUids", () => {
-  it("returns the owner when there is no sub account", () => {
-    assert.deepStrictEqual(notifyTargetUids("owner1", [], "rest1"), ["owner1"]);
-  });
-
-  it("includes sub accounts assigned to the restaurant", () => {
-    const children = [
-      { uid: "child1", restaurantLists: ["rest1", "rest2"] },
-      { uid: "child2", restaurantLists: ["rest2"] },
-      { uid: "child3", restaurantLists: [] },
-    ];
-    assert.deepStrictEqual(notifyTargetUids("owner1", children, "rest1"), [
-      "owner1",
-      "child1",
-    ]);
-  });
-
-  it("returns only the owner when no sub account is assigned", () => {
-    assert.deepStrictEqual(
-      notifyTargetUids(
-        "owner1",
-        [{ uid: "child1", restaurantLists: ["rest2"] }],
-        "rest1",
-      ),
-      ["owner1"],
-    );
-  });
-});
-
 describe("chunk", () => {
   it("splits at the multicast limit", () => {
-    const fids = Array.from(
-      { length: MULTICAST_LIMIT + 1 },
-      (_unused, i) => `fid${i}`,
-    );
+    const fids = Array.from({ length: MULTICAST_LIMIT + 1 }, (_unused, i) => `fid${i}`);
     const batches = chunk(fids, MULTICAST_LIMIT);
     assert.strictEqual(batches.length, 2);
     assert.strictEqual(batches[0].length, MULTICAST_LIMIT);
@@ -162,14 +122,8 @@ describe("chunk", () => {
 
 describe("INVALID_TARGET_CODES", () => {
   it("covers the codes that mean the target itself is dead", () => {
-    assert.ok(
-      INVALID_TARGET_CODES.includes("messaging/installation-id-not-registered"),
-    );
-    assert.ok(
-      INVALID_TARGET_CODES.includes(
-        "messaging/registration-token-not-registered",
-      ),
-    );
+    assert.ok(INVALID_TARGET_CODES.includes("messaging/installation-id-not-registered"));
+    assert.ok(INVALID_TARGET_CODES.includes("messaging/registration-token-not-registered"));
   });
 
   // invalid-argument はペイロード不正でも返る。prune の根拠にすると
@@ -180,36 +134,116 @@ describe("INVALID_TARGET_CODES", () => {
 });
 
 describe("web push validator", () => {
-  it("accepts a registration from the browser", () => {
-    assert.strictEqual(
-      validateRegisterWebPush({ fid, platform: "ios" }).result,
-      true,
-    );
+  const redeem = { token: "a".repeat(43), fid, platform: "ios", name: "レジ" };
+
+  it("accepts an invite redemption from an unauthenticated device", () => {
+    assert.strictEqual(validateRedeemPushInvite(redeem).result, true);
+  });
+
+  it("rejects a token that is too short to be a generated one", () => {
+    assert.strictEqual(validateRedeemPushInvite({ ...redeem, token: "short" }).result, false);
+  });
+
+  it("rejects a token carrying characters base64url never produces", () => {
+    assert.strictEqual(validateRedeemPushInvite({ ...redeem, token: "a".repeat(42) + "/" }).result, false);
+  });
+
+  it("rejects a missing token, fid or name", () => {
+    assert.strictEqual(validateRedeemPushInvite({ ...redeem, token: "" }).result, false);
+    assert.strictEqual(validateRedeemPushInvite({ ...redeem, fid: "" }).result, false);
+    assert.strictEqual(validateRedeemPushInvite({ ...redeem, name: "" }).result, false);
   });
 
   it("rejects a fid with invalid characters", () => {
-    assert.strictEqual(
-      validateRegisterWebPush({ fid: "abc$def", platform: "ios" }).result,
-      false,
-    );
-  });
-
-  it("rejects an empty fid", () => {
-    assert.strictEqual(
-      validateRegisterWebPush({ fid: "", platform: "ios" }).result,
-      false,
-    );
-    assert.strictEqual(validateUnregisterWebPush({ fid: "" }).result, false);
+    assert.strictEqual(validateRedeemPushInvite({ ...redeem, fid: "abc$def" }).result, false);
   });
 
   it("rejects a non-alphabetic platform", () => {
-    assert.strictEqual(
-      validateRegisterWebPush({ fid, platform: "ios9" }).result,
-      false,
-    );
+    assert.strictEqual(validateRedeemPushInvite({ ...redeem, platform: "ios9" }).result, false);
   });
 
-  it("accepts unregister data carrying only the fid", () => {
-    assert.strictEqual(validateUnregisterWebPush({ fid }).result, true);
+  it("accepts an invite request naming a restaurant", () => {
+    assert.strictEqual(validateCreatePushInvite({ restaurantId: "abcABC123" }).result, true);
+  });
+
+  it("rejects an invite request without a restaurant", () => {
+    assert.strictEqual(validateCreatePushInvite({ restaurantId: "" }).result, false);
+  });
+});
+
+describe("invite token", () => {
+  it("generates a token the validator accepts", () => {
+    assert.ok(isInviteToken(createInviteToken()));
+  });
+
+  it("never generates the same token twice", () => {
+    const tokens = new Set(Array.from({ length: 200 }, () => createInviteToken()));
+    assert.strictEqual(tokens.size, 200);
+  });
+
+  // doc id にはハッシュだけを置く。DB が漏れても URL は復元できない。
+  it("hashes to something that is not the token", () => {
+    const token = createInviteToken();
+    const hash = hashInviteToken(token);
+    assert.notStrictEqual(hash, token);
+    assert.ok(!hash.includes(token));
+    assert.strictEqual(hash, hashInviteToken(token));
+  });
+
+  it("hashes different tokens differently", () => {
+    assert.notStrictEqual(hashInviteToken(createInviteToken()), hashInviteToken(createInviteToken()));
+  });
+
+  it("puts the token in the url and nothing else", () => {
+    const token = createInviteToken();
+    const url = inviteUrl("example.com", token);
+    assert.strictEqual(url, `https://example.com/pushdevice/${token}`);
+  });
+});
+
+describe("inviteRejection", () => {
+  const usable = { restaurantId: "r1", createdBy: "u1", expiresAt: 2000 };
+
+  it("accepts an unused invite inside its window", () => {
+    assert.strictEqual(inviteRejection(usable, 1999), null);
+  });
+
+  it("rejects an invite that was never issued", () => {
+    assert.strictEqual(inviteRejection(undefined, 0), "not-found");
+  });
+
+  it("rejects an invite already redeemed", () => {
+    assert.strictEqual(inviteRejection({ ...usable, usedAt: 1500 }, 1999), "used");
+  });
+
+  it("rejects an invite at and past its expiry", () => {
+    assert.strictEqual(inviteRejection(usable, 2000), "expired");
+    assert.strictEqual(inviteRejection(usable, 9999), "expired");
+  });
+
+  // 期限切れの使用済み招待を「期限切れ」と言うと、作り直せば通ると読めてしまう
+  it("reports a redeemed invite as used even after it expired", () => {
+    assert.strictEqual(inviteRejection({ ...usable, usedAt: 1500 }, 9999), "used");
+  });
+
+  it("expires ahead of the moment it was issued", () => {
+    assert.ok(inviteExpiry(1000) > 1000);
+  });
+});
+
+describe("deviceName", () => {
+  it("keeps what the person typed", () => {
+    assert.strictEqual(deviceName("  レジの iPad  ", truncate), "レジの iPad");
+  });
+
+  it("falls back rather than refusing an empty name", () => {
+    [undefined, null, "", "   ", 7].forEach((value) => {
+      assert.strictEqual(deviceName(value, truncate), DEFAULT_DEVICE_NAME);
+    });
+  });
+
+  it("caps a long name", () => {
+    const name = deviceName("あ".repeat(200), truncate);
+    assert.strictEqual(Array.from(name).length, MAX_DEVICE_NAME_LENGTH);
   });
 });

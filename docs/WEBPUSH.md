@@ -10,13 +10,30 @@ FCM（Firebase Cloud Messaging）の **FID 方式** を使う。端末は FCM �
 サーバは `sendEachForMulticast({ fids, data })` でその FID 宛に送る。
 VAPID 公開鍵は FCM の Web 設定として使う（`web-push` パッケージは使わない）。
 
+登録は LINE と同じく**店舗に紐づく**。通知を受ける端末は管理アカウントの持ち主とは限らない
+（厨房のタブレット、アルバイトのスマホ）ので、その端末にログイン情報を渡さずに済むよう、
+**ワンタイム URL** 経由でだけ登録できる。
+
 ```
-管理画面: 通知設定で ON → register() → onRegistered() で FID 取得
-          → registerWebPush2 (callable) が admins/{uid}/pushRegistrations/{fid} に保存
-注文発生: notifyRestaurant() → オーナー + 担当サブアカウントの FID を集めて
+管理者:   店舗の「通知端末」画面 → 端末を追加 → createPushInvite2 が URL を返す
+          （QR とコピーで端末に渡す）
+登録端末: その URL を開く（ログイン不要）→ 名前を入れて通知を許可
+          → register() / onRegistered() で FID
+          → redeemPushInvite2 が照合して
+             restaurants/{restaurantId}/pushRegistrations/{fid} に保存し、招待を使用済みにする
+注文発生: notifyRestaurant() → その店舗の登録のうち notify が立つ FID へ
           sendEachForMulticast({ fids, data }) で送信
 端末:     sw.js の onBackgroundMessage → showNotification → タップで該当注文画面へ
 ```
+
+### ワンタイム URL を DB から読ませない
+
+- doc id はトークンそのものではなく **SHA-256**。DB が漏れても URL は復元できない
+- `firestore.rules` で `pushInvites` は read も write も拒否する。`list` だけ塞いでも、
+  doc id（＝トークン）を知っていれば `get` できてしまう
+- クライアントはトークン doc を一度も読まない。照合は Callable の中だけで起きる
+- 照合と使用済みの記録は1つのトランザクションに入れる。分けると、同じ URL を同時に開いた
+  2台が両方とも「未使用」を読んで両方登録できてしまう
 
 送信は **data のみ**（`notification` ブロックを付けない）。付けると SDK が独自に通知を出し、
 表示が二重になりタップの制御も奪われる。表示は `public/sw.js`（背面）と
@@ -76,9 +93,10 @@ cd functions && yarn deploy
 
 ### 5. 動作確認
 
-`/admin/webpush` に確認用ページがある。登録 / 解除 / テスト送信と、
+`/admin/webpush` に確認用ページがある。店舗 ID を入れて登録 / テスト送信ができ、
 FCM の失敗コード・Service Worker の scope / state・通知許可の状態がログに出る。
-宛先はサインイン中の uid の登録端末だけで、他のアカウントには届かない。
+このページの「登録」は招待を作ってその場で使うので、`createPushInvite2` と
+`redeemPushInvite2` の両方を一度に通せる。
 
 ## ハマりどころ
 
@@ -122,7 +140,10 @@ SDK 自身が `register()` をもう一本キューに積む。FID を受け取�
 Chrome がインストール導線を出す条件を満たすためだけに置いてある）。
 加えて `firebase.json` で `/sw.js` を `Cache-Control: no-cache` で配信する。
 
-登録時の scope は `/admin/`。注文者が開くページは Service Worker の管理下に入らない。
+scope は2つある。管理画面が `/admin/`、ワンタイム URL の登録ページが `/pushdevice/`。
+登録ページは非ログインの端末が開くので `/admin/` の外にあり、別 scope が要る。
+同じ `sw.js` を2つの scope で登録する形で、注文者が開く店舗ページはどちらにも入らない。
+
 firebaseConfig は環境ごとに違うため、登録 URL のクエリで SW に渡す（`sw.js` を環境別に作らずに済む）。
 
 ### 7. 通知タップ時のタブ選択
@@ -131,14 +152,10 @@ firebaseConfig は環境ごとに違うため、登録 URL のクエリで SW �
 （注文者が開いている店舗ページなど）も返す。絞らないと注文者のタブを管理画面へ飛ばしてしまうので、
 URL が `/admin/` で始まるものだけを再利用対象にする。
 
-### 8. サインアウト
+### 8. サインアウトでは端末を外さない
 
-共有端末で前のアカウント宛の通知が届き続けないよう、**サインアウトする前に**配信先から端末を外す。
-`unregisterWebPush` は `request.auth` から uid を取るので、認証が切れたあとでは必ず失敗する。
-
-サインアウトは `signOutAfterDisablingPush()`（`src/utils/useWebPushToggle.ts`）に集約してある。
-新しいサインアウト経路を足すときはここを通すこと。待ちには上限があり、
-外せなくてもサインアウトは必ず行う（サーバ側は次の送信が「宛先が無効」を返した時点で登録を消す）。
+登録は店舗に紐づくので、誰かがサインアウトしても店舗の通知端末は残る。LINE と同じ扱い。
+端末を外すのは一覧画面からの削除（または OFF）だけ。
 
 ### 9. macOS / Windows で通知が出ない
 
@@ -148,18 +165,32 @@ URL が `/admin/` で始まるものだけを再利用対象にする。
 
 ## データ
 
-`admins/{uid}/pushRegistrations/{fid}`
+`restaurants/{restaurantId}/pushRegistrations/{fid}`
 
 | フィールド | 内容 |
 | --- | --- |
 | `fid` | Firebase Installation ID（doc id と同じ） |
+| `name` | 端末の呼び名。登録する人が入力する |
+| `notify` | 一覧で ON/OFF する。送信時にこれで絞る |
 | `platform` | `ios` / `android` / `other` |
+| `invitedBy` | 招待を作った管理者の uid |
 | `updatedAt` | 登録・更新時刻 |
 
 - doc id が FID なので、同じ端末で再登録しても doc が増えない。
-- Functions からのみ読み書きする（`firestore.rules` でクライアントからのアクセスを拒否）。
-- 登録・解除の uid は `request.auth` からしか取らない。他人のアカウントに端末を紐づけることはできない。
+- 一覧・ON/OFF・削除はクライアントから直接行う。rules は `lines` と同じ権限。
+- 新規登録は招待経由なので Functions が書く。
 - 送信が「宛先そのものが無効」を示すコードを返した FID だけを削除する。
   `messaging/invalid-argument` は payload 不正でも返るため、削除の根拠にしない。
+
+`pushInvites/{tokenHash}`（トップレベル）
+
+| フィールド | 内容 |
+| --- | --- |
+| `restaurantId` | 招待の対象店舗 |
+| `createdBy` | 作った管理者の uid |
+| `createdAt` / `expiresAt` | 期限（`PUSH_INVITE_TTL_MS`） |
+| `usedAt` | 使用済みの印。一度使ったら再利用できない |
+
+クライアントから read も write もできない。
 
 送信結果は `restaurants/{restaurantId}/log/{date}/webPushLog/{orderId}-{messageId}` に記録される。

@@ -29,7 +29,7 @@ LINE は既に店舗紐付けで、名前付きの一覧を持っている（`re
 | `invitedBy` | 招待を作った管理者の uid。登録者は非ログインなので uid を持たない |
 | `updatedAt` | serverTimestamp |
 
-`restaurants/{restaurantId}/pushInvites/{tokenHash}`
+`pushInvites/{tokenHash}`（トップレベル）
 
 | フィールド | 内容 |
 | --- | --- |
@@ -39,6 +39,9 @@ LINE は既に店舗紐付けで、名前付きの一覧を持っている（`re
 | `usedAt` | 使用済みの印。一度使ったら再利用できない |
 
 ### ワンタイム URL を DB から読めなくする
+
+招待はトップレベルに置く。URL にはトークンしか載せないので、店舗を知らないまま
+ハッシュだけで引けないと collectionGroup のクエリが要る。
 
 - **doc id はトークンそのものではなく、その SHA-256。** DB が漏れても URL は復元できない。
 - **`firestore.rules` で `pushInvites` はクライアントから read も write も拒否する。**
@@ -77,8 +80,9 @@ LINE は既に店舗紐付けで、名前付きの一覧を持っている（`re
 
 - `src/app/admin/Restaurants/ManagePush.vue` — `/admin/restaurants/{id}/pushlist`。
   `ManageLine.vue` と同じ一覧（名前・ON/OFF・削除）＋「端末を追加」＋テスト送信。
-- 入口は LINE の隣（`src/app/admin/Index/Restaurant.vue` と `Restaurants/Index.vue`）。
-- `src/app/pushDevice/Register.vue` — 公開ページ。ログイン不要。名前入力と許可のみ。
+- 入口は注文画面の通知設定（`NotificationSettings.vue`）から。LINE の導線の隣に置く。
+- `src/app/pushDevice/Register.vue` — `/pushdevice/:token`。公開ページ。ログイン不要。
+  iOS 用の manifest は `start_url` にトークンが要るので、静的ファイルではなくその場で組み立てる。
 
 ## iOS の案内は作り込む
 
@@ -133,6 +137,8 @@ Service Worker の scope も変わる。いまは `/admin/` に閉じている�
 
 ## テスト
 
-- トークンの生成・ハッシュ化・期限判定・使用済み判定を純関数に切り出して単体テスト。
-- 招待の照合が失敗する側（期限切れ / 使用済み / 存在しない / 形式不正）を網羅する。
-- 送信対象の絞り込み（`notify` が false のものを除く）の単体テスト。
+- `functions/src/functions/notify/pushInviteFormat.ts` に純関数を切り出し、
+  `functions/tests/webpush_test.ts` でトークンの生成・ハッシュ化・URL 組み立て・
+  照合の失敗側（期限切れ / 使用済み / 存在しない / 形式不正）・端末名の既定値と上限を見る。
+- 照合と使用済みの記録は1つのトランザクションに入れる。同じ URL を同時に開いた2台が
+  両方登録できてしまうため。

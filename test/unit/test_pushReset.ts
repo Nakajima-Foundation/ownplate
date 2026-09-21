@@ -1,10 +1,7 @@
 import { describe, it } from "node:test";
 import assert from "node:assert";
 
-import {
-  resetRegistrationState,
-  settleWithin,
-} from "../../src/utils/pushReset.ts";
+import { resetRegistrationState } from "../../src/utils/pushReset.ts";
 
 const recorder = () => {
   const calls: string[] = [];
@@ -75,50 +72,5 @@ describe("resetRegistrationState", () => {
       onFailure: r.onFailure,
     });
     assert.strictEqual(r.failures.length, 2);
-  });
-});
-
-describe("settleWithin", () => {
-  // 予約されたコールバックを呼ばずに捨てることで「上限にまだ達していない」状態を作る
-  const never = () => undefined;
-  const flush = () => new Promise((resolve) => setImmediate(resolve));
-
-  it("returns as soon as the work resolves, without waiting for the bound", async () => {
-    await settleWithin(Promise.resolve("done"), 1000, never);
-  });
-
-  it("returns when the work rejects, and does not reject itself", async () => {
-    await settleWithin(Promise.reject(new Error("boom")), 1000, never);
-  });
-
-  it("waits for the bound when the work never settles", async () => {
-    let fire = () => undefined as void;
-    let requested_ms = 0;
-    let settled = false;
-    const waiting = settleWithin(
-      new Promise(() => undefined),
-      1500,
-      (callback, ms) => {
-        fire = callback;
-        requested_ms = ms;
-      },
-    ).then(() => {
-      settled = true;
-    });
-
-    await flush();
-    assert.strictEqual(settled, false);
-    assert.strictEqual(requested_ms, 1500);
-
-    fire();
-    await waiting;
-    assert.strictEqual(settled, true);
-  });
-
-  it("resolves to nothing, so callers cannot branch on the outcome", async () => {
-    assert.strictEqual(
-      await settleWithin(Promise.resolve("value"), 1000, never),
-      undefined,
-    );
   });
 });

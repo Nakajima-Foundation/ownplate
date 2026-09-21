@@ -169,11 +169,6 @@ service cloud.firestore {
         allow read: if request.auth.uid == childId;
       }
 
-      // Web Push の端末登録 (FID) は Functions からのみ読み書きする
-      match /pushRegistrations/{fid} {
-        allow read, write: if false;
-      }
-
       match /system/{document=**} {
         allow read, write: if false;
       }
@@ -181,6 +176,13 @@ service cloud.firestore {
         allow read: if request.auth.uid == userId;
       }
     }
+    // Web Push のワンタイム招待。doc id はトークンの SHA-256。
+    // list だけ塞いでも、トークンを知っていれば get できてしまうので read ごと塞ぐ。
+    // 照合は Functions の中だけで起き、クライアントはこの doc を一度も読まない。
+    match /pushInvites/{tokenHash} {
+      allow read, write: if false;
+    }
+
     match /zipcode/{zipCode} {
       allow get: if true
     }
@@ -356,6 +358,12 @@ service cloud.firestore {
           }
         }
         match /lines/{lineId} {
+          allow read, write: if isRestaurantOwner(restaurantId, request);
+          allow read, write: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request);
+        }
+        // Web Push の端末登録。一覧・ON/OFF・削除は LINE と同じ権限で行う。
+        // 新規登録はワンタイム URL 経由で Functions が書くので、ここには要らない。
+        match /pushRegistrations/{fid} {
           allow read, write: if isRestaurantOwner(restaurantId, request);
           allow read, write: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request);
         }

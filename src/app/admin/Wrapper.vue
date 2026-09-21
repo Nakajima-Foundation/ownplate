@@ -8,7 +8,11 @@
 import { defineComponent, onMounted } from "vue";
 import { useHead } from "@unhead/vue";
 
-import { listenForegroundPush, registerServiceWorker } from "@/utils/webPush";
+import {
+  ADMIN_SCOPE,
+  listenForegroundPush,
+  registerServiceWorker,
+} from "@/utils/webPush";
 
 export default defineComponent({
   setup() {
@@ -21,13 +25,16 @@ export default defineComponent({
         { name: "mobile-web-app-capable", content: "yes" },
         // iOS 16.3 以前は manifest の display を見ないので、この meta が無いと standalone にならない
         { name: "apple-mobile-web-app-capable", content: "yes" },
-        { name: "apple-mobile-web-app-title", content: "おもちかえり.com 管理" },
+        {
+          name: "apple-mobile-web-app-title",
+          content: "おもちかえり.com 管理",
+        },
       ],
     });
 
     onMounted(() => {
       // 注文者側のページには Service Worker を一切置かないよう、ここで初めて登録する
-      registerServiceWorker();
+      registerServiceWorker(ADMIN_SCOPE);
       listenForegroundPush();
     });
   },

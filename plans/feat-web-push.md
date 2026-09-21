@@ -1,5 +1,10 @@
 # 店舗運営者向け通知に PWA / Web Push を追加する
 
+> **登録まわりはこのあと差し替えた。** 店舗紐付け＋ワンタイム URL への変更は
+> [plans/feat-web-push-invite.md](./feat-web-push-invite.md) を参照。
+> この文書は FCM FID 方式そのものの判断（httpsCallable との衝突、専用 app による分離、
+> installation の回転、tag を付けない理由）の記録として残す。
+
 関連 issue: https://github.com/Nakajima-Foundation/ownplate/issues/1781
 設定・運用手順: [docs/WEBPUSH.md](../docs/WEBPUSH.md)
 

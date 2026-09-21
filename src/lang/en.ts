@@ -991,6 +991,28 @@ const data = {
     "auth/code-expired":
       "The SMS verification code has expired. Please resend the SMS verification code and enter it again",
   },
+  pushDevice: {
+    title: "Register a device for notifications",
+    installHeading: "On iPhone or iPad",
+    installStep1: "Tap the share button at the bottom of the screen",
+    installStep2: 'Choose "Add to Home Screen"',
+    installStep3: "Open this page again from the icon that was added",
+    nameHint: "Give this device a name you will recognize.",
+    namePlaceholder: "e.g. iPad at the register",
+    register: "Receive notifications",
+    done: "Registered",
+    doneHint: "This device will be notified when a new order arrives.",
+    failure: {
+      unconfigured: "Push notifications are not available for this restaurant.",
+      unsupported: "This device or browser cannot receive push notifications.",
+      denied:
+        "Notifications are blocked. Please allow them in your browser settings.",
+      dismissed: "Notifications were not allowed. Please try again.",
+      "no-fid": "Registration failed. Please try again in a moment.",
+      invite:
+        "This URL has already been used or has expired. Please ask the restaurant for a new one.",
+    },
+  },
   admin: {
     welcomeMessage: "Welcome!",
     userManual: "User Manual",
@@ -1149,7 +1171,20 @@ const data = {
     forgotPassword: "Forgot Password？",
     passwordReset: "Reset Password",
     pleaseCheckInbox: "Please check your inbox, an email is on the way.",
+    push: {
+      devices: "Devices to notify",
+      empty: "No device has been registered yet.",
+      addDevice: "Add a device",
+      inviteHeading: "Open this URL on the device",
+      inviteHint:
+        "This URL works only once. Allow notifications on that device to finish. It cannot be shown again, so create a new one if you need it.",
+      copy: "Copy URL",
+      copied: "Copied",
+      test: "Send a test",
+      deleteConfirm: "Stop notifying this device?",
+    },
     webpush: {
+      restaurantId: "Restaurant ID",
       title: "Web Push test",
       statusHeading: "Status",
       configured: "VAPID key",
@@ -1197,14 +1232,9 @@ const data = {
       infinityNotificationOn: "Remind Every Minute",
       infinityNotificationOff: "Notify One Time",
       soundTest: "Test",
-      webPushOn: "Push notifications: On",
-      webPushOff: "Push notifications: Off",
       webPushDescription:
         "Notifies this device of new orders even when the admin page is closed.",
-      webPushIosHint:
-        "On iPhone and iPad, this works only when opened from the icon added to the Home Screen.",
-      webPushError:
-        "Could not enable push notifications. Please check your browser's notification settings.",
+      webPushDevices: "Push notification devices",
       paymentIsNotCompleted:
         "Note: Please complete the credit card payment process by clicking the 'Accepted' button before giving the items to the customer.",
       cancelButton: "Cancel this order",

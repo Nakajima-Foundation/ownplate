@@ -62,6 +62,7 @@
 import { defineComponent } from "vue";
 
 import { auth } from "@/lib/firebase/firebase9";
+import { signOut } from "firebase/auth";
 
 import ProfileLogin from "@/app/user/Profile/Login.vue";
 import ProfileDeleteAccount from "@/app/user/Profile/DeleteAccount.vue";
@@ -75,7 +76,6 @@ import AddressButton from "@/components/form/AddressButton.vue";
 
 import { defaultHeader } from "@/config/header";
 
-import { signOutAfterDisablingPush } from "@/utils/useWebPushToggle";
 import { useUserData } from "@/utils/utils";
 import { useHead } from "@unhead/vue";
 
@@ -96,7 +96,7 @@ export default defineComponent({
     }));
 
     const handleSignOut = () => {
-      signOutAfterDisablingPush(auth);
+      signOut(auth);
     };
     const { isLiffUser, claims, user } = useUserData();
     return {

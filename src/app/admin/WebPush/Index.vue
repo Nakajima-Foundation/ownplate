@@ -45,6 +45,11 @@
       <div class="mb-2 text-sm font-bold text-black/60">
         {{ $t("admin.webpush.registrationHeading") }}
       </div>
+      <input
+        v-model="restaurantId"
+        class="mb-2 w-full rounded-lg border border-teal-400 px-3 py-2"
+        :placeholder="$t('admin.webpush.restaurantId')"
+      />
       <div class="flex flex-wrap gap-2">
         <button
           type="button"
@@ -53,15 +58,6 @@
         >
           <span class="text-sm font-bold text-green-600">
             {{ $t("admin.webpush.register") }}
-          </span>
-        </button>
-        <button
-          type="button"
-          class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-red-700/10 px-4"
-          @click="onUnregister()"
-        >
-          <span class="text-sm font-bold text-red-700">
-            {{ $t("admin.webpush.unregister") }}
           </span>
         </button>
       </div>
@@ -128,20 +124,20 @@
 import { defineComponent, onMounted, ref } from "vue";
 
 import {
+  createPushInvite,
   ping,
-  registerWebPush,
+  redeemPushInvite,
   sendTestWebPush,
-  unregisterWebPush,
 } from "@/lib/firebase/functions";
 import { describeSendResult } from "@/utils/pushFormat";
 import {
+  ADMIN_SCOPE,
   currentDeviceFid,
   isWebPushConfigured,
   isWebPushSupported,
   subscribeThisDevice,
   thisDevicePlatform,
 } from "@/utils/webPush";
-import { useRestaurantId } from "@/utils/utils";
 
 export default defineComponent({
   setup() {
@@ -152,7 +148,7 @@ export default defineComponent({
     const title = ref("テスト通知");
     const body = ref("おもちかえり.com");
     const log = ref<string[]>([]);
-    const restaurantId = useRestaurantId();
+    const restaurantId = ref("");
 
     const note = (message: string) => {
       log.value.unshift(`${new Date().toLocaleTimeString()}  ${message}`);
@@ -178,16 +174,24 @@ export default defineComponent({
       );
     });
 
+    // 本番の登録はワンタイム URL 経由。ここは管理者なので招待を作ってその場で使い、
+    // createPushInvite2 と redeemPushInvite2 の両方を一度に通す。
     const onRegister = async () => {
       try {
-        const result = await subscribeThisDevice();
+        const result = await subscribeThisDevice(ADMIN_SCOPE);
         if (!result.ok) {
           note(`register failed: ${result.reason}`);
           return;
         }
-        await registerWebPush({
+        const { data: invite } = await createPushInvite({
+          restaurantId: restaurantId.value,
+        });
+        note(`invite ${invite.url}`);
+        await redeemPushInvite({
+          token: invite.url.split("/").pop() ?? "",
           fid: result.fid,
           platform: thisDevicePlatform(),
+          name: "webpush test page",
         });
         note(`registered fid=${result.fid}`);
         await refresh();
@@ -196,24 +200,10 @@ export default defineComponent({
       }
     };
 
-    const onUnregister = async () => {
-      try {
-        const current = await currentDeviceFid();
-        if (!current) {
-          note("unregister skipped: no fid on this device");
-          return;
-        }
-        await unregisterWebPush({ fid: current });
-        note(`unregistered fid=${current}`);
-        await refresh();
-      } catch (e) {
-        note(`unregister error: ${e}`);
-      }
-    };
-
     const onSend = async () => {
       try {
         const { data } = await sendTestWebPush({
+          restaurantId: restaurantId.value,
           title: title.value,
           body: body.value,
         });
@@ -244,6 +234,7 @@ export default defineComponent({
     };
 
     return {
+      restaurantId,
       configured,
       supported,
       permission,
@@ -252,7 +243,6 @@ export default defineComponent({
       body,
       log,
       onRegister,
-      onUnregister,
       onSend,
       onProbe,
     };

@@ -18,7 +18,7 @@ import { sendMessageDirect } from "./notify/line";
 import * as sms from "./notify/sms";
 import * as twilio from "./notify/twilio";
 import * as ses from "./notify/ses";
-import { isWebPushConfigured, restaurantNotifyUids, sendWebPush } from "./notify/webpush";
+import { isWebPushConfigured, sendWebPush } from "./notify/webpush";
 import { createOrderPushData } from "./notify/webpushFormat";
 
 const LINE_MESSAGE_TOKEN = defineSecret("LINE_MESSAGE_TOKEN");
@@ -147,7 +147,6 @@ export const createNotifyRestaurantMailMessage = async (messageId: string, resta
 
 type WebPushParams = {
   restaurantId: string;
-  ownerUid: string;
   orderId: string;
   messageId: string;
   restaurantName: string;
@@ -156,10 +155,9 @@ type WebPushParams = {
 };
 
 const sendRestaurantWebPush = async (db: Firestore, params: WebPushParams) => {
-  const { restaurantId, ownerUid, orderId, messageId, restaurantName, subject, datestr } = params;
-  const uids = await restaurantNotifyUids(db, ownerUid, restaurantId);
+  const { restaurantId, orderId, messageId, restaurantName, subject, datestr } = params;
   const payload = createOrderPushData(subject, restaurantName, restaurantId, orderId);
-  const result = await sendWebPush(db, uids, payload);
+  const result = await sendWebPush(db, restaurantId, payload);
   if (result.targets === 0) {
     return;
   }
@@ -249,7 +247,6 @@ export const notifyRestaurant = async (db: Firestore, messageId: string, restaur
   // web push. (管理画面を閉じている端末向け)
   await notifyRestaurantByWebPush(db, {
     restaurantId,
-    ownerUid: restaurant.uid,
     orderId,
     messageId,
     restaurantName,

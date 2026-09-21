@@ -128,16 +128,31 @@ export interface DispatchData {
 }
 
 // Web Push function call types
-export interface RegisterWebPushData {
-  fid: string;
-  platform: string;
+export interface CreatePushInviteData {
+  restaurantId: string;
 }
 
-export interface UnregisterWebPushData {
+export interface CreatePushInviteResult {
+  result: boolean;
+  url: string;
+  expiresAt: number;
+}
+
+// 登録するのは非ログインの端末なので、uid ではなくトークンが唯一の資格になる
+export interface RedeemPushInviteData {
+  token: string;
   fid: string;
+  platform: string;
+  name: string;
+}
+
+export interface RedeemPushInviteResult {
+  result: boolean;
+  restaurantId: string;
 }
 
 export interface SendTestWebPushData {
+  restaurantId: string;
   title: string;
   body: string;
 }

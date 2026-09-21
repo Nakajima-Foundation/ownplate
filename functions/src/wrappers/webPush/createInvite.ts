@@ -1,7 +1,7 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { onCall, HttpsError } from "firebase-functions/v2/https";
 
-import { unregisterWebPush } from "../../functions/webPush";
+import { createPushInvite } from "../../functions/webPush";
 import { enforceAppCheck } from "../firebase";
 
 const db = getFirestore();
@@ -17,6 +17,6 @@ export default onCall(
     if (context.app == undefined) {
       throw new HttpsError("failed-precondition", "The function must be called from an App Check verified app.");
     }
-    return await unregisterWebPush(db, context.data, context);
+    return await createPushInvite(db, context.data, context);
   },
 );

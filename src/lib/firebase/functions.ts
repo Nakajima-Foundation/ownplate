@@ -11,8 +11,10 @@ import type {
   LiffAuthenticateData,
   PingData,
   StripeDeleteRestaurantCardData,
-  RegisterWebPushData,
-  UnregisterWebPushData,
+  CreatePushInviteData,
+  CreatePushInviteResult,
+  RedeemPushInviteData,
+  RedeemPushInviteResult,
   SendTestWebPushData,
   SendTestWebPushResult,
 } from "@/models/functionTypes";
@@ -115,14 +117,15 @@ export const stripeReceipt = httpsCallable<
   { receipt_url?: string }
 >(functionsJP, "stripeReceipt2");
 
-export const registerWebPush = httpsCallable<
-  RegisterWebPushData,
-  { result: boolean }
->(functionsJP, "registerWebPush2");
-export const unregisterWebPush = httpsCallable<
-  UnregisterWebPushData,
-  { result: boolean }
->(functionsJP, "unregisterWebPush2");
+export const createPushInvite = httpsCallable<
+  CreatePushInviteData,
+  CreatePushInviteResult
+>(functionsJP, "createPushInvite2");
+// 登録する端末はサインインしていない。トークンを知っていることが唯一の資格。
+export const redeemPushInvite = httpsCallable<
+  RedeemPushInviteData,
+  RedeemPushInviteResult
+>(functionsJP, "redeemPushInvite2");
 export const sendTestWebPush = httpsCallable<
   SendTestWebPushData,
   SendTestWebPushResult,

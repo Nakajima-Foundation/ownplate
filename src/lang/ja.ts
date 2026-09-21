@@ -989,6 +989,28 @@ const data = {
     "auth/code-expired":
       "SMS確認コードが有効期限切れです。SMS確認コードを再送信して再度入力してください",
   },
+  pushDevice: {
+    title: "通知を受け取る端末の登録",
+    installHeading: "iPhone・iPad をお使いの場合",
+    installStep1: "画面下の共有ボタンを押します",
+    installStep2: "「ホーム画面に追加」を選びます",
+    installStep3: "追加されたアイコンから、このページを開き直します",
+    nameHint: "どの端末かわかる名前を入れてください。",
+    namePlaceholder: "例：レジの iPad",
+    register: "通知を受け取る",
+    done: "登録しました",
+    doneHint: "新しい注文が入ると、この端末に通知が届きます。",
+    failure: {
+      unconfigured: "この店舗ではプッシュ通知を利用できません。",
+      unsupported: "この端末またはブラウザではプッシュ通知を利用できません。",
+      denied: "通知がブロックされています。ブラウザの設定で許可してください。",
+      dismissed: "通知が許可されませんでした。もう一度お試しください。",
+      "no-fid":
+        "登録できませんでした。しばらくしてからもう一度お試しください。",
+      invite:
+        "この URL は使用済みか、期限が切れています。お店にお問い合わせください。",
+    },
+  },
   admin: {
     welcomeMessage: "いらっしゃいませ！",
     userManual: "使い方説明",
@@ -1148,7 +1170,20 @@ const data = {
     forgotPassword: "パスワードを忘れた場合",
     passwordReset: "パスワードのリセット",
     pleaseCheckInbox: "メールを送信しました。受信箱をご確認ください。",
+    push: {
+      devices: "通知する端末",
+      empty: "まだ端末が登録されていません。",
+      addDevice: "端末を追加",
+      inviteHeading: "この URL を端末で開いてください",
+      inviteHint:
+        "URL は一度きりです。開いた端末で通知を許可すると登録されます。閉じると再表示できないので、必要なら作り直してください。",
+      copy: "URL をコピー",
+      copied: "コピーしました",
+      test: "テスト送信",
+      deleteConfirm: "この端末への通知を消去しますか？",
+    },
     webpush: {
+      restaurantId: "店舗 ID",
       title: "Web Push テスト",
       statusHeading: "状態",
       configured: "VAPID 鍵",
@@ -1195,14 +1230,9 @@ const data = {
       infinityNotificationOn: "1分おきに再通知",
       infinityNotificationOff: "受注時のみ通知",
       soundTest: "テスト",
-      webPushOn: "プッシュ通知：オン",
-      webPushOff: "プッシュ通知：オフ",
       webPushDescription:
         "管理画面を閉じていても、この端末に新しい注文をお知らせします。",
-      webPushIosHint:
-        "iPhone・iPadでは、ホーム画面に追加したアイコンから開いた場合のみ利用できます。",
-      webPushError:
-        "プッシュ通知を設定できませんでした。ブラウザの通知設定をご確認ください。",
+      webPushDevices: "プッシュ通知の端末",
       paymentIsNotCompleted:
         "ご注意：「受付済み」ボタンを押すとカード決済が処理されます。",
       cancelButton: "注文をキャンセル",

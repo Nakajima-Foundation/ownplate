@@ -54,7 +54,7 @@ import {
   setCurrentScreen,
 } from "firebase/analytics";
 
-import { onAuthStateChanged, Unsubscribe } from "firebase/auth";
+import { onAuthStateChanged, Unsubscribe, signOut } from "firebase/auth";
 
 import AppHeader from "@/components/App/Header.vue";
 import AppFooter from "@/components/App/Footer.vue";
@@ -65,7 +65,6 @@ import DialogTips from "@/components/DialogTips.vue";
 import AudioPlay from "@/components/AudioPlay.vue";
 import Loading from "@/components/Loading.vue";
 import { isDev, useRestaurantId } from "@/utils/utils";
-import { signOutAfterDisablingPush } from "@/utils/useWebPushToggle";
 
 import * as Sentry from "@sentry/vue";
 import { defaultHeader } from "@/config/header";
@@ -149,7 +148,7 @@ export default defineComponent({
             const diff =
               Date.now() - Number(result.claims?.auth_time || 0) * 1000;
             if (diff > 3600 * 24 * 30 * 1000) {
-              signOutAfterDisablingPush(auth);
+              signOut(auth);
             } else {
               userStore.setUser(fUser);
               userStore.setCustomClaims(result.claims);

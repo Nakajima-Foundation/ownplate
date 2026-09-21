@@ -18,7 +18,11 @@ import { detectPlatform } from "@/utils/pushFormat";
 import { resetRegistrationState } from "@/utils/pushReset";
 
 const SERVICE_WORKER_PATH = "/sw.js";
-const ADMIN_SCOPE = "/admin/";
+
+// Service Worker を置く範囲。注文者が開く店舗ページはどちらにも入らない。
+// 登録ページは非ログインの端末が開くので /admin/ の外にあり、別 scope が要る。
+export const ADMIN_SCOPE = "/admin/";
+export const PUSH_DEVICE_SCOPE = "/pushdevice/";
 const REGISTER_TIMEOUT_MS = 10000;
 const NOTIFICATION_ICON = "/android-chrome-192x192.png";
 const DEFAULT_NOTIFICATION_TITLE = "おもちかえり.com";
@@ -53,14 +57,13 @@ export const isWebPushSupported = () => isSupported();
 const serviceWorkerUrl = () =>
   `${SERVICE_WORKER_PATH}?config=${encodeURIComponent(JSON.stringify(firebaseConfig))}`;
 
-export const registerServiceWorker = async () => {
+export const registerServiceWorker = async (scope: string) => {
   if (!("serviceWorker" in navigator)) {
     return null;
   }
   try {
-    // scope を /admin/ に絞る。注文者が開くページは Service Worker の管理下に入らない。
     return await navigator.serviceWorker.register(serviceWorkerUrl(), {
-      scope: ADMIN_SCOPE,
+      scope,
     });
   } catch (e) {
     console.error("failed to register the service worker", e);
@@ -179,12 +182,14 @@ const acquireFid = async (registration: ServiceWorkerRegistration) => {
   return pending;
 };
 
-export const subscribeThisDevice = async (): Promise<PushResult> => {
+export const subscribeThisDevice = async (
+  scope: string,
+): Promise<PushResult> => {
   const failure = await checkPreconditions();
   if (failure) {
     return { ok: false, reason: failure };
   }
-  const registration = await registerServiceWorker();
+  const registration = await registerServiceWorker(scope);
   if (!registration) {
     return { ok: false, reason: "unsupported" };
   }
