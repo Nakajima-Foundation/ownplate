@@ -15,7 +15,7 @@ OwnPlate は飲食店向けのテイクアウト注文サービス。Firebase + 
 - バックエンド: Firebase Functions / Express / Firestore
 - 決済: Stripe Connect（OAuth で店舗オーナーが自分の Stripe アカウントを連携するマーケットプレイス型）+ PaymentIntent API（注文ごとに各オーナーの Stripe アカウント上で決済）
 - 監視: Sentry（フロント・バックエンド両方）
-- 通知: Twilio (SMS・電話) / Nodemailer (メール) / LINE (LIFF) / Web Push (VAPID, `web-push`)
+- 通知: Twilio (SMS・電話) / Nodemailer (メール) / LINE (LIFF) / Web Push (FCM, 管理画面の PWA)
 - E2E: Playwright
 - パッケージ管理: yarn（ルート・`functions/` 独立）
 

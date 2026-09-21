@@ -1,6 +1,7 @@
 # 店舗運営者向け通知に PWA / Web Push を追加する
 
 関連 issue: https://github.com/Nakajima-Foundation/ownplate/issues/1781
+設定・運用手順: [docs/WEBPUSH.md](../docs/WEBPUSH.md)
 
 ## 背景・課題
 
@@ -8,28 +9,41 @@
 LINE / メール(SES) / 電話(Twilio) / `admins/{uid}/private/notification` 経由の通知音 の4経路がある。
 通知音は管理画面を開いている間しか鳴らないため、画面を閉じた端末に届く経路が無い。
 
-## 方式: 標準 Web Push (VAPID + `web-push`)
+## 方式: FCM の FID 方式
 
-FCM を使わず、W3C Push API + VAPID で直接ブラウザの push サービスへ送る。判断根拠は issue #1781 に記載。
-要点は、`httpsCallable()` が内部で `messaging.getToken()` を呼ぶため FCM の FID 方式が
-callable 23個と両立しないこと、および `getToken` 方式は非推奨 API であること。
+mulmoserver と同じ構成にする。端末は `register()` / `onRegistered()` で FID を取り、
+サーバは firebase-admin の `sendEachForMulticast({ fids, data })` で送る。
 
-- firebase-admin の更新は不要（現行 13.8.0 のまま）
-- App Check(`enforceAppCheck = true`) を迂回する必要が無く、登録/解除は通常の callable で行える
+当初は標準 Web Push（VAPID + `web-push` パッケージ）で実装した。`httpsCallable()` が内部で
+デフォルトアプリの `messaging.getToken()` を呼び、FID をサーバ側で無効化してしまうためで、
+callable を多用する管理画面とは両立しないと判断していた。
+
+衝突そのものは実在するが、**push を専用の Firebase app（名前 `"push"`）で扱えば回避できる**。
+installation id は `` `${app.name}!${appId}` `` をキーに保存されるので、アプリ名が違えば FID も別物になり、
+デフォルトアプリの `getToken()` に巻き込まれない。実機で「callable を叩いた直後の送信も届く」ことを確認したうえで
+FID 方式に切り替えた。callable 側には手を入れていない。
+
+FID 方式にした利点:
+
+- iOS / Android / デスクトップの差分を FCM が吸収する
+- 秘密鍵の管理が不要（Secret Manager への登録も無い）
+- mulmoserver / mulmoterminal と同じ実装なので、詰まったときに参照先がある
+
+前提として firebase-admin 14 への更新が必要で、これは別 PR で先に済ませた。
 
 ## データモデル
 
-`admins/{uid}/webPushSubscriptions/{subscriptionId}`
+`admins/{uid}/pushRegistrations/{fid}`
 
 | フィールド | 内容 |
 | --- | --- |
-| `endpoint` | PushSubscription の endpoint URL |
-| `keys.p256dh` / `keys.auth` | 暗号化鍵 |
+| `fid` | Firebase Installation ID（doc id と同じ） |
+| `platform` | `ios` / `android` / `other` |
 | `updatedAt` | serverTimestamp |
 
-- `subscriptionId` は endpoint の SHA-256。同一端末の再購読で doc が増殖しない。
-- 書き込みは Functions のみ。Firestore rules で client の read/write を明示的に拒否する
-  （`match /admins/{userId}` は subcollection に波及しないので現状でも拒否されるが、明示する）。
+- doc id が FID なので、同一端末の再登録で doc が増殖しない。
+- 書き込みは Functions のみ。`firestore.rules` で client の read/write を明示的に拒否する。
+- 登録・解除の uid は `request.auth` からしか取らない。
 
 ## 送信対象の解決
 
@@ -45,14 +59,17 @@ children は少数なので全件取得してメモリ上で絞る（複合イ�
 ### Functions
 
 - `functions/src/functions/notify/webpush.ts`
-  - `sendWebPush(db, uids, payload)`: 対象 uid の購読を集めて `web-push` で送信。
-    404 / 410 は購読失効なので該当 doc を削除する（prune）。
-  - VAPID: 公開鍵は `functions/src/common/project.ts`（`src/config/project.ts` からのコピー）、
-    秘密鍵は `defineSecret("VAPID_PRIVATE_KEY")`、subject は `https://${ownPlateConfig.hostName}`。
+  - `sendWebPush(db, uids, data)`: 対象 uid の FID を集めて `sendEachForMulticast` で送信。
+    multicast の宛先上限を超える分は分割する。
+  - 宛先そのものが無効であることを示すコードを返した FID だけ削除する（prune）。
+    `messaging/invalid-argument` は payload 不正でも返るため根拠にしない。
+  - 失敗した FCM エラーコードを結果に含める。これが無いと「届かない」以上の切り分けができない。
 - `functions/src/functions/notify/webpushFormat.ts`
-  - 純関数の payload 生成（title / body / url / tag）。テスト対象。
+  - 純関数の payload 生成と送信対象 uid の解決。テスト対象。
+  - tag は持たせない（同じ tag の通知は置き換えになり再通知されない）。
 - `functions/src/functions/webPush.ts` + `functions/src/wrappers/webPush/*`
-  - `registerWebPush2` / `unregisterWebPush2`（onCall・asia-northeast1・App Check 強制）。
+  - `registerWebPush2` / `unregisterWebPush2` / `sendTestWebPush2`
+    （onCall・asia-northeast1・App Check 強制）。
 - `notifyRestaurant()` に1チャネル追加。送信結果は
   `restaurants/{restaurantId}/log/{date}/webPushLog/{orderId}-{messageId}` に既存 lineLog と同形で記録。
   push の失敗が既存チャネルや注文処理を巻き込まないよう try/catch で封じ込める。
@@ -62,44 +79,66 @@ children は少数なので全件取得してメモリ上で絞る（複合イ�
 ### フロント
 
 - `src/utils/webPush.ts`
-  - `isWebPushSupported()` / `subscribeWebPush()` / `unsubscribeWebPush()` /
-    `urlBase64ToUint8Array()`（applicationServerKey 変換）。
-- `src/lib/firebase/functions.ts` に callable を2つ追加。
-- `src/app/admin/Notifications/NotificationSettings.vue` に ON/OFF トグルを追加。
-  通知許可ダイアログは**タップ起点でないと出せない**ため、トグル押下から `Notification.requestPermission()` を呼ぶ。
-- Service Worker 登録は `src/main.ts`。
-- サインアウト時に `unsubscribeWebPush()` を best-effort で実行（共有端末で前アカウント宛の通知が届き続けるのを防ぐ）。
+  - `pushApp()` — push 専用の Firebase app。`getMessaging()` / `getInstallations()` は必ずこれを渡す。
+  - `subscribeThisDevice()` — 許可 → SW 登録 → リセット → `register()` → FID。
+  - `resetBeforeRegistering()` — 購読の破棄と installation id の回転を `allSettled` で並列に。
+    これが無いと `register()` のキャッシュから成功が返り、FCM 側で死んだ登録に戻れない。
+  - `onRegistered` のハンドラは一度張ったら外さない（外すと後続が
+    `invalid-on-registered-handler` で落ちる）。
+  - `listenForegroundPush()` — 前面ではブラウザが背面ハンドラを呼ばないので自分で表示する。
+- `src/utils/pushFormat.ts` / `src/utils/pushReset.ts` — Firebase 非依存の純関数。ブラウザ無しで単体テストできる。
+- `src/lib/firebase/functions.ts` に callable を3つ追加。
+- `src/app/admin/Notifications/NotificationSettings.vue` に ON/OFF トグルを追加（`useWebPushToggle`）。
+  通知許可ダイアログは**タップ起点でないと出せない**ので、トグル押下から `Notification.requestPermission()` を呼ぶ。
+- `src/app/admin/WebPush/Index.vue` — `/admin/webpush` の確認用ページ。登録 / 解除 / 送信と、
+  FCM の失敗コード・SW の scope / state・通知許可をログに出す。
+- サインアウトは `signOutAfterDisablingPush()` に集約し、`signOut()` の**前に**
+  `disableThisDevice()` を best-effort で実行する（共有端末で前アカウント宛の通知が届き続けるのを防ぐ。
+  認証が切れたあとでは callable が必ず失敗する）。待ちは `settleWithin()` で上限を付け、
+  片付けが遅くてもログアウトを止めない。
 
 ### PWA
 
-- `public/manifest.webmanifest`（サイト全体・既存の `android-chrome-192x192.png` / `512x512.png` を流用）
-- `public/sw.js`: precache しない。`push` → `showNotification`、`notificationclick` → 既存タブを focus、
-  無ければ `/admin/restaurants/{restaurantId}/orders/{orderId}` を開く。
-- `index.html` に manifest / apple 用 meta を追加。
+- `public/manifest.webmanifest` — `scope` / `start_url` とも `/admin/`。既存のアイコンを流用。
+- manifest と apple 用 meta は `src/app/admin/Wrapper.vue` の `useHead` から差し込む。
+  `index.html` に置くと注文者にも PWA 導線が出るため。**`useHead` は `setup()` の中で呼ぶ**
+  （モジュール直下だと `injectHead()` が context を見つけられず throw し、管理画面が丸ごと白画面になる）。
+- `public/sw.js`: compat SDK を CDN から読み、`onBackgroundMessage` → `showNotification`。
+  precache しない。firebaseConfig は登録 URL のクエリで受け取る（環境別に作り分けない）。
+  `notificationclick` は `/admin/` で始まるタブだけを再利用対象にする。
+- Service Worker の登録は `src/app/admin/Wrapper.vue` から scope `/admin/` で行う。注文者側には一切置かない。
 - `firebase.json` の hosting headers に `/sw.js` の `Cache-Control: no-cache` を追加。
 
 ### 設定
 
-- VAPID 鍵ペアを生成し、公開鍵を `src/config/default/{ownplate,ownplate-jp,ownplate-dev}.ts` に、
-  秘密鍵を `firebase functions:secrets:set VAPID_PRIVATE_KEY` に設定する。
-- 公開鍵が未設定の間は UI 側でトグルを無効化する。
+- Firebase コンソールの Cloud Messaging ウェブ構成の公開鍵を
+  `src/config/default/{ownplate-jp,ownplate-dev}.ts` の `webPushVapidPublicKey` に設定する。
+- `fcmregistrations.googleapis.com` / `fcm.googleapis.com` を有効化する。
+- 公開鍵が空の間は UI 側でトグルを出さず、サーバ側も Firestore を読む前に打ち切る。
 
 ## 対象外
 
-- infinity notification（60秒ごとの再通知）の push での再現。未対応注文の定期再送は scheduled function が別途必要。
+- infinity notification（一定間隔での再通知）の push での再現。未対応注文の定期再送は scheduled function が別途必要。
 - 注文者（ユーザー側）への Web Push。
 
 ## 確認観点
 
-- iOS 16.4+ で「ホーム画面に追加」した PWA から購読でき、アプリを閉じた状態で通知が届く。
-- Android Chrome で同様に届く。
-- 通知タップで該当注文画面に遷移する。
-- オーナーとサブアカウントの両方に届く。担当外店舗のサブアカウントには届かない。
-- サインアウト後、その端末に前アカウント宛の通知が届かない。
-- 購読を持たない店舗でも既存の LINE / メール / 電話 / 通知音 が従来通り動く。
+- [x] Android Chrome で登録し、テスト送信が届く
+- [x] callable を叩いた直後でもテスト送信が届く（専用 app による分離の確認）
+- [x] 連続して送っても2通目以降が届く（tag を外した確認）
+- [ ] 実際の注文で `notifyRestaurant()` 経由の通知が届く
+- [ ] iOS 16.4+ で「ホーム画面に追加」した PWA から登録でき、閉じた状態で届く
+- [ ] 通知タップで該当注文画面に遷移する
+- [ ] オーナーとサブアカウントの両方に届く。担当外店舗のサブアカウントには届かない
+- [ ] サインアウト後、その端末に前アカウント宛の通知が届かない
+- [ ] 登録を持たない店舗でも既存の LINE / メール / 電話 / 通知音 が従来通り動く
+- [ ] 注文者のページで Service Worker も manifest も読み込まれない
 
 ## テスト
 
-- `functions/tests/` に payload 生成と送信対象 uid 解決の単体テストを追加。
-- ルート: `yarn format` / `yarn lint` / `yarn build`。
-- functions: `yarn format` / `yarn lint` / `yarn build` / 既存 `yarn tests`。
+- `functions/tests/webpush_test.ts` — payload 生成・送信対象 uid の解決・分割・prune 対象コード・validator。
+  `ci_test` の `wp_tests` から走る。
+- `test/unit/test_pushFormat.ts` / `test/unit/test_pushReset.ts` — フロント側の純関数。
+  `yarn test`（`node --test`）で走り、CI の `build-vue` に入れてある。依存追加は無し。
+- ルート: `yarn format` / `yarn lint` / `yarn build` / `yarn test`。
+- functions: `yarn format` / `yarn lint` / `yarn build` / `yarn ci_test`。

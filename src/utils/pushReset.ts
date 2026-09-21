@@ -30,3 +30,22 @@ export const resetRegistrationState = async (
     }
   });
 };
+
+// 後始末を待つが、待ちすぎない。片付けが遅いせいで本来の操作（サインアウト）が
+// 止まるのを防ぐ。reject は握りつぶす — 呼び出し側に「とにかく先へ進む」以外の
+// 選択肢が無いのは resetRegistrationState と同じ。
+//
+// schedule を引数で受けるのは、テストで実時間を待たないため。
+export const settleWithin = async (
+  work: Promise<unknown>,
+  timeout_ms: number,
+  schedule: (callback: () => void, ms: number) => unknown,
+): Promise<void> => {
+  await Promise.race([
+    work.then(
+      () => undefined,
+      () => undefined,
+    ),
+    new Promise<void>((resolve) => schedule(() => resolve(), timeout_ms)),
+  ]);
+};

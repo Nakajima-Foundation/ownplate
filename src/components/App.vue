@@ -54,7 +54,7 @@ import {
   setCurrentScreen,
 } from "firebase/analytics";
 
-import { onAuthStateChanged, Unsubscribe, signOut } from "firebase/auth";
+import { onAuthStateChanged, Unsubscribe } from "firebase/auth";
 
 import AppHeader from "@/components/App/Header.vue";
 import AppFooter from "@/components/App/Footer.vue";
@@ -65,7 +65,7 @@ import DialogTips from "@/components/DialogTips.vue";
 import AudioPlay from "@/components/AudioPlay.vue";
 import Loading from "@/components/Loading.vue";
 import { isDev, useRestaurantId } from "@/utils/utils";
-import { disableThisDevice } from "@/utils/useWebPushToggle";
+import { signOutAfterDisablingPush } from "@/utils/useWebPushToggle";
 
 import * as Sentry from "@sentry/vue";
 import { defaultHeader } from "@/config/header";
@@ -149,7 +149,7 @@ export default defineComponent({
             const diff =
               Date.now() - Number(result.claims?.auth_time || 0) * 1000;
             if (diff > 3600 * 24 * 30 * 1000) {
-              signOut(auth);
+              signOutAfterDisablingPush(auth);
             } else {
               userStore.setUser(fUser);
               userStore.setCustomClaims(result.claims);
@@ -166,11 +166,6 @@ export default defineComponent({
         setUserProperties(analytics, { role: "anonymous" });
         userStore.setUser(null);
         userStore.setCustomClaims(null);
-        // 共有端末で前のアカウント宛の通知が届き続けないよう、離れるアカウントの
-        // 配信先からこの端末を外す。サインアウトは決してブロックしない。
-        disableThisDevice().catch((error: unknown) => {
-          Sentry.captureException(error);
-        });
       }
     });
 

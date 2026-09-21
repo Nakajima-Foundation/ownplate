@@ -54,14 +54,18 @@ self.addEventListener("activate", (event) => {
   event.waitUntil(self.clients.claim());
 });
 
+const ADMIN_PREFIX = "/admin/";
+
+// 再利用するタブは管理画面のものだけに絞る。includeUncontrolled は scope の外にある
+// 同一オリジンのページ（注文者が開いている店舗ページなど）も返すため、絞らないと
+// 通知のタップで注文者のタブを管理画面へ飛ばしてしまう。
 const focusOrOpen = async (url) => {
   const clients = await self.clients.matchAll({
     type: "window",
     includeUncontrolled: true,
   });
-  const opened = clients.find((client) =>
-    client.url.startsWith(self.location.origin),
-  );
+  const adminOrigin = `${self.location.origin}${ADMIN_PREFIX}`;
+  const opened = clients.find((client) => client.url.startsWith(adminOrigin));
   if (!opened) {
     await self.clients.openWindow(url);
     return;
