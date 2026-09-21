@@ -1,5 +1,5 @@
 import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
-import * as admin from "firebase-admin";
+import { DocumentReference, FieldValue, Firestore, Timestamp, Transaction, UpdateData } from "firebase-admin/firestore";
 import moment from "moment-timezone";
 
 import * as utils from "../../lib/utils";
@@ -13,7 +13,7 @@ import { StripeCustomerInfo, StripePaymentIntentWithCharge } from "../../lib/typ
 import { RestaurantInfoData } from "../../models/RestaurantInfo";
 import { validateOrderUpdate } from "../../lib/validator";
 
-const getMgsKey = (status: number, isEC: boolean, timeEstimated?: admin.firestore.Timestamp) => {
+const getMgsKey = (status: number, isEC: boolean, timeEstimated?: Timestamp) => {
   if (status === order_status.order_accepted) {
     return isEC ? "msg_ec_order_accepted" : "msg_order_accepted";
   }
@@ -34,11 +34,11 @@ const getMgsKey = (status: number, isEC: boolean, timeEstimated?: admin.firestor
 };
 
 const getPaymentIntent = async (
-  db: admin.firestore.Firestore,
+  db: Firestore,
   restaurantOwnerUid: string,
   order: OrderData,
-  transaction: admin.firestore.Transaction,
-  stripeRef: admin.firestore.DocumentReference,
+  transaction: Transaction,
+  stripeRef: DocumentReference,
 ) => {
   const stripe = utils.get_stripe_v2();
   const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
@@ -61,7 +61,7 @@ const getPaymentIntent = async (
 };
 
 // This function is called by admins (restaurant operators) to update the status of order
-export const update = async (db: admin.firestore.Firestore, data: OrderUpdateData, context: CallableRequest) => {
+export const update = async (db: Firestore, data: OrderUpdateData, context: CallableRequest) => {
   const ownerUid = utils.validate_owner_admin_auth(context);
   const uid = utils.validate_auth(context);
   const { restaurantId, orderId, status, timeEstimated } = data;
@@ -121,8 +121,8 @@ export const update = async (db: admin.firestore.Firestore, data: OrderUpdateDat
       const updateTimeKey = timeEventMapping[order_status_keys[status] as keyof typeof timeEventMapping];
       const updateData: UpdateDataOnOrderUpdate = {
         status,
-        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
-        [updateTimeKey]: admin.firestore.FieldValue.serverTimestamp(),
+        updatedAt: FieldValue.serverTimestamp(),
+        [updateTimeKey]: FieldValue.serverTimestamp(),
       };
       if (isStripeProcess) {
         updateData.payment = {
@@ -130,13 +130,13 @@ export const update = async (db: admin.firestore.Firestore, data: OrderUpdateDat
         };
       }
       if (status === order_status.order_accepted) {
-        updateData.timeEstimated = timeEstimated ? new admin.firestore.Timestamp(timeEstimated.seconds, timeEstimated.nanoseconds) : order.timePlaced;
+        updateData.timeEstimated = timeEstimated ? new Timestamp(timeEstimated.seconds, timeEstimated.nanoseconds) : order.timePlaced;
         updateData.timePickupForQuery = updateData.timeEstimated;
         order.timeEstimated = updateData.timeEstimated;
       }
       await transaction.update(
         orderRef,
-        updateData as admin.firestore.UpdateData<OrderData>,
+        updateData as UpdateData<OrderData>,
       );
       if (isStripeProcess) {
         const typedPaymentIntent = paymentIntent as StripePaymentIntentWithCharge;
@@ -150,7 +150,7 @@ export const update = async (db: admin.firestore.Firestore, data: OrderUpdateDat
               const { exp_month, exp_year, brand, last4 } = card;
               await transaction.set(stripeReadOnlyRef, {
                 card: { exp_month, exp_year, brand, last4 },
-                updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+                updatedAt: FieldValue.serverTimestamp(),
               });
             }
             const stripe = utils.get_stripe_v2();

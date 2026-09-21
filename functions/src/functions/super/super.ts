@@ -1,10 +1,11 @@
 import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
 import * as utils from "../../lib/utils";
-import * as admin from "firebase-admin";
+import { getAuth } from "firebase-admin/auth";
+import { FieldValue, Firestore } from "firebase-admin/firestore";
 
 import { DispatchData } from "../../models/functionTypes";
 
-export const dispatch = async (db: admin.firestore.Firestore, data: DispatchData, context: CallableRequest) => {
+export const dispatch = async (db: Firestore, data: DispatchData, context: CallableRequest) => {
   if (!context.auth?.token?.admin) {
     throw new HttpsError("permission-denied", "You do not have permission to confirm this request.");
   }
@@ -19,7 +20,7 @@ export const dispatch = async (db: admin.firestore.Firestore, data: DispatchData
       result = await getCustomClaims(db, uid);
       break;
     case "setCustomClaim": {
-      const userRecord = await admin.auth().getUser(uid);
+      const userRecord = await getAuth().getUser(uid);
       if (key === "operator" && userRecord.email) {
         result = await setCustomClaim(db, uid, key, value);
         await db.collection(`admins/${uidSuper}/adminlogs`).add({
@@ -30,7 +31,7 @@ export const dispatch = async (db: admin.firestore.Firestore, data: DispatchData
           value,
           email: userRecord.email,
           success: true,
-          createdAt: admin.firestore.FieldValue.serverTimestamp(),
+          createdAt: FieldValue.serverTimestamp(),
         });
       } else {
         await db.collection(`admins/${uidSuper}/adminlogs`).add({
@@ -41,7 +42,7 @@ export const dispatch = async (db: admin.firestore.Firestore, data: DispatchData
           value,
           success: false,
           error: "invalid_parameters",
-          createdAt: admin.firestore.FieldValue.serverTimestamp(),
+          createdAt: FieldValue.serverTimestamp(),
         });
       }
       break;
@@ -55,7 +56,7 @@ export const dispatch = async (db: admin.firestore.Firestore, data: DispatchData
         value,
         success: false,
         error: "invalid_cmd",
-        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+        createdAt: FieldValue.serverTimestamp(),
       });
       throw new HttpsError("invalid-argument", "Invalid command.");
     }
@@ -66,15 +67,15 @@ export const dispatch = async (db: admin.firestore.Firestore, data: DispatchData
   }
 };
 
-const getCustomClaims = async (db: admin.firestore.Firestore, uid: string) => {
-  const userRecord = await admin.auth().getUser(uid);
+const getCustomClaims = async (db: Firestore, uid: string) => {
+  const userRecord = await getAuth().getUser(uid);
   const customClaims = userRecord.customClaims || {};
   return { result: customClaims };
 };
 
-const setCustomClaim = async (db: admin.firestore.Firestore, uid: string, key: string, value: boolean) => {
+const setCustomClaim = async (db: Firestore, uid: string, key: string, value: boolean) => {
   const obj = { [key]: value };
-  await admin.auth().setCustomUserClaims(uid, obj);
+  await getAuth().setCustomUserClaims(uid, obj);
   await db.doc(`admins/${uid}`).update(obj); // duplicated data in DB
   return await getCustomClaims(db, uid);
 };

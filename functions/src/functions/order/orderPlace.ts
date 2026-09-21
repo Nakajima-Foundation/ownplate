@@ -1,6 +1,6 @@
 import Stripe from "stripe";
 import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
-import * as admin from "firebase-admin";
+import { CollectionReference, DocumentData, DocumentReference, FieldValue, Firestore, Timestamp, Transaction } from "firebase-admin/firestore";
 import moment from "moment-timezone";
 
 import { order_status, stripe_regions_jp } from "../../common/constant";
@@ -19,7 +19,7 @@ import { validateOrderPlaced, validateCustomer } from "../../lib/validator";
 
 import { getPromotion, enableUserPromotion, userPromotionHistoryData, getUserHistoryDoc, getUserHistoryCollectionPath, getDiscountPrice } from "./promotion";
 
-export const getOrderData = async (transaction: admin.firestore.Transaction, orderRef: admin.firestore.DocumentReference): Promise<OrderData> => {
+export const getOrderData = async (transaction: Transaction, orderRef: DocumentReference): Promise<OrderData> => {
   const orderDoc = await transaction.get(orderRef);
   const order = orderDoc.data() as OrderData | undefined;
   if (!order) {
@@ -30,13 +30,13 @@ export const getOrderData = async (transaction: admin.firestore.Transaction, ord
 };
 
 export const updateOrderTotalDataAndUserLog = async (
-  db: admin.firestore.Firestore,
-  transaction: admin.firestore.Transaction,
+  db: Firestore,
+  transaction: Transaction,
   customerUid: string,
   order: { [menuId: string]: number | number[] },
   restaurantId: string,
   ownerUid: string,
-  timePlaced: admin.firestore.Timestamp,
+  timePlaced: Timestamp,
   positive: boolean,
 ) => {
   const menuIds = Object.keys(order);
@@ -45,8 +45,8 @@ export const updateOrderTotalDataAndUserLog = async (
   // Firestore transactions require all reads to be executed before all writes.
 
   // Read !!
-  const totalRef: { [key: string]: admin.firestore.DocumentReference } = {};
-  const totals: { [key: string]: admin.firestore.DocumentData | undefined } = {};
+  const totalRef: { [key: string]: DocumentReference } = {};
+  const totals: { [key: string]: DocumentData | undefined } = {};
   const nums: { [key: string]: number } = {};
   await Promise.all(
     menuIds.map(async (menuId) => {
@@ -96,7 +96,7 @@ export const updateOrderTotalDataAndUserLog = async (
       // lastOrder: timePlaced,
       restaurantId,
       ownerUid,
-      updateAt: admin.firestore.FieldValue.serverTimestamp(),
+      updateAt: FieldValue.serverTimestamp(),
     };
     await transaction.set(userLogRef, data);
   } else {
@@ -107,8 +107,8 @@ export const updateOrderTotalDataAndUserLog = async (
       cancelCounter,
       currentOrder: timePlaced,
       lastOrder: userLog.currentOrder || timePlaced,
-      updateAt: admin.firestore.FieldValue.serverTimestamp(),
-      lastUpdatedAt: userLog.updateAt || new admin.firestore.Timestamp(1577804400, 0),
+      updateAt: FieldValue.serverTimestamp(),
+      lastUpdatedAt: userLog.updateAt || new Timestamp(1577804400, 0),
     };
     await transaction.update(userLogRef, updateData);
   }
@@ -117,7 +117,7 @@ export const updateOrderTotalDataAndUserLog = async (
 const multiple = stripe_regions_jp.multiple; // 100 for USD, 1 for JPY
 
 // This function is called by users to place orders without paying
-export const place = async (db: admin.firestore.Firestore, data: OrderPlacedData, context: CallableRequest) => {
+export const place = async (db: Firestore, data: OrderPlacedData, context: CallableRequest) => {
   const customerUid = utils.validate_customer_auth(context);
 
   const { restaurantId, orderId, tip, timeToPickup, memo, userName, customerInfo, payStripe, waitingPayment } = data;
@@ -137,7 +137,7 @@ export const place = async (db: admin.firestore.Firestore, data: OrderPlacedData
     throw new HttpsError("invalid-argument", "Validation Error.");
   }
   // In isEC, timeToPickup is now. else time to pick
-  const timePlaced = new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds);
+  const timePlaced = new Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds);
 
   try {
     const restaurantData = await utils.get_restaurant(db, restaurantId) as RestaurantInfoData;
@@ -158,7 +158,7 @@ export const place = async (db: admin.firestore.Firestore, data: OrderPlacedData
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
     const customerRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/customer/data`);
 
-    const result = await db.runTransaction(async (transaction: admin.firestore.Transaction) => {
+    const result = await db.runTransaction(async (transaction: Transaction) => {
       const order = await getOrderData(transaction, orderRef);
       if (!order) {
         throw new HttpsError("invalid-argument", "This order does not exist.");
@@ -171,8 +171,8 @@ export const place = async (db: admin.firestore.Firestore, data: OrderPlacedData
       }
       // promotion
       const { historyCollectionRef, historyDocRef, promotionData, discountPrice } = await (async (): Promise<{
-        historyCollectionRef?: admin.firestore.CollectionReference;
-        historyDocRef?: admin.firestore.DocumentReference;
+        historyCollectionRef?: CollectionReference;
+        historyDocRef?: DocumentReference;
         promotionData?: PromotionData;
         discountPrice: number;
       }> => {
@@ -276,7 +276,7 @@ export const place = async (db: admin.firestore.Firestore, data: OrderPlacedData
           uid: customerUid,
           orderId,
           restaurantId,
-          createdAt: admin.firestore.FieldValue.serverTimestamp(),
+          createdAt: FieldValue.serverTimestamp(),
         });
       }
       // customerUid
@@ -290,7 +290,7 @@ export const place = async (db: admin.firestore.Firestore, data: OrderPlacedData
         shippingCost,
         sendSMS: true,
         printed: false,
-        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        updatedAt: FieldValue.serverTimestamp(),
         timePlaced,
         timePickupForQuery: timePlaced,
         client_secret,
@@ -300,7 +300,7 @@ export const place = async (db: admin.firestore.Firestore, data: OrderPlacedData
         name: userName,
       };
       if (!waitingPayment) {
-        updateData.orderPlacedAt = admin.firestore.FieldValue.serverTimestamp();
+        updateData.orderPlacedAt = FieldValue.serverTimestamp();
       }
       if (enableStripe) {
         const update = {

@@ -1,9 +1,9 @@
-import * as admin from "firebase-admin";
+import { Firestore } from "firebase-admin/firestore";
 import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
 import * as utils from "../../../lib/utils";
 import { ownPlateConfig } from "../../../common/project";
 
-export const disconnect = async (db: admin.firestore.Firestore, context: CallableRequest) => {
+export const disconnect = async (db: Firestore, context: CallableRequest) => {
   const uid = utils.validate_admin_auth(context);
   const stripe = utils.get_stripe_v2();
 

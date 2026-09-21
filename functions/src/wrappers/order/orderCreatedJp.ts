@@ -1,11 +1,11 @@
 import { onCall, HttpsError } from "firebase-functions/v2/https";
 
-import * as admin from "firebase-admin";
+import { getFirestore } from "firebase-admin/firestore";
 
 import { orderCreated } from "../../functions/order/orderCreated";
 import { enforceAppCheck, secretKeys } from "../firebase";
 
-const db = admin.firestore();
+const db = getFirestore();
 
 export default onCall(
   {

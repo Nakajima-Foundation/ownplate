@@ -1,11 +1,11 @@
 import { onCall, HttpsError } from "firebase-functions/v2/https";
 
-import * as admin from "firebase-admin";
+import { getFirestore } from "firebase-admin/firestore";
 
 import { ping } from "../functions/ping";
 import { enforceAppCheck } from "./firebase";
 
-const db = admin.firestore();
+const db = getFirestore();
 
 export default onCall(
   {
@@ -19,4 +19,5 @@ export default onCall(
       throw new HttpsError("failed-precondition", "The function must be called from an App Check verified app.");
     }
     return await ping(db, context.data, context);
-  });
+  },
+);

@@ -1,4 +1,4 @@
-import * as admin from "firebase-admin";
+import { FieldValue, Firestore } from "firebase-admin/firestore";
 import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
 
 import * as utils from "../../lib/utils";
@@ -9,7 +9,7 @@ import { validateCancelPayment } from "../../lib/validator";
 import { OrderCancelPaymentData } from "../../models/functionTypes";
 
 // This function is called by admin to cancel an exsting order
-export const cancelStripePayment = async (db: admin.firestore.Firestore, data: OrderCancelPaymentData, context: CallableRequest) => {
+export const cancelStripePayment = async (db: Firestore, data: OrderCancelPaymentData, context: CallableRequest) => {
   const ownerUid = utils.validate_owner_admin_auth(context);
   const uid = utils.validate_auth(context);
 
@@ -47,8 +47,8 @@ export const cancelStripePayment = async (db: admin.firestore.Firestore, data: O
 
       const paymentIntent = await cancelStripe(db, transaction, stripeRef, restaurantOwnerUid, order.id);
       const updateData = {
-        orderRestaurantPaymentCanceledAt: admin.firestore.FieldValue.serverTimestamp(),
-        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        orderRestaurantPaymentCanceledAt: FieldValue.serverTimestamp(),
+        updatedAt: FieldValue.serverTimestamp(),
         uidPaymentCanceledBy: uid,
         payment: {
           stripe: "canceled",

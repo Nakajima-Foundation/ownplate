@@ -1,4 +1,4 @@
-import * as admin from "firebase-admin";
+import { getApps, initializeApp } from "firebase-admin/app";
 import * as Sentry from "@sentry/node";
 
 import exportIfNeeded from "./lib/exportifneeded";
@@ -6,8 +6,8 @@ import exportIfNeeded from "./lib/exportifneeded";
 const senty_dsn = process.env.SENTY_DSN ?? "";
 Sentry.init({ dsn: senty_dsn });
 
-if (!admin.apps.length) {
-  admin.initializeApp();
+if (!getApps().some((app) => app.name === "[DEFAULT]")) {
+  initializeApp();
 }
 
 exportIfNeeded("apiJP2", "apiJP", exports);
