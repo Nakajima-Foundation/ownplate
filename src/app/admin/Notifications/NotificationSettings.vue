@@ -140,10 +140,16 @@
 
           <!-- Web Push -->
           <div v-if="webPushConfigured" class="mt-4">
-            <a v-if="webPushSupported" @click="toggleWebPush()">
+            <button
+              v-if="webPushSupported"
+              type="button"
+              class="cursor-pointer"
+              :aria-pressed="webPushEnabled"
+              @click="toggleWebPush()"
+            >
               <div
                 v-if="webPushEnabled"
-                class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-green-600/10 px-4"
+                class="inline-flex h-9 items-center justify-center rounded-full bg-green-600/10 px-4"
               >
                 <i class="material-icons mr-2 text-lg text-green-600"
                   >notifications_active</i
@@ -155,7 +161,7 @@
 
               <div
                 v-else
-                class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-black/5 px-4"
+                class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
               >
                 <i class="material-icons mr-2 text-lg text-black/30"
                   >notifications_off</i
@@ -164,7 +170,7 @@
                   {{ $t("admin.order.webPushOff") }}
                 </div>
               </div>
-            </a>
+            </button>
 
             <div class="mt-2 text-xs text-black/60">
               {{ $t("admin.order.webPushDescription") }}

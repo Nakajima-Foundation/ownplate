@@ -46,22 +46,24 @@
         {{ $t("admin.webpush.registrationHeading") }}
       </div>
       <div class="flex flex-wrap gap-2">
-        <a
+        <button
+          type="button"
           class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-green-600/10 px-4"
           @click="onRegister()"
         >
           <span class="text-sm font-bold text-green-600">
             {{ $t("admin.webpush.register") }}
           </span>
-        </a>
-        <a
+        </button>
+        <button
+          type="button"
           class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-red-700/10 px-4"
           @click="onUnregister()"
         >
           <span class="text-sm font-bold text-red-700">
             {{ $t("admin.webpush.unregister") }}
           </span>
-        </a>
+        </button>
       </div>
     </div>
 
@@ -80,14 +82,15 @@
         class="mb-2 w-full rounded-lg border border-teal-400 px-3 py-2"
         :placeholder="$t('admin.webpush.sendBody')"
       />
-      <a
+      <button
+        type="button"
         class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-black/5 px-4"
         @click="onSend()"
       >
         <span class="text-op-teal text-sm font-bold">
           {{ $t("admin.webpush.send") }}
         </span>
-      </a>
+      </button>
     </div>
 
     <!-- Callable interference probe -->
@@ -98,14 +101,15 @@
       <div class="mb-2 text-xs text-black/60">
         {{ $t("admin.webpush.probeHint") }}
       </div>
-      <a
+      <button
+        type="button"
         class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-black/5 px-4"
         @click="onProbe()"
       >
         <span class="text-op-teal text-sm font-bold">
           {{ $t("admin.webpush.probe") }}
         </span>
-      </a>
+      </button>
     </div>
 
     <!-- Log -->

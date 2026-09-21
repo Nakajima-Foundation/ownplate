@@ -61,6 +61,24 @@ describe("webPushFormat", () => {
     assert.strictEqual(data.body.length, 300);
   });
 
+  // slice は UTF-16 の単位で切るため、絵文字の途中で切ると孤立サロゲートが残る
+  it("never splits a surrogate pair", () => {
+    const data = createWebPushData(
+      "\u{1F363}".repeat(300),
+      "\u{1F363}".repeat(500),
+      "/x",
+    );
+    const lonely =
+      /[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/u;
+    assert.ok(!lonely.test(data.title));
+    assert.ok(!lonely.test(data.body));
+  });
+
+  it("counts the bound in code points, not utf-16 units", () => {
+    const data = createWebPushData("\u{1F363}".repeat(300), "", "/x");
+    assert.strictEqual(Array.from(data.title).length, 100);
+  });
+
   it("keeps text at the boundary untouched", () => {
     const data = createWebPushData("a".repeat(100), "b".repeat(300), "/x");
     assert.strictEqual(data.title, "a".repeat(100));

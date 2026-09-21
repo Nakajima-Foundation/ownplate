@@ -25,11 +25,14 @@ export const adminOrderPath = (restaurantId: string, orderId: string) => {
   return `/admin/restaurants/${restaurantId}/orders/${orderId}`;
 };
 
+// 長さは符号位置で数える。slice は UTF-16 の単位で切るので、絵文字のような
+// サロゲートペアの途中で切れて孤立サロゲートが残り、末尾が � になる。
 const truncate = (text: string, max: number) => {
-  if (text.length <= max) {
+  const characters = Array.from(text);
+  if (characters.length <= max) {
     return text;
   }
-  return text.slice(0, max - 1) + "…";
+  return characters.slice(0, max - 1).join("") + "…";
 };
 
 const PLATFORMS: readonly PushDevicePlatform[] = ["ios", "android", "other"];
