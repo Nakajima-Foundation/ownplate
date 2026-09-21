@@ -26,7 +26,9 @@ const showPush = (data) =>
   self.registration.showNotification(data.title || DEFAULT_TITLE, {
     body: data.body || "",
     icon: ICON_PATH,
-    badge: ICON_PATH,
+    // badge は渡さない。Android はこれを白一色のマスクとして描くので、色付きの
+    // ロゴを渡すとステータスバーに白い四角が出るだけになる。単色の専用素材が
+    // 用意できるまではブラウザ既定に任せる。
     // tag は付けない。同じ tag の通知は既存を置き換えるだけで再通知されず、
     // 実機で「1通目だけ出て以降沈黙する」状態になった。
     data,
