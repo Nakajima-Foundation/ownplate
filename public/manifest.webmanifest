@@ -1,8 +1,8 @@
 {
-  "name": "おもちかえり.com",
-  "short_name": "おもちかえり",
-  "start_url": "/",
-  "scope": "/",
+  "name": "おもちかえり.com 管理",
+  "short_name": "おもちかえり管理",
+  "start_url": "/admin/restaurants",
+  "scope": "/admin/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#0097a7",

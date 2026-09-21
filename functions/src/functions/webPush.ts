@@ -1,4 +1,4 @@
-import * as admin from "firebase-admin";
+import { FieldValue, Firestore } from "firebase-admin/firestore";
 import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
 
 import { RegisterWebPushData, SendTestWebPushData, UnregisterWebPushData } from "../models/functionTypes";
@@ -20,7 +20,7 @@ const validated = (data: object, result: { result: boolean; errors: unknown[] },
 
 // 端末が FCM に登録したあとに呼ぶ。uid は request.auth からしか取らないので、
 // 他人のアカウントに端末を紐づけることはできない。
-export const registerWebPush = async (db: admin.firestore.Firestore, data: RegisterWebPushData, context: CallableRequest) => {
+export const registerWebPush = async (db: Firestore, data: RegisterWebPushData, context: CallableRequest) => {
   const uid = utils.validate_admin_auth(context);
   validated(data, validateRegisterWebPush(data), "registerWebPush");
 
@@ -28,7 +28,7 @@ export const registerWebPush = async (db: admin.firestore.Firestore, data: Regis
     {
       fid: data.fid,
       platform: asPlatform(data.platform),
-      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      updatedAt: FieldValue.serverTimestamp(),
     },
     { merge: true },
   );
@@ -36,7 +36,7 @@ export const registerWebPush = async (db: admin.firestore.Firestore, data: Regis
 };
 
 // サインアウト時や端末一覧からの削除で呼ぶ。削除できるのは自分の uid 配下だけ。
-export const unregisterWebPush = async (db: admin.firestore.Firestore, data: UnregisterWebPushData, context: CallableRequest) => {
+export const unregisterWebPush = async (db: Firestore, data: UnregisterWebPushData, context: CallableRequest) => {
   const uid = utils.validate_admin_auth(context);
   validated(data, validateUnregisterWebPush(data), "unregisterWebPush");
 
@@ -45,7 +45,7 @@ export const unregisterWebPush = async (db: admin.firestore.Firestore, data: Unr
 };
 
 // 動作確認用。宛先は request.auth.uid の登録端末のみで、他のアカウントには届かない。
-export const sendTestWebPush = async (db: admin.firestore.Firestore, data: SendTestWebPushData, context: CallableRequest) => {
+export const sendTestWebPush = async (db: Firestore, data: SendTestWebPushData, context: CallableRequest) => {
   const uid = utils.validate_admin_auth(context);
   const title = (data?.title ?? "").trim();
   if (!title) {

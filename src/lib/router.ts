@@ -196,6 +196,11 @@ export const customRoutes: CustomRoute[] = [
         component: () => import("@/app/admin/Index.vue"),
       },
       {
+        name: "admin-webpush",
+        path: "webpush",
+        component: () => import("@/app/admin/WebPush/Index.vue"),
+      },
+      {
         path: "restaurants/:restaurantId",
         component: () => import("@/app/admin/Restaurants/Wrapper.vue"),
         children: [

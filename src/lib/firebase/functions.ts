@@ -13,6 +13,7 @@ import type {
   StripeDeleteRestaurantCardData,
   RegisterWebPushData,
   UnregisterWebPushData,
+  SendTestWebPushData,
 } from "@/models/functionTypes";
 
 export const lineVerifyFriend = httpsCallable<
@@ -121,3 +122,7 @@ export const unregisterWebPush = httpsCallable<
   UnregisterWebPushData,
   { result: boolean }
 >(functionsJP, "unregisterWebPush2");
+export const sendTestWebPush = httpsCallable<
+  SendTestWebPushData,
+  { result: boolean; sent: number; failed: number; targets: number }
+>(functionsJP, "sendTestWebPush2");

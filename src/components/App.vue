@@ -65,7 +65,7 @@ import DialogTips from "@/components/DialogTips.vue";
 import AudioPlay from "@/components/AudioPlay.vue";
 import Loading from "@/components/Loading.vue";
 import { isDev, useRestaurantId } from "@/utils/utils";
-import { unsubscribeWebPush } from "@/utils/webPush";
+import { disableThisDevice } from "@/utils/useWebPushToggle";
 
 import * as Sentry from "@sentry/vue";
 import { defaultHeader } from "@/config/header";
@@ -166,9 +166,9 @@ export default defineComponent({
         setUserProperties(analytics, { role: "anonymous" });
         userStore.setUser(null);
         userStore.setCustomClaims(null);
-        // 共有端末で前のアカウント宛の通知が届き続けないように購読を切る。
-        // 残ったサーバ側の登録は、次の送信が 410 を返した時点で削除される。
-        unsubscribeWebPush().catch((error: unknown) => {
+        // 共有端末で前のアカウント宛の通知が届き続けないよう、離れるアカウントの
+        // 配信先からこの端末を外す。サインアウトは決してブロックしない。
+        disableThisDevice().catch((error: unknown) => {
           Sentry.captureException(error);
         });
       }
