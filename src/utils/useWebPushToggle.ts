@@ -53,6 +53,14 @@ export const disableThisDevice = async () => {
 const DISABLE_TIMEOUT_MS = 3000;
 
 export const signOutAfterDisablingPush = async (auth: Auth) => {
+  // 配信先を持てるのは管理アカウントだけ。注文者で呼ぶと unregisterWebPush が
+  // validate_admin_auth で必ず落ち、共有端末（管理者が push を有効にした端末）で
+  // 注文者がログアウトするたびに Sentry に無意味な例外が積まれる。
+  // 管理アカウントはメール + パスワードなので、email の有無で見分ける。
+  if (!auth.currentUser?.email) {
+    await signOut(auth);
+    return;
+  }
   const disabling = disableThisDevice().catch((e: unknown) => {
     Sentry.captureException(e);
   });
