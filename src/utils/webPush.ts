@@ -87,28 +87,51 @@ const checkPreconditions = async (): Promise<PushFailure | null> => {
   return null;
 };
 
-// FID は onRegistered 経由で届く。取りこぼさないよう register() より先に購読し、
-// 無言で失敗したときに固まらないようタイムアウトを置く。
+// FID は onRegistered 経由で届く。
+//
+// ハンドラは一度張ったら外さない。SDK の register() は通知を送る「あと」にも
+// onRegisteredHandler の存在を確認し、さらに installation id が変わると SDK 自身が
+// register() をもう一本キューに積む。FID を受け取った時点で解除すると、後続の
+// リンクがハンドラを見失って invalid-on-registered-handler で落ちる。
+let fidWaiters: Array<(fid: string) => void> = [];
+let onRegisteredAttached = false;
+
+const attachOnRegistered = (messaging: Messaging) => {
+  if (onRegisteredAttached) {
+    return;
+  }
+  onRegisteredAttached = true;
+  onRegistered(messaging, (fid) => {
+    const waiting = fidWaiters;
+    fidWaiters = [];
+    waiting.forEach((notify) => notify(fid));
+  });
+};
+
 const nextFid = (messaging: Messaging): Promise<string | null> =>
   new Promise((resolve) => {
-    const teardown: Array<() => void> = [];
+    attachOnRegistered(messaging);
     let settled = false;
     const finish = (fid: string | null) => {
       if (settled) {
         return;
       }
       settled = true;
-      teardown.forEach((detach) => detach());
       resolve(fid);
     };
-    teardown.push(onRegistered(messaging, (fid) => finish(fid)));
-    const timer = window.setTimeout(() => finish(null), REGISTER_TIMEOUT_MS);
-    teardown.push(() => window.clearTimeout(timer));
+    const waiter = (fid: string) => finish(fid);
+    fidWaiters.push(waiter);
+    window.setTimeout(() => {
+      // 待ち受けを畳む。放置すると次回の通知で解決済みの Promise を触りにいく。
+      fidWaiters = fidWaiters.filter((entry) => entry !== waiter);
+      finish(null);
+    }, REGISTER_TIMEOUT_MS);
   });
 
 // FCM が既に落とした登録はここからは見えない。register() は自前のキャッシュから
 // 成功を返すため、送信時まで判明しない。キャッシュの鍵になっている2つの入力
 // （installation id と購読）を先に落とすことで、確実に再登録させる。
+// どちらも失敗しうるので best-effort。警告だけ出して登録は続行する。
 const resetBeforeRegistering = (registration: ServiceWorkerRegistration) =>
   resetRegistrationState({
     dropSubscription: async () => {
