@@ -1201,6 +1201,11 @@ const data = {
     passwordReset: "Reset Password",
     pleaseCheckInbox: "Please check your inbox, an email is on the way.",
     push: {
+      rename: "Renommer l'appareil",
+      save: "Enregistrer",
+      delete: "Supprimer",
+      registeredAt: "Enregistré",
+      namePlaceholder: "ex. iPad de la caisse",
       devices: "Appareils à notifier",
       empty: "Aucun appareil n'est encore enregistré.",
       addDevice: "Ajouter un appareil",

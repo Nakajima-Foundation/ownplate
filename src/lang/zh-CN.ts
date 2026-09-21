@@ -1127,6 +1127,11 @@ const data = {
     passwordReset: "重置密码",
     pleaseCheckInbox: "邮件已发送。请查看收件箱。",
     push: {
+      rename: "修改设备名称",
+      save: "保存",
+      delete: "删除",
+      registeredAt: "注册",
+      namePlaceholder: "例如：收银台的 iPad",
       devices: "接收通知的设备",
       empty: "尚未注册任何设备。",
       addDevice: "添加设备",

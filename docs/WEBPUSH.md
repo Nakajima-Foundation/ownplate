@@ -229,10 +229,14 @@ path から自分のオリジンの区画を割り出し、無関係なタブを
 | `notify` | 一覧で ON/OFF する。送信時にこれで絞る |
 | `platform` | `ios` / `android` / `other` |
 | `invitedBy` | 招待を作った管理者の uid |
+| `registeredAt` | 登録時刻。一覧に出す |
 | `updatedAt` | 登録・更新時刻 |
 
 - doc id が FID なので、同じ端末で再登録しても doc が増えない。
-- 一覧・ON/OFF・削除はクライアントから直接行う。rules は `lines` と同じ権限。
+- 一覧・ON/OFF・削除・名前の変更はクライアントから直接行う。rules は `lines` と同じ権限。
+- `registeredAt` は後から足したので、それ以前の登録には無い。一覧は `updatedAt` に
+  フォールバックする（`updatedAt` は引き換え時にしか書かれないので登録時刻と同じになる）。
+- 名前の長さは一覧からの変更では縛らない。見分けにしか使わないため。
 - 新規登録は招待経由なので Functions が書く。
 - 送信が「宛先そのものが無効」を示すコードを返した FID だけを削除する。
   `messaging/invalid-argument` は payload 不正でも返るため、削除の根拠にしない。

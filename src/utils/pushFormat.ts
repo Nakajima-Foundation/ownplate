@@ -23,3 +23,14 @@ export const describeSendResult = (sent: number, targets: number): string => {
   }
   return `sent ${sent}/${targets}`;
 };
+
+// Firestore の Timestamp だけを当てにする。serverTimestamp() は書き込み直後の
+// ローカルスナップショットでは null になるので、そこも通る形にしておく。
+export type TimestampLike = { seconds: number } | null | undefined;
+
+// 一覧に出す登録日時。registeredAt は後から足したので、それ以前の登録には無い。
+// updatedAt は引き換え時にしか書かれていないので、その場合はこれが登録日時になる。
+export const registeredAtSeconds = (
+  registeredAt: TimestampLike,
+  updatedAt: TimestampLike,
+): number | null => registeredAt?.seconds ?? updatedAt?.seconds ?? null;

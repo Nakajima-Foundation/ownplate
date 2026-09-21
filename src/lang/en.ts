@@ -1181,6 +1181,11 @@ const data = {
     passwordReset: "Reset Password",
     pleaseCheckInbox: "Please check your inbox, an email is on the way.",
     push: {
+      rename: "Rename device",
+      save: "Save",
+      delete: "Delete",
+      registeredAt: "Registered",
+      namePlaceholder: "e.g. iPad at the register",
       devices: "Devices to notify",
       empty: "No device has been registered yet.",
       addDevice: "Add a device",

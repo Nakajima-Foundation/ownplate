@@ -27,8 +27,22 @@
             :key="device.id"
             class="flex items-center"
           >
+            <!-- Rename -->
+            <div
+              v-if="editingId === device.id"
+              class="flex-1 rounded-lg bg-white p-4 shadow-sm"
+            >
+              <input
+                v-model="editingName"
+                class="w-full rounded border border-teal-400 px-2 py-1"
+                :placeholder="$t('admin.push.namePlaceholder')"
+                @keyup.enter="handleRename(device)"
+              />
+            </div>
+
             <!-- Device Name -->
             <button
+              v-else
               type="button"
               class="flex-1 cursor-pointer rounded-lg bg-white p-4 text-left shadow-sm"
               :aria-pressed="!!device.notify"
@@ -39,21 +53,59 @@
                 <i class="material-icons mr-2 text-2xl">{{
                   device.notify ? "check_box" : "check_box_outline_blank"
                 }}</i>
-                <div class="text-base font-bold">
-                  {{ device.name }}
+                <div>
+                  <div class="text-base font-bold">
+                    {{ device.name }}
+                  </div>
+                  <div
+                    v-if="registeredOn(device)"
+                    class="text-xs text-black/40"
+                  >
+                    {{ $t("admin.push.registeredAt") }}
+                    {{ registeredOn(device) }}
+                  </div>
                 </div>
               </div>
             </button>
 
-            <!-- Delete -->
-            <div>
-              <button
-                type="button"
-                class="ml-4 inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-black/5 px-4"
-                @click.stop="handleDelete(device.id)"
-              >
-                <i class="material-icons text-lg text-red-700">delete</i>
-              </button>
+            <!-- Actions -->
+            <div class="ml-4 flex items-center space-x-2">
+              <template v-if="editingId === device.id">
+                <button
+                  type="button"
+                  class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-green-600/10 px-4"
+                  :aria-label="$t('admin.push.save')"
+                  @click.stop="handleRename(device)"
+                >
+                  <i class="material-icons text-lg text-green-600">check</i>
+                </button>
+                <button
+                  type="button"
+                  class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-black/5 px-4"
+                  :aria-label="$t('button.cancel')"
+                  @click.stop="editingId = ''"
+                >
+                  <i class="material-icons text-lg text-black/40">close</i>
+                </button>
+              </template>
+              <template v-else>
+                <button
+                  type="button"
+                  class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-black/5 px-4"
+                  :aria-label="$t('admin.push.rename')"
+                  @click.stop="startRename(device)"
+                >
+                  <i class="material-icons text-op-teal text-lg">edit</i>
+                </button>
+                <button
+                  type="button"
+                  class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-black/5 px-4"
+                  :aria-label="$t('admin.push.delete')"
+                  @click.stop="handleDelete(device.id)"
+                >
+                  <i class="material-icons text-lg text-red-700">delete</i>
+                </button>
+              </template>
             </div>
           </div>
         </div>
@@ -147,7 +199,9 @@ import {
 
 import { createPushInvite, sendTestWebPush } from "@/lib/firebase/functions";
 import { checkShopAccount } from "@/utils/userPermission";
-import { describeSendResult } from "@/utils/pushFormat";
+import moment from "moment";
+
+import { describeSendResult, registeredAtSeconds } from "@/utils/pushFormat";
 import {
   useAdminUids,
   useRestaurantId,
@@ -161,10 +215,14 @@ import AdminHeader from "@/app/admin/AdminHeader.vue";
 import { useDialogStore } from "@/store/dialog";
 import { useHead } from "@unhead/vue";
 
+type TimestampLike = { seconds: number } | null | undefined;
+
 type PushDeviceData = {
   id: string;
   name?: string;
   notify?: boolean;
+  registeredAt?: TimestampLike;
+  updatedAt?: TimestampLike;
 };
 
 export default defineComponent({
@@ -196,6 +254,8 @@ export default defineComponent({
     const creating = ref(false);
     const copied = ref(false);
     const testResult = ref("");
+    const editingId = ref("");
+    const editingName = ref("");
 
     const detacher = onSnapshot(
       collection(db, `restaurants/${restaurantId.value}/pushRegistrations`),
@@ -209,6 +269,9 @@ export default defineComponent({
       detacher();
     });
 
+    // ここと handleRename は updatedAt を書かないこと。registeredAt が足される前に
+    // 登録された端末は、一覧の登録日を updatedAt から取っている。触ると、その端末の
+    // 登録日が「最後に操作した日」に黙って変わる。
     const handleToggle = async (device: PushDeviceData) => {
       await updateDoc(
         doc(
@@ -217,6 +280,34 @@ export default defineComponent({
         ),
         { notify: !device.notify },
       );
+    };
+
+    const registeredOn = (device: PushDeviceData) => {
+      const seconds = registeredAtSeconds(
+        device.registeredAt,
+        device.updatedAt,
+      );
+      return seconds === null ? "" : moment.unix(seconds).format("YYYY-MM-DD");
+    };
+
+    const startRename = (device: PushDeviceData) => {
+      editingId.value = device.id;
+      editingName.value = device.name ?? "";
+    };
+
+    // 名前は一覧の見分けにしか使わないので、空にされたら変更しないで閉じるだけ。
+    const handleRename = async (device: PushDeviceData) => {
+      const name = editingName.value.trim();
+      if (name && name !== device.name) {
+        await updateDoc(
+          doc(
+            db,
+            `restaurants/${restaurantId.value}/pushRegistrations/${device.id}`,
+          ),
+          { name },
+        );
+      }
+      editingId.value = "";
     };
 
     const handleDelete = (fid: string) => {
@@ -283,6 +374,11 @@ export default defineComponent({
       creating,
       copied,
       testResult,
+      editingId,
+      editingName,
+      registeredOn,
+      startRename,
+      handleRename,
       handleToggle,
       handleDelete,
       handleCreateInvite,
