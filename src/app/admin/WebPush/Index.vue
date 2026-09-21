@@ -178,15 +178,17 @@ export default defineComponent({
     // createPushInvite2 と redeemPushInvite2 の両方を一度に通す。
     const onRegister = async () => {
       try {
+        // 招待を先に作る。subscribeThisDevice() は installation id を回すので、
+        // 招待が取れないまま回すと、この端末の既存の登録を無駄に壊す。
+        const { data: invite } = await createPushInvite({
+          restaurantId: restaurantId.value,
+        });
+        note(`invite ${invite.url}`);
         const result = await subscribeThisDevice(ADMIN_SCOPE);
         if (!result.ok) {
           note(`register failed: ${result.reason}`);
           return;
         }
-        const { data: invite } = await createPushInvite({
-          restaurantId: restaurantId.value,
-        });
-        note(`invite ${invite.url}`);
         await redeemPushInvite({
           token: invite.url.split("/").pop() ?? "",
           fid: result.fid,

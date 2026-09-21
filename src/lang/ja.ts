@@ -1002,6 +1002,14 @@ const data = {
     register: "通知を受け取る",
     done: "登録しました",
     doneHint: "新しい注文が入ると、この端末に通知が届きます。",
+    status: {
+      "registered-here": "この端末は登録済みです",
+      used: "この URL は使用済みです。お店に新しい URL を発行してもらってください。",
+      expired:
+        "この URL は期限切れです。お店に新しい URL を発行してもらってください。",
+      "not-found":
+        "この URL は無効です。お店に新しい URL を発行してもらってください。",
+    },
     failure: {
       unconfigured: "この店舗ではプッシュ通知を利用できません。",
       unsupported: "この端末またはブラウザではプッシュ通知を利用できません。",

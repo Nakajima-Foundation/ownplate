@@ -1019,6 +1019,13 @@ const data = {
     register: "Recevoir les notifications",
     done: "Enregistré",
     doneHint: "Cet appareil sera notifié à l'arrivée d'une nouvelle commande.",
+    status: {
+      "registered-here": "Cet appareil est déjà enregistré",
+      used: "Cette URL a déjà été utilisée. Demandez-en une nouvelle au restaurant.",
+      expired: "Cette URL a expiré. Demandez-en une nouvelle au restaurant.",
+      "not-found":
+        "Cette URL n'est pas valide. Demandez-en une nouvelle au restaurant.",
+    },
     failure: {
       unconfigured:
         "Les notifications push ne sont pas disponibles pour ce restaurant.",

@@ -4,8 +4,40 @@
       {{ $t("pushDevice.title") }}
     </div>
 
+    <!-- 完了 -->
+    <div v-if="registered" class="mt-6 rounded-lg bg-white p-4 shadow-sm">
+      <div class="flex items-center text-green-600">
+        <i class="material-icons mr-2 text-2xl">check_circle</i>
+        <div class="text-base font-bold">{{ $t("pushDevice.done") }}</div>
+      </div>
+      <div class="mt-2 text-sm text-black/60">
+        {{ $t("pushDevice.doneHint") }}
+      </div>
+    </div>
+
+    <!-- 招待が使えないときは、登録の導線そのものを出さない -->
+    <div
+      v-else-if="statusMessage"
+      class="mt-6 rounded-lg bg-white p-4 shadow-sm"
+    >
+      <div
+        class="flex items-center"
+        :class="
+          status === 'registered-here' ? 'text-green-600' : 'text-black/60'
+        "
+      >
+        <i class="material-icons mr-2 text-2xl">{{
+          status === "registered-here" ? "check_circle" : "error_outline"
+        }}</i>
+        <div class="text-base font-bold">{{ statusMessage }}</div>
+      </div>
+    </div>
+
     <!-- iOS はホーム画面に追加しないと通知そのものを受け取れない -->
-    <div v-if="needsHomeScreen" class="mt-6 rounded-lg bg-white p-4 shadow-sm">
+    <div
+      v-else-if="needsHomeScreen"
+      class="mt-6 rounded-lg bg-white p-4 shadow-sm"
+    >
       <div class="text-base font-bold text-black/60">
         {{ $t("pushDevice.installHeading") }}
       </div>
@@ -17,7 +49,7 @@
     </div>
 
     <!-- 登録 -->
-    <div v-else-if="!registered" class="mt-6">
+    <div v-else-if="status === 'usable'" class="mt-6">
       <div class="text-sm text-black/60">
         {{ $t("pushDevice.nameHint") }}
       </div>
@@ -49,17 +81,6 @@
       </div>
     </div>
 
-    <!-- 完了 -->
-    <div v-else class="mt-6 rounded-lg bg-white p-4 shadow-sm">
-      <div class="flex items-center text-green-600">
-        <i class="material-icons mr-2 text-2xl">check_circle</i>
-        <div class="text-base font-bold">{{ $t("pushDevice.done") }}</div>
-      </div>
-      <div class="mt-2 text-sm text-black/60">
-        {{ $t("pushDevice.doneHint") }}
-      </div>
-    </div>
-
     <!-- Loading -->
     <Loading v-if="working" />
   </div>
@@ -72,9 +93,11 @@ import { useRoute } from "vue-router";
 import { useHead } from "@unhead/vue";
 
 import Loading from "@/components/Loading.vue";
-import { redeemPushInvite } from "@/lib/firebase/functions";
+import type { PushInviteStatus } from "@/models/functionTypes";
+import { checkPushInvite, redeemPushInvite } from "@/lib/firebase/functions";
 import {
   PUSH_DEVICE_SCOPE,
+  currentDeviceFid,
   isWebPushSupported,
   subscribeThisDevice,
   thisDevicePlatform,
@@ -91,6 +114,7 @@ export default defineComponent({
 
     const token = computed(() => String(route.params.token ?? ""));
     const supported = ref<boolean | null>(null);
+    const status = ref<PushInviteStatus | null>(null);
     const registered = ref(false);
     const working = ref(false);
     const name = ref("");
@@ -143,8 +167,26 @@ export default defineComponent({
       ],
     }));
 
+    // 招待の状態を「押す前に」確かめる。押してからでは遅い — 登録手順は先に
+    // installation id を回すので、そこで招待が弾かれると、動いていた端末の
+    // 登録が死んだまま戻せなくなる。PWA の start_url がこの URL なので、
+    // ホーム画面から起動するたびにこの画面に戻ってくる。
+    const refreshStatus = async () => {
+      try {
+        const { data } = await checkPushInvite({
+          token: token.value,
+          fid: await currentDeviceFid(),
+        });
+        status.value = data.status;
+      } catch (e) {
+        console.error("failed to check the push invite", e);
+        status.value = "not-found";
+      }
+    };
+
     onMounted(async () => {
       supported.value = await isWebPushSupported();
+      await refreshStatus();
     });
 
     const handleRegister = async () => {
@@ -154,6 +196,13 @@ export default defineComponent({
       working.value = true;
       error.value = "";
       try {
+        // 破壊的な手順に入る直前にもう一度見る。画面を開いたまま別の端末に
+        // 使われている場合がある。
+        await refreshStatus();
+        if (status.value !== "usable") {
+          working.value = false;
+          return;
+        }
         const result = await subscribeThisDevice(PUSH_DEVICE_SCOPE);
         if (!result.ok) {
           error.value = t(`pushDevice.failure.${result.reason}`);
@@ -167,6 +216,7 @@ export default defineComponent({
           name: name.value,
         });
         registered.value = true;
+        status.value = "registered-here";
       } catch (e) {
         console.error("failed to redeem the push invite", e);
         error.value = t("pushDevice.failure.invite");
@@ -174,8 +224,16 @@ export default defineComponent({
       working.value = false;
     };
 
+    const statusMessage = computed(() =>
+      status.value && status.value !== "usable"
+        ? t(`pushDevice.status.${status.value}`)
+        : "",
+    );
+
     return {
       MAX_DEVICE_NAME_LENGTH,
+      status,
+      statusMessage,
       needsHomeScreen,
       registered,
       working,

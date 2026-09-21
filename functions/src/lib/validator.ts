@@ -14,6 +14,7 @@ import {
   PingData,
   LineValidateData,
   LiffAuthenticateData,
+  CheckPushInviteData,
   CreatePushInviteData,
   RedeemPushInviteData,
 } from "../models/functionTypes";
@@ -387,6 +388,21 @@ export const validateCreatePushInvite = (data: CreatePushInviteData) => {
     restaurantId: {
       type: "firebaseId",
       required: true,
+    },
+  };
+  return validateData(data, validator);
+};
+
+export const validateCheckPushInvite = (data: CheckPushInviteData) => {
+  const validator = {
+    token: {
+      type: "string",
+      required: true,
+      regex: /^[A-Za-z0-9_-]{22,128}$/,
+    },
+    fid: {
+      type: "numAlphaBar",
+      required: false,
     },
   };
   return validateData(data, validator);

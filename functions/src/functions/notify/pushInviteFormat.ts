@@ -14,11 +14,15 @@ export type PushInviteData = {
   createdBy: string;
   expiresAt: number;
   usedAt?: number | null;
+  usedByFid?: string | null;
 };
 
 // 照合できない理由。呼び出し側がそのまま利用者向けの文言に割り当てられるよう、
 // 「見つからない」と「期限切れ」を潰さずに返す。
-export type PushInviteRejection = "not-found" | "used" | "expired";
+// registered-here が要るのは、PWA の start_url が招待 URL そのものだから。
+// ホーム画面のアイコンから起動するたびにこの画面に戻るので、登録を済ませた端末に
+// 「使用済み」とだけ出すと、動いている利用者が壊れたと思って押し直す。
+export type PushInviteStatus = "usable" | "registered-here" | "not-found" | "used" | "expired";
 
 export const createInviteToken = () => randomBytes(PUSH_INVITE_TOKEN_BYTES).toString("base64url");
 
@@ -31,17 +35,17 @@ export const inviteUrl = (hostName: string, token: string) => `https://${hostNam
 
 // 使用済みを期限切れより先に見る。期限が切れた使用済み招待を「期限切れ」と言うと、
 // 作り直せば通ると読めてしまう。
-export const inviteRejection = (invite: PushInviteData | undefined, now_ms: number): PushInviteRejection | null => {
+export const inviteStatus = (invite: PushInviteData | undefined, now_ms: number, fid?: string): PushInviteStatus => {
   if (!invite) {
     return "not-found";
   }
   if (invite.usedAt) {
-    return "used";
+    return fid && invite.usedByFid === fid ? "registered-here" : "used";
   }
   if (now_ms >= invite.expiresAt) {
     return "expired";
   }
-  return null;
+  return "usable";
 };
 
 export const inviteExpiry = (now_ms: number) => now_ms + PUSH_INVITE_TTL_MS;

@@ -1,13 +1,13 @@
 import { FieldValue, Firestore } from "firebase-admin/firestore";
 import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
 
-import { CreatePushInviteData, RedeemPushInviteData, SendTestWebPushData } from "../models/functionTypes";
+import { CheckPushInviteData, CreatePushInviteData, RedeemPushInviteData, SendTestWebPushData } from "../models/functionTypes";
 import { RestaurantInfoData } from "../models/RestaurantInfo";
-import { validateCreatePushInvite, validateRedeemPushInvite } from "../lib/validator";
+import { validateCheckPushInvite, validateCreatePushInvite, validateRedeemPushInvite } from "../lib/validator";
 import * as utils from "../lib/utils";
 import { ownPlateConfig } from "../common/project";
 import { registrationsCollection, sendWebPush } from "./notify/webpush";
-import { PUSH_INVITE_COLLECTION, PushInviteData, createInviteToken, deviceName, hashInviteToken, inviteExpiry, inviteRejection, inviteUrl } from "./notify/pushInviteFormat";
+import { PUSH_INVITE_COLLECTION, PushInviteData, createInviteToken, deviceName, hashInviteToken, inviteExpiry, inviteStatus, inviteUrl } from "./notify/pushInviteFormat";
 import { asPlatform, createWebPushData, truncate } from "./notify/webpushFormat";
 
 const TEST_PUSH_PATH = "/admin/webpush";
@@ -58,21 +58,38 @@ export const createPushInvite = async (db: Firestore, data: CreatePushInviteData
   };
 };
 
+const inviteRef = (db: Firestore, token: string) => db.collection(PUSH_INVITE_COLLECTION).doc(hashInviteToken(token));
+
+// 認証不要・状態を変えない。登録ページが「押す前に」使えるか確かめるためのもの。
+//
+// これが無いと、端末側の登録手順が先に installation id を回してしまう。回してから
+// 招待が弾かれると、Firestore に残った古い FID は死に、端末は新しい FID を持った
+// まま登録先が無くなる。招待は使い切りなので、その端末は自力で戻れない。
+// PWA の start_url が招待 URL そのものなので、これはホーム画面から起動して
+// ボタンを押すだけで起きる。
+export const checkPushInvite = async (db: Firestore, data: CheckPushInviteData) => {
+  validated(validateCheckPushInvite(data), "checkPushInvite");
+  const invite = (await inviteRef(db, data.token).get()).data() as PushInviteData | undefined;
+  return { result: true, status: inviteStatus(invite, Date.now(), data.fid) };
+};
+
 // 認証不要。トークンを知っていることが唯一の資格で、書ける先はトークンが指す店舗だけ。
 export const redeemPushInvite = async (db: Firestore, data: RedeemPushInviteData) => {
   validated(validateRedeemPushInvite(data), "redeemPushInvite");
 
-  const inviteRef = db.collection(PUSH_INVITE_COLLECTION).doc(hashInviteToken(data.token));
+  const ref = inviteRef(db, data.token);
 
   // 使用済みにするのと登録を書くのを1つのトランザクションに入れる。分けると、
   // 同じ URL を同時に開いた2台が両方とも「未使用」を読んで両方登録できてしまう。
   const restaurantId = await db.runTransaction(async (transaction) => {
-    const invite = (await transaction.get(inviteRef)).data() as PushInviteData | undefined;
-    const rejection = inviteRejection(invite, Date.now());
-    if (rejection || !invite) {
-      throw new HttpsError("permission-denied", rejection ?? "not-found");
+    const invite = (await transaction.get(ref)).data() as PushInviteData | undefined;
+    const status = inviteStatus(invite, Date.now(), data.fid);
+    if (status !== "usable" || !invite) {
+      throw new HttpsError("permission-denied", status);
     }
-    transaction.update(inviteRef, { usedAt: Date.now() });
+    // どの端末が使ったかを残す。同じ端末が同じ URL を開き直したときに
+    // 「使用済み」ではなく「この端末は登録済み」と出すために要る。
+    transaction.update(ref, { usedAt: Date.now(), usedByFid: data.fid });
     transaction.set(
       registrationsCollection(db, invite.restaurantId).doc(data.fid),
       {

@@ -962,6 +962,12 @@ const data = {
     register: "接收通知",
     done: "已註冊",
     doneHint: "有新訂單時，本裝置將收到通知。",
+    status: {
+      "registered-here": "本裝置已註冊",
+      used: "此網址已被使用。請向店鋪索取新的網址。",
+      expired: "此網址已過期。請向店鋪索取新的網址。",
+      "not-found": "此網址無效。請向店鋪索取新的網址。",
+    },
     failure: {
       unconfigured: "本店鋪無法使用推播通知。",
       unsupported: "此裝置或瀏覽器無法接收推播通知。",

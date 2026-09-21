@@ -50,6 +50,7 @@ exportIfNeeded("subAccountInvitationDeny2", "subaccount/deny", exports);
 exportIfNeeded("subAccountDeleteChild2", "subaccount/delete", exports);
 
 exportIfNeeded("createPushInvite2", "webPush/createInvite", exports);
+exportIfNeeded("checkPushInvite2", "webPush/checkInvite", exports);
 exportIfNeeded("redeemPushInvite2", "webPush/redeemInvite", exports);
 exportIfNeeded("sendTestWebPush2", "webPush/sendTest", exports);
 

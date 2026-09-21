@@ -962,6 +962,12 @@ const data = {
     register: "接收通知",
     done: "已注册",
     doneHint: "有新订单时，本设备将收到通知。",
+    status: {
+      "registered-here": "本设备已注册",
+      used: "此网址已被使用。请向店铺索取新的网址。",
+      expired: "此网址已过期。请向店铺索取新的网址。",
+      "not-found": "此网址无效。请向店铺索取新的网址。",
+    },
     failure: {
       unconfigured: "本店铺无法使用推送通知。",
       unsupported: "此设备或浏览器无法接收推送通知。",

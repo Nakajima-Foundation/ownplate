@@ -19,11 +19,11 @@ import {
   deviceName,
   hashInviteToken,
   inviteExpiry,
-  inviteRejection,
+  inviteStatus,
   inviteUrl,
   isInviteToken,
 } from "../src/functions/notify/pushInviteFormat";
-import { validateCreatePushInvite, validateRedeemPushInvite } from "../src/lib/validator";
+import { validateCheckPushInvite, validateCreatePushInvite, validateRedeemPushInvite } from "../src/lib/validator";
 
 // Firebase Installation ID は base64url 相当の固定長文字列
 const fid = "dGVzdEZpZFZhbHVlMDAx";
@@ -162,6 +162,19 @@ describe("web push validator", () => {
     assert.strictEqual(validateRedeemPushInvite({ ...redeem, platform: "ios9" }).result, false);
   });
 
+  it("accepts a check carrying only the token", () => {
+    assert.strictEqual(validateCheckPushInvite({ token: "a".repeat(43) }).result, true);
+  });
+
+  it("rejects a check whose token is malformed", () => {
+    assert.strictEqual(validateCheckPushInvite({ token: "short" }).result, false);
+    assert.strictEqual(validateCheckPushInvite({ token: "" }).result, false);
+  });
+
+  it("rejects a check whose fid is malformed", () => {
+    assert.strictEqual(validateCheckPushInvite({ token: "a".repeat(43), fid: "abc$def" }).result, false);
+  });
+
   it("accepts an invite request naming a restaurant", () => {
     assert.strictEqual(validateCreatePushInvite({ restaurantId: "abcABC123" }).result, true);
   });
@@ -201,29 +214,44 @@ describe("invite token", () => {
   });
 });
 
-describe("inviteRejection", () => {
+describe("inviteStatus", () => {
   const usable = { restaurantId: "r1", createdBy: "u1", expiresAt: 2000 };
+  const fid = "dGVzdEZpZFZhbHVlMDAx";
 
   it("accepts an unused invite inside its window", () => {
-    assert.strictEqual(inviteRejection(usable, 1999), null);
+    assert.strictEqual(inviteStatus(usable, 1999), "usable");
   });
 
   it("rejects an invite that was never issued", () => {
-    assert.strictEqual(inviteRejection(undefined, 0), "not-found");
+    assert.strictEqual(inviteStatus(undefined, 0), "not-found");
   });
 
   it("rejects an invite already redeemed", () => {
-    assert.strictEqual(inviteRejection({ ...usable, usedAt: 1500 }, 1999), "used");
+    assert.strictEqual(inviteStatus({ ...usable, usedAt: 1500 }, 1999), "used");
   });
 
   it("rejects an invite at and past its expiry", () => {
-    assert.strictEqual(inviteRejection(usable, 2000), "expired");
-    assert.strictEqual(inviteRejection(usable, 9999), "expired");
+    assert.strictEqual(inviteStatus(usable, 2000), "expired");
+    assert.strictEqual(inviteStatus(usable, 9999), "expired");
   });
 
   // 期限切れの使用済み招待を「期限切れ」と言うと、作り直せば通ると読めてしまう
   it("reports a redeemed invite as used even after it expired", () => {
-    assert.strictEqual(inviteRejection({ ...usable, usedAt: 1500 }, 9999), "used");
+    assert.strictEqual(inviteStatus({ ...usable, usedAt: 1500 }, 9999), "used");
+  });
+
+  // PWA の start_url が招待 URL なので、登録を済ませた端末が同じ画面に戻ってくる。
+  // そこに「使用済み」とだけ出すと、動いている利用者が押し直して登録を壊す。
+  it("tells the device that redeemed it apart from anyone else", () => {
+    const used = { ...usable, usedAt: 1500, usedByFid: fid };
+    assert.strictEqual(inviteStatus(used, 1999, fid), "registered-here");
+    assert.strictEqual(inviteStatus(used, 1999, "otherFid"), "used");
+    assert.strictEqual(inviteStatus(used, 1999), "used");
+  });
+
+  // 未使用の招待は、fid を渡しても usable のまま
+  it("never reports registered-here for an invite nobody redeemed", () => {
+    assert.strictEqual(inviteStatus(usable, 1999, fid), "usable");
   });
 
   it("expires ahead of the moment it was issued", () => {

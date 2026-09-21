@@ -1015,6 +1015,12 @@ const data = {
     register: "Terima notifikasi",
     done: "Terdaftar",
     doneHint: "Perangkat ini akan diberi tahu saat ada pesanan baru.",
+    status: {
+      "registered-here": "Perangkat ini sudah terdaftar",
+      used: "URL ini sudah digunakan. Mintalah yang baru ke restoran.",
+      expired: "URL ini telah kedaluwarsa. Mintalah yang baru ke restoran.",
+      "not-found": "URL ini tidak valid. Mintalah yang baru ke restoran.",
+    },
     failure: {
       unconfigured: "Notifikasi push tidak tersedia untuk restoran ini.",
       unsupported:

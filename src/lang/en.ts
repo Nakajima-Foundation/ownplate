@@ -1004,6 +1004,13 @@ const data = {
     register: "Receive notifications",
     done: "Registered",
     doneHint: "This device will be notified when a new order arrives.",
+    status: {
+      "registered-here": "This device is already registered",
+      used: "This URL has already been used. Please ask the restaurant for a new one.",
+      expired: "This URL has expired. Please ask the restaurant for a new one.",
+      "not-found":
+        "This URL is not valid. Please ask the restaurant for a new one.",
+    },
     failure: {
       unconfigured: "Push notifications are not available for this restaurant.",
       unsupported: "This device or browser cannot receive push notifications.",

@@ -1006,6 +1006,12 @@ const data = {
     register: "Nhận thông báo",
     done: "Đã đăng ký",
     doneHint: "Thiết bị này sẽ được thông báo khi có đơn hàng mới.",
+    status: {
+      "registered-here": "Thiết bị này đã được đăng ký",
+      used: "URL này đã được dùng. Vui lòng xin URL mới từ nhà hàng.",
+      expired: "URL này đã hết hạn. Vui lòng xin URL mới từ nhà hàng.",
+      "not-found": "URL này không hợp lệ. Vui lòng xin URL mới từ nhà hàng.",
+    },
     failure: {
       unconfigured: "Nhà hàng này không sử dụng được thông báo đẩy.",
       unsupported:

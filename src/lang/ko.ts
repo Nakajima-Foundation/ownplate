@@ -997,6 +997,12 @@ const data = {
     register: "알림 받기",
     done: "등록했습니다",
     doneHint: "새 주문이 들어오면 이 기기로 알림이 전송됩니다.",
+    status: {
+      "registered-here": "이 기기는 등록되어 있습니다",
+      used: "이 URL은 이미 사용되었습니다. 매장에 새 URL을 요청해 주세요.",
+      expired: "이 URL은 기한이 지났습니다. 매장에 새 URL을 요청해 주세요.",
+      "not-found": "이 URL은 유효하지 않습니다. 매장에 새 URL을 요청해 주세요.",
+    },
     failure: {
       unconfigured: "이 매장에서는 푸시 알림을 사용할 수 없습니다.",
       unsupported:

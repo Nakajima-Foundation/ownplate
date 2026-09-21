@@ -138,6 +138,20 @@ export interface CreatePushInviteResult {
   expiresAt: number;
 }
 
+// 押す前に招待が使えるか確かめる。状態は変えない。
+export interface CheckPushInviteData {
+  token: string;
+  fid?: string;
+}
+
+export type PushInviteStatus =
+  "usable" | "registered-here" | "not-found" | "used" | "expired";
+
+export interface CheckPushInviteResult {
+  result: boolean;
+  status: PushInviteStatus;
+}
+
 // 登録するのは非ログインの端末なので、uid ではなくトークンが唯一の資格になる
 export interface RedeemPushInviteData {
   token: string;

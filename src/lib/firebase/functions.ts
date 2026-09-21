@@ -11,6 +11,8 @@ import type {
   LiffAuthenticateData,
   PingData,
   StripeDeleteRestaurantCardData,
+  CheckPushInviteData,
+  CheckPushInviteResult,
   CreatePushInviteData,
   CreatePushInviteResult,
   RedeemPushInviteData,
@@ -121,6 +123,11 @@ export const createPushInvite = httpsCallable<
   CreatePushInviteData,
   CreatePushInviteResult
 >(functionsJP, "createPushInvite2");
+// 押す前に招待が使えるか確かめる。状態は変えないので、何度呼んでも安全。
+export const checkPushInvite = httpsCallable<
+  CheckPushInviteData,
+  CheckPushInviteResult
+>(functionsJP, "checkPushInvite2");
 // 登録する端末はサインインしていない。トークンを知っていることが唯一の資格。
 export const redeemPushInvite = httpsCallable<
   RedeemPushInviteData,
