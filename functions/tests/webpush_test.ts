@@ -12,42 +12,57 @@ import {
   detectPlatform,
   notifyTargetUids,
 } from "../src/functions/notify/webpushFormat";
-import { validateRegisterWebPush, validateUnregisterWebPush } from "../src/lib/validator";
+import {
+  validateRegisterWebPush,
+  validateUnregisterWebPush,
+} from "../src/lib/validator";
 
 // Firebase Installation ID は base64url 相当の固定長文字列
 const fid = "dGVzdEZpZFZhbHVlMDAx";
 
 describe("webPushFormat", () => {
   it("builds the admin order path", () => {
-    assert.strictEqual(adminOrderPath("rest1", "order1"), "/admin/restaurants/rest1/orders/order1");
+    assert.strictEqual(
+      adminOrderPath("rest1", "order1"),
+      "/admin/restaurants/rest1/orders/order1",
+    );
   });
 
   it("builds a data-only payload the service worker can read", () => {
-    assert.deepStrictEqual(createOrderPushData("新しい注文 #12", "テスト店", "rest1", "order1"), {
-      title: "新しい注文 #12",
-      body: "テスト店",
-      url: "/admin/restaurants/rest1/orders/order1",
-      tag: "order1",
-    });
+    assert.deepStrictEqual(
+      createOrderPushData("新しい注文 #12", "テスト店", "rest1", "order1"),
+      {
+        title: "新しい注文 #12",
+        body: "テスト店",
+        url: "/admin/restaurants/rest1/orders/order1",
+      },
+    );
   });
 
   it("keeps the url host-free so the service worker can resolve it", () => {
-    assert.ok(createOrderPushData("t", "n", "rest1", "order1").url.startsWith("/"));
+    assert.ok(
+      createOrderPushData("t", "n", "rest1", "order1").url.startsWith("/"),
+    );
   });
 
-  it("uses the order id as the tag so repeats replace rather than stack", () => {
-    assert.strictEqual(createOrderPushData("t", "n", "rest1", "order9").tag, "order9");
+  // tag を付けると同じ tag の通知は置き換えになり、renotify が無い限り再通知されない。
+  // 実機で「1通目だけ出て以降沈黙する」状態になったため、payload に tag は持たせない。
+  it("carries no tag", () => {
+    assert.strictEqual(
+      createOrderPushData("t", "n", "rest1", "order9").tag,
+      undefined,
+    );
   });
 
   it("truncates long title and body", () => {
-    const data = createWebPushData("a".repeat(300), "b".repeat(500), "/x", "tag");
+    const data = createWebPushData("a".repeat(300), "b".repeat(500), "/x");
     assert.strictEqual(data.title.length, 100);
     assert.ok(data.title.endsWith("…"));
     assert.strictEqual(data.body.length, 300);
   });
 
   it("keeps text at the boundary untouched", () => {
-    const data = createWebPushData("a".repeat(100), "b".repeat(300), "/x", "tag");
+    const data = createWebPushData("a".repeat(100), "b".repeat(300), "/x");
     assert.strictEqual(data.title, "a".repeat(100));
     assert.strictEqual(data.body, "b".repeat(300));
   });
@@ -87,17 +102,30 @@ describe("notifyTargetUids", () => {
       { uid: "child2", restaurantLists: ["rest2"] },
       { uid: "child3", restaurantLists: [] },
     ];
-    assert.deepStrictEqual(notifyTargetUids("owner1", children, "rest1"), ["owner1", "child1"]);
+    assert.deepStrictEqual(notifyTargetUids("owner1", children, "rest1"), [
+      "owner1",
+      "child1",
+    ]);
   });
 
   it("returns only the owner when no sub account is assigned", () => {
-    assert.deepStrictEqual(notifyTargetUids("owner1", [{ uid: "child1", restaurantLists: ["rest2"] }], "rest1"), ["owner1"]);
+    assert.deepStrictEqual(
+      notifyTargetUids(
+        "owner1",
+        [{ uid: "child1", restaurantLists: ["rest2"] }],
+        "rest1",
+      ),
+      ["owner1"],
+    );
   });
 });
 
 describe("chunk", () => {
   it("splits at the multicast limit", () => {
-    const fids = Array.from({ length: MULTICAST_LIMIT + 1 }, (_unused, i) => `fid${i}`);
+    const fids = Array.from(
+      { length: MULTICAST_LIMIT + 1 },
+      (_unused, i) => `fid${i}`,
+    );
     const batches = chunk(fids, MULTICAST_LIMIT);
     assert.strictEqual(batches.length, 2);
     assert.strictEqual(batches[0].length, MULTICAST_LIMIT);
@@ -116,8 +144,14 @@ describe("chunk", () => {
 
 describe("INVALID_TARGET_CODES", () => {
   it("covers the codes that mean the target itself is dead", () => {
-    assert.ok(INVALID_TARGET_CODES.includes("messaging/installation-id-not-registered"));
-    assert.ok(INVALID_TARGET_CODES.includes("messaging/registration-token-not-registered"));
+    assert.ok(
+      INVALID_TARGET_CODES.includes("messaging/installation-id-not-registered"),
+    );
+    assert.ok(
+      INVALID_TARGET_CODES.includes(
+        "messaging/registration-token-not-registered",
+      ),
+    );
   });
 
   // invalid-argument はペイロード不正でも返る。prune の根拠にすると
@@ -129,20 +163,32 @@ describe("INVALID_TARGET_CODES", () => {
 
 describe("web push validator", () => {
   it("accepts a registration from the browser", () => {
-    assert.strictEqual(validateRegisterWebPush({ fid, platform: "ios" }).result, true);
+    assert.strictEqual(
+      validateRegisterWebPush({ fid, platform: "ios" }).result,
+      true,
+    );
   });
 
   it("rejects a fid with invalid characters", () => {
-    assert.strictEqual(validateRegisterWebPush({ fid: "abc$def", platform: "ios" }).result, false);
+    assert.strictEqual(
+      validateRegisterWebPush({ fid: "abc$def", platform: "ios" }).result,
+      false,
+    );
   });
 
   it("rejects an empty fid", () => {
-    assert.strictEqual(validateRegisterWebPush({ fid: "", platform: "ios" }).result, false);
+    assert.strictEqual(
+      validateRegisterWebPush({ fid: "", platform: "ios" }).result,
+      false,
+    );
     assert.strictEqual(validateUnregisterWebPush({ fid: "" }).result, false);
   });
 
   it("rejects a non-alphabetic platform", () => {
-    assert.strictEqual(validateRegisterWebPush({ fid, platform: "ios9" }).result, false);
+    assert.strictEqual(
+      validateRegisterWebPush({ fid, platform: "ios9" }).result,
+      false,
+    );
   });
 
   it("accepts unregister data carrying only the fid", () => {

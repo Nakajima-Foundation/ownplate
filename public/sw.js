@@ -11,7 +11,6 @@ importScripts(
 
 const DEFAULT_TITLE = "おもちかえり.com";
 const ICON_PATH = "/android-chrome-192x192.png";
-const DEFAULT_TAG = "ownplate";
 
 const readConfig = () => {
   try {
@@ -28,9 +27,9 @@ const showPush = (data) =>
     body: data.body || "",
     icon: ICON_PATH,
     badge: ICON_PATH,
-    tag: data.tag || DEFAULT_TAG,
+    // tag は付けない。同じ tag の通知は既存を置き換えるだけで再通知されず、
+    // 実機で「1通目だけ出て以降沈黙する」状態になった。
     data,
-    requireInteraction: true,
   });
 
 const config = readConfig();

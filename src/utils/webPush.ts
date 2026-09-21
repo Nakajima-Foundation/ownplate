@@ -1,9 +1,5 @@
 import { FirebaseApp, getApps, initializeApp } from "firebase/app";
-import {
-  deleteInstallations,
-  getId,
-  getInstallations,
-} from "firebase/installations";
+import { getId, getInstallations } from "firebase/installations";
 import {
   Messaging,
   getMessaging,
@@ -143,17 +139,18 @@ const nextFid = (messaging: Messaging): Promise<string | null> =>
     }, REGISTER_TIMEOUT_MS);
   });
 
-// FCM が既に落とした登録はここからは見えない。register() は自前のキャッシュから
-// 成功を返すため、送信時まで判明しない。キャッシュの鍵になっている2つの入力
-// （installation id と購読）を先に落とすことで、確実に再登録させる。
-// どちらも失敗しうるので best-effort。警告だけ出して登録は続行する。
+// 購読だけ捨てて、新しい endpoint で登録し直させる。
+//
+// installation id の回転はここでは行わない。回すと押すたびに別の FID が発行され、
+// 前の登録が配信先として残り続ける（実測で 1 回の送信に対し死んだ宛先が 4 件溜まった）。
+// 失効した登録はサーバ側が送信失敗コードを見て自動削除する。
 const resetBeforeRegistering = (registration: ServiceWorkerRegistration) =>
   resetRegistrationState({
     dropSubscription: async () => {
       const subscription = await registration.pushManager.getSubscription();
       return subscription?.unsubscribe();
     },
-    rotateInstallation: () => deleteInstallations(getInstallations(pushApp())),
+    rotateInstallation: () => Promise.resolve(),
     onFailure: (reason) =>
       console.warn("push registration reset failed", reason),
   });
@@ -215,7 +212,7 @@ export const listenForegroundPush = async () => {
       registration.showNotification(data.title || DEFAULT_NOTIFICATION_TITLE, {
         body: data.body ?? "",
         icon: NOTIFICATION_ICON,
-        tag: data.tag,
+        // SW 側と同じ理由で tag は付けない。
         data,
       });
     });
