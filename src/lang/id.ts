@@ -161,6 +161,9 @@ const data = {
     current: "Sebelum perubahan",
     clickAndUpload: "Klik di sini",
     clickAndUploadDetail: "Klik area abu-abu untuk mengunggah (format JPEG)",
+    imageTooLarge:
+      "Ukuran gambar maksimal {size}MB. Silakan pilih gambar yang lebih kecil.",
+    imageNotImage: "Silakan pilih berkas gambar.",
     edit: "Edit",
   },
   currency: {

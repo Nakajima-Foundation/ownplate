@@ -158,6 +158,9 @@ const data = {
     current: "ก่อนเปลี่ยนแปลง",
     clickAndUpload: "คลิกที่นี่",
     clickAndUploadDetail: "คลิกที่พื้นที่สีเทาเพื่ออัปโหลด (รูปแบบ JPEG)",
+    imageTooLarge:
+      "รูปภาพต้องมีขนาดไม่เกิน {size}MB กรุณาเลือกรูปที่เล็กกว่านี้",
+    imageNotImage: "กรุณาเลือกไฟล์รูปภาพ",
     edit: "แก้ไข",
   },
   currency: {
