@@ -256,10 +256,13 @@ describe("buildReceiptText — 登録番号", () => {
     });
   });
 
-  // receiptline は {} を記法として読む。素通しすると行ごと消える。
-  it("escapes receiptline markup rather than letting it through", () => {
-    const text = buildReceiptText(dummyRestaurant({ invoiceNumber: "T1234{5678901}23" }), dummyOrder());
-    assert.ok(!text.includes("{5678901}"));
+  // 印字される番号は T + 半角数字13桁だけなので、receiptline の記法は入りようがない。
+  // 「記法を含む番号が素通りしない」を assert しても、先に形で弾かれるため何も
+  // 検証できない（実際に escape を外しても緑のままだった）。代わりに、印字された
+  // 行が期待どおりであることと、記法を含む値では行が出ないことを分けて見る。
+  it("prints the number verbatim when it is well formed", () => {
+    const text = buildReceiptText(dummyRestaurant({ invoiceNumber: "T9876543210987" }), dummyOrder());
+    assert.ok(text.includes("登録番号：T9876543210987"));
   });
 
   // 登録番号と税率ごとの区分は両方そろって初めて適格簡易請求書になる。

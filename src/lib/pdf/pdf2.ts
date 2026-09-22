@@ -1,5 +1,5 @@
 import pdfMake from "pdfmake/build/pdfmake";
-import { isReducedTaxRate, isValidInvoiceNumber } from "@/utils/commonUtils";
+import { isReducedTaxRate, printableInvoiceNumber } from "@/utils/commonUtils";
 import moment from "moment";
 
 import { nameOfOrder, formatOption, optionPrice } from "@/utils/strings";
@@ -239,16 +239,13 @@ export const printOrderData = (
     ],
     margin: [2, 0],
   });
-  // 登録番号。未設定の店舗（免税事業者など）では行ごと出さない。
-  // 形が不正なら印字もしない（レシート側と同じ判断）。
-  if (
-    isValidInvoiceNumber(restaurantInfo.invoiceNumber) &&
-    restaurantInfo.invoiceNumber
-  ) {
+  // 登録番号。印字の可否はレシートと同じ関数で決める（未設定でも形が不正でも出さない）。
+  const printableInvoice = printableInvoiceNumber(restaurantInfo.invoiceNumber);
+  if (printableInvoice) {
     content.push({
       text: [
         { text: "登録番号：", fontSize: 6 },
-        { text: restaurantInfo.invoiceNumber, fontSize: 6 },
+        { text: printableInvoice, fontSize: 6 },
       ],
       margin: [2, 0],
     });

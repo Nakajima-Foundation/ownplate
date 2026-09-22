@@ -52,3 +52,13 @@ export const isReducedTaxRate = (
 // 初めて分かる。無いほうがまだ正直なので、形だけは弾く。
 export const isValidInvoiceNumber = (value: string | undefined): boolean =>
   !value || /^T\d{13}$/.test(value);
+
+// 印字してよい登録番号、または null。未設定でも形が不正でも null。
+//
+// isValidInvoiceNumber は「空も通す」ので、印字の可否を決めるには
+// `isValidInvoiceNumber(x) && x` と二重に書く必要があった。片方を消すと
+// 「登録番号：」だけの行が出る。名前が「印字してよいか」を言う関数に寄せて、
+// 呼び出し側から判断を無くす。
+export const printableInvoiceNumber = (
+  value: string | undefined,
+): string | null => (value && isValidInvoiceNumber(value) ? value : null);

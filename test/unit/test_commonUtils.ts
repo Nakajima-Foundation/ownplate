@@ -4,6 +4,7 @@ import assert from "node:assert";
 import {
   isReducedTaxRate,
   isValidInvoiceNumber,
+  printableInvoiceNumber,
 } from "../../src/utils/commonUtils.ts";
 
 describe("isReducedTaxRate", () => {
@@ -60,5 +61,35 @@ describe("isValidInvoiceNumber", () => {
   it("rejects surrounding whitespace rather than trimming it", () => {
     assert.strictEqual(isValidInvoiceNumber(` ${valid}`), false);
     assert.strictEqual(isValidInvoiceNumber(`${valid}\n`), false);
+  });
+});
+
+describe("printableInvoiceNumber", () => {
+  const valid = "T1234567890123";
+
+  it("returns the number when it is set and well formed", () => {
+    assert.strictEqual(printableInvoiceNumber(valid), valid);
+  });
+
+  // ここが「印字してよいか」を1箇所で決める。呼び出し側が && を重ねなくて済む。
+  // 重ねる形だと、片方を消したときに「登録番号：」だけの行が出る。
+  it("returns nothing for an unset number", () => {
+    assert.strictEqual(printableInvoiceNumber(undefined), null);
+    assert.strictEqual(printableInvoiceNumber(""), null);
+  });
+
+  it("returns nothing for a malformed number", () => {
+    ["T123", "1234567890123", "t1234567890123", " " + valid].forEach(
+      (value) => {
+        assert.strictEqual(printableInvoiceNumber(value), null);
+      },
+    );
+  });
+
+  // isValidInvoiceNumber は空を通す（入力欄で必須にしないため）。
+  // 印字の可否はそれとは別の判断で、この2つが混ざったのが元の欠陥だった。
+  it("differs from isValidInvoiceNumber precisely on the empty case", () => {
+    assert.strictEqual(isValidInvoiceNumber(""), true);
+    assert.strictEqual(printableInvoiceNumber(""), null);
   });
 });
