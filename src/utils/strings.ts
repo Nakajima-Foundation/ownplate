@@ -1,4 +1,4 @@
-import { OrderInfoData } from "@/models/orderInfo";
+import type { OrderInfoData } from "../models/orderInfoData";
 
 export const nameOfOrder = (order: OrderInfoData) => {
   return order && order.number !== undefined

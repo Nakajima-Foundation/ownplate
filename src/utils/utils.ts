@@ -12,6 +12,7 @@ import {
 import { ShopOwnerData, PartnerData } from "@/models/ShopOwner";
 import { OrderInfoData, OrderItemData } from "@/models/orderInfoData";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { roundPrice } from "./price";
 import { MenuData } from "@/models/menu";
 
 import {
@@ -336,11 +337,6 @@ export const getPartner = (shopOwner: ShopOwnerData) => {
 };
 
 export const isLineEnabled = !!ownPlateConfig.line;
-
-export const roundPrice = (price: number) => {
-  const m = stripe_regions_jp.multiple;
-  return Math.round(price * m) / m;
-};
 
 export const displayOption = (
   option: string,
