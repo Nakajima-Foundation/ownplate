@@ -98,6 +98,32 @@ export const taxCategories = (
     },
   ].filter((category) => category.revenue > 0);
 
+// 合計に乗るのに税率区分には入っていない金額。行として出さないと、合計の出どころが
+// 読めない書類になる。EC 送料と割引は、いままでどちらの書類にも行が無かった。
+//
+// 金額には触れない。これらには消費税が計算されていないが、課税し直すと外税の店舗では
+// 顧客の請求額が変わる。ここでやるのは記載だけ。
+//
+// 配達料金と心づけを含めないのは、既に（0のときも）出ているものを変えないため。
+// 0 の行を出さないのは、いま行が無いので 0円 の行が増えると紙が伸びるから。
+export type ExtraCharge = { kind: "shipping" | "discount"; amount: number };
+
+// Firestore の生データなので数値とは限らない。文字列のまま比較すると "5" > 0 が真になり、
+// 金額の行に文字列がそのまま出る。
+const numericAmount = (value: unknown): number =>
+  typeof value === "number" && Number.isFinite(value) ? value : 0;
+
+export const extraCharges = (order: {
+  shippingCost?: unknown;
+  discountPrice?: unknown;
+}): ExtraCharge[] => {
+  const charges: ExtraCharge[] = [
+    { kind: "shipping", amount: numericAmount(order.shippingCost) },
+    { kind: "discount", amount: numericAmount(order.discountPrice) },
+  ];
+  return charges.filter((charge) => charge.amount > 0);
+};
+
 // 内税か外税か。レシートと PDF の両方がこれを使う。
 //
 // 注文時の値を優先する。金額は注文時の設定で計算されて凍結されているので、店舗の

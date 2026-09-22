@@ -2,6 +2,7 @@ import { describe, it } from "node:test";
 import assert from "node:assert";
 
 import {
+  extraCharges,
   isInclusiveTax,
   isReducedTaxRate,
   isValidInvoiceNumber,
@@ -133,6 +134,42 @@ describe("isInclusiveTax", () => {
 
   it("is exclusive when neither says anything", () => {
     assert.strictEqual(isInclusiveTax({}, {}), false);
+  });
+});
+
+describe("extraCharges", () => {
+  it("returns a line for each amount the order actually carries", () => {
+    assert.deepStrictEqual(
+      extraCharges({ shippingCost: 200, discountPrice: 150 }),
+      [
+        { kind: "shipping", amount: 200 },
+        { kind: "discount", amount: 150 },
+      ],
+    );
+  });
+
+  // 0円 の行は出さない。いまどちらの書類にも行が無いので、増やすと紙が伸びる。
+  it("leaves out an amount that is zero or absent", () => {
+    assert.deepStrictEqual(extraCharges({}), []);
+    assert.deepStrictEqual(extraCharges({ shippingCost: 0, discountPrice: 0 }), []);
+    assert.deepStrictEqual(extraCharges({ shippingCost: 200 }), [
+      { kind: "shipping", amount: 200 },
+    ]);
+  });
+
+  // Firestore の生データなので数値とは限らない。"5" > 0 は真になるので、
+  // そのまま通すと金額の行に文字列がそのまま出る。
+  it("ignores an amount that is not a finite number", () => {
+    ["200", null, undefined, NaN, Infinity, {}, [200]].forEach((value) => {
+      assert.deepStrictEqual(extraCharges({ shippingCost: value }), []);
+    });
+  });
+
+  // どちらの金額かは kind で決まる。割引は合計から引かれるので、
+  // 出すときに符号を付けるのは描画側の仕事。
+  it("says which amount each line is", () => {
+    assert.strictEqual(extraCharges({ shippingCost: 1 })[0].kind, "shipping");
+    assert.strictEqual(extraCharges({ discountPrice: 1 })[0].kind, "discount");
   });
 });
 

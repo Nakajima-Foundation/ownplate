@@ -1,5 +1,6 @@
 import pdfMake from "pdfmake/build/pdfmake";
 import {
+  extraCharges,
   isInclusiveTax,
   isReducedTaxRate,
   printableInvoiceNumber,
@@ -350,6 +351,19 @@ export const printOrderData = (
       alignment: "right",
     });
   }
+  // 税率区分の外にある金額。行として出さないと合計の出どころが読めない。
+  // 税込と書かないのは、これらに消費税が計算されていないから。
+  extraCharges(orderInfo).forEach((charge) => {
+    content.push({
+      text: [
+        charge.kind === "shipping"
+          ? "送料: " + priceString(charge.amount)
+          : "割引: -" + priceString(charge.amount),
+      ],
+      margin: [2, 0],
+      alignment: "right",
+    });
+  });
   // 決済
   // 合計金額
   content.push({

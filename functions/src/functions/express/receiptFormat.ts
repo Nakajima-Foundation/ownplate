@@ -3,7 +3,7 @@ import moment from "moment-timezone";
 
 import { nameOfOrder, timezone } from "../../lib/utils";
 import type { MenuData } from "../../models/menu";
-import { TaxDisplayRow, isInclusiveTax, isReducedTaxRate, printableInvoiceNumber, taxDisplayRows } from "../../utils/commonUtils";
+import { ExtraCharge, TaxDisplayRow, extraCharges, isInclusiveTax, isReducedTaxRate, printableInvoiceNumber, taxDisplayRows } from "../../utils/commonUtils";
 
 // レシート本文の組み立てのうち、文字列とデータだけで決まる部分。
 // receiptline も Firestore も触らないので、ブラウザもプリンタも無しでテストできる。
@@ -13,6 +13,10 @@ export const taxLines = (rows: TaxDisplayRow[], taxPayment: string): string =>
   rows
     .flatMap((row) => (row.kind === "total" ? [`消費税（${taxPayment}） | ¥${row.tax}`] : [`${row.rate}%対象 | ¥${row.revenue}`, `消費税（${taxPayment}） | ¥${row.tax}`]))
     .join("\n");
+
+// 税率区分の外にある金額の行。合計の出どころが読めるように出す。
+export const extraChargeLines = (charges: ExtraCharge[]): string[] =>
+  charges.map((charge) => (charge.kind === "shipping" ? `送料 | ¥${charge.amount}` : `割引 | -¥${charge.amount}`));
 
 // 軽減税率の商品が1つでもあるか。明細を組み立てながらフラグを立てるのではなく
 // データから直接決める。組み立ての都合で印と凡例が食い違うのを防ぐ。
@@ -82,6 +86,16 @@ export const buildReceiptText = (restaurantData: DocumentData, orderData: Docume
   // 区分の決定は commonUtils の taxDisplayRows。PDF 側と同じ関数を通す。
   const taxText = taxLines(taxDisplayRows(orderData.accounting, restaurantData.foodTax, restaurantData.alcoholTax, orderData.tax || 0), taxPayment);
 
+  // 区分の外にある金額のうち、いま行が無いものだけ足す。配達料金と心づけは 0 でも
+  // 出ているので変えない（行を消すとほぼ全てのレシートの見た目が変わる）。
+  const amountLines = [
+    `小計 | ¥${orderData.total}`,
+    taxText,
+    `配達料金 | ¥${orderData.deliveryFee || 0} `,
+    `心づけ (サービス料・消費税含む)| ¥${orderData.tip || 0}`,
+    ...extraChargeLines(extraCharges(orderData)),
+  ].join("\n");
+
   const onlinePay = orderData?.payment?.stripe ? "事前クレジット決済" : "現地払い";
   // 凡例が無いときに行だけ残すと、旧実装に無かった空行が1行増える。
   // レシートは紙なので、空行は見えるし紙を食う。
@@ -104,10 +118,7 @@ ${escapePrinterString(orderData.name || "")}さん|
 ${orders}
 -
 {w:16,16;a:right}
-小計 | ¥${orderData.total}
-${taxText}
-配達料金 | ¥${orderData.deliveryFee || 0} 
-心づけ (サービス料・消費税含む)| ¥${orderData.tip || 0}
+${amountLines}
 -
 ^^ 合計 | ^^^¥${orderData.totalCharge}
 {w:auto; b:space}
