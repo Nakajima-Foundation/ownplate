@@ -1,57 +1,26 @@
 import { describe, it } from "node:test";
 import assert from "node:assert";
 
-import { buildReceiptText, hasReducedTaxItem, itemMark, reducedTaxNote, taxCategories, taxLines } from "../src/functions/express/receiptFormat";
+import { buildReceiptText, hasReducedTaxItem, itemMark, reducedTaxNote, taxLines } from "../src/functions/express/receiptFormat";
+import { taxDisplayRows } from "../src/utils/commonUtils";
 
 const food = { revenue: 1000, tax: 74 };
 const alcohol = { revenue: 500, tax: 45 };
 
-describe("taxCategories", () => {
-  it("splits the order by rate, food first", () => {
-    assert.deepStrictEqual(taxCategories({ food, alcohol }, 8, 10), [
-      { rate: 8, revenue: 1000, tax: 74 },
-      { rate: 10, revenue: 500, tax: 45 },
-    ]);
-  });
-
-  // 0円の行はレシートを長くするだけで、「その税率の取引があった」と誤読させる
-  it("leaves out a category with no revenue", () => {
-    assert.deepStrictEqual(taxCategories({ food }, 8, 10), [{ rate: 8, revenue: 1000, tax: 74 }]);
-    assert.deepStrictEqual(taxCategories({ alcohol }, 8, 10), [{ rate: 10, revenue: 500, tax: 45 }]);
-  });
-
-  // 率をベタ書きすると、税率が変わったとき金額は正しいのに表示だけ嘘になる
-  it("takes the rate from the caller rather than assuming 8 and 10", () => {
-    assert.deepStrictEqual(taxCategories({ food, alcohol }, 1, 10), [
-      { rate: 1, revenue: 1000, tax: 74 },
-      { rate: 10, revenue: 500, tax: 45 },
-    ]);
-  });
-
-  it("returns nothing for an order with no accounting at all", () => {
-    assert.deepStrictEqual(taxCategories(undefined, 8, 10), []);
-    assert.deepStrictEqual(taxCategories({}, 8, 10), []);
-  });
-
-  // 税額だけあって売上が無い形は出さない。区分として意味を成さない。
-  it("leaves out a category that has tax but no revenue", () => {
-    assert.deepStrictEqual(taxCategories({ food: { revenue: 0, tax: 74 } }, 8, 10), []);
-  });
-});
-
 describe("taxLines", () => {
+  const rows = (accounting: unknown, totalTax = 119) => taxDisplayRows(accounting as never, 8, 10, totalTax);
+
   it("writes one pair of lines per category", () => {
-    assert.strictEqual(taxLines(taxCategories({ food, alcohol }, 8, 10), "内税", 119), "8%対象 | ¥1000\n消費税（内税） | ¥74\n10%対象 | ¥500\n消費税（内税） | ¥45");
+    assert.strictEqual(taxLines(rows({ food, alcohol }), "内税"), "8%対象 | ¥1000\n消費税（内税） | ¥74\n10%対象 | ¥500\n消費税（内税） | ¥45");
   });
 
-  // accounting を持たない古い注文。区分が出せないときに何も出さないと、
-  // 消費税の記載そのものが消える。
+  // 区分が出せない注文で何も出さないと、消費税の記載そのものが消える
   it("falls back to the single total for an order with no breakdown", () => {
-    assert.strictEqual(taxLines([], "外税", 119), "消費税（外税） | ¥119");
+    assert.strictEqual(taxLines(rows(undefined), "外税"), "消費税（外税） | ¥119");
   });
 
   it("carries the inclusive/exclusive wording through", () => {
-    assert.ok(taxLines(taxCategories({ food }, 8, 10), "外税", 74).includes("消費税（外税）"));
+    assert.ok(taxLines(rows({ food }), "外税").includes("消費税（外税）"));
   });
 });
 

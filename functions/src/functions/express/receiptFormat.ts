@@ -3,39 +3,16 @@ import moment from "moment-timezone";
 
 import { nameOfOrder, timezone } from "../../lib/utils";
 import type { MenuData } from "../../models/menu";
-import { isReducedTaxRate, printableInvoiceNumber } from "../../utils/commonUtils";
+import { TaxDisplayRow, isReducedTaxRate, printableInvoiceNumber, taxDisplayRows } from "../../utils/commonUtils";
 
 // レシート本文の組み立てのうち、文字列とデータだけで決まる部分。
 // receiptline も Firestore も触らないので、ブラウザもプリンタも無しでテストできる。
 
-export type TaxCategory = { rate: number; revenue: number; tax: number };
-
-export type OrderAccounting =
-  | {
-      food?: { revenue?: number; tax?: number };
-      alcohol?: { revenue?: number; tax?: number };
-    }
-  | undefined;
-
-// 税率ごとの区分。適格簡易請求書は区分の記載が要件。
-//
-// 率は引数で受ける。ベタ書きすると、税率が変わったときに金額は正しいのに
-// 率の表示だけ嘘になる。
-//
-// 売上が無い区分は出さない。0円の行はレシートを長くするだけで、
-// 「その税率の取引があった」と誤読させる。
-export const taxCategories = (accounting: OrderAccounting, foodTax: number, alcoholTax: number): TaxCategory[] =>
-  [
-    { rate: foodTax, revenue: accounting?.food?.revenue ?? 0, tax: accounting?.food?.tax ?? 0 },
-    { rate: alcoholTax, revenue: accounting?.alcohol?.revenue ?? 0, tax: accounting?.alcohol?.tax ?? 0 },
-  ].filter((category) => category.revenue > 0);
-
-// 税の行。accounting を持たない古い注文は、これまでどおり合計だけを出す。
-// 区分が出せないときに何も出さないと、消費税の記載そのものが消える。
-export const taxLines = (categories: TaxCategory[], taxPayment: string, totalTax: number): string =>
-  categories.length > 0
-    ? categories.flatMap((category) => [`${category.rate}%対象 | ¥${category.revenue}`, `消費税（${taxPayment}） | ¥${category.tax}`]).join("\n")
-    : `消費税（${taxPayment}） | ¥${totalTax}`;
+// 税の行。区分が出せない注文は、合計だけの1行になる（taxDisplayRows が決める）。
+export const taxLines = (rows: TaxDisplayRow[], taxPayment: string): string =>
+  rows
+    .flatMap((row) => (row.rate === null ? [`消費税（${taxPayment}） | ¥${row.tax}`] : [`${row.rate}%対象 | ¥${row.revenue}`, `消費税（${taxPayment}） | ¥${row.tax}`]))
+    .join("\n");
 
 // 軽減税率の商品が1つでもあるか。明細を組み立てながらフラグを立てるのではなく
 // データから直接決める。組み立ての都合で印と凡例が食い違うのを防ぐ。
@@ -103,7 +80,7 @@ export const buildReceiptText = (restaurantData: DocumentData, orderData: Docume
   const taxPayment = restaurantData.inclusiveTax ? "内税" : "外税";
 
   // 区分は receiptFormat.ts の純関数に切り出してある（単体テストあり）
-  const taxText = taxLines(taxCategories(orderData.accounting, restaurantData.foodTax, restaurantData.alcoholTax), taxPayment, orderData.tax || 0);
+  const taxText = taxLines(taxDisplayRows(orderData.accounting, restaurantData.foodTax, restaurantData.alcoholTax, orderData.tax || 0), taxPayment);
 
   const onlinePay = orderData?.payment?.stripe ? "事前クレジット決済" : "現地払い";
   // 凡例が無いときに行だけ残すと、旧実装に無かった空行が1行増える。

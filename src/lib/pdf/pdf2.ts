@@ -1,5 +1,9 @@
 import pdfMake from "pdfmake/build/pdfmake";
-import { isReducedTaxRate, printableInvoiceNumber } from "@/utils/commonUtils";
+import {
+  isReducedTaxRate,
+  printableInvoiceNumber,
+  taxDisplayRows,
+} from "@/utils/commonUtils";
 import moment from "moment";
 
 import { nameOfOrder, formatOption, optionPrice } from "@/utils/strings";
@@ -352,35 +356,27 @@ export const printOrderData = (
     margin: [2, 3],
     alignment: "right",
   });
-  // 税率ごとの合計金額
-  if ((orderInfo?.accounting?.food?.revenue || 0) > 0) {
-    content.push({
-      text: [
-        `${restaurantInfo.foodTax}%対象: ` +
-          priceString(orderInfo?.accounting?.food?.revenue || 0),
-        "(" +
-          (orderInfo.inclusiveTax ? "内税額: " : "外税額:") +
-          priceString(orderInfo?.accounting?.food?.tax || 0) +
-          ")",
-      ].join("\n"),
-      margin: [2, 0],
-      alignment: "right",
-    });
-  }
-  if ((orderInfo?.accounting?.alcohol?.revenue || 0) > 0) {
-    content.push({
-      text: [
-        `${restaurantInfo.alcoholTax}%対象: ` +
-          priceString(orderInfo?.accounting?.alcohol?.revenue || 0),
-        "(" +
-          (orderInfo.inclusiveTax ? "内税額: " : "外税額:") +
-          priceString(orderInfo?.accounting?.alcohol?.tax || 0) +
-          ")",
-      ].join("\n"),
-      margin: [2, 0],
-      alignment: "right",
-    });
-  }
+  // 税率ごとの合計金額。区分の計算はレシートと同じ関数（commonUtils）で行う。
+  //
+  // accounting を持たない古い注文（#1782 以前）では区分が出せない。そのときに何も
+  // 出さないと、消費税の記載そのものがレシートから消える。レシート側と同じく合計だけ出す。
+  const taxLabel = orderInfo.inclusiveTax ? "内税額: " : "外税額: ";
+  const taxTexts = taxDisplayRows(
+    orderInfo?.accounting,
+    restaurantInfo.foodTax,
+    restaurantInfo.alcoholTax,
+    orderInfo.tax || 0,
+  ).map((row) =>
+    row.rate === null
+      ? taxLabel + priceString(row.tax)
+      : [
+          `${row.rate}%対象: ` + priceString(row.revenue || 0),
+          "(" + taxLabel + priceString(row.tax) + ")",
+        ].join("\n"),
+  );
+  taxTexts.forEach((text) => {
+    content.push({ text, margin: [2, 0], alignment: "right" });
+  });
   if (orderItems.some((orderItem) => isReducedTaxRate(orderItem.item))) {
     content.push({
       text: "※軽減税率対象",

@@ -5,6 +5,7 @@ import {
   isReducedTaxRate,
   isValidInvoiceNumber,
   printableInvoiceNumber,
+  taxDisplayRows,
 } from "../../src/utils/commonUtils.ts";
 
 describe("isReducedTaxRate", () => {
@@ -91,5 +92,37 @@ describe("printableInvoiceNumber", () => {
   it("differs from isValidInvoiceNumber precisely on the empty case", () => {
     assert.strictEqual(isValidInvoiceNumber(""), true);
     assert.strictEqual(printableInvoiceNumber(""), null);
+  });
+});
+
+describe("taxDisplayRows", () => {
+  const food = { revenue: 1000, tax: 74 };
+  const alcohol = { revenue: 500, tax: 45 };
+
+  it("returns one row per rate that has revenue", () => {
+    assert.deepStrictEqual(taxDisplayRows({ food, alcohol }, 8, 10, 119), [
+      { rate: 8, revenue: 1000, tax: 74 },
+      { rate: 10, revenue: 500, tax: 45 },
+    ]);
+  });
+
+  it("takes the rates from the caller rather than assuming 8 and 10", () => {
+    assert.strictEqual(taxDisplayRows({ food }, 1, 10, 74)[0].rate, 1);
+  });
+
+  // ここが一番の要点。空配列を返すと、呼ぶ側が「何も出さない」を選べてしまう。
+  // 実際 PDF がそうなっていて、古い注文の請求書から消費税の記載が消えていた。
+  it("never returns an empty list, so no renderer can print nothing", () => {
+    [undefined, {}, { food: { revenue: 0, tax: 0 } }].forEach((accounting) => {
+      const rows = taxDisplayRows(accounting, 8, 10, 119);
+      assert.strictEqual(rows.length, 1);
+      assert.deepStrictEqual(rows[0], { rate: null, revenue: null, tax: 119 });
+    });
+  });
+
+  // rate が null は「区分が出せなかった」の印。レシートも PDF もこれを見て出し分ける。
+  it("marks the fallback row with a null rate", () => {
+    assert.strictEqual(taxDisplayRows(undefined, 8, 10, 119)[0].rate, null);
+    assert.notStrictEqual(taxDisplayRows({ food }, 8, 10, 74)[0].rate, null);
   });
 });

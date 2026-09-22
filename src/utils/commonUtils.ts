@@ -62,3 +62,65 @@ export const isValidInvoiceNumber = (value: string | undefined): boolean =>
 export const printableInvoiceNumber = (
   value: string | undefined,
 ): string | null => (value && isValidInvoiceNumber(value) ? value : null);
+
+export type TaxCategory = { rate: number; revenue: number; tax: number };
+
+export type OrderAccounting =
+  | {
+      food?: { revenue?: number; tax?: number };
+      alcohol?: { revenue?: number; tax?: number };
+    }
+  | undefined;
+
+// 税率ごとの区分。適格簡易請求書は区分の記載が要件。
+//
+// 率は引数で受ける。ベタ書きすると、税率が変わったときに金額は正しいのに
+// 率の表示だけ嘘になる。
+//
+// 売上が無い区分は出さない。0円の行はレシートを長くするだけで、
+// 「その税率の取引があった」と誤読させる。
+export const taxCategories = (
+  accounting: OrderAccounting,
+  foodTax: number,
+  alcoholTax: number,
+): TaxCategory[] =>
+  [
+    {
+      rate: foodTax,
+      revenue: accounting?.food?.revenue ?? 0,
+      tax: accounting?.food?.tax ?? 0,
+    },
+    {
+      rate: alcoholTax,
+      revenue: accounting?.alcohol?.revenue ?? 0,
+      tax: accounting?.alcohol?.tax ?? 0,
+    },
+  ].filter((category) => category.revenue > 0);
+
+// 表示する税の行。レシートと PDF の両方がこれを使う。
+//
+// 区分が出せない注文（accounting を持たない #1782 以前のもの）では、合計だけの1行に
+// 落とす。ここで空配列を返すと、呼ぶ側が「何も出さない」を選びうる。実際 PDF が
+// そうなっていて、古い注文の請求書から消費税の記載そのものが消えていた。
+// rate が null の行が「区分が出せなかった」を意味する。
+export type TaxDisplayRow = {
+  rate: number | null;
+  revenue: number | null;
+  tax: number;
+};
+
+export const taxDisplayRows = (
+  accounting: OrderAccounting,
+  foodTax: number,
+  alcoholTax: number,
+  totalTax: number,
+): TaxDisplayRow[] => {
+  const categories = taxCategories(accounting, foodTax, alcoholTax);
+  return categories.length > 0
+    ? categories.map((category) => ({
+        rate: category.rate,
+        revenue: category.revenue,
+        tax: category.tax,
+      }))
+    : [{ rate: null, revenue: null, tax: totalTax }];
+};
