@@ -8,7 +8,10 @@ import {
 import moment from "moment";
 
 import { nameOfOrder, formatOption, optionPrice } from "@/utils/strings";
-import { orderDocumentDate } from "@/utils/orderDocumentDate";
+import {
+  orderDocumentDate,
+  orderDocumentDateLabel,
+} from "@/utils/orderDocumentDate";
 import { roundPrice, useNationalPhoneNumber } from "@/utils/utils";
 
 import { OrderInfoData, OrderItemData } from "@/models/orderInfoData";
@@ -286,8 +289,7 @@ export const printOrderData = (
     content.push({
       text: [
         {
-          text:
-            documentDate.kind === "estimated" ? "受渡時間: " : "受渡希望時間: ",
+          text: orderDocumentDateLabel(documentDate),
           fontSize: 6,
         },
         {

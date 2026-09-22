@@ -31,3 +31,10 @@ export const orderDocumentDate = (order: {
   }
   return null;
 };
+
+// 書類に出すラベル。希望時刻を「受渡時間」と書くと、店舗が確定した時刻に見える。
+// レシートが同じ値に使っている語に合わせる。
+//
+// 描画側に置くと pdfmake ごと読み込むことになり、2つを入れ替えても何も赤くならない。
+export const orderDocumentDateLabel = (date: OrderDocumentDate): string =>
+  date.kind === "estimated" ? "受渡時間: " : "受渡希望時間: ";
