@@ -49,7 +49,7 @@
           </button>
 
           <t-submit
-            :isDisabled="Object.keys(errors).length > 0"
+            :isDisabled="submitting || Object.keys(errors).length > 0"
             class="h-12 w-32 font-bold text-white shadow-sm"
           >
             {{ $t("button.next") }}
@@ -110,11 +110,15 @@ export default defineComponent({
     const handleCancel = () => {
       router.push("/admin/user/signin");
     };
+    // 送信中にもう一度押されても重ねて送らない。ボタンの無効化だけでは Enter の連打や
+    // 素早いダブルクリックが通るので、ここでも止める。
+    const submitting = ref(false);
     const handleNext = () => {
       submitted.value = true;
-      if (Object.keys(errors.value).length > 0) {
+      if (submitting.value || Object.keys(errors.value).length > 0) {
         return;
       }
+      submitting.value = true;
       const options = { url: window.location.href.replace(/reset$/, "signin") };
       console.log("handleNext", options.url);
       sendPasswordResetEmail(auth, email.value, options)
@@ -130,12 +134,16 @@ export default defineComponent({
             badEmail = "---Invalid---";
             apiError.value = error.code;
           }
+        })
+        .finally(() => {
+          submitting.value = false;
         });
     };
     return {
       handleNext,
       handleCancel,
       errors,
+      submitting,
 
       email,
       emailSent,

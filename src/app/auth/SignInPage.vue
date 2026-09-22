@@ -116,7 +116,10 @@
                 </div>
               </div>
             </button>
-            <t-submit class="h-12 w-32 font-bold text-white">
+            <t-submit
+              :isDisabled="submitting"
+              class="h-12 w-32 font-bold text-white"
+            >
               {{ $t("button.next") }}
             </t-submit>
           </div>
@@ -235,7 +238,14 @@ export default defineComponent({
       generalStore.setLoading(false);
     };
 
+    // 送信中にもう一度送らない。読み込み中の覆いはマウスしか止めないので、Enter の連打は
+    // ここまで届く。
+    const submitting = ref(false);
     const onSignin = () => {
+      if (submitting.value) {
+        return;
+      }
+      submitting.value = true;
       generalStore.setLoading(true);
       errors.value = {};
       signInWithEmailAndPassword(auth, email.value, password.value)
@@ -265,12 +275,16 @@ export default defineComponent({
             errors.value = { email: [errorCode] };
           }
           generalStore.setLoading(false);
+        })
+        .finally(() => {
+          submitting.value = false;
         });
     };
     return {
       email,
       password,
       errors,
+      submitting,
       showTotpVerification,
       mfaResolver,
 

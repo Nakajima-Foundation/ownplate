@@ -58,7 +58,7 @@
 
         <t-submit
           id="button-send-tel"
-          :isDisabled="!readyToSendSMS"
+          :isDisabled="submitting || !readyToSendSMS"
           class="h-12 w-32 font-bold text-white shadow-sm"
         >
           {{ $t("sms.send") }}
@@ -131,7 +131,7 @@
 
         <t-submit
           id="button-send-code"
-          :isDisabled="!readyToSendVerificationCode"
+          :isDisabled="submitting || !readyToSendVerificationCode"
           class="h-12 w-32 font-bold text-white shadow-sm"
         >
           {{ $t("sms.sendVerificationCode") }}
@@ -235,7 +235,15 @@ export default defineComponent({
       }
     });
 
+    // 送信中にもう一度送らない。読み込み中の覆いはマウスしか止めないので、Enter の連打は
+    // ここまで届き、SMS が2通送られて1通目のコードが使えなくなる。2つの form は同時に
+    // 表示されないので、フラグは1つで足りる。
+    const submitting = ref(false);
     const handleSubmit = async () => {
+      if (submitting.value) {
+        return;
+      }
+      submitting.value = true;
       console.log("submit");
       try {
         generalStore.setLoading(true);
@@ -260,9 +268,14 @@ export default defineComponent({
         errors.value = ["sms." + code];
       } finally {
         generalStore.setLoading(false);
+        submitting.value = false;
       }
     };
     const handleCode = async () => {
+      if (submitting.value) {
+        return;
+      }
+      submitting.value = true;
       console.log("handleCode");
       errors.value = [];
       try {
@@ -306,10 +319,12 @@ export default defineComponent({
         errors.value = ["sms." + code];
       } finally {
         generalStore.setLoading(false);
+        submitting.value = false;
       }
     };
     return {
       countries,
+      submitting,
 
       countryCode,
       phoneNumber,
