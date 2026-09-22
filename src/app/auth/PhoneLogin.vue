@@ -46,6 +46,7 @@
       <div class="mt-4 text-center">
         <t-button
           id="signInButton"
+          type="button"
           @click="$emit('dismissed', false)"
           :isCancel="true"
           class="mr-4 mb-2 inline-flex h-12 w-32 items-center justify-center rounded-full bg-black/5"
@@ -55,13 +56,13 @@
           </div>
         </t-button>
 
-        <t-button
+        <t-submit
           id="button-send-tel"
           :isDisabled="!readyToSendSMS"
           class="h-12 w-32 font-bold text-white shadow-sm"
         >
           {{ $t("sms.send") }}
-        </t-button>
+        </t-submit>
       </div>
 
       <!-- Terms of Use & Privacy Policy -->
@@ -120,6 +121,7 @@
       <!-- Submit Buttons -->
       <div class="mt-4 text-center">
         <t-button
+          type="button"
           @click="$emit('dismissed', false)"
           :isCancel="true"
           class="mr-4 mb-2 inline-flex h-12 w-32 items-center justify-center rounded-full bg-black/5"
@@ -127,13 +129,13 @@
           {{ $t("button.cancel") }}
         </t-button>
 
-        <t-button
+        <t-submit
           id="button-send-code"
           :isDisabled="!readyToSendVerificationCode"
           class="h-12 w-32 font-bold text-white shadow-sm"
         >
           {{ $t("sms.sendVerificationCode") }}
-        </t-button>
+        </t-submit>
       </div>
     </form>
   </div>
