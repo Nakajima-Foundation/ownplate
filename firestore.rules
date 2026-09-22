@@ -361,11 +361,21 @@ service cloud.firestore {
           allow read, write: if isRestaurantOwner(restaurantId, request);
           allow read, write: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request);
         }
-        // Web Push の端末登録。一覧・ON/OFF・削除は LINE と同じ権限で行う。
-        // 新規登録はワンタイム URL 経由で Functions が書くので、ここには要らない。
+        // Web Push の端末登録。lines と違い、この doc はサーバだけが持つ値
+        // (recentSends の送信記録、restaurantId、登録時の情報) を抱えている。
+        // そこでクライアントに許すのは「一覧に出す」「ON/OFF する」「名前を変える」
+        // 「消す」だけに絞る。禁止するフィールドを並べるのではなく、触ってよい
+        // フィールドだけを列挙する。並べ方だと、後から足したフィールドが素通りする。
+        // 新規作成はワンタイム URL 経由で Functions が書くので、クライアントには要らない。
+        // Functions は Admin SDK なのでこの rules を通らない。
         match /pushRegistrations/{fid} {
-          allow read, write: if isRestaurantOwner(restaurantId, request);
-          allow read, write: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request);
+          allow read, delete: if isRestaurantOwner(restaurantId, request);
+          allow read, delete: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request);
+          allow update: if isRestaurantOwner(restaurantId, request)
+                           && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['notify', 'name']);
+          allow update: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request)
+                           && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['notify', 'name']);
+          allow create: if false;
         }
         match /liffCustomer/{uid} {
           allow read: if isRestaurantOwner(restaurantId, request);

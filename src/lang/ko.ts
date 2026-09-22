@@ -1171,6 +1171,7 @@ const data = {
     passwordReset: "비밀번호 재설정",
     pleaseCheckInbox: "이메일을 전송했습니다. 받은 편지함을 확인해 주세요.",
     push: {
+      sendFailed: "최근 전송에 실패했습니다",
       lastSentAt: "마지막 전송",
       undelivered: "알림이 도착하지 않습니다. 다시 등록해 주세요.",
       rename: "기기 이름 변경",

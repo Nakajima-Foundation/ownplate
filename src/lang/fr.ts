@@ -1203,6 +1203,7 @@ const data = {
     passwordReset: "Reset Password",
     pleaseCheckInbox: "Please check your inbox, an email is on the way.",
     push: {
+      sendFailed: "Le dernier envoi a échoué",
       lastSentAt: "Dernier envoi",
       undelivered:
         "Les notifications n'arrivent plus sur cet appareil. Veuillez l'enregistrer à nouveau.",

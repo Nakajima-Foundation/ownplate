@@ -1183,6 +1183,7 @@ const data = {
     passwordReset: "Reset Password",
     pleaseCheckInbox: "Please check your inbox, an email is on the way.",
     push: {
+      sendFailed: "The most recent send failed",
       lastSentAt: "Last sent",
       undelivered:
         "Notifications are not reaching this device. Please register it again.",

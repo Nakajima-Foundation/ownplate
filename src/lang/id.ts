@@ -1196,6 +1196,7 @@ const data = {
     passwordReset: "Reset kata sandi",
     pleaseCheckInbox: "Email telah dikirim. Silakan periksa kotak masuk.",
     push: {
+      sendFailed: "Pengiriman terakhir gagal",
       lastSentAt: "Terakhir dikirim",
       undelivered:
         "Notifikasi tidak sampai ke perangkat ini. Silakan daftarkan ulang.",

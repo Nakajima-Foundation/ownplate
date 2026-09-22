@@ -24,9 +24,7 @@ export const isWebPushConfigured = () => {
   return webPushVapidPublicKey.length > 0;
 };
 
-// 送信先。直近の結果も一緒に持ち帰る。送信後に書き戻すとき、これが無いと
-// 端末ごとにもう一度読むことになる。
-export type WebPushTarget = { fid: string; recentSends: SendRecord[] };
+export type WebPushTarget = { fid: string };
 
 // 端末は FID で識別し、それをそのまま doc id にしている。
 // 一覧で OFF にした端末は送信対象から外す（LINE の notify と同じ扱い）。
@@ -38,22 +36,37 @@ export const loadTargets = async (db: Firestore, restaurantId: string): Promise<
 // 宛先が死んでいても doc は消さない。消すと一覧から黙って無くなり、店舗側は
 // 「届かなくなった」ことに気づけないまま、通知が来ないだけの状態になる。
 // 送信対象から外すのは notify を落とすことで足りる。
+// 宛先が死んでいても doc は消さない。消すと一覧から黙って無くなり、店舗側は
+// 「届かなくなった」ことに気づけないまま、通知が来ないだけの状態になる。
+// 送信対象から外すのは notify を落とすことで足りる。
+//
+// 1件ずつトランザクションにするのは、recentSends が読んでから書くまでの間に
+// 別の注文の送信が挟まると記録が消えるため。消えるのが失敗の記録だと、
+// アラートが出ずにこの機能の目的が果たせない。
+const recordResult = async (db: Firestore, restaurantId: string, fid: string, response: SendResponse | undefined, now_ms: number) => {
+  const code = response?.success ? undefined : (response?.error?.code ?? "unknown");
+  const dead = code !== undefined && INVALID_TARGET_CODES.includes(code);
+  const record: SendRecord = { at: now_ms, ok: !!response?.success, ...(code ? { code } : {}), ...(dead ? { dead: true } : {}) };
+  const ref = registrationsCollection(db, restaurantId).doc(fid);
+  await db.runTransaction(async (transaction) => {
+    const current = await transaction.get(ref);
+    if (!current.exists) {
+      // 送信中に削除された端末。配信そのものは済んでいるので、記録先が無いだけ。
+      return;
+    }
+    transaction.update(ref, {
+      recentSends: appendSend(current.data()?.recentSends, record),
+      ...(dead ? { notify: false } : {}),
+    });
+  });
+};
+
 const recordResults = async (db: Firestore, restaurantId: string, targets: WebPushTarget[], responses: SendResponse[], now_ms: number) => {
   await Promise.all(
     targets.map(async (target, index) => {
-      const response = responses[index];
-      const code = response?.success ? undefined : (response?.error?.code ?? "unknown");
-      const dead = code !== undefined && INVALID_TARGET_CODES.includes(code);
-      const record: SendRecord = { at: now_ms, ok: !!response?.success, ...(code ? { code } : {}) };
       try {
-        await registrationsCollection(db, restaurantId)
-          .doc(target.fid)
-          .update({
-            recentSends: appendSend(target.recentSends, record),
-            ...(dead ? { notify: false } : {}),
-          });
+        await recordResult(db, restaurantId, target.fid, responses[index], now_ms);
       } catch (e) {
-        // 送信中に削除された端末など。記録できなくても配信そのものは済んでいる。
         console.error("webPush: could not record the send result", { fid: target.fid, error: e });
       }
     }),

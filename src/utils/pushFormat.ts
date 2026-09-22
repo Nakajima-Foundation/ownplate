@@ -36,7 +36,13 @@ export const registeredAtSeconds = (
 ): number | null => registeredAt?.seconds ?? updatedAt?.seconds ?? null;
 
 // 送信のたびにサーバが端末ごとに残す結果。最新が先頭。
-export type SendRecord = { at: number; ok: boolean; code?: string };
+// dead は「宛先そのものが死んでいる」と FCM が言った失敗だけに立つ。
+export type SendRecord = {
+  at: number;
+  ok: boolean;
+  code?: string;
+  dead?: boolean;
+};
 
 // アラートを出すかを決める窓。サーバが保持する件数より小さいこと。
 // 大きくしても、保持していないぶんは見えないだけで害は無い。
@@ -44,12 +50,23 @@ export const FAILURE_ALERT_WINDOW = 3;
 
 // 直近の送信に失敗が混じっている端末。ここに出るのは「FCM が宛先を拒否した」場合だけで、
 // 端末側で通知を切っている・集中モードに入っているものは成功として返るため出ない。
+const recentWindow = (recentSends: SendRecord[] | undefined): SendRecord[] =>
+  (recentSends ?? []).slice(0, FAILURE_ALERT_WINDOW);
+
 export const hasRecentFailure = (
   recentSends: SendRecord[] | undefined,
-): boolean =>
-  (recentSends ?? [])
-    .slice(0, FAILURE_ALERT_WINDOW)
-    .some((record) => !record.ok);
+): boolean => recentWindow(recentSends).some((record) => !record.ok);
+
+// 失敗のうち「宛先そのものが死んでいる」もの。これだけが再登録で直る。
+// payload 不正や一時的な失敗にも再登録を指示すると、直らない作業をさせることになる。
+export const needsReregistration = (
+  recentSends: SendRecord[] | undefined,
+): boolean => recentWindow(recentSends).some((record) => record.dead === true);
+
+// 直近の失敗の FCM コード。再登録では直らない失敗の切り分けに要る。
+export const recentFailureCode = (
+  recentSends: SendRecord[] | undefined,
+): string => recentWindow(recentSends).find((record) => !record.ok)?.code ?? "";
 
 export const lastSend = (
   recentSends: SendRecord[] | undefined,

@@ -1183,6 +1183,7 @@ const data = {
     passwordReset: "パスワードのリセット",
     pleaseCheckInbox: "メールを送信しました。受信箱をご確認ください。",
     push: {
+      sendFailed: "直近の送信に失敗しています",
       lastSentAt: "最終送信",
       undelivered: "通知が届いていません。登録し直してください",
       rename: "端末名を変更",
