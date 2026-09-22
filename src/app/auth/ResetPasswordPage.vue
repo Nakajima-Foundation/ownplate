@@ -110,8 +110,7 @@ export default defineComponent({
     const handleCancel = () => {
       router.push("/admin/user/signin");
     };
-    // 送信中にもう一度押されても重ねて送らない。ボタンの無効化だけでは Enter の連打や
-    // 素早いダブルクリックが通るので、ここでも止める。
+    // ボタンの無効化だけでは素早いダブルクリックや Enter の連打が通るので、ここでも止める。
     const submitting = ref(false);
     const handleNext = () => {
       submitted.value = true;

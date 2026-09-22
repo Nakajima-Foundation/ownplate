@@ -235,9 +235,7 @@ export default defineComponent({
       }
     });
 
-    // 送信中にもう一度送らない。読み込み中の覆いはマウスしか止めないので、Enter の連打は
-    // ここまで届き、SMS が2通送られて1通目のコードが使えなくなる。2つの form は同時に
-    // 表示されないので、フラグは1つで足りる。
+    // 2通目の SMS で1通目のコードが使えなくなる。2つの form は同時に出ないので1つで足りる。
     const submitting = ref(false);
     const handleSubmit = async () => {
       if (submitting.value) {
@@ -317,9 +315,10 @@ export default defineComponent({
           Sentry.captureException(error);
         }
         errors.value = ["sms." + code];
-      } finally {
-        generalStore.setLoading(false);
         submitting.value = false;
+      } finally {
+        // 成功時は戻さない。閉じるのは親がログインを確認してからで、その間に再送できてしまう。
+        generalStore.setLoading(false);
       }
     };
     return {

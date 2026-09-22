@@ -1363,6 +1363,7 @@ const data = {
         "auth/invalid-login-credentials": "อีเมลหรือรหัสผ่านไม่ถูกต้อง",
         "auth/unauthorized-continue-uri": "โดเมนไม่ได้ลงทะเบียนในไวท์ลิสต์",
         "auth/internal-error": "รหัสผ่านไม่ถูกต้อง",
+        "auth/missing-password": "กรุณากรอกรหัสผ่าน",
         "auth/invalid-credential": "Email or Password is invalid.",
       },
     },

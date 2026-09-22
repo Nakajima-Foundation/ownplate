@@ -35,7 +35,8 @@
 
       <!-- Sign In Card -->
       <div class="mt-2 rounded-lg bg-white p-6 shadow-sm">
-        <form @submit.prevent="onSignin">
+        <!-- ブラウザの email 検証は登録時の検証より狭く、既存のアカウントを締め出しうる -->
+        <form novalidate @submit.prevent="onSignin">
           <div class="text-xl font-bold text-black/30">
             {{ $t("admin.pleaseSignIn") }}
           </div>
@@ -238,8 +239,7 @@ export default defineComponent({
       generalStore.setLoading(false);
     };
 
-    // 送信中にもう一度送らない。読み込み中の覆いはマウスしか止めないので、Enter の連打は
-    // ここまで届く。
+    // 読み込み中の覆いはマウスしか止めないので、Enter の連打もここで止める。
     const submitting = ref(false);
     const onSignin = () => {
       if (submitting.value) {
@@ -250,10 +250,12 @@ export default defineComponent({
       errors.value = {};
       signInWithEmailAndPassword(auth, email.value, password.value)
         .then(() => {
+          // 成功時は戻さない。画面の遷移は user の監視から遅れて起き、その間に再送できてしまう。
           console.log("onSignin success");
           generalStore.setLoading(false);
         })
         .catch((error) => {
+          submitting.value = false;
           console.log("onSignin failed", error.code, error.message);
 
           // Check if MFA is required
@@ -268,16 +270,14 @@ export default defineComponent({
           const errorCode = "admin.error.code." + error.code;
           if (
             error.code === "auth/wrong-password" ||
-            error.code === "auth/internal-error"
+            error.code === "auth/internal-error" ||
+            error.code === "auth/missing-password"
           ) {
             errors.value = { password: [errorCode] };
           } else {
             errors.value = { email: [errorCode] };
           }
           generalStore.setLoading(false);
-        })
-        .finally(() => {
-          submitting.value = false;
         });
     };
     return {

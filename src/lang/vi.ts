@@ -1385,6 +1385,7 @@ const data = {
         "auth/unauthorized-continue-uri":
           "Tên miền chưa được đăng ký trong danh sách trắng.",
         "auth/internal-error": "Mật khẩu không hợp lệ.",
+        "auth/missing-password": "Vui lòng nhập mật khẩu.",
         "auth/invalid-credential": "Email or Password is invalid.",
       },
     },

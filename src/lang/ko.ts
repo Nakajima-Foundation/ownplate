@@ -1362,6 +1362,7 @@ const data = {
         "auth/unauthorized-continue-uri":
           "도메인이 화이트리스트에 등록되지 않았습니다.",
         "auth/internal-error": "비밀번호가 유효하지 않습니다.",
+        "auth/missing-password": "비밀번호를 입력해 주세요.",
         "auth/invalid-credential": "이메일 또는 비밀번호가 유효하지 않습니다.",
       },
     },

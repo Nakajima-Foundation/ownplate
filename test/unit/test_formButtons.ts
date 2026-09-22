@@ -1,6 +1,6 @@
 import { describe, it } from "node:test";
 import assert from "node:assert";
-import { readFileSync, readdirSync, statSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parse } from "vue/compiler-sfc";
@@ -12,7 +12,9 @@ import { parse } from "vue/compiler-sfc";
 //   - 入力欄は Enter のキーリスナを持たない。form の submit と二重に走る
 // 見えないもの（テンプレートを1つずつ読む限り追えない。いまの src には無い）:
 //   自作部品が内部で <button> を描画する / 自作部品が <form> を描画しボタンが slot にある /
-//   form の外のボタンが form="id" で紐づく / ハンドラの中で Enter を判定している
+//   form の外のボタンが form="id" で紐づく / ハンドラの中で Enter を判定している /
+//   form 自身や祖先のリスナ（@keyup.enter、子の click が伝わる @click）/
+//   <Button> や :TYPE のような大文字の書き方 / <template src> や lang 付きの template
 
 // AST の型は parse の戻り値から取る。手で書くと、コンパイラの形が変わっても気づけない。
 type RootNode = NonNullable<
@@ -69,7 +71,7 @@ const hasEnterKeyListener = (props: Prop[]) =>
       isDirective(p) &&
       p.name === "on" &&
       keyEvents.has((staticArg(p) ?? "").toLowerCase()) &&
-      p.modifiers.some((m) => m.content.toLowerCase() === "enter"),
+      p.modifiers.some((m) => m.content === "enter"),
   );
 
 const violation = (node: ElementNode, reason: string): Violation => ({
@@ -78,12 +80,18 @@ const violation = (node: ElementNode, reason: string): Violation => ({
   reason,
 });
 
+// 部品は描画される既定の type を持つ。呼び出し側の type は属性の引き継ぎで優先される。
+const defaultTypes: Record<string, string> = {
+  "t-button": "button",
+  "t-submit": "submit",
+};
+
 const checkButton = (node: ElementNode): Violation | null => {
   const props = node.props;
   if (props.some(isOpaque) || boundType(props)) {
     return violation(node, "束縛の対象が読めない（type やリスナを実行時に差し込める）");
   }
-  const type = node.tag === "t-submit" ? "submit" : staticType(props);
+  const type = staticType(props) ?? defaultTypes[node.tag];
   if (type === undefined) {
     return violation(node, "type が無い（form の中では submit として振る舞う）");
   }
@@ -141,11 +149,9 @@ const reports = (inner: string) => formButtonViolations(wrap(inner)).length;
 
 describe("formButtonViolations — 捕まえるべき形", () => {
   // ここが赤くならないと、下の全体走査は何も守っていない。
-  it("reports a button without a type inside a form", () => {
-    [
-      `<form @submit.prevent="go"><button @click="cancel">x</button></form>`,
-      `<form @submit.prevent="go"><t-button @click="cancel">x</t-button></form>`,
-    ].forEach((source) => assert.strictEqual(reports(source), 1, source));
+  it("reports a native button without a type inside a form", () => {
+    const source = `<form @submit.prevent="go"><button @click="cancel">x</button></form>`;
+    assert.strictEqual(reports(source), 1);
   });
 
   // 実際にあった二重送信の形。Vue にはリスナの書き方が多いので、どれでも同じに扱う。
@@ -195,7 +201,6 @@ describe("formButtonViolations — 捕まえるべき形", () => {
       `<form @submit.prevent="go"><input :type="kind" /></form>`,
       `<form @submit.prevent="go"><input type="text" v-bind="attrs" /></form>`,
       `<form @submit.prevent="go"><input type="text" @keyup.enter="go" /></form>`,
-      `<form @submit.prevent="go"><input type="text" @keydown.Enter="go" /></form>`,
       `<form @submit.prevent="go"><component :is="'button'" @click="go">x</component></form>`,
     ].forEach((source) => assert.strictEqual(reports(source), 1, source));
   });
@@ -248,6 +253,24 @@ describe("formButtonViolations — 通すべき形", () => {
     assert.strictEqual(reports(source), 0);
   });
 
+  // t-button は type="button" を描画するので、form の中でも送信しない（button.vue で固定）。
+  it("accepts a t-button without a type, which renders as a plain button", () => {
+    const source = `<form @submit.prevent="go"><t-button @click="cancel">x</t-button></form>`;
+    assert.strictEqual(reports(source), 0);
+  });
+
+  // 呼び出し側の type が勝つので、type="button" を渡した t-submit は送信しない。
+  it("treats a t-submit given type=button as a plain button", () => {
+    const source = `<form @submit.prevent="go"><t-submit type="button" @click="x">x</t-submit></form>`;
+    assert.strictEqual(reports(source), 0);
+  });
+
+  // Vue は修飾キーを大文字小文字まで比べる。.Enter は Enter キーでは発火しない。
+  it("ignores a key modifier Vue never matches", () => {
+    const source = `<form @submit.prevent="go"><input type="text" @keydown.Enter="go" /></form>`;
+    assert.strictEqual(reports(source), 0);
+  });
+
   it("ignores buttons outside any form", () => {
     const source = `<div><button @click="x">x</button><t-button @click="y">y</t-button></div>`;
     assert.strictEqual(reports(source), 0);
@@ -266,13 +289,15 @@ describe("formButtonViolations — 通すべき形", () => {
   });
 });
 
+// 実体のあるファイルとディレクトリだけを辿る。エディタのロックファイルのような
+// 壊れたシンボリックリンクで、コードと無関係に落ちないように。
 const vueFiles = (dir: string): string[] =>
-  readdirSync(dir).flatMap((name) => {
-    const path = join(dir, name);
-    if (statSync(path).isDirectory()) {
+  readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const path = join(dir, entry.name);
+    if (entry.isDirectory()) {
       return vueFiles(path);
     }
-    return path.endsWith(".vue") ? [path] : [];
+    return entry.isFile() && entry.name.endsWith(".vue") ? [path] : [];
   });
 
 describe("form の中のボタン — アプリ全体", () => {
@@ -286,5 +311,18 @@ describe("form の中のボタン — アプリ全体", () => {
       ),
     );
     assert.deepStrictEqual(found, []);
+  });
+});
+
+// 根本の直し。t-button が type を描画しないと、form の中の t-button はすべて送信ボタンになる。
+// 上の検査は t-button を「送信しない」と扱うので、その前提をここで固定する。
+describe("button.vue", () => {
+  it("renders type=button on its root, so a t-button never submits by default", () => {
+    const root = fileURLToPath(new URL("../../", import.meta.url));
+    const source = readFileSync(join(root, "src/components/form/button.vue"), "utf-8");
+    const ast = parse(source).descriptor.template?.ast;
+    const button = ast?.children.find(isElement);
+    assert.strictEqual(button?.tag, "button");
+    assert.strictEqual(staticType(button?.props ?? []), "button");
   });
 });

@@ -1394,6 +1394,7 @@ const data = {
         "auth/unauthorized-continue-uri":
           "Domain belum terdaftar di daftar putih.",
         "auth/internal-error": "Kata sandi tidak valid.",
+        "auth/missing-password": "Silakan masukkan kata sandi Anda.",
         "auth/invalid-credential": "Email or Password is invalid.",
       },
     },

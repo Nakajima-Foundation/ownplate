@@ -1408,6 +1408,7 @@ const data = {
           "L'adresse e-mail ou le mot de passe est invalide.",
         "auth/unauthorized-continue-uri": "Domain not whitelisted by project",
         "auth/internal-error": "Le mot de passe est invalide.",
+        "auth/missing-password": "Veuillez saisir votre mot de passe.",
         "auth/invalid-credential":
           "L'adresse e-mail ou le mot de passe est invalide.",
       },

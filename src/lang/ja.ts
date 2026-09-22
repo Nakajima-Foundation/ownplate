@@ -1376,6 +1376,7 @@ const data = {
         "auth/unauthorized-continue-uri":
           "ドメインがホワイトリストに登録されていません。",
         "auth/internal-error": "パスワードが無効です。",
+        "auth/missing-password": "パスワードを入力してください。",
         "auth/invalid-credential": "Email or Password is invalid.",
       },
     },

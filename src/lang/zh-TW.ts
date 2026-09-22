@@ -1311,6 +1311,7 @@ const data = {
         "auth/invalid-login-credentials": "郵箱或密碼無效。",
         "auth/unauthorized-continue-uri": "域名未註冊在白名單中。",
         "auth/internal-error": "密碼無效。",
+        "auth/missing-password": "請輸入密碼。",
         "auth/invalid-credential": "郵箱或密碼無效。",
       },
     },
