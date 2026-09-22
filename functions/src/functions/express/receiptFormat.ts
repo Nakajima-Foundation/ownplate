@@ -98,9 +98,11 @@ export const buildReceiptText = (restaurantData: DocumentData, orderData: Docume
 
   // 区分は receiptFormat.ts の純関数に切り出してある（単体テストあり）
   const taxText = taxLines(taxCategories(orderData.accounting, restaurantData.foodTax, restaurantData.alcoholTax), taxPayment, orderData.tax || 0);
-  const reducedNote = reducedTaxNote(hasReducedItem);
 
   const onlinePay = orderData?.payment?.stripe ? "事前クレジット決済" : "現地払い";
+  // 凡例が無いときに行だけ残すと、旧実装に無かった空行が1行増える。
+  // レシートは紙なので、空行は見えるし紙を食う。
+  const footer = [`支払方法："${onlinePay}"|`, ...(reducedTaxNote(hasReducedItem) ? [reducedTaxNote(hasReducedItem)] : [])].join("\n");
   const text = `
 ^^${escapePrinterString(restaurantData.restaurantName || "")}
 おもちかえり.com
@@ -123,8 +125,7 @@ ${taxText}
 -
 ^^ 合計 | ^^^¥${orderData.totalCharge}
 {w:auto; b:space}
-支払方法："${onlinePay}"|
-${reducedNote}
+${footer}
 
 
 `;

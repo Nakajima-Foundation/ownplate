@@ -208,6 +208,29 @@ describe("buildReceiptText", () => {
   });
 });
 
+// buildReceiptText の切り出しは「移しただけ」を主張している。旧実装と並走させて
+// 400 通り（税区分・accounting の有無・内外税・受渡方法・決済・オプション）を比べ、
+// 税率別の行・消費税の行・※・凡例を除いた全行が一致することを確認した。
+// harness は旧コードを含むので残せない。そこで見つかった性質だけを残す。
+describe("buildReceiptText — 旧実装との差が意図した箇所だけであること", () => {
+  // 差分テストで見つかった。凡例が無いときに行だけ残すと、紙のレシートに
+  // 旧実装には無かった空行が1行増える。
+  it("adds no blank line when there is no note to print", () => {
+    const withNote = buildReceiptText(dummyRestaurant(), dummyOrder());
+    const withoutNote = buildReceiptText(
+      dummyRestaurant(),
+      dummyOrder({
+        order: { beer: { 0: 1 } },
+        menuItems: { beer: { itemName: "ビール", tax: "alcohol" } },
+        accounting: { alcohol: { revenue: 500, tax: 45 } },
+      }),
+    );
+    assert.ok(withNote.includes('支払方法："現地払い"|\n※軽減税率対象'));
+    assert.ok(withoutNote.includes('支払方法："現地払い"|\n\n'));
+    assert.ok(!withoutNote.includes('支払方法："現地払い"|\n\n\n\n'));
+  });
+});
+
 describe("buildReceiptText — 登録番号", () => {
   it("prints the registration number when the restaurant has one", () => {
     const text = buildReceiptText(dummyRestaurant({ invoiceNumber: "T1234567890123" }), dummyOrder());
