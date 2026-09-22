@@ -10,6 +10,7 @@ import { parse } from "vue/compiler-sfc";
 //   - 送信しないボタンは type="button" か "reset"。type の値は HTML の3値だけ（大文字小文字は問わない）
 //   - 束縛の対象が読めない v-bind / v-on、束縛された type、<component> は報告する
 //   - 入力欄は Enter のキーリスナを持たない。form の submit と二重に走る
+//   - form は送信するものを持つ。t-button は送信しないので、置き換えると送れない form になる
 // 見えないもの（テンプレートを1つずつ読む限り追えない。いまの src には無い）:
 //   自作部品が内部で <button> を描画する / 自作部品が <form> を描画しボタンが slot にある /
 //   form の外のボタンが form="id" で紐づく / ハンドラの中で Enter を判定している /
@@ -119,6 +120,17 @@ const checkInput = (node: ElementNode): Violation | null => {
   return null;
 };
 
+// 描画される type。素の <button> は type が無ければ submit になる。
+const renderedButtonType = (node: ElementNode) =>
+  staticType(node.props) ?? defaultTypes[node.tag] ?? "submit";
+
+const isSubmitter = (node: ElementNode) =>
+  (buttonTags.has(node.tag) && renderedButtonType(node) === "submit") ||
+  (node.tag === "input" && submitInputTypes.has(staticType(node.props) ?? ""));
+
+const hasSubmitter = (node: ElementNode): boolean =>
+  node.children.some((c) => isElement(c) && (isSubmitter(c) || hasSubmitter(c)));
+
 const checkControl = (node: ElementNode): Violation | null => {
   if (node.tag === "component") {
     return violation(node, "描画される要素が読めない（:is で button になりうる）");
@@ -134,7 +146,11 @@ const collect = (node: TemplateChild, insideForm: boolean): Violation[] => {
     return [];
   }
   const inForm = insideForm || node.tag === "form";
-  const own = insideForm ? [checkControl(node)] : [];
+  const noSubmitter =
+    node.tag === "form" && !hasSubmitter(node)
+      ? violation(node, "送信するものが無い（クリックでも Enter でも送信できない）")
+      : null;
+  const own = [insideForm ? checkControl(node) : null, noSubmitter];
   const children = node.children.flatMap((child) => collect(child, inForm));
   return [...own.filter((v): v is Violation => v !== null), ...children];
 };
@@ -145,7 +161,13 @@ export const formButtonViolations = (vueSource: string): Violation[] => {
 };
 
 const wrap = (inner: string) => `<template>${inner}</template>`;
-const reports = (inner: string) => formButtonViolations(wrap(inner)).length;
+// ボタン単体の規則だけを見るため、form に送信するものを1つ添えてから数える。
+// form 自体の規則（送信するものが無い）は reportsForm で素のまま見る。
+const withSubmitter = (inner: string) =>
+  inner.replace(/<\/form>/g, "<t-submit>ok</t-submit></form>");
+const reports = (inner: string) =>
+  formButtonViolations(wrap(withSubmitter(inner))).length;
+const reportsForm = (inner: string) => formButtonViolations(wrap(inner)).length;
 
 describe("formButtonViolations — 捕まえるべき形", () => {
   // ここが赤くならないと、下の全体走査は何も守っていない。
@@ -203,6 +225,15 @@ describe("formButtonViolations — 捕まえるべき形", () => {
       `<form @submit.prevent="go"><input type="text" @keyup.enter="go" /></form>`,
       `<form @submit.prevent="go"><component :is="'button'" @click="go">x</component></form>`,
     ].forEach((source) => assert.strictEqual(reports(source), 1, source));
+  });
+
+  // t-button は送信しないので、送信ボタンを t-button に置き換えると送れない form になる。
+  it("reports a form with nothing that submits it", () => {
+    [
+      `<form @submit.prevent="go"><t-button type="button">cancel</t-button><t-button>ok</t-button></form>`,
+      `<form @submit.prevent="go"><input type="text" /></form>`,
+      `<form @submit.prevent="go"><t-submit type="button">x</t-submit></form>`,
+    ].forEach((source) => assert.strictEqual(reportsForm(source), 1, source));
   });
 
   // 正規表現では読み違えやすい形。属性が複数行にまたがる、入れ子の中にある。

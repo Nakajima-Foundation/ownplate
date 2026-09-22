@@ -143,6 +143,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, watch, computed, onMounted } from "vue";
+import { beginSubmit } from "../../utils/beginSubmit";
 
 import { db, auth } from "@/lib/firebase/firebase9";
 import {
@@ -238,10 +239,9 @@ export default defineComponent({
     // 2通目の SMS で1通目のコードが使えなくなる。2つの form は同時に出ないので1つで足りる。
     const submitting = ref(false);
     const handleSubmit = async () => {
-      if (submitting.value) {
+      if (!beginSubmit(submitting)) {
         return;
       }
-      submitting.value = true;
       console.log("submit");
       try {
         generalStore.setLoading(true);
@@ -270,10 +270,9 @@ export default defineComponent({
       }
     };
     const handleCode = async () => {
-      if (submitting.value) {
+      if (!beginSubmit(submitting)) {
         return;
       }
-      submitting.value = true;
       console.log("handleCode");
       errors.value = [];
       try {

@@ -163,6 +163,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, watch } from "vue";
+import { beginSubmit } from "../../utils/beginSubmit";
 import { auth } from "@/lib/firebase/firebase9";
 import {
   signInWithEmailAndPassword,
@@ -242,10 +243,9 @@ export default defineComponent({
     // 読み込み中の覆いはマウスしか止めないので、Enter の連打もここで止める。
     const submitting = ref(false);
     const onSignin = () => {
-      if (submitting.value) {
+      if (!beginSubmit(submitting)) {
         return;
       }
-      submitting.value = true;
       generalStore.setLoading(true);
       errors.value = {};
       signInWithEmailAndPassword(auth, email.value, password.value)

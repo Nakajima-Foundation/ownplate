@@ -70,6 +70,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
+import { beginSubmit } from "../../utils/beginSubmit";
 import isEmail from "validator/lib/isEmail";
 import { auth } from "@/lib/firebase/firebase9";
 import { sendPasswordResetEmail } from "firebase/auth";
@@ -114,10 +115,12 @@ export default defineComponent({
     const submitting = ref(false);
     const handleNext = () => {
       submitted.value = true;
-      if (submitting.value || Object.keys(errors.value).length > 0) {
+      if (Object.keys(errors.value).length > 0) {
         return;
       }
-      submitting.value = true;
+      if (!beginSubmit(submitting)) {
+        return;
+      }
       const options = { url: window.location.href.replace(/reset$/, "signin") };
       console.log("handleNext", options.url);
       sendPasswordResetEmail(auth, email.value, options)
