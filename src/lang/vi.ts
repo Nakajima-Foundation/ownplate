@@ -1187,6 +1187,7 @@ const data = {
     passwordReset: "Đặt lại mật khẩu",
     pleaseCheckInbox: "Đã gửi email. Vui lòng kiểm tra hộp thư đến.",
     push: {
+      sendFailed: "Lần gửi gần nhất đã thất bại",
       lastSentAt: "Gửi lần cuối",
       undelivered:
         "Thông báo không đến được thiết bị này. Vui lòng đăng ký lại.",

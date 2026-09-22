@@ -6,6 +6,8 @@ import {
   detectPlatform,
   hasRecentFailure,
   lastSend,
+  needsReregistration,
+  recentFailureCode,
   registeredAtSeconds,
 } from "../../src/utils/pushFormat.ts";
 
@@ -112,5 +114,73 @@ describe("lastSend", () => {
   it("returns nothing for a device that has never been sent to", () => {
     assert.strictEqual(lastSend(undefined), null);
     assert.strictEqual(lastSend([]), null);
+  });
+});
+
+describe("needsReregistration", () => {
+  const ok = (at: number) => ({ at, ok: true });
+  const deadTarget = (at: number) => ({
+    at,
+    ok: false,
+    code: "messaging/installation-id-not-registered",
+    dead: true,
+  });
+  // payload 不正など。再登録しても直らない。
+  const otherFailure = (at: number) => ({
+    at,
+    ok: false,
+    code: "messaging/invalid-argument",
+  });
+
+  it("asks for re-registration only when the target itself is dead", () => {
+    assert.strictEqual(needsReregistration([deadTarget(1)]), true);
+    assert.strictEqual(needsReregistration([otherFailure(1)]), false);
+  });
+
+  // 「失敗している」と「登録し直せば直る」は別。ここが同じだと、直らない作業をさせる。
+  it("is not the same thing as having a recent failure", () => {
+    const history = [otherFailure(1)];
+    assert.strictEqual(hasRecentFailure(history), true);
+    assert.strictEqual(needsReregistration(history), false);
+  });
+
+  it("says nothing for a healthy or unknown device", () => {
+    assert.strictEqual(needsReregistration([ok(1)]), false);
+    assert.strictEqual(needsReregistration(undefined), false);
+    assert.strictEqual(needsReregistration([]), false);
+  });
+
+  it("stops asking once the dead result falls outside the window", () => {
+    assert.strictEqual(
+      needsReregistration([ok(4), ok(3), ok(2), deadTarget(1)]),
+      false,
+    );
+  });
+});
+
+describe("recentFailureCode", () => {
+  it("reports the newest failing code inside the window", () => {
+    assert.strictEqual(
+      recentFailureCode([
+        { at: 3, ok: false, code: "messaging/second" },
+        { at: 2, ok: false, code: "messaging/first" },
+      ]),
+      "messaging/second",
+    );
+  });
+
+  it("skips successes to find the failure", () => {
+    assert.strictEqual(
+      recentFailureCode([
+        { at: 2, ok: true },
+        { at: 1, ok: false, code: "x" },
+      ]),
+      "x",
+    );
+  });
+
+  it("returns nothing when there is no failure to report", () => {
+    assert.strictEqual(recentFailureCode([{ at: 1, ok: true }]), "");
+    assert.strictEqual(recentFailureCode(undefined), "");
   });
 });

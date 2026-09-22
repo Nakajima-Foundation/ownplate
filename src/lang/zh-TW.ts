@@ -1129,6 +1129,7 @@ const data = {
     passwordReset: "重置密碼",
     pleaseCheckInbox: "郵件已傳送。請檢視收件箱。",
     push: {
+      sendFailed: "最近一次傳送失敗",
       lastSentAt: "最後傳送",
       undelivered: "通知未能送達此裝置。請重新註冊。",
       rename: "修改裝置名稱",

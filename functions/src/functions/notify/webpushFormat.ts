@@ -12,7 +12,11 @@ export const INVALID_TARGET_CODES = ["messaging/installation-id-not-registered",
 export const RECENT_SENDS_KEPT = 5;
 
 // code は成功時に持たせない。Firestore は undefined を書けないので、呼ぶ側で省くこと。
-export type SendRecord = { at: number; ok: boolean; code?: string };
+//
+// dead は「宛先そのものが死んでいる」と FCM が言った失敗。一覧の文言を分けるために要る。
+// 失敗のすべてが再登録で直るわけではない（payload 不正や一時的な失敗もここを通る）ので、
+// これが無いと「登録し直してください」を直しようのない失敗にも出すことになる。
+export type SendRecord = { at: number; ok: boolean; code?: string; dead?: boolean };
 
 export const appendSend = (previous: SendRecord[] | undefined, record: SendRecord): SendRecord[] =>
   [record, ...(Array.isArray(previous) ? previous : [])].slice(0, RECENT_SENDS_KEPT);

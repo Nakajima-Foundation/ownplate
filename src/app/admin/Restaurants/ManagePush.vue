@@ -68,11 +68,21 @@
                     {{ $t("admin.push.lastSentAt") }} {{ lastSentOn(device) }}
                   </div>
                   <div
-                    v-if="undelivered(device)"
+                    v-if="needsReRegister(device)"
                     class="mt-1 flex items-center text-xs font-bold text-red-700"
                   >
                     <i class="material-icons mr-1 text-base">error_outline</i>
                     {{ $t("admin.push.undelivered") }}
+                  </div>
+                  <div
+                    v-else-if="sendFailed(device)"
+                    class="mt-1 flex items-center text-xs font-bold text-red-700"
+                  >
+                    <i class="material-icons mr-1 text-base">error_outline</i>
+                    {{ $t("admin.push.sendFailed") }}
+                    <span class="ml-1 font-normal">{{
+                      failureCode(device)
+                    }}</span>
                   </div>
                 </div>
               </div>
@@ -216,6 +226,8 @@ import {
   describeSendResult,
   hasRecentFailure,
   lastSend,
+  needsReregistration,
+  recentFailureCode,
   registeredAtSeconds,
 } from "@/utils/pushFormat";
 import {
@@ -307,10 +319,19 @@ export default defineComponent({
       return seconds === null ? "" : moment.unix(seconds).format("YYYY-MM-DD");
     };
 
-    // 出せるのは「FCM が宛先を拒否した」場合だけ。端末側で通知を切っている・
+    // 「失敗している」と「登録し直せば直る」を分ける。失敗のすべてが再登録で
+    // 直るわけではないので、まとめると直らない作業をさせることになる。
+    //
+    // どちらも、出るのは FCM が失敗を返した場合だけ。端末側で通知を切っている・
     // 集中モードに入っているものは FCM から見れば成功なので、ここには出ない。
-    const undelivered = (device: PushDeviceData) =>
+    const needsReRegister = (device: PushDeviceData) =>
+      needsReregistration(device.recentSends);
+
+    const sendFailed = (device: PushDeviceData) =>
       hasRecentFailure(device.recentSends);
+
+    const failureCode = (device: PushDeviceData) =>
+      recentFailureCode(device.recentSends);
 
     const lastSentOn = (device: PushDeviceData) => {
       const record = lastSend(device.recentSends);
@@ -404,7 +425,9 @@ export default defineComponent({
       editingId,
       editingName,
       registeredOn,
-      undelivered,
+      needsReRegister,
+      sendFailed,
+      failureCode,
       lastSentOn,
       startRename,
       handleRename,
