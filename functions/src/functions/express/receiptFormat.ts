@@ -1,3 +1,7 @@
+import { DocumentData } from "firebase-admin/firestore";
+import moment from "moment-timezone";
+
+import { nameOfOrder, timezone } from "../../lib/utils";
 import type { MenuData } from "../../models/menu";
 import { isReducedTaxRate } from "../../utils/commonUtils";
 
@@ -43,3 +47,86 @@ export const reducedTaxNote = (hasReducedItem: boolean): string => (hasReducedIt
 
 // 商品名に付ける軽減税率の印
 export const itemMark = (item: Partial<MenuData> | undefined): string => (isReducedTaxRate(item) ? "※" : "");
+
+const escapeOptionPrice = (text: string) => {
+  const optionPriceRegex = /\(((\+|＋|ー|−)[0-9.]+)\)/g;
+  return text.replace(optionPriceRegex, "");
+};
+export const escapePrinterString = (text: string) => {
+  // {}+-|"`^,;:
+  return text.replace(/[{}+\-|"`^,;:]+/g, "");
+};
+
+// receiptline に渡す手前のテキスト。ここまでが Firestore にもプリンタにも依存しない
+// ので、ダミーの注文データを与えて単体テストできる。
+// 実際の変換 (receiptline.transform) は apis.ts に残してある。
+export const buildReceiptText = (restaurantData: DocumentData, orderData: DocumentData): string => {
+  const orderNumber = nameOfOrder(orderData.number);
+
+  const hasReducedItem = hasReducedTaxItem(orderData.menuItems, Object.keys(orderData.order));
+
+  const messages: string[] = [];
+  Object.keys(orderData.order).map((menuId) => {
+    const menu = orderData.menuItems[menuId];
+    const name = menu.itemName;
+    return Object.keys(orderData.order[menuId]).map((key) => {
+      const count = orderData.order[menuId][key];
+      messages.push(`${escapePrinterString(name)}${itemMark(menu)} | x${count}`);
+
+      try {
+        if (orderData.options && orderData.options[menuId] && orderData.options[menuId][key]) {
+          const opts = orderData.options[menuId][key].filter((o: unknown) => o);
+          if (opts.length > 0) {
+            opts.map((opt: string) => {
+              if (opt) {
+                messages.push("~~~*" + escapePrinterString(escapeOptionPrice(opt)) + "|");
+              }
+            });
+          }
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    });
+  });
+  const orders = messages.join("\n");
+  const howToReceive = orderData.isDelivery ? "デリバリー" : "テイクアウト";
+  const timeEstimated = moment(orderData.timePlaced.toDate()).tz(timezone).format("YYYY/MM/DD HH:mm");
+  // 未設定の店舗（免税事業者など）では行ごと出さない。
+  const invoiceLine = restaurantData.invoiceNumber ? `登録番号：${restaurantData.invoiceNumber}` : "";
+  const taxPayment = restaurantData.inclusiveTax ? "内税" : "外税";
+
+  // 区分は receiptFormat.ts の純関数に切り出してある（単体テストあり）
+  const taxText = taxLines(taxCategories(orderData.accounting, restaurantData.foodTax, restaurantData.alcoholTax), taxPayment, orderData.tax || 0);
+  const reducedNote = reducedTaxNote(hasReducedItem);
+
+  const onlinePay = orderData?.payment?.stripe ? "事前クレジット決済" : "現地払い";
+  const text = `
+^^${escapePrinterString(restaurantData.restaurantName || "")}
+おもちかえり.com
+${invoiceLine}
+
+^^^"${orderNumber}"
+
+|受渡方法："${howToReceive}"
+|受渡希望時間："${timeEstimated}"
+
+${escapePrinterString(orderData.name || "")}さん|
+{w:*,4;b:line}
+${orders}
+-
+{w:16,16;a:right}
+小計 | ¥${orderData.total}
+${taxText}
+配達料金 | ¥${orderData.deliveryFee || 0} 
+心づけ (サービス料・消費税含む)| ¥${orderData.tip || 0}
+-
+^^ 合計 | ^^^¥${orderData.totalCharge}
+{w:auto; b:space}
+支払方法："${onlinePay}"|
+${reducedNote}
+
+
+`;
+  return text;
+};
