@@ -748,13 +748,13 @@ import {
   regionalSetting,
   stripeRegion,
   countObj,
-  roundPrice,
   taxRate,
   notFoundResponse,
   smallImageErrorHandler,
   displayOption,
   defaultTitle,
 } from "@/utils/utils";
+import { roundPrice } from "@/utils/price";
 
 import { uploadFile } from "@/lib/firebase/storage";
 
