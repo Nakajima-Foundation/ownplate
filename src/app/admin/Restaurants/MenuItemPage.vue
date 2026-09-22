@@ -427,8 +427,74 @@
               {{ $t("editMenu.itemOptionsNote") }}
             </div>
 
+            <!-- Option Reorder Mode Toggle -->
+            <div
+              v-if="(menuInfo.itemOptionCheckbox || []).length > 1"
+              class="pb-2"
+            >
+              <button
+                @click="toggleOptionMoveMode"
+                :disabled="submitting"
+                class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full px-4"
+                :class="isOptionMoveMode ? 'bg-op-teal' : 'bg-black/5'"
+              >
+                <i
+                  class="material-icons mr-2 text-lg"
+                  :class="isOptionMoveMode ? 'text-white' : 'text-op-teal'"
+                  >{{ isOptionMoveMode ? "check" : "swap_vert" }}</i
+                >
+                <span
+                  class="text-sm font-bold"
+                  :class="isOptionMoveMode ? 'text-white' : 'text-op-teal'"
+                  >{{
+                    isOptionMoveMode
+                      ? $t("editMenu.doneReorder")
+                      : $t("editMenu.reorder")
+                  }}</span
+                >
+              </button>
+            </div>
+
+            <!-- Option Settings: Reorder Mode -->
+            <draggable
+              v-if="isOptionMoveMode"
+              :modelValue="optionRows"
+              @update:modelValue="onOptionsReorder"
+              :item-key="optionRowKey"
+              :disabled="submitting"
+              handle=".option-drag-handle"
+              animation="300"
+              ghost-class="opacity-50"
+              tag="div"
+              class="space-y-2"
+            >
+              <template #item="{ element: optionRow, index }">
+                <div class="flex items-center rounded-lg bg-black/5 p-2">
+                  <i
+                    class="material-icons option-drag-handle mr-2 cursor-move text-2xl text-black/40"
+                    >drag_indicator</i
+                  >
+                  <div class="mr-2 text-sm font-bold text-black/30">
+                    {{ index + 1 }}
+                  </div>
+                  <div
+                    class="min-w-0 flex-1 truncate text-sm font-bold"
+                    :class="
+                      optionRow.text === '' ? 'text-black/30' : 'text-black/60'
+                    "
+                  >
+                    {{
+                      optionRow.text === ""
+                        ? $t("editMenu.enterItemOption")
+                        : optionRow.text
+                    }}
+                  </div>
+                </div>
+              </template>
+            </draggable>
+
             <!-- Option Settings -->
-            <div class="grid-col-1 space-y-4">
+            <div v-else class="grid-col-1 space-y-4">
               <div
                 v-for="(option, key) in menuInfo.itemOptionCheckbox"
                 :key="key"
@@ -516,7 +582,7 @@
             </div>
 
             <!-- Add Option -->
-            <div class="mt-4">
+            <div v-if="!isOptionMoveMode" class="mt-4">
               <button class="cursor-pointer" @click="addOption">
                 <div
                   class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
@@ -717,7 +783,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, reactive, PropType } from "vue";
+import {
+  defineComponent,
+  ref,
+  computed,
+  reactive,
+  defineAsyncComponent,
+  PropType,
+} from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import {
   doc,
@@ -755,6 +828,7 @@ import {
   defaultTitle,
 } from "@/utils/utils";
 import { roundPrice } from "@/utils/price";
+import { OptionRow, toOptionRows, toOptionTexts } from "@/utils/optionRows";
 
 import { uploadFile } from "@/lib/firebase/storage";
 
@@ -780,6 +854,9 @@ export default defineComponent({
     HoursInput,
     ImageUpload,
     Checkbox,
+    // 並べ替えを使わない訪問でも、sortablejs は読み込まれた時点で document に passive でない
+    // touchmove を張り、この長い入力欄の巻き取りを主スレッド待ちにする。押すまで読み込まない。
+    draggable: defineAsyncComponent(() => import("vuedraggable")),
   },
   props: {
     shopInfo: {
@@ -1040,6 +1117,24 @@ export default defineComponent({
       }
     };
 
+    // 並べ替えのあいだだけ、行に通し番号を振った形で持つ。モード中は入力欄を出さないので
+    // 番号と中身がずれる隙が無く、番号が保存されることもない。
+    const isOptionMoveMode = ref(false);
+    const optionRows = ref<OptionRow[]>([]);
+    const optionRowKey = (optionRow: OptionRow) => optionRow.id;
+    const toggleOptionMoveMode = () => {
+      if (!isOptionMoveMode.value) {
+        optionRows.value = toOptionRows(menuInfo.itemOptionCheckbox);
+      }
+      isOptionMoveMode.value = !isOptionMoveMode.value;
+    };
+    // 並べ替えモードを抜けるのを待たずに書き戻す。モードに入ったまま保存を押しても
+    // 並べ替えた順序が保存されるようにするため。
+    const onOptionsReorder = (newOptionRows: OptionRow[]) => {
+      optionRows.value = newOptionRows;
+      menuInfo.itemOptionCheckbox = toOptionTexts(newOptionRows);
+    };
+
     const positionDown = (key: number) => {
       const item = [...menuInfo.itemOptionCheckbox];
       const tmp = item[key];
@@ -1107,6 +1202,12 @@ export default defineComponent({
 
       positionDown,
       positionUp,
+
+      isOptionMoveMode,
+      optionRows,
+      optionRowKey,
+      toggleOptionMoveMode,
+      onOptionsReorder,
 
       openTips,
     };
