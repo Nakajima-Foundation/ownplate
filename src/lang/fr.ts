@@ -325,6 +325,10 @@ const data = {
     notificationConfig: "Paramètres de notification",
     moveToLineConfig:
       "Accéder à l'écran des paramètres de notification LINE. N'oubliez pas d'enregistrer cette page avant de vous déplacer.",
+    invoiceNumber: "Numéro d'enregistrement de facture",
+    enterInvoiceNumber: "ex. T1234567890123",
+    invoiceNumberNote:
+      "Numéro d'enregistrement de l'émetteur de factures qualifiées. Omis du reçu et du PDF s'il n'est pas défini.",
     webPushNotification: "Notifications push",
     moveToPushConfig: "Gérer les appareils push",
     openDaysConfig: "Paramètres des jours et heures d'ouverture",
@@ -1615,6 +1619,9 @@ const data = {
     reset: "Reset Server URL",
   },
   validationError: {
+    invoiceNumber: {
+      format: "Saisissez T suivi de 13 chiffres (caractères demi-chasse)",
+    },
     itemName: {
       empty: "Veuillez saisir le nom de l'article",
     },

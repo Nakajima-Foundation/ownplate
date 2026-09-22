@@ -3,39 +3,16 @@ import moment from "moment-timezone";
 
 import { nameOfOrder, timezone } from "../../lib/utils";
 import type { MenuData } from "../../models/menu";
-import { isReducedTaxRate } from "../../utils/commonUtils";
+import { TaxDisplayRow, isInclusiveTax, isReducedTaxRate, printableInvoiceNumber, taxDisplayRows } from "../../utils/commonUtils";
 
 // レシート本文の組み立てのうち、文字列とデータだけで決まる部分。
 // receiptline も Firestore も触らないので、ブラウザもプリンタも無しでテストできる。
 
-export type TaxCategory = { rate: number; revenue: number; tax: number };
-
-export type OrderAccounting =
-  | {
-      food?: { revenue?: number; tax?: number };
-      alcohol?: { revenue?: number; tax?: number };
-    }
-  | undefined;
-
-// 税率ごとの区分。適格簡易請求書は区分の記載が要件。
-//
-// 率は引数で受ける。ベタ書きすると、税率が変わったときに金額は正しいのに
-// 率の表示だけ嘘になる。
-//
-// 売上が無い区分は出さない。0円の行はレシートを長くするだけで、
-// 「その税率の取引があった」と誤読させる。
-export const taxCategories = (accounting: OrderAccounting, foodTax: number, alcoholTax: number): TaxCategory[] =>
-  [
-    { rate: foodTax, revenue: accounting?.food?.revenue ?? 0, tax: accounting?.food?.tax ?? 0 },
-    { rate: alcoholTax, revenue: accounting?.alcohol?.revenue ?? 0, tax: accounting?.alcohol?.tax ?? 0 },
-  ].filter((category) => category.revenue > 0);
-
-// 税の行。accounting を持たない古い注文は、これまでどおり合計だけを出す。
-// 区分が出せないときに何も出さないと、消費税の記載そのものが消える。
-export const taxLines = (categories: TaxCategory[], taxPayment: string, totalTax: number): string =>
-  categories.length > 0
-    ? categories.flatMap((category) => [`${category.rate}%対象 | ¥${category.revenue}`, `消費税（${taxPayment}） | ¥${category.tax}`]).join("\n")
-    : `消費税（${taxPayment}） | ¥${totalTax}`;
+// 税の行。区分が出せない注文は、合計だけの1行になる（taxDisplayRows が決める）。
+export const taxLines = (rows: TaxDisplayRow[], taxPayment: string): string =>
+  rows
+    .flatMap((row) => (row.kind === "total" ? [`消費税（${taxPayment}） | ¥${row.tax}`] : [`${row.rate}%対象 | ¥${row.revenue}`, `消費税（${taxPayment}） | ¥${row.tax}`]))
+    .join("\n");
 
 // 軽減税率の商品が1つでもあるか。明細を組み立てながらフラグを立てるのではなく
 // データから直接決める。組み立ての都合で印と凡例が食い違うのを防ぐ。
@@ -92,18 +69,30 @@ export const buildReceiptText = (restaurantData: DocumentData, orderData: Docume
   const orders = messages.join("\n");
   const howToReceive = orderData.isDelivery ? "デリバリー" : "テイクアウト";
   const timeEstimated = moment(orderData.timePlaced.toDate()).tz(timezone).format("YYYY/MM/DD HH:mm");
-  const taxPayment = restaurantData.inclusiveTax ? "内税" : "外税";
+  // 未設定でも形が不正でも印字しない。画面側の検証はブラウザにしか無く、
+  // Firestore を直接書けば不正な値が入る。不正な番号が載ったレシートは、受け取った側が
+  // 仕入税額控除に使えず、経費精算で弾かれて初めて分かる。無いほうがまだ正直。
+  //
+  // escapePrinterString は、いまの形（T + 半角数字13桁）では通す文字が無いので効かない。
+  // 形を緩めたときに receiptline の記法（{} や |）が素通りしないための備えとして残す。
+  const printable = printableInvoiceNumber(restaurantData.invoiceNumber);
+  const invoiceLine = printable ? `登録番号：${escapePrinterString(printable)}` : "";
+  const taxPayment = isInclusiveTax(orderData, restaurantData) ? "内税" : "外税";
 
-  // 区分は receiptFormat.ts の純関数に切り出してある（単体テストあり）
-  const taxText = taxLines(taxCategories(orderData.accounting, restaurantData.foodTax, restaurantData.alcoholTax), taxPayment, orderData.tax || 0);
+  // 区分の決定は commonUtils の taxDisplayRows。PDF 側と同じ関数を通す。
+  const taxText = taxLines(taxDisplayRows(orderData.accounting, restaurantData.foodTax, restaurantData.alcoholTax, orderData.tax || 0), taxPayment);
 
   const onlinePay = orderData?.payment?.stripe ? "事前クレジット決済" : "現地払い";
   // 凡例が無いときに行だけ残すと、旧実装に無かった空行が1行増える。
   // レシートは紙なので、空行は見えるし紙を食う。
   const footer = [`支払方法："${onlinePay}"|`, ...(reducedTaxNote(hasReducedItem) ? [reducedTaxNote(hasReducedItem)] : [])].join("\n");
+  // 登録番号は店名のすぐ下。発行元は店舗なので、プラットフォームの行を挟むと
+  // おもちかえり.com の番号に読める。
+  // footer と同じ理由で、行だけ残さない。番号を持たない店舗のレシートに空行が1行増える。
+  const header = [`^^${escapePrinterString(restaurantData.restaurantName || "")}`, ...(invoiceLine ? [invoiceLine] : []), "おもちかえり.com"].join("\n");
+
   const text = `
-^^${escapePrinterString(restaurantData.restaurantName || "")}
-おもちかえり.com
+${header}
 
 ^^^"${orderNumber}"
 

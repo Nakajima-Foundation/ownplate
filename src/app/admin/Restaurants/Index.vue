@@ -488,6 +488,21 @@
               </div>
             </div>
 
+            <!-- Invoice Number -->
+            <div class="mt-4">
+              <text-form
+                v-model="editShopInfo.invoiceNumber"
+                titleKey="editRestaurant.invoiceNumber"
+                placeholder="editRestaurant.enterInvoiceNumber"
+                :error="errors['invoiceNumber']"
+                :maxlength="14"
+                :required="false"
+              />
+              <div class="mt-1 text-xs text-black/60">
+                {{ $t("editRestaurant.invoiceNumberNote") }}
+              </div>
+            </div>
+
             <!-- Tax Display -->
             <div class="mt-4">
               <div class="pb-2 text-sm font-bold">
@@ -1140,7 +1155,7 @@ import {
 } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
 
 import { google_geocode } from "@/lib/google/api";
 import { ownPlateConfig, GMAPId } from "@/config/project";
@@ -1164,10 +1179,11 @@ import ImageUpload from "@/components/ImageUpload.vue";
 import { checkShopOwner } from "@/utils/userPermission";
 
 import {
-  getEditShopInfo,
   shopInfoValidator,
   copyRestaurant,
 } from "@/utils/admin/RestaurantPageUtils";
+import { getEditShopInfo } from "@/utils/admin/shopInfoPayload";
+import { isValidInvoiceNumber } from "@/utils/commonUtils";
 import {
   cleanObject,
   isNull,
@@ -1513,7 +1529,7 @@ export default defineComponent({
             resizedImages: {},
           };
         }
-        const restaurantData = getEditShopInfo(newData);
+        const restaurantData = getEditShopInfo(newData, serverTimestamp());
         await updateRestaurantData(restaurantData);
 
         router.push(`/admin/restaurants/#restaurant_` + restaurantId.value);
@@ -1548,7 +1564,13 @@ export default defineComponent({
     };
 
     const disableSave = computed(() => {
-      return hasError.value && editShopInfo.publicFlag;
+      // 非公開の店舗では入力途中の未入力を許す。ただし形の違う登録番号だけは
+      // 公開状態に関わらず止める。保存できてしまうと、印字側が弾くので画面上は
+      // 設定済みに見えたまま、レシートにも請求書にも一生出ない。
+      return (
+        (hasError.value && editShopInfo.publicFlag) ||
+        !isValidInvoiceNumber(editShopInfo.invoiceNumber)
+      );
     });
 
     const openTips = (key: string) => {

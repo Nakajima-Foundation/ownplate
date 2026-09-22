@@ -315,6 +315,10 @@ const data = {
     notificationConfig: "알림 설정",
     moveToLineConfig:
       "LINE 알림 설정 화면으로 이동합니다. 이동하기 전에 이 페이지 저장을 잊지 마세요.",
+    invoiceNumber: "인보이스 등록번호",
+    enterInvoiceNumber: "예: T1234567890123",
+    invoiceNumberNote:
+      "적격청구서 발행사업자 등록번호. 미설정 시 영수증과 PDF에 인쇄되지 않습니다.",
     webPushNotification: "푸시 알림",
     moveToPushConfig: "푸시 알림 기기 설정으로",
     openDaysConfig: "영업일시 설정",
@@ -1564,6 +1568,9 @@ const data = {
     reset: "서버 URL 재설정",
   },
   validationError: {
+    invoiceNumber: {
+      format: "반각으로 T 다음에 숫자 13자리를 입력하세요",
+    },
     itemName: {
       empty: "상품명을 입력해 주세요",
     },

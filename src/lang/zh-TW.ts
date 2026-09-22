@@ -305,6 +305,10 @@ const data = {
     orderConfirmViewConfig: "訂單確認介面設定",
     notificationConfig: "通知設定",
     moveToLineConfig: "跳轉至 LINE 通知設定介面。跳轉前請記得儲存此頁。",
+    invoiceNumber: "發票登記號",
+    enterInvoiceNumber: "例如：T1234567890123",
+    invoiceNumberNote:
+      "合格發票開立者登記號。未設定時不會列印在收據和 PDF 上。",
     webPushNotification: "推播通知",
     moveToPushConfig: "管理推播裝置",
     openDaysConfig: "營業日時設定",
@@ -1507,6 +1511,9 @@ const data = {
     reset: "重置伺服器 URL",
   },
   validationError: {
+    invoiceNumber: {
+      format: "請輸入半形 T 加 13 位數字",
+    },
     itemName: {
       empty: "請輸入商品名稱",
     },

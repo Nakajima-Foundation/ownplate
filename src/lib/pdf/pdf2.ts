@@ -1,5 +1,10 @@
 import pdfMake from "pdfmake/build/pdfmake";
-import { isReducedTaxRate } from "@/utils/commonUtils";
+import {
+  isInclusiveTax,
+  isReducedTaxRate,
+  printableInvoiceNumber,
+  taxDisplayRows,
+} from "@/utils/commonUtils";
 import moment from "moment";
 
 import { nameOfOrder, formatOption, optionPrice } from "@/utils/strings";
@@ -218,6 +223,19 @@ export const printOrderData = (
     fontSize: 12,
     margin: [2, 0],
   });
+  // 登録番号。印字の可否はレシートと同じ関数で決める（未設定でも形が不正でも出さない）。
+  // 発行元は店舗なので店名のすぐ下に置く。プラットフォームの行を挟むと
+  // おもちかえり.com の番号に読める。
+  const printableInvoice = printableInvoiceNumber(restaurantInfo.invoiceNumber);
+  if (printableInvoice) {
+    content.push({
+      text: [
+        { text: "登録番号：", fontSize: 6 },
+        { text: printableInvoice, fontSize: 6 },
+      ],
+      margin: [2, 0],
+    });
+  }
 
   // おもちかえり.com 番号
   content.push({
@@ -239,22 +257,6 @@ export const printOrderData = (
     ],
     margin: [2, 0],
   });
-  // 登録番号
-  /* TODO: add restaurant admin
-  content.push({
-    text: [
-      {
-        text: "登録番号: ",
-        fontSize: 6,
-      },
-      {
-        text: "T123456",
-        fontSize: 6,
-      },
-    ],
-    margin: [2, 0, 0, 2],
-  });
-  */
   content.push({
     text: nameOfOrder(orderInfo),
     fontSize: 12,
@@ -357,35 +359,29 @@ export const printOrderData = (
     margin: [2, 3],
     alignment: "right",
   });
-  // 税率ごとの合計金額
-  if ((orderInfo?.accounting?.food?.revenue || 0) > 0) {
-    content.push({
-      text: [
-        `${restaurantInfo.foodTax}%対象: ` +
-          priceString(orderInfo?.accounting?.food?.revenue || 0),
-        "(" +
-          (orderInfo.inclusiveTax ? "内税額: " : "外税額:") +
-          priceString(orderInfo?.accounting?.food?.tax || 0) +
-          ")",
-      ].join("\n"),
-      margin: [2, 0],
-      alignment: "right",
-    });
-  }
-  if ((orderInfo?.accounting?.alcohol?.revenue || 0) > 0) {
-    content.push({
-      text: [
-        `${restaurantInfo.alcoholTax}%対象: ` +
-          priceString(orderInfo?.accounting?.alcohol?.revenue || 0),
-        "(" +
-          (orderInfo.inclusiveTax ? "内税額: " : "外税額:") +
-          priceString(orderInfo?.accounting?.alcohol?.tax || 0) +
-          ")",
-      ].join("\n"),
-      margin: [2, 0],
-      alignment: "right",
-    });
-  }
+  // 税率ごとの合計金額。区分の計算はレシートと同じ関数（commonUtils）で行う。
+  //
+  // accounting を持たない古い注文では区分が出せない。そのときに何も出さないと、
+  // 消費税の記載そのものが請求書から消える。レシート側と同じく合計だけ出す。
+  const taxLabel = isInclusiveTax(orderInfo, restaurantInfo)
+    ? "内税額: "
+    : "外税額: ";
+  const taxTexts = taxDisplayRows(
+    orderInfo?.accounting,
+    restaurantInfo.foodTax,
+    restaurantInfo.alcoholTax,
+    orderInfo.tax || 0,
+  ).map((row) =>
+    row.kind === "total"
+      ? taxLabel + priceString(row.tax)
+      : [
+          `${row.rate}%対象: ` + priceString(row.revenue),
+          "(" + taxLabel + priceString(row.tax) + ")",
+        ].join("\n"),
+  );
+  taxTexts.forEach((text) => {
+    content.push({ text, margin: [2, 0], alignment: "right" });
+  });
   if (orderItems.some((orderItem) => isReducedTaxRate(orderItem.item))) {
     content.push({
       text: "※軽減税率対象",

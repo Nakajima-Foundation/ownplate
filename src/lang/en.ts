@@ -317,6 +317,10 @@ const data = {
     notificationConfig: "Notification settings",
     moveToLineConfig:
       "Go to the LINE notification settings screen. Don't forget to save this page before moving.",
+    invoiceNumber: "Invoice registration number",
+    enterInvoiceNumber: "e.g. T1234567890123",
+    invoiceNumberNote:
+      "Qualified invoice issuer registration number. Left off the receipt and PDF when unset.",
     webPushNotification: "Push notifications",
     moveToPushConfig: "Manage push devices",
     openDaysConfig: "Business date and time setting",
@@ -1586,6 +1590,9 @@ const data = {
     reset: "Reset Server URL",
   },
   validationError: {
+    invoiceNumber: {
+      format: "Enter T followed by 13 digits (half-width characters)",
+    },
     itemName: {
       empty: "Please enter the item name",
     },

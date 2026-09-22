@@ -1,57 +1,26 @@
 import { describe, it } from "node:test";
 import assert from "node:assert";
 
-import { buildReceiptText, hasReducedTaxItem, itemMark, reducedTaxNote, taxCategories, taxLines } from "../src/functions/express/receiptFormat";
+import { buildReceiptText, hasReducedTaxItem, itemMark, reducedTaxNote, taxLines } from "../src/functions/express/receiptFormat";
+import { OrderAccounting, taxDisplayRows } from "../src/utils/commonUtils";
 
 const food = { revenue: 1000, tax: 74 };
 const alcohol = { revenue: 500, tax: 45 };
 
-describe("taxCategories", () => {
-  it("splits the order by rate, food first", () => {
-    assert.deepStrictEqual(taxCategories({ food, alcohol }, 8, 10), [
-      { rate: 8, revenue: 1000, tax: 74 },
-      { rate: 10, revenue: 500, tax: 45 },
-    ]);
-  });
-
-  // 0円の行はレシートを長くするだけで、「その税率の取引があった」と誤読させる
-  it("leaves out a category with no revenue", () => {
-    assert.deepStrictEqual(taxCategories({ food }, 8, 10), [{ rate: 8, revenue: 1000, tax: 74 }]);
-    assert.deepStrictEqual(taxCategories({ alcohol }, 8, 10), [{ rate: 10, revenue: 500, tax: 45 }]);
-  });
-
-  // 率をベタ書きすると、税率が変わったとき金額は正しいのに表示だけ嘘になる
-  it("takes the rate from the caller rather than assuming 8 and 10", () => {
-    assert.deepStrictEqual(taxCategories({ food, alcohol }, 1, 10), [
-      { rate: 1, revenue: 1000, tax: 74 },
-      { rate: 10, revenue: 500, tax: 45 },
-    ]);
-  });
-
-  it("returns nothing for an order with no accounting at all", () => {
-    assert.deepStrictEqual(taxCategories(undefined, 8, 10), []);
-    assert.deepStrictEqual(taxCategories({}, 8, 10), []);
-  });
-
-  // 税額だけあって売上が無い形は出さない。区分として意味を成さない。
-  it("leaves out a category that has tax but no revenue", () => {
-    assert.deepStrictEqual(taxCategories({ food: { revenue: 0, tax: 74 } }, 8, 10), []);
-  });
-});
-
 describe("taxLines", () => {
+  const rows = (accounting: OrderAccounting, totalTax = 119) => taxDisplayRows(accounting, 8, 10, totalTax);
+
   it("writes one pair of lines per category", () => {
-    assert.strictEqual(taxLines(taxCategories({ food, alcohol }, 8, 10), "内税", 119), "8%対象 | ¥1000\n消費税（内税） | ¥74\n10%対象 | ¥500\n消費税（内税） | ¥45");
+    assert.strictEqual(taxLines(rows({ food, alcohol }), "内税"), "8%対象 | ¥1000\n消費税（内税） | ¥74\n10%対象 | ¥500\n消費税（内税） | ¥45");
   });
 
-  // accounting を持たない古い注文。区分が出せないときに何も出さないと、
-  // 消費税の記載そのものが消える。
+  // 区分が出せない注文で何も出さないと、消費税の記載そのものが消える
   it("falls back to the single total for an order with no breakdown", () => {
-    assert.strictEqual(taxLines([], "外税", 119), "消費税（外税） | ¥119");
+    assert.strictEqual(taxLines(rows(undefined), "外税"), "消費税（外税） | ¥119");
   });
 
   it("carries the inclusive/exclusive wording through", () => {
-    assert.ok(taxLines(taxCategories({ food }, 8, 10), "外税", 74).includes("消費税（外税）"));
+    assert.ok(taxLines(rows({ food }), "外税").includes("消費税（外税）"));
   });
 });
 
@@ -119,6 +88,7 @@ const dummyRestaurant = (extra = {}) => ({
 const dummyOrder = (extra = {}) => ({
   number: 653,
   name: "山田",
+  inclusiveTax: true,
   isDelivery: false,
   timePlaced: { toDate: () => new Date("2026-09-22T03:00:00Z") },
   order: { bento: { 0: 2 }, beer: { 0: 1 } },
@@ -132,7 +102,10 @@ const dummyOrder = (extra = {}) => ({
   deliveryFee: 0,
   tip: 0,
   totalCharge: 1500,
-  accounting: { food: { revenue: 1000, tax: 74 }, alcohol: { revenue: 500, tax: 45 } },
+  accounting: {
+    food: { revenue: 1000, tax: 74 },
+    alcohol: { revenue: 500, tax: 45 },
+  },
   payment: {},
   ...extra,
 });
@@ -160,10 +133,20 @@ describe("buildReceiptText", () => {
     assert.ok(!text.includes("8%対象"));
   });
 
-  it("says 外税 when the restaurant prices exclude tax", () => {
-    const text = buildReceiptText(dummyRestaurant({ inclusiveTax: false }), dummyOrder());
+  // 店舗が後から税込に切り替えた注文。?? でなく || で書くと、注文の false が偽と
+  // 見なされて店舗の設定に落ち、外税で計算された金額に内税の札が付く。
+  it("says 外税 when the order was placed under exclusive pricing", () => {
+    const text = buildReceiptText(dummyRestaurant({ inclusiveTax: true }), dummyOrder({ inclusiveTax: false }));
     assert.ok(text.includes("消費税（外税） | ¥74"));
     assert.ok(!text.includes("消費税（内税）"));
+  });
+
+  // 金額は注文時の設定で計算されて凍結されている。店舗が後から切り替えたときに
+  // 店舗の現在値を見ると、金額と食い違う札を貼ることになる。PDF 側と同じ関数を通す。
+  it("follows the order's own tax mode, not the restaurant's current one", () => {
+    const text = buildReceiptText(dummyRestaurant({ inclusiveTax: false }), dummyOrder({ inclusiveTax: true }));
+    assert.ok(text.includes("消費税（内税） | ¥74"));
+    assert.ok(!text.includes("消費税（外税）"));
   });
 
   // 軽減税率の商品が無い注文に、指す先の無い凡例を残さない
@@ -228,5 +211,55 @@ describe("buildReceiptText — 旧実装との差が意図した箇所だけで�
     assert.ok(withNote.includes('支払方法："現地払い"|\n※軽減税率対象'));
     assert.ok(withoutNote.includes('支払方法："現地払い"|\n\n'));
     assert.ok(!withoutNote.includes('支払方法："現地払い"|\n\n\n\n'));
+  });
+});
+
+describe("buildReceiptText — 登録番号", () => {
+  it("prints the registration number when the restaurant has one", () => {
+    const text = buildReceiptText(dummyRestaurant({ invoiceNumber: "T1234567890123" }), dummyOrder());
+    assert.ok(text.includes("登録番号：T1234567890123"));
+  });
+
+  // 発行元は店舗。プラットフォームの行を挟むと、おもちかえり.com の番号に読める。
+  it("puts the number directly under the restaurant name, above the platform line", () => {
+    const text = buildReceiptText(dummyRestaurant({ invoiceNumber: "T1234567890123" }), dummyOrder());
+    assert.ok(text.includes("^^テスト店\n登録番号：T1234567890123\nおもちかえり.com"));
+  });
+
+  // 免税事業者は番号を持たない。**行ごと**出さないことを、空行が増えていないことで
+  // 確かめる。!includes("登録番号") だけだと、空行が残っていても緑のまま通る。
+  it("leaves the line out entirely when unset, adding no blank line", () => {
+    [undefined, ""].forEach((invoiceNumber) => {
+      const text = buildReceiptText(dummyRestaurant({ invoiceNumber }), dummyOrder());
+      assert.ok(!text.includes("登録番号"));
+      assert.ok(text.includes('^^テスト店\nおもちかえり.com\n\n^^^"'));
+    });
+  });
+
+  // 画面側の検証はブラウザにしか無い。Firestore を直接書けば不正な値が入るので、
+  // 印字の手前でも見る。不正な番号のレシートは、受け取った側が控除に使えない。
+  it("prints nothing when the stored number is malformed", () => {
+    ["T123", "1234567890123", "t1234567890123", " T1234567890123"].forEach((invoiceNumber) => {
+      const text = buildReceiptText(dummyRestaurant({ invoiceNumber }), dummyOrder());
+      assert.ok(!text.includes("登録番号"));
+    });
+  });
+
+  // 印字される番号は T + 半角数字13桁だけなので、receiptline の記法は入りようがない。
+  // 「記法を含む番号が素通りしない」を assert しても、先に形で弾かれるため何も
+  // 検証できない（実際に escape を外しても緑のままだった）。代わりに、印字された
+  // 行が期待どおりであることと、記法を含む値では行が出ないことを分けて見る。
+  it("prints the number verbatim when it is well formed", () => {
+    const text = buildReceiptText(dummyRestaurant({ invoiceNumber: "T9876543210987" }), dummyOrder());
+    assert.ok(text.includes("登録番号：T9876543210987"));
+  });
+
+  // 登録番号と税率ごとの区分は両方そろって初めて適格簡易請求書になる。
+  // 片方だけだと、受け取った側が仕入税額控除に使えない。
+  it("prints the number alongside the per-rate breakdown, not instead of it", () => {
+    const text = buildReceiptText(dummyRestaurant({ invoiceNumber: "T1234567890123" }), dummyOrder());
+    assert.ok(text.includes("登録番号：T1234567890123"));
+    assert.ok(text.includes("8%対象 | ¥1000"));
+    assert.ok(text.includes("10%対象 | ¥500"));
   });
 });

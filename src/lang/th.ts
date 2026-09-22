@@ -316,6 +316,10 @@ const data = {
     notificationConfig: "ตั้งค่าการแจ้งเตือน",
     moveToLineConfig:
       "จะย้ายไปยังหน้าตั้งค่าการแจ้งเตือน LINE อย่าลืมบันทึกหน้านี้ก่อนย้าย",
+    invoiceNumber: "เลขทะเบียนใบกำกับภาษี",
+    enterInvoiceNumber: "เช่น T1234567890123",
+    invoiceNumberNote:
+      "เลขทะเบียนผู้ออกใบกำกับภาษี หากไม่ได้ตั้งค่าจะไม่พิมพ์บนใบเสร็จและ PDF",
     webPushNotification: "การแจ้งเตือนแบบพุช",
     moveToPushConfig: "จัดการอุปกรณ์รับการแจ้งเตือน",
     openDaysConfig: "ตั้งค่าวัน/เวลาทำการ",
@@ -1564,6 +1568,9 @@ const data = {
     reset: "รีเซ็ต URL เซิร์ฟเวอร์",
   },
   validationError: {
+    invoiceNumber: {
+      format: "กรอก T ตามด้วยตัวเลข 13 หลัก (อักขระครึ่งความกว้าง)",
+    },
     itemName: {
       empty: "กรุณาป้อนชื่อสินค้า",
     },

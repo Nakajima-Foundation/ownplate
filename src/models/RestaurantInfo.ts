@@ -54,6 +54,8 @@ export interface RestaurantInfoData {
   foodTax: number;
   alcoholTax: number;
   inclusiveTax: boolean;
+  // 適格請求書発行事業者の登録番号。未設定の店舗（免税事業者など）は空。
+  invoiceNumber?: string;
   openTimes: { [key: string]: { start: number; end: number }[] };
   businessDay: { [key: string]: string[] };
 
