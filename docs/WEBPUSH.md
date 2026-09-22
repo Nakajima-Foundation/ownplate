@@ -225,11 +225,13 @@ path から自分のオリジンの区画を割り出し、無関係なタブを
 | フィールド | 内容 |
 | --- | --- |
 | `fid` | Firebase Installation ID（doc id と同じ） |
+| `restaurantId` | 親パスと重複するが、collectionGroup のクエリが親パスで絞れないため持つ |
 | `name` | 端末の呼び名。登録する人が入力する |
 | `notify` | 一覧で ON/OFF する。送信時にこれで絞る |
 | `platform` | `ios` / `android` / `other` |
 | `invitedBy` | 招待を作った管理者の uid |
 | `registeredAt` | 登録時刻。一覧に出す |
+| `recentSends` | 直近の送信結果。最新が先頭で、件数は `RECENT_SENDS_KEPT` で頭打ち |
 | `updatedAt` | 登録・更新時刻 |
 
 - doc id が FID なので、同じ端末で再登録しても doc が増えない。
@@ -238,8 +240,17 @@ path から自分のオリジンの区画を割り出し、無関係なタブを
   フォールバックする（`updatedAt` は引き換え時にしか書かれないので登録時刻と同じになる）。
 - 名前の長さは一覧からの変更では縛らない。見分けにしか使わないため。
 - 新規登録は招待経由なので Functions が書く。
-- 送信が「宛先そのものが無効」を示すコードを返した FID だけを削除する。
-  `messaging/invalid-argument` は payload 不正でも返るため、削除の根拠にしない。
+- 送信が「宛先そのものが無効」を示すコードを返した端末は、**削除せず `notify` を落とす**。
+  削除すると一覧から黙って消え、店舗側が「届かなくなった」ことに気づけない。
+  `messaging/invalid-argument` は payload 不正でも返るため、この判断の根拠にしない。
+- 一覧は `recentSends` の直近ぶん（`FAILURE_ALERT_WINDOW`）に失敗が混じっていればアラートを出す。
+- `restaurantId` は、店舗一覧のカードに「登録あり/なし」を出すための布石。出すには別途
+  collection group の rules と Firestore の index が要る（どちらも後から足せる）。
+  **この PR より前に登録された端末はこのフィールドを持たない。** 親パスから backfill できる。
+
+**アラートで分かるのは「FCM が宛先を拒否した」ところまで。** 通知が表示されたか、人が見たかは
+取れない。端末側で通知を切っている・集中モードに入っているものは FCM から見れば成功なので、
+アラートは出ない。「アラートが出ていない＝届いている」ではない。
 
 `pushInvites/{tokenHash}`（トップレベル）
 

@@ -323,6 +323,8 @@ const data = {
     notificationConfig: "Pengaturan notifikasi",
     moveToLineConfig:
       "Akan beralih ke halaman pengaturan notifikasi LINE. Jangan lupa simpan halaman ini sebelum beralih.",
+    webPushNotification: "Notifikasi push",
+    moveToPushConfig: "Kelola perangkat push",
     openDaysConfig: "Pengaturan hari/jam operasi",
     lunchOrDinnerToggle: "Beralih otomatis menu makan siang/makan malam",
     lunchOrDinnerNotice:
@@ -1194,6 +1196,9 @@ const data = {
     passwordReset: "Reset kata sandi",
     pleaseCheckInbox: "Email telah dikirim. Silakan periksa kotak masuk.",
     push: {
+      lastSentAt: "Terakhir dikirim",
+      undelivered:
+        "Notifikasi tidak sampai ke perangkat ini. Silakan daftarkan ulang.",
       rename: "Ubah nama perangkat",
       save: "Simpan",
       delete: "Hapus",

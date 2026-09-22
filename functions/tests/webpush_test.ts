@@ -11,6 +11,8 @@ import {
   createWebPushData,
   detectPlatform,
   truncate,
+  RECENT_SENDS_KEPT,
+  appendSend,
 } from "../src/functions/notify/webpushFormat";
 import {
   DEFAULT_DEVICE_NAME,
@@ -181,6 +183,40 @@ describe("web push validator", () => {
 
   it("rejects an invite request without a restaurant", () => {
     assert.strictEqual(validateCreatePushInvite({ restaurantId: "" }).result, false);
+  });
+});
+
+describe("appendSend", () => {
+  const ok = (at: number) => ({ at, ok: true });
+
+  it("puts the newest result first", () => {
+    assert.deepStrictEqual(appendSend([ok(1)], ok(2)), [ok(2), ok(1)]);
+  });
+
+  it("starts a history for a device that has none", () => {
+    assert.deepStrictEqual(appendSend(undefined, ok(1)), [ok(1)]);
+  });
+
+  // 既存 doc の recentSends が配列でない場合でも落とさない
+  it("ignores a stored value that is not a list", () => {
+    assert.deepStrictEqual(appendSend("nonsense" as never, ok(1)), [ok(1)]);
+  });
+
+  it("keeps only the most recent results", () => {
+    const history = Array.from({ length: RECENT_SENDS_KEPT }, (_unused, i) => ok(i));
+    const grown = appendSend(history, ok(99));
+    assert.strictEqual(grown.length, RECENT_SENDS_KEPT);
+    assert.deepStrictEqual(grown[0], ok(99));
+  });
+
+  it("never grows past the cap however many times it is called", () => {
+    const grown = Array.from({ length: RECENT_SENDS_KEPT * 3 }).reduce<ReturnType<typeof appendSend>>((history, _unused, i) => appendSend(history, ok(i)), []);
+    assert.strictEqual(grown.length, RECENT_SENDS_KEPT);
+  });
+
+  // Firestore は undefined を書けないので、成功時に code を持たせてはいけない
+  it("carries no code for a success", () => {
+    assert.strictEqual("code" in appendSend([], ok(1))[0], false);
   });
 });
 

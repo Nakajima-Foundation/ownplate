@@ -94,6 +94,9 @@ export const redeemPushInvite = async (db: Firestore, data: RedeemPushInviteData
       registrationsCollection(db, invite.restaurantId).doc(data.fid),
       {
         fid: data.fid,
+        // 親パスと重複するが、collectionGroup のクエリは親パスで絞れない。
+        // 店舗一覧から「どの店舗に端末が登録されているか」を引くのに要る（LINE の lines も同じ理由で持っている）。
+        restaurantId: invite.restaurantId,
         name: deviceName(data.name, truncate),
         notify: true,
         platform: asPlatform(data.platform),

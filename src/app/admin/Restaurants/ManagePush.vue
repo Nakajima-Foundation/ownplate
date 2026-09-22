@@ -64,6 +64,16 @@
                     {{ $t("admin.push.registeredAt") }}
                     {{ registeredOn(device) }}
                   </div>
+                  <div v-if="lastSentOn(device)" class="text-xs text-black/40">
+                    {{ $t("admin.push.lastSentAt") }} {{ lastSentOn(device) }}
+                  </div>
+                  <div
+                    v-if="undelivered(device)"
+                    class="mt-1 flex items-center text-xs font-bold text-red-700"
+                  >
+                    <i class="material-icons mr-1 text-base">error_outline</i>
+                    {{ $t("admin.push.undelivered") }}
+                  </div>
                 </div>
               </div>
             </button>
@@ -201,7 +211,13 @@ import { createPushInvite, sendTestWebPush } from "@/lib/firebase/functions";
 import { checkShopAccount } from "@/utils/userPermission";
 import moment from "moment";
 
-import { describeSendResult, registeredAtSeconds } from "@/utils/pushFormat";
+import {
+  type SendRecord,
+  describeSendResult,
+  hasRecentFailure,
+  lastSend,
+  registeredAtSeconds,
+} from "@/utils/pushFormat";
 import {
   useAdminUids,
   useRestaurantId,
@@ -223,6 +239,7 @@ type PushDeviceData = {
   notify?: boolean;
   registeredAt?: TimestampLike;
   updatedAt?: TimestampLike;
+  recentSends?: SendRecord[];
 };
 
 export default defineComponent({
@@ -288,6 +305,16 @@ export default defineComponent({
         device.updatedAt,
       );
       return seconds === null ? "" : moment.unix(seconds).format("YYYY-MM-DD");
+    };
+
+    // 出せるのは「FCM が宛先を拒否した」場合だけ。端末側で通知を切っている・
+    // 集中モードに入っているものは FCM から見れば成功なので、ここには出ない。
+    const undelivered = (device: PushDeviceData) =>
+      hasRecentFailure(device.recentSends);
+
+    const lastSentOn = (device: PushDeviceData) => {
+      const record = lastSend(device.recentSends);
+      return record ? moment(record.at).format("YYYY-MM-DD HH:mm") : "";
     };
 
     const startRename = (device: PushDeviceData) => {
@@ -377,6 +404,8 @@ export default defineComponent({
       editingId,
       editingName,
       registeredOn,
+      undelivered,
+      lastSentOn,
       startRename,
       handleRename,
       handleToggle,

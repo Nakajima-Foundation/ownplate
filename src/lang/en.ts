@@ -317,6 +317,8 @@ const data = {
     notificationConfig: "Notification settings",
     moveToLineConfig:
       "Go to the LINE notification settings screen. Don't forget to save this page before moving.",
+    webPushNotification: "Push notifications",
+    moveToPushConfig: "Manage push devices",
     openDaysConfig: "Business date and time setting",
     lunchOrDinnerToggle: "Automatic lunch/dinner switch",
     lunchOrDinnerNotice:
@@ -1181,6 +1183,9 @@ const data = {
     passwordReset: "Reset Password",
     pleaseCheckInbox: "Please check your inbox, an email is on the way.",
     push: {
+      lastSentAt: "Last sent",
+      undelivered:
+        "Notifications are not reaching this device. Please register it again.",
       rename: "Rename device",
       save: "Save",
       delete: "Delete",
