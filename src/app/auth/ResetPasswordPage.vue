@@ -34,7 +34,11 @@
 
         <!-- Submit Button -->
         <div class="mt-2 text-center">
-          <button @click="handleCancel" class="mr-4 mb-2 cursor-pointer">
+          <button
+            type="button"
+            @click="handleCancel"
+            class="mr-4 mb-2 cursor-pointer"
+          >
             <div
               class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black/5"
             >
