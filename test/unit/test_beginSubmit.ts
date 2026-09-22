@@ -165,3 +165,64 @@ describe("認証画面のハンドラは、Firebase を呼ぶ前に beginSubmit 
     });
   });
 });
+
+// 送信中の判定を戻す場所。成功時に戻すと、画面が遷移するまでの間に再送できてしまう。
+// 失敗の側（catch）で戻すか、成功後も続けて使う form なら両方の側（finally）で戻す。
+type ReleaseSite = "catch" | "finally" | "success" | "other";
+
+const isRelease = (node: ts.Node): boolean =>
+  ts.isBinaryExpression(node) &&
+  node.operatorToken.kind === ts.SyntaxKind.EqualsToken &&
+  node.left.getText() === "submitting.value" &&
+  node.right.kind === ts.SyntaxKind.FalseKeyword;
+
+// その位置から外側へたどり、最初に当たった catch / finally / then を返す。
+const siteOf = (node: ts.Node | undefined): ReleaseSite => {
+  if (!node) {
+    return "other";
+  }
+  if (ts.isCatchClause(node)) {
+    return "catch";
+  }
+  if (node.parent && ts.isTryStatement(node.parent) && node.parent.finallyBlock === node) {
+    return "finally";
+  }
+  const call = ts.isArrowFunction(node) ? node.parent : undefined;
+  const method =
+    call && ts.isCallExpression(call) && ts.isPropertyAccessExpression(call.expression)
+      ? call.expression.name.text
+      : undefined;
+  const sites: Record<string, ReleaseSite> = { catch: "catch", finally: "finally", then: "success" };
+  return method && sites[method] ? sites[method] : siteOf(node.parent);
+};
+
+const releaseSites = (body: ts.Block): ReleaseSite[] => {
+  const found: ReleaseSite[] = [];
+  const visit = (node: ts.Node) => {
+    if (isRelease(node)) {
+      found.push(siteOf(node));
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(body);
+  return found;
+};
+
+describe("送信中の判定を戻す場所", () => {
+  const expected = [
+    // 成功すると画面が遷移する。遷移を待つ間に再送できないよう、失敗時だけ戻す。
+    { file: "src/app/auth/SignInPage.vue", name: "onSignin", sites: ["catch"] },
+    { file: "src/app/auth/PhoneLogin.vue", name: "handleCode", sites: ["catch"] },
+    // 成功後も確認コードの form に進んで同じ判定を使うので、両方の側で戻す。
+    { file: "src/app/auth/PhoneLogin.vue", name: "handleSubmit", sites: ["finally"] },
+    // 成功すると送信完了の表示に切り替わり、form は使わない。両方の側で戻してよい。
+    { file: "src/app/auth/ResetPasswordPage.vue", name: "handleNext", sites: ["finally"] },
+  ];
+  expected.forEach(({ file, name, sites }) => {
+    it(`${file.split("/").pop()} の ${name} は ${sites.join(" / ")} で戻す`, () => {
+      const body = findHandlerBody(scriptOf(file), name);
+      assert.ok(body, `${name} が見つからない`);
+      assert.deepStrictEqual(releaseSites(body), sites);
+    });
+  });
+});

@@ -164,6 +164,7 @@
 <script lang="ts">
 import { defineComponent, ref, watch } from "vue";
 import { beginSubmit } from "../../utils/beginSubmit";
+import { signinErrorField } from "../../utils/signinErrorField";
 import { auth } from "@/lib/firebase/firebase9";
 import {
   signInWithEmailAndPassword,
@@ -267,16 +268,9 @@ export default defineComponent({
             return;
           }
 
-          const errorCode = "admin.error.code." + error.code;
-          if (
-            error.code === "auth/wrong-password" ||
-            error.code === "auth/internal-error" ||
-            error.code === "auth/missing-password"
-          ) {
-            errors.value = { password: [errorCode] };
-          } else {
-            errors.value = { email: [errorCode] };
-          }
+          errors.value = {
+            [signinErrorField(error.code)]: ["admin.error.code." + error.code],
+          };
           generalStore.setLoading(false);
         });
     };
