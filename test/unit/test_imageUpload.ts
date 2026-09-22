@@ -68,16 +68,34 @@ describe("アップロード上限は storage.rules と一致する", () => {
     "utf-8",
   );
 
-  it("reads the same megabyte limit the deployed rules enforce", () => {
-    const limit = rules.match(
-      /request\.resource\.size <= (\d+) \* 1024 \* 1024/,
+  // コメントを落としてから、上限を書いている関数の中だけを見る。
+  // ファイル全体を検索すると、コメントに同じ式が残っているだけでテストが通る。
+  // 実際にそれで、ルールが < に変わっていても緑のままになった。
+  const sizeLimitRule = (() => {
+    const active = rules
+      .split("\n")
+      .map((line) => line.replace(/\/\/.*$/, ""))
+      .join("\n");
+    const body = active.match(
+      /function isImageWithinLimit\(\)\s*\{([^}]*)\}/,
     );
-    assert.ok(limit, "storage.rules から上限を読み取れない");
-    assert.strictEqual(Number(limit[1]), maxImageUploadMegaBytes);
+    assert.ok(body, "storage.rules に isImageWithinLimit が見つからない");
+    return body[1];
+  })();
+
+  it("reads the same megabyte limit the deployed rules enforce", () => {
+    const limits = [
+      ...sizeLimitRule.matchAll(
+        /request\.resource\.size <= (\d+) \* 1024 \* 1024/g,
+      ),
+    ];
+    assert.strictEqual(limits.length, 1, "上限の式がちょうど1つでない");
+    assert.strictEqual(Number(limits[0][1]), maxImageUploadMegaBytes);
   });
 
   // ルールは <= で書かれている。< に変わると境界の画像の扱いが食い違う。
   it("matches the comparison the rules use", () => {
-    assert.ok(rules.includes("request.resource.size <= "));
+    assert.ok(sizeLimitRule.includes("request.resource.size <= "));
+    assert.ok(!/request\.resource\.size <(?!=)/.test(sizeLimitRule));
   });
 });
