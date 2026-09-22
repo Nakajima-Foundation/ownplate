@@ -358,19 +358,24 @@ export const printOrderData = (
   });
   // 税率ごとの合計金額。区分の計算はレシートと同じ関数（commonUtils）で行う。
   //
-  // accounting を持たない古い注文（#1782 以前）では区分が出せない。そのときに何も
-  // 出さないと、消費税の記載そのものがレシートから消える。レシート側と同じく合計だけ出す。
-  const taxLabel = orderInfo.inclusiveTax ? "内税額: " : "外税額: ";
+  // accounting を持たない古い注文では区分が出せない。そのときに何も出さないと、
+  // 消費税の記載そのものが請求書から消える。レシート側と同じく合計だけ出す。
+  //
+  // 内税/外税は注文時の値を使う。ただし accounting を持たない注文は inclusiveTax も
+  // 持たない（注文作成時に同じ場所で書かれる）ので、店舗の設定に落とす。
+  // 落とさないと、税込の店舗の古い注文だけが「外税額」と書かれる。
+  const isInclusiveTax = orderInfo.inclusiveTax ?? restaurantInfo.inclusiveTax;
+  const taxLabel = isInclusiveTax ? "内税額: " : "外税額: ";
   const taxTexts = taxDisplayRows(
     orderInfo?.accounting,
     restaurantInfo.foodTax,
     restaurantInfo.alcoholTax,
     orderInfo.tax || 0,
   ).map((row) =>
-    row.rate === null
+    row.kind === "total"
       ? taxLabel + priceString(row.tax)
       : [
-          `${row.rate}%対象: ` + priceString(row.revenue || 0),
+          `${row.rate}%対象: ` + priceString(row.revenue),
           "(" + taxLabel + priceString(row.tax) + ")",
         ].join("\n"),
   );

@@ -2,13 +2,13 @@ import { describe, it } from "node:test";
 import assert from "node:assert";
 
 import { buildReceiptText, hasReducedTaxItem, itemMark, reducedTaxNote, taxLines } from "../src/functions/express/receiptFormat";
-import { taxDisplayRows } from "../src/utils/commonUtils";
+import { OrderAccounting, taxDisplayRows } from "../src/utils/commonUtils";
 
 const food = { revenue: 1000, tax: 74 };
 const alcohol = { revenue: 500, tax: 45 };
 
 describe("taxLines", () => {
-  const rows = (accounting: unknown, totalTax = 119) => taxDisplayRows(accounting as never, 8, 10, totalTax);
+  const rows = (accounting: OrderAccounting, totalTax = 119) => taxDisplayRows(accounting, 8, 10, totalTax);
 
   it("writes one pair of lines per category", () => {
     assert.strictEqual(taxLines(rows({ food, alcohol }), "内税"), "8%対象 | ¥1000\n消費税（内税） | ¥74\n10%対象 | ¥500\n消費税（内税） | ¥45");

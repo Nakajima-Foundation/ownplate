@@ -44,24 +44,24 @@ export const isReducedTaxRate = (
   item: Partial<MenuData> | undefined,
 ): boolean => item?.tax !== "alcohol";
 
-// 適格請求書発行事業者の登録番号。"T" + 13桁と法律で決まっている。
+// 印字してよい適格請求書発行事業者の登録番号、または null。
+// "T" + 半角数字13桁と法律で決まっている。
 //
-// 空は通す。免税事業者は番号を持たないので、必須にすると入力欄で詰まる。
 // 形だけ見て実在は確かめられない（それは国税庁の公表サイトの話）が、形の違う番号を
 // 請求書に印字すると、受け取った側が仕入税額控除に使えず、経費精算で弾かれて
 // 初めて分かる。無いほうがまだ正直なので、形だけは弾く。
-export const isValidInvoiceNumber = (value: string | undefined): boolean =>
-  !value || /^T\d{13}$/.test(value);
-
-// 印字してよい登録番号、または null。未設定でも形が不正でも null。
 //
-// isValidInvoiceNumber は「空も通す」ので、印字の可否を決めるには
-// `isValidInvoiceNumber(x) && x` と二重に書く必要があった。片方を消すと
-// 「登録番号：」だけの行が出る。名前が「印字してよいか」を言う関数に寄せて、
-// 呼び出し側から判断を無くす。
-export const printableInvoiceNumber = (
-  value: string | undefined,
-): string | null => (value && isValidInvoiceNumber(value) ? value : null);
+// 引数が unknown なのは、呼び出し側が Firestore の生データだから。RegExp.test() は
+// 引数を文字列化するので、["T1234567890123"] のような値を素通しすると、
+// 文字列を期待している印字側（escapePrinterString）がそこで落ちる。
+export const printableInvoiceNumber = (value: unknown): string | null =>
+  typeof value === "string" && /^T\d{13}$/.test(value) ? value : null;
+
+// 入力欄の検証。印字の可否との違いは空の扱いだけで、こちらは空を通す。
+// 免税事業者は番号を持たないので、必須にすると入力欄で詰まる。
+// isEmpty は使わない。String(value) で比べるので、[] のような値が空として通る。
+export const isValidInvoiceNumber = (value: unknown): boolean =>
+  isNull(value) || value === "" || printableInvoiceNumber(value) !== null;
 
 export type TaxCategory = { rate: number; revenue: number; tax: number };
 
@@ -74,8 +74,9 @@ export type OrderAccounting =
 
 // 税率ごとの区分。適格簡易請求書は区分の記載が要件。
 //
-// 率は引数で受ける。ベタ書きすると、税率が変わったときに金額は正しいのに
-// 率の表示だけ嘘になる。
+// 率は引数で受ける。呼び出し側が渡すのは店舗の**現在**の設定なので、税率が変わると
+// 過去の注文を再印字したときに率だけが今の値になる（金額は注文時のまま）。
+// 注文時の率は保存されていないので、ここでは直せない。
 //
 // 売上が無い区分は出さない。0円の行はレシートを長くするだけで、
 // 「その税率の取引があった」と誤読させる。
@@ -99,15 +100,16 @@ export const taxCategories = (
 
 // 表示する税の行。レシートと PDF の両方がこれを使う。
 //
-// 区分が出せない注文（accounting を持たない #1782 以前のもの）では、合計だけの1行に
-// 落とす。ここで空配列を返すと、呼ぶ側が「何も出さない」を選びうる。実際 PDF が
-// そうなっていて、古い注文の請求書から消費税の記載そのものが消えていた。
-// rate が null の行が「区分が出せなかった」を意味する。
-export type TaxDisplayRow = {
-  rate: number | null;
-  revenue: number | null;
-  tax: number;
-};
+// 区分が出せない古い注文（accounting を持たないもの）では、合計だけの1行に落とす。
+// ここで空配列を返すと、呼ぶ側が「何も出さない」を選びうる。実際 PDF がそうなっていて、
+// 古い注文の請求書から消費税の記載そのものが消えていた。
+//
+// どちらの行かは kind だけで決まる。率や売上の値で見分けると、データ側の値
+// （foodTax が null で保存されている等）が「区分が出せなかった」を偽装できてしまい、
+// 区分のある注文から 対象 の行が黙って消える。
+export type TaxDisplayRow =
+  | { kind: "category"; rate: number; revenue: number; tax: number }
+  | { kind: "total"; tax: number };
 
 export const taxDisplayRows = (
   accounting: OrderAccounting,
@@ -117,10 +119,11 @@ export const taxDisplayRows = (
 ): TaxDisplayRow[] => {
   const categories = taxCategories(accounting, foodTax, alcoholTax);
   return categories.length > 0
-    ? categories.map((category) => ({
+    ? categories.map((category): TaxDisplayRow => ({
+        kind: "category",
         rate: category.rate,
         revenue: category.revenue,
         tax: category.tax,
       }))
-    : [{ rate: null, revenue: null, tax: totalTax }];
+    : [{ kind: "total", tax: totalTax }];
 };

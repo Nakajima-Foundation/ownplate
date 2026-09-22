@@ -1,7 +1,10 @@
 import { describe, it } from "node:test";
 import assert from "node:assert";
 
-import { getEditShopInfo } from "../../src/utils/admin/shopInfoPayload.ts";
+import {
+  getCopyShopInfo,
+  getEditShopInfo,
+} from "../../src/utils/admin/shopInfoPayload.ts";
 
 // getEditShopInfo は保存する値の「許可リスト」で、ここに無いフィールドは
 // 画面で編集できても Firestore に書かれない。入力も検証も通り、保存も成功したように
@@ -26,6 +29,7 @@ describe("getEditShopInfo", () => {
   it("carries the invoice registration number through to the saved payload", () => {
     const saved = getEditShopInfo(
       shopInfo({ invoiceNumber: "T1234567890123" }),
+      "NOW",
     );
     assert.strictEqual(saved.invoiceNumber, "T1234567890123");
   });
@@ -60,5 +64,30 @@ describe("getEditShopInfo — 時刻の注入", () => {
     const saved = getEditShopInfo(shopInfo({ createdAt: "ORIGINAL" }), "NOW");
     assert.strictEqual(saved.createdAt, "ORIGINAL");
     assert.strictEqual(saved.updatedAt, "NOW");
+  });
+});
+
+describe("getCopyShopInfo", () => {
+  const copied = () =>
+    getCopyShopInfo(
+      getEditShopInfo(
+        shopInfo({ invoiceNumber: "T1234567890123", publicFlag: true }),
+        "NOW",
+      ),
+      "COPY_NOW",
+    );
+
+  // 登録番号は事業者に紐づく。複製先に引き継ぐと、登録を受けていない事業者の
+  // レシートと請求書に他人の番号が載る。
+  it("does not carry the invoice registration number into the copy", () => {
+    assert.strictEqual(copied().invoiceNumber, "");
+  });
+
+  it("resets what must not carry over and keeps the rest", () => {
+    const saved = copied();
+    assert.strictEqual(saved.publicFlag, false);
+    assert.strictEqual(saved.deletedFlag, false);
+    assert.strictEqual(saved.createdAt, "COPY_NOW");
+    assert.strictEqual(saved.restaurantName, "テスト店");
   });
 });

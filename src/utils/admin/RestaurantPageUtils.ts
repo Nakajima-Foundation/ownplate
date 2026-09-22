@@ -1,6 +1,6 @@
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { isValidInvoiceNumber } from "@/utils/commonUtils";
-import { getEditShopInfo } from "./shopInfoPayload";
+import { getCopyShopInfo, getEditShopInfo } from "./shopInfoPayload";
 import { isNull, cleanObject } from "@/utils/utils";
 import { reservationTheDayBefore, daysOfWeek } from "@/config/constant";
 
@@ -202,12 +202,7 @@ export const copyRestaurant = async (
 ) => {
   const restaurantData = getEditShopInfo(shopInfo, serverTimestamp());
   restaurantData.restaurantName = restaurantData.restaurantName + " - COPY";
-  const newRestaurantData = {
-    ...restaurantData,
-    publicFlag: false,
-    deletedFlag: false,
-    createdAt: serverTimestamp(),
-  };
+  const newRestaurantData = getCopyShopInfo(restaurantData, serverTimestamp());
 
   const restaurantDoc = await addDoc(
     collection(db, "restaurants"),

@@ -73,3 +73,20 @@ export const getEditShopInfo = (
   };
   return restaurantData;
 };
+
+// 店舗を複製するときに引き継がない値。
+//
+// 登録番号は事業者に紐づく。複製先にそのまま持ち込むと、登録を受けていない事業者の
+// レシートと請求書に他人の番号が載り、開いて見るまで気づけない。
+// getEditShopInfo に項目を足すと自動でこちらにも入るので、引き継いでよいかは
+// 足すたびに決める必要がある。
+export const getCopyShopInfo = <T extends object>(
+  restaurantData: T,
+  now: unknown,
+) => ({
+  ...restaurantData,
+  publicFlag: false,
+  deletedFlag: false,
+  invoiceNumber: "",
+  createdAt: now,
+});

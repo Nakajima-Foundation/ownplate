@@ -495,6 +495,7 @@
                 titleKey="editRestaurant.invoiceNumber"
                 placeholder="editRestaurant.enterInvoiceNumber"
                 :error="errors['invoiceNumber']"
+                :maxlength="14"
                 :required="false"
               />
               <div class="mt-1 text-xs text-black/60">
@@ -1182,6 +1183,7 @@ import {
   copyRestaurant,
 } from "@/utils/admin/RestaurantPageUtils";
 import { getEditShopInfo } from "@/utils/admin/shopInfoPayload";
+import { isValidInvoiceNumber } from "@/utils/commonUtils";
 import {
   cleanObject,
   isNull,
@@ -1562,7 +1564,13 @@ export default defineComponent({
     };
 
     const disableSave = computed(() => {
-      return hasError.value && editShopInfo.publicFlag;
+      // 非公開の店舗では入力途中の未入力を許す。ただし形の違う登録番号だけは
+      // 公開状態に関わらず止める。保存できてしまうと、印字側が弾くので画面上は
+      // 設定済みに見えたまま、レシートにも請求書にも一生出ない。
+      return (
+        (hasError.value && editShopInfo.publicFlag) ||
+        !isValidInvoiceNumber(editShopInfo.invoiceNumber)
+      );
     });
 
     const openTips = (key: string) => {

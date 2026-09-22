@@ -11,7 +11,7 @@ import { TaxDisplayRow, isReducedTaxRate, printableInvoiceNumber, taxDisplayRows
 // 税の行。区分が出せない注文は、合計だけの1行になる（taxDisplayRows が決める）。
 export const taxLines = (rows: TaxDisplayRow[], taxPayment: string): string =>
   rows
-    .flatMap((row) => (row.rate === null ? [`消費税（${taxPayment}） | ¥${row.tax}`] : [`${row.rate}%対象 | ¥${row.revenue}`, `消費税（${taxPayment}） | ¥${row.tax}`]))
+    .flatMap((row) => (row.kind === "total" ? [`消費税（${taxPayment}） | ¥${row.tax}`] : [`${row.rate}%対象 | ¥${row.revenue}`, `消費税（${taxPayment}） | ¥${row.tax}`]))
     .join("\n");
 
 // 軽減税率の商品が1つでもあるか。明細を組み立てながらフラグを立てるのではなく
@@ -79,7 +79,7 @@ export const buildReceiptText = (restaurantData: DocumentData, orderData: Docume
   const invoiceLine = printable ? `登録番号：${escapePrinterString(printable)}` : "";
   const taxPayment = restaurantData.inclusiveTax ? "内税" : "外税";
 
-  // 区分は receiptFormat.ts の純関数に切り出してある（単体テストあり）
+  // 区分の決定は commonUtils の taxDisplayRows。PDF 側と同じ関数を通す。
   const taxText = taxLines(taxDisplayRows(orderData.accounting, restaurantData.foodTax, restaurantData.alcoholTax, orderData.tax || 0), taxPayment);
 
   const onlinePay = orderData?.payment?.stripe ? "事前クレジット決済" : "現地払い";
