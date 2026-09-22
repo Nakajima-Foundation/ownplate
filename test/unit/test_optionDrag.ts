@@ -86,6 +86,23 @@ const returnedPropertyOf = (
   return found.length === 1 ? found[0] : undefined;
 };
 
+// 保存は写真の送信を待つあいだ menuInfo を読まない。その隙に並べ替えられると、押していない
+// 並びがそのまま保存されて一覧へ戻る。この画面が Firestore を書く操作を submitting で塞いで
+// いるのと同じ守りが、並べ替えにも要る。
+const disabledExpression = (node: ElementNode): string | undefined => {
+  const bind = node.props.find(
+    (prop) =>
+      "modifiers" in prop &&
+      prop.name === "bind" &&
+      prop.arg !== undefined &&
+      "content" in prop.arg &&
+      prop.arg.content === "disabled",
+  );
+  return bind && "exp" in bind && bind.exp && "content" in bind.exp
+    ? bind.exp.content
+    : undefined;
+};
+
 describe("オプションの並べ替えの目印", () => {
   const source = readFileSync(join(root, pageFile), "utf-8");
 
@@ -101,6 +118,11 @@ describe("オプションの並べ替えの目印", () => {
 
   it("makes optionRowKey read the transient id, never the option text", () => {
     assert.strictEqual(returnedPropertyOf(source, "optionRowKey"), "id");
+  });
+
+  it("stops dragging while a save is in flight", () => {
+    const [node] = draggablesOf(source);
+    assert.match(disabledExpression(node) ?? "", /\bsubmitting\b/);
   });
 });
 
@@ -158,10 +180,28 @@ describe("この検査自体が空振りしないこと", () => {
     assert.strictEqual(returnedPropertyOf(renamed, "optionRowKey"), undefined);
   });
 
+  it("rejects a draggable that can be dragged during a save", () => {
+    const [ungated] = draggablesOf(
+      sfc(`<draggable :item-key="optionRowKey" />`, goodScript),
+    );
+    assert.strictEqual(disabledExpression(ungated), undefined);
+    const [wrongFlag] = draggablesOf(
+      sfc(
+        `<draggable :item-key="optionRowKey" :disabled="busy" />`,
+        goodScript,
+      ),
+    );
+    assert.doesNotMatch(disabledExpression(wrongFlag) ?? "", /\bsubmitting\b/);
+  });
+
   it("accepts the shape the page actually uses", () => {
-    const good = sfc(`<draggable :item-key="optionRowKey" />`, goodScript);
+    const good = sfc(
+      `<draggable :item-key="optionRowKey" :disabled="submitting" />`,
+      goodScript,
+    );
     const [node] = draggablesOf(good);
     assert.strictEqual(itemKeyExpression(node), "optionRowKey");
+    assert.match(disabledExpression(node) ?? "", /\bsubmitting\b/);
     assert.strictEqual(returnedPropertyOf(good, "optionRowKey"), "id");
   });
 });

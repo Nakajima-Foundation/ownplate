@@ -434,6 +434,7 @@
             >
               <button
                 @click="toggleOptionMoveMode"
+                :disabled="submitting"
                 class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full px-4"
                 :class="isOptionMoveMode ? 'bg-op-teal' : 'bg-black/5'"
               >
@@ -460,6 +461,7 @@
               :modelValue="optionRows"
               @update:modelValue="onOptionsReorder"
               :item-key="optionRowKey"
+              :disabled="submitting"
               handle=".option-drag-handle"
               animation="300"
               ghost-class="opacity-50"
