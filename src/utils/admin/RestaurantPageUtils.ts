@@ -1,4 +1,5 @@
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { isValidInvoiceNumber } from "@/utils/commonUtils";
 import { isNull, cleanObject } from "@/utils/utils";
 import { reservationTheDayBefore, daysOfWeek } from "@/config/constant";
 
@@ -164,6 +165,13 @@ export const shopInfoValidator = (
   ["introduction", "orderNotice", "orderThanks"].forEach((name) => {
     err[name] = [];
   });
+  // 未設定は通す。免税事業者は番号を持たない。
+  err["invoiceNumber"] = [];
+  if (!isValidInvoiceNumber(shopInfo.invoiceNumber)) {
+    (err["invoiceNumber"] as string[]).push(
+      "validationError.invoiceNumber.format",
+    );
+  }
   // validate pickUpMinimumCookTime
   if (Number.isInteger(shopInfo["pickUpMinimumCookTime"])) {
     if (shopInfo["pickUpMinimumCookTime"] > 24 * 60 * 7) {

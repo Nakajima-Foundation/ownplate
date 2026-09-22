@@ -239,22 +239,16 @@ export const printOrderData = (
     ],
     margin: [2, 0],
   });
-  // 登録番号
-  /* TODO: add restaurant admin
-  content.push({
-    text: [
-      {
-        text: "登録番号: ",
-        fontSize: 6,
-      },
-      {
-        text: "T123456",
-        fontSize: 6,
-      },
-    ],
-    margin: [2, 0, 0, 2],
-  });
-  */
+  // 登録番号。未設定の店舗（免税事業者など）では行ごと出さない。
+  if (restaurantInfo.invoiceNumber) {
+    content.push({
+      text: [
+        { text: "登録番号: ", fontSize: 6 },
+        { text: restaurantInfo.invoiceNumber, fontSize: 6 },
+      ],
+      margin: [2, 0, 0, 2],
+    });
+  }
   content.push({
     text: nameOfOrder(orderInfo),
     fontSize: 12,

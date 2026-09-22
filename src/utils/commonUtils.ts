@@ -37,3 +37,12 @@ export const isEmpty = (value: unknown): boolean => {
 // 「8%で計算されているのに ※ が付かない」行ができる。
 export const isReducedTaxRate = (item: { tax?: string } | undefined): boolean =>
   item?.tax !== "alcohol";
+
+// 適格請求書発行事業者の登録番号。"T" + 13桁と法律で決まっている。
+//
+// 空は通す。免税事業者は番号を持たないので、必須にすると入力欄で詰まる。
+// 形だけ見て実在は確かめられない（それは国税庁の公表サイトの話）が、形の違う番号を
+// 請求書に印字すると、受け取った側が仕入税額控除に使えず、経費精算で弾かれて
+// 初めて分かる。無いほうがまだ正直なので、形だけは弾く。
+export const isValidInvoiceNumber = (value: string | undefined): boolean =>
+  !value || /^T\d{13}$/.test(value);

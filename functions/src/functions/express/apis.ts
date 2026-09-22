@@ -78,6 +78,8 @@ export const getSVG = (restaurantData: DocumentData, orderData: DocumentData) =>
   const orders = messages.join("\n");
   const howToReceive = orderData.isDelivery ? "デリバリー" : "テイクアウト";
   const timeEstimated = moment(orderData.timePlaced.toDate()).tz(timezone).format("YYYY/MM/DD HH:mm");
+  // 未設定の店舗（免税事業者など）では行ごと出さない。
+  const invoiceLine = restaurantData.invoiceNumber ? `登録番号：${restaurantData.invoiceNumber}` : "";
   const taxPayment = restaurantData.inclusiveTax ? "内税" : "外税";
 
   // 税率ごとに区分して出す。適格簡易請求書は区分の記載が要件で、PDF は既にそうしている。
@@ -99,6 +101,7 @@ export const getSVG = (restaurantData: DocumentData, orderData: DocumentData) =>
   const text = `
 ^^${escapePrinterString(restaurantData.restaurantName || "")}
 おもちかえり.com
+${invoiceLine}
 
 ^^^"${orderNumber}"
 

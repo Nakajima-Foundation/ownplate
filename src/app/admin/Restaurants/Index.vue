@@ -488,6 +488,21 @@
               </div>
             </div>
 
+            <!-- Invoice Number -->
+            <div class="mt-4">
+              <text-form
+                v-model="editShopInfo.invoiceNumber"
+                titleKey="editRestaurant.invoiceNumber"
+                placeholder="editRestaurant.enterInvoiceNumber"
+                :error="errors['invoiceNumber']"
+                :maxlength="14"
+                :required="false"
+              />
+              <div class="mt-1 text-xs text-black/60">
+                {{ $t("editRestaurant.invoiceNumberNote") }}
+              </div>
+            </div>
+
             <!-- Tax Display -->
             <div class="mt-4">
               <div class="pb-2 text-sm font-bold">

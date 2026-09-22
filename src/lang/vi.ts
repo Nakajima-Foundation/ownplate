@@ -322,6 +322,10 @@ const data = {
     notificationConfig: "Cài đặt thông báo",
     moveToLineConfig:
       "Sẽ chuyển đến trang cài đặt thông báo LINE. Đừng quên lưu trang này trước khi chuyển.",
+    invoiceNumber: "Số đăng ký hóa đơn",
+    enterInvoiceNumber: "ví dụ: T1234567890123",
+    invoiceNumberNote:
+      "Số đăng ký của đơn vị phát hành hóa đơn. Không in trên biên lai và PDF nếu chưa đặt.",
     webPushNotification: "Thông báo đẩy",
     moveToPushConfig: "Quản lý thiết bị nhận thông báo",
     openDaysConfig: "Cài đặt ngày/giờ hoạt động",
@@ -1590,6 +1594,9 @@ const data = {
     reset: "Đặt lại URL máy chủ",
   },
   validationError: {
+    invoiceNumber: {
+      format: "Nhập T theo sau là 13 chữ số",
+    },
     itemName: {
       empty: "Vui lòng nhập tên món",
     },

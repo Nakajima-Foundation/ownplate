@@ -323,6 +323,10 @@ const data = {
     notificationConfig: "Pengaturan notifikasi",
     moveToLineConfig:
       "Akan beralih ke halaman pengaturan notifikasi LINE. Jangan lupa simpan halaman ini sebelum beralih.",
+    invoiceNumber: "Nomor registrasi faktur",
+    enterInvoiceNumber: "mis. T1234567890123",
+    invoiceNumberNote:
+      "Nomor registrasi penerbit faktur. Tidak dicetak pada struk dan PDF jika kosong.",
     webPushNotification: "Notifikasi push",
     moveToPushConfig: "Kelola perangkat push",
     openDaysConfig: "Pengaturan hari/jam operasi",
@@ -1599,6 +1603,9 @@ const data = {
     reset: "Reset URL server",
   },
   validationError: {
+    invoiceNumber: {
+      format: "Masukkan T diikuti 13 digit",
+    },
     itemName: {
       empty: "Silakan masukkan nama item",
     },

@@ -305,6 +305,10 @@ const data = {
     orderConfirmViewConfig: "订单确认界面设置",
     notificationConfig: "通知设置",
     moveToLineConfig: "跳转至 LINE 通知设置界面。跳转前请记得保存此页。",
+    invoiceNumber: "发票登记号",
+    enterInvoiceNumber: "例如：T1234567890123",
+    invoiceNumberNote:
+      "合格发票开具者登记号。未设置时不会打印在小票和 PDF 上。",
     webPushNotification: "推送通知",
     moveToPushConfig: "管理推送设备",
     openDaysConfig: "营业日时设置",
@@ -1507,6 +1511,9 @@ const data = {
     reset: "重置服务器 URL",
   },
   validationError: {
+    invoiceNumber: {
+      format: "请输入 T 加 13 位数字",
+    },
     itemName: {
       empty: "请输入商品名称",
     },

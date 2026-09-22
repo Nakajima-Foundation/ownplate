@@ -319,6 +319,10 @@ const data = {
     notificationConfig: "通知設定",
     moveToLineConfig:
       "LINE通知設定画面に移動します。移動の前に、このページの保存を忘れずに。",
+    invoiceNumber: "登録番号（適格請求書発行事業者）",
+    enterInvoiceNumber: "例：T1234567890123",
+    invoiceNumberNote:
+      "適格請求書発行事業者の登録番号。未設定の場合はレシート・PDF に印字しません。",
     webPushNotification: "プッシュ通知",
     moveToPushConfig: "プッシュ通知の端末設定へ",
     openDaysConfig: "営業日時設定",
@@ -1580,6 +1584,9 @@ const data = {
     reset: "サーバーURLリセット",
   },
   validationError: {
+    invoiceNumber: {
+      format: "「T」＋13桁で入力してください",
+    },
     itemName: {
       empty: "商品名を入力してください",
     },
