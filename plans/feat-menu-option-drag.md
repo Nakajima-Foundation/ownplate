@@ -7,7 +7,7 @@ omochikaeri-docs#179
 `src/app/admin/Restaurants/MenuItemPage.vue` のオプション編集は各行の ↑ / ↓ ボタンで1つずつ動かす形で、
 オプションの多い商品では下から上へ運ぶのに何度も押すことになる、という店舗オーナーからの要望。
 
-商品一覧の並べ替え（#164、`MenuListPage.vue`）で `vuedraggable` を導入済みなので、依存の追加は無い。
+商品一覧の並べ替え（omochikaeri-docs#164、`MenuListPage.vue`）で `vuedraggable` を導入済みなので、依存の追加は無い。
 
 ## 方針
 
@@ -54,7 +54,7 @@ omochikaeri-docs#179
 
 既存の行の表示（↑↓・入力欄・削除・プレビュー）には手を入れない。
 
-i18n の `editMenu.reorder` / `editMenu.doneReorder` は #164 で追加済みのものを使う。
+i18n の `editMenu.reorder` / `editMenu.doneReorder` は omochikaeri-docs#164 で追加済みのものを使う。
 
 ## 確認すること
 

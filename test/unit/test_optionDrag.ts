@@ -7,9 +7,9 @@ import ts from "typescript";
 import { parse } from "vue/compiler-sfc";
 
 // オプションの目印が中身の文字列から作られると、空のオプションが2つ並んだだけで
-// vuedraggable が別の行を動かす（実測: 5行が7行になり、画面と保存される値がずれる）。
-// 目印の作り方は src/utils/optionRows.ts で試験できるが、画面がそれを使っているかは
-// 画面を読まないと分からないので、ここで結びつきを押さえる。
+// vuedraggable が行を取り違え、描かれる並びと保存される並びがずれる。目印の作り方は
+// src/utils/optionRows.ts で試験できるが、画面がそれを使っているかは画面を読まないと
+// 分からないので、ここで結びつきを押さえる。
 
 const root = fileURLToPath(new URL("../../", import.meta.url));
 const pageFile = "src/app/admin/Restaurants/MenuItemPage.vue";

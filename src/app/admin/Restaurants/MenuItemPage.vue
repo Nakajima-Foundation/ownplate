@@ -428,7 +428,10 @@
             </div>
 
             <!-- Option Reorder Mode Toggle -->
-            <div v-if="menuInfo.itemOptionCheckbox.length > 1" class="pb-2">
+            <div
+              v-if="(menuInfo.itemOptionCheckbox || []).length > 1"
+              class="pb-2"
+            >
               <button
                 @click="toggleOptionMoveMode"
                 class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full px-4"
@@ -461,16 +464,28 @@
               animation="300"
               ghost-class="opacity-50"
               tag="div"
-              class="grid-col-1 space-y-2"
+              class="space-y-2"
             >
-              <template #item="{ element: optionRow }">
+              <template #item="{ element: optionRow, index }">
                 <div class="flex items-center rounded-lg bg-black/5 p-2">
                   <i
                     class="material-icons option-drag-handle mr-2 cursor-move text-2xl text-black/40"
                     >drag_indicator</i
                   >
-                  <div class="flex-1 text-sm font-bold text-black/60">
-                    {{ optionRow.text }}
+                  <div class="mr-2 text-sm font-bold text-black/30">
+                    {{ index + 1 }}
+                  </div>
+                  <div
+                    class="min-w-0 flex-1 truncate text-sm font-bold"
+                    :class="
+                      optionRow.text === '' ? 'text-black/30' : 'text-black/60'
+                    "
+                  >
+                    {{
+                      optionRow.text === ""
+                        ? $t("editMenu.enterItemOption")
+                        : optionRow.text
+                    }}
                   </div>
                 </div>
               </template>
@@ -766,7 +781,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, reactive, PropType } from "vue";
+import {
+  defineComponent,
+  ref,
+  computed,
+  reactive,
+  defineAsyncComponent,
+  PropType,
+} from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import {
   doc,
@@ -787,7 +809,6 @@ import HoursInput from "@/app/admin/inputComponents/HoursInput.vue";
 import Checkbox from "@/components/form/checkbox.vue";
 
 import ImageUpload from "@/components/ImageUpload.vue";
-import draggable from "vuedraggable";
 
 import { taxRates, daysOfWeek } from "@/config/constant";
 import { ownPlateConfig } from "@/config/project";
@@ -831,7 +852,9 @@ export default defineComponent({
     HoursInput,
     ImageUpload,
     Checkbox,
-    draggable,
+    // 並べ替えを使わない訪問でも、sortablejs は読み込まれた時点で document に passive でない
+    // touchmove を張り、この長い入力欄の巻き取りを主スレッド待ちにする。押すまで読み込まない。
+    draggable: defineAsyncComponent(() => import("vuedraggable")),
   },
   props: {
     shopInfo: {
