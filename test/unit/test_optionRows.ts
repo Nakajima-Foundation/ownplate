@@ -4,8 +4,8 @@ import type { OptionRow } from "../../src/utils/optionRows.ts";
 import { toOptionRows, toOptionTexts } from "../../src/utils/optionRows.ts";
 
 // オプションは店舗オーナーが打った文字列そのものなので、空のまま2つ追加する・同じ名前を
-// 2つ作る、が普通に起きる。文字列を目印に使うと vuedraggable が別の行を動かすため、
-// 重複した中身でも目印が重ならないことがこの関数の存在理由。
+// 2つ作る、が普通に起きる。目印は Vue が行を照合する鍵になるので、重複するとドラッグのあと
+// 行が増えたり消えたりする。重複した中身でも目印が重ならないことがこの関数の存在理由。
 describe("toOptionRows", () => {
   it("gives every row a distinct id even when the texts are identical", () => {
     const rows = toOptionRows(["", "", "サイズ", "サイズ"]);

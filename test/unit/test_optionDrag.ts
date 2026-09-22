@@ -6,8 +6,8 @@ import { fileURLToPath } from "node:url";
 import ts from "typescript";
 import { parse } from "vue/compiler-sfc";
 
-// オプションの目印が中身の文字列から作られると、空のオプションが2つ並んだだけで
-// vuedraggable が行を取り違え、描かれる並びと保存される並びがずれる。目印の作り方は
+// オプションの目印が中身の文字列から作られると、空のオプションが2つ並んだだけで鍵が重複し、
+// ドラッグのあと行が増えたり消えたりして、描かれる並びと保存される並びがずれる。目印の作り方は
 // src/utils/optionRows.ts で試験できるが、画面がそれを使っているかは画面を読まないと
 // 分からないので、ここで結びつきを押さえる。
 
