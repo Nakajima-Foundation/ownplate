@@ -160,6 +160,8 @@ const data = {
     current: "変更前",
     clickAndUpload: "ここをクリック",
     clickAndUploadDetail: "グレー部分をクリックしてアップロード(JPEG形式)",
+    imageTooLarge: "画像は{size}MBまでです。小さい画像を選んでください。",
+    imageNotImage: "画像ファイルを選んでください。",
     edit: "編集",
   },
   currency: {

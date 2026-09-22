@@ -158,6 +158,9 @@ const data = {
     current: "변경 전",
     clickAndUpload: "여기를 클릭",
     clickAndUploadDetail: "회색 영역을 클릭하여 업로드 (JPEG 형식)",
+    imageTooLarge:
+      "이미지는 {size}MB 이하여야 합니다. 더 작은 이미지를 선택해 주세요.",
+    imageNotImage: "이미지 파일을 선택해 주세요.",
     edit: "편집",
   },
   currency: {

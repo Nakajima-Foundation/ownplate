@@ -166,6 +166,9 @@ const data = {
     current: "Current",
     clickAndUpload: "Click and Upload",
     clickAndUploadDetail: "Click gray area to upload image(JPEG only)",
+    imageTooLarge:
+      "Images must be {size}MB or smaller. Please choose a smaller image.",
+    imageNotImage: "Please choose an image file.",
     edit: "Edit",
   },
   currency: {
