@@ -1,3 +1,5 @@
+import type { MenuData } from "../models/menu";
+
 interface PostageInfo {
   freeThreshold: number;
   postageList: { [key: string]: number[] };
@@ -35,8 +37,12 @@ export const isEmpty = (value: unknown): boolean => {
 // 税区分が入っていない古いメニューは軽減税率として扱う。orderAccounting() が
 // 「"alcohol" 以外は foodTax」で計算しているので、そこと食い違わせると
 // 「8%で計算されているのに ※ が付かない」行ができる。
-export const isReducedTaxRate = (item: { tax?: string } | undefined): boolean =>
-  item?.tax !== "alcohol";
+// 型だけの import。実行時には消えるので、このファイルは依存ゼロのまま
+// （node --test から直接読めることが、ここに置いている理由）。
+// 相対パスは src/ と functions/src/ の両方で同じ場所を指す。
+export const isReducedTaxRate = (
+  item: Partial<MenuData> | undefined,
+): boolean => item?.tax !== "alcohol";
 
 // 適格請求書発行事業者の登録番号。"T" + 13桁と法律で決まっている。
 //

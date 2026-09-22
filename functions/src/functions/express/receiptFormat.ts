@@ -1,3 +1,4 @@
+import type { MenuData } from "../../models/menu";
 import { isReducedTaxRate } from "../../utils/commonUtils";
 
 // レシート本文の組み立てのうち、文字列とデータだけで決まる部分。
@@ -34,11 +35,11 @@ export const taxLines = (categories: TaxCategory[], taxPayment: string, totalTax
 
 // 軽減税率の商品が1つでもあるか。明細を組み立てながらフラグを立てるのではなく
 // データから直接決める。組み立ての都合で印と凡例が食い違うのを防ぐ。
-export const hasReducedTaxItem = (menuItems: { [menuId: string]: { tax?: string } }, orderedMenuIds: string[]): boolean =>
+export const hasReducedTaxItem = (menuItems: { [menuId: string]: Partial<MenuData> }, orderedMenuIds: string[]): boolean =>
   orderedMenuIds.some((menuId) => isReducedTaxRate(menuItems[menuId]));
 
 // 凡例。軽減税率の商品が無いレシートに出すと、何を指しているか分からない印だけが残る。
 export const reducedTaxNote = (hasReducedItem: boolean): string => (hasReducedItem ? "※軽減税率対象" : "");
 
 // 商品名に付ける軽減税率の印
-export const itemMark = (item: { tax?: string } | undefined): string => (isReducedTaxRate(item) ? "※" : "");
+export const itemMark = (item: Partial<MenuData> | undefined): string => (isReducedTaxRate(item) ? "※" : "");
