@@ -28,3 +28,12 @@ export const isNull = (value: unknown): value is null | undefined => {
 export const isEmpty = (value: unknown): boolean => {
   return value === null || value === undefined || String(value) === "";
 };
+
+// 軽減税率の対象か。税区分 `tax` が "alcohol" のものだけが標準税率で（酒・グッズなど）、
+// それ以外は軽減税率が適用される飲食料品。
+//
+// 税区分が入っていない古いメニューは軽減税率として扱う。orderAccounting() が
+// 「"alcohol" 以外は foodTax」で計算しているので、そこと食い違わせると
+// 「8%で計算されているのに ※ が付かない」行ができる。
+export const isReducedTaxRate = (item: { tax?: string } | undefined): boolean =>
+  item?.tax !== "alcohol";

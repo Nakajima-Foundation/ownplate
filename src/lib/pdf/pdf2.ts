@@ -1,4 +1,5 @@
 import pdfMake from "pdfmake/build/pdfmake";
+import { isReducedTaxRate } from "@/utils/commonUtils";
 import moment from "moment";
 
 import { nameOfOrder, formatOption, optionPrice } from "@/utils/strings";
@@ -305,7 +306,9 @@ export const printOrderData = (
   // オーダー内容
   orderItems.forEach((orderItem: OrderItemData) => {
     content.push({
-      text: orderItem.item.itemName + " ※ ",
+      text:
+        orderItem.item.itemName +
+        (isReducedTaxRate(orderItem.item) ? " ※ " : ""),
       margin: [2, 0],
     });
     const options = orderItem.options
@@ -358,7 +361,8 @@ export const printOrderData = (
   if ((orderInfo?.accounting?.food?.revenue || 0) > 0) {
     content.push({
       text: [
-        "8%対象: " + priceString(orderInfo?.accounting?.food?.revenue || 0),
+        `${restaurantInfo.foodTax}%対象: ` +
+          priceString(orderInfo?.accounting?.food?.revenue || 0),
         "(" +
           (orderInfo.inclusiveTax ? "内税額: " : "外税額:") +
           priceString(orderInfo?.accounting?.food?.tax || 0) +
@@ -371,7 +375,8 @@ export const printOrderData = (
   if ((orderInfo?.accounting?.alcohol?.revenue || 0) > 0) {
     content.push({
       text: [
-        "10%対象: " + priceString(orderInfo?.accounting?.alcohol?.revenue || 0),
+        `${restaurantInfo.alcoholTax}%対象: ` +
+          priceString(orderInfo?.accounting?.alcohol?.revenue || 0),
         "(" +
           (orderInfo.inclusiveTax ? "内税額: " : "外税額:") +
           priceString(orderInfo?.accounting?.alcohol?.tax || 0) +
@@ -381,11 +386,13 @@ export const printOrderData = (
       alignment: "right",
     });
   }
-  content.push({
-    text: "※軽減税率対象",
-    fontSize: 6,
-    margin: [2, 1],
-  });
+  if (orderItems.some((orderItem) => isReducedTaxRate(orderItem.item))) {
+    content.push({
+      text: "※軽減税率対象",
+      fontSize: 6,
+      margin: [2, 1],
+    });
+  }
 
   const hasStripe = !!orderInfo?.payment?.stripe;
   content.push({

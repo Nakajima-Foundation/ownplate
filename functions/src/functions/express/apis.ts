@@ -12,6 +12,7 @@ import { RequestWithRestaurant } from "../../lib/types/restaurant";
 
 import { validateFirebaseId } from "../../lib/validator";
 import { order_status } from "../../common/constant";
+import { isReducedTaxRate } from "../../utils/commonUtils";
 import moment from "moment-timezone";
 import * as receiptline from "receiptline";
 // import { convert } from 'convert-svg-to-png';
@@ -49,12 +50,14 @@ export const getSVG = (restaurantData: DocumentData, orderData: DocumentData) =>
   const orderNumber = nameOfOrder(orderData.number);
 
   const messages: string[] = [];
+  let hasReducedItem = false;
   Object.keys(orderData.order).map((menuId) => {
     const menu = orderData.menuItems[menuId] as MenuData;
+    hasReducedItem = hasReducedItem || isReducedTaxRate(menu);
     const name = menu.itemName;
     return Object.keys(orderData.order[menuId]).map((key) => {
       const count = orderData.order[menuId][key];
-      messages.push(`${escapePrinterString(name)} | x${count}`);
+      messages.push(`${escapePrinterString(name)}${isReducedTaxRate(menu) ? "※" : ""} | x${count}`);
 
       try {
         if (orderData.options && orderData.options[menuId] && orderData.options[menuId][key]) {
@@ -76,6 +79,22 @@ export const getSVG = (restaurantData: DocumentData, orderData: DocumentData) =>
   const howToReceive = orderData.isDelivery ? "デリバリー" : "テイクアウト";
   const timeEstimated = moment(orderData.timePlaced.toDate()).tz(timezone).format("YYYY/MM/DD HH:mm");
   const taxPayment = restaurantData.inclusiveTax ? "内税" : "外税";
+
+  // 税率ごとに区分して出す。適格簡易請求書は区分の記載が要件で、PDF は既にそうしている。
+  // 率は店舗設定から読む。ベタ書きすると税率が変わったときに表示だけ嘘になる。
+  const taxRows: string[] = [];
+  const pushTaxRow = (rate: number, revenue: number, tax: number) => {
+    if (revenue > 0) {
+      taxRows.push(`${rate}%対象 | ¥${revenue}`);
+      taxRows.push(`消費税（${taxPayment}） | ¥${tax}`);
+    }
+  };
+  pushTaxRow(restaurantData.foodTax, orderData.accounting?.food?.revenue || 0, orderData.accounting?.food?.tax || 0);
+  pushTaxRow(restaurantData.alcoholTax, orderData.accounting?.alcohol?.revenue || 0, orderData.accounting?.alcohol?.tax || 0);
+  // accounting を持たない古い注文は、これまでどおり合計だけを出す
+  const taxLines = taxRows.length > 0 ? taxRows.join("\n") : `消費税（${taxPayment}） | ¥${orderData.tax || 0}`;
+  const reducedNote = hasReducedItem ? "※軽減税率対象" : "";
+
   const onlinePay = orderData?.payment?.stripe ? "事前クレジット決済" : "現地払い";
   const text = `
 ^^${escapePrinterString(restaurantData.restaurantName || "")}
@@ -92,13 +111,14 @@ ${orders}
 -
 {w:16,16;a:right}
 小計 | ¥${orderData.total}
-消費税（${taxPayment}） | ¥${orderData.tax || 0}
+${taxLines}
 配達料金 | ¥${orderData.deliveryFee || 0} 
 心づけ (サービス料・消費税含む)| ¥${orderData.tip || 0}
 -
 ^^ 合計 | ^^^¥${orderData.totalCharge}
 {w:auto; b:space}
 支払方法："${onlinePay}"|
+${reducedNote}
 
 
 `;
