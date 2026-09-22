@@ -10,6 +10,7 @@ import moment from "moment";
 
 import { nameOfOrder, formatOption, optionPrice } from "@/utils/strings";
 import { roundPrice, useNationalPhoneNumber } from "@/utils/utils";
+import { extraChargeText, priceString } from "./pdfText";
 
 import { OrderInfoData, OrderItemData } from "@/models/orderInfoData";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
@@ -193,10 +194,6 @@ export const testDownload = (): string => {
   return pdfDoc;
 };
 
-const priceString = (price: number) => {
-  return "¥" + Number(price).toLocaleString() + "";
-};
-
 export const displayOption = (options: string[]) => {
   return options
     .filter((choice: string) => choice)
@@ -355,11 +352,7 @@ export const printOrderData = (
   // 税込と書かないのは、これらに消費税が計算されていないから。
   extraCharges(orderInfo).forEach((charge) => {
     content.push({
-      text: [
-        charge.kind === "shipping"
-          ? "送料: " + priceString(charge.amount)
-          : "割引: -" + priceString(charge.amount),
-      ],
+      text: [extraChargeText(charge)],
       margin: [2, 0],
       alignment: "right",
     });
