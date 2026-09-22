@@ -319,6 +319,8 @@ const data = {
     notificationConfig: "通知設定",
     moveToLineConfig:
       "LINE通知設定画面に移動します。移動の前に、このページの保存を忘れずに。",
+    webPushNotification: "プッシュ通知",
+    moveToPushConfig: "プッシュ通知の端末設定へ",
     openDaysConfig: "営業日時設定",
     lunchOrDinnerToggle: "ランチ/ディナーの自動切り替え",
     lunchOrDinnerNotice:
@@ -1181,6 +1183,8 @@ const data = {
     passwordReset: "パスワードのリセット",
     pleaseCheckInbox: "メールを送信しました。受信箱をご確認ください。",
     push: {
+      lastSentAt: "最終送信",
+      undelivered: "通知が届いていません。登録し直してください",
       rename: "端末名を変更",
       save: "保存",
       delete: "削除",

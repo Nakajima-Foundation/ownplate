@@ -34,3 +34,23 @@ export const registeredAtSeconds = (
   registeredAt: TimestampLike,
   updatedAt: TimestampLike,
 ): number | null => registeredAt?.seconds ?? updatedAt?.seconds ?? null;
+
+// 送信のたびにサーバが端末ごとに残す結果。最新が先頭。
+export type SendRecord = { at: number; ok: boolean; code?: string };
+
+// アラートを出すかを決める窓。サーバが保持する件数より小さいこと。
+// 大きくしても、保持していないぶんは見えないだけで害は無い。
+export const FAILURE_ALERT_WINDOW = 3;
+
+// 直近の送信に失敗が混じっている端末。ここに出るのは「FCM が宛先を拒否した」場合だけで、
+// 端末側で通知を切っている・集中モードに入っているものは成功として返るため出ない。
+export const hasRecentFailure = (
+  recentSends: SendRecord[] | undefined,
+): boolean =>
+  (recentSends ?? [])
+    .slice(0, FAILURE_ALERT_WINDOW)
+    .some((record) => !record.ok);
+
+export const lastSend = (
+  recentSends: SendRecord[] | undefined,
+): SendRecord | null => recentSends?.[0] ?? null;

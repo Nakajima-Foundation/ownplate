@@ -315,6 +315,8 @@ const data = {
     notificationConfig: "알림 설정",
     moveToLineConfig:
       "LINE 알림 설정 화면으로 이동합니다. 이동하기 전에 이 페이지 저장을 잊지 마세요.",
+    webPushNotification: "푸시 알림",
+    moveToPushConfig: "푸시 알림 기기 설정으로",
     openDaysConfig: "영업일시 설정",
     lunchOrDinnerToggle: "런치/디너 자동 전환",
     lunchOrDinnerNotice:
@@ -1169,6 +1171,8 @@ const data = {
     passwordReset: "비밀번호 재설정",
     pleaseCheckInbox: "이메일을 전송했습니다. 받은 편지함을 확인해 주세요.",
     push: {
+      lastSentAt: "마지막 전송",
+      undelivered: "알림이 도착하지 않습니다. 다시 등록해 주세요.",
       rename: "기기 이름 변경",
       save: "저장",
       delete: "삭제",

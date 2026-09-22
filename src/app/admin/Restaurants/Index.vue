@@ -805,6 +805,21 @@
                 </router-link>
               </div>
             </div>
+
+            <div class="mt-4 ml-8">
+              <div class="pb-2 text-sm font-bold">
+                {{ $t("editRestaurant.webPushNotification") }}
+              </div>
+              <div class="rounded-lg bg-black/5 p-4">
+                <router-link
+                  :to="`/admin/restaurants/${restaurantId}/pushlist`"
+                >
+                  <span class="text-op-teal text-sm font-bold">
+                    {{ $t("editRestaurant.moveToPushConfig") }}
+                  </span>
+                </router-link>
+              </div>
+            </div>
           </div>
           <!-- end of notification -->
         </div>

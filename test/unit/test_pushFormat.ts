@@ -4,6 +4,8 @@ import assert from "node:assert";
 import {
   describeSendResult,
   detectPlatform,
+  hasRecentFailure,
+  lastSend,
   registeredAtSeconds,
 } from "../../src/utils/pushFormat.ts";
 
@@ -60,5 +62,55 @@ describe("registeredAtSeconds", () => {
       registeredAtSeconds({ seconds: 0 }, { seconds: 200 }),
       0,
     );
+  });
+});
+
+describe("hasRecentFailure", () => {
+  const ok = (at: number) => ({ at, ok: true });
+  const ng = (at: number) => ({ at, ok: false, code: "messaging/x" });
+
+  it("says nothing when there is no history at all", () => {
+    assert.strictEqual(hasRecentFailure(undefined), false);
+    assert.strictEqual(hasRecentFailure([]), false);
+  });
+
+  it("says nothing while every recent send succeeded", () => {
+    assert.strictEqual(hasRecentFailure([ok(3), ok(2), ok(1)]), false);
+  });
+
+  it("alerts on a failure anywhere inside the window", () => {
+    assert.strictEqual(hasRecentFailure([ng(3), ok(2), ok(1)]), true);
+    assert.strictEqual(hasRecentFailure([ok(3), ng(2), ok(1)]), true);
+    assert.strictEqual(hasRecentFailure([ok(3), ok(2), ng(1)]), true);
+  });
+
+  // 窓の外に落ちた失敗は、その後の送信が通っているということなので出さない
+  it("stops alerting once the failure falls outside the window", () => {
+    assert.strictEqual(hasRecentFailure([ok(4), ok(3), ok(2), ng(1)]), false);
+  });
+
+  it("works on a history shorter than the window", () => {
+    assert.strictEqual(hasRecentFailure([ng(1)]), true);
+    assert.strictEqual(hasRecentFailure([ok(1)]), false);
+  });
+});
+
+describe("lastSend", () => {
+  it("returns the newest record, which is the first", () => {
+    assert.deepStrictEqual(
+      lastSend([
+        { at: 2, ok: true },
+        { at: 1, ok: false },
+      ]),
+      {
+        at: 2,
+        ok: true,
+      },
+    );
+  });
+
+  it("returns nothing for a device that has never been sent to", () => {
+    assert.strictEqual(lastSend(undefined), null);
+    assert.strictEqual(lastSend([]), null);
   });
 });

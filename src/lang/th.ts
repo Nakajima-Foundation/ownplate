@@ -316,6 +316,8 @@ const data = {
     notificationConfig: "ตั้งค่าการแจ้งเตือน",
     moveToLineConfig:
       "จะย้ายไปยังหน้าตั้งค่าการแจ้งเตือน LINE อย่าลืมบันทึกหน้านี้ก่อนย้าย",
+    webPushNotification: "การแจ้งเตือนแบบพุช",
+    moveToPushConfig: "จัดการอุปกรณ์รับการแจ้งเตือน",
     openDaysConfig: "ตั้งค่าวัน/เวลาทำการ",
     lunchOrDinnerToggle: "สลับเมนูกลางวัน/เย็นอัตโนมัติ",
     lunchOrDinnerNotice:
@@ -1170,6 +1172,8 @@ const data = {
     passwordReset: "รีเซ็ตรหัสผ่าน",
     pleaseCheckInbox: "ส่งอีเมลแล้ว กรุณาตรวจสอบกล่องจดหมาย",
     push: {
+      lastSentAt: "ส่งล่าสุด",
+      undelivered: "การแจ้งเตือนไปไม่ถึงอุปกรณ์นี้ กรุณาลงทะเบียนใหม่",
       rename: "เปลี่ยนชื่ออุปกรณ์",
       save: "บันทึก",
       delete: "ลบ",

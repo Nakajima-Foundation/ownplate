@@ -2,7 +2,7 @@ import { Firestore } from "firebase-admin/firestore";
 import { SendResponse, getMessaging } from "firebase-admin/messaging";
 
 import { webPushVapidPublicKey } from "../../common/project";
-import { INVALID_TARGET_CODES, MULTICAST_LIMIT, chunk } from "./webpushFormat";
+import { INVALID_TARGET_CODES, MULTICAST_LIMIT, SendRecord, appendSend, chunk } from "./webpushFormat";
 
 export type WebPushResult = {
   sent: number;
@@ -24,22 +24,44 @@ export const isWebPushConfigured = () => {
   return webPushVapidPublicKey.length > 0;
 };
 
+// 送信先。直近の結果も一緒に持ち帰る。送信後に書き戻すとき、これが無いと
+// 端末ごとにもう一度読むことになる。
+export type WebPushTarget = { fid: string; recentSends: SendRecord[] };
+
 // 端末は FID で識別し、それをそのまま doc id にしている。
 // 一覧で OFF にした端末は送信対象から外す（LINE の notify と同じ扱い）。
-export const loadFids = async (db: Firestore, restaurantId: string) => {
+export const loadTargets = async (db: Firestore, restaurantId: string): Promise<WebPushTarget[]> => {
   const snapshot = await registrationsCollection(db, restaurantId).get();
-  return snapshot.docs.filter((doc) => doc.data().notify).map((doc) => doc.id);
+  return snapshot.docs.filter((doc) => doc.data().notify).map((doc) => ({ fid: doc.id, recentSends: doc.data().recentSends ?? [] }));
 };
 
-const pruneInvalidFids = async (db: Firestore, restaurantId: string, fids: string[], responses: SendResponse[]) => {
-  const invalid = fids.filter((_fid, index) => {
-    const code = responses[index]?.error?.code;
-    return code !== undefined && INVALID_TARGET_CODES.includes(code);
-  });
-  await Promise.all(invalid.map((fid) => registrationsCollection(db, restaurantId).doc(fid).delete()));
+// 宛先が死んでいても doc は消さない。消すと一覧から黙って無くなり、店舗側は
+// 「届かなくなった」ことに気づけないまま、通知が来ないだけの状態になる。
+// 送信対象から外すのは notify を落とすことで足りる。
+const recordResults = async (db: Firestore, restaurantId: string, targets: WebPushTarget[], responses: SendResponse[], now_ms: number) => {
+  await Promise.all(
+    targets.map(async (target, index) => {
+      const response = responses[index];
+      const code = response?.success ? undefined : (response?.error?.code ?? "unknown");
+      const dead = code !== undefined && INVALID_TARGET_CODES.includes(code);
+      const record: SendRecord = { at: now_ms, ok: !!response?.success, ...(code ? { code } : {}) };
+      try {
+        await registrationsCollection(db, restaurantId)
+          .doc(target.fid)
+          .update({
+            recentSends: appendSend(target.recentSends, record),
+            ...(dead ? { notify: false } : {}),
+          });
+      } catch (e) {
+        // 送信中に削除された端末など。記録できなくても配信そのものは済んでいる。
+        console.error("webPush: could not record the send result", { fid: target.fid, error: e });
+      }
+    }),
+  );
 };
 
-const deliverBatch = async (db: Firestore, restaurantId: string, data: Record<string, string>, fids: string[]) => {
+const deliverBatch = async (db: Firestore, restaurantId: string, data: Record<string, string>, targets: WebPushTarget[]) => {
+  const fids = targets.map((target) => target.fid);
   const response = await getMessaging().sendEachForMulticast({ fids, data });
   const codes: string[] = [];
   response.responses.forEach((result, index) => {
@@ -53,21 +75,21 @@ const deliverBatch = async (db: Firestore, restaurantId: string, data: Record<st
       });
     }
   });
-  await pruneInvalidFids(db, restaurantId, fids, response.responses);
+  await recordResults(db, restaurantId, targets, response.responses, Date.now());
   return { sent: response.successCount, failed: response.failureCount, codes };
 };
 
 // 500 宛先を超える分もまとめて配信する
 export const sendWebPush = async (db: Firestore, restaurantId: string, data: Record<string, string>): Promise<WebPushResult> => {
-  const fids = await loadFids(db, restaurantId);
-  if (fids.length === 0) {
+  const targets = await loadTargets(db, restaurantId);
+  if (targets.length === 0) {
     return { sent: 0, failed: 0, targets: 0, codes: [] };
   }
-  const batches = await Promise.all(chunk(fids, MULTICAST_LIMIT).map((batch) => deliverBatch(db, restaurantId, data, batch)));
+  const batches = await Promise.all(chunk(targets, MULTICAST_LIMIT).map((batch) => deliverBatch(db, restaurantId, data, batch)));
   return {
     sent: batches.reduce((total, batch) => total + batch.sent, 0),
     failed: batches.reduce((total, batch) => total + batch.failed, 0),
-    targets: fids.length,
+    targets: targets.length,
     codes: batches.flatMap((batch) => batch.codes),
   };
 };

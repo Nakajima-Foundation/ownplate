@@ -322,6 +322,8 @@ const data = {
     notificationConfig: "Cài đặt thông báo",
     moveToLineConfig:
       "Sẽ chuyển đến trang cài đặt thông báo LINE. Đừng quên lưu trang này trước khi chuyển.",
+    webPushNotification: "Thông báo đẩy",
+    moveToPushConfig: "Quản lý thiết bị nhận thông báo",
     openDaysConfig: "Cài đặt ngày/giờ hoạt động",
     lunchOrDinnerToggle: "Tự động chuyển đổi menu trưa/tối",
     lunchOrDinnerNotice:
@@ -1185,6 +1187,9 @@ const data = {
     passwordReset: "Đặt lại mật khẩu",
     pleaseCheckInbox: "Đã gửi email. Vui lòng kiểm tra hộp thư đến.",
     push: {
+      lastSentAt: "Gửi lần cuối",
+      undelivered:
+        "Thông báo không đến được thiết bị này. Vui lòng đăng ký lại.",
       rename: "Đổi tên thiết bị",
       save: "Lưu",
       delete: "Xoá",

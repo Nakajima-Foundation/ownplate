@@ -305,6 +305,8 @@ const data = {
     orderConfirmViewConfig: "订单确认界面设置",
     notificationConfig: "通知设置",
     moveToLineConfig: "跳转至 LINE 通知设置界面。跳转前请记得保存此页。",
+    webPushNotification: "推送通知",
+    moveToPushConfig: "管理推送设备",
     openDaysConfig: "营业日时设置",
     lunchOrDinnerToggle: "午餐/晚餐自动切换",
     lunchOrDinnerNotice:
@@ -1127,6 +1129,8 @@ const data = {
     passwordReset: "重置密码",
     pleaseCheckInbox: "邮件已发送。请查看收件箱。",
     push: {
+      lastSentAt: "最后发送",
+      undelivered: "通知未能送达此设备。请重新注册。",
       rename: "修改设备名称",
       save: "保存",
       delete: "删除",

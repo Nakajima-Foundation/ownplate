@@ -325,6 +325,8 @@ const data = {
     notificationConfig: "Paramètres de notification",
     moveToLineConfig:
       "Accéder à l'écran des paramètres de notification LINE. N'oubliez pas d'enregistrer cette page avant de vous déplacer.",
+    webPushNotification: "Notifications push",
+    moveToPushConfig: "Gérer les appareils push",
     openDaysConfig: "Paramètres des jours et heures d'ouverture",
     lunchOrDinnerToggle: "Basculement automatique déjeuner/dîner",
     lunchOrDinnerNotice:
@@ -1201,6 +1203,9 @@ const data = {
     passwordReset: "Reset Password",
     pleaseCheckInbox: "Please check your inbox, an email is on the way.",
     push: {
+      lastSentAt: "Dernier envoi",
+      undelivered:
+        "Les notifications n'arrivent plus sur cet appareil. Veuillez l'enregistrer à nouveau.",
       rename: "Renommer l'appareil",
       save: "Enregistrer",
       delete: "Supprimer",

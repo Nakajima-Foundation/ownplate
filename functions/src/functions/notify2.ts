@@ -167,6 +167,9 @@ const sendRestaurantWebPush = async (db: Firestore, params: WebPushParams) => {
     orderId,
     messageId,
     sent: result.sent,
+    failed: result.failed,
+    // 失敗したときの FCM のコード。これが無いと「届いていない」以上の切り分けができない。
+    codes: result.codes,
     targets: result.targets,
     updatedAt: process.env.NODE_ENV !== "test" ? FieldValue.serverTimestamp() : Date.now(),
   });
