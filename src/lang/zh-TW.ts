@@ -1512,7 +1512,7 @@ const data = {
   },
   validationError: {
     invoiceNumber: {
-      format: "請輸入 T 加 13 位數字",
+      format: "請輸入半形 T 加 13 位數字",
     },
     itemName: {
       empty: "請輸入商品名稱",

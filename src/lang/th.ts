@@ -1569,7 +1569,7 @@ const data = {
   },
   validationError: {
     invoiceNumber: {
-      format: "กรอก T ตามด้วยตัวเลข 13 หลัก",
+      format: "กรอก T ตามด้วยตัวเลข 13 หลัก (อักขระครึ่งความกว้าง)",
     },
     itemName: {
       empty: "กรุณาป้อนชื่อสินค้า",

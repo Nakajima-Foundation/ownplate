@@ -1595,7 +1595,7 @@ const data = {
   },
   validationError: {
     invoiceNumber: {
-      format: "Nhập T theo sau là 13 chữ số",
+      format: "Nhập T theo sau là 13 chữ số (ký tự nửa chiều rộng)",
     },
     itemName: {
       empty: "Vui lòng nhập tên món",

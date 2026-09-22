@@ -1,5 +1,6 @@
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { isValidInvoiceNumber } from "@/utils/commonUtils";
+import { getEditShopInfo } from "./shopInfoPayload";
 import { isNull, cleanObject } from "@/utils/utils";
 import { reservationTheDayBefore, daysOfWeek } from "@/config/constant";
 
@@ -16,70 +17,6 @@ import {
   getDocs,
   getDoc,
 } from "firebase/firestore";
-
-export const getEditShopInfo = (shopInfo: RestaurantInfoData) => {
-  const restaurantData = {
-    restProfilePhoto: shopInfo.restProfilePhoto,
-    restCoverPhoto: shopInfo.restCoverPhoto,
-    restaurantName: shopInfo.restaurantName,
-    ownerName: shopInfo.ownerName,
-    streetAddress: shopInfo.streetAddress,
-    images: {
-      cover: shopInfo?.images?.cover || {},
-      profile: shopInfo?.images?.profile || {},
-    },
-    city: shopInfo.city,
-    state: shopInfo.state,
-    zip: shopInfo.zip,
-    location: shopInfo.location,
-    place_id: shopInfo.place_id,
-    phoneNumber: shopInfo.phoneNumber,
-    phoneCall: shopInfo.phoneCall,
-    emailNotification: shopInfo.emailNotification,
-    enablePrinter: shopInfo.enablePrinter,
-    enableLunchDinner: shopInfo.enableLunchDinner || false,
-    acceptUserMessage: shopInfo.acceptUserMessage,
-    countryCode: shopInfo.countryCode,
-    url: shopInfo.url,
-    lineUrl: shopInfo.lineUrl,
-    instagramUrl: shopInfo.instagramUrl,
-    uberEatsUrl: shopInfo.uberEatsUrl,
-    introduction: shopInfo.introduction,
-    enablePreline: shopInfo.enablePreline,
-    orderNotice: shopInfo.orderNotice,
-    orderThanks: shopInfo.orderThanks,
-    pickUpMinimumCookTime: shopInfo.pickUpMinimumCookTime,
-    pickUpDaysInAdvance: shopInfo.pickUpDaysInAdvance,
-    personalInfo: shopInfo.personalInfo,
-    paymentMethods: shopInfo.paymentMethods || {},
-    foodTax: Number(shopInfo.foodTax),
-    alcoholTax: Number(shopInfo.alcoholTax),
-    openTimes: Object.keys(shopInfo.openTimes).reduce<{
-      [key: string]: { start: number; end: number }[];
-    }>((tmp, key) => {
-      tmp[key] = shopInfo.openTimes[key]
-        .filter((el): el is { start: number; end: number } => {
-          return el !== null && el?.end !== null && el?.start !== null;
-        })
-        .sort((a, b) => {
-          return a.start < b.start ? -1 : 1;
-        });
-      return tmp;
-    }, {}),
-    businessDay: shopInfo.businessDay,
-    temporaryClosure: shopInfo.temporaryClosure,
-    lastOrderTime: shopInfo.lastOrderTime || null,
-    category1: shopInfo.category1,
-    category2: shopInfo.category2,
-    uid: shopInfo.uid,
-    publicFlag: shopInfo.publicFlag,
-    inclusiveTax: shopInfo.inclusiveTax,
-    updatedAt: serverTimestamp(),
-    createdAt: shopInfo.createdAt || serverTimestamp(),
-  };
-  return restaurantData;
-};
-
 export const defaultShopInfo = {
   restaurantName: "",
   ownerName: "",
@@ -94,6 +31,7 @@ export const defaultShopInfo = {
   lineUrl: "",
   instagramUrl: "",
   uberEatsUrl: "",
+  invoiceNumber: "",
   introduction: "",
   orderNotice: "",
   orderThanks: "",
@@ -166,12 +104,9 @@ export const shopInfoValidator = (
     err[name] = [];
   });
   // 未設定は通す。免税事業者は番号を持たない。
-  err["invoiceNumber"] = [];
-  if (!isValidInvoiceNumber(shopInfo.invoiceNumber)) {
-    (err["invoiceNumber"] as string[]).push(
-      "validationError.invoiceNumber.format",
-    );
-  }
+  err["invoiceNumber"] = isValidInvoiceNumber(shopInfo.invoiceNumber)
+    ? []
+    : ["validationError.invoiceNumber.format"];
   // validate pickUpMinimumCookTime
   if (Number.isInteger(shopInfo["pickUpMinimumCookTime"])) {
     if (shopInfo["pickUpMinimumCookTime"] > 24 * 60 * 7) {
@@ -265,7 +200,7 @@ export const copyRestaurant = async (
   uid: string,
   restaurantId: string,
 ) => {
-  const restaurantData = getEditShopInfo(shopInfo);
+  const restaurantData = getEditShopInfo(shopInfo, serverTimestamp());
   restaurantData.restaurantName = restaurantData.restaurantName + " - COPY";
   const newRestaurantData = {
     ...restaurantData,

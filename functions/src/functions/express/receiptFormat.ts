@@ -3,7 +3,7 @@ import moment from "moment-timezone";
 
 import { nameOfOrder, timezone } from "../../lib/utils";
 import type { MenuData } from "../../models/menu";
-import { isReducedTaxRate } from "../../utils/commonUtils";
+import { isReducedTaxRate, isValidInvoiceNumber } from "../../utils/commonUtils";
 
 // レシート本文の組み立てのうち、文字列とデータだけで決まる部分。
 // receiptline も Firestore も触らないので、ブラウザもプリンタも無しでテストできる。
@@ -93,7 +93,14 @@ export const buildReceiptText = (restaurantData: DocumentData, orderData: Docume
   const howToReceive = orderData.isDelivery ? "デリバリー" : "テイクアウト";
   const timeEstimated = moment(orderData.timePlaced.toDate()).tz(timezone).format("YYYY/MM/DD HH:mm");
   // 未設定の店舗（免税事業者など）では行ごと出さない。
-  const invoiceLine = restaurantData.invoiceNumber ? `登録番号：${restaurantData.invoiceNumber}` : "";
+  //
+  // 形が不正なら印字もしない。画面側の検証はブラウザにしか無く、Firestore を直接
+  // 書けば不正な値が入る。不正な番号が載ったレシートは、受け取った側が仕入税額控除に
+  // 使えず、経費精算で弾かれて初めて分かる。無いほうがまだ正直。
+  //
+  // escapePrinterString を通すのは、ここだけが素通しだったため。receiptline は
+  // {} を記法として読むので、含まれていると行ごと消える。
+  const invoiceLine = isValidInvoiceNumber(restaurantData.invoiceNumber) && restaurantData.invoiceNumber ? `登録番号：${escapePrinterString(restaurantData.invoiceNumber)}` : "";
   const taxPayment = restaurantData.inclusiveTax ? "内税" : "外税";
 
   // 区分は receiptFormat.ts の純関数に切り出してある（単体テストあり）
@@ -103,10 +110,11 @@ export const buildReceiptText = (restaurantData: DocumentData, orderData: Docume
   // 凡例が無いときに行だけ残すと、旧実装に無かった空行が1行増える。
   // レシートは紙なので、空行は見えるし紙を食う。
   const footer = [`支払方法："${onlinePay}"|`, ...(reducedTaxNote(hasReducedItem) ? [reducedTaxNote(hasReducedItem)] : [])].join("\n");
+  // footer と同じ理由。行だけ残すと、番号を持たない店舗のレシートに空行が1行増える。
+  const header = [`^^${escapePrinterString(restaurantData.restaurantName || "")}`, "おもちかえり.com", ...(invoiceLine ? [invoiceLine] : [])].join("\n");
+
   const text = `
-^^${escapePrinterString(restaurantData.restaurantName || "")}
-おもちかえり.com
-${invoiceLine}
+${header}
 
 ^^^"${orderNumber}"
 

@@ -1569,7 +1569,7 @@ const data = {
   },
   validationError: {
     invoiceNumber: {
-      format: "T 다음에 13자리 숫자를 입력하세요",
+      format: "반각으로 T 다음에 숫자 13자리를 입력하세요",
     },
     itemName: {
       empty: "상품명을 입력해 주세요",

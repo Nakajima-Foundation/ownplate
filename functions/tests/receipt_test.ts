@@ -237,12 +237,29 @@ describe("buildReceiptText — 登録番号", () => {
     assert.ok(text.includes("登録番号：T1234567890123"));
   });
 
-  // 免税事業者は番号を持たない。行ごと出さないので、これまでと同じ見た目になる。
-  it("leaves the line out entirely when unset", () => {
+  // 免税事業者は番号を持たない。**行ごと**出さないことを、空行が増えていないことで
+  // 確かめる。!includes("登録番号") だけだと、空行が残っていても緑のまま通る。
+  it("leaves the line out entirely when unset, adding no blank line", () => {
     [undefined, ""].forEach((invoiceNumber) => {
       const text = buildReceiptText(dummyRestaurant({ invoiceNumber }), dummyOrder());
       assert.ok(!text.includes("登録番号"));
+      assert.ok(text.includes('おもちかえり.com\n\n^^^"'));
     });
+  });
+
+  // 画面側の検証はブラウザにしか無い。Firestore を直接書けば不正な値が入るので、
+  // 印字の手前でも見る。不正な番号のレシートは、受け取った側が控除に使えない。
+  it("prints nothing when the stored number is malformed", () => {
+    ["T123", "1234567890123", "t1234567890123", " T1234567890123"].forEach((invoiceNumber) => {
+      const text = buildReceiptText(dummyRestaurant({ invoiceNumber }), dummyOrder());
+      assert.ok(!text.includes("登録番号"));
+    });
+  });
+
+  // receiptline は {} を記法として読む。素通しすると行ごと消える。
+  it("escapes receiptline markup rather than letting it through", () => {
+    const text = buildReceiptText(dummyRestaurant({ invoiceNumber: "T1234{5678901}23" }), dummyOrder());
+    assert.ok(!text.includes("{5678901}"));
   });
 
   // 登録番号と税率ごとの区分は両方そろって初めて適格簡易請求書になる。

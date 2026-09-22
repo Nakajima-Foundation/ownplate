@@ -1604,7 +1604,7 @@ const data = {
   },
   validationError: {
     invoiceNumber: {
-      format: "Masukkan T diikuti 13 digit",
+      format: "Masukkan T diikuti 13 digit (karakter setengah lebar)",
     },
     itemName: {
       empty: "Silakan masukkan nama item",

@@ -495,7 +495,6 @@
                 titleKey="editRestaurant.invoiceNumber"
                 placeholder="editRestaurant.enterInvoiceNumber"
                 :error="errors['invoiceNumber']"
-                :maxlength="14"
                 :required="false"
               />
               <div class="mt-1 text-xs text-black/60">
@@ -1155,7 +1154,7 @@ import {
 } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
 
 import { google_geocode } from "@/lib/google/api";
 import { ownPlateConfig, GMAPId } from "@/config/project";
@@ -1179,10 +1178,10 @@ import ImageUpload from "@/components/ImageUpload.vue";
 import { checkShopOwner } from "@/utils/userPermission";
 
 import {
-  getEditShopInfo,
   shopInfoValidator,
   copyRestaurant,
 } from "@/utils/admin/RestaurantPageUtils";
+import { getEditShopInfo } from "@/utils/admin/shopInfoPayload";
 import {
   cleanObject,
   isNull,
@@ -1528,7 +1527,7 @@ export default defineComponent({
             resizedImages: {},
           };
         }
-        const restaurantData = getEditShopInfo(newData);
+        const restaurantData = getEditShopInfo(newData, serverTimestamp());
         await updateRestaurantData(restaurantData);
 
         router.push(`/admin/restaurants/#restaurant_` + restaurantId.value);

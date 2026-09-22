@@ -1585,7 +1585,7 @@ const data = {
   },
   validationError: {
     invoiceNumber: {
-      format: "「T」＋13桁で入力してください",
+      format: "半角で「T」＋数字13桁を入力してください",
     },
     itemName: {
       empty: "商品名を入力してください",

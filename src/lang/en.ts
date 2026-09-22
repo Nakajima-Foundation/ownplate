@@ -1591,7 +1591,7 @@ const data = {
   },
   validationError: {
     invoiceNumber: {
-      format: "Enter T followed by 13 digits",
+      format: "Enter T followed by 13 digits (half-width characters)",
     },
     itemName: {
       empty: "Please enter the item name",

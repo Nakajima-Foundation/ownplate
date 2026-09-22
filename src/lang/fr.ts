@@ -1620,7 +1620,7 @@ const data = {
   },
   validationError: {
     invoiceNumber: {
-      format: "Saisissez T suivi de 13 chiffres",
+      format: "Saisissez T suivi de 13 chiffres (caractères demi-chasse)",
     },
     itemName: {
       empty: "Veuillez saisir le nom de l'article",
