@@ -5,25 +5,13 @@ import {
   getCopyShopInfo,
   getEditShopInfo,
 } from "../../src/utils/admin/shopInfoPayload.ts";
+import { restaurantInfoFixture } from "../fixtures/restaurantInfo.ts";
 
 // getEditShopInfo は保存する値の「許可リスト」で、ここに無いフィールドは
 // 画面で編集できても Firestore に書かれない。入力も検証も通り、保存も成功したように
 // 見えるので、抜けていても気づけない。実際 invoiceNumber が抜けていて、機能が
 // 丸ごと死んでいるのにテストは緑だった。
-const shopInfo = (extra = {}) => ({
-  restaurantName: "テスト店",
-  ownerName: "山田",
-  streetAddress: "1-2-3",
-  city: "渋谷区",
-  state: "東京都",
-  zip: "1500001",
-  phoneNumber: "0312345678",
-  foodTax: 8,
-  alcoholTax: 10,
-  openTimes: {},
-  temporaryClosure: [],
-  ...extra,
-});
+const shopInfo = restaurantInfoFixture;
 
 describe("getEditShopInfo", () => {
   it("carries the invoice registration number through to the saved payload", () => {
@@ -54,15 +42,19 @@ describe("getEditShopInfo", () => {
 describe("getEditShopInfo — 時刻の注入", () => {
   // Firestore の serverTimestamp をこの中で呼ぶと、ファイルが Firebase に依存して
   // 単体テストから読めなくなる。呼び出し側から渡す形にしてある。
-  it("uses the timestamp it is handed", () => {
-    const saved = getEditShopInfo(shopInfo(), "NOW");
+
+  // 新規の店舗は createdAt を持たない（defaultShopInfo に無い）。
+  // 型の上では必須なので、その形を作るには明示的に外す必要がある。
+  it("uses the timestamp it is handed when the restaurant has no creation time", () => {
+    const saved = getEditShopInfo(shopInfo({ createdAt: undefined }), "NOW");
     assert.strictEqual(saved.updatedAt, "NOW");
     assert.strictEqual(saved.createdAt, "NOW");
   });
 
   it("keeps an existing creation time rather than overwriting it", () => {
-    const saved = getEditShopInfo(shopInfo({ createdAt: "ORIGINAL" }), "NOW");
-    assert.strictEqual(saved.createdAt, "ORIGINAL");
+    const original = new Date("2019-05-06T00:00:00Z");
+    const saved = getEditShopInfo(shopInfo({ createdAt: original }), "NOW");
+    assert.strictEqual(saved.createdAt, original);
     assert.strictEqual(saved.updatedAt, "NOW");
   });
 });
