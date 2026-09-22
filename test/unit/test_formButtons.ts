@@ -13,16 +13,21 @@ import { parse } from "@vue/compiler-sfc";
 //
 // 許すのは次の形だけで、それ以外は報告する（安全な書き方でも、明示していなければ弾く）:
 //   - 送信するもの（<t-submit> / type="submit"）は click を持たない。入口は form の submit だけ
-//   - 送信しないボタンは type="button" を明示する
+//   - 送信しないボタンは type="button"（または "reset"）を明示する
+//   - type の値は HTML が定める button / reset / submit のどれか（大文字小文字は区別しない）。
+//     それ以外（不正な値・空）は、ブラウザが submit として扱うので報告する
 //   - 束縛の対象がテンプレートから読めること。v-bind="attrs" のようなまとめ渡しや
 //     :[name] のような動的な引数は、実行時に type や click を差し込めるので報告する。
 //     安全に使っている場合も弾く。書き方を列挙して塞ぐと、次の書き方が必ず漏れるため
 //   - <input type="submit"> / <input type="image"> も送信するので、同じく click を持たない
 //   - <component :is> は何が描画されるか読めないので報告する
 //
-// 見えないもの: t-button / t-submit 以外の自作部品が内部で <button> を描画している場合。
-// テンプレートだけでは部品の中身まで追えない。form の中で使う部品を増やしたら、この検査が
-// その部品を知らないことに注意する。
+// 見えないもの（どれもテンプレートを1つずつ読む限り追えない。いまの src には無い）:
+//   - t-button / t-submit 以外の自作部品が、内部で <button> を描画している場合
+//   - <form> を自作部品が描画していて、ボタンがその slot に入っている場合
+//   - form の外にあるボタンが form="id" で form に紐づいている場合
+// form の中で使う部品を増やすとき、form を包む部品を作るとき、form 属性を使うときは、
+// この検査が見ていないことに注意する。
 //
 // テンプレートは正規表現でなく Vue のコンパイラで読む。@click と v-on:click、複数行の要素、
 // 修飾子付きの @click.prevent、:type のような束縛を、Vue と同じように区別するため。
@@ -48,6 +53,8 @@ const elementType = 1;
 const attributeType = 6;
 const buttonTags = new Set(["button", "t-button", "t-submit"]);
 const submitInputTypes = new Set(["submit", "image"]);
+// button の type として HTML が定める値。これ以外はブラウザが submit として扱う。
+const nonSubmittingButtonTypes = new Set(["button", "reset"]);
 
 const isTemplateNode = (value: unknown): value is TemplateNode =>
   typeof value === "object" && value !== null && "type" in value && "loc" in value;
@@ -62,9 +69,12 @@ const isOpaqueBinding = (prop: TemplateProp) =>
   (prop.name === "bind" || prop.name === "on") &&
   (!prop.arg || !prop.arg.isStatic);
 
-// 静的な type="…" の値。:type のように束縛されていれば、実行時の値は分からない。
+// 静的な type="…" の値を小文字で。HTML の type は大文字小文字を区別しないので、
+// "Submit" も submit として扱う必要がある。:type のように束縛されていれば読めない。
 const staticType = (props: TemplateProp[]) =>
-  props.find((p) => p.type === attributeType && p.name === "type")?.value?.content;
+  props
+    .find((p) => p.type === attributeType && p.name === "type")
+    ?.value?.content.toLowerCase();
 
 const hasClick = (props: TemplateProp[]) =>
   props.some((p) => isDirective(p, "on", "click"));
@@ -80,8 +90,12 @@ const checkButton = (node: TemplateNode): Violation | null => {
     return { line, tag, reason: "type が束縛されている（実行時の値を検査できない）" };
   }
   const type = staticType(props);
-  if (!type && tag !== "t-submit") {
+  if (type === undefined && tag !== "t-submit") {
     return { line, tag, reason: "type が無い（form の中では submit として振る舞う）" };
+  }
+  const known = type === "submit" || nonSubmittingButtonTypes.has(type ?? "");
+  if (tag !== "t-submit" && !known) {
+    return { line, tag, reason: "type の値が不正（ブラウザは submit として扱う）" };
   }
   const submits = tag === "t-submit" || type === "submit";
   if (submits && hasClick(props)) {
@@ -192,6 +206,19 @@ describe("formButtonViolations — 捕まえるべき形", () => {
     assert.strictEqual(formButtonViolations(source).length, 1);
   });
 
+  // HTML の type は大文字小文字を区別しない。不正な値や空はブラウザが submit として扱う。
+  it("treats a type the way the browser does", () => {
+    [
+      `<form @submit.prevent="go"><button type="Submit" @click="go">x</button></form>`,
+      `<form @submit.prevent="go"><input type="IMAGE" @click="go" /></form>`,
+      `<form @submit.prevent="go"><button type="foo" @click="cancel">x</button></form>`,
+      `<form @submit.prevent="go"><button type="" @click="cancel">x</button></form>`,
+      `<form @submit.prevent="go"><t-button type="sumbit">x</t-button></form>`,
+    ].forEach((source) => {
+      assert.strictEqual(formButtonViolations(wrap(source)).length, 1, source);
+    });
+  });
+
   // button 以外にも form を送信するものがある。
   it("reports other things that submit a form", () => {
     [
@@ -227,6 +254,17 @@ describe("formButtonViolations — 通すべき形", () => {
       <t-button type="button" v-on:click="cancel">x</t-button>
       <t-submit>ok</t-submit>
       <button type="submit">ok</button>
+    </form>`);
+    assert.deepStrictEqual(formButtonViolations(source), []);
+  });
+
+  // 大文字小文字が違うだけの正しい値は通す。reset も送信しない。
+  it("accepts the valid types in any case", () => {
+    const source = wrap(`<form @submit.prevent="go">
+      <button type="BUTTON" @click="cancel">x</button>
+      <button type="reset">clear</button>
+      <t-button type="Button" @click="cancel">x</t-button>
+      <button type="Submit">ok</button>
     </form>`);
     assert.deepStrictEqual(formButtonViolations(source), []);
   });
