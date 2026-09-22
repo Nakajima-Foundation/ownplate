@@ -69,14 +69,26 @@ const findHandlerBody = (source: ts.SourceFile, name: string): ts.Block | undefi
   return found[0];
 };
 
+// 条件だけでなく、中で必ず抜けることまで見る。条件が同じでも return が無ければ、
+// 素通りして Firebase を呼ぶ。
+const exitsUnconditionally = (statement: ts.Statement): boolean =>
+  ts.isReturnStatement(statement) ||
+  ts.isThrowStatement(statement) ||
+  (ts.isBlock(statement) &&
+    statement.statements.some((s) => ts.isReturnStatement(s) || ts.isThrowStatement(s)));
+
+const isBeginSubmitCondition = (expression: ts.Expression) =>
+  ts.isPrefixUnaryExpression(expression) &&
+  expression.operator === ts.SyntaxKind.ExclamationToken &&
+  ts.isCallExpression(expression.operand) &&
+  expression.operand.expression.getText() === "beginSubmit" &&
+  expression.operand.arguments.map((a) => a.getText()).join() === "submitting";
+
 // `if (!beginSubmit(submitting)) { return; }` の形か。
 const isBeginSubmitGuard = (statement: ts.Statement) =>
   ts.isIfStatement(statement) &&
-  ts.isPrefixUnaryExpression(statement.expression) &&
-  statement.expression.operator === ts.SyntaxKind.ExclamationToken &&
-  ts.isCallExpression(statement.expression.operand) &&
-  statement.expression.operand.expression.getText() === "beginSubmit" &&
-  statement.expression.operand.arguments.map((a) => a.getText()).join() === "submitting";
+  isBeginSubmitCondition(statement.expression) &&
+  exitsUnconditionally(statement.thenStatement);
 
 // その文の中のどこかで、名前が一致する関数を呼んでいるか（obj.confirm(...) も含む）。
 const callsFunction = (node: ts.Node, name: string): boolean => {
@@ -86,17 +98,70 @@ const callsFunction = (node: ts.Node, name: string): boolean => {
   return calleeName === name || (ts.forEachChild(node, (c) => callsFunction(c, name) || undefined) ?? false);
 };
 
+// 問題が無ければ null、あればその理由。
+const guardProblem = (
+  source: ts.SourceFile,
+  name: string,
+  firebase: string,
+): string | null => {
+  const body = findHandlerBody(source, name);
+  if (!body) {
+    return `${name} が見つからない`;
+  }
+  const statements = [...body.statements];
+  const guard = statements.findIndex(isBeginSubmitGuard);
+  const call = statements.findIndex((s) => callsFunction(s, firebase));
+  if (call < 0) {
+    return `${name} が ${firebase} を呼んでいない（検査の前提が崩れている）`;
+  }
+  if (guard < 0) {
+    return `${name} に、必ず抜ける beginSubmit の判定が無い`;
+  }
+  return guard < call ? null : `${name} の beginSubmit が ${firebase} より後にある`;
+};
+
+const snippet = (body: string) =>
+  ts.createSourceFile(
+    "snippet.ts",
+    `const go = async () => {${body}};`,
+    ts.ScriptTarget.Latest,
+    true,
+  );
+
+// 検査そのものを両方向で固定する。ここが赤くならないと、下の実ファイルの検査は何も守らない。
+describe("guardProblem — 判定そのもの", () => {
+  it("accepts a guard that returns before the call", () => {
+    [
+      `if (!beginSubmit(submitting)) { return; } await fire();`,
+      `if (!beginSubmit(submitting)) return; await fire();`,
+      `setup(); if (!beginSubmit(submitting)) { log(); return; } await fire();`,
+    ].forEach((body) => assert.strictEqual(guardProblem(snippet(body), "go", "fire"), null, body));
+  });
+
+  // 見た目は同じ判定でも、抜けなければ Firebase まで素通りする。
+  it("rejects a guard that does not leave the handler", () => {
+    [
+      `if (!beginSubmit(submitting)) { log("busy"); } await fire();`,
+      `if (!beginSubmit(submitting)) {} await fire();`,
+      `if (!beginSubmit(submitting)) { if (x) { return; } } await fire();`,
+    ].forEach((body) => assert.notStrictEqual(guardProblem(snippet(body), "go", "fire"), null, body));
+  });
+
+  it("rejects a missing guard, a guard after the call, or a guard on another flag", () => {
+    [
+      `await fire();`,
+      `await fire(); if (!beginSubmit(submitting)) { return; }`,
+      `const p = fire(); if (!beginSubmit(submitting)) { return; } await p;`,
+      `if (!beginSubmit(other)) { return; } await fire();`,
+      `if (beginSubmit(submitting)) { return; } await fire();`,
+    ].forEach((body) => assert.notStrictEqual(guardProblem(snippet(body), "go", "fire"), null, body));
+  });
+});
+
 describe("認証画面のハンドラは、Firebase を呼ぶ前に beginSubmit で止める", () => {
   handlers.forEach(({ file, name, firebase }) => {
     it(`${file.split("/").pop()} の ${name}`, () => {
-      const body = findHandlerBody(scriptOf(file), name);
-      assert.ok(body, `${name} が見つからない`);
-      const statements = [...body.statements];
-      const guard = statements.findIndex(isBeginSubmitGuard);
-      const call = statements.findIndex((s) => callsFunction(s, firebase));
-      assert.ok(guard >= 0, `${name} に beginSubmit の判定が無い`);
-      assert.ok(call >= 0, `${name} が ${firebase} を呼んでいない（検査の前提が崩れている）`);
-      assert.ok(guard < call, `${name} の beginSubmit が ${firebase} より後にある`);
+      assert.strictEqual(guardProblem(scriptOf(file), name, firebase), null);
     });
   });
 });
