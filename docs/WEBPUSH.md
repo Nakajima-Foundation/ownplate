@@ -225,6 +225,7 @@ path から自分のオリジンの区画を割り出し、無関係なタブを
 | フィールド | 内容 |
 | --- | --- |
 | `fid` | Firebase Installation ID（doc id と同じ） |
+| `restaurantId` | 親パスと重複するが、collectionGroup のクエリが親パスで絞れないため持つ |
 | `name` | 端末の呼び名。登録する人が入力する |
 | `notify` | 一覧で ON/OFF する。送信時にこれで絞る |
 | `platform` | `ios` / `android` / `other` |
@@ -243,6 +244,9 @@ path から自分のオリジンの区画を割り出し、無関係なタブを
   削除すると一覧から黙って消え、店舗側が「届かなくなった」ことに気づけない。
   `messaging/invalid-argument` は payload 不正でも返るため、この判断の根拠にしない。
 - 一覧は `recentSends` の直近ぶん（`FAILURE_ALERT_WINDOW`）に失敗が混じっていればアラートを出す。
+- `restaurantId` は、店舗一覧のカードに「登録あり/なし」を出すための布石。出すには別途
+  collection group の rules と Firestore の index が要る（どちらも後から足せる）。
+  **この PR より前に登録された端末はこのフィールドを持たない。** 親パスから backfill できる。
 
 **アラートで分かるのは「FCM が宛先を拒否した」ところまで。** 通知が表示されたか、人が見たかは
 取れない。端末側で通知を切っている・集中モードに入っているものは FCM から見れば成功なので、
