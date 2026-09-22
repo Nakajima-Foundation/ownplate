@@ -8,6 +8,7 @@ import {
 import moment from "moment";
 
 import { nameOfOrder, formatOption, optionPrice } from "@/utils/strings";
+import { orderDocumentDate } from "@/utils/orderDocumentDate";
 import { roundPrice, useNationalPhoneNumber } from "@/utils/utils";
 
 import { OrderInfoData, OrderItemData } from "@/models/orderInfoData";
@@ -278,18 +279,19 @@ export const printOrderData = (
     margin: [2, 0],
   });
 
-  // 日付
-  if (orderInfo.timeEstimated) {
+  // 日付。受付前にキャンセルされた注文は timeEstimated を持たないが、取引年月日の無い
+  // 書類を出すわけにはいかないので、希望受渡時刻に落とす（どちらも受渡の時刻）。
+  const documentDate = orderDocumentDate(orderInfo);
+  if (documentDate) {
     content.push({
       text: [
         {
-          text: "受渡時間: ",
+          text:
+            documentDate.kind === "estimated" ? "受渡時間: " : "受渡希望時間: ",
           fontSize: 6,
         },
         {
-          text: moment(orderInfo.timeEstimated.toDate()).format(
-            "YYYY/MM/DD HH:mm",
-          ),
+          text: moment(documentDate.at).format("YYYY/MM/DD HH:mm"),
           fontSize: 6,
           bold: true,
         },
