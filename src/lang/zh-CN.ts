@@ -156,6 +156,8 @@ const data = {
     current: "变更前",
     clickAndUpload: "点击此处",
     clickAndUploadDetail: "点击灰色部分上传 (JPEG 格式)",
+    imageTooLarge: "图片大小不能超过 {size}MB，请选择更小的图片。",
+    imageNotImage: "请选择图片文件。",
     edit: "编辑",
   },
   currency: {

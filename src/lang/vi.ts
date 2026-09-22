@@ -159,6 +159,9 @@ const data = {
     current: "Trước khi thay đổi",
     clickAndUpload: "Nhấp vào đây",
     clickAndUploadDetail: "Nhấp vào vùng xám để tải lên (định dạng JPEG)",
+    imageTooLarge:
+      "Ảnh phải có dung lượng tối đa {size}MB. Vui lòng chọn ảnh nhỏ hơn.",
+    imageNotImage: "Vui lòng chọn một tệp ảnh.",
     edit: "Chỉnh sửa",
   },
   currency: {
