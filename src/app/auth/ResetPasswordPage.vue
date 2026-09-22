@@ -34,7 +34,11 @@
 
         <!-- Submit Button -->
         <div class="mt-2 text-center">
-          <button @click="handleCancel" class="mr-4 mb-2 cursor-pointer">
+          <button
+            type="button"
+            @click="handleCancel"
+            class="mr-4 mb-2 cursor-pointer"
+          >
             <div
               class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black/5"
             >
@@ -45,7 +49,7 @@
           </button>
 
           <t-submit
-            :isDisabled="Object.keys(errors).length > 0"
+            :isDisabled="submitting || Object.keys(errors).length > 0"
             class="h-12 w-32 font-bold text-white shadow-sm"
           >
             {{ $t("button.next") }}
@@ -66,6 +70,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
+import { beginSubmit } from "../../utils/beginSubmit";
 import isEmail from "validator/lib/isEmail";
 import { auth } from "@/lib/firebase/firebase9";
 import { sendPasswordResetEmail } from "firebase/auth";
@@ -106,9 +111,14 @@ export default defineComponent({
     const handleCancel = () => {
       router.push("/admin/user/signin");
     };
+    // ボタンの無効化だけでは素早いダブルクリックや Enter の連打が通るので、ここでも止める。
+    const submitting = ref(false);
     const handleNext = () => {
       submitted.value = true;
       if (Object.keys(errors.value).length > 0) {
+        return;
+      }
+      if (!beginSubmit(submitting)) {
         return;
       }
       const options = { url: window.location.href.replace(/reset$/, "signin") };
@@ -126,12 +136,16 @@ export default defineComponent({
             badEmail = "---Invalid---";
             apiError.value = error.code;
           }
+        })
+        .finally(() => {
+          submitting.value = false;
         });
     };
     return {
       handleNext,
       handleCancel,
       errors,
+      submitting,
 
       email,
       emailSent,

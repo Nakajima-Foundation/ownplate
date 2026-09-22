@@ -118,6 +118,7 @@
         <!-- Submit Button -->
         <div class="mt-2 text-center">
           <t-button
+            type="button"
             @click="handleCancel"
             :isCancel="true"
             class="mr-4 mb-2 h-12 w-32"
