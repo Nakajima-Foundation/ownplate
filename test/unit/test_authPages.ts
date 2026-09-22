@@ -75,3 +75,44 @@ describe("サインインのエラーの訳", () => {
     assert.deepStrictEqual(missing, []);
   });
 });
+
+type Prop = ElementNode["props"][number];
+
+// 送信中は送信ボタンを無効にして見せる。判定だけでも二重送信は止まるが、押せるように
+// 見えると押し直される。無効にした既定のボタンは Enter による暗黙の送信も止める。
+const submittersIn = (node: TemplateChild): ElementNode[] => {
+  if (!isElement(node)) {
+    return [];
+  }
+  const own = node.tag === "t-submit" ? [node] : [];
+  return [...own, ...node.children.flatMap(submittersIn)];
+};
+
+const disabledBinding = (node: ElementNode): string | undefined => {
+  const bind = node.props.find(
+    (p: Prop) =>
+      "modifiers" in p &&
+      p.name === "bind" &&
+      p.arg !== undefined &&
+      "content" in p.arg &&
+      p.arg.content === "isDisabled",
+  );
+  return bind && "exp" in bind && bind.exp && "content" in bind.exp
+    ? bind.exp.content
+    : undefined;
+};
+
+describe("認証画面の送信ボタンは、送信中は無効になる", () => {
+  ["SignInPage.vue", "ResetPasswordPage.vue", "PhoneLogin.vue", "SignUpPage.vue"].forEach((name) => {
+    it(name, () => {
+      const source = readFileSync(join(root, "src/app/auth", name), "utf-8");
+      const ast = parse(source).descriptor.template?.ast;
+      const submitters = ast ? ast.children.flatMap(submittersIn) : [];
+      assert.ok(submitters.length > 0, `${name} に送信ボタンが無い`);
+      submitters.forEach((node) => {
+        const binding = disabledBinding(node) ?? "";
+        assert.ok(/\bsubmitting\b/.test(binding), `${name}:${node.loc.start.line} の :isDisabled に submitting が無い`);
+      });
+    });
+  });
+});

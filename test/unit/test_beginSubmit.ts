@@ -208,6 +208,36 @@ const releaseSites = (body: ts.Block): ReleaseSite[] => {
   return found;
 };
 
+// 入れ子の関数の中は見ない（別の実行経路）。
+const containsReturn = (node: ts.Node): boolean =>
+  ts.isReturnStatement(node) ||
+  (!ts.isFunctionLike(node) &&
+    (ts.forEachChild(node, (c) => containsReturn(c) || undefined) ?? false));
+
+// 戻す文より前に、途中で抜ける文が無いか。あると、その経路では戻さずに抜ける
+// （二段階認証が必要なときの早期 return がそれで、TOTP を閉じても form が無効のまま残る）。
+const releaseBeforeEveryReturn = (release: ts.Node): boolean => {
+  const statement = release.parent;
+  const block = statement?.parent;
+  if (!statement || !block || !ts.isBlock(block)) {
+    return false;
+  }
+  const index = block.statements.findIndex((s) => s === statement);
+  return block.statements.slice(0, index).every((s) => !containsReturn(s));
+};
+
+const releasesOf = (body: ts.Block): ts.Node[] => {
+  const found: ts.Node[] = [];
+  const visit = (node: ts.Node) => {
+    if (isRelease(node)) {
+      found.push(node);
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(body);
+  return found;
+};
+
 describe("送信中の判定を戻す場所", () => {
   const expected = [
     // 成功すると画面が遷移する。遷移を待つ間に再送できないよう、失敗時だけ戻す。
@@ -224,5 +254,38 @@ describe("送信中の判定を戻す場所", () => {
       assert.ok(body, `${name} が見つからない`);
       assert.deepStrictEqual(releaseSites(body), sites);
     });
+
+    it(`${file.split("/").pop()} の ${name} は、途中で抜ける前に戻す`, () => {
+      const body = findHandlerBody(scriptOf(file), name);
+      assert.ok(body, `${name} が見つからない`);
+      releasesOf(body).forEach((release) => {
+        assert.ok(releaseBeforeEveryReturn(release), `${name} で、戻す前に抜ける経路がある`);
+      });
+    });
+  });
+});
+
+
+describe("releaseBeforeEveryReturn — 判定そのもの", () => {
+  const releaseIn = (body: string) => {
+    const source = snippet(body);
+    const found = releasesOf(findHandlerBody(source, "go") ?? ts.factory.createBlock([]));
+    assert.strictEqual(found.length, 1, "戻す文がちょうど1つでない");
+    return found[0];
+  };
+
+  it("accepts a release that comes before any early return", () => {
+    [
+      `try { await fire(); } catch (e) { submitting.value = false; if (mfa) { return; } show(e); }`,
+      `try { await fire(); } catch (e) { show(e); submitting.value = false; }`,
+    ].forEach((body) => assert.strictEqual(releaseBeforeEveryReturn(releaseIn(body)), true, body));
+  });
+
+  // 早期 return の後ろに置くと、その経路では戻らない。
+  it("rejects a release that an early return can skip", () => {
+    [
+      `try { await fire(); } catch (e) { if (mfa) { return; } submitting.value = false; }`,
+      `try { await fire(); } catch (e) { if (mfa) return; show(e); submitting.value = false; }`,
+    ].forEach((body) => assert.strictEqual(releaseBeforeEveryReturn(releaseIn(body)), false, body));
   });
 });
