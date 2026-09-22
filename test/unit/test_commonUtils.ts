@@ -2,6 +2,7 @@ import { describe, it } from "node:test";
 import assert from "node:assert";
 
 import {
+  isInclusiveTax,
   isReducedTaxRate,
   isValidInvoiceNumber,
   printableInvoiceNumber,
@@ -107,6 +108,31 @@ describe("printableInvoiceNumber", () => {
   it("differs from isValidInvoiceNumber precisely on the empty case", () => {
     assert.strictEqual(isValidInvoiceNumber(""), true);
     assert.strictEqual(printableInvoiceNumber(""), null);
+  });
+});
+
+describe("isInclusiveTax", () => {
+  // 金額は注文時の設定で計算されて凍結されている。店舗の現在値を見ると、
+  // 店舗が後から切り替えたときに金額と食い違う札を貼ることになる。
+  it("takes the order's own setting over the restaurant's current one", () => {
+    assert.strictEqual(isInclusiveTax({ inclusiveTax: true }, { inclusiveTax: false }), true);
+    assert.strictEqual(isInclusiveTax({ inclusiveTax: false }, { inclusiveTax: true }), false);
+  });
+
+  // 古い注文は inclusiveTax を持たない（accounting と同じ場所で書かれる）。
+  it("falls back to the restaurant when the order has no setting", () => {
+    assert.strictEqual(isInclusiveTax({}, { inclusiveTax: true }), true);
+    assert.strictEqual(isInclusiveTax({}, { inclusiveTax: false }), false);
+  });
+
+  // ここが ?? である理由。|| だと「外税で保存された注文」が false を偽と見なされて
+  // 店舗の設定に落ち、税込の店舗では内税と書かれる。
+  it("keeps an explicit false rather than falling through to the restaurant", () => {
+    assert.strictEqual(isInclusiveTax({ inclusiveTax: false }, { inclusiveTax: true }), false);
+  });
+
+  it("is exclusive when neither says anything", () => {
+    assert.strictEqual(isInclusiveTax({}, {}), false);
   });
 });
 

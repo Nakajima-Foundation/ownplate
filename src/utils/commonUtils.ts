@@ -98,6 +98,20 @@ export const taxCategories = (
     },
   ].filter((category) => category.revenue > 0);
 
+// 内税か外税か。レシートと PDF の両方がこれを使う。
+//
+// 注文時の値を優先する。金額は注文時の設定で計算されて凍結されているので、店舗の
+// 現在値を見ると、店舗が後から切り替えたときに金額と食い違う札を貼ることになる。
+// 古い注文は inclusiveTax を持たない（accounting と同じ場所で書かれるため）ので、
+// そのときだけ店舗の設定に落とす。
+//
+// ?? であって || ではない。注文が「外税」で保存されている場合、|| だと false が
+// 偽と見なされて店舗の設定に落ちてしまう。
+export const isInclusiveTax = (
+  order: { inclusiveTax?: boolean },
+  restaurant: { inclusiveTax?: boolean },
+): boolean => order.inclusiveTax ?? restaurant.inclusiveTax ?? false;
+
 // 表示する税の行。レシートと PDF の両方がこれを使う。
 //
 // 区分が出せない古い注文（accounting を持たないもの）では、合計だけの1行に落とす。

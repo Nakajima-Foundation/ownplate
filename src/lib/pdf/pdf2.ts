@@ -1,5 +1,6 @@
 import pdfMake from "pdfmake/build/pdfmake";
 import {
+  isInclusiveTax,
   isReducedTaxRate,
   printableInvoiceNumber,
   taxDisplayRows,
@@ -222,6 +223,19 @@ export const printOrderData = (
     fontSize: 12,
     margin: [2, 0],
   });
+  // 登録番号。印字の可否はレシートと同じ関数で決める（未設定でも形が不正でも出さない）。
+  // 発行元は店舗なので店名のすぐ下に置く。プラットフォームの行を挟むと
+  // おもちかえり.com の番号に読める。
+  const printableInvoice = printableInvoiceNumber(restaurantInfo.invoiceNumber);
+  if (printableInvoice) {
+    content.push({
+      text: [
+        { text: "登録番号：", fontSize: 6 },
+        { text: printableInvoice, fontSize: 6 },
+      ],
+      margin: [2, 0],
+    });
+  }
 
   // おもちかえり.com 番号
   content.push({
@@ -243,17 +257,6 @@ export const printOrderData = (
     ],
     margin: [2, 0],
   });
-  // 登録番号。印字の可否はレシートと同じ関数で決める（未設定でも形が不正でも出さない）。
-  const printableInvoice = printableInvoiceNumber(restaurantInfo.invoiceNumber);
-  if (printableInvoice) {
-    content.push({
-      text: [
-        { text: "登録番号：", fontSize: 6 },
-        { text: printableInvoice, fontSize: 6 },
-      ],
-      margin: [2, 0],
-    });
-  }
   content.push({
     text: nameOfOrder(orderInfo),
     fontSize: 12,
@@ -360,12 +363,9 @@ export const printOrderData = (
   //
   // accounting を持たない古い注文では区分が出せない。そのときに何も出さないと、
   // 消費税の記載そのものが請求書から消える。レシート側と同じく合計だけ出す。
-  //
-  // 内税/外税は注文時の値を使う。ただし accounting を持たない注文は inclusiveTax も
-  // 持たない（注文作成時に同じ場所で書かれる）ので、店舗の設定に落とす。
-  // 落とさないと、税込の店舗の古い注文だけが「外税額」と書かれる。
-  const isInclusiveTax = orderInfo.inclusiveTax ?? restaurantInfo.inclusiveTax;
-  const taxLabel = isInclusiveTax ? "内税額: " : "外税額: ";
+  const taxLabel = isInclusiveTax(orderInfo, restaurantInfo)
+    ? "内税額: "
+    : "外税額: ";
   const taxTexts = taxDisplayRows(
     orderInfo?.accounting,
     restaurantInfo.foodTax,

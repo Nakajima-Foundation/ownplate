@@ -3,7 +3,7 @@ import moment from "moment-timezone";
 
 import { nameOfOrder, timezone } from "../../lib/utils";
 import type { MenuData } from "../../models/menu";
-import { TaxDisplayRow, isReducedTaxRate, printableInvoiceNumber, taxDisplayRows } from "../../utils/commonUtils";
+import { TaxDisplayRow, isInclusiveTax, isReducedTaxRate, printableInvoiceNumber, taxDisplayRows } from "../../utils/commonUtils";
 
 // レシート本文の組み立てのうち、文字列とデータだけで決まる部分。
 // receiptline も Firestore も触らないので、ブラウザもプリンタも無しでテストできる。
@@ -77,7 +77,7 @@ export const buildReceiptText = (restaurantData: DocumentData, orderData: Docume
   // 形を緩めたときに receiptline の記法（{} や |）が素通りしないための備えとして残す。
   const printable = printableInvoiceNumber(restaurantData.invoiceNumber);
   const invoiceLine = printable ? `登録番号：${escapePrinterString(printable)}` : "";
-  const taxPayment = restaurantData.inclusiveTax ? "内税" : "外税";
+  const taxPayment = isInclusiveTax(orderData, restaurantData) ? "内税" : "外税";
 
   // 区分の決定は commonUtils の taxDisplayRows。PDF 側と同じ関数を通す。
   const taxText = taxLines(taxDisplayRows(orderData.accounting, restaurantData.foodTax, restaurantData.alcoholTax, orderData.tax || 0), taxPayment);
@@ -86,8 +86,10 @@ export const buildReceiptText = (restaurantData: DocumentData, orderData: Docume
   // 凡例が無いときに行だけ残すと、旧実装に無かった空行が1行増える。
   // レシートは紙なので、空行は見えるし紙を食う。
   const footer = [`支払方法："${onlinePay}"|`, ...(reducedTaxNote(hasReducedItem) ? [reducedTaxNote(hasReducedItem)] : [])].join("\n");
-  // footer と同じ理由。行だけ残すと、番号を持たない店舗のレシートに空行が1行増える。
-  const header = [`^^${escapePrinterString(restaurantData.restaurantName || "")}`, "おもちかえり.com", ...(invoiceLine ? [invoiceLine] : [])].join("\n");
+  // 登録番号は店名のすぐ下。発行元は店舗なので、プラットフォームの行を挟むと
+  // おもちかえり.com の番号に読める。
+  // footer と同じ理由で、行だけ残さない。番号を持たない店舗のレシートに空行が1行増える。
+  const header = [`^^${escapePrinterString(restaurantData.restaurantName || "")}`, ...(invoiceLine ? [invoiceLine] : []), "おもちかえり.com"].join("\n");
 
   const text = `
 ${header}

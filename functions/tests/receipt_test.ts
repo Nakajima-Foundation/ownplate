@@ -88,6 +88,7 @@ const dummyRestaurant = (extra = {}) => ({
 const dummyOrder = (extra = {}) => ({
   number: 653,
   name: "山田",
+  inclusiveTax: true,
   isDelivery: false,
   timePlaced: { toDate: () => new Date("2026-09-22T03:00:00Z") },
   order: { bento: { 0: 2 }, beer: { 0: 1 } },
@@ -101,7 +102,10 @@ const dummyOrder = (extra = {}) => ({
   deliveryFee: 0,
   tip: 0,
   totalCharge: 1500,
-  accounting: { food: { revenue: 1000, tax: 74 }, alcohol: { revenue: 500, tax: 45 } },
+  accounting: {
+    food: { revenue: 1000, tax: 74 },
+    alcohol: { revenue: 500, tax: 45 },
+  },
   payment: {},
   ...extra,
 });
@@ -129,10 +133,20 @@ describe("buildReceiptText", () => {
     assert.ok(!text.includes("8%対象"));
   });
 
-  it("says 外税 when the restaurant prices exclude tax", () => {
-    const text = buildReceiptText(dummyRestaurant({ inclusiveTax: false }), dummyOrder());
+  // 店舗が後から税込に切り替えた注文。?? でなく || で書くと、注文の false が偽と
+  // 見なされて店舗の設定に落ち、外税で計算された金額に内税の札が付く。
+  it("says 外税 when the order was placed under exclusive pricing", () => {
+    const text = buildReceiptText(dummyRestaurant({ inclusiveTax: true }), dummyOrder({ inclusiveTax: false }));
     assert.ok(text.includes("消費税（外税） | ¥74"));
     assert.ok(!text.includes("消費税（内税）"));
+  });
+
+  // 金額は注文時の設定で計算されて凍結されている。店舗が後から切り替えたときに
+  // 店舗の現在値を見ると、金額と食い違う札を貼ることになる。PDF 側と同じ関数を通す。
+  it("follows the order's own tax mode, not the restaurant's current one", () => {
+    const text = buildReceiptText(dummyRestaurant({ inclusiveTax: false }), dummyOrder({ inclusiveTax: true }));
+    assert.ok(text.includes("消費税（内税） | ¥74"));
+    assert.ok(!text.includes("消費税（外税）"));
   });
 
   // 軽減税率の商品が無い注文に、指す先の無い凡例を残さない
@@ -206,13 +220,19 @@ describe("buildReceiptText — 登録番号", () => {
     assert.ok(text.includes("登録番号：T1234567890123"));
   });
 
+  // 発行元は店舗。プラットフォームの行を挟むと、おもちかえり.com の番号に読める。
+  it("puts the number directly under the restaurant name, above the platform line", () => {
+    const text = buildReceiptText(dummyRestaurant({ invoiceNumber: "T1234567890123" }), dummyOrder());
+    assert.ok(text.includes("^^テスト店\n登録番号：T1234567890123\nおもちかえり.com"));
+  });
+
   // 免税事業者は番号を持たない。**行ごと**出さないことを、空行が増えていないことで
   // 確かめる。!includes("登録番号") だけだと、空行が残っていても緑のまま通る。
   it("leaves the line out entirely when unset, adding no blank line", () => {
     [undefined, ""].forEach((invoiceNumber) => {
       const text = buildReceiptText(dummyRestaurant({ invoiceNumber }), dummyOrder());
       assert.ok(!text.includes("登録番号"));
-      assert.ok(text.includes('おもちかえり.com\n\n^^^"'));
+      assert.ok(text.includes('^^テスト店\nおもちかえり.com\n\n^^^"'));
     });
   });
 
