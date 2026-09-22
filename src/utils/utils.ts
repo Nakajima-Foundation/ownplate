@@ -31,7 +31,7 @@ import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import isURL from "validator/lib/isURL";
 import isLatLong from "validator/lib/isLatLong";
 
-import { isNull, isEmpty } from "./commonUtils";
+import { isNull, isEmpty, optionChoicesAt, optionPrice } from "./commonUtils";
 
 import { useRoute, useRouter } from "vue-router";
 import { useGeneralStore } from "../store";
@@ -349,14 +349,6 @@ export const displayOption = (
   });
 };
 
-const optionPrice = (option: string) => {
-  const regex = /\(((\+|-|＋|ー|−)[0-9.]+)\)/;
-  const match = (option || "").match(regex);
-  if (match) {
-    return Number(match[1].replace(/ー|−/g, "-").replace(/＋/g, "+"));
-  }
-  return 0;
-};
 const useIsInLiff = () => {
   const route = useRoute();
 
@@ -498,7 +490,7 @@ export const getPrices = (
       const selectedOptionsRaw = trimmedSelectedOptions[menuId][orderKey] || [];
       const price = selectedOptionsRaw.reduce(
         (tmpPrice: number, selectedOpt, key) => {
-          const opt = (menu.itemOptionCheckbox[key] || "").split(",");
+          const opt = optionChoicesAt(menu.itemOptionCheckbox, key);
           if (opt.length === 1) {
             if (selectedOpt) {
               return (
@@ -558,13 +550,16 @@ export const getPostOption = (
     ret[id] = (trimmedSelectedOptions[id] || []).map((item) => {
       return item
         .map((selectedOpt, key) => {
-          const opt = (cartItems[id] || {}).itemOptionCheckbox[key].split(",");
+          const opt = optionChoicesAt(
+            (cartItems[id] || {}).itemOptionCheckbox,
+            key,
+          );
           if (opt.length === 1) {
             if (selectedOpt) {
               return opt[0];
             }
           } else {
-            return opt[Number(selectedOpt)];
+            return opt[Number(selectedOpt)] ?? "";
           }
           return "";
         })

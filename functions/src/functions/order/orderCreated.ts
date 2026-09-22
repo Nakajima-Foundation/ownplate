@@ -9,18 +9,19 @@ import { OrderData, OptionValue } from "../../lib/types/order";
 import { RestaurantInfoData } from "../../models/RestaurantInfo";
 import { MenuData, MenuItem } from "../../models/menu";
 import { validateOrderCreated } from "../../lib/validator";
+import { optionChoicesAt, optionPrice } from "../../utils/commonUtils";
 import { Context } from "../../models/TestType";
 
 const getOptionPrice = (selectedOptionsRaw: OptionValue[], menu: MenuData, multiple: number) => {
   return selectedOptionsRaw.reduce((tmpPrice: number, selectedOpt: OptionValue, key: number) => {
-    const opt = menu.itemOptionCheckbox[key].split(",");
+    const opt = optionChoicesAt(menu.itemOptionCheckbox, key);
     if (opt.length === 1) {
       if (selectedOpt) {
-        return tmpPrice + Math.round(utils.optionPrice(opt[0]) * multiple) / multiple;
+        return tmpPrice + Math.round(optionPrice(opt[0]) * multiple) / multiple;
       }
     } else {
       const optIndex = typeof selectedOpt === "number" ? selectedOpt : Number(selectedOpt);
-      return tmpPrice + Math.round(utils.optionPrice(opt[optIndex]) * multiple) / multiple;
+      return tmpPrice + Math.round(optionPrice(opt[optIndex]) * multiple) / multiple;
     }
     return tmpPrice;
   }, 0);

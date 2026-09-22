@@ -1,4 +1,5 @@
 import type { OrderInfoData } from "../models/orderInfoData";
+import { convOptionPrice, optionPriceRegex } from "./commonUtils.ts";
 
 export const nameOfOrder = (order: OrderInfoData) => {
   return order && order.number !== undefined
@@ -6,36 +7,25 @@ export const nameOfOrder = (order: OrderInfoData) => {
     : "";
 };
 
-export const regexOptionPrice = /\(((\+|-|＋|ー|−)[0-9.]+)\)/;
-
-export const convPrice = (priceStr: string) => {
-  return Number(priceStr.replace(/ー|−/g, "-").replace(/＋/g, "+"));
-};
-
-export const optionPrice = (option: string) => {
-  const match = option.match(regexOptionPrice);
-  if (match) {
-    return convPrice(match[1]);
-  }
-  return 0;
-};
-
+// 金額の部分を店舗の通貨で書き直した選択肢の名前。値の取り出し方は commonUtils の
+// optionPrice と同じ規則を使う。
 export const formatOption = (
-  option: string,
+  option: string | null | undefined,
   localize: (price: number) => string,
 ) => {
-  const match = option.match(regexOptionPrice);
+  const text = option ?? "";
+  const match = text.match(optionPriceRegex);
   if (match) {
-    const price = convPrice(match[1]);
+    const price = convOptionPrice(match[1]);
     return (
-      option.slice(0, match.index) +
+      text.slice(0, match.index) +
       "(" +
       (price > 0 ? "+" : "") +
       localize(price) +
       ")"
     );
   }
-  return option;
+  return text;
 };
 
 export const halfCharactors = (str: string) => {
