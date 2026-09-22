@@ -1,5 +1,6 @@
 import pdfMake from "pdfmake/build/pdfmake";
 import {
+  extraCharges,
   isInclusiveTax,
   isReducedTaxRate,
   printableInvoiceNumber,
@@ -13,6 +14,7 @@ import {
   orderDocumentDateLabel,
 } from "@/utils/orderDocumentDate";
 import { roundPrice, useNationalPhoneNumber } from "@/utils/utils";
+import { extraChargeText, priceString } from "./pdfText";
 
 import { OrderInfoData, OrderItemData } from "@/models/orderInfoData";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
@@ -196,10 +198,6 @@ export const testDownload = (): string => {
   return pdfDoc;
 };
 
-const priceString = (price: number) => {
-  return "¥" + Number(price).toLocaleString() + "";
-};
-
 export const displayOption = (options: string[]) => {
   return options
     .filter((choice: string) => choice)
@@ -354,6 +352,15 @@ export const printOrderData = (
       alignment: "right",
     });
   }
+  // 税率区分の外にある金額。行として出さないと合計の出どころが読めない。
+  // 税込と書かないのは、これらに消費税が計算されていないから。
+  extraCharges(orderInfo).forEach((charge) => {
+    content.push({
+      text: [extraChargeText(charge)],
+      margin: [2, 0],
+      alignment: "right",
+    });
+  });
   // 決済
   // 合計金額
   content.push({

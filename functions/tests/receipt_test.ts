@@ -1,7 +1,7 @@
 import { describe, it } from "node:test";
 import assert from "node:assert";
 
-import { buildReceiptText, hasReducedTaxItem, itemMark, reducedTaxNote, taxLines } from "../src/functions/express/receiptFormat";
+import { buildReceiptText, extraChargeLines, hasReducedTaxItem, itemMark, reducedTaxNote, taxLines } from "../src/functions/express/receiptFormat";
 import { OrderAccounting, taxDisplayRows } from "../src/utils/commonUtils";
 
 const food = { revenue: 1000, tax: 74 };
@@ -21,6 +21,22 @@ describe("taxLines", () => {
 
   it("carries the inclusive/exclusive wording through", () => {
     assert.ok(taxLines(rows({ food }), "外税").includes("消費税（外税）"));
+  });
+});
+
+describe("extraChargeLines", () => {
+  it("writes the shipping cost and the discount, the discount as a subtraction", () => {
+    assert.deepStrictEqual(
+      extraChargeLines([
+        { kind: "shipping", amount: 200 },
+        { kind: "discount", amount: 150 },
+      ]),
+      ["送料 | ¥200", "割引 | -¥150"],
+    );
+  });
+
+  it("writes nothing when the order carries neither", () => {
+    assert.deepStrictEqual(extraChargeLines([]), []);
   });
 });
 
@@ -191,10 +207,10 @@ describe("buildReceiptText", () => {
   });
 });
 
-// buildReceiptText の切り出しは「移しただけ」を主張している。旧実装と並走させて
-// 400 通り（税区分・accounting の有無・内外税・受渡方法・決済・オプション）を比べ、
+// buildReceiptText の切り出しは「移しただけ」を主張している。旧実装と並走させ、
+// 税区分・accounting の有無・内外税・受渡方法・決済・オプションを振って比べ、
 // 税率別の行・消費税の行・※・凡例を除いた全行が一致することを確認した。
-// harness は旧コードを含むので残せない。そこで見つかった性質だけを残す。
+// harness は旧コードを含むので残せない。見つかった性質だけを残す。
 describe("buildReceiptText — 旧実装との差が意図した箇所だけであること", () => {
   // 差分テストで見つかった。凡例が無いときに行だけ残すと、紙のレシートに
   // 旧実装には無かった空行が1行増える。
@@ -261,5 +277,42 @@ describe("buildReceiptText — 登録番号", () => {
     assert.ok(text.includes("登録番号：T1234567890123"));
     assert.ok(text.includes("8%対象 | ¥1000"));
     assert.ok(text.includes("10%対象 | ¥500"));
+  });
+});
+
+// 旧実装と並走させ、送料も割引も持たない注文（税区分・accounting の有無・内外税の
+// 組み合わせ・配達料金・心づけ・受渡方法・登録番号の有無を振ったもの）で全文が一致する
+// ことを確認した。harness は旧コードを含むので残せない。見つかった性質だけを残す。
+describe("buildReceiptText — 区分の外にある金額", () => {
+  // 持たない注文の見た目を変えないことが、この変更の前提だった。
+  it("adds no line to an order that carries neither", () => {
+    const text = buildReceiptText(dummyRestaurant(), dummyOrder());
+    assert.ok(!text.includes("送料"));
+    assert.ok(!text.includes("割引"));
+    assert.ok(text.includes("心づけ (サービス料・消費税含む)| ¥0\n-"));
+  });
+
+  // 合計にだけ乗って明細に出ないと、差額の出どころが読めない書類になる。
+  it("puts the shipping cost between the tip and the total", () => {
+    const text = buildReceiptText(dummyRestaurant(), dummyOrder({ shippingCost: 200, totalCharge: 1700 }));
+    assert.ok(text.includes("心づけ (サービス料・消費税含む)| ¥0\n送料 | ¥200\n-"));
+    assert.ok(text.includes("^^ 合計 | ^^^¥1700"));
+  });
+
+  it("writes the discount as a subtraction", () => {
+    const text = buildReceiptText(dummyRestaurant(), dummyOrder({ discountPrice: 150, totalCharge: 1350 }));
+    assert.ok(text.includes("割引 | -¥150"));
+  });
+
+  it("writes both, in a fixed order", () => {
+    const text = buildReceiptText(dummyRestaurant(), dummyOrder({ shippingCost: 200, discountPrice: 150, totalCharge: 1550 }));
+    assert.ok(text.includes("送料 | ¥200\n割引 | -¥150"));
+  });
+
+  // 0円 の行を出すと、ほぼ全てのレシートに2行増える。
+  it("adds no line when the amounts are zero", () => {
+    const text = buildReceiptText(dummyRestaurant(), dummyOrder({ shippingCost: 0, discountPrice: 0 }));
+    assert.ok(!text.includes("送料"));
+    assert.ok(!text.includes("割引"));
   });
 });
