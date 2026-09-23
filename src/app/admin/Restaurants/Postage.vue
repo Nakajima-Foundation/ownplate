@@ -83,12 +83,8 @@ import { defineComponent, ref } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 
-import {
-  useAdminUids,
-  notFoundResponse,
-  useRestaurantId,
-  regionalSetting,
-} from "@/utils/utils";
+import { useAdminUids, notFoundResponse, useRestaurantId } from "@/utils/utils";
+import { regionalSetting } from "@/config/constant";
 import { checkShopAccount } from "@/utils/userPermission";
 
 import NotFound from "@/components/NotFound.vue";

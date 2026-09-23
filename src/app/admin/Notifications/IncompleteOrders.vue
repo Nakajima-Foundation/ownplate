@@ -33,7 +33,8 @@ i
 <script lang="ts">
 import { defineComponent, computed, PropType } from "vue";
 
-import { isNull, useRestaurantId } from "@/utils/utils";
+import { useRestaurantId } from "@/utils/utils";
+import { isNull } from "@/utils/commonUtils";
 import { midNight } from "@/utils/dateUtils";
 import moment from "moment";
 

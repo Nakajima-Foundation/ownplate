@@ -5,8 +5,8 @@ import {
   num2time,
   num2simpleTime,
   num2simpleFormatedTime,
-  isNull,
 } from "@/utils/utils";
+import { isNull } from "@/utils/commonUtils";
 import moment from "moment";
 import { MenuData } from "@/models/menu";
 import { useGeneralStore } from "../store";

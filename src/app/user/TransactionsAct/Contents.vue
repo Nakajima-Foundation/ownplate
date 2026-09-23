@@ -234,7 +234,8 @@ import { defineComponent, ref, computed, onUnmounted, PropType } from "vue";
 import { daysOfWeek } from "@/config/constant";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, onSnapshot } from "firebase/firestore";
-import { isNull, useNationalPhoneNumber, num2time } from "@/utils/utils";
+import { useNationalPhoneNumber, num2time } from "@/utils/utils";
+import { isNull } from "@/utils/commonUtils";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { PaymentInfo } from "@/models/paymentInfo";

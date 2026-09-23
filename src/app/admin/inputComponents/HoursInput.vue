@@ -54,7 +54,7 @@
 import { defineComponent } from "vue";
 
 import { timeList } from "@/config/constant";
-import { isNull } from "@/utils/utils";
+import { isNull } from "@/utils/commonUtils";
 
 export default defineComponent({
   name: "HoursInput",

@@ -181,7 +181,8 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
 import { useRoute } from "vue-router";
-import { useLiffBasePath, regionalSetting, useUserData } from "@/utils/utils";
+import { useLiffBasePath, useUserData } from "@/utils/utils";
+import { regionalSetting } from "@/config/constant";
 import SideMenuButton from "@/components/App/SideMenuButton.vue";
 import SideMenuText from "@/components/App/SideMenuText.vue";
 import SideBar from "@/components/App/SideBar.vue";

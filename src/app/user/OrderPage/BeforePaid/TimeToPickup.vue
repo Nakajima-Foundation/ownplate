@@ -51,7 +51,7 @@ import {
 
 import { Timestamp } from "firebase/firestore";
 
-import { isNull } from "@/utils/utils";
+import { isNull } from "@/utils/commonUtils";
 import { usePickupTime } from "@/utils/pickup";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";

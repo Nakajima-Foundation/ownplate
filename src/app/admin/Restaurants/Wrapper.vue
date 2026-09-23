@@ -51,10 +51,10 @@ import { ping } from "@/lib/firebase/functions";
 import {
   getShopOwner,
   getPartner,
-  regionalSetting,
   useRestaurantId,
   useAdminUids,
 } from "@/utils/utils";
+import { regionalSetting } from "@/config/constant";
 
 import { defaultShopInfo } from "@/utils/admin/RestaurantPageUtils";
 import { checkAdminPermission } from "@/utils/userPermission";

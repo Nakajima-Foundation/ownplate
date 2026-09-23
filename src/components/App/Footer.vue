@@ -100,7 +100,9 @@
 <script lang="ts">
 import { defineComponent, ref, computed, watch } from "vue";
 
-import { useUserData, isJapan, regionalSetting, isNull } from "@/utils/utils";
+import { useUserData, isJapan } from "@/utils/utils";
+import { isNull } from "@/utils/commonUtils";
+import { regionalSetting } from "@/config/constant";
 
 import { db, auth } from "@/lib/firebase/firebase9";
 import { doc, getDoc, setDoc } from "firebase/firestore";

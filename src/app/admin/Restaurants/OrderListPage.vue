@@ -94,13 +94,13 @@ import ToggleSwitch from "@/components/ToggleSwitch.vue";
 
 import {
   doc2data,
-  isNull,
   useAdminUids,
   notFoundResponse,
   useRestaurantId,
   defaultTitle,
   orderFilter,
 } from "@/utils/utils";
+import { isNull } from "@/utils/commonUtils";
 import { checkShopAccount } from "@/utils/userPermission";
 import { useAdminConfigToggle } from "@/utils/admin/Toggle";
 
