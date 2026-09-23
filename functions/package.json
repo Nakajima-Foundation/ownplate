@@ -9,17 +9,7 @@
     "smoke_tests": "NODE_ENV=test node --import tsx --test tests/admin_smoke_test.ts",
     "unit_tests": "NODE_ENV=test node --import tsx --test tests/unit/*_test.ts",
     "ci_test": "yarn run unit_tests",
-    "tests": "NODE_ENV=test tsx ./node_modules/mocha/bin/mocha --recursive tests/*_test.ts --timeout 30000",
-    "e_tests": "NODE_ENV=test tsx ./node_modules/mocha/bin/mocha --recursive tests/express_test.ts",
-    "o_tests": "NODE_ENV=test tsx ./node_modules/mocha/bin/mocha --recursive tests/order_test.ts",
-    "oc_tests": "NODE_ENV=test tsx ./node_modules/mocha/bin/mocha --recursive tests/order_change_test.ts",
-    "n_tests": "NODE_ENV=test tsx ./node_modules/mocha/bin/mocha --recursive tests/notify_test.ts --timeout 30000",
-    "t_tests": "NODE_ENV=test tsx ./node_modules/mocha/bin/mocha --recursive tests/twilio_test.ts",
-    "t2_tests": "NODE_ENV=test tsx ./node_modules/mocha/bin/mocha --recursive tests/twilio2_test.ts  --timeout 30000",
-    "s_tests": "NODE_ENV=test tsx ./node_modules/mocha/bin/mocha --recursive tests/subaccount_test.ts",
-    "mailtests": "NODE_ENV=test tsx ./node_modules/mocha/bin/mocha --recursive tests/sms_test.ts",
-    "smaregitests": "NODE_ENV=test tsx ./node_modules/mocha/bin/mocha --recursive tests/smaregi_test.ts",
-    "d_tests": "NODE_ENV=test tsx ./node_modules/mocha/bin/mocha --recursive tests/dl_test.ts"
+    "e_tests": "NODE_ENV=test tsx ./node_modules/mocha/bin/mocha --recursive tests/express_test.ts"
   },
   "engines": {
     "node": "24"
