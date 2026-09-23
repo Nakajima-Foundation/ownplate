@@ -1,6 +1,7 @@
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { isValidInvoiceNumber, isNull } from "@/utils/commonUtils";
 import { reservationTheDayBefore, daysOfWeek } from "@/config/constant";
+import { businessHoursErrors } from "./businessHours";
 
 export const defaultShopInfo = {
   restaurantName: "",
@@ -141,26 +142,10 @@ export const shopInfoValidator = (
 
   const errorTime: ShopInfoBussinessTimeError = {};
   Object.keys(daysOfWeek).forEach((dayKey: string) => {
-    errorTime[dayKey] = [] as string[][];
-    [0, 1].forEach((key2) => {
-      errorTime[dayKey].push([]);
-      if (shopInfo.businessDay[dayKey]) {
-        if (shopInfo.openTimes[dayKey] && shopInfo.openTimes[dayKey][key2]) {
-          const data = shopInfo.openTimes[dayKey][key2];
-          // xor
-          if (isNull(data.start) !== isNull(data.end)) {
-            errorTime[dayKey][key2].push("validationError.oneInEmpty");
-          }
-          if (!isNull(data.start) && !isNull(data.end)) {
-            if (data.start > data.end) {
-              errorTime[dayKey][key2].push("validationError.validBusinessTime");
-            }
-          }
-        } else if (key2 === 0) {
-          errorTime[dayKey][key2].push("validationError.noSelect");
-        }
-      }
-    });
+    errorTime[dayKey] = businessHoursErrors(
+      !!shopInfo.businessDay[dayKey],
+      shopInfo.openTimes[dayKey],
+    );
   });
   err["time"] = errorTime;
   err["phoneNumber"] = errorsPhone;

@@ -5,6 +5,10 @@ import {
   defaultShopInfo,
   shopInfoValidator,
 } from "../../src/utils/admin/shopInfoForm.ts";
+import {
+  businessHoursErrors,
+  type OpenTimeSlot,
+} from "../../src/utils/admin/businessHours.ts";
 import { restaurantInfoFixture } from "../fixtures/restaurantInfo.ts";
 
 // 店舗情報の入力検証。返す一覧が、保存ボタンを止めるか・公開のチェックを止めるか・
@@ -263,15 +267,127 @@ describe("shopInfoValidator — 外部リンク", () => {
   });
 });
 
-// 営業時間。曜日ごとに2枠（昼と夜）を見る。
+// 営業時間の規則。画面の時刻選択は空欄を選ぶと項目ごと消すので、片方だけ入っている形も
+// 枠そのものが無い形も来る。その形を渡せるように、規則を別の関数に切り出してある。
+describe("businessHoursErrors", () => {
+  const openDay = (slots: OpenTimeSlot[] | undefined) =>
+    businessHoursErrors(true, slots);
+
+  // 休業日は時間を見ない。見ると、閉めている曜日の空欄で保存が止まる。
+  it("says nothing about a day the shop is closed", () => {
+    assert.deepStrictEqual(businessHoursErrors(false, undefined), [[], []]);
+    assert.deepStrictEqual(businessHoursErrors(false, []), [[], []]);
+    assert.deepStrictEqual(
+      businessHoursErrors(false, [{ start: 900, end: 660 }]),
+      [[], []],
+    );
+  });
+
+  it("always answers for both slots, in order", () => {
+    assert.strictEqual(openDay(undefined).length, 2);
+    assert.strictEqual(businessHoursErrors(false, undefined).length, 2);
+  });
+
+  it("wants a first slot on a day the shop is open", () => {
+    assert.deepStrictEqual(openDay(undefined), [
+      ["validationError.noSelect"],
+      [],
+    ]);
+    assert.deepStrictEqual(openDay([]), [["validationError.noSelect"], []]);
+    assert.deepStrictEqual(openDay([null]), [["validationError.noSelect"], []]);
+  });
+
+  // 2枠目は任意。夜の部を置かない店舗が止まらないように。
+  it("does not ask for a second slot", () => {
+    assert.deepStrictEqual(openDay([{ start: 660, end: 840 }]), [[], []]);
+    assert.deepStrictEqual(openDay([{ start: 660, end: 840 }, null]), [[], []]);
+  });
+
+  it("accepts a day with both slots filled", () => {
+    assert.deepStrictEqual(
+      openDay([
+        { start: 660, end: 840 },
+        { start: 1020, end: 1320 },
+      ]),
+      [[], []],
+    );
+  });
+
+  it("complains when only one end of a slot is set", () => {
+    assert.deepStrictEqual(openDay([{ start: 660 }]), [
+      ["validationError.oneInEmpty"],
+      [],
+    ]);
+    assert.deepStrictEqual(openDay([{ end: 840 }]), [
+      ["validationError.oneInEmpty"],
+      [],
+    ]);
+    assert.deepStrictEqual(openDay([{ start: 660, end: null }]), [
+      ["validationError.oneInEmpty"],
+      [],
+    ]);
+  });
+
+  // 両方とも空の枠は「片方だけ」ではないので、そこは何も言わない。
+  it("says nothing about a slot with neither end set", () => {
+    assert.deepStrictEqual(openDay([{}]), [[], []]);
+    assert.deepStrictEqual(openDay([{ start: null, end: null }]), [[], []]);
+  });
+
+  it("complains when a slot ends before it starts", () => {
+    assert.deepStrictEqual(openDay([{ start: 900, end: 660 }]), [
+      ["validationError.validBusinessTime"],
+      [],
+    ]);
+  });
+
+  // 境目。開始と終了が同じ枠は通る。
+  it("accepts a slot that starts and ends at the same minute", () => {
+    assert.deepStrictEqual(openDay([{ start: 660, end: 660 }]), [[], []]);
+  });
+
+  // 真夜中は 0。偽値なので、空欄と取り違えると深夜営業の店舗が保存できなくなる。
+  it("treats midnight as a time, not as an empty field", () => {
+    assert.deepStrictEqual(openDay([{ start: 0, end: 840 }]), [[], []]);
+    assert.deepStrictEqual(openDay([{ start: 0, end: 0 }]), [[], []]);
+    assert.deepStrictEqual(openDay([{ start: 0, end: null }]), [
+      ["validationError.oneInEmpty"],
+      [],
+    ]);
+  });
+
+  it("points at the slot that is wrong, not the other one", () => {
+    assert.deepStrictEqual(
+      openDay([
+        { start: 660, end: 840 },
+        { start: 1320, end: 1020 },
+      ]),
+      [[], ["validationError.validBusinessTime"]],
+    );
+  });
+
+  it("ignores anything beyond the two slots", () => {
+    assert.deepStrictEqual(
+      openDay([
+        { start: 660, end: 840 },
+        { start: 1020, end: 1320 },
+        { start: 1320, end: 1020 },
+      ]),
+      [[], []],
+    );
+  });
+});
+
+// 検証を通して見たときも同じ答えになること。曜日ごとに別々に見る。
 describe("shopInfoValidator — 営業時間", () => {
-  const timeErrors = (businessDay: unknown, openTimes: unknown) => {
+  const timeErrors = (
+    businessDay: { [key: string]: string[] },
+    openTimes: { [key: string]: { start: number; end: number }[] },
+  ) => {
     const value = errorsFor({ businessDay, openTimes }).time;
     assert.ok(value && !Array.isArray(value), "time が入れ子になっていない");
     return value;
   };
-  const monday = (openTimes: unknown) =>
-    timeErrors({ "1": true }, openTimes)["1"];
 
   it("reports two slots for every day of the week", () => {
     const all = timeErrors({}, {});
@@ -289,89 +405,25 @@ describe("shopInfoValidator — 営業時間", () => {
     });
   });
 
-  // 休業日は時間を見ない。見ると、閉めている曜日の空欄で保存が止まる。
-  it("says nothing about a day the shop is closed", () => {
-    assert.deepStrictEqual(timeErrors({ "1": false }, { "1": [] })["1"], [
-      [],
-      [],
-    ]);
-    assert.deepStrictEqual(timeErrors({}, { "1": [] })["1"], [[], []]);
-  });
-
-  it("wants a first slot on a day the shop is open", () => {
-    assert.deepStrictEqual(monday({ "1": [] }), [
-      ["validationError.noSelect"],
-      [],
-    ]);
-    assert.deepStrictEqual(monday({}), [["validationError.noSelect"], []]);
-  });
-
-  // 2枠目は任意。夜の部を置かない店舗が止まらないように。
-  it("does not ask for a second slot", () => {
-    assert.deepStrictEqual(monday({ "1": [{ start: 660, end: 840 }] }), [
-      [],
-      [],
-    ]);
-  });
-
-  it("accepts a day with both slots filled", () => {
-    assert.deepStrictEqual(
-      monday({
-        "1": [
-          { start: 660, end: 840 },
-          { start: 1020, end: 1320 },
-        ],
-      }),
-      [[], []],
-    );
-  });
-
-  it("complains when only one end of a slot is set", () => {
-    assert.deepStrictEqual(monday({ "1": [{ start: 660 }] }), [
-      ["validationError.oneInEmpty"],
-      [],
-    ]);
-    assert.deepStrictEqual(monday({ "1": [{ end: 840 }] }), [
-      ["validationError.oneInEmpty"],
-      [],
-    ]);
-  });
-
-  it("complains when a slot ends before it starts", () => {
-    assert.deepStrictEqual(monday({ "1": [{ start: 900, end: 660 }] }), [
-      ["validationError.validBusinessTime"],
-      [],
-    ]);
-  });
-
-  // 境目。開始と終了が同じ枠は通る。
-  it("accepts a slot that starts and ends at the same minute", () => {
-    assert.deepStrictEqual(monday({ "1": [{ start: 660, end: 660 }] }), [
-      [],
-      [],
-    ]);
-  });
-
-  it("points at the slot that is wrong, not the other one", () => {
-    assert.deepStrictEqual(
-      monday({
-        "1": [
-          { start: 660, end: 840 },
-          { start: 1320, end: 1020 },
-        ],
-      }),
-      [[], ["validationError.validBusinessTime"]],
-    );
-  });
-
   it("checks each day of the week on its own", () => {
     const all = timeErrors(
-      { "1": true, "2": true },
+      { "1": ["open"], "2": ["open"] },
       { "1": [{ start: 660, end: 840 }], "2": [] },
     );
     assert.deepStrictEqual(all["1"], [[], []]);
     assert.deepStrictEqual(all["2"], [["validationError.noSelect"], []]);
     assert.deepStrictEqual(all["3"], [[], []]);
+  });
+
+  it("carries a wrong slot through to the field the screen reads", () => {
+    const all = timeErrors(
+      { "1": ["open"] },
+      { "1": [{ start: 900, end: 660 }] },
+    );
+    assert.deepStrictEqual(all["1"], [
+      ["validationError.validBusinessTime"],
+      [],
+    ]);
   });
 });
 
