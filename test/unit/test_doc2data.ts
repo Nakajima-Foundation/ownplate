@@ -1,5 +1,6 @@
 import { describe, it } from "node:test";
 import assert from "node:assert";
+import type { DocumentData } from "firebase/firestore";
 import { doc2data } from "../../src/utils/utils.ts";
 
 // Firestore から読むデータはほぼ全部ここを通る。id を書き足し、どの種類かの印を付ける。
@@ -8,9 +9,9 @@ import { doc2data } from "../../src/utils/utils.ts";
 // 引数の型が Firestore の snapshot 全体だったときは、この試験が書けなかった。
 // 使うのは id と data() だけなので、型をその2つに狭めてある。
 
-const snapshotOf = (id: string, data: unknown) => ({
+const snapshotOf = (id: string, data: DocumentData | undefined) => ({
   id,
-  data: () => data as Record<string, unknown> | undefined,
+  data: () => data,
 });
 
 describe("doc2data", () => {

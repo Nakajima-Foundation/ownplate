@@ -8,7 +8,7 @@ omochikaeri-docs#204
 それなのに引数の型が `DocumentSnapshot | QueryDocumentSnapshot`（`metadata` / `exists` /
 `get` / `toJSON` / `ref` を含む）になっていて、**試験から呼べなかった**。
 
-Firestore から読むデータはほぼ全部ここを通り、呼び手は20ファイル。試験はゼロだった。
+Firestore から読むデータはほぼ全部ここを通る。試験はゼロだった。
 
 ## 直す範囲
 
@@ -19,7 +19,7 @@ Firestore の `DocumentSnapshot` も `QueryDocumentSnapshot` もこの形を構�
 
 ## 呼び手が影響を受けないことの確かめ方
 
-**`tsc` では足りない。** 呼び手20本のうち **16本が `.vue`** で、`tsc` は `.vue` を読まない。
+**`tsc` では足りない。** 呼び手の大半が `.vue` で、`tsc` は `.vue` を読まない。
 `yarn build` の中の checker も `typescript: true` で素の `tsc` なので同じ。
 
 `vue-tsc` を変更の前後で走らせ、**エラーの集合が一致すること**で確かめる
