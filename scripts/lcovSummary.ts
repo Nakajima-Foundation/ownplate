@@ -104,7 +104,9 @@ export const formatCell = (count: CoverageCount) => {
   return `${colorOf(percent)} ${percent.toFixed(2)}% \`${barOf(percent)}\``;
 };
 
-const escapeCell = (text: string) => text.replace(/\|/g, "\\|");
+// A backslash before our escaped pipe would un-escape it, so Windows separators become "/" first.
+const escapeCell = (text: string) =>
+  text.replace(/\\/g, "/").replace(/\|/g, "\\|");
 
 const fileRow = (file: FileCoverage) =>
   `| \`${escapeCell(file.file)}\` | ${METRICS.map((metric) => formatCell(file[metric])).join(" | ")} |`;

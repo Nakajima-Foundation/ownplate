@@ -146,6 +146,14 @@ describe("renderCoverageMarkdown", () => {
     );
   });
 
+  it("keeps a pipe escaped when a backslash comes before it", () => {
+    const markdown = renderCoverageMarkdown(
+      "t",
+      parseLcov(record("C:\\x\\|y.ts", [])),
+    );
+    assert.match(markdown, /`C:\/x\/\\\|y\.ts`/);
+  });
+
   it("renders an empty report without failing", () => {
     assert.match(renderCoverageMarkdown("t", []), /Files \(0\)/);
   });
