@@ -5,7 +5,7 @@ omochikaeri-docs#194
 ## 何が問題か
 
 `src/utils/phoneutil.ts` が CommonJS の `google-libphonenumber` から名前付き import をしている。
-root は `"type": "module"` なので、node の ESM 側はこのパッケージの名前を静的に読めず落ちる。
+リポジトリ直下は `"type": "module"` なので、node の ESM 側はこのパッケージの名前を静的に読めず落ちる。
 
 画面は壊れていない（vite が CommonJS を事前に束ねる）。壊れているのは node から読めないことで、
 そのぶん単体試験が書けない。`src/` の ts を node で読ませると、詰まる17本のうち12本がこの1本に起因していた。
@@ -19,11 +19,11 @@ root は `"type": "module"` なので、node の ESM 側はこのパッケージ
 
 ## 確かめ方
 
-このファイルは `scripts/copy2functions.sh` で functions 側へコピーされ、あちらは `tsc` で JS に落とす。
+このファイルは `scripts/copy2functions.sh` で `functions/` 配下へコピーされ、あちらは `tsc` で JavaScript に変換する。
 **両側を通す**:
 
-- root: `yarn typecheck:test` / `yarn test` / `yarn build`
-- functions: `sh scripts/copy2functions.sh` のあと `yarn build` と `tests/unit/phoneutil_test.ts`
+- 直下: `yarn typecheck:test` / `yarn test` / `yarn build`
+- `functions/` 配下: `sh scripts/copy2functions.sh` のあと `yarn build` と `tests/unit/phoneutil_test.ts`
 - node から実際に電話番号を整形させて、値が変わらないこと
 
 `yarn typecheck:test` だけでは足りない。eslint は vite build の中で走るため。
