@@ -1,10 +1,6 @@
 import { ref, computed, onMounted, Ref } from "vue";
 import type { User } from "firebase/auth";
-import type {
-  DocumentData,
-  DocumentSnapshot,
-  QueryDocumentSnapshot,
-} from "firebase/firestore";
+import type { DocumentData } from "firebase/firestore";
 
 import { ShopOwnerData, PartnerData } from "@/models/ShopOwner";
 import { OrderInfoData, OrderItemData } from "@/models/orderInfoData";
@@ -113,9 +109,10 @@ export const shareUrl = (prefix: string) => {
 };
 
 export const doc2data = <T = DocumentData>(dataType: string) => {
-  return (
-    _doc: DocumentSnapshot<DocumentData> | QueryDocumentSnapshot<DocumentData>,
-  ): T => {
+  // 受け取るのは Firestore の snapshot だが、使うのは id と data() だけ。型をその2つに
+  // 狭めてあるので、試験から最小の値で呼べる。Firestore の DocumentSnapshot も
+  // QueryDocumentSnapshot もこの形を構造的に満たすため、呼び出し側は変わらない。
+  return (_doc: { id: string; data: () => DocumentData | undefined }): T => {
     const data = _doc.data() || ({} as DocumentData);
     data.id = _doc.id;
     data._dataType = dataType;
