@@ -7,7 +7,7 @@
   "type": "module",
   "scripts": {
     "start": "vite",
-    "test": "node --test test/unit/test_*.ts",
+    "test": "node --import tsx --test test/unit/test_*.ts",
     "typecheck:test": "tsc --noEmit -p tsconfig.test.json",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
@@ -73,6 +73,7 @@
     "prettier-plugin-tailwindcss": "^0.8.1",
     "raw-loader": "^4.0.2",
     "tailwindcss": "^4.3.3",
+    "tsx": "^4.23.15",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.70.0",
     "vite-plugin-checker": "^0.14.5",
