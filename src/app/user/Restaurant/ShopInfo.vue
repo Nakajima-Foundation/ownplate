@@ -283,13 +283,13 @@ import { formatURL } from "@/utils/phoneutil";
 import { ownPlateConfig, GAPIKey } from "@/config/project";
 import { usePickupTime } from "@/utils/pickup";
 import {
-  isNull,
   useNationalPhoneNumber,
   validUrl,
   validLocation,
   validPlaceId,
   num2time,
 } from "@/utils/utils";
+import { isNull } from "@/utils/commonUtils";
 
 import TransactionsAct from "@/app/user/TransactionsAct.vue";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";

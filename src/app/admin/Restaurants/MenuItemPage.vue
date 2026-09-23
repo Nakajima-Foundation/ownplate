@@ -838,14 +838,13 @@ import Checkbox from "@/components/form/checkbox.vue";
 
 import ImageUpload from "@/components/ImageUpload.vue";
 
-import { taxRates, daysOfWeek } from "@/config/constant";
+import { taxRates, daysOfWeek, regionalSetting } from "@/config/constant";
 import { ownPlateConfig } from "@/config/project";
 import { halfCharactors } from "@/utils/strings";
 import { optionPrice } from "@/utils/commonUtils";
 import {
   doc2data,
   useAdminUids,
-  regionalSetting,
   stripeRegion,
   countObj,
   taxRate,

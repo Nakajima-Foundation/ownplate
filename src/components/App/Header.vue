@@ -26,7 +26,8 @@
 
 <script lang="ts">
 import { defineComponent, computed } from "vue";
-import { useTopPath, regionalSetting, useRestaurantId } from "@/utils/utils";
+import { useTopPath, useRestaurantId } from "@/utils/utils";
+import { regionalSetting } from "@/config/constant";
 
 export default defineComponent({
   emits: ["handleOpen"],

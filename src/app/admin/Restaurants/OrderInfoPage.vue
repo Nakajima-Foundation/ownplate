@@ -554,7 +554,7 @@ import ButtonLoading from "@/components/form/Loading.vue";
 import CancelModal from "@/app/admin/Order/CancelModal.vue";
 import PaymentCancelModal from "@/app/admin/Order/PaymentCancelModal.vue";
 
-import { costCal } from "@/utils/commonUtils";
+import { costCal, isEmpty } from "@/utils/commonUtils";
 import { downloadOrderPdf, printOrder, data2UrlSchema } from "@/lib/pdf/pdf2";
 
 import { checkShopAccount } from "@/utils/userPermission";
@@ -566,7 +566,6 @@ import {
   stripeRegion,
   convOrderStateForText,
   isDev,
-  isEmpty,
   // isNull,
   getShopOwner,
   getOrderItems,

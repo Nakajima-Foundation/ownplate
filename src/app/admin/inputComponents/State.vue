@@ -30,7 +30,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 
-import { regionalSetting } from "@/utils/utils";
+import { regionalSetting } from "@/config/constant";
 
 export default defineComponent({
   name: "State",

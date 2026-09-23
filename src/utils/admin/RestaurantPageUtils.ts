@@ -1,7 +1,7 @@
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
-import { isValidInvoiceNumber } from "@/utils/commonUtils";
+import { isValidInvoiceNumber, isNull } from "@/utils/commonUtils";
 import { getCopyShopInfo, getEditShopInfo } from "./shopInfoPayload";
-import { isNull, cleanObject } from "@/utils/utils";
+import { cleanObject } from "@/utils/utils";
 import { reservationTheDayBefore, daysOfWeek } from "@/config/constant";
 
 import { db } from "@/lib/firebase/firebase9";

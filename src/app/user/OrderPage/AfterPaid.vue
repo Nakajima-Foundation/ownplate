@@ -225,7 +225,8 @@ import { stripeCancelIntent } from "@/lib/firebase/functions";
 
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
-import { isEmpty, validUrl } from "@/utils/utils";
+import { validUrl } from "@/utils/utils";
+import { isEmpty } from "@/utils/commonUtils";
 
 import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
