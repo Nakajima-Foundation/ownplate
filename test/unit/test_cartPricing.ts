@@ -17,6 +17,10 @@ import { restaurantInfoFixture } from "../fixtures/restaurantInfo.ts";
 //
 // 画面が出す金額とオプション名はこの連鎖で決まる。サーバは注文を受けたあと rawOptions から
 // 同じものを作り直す（ownplate#1825）ので、ここがずれると客が見た額と請求額が食い違う。
+//
+// 選んだ位置は文字列で渡す。utils.ts の SelectedOption がそう宣言しているため。正本の
+// OptionValue（models/orderTypes.ts）は数値も許しており、実行時はどちらも通る
+// （test_optionPrice.ts が両方を留めている）。
 
 const YEN = 1;
 
@@ -30,7 +34,7 @@ describe("カートの金額", () => {
 
   const totalOf = (
     orders: { [key: string]: number[] },
-    selected: { [key: string]: (boolean | string | number)[][] },
+    selected: { [key: string]: (boolean | string)[][] },
   ) => {
     const trimmed = getTrimmedSelectedOptions(orders, cartItems, selected);
     const prices = getPrices(YEN, orders, cartItems, trimmed);
@@ -39,21 +43,21 @@ describe("カートの金額", () => {
 
   it("adds the chosen option to the item's own price", () => {
     assert.strictEqual(
-      totalOf({ bento: [1] }, { bento: [[3, true]] }).bento,
+      totalOf({ bento: [1] }, { bento: [["3", true]] }).bento,
       1350,
     );
   });
 
   it("charges nothing extra when no option is chosen", () => {
     assert.strictEqual(
-      totalOf({ bento: [1] }, { bento: [[0, false]] }).bento,
+      totalOf({ bento: [1] }, { bento: [["0", false]] }).bento,
       1000,
     );
   });
 
   it("multiplies by how many were ordered", () => {
     assert.strictEqual(
-      totalOf({ bento: [2] }, { bento: [[3, true]] }).bento,
+      totalOf({ bento: [2] }, { bento: [["3", true]] }).bento,
       2700,
     );
   });
@@ -64,8 +68,8 @@ describe("カートの金額", () => {
       { bento: [1, 2] },
       {
         bento: [
-          [3, true],
-          [1, false],
+          ["3", true],
+          ["1", false],
         ],
       },
     );
@@ -135,7 +139,7 @@ describe("選んだ選択肢の名前", () => {
 
   it("names what the customer actually picked", () => {
     const trimmed = getTrimmedSelectedOptions({ bento: [1] }, cartItems, {
-      bento: [[3, true]],
+      bento: [["3", true]],
     });
     assert.deepStrictEqual(getPostOption(trimmed, cartItems).bento, [
       ["L(+300)", "のり(+50)"],
@@ -144,7 +148,7 @@ describe("選んだ選択肢の名前", () => {
 
   // 金額と名前は同じ選択から出る。片方だけずれるとレシートと請求額が食い違う。
   it("names the choice the price was taken from", () => {
-    const selected = { bento: [[1, false]] };
+    const selected = { bento: [["1", false]] };
     const trimmed = getTrimmedSelectedOptions(
       { bento: [1] },
       cartItems,
@@ -165,7 +169,7 @@ describe("選んだ選択肢の名前", () => {
       bento: menuFixture({ price: 1000, itemOptionCheckbox: ["のり(+50)"] }),
     };
     const trimmed = getTrimmedSelectedOptions({ bento: [1] }, fewerGroups, {
-      bento: [[3, true]],
+      bento: [["3", true]],
     });
     assert.strictEqual(trimmed.bento[0].length, 1);
     assert.strictEqual(
