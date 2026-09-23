@@ -48,12 +48,8 @@ import NotFound from "@/components/NotFound.vue";
 import { PartnerData } from "@/models/ShopOwner";
 import { ping } from "@/lib/firebase/functions";
 
-import {
-  getShopOwner,
-  getPartner,
-  useRestaurantId,
-  useAdminUids,
-} from "@/utils/utils";
+import { getPartner, useRestaurantId, useAdminUids } from "@/utils/utils";
+import { getShopOwner } from "@/utils/shopOwner";
 import { regionalSetting } from "@/config/constant";
 
 import { defaultShopInfo } from "@/utils/admin/RestaurantPageUtils";
