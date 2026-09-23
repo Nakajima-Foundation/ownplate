@@ -74,6 +74,61 @@ describe("getNewItemData", () => {
     );
   });
 
+  // 別名・昼夜・除外日は、設定されていればそのまま持ち越す。既定へ倒すと店舗の設定が消える。
+  it("carries the alias the owner typed", () => {
+    const item = menuFixture({ itemAliasesName: "からあげ" });
+    assert.strictEqual(
+      getNewItemData(item, JP, VALIDATED).itemAliasesName,
+      "からあげ",
+    );
+  });
+
+  it("gives an item with no alias an empty one rather than nothing", () => {
+    const item = menuFixture({ itemAliasesName: "" });
+    assert.strictEqual(getNewItemData(item, JP, VALIDATED).itemAliasesName, "");
+  });
+
+  it("carries the lunch and dinner settings across", () => {
+    const both = getNewItemData(
+      menuFixture({ availableLunch: true, availableDinner: true }),
+      JP,
+      VALIDATED,
+    );
+    assert.strictEqual(both.availableLunch, true);
+    assert.strictEqual(both.availableDinner, true);
+
+    const neither = getNewItemData(
+      menuFixture({ availableLunch: false, availableDinner: false }),
+      JP,
+      VALIDATED,
+    );
+    assert.strictEqual(neither.availableLunch, false);
+    assert.strictEqual(neither.availableDinner, false);
+
+    const lunchOnly = getNewItemData(
+      menuFixture({ availableLunch: true, availableDinner: false }),
+      JP,
+      VALIDATED,
+    );
+    assert.strictEqual(lunchOnly.availableLunch, true);
+    assert.strictEqual(lunchOnly.availableDinner, false);
+  });
+
+  it("carries the days the item is not sold on", () => {
+    const item = menuFixture({ exceptDay: { "0": true, "6": true } });
+    assert.deepStrictEqual(getNewItemData(item, JP, VALIDATED).exceptDay, {
+      "0": true,
+      "6": true,
+    });
+  });
+
+  it("gives an item with no excluded days an empty holder", () => {
+    assert.deepStrictEqual(
+      getNewItemData(menuFixture(), JP, VALIDATED).exceptDay,
+      {},
+    );
+  });
+
   it("keeps the options the owner set", () => {
     const item = menuFixture({ itemOptionCheckbox: ["サイズ,S,M", "のり"] });
     assert.deepStrictEqual(
@@ -116,6 +171,12 @@ describe("getNewItemData の除外時間", () => {
   // 逆順に打たれたら入れ替える。そのまま保存すると、どの時刻も範囲に入らない。
   it("turns a backwards range around instead of storing it as typed", () => {
     assert.deepStrictEqual(exceptHourOf(17, 14), { start: 14, end: 17 });
+  });
+
+  // 開始と終了が同じ。> を >= にすると入れ替えが起きて、同じ値どうしなので結果は変わらないが、
+  // 逆に >= を > にした場合との差はここにしか出ない。
+  it("keeps a range whose ends are the same", () => {
+    assert.deepStrictEqual(exceptHourOf(14, 14), { start: 14, end: 14 });
   });
 
   it("stores nothing when either end is missing", () => {
@@ -165,6 +226,12 @@ describe("copyMenuData", () => {
     assert.strictEqual(copied.itemName, "から揚げ");
     assert.strictEqual(copied.price, 800);
     assert.deepStrictEqual(copied.itemOptionCheckbox, ["サイズ,S,M"]);
+  });
+
+  // 消された商品を複製しても、複製は消えていない状態で作られる。
+  it("makes the copy not deleted, even from a deleted original", () => {
+    const deleted = menuFixture({ deletedFlag: true });
+    assert.strictEqual(copyMenuData(deleted, JP, OWNER).deletedFlag, false);
   });
 
   it("clears sold-out on the copy", () => {

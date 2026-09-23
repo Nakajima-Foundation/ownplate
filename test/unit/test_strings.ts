@@ -59,6 +59,18 @@ describe("formatOption", () => {
     assert.strictEqual(formatOption("ゼロ(+0)", asIs), "ゼロ(0)");
   });
 
+  // + を付けるかどうかの境目は 0。1円でも足すなら + が要る。
+  it("marks the smallest rise there is", () => {
+    assert.strictEqual(formatOption("一円(+1)", asIs), "一円(+1)");
+    assert.strictEqual(formatOption("小数(+0.5)", asIs), "小数(+0.5)");
+  });
+
+  // 引く側の境目も見る。-1 に + が付くと値引きが値上げになる。
+  it("marks the smallest fall there is", () => {
+    assert.strictEqual(formatOption("一円引(-1)", asIs), "一円引(-1)");
+    assert.strictEqual(formatOption("小数引(-0.5)", asIs), "小数引(-0.5)");
+  });
+
   it("hands the price to the caller's formatter, not to its own", () => {
     assert.strictEqual(
       formatOption("L(+1000)", (price) => price.toLocaleString("en-US")),
