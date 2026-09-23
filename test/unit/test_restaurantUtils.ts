@@ -10,7 +10,9 @@ import { restaurantInfoFixture } from "../fixtures/restaurantInfo.ts";
 // 店舗一覧を都道府県ごとに束ねる。束ね漏れると、その県の店舗が一覧から消える。
 //
 // 引数の型が QueryDocumentSnapshot だったときは、この試験が書けなかった。使うのは
-// id と data() だけなので、型をその2つに狭めてある。
+// id と data() だけなので、型をその2つに狭めてある。data() の戻りは DocumentData のまま
+// にしてある。RestaurantInfoData まで狭めると、Firestore の data() が DocumentData を
+// 返すので呼び出し側が通らなくなる（一度そうして vue-tsc に2件出された）。
 const docOf = (id: string, name: string, state: string) => ({
   id,
   data: () => restaurantInfoFixture({ restaurantName: name, state }),
