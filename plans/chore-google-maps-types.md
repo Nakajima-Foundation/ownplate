@@ -12,11 +12,14 @@ omochikaeri-docs#202 の一部。
 
 ## やること
 
-- `@types/google.maps` を開発時の依存に入れる
-- `tsconfig.json` の `types` に `"google.maps"` を足す
+`tsconfig.json` の `types` に `"google.maps"` を足す。**それだけ。**
 
-**`types` が明示指定されているので、パッケージを入れるだけでは効かない。** 入れただけの状態で
-測ったら件数は1件も変わらなかった。`types` に列挙して初めて拾われる。
+`@types/google.maps` は**既に開発時の依存に入っていた**（`^3.66.3`）。入っているのに
+`tsconfig.json` の `types` が `["vite/client", "@types/gtag.js"]` と明示指定されているため、
+列挙されていない型が拾われていなかった。
+
+念のため `yarn add -D @types/google.maps` を実行したが、同じ版が既にあり **無動作**だった。
+足りなかったのは1語だけ。
 
 ## 効果
 
