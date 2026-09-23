@@ -1,4 +1,5 @@
 import type { MenuData } from "../models/menu";
+import type { OptionValue } from "../models/orderTypes";
 
 interface PostageInfo {
   freeThreshold: number;
@@ -23,30 +24,44 @@ export const costCal = (
   return 0;
 };
 
-// オプションは "サイズ,S(+100),M(+200)" のように、1つの組を1つの文字列に詰めて保存する。
-// 追加料金は選択肢の名前の中に "(+100)" の形で書かれ、全角の ＋ ー − も使われる。
 export const optionPriceRegex = /\(((\+|-|＋|ー|−)[0-9.]+)\)/;
 
-export const convOptionPrice = (priceStr: string): number =>
+export const toSignedNumber = (priceStr: string): number =>
   Number(priceStr.replace(/ー|−/g, "-").replace(/＋/g, "+"));
 
-// 空や欠けた選択肢でも落ちない。注文は選んだオプションを**位置**で保存するので、店舗が
-// あとから組を減らすと、既存の注文から存在しない選択肢を引くことが実際に起きる。投げると
-// 店主には「internal」としか出ない。
-export const optionPrice = (option: string | null | undefined): number => {
-  const match = (option ?? "").match(optionPriceRegex);
-  return match ? convOptionPrice(match[1]) : 0;
+export const optionPrice = (choice: string | null | undefined): number => {
+  const match = (choice ?? "").match(optionPriceRegex);
+  return match ? toSignedNumber(match[1]) : 0;
 };
 
-// 位置で指された組の選択肢。組が無いときは [""] を返す。
-//
-// 空配列ではない。呼び出し側は length === 1 を「入／切のひとつ」と読んで opt[0] の金額を
-// 足すので、空配列だと opt[0] が undefined になって同じ落ち方に戻る。[""] なら 0 円として
-// 通る。組が消えているのは「選ばれていない」と同じ扱いにするのが、いちばん害が小さい。
+// 組が無いときも [""] を返す。空配列だと、選択肢ひとつの組として choices[0] を読む
+// 呼び出し側がそこで落ちる。
 export const optionChoicesAt = (
   itemOptionCheckbox: string[] | null | undefined,
   index: number,
 ): string[] => ((itemOptionCheckbox ?? [])[index] ?? "").split(",");
+
+const isSingleChoiceGroup = (choices: string[]): boolean =>
+  choices.length === 1;
+
+const roundedOptionPrice = (choice: string, priceMultiple: number): number =>
+  Math.round(optionPrice(choice) * priceMultiple) / priceMultiple;
+
+export const selectedOptionsPrice = (
+  selectedOptions: OptionValue[],
+  itemOptionCheckbox: string[] | null | undefined,
+  priceMultiple: number,
+  basePrice = 0,
+): number =>
+  selectedOptions.reduce((total: number, selected, index) => {
+    const choices = optionChoicesAt(itemOptionCheckbox, index);
+    if (isSingleChoiceGroup(choices)) {
+      return selected
+        ? total + roundedOptionPrice(choices[0], priceMultiple)
+        : total;
+    }
+    return total + roundedOptionPrice(choices[Number(selected)], priceMultiple);
+  }, basePrice);
 
 export const isNull = (value: unknown): value is null | undefined => {
   return value === null || value === undefined;

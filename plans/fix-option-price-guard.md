@@ -30,16 +30,31 @@ omochikaeri-docs#187 の PR A（金額は変えない）
 寄せ先は `src/utils/commonUtils.ts`。`src/` と `functions/src/` で共有される正本で、
 `firebase.json` の predeploy と CI の両方がコピーする。
 
+## 選択したオプションの合計も1つに寄せる
+
+買い物かご（`src/utils/utils.ts` の `getPrices`）と注文の確定（`functions/src/functions/order/orderCreated.ts`
+の `getOptionPrice`）が、**同じ規則を別々に書いていた**。片方だけ直すと、客が見た金額と実際に
+請求される金額が食い違う。`selectedOptionsPrice` として `commonUtils.ts` に寄せ、両方がそこを通る。
+
+これは純粋関数なので `node:test` で試験でき、CI の `yarn test`（`build-vue`）で回る。いままで
+この経路を通る試験は**どこでも走っていなかった**（`functions/tests/order_test.ts` は mocha 前提で、
+`mocha` が `functions/package.json` の依存に入っておらず、CI の `ci_test` にも含まれない）。
+
+畳み込みの初期値は呼び出し側から渡す。買い物かごは `menu.price` を初期値にしていて、サーバは
+0 から始めて後から足していた。浮動小数の足し算は順序で結果が変わりうるので、形を揃えずに
+どちらもそのままにする。
+
 ## 変更するもの
 
-- `src/utils/commonUtils.ts` — `optionPriceRegex` / `convOptionPrice` / `optionPrice` /
-  `optionChoicesAt` を置く
+- `src/utils/commonUtils.ts` — `optionPriceRegex` / `toSignedNumber` / `optionPrice` /
+  `optionChoicesAt` / `selectedOptionsPrice` を置く
 - `src/utils/strings.ts` — 自前の複製を消し、`formatOption` は寄せた規則を使う
 - `src/utils/utils.ts` — 自前の複製を消す。`getPrices` と `getPostOption` の組の取り出しを
   `optionChoicesAt` にする
 - `functions/src/lib/utils.ts` — 自前の複製を消す
-- `functions/src/functions/order/orderCreated.ts` — `getOptionPrice` の組の取り出しを
-  `optionChoicesAt` にし、`optionPrice` を寄せ先から呼ぶ
+- `functions/src/functions/order/orderCreated.ts` — `getOptionPrice` を消し、
+  `selectedOptionsPrice` を通す
+- `test/unit/test_optionPrice.ts` — 寄せた規則の試験（`node:test`、CI の `yarn test` で回る）
 
 ## 挙動が変わらないことの確かめ方
 
@@ -48,6 +63,10 @@ omochikaeri-docs#187 の PR A（金額は変えない）
 
 旧い実装が投げていた入力（`undefined` / 範囲外）でだけ結果が変わる。そこは「投げる」から
 「0円として扱う」への変更なので、旧い側が投げたことも記録して比べる。
+
+比べるのは関数の返り値だけでなく、**商品1点の価格そのもの**（基本価格 + オプションの合計）。
+比較は `Object.is` で行う。丸めたあとに比べると、浮動小数の足し算の順序が変わったことを
+見落とす。
 
 ## 確認すること
 

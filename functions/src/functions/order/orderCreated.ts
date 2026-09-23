@@ -9,25 +9,15 @@ import { OrderData, OptionValue } from "../../lib/types/order";
 import { RestaurantInfoData } from "../../models/RestaurantInfo";
 import { MenuData, MenuItem } from "../../models/menu";
 import { validateOrderCreated } from "../../lib/validator";
-import { optionChoicesAt, optionPrice } from "../../utils/commonUtils";
+import { selectedOptionsPrice } from "../../utils/commonUtils";
 import { Context } from "../../models/TestType";
 
-const getOptionPrice = (selectedOptionsRaw: OptionValue[], menu: MenuData, multiple: number) => {
-  return selectedOptionsRaw.reduce((tmpPrice: number, selectedOpt: OptionValue, key: number) => {
-    const opt = optionChoicesAt(menu.itemOptionCheckbox, key);
-    if (opt.length === 1) {
-      if (selectedOpt) {
-        return tmpPrice + Math.round(optionPrice(opt[0]) * multiple) / multiple;
-      }
-    } else {
-      const optIndex = typeof selectedOpt === "number" ? selectedOpt : Number(selectedOpt);
-      return tmpPrice + Math.round(optionPrice(opt[optIndex]) * multiple) / multiple;
-    }
-    return tmpPrice;
-  }, 0);
-};
-
-export const orderAccounting = (restaurantData: RestaurantInfoData, food_sub_total: number, alcohol_sub_total: number, multiple: number) => {
+export const orderAccounting = (
+  restaurantData: RestaurantInfoData,
+  food_sub_total: number,
+  alcohol_sub_total: number,
+  multiple: number,
+) => {
   // tax rate
   const inclusiveTax = restaurantData.inclusiveTax || false;
   const alcoholTax = restaurantData.alcoholTax || 0;
@@ -39,8 +29,13 @@ export const orderAccounting = (restaurantData: RestaurantInfoData, food_sub_tot
     throw new Error("invalid order: total 0 ");
   }
   if (inclusiveTax) {
-    const food_tax = Math.round(food_sub_total * (1 - 1 / (1 + foodTax / 100)) * multiple) / multiple;
-    const alcohol_tax = Math.round(alcohol_sub_total * (1 - 1 / (1 + alcoholTax / 100)) * multiple) / multiple;
+    const food_tax =
+      Math.round(food_sub_total * (1 - 1 / (1 + foodTax / 100)) * multiple) /
+      multiple;
+    const alcohol_tax =
+      Math.round(
+        alcohol_sub_total * (1 - 1 / (1 + alcoholTax / 100)) * multiple,
+      ) / multiple;
     const tax = food_tax + alcohol_tax;
     return {
       tax,
@@ -53,8 +48,11 @@ export const orderAccounting = (restaurantData: RestaurantInfoData, food_sub_tot
       alcohol_tax,
     };
   } else {
-    const food_tax = Math.round(((food_sub_total * foodTax) / 100) * multiple) / multiple;
-    const alcohol_tax = Math.round(((alcohol_sub_total * alcoholTax) / 100) * multiple) / multiple;
+    const food_tax =
+      Math.round(((food_sub_total * foodTax) / 100) * multiple) / multiple;
+    const alcohol_tax =
+      Math.round(((alcohol_sub_total * alcoholTax) / 100) * multiple) /
+      multiple;
     const tax = food_tax + alcohol_tax;
 
     const total = sub_total + tax;
@@ -75,10 +73,22 @@ export const orderAccounting = (restaurantData: RestaurantInfoData, food_sub_tot
 export const createNewOrderData = async (
   restaurantRef: DocumentReference,
   orderRef: DocumentReference,
-  orderData: Partial<OrderData> & { order: { [menuId: string]: number | number[] }; rawOptions?: { [menuId: string]: OptionValue[][] } },
+  orderData: Partial<OrderData> & {
+    order: { [menuId: string]: number | number[] };
+    rawOptions?: { [menuId: string]: OptionValue[][] };
+  },
   multiple: number,
 ): Promise<
-  | { result: true, data: { newOrderData: { [menuId: string]: number[] }; newItems: { [menuId: string]: MenuItem }; newPrices: { [menuId: string]: number[] }; food_sub_total: number; alcohol_sub_total: number }}
+  | {
+      result: true;
+      data: {
+        newOrderData: { [menuId: string]: number[] };
+        newItems: { [menuId: string]: MenuItem };
+        newPrices: { [menuId: string]: number[] };
+        food_sub_total: number;
+        alcohol_sub_total: number;
+      };
+    }
   | { result: false }
 > => {
   const menuIds = Object.keys(orderData.order);
@@ -126,7 +136,11 @@ export const createNewOrderData = async (
         return;
       }
       const rawOptions = orderData.rawOptions?.[menuId]?.[orderKey];
-      const price = menu.price + (rawOptions ? getOptionPrice(rawOptions, menu, multiple) : 0);
+      const price =
+        menu.price +
+        (rawOptions
+          ? selectedOptionsPrice(rawOptions, menu.itemOptionCheckbox, multiple)
+          : 0);
       newOrder.push(num);
       prices.push(price * num);
     });
@@ -166,7 +180,11 @@ export const createNewOrderData = async (
   };
 };
 
-export const orderCreated = async (db: Firestore, data: OrderCreatedData, context: functions.https.CallableContext | Context) => {
+export const orderCreated = async (
+  db: Firestore,
+  data: OrderCreatedData,
+  context: functions.https.CallableContext | Context,
+) => {
   const customerUid = utils.validate_customer_auth(context);
 
   const { restaurantId, orderId } = data;
@@ -175,7 +193,10 @@ export const orderCreated = async (db: Firestore, data: OrderCreatedData, contex
   const validateResult = validateOrderCreated(data);
   if (!validateResult.result) {
     console.error("orderCreated", validateResult.errors);
-    throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+    throw new functions.https.HttpsError(
+      "invalid-argument",
+      "Validation Error.",
+    );
   }
 
   const restaurantRef = db.doc(`restaurants/${restaurantId}`);
@@ -200,41 +221,79 @@ export const orderCreated = async (db: Firestore, data: OrderCreatedData, contex
     const order = await orderRef.get();
 
     if (!order) {
-      throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
+      throw new functions.https.HttpsError(
+        "invalid-argument",
+        "This order does not exist.",
+      );
     }
     const orderData = order.data() as OrderData | undefined;
 
-    if (!orderData || !orderData.status || orderData.status !== order_status.new_order || !orderData.uid || orderData.uid !== customerUid) {
+    if (
+      !orderData ||
+      !orderData.status ||
+      orderData.status !== order_status.new_order ||
+      !orderData.uid ||
+      orderData.uid !== customerUid
+    ) {
       console.log("invalid order:" + String(orderId));
-      throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
+      throw new functions.https.HttpsError(
+        "invalid-argument",
+        "This order does not exist.",
+      );
     }
 
     // validate
     const ownerUid = restaurantData.uid;
     const { isDelivery, isLiff, lunchOrDinner } = orderData;
     if (isDelivery && !restaurantData.enableDelivery) {
-      throw new functions.https.HttpsError("invalid-argument", "Invalid delivery order.");
+      throw new functions.https.HttpsError(
+        "invalid-argument",
+        "Invalid delivery order.",
+      );
     }
     if (isLiff && !restaurantData.supportLiff) {
-      throw new functions.https.HttpsError("invalid-argument", "Invalid liff order.");
+      throw new functions.https.HttpsError(
+        "invalid-argument",
+        "Invalid liff order.",
+      );
     }
     if (restaurantData.enableLunchDinner) {
       if (!lunchOrDinner || !["lunch", "dinner"].includes(lunchOrDinner)) {
-        throw new functions.https.HttpsError("invalid-argument", "Invalid lunch dinner order.");
+        throw new functions.https.HttpsError(
+          "invalid-argument",
+          "Invalid lunch dinner order.",
+        );
       }
     } else {
       if (lunchOrDinner) {
-        throw new functions.https.HttpsError("invalid-argument", "Invalid lunch dinner order.");
+        throw new functions.https.HttpsError(
+          "invalid-argument",
+          "Invalid lunch dinner order.",
+        );
       }
     }
 
     const multiple = stripe_regions_jp.multiple; //100 for USD, 1 for JPY
 
-    const res = await createNewOrderData(restaurantRef, orderRef, orderData, multiple);
+    const res = await createNewOrderData(
+      restaurantRef,
+      orderRef,
+      orderData,
+      multiple,
+    );
     if (!res.result) {
-      throw new functions.https.HttpsError("permission-denied", "unknown error.");
+      throw new functions.https.HttpsError(
+        "permission-denied",
+        "unknown error.",
+      );
     }
-    const { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total } = res.data;
+    const {
+      newOrderData,
+      newItems,
+      newPrices,
+      food_sub_total,
+      alcohol_sub_total,
+    } = res.data;
 
     // Atomically increment the orderCount of the restaurant
     let orderCount = 0;
@@ -249,15 +308,38 @@ export const orderCreated = async (db: Firestore, data: OrderCreatedData, contex
       }
     });
 
-    const accountingResult = orderAccounting(restaurantData, food_sub_total, alcohol_sub_total, multiple);
+    const accountingResult = orderAccounting(
+      restaurantData,
+      food_sub_total,
+      alcohol_sub_total,
+      multiple,
+    );
 
-    const deliveryData = orderData.isDelivery ? await utils.get_restaurant_delivery_area(db, restaurantId) : {};
-    const deliveryFee = utils.get_delivery_cost(orderData, deliveryData, accountingResult.total);
+    const deliveryData = orderData.isDelivery
+      ? await utils.get_restaurant_delivery_area(db, restaurantId)
+      : {};
+    const deliveryFee = utils.get_delivery_cost(
+      orderData,
+      deliveryData,
+      accountingResult.total,
+    );
 
-    await createCustomer(db, customerUid, context.auth?.token?.phone_number || "");
+    await createCustomer(
+      db,
+      customerUid,
+      context.auth?.token?.phone_number || "",
+    );
 
     // just copy original data.
-    const { options, rawOptions, uid, phoneNumber, name, updatedAt, timeCreated } = orderData;
+    const {
+      options,
+      rawOptions,
+      uid,
+      phoneNumber,
+      name,
+      updatedAt,
+      timeCreated,
+    } = orderData;
 
     await orderRef.set(
       utils.filterData({

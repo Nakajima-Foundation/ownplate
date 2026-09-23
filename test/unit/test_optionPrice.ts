@@ -1,6 +1,10 @@
 import { describe, it } from "node:test";
 import assert from "node:assert";
-import { optionPrice, optionChoicesAt } from "../../src/utils/commonUtils.ts";
+import {
+  optionPrice,
+  optionChoicesAt,
+  selectedOptionsPrice,
+} from "../../src/utils/commonUtils.ts";
 
 // オプションは "サイズ,S(+100),M(+200)" のように1つの組を1つの文字列に詰めて保存し、
 // 注文は選んだ位置だけを保存する。店舗があとから組を減らしたり並べ替えたりすると、
@@ -106,5 +110,96 @@ describe("組が減ったあとの既存の注文", () => {
       );
     }, 0);
     assert.strictEqual(total, 100);
+  });
+});
+
+describe("selectedOptionsPrice", () => {
+  const groups = ["サイズ,S(+100),M(+200),L(+300)", "のり(+50)"];
+  const YEN = 1;
+
+  it("returns the base price when nothing is selected", () => {
+    assert.strictEqual(selectedOptionsPrice([], groups, YEN, 1000), 1000);
+  });
+
+  it("adds a single-choice group only when it is checked", () => {
+    assert.strictEqual(
+      selectedOptionsPrice([0, true], groups, YEN, 1000),
+      1050,
+    );
+    assert.strictEqual(
+      selectedOptionsPrice([0, false], groups, YEN, 1000),
+      1000,
+    );
+  });
+
+  it("adds the choice the position points at", () => {
+    assert.strictEqual(
+      selectedOptionsPrice([3, false], groups, YEN, 1000),
+      1300,
+    );
+    assert.strictEqual(
+      selectedOptionsPrice([1, false], groups, YEN, 1000),
+      1100,
+    );
+  });
+
+  it("reads a selection stored as a string the same as a number", () => {
+    assert.strictEqual(
+      selectedOptionsPrice(["3", false], groups, YEN, 1000),
+      selectedOptionsPrice([3, false], groups, YEN, 1000),
+    );
+  });
+
+  it("defaults the base price to nothing", () => {
+    assert.strictEqual(selectedOptionsPrice([3, true], groups, YEN), 350);
+  });
+
+  // 店舗があとから組や選択肢を減らすと、保存された位置が範囲の外に出る。
+  it("charges nothing for a position that no longer exists", () => {
+    assert.strictEqual(
+      selectedOptionsPrice([9, false], groups, YEN, 1000),
+      1000,
+    );
+    assert.strictEqual(
+      selectedOptionsPrice([3, false, true], groups, YEN, 1000),
+      1300,
+    );
+    assert.strictEqual(selectedOptionsPrice([1, true], null, YEN, 1000), 1000);
+    assert.strictEqual(
+      selectedOptionsPrice([1, true], undefined, YEN, 1000),
+      1000,
+    );
+  });
+
+  it("never throws, whatever the stored selection turns out to be", () => {
+    const selections = [
+      [],
+      [true],
+      [false],
+      [0],
+      [5],
+      [null],
+      [1, null, true],
+      ["1", "0"],
+    ];
+    const groupSets = [groups, ["単品(+3.5)"], [""], []];
+    groupSets.forEach((list) => {
+      selections.forEach((selected) => {
+        [1, 100].forEach((priceMultiple) => {
+          assert.doesNotThrow(() =>
+            selectedOptionsPrice(selected, list, priceMultiple, 1000),
+          );
+        });
+      });
+    });
+  });
+
+  // 小数のある通貨では店舗の刻みで丸める。円（刻み1）では小数が落ちる。
+  it("rounds each option to the currency's step", () => {
+    assert.strictEqual(selectedOptionsPrice([true], ["単品(+3.5)"], 1, 0), 4);
+    assert.strictEqual(
+      selectedOptionsPrice([true], ["単品(+3.5)"], 100, 0),
+      3.5,
+    );
   });
 });

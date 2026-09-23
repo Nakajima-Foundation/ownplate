@@ -31,7 +31,12 @@ import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import isURL from "validator/lib/isURL";
 import isLatLong from "validator/lib/isLatLong";
 
-import { isNull, isEmpty, optionChoicesAt, optionPrice } from "./commonUtils";
+import {
+  isNull,
+  isEmpty,
+  optionChoicesAt,
+  selectedOptionsPrice,
+} from "./commonUtils";
 
 import { useRoute, useRouter } from "vue-router";
 import { useGeneralStore } from "../store";
@@ -488,24 +493,10 @@ export const getPrices = (
     ret[menuId] = [];
     orders[menuId].forEach((num, orderKey) => {
       const selectedOptionsRaw = trimmedSelectedOptions[menuId][orderKey] || [];
-      const price = selectedOptionsRaw.reduce(
-        (tmpPrice: number, selectedOpt, key) => {
-          const opt = optionChoicesAt(menu.itemOptionCheckbox, key);
-          if (opt.length === 1) {
-            if (selectedOpt) {
-              return (
-                tmpPrice + Math.round(optionPrice(opt[0]) * multiple) / multiple
-              );
-            }
-          } else {
-            return (
-              tmpPrice +
-              Math.round(optionPrice(opt[Number(selectedOpt)]) * multiple) /
-                multiple
-            );
-          }
-          return tmpPrice;
-        },
+      const price = selectedOptionsPrice(
+        selectedOptionsRaw,
+        menu.itemOptionCheckbox,
+        multiple,
         menu.price,
       );
       ret[menuId].push(price * num);
