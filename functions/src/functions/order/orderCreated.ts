@@ -10,6 +10,7 @@ import { RestaurantInfoData } from "../../models/RestaurantInfo";
 import { MenuData, MenuItem } from "../../models/menu";
 import { validateOrderCreated } from "../../lib/validator";
 import { selectedOptionsPrice } from "../../utils/commonUtils";
+import { hasOrderedMenu, menuForPricing, menuSnapshot } from "./menuSnapshot";
 import { Context } from "../../models/TestType";
 
 export const orderAccounting = (restaurantData: RestaurantInfoData, food_sub_total: number, alcohol_sub_total: number, multiple: number) => {
@@ -95,6 +96,9 @@ export const createNewOrderData = async (
       return;
     }
 
+    const orderedMenuItem = orderData.menuItems?.[menuId];
+    const pricingMenu = menuForPricing(orderedMenuItem, menu);
+
     const prices: number[] = [];
     const newOrder: number[] = [];
 
@@ -111,7 +115,7 @@ export const createNewOrderData = async (
         return;
       }
       const rawOptions = orderData.rawOptions?.[menuId]?.[orderKey];
-      const price = menu.price + (rawOptions ? selectedOptionsPrice(rawOptions, menu.itemOptionCheckbox, multiple) : 0);
+      const price = pricingMenu.price + (rawOptions ? selectedOptionsPrice(rawOptions, pricingMenu.itemOptionCheckbox, multiple) : 0);
       newOrder.push(num);
       prices.push(price * num);
     });
@@ -119,25 +123,12 @@ export const createNewOrderData = async (
     newOrderData[menuId] = newOrder;
 
     const total = prices.reduce((sum, price) => sum + price, 0);
-    if (menu.tax === "alcohol") {
+    if (pricingMenu.tax === "alcohol") {
       alcohol_sub_total += total;
     } else {
       food_sub_total += total;
     }
-    const menuItem: MenuItem = {
-      price: menu.price,
-      itemName: menu.itemName,
-      itemPhoto: menu.itemPhoto,
-      images: menu.images,
-      itemAliasesName: menu.itemAliasesName || "",
-      category1: menu.category1 || "",
-      category2: menu.category2 || "",
-      exceptDay: menu.exceptDay || {},
-      exceptHour: menu.exceptHour || {},
-      tax: menu.tax || "",
-    };
-
-    newItems[menuId] = menuItem;
+    newItems[menuId] = hasOrderedMenu(orderedMenuItem) ? orderedMenuItem : menuSnapshot(menu);
   });
   return {
     result: true,

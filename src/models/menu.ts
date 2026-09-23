@@ -31,6 +31,7 @@ export interface TitleData {
 export interface MenuItem {
   price: number;
   itemName: string;
+  itemOptionCheckbox?: string[];
   itemPhoto?: string;
   images?: MenuImages;
   itemAliasesName: string;
