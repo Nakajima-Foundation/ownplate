@@ -8,6 +8,7 @@
   "scripts": {
     "start": "vite",
     "test": "node --import tsx --test test/unit/test_*.ts",
+    "test:coverage": "node --import tsx --experimental-test-coverage --test-coverage-exclude=src/lang/** --test-coverage-exclude=test/** --test-coverage-lines=80 --test-coverage-branches=85 --test-coverage-functions=60 --test test/unit/test_*.ts",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "typecheck:test": "tsc --noEmit -p tsconfig.test.json",
     "test:e2e": "playwright test",

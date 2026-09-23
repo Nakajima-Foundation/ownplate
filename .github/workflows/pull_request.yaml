@@ -61,7 +61,7 @@ jobs:
     - run: yarn run lint
     - run: yarn run typecheck
     - run: yarn run typecheck:test
-    - run: yarn run test
+    - run: yarn run test:coverage
     - name: yarn build
       run: yarn run build
 
