@@ -42,7 +42,6 @@ describe("券の置き場", () => {
     );
   });
 
-  // 順番が命。入れ替えると別の店舗を指す。
   it("takes the shop first and the coupon second", () => {
     assert.notStrictEqual(
       getPromotionDocumentPath("a", "b"),
@@ -214,7 +213,8 @@ describe("画面とサーバの割引額が一致すること", () => {
   });
 });
 
-// 支払い方法の縛り。カード決済だけ、現地払いだけ、という券がある。
+// カード決済だけ、現地払いだけ、という券がある。縛りは stripe / instore / 無し の
+// 3つだけなので、実装にある「それ以外」の分岐は型が認めておらず、ここからは踏めない。
 describe("isPaymentAllowed", () => {
   const withRestriction = (paymentRestrictions: PaymentRestrictions) => ({
     paymentRestrictions,
@@ -243,7 +243,4 @@ describe("isPaymentAllowed", () => {
     assert.strictEqual(isPaymentAllowed(null, false), false);
     assert.strictEqual(isPaymentAllowed(undefined, true), false);
   });
-
-  // 縛りは stripe / instore / 無し の3つだけ。それ以外は型が認めていないので
-  // ここからは渡せない（実装は「縛りなし」として通す書き方になっている）。
 });
