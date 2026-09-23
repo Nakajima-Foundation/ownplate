@@ -567,13 +567,13 @@ import {
   convOrderStateForText,
   isDev,
   // isNull,
-  getShopOwner,
   getOrderItems,
   arrayChunk,
   array2obj,
   defaultTitle,
   errorMessage,
 } from "@/utils/utils";
+import { getShopOwner } from "@/utils/shopOwner";
 
 import { useUserStore } from "@/store/user";
 import { useGeneralStore } from "@/store";

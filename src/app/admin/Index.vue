@@ -295,7 +295,6 @@ import SubAccount from "@/app/admin/Index/SubAccount.vue";
 import { ping } from "@/lib/firebase/functions";
 
 import {
-  getShopOwner,
   doc2data,
   sleep,
   scrollToElementById,
@@ -303,6 +302,7 @@ import {
   useAdminUids,
   defaultTitle,
 } from "@/utils/utils";
+import { getShopOwner } from "@/utils/shopOwner";
 import { checkAdminPermission } from "@/utils/userPermission";
 
 import { useAdminConfigToggle } from "@/utils/admin/Toggle";

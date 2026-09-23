@@ -1,12 +1,9 @@
 import { ref, computed, onMounted, Ref } from "vue";
-import { User } from "firebase/auth";
-import { db } from "@/lib/firebase/firebase9";
-import {
+import type { User } from "firebase/auth";
+import type {
   DocumentData,
   DocumentSnapshot,
   QueryDocumentSnapshot,
-  doc,
-  getDoc,
 } from "firebase/firestore";
 
 import { ShopOwnerData, PartnerData } from "@/models/ShopOwner";
@@ -218,14 +215,6 @@ export const getSoundIndex = (nameKey: string) => {
   return 0;
 };
 
-export const getShopOwner = async (uid: string): Promise<ShopOwnerData> => {
-  const defaultData = { hidePrivacy: false };
-  const admin = (await getDoc(doc(db, `/admins/${uid}`))).data();
-  if (admin) {
-    return admin as ShopOwnerData;
-  }
-  return defaultData;
-};
 export const arraySum = (arr: number[]) => {
   return Object.values(arr || [0]).reduce(
     (accumulator, currentValue) => accumulator + currentValue,
