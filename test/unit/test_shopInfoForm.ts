@@ -471,16 +471,17 @@ describe("shopInfoValidator — 写真", () => {
 // 新しい店舗の初期値。ここに無い欄は、編集画面を開いた時点では undefined。
 describe("defaultShopInfo", () => {
   it("starts a new shop with the required text fields empty", () => {
-    [
+    const required: (keyof typeof defaultShopInfo)[] = [
       "restaurantName",
       "ownerName",
       "streetAddress",
       "city",
       "state",
       "zip",
-    ].forEach((field) => {
+    ];
+    required.forEach((field) => {
       assert.strictEqual(
-        defaultShopInfo[field as keyof typeof defaultShopInfo],
+        defaultShopInfo[field],
         "",
         `${field} の初期値が空文字ではない`,
       );
