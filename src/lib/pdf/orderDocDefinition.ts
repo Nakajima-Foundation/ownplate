@@ -6,6 +6,7 @@ import {
   extraCharges,
   isInclusiveTax,
   isReducedTaxRate,
+  optionPrice,
   printableInvoiceNumber,
   taxDisplayRows,
 } from "../../utils/commonUtils.ts";
@@ -14,7 +15,7 @@ import {
   orderDocumentDateLabel,
 } from "../../utils/orderDocumentDate.ts";
 import { roundPrice } from "../../utils/price.ts";
-import { formatOption, nameOfOrder, optionPrice } from "../../utils/strings.ts";
+import { formatOption, nameOfOrder } from "../../utils/strings.ts";
 import { extraChargeText, priceString } from "./pdfText.ts";
 import { defaultStyle, pageMargins, pageSize, styles } from "./pdfStyles.ts";
 

@@ -9,22 +9,8 @@ import { OrderData, OptionValue } from "../../lib/types/order";
 import { RestaurantInfoData } from "../../models/RestaurantInfo";
 import { MenuData, MenuItem } from "../../models/menu";
 import { validateOrderCreated } from "../../lib/validator";
+import { selectedOptionsPrice } from "../../utils/commonUtils";
 import { Context } from "../../models/TestType";
-
-const getOptionPrice = (selectedOptionsRaw: OptionValue[], menu: MenuData, multiple: number) => {
-  return selectedOptionsRaw.reduce((tmpPrice: number, selectedOpt: OptionValue, key: number) => {
-    const opt = menu.itemOptionCheckbox[key].split(",");
-    if (opt.length === 1) {
-      if (selectedOpt) {
-        return tmpPrice + Math.round(utils.optionPrice(opt[0]) * multiple) / multiple;
-      }
-    } else {
-      const optIndex = typeof selectedOpt === "number" ? selectedOpt : Number(selectedOpt);
-      return tmpPrice + Math.round(utils.optionPrice(opt[optIndex]) * multiple) / multiple;
-    }
-    return tmpPrice;
-  }, 0);
-};
 
 export const orderAccounting = (restaurantData: RestaurantInfoData, food_sub_total: number, alcohol_sub_total: number, multiple: number) => {
   // tax rate
@@ -125,7 +111,7 @@ export const createNewOrderData = async (
         return;
       }
       const rawOptions = orderData.rawOptions?.[menuId]?.[orderKey];
-      const price = menu.price + (rawOptions ? getOptionPrice(rawOptions, menu, multiple) : 0);
+      const price = menu.price + (rawOptions ? selectedOptionsPrice(rawOptions, menu.itemOptionCheckbox, multiple) : 0);
       newOrder.push(num);
       prices.push(price * num);
     });

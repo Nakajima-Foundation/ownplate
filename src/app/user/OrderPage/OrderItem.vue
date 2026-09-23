@@ -65,7 +65,8 @@
 import { defineComponent, computed, PropType } from "vue";
 import { useI18n } from "vue-i18n";
 
-import { formatOption, optionPrice } from "@/utils/strings";
+import { formatOption } from "@/utils/strings";
+import { optionPrice } from "@/utils/commonUtils";
 import { smallImageErrorHandler, useUserData } from "@/utils/utils";
 import { roundPrice } from "@/utils/price";
 import { MenuData } from "@/models/menu";

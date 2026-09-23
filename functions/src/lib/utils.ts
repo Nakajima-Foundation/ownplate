@@ -160,21 +160,6 @@ export const process_error = (error: Error) => {
   return new functions.https.HttpsError("internal", "error");
 };
 
-// const regex = /\((\+|\-)[0-9\.]+\)/
-const regex = /\(((\+|-|＋|ー|−)[0-9.]+)\)/;
-
-const convPrice = (priceStr: string) => {
-  return Number(priceStr.replace(/ー|−/g, "-").replace(/＋/g, "+"));
-};
-
-export const optionPrice = (option: string) => {
-  const match = option.match(regex);
-  if (match) {
-    return convPrice(match[1]);
-  }
-  return 0;
-};
-
 const chunk = (arr: string[], chunkSize: number) => {
   const ret: string[][] = [];
   const len = arr.length;

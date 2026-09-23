@@ -1,4 +1,5 @@
 import type { MenuData } from "../models/menu";
+import type { OptionValue } from "../models/orderTypes";
 
 interface PostageInfo {
   freeThreshold: number;
@@ -22,6 +23,43 @@ export const costCal = (
   }
   return 0;
 };
+
+export const optionPriceRegex = /\(((\+|-|＋|ー|−)[0-9.]+)\)/;
+
+export const toSignedNumber = (priceStr: string): number =>
+  Number(priceStr.replace(/ー|−/g, "-").replace(/＋/g, "+"));
+
+export const optionPrice = (choice: string | null | undefined): number => {
+  const match = (choice ?? "").match(optionPriceRegex);
+  return match ? toSignedNumber(match[1]) : 0;
+};
+
+export const optionChoicesAt = (
+  itemOptionCheckbox: string[] | null | undefined,
+  index: number,
+): string[] => ((itemOptionCheckbox ?? [])[index] ?? "").split(",");
+
+const isSingleChoiceGroup = (choices: string[]): boolean =>
+  choices.length === 1;
+
+const roundedOptionPrice = (choice: string, priceMultiple: number): number =>
+  Math.round(optionPrice(choice) * priceMultiple) / priceMultiple;
+
+export const selectedOptionsPrice = (
+  selectedOptions: OptionValue[],
+  itemOptionCheckbox: string[] | null | undefined,
+  priceMultiple: number,
+  basePrice = 0,
+): number =>
+  selectedOptions.reduce((total: number, selected, index) => {
+    const choices = optionChoicesAt(itemOptionCheckbox, index);
+    if (isSingleChoiceGroup(choices)) {
+      return selected
+        ? total + roundedOptionPrice(choices[0], priceMultiple)
+        : total;
+    }
+    return total + roundedOptionPrice(choices[Number(selected)], priceMultiple);
+  }, basePrice);
 
 export const isNull = (value: unknown): value is null | undefined => {
   return value === null || value === undefined;

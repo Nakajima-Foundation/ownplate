@@ -31,7 +31,12 @@ import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import isURL from "validator/lib/isURL";
 import isLatLong from "validator/lib/isLatLong";
 
-import { isNull, isEmpty } from "./commonUtils";
+import {
+  isNull,
+  isEmpty,
+  optionChoicesAt,
+  selectedOptionsPrice,
+} from "./commonUtils";
 
 import { useRoute, useRouter } from "vue-router";
 import { useGeneralStore } from "../store";
@@ -349,14 +354,6 @@ export const displayOption = (
   });
 };
 
-const optionPrice = (option: string) => {
-  const regex = /\(((\+|-|＋|ー|−)[0-9.]+)\)/;
-  const match = (option || "").match(regex);
-  if (match) {
-    return Number(match[1].replace(/ー|−/g, "-").replace(/＋/g, "+"));
-  }
-  return 0;
-};
 const useIsInLiff = () => {
   const route = useRoute();
 
@@ -496,24 +493,10 @@ export const getPrices = (
     ret[menuId] = [];
     orders[menuId].forEach((num, orderKey) => {
       const selectedOptionsRaw = trimmedSelectedOptions[menuId][orderKey] || [];
-      const price = selectedOptionsRaw.reduce(
-        (tmpPrice: number, selectedOpt, key) => {
-          const opt = (menu.itemOptionCheckbox[key] || "").split(",");
-          if (opt.length === 1) {
-            if (selectedOpt) {
-              return (
-                tmpPrice + Math.round(optionPrice(opt[0]) * multiple) / multiple
-              );
-            }
-          } else {
-            return (
-              tmpPrice +
-              Math.round(optionPrice(opt[Number(selectedOpt)]) * multiple) /
-                multiple
-            );
-          }
-          return tmpPrice;
-        },
+      const price = selectedOptionsPrice(
+        selectedOptionsRaw,
+        menu.itemOptionCheckbox,
+        multiple,
         menu.price,
       );
       ret[menuId].push(price * num);
@@ -558,13 +541,16 @@ export const getPostOption = (
     ret[id] = (trimmedSelectedOptions[id] || []).map((item) => {
       return item
         .map((selectedOpt, key) => {
-          const opt = (cartItems[id] || {}).itemOptionCheckbox[key].split(",");
+          const opt = optionChoicesAt(
+            (cartItems[id] || {}).itemOptionCheckbox,
+            key,
+          );
           if (opt.length === 1) {
             if (selectedOpt) {
               return opt[0];
             }
           } else {
-            return opt[Number(selectedOpt)];
+            return opt[Number(selectedOpt)] ?? "";
           }
           return "";
         })

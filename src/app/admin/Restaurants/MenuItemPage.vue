@@ -814,7 +814,8 @@ import ImageUpload from "@/components/ImageUpload.vue";
 
 import { taxRates, daysOfWeek } from "@/config/constant";
 import { ownPlateConfig } from "@/config/project";
-import { halfCharactors, optionPrice } from "@/utils/strings";
+import { halfCharactors } from "@/utils/strings";
+import { optionPrice } from "@/utils/commonUtils";
 import {
   doc2data,
   useAdminUids,
