@@ -72,6 +72,14 @@ describe("costCal が何も請求しない場合", () => {
     assert.strictEqual(costCal({}, TOKYO, 1000), 0);
   });
 
+  // 一覧が1件だけ。`postageList.length > 0` の境目。> 1 にすると1件の一覧が無視される。
+  it("uses a list of exactly one entry", () => {
+    assert.strictEqual(
+      costCal({ postageList: { default: [300] } }, 1, 1000),
+      300,
+    );
+  });
+
   it("charges nothing when the list is empty", () => {
     assert.strictEqual(
       costCal({ postageList: { default: [] } }, TOKYO, 1000),

@@ -3,10 +3,13 @@ import assert from "node:assert";
 
 import {
   extraCharges,
+  isEmpty,
   isInclusiveTax,
+  isNull,
   isReducedTaxRate,
   isValidInvoiceNumber,
   printableInvoiceNumber,
+  taxCategories,
   taxDisplayRows,
 } from "../../src/utils/commonUtils.ts";
 
@@ -93,11 +96,15 @@ describe("printableInvoiceNumber", () => {
   // [valid] は形の検査を通ってしまう。そのまま返すと印字側（文字列を前提にしている）
   // がそこで落ち、その店舗のレシートが一枚も出なくなる。
   it("returns nothing for a value that is not a string", () => {
-    [[valid], [[valid]], 1234567890123, { toString: () => valid }, true].forEach(
-      (value) => {
-        assert.strictEqual(printableInvoiceNumber(value), null);
-      },
-    );
+    [
+      [valid],
+      [[valid]],
+      1234567890123,
+      { toString: () => valid },
+      true,
+    ].forEach((value) => {
+      assert.strictEqual(printableInvoiceNumber(value), null);
+    });
   });
 
   it("rejects a non-string in the form validation too", () => {
@@ -116,8 +123,14 @@ describe("isInclusiveTax", () => {
   // 金額は注文時の設定で計算されて凍結されている。店舗の現在値を見ると、
   // 店舗が後から切り替えたときに金額と食い違う札を貼ることになる。
   it("takes the order's own setting over the restaurant's current one", () => {
-    assert.strictEqual(isInclusiveTax({ inclusiveTax: true }, { inclusiveTax: false }), true);
-    assert.strictEqual(isInclusiveTax({ inclusiveTax: false }, { inclusiveTax: true }), false);
+    assert.strictEqual(
+      isInclusiveTax({ inclusiveTax: true }, { inclusiveTax: false }),
+      true,
+    );
+    assert.strictEqual(
+      isInclusiveTax({ inclusiveTax: false }, { inclusiveTax: true }),
+      false,
+    );
   });
 
   // 古い注文は inclusiveTax を持たない（accounting と同じ場所で書かれる）。
@@ -129,7 +142,10 @@ describe("isInclusiveTax", () => {
   // ここが ?? である理由。|| だと「外税で保存された注文」が false を偽と見なされて
   // 店舗の設定に落ち、税込の店舗では内税と書かれる。
   it("keeps an explicit false rather than falling through to the restaurant", () => {
-    assert.strictEqual(isInclusiveTax({ inclusiveTax: false }, { inclusiveTax: true }), false);
+    assert.strictEqual(
+      isInclusiveTax({ inclusiveTax: false }, { inclusiveTax: true }),
+      false,
+    );
   });
 
   it("is exclusive when neither says anything", () => {
@@ -151,7 +167,10 @@ describe("extraCharges", () => {
   // 0円 の行は出さない。いまどちらの書類にも行が無いので、増やすと紙が伸びる。
   it("leaves out an amount that is zero or absent", () => {
     assert.deepStrictEqual(extraCharges({}), []);
-    assert.deepStrictEqual(extraCharges({ shippingCost: 0, discountPrice: 0 }), []);
+    assert.deepStrictEqual(
+      extraCharges({ shippingCost: 0, discountPrice: 0 }),
+      [],
+    );
     assert.deepStrictEqual(extraCharges({ shippingCost: 200 }), [
       { kind: "shipping", amount: 200 },
     ]);
@@ -224,5 +243,95 @@ describe("taxDisplayRows", () => {
       assert.strictEqual(row.kind, "category");
     });
     assert.strictEqual(taxDisplayRows(undefined, 8, 10, 119)[0].kind, "total");
+  });
+});
+
+// 「空か」の判定。入力欄の検証と表示の分岐に使う。
+// isNull と違って、値を文字列にしてから空かどうかを見る。
+describe("isNull", () => {
+  it("says yes only for null and undefined", () => {
+    assert.strictEqual(isNull(null), true);
+    assert.strictEqual(isNull(undefined), true);
+  });
+
+  it("says no for everything else, including the falsy ones", () => {
+    [0, "", false, NaN, [], {}, "text"].forEach((value) => {
+      assert.strictEqual(
+        isNull(value),
+        false,
+        JSON.stringify(value) ?? String(value),
+      );
+    });
+  });
+});
+
+describe("isEmpty", () => {
+  it("says yes for null and undefined", () => {
+    assert.strictEqual(isEmpty(null), true);
+    assert.strictEqual(isEmpty(undefined), true);
+  });
+
+  it("says yes for the empty string", () => {
+    assert.strictEqual(isEmpty(""), true);
+  });
+
+  // 空配列は String([]) が "" なので空として扱われる。
+  it("says yes for an empty array, because it reads as an empty string", () => {
+    assert.strictEqual(isEmpty([]), true);
+  });
+
+  // 0 と false は空ではない。空として扱うと「0円」「無効」が未入力になる。
+  it("says no for zero and false", () => {
+    assert.strictEqual(isEmpty(0), false);
+    assert.strictEqual(isEmpty(false), false);
+  });
+
+  it("says no for ordinary values", () => {
+    ["text", " ", 1, -1, [0], {}, NaN].forEach((value) => {
+      assert.strictEqual(isEmpty(value), false, String(value));
+    });
+  });
+});
+
+// 税率ごとの区分。売上の無い区分は行として出さない。
+describe("taxCategories の境目", () => {
+  it("drops a category whose revenue is zero", () => {
+    const rows = taxCategories({ food: { revenue: 0, tax: 0 } }, 8, 10);
+    assert.deepStrictEqual(rows, []);
+  });
+
+  // 1円でも売上があれば出す。ここを > 1 にすると、1円の区分が消える。
+  it("keeps a category whose revenue is one yen", () => {
+    const rows = taxCategories({ food: { revenue: 1, tax: 0 } }, 8, 10);
+    assert.strictEqual(rows.length, 1);
+    assert.strictEqual(rows[0].revenue, 1);
+  });
+
+  // 税額が入っていない古い注文。0 として扱う。1 などに化けると帳簿が狂う。
+  it("reads a missing tax as zero, not as anything else", () => {
+    const rows = taxCategories({ food: { revenue: 100 } }, 8, 10);
+    assert.strictEqual(rows.length, 1);
+    assert.strictEqual(rows[0].tax, 0);
+  });
+
+  it("reads a missing revenue as zero, so the category drops out", () => {
+    assert.deepStrictEqual(taxCategories({ food: { tax: 50 } }, 8, 10), []);
+  });
+
+  it("keeps both categories when both have revenue", () => {
+    const rows = taxCategories(
+      { food: { revenue: 100, tax: 8 }, alcohol: { revenue: 200, tax: 20 } },
+      8,
+      10,
+    );
+    assert.strictEqual(rows.length, 2);
+    assert.deepStrictEqual(
+      rows.map((r) => r.rate),
+      [8, 10],
+    );
+  });
+
+  it("gives nothing back for an order with no accounting at all", () => {
+    assert.deepStrictEqual(taxCategories(undefined, 8, 10), []);
   });
 });
