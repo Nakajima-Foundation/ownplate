@@ -34,8 +34,6 @@ export const optionPrice = (choice: string | null | undefined): number => {
   return match ? toSignedNumber(match[1]) : 0;
 };
 
-// 組が無いときも [""] を返す。空配列だと、選択肢ひとつの組として choices[0] を読む
-// 呼び出し側がそこで落ちる。
 export const optionChoicesAt = (
   itemOptionCheckbox: string[] | null | undefined,
   index: number,

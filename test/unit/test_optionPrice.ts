@@ -86,7 +86,8 @@ describe("optionChoicesAt", () => {
         assert.ok(Array.isArray(choices));
         assert.ok(
           choices.length > 0,
-          "呼び出し側が opt[0] を読むので空にできない",
+          '組が無いときも [""]。直す前の (x || "").split(",") と同じ形なので、' +
+            "選択肢ひとつの組として扱う枝がそのまま通る",
         );
       });
     });
