@@ -19,11 +19,8 @@ omochikaeri-docs#196 の続き。**実装には触らない。**
 
 ## 直さずに留めるもの
 
-**`validLocation` は緯度0・経度0 を弾く。** `location.lat || ""` と書いてあるため、
-0 が空文字になって `isLatLong` に渡る。赤道上・本初子午線上の座標は通らない。
-
-日本向けの店舗では届かないので直さない。いまの挙動として留めるに留める。届くようになれば
-この試験が根拠になる。
+`validLocation` の境目の扱いについて、確認すべき点を omochikaeri-docs#207 に記録した。
+この PR では挙動を変えず、いまの形を試験で留めるに留める。
 
 ## 確かめ方
 
@@ -36,16 +33,10 @@ omochikaeri-docs#196 の続き。**実装には触らない。**
 `>=` ↔ `>`、`===` ↔ `!==`、`&&` ↔ `||`、`??` → `||`、`true` ↔ `false`、数値 +1 を
 1箇所ずつ当て、試験が赤くならなかったものを穴として拾う。コメントと文字列の中は除外する。
 
-### 見つかった本物の穴
+### 覆いを足した関数
 
-| 場所 | 何が漏れていたか |
-| --- | --- |
-| `commonUtils.costCal` | **試験が1つも無かった**（送料の計算。サーバの注文確定でも呼ばれる） |
-| `commonUtils.isEmpty` / `isNull` | 試験が無かった |
-| `commonUtils.taxCategories` | 売上ちょうど1円・税額が未設定の枝 |
-| `strings.formatOption` | `+` を付ける境目（ちょうど1円） |
-| `menu.getNewItemData` | 別名・昼夜・除外日の素通し、`availableLunch: false` の枝 |
-| `menuUtils.copyMenuData` | 消された商品からの複製 |
+`costCal`（**試験が1つも無かった**）/ `isEmpty` / `isNull` / `taxCategories` の境目 /
+`formatOption` の境目 / `getNewItemData` の素通し / `copyMenuData`
 
 ### 等価な変異（穴ではない）
 
