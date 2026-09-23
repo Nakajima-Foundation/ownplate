@@ -151,7 +151,7 @@ describe("renderCoverageMarkdown", () => {
       "t",
       parseLcov(record("C:\\x\\|y.ts", [])),
     );
-    assert.match(markdown, /`C:\/x\/\\\|y\.ts`/);
+    assert.ok(markdown.includes("`C:\\\\x\\\\\\|y.ts`"));
   });
 
   it("renders an empty report without failing", () => {
