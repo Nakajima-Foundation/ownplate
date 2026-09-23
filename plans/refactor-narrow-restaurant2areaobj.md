@@ -12,7 +12,7 @@ omochikaeri-docs#204（`doc2data` と対になるもう一方）
 
 ## 直す範囲
 
-引数の型を `{ id: string; data: () => RestaurantInfoData }[]` に狭める。**中身は変えない。**
+引数の型を `{ id: string; data: () => DocumentData }[]` に狭める。**中身は変えない。**
 
 `data()` の戻りは `DocumentData` のままにする。**`RestaurantInfoData` まで狭めてはいけない** —
 Firestore の `data()` は `DocumentData` を返すので、呼び出し側が通らなくなる。
