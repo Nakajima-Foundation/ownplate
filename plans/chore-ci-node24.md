@@ -13,11 +13,22 @@ run on Node.js 24: google-github-actions/auth@v2
 
 ## 調べた結果
 
-git 管理下の workflow で Node 20 なのは `google-github-actions/auth@v2` **1つだけ**。
-`actions/checkout@v6` / `actions/setup-node@v6` / `actions/cache@v5` /
-`github/codeql-action/*@v3` はすべて node24。Node そのものも既に24に揃っている。
+git 管理下の workflow の action を全部調べたところ、Node 20 は **2つ**あった。
 
-## v3 に上げる根拠
+| action | 版 | runtime |
+| --- | --- | --- |
+| `actions/checkout` | v6 | node24 |
+| `actions/setup-node` | v6 | node24 |
+| `actions/cache` | v5 | node24 |
+| **`github/codeql-action/*`** | **v3 → v4** | **node20 → node24** |
+| **`google-github-actions/auth`** | **v2 → v3** | **node20 → node24** |
+
+Node そのものは既に24に揃っている（`deploy.yml` が `24.18.0` 固定、`pull_request.yaml` が `24.x`）。
+
+`codeql-action` の v3 と v4 は**同じコードの並行リリース**で（4.38.1 と 3.38.1 が同日）、
+v4 が Node 24 版。CHANGELOG に機能面の破壊的変更は無い。
+
+## auth を v3 に上げる根拠
 
 `google-github-actions/auth@v3` は `runs.using: node24`。v3.0.0 の変更は
 「Node 24 へ更新し、古いパラメータを削除」で、消えたのは `backoff` / `backoff_limit` /
