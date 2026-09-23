@@ -1,13 +1,63 @@
 import { describe, it } from "node:test";
 import assert from "node:assert";
-import { sortRestaurantObj } from "../../src/utils/RestaurantUtils.ts";
+import {
+  restaurant2AreaObj,
+  sortRestaurantObj,
+} from "../../src/utils/RestaurantUtils.ts";
 import { convMm2pt } from "../../src/lib/pdf/pdfStyles.ts";
 import { restaurantInfoFixture } from "../fixtures/restaurantInfo.ts";
 
-// restaurant2AreaObj はここでは試験していない。実際に使うのは doc.id と doc.data() だけなのに、
-// 引数の型が QueryDocumentSnapshot（metadata / exists / get / toJSON / ref を含む）なので、
-// as を使わずに満たす値が作れない。引数の型を { id: string; data(): ... } まで狭めれば
-// 試験できるようになるが、それは実装の変更なので別の作業にする。
+// 店舗一覧を都道府県ごとに束ねる。束ね漏れると、その県の店舗が一覧から消える。
+//
+// 引数の型が QueryDocumentSnapshot だったときは、この試験が書けなかった。使うのは
+// id と data() だけなので、型をその2つに狭めてある。
+const docOf = (id: string, name: string, state: string) => ({
+  id,
+  data: () => restaurantInfoFixture({ restaurantName: name, state }),
+});
+
+describe("restaurant2AreaObj", () => {
+  it("groups the shops under the state each one is in", () => {
+    const grouped = restaurant2AreaObj([
+      docOf("a", "あ店", "東京都"),
+      docOf("b", "い店", "大阪府"),
+      docOf("c", "う店", "東京都"),
+    ]);
+    assert.deepStrictEqual(Object.keys(grouped).sort(), ["大阪府", "東京都"]);
+    assert.strictEqual(grouped["東京都"].length, 2);
+    assert.strictEqual(grouped["大阪府"].length, 1);
+  });
+
+  // 一覧から店舗ページへ飛ぶのに id が要る。Firestore は data() に id を含めない。
+  it("writes the document id onto each shop", () => {
+    const grouped = restaurant2AreaObj([docOf("shop-1", "あ店", "東京都")]);
+    assert.strictEqual(grouped["東京都"][0].id, "shop-1");
+  });
+
+  it("keeps the order the documents came in", () => {
+    const grouped = restaurant2AreaObj([
+      docOf("a", "あ店", "東京都"),
+      docOf("b", "い店", "東京都"),
+    ]);
+    assert.deepStrictEqual(
+      grouped["東京都"].map((shop) => shop.id),
+      ["a", "b"],
+    );
+  });
+
+  // data() が返した object をそのまま束ねる。写していないので、呼び出し側が
+  // data() の結果を別に持っていると、そちらにも id が付く。
+  it("writes into the object data() returned, rather than copying it", () => {
+    const shop = restaurantInfoFixture({ state: "東京都" });
+    const grouped = restaurant2AreaObj([{ id: "abc", data: () => shop }]);
+    assert.strictEqual(grouped["東京都"][0], shop);
+    assert.strictEqual(shop.id, "abc");
+  });
+
+  it("returns nothing for no shops", () => {
+    assert.deepStrictEqual(restaurant2AreaObj([]), {});
+  });
+});
 
 // 県ごとの並びを店名順にする。
 describe("sortRestaurantObj", () => {
