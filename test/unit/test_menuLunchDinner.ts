@@ -8,7 +8,7 @@ import {
 
 // このファイルは tsx を通さないと読めない。src/models/menu.ts が拡張子なしで
 // ./firebaseUtils を import していて、素の node --test はそれを解決できないため。
-// 拡張子を足す手は使えない（functions 側が tsc で JS に落とすので TS5097 で落ちる）。
+// 拡張子を足す手は使えない（`functions/` 配下が tsc で JavaScript に変換するので TS5097 で落ちる）。
 
 const menuItem = (
   availableLunch: boolean,
