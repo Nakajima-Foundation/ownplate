@@ -1,8 +1,8 @@
-import {
-  PhoneNumberUtil,
-  PhoneNumber,
-  PhoneNumberFormat,
-} from "google-libphonenumber";
+import googleLibPhoneNumber, { type PhoneNumber } from "google-libphonenumber";
+
+// 名前付き import にしない。google-libphonenumber は CommonJS で、node の ESM 側が
+// 名前を読めず SyntaxError になる（root は "type": "module"）。既定 import からほどく。
+const { PhoneNumberUtil, PhoneNumberFormat } = googleLibPhoneNumber;
 
 const phoneUtil = PhoneNumberUtil.getInstance();
 
