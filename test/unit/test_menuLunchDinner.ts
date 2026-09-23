@@ -1,6 +1,7 @@
 import { describe, it } from "node:test";
 import assert from "node:assert";
 import type { MenuData, TitleData } from "../../src/models/menu";
+import { menuFixture, titleFixture } from "../fixtures/menu.ts";
 import {
   isAvailableLunchOrDinner,
   onlyLunchOrDinner,
@@ -13,32 +14,12 @@ import {
 const menuItem = (
   availableLunch: boolean,
   availableDinner: boolean,
-): MenuData => ({
-  price: 1000,
-  itemName: "唐揚げ",
-  itemAliasesName: "",
-  tax: "food",
-  itemDescription: "",
-  itemMemo: "",
-  itemOptionCheckbox: [],
-  publicFlag: true,
-  deletedFlag: false,
-  soldOut: false,
-  validatedFlag: true,
-  allergens: {},
-  availableLunch,
-  availableDinner,
-});
+): MenuData => menuFixture({ availableLunch, availableDinner });
 
 const titleItem = (
   availableLunch: boolean,
   availableDinner: boolean,
-): TitleData => ({
-  name: "お食事",
-  deletedFlag: false,
-  availableLunch,
-  availableDinner,
-});
+): TitleData => titleFixture({ availableLunch, availableDinner });
 
 // 店舗が昼も夜も指定しなかった商品は「いつでも出す」。どちらも false のまま素直に読むと、
 // 指定していないだけの商品が昼にも夜にも出なくなる。

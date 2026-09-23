@@ -1,4 +1,4 @@
-import type { MenuData } from "../../src/models/menu.ts";
+import type { MenuData, TitleData } from "../../src/models/menu.ts";
 
 // 型を満たす商品ひとつ分。テストは必要な項目だけ上書きして使う。
 const base: MenuData = {
@@ -21,5 +21,19 @@ const base: MenuData = {
 
 export const menuFixture = (overrides: Partial<MenuData> = {}): MenuData => ({
   ...base,
+  ...overrides,
+});
+
+const titleBase: TitleData = {
+  name: "お食事",
+  deletedFlag: false,
+  availableLunch: true,
+  availableDinner: true,
+};
+
+export const titleFixture = (
+  overrides: Partial<TitleData> = {},
+): TitleData => ({
+  ...titleBase,
   ...overrides,
 });
