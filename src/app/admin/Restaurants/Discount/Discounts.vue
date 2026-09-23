@@ -170,10 +170,8 @@ import { defineComponent } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 
-import {
-  usePromotionsForAdmin,
-  getPromotionCollctionPath,
-} from "@/utils/promotion";
+import { usePromotionsForAdmin } from "@/utils/promotion";
+import { getPromotionCollctionPath } from "@/utils/promotionRules";
 
 import {
   setDoc,

@@ -32,15 +32,13 @@ import Promotion, {
   UserPromotionHistoryData,
 } from "@/models/promotion";
 
-export const getPromotionCollctionPath = (id: string) => {
-  return `restaurants/${id}/promotions`;
-};
-
-export const getPromotionDocumentPath = (id: string, promotionId: string) => {
-  const basePath = getPromotionCollctionPath(id);
-  const path = `${basePath}/${promotionId}`;
-  return path;
-};
+import {
+  getPromotionCollctionPath,
+  getPromotionDocumentPath,
+  isPaymentAllowed,
+  promotionDiscount,
+  userPromotionHistoryPath,
+} from "@/utils/promotionRules";
 
 export const getPromotion = async (id: string, promotionId: string) => {
   const path = getPromotionDocumentPath(id, promotionId);
@@ -87,7 +85,7 @@ const getUserHistoryPath = (id: string, user: UserRef) => {
   if (!isUser(user.value)) {
     throw new Error("user is not authenticated");
   }
-  return `users/${user.value.uid}/promotionHistories`;
+  return userPromotionHistoryPath(user.value.uid);
 };
 const getHistoryCondition = (id: string) => {
   return where("restaurantId", "==", id);
@@ -258,30 +256,14 @@ export const usePromotionData = (
 
   watchEffect(() => {
     if (orderInfo && promotion && promotion.value) {
-      enablePromotion.value =
-        orderInfo.total >= promotion.value.discountThreshold;
-      if (promotion.value.discountMethod === "amount") {
-        discountPrice.value = Number(promotion.value.discountValue);
-      } else {
-        discountPrice.value = Number(
-          (promotion.value.discountValue * orderInfo.total) / 100,
-        );
-      }
+      const discount = promotionDiscount(orderInfo.total, promotion.value);
+      enablePromotion.value = discount.enabled;
+      discountPrice.value = discount.discountPrice;
     }
   });
 
-  const isEnablePaymentPromotion = (payStripe: boolean) => {
-    if (!promotion.value) {
-      return false;
-    }
-    if (promotion.value.paymentRestrictions === "stripe") {
-      return payStripe;
-    }
-    if (promotion.value.paymentRestrictions === "instore") {
-      return !payStripe;
-    }
-    return true;
-  };
+  const isEnablePaymentPromotion = (payStripe: boolean) =>
+    isPaymentAllowed(promotion.value, payStripe);
 
   return {
     enablePromotion,

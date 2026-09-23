@@ -253,7 +253,8 @@ import {
   promotionPaymentRestrictionsSelect,
 } from "@/config/constant";
 
-import { getPromotion, getPromotionDocumentPath } from "@/utils/promotion";
+import { getPromotion } from "@/utils/promotion";
+import { getPromotionDocumentPath } from "@/utils/promotionRules";
 import { PromotionData } from "@/models/promotion";
 
 import { useRoute, useRouter } from "vue-router";
