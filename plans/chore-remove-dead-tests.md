@@ -37,8 +37,9 @@ NODE_ENV=test node --import tsx -e "import('./tests/<名前>.ts')"
 
 ## 残すもの
 
-- `express_test.ts` / `stripe_test.ts` — import は解決する。`mocha` と `chai` を入れて Firestore
-  emulator を起動すれば動く見込み。`e_tests` のスクリプトも残す
+- `express_test.ts` / `stripe_test.ts` — import 先のモジュールは解決する。足りないのは依存で、
+  `stripe_test.ts` は `mocha` / `chai`、`express_test.ts` はそれに加えて `cheerio`
+  （`test_helper.ts` が使う）。Firestore emulator も要る。`e_tests` のスクリプトは残す
 - `admin_smoke_test.ts` と `smoke_tests` — `node:test` で書かれており、emulator があれば動く
 
 ## 確かめ方
