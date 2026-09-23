@@ -42,6 +42,43 @@ const perLinePushes = (source: string): Pushes | undefined => {
   return found.length === 1 ? found[0] : undefined;
 };
 
+// 保存する直前で client の options に戻されると、位置の解決が「カートに入れた時のメニュー」に
+// 逆戻りして、請求額と印字がまたずれる。保存の1行を構文木で押さえる。
+const storedOptionsSource = (source: string): string | undefined => {
+  const file = ts.createSourceFile("orderCreated.ts", source, ts.ScriptTarget.Latest, true);
+  const found: string[] = [];
+  const visit = (node: ts.Node) => {
+    if (ts.isPropertyAssignment(node) && ts.isIdentifier(node.name) && node.name.text === "options" && ts.isIdentifier(node.initializer)) {
+      found.push(node.initializer.text);
+    }
+    if (ts.isShorthandPropertyAssignment(node) && node.name.text === "options") {
+      found.push("options");
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(file);
+  return found.length === 1 ? found[0] : undefined;
+};
+
+const destructuresFromOrderData = (source: string, name: string): boolean => {
+  const file = ts.createSourceFile("orderCreated.ts", source, ts.ScriptTarget.Latest, true);
+  let found = false;
+  const visit = (node: ts.Node) => {
+    if (
+      ts.isVariableDeclaration(node) &&
+      ts.isObjectBindingPattern(node.name) &&
+      node.initializer !== undefined &&
+      node.initializer.getText(file) === "orderData" &&
+      node.name.elements.some((element) => ts.isIdentifier(element.name) && element.name.text === name)
+    ) {
+      found = true;
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(file);
+  return found;
+};
+
 describe("注文の1行ぶんが、3つとも同じ枝で積まれる", () => {
   const source = readFileSync(join(root, orderCreated), "utf-8");
 
@@ -95,5 +132,43 @@ describe("この検査自体が空振りしないこと", () => {
       optionNames.push(names);
     });`;
     assert.strictEqual(perLinePushes(noGuard)?.zeroGuardFirst, false);
+  });
+});
+
+describe("保存される options は、サーバが位置から作ったもの", () => {
+  const source = readFileSync(join(root, orderCreated), "utf-8");
+
+  it("stores the names the server resolved, not the ones the client sent", () => {
+    assert.strictEqual(storedOptionsSource(source), "newOptions");
+  });
+
+  it("does not take the option names off the order the client wrote", () => {
+    assert.strictEqual(destructuresFromOrderData(source, "options"), false);
+  });
+
+  it("still takes the positions off the order the client wrote", () => {
+    assert.strictEqual(destructuresFromOrderData(source, "rawOptions"), true);
+  });
+});
+
+describe("保存の検査が空振りしないこと", () => {
+  it("rejects storing the client's option names", () => {
+    const clientCopy = `const { options, rawOptions } = orderData;
+      await orderRef.set(utils.filterData({ order: newOrderData, options, rawOptions }));`;
+    assert.strictEqual(storedOptionsSource(clientCopy), "options");
+    assert.strictEqual(destructuresFromOrderData(clientCopy, "options"), true);
+  });
+
+  it("accepts the shape the code actually uses", () => {
+    const serverDerived = `const { rawOptions } = orderData;
+      await orderRef.set(utils.filterData({ order: newOrderData, options: newOptions, rawOptions }));`;
+    assert.strictEqual(storedOptionsSource(serverDerived), "newOptions");
+    assert.strictEqual(destructuresFromOrderData(serverDerived, "options"), false);
+    assert.strictEqual(destructuresFromOrderData(serverDerived, "rawOptions"), true);
+  });
+
+  it("rejects a file that stores no option names at all", () => {
+    const missing = `await orderRef.set(utils.filterData({ order: newOrderData }));`;
+    assert.strictEqual(storedOptionsSource(missing), undefined);
   });
 });
