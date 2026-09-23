@@ -13,7 +13,7 @@ import {
   truncate,
   RECENT_SENDS_KEPT,
   appendSend,
-} from "../src/functions/notify/webpushFormat";
+} from "../../src/functions/notify/webpushFormat";
 import {
   DEFAULT_DEVICE_NAME,
   MAX_DEVICE_NAME_LENGTH,
@@ -24,8 +24,8 @@ import {
   inviteStatus,
   inviteUrl,
   isInviteToken,
-} from "../src/functions/notify/pushInviteFormat";
-import { validateCheckPushInvite, validateCreatePushInvite, validateRedeemPushInvite } from "../src/lib/validator";
+} from "../../src/functions/notify/pushInviteFormat";
+import { validateCheckPushInvite, validateCreatePushInvite, validateRedeemPushInvite } from "../../src/lib/validator";
 
 // Firebase Installation ID は base64url 相当の固定長文字列
 const fid = "dGVzdEZpZFZhbHVlMDAx";

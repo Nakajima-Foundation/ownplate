@@ -1,7 +1,7 @@
 import { describe, it } from "node:test";
 import assert from "node:assert";
 
-import * as validator from "../src/lib/validator";
+import * as validator from "../../src/lib/validator";
 
 describe("validator function", () => {
   it("should validate order update data correctly", async () => {

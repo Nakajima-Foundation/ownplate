@@ -1,7 +1,7 @@
 // import * as admin from "firebase-admin";
 import { describe, it } from "node:test";
 import assert from "node:assert";
-// import { getSVG } from "../src/functions/express/apis";
+// import { getSVG } from "../../src/functions/express/apis";
 // import { writeFile } from "fs";
 import * as receiptline from "receiptline";
 // import { convert } from "convert-svg-to-png";
@@ -56,10 +56,10 @@ describe("svg function", () => {
       "^^テストカフェ8080 デリバリーss\n" +
       "おもちかえり.com\n" +
       "\n" +
-      "^^^\"#535\"\n" +
+      '^^^"#535"\n' +
       "\n" +
-      "|受渡方法：\"テイクアウト\"\n" +
-      "|受渡希望時間：\"2023/04/09 11:40\"\n" +
+      '|受渡方法："テイクアウト"\n' +
+      '|受渡希望時間："2023/04/09 11:40"\n' +
       "\n" +
       "テスト太郎さん|\n" +
       "{w:*,4;b:line}\n" +
@@ -76,7 +76,7 @@ describe("svg function", () => {
       "-\n" +
       "^^合計 | ^^^¥2000\n" +
       "{w:auto; b:space}\n" +
-      "支払方法：\"現地払い\"|\n" +
+      '支払方法："現地払い"|\n' +
       "\n" +
       "\n";
     const svg = receiptline.transform(text, { encoding: "cp932" });
