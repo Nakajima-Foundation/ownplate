@@ -14,10 +14,11 @@
     <div v-if="shopInfo" class="mt-4 rounded-lg bg-white p-4 shadow-sm">
       <div class="flex items-center">
         <img
-          v-if="shopInfo.restaurantProfilePhoto"
-          :src="shopInfo.restaurantProfilePhoto"
+          v-if="shopInfo.restProfilePhoto"
+          :src="shopInfo.restProfilePhoto"
           alt=""
           class="h-12 w-12 rounded-full object-cover"
+          @error="smallImageErrorHandler"
         />
         <div class="ml-3">
           <div class="font-bold">{{ shopInfo.restaurantName }}</div>
@@ -79,7 +80,7 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, onSnapshot, getDoc, Unsubscribe } from "firebase/firestore";
 import { stripeDeleteRestaurantCard } from "@/lib/firebase/functions";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
-import { useUserData } from "@/utils/utils";
+import { smallImageErrorHandler, useUserData } from "@/utils/utils";
 import { useGeneralStore } from "@/store";
 import { useDialogStore } from "@/store/dialog";
 import moment from "moment";
@@ -191,6 +192,7 @@ export default defineComponent({
     });
 
     return {
+      smallImageErrorHandler,
       restaurantId,
       shopInfo,
       storedCard,

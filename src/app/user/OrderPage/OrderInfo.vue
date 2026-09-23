@@ -83,7 +83,6 @@
             </div>
           </div>
           <div class="text-right">
-            {{ orderInfo.shoppingCost }}
             <div class="text-base">
               {{ $n(actualShippingCost, "currency") }}
             </div>
