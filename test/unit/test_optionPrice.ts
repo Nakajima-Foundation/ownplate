@@ -4,6 +4,7 @@ import {
   optionPrice,
   optionChoicesAt,
   selectedOptionsPrice,
+  selectedOptionNames,
 } from "../../src/utils/commonUtils.ts";
 
 // オプションは "サイズ,S(+100),M(+200)" のように1つの組を1つの文字列に詰めて保存し、
@@ -201,6 +202,107 @@ describe("selectedOptionsPrice", () => {
     assert.strictEqual(
       selectedOptionsPrice([true], ["単品(+3.5)"], 100, 0),
       3.5,
+    );
+  });
+});
+
+// 注文に保存される「表示用の選択肢」。いままで画面側が作って送っていたものを、サーバが
+// 同じ規則で作り直す。規則がずれると、すべての注文のレシートが変わる。
+describe("selectedOptionNames", () => {
+  const groups = ["サイズ,S(+100),M(+200),L(+300)", "のり(+50)"];
+
+  it("names the choice each position points at", () => {
+    assert.deepStrictEqual(selectedOptionNames([3, true], groups), [
+      "L(+300)",
+      "のり(+50)",
+    ]);
+    assert.deepStrictEqual(selectedOptionNames([1, false], groups), [
+      "S(+100)",
+      "",
+    ]);
+  });
+
+  it("names nothing for an unchecked single-choice group", () => {
+    assert.deepStrictEqual(selectedOptionNames([0, false], groups), [
+      "サイズ",
+      "",
+    ]);
+  });
+
+  it("reads a multi-choice position stored as a string the same as a number", () => {
+    assert.deepStrictEqual(
+      selectedOptionNames(["3", false], groups),
+      selectedOptionNames([3, false], groups),
+    );
+  });
+
+  // 単一選択の組は真偽で判定するので、文字列の "0" は「入」、数値の 0 は「切」。
+  // 直感に反するが、金額側（selectedOptionsPrice）も同じ判定なので両者は食い違わない。
+  // ここを「揃える」と、保存済みの注文のレシートと請求額がずれる。
+  it("agrees with the price on which single-choice groups count as checked", () => {
+    [
+      ["3", "0"],
+      [3, 0],
+      ["3", 0],
+      [3, "0"],
+    ].forEach((selected) => {
+      const names = selectedOptionNames(selected, groups);
+      const price = selectedOptionsPrice(selected, groups, 1, 1000);
+      const charged = names[1] === "" ? 1300 : 1350;
+      assert.strictEqual(price, charged);
+    });
+  });
+
+  it("trims the spaces the owner typed around a choice", () => {
+    assert.deepStrictEqual(selectedOptionNames([1], ["サイズ, 小 , 大 "]), [
+      "小",
+    ]);
+  });
+
+  // 店舗が組や選択肢を減らすと、保存された位置が範囲の外に出る。
+  it("names nothing for a position that no longer exists", () => {
+    assert.deepStrictEqual(selectedOptionNames([9, true, true], groups), [
+      "",
+      "のり(+50)",
+      "",
+    ]);
+    assert.deepStrictEqual(selectedOptionNames([1, true], null), ["", ""]);
+  });
+
+  it("never throws, whatever the stored selection turns out to be", () => {
+    [
+      [],
+      [true],
+      [false],
+      [0],
+      [5],
+      [null],
+      [1, null, true],
+      ["1", "0"],
+    ].forEach((selected) => {
+      [groups, ["単品(+3.5)"], [""], [], null, undefined].forEach((list) => {
+        assert.doesNotThrow(() => selectedOptionNames(selected, list));
+      });
+    });
+  });
+
+  // 金額と名前は同じ入力・同じ組から出る。片方だけずれると、レシートと請求額が食い違う。
+  it("names the choice the price was taken from", () => {
+    const selected = [3, true];
+    assert.deepStrictEqual(selectedOptionNames(selected, groups), [
+      "L(+300)",
+      "のり(+50)",
+    ]);
+    assert.strictEqual(selectedOptionsPrice(selected, groups, 1, 1000), 1350);
+
+    const reordered = ["のり(+50)", "サイズ,S(+100),M(+200),L(+300)"];
+    assert.deepStrictEqual(selectedOptionNames(selected, reordered), [
+      "のり(+50)",
+      "S(+100)",
+    ]);
+    assert.strictEqual(
+      selectedOptionsPrice(selected, reordered, 1, 1000),
+      1150,
     );
   });
 });
