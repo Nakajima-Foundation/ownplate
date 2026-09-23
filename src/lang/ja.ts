@@ -361,6 +361,8 @@ const data = {
     availableDayTimeSettings: "商品の注文可能時間設定",
     free: "無料",
     optionsPreview: "オプションプレビュー",
+    showOptionsPreview: "プレビューを表示",
+    hideOptionsPreview: "プレビューを隠す",
     priceChange: "値段変化",
     noPriceChange: "なし",
     tax: "消費税",

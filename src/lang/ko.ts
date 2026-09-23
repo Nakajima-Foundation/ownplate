@@ -358,6 +358,8 @@ const data = {
     availableDayTimeSettings: "상품의 주문 가능 시간 설정",
     free: "무료",
     optionsPreview: "옵션 미리보기",
+    showOptionsPreview: "옵션 미리보기 표시",
+    hideOptionsPreview: "옵션 미리보기 숨기기",
     priceChange: "가격 변동",
     noPriceChange: "없음",
     tax: "소비세",

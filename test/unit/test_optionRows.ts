@@ -1,7 +1,11 @@
 import { describe, it } from "node:test";
 import assert from "node:assert";
 import type { OptionRow } from "../../src/utils/optionRows.ts";
-import { toOptionRows, toOptionTexts } from "../../src/utils/optionRows.ts";
+import {
+  hasOptionsToPreview,
+  toOptionRows,
+  toOptionTexts,
+} from "../../src/utils/optionRows.ts";
 
 // オプションは店舗オーナーが打った文字列そのものなので、空のまま2つ追加する・同じ名前を
 // 2つ作る、が普通に起きる。目印は Vue が行を照合する鍵になるので、重複するとドラッグのあと
@@ -64,5 +68,33 @@ describe("並べ替えの往復", () => {
         reordered.map((row) => options[row.id]),
       );
     });
+  });
+});
+
+// プレビューの開閉トグルを出すかどうか。新規商品の既定は [""] なので、長さで見ると
+// 「何も設定していない商品」にもトグルが出てしまう。
+describe("hasOptionsToPreview", () => {
+  it("says yes once one option has something in it", () => {
+    assert.strictEqual(hasOptionsToPreview(["サイズ,S,M"]), true);
+    assert.strictEqual(hasOptionsToPreview(["", "のり"]), true);
+  });
+
+  it("says no for a brand-new item", () => {
+    assert.strictEqual(hasOptionsToPreview([""]), false);
+  });
+
+  it("says no when every option is blank, however many there are", () => {
+    assert.strictEqual(hasOptionsToPreview(["", "", ""]), false);
+  });
+
+  it("treats spaces as blank", () => {
+    assert.strictEqual(hasOptionsToPreview([" ", "\t"]), false);
+    assert.strictEqual(hasOptionsToPreview([" ", " の "]), true);
+  });
+
+  it("says no for an item with no option field at all", () => {
+    assert.strictEqual(hasOptionsToPreview([]), false);
+    assert.strictEqual(hasOptionsToPreview(null), false);
+    assert.strictEqual(hasOptionsToPreview(undefined), false);
   });
 });

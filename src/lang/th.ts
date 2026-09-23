@@ -359,6 +359,8 @@ const data = {
     availableDayTimeSettings: "ตั้งค่าเวลาที่สามารถสั่งซื้อสินค้าได้",
     free: "ฟรี",
     optionsPreview: "ดูตัวอย่างตัวเลือก",
+    showOptionsPreview: "แสดงตัวอย่างตัวเลือก",
+    hideOptionsPreview: "ซ่อนตัวอย่างตัวเลือก",
     priceChange: "การเปลี่ยนแปลงราคา",
     noPriceChange: "ไม่มี",
     tax: "ภาษีการบริโภค",
