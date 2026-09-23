@@ -9,7 +9,7 @@ import { OrderData, OptionValue } from "../../lib/types/order";
 import { RestaurantInfoData } from "../../models/RestaurantInfo";
 import { MenuData, MenuItem } from "../../models/menu";
 import { validateOrderCreated } from "../../lib/validator";
-import { selectedOptionsPrice } from "../../utils/commonUtils";
+import { selectedOptionNames, selectedOptionsPrice } from "../../utils/commonUtils";
 import { Context } from "../../models/TestType";
 
 export const orderAccounting = (restaurantData: RestaurantInfoData, food_sub_total: number, alcohol_sub_total: number, multiple: number) => {
@@ -63,7 +63,7 @@ export const createNewOrderData = async (
   orderData: Partial<OrderData> & { order: { [menuId: string]: number | number[] }; rawOptions?: { [menuId: string]: OptionValue[][] } },
   multiple: number,
 ): Promise<
-  | { result: true, data: { newOrderData: { [menuId: string]: number[] }; newItems: { [menuId: string]: MenuItem }; newPrices: { [menuId: string]: number[] }; food_sub_total: number; alcohol_sub_total: number }}
+  | { result: true, data: { newOrderData: { [menuId: string]: number[] }; newItems: { [menuId: string]: MenuItem }; newPrices: { [menuId: string]: number[] }; newOptions: { [menuId: string]: string[][] }; food_sub_total: number; alcohol_sub_total: number }}
   | { result: false }
 > => {
   const menuIds = Object.keys(orderData.order);
@@ -73,6 +73,7 @@ export const createNewOrderData = async (
   const newOrderData: { [menuId: string]: number[] } = {};
   const newItems: { [menuId: string]: MenuItem } = {};
   const newPrices: { [menuId: string]: number[] } = {};
+  const newOptions: { [menuId: string]: string[][] } = {};
 
   let food_sub_total = 0;
   let alcohol_sub_total = 0;
@@ -97,6 +98,7 @@ export const createNewOrderData = async (
 
     const prices: number[] = [];
     const newOrder: number[] = [];
+    const optionNames: string[][] = [];
 
     const orderItem = orderData.order[menuId];
     const numArray = Array.isArray(orderItem) ? orderItem : [orderItem];
@@ -114,9 +116,11 @@ export const createNewOrderData = async (
       const price = menu.price + (rawOptions ? selectedOptionsPrice(rawOptions, menu.itemOptionCheckbox, multiple) : 0);
       newOrder.push(num);
       prices.push(price * num);
+      optionNames.push(rawOptions ? selectedOptionNames(rawOptions, menu.itemOptionCheckbox) : []);
     });
     newPrices[menuId] = prices;
     newOrderData[menuId] = newOrder;
+    newOptions[menuId] = optionNames;
 
     const total = prices.reduce((sum, price) => sum + price, 0);
     if (menu.tax === "alcohol") {
@@ -145,6 +149,7 @@ export const createNewOrderData = async (
       newOrderData,
       newItems,
       newPrices,
+      newOptions,
       food_sub_total,
       alcohol_sub_total,
     },
@@ -219,7 +224,7 @@ export const orderCreated = async (db: Firestore, data: OrderCreatedData, contex
     if (!res.result) {
       throw new functions.https.HttpsError("permission-denied", "unknown error.");
     }
-    const { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total } = res.data;
+    const { newOrderData, newItems, newPrices, newOptions, food_sub_total, alcohol_sub_total } = res.data;
 
     // Atomically increment the orderCount of the restaurant
     let orderCount = 0;
@@ -242,7 +247,7 @@ export const orderCreated = async (db: Firestore, data: OrderCreatedData, contex
     await createCustomer(db, customerUid, context.auth?.token?.phone_number || "");
 
     // just copy original data.
-    const { options, rawOptions, uid, phoneNumber, name, updatedAt, timeCreated } = orderData;
+    const { rawOptions, uid, phoneNumber, name, updatedAt, timeCreated } = orderData;
 
     await orderRef.set(
       utils.filterData({
@@ -253,7 +258,6 @@ export const orderCreated = async (db: Firestore, data: OrderCreatedData, contex
         lunchOrDinner,
 
         // just copy
-        options,
         rawOptions,
         uid,
         phoneNumber,
@@ -264,6 +268,7 @@ export const orderCreated = async (db: Firestore, data: OrderCreatedData, contex
 
         ownerUid,
         order: newOrderData,
+        options: newOptions,
         menuItems: newItems, // Clone of ordered menu items (simplified)
         prices: newPrices,
         status: order_status.validation_ok,

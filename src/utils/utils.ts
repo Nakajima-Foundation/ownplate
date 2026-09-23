@@ -34,7 +34,7 @@ import isLatLong from "validator/lib/isLatLong";
 import {
   isNull,
   isEmpty,
-  optionChoicesAt,
+  selectedOptionNames,
   selectedOptionsPrice,
 } from "./commonUtils";
 
@@ -538,24 +538,9 @@ export const getPostOption = (
   return Object.keys(trimmedSelectedOptions).reduce<{
     [key: string]: string[][];
   }>((ret, id) => {
-    ret[id] = (trimmedSelectedOptions[id] || []).map((item) => {
-      return item
-        .map((selectedOpt, key) => {
-          const opt = optionChoicesAt(
-            (cartItems[id] || {}).itemOptionCheckbox,
-            key,
-          );
-          if (opt.length === 1) {
-            if (selectedOpt) {
-              return opt[0];
-            }
-          } else {
-            return opt[Number(selectedOpt)] ?? "";
-          }
-          return "";
-        })
-        .map((s) => s.trim());
-    });
+    ret[id] = (trimmedSelectedOptions[id] || []).map((item) =>
+      selectedOptionNames(item, (cartItems[id] || {}).itemOptionCheckbox),
+    );
     return ret;
   }, {});
 };

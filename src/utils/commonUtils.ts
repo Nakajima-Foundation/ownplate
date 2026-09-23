@@ -45,6 +45,20 @@ const isSingleChoiceGroup = (choices: string[]): boolean =>
 const roundedOptionPrice = (choice: string, priceMultiple: number): number =>
   Math.round(optionPrice(choice) * priceMultiple) / priceMultiple;
 
+export const selectedOptionNames = (
+  selectedOptions: OptionValue[],
+  itemOptionCheckbox: string[] | null | undefined,
+): string[] =>
+  selectedOptions
+    .map((selected, index) => {
+      const choices = optionChoicesAt(itemOptionCheckbox, index);
+      if (isSingleChoiceGroup(choices)) {
+        return selected ? choices[0] : "";
+      }
+      return choices[Number(selected)] ?? "";
+    })
+    .map((name) => name.trim());
+
 export const selectedOptionsPrice = (
   selectedOptions: OptionValue[],
   itemOptionCheckbox: string[] | null | undefined,
