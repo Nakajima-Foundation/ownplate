@@ -1,8 +1,8 @@
 import { describe, it } from "node:test";
 import assert from "node:assert";
 
-import { buildReceiptText, extraChargeLines, hasReducedTaxItem, itemMark, reducedTaxNote, taxLines } from "../src/functions/express/receiptFormat";
-import { OrderAccounting, taxDisplayRows } from "../src/utils/commonUtils";
+import { buildReceiptText, extraChargeLines, hasReducedTaxItem, itemMark, reducedTaxNote, taxLines } from "../../src/functions/express/receiptFormat";
+import { OrderAccounting, taxDisplayRows } from "../../src/utils/commonUtils";
 
 const food = { revenue: 1000, tax: 74 };
 const alcohol = { revenue: 500, tax: 45 };

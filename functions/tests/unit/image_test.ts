@@ -2,8 +2,8 @@ import { describe, it } from "node:test";
 import assert from "node:assert";
 
 // import * as image from '../src/functions/image/image'
-import * as imageUtil from "../src/functions/image/imageUtil";
-import * as constant from "../src/functions/image/constant";
+import * as imageUtil from "../../src/functions/image/imageUtil";
+import * as constant from "../../src/functions/image/constant";
 
 // import * as constant from '../src/common/constant';
 // import * as test_db_helper from './test_db_helper';

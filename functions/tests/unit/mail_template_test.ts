@@ -1,7 +1,7 @@
 import { describe, it } from "node:test";
 import assert from "node:assert";
 
-import { createNotifyRestaurantMailMessage } from "./../src/functions/notify2";
+import { createNotifyRestaurantMailMessage } from "../../src/functions/notify2";
 
 const order = {
   prices: {

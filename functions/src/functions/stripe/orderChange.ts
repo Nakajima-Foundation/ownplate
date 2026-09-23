@@ -18,7 +18,7 @@ type OrderOptionsMap = Record<string, Record<number, unknown>>;
 
 const multiple = stripe_regions_jp.multiple; // 100 for USD, 1 for JPY
 
-const getUpdateOrder = (
+export const getUpdateOrder = (
   newOrders: NewOrderData[],
   order: OrderQuantityMap,
   options: OrderOptionsMap,
