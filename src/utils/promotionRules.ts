@@ -1,4 +1,4 @@
-import type { DiscountMethod, PaymentRestrictions } from "@/models/common";
+import type { DiscountMethod, PaymentRestrictions } from "../models/common";
 
 export const getPromotionCollctionPath = (id: string) => {
   return `restaurants/${id}/promotions`;

@@ -8,9 +8,6 @@ import {
   promotionDiscount,
   userPromotionHistoryPath,
 } from "../../src/utils/promotionRules.ts";
-import { getDiscountPrice } from "../../functions/src/functions/order/promotion.ts";
-import type { PromotionData as ServerPromotionData } from "../../functions/src/lib/types/promotion.ts";
-import type { Timestamp } from "firebase-admin/firestore";
 import type {
   DiscountMethod,
   PaymentRestrictions,
@@ -151,67 +148,10 @@ describe("promotionDiscount — いくら引くか", () => {
   });
 });
 
-// 画面が出す割引額と、サーバが請求時に計算する割引額。**ずれると客が見た額と
-// 請求額が食い違う。** 別々のファイルに同じ規則が二重に書かれているので、
-// 片方だけ直しても気づけない。
-describe("画面とサーバの割引額が一致すること", () => {
-  // サーバ側の関数は券ひとつ分の型を丸ごと要求する。使うのは discountMethod と
-  // discountValue だけなので、残りは型を満たすためだけの値。
-  const timestampAt = (seconds: number): Timestamp => ({
-    seconds,
-    nanoseconds: 0,
-    toDate: () => new Date(seconds * 1000),
-    toMillis: () => seconds * 1000,
-    isEqual: (other) => other.seconds === seconds,
-    valueOf: () => String(seconds),
-    toInstant: () => {
-      throw new Error("この試験では呼ばれない");
-    },
-  });
-
-  const serverCoupon = (
-    discountMethod: DiscountMethod,
-    discountValue: number,
-  ): ServerPromotionData => ({
-    promotionId: "promo1",
-    promotionName: "券",
-    enable: true,
-    type: "onetimeCoupon",
-    hasTerm: false,
-    termFrom: timestampAt(0),
-    termTo: timestampAt(1),
-    discountThreshold: 1000,
-    discountMethod,
-    discountValue,
-    paymentRestrictions: null,
-    usageRestrictions: false,
-  });
-
-  const cases: {
-    discountMethod: DiscountMethod;
-    discountValue: number;
-    total: number;
-  }[] = [
-    { discountMethod: "amount", discountValue: 500, total: 5000 },
-    { discountMethod: "amount", discountValue: 500, total: 1 },
-    { discountMethod: "amount", discountValue: 0, total: 5000 },
-    { discountMethod: "ratio", discountValue: 10, total: 5000 },
-    { discountMethod: "ratio", discountValue: 33, total: 1001 },
-    { discountMethod: "ratio", discountValue: 100, total: 2500 },
-    { discountMethod: "ratio", discountValue: 0, total: 5000 },
-  ];
-
-  it("computes the same amount off as the server does", () => {
-    cases.forEach(({ discountMethod, discountValue, total }) => {
-      assert.strictEqual(
-        promotionDiscount(total, coupon({ discountMethod, discountValue }))
-          .discountPrice,
-        getDiscountPrice(serverCoupon(discountMethod, discountValue), total),
-        `${discountMethod} ${discountValue} / ${total} でずれている`,
-      );
-    });
-  });
-});
+// 画面が出す割引額とサーバが請求時に計算する割引額が一致することは、両方を読める
+// functions 側で照合している（functions/tests/unit/promotion_test.ts）。
+// ここからはサーバ側のファイルを読めない — functions/src/models/ はデプロイ時に
+// コピーされるもので、git には入っていない。
 
 // カード決済だけ、現地払いだけ、という券がある。縛りは stripe / instore / 無し の
 // 3つだけなので、実装にある「それ以外」の分岐は型が認めておらず、ここからは踏めない。

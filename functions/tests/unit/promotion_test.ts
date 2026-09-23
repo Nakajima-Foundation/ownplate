@@ -7,6 +7,8 @@ import {
   getUserHistoryCollectionPath,
 } from "../../src/functions/order/promotion";
 import { PromotionData } from "../../src/lib/types/promotion";
+// 画面側の規則。同じ割引の計算が二重に書かれているので、ここで突き合わせる。
+import { promotionDiscount } from "../../../src/utils/promotionRules";
 
 const promotion = (values: Partial<PromotionData>): PromotionData =>
   values as PromotionData;
@@ -251,5 +253,40 @@ describe("getUserHistoryCollectionPath", () => {
       getUserHistoryCollectionPath("customer1"),
       getUserHistoryCollectionPath("customer2"),
     );
+  });
+});
+
+// 画面が出す割引額と、サーバが請求時に計算する割引額。**ずれると客が見た額と請求額が
+// 食い違う。** 同じ規則が別々のファイルに二重に書かれているので、片方だけ直しても
+// 気づけない。両方を読めるのはこちら側だけ（画面側の試験からは functions/src/models/ の
+// コピーを読めない）。
+describe("画面とサーバの割引額が一致すること", () => {
+  const cases: {
+    discountMethod: "amount" | "ratio";
+    discountValue: number;
+    total: number;
+  }[] = [
+    { discountMethod: "amount", discountValue: 500, total: 5000 },
+    { discountMethod: "amount", discountValue: 500, total: 1 },
+    { discountMethod: "amount", discountValue: 0, total: 5000 },
+    { discountMethod: "ratio", discountValue: 10, total: 5000 },
+    { discountMethod: "ratio", discountValue: 33, total: 1001 },
+    { discountMethod: "ratio", discountValue: 100, total: 2500 },
+    { discountMethod: "ratio", discountValue: 0, total: 5000 },
+  ];
+
+  it("takes the same amount off as the screen showed", () => {
+    cases.forEach(({ discountMethod, discountValue, total }) => {
+      const promotion = coupon({ discountMethod, discountValue });
+      assert.strictEqual(
+        getDiscountPrice(promotion, total),
+        promotionDiscount(total, {
+          discountThreshold: promotion.discountThreshold,
+          discountMethod,
+          discountValue,
+        }).discountPrice,
+        `${discountMethod} ${discountValue} / ${total} でずれている`,
+      );
+    });
   });
 });

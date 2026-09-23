@@ -50,7 +50,16 @@ SingularitySociety/omochikaeri-docs#212
 
 同じ規則が `functions/src/functions/order/promotion.ts` の `getDiscountPrice` にも
 書かれている。**ずれると客が見た額と請求額が食い違う。** 両方を同じ入力で呼んで
-一致を照合する試験を足した。片方だけ丸める変異で赤くなることを確かめてある。
+一致を照合する試験を足した。割合を丸める・定額をずらす・定額と割合を入れ替える、
+いずれの変異でも赤くなることを確かめてある。
+
+照合は **functions 側**（`functions/tests/unit/promotion_test.ts`）に置いた。
+最初は画面側の試験に置いたが、そこからサーバ側のファイルを読むと **CI で落ちる**。
+`functions/src/models/` はデプロイ時にコピーされるもので git に入っておらず、
+`firebase-functions` も画面側の依存には無い。手元の作業木には過去のコピーが残っていた
+ので型検査が通ってしまい、CI で初めて分かった。
+
+画面側の規則の型の取り込みを相対指定にして、functions 側からも読めるようにしてある。
 
 ## 確かめていないこと
 
