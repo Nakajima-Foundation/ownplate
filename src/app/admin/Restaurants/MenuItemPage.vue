@@ -517,20 +517,26 @@
                 :key="key"
               >
                 <div :key="key" class="mb-2 flex">
-                  <button @click="positionDown(key)" class="cursor-pointer">
+                  <button
+                    v-if="key !== menuInfo.itemOptionCheckbox.length - 1"
+                    @click="positionDown(key)"
+                    class="cursor-pointer"
+                  >
                     <div
                       class="mr-2 inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
-                      v-if="key !== menuInfo.itemOptionCheckbox.length - 1"
                     >
                       <i class="material-icons text-op-teal text-lg"
                         >arrow_downward</i
                       >
                     </div>
                   </button>
-                  <button @click="positionUp(key)" class="cursor-pointer">
+                  <button
+                    v-if="key !== 0"
+                    @click="positionUp(key)"
+                    class="cursor-pointer"
+                  >
                     <div
                       class="mr-2 inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
-                      v-if="key !== 0"
                     >
                       <i class="material-icons text-op-teal text-lg"
                         >arrow_upward</i
@@ -852,6 +858,8 @@ import { roundPrice } from "@/utils/price";
 import {
   OptionRow,
   hasOptionsToPreview,
+  optionMovedDown,
+  optionMovedUp,
   toOptionRows,
   toOptionTexts,
 } from "@/utils/optionRows";
@@ -1169,18 +1177,16 @@ export default defineComponent({
     };
 
     const positionDown = (key: number) => {
-      const item = [...menuInfo.itemOptionCheckbox];
-      const tmp = item[key];
-      item[key] = item[key + 1];
-      item[key + 1] = tmp;
-      menuInfo.itemOptionCheckbox = item;
+      menuInfo.itemOptionCheckbox = optionMovedDown(
+        menuInfo.itemOptionCheckbox,
+        key,
+      );
     };
     const positionUp = (key: number) => {
-      const item = [...menuInfo.itemOptionCheckbox];
-      const tmp = item[key - 1];
-      item[key - 1] = item[key];
-      item[key] = tmp;
-      menuInfo.itemOptionCheckbox = item;
+      menuInfo.itemOptionCheckbox = optionMovedUp(
+        menuInfo.itemOptionCheckbox,
+        key,
+      );
     };
 
     const openTips = (key: string) => {
