@@ -6,6 +6,7 @@ import {
   detectPlatform,
   hasRecentFailure,
   lastSend,
+  MAX_DEVICE_NAME_LENGTH,
   needsReregistration,
   recentFailureCode,
   registeredAtSeconds,
@@ -182,5 +183,15 @@ describe("recentFailureCode", () => {
   it("returns nothing when there is no failure to report", () => {
     assert.strictEqual(recentFailureCode([{ at: 1, ok: true }]), "");
     assert.strictEqual(recentFailureCode(undefined), "");
+  });
+});
+
+// 入力欄の上限と、サーバが実際に詰める長さ。片方だけ動かすと、入力できた名前が
+// 保存時に黙って切られる（または短く制限されたまま気づけない）。
+describe("MAX_DEVICE_NAME_LENGTH", () => {
+  it("matches the length the server truncates to", async () => {
+    const server =
+      await import("../../functions/src/functions/notify/pushInviteFormat.ts");
+    assert.strictEqual(MAX_DEVICE_NAME_LENGTH, server.MAX_DEVICE_NAME_LENGTH);
   });
 });

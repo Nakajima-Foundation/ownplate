@@ -83,3 +83,114 @@ describe("getCopyShopInfo", () => {
     assert.strictEqual(saved.restaurantName, "テスト店");
   });
 });
+
+// 営業時間は開始の早い順に並べて保存する。並べずに保存すると、店舗ページの営業時間が
+// 入力した順のまま出る（昼の部と夜の部が入れ替わって見える）。
+describe("getEditShopInfo — 営業時間", () => {
+  const savedTimes = (times: { start: number; end: number }[]) =>
+    getEditShopInfo(shopInfo({ openTimes: { "1": times } }), "NOW").openTimes[
+      "1"
+    ];
+
+  it("orders the day's slots by when they start", () => {
+    assert.deepStrictEqual(
+      savedTimes([
+        { start: 1020, end: 1320 },
+        { start: 660, end: 840 },
+      ]),
+      [
+        { start: 660, end: 840 },
+        { start: 1020, end: 1320 },
+      ],
+    );
+  });
+
+  it("leaves an already-ordered day alone", () => {
+    assert.deepStrictEqual(
+      savedTimes([
+        { start: 660, end: 840 },
+        { start: 1020, end: 1320 },
+      ]),
+      [
+        { start: 660, end: 840 },
+        { start: 1020, end: 1320 },
+      ],
+    );
+  });
+
+  it("keeps a day with a single slot, and a day with none", () => {
+    assert.deepStrictEqual(savedTimes([{ start: 660, end: 840 }]), [
+      { start: 660, end: 840 },
+    ]);
+    assert.deepStrictEqual(savedTimes([]), []);
+  });
+
+  // 曜日ごとに別々。まとめて扱うと、ある曜日の時間が他の曜日にも出る。
+  it("sorts each day of the week on its own", () => {
+    const saved = getEditShopInfo(
+      shopInfo({
+        openTimes: {
+          "1": [
+            { start: 1020, end: 1320 },
+            { start: 660, end: 840 },
+          ],
+          "2": [{ start: 540, end: 780 }],
+        },
+      }),
+      "NOW",
+    ).openTimes;
+    assert.deepStrictEqual(Object.keys(saved), ["1", "2"]);
+    assert.strictEqual(saved["1"][0].start, 660);
+    assert.strictEqual(saved["2"][0].start, 540);
+  });
+});
+
+// 未設定の項目。Firestore は undefined を書けないので、空の値に置き換えて保存する。
+// 置き換えを外すと保存そのものが失敗する。
+describe("getEditShopInfo — 未設定の項目", () => {
+  it("saves an empty object for a shop with no payment methods", () => {
+    assert.deepStrictEqual(
+      getEditShopInfo(shopInfo({ paymentMethods: undefined }), "NOW")
+        .paymentMethods,
+      {},
+    );
+  });
+
+  it("carries the payment methods a shop has set", () => {
+    assert.deepStrictEqual(
+      getEditShopInfo(shopInfo({ paymentMethods: { stripe: true } }), "NOW")
+        .paymentMethods,
+      { stripe: true },
+    );
+  });
+
+  it("saves empty objects for a shop with no images", () => {
+    const saved = getEditShopInfo(shopInfo({ images: undefined }), "NOW");
+    assert.deepStrictEqual(saved.images, { cover: {}, profile: {} });
+  });
+
+  it("treats an unset lunch/dinner switch as off", () => {
+    assert.strictEqual(
+      getEditShopInfo(shopInfo({ enableLunchDinner: undefined }), "NOW")
+        .enableLunchDinner,
+      false,
+    );
+    assert.strictEqual(
+      getEditShopInfo(shopInfo({ enableLunchDinner: true }), "NOW")
+        .enableLunchDinner,
+      true,
+    );
+  });
+
+  it("saves null rather than nothing for an unset last-order time", () => {
+    assert.strictEqual(
+      getEditShopInfo(shopInfo({ lastOrderTime: undefined }), "NOW")
+        .lastOrderTime,
+      null,
+    );
+    assert.strictEqual(
+      getEditShopInfo(shopInfo({ lastOrderTime: 60 }), "NOW").lastOrderTime,
+      60,
+    );
+  });
+});

@@ -3,8 +3,13 @@ import assert from "node:assert";
 import {
   restaurant2AreaObj,
   sortRestaurantObj,
+  imageUtils,
 } from "../../src/utils/RestaurantUtils.ts";
-import { convMm2pt } from "../../src/lib/pdf/pdfStyles.ts";
+import {
+  convMm2pt,
+  pageMargins,
+  pageSize,
+} from "../../src/lib/pdf/pdfStyles.ts";
 import { restaurantInfoFixture } from "../fixtures/restaurantInfo.ts";
 
 // 店舗一覧を都道府県ごとに束ねる。束ね漏れると、その県の店舗が一覧から消える。
@@ -140,5 +145,65 @@ describe("convMm2pt", () => {
   it("grows with the width", () => {
     assert.ok(convMm2pt(80) > convMm2pt(58));
     assert.ok(convMm2pt(58) > convMm2pt(54));
+  });
+});
+
+// レシートの紙の大きさ。ここが変わると印字が紙からはみ出す、または余白だらけになる。
+// フォントの大きさ（styles）は体裁の話なので留めない。
+describe("レシートの紙の寸法", () => {
+  it("is as wide as a 54mm receipt roll", () => {
+    assert.strictEqual(pageSize.width, convMm2pt(54));
+    assert.strictEqual(pageSize.width, 153.07);
+  });
+
+  it("grows to fit however much is printed", () => {
+    assert.strictEqual(pageSize.height, "auto");
+  });
+
+  // 左右の余白は 0。紙が狭いので、余白を取ると印字できる幅が減る。
+  it("keeps no margin at the sides, and a small one top and bottom", () => {
+    assert.deepStrictEqual(pageMargins, [0, 2, 0, 2]);
+  });
+});
+
+// 画像と分類の拡大表示。開いた状態のまま閉じられなくなる／二度と開かなくなる、が
+// この2つの取り違えで起きる。
+describe("imageUtils", () => {
+  it("starts with both popups shut", () => {
+    const { imagePopup, categoryPopup } = imageUtils();
+    assert.strictEqual(imagePopup.value, false);
+    assert.strictEqual(categoryPopup.value, false);
+  });
+
+  it("opens and shuts the image popup", () => {
+    const { imagePopup, openImage, closeImage } = imageUtils();
+    openImage();
+    assert.strictEqual(imagePopup.value, true);
+    closeImage();
+    assert.strictEqual(imagePopup.value, false);
+  });
+
+  it("opens and shuts the category popup", () => {
+    const { categoryPopup, openCategory, closeCategory } = imageUtils();
+    openCategory();
+    assert.strictEqual(categoryPopup.value, true);
+    closeCategory();
+    assert.strictEqual(categoryPopup.value, false);
+  });
+
+  // 片方を開いても、もう片方は閉じたまま。取り違えると画像を開いたのに分類が出る。
+  it("keeps the two popups independent", () => {
+    const { imagePopup, categoryPopup, openImage } = imageUtils();
+    openImage();
+    assert.strictEqual(categoryPopup.value, false);
+    assert.strictEqual(imagePopup.value, true);
+  });
+
+  // 呼ぶたびに別の状態。使い回すと、ある店舗のページで開いた拡大表示が次のページに残る。
+  it("hands each caller its own state", () => {
+    const first = imageUtils();
+    const second = imageUtils();
+    first.openImage();
+    assert.strictEqual(second.imagePopup.value, false);
   });
 });
