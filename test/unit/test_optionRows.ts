@@ -3,6 +3,8 @@ import assert from "node:assert";
 import type { OptionRow } from "../../src/utils/optionRows.ts";
 import {
   hasOptionsToPreview,
+  optionMovedDown,
+  optionMovedUp,
   toOptionRows,
   toOptionTexts,
 } from "../../src/utils/optionRows.ts";
@@ -96,5 +98,72 @@ describe("hasOptionsToPreview", () => {
     assert.strictEqual(hasOptionsToPreview([]), false);
     assert.strictEqual(hasOptionsToPreview(null), false);
     assert.strictEqual(hasOptionsToPreview(undefined), false);
+  });
+});
+
+// ↑↓ ボタンで1つずつ動かす。端から先へ動かそうとすると、直す前は配列に穴が空き、次の描画で
+// itemOptions が split で落ちて編集画面ごと消えていた。
+describe("optionMovedUp / optionMovedDown", () => {
+  const options = ["A", "B", "C"];
+
+  it("swaps a row with the one above it", () => {
+    assert.deepStrictEqual(optionMovedUp(options, 1), ["B", "A", "C"]);
+    assert.deepStrictEqual(optionMovedUp(options, 2), ["A", "C", "B"]);
+  });
+
+  it("swaps a row with the one below it", () => {
+    assert.deepStrictEqual(optionMovedDown(options, 0), ["B", "A", "C"]);
+    assert.deepStrictEqual(optionMovedDown(options, 1), ["A", "C", "B"]);
+  });
+
+  it("leaves the list alone at the ends", () => {
+    assert.deepStrictEqual(optionMovedUp(options, 0), options);
+    assert.deepStrictEqual(optionMovedDown(options, 2), options);
+  });
+
+  it("leaves the list alone for a row that is not there", () => {
+    [-1, 3, 99].forEach((index) => {
+      assert.deepStrictEqual(optionMovedUp(options, index), options);
+      assert.deepStrictEqual(optionMovedDown(options, index), options);
+    });
+  });
+
+  // 直す前に実際に起きていた壊れ方。長さが増えて穴が空く。
+  it("never changes the length and never leaves a hole", () => {
+    const lists = [[], ["A"], ["A", "B"], options, ["", "B", ""]];
+    lists.forEach((list) => {
+      for (let index = -2; index <= list.length + 1; index += 1) {
+        [optionMovedUp(list, index), optionMovedDown(list, index)].forEach(
+          (moved) => {
+            assert.strictEqual(moved.length, list.length);
+            moved.forEach((value) =>
+              assert.strictEqual(typeof value, "string"),
+            );
+          },
+        );
+      }
+    });
+  });
+
+  it("cannot move the only row there is", () => {
+    assert.deepStrictEqual(optionMovedUp(["A"], 0), ["A"]);
+    assert.deepStrictEqual(optionMovedDown(["A"], 0), ["A"]);
+  });
+
+  it("tolerates an item with no option field at all", () => {
+    assert.deepStrictEqual(optionMovedUp(null, 0), []);
+    assert.deepStrictEqual(optionMovedDown(undefined, 0), []);
+  });
+
+  it("does not modify what it was given", () => {
+    const original = ["A", "B", "C"];
+    optionMovedUp(original, 1);
+    optionMovedDown(original, 1);
+    assert.deepStrictEqual(original, ["A", "B", "C"]);
+  });
+
+  it("gives back a new array, so assigning it re-renders", () => {
+    assert.notStrictEqual(optionMovedUp(options, 0), options);
+    assert.notStrictEqual(optionMovedDown(options, 2), options);
   });
 });

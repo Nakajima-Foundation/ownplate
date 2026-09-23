@@ -18,3 +18,32 @@ export const hasOptionsToPreview = (
   itemOptionCheckbox: string[] | null | undefined,
 ): boolean =>
   (itemOptionCheckbox ?? []).some((option) => (option ?? "").trim() !== "");
+
+const swapped = (options: string[], a: number, b: number): string[] => {
+  const moved = [...options];
+  moved[a] = options[b];
+  moved[b] = options[a];
+  return moved;
+};
+
+// 端の行から先へは動かさない。範囲の外を掴むと配列に穴が空き、次の描画で
+// itemOptions が split で落ちて編集画面ごと消える。
+export const optionMovedUp = (
+  itemOptionCheckbox: string[] | null | undefined,
+  index: number,
+): string[] => {
+  const options = itemOptionCheckbox ?? [];
+  return index > 0 && index < options.length
+    ? swapped(options, index - 1, index)
+    : [...options];
+};
+
+export const optionMovedDown = (
+  itemOptionCheckbox: string[] | null | undefined,
+  index: number,
+): string[] => {
+  const options = itemOptionCheckbox ?? [];
+  return index >= 0 && index < options.length - 1
+    ? swapped(options, index, index + 1)
+    : [...options];
+};
