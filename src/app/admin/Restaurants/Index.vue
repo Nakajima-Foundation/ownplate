@@ -1178,10 +1178,8 @@ import ImageUpload from "@/components/ImageUpload.vue";
 
 import { checkShopOwner } from "@/utils/userPermission";
 
-import {
-  shopInfoValidator,
-  copyRestaurant,
-} from "@/utils/admin/RestaurantPageUtils";
+import { copyRestaurant } from "@/utils/admin/RestaurantPageUtils";
+import { shopInfoValidator } from "@/utils/admin/shopInfoForm";
 import { getEditShopInfo } from "@/utils/admin/shopInfoPayload";
 import { isValidInvoiceNumber, isNull } from "@/utils/commonUtils";
 import {

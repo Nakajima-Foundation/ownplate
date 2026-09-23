@@ -52,7 +52,7 @@ import { getPartner, useRestaurantId, useAdminUids } from "@/utils/utils";
 import { getShopOwner } from "@/utils/shopOwner";
 import { regionalSetting } from "@/config/constant";
 
-import { defaultShopInfo } from "@/utils/admin/RestaurantPageUtils";
+import { defaultShopInfo } from "@/utils/admin/shopInfoForm";
 import { checkAdminPermission } from "@/utils/userPermission";
 
 export default defineComponent({
