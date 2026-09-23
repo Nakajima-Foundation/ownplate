@@ -52,21 +52,20 @@ i18n キー（特に新規キー）を追加・変更するときは、 **`src/l
 | `yarn lint` / `yarn format` | ESLint / Prettier |
 | `yarn serve` | `firebase serve --only functions` |
 | `yarn deploy` | `firebase deploy --only functions` |
-| `yarn ci_test` | CI 相当（image / validator / mail_template / svg / webpush） |
-| `yarn tests` | mocha で全 `tests/*_test.ts` を再帰実行 |
+| `yarn ci_test` | CI で走るテスト（`yarn unit_tests` と同じ） |
+| `yarn unit_tests` | `tests/unit/` の `node:test`。外部サービスも emulator も要らない |
+| `yarn smoke_tests` | `tests/admin_smoke_test.ts`。Firestore emulator が要る |
 
-個別 mocha テストは頭文字で呼び分ける: `o_tests`（order）/ `oc_tests`（order_change）/ `n_tests`（notify）/ `t_tests`・`t2_tests`（twilio）/ `s_tests`（subaccount）/ `d_tests`（dl）/ `e_tests`（express）/ `smaregitests` ほか。
+**`tests/unit/` に `*_test.ts` を置けば、`package.json` を直さなくても CI で走る。**
 
 単一ファイルを直接叩く例:
 
 ```bash
-# mocha 系
 cd functions
-NODE_ENV=test tsx ./node_modules/mocha/bin/mocha tests/order_test.ts --timeout 30000
-
-# node --test 系（i_tests / validator_tests / m_tests / svg_tests と同じ要領）
-NODE_ENV=test node --import tsx --test tests/validator_test.ts
+NODE_ENV=test node --import tsx --test tests/unit/validator_test.ts
 ```
+
+emulator が要るテストと、動かなくなっている残りについては [functions/tests/README.md](./functions/tests/README.md)。
 
 ## アーキテクチャ
 
