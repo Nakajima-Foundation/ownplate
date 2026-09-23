@@ -14,8 +14,8 @@
     <div v-if="shopInfo" class="mt-4 rounded-lg bg-white p-4 shadow-sm">
       <div class="flex items-center">
         <img
-          v-if="shopInfo.restaurantProfilePhoto"
-          :src="shopInfo.restaurantProfilePhoto"
+          v-if="shopInfo.restProfilePhoto"
+          :src="shopInfo.restProfilePhoto"
           alt=""
           class="h-12 w-12 rounded-full object-cover"
         />
