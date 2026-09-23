@@ -347,6 +347,8 @@ const data = {
     availableDayTimeSettings: "商品可下单时间设置",
     free: "免费",
     optionsPreview: "选项预览",
+    showOptionsPreview: "显示选项预览",
+    hideOptionsPreview: "隐藏选项预览",
     priceChange: "价格变化",
     noPriceChange: "无",
     tax: "消费税",

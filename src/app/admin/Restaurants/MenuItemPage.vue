@@ -427,6 +427,23 @@
               {{ $t("editMenu.itemOptionsNote") }}
             </div>
 
+            <!-- Option Preview Toggle -->
+            <div v-if="hasOptionContent" class="pb-2">
+              <button
+                @click="switchOptionsPreview"
+                class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-black/5 px-4"
+              >
+                <i class="material-icons text-op-teal mr-2 text-lg">{{
+                  showOptionsPreview ? "visibility_off" : "visibility"
+                }}</i>
+                <span class="text-op-teal text-sm font-bold">{{
+                  showOptionsPreview
+                    ? $t("editMenu.hideOptionsPreview")
+                    : $t("editMenu.showOptionsPreview")
+                }}</span>
+              </button>
+            </div>
+
             <!-- Option Reorder Mode Toggle -->
             <div
               v-if="(menuInfo.itemOptionCheckbox || []).length > 1"
@@ -537,7 +554,10 @@
                 </div>
 
                 <!-- Option Preview -->
-                <div class="rounded-lg bg-black/5 p-4">
+                <div
+                  v-if="showOptionsPreview"
+                  class="rounded-lg bg-black/5 p-4"
+                >
                   <div class="mb-2 flex text-xs font-bold text-black/30">
                     <div class="flex-1">
                       {{ $t("editMenu.optionsPreview") }}
@@ -829,13 +849,19 @@ import {
   defaultTitle,
 } from "@/utils/utils";
 import { roundPrice } from "@/utils/price";
-import { OptionRow, toOptionRows, toOptionTexts } from "@/utils/optionRows";
+import {
+  OptionRow,
+  hasOptionsToPreview,
+  toOptionRows,
+  toOptionTexts,
+} from "@/utils/optionRows";
 
 import { uploadFile } from "@/lib/firebase/storage";
 
 import { getNewItemData, MenuData } from "@/models/menu";
 import { copyMenuData } from "@/models/menuUtils";
 import { checkShopOwner } from "@/utils/userPermission";
+import { useAdminConfigToggle } from "@/utils/admin/Toggle";
 
 import { useUserStore } from "@/store/user";
 import { useDialogStore } from "@/store/dialog";
@@ -919,6 +945,12 @@ export default defineComponent({
     const copyRestaurantId = ref<string | null>(null);
 
     const { uid } = useAdminUids();
+
+    const { toggle: showOptionsPreview, switchToggle: switchOptionsPreview } =
+      useAdminConfigToggle("menuOptionsPreview", uid.value, true);
+    const hasOptionContent = computed(() =>
+      hasOptionsToPreview(menuInfo.itemOptionCheckbox),
+    );
 
     // allow sub Account
     if (!checkShopOwner(props.shopInfo, uid.value)) {
@@ -1203,6 +1235,10 @@ export default defineComponent({
 
       positionDown,
       positionUp,
+
+      showOptionsPreview,
+      switchOptionsPreview,
+      hasOptionContent,
 
       isOptionMoveMode,
       optionRows,

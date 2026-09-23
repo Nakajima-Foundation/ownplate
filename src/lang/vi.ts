@@ -366,6 +366,8 @@ const data = {
     availableDayTimeSettings: "Cài đặt thời gian có thể đặt sản phẩm",
     free: "Miễn phí",
     optionsPreview: "Xem trước tùy chọn",
+    showOptionsPreview: "Hiện xem trước tùy chọn",
+    hideOptionsPreview: "Ẩn xem trước tùy chọn",
     priceChange: "Thay đổi giá",
     noPriceChange: "Không",
     tax: "Thuế tiêu thụ",

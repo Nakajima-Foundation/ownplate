@@ -371,6 +371,8 @@ const data = {
       "Paramètres des horaires de commande de l'article",
     free: "Gratuit",
     optionsPreview: "Options Preview",
+    showOptionsPreview: "Show Options Preview",
+    hideOptionsPreview: "Hide Options Preview",
     priceChange: "Price Change",
     noPriceChange: "No Change",
     tax: "Tax",

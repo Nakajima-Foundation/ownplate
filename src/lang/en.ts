@@ -363,6 +363,8 @@ const data = {
     availableDayTimeSettings: "Product orderable time setting",
     free: "Free",
     optionsPreview: "Options Preview",
+    showOptionsPreview: "Show Options Preview",
+    hideOptionsPreview: "Hide Options Preview",
     priceChange: "Price Change",
     noPriceChange: "No Change",
     tax: "Tax",

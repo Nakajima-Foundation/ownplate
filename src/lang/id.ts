@@ -368,6 +368,8 @@ const data = {
     availableDayTimeSettings: "Pengaturan waktu produk dapat dipesan",
     free: "Gratis",
     optionsPreview: "Pratinjau opsi",
+    showOptionsPreview: "Tampilkan pratinjau opsi",
+    hideOptionsPreview: "Sembunyikan pratinjau opsi",
     priceChange: "Perubahan harga",
     noPriceChange: "Tidak ada",
     tax: "Pajak konsumsi",

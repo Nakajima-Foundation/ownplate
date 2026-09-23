@@ -11,3 +11,10 @@ export const toOptionRows = (options: string[]): OptionRow[] =>
 
 export const toOptionTexts = (rows: OptionRow[]): string[] =>
   rows.map((row) => row.text);
+
+// プレビューに映すものが無いなら、開閉のトグル自体を出さない。新規商品の既定は [""] なので、
+// 「オプションが設定されているか」は長さではなく中身で見る。
+export const hasOptionsToPreview = (
+  itemOptionCheckbox: string[] | null | undefined,
+): boolean =>
+  (itemOptionCheckbox ?? []).some((option) => (option ?? "").trim() !== "");
