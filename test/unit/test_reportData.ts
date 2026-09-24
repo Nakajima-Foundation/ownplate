@@ -135,6 +135,48 @@ describe("order2ReportData — 引数を書き換えること", () => {
     assert.ok(order.timePlaced instanceof Date);
   });
 
+  // 注文に入っていた区分の実体をそのまま返すこと。写しに差し替えると、
+  // prototype 経由の値や凍結が落ちて、売上の欄が静かに空になる。
+  it("keeps the very accounting object it was given", () => {
+    const accounting = {
+      food: { revenue: 1000, tax: 74 },
+      alcohol: { revenue: 0, tax: 0 },
+    };
+    const order = orderInfoFixture({ tip: 110, accounting });
+    assert.strictEqual(
+      order2ReportData(order, SERVICE_TAX_RATE).accounting,
+      accounting,
+    );
+  });
+
+  // すでに区分がある注文に `accounting` を書き戻さないこと。書き戻すと、
+  // 注文側に setter がある場合に旧と呼ばれ方が変わる。
+  it("does not write accounting back when the order already has one", () => {
+    const accounting = {
+      food: { revenue: 1000, tax: 74 },
+      alcohol: { revenue: 0, tax: 0 },
+    };
+    const order = orderInfoFixture({ tip: 110 });
+    const writes: number[] = [];
+    Object.defineProperty(order, "accounting", {
+      get: () => accounting,
+      set: () => {
+        writes.push(1);
+      },
+      configurable: true,
+    });
+    order2ReportData(order, SERVICE_TAX_RATE);
+    assert.strictEqual(writes.length, 0);
+  });
+
+  // 型では起きないが、Firestore の中身は型より古い。区分がオブジェクトで
+  // なかったときに黙って返すと、食品も酒も無い行が売上ゼロとして数えられる。
+  it("throws rather than reporting a row with no food or alcohol", () => {
+    const order = orderInfoFixture({ tip: 110 });
+    Object.assign(order, { accounting: 1 });
+    assert.throws(() => order2ReportData(order, SERVICE_TAX_RATE), TypeError);
+  });
+
   // **二度通せない。** 一度目で日時を Date に直すので、二度目は toDate が無くて落ちる。
   // いまの呼び出し側は Firestore の snapshot から毎回 data() で新しい実体を作るため
   // 起きないが、同じ注文を使い回す呼び出しを足すと落ちる。
