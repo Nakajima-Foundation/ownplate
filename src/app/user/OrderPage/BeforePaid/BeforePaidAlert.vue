@@ -40,6 +40,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
+import type { OrderInfoData } from "@/models/orderInfo";
 import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 export default defineComponent({
   props: {
@@ -48,7 +49,7 @@ export default defineComponent({
       required: true,
     },
     orderInfo: {
-      type: Object,
+      type: Object as PropType<OrderInfoData>,
       required: true,
     },
     message: {

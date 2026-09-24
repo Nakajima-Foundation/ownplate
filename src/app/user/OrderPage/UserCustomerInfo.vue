@@ -8,6 +8,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, PropType } from "vue";
+import type { OrderInfoData } from "@/models/orderInfo";
 import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 import CustomerInfo from "@/components/CustomerInfo.vue";
 import { doc, getDoc, DocumentData } from "firebase/firestore";
@@ -24,7 +25,7 @@ export default defineComponent({
       required: true,
     },
     orderInfo: {
-      type: Object,
+      type: Object as PropType<OrderInfoData>,
       required: true,
     },
     orderId: {

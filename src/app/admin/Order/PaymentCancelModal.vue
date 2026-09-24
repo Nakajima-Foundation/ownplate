@@ -64,6 +64,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, PropType } from "vue";
+import type { OrderInfoData } from "@/models/orderInfo";
 import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { stripePaymentCancelIntent } from "@/lib/firebase/functions";
 
@@ -79,7 +80,7 @@ export default defineComponent({
       required: true,
     },
     orderInfo: {
-      type: Object,
+      type: Object as PropType<OrderInfoData>,
       required: true,
     },
     orderId: {
