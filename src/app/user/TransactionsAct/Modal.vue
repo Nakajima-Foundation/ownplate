@@ -4,7 +4,6 @@
     <t-modal v-model:active="transactionsActPopup" width="488" scroll="keep">
       <Contents
         :shopInfo="shopInfo"
-        :isDelivery="isDelivery"
         @closeTransactionsAct="closeTransactionsAct"
         closeButton="menu.close"
       />
@@ -21,10 +20,6 @@ export default defineComponent({
   props: {
     shopInfo: {
       type: Object as PropType<RestaurantInfoData>,
-      required: true,
-    },
-    isDelivery: {
-      type: Boolean,
       required: true,
     },
   },

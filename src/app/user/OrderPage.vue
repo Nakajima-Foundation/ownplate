@@ -47,11 +47,7 @@
         :hasLine="hasLine"
       />
     </template>
-    <TransactionsActModal
-      ref="transactions"
-      :isDelivery="orderInfo.isDelivery || false"
-      :shopInfo="shopInfo"
-    />
+    <TransactionsActModal ref="transactions" :shopInfo="shopInfo" />
   </div>
 </template>
 
