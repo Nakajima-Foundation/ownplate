@@ -1,7 +1,7 @@
 import { describe, it, beforeEach, afterEach, mock } from "node:test";
 import assert from "node:assert";
 import { createPinia, setActivePinia } from "pinia";
-import { computed, ref, type ComputedRef } from "vue";
+import { computed, effectScope, ref, type ComputedRef } from "vue";
 
 import { usePickupTime } from "../../src/utils/pickup.ts";
 import { useGeneralStore } from "../../src/store/index.ts";
@@ -35,6 +35,7 @@ const freezeAt = (hour: number) => {
   });
 };
 const ELEVEN = 11 * MINUTES_PER_HOUR;
+const ONE_HOUR_MS = 60 * 60 * 1000;
 const TWO_PM = 14 * MINUTES_PER_HOUR;
 
 // 臨時休業は Firestore の Timestamp で届く。読む側は seconds の有無で
@@ -101,7 +102,6 @@ const pickupAt = async <T>(
 ): Promise<T> => {
   freezeAt(nowHour);
   useGeneralStore().date = new Date();
-  // computed なので、値は setup の中で読む。外で読むと i18n が無くて落ちる。
   return runInSetup(() =>
     read(
       usePickupTime(shopInfo, exceptData, ref(menus), lunchOrDinner, skipToday),
@@ -298,6 +298,32 @@ describe("todaysLast", () => {
 
   it("names nothing once today is over", async () => {
     assert.strictEqual(await pickupAt(15, (p) => p.todaysLast?.value), null);
+  });
+});
+
+// 画面は1分ごとに store の時計を進め、computed は次の描画の前に setup の外で計算し直される。
+// ここで落ちると、店舗ページを開いたまま1分待った客の画面が止まる。
+// runInSetup は SSR で、SSR の computed は依存に関係なく毎回計算し直すので、ここでは使わない。
+describe("時計が進んだあとの再計算", () => {
+  it("recomputes outside setup once the store clock moves", () => {
+    freezeAt(11);
+    const generalStore = useGeneralStore();
+    generalStore.date = new Date();
+    const scope = effectScope();
+    const pickup = scope.run(() => usePickupTime(shopOpen11to2(), {}, ref({})));
+    if (!pickup) {
+      throw new Error("effectScope が走らなかった");
+    }
+    const firstPickupDisplay = () =>
+      pickup.availableDays.value[0].times[0].display;
+    assert.strictEqual(firstPickupDisplay(), "午前 11:30");
+
+    mock.timers.tick(ONE_HOUR_MS);
+    generalStore.date = new Date();
+
+    assert.strictEqual(pickup.todaysLast.value?.lastOrderTime, "午後 01:35");
+    assert.strictEqual(firstPickupDisplay(), "午後 00:30");
+    scope.stop();
   });
 });
 

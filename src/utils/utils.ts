@@ -1,4 +1,4 @@
-import { ref, computed, onMounted, Ref } from "vue";
+import { ref, computed, onMounted, unref, Ref } from "vue";
 import type { User } from "firebase/auth";
 import type { DocumentData } from "firebase/firestore";
 
@@ -34,6 +34,7 @@ import { useRoute, useRouter } from "vue-router";
 import { useGeneralStore } from "../store";
 import { useUserStore } from "@/store/user";
 import { useI18n } from "vue-i18n";
+import i18n from "../lib/vue-i18n";
 
 // 捕まえたものは何でもありうる。在否の判定も読みも try の中に置く。どちらも
 // getter や Proxy の罠になりうるので、外に置くと守りを素通りして投げる。
@@ -153,8 +154,11 @@ export const num2simpleFormatedTime = (num: number) => {
   ].join("");
 };
 
+// computed の再計算は setup の外で走るので、useI18n ではなく global を使う。
 export const num2time = (num: number) => {
-  const { locale, t } = useI18n();
+  const { locale, t } = i18n.global;
+  // legacy: false では locale は ref だが、型は文字列と宣言されている。
+  const localeName = unref(locale);
 
   if (num === 0 || num === 60 * 24) {
     return t("shopInfo.midnight");
@@ -162,7 +166,7 @@ export const num2time = (num: number) => {
   if (num === 60 * 12) {
     return t("shopInfo.noon");
   }
-  const offsetTime = locale.value === "ja" ? 12 : 13;
+  const offsetTime = localeName === "ja" ? 12 : 13;
   const isPm = num >= 60 * 12;
   if (num >= 60 * offsetTime) {
     num = num - 60 * 12;
