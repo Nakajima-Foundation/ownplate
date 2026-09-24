@@ -456,7 +456,7 @@ export default defineComponent({
 
     const notAvailable = ref(false);
 
-    const cardState = ref({});
+    const cardState = ref<{ complete?: boolean }>({});
     const memo = ref("");
     const userName = ref(props.orderInfo.name);
 
@@ -598,7 +598,7 @@ export default defineComponent({
     const handleTipChange = (_tip: number) => {
       tip = _tip;
     };
-    const handleCardStateChange = (state: { [key: string]: boolean }) => {
+    const handleCardStateChange = (state: { complete?: boolean }) => {
       cardState.value = state;
     };
     // internal

@@ -49,7 +49,8 @@ export default defineComponent({
     const generalStore = useGeneralStore();
 
     const restaurantId = useRestaurantId();
-    // 初期値は Wrapper が null で作る。使う側は v-if で見るので null でよい。
+    // 保存された設定をそのまま受ける。まだ保存されていなければ空。値は null にも
+    // なるので、読む側は v-if で見る。
     const notificationData = ref<{
       soundOn?: boolean | null;
       infinityNotification?: boolean | null;
