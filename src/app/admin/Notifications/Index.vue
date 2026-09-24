@@ -2,7 +2,6 @@
   <div>
     <!-- Notification Settings Button -->
     <notification-setting-button
-      :notificationData="notificationData"
       @openNotificationSettings="openNotificationSettings"
     />
 

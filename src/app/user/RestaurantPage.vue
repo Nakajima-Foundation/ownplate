@@ -89,7 +89,6 @@
             <div class="mx-6 mt-2 lg:mx-0">
               <TransactionsActContents
                 :shopInfo="shopInfo"
-                :isDelivery="isDelivery"
                 @closeTransactionsAct="closeTransactionsAct"
                 closeButton="button.back"
               />
@@ -115,7 +114,6 @@
             <div class="mx-6 mt-4 lg:mx-0" v-if="shopInfo.enableLunchDinner">
               <div class="rounded-lg bg-white shadow-sm">
                 <LunchDinner
-                  :shopInfo="shopInfo"
                   v-model="lunchOrDinner"
                   :hasDinnerOnlyOrder="hasDinnerOnlyOrder"
                   :hasLunchOnlyOrder="hasLunchOnlyOrder"
