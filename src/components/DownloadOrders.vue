@@ -24,7 +24,7 @@ import DownloadCsv from "@/components/DownloadCSV.vue";
 import moment from "moment";
 import { nameOfOrder } from "@/utils/strings";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
-import { order_status } from "@/config/constant";
+import { order_status, orderStatusOf } from "@/config/constant";
 import { OrderInfoData } from "@/models/orderInfo";
 import { arrayOrNumSum, orderTypeKey, getRestaurantId } from "@/utils/utils";
 
@@ -54,7 +54,7 @@ export default defineComponent({
           return count + arrayOrNumSum(order.order[id]);
         }, 0);
         const status = Object.keys(order_status).reduce((result, key) => {
-          if (order_status[key] === order.status) {
+          if (orderStatusOf(key) === order.status) {
             return key;
           }
           return result;
