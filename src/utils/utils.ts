@@ -689,6 +689,10 @@ export const notFoundResponse: { notFound: true } = {
   notFound: true,
 };
 
+// 画面から離れることが決まった setup が返すもの。`return;` にすると setup の戻り型が
+// undefined との union になり、template がその画面の値を一つも読めなくなる。
+export const redirectedResponse: Record<string, never> = {};
+
 const setImageFallbackSrc = (e: Event, src: string) => {
   if (e.target instanceof HTMLImageElement) {
     e.target.src = src;
