@@ -245,4 +245,48 @@ describe("errorCode / errorMessage", () => {
       assert.strictEqual(errorMessage(value), undefined);
     });
   });
+
+  // 「何でも受ける」には、読もうとすると投げるものも含まれる。
+  it("tolerates one whose field cannot be read", () => {
+    const throwing = {};
+    Object.defineProperty(throwing, "code", {
+      get: () => {
+        throw new Error("unreadable");
+      },
+    });
+    assert.strictEqual(errorCode(throwing), undefined);
+  });
+
+  it("tolerates one that refuses the presence check", () => {
+    const refusing = new Proxy(
+      {},
+      {
+        has: () => {
+          throw new Error("no");
+        },
+      },
+    );
+    assert.strictEqual(errorCode(refusing), undefined);
+    assert.strictEqual(errorMessage(refusing), undefined);
+  });
+
+  it("tolerates a revoked proxy", () => {
+    const { proxy, revoke } = Proxy.revocable({ code: "a" }, {});
+    revoke();
+    assert.strictEqual(errorCode(proxy), undefined);
+  });
+
+  // 在否を検めた値と返す値が食い違わないこと。二度読むと食い違う。
+  it("reads the field once, so a changing accessor cannot slip past the check", () => {
+    let reads = 0;
+    const changing = {};
+    Object.defineProperty(changing, "code", {
+      get: () => {
+        reads += 1;
+        return reads === 1 ? "first" : 12345;
+      },
+    });
+    assert.strictEqual(errorCode(changing), "first");
+    assert.strictEqual(reads, 1);
+  });
 });

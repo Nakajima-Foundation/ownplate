@@ -75,7 +75,7 @@ import isEmail from "validator/lib/isEmail";
 import { auth } from "@/lib/firebase/firebase9";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { useRouter } from "vue-router";
-import { defaultTitle } from "@/utils/utils";
+import { defaultTitle, errorCode } from "@/utils/utils";
 import { useHead } from "@unhead/vue";
 
 export default defineComponent({
@@ -85,7 +85,7 @@ export default defineComponent({
 
     const email = ref("");
     let badEmail = "---invalid---";
-    const apiError = ref(null);
+    const apiError = ref<string | null>(null);
     const emailSent = ref(false);
     const submitted = ref(false);
 
@@ -128,13 +128,14 @@ export default defineComponent({
           console.log("success");
           emailSent.value = true;
         })
-        .catch((error) => {
+        .catch((error: unknown) => {
           console.error("reset", error);
-          if (error.code === "auth/user-not-found") {
+          const code = errorCode(error);
+          if (code === "auth/user-not-found") {
             badEmail = email.value;
           } else {
             badEmail = "---Invalid---";
-            apiError.value = error.code;
+            apiError.value = code ?? null;
           }
         })
         .finally(() => {

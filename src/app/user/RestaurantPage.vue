@@ -326,6 +326,7 @@ import {
   defaultTitle,
   stripeRegion,
   errorCode,
+  errorMessage,
 } from "@/utils/utils";
 
 import { imageUtils } from "@/utils/RestaurantUtils";
@@ -722,7 +723,7 @@ export default defineComponent({
             goCheckout();
           }, 500);
         } else {
-          console.error(error.message);
+          console.error(errorMessage(error));
           dialogStore.setErrorMessage({
             code: "order.checkout",
             error,
