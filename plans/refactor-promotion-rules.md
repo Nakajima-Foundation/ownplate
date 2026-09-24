@@ -55,7 +55,8 @@ SingularitySociety/omochikaeri-docs#212
 
 照合は **functions 側**（`functions/tests/unit/promotion_test.ts`）に置いた。
 最初は画面側の試験に置いたが、そこからサーバ側のファイルを読むと **CI で落ちる**。
-`functions/src/models/` はデプロイ時にコピーされるもので git に入っておらず、
+`functions/src/models/` は `scripts/copy2functions.sh` が **`src/`（画面側）を正本として**
+コピーするもので、コピー先は git に入っていない。
 `firebase-functions` も画面側の依存には無い。手元の作業木には過去のコピーが残っていた
 ので型検査が通ってしまい、CI で初めて分かった。
 
