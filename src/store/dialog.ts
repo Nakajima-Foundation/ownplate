@@ -12,6 +12,8 @@ interface DialogErrorData {
   message?: string;
   message2?: string;
   code?: string;
+  // DialogBox が Sentry へ渡すもの。捕まえた例外をそのまま入れる。
+  error?: unknown;
 }
 interface DialogTipsData {
   key: string;
