@@ -32,10 +32,8 @@
         :orderInfo="orderInfo"
         :orderItems="orderItems"
         :paymentInfo="paymentInfo"
-        :deliveryData="deliveryData"
         :menuPagePath="menuPagePath"
         @openTransactionsAct="openTransactionsAct"
-        :promotions="promotions"
       />
 
       <OrderPageAfter

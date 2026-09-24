@@ -195,7 +195,6 @@
                   "
                   :numberOfOrders="numberOfOrderObj[restaurantId] || 0"
                   :lineEnable="lines[restaurantId] || false"
-                  :shopOwner="shopOwner"
                   :position="
                     index == 0
                       ? 'first'
