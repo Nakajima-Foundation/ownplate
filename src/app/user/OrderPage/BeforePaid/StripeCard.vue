@@ -162,7 +162,12 @@ export default defineComponent({
     const cardElem = ref<any>(null);
     let elementStatus = { complete: false };
 
-    const storedCard = ref(null);
+    const storedCard = ref<{
+      brand: string;
+      last4: string;
+      exp_month: number;
+      exp_year: number;
+    } | null>(null);
     const useStoredCard = ref(false);
     const save = ref(true);
 
