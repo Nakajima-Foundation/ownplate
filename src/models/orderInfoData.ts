@@ -2,6 +2,7 @@ import { Timestamp } from "./firebaseUtils";
 import { MenuData } from "./menu";
 import { CustomerInfo } from "./customer";
 import { OrderStatus } from "./common";
+import type { RestaurantInfoData } from "./RestaurantInfo";
 
 export interface OrderInfoData {
   id: string;
@@ -38,6 +39,16 @@ export interface OrderInfoData {
     };
   };
   shippingCost: number;
+
+  // 券を使った注文に、確定時に書かれる（functions の orderPlace）。
+  promotionId?: string;
+  promotionName?: string;
+
+  // LINE の中から注文したか。注文を作るときに画面が入れる。
+  isLiff?: boolean;
+
+  // 一覧の画面が、注文ごとに店舗を引いて後から付ける。Firestore には無い。
+  restaurant?: RestaurantInfoData;
   isDelivery: boolean;
   isEC: boolean;
   tip: number;

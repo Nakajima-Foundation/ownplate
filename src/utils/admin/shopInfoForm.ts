@@ -59,8 +59,10 @@ export const defaultShopInfo = {
 };
 
 type ShopInfoBussinessTimeError = { [key: string]: string[][] };
-type shopInfoValidatorError = {
-  [key: string]: string[] | ShopInfoBussinessTimeError;
+// 欄ごとの文句は文字列の一覧。**time だけが曜日と枠で入れ子になっている。**
+// ひとまとめの union にすると、画面が errors["restProfilePhoto"][0] と読めなくなる。
+type shopInfoValidatorError = { [key: string]: string[] } & {
+  time?: ShopInfoBussinessTimeError;
 };
 
 export const shopInfoValidator = (
