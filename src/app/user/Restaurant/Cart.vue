@@ -70,6 +70,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
+import type Promotion from "@/models/promotion";
 import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import CartItem from "@/app/user/Restaurant/CartItem.vue";
@@ -106,11 +107,11 @@ export default defineComponent({
       required: true,
     },
     promotions: {
-      type: Array,
+      type: Array<Promotion>,
       required: false,
     },
     possiblePromotions: {
-      type: Array,
+      type: Array<Promotion>,
       required: false,
     },
     selectedOptions: {

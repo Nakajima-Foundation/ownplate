@@ -66,6 +66,7 @@ import {
   watch,
   PropType,
 } from "vue";
+import type Promotion from "@/models/promotion";
 import type { PaymentInfo } from "@/models/paymentInfo";
 
 import NotFound from "@/components/NotFound.vue";
@@ -129,7 +130,7 @@ export default defineComponent({
       required: false,
     },
     promotions: {
-      type: Array,
+      type: Array<Promotion>,
       required: true,
     },
   },
