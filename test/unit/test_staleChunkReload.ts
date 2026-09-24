@@ -3,6 +3,7 @@ import assert from "node:assert";
 import {
   STALE_CHUNK_RELOAD_COOLDOWN_MS,
   parseReloadedAt,
+  sameOriginReloadUrl,
   shouldReloadForStaleChunk,
 } from "../../src/utils/staleChunkReload.ts";
 
@@ -58,6 +59,43 @@ describe("parseReloadedAt", () => {
   it("treats a value that is not a number as never reloaded", () => {
     ["abc", "NaN", "Infinity", "-Infinity", "12ab", "{}"].forEach((raw) => {
       assert.strictEqual(parseReloadedAt(raw), null, raw);
+    });
+  });
+});
+
+// 開き直す先は移動先のパス。パスの書き方しだいでブラウザは別のサイトを開くので、同じオリジンに限る。
+describe("sameOriginReloadUrl", () => {
+  const ORIGIN = "https://omochikaeri.com";
+
+  it("opens the destination on the same site", () => {
+    assert.strictEqual(
+      sameOriginReloadUrl(
+        "/admin/restaurants/abc/orders?day=2026-09-24",
+        ORIGIN,
+      ),
+      `${ORIGIN}/admin/restaurants/abc/orders?day=2026-09-24`,
+    );
+    assert.strictEqual(
+      sameOriginReloadUrl("/r/abc#menu", ORIGIN),
+      `${ORIGIN}/r/abc#menu`,
+    );
+    assert.strictEqual(
+      sameOriginReloadUrl("/ok?next=//evil.example", ORIGIN),
+      `${ORIGIN}/ok?next=//evil.example`,
+    );
+  });
+
+  it("refuses a path the browser would open on another site", () => {
+    [
+      "//evil.example/x",
+      "///evil.example/x",
+      "/\\evil.example/x",
+      "\\\\evil.example/x",
+      "https://evil.example/x",
+      "javascript:alert(1)",
+      "http://omochikaeri.com/x",
+    ].forEach((fullPath) => {
+      assert.strictEqual(sameOriginReloadUrl(fullPath, ORIGIN), null, fullPath);
     });
   });
 });

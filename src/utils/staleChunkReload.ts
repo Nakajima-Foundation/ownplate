@@ -20,3 +20,17 @@ export const shouldReloadForStaleChunk = (
   // 時計が戻ったときは、前回の記録を当てにしない。
   return elapsed_ms < 0 || elapsed_ms >= STALE_CHUNK_RELOAD_COOLDOWN_MS;
 };
+
+// "//host" や "/\host" は、ルーターは通してもブラウザは別オリジンとして開く。
+// 同じオリジンに解決できるものだけを返す。
+export const sameOriginReloadUrl = (
+  fullPath: string,
+  origin: string,
+): string | null => {
+  try {
+    const reloadUrl = new URL(fullPath, origin);
+    return reloadUrl.origin === origin ? reloadUrl.href : null;
+  } catch {
+    return null;
+  }
+};

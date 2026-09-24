@@ -1,21 +1,21 @@
 import type { Router } from "vue-router";
 import {
   parseReloadedAt,
+  sameOriginReloadUrl,
   shouldReloadForStaleChunk,
 } from "../utils/staleChunkReload";
 
 const RELOADED_AT_KEY = "staleChunkReloadedAt";
 
-const readReloadedAt = (): number | null => {
+// 記録を読めない・書けないときは開き直さない。分割ファイルが本当に無いと、読み込み直しが止まらなくなる。
+const claimReload = (now_ms: number): boolean => {
   try {
-    return parseReloadedAt(window.sessionStorage.getItem(RELOADED_AT_KEY));
-  } catch {
-    return null;
-  }
-};
-
-const writeReloadedAt = (now_ms: number): boolean => {
-  try {
+    const reloadedAt_ms = parseReloadedAt(
+      window.sessionStorage.getItem(RELOADED_AT_KEY),
+    );
+    if (!shouldReloadForStaleChunk(reloadedAt_ms, now_ms)) {
+      return false;
+    }
     window.sessionStorage.setItem(RELOADED_AT_KEY, String(now_ms));
     return true;
   } catch {
@@ -39,14 +39,10 @@ export const reloadOnStaleChunk = (router: Router) => {
     if (!staleChunkErrors.has(error)) {
       return;
     }
-    const now_ms = Date.now();
-    if (!shouldReloadForStaleChunk(readReloadedAt(), now_ms)) {
+    const reloadUrl = sameOriginReloadUrl(to.fullPath, window.location.origin);
+    if (reloadUrl === null || !claimReload(Date.now())) {
       return;
     }
-    // 記録できないと、分割ファイルが本当に無いときに読み込み直しが止まらない。
-    if (!writeReloadedAt(now_ms)) {
-      return;
-    }
-    window.location.assign(to.fullPath);
+    window.location.assign(reloadUrl);
   });
 };
