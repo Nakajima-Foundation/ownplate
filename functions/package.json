@@ -8,6 +8,7 @@
     "deploy": "firebase deploy --only functions",
     "smoke_tests": "NODE_ENV=test node --import tsx --test tests/admin_smoke_test.ts",
     "unit_tests": "NODE_ENV=test node --import tsx --test tests/unit/*_test.ts",
+    "unit_tests:coverage": "mkdir -p coverage && NODE_ENV=test node --import tsx --experimental-test-coverage --test-coverage-exclude=tests/** --test-reporter=spec --test-reporter-destination=stdout --test-reporter=lcov --test-reporter-destination=coverage/lcov.info --test tests/unit/*_test.ts",
     "ci_test": "yarn run unit_tests",
     "tests": "NODE_ENV=test tsx ./node_modules/mocha/bin/mocha --recursive tests/*_test.ts --timeout 30000",
     "e_tests": "NODE_ENV=test tsx ./node_modules/mocha/bin/mocha --recursive tests/express_test.ts",
