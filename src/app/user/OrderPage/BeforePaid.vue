@@ -356,6 +356,7 @@
 
 <script lang="ts">
 import { defineComponent, computed, watch, ref, PropType } from "vue";
+import type { PaymentInfo } from "@/models/paymentInfo";
 
 import ShopHeader from "@/app/user/Restaurant/ShopHeader.vue";
 
@@ -426,7 +427,7 @@ export default defineComponent({
       required: true,
     },
     paymentInfo: {
-      type: Object,
+      type: Object as PropType<PaymentInfo>,
       required: true,
     },
     deliveryData: {
