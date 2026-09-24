@@ -248,6 +248,7 @@ import { stripeRegion } from "@/utils/utils";
 import OrderItem from "@/app/user/OrderPage/OrderItem.vue";
 
 import { OrderInfoData } from "@/models/orderInfo";
+import type { OrderItemData } from "@/models/orderInfoData";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { MenuData } from "@/models/menu";
 
@@ -256,7 +257,7 @@ export default defineComponent({
 
   props: {
     orderItems: {
-      type: Array,
+      type: Array<OrderItemData>,
       required: true,
     },
     orderInfo: {
