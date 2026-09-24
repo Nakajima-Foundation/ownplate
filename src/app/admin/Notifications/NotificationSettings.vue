@@ -193,7 +193,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from "vue";
+import { defineComponent, ref, watch, PropType } from "vue";
+import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 
@@ -222,7 +223,7 @@ export default defineComponent({
       required: true,
     },
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: false,
     },
   },

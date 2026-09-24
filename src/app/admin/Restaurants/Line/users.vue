@@ -31,7 +31,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, PropType } from "vue";
+import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { checkShopAccount } from "@/utils/userPermission";
 import { useAdminUids, notFoundResponse } from "@/utils/utils";
@@ -49,7 +50,7 @@ export default defineComponent({
   },
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
   },

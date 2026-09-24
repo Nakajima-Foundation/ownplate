@@ -199,6 +199,7 @@
 
 <script lang="ts">
 import { db } from "@/lib/firebase/firebase9";
+import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 import {
   query,
   collection,
@@ -208,7 +209,14 @@ import {
   Unsubscribe,
 } from "firebase/firestore";
 
-import { defineComponent, ref, computed, watch, onUnmounted } from "vue";
+import {
+  defineComponent,
+  ref,
+  computed,
+  watch,
+  onUnmounted,
+  PropType,
+} from "vue";
 import moment from "moment";
 
 import BackButton from "@/components/BackButton.vue";
@@ -248,7 +256,7 @@ export default defineComponent({
   },
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
   },
