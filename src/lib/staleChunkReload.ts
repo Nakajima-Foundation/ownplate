@@ -1,23 +1,13 @@
 import type { Router } from "vue-router";
 import {
-  parseReloadedAt,
+  claimStaleChunkReload,
   sameOriginReloadUrl,
-  shouldReloadForStaleChunk,
 } from "../utils/staleChunkReload";
 
-const RELOADED_AT_KEY = "staleChunkReloadedAt";
-
-// 記録を読めない・書けないときは開き直さない。分割ファイルが本当に無いと、読み込み直しが止まらなくなる。
-const claimReload = (now_ms: number): boolean => {
+// sessionStorage は、無効にされた環境では読むだけで投げる。
+const claimReload = (): boolean => {
   try {
-    const reloadedAt_ms = parseReloadedAt(
-      window.sessionStorage.getItem(RELOADED_AT_KEY),
-    );
-    if (!shouldReloadForStaleChunk(reloadedAt_ms, now_ms)) {
-      return false;
-    }
-    window.sessionStorage.setItem(RELOADED_AT_KEY, String(now_ms));
-    return true;
+    return claimStaleChunkReload(window.sessionStorage, Date.now());
   } catch {
     return false;
   }
@@ -40,7 +30,7 @@ export const reloadOnStaleChunk = (router: Router) => {
       return;
     }
     const reloadUrl = sameOriginReloadUrl(to.fullPath, window.location.origin);
-    if (reloadUrl === null || !claimReload(Date.now())) {
+    if (reloadUrl === null || !claimReload()) {
       return;
     }
     window.location.assign(reloadUrl);

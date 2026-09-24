@@ -2,6 +2,8 @@ import { describe, it } from "node:test";
 import assert from "node:assert";
 import {
   STALE_CHUNK_RELOAD_COOLDOWN_MS,
+  STALE_CHUNK_RELOADED_AT_KEY,
+  claimStaleChunkReload,
   parseReloadedAt,
   sameOriginReloadUrl,
   shouldReloadForStaleChunk,
@@ -97,5 +99,52 @@ describe("sameOriginReloadUrl", () => {
     ].forEach((fullPath) => {
       assert.strictEqual(sameOriginReloadUrl(fullPath, ORIGIN), null, fullPath);
     });
+  });
+});
+
+// 記録が読めない・書けないのに開き直すと、分割ファイルが本当に無いときに読み込み直しが止まらない。
+describe("claimStaleChunkReload", () => {
+  const memoryStorage = (initial: { [key: string]: string } = {}) => {
+    const items = new Map(Object.entries(initial));
+    return {
+      items,
+      getItem: (key: string) => items.get(key) ?? null,
+      setItem: (key: string, value: string) => {
+        items.set(key, value);
+      },
+    };
+  };
+  const failing = () => {
+    throw new Error("storage is disabled");
+  };
+
+  it("claims the first reload and records when it happened", () => {
+    const storage = memoryStorage();
+    assert.strictEqual(claimStaleChunkReload(storage, NOW_MS), true);
+    assert.strictEqual(
+      storage.items.get(STALE_CHUNK_RELOADED_AT_KEY),
+      String(NOW_MS),
+    );
+  });
+
+  it("refuses a second reload inside the cooldown and keeps the first record", () => {
+    const storage = memoryStorage({
+      [STALE_CHUNK_RELOADED_AT_KEY]: String(NOW_MS),
+    });
+    assert.strictEqual(claimStaleChunkReload(storage, NOW_MS + 1), false);
+    assert.strictEqual(
+      storage.items.get(STALE_CHUNK_RELOADED_AT_KEY),
+      String(NOW_MS),
+    );
+  });
+
+  it("refuses when the record cannot be read", () => {
+    const storage = { ...memoryStorage(), getItem: failing };
+    assert.strictEqual(claimStaleChunkReload(storage, NOW_MS), false);
+  });
+
+  it("refuses when the record cannot be written", () => {
+    const storage = { ...memoryStorage(), setItem: failing };
+    assert.strictEqual(claimStaleChunkReload(storage, NOW_MS), false);
   });
 });

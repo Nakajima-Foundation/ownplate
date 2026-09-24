@@ -34,3 +34,26 @@ export const sameOriginReloadUrl = (
     return null;
   }
 };
+
+export const STALE_CHUNK_RELOADED_AT_KEY = "staleChunkReloadedAt";
+
+export type ReloadRecordStorage = Pick<Storage, "getItem" | "setItem">;
+
+// 記録を読めない・書けないときは開き直さない。分割ファイルが本当に無いと、読み込み直しが止まらなくなる。
+export const claimStaleChunkReload = (
+  storage: ReloadRecordStorage,
+  now_ms: number,
+): boolean => {
+  try {
+    const reloadedAt_ms = parseReloadedAt(
+      storage.getItem(STALE_CHUNK_RELOADED_AT_KEY),
+    );
+    if (!shouldReloadForStaleChunk(reloadedAt_ms, now_ms)) {
+      return false;
+    }
+    storage.setItem(STALE_CHUNK_RELOADED_AT_KEY, String(now_ms));
+    return true;
+  } catch {
+    return false;
+  }
+};
