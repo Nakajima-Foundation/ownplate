@@ -31,6 +31,7 @@ describe("inputValueOf", () => {
     assert.strictEqual(inputValueOf({ target: { value: Symbol("s") } }), "");
     assert.strictEqual(inputValueOf({ target: { value: {} } }), "");
     assert.strictEqual(inputValueOf({ target: { value: new String("x") } }), "");
+    assert.strictEqual(inputValueOf({ target: { value: new Number(540) } }), "");
     assert.strictEqual(inputValueOf({ target: "text" }), "");
   });
 
