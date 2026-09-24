@@ -32,16 +32,14 @@
                   <div class="text-xs">
                     {{ $t("order.totalCharge") }}
                   </div>
-                  <div v-if="hasStripe" class="text-base">
+                  <div v-if="stripeState" class="text-base">
                     <a :href="search" target="stripe">
                       <div>{{ $n(orderInfo.totalCharge, "currency") }}</div>
                       <StripeStatus
-                        :stripeState="orderInfo.payment.stripe"
+                        :stripeState="stripeState"
                         class="stripe_ text-xs font-bold"
                       >
-                        {{
-                          $t("order.status.stripe_" + orderInfo.payment.stripe)
-                        }}
+                        {{ $t("order.status.stripe_" + stripeState) }}
                       </StripeStatus>
                     </a>
                   </div>
@@ -70,7 +68,7 @@
             >
               {{ $t("admin.order.waitingPaymentWarninig") }}
             </div>
-            <div v-if="hasStripe && orderInfo.payment.stripe !== 'canceled'">
+            <div v-if="stripeState && stripeState !== 'canceled'">
               <div
                 class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-yellow-500/10 px-4 py-1 font-bold text-yellow-500"
               >
@@ -125,7 +123,7 @@
               class="mt-4 text-center"
               v-if="
                 isValidTransition('order_canceled') &&
-                (paymentIsNotCompleted || !hasStripe)
+                (paymentIsNotCompleted || !stripeState)
               "
             >
               <button @click="openCancel()">
@@ -844,13 +842,14 @@ export default defineComponent({
       }
       return undefined; // backward compatibility
     });
-    const hasStripe = computed(() => {
+    // 支払いの状態そのもの。現地払いの注文には無いので undefined になる。
+    const stripeState = computed(() => {
       return orderInfo.value.payment && orderInfo.value.payment.stripe;
     });
     const paymentIsNotCompleted = computed(() => {
       return (
-        // hasStripe.value && orderInfo.value.status < order_status.ready_to_pickup
-        hasStripe.value && orderInfo.value.payment?.stripe === "pending"
+        // stripeState.value && orderInfo.value.status < order_status.ready_to_pickup
+        stripeState.value && orderInfo.value.payment?.stripe === "pending"
       );
     });
     const phoneNumber = computed(() => {
@@ -1148,7 +1147,7 @@ export default defineComponent({
       estimatedTimes,
       timeRequested,
       timeEstimated,
-      hasStripe,
+      stripeState,
       paymentIsNotCompleted,
 
       nationalPhoneNumber,
