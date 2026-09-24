@@ -6,8 +6,14 @@
       @click="openCalendar"
       readonly
       class="w-full cursor-pointer rounded border border-gray-300 p-2"
+      :class="icon ? 'pr-10' : ''"
       :placeholder="placeholder"
     />
+    <i
+      v-if="icon"
+      class="material-icons pointer-events-none absolute top-1/2 right-2 -translate-y-1/2 text-gray-400"
+      >{{ icon }}</i
+    >
     <div
       v-if="isCalendarOpen"
       class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
@@ -29,7 +35,8 @@
           <div class="text-lg font-semibold">{{ monthName }} {{ year }}</div>
           <button
             @click="nextMonth"
-            class="cursor-pointer rounded-full p-2 hover:bg-gray-100"
+            :disabled="isNextMonthDisabled"
+            class="cursor-pointer rounded-full p-2 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
           >
             &gt;
           </button>
@@ -48,7 +55,7 @@
             @click="selectDate(day)"
             :class="[
               'flex h-8 w-8 items-center justify-center rounded-full',
-              isPast(day)
+              isDisabled(day)
                 ? 'cursor-not-allowed text-gray-300'
                 : [
                     'cursor-pointer',
@@ -75,8 +82,19 @@
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
 import moment from "moment";
+import {
+  isDateDisabled,
+  isPrevMonthOutOfRange,
+  isNextMonthOutOfRange,
+} from "@/utils/datePickerBounds";
 
-const props = defineProps<{ modelValue: Date | null; placeholder: string }>();
+const props = defineProps<{
+  modelValue: Date | null;
+  placeholder: string;
+  minDate?: Date;
+  maxDate?: Date;
+  icon?: string;
+}>();
 const emit = defineEmits<{ (e: "update:modelValue", value: Date): void }>();
 
 const isCalendarOpen = ref(false);
@@ -136,20 +154,19 @@ const isSameMonth = (day: Date) => {
   return moment(day).isSame(currentMonth.value, "month");
 };
 
-const isPast = (day: Date) => {
-  return moment(day).isBefore(moment(), "day");
-};
+const isDisabled = (day: Date) =>
+  isDateDisabled(day, new Date(), props.minDate, props.maxDate);
 
-const isPrevMonthDisabled = computed(() => {
-  const today = moment();
-  return currentMonth.value
-    .clone()
-    .startOf("month")
-    .isSameOrBefore(today.clone().startOf("month"));
-});
+const isPrevMonthDisabled = computed(() =>
+  isPrevMonthOutOfRange(currentMonth.value.toDate(), new Date(), props.minDate),
+);
+
+const isNextMonthDisabled = computed(() =>
+  isNextMonthOutOfRange(currentMonth.value.toDate(), props.maxDate),
+);
 
 const selectDate = (day: Date) => {
-  if (isPast(day)) return;
+  if (isDisabled(day)) return;
   emit("update:modelValue", day);
   closeCalendar();
 };
@@ -162,6 +179,9 @@ const prevMonth = () => {
 };
 
 const nextMonth = () => {
+  if (isNextMonthDisabled.value) {
+    return;
+  }
   currentMonth.value = currentMonth.value.clone().add(1, "month");
 };
 
