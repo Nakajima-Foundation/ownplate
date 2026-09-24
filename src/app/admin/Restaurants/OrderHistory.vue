@@ -133,7 +133,10 @@ import {
   QueryDocumentSnapshot,
   DocumentData,
 } from "firebase/firestore";
-import { order_status, order_status_for_form } from "@/config/constant";
+import {
+  order_status_for_form,
+  orderStatusOf,
+} from "@/config/constant";
 import { OrderInfoData } from "@/models/orderInfo";
 import { CustomerInfo } from "@/models/customer";
 
@@ -180,7 +183,7 @@ export default defineComponent({
     const orderState = ref(0);
     const orderStatus = Object.keys(order_status_for_form).map((key) => {
       return {
-        index: order_status[key],
+        index: orderStatusOf(key),
         key: key === "error" ? "" : key,
       };
     });
