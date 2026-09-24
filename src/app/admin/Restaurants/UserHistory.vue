@@ -136,6 +136,7 @@ import {
   useRestaurantId,
   resizedProfileImage,
   defaultTitle,
+  notFoundResponse,
 } from "@/utils/utils";
 
 import BackButton from "@/components/BackButton.vue";
@@ -177,9 +178,7 @@ export default defineComponent({
     });
     const { ownerUid } = useAdminUids();
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
-      return {
-        notFound: true,
-      };
+      return notFoundResponse;
     }
 
     useHead(() => ({
