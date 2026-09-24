@@ -49,7 +49,11 @@ export default defineComponent({
     const generalStore = useGeneralStore();
 
     const restaurantId = useRestaurantId();
-    const notificationData = ref({});
+    // 初期値は Wrapper が null で作る。使う側は v-if で見るので null でよい。
+    const notificationData = ref<{
+      soundOn?: boolean | null;
+      infinityNotification?: boolean | null;
+    }>({});
     const detacher = onSnapshot(
       doc(db, `restaurants/${restaurantId.value}/private/notifications`),
       (notification) => {

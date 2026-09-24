@@ -123,6 +123,7 @@ import {
   limit,
   query,
   QueryConstraint,
+  type Timestamp,
 } from "firebase/firestore";
 
 import { order_status } from "@/config/constant";
@@ -168,7 +169,11 @@ export default defineComponent({
     const router = useRouter();
 
     const orders = ref<OrderInfoData[]>([]);
-    const userLog = ref({});
+    const userLog = ref<{
+      counter?: number;
+      cancelCounter?: number;
+      lastOrder?: Timestamp;
+    }>({});
     const limitNum = 30;
     const last = ref();
     const restaurantId = useRestaurantId();

@@ -172,7 +172,7 @@ export default defineComponent({
 
     const isPayingError = ref(false);
 
-    const cardState = ref({});
+    const cardState = ref<{ [key: string]: boolean }>({});
 
     // ref for refs
     const stripeRef = ref();
