@@ -315,6 +315,13 @@ export const priceWithTax = (shopInfo: RestaurantInfoData, menu: MenuData) => {
   );
 };
 
+// 問い合わせ先に使う提携先。`getPartner` は知らない id を穴のまま残すので、
+// 先頭が穴のこともある。埋まっている最初のものを選ぶ。
+export const firstKnownPartner = (
+  found: (PartnerData | undefined)[],
+): PartnerData | undefined =>
+  found.find((partner): partner is PartnerData => partner !== undefined);
+
 export const getPartner = (shopOwner: ShopOwnerData) => {
   return ((shopOwner || {}).partners || []).map((p: string) => {
     const match = partners.find((a: PartnerData) => {
