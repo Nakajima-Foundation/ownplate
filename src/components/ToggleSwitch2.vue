@@ -31,7 +31,7 @@ export default defineComponent({
       required: true,
     },
     toggleValues: {
-      type: Array,
+      type: Array<{ name: string; value: string }>,
       required: true,
     },
     disabled: {

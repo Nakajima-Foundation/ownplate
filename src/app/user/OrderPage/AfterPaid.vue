@@ -229,6 +229,7 @@ import { validUrl } from "@/utils/utils";
 import { isEmpty } from "@/utils/commonUtils";
 
 import { OrderInfoData } from "@/models/orderInfo";
+import type { OrderItemData } from "@/models/orderInfoData";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { useRoute } from "vue-router";
@@ -267,7 +268,7 @@ export default defineComponent({
       required: true,
     },
     orderItems: {
-      type: Array,
+      type: Array<OrderItemData>,
       required: true,
     },
     paymentInfo: {
