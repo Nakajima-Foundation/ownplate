@@ -10,7 +10,7 @@ export type ReportRow = OrderInfoData & {
 
 // 検めるのは有無だけ。`ReportRow` が `OrderInfoData` に足している約束もそれだけ
 // （`NonNullable` は undefined を外すだけで、中身までは見ない）。
-export const hasAccounting = (order: OrderInfoData): order is ReportRow =>
+const hasAccounting = (order: OrderInfoData): order is ReportRow =>
   order.accounting !== undefined;
 
 export const order2ReportData = (

@@ -1,7 +1,7 @@
 import { describe, it } from "node:test";
 import assert from "node:assert";
 
-import { order2ReportData, hasAccounting } from "../../src/models/orderInfo.ts";
+import { order2ReportData } from "../../src/models/orderInfo.ts";
 import { orderInfoFixture, timestampOf } from "../fixtures/orderInfo.ts";
 
 // 売上報告と書き出しの一行分。店舗が売上を数え、税を申告するのに使う。
@@ -213,17 +213,5 @@ describe("order2ReportData — 引数を書き換えること", () => {
       TypeError,
       "二度目は日時を直せない",
     );
-  });
-});
-
-describe("hasAccounting", () => {
-  it("is false for an order with no breakdown", () => {
-    const order = orderInfoFixture();
-    delete order.accounting;
-    assert.strictEqual(hasAccounting(order), false);
-  });
-
-  it("is true for an order that has one", () => {
-    assert.strictEqual(hasAccounting(orderInfoFixture()), true);
   });
 });
