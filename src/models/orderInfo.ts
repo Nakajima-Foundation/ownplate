@@ -4,10 +4,19 @@ import { stripe_regions_jp } from "../config/constant";
 import { OrderInfoData } from "./orderInfoData";
 export type { OrderInfoData } from "./orderInfoData";
 
+export type ReportRow = OrderInfoData & {
+  accounting: NonNullable<OrderInfoData["accounting"]>;
+};
+
+// 検めるのは有無だけ。`ReportRow` が `OrderInfoData` に足している約束もそれだけ
+// （`NonNullable` は undefined を外すだけで、中身までは見ない）。
+const hasAccounting = (order: OrderInfoData): order is ReportRow =>
+  order.accounting !== undefined;
+
 export const order2ReportData = (
   order: OrderInfoData,
   serviceTaxRate: number,
-) => {
+): ReportRow => {
   const multiple = stripe_regions_jp.multiple;
   // @ts-expect-error maybe different type or undefine
   order.timeConfirmed = order?.timeConfirmed?.toDate();
@@ -42,5 +51,8 @@ export const order2ReportData = (
     };
   }
   order.type = orderType(order);
+  if (!hasAccounting(order)) {
+    throw new Error("order2ReportData: accounting was not filled");
+  }
   return order;
 };
