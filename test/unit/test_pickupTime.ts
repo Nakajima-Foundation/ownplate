@@ -308,15 +308,21 @@ describe("時計が進んだあとの再計算", () => {
     freezeAt(11);
     const generalStore = useGeneralStore();
     generalStore.date = new Date();
-    const pickup = await runInSetup(() =>
-      usePickupTime(shopOpen11to2(), {}, ref({})),
-    );
+    const firstPickupDisplay = (p: ReturnType<typeof usePickupTime>) =>
+      p.availableDays.value[0].times[0].display;
+    // 画面と同じく、最初の計算は setup の中で済ませておく。
+    const { pickup, displayBefore } = await runInSetup(() => {
+      const pickup = usePickupTime(shopOpen11to2(), {}, ref({}));
+      pickup.todaysLast.value;
+      return { pickup, displayBefore: firstPickupDisplay(pickup) };
+    });
+    assert.strictEqual(displayBefore, "午前 11:30");
 
     mock.timers.tick(ONE_HOUR_MS);
     generalStore.date = new Date();
 
     assert.strictEqual(pickup.todaysLast.value?.lastOrderTime, "午後 01:35");
-    assert.strictEqual(pickup.availableDays.value[0].times[0].display, "午後 00:30");
+    assert.strictEqual(firstPickupDisplay(pickup), "午後 00:30");
   });
 });
 
