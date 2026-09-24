@@ -36,20 +36,30 @@ import { useUserStore } from "@/store/user";
 import { useI18n } from "vue-i18n";
 import i18n from "../lib/vue-i18n";
 
+// 捕まえたものは何でもありうる。在否の判定も読みも try の中に置く。どちらも
+// getter や Proxy の罠になりうるので、外に置くと守りを素通りして投げる。
 export const errorCode = (error: unknown): string | undefined => {
-  if (error !== null && typeof error === "object" && "code" in error) {
+  try {
+    if (error === null || typeof error !== "object" || !("code" in error)) {
+      return undefined;
+    }
     const code = error.code;
     return typeof code === "string" ? code : undefined;
+  } catch {
+    return undefined;
   }
-  return undefined;
 };
 
 export const errorMessage = (error: unknown): string | undefined => {
-  if (error !== null && typeof error === "object" && "message" in error) {
+  try {
+    if (error === null || typeof error !== "object" || !("message" in error)) {
+      return undefined;
+    }
     const message = error.message;
     return typeof message === "string" ? message : undefined;
+  } catch {
+    return undefined;
   }
-  return undefined;
 };
 
 export const stripeRegion = stripe_regions_jp; // TODO remove
