@@ -267,6 +267,7 @@ import {
   onUnmounted,
   PropType,
 } from "vue";
+import type { PaymentInfo } from "@/models/paymentInfo";
 
 import RestaurantMenu from "@/app/user/Restaurant/Menu.vue";
 import PhoneLogin from "@/app/auth/PhoneLogin.vue";
@@ -372,7 +373,7 @@ export default defineComponent({
       required: true,
     },
     paymentInfo: {
-      type: Object,
+      type: Object as PropType<PaymentInfo>,
       required: true,
     },
     deliveryData: {

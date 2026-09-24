@@ -201,6 +201,7 @@
 
 <script lang="ts">
 import { defineComponent, computed, PropType, ref } from "vue";
+import type { PaymentInfo } from "@/models/paymentInfo";
 
 import ShopHeader from "@/app/user/Restaurant/ShopHeader.vue";
 import ShopInfo from "@/app/user/Restaurant/ShopInfo.vue";
@@ -272,7 +273,7 @@ export default defineComponent({
       required: true,
     },
     paymentInfo: {
-      type: Object,
+      type: Object as PropType<PaymentInfo>,
       required: true,
     },
     menuPagePath: {

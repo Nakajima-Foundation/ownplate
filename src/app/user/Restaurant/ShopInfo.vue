@@ -276,6 +276,7 @@
 
 <script lang="ts">
 import { defineComponent, computed, ref, PropType } from "vue";
+import type { PaymentInfo } from "@/models/paymentInfo";
 import moment from "moment";
 
 import { daysOfWeek, paymentMethods } from "@/config/constant";
@@ -306,7 +307,7 @@ export default defineComponent({
       required: true,
     },
     paymentInfo: {
-      type: Object,
+      type: Object as PropType<PaymentInfo>,
       required: true,
     },
     isDelivery: {

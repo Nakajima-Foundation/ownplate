@@ -66,6 +66,7 @@ import {
   watch,
   PropType,
 } from "vue";
+import type { PaymentInfo } from "@/models/paymentInfo";
 
 import NotFound from "@/components/NotFound.vue";
 import RequireLogin from "@/components/RequireLogin.vue";
@@ -116,7 +117,7 @@ export default defineComponent({
       required: true,
     },
     paymentInfo: {
-      type: Object,
+      type: Object as PropType<PaymentInfo>,
       required: true,
     },
     deliveryData: {

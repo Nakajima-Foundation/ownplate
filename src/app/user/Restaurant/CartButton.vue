@@ -160,6 +160,7 @@
 </template>
 <script lang="ts">
 import { defineComponent, computed, ref, watch, PropType } from "vue";
+import type { PaymentInfo } from "@/models/paymentInfo";
 import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { arraySum } from "@/utils/utils";
@@ -180,7 +181,7 @@ export default defineComponent({
       required: true,
     },
     paymentInfo: {
-      type: Object,
+      type: Object as PropType<PaymentInfo>,
       required: true,
     },
     deliveryData: {
