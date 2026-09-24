@@ -129,3 +129,4 @@ batch/*
 .i18n-cache/
 .mcp.json
 .playwright-mcp/
+test/.setup-cache/
