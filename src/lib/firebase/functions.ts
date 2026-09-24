@@ -1,6 +1,7 @@
 import { functionsJP } from "@/lib/firebase/firebase9";
 import { httpsCallable } from "firebase/functions";
 import type {
+  DispatchData,
   LineVerifyFriendData,
   SubAccountDeleteChildData,
   SubAccountInvitateData,
@@ -64,7 +65,13 @@ export const lineValidate = httpsCallable<
   }
 >(functionsJP, "lineValidate2");
 
-export const superDispatch = httpsCallable(functionsJP, "superDispatch2");
+// cmd ごとに中身が違う。`setCustomClaim` は条件を満たさないと初期値の
+// `{ result: false, message: "not processed" }` をそのまま返す（知らない cmd は例外）。
+// 1つの形には決められないので、読む側が絞る前提で unknown のまま渡す。
+export const superDispatch = httpsCallable<DispatchData, { result: unknown }>(
+  functionsJP,
+  "superDispatch2",
+);
 
 export const superTwilio = httpsCallable(functionsJP, "superTwilio2");
 

@@ -482,8 +482,9 @@ export default defineComponent({
       type: Array<number>,
       required: true,
     },
+    // 品目ごと × 選択肢。`CartOptionType` の値そのもの。
     selectedOptions: {
-      type: Array,
+      type: Array<(boolean | string)[]>,
       required: false,
     },
     initialOpenMenuFlag: {
@@ -494,8 +495,9 @@ export default defineComponent({
       type: Boolean,
       required: true,
     },
+    // 品目ごとの金額。`getPrices` が返す値そのもの。
     prices: {
-      type: Array,
+      type: Array<number>,
       required: true,
     },
     mode: {
