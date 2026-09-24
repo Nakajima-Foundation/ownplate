@@ -165,6 +165,7 @@
 import { defineComponent, ref, watch } from "vue";
 import { beginSubmit } from "../../utils/beginSubmit";
 import { signinErrorField } from "../../utils/signinErrorField";
+import { errorCode, errorMessage } from "@/utils/utils";
 import { auth } from "@/lib/firebase/firebase9";
 import {
   signInWithEmailAndPassword,
@@ -258,12 +259,15 @@ export default defineComponent({
           console.log("onSignin success");
           generalStore.setLoading(false);
         })
+        // 引数に型を付けない。下の getMultiFactorResolver が Firebase の誤りを
+        // そのまま要求するので、unknown にすると渡せなくなる。読むほうだけ通す。
         .catch((error) => {
           submitting.value = false;
-          console.log("onSignin failed", error.code, error.message);
+          const code = errorCode(error);
+          console.log("onSignin failed", code, errorMessage(error));
 
           // Check if MFA is required
-          if (error.code === "auth/multi-factor-auth-required") {
+          if (code === "auth/multi-factor-auth-required") {
             // Get the multi-factor resolver
             mfaResolver.value = getMultiFactorResolver(auth, error);
             showTotpVerification.value = true;
@@ -272,7 +276,7 @@ export default defineComponent({
           }
 
           errors.value = {
-            [signinErrorField(error.code)]: ["admin.error.code." + error.code],
+            [signinErrorField(code ?? "")]: ["admin.error.code." + code],
           };
           generalStore.setLoading(false);
         });
