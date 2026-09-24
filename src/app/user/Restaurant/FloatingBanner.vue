@@ -92,7 +92,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, PropType } from "vue";
 
 import moment from "moment-timezone";
 import type Promotion from "@/models/promotion";
@@ -106,7 +106,7 @@ export default defineComponent({
   },
   props: {
     promotion: {
-      type: Object,
+      type: Object as PropType<Promotion>,
       required: true,
     },
     possiblePromotions: {
