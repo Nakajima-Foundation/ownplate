@@ -6,17 +6,21 @@
     </div>
     <div v-else>
       <div v-if="partner && partner.length > 0" class="mx-6 mt-3 items-center">
-        <div v-for="(part, k) in partner" :key="k" class="flex">
-          <div class="flex-1">
-            <img :src="`/partners/${part.logo}`" alt="" class="w-12" />
-            <span class="font-bold">
-              {{ part.name }}
-            </span>
+        <template v-for="(part, k) in partner" :key="k">
+          <!-- 提携先が消されたあとも店舗側には id が残る。getPartner はその穴を
+               undefined のまま残すので、ここで飛ばす。 -->
+          <div v-if="part" class="flex">
+            <div class="flex-1">
+              <img :src="`/partners/${part.logo}`" alt="" class="w-12" />
+              <span class="font-bold">
+                {{ part.name }}
+              </span>
+            </div>
+            <div class="cursor-pointer text-right font-bold" v-if="part.ask">
+              <a href="#" @click="openContact()">サポート問い合わせ</a>
+            </div>
           </div>
-          <div class="cursor-pointer text-right font-bold" v-if="part.ask">
-            <a href="#" @click="openContact()">サポート問い合わせ</a>
-          </div>
-        </div>
+        </template>
       </div>
       <!-- Notification Settings Popup-->
       <router-view
