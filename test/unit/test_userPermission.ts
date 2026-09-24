@@ -36,6 +36,8 @@ describe("checkShopAccount", () => {
 
   // 呼び手の uid は「まだ分かっていない」ことがある。サインインの確認が済む前や、
   // 子アカウントの親が読めていないとき。
+  // （この1件は直す前の実装でも通る。契約を書き留めるためのもので、
+  //   直したことを留めているのは次の「両方とも無い」のほう。）
   it("keeps out a uid that is not known yet", () => {
     assert.strictEqual(checkShopAccount(shop, undefined), false);
   });
