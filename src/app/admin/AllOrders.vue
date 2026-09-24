@@ -105,7 +105,11 @@ import {
   QueryDocumentSnapshot,
 } from "firebase/firestore";
 
-import { order_status, order_status_keys } from "@/config/constant";
+import {
+  order_status,
+  order_status_keys,
+  orderStatusOf,
+} from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
 import { revenueCSVHeader } from "@/utils/reportUtils";
 import { order2ReportData, OrderInfoData } from "@/models/orderInfo";
@@ -173,7 +177,7 @@ export default defineComponent({
           })
           .map((key) => {
             return {
-              index: order_status[key],
+              index: orderStatusOf(key),
               key: key === "error" ? "" : key,
             };
           }),

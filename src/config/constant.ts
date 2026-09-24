@@ -16,6 +16,15 @@ export const order_status = {
 // Type for order status values
 export type OrderStatus = (typeof order_status)[keyof typeof order_status];
 
+export type OrderStatusName = keyof typeof order_status;
+
+// 名前が `OrderStatusName` だと分かっているところは直接索ける。こちらは
+// `Object.keys()` のように string しか手元に無いとき用。知らない名前には undefined。
+const orderStatusByName: { readonly [key: string]: OrderStatus | undefined } =
+  order_status;
+export const orderStatusOf = (key: string): OrderStatus | undefined =>
+  orderStatusByName[key];
+
 export const order_status_for_form: { [key: string]: number } = {
   error: 0,
   order_placed: order_status.order_placed, // by user and stripe
@@ -27,7 +36,7 @@ export const order_status_for_form: { [key: string]: number } = {
 
 export const order_status_keys = Object.keys(order_status).reduce(
   (tmp: { [key: string]: string }, key: string) => {
-    tmp[String(order_status[key as keyof typeof order_status])] = key;
+    tmp[String(orderStatusOf(key))] = key;
     return tmp;
   },
   {},

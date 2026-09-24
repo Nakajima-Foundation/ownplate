@@ -56,7 +56,7 @@ import DownloadCsv from "@/components/DownloadCSV.vue";
 import moment from "moment";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import { nameOfOrder } from "@/utils/strings";
-import { order_status } from "@/config/constant";
+import { order_status, orderStatusOf } from "@/config/constant";
 import { arrayChunk, forceArray } from "@/utils/utils";
 
 import { reportHeaders, reportHeadersWithAddress } from "@/utils/reportUtils";
@@ -174,7 +174,7 @@ export default defineComponent({
       mergedOrder.value.forEach((order) => {
         const ids = Object.keys(order.order);
         const status = Object.keys(order_status).reduce((result, key) => {
-          if (order_status[key] === order.status) {
+          if (orderStatusOf(key) === order.status) {
             return key;
           }
           return result;

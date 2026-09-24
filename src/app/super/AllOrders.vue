@@ -101,7 +101,11 @@ import OrderedInfo from "@/app/admin/Order/OrderedInfo.vue";
 import BackButton from "@/components/BackButton.vue";
 import DownloadCsv from "@/components/DownloadCSV.vue";
 
-import { order_status, order_status_keys } from "@/config/constant";
+import {
+  order_status,
+  order_status_keys,
+  orderStatusOf,
+} from "@/config/constant";
 import {
   arrayOrNumSum,
   defaultTitle,
@@ -158,7 +162,7 @@ export default defineComponent({
     const orderStatus = (() => {
       return Object.keys(order_status).map((key) => {
         return {
-          index: order_status[key],
+          index: orderStatusOf(key),
           key: key === "error" ? "" : key,
         };
       });
