@@ -242,6 +242,7 @@
 
 <script lang="ts">
 import { defineComponent, computed, watch, ref, PropType } from "vue";
+import type Promotion from "@/models/promotion";
 
 import { order_status } from "@/config/constant";
 import { stripeRegion } from "@/utils/utils";
@@ -274,7 +275,7 @@ export default defineComponent({
     },
     // promotion
     promotion: {
-      type: Object,
+      type: Object as PropType<Promotion>,
       required: false,
     },
     enablePromotion: {
