@@ -33,10 +33,15 @@ import Promotion, {
 } from "@/models/promotion";
 
 import {
+  compareForAdmin,
+  compareForCustomer,
   getPromotionCollctionPath,
   getPromotionDocumentPath,
+  hasStarted,
   isPaymentAllowed,
   promotionDiscount,
+  splitPromotionIdsByLookup,
+  usablePromotions,
   userPromotionHistoryPath,
 } from "@/utils/promotionRules";
 
@@ -53,21 +58,7 @@ export const usePromotionsForAdmin = (id: string) => {
     onSnapshot(query(collection(db, promotionPath)), (ret1) => {
       promotionDataSet.value = ret1.docs
         .map((a) => new Promotion(a))
-        .sort((a, b) => {
-          if (a.currentOpen !== b.currentOpen) {
-            return a.currentOpen ? -1 : 1;
-          }
-          if (a.enable !== b.enable) {
-            return a.enable ? -1 : 1;
-          }
-          if (a.enable !== b.enable) {
-            return a.enable ? -1 : 1;
-          }
-          if (a.hasTerm !== b.hasTerm) {
-            return a.hasTerm ? -1 : 1;
-          }
-          return a.termFrom > b.termFrom ? -1 : 1;
-        });
+        .sort(compareForAdmin);
     });
   })();
   return {
@@ -120,15 +111,11 @@ export const usePromotions = (id: string, user: UserRef) => {
       ).then((ret1) => {
         const res = ret1.docs
           .map((a) => new Promotion(a))
-          .filter((a) => {
-            return a.termFrom < new Date();
-          });
+          .filter((a) => hasStarted(a, new Date()));
         res.map((a) => p.push(a));
       }),
     ]);
-    promotionData.value = p.sort((a, b) => {
-      return a.discountValue > b.discountValue ? 1 : -1;
-    });
+    promotionData.value = p.sort(compareForCustomer);
   })();
 
   const promotionUsed = ref<{
@@ -150,18 +137,9 @@ export const usePromotions = (id: string, user: UserRef) => {
         promotionUsed.value = {};
         return;
       }
-      const keys: string[] = [];
-      const values: string[] = [];
-      promotionData.value.forEach((a) => {
-        if (
-          ["discount", "onetimeCoupon"].includes(a.type) &&
-          a.usageRestrictions
-        ) {
-          keys.push(a.promotionId);
-        } else {
-          values.push(a.promotionId);
-        }
-      });
+      const { byDocumentId: keys, byField: values } = splitPromotionIdsByLookup(
+        promotionData.value,
+      );
       // TODO set condition
       const userHistoryPath = getUserHistoryPath(id, user);
 
@@ -219,28 +197,9 @@ export const usePromotions = (id: string, user: UserRef) => {
           : null;
     }
   });
-  const promotions = computed(() => {
-    if (promotionUsed.value !== null) {
-      const ret = promotionData.value.filter((a) => {
-        if (!a.usageRestrictions) {
-          return true;
-        }
-        if (a.type === "multipletimesCoupon") {
-          // TODO
-        } else if (a.type === "onetimeCoupon") {
-          const used = (promotionUsed.value || {})[a?.data.promotionId];
-          if (Array.isArray(used)) {
-            return true;
-          }
-          return !used?.used;
-        }
-        // discount case.
-        return !(promotionUsed.value || {})[a?.data.promotionId];
-      });
-      return ret;
-    }
-    return [];
-  });
+  const promotions = computed(() =>
+    usablePromotions(promotionData.value, promotionUsed.value),
+  );
 
   return {
     promotions,
