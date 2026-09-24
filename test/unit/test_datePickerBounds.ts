@@ -9,7 +9,12 @@ import {
 // 臨時休業日の選択範囲。2020 年の Buefy 版は min-date（前日）と
 // max-date（6か月後）で挟んでいた。手書きへ移したとき上限が落ちていたので、
 // 上限が効くことをここで押さえる。
-const day = (iso: string) => new Date(`${iso}T00:00:00+09:00`);
+// 判定は moment の「日」比較で、実行環境のローカル時刻で行われる。
+// オフセット付きの文字列で作ると UTC の走者では1日ずれるので、ローカルの深夜で組む。
+const day = (iso: string) => {
+  const [year, month, date] = iso.split("-").map(Number);
+  return new Date(year, month - 1, date);
+};
 const now = day("2026-09-25");
 const maxDate = day("2027-03-25"); // 6か月後
 
@@ -43,8 +48,11 @@ describe("選べる日の範囲", () => {
 
   // 時刻が入っていても日で比べる。
   it("同じ日なら時刻が違っても境界の内側", () => {
-    const noon = new Date("2027-03-25T23:59:00+09:00");
-    assert.strictEqual(isDateDisabled(noon, now, undefined, maxDate), false);
+    const lateOnMaxDate = new Date(2027, 2, 25, 23, 59);
+    assert.strictEqual(
+      isDateDisabled(lateOnMaxDate, now, undefined, maxDate),
+      false,
+    );
   });
 });
 
