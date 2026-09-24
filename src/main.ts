@@ -3,6 +3,7 @@ import { createApp } from "vue";
 import { createPinia } from "pinia";
 
 import router from "@/lib/router";
+import { reloadOnStaleChunk } from "./lib/staleChunkReload";
 
 // plugins
 import i18n from "@/lib/vue-i18n";
@@ -42,6 +43,7 @@ const head = createHead();
 app.use(head);
 
 app.use(router);
+reloadOnStaleChunk(router);
 app.use(i18n);
 
 const pinia = createPinia();
