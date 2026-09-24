@@ -87,10 +87,7 @@
       <div v-if="moreInfo">
         <!-- Transactions Act -->
         <div class="mt-4">
-          <transactions-act
-            :shopInfo="shopInfo"
-            :isDelivery="isDelivery"
-          ></transactions-act>
+          <transactions-act :shopInfo="shopInfo"></transactions-act>
         </div>
 
         <!-- Restaurant Website -->

@@ -13,11 +13,7 @@
       </a>
     </div>
 
-    <TransactionsActModal
-      ref="transactions"
-      :shopInfo="shopInfo"
-      :isDelivery="isDelivery"
-    />
+    <TransactionsActModal ref="transactions" :shopInfo="shopInfo" />
   </div>
 </template>
 
@@ -31,10 +27,6 @@ export default defineComponent({
   props: {
     shopInfo: {
       type: Object as PropType<RestaurantInfoData>,
-      required: true,
-    },
-    isDelivery: {
-      type: Boolean,
       required: true,
     },
   },
