@@ -103,7 +103,9 @@ export const stripe_regions_jp = {
   allergens: ["shrimp", "crab", "gluten", "soba", "egg", "milk", "peanuts"],
 };
 
-export const daysOfWeek = {
+// 曜日の番号で索く。moment の "e" が返す 0-6 に 7 を足した形で呼ばれるので、
+// 番号で索けることを宣言でも言う。
+export const daysOfWeek: { [key: number]: string } = {
   1: "monday",
   2: "tuesday",
   3: "wednesday",
@@ -163,7 +165,9 @@ export const JPPrefecture = [
   "沖縄県",
 ];
 
-export const taxRates = ["food", "alcohol"];
+// 要素の型を明示する。広がって string になると、この名前で索く一覧
+// （taxRateKeys など）が索けなくなる。
+export const taxRates: ("food" | "alcohol")[] = ["food", "alcohol"];
 
 export const reservationTheDayBefore = [
   { messageKey: "editRestaurant.reservationTheDaysBefore.zero", value: 0 },
