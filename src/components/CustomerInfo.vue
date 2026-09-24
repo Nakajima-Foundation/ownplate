@@ -48,6 +48,7 @@ import {
 import { getShopIcon, getCustomerIcon } from "@/utils/map";
 import { GMAPId } from "@/config/project";
 import { GOOGLE_MAP_DEFAULT_CENTER } from "@/config/constant";
+import { CustomerInfo } from "@/models/customer";
 
 export default defineComponent({
   props: {
@@ -58,9 +59,7 @@ export default defineComponent({
       required: true,
     },
     customer: {
-      type: Object as PropType<{
-        location: { lat: number; lng: number };
-      }>,
+      type: Object as PropType<CustomerInfo>,
       required: true,
     },
     phoneNumber: {
