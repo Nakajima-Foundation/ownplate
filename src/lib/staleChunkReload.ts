@@ -22,15 +22,21 @@ export const reloadOnStaleChunk = (router: Router) => {
       staleChunkErrors.add(event.payload);
     }
   });
-  router.onError((error: unknown, to) => {
+  const staleChunkReloadUrl = (error: unknown, fullPath: string) => {
     if (typeof error !== "object" || error === null) {
-      return;
+      return null;
     }
     if (!staleChunkErrors.has(error)) {
-      return;
+      return null;
     }
-    const reloadUrl = sameOriginReloadUrl(to.fullPath, window.location.origin);
-    if (reloadUrl === null || !claimReload()) {
+    const reloadUrl = sameOriginReloadUrl(fullPath, window.location.origin);
+    return reloadUrl !== null && claimReload() ? reloadUrl : null;
+  };
+  router.onError((error: unknown, to) => {
+    const reloadUrl = staleChunkReloadUrl(error, to.fullPath);
+    if (reloadUrl === null) {
+      // vue-router はリスナーが一つでもあると自分の console.error を出さない。RouterLink は失敗を握りつぶすので、ここで出す。
+      console.error(error);
       return;
     }
     window.location.assign(reloadUrl);
