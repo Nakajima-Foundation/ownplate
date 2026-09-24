@@ -683,7 +683,9 @@ export const useNationalPhoneNumber = (shopInfo: RestaurantInfoData) => {
   };
 };
 
-export const notFoundResponse = {
+// 型を `true` のまま留める。広がって `boolean` になると、画面側で
+// 「権限が無いときの形」として宣言した型に代入できなくなる。
+export const notFoundResponse: { notFound: true } = {
   notFound: true,
 };
 
