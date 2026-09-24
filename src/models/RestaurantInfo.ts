@@ -57,7 +57,7 @@ export interface RestaurantInfoData {
   // 適格請求書発行事業者の登録番号。未設定の店舗（免税事業者など）は空。
   invoiceNumber?: string;
   openTimes: { [key: string]: { start: number; end: number }[] };
-  businessDay: { [key: string]: string[] };
+  businessDay: { [key: string]: boolean };
 
   pickUpMinimumCookTime: number;
   pickUpDaysInAdvance: number;
@@ -77,7 +77,9 @@ export interface RestaurantInfoData {
   };
   publicFlag: boolean;
   deletedFlag: boolean;
-  temporaryClosure: { toDate: () => Date; seconds?: number }[];
+  // Firestore から読んだ直後は Timestamp、画面が日付を足したあとや Wrapper が
+  // 変換したあとは素の Date。読む側は seconds の有無で見分けている。
+  temporaryClosure: ({ toDate: () => Date; seconds?: number } | Date)[];
   lastOrderTime?: number;
   category1: string[];
   category2: string[];

@@ -34,9 +34,16 @@ export const usePickupTime = (
   const generalStore = useGeneralStore();
 
   // public
+  // 臨時休業は2つの形で届く。Firestore から読んだ直後は Timestamp、画面が日付を足した
+  // あとや Wrapper が変換したあとは素の Date。seconds があるかどうかで見分ける。
+  const isTimestamp = (
+    day: RestaurantInfoData["temporaryClosure"][number],
+  ): day is { toDate: () => Date; seconds?: number } =>
+    !(day instanceof Date) && Boolean(day.seconds);
+
   const temporaryClosure = computed(() => {
     return (shopInfo.temporaryClosure || []).map((day) => {
-      return moment(day.seconds ? day.toDate() : day).format("YYYY-MM-DD");
+      return moment(isTimestamp(day) ? day.toDate() : day).format("YYYY-MM-DD");
     });
   });
   const shopInfoBusinessDay = computed(() => {
