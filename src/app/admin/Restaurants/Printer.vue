@@ -66,8 +66,9 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, ref, computed, onUnmounted } from "vue";
+<script lang="ts">
+import { defineComponent, ref, computed, onUnmounted, PropType } from "vue";
+import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, collection, onSnapshot, setDoc } from "firebase/firestore";
 
@@ -85,12 +86,12 @@ export default defineComponent({
   },
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
   },
   setup() {
-    const notFound = ref(null);
+    const notFound = ref<boolean | null>(null);
     const printerConfig = ref();
     const ipaddress = ref(""); // memo not implemented
 
