@@ -32,14 +32,14 @@
       <SoundConfigWatcher :notificationConfig="notificationConfig" />
       <NewOrderWatcher :notificationConfig="notificationConfig" />
       <t-modal v-model:active="isOpen" width="488">
-        <PartnersContact :id="(partner[0] || {}).id" />
+        <PartnersContact :id="contactPartner?.id" />
       </t-modal>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onUnmounted } from "vue";
+import { defineComponent, ref, onUnmounted, computed } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, onSnapshot, getDoc } from "firebase/firestore";
 
@@ -52,7 +52,12 @@ import NotFound from "@/components/NotFound.vue";
 import { PartnerData } from "@/models/ShopOwner";
 import { ping } from "@/lib/firebase/functions";
 
-import { getPartner, useRestaurantId, useAdminUids } from "@/utils/utils";
+import {
+  getPartner,
+  firstKnownPartner,
+  useRestaurantId,
+  useAdminUids,
+} from "@/utils/utils";
 import { getShopOwner } from "@/utils/shopOwner";
 import { regionalSetting } from "@/config/constant";
 
@@ -145,6 +150,7 @@ export default defineComponent({
     });
 
     const partner = ref<(PartnerData | undefined)[]>([]);
+    const contactPartner = computed(() => firstKnownPartner(partner.value));
     (async () => {
       const shopOwner = await getShopOwner(ownerUid.value);
       partner.value = await getPartner(shopOwner);
@@ -157,6 +163,7 @@ export default defineComponent({
       notificationConfig,
 
       partner,
+      contactPartner,
       openContact,
       isOpen,
 

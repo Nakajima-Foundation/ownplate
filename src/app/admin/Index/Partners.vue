@@ -21,14 +21,14 @@
       </template>
     </div>
     <t-modal :active="isOpen" width="488" @dismissed="close">
-      <PartnersContact :id="(partners[0] || {}).id" />
+      <PartnersContact :id="contactPartner?.id" />
     </t-modal>
   </div>
 </template>
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
 import PartnersContact from "@/app/admin/Partners/Contact.vue";
-import { getPartner } from "@/utils/utils";
+import { getPartner, firstKnownPartner } from "@/utils/utils";
 import { ShopOwnerData } from "@/models/ShopOwner";
 
 export default defineComponent({
@@ -47,6 +47,8 @@ export default defineComponent({
       return getPartner(props.shopOwner as ShopOwnerData);
     });
 
+    const contactPartner = computed(() => firstKnownPartner(partners.value));
+
     const openContact = () => {
       isOpen.value = true;
     };
@@ -58,6 +60,7 @@ export default defineComponent({
       openContact,
       close,
       partners,
+      contactPartner,
     };
   },
 });

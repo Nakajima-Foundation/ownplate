@@ -4,6 +4,7 @@ import assert from "node:assert";
 import {
   displayOption,
   getPartner,
+  firstKnownPartner,
   orderType,
   orderTypeKey,
   useToggle,
@@ -99,6 +100,31 @@ describe("getPartner", () => {
     assert.strictEqual(found.length, 2);
     assert.strictEqual(found[0], undefined);
     assert.strictEqual(found[1]?.id, known);
+  });
+});
+
+// 問い合わせ先に使う1件の選び方。穴のある一覧から埋まっている最初のものを選ぶ。
+describe("firstKnownPartner", () => {
+  const known = partners[0];
+
+  it("takes the first one that is filled in", () => {
+    assert.strictEqual(firstKnownPartner([known]), known);
+  });
+
+  it("skips a hole at the front", () => {
+    assert.strictEqual(firstKnownPartner([undefined, known]), known);
+  });
+
+  it("finds nothing when every entry is a hole", () => {
+    assert.strictEqual(firstKnownPartner([undefined, undefined]), undefined);
+  });
+
+  it("finds nothing in an empty list", () => {
+    assert.strictEqual(firstKnownPartner([]), undefined);
+  });
+
+  it("takes the earlier one when several are filled in", () => {
+    assert.strictEqual(firstKnownPartner([known, partners[1]]), known);
   });
 });
 
