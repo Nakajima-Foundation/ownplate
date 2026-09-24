@@ -83,24 +83,36 @@ export default defineComponent({
     const isVisible = computed(() => {
       return !!(error.value || alert.value);
     });
+    // 文面はエラーが出ているときだけ読まれる（template が v-if で囲っている）。
+    // 無いときの答えを決めておけば、読み手の増減に関わらず落ちない。
     const errorMessage = computed(() => {
-      Sentry.captureException(error.value?.error);
-      if (error.value.message) {
-        return error.value.message;
-      } else if (error.value.code) {
-        return t("errorPage.code." + error.value.code);
+      const current = error.value;
+      if (!current) {
+        return "";
+      }
+      Sentry.captureException(current.error);
+      if (current.message) {
+        return current.message;
+      } else if (current.code) {
+        return t("errorPage.code." + current.code);
       }
       return "";
     });
     const errorMessage2 = computed(() => {
-      return error.value.message2 || "errorPage.message.generic";
+      return error.value?.message2 || "errorPage.message.generic";
     });
     const close = () => {
       dialogStore.resetDialog();
     };
+    // 押せるのは alert が出ているときだけ。無いのに呼ばれたら、黙って閉じるのではなく
+    // 何もしないほうが原因を追いやすい。
     const handleYes = () => {
       console.log("handleYes");
-      alert.value.callback();
+      const current = alert.value;
+      if (!current) {
+        return;
+      }
+      current.callback();
       close();
     };
     return {
