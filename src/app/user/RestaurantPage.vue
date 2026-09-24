@@ -426,11 +426,9 @@ export default defineComponent({
     const defaultHowToReceive = (() => {
       // for 333
       const rId = route.params.restaurantId as string;
-      if (cartStore.carts[rId]) {
-        const cart = cartStore.carts[rId] || {};
-        if (cart.howtoreceive) {
-          return cart.howtoreceive;
-        }
+      const cart = cartStore.carts[rId];
+      if (cart?.howtoreceive) {
+        return cart.howtoreceive;
       }
       if (props.shopInfo.deliveryOnlyStore) {
         return "delivery";
@@ -481,9 +479,9 @@ export default defineComponent({
     // avoid to reset cart when pickup or other not takeout
     onBeforeMount(() => {
       // Check if we came here as the result of "Edit Items"
-      console.log(cartStore.carts[restaurantId.value]);
-      if (cartStore.carts[restaurantId.value]) {
-        const cart = cartStore.carts[restaurantId.value] || {};
+      const cart = cartStore.carts[restaurantId.value];
+      console.log(cart);
+      if (cart) {
         orders.value = cart.orders || {};
         cartItems.value = cart.cartItems || {};
         selectedOptions.value = cart.options || {};
