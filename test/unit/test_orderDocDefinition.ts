@@ -3,7 +3,7 @@ import assert from "node:assert";
 
 import { buildOrderDocDefinition } from "../../src/lib/pdf/orderDocDefinition.ts";
 import { restaurantInfoFixture } from "../fixtures/restaurantInfo.ts";
-import { orderInfoFixture } from "../fixtures/orderInfo.ts";
+import { orderInfoFixture, timestampOf } from "../fixtures/orderInfo.ts";
 import { menuFixture } from "../fixtures/menu.ts";
 import type {
   OrderInfoData,
@@ -127,10 +127,19 @@ describe("buildOrderDocDefinition — 日付", () => {
 
   // timeEstimated は受付時にしか書かれない。受付前にキャンセルされた注文でも印刷でき、
   // 日付の無い書類は適格簡易請求書として成立しない。
+  //
+  // 日付は実行環境の時間帯で決まるので、期待値も同じ時刻から作る。書き下すと
+  // 日本では通って UTC より西の環境では前日になる。
   it("falls back to the requested handover time when never accepted", () => {
+    const requested = timestampOf("2026-09-22T09:00:00Z").toDate();
+    const localDate = [
+      requested.getFullYear(),
+      String(requested.getMonth() + 1).padStart(2, "0"),
+      String(requested.getDate()).padStart(2, "0"),
+    ].join("/");
     const printed = build({}, { timeEstimated: undefined });
     assert.ok(printed.includes("受渡希望時間: "));
-    assert.ok(printed.includes("2026/09/22"));
+    assert.ok(printed.includes(localDate), `${localDate} が出ていない`);
   });
 });
 
