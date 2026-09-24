@@ -183,9 +183,7 @@ export default defineComponent({
         ids.forEach((menuId, index) => {
           const orderItems = forceArray(order.order[menuId]);
           const options = order.options[menuId] || [];
-          const prices = order.prices[menuId] || [];
           const menuItem = (order.menuItems || {})[menuId] || {};
-          const taxRate = menuItem.tax === "food" ? 8 : 10;
           Object.keys(orderItems).forEach((key) => {
             const opt = Array.isArray(options[key] || [])
               ? options[key]
@@ -292,18 +290,6 @@ export default defineComponent({
                 category1: menuItem.category1 || "",
                 category2: menuItem.category2 || "",
 
-                categoryId: menuItem.category || "",
-                subCategoryId: menuItem.subCategory || "",
-                productId: menuItem.productId || "",
-
-                // for mo
-                menuPrice: menuItem.price,
-                taxRate,
-                tax: Math.round((menuItem.price * taxRate) / (100 + taxRate)),
-                productSubTotal: prices[key],
-
-                cancelReason: order.cancelReason,
-                // end of for mo
                 total: writeonFirstLine(index, key, order.totalCharge || ""),
                 discountPrice: writeonFirstLine(
                   index,
