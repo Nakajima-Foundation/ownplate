@@ -18,18 +18,19 @@ export const checkAdminPermission = () => {
   return true;
 };
 
+// 呼び手が渡す uid は「まだ分かっていない」ことがある（サインインの確認前など）。
+// そのときは一致しない扱いにする。両方が undefined でも通してはいけない。
+const belongsTo = (shopInfo: RestaurantInfoData, uid: string | undefined) =>
+  uid !== undefined && shopInfo.uid === uid;
+
 // allow subAccounts
 export const checkShopAccount = (
   shopInfo: RestaurantInfoData,
-  ownerUid: string,
-) => {
-  return shopInfo.uid === ownerUid;
-};
+  ownerUid: string | undefined,
+) => belongsTo(shopInfo, ownerUid);
 
 // only owner
 export const checkShopOwner = (
   shopInfo: RestaurantInfoData,
-  uidAdmin: string,
-) => {
-  return shopInfo.uid === uidAdmin;
-};
+  uidAdmin: string | undefined,
+) => belongsTo(shopInfo, uidAdmin);

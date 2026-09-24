@@ -448,13 +448,15 @@ export default defineComponent({
     });
 
     const { user, uid, isAdmin, isUser, isLiffUser } = useUserData();
+    // 比べる uid が分かっていないときに、店舗側の uid も無いと素の比較では
+    // 一致してしまう。分かっていなければ一致しない扱いにする。
+    const belongsToShop = (candidate: string | undefined) =>
+      candidate !== undefined && candidate === props.shopInfo.uid;
     const isOwner = computed(() => {
-      return isAdmin.value && uid.value === props.shopInfo.uid;
+      return isAdmin.value && belongsToShop(uid.value);
     });
     const isSubAccount = computed(() => {
-      return (
-        isAdmin.value && userStore?.claims?.parentUid === props.shopInfo.uid
-      );
+      return isAdmin.value && belongsToShop(userStore?.claims?.parentUid);
     });
     const isPreview = computed(() => {
       return props.notFound && isOwner.value;
