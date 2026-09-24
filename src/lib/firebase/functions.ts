@@ -1,6 +1,7 @@
 import { functionsJP } from "@/lib/firebase/firebase9";
 import { httpsCallable } from "firebase/functions";
 import type {
+  DispatchData,
   LineVerifyFriendData,
   SubAccountDeleteChildData,
   SubAccountInvitateData,
@@ -64,7 +65,12 @@ export const lineValidate = httpsCallable<
   }
 >(functionsJP, "lineValidate2");
 
-export const superDispatch = httpsCallable(functionsJP, "superDispatch2");
+// cmd ごとに中身が違う。知らない cmd には `{ result: false }` が返るので、
+// 読む側が絞る前提で unknown のまま渡す。
+export const superDispatch = httpsCallable<DispatchData, { result: unknown }>(
+  functionsJP,
+  "superDispatch2",
+);
 
 export const superTwilio = httpsCallable(functionsJP, "superTwilio2");
 

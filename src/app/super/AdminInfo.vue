@@ -56,12 +56,19 @@ export default defineComponent({
     const route = useRoute();
     const generalStore = useGeneralStore();
 
+    // 知らない cmd には `{ result: false }` が返る。権限の読みは欄の有無で見るので、
+    // オブジェクトでないものは空として扱えば同じ結果になる。
+    const claimsOf = (result: unknown): DocumentData =>
+      typeof result === "object" && result !== null ? result : {};
+
     const customClaims = ref<DocumentData>({});
     const restaurants = ref<DocumentData[]>([]);
     const admin = ref<DocumentData>({});
     const adminPrivate = ref<DocumentData>({});
 
-    const adminId = route.params.adminId;
+    // route の引数は型の上では配列にもなりうる。この経路は繰り返し指定ではないので
+    // 常に文字列だが、文字列として扱うことを宣言でも言う。
+    const adminId = String(route.params.adminId);
 
     useHead(() => ({
       title: [defaultTitle, "Super Admin info"].join(" / "),
@@ -70,8 +77,10 @@ export default defineComponent({
     superDispatch({
       cmd: "getCustomeClaims",
       uid: adminId,
+      key: "",
+      value: false,
     }).then(({ data }) => {
-      customClaims.value = data.result;
+      customClaims.value = claimsOf(data.result);
     });
     getDocs(
       query(collection(db, "/restaurants/"), where("uid", "==", adminId)),
@@ -107,7 +116,7 @@ export default defineComponent({
             key: "operator",
             value,
           });
-          customClaims.value = data.result;
+          customClaims.value = claimsOf(data.result);
         } catch (error) {
           console.error(error);
         } finally {
