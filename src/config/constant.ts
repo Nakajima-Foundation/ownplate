@@ -103,9 +103,9 @@ export const stripe_regions_jp = {
   allergens: ["shrimp", "crab", "gluten", "soba", "egg", "milk", "peanuts"],
 };
 
-// 曜日の番号で索く。moment の "e" が返す 0-6 に 7 を足した形で呼ばれるので、
-// 番号で索けることを宣言でも言う。
-export const daysOfWeek: { [key: number]: string } = {
+// 曜日の番号で索く。moment の "e" が返す 0-6 に 7 を足した形で呼ばれる。
+// 1..7 の外は入っていないので、戻りは undefined にもなると言う。
+export const daysOfWeek: { [key: number]: string | undefined } = {
   1: "monday",
   2: "tuesday",
   3: "wednesday",

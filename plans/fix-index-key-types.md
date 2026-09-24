@@ -14,8 +14,11 @@
 
 `src/config/constant.ts` の2つに型注釈を足しただけ。`as` は使っていない。
 
+`daysOfWeek` の戻りは `string | undefined` にしてある。1..7 の外は入っていないので、
+`string` と言い切ると**置き換える前より悪い嘘**になる（最初 `string` と書いて指摘された）。
+
 - `taxRates: ("food" | "alcohol")[]`
-- `daysOfWeek: { [key: number]: string }`
+- `daysOfWeek: { [key: number]: string | undefined }`
 
 ## 出力が変わらないことの確かめ方
 
