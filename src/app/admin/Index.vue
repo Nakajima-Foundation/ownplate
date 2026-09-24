@@ -301,6 +301,7 @@ import {
   arrayChunk,
   useAdminUids,
   defaultTitle,
+  redirectedResponse,
 } from "@/utils/utils";
 import { getShopOwner } from "@/utils/shopOwner";
 import { checkAdminPermission } from "@/utils/userPermission";
@@ -356,7 +357,7 @@ export default defineComponent({
     }));
 
     if (!checkAdminPermission()) {
-      return;
+      return redirectedResponse;
     }
     ping({
       restaurantId: "index",

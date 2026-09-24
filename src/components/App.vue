@@ -64,7 +64,7 @@ import DialogBox from "@/components/DialogBox.vue";
 import DialogTips from "@/components/DialogTips.vue";
 import AudioPlay from "@/components/AudioPlay.vue";
 import Loading from "@/components/Loading.vue";
-import { isDev, useRestaurantId } from "@/utils/utils";
+import { isDev, useRestaurantId, redirectedResponse } from "@/utils/utils";
 
 import * as Sentry from "@sentry/vue";
 import { defaultHeader } from "@/config/header";
@@ -181,7 +181,7 @@ export default defineComponent({
           window.location.href =
             window.location.href + "?openExternalBrowser=1";
         }
-        return;
+        return redirectedResponse;
       }
     }
 
