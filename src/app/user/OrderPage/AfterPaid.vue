@@ -173,7 +173,6 @@
 
           <div class="mt-2">
             <shop-info
-              :compact="true"
               :shopInfo="shopInfo"
               :isDelivery="orderInfo.isDelivery"
               :paymentInfo="paymentInfo"

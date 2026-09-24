@@ -178,7 +178,6 @@
           <div class="mt-2 text-center">
             <share-popup
               :shopInfo="shopInfo"
-              :mode="mode"
               :suffix="urlSuffix"
               :isMenu="true"
             ></share-popup>
@@ -498,10 +497,6 @@ export default defineComponent({
     // 品目ごとの金額。`getPrices` が返す値そのもの。
     prices: {
       type: Array<number>,
-      required: true,
-    },
-    mode: {
-      type: String,
       required: true,
     },
   },
