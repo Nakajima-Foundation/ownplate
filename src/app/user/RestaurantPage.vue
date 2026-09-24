@@ -53,7 +53,7 @@
               <div class="mt-4 flex items-center justify-center space-x-4">
                 <!-- Share Popup -->
                 <div>
-                  <share-popup :shopInfo="shopInfo" :mode="mode"></share-popup>
+                  <share-popup :shopInfo="shopInfo"></share-popup>
                 </div>
 
                 <!-- Favorite Button -->
@@ -152,7 +152,6 @@
                       :shopInfo="shopInfo"
                       :isOpen="menuId === item.id"
                       :prices="prices[item.id] || []"
-                      :mode="mode"
                       @didOrderdChange="didOrderdChange($event)"
                       @updateSelectedOptions="
                         updateSelectedOptions(item.id, $event)
