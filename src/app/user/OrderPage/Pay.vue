@@ -172,7 +172,9 @@ export default defineComponent({
 
     const isPayingError = ref(false);
 
-    const cardState = ref({});
+    // StripeCard が渡すのは Stripe の実物か `{ complete: true }` のどちらか。
+    // 画面が見るのは complete だけなので、それだけを約束する。
+    const cardState = ref<{ complete?: boolean }>({});
 
     // ref for refs
     const stripeRef = ref();
@@ -219,7 +221,7 @@ export default defineComponent({
         restaurantId,
       );
     };
-    const handleCardStateChange = (state: { [key: string]: boolean }) => {
+    const handleCardStateChange = (state: { complete?: boolean }) => {
       if (state.complete) {
         isPayingError.value = false;
       }

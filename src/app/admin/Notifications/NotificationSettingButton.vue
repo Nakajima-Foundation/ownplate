@@ -49,7 +49,12 @@ export default defineComponent({
     const generalStore = useGeneralStore();
 
     const restaurantId = useRestaurantId();
-    const notificationData = ref({});
+    // 保存された設定をそのまま受ける。まだ保存されていなければ空。値は null にも
+    // なるので、読む側は v-if で見る。
+    const notificationData = ref<{
+      soundOn?: boolean | null;
+      infinityNotification?: boolean | null;
+    }>({});
     const detacher = onSnapshot(
       doc(db, `restaurants/${restaurantId.value}/private/notifications`),
       (notification) => {
