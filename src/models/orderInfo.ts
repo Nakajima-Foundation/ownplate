@@ -4,13 +4,12 @@ import { stripe_regions_jp } from "../config/constant";
 import { OrderInfoData } from "./orderInfoData";
 export type { OrderInfoData } from "./orderInfoData";
 
-type OrderAccounting = NonNullable<OrderInfoData["accounting"]>;
-
 export type ReportRow = OrderInfoData & {
-  accounting: OrderAccounting & {
-    service: NonNullable<OrderAccounting["service"]>;
-  };
+  accounting: NonNullable<OrderInfoData["accounting"]>;
 };
+
+const isReportRow = (order: OrderInfoData): order is ReportRow =>
+  order.accounting !== undefined;
 
 export const order2ReportData = (
   order: OrderInfoData,
@@ -23,27 +22,35 @@ export const order2ReportData = (
   order.timePlaced = order?.timePlaced?.toDate();
   // @ts-expect-error maybe different type or undefine
   order.timeEstimated = order?.timeEstimated?.toDate();
-  const accounting = order.accounting || {
-    food: {
-      revenue: order.total - order.tax,
-      tax: order.tax,
-    },
-    alcohol: {
-      revenue: 0,
-      tax: 0,
-    },
-  };
-  const serviceTax =
-    ownPlateConfig.region === "JP"
-      ? Math.round(order.tip * (1 - 1 / (1 + serviceTaxRate)) * multiple) /
-        multiple
-      : 0;
-  const accountingWithService = Object.assign(accounting, {
-    service: {
+  if (!order.accounting) {
+    order.accounting = {
+      food: {
+        revenue: order.total - order.tax,
+        tax: order.tax,
+      },
+      alcohol: {
+        revenue: 0,
+        tax: 0,
+      },
+    };
+  }
+  if (ownPlateConfig.region === "JP") {
+    const serviceTax =
+      Math.round(order.tip * (1 - 1 / (1 + serviceTaxRate)) * multiple) /
+      multiple;
+    order.accounting.service = {
       revenue: order.tip,
       tax: serviceTax,
-    },
-  });
+    };
+  } else {
+    order.accounting.service = {
+      revenue: order.tip,
+      tax: 0,
+    };
+  }
   order.type = orderType(order);
-  return Object.assign(order, { accounting: accountingWithService });
+  if (!isReportRow(order)) {
+    throw new Error("order2ReportData: accounting was not filled");
+  }
+  return order;
 };

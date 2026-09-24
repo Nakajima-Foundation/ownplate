@@ -1,51 +1,55 @@
-# 売上表の `accounting` を、大元の型で「必ずある」にする
+# 売上表の `accounting` を、戻り値の型で「必ずある」にする
 
 ## いまの形
 
-`order2ReportData` は `accounting` が無ければその場で組み立て、地域にかかわらず
-`accounting.service` を入れてから注文を返す。つまり **戻ってきた注文は
-`accounting` も `accounting.service` も必ず持つ**。
-
-しかし戻り値の型は引数の型のままで、`accounting` も中の `service` も省略可のまま。
-`ReportPage.vue` はそれを `ref<OrderInfoData[]>` で受けるので、テンプレートが
-`order.accounting.food.revenue` と素直に読んでいる箇所が全部「無いかもしれない」と
-言われる。
+`order2ReportData` は `accounting` が無ければその場で組み立ててから注文を返す。
+つまり **戻ってきた注文は `accounting` を必ず持つ**。しかし戻り値の型は引数の型の
+ままで、`ReportPage.vue` はそれを `ref<OrderInfoData[]>` で受けるので、テンプレートが
+`order.accounting.food.revenue` と素直に読んでいる箇所が「無いかもしれない」と言われる。
 
 ## 変えたこと
 
-`ReportRow` を export して、`accounting` と `accounting.service` を必須にした。
-`ReportPage.vue` の `orders` をその型で受ける。
+**関数の本体は一行も変えていない。** 足したのは3つだけ。
 
-**読む側に `?.` を足すのではなく、大元の宣言から省略可を外す形にした。** `?.` は
-無いときに黙って進むので、どこで消えたのか分からなくなる。
+- `ReportRow` — `accounting` が必須の型。export して `ReportPage.vue` が受ける
+- `isReportRow` — 型ガード。`as` を使わずに戻り値の型を絞るため
+- 戻り値の型注釈と、ガードを満たさなかったときの例外
 
-実装は3箇所だけ形が変わった。いずれも **プロパティへの代入では型に伝わらない** ため:
+読む側に `?.` を足すのではなく、大元の宣言から省略可を外す形にした。
 
-| 前 | 後 | なぜ |
-|---|---|---|
-| `if (!order.accounting) { order.accounting = ... }` | `const accounting = order.accounting \|\| {...}` | `order` 自身の型は代入では変わらない |
-| `order.accounting.service = {...}` | `Object.assign(accounting, { service })` | `Object.assign` は `T & U` を返すので型に伝わる |
-| 地域で `if/else` して2回書く | `serviceTax` を三項で決めて1回書く | `service` を1回で組み立てる必要があるため。元は両方の枝で `revenue` が重複していた |
+## `service` まで必須にするのは見送った
 
-フォールバックの判定は元の `if (!order.accounting)` と同じ **偽値** の判定にした。
-`??` にすると `accounting` が偽値の非 null だったとき、次の代入が例外になる。
+テンプレートには `order.accounting.service.revenue` を読む箇所もある。`service` も
+必須にすれば通るが、**そのためには本体を書き換える必要があり、書き換えると振る舞いが
+変わる**。測って確かめた結果は下記。
+
+| 試した形 | 差 |
+|---|---|
+| `Object.assign(accounting, { service })` で型に伝える | 真値のスカラーで**差が出る**（旧は例外、新は箱に入れて売上ゼロの行を返す） |
+| 素の代入に戻して `Object.assign(order, { accounting })` | `order.accounting` に setter があると**差が出る** |
+| **本体そのまま + 型ガード（採用）** | **差ゼロ** |
+
+売上の数字なので、うるさく落ちる旧の動作を、黙って food と alcohol の無い行に
+変える方向の差は取らない。`service` の2件は残す。
 
 ## 同じ振る舞いであることの確かめ方
 
 **読んで判断していない。** 旧実装をそのまま写して、新と並べて走らせた。
 
-`accounting`（未定義・null・偽値・空配列・空・凍結・prototype 経由・`service` が
-既にある・getter だけ）、金額（0・負・小数・NaN・Infinity）、税率（0・負・-1・NaN）、
-日時欄の有無、注文種別、地域、`multiple` を総当たり。突き合わせたのは
-**戻り値・引数がどう書き換わったか・戻り値が引数と同一実体か・例外の種類と文面**。
-差は出なかった。
+網羅した `accounting`: 未定義・null・偽値スカラー・**真値スカラー**・真偽値・空配列・
+非空配列・空・凍結・封印・prototype 経由・`service` が既にある・`service` が getter だけ・
+**`service` の setter が値を捨てる**・Proxy・`Number`/`String` の箱。これに加えて
+**`order` 側に `accounting` の setter がある場合**、金額（0・負・小数・NaN・Infinity）、
+税率（0・負・-1・NaN）、日時欄の有無、注文種別、地域、`multiple`。
 
-harness は壊して効きを確かめてある。`||` を `??` にする／注文へ戻すのをやめる／
-`accounting` を書き換えず写しにする／地域の判定を反転／割り算をずらす／料金をずらす／
-`type` を入れない、の7通りすべてで赤くなる。壊していない写しは差ゼロを返す。
+突き合わせたのは **戻り値・引数がどう書き換わったか・戻り値が引数と同一実体か・
+`accounting` が同一実体か・setter が何回呼ばれたか・Proxy が何を受けたか・
+例外の種類と文面**。差は出なかった。
 
-`orderType` は `isEC` と `isDelivery` しか読まないので、`accounting` を注文へ戻す
-位置は観測されない。`Math.round` を地域で呼ばなくなったが副作用は無い。
+harness は壊して効きを確かめてある。守りを常に偽にする／埋める条件を反転／
+食品の売上をずらす／サービス税をずらす／`type` を入れない／国外のサービス税をずらす、
+の6通りで赤くなる。**守りを常に真にする（＝足した例外を消す）変異だけが差ゼロ** で、
+これは「この格子では例外は一度も発火しない」という結果。
 
 ## 確かめていないこと
 
