@@ -337,7 +337,13 @@ export default defineComponent({
     const restaurant_detacher = onSnapshot(
       doc(db, `restaurants/${restaurantId.value}`),
       (results) => {
-        if (results.exists() && results.data().uid === ownerUid.value) {
+        // 比べる uid が分かっていないときに、店舗側の uid も無いと素の比較では
+        // 一致してしまう。分かっていなければ一致しない扱いにする。
+        if (
+          results.exists() &&
+          ownerUid.value !== undefined &&
+          results.data().uid === ownerUid.value
+        ) {
           shopInfoSnapshot.value = results.data() as RestaurantInfoData;
           notFound.value = false;
         } else {

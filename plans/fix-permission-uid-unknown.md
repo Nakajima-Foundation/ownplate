@@ -18,11 +18,14 @@ SingularitySociety/omochikaeri-docs#216
 この宣言を直したことで、`shopInfo` に型を付ける作業（`type: Object` の40件）が
 初めて効くようになる。そちらは別に扱う。
 
-## 同じ形がもう1箇所あった
+## 同じ形は全部で3箇所あった
 
-`src/app/user/RestaurantPage.vue` の `isOwner` と `isSubAccount` も同じ素の比較だった
-（レビューの指摘）。同じ守りを入れてある。128通りで並べて測り、差は7件、
-**新しいほうが通してしまう組は0**（すべて止める方向）。
+レビューが1巡目で `RestaurantPage.vue` の `isOwner` / `isSubAccount` を、2巡目で
+`MenuListPage.vue` の店舗の購読を指摘した。**3箇所目で場当たりをやめ、repo 全体を
+`grep` で洗い直した**。uid を比べている箇所はこれで全部守られている。
+
+並べて測った結果は、`RestaurantPage` が128通りで差7件、`MenuListPage` が32通りで差1件。
+**どちらも「新しいほうが通してしまう組」は0**（すべて止める方向）。
 
 ## 振る舞い
 
