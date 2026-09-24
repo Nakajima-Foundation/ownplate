@@ -40,7 +40,10 @@
 切り上げの境目・臨時休業・Timestamp の変換・休業日・受け取れない時間帯・商品ごとの休業日の
 9通りに崩して、すべて赤くなることを見た。
 
-`git archive HEAD` で追跡分だけの木を作っても通る。
+`git archive HEAD` で**追跡分だけの木**を作り、CI と同じ設定のコピー
+（`cp src/config/default/ownplate-dev.ts src/config/project.ts`）をしてから走らせても通る。
+この設定ファイルも git に入っていないので、コピーを忘れると `@/config` が解決できずに
+落ちる — 手元との差はコピー先だけではない。
 
 ## 確かめていないこと
 
