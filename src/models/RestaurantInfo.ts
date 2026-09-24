@@ -77,7 +77,9 @@ export interface RestaurantInfoData {
   };
   publicFlag: boolean;
   deletedFlag: boolean;
-  temporaryClosure: { toDate: () => Date; seconds?: number }[];
+  // Firestore から読んだ直後は Timestamp、画面が日付を足したあとや Wrapper が
+  // 変換したあとは素の Date。読む側は seconds の有無で見分けている。
+  temporaryClosure: ({ toDate: () => Date; seconds?: number } | Date)[];
   lastOrderTime?: number;
   category1: string[];
   category2: string[];

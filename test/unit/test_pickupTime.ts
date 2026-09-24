@@ -1,4 +1,4 @@
-import { describe, it, beforeEach } from "node:test";
+import { describe, it, beforeEach, afterEach, mock } from "node:test";
 import assert from "node:assert";
 import { createPinia, setActivePinia } from "pinia";
 import { computed, ref, type ComputedRef } from "vue";
@@ -15,14 +15,20 @@ import type { MenuData } from "../../src/models/menu.ts";
 // 客が注文を受け取れる日と時刻。**ここが店舗ページと注文画面の受取時刻の選択肢**になる。
 // 出しすぎれば店が用意できない時刻の注文が入り、出さなすぎれば受けられる注文を逃す。
 //
-// 日付の境目は実行環境の時間帯で決まる（`midNight()` がローカルの0時を返す）。
-// そのため時刻は**今日の0時からの分数**で組み立てる。そうすれば日本でも UTC の CI でも
-// 同じ答えになる。
+// **時計を固定する。** 実装は `midNight()` と `new Date()` を自分で何度も読むので、
+// 固定しないと日付をまたいだ瞬間に store の「今日」と食い違う。固定すれば曜日も決まる。
+// 時刻はローカルで組み立てるので、日本でも UTC の CI でも同じ分数になる。
 const MINUTES_PER_HOUR = 60;
-const at = (hour: number, minute = 0) => {
-  const date = midNight();
-  date.setMinutes(hour * MINUTES_PER_HOUR + minute);
-  return date;
+const FROZEN_YEAR = 2026;
+const FROZEN_MONTH_INDEX = 8; // 9月
+const FROZEN_DAY = 24; // 木曜
+const THURSDAY = "4";
+const freezeAt = (hour: number) => {
+  mock.timers.reset();
+  mock.timers.enable({
+    apis: ["Date"],
+    now: new Date(FROZEN_YEAR, FROZEN_MONTH_INDEX, FROZEN_DAY, hour),
+  });
 };
 const ELEVEN = 11 * MINUTES_PER_HOUR;
 const TWO_PM = 14 * MINUTES_PER_HOUR;
@@ -50,6 +56,26 @@ const sameHoursEveryDay = (start: number, end: number) =>
 
 type ExceptData = Parameters<typeof usePickupTime>[1];
 
+const FIVE_PM = 17 * MINUTES_PER_HOUR;
+const NINE_PM = 21 * MINUTES_PER_HOUR;
+
+// 昼の部と夜の部を持つ店舗。lunchOrDinner でどちらか一方だけを出す。
+const shopLunchAndDinner = () =>
+  restaurantInfoFixture({
+    businessDay: everyDay,
+    openTimes: Object.fromEntries(
+      ["1", "2", "3", "4", "5", "6", "7"].map((day) => [
+        day,
+        [
+          { start: ELEVEN, end: TWO_PM },
+          { start: FIVE_PM, end: NINE_PM },
+        ],
+      ]),
+    ),
+    pickUpMinimumCookTime: 25,
+    pickUpDaysInAdvance: 3,
+  });
+
 const shopOpen11to2 = (over: Partial<RestaurantInfoData> = {}) =>
   restaurantInfoFixture({
     businessDay: everyDay,
@@ -69,7 +95,8 @@ const pickupAt = async <T>(
   lunchOrDinner?: string,
   skipToday?: ComputedRef<boolean>,
 ): Promise<T> => {
-  useGeneralStore().date = at(nowHour);
+  freezeAt(nowHour);
+  useGeneralStore().date = new Date();
   // computed なので、値は setup の中で読む。外で読むと i18n が無くて落ちる。
   return runInSetup(() =>
     read(
@@ -80,6 +107,10 @@ const pickupAt = async <T>(
 
 beforeEach(() => {
   setActivePinia(createPinia());
+});
+
+afterEach(() => {
+  mock.timers.reset();
 });
 
 describe("受け取れる日数", () => {
@@ -318,12 +349,11 @@ describe("受け取れない時間帯", () => {
   });
 
   it("drops a whole weekday the shop excepted", async () => {
-    const todayNumber = new Date().getDay() === 0 ? 7 : new Date().getDay();
     const days = await pickupAt(
       9,
       (p) => p.availableDays.value.map((d) => d.offset),
       shopOpen11to2(),
-      { value: { exceptDay: { [String(todayNumber)]: true } } },
+      { value: { exceptDay: { [THURSDAY]: true } } },
     );
     assert.ok(!days.includes(0));
   });
@@ -390,5 +420,88 @@ describe("menuPickupData", () => {
   it("says nothing for a cart with no items", async () => {
     const data = await pickupAt(9, (p) => p.menuPickupData.value);
     assert.deepStrictEqual(data, {});
+  });
+});
+
+// 昼の部だけ・夜の部だけを出す注文がある。取り違えると、昼の注文に夜の時刻が並ぶ。
+describe("昼の部と夜の部", () => {
+  const timesFor = (lunchOrDinner?: string) =>
+    pickupAt(
+      9,
+      (p) => p.availableDays.value[0].times.map((t) => t.time),
+      shopLunchAndDinner(),
+      {},
+      {},
+      lunchOrDinner,
+    );
+
+  it("offers both halves of the day when neither was asked for", async () => {
+    const times = await timesFor(undefined);
+    assert.ok(times.includes(ELEVEN));
+    assert.ok(times.includes(TWO_PM));
+    assert.ok(times.includes(FIVE_PM));
+    assert.ok(times.includes(NINE_PM));
+  });
+
+  it("offers only the lunch half for a lunch order", async () => {
+    const times = await timesFor("lunch");
+    assert.strictEqual(times[0], ELEVEN);
+    assert.strictEqual(times[times.length - 1], TWO_PM);
+    assert.ok(!times.includes(FIVE_PM));
+  });
+
+  it("offers only the dinner half for a dinner order", async () => {
+    const times = await timesFor("dinner");
+    assert.strictEqual(times[0], FIVE_PM);
+    assert.strictEqual(times[times.length - 1], NINE_PM);
+    assert.ok(!times.includes(ELEVEN));
+  });
+
+  // 夜の部を置いていない店舗に夜の注文が来たら、時刻は出さない。
+  it("offers nothing for a dinner order at a shop with no dinner half", async () => {
+    const days = await pickupAt(
+      9,
+      (p) => p.availableDays.value.length,
+      shopOpen11to2(),
+      {},
+      {},
+      "dinner",
+    );
+    assert.strictEqual(days, 0);
+  });
+});
+
+// 臨時休業は2つの形で届く。Firestore から読んだ直後は Timestamp、画面が日付を足した
+// あとや Wrapper が変換したあとは**素の Date**。管理画面の受付停止ページは後者を渡す。
+describe("臨時休業の2つの形", () => {
+  const offsetsWithClosure = (
+    closure: RestaurantInfoData["temporaryClosure"],
+  ) =>
+    pickupAt(
+      9,
+      (p) => p.availableDays.value.map((d) => d.offset),
+      shopOpen11to2({ temporaryClosure: closure }),
+    );
+
+  it("drops the day when the closure arrived as a Firestore timestamp", async () => {
+    freezeAt(9);
+    assert.deepStrictEqual(
+      await offsetsWithClosure([closedOn(midNight(1))]),
+      [0, 2, 3],
+    );
+  });
+
+  // ここを Timestamp 前提にすると、管理画面の受付停止ページで休業日が効かなくなる。
+  it("drops the day when the closure arrived as a plain Date", async () => {
+    freezeAt(9);
+    assert.deepStrictEqual(await offsetsWithClosure([midNight(1)]), [0, 2, 3]);
+  });
+
+  it("reads both shapes in one list", async () => {
+    freezeAt(9);
+    assert.deepStrictEqual(
+      await offsetsWithClosure([closedOn(midNight(1)), midNight(2)]),
+      [0, 3],
+    );
   });
 });
