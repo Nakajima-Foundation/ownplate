@@ -65,8 +65,9 @@ export const lineValidate = httpsCallable<
   }
 >(functionsJP, "lineValidate2");
 
-// cmd ごとに中身が違う。知らない cmd には `{ result: false }` が返るので、
-// 読む側が絞る前提で unknown のまま渡す。
+// cmd ごとに中身が違う。`setCustomClaim` は条件を満たさないと初期値の
+// `{ result: false, message: "not processed" }` をそのまま返す（知らない cmd は例外）。
+// 1つの形には決められないので、読む側が絞る前提で unknown のまま渡す。
 export const superDispatch = httpsCallable<DispatchData, { result: unknown }>(
   functionsJP,
   "superDispatch2",

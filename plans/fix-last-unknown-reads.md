@@ -10,8 +10,11 @@
 
 ## `superDispatch` の戻りを `unknown` と宣言した理由
 
-`functions/src/functions/super/super.ts` の dispatcher は cmd ごとに違うものを返し、
-**知らない cmd には `{ result: false }` を返す**。1つの形には決められないので、
+`functions/src/functions/super/super.ts` の dispatcher は cmd ごとに違うものを返す。
+`getCustomeClaims` と `setCustomClaim` は `{ result: <claims> }` を返すが、
+**`setCustomClaim` は対象が operator でないか相手にメールが無いと、初期値の
+`{ result: false, message: "not processed" }` をそのまま返す**（知らない cmd のほうは
+`HttpsError` を投げるので戻りにはならない）。1つの形には決められないので
 `{ result: unknown }` と正直に宣言し、**読む側で絞る**ことにした。
 
 `AdminInfo.vue` は `claimsOf` で絞る。画面が読むのは `admin` と `operator` の2つだけで、

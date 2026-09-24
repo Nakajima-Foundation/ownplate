@@ -56,8 +56,8 @@ export default defineComponent({
     const route = useRoute();
     const generalStore = useGeneralStore();
 
-    // 知らない cmd には `{ result: false }` が返る。権限の読みは欄の有無で見るので、
-    // オブジェクトでないものは空として扱えば同じ結果になる。
+    // `setCustomClaim` は条件を満たさないと `{ result: false }` を返す。権限の読みは
+    // 欄の有無で見るので、オブジェクトでないものを空として扱えば同じ結果になる。
     const claimsOf = (result: unknown): DocumentData =>
       typeof result === "object" && result !== null ? result : {};
 
