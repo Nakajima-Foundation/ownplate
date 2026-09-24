@@ -1,7 +1,7 @@
 import { describe, it, beforeEach, afterEach, mock } from "node:test";
 import assert from "node:assert";
 import { createPinia, setActivePinia } from "pinia";
-import { computed, ref, type ComputedRef } from "vue";
+import { computed, effectScope, ref, type ComputedRef } from "vue";
 
 import { usePickupTime } from "../../src/utils/pickup.ts";
 import { useGeneralStore } from "../../src/store/index.ts";
@@ -303,26 +303,27 @@ describe("todaysLast", () => {
 
 // 画面は1分ごとに store の時計を進め、computed は次の描画の前に setup の外で計算し直される。
 // ここで落ちると、店舗ページを開いたまま1分待った客の画面が止まる。
+// runInSetup は SSR で、SSR の computed は依存に関係なく毎回計算し直すので、ここでは使わない。
 describe("時計が進んだあとの再計算", () => {
-  it("recomputes outside setup once the store clock moves", async () => {
+  it("recomputes outside setup once the store clock moves", () => {
     freezeAt(11);
     const generalStore = useGeneralStore();
     generalStore.date = new Date();
-    const firstPickupDisplay = (p: ReturnType<typeof usePickupTime>) =>
-      p.availableDays.value[0].times[0].display;
-    // 画面と同じく、最初の計算は setup の中で済ませておく。
-    const { pickup, displayBefore } = await runInSetup(() => {
-      const pickup = usePickupTime(shopOpen11to2(), {}, ref({}));
-      pickup.todaysLast.value;
-      return { pickup, displayBefore: firstPickupDisplay(pickup) };
-    });
-    assert.strictEqual(displayBefore, "午前 11:30");
+    const scope = effectScope();
+    const pickup = scope.run(() => usePickupTime(shopOpen11to2(), {}, ref({})));
+    if (!pickup) {
+      throw new Error("effectScope が走らなかった");
+    }
+    const firstPickupDisplay = () =>
+      pickup.availableDays.value[0].times[0].display;
+    assert.strictEqual(firstPickupDisplay(), "午前 11:30");
 
     mock.timers.tick(ONE_HOUR_MS);
     generalStore.date = new Date();
 
     assert.strictEqual(pickup.todaysLast.value?.lastOrderTime, "午後 01:35");
-    assert.strictEqual(firstPickupDisplay(pickup), "午後 00:30");
+    assert.strictEqual(firstPickupDisplay(), "午後 00:30");
+    scope.stop();
   });
 });
 

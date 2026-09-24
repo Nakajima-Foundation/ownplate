@@ -1,4 +1,4 @@
-import { ref, computed, onMounted, isRef, Ref } from "vue";
+import { ref, computed, onMounted, unref, Ref } from "vue";
 import type { User } from "firebase/auth";
 import type { DocumentData } from "firebase/firestore";
 
@@ -34,7 +34,7 @@ import { useRoute, useRouter } from "vue-router";
 import { useGeneralStore } from "../store";
 import { useUserStore } from "@/store/user";
 import { useI18n } from "vue-i18n";
-import i18n from "@/lib/vue-i18n";
+import i18n from "../lib/vue-i18n";
 
 export const errorCode = (error: unknown): string | undefined => {
   if (error !== null && typeof error === "object" && "code" in error) {
@@ -148,7 +148,7 @@ export const num2simpleFormatedTime = (num: number) => {
 export const num2time = (num: number) => {
   const { locale, t } = i18n.global;
   // legacy: false では locale は ref だが、型は文字列と宣言されている。
-  const localeName = isRef(locale) ? locale.value : locale;
+  const localeName = unref(locale);
 
   if (num === 0 || num === 60 * 24) {
     return t("shopInfo.midnight");
