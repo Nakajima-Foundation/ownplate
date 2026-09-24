@@ -1001,12 +1001,9 @@
                 <!-- Date Picker -->
                 <DatePicker
                   class="w-full"
-                  icon="calendar-today"
+                  icon="calendar_today"
                   v-model="newTemporaryClosure"
-                  ref="datepicker"
-                  :min-date="now"
                   :max-date="maxDate"
-                  expanded
                   :placeholder="$t('shopInfo.temporaryClosureSelect')"
                 >
                 </DatePicker>
