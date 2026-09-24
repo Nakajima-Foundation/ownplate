@@ -33,7 +33,6 @@
         :orderItems="orderItems"
         :paymentInfo="paymentInfo"
         :menuPagePath="menuPagePath"
-        @openTransactionsAct="openTransactionsAct"
       />
 
       <OrderPageAfter
