@@ -5,7 +5,6 @@ import { computed, ref, type ComputedRef } from "vue";
 
 import { usePickupTime } from "../../src/utils/pickup.ts";
 import { useGeneralStore } from "../../src/store/index.ts";
-import { midNight } from "../../src/utils/dateUtils.ts";
 import { restaurantInfoFixture } from "../fixtures/restaurantInfo.ts";
 import { menuFixture } from "../fixtures/menu.ts";
 import { runInSetup } from "../helpers/vueSetup.ts";
@@ -23,6 +22,11 @@ const FROZEN_YEAR = 2026;
 const FROZEN_MONTH_INDEX = 8; // 9月
 const FROZEN_DAY = 24; // 木曜
 const THURSDAY = "4";
+// 固定日からの相対で日付を作る。**実時計を読んではいけない** — pickupAt() の引数は
+// 中で時計を固定するより先に評価されるので、読むと実行環境の日付が混ざる。
+const frozenDatePlus = (days: number) =>
+  new Date(FROZEN_YEAR, FROZEN_MONTH_INDEX, FROZEN_DAY + days);
+
 const freezeAt = (hour: number) => {
   mock.timers.reset();
   mock.timers.enable({
@@ -299,11 +303,8 @@ describe("todaysLast", () => {
 
 // 休業日。曜日で閉める、日を指定して閉める、の2通り。
 describe("休みの日", () => {
-  const todayKey = () =>
-    String(new Date().getDay() === 0 ? 7 : new Date().getDay());
-
   it("drops a weekday the shop is closed on", async () => {
-    const closedToday = { ...everyDay, [todayKey()]: false };
+    const closedToday = { ...everyDay, [THURSDAY]: false };
     const days = await pickupAt(
       9,
       (p) => p.availableDays.value.map((d) => d.offset),
@@ -317,7 +318,7 @@ describe("休みの日", () => {
     const days = await pickupAt(
       9,
       (p) => p.availableDays.value.map((d) => d.offset),
-      shopOpen11to2({ temporaryClosure: [closedOn(midNight(1))] }),
+      shopOpen11to2({ temporaryClosure: [closedOn(frozenDatePlus(1))] }),
     );
     assert.deepStrictEqual(days, [0, 2, 3]);
   });
@@ -326,9 +327,11 @@ describe("休みの日", () => {
     const closures = await pickupAt(
       9,
       (p) => p.temporaryClosure.value,
-      shopOpen11to2({ temporaryClosure: [closedOn(midNight(1))] }),
+      shopOpen11to2({
+        temporaryClosure: [closedOn(frozenDatePlus(1)), frozenDatePlus(3)],
+      }),
     );
-    assert.strictEqual(closures.length, 1);
+    assert.deepStrictEqual(closures, ["2026-09-25", "2026-09-27"]);
   });
 });
 
@@ -402,18 +405,15 @@ describe("menuPickupData", () => {
   });
 
   it("lists the days an item can be picked up, minus its own closed days", async () => {
-    const todayNumber = String(
-      new Date().getDay() === 0 ? 7 : new Date().getDay(),
-    );
     const data = await pickupAt(
       9,
       (p) => p.menuPickupData.value,
       shopOpen11to2(),
       {},
-      { bento: menuFixture({ exceptDay: { [todayNumber]: true } }) },
+      { bento: menuFixture({ exceptDay: { [THURSDAY]: true } }) },
     );
     assert.strictEqual(data.bento.hasExceptDay, true);
-    assert.ok(!data.bento.menuAvailableDays.includes(todayNumber));
+    assert.ok(!data.bento.menuAvailableDays.includes(THURSDAY));
     assert.strictEqual(data.bento.menuAvailableDays.length, 6);
   });
 
@@ -484,23 +484,26 @@ describe("臨時休業の2つの形", () => {
     );
 
   it("drops the day when the closure arrived as a Firestore timestamp", async () => {
-    freezeAt(9);
     assert.deepStrictEqual(
-      await offsetsWithClosure([closedOn(midNight(1))]),
+      await offsetsWithClosure([closedOn(frozenDatePlus(1))]),
       [0, 2, 3],
     );
   });
 
   // ここを Timestamp 前提にすると、管理画面の受付停止ページで休業日が効かなくなる。
   it("drops the day when the closure arrived as a plain Date", async () => {
-    freezeAt(9);
-    assert.deepStrictEqual(await offsetsWithClosure([midNight(1)]), [0, 2, 3]);
+    assert.deepStrictEqual(
+      await offsetsWithClosure([frozenDatePlus(1)]),
+      [0, 2, 3],
+    );
   });
 
   it("reads both shapes in one list", async () => {
-    freezeAt(9);
     assert.deepStrictEqual(
-      await offsetsWithClosure([closedOn(midNight(1)), midNight(2)]),
+      await offsetsWithClosure([
+        closedOn(frozenDatePlus(1)),
+        frozenDatePlus(2),
+      ]),
       [0, 3],
     );
   });
