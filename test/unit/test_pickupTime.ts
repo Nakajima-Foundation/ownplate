@@ -27,6 +27,13 @@ const at = (hour: number, minute = 0) => {
 const ELEVEN = 11 * MINUTES_PER_HOUR;
 const TWO_PM = 14 * MINUTES_PER_HOUR;
 
+// 臨時休業は Firestore の Timestamp で届く。読む側は seconds の有無で
+// 「Timestamp か、素の Date か」を見分けているので、seconds も入れておく。
+const closedOn = (date: Date) => ({
+  seconds: Math.floor(date.getTime() / 1000),
+  toDate: () => date,
+});
+
 const everyDay = {
   "1": true,
   "2": true,
@@ -258,7 +265,7 @@ describe("休みの日", () => {
     const days = await pickupAt(
       9,
       (p) => p.availableDays.value.map((d) => d.offset),
-      shopOpen11to2({ temporaryClosure: [midNight(1)] }),
+      shopOpen11to2({ temporaryClosure: [closedOn(midNight(1))] }),
     );
     assert.deepStrictEqual(days, [0, 2, 3]);
   });
@@ -267,7 +274,7 @@ describe("休みの日", () => {
     const closures = await pickupAt(
       9,
       (p) => p.temporaryClosure.value,
-      shopOpen11to2({ temporaryClosure: [midNight(1)] }),
+      shopOpen11to2({ temporaryClosure: [closedOn(midNight(1))] }),
     );
     assert.strictEqual(closures.length, 1);
   });
@@ -338,7 +345,7 @@ describe("menuPickupData", () => {
       (p) => p.menuPickupData.value,
       shopOpen11to2(),
       {},
-      { bento: menuFixture({ exceptHour: { start: ELEVEN, end: null } }) },
+      { bento: menuFixture({ exceptHour: { start: ELEVEN, end: undefined } }) },
     );
     assert.strictEqual(data.bento.hasExceptHour, false);
   });

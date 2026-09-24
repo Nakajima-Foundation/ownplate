@@ -381,7 +381,7 @@ describe("businessHoursErrors", () => {
 // 検証を通して見たときも同じ答えになること。曜日ごとに別々に見る。
 describe("shopInfoValidator — 営業時間", () => {
   const timeErrors = (
-    businessDay: { [key: string]: string[] },
+    businessDay: { [key: string]: boolean },
     openTimes: { [key: string]: { start: number; end: number }[] },
   ) => {
     const value = errorsFor({ businessDay, openTimes }).time;
@@ -407,7 +407,7 @@ describe("shopInfoValidator — 営業時間", () => {
 
   it("checks each day of the week on its own", () => {
     const all = timeErrors(
-      { "1": ["open"], "2": ["open"] },
+      { "1": true, "2": true },
       { "1": [{ start: 660, end: 840 }], "2": [] },
     );
     assert.deepStrictEqual(all["1"], [[], []]);
@@ -416,10 +416,7 @@ describe("shopInfoValidator — 営業時間", () => {
   });
 
   it("carries a wrong slot through to the field the screen reads", () => {
-    const all = timeErrors(
-      { "1": ["open"] },
-      { "1": [{ start: 900, end: 660 }] },
-    );
+    const all = timeErrors({ "1": true }, { "1": [{ start: 900, end: 660 }] });
     assert.deepStrictEqual(all["1"], [
       ["validationError.validBusinessTime"],
       [],
