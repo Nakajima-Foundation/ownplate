@@ -49,7 +49,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watch } from "vue";
+import { defineComponent, ref, computed, watch, PropType } from "vue";
+import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { db } from "@/lib/firebase/firebase9";
 import { getDocs, query, collectionGroup, where } from "firebase/firestore";
 import DownloadCsv from "@/components/DownloadCSV.vue";
@@ -75,7 +76,7 @@ export default defineComponent({
       required: true,
     },
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
     fileName: {

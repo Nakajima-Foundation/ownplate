@@ -52,14 +52,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, computed } from "vue";
+import { defineComponent, ref, watch, computed, PropType } from "vue";
+import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { defaultTitle } from "@/utils/utils";
 import { useHead } from "@unhead/vue";
 
 export default defineComponent({
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
     categoryKey: {
