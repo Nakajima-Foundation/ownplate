@@ -1,7 +1,7 @@
 import { describe, it, beforeEach } from "node:test";
 import assert from "node:assert";
 import { createPinia, setActivePinia } from "pinia";
-import { ref } from "vue";
+import { computed, ref, type ComputedRef } from "vue";
 
 import { usePickupTime } from "../../src/utils/pickup.ts";
 import { useGeneralStore } from "../../src/store/index.ts";
@@ -67,19 +67,13 @@ const pickupAt = async <T>(
   exceptData: ExceptData = {},
   menus: { [key: string]: MenuData } = {},
   lunchOrDinner?: string,
-  skipToday?: { value: boolean },
+  skipToday?: ComputedRef<boolean>,
 ): Promise<T> => {
   useGeneralStore().date = at(nowHour);
   // computed なので、値は setup の中で読む。外で読むと i18n が無くて落ちる。
   return runInSetup(() =>
     read(
-      usePickupTime(
-        shopInfo,
-        exceptData,
-        ref(menus),
-        lunchOrDinner,
-        skipToday as never,
-      ),
+      usePickupTime(shopInfo, exceptData, ref(menus), lunchOrDinner, skipToday),
     ),
   );
 };
@@ -129,6 +123,33 @@ describe("受け取れる日数", () => {
   it("drops today once the shop has closed", async () => {
     const days = await pickupAt(15, (p) => p.availableDays.value.length);
     assert.strictEqual(days, 3);
+  });
+
+  // 「今日は受けない」を呼び出し側が立てられる。注文を確定したあとの画面などで使う。
+  it("drops today when the caller says to skip it", async () => {
+    const days = await pickupAt(
+      9,
+      (p) => p.availableDays.value.map((d) => d.offset),
+      shopOpen11to2(),
+      {},
+      {},
+      undefined,
+      computed(() => true),
+    );
+    assert.deepStrictEqual(days, [1, 2, 3]);
+  });
+
+  it("keeps today when the caller says not to skip it", async () => {
+    const days = await pickupAt(
+      9,
+      (p) => p.availableDays.value.map((d) => d.offset),
+      shopOpen11to2(),
+      {},
+      {},
+      undefined,
+      computed(() => false),
+    );
+    assert.deepStrictEqual(days, [0, 1, 2, 3]);
   });
 
   it("offers nothing at all while the shop information is still loading", async () => {
