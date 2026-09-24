@@ -107,7 +107,6 @@
             :orders="filteredOrders"
             :fileName="fileName"
             :hideTable="true"
-            :withStatus="true"
             :shopInfo="shopInfo"
             buttonTitle="admin.report.download-csv-history-details"
           />

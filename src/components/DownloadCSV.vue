@@ -21,7 +21,7 @@ export default defineComponent({
     },
     fieldNames: {
       type: Object as PropType<string[]>,
-      required: true,
+      required: false,
     },
     fileName: {
       type: String,
