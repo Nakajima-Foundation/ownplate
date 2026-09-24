@@ -222,7 +222,7 @@
                           updateSelectedOptions(
                             quantityKey,
                             index,
-                            $event.target.value,
+                            inputValueOf($event),
                           )
                         "
                         :name="`${item.id}_${quantityKey}_${index}`"
@@ -440,6 +440,7 @@ import {
   displayOption,
   stripeRegion,
 } from "@/utils/utils";
+import { inputValueOf } from "@/utils/domEvent";
 
 import moment from "moment-timezone";
 
@@ -702,6 +703,7 @@ export default defineComponent({
     };
 
     return {
+      inputValueOf,
       openMenuFlag,
       imagePopup,
       urlSuffix,

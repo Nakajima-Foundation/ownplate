@@ -54,7 +54,7 @@
 import { defineComponent } from "vue";
 
 import { timeList } from "@/config/constant";
-import { isNull } from "@/utils/commonUtils";
+import { inputValueOf } from "@/utils/domEvent";
 
 export default defineComponent({
   name: "HoursInput",
@@ -77,19 +77,21 @@ export default defineComponent({
   setup(props, context) {
     const updateValueStart = (e: Event) => {
       const a = { ...props.modelValue };
-      if (isNull(e.target.value) || e.target.value === "") {
+      const value = inputValueOf(e);
+      if (value === "") {
         delete a.start;
       } else {
-        a.start = Number(e.target.value);
+        a.start = Number(value);
       }
       context.emit("update:modelValue", a);
     };
     const updateValueEnd = (e: Event) => {
       const a = { ...props.modelValue };
-      if (isNull(e.target.value) || e.target.value === "") {
+      const value = inputValueOf(e);
+      if (value === "") {
         delete a.end;
       } else {
-        a.end = Number(e.target.value);
+        a.end = Number(value);
       }
       context.emit("update:modelValue", a);
     };
