@@ -133,10 +133,7 @@ import {
   QueryDocumentSnapshot,
   DocumentData,
 } from "firebase/firestore";
-import {
-  order_status_for_form,
-  orderStatusOf,
-} from "@/config/constant";
+import { order_status_for_form, orderStatusOf } from "@/config/constant";
 import { OrderInfoData } from "@/models/orderInfo";
 import { CustomerInfo } from "@/models/customer";
 

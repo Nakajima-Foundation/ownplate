@@ -20,10 +20,14 @@ export type OrderStatusName = keyof typeof order_status;
 
 // 名前が `OrderStatusName` だと分かっているところは直接索ける。こちらは
 // `Object.keys()` のように string しか手元に無いとき用。知らない名前には undefined。
+// 自前の欄だけを見る。素の索きだと `toString` などで継承した関数が返り、
+// 戻り値の型が嘘になる。
 const orderStatusByName: { readonly [key: string]: OrderStatus | undefined } =
   order_status;
 export const orderStatusOf = (key: string): OrderStatus | undefined =>
-  orderStatusByName[key];
+  Object.prototype.hasOwnProperty.call(orderStatusByName, key)
+    ? orderStatusByName[key]
+    : undefined;
 
 export const order_status_for_form: { [key: string]: number } = {
   error: 0,
