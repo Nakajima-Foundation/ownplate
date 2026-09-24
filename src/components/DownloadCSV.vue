@@ -27,6 +27,10 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    formulas: {
+      type: Object as PropType<{ [key: string]: string }>,
+      required: false,
+    },
   },
   emits: ["success"],
   setup(props, ctx) {
@@ -37,6 +41,7 @@ export default defineComponent({
           data: props.data,
           fields: props.fields,
           fieldNames: props.fieldNames,
+          formulas: props.formulas,
         },
         t,
       );
