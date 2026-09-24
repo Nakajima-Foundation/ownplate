@@ -536,6 +536,7 @@ import {
   order_status,
   possible_transitions,
   timeEventMapping,
+  OrderStatusName,
 } from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
 import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
@@ -873,7 +874,7 @@ export default defineComponent({
         : null;
       return `/admin/restaurants/${restaurantId.value}/orders?day=${day}`;
     });
-    const orderStates = [
+    const orderStates: OrderStatusName[] = [
       "order_placed",
       "order_accepted",
       "ready_to_pickup",
@@ -1003,7 +1004,7 @@ export default defineComponent({
     const toggleIsOrderChange = () => {
       isOrderChange.value = !isOrderChange.value;
     };
-    const isValidTransition = (newStatus: string) => {
+    const isValidTransition = (newStatus: OrderStatusName) => {
       const newStatusValue = order_status[newStatus];
       return possibleTransitions.value[newStatusValue];
     };
@@ -1024,7 +1025,7 @@ export default defineComponent({
       const date = new Date(time + timeOffset.value * 60000);
       return Timestamp.fromDate(date);
     };
-    const handleChangeStatus = async (statusKey: string) => {
+    const handleChangeStatus = async (statusKey: OrderStatusName) => {
       const newStatus = order_status[statusKey];
       if (newStatus === orderInfo.value.status) {
         return;
@@ -1096,7 +1097,7 @@ export default defineComponent({
         },
       });
     };
-    const classOf = (statusKey: string) => {
+    const classOf = (statusKey: OrderStatusName) => {
       if (order_status[statusKey] === orderInfo.value.status) {
         return statusKey;
       }
