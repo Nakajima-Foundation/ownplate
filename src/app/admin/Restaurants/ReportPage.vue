@@ -232,7 +232,7 @@ import {
   defaultTitle,
 } from "@/utils/utils";
 
-import { order2ReportData, OrderInfoData } from "@/models/orderInfo";
+import { order2ReportData, OrderInfoData, ReportRow } from "@/models/orderInfo";
 
 import { checkShopOwner } from "@/utils/userPermission";
 import { useI18n } from "vue-i18n";
@@ -254,7 +254,7 @@ export default defineComponent({
   },
   setup(props) {
     const { t } = useI18n({ useScope: "global" });
-    const orders = ref<OrderInfoData[]>([]);
+    const orders = ref<ReportRow[]>([]);
     const total = ref({
       food: {
         revenue: 0,
