@@ -190,7 +190,10 @@ export default defineComponent({
 
     const email = ref("");
     const password = ref("");
-    const errors = ref({});
+    // 欄ごとの文面。どの欄になるかは signinErrorField が決めるので、そこから型を取る。
+    const errors = ref<
+      Partial<Record<ReturnType<typeof signinErrorField>, string[]>>
+    >({});
     const showTotpVerification = ref(false);
     const mfaResolver = ref<MultiFactorResolver | null>(null);
 
