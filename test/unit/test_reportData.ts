@@ -1,7 +1,7 @@
 import { describe, it } from "node:test";
 import assert from "node:assert";
 
-import { order2ReportData } from "../../src/models/orderInfo.ts";
+import { order2ReportData, hasAccounting } from "../../src/models/orderInfo.ts";
 import { orderInfoFixture, timestampOf } from "../fixtures/orderInfo.ts";
 
 // 売上報告と書き出しの一行分。店舗が売上を数え、税を申告するのに使う。
@@ -171,10 +171,35 @@ describe("order2ReportData — 引数を書き換えること", () => {
 
   // 型では起きないが、Firestore の中身は型より古い。区分がオブジェクトで
   // なかったときに黙って返すと、食品も酒も無い行が売上ゼロとして数えられる。
-  it("throws rather than reporting a row with no food or alcohol", () => {
+  // 落ちるのは `service` の代入。ここで受け止めているのは、その代入を
+  // `Object.assign` に置き換えると箱に入って通ってしまう、という点。
+  it("throws at the service assignment when accounting is not an object", () => {
     const order = orderInfoFixture({ tip: 110 });
     Object.assign(order, { accounting: 1 });
     assert.throws(() => order2ReportData(order, SERVICE_TAX_RATE), TypeError);
+  });
+
+  // 読むたびに値が変わる `accounting`。戻り値の型は「必ずある」と言っているので、
+  // 消えていたら渡さずに落とす。守りを外すとここだけが緑のまま通る。
+  it("throws when accounting vanishes before the row is handed back", () => {
+    const accounting = {
+      food: { revenue: 1000, tax: 74 },
+      alcohol: { revenue: 0, tax: 0 },
+    };
+    const order = orderInfoFixture({ tip: 110 });
+    let reads = 0;
+    Object.defineProperty(order, "accounting", {
+      get: () => {
+        reads += 1;
+        return reads <= 2 ? accounting : undefined;
+      },
+      set: () => {},
+      configurable: true,
+    });
+    assert.throws(
+      () => order2ReportData(order, SERVICE_TAX_RATE),
+      /accounting was not filled/,
+    );
   });
 
   // **二度通せない。** 一度目で日時を Date に直すので、二度目は toDate が無くて落ちる。
@@ -188,5 +213,17 @@ describe("order2ReportData — 引数を書き換えること", () => {
       TypeError,
       "二度目は日時を直せない",
     );
+  });
+});
+
+describe("hasAccounting", () => {
+  it("is false for an order with no breakdown", () => {
+    const order = orderInfoFixture();
+    delete order.accounting;
+    assert.strictEqual(hasAccounting(order), false);
+  });
+
+  it("is true for an order that has one", () => {
+    assert.strictEqual(hasAccounting(orderInfoFixture()), true);
   });
 });

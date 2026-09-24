@@ -8,7 +8,9 @@ export type ReportRow = OrderInfoData & {
   accounting: NonNullable<OrderInfoData["accounting"]>;
 };
 
-const isReportRow = (order: OrderInfoData): order is ReportRow =>
+// 検めるのは有無だけ。`ReportRow` が `OrderInfoData` に足している約束もそれだけ
+// （`NonNullable` は undefined を外すだけで、中身までは見ない）。
+export const hasAccounting = (order: OrderInfoData): order is ReportRow =>
   order.accounting !== undefined;
 
 export const order2ReportData = (
@@ -49,7 +51,7 @@ export const order2ReportData = (
     };
   }
   order.type = orderType(order);
-  if (!isReportRow(order)) {
+  if (!hasAccounting(order)) {
     throw new Error("order2ReportData: accounting was not filled");
   }
   return order;
