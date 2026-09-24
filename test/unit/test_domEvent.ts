@@ -61,6 +61,33 @@ describe("inputValueOf", () => {
     assert.strictEqual(reads, 1);
   });
 
+  it("treats a target that cannot be read as empty", () => {
+    const event = {
+      get target(): unknown {
+        throw new Error("unreadable");
+      },
+    };
+    assert.strictEqual(inputValueOf(event), "");
+  });
+
+  it("treats a target that refuses the presence check as empty", () => {
+    const target = new Proxy(
+      {},
+      {
+        has: () => {
+          throw new Error("no");
+        },
+      },
+    );
+    assert.strictEqual(inputValueOf({ target }), "");
+  });
+
+  it("treats a revoked proxy target as empty", () => {
+    const { proxy, revoke } = Proxy.revocable({ value: "x" }, {});
+    revoke();
+    assert.strictEqual(inputValueOf({ target: proxy }), "");
+  });
+
   it("treats a value that cannot be read as empty", () => {
     const target = {};
     Object.defineProperty(target, "value", {
