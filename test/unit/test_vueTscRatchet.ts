@@ -1,0 +1,171 @@
+import { describe, it } from "node:test";
+import assert from "node:assert";
+
+import {
+  buildBaseline,
+  compareToBaseline,
+  countByFile,
+  parseVueTscOutput,
+  renderRatchetReport,
+  totalOf,
+  type Baseline,
+} from "../../scripts/vueTscRatchet.ts";
+
+// vue-tsc の据え置き一覧。**これが CI の合否を決める**ので、
+// 増えたのに気づかない・減ったのに一覧が古いまま、のどちらも起きてはいけない。
+
+const OUTPUT = [
+  "src/app/user/RestaurantPage.vue(10,5): error TS2345: Argument of type 'A' is not assignable.",
+  "src/app/user/RestaurantPage.vue(20,7): error TS2339: Property 'x' does not exist.",
+  "src/components/Map.vue(3,1): error TS18047: 'map' is possibly 'null'.",
+].join("\n");
+
+const baselineOf = (files: { [file: string]: number }): Baseline => ({
+  note: "test",
+  total: totalOf(files),
+  files,
+});
+
+describe("vue-tsc の出力を読む", () => {
+  it("ファイル・行・桁・番号・本文を取り出す", () => {
+    const [first] = parseVueTscOutput(OUTPUT);
+    assert.deepStrictEqual(first, {
+      file: "src/app/user/RestaurantPage.vue",
+      line: 10,
+      column: 5,
+      code: "TS2345",
+      message: "Argument of type 'A' is not assignable.",
+    });
+  });
+
+  it("3件とも拾う", () => {
+    assert.strictEqual(parseVueTscOutput(OUTPUT).length, 3);
+  });
+
+  // 要約の行や空行を数に入れない。入れると合計がずれる。
+  it("診断以外の行は数えない", () => {
+    const noisy = [
+      "Files:  1234",
+      "",
+      "Found 3 errors in 2 files.",
+      OUTPUT,
+    ].join("\n");
+    assert.strictEqual(parseVueTscOutput(noisy).length, 3);
+  });
+
+  // node_modules 由来の指摘は repo の責任ではないので数えない。
+  it("src/ の外は数えない", () => {
+    const outside =
+      "node_modules/foo/index.d.ts(1,1): error TS2304: Cannot find name 'x'.";
+    assert.strictEqual(parseVueTscOutput(outside).length, 0);
+  });
+
+  it("警告は数えない。落とすのはエラーだけ", () => {
+    const warning = "src/app/user/Foo.vue(1,1): warning TS6133: unused.";
+    assert.strictEqual(parseVueTscOutput(warning).length, 0);
+  });
+});
+
+describe("ファイルごとに数える", () => {
+  it("同じファイルの分をまとめる", () => {
+    assert.deepStrictEqual(countByFile(parseVueTscOutput(OUTPUT)), {
+      "src/app/user/RestaurantPage.vue": 2,
+      "src/components/Map.vue": 1,
+    });
+  });
+
+  it("何も出なければ空", () => {
+    assert.deepStrictEqual(countByFile([]), {});
+    assert.strictEqual(totalOf({}), 0);
+  });
+});
+
+describe("据え置き一覧との突き合わせ", () => {
+  const baseline = baselineOf({ "a.vue": 2, "b.vue": 1 });
+
+  it("同じなら増減なし", () => {
+    const result = compareToBaseline({ "a.vue": 2, "b.vue": 1 }, baseline);
+    assert.deepStrictEqual(result.regressed, []);
+    assert.deepStrictEqual(result.improved, []);
+  });
+
+  // ここが本題。新しい型エラーを入れたら落ちなければならない。
+  it("既にあるファイルで増えたら増加として挙げる", () => {
+    const result = compareToBaseline({ "a.vue": 3, "b.vue": 1 }, baseline);
+    assert.deepStrictEqual(result.regressed, [
+      { file: "a.vue", before: 2, after: 3 },
+    ]);
+  });
+
+  it("一覧に無いファイルで出たら増加として挙げる", () => {
+    const result = compareToBaseline(
+      { "a.vue": 2, "b.vue": 1, "c.vue": 1 },
+      baseline,
+    );
+    assert.deepStrictEqual(result.regressed, [
+      { file: "c.vue", before: 0, after: 1 },
+    ]);
+  });
+
+  it("減ったら減少として挙げる", () => {
+    const result = compareToBaseline({ "a.vue": 1, "b.vue": 1 }, baseline);
+    assert.deepStrictEqual(result.improved, [
+      { file: "a.vue", before: 2, after: 1 },
+    ]);
+  });
+
+  // ファイルごと消えた場合も減少。合計だけ見ていると、別のファイルで
+  // 増えた分と相殺されて気づけない。
+  it("ファイルごと無くなっても減少として挙げる", () => {
+    const result = compareToBaseline({ "b.vue": 1 }, baseline);
+    assert.deepStrictEqual(result.improved, [
+      { file: "a.vue", before: 2, after: 0 },
+    ]);
+  });
+
+  // 合計が同じでも、中身が動いていれば見逃さないこと。
+  it("合計が変わらなくても、増えたファイルと減ったファイルを両方挙げる", () => {
+    const result = compareToBaseline({ "a.vue": 1, "b.vue": 2 }, baseline);
+    assert.strictEqual(result.total, baseline.total);
+    assert.deepStrictEqual(result.regressed, [
+      { file: "b.vue", before: 1, after: 2 },
+    ]);
+    assert.deepStrictEqual(result.improved, [
+      { file: "a.vue", before: 2, after: 1 },
+    ]);
+  });
+});
+
+describe("合否の判定", () => {
+  const baseline = baselineOf({ "a.vue": 2 });
+  const report = (current: { [file: string]: number }) =>
+    renderRatchetReport(compareToBaseline(current, baseline), "yarn x");
+
+  it("一覧どおりなら通す", () => {
+    assert.strictEqual(report({ "a.vue": 2 }).ok, true);
+  });
+
+  it("増えたら落とす", () => {
+    assert.strictEqual(report({ "a.vue": 3 }).ok, false);
+  });
+
+  // 減ったときも落とす。そうしないと一覧が古いまま残り、
+  // 次に誰かが入れた分をその余白が吸ってしまう。
+  it("減ったときも落として、一覧の更新を促す", () => {
+    const result = report({ "a.vue": 1 });
+    assert.strictEqual(result.ok, false);
+    assert.ok(result.text.includes("yarn x"));
+  });
+
+  it("増えたときは増えたファイルを本文に出す", () => {
+    assert.ok(report({ "a.vue": 3 }).text.includes("a.vue: 2 → 3"));
+  });
+});
+
+describe("一覧の書き出し", () => {
+  it("合計を数え、ファイル名を並べ替える", () => {
+    const written = buildBaseline({ "b.vue": 1, "a.vue": 2 }, "note");
+    assert.strictEqual(written.total, 3);
+    assert.deepStrictEqual(Object.keys(written.files), ["a.vue", "b.vue"]);
+  });
+});
