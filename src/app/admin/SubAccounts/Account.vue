@@ -31,11 +31,11 @@
           </span>
         </div>
         <div>
-          {{ child.email }} /
+          {{ child?.email }} /
           {{
             $t(
               "admin.subAccounts.messageResult." +
-                (child.accepted === true ? "accepted" : "waiting"),
+                (child?.accepted === true ? "accepted" : "waiting"),
             )
           }}
         </div>
