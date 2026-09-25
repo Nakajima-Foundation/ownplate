@@ -7,6 +7,7 @@ import { OrderInfoData, OrderItemData } from "@/models/orderInfoData";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { roundPrice } from "./price";
 import { MenuData } from "@/models/menu";
+import { CartItemsType } from "@/models/cartType";
 
 import {
   order_status,
@@ -491,11 +492,11 @@ export const getPriceWithTax = (
 
 export const subtotal2total = (
   subTotal: { [key: string]: number },
-  cartItems: { [key: string]: MenuData },
+  cartItems: CartItemsType,
   shopInfo: RestaurantInfoData,
 ) => {
   return Object.keys(subTotal).reduce((tmp, menuId) => {
-    const menu = cartItems[menuId] || {};
+    const menu: Partial<MenuData> = cartItems[menuId] || {};
     return tmp + getPriceWithTax(subTotal[menuId], menu, shopInfo);
   }, 0);
 };
@@ -503,13 +504,13 @@ export const subtotal2total = (
 export const getPrices = (
   multiple: number,
   orders: { [key: string]: number[] },
-  cartItems: { [key: string]: MenuData },
+  cartItems: CartItemsType,
   trimmedSelectedOptions: { [key: string]: SelectedOption[] },
 ) => {
   const ret: { [key: string]: number[] } = {};
 
   Object.keys(orders).forEach((menuId) => {
-    const menu = cartItems[menuId] || {};
+    const menu: Partial<MenuData> = cartItems[menuId] || {};
     ret[menuId] = [];
     orders[menuId].forEach((num, orderKey) => {
       const selectedOptionsRaw = trimmedSelectedOptions[menuId][orderKey] || [];
@@ -529,14 +530,13 @@ type SelectedOption = (boolean | string)[];
 
 export const getTrimmedSelectedOptions = (
   orders: { [key: string]: number[] },
-  cartItems: { [key: string]: MenuData },
+  cartItems: CartItemsType,
   selectedOptions: { [key: string]: SelectedOption[] },
 ) => {
   return Object.keys(orders).reduce<{ [key: string]: SelectedOption[] }>(
     (ret, id) => {
-      const options = itemOptionCheckbox2options(
-        (cartItems[id] || {}).itemOptionCheckbox,
-      );
+      const menu: Partial<MenuData> = cartItems[id] || {};
+      const options = itemOptionCheckbox2options(menu.itemOptionCheckbox);
       const selectedOption = selectedOptions[id].map((selected) => {
         if (Array.isArray(selected) && selected.length > options.length) {
           const newopt = [...selected];
@@ -553,13 +553,14 @@ export const getTrimmedSelectedOptions = (
 
 export const getPostOption = (
   trimmedSelectedOptions: { [key: string]: SelectedOption[] },
-  cartItems: { [key: string]: MenuData },
+  cartItems: CartItemsType,
 ) => {
   return Object.keys(trimmedSelectedOptions).reduce<{
     [key: string]: string[][];
   }>((ret, id) => {
+    const menu: Partial<MenuData> = cartItems[id] || {};
     ret[id] = (trimmedSelectedOptions[id] || []).map((item) =>
-      selectedOptionNames(item, (cartItems[id] || {}).itemOptionCheckbox),
+      selectedOptionNames(item, menu.itemOptionCheckbox),
     );
     return ret;
   }, {});
