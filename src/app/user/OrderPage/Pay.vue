@@ -66,10 +66,10 @@
                 ref="stripeRef"
                 :stripeJCB="stripeJCB"
                 :stripeAccount="stripeAccount"
-                :clientSecret="orderInfo.client_secret"
+                :clientSecret="orderInfo.client_secret ?? ''"
                 :ownerUid="shopInfo.uid"
                 :uid="orderInfo.uid"
-                :hasPayment="orderInfo.hasPayment"
+                :hasPayment="orderInfo.hasPayment ?? false"
                 :isPayingError="isPayingError"
               ></stripe-card>
               <div class="mt-4 text-center">
@@ -114,7 +114,7 @@ import BeforePaidAlert from "@/app/user/OrderPage/BeforePaid/BeforePaidAlert.vue
 
 import { orderPay } from "@/lib/firebase/functions";
 
-import { OrderInfoData } from "@/models/orderInfo";
+import { OrderDataBase } from "@/models/orderTypes";
 import { OrderItemData } from "@/models/orderInfoData";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
@@ -143,7 +143,7 @@ export default defineComponent({
       required: true,
     },
     orderInfo: {
-      type: Object as PropType<OrderInfoData>,
+      type: Object as PropType<OrderDataBase>,
       required: true,
     },
     orderItems: {
