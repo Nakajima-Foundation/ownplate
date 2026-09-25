@@ -56,7 +56,7 @@
                 :order="order"
               />
               <router-link :to="`/s/restaurants/${order.restaurantId}`">
-                {{ order.restaurant.restaurantName }}
+                {{ order.restaurant?.restaurantName }}
               </router-link>
             </div>
           </div>
@@ -266,7 +266,7 @@ export default defineComponent({
         const time = order.timeEstimated || order.timePlaced;
         return {
           date: time ? moment(time).format("YYYY/MM/DD") : "",
-          restaurantName: order.restaurant.restaurantName,
+          restaurantName: order.restaurant?.restaurantName,
           orderStatus: t("order.status." + order_status_keys[order.status]),
           revenue: order.totalCharge,
           total: Object.values(order.order).reduce((count, currentOrder) => {
