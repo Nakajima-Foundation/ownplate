@@ -76,8 +76,13 @@ export const getRestaurantId = () => {
   return route.params.restaurantId as string;
 };
 
+// 店舗そのものと、店名と写真だけを複製した「いいね」の記録の両方から呼ばれるので、
+// 実際に読む2つの欄だけを要求する。
 export const resizedProfileImage = (
-  restaurant: RestaurantInfoData,
+  restaurant: {
+    images?: { profile?: { resizedImages?: { [key: string]: string } } };
+    restProfilePhoto?: string;
+  },
   size: string,
 ) => {
   return (

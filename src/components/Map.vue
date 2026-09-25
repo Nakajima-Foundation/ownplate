@@ -88,7 +88,10 @@ export default defineComponent({
         anchor.appendChild(document.createElement("br"));
 
         const image = document.createElement("img");
-        image.src = resizedProfileImage(restaurant, "600");
+        const profilePhoto = resizedProfileImage(restaurant, "600");
+        if (profilePhoto) {
+          image.src = profilePhoto;
+        }
         image.alt = restaurant.restaurantName;
         image.className = "h-12 w-12 rounded-full object-cover";
         anchor.appendChild(image);
