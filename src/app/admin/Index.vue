@@ -186,12 +186,12 @@
               >
                 <a :id="'restaurant_' + restaurantId" />
                 <restaurant
-                  v-if="restaurantItems[restaurantId]"
+                  v-if="restaurantItems?.[restaurantId]"
                   :simpleMode="simpleMode"
-                  :shopInfo="restaurantItems[restaurantId]"
+                  :shopInfo="restaurantItems?.[restaurantId]"
                   :restaurantid="restaurantId"
                   :numberOfMenus="
-                    restaurantItems[restaurantId].numberOfMenus || 0
+                    restaurantItems?.[restaurantId].numberOfMenus || 0
                   "
                   :numberOfOrders="numberOfOrderObj[restaurantId] || 0"
                   :lineEnable="lines[restaurantId] || false"

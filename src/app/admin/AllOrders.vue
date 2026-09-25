@@ -204,9 +204,9 @@ export default defineComponent({
         const time = order.timeEstimated || order.timePlaced;
         return {
           date: time ? moment(time).format("YYYY/MM/DD") : "",
-          restaurantId: order.restaurant.restaurantId, // mo
+          restaurantId: order.restaurant?.restaurantId, // mo
           type: t("order." + orderTypeKey(order)),
-          restaurantName: order.restaurant.restaurantName,
+          restaurantName: order.restaurant?.restaurantName,
           orderStatus: t("order.status." + order_status_keys[order.status]),
           foodRevenue: order.accounting?.food.revenue,
           foodTax: order.accounting?.food?.tax,
