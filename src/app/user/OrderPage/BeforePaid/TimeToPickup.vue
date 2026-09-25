@@ -92,8 +92,9 @@ export default defineComponent({
       ).reduce<ExceptDataValue>(
         (tmp, menu) => {
           const { exceptDay, exceptHour } = menu;
-          Object.keys(exceptDay || {}).forEach((key) => {
-            if (exceptDay[key]) {
+          const menuExceptDay = exceptDay || {};
+          Object.keys(menuExceptDay).forEach((key) => {
+            if (menuExceptDay[key]) {
               tmp.exceptDay[key] = true;
             }
           });

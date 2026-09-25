@@ -76,7 +76,7 @@ export default defineComponent({
     const { t } = useI18n();
 
     const areaId = route.params.areaId as string;
-    const areaName = regionalSetting.AddressStates[areaId];
+    const areaName = regionalSetting.AddressStates[Number(areaId)];
 
     useHead(() => ({
       title: [
