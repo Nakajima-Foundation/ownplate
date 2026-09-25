@@ -100,7 +100,7 @@
 <script lang="ts">
 import { defineComponent, ref, computed, watch } from "vue";
 
-import { useUserData, isJapan } from "@/utils/utils";
+import { useUserData } from "@/utils/utils";
 import { isNull } from "@/utils/commonUtils";
 import { regionalSetting } from "@/config/constant";
 
@@ -155,11 +155,7 @@ export default defineComponent({
       if (route.query.lang) {
         changeLang(route.query.lang as string);
       } else if (navigator.userAgent.toLowerCase().indexOf("googlebot") > -1) {
-        if (isJapan) {
-          changeLang("ja");
-        } else {
-          changeLang("en");
-        }
+        changeLang("ja");
       } else {
         const __language =
           (window.navigator.languages && window.navigator.languages[0]) ||
