@@ -66,9 +66,9 @@ export const usePromotionsForAdmin = (id: string) => {
   };
 };
 
-type UserRef = ComputedRef<undefined | boolean | User>;
+type UserRef = ComputedRef<undefined | null | User>;
 
-const isUser = (v: undefined | boolean | User): v is User => {
+const isUser = (v: undefined | null | User): v is User => {
   return typeof v === "object" && v !== null;
 };
 
