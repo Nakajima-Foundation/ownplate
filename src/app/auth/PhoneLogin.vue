@@ -169,7 +169,8 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 
-import { stripeRegion, useIsLocaleJapan, errorCode } from "@/utils/utils";
+import { useIsLocaleJapan, errorCode } from "@/utils/utils";
+import { stripe_regions_jp } from "../../config/constant";
 import moment from "moment";
 import * as Sentry from "@sentry/vue";
 
@@ -187,7 +188,7 @@ export default defineComponent({
   },
   emits: ["dismissed"],
   setup(props, ctx) {
-    const countries = stripeRegion.countries;
+    const countries = stripe_regions_jp.countries;
 
     const generalStore = useGeneralStore();
     const countryCode = countries[0].code || "+1";
