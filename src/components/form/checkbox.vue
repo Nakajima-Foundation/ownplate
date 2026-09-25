@@ -42,8 +42,10 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
-    const change = (e) => {
-      ctx.emit("update:modelValue", e.target.checked);
+    const change = (e: Event) => {
+      if (e.target instanceof HTMLInputElement) {
+        ctx.emit("update:modelValue", e.target.checked);
+      }
     };
     return {
       change,
