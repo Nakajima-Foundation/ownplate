@@ -10,10 +10,21 @@ import {
 
 export const useAdminConfigToggle = (
   key: string,
-  uid: string,
+  uid: string | undefined,
   defaultValue: boolean,
 ) => {
   const toggle = ref(true);
+  // uid は署名の確認が済むまで無い。無いまま adminConfigs/undefined を
+  // 購読・更新しないよう、何もしない版を返す。落ち着く値は購読した場合と同じ。
+  if (uid === undefined) {
+    toggle.value = defaultValue;
+    return {
+      toggle,
+      switchToggle: () => {
+        // 書き込む先が無い。
+      },
+    };
+  }
   const path = adminConfigPath(uid);
   const switchToggle = () => {
     setDoc(doc(db, path), { [key]: !toggle.value }, { merge: true });
@@ -33,12 +44,21 @@ export const useAdminConfigToggle = (
 
 export const useAdminConfigToggle2 = (
   key: string,
-  uid: string,
+  uid: string | undefined,
   restaurantId: string,
   defaultValue: number,
   enableSave: boolean,
 ) => {
   const toggle = ref(defaultValue);
+  // 上と同じ。uid が無いまま adminConfigs/undefined/... を読み書きしない。
+  if (uid === undefined) {
+    return {
+      toggle,
+      switchToggle: () => {
+        // 書き込む先が無い。
+      },
+    };
+  }
   const path = adminRestaurantConfigPath(uid, restaurantId);
   const switchToggle = () => {
     setDoc(doc(db, path), { [key]: toggle.value }, { merge: true });
