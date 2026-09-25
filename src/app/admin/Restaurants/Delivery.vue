@@ -332,7 +332,9 @@ export default defineComponent({
     });
 
     const removeAllMarker = () => {
-      markers.value.forEach((marker) => marker.setMap(null));
+      markers.value.forEach((marker) => {
+        marker.map = null;
+      });
       markers.value = [];
     };
 

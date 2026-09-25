@@ -73,11 +73,13 @@ export default defineComponent({
     let map: google.maps.Map | null = null;
     let gCenter: google.maps.LatLng | null = null;
     let gHome: google.maps.LatLng | null = null;
-    const markers: google.maps.Marker[] = [];
+    const markers: google.maps.marker.AdvancedMarkerElement[] = [];
     const circles: google.maps.Circle[] = [];
 
     const removeAllMarker = () => {
-      markers.forEach((marker) => marker.setMap(null));
+      markers.forEach((marker) => {
+        marker.map = null;
+      });
       markers.length = 0;
     };
 
