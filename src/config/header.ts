@@ -1,8 +1,9 @@
 import { ownPlateConfig, gtmID, GAPIKey } from "@/config/project";
+import type { ResolvableLink } from "@unhead/vue";
 
 const hostName = ownPlateConfig.hostName;
 
-const link = [
+const link: ResolvableLink[] = [
   {
     rel: "icon",
     type: "image/x-icon",
