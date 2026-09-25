@@ -11,6 +11,7 @@
     "test:coverage": "mkdir -p coverage && node --import tsx --experimental-test-coverage --test-coverage-exclude=src/lang/** --test-coverage-exclude=test/** --test-coverage-lines=80 --test-coverage-branches=85 --test-coverage-functions=60 --test-reporter=spec --test-reporter-destination=stdout --test-reporter=lcov --test-reporter-destination=coverage/lcov.info --test test/unit/test_*.ts",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "typecheck:test": "tsc --noEmit -p tsconfig.test.json",
+    "typecheck:vue": "node scripts/vueTscBaseline.ts",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "build": "vite build && cp dist/index.html functions/templates/index.html",
@@ -81,6 +82,7 @@
     "typescript-eslint": "^8.70.1",
     "vite-plugin-checker": "^0.14.5",
     "vue-eslint-parser": "^10.4.1",
+    "vue-tsc": "3.3.11",
     "yaml-eslint-parser": "^2.1.0"
   }
 }
