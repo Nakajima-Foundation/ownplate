@@ -555,7 +555,8 @@ export default defineComponent({
 
     // methods
     type LatLng = { lat?: number; lng?: number };
-    const updateHome = (pos: LatLng) => {
+    // 地図は setHome(lat: number, lng: number) から送るので、こちらは必ずそろっている。
+    const updateHome = (pos: { lat: number; lng: number }) => {
       ecCustomerRef.value.updateHome(pos);
     };
     const updateLocation = (pos: LatLng) => {

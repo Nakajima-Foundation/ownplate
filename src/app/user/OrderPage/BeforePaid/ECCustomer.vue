@@ -319,7 +319,7 @@ export default defineComponent({
       }
     })();
 
-    const updateHome = (pos: { lat?: number; lng?: number }) => {
+    const updateHome = (pos: { lat: number; lng: number }) => {
       const customer = { ...customerInfo.value };
       customer.location = pos;
       customerInfo.value = customer;
