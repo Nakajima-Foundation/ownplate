@@ -91,7 +91,7 @@ export const cancelStripe = async (
     
     const idempotencyKey = getHash([orderId, paymentIntentId].join("-"));
     const stripe = utils.get_stripe_v2();
-    const paymentIntent = await stripe.paymentIntents.cancel(paymentIntentId, {
+    const paymentIntent = await stripe.paymentIntents.cancel(paymentIntentId, undefined, {
       idempotencyKey: `${idempotencyKey}-cancel`,
       stripeAccount,
     });
