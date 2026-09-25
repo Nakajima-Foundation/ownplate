@@ -16,7 +16,7 @@
       >
         <option
           v-for="(timeItem, index) of timeList"
-          :key="index"
+          :key="timeItem ?? ''"
           :value="index === 0 ? null : (index - 1) * 30"
         >
           {{ timeItem }}
@@ -40,7 +40,7 @@
       >
         <option
           v-for="(timeItem, index) of timeList"
-          :key="index"
+          :key="timeItem ?? ''"
           :value="index === 0 ? null : (index - 1) * 30"
         >
           {{ timeItem }}
