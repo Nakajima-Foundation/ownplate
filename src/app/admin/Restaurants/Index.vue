@@ -913,7 +913,7 @@
                       <hours-input
                         v-model="editShopInfo.openTimes[index][0]"
                         :variant="
-                          errors['time'][index][0].length > 0
+                          timeErrors[index][0].length > 0
                             ? 'danger'
                             : 'success'
                         "
@@ -927,10 +927,10 @@
                       </div>
                     </div>
                     <p
-                      v-if="errors['time'][index][0].length > 0"
+                      v-if="timeErrors[index][0].length > 0"
                       class="mt-1 text-sm font-bold text-red-700"
                     >
-                      {{ $t(errors["time"][index][0][0]) }}
+                      {{ $t(timeErrors[index][0][0]) }}
                     </p>
                   </div>
 
@@ -943,7 +943,7 @@
                       <hours-input
                         v-model="editShopInfo.openTimes[index][1]"
                         :variant="
-                          errors['time'][index][1].length > 0
+                          timeErrors[index][1].length > 0
                             ? 'danger'
                             : 'success'
                         "
@@ -957,10 +957,10 @@
                       </div>
                     </div>
                     <p
-                      v-if="errors['time'][index][1].length > 0"
+                      v-if="timeErrors[index][1].length > 0"
                       class="mt-1 text-sm font-bold text-red-700"
                     >
-                      {{ $t(errors["time"][index][1][0]) }}
+                      {{ $t(timeErrors[index][1][0]) }}
                     </p>
                   </div>
                 </div>
@@ -1319,6 +1319,9 @@ export default defineComponent({
         files.value["cover"],
       );
     });
+    // 曜日と枠で入れ子になっているのは time だけ。他の欄と同じ形で読ませると、
+    // 一覧の添字が文字列の一覧を指していることになって型が合わない。
+    const timeErrors = computed(() => errors.value.time ?? {});
     const hasError = computed(() => {
       const num = countObj(errors.value);
       return num > 0;
@@ -1597,6 +1600,7 @@ export default defineComponent({
       restProfilePhoto,
       restCoverPhoto,
       errors,
+      timeErrors,
       hasError,
 
       deleteTemporaryClosure,
