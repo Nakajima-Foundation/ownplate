@@ -686,7 +686,12 @@ export const usePhoneNumber = (shopInfo: Ref<RestaurantInfoData>) => {
     nationalPhoneNumber,
   };
 };
-export const scrollToElementById = (id: string) => {
+// 呼び手が渡す id は、まだ保存されていない品目では無い。
+// 無いまま getElementById に渡しても何も見つからないので、先に返す。
+export const scrollToElementById = (id: string | undefined) => {
+  if (id === undefined) {
+    return;
+  }
   const elem = document.getElementById(id);
   if (elem) {
     scrollTo(0, elem.getBoundingClientRect().y + window.pageYOffset);
