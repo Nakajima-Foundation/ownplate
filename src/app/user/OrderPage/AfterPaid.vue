@@ -277,7 +277,7 @@ export default defineComponent({
     },
     menuPagePath: {
       type: String,
-      required: false,
+      required: true,
     },
     hasFriends: {
       type: Boolean as PropType<boolean | null>,

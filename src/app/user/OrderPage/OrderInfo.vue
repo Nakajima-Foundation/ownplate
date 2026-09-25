@@ -275,7 +275,7 @@ export default defineComponent({
     },
     // promotion
     promotion: {
-      type: Object as PropType<Promotion>,
+      type: Object as PropType<Promotion | null>,
       required: false,
     },
     enablePromotion: {

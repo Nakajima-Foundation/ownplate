@@ -250,7 +250,6 @@ import { useMenuAndTitle } from "@/app/admin/Restaurants/MenuListPage/Utils";
 
 import { ownPlateConfig } from "@/config/project";
 
-import { MenuData, TitleData } from "@/models/menu";
 import {
   copyMenuData,
   getBlankMenuItem,
@@ -577,7 +576,8 @@ export default defineComponent({
       }
     };
 
-    const forkItem = async (itemKey: string, newData: MenuData | TitleData) => {
+    // 読むのは id だけ。呼び手が渡すのは addDoc の戻りで、読み込んだ品目ではない。
+    const forkItem = async (itemKey: string, newData: { id: string }) => {
       const pos = menuLists.value.indexOf(itemKey);
 
       const newMenuLists = menuLists.value;

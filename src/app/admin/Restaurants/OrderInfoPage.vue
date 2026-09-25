@@ -529,6 +529,7 @@ import {
 } from "firebase/firestore";
 
 import { orderUpdate, orderChange } from "@/lib/firebase/functions";
+import { OrderUpdateData } from "@/models/functionTypes";
 
 import {
   order_status,
@@ -1035,12 +1036,7 @@ export default defineComponent({
       updating.value = statusKey;
       try {
         generalStore.setLoading(true);
-        const params: {
-          restaurantId: string;
-          orderId: string;
-          status: number;
-          timeEstimated?: Date;
-        } = {
+        const params: OrderUpdateData = {
           restaurantId: restaurantId.value,
           orderId: orderId.value,
           status: newStatus,
