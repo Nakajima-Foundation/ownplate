@@ -48,7 +48,7 @@
       <!-- LINE Not Connected -->
 
       <div v-if="!inLiff && (!isLineUser || isDev)">
-        <div v-if="isLineEnabled" class="mt-4 text-center">
+        <div class="mt-4 text-center">
           <div v-if="isLineUser && isDev" class="mb-2 text-base font-bold">
             再設定 for Dev
           </div>
@@ -71,12 +71,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, watch } from "vue";
-import {
-  useUserData,
-  useLiffIndexId,
-  isDev,
-  isLineEnabled,
-} from "@/utils/utils";
+import { useUserData, useLiffIndexId, isDev } from "@/utils/utils";
 import liff from "@line/liff";
 
 import { db } from "@/lib/firebase/firebase9";
@@ -200,7 +195,6 @@ export default defineComponent({
 
       isDev,
       inLiff,
-      isLineEnabled,
 
       isLiffUser,
       isLineUser,

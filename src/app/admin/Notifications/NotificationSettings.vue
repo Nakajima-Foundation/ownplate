@@ -163,7 +163,6 @@
           <!-- LINE Connection -->
           <div class="mt-4" @click="closeNotificationSettings()">
             <router-link
-              v-if="isLineEnabled"
               class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
               :to="`/admin/restaurants/${restaurantId}/line`"
             >
@@ -199,12 +198,7 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 
 import { soundFiles } from "@/config/constant";
-import {
-  getSoundIndex,
-  useRestaurantId,
-  useSoundPlay,
-  isLineEnabled,
-} from "@/utils/utils";
+import { getSoundIndex, useRestaurantId, useSoundPlay } from "@/utils/utils";
 import { isWebPushConfigured } from "@/utils/webPush";
 
 import IncompleteOrders from "@/app/admin/Notifications/IncompleteOrders.vue";
@@ -276,7 +270,6 @@ export default defineComponent({
       soundToggle,
       closeNotificationSettings,
       delayedSoundPlay,
-      isLineEnabled,
 
       webPushConfigured,
 
