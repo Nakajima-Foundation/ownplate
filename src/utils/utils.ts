@@ -305,7 +305,18 @@ export const itemOptionCheckbox2options = (
     });
   });
 };
-export const taxRate = (shopInfo: RestaurantInfoData, item: MenuData) => {
+// 税の計算が読むのは店舗の3つとメニューの `tax` だけ。RestaurantInfoData / MenuData
+// 全体を要求すると、「この金額はもう税込みだから触るな」を表すために
+// { inclusiveTax: true } を渡している呼び出し元（Cart まわり）が通らない。
+// inclusiveTax が真の枝では税率を読まないので、そのときだけ税率を省ける形にしてある。
+export type TaxableShop =
+  | { inclusiveTax: true; foodTax?: number; alcoholTax?: number }
+  | { inclusiveTax?: boolean; foodTax: number; alcoholTax: number };
+
+export type TaxableMenu = { tax?: string };
+export type PricedMenu = TaxableMenu & { price: number };
+
+export const taxRate = (shopInfo: TaxableShop, item: TaxableMenu) => {
   if (shopInfo.inclusiveTax) {
     return 1;
   }
@@ -315,7 +326,7 @@ export const taxRate = (shopInfo: RestaurantInfoData, item: MenuData) => {
   return 1 + shopInfo.foodTax * 0.01;
 };
 
-export const priceWithTax = (shopInfo: RestaurantInfoData, menu: MenuData) => {
+export const priceWithTax = (shopInfo: TaxableShop, menu: PricedMenu) => {
   return Math.round(
     (() => {
       if (shopInfo.inclusiveTax) {
@@ -461,8 +472,8 @@ export const prices2subtotal = (prices: { [key: string]: number[] }) => {
 
 export const getPriceWithTax = (
   subTotal: number,
-  menu: MenuData,
-  shopInfo: RestaurantInfoData,
+  menu: TaxableMenu,
+  shopInfo: TaxableShop,
 ) => {
   if (!shopInfo.inclusiveTax) {
     if (menu.tax === "alcohol") {
