@@ -25,21 +25,43 @@ export type Comparison = {
 };
 
 // vue-tsc は `src/x.vue(12,3): error TS2345: ...` の形で出す。
-// 先頭を src/ に絞ってあるのは、node_modules 由来の指摘を数に入れないため。
-const DIAGNOSTIC_LINE = /^(src\/[^(]+)\((\d+),(\d+)\): error (TS\d+): (.*)$/;
+// ファイル名は欲張って取る。`[^(]+` にするとファイル名に含まれる `(` で
+// 切れてしまい、その行を黙って落とす。
+const DIAGNOSTIC_LINE = /^(.+)\((\d+),(\d+)\): error (TS\d+): (.*)$/;
+// 診断の形に見える行。これに当たるのに DIAGNOSTIC_LINE で読めなければ、
+// 数え方が実物に追いついていない。ファイル名を伴わない診断は行頭が
+// `error TS...` になるので、直前のコロンを必須にしてはいけない。
+const LOOKS_LIKE_ERROR = /(^|: )error TS\d+: /;
 
+const readLine = (line: string): Diagnostic | null => {
+  const matched = DIAGNOSTIC_LINE.exec(line);
+  return matched === null
+    ? null
+    : {
+        file: matched[1],
+        line: Number(matched[2]),
+        column: Number(matched[3]),
+        code: matched[4],
+        message: matched[5],
+      };
+};
+
+// 数えるのは src/ の下だけ。node_modules 由来は repo の責任ではない。
 export const parseVueTscOutput = (stdout: string): Diagnostic[] =>
   stdout
     .split("\n")
-    .map((line) => DIAGNOSTIC_LINE.exec(line))
-    .filter((matched): matched is RegExpExecArray => matched !== null)
-    .map((matched) => ({
-      file: matched[1],
-      line: Number(matched[2]),
-      column: Number(matched[3]),
-      code: matched[4],
-      message: matched[5],
-    }));
+    .map(readLine)
+    .filter((diagnostic): diagnostic is Diagnostic => diagnostic !== null)
+    .filter((diagnostic) => diagnostic.file.startsWith("src/"));
+
+// 読めなかった行。tsconfig が見つからないときの `error TS5058: ...` は
+// ファイル名を伴わないのでここに来る。**読めない行があるまま数えると 0 件と出て、
+// 据え置き一覧を空にしてしまい、門が二度と効かなくなる。**
+export const findUnreadableErrorLines = (stdout: string): string[] =>
+  stdout
+    .split("\n")
+    .filter((line) => LOOKS_LIKE_ERROR.test(line))
+    .filter((line) => readLine(line) === null);
 
 export const countByFile = (diagnostics: Diagnostic[]): FileCounts =>
   diagnostics.reduce<FileCounts>((counts, diagnostic) => {

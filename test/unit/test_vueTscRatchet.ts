@@ -5,6 +5,7 @@ import {
   buildBaseline,
   compareToBaseline,
   countByFile,
+  findUnreadableErrorLines,
   parseVueTscOutput,
   renderRatchetReport,
   totalOf,
@@ -58,6 +59,17 @@ describe("vue-tsc の出力を読む", () => {
     const outside =
       "node_modules/foo/index.d.ts(1,1): error TS2304: Cannot find name 'x'.";
     assert.strictEqual(parseVueTscOutput(outside).length, 0);
+  });
+
+  // ファイル名に括弧が入ると、途中で切る書き方では**黙って落ちる**。
+  // 落ちた行はどこにも出ないので、門が素通しになったことに気づけない。
+  it("ファイル名に括弧が入っていても読める", () => {
+    const parenthesised =
+      "src/components/probe(paren).vue(3,7): error TS2322: Type 'string' is not assignable.";
+    const [diagnostic] = parseVueTscOutput(parenthesised);
+    assert.strictEqual(diagnostic.file, "src/components/probe(paren).vue");
+    assert.strictEqual(diagnostic.line, 3);
+    assert.strictEqual(diagnostic.column, 7);
   });
 
   it("警告は数えない。落とすのはエラーだけ", () => {
@@ -167,5 +179,39 @@ describe("一覧の書き出し", () => {
     const written = buildBaseline({ "b.vue": 1, "a.vue": 2 }, "note");
     assert.strictEqual(written.total, 3);
     assert.deepStrictEqual(Object.keys(written.files), ["a.vue", "b.vue"]);
+  });
+});
+
+// 数え方が実物に追いつかなくなったときに、**黙って 0 件にしない**ための守り。
+// ここが無いと、tsconfig を見失っただけで「全部直った」と判定され、
+// --update で一覧が空になり、門が二度と効かなくなる。
+describe("読めない出力を見つける", () => {
+  it("ファイル名を伴わないエラーを拾う", () => {
+    const configError =
+      "error TS5058: The specified path does not exist: 'nonexistent.json'.";
+    assert.deepStrictEqual(findUnreadableErrorLines(configError), [
+      configError,
+    ]);
+    // 数えるほうは 0 件を返す。だからこそ上の守りが要る。
+    assert.strictEqual(parseVueTscOutput(configError).length, 0);
+  });
+
+  it("読める診断は読めない扱いにしない", () => {
+    assert.deepStrictEqual(findUnreadableErrorLines(OUTPUT), []);
+  });
+
+  // src/ の外は「読めた上で数えない」。読めないのとは別。
+  it("node_modules の指摘は読めない扱いにしない", () => {
+    const outside =
+      "node_modules/foo/index.d.ts(1,1): error TS2304: Cannot find name 'x'.";
+    assert.deepStrictEqual(findUnreadableErrorLines(outside), []);
+    assert.strictEqual(parseVueTscOutput(outside).length, 0);
+  });
+
+  it("要約や空行は読めない扱いにしない", () => {
+    assert.deepStrictEqual(
+      findUnreadableErrorLines("Found 3 errors in 2 files.\n\n"),
+      [],
+    );
   });
 });

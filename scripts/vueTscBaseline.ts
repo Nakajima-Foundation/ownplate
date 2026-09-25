@@ -5,6 +5,7 @@ import {
   buildBaseline,
   compareToBaseline,
   countByFile,
+  findUnreadableErrorLines,
   parseVueTscOutput,
   renderRatchetReport,
   type Baseline,
@@ -36,8 +37,24 @@ const readBaseline = (): Baseline => {
   }
 };
 
+// 読めない行があったら、数えずに落とす。tsconfig が見つからないときのように
+// 診断が1件も取れないまま --update すると、一覧が空になって門が効かなくなる。
+const refuseUnreadable = (output: string) => {
+  const unreadable = findUnreadableErrorLines(output);
+  if (unreadable.length === 0) {
+    return;
+  }
+  const lines = [
+    "vue-tsc: 読めない出力がありました。数えずに止めます。",
+    ...unreadable.map((line) => `  ${line}`),
+  ];
+  throw new Error(lines.join("\n"));
+};
+
 const main = () => {
-  const current = countByFile(parseVueTscOutput(runVueTsc()));
+  const output = runVueTsc();
+  refuseUnreadable(output);
+  const current = countByFile(parseVueTscOutput(output));
   if (process.argv.includes("--update")) {
     writeFileSync(
       BASELINE_PATH,
