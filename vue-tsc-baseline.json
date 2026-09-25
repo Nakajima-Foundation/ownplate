@@ -1,12 +1,12 @@
 {
   "note": "vue-tsc の据え置き一覧。減る方向にしか動かさない。直したら --update で更新する。",
-  "total": 60,
+  "total": 58,
   "files": {
     "src/app/admin/Order/OrderedInfo.vue": 2,
     "src/app/admin/Order/ReportDetails.vue": 1,
     "src/app/admin/Restaurants/ManageLine.vue": 1,
     "src/app/admin/Restaurants/OrderHistory.vue": 3,
-    "src/app/admin/Restaurants/OrderInfoPage.vue": 5,
+    "src/app/admin/Restaurants/OrderInfoPage.vue": 4,
     "src/app/admin/Restaurants/OrderListPage.vue": 2,
     "src/app/admin/Restaurants/ReportPage.vue": 1,
     "src/app/admin/Restaurants/UserHistory.vue": 2,
@@ -19,7 +19,6 @@
     "src/app/user/OrderPage/BeforePaid/ECCustomer.vue": 5,
     "src/app/user/OrderPage/BeforePaid/TimeToPickup.vue": 1,
     "src/app/user/OrderPage/OrderInfo.vue": 3,
-    "src/app/user/OrderPage/UserCustomerInfo.vue": 1,
     "src/app/user/Profile/Line.vue": 1,
     "src/app/user/Restaurant/CartItem.vue": 1,
     "src/app/user/Restaurant/Menu.vue": 4,
