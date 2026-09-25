@@ -2,6 +2,7 @@ import { describe, it } from "node:test";
 import assert from "node:assert";
 import {
   isDateDisabled,
+  isDateOutOfRange,
   isPrevMonthOutOfRange,
   isNextMonthOutOfRange,
 } from "../../src/utils/datePickerBounds.ts";
@@ -72,5 +73,67 @@ describe("月送りの可否", () => {
 
   it("maxDate を渡さなければいくらでも進める", () => {
     assert.strictEqual(isNextMonthOutOfRange(day("2099-01-01")), false);
+  });
+});
+
+// 割引の有効期間の選択範囲。こちらは下限を暗黙に補わない。
+// 渡した範囲の外を**選べてしまう**のが、移植のときに落ちていたところ。
+// 終了日を開始日より前にできると、その割引は保存はされるが永久に効かない
+// （promotion.ts の判定が termFrom < now < termTo を要求するため）。
+describe("期間の選択範囲", () => {
+  const from = day("2026-03-01");
+  const to = day("2026-06-01");
+
+  it("範囲を渡さなければどの日も選べる", () => {
+    assert.strictEqual(isDateOutOfRange(day("1999-01-01")), false);
+    assert.strictEqual(isDateOutOfRange(day("2099-01-01")), false);
+  });
+
+  // ここが本題。開始日より前の終了日は選べてはいけない。
+  it("下限の前日は範囲外、当日は範囲内", () => {
+    assert.strictEqual(isDateOutOfRange(day("2026-02-28"), from), true);
+    assert.strictEqual(isDateOutOfRange(day("2026-03-01"), from), false);
+  });
+
+  it("上限の当日は範囲内、その翌日は範囲外", () => {
+    assert.strictEqual(
+      isDateOutOfRange(day("2026-06-01"), undefined, to),
+      false,
+    );
+    assert.strictEqual(
+      isDateOutOfRange(day("2026-06-02"), undefined, to),
+      true,
+    );
+  });
+
+  it("両側を渡すと挟まれる", () => {
+    assert.strictEqual(isDateOutOfRange(day("2026-02-28"), from, to), true);
+    assert.strictEqual(isDateOutOfRange(day("2026-04-15"), from, to), false);
+    assert.strictEqual(isDateOutOfRange(day("2026-06-02"), from, to), true);
+  });
+
+  // DatePicker 側と違い、過去だからという理由では塞がない。
+  // 割引は過去に始まっている期間も扱う。
+  it("下限を渡さなければ過去も範囲内", () => {
+    assert.strictEqual(
+      isDateOutOfRange(day("2020-01-01"), undefined, to),
+      false,
+    );
+  });
+
+  it("上下を逆に渡すとどの日も範囲外になる", () => {
+    assert.strictEqual(isDateOutOfRange(day("2026-04-15"), to, from), true);
+  });
+
+  it("同じ日を上下に渡すとその日だけが範囲内", () => {
+    assert.strictEqual(isDateOutOfRange(day("2026-03-01"), from, from), false);
+    assert.strictEqual(isDateOutOfRange(day("2026-03-02"), from, from), true);
+  });
+
+  it("時刻が入っていても日で比べる", () => {
+    assert.strictEqual(
+      isDateOutOfRange(new Date(2026, 5, 1, 23, 59), from, to),
+      false,
+    );
   });
 });

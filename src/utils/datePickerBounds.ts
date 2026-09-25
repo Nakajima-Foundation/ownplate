@@ -19,6 +19,22 @@ export const isDateDisabled = (
   return false;
 };
 
+// DateTimePicker 用。こちらは下限を暗黙に補わない — 渡された範囲だけを見る。
+// 割引の有効期間のように、過去に始まっている期間も扱うため。
+export const isDateOutOfRange = (
+  day: Date,
+  minDate?: Date,
+  maxDate?: Date,
+): boolean => {
+  if (minDate && moment(day).isBefore(moment(minDate), "day")) {
+    return true;
+  }
+  if (maxDate && moment(day).isAfter(moment(maxDate), "day")) {
+    return true;
+  }
+  return false;
+};
+
 export const isPrevMonthOutOfRange = (
   month: Date,
   now: Date,
