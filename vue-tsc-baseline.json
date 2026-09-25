@@ -1,6 +1,6 @@
 {
   "note": "vue-tsc の据え置き一覧。減る方向にしか動かさない。直したら --update で更新する。",
-  "total": 103,
+  "total": 101,
   "files": {
     "src/app/admin/Messages/MessageCard.vue": 1,
     "src/app/admin/Order/OrderedInfo.vue": 2,
@@ -15,7 +15,6 @@
     "src/app/admin/Restaurants/ReportPage.vue": 3,
     "src/app/admin/Restaurants/UserHistory.vue": 2,
     "src/app/admin/Restaurants/Wrapper.vue": 1,
-    "src/app/admin/SubAccounts/Account.vue": 2,
     "src/app/admin/Watcher/SoundConfigWatcher.vue": 2,
     "src/app/auth/LineCallback.vue": 3,
     "src/app/liff/LiffWrapper.vue": 1,
@@ -24,7 +23,7 @@
     "src/app/super/AllRestaurants.vue": 2,
     "src/app/user/DiscountHistory.vue": 2,
     "src/app/user/OrderPage/BeforePaid/ECCustomer.vue": 5,
-    "src/app/user/OrderPage/BeforePaid/TimeToPickup.vue": 2,
+    "src/app/user/OrderPage/BeforePaid/TimeToPickup.vue": 1,
     "src/app/user/OrderPage/OrderInfo.vue": 4,
     "src/app/user/OrderPage/Pay.vue": 2,
     "src/app/user/OrderPage/UserCustomerInfo.vue": 1,
@@ -33,7 +32,7 @@
     "src/app/user/Restaurant/CartItem.vue": 1,
     "src/app/user/Restaurant/Menu.vue": 4,
     "src/app/user/Restaurant/ShopInfo.vue": 5,
-    "src/app/user/RestaurantCard.vue": 2,
+    "src/app/user/RestaurantCard.vue": 1,
     "src/app/user/RestaurantIndex.vue": 3,
     "src/app/user/RestaurantPage.vue": 6,
     "src/app/user/RestaurantWrapper.vue": 2,

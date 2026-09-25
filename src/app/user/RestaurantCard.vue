@@ -152,8 +152,9 @@ export default defineComponent({
           doc(db, `restaurants/${restaurantId.value}`),
         );
         if (shopDoc.exists()) {
-          shopInfo.value = shopDoc.data();
-          ownerUid.value = shopInfo.value.uid;
+          const shopData = shopDoc.data();
+          shopInfo.value = shopData;
+          ownerUid.value = shopData.uid;
           // Start monitoring card info once we have owner UID
           checkStripe();
         }
