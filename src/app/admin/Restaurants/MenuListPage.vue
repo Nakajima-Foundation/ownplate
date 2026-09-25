@@ -248,8 +248,6 @@ import AdminHeader from "@/app/admin/AdminHeader.vue";
 
 import { useMenuAndTitle } from "@/app/admin/Restaurants/MenuListPage/Utils";
 
-import { ownPlateConfig } from "@/config/project";
-
 import {
   copyMenuData,
   getBlankMenuItem,
@@ -615,11 +613,7 @@ export default defineComponent({
       if (item._dataType !== "menu") {
         return;
       }
-      const data = copyMenuData(
-        item,
-        ownPlateConfig.region === "JP",
-        uid.value,
-      );
+      const data = copyMenuData(item, uid.value);
       const newData = await addDoc(
         collection(db, `restaurants/${restaurantId.value}/menus`),
         cleanObject(data),

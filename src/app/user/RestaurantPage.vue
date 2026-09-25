@@ -292,7 +292,7 @@ import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
 import { orderCreated } from "@/lib/firebase/functions";
 
-import { order_status } from "@/config/constant";
+import { order_status, stripe_regions_jp } from "@/config/constant";
 
 import { ownPlateConfig } from "@/config/project";
 import * as analyticsUtil from "@/lib/firebase/analytics";
@@ -322,7 +322,6 @@ import {
   useUserData,
   useBasePath,
   defaultTitle,
-  stripeRegion,
   errorCode,
   errorMessage,
 } from "@/utils/utils";
@@ -408,7 +407,7 @@ export default defineComponent({
     const cartItems = ref<CartItemsType>({});
     const selectedOptions = ref<CartOptionType>({});
 
-    const multiple = stripeRegion.multiple;
+    const multiple = stripe_regions_jp.multiple;
 
     const basePath = useBasePath();
 

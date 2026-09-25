@@ -85,13 +85,12 @@ const newExceptHour = (exceptHour: ExceptHour) => {
 };
 export const getNewItemData = (
   item: MenuData,
-  isJP: boolean,
   validatedFlag: boolean,
 ): MenuData => {
   const itemData = {
     itemName: item.itemName,
     itemAliasesName: item.itemAliasesName || "",
-    price: isJP ? Math.round(Number(item.price)) : Number(item.price),
+    price: Math.round(Number(item.price)),
     tax: item.tax,
     itemDescription: item.itemDescription,
     itemMemo: item.itemMemo,

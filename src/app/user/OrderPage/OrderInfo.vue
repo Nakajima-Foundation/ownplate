@@ -2,11 +2,14 @@
   <div class="rounded-lg bg-white p-4 shadow-sm">
     <!-- Order Items -->
     <div class="grid grid-cols-1 space-y-4">
-      <template v-for="(orderItem, key) in orderItems" :key="orderItem.orderIndex.join('-')">
+      <template
+        v-for="(orderItem, key) in orderItems"
+        :key="orderItem.orderIndex.join('-')"
+      >
         <order-item
           :orderItem="orderItem"
           :editable="editable"
-          :available="(editedAvailableOrders || {})[key]"
+          :available="(editedAvailableOrders || [])[key]"
           @update="updateAvailable"
           :menuData="(menuData || {})[orderItem.id]"
           :mkey="key"
@@ -244,8 +247,7 @@
 import { defineComponent, computed, watch, ref, PropType } from "vue";
 import type Promotion from "@/models/promotion";
 
-import { order_status } from "@/config/constant";
-import { stripeRegion } from "@/utils/utils";
+import { order_status, stripe_regions_jp } from "@/config/constant";
 import OrderItem from "@/app/user/OrderPage/OrderItem.vue";
 
 import { OrderInfoData } from "@/models/orderInfo";
@@ -292,7 +294,7 @@ export default defineComponent({
       required: false,
     },
     editedAvailableOrders: {
-      type: Array,
+      type: Array as PropType<boolean[]>,
       required: false,
     },
     shippingCost: {
@@ -305,8 +307,8 @@ export default defineComponent({
   },
   emits: ["update", "change"],
   setup(props, ctx) {
-    const regionTip = stripeRegion.tip;
-    const tipStep = 1.0 / stripeRegion.multiple;
+    const regionTip = stripe_regions_jp.tip;
+    const tipStep = 1.0 / stripe_regions_jp.multiple;
 
     const tip = ref<number | string>("");
 
@@ -317,7 +319,7 @@ export default defineComponent({
 
     // internal
     const calcTip = (ratio: number) => {
-      const m = stripeRegion.multiple;
+      const m = stripe_regions_jp.multiple;
       const value = Math.round((props.orderInfo.total * ratio * m) / 100) / m;
       if (m === 1) {
         return Math.round(value);

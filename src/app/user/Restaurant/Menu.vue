@@ -426,7 +426,7 @@ import SharePopup from "@/app/user/Restaurant/SharePopup.vue";
 import LunchDinnerIcon from "@/app/user/Restaurant/LunchDinnerIcon.vue";
 
 import * as analyticsUtil from "@/lib/firebase/analytics";
-import { daysOfWeek } from "@/config/constant";
+import { daysOfWeek, stripe_regions_jp } from "@/config/constant";
 
 import {
   useBasePath,
@@ -437,7 +437,6 @@ import {
   imageErrorHandler,
   num2time,
   displayOption,
-  stripeRegion,
 } from "@/utils/utils";
 import { inputValueOf } from "@/utils/domEvent";
 
@@ -527,7 +526,7 @@ export default defineComponent({
     });
     const allergens = computed(() => {
       if (props.item.allergens) {
-        return stripeRegion.allergens.filter((allergen: string) => {
+        return stripe_regions_jp.allergens.filter((allergen: string) => {
           return props.item.allergens[allergen];
         });
       }

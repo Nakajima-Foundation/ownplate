@@ -63,7 +63,6 @@ export const errorMessage = (error: unknown): string | undefined => {
   }
 };
 
-export const stripeRegion = stripe_regions_jp; // TODO remove
 // from mixin
 export const useRestaurantId = () => {
   const route = useRoute();

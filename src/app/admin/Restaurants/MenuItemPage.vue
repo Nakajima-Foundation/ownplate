@@ -838,14 +838,17 @@ import Checkbox from "@/components/form/checkbox.vue";
 
 import ImageUpload from "@/components/ImageUpload.vue";
 
-import { taxRates, daysOfWeek, regionalSetting } from "@/config/constant";
-import { ownPlateConfig } from "@/config/project";
+import {
+  taxRates,
+  daysOfWeek,
+  regionalSetting,
+  stripe_regions_jp,
+} from "@/config/constant";
 import { halfCharactors } from "@/utils/strings";
 import { optionPrice } from "@/utils/commonUtils";
 import {
   doc2data,
   useAdminUids,
-  stripeRegion,
   countObj,
   taxRate,
   notFoundResponse,
@@ -946,9 +949,9 @@ export default defineComponent({
           : defaultTitle,
     }));
 
-    const maxPrice = 1000000.0 / stripeRegion.multiple;
-    const allergens = stripeRegion.allergens;
-    const priceStep = 1.0 / stripeRegion.multiple;
+    const maxPrice = 1000000.0 / stripe_regions_jp.multiple;
+    const allergens = stripe_regions_jp.allergens;
+    const priceStep = 1.0 / stripe_regions_jp.multiple;
 
     const notFound = ref<boolean | null>(null);
     const menuId = route.params.menuId;
@@ -1087,11 +1090,7 @@ export default defineComponent({
             title: shop.restaurantName,
             code: "editCommon.copyMenuAlert",
             callback: async () => {
-              const newItem = copyMenuData(
-                menuInfo,
-                ownPlateConfig.region === "JP",
-                userStore.uidAdmin,
-              );
+              const newItem = copyMenuData(menuInfo, userStore.uidAdmin);
               newItem.validatedFlag = !hasError.value;
 
               const category1 = shop.category1 || [];
@@ -1133,11 +1132,7 @@ export default defineComponent({
             resizedImages: {},
           };
         }
-        const itemData = getNewItemData(
-          menuInfo,
-          ownPlateConfig.region === "JP",
-          !hasError.value,
-        );
+        const itemData = getNewItemData(menuInfo, !hasError.value);
 
         // Convert double-width characters with half-width characters in options
         // We also convert Japanse commas with alphabet commas
