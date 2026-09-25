@@ -604,11 +604,8 @@ export default defineComponent({
       scrollToElementById(props.item.id);
       imagePopup.value = true;
 
-      // TODO confirm 2023-01
-      const current = router.currentRoute.path;
-
-      const to = basePath.value + "/r/" + restaurantId + (urlSuffix || "");
-      if (current !== to) {
+      const to = basePath.value + "/r/" + restaurantId + urlSuffix;
+      if (route.path !== to) {
         router.replace(to);
       }
       analyticsUtil.sendViewItem(

@@ -97,6 +97,8 @@ export interface RestaurantInfoData {
 
 // Wrapper が toDate() で変換したあとの形。臨時休業日はそこで素の Date に揃う。
 // 管理画面はこちらを受け取るので、seconds の有無で見分ける必要がない。
+export type CategoryKey = "category1" | "category2";
+
 export type ConvertedRestaurantInfoData = Omit<
   RestaurantInfoData,
   "temporaryClosure"
