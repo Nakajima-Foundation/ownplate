@@ -1352,8 +1352,8 @@ export default defineComponent({
       move = true,
     ) => {
       if (location && location.lat && location.lng) {
-        if (move) {
-          mapObj.setCenter(location);
+        if (move && mapObj) {
+          mapObj.setCenter({ lat: location.lat, lng: location.lng });
         }
         removeAllMarker();
         markers.push(
