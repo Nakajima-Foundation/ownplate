@@ -46,7 +46,11 @@ export const order_status_keys = Object.keys(order_status).reduce(
   {},
 );
 
-export const possible_transitions = {
+// 遷移表に無い状態でも引かれる（読み手が || {} で受けている）。
+// 索引シグネチャが無いと、載っている4つ以外では引けない。
+export const possible_transitions: {
+  [key: number]: { [key: number]: boolean };
+} = {
   [order_status.order_placed]: {
     [order_status.order_accepted]: true,
     [order_status.order_canceled]: true,
