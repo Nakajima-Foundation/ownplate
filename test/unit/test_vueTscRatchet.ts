@@ -6,9 +6,10 @@ import {
   compareToBaseline,
   countByFile,
   describeAbnormalExit,
+  describeInvalidBaseline,
   findUnreadableErrorLines,
   parseVueTscOutput,
-  refuseEmptyUpdate,
+  refuseBaselineUpdate,
   renderRatchetReport,
   totalOf,
   type Baseline,
@@ -264,22 +265,96 @@ describe("vue-tsc の終わり方", () => {
 
 // 一覧を空にする更新は門を外すのと同じ。**設定の取りこぼしで 0 件になった場合と、
 // 本当に全部直った場合は、数からは区別できない。** だから明示を求める。
-describe("一覧を空にする更新", () => {
+describe("据え置き一覧の更新を断る", () => {
+  const previous = baselineOf({ "a.vue": 2, "b.vue": 1 });
+
+  // **ここが ratchet の要。** 増えたぶんを書き込めるなら、
+  // 型エラーを入れて --update するだけで通ってしまう。
+  it("増えていたら断る", () => {
+    const refusal = refuseBaselineUpdate(
+      { "a.vue": 3, "b.vue": 1 },
+      previous,
+      false,
+    );
+    assert.ok(refusal?.includes("a.vue: 2 → 3"));
+  });
+
+  it("一覧に無いファイルで出ていたら断る", () => {
+    const refusal = refuseBaselineUpdate(
+      { "a.vue": 2, "b.vue": 1, "c.vue": 1 },
+      previous,
+      false,
+    );
+    assert.ok(refusal?.includes("c.vue: 0 → 1"));
+  });
+
+  // 合計が同じでも、どこかで増えていれば断る。
+  it("合計が変わらなくても、増えたファイルがあれば断る", () => {
+    assert.ok(
+      refuseBaselineUpdate({ "a.vue": 1, "b.vue": 2 }, previous, false) !==
+        null,
+    );
+  });
+
+  it("減っただけなら通す", () => {
+    assert.strictEqual(
+      refuseBaselineUpdate({ "a.vue": 1, "b.vue": 1 }, previous, false),
+      null,
+    );
+  });
+
+  it("同じなら通す", () => {
+    assert.strictEqual(
+      refuseBaselineUpdate({ "a.vue": 2, "b.vue": 1 }, previous, false),
+      null,
+    );
+  });
+
+  // 一覧を空にする更新は門を外すのと同じ。設定の取りこぼしで 0 件になった場合と、
+  // 本当に全部直った場合は、数からは区別できない。
   it("非空だった一覧を 0 件で上書きしようとしたら断る", () => {
-    assert.ok(refuseEmptyUpdate(0, 167, false)?.includes("--allow-empty"));
+    assert.ok(
+      refuseBaselineUpdate({}, previous, false)?.includes("--allow-empty"),
+    );
   });
 
-  it("明示されていれば通す", () => {
-    assert.strictEqual(refuseEmptyUpdate(0, 167, true), null);
+  it("明示されていれば空にできる", () => {
+    assert.strictEqual(refuseBaselineUpdate({}, previous, true), null);
   });
 
-  // 初回はまだ一覧が無い（0 件）ので、0 件からの更新は止めない。
-  it("元から 0 件なら断らない", () => {
-    assert.strictEqual(refuseEmptyUpdate(0, 0, false), null);
+  // 初回はまだ一覧が無い。
+  it("一覧が無ければ何も断らない", () => {
+    assert.strictEqual(refuseBaselineUpdate({ "a.vue": 9 }, null, false), null);
+    assert.strictEqual(refuseBaselineUpdate({}, null, false), null);
+  });
+});
+
+// 壊れた一覧を「無い」と同じに扱うと、空化や増加の守りをすり抜ける。
+describe("据え置き一覧そのものを検める", () => {
+  it("正しい一覧は通す", () => {
+    assert.strictEqual(
+      describeInvalidBaseline({ note: "x", total: 3, files: { "a.vue": 3 } }),
+      null,
+    );
   });
 
-  it("減っただけなら断らない", () => {
-    assert.strictEqual(refuseEmptyUpdate(1, 167, false), null);
-    assert.strictEqual(refuseEmptyUpdate(200, 167, false), null);
+  it("形が違えば断る", () => {
+    assert.ok(describeInvalidBaseline(null) !== null);
+    assert.ok(describeInvalidBaseline([]) !== null);
+    assert.ok(describeInvalidBaseline("x") !== null);
+  });
+
+  it("files が読めなければ断る", () => {
+    assert.ok(describeInvalidBaseline({ total: 0 }) !== null);
+    assert.ok(
+      describeInvalidBaseline({ total: 1, files: { "a.vue": "1" } }) !== null,
+    );
+  });
+
+  // total と内訳が食い違う一覧は、どちらを信じても間違える。
+  it("total が内訳と合わなければ断る", () => {
+    assert.ok(
+      describeInvalidBaseline({ total: 0, files: { "a.vue": 3 } }) !== null,
+    );
   });
 });

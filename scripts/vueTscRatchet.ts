@@ -84,20 +84,62 @@ export const findUnreadableErrorLines = (stdout: string): string[] =>
 const NO_DIAGNOSTICS = 0;
 const DIAGNOSTICS_REPORTED = 2;
 
-// 一覧を空にする更新は、門を外すのと同じ。**本当に全部直ったのか、設定の
-// 取りこぼしで 0 件になったのかは、数からは区別できない。** 前者なら明示して通す。
-export const refuseEmptyUpdate = (
-  currentTotal: number,
-  baselineTotal: number,
+const isRecord = (value: unknown): value is { [key: string]: unknown } =>
+  typeof value === "object" && value !== null && !Array.isArray(value);
+
+const isFileCounts = (value: unknown): value is FileCounts =>
+  isRecord(value) &&
+  Object.values(value).every((count) => typeof count === "number");
+
+// 壊れた一覧を「無い」と同じに扱うと、空化や増加の守りをすり抜ける。
+// 無いのか壊れているのかを、呼ぶ側が区別できるようにする。
+export const describeInvalidBaseline = (parsed: unknown): string | null => {
+  if (!isRecord(parsed)) {
+    return "据え置き一覧の形が違います。";
+  }
+  if (!isFileCounts(parsed.files)) {
+    return "据え置き一覧の files が読めません。";
+  }
+  if (parsed.total !== totalOf(parsed.files)) {
+    return `据え置き一覧の total が内訳と合いません（total: ${String(parsed.total)} / 内訳: ${totalOf(parsed.files)}）。`;
+  }
+  return null;
+};
+
+// **ここが ratchet の要。** 一覧を増やす更新を断る。増えたぶんを書き込めるなら、
+// 新しい型エラーを入れて --update するだけで通ってしまい、門の意味が無くなる。
+// 本当に増やす必要があるなら、一覧を手で直す（差分がレビューに残る）。
+export const refuseBaselineUpdate = (
+  current: FileCounts,
+  previous: Baseline | null,
   allowEmpty: boolean,
-): string | null =>
-  !allowEmpty && currentTotal === 0 && baselineTotal > 0
-    ? [
-        "vue-tsc: 指摘が 0 件でした。据え置き一覧を空にすると門が効かなくなります。",
-        "  設定の取りこぼしで 0 件になっていないか確かめてください。",
-        "  本当に全部直ったのなら --allow-empty を付けてください。",
-      ].join("\n")
-    : null;
+): string | null => {
+  if (previous === null) {
+    return null;
+  }
+  const { regressed } = compareToBaseline(current, previous);
+  if (regressed.length > 0) {
+    return [
+      "vue-tsc: 増えたぶんを据え置き一覧に書き込むことはできません。",
+      ...regressed.map(
+        (change) => `  ${change.file}: ${change.before} → ${change.after}`,
+      ),
+      "",
+      "入った型エラーを直してください。",
+      "増やすことが本当に必要なら、一覧を手で直してください（差分がレビューに残ります）。",
+    ].join("\n");
+  }
+  // 一覧を空にする更新は、門を外すのと同じ。**本当に全部直ったのか、設定の
+  // 取りこぼしで 0 件になったのかは、数からは区別できない。** 前者なら明示して通す。
+  if (!allowEmpty && totalOf(current) === 0 && previous.total > 0) {
+    return [
+      "vue-tsc: 指摘が 0 件でした。据え置き一覧を空にすると門が効かなくなります。",
+      "  設定の取りこぼしで 0 件になっていないか確かめてください。",
+      "  本当に全部直ったのなら --allow-empty を付けてください。",
+    ].join("\n");
+  }
+  return null;
+};
 
 export const describeAbnormalExit = (
   status: number | null,

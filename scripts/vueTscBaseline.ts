@@ -7,10 +7,10 @@ import {
   countByFile,
   describeAbnormalExit,
   findUnreadableErrorLines,
+  describeInvalidBaseline,
   parseVueTscOutput,
-  refuseEmptyUpdate,
+  refuseBaselineUpdate,
   renderRatchetReport,
-  totalOf,
   type Baseline,
 } from "./vueTscRatchet.ts";
 
@@ -37,21 +37,31 @@ const runVueTsc = (): string => {
   return `${result.stdout ?? ""}${result.stderr ?? ""}`;
 };
 
-const readBaseline = (): Baseline => {
+// 無いのか壊れているのかを区別する。壊れているのを「無い」と同じに扱うと、
+// 空化や増加の守りをすり抜ける。
+const readBaseline = (): Baseline | null => {
+  let raw: string;
   try {
-    return JSON.parse(readFileSync(BASELINE_PATH, "utf8"));
-  } catch (error) {
-    throw new Error(`${BASELINE_PATH} を読めませんでした`, { cause: error });
+    raw = readFileSync(BASELINE_PATH, "utf8");
+  } catch {
+    return null;
   }
+  const parsed: unknown = JSON.parse(raw);
+  const invalid = describeInvalidBaseline(parsed);
+  if (invalid !== null) {
+    throw new Error(`${BASELINE_PATH}: ${invalid}`);
+  }
+  return parsed;
 };
 
-// 初回はまだ一覧が無い。その場合だけ 0 件からの更新を許す。
-const previousTotal = (): number => {
-  try {
-    return readBaseline().total;
-  } catch {
-    return 0;
+const requireBaseline = (): Baseline => {
+  const baseline = readBaseline();
+  if (baseline === null) {
+    throw new Error(
+      `${BASELINE_PATH} がありません。${UPDATE_COMMAND} で作ってください。`,
+    );
   }
+  return baseline;
 };
 
 // 読めない行があったら、数えずに落とす。tsconfig が見つからないときのように
@@ -73,9 +83,9 @@ const main = () => {
   refuseUnreadable(output);
   const current = countByFile(parseVueTscOutput(output));
   if (process.argv.includes("--update")) {
-    const refusal = refuseEmptyUpdate(
-      totalOf(current),
-      previousTotal(),
+    const refusal = refuseBaselineUpdate(
+      current,
+      readBaseline(),
       process.argv.includes("--allow-empty"),
     );
     if (refusal !== null) {
@@ -89,7 +99,7 @@ const main = () => {
     return;
   }
   const report = renderRatchetReport(
-    compareToBaseline(current, readBaseline()),
+    compareToBaseline(current, requireBaseline()),
     UPDATE_COMMAND,
   );
   process.stdout.write(`${report.text}\n`);
