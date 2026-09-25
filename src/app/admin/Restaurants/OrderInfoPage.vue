@@ -784,7 +784,7 @@ export default defineComponent({
     });
     watch(orderItems, () => {
       Object.keys(orderItems.value).forEach((key: string) => {
-        editedAvailableOrders.value[key] = true;
+        editedAvailableOrders.value[Number(key)] = true;
       });
     });
     const timeStampToText = (timestamp: Timestamp) => {
@@ -884,8 +884,9 @@ export default defineComponent({
     const edited_available_order_info = computed(() => {
       const ret: { menuId: string; index: number }[] = [];
       Object.keys(editedAvailableOrders.value).forEach((key: string) => {
-        if (editedAvailableOrders.value[key]) {
-          const indexes = orderItems.value[key]?.orderIndex;
+        const itemIndex = Number(key);
+        if (editedAvailableOrders.value[itemIndex]) {
+          const indexes = orderItems.value[itemIndex]?.orderIndex;
           if (indexes) {
             ret.push({ menuId: indexes[0], index: Number(indexes[1]) });
           }
