@@ -6,6 +6,8 @@ import {
   isEmpty,
   isInclusiveTax,
   isNull,
+  isOptionChecked,
+  optionChoiceIndex,
   isReducedTaxRate,
   isValidInvoiceNumber,
   printableInvoiceNumber,
@@ -333,5 +335,41 @@ describe("taxCategories の境目", () => {
 
   it("gives nothing back for an order with no accounting at all", () => {
     assert.deepStrictEqual(taxCategories(undefined, 8, 10), []);
+  });
+});
+
+// 選択肢の値は、組の形で意味が変わる。**値だけでは区別がつかない**ので、
+// 読み方の方に名前を付けてある。ここはその読み方そのものを固定する。
+describe("選択肢の値の読み方", () => {
+  // 選択肢が一つの組（チェック欄）。真偽で入る。
+  it("isOptionChecked は真偽として読む", () => {
+    assert.strictEqual(isOptionChecked(true), true);
+    assert.strictEqual(isOptionChecked(false), false);
+    assert.strictEqual(isOptionChecked(null), false);
+    assert.strictEqual(isOptionChecked(undefined), false);
+    assert.strictEqual(isOptionChecked(""), false);
+    assert.strictEqual(isOptionChecked(0), false);
+    // 既定値の 0 は「選んでいない」側。文字の "0" は真になる（JS の真偽判定のまま）。
+    assert.strictEqual(isOptionChecked("0"), true);
+  });
+
+  // 選択肢が複数の組（ラジオ）。選んだ番号が文字列で入るので、数に戻す。
+  it("optionChoiceIndex は番号として読む", () => {
+    assert.strictEqual(optionChoiceIndex("0"), 0);
+    assert.strictEqual(optionChoiceIndex("2"), 2);
+    assert.strictEqual(optionChoiceIndex(0), 0);
+    assert.strictEqual(optionChoiceIndex(2), 2);
+    // 既定値は数の 0。チェック欄の真偽が紛れ込んだら 0 / 1 になる。
+    assert.strictEqual(optionChoiceIndex(false), 0);
+    assert.strictEqual(optionChoiceIndex(true), 1);
+  });
+
+  // **parseInt ではない。** 空文字は 0、文字列は NaN。ここを取り違えると
+  // 選んでいない欄が先頭の選択肢として値段に乗る。
+  it("空文字は 0、数でない文字は NaN", () => {
+    assert.strictEqual(optionChoiceIndex(""), 0);
+    assert.ok(Number.isNaN(optionChoiceIndex("abc")));
+    assert.strictEqual(optionChoiceIndex(null), 0);
+    assert.ok(Number.isNaN(optionChoiceIndex(undefined)));
   });
 });

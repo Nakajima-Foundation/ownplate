@@ -200,7 +200,9 @@
                 >
                   <div v-if="option.length === 1" class="field">
                     <Checkbox
-                      :modelValue="selectedOptions[quantityKey][index]"
+                      :modelValue="
+                        isOptionChecked(selectedOptions?.[quantityKey]?.[index])
+                      "
                       @update:modelValue="
                         updateSelectedOptions(quantityKey, index, $event)
                       "
@@ -216,7 +218,7 @@
                     >
                       <input
                         type="radio"
-                        :modelValue="selectedOptions[quantityKey][index]"
+                        :modelValue="selectedOptions?.[quantityKey]?.[index]"
                         @change="
                           updateSelectedOptions(
                             quantityKey,
@@ -439,6 +441,8 @@ import {
   displayOption,
 } from "@/utils/utils";
 import { inputValueOf } from "@/utils/domEvent";
+import { isOptionChecked } from "@/utils/commonUtils";
+import type { OptionValue } from "@/models/orderTypes";
 
 import moment from "moment-timezone";
 
@@ -482,7 +486,7 @@ export default defineComponent({
     },
     // 品目ごと × 選択肢。`CartOptionType` の値そのもの。
     selectedOptions: {
-      type: Array<(boolean | string)[]>,
+      type: Array as PropType<OptionValue[][]>,
       required: false,
     },
     initialOpenMenuFlag: {
@@ -628,7 +632,7 @@ export default defineComponent({
     const setQuantities = (key: number, newValue: number) => {
       const newQuantities = [...props.quantities];
       newQuantities[key] = newValue;
-      const newSelectedOptions = [...props.selectedOptions];
+      const newSelectedOptions = [...(props.selectedOptions ?? [])];
       if (newQuantities[key] === 0 && newQuantities.length > 1) {
         newQuantities.splice(key, 1);
         newSelectedOptions.splice(key, 1);
@@ -644,7 +648,7 @@ export default defineComponent({
       index: number,
       e: boolean | string,
     ) => {
-      const newSelectedOptions = [...props.selectedOptions];
+      const newSelectedOptions = [...(props.selectedOptions ?? [])];
       newSelectedOptions[quantityKey][index] = e;
       ctx.emit("updateSelectedOptions", newSelectedOptions);
     };
@@ -683,7 +687,7 @@ export default defineComponent({
       );
     };
     const pushItem = () => {
-      const newSelectedOptions = [...props.selectedOptions];
+      const newSelectedOptions = [...(props.selectedOptions ?? [])];
       newSelectedOptions.push([...defaultOpions.value]);
 
       const newQuantities = [...props.quantities];
@@ -696,6 +700,7 @@ export default defineComponent({
     };
 
     return {
+      isOptionChecked,
       inputValueOf,
       openMenuFlag,
       imagePopup,

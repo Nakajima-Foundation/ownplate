@@ -8,6 +8,7 @@ import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { roundPrice } from "./price";
 import { MenuData } from "@/models/menu";
 import { CartItemsType } from "@/models/cartType";
+import type { OptionValue } from "@/models/orderTypes";
 
 import {
   order_status,
@@ -523,7 +524,7 @@ export const getPrices = (
   return ret;
 };
 
-type SelectedOption = (boolean | string)[];
+type SelectedOption = OptionValue[];
 
 export const getTrimmedSelectedOptions = (
   orders: { [key: string]: number[] },

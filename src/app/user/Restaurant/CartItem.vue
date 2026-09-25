@@ -10,7 +10,7 @@
         </div>
         <div class="mt-1" v-for="(option, k) in options" :key="k">
           <div v-if="option.length === 1">
-            <div v-if="selectedOptions[k]">
+            <div v-if="isOptionChecked(selectedOptions[k])">
               <span class="text-sm text-black"
                 >{{ $t("sitemenu.options") }}:
               </span>
@@ -24,7 +24,7 @@
               {{ $t("sitemenu.options") }}:</span
             >
             <span class="text-sm font-bold text-gray-500">
-              {{ option[selectedOptions[k]] }}</span
+              {{ option[optionChoiceIndex(selectedOptions[k])] }}</span
             >
           </div>
         </div>
@@ -79,6 +79,8 @@ import {
   smallImageErrorHandler,
   useRestaurantId,
 } from "@/utils/utils";
+import { isOptionChecked, optionChoiceIndex } from "@/utils/commonUtils";
+import type { OptionValue } from "@/models/orderTypes";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import Price from "@/components/Price.vue";
@@ -109,7 +111,7 @@ export default defineComponent({
       required: true,
     },
     selectedOptions: {
-      type: Array,
+      type: Array as PropType<OptionValue[]>,
       required: true,
     },
   },
@@ -156,6 +158,8 @@ export default defineComponent({
       return props.item.soldOutToday === today;
     });
     return {
+      isOptionChecked,
+      optionChoiceIndex,
       image,
       options,
       subTotalWithTax,
