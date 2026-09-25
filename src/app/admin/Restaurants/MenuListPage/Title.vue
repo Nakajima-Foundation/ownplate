@@ -94,7 +94,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
+import type { TitleData } from "@/models/menu";
 import { useAdminUids } from "@/utils/utils";
 
 import { useDialogStore } from "@/store/dialog";
@@ -112,7 +113,7 @@ export default defineComponent({
       required: true,
     },
     title: {
-      type: Object,
+      type: Object as PropType<TitleData>,
       required: true,
     },
     position: {

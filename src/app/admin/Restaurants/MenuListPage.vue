@@ -593,6 +593,9 @@ export default defineComponent({
     };
     const forkTitleItem = async (itemKey: string) => {
       const item = itemsObj.value[itemKey];
+      if (item._dataType !== "title") {
+        return;
+      }
       const data = {
         name: item.name,
         uid: uid.value,
@@ -609,6 +612,9 @@ export default defineComponent({
 
     const forkMenuItem = async (itemKey: string) => {
       const item = itemsObj.value[itemKey];
+      if (item._dataType !== "menu") {
+        return;
+      }
       const data = copyMenuData(
         item,
         ownPlateConfig.region === "JP",
