@@ -195,7 +195,7 @@ export default defineComponent({
       }
       return [];
     });
-    const getSuspend = (suspendUntil) => {
+    const getSuspend = (suspendUntil: { toDate: () => Date } | null) => {
       if (suspendUntil) {
         const time = suspendUntil.toDate();
         if (time < new Date()) {

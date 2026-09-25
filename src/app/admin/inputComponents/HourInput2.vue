@@ -30,6 +30,7 @@
 import { defineComponent } from "vue";
 
 import { timeList2 as timeList } from "@/config/constant";
+import { inputValueOf } from "@/utils/domEvent";
 
 export default defineComponent({
   name: "HoursInput",
@@ -50,8 +51,8 @@ export default defineComponent({
   },
   emits: ["update:modelValue"],
   setup(props, context) {
-    const updateValue = (e) => {
-      context.emit("update:modelValue", Number(e.target.value));
+    const updateValue = (e: Event) => {
+      context.emit("update:modelValue", Number(inputValueOf(e)));
     };
 
     return {
