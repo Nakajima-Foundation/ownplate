@@ -129,4 +129,25 @@ describe("costCal が一覧の外を指したとき", () => {
   it("gives back NaN for a negative prefecture", () => {
     assert.strictEqual(Number.isNaN(costCal({ postageList }, -1, 1000)), true);
   });
+
+  // prefectureId は入力経路で型が変わる。郵便番号から選ぶと数、都道府県の欄から
+  // 選ぶと文字列がそのまま保存される（omochikaeri-docs #222）。**請求額は同じ**で
+  // なければならない。
+  it("charges the same whether the prefecture arrives as a number or a string", () => {
+    assert.strictEqual(
+      costCal({ postageList }, TOKYO, 1000),
+      costCal({ postageList }, String(TOKYO), 1000),
+    );
+    assert.strictEqual(costCal({ postageList }, "13", 1000), 1300);
+    assert.strictEqual(costCal({ postageList }, "1", 1000), 100);
+    assert.strictEqual(costCal({ postageList }, "47", 1000), 4700);
+  });
+
+  // 空文字は「未設定」と同じ側（真偽判定で落ちる）ので 0。数でない文字は真なので
+  // 分岐に入り、一覧の外を指して NaN になる（負の番号と同じ）。
+  it("treats an empty prefecture as unset and a non-numeric one as out of range", () => {
+    assert.strictEqual(costCal({ postageList }, "", 1000), 0);
+    assert.strictEqual(costCal({ postageList }, undefined, 1000), 0);
+    assert.ok(Number.isNaN(costCal({ postageList }, "abc", 1000)));
+  });
 });
