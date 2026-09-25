@@ -24,6 +24,7 @@ import NotFound from "@/components/NotFound.vue";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { usePromotions } from "@/utils/promotion";
+import { regionalSetting } from "@/config/constant";
 
 export default defineComponent({
   name: "RestaurantWrapper",
@@ -44,7 +45,13 @@ export default defineComponent({
       const restaurant = await getDoc(
         doc(db, `restaurants/${restaurantId.value}`),
       );
-      shopInfo.value = restaurant.data() || {};
+      // 地域の税率を最後に混ぜる。管理側（Restaurants/Wrapper.vue）と同じ形にして、
+      // 店舗ドキュメントに税率が無いときに値段が NaN になるのと、
+      // 管理画面の表示と客に見える金額がずれるのを防ぐ。
+      shopInfo.value = {
+        ...(restaurant.data() || {}),
+        ...(regionalSetting.defaultTax || {}),
+      };
       const exist_and_public =
         restaurant.exists() &&
         !shopInfo.value.deletedFlag &&
