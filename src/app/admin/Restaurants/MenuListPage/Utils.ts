@@ -5,14 +5,14 @@ import {
   query,
   where,
   onSnapshot,
-  DocumentData,
   Unsubscribe,
 } from "firebase/firestore";
 import { doc2data, array2obj } from "@/utils/utils";
+import type { MenuData, TitleData } from "@/models/menu";
 
 export const useMenuAndTitle = (menuRestaurantId: Ref<string>) => {
-  const menus = ref<DocumentData[] | null>(null);
-  const menuCache = ref<{ [key: string]: DocumentData[] }>({});
+  const menus = ref<MenuData[] | null>(null);
+  const menuCache = ref<{ [key: string]: MenuData[] }>({});
   const menuDetacher = ref<Unsubscribe | null>(null);
   const detacheMenu = () => {
     if (menuDetacher.value) {
@@ -20,8 +20,8 @@ export const useMenuAndTitle = (menuRestaurantId: Ref<string>) => {
     }
   };
 
-  const titles = ref<DocumentData[] | null>(null);
-  const menuObj = ref<{ [key: string]: DocumentData }>({});
+  const titles = ref<TitleData[] | null>(null);
+  const menuObj = ref<{ [key: string]: MenuData }>({});
   const isLoading = ref(true);
 
   const loadMenu = () => {
@@ -40,7 +40,9 @@ export const useMenuAndTitle = (menuRestaurantId: Ref<string>) => {
     menuDetacher.value = onSnapshot(
       query(menuQuery),
       (results) => {
-        menus.value = (results.empty ? [] : results.docs).map(doc2data("menu"));
+        menus.value = (results.empty ? [] : results.docs).map(
+          doc2data<MenuData>("menu"),
+        );
         isLoading.value = false;
       },
 
@@ -56,14 +58,18 @@ export const useMenuAndTitle = (menuRestaurantId: Ref<string>) => {
       where("deletedFlag", "==", false),
     ),
     (results) => {
-      titles.value = (results.empty ? [] : results.docs).map(doc2data("title"));
+      titles.value = (results.empty ? [] : results.docs).map(
+        doc2data<TitleData>("title"),
+      );
     },
   );
 
   const itemsObj = computed(() => {
     if (menus.value && titles.value) {
       menuObj.value = array2obj(menus.value);
-      return array2obj(menus.value.concat(titles.value));
+      // concat は要素の型が違うと受け付けないので展開で繋ぐ。素の配列なので結果は同じ。
+      const items: (MenuData | TitleData)[] = [...menus.value, ...titles.value];
+      return array2obj(items);
     }
     return {};
   });

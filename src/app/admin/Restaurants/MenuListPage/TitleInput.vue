@@ -11,13 +11,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from "vue";
+import { defineComponent, ref, onMounted, PropType } from "vue";
+import type { TitleData } from "@/models/menu";
 
 export default defineComponent({
   name: "TitleInput",
   props: {
     title: {
-      type: Object,
+      type: Object as PropType<TitleData>,
       required: true,
     },
   },
