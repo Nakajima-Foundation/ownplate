@@ -54,6 +54,7 @@ import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { db } from "@/lib/firebase/firebase9";
 import { getDocs, query, collectionGroup, where } from "firebase/firestore";
 import DownloadCsv from "@/components/DownloadCSV.vue";
+import type { CsvRow } from "@/utils/csv";
 import moment from "moment";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import { nameOfOrder } from "@/utils/strings";
@@ -171,7 +172,7 @@ export default defineComponent({
       });
     });
     const tableData = computed(() => {
-      const items: { [key: string]: string | number | null }[] = [];
+      const items: CsvRow[] = [];
       mergedOrder.value.forEach((order) => {
         const ids = Object.keys(order.order);
         const status = Object.keys(order_status).reduce((result, key) => {
@@ -185,9 +186,11 @@ export default defineComponent({
           const options = order.options[menuId] || [];
           const menuItem = (order.menuItems || {})[menuId] || {};
           Object.keys(orderItems).forEach((key) => {
-            const opt = Array.isArray(options[key] || [])
-              ? options[key]
-              : [options[key]];
+            // key は writeonFirstLine が Number(key) === 0 で使うので残す。
+            const itemIndex = Number(key);
+            const opt = Array.isArray(options[itemIndex] || [])
+              ? options[itemIndex]
+              : [options[itemIndex]];
             try {
               items.push({
                 id: `${order.id}/${menuId}`,
@@ -278,7 +281,7 @@ export default defineComponent({
                   key,
                   order?.isDelivery ? "1" : "",
                 ),
-                count: orderItems[key],
+                count: orderItems[itemIndex],
                 options: opt.filter((a: string) => String(a) !== "").join("/"),
                 memo: writeonFirstLine(index, key, order.memo),
                 itemName: menuItem.itemName,
