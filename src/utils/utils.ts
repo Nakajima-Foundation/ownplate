@@ -16,7 +16,7 @@ import {
   stripe_regions_jp,
   soundFiles,
 } from "@/config/constant";
-import { firebaseConfig, ownPlateConfig } from "@/config/project";
+import { firebaseConfig } from "@/config/project";
 
 import { defaultHeader } from "@/config/header";
 
@@ -360,8 +360,6 @@ export const getPartner = (shopOwner: ShopOwnerData) => {
     return match;
   });
 };
-
-export const isLineEnabled = !!ownPlateConfig.line;
 
 export const displayOption = (
   option: string,
