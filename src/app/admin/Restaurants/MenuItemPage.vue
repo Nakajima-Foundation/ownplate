@@ -174,7 +174,7 @@
                     :value="taxItem"
                     :key="taxItem"
                   >
-                    {{ shopInfo && (shopInfo[taxItem + "Tax"] || 0) + "%" }}
+                    {{ shopInfo && (shopInfo[`${taxItem}Tax`] || 0) + "%" }}
                     - {{ $t("editMenu." + taxRateKeys[taxItem]) }}
                   </option>
                 </select>
@@ -367,7 +367,7 @@
           </div>
 
           <!-- Additional Photos -->
-          <div v-if="false" class="mt-4">
+          <div v-if="showAdditionalPhotos" class="mt-4">
             <div class="pb-2 text-sm font-bold">
               {{ $t("editMenu.additionalPhotos") }}
             </div>
@@ -908,6 +908,10 @@ export default defineComponent({
 
     const dummyCheckbox = ref([]);
 
+    // 追加写真はこれから作る。リテラルの false を書くと、その枝が到達不能と
+    // 見なされて型の絞り込みが戻り、同じ枝の中の束縛が読めなくなる。
+    const showAdditionalPhotos = false;
+
     const menuInfo = reactive<MenuData>({
       itemName: "",
       itemAliasesName: "",
@@ -1196,6 +1200,7 @@ export default defineComponent({
     return {
       dummyCheckbox,
       menuInfo,
+      showAdditionalPhotos,
 
       taxRates,
       taxRateKeys,
