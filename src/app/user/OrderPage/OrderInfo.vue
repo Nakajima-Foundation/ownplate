@@ -9,7 +9,7 @@
         <order-item
           :orderItem="orderItem"
           :editable="editable"
-          :available="(editedAvailableOrders || {})[key]"
+          :available="(editedAvailableOrders || [])[key]"
           @update="updateAvailable"
           :menuData="(menuData || {})[orderItem.id]"
           :mkey="key"
@@ -294,7 +294,7 @@ export default defineComponent({
       required: false,
     },
     editedAvailableOrders: {
-      type: Array,
+      type: Array as PropType<boolean[]>,
       required: false,
     },
     shippingCost: {

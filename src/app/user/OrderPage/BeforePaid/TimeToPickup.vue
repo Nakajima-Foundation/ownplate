@@ -103,7 +103,7 @@ export default defineComponent({
             !isNull(exceptHour.start) &&
             !isNull(exceptHour.end)
           ) {
-            tmp.exceptHours.push(exceptHour);
+            tmp.exceptHours.push({ start: exceptHour.start, end: exceptHour.end });
           }
           return tmp;
         },
