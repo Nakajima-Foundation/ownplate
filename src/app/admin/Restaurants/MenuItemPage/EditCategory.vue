@@ -53,7 +53,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, watch, computed, PropType } from "vue";
-import type { RestaurantInfoData } from "@/models/RestaurantInfo";
+import type { RestaurantInfoData, CategoryKey } from "@/models/RestaurantInfo";
 import { defaultTitle } from "@/utils/utils";
 import { useHead } from "@unhead/vue";
 
@@ -64,7 +64,7 @@ export default defineComponent({
       required: true,
     },
     categoryKey: {
-      type: String,
+      type: String as PropType<CategoryKey>,
       required: true,
     },
   },
