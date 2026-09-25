@@ -2,7 +2,7 @@
   <div class="rounded-lg bg-white p-4 shadow-sm">
     <!-- Order Items -->
     <div class="grid grid-cols-1 space-y-4">
-      <template v-for="(orderItem, key) in orderItems" :key="orderItem.key">
+      <template v-for="(orderItem, key) in orderItems" :key="orderItem.orderIndex.join('-')">
         <order-item
           :orderItem="orderItem"
           :editable="editable"
