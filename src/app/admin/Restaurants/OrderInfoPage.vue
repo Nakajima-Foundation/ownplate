@@ -794,7 +794,9 @@ export default defineComponent({
       return "";
     };
     const timeOfEvents = computed(() => {
-      const mapping = Object.keys(timeEventMapping).reduce((tmp, key) => {
+      const mapping = Object.keys(timeEventMapping).reduce<{
+        [key: string]: string;
+      }>((tmp, key) => {
         tmp[key] = timeStampToText(orderInfo.value[timeEventMapping[key]]);
         return tmp;
       }, {});

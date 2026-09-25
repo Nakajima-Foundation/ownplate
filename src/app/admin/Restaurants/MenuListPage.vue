@@ -489,7 +489,7 @@ export default defineComponent({
     // 値そのものを key として使う identity 関数を渡す。
     const menuListItemKey = (key: string) => key;
 
-    const addTitle = async (operation: string) => {
+    const addTitle = async (operation?: string) => {
       submitting.value = true;
       try {
         const data = getBlankTitleItem(uid.value);
@@ -510,7 +510,7 @@ export default defineComponent({
         submitting.value = false;
       }
     };
-    const addMenu = async (operation: string) => {
+    const addMenu = async (operation?: string) => {
       submitting.value = true;
       try {
         const itemData = getBlankMenuItem(uid.value);
