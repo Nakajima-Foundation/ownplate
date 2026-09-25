@@ -40,7 +40,8 @@ export default defineComponent({
     const logUid = route.params.uid;
     const logId = route.params.logId;
     getDoc(doc(db, `admins/${logUid}/stripeLogs/${logId}`)).then((_doc) => {
-      log.value = _doc.data();
+      // 文書が無ければ .data() は undefined。ref の初期値と同じ null にしておく。
+      log.value = _doc.data() || null;
     });
     return {
       stripeActionStrings,

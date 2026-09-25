@@ -98,7 +98,8 @@ export default defineComponent({
     }, 1000 * intervalTime);
 
     onUnmounted(() => {
-      order_detacher();
+      // 上の dateWasUpdated と同じく、まだ張られていないことがある。
+      order_detacher?.();
       clearInterval(intervalTask);
     });
     watch(today, () => {

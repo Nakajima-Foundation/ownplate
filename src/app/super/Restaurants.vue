@@ -46,7 +46,8 @@ export default defineComponent({
 
     const restaurantData = ref<DocumentData>({});
     getDoc(doc(db, `restaurants/${restaurantId}`)).then((restaurantDoc) => {
-      restaurantData.value = restaurantDoc.data();
+      // 文書が無ければ .data() は undefined。ref の初期値と同じ空にしておく。
+      restaurantData.value = restaurantDoc.data() || {};
     });
 
     const phone = async () => {
