@@ -4,14 +4,15 @@ import { stripe_regions_jp } from "../config/constant";
 import { OrderInfoData } from "./orderInfoData";
 export type { OrderInfoData } from "./orderInfoData";
 
+type Accounting = NonNullable<OrderInfoData["accounting"]>;
+
 export type ReportRow = OrderInfoData & {
-  accounting: NonNullable<OrderInfoData["accounting"]>;
+  accounting: Accounting & { service: NonNullable<Accounting["service"]> };
 };
 
-// 検めるのは有無だけ。`ReportRow` が `OrderInfoData` に足している約束もそれだけ
-// （`NonNullable` は undefined を外すだけで、中身までは見ない）。
+// 検めるのは有無だけ。`ReportRow` が `OrderInfoData` に足している約束もそれだけ。
 const hasAccounting = (order: OrderInfoData): order is ReportRow =>
-  order.accounting !== undefined;
+  order.accounting !== undefined && order.accounting.service !== undefined;
 
 export const order2ReportData = (
   order: OrderInfoData,

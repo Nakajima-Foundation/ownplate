@@ -912,7 +912,11 @@ export default defineComponent({
     // 見なされて型の絞り込みが戻り、同じ枝の中の束縛が読めなくなる。
     const showAdditionalPhotos = false;
 
-    const menuInfo = reactive<MenuData>({
+    type MenuEditState = MenuData & {
+      images: NonNullable<MenuData["images"]>;
+      exceptDay: NonNullable<MenuData["exceptDay"]>;
+    };
+    const menuInfo = reactive<MenuEditState>({
       itemName: "",
       itemAliasesName: "",
       price: 0,
@@ -928,7 +932,7 @@ export default defineComponent({
       exceptHour: {},
       category1: "",
       category2: "",
-    } as MenuData);
+    } as MenuEditState);
 
     useHead(() => ({
       title:
