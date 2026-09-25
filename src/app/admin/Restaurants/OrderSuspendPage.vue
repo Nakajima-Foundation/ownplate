@@ -231,7 +231,7 @@ export default defineComponent({
         suspendUntil: null,
       });
       generalStore.setLoading(false);
-      suspendUntil.value = null;
+      suspendUntil.value = false;
       ctx.emit("updateRestaurant");
     };
     return {
