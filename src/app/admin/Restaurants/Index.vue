@@ -1024,7 +1024,7 @@
                   <template
                     v-for="(day, key) in editShopInfo.temporaryClosure || []"
                   >
-                    <template v-if="day.getTime() >= now">
+                    <template v-if="day.getTime() >= now.getTime()">
                       <div
                         :key="key"
                         class="flex items-center rounded-sm bg-white/50 px-2"
@@ -1205,7 +1205,7 @@ import { useRouter } from "vue-router";
 import { useHead } from "@unhead/vue";
 import moment from "moment";
 
-import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { ConvertedRestaurantInfoData } from "@/models/RestaurantInfo";
 
 export default defineComponent({
   name: "RestaurantPage",
@@ -1225,7 +1225,7 @@ export default defineComponent({
   },
   props: {
     shopInfo: {
-      type: Object as PropType<RestaurantInfoData>,
+      type: Object as PropType<ConvertedRestaurantInfoData>,
       required: true,
     },
   },

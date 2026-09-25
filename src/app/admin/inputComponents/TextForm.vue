@@ -64,7 +64,7 @@ export default defineComponent({
     },
     placeholder: {
       type: String,
-      required: false,
+      required: true,
     },
     maxlength: {
       type: Number,
