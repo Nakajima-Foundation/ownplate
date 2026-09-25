@@ -42,6 +42,14 @@ export const optionChoicesAt = (
 const isSingleChoiceGroup = (choices: string[]): boolean =>
   choices.length === 1;
 
+// 選択肢が一つの組はチェック欄なので真偽が入り、複数の組はラジオなので選んだ
+// 番号が文字列で入る。値だけでは区別がつかないので、読み方の方に名前を付ける。
+export const isOptionChecked = (selected: OptionValue | undefined): boolean =>
+  !!selected;
+
+export const optionChoiceIndex = (selected: OptionValue | undefined): number =>
+  Number(selected);
+
 const roundedOptionPrice = (choice: string, priceMultiple: number): number =>
   Math.round(optionPrice(choice) * priceMultiple) / priceMultiple;
 
@@ -53,9 +61,9 @@ export const selectedOptionNames = (
     .map((selected, index) => {
       const choices = optionChoicesAt(itemOptionCheckbox, index);
       if (isSingleChoiceGroup(choices)) {
-        return selected ? choices[0] : "";
+        return isOptionChecked(selected) ? choices[0] : "";
       }
-      return choices[Number(selected)] ?? "";
+      return choices[optionChoiceIndex(selected)] ?? "";
     })
     .map((name) => name.trim());
 
@@ -68,11 +76,14 @@ export const selectedOptionsPrice = (
   selectedOptions.reduce((total: number, selected, index) => {
     const choices = optionChoicesAt(itemOptionCheckbox, index);
     if (isSingleChoiceGroup(choices)) {
-      return selected
+      return isOptionChecked(selected)
         ? total + roundedOptionPrice(choices[0], priceMultiple)
         : total;
     }
-    return total + roundedOptionPrice(choices[Number(selected)], priceMultiple);
+    return (
+      total +
+      roundedOptionPrice(choices[optionChoiceIndex(selected)], priceMultiple)
+    );
   }, basePrice);
 
 export const isNull = (value: unknown): value is null | undefined => {

@@ -342,6 +342,7 @@ import {
   CartItemsType,
   CartOptionType,
 } from "@/models/cartType";
+import type { OptionValue } from "@/models/orderTypes";
 
 export default defineComponent({
   name: "RestaurantPage",
@@ -604,7 +605,7 @@ export default defineComponent({
     const didOrderdChange = (eventArgs: {
       quantities: number[];
       itemId: string;
-      optionValues: string;
+      optionValues: OptionValue[][];
       itemData: MenuData;
     }) => {
       // NOTE: We need to assign a new object to trigger computed properties
