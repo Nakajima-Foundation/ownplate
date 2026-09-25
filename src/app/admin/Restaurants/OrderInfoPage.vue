@@ -536,6 +536,7 @@ import {
   possible_transitions,
   timeEventMapping,
   OrderStatusName,
+  stripe_regions_jp,
 } from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
 import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
@@ -563,7 +564,6 @@ import {
   useAdminUids,
   useRestaurantId,
   notFoundResponse,
-  stripeRegion,
   convOrderStateForText,
   isDev,
   // isNull,
@@ -900,7 +900,7 @@ export default defineComponent({
 
     const editable_order_info = computed(() => {
       const tmpMenuObj = orderInfo.value.menuItems;
-      const multiple = stripeRegion.multiple;
+      const multiple = stripe_regions_jp.multiple;
       const ret = edited_available_order_info.value.reduce(
         (tmp, info) => {
           const { menuId, index } = info;
