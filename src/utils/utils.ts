@@ -633,8 +633,6 @@ export const useToggle = (defaultValue = false) => {
   };
 };
 
-export const isJapan = ownPlateConfig.region === "JP";
-
 export const defaultTitle = defaultHeader.title;
 
 export const useAdminUids = () => {

@@ -1,6 +1,5 @@
 <template>
   <div
-    v-if="isJapan"
     class="mx-6 mt-4 rounded-lg border-2 border-solid border-black/10 px-4 py-2"
   >
     <div class="mt-2">
@@ -20,13 +19,11 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import newsList from "../News/data";
-import { isJapan } from "@/utils/utils";
 
 export default defineComponent({
   setup() {
     return {
       news: newsList[0],
-      isJapan,
     };
   },
 });
