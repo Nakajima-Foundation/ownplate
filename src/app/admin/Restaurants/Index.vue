@@ -1338,7 +1338,7 @@ export default defineComponent({
     const removeAllMarker = () => {
       if (markers && markers.length > 0) {
         markers.forEach((marker) => {
-          marker.setMap(null);
+          marker.map = null;
         });
         markers.splice(0);
       }
