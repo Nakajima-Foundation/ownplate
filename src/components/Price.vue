@@ -11,19 +11,17 @@
 <script lang="ts">
 import { defineComponent, computed, PropType } from "vue";
 
-import { priceWithTax } from "@/utils/utils";
-import { RestaurantInfoData } from "@/models/RestaurantInfo";
-import { MenuData } from "@/models/menu";
+import { priceWithTax, type TaxableShop, type PricedMenu } from "@/utils/utils";
 
 export default defineComponent({
   name: "Price",
   props: {
     shopInfo: {
-      type: Object as PropType<RestaurantInfoData>,
+      type: Object as PropType<TaxableShop>,
       required: true,
     },
     menu: {
-      type: Object as PropType<MenuData>,
+      type: Object as PropType<PricedMenu>,
       required: true,
     },
     offset: {
