@@ -5,6 +5,7 @@ import {
   buildBaseline,
   compareToBaseline,
   countByFile,
+  describeAbnormalExit,
   findUnreadableErrorLines,
   parseVueTscOutput,
   renderRatchetReport,
@@ -213,5 +214,49 @@ describe("読めない出力を見つける", () => {
       findUnreadableErrorLines("Found 3 errors in 2 files.\n\n"),
       [],
     );
+  });
+});
+
+// 絶対パスや Windows 形式で来ると、読めてはいるのに src/ で始まらないので
+// 数から外れる。**黙って外れると門が緩む**ので、読めない扱いにして止める。
+describe("知らない場所を指す診断", () => {
+  it("絶対パスは読めない扱いにする", () => {
+    const absolute =
+      "/Users/who/repo/src/components/Abs.vue(3,7): error TS2322: Type 'string'.";
+    assert.strictEqual(parseVueTscOutput(absolute).length, 0);
+    assert.deepStrictEqual(findUnreadableErrorLines(absolute), [absolute]);
+  });
+
+  it("Windows 形式のパスも読めない扱いにする", () => {
+    const windows =
+      "C:\\repo\\src\\components\\Win.vue(3,7): error TS2322: Type 'string'.";
+    assert.strictEqual(parseVueTscOutput(windows).length, 0);
+    assert.deepStrictEqual(findUnreadableErrorLines(windows), [windows]);
+  });
+
+  // node_modules だけは「読めたうえで数えない」と決めてある。
+  it("node_modules は見送る場所として挙げてあるので止めない", () => {
+    const outside =
+      "node_modules/foo/index.d.ts(1,1): error TS2304: Cannot find name 'x'.";
+    assert.deepStrictEqual(findUnreadableErrorLines(outside), []);
+  });
+});
+
+// 出力が途中で切れたまま数えると、少なく出たぶんだけ据え置き一覧が緩む。
+describe("vue-tsc の終わり方", () => {
+  it("指摘なし（0）と指摘あり（2）は正常", () => {
+    assert.strictEqual(describeAbnormalExit(0, null), null);
+    assert.strictEqual(describeAbnormalExit(2, null), null);
+  });
+
+  // 殺されたとき status は null、signal に名前が入る。
+  it("合図で殺されたら止める", () => {
+    assert.ok(describeAbnormalExit(null, "SIGTERM")?.includes("SIGTERM"));
+    assert.ok(describeAbnormalExit(137, "SIGKILL")?.includes("SIGKILL"));
+  });
+
+  it("知らない終了コードでも止める", () => {
+    assert.ok(describeAbnormalExit(1, null)?.includes("1"));
+    assert.ok(describeAbnormalExit(null, null) !== null);
   });
 });

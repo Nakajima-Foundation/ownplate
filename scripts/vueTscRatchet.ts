@@ -46,22 +46,56 @@ const readLine = (line: string): Diagnostic | null => {
       };
 };
 
-// 数えるのは src/ の下だけ。node_modules 由来は repo の責任ではない。
+// 数えるのはここの下だけ。
+const COUNTED_PREFIX = "src/";
+// 読めたうえで数えないと決めた場所。repo の責任でないものだけを挙げる。
+// ここに無い場所が出てきたら、数え方が実物に追いついていないので止める
+// （絶対パスや Windows 形式で来ると、黙って捨てられてしまうため）。
+const IGNORED_PREFIXES = ["node_modules/"];
+
+const isCounted = (file: string) => file.startsWith(COUNTED_PREFIX);
+const isIgnored = (file: string) =>
+  IGNORED_PREFIXES.some((prefix) => file.startsWith(prefix));
+
 export const parseVueTscOutput = (stdout: string): Diagnostic[] =>
   stdout
     .split("\n")
     .map(readLine)
     .filter((diagnostic): diagnostic is Diagnostic => diagnostic !== null)
-    .filter((diagnostic) => diagnostic.file.startsWith("src/"));
+    .filter((diagnostic) => isCounted(diagnostic.file));
 
-// 読めなかった行。tsconfig が見つからないときの `error TS5058: ...` は
-// ファイル名を伴わないのでここに来る。**読めない行があるまま数えると 0 件と出て、
-// 据え置き一覧を空にしてしまい、門が二度と効かなくなる。**
+// 数えも見送りもできなかった行。tsconfig が見つからないときの `error TS5058: ...`
+// （ファイル名を伴わない）や、知らない場所を指す行がここに来る。
+// **読めない行があるまま数えると少なく出て、据え置き一覧を緩めてしまう。**
 export const findUnreadableErrorLines = (stdout: string): string[] =>
   stdout
     .split("\n")
     .filter((line) => LOOKS_LIKE_ERROR.test(line))
-    .filter((line) => readLine(line) === null);
+    .filter((line) => {
+      const diagnostic = readLine(line);
+      return (
+        diagnostic === null ||
+        !(isCounted(diagnostic.file) || isIgnored(diagnostic.file))
+      );
+    });
+
+// vue-tsc の終わり方。指摘が無ければ 0、あれば 2 を返す。
+// それ以外や、合図で殺された場合は、出力が途中で切れている恐れがある。
+const NO_DIAGNOSTICS = 0;
+const DIAGNOSTICS_REPORTED = 2;
+
+export const describeAbnormalExit = (
+  status: number | null,
+  signal: string | null,
+): string | null => {
+  if (signal !== null) {
+    return `vue-tsc が ${signal} で終わりました。出力が途中で切れています。`;
+  }
+  if (status !== NO_DIAGNOSTICS && status !== DIAGNOSTICS_REPORTED) {
+    return `vue-tsc の終了コードが ${status} でした。数え方が追いついていません。`;
+  }
+  return null;
+};
 
 export const countByFile = (diagnostics: Diagnostic[]): FileCounts =>
   diagnostics.reduce<FileCounts>((counts, diagnostic) => {

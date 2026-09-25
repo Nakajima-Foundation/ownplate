@@ -5,6 +5,7 @@ import {
   buildBaseline,
   compareToBaseline,
   countByFile,
+  describeAbnormalExit,
   findUnreadableErrorLines,
   parseVueTscOutput,
   renderRatchetReport,
@@ -25,6 +26,11 @@ const runVueTsc = (): string => {
   );
   if (result.error) {
     throw new Error("vue-tsc を起動できませんでした", { cause: result.error });
+  }
+  // 途中で切れた出力を数えると、少なく出たぶんだけ据え置き一覧が緩む。
+  const abnormal = describeAbnormalExit(result.status, result.signal);
+  if (abnormal !== null) {
+    throw new Error(abnormal);
   }
   return `${result.stdout ?? ""}${result.stderr ?? ""}`;
 };
