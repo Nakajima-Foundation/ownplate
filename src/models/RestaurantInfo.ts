@@ -72,8 +72,16 @@ export interface RestaurantInfoData {
   suspendUntil: { toDate: () => Date } | null;
 
   images: {
-    cover?: { path?: string; resizedImages?: { [key: string]: string } };
-    profile?: { path?: string; resizedImages?: { [key: string]: string } };
+    cover?: {
+      original?: string;
+      path?: string;
+      resizedImages?: { [key: string]: string };
+    };
+    profile?: {
+      original?: string;
+      path?: string;
+      resizedImages?: { [key: string]: string };
+    };
   };
   publicFlag: boolean;
   deletedFlag: boolean;
