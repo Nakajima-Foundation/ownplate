@@ -44,12 +44,21 @@ export const useAdminConfigToggle = (
 
 export const useAdminConfigToggle2 = (
   key: string,
-  uid: string,
+  uid: string | undefined,
   restaurantId: string,
   defaultValue: number,
   enableSave: boolean,
 ) => {
   const toggle = ref(defaultValue);
+  // 上と同じ。uid が無いまま adminConfigs/undefined/... を読み書きしない。
+  if (uid === undefined) {
+    return {
+      toggle,
+      switchToggle: () => {
+        // 書き込む先が無い。
+      },
+    };
+  }
   const path = adminRestaurantConfigPath(uid, restaurantId);
   const switchToggle = () => {
     setDoc(doc(db, path), { [key]: toggle.value }, { merge: true });
