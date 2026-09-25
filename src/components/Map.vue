@@ -103,7 +103,7 @@ export default defineComponent({
 
         const marker = new google.maps.marker.AdvancedMarkerElement({
           map,
-          position,
+          position: { lat: position.lat, lng: position.lng },
         });
         marker.addListener("click", () => {
           closeAllInfoWindows();
