@@ -142,7 +142,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, computed, onMounted } from "vue";
+import {
+  defineComponent,
+  ref,
+  watch,
+  computed,
+  onMounted,
+  PropType,
+} from "vue";
 import { beginSubmit } from "../../utils/beginSubmit";
 
 import { db, auth } from "@/lib/firebase/firebase9";
@@ -175,7 +182,7 @@ export default defineComponent({
   },
   props: {
     relogin: {
-      type: String,
+      type: String as PropType<string | null>,
     },
   },
   emits: ["dismissed"],

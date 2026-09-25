@@ -53,7 +53,7 @@ export default defineComponent({
       required: true,
     },
     hasFriends: {
-      type: Boolean,
+      type: Boolean as PropType<boolean | null>,
       required: false,
     },
     hasLine: {
