@@ -203,7 +203,7 @@
 
     <!-- promotion discount for before pay -->
     <div
-      v-if="enablePromotion"
+      v-if="enablePromotion && promotion"
       class="-mx-2 mt-2 rounded-lg bg-green-600/10 p-2"
     >
       <!-- promotion discount -->
@@ -221,7 +221,7 @@
         </div>
         <div class="text-right">
           <div class="text-base">
-            {{ $n(-discountPrice, "currency") }}
+            {{ $n(-(discountPrice ?? 0), "currency") }}
           </div>
         </div>
       </div>
