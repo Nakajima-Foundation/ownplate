@@ -17,7 +17,6 @@ const data = {
     },
   },
   serviceName: {
-    ownPlate: "OwnPlate",
     omochikaeri: "おもちかえり.com",
   },
   pageTitle: {

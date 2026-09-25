@@ -198,16 +198,19 @@ export default defineComponent({
   setup(props, ctx) {
     const isSaveAddress = ref(true);
     const customerInfo = ref<CustomerInfo>({});
-    const addressList = ref([]);
+    // 郵便番号の文書が持つ住所の一つ分（zipcodeJP/parse.js が作る形）。
+    type ZipAddress = {
+      prefectureId: number;
+      prefecture: string;
+      address1: string;
+      address2: string;
+      address3: string;
+    };
+    const addressList = ref<ZipAddress[]>([]);
 
     const { uid } = useUserData();
 
-    const updateAddress = (address: {
-      address2: string;
-      address3: string;
-      prefectureId: number;
-      prefecture: string;
-    }) => {
+    const updateAddress = (address: ZipAddress) => {
       const { address2, address3, prefectureId, prefecture } = address;
 
       const data = {
