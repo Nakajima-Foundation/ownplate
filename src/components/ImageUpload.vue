@@ -41,7 +41,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, PropType } from "vue";
 import {
   ImageUploadRejection,
   imageUploadRejection,
@@ -50,7 +50,7 @@ import {
 export default defineComponent({
   props: {
     preview: {
-      type: String,
+      type: String as PropType<string | null>,
       required: false,
     },
     // 親は文字列（style="width: 128px"）でも渡す。Object だけにすると
