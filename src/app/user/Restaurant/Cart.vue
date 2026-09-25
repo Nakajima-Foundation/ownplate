@@ -72,6 +72,7 @@
 import { defineComponent, PropType } from "vue";
 import type Promotion from "@/models/promotion";
 import type { RestaurantInfoData } from "@/models/RestaurantInfo";
+import type { OrderDataType } from "@/models/cartType";
 
 import CartItem from "@/app/user/Restaurant/CartItem.vue";
 
@@ -95,7 +96,7 @@ export default defineComponent({
       required: true,
     },
     orders: {
-      type: Object,
+      type: Object as PropType<OrderDataType>,
       required: true,
     },
     menuObj: {
