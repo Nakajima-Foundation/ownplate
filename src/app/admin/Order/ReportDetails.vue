@@ -188,9 +188,7 @@ export default defineComponent({
           Object.keys(orderItems).forEach((key) => {
             // key は writeonFirstLine が Number(key) === 0 で使うので残す。
             const itemIndex = Number(key);
-            const opt = Array.isArray(options[itemIndex] || [])
-              ? options[itemIndex]
-              : [options[itemIndex]];
+            const opt = forceArray(options[itemIndex] ?? "");
             try {
               items.push({
                 id: `${order.id}/${menuId}`,
