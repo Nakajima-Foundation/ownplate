@@ -1,4 +1,3 @@
-import { ownPlateConfig } from "@/config/project";
 import { orderType } from "@/utils/utils";
 import { stripe_regions_jp } from "../config/constant";
 import { OrderInfoData } from "./orderInfoData";
@@ -37,20 +36,13 @@ export const order2ReportData = (
       },
     };
   }
-  if (ownPlateConfig.region === "JP") {
-    const serviceTax =
-      Math.round(order.tip * (1 - 1 / (1 + serviceTaxRate)) * multiple) /
-      multiple;
-    order.accounting.service = {
-      revenue: order.tip,
-      tax: serviceTax,
-    };
-  } else {
-    order.accounting.service = {
-      revenue: order.tip,
-      tax: 0,
-    };
-  }
+  const serviceTax =
+    Math.round(order.tip * (1 - 1 / (1 + serviceTaxRate)) * multiple) /
+    multiple;
+  order.accounting.service = {
+    revenue: order.tip,
+    tax: serviceTax,
+  };
   order.type = orderType(order);
   if (!hasAccounting(order)) {
     throw new Error("order2ReportData: accounting was not filled");
