@@ -8,7 +8,9 @@ import {
   describeAbnormalExit,
   findUnreadableErrorLines,
   parseVueTscOutput,
+  refuseEmptyUpdate,
   renderRatchetReport,
+  totalOf,
   type Baseline,
 } from "./vueTscRatchet.ts";
 
@@ -43,6 +45,15 @@ const readBaseline = (): Baseline => {
   }
 };
 
+// 初回はまだ一覧が無い。その場合だけ 0 件からの更新を許す。
+const previousTotal = (): number => {
+  try {
+    return readBaseline().total;
+  } catch {
+    return 0;
+  }
+};
+
 // 読めない行があったら、数えずに落とす。tsconfig が見つからないときのように
 // 診断が1件も取れないまま --update すると、一覧が空になって門が効かなくなる。
 const refuseUnreadable = (output: string) => {
@@ -62,6 +73,14 @@ const main = () => {
   refuseUnreadable(output);
   const current = countByFile(parseVueTscOutput(output));
   if (process.argv.includes("--update")) {
+    const refusal = refuseEmptyUpdate(
+      totalOf(current),
+      previousTotal(),
+      process.argv.includes("--allow-empty"),
+    );
+    if (refusal !== null) {
+      throw new Error(refusal);
+    }
     writeFileSync(
       BASELINE_PATH,
       `${JSON.stringify(buildBaseline(current, NOTE), null, 2)}\n`,

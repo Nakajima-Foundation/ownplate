@@ -8,6 +8,7 @@ import {
   describeAbnormalExit,
   findUnreadableErrorLines,
   parseVueTscOutput,
+  refuseEmptyUpdate,
   renderRatchetReport,
   totalOf,
   type Baseline,
@@ -258,5 +259,27 @@ describe("vue-tsc の終わり方", () => {
   it("知らない終了コードでも止める", () => {
     assert.ok(describeAbnormalExit(1, null)?.includes("1"));
     assert.ok(describeAbnormalExit(null, null) !== null);
+  });
+});
+
+// 一覧を空にする更新は門を外すのと同じ。**設定の取りこぼしで 0 件になった場合と、
+// 本当に全部直った場合は、数からは区別できない。** だから明示を求める。
+describe("一覧を空にする更新", () => {
+  it("非空だった一覧を 0 件で上書きしようとしたら断る", () => {
+    assert.ok(refuseEmptyUpdate(0, 167, false)?.includes("--allow-empty"));
+  });
+
+  it("明示されていれば通す", () => {
+    assert.strictEqual(refuseEmptyUpdate(0, 167, true), null);
+  });
+
+  // 初回はまだ一覧が無い（0 件）ので、0 件からの更新は止めない。
+  it("元から 0 件なら断らない", () => {
+    assert.strictEqual(refuseEmptyUpdate(0, 0, false), null);
+  });
+
+  it("減っただけなら断らない", () => {
+    assert.strictEqual(refuseEmptyUpdate(1, 167, false), null);
+    assert.strictEqual(refuseEmptyUpdate(200, 167, false), null);
   });
 });

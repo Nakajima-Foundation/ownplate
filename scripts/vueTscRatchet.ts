@@ -84,6 +84,21 @@ export const findUnreadableErrorLines = (stdout: string): string[] =>
 const NO_DIAGNOSTICS = 0;
 const DIAGNOSTICS_REPORTED = 2;
 
+// 一覧を空にする更新は、門を外すのと同じ。**本当に全部直ったのか、設定の
+// 取りこぼしで 0 件になったのかは、数からは区別できない。** 前者なら明示して通す。
+export const refuseEmptyUpdate = (
+  currentTotal: number,
+  baselineTotal: number,
+  allowEmpty: boolean,
+): string | null =>
+  !allowEmpty && currentTotal === 0 && baselineTotal > 0
+    ? [
+        "vue-tsc: 指摘が 0 件でした。据え置き一覧を空にすると門が効かなくなります。",
+        "  設定の取りこぼしで 0 件になっていないか確かめてください。",
+        "  本当に全部直ったのなら --allow-empty を付けてください。",
+      ].join("\n")
+    : null;
+
 export const describeAbnormalExit = (
   status: number | null,
   signal: string | null,
