@@ -93,6 +93,23 @@ const isFileCounts = (value: unknown): value is FileCounts =>
 
 // 壊れた一覧を「無い」と同じに扱うと、空化や増加の守りをすり抜ける。
 // 無いのか壊れているのかを、呼ぶ側が区別できるようにする。
+// 壊れた一覧は検めでも更新でも同じ行き止まりになる。逃げ道を文言に持たせる。
+// 混ざる原因は併合: 別々の枝が別々の行を書き換えると、git は衝突させずに混ぜる。
+export const describeUnusableBaseline = (
+  parsed: unknown,
+  baselinePath: string,
+  updateCommand: string,
+): string | null => {
+  const invalid = describeInvalidBaseline(parsed);
+  if (invalid === null) {
+    return null;
+  }
+  return [
+    `${baselinePath}: ${invalid}`,
+    `併合で混ざったときは、消してから作り直す: rm ${baselinePath} && ${updateCommand}`,
+  ].join("\n");
+};
+
 export const describeInvalidBaseline = (parsed: unknown): string | null => {
   if (!isRecord(parsed)) {
     return "据え置き一覧の形が違います。";

@@ -7,7 +7,7 @@ import {
   countByFile,
   describeAbnormalExit,
   findUnreadableErrorLines,
-  describeInvalidBaseline,
+  describeUnusableBaseline,
   parseVueTscOutput,
   refuseBaselineUpdate,
   renderRatchetReport,
@@ -47,9 +47,9 @@ const readBaseline = (): Baseline | null => {
     return null;
   }
   const parsed: unknown = JSON.parse(raw);
-  const invalid = describeInvalidBaseline(parsed);
-  if (invalid !== null) {
-    throw new Error(`${BASELINE_PATH}: ${invalid}`);
+  const unusable = describeUnusableBaseline(parsed, BASELINE_PATH, UPDATE_COMMAND);
+  if (unusable !== null) {
+    throw new Error(unusable);
   }
   return parsed;
 };
