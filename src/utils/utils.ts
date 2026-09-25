@@ -223,7 +223,7 @@ export const useSoundPlay = () => {
   };
 };
 
-export const getSoundIndex = (nameKey: string) => {
+export const getSoundIndex = (nameKey: string | null | undefined) => {
   if (nameKey) {
     const index = soundFiles.findIndex((data) => data.nameKey === nameKey);
     return index >= 0 ? index : 0;
