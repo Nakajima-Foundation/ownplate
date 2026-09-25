@@ -1,8 +1,7 @@
 {
   "note": "vue-tsc の据え置き一覧。減る方向にしか動かさない。直したら --update で更新する。",
-  "total": 59,
+  "total": 58,
   "files": {
-    "src/app/admin/Messages/MessageCard.vue": 1,
     "src/app/admin/Order/OrderedInfo.vue": 2,
     "src/app/admin/Order/ReportDetails.vue": 1,
     "src/app/admin/Restaurants/ManageLine.vue": 1,
