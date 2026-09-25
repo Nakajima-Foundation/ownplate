@@ -3,10 +3,10 @@ import { isNull } from "../utils/commonUtils";
 
 export interface MenuImages {
   item: {
-    resizedImages: {
+    resizedImages?: {
       [key: string]: string;
     };
-    original: string;
+    original?: string;
     path?: string;
   };
 }
