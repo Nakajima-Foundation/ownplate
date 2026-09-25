@@ -13,7 +13,7 @@ import {
 const BASELINE_PATH = "vue-tsc-baseline.json";
 const UPDATE_COMMAND = "yarn typecheck:vue --update";
 const NOTE =
-  "vue-tsc の据え置き一覧。減る方向にしか動かさない。残りの内訳は omochikaeri-docs の追跡 issue を参照。";
+  "vue-tsc の据え置き一覧。減る方向にしか動かさない。直したら --update で更新する。";
 
 // repo の vue-tsc を直に呼ぶ。npx だと別の TypeScript を連れてきて落ちる。
 const runVueTsc = (): string => {

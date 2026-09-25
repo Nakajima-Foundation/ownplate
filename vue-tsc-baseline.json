@@ -1,5 +1,5 @@
 {
-  "note": "vue-tsc の据え置き一覧。減る方向にしか動かさない。残りの内訳は omochikaeri-docs の追跡 issue を参照。",
+  "note": "vue-tsc の据え置き一覧。減る方向にしか動かさない。直したら --update で更新する。",
   "total": 167,
   "files": {
     "src/app/admin/AllOrders.vue": 2,
