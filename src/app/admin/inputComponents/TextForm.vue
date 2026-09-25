@@ -37,7 +37,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import { inputValueOf } from "@/utils/domEvent";
 import { useDialogStore } from "@/store/dialog";
 
@@ -71,7 +71,7 @@ export default defineComponent({
       required: true,
     },
     error: {
-      type: Array,
+      type: Array as PropType<string[]>,
       required: true,
     },
     modelValue: {

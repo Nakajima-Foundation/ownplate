@@ -1,6 +1,6 @@
 {
   "note": "vue-tsc の据え置き一覧。減る方向にしか動かさない。直したら --update で更新する。",
-  "total": 118,
+  "total": 115,
   "files": {
     "src/app/admin/AllOrders.vue": 2,
     "src/app/admin/Index.vue": 3,
@@ -22,7 +22,6 @@
     "src/app/admin/Watcher/SoundConfigWatcher.vue": 2,
     "src/app/admin/inputComponents/HourInput2.vue": 1,
     "src/app/admin/inputComponents/HoursInput.vue": 2,
-    "src/app/admin/inputComponents/TextForm.vue": 1,
     "src/app/auth/LineCallback.vue": 3,
     "src/app/liff/LiffWrapper.vue": 1,
     "src/app/super/AllAdmins.vue": 2,
@@ -30,12 +29,10 @@
     "src/app/super/AllRestaurants.vue": 2,
     "src/app/user/DiscountHistory.vue": 2,
     "src/app/user/OrderPage/BeforePaid/ECCustomer.vue": 5,
-    "src/app/user/OrderPage/BeforePaid/Map.vue": 1,
     "src/app/user/OrderPage/BeforePaid/TimeToPickup.vue": 2,
     "src/app/user/OrderPage/OrderInfo.vue": 4,
     "src/app/user/OrderPage/Pay.vue": 2,
     "src/app/user/OrderPage/UserCustomerInfo.vue": 1,
-    "src/app/user/Profile/DeleteAccount.vue": 1,
     "src/app/user/Profile/Line.vue": 1,
     "src/app/user/Restaurant/Cart.vue": 2,
     "src/app/user/Restaurant/CartItem.vue": 1,
