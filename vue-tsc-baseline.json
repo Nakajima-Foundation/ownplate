@@ -6,7 +6,6 @@
     "src/app/admin/Order/OrderedInfo.vue": 2,
     "src/app/admin/Order/ReportDetails.vue": 1,
     "src/app/admin/Restaurants/Discount/Discounts.vue": 4,
-    "src/app/admin/Restaurants/Index.vue": 1,
     "src/app/admin/Restaurants/ManageLine.vue": 1,
     "src/app/admin/Restaurants/OrderHistory.vue": 3,
     "src/app/admin/Restaurants/OrderInfoPage.vue": 5,
