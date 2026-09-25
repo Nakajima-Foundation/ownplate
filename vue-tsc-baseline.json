@@ -31,7 +31,7 @@
     "src/app/user/Profile/Line.vue": 1,
     "src/app/user/Restaurant/Cart.vue": 2,
     "src/app/user/Restaurant/CartItem.vue": 1,
-    "src/app/user/Restaurant/Menu.vue": 5,
+    "src/app/user/Restaurant/Menu.vue": 4,
     "src/app/user/Restaurant/ShopInfo.vue": 5,
     "src/app/user/RestaurantCard.vue": 2,
     "src/app/user/RestaurantIndex.vue": 3,
