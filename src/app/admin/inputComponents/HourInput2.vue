@@ -16,7 +16,7 @@
       >
         <option
           v-for="(timeItem, index) of timeList"
-          :key="timeItem"
+          :key="index"
           :value="index === 0 ? null : (index - 1) * 10"
         >
           {{ timeItem }}
