@@ -1278,7 +1278,8 @@ export default defineComponent({
 
     // only owner
     const { uid } = useAdminUids();
-    if (!checkShopOwner(props.shopInfo, uid.value)) {
+    const ownerUid = uid.value;
+    if (!ownerUid || !checkShopOwner(props.shopInfo, ownerUid)) {
       return notFoundResponse;
     }
     notFound.value = false;
@@ -1469,7 +1470,7 @@ export default defineComponent({
       try {
         const id = await copyRestaurant(
           editShopInfo,
-          uid.value,
+          ownerUid,
           restaurantId.value,
         );
         router.push({
