@@ -788,17 +788,17 @@ export default defineComponent({
         editedAvailableOrders.value[Number(key)] = true;
       });
     });
-    const timeStampToText = (timestamp: Timestamp) => {
+    const timeStampToText = (timestamp?: Timestamp) => {
       if (timestamp) {
         return d(timestamp.toDate(), "long");
       }
       return "";
     };
     const timeOfEvents = computed(() => {
-      const mapping = Object.keys(timeEventMapping).reduce<{
+      const mapping = Object.entries(timeEventMapping).reduce<{
         [key: string]: string;
-      }>((tmp, key) => {
-        tmp[key] = timeStampToText(orderInfo.value[timeEventMapping[key]]);
+      }>((tmp, [key, field]) => {
+        tmp[key] = timeStampToText(orderInfo.value[field]);
         return tmp;
       }, {});
       return mapping;
