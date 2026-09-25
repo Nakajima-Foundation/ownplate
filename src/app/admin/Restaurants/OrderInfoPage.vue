@@ -950,7 +950,7 @@ export default defineComponent({
       }
       const shippingCost = costCal(
         postageInfo.value,
-        orderInfo.value?.customerInfo?.prefectureId as number,
+        orderInfo.value?.customerInfo?.prefectureId,
         ret.total,
       );
 

@@ -8,7 +8,7 @@ interface PostageInfo {
 
 export const costCal = (
   postageInfo: Partial<PostageInfo> | null | undefined,
-  prefectureId: number,
+  prefectureId: number | string | undefined,
   total: number,
 ) => {
   const postageList = postageInfo?.postageList?.default || [];
@@ -19,7 +19,7 @@ export const costCal = (
     }
   }
   if (prefectureId && postageList.length > 0) {
-    return Number(postageList[prefectureId - 1]);
+    return Number(postageList[Number(prefectureId) - 1]);
   }
   return 0;
 };

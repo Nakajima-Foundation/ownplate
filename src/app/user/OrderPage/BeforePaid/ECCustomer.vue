@@ -170,6 +170,7 @@ import { defineComponent, ref, computed, PropType } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { countObj, useUserData } from "@/utils/utils";
+import { inputValueOf } from "@/utils/domEvent";
 import { regionalSetting } from "@/config/constant";
 
 import { CustomerInfo } from "@/models/customer";
@@ -222,9 +223,11 @@ export default defineComponent({
       customerInfo.value = { ...customerInfo.value, ...data };
       addressList.value = [];
     };
-    const updatePrefecture = (e) => {
-      const prefectureId = e.target.value;
-      const prefecture = regionalSetting.AddressStates[prefectureId - 1];
+    const updatePrefecture = (e: Event) => {
+      // 欄の値は文字列。保存もそのまま文字列で入る（郵便番号から選んだときは数）。
+      const prefectureId = inputValueOf(e);
+      const prefecture =
+        regionalSetting.AddressStates[Number(prefectureId) - 1];
 
       if (prefecture) {
         customerInfo.value = {
