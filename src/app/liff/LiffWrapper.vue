@@ -127,7 +127,6 @@ export default defineComponent({
           (async () => {
             const { data } = await liffAuthenticate({
               liffIndexId: liffIndexId.value,
-              liffId: liffId.value,
               token: liffIdToken.value,
             });
             if (data.customToken) {
