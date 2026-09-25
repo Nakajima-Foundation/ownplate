@@ -538,7 +538,9 @@ export default defineComponent({
       );
       return menuLists
         .map((itemId) => {
-          return { ...itemsObj[itemId] };
+          // itemsObj はこの id で引いているので、拾い直しても同じ値になる。
+          // 型の上でも id が確定し、添字として使えるようになる。
+          return { ...itemsObj[itemId], id: itemId };
         })
         .filter(lunchOrDinnerFilter)
         .filter((item) => {
