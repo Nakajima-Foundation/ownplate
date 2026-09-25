@@ -4,7 +4,7 @@ import { type MenuData, type TitleData, getNewItemData } from "./menu";
 export const copyMenuData = (
   item: MenuData,
   isJP: boolean,
-  uid: string,
+  uid: string | undefined,
 ): MenuData => {
   const base = getNewItemData(item, isJP, item.validatedFlag);
   const data = {
@@ -17,7 +17,7 @@ export const copyMenuData = (
   return data;
 };
 
-export const getBlankMenuItem = (uid: string): MenuData => {
+export const getBlankMenuItem = (uid: string | undefined): MenuData => {
   const itemData = {
     itemName: "",
     itemAliasesName: "",
@@ -38,7 +38,7 @@ export const getBlankMenuItem = (uid: string): MenuData => {
   };
   return itemData;
 };
-export const getBlankTitleItem = (uid: string): TitleData => {
+export const getBlankTitleItem = (uid: string | undefined): TitleData => {
   const data = {
     name: "",
     uid,

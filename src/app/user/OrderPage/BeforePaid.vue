@@ -109,13 +109,12 @@
           <div class="mt-4" v-if="orderInfo.isDelivery">
             <span
               v-if="
-                $refs.ecCustomerRef &&
-                $refs.ecCustomerRef.ecErrors['location'].length > 0
+                ecCustomerRef && ecCustomerRef.ecErrors['location'].length > 0
               "
               class="font-bold text-red-700"
             >
               <div
-                v-for="(error, key) in $refs.ecCustomerRef.ecErrors['location']"
+                v-for="(error, key) in ecCustomerRef.ecErrors['location']"
                 :key="key"
               >
                 {{ $t(error) }}
@@ -125,9 +124,7 @@
               ref="orderPageMapRef"
               @updateHome="updateHome"
               :shopInfo="shopInfo"
-              :fullAddress="
-                $refs.ecCustomerRef && $refs.ecCustomerRef.fullAddress
-              "
+              :fullAddress="ecCustomerRef && ecCustomerRef.fullAddress"
               :deliveryInfo="deliveryData"
             />
           </div>
@@ -338,11 +335,7 @@
 
             <!-- Error message for ec and delivery -->
             <div
-              v-if="
-                requireAddress &&
-                $refs.ecCustomerRef &&
-                $refs.ecCustomerRef.hasEcError
-              "
+              v-if="requireAddress && ecCustomerRef && ecCustomerRef.hasEcError"
               class="mt-2 text-center font-bold text-red-700"
             >
               {{ $t("order.alertReqireAddress") }}

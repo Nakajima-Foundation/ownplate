@@ -28,7 +28,7 @@ export interface TitleData {
   deletedFlag: boolean;
 }
 
-export interface MenuItem {
+export type MenuItem = {
   price: number;
   itemName: string;
   itemPhoto?: string;
@@ -39,9 +39,9 @@ export interface MenuItem {
   exceptDay?: { [key: string]: boolean };
   exceptHour?: ExceptHour;
   tax: string;
-}
+};
 
-export interface MenuData extends MenuItem {
+export type MenuData = MenuItem & {
   _dataType?: "menu"; // set by doc2data. not need to store in db.
   id?: string; // set by doc2data. not need to store in db.
   itemDescription: string;
@@ -63,7 +63,7 @@ export interface MenuData extends MenuItem {
   validatedFlag: boolean;
 
   createdAt?: Timestamp | FieldValue;
-}
+};
 
 // for util function
 

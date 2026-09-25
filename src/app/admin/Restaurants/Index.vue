@@ -483,7 +483,7 @@
                   :key="k"
                 >
                   {{ $t("editMenu." + taxRateKeys[taxItem]) }}
-                  {{ editShopInfo[taxItem + "Tax"] }}%
+                  {{ editShopInfo[`${taxItem}Tax`] }}%
                 </div>
               </div>
             </div>
