@@ -16,7 +16,6 @@ const data = {
     },
   },
   serviceName: {
-    ownPlate: "OwnPlate",
     omochikaeri: "Omochikaeri.com",
   },
   pageTitle: {
