@@ -152,7 +152,7 @@ export default defineComponent({
         } else {
           last.value = null;
         }
-        const _admins = snapshot.docs.map(doc2data("admin"));
+        const _admins = snapshot.docs.map(doc2data<AdminData>("admin"));
         _admins.forEach((admin) => {
           admins.value.push(admin);
           // NOTE: We are getting extra data only once for each admin
