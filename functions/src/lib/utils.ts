@@ -1,7 +1,6 @@
 import * as functions from "firebase-functions/v1";
 import { HttpsError } from "firebase-functions/v2/https";
 import { defineSecret } from "firebase-functions/params";
-import { stripe_regions_jp } from "../common/constant";
 import Stripe from "stripe";
 import * as Sentry from "@sentry/node";
 
@@ -9,7 +8,6 @@ import { Context } from "../models/TestType";
 import { RestaurantInfoData } from "../models/RestaurantInfo";
 import { DocumentData, DocumentReference, FieldPath, Firestore, QueryDocumentSnapshot } from "firebase-admin/firestore";
 
-export const stripeRegion = stripe_regions_jp;
 const stripe_wh_secret = defineSecret("STRIPE_WH_SECRET");
 
 const stripe_secret = defineSecret("STRIPE_SECRET");
