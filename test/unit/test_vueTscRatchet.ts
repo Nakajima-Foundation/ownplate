@@ -7,6 +7,7 @@ import {
   countByFile,
   describeAbnormalExit,
   describeInvalidBaseline,
+  describeUnusableBaseline,
   findUnreadableErrorLines,
   parseVueTscOutput,
   refuseBaselineUpdate,
@@ -356,5 +357,36 @@ describe("据え置き一覧そのものを検める", () => {
     assert.ok(
       describeInvalidBaseline({ total: 0, files: { "a.vue": 3 } }) !== null,
     );
+  });
+});
+
+// 壊れた一覧は検めでも更新でも止まる。抜け道を書いていないと、
+// 次に併合で混ざった人が消す以外の手を思いつけない。
+describe("describeUnusableBaseline", () => {
+  const PATH = "vue-tsc-baseline.json";
+  const CMD = "yarn typecheck:vue --update";
+
+  it("読める一覧では何も言わない", () => {
+    assert.equal(
+      describeUnusableBaseline(baselineOf({ "a.vue": 3 }), PATH, CMD),
+      null,
+    );
+  });
+
+  it("壊れているときは、理由と作り直し方の両方を返す", () => {
+    const invalidShapes: unknown[] = [
+      null,
+      [],
+      "x",
+      { total: 0 },
+      { total: 1, files: { "a.vue": "1" } },
+      { total: 0, files: { "a.vue": 3 } },
+    ];
+    invalidShapes.forEach((shape) => {
+      const message = describeUnusableBaseline(shape, PATH, CMD);
+      assert.ok(message !== null);
+      assert.ok(message.includes(describeInvalidBaseline(shape) ?? "‼"));
+      assert.ok(message.includes(`rm ${PATH} && ${CMD}`));
+    });
   });
 });
