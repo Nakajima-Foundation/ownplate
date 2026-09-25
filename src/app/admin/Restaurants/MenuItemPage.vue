@@ -876,7 +876,7 @@ import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useHead } from "@unhead/vue";
 
-import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { RestaurantInfoData, CategoryKey } from "@/models/RestaurantInfo";
 
 export default defineComponent({
   name: "MenuItemPage",
@@ -951,7 +951,7 @@ export default defineComponent({
     const submitting = ref(false);
 
     const files: { [key: string]: File } = {};
-    const categoryKey = ref<string | null>(null);
+    const categoryKey = ref<CategoryKey | null>(null);
     const restaurants = ref<RestaurantInfoData[]>([]);
     const copyRestaurantId = ref<string | null>(null);
 
@@ -1058,7 +1058,7 @@ export default defineComponent({
     const handleDismissed = () => {
       categoryKey.value = null;
     };
-    const editCategory = (key: string) => {
+    const editCategory = (key: CategoryKey) => {
       categoryKey.value = key;
     };
     const previewMenu = ref();
