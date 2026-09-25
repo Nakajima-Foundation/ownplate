@@ -91,7 +91,7 @@ export const timeEventMapping = {
   order_canceled_by_customer: "orderCustomerCanceledAt",
   transaction_complete: "transactionCompletedAt",
   transaction_hide: "transactionHideAt", // special condition
-};
+} as const;
 
 export const stripe_regions_jp = {
   langs: ["ja"],

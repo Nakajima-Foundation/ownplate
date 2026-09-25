@@ -68,6 +68,8 @@ export interface OrderInfoData {
   lastUpdatedAt: Timestamp;
   orderCustomerCanceledAt: Timestamp;
   orderRestaurantCanceledAt?: Timestamp;
+  orderCookingCompletedAt?: Timestamp;
+  transactionHideAt?: Timestamp;
   uidPaymentCanceledBy: boolean;
   discountPrice: number;
 
