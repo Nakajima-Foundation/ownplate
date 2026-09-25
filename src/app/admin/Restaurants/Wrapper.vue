@@ -28,9 +28,11 @@
         v-if="noRestaurant === false"
         @updateRestaurant="updateRestaurant"
       ></router-view>
-      <NotificationWatcher :notificationConfig="notificationConfig" />
-      <SoundConfigWatcher :notificationConfig="notificationConfig" />
-      <NewOrderWatcher :notificationConfig="notificationConfig" />
+      <template v-if="notificationConfig">
+        <NotificationWatcher :notificationConfig="notificationConfig" />
+        <SoundConfigWatcher :notificationConfig="notificationConfig" />
+        <NewOrderWatcher :notificationConfig="notificationConfig" />
+      </template>
       <t-modal v-model:active="isOpen" width="488">
         <PartnersContact :id="contactPartner?.id" />
       </t-modal>
