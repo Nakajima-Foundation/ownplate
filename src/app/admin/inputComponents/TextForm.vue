@@ -75,7 +75,7 @@ export default defineComponent({
       required: true,
     },
     modelValue: {
-      type: String,
+      type: String as PropType<string | undefined>,
       required: true,
     },
   },
