@@ -129,4 +129,39 @@ describe("getOrderItems", () => {
       [],
     );
   });
+
+  // 明細の v-for の鍵はこの orderIndex から作る。重複すると Vue が別の行の DOM を
+  // 使い回すので、商品 id に区切り文字や数字が混ざっても衝突しないことを確かめる。
+  it("orderIndex は行ごとに必ず違う", () => {
+    const menuIds = ["bento", "bento-1", "bento-12", "1", "1-2", "a-b-c"];
+    const lineCounts = [1, 2, 3];
+    const menuItems = Object.fromEntries(menuIds.map((id) => [id, ordered]));
+    const menuObj = Object.fromEntries(menuIds.map((id) => [id, current]));
+
+    const checkOne = (lines: number[]) => {
+      const order: { [key: string]: number[] } = {};
+      const options: { [key: string]: string[] } = {};
+      menuIds.forEach((id, index) => {
+        const count = lines[index];
+        order[id] = Array.from({ length: count }, (_unused, n) => n + 1);
+        options[id] = Array.from({ length: count }, (_unused, n) => `opt${n}`);
+      });
+      const keys = itemsOf(order, options, menuItems, menuObj).map((row) =>
+        row.orderIndex.join("-"),
+      );
+      assert.strictEqual(new Set(keys).size, keys.length);
+    };
+
+    let checked = 0;
+    const walk = (lines: number[]) => {
+      if (lines.length === menuIds.length) {
+        checkOne(lines);
+        checked += 1;
+        return;
+      }
+      lineCounts.forEach((count) => walk([...lines, count]));
+    };
+    walk([]);
+    assert.strictEqual(checked, lineCounts.length ** menuIds.length);
+  });
 });
