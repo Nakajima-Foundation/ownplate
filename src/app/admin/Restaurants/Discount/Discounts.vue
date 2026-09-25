@@ -193,17 +193,17 @@ export default defineComponent({
   props: {
     shopInfo: {
       type: Object as PropType<RestaurantInfoData>,
-      required: false,
+      required: true,
     },
   },
   setup(props) {
-    const id = props.shopInfo?.restaurantId;
-    const { promotionDataSet } = usePromotionsForAdmin(id as string);
+    const id = props.shopInfo.restaurantId;
+    const { promotionDataSet } = usePromotionsForAdmin(id);
 
     const { ownerUid } = useAdminUids();
 
     if (
-      !checkShopAccount(props.shopInfo || {}, ownerUid.value) ||
+      !checkShopAccount(props.shopInfo, ownerUid.value) ||
       !ownerUid.value
     ) {
       return notFoundResponse;
