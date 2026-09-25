@@ -1,6 +1,5 @@
 import { useRouter, useRoute } from "vue-router";
 import { useUserStore } from "@/store/user";
-import { RestaurantInfoData } from "../models/RestaurantInfo";
 
 export const checkAdminPermission = () => {
   const userStore = useUserStore();
@@ -20,17 +19,17 @@ export const checkAdminPermission = () => {
 
 // 呼び手が渡す uid は「まだ分かっていない」ことがある（サインインの確認前など）。
 // そのときは一致しない扱いにする。両方が undefined でも通してはいけない。
-const belongsTo = (shopInfo: RestaurantInfoData, uid: string | undefined) =>
+const belongsTo = (shopInfo: { uid?: string }, uid: string | undefined) =>
   uid !== undefined && shopInfo.uid === uid;
 
 // allow subAccounts
 export const checkShopAccount = (
-  shopInfo: RestaurantInfoData,
+  shopInfo: { uid?: string },
   ownerUid: string | undefined,
 ) => belongsTo(shopInfo, ownerUid);
 
 // only owner
 export const checkShopOwner = (
-  shopInfo: RestaurantInfoData,
+  shopInfo: { uid?: string },
   uidAdmin: string | undefined,
 ) => belongsTo(shopInfo, uidAdmin);

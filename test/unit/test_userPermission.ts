@@ -61,6 +61,25 @@ describe("checkShopOwner", () => {
   });
 });
 
+// Discount の3画面は `props.shopInfo || {}` を渡す。店舗がまだ読めていないときは
+// 本当に空のオブジェクトが来るので、その形で通らないことを留めておく。
+describe("店舗がまだ読めていないとき", () => {
+  it("keeps an empty shop out, whatever uid is offered", () => {
+    [undefined, "", "owner-uid", "someone-else"].forEach((uid) => {
+      assert.strictEqual(
+        checkShopAccount({}, uid),
+        false,
+        `uid=${JSON.stringify(uid)}`,
+      );
+      assert.strictEqual(
+        checkShopOwner({}, uid),
+        false,
+        `uid=${JSON.stringify(uid)}`,
+      );
+    });
+  });
+});
+
 // 中身が同じであることを留めておく。片方だけ直すと、もう片方が取り残される。
 describe("2つの判定は同じ答えを返す", () => {
   it("agrees on every uid, because the difference is in what the caller passes", () => {
