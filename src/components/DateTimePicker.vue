@@ -40,11 +40,12 @@
             :key="index"
             @click="selectDate(day)"
             :class="[
-              'flex h-8 w-8 cursor-pointer items-center justify-center rounded-full',
+              'flex h-8 w-8 items-center justify-center rounded-full',
+              isDisabled(day) ? 'cursor-not-allowed' : 'cursor-pointer',
               { 'text-gray-300': isDisabled(day) && !isSelected(day) },
               { 'bg-blue-500 text-white hover:bg-blue-600': isSelected(day) },
               { 'text-gray-400': !isSameMonth(day) && !isDisabled(day) },
-              { 'hover:bg-gray-200': !isSelected(day) },
+              { 'hover:bg-gray-200': !isSelected(day) && !isDisabled(day) },
               { 'ring-2 ring-blue-500': isToday(day) && !isSelected(day) },
             ]"
           >
@@ -84,6 +85,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
 import moment from "moment";
+import { isDateOutOfRange } from "@/utils/datePickerBounds";
 import { useI18n } from "vue-i18n";
 
 const props = defineProps<{
@@ -159,15 +161,13 @@ const isSameMonth = (day: Date) => {
   return moment(day).isSame(currentMonth.value, "month");
 };
 
-const isDisabled = (day: Date) => {
-  if (props.minDate && moment(day).isBefore(moment(props.minDate), "day"))
-    return true;
-  if (props.maxDate && moment(day).isAfter(moment(props.maxDate), "day"))
-    return true;
-  return false;
-};
+const isDisabled = (day: Date) =>
+  isDateOutOfRange(day, props.minDate, props.maxDate);
 
 const selectDate = (day: Date) => {
+  if (isDisabled(day)) {
+    return;
+  }
   const newDate = moment(day).hour(hours.value).minute(minutes.value).toDate();
   emit("update:modelValue", newDate);
 };
