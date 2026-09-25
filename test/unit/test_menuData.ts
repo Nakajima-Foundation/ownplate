@@ -8,8 +8,6 @@ import {
 } from "../../src/models/menuUtils.ts";
 import { menuFixture } from "../fixtures/menu.ts";
 
-const JP = true;
-const NOT_JP = false;
 const VALIDATED = true;
 const NOT_VALIDATED = false;
 
@@ -21,55 +19,48 @@ describe("getNewItemData", () => {
   it("never publishes an item that has not been validated", () => {
     const wantsToBePublic = menuFixture({ publicFlag: true });
     assert.strictEqual(
-      getNewItemData(wantsToBePublic, JP, NOT_VALIDATED).publicFlag,
+      getNewItemData(wantsToBePublic, NOT_VALIDATED).publicFlag,
       false,
     );
     assert.strictEqual(
-      getNewItemData(wantsToBePublic, JP, VALIDATED).publicFlag,
+      getNewItemData(wantsToBePublic, VALIDATED).publicFlag,
       true,
     );
   });
 
   it("keeps a validated item private when the owner asked for private", () => {
     const item = menuFixture({ publicFlag: false });
-    assert.strictEqual(getNewItemData(item, JP, VALIDATED).publicFlag, false);
+    assert.strictEqual(getNewItemData(item, VALIDATED).publicFlag, false);
   });
 
   // 売り切れは保存のたびに外れる。売り切れにした商品の説明を直して保存すると、
   // 客の画面にまた並ぶ。意図した挙動かどうかは別として、いまはそう動く。
   it("clears sold-out every time the item is saved", () => {
     const soldOut = menuFixture({ soldOut: true });
-    assert.strictEqual(getNewItemData(soldOut, JP, VALIDATED).soldOut, false);
+    assert.strictEqual(getNewItemData(soldOut, VALIDATED).soldOut, false);
   });
 
   it("never carries a deleted flag into the saved item", () => {
     const deleted = menuFixture({ deletedFlag: true });
-    assert.strictEqual(
-      getNewItemData(deleted, JP, VALIDATED).deletedFlag,
-      false,
-    );
+    assert.strictEqual(getNewItemData(deleted, VALIDATED).deletedFlag, false);
   });
 
   // 円に小数は無い。丸めないと、注文の合計が1円ずれる。
-  it("rounds the price to whole yen in Japan, and leaves it alone elsewhere", () => {
+  it("rounds the price to whole yen", () => {
     assert.strictEqual(
-      getNewItemData(menuFixture({ price: 500.4 }), JP, VALIDATED).price,
+      getNewItemData(menuFixture({ price: 500.4 }), VALIDATED).price,
       500,
     );
     assert.strictEqual(
-      getNewItemData(menuFixture({ price: 500.5 }), JP, VALIDATED).price,
+      getNewItemData(menuFixture({ price: 500.5 }), VALIDATED).price,
       501,
-    );
-    assert.strictEqual(
-      getNewItemData(menuFixture({ price: 500.5 }), NOT_JP, VALIDATED).price,
-      500.5,
     );
   });
 
   it("gives an item with no options an empty list rather than nothing", () => {
     const item = menuFixture({ itemOptionCheckbox: [] });
     assert.deepStrictEqual(
-      getNewItemData(item, JP, VALIDATED).itemOptionCheckbox,
+      getNewItemData(item, VALIDATED).itemOptionCheckbox,
       [],
     );
   });
@@ -78,20 +69,19 @@ describe("getNewItemData", () => {
   it("carries the alias the owner typed", () => {
     const item = menuFixture({ itemAliasesName: "からあげ" });
     assert.strictEqual(
-      getNewItemData(item, JP, VALIDATED).itemAliasesName,
+      getNewItemData(item, VALIDATED).itemAliasesName,
       "からあげ",
     );
   });
 
   it("gives an item with no alias an empty one rather than nothing", () => {
     const item = menuFixture({ itemAliasesName: "" });
-    assert.strictEqual(getNewItemData(item, JP, VALIDATED).itemAliasesName, "");
+    assert.strictEqual(getNewItemData(item, VALIDATED).itemAliasesName, "");
   });
 
   it("carries the lunch and dinner settings across", () => {
     const both = getNewItemData(
       menuFixture({ availableLunch: true, availableDinner: true }),
-      JP,
       VALIDATED,
     );
     assert.strictEqual(both.availableLunch, true);
@@ -99,7 +89,6 @@ describe("getNewItemData", () => {
 
     const neither = getNewItemData(
       menuFixture({ availableLunch: false, availableDinner: false }),
-      JP,
       VALIDATED,
     );
     assert.strictEqual(neither.availableLunch, false);
@@ -107,7 +96,6 @@ describe("getNewItemData", () => {
 
     const lunchOnly = getNewItemData(
       menuFixture({ availableLunch: true, availableDinner: false }),
-      JP,
       VALIDATED,
     );
     assert.strictEqual(lunchOnly.availableLunch, true);
@@ -116,7 +104,7 @@ describe("getNewItemData", () => {
 
   it("carries the days the item is not sold on", () => {
     const item = menuFixture({ exceptDay: { "0": true, "6": true } });
-    assert.deepStrictEqual(getNewItemData(item, JP, VALIDATED).exceptDay, {
+    assert.deepStrictEqual(getNewItemData(item, VALIDATED).exceptDay, {
       "0": true,
       "6": true,
     });
@@ -124,17 +112,17 @@ describe("getNewItemData", () => {
 
   it("gives an item with no excluded days an empty holder", () => {
     assert.deepStrictEqual(
-      getNewItemData(menuFixture(), JP, VALIDATED).exceptDay,
+      getNewItemData(menuFixture(), VALIDATED).exceptDay,
       {},
     );
   });
 
   it("keeps the options the owner set", () => {
     const item = menuFixture({ itemOptionCheckbox: ["サイズ,S,M", "のり"] });
-    assert.deepStrictEqual(
-      getNewItemData(item, JP, VALIDATED).itemOptionCheckbox,
-      ["サイズ,S,M", "のり"],
-    );
+    assert.deepStrictEqual(getNewItemData(item, VALIDATED).itemOptionCheckbox, [
+      "サイズ,S,M",
+      "のり",
+    ]);
   });
 
   // 無いときに空の入れ物を置くのは、Firestore が undefined を拒むため。
@@ -148,20 +136,17 @@ describe("getNewItemData", () => {
       resizedImages: { "600": "a-600.jpg" },
     };
     const withImage = menuFixture({ images: { item: itemImage } });
-    assert.deepStrictEqual(getNewItemData(withImage, JP, VALIDATED).images, {
+    assert.deepStrictEqual(getNewItemData(withImage, VALIDATED).images, {
       item: itemImage,
     });
-    assert.deepStrictEqual(
-      getNewItemData(menuFixture(), JP, VALIDATED).images,
-      {},
-    );
+    assert.deepStrictEqual(getNewItemData(menuFixture(), VALIDATED).images, {});
   });
 });
 
 // 販売しない時間帯。店舗オーナーは終了を先に打つことがある。
 describe("getNewItemData の除外時間", () => {
   const exceptHourOf = (start?: number, end?: number) =>
-    getNewItemData(menuFixture({ exceptHour: { start, end } }), JP, VALIDATED)
+    getNewItemData(menuFixture({ exceptHour: { start, end } }), VALIDATED)
       .exceptHour;
 
   it("keeps a range that reads forwards", () => {
@@ -197,21 +182,17 @@ describe("copyMenuData", () => {
 
   it("never publishes the copy, even when the original is public", () => {
     const published = menuFixture({ publicFlag: true, validatedFlag: true });
-    assert.strictEqual(copyMenuData(published, JP, OWNER).publicFlag, false);
+    assert.strictEqual(copyMenuData(published, OWNER).publicFlag, false);
   });
 
   it("gives the copy to the owner who made it", () => {
-    const copied = copyMenuData(
-      menuFixture({ uid: "someone-else" }),
-      JP,
-      OWNER,
-    );
+    const copied = copyMenuData(menuFixture({ uid: "someone-else" }), OWNER);
     assert.strictEqual(copied.uid, OWNER);
   });
 
   it("stamps the copy with a creation time", () => {
     assert.notStrictEqual(
-      copyMenuData(menuFixture(), JP, OWNER).createdAt,
+      copyMenuData(menuFixture(), OWNER).createdAt,
       undefined,
     );
   });
@@ -222,7 +203,7 @@ describe("copyMenuData", () => {
       price: 800,
       itemOptionCheckbox: ["サイズ,S,M"],
     });
-    const copied = copyMenuData(original, JP, OWNER);
+    const copied = copyMenuData(original, OWNER);
     assert.strictEqual(copied.itemName, "から揚げ");
     assert.strictEqual(copied.price, 800);
     assert.deepStrictEqual(copied.itemOptionCheckbox, ["サイズ,S,M"]);
@@ -231,12 +212,12 @@ describe("copyMenuData", () => {
   // 消された商品を複製しても、複製は消えていない状態で作られる。
   it("makes the copy not deleted, even from a deleted original", () => {
     const deleted = menuFixture({ deletedFlag: true });
-    assert.strictEqual(copyMenuData(deleted, JP, OWNER).deletedFlag, false);
+    assert.strictEqual(copyMenuData(deleted, OWNER).deletedFlag, false);
   });
 
   it("clears sold-out on the copy", () => {
     const soldOut = menuFixture({ soldOut: true });
-    assert.strictEqual(copyMenuData(soldOut, JP, OWNER).soldOut, false);
+    assert.strictEqual(copyMenuData(soldOut, OWNER).soldOut, false);
   });
 });
 

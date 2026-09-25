@@ -698,7 +698,7 @@
           </div>
 
           <!-- Delivery Config -->
-          <div v-if="region === 'JP'" class="mt-4">
+          <div class="mt-4">
             <a id="deliveryConfig" />
             <div class="pb-2 text-sm font-bold">
               {{ $t("editRestaurant.deliveryConfigTitle") }}
@@ -913,9 +913,7 @@
                       <hours-input
                         v-model="editShopInfo.openTimes[index][0]"
                         :variant="
-                          timeErrors[index][0].length > 0
-                            ? 'danger'
-                            : 'success'
+                          timeErrors[index][0].length > 0 ? 'danger' : 'success'
                         "
                         :disabled="!editShopInfo.businessDay[index]"
                       ></hours-input>
@@ -943,9 +941,7 @@
                       <hours-input
                         v-model="editShopInfo.openTimes[index][1]"
                         :variant="
-                          timeErrors[index][1].length > 0
-                            ? 'danger'
-                            : 'success'
+                          timeErrors[index][1].length > 0 ? 'danger' : 'success'
                         "
                         :disabled="!editShopInfo.businessDay[index]"
                       ></hours-input>
@@ -1155,7 +1151,7 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
 
 import { google_geocode } from "@/lib/google/api";
-import { ownPlateConfig, GMAPId } from "@/config/project";
+import { GMAPId } from "@/config/project";
 
 import DatePicker from "@/components/DatePicker.vue";
 import NotFound from "@/components/NotFound.vue";
@@ -1238,7 +1234,6 @@ export default defineComponent({
     maxDate.setMonth(maxDate.getMonth() + 6);
     const now = moment().subtract(1, "days").toDate();
     const taxRateKeys = regionalSetting["taxRateKeys"];
-    const region = ownPlateConfig.region;
 
     const notFound = ref<boolean | null>(null);
     const gMap = ref();
@@ -1583,7 +1578,6 @@ export default defineComponent({
       minimumCookTimeChoices,
       taxRates,
       taxRateKeys,
-      region,
 
       editShopInfo,
 

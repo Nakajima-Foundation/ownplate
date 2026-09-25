@@ -3,10 +3,9 @@ import { type MenuData, type TitleData, getNewItemData } from "./menu";
 
 export const copyMenuData = (
   item: MenuData,
-  isJP: boolean,
   uid: string | undefined,
 ): MenuData => {
-  const base = getNewItemData(item, isJP, item.validatedFlag);
+  const base = getNewItemData(item, item.validatedFlag);
   const data = {
     ...base,
     uid,

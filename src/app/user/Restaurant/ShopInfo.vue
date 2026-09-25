@@ -12,14 +12,10 @@
           <div class="inline-flex items-center justify-center">
             <i class="material-icons text-op-teal mr-2 text-lg">place</i>
             <div class="text-op-teal text-sm font-bold">
-              <div v-if="region === 'JP'">
+              <div>
                 〒{{ shopInfo.zip }} {{ shopInfo.state }}
                 {{ shopInfo.city }}
                 {{ shopInfo.streetAddress }}
-              </div>
-              <div v-else>
-                {{ shopInfo.streetAddress }}, {{ shopInfo.city }},
-                {{ shopInfo.state }} {{ shopInfo.zip }}
               </div>
             </div>
           </div>
@@ -278,7 +274,7 @@ import moment from "moment";
 
 import { daysOfWeek, paymentMethods } from "@/config/constant";
 import { formatURL } from "@/utils/phoneutil";
-import { ownPlateConfig, GAPIKey } from "@/config/project";
+import { GAPIKey } from "@/config/project";
 import { usePickupTime } from "@/utils/pickup";
 import {
   useNationalPhoneNumber,
@@ -408,7 +404,6 @@ export default defineComponent({
     const hasUberEatsUrl = computed(() => {
       return props.shopInfo.uberEatsUrl && validUrl(props.shopInfo.uberEatsUrl);
     });
-    const region = ownPlateConfig.region;
 
     const stripeAccount = computed(() => {
       return props.paymentInfo.stripe;
@@ -498,7 +493,6 @@ export default defineComponent({
       hasLineUrl,
       hasInstagramUrl,
       hasUberEatsUrl,
-      region,
       showPayment,
       stripeAccount,
       inStorePayment,

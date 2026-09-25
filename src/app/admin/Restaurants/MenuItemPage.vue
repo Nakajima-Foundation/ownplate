@@ -839,7 +839,6 @@ import Checkbox from "@/components/form/checkbox.vue";
 import ImageUpload from "@/components/ImageUpload.vue";
 
 import { taxRates, daysOfWeek, regionalSetting } from "@/config/constant";
-import { ownPlateConfig } from "@/config/project";
 import { halfCharactors } from "@/utils/strings";
 import { optionPrice } from "@/utils/commonUtils";
 import {
@@ -1087,11 +1086,7 @@ export default defineComponent({
             title: shop.restaurantName,
             code: "editCommon.copyMenuAlert",
             callback: async () => {
-              const newItem = copyMenuData(
-                menuInfo,
-                ownPlateConfig.region === "JP",
-                userStore.uidAdmin,
-              );
+              const newItem = copyMenuData(menuInfo, userStore.uidAdmin);
               newItem.validatedFlag = !hasError.value;
 
               const category1 = shop.category1 || [];
@@ -1133,11 +1128,7 @@ export default defineComponent({
             resizedImages: {},
           };
         }
-        const itemData = getNewItemData(
-          menuInfo,
-          ownPlateConfig.region === "JP",
-          !hasError.value,
-        );
+        const itemData = getNewItemData(menuInfo, !hasError.value);
 
         // Convert double-width characters with half-width characters in options
         // We also convert Japanse commas with alphabet commas
