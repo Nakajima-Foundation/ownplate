@@ -96,7 +96,7 @@ export default defineComponent({
     const route = useRoute();
     const ownerUid = route.params.ownerUid;
 
-    const restaurantsObj = ref({});
+    const restaurantsObj = ref<{ [key: string]: RestaurantInfoData[] }>({});
     const restaurants = ref<RestaurantInfoData[]>([]);
     const ownerData = ref<OwnerData>({});
 
