@@ -24,7 +24,10 @@ jobs:
       uses: actions/setup-node@v6
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+        # install するのは yarn。'npm' だと npm 側の置き場を保存してしまい、
+        # yarn の取得分が毎回まるごと取り直しになる。
+        cache: 'yarn'
+        cache-dependency-path: functions/yarn.lock
     - run: cp ../src/config/constant.ts ./src/common/constant.ts
     - run: cp ../src/utils/phoneutil.ts ./src/common/phoneutil.ts
     - run: cp ../src/utils/commonUtils.ts ./src/utils/commonUtils.ts
@@ -58,7 +61,8 @@ jobs:
       uses: actions/setup-node@v6
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+        # 同上。この repo に package-lock.json は無い。
+        cache: 'yarn'
     - run: cp src/config/default/ownplate-dev.ts src/config/project.ts
     - run: yarn install
     - run: yarn run lint
