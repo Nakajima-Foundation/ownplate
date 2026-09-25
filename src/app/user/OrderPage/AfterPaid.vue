@@ -280,7 +280,7 @@ export default defineComponent({
       required: false,
     },
     hasFriends: {
-      type: Boolean,
+      type: Boolean as PropType<boolean | null>,
       required: false,
     },
     hasLine: {
