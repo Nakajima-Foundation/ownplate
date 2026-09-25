@@ -632,6 +632,10 @@ export default defineComponent({
       selectedOptions.value = newSelectedOptions;
     };
     const goCheckout = async () => {
+      const signedInUser = user.value;
+      if (!signedInUser) {
+        return;
+      }
       const name = await (async () => {
         if (isLiffUser.value) {
           try {
@@ -641,7 +645,7 @@ export default defineComponent({
             return "";
           }
         }
-        return user.value.displayName;
+        return signedInUser.displayName;
       })();
 
       const isStoreUserName = props.shopInfo.personalInfo !== "notRequired";
@@ -650,7 +654,7 @@ export default defineComponent({
         options: convOptionArray2Obj(postOptions.value),
         rawOptions: convOptionArray2Obj(trimmedSelectedOptions.value),
         status: order_status.new_order,
-        uid: user.value.uid,
+        uid: signedInUser.uid,
         ownerUid: props.shopInfo.uid,
         lunchOrDinner: props.shopInfo.enableLunchDinner
           ? lunchOrDinner.value
@@ -658,7 +662,7 @@ export default defineComponent({
         isDelivery:
           (props.shopInfo.enableDelivery && isDelivery.value) || false, // true, // for test
         isLiff: isLiffUser.value,
-        phoneNumber: user.value.phoneNumber,
+        phoneNumber: signedInUser.phoneNumber,
         name: isStoreUserName ? name : "",
         updatedAt: serverTimestamp(),
         timeCreated: serverTimestamp(),
