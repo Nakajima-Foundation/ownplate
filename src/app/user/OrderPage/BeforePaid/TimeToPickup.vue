@@ -51,7 +51,7 @@ import {
 
 import { Timestamp } from "firebase/firestore";
 
-import { isNull } from "@/utils/commonUtils";
+import { exceptDataOf } from "@/utils/exceptData";
 import { usePickupTime } from "@/utils/pickup";
 import { pickupDateOf } from "../../../../utils/pickupDate";
 
@@ -82,37 +82,8 @@ export default defineComponent({
     const dayIndex = ref(0);
     const time = ref(0);
 
-    type ExceptHour = { start: number; end: number };
-    type ExceptDataValue = {
-      exceptDay: { [key: string]: boolean };
-      exceptHours: ExceptHour[];
-    };
     const exceptData = computed(() => {
-      return Object.values(
-        props.orderInfo.menuItems || {},
-      ).reduce<ExceptDataValue>(
-        (tmp, menu) => {
-          const { exceptDay, exceptHour } = menu;
-          const menuExceptDay = exceptDay || {};
-          Object.keys(menuExceptDay).forEach((key) => {
-            if (menuExceptDay[key]) {
-              tmp.exceptDay[key] = true;
-            }
-          });
-          if (
-            !isNull(exceptHour) &&
-            !isNull(exceptHour.start) &&
-            !isNull(exceptHour.end)
-          ) {
-            tmp.exceptHours.push({
-              start: exceptHour.start,
-              end: exceptHour.end,
-            });
-          }
-          return tmp;
-        },
-        { exceptDay: {}, exceptHours: [] },
-      );
+      return exceptDataOf(props.orderInfo.menuItems);
     });
 
     const { deliveryAvailableDays, availableDays } = usePickupTime(
