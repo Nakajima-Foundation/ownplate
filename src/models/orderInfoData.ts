@@ -58,7 +58,7 @@ export interface OrderInfoData {
   isDelivery: boolean;
   isEC: boolean;
   tip: number;
-  menuItems: { [key: string]: MenuData };
+  menuItems?: { [key: string]: MenuData };
   phoneNumber: string;
   // 行ごとの数。古い注文は数値ひとつ。
   order: { [key: string]: number[] | number };

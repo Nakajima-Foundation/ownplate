@@ -274,7 +274,8 @@ export const getOrderItems = (
   orderInfo: OrderInfoData,
   menuObj: { [key: string]: MenuData },
 ) => {
-  if (orderInfo.order && orderInfo.menuItems) {
+  const { menuItems } = orderInfo;
+  if (orderInfo.order && menuItems) {
     return Object.keys(orderInfo.order).reduce(
       (tmp: OrderItemData[], menuId) => {
         const numArray = Array.isArray(orderInfo.order[menuId])
@@ -288,7 +289,7 @@ export const getOrderItems = (
             ? [itemOptions]
             : [];
         Object.keys(numArray).forEach((numKey: string) => {
-          const item = orderInfo.menuItems[menuId] || menuObj[menuId] || {};
+          const item = menuItems[menuId] || menuObj[menuId] || {};
           item.images = (menuObj[menuId] || {}).images;
           item.itemPhoto = (menuObj[menuId] || {}).itemPhoto;
           tmp.push({
