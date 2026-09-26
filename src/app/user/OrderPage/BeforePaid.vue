@@ -124,7 +124,7 @@
               ref="orderPageMapRef"
               @updateHome="updateHome"
               :shopInfo="shopInfo"
-              :fullAddress="ecCustomerRef && ecCustomerRef.fullAddress"
+              :fullAddress="ecCustomerRef?.fullAddress"
               :deliveryInfo="deliveryData"
             />
           </div>
@@ -457,8 +457,8 @@ export default defineComponent({
     let tip = 0;
 
     // ref for refs
-    const ecCustomerRef = ref();
-    const orderPageMapRef = ref();
+    const ecCustomerRef = ref<InstanceType<typeof ECCustomer> | null>(null);
+    const orderPageMapRef = ref<InstanceType<typeof OrderPageMap> | null>(null);
     const timeToPickupRef = ref<InstanceType<typeof TimeToPickup> | null>(null);
     const stripeRef = ref();
 
@@ -554,10 +554,10 @@ export default defineComponent({
     });
 
     // methods
-    type LatLng = { lat?: number; lng?: number };
-    // 地図は setHome(lat: number, lng: number) から送るので、こちらは必ずそろっている。
-    const updateHome = (pos: { lat: number; lng: number }) => {
-      ecCustomerRef.value.updateHome(pos);
+    type LatLng = { lat: number; lng: number };
+    // 地図は setHome(lat: number, lng: number) から、ECCustomer は保存済みの location から送る。どちらもそろっている。
+    const updateHome = (pos: LatLng) => {
+      ecCustomerRef.value?.updateHome(pos);
     };
     const updateLocation = (pos: LatLng) => {
       if (orderPageMapRef.value) {
@@ -621,7 +621,7 @@ export default defineComponent({
         if (ecCustomerRef.value && ecCustomerRef.value.hasEcError) {
           return;
         }
-        if (ecCustomerRef.value.isSaveAddress) {
+        if (ecCustomerRef.value?.isSaveAddress) {
           await ecCustomerRef.value.saveAddress();
         }
       }

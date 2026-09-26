@@ -12,17 +12,21 @@ export default defineComponent({
     const generalStore = useGeneralStore();
 
     const playedSilent = ref(false);
-    const audioRef = ref();
+    const audioRef = ref<HTMLAudioElement | null>(null);
     const soundFile = computed(() => {
       return generalStore.soundFile;
     });
 
     const enableSound = async () => {
       if (!playedSilent.value) {
+        const audio = audioRef.value;
+        if (!audio) {
+          return;
+        }
         try {
-          audioRef.value.setAttribute("src", "/silence.mp3");
-          audioRef.value.currentTime = 0;
-          await audioRef.value.play();
+          audio.setAttribute("src", "/silence.mp3");
+          audio.currentTime = 0;
+          await audio.play();
 
           playedSilent.value = true;
           generalStore.setSoundEnable();
@@ -33,10 +37,14 @@ export default defineComponent({
       }
     };
     const play = () => {
+      const audio = audioRef.value;
+      if (!audio) {
+        return;
+      }
       try {
-        audioRef.value.setAttribute("src", soundFile.value);
-        audioRef.value.currentTime = 0;
-        audioRef.value.play();
+        audio.setAttribute("src", soundFile.value);
+        audio.currentTime = 0;
+        audio.play();
       } catch (e) {
         console.log(e);
       }
