@@ -3,6 +3,10 @@
 // 受取時刻の組み立てが undefined を踏んで画面ごと落ちる。
 export const SEED_RESTAURANT_ID = "e2e-restaurant";
 export const SEED_OWNER_UID = "e2e-owner";
+// 管理画面は「メール認証されていれば店舗オーナー」という作り（store/user.ts の
+// isAdmin）。所有は店舗の uid が一致するかで決まるので、uid を指定して作る。
+export const SEED_OWNER_EMAIL = "e2e-owner@example.com";
+export const SEED_OWNER_PASSWORD = "e2e-password-1234";
 export const SEED_RESTAURANT_NAME = "E2E テスト食堂";
 export const SEED_MENU_ID = "e2e-menu";
 export const SEED_MENU_NAME = "から揚げ定食";
@@ -20,7 +24,10 @@ const everyDay = <T>(value: () => T) =>
     return days;
   }, {});
 
-export const seedRestaurant = () => ({
+// 管理画面の一覧は orderBy("createdAt") で引く。Firestore は並べ替えの鍵を持たない
+// 文書を結果から落とすので、これが無いと店舗が一件も出ない。
+export const seedRestaurant = (createdAt: Date) => ({
+  createdAt,
   // RestaurantWrapper のテンプレートが shopInfo.restaurantId を見て描き分けるので、
   // 文書の id とは別に属性としても要る。
   restaurantId: SEED_RESTAURANT_ID,
