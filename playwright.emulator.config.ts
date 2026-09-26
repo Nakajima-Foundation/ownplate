@@ -13,7 +13,9 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  // **手元も一人で走らせる。** 種まきは一つの店舗を皆で使い、売り切れや支払い方法を
+  // 切り替える試験がある。並べると隣の試験の足元が変わる。CI と同じ走らせ方にする。
+  workers: 1,
   reporter: "html",
   // 画面を配るのは build 済みの静的ファイルだが、冷えた runner は最初の描画が遅い。
   // 既定の 5 秒だと取りこぼす。

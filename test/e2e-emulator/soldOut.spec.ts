@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 
 import {
   SEED_MENU_NAME,
@@ -15,6 +15,14 @@ import { setSoldOut } from "./shopState";
 
 const SHOP_PATH = `/r/${SEED_RESTAURANT_ID}`;
 
+// 品物ごとの札で見る。画面全体で数えると、**別の品物が売り切れていても数は合う**。
+// 品物カードに目印が無いので、見た目の組み（角丸・白・影）で掴み、いちばん内側を取る。
+const menuCard = (page: Page, itemName: string) =>
+  page
+    .locator("div.rounded-lg.bg-white.shadow-sm")
+    .filter({ hasText: itemName })
+    .last();
+
 test.describe.configure({ mode: "serial" });
 
 test.afterEach(async () => {
@@ -30,11 +38,16 @@ test.describe("売り切れの表示", () => {
     await setSoldOut(true);
     await page.reload();
 
-    await expect(page.getByText(SEED_MENU_NAME).first()).toBeVisible();
-    await expect(page.getByText("Sold Out").first()).toBeVisible();
+    await expect(
+      menuCard(page, SEED_MENU_NAME).getByText("Sold Out"),
+    ).toBeVisible();
+    await expect(
+      menuCard(page, SEED_MENU_NAME).getByText("Add", { exact: true }),
+    ).toHaveCount(0);
     // 売り切れでない品物はそのまま入れられる。
-    await expect(page.getByText(SEED_OPTION_MENU_NAME).first()).toBeVisible();
-    await expect(page.getByText("Add", { exact: true })).toHaveCount(1);
+    await expect(
+      menuCard(page, SEED_OPTION_MENU_NAME).getByText("Add", { exact: true }),
+    ).toBeVisible();
   });
 
   test("売り切れを戻すとまた入れられる", async ({ page }) => {
