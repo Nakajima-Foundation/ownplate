@@ -2,6 +2,7 @@ import {
   QueryDocumentSnapshot,
   DocumentSnapshot,
   DocumentData,
+  Timestamp,
 } from "firebase/firestore";
 import FirebaseModel from "./firebasemodel";
 import { PromotionDataBase } from "./promotionTypes";
@@ -14,6 +15,9 @@ export interface PromotionData extends PromotionDataBase, DocumentData {
 export interface UserPromotionHistoryData {
   promotionId: string;
   used?: boolean;
+  // 使った時点で必ず書かれる（functions/src/functions/order/promotion.ts が
+  // used とまとめて入れる。この文書はそこでしか作られない）。
+  usedAt: Timestamp;
 }
 
 export default class Promotion extends FirebaseModel<PromotionData> {
