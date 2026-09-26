@@ -1,3 +1,4 @@
+import type { Timestamp } from "./firebaseUtils";
 export interface RestaurantInfoData {
   url: string;
   restaurantName: string;
@@ -92,7 +93,7 @@ export interface RestaurantInfoData {
   category1: string[];
   category2: string[];
 
-  createdAt: Date;
+  createdAt: Timestamp;
 }
 
 // Wrapper が toDate() で変換したあとの形。臨時休業日はそこで素の Date に揃う。
