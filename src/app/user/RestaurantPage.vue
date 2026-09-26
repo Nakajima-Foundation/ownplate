@@ -768,7 +768,7 @@ export default defineComponent({
         goCheckout();
       }
     });
-    const cartButton = ref();
+    const cartButton = ref<InstanceType<typeof CartButton> | null>(null);
     const isShowCart = computed(() => {
       return cartButton.value?.isShowCart || false;
     });

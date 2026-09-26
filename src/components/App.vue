@@ -121,15 +121,15 @@ export default defineComponent({
       }
       return false;
     });
-    const audioPlay = ref();
+    const audioPlay = ref<InstanceType<typeof AudioPlay> | null>(null);
     const enableSound = () => {
       if (audioPlay.value?.enableSound) {
         audioPlay.value?.enableSound();
       }
     };
-    const sideMenu = ref();
+    const sideMenu = ref<InstanceType<typeof SideMenu> | null>(null);
     const handleOpen = () => {
-      sideMenu.value.handleOpen();
+      sideMenu.value?.handleOpen();
     };
     const pingAnalytics = () => {
       setCurrentScreen(analytics, document.title);

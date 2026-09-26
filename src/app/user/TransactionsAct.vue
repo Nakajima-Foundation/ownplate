@@ -34,9 +34,11 @@ export default defineComponent({
     TransactionsActModal,
   },
   setup() {
-    const transactions = ref();
+    const transactions = ref<InstanceType<typeof TransactionsActModal> | null>(
+      null,
+    );
     const openTransactionsAct = () => {
-      transactions.value.openTransactionsAct();
+      transactions.value?.openTransactionsAct();
     };
     return {
       openTransactionsAct,

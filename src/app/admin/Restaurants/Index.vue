@@ -1236,7 +1236,7 @@ export default defineComponent({
     const taxRateKeys = regionalSetting["taxRateKeys"];
 
     const notFound = ref<boolean | null>(null);
-    const gMap = ref();
+    const gMap = ref<HTMLElement | null>(null);
     let mapObj: google.maps.Map | null = null;
 
     // internal ref;

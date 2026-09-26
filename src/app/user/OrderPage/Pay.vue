@@ -178,7 +178,7 @@ export default defineComponent({
     const cardState = ref<{ complete?: boolean }>({});
 
     // ref for refs
-    const stripeRef = ref();
+    const stripeRef = ref<InstanceType<typeof StripeCard> | null>(null);
 
     const stripeAccount = computed(() => {
       return props.paymentInfo.stripe;
@@ -233,7 +233,12 @@ export default defineComponent({
       try {
         isPayingError.value = false;
         generalStore.setLoading(true);
-        const pay = await stripeRef.value.processPayment();
+        const stripeCard = stripeRef.value;
+        // カード欄は v-if="showPayment" の中にある。無いまま支払わない。
+        if (!stripeCard) {
+          throw new Error("Pay: the card form is not rendered");
+        }
+        const pay = await stripeCard.processPayment();
         if (pay.error) {
           isPayingError.value = true;
           generalStore.setLoading(false);
@@ -242,7 +247,7 @@ export default defineComponent({
         await orderPay({
           restaurantId,
           orderId: orderId.value,
-          isSavePay: stripeRef.value.isSavePay,
+          isSavePay: stripeCard.isSavePay,
         });
 
         sendPurchase();

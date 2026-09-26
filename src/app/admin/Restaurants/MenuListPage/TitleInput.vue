@@ -25,9 +25,9 @@ export default defineComponent({
   emits: ["saveTitle"],
   setup(props, ctx) {
     const name = ref(props.title.name);
-    const textInput = ref();
+    const textInput = ref<HTMLInputElement | null>(null);
     onMounted(() => {
-      textInput.value.focus();
+      textInput.value?.focus();
     });
     const saveTitle = () => {
       ctx.emit("saveTitle", name.value);
