@@ -88,7 +88,15 @@ export const addOneItemAndCheckout = async (page: Page) => {
 // handleDismissed / waitForUser）。先に署名しておけばその筋を通らない。
 export const signInCustomer = async (page: Page) => {
   await page.goto("/u/profile");
-  await page.getByText("Sign In as a User").first().click();
+  // 一つの試験で二度呼ぶことがある（注文を続けて出すとき）。署名済みなら
+  // 「テイクアウトのお客様」の口は無く、待っても現れない。
+  const signedIn = page.getByText("Sign Out");
+  const signInLink = page.getByText("Sign In as a User").first();
+  await expect(signInLink.or(signedIn).first()).toBeVisible();
+  if (await signedIn.isVisible()) {
+    return;
+  }
+  await signInLink.click();
   await expect(page.locator('input[type="tel"]')).toBeVisible();
   await signInByPhone(page);
   await expect(page.getByText("Sign Out")).toBeVisible();
