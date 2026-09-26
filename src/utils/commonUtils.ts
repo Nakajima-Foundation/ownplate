@@ -2,9 +2,21 @@ import type { MenuData } from "../models/menu";
 import type { OptionValue } from "../models/orderTypes";
 
 interface PostageInfo {
-  freeThreshold: number;
+  freeThreshold: number | string | null;
   postageList: { [key: string]: number[] };
 }
+
+// 管理画面の数値欄を空のまま保存すると "" が入るので、空は「設定なし」として扱う。0 は「常に無料」。
+export const freeThresholdOf = (raw: unknown): number | null => {
+  if (typeof raw === "number") {
+    return Number.isFinite(raw) ? raw : null;
+  }
+  if (typeof raw === "string" && raw !== "") {
+    const threshold = Number(raw);
+    return Number.isFinite(threshold) ? threshold : null;
+  }
+  return null;
+};
 
 export const costCal = (
   postageInfo: Partial<PostageInfo> | null | undefined,
@@ -12,14 +24,14 @@ export const costCal = (
   total: number,
 ) => {
   const postageList = postageInfo?.postageList?.default || [];
-  const freeThreshold = postageInfo?.freeThreshold || null;
-  if (freeThreshold !== null) {
-    if (total >= freeThreshold) {
-      return 0;
-    }
+  const freeThreshold = freeThresholdOf(postageInfo?.freeThreshold);
+  if (freeThreshold !== null && total >= freeThreshold) {
+    return 0;
   }
   if (prefectureId && postageList.length > 0) {
-    return Number(postageList[Number(prefectureId) - 1]);
+    const postage = Number(postageList[Number(prefectureId) - 1]);
+    // 一覧の外や壊れた値（NaN・Infinity）は、そのまま注文の合計と決済に流れてしまう。
+    return Number.isFinite(postage) ? postage : 0;
   }
   return 0;
 };

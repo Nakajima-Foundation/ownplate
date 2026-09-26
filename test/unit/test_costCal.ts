@@ -1,6 +1,6 @@
 import { describe, it } from "node:test";
 import assert from "node:assert";
-import { costCal } from "../../src/utils/commonUtils.ts";
+import { costCal, freeThresholdOf } from "../../src/utils/commonUtils.ts";
 
 // EC の送料。注文確定のときにサーバ（functions/src/functions/order/orderPlace.ts）でも
 // 呼ばれるので、ここが狂うと客の請求額が変わる。
@@ -50,14 +50,53 @@ describe("costCal の無料の境目", () => {
     assert.strictEqual(costCal({ postageList }, TOKYO, 999999), 1300);
   });
 
-  // 0 を設定すると「常に無料」のつもりだが、`freeThreshold || null` で落ちるので課金される。
-  // 管理画面の読み込み（Postage.vue の `if (data.freeThreshold)`）でも同じく落ちる。
-  // いまの挙動として留める。直すかは omochikaeri-docs の課題。
-  it("ignores a threshold of zero and charges anyway", () => {
+  // 0 は「常に無料」。
+  it("makes every order free when the threshold is zero", () => {
     assert.strictEqual(
       costCal({ postageList, freeThreshold: 0 }, TOKYO, 100),
+      0,
+    );
+    assert.strictEqual(costCal({ postageList, freeThreshold: 0 }, TOKYO, 0), 0);
+  });
+
+  // 管理画面の数値欄を空のまま保存すると "" が入る。これを 0 と読むと常に無料になってしまう。
+  it("charges when the saved threshold is an empty string", () => {
+    assert.strictEqual(
+      costCal({ postageList, freeThreshold: "" }, TOKYO, 100),
       1300,
     );
+  });
+});
+
+describe("freeThresholdOf", () => {
+  it("reads a number, including zero", () => {
+    assert.strictEqual(freeThresholdOf(0), 0);
+    assert.strictEqual(freeThresholdOf(3000), 3000);
+    assert.strictEqual(freeThresholdOf(-5), -5);
+  });
+
+  it("reads a numeric string as a number", () => {
+    assert.strictEqual(freeThresholdOf("3000"), 3000);
+    assert.strictEqual(freeThresholdOf("0"), 0);
+  });
+
+  it("treats empty, missing and non-numeric values as not set", () => {
+    [
+      undefined,
+      null,
+      "",
+      "abc",
+      NaN,
+      Infinity,
+      -Infinity,
+      "Infinity",
+      true,
+      false,
+      {},
+      [],
+    ].forEach((raw) => {
+      assert.strictEqual(freeThresholdOf(raw), null, JSON.stringify(raw));
+    });
   });
 });
 
@@ -93,22 +132,27 @@ describe("costCal が何も請求しない場合", () => {
   });
 });
 
-// 一覧の外を指したときの形。いまは NaN が返る。
-//
-// 管理画面は常に47件で作るので、都道府県の選択（1〜47）からは届かない。ただし古い店舗や
-// 途中まで保存された文書で一覧が短いと届きうる。NaN は注文の合計に入り、そのまま Stripe へ行く。
-// 到達を示せていないので直さず、そうなっていることだけを留める。
+// 一覧の外を指したとき。管理画面は常に47件で作るが、一覧の短い古い文書では届きうる。
+// NaN を返すと注文の合計に入り、そのまま決済へ行くので 0 にする。
 describe("costCal が一覧の外を指したとき", () => {
   const shortList = { default: [100, 200] };
 
-  it("gives back NaN rather than nothing", () => {
+  it("charges nothing rather than NaN", () => {
+    assert.strictEqual(costCal({ postageList: shortList }, 47, 1000), 0);
+    assert.strictEqual(costCal({ postageList: shortList }, 3, 1000), 0);
+  });
+
+  it("charges nothing for an infinite amount in the list", () => {
     assert.strictEqual(
-      Number.isNaN(costCal({ postageList: shortList }, 47, 1000)),
-      true,
+      costCal({ postageList: { default: [100, Infinity] } }, 2, 1000),
+      0,
     );
+  });
+
+  it("charges nothing for a broken amount in the list", () => {
     assert.strictEqual(
-      Number.isNaN(costCal({ postageList: shortList }, 3, 1000)),
-      true,
+      costCal({ postageList: JSON.parse('{"default":[100,"x"]}') }, 2, 1000),
+      0,
     );
   });
 
@@ -117,7 +161,6 @@ describe("costCal が一覧の外を指したとき", () => {
     assert.strictEqual(costCal({ postageList: shortList }, 2, 1000), 200);
   });
 
-  // 無料の境目を超えていれば、一覧の外でも NaN にならない（先に 0 で返る）。
   it("returns zero before reaching the list when the order is free", () => {
     assert.strictEqual(
       costCal({ postageList: shortList, freeThreshold: 500 }, 47, 1000),
@@ -125,9 +168,8 @@ describe("costCal が一覧の外を指したとき", () => {
     );
   });
 
-  // 負の prefectureId も一覧の外。
-  it("gives back NaN for a negative prefecture", () => {
-    assert.strictEqual(Number.isNaN(costCal({ postageList }, -1, 1000)), true);
+  it("charges nothing for a negative prefecture", () => {
+    assert.strictEqual(costCal({ postageList }, -1, 1000), 0);
   });
 
   // prefectureId は入力経路で型が変わる。郵便番号から選ぶと数、都道府県の欄から
@@ -143,11 +185,9 @@ describe("costCal が一覧の外を指したとき", () => {
     assert.strictEqual(costCal({ postageList }, "47", 1000), 4700);
   });
 
-  // 空文字は「未設定」と同じ側（真偽判定で落ちる）ので 0。数でない文字は真なので
-  // 分岐に入り、一覧の外を指して NaN になる（負の番号と同じ）。
-  it("treats an empty prefecture as unset and a non-numeric one as out of range", () => {
+  it("charges nothing for an empty or non-numeric prefecture", () => {
     assert.strictEqual(costCal({ postageList }, "", 1000), 0);
     assert.strictEqual(costCal({ postageList }, undefined, 1000), 0);
-    assert.ok(Number.isNaN(costCal({ postageList }, "abc", 1000)));
+    assert.strictEqual(costCal({ postageList }, "abc", 1000), 0);
   });
 });

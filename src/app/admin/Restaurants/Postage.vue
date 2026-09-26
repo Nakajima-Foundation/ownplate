@@ -87,6 +87,7 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useAdminUids, notFoundResponse, useRestaurantId } from "@/utils/utils";
 import { regionalSetting } from "@/config/constant";
 import { checkShopAccount } from "@/utils/userPermission";
+import { freeThresholdOf } from "../../../utils/commonUtils";
 
 import NotFound from "@/components/NotFound.vue";
 import Checkbox from "@/components/form/checkbox.vue";
@@ -123,9 +124,10 @@ export default defineComponent({
             if (data.postageList) {
               postage.value = data.postageList.default;
             }
-            if (data.freeThreshold) {
+            const savedFreeThreshold = freeThresholdOf(data.freeThreshold);
+            if (savedFreeThreshold !== null) {
               enableFree.value = true;
-              freeThreshold.value = data.freeThreshold;
+              freeThreshold.value = savedFreeThreshold;
             }
           }
         }
