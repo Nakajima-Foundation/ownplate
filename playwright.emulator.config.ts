@@ -35,10 +35,14 @@ export default defineConfig({
       timeout: 120_000,
     },
     {
-      command: "yarn start",
+      // dev server はその場で変換するので、最初に開く画面の描画が機械の速さに
+      // 引きずられる（遅い runner では何十秒も待たされる）。**本番と同じ build を
+      // 配る。** 旗は build 時に埋め込まれるので、build 側にも渡す。
+      command: "yarn build && npx vite preview --port 3000 --strictPort",
       url: "http://localhost:3000",
       reuseExistingServer: !process.env.CI,
       env: { VITE_FIREBASE_EMULATOR: "true" },
+      timeout: 300_000,
     },
   ],
 });
