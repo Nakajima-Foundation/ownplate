@@ -8,6 +8,7 @@ import {
   SEED_EDIT_RESTAURANT_NAME,
   SEED_FOOD_TAX_PERCENT,
 } from "../../scripts/seedData";
+import { resetEditRestaurant } from "./shopState";
 
 // もとは QA 手順書「おもちかえり.com QA手順書 兼 QA結果報告書 - Vue3-full-test」の
 // 「7. 管理画面 > … > 店情報の変更」ケース2 Step12・Step13・Step23-1/23-2。
@@ -39,21 +40,11 @@ const save = async (page: Page) => {
   await expect(page).toHaveURL(new RegExp(`${ADMIN_TOP}/?(#.*)?$`));
 };
 
-// 名前は戻す。次に走るときも同じ状態から始められるように。
-test.afterEach(async ({ page }) => {
-  await page.goto(EDIT_PATH);
-  const name = page.getByPlaceholder("Enter restaurant name");
-  if ((await name.count()) > 0) {
-    await name.fill(SEED_EDIT_RESTAURANT_NAME);
-    const inclusive = page.getByText("Tax Icnluded");
-    if (await inclusive.isVisible()) {
-      const box = page.locator('input[type="checkbox"]').first();
-      if (await box.isChecked()) {
-        await inclusive.click();
-      }
-    }
-    await save(page);
-  }
+// 名前と内税は**画面を通さずに戻す**。画面から戻すと、チェック欄を位置で掴む
+// ことになって別の設定を読み、戻ったつもりで戻っていないことがある（CI で
+// 次の試験が落ちた）。
+test.afterEach(async () => {
+  await resetEditRestaurant();
 });
 
 test.describe("店情報の保存", () => {
