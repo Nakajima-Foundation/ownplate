@@ -4,6 +4,9 @@ import { CustomerInfo } from "./customer";
 import { OrderStatus } from "./common";
 import type { RestaurantInfoData } from "./RestaurantInfo";
 
+// 注文の行番号から、その行のオプションを引く。
+export type OptionsByLine = { [lineIndex: number]: string | string[] };
+
 export interface OrderInfoData {
   id: string;
   name: string;
@@ -60,7 +63,7 @@ export interface OrderInfoData {
   // 行ごとの数。古い注文は数値ひとつ。
   order: { [key: string]: number[] | number };
   // Firestore は配列の入れ子を持てないので、行番号をキーにしたオブジェクトで入る。古い注文は配列ひとつ。
-  options: { [key: string]: { [lineIndex: string]: string[] } | string[] };
+  options: { [key: string]: OptionsByLine };
   payment?: {
     stripe?: string;
   };
@@ -84,9 +87,6 @@ export interface OrderInfoData {
 
   cancelReason?: string; // mo
 }
-
-// 注文の行番号から、その行のオプションを引く。
-export type OptionsByLine = { [lineIndex: number]: string | string[] };
 
 export interface OrderItemData {
   item: MenuData;

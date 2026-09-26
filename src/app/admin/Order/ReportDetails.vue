@@ -64,7 +64,6 @@ import { arrayChunk, forceArray } from "@/utils/utils";
 import { reportHeaders, reportHeadersWithAddress } from "@/utils/reportUtils";
 
 import { OrderInfoData } from "@/models/orderInfo";
-import type { OptionsByLine } from "@/models/orderInfoData";
 import { CustomerInfo } from "@/models/customer";
 import { useI18n } from "vue-i18n";
 
@@ -184,7 +183,7 @@ export default defineComponent({
         }, "unexpected");
         ids.forEach((menuId, index) => {
           const orderItems = forceArray(order.order[menuId]);
-          const options: OptionsByLine = order.options[menuId] || [];
+          const options = order.options[menuId] || [];
           const menuItem = (order.menuItems || {})[menuId] || {};
           Object.keys(orderItems).forEach((key) => {
             // key は writeonFirstLine が Number(key) === 0 で使うので残す。
