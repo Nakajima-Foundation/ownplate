@@ -2,14 +2,15 @@ import { describe, it } from "node:test";
 import assert from "node:assert";
 
 import {
+  convOptionArray2Obj,
   extraCharges,
   isEmpty,
   isInclusiveTax,
   isNull,
   isOptionChecked,
-  optionChoiceIndex,
   isReducedTaxRate,
   isValidInvoiceNumber,
+  optionChoiceIndex,
   printableInvoiceNumber,
   taxCategories,
   taxDisplayRows,
@@ -371,5 +372,39 @@ describe("選択肢の値の読み方", () => {
     assert.ok(Number.isNaN(optionChoiceIndex("abc")));
     assert.strictEqual(optionChoiceIndex(null), 0);
     assert.ok(Number.isNaN(optionChoiceIndex(undefined)));
+  });
+});
+
+// 注文の options はここを通してから Firestore へ書く。**入れ子の配列は保存できない**
+// ので、数量の側を添字の object に変える。読む側は添字で引くだけなので形は変わらない。
+// ここが素通しに戻ると、注文が status: error で止まり画面には「売り切れかもしれない」
+// とだけ出る（原因が分からない）。
+describe("convOptionArray2Obj", () => {
+  it("数量の配列を添字の object にする", () => {
+    assert.deepStrictEqual(convOptionArray2Obj({ menu1: [["大盛り"], []] }), {
+      menu1: { 0: ["大盛り"], 1: [] },
+    });
+  });
+
+  it("入れ子の配列を残さない", () => {
+    const converted = convOptionArray2Obj({ menu1: [[], ["温"]] });
+    Object.values(converted).forEach((perMenu) => {
+      assert.ok(
+        !Array.isArray(perMenu),
+        "品物ごとの値が配列のままになっている",
+      );
+    });
+  });
+
+  it("品物が複数あってもそれぞれ変換する", () => {
+    assert.deepStrictEqual(
+      convOptionArray2Obj({ a: [["x"]], b: [["y"], ["z"]] }),
+      { a: { 0: ["x"] }, b: { 0: ["y"], 1: ["z"] } },
+    );
+  });
+
+  it("空を渡しても落ちない", () => {
+    assert.deepStrictEqual(convOptionArray2Obj({}), {});
+    assert.deepStrictEqual(convOptionArray2Obj({ menu1: [] }), { menu1: {} });
   });
 });

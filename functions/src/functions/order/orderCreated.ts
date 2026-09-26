@@ -9,7 +9,7 @@ import { OrderData, OptionValue } from "../../lib/types/order";
 import { RestaurantInfoData } from "../../models/RestaurantInfo";
 import { MenuData, MenuItem } from "../../models/menu";
 import { validateOrderCreated } from "../../lib/validator";
-import { selectedOptionNames, selectedOptionsPrice } from "../../utils/commonUtils";
+import { convOptionArray2Obj, selectedOptionNames, selectedOptionsPrice } from "../../utils/commonUtils";
 import { Context } from "../../models/TestType";
 
 export const orderAccounting = (restaurantData: RestaurantInfoData, food_sub_total: number, alcohol_sub_total: number, multiple: number) => {
@@ -268,7 +268,9 @@ export const orderCreated = async (db: Firestore, data: OrderCreatedData, contex
 
         ownerUid,
         order: newOrderData,
-        options: newOptions,
+        // Firestore は入れ子の配列を保存できない。数量の側を添字の object にする。
+        // 画面が client から送っていた形と同じなので、読む側は変わらない。
+        options: convOptionArray2Obj(newOptions),
         menuItems: newItems, // Clone of ordered menu items (simplified)
         prices: newPrices,
         status: order_status.validation_ok,

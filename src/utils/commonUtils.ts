@@ -67,6 +67,24 @@ export const selectedOptionNames = (
     })
     .map((name) => name.trim());
 
+// Firestore は入れ子の配列を保存できない。選択肢は「品物ごと・数量ごとの文字列の配列」
+// なので、数量の側を添字の object に変えてから保存する。読む側は添字で引くので、
+// 配列でも object でも同じように読める。
+export const convOptionArray2Obj = <T>(obj: { [key: string]: T[] }) =>
+  Object.keys(obj).reduce<{ [key: string]: { [key: string]: T } }>(
+    (newObj, objKey) => {
+      newObj[objKey] = obj[objKey].reduce<{ [key: string]: T }>(
+        (tmp, value, key) => {
+          tmp[key] = value;
+          return tmp;
+        },
+        {},
+      );
+      return newObj;
+    },
+    {},
+  );
+
 export const selectedOptionsPrice = (
   selectedOptions: OptionValue[],
   itemOptionCheckbox: string[] | null | undefined,
