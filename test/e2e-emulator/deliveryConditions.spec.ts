@@ -2,12 +2,14 @@ import { expect, test, type Page } from "@playwright/test";
 
 import {
   SEED_DELIVERY_FEE,
+  SEED_DELIVERY_FREE_THRESHOLD,
   SEED_DELIVERY_MENU_NAME,
   SEED_DELIVERY_RESTAURANT_ID,
   SEED_DELIVERY_THRESHOLD,
   SEED_DELIVERY_UNDER_MENU_NAME,
 } from "../../scripts/seedData";
 import { signInCustomer } from "./helpers";
+import { setDeliveryArea, type DeliveryArea } from "./shopState";
 
 // もとは QA 手順書「おもちかえり.com QA手順書 兼 QA結果報告書 - 配送条件のテスト」
 // ケース1（配達受付可能合計金額 1000 / 配達料金 500 / 配達料金無料 2000）の判定表。
@@ -17,12 +19,28 @@ import { signInCustomer } from "./helpers";
 // | 1000 | 配達料金 500 |
 // |  999 | 注文できない |
 //
+// ケース2（受付下限なし）とケース3（無料設定なし）も同じ店舗で見る。設定は
+// 試験ごとに置き直し、**必ずケース1の姿に戻す**（種まきと同じ状態から始められるように）。
+//
 // 店舗は配達専用の種まき（税 0）。**税が乗ると境目がずれる**ので、金額をそのまま
 // 判定表と突き合わせられるようにしてある。
 
 const SHOP_PATH = `/r/${SEED_DELIVERY_RESTAURANT_ID}`;
 const FLOW_TIMEOUT_MS = 240_000;
-test.describe.configure({ timeout: FLOW_TIMEOUT_MS });
+test.describe.configure({ timeout: FLOW_TIMEOUT_MS, mode: "serial" });
+
+// ケース1（種まきと同じ）。
+const CASE_ONE: DeliveryArea = {
+  enableDeliveryThreshold: true,
+  deliveryThreshold: SEED_DELIVERY_THRESHOLD,
+  deliveryFee: SEED_DELIVERY_FEE,
+  enableDeliveryFree: true,
+  deliveryFreeThreshold: SEED_DELIVERY_FREE_THRESHOLD,
+};
+
+test.afterEach(async () => {
+  await setDeliveryArea(CASE_ONE);
+});
 
 const yen = (amount: number) => `¥${amount.toLocaleString("en-US")}`;
 
@@ -99,5 +117,40 @@ test.describe("配送条件", () => {
     await waitForConfirmation(page);
 
     await expect(page.getByText(yen(SEED_DELIVERY_FEE))).toHaveCount(0);
+  });
+
+  // ケース2「配達受付可能合計金額 OFF、配達料金無料 2000」判定表 2
+  // 「1000円注文 → 配達料金500円」。下限が無いので 999 でも進める。
+  test("受付の下限が無ければ下限未満でも注文できる", async ({ page }) => {
+    await setDeliveryArea({ ...CASE_ONE, enableDeliveryThreshold: false });
+
+    await signInCustomer(page);
+    await chooseDelivery(page);
+    await addItem(page, SEED_DELIVERY_UNDER_MENU_NAME, 1);
+
+    await expect(page.getByText(/Can be delivered for/)).toHaveCount(0);
+    await page.getByText("Confirm Cart").click();
+    await page.getByText("Checkout").click();
+    await waitForConfirmation(page);
+
+    await expect(page.getByText(yen(SEED_DELIVERY_FEE)).first()).toBeVisible();
+  });
+
+  // ケース3「配達料金無料 OFF」判定表 1
+  // 「1000円注文 → 配達料金500円」。無料の境目が無いので 2000 でもかかる。
+  test("無料の設定が無ければ境目を越えても配達料金がかかる", async ({
+    page,
+  }) => {
+    await setDeliveryArea({ ...CASE_ONE, enableDeliveryFree: false });
+
+    await signInCustomer(page);
+    await chooseDelivery(page);
+    await addItem(page, SEED_DELIVERY_MENU_NAME, 2);
+
+    await page.getByText("Confirm Cart").click();
+    await page.getByText("Checkout").click();
+    await waitForConfirmation(page);
+
+    await expect(page.getByText(yen(SEED_DELIVERY_FEE)).first()).toBeVisible();
   });
 });

@@ -6,6 +6,9 @@ import {
   FIRESTORE_EMULATOR_PORT,
 } from "../../src/config/emulatorPorts";
 import {
+  SEED_DELIVERY_RESTAURANT_ID,
+  SEED_EDIT_RESTAURANT_ID,
+  SEED_EDIT_RESTAURANT_NAME,
   SEED_MENU_ID,
   SEED_OPEN_TIME,
   SEED_PROMOTION_ID,
@@ -53,30 +56,46 @@ export const setSoldOut = (soldOut: boolean) =>
     "売り切れ",
   );
 
-// 値引きが使える支払い方法。"stripe" ならカード払いのときだけ、"instore" なら
-// 受け取り払いのときだけ効く（promotionRules の isPaymentAllowed）。
-// null は「絞らない」——Firestore では値の無い null をそう置く。
-export type PaymentRestriction = "stripe" | "instore" | null;
+// 配送条件。手順書は「設定 → 判定表」の形で書かれているので、設定を置ける口を
+// 用意しておく。地図は描かせない（確認画面が Google を待つと金額まで進めない）。
+export type DeliveryArea = {
+  enableDeliveryThreshold: boolean;
+  deliveryThreshold: number;
+  deliveryFee: number;
+  enableDeliveryFree: boolean;
+  deliveryFreeThreshold: number;
+};
 
-export const setPromotionPaymentRestriction = async (
-  restriction: PaymentRestriction,
-) => {
-  const value =
-    restriction === null ? { nullValue: null } : { stringValue: restriction };
+export const setDeliveryArea = async (area: DeliveryArea) => {
   const response = await fetch(
-    `${DOCUMENTS_URL}/restaurants/${SEED_RESTAURANT_ID}/promotions/${SEED_PROMOTION_ID}` +
-      `?updateMask.fieldPaths=paymentRestrictions`,
+    `${DOCUMENTS_URL}/restaurants/${SEED_DELIVERY_RESTAURANT_ID}/delivery/area`,
     {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer owner",
       },
-      body: JSON.stringify({ fields: { paymentRestrictions: value } }),
+      body: JSON.stringify({
+        fields: {
+          enableAreaMap: { booleanValue: false },
+          enableAreaText: { booleanValue: false },
+          radius: { integerValue: String(500) },
+          areaText: { stringValue: "" },
+          enableDeliveryThreshold: {
+            booleanValue: area.enableDeliveryThreshold,
+          },
+          deliveryThreshold: { integerValue: String(area.deliveryThreshold) },
+          deliveryFee: { integerValue: String(area.deliveryFee) },
+          enableDeliveryFree: { booleanValue: area.enableDeliveryFree },
+          deliveryFreeThreshold: {
+            integerValue: String(area.deliveryFreeThreshold),
+          },
+        },
+      }),
     },
   );
   if (!response.ok) {
-    throw new Error(`値引きの支払い制限を変えられません: ${response.status}`);
+    throw new Error(`配送条件を変えられません: ${response.status}`);
   }
 };
 
@@ -108,4 +127,56 @@ export const setClosingTime = (closeTime: number) => {
     },
     "営業時間",
   );
+};
+
+// 保存を伴う試験の後片付け。**画面から戻すと当てにならない** — 店情報の画面は
+// チェック欄をいくつも持ち、位置で掴むと別の設定を読んでしまう。値を直に戻す。
+export const resetEditRestaurant = async () => {
+  const response = await fetch(
+    `${DOCUMENTS_URL}/restaurants/${SEED_EDIT_RESTAURANT_ID}` +
+      `?updateMask.fieldPaths=restaurantName&updateMask.fieldPaths=inclusiveTax`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer owner",
+      },
+      body: JSON.stringify({
+        fields: {
+          restaurantName: { stringValue: SEED_EDIT_RESTAURANT_NAME },
+          inclusiveTax: { booleanValue: false },
+        },
+      }),
+    },
+  );
+  if (!response.ok) {
+    throw new Error(`編集用店舗を戻せません: ${response.status}`);
+  }
+};
+
+// 値引きが使える支払い方法。"stripe" ならカード払いのときだけ、"instore" なら
+// 受け取り払いのときだけ効く（promotionRules の isPaymentAllowed）。
+// null は「絞らない」——Firestore では値の無い null をそう置く。
+export type PaymentRestriction = "stripe" | "instore" | null;
+
+export const setPromotionPaymentRestriction = async (
+  restriction: PaymentRestriction,
+) => {
+  const value =
+    restriction === null ? { nullValue: null } : { stringValue: restriction };
+  const response = await fetch(
+    `${DOCUMENTS_URL}/restaurants/${SEED_RESTAURANT_ID}/promotions/${SEED_PROMOTION_ID}` +
+      `?updateMask.fieldPaths=paymentRestrictions`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer owner",
+      },
+      body: JSON.stringify({ fields: { paymentRestrictions: value } }),
+    },
+  );
+  if (!response.ok) {
+    throw new Error(`値引きの支払い制限を変えられません: ${response.status}`);
+  }
 };

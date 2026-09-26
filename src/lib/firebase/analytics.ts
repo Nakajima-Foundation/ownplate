@@ -10,6 +10,7 @@ import { logEvent } from "firebase/analytics";
 import { MenuData } from "@/models/menu";
 import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { forceArray } from "@/utils/utils";
 
 export interface AnalyticsMenuData extends Partial<MenuData> {
   quantity: number;
@@ -267,7 +268,7 @@ export const getDataForLayer = (
     currency: "JPY",
 
     items: menus.map((menu) => {
-      const q = orderInfo.order[menu.id].reduce((t, c) => t + c, 0);
+      const q = forceArray(orderInfo.order[menu.id]).reduce((t, c) => t + c, 0);
       return sku_item_data_for_datalayer(menu, shopInfo, restaurantId, q);
     }),
   };

@@ -269,9 +269,12 @@ export default defineComponent({
           restaurantName: order.restaurant?.restaurantName,
           orderStatus: t("order.status." + order_status_keys[order.status]),
           revenue: order.totalCharge,
-          total: Object.values(order.order).reduce((count, currentOrder) => {
-            return count + arrayOrNumSum(currentOrder);
-          }, 0),
+          total: Object.values(order.order).reduce<number>(
+            (count, currentOrder) => {
+              return count + arrayOrNumSum(currentOrder);
+            },
+            0,
+          ),
           name: nameOfOrder(order),
           payment: order.payment?.stripe ? "stripe" : "",
         };

@@ -321,7 +321,7 @@ export default defineComponent({
           serviceTax: order.accounting?.service?.tax,
           shippingCost: order.shippingCost || order.deliveryFee || 0,
           total: order.totalCharge,
-          totalCount: Object.values(order.order).reduce(
+          totalCount: Object.values(order.order).reduce<number>(
             (count, currentOrder) => {
               return count + arrayOrNumSum(currentOrder);
             },
