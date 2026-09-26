@@ -80,7 +80,8 @@ test.describe("パスワードを忘れた場合", () => {
     await submitResetRequest(page, email);
     await expect(page.getByText(SENT_MESSAGE)).toBeVisible();
 
-    await page.goto(`${ACTION_PATH}${await latestResetCode(email)}`);
+    const code = await latestResetCode(email);
+    await page.goto(`${ACTION_PATH}${code}`);
 
     const password = page.locator('input[type="password"]');
     await expect(password.first()).toBeVisible();
@@ -113,5 +114,9 @@ test.describe("パスワードを忘れた場合", () => {
     await page.locator('input[type="password"]').fill(NEW_PASSWORD);
     await page.getByRole("button", { name: "Next" }).click();
     await expect(page).toHaveURL("/admin/restaurants");
+
+    // 使い終わった合言葉は二度目は通らない。届いた綴りを読み返して開き直す筋。
+    await page.goto(`${ACTION_PATH}${code}`);
+    await expect(page.getByText("Email is expired")).toBeVisible();
   });
 });
