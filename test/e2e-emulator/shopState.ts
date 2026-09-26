@@ -159,6 +159,45 @@ export const resetEditRestaurant = async () => {
 // null は「絞らない」——Firestore では値の無い null をそう置く。
 export type PaymentRestriction = "stripe" | "instore" | null;
 
+const patchPromotion = async (
+  fields: { [key: string]: unknown },
+  what: string,
+) => {
+  const mask = Object.keys(fields)
+    .map((name) => `updateMask.fieldPaths=${name}`)
+    .join("&");
+  const response = await fetch(
+    `${DOCUMENTS_URL}/restaurants/${SEED_RESTAURANT_ID}/promotions/${SEED_PROMOTION_ID}?${mask}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer owner",
+      },
+      body: JSON.stringify({ fields }),
+    },
+  );
+  if (!response.ok) {
+    throw new Error(`${what}を変えられません: ${response.status}`);
+  }
+};
+
+// 利用回数の制限。真にすると、一度使った人にはキャンペーンが出なくなる
+// （promotionRules の usablePromotions）。
+export const setPromotionUsageRestriction = (restricted: boolean) =>
+  patchPromotion(
+    { usageRestrictions: { booleanValue: restricted } },
+    "利用回数の制限",
+  );
+
+// キャンペーンの終わり。過去にすると、客側の取り込みの条件
+// （termTo > いま）から外れる。
+export const setPromotionTermTo = (termTo: Date) =>
+  patchPromotion(
+    { termTo: { timestampValue: termTo.toISOString() } },
+    "キャンペーンの期限",
+  );
+
 export const setPromotionPaymentRestriction = async (
   restriction: PaymentRestriction,
 ) => {
