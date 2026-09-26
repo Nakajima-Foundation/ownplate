@@ -47,6 +47,17 @@ export const seedPromotion = () => ({
   usageRestrictions: false,
 });
 
+// 保存を伴う試験のための、別のオーナーと店舗。**同じ店舗を書き換えると
+// ほかの試験の前提が変わる。** オーナーごと分けておけば管理画面の一覧も混ざらない。
+export const SEED_EDIT_OWNER_UID = "e2eeditowner";
+export const SEED_EDIT_OWNER_EMAIL = "e2e-edit-owner@example.com";
+export const SEED_EDIT_OWNER_PASSWORD = "e2e-edit-password-1234";
+export const SEED_EDIT_RESTAURANT_ID = "e2eeditshop";
+export const SEED_EDIT_RESTAURANT_NAME = "E2E 編集用食堂";
+export const SEED_EDIT_MENU_ID = "e2eeditmenu";
+export const SEED_EDIT_MENU_NAME = "編集用ランチ";
+export const SEED_EDIT_MENU_PRICE = 500;
+
 export const SEED_MENU_ID = "e2emenu";
 export const SEED_MENU_NAME = "から揚げ定食";
 export const SEED_MENU_PRICE = 800;
@@ -71,6 +82,9 @@ export const seedRestaurant = (createdAt: Date) => ({
   // 文書の id とは別に属性としても要る。
   restaurantId: SEED_RESTAURANT_ID,
   restaurantName: SEED_RESTAURANT_NAME,
+  // 必須の欄。**空だと店情報の変更画面で「保存」が死ぬ** — 画面の初期値は "" で、
+  // 種に無い欄はそのまま未入力として扱われる。
+  ownerName: "店長 花子",
   // 品物の並び順。ここに id が無い品物は画面に出ない。
   menuLists: [SEED_MENU_ID, SEED_OPTION_MENU_ID],
   uid: SEED_OWNER_UID,
@@ -136,4 +150,27 @@ export const seedMenu = () => ({
   uid: SEED_OWNER_UID,
   itemOptionCheckbox: [],
   images: {},
+});
+
+// 1x1 の透明な点。画像は**未設定だと公開店舗の保存が止まる**（shopInfoForm の
+// restProfilePhoto / restCoverPhoto）。網に出さずに置けるよう、埋め込みで持つ。
+const TRANSPARENT_PIXEL =
+  "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+
+export const seedEditRestaurant = (createdAt: Date) => ({
+  ...seedRestaurant(createdAt),
+  restProfilePhoto: TRANSPARENT_PIXEL,
+  restCoverPhoto: TRANSPARENT_PIXEL,
+  restaurantId: SEED_EDIT_RESTAURANT_ID,
+  restaurantName: SEED_EDIT_RESTAURANT_NAME,
+  menuLists: [SEED_EDIT_MENU_ID],
+  uid: SEED_EDIT_OWNER_UID,
+});
+
+export const seedEditMenu = () => ({
+  ...seedMenu(),
+  itemName: SEED_EDIT_MENU_NAME,
+  itemDescription: "保存の試験用",
+  price: SEED_EDIT_MENU_PRICE,
+  uid: SEED_EDIT_OWNER_UID,
 });
