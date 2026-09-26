@@ -11,11 +11,11 @@ import { MenuData } from "@/models/menu";
 import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
-export interface AnalyticsMenuData extends MenuData {
-  id: string;
+export interface AnalyticsMenuData extends Partial<MenuData> {
   quantity: number;
-  category: string;
-  subCategory: string;
+  // menu の模型から消えた属性。書き手がいないので常に undefined。
+  category?: string;
+  subCategory?: string;
 }
 type AnalyticsData = Record<string, unknown>;
 
@@ -255,7 +255,7 @@ export const sku_item_data_for_datalayer = (
 export const getDataForLayer = (
   orderInfo: OrderInfoData,
   orderId: string,
-  menus: AnalyticsMenuData[],
+  menus: (AnalyticsMenuData & { id: string })[],
   shopInfo: RestaurantInfoData,
   restaurantId: string,
 ) => {

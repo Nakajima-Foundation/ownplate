@@ -1,7 +1,7 @@
 import { describe, it } from "node:test";
 import assert from "node:assert";
 import type { DocumentData } from "firebase/firestore";
-import { doc2data } from "../../src/utils/utils.ts";
+import { collectionData, doc2data } from "../../src/utils/utils.ts";
 
 // Firestore から読むデータはほぼ全部ここを通る。id を書き足し、どの種類かの印を付ける。
 // ここが狂うと、一覧から詳細へ飛べない・種類で分岐している画面が静かに壊れる。
@@ -81,5 +81,33 @@ describe("doc2data", () => {
       id: "a",
       _dataType: "",
     });
+  });
+});
+
+// doc2data と違い、こちらは値に一切触れない。型を当てるだけの入口なので、
+// 通した値が同じものであること自体が守るべき性質になる。
+describe("collectionData", () => {
+  it("gives back the very same object", () => {
+    const original: DocumentData = { restaurantName: "あ", uid: "u1" };
+    assert.strictEqual(collectionData(original), original);
+  });
+
+  it("adds no key and removes none", () => {
+    const original: DocumentData = { a: 1, b: undefined };
+    const passed = collectionData(original);
+    assert.deepStrictEqual(Object.keys(passed), ["a", "b"]);
+    assert.deepStrictEqual(passed, original);
+  });
+
+  it("takes an empty document", () => {
+    const original: DocumentData = {};
+    assert.strictEqual(collectionData(original), original);
+    assert.deepStrictEqual(Object.keys(original), []);
+  });
+
+  it("keeps nested values by reference", () => {
+    const nested = { k: [1, 2] };
+    const original: DocumentData = { nested };
+    assert.strictEqual(collectionData(original).nested, nested);
   });
 });

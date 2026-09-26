@@ -18,7 +18,12 @@ import { defineComponent, ref } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc } from "firebase/firestore";
-import { routeMode, useUserData, useRestaurantId } from "@/utils/utils";
+import {
+  routeMode,
+  useUserData,
+  useRestaurantId,
+  collectionData,
+} from "@/utils/utils";
 
 import NotFound from "@/components/NotFound.vue";
 
@@ -44,7 +49,9 @@ export default defineComponent({
       const restaurant = await getDoc(
         doc(db, `restaurants/${restaurantId.value}`),
       );
-      shopInfo.value = restaurant.data() || {};
+      shopInfo.value = collectionData<RestaurantInfoData>(
+        restaurant.data() || {},
+      );
       const exist_and_public =
         restaurant.exists() &&
         !shopInfo.value.deletedFlag &&

@@ -125,6 +125,11 @@ export const shareUrl = (prefix: string) => {
   );
 };
 
+// Firestore の data() は DocumentData を返すが、読む先のコレクションごとに形は
+// 決まっている。値には触れず型だけを当てる。当て場所をここ一箇所に集める。
+export const collectionData = <T = DocumentData>(data: DocumentData): T =>
+  data as T;
+
 export const doc2data = <T = DocumentData>(dataType: string) => {
   // 受け取るのは Firestore の snapshot だが、使うのは id と data() だけ。型をその2つに
   // 狭めてあるので、試験から最小の値で呼べる。Firestore の DocumentSnapshot も
@@ -133,7 +138,7 @@ export const doc2data = <T = DocumentData>(dataType: string) => {
     const data = _doc.data() || ({} as DocumentData);
     data.id = _doc.id;
     data._dataType = dataType;
-    return data as T;
+    return collectionData<T>(data);
   };
 };
 

@@ -697,9 +697,10 @@ export default defineComponent({
           const checkoutMenus: AnalyticsMenuData[] = [];
           Object.keys(orders.value).forEach((currentMenuId) => {
             orders.value[currentMenuId].forEach((quantity: number) => {
-              const menu = { ...cartItems.value[currentMenuId] };
-              menu.quantity = quantity;
-              checkoutMenus.push(menu);
+              checkoutMenus.push({
+                ...cartItems.value[currentMenuId],
+                quantity,
+              });
             });
           });
           analyticsUtil.sendBeginCheckoout(
