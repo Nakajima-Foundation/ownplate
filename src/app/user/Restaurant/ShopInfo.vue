@@ -151,7 +151,7 @@
               <div
                 class="flex rounded-sm px-2 py-1 text-sm"
                 :class="
-                  weekday == key % 7
+                  weekday == Number(key) % 7
                     ? isTodayTemporaryClosure
                       ? 'bg-red-700/10'
                       : 'bg-green-600/10'
@@ -252,11 +252,11 @@
               class="text-sm"
               :key="key"
             >
-              {{ moment(day.toDate()).format("YYYY/MM/DD") }}
+              {{ moment(asDate(day)).format("YYYY/MM/DD") }}
               {{
                 $t(
                   "week.short." +
-                    days[Number(moment(day.toDate()).format("e")) || 7],
+                    days[Number(moment(asDate(day)).format("e")) || 7],
                 )
               }}
             </div>
@@ -274,6 +274,7 @@ import moment from "moment";
 
 import { daysOfWeek, paymentMethods } from "@/config/constant";
 import { formatURL } from "@/utils/phoneutil";
+import { asDate } from "@/utils/dateUtils";
 import { GAPIKey } from "@/config/project";
 import { usePickupTime } from "@/utils/pickup";
 import {
@@ -331,13 +332,15 @@ export default defineComponent({
     const dispTemporaryClosure = computed(() => {
       const now = Date.now();
       return (props.shopInfo.temporaryClosure || []).filter((day) => {
-        return day.seconds + 3600 * 24 > now / 1000;
+        // 素の Date は 0 として扱う。いまも seconds が無くて対象外になっている。
+        const seconds = day instanceof Date ? 0 : (day.seconds ?? 0);
+        return seconds + 3600 * 24 > now / 1000;
       });
     });
     const isTodayTemporaryClosure = computed(() => {
       const res = dispTemporaryClosure.value.find((day) => {
         return (
-          moment(day.toDate()).format("YYYYMMDD") ===
+          moment(asDate(day)).format("YYYYMMDD") ===
           moment().format("YYYYMMDD")
         );
       });
@@ -476,6 +479,7 @@ export default defineComponent({
     };
 
     return {
+      asDate,
       moreInfo,
       days: daysOfWeek,
       weekday,
