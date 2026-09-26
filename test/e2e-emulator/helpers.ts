@@ -177,6 +177,32 @@ export const setInStorePayment = async (allowed: boolean) => {
   }
 };
 
+// 「シンプル/全て」は管理者ごとに Firestore へ残るので、画面から押して確かめると
+// 次の試験へ持ち越す。状態は直に置く。
+const ADMIN_CONFIG_URL =
+  `http://${EMULATOR_HOST}:${FIRESTORE_EMULATOR_PORT}` +
+  `/v1/projects/ownplate-dev/databases/(default)/documents` +
+  `/adminConfigs/${SEED_OWNER_UID}`;
+
+export const setSimpleMode = async (simple: boolean) => {
+  const response = await fetch(
+    `${ADMIN_CONFIG_URL}?updateMask.fieldPaths=simpleMode`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer owner",
+      },
+      body: JSON.stringify({
+        fields: { simpleMode: { booleanValue: simple } },
+      }),
+    },
+  );
+  if (!response.ok) {
+    throw new Error(`シンプル表示を変えられません: ${response.status}`);
+  }
+};
+
 // 店舗側で注文を開く。既定の注文一覧は日付で絞るので、全件の画面から探す。
 // 状態を進めると一覧へ戻される作りなので、進めるたびにここを通る。
 export const ADMIN_HISTORY_PATH = `/admin/restaurants/${SEED_RESTAURANT_ID}/history`;
