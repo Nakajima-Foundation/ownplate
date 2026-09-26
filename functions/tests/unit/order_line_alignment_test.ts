@@ -44,12 +44,27 @@ const perLinePushes = (source: string): Pushes | undefined => {
 
 // 保存する直前で client の options に戻されると、位置の解決が「カートに入れた時のメニュー」に
 // 逆戻りして、請求額と印字がまたずれる。保存の1行を構文木で押さえる。
+// Firestore は入れ子の配列を保存できないので、保存の1行は形を変える関数で包まれる。
+// 包みは素通しして、値がどこから来たかだけを見る。
+const rootIdentifier = (node: ts.Expression): string | undefined => {
+  if (ts.isIdentifier(node)) {
+    return node.text;
+  }
+  if (ts.isCallExpression(node) && node.arguments.length === 1) {
+    return rootIdentifier(node.arguments[0]);
+  }
+  return undefined;
+};
+
 const storedOptionsSource = (source: string): string | undefined => {
   const file = ts.createSourceFile("orderCreated.ts", source, ts.ScriptTarget.Latest, true);
   const found: string[] = [];
   const visit = (node: ts.Node) => {
-    if (ts.isPropertyAssignment(node) && ts.isIdentifier(node.name) && node.name.text === "options" && ts.isIdentifier(node.initializer)) {
-      found.push(node.initializer.text);
+    if (ts.isPropertyAssignment(node) && ts.isIdentifier(node.name) && node.name.text === "options") {
+      const root = rootIdentifier(node.initializer);
+      if (root !== undefined) {
+        found.push(root);
+      }
     }
     if (ts.isShorthandPropertyAssignment(node) && node.name.text === "options") {
       found.push("options");
@@ -159,9 +174,17 @@ describe("保存の検査が空振りしないこと", () => {
     assert.strictEqual(destructuresFromOrderData(clientCopy, "options"), true);
   });
 
+  // 包みを素通しにした分、中身が client のものなら弾けることを別に押さえる。
+  it("rejects the client's option names even when wrapped", () => {
+    const wrappedClientCopy = `const { options, rawOptions } = orderData;
+      await orderRef.set(utils.filterData({ order: newOrderData, options: convOptionArray2Obj(options), rawOptions }));`;
+    assert.strictEqual(storedOptionsSource(wrappedClientCopy), "options");
+    assert.strictEqual(destructuresFromOrderData(wrappedClientCopy, "options"), true);
+  });
+
   it("accepts the shape the code actually uses", () => {
     const serverDerived = `const { rawOptions } = orderData;
-      await orderRef.set(utils.filterData({ order: newOrderData, options: newOptions, rawOptions }));`;
+      await orderRef.set(utils.filterData({ order: newOrderData, options: convOptionArray2Obj(newOptions), rawOptions }));`;
     assert.strictEqual(storedOptionsSource(serverDerived), "newOptions");
     assert.strictEqual(destructuresFromOrderData(serverDerived, "options"), false);
     assert.strictEqual(destructuresFromOrderData(serverDerived, "rawOptions"), true);
