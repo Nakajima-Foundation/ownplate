@@ -133,7 +133,9 @@ export default defineComponent({
     const { isUser, isLiffUser, inLiff } = useUserData();
 
     const loginVisible = ref(false);
-    const transactions = ref();
+    const transactions = ref<InstanceType<typeof TransactionsActModal> | null>(
+      null,
+    );
     const orderInfo = ref<OrderInfoData>({} as OrderInfoData);
     const hasFriends = ref<boolean | null>(null);
     const menuObj = ref<{ [key: string]: MenuData } | null>(null);
@@ -235,7 +237,7 @@ export default defineComponent({
       }
     };
     const openTransactionsAct = () => {
-      transactions.value.openTransactionsAct();
+      transactions.value?.openTransactionsAct();
     };
     if (isUser.value || isLiffUser.value) {
       loadUserData();

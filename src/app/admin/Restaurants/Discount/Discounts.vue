@@ -198,16 +198,14 @@ export default defineComponent({
   },
   setup(props) {
     const id = props.shopInfo.restaurantId;
-    const { promotionDataSet } = usePromotionsForAdmin(id);
 
     const { ownerUid } = useAdminUids();
 
-    if (
-      !checkShopAccount(props.shopInfo, ownerUid.value) ||
-      !ownerUid.value
-    ) {
+    if (!checkShopAccount(props.shopInfo, ownerUid.value) || !ownerUid.value) {
       return notFoundResponse;
     }
+
+    const { promotionDataSet } = usePromotionsForAdmin(id);
 
     const newDiscount = async () => {
       const path = getPromotionCollctionPath(id as string);
