@@ -90,7 +90,7 @@ export interface OrderInfoData {
 
 export interface OrderItemData {
   item: MenuData;
-  count: number | number[];
+  count: number;
   id: string;
   options: string | string[];
   orderIndex: string[];

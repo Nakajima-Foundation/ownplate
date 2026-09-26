@@ -67,9 +67,10 @@ import { useI18n } from "vue-i18n";
 
 import { formatOption } from "@/utils/strings";
 import { optionPrice } from "@/utils/commonUtils";
-import { smallImageErrorHandler, useUserData } from "@/utils/utils";
+import { forceArray, smallImageErrorHandler, useUserData } from "@/utils/utils";
 import { roundPrice } from "@/utils/price";
 import { MenuData } from "@/models/menu";
+import { OrderItemData } from "@/models/orderInfoData";
 
 import Checkbox from "@/components/form/checkbox.vue";
 
@@ -81,7 +82,7 @@ export default defineComponent({
   },
   props: {
     orderItem: {
-      type: Object,
+      type: Object as PropType<OrderItemData>,
       required: true,
     },
     menuData: {
@@ -121,14 +122,14 @@ export default defineComponent({
       return formatOption(option, (price) => n(price, "currency"));
     };
     const specialRequest = computed(() => {
-      return props.orderItem.options
+      return forceArray(props.orderItem.options)
         .filter((choice: string) => choice)
         .map((choice: string) => displayOption(choice))
         .join(", ");
     });
     const totalPrice = computed(() => {
       let price = item.value.price;
-      props.orderItem.options.forEach((option: string) => {
+      forceArray(props.orderItem.options).forEach((option: string) => {
         const p = roundPrice(optionPrice(option));
         price += p;
       });
