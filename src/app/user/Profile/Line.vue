@@ -71,7 +71,12 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, watch } from "vue";
-import { useUserData, useLiffIndexId, isDev } from "@/utils/utils";
+import {
+  useUserData,
+  useLiffIndexId,
+  isDev,
+  collectionData,
+} from "@/utils/utils";
 import liff from "@line/liff";
 
 import { db } from "@/lib/firebase/firebase9";
@@ -93,7 +98,7 @@ export default defineComponent({
     const liffIndexId = useLiffIndexId();
 
     const isFriend = ref<undefined | boolean>(undefined);
-    const liffConfig = ref<null | { friendUrl: string }>(null);
+    const liffConfig = ref<null | undefined | { friendUrl: string }>(null);
 
     const isWindowActive = computed(() => {
       return generalStore.isWindowActive;
@@ -178,9 +183,11 @@ export default defineComponent({
         checkFriend();
       }
       if (inLiff.value) {
-        liffConfig.value = (
+        const liffDoc = (
           await getDoc(doc(db, `liff/${liffIndexId.value}`))
         ).data();
+        liffConfig.value =
+          liffDoc && collectionData<{ friendUrl: string }>(liffDoc);
       }
     };
     init();

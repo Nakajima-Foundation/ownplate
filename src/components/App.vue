@@ -134,7 +134,9 @@ export default defineComponent({
     const pingAnalytics = () => {
       setCurrentScreen(analytics, document.title);
       logEvent(analytics, "page_view");
-      logEvent(analytics, "screen_view", {
+      // 旧来の名前で送り続けている。変えると GA に届く中身が変わるので型だけ通す。
+      const screenViewEvent: string = "screen_view";
+      logEvent(analytics, screenViewEvent, {
         app_name: "web",
         screen_name: document.title,
       });

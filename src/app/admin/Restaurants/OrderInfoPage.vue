@@ -736,7 +736,9 @@ export default defineComponent({
     const orderUpdateInterval = computed(() => {
       if (orderInfo.value.orderPlacedAt && userLog.value.lastUpdatedAt) {
         const intervalHour =
-          (orderInfo.value.orderPlacedAt - userLog.value.lastUpdatedAt) / 3600;
+          (Number(orderInfo.value.orderPlacedAt) -
+            Number(userLog.value.lastUpdatedAt)) /
+          3600;
         return intervalHour;
       }
       return -1000000;
@@ -744,7 +746,9 @@ export default defineComponent({
     const orderPickupInterval = computed(() => {
       if (orderInfo.value.timeCreated && userLog.value.lastUpdatedAt) {
         const intervalHour =
-          (orderInfo.value.timeCreated - userLog.value.lastUpdatedAt) / 3600;
+          (Number(orderInfo.value.timeCreated) -
+            Number(userLog.value.lastUpdatedAt)) /
+          3600;
         return intervalHour;
       }
       return -1000000;

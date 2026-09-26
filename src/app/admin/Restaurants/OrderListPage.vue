@@ -83,14 +83,9 @@ import {
   PropType,
 } from "vue";
 import type { RestaurantInfoData } from "@/models/RestaurantInfo";
+import type { OrderInfoData } from "@/models/orderInfoData";
 import { db } from "@/lib/firebase/firebase9";
-import {
-  collection,
-  where,
-  query,
-  onSnapshot,
-  DocumentData,
-} from "firebase/firestore";
+import { collection, where, query, onSnapshot } from "firebase/firestore";
 
 import { midNight } from "@/utils/dateUtils";
 import moment from "moment";
@@ -134,7 +129,7 @@ export default defineComponent({
     const route = useRoute();
     const router = useRouter();
 
-    const orders = ref<DocumentData[]>([]);
+    const orders = ref<OrderInfoData[]>([]);
     const dayIndex = ref(0);
     const restaurantId = useRestaurantId();
 
@@ -220,7 +215,7 @@ export default defineComponent({
         ),
         (result) => {
           orders.value = result.docs
-            .map(doc2data("order"))
+            .map(doc2data<OrderInfoData>("order"))
             .filter(orderFilter)
             .sort((order0, order1) => {
               if (order0.status === order1.status) {

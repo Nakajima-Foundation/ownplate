@@ -80,7 +80,11 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, onSnapshot, getDoc, Unsubscribe } from "firebase/firestore";
 import { stripeDeleteRestaurantCard } from "@/lib/firebase/functions";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
-import { smallImageErrorHandler, useUserData } from "@/utils/utils";
+import {
+  smallImageErrorHandler,
+  useUserData,
+  collectionData,
+} from "@/utils/utils";
 import { useGeneralStore } from "@/store";
 import { useDialogStore } from "@/store/dialog";
 import moment from "moment";
@@ -152,7 +156,7 @@ export default defineComponent({
           doc(db, `restaurants/${restaurantId.value}`),
         );
         if (shopDoc.exists()) {
-          const shopData = shopDoc.data();
+          const shopData = collectionData<RestaurantInfoData>(shopDoc.data());
           shopInfo.value = shopData;
           ownerUid.value = shopData.uid;
           // Start monitoring card info once we have owner UID
