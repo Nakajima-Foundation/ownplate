@@ -189,3 +189,68 @@ export const openOrderDetail = async (page: Page, orderNumber: string) => {
   await card.click();
   await expect(page).toHaveURL(new RegExp(`${ADMIN_ORDERS_PATH}/`));
 };
+
+// エミュレーターの Identity Toolkit。鍵は形だけ見るので中身は問われない。
+const IDENTITY_URL =
+  `http://${EMULATOR_HOST}:${AUTH_EMULATOR_PORT}` +
+  `/identitytoolkit.googleapis.com/v1`;
+const OOB_CODES_URL =
+  `http://${EMULATOR_HOST}:${AUTH_EMULATOR_PORT}` +
+  `/emulator/v1/projects/ownplate-dev/oobCodes`;
+
+const postToEmulator = async (
+  url: string,
+  body: unknown,
+  asOwner: boolean,
+): Promise<{ [key: string]: unknown }> => {
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(asOwner ? { Authorization: "Bearer owner" } : {}),
+    },
+    body: JSON.stringify(body),
+  });
+  if (!response.ok) {
+    throw new Error(`${url}: ${response.status} ${await response.text()}`);
+  }
+  return response.json();
+};
+
+// 合言葉を変える試験のための、その試験だけの口座。種まきのオーナーを使い回すと、
+// 同じオーナーで署名するほかの試験が並びの順で落ちる。
+export const createOwnerAccount = async (
+  email: string,
+  password: string,
+): Promise<string> => {
+  const created = await postToEmulator(
+    `${IDENTITY_URL}/accounts:signUp?key=e2e`,
+    { email, password, returnSecureToken: true },
+    false,
+  );
+  return String(created.localId);
+};
+
+// 画面から作った口座はメール確認が済んでいない。管理画面は済んだものしか通さない。
+export const markEmailVerified = async (uid: string) => {
+  await postToEmulator(
+    `${IDENTITY_URL}/projects/ownplate-dev/accounts:update`,
+    { localId: uid, emailVerified: true },
+    true,
+  );
+};
+
+// 再設定のメールは飛ばないが、合言葉はエミュレーターが持っている。
+export const latestResetCode = async (email: string): Promise<string> => {
+  const response = await fetch(OOB_CODES_URL);
+  const body = (await response.json()) as {
+    oobCodes: { email: string; oobCode: string; requestType: string }[];
+  };
+  const mine = body.oobCodes.filter(
+    (code) => code.email === email && code.requestType === "PASSWORD_RESET",
+  );
+  if (mine.length === 0) {
+    throw new Error(`${email} 宛の再設定の合言葉がありません`);
+  }
+  return mine[mine.length - 1].oobCode;
+};
