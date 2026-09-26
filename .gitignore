@@ -124,6 +124,10 @@ public/admin/docs/articles/
 batch/*
 **/*.sh
 
+# 手元の作業置き場。認証情報や利用者のデータが置かれるので丸ごと追跡しない。
+log/
+memo/
+
 # Claude Code / local tooling
 .claude/worktrees/
 .i18n-cache/
