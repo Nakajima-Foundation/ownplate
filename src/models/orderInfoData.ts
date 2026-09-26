@@ -85,6 +85,9 @@ export interface OrderInfoData {
   cancelReason?: string; // mo
 }
 
+// 注文の行番号から、その行のオプションを引く。
+export type OptionsByLine = { [lineIndex: number]: string | string[] };
+
 export interface OrderItemData {
   item: MenuData;
   count: number | number[];
