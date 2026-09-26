@@ -10,6 +10,9 @@ import {
   FIRESTORE_EMULATOR_PORT,
 } from "../src/config/emulatorPorts.ts";
 import {
+  SEED_CUSTOMER_PHONE,
+  SEED_CUSTOMER_STRIPE_ID,
+  SEED_CUSTOMER_UID,
   SEED_MENU_ID,
   SEED_OPTION_MENU_ID,
   SEED_OWNER_EMAIL,
@@ -59,6 +62,22 @@ const upsertOwner = async () => {
   });
 };
 
+// 電話で署名すると毎回あたらしい uid が振られ、Stripe の顧客 id を先に置けない。
+// 番号を決め打ちした利用者を作って uid を固定する。
+const upsertCustomer = async () => {
+  const auth = getAuth();
+  const existing = await auth
+    .getUserByPhoneNumber(SEED_CUSTOMER_PHONE)
+    .catch(() => null);
+  if (existing) {
+    await auth.deleteUser(existing.uid);
+  }
+  await auth.createUser({
+    uid: SEED_CUSTOMER_UID,
+    phoneNumber: SEED_CUSTOMER_PHONE,
+  });
+};
+
 const main = async () => {
   requireEmulator();
   initializeApp({ projectId: PROJECT_ID });
@@ -76,6 +95,12 @@ const main = async () => {
   await db
     .doc(`admins/${SEED_OWNER_UID}/public/payment`)
     .set({ inStore: true });
+  await upsertCustomer();
+  // 置いておかないと orderCreated が本物の Stripe へ顧客を作りに行き、
+  // 鍵の無い CI では注文が「売り切れかも」の見た目で失敗する。
+  await db
+    .doc(`users/${SEED_CUSTOMER_UID}/system/stripe`)
+    .set({ customerId: SEED_CUSTOMER_STRIPE_ID });
   process.stdout.write(
     `種まき完了: restaurants/${SEED_RESTAURANT_ID}（${SEED_RESTAURANT_NAME}）\n`,
   );

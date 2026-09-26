@@ -6,6 +6,7 @@ import {
   FIRESTORE_EMULATOR_PORT,
 } from "../../src/config/emulatorPorts";
 import {
+  SEED_CUSTOMER_PHONE_INPUT,
   SEED_OWNER_EMAIL,
   SEED_OWNER_PASSWORD,
   SEED_OWNER_UID,
@@ -18,7 +19,9 @@ import {
 // **各段階が出てから次を押す。** まとめて押すと、まだ手が付いていない画面を叩いて
 // 静かに進まなくなる（待ち時間を足しても直らない）。
 
-export const PHONE_NUMBER = "09012345678";
+// 種まきと同じ番号でなければ、署名して付く uid が種まきの uid と別になる。
+// そうなると Stripe の顧客 id が無い扱いになり、注文が本物の Stripe を叩く。
+export const PHONE_NUMBER = SEED_CUSTOMER_PHONE_INPUT;
 export const CUSTOMER_NAME = "試験 太郎";
 
 const VERIFICATION_CODES_URL = `http://${EMULATOR_HOST}:${AUTH_EMULATOR_PORT}/emulator/v1/projects/ownplate-dev/verificationCodes`;

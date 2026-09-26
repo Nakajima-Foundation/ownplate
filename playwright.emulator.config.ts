@@ -15,11 +15,8 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
   reporter: "html",
-  // dev server は要求されて初めて変換するので、最初に開く画面だけ描画が遅い。
-  // 既定の 5 秒だと冷えた状態（CI は毎回これ）で取りこぼす。
-  expect: { timeout: 20_000 },
-  // dev server は要求されて初めて変換するので、最初に開く画面だけ描画が遅い。
-  // 既定の 5 秒だと冷えた状態（CI は毎回これ）で取りこぼす。
+  // 画面を配るのは build 済みの静的ファイルだが、冷えた runner は最初の描画が遅い。
+  // 既定の 5 秒だと取りこぼす。
   expect: { timeout: 20_000 },
   use: {
     baseURL: "http://localhost:3000",
@@ -28,11 +25,18 @@ export default defineConfig({
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
   webServer: [
     {
+      // 秘密の偽物は**エミュレーターが上がる前**に置く。起動時に読まれるので、
+      // globalSetup では間に合わない。
       command:
+        "npx tsx scripts/writeEmulatorSecrets.ts && " +
         "firebase emulators:start --project ownplate-dev --only auth,firestore,functions",
       url: `http://${EMULATOR_HOST}:${FIRESTORE_EMULATOR_PORT}/`,
       reuseExistingServer: !process.env.CI,
       timeout: 120_000,
+      // 注文が失敗しても画面には「売り切れかもしれません」としか出ない。
+      // どの分岐で落ちたかは関数側の console だけが持っているので、流す。
+      stdout: "pipe",
+      stderr: "pipe",
     },
     {
       // dev server はその場で変換するので、最初に開く画面の描画が機械の速さに

@@ -133,3 +133,5 @@ memo/
 .i18n-cache/
 .mcp.json
 .playwright-mcp/
+# e2e がエミュレーターへ渡す偽の秘密（scripts/writeEmulatorSecrets.ts が作る）
+functions/.secret.local
