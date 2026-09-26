@@ -183,7 +183,8 @@ export default defineComponent({
         }, "unexpected");
         ids.forEach((menuId, index) => {
           const orderItems = forceArray(order.order[menuId]);
-          const options = order.options[menuId] || [];
+          const options: { [lineIndex: number]: string | string[] } =
+            order.options[menuId] || [];
           const menuItem = (order.menuItems || {})[menuId] || {};
           Object.keys(orderItems).forEach((key) => {
             // key は writeonFirstLine が Number(key) === 0 で使うので残す。

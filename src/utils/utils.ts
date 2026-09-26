@@ -276,9 +276,14 @@ export const getOrderItems = (
         const numArray = Array.isArray(orderInfo.order[menuId])
           ? orderInfo.order[menuId]
           : [orderInfo.order[menuId]];
-        const optArray = Array.isArray(orderInfo.order[menuId])
-          ? orderInfo.options[menuId]
-          : [orderInfo.options[menuId]];
+        const itemOptions = orderInfo.options[menuId];
+        // 古い注文は、オプションが商品ごとにひとつの配列で入っている。
+        const optArray: { [lineIndex: number]: string | string[] } =
+          Array.isArray(orderInfo.order[menuId])
+            ? itemOptions
+            : Array.isArray(itemOptions)
+              ? [itemOptions]
+              : [];
         Object.keys(numArray).forEach((numKey: string) => {
           const item = orderInfo.menuItems[menuId] || menuObj[menuId] || {};
           item.images = (menuObj[menuId] || {}).images;
