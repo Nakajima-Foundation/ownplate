@@ -717,7 +717,7 @@ export default defineComponent({
         }
       });
       const menuRestaurantId = restaurantId.value;
-      const menuIds = Object.keys(orderInfo.value.menuItems);
+      const menuIds = Object.keys(orderInfo.value.menuItems || {});
       arrayChunk(menuIds, 10).forEach((arr) => {
         getDocs(
           query(
@@ -903,7 +903,7 @@ export default defineComponent({
     });
 
     const editable_order_info = computed(() => {
-      const tmpMenuObj = orderInfo.value.menuItems;
+      const tmpMenuObj = orderInfo.value.menuItems || {};
       const multiple = stripe_regions_jp.multiple;
       const ret = edited_available_order_info.value.reduce(
         (tmp, info) => {
