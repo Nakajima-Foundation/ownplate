@@ -71,14 +71,11 @@ describe("getOrderItems", () => {
 
   // 実際に保存される options は、品目ごとに「行の添字 → その行で選んだオプションの配列」。
   // Firestore は入れ子の配列を保存できないので、行は配列ではなく添字を鍵にした object で持つ。
-  // 型（OrderInfoData）はこの形を認めていないので、JSON から作って渡す。
   it("reads the options in the shape they are stored", () => {
     const rows = getOrderItems(
       orderInfoFixture({
         order: { bento: [2, 1] },
-        options: JSON.parse(
-          '{"bento": {"0": ["L(+300)", "辛口"], "1": ["S(+100)"]}}',
-        ),
+        options: { bento: { 0: ["L(+300)", "辛口"], 1: ["S(+100)"] } },
         menuItems: { bento: ordered },
       }),
       {},
@@ -96,8 +93,8 @@ describe("getOrderItems", () => {
   it("reads an old order whose count is a single number", () => {
     const rows = getOrderItems(
       orderInfoFixture({
-        order: JSON.parse('{"bento": 2}'),
-        options: JSON.parse('{"bento": ["L(+300)"]}'),
+        order: { bento: 2 },
+        options: { bento: ["L(+300)"] },
         menuItems: { bento: ordered },
       }),
       {},
@@ -105,6 +102,94 @@ describe("getOrderItems", () => {
     assert.deepStrictEqual(
       rows.map((row) => [row.count, row.options, row.orderIndex]),
       [[2, ["L(+300)"], ["bento", "0"]]],
+    );
+  });
+
+  it("reads an old order that kept no options", () => {
+    const rows = getOrderItems(
+      orderInfoFixture({
+        order: { bento: 2 },
+        options: {},
+        menuItems: { bento: ordered },
+      }),
+      {},
+    );
+    assert.deepStrictEqual(
+      rows.map((row) => [row.count, row.options]),
+      [[2, undefined]],
+    );
+  });
+
+  // 数は数値ひとつなのに、オプションが今の形（行の object）で入っている注文は書かれない。
+  // 来ても object をまるごと 1 行のオプションとして渡さず、オプション無しとして読む。
+  it("reads no options for an old count paired with the current options shape", () => {
+    const rows = getOrderItems(
+      orderInfoFixture({
+        order: { bento: 2 },
+        options: { bento: { 0: ["L(+300)"] } },
+        menuItems: { bento: ordered },
+      }),
+      {},
+    );
+    assert.deepStrictEqual(
+      rows.map((row) => [row.count, row.options]),
+      [[2, undefined]],
+    );
+  });
+
+  it("leaves a line without options when its slot is missing", () => {
+    const rows = getOrderItems(
+      orderInfoFixture({
+        order: { bento: [1, 2, 3] },
+        options: { bento: { 0: ["L(+300)"], 2: ["S(+100)"] } },
+        menuItems: { bento: ordered },
+      }),
+      {},
+    );
+    assert.deepStrictEqual(
+      rows.map((row) => [row.count, row.options]),
+      [
+        [1, ["L(+300)"]],
+        [2, undefined],
+        [3, ["S(+100)"]],
+      ],
+    );
+  });
+
+  // 数が 0 の行も行として残す。消すと orderIndex の番号がずれる。
+  it("keeps a line whose count is zero", () => {
+    const rows = itemsOf({ bento: [0, 2] }, { bento: ["", "L(+300)"] });
+    assert.deepStrictEqual(
+      rows.map((row) => [row.count, row.orderIndex]),
+      [
+        [0, ["bento", "0"]],
+        [2, ["bento", "1"]],
+      ],
+    );
+  });
+
+  it("ignores options for an item that is not in the order", () => {
+    const rows = itemsOf({ bento: [1] }, { bento: [""], beer: ["大"] });
+    assert.deepStrictEqual(
+      rows.map((row) => row.id),
+      ["bento"],
+    );
+  });
+
+  // 今の形の注文で、品目の options がまるごと無いと落ちる。orderCreated は注文の全品目に
+  // options を書くので起きないはずの形で、落ちるのは今の挙動をそのまま記録したもの。
+  it("throws when a current-shape order has no options for an item", () => {
+    assert.throws(
+      () =>
+        getOrderItems(
+          orderInfoFixture({
+            order: { bento: [1] },
+            options: {},
+            menuItems: { bento: ordered },
+          }),
+          {},
+        ),
+      TypeError,
     );
   });
 
@@ -153,6 +238,19 @@ describe("getOrderItems", () => {
     assert.deepStrictEqual(
       getOrderItems(
         orderInfoFixture({ order: { bento: [1] }, menuItems: undefined }),
+        { bento: current },
+      ),
+      [],
+    );
+  });
+
+  it("makes no rows when the copy of the menu is null", () => {
+    assert.deepStrictEqual(
+      getOrderItems(
+        orderInfoFixture({
+          order: { bento: [1] },
+          menuItems: JSON.parse("null"),
+        }),
         { bento: current },
       ),
       [],

@@ -65,10 +65,8 @@
 import { defineComponent, computed, PropType } from "vue";
 import { useI18n } from "vue-i18n";
 
-import { formatOption } from "@/utils/strings";
-import { optionPrice } from "@/utils/commonUtils";
-import { forceArray, smallImageErrorHandler, useUserData } from "@/utils/utils";
-import { roundPrice } from "@/utils/price";
+import { smallImageErrorHandler, useUserData } from "@/utils/utils";
+import { orderLineOptionsText, orderLineTotalPrice } from "@/utils/orderLine";
 import { MenuData } from "@/models/menu";
 import { OrderItemData } from "@/models/orderInfoData";
 
@@ -118,22 +116,17 @@ export default defineComponent({
     const count = computed(() => {
       return props.orderItem.count;
     });
-    const displayOption = (option: string) => {
-      return formatOption(option, (price) => n(price, "currency"));
-    };
     const specialRequest = computed(() => {
-      return forceArray(props.orderItem.options)
-        .filter((choice: string) => choice)
-        .map((choice: string) => displayOption(choice))
-        .join(", ");
+      return orderLineOptionsText(props.orderItem.options, (price) =>
+        n(price, "currency"),
+      );
     });
     const totalPrice = computed(() => {
-      let price = item.value.price;
-      forceArray(props.orderItem.options).forEach((option: string) => {
-        const p = roundPrice(optionPrice(option));
-        price += p;
-      });
-      return price * count.value;
+      return orderLineTotalPrice(
+        item.value.price,
+        props.orderItem.options,
+        count.value,
+      );
     });
     const { isAdmin } = useUserData();
 
