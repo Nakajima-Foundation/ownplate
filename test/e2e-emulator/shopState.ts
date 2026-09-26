@@ -11,6 +11,7 @@ import {
   SEED_EDIT_RESTAURANT_NAME,
   SEED_MENU_ID,
   SEED_OPEN_TIME,
+  SEED_PROMOTION_ID,
   SEED_RESTAURANT_ID,
 } from "../../scripts/seedData";
 
@@ -150,5 +151,32 @@ export const resetEditRestaurant = async () => {
   );
   if (!response.ok) {
     throw new Error(`編集用店舗を戻せません: ${response.status}`);
+  }
+};
+
+// 値引きが使える支払い方法。"stripe" ならカード払いのときだけ、"instore" なら
+// 受け取り払いのときだけ効く（promotionRules の isPaymentAllowed）。
+// null は「絞らない」——Firestore では値の無い null をそう置く。
+export type PaymentRestriction = "stripe" | "instore" | null;
+
+export const setPromotionPaymentRestriction = async (
+  restriction: PaymentRestriction,
+) => {
+  const value =
+    restriction === null ? { nullValue: null } : { stringValue: restriction };
+  const response = await fetch(
+    `${DOCUMENTS_URL}/restaurants/${SEED_RESTAURANT_ID}/promotions/${SEED_PROMOTION_ID}` +
+      `?updateMask.fieldPaths=paymentRestrictions`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer owner",
+      },
+      body: JSON.stringify({ fields: { paymentRestrictions: value } }),
+    },
+  );
+  if (!response.ok) {
+    throw new Error(`値引きの支払い制限を変えられません: ${response.status}`);
   }
 };
