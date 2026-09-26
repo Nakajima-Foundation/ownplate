@@ -58,6 +58,26 @@ export const SEED_EDIT_MENU_ID = "e2eeditmenu";
 export const SEED_EDIT_MENU_NAME = "編集用ランチ";
 export const SEED_EDIT_MENU_PRICE = 500;
 
+// 配送条件の試験のための店舗。**税を 0 にしてある** — 判定表の境目（999 / 1000 /
+// 2000）は「注文金額」で書かれており、税が乗ると境目がずれて何を測ったか分からなくなる。
+export const SEED_DELIVERY_OWNER_UID = "e2edeliveryowner";
+export const SEED_DELIVERY_OWNER_EMAIL = "e2e-delivery-owner@example.com";
+export const SEED_DELIVERY_OWNER_PASSWORD = "e2e-delivery-password-1234";
+export const SEED_DELIVERY_RESTAURANT_ID = "e2edeliveryshop";
+export const SEED_DELIVERY_RESTAURANT_NAME = "E2E 配達食堂";
+// 判定表の境目に合わせた二品。999 だけでは受け付けず、1000 で受け付け、
+// 二つで 2000 になって配達無料になる。
+export const SEED_DELIVERY_UNDER_MENU_ID = "e2edeliveryunder";
+export const SEED_DELIVERY_UNDER_MENU_NAME = "境目未満弁当";
+export const SEED_DELIVERY_UNDER_PRICE = 999;
+export const SEED_DELIVERY_MENU_ID = "e2edeliverymenu";
+export const SEED_DELIVERY_MENU_NAME = "配達弁当";
+export const SEED_DELIVERY_MENU_PRICE = 1000;
+// 配送条件（管理画面の宅配設定と同じ形）。
+export const SEED_DELIVERY_THRESHOLD = 1000;
+export const SEED_DELIVERY_FEE = 500;
+export const SEED_DELIVERY_FREE_THRESHOLD = 2000;
+
 export const SEED_MENU_ID = "e2emenu";
 export const SEED_MENU_NAME = "から揚げ定食";
 export const SEED_MENU_PRICE = 800;
@@ -173,4 +193,49 @@ export const seedEditMenu = () => ({
   itemDescription: "保存の試験用",
   price: SEED_EDIT_MENU_PRICE,
   uid: SEED_EDIT_OWNER_UID,
+});
+
+export const seedDeliveryRestaurant = (createdAt: Date) => ({
+  ...seedRestaurant(createdAt),
+  restaurantId: SEED_DELIVERY_RESTAURANT_ID,
+  restaurantName: SEED_DELIVERY_RESTAURANT_NAME,
+  menuLists: [SEED_DELIVERY_MENU_ID, SEED_DELIVERY_UNDER_MENU_ID],
+  uid: SEED_DELIVERY_OWNER_UID,
+  enableDelivery: true,
+  deliveryOnlyStore: false,
+  deliveryMinimumCookTime: 60,
+  onlyTakeout: false,
+  foodTax: 0,
+  alcoholTax: 0,
+});
+
+// 配達の範囲は地図で描かせない。確認画面が Google の地図を待つと、
+// 見たいのは金額なのにそこで止まる。
+export const seedDeliveryArea = () => ({
+  enableAreaMap: false,
+  enableAreaText: false,
+  radius: 500,
+  areaText: "",
+  enableDeliveryFree: true,
+  deliveryFreeThreshold: SEED_DELIVERY_FREE_THRESHOLD,
+  enableDeliveryThreshold: true,
+  deliveryThreshold: SEED_DELIVERY_THRESHOLD,
+  deliveryFee: SEED_DELIVERY_FEE,
+  uid: SEED_DELIVERY_OWNER_UID,
+});
+
+export const seedDeliveryMenu = () => ({
+  ...seedMenu(),
+  itemName: SEED_DELIVERY_MENU_NAME,
+  itemDescription: "配達の試験用",
+  price: SEED_DELIVERY_MENU_PRICE,
+  uid: SEED_DELIVERY_OWNER_UID,
+});
+
+export const seedDeliveryUnderMenu = () => ({
+  ...seedMenu(),
+  itemName: SEED_DELIVERY_UNDER_MENU_NAME,
+  itemDescription: "配達の試験用（境目未満）",
+  price: SEED_DELIVERY_UNDER_PRICE,
+  uid: SEED_DELIVERY_OWNER_UID,
 });

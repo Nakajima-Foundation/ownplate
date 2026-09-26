@@ -13,6 +13,12 @@ import {
   SEED_CUSTOMER_PHONE,
   SEED_CUSTOMER_STRIPE_ID,
   SEED_CUSTOMER_UID,
+  SEED_DELIVERY_MENU_ID,
+  SEED_DELIVERY_OWNER_EMAIL,
+  SEED_DELIVERY_OWNER_PASSWORD,
+  SEED_DELIVERY_OWNER_UID,
+  SEED_DELIVERY_RESTAURANT_ID,
+  SEED_DELIVERY_UNDER_MENU_ID,
   SEED_EDIT_MENU_ID,
   SEED_EDIT_OWNER_EMAIL,
   SEED_EDIT_OWNER_PASSWORD,
@@ -27,6 +33,10 @@ import {
   SEED_RESTAURANT_ID,
   SEED_RESTAURANT_NAME,
   seedMenu,
+  seedDeliveryArea,
+  seedDeliveryMenu,
+  seedDeliveryRestaurant,
+  seedDeliveryUnderMenu,
   seedEditMenu,
   seedEditRestaurant,
   seedOptionMenu,
@@ -69,6 +79,16 @@ const upsertOwner = async () => {
     password: SEED_OWNER_PASSWORD,
     emailVerified: true,
   });
+};
+
+// 署名でしか作れないので、オーナーは一人ずつ作る。作り方はどれも同じ。
+const upsertAdmin = async (uid: string, email: string, password: string) => {
+  const auth = getAuth();
+  const existing = await auth.getUserByEmail(email).catch(() => null);
+  if (existing) {
+    await auth.deleteUser(existing.uid);
+  }
+  await auth.createUser({ uid, email, password, emailVerified: true });
 };
 
 // 保存を伴う試験のオーナー。作り方は上と同じ。
@@ -134,6 +154,30 @@ const main = async () => {
   await upsertEditOwner();
   await db
     .doc(`admins/${SEED_EDIT_OWNER_UID}/public/payment`)
+    .set({ inStore: true });
+  const deliveryRestaurant = db.doc(
+    `restaurants/${SEED_DELIVERY_RESTAURANT_ID}`,
+  );
+  await deliveryRestaurant.set(seedDeliveryRestaurant(SEEDED_AT));
+  await deliveryRestaurant
+    .collection("menus")
+    .doc(SEED_DELIVERY_MENU_ID)
+    .set(seedDeliveryMenu());
+  await deliveryRestaurant
+    .collection("menus")
+    .doc(SEED_DELIVERY_UNDER_MENU_ID)
+    .set(seedDeliveryUnderMenu());
+  await deliveryRestaurant
+    .collection("delivery")
+    .doc("area")
+    .set(seedDeliveryArea());
+  await upsertAdmin(
+    SEED_DELIVERY_OWNER_UID,
+    SEED_DELIVERY_OWNER_EMAIL,
+    SEED_DELIVERY_OWNER_PASSWORD,
+  );
+  await db
+    .doc(`admins/${SEED_DELIVERY_OWNER_UID}/public/payment`)
     .set({ inStore: true });
   await upsertCustomer();
   // 置いておかないと orderCreated が本物の Stripe へ顧客を作りに行き、
