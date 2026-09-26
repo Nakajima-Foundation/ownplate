@@ -316,17 +316,17 @@ export default defineComponent({
     const restaurantId = computed(() => {
       return route.params.restaurantId as string;
     });
+    // allow sub Account
+    if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
+      return notFoundResponse;
+    }
+
     const { menuObj, itemsObj, numberOfMenus, loadMenu, isLoading } =
       useMenuAndTitle(restaurantId);
 
     const menuCounter = computed(() => {
       return Object.keys(menuObj.value).length;
     });
-
-    // allow sub Account
-    if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
-      return notFoundResponse;
-    }
 
     // This is duplicate data with shopInfo. But DONT'T REMOVE THIS!!
     // Menu list is saved in restaurant info. This data needs reactive.

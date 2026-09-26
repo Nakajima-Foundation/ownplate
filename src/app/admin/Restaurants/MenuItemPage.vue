@@ -964,16 +964,16 @@ export default defineComponent({
 
     const { uid } = useAdminUids();
 
+    // allow sub Account
+    if (!checkShopOwner(props.shopInfo, uid.value)) {
+      return notFoundResponse;
+    }
+
     const { toggle: showOptionsPreview, switchToggle: switchOptionsPreview } =
       useAdminConfigToggle("menuOptionsPreview", uid.value, true);
     const hasOptionContent = computed(() =>
       hasOptionsToPreview(menuInfo.itemOptionCheckbox),
     );
-
-    // allow sub Account
-    if (!checkShopOwner(props.shopInfo, uid.value)) {
-      return notFoundResponse;
-    }
     const menuRestaurantId = computed(() => {
       return route.params.restaurantId;
     });
