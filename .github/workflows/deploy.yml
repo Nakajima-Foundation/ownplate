@@ -1,7 +1,6 @@
-# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
-
-name: Node.js CI
+# main を staging へデプロイする。検査はしない（lint / 型検査 / 試験は
+# pull_request.yaml 側。あちらも main への push で回るので、名前を分けてある）。
+name: Deploy (staging)
 
 on:
   push:

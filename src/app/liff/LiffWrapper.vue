@@ -35,7 +35,7 @@ import { signInWithCustomToken, signOut } from "firebase/auth";
 import { liffAuthenticate } from "@/lib/firebase/functions";
 import { useUserStore } from "@/store/user";
 
-import queryString from "query-string";
+import { classifyOS, parseLiffState } from "@/utils/liffState";
 
 import PC from "@/app/liff/PC.vue";
 import NotFound from "@/components/NotFound.vue";
@@ -60,33 +60,7 @@ import { useRoute } from "vue-router";
  5. everything ok
 */
 
-const getOS = () => {
-  const os = liff.getOS();
-  const isAndroid = os === "android";
-  const isIOS = os === "ios";
-  const isWeb = os === "web";
-  return {
-    os,
-    isAndroid,
-    isIOS,
-    isWeb,
-  };
-};
-
-const parseLiffState = (liffstate: string) => {
-  if (!liffstate) return {};
-  const splited = liffstate.split("?");
-  if (splited.length < 2) {
-    return {
-      liffStatePath: splited[0] || "",
-      liffStateQuery: {},
-    };
-  }
-  return {
-    liffStatePath: splited[0],
-    liffStateQuery: queryString.parse(splited[1]),
-  };
-};
+const getOS = () => classifyOS(liff.getOS());
 
 export default defineComponent({
   components: {
