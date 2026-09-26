@@ -53,6 +53,7 @@ import { Timestamp } from "firebase/firestore";
 
 import { isNull } from "@/utils/commonUtils";
 import { usePickupTime } from "@/utils/pickup";
+import { pickupDateOf } from "../../../../utils/pickupDate";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { OrderInfoData } from "@/models/orderInfo";
@@ -103,7 +104,10 @@ export default defineComponent({
             !isNull(exceptHour.start) &&
             !isNull(exceptHour.end)
           ) {
-            tmp.exceptHours.push({ start: exceptHour.start, end: exceptHour.end });
+            tmp.exceptHours.push({
+              start: exceptHour.start,
+              end: exceptHour.end,
+            });
           }
           return tmp;
         },
@@ -159,11 +163,8 @@ export default defineComponent({
       console.log("time changed");
     });
 
-    // TODO: change emit
     const timeToPickup = () => {
-      const date = days.value[dayIndex.value].date;
-      date.setHours(time.value / 60);
-      date.setMinutes(time.value % 60);
+      const date = pickupDateOf(days.value[dayIndex.value].date, time.value);
       const ts = Timestamp.fromDate(date);
       return new Timestamp(ts.seconds, ts.nanoseconds);
     };

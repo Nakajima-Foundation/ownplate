@@ -56,6 +56,9 @@ export const SEED_FOOD_TAX_PERCENT = 8;
 const MINUTES_PER_HOUR = 60;
 const OPEN_HOUR = 11;
 const CLOSE_HOUR = 21;
+// 営業時間は 0 時からの分数で持つ。試験で閉店時刻を動かしたあと、ここへ戻す。
+export const SEED_OPEN_TIME = OPEN_HOUR * MINUTES_PER_HOUR;
+export const SEED_CLOSE_TIME = CLOSE_HOUR * MINUTES_PER_HOUR;
 
 const everyDay = <T>(value: () => T) =>
   [1, 2, 3, 4, 5, 6, 7].reduce<{ [key: number]: T }>((days, day) => {
@@ -88,9 +91,7 @@ export const seedRestaurant = (createdAt: Date) => ({
   countryCode: "+81",
   introduction: "e2e 用の店舗です。",
   businessDay: everyDay(() => true),
-  openTimes: everyDay(() => [
-    { start: OPEN_HOUR * MINUTES_PER_HOUR, end: CLOSE_HOUR * MINUTES_PER_HOUR },
-  ]),
+  openTimes: everyDay(() => [{ start: SEED_OPEN_TIME, end: SEED_CLOSE_TIME }]),
   foodTax: SEED_FOOD_TAX_PERCENT,
   alcoholTax: 10,
   inclusiveTax: false,
