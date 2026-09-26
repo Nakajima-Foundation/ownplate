@@ -5,7 +5,11 @@ import {
   EMULATOR_HOST,
   FIRESTORE_EMULATOR_PORT,
 } from "../../src/config/emulatorPorts";
-import { SEED_MENU_ID, SEED_RESTAURANT_ID } from "../../scripts/seedData";
+import {
+  SEED_DELIVERY_RESTAURANT_ID,
+  SEED_MENU_ID,
+  SEED_RESTAURANT_ID,
+} from "../../scripts/seedData";
 
 const DOCUMENTS_URL =
   `http://${EMULATOR_HOST}:${FIRESTORE_EMULATOR_PORT}` +
@@ -40,3 +44,46 @@ export const setSoldOut = (soldOut: boolean) =>
     { booleanValue: soldOut },
     "売り切れ",
   );
+
+// 配送条件。手順書は「設定 → 判定表」の形で書かれているので、設定を置ける口を
+// 用意しておく。地図は描かせない（確認画面が Google を待つと金額まで進めない）。
+export type DeliveryArea = {
+  enableDeliveryThreshold: boolean;
+  deliveryThreshold: number;
+  deliveryFee: number;
+  enableDeliveryFree: boolean;
+  deliveryFreeThreshold: number;
+};
+
+export const setDeliveryArea = async (area: DeliveryArea) => {
+  const response = await fetch(
+    `${DOCUMENTS_URL}/restaurants/${SEED_DELIVERY_RESTAURANT_ID}/delivery/area`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer owner",
+      },
+      body: JSON.stringify({
+        fields: {
+          enableAreaMap: { booleanValue: false },
+          enableAreaText: { booleanValue: false },
+          radius: { integerValue: String(500) },
+          areaText: { stringValue: "" },
+          enableDeliveryThreshold: {
+            booleanValue: area.enableDeliveryThreshold,
+          },
+          deliveryThreshold: { integerValue: String(area.deliveryThreshold) },
+          deliveryFee: { integerValue: String(area.deliveryFee) },
+          enableDeliveryFree: { booleanValue: area.enableDeliveryFree },
+          deliveryFreeThreshold: {
+            integerValue: String(area.deliveryFreeThreshold),
+          },
+        },
+      }),
+    },
+  );
+  if (!response.ok) {
+    throw new Error(`配送条件を変えられません: ${response.status}`);
+  }
+};
