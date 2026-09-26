@@ -65,7 +65,7 @@
                 @change="handleCardStateChange"
                 ref="stripeRef"
                 :stripeJCB="stripeJCB"
-                :stripeAccount="stripeAccount"
+                :stripeAccount="stripeAccount ?? ''"
                 :clientSecret="orderInfo.client_secret ?? ''"
                 :ownerUid="shopInfo.uid"
                 :uid="orderInfo.uid"
@@ -117,6 +117,7 @@ import { orderPay } from "@/lib/firebase/functions";
 import { OrderDataBase } from "@/models/orderTypes";
 import { OrderItemData } from "@/models/orderInfoData";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import type { PaymentInfo } from "@/models/paymentInfo";
 
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
@@ -151,7 +152,7 @@ export default defineComponent({
       required: true,
     },
     paymentInfo: {
-      type: Object,
+      type: Object as PropType<PaymentInfo>,
       required: true,
     },
     menuPagePath: {
