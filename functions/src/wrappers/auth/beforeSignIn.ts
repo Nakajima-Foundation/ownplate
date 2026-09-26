@@ -1,6 +1,4 @@
-import {
-  beforeUserSignedIn,
-} from "firebase-functions/v2/identity";
+import { beforeUserSignedIn } from "firebase-functions/v2/identity";
 
 export default beforeUserSignedIn(
   {
@@ -13,4 +11,5 @@ export default beforeUserSignedIn(
         signInIpAddress: context.ipAddress,
       },
     };
-  });
+  },
+);

@@ -1,8 +1,8 @@
 import { getFirestore } from "firebase-admin/firestore";
-import { onCall, HttpsError } from "firebase-functions/v2/https";
+import { onCall } from "firebase-functions/v2/https";
 
 import { dispatch } from "../../functions/super/super";
-import { enforceAppCheck } from "../firebase";
+import { enforceAppCheck, requireAppCheck } from "../firebase";
 
 const db = getFirestore();
 
@@ -14,9 +14,7 @@ export default onCall(
     maxInstances: 5,
   },
   async (context) => {
-    if (context.app == undefined) {
-      throw new HttpsError("failed-precondition", "The function must be called from an App Check verified app.");
-    }
+    requireAppCheck(context);
     return await dispatch(db, context.data, context);
   },
 );

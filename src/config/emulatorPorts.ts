@@ -3,3 +3,4 @@
 export const EMULATOR_HOST = "127.0.0.1";
 export const FIRESTORE_EMULATOR_PORT = 8089;
 export const AUTH_EMULATOR_PORT = 9099;
+export const FUNCTIONS_EMULATOR_PORT = 5001;

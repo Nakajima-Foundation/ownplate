@@ -1,14 +1,16 @@
 // e2e がエミュレーターへ入れる中身。輸入しても何も起きない（副作用なし）。
 // 形は src/utils/admin/shopInfoForm.ts の初期値に合わせてある。ずれると
 // 受取時刻の組み立てが undefined を踏んで画面ごと落ちる。
-export const SEED_RESTAURANT_ID = "e2e-restaurant";
-export const SEED_OWNER_UID = "e2e-owner";
+// Firestore の自動 id は英数字だけ。functions 側の validateFirebaseId が
+// /^[a-zA-Z0-9]+$/ を要求するので、ハイフンを入れると注文の検証で弾かれる。
+export const SEED_RESTAURANT_ID = "e2erestaurant";
+export const SEED_OWNER_UID = "e2eowner";
 // 管理画面は「メール認証されていれば店舗オーナー」という作り（store/user.ts の
 // isAdmin）。所有は店舗の uid が一致するかで決まるので、uid を指定して作る。
 export const SEED_OWNER_EMAIL = "e2e-owner@example.com";
 export const SEED_OWNER_PASSWORD = "e2e-password-1234";
 export const SEED_RESTAURANT_NAME = "E2E テスト食堂";
-export const SEED_MENU_ID = "e2e-menu";
+export const SEED_MENU_ID = "e2emenu";
 export const SEED_MENU_NAME = "から揚げ定食";
 export const SEED_MENU_PRICE = 800;
 export const SEED_FOOD_TAX_PERCENT = 8;
@@ -65,7 +67,7 @@ export const seedRestaurant = (createdAt: Date) => ({
 
 // 選択肢は「名前(+100)」の形。組の中がカンマ区切りで1つならチェック欄、
 // 複数ならラジオ。src/utils/commonUtils.ts の読み方に合わせてある。
-export const SEED_OPTION_MENU_ID = "e2e-menu-options";
+export const SEED_OPTION_MENU_ID = "e2emenuoptions";
 export const SEED_OPTION_MENU_NAME = "オプション付き弁当";
 export const SEED_OPTION_MENU_PRICE = 1000;
 export const SEED_CHECKBOX_OPTION = "大盛り(+100)";
@@ -84,6 +86,10 @@ export const seedOptionMenu = () => ({
 export const seedMenu = () => ({
   itemName: SEED_MENU_NAME,
   itemAliasesName: "",
+  // orderCreated が menuItems へ写すので、undefined だと Firestore が書き込みを拒む。
+  itemPhoto: "",
+  category1: "",
+  category2: "",
   itemDescription: "から揚げと白飯",
   price: SEED_MENU_PRICE,
   tax: "food",

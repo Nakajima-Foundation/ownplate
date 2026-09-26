@@ -1,8 +1,8 @@
-import { onCall, HttpsError } from "firebase-functions/v2/https";
+import { onCall } from "firebase-functions/v2/https";
 import { getFirestore } from "firebase-admin/firestore";
 
 import { deleteAccount } from "../functions/account";
-import { enforceAppCheck, secretKeys } from "./firebase";
+import { enforceAppCheck, requireAppCheck, secretKeys } from "./firebase";
 
 const db = getFirestore();
 
@@ -15,9 +15,7 @@ export default onCall(
     secrets: secretKeys,
   },
   async (context) => {
-    if (context.app == undefined) {
-      throw new HttpsError("failed-precondition", "The function must be called from an App Check verified app.");
-    }
+    requireAppCheck(context);
     return await deleteAccount(db, context);
   },
 );
