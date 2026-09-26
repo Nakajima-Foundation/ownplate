@@ -5,16 +5,27 @@ import {
   EMULATOR_HOST,
   FIRESTORE_EMULATOR_PORT,
 } from "../../src/config/emulatorPorts";
-import { SEED_MENU_ID, SEED_RESTAURANT_ID } from "../../scripts/seedData";
+import {
+  SEED_MENU_ID,
+  SEED_OPEN_TIME,
+  SEED_RESTAURANT_ID,
+} from "../../scripts/seedData";
 
 const DOCUMENTS_URL =
   `http://${EMULATOR_HOST}:${FIRESTORE_EMULATOR_PORT}` +
   `/v1/projects/ownplate-dev/databases/(default)/documents`;
 
+// Firestore の REST が受け取る値の形（使う分だけ）。
+type FirestoreValue =
+  | { booleanValue: boolean }
+  | { integerValue: string }
+  | { arrayValue: { values: FirestoreValue[] } }
+  | { mapValue: { fields: { [key: string]: FirestoreValue } } };
+
 const patchField = async (
   path: string,
   field: string,
-  value: { booleanValue: boolean },
+  value: FirestoreValue,
   what: string,
 ) => {
   const response = await fetch(
@@ -40,3 +51,33 @@ export const setSoldOut = (soldOut: boolean) =>
     { booleanValue: soldOut },
     "売り切れ",
   );
+
+const WEEKDAYS = ["1", "2", "3", "4", "5", "6", "7"];
+
+// 毎日同じ営業時間（開店は種まきのまま）にする。閉店は 0 時からの分数。
+export const setClosingTime = (closeTime: number) => {
+  const oneSpan: FirestoreValue = {
+    arrayValue: {
+      values: [
+        {
+          mapValue: {
+            fields: {
+              start: { integerValue: String(SEED_OPEN_TIME) },
+              end: { integerValue: String(closeTime) },
+            },
+          },
+        },
+      ],
+    },
+  };
+  return patchField(
+    `restaurants/${SEED_RESTAURANT_ID}`,
+    "openTimes",
+    {
+      mapValue: {
+        fields: Object.fromEntries(WEEKDAYS.map((day) => [day, oneSpan])),
+      },
+    },
+    "営業時間",
+  );
+};
