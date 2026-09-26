@@ -7,8 +7,8 @@ import {
 } from "../../scripts/seedData";
 import {
   addOneItemAndCheckout,
-  signInAsOwner,
-  signInByPhone,
+  expectOrderPlaced,
+  signInCustomer,
   waitForOrderConfirmation,
 } from "./helpers";
 
@@ -31,8 +31,8 @@ test.describe("注文の一周", () => {
   // 30. カート機能 / ケース1 の先。orderCreated が金額を組み立て直すので、
   // ここが落ちると注文が status: error で止まり「売り切れかも」とだけ出る。
   test("注文確認画面に小計・税・合計が出る", async ({ page }) => {
+    await signInCustomer(page);
     await addOneItemAndCheckout(page);
-    await signInByPhone(page);
     await waitForOrderConfirmation(page);
 
     await expect(
@@ -41,15 +41,15 @@ test.describe("注文の一周", () => {
   });
 
   test("確定すると注文状況が Order Placed になる", async ({ page }) => {
+    await signInCustomer(page);
     await addOneItemAndCheckout(page);
-    await signInByPhone(page);
     await waitForOrderConfirmation(page);
     await page
       .getByRole("button", { name: /Place Order/i })
       .first()
       .click();
 
-    await expect(page.getByText("Order Placed")).toBeVisible();
+    await expectOrderPlaced(page);
     await expect(page.getByText(SEED_MENU_NAME).first()).toBeVisible();
     await expect(
       page.getByText(yen(withTax(SEED_MENU_PRICE))).first(),

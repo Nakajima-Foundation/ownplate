@@ -15,6 +15,12 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
   reporter: "html",
+  // dev server は要求されて初めて変換するので、最初に開く画面だけ描画が遅い。
+  // 既定の 5 秒だと冷えた状態（CI は毎回これ）で取りこぼす。
+  expect: { timeout: 20_000 },
+  // dev server は要求されて初めて変換するので、最初に開く画面だけ描画が遅い。
+  // 既定の 5 秒だと冷えた状態（CI は毎回これ）で取りこぼす。
+  expect: { timeout: 20_000 },
   use: {
     baseURL: "http://localhost:3000",
     trace: "on-first-retry",

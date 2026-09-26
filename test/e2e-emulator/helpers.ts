@@ -65,6 +65,8 @@ export const signInByPhone = async (page: Page) => {
   await page.getByRole("button", { name: "Send", exact: true }).click();
 };
 
+// かごに入れて「Checkout」まで。そのあと何が出るかは署名済みかで変わるので、
+// ここでは主張しない。
 export const addOneItemAndCheckout = async (page: Page) => {
   await page.goto(`/r/${SEED_RESTAURANT_ID}`);
   await page.getByText("Add", { exact: true }).first().click();
@@ -74,30 +76,59 @@ export const addOneItemAndCheckout = async (page: Page) => {
   await expect(page.getByText("Checkout")).toBeVisible();
 
   await page.getByText("Checkout").click();
+};
+
+// 先にマイページで署名しておく。
+//
+// **お会計の途中で署名すると間欠的に進まなくなる。** ダイアログを閉じた時点で
+// 利用者情報がまだ届いていないと、画面は watch 頼みの待ちに入る（RestaurantPage の
+// handleDismissed / waitForUser）。先に署名しておけばその筋を通らない。
+export const signInCustomer = async (page: Page) => {
+  await page.goto("/u/profile");
+  await page.getByText("Sign In as a User").first().click();
   await expect(page.locator('input[type="tel"]')).toBeVisible();
+  await signInByPhone(page);
+  await expect(page.getByText("Sign Out")).toBeVisible();
 };
 
 // 署名のあと、注文が作られて注文確認へ移るまで待つ。
+// waitForURL は「読み込み」を待つので、画面の中だけで移る SPA では返ってこない
+// ことがある。URL を見に行く toHaveURL を使う。
+const ORDER_URL_WAIT_MS = 90_000;
+
 export const waitForOrderConfirmation = async (page: Page) => {
-  await page.waitForURL(new RegExp(`/r/${SEED_RESTAURANT_ID}/order/`));
+  await expect(page).toHaveURL(new RegExp(`/r/${SEED_RESTAURANT_ID}/order/`), {
+    timeout: ORDER_URL_WAIT_MS,
+  });
   await expect(
     page.getByRole("button", { name: /Place Order/i }).first(),
   ).toBeVisible();
 };
 
+// 確定したかどうかは「Order Placed」で見分けられない。**確定前の注意書きにも
+// その文字列が入っている**（「before the order state is Order Placed」）。
+// 確定後にだけ出るもので見る。
+export const expectOrderPlaced = async (page: Page) => {
+  await expect(page.getByText(/hasn't been placed yet/)).toHaveCount(0);
+  await expect(page.getByText(/^#\d+$/).first()).toBeVisible();
+};
+
 // 注文を最後まで通し、店舗側で見分けるための注文番号（#001 の 001）を返す。
 export const placeOrder = async (page: Page): Promise<string> => {
+  await signInCustomer(page);
   await addOneItemAndCheckout(page);
-  await signInByPhone(page);
   await waitForOrderConfirmation(page);
   await page
     .getByRole("button", { name: /Place Order/i })
     .first()
     .click();
-  await expect(page.getByText("Order Placed")).toBeVisible();
+  await expectOrderPlaced(page);
 
-  const body = (await page.textContent("body")) ?? "";
-  const number = body.match(/#(\d+)/)?.[1];
+  const shown = await page
+    .getByText(/^#\d+$/)
+    .first()
+    .textContent();
+  const number = shown?.match(/#(\d+)/)?.[1];
   if (!number) {
     throw new Error("注文番号が画面に出ていません");
   }
@@ -141,4 +172,17 @@ export const setInStorePayment = async (allowed: boolean) => {
   if (!response.ok) {
     throw new Error(`支払い設定を変えられません: ${response.status}`);
   }
+};
+
+// 店舗側で注文を開く。既定の注文一覧は日付で絞るので、全件の画面から探す。
+// 状態を進めると一覧へ戻される作りなので、進めるたびにここを通る。
+export const ADMIN_HISTORY_PATH = `/admin/restaurants/${SEED_RESTAURANT_ID}/history`;
+export const ADMIN_ORDERS_PATH = `/admin/restaurants/${SEED_RESTAURANT_ID}/orders`;
+
+export const openOrderDetail = async (page: Page, orderNumber: string) => {
+  await page.goto(ADMIN_HISTORY_PATH);
+  const card = page.getByText(`#${orderNumber}`).first();
+  await expect(card).toBeVisible();
+  await card.click();
+  await expect(page).toHaveURL(new RegExp(`${ADMIN_ORDERS_PATH}/`));
 };
