@@ -1,3 +1,4 @@
+import { Timestamp } from "firebase/firestore";
 import type { RestaurantInfoData } from "../../src/models/RestaurantInfo.ts";
 
 // 型を満たす店舗ひとつ分。テストは必要な項目だけ上書きして使う。
@@ -79,7 +80,7 @@ const base: RestaurantInfoData = {
   category1: [],
   category2: [],
 
-  createdAt: new Date("2020-01-01T00:00:00Z"),
+  createdAt: Timestamp.fromDate(new Date("2020-01-01T00:00:00Z")),
 };
 
 export const restaurantInfoFixture = (

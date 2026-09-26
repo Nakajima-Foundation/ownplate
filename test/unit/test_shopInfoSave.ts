@@ -1,3 +1,4 @@
+import { Timestamp } from "firebase/firestore";
 import { describe, it } from "node:test";
 import assert from "node:assert";
 
@@ -52,7 +53,7 @@ describe("getEditShopInfo — 時刻の注入", () => {
   });
 
   it("keeps an existing creation time rather than overwriting it", () => {
-    const original = new Date("2019-05-06T00:00:00Z");
+    const original = Timestamp.fromDate(new Date("2019-05-06T00:00:00Z"));
     const saved = getEditShopInfo(shopInfo({ createdAt: original }), "NOW");
     assert.strictEqual(saved.createdAt, original);
     assert.strictEqual(saved.updatedAt, "NOW");
