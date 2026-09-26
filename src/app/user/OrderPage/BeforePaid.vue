@@ -459,7 +459,7 @@ export default defineComponent({
     // ref for refs
     const ecCustomerRef = ref();
     const orderPageMapRef = ref();
-    const timeToPickupRef = ref();
+    const timeToPickupRef = ref<InstanceType<typeof TimeToPickup> | null>(null);
     const stripeRef = ref();
 
     const postageInfo = ref({});
@@ -627,7 +627,11 @@ export default defineComponent({
       }
       const timeToPickup = props.shopInfo.isEC
         ? Timestamp.now()
-        : timeToPickupRef.value.timeToPickup();
+        : timeToPickupRef.value?.timeToPickup();
+      // 受取時刻の欄は、店舗に営業日が無いと描画されない（v-if="shopInfo.businessDay"）。
+      if (!timeToPickup) {
+        return;
+      }
       try {
         generalStore.setLoading(true);
         const promotionId =
