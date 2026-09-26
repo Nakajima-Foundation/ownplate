@@ -4,6 +4,7 @@ import {
   AUTH_EMULATOR_PORT,
   EMULATOR_HOST,
   FIRESTORE_EMULATOR_PORT,
+  FUNCTIONS_EMULATOR_PORT,
 } from "../../src/config/emulatorPorts";
 
 const READY_WAIT_MS = 60_000;
@@ -30,6 +31,9 @@ const waitUntilAnswering = async (port: number) => {
 export default async () => {
   await waitUntilAnswering(FIRESTORE_EMULATOR_PORT);
   await waitUntilAnswering(AUTH_EMULATOR_PORT);
+  // 注文の確定は Callable を呼ぶ。functions は一番あとに上がるので、ここを待たないと
+  // 最初の注文だけが「売り切れかも」で落ちる。
+  await waitUntilAnswering(FUNCTIONS_EMULATOR_PORT);
   execFileSync("npx", ["tsx", "scripts/seedEmulator.ts"], {
     stdio: "inherit",
     env: {

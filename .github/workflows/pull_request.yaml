@@ -109,6 +109,13 @@ jobs:
     # deploy.yml と同じで、重いので package.json には入れずここで入れる。
     - run: yarn add -D firebase-tools
     - run: npx playwright install --with-deps chromium
+    # 注文の確定は Callable を呼ぶので、エミュレーターに載せる functions を用意する。
+    - name: functions を用意する
+      run: |
+        sh scripts/copy2functions.sh
+        cp src/config/project.ts functions/src/common/project.ts
+        yarn --cwd functions install
+        yarn --cwd functions build
     - name: e2e
       run: yarn run test:e2e
     - name: e2e (Firebase エミュレーター)
