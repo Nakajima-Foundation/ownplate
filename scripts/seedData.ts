@@ -21,6 +21,32 @@ export const SEED_CUSTOMER_PHONE =
 // orderCreated は注文のたびに createCustomer を通る。/users/:uid/system/stripe が
 // 無いと本物の Stripe API へ顧客を作りに行くので、先に置いて通らせない。
 export const SEED_CUSTOMER_STRIPE_ID = "cus_e2e";
+// 値引き。閾値をほかの試験の注文より高くしてあるので、ここ以外には効かない。
+export const SEED_PROMOTION_ID = "e2ediscount";
+export const SEED_PROMOTION_NAME = "E2E 値引き";
+export const SEED_PROMOTION_THRESHOLD = 2000;
+export const SEED_PROMOTION_DISCOUNT = 100;
+
+// 期間は「いま」を必ず含む固定の幅にする。相対で置くと、走らせた時刻で結果が変わる。
+const PROMOTION_TERM_FROM = new Date("2020-01-01T00:00:00Z");
+const PROMOTION_TERM_TO = new Date("2099-12-31T00:00:00Z");
+
+export const seedPromotion = () => ({
+  promotionId: SEED_PROMOTION_ID,
+  promotionName: SEED_PROMOTION_NAME,
+  enable: true,
+  type: "discount",
+  hasTerm: true,
+  termFrom: PROMOTION_TERM_FROM,
+  termTo: PROMOTION_TERM_TO,
+  discountThreshold: SEED_PROMOTION_THRESHOLD,
+  discountMethod: "amount",
+  discountValue: SEED_PROMOTION_DISCOUNT,
+  // 支払い方法で絞らない。受け取り払いでも効く。
+  paymentRestrictions: null,
+  usageRestrictions: false,
+});
+
 export const SEED_MENU_ID = "e2emenu";
 export const SEED_MENU_NAME = "から揚げ定食";
 export const SEED_MENU_PRICE = 800;
