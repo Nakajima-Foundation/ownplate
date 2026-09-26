@@ -64,7 +64,7 @@
           <!-- Table Body -->
           <tr v-for="order in orders" :key="order.id" class="text-sm">
             <td class="p-2">
-              <div class="text-right">{{ $d(order.timeConfirmed) }}</div>
+              <div class="text-right">{{ $d(asDate(order.timeConfirmed)) }}</div>
             </td>
             <td class="p-2">
               <div class="text-right">
@@ -227,7 +227,7 @@ import NotFound from "@/components/NotFound.vue";
 
 import { ownPlateConfig } from "@/config/project";
 import { nameOfOrder } from "@/utils/strings";
-import { midNightOfMonth } from "@/utils/dateUtils";
+import { asDate, midNightOfMonth } from "@/utils/dateUtils";
 import { revenueCSVHeader, revenueTableHeader } from "@/utils/reportUtils";
 import { order_status_keys } from "@/config/constant";
 import {
@@ -439,6 +439,7 @@ export default defineComponent({
       updateQuery();
     });
     return {
+      asDate,
       orders,
       total,
       monthIndex,

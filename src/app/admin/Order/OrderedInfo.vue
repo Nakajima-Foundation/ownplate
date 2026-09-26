@@ -255,6 +255,7 @@
 import { defineComponent, ref, computed, PropType } from "vue";
 
 import { nameOfOrder } from "@/utils/strings";
+import { asDate } from "@/utils/dateUtils";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 
 import { db } from "@/lib/firebase/firebase9";
@@ -311,7 +312,9 @@ export default defineComponent({
       return props.order?.payment?.stripe;
     });
     const timestamp = computed(() => {
-      const time = props.order.timeEstimated || props.order.timePlaced;
+      const time = asDate(
+        props.order.timeEstimated || props.order.timePlaced,
+      );
 
       if (props.isSuperView) {
         return d(time, "long");
