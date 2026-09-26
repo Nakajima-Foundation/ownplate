@@ -3,6 +3,7 @@ import { expect, test } from "@playwright/test";
 import {
   SEED_FOOD_TAX_PERCENT,
   SEED_RESTAURANT_ID,
+  SEED_RESTAURANT_NAME,
 } from "../../scripts/seedData";
 import { signInAsOwner } from "./helpers";
 
@@ -81,5 +82,37 @@ test.describe("店情報の欄の文字数", () => {
 
     await page.getByText("Tax Icnluded").click();
     await expect(example).toContainText(yen(EXAMPLE_WITH_TAX));
+  });
+
+  // ケース2 Step1「『飲食店名』は入力必須になっている」。
+  // 空にすると知らせが出て、保存の口が死ぬ。
+  test("飲食店名を空にすると保存できない", async ({ page }) => {
+    await signInAsOwner(page);
+    await page.goto(EDIT_PATH);
+
+    const name = page.getByPlaceholder("Enter restaurant name");
+    await expect(name).toHaveValue(SEED_RESTAURANT_NAME);
+    await name.fill("");
+
+    await expect(
+      page.getByText("Please enter the restaurant name").first(),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: "Save" }).first(),
+    ).toBeDisabled();
+  });
+
+  // ケース2 Step22 の並び。適格請求書の番号は T と 13 桁でなければ知らせが出る。
+  test("請求書番号の形が違うと知らせる", async ({ page }) => {
+    await signInAsOwner(page);
+    await page.goto(EDIT_PATH);
+
+    await page.getByPlaceholder("e.g. T1234567890123").fill("T123");
+
+    await expect(
+      page
+        .getByText("Enter T followed by 13 digits (half-width characters)")
+        .first(),
+    ).toBeVisible();
   });
 });
