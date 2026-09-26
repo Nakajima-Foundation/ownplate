@@ -1,6 +1,9 @@
 import { expect, test } from "@playwright/test";
 
-import { SEED_RESTAURANT_ID } from "../../scripts/seedData";
+import {
+  SEED_FOOD_TAX_PERCENT,
+  SEED_RESTAURANT_ID,
+} from "../../scripts/seedData";
 import { signInAsOwner } from "./helpers";
 
 // もとは QA 手順書「おもちかえり.com QA手順書 兼 QA結果報告書 - Vue3-full-test」の
@@ -36,6 +39,14 @@ const LIMITS: { placeholder: string; limit: number }[] = [
 
 const OVERFLOW = 5;
 
+// 表示例は 1000 円の品物で出る（画面が決め打ちしている値）。
+const EXAMPLE_PRICE = 1000;
+const PERCENT = 100;
+const EXAMPLE_WITH_TAX = Math.floor(
+  (EXAMPLE_PRICE * (PERCENT + SEED_FOOD_TAX_PERCENT)) / PERCENT,
+);
+const yen = (amount: number) => `¥${amount.toLocaleString("en-US")}`;
+
 test.describe("店情報の欄の文字数", () => {
   test("どの欄も上限を超えて入らない", async ({ page }) => {
     await signInAsOwner(page);
@@ -49,5 +60,26 @@ test.describe("店情報の欄の文字数", () => {
       // **属性が消えても属性どうしの比較で通ってしまう。**
       await expect(field).toHaveValue("a".repeat(limit));
     }
+  });
+
+  // ケース2 Step23「『内税』チェックを ON/OFF する → 表示例が切り替わる」。
+  // ここも保存しない。切り替えの見た目だけを見る。
+  test("内税のチェックで表示例が切り替わる", async ({ page }) => {
+    await signInAsOwner(page);
+    await page.goto(EDIT_PATH);
+
+    // 「(inc. tax)」はそれだけの span に入っている。金額と一緒に読むには、
+    // 表示例を囲む太字ごと掴む。
+    const example = page
+      .locator("b")
+      .filter({ hasText: /inc\. tax/ })
+      .first();
+    await expect(example).toContainText(yen(EXAMPLE_WITH_TAX));
+
+    await page.getByText("Tax Icnluded").click();
+    await expect(example).toContainText(yen(EXAMPLE_PRICE));
+
+    await page.getByText("Tax Icnluded").click();
+    await expect(example).toContainText(yen(EXAMPLE_WITH_TAX));
   });
 });
