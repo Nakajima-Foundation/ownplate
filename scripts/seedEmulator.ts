@@ -9,10 +9,12 @@ import {
 } from "../src/config/emulatorPorts.ts";
 import {
   SEED_MENU_ID,
+  SEED_OPTION_MENU_ID,
   SEED_OWNER_UID,
   SEED_RESTAURANT_ID,
   SEED_RESTAURANT_NAME,
   seedMenu,
+  seedOptionMenu,
   seedRestaurant,
 } from "./seedData.ts";
 
@@ -34,9 +36,15 @@ const main = async () => {
   const restaurant = db.doc(`restaurants/${SEED_RESTAURANT_ID}`);
   await restaurant.set(seedRestaurant());
   await restaurant.collection("menus").doc(SEED_MENU_ID).set(seedMenu());
+  await restaurant
+    .collection("menus")
+    .doc(SEED_OPTION_MENU_ID)
+    .set(seedOptionMenu());
+  // inStore を立てると受け取り払いになり、Stripe 無しで注文まで進める。
+  // PaymentInfo の stripe は文字列なので、偽の false を置くのは誤り。
   await db
     .doc(`admins/${SEED_OWNER_UID}/public/payment`)
-    .set({ stripe: false });
+    .set({ inStore: true });
   process.stdout.write(
     `種まき完了: restaurants/${SEED_RESTAURANT_ID}（${SEED_RESTAURANT_NAME}）\n`,
   );
