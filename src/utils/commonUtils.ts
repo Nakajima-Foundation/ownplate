@@ -9,11 +9,11 @@ interface PostageInfo {
 // 管理画面の数値欄を空のまま保存すると "" が入るので、空は「設定なし」として扱う。0 は「常に無料」。
 export const freeThresholdOf = (raw: unknown): number | null => {
   if (typeof raw === "number") {
-    return Number.isNaN(raw) ? null : raw;
+    return Number.isFinite(raw) ? raw : null;
   }
   if (typeof raw === "string" && raw !== "") {
     const threshold = Number(raw);
-    return Number.isNaN(threshold) ? null : threshold;
+    return Number.isFinite(threshold) ? threshold : null;
   }
   return null;
 };
@@ -30,8 +30,8 @@ export const costCal = (
   }
   if (prefectureId && postageList.length > 0) {
     const postage = Number(postageList[Number(prefectureId) - 1]);
-    // 一覧の外や壊れた値は NaN になり、そのまま注文の合計と決済に流れてしまう。
-    return Number.isNaN(postage) ? 0 : postage;
+    // 一覧の外や壊れた値（NaN・Infinity）は、そのまま注文の合計と決済に流れてしまう。
+    return Number.isFinite(postage) ? postage : 0;
   }
   return 0;
 };

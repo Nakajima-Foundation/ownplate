@@ -81,7 +81,20 @@ describe("freeThresholdOf", () => {
   });
 
   it("treats empty, missing and non-numeric values as not set", () => {
-    [undefined, null, "", "abc", NaN, true, false, {}, []].forEach((raw) => {
+    [
+      undefined,
+      null,
+      "",
+      "abc",
+      NaN,
+      Infinity,
+      -Infinity,
+      "Infinity",
+      true,
+      false,
+      {},
+      [],
+    ].forEach((raw) => {
       assert.strictEqual(freeThresholdOf(raw), null, JSON.stringify(raw));
     });
   });
@@ -127,6 +140,13 @@ describe("costCal が一覧の外を指したとき", () => {
   it("charges nothing rather than NaN", () => {
     assert.strictEqual(costCal({ postageList: shortList }, 47, 1000), 0);
     assert.strictEqual(costCal({ postageList: shortList }, 3, 1000), 0);
+  });
+
+  it("charges nothing for an infinite amount in the list", () => {
+    assert.strictEqual(
+      costCal({ postageList: { default: [100, Infinity] } }, 2, 1000),
+      0,
+    );
   });
 
   it("charges nothing for a broken amount in the list", () => {
