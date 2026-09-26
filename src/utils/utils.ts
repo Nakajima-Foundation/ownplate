@@ -27,7 +27,6 @@ import isURL from "validator/lib/isURL";
 import isLatLong from "validator/lib/isLatLong";
 
 import {
-  convOptionArray2Obj,
   isNull,
   selectedOptionNames,
   selectedOptionsPrice,
@@ -453,8 +452,6 @@ export const validLocation = (location: { lat?: number; lng?: number }) => {
 export const validPlaceId = (placeId: string) => {
   return /^[a-zA-Z0-9-_]+$/.test(placeId) || placeId === "";
 };
-
-export { convOptionArray2Obj };
 
 export const prices2subtotal = (prices: { [key: string]: number[] }) => {
   return Object.keys(prices).reduce<{ [key: string]: number }>(

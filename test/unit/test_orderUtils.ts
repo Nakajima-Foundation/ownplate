@@ -3,7 +3,6 @@ import assert from "node:assert";
 import {
   arrayOrNumSum,
   arraySum,
-  convOptionArray2Obj,
   convOrderStateForText,
   itemOptionCheckbox2options,
   orderType,
@@ -11,6 +10,7 @@ import {
   priceWithTax,
   taxRate,
 } from "../../src/utils/utils.ts";
+import { convOptionArray2Obj } from "../../src/utils/commonUtils.ts";
 import { menuFixture } from "../fixtures/menu.ts";
 import { orderInfoFixture } from "../fixtures/orderInfo.ts";
 import { restaurantInfoFixture } from "../fixtures/restaurantInfo.ts";

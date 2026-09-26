@@ -312,7 +312,6 @@ import { useHead } from "@unhead/vue";
 import {
   array2obj,
   arraySum,
-  convOptionArray2Obj,
   prices2subtotal,
   subtotal2total,
   getPrices,
@@ -325,6 +324,7 @@ import {
   errorCode,
   errorMessage,
 } from "@/utils/utils";
+import { convOptionArray2Obj } from "@/utils/commonUtils";
 
 import { imageUtils } from "@/utils/RestaurantUtils";
 
