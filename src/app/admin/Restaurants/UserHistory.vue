@@ -129,6 +129,7 @@ import {
 
 import { order_status } from "@/config/constant";
 import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
+import { asDate } from "@/utils/dateUtils";
 import { OrderInfoData } from "@/models/orderInfo";
 
 import { checkShopAccount } from "@/utils/userPermission";
@@ -255,7 +256,7 @@ export default defineComponent({
           return order as OrderInfoData;
         })
         .sort((a, b) => {
-          if (a.timePlaced.getTime() === b.timePlaced.getTime()) {
+          if (asDate(a.timePlaced).getTime() === asDate(b.timePlaced).getTime()) {
             return a.number > b.number ? -1 : 1;
           }
           return a.timePlaced > b.timePlaced ? -1 : 1;

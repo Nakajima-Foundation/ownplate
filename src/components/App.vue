@@ -187,7 +187,7 @@ export default defineComponent({
 
     let openTime = new Date();
     timerId = window.setInterval(() => {
-      const diff = (new Date() - openTime) / 1000; // second
+      const diff = (Date.now() - openTime.getTime()) / 1000; // second
       if (diff > 20 * 3600) {
         openTime = new Date();
         location.reload();
