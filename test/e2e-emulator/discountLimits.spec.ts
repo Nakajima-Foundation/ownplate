@@ -2,6 +2,7 @@ import { expect, test, type Page } from "@playwright/test";
 
 import {
   SEED_FOOD_TAX_PERCENT,
+  SEED_MENU_NAME,
   SEED_MENU_PRICE,
   SEED_PROMOTION_DISCOUNT,
   SEED_PROMOTION_TERM_TO,
@@ -24,6 +25,13 @@ import { setPromotionTermTo, setPromotionUsageRestriction } from "./shopState";
 
 const SHOP_PATH = `/r/${SEED_RESTAURANT_ID}`;
 const BANNER = /キャンペーン実施中/;
+
+// **「無い」は画面が描けてから数える。** 読み込み中はどの札も無いので、
+// 移動した直後に数えると必ず 0 になり、何を見ても通ってしまう。
+const openShopAndSettle = async (page: Page) => {
+  await page.goto(SHOP_PATH);
+  await expect(page.getByText(SEED_MENU_NAME).first()).toBeVisible();
+};
 const PERCENT = 100;
 const FLOW_TIMEOUT_MS = 240_000;
 test.describe.configure({ timeout: FLOW_TIMEOUT_MS, mode: "serial" });
@@ -64,22 +72,22 @@ test.describe("値引きの使える回数と期間", () => {
     await setPromotionUsageRestriction(true);
     await signInCustomer(page);
 
-    await page.goto(SHOP_PATH);
+    await openShopAndSettle(page);
     await expect(page.getByText(BANNER)).toBeVisible();
 
     await placeDiscountedOrder(page);
 
-    await page.goto(SHOP_PATH);
+    await openShopAndSettle(page);
     await expect(page.getByText(BANNER)).toHaveCount(0);
   });
 
   // 「4. キャンペーン期間が終わると自動OFFになる」
   test("期間が終わった値引きは出なくなる", async ({ page }) => {
-    await page.goto(SHOP_PATH);
+    await openShopAndSettle(page);
     await expect(page.getByText(BANNER)).toBeVisible();
 
     await setPromotionTermTo(new Date("2020-01-02T00:00:00Z"));
-    await page.reload();
+    await openShopAndSettle(page);
 
     await expect(page.getByText(BANNER)).toHaveCount(0);
   });
