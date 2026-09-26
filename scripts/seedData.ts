@@ -29,7 +29,7 @@ export const SEED_PROMOTION_DISCOUNT = 100;
 
 // 期間は「いま」を必ず含む固定の幅にする。相対で置くと、走らせた時刻で結果が変わる。
 const PROMOTION_TERM_FROM = new Date("2020-01-01T00:00:00Z");
-const PROMOTION_TERM_TO = new Date("2099-12-31T00:00:00Z");
+export const SEED_PROMOTION_TERM_TO = new Date("2099-12-31T00:00:00Z");
 
 export const seedPromotion = () => ({
   promotionId: SEED_PROMOTION_ID,
@@ -38,7 +38,7 @@ export const seedPromotion = () => ({
   type: "discount",
   hasTerm: true,
   termFrom: PROMOTION_TERM_FROM,
-  termTo: PROMOTION_TERM_TO,
+  termTo: SEED_PROMOTION_TERM_TO,
   discountThreshold: SEED_PROMOTION_THRESHOLD,
   discountMethod: "amount",
   discountValue: SEED_PROMOTION_DISCOUNT,
