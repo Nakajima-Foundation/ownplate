@@ -61,7 +61,6 @@ export default defineComponent({
         logs.value = snapshot.docs.map((doc) => {
           const log = doc.data();
           log.id = doc.id;
-          log.createdAt = log.createdAt.toDate();
           return log;
         });
       },
