@@ -120,10 +120,23 @@ jobs:
       run: yarn run test:e2e
     - name: e2e (Firebase エミュレーター)
       run: yarn run test:e2e:emulator
+    # 失敗したときだけ、エミュレーターが何を言っていたかを出す。
+    # 画面には「売り切れかもしれません」としか出ないので、関数側を見ないと分からない。
+    - name: エミュレーターの記録
+      if: failure()
+      run: |
+        for f in firebase-debug.log firestore-debug.log ui-debug.log \
+                 functions/firebase-debug.log; do
+          [ -f "$f" ] && { echo "===== $f ====="; tail -200 "$f"; }
+        done
+        echo "===== 注文の状態 ====="
+        cat playwright-report/data/*.md 2>/dev/null | grep -iE "error|could not|dialog" | head -20
     - uses: actions/upload-artifact@v4
       if: failure()
       with:
         name: playwright-report
-        path: playwright-report/
+        path: |
+          playwright-report/
+          *-debug.log
         retention-days: 7
       

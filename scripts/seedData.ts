@@ -1,3 +1,5 @@
+import { stripe_regions_jp } from "../src/config/constant.ts";
+
 // e2e がエミュレーターへ入れる中身。輸入しても何も起きない（副作用なし）。
 // 形は src/utils/admin/shopInfoForm.ts の初期値に合わせてある。ずれると
 // 受取時刻の組み立てが undefined を踏んで画面ごと落ちる。
@@ -10,6 +12,15 @@ export const SEED_OWNER_UID = "e2eowner";
 export const SEED_OWNER_EMAIL = "e2e-owner@example.com";
 export const SEED_OWNER_PASSWORD = "e2e-password-1234";
 export const SEED_RESTAURANT_NAME = "E2E テスト食堂";
+// 注文者。画面は国番号を前に足すだけなので、先頭の 0 は残ったまま送られる。
+// uid を決めておくと、Stripe の顧客 id を先に置いておける（下記）。
+export const SEED_CUSTOMER_UID = "e2ecustomer";
+export const SEED_CUSTOMER_PHONE_INPUT = "09012345678";
+export const SEED_CUSTOMER_PHONE =
+  stripe_regions_jp.countries[0].code + SEED_CUSTOMER_PHONE_INPUT;
+// orderCreated は注文のたびに createCustomer を通る。/users/:uid/system/stripe が
+// 無いと本物の Stripe API へ顧客を作りに行くので、先に置いて通らせない。
+export const SEED_CUSTOMER_STRIPE_ID = "cus_e2e";
 export const SEED_MENU_ID = "e2emenu";
 export const SEED_MENU_NAME = "から揚げ定食";
 export const SEED_MENU_PRICE = 800;
