@@ -3297,10 +3297,10 @@ strip-ansi@^7.0.1:
   dependencies:
     ansi-regex "^6.2.2"
 
-stripe@^21:
-  version "21.0.1"
-  resolved "https://registry.yarnpkg.com/stripe/-/stripe-21.0.1.tgz#e26d90051442ef7d0d1aa79b6346f1c941d8dc63"
-  integrity sha512-ocv0j7dWttswDWV2XL/kb6+yiLpDXNXL3RQAOB5OB2kr49z0cEatdQc12+zP/j5nrXk6rAsT4N3y/NUvBbK7Pw==
+stripe@~22.6.2:
+  version "22.6.2"
+  resolved "https://registry.yarnpkg.com/stripe/-/stripe-22.6.2.tgz#e2acadf999b88a277e2c555d9008ac029b4f91e9"
+  integrity sha512-PwRE2scocvXqDKPiskMa5vRJEAEkq46W69XyUYmAwrNSLr675lQnfqLwnsndAWizwgihOWw/irLmoFRo3ez7ew==
 
 strnum@^2.4.1:
   version "2.4.1"
