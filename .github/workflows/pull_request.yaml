@@ -3,8 +3,13 @@
 
 name: Node.js CI
 
+# PR だけでなく main への push でも回す。PR ごとに緑でも、併合した組み合わせは
+# 誰も検めていない。deploy.yml は型検査をしないので、ここが main の唯一の門になる。
 on:
-  pull_request
+  pull_request:
+  push:
+    branches:
+      - main
 
 jobs:
   build-functions:
