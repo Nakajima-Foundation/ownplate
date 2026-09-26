@@ -7,6 +7,8 @@ import {
 } from "../../src/config/emulatorPorts";
 import {
   SEED_DELIVERY_RESTAURANT_ID,
+  SEED_EDIT_RESTAURANT_ID,
+  SEED_EDIT_RESTAURANT_NAME,
   SEED_MENU_ID,
   SEED_OPEN_TIME,
   SEED_RESTAURANT_ID,
@@ -124,4 +126,29 @@ export const setClosingTime = (closeTime: number) => {
     },
     "営業時間",
   );
+};
+
+// 保存を伴う試験の後片付け。**画面から戻すと当てにならない** — 店情報の画面は
+// チェック欄をいくつも持ち、位置で掴むと別の設定を読んでしまう。値を直に戻す。
+export const resetEditRestaurant = async () => {
+  const response = await fetch(
+    `${DOCUMENTS_URL}/restaurants/${SEED_EDIT_RESTAURANT_ID}` +
+      `?updateMask.fieldPaths=restaurantName&updateMask.fieldPaths=inclusiveTax`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer owner",
+      },
+      body: JSON.stringify({
+        fields: {
+          restaurantName: { stringValue: SEED_EDIT_RESTAURANT_NAME },
+          inclusiveTax: { booleanValue: false },
+        },
+      }),
+    },
+  );
+  if (!response.ok) {
+    throw new Error(`編集用店舗を戻せません: ${response.status}`);
+  }
 };

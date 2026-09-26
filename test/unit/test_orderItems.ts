@@ -69,8 +69,44 @@ describe("getOrderItems", () => {
     assert.deepStrictEqual(rows[1].orderIndex, ["bento", "1"]);
   });
 
-  // 数が配列ではなく数値ひとつで入っている古い注文も読める。ただしその形は型が
-  // 認めていないので、ここからは渡せない（SingularitySociety/omochikaeri-docs#209）。
+  // 実際に保存される options は、品目ごとに「行の添字 → その行で選んだオプションの配列」。
+  // Firestore は入れ子の配列を保存できないので、行は配列ではなく添字を鍵にした object で持つ。
+  // 型（OrderInfoData）はこの形を認めていないので、JSON から作って渡す。
+  it("reads the options in the shape they are stored", () => {
+    const rows = getOrderItems(
+      orderInfoFixture({
+        order: { bento: [2, 1] },
+        options: JSON.parse(
+          '{"bento": {"0": ["L(+300)", "辛口"], "1": ["S(+100)"]}}',
+        ),
+        menuItems: { bento: ordered },
+      }),
+      {},
+    );
+    assert.deepStrictEqual(
+      rows.map((row) => [row.count, row.options]),
+      [
+        [2, ["L(+300)", "辛口"]],
+        [1, ["S(+100)"]],
+      ],
+    );
+  });
+
+  // 数が配列ではなく数値ひとつで入っている古い注文も読める。
+  it("reads an old order whose count is a single number", () => {
+    const rows = getOrderItems(
+      orderInfoFixture({
+        order: JSON.parse('{"bento": 2}'),
+        options: JSON.parse('{"bento": ["L(+300)"]}'),
+        menuItems: { bento: ordered },
+      }),
+      {},
+    );
+    assert.deepStrictEqual(
+      rows.map((row) => [row.count, row.options, row.orderIndex]),
+      [[2, ["L(+300)"], ["bento", "0"]]],
+    );
+  });
 
   it("takes the name and the price from the order, not from the menu today", () => {
     const rows = itemsOf({ bento: [1] }, { bento: [""] });
