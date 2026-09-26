@@ -33,6 +33,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, PropType } from "vue";
+import type VueQrcode from "@chenfengyuan/vue-qrcode";
 import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { shareUrlAdmin } from "@/utils/utils";
 
@@ -45,9 +46,12 @@ export default defineComponent({
   },
   setup(props) {
     const urlMenu = shareUrlAdmin(props);
-    const qrcodeRef = ref();
+    const qrcodeRef = ref<InstanceType<typeof VueQrcode> | null>(null);
 
     const download = () => {
+      if (!qrcodeRef.value) {
+        return;
+      }
       const a = document.createElement("a");
       a.href = qrcodeRef.value.$el.toDataURL("image/png");
       a.download = "qrcode.png";
