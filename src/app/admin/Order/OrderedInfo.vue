@@ -335,9 +335,12 @@ export default defineComponent({
     });
     const totalCount = computed(() => {
       if (props.order.order) {
-        return Object.values(props.order.order).reduce((count, order) => {
-          return count + arrayOrNumSum(order);
-        }, 0);
+        return Object.values(props.order.order).reduce<number>(
+          (count, order) => {
+            return count + arrayOrNumSum(order);
+          },
+          0,
+        );
       }
       return 0;
     });
