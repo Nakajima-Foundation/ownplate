@@ -21,7 +21,8 @@
     "customclaims": "babel-node --presets @babel/env  ./batch/customclaims.js",
     "format": "prettier --write '{src/**/*,*}.{js,ts,vue,json,css}'",
     "makenews": "npx tsx ./batch/news.js",
-    "user": "babel-node --presets @babel/env  ./batch/user.js"
+    "user": "babel-node --presets @babel/env  ./batch/user.js",
+    "test:e2e:emulator": "playwright test -c playwright.emulator.config.ts"
   },
   "dependencies": {
     "@chenfengyuan/vue-qrcode": "^2.0.0",
