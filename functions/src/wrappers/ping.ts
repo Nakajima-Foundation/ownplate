@@ -1,9 +1,9 @@
-import { onCall, HttpsError } from "firebase-functions/v2/https";
+import { onCall } from "firebase-functions/v2/https";
 
 import { getFirestore } from "firebase-admin/firestore";
 
 import { ping } from "../functions/ping";
-import { enforceAppCheck } from "./firebase";
+import { enforceAppCheck, requireAppCheck } from "./firebase";
 
 const db = getFirestore();
 
@@ -15,9 +15,7 @@ export default onCall(
     maxInstances: 100,
   },
   async (context) => {
-    if (context.app == undefined) {
-      throw new HttpsError("failed-precondition", "The function must be called from an App Check verified app.");
-    }
+    requireAppCheck(context);
     return await ping(db, context.data, context);
   },
 );

@@ -41,20 +41,22 @@ const requireEmulator = () => {
   }
 };
 
-// 何度走らせても同じ状態になるように、居れば作り直さず上書きする。
+// 何度走らせても同じ状態になるように、同じメールを持つ古い利用者を消してから作る。
+// uid を変えたときに「メールは使用中、uid は無い」で詰まるのを避ける。
 const upsertOwner = async () => {
   const auth = getAuth();
-  const owner = {
+  const existing = await auth
+    .getUserByEmail(SEED_OWNER_EMAIL)
+    .catch(() => null);
+  if (existing) {
+    await auth.deleteUser(existing.uid);
+  }
+  await auth.createUser({
     uid: SEED_OWNER_UID,
     email: SEED_OWNER_EMAIL,
     password: SEED_OWNER_PASSWORD,
     emailVerified: true,
-  };
-  try {
-    await auth.createUser(owner);
-  } catch {
-    await auth.updateUser(SEED_OWNER_UID, owner);
-  }
+  });
 };
 
 const main = async () => {

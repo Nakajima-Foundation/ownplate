@@ -23,7 +23,7 @@ export default defineConfig({
   webServer: [
     {
       command:
-        "firebase emulators:start --project ownplate-dev --only auth,firestore",
+        "firebase emulators:start --project ownplate-dev --only auth,firestore,functions",
       url: `http://${EMULATOR_HOST}:${FIRESTORE_EMULATOR_PORT}/`,
       reuseExistingServer: !process.env.CI,
       timeout: 120_000,

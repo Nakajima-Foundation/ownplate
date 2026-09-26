@@ -6,6 +6,7 @@ import {
   AUTH_EMULATOR_PORT,
   EMULATOR_HOST,
   FIRESTORE_EMULATOR_PORT,
+  FUNCTIONS_EMULATOR_PORT,
 } from "@/config/emulatorPorts";
 
 // e2e をエミュレーターに向けるときだけ真。本番の build では未定義なので、
@@ -28,7 +29,7 @@ if (!useEmulator) {
 
 // for V9
 import { connectAuthEmulator, getAuth } from "firebase/auth";
-import { getFunctions } from "firebase/functions";
+import { connectFunctionsEmulator, getFunctions } from "firebase/functions";
 import { getAnalytics } from "firebase/analytics";
 // import { getFirestore } from "firebase/firestore";
 import {
@@ -53,6 +54,9 @@ if (useEmulator) {
     disableWarnings: true,
   });
   connectFirestoreEmulator(db, EMULATOR_HOST, FIRESTORE_EMULATOR_PORT);
+  // エミュレーターは region を分けずひとつの口で受けるので、両方を同じ先へ。
+  connectFunctionsEmulator(functions, EMULATOR_HOST, FUNCTIONS_EMULATOR_PORT);
+  connectFunctionsEmulator(functionsJP, EMULATOR_HOST, FUNCTIONS_EMULATOR_PORT);
 }
 
 export default firebaseApp;
