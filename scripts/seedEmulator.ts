@@ -15,6 +15,7 @@ import {
   SEED_CUSTOMER_UID,
   SEED_MENU_ID,
   SEED_OPTION_MENU_ID,
+  SEED_PROMOTION_ID,
   SEED_OWNER_EMAIL,
   SEED_OWNER_PASSWORD,
   SEED_OWNER_UID,
@@ -22,6 +23,7 @@ import {
   SEED_RESTAURANT_NAME,
   seedMenu,
   seedOptionMenu,
+  seedPromotion,
   seedRestaurant,
 } from "./seedData.ts";
 
@@ -89,6 +91,10 @@ const main = async () => {
     .collection("menus")
     .doc(SEED_OPTION_MENU_ID)
     .set(seedOptionMenu());
+  await restaurant
+    .collection("promotions")
+    .doc(SEED_PROMOTION_ID)
+    .set(seedPromotion());
   // inStore を立てると受け取り払いになり、Stripe 無しで注文まで進める。
   // PaymentInfo の stripe は文字列なので、偽の false を置くのは誤り。
   await upsertOwner();
