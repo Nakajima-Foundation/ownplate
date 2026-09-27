@@ -1578,6 +1578,7 @@ const data = {
     },
     price: {
       empty: "가격을 입력해 주세요",
+      invalid: "가격은 0 이상의 정수로 입력해 주세요",
     },
     restaurantName: {
       empty: "음식점명을 입력해 주세요",
