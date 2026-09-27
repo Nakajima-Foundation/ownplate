@@ -5,6 +5,7 @@ import {
   holidaysBetweenKeys,
   holidaysThroughNextYear,
   isJapaneseHoliday,
+  japaneseHolidayOf,
 } from "../../src/utils/holiday.ts";
 import { dateKeyOf, startOfDayOfKey } from "../../src/utils/shopCalendar.ts";
 import { shopTime } from "../helpers/shopTime.ts";
@@ -16,14 +17,14 @@ const dayOf = (year: number, month: number, day: number, hour = 0) =>
 
 describe("isJapaneseHoliday", () => {
   it("knows fixed-date holidays", () => {
-    assert.strictEqual(isJapaneseHoliday(dayOf(2026, 1, 1)), true); // 元日
-    assert.strictEqual(isJapaneseHoliday(dayOf(2026, 5, 3)), true); // 憲法記念日
-    assert.strictEqual(isJapaneseHoliday(dayOf(2026, 11, 3)), true); // 文化の日
+    assert.strictEqual(isJapaneseHoliday(dayOf(2025, 1, 1)), true); // 元日
+    assert.strictEqual(isJapaneseHoliday(dayOf(2025, 5, 3)), true); // 憲法記念日
+    assert.strictEqual(isJapaneseHoliday(dayOf(2025, 11, 3)), true); // 文化の日
   });
 
   it("knows holidays that move to a Monday", () => {
-    assert.strictEqual(isJapaneseHoliday(dayOf(2026, 1, 12)), true); // 成人の日
-    assert.strictEqual(isJapaneseHoliday(dayOf(2026, 9, 21)), true); // 敬老の日
+    assert.strictEqual(isJapaneseHoliday(dayOf(2025, 1, 13)), true); // 成人の日
+    assert.strictEqual(isJapaneseHoliday(dayOf(2025, 9, 15)), true); // 敬老の日
   });
 
   // 祝日が日曜に重なると、次の平日が休みになる。
@@ -68,15 +69,15 @@ describe("isJapaneseHoliday", () => {
   });
 
   it("sees the whole year of holidays, from the first to the last", () => {
-    assert.strictEqual(isJapaneseHoliday(dayOf(2026, 12, 31)), false);
-    assert.strictEqual(isJapaneseHoliday(dayOf(2026, 12, 23)), false); // 天皇誕生日は 2 月に移った
-    assert.strictEqual(isJapaneseHoliday(dayOf(2026, 2, 23)), true);
+    assert.strictEqual(isJapaneseHoliday(dayOf(2025, 12, 31)), false);
+    assert.strictEqual(isJapaneseHoliday(dayOf(2025, 12, 23)), false); // 天皇誕生日は 2 月に移った
+    assert.strictEqual(isJapaneseHoliday(dayOf(2025, 2, 23)), true);
   });
 
-  // 持っている祝日は 2050 年まで。それより先は祝日を知らないので false になる。
-  it("knows no holidays after the data it ships with", () => {
-    assert.strictEqual(isJapaneseHoliday(dayOf(2050, 1, 1)), true);
-    assert.strictEqual(isJapaneseHoliday(dayOf(2051, 1, 1)), false);
+  // パッケージが持っている範囲を過ぎた日は祝日を知らないので false。範囲は更新で延びうるので、
+  // 境目の年は固定せず、ずっと先の日で見る。
+  it("knows no holidays beyond the data it ships with", () => {
+    assert.strictEqual(isJapaneseHoliday(dayOf(9999, 1, 1)), false);
   });
 
   it("is false for an invalid date instead of throwing", () => {
@@ -149,8 +150,44 @@ describe("holidaysThroughNextYear", () => {
   it("decides this year and today by JST", () => {
     const newYearMorning = shopTime(2027, 1, 1, 1);
     const listed = holidaysThroughNextYear(newYearMorning);
-    assert.strictEqual(listed[0]?.dateKey, "2027-01-01");
+    assert.ok(listed.every((holiday) => holiday.dateKey >= "2027-01-01"));
     assert.ok(listed.every((holiday) => holiday.dateKey <= "2028-12-31"));
     assert.ok(listed.some((holiday) => holiday.dateKey >= "2028-01-01"));
+  });
+});
+
+// パッケージの 1 件の形が更新で変わっても、黙って壊れた値を出さない。
+describe("japaneseHolidayOf", () => {
+  it("reads the date, the name and the English name", () => {
+    assert.deepStrictEqual(
+      japaneseHolidayOf({
+        date: "2025-11-03",
+        name: "文化の日",
+        name_en: "Culture Day",
+      }),
+      { dateKey: "2025-11-03", name: "文化の日", nameEn: "Culture Day" },
+    );
+  });
+
+  it("falls back to the Japanese name when the English one is missing", () => {
+    assert.deepStrictEqual(
+      japaneseHolidayOf({
+        date: "2025-11-03",
+        name: "文化の日",
+        nameEn: "Culture Day",
+      }),
+      { dateKey: "2025-11-03", name: "文化の日", nameEn: "文化の日" },
+    );
+  });
+
+  it("drops a record without a date or a name", () => {
+    [
+      null,
+      undefined,
+      "2025-11-03",
+      { name: "文化の日" },
+      { date: "2025-11-03" },
+      { date: 20251103, name: "文化の日" },
+    ].forEach((value) => assert.strictEqual(japaneseHolidayOf(value), null));
   });
 });

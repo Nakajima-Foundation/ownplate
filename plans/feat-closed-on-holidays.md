@@ -19,6 +19,7 @@ SingularitySociety/omochikaeri-docs#70。メニューの除外日の「祝日」
 - 一覧はパッケージの `between` を使わず、祝日のデータを JST の日付の文字列で絞る（`between` は端末の暦で日付を読むため）
 - functions にもパッケージを入れる。ルートと functions で指定（package.json）も入っている版（yarn.lock）も揃っていることを `test/unit/test_holidayPackage.ts` で確かめる。片方だけ更新すると赤くなる
 - 試験で祝日の日付を固定するのは過ぎた年だけにし、これから先の分は「範囲に収まる・順に並ぶ・判定と一覧が食い違わない」で見る
+- パッケージの 1 件は読むときに形を確かめる（`japaneseHolidayOf`）。日付か名前が無い件は落とし、英語名が無ければ日本語名を出す
 
 ## 更新の手順
 

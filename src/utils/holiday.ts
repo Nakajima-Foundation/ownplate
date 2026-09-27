@@ -13,8 +13,42 @@ export type JapaneseHoliday = {
   nameEn: string;
 };
 
-type HolidayRecord = { date: string; name: string; name_en: string };
-const holidays: Record<string, HolidayRecord> = holiday_jp.holidays;
+// パッケージの 1 件分。更新で形が変わっても黙って壊れないよう、読むときに確かめる。
+type HolidayRecord = { date: string; name: string; name_en?: unknown };
+const isHolidayRecord = (value: unknown): value is HolidayRecord =>
+  typeof value === "object" &&
+  value !== null &&
+  "date" in value &&
+  typeof value.date === "string" &&
+  "name" in value &&
+  typeof value.name === "string";
+
+const isRecord = (value: unknown): value is { [key: string]: unknown } =>
+  typeof value === "object" && value !== null;
+
+// パッケージの 1 件を読む。形が合わなければ null（その件だけ落とす）。
+// 英語名が無い（項目名が変わった）ときは日本語名を出す。
+export const japaneseHolidayOf = (value: unknown): JapaneseHoliday | null =>
+  isHolidayRecord(value)
+    ? {
+        dateKey: value.date,
+        name: value.name,
+        nameEn: typeof value.name_en === "string" ? value.name_en : value.name,
+      }
+    : null;
+
+const isJapaneseHolidayValue = (
+  value: JapaneseHoliday | null,
+): value is JapaneseHoliday => value !== null;
+
+const allHolidays = (): JapaneseHoliday[] => {
+  const holidays: unknown = holiday_jp.holidays;
+  return isRecord(holidays)
+    ? Object.values(holidays)
+        .map(japaneseHolidayOf)
+        .filter(isJapaneseHolidayValue)
+    : [];
+};
 
 export const isJapaneseHoliday = (date: Date): boolean =>
   holiday_jp.isHoliday(dateKeyOf(date));
@@ -24,14 +58,9 @@ export const holidaysBetweenKeys = (
   fromKey: string,
   toKey: string,
 ): JapaneseHoliday[] =>
-  Object.values(holidays)
-    .filter((holiday) => holiday.date >= fromKey && holiday.date <= toKey)
-    .sort((a, b) => (a.date < b.date ? -1 : 1))
-    .map((holiday) => ({
-      dateKey: holiday.date,
-      name: holiday.name,
-      nameEn: holiday.name_en,
-    }));
+  allHolidays()
+    .filter((holiday) => holiday.dateKey >= fromKey && holiday.dateKey <= toKey)
+    .sort((a, b) => (a.dateKey < b.dateKey ? -1 : 1));
 
 // 今日（JST）から翌年の年末までの祝日。店舗設定で「祝日定休」の対象を見せるのに使う。
 export const holidaysThroughNextYear = (now: Date): JapaneseHoliday[] => {
