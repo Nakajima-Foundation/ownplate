@@ -775,6 +775,11 @@
     protobufjs "^7.5.3"
     yargs "^17.7.2"
 
+"@holiday-jp/holiday_jp@^2.5.2":
+  version "2.5.2"
+  resolved "https://registry.yarnpkg.com/@holiday-jp/holiday_jp/-/holiday_jp-2.5.2.tgz#295e3220452f39a18611a7a50e01fd92b5878dbc"
+  integrity sha512-yW5oc0TFgOWVHMdfnnpKz7daDjuGY2yCR/q8hLc3EvDKxZY/5/oCXxXdOahXH8te8hMvWFmKxkfeWsUKdpa1Ug==
+
 "@humanfs/core@^0.19.2":
   version "0.19.2"
   resolved "https://registry.yarnpkg.com/@humanfs/core/-/core-0.19.2.tgz#a8272ca03b2acf492670222b2320b6c421bfde60"
