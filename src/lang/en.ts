@@ -1600,6 +1600,7 @@ const data = {
     },
     price: {
       empty: "Please enter the price",
+      invalid: "Please enter a whole number of 0 or more for the price",
     },
     restaurantName: {
       empty: "Please enter the restaurant name",

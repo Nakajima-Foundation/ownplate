@@ -1604,6 +1604,7 @@ const data = {
     },
     price: {
       empty: "Vui lòng nhập giá",
+      invalid: "Vui lòng nhập giá là số nguyên từ 0 trở lên",
     },
     restaurantName: {
       empty: "Vui lòng nhập tên nhà hàng",

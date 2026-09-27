@@ -1520,6 +1520,7 @@ const data = {
     },
     price: {
       empty: "請輸入價格",
+      invalid: "請輸入0以上的整數作為價格",
     },
     restaurantName: {
       empty: "請輸入餐廳名稱",

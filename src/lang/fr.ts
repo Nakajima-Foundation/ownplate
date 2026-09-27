@@ -1629,6 +1629,8 @@ const data = {
     },
     price: {
       empty: "Veuillez saisir le prix",
+      invalid:
+        "Veuillez saisir un nombre entier supérieur ou égal à 0 pour le prix",
     },
     restaurantName: {
       empty: "Veuillez saisir le nom du restaurant",
