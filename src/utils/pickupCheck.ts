@@ -1,4 +1,5 @@
 import { exceptDataOf } from "./exceptData";
+import { isJapaneseHoliday } from "./holiday";
 import {
   availablePickupDays,
   minimumCookTimeOf,
@@ -41,6 +42,7 @@ export const checkPickupOffered = (
       minimumTime,
       now,
       midNightAfter: (offset) => startOfDayAfter(now, offset),
+      isHoliday: isJapaneseHoliday,
     }),
     shop,
     minimumTime,

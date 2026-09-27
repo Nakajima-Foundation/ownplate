@@ -89,6 +89,8 @@ export interface RestaurantInfoData {
   // Firestore から読んだ直後は Timestamp、画面が日付を足したあとや Wrapper が
   // 変換したあとは素の Date。読む側は seconds の有無で見分けている。
   temporaryClosure: ({ toDate: () => Date; seconds?: number } | Date)[];
+  // 祝日を定休日にする（祝日は受け取れない）。
+  closedOnHolidays?: boolean;
   lastOrderTime?: number;
   category1: string[];
   category2: string[];

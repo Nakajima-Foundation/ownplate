@@ -7,6 +7,7 @@ cp src/utils/shopCalendar.ts functions/src/utils/shopCalendar.ts
 cp src/utils/pickupDays.ts functions/src/utils/pickupDays.ts
 cp src/utils/exceptData.ts functions/src/utils/exceptData.ts
 cp src/utils/pickupCheck.ts functions/src/utils/pickupCheck.ts
+cp src/utils/holiday.ts functions/src/utils/holiday.ts
 cp src/models/RestaurantInfo.ts functions/src/models/RestaurantInfo.ts
 cp src/models/menu.ts functions/src/models/menu.ts
 cp src/models/customer.ts functions/src/models/customer.ts

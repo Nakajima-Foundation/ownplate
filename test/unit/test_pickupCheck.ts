@@ -11,6 +11,7 @@ import {
   withinLastOrder,
 } from "../../src/utils/pickupDays.ts";
 import { pickupDateOf, startOfDayAfter } from "../../src/utils/shopCalendar.ts";
+import { isJapaneseHoliday } from "../../src/utils/holiday.ts";
 import { menuFixture } from "../fixtures/menu.ts";
 import { shopTime } from "../helpers/shopTime.ts";
 
@@ -171,6 +172,21 @@ describe("checkPickupOffered", () => {
     );
   });
 
+  // 本物の祝日データで見る。更新で変わらないよう、過ぎた年の祝日を使う（2025-11-03 文化の日）。
+  it("rejects a holiday when the shop closes on holidays", () => {
+    const now = shopTime(2025, 11, 2, 11);
+    const holiday = shopTime(2025, 11, 3, 12);
+    assert.deepStrictEqual(
+      check({
+        shop: shopOf({ closedOnHolidays: true }),
+        now,
+        pickupAt: holiday,
+      }),
+      NO_DAY,
+    );
+    assert.deepStrictEqual(check({ now, pickupAt: holiday }), OFFERED);
+  });
+
   it("accepts an order without a copy of the menu", () => {
     assert.deepStrictEqual(check({ menuItems: undefined }), OFFERED);
   });
@@ -226,6 +242,7 @@ describe("checkPickupOffered: 画面の選択肢と同じ", () => {
                 minimumTime,
                 now,
                 midNightAfter: (offset) => startOfDayAfter(now, offset),
+                isHoliday: isJapaneseHoliday,
               }),
               shop,
               minimumTime,

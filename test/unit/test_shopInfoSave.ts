@@ -40,6 +40,30 @@ describe("getEditShopInfo", () => {
   });
 });
 
+// 祝日定休は真偽値だけを保存する（祝日のデータは保存しない）。未設定の店は false で保存する。
+describe("getEditShopInfo — 祝日定休", () => {
+  it("carries closedOnHolidays through to the saved payload", () => {
+    assert.strictEqual(
+      getEditShopInfo(shopInfo({ closedOnHolidays: true }), "NOW")
+        .closedOnHolidays,
+      true,
+    );
+    assert.strictEqual(
+      getEditShopInfo(shopInfo({ closedOnHolidays: false }), "NOW")
+        .closedOnHolidays,
+      false,
+    );
+  });
+
+  it("saves false for a shop that never set it", () => {
+    assert.strictEqual(
+      getEditShopInfo(shopInfo({ closedOnHolidays: undefined }), "NOW")
+        .closedOnHolidays,
+      false,
+    );
+  });
+});
+
 describe("getEditShopInfo — 時刻の注入", () => {
   // Firestore の serverTimestamp をこの中で呼ぶと、ファイルが Firebase に依存して
   // 単体テストから読めなくなる。呼び出し側から渡す形にしてある。

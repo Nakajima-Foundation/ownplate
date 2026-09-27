@@ -1049,6 +1049,42 @@
                 </div>
               </div>
             </div>
+            <!-- Closed on Holidays -->
+            <div class="mt-4">
+              <div class="pb-2 text-sm font-bold">
+                {{ $t("shopInfo.closedOnHolidays") }}
+              </div>
+              <div class="rounded-lg bg-black/5 p-4">
+                <Checkbox v-model="editShopInfo.closedOnHolidays">
+                  <span class="font-bold">
+                    {{ $t("shopInfo.closedOnHolidaysLabel") }}
+                  </span>
+                </Checkbox>
+                <div class="mt-2 text-sm text-black/60">
+                  {{ $t("shopInfo.closedOnHolidaysDescription") }}
+                </div>
+
+                <!-- Holidays through the end of next year -->
+                <div class="mt-4 text-sm font-bold text-black/40">
+                  {{ $t("shopInfo.holidayList") }}
+                </div>
+                <div class="mt-1 grid grid-cols-1 space-y-1">
+                  <div
+                    v-for="holiday in upcomingHolidays"
+                    :key="holiday.dateKey"
+                    class="flex rounded-sm bg-white/50 px-2 py-1 text-sm"
+                  >
+                    <div class="w-36">
+                      {{ holiday.dateKey.replaceAll("-", "/") }}
+                      {{ $t("week.short." + days[holiday.weekday]) }}
+                    </div>
+                    <div class="flex-1">
+                      {{ holiday.name }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1200,6 +1236,13 @@ import { useDialogStore } from "@/store/dialog";
 import { useRouter } from "vue-router";
 import { useHead } from "@unhead/vue";
 import moment from "moment";
+import { useI18n } from "vue-i18n";
+
+import { holidaysThroughNextYear } from "@/utils/holiday";
+import { startOfDayOfKey, weekdayOf } from "@/utils/shopCalendar";
+
+// 曜日のキーは月曜 "1"〜日曜 "7"。weekdayOf は日曜が 0。
+const SUNDAY_KEY = 7;
 
 import { ConvertedRestaurantInfoData } from "@/models/RestaurantInfo";
 
@@ -1233,6 +1276,16 @@ export default defineComponent({
     const maxDate = new Date();
     maxDate.setMonth(maxDate.getMonth() + 6);
     const now = moment().subtract(1, "days").toDate();
+
+    // 祝日定休の対象を誤解なく見せるため、今日から翌年末までの祝日を並べる。
+    const { locale } = useI18n({ useScope: "global" });
+    const upcomingHolidays = computed(() =>
+      holidaysThroughNextYear(new Date()).map((holiday) => ({
+        dateKey: holiday.dateKey,
+        weekday: weekdayOf(startOfDayOfKey(holiday.dateKey)) || SUNDAY_KEY,
+        name: locale.value === "ja" ? holiday.name : holiday.nameEn,
+      })),
+    );
     const taxRateKeys = regionalSetting["taxRateKeys"];
 
     const notFound = ref<boolean | null>(null);
@@ -1581,6 +1634,7 @@ export default defineComponent({
 
       editShopInfo,
 
+      upcomingHolidays,
       days: daysOfWeek,
 
       // ref

@@ -15,6 +15,7 @@ import {
   type PickupSlotDay,
 } from "@/utils/pickupDays";
 import { startOfDayAfter } from "@/utils/shopCalendar";
+import { isJapaneseHoliday } from "@/utils/holiday";
 import { useGeneralStore } from "../store";
 
 type AvailableDay = {
@@ -116,6 +117,7 @@ export const usePickupTime = (
       minimumTime,
       now,
       midNightAfter: (offset: number) => startOfDayAfter(new Date(), offset),
+      isHoliday: isJapaneseHoliday,
     });
   };
 
