@@ -15,6 +15,11 @@ export type PickupShop = Pick<
   | "lastOrderTime"
 >;
 
+export type PickupCookTimes = Pick<
+  RestaurantInfoData,
+  "pickUpMinimumCookTime" | "deliveryMinimumCookTime"
+>;
+
 export type PickupExcept = {
   exceptDay?: { [key: string]: boolean };
   exceptHours?: { start: number; end: number }[];
@@ -35,6 +40,7 @@ export type PickupDaysInput = {
 
 export const PICKUP_TIME_INTERVAL_MIN = 10;
 const DEFAULT_DAYS_IN_ADVANCE = 3;
+const DEFAULT_MINIMUM_COOK_TIME_MIN = 25;
 const WEEKDAYS_FROM_SUNDAY = [7, 1, 2, 3, 4, 5, 6];
 const MS_PER_MINUTE = 60000;
 
@@ -111,6 +117,11 @@ export const daysInAdvanceOf = (
     : shop.pickUpDaysInAdvance;
   return tmp + 1;
 };
+
+// 注文から受け取れるまでにかかる分。店が 0 や未設定なら既定の分。
+export const minimumCookTimeOf = (shop: PickupCookTimes, isDelivery: boolean) =>
+  (isDelivery ? shop.deliveryMinimumCookTime : shop.pickUpMinimumCookTime) ||
+  DEFAULT_MINIMUM_COOK_TIME_MIN;
 
 // 調理時間と注文停止のぶん、これより前の時刻は受け取れない。
 const earliestPickupOf = (shop: PickupShop, now: Date, minimumTime: number) => {

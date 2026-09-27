@@ -36,6 +36,10 @@ jobs:
     - run: cp ../src/config/constant.ts ./src/common/constant.ts
     - run: cp ../src/utils/phoneutil.ts ./src/common/phoneutil.ts
     - run: cp ../src/utils/commonUtils.ts ./src/utils/commonUtils.ts
+    - run: cp ../src/utils/shopCalendar.ts ./src/utils/shopCalendar.ts
+    - run: cp ../src/utils/pickupDays.ts ./src/utils/pickupDays.ts
+    - run: cp ../src/utils/exceptData.ts ./src/utils/exceptData.ts
+    - run: cp ../src/utils/pickupCheck.ts ./src/utils/pickupCheck.ts
     - run: cp ../src/models/RestaurantInfo.ts ./src/models/RestaurantInfo.ts
     - run: cp ../src/models/menu.ts ./src/models/menu.ts
     - run: cp ../src/models/customer.ts ./src/models/customer.ts

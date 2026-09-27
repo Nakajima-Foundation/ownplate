@@ -7,6 +7,7 @@ import { order_status, stripe_regions_jp } from "../../common/constant";
 import * as utils from "../../lib/utils";
 import { notifyNewOrderToRestaurant } from "../notify2";
 import { costCal } from "../../utils/commonUtils";
+import { checkPickupOffered } from "../../utils/pickupCheck";
 
 import { getStripeAccount, getHash, getCustomerStripeInfo2, saveCustomerStripeInfo2 } from "../stripe/intent";
 import { OrderPlacedData } from "../../models/functionTypes";
@@ -27,6 +28,30 @@ export const getOrderData = async (transaction: Transaction, orderRef: DocumentR
   }
   order.id = orderDoc.id;
   return order;
+};
+
+// 受取日時が画面の選択肢に入っていたかを記録するだけ。まだ弾かない（omochikaeri-docs#227）。
+// 判定が例外を出しても注文は止めない。
+const logPickupOutsideOffered = (restaurantData: RestaurantInfoData, order: OrderData, pickupAt: Date, restaurantId: string, orderId: string) => {
+  const now = new Date();
+  try {
+    const result = checkPickupOffered({
+      shop: restaurantData,
+      menuItems: order.menuItems,
+      lunchOrDinner: order.lunchOrDinner,
+      isDelivery: !!order.isDelivery,
+      now,
+      pickupAt,
+    });
+    if (!result.offered) {
+      console.warn(
+        "orderPlace: pickup time is outside the offered slots",
+        JSON.stringify({ restaurantId, orderId, reason: result.reason, pickupAt: pickupAt.toISOString(), now: now.toISOString() }),
+      );
+    }
+  } catch (error) {
+    console.warn("orderPlace: pickup time check failed", restaurantId, orderId, error);
+  }
 };
 
 export const updateOrderTotalDataAndUserLog = async (
@@ -168,6 +193,9 @@ export const place = async (db: Firestore, data: OrderPlacedData, context: Calla
       }
       if (order.status !== order_status.validation_ok) {
         throw new HttpsError("failed-precondition", "The order has been already placed or canceled");
+      }
+      if (!restaurantData.isEC) {
+        logPickupOutsideOffered(restaurantData, order, timePlaced.toDate(), restaurantId, orderId);
       }
       // promotion
       const { historyCollectionRef, historyDocRef, promotionData, discountPrice } = await (async (): Promise<{
