@@ -8,6 +8,7 @@ SingularitySociety/omochikaeri-docs#229 の B。A（#2037）でまとめた `sho
 - `SHOP_TIME_ZONE`（"Asia/Tokyo"）を出し、受取日時を使う画面の日付表示に渡す
   - 注文画面（`TimeToPickup.vue`）の受取日
   - 注文停止画面（`OrderSuspendPage.vue`）の日付と停止中の日時
+- 「本日売り切れ」（`soldOutToday`）の今日も JST で決める（`src/utils/soldOut.ts`）。読む所（店舗ページの商品・カート・注文画面の在庫と明細）と、書く所（管理画面のメニュー一覧）。受取日の一覧と同じ暦でないと、海外の端末で JST の翌日に入った時間帯に食い違う
 - 単体試験の日時を JST で組み立てる（`test/helpers/shopTime.ts`）。どのタイムゾーンで走らせても同じになる
 - `test:tz`（America/Los_Angeles で単体試験）を足し、CI で走らせる
 - e2e
