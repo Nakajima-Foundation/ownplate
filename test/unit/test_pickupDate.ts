@@ -1,17 +1,17 @@
 import { describe, it } from "node:test";
 import assert from "node:assert";
 import { pickupDateOf } from "../../src/utils/shopCalendar.ts";
+import { shopTime } from "../helpers/shopTime.ts";
 
 // 受取日（その日の 0 時）と、0 時からの分数で選ばれた受取時刻から、注文に送る受取日時を作る。
-const SEPTEMBER = 8;
-const pickupDay = () => new Date(2026, SEPTEMBER, 27);
+const pickupDay = () => shopTime(2026, 9, 27);
 const MIDNIGHT_SLOT = 24 * 60; // 営業時間の終わりに「12:00 AM」を選ぶと出る「深夜 0:00」の枠
 
 describe("pickupDateOf", () => {
   it("sets the chosen time on the pickup day", () => {
     assert.deepStrictEqual(
       pickupDateOf(pickupDay(), 11 * 60 + 30),
-      new Date(2026, SEPTEMBER, 27, 11, 30),
+      shopTime(2026, 9, 27, 11, 30),
     );
     assert.deepStrictEqual(pickupDateOf(pickupDay(), 0), pickupDay());
   });
@@ -19,7 +19,7 @@ describe("pickupDateOf", () => {
   it("rolls the midnight slot over to the next day", () => {
     assert.deepStrictEqual(
       pickupDateOf(pickupDay(), MIDNIGHT_SLOT),
-      new Date(2026, SEPTEMBER, 28, 0, 0),
+      shopTime(2026, 9, 28),
     );
   });
 

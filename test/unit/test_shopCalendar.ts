@@ -3,6 +3,7 @@ import assert from "node:assert";
 
 import {
   addDays,
+  pickupDateOf,
   addMinutes,
   dateKeyOf,
   formatDay,
@@ -10,33 +11,34 @@ import {
   startOfDayAfter,
   weekdayOf,
 } from "../../src/utils/shopCalendar.ts";
+import { shopTime } from "../helpers/shopTime.ts";
 
-// 受取日時に関わる暦の計算。いまは端末のローカル時刻で数えるので、試験の日付もローカル時刻で
-// 組み立てる（日本でも UTC の CI でも同じ日になる）。
+// 受取日時に関わる暦の計算。店の時刻（JST）で数えるので、試験の日付も JST で組み立てる。
+// どのタイムゾーンで走らせても同じ結果になる。
 
 const at = (month: number, day: number, hour = 0, minute = 0) =>
-  new Date(2026, month - 1, day, hour, minute, 30, 250);
+  shopTime(2026, month, day, hour, minute, 30, 250);
 
 describe("startOfDayAfter", () => {
   it("is midnight of the same day for offset zero", () => {
     assert.strictEqual(
       startOfDayAfter(at(9, 24, 15, 45), 0).getTime(),
-      new Date(2026, 8, 24).getTime(),
+      shopTime(2026, 9, 24).getTime(),
     );
   });
 
   it("counts days forward and backward, across months and years", () => {
     assert.strictEqual(
       startOfDayAfter(at(9, 30, 10), 1).getTime(),
-      new Date(2026, 9, 1).getTime(),
+      shopTime(2026, 10, 1).getTime(),
     );
     assert.strictEqual(
       startOfDayAfter(at(12, 31, 23, 59), 1).getTime(),
-      new Date(2027, 0, 1).getTime(),
+      shopTime(2027, 1, 1).getTime(),
     );
     assert.strictEqual(
       startOfDayAfter(at(3, 1, 0, 1), -1).getTime(),
-      new Date(2026, 1, 28).getTime(),
+      shopTime(2026, 2, 28).getTime(),
     );
   });
 
@@ -96,5 +98,15 @@ describe("formatDay / dateKeyOf", () => {
 
   it("writes the day the date falls on, not the next one, late at night", () => {
     assert.strictEqual(dateKeyOf(at(12, 31, 23, 59)), "2026-12-31");
+  });
+});
+
+describe("pickupDateOf", () => {
+  // 注文停止画面は受け取れる日が無いとき「今」を起点にするので、秒以下が残る。
+  it("keeps the seconds of the day it starts from", () => {
+    assert.strictEqual(
+      pickupDateOf(at(9, 24, 10, 5), 90).getTime(),
+      shopTime(2026, 9, 24, 1, 30, 30, 250).getTime(),
+    );
   });
 });

@@ -25,7 +25,9 @@
       <!-- Date -->
       <div class="mx-6 mt-4 text-sm font-bold text-black/60">
         {{ $t("admin.order.suspendNewOrders") }}
-        <span v-if="date">: {{ $d(date.date, "short") }}</span>
+        <span v-if="date"
+          >: {{ $d(date.date, { key: "short", timeZone: shopTimeZone }) }}</span
+        >
       </div>
 
       <!-- Suspend and Unsuspend  -->
@@ -131,7 +133,7 @@ import {
   defaultTitle,
 } from "@/utils/utils";
 import { usePickupTime } from "@/utils/pickup";
-import { addDays, pickupDateOf } from "@/utils/shopCalendar";
+import { addDays, pickupDateOf, SHOP_TIME_ZONE } from "@/utils/shopCalendar";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { useGeneralStore } from "@/store";
@@ -202,7 +204,7 @@ export default defineComponent({
         if (time < new Date()) {
           return false;
         }
-        return d(time, "long");
+        return d(time, { key: "long", timeZone: SHOP_TIME_ZONE });
       }
       return false;
     };
@@ -235,6 +237,7 @@ export default defineComponent({
       suspendUntil,
       handleSuspend,
       handleRemove,
+      shopTimeZone: SHOP_TIME_ZONE,
       notFound: false,
     };
   },

@@ -139,6 +139,7 @@
 </template>
 
 <script lang="ts">
+import { isSoldOutOn, soldOutTodayKeyOf } from "@/utils/soldOut";
 import { defineComponent, computed, PropType } from "vue";
 import type { MenuData } from "@/models/menu";
 import type { RestaurantInfoData } from "@/models/RestaurantInfo";
@@ -159,7 +160,6 @@ import { useGeneralStore } from "@/store";
 import { useDialogStore } from "@/store/dialog";
 
 import { useRouter } from "vue-router";
-import moment from "moment-timezone";
 export default defineComponent({
   components: {
     Price,
@@ -205,11 +205,10 @@ export default defineComponent({
     };
 
     const soldOutToday = computed(() => {
-      const today = moment(generalStore.date).format("YYYY-MM-DD");
-      return props.menuitem.soldOutToday === today; // = !soldOut;
+      return isSoldOutOn(props.menuitem.soldOutToday, generalStore.date);
     });
     const soldOutTodayToggle = (e: boolean) => {
-      const today = moment(generalStore.date).format("YYYY-MM-DD");
+      const today = soldOutTodayKeyOf(generalStore.date);
       const path = `restaurants/${restaurantId.value}/menus/${props.menuitem.id}`;
       if (e) {
         updateDoc(doc(db, path), { soldOutToday: today });

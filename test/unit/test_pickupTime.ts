@@ -10,28 +10,29 @@ import { menuFixture } from "../fixtures/menu.ts";
 import { runInSetup } from "../helpers/vueSetup.ts";
 import type { RestaurantInfoData } from "../../src/models/RestaurantInfo.ts";
 import type { MenuData } from "../../src/models/menu.ts";
+import { shopTime } from "../helpers/shopTime.ts";
 
 // 客が注文を受け取れる日と時刻。**ここが店舗ページと注文画面の受取時刻の選択肢**になる。
 // 出しすぎれば店が用意できない時刻の注文が入り、出さなすぎれば受けられる注文を逃す。
 //
 // **時計を固定する。** 実装は `midNight()` と `new Date()` を自分で何度も読むので、
 // 固定しないと日付をまたいだ瞬間に store の「今日」と食い違う。固定すれば曜日も決まる。
-// 時刻はローカルで組み立てるので、日本でも UTC の CI でも同じ分数になる。
+// 時刻は店の時刻（JST）で組み立てるので、どのタイムゾーンで走らせても同じ分数になる。
 const MINUTES_PER_HOUR = 60;
 const FROZEN_YEAR = 2026;
-const FROZEN_MONTH_INDEX = 8; // 9月
+const FROZEN_MONTH = 9;
 const FROZEN_DAY = 24; // 木曜
 const THURSDAY = "4";
 // 固定日からの相対で日付を作る。**実時計を読んではいけない** — pickupAt() の引数は
 // 中で時計を固定するより先に評価されるので、読むと実行環境の日付が混ざる。
 const frozenDatePlus = (days: number) =>
-  new Date(FROZEN_YEAR, FROZEN_MONTH_INDEX, FROZEN_DAY + days);
+  shopTime(FROZEN_YEAR, FROZEN_MONTH, FROZEN_DAY + days);
 
 const freezeAt = (hour: number) => {
   mock.timers.reset();
   mock.timers.enable({
     apis: ["Date"],
-    now: new Date(FROZEN_YEAR, FROZEN_MONTH_INDEX, FROZEN_DAY, hour),
+    now: shopTime(FROZEN_YEAR, FROZEN_MONTH, FROZEN_DAY, hour),
   });
 };
 const ELEVEN = 11 * MINUTES_PER_HOUR;

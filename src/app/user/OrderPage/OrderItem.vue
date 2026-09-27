@@ -62,6 +62,7 @@
 </template>
 
 <script lang="ts">
+import { isSoldOutOn } from "@/utils/soldOut";
 import { defineComponent, computed, PropType } from "vue";
 import { useI18n } from "vue-i18n";
 
@@ -72,7 +73,6 @@ import { OrderItemData } from "@/models/orderInfoData";
 
 import Checkbox from "@/components/form/checkbox.vue";
 
-import moment from "moment-timezone";
 
 export default defineComponent({
   components: {
@@ -137,9 +137,8 @@ export default defineComponent({
       smallImageErrorHandler(e);
     };
 
-    const today = moment().format("YYYY-MM-DD");
     const soldOutToday = computed(() => {
-      return props.menuData?.soldOutToday === today;
+      return isSoldOutOn(props.menuData?.soldOutToday, new Date());
     });
     return {
       item,

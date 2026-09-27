@@ -2,9 +2,10 @@ import { describe, it } from "node:test";
 import assert from "node:assert";
 
 import { openNowByDay } from "../../src/utils/shopOpen.ts";
+import { shopTime } from "../helpers/shopTime.ts";
 
 // 店舗情報の営業時間の一覧で、今日の行に「Open」を出すかどうか。
-// 日付はローカル時刻で組み立てる（実装は端末の暦で読む）。
+// 日付は店の時刻（JST）で組み立てる（実装は JST の暦で読む）。
 
 const H = 60;
 const EVERY_DAY = ["1", "2", "3", "4", "5", "6", "7"];
@@ -17,9 +18,9 @@ const hours8to20 = Object.fromEntries(
 
 // 2026-09-27 は日曜、28 は月曜、26 は土曜。
 const sundayAt = (hour: number, minute = 0) =>
-  new Date(2026, 8, 27, hour, minute);
+  shopTime(2026, 9, 27, hour, minute);
 const mondayAt = (hour: number, minute = 0) =>
-  new Date(2026, 8, 28, hour, minute);
+  shopTime(2026, 9, 28, hour, minute);
 
 const openDays = (result: { [day: string]: boolean }) =>
   Object.keys(result).filter((day) => result[day]);
@@ -42,7 +43,7 @@ describe("openNowByDay", () => {
 
   it("marks only today, even when every day has the same hours", () => {
     [0, 1, 2, 3, 4, 5, 6].forEach((daysAfterSunday) => {
-      const now = new Date(2026, 8, 27 + daysAfterSunday, 12);
+      const now = shopTime(2026, 9, 27 + daysAfterSunday, 12);
       const expected = daysAfterSunday === 0 ? "7" : String(daysAfterSunday);
       assert.deepStrictEqual(
         openDays(openNowByDay(businessEveryDay, hours8to20, now)),

@@ -412,6 +412,7 @@
 </template>
 
 <script lang="ts">
+import { isSoldOutOn } from "@/utils/soldOut";
 import {
   defineComponent,
   ref,
@@ -444,7 +445,6 @@ import { inputValueOf } from "@/utils/domEvent";
 import { isOptionChecked } from "@/utils/commonUtils";
 import type { OptionValue } from "@/models/orderTypes";
 
-import moment from "moment-timezone";
 
 // menu UI algorithm
 //   init quantities = [0]
@@ -522,8 +522,7 @@ export default defineComponent({
       return !!props.item.soldOut;
     });
     const isSoldOutToday = computed(() => {
-      const today = moment(generalStore.date).format("YYYY-MM-DD");
-      return props.item.soldOutToday === today;
+      return isSoldOutOn(props.item.soldOutToday, generalStore.date);
     });
     const totalQuantity = computed(() => {
       return arraySum(props.quantities);

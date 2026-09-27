@@ -75,6 +75,8 @@ jobs:
     - run: yarn run typecheck:test
     - run: yarn run typecheck:vue
     - run: yarn run test:coverage
+    # 受取日時は JST で数える。端末のタイムゾーンに寄りかかった間違いは UTC だけでは見えないので、別のタイムゾーンでも走らせる。
+    - run: yarn run test:tz
     - name: coverage summary
       if: always()
       run: node scripts/coverage-summary.ts coverage/lcov.info Frontend

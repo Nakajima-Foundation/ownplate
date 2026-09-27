@@ -72,6 +72,7 @@
 </template>
 
 <script lang="ts">
+import { isSoldOutOn } from "@/utils/soldOut";
 import { defineComponent, computed, PropType } from "vue";
 import {
   itemOptionCheckbox2options,
@@ -90,7 +91,6 @@ import { MenuData } from "@/models/menu";
 import { AnalyticsMenuData } from "@/lib/firebase/analytics";
 import { useGeneralStore } from "@/store";
 
-import moment from "moment-timezone";
 
 export default defineComponent({
   props: {
@@ -154,8 +154,7 @@ export default defineComponent({
       );
     };
     const isSoldOutToday = computed(() => {
-      const today = moment(generalStore.date).format("YYYY-MM-DD");
-      return props.item.soldOutToday === today;
+      return isSoldOutOn(props.item.soldOutToday, generalStore.date);
     });
     return {
       isOptionChecked,
