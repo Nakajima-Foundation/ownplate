@@ -18,9 +18,6 @@ export const order2ReportData = (
   serviceTaxRate: number,
 ): ReportRow => {
   const multiple = stripe_regions_jp.multiple;
-  order.timeConfirmed = order?.timeConfirmed?.toDate();
-  order.timePlaced = order?.timePlaced?.toDate();
-  order.timeEstimated = order?.timeEstimated?.toDate();
   if (!order.accounting) {
     order.accounting = {
       food: {

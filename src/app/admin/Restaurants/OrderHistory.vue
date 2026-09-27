@@ -226,7 +226,9 @@ export default defineComponent({
       }
       const docs = (await getDocs(dbQuery)).docs;
       last.value = docs.length === limitNum ? docs[limitNum - 1] : null;
-      const tmpOrders = docs.map(doc2data<OrderInfoData>("order")).filter(orderFilter);
+      const tmpOrders = docs
+        .map(doc2data<OrderInfoData>("order"))
+        .filter(orderFilter);
       const customers: { [key: string]: CustomerInfo } = {};
       if (props.shopInfo.isEC || props.shopInfo.enableDelivery) {
         const ids = tmpOrders.map((order) => order.id);
@@ -253,13 +255,6 @@ export default defineComponent({
 
       tmpOrders.forEach((order: OrderInfoData) => {
         order.customerInfo = order.customerInfo || customers[order.id] || {};
-        order.timePlaced = order.timePlaced.toDate();
-        if (order.timeEstimated) {
-          order.timeEstimated = order.timeEstimated.toDate();
-        }
-        if (order.timeConfirmed) {
-          order.timeConfirmed = order.timeConfirmed.toDate();
-        }
         order.type = orderType(order);
         orders.value.push(order);
       });
@@ -281,7 +276,7 @@ export default defineComponent({
         })
         .sort(
           (a: OrderInfoData, b: OrderInfoData) =>
-            (a.timePlaced > b.timePlaced ? -1 : 1) *
+            (a.timePlaced.toDate() > b.timePlaced.toDate() ? -1 : 1) *
             (sortOrder.value === 0 ? 1 : -1),
         );
     });

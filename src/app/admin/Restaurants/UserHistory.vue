@@ -129,7 +129,6 @@ import {
 
 import { order_status } from "@/config/constant";
 import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
-import { asDate } from "@/utils/dateUtils";
 import { OrderInfoData } from "@/models/orderInfo";
 
 import { checkShopAccount } from "@/utils/userPermission";
@@ -243,23 +242,15 @@ export default defineComponent({
       ).docs;
       last.value = docs.length === limitNum ? docs[limitNum - 1] : null;
       orders.value = docs
-        .map(doc2data("order"))
+        .map(doc2data<OrderInfoData>("order"))
         .filter((a) => a.status !== order_status.transaction_hide)
-        .map((order) => {
-          order.timePlaced = order.timePlaced.toDate();
-          if (order.timeEstimated) {
-            order.timeEstimated = order.timeEstimated.toDate();
-          }
-          if (order.timeConfirmed) {
-            order.timeConfirmed = order.timeConfirmed.toDate();
-          }
-          return order as OrderInfoData;
-        })
         .sort((a, b) => {
-          if (asDate(a.timePlaced).getTime() === asDate(b.timePlaced).getTime()) {
+          if (
+            a.timePlaced.toDate().getTime() === b.timePlaced.toDate().getTime()
+          ) {
             return a.number > b.number ? -1 : 1;
           }
-          return a.timePlaced > b.timePlaced ? -1 : 1;
+          return a.timePlaced.toDate() > b.timePlaced.toDate() ? -1 : 1;
         });
     };
     const orderSelected = (order: OrderInfoData) => {
