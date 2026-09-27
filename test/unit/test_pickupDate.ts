@@ -1,6 +1,6 @@
 import { describe, it } from "node:test";
 import assert from "node:assert";
-import { pickupDateOf } from "../../src/utils/pickupDate.ts";
+import { pickupDateOf } from "../../src/utils/shopCalendar.ts";
 
 // 受取日（その日の 0 時）と、0 時からの分数で選ばれた受取時刻から、注文に送る受取日時を作る。
 const SEPTEMBER = 8;

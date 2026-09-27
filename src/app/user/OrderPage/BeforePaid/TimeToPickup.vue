@@ -53,7 +53,7 @@ import { Timestamp } from "firebase/firestore";
 
 import { exceptDataOf } from "@/utils/exceptData";
 import { usePickupTime } from "@/utils/pickup";
-import { pickupDateOf } from "../../../../utils/pickupDate";
+import { pickupDateOf } from "../../../../utils/shopCalendar";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { OrderInfoData } from "@/models/orderInfo";
