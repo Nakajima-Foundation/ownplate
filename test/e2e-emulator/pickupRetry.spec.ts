@@ -18,6 +18,8 @@ import { setClosingTime } from "./shopState";
 const FLOW_TIMEOUT_MS = 120_000;
 const MIDNIGHT_SLOT = 24 * 60;
 const MILLISECONDS_PER_SECOND = 1000;
+// 受取日時は店の時刻（JST、UTC+9）で数える。試験を走らせる側のタイムゾーンでは読まない。
+const TOKYO_OFFSET_MS = 9 * 60 * 60 * MILLISECONDS_PER_SECOND;
 
 test.describe.configure({ mode: "serial", timeout: FLOW_TIMEOUT_MS });
 
@@ -64,6 +66,10 @@ test("確定をやり直しても深夜 0:00 の受取日時がずれない", as
 
   expect(sentSeconds).toHaveLength(2);
   expect(sentSeconds[1]).toBe(sentSeconds[0]);
-  const pickup = new Date(sentSeconds[0] * MILLISECONDS_PER_SECOND);
-  expect([pickup.getHours(), pickup.getMinutes()]).toEqual([0, 0]);
+  const pickupInTokyo = new Date(
+    sentSeconds[0] * MILLISECONDS_PER_SECOND + TOKYO_OFFSET_MS,
+  );
+  expect([pickupInTokyo.getUTCHours(), pickupInTokyo.getUTCMinutes()]).toEqual([
+    0, 0,
+  ]);
 });

@@ -1,7 +1,12 @@
 import { expect, test, type Page } from "@playwright/test";
 
 import { SEED_MENU_NAME, SEED_RESTAURANT_ID } from "../../scripts/seedData";
-import { signInAsOwner } from "./helpers";
+import {
+  addOneItemAndCheckout,
+  signInAsOwner,
+  signInCustomer,
+  waitForOrderConfirmation,
+} from "./helpers";
 import { setMenuExcept } from "./shopState";
 
 // 受け取れる日時を使う画面のうち、注文画面の外にあるもの（店舗ページの店舗情報と商品、
@@ -167,5 +172,60 @@ test.describe("店舗ページの商品の受取除外", () => {
     );
     await expect(item).not.toContainText("Mon");
     await expect(item).toContainText("Unavailable Time: 12:30 PM ~ 01:20 PM");
+  });
+});
+
+// 受取日時は店の時刻（JST）で数える。端末が日本以外のタイムゾーンでも、日本の端末と同じ
+// 選択肢を出し、選んだ時刻を日本時間のその時刻として送る。
+test.describe("日本以外のタイムゾーンの端末（ロサンゼルス）", () => {
+  test.use({ timezoneId: "America/Los_Angeles" });
+
+  const ELEVEN_THIRTY_AM = 11 * MINUTES_PER_HOUR + 30;
+  const ORDER_FLOW_TIMEOUT_MS = 120_000;
+  const MILLISECONDS_PER_SECOND = 1000;
+  type OrderPlaceRequest = { data: { timeToPickup: { seconds: number } } };
+
+  test("店舗情報は日本時間で受取時刻とラストオーダーを出す", async ({
+    page,
+  }) => {
+    await openShop(page, TEN_AM);
+    const box = shopTimesBox(page);
+    await expect(box).toContainText(`${monthDayOf(tokyoTime(0, 0))}`);
+    await expect(box).toContainText("11:00 AM");
+    await expect(box).toContainText("Last order for today: 08:35 PM");
+  });
+
+  test("選んだ受取時刻を日本時間のその時刻として送る", async ({ page }) => {
+    test.setTimeout(ORDER_FLOW_TIMEOUT_MS);
+    await page.clock.setFixedTime(tokyoTime(0, TEN_AM));
+    await signInCustomer(page);
+    await addOneItemAndCheckout(page);
+    await waitForOrderConfirmation(page);
+
+    // 受取日は一覧の最後（今日から受付日数ぶん先）、時刻は 11:30。
+    const timeSelect = page.locator("select", {
+      has: page.locator(`option[value="${ELEVEN_THIRTY_AM}"]`),
+    });
+    const daySelect = timeSelect.locator("xpath=preceding-sibling::select[1]");
+    const dayCount = await daySelect.locator("option").count();
+    await daySelect.selectOption({ index: dayCount - 1 });
+    await timeSelect.selectOption(String(ELEVEN_THIRTY_AM));
+
+    // 送られた受取日時を控えて、確定はさせない。
+    const sentSeconds: number[] = [];
+    await page.route("**/orderPlaceJp2", async (route) => {
+      const request: OrderPlaceRequest = route.request().postDataJSON();
+      sentSeconds.push(request.data.timeToPickup.seconds);
+      await route.abort();
+    });
+    await page
+      .getByRole("button", { name: /Place Order/i })
+      .first()
+      .click();
+    await expect.poll(() => sentSeconds.length).toBe(1);
+
+    expect(sentSeconds[0] * MILLISECONDS_PER_SECOND).toBe(
+      tokyoTime(dayCount - 1, ELEVEN_THIRTY_AM).getTime(),
+    );
   });
 });

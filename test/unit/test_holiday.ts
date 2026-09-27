@@ -2,11 +2,12 @@ import { describe, it } from "node:test";
 import assert from "node:assert";
 
 import { isJapaneseHoliday } from "../../src/utils/holiday.ts";
+import { shopTime } from "../helpers/shopTime.ts";
 
 // 受取日が祝日かどうか。平日限定の商品を祝日に出さないために使う。
-// 日付はローカル時刻で組み立てる（実装が端末の暦で読むので、日本でも UTC の CI でも同じ日になる）。
+// 日付は店の時刻（JST）で組み立てる（実装が JST の暦で読むので、どのタイムゾーンで走らせても同じ日になる）。
 const dayOf = (year: number, month: number, day: number, hour = 0) =>
-  new Date(year, month - 1, day, hour);
+  shopTime(year, month, day, hour);
 
 describe("isJapaneseHoliday", () => {
   it("knows fixed-date holidays", () => {
@@ -55,10 +56,10 @@ describe("isJapaneseHoliday", () => {
       assert.strictEqual(isJapaneseHoliday(dayOf(2025, 12, 31, hour)), false);
     });
     assert.strictEqual(
-      isJapaneseHoliday(new Date(2026, 0, 1, 23, 59, 59, 999)),
+      isJapaneseHoliday(shopTime(2026, 1, 1, 23, 59, 59, 999)),
       true,
     );
-    assert.strictEqual(isJapaneseHoliday(new Date(2026, 0, 2, 0, 0, 0)), false);
+    assert.strictEqual(isJapaneseHoliday(shopTime(2026, 1, 2)), false);
   });
 
   it("sees the whole year of holidays, from the first to the last", () => {

@@ -11,10 +11,11 @@ import {
   type PickupDaysInput,
   type PickupShop,
 } from "../../src/utils/pickupDays.ts";
+import { shopTime } from "../helpers/shopTime.ts";
 
 // 受け取れる日と時刻の決まり。画面の選択肢はここから作る。
 // 時計は引数で渡すので、試験は好きな「今」と「今日の 0 時」を渡すだけで決まる。
-// 日付はローカル時刻で組み立てる（実装は日付を端末の暦で読む）。
+// 日付は店の時刻（JST）で組み立てる（実装は日付を JST の暦で読む）。
 //
 // usePickupTime がどの時計を渡すかは、ここでは試験していない。今は「今」を store の時計、
 // 「今日の 0 時」を端末の時計から渡しており、store の時計が遅れたまま 0 時をまたぐと
@@ -26,13 +27,12 @@ const TWO_PM = 14 * H;
 const EVERY_DAY = ["1", "2", "3", "4", "5", "6", "7"];
 
 // 2026-09-24 は木曜。
-const THURSDAY = new Date(2026, 8, 24);
+const THURSDAY = shopTime(2026, 9, 24);
 const at = (dayDelta: number, minutes: number, seconds = 0) =>
-  new Date(2026, 8, 24 + dayDelta, 0, minutes, seconds);
-const midNightFrom =
-  (today: Date) =>
-  (offset: number): Date =>
-    new Date(today.getFullYear(), today.getMonth(), today.getDate() + offset);
+  shopTime(2026, 9, 24 + dayDelta, 0, minutes, seconds);
+// 今日（木曜）から offset 日後の 0 時（JST）。
+const midNightAfterThursday = (offset: number): Date =>
+  shopTime(2026, 9, 24 + offset);
 
 const hoursEveryDay = (blocks: { start: number; end: number }[]) =>
   Object.fromEntries(EVERY_DAY.map((day) => [day, blocks]));
@@ -52,7 +52,7 @@ const inputOf = (over: Partial<PickupDaysInput> = {}): PickupDaysInput => ({
   skipToday: false,
   minimumTime: 25,
   now: at(0, 9 * H),
-  midNightAfter: midNightFrom(THURSDAY),
+  midNightAfter: midNightAfterThursday,
   ...over,
 });
 
@@ -76,7 +76,7 @@ describe("availablePickupDays: 日", () => {
     days.forEach((day) =>
       assert.strictEqual(
         day.date.getTime(),
-        midNightFrom(THURSDAY)(day.offset).getTime(),
+        midNightAfterThursday(day.offset).getTime(),
       ),
     );
   });
