@@ -901,7 +901,6 @@ const data = {
     discountPriceMessage: "There is a discount",
     discountPrice: "Montant de la remise",
     beforeDiscountPrice: "Prix avant remise",
-    cancelReason: "Motif d'annulation",
     productId: "Référence produit",
     category: "Catégorie",
     categoryId: "ID catégorie",

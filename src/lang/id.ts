@@ -897,7 +897,6 @@ const data = {
     discountPriceMessage: "Ada diskon",
     discountPrice: "Jumlah diskon",
     beforeDiscountPrice: "Harga sebelum diskon",
-    cancelReason: "Alasan pembatalan",
     productId: "Nomor produk",
     category: "Kategori",
     categoryId: "ID kategori",

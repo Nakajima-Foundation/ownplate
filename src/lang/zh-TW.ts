@@ -850,7 +850,6 @@ const data = {
     discountPriceMessage: "有折扣",
     discountPrice: "折扣金額",
     beforeDiscountPrice: "折扣前價格",
-    cancelReason: "取消原因",
     productId: "商品編號",
     category: "分類",
     categoryId: "分類 ID",

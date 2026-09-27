@@ -880,7 +880,6 @@ const data = {
     discountPriceMessage: "할인이 있습니다",
     discountPrice: "할인 금액",
     beforeDiscountPrice: "할인 전 가격",
-    cancelReason: "취소 사유",
     productId: "상품 번호",
     category: "카테고리",
     categoryId: "카테고리 ID",

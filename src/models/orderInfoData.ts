@@ -84,8 +84,6 @@ export interface OrderInfoData {
   customerInfo: CustomerInfo;
   memo: string;
   lunchOrDinner?: string;
-
-  cancelReason?: string; // mo
 }
 
 export interface OrderItemData {

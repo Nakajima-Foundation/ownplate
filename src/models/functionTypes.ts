@@ -38,7 +38,6 @@ export interface ConfirmIntentData {
 export interface OrderCancelData {
   restaurantId: string;
   orderId: string;
-  cancelReason: string;
 }
 
 export interface NewOrderData {
