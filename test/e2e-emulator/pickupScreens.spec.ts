@@ -56,8 +56,9 @@ const openShop = async (page: Page, minutes: number) => {
   await page.goto(`/r/${SEED_RESTAURANT_ID}`);
 };
 
+// 見出し（「Takeaway:Minimum available time」）の親が、受取時刻とラストオーダーを持つ枠。
 const shopTimesBox = (page: Page) =>
-  page.locator("div", { hasText: "Minimum available time" }).last();
+  page.getByText("Minimum available time").first().locator("..");
 
 test.describe("店舗ページの店舗情報", () => {
   test("開店前は、今日の開店時刻からと、今日のラストオーダーを出す", async ({
@@ -68,7 +69,7 @@ test.describe("店舗ページの店舗情報", () => {
     await expect(box).toContainText(`${monthDayOf(tokyoTime(0, 0))}`);
     await expect(box).toContainText("11:00 AM");
     // 最後の受取枠 21:00 から調理の 25 分を引いた 20:35。
-    await expect(box).toContainText("Last order for today: 8:35 PM");
+    await expect(box).toContainText("Last order for today: 08:35 PM");
   });
 
   test("閉店後は、今日は受け取れないと出して、明日の開店時刻を出す", async ({
@@ -83,8 +84,9 @@ test.describe("店舗ページの店舗情報", () => {
 });
 
 test.describe("注文停止画面", () => {
+  // 時刻のボタンだけ。日単位のボタン（Suspend until the end of N days）は数えない。
   const suspendButtons = (page: Page) =>
-    page.getByRole("button", { name: /Suspend until/ });
+    page.getByRole("button", { name: /Suspend until \d/ });
 
   const openSuspendPage = async (page: Page, minutes: number) => {
     await page.clock.setFixedTime(tokyoTime(0, minutes));
@@ -97,7 +99,7 @@ test.describe("注文停止画面", () => {
     await openSuspendPage(page, TEN_AM);
     await expect(suspendButtons(page)).toHaveCount(SUSPEND_BUTTON_COUNT);
     await expect(suspendButtons(page).first()).toContainText("11:10 AM");
-    await expect(suspendButtons(page).last()).toContainText("1:00 PM");
+    await expect(suspendButtons(page).last()).toContainText("01:00 PM");
   });
 
   test("閉店後は、明日の 11:10 から出す", async ({ page }) => {
@@ -131,6 +133,6 @@ test.describe("店舗ページの商品の受取除外", () => {
       "Tue・Wed・Thu・Fri・Sat・Sun Limited sale on the day of the week",
     );
     await expect(item).not.toContainText("Mon");
-    await expect(item).toContainText("Unavailable Time: 12:30 PM ~ 1:20 PM");
+    await expect(item).toContainText("Unavailable Time: 12:30 PM ~ 01:20 PM");
   });
 });
