@@ -219,3 +219,16 @@ export const setPromotionPaymentRestriction = async (
     throw new Error(`値引きの支払い制限を変えられません: ${response.status}`);
   }
 };
+
+// 掲載の申し込み。申し込むと requestList に文書ができ、取り消すと消える。
+// 試験のあとに残すと、次に走らせたとき「申請中」から始まってしまう。
+export const clearListingRequest = async () => {
+  const response = await fetch(
+    `${DOCUMENTS_URL}/requestList/${SEED_EDIT_RESTAURANT_ID}`,
+    { method: "DELETE", headers: { Authorization: "Bearer owner" } },
+  );
+  // 無いときの 404 は片付けとしては正しい。
+  if (!response.ok && response.status !== 404) {
+    throw new Error(`掲載の申し込みを消せません: ${response.status}`);
+  }
+};
