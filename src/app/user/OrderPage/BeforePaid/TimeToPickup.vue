@@ -12,7 +12,7 @@
             :value="index"
             :key="day.offset"
           >
-            {{ $d(day.date, { key: "short", timeZone: shopTimeZone }) }}
+            {{ $d(day.date, "short") }}
             <span v-if="day.offset === 0">{{ $t("date.today") }}</span>
           </option>
         </select>
@@ -53,7 +53,7 @@ import { Timestamp } from "firebase/firestore";
 
 import { exceptDataOf } from "@/utils/exceptData";
 import { usePickupTime } from "@/utils/pickup";
-import { pickupDateOf, SHOP_TIME_ZONE } from "../../../../utils/shopCalendar";
+import { pickupDateOf } from "../../../../utils/shopCalendar";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { OrderInfoData } from "@/models/orderInfo";
@@ -147,7 +147,6 @@ export default defineComponent({
 
       dayIndex,
       time,
-      shopTimeZone: SHOP_TIME_ZONE,
     };
   },
 });
