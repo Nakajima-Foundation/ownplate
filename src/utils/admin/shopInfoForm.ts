@@ -54,6 +54,7 @@ export const defaultShopInfo = {
   category2: [],
   publicFlag: false,
   temporaryClosure: [],
+  closedOnHolidays: false,
   paymentMethods: {},
   personalInfo: "optional",
 };

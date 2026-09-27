@@ -53,6 +53,7 @@ const inputOf = (over: Partial<PickupDaysInput> = {}): PickupDaysInput => ({
   minimumTime: 25,
   now: at(0, 9 * H),
   midNightAfter: midNightAfterThursday,
+  isHoliday: () => false,
   ...over,
 });
 
@@ -164,6 +165,68 @@ describe("availablePickupDays: 日", () => {
       () => availablePickupDays(inputOf({ shop: noHours })),
       TypeError,
     );
+  });
+});
+
+// 祝日の判定は差し替える（決まった日だけを祝日にする）。本物の祝日データは test_holiday.ts。
+describe("availablePickupDays: 祝日定休", () => {
+  const fridayIsHoliday = (date: Date) =>
+    date.getTime() === shopTime(2026, 9, 25).getTime();
+
+  it("drops a holiday when the shop closes on holidays", () => {
+    assert.deepStrictEqual(
+      offsetsOf(
+        inputOf({
+          shop: shopOf({ closedOnHolidays: true }),
+          isHoliday: fridayIsHoliday,
+        }),
+      ),
+      [0, 2, 3],
+    );
+  });
+
+  it("keeps a holiday when the shop opens on holidays", () => {
+    [false, undefined].forEach((closedOnHolidays) =>
+      assert.deepStrictEqual(
+        offsetsOf(
+          inputOf({
+            shop: shopOf({ closedOnHolidays }),
+            isHoliday: fridayIsHoliday,
+          }),
+        ),
+        [0, 1, 2, 3],
+      ),
+    );
+  });
+
+  it("asks about the day at midnight, one day at a time", () => {
+    const asked: string[] = [];
+    availablePickupDays(
+      inputOf({
+        shop: shopOf({ closedOnHolidays: true }),
+        isHoliday: (date) => {
+          asked.push(date.toISOString());
+          return false;
+        },
+      }),
+    );
+    assert.deepStrictEqual(
+      asked,
+      [0, 1, 2, 3].map((offset) => midNightAfterThursday(offset).toISOString()),
+    );
+  });
+
+  it("does not ask when the shop opens on holidays", () => {
+    let asked = 0;
+    availablePickupDays(
+      inputOf({
+        isHoliday: () => {
+          asked += 1;
+          return true;
+        },
+      }),
+    );
+    assert.strictEqual(asked, 0);
   });
 });
 

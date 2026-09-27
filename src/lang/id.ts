@@ -524,6 +524,11 @@ const data = {
     temporaryClosureDescription: "Pilih tanggal lalu tekan tambah",
     temporaryClosureOkay: "OK",
     temporaryClosureSelect: "Pilih tanggal",
+    closedOnHolidays: "Tutup pada Hari Libur",
+    closedOnHolidaysLabel: "Tutup pada hari libur nasional",
+    closedOnHolidaysDescription:
+      "Jika aktif, pesanan tidak dapat diambil pada hari libur nasional Jepang.",
+    holidayList: "Hari libur nasional (hingga akhir tahun depan)",
     paymentMethod: "Metode pembayaran",
     onlinePayment: "Pembayaran online",
     onsitePayment: "Bayar saat penerimaan",

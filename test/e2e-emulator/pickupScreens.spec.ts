@@ -7,7 +7,7 @@ import {
   signInCustomer,
   waitForOrderConfirmation,
 } from "./helpers";
-import { setMenuExcept } from "./shopState";
+import { setClosedOnHolidays, setMenuExcept } from "./shopState";
 
 // 受け取れる日時を使う画面のうち、注文画面の外にあるもの（店舗ページの店舗情報と商品、
 // 注文停止画面）。受け取れる日時はブラウザの時計で決まるので、日本時間の「今日の決まった
@@ -227,5 +227,40 @@ test.describe("日本以外のタイムゾーンの端末（ロサンゼルス�
     expect(sentSeconds[0] * MILLISECONDS_PER_SECOND).toBe(
       tokyoTime(dayCount - 1, ELEVEN_THIRTY_AM).getTime(),
     );
+  });
+});
+
+// 祝日定休。祝日は本物のデータで見るので、パッケージを更新しても変わらない過ぎた日に時計を
+// 合わせる。日本時間 2025-11-02（日）22:00、翌 11/3（月）は文化の日。
+test.describe("祝日定休", () => {
+  const BEFORE_CULTURE_DAY = new Date(Date.UTC(2025, 10, 2, 13, 0));
+
+  test.afterEach(async () => {
+    await setClosedOnHolidays(false);
+  });
+
+  test("祝日定休なら、一番早い受取は祝日の翌日になる", async ({ page }) => {
+    await setClosedOnHolidays(true);
+    await page.clock.setFixedTime(BEFORE_CULTURE_DAY);
+    await page.goto(`/r/${SEED_RESTAURANT_ID}`);
+    const box = shopTimesBox(page);
+    await expect(box).toContainText("11/04");
+    await expect(box).not.toContainText("11/03");
+  });
+
+  test("祝日定休でなければ、祝日も受け取れる", async ({ page }) => {
+    await page.clock.setFixedTime(BEFORE_CULTURE_DAY);
+    await page.goto(`/r/${SEED_RESTAURANT_ID}`);
+    await expect(shopTimesBox(page)).toContainText("11/03");
+  });
+
+  test("店舗設定に、今日から翌年末までの祝日を並べる", async ({ page }) => {
+    await page.clock.setFixedTime(BEFORE_CULTURE_DAY);
+    await signInAsOwner(page);
+    await page.goto(`/admin/restaurants/${SEED_RESTAURANT_ID}`);
+    await expect(page.getByText("Closed on public holidays")).toBeVisible();
+    await expect(page.getByText("2025/11/03", { exact: false })).toBeVisible();
+    await expect(page.getByText("2026/01/01", { exact: false })).toBeVisible();
+    await expect(page.getByText("2027/01/01", { exact: false })).toHaveCount(0);
   });
 });

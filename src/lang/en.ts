@@ -519,6 +519,11 @@ const data = {
     temporaryClosureDescription: "Please select a date and then press Add",
     temporaryClosureOkay: "OK",
     temporaryClosureSelect: "Select a date",
+    closedOnHolidays: "Closed on Holidays",
+    closedOnHolidaysLabel: "Closed on public holidays",
+    closedOnHolidaysDescription:
+      "When on, orders cannot be picked up on Japanese public holidays.",
+    holidayList: "Public holidays (through the end of next year)",
     paymentMethod: "Payment Method",
     onlinePayment: "Online Payment",
     onsitePayment: "On Site Payment",

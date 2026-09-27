@@ -9,6 +9,7 @@ import {
   formatDay,
   minutesOfDay,
   startOfDayAfter,
+  startOfDayOfKey,
   startOfMonthAfter,
   weekdayOf,
 } from "../../src/utils/shopCalendar.ts";
@@ -140,6 +141,21 @@ describe("startOfMonthAfter", () => {
     assert.strictEqual(
       startOfMonthAfter(shopTime(2026, 10, 1, 0, 30), 0).getTime(),
       shopTime(2026, 10, 1).getTime(),
+    );
+  });
+});
+
+describe("startOfDayOfKey", () => {
+  it("is midnight (JST) of the day the key names", () => {
+    assert.strictEqual(
+      startOfDayOfKey("2026-09-27").getTime(),
+      shopTime(2026, 9, 27).getTime(),
+    );
+  });
+
+  it("round-trips with dateKeyOf", () => {
+    ["2026-01-01", "2026-12-31", "2024-02-29", "2050-06-15"].forEach((key) =>
+      assert.strictEqual(dateKeyOf(startOfDayOfKey(key)), key),
     );
   });
 });

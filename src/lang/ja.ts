@@ -516,6 +516,11 @@ const data = {
     temporaryClosureDescription: "日にちを選択してから追加を押してください",
     temporaryClosureOkay: "OK",
     temporaryClosureSelect: "日にちを選択",
+    closedOnHolidays: "祝日定休日",
+    closedOnHolidaysLabel: "祝日を定休日にする",
+    closedOnHolidaysDescription:
+      "オンにすると、祝日は受け取りできなくなります。",
+    holidayList: "対象の祝日（翌年末まで）",
     paymentMethod: "支払い方法",
     onlinePayment: "オンライン決済",
     onsitePayment: "受け取り払い",

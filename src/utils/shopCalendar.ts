@@ -80,3 +80,9 @@ export const formatDay = (date: Date, pattern: string): string =>
   moment(date).utcOffset(SHOP_OFFSET_MINUTES).format(pattern);
 
 export const dateKeyOf = (date: Date): string => formatDay(date, "YYYY-MM-DD");
+
+// YYYY-MM-DD（JST）の日の 0 時。
+export const startOfDayOfKey = (dateKey: string): Date => {
+  const [year, month, day] = dateKey.split("-").map(Number);
+  return fromShopClock(year, month - 1, day);
+};

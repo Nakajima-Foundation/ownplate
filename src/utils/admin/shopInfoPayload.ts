@@ -62,6 +62,7 @@ export const getEditShopInfo = (
     }, {}),
     businessDay: shopInfo.businessDay,
     temporaryClosure: shopInfo.temporaryClosure,
+    closedOnHolidays: !!shopInfo.closedOnHolidays,
     lastOrderTime: shopInfo.lastOrderTime || null,
     category1: shopInfo.category1,
     category2: shopInfo.category2,

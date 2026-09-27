@@ -10,6 +10,7 @@ export type PickupShop = Pick<
   | "businessDay"
   | "openTimes"
   | "temporaryClosure"
+  | "closedOnHolidays"
   | "suspendUntil"
   | "pickUpDaysInAdvance"
   | "lastOrderTime"
@@ -36,6 +37,8 @@ export type PickupDaysInput = {
   now: Date;
   // 今日から offset 日後の 0 時。画面は端末の時計で作る。
   midNightAfter: (offset: number) => Date;
+  // その日が祝日か。祝日のデータは呼ぶ側が渡す（画面とサーバが同じものを渡す）。
+  isHoliday: (date: Date) => boolean;
 };
 
 export const PICKUP_TIME_INTERVAL_MIN = 10;
@@ -162,7 +165,10 @@ export const availablePickupDays = (
   const closedDates = temporaryClosureDatesOf(shop);
   const openOffsets = businessOffsets.filter((offset) => {
     const date = dateKeyOf(midNightAfter(offset));
-    return !closedDates.includes(date);
+    if (closedDates.includes(date)) {
+      return false;
+    }
+    return !(shop.closedOnHolidays && input.isHoliday(midNightAfter(offset)));
   });
   if (openOffsets.length === 0) {
     return [];

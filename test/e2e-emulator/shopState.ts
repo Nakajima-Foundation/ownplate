@@ -48,6 +48,15 @@ const patchField = async (
   }
 };
 
+// 祝日定休。種まきの店舗は持っていないので、試験のあとは false に戻す。
+export const setClosedOnHolidays = (closed: boolean) =>
+  patchField(
+    `restaurants/${SEED_RESTAURANT_ID}`,
+    "closedOnHolidays",
+    { booleanValue: closed },
+    "祝日定休",
+  );
+
 export const setSoldOut = (soldOut: boolean) =>
   patchField(
     `restaurants/${SEED_RESTAURANT_ID}/menus/${SEED_MENU_ID}`,

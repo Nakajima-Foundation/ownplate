@@ -514,6 +514,11 @@ const data = {
     temporaryClosureDescription: "กรุณาเลือกวันที่และกดเพิ่ม",
     temporaryClosureOkay: "OK",
     temporaryClosureSelect: "เลือกวันที่",
+    closedOnHolidays: "ปิดวันหยุดนักขัตฤกษ์",
+    closedOnHolidaysLabel: "ปิดทำการในวันหยุดนักขัตฤกษ์",
+    closedOnHolidaysDescription:
+      "เมื่อเปิดใช้งาน จะไม่สามารถรับสินค้าในวันหยุดนักขัตฤกษ์ของญี่ปุ่นได้",
+    holidayList: "วันหยุดนักขัตฤกษ์ (ถึงสิ้นปีหน้า)",
     paymentMethod: "วิธีชำระเงิน",
     onlinePayment: "ชำระเงินออนไลน์",
     onsitePayment: "ชำระที่ร้าน",
