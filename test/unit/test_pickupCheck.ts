@@ -187,6 +187,20 @@ describe("checkPickupOffered", () => {
     assert.deepStrictEqual(check({ now, pickupAt: holiday }), OFFERED);
   });
 
+  it("rejects a holiday when an ordered item excludes holidays", () => {
+    const now = shopTime(2025, 11, 2, 11);
+    const holiday = shopTime(2025, 11, 3, 12);
+    const menuItems = { bento: menuFixture({ exceptDay: { holiday: true } }) };
+    assert.deepStrictEqual(
+      check({ menuItems, now, pickupAt: holiday }),
+      NO_DAY,
+    );
+    assert.deepStrictEqual(
+      check({ menuItems, now, pickupAt: shopTime(2025, 11, 4, 12) }),
+      OFFERED,
+    );
+  });
+
   it("accepts an order without a copy of the menu", () => {
     assert.deepStrictEqual(check({ menuItems: undefined }), OFFERED);
   });

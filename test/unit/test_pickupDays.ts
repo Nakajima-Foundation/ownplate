@@ -216,6 +216,35 @@ describe("availablePickupDays: 祝日定休", () => {
     );
   });
 
+  it("drops a holiday when an item in the order excludes holidays", () => {
+    assert.deepStrictEqual(
+      offsetsOf(
+        inputOf({
+          except: { exceptDay: { holiday: true } },
+          isHoliday: fridayIsHoliday,
+        }),
+      ),
+      [0, 2, 3],
+    );
+    assert.deepStrictEqual(
+      offsetsOf(
+        inputOf({
+          except: { exceptDay: { holiday: false } },
+          isHoliday: fridayIsHoliday,
+        }),
+      ),
+      [0, 1, 2, 3],
+    );
+  });
+
+  // 祝日の除外は曜日の除外とは別。曜日の一覧には効かない。
+  it("does not treat the holiday flag as a weekday", () => {
+    assert.deepStrictEqual(
+      businessDaysOf(shopOf(), { exceptDay: { holiday: true } }).map(Boolean),
+      [true, true, true, true, true, true, true],
+    );
+  });
+
   it("does not ask when the shop opens on holidays", () => {
     let asked = 0;
     availablePickupDays(

@@ -41,6 +41,9 @@ export type PickupDaysInput = {
   isHoliday: (date: Date) => boolean;
 };
 
+// 商品の除外日（exceptDay）で祝日を表すキー。曜日のキーは "1"（月）〜"7"（日）。
+export const HOLIDAY_KEY = "holiday";
+
 export const PICKUP_TIME_INTERVAL_MIN = 10;
 const DEFAULT_DAYS_IN_ADVANCE = 3;
 const DEFAULT_MINIMUM_COOK_TIME_MIN = 25;
@@ -168,7 +171,10 @@ export const availablePickupDays = (
     if (closedDates.includes(date)) {
       return false;
     }
-    return !(shop.closedOnHolidays && input.isHoliday(midNightAfter(offset)));
+    // 店が祝日定休か、注文の商品のどれかが祝日を除外していれば、祝日は受け取れない。
+    const closedOnHolidays =
+      shop.closedOnHolidays || (except?.exceptDay || {})[HOLIDAY_KEY];
+    return !(closedOnHolidays && input.isHoliday(midNightAfter(offset)));
   });
   if (openOffsets.length === 0) {
     return [];

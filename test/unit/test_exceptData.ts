@@ -52,6 +52,13 @@ describe("exceptDataOf", () => {
     );
   });
 
+  it("carries an item's holiday exclusion to the whole order", () => {
+    assert.deepStrictEqual(
+      exceptDataOf(itemsOf({ exceptDay: { holiday: true } }, {})).exceptDay,
+      { holiday: true },
+    );
+  });
+
   it("takes an item's excluded hours when both ends are set", () => {
     assert.deepStrictEqual(
       exceptDataOf(itemsOf({ exceptHour: { start: 600, end: 720 } }))

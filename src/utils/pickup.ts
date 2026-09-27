@@ -9,6 +9,7 @@ import { isNull } from "@/utils/commonUtils";
 import { MenuData } from "@/models/menu";
 import {
   availablePickupDays,
+  HOLIDAY_KEY,
   minimumCookTimeOf,
   temporaryClosureDatesOf,
   withinLastOrder,
@@ -174,6 +175,7 @@ export const usePickupTime = (
     hasExceptData: boolean;
     hasExceptDay: boolean;
     hasExceptHour: boolean;
+    exceptHoliday: boolean;
     menuAvailableDays: string[];
     exceptHour: MenuData["exceptHour"];
   };
@@ -187,8 +189,12 @@ export const usePickupTime = (
         !isNull(exceptHour) &&
         !isNull(exceptHour?.start) &&
         !isNull(exceptHour?.end);
+      // 曜日の除外だけを数える。祝日の除外は別の行で出す。
       const hasExceptDay =
-        (Object.values(exceptDay || {}) || []).filter((a) => a).length > 0;
+        Object.entries(exceptDay || {}).filter(
+          ([day, excluded]) => day !== HOLIDAY_KEY && excluded,
+        ).length > 0;
+      const exceptHoliday = !!(exceptDay || {})[HOLIDAY_KEY];
       const menuAvailableDays = Object.keys(
         availableBusinessDays.value || {},
       ).reduce<string[]>((arr, day) => {
@@ -202,9 +208,10 @@ export const usePickupTime = (
       }, []);
 
       tmp[key] = {
-        hasExceptData: hasExceptDay || hasExceptHour,
+        hasExceptData: hasExceptDay || hasExceptHour || exceptHoliday,
         hasExceptDay,
         hasExceptHour,
+        exceptHoliday,
         menuAvailableDays,
         exceptHour,
       };

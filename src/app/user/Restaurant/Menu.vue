@@ -116,6 +116,9 @@
             </span>
             {{ $t("sitemenu.limitedSale") }}
           </div>
+          <div v-if="menuPickupData.exceptHoliday">
+            &#8251; {{ $t("sitemenu.unavailableOnHolidays") }}
+          </div>
           <div v-if="menuPickupData.hasExceptHour">
             &#8251; {{ $t("sitemenu.unavailableTime") }}:
             <span class="font-bold"

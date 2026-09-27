@@ -444,6 +444,48 @@ describe("menuPickupData", () => {
     assert.strictEqual(data.bento.menuAvailableDays.length, 6);
   });
 
+  // 祝日だけを除外した商品は、曜日の行を出さず、祝日の行だけを出す。
+  it("shows a holiday-only exclusion apart from the weekdays", async () => {
+    const data = await pickupAt(
+      9,
+      (p) => p.menuPickupData.value,
+      shopOpen11to2(),
+      {},
+      { bento: menuFixture({ exceptDay: { holiday: true } }) },
+    );
+    assert.strictEqual(data.bento.hasExceptData, true);
+    assert.strictEqual(data.bento.hasExceptDay, false);
+    assert.strictEqual(data.bento.exceptHoliday, true);
+    assert.strictEqual(data.bento.menuAvailableDays.length, 7);
+  });
+
+  it("shows weekday and holiday exclusions together", async () => {
+    const data = await pickupAt(
+      9,
+      (p) => p.menuPickupData.value,
+      shopOpen11to2(),
+      {},
+      {
+        bento: menuFixture({ exceptDay: { [THURSDAY]: true, holiday: true } }),
+      },
+    );
+    assert.strictEqual(data.bento.hasExceptDay, true);
+    assert.strictEqual(data.bento.exceptHoliday, true);
+    assert.ok(!data.bento.menuAvailableDays.includes(THURSDAY));
+  });
+
+  it("says no holiday exclusion when the flag is off", async () => {
+    const data = await pickupAt(
+      9,
+      (p) => p.menuPickupData.value,
+      shopOpen11to2(),
+      {},
+      { bento: menuFixture({ exceptDay: { holiday: false } }) },
+    );
+    assert.strictEqual(data.bento.hasExceptData, false);
+    assert.strictEqual(data.bento.exceptHoliday, false);
+  });
+
   it("says nothing for a cart with no items", async () => {
     const data = await pickupAt(9, (p) => p.menuPickupData.value);
     assert.deepStrictEqual(data, {});
