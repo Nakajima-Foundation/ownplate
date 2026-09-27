@@ -1,5 +1,5 @@
-import { isNull } from "@/utils/commonUtils";
-import type { MenuData } from "@/models/menu";
+import { isNull } from "./commonUtils";
+import type { MenuData } from "../models/menu";
 
 export type OrderExceptData = {
   exceptDay: { [key: string]: boolean };

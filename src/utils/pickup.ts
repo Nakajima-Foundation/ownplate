@@ -9,6 +9,7 @@ import { isNull } from "@/utils/commonUtils";
 import { MenuData } from "@/models/menu";
 import {
   availablePickupDays,
+  minimumCookTimeOf,
   temporaryClosureDatesOf,
   withinLastOrder,
   type PickupSlotDay,
@@ -57,10 +58,10 @@ export const usePickupTime = (
     );
   });
   const minimumCookTime = computed(() => {
-    return shopInfo.pickUpMinimumCookTime || 25;
+    return minimumCookTimeOf(shopInfo, false);
   });
   const minimumDeliveryTime = computed(() => {
-    return shopInfo.deliveryMinimumCookTime || 25;
+    return minimumCookTimeOf(shopInfo, true);
   });
 
   // just for display
