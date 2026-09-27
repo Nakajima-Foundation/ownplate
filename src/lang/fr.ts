@@ -905,8 +905,6 @@ const data = {
     productId: "Référence produit",
     category: "Catégorie",
     categoryId: "ID catégorie",
-    subCategory: "Sous-catégorie",
-    subCategoryId: "ID sous-catégorie",
   },
   editEC: {
     postageList: "Liste des frais de port",

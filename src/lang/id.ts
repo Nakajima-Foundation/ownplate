@@ -901,8 +901,6 @@ const data = {
     productId: "Nomor produk",
     category: "Kategori",
     categoryId: "ID kategori",
-    subCategory: "Subkategori",
-    subCategoryId: "ID subkategori",
   },
   editEC: {
     postageList: "Daftar biaya pengiriman",

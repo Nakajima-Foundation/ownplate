@@ -893,8 +893,6 @@ const data = {
     productId: "Mã sản phẩm",
     category: "Danh mục",
     categoryId: "ID danh mục",
-    subCategory: "Danh mục phụ",
-    subCategoryId: "ID danh mục phụ",
   },
   editEC: {
     postageList: "Danh sách phí vận chuyển",

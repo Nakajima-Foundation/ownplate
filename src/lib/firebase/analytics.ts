@@ -10,13 +10,9 @@ import { logEvent } from "firebase/analytics";
 import { MenuData } from "@/models/menu";
 import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
-import { forceArray } from "@/utils/utils";
 
 export interface AnalyticsMenuData extends Partial<MenuData> {
   quantity: number;
-  // menu の模型から消えた属性。書き手がいないので常に undefined。
-  category?: string;
-  subCategory?: string;
 }
 type AnalyticsData = Record<string, unknown>;
 
@@ -235,44 +231,6 @@ export const sendViewCart = (
   } catch (e) {
     console.log(e);
   }
-};
-
-export const sku_item_data_for_datalayer = (
-  menu: AnalyticsMenuData,
-  shopInfo: RestaurantInfoData,
-  restaurantId: string,
-  quantity: number,
-) => {
-  return {
-    item_name: menu.itemName,
-    item_id: "SKU_" + menu.id,
-    price: menu.price,
-    item_brand: shopInfo.restaurantName,
-    item_category: menu.subCategory,
-    quantity,
-  };
-};
-
-export const getDataForLayer = (
-  orderInfo: OrderInfoData,
-  orderId: string,
-  menus: (AnalyticsMenuData & { id: string })[],
-  shopInfo: RestaurantInfoData,
-  restaurantId: string,
-) => {
-  const analyticsData = {
-    transaction_id: orderId,
-    affiliation: shopInfo.restaurantName,
-    value: orderInfo.total,
-    tax: orderInfo.tax,
-    currency: "JPY",
-
-    items: menus.map((menu) => {
-      const q = forceArray(orderInfo.order[menu.id]).reduce((t, c) => t + c, 0);
-      return sku_item_data_for_datalayer(menu, shopInfo, restaurantId, q);
-    }),
-  };
-  return analyticsData;
 };
 
 /*

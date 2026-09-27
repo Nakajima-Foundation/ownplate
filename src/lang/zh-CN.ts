@@ -854,8 +854,6 @@ const data = {
     productId: "商品编号",
     category: "分类",
     categoryId: "分类 ID",
-    subCategory: "子分类",
-    subCategoryId: "子分类 ID",
   },
   editEC: {
     postageList: "运费列表",

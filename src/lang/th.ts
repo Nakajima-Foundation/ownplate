@@ -886,8 +886,6 @@ const data = {
     productId: "หมายเลขสินค้า",
     category: "หมวดหมู่",
     categoryId: "ID หมวดหมู่",
-    subCategory: "หมวดหมู่ย่อย",
-    subCategoryId: "ID หมวดหมู่ย่อย",
   },
   editEC: {
     postageList: "รายการค่าจัดส่ง",
