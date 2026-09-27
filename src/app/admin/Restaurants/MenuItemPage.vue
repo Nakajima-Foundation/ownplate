@@ -303,7 +303,14 @@
                   <Checkbox v-model="menuInfo.exceptDay[index]">
                     <span class="text-base font-bold">
                       {{ $t("week.short." + day) }}
-                      <span v-if="index !== '7'">/</span>
+                      <span>/</span>
+                    </span>
+                  </Checkbox>
+                </span>
+                <span>
+                  <Checkbox v-model="menuInfo.exceptDay[holidayKey]">
+                    <span class="text-base font-bold">
+                      {{ $t("editMenu.holiday") }}
                     </span>
                   </Checkbox>
                 </span>
@@ -845,6 +852,7 @@ import {
   stripe_regions_jp,
 } from "@/config/constant";
 import { halfCharactors } from "@/utils/strings";
+import { HOLIDAY_KEY } from "@/utils/pickupDays";
 import { optionPrice } from "@/utils/commonUtils";
 import {
   doc2data,
@@ -1245,6 +1253,7 @@ export default defineComponent({
       copyItem,
       submitItem,
 
+      holidayKey: HOLIDAY_KEY,
       daysOfWeek,
 
       smallImageErrorHandler,

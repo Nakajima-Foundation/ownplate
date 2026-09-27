@@ -173,6 +173,18 @@ test.describe("店舗ページの商品の受取除外", () => {
     await expect(item).not.toContainText("Mon");
     await expect(item).toContainText("Unavailable Time: 12:30 PM ~ 01:20 PM");
   });
+
+  test("祝日を除外した商品に、祝日は受け取れないと出す", async ({ page }) => {
+    await setMenuExcept({ exceptDay: { holiday: true } });
+    await page.goto(`/r/${SEED_RESTAURANT_ID}`);
+    const item = page
+      .locator("div", { hasText: SEED_MENU_NAME })
+      .filter({ hasText: "Not available on public holidays" })
+      .last();
+    await expect(item).toContainText("Not available on public holidays");
+    // 曜日の除外は無いので、曜日の行は出さない。
+    await expect(item).not.toContainText("Limited sale on the day of the week");
+  });
 });
 
 // 受取日時は店の時刻（JST）で数える。端末が日本以外のタイムゾーンでも、日本の端末と同じ
