@@ -32,6 +32,9 @@ import {
   SEED_OWNER_UID,
   SEED_RESTAURANT_ID,
   SEED_RESTAURANT_NAME,
+  SEED_SUPER_EMAIL,
+  SEED_SUPER_PASSWORD,
+  SEED_SUPER_UID,
   seedMenu,
   seedDeliveryArea,
   seedDeliveryMenu,
@@ -179,6 +182,8 @@ const main = async () => {
   await db
     .doc(`admins/${SEED_DELIVERY_OWNER_UID}/public/payment`)
     .set({ inStore: true });
+  await upsertAdmin(SEED_SUPER_UID, SEED_SUPER_EMAIL, SEED_SUPER_PASSWORD);
+  await getAuth().setCustomUserClaims(SEED_SUPER_UID, { admin: true });
   await upsertCustomer();
   // 置いておかないと orderCreated が本物の Stripe へ顧客を作りに行き、
   // 鍵の無い CI では注文が「売り切れかも」の見た目で失敗する。
