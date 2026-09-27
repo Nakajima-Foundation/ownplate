@@ -505,6 +505,7 @@ const data = {
     closedOnHolidaysLabel: "國定假日公休",
     closedOnHolidaysDescription: "開啟後，國定假日無法取餐。",
     holidayList: "適用的國定假日（至明年年底）",
+    closedOnHolidaysNotice: "國定假日公休",
     paymentMethod: "支付方式",
     onlinePayment: "線上支付",
     onsitePayment: "現場支付",

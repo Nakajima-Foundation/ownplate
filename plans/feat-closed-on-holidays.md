@@ -6,6 +6,7 @@ SingularitySociety/omochikaeri-docs#70。メニューの除外日の「祝日」
 
 - 店舗設定の臨時休業の下に「祝日を定休日にする」（`closedOnHolidays`）。オンなら祝日は受け取れない日になる
 - その下に、今日（JST）から翌年の年末までの祝日を日付・曜日・名前で並べる（誤解がないように）
+- 店舗ページの店舗情報の営業時間の下に「祝日は定休日です」（祝日定休の店だけ）
 - 受け取れる日の判定（`pickupDays.ts` の `availablePickupDays`）で、`closedOnHolidays` の店は祝日を外す。祝日かどうかは呼ぶ側が `isHoliday` で渡す（必須。画面は `usePickupTime`、サーバは `orderPlace` の記録 `pickupCheck` が同じ `isJapaneseHoliday` を渡す）
 - 保存（`shopInfoPayload.ts`）と既定値（`shopInfoForm.ts`）、`RestaurantInfoData.closedOnHolidays`
 - 文言を全言語に（es は臨時休業の文言も持たず en にフォールバックしているので、合わせて足さない）

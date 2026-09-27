@@ -505,6 +505,7 @@ const data = {
     closedOnHolidaysLabel: "节假日定休",
     closedOnHolidaysDescription: "开启后，节假日无法取餐。",
     holidayList: "适用的节假日（至明年年底）",
+    closedOnHolidaysNotice: "节假日为定休日",
     paymentMethod: "支付方式",
     onlinePayment: "在线支付",
     onsitePayment: "现场支付",

@@ -529,6 +529,7 @@ const data = {
     closedOnHolidaysDescription:
       "Jika aktif, pesanan tidak dapat diambil pada hari libur nasional Jepang.",
     holidayList: "Hari libur nasional (hingga akhir tahun depan)",
+    closedOnHolidaysNotice: "Tutup pada hari libur nasional",
     paymentMethod: "Metode pembayaran",
     onlinePayment: "Pembayaran online",
     onsitePayment: "Bayar saat penerimaan",

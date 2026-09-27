@@ -519,6 +519,7 @@ const data = {
     closedOnHolidaysDescription:
       "เมื่อเปิดใช้งาน จะไม่สามารถรับสินค้าในวันหยุดนักขัตฤกษ์ของญี่ปุ่นได้",
     holidayList: "วันหยุดนักขัตฤกษ์ (ถึงสิ้นปีหน้า)",
+    closedOnHolidaysNotice: "ปิดทำการในวันหยุดนักขัตฤกษ์",
     paymentMethod: "วิธีชำระเงิน",
     onlinePayment: "ชำระเงินออนไลน์",
     onsitePayment: "ชำระที่ร้าน",

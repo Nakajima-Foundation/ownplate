@@ -517,6 +517,7 @@ const data = {
     closedOnHolidaysLabel: "공휴일을 정기 휴무일로 설정",
     closedOnHolidaysDescription: "켜면 공휴일에는 수령할 수 없습니다.",
     holidayList: "대상 공휴일(내년 말까지)",
+    closedOnHolidaysNotice: "공휴일은 정기 휴무일입니다",
     paymentMethod: "결제 방법",
     onlinePayment: "온라인 결제",
     onsitePayment: "현장 결제",

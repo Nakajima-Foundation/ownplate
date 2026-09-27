@@ -248,6 +248,25 @@ test.describe("祝日定休", () => {
     await expect(box).not.toContainText("11/03");
   });
 
+  test("祝日定休なら、店舗情報の営業時間に祝日は定休日と出す", async ({
+    page,
+  }) => {
+    await setClosedOnHolidays(true);
+    await page.goto(`/r/${SEED_RESTAURANT_ID}`);
+    await page.getByText("View More", { exact: true }).click();
+    await expect(
+      page.getByText("Closed on public holidays", { exact: true }),
+    ).toBeVisible();
+  });
+
+  test("祝日定休でなければ、祝日の定休を出さない", async ({ page }) => {
+    await page.goto(`/r/${SEED_RESTAURANT_ID}`);
+    await page.getByText("View More", { exact: true }).click();
+    await expect(
+      page.getByText("Closed on public holidays", { exact: true }),
+    ).toHaveCount(0);
+  });
+
   test("祝日定休でなければ、祝日も受け取れる", async ({ page }) => {
     await page.clock.setFixedTime(BEFORE_CULTURE_DAY);
     await page.goto(`/r/${SEED_RESTAURANT_ID}`);

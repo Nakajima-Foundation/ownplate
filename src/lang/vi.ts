@@ -526,6 +526,7 @@ const data = {
     closedOnHolidaysDescription:
       "Khi bật, không thể nhận hàng vào các ngày lễ của Nhật Bản.",
     holidayList: "Các ngày lễ (đến hết năm sau)",
+    closedOnHolidaysNotice: "Nghỉ vào các ngày lễ",
     paymentMethod: "Phương thức thanh toán",
     onlinePayment: "Thanh toán trực tuyến",
     onsitePayment: "Thanh toán khi nhận hàng",

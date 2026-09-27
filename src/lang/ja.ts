@@ -521,6 +521,7 @@ const data = {
     closedOnHolidaysDescription:
       "オンにすると、祝日は受け取りできなくなります。",
     holidayList: "対象の祝日（翌年末まで）",
+    closedOnHolidaysNotice: "祝日は定休日です",
     paymentMethod: "支払い方法",
     onlinePayment: "オンライン決済",
     onsitePayment: "受け取り払い",

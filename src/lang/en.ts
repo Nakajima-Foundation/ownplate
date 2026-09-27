@@ -524,6 +524,7 @@ const data = {
     closedOnHolidaysDescription:
       "When on, orders cannot be picked up on Japanese public holidays.",
     holidayList: "Public holidays (through the end of next year)",
+    closedOnHolidaysNotice: "Closed on public holidays",
     paymentMethod: "Payment Method",
     onlinePayment: "Online Payment",
     onsitePayment: "On Site Payment",

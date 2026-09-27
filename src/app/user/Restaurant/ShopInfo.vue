@@ -194,6 +194,12 @@
               </div>
             </template>
           </div>
+          <div
+            v-if="shopInfo.closedOnHolidays"
+            class="mt-1 px-2 text-sm font-bold text-red-700"
+          >
+            {{ $t("shopInfo.closedOnHolidaysNotice") }}
+          </div>
         </div>
 
         <!-- Payment Method -->
