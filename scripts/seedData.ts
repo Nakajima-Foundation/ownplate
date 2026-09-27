@@ -47,6 +47,10 @@ export const seedPromotion = () => ({
   usageRestrictions: false,
 });
 
+// スーパー管理者。画面は custom claim の admin を見る（store/user.ts の isSuperAdmin）。
+export const SEED_SUPER_UID = "e2esuper";
+export const SEED_SUPER_EMAIL = "e2e-super@example.com";
+export const SEED_SUPER_PASSWORD = "e2e-super-password-1234";
 // 保存を伴う試験のための、別のオーナーと店舗。**同じ店舗を書き換えると
 // ほかの試験の前提が変わる。** オーナーごと分けておけば管理画面の一覧も混ざらない。
 export const SEED_EDIT_OWNER_UID = "e2eeditowner";

@@ -147,9 +147,13 @@ export const placeOrder = async (page: Page): Promise<string> => {
 };
 
 // 合言葉を変えて失敗の側も試すので、入力と着地の確認を分けてある。
-export const submitOwnerSignIn = async (page: Page, password: string) => {
+export const submitOwnerSignIn = async (
+  page: Page,
+  password: string,
+  email = SEED_OWNER_EMAIL,
+) => {
   await page.goto("/admin/user/signin");
-  await page.locator('input[type="email"]').fill(SEED_OWNER_EMAIL);
+  await page.locator('input[type="email"]').fill(email);
   await page.locator('input[type="password"]').fill(password);
   await page.getByRole("button", { name: "Next" }).click();
 };
