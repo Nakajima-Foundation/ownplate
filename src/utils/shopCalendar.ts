@@ -36,6 +36,16 @@ export const startOfDayAfter = (now: Date, offsetDays: number): Date => {
   );
 };
 
+// now の月から offsetMonths か月後の 1 日 0 時（JST）。
+export const startOfMonthAfter = (now: Date, offsetMonths: number): Date => {
+  const clock = shopClockOf(now);
+  return fromShopClock(
+    clock.getUTCFullYear(),
+    clock.getUTCMonth() + offsetMonths,
+    1,
+  );
+};
+
 // 日曜が 0（JST の曜日）。
 export const weekdayOf = (date: Date): number => shopClockOf(date).getUTCDay();
 
