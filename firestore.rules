@@ -38,6 +38,9 @@ service cloud.firestore {
       return resource.data.ownerUid == request.auth.uid;
     }
 
+    function hasNumberPrice(request) {
+      return request.resource.data.price is number;
+    }
     function isRestaurantOwner(restaurantId, request) {
       return get(/databases/$(database)/documents/restaurants/$(restaurantId)).data.uid == request.auth.uid;
     }
@@ -320,8 +323,10 @@ service cloud.firestore {
           allow read: if isAdmin(request) && isRestaurantGroupSubAccount(restaurantId, request);
           allow read: if isSuper(request);
 
-          allow write: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
-          allow write: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request);
+          // 値段が数であることは**ここでしか守れない**。画面の type="number" は
+          // 迂回できるし、数でない値段は客側に ¥0 として出たうえで注文まで通る。
+          allow write: if hasNumberPrice(request) && isAdmin(request) && isRestaurantOwner(restaurantId, request);
+          allow write: if hasNumberPrice(request) && isAdmin(request) && isRestaurantSubAccount(restaurantId, request);
         }
         match /titles/{titleId} {
           allow read: if true

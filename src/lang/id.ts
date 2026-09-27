@@ -1613,6 +1613,7 @@ const data = {
     },
     price: {
       empty: "Silakan masukkan harga",
+      invalid: "Masukkan bilangan bulat 0 atau lebih untuk harga",
     },
     restaurantName: {
       empty: "Silakan masukkan nama restoran",

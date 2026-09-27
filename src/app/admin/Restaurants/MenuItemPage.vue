@@ -1038,6 +1038,15 @@ export default defineComponent({
           err[name].push("validationError." + name + ".empty");
         }
       });
+      // 値段は保存のときに Math.round(Number(...)) を通る。**そのままだと小数は
+      // 黙って丸められ、負の数はそのまま入る。** 打った値と保存される値が違うので、
+      // 丸める前に止める。守り自体は firestore.rules の側。
+      if (err["price"].length === 0) {
+        const price = Number(menuInfo.price);
+        if (!Number.isFinite(price) || price < 0 || !Number.isInteger(price)) {
+          err["price"].push("validationError.price.invalid");
+        }
+      }
       err["itemDescription"] = [];
       return err;
     });
