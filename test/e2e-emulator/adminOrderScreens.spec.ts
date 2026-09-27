@@ -49,7 +49,7 @@ const downloadCsv = async (page: Page, label: string): Promise<string[][]> => {
   ]);
   const text = await readFile(await download.path(), "utf8");
   return text
-    .replace(/^﻿/, "")
+    .replace(/^\uFEFF/, "")
     .split(/\r?\n/)
     .filter((line) => line.length > 0)
     .map((line) => line.split(","));
