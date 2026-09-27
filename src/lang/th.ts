@@ -882,7 +882,6 @@ const data = {
     discountPriceMessage: "มีส่วนลด",
     discountPrice: "จำนวนส่วนลด",
     beforeDiscountPrice: "ราคาก่อนลด",
-    cancelReason: "เหตุผลการยกเลิก",
     productId: "หมายเลขสินค้า",
     category: "หมวดหมู่",
     categoryId: "ID หมวดหมู่",

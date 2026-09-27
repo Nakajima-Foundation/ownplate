@@ -295,10 +295,6 @@ export const validateCancel = (data: OrderCancelData) => {
       type: "firebaseId",
       required: true,
     },
-    cancelReason: {
-      type: "numAlpha",
-      required: false,
-    },
   };
   return validateData(data, validator);
 };

@@ -16,7 +16,7 @@ export const cancel = async (db: Firestore, data: OrderCancelData, context: Call
 
   const uid = isAdmin ? utils.validate_owner_admin_auth(context) : utils.validate_customer_auth(context);
 
-  const { restaurantId, orderId, cancelReason } = data;
+  const { restaurantId, orderId } = data;
   utils.required_params({ restaurantId, orderId });
 
   const validateResult = validateCancel(data);
@@ -55,16 +55,14 @@ export const cancel = async (db: Firestore, data: OrderCancelData, context: Call
         }
       }
       const cancelTimeKey = uid === order.uid ? "orderCustomerCanceledAt" : "orderRestaurantCanceledAt";
-      // user can cancel if restaurant cancel just only payment and status is placed.
-      const myCancelReason = isAdmin ? cancelReason || null : "canceledByCustomer";
       const updateDataBase = {
         timeCanceled: FieldValue.serverTimestamp(),
         [cancelTimeKey]: FieldValue.serverTimestamp(),
         updatedAt: FieldValue.serverTimestamp(),
         status: order_status.order_canceled,
-        cancelReason: myCancelReason,
         uidCanceledBy: uid,
       };
+      // user can cancel if restaurant cancel just only payment and status is placed.
       const noPayment = !order.payment || !order.payment.stripe || (!isAdmin && order.payment.stripe === "canceled");
       const hasPayment = !noPayment;
       if (hasPayment && order.payment.stripe !== "pending") {

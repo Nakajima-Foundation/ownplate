@@ -884,7 +884,6 @@ const data = {
     discountPriceMessage: "値引きがあります",
     discountPrice: "値引き金額",
     beforeDiscountPrice: "値引き前価格",
-    cancelReason: "キャンセル理由",
     productId: "商品番号",
     category: "カテゴリ",
     categoryId: "カテゴリID",

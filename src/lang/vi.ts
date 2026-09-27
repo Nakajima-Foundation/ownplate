@@ -889,7 +889,6 @@ const data = {
     discountPriceMessage: "Có giảm giá",
     discountPrice: "Số tiền giảm",
     beforeDiscountPrice: "Giá trước giảm",
-    cancelReason: "Lý do hủy",
     productId: "Mã sản phẩm",
     category: "Danh mục",
     categoryId: "ID danh mục",

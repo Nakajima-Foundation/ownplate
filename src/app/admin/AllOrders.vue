@@ -227,7 +227,6 @@ export default defineComponent({
           beforeDiscountPrice: order.totalCharge + (order.discountPrice || 0),
           name: nameOfOrder(order),
           payment: order.payment?.stripe ? "stripe" : "",
-          cancelReason: order.cancelReason,
         };
       });
     });
