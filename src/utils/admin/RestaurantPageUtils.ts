@@ -1,4 +1,4 @@
-import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { ConvertedRestaurantInfoData } from "@/models/RestaurantInfo";
 import { getCopyShopInfo, getEditShopInfo } from "./shopInfoPayload";
 import { cleanObject } from "@/utils/utils";
 
@@ -17,7 +17,7 @@ import {
 } from "firebase/firestore";
 
 export const copyRestaurant = async (
-  shopInfo: RestaurantInfoData,
+  shopInfo: ConvertedRestaurantInfoData,
   uid: string,
   restaurantId: string,
 ) => {

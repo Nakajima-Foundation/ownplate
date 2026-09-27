@@ -112,13 +112,6 @@ export default defineComponent({
       const restaurant_data = restaurant.data();
       const copy = JSON.parse(JSON.stringify(defaultShopInfo));
       const loadShopInfo = { ...copy, ...restaurant_data, ...defaultTax };
-      if (loadShopInfo.temporaryClosure) {
-        loadShopInfo.temporaryClosure = loadShopInfo.temporaryClosure.map(
-          (day: { toDate: () => Date }) => {
-            return day.toDate();
-          },
-        );
-      }
       shopInfo.value = loadShopInfo;
       noRestaurant.value = false;
     };

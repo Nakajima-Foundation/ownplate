@@ -1017,9 +1017,7 @@
 
                 <!-- Saved Closure Days -->
                 <div class="mb-2 grid grid-cols-1 space-y-2">
-                  <template
-                    v-for="(day, key) in editShopInfo.temporaryClosure || []"
-                  >
+                  <template v-for="(day, key) in temporaryClosureDates">
                     <template v-if="day.getTime() >= now.getTime()">
                       <div
                         :key="key"
@@ -1244,7 +1242,10 @@ import { startOfDayOfKey, weekdayOf } from "@/utils/shopCalendar";
 // 曜日のキーは月曜 "1"〜日曜 "7"。weekdayOf は日曜が 0。
 const SUNDAY_KEY = 7;
 
-import { ConvertedRestaurantInfoData } from "@/models/RestaurantInfo";
+import {
+  ConvertedRestaurantInfoData,
+  RestaurantInfoData,
+} from "@/models/RestaurantInfo";
 
 export default defineComponent({
   name: "RestaurantPage",
@@ -1264,7 +1265,7 @@ export default defineComponent({
   },
   props: {
     shopInfo: {
-      type: Object as PropType<ConvertedRestaurantInfoData>,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
   },
@@ -1313,6 +1314,15 @@ export default defineComponent({
     const selectedResult = ref(0);
 
     const editShopInfo = reactive(props.shopInfo);
+    // editShopInfo は Wrapper の店舗設定そのもの。臨時休業日を Date にして書き戻すと、
+    // ほかの管理画面が Timestamp のつもりで読むので、フォームの中だけで持つ。
+    const temporaryClosureDates = ref<Date[]>(
+      (props.shopInfo.temporaryClosure || []).map((day) => day.toDate()),
+    );
+    const shopInfoToSave = (): ConvertedRestaurantInfoData => ({
+      ...editShopInfo,
+      temporaryClosure: temporaryClosureDates.value,
+    });
 
     useHead(() => ({
       title: props.shopInfo.restaurantName
@@ -1428,21 +1438,18 @@ export default defineComponent({
       const func = (elem: Date) => {
         return elem.getTime() === day.getTime();
       };
-      return !editShopInfo.temporaryClosure.some(func);
+      return !temporaryClosureDates.value.some(func);
     };
     const deleteTemporaryClosure = (key: number) => {
-      editShopInfo.temporaryClosure = editShopInfo.temporaryClosure.filter(
+      temporaryClosureDates.value = temporaryClosureDates.value.filter(
         (v, n) => n !== key,
       );
     };
     const addNewTemporaryClosure = () => {
-      if (
-        !isNull(newTemporaryClosure.value) &&
-        isNewTemporaryClosure(newTemporaryClosure.value as Date) &&
-        isFuture(newTemporaryClosure.value as Date)
-      ) {
-        editShopInfo.temporaryClosure.push(newTemporaryClosure.value);
-        editShopInfo.temporaryClosure.sort((a, b) => {
+      const day = newTemporaryClosure.value;
+      if (!isNull(day) && isNewTemporaryClosure(day) && isFuture(day)) {
+        temporaryClosureDates.value.push(day);
+        temporaryClosureDates.value.sort((a, b) => {
           return a.getTime() > b.getTime() ? 1 : -1;
         });
       }
@@ -1517,7 +1524,7 @@ export default defineComponent({
     const copyRestaurantFunc = async () => {
       try {
         const id = await copyRestaurant(
-          editShopInfo,
+          shopInfoToSave(),
           ownerUid,
           restaurantId.value,
         );
@@ -1553,7 +1560,7 @@ export default defineComponent({
     };
     const saveRestaurant = async () => {
       submitting.value = true;
-      const newData = { ...editShopInfo };
+      const newData = shopInfoToSave();
       try {
         if (files.value["profile"]) {
           const path = `/images/restaurants/${restaurantId.value}/${uid.value}/profile.jpg`;
@@ -1652,6 +1659,7 @@ export default defineComponent({
       timeErrors,
       hasError,
 
+      temporaryClosureDates,
       deleteTemporaryClosure,
       addNewTemporaryClosure,
 

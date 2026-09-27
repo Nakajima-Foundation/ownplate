@@ -1,3 +1,4 @@
+import { Timestamp } from "firebase/firestore";
 import { describe, it, beforeEach, afterEach, mock } from "node:test";
 import assert from "node:assert";
 import { createPinia, setActivePinia } from "pinia";
@@ -41,10 +42,7 @@ const TWO_PM = 14 * MINUTES_PER_HOUR;
 
 // 臨時休業は Firestore の Timestamp で届く。読む側は seconds の有無で
 // 「Timestamp か、素の Date か」を見分けているので、seconds も入れておく。
-const closedOn = (date: Date) => ({
-  seconds: Math.floor(date.getTime() / 1000),
-  toDate: () => date,
-});
+const closedOn = (date: Date) => Timestamp.fromDate(date);
 
 const everyDay = {
   "1": true,
@@ -355,7 +353,10 @@ describe("休みの日", () => {
       9,
       (p) => p.temporaryClosure.value,
       shopOpen11to2({
-        temporaryClosure: [closedOn(frozenDatePlus(1)), frozenDatePlus(3)],
+        temporaryClosure: [
+          closedOn(frozenDatePlus(1)),
+          closedOn(frozenDatePlus(3)),
+        ],
       }),
     );
     assert.deepStrictEqual(closures, ["2026-09-25", "2026-09-27"]);
@@ -537,43 +538,5 @@ describe("昼の部と夜の部", () => {
       "dinner",
     );
     assert.strictEqual(days, 0);
-  });
-});
-
-// 臨時休業は2つの形で届く。Firestore から読んだ直後は Timestamp、画面が日付を足した
-// あとや Wrapper が変換したあとは**素の Date**。管理画面の受付停止ページは後者を渡す。
-describe("臨時休業の2つの形", () => {
-  const offsetsWithClosure = (
-    closure: RestaurantInfoData["temporaryClosure"],
-  ) =>
-    pickupAt(
-      9,
-      (p) => p.availableDays.value.map((d) => d.offset),
-      shopOpen11to2({ temporaryClosure: closure }),
-    );
-
-  it("drops the day when the closure arrived as a Firestore timestamp", async () => {
-    assert.deepStrictEqual(
-      await offsetsWithClosure([closedOn(frozenDatePlus(1))]),
-      [0, 2, 3],
-    );
-  });
-
-  // ここを Timestamp 前提にすると、管理画面の受付停止ページで休業日が効かなくなる。
-  it("drops the day when the closure arrived as a plain Date", async () => {
-    assert.deepStrictEqual(
-      await offsetsWithClosure([frozenDatePlus(1)]),
-      [0, 2, 3],
-    );
-  });
-
-  it("reads both shapes in one list", async () => {
-    assert.deepStrictEqual(
-      await offsetsWithClosure([
-        closedOn(frozenDatePlus(1)),
-        frozenDatePlus(2),
-      ]),
-      [0, 3],
-    );
   });
 });

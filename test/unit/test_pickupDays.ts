@@ -1,3 +1,4 @@
+import { Timestamp } from "firebase/firestore";
 import { describe, it } from "node:test";
 import assert from "node:assert";
 
@@ -62,10 +63,7 @@ const offsetsOf = (input: PickupDaysInput) =>
 const firstTimeOf = (input: PickupDaysInput) =>
   availablePickupDays(input)[0]?.times[0];
 
-const ts = (date: Date) => ({
-  seconds: Math.floor(date.getTime() / 1000),
-  toDate: () => date,
-});
+const ts = (date: Date) => Timestamp.fromDate(date);
 
 describe("availablePickupDays: 日", () => {
   it("offers today plus the days the shop accepts in advance", () => {
@@ -114,9 +112,9 @@ describe("availablePickupDays: 日", () => {
     assert.deepStrictEqual(offsetsOf(inputOf({ shop })), [0, 1, 2]);
   });
 
-  it("drops a temporarily closed date in either of its two shapes", () => {
+  it("drops the temporarily closed dates", () => {
     const shop = shopOf({
-      temporaryClosure: [ts(at(1, 0)), at(3, 0)],
+      temporaryClosure: [ts(at(1, 0)), ts(at(3, 0))],
     });
     assert.deepStrictEqual(offsetsOf(inputOf({ shop })), [0, 2]);
   });
@@ -402,10 +400,10 @@ describe("部品", () => {
     assert.strictEqual(daysInAdvanceOf({ pickUpDaysInAdvance: 0 }), 1);
   });
 
-  it("temporaryClosureDatesOf reads both shapes as local dates", () => {
+  it("temporaryClosureDatesOf reads the closures as shop dates", () => {
     assert.deepStrictEqual(
       temporaryClosureDatesOf({
-        temporaryClosure: [ts(at(1, 0)), at(2, 23 * H)],
+        temporaryClosure: [ts(at(1, 0)), ts(at(2, 23 * H))],
       }),
       ["2026-09-25", "2026-09-26"],
     );

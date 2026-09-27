@@ -1,4 +1,4 @@
-import type { RestaurantInfoData } from "../../models/RestaurantInfo";
+import type { ConvertedRestaurantInfoData } from "../../models/RestaurantInfo";
 
 // 保存する値の許可リスト。**ここに無いフィールドは、画面で編集できても Firestore に
 // 書かれない。** 入力も検証も通り、保存も成功したように見えるので、抜けていても
@@ -6,7 +6,7 @@ import type { RestaurantInfoData } from "../../models/RestaurantInfo";
 //
 // Firebase を触らない純粋な変換なので、別ファイルにして単体テストできるようにしてある。
 export const getEditShopInfo = (
-  shopInfo: RestaurantInfoData,
+  shopInfo: ConvertedRestaurantInfoData,
   // 時刻は呼び出し側から渡す。Firestore の serverTimestamp をここで呼ぶと
   // このファイルが Firebase に依存し、単体テストから読めなくなる。
   now: unknown,

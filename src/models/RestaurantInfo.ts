@@ -86,9 +86,7 @@ export interface RestaurantInfoData {
   };
   publicFlag: boolean;
   deletedFlag: boolean;
-  // Firestore から読んだ直後は Timestamp、画面が日付を足したあとや Wrapper が
-  // 変換したあとは素の Date。読む側は seconds の有無で見分けている。
-  temporaryClosure: ({ toDate: () => Date; seconds?: number } | Date)[];
+  temporaryClosure: Timestamp[];
   // 祝日を定休日にする（祝日は受け取れない）。
   closedOnHolidays?: boolean;
   lastOrderTime?: number;
@@ -98,10 +96,9 @@ export interface RestaurantInfoData {
   createdAt: Timestamp;
 }
 
-// Wrapper が toDate() で変換したあとの形。臨時休業日はそこで素の Date に揃う。
-// 管理画面はこちらを受け取るので、seconds の有無で見分ける必要がない。
 export type CategoryKey = "category1" | "category2";
 
+// 店舗編集フォームの形。臨時休業日は日付を足し引きするので Date で持つ。
 export type ConvertedRestaurantInfoData = Omit<
   RestaurantInfoData,
   "temporaryClosure"
