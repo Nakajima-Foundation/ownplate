@@ -134,7 +134,9 @@ export const setClosingTime = (closeTime: number) => {
 export const resetEditRestaurant = async () => {
   const response = await fetch(
     `${DOCUMENTS_URL}/restaurants/${SEED_EDIT_RESTAURANT_ID}` +
-      `?updateMask.fieldPaths=restaurantName&updateMask.fieldPaths=inclusiveTax`,
+      `?updateMask.fieldPaths=restaurantName` +
+      `&updateMask.fieldPaths=inclusiveTax` +
+      `&updateMask.fieldPaths=acceptUserMessage`,
     {
       method: "PATCH",
       headers: {
@@ -145,6 +147,7 @@ export const resetEditRestaurant = async () => {
         fields: {
           restaurantName: { stringValue: SEED_EDIT_RESTAURANT_NAME },
           inclusiveTax: { booleanValue: false },
+          acceptUserMessage: { booleanValue: false },
         },
       }),
     },
