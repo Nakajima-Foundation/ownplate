@@ -19,12 +19,9 @@ export interface OrderInfoData {
   deliveryFee: number;
   tax: number;
   timeCreated: Timestamp;
-  get timeEstimated(): Timestamp;
-  set timeEstimated(value: Timestamp | Date);
-  get timeConfirmed(): Timestamp;
-  set timeConfirmed(value: Timestamp | Date);
-  get timePlaced(): Timestamp;
-  set timePlaced(value: Timestamp | Date);
+  timeEstimated: Timestamp;
+  timeConfirmed: Timestamp;
+  timePlaced: Timestamp;
   transactionCompletedAt: Timestamp;
 
   status: OrderStatus;

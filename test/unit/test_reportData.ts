@@ -91,23 +91,25 @@ describe("order2ReportData — 受渡方法", () => {
   });
 });
 
-// 日時は Firestore の形のままでは表計算に出せないので、Date へ直す。
+// 日時は Firestore の Timestamp のまま渡す。表に出す側が asDate で Date にする（ownplate#1981）。
 describe("order2ReportData — 日時", () => {
-  it("turns the recorded times into dates", () => {
-    const report = order2ReportData(orderInfoFixture(), SERVICE_TAX_RATE);
-    assert.ok(report.timeConfirmed instanceof Date);
-    assert.ok(report.timePlaced instanceof Date);
-    assert.ok(report.timeEstimated instanceof Date);
+  it("leaves the recorded times as the Timestamps Firestore gave", () => {
+    const order = orderInfoFixture();
+    const { timeConfirmed, timePlaced, timeEstimated } = order;
+    const report = order2ReportData(order, SERVICE_TAX_RATE);
+    assert.strictEqual(report.timeConfirmed, timeConfirmed);
+    assert.strictEqual(report.timePlaced, timePlaced);
+    assert.strictEqual(report.timeEstimated, timeEstimated);
   });
 
-  it("keeps the moment, not just the shape", () => {
+  it("keeps the moment", () => {
     const placed = timestampOf("2026-09-22T09:00:00Z");
     const report = order2ReportData(
       orderInfoFixture({ timePlaced: placed }),
       SERVICE_TAX_RATE,
     );
     assert.strictEqual(
-      new Date(String(report.timePlaced)).toISOString(),
+      report.timePlaced.toDate().toISOString(),
       "2026-09-22T09:00:00.000Z",
     );
   });
@@ -129,10 +131,11 @@ describe("order2ReportData — 引数を書き換えること", () => {
     assert.strictEqual(order2ReportData(order, SERVICE_TAX_RATE), order);
   });
 
-  it("leaves the dates converted on the caller's own order", () => {
+  it("does not touch the times on the caller's own order", () => {
     const order = orderInfoFixture();
+    const { timePlaced } = order;
     order2ReportData(order, SERVICE_TAX_RATE);
-    assert.ok(order.timePlaced instanceof Date);
+    assert.strictEqual(order.timePlaced, timePlaced);
   });
 
   // 注文に入っていた区分の実体をそのまま返すこと。写しに差し替えると、
@@ -202,16 +205,12 @@ describe("order2ReportData — 引数を書き換えること", () => {
     );
   });
 
-  // **二度通せない。** 一度目で日時を Date に直すので、二度目は toDate が無くて落ちる。
-  // いまの呼び出し側は Firestore の snapshot から毎回 data() で新しい実体を作るため
-  // 起きないが、同じ注文を使い回す呼び出しを足すと落ちる。
-  it("cannot be run twice over one and the same order", () => {
+  // 日時を書き換えなくなったので、同じ注文に二度通しても落ちない。
+  it("can be run twice over one and the same order", () => {
     const order = orderInfoFixture({ tip: 110 });
-    order2ReportData(order, SERVICE_TAX_RATE);
-    assert.throws(
-      () => order2ReportData(order, SERVICE_TAX_RATE),
-      TypeError,
-      "二度目は日時を直せない",
-    );
+    const first = order2ReportData(order, SERVICE_TAX_RATE);
+    const firstTimePlaced = first.timePlaced.toMillis();
+    const second = order2ReportData(order, SERVICE_TAX_RATE);
+    assert.strictEqual(second.timePlaced.toMillis(), firstTimePlaced);
   });
 });

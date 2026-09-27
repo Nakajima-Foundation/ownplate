@@ -96,6 +96,8 @@
 import { defineComponent, ref, computed } from "vue";
 
 import moment from "moment";
+import { asDate } from "@/utils/dateUtils";
+import { formatDay } from "@/utils/shopCalendar";
 
 import OrderedInfo from "@/app/admin/Order/OrderedInfo.vue";
 import BackButton from "@/components/BackButton.vue";
@@ -199,7 +201,6 @@ export default defineComponent({
             const order = myDoc.data() as OrderInfoData;
             order.restaurantId = myDoc.ref.path.split("/")[1];
             order.id = myDoc.id;
-            order.timePlaced = order.timePlaced.toDate();
             if (!restaurants.value[order.restaurantId]) {
               const orderSnapshot = await getDoc(
                 doc(db, `restaurants/${order.restaurantId}`),
@@ -208,9 +209,6 @@ export default defineComponent({
                 orderSnapshot.data() as RestaurantInfoData;
             }
             order.restaurant = restaurants.value[order.restaurantId];
-            if (order.timeEstimated) {
-              order.timeEstimated = order.timeEstimated.toDate();
-            }
             orders.value.push(order);
           }
         }
@@ -265,7 +263,7 @@ export default defineComponent({
       return filteredOrders.value.map((order) => {
         const time = order.timeEstimated || order.timePlaced;
         return {
-          date: time ? moment(time).format("YYYY/MM/DD") : "",
+          date: time ? formatDay(asDate(time), "YYYY/MM/DD") : "",
           restaurantName: order.restaurant?.restaurantName,
           orderStatus: t("order.status." + order_status_keys[order.status]),
           revenue: order.totalCharge,

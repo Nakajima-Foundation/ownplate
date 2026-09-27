@@ -88,7 +88,8 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
 
-import moment from "moment-timezone";
+import { asDate } from "@/utils/dateUtils";
+import { formatDay } from "@/utils/shopCalendar";
 
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -203,7 +204,7 @@ export default defineComponent({
       return filteredOrders.value.map((order) => {
         const time = order.timeEstimated || order.timePlaced;
         return {
-          date: time ? moment(time).format("YYYY/MM/DD") : "",
+          date: time ? formatDay(asDate(time), "YYYY/MM/DD") : "",
           restaurantId: order.restaurant?.restaurantId, // mo
           type: t("order." + orderTypeKey(order)),
           restaurantName: order.restaurant?.restaurantName,

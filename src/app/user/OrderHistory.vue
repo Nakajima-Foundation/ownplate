@@ -47,6 +47,7 @@
 import { defineComponent, ref, computed, onUnmounted, watch } from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import {
+  Timestamp,
   collectionGroup,
   query,
   onSnapshot,
@@ -119,11 +120,9 @@ export default defineComponent({
             const order = doc.data();
             order.restaurantId = doc.ref.path.split("/")[1];
             order.id = doc.id;
-            // HACK: Remove it later
-            order.timePlaced =
-              (order.timePlaced && order.timePlaced.toDate()) || new Date();
-            if (order.timeEstimated) {
-              order.timeEstimated = order.timeEstimated.toDate();
+            // 受取日時が無い注文は、今の時刻として出す（以前からの扱い）。
+            if (!order.timePlaced) {
+              order.timePlaced = Timestamp.now();
             }
             return order as OrderInfoData;
           });

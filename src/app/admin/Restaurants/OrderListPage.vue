@@ -227,13 +227,6 @@ export default defineComponent({
                 return aTime > bTime ? -1 : 1;
               }
               return order0.status < order1.status ? -1 : 1;
-            })
-            .map((order) => {
-              order.timePlaced = order.timePlaced.toDate();
-              if (order.timeEstimated) {
-                order.timeEstimated = order.timeEstimated.toDate();
-              }
-              return order;
             });
         },
       );
