@@ -56,6 +56,52 @@ export const setSoldOut = (soldOut: boolean) =>
     "売り切れ",
   );
 
+// 商品の受取除外（曜日と時間帯）。null で項目ごと消す（種まきの商品は持っていない）。
+export type MenuExcept = {
+  exceptDay: { [day: string]: boolean };
+  exceptHour: { start: number; end: number };
+};
+
+export const setMenuExcept = async (except: MenuExcept | null) => {
+  const fields: { [key: string]: FirestoreValue } = except
+    ? {
+        exceptDay: {
+          mapValue: {
+            fields: Object.fromEntries(
+              Object.entries(except.exceptDay).map(([day, flag]) => [
+                day,
+                { booleanValue: flag },
+              ]),
+            ),
+          },
+        },
+        exceptHour: {
+          mapValue: {
+            fields: {
+              start: { integerValue: String(except.exceptHour.start) },
+              end: { integerValue: String(except.exceptHour.end) },
+            },
+          },
+        },
+      }
+    : {};
+  const response = await fetch(
+    `${DOCUMENTS_URL}/restaurants/${SEED_RESTAURANT_ID}/menus/${SEED_MENU_ID}` +
+      "?updateMask.fieldPaths=exceptDay&updateMask.fieldPaths=exceptHour",
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer owner",
+      },
+      body: JSON.stringify({ fields }),
+    },
+  );
+  if (!response.ok) {
+    throw new Error(`商品の受取除外を変えられません: ${response.status}`);
+  }
+};
+
 // 配送条件。手順書は「設定 → 判定表」の形で書かれているので、設定を置ける口を
 // 用意しておく。地図は描かせない（確認画面が Google を待つと金額まで進めない）。
 export type DeliveryArea = {
@@ -220,5 +266,18 @@ export const setPromotionPaymentRestriction = async (
   );
   if (!response.ok) {
     throw new Error(`値引きの支払い制限を変えられません: ${response.status}`);
+  }
+};
+
+// 掲載の申し込み。申し込むと requestList に文書ができ、取り消すと消える。
+// 試験のあとに残すと、次に走らせたとき「申請中」から始まってしまう。
+export const clearListingRequest = async () => {
+  const response = await fetch(
+    `${DOCUMENTS_URL}/requestList/${SEED_EDIT_RESTAURANT_ID}`,
+    { method: "DELETE", headers: { Authorization: "Bearer owner" } },
+  );
+  // 無いときの 404 は片付けとしては正しい。
+  if (!response.ok && response.status !== 404) {
+    throw new Error(`掲載の申し込みを消せません: ${response.status}`);
   }
 };
