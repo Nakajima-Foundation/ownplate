@@ -884,8 +884,6 @@ const data = {
     productId: "상품 번호",
     category: "카테고리",
     categoryId: "카테고리 ID",
-    subCategory: "서브 카테고리",
-    subCategoryId: "서브 카테고리 ID",
   },
   editEC: {
     postageList: "배송비 목록",

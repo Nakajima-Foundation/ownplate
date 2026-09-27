@@ -890,8 +890,6 @@ const data = {
     productId: "Product Id",
     category: "Category",
     categoryId: "Category Id",
-    subCategory: "SubCategory",
-    subCategoryId: "SubCategory Id",
   },
   editEC: {
     postageList: "Shipping list",

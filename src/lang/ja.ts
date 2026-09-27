@@ -888,8 +888,6 @@ const data = {
     productId: "商品番号",
     category: "カテゴリ",
     categoryId: "カテゴリID",
-    subCategory: "サブカテゴリ",
-    subCategoryId: "サブカテゴリID",
   },
   editEC: {
     postageList: "送料リスト",
