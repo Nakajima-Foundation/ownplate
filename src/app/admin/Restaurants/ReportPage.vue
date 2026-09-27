@@ -42,7 +42,7 @@
             :value="day.index"
             :key="day.index"
           >
-            {{ moment(day.date).format("YYYY-MM") }}
+            {{ formatDay(day.date, "YYYY-MM") }}
           </option>
         </select>
       </div>
@@ -221,7 +221,6 @@ import {
   onUnmounted,
   PropType,
 } from "vue";
-import moment from "moment";
 
 import BackButton from "@/components/BackButton.vue";
 import DownloadCsv from "@/components/DownloadCSV.vue";
@@ -231,8 +230,12 @@ import NotFound from "@/components/NotFound.vue";
 
 import { ownPlateConfig } from "@/config/project";
 import { nameOfOrder } from "@/utils/strings";
-import { asDate, midNightOfMonth } from "@/utils/dateUtils";
-import { SHOP_TIME_ZONE } from "@/utils/shopCalendar";
+import { asDate } from "@/utils/dateUtils";
+import {
+  formatDay,
+  SHOP_TIME_ZONE,
+  startOfMonthAfter,
+} from "@/utils/shopCalendar";
 import { revenueCSVHeader, revenueTableHeader } from "@/utils/reportUtils";
 import { order_status_keys } from "@/config/constant";
 import {
@@ -312,7 +315,7 @@ export default defineComponent({
     const tableData = computed(() => {
       return orders.value.map((order: OrderInfoData) => {
         return {
-          date: moment(order.timeConfirmed).format("YYYY/MM/DD"),
+          date: formatDay(asDate(order.timeConfirmed), "YYYY/MM/DD"),
           restaurantId: props.shopInfo.restaurantId, // mo
           type: t("order." + orderTypeKey(order)),
           restaurantName: props.shopInfo.restaurantName,
@@ -341,15 +344,13 @@ export default defineComponent({
     });
     const lastSeveralMonths = computed(() => {
       return Array.from(Array(12).keys()).map((index) => {
-        const date = midNightOfMonth(-index);
+        const date = startOfMonthAfter(new Date(), -index);
         return { index, date };
       });
     });
     const fileNameSummary = computed(() => {
       return [
-        moment(lastSeveralMonths.value[monthIndex.value].date).format(
-          "YYYY-MM",
-        ),
+        formatDay(lastSeveralMonths.value[monthIndex.value].date, "YYYY-MM"),
         "revenue",
         props.shopInfo.restaurantId,
         "summary",
@@ -357,9 +358,7 @@ export default defineComponent({
     });
     const fileNameDetail = computed(() => {
       return [
-        moment(lastSeveralMonths.value[monthIndex.value].date).format(
-          "YYYY-MM",
-        ),
+        formatDay(lastSeveralMonths.value[monthIndex.value].date, "YYYY-MM"),
         "revenue",
         props.shopInfo.restaurantId,
         "detail",
@@ -464,7 +463,7 @@ export default defineComponent({
 
       notFound: false,
 
-      moment,
+      formatDay,
       resizedProfileImage,
     };
   },

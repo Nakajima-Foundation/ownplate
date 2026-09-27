@@ -273,7 +273,7 @@ import {
 } from "firebase/firestore";
 
 import { order_status } from "@/config/constant";
-import { midNight } from "@/utils/dateUtils";
+import { startOfDayAfter } from "@/utils/shopCalendar";
 
 import ToggleSwitch from "@/components/ToggleSwitch.vue";
 
@@ -381,7 +381,7 @@ export default defineComponent({
           return onSnapshot(
             query(
               collection(db, `restaurants/${restaurantId}/orders`),
-              where("timePlaced", ">=", midNight()),
+              where("timePlaced", ">=", startOfDayAfter(new Date(), 0)),
             ),
             // IDEALLY: .where("status", "<", order_status.ready_to_pickup)
             (result) => {

@@ -14,7 +14,7 @@ import {
   Unsubscribe,
 } from "firebase/firestore";
 
-import { midNight } from "@/utils/dateUtils";
+import { startOfDayAfter } from "@/utils/shopCalendar";
 import { order_status } from "@/config/constant";
 
 import { doc2data, useRestaurantId, useSoundPlay } from "@/utils/utils";
@@ -41,7 +41,7 @@ export default defineComponent({
     const orders = ref<OrderInfoData[]>([]);
 
     const today = computed(() => {
-      return midNight(0);
+      return startOfDayAfter(new Date(), 0);
     });
     const hasNewOrder = computed(() => {
       return orders.value.length > 0;

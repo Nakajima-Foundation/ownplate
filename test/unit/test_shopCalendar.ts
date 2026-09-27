@@ -9,6 +9,7 @@ import {
   formatDay,
   minutesOfDay,
   startOfDayAfter,
+  startOfMonthAfter,
   weekdayOf,
 } from "../../src/utils/shopCalendar.ts";
 import { shopTime } from "../helpers/shopTime.ts";
@@ -107,6 +108,38 @@ describe("pickupDateOf", () => {
     assert.strictEqual(
       pickupDateOf(at(9, 24, 10, 5), 90).getTime(),
       shopTime(2026, 9, 24, 1, 30, 30, 250).getTime(),
+    );
+  });
+});
+
+describe("startOfMonthAfter", () => {
+  it("is the first day of the month at midnight (JST)", () => {
+    assert.strictEqual(
+      startOfMonthAfter(at(9, 24, 15, 45), 0).getTime(),
+      shopTime(2026, 9, 1).getTime(),
+    );
+  });
+
+  it("counts months backward and forward, across years", () => {
+    assert.strictEqual(
+      startOfMonthAfter(at(9, 24), -1).getTime(),
+      shopTime(2026, 8, 1).getTime(),
+    );
+    assert.strictEqual(
+      startOfMonthAfter(at(9, 24), -9).getTime(),
+      shopTime(2025, 12, 1).getTime(),
+    );
+    assert.strictEqual(
+      startOfMonthAfter(at(9, 24), 4).getTime(),
+      shopTime(2027, 1, 1).getTime(),
+    );
+  });
+
+  // JST では 10/1 に入っているが、UTC やロサンゼルスではまだ 9/30。
+  it("uses the JST month, not the month on the device", () => {
+    assert.strictEqual(
+      startOfMonthAfter(shopTime(2026, 10, 1, 0, 30), 0).getTime(),
+      shopTime(2026, 10, 1).getTime(),
     );
   });
 });

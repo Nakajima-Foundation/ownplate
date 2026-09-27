@@ -35,7 +35,7 @@
               :key="day.index"
             >
               {{ $d(day.date, "short") }}
-              {{ orderCounter[moment(day.date).format("YYYY-MM-DD")] }}
+              {{ orderCounter[dateKeyOf(day.date)] }}
               <span v-if="day.index === pickUpDaysInAdvance">{{
                 $t("date.today")
               }}</span>
@@ -87,8 +87,7 @@ import type { OrderInfoData } from "@/models/orderInfoData";
 import { db } from "@/lib/firebase/firebase9";
 import { collection, where, query, onSnapshot } from "firebase/firestore";
 
-import { midNight } from "@/utils/dateUtils";
-import moment from "moment";
+import { dateKeyOf, startOfDayAfter } from "@/utils/shopCalendar";
 
 import OrderedInfo from "@/app/admin/Order/OrderedInfo.vue";
 import NotFound from "@/components/NotFound.vue";
@@ -164,7 +163,10 @@ export default defineComponent({
     const lastSeveralDays = computed(() => {
       return Array.from(Array(10 + pickUpDaysInAdvance.value).keys()).map(
         (index) => {
-          const date = midNight(pickUpDaysInAdvance.value - index);
+          const date = startOfDayAfter(
+            new Date(),
+            pickUpDaysInAdvance.value - index,
+          );
           return { index, date };
         },
       );
@@ -174,14 +176,12 @@ export default defineComponent({
     const updateDayIndex = () => {
       const newDayIndex =
         lastSeveralDays.value.findIndex((day) => {
-          return moment(day.date).format("YYYY-MM-DD") === route.query.day;
+          return dateKeyOf(day.date) === route.query.day;
         }) || 0;
       dayIndex.value = newDayIndex > 0 ? newDayIndex : 0;
     };
     const updateQueryDay = () => {
-      const day = moment(lastSeveralDays.value[dayIndex.value].date).format(
-        "YYYY-MM-DD",
-      );
+      const day = dateKeyOf(lastSeveralDays.value[dayIndex.value].date);
       if (route.query.day !== day) {
         router.push(
           "/admin/restaurants/" + restaurantId.value + "/orders?day=" + day,
@@ -251,11 +251,10 @@ export default defineComponent({
     const orderCounter = computed(() => {
       return lastSeveralDays.value.reduce(
         (tmp: { [key: string]: string }, day) => {
-          const count = (
-            generalStore.orderObj[moment(day.date).format("YYYY-MM-DD")] || []
-          ).length;
+          const count = (generalStore.orderObj[dateKeyOf(day.date)] || [])
+            .length;
           if (count > 0) {
-            tmp[moment(day.date).format("YYYY-MM-DD")] = "(" + count + ")";
+            tmp[dateKeyOf(day.date)] = "(" + count + ")";
           }
           return tmp;
         },
@@ -294,7 +293,7 @@ export default defineComponent({
       updateDayIndex,
 
       restaurantId,
-      moment,
+      dateKeyOf,
     };
   },
 });

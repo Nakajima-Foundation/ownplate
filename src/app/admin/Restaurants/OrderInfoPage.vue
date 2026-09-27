@@ -249,7 +249,8 @@
                     {{ $t("order.lastOrder") }}:
                     {{
                       userLog.lastOrder
-                        ? moment(userLog.lastOrder.toDate()).format(
+                        ? formatDay(
+                            userLog.lastOrder.toDate(),
                             "YYYY/MM/DD HH:mm",
                           )
                         : "--"
@@ -257,7 +258,8 @@
                     {{ $t("order.thisOrder") }}:
                     {{
                       orderInfo.timePlaced
-                        ? moment(orderInfo.timePlaced.toDate()).format(
+                        ? formatDay(
+                            orderInfo.timePlaced.toDate(),
                             "YYYY/MM/DD HH:mm",
                           )
                         : "--"
@@ -268,7 +270,8 @@
                   {{ $t("order.lastOrder") }}:
                   {{
                     userLog.lastOrder
-                      ? moment(userLog.lastOrder.toDate()).format(
+                      ? formatDay(
+                          userLog.lastOrder.toDate(),
                           "YYYY/MM/DD HH:mm",
                         )
                       : "--"
@@ -540,7 +543,7 @@ import {
 } from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
 import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
-import moment from "moment-timezone";
+import { dateKeyOf, formatDay } from "@/utils/shopCalendar";
 
 import { ownPlateConfig } from "@/config/project";
 
@@ -876,7 +879,7 @@ export default defineComponent({
         return `/admin/restaurants/${restaurantId.value}/history`;
       }
       const day = orderInfo.value.timePlaced
-        ? moment(orderInfo.value.timePlaced.toDate()).format("YYYY-MM-DD")
+        ? dateKeyOf(orderInfo.value.timePlaced.toDate())
         : null;
       return `/admin/restaurants/${restaurantId.value}/orders?day=${day}`;
     });
@@ -1186,7 +1189,7 @@ export default defineComponent({
 
       convOrderStateForText,
 
-      moment,
+      formatDay,
       restaurantId,
     };
   },

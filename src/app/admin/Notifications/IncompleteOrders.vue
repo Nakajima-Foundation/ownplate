@@ -11,9 +11,7 @@ i
         :class="`mr-2 mb-2 inline-flex h-9 items-center justify-center rounded-full px-4 ${
           index === 0 ? 'bg-red-700/10' : 'bg-black/5'
         }`"
-        :to="`/admin/restaurants/${restaurantId}/orders?day=${moment(
-          day.date,
-        ).format('YYYY-MM-DD')}`"
+        :to="`/admin/restaurants/${restaurantId}/orders?day=${dateKeyOf(day.date)}`"
         v-for="(day, index) in lastSeveralDays"
         :key="day.index"
       >
@@ -23,7 +21,7 @@ i
           }`"
         >
           {{ $d(day.date, "short") }} {{ index === 0 ? "本日" : "" }} -
-          {{ orderCounter[moment(day.date).format("YYYY-MM-DD")] }}
+          {{ orderCounter[dateKeyOf(day.date)] }}
         </span>
       </router-link>
     </div>
@@ -35,8 +33,7 @@ import { defineComponent, computed, PropType } from "vue";
 
 import { useRestaurantId } from "@/utils/utils";
 import { isNull } from "@/utils/commonUtils";
-import { midNight } from "@/utils/dateUtils";
-import moment from "moment";
+import { dateKeyOf, startOfDayAfter } from "@/utils/shopCalendar";
 
 import { useGeneralStore } from "@/store";
 
@@ -65,7 +62,7 @@ export default defineComponent({
     const lastSeveralDays = computed(() => {
       return Array.from(Array(pickUpDaysInAdvance.value).keys()).map(
         (index) => {
-          const date = midNight(index);
+          const date = startOfDayAfter(new Date(), index);
           return { index, date };
         },
       );
@@ -73,10 +70,9 @@ export default defineComponent({
     const orderCounter = computed(() => {
       return lastSeveralDays.value.reduce(
         (tmp: { [key: string]: number }, day) => {
-          const count = (
-            generalStore.orderObj[moment(day.date).format("YYYY-MM-DD")] || []
-          ).length;
-          tmp[moment(day.date).format("YYYY-MM-DD")] = count || 0;
+          const count = (generalStore.orderObj[dateKeyOf(day.date)] || [])
+            .length;
+          tmp[dateKeyOf(day.date)] = count || 0;
           return tmp;
         },
         {},
@@ -90,7 +86,7 @@ export default defineComponent({
     return {
       lastSeveralDays,
       orderCounter,
-      moment,
+      dateKeyOf,
       restaurantId,
       closeNotificationSettings,
     };
