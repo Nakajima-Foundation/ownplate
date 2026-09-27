@@ -275,7 +275,8 @@ import moment from "moment";
 import { daysOfWeek, paymentMethods } from "@/config/constant";
 import { formatURL } from "@/utils/phoneutil";
 import { asDate } from "@/utils/dateUtils";
-import { formatDay, minutesOfDay, weekdayOf } from "@/utils/shopCalendar";
+import { formatDay, weekdayOf } from "@/utils/shopCalendar";
+import { openNowByDay } from "@/utils/shopOpen";
 import { GAPIKey } from "@/config/project";
 import { usePickupTime } from "@/utils/pickup";
 import {
@@ -368,22 +369,7 @@ export default defineComponent({
     });
 
     const isOpen = computed(() => {
-      return Object.keys(daysOfWeek).reduce(
-        (tmpObj: { [key: string]: boolean }, day) => {
-          if (weekday === Number(day) && businessDay.value[day]) {
-            // get now and compaire
-            const res = openTimes.value[day].reduce((tmpOpen, time) => {
-              const now = minutesOfDay(today);
-              return tmpOpen || (now >= time.start && now <= time.end);
-            }, false);
-            tmpObj[day] = res;
-          } else {
-            tmpObj[day] = false;
-          }
-          return tmpObj;
-        },
-        {},
-      );
+      return openNowByDay(businessDay.value, openTimes.value, today);
     });
     const hasLocation = computed(() => {
       return (

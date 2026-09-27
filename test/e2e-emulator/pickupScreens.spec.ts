@@ -83,6 +83,39 @@ test.describe("店舗ページの店舗情報", () => {
   });
 });
 
+// 今日（日本時間）から見て、次の weekday（日曜が 0）までの日数。今日がそれなら 0。
+const daysUntilWeekday = (weekday: number) => {
+  const { year, month, day } = todayInTokyo();
+  const todayWeekday = new Date(Date.UTC(year, month - 1, day)).getUTCDay();
+  return (weekday - todayWeekday + 7) % 7;
+};
+const SUNDAY = 0;
+const MONDAY = 1;
+const TWO_PM = 14 * MINUTES_PER_HOUR;
+
+test.describe("店舗情報の営業時間の「Open」", () => {
+  const openOn = async (page: Page, weekday: number) => {
+    await page.clock.setFixedTime(tokyoTime(daysUntilWeekday(weekday), TWO_PM));
+    await page.goto(`/r/${SEED_RESTAURANT_ID}`);
+    await page.getByText("View More", { exact: true }).click();
+  };
+
+  // 営業時間のキーは日曜が "7"、曜日は日曜が 0。以前は日曜だけ出なかった。
+  test("日曜の営業時間内に、今日の行に Open を出す", async ({ page }) => {
+    await openOn(page, SUNDAY);
+    const today = page.locator("div.flex.rounded-sm", { hasText: "Sun" });
+    await expect(today.getByText("Open", { exact: true })).toBeVisible();
+    await expect(page.getByText("Open", { exact: true })).toHaveCount(1);
+  });
+
+  test("月曜の営業時間内に、今日の行に Open を出す", async ({ page }) => {
+    await openOn(page, MONDAY);
+    const today = page.locator("div.flex.rounded-sm", { hasText: "Mon" });
+    await expect(today.getByText("Open", { exact: true })).toBeVisible();
+    await expect(page.getByText("Open", { exact: true })).toHaveCount(1);
+  });
+});
+
 test.describe("注文停止画面", () => {
   // 時刻のボタンだけ。日単位のボタン（Suspend until the end of N days）は数えない。
   const suspendButtons = (page: Page) =>
