@@ -131,6 +131,7 @@ import {
   defaultTitle,
 } from "@/utils/utils";
 import { usePickupTime } from "@/utils/pickup";
+import { addDays, pickupDateOf } from "@/utils/shopCalendar";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { useGeneralStore } from "@/store";
@@ -208,14 +209,8 @@ export default defineComponent({
     const suspendUntil = ref(getSuspend(props.shopInfo.suspendUntil));
 
     const handleSuspend = async (day: number, time: number) => {
-      const tmpDate = date.value?.date
-        ? new Date(date.value?.date)
-        : new Date();
-      tmpDate.setHours(time / 60);
-      tmpDate.setMinutes(time % 60);
-      if (day && day > 0) {
-        tmpDate.setDate(tmpDate.getDate() + day);
-      }
+      const atTime = pickupDateOf(date.value?.date || new Date(), time);
+      const tmpDate = day && day > 0 ? addDays(atTime, day) : atTime;
       generalStore.setLoading(true);
       const timeStamp = Timestamp.fromDate(tmpDate);
       await updateDoc(doc(db, `restaurants/${restaurantId.value}`), {

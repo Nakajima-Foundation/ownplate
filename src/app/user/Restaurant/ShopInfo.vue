@@ -252,11 +252,11 @@
               class="text-sm"
               :key="key"
             >
-              {{ moment(asDate(day)).format("YYYY/MM/DD") }}
+              {{ formatDay(asDate(day), "YYYY/MM/DD") }}
               {{
                 $t(
                   "week.short." +
-                    days[Number(moment(asDate(day)).format("e")) || 7],
+                    days[Number(formatDay(asDate(day), "e")) || 7],
                 )
               }}
             </div>
@@ -275,6 +275,7 @@ import moment from "moment";
 import { daysOfWeek, paymentMethods } from "@/config/constant";
 import { formatURL } from "@/utils/phoneutil";
 import { asDate } from "@/utils/dateUtils";
+import { formatDay, minutesOfDay, weekdayOf } from "@/utils/shopCalendar";
 import { GAPIKey } from "@/config/project";
 import { usePickupTime } from "@/utils/pickup";
 import {
@@ -315,7 +316,7 @@ export default defineComponent({
 
     const d = new Date();
     const moreInfo = ref(false);
-    const weekday = d.getDay();
+    const weekday = weekdayOf(d);
     const today = d;
 
     const mapWidth = computed(() => {
@@ -340,8 +341,8 @@ export default defineComponent({
     const isTodayTemporaryClosure = computed(() => {
       const res = dispTemporaryClosure.value.find((day) => {
         return (
-          moment(asDate(day)).format("YYYYMMDD") ===
-          moment().format("YYYYMMDD")
+          formatDay(asDate(day), "YYYYMMDD") ===
+          formatDay(new Date(), "YYYYMMDD")
         );
       });
       return !!res;
@@ -372,7 +373,7 @@ export default defineComponent({
           if (weekday === Number(day) && businessDay.value[day]) {
             // get now and compaire
             const res = openTimes.value[day].reduce((tmpOpen, time) => {
-              const now = today.getHours() * 60 + today.getMinutes();
+              const now = minutesOfDay(today);
               return tmpOpen || (now >= time.start && now <= time.end);
             }, false);
             tmpObj[day] = res;
@@ -450,7 +451,7 @@ export default defineComponent({
       moment.locale(locale.value as string);
       if (!isNull(time) && !isNull(date)) {
         ctx.emit("noAvailableTime", false);
-        return [moment(date).format("MM/DD (ddd)"), time].join(" ");
+        return [formatDay(date, "MM/DD (ddd)"), time].join(" ");
       } else {
         ctx.emit("noAvailableTime", true);
         return t("shopInfo.noAvailableTime");
@@ -517,7 +518,7 @@ export default defineComponent({
       //
       temporaryClosure,
 
-      moment,
+      formatDay,
 
       businessDay,
       openTimes,

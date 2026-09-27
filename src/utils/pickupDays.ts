@@ -1,6 +1,5 @@
-import moment from "moment";
-
 import { isNull } from "./commonUtils";
+import { addMinutes, dateKeyOf, weekdayOf } from "./shopCalendar";
 import type { RestaurantInfoData } from "../models/RestaurantInfo";
 
 // 受け取れる日と時刻の決まり。画面（usePickupTime）が選択肢を作るのに使う。
@@ -50,7 +49,7 @@ export const temporaryClosureDatesOf = (
   shop: Pick<PickupShop, "temporaryClosure">,
 ) =>
   (shop.temporaryClosure || []).map((day) => {
-    return moment(isTimestamp(day) ? day.toDate() : day).format("YYYY-MM-DD");
+    return dateKeyOf(isTimestamp(day) ? day.toDate() : day);
   });
 
 // 日曜始まりの曜日ごとに、店が開いていて除外もされていないか。
@@ -115,8 +114,7 @@ export const daysInAdvanceOf = (
 
 // 調理時間と注文停止のぶん、これより前の時刻は受け取れない。
 const earliestPickupOf = (shop: PickupShop, now: Date, minimumTime: number) => {
-  const soonest = new Date(now);
-  soonest.setMinutes(now.getMinutes() + minimumTime);
+  const soonest = addMinutes(now, minimumTime);
   if (shop.suspendUntil) {
     const specifiedDate = shop.suspendUntil.toDate();
     if (specifiedDate > soonest) {
@@ -136,7 +134,7 @@ export const availablePickupDays = (
   if (!shop.businessDay) {
     return [];
   }
-  const today = now.getDay();
+  const today = weekdayOf(now);
   const earliest = earliestPickupOf(shop, now, minimumTime);
   const offsets = Array.from(Array(daysInAdvanceOf(shop)).keys());
   const businessDays = offsets.length > 0 ? businessDaysOf(shop, except) : [];
@@ -152,7 +150,7 @@ export const availablePickupDays = (
   }
   const closedDates = temporaryClosureDatesOf(shop);
   const openOffsets = businessOffsets.filter((offset) => {
-    const date = moment(midNightAfter(offset)).format("YYYY-MM-DD");
+    const date = dateKeyOf(midNightAfter(offset));
     return !closedDates.includes(date);
   });
   if (openOffsets.length === 0) {

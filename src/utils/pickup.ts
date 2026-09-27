@@ -1,5 +1,4 @@
 import { computed, Ref, ComputedRef } from "vue";
-import { midNight } from "@/utils/dateUtils";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import {
   num2time,
@@ -14,6 +13,7 @@ import {
   withinLastOrder,
   type PickupSlotDay,
 } from "@/utils/pickupDays";
+import { startOfDayAfter } from "@/utils/shopCalendar";
 import { useGeneralStore } from "../store";
 
 type AvailableDay = {
@@ -114,7 +114,7 @@ export const usePickupTime = (
       skipToday: Boolean(skipToday && skipToday.value),
       minimumTime,
       now,
-      midNightAfter: midNight,
+      midNightAfter: (offset: number) => startOfDayAfter(new Date(), offset),
     });
   };
 
