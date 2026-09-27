@@ -56,6 +56,52 @@ export const setSoldOut = (soldOut: boolean) =>
     "売り切れ",
   );
 
+// 商品の受取除外（曜日と時間帯）。null で項目ごと消す（種まきの商品は持っていない）。
+export type MenuExcept = {
+  exceptDay: { [day: string]: boolean };
+  exceptHour: { start: number; end: number };
+};
+
+export const setMenuExcept = async (except: MenuExcept | null) => {
+  const fields: { [key: string]: FirestoreValue } = except
+    ? {
+        exceptDay: {
+          mapValue: {
+            fields: Object.fromEntries(
+              Object.entries(except.exceptDay).map(([day, flag]) => [
+                day,
+                { booleanValue: flag },
+              ]),
+            ),
+          },
+        },
+        exceptHour: {
+          mapValue: {
+            fields: {
+              start: { integerValue: String(except.exceptHour.start) },
+              end: { integerValue: String(except.exceptHour.end) },
+            },
+          },
+        },
+      }
+    : {};
+  const response = await fetch(
+    `${DOCUMENTS_URL}/restaurants/${SEED_RESTAURANT_ID}/menus/${SEED_MENU_ID}` +
+      "?updateMask.fieldPaths=exceptDay&updateMask.fieldPaths=exceptHour",
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer owner",
+      },
+      body: JSON.stringify({ fields }),
+    },
+  );
+  if (!response.ok) {
+    throw new Error(`商品の受取除外を変えられません: ${response.status}`);
+  }
+};
+
 // 配送条件。手順書は「設定 → 判定表」の形で書かれているので、設定を置ける口を
 // 用意しておく。地図は描かせない（確認画面が Google を待つと金額まで進めない）。
 export type DeliveryArea = {
