@@ -81,6 +81,16 @@
           "region": "asia-northeast1"
         },
         {
+          "source": "/robots.txt",
+          "function": "apiJP2",
+          "region": "asia-northeast1"
+        },
+        {
+          "source": "/llms.txt",
+          "function": "apiJP2",
+          "region": "asia-northeast1"
+        },
+        {
           "source": "**",
           "destination": "/index.html"
         }
