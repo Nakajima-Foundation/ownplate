@@ -15,6 +15,7 @@ import * as apis from "./apis";
 import * as xmlbuilder from "xmlbuilder";
 
 import { validateFirebaseId } from "../../lib/validator";
+import { isPublicHost, llmsTxt, robotsTxt } from "../../lib/seo";
 
 import moment from "moment";
 
@@ -190,6 +191,7 @@ const ogpPage = async (req: express.Request<OgpParams>, res: express.Response): 
       `<meta property="og:site_name" content="${escapeHtml(siteName)}" />`,
       "<meta property=\"og:type\" content=\"website\" />",
       `<meta property="og:url" content="${url}" />`,
+      `<link rel="canonical" href="${url}" />`,
       `<meta property="og:description" content="${escapeHtml(description)}" />`,
       `<meta property="og:image" content="${escapeHtml(image)}" />`,
       "<meta name=\"twitter:card\" content=\"summary_large_image\" />",
@@ -268,6 +270,7 @@ const ownerPage = async (req: express.Request<OwnerParams>, res: express.Respons
       `<meta property="og:site_name" content="${escapeHtml(siteName)}" />`,
       "<meta property=\"og:type\" content=\"website\" />",
       `<meta property="og:url" content="${url}" />`,
+      `<link rel="canonical" href="${url}" />`,
       `<meta property="og:description" content="${escapeHtml(description)}" />`,
       `<meta property="og:image" content="${escapeHtml(image)}" />`,
       "<meta name=\"twitter:card\" content=\"summary_large_image\" />",
@@ -395,3 +398,19 @@ app.get("/r/:restaurantName/order/:orderId", ogpPage);
 app.get("/o/:ownerId", ownerPage);
 
 app.get("/sitemap.xml", sitemap_response);
+
+const TEXT_CACHE_CONTROL = "public, max-age=3600, s-maxage=3600";
+
+app.get("/robots.txt", (req: express.Request, res: express.Response) => {
+  res.set("Cache-Control", TEXT_CACHE_CONTROL);
+  res.type("text/plain").send(robotsTxt(ownPlateConfig.hostName));
+});
+
+app.get("/llms.txt", (req: express.Request, res: express.Response) => {
+  if (!isPublicHost(ownPlateConfig.hostName)) {
+    res.status(404).end();
+    return;
+  }
+  res.set("Cache-Control", TEXT_CACHE_CONTROL);
+  res.type("text/plain").send(llmsTxt(ownPlateConfig));
+});
