@@ -57,6 +57,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
+import type { ListingRequestData } from "@/models/superLogs";
 import {
   doc2data,
   array2obj,
@@ -79,7 +80,6 @@ import {
   orderBy,
   getDocs,
   documentId,
-  DocumentData,
 } from "firebase/firestore";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
@@ -94,7 +94,7 @@ export default defineComponent({
       title: [defaultTitle, "Super All Requests"].join(" / "),
     }));
 
-    const requests = ref<DocumentData[]>([]);
+    const requests = ref<ListingRequestData[]>([]);
     const restaurantsObj = ref<{ [key: string]: RestaurantInfoData }>({});
 
     getDocs(
@@ -104,7 +104,9 @@ export default defineComponent({
         orderBy("created", "desc"),
       ),
     ).then(async (snapshot) => {
-      requests.value = snapshot.docs.map(doc2data("request"));
+      requests.value = snapshot.docs.map(
+        doc2data<ListingRequestData>("request"),
+      );
       const ids = requests.value.map((a) => a.id);
       for (const arr of arrayChunk(ids, 10)) {
         const resCols = await getDocs(

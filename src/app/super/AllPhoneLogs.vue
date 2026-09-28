@@ -19,6 +19,7 @@
 
 <script lang="ts">
 import { defineComponent, onUnmounted, ref } from "vue";
+import type { PhoneLogData } from "@/models/superLogs";
 import BackButton from "@/components/BackButton.vue";
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -27,11 +28,10 @@ import {
   collectionGroup,
   orderBy,
   limit,
-  DocumentData,
   Unsubscribe,
 } from "firebase/firestore";
 
-import { useSuper, defaultTitle } from "@/utils/utils";
+import { collectionData, useSuper, defaultTitle } from "@/utils/utils";
 import { useHead } from "@unhead/vue";
 import moment from "moment-timezone";
 
@@ -42,7 +42,7 @@ export default defineComponent({
   setup() {
     useSuper();
 
-    const logs = ref<DocumentData[]>([]);
+    const logs = ref<PhoneLogData[]>([]);
     let detacher: Unsubscribe | null = null;
 
     useHead(() => ({
@@ -57,7 +57,7 @@ export default defineComponent({
       ),
       (snapshot) => {
         logs.value = snapshot.docs.map((doc) => {
-          const log = doc.data();
+          const log = collectionData<PhoneLogData>(doc.data());
           log.id = doc.id;
           return log;
         });

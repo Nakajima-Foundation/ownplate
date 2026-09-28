@@ -22,6 +22,7 @@
 
 <script lang="ts">
 import { defineComponent, onUnmounted, ref } from "vue";
+import type { AdminLogData } from "@/models/superLogs";
 import BackButton from "@/components/BackButton.vue";
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -30,11 +31,10 @@ import {
   collectionGroup,
   orderBy,
   limit,
-  DocumentData,
   Unsubscribe,
 } from "firebase/firestore";
 
-import { useSuper, defaultTitle } from "@/utils/utils";
+import { collectionData, useSuper, defaultTitle } from "@/utils/utils";
 import { useHead } from "@unhead/vue";
 
 export default defineComponent({
@@ -48,7 +48,7 @@ export default defineComponent({
       title: [defaultTitle, "Super All Log"].join(" / "),
     }));
 
-    const logs = ref<DocumentData[]>([]);
+    const logs = ref<AdminLogData[]>([]);
     let detacher: Unsubscribe | null = null;
 
     detacher = onSnapshot(
@@ -59,7 +59,7 @@ export default defineComponent({
       ),
       (snapshot) => {
         logs.value = snapshot.docs.map((doc) => {
-          const log = doc.data();
+          const log = collectionData<AdminLogData>(doc.data());
           log.id = doc.id;
           return log;
         });
