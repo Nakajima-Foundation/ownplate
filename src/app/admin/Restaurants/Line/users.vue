@@ -32,16 +32,17 @@
 
 <script lang="ts">
 import { defineComponent, ref, PropType } from "vue";
+import type { LineUserData } from "@/models/lineUser";
 import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { checkShopAccount } from "@/utils/userPermission";
-import { useAdminUids, notFoundResponse } from "@/utils/utils";
+import { collectionData, useAdminUids, notFoundResponse } from "@/utils/utils";
 
 import NotFound from "@/components/NotFound.vue";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 
 import { db } from "@/lib/firebase/firebase9";
-import { getDocs, collection, DocumentData } from "firebase/firestore";
+import { getDocs, collection } from "firebase/firestore";
 
 export default defineComponent({
   components: {
@@ -60,7 +61,7 @@ export default defineComponent({
       return notFoundResponse;
     }
 
-    const users = ref<DocumentData[]>([]);
+    const users = ref<LineUserData[]>([]);
     const loadUsers = async () => {
       const col = await getDocs(
         collection(
@@ -68,7 +69,7 @@ export default defineComponent({
           `restaurants/${props.shopInfo.restaurantId}/lineUsersData`,
         ),
       );
-      users.value = col.docs.map((a) => a.data());
+      users.value = col.docs.map((a) => collectionData<LineUserData>(a.data()));
     };
     loadUsers();
 
