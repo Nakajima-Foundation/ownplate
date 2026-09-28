@@ -9,7 +9,6 @@ import {
 } from "@/models/orderInfoData";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { roundPrice } from "./price";
-import type { TaxableMenu, TaxableShop } from "./commonUtils";
 import { MenuData } from "@/models/menu";
 import { CartItemsType } from "@/models/cartType";
 import type { OptionValue } from "@/models/orderTypes";
@@ -35,6 +34,8 @@ import {
   isNull,
   selectedOptionNames,
   selectedOptionsPrice,
+  type TaxableMenu,
+  type TaxableShop,
 } from "./commonUtils";
 
 import { useRoute, useRouter } from "vue-router";
