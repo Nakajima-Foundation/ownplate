@@ -1,7 +1,7 @@
 import type { MenuData } from "../models/menu";
 import type { OptionValue } from "../models/orderTypes";
 
-interface PostageInfo {
+export interface PostageInfo {
   freeThreshold: number | string | null;
   postageList: { [key: string]: number[] };
 }

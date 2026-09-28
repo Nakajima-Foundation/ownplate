@@ -127,6 +127,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
+import type { DeliveryAreaData } from "@/models/deliveryArea";
 import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 export default defineComponent({
   emits: ["update:modelValue"],
@@ -136,7 +137,7 @@ export default defineComponent({
       required: true,
     },
     deliveryData: {
-      type: Object,
+      type: Object as PropType<DeliveryAreaData>,
       required: true,
     },
     modelValue: {

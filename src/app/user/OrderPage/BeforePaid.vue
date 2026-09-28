@@ -349,6 +349,7 @@
 
 <script lang="ts">
 import { defineComponent, computed, watch, ref, PropType } from "vue";
+import type { DeliveryAreaData } from "@/models/deliveryArea";
 import type { PaymentInfo } from "@/models/paymentInfo";
 
 import ShopHeader from "@/app/user/Restaurant/ShopHeader.vue";
@@ -371,7 +372,7 @@ import { orderPlace } from "@/lib/firebase/functions";
 
 import { order_status, paymentMethods } from "@/config/constant";
 
-import { costCal } from "@/utils/commonUtils";
+import { costCal, type PostageInfo } from "@/utils/commonUtils";
 import { errorMessage } from "@/utils/utils";
 import { usePromotionData } from "@/utils/promotion";
 
@@ -424,7 +425,7 @@ export default defineComponent({
       required: true,
     },
     deliveryData: {
-      type: Object,
+      type: Object as PropType<DeliveryAreaData>,
       required: true,
     },
     promotions: {
@@ -462,7 +463,7 @@ export default defineComponent({
     const timeToPickupRef = ref<InstanceType<typeof TimeToPickup> | null>(null);
     const stripeRef = ref();
 
-    const postageInfo = ref({});
+    const postageInfo = ref<Partial<PostageInfo>>({});
     const setPostage = () => {
       if (props.shopInfo.isEC) {
         getDoc(doc(db, `restaurants/${restaurantId}/ec/postage`)).then(

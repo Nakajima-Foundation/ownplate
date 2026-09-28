@@ -15,6 +15,8 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
+import type { PaymentInfo } from "@/models/paymentInfo";
+import type { DeliveryAreaData } from "@/models/deliveryArea";
 
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc } from "firebase/firestore";
@@ -39,8 +41,11 @@ export default defineComponent({
     const mode = routeMode();
 
     const shopInfo = ref<RestaurantInfoData | Record<string, never>>({});
-    const paymentInfo = ref({});
-    const deliveryData = ref({});
+    const paymentInfo = ref<PaymentInfo>({});
+    // 配達を有効にした店でだけ読む。読むまでは空のまま子へ渡る（読む側は配達の店でだけ使う）。
+    const deliveryData = ref<DeliveryAreaData>(
+      collectionData<DeliveryAreaData>({}),
+    );
     const notFound = ref<boolean | null>(null);
 
     const restaurantId = useRestaurantId();
@@ -76,7 +81,9 @@ export default defineComponent({
           getDoc(
             doc(db, `restaurants/${restaurantId.value}/delivery/area`),
           ).then((snapshot) => {
-            deliveryData.value = snapshot.data() || {};
+            deliveryData.value = collectionData<DeliveryAreaData>(
+              snapshot.data() || {},
+            );
           });
         }
       }

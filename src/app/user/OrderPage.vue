@@ -59,6 +59,7 @@ import {
   watch,
   PropType,
 } from "vue";
+import type { DeliveryAreaData } from "@/models/deliveryArea";
 import type Promotion from "@/models/promotion";
 import type { PaymentInfo } from "@/models/paymentInfo";
 
@@ -115,7 +116,7 @@ export default defineComponent({
       required: true,
     },
     deliveryData: {
-      type: Object,
+      type: Object as PropType<DeliveryAreaData>,
       required: true,
     },
     notFound: {
