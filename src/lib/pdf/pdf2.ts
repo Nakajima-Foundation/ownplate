@@ -1,4 +1,5 @@
 import pdfMake from "pdfmake/build/pdfmake";
+import type { Content, TDocumentDefinitions } from "pdfmake/interfaces";
 
 import { useNationalPhoneNumber } from "@/utils/utils";
 import { buildOrderDocDefinition } from "./orderDocDefinition";
@@ -22,9 +23,8 @@ const pdfFont = {
 };
 pdfMake.fonts = pdfFont;
 
-
 export const orderDownloadData = () => {
-  const content = [
+  const content: Content[] = [
     {
       text: "テイクアウト",
       style: "title",
@@ -68,7 +68,7 @@ export const orderDownloadData = () => {
   ];
   const images = {};
 
-  const docDefinition = {
+  const docDefinition: TDocumentDefinitions = {
     pageSize,
 
     // [left, top, right, bottom] or [horizontal, vertical] or just a number for equal margins
@@ -78,8 +78,7 @@ export const orderDownloadData = () => {
     images,
     styles,
     defaultStyle,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } as any;
+  };
   const pdfDoc = pdfMake.createPdf(docDefinition);
   return pdfDoc;
 };
@@ -95,7 +94,7 @@ export const orderPrintData = (): string => {
 };
 
 export const testDownload = (): string => {
-  const content = [
+  const content: Content[] = [
     {
       image: "headerLogo",
       width: convMm2pt(40),
@@ -147,7 +146,7 @@ export const testDownload = (): string => {
       location.protocol + "//" + location.host + "/LP-Cover-Mobile-1-1.jpg",
   };
 
-  const docDefinition = {
+  const docDefinition: TDocumentDefinitions = {
     pageSize,
 
     // [left, top, right, bottom] or [horizontal, vertical] or just a number for equal margins
@@ -157,13 +156,11 @@ export const testDownload = (): string => {
     images,
     styles,
     defaultStyle,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } as any;
+  };
   // @ts-expect-error unknown
   const pdfDoc: string = pdfMake.createPdf(docDefinition).getBase64();
   return pdfDoc;
 };
-
 
 export const printOrderData = (
   restaurantInfo: RestaurantInfoData,
