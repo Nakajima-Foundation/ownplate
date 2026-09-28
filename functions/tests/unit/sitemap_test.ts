@@ -59,10 +59,10 @@ describe("sitemapUrls", () => {
   });
 
   it("leaves out noindex restaurants and their menus", () => {
-    const locs = sitemapUrls({ ...source, noindexRestaurantIds: ["shopA"] }).map((url) => url.loc);
-    assert.ok(!locs.includes("https://omochikaeri.com/r/shopA"));
-    assert.ok(!locs.includes("https://omochikaeri.com/r/shopA/menus/menu1"));
-    assert.ok(locs.includes("https://omochikaeri.com/r/shopB"));
+    assert.deepStrictEqual(
+      sitemapUrls({ ...source, noindexRestaurantIds: ["shopA"] }).filter((url) => url.lastmod !== undefined),
+      [{ loc: "https://omochikaeri.com/r/shopB", lastmod: "2026-08-01" }],
+    );
   });
 
   it("works with nothing listed", () => {
