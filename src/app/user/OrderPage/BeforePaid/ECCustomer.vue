@@ -250,15 +250,20 @@ export default defineComponent({
     };
     const ecErrors = computed(() => {
       const err: { [key: string]: string[] } = {};
-      const attrs = ["zip", "address", "name", "prefectureId"];
+      const attrs: (keyof CustomerInfo)[] = [
+        "zip",
+        "address",
+        "name",
+        "prefectureId",
+      ];
       if (props.shopInfo.isEC) {
         attrs.push("email");
       }
       attrs.forEach((name) => {
         err[name] = [];
         if (
-          customerInfo.value[name as keyof CustomerInfo] === undefined ||
-          customerInfo.value[name as keyof CustomerInfo] === ""
+          customerInfo.value[name] === undefined ||
+          customerInfo.value[name] === ""
         ) {
           err[name].push("validationError." + name + ".empty");
         }

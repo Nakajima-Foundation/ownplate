@@ -17,7 +17,7 @@ export interface AnalyticsMenuData extends Partial<MenuData> {
 type AnalyticsData = Record<string, unknown>;
 
 export const sku_item_data = (
-  menu: AnalyticsMenuData,
+  menu: Partial<MenuData>,
   shopInfo: RestaurantInfoData,
   restaurantId: string,
 ) => {
@@ -30,7 +30,7 @@ export const sku_item_data = (
   };
 };
 export const sku_item_data2 = (
-  menu: AnalyticsMenuData,
+  menu: Partial<MenuData>,
   shopInfo: RestaurantInfoData,
   restaurantId: string,
   quantity: number,
@@ -54,7 +54,7 @@ const analyticsWrapper = (eventName: string, data: AnalyticsData) => {
 };
 
 export const sendMenuListView = (
-  menus: AnalyticsMenuData[],
+  menus: Partial<MenuData>[],
   shopInfo: RestaurantInfoData,
   restaurantId: string,
 ) => {
@@ -139,7 +139,7 @@ export const sendRedunded = (
 // LOGIN
 
 export const sendViewItem = (
-  item: AnalyticsMenuData,
+  item: Partial<MenuData>,
   shopInfo: RestaurantInfoData,
   restaurantId: string,
 ) => {
@@ -157,7 +157,7 @@ export const sendViewItem = (
 };
 
 export const sendSelectItem = (
-  item: AnalyticsMenuData,
+  item: Partial<MenuData>,
   shopInfo: RestaurantInfoData,
   restaurantId: string,
 ) => {
@@ -174,7 +174,7 @@ export const sendSelectItem = (
 };
 
 export const sendAddToCart = (
-  item: AnalyticsMenuData,
+  item: Partial<MenuData>,
   shopInfo: RestaurantInfoData,
   restaurantId: string,
   quantity: number,
@@ -193,7 +193,7 @@ export const sendAddToCart = (
 };
 
 export const sendRemoveFromCart = (
-  item: AnalyticsMenuData,
+  item: Partial<MenuData>,
   shopInfo: RestaurantInfoData,
   restaurantId: string,
   quantity: number,

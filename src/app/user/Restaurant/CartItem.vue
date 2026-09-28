@@ -88,9 +88,7 @@ import Price from "@/components/Price.vue";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { MenuData } from "@/models/menu";
-import { AnalyticsMenuData } from "@/lib/firebase/analytics";
 import { useGeneralStore } from "@/store";
-
 
 export default defineComponent({
   props: {
@@ -138,7 +136,7 @@ export default defineComponent({
     const increase = () => {
       ctx.emit("increase");
       analyticsUtil.sendAddToCart(
-        props.item as AnalyticsMenuData,
+        props.item,
         props.shopInfo,
         restaurantId.value,
         1,
@@ -147,7 +145,7 @@ export default defineComponent({
     const decrease = () => {
       ctx.emit("decrease");
       analyticsUtil.sendRemoveFromCart(
-        props.item as AnalyticsMenuData,
+        props.item,
         props.shopInfo,
         restaurantId.value,
         1,

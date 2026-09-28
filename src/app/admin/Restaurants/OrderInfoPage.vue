@@ -1017,7 +1017,7 @@ export default defineComponent({
 
     const updateEnable = (value: [number, boolean]) => {
       const newData = editedAvailableOrders.value.concat();
-      newData[value[0] as number] = value[1];
+      newData[value[0]] = value[1];
       editedAvailableOrders.value = newData;
     };
     const toggleIsOrderChange = () => {

@@ -208,7 +208,7 @@ export default defineComponent({
     const { promotionDataSet } = usePromotionsForAdmin(id);
 
     const newDiscount = async () => {
-      const path = getPromotionCollctionPath(id as string);
+      const path = getPromotionCollctionPath(id);
       const promotionId = doc(collection(db, path)).id;
       const data = {
         promotionName: "no name",

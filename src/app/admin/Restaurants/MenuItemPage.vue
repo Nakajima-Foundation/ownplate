@@ -1013,8 +1013,8 @@ export default defineComponent({
         restaurantsCollection.docs.length > 0
       ) {
         restaurants.value = restaurantsCollection.docs.map((r) =>
-          doc2data("r")(r),
-        ) as RestaurantInfoData[];
+          doc2data<RestaurantInfoData>("r")(r),
+        );
         copyRestaurantId.value = restaurants.value[0].id;
       }
     });
@@ -1040,12 +1040,14 @@ export default defineComponent({
 
     const errors = computed(() => {
       const err: { [key: string]: string[] } = {};
-      ["itemName", "price", "tax"].forEach((name: string) => {
-        err[name] = [];
-        if (menuInfo[name as keyof MenuData] === "") {
-          err[name].push("validationError." + name + ".empty");
-        }
-      });
+      (["itemName", "price", "tax"] satisfies (keyof MenuData)[]).forEach(
+        (name) => {
+          err[name] = [];
+          if (menuInfo[name] === "") {
+            err[name].push("validationError." + name + ".empty");
+          }
+        },
+      );
       // 値段は保存のときに Math.round(Number(...)) を通る。**そのままだと小数は
       // 黙って丸められ、負の数はそのまま入る。** 打った値と保存される値が違うので、
       // 丸める前に止める。守り自体は firestore.rules の側。

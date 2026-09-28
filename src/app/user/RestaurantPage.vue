@@ -506,7 +506,7 @@ export default defineComponent({
 
     watch(menus, (values) => {
       analyticsUtil.sendMenuListView(
-        values as AnalyticsMenuData[],
+        values,
         props.shopInfo,
         restaurantId.value,
       );

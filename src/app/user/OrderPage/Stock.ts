@@ -12,7 +12,6 @@ import { db } from "@/lib/firebase/firebase9";
 
 import { arrayChunk } from "@/utils/utils";
 
-
 import { OrderInfoData } from "@/models/orderInfo";
 import { MenuData } from "@/models/menu";
 
@@ -37,7 +36,7 @@ export const useHasSoldOutToday = (
     );
     ret.docs.forEach((a) => {
       const d = a.data() as MenuData;
-      menuData.value[a.id as string] = d;
+      menuData.value[a.id] = d;
       if (isSoldOutOn(d.soldOutToday, now)) {
         hasSoldOutToday.value = true;
       }

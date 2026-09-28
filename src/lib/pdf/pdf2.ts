@@ -87,13 +87,12 @@ export const orderPdfDownload = () => {
   const pdfDoc = orderDownloadData();
   return pdfDoc.download();
 };
-export const orderPrintData = (): string => {
+export const orderPrintData = (): Promise<string> => {
   const pdfDoc = orderDownloadData();
-  // @ts-expect-error unknown
-  return pdfDoc.getBase64(); // Promise<string>;
+  return pdfDoc.getBase64();
 };
 
-export const testDownload = (): string => {
+export const testDownload = (): Promise<string> => {
   const content: Content[] = [
     {
       image: "headerLogo",
@@ -157,8 +156,7 @@ export const testDownload = (): string => {
     styles,
     defaultStyle,
   };
-  // @ts-expect-error unknown
-  const pdfDoc: string = pdfMake.createPdf(docDefinition).getBase64();
+  const pdfDoc: Promise<string> = pdfMake.createPdf(docDefinition).getBase64();
   return pdfDoc;
 };
 
@@ -181,9 +179,8 @@ export const printOrder = (
   restaurantInfo: RestaurantInfoData,
   orderInfo: OrderInfoData,
   orderItems: OrderItemData[],
-): string => {
+): Promise<string> => {
   const pdfDoc = printOrderData(restaurantInfo, orderInfo, orderItems);
-  // @ts-expect-error unknown
   return pdfDoc.getBase64();
 };
 export const downloadOrderPdf = (
