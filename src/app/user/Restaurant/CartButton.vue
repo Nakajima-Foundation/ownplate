@@ -160,6 +160,7 @@
 </template>
 <script lang="ts">
 import { defineComponent, computed, ref, watch, PropType } from "vue";
+import type { DeliveryAreaData } from "@/models/deliveryArea";
 import type { PaymentInfo } from "@/models/paymentInfo";
 import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 
@@ -185,7 +186,7 @@ export default defineComponent({
       required: true,
     },
     deliveryData: {
-      type: Object,
+      type: Object as PropType<DeliveryAreaData>,
       required: true,
     },
     noAvailableTime: {

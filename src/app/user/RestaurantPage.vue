@@ -264,6 +264,7 @@ import {
   onUnmounted,
   PropType,
 } from "vue";
+import type { DeliveryAreaData } from "@/models/deliveryArea";
 import type { PaymentInfo } from "@/models/paymentInfo";
 
 import RestaurantMenu from "@/app/user/Restaurant/Menu.vue";
@@ -374,7 +375,7 @@ export default defineComponent({
       required: true,
     },
     deliveryData: {
-      type: Object,
+      type: Object as PropType<DeliveryAreaData>,
       required: true,
     },
     notFound: {

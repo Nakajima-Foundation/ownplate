@@ -528,12 +528,14 @@ import {
   where,
   documentId,
   Timestamp,
-  DocumentData,
 } from "firebase/firestore";
 
 import { orderUpdate, orderChange } from "@/lib/firebase/functions";
 import { OrderUpdateData } from "@/models/functionTypes";
 import type { MenuData } from "@/models/menu";
+import type { UserLogData } from "@/models/userLog";
+import type { DeliveryAreaData } from "@/models/deliveryArea";
+import type { CustomerInfo as CustomerInfoData } from "@/models/customer";
 
 import {
   order_status,
@@ -559,11 +561,12 @@ import ButtonLoading from "@/components/form/Loading.vue";
 import CancelModal from "@/app/admin/Order/CancelModal.vue";
 import PaymentCancelModal from "@/app/admin/Order/PaymentCancelModal.vue";
 
-import { costCal, isEmpty } from "@/utils/commonUtils";
+import { costCal, isEmpty, type PostageInfo } from "@/utils/commonUtils";
 import { downloadOrderPdf, printOrder, data2UrlSchema } from "@/lib/pdf/pdf2";
 
 import { checkShopAccount } from "@/utils/userPermission";
 import {
+  collectionData,
   doc2data,
   useAdminUids,
   useRestaurantId,
@@ -622,11 +625,14 @@ export default defineComponent({
     const { d } = useI18n({ useScope: "global" });
     const menuObj = ref<{ [key: string]: MenuData }>({});
     const orderInfo = ref<OrderInfoData>({} as OrderInfoData);
-    const customer = ref({});
-    const postageInfo = ref({});
-    const deliveryData = ref<DocumentData>({});
+    const customer = ref<CustomerInfoData>({});
+    const postageInfo = ref<Partial<PostageInfo>>({});
+    // 配達を有効にした店でだけ読む。読むまでは空。
+    const deliveryData = ref<DeliveryAreaData>(
+      collectionData<DeliveryAreaData>({}),
+    );
     const shopOwner = ref<ShopOwnerData | null>(null);
-    const userLog = ref<DocumentData>({});
+    const userLog = ref<Partial<UserLogData>>({});
 
     const updating = ref("");
     const changing = ref(false);
@@ -668,7 +674,9 @@ export default defineComponent({
     if (props.shopInfo.enableDelivery) {
       getDoc(doc(db, `restaurants/${restaurantId.value}/delivery/area`)).then(
         (snapshot) => {
-          deliveryData.value = snapshot.data() || {};
+          deliveryData.value = collectionData<DeliveryAreaData>(
+            snapshot.data() || {},
+          );
         },
       );
     }
@@ -684,7 +692,7 @@ export default defineComponent({
           return;
         }
         const order_data = order.data();
-        orderInfo.value = order_data as OrderInfoData;
+        orderInfo.value = collectionData<OrderInfoData>(order_data);
         if (orderInfo.value.isDelivery || props.shopInfo.isEC) {
           const tmpCustomer = await getDoc(
             doc(

@@ -11,7 +11,8 @@ import { defineComponent, ref, PropType } from "vue";
 import type { OrderInfoData } from "@/models/orderInfo";
 import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 import CustomerInfo from "@/components/CustomerInfo.vue";
-import { doc, getDoc, DocumentData } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
+import type { CustomerInfo as CustomerInfoData } from "@/models/customer";
 import { db } from "@/lib/firebase/firebase9";
 
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
@@ -37,7 +38,7 @@ export default defineComponent({
     CustomerInfo,
   },
   setup(props) {
-    const customer = ref<DocumentData>({});
+    const customer = ref<CustomerInfoData>({});
     const restaurantId = getRestaurantId();
     getDoc(
       doc(

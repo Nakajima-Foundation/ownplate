@@ -124,12 +124,12 @@ import {
   limit,
   query,
   QueryConstraint,
-  type Timestamp,
 } from "firebase/firestore";
 
 import { order_status } from "@/config/constant";
 import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
 import { OrderInfoData } from "@/models/orderInfo";
+import type { UserLogData } from "@/models/userLog";
 
 import { checkShopAccount } from "@/utils/userPermission";
 import {
@@ -170,11 +170,7 @@ export default defineComponent({
     const router = useRouter();
 
     const orders = ref<OrderInfoData[]>([]);
-    const userLog = ref<{
-      counter?: number;
-      cancelCounter?: number;
-      lastOrder?: Timestamp;
-    }>({});
+    const userLog = ref<Partial<UserLogData>>({});
     const limitNum = 30;
     const last = ref();
     const restaurantId = useRestaurantId();
