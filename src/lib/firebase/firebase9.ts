@@ -9,6 +9,13 @@ import {
   FUNCTIONS_EMULATOR_PORT,
 } from "@/config/emulatorPorts";
 
+// App Check のデバッグ用トークン。firebase/app-check が window から読む。
+declare global {
+  interface Window {
+    FIREBASE_APPCHECK_DEBUG_TOKEN: boolean | undefined;
+  }
+}
+
 // e2e をエミュレーターに向けるときだけ真。本番の build では未定義なので、
 // 下の分岐ごと消える。
 const useEmulator = import.meta.env.VITE_FIREBASE_EMULATOR === "true";
