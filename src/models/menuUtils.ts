@@ -1,10 +1,15 @@
 import { serverTimestamp } from "firebase/firestore";
-import { type MenuData, type TitleData, getNewItemData } from "./menu";
+import {
+  type MenuData,
+  type MenuSaveData,
+  type TitleData,
+  getNewItemData,
+} from "./menu";
 
 export const copyMenuData = (
   item: MenuData,
   uid: string | undefined,
-): MenuData => {
+): MenuSaveData => {
   const base = getNewItemData(item, item.validatedFlag);
   const data = {
     ...base,

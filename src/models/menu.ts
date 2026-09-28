@@ -65,6 +65,12 @@ export type MenuData = MenuItem & {
   createdAt?: Timestamp | FieldValue;
 };
 
+// 保存する形。画像と除外時間は、無いときに空のオブジェクトを書く（Firestore は undefined を書けない）。
+export type MenuSaveData = Omit<MenuData, "images" | "exceptHour"> & {
+  images: Partial<MenuImages>;
+  exceptHour: ExceptHour;
+};
+
 // for util function
 
 const newExceptHour = (exceptHour: ExceptHour) => {
@@ -86,7 +92,7 @@ const newExceptHour = (exceptHour: ExceptHour) => {
 export const getNewItemData = (
   item: MenuData,
   validatedFlag: boolean,
-): MenuData => {
+): MenuSaveData => {
   const itemData = {
     itemName: item.itemName,
     itemAliasesName: item.itemAliasesName || "",
@@ -113,7 +119,6 @@ export const getNewItemData = (
     exceptDay: item.exceptDay || {},
     exceptHour: newExceptHour(item.exceptHour || {}),
   };
-  // @ts-expect-error - Firestore does not allow undefined in images field, using empty object causes type mismatch
   return itemData;
 };
 
