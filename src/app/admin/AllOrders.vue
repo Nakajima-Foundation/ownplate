@@ -114,6 +114,7 @@ import { nameOfOrder } from "@/utils/strings";
 import { revenueCSVHeader } from "@/utils/reportUtils";
 import { order2ReportData, OrderInfoData } from "@/models/orderInfo";
 import {
+  collectionData,
   defaultTitle,
   arrayOrNumSum,
   useAdminUids,
@@ -254,7 +255,7 @@ export default defineComponent({
           for (; i < snapshot.docs.length; i++) {
             const orderDoc = snapshot.docs[i];
             const order = order2ReportData(
-              orderDoc.data() as OrderInfoData,
+              collectionData<OrderInfoData>(orderDoc.data()),
               serviceTaxRate,
             );
             order.restaurantId = orderDoc.ref.path.split("/")[1];

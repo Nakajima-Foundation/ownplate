@@ -59,7 +59,7 @@ import { getDocs, collection, where, query } from "firebase/firestore";
 import { defaultHeader } from "@/config/header";
 import AreaMap from "@/components/Map.vue";
 
-import { resizedProfileImage } from "@/utils/utils";
+import { collectionData, resizedProfileImage } from "@/utils/utils";
 import { regionalSetting } from "@/config/constant";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
@@ -100,7 +100,7 @@ export default defineComponent({
           .map((doc) => {
             const data = doc.data();
             data.id = doc.id;
-            return data as RestaurantInfoData;
+            return collectionData<RestaurantInfoData>(data);
           })
           .sort((a, b) => {
             return a.restaurantName > b.restaurantName ? 1 : -1;
