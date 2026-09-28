@@ -16,6 +16,8 @@ import * as xmlbuilder from "xmlbuilder";
 
 import { validateFirebaseId } from "../../lib/validator";
 import { isPublicHost, llmsTxt, robotsTxt } from "../../lib/seo";
+import { sitemapUrls } from "../../lib/sitemap";
+import { regionalSetting } from "../../common/constant";
 import { escapeHtml, isPublicMenu, toMenu, toRestaurant, menuBodyHtml, menuItemJsonLd, orderPublicMenus, restaurantBodyHtml, restaurantJsonLd, serializeJsonLd } from "../../lib/structuredData";
 
 import moment from "moment";
@@ -56,24 +58,39 @@ const lastmod = (restaurant: { updatedAt?: Timestamp; createdAt?: Timestamp }) =
   return "2020-07-01";
 };
 
+const publicMenusOf = async (restaurantId: string) => {
+  const menus = await db.collection(`restaurants/${restaurantId}/menus`).where("deletedFlag", "==", false).where("publicFlag", "==", true).get();
+  return menus.docs.filter((doc) => isPublicMenu(doc.data())).map((doc) => ({ restaurantId, id: doc.id, lastmod: lastmod(doc.data()) }));
+};
+
 export const sitemap_response = async (req: express.Request, res: express.Response) => {
   try {
-    const hostname = "https://" + ownPlateConfig.hostName;
-
     const urlset = xmlbuilder.create("urlset").att("xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9");
 
     const docs = (await db.collection("restaurants").where("publicFlag", "==", true).where("deletedFlag", "==", false).orderBy("updatedAt", "desc").get()).docs;
-    await Promise.all(
-      docs.map(async (doc) => {
-        const url = urlset.ele("url");
-        url.ele("loc", hostname + "/r/" + doc.id);
-        url.ele("lastmod", lastmod(doc.data()));
-      }),
-    );
+    const menus = (await Promise.all(docs.map((doc) => publicMenusOf(doc.id)))).flat();
+    const urls = sitemapUrls({
+      origin: "https://" + ownPlateConfig.hostName,
+      prefectures: regionalSetting.AddressStates,
+      listedStates: docs
+        .filter((doc) => doc.data().onTheList === true)
+        .map((doc) => doc.data().state)
+        .filter((state): state is string => typeof state === "string"),
+      restaurants: docs.map((doc) => ({ id: doc.id, lastmod: lastmod(doc.data()) })),
+      menus,
+    });
+    urls.forEach((sitemapUrl) => {
+      const url = urlset.ele("url");
+      url.ele("loc", sitemapUrl.loc);
+      if (sitemapUrl.lastmod) {
+        url.ele("lastmod", sitemapUrl.lastmod);
+      }
+    });
 
     const xml = urlset.dec("1.0", "UTF-8").end({ pretty: true });
 
     res.setHeader("Content-Type", "text/xml");
+    res.set("Cache-Control", "public, max-age=3600, s-maxage=3600");
     return res.send(xml);
   } catch (e) {
     console.error(e);
