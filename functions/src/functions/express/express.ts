@@ -198,8 +198,8 @@ const ogpPage = async (req: express.Request<OgpParams>, res: express.Response): 
     }
 
     const menuData = await getMenuData(restaurantName, menuId);
-    // お客様の画面に出ないメニューは、名前や画像も OGP に出さない。
-    if (menuData.exists && (!menuData.data || !isPublicMenu(menuData.data))) {
+    // 無いメニューと、お客様の画面に出ないメニューは 404。名前や画像も OGP に出さない。
+    if (menuId && (!menuData.exists || !menuData.data || !isPublicMenu(menuData.data))) {
       res.status(404).send(template_data);
       return;
     }
