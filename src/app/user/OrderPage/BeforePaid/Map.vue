@@ -42,7 +42,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from "vue";
+import { defineComponent, ref, onMounted, PropType } from "vue";
+import type { DeliveryAreaData } from "@/models/deliveryArea";
 import { haversine_distance } from "@/utils/utils";
 import { GOOGLE_MAP_DEFAULT_CENTER } from "@/config/constant";
 import { GMAPId } from "@/config/project";
@@ -56,7 +57,7 @@ export default defineComponent({
       required: true,
     },
     deliveryInfo: {
-      type: Object,
+      type: Object as PropType<DeliveryAreaData>,
       required: true,
     },
     fullAddress: {

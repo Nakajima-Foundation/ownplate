@@ -72,7 +72,11 @@
 import { defineComponent, PropType } from "vue";
 import type Promotion from "@/models/promotion";
 import type { RestaurantInfoData } from "@/models/RestaurantInfo";
-import type { OrderDataType } from "@/models/cartType";
+import type {
+  CartOptionType,
+  CartTotalPrice,
+  OrderDataType,
+} from "@/models/cartType";
 
 import CartItem from "@/app/user/Restaurant/CartItem.vue";
 
@@ -104,7 +108,7 @@ export default defineComponent({
       required: true,
     },
     prices: {
-      type: Object,
+      type: Object as PropType<{ [menuId: string]: number[] }>,
       required: true,
     },
     promotions: {
@@ -116,11 +120,11 @@ export default defineComponent({
       required: false,
     },
     selectedOptions: {
-      type: Object,
+      type: Object as PropType<CartOptionType>,
       required: true,
     },
     totalPrice: {
-      type: Object,
+      type: Object as PropType<CartTotalPrice>,
       required: true,
     },
     lunchOrDinner: {
