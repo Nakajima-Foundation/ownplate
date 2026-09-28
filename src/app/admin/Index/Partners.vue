@@ -26,7 +26,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, computed } from "vue";
+import { defineComponent, ref, computed, PropType } from "vue";
 import PartnersContact from "@/app/admin/Partners/Contact.vue";
 import { getPartner, firstKnownPartner } from "@/utils/utils";
 import { ShopOwnerData } from "@/models/ShopOwner";
@@ -37,14 +37,14 @@ export default defineComponent({
   },
   props: {
     shopOwner: {
-      type: Object,
+      type: Object as PropType<ShopOwnerData>,
       required: true,
     },
   },
   setup(props) {
     const isOpen = ref(false);
     const partners = computed(() => {
-      return getPartner(props.shopOwner as ShopOwnerData);
+      return getPartner(props.shopOwner);
     });
 
     const contactPartner = computed(() => firstKnownPartner(partners.value));

@@ -16,7 +16,7 @@ export const getShopOwner = async (
   }
   const admin = (await getDoc(doc(db, `/admins/${uid}`))).data();
   if (admin) {
-    return admin as ShopOwnerData;
+    return admin;
   }
   return defaultData;
 };
