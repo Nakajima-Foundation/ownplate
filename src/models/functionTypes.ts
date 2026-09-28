@@ -13,8 +13,9 @@ export interface OrderPlacedData {
   orderId: string;
   tip: number;
   timeToPickup: Timestamp;
-  promotionId: string;
-  affiliateId: string;
+  // 値引きを使わないとき、画面は null を送る（validateOrderPlaced も省略を許す）。
+  promotionId?: string | null;
+  affiliateId?: string;
   waitingPayment: boolean;
   memo: string;
   userName: string;
@@ -49,6 +50,12 @@ export interface OrderChangeData {
   restaurantId: string;
   orderId: string;
   newOrder: NewOrderData[];
+}
+
+// 決済（functions の stripe/orderPay.ts）。
+export interface OrderPayData {
+  restaurantId: string;
+  orderId: string;
   isSavePay: boolean;
 }
 
