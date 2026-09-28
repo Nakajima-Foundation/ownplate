@@ -1,5 +1,8 @@
 import { Timestamp } from "firebase/firestore";
-import type { RestaurantInfoData } from "../../src/models/RestaurantInfo.ts";
+import type {
+  ConvertedRestaurantInfoData,
+  RestaurantInfoData,
+} from "../../src/models/RestaurantInfo.ts";
 
 // 型を満たす店舗ひとつ分。テストは必要な項目だけ上書きして使う。
 //
@@ -86,3 +89,12 @@ const base: RestaurantInfoData = {
 export const restaurantInfoFixture = (
   overrides: Partial<RestaurantInfoData> = {},
 ): RestaurantInfoData => ({ ...base, ...overrides });
+
+// 店舗編集フォームの形。臨時休業日は Date で持つ。
+export const shopInfoFormFixture = (
+  overrides: Partial<ConvertedRestaurantInfoData> = {},
+): ConvertedRestaurantInfoData => ({
+  ...base,
+  temporaryClosure: [],
+  ...overrides,
+});

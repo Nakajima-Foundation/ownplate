@@ -1,3 +1,4 @@
+import { Timestamp } from "firebase/firestore";
 import { describe, it } from "node:test";
 import assert from "node:assert";
 
@@ -107,7 +108,9 @@ describe("checkPickupOffered", () => {
   });
 
   it("rejects a date the shop closed temporarily", () => {
-    const shop = shopOf({ temporaryClosure: [shopTime(2026, 9, 25)] });
+    const shop = shopOf({
+      temporaryClosure: [Timestamp.fromDate(shopTime(2026, 9, 25))],
+    });
     assert.deepStrictEqual(
       check({ shop, pickupAt: shopTime(2026, 9, 25, 12) }),
       NO_DAY,

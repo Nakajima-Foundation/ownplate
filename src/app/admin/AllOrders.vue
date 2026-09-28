@@ -88,7 +88,6 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
 
-import { asDate } from "@/utils/dateUtils";
 import { formatDay } from "@/utils/shopCalendar";
 
 import { db } from "@/lib/firebase/firebase9";
@@ -204,7 +203,7 @@ export default defineComponent({
       return filteredOrders.value.map((order) => {
         const time = order.timeEstimated || order.timePlaced;
         return {
-          date: time ? formatDay(asDate(time), "YYYY/MM/DD") : "",
+          date: time ? formatDay(time.toDate(), "YYYY/MM/DD") : "",
           restaurantId: order.restaurant?.restaurantId, // mo
           type: t("order." + orderTypeKey(order)),
           restaurantName: order.restaurant?.restaurantName,

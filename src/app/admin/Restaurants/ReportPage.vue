@@ -66,7 +66,7 @@
             <td class="p-2">
               <div class="text-right">
                 {{
-                  $d(asDate(order.timeConfirmed), { timeZone: shopTimeZone })
+                  $d(order.timeConfirmed.toDate(), { timeZone: shopTimeZone })
                 }}
               </div>
             </td>
@@ -230,7 +230,6 @@ import NotFound from "@/components/NotFound.vue";
 
 import { ownPlateConfig } from "@/config/project";
 import { nameOfOrder } from "@/utils/strings";
-import { asDate } from "@/utils/dateUtils";
 import {
   formatDay,
   SHOP_TIME_ZONE,
@@ -315,7 +314,7 @@ export default defineComponent({
     const tableData = computed(() => {
       return orders.value.map((order: OrderInfoData) => {
         return {
-          date: formatDay(asDate(order.timeConfirmed), "YYYY/MM/DD"),
+          date: formatDay(order.timeConfirmed.toDate(), "YYYY/MM/DD"),
           restaurantId: props.shopInfo.restaurantId, // mo
           type: t("order." + orderTypeKey(order)),
           restaurantName: props.shopInfo.restaurantName,
@@ -444,7 +443,6 @@ export default defineComponent({
     });
     return {
       shopTimeZone: SHOP_TIME_ZONE,
-      asDate,
       orders,
       total,
       monthIndex,

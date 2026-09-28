@@ -50,18 +50,11 @@ const DEFAULT_MINIMUM_COOK_TIME_MIN = 25;
 const WEEKDAYS_FROM_SUNDAY = [7, 1, 2, 3, 4, 5, 6];
 const MS_PER_MINUTE = 60000;
 
-// 臨時休業は2つの形で届く。Firestore から読んだ直後は Timestamp、画面が日付を足した
-// あとや Wrapper が変換したあとは素の Date。seconds があるかどうかで見分ける。
-const isTimestamp = (
-  day: RestaurantInfoData["temporaryClosure"][number],
-): day is { toDate: () => Date; seconds?: number } =>
-  !(day instanceof Date) && Boolean(day.seconds);
-
 export const temporaryClosureDatesOf = (
   shop: Pick<PickupShop, "temporaryClosure">,
 ) =>
   (shop.temporaryClosure || []).map((day) => {
-    return dateKeyOf(isTimestamp(day) ? day.toDate() : day);
+    return dateKeyOf(day.toDate());
   });
 
 // 日曜始まりの曜日ごとに、店が開いていて除外もされていないか。

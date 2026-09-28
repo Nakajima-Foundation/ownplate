@@ -91,7 +91,7 @@ describe("order2ReportData — 受渡方法", () => {
   });
 });
 
-// 日時は Firestore の Timestamp のまま渡す。表に出す側が asDate で Date にする（ownplate#1981）。
+// 日時は Firestore の Timestamp のまま渡す。表に出す側が toDate() で Date にする（ownplate#1981）。
 describe("order2ReportData — 日時", () => {
   it("leaves the recorded times as the Timestamps Firestore gave", () => {
     const order = orderInfoFixture();

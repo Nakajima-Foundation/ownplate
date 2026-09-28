@@ -23,6 +23,7 @@ const DOCUMENTS_URL =
 type FirestoreValue =
   | { booleanValue: boolean }
   | { integerValue: string }
+  | { timestampValue: string }
   | { arrayValue: { values: FirestoreValue[] } }
   | { mapValue: { fields: { [key: string]: FirestoreValue } } };
 
@@ -293,4 +294,38 @@ export const clearListingRequest = async () => {
   if (!response.ok && response.status !== 404) {
     throw new Error(`掲載の申し込みを消せません: ${response.status}`);
   }
+};
+
+// 臨時休業日。Firestore には Timestamp で入る。
+export const setEditTemporaryClosure = (days: Date[]) =>
+  patchField(
+    `restaurants/${SEED_EDIT_RESTAURANT_ID}`,
+    "temporaryClosure",
+    {
+      arrayValue: {
+        values: days.map((day) => ({ timestampValue: day.toISOString() })),
+      },
+    },
+    "臨時休業日",
+  );
+
+// 保存された臨時休業日を、Firestore の REST が返す形のまま読む。
+export const editTemporaryClosure = async (): Promise<
+  { timestampValue?: string }[]
+> => {
+  const url = `${DOCUMENTS_URL}/restaurants/${SEED_EDIT_RESTAURANT_ID}`;
+  const response = await fetch(url, {
+    headers: { Authorization: "Bearer owner" },
+  });
+  if (!response.ok) {
+    throw new Error(`${url}: ${response.status}`);
+  }
+  const body = (await response.json()) as {
+    fields: {
+      temporaryClosure?: {
+        arrayValue: { values?: { timestampValue?: string }[] };
+      };
+    };
+  };
+  return body.fields.temporaryClosure?.arrayValue.values ?? [];
 };

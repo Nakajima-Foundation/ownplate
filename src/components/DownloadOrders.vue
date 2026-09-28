@@ -21,7 +21,6 @@
 <script lang="ts">
 import { defineComponent, computed, PropType } from "vue";
 import DownloadCsv from "@/components/DownloadCSV.vue";
-import { asDate } from "@/utils/dateUtils";
 import { formatDay } from "@/utils/shopCalendar";
 import { nameOfOrder } from "@/utils/strings";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
@@ -61,14 +60,14 @@ export default defineComponent({
           return result;
         }, "unexpected");
         return {
-          datePlaced: formatDay(asDate(order.timePlaced), "YYYY/MM/DD HH:mm"),
+          datePlaced: formatDay(order.timePlaced.toDate(), "YYYY/MM/DD HH:mm"),
           type: t("order." + orderTypeKey(order)),
           dateEstimated:
             order.timeEstimated &&
-            formatDay(asDate(order.timeEstimated), "YYYY/MM/DD HH:mm"),
+            formatDay(order.timeEstimated.toDate(), "YYYY/MM/DD HH:mm"),
           dateConfirmed:
             order.timeConfirmed &&
-            formatDay(asDate(order.timeConfirmed), "YYYY/MM/DD HH:mm"),
+            formatDay(order.timeConfirmed.toDate(), "YYYY/MM/DD HH:mm"),
           statusName: t(`order.status.${status}`),
           totalCount,
           total: order.totalCharge,

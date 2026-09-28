@@ -258,11 +258,11 @@
               class="text-sm"
               :key="key"
             >
-              {{ formatDay(asDate(day), "YYYY/MM/DD") }}
+              {{ formatDay(day.toDate(), "YYYY/MM/DD") }}
               {{
                 $t(
                   "week.short." +
-                    days[Number(formatDay(asDate(day), "e")) || 7],
+                    days[Number(formatDay(day.toDate(), "e")) || 7],
                 )
               }}
             </div>
@@ -280,7 +280,6 @@ import moment from "moment";
 
 import { daysOfWeek, paymentMethods } from "@/config/constant";
 import { formatURL } from "@/utils/phoneutil";
-import { asDate } from "@/utils/dateUtils";
 import { formatDay, weekdayOf } from "@/utils/shopCalendar";
 import { openNowByDay } from "@/utils/shopOpen";
 import { GAPIKey } from "@/config/project";
@@ -340,15 +339,13 @@ export default defineComponent({
     const dispTemporaryClosure = computed(() => {
       const now = Date.now();
       return (props.shopInfo.temporaryClosure || []).filter((day) => {
-        // 素の Date は 0 として扱う。いまも seconds が無くて対象外になっている。
-        const seconds = day instanceof Date ? 0 : (day.seconds ?? 0);
-        return seconds + 3600 * 24 > now / 1000;
+        return day.seconds + 3600 * 24 > now / 1000;
       });
     });
     const isTodayTemporaryClosure = computed(() => {
       const res = dispTemporaryClosure.value.find((day) => {
         return (
-          formatDay(asDate(day), "YYYYMMDD") ===
+          formatDay(day.toDate(), "YYYYMMDD") ===
           formatDay(new Date(), "YYYYMMDD")
         );
       });
@@ -472,7 +469,6 @@ export default defineComponent({
     };
 
     return {
-      asDate,
       moreInfo,
       days: daysOfWeek,
       weekday,

@@ -96,7 +96,6 @@
 import { defineComponent, ref, computed } from "vue";
 
 import moment from "moment";
-import { asDate } from "@/utils/dateUtils";
 import { formatDay } from "@/utils/shopCalendar";
 
 import OrderedInfo from "@/app/admin/Order/OrderedInfo.vue";
@@ -263,7 +262,7 @@ export default defineComponent({
       return filteredOrders.value.map((order) => {
         const time = order.timeEstimated || order.timePlaced;
         return {
-          date: time ? formatDay(asDate(time), "YYYY/MM/DD") : "",
+          date: time ? formatDay(time.toDate(), "YYYY/MM/DD") : "",
           restaurantName: order.restaurant?.restaurantName,
           orderStatus: t("order.status." + order_status_keys[order.status]),
           revenue: order.totalCharge,
