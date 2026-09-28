@@ -585,6 +585,7 @@ import { useDialogStore } from "@/store/dialog";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useHead } from "@unhead/vue";
+import { isContinuousOrder } from "@/utils/continuousOrder";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { OrderInfoData } from "@/models/orderInfo";
@@ -736,41 +737,12 @@ export default defineComponent({
       });
     });
 
-    const orderUpdateInterval = computed(() => {
-      if (orderInfo.value.orderPlacedAt && userLog.value.lastUpdatedAt) {
-        const intervalHour =
-          (Number(orderInfo.value.orderPlacedAt) -
-            Number(userLog.value.lastUpdatedAt)) /
-          3600;
-        return intervalHour;
-      }
-      return -1000000;
-    });
-    const orderPickupInterval = computed(() => {
-      if (orderInfo.value.timeCreated && userLog.value.lastUpdatedAt) {
-        const intervalHour =
-          (Number(orderInfo.value.timeCreated) -
-            Number(userLog.value.lastUpdatedAt)) /
-          3600;
-        return intervalHour;
-      }
-      return -1000000;
-    });
-    const isWarningOrder = computed(() => {
-      if (orderUpdateInterval.value < 4 && orderUpdateInterval.value > -4) {
-        if (Number.isNaN(orderUpdateInterval.value)) {
-          return true;
-        }
-      }
-
-      if (orderPickupInterval.value === 0) {
-        return false;
-      }
-      if (orderPickupInterval.value < 4 && orderPickupInterval.value > -4) {
-        return true;
-      }
-      return false;
-    });
+    const isWarningOrder = computed(() =>
+      isContinuousOrder(
+        orderInfo.value.timeCreated,
+        userLog.value.lastUpdatedAt,
+      ),
+    );
 
     const hasMemo = computed(() => {
       return orderInfo.value && !isEmpty(orderInfo.value.memo);

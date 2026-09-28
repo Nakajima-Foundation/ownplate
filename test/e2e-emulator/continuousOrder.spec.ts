@@ -1,13 +1,14 @@
 import { expect, test } from "@playwright/test";
 
 import { openOrderDetail, placeOrder, signInAsOwner } from "./helpers";
+import { setPreviousOrderTime } from "./shopState";
 
 // omochikaeri-docs #224 の C「注文一覧と注文詳細」。手順書（Vue3-full-test）は
 // 注文回数と続けざまの注文の警告を項目に持っていない。
 //
 // 注文回数は店舗ごとに積み上がる文書（restaurants/:id/userLog/:uid）から来る。
 // **一件目だけの状態はこの一式の中では作れない**（ほかの試験が先に注文する）ので、
-// 「出ない側」は見ない。続けて注文したときに出る側だけを見る。
+// 「出ない側」は前の注文の時刻を直に昔へ動かして作る。
 
 const FLOW_TIMEOUT_MS = 300_000;
 test.describe.configure({ timeout: FLOW_TIMEOUT_MS });
@@ -26,5 +27,16 @@ test.describe("続けざまの注文の知らせ", () => {
     await expect(
       page.getByText("Warning: a continuous order").first(),
     ).toBeVisible();
+  });
+
+  test("前の注文から 4 時間以上空いていれば警告は出ない", async ({ page }) => {
+    const number = await placeOrder(page);
+    await setPreviousOrderTime(new Date("2020-01-01T00:00:00Z"));
+
+    await signInAsOwner(page);
+    await openOrderDetail(page, number);
+
+    await expect(page.getByText(/Order: [1-9]\d* times/).first()).toBeVisible();
+    await expect(page.getByText("Warning: a continuous order")).toHaveCount(0);
   });
 });
