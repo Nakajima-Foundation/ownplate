@@ -6,8 +6,11 @@ const PUBLIC_HOSTS = ["omochikaeri.com", "ownplate.today"];
 
 export const isPublicHost = (hostName: string): boolean => PUBLIC_HOSTS.includes(hostName);
 
-// 管理画面・スーパー管理画面・オペレーター画面・利用者のページ・注文ページは、検索に載せない。
-const DISALLOWED_PATHS = ["/admin", "/s/", "/op", "/u/", "/r/*/order/"];
+// 検索に載せない画面。管理画面・スーパー管理画面・オペレーター画面、利用者のページ
+// （お気に入り・注文・カード）、ログインの戻り先、LIFF、プッシュ通知の登録。
+// スーパー管理画面を /s で拒むと /sitemap.xml まで拒むので、/s/ と /s$ に分ける。
+// どの経路をどちらに置くかは tests/unit/seo_test.ts が src/lib/router.ts と突き合わせる。
+export const DISALLOWED_PATHS = ["/admin", "/s/", "/s$", "/op", "/u/", "/r/favorites", "/r/*/order/", "/r/*/card", "/callback/", "/liff/", "/pushdevice/"];
 
 export const robotsTxt = (hostName: string): string => {
   if (!isPublicHost(hostName)) {
