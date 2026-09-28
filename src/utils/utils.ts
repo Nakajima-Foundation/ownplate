@@ -34,6 +34,8 @@ import {
   isNull,
   selectedOptionNames,
   selectedOptionsPrice,
+  type TaxableMenu,
+  type TaxableShop,
 } from "./commonUtils";
 
 import { useRoute, useRouter } from "vue-router";
@@ -326,17 +328,6 @@ export const itemOptionCheckbox2options = (
     });
   });
 };
-// 税の計算が読むのは店舗の3つとメニューの `tax` だけ。RestaurantInfoData / MenuData
-// 全体を要求すると、「この金額はもう税込みだから触るな」を表すために
-// { inclusiveTax: true } を渡している呼び出し元（Cart まわり）が通らない。
-// inclusiveTax が真の枝では税率を読まないので、そのときだけ税率を省ける形にしてある。
-export type TaxableShop =
-  | { inclusiveTax: true; foodTax?: number; alcoholTax?: number }
-  | { inclusiveTax?: boolean; foodTax: number; alcoholTax: number };
-
-export type TaxableMenu = { tax?: string };
-export type PricedMenu = TaxableMenu & { price: number };
-
 export const taxRate = (shopInfo: TaxableShop, item: TaxableMenu) => {
   if (shopInfo.inclusiveTax) {
     return 1;
@@ -345,20 +336,6 @@ export const taxRate = (shopInfo: TaxableShop, item: TaxableMenu) => {
     return 1 + shopInfo.alcoholTax * 0.01;
   }
   return 1 + shopInfo.foodTax * 0.01;
-};
-
-export const priceWithTax = (shopInfo: TaxableShop, menu: PricedMenu) => {
-  return Math.round(
-    (() => {
-      if (shopInfo.inclusiveTax) {
-        return menu.price;
-      }
-      if (menu.tax === "alcohol") {
-        return (1 + shopInfo.alcoholTax * 0.01) * menu.price;
-      }
-      return (1 + shopInfo.foodTax * 0.01) * menu.price;
-    })(),
-  );
 };
 
 // 問い合わせ先に使う提携先。`getPartner` は知らない id を穴のまま残すので、

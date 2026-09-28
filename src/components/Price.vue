@@ -11,7 +11,11 @@
 <script lang="ts">
 import { defineComponent, computed, PropType } from "vue";
 
-import { priceWithTax, type TaxableShop, type PricedMenu } from "@/utils/utils";
+import {
+  priceWithTax,
+  type TaxableShop,
+  type PricedMenu,
+} from "@/utils/commonUtils";
 
 export default defineComponent({
   name: "Price",
