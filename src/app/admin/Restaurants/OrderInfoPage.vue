@@ -1077,6 +1077,7 @@ export default defineComponent({
       } catch (error) {
         console.error(errorMessage(error), error);
         dialogStore.setErrorMessage({
+          error,
           code: "order.update",
         });
       } finally {
@@ -1103,6 +1104,7 @@ export default defineComponent({
           } catch (error) {
             console.error(errorMessage(error), error);
             dialogStore.setErrorMessage({
+              error,
               code: "order.update",
             });
           } finally {

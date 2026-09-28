@@ -82,6 +82,7 @@ export default defineComponent({
         } catch (error) {
           console.error(errorMessage(error), error);
           dialogStore.setErrorMessage({
+            error,
             code: "line.validation",
             message2: "errorPage.message.line",
           });

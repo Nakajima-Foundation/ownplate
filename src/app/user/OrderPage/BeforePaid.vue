@@ -669,6 +669,7 @@ export default defineComponent({
         // alert(JSON.stringify(error));
         console.error(errorMessage(error), error);
         dialogStore.setErrorMessage({
+          error,
           code: "order.place",
         });
       } finally {

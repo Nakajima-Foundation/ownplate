@@ -156,6 +156,7 @@ export default defineComponent({
           } catch (error) {
             console.error(error);
             dialogStore.setErrorMessage({
+              error,
               code: "stripe.connect",
             });
           } finally {
@@ -239,6 +240,7 @@ export default defineComponent({
           } catch (error) {
             console.error(error);
             dialogStore.setErrorMessage({
+              error,
               code: "stripe.disconnect",
             });
           } finally {

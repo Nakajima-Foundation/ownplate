@@ -1589,6 +1589,7 @@ export default defineComponent({
         console.error(error);
         submitting.value = false;
         dialogStore.setErrorMessage({
+          error,
           code: "restaurant.save",
         });
       }

@@ -568,7 +568,7 @@ export default defineComponent({
 
           router.push(`/admin/restaurants/${newDoc.id}`);
         } catch (error) {
-          dialogStore.setErrorMessage({});
+          dialogStore.setErrorMessage({ error });
           console.error(error);
         }
       }

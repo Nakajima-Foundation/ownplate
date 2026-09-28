@@ -119,6 +119,7 @@ export default defineComponent({
       } catch (error) {
         console.error(errorMessage(error), error);
         dialogStore.setErrorMessage({
+          error,
           code: "stripe.cancel",
         });
       } finally {
