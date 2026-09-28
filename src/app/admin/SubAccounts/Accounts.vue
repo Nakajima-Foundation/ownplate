@@ -219,8 +219,10 @@ export default defineComponent({
       ),
     ).then((restaurantCollection) => {
       restaurantObj.value = array2obj(
-        restaurantCollection.docs.map(doc2data("restaurant")),
-      ) as { [key: string]: RestaurantInfoData };
+        restaurantCollection.docs.map(
+          doc2data<RestaurantInfoData>("restaurant"),
+        ),
+      );
     });
     const childDetacher = onSnapshot(
       collection(db, `admins/${uid.value}/children`),

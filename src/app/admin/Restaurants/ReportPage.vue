@@ -389,10 +389,8 @@ export default defineComponent({
         (snapshot) => {
           const serviceTaxRate = props.shopInfo.alcoholTax / 100;
           orders.value = snapshot.docs
-            .map(doc2data("order"))
-            .map((order) =>
-              order2ReportData(order as OrderInfoData, serviceTaxRate),
-            );
+            .map(doc2data<OrderInfoData>("order"))
+            .map((order) => order2ReportData(order, serviceTaxRate));
           total.value = orders.value.reduce(
             (resultTotal, order) => {
               const accounting = order.accounting;

@@ -533,6 +533,7 @@ import {
 
 import { orderUpdate, orderChange } from "@/lib/firebase/functions";
 import { OrderUpdateData } from "@/models/functionTypes";
+import type { MenuData } from "@/models/menu";
 
 import {
   order_status,
@@ -619,7 +620,7 @@ export default defineComponent({
     const route = useRoute();
     const router = useRouter();
     const { d } = useI18n({ useScope: "global" });
-    const menuObj = ref({});
+    const menuObj = ref<{ [key: string]: MenuData }>({});
     const orderInfo = ref<OrderInfoData>({} as OrderInfoData);
     const customer = ref({});
     const postageInfo = ref({});
@@ -729,7 +730,9 @@ export default defineComponent({
           ),
         ).then((menu) => {
           if (!menu.empty) {
-            const tmpMenuObj = array2obj(menu.docs.map(doc2data("menu")));
+            const tmpMenuObj = array2obj(
+              menu.docs.map(doc2data<MenuData>("menu")),
+            );
             menuObj.value = { ...menuObj.value, ...tmpMenuObj };
           }
         });

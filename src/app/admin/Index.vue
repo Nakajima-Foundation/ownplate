@@ -444,9 +444,8 @@ export default defineComponent({
                     tmp: { [key: string]: RestaurantInfoData },
                     restaurantDoc: DocumentSnapshot<DocumentData>,
                   ) => {
-                    tmp[restaurantDoc.id] = doc2data("restaurant")(
-                      restaurantDoc,
-                    ) as RestaurantInfoData;
+                    tmp[restaurantDoc.id] =
+                      doc2data<RestaurantInfoData>("restaurant")(restaurantDoc);
                     if (!restaurantLists.value.includes(restaurantDoc.id)) {
                       restaurantLists.value.push(restaurantDoc.id);
                     }
@@ -486,9 +485,10 @@ export default defineComponent({
                       tmp: { [key: string]: RestaurantInfoData },
                       restaurantDoc: DocumentSnapshot<DocumentData>,
                     ) => {
-                      tmp[restaurantDoc.id] = doc2data("restaurant")(
-                        restaurantDoc,
-                      ) as RestaurantInfoData;
+                      tmp[restaurantDoc.id] =
+                        doc2data<RestaurantInfoData>("restaurant")(
+                          restaurantDoc,
+                        );
                       return tmp;
                     },
                     {},

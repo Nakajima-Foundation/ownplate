@@ -113,7 +113,9 @@ export default defineComponent({
         if (!resCols.empty) {
           restaurantsObj.value = {
             ...restaurantsObj.value,
-            ...array2obj(resCols.docs.map(doc2data("restaurant"))),
+            ...array2obj(
+              resCols.docs.map(doc2data<RestaurantInfoData>("restaurant")),
+            ),
           };
         }
       }
