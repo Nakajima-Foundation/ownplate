@@ -60,7 +60,7 @@ export default defineComponent({
           where("status", "==", order_status.order_placed),
         ),
         (result) => {
-          orders.value = result.docs.map(doc2data("order")) as OrderInfoData[];
+          orders.value = result.docs.map(doc2data<OrderInfoData>("order"));
           generalStore.setOrders(orders.value);
         },
         (error) => {

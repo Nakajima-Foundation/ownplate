@@ -105,7 +105,7 @@ export default defineComponent({
       title: [defaultTitle, "Admin Subaccount Account"].join(" / "),
     }));
 
-    const restaurantObj = ref({});
+    const restaurantObj = ref<{ [key: string]: RestaurantInfoData }>({});
     const restaurants = ref<RestaurantInfoData[]>([]);
 
     const { uid } = useAdminUids();
@@ -119,11 +119,13 @@ export default defineComponent({
       ),
     ).then((restaurantCollection) => {
       restaurantObj.value = array2obj(
-        restaurantCollection.docs.map(doc2data("restaurant")),
+        restaurantCollection.docs.map(
+          doc2data<RestaurantInfoData>("restaurant"),
+        ),
       );
       restaurants.value = restaurantCollection.docs
-        .map(doc2data("restaurant"))
-        .filter((r) => r.publicFlag) as RestaurantInfoData[];
+        .map(doc2data<RestaurantInfoData>("restaurant"))
+        .filter((r) => r.publicFlag);
     });
     const name = ref("");
 

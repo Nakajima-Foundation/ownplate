@@ -81,7 +81,7 @@ export const useMenu = (restaurantId: Ref<string>) => {
             const data = a.data();
             return data.validatedFlag === undefined || data.validatedFlag;
           })
-          .map(doc2data("menu")) as MenuData[];
+          .map(doc2data<MenuData>("menu"));
         menuCache.value = ret;
         if (callback) {
           callback();
