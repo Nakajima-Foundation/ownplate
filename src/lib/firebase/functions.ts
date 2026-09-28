@@ -11,6 +11,9 @@ import type {
   OrderCreatedData,
   LiffAuthenticateData,
   PingData,
+  OrderChangeData,
+  OrderPlacedData,
+  OrderPayData,
   StripeOAuthVerifyData,
   StripeDeleteRestaurantCardData,
   CheckPushInviteData,
@@ -86,16 +89,22 @@ export const orderUpdate = httpsCallable<
   }
 >(functionsJP, "orderUpdateJp2");
 
-export const orderChange = httpsCallable(functionsJP, "orderChangeJp2");
+export const orderChange = httpsCallable<OrderChangeData>(
+  functionsJP,
+  "orderChangeJp2",
+);
 
-export const orderPlace = httpsCallable(functionsJP, "orderPlaceJp2");
+export const orderPlace = httpsCallable<OrderPlacedData>(
+  functionsJP,
+  "orderPlaceJp2",
+);
 
 export const orderCreated = httpsCallable<OrderCreatedData>(
   functionsJP,
   "orderCreatedJp2",
 );
 
-export const orderPay = httpsCallable(functionsJP, "stripepay2");
+export const orderPay = httpsCallable<OrderPayData>(functionsJP, "stripepay2");
 
 export const liffAuthenticate = httpsCallable<
   LiffAuthenticateData,
