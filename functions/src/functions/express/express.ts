@@ -1,7 +1,7 @@
 import express from "express";
 import * as functions from "firebase-functions";
 import { getApps, initializeApp } from "firebase-admin/app";
-import { Firestore, Timestamp, getFirestore } from "firebase-admin/firestore";
+import { DocumentData, Firestore, Timestamp, getFirestore } from "firebase-admin/firestore";
 import * as fs from "fs";
 import { ownPlateConfig } from "../../common/project";
 
@@ -16,6 +16,7 @@ import * as xmlbuilder from "xmlbuilder";
 
 import { validateFirebaseId } from "../../lib/validator";
 import { isPublicHost, llmsTxt, robotsTxt } from "../../lib/seo";
+import { escapeHtml, isPublicMenu, toMenu, toRestaurant, menuBodyHtml, menuItemJsonLd, orderPublicMenus, restaurantBodyHtml, restaurantJsonLd, serializeJsonLd } from "../../lib/structuredData";
 
 import moment from "moment";
 
@@ -81,23 +82,6 @@ export const sitemap_response = async (req: express.Request, res: express.Respon
   }
 };
 
-const escapeHtml = (str: string): string => {
-  if (typeof str !== "string") {
-    return "";
-  }
-  const mapping: Record<string, string> = {
-    "&": "&amp;",
-    "'": "&#x27;",
-    "`": "&#x60;",
-    "\"": "&quot;",
-    "<": "&lt;",
-    ">": "&gt;",
-  };
-  return str.replace(/[&'`"<>]/g, function (match) {
-    return mapping[match];
-  });
-};
-
 const getMenuData = async (restaurantName: string, menuId: string) => {
   if (menuId) {
     const menu = await db.doc(`restaurants/${restaurantName}/menus/${menuId}`).get();
@@ -110,6 +94,7 @@ const getMenuData = async (restaurantName: string, menuId: string) => {
         image: (menu_data?.images?.item?.resizedImages || {})["600"] || menu_data.itemPhoto,
         description: menu_data?.itemDescription,
         name: menu_data?.itemName,
+        data: menu_data,
         exists: true,
       };
     }
@@ -122,8 +107,65 @@ const getMenuData = async (restaurantName: string, menuId: string) => {
 // パラメータだけのルートなので、実際に受け取る形を型で明示する。
 type OgpParams = { restaurantName: string; menuId: string };
 
+// 構造化データに載せるメニューの上限。メニューの多い店でも、ページとデータの読み込みを抑える。
+const MAX_STRUCTURED_MENUS = 100;
+
+const defaultBody = (title: string, introduction: unknown) =>
+  ["<h1 style=\"font-size: 50px;\">", escapeHtml(title), "</h1>", "<span style=\"font-size: 30px;\">", escapeHtml(introduction), "</span>"].join("\n");
+
+const loadPublicMenus = async (restaurantName: string, menuLists: unknown) => {
+  const menus = await db.collection(`restaurants/${restaurantName}/menus`).where("deletedFlag", "==", false).where("publicFlag", "==", true).get();
+  const order = Array.isArray(menuLists) ? menuLists.filter((id): id is string => typeof id === "string") : [];
+  return orderPublicMenus(
+    menus.docs.map((doc) => ({ id: doc.id, data: doc.data() })),
+    order,
+    MAX_STRUCTURED_MENUS,
+  );
+};
+
+// お店・メニューのページの JSON-LD と、JS を実行しないクローラー向けの本文。
+const structuredPage = async (params: {
+  restaurantName: string;
+  restaurant: DocumentData;
+  menuData: Awaited<ReturnType<typeof getMenuData>>;
+  title: string;
+  url: string;
+  image?: string;
+}) => {
+  const { restaurantName, menuData, title, url, image } = params;
+  const restaurant = toRestaurant(params.restaurant);
+  const restaurantUrl = `https://${ownPlateConfig.hostName}/r/${restaurantName}`;
+  if (menuData.exists) {
+    if (!menuData.data || !isPublicMenu(menuData.data)) {
+      return undefined;
+    }
+    const menu = toMenu(menuData.data);
+    return {
+      jsonLd: serializeJsonLd(menuItemJsonLd({ restaurant, menu, url, restaurantUrl, image })),
+      body: menuBodyHtml({ title, restaurant, menu }),
+    };
+  }
+  const menus = (await loadPublicMenus(restaurantName, params.restaurant.menuLists)).map(toMenu);
+  return {
+    jsonLd: serializeJsonLd(restaurantJsonLd({ restaurant, menus, url, image })),
+    body: restaurantBodyHtml({ title, restaurant, menus }),
+  };
+};
+
+// 構造化データが作れなくても、OGP のページはこれまでどおり返す。
+const structuredPageOrSkip = async (params: Parameters<typeof structuredPage>[0]) => {
+  try {
+    return await structuredPage(params);
+  } catch (e) {
+    console.error(e);
+    Sentry.captureException(e);
+    return undefined;
+  }
+};
+
 const ogpPage = async (req: express.Request<OgpParams>, res: express.Response): Promise<void> => {
   const { restaurantName, menuId } = req.params;
+  const isOrderPage = req.path.includes("/order/");
   const template_data = fs.readFileSync("./templates/index.html", {
     encoding: "utf8",
   });
@@ -207,21 +249,18 @@ const ogpPage = async (req: express.Request<OgpParams>, res: express.Response): 
 
     const regexBody = /<div id="app">/;
 
-    const bodyString = [
-      "<div id=\"app\">",
-      "<h1 style=\"font-size: 50px;\">",
-      escapeHtml(title),
-      "</h1>",
-      "<span style=\"font-size: 30px;\">",
-      escapeHtml(restaurant_data.introduction),
-      "</span>",
-    ].join("\n");
+    const seo = ownerData.hidePrivacy || isOrderPage ? undefined : await structuredPageOrSkip({ restaurantName, restaurant: restaurant_data, menuData, title, url, image });
+    if (seo) {
+      metas.push(`<script type="application/ld+json">${seo.jsonLd}</script>`);
+    }
+    const bodyString = ["<div id=\"app\">", seo ? seo.body : defaultBody(title, restaurant_data.introduction)].join("\n");
 
+    // 置き換える文字列は店舗の入力を含むので、$& などを置換の記法として読ませないよう関数で渡す。
     res.send(
       template_data
         .replace(/<meta[^>]*>/g, "")
-        .replace(regexTitle, metas.join("\n"))
-        .replace(regexBody, bodyString),
+        .replace(regexTitle, () => metas.join("\n"))
+        .replace(regexBody, () => bodyString),
     );
   } catch (e) {
     console.log(e);

@@ -8,9 +8,9 @@ import {
   itemOptionCheckbox2options,
   orderType,
   orderTypeKey,
-  priceWithTax,
   taxRate,
 } from "../../src/utils/utils.ts";
+import { priceWithTax } from "../../src/utils/commonUtils.ts";
 import { menuFixture } from "../fixtures/menu.ts";
 import { orderInfoFixture } from "../fixtures/orderInfo.ts";
 import { restaurantInfoFixture } from "../fixtures/restaurantInfo.ts";
