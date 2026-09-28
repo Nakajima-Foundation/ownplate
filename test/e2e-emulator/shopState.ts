@@ -7,6 +7,7 @@ import {
 } from "../../src/config/emulatorPorts";
 import {
   SEED_DELIVERY_RESTAURANT_ID,
+  SEED_CUSTOMER_UID,
   SEED_EDIT_RESTAURANT_ID,
   SEED_EDIT_RESTAURANT_NAME,
   SEED_MENU_ID,
@@ -328,4 +329,37 @@ export const editTemporaryClosure = async (): Promise<
     };
   };
   return body.fields.temporaryClosure?.arrayValue.values ?? [];
+};
+
+// 種まきのお客様が、種まきの店舗で前に注文した時刻（注文詳細の「連続した注文」の基準）。
+// 次の注文を出すと functions が上書きするので、戻さなくてよい。
+export const setPreviousOrderTime = (at: Date) =>
+  patchField(
+    `restaurants/${SEED_RESTAURANT_ID}/userLog/${SEED_CUSTOMER_UID}`,
+    "lastUpdatedAt",
+    { timestampValue: at.toISOString() },
+    "前の注文の時刻",
+  );
+
+// 種まきの店舗の注文の、Firestore に入っている時刻（ISO 文字列）。
+export const orderTimes = async (
+  orderId: string,
+): Promise<{ timeCreated: string; orderPlacedAt: string }> => {
+  const url = `${DOCUMENTS_URL}/restaurants/${SEED_RESTAURANT_ID}/orders/${orderId}`;
+  const response = await fetch(url, {
+    headers: { Authorization: "Bearer owner" },
+  });
+  if (!response.ok) {
+    throw new Error(`${url}: ${response.status}`);
+  }
+  const body = (await response.json()) as {
+    fields: {
+      timeCreated: { timestampValue: string };
+      orderPlacedAt: { timestampValue: string };
+    };
+  };
+  return {
+    timeCreated: body.fields.timeCreated.timestampValue,
+    orderPlacedAt: body.fields.orderPlacedAt.timestampValue,
+  };
 };

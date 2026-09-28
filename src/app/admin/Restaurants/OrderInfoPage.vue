@@ -758,9 +758,7 @@ export default defineComponent({
     });
     const isWarningOrder = computed(() => {
       if (orderUpdateInterval.value < 4 && orderUpdateInterval.value > -4) {
-        if (Number.isNaN(orderUpdateInterval.value)) {
-          return true;
-        }
+        return true;
       }
 
       if (orderPickupInterval.value === 0) {
