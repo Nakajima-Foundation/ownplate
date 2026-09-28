@@ -340,7 +340,7 @@ export default defineComponent({
         if (code === "auth/email-already-in-use") {
           emailTaken.value = email.value;
         } else {
-          dialogStore.setErrorMessage({ code: "auth.signupFailed" });
+          dialogStore.setErrorMessage({ code: "auth.signupFailed", error });
         }
       } finally {
         generalStore.setLoading(false);

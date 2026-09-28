@@ -84,7 +84,10 @@ export default defineComponent({
       return !!(error.value || alert.value);
     });
     const errorMessage = computed(() => {
-      Sentry.captureException(error.value?.error);
+      // 例外を捕まえずに出すダイアログ（結果が失敗だったときなど）は、送るものが無い。
+      if (error.value?.error !== undefined) {
+        Sentry.captureException(error.value.error);
+      }
       if (error.value?.message) {
         return error.value.message;
       } else if (error.value?.code) {
