@@ -91,11 +91,7 @@ export default defineComponent({
     });
 
     const drawMap = () => {
-      if (
-        !mapRef.value ||
-        !props.customer.location ||
-        !shopLocation.value
-      ) {
+      if (!mapRef.value || !props.customer.location || !shopLocation.value) {
         return;
       }
       if (mapObj.value) {
@@ -113,14 +109,12 @@ export default defineComponent({
       // Google Maps API mounts the marker via the `map` option in the constructor;
       // the returned reference is intentionally discarded.
       // shop marker
-      // eslint-disable-next-line no-new
-      new google.maps.marker.AdvancedMarkerElement({
+      void new google.maps.marker.AdvancedMarkerElement({
         map,
         position: props.customer.location,
         content: getCustomerIcon(),
       });
-      // eslint-disable-next-line no-new
-      new google.maps.marker.AdvancedMarkerElement({
+      void new google.maps.marker.AdvancedMarkerElement({
         map,
         position: shopLocation.value,
         content: getShopIcon(),
