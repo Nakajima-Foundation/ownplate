@@ -22,7 +22,7 @@ import {
   Unsubscribe,
 } from "firebase/firestore";
 
-import { arrayChunk } from "@/utils/utils";
+import { collectionData, arrayChunk } from "@/utils/utils";
 
 import { db } from "@/lib/firebase/firebase9";
 
@@ -161,7 +161,9 @@ export const usePromotions = (id: string, user: UserRef) => {
                   ? { ...promotionUsed.value }
                   : {};
                 a.docs.forEach((b) => {
-                  used[b.id] = b.data() as UserPromotionHistoryData;
+                  used[b.id] = collectionData<UserPromotionHistoryData>(
+                    b.data(),
+                  );
                 });
                 promotionUsed.value = used;
               },
@@ -188,7 +190,7 @@ export const usePromotions = (id: string, user: UserRef) => {
                   )
                     ? existing
                     : [];
-                  list.push(b.data() as UserPromotionHistoryData);
+                  list.push(collectionData<UserPromotionHistoryData>(b.data()));
                   used[b.id] = list;
                 });
                 promotionUsed.value = used;
@@ -250,7 +252,7 @@ export const useUserPromotionHistory = (id: string, user: UserRef) => {
       const userHistory: DiscountHistoryItem[] = historySnapShot.docs.map(
         (a) => {
           return {
-            userHistory: a.data() as UserPromotionHistoryData,
+            userHistory: collectionData<UserPromotionHistoryData>(a.data()),
             history: {},
           };
         },
@@ -268,7 +270,7 @@ export const useUserPromotionHistory = (id: string, user: UserRef) => {
             ),
           );
           ret.docs.forEach((a) => {
-            histories[a.id] = a.data() as PromotionData;
+            histories[a.id] = collectionData<PromotionData>(a.data());
           });
         }),
       );

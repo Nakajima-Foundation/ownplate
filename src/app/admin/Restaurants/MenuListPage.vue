@@ -263,6 +263,7 @@ import { useHead } from "@unhead/vue";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import {
+  collectionData,
   sleep,
   scrollToElementById,
   defaultTitle,
@@ -341,7 +342,9 @@ export default defineComponent({
           ownerUid.value !== undefined &&
           results.data().uid === ownerUid.value
         ) {
-          shopInfoSnapshot.value = results.data() as RestaurantInfoData;
+          shopInfoSnapshot.value = collectionData<RestaurantInfoData>(
+            results.data(),
+          );
           notFound.value = false;
         } else {
           notFound.value = true;

@@ -81,6 +81,7 @@ import { lineVerifyFriend } from "@/lib/firebase/functions";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import {
+  collectionData,
   getOrderItems,
   useLiffBasePath,
   useRestaurantId,
@@ -137,7 +138,7 @@ export default defineComponent({
     const transactions = ref<InstanceType<typeof TransactionsActModal> | null>(
       null,
     );
-    const orderInfo = ref<OrderInfoData>({} as OrderInfoData);
+    const orderInfo = ref<OrderInfoData>(collectionData<OrderInfoData>({}));
     const hasFriends = ref<boolean | null>(null);
     const menuObj = ref<{ [key: string]: MenuData } | null>(null);
     const detachers: Unsubscribe[] = [];
@@ -183,7 +184,7 @@ export default defineComponent({
         doc(db, `restaurants/${restaurantId.value}/orders/${orderId}`),
         (order) => {
           const order_data = order.exists() ? order.data() : {};
-          orderInfo.value = order_data as OrderInfoData;
+          orderInfo.value = collectionData<OrderInfoData>(order_data);
           menuObj.value = orderInfo.value.menuItems || {};
           if (just_validated.value) {
             analyticsUtil.sendViewCart(

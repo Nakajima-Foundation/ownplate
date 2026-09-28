@@ -62,7 +62,7 @@ import PhoneLogin from "@/app/auth/PhoneLogin.vue";
 import BackButton from "@/components/BackButton.vue";
 
 import { defaultHeader } from "@/config/header";
-import { useBasePath, useTopPath } from "@/utils/utils";
+import { collectionData, useBasePath, useTopPath } from "@/utils/utils";
 
 import { useUserStore } from "@/store/user";
 import { useRouter } from "vue-router";
@@ -124,7 +124,7 @@ export default defineComponent({
             if (!order.timePlaced) {
               order.timePlaced = Timestamp.now();
             }
-            return order as OrderInfoData;
+            return collectionData<OrderInfoData>(order);
           });
           loading.value = false;
         });

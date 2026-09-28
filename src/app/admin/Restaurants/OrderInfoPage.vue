@@ -624,7 +624,7 @@ export default defineComponent({
     const router = useRouter();
     const { d } = useI18n({ useScope: "global" });
     const menuObj = ref<{ [key: string]: MenuData }>({});
-    const orderInfo = ref<OrderInfoData>({} as OrderInfoData);
+    const orderInfo = ref<OrderInfoData>(collectionData<OrderInfoData>({}));
     const customer = ref<CustomerInfoData>({});
     const postageInfo = ref<Partial<PostageInfo>>({});
     // 配達を有効にした店でだけ読む。読むまでは空。

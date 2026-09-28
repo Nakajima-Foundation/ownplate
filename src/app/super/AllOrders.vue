@@ -108,6 +108,7 @@ import {
   orderStatusOf,
 } from "@/config/constant";
 import {
+  collectionData,
   arrayOrNumSum,
   defaultTitle,
   getBackUrl,
@@ -197,7 +198,7 @@ export default defineComponent({
           let i = 0;
           for (; i < snapshot.docs.length; i++) {
             const myDoc = snapshot.docs[i];
-            const order = myDoc.data() as OrderInfoData;
+            const order = collectionData<OrderInfoData>(myDoc.data());
             order.restaurantId = myDoc.ref.path.split("/")[1];
             order.id = myDoc.id;
             if (!restaurants.value[order.restaurantId]) {
