@@ -31,7 +31,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
+import type { AdminMessageData } from "@/models/subAccount";
 
 import {
   subAccountInvitationAccept,
@@ -48,7 +49,7 @@ export default defineComponent({
   name: "MessageCard",
   props: {
     message: {
-      type: Object,
+      type: Object as PropType<AdminMessageData>,
       required: true,
     },
   },

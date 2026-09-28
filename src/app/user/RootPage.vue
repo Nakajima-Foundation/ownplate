@@ -60,6 +60,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
+import type { ReviewData } from "@/models/reviewData";
 
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -68,7 +69,6 @@ import {
   orderBy,
   limit,
   query,
-  DocumentData,
 } from "firebase/firestore";
 
 import { RestaurantHeader } from "@/config/header";
@@ -92,7 +92,7 @@ export default defineComponent({
     );
     useHead(Object.assign(RestaurantHeader, { title }));
 
-    const likes = ref<DocumentData[]>([]);
+    const likes = ref<ReviewData[]>([]);
     onMounted(async () => {
       if (isUser.value) {
         const snapshot = await getDocs(

@@ -254,6 +254,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, onUnmounted, onMounted } from "vue";
+import type { AdminMessageData } from "@/models/subAccount";
 
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -349,7 +350,7 @@ export default defineComponent({
     const shopOwner = ref<ShopOwnerData | Record<string, never> | null>(null);
     const restaurantLists = ref<string[]>([]);
     const numberOfOrderObj = ref<{ [key: string]: number }>({});
-    const messages = ref<DocumentData[]>([]);
+    const messages = ref<AdminMessageData[]>([]);
 
     useHead(() => ({
       title: ["Admin Index", defaultTitle].join(" / "),
@@ -532,8 +533,8 @@ export default defineComponent({
         ),
         (messageCollection) => {
           messages.value = messageCollection.docs
-            .map(doc2data("message"))
-            .filter((a: DocumentData) => a.toDisplay);
+            .map(doc2data<AdminMessageData>("message"))
+            .filter((a) => a.toDisplay);
         },
       );
     });
