@@ -258,6 +258,7 @@ import { checkShopAccount } from "@/utils/userPermission";
 import { useAdminConfigToggle2 } from "@/utils/admin/Toggle";
 
 import { useRouter, useRoute } from "vue-router";
+import { routeParamOf } from "@/utils/routeParam";
 import { useHead } from "@unhead/vue";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
@@ -315,7 +316,7 @@ export default defineComponent({
     }));
 
     const restaurantId = computed(() => {
-      return route.params.restaurantId as string;
+      return routeParamOf(route.params.restaurantId);
     });
     // allow sub Account
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {

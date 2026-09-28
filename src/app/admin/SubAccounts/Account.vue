@@ -69,6 +69,7 @@
 import { defineComponent, ref, computed } from "vue";
 import type { SubAccountChildData } from "@/models/subAccount";
 import { useRouter, useRoute } from "vue-router";
+import { routeParamOf } from "@/utils/routeParam";
 import { useHead } from "@unhead/vue";
 
 import { db } from "@/lib/firebase/firebase9";
@@ -99,7 +100,7 @@ export default defineComponent({
     const router = useRouter();
 
     const subAccountId = computed(() => {
-      return route.params.subAccountId;
+      return routeParamOf(route.params.subAccountId);
     });
     useHead(() => ({
       title: [defaultTitle, "Admin Subaccount Account"].join(" / "),

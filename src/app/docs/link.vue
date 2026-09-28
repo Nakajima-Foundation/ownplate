@@ -11,6 +11,7 @@ import { doc, getDoc } from "firebase/firestore";
 import NotFound from "@/components/NotFound.vue";
 
 import { useRoute } from "vue-router";
+import { routeParamOf } from "@/utils/routeParam";
 
 export default defineComponent({
   name: "LinkPage",
@@ -20,7 +21,7 @@ export default defineComponent({
   setup() {
     const notFound = ref(false);
     const route = useRoute();
-    const key = route.params.urlKey;
+    const key = routeParamOf(route.params.urlKey);
 
     getDoc(doc(db, `/link/${key}`)).then((admin) => {
       if (admin && admin.data()) {

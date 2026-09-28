@@ -153,6 +153,7 @@ import AdminHeader from "@/app/admin/AdminHeader.vue";
 import BackButton from "@/components/BackButton.vue";
 
 import { useRoute } from "vue-router";
+import { routeParamOf } from "@/utils/routeParam";
 
 import moment from "moment-timezone";
 
@@ -172,7 +173,7 @@ export default defineComponent({
 
     const id = props.shopInfo?.restaurantId;
     const idKey = "restaurantId";
-    const discountId = route.params.discountId;
+    const discountId = routeParamOf(route.params.discountId);
 
     const { ownerUid } = useAdminUids();
     if (

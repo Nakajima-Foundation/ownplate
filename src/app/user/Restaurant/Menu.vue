@@ -456,6 +456,7 @@ import type { OptionValue } from "@/models/orderTypes";
 
 import { useGeneralStore } from "@/store";
 import { useRoute, useRouter } from "vue-router";
+import { routeParamOf } from "@/utils/routeParam";
 import { useI18n } from "vue-i18n";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
@@ -515,7 +516,7 @@ export default defineComponent({
     const openMenuFlag = ref(props.initialOpenMenuFlag);
     const imagePopup = ref(false);
     const urlSuffix = "/menus/" + props.item.id;
-    const restaurantId = route.params.restaurantId as string;
+    const restaurantId = routeParamOf(route.params.restaurantId);
 
     const basePath = useBasePath();
 

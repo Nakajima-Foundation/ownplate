@@ -84,6 +84,7 @@ import { defaultHeader } from "@/config/header";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { OwnerData } from "@/models/ownerData";
 import { useRoute } from "vue-router";
+import { routeParamOf } from "@/utils/routeParam";
 import { useHead } from "@unhead/vue";
 
 export default defineComponent({
@@ -94,7 +95,7 @@ export default defineComponent({
 
   setup() {
     const route = useRoute();
-    const ownerUid = route.params.ownerUid;
+    const ownerUid = routeParamOf(route.params.ownerUid);
 
     const restaurantsObj = ref<{ [key: string]: RestaurantInfoData[] }>({});
     const restaurants = ref<RestaurantInfoData[]>([]);

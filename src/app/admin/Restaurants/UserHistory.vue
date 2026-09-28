@@ -149,6 +149,7 @@ import NotificationIndex from "@/app/admin/Notifications/Index.vue";
 import PreviewLink from "@/app/admin/common/PreviewLink.vue";
 
 import { useRouter, useRoute } from "vue-router";
+import { routeParamOf } from "@/utils/routeParam";
 import { useHead } from "@unhead/vue";
 import moment from "moment-timezone";
 
@@ -177,7 +178,7 @@ export default defineComponent({
     const restaurantId = useRestaurantId();
 
     const customerUid = computed(() => {
-      return route.params.userId;
+      return routeParamOf(route.params.userId);
     });
     const { ownerUid } = useAdminUids();
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {

@@ -90,6 +90,7 @@ import {
 } from "@/utils/utils";
 
 import { useRoute, onBeforeRouteLeave } from "vue-router";
+import { routeParamOf } from "@/utils/routeParam";
 import { useHead } from "@unhead/vue";
 
 import { OrderInfoData } from "@/models/orderInfo";
@@ -155,7 +156,7 @@ export default defineComponent({
         : [defaultTitle, "Order Page"].join(" / "),
     }));
 
-    const orderId = route.params.orderId as string;
+    const orderId = routeParamOf(route.params.orderId);
     const orderError = computed(() => {
       return orderInfo.value.status === order_status.error;
     });

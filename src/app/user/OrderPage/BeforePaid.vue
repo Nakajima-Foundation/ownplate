@@ -389,6 +389,7 @@ import { useGeneralStore } from "@/store";
 import { useCartStore } from "@/store/cart";
 import { useDialogStore } from "@/store/dialog";
 import { useRoute } from "vue-router";
+import { routeParamOf } from "@/utils/routeParam";
 
 export default defineComponent({
   name: "Order",
@@ -447,7 +448,7 @@ export default defineComponent({
     const cartStore = useCartStore();
     const dialogStore = useDialogStore();
 
-    const restaurantId = route.params.restaurantId as string;
+    const restaurantId = routeParamOf(route.params.restaurantId);
 
     const notAvailable = ref(false);
 
@@ -487,7 +488,7 @@ export default defineComponent({
     });
 
     const orderId = computed(() => {
-      return route.params.orderId as string;
+      return routeParamOf(route.params.orderId);
     });
     const stripeSmallPayment = computed(() => {
       return props.orderInfo.total <= 50;

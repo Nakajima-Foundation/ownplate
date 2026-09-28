@@ -884,6 +884,7 @@ import { useAdminConfigToggle } from "@/utils/admin/Toggle";
 import { useUserStore } from "@/store/user";
 import { useDialogStore } from "@/store/dialog";
 import { useRoute, useRouter } from "vue-router";
+import { routeParamOf } from "@/utils/routeParam";
 import { useI18n } from "vue-i18n";
 import { useHead } from "@unhead/vue";
 
@@ -962,7 +963,7 @@ export default defineComponent({
     const priceStep = 1.0 / stripe_regions_jp.multiple;
 
     const notFound = ref<boolean | null>(null);
-    const menuId = route.params.menuId;
+    const menuId = routeParamOf(route.params.menuId);
     const submitting = ref(false);
 
     const files: { [key: string]: File } = {};
@@ -983,7 +984,7 @@ export default defineComponent({
       hasOptionsToPreview(menuInfo.itemOptionCheckbox),
     );
     const menuRestaurantId = computed(() => {
-      return route.params.restaurantId;
+      return routeParamOf(route.params.restaurantId);
     });
 
     const taxRateKeys = regionalSetting["taxRateKeys"];

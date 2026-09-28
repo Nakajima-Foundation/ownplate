@@ -259,6 +259,7 @@ import { getPromotionDocumentPath } from "@/utils/promotionRules";
 import { PromotionData } from "@/models/promotion";
 
 import { useRoute, useRouter } from "vue-router";
+import { routeParamOf } from "@/utils/routeParam";
 import { useAdminUids, notFoundResponse } from "@/utils/utils";
 import { checkShopAccount } from "@/utils/userPermission";
 
@@ -276,7 +277,7 @@ export default defineComponent({
   setup(props) {
     const route = useRoute();
     const router = useRouter();
-    const discountId = route.params.discountId as string;
+    const discountId = routeParamOf(route.params.discountId);
 
     const id = props.shopInfo.restaurantId;
     const promotion = ref<PromotionData | null>(null);
