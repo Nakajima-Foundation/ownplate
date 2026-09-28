@@ -111,6 +111,7 @@
 <script lang="ts">
 import { defineComponent, ref, watch, onMounted, computed } from "vue";
 
+import type { StripePaymentElement } from "@stripe/stripe-js";
 import { getStripeInstance } from "@/lib/stripe/stripe";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc } from "firebase/firestore";
@@ -157,9 +158,7 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const stripe = getStripeInstance(props.stripeAccount);
-    // Stripe is loaded via script tag (window.Stripe), so no dedicated types are available.
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const cardElem = ref<any>(null);
+    const cardElem = ref<StripePaymentElement | null>(null);
     let elementStatus = { complete: false };
 
     const storedCard = ref<{
