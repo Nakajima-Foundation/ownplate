@@ -15,6 +15,8 @@ import {
   signInAsOwner,
   submitOwnerSignIn,
 } from "./helpers";
+import { orderTimes } from "./shopState";
+import { dateKeyOf } from "../../src/utils/shopCalendar";
 
 // 注文の日時は Firestore の Timestamp のまま画面へ渡る。Date のつもりで書式に
 // 通すと、落ちずに「Invalid date」と出る。一覧と CSV を開いて、それが無いかを見る。
@@ -84,16 +86,21 @@ const expectCsvDates = (
 
 test.describe("管理画面とスーパー管理画面で注文の日時が読める", () => {
   let orderNumber = "";
+  // 注文一覧は受取日で絞り、既定は今日。閉店間際に走ると受取は翌日になるので、その日を開く。
+  let pickupDay = "";
 
   test.beforeAll(async ({ browser }) => {
     const page = await browser.newPage();
     orderNumber = await placeOrder(page);
+    const orderId = new URL(page.url()).pathname.split("/").pop() ?? "";
+    const { timePlaced } = await orderTimes(orderId);
+    pickupDay = dateKeyOf(new Date(timePlaced));
     await page.close();
   });
 
   test("注文一覧", async ({ page }) => {
     await signInAsOwner(page);
-    await page.goto(ADMIN_ORDERS_PATH);
+    await page.goto(`${ADMIN_ORDERS_PATH}?day=${pickupDay}`);
     await expectOrderCard(page, orderNumber);
   });
 

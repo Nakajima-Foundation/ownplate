@@ -344,7 +344,11 @@ export const setPreviousOrderTime = (at: Date) =>
 // 種まきの店舗の注文の、Firestore に入っている時刻（ISO 文字列）。
 export const orderTimes = async (
   orderId: string,
-): Promise<{ timeCreated: string; orderPlacedAt: string }> => {
+): Promise<{
+  timeCreated: string;
+  orderPlacedAt: string;
+  timePlaced: string;
+}> => {
   const url = `${DOCUMENTS_URL}/restaurants/${SEED_RESTAURANT_ID}/orders/${orderId}`;
   const response = await fetch(url, {
     headers: { Authorization: "Bearer owner" },
@@ -356,10 +360,12 @@ export const orderTimes = async (
     fields: {
       timeCreated: { timestampValue: string };
       orderPlacedAt: { timestampValue: string };
+      timePlaced: { timestampValue: string };
     };
   };
   return {
     timeCreated: body.fields.timeCreated.timestampValue,
     orderPlacedAt: body.fields.orderPlacedAt.timestampValue,
+    timePlaced: body.fields.timePlaced.timestampValue,
   };
 };
