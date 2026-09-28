@@ -16,7 +16,8 @@ import * as xmlbuilder from "xmlbuilder";
 
 import { validateFirebaseId } from "../../lib/validator";
 import { isPublicHost, llmsTxt, robotsTxt } from "../../lib/seo";
-import { sitemapUrls } from "../../lib/sitemap";
+import { readInBatches } from "../../lib/readInBatches";
+import { MAX_SITEMAP_URLS, sitemapUrls, type SitemapSource } from "../../lib/sitemap";
 import { regionalSetting } from "../../common/constant";
 import { escapeHtml, isPublicMenu, toMenu, toRestaurant, menuBodyHtml, menuItemJsonLd, orderPublicMenus, restaurantBodyHtml, restaurantJsonLd, serializeJsonLd } from "../../lib/structuredData";
 
@@ -58,6 +59,9 @@ const lastmod = (restaurant: { updatedAt?: Timestamp; createdAt?: Timestamp }) =
   return "2020-07-01";
 };
 
+// sitemap を作るときに、同時に投げる Firestore の読み込みの数。
+const SITEMAP_READ_CONCURRENCY = 10;
+
 const publicMenusOf = async (restaurantId: string) => {
   const menus = await db.collection(`restaurants/${restaurantId}/menus`).where("deletedFlag", "==", false).where("publicFlag", "==", true).get();
   return menus.docs.filter((doc) => isPublicMenu(doc.data())).map((doc) => ({ restaurantId, id: doc.id, lastmod: lastmod(doc.data()) }));
@@ -66,7 +70,7 @@ const publicMenusOf = async (restaurantId: string) => {
 // オーナーが hidePrivacy にしているお店は、ページに noindex が付く（ogpPage）。
 const noindexRestaurantIds = async (docs: QueryDocumentSnapshot[]) => {
   const uids = [...new Set(docs.map((doc) => doc.data().uid).filter((uid): uid is string => typeof uid === "string"))];
-  const hiddenUids = new Set((await Promise.all(uids.map(async (uid) => ((await getShopOwner(uid))?.hidePrivacy ? [uid] : [])))).flat());
+  const hiddenUids = new Set(await readInBatches(uids, SITEMAP_READ_CONCURRENCY, async (uid) => ((await getShopOwner(uid))?.hidePrivacy ? [uid] : [])));
   return docs.filter((doc) => hiddenUids.has(doc.data().uid)).map((doc) => doc.id);
 };
 
@@ -75,8 +79,8 @@ export const sitemap_response = async (req: express.Request, res: express.Respon
     const urlset = xmlbuilder.create("urlset").att("xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9");
 
     const docs = (await db.collection("restaurants").where("publicFlag", "==", true).where("deletedFlag", "==", false).orderBy("updatedAt", "desc").get()).docs;
-    const menus = (await Promise.all(docs.map((doc) => publicMenusOf(doc.id)))).flat();
-    const urls = sitemapUrls({
+    const noindex = await noindexRestaurantIds(docs);
+    const withoutMenus: SitemapSource = {
       origin: "https://" + ownPlateConfig.hostName,
       prefectures: regionalSetting.AddressStates,
       listedStates: docs
@@ -84,9 +88,14 @@ export const sitemap_response = async (req: express.Request, res: express.Respon
         .map((doc) => doc.data().state)
         .filter((state): state is string => typeof state === "string"),
       restaurants: docs.map((doc) => ({ id: doc.id, lastmod: lastmod(doc.data()) })),
-      menus,
-      noindexRestaurantIds: await noindexRestaurantIds(docs),
-    });
+      menus: [],
+      noindexRestaurantIds: noindex,
+    };
+    // メニューは、上限までの残りの枠が埋まったら、それ以上読まない。
+    const menuSlots = MAX_SITEMAP_URLS - sitemapUrls(withoutMenus).length;
+    const indexedIds = docs.map((doc) => doc.id).filter((id) => !noindex.includes(id));
+    const menus = menuSlots > 0 ? await readInBatches(indexedIds, SITEMAP_READ_CONCURRENCY, publicMenusOf, (sofar) => sofar.length >= menuSlots) : [];
+    const urls = sitemapUrls({ ...withoutMenus, menus });
     urls.forEach((sitemapUrl) => {
       const url = urlset.ele("url");
       url.ele("loc", sitemapUrl.loc);

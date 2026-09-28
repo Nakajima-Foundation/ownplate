@@ -13,3 +13,7 @@
   - メニュー: 載せたお店の、お客様の画面に出るメニュー（`isPublicMenu`）
   - sitemaps.org の上限（`MAX_SITEMAP_URLS`）を超えるときは、お店に依らないページ・エリア・お店・メニューの順に残す
 - `sitemap_response` をこれに差し替え、1 時間キャッシュする（お店ごとにメニューを読むため）
+- Firestore の読み込みを抑える
+  - オーナー・メニューの読み込みは `readInBatches` で `SITEMAP_READ_CONCURRENCY` 件ずつ
+  - noindex のお店のメニューは読まない
+  - 上限までの残りの枠が埋まったら、メニューはそれ以上読まない
