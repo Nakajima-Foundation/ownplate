@@ -28,7 +28,7 @@ export const useTitles = (restaurantId: Ref) => {
       ),
       (title) => {
         if (!title.empty) {
-          titles.value = title.docs.map(doc2data("title"));
+          titles.value = title.docs.map(doc2data<TitleData>("title"));
         }
       },
     );

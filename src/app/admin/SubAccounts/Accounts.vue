@@ -157,6 +157,10 @@
 
 <script lang="ts">
 import { defineComponent, ref, onUnmounted, watch } from "vue";
+import type {
+  AdminMessageData,
+  SubAccountChildData,
+} from "@/models/subAccount";
 
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -168,7 +172,6 @@ import {
   orderBy,
   collectionGroup,
   Unsubscribe,
-  DocumentData,
 } from "firebase/firestore";
 
 import {
@@ -197,9 +200,9 @@ export default defineComponent({
     const router = useRouter();
 
     const restaurantObj = ref<{ [key: string]: RestaurantInfoData }>({});
-    const children = ref<DocumentData[]>([]);
+    const children = ref<SubAccountChildData[]>([]);
     const detachers: Unsubscribe[] = [];
-    const messages = ref<DocumentData[]>([]);
+    const messages = ref<AdminMessageData[]>([]);
     const errors = ref<string[]>([]);
     const email = ref("");
     const name = ref("");
@@ -227,7 +230,9 @@ export default defineComponent({
     const childDetacher = onSnapshot(
       collection(db, `admins/${uid.value}/children`),
       (childrenCollection) => {
-        children.value = childrenCollection.docs.map(doc2data("admin"));
+        children.value = childrenCollection.docs.map(
+          doc2data<SubAccountChildData>("admin"),
+        );
       },
     );
     detachers.push(childDetacher);
@@ -239,7 +244,9 @@ export default defineComponent({
         orderBy("createdAt", "desc"),
       ),
       (messageCollection) => {
-        messages.value = messageCollection.docs.map(doc2data("message"));
+        messages.value = messageCollection.docs.map(
+          doc2data<AdminMessageData>("message"),
+        );
       },
     );
     detachers.push(messageDetacher);
@@ -262,7 +269,7 @@ export default defineComponent({
         },
       });
     };
-    const rList = (restaurantLists: string[]) => {
+    const rList = (restaurantLists: string[] | undefined) => {
       return (restaurantLists || [])
         .map((r) => {
           return restaurantObj.value[r]?.restaurantName;

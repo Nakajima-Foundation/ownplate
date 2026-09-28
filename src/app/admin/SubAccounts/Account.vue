@@ -67,6 +67,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
+import type { SubAccountChildData } from "@/models/subAccount";
 import { useRouter, useRoute } from "vue-router";
 import { useHead } from "@unhead/vue";
 
@@ -80,7 +81,6 @@ import {
   collection,
   where,
   orderBy,
-  DocumentData,
 } from "firebase/firestore";
 
 import { doc2data, array2obj, useAdminUids, defaultTitle } from "@/utils/utils";
@@ -127,9 +127,9 @@ export default defineComponent({
         .map(doc2data<RestaurantInfoData>("restaurant"))
         .filter((r) => r.publicFlag);
     });
-    const name = ref("");
+    const name = ref<string | undefined>("");
 
-    const child = ref<DocumentData | undefined | { [key: string]: string }>({});
+    const child = ref<Partial<SubAccountChildData> | undefined>({});
     getDoc(doc(db, `admins/${uid.value}/children/${subAccountId.value}`)).then(
       (childrenDoc) => {
         child.value = childrenDoc.data();

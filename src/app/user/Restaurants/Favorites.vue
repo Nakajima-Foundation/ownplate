@@ -62,6 +62,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
+import type { ReviewData } from "@/models/reviewData";
 import { db } from "@/lib/firebase/firebase9";
 import {
   getDocs,
@@ -69,7 +70,6 @@ import {
   orderBy,
   limit,
   query,
-  DocumentData,
 } from "firebase/firestore";
 
 import { RestaurantHeader } from "@/config/header";
@@ -97,7 +97,7 @@ export default defineComponent({
     const router = useRouter();
     const { t } = useI18n();
     const basePath = useBasePath();
-    const likes = ref<DocumentData[] | null>(null);
+    const likes = ref<ReviewData[] | null>(null);
 
     const { uid, isUser } = useUserData();
 
