@@ -64,6 +64,7 @@ import { regionalSetting } from "@/config/constant";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { useRoute } from "vue-router";
+import { routeParamOf } from "@/utils/routeParam";
 import { useHead } from "@unhead/vue";
 import { useI18n } from "vue-i18n";
 
@@ -75,7 +76,7 @@ export default defineComponent({
     const route = useRoute();
     const { t } = useI18n();
 
-    const areaId = route.params.areaId as string;
+    const areaId = routeParamOf(route.params.areaId);
     const areaName = regionalSetting.AddressStates[Number(areaId)];
 
     useHead(() => ({

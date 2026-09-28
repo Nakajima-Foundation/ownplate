@@ -43,6 +43,7 @@ import NotFound from "@/components/NotFound.vue";
 import Modal from "@/components/Modal2.vue";
 
 import { useRoute } from "vue-router";
+import { routeParamOf } from "@/utils/routeParam";
 
 /*
  liff flow
@@ -92,7 +93,7 @@ export default defineComponent({
     });
 
     const liffIndexId = computed(() => {
-      return route.params.liffIndexId as string;
+      return routeParamOf(route.params.liffIndexId);
     });
 
     watch(userLoad, () => {

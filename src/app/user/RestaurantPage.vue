@@ -337,6 +337,7 @@ import { useCartStore } from "@/store/cart";
 import { useDialogStore } from "@/store/dialog";
 
 import { useRoute, useRouter } from "vue-router";
+import { routeParamOf } from "@/utils/routeParam";
 
 import {
   OrderDataType,
@@ -425,7 +426,7 @@ export default defineComponent({
 
     const defaultHowToReceive = (() => {
       // for 333
-      const rId = route.params.restaurantId as string;
+      const rId = routeParamOf(route.params.restaurantId);
       const cart = cartStore.carts[rId];
       if (cart?.howtoreceive) {
         return cart.howtoreceive;
@@ -440,10 +441,10 @@ export default defineComponent({
     const lunchOrDinner = ref("lunch");
 
     const restaurantId = computed(() => {
-      return route.params.restaurantId as string;
+      return routeParamOf(route.params.restaurantId);
     });
     const menuId = computed(() => {
-      return route.params.menuId;
+      return routeParamOf(route.params.menuId);
     });
 
     const { user, uid, isAdmin, isUser, isLiffUser } = useUserData();
@@ -714,7 +715,7 @@ export default defineComponent({
           console.log(e);
         }
         if (props.mode === "liff") {
-          const liffIndexId = route.params.liffIndexId;
+          const liffIndexId = routeParamOf(route.params.liffIndexId);
           router.push({
             path: `/liff/${liffIndexId}/r/${restaurantId.value}/order/${res.id}`,
           });

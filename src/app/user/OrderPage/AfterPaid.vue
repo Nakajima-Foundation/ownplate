@@ -233,6 +233,7 @@ import type { OrderItemData } from "@/models/orderInfoData";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { useRoute } from "vue-router";
+import { routeParamOf } from "@/utils/routeParam";
 import { useGeneralStore } from "@/store";
 import { useDialogStore } from "@/store/dialog";
 import { useI18n } from "vue-i18n";
@@ -294,8 +295,8 @@ export default defineComponent({
     const dialogStore = useDialogStore();
     const { d } = useI18n({ useScope: "global" });
 
-    const orderId = route.params.orderId as string;
-    const restaurantId = route.params.restaurantId as string;
+    const orderId = routeParamOf(route.params.orderId);
+    const restaurantId = routeParamOf(route.params.restaurantId);
 
     const hasStripe = computed(() => {
       return props.orderInfo.payment && props.orderInfo.payment.stripe;

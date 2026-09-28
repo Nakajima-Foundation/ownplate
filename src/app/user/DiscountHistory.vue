@@ -10,6 +10,7 @@
 <script lang="ts">
 import { defineComponent, computed } from "vue";
 import { useRoute } from "vue-router";
+import { routeParamOf } from "@/utils/routeParam";
 
 import { useUserData } from "@/utils/utils";
 
@@ -23,7 +24,7 @@ export default defineComponent({
 
     // TODO: fix restaurant path is not set
     const restaurantId = computed(() => {
-      return route.params.restaurantId as string;
+      return routeParamOf(route.params.restaurantId);
     });
 
     const id = restaurantId.value;

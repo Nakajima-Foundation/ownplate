@@ -29,6 +29,7 @@ import { defineComponent } from "vue";
 import BackButton from "@/components/BackButton.vue";
 
 import { useRoute } from "vue-router";
+import { routeParamOf } from "@/utils/routeParam";
 
 import linenews from "../../../../docs/article230930_line_official_account/line_official_account.md";
 import soldout from "../../../../docs/article231007_out_of_stock/out_of_stock.md";
@@ -67,7 +68,7 @@ export default defineComponent({
   },
   setup() {
     const route = useRoute();
-    const articleId = route.params.articleId as string;
+    const articleId = routeParamOf(route.params.articleId);
     const article = articles[articleId];
     const notFound = !article;
 

@@ -30,6 +30,7 @@ import { getDoc, doc } from "firebase/firestore";
 
 import { superPermissionCheck, getBackUrl, defaultTitle } from "@/utils/utils";
 import { useRoute } from "vue-router";
+import { routeParamOf } from "@/utils/routeParam";
 import { useHead } from "@unhead/vue";
 
 export default defineComponent({
@@ -38,7 +39,7 @@ export default defineComponent({
   },
   setup() {
     const route = useRoute();
-    const restaurantId = route.params.restaurantId;
+    const restaurantId = routeParamOf(route.params.restaurantId);
     superPermissionCheck();
 
     useHead(() => ({

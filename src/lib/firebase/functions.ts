@@ -11,6 +11,7 @@ import type {
   OrderCreatedData,
   LiffAuthenticateData,
   PingData,
+  SuperTwilioCallData,
   OrderChangeData,
   OrderPlacedData,
   OrderPayData,
@@ -77,7 +78,10 @@ export const superDispatch = httpsCallable<DispatchData, { result: unknown }>(
   "superDispatch2",
 );
 
-export const superTwilio = httpsCallable(functionsJP, "superTwilio2");
+export const superTwilio = httpsCallable<SuperTwilioCallData>(
+  functionsJP,
+  "superTwilio2",
+);
 
 export const accountDelete = httpsCallable(functionsJP, "accountDelete2");
 

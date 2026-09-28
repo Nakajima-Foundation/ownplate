@@ -587,6 +587,7 @@ import { useGeneralStore } from "@/store";
 import { useDialogStore } from "@/store/dialog";
 
 import { useRoute, useRouter } from "vue-router";
+import { routeParamOf } from "@/utils/routeParam";
 import { useI18n } from "vue-i18n";
 import { useHead } from "@unhead/vue";
 
@@ -681,7 +682,7 @@ export default defineComponent({
       );
     }
     const orderId = computed(() => {
-      return route.params.orderId as string;
+      return routeParamOf(route.params.orderId);
     });
 
     const order_detacher = onSnapshot(

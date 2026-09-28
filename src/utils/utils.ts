@@ -37,6 +37,7 @@ import {
 } from "./commonUtils";
 
 import { useRoute, useRouter } from "vue-router";
+import { routeParamOf } from "./routeParam";
 import { useGeneralStore } from "../store";
 import { useUserStore } from "@/store/user";
 import { useI18n } from "vue-i18n";
@@ -72,13 +73,13 @@ export const errorMessage = (error: unknown): string | undefined => {
 export const useRestaurantId = () => {
   const route = useRoute();
   return computed(() => {
-    return route.params.restaurantId as string;
+    return routeParamOf(route.params.restaurantId);
   });
 };
 
 export const getRestaurantId = () => {
   const route = useRoute();
-  return route.params.restaurantId as string;
+  return routeParamOf(route.params.restaurantId);
 };
 
 // 店舗そのものと、店名と写真だけを複製した「いいね」の記録の両方から呼ばれるので、
@@ -399,7 +400,7 @@ export const useLiffIndexId = () => {
   const route = useRoute();
 
   return computed(() => {
-    return route.params.liffIndexId as string;
+    return routeParamOf(route.params.liffIndexId);
   });
 };
 
