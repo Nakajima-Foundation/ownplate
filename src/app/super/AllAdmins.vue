@@ -58,6 +58,10 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
+import type {
+  AdminPrivateProfileData,
+  ShopOwnerData,
+} from "@/models/ShopOwner";
 
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -73,6 +77,7 @@ import {
   DocumentData,
   QueryDocumentSnapshot,
   Unsubscribe,
+  type Timestamp,
 } from "firebase/firestore";
 
 import { stripeVerify } from "@/lib/firebase/functions";
@@ -92,10 +97,11 @@ export default defineComponent({
   setup() {
     useSuper();
 
-    type AdminData = DocumentData & { id: string };
+    // created で並べて読むので、created の無い文書は Firestore が返さない。
+    type AdminData = ShopOwnerData & { id: string; created: Timestamp };
     type AdminInfo = {
       payment?: DocumentData;
-      profile?: DocumentData;
+      profile?: Partial<AdminPrivateProfileData>;
       account?: { capabilities?: { [key: string]: string } };
     };
     const admins = ref<AdminData[]>([]);

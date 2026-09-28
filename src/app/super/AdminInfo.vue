@@ -22,6 +22,10 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
+import type {
+  AdminPrivateProfileData,
+  ShopOwnerData,
+} from "@/models/ShopOwner";
 import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { db } from "@/lib/firebase/firebase9";
@@ -64,8 +68,8 @@ export default defineComponent({
 
     const customClaims = ref<DocumentData>({});
     const restaurants = ref<RestaurantInfoData[]>([]);
-    const admin = ref<DocumentData>({});
-    const adminPrivate = ref<DocumentData>({});
+    const admin = ref<ShopOwnerData>({});
+    const adminPrivate = ref<Partial<AdminPrivateProfileData>>({});
 
     // route の引数は型の上では配列にもなりうる。この経路は繰り返し指定ではないので
     // 常に文字列だが、文字列として扱うことを宣言でも言う。
