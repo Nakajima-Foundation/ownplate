@@ -115,7 +115,9 @@ export default defineComponent({
         ),
       );
       restaurantsObj.value = restaurant2AreaObj(restaurantsCollection.docs);
-      restaurants.value = restaurantsCollection.docs.map(doc2data(""));
+      restaurants.value = restaurantsCollection.docs.map(
+        doc2data<RestaurantInfoData>(""),
+      );
       sortRestaurantObj(restaurantsObj.value);
 
       const ownerDoc = await getDoc(doc(db, `owners/${ownerUid}`));
