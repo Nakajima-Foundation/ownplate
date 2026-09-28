@@ -12,6 +12,7 @@ const source: SitemapSource = {
     { id: "shopB", lastmod: "2026-08-01" },
   ],
   menus: [{ restaurantId: "shopA", id: "menu1", lastmod: "2026-09-02" }],
+  noindexRestaurantIds: [],
 };
 
 describe("sitemapUrls", () => {
@@ -57,7 +58,14 @@ describe("sitemapUrls", () => {
     assert.strictEqual(sitemapUrls(many).length, MAX_SITEMAP_URLS);
   });
 
+  it("leaves out noindex restaurants and their menus", () => {
+    const locs = sitemapUrls({ ...source, noindexRestaurantIds: ["shopA"] }).map((url) => url.loc);
+    assert.ok(!locs.includes("https://omochikaeri.com/r/shopA"));
+    assert.ok(!locs.includes("https://omochikaeri.com/r/shopA/menus/menu1"));
+    assert.ok(locs.includes("https://omochikaeri.com/r/shopB"));
+  });
+
   it("works with nothing listed", () => {
-    assert.strictEqual(sitemapUrls({ origin: "https://x", prefectures: [], listedStates: [], restaurants: [], menus: [] }).length, 7);
+    assert.strictEqual(sitemapUrls({ origin: "https://x", prefectures: [], listedStates: [], restaurants: [], menus: [], noindexRestaurantIds: [] }).length, 7);
   });
 });

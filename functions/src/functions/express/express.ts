@@ -1,7 +1,7 @@
 import express from "express";
 import * as functions from "firebase-functions";
 import { getApps, initializeApp } from "firebase-admin/app";
-import { DocumentData, Firestore, Timestamp, getFirestore } from "firebase-admin/firestore";
+import { DocumentData, Firestore, QueryDocumentSnapshot, Timestamp, getFirestore } from "firebase-admin/firestore";
 import * as fs from "fs";
 import { ownPlateConfig } from "../../common/project";
 
@@ -63,6 +63,13 @@ const publicMenusOf = async (restaurantId: string) => {
   return menus.docs.filter((doc) => isPublicMenu(doc.data())).map((doc) => ({ restaurantId, id: doc.id, lastmod: lastmod(doc.data()) }));
 };
 
+// オーナーが hidePrivacy にしているお店は、ページに noindex が付く（ogpPage）。
+const noindexRestaurantIds = async (docs: QueryDocumentSnapshot[]) => {
+  const uids = [...new Set(docs.map((doc) => doc.data().uid).filter((uid): uid is string => typeof uid === "string"))];
+  const hiddenUids = new Set((await Promise.all(uids.map(async (uid) => ((await getShopOwner(uid))?.hidePrivacy ? [uid] : [])))).flat());
+  return docs.filter((doc) => hiddenUids.has(doc.data().uid)).map((doc) => doc.id);
+};
+
 export const sitemap_response = async (req: express.Request, res: express.Response) => {
   try {
     const urlset = xmlbuilder.create("urlset").att("xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9");
@@ -78,6 +85,7 @@ export const sitemap_response = async (req: express.Request, res: express.Respon
         .filter((state): state is string => typeof state === "string"),
       restaurants: docs.map((doc) => ({ id: doc.id, lastmod: lastmod(doc.data()) })),
       menus,
+      noindexRestaurantIds: await noindexRestaurantIds(docs),
     });
     urls.forEach((sitemapUrl) => {
       const url = urlset.ele("url");

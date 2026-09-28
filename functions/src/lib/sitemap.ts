@@ -16,6 +16,8 @@ export type SitemapSource = {
   listedStates: string[];
   restaurants: { id: string; lastmod: string }[];
   menus: { restaurantId: string; id: string; lastmod: string }[];
+  // ページに noindex を付けているお店（オーナーの hidePrivacy）。お店もメニューも載せない。
+  noindexRestaurantIds: string[];
 };
 
 const areaPaths = (prefectures: string[], listedStates: string[]): string[] => {
@@ -26,10 +28,13 @@ const areaPaths = (prefectures: string[], listedStates: string[]): string[] => {
 // 上限を超えるときは、お店に依らないページ・エリア・お店・メニューの順に残す。
 export const sitemapUrls = (source: SitemapSource, limit: number = MAX_SITEMAP_URLS): SitemapUrl[] => {
   const { origin } = source;
+  const noindex = new Set(source.noindexRestaurantIds);
+  const restaurants = source.restaurants.filter((restaurant) => !noindex.has(restaurant.id));
+  const menus = source.menus.filter((menu) => !noindex.has(menu.restaurantId));
   return [
     ...STATIC_PATHS.map((path) => ({ loc: origin + path })),
     ...areaPaths(source.prefectures, source.listedStates).map((path) => ({ loc: origin + path })),
-    ...source.restaurants.map((restaurant) => ({ loc: `${origin}/r/${restaurant.id}`, lastmod: restaurant.lastmod })),
-    ...source.menus.map((menu) => ({ loc: `${origin}/r/${menu.restaurantId}/menus/${menu.id}`, lastmod: menu.lastmod })),
+    ...restaurants.map((restaurant) => ({ loc: `${origin}/r/${restaurant.id}`, lastmod: restaurant.lastmod })),
+    ...menus.map((menu) => ({ loc: `${origin}/r/${menu.restaurantId}/menus/${menu.id}`, lastmod: menu.lastmod })),
   ].slice(0, limit);
 };
