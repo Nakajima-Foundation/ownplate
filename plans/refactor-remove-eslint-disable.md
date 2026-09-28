@@ -4,7 +4,9 @@
 
 - `no-empty-function`（注文一覧の `order_detacher` の初期値、アップロードの進み具合の callback）: `() => {}` を `() => undefined` にする。どちらも `undefined` を返すだけの関数。
 - `no-new`（お客様情報の地図の印）: `new X(...)` の文を `void new X(...)` にする。印を作るという評価そのものは同じ。
-- `shims-tsx.d.ts`: 使われていない JSX の型宣言（空の interface 2つと `any`）を消す。このリポジトリに `.tsx` は無い。`Window` の宣言は残す。
+- `shims-tsx.d.ts` を消す。
+  - 使われていない JSX の型宣言（空の interface 2つと `any`）は消す。このリポジトリに `.tsx` は無い。
+  - 残る `Window` の宣言（`FIREBASE_APPCHECK_DEBUG_TOKEN`）は、使う唯一の場所 `firebase9.ts` へ移す。
 
 ## 確かめたこと
 
