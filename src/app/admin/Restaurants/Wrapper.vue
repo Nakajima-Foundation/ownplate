@@ -43,7 +43,7 @@
 <script lang="ts">
 import { defineComponent, ref, onUnmounted, computed } from "vue";
 import { db } from "@/lib/firebase/firebase9";
-import { doc, onSnapshot, getDoc } from "firebase/firestore";
+import { doc, onSnapshot, getDoc, type Unsubscribe } from "firebase/firestore";
 
 import NotificationWatcher from "@/app/admin/Watcher/NotificationWatcher.vue";
 import SoundConfigWatcher from "@/app/admin/Watcher/SoundConfigWatcher.vue";
@@ -117,7 +117,7 @@ export default defineComponent({
     };
     updateRestaurant();
 
-    const notification_detacher = ref();
+    const notification_detacher = ref<Unsubscribe>();
     notification_detacher.value = onSnapshot(
       doc(db, `restaurants/${restaurantId.value}/private/notifications`),
       (notification) => {

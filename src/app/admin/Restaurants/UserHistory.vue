@@ -124,6 +124,7 @@ import {
   limit,
   query,
   QueryConstraint,
+  type QueryDocumentSnapshot,
 } from "firebase/firestore";
 
 import { order_status } from "@/config/constant";
@@ -172,7 +173,7 @@ export default defineComponent({
     const orders = ref<OrderInfoData[]>([]);
     const userLog = ref<Partial<UserLogData>>({});
     const limitNum = 30;
-    const last = ref();
+    const last = ref<QueryDocumentSnapshot | null>();
     const restaurantId = useRestaurantId();
 
     const customerUid = computed(() => {

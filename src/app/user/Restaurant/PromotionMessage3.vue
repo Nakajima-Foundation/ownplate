@@ -15,6 +15,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
+import type { CartTotalPrice } from "@/models/cartType";
 import type Promotion from "@/models/promotion";
 
 export default defineComponent({
@@ -24,7 +25,7 @@ export default defineComponent({
       required: true,
     },
     totalPrice: {
-      type: Object,
+      type: Object as PropType<CartTotalPrice>,
       required: true,
     },
   },

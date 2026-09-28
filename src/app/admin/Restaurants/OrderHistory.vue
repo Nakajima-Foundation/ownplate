@@ -175,7 +175,7 @@ export default defineComponent({
     const limitNum = 60;
     const last = ref<QueryDocumentSnapshot<DocumentData> | null>(null);
     const orders = ref<OrderInfoData[]>([]);
-    const notFound = ref(null);
+    const notFound = ref<boolean | null>(null);
 
     const orderState = ref(0);
     const orderStatus = Object.keys(order_status_for_form).map((key) => {
