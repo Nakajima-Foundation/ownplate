@@ -124,7 +124,7 @@ export const sleep = async (seconds: number) => {
 
 export const shareUrl = (prefix: string) => {
   const route = useRoute();
-  const restaurantId = route.params.restaurantId;
+  const restaurantId = routeParamOf(route.params.restaurantId);
   return (
     location.protocol + "//" + location.host + prefix + "/r/" + restaurantId
   );

@@ -143,7 +143,7 @@ export const stripeVerify = httpsCallable<
   }
 >(functionsJP, "stripeVerify2");
 export const stripeReceipt = httpsCallable<
-  { restaurantId: string; orderId: string | string[] },
+  { restaurantId: string; orderId: string },
   { receipt_url?: string }
 >(functionsJP, "stripeReceipt2");
 
