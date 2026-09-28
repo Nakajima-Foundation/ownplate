@@ -20,6 +20,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
+import type { StripeLogData } from "@/models/superLogs";
 import BackButton from "@/components/BackButton.vue";
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -29,12 +30,11 @@ import {
   startAfter,
   getDocs,
   collectionGroup,
-  DocumentData,
   QueryDocumentSnapshot,
 } from "firebase/firestore";
 
 import { stripeActionStrings } from "@/lib/stripe/stripe";
-import { useSuper, defaultTitle } from "@/utils/utils";
+import { collectionData, useSuper, defaultTitle } from "@/utils/utils";
 import { useHead } from "@unhead/vue";
 import moment from "moment-timezone";
 
@@ -45,7 +45,7 @@ export default defineComponent({
   setup() {
     useSuper();
 
-    const logs = ref<DocumentData[]>([]);
+    const logs = ref<StripeLogData[]>([]);
     const last = ref<QueryDocumentSnapshot | null>(null);
 
     useHead(() => ({
@@ -61,7 +61,7 @@ export default defineComponent({
     ).then((snapshot) => {
       logs.value = snapshot.docs.map((doc) => {
         last.value = doc;
-        const log = doc.data();
+        const log = collectionData<StripeLogData>(doc.data());
         log.id = doc.id;
         return log;
       });
@@ -80,7 +80,7 @@ export default defineComponent({
       if (!nextData.empty) {
         nextData.docs.forEach((doc) => {
           last.value = doc;
-          const log = doc.data();
+          const log = collectionData<StripeLogData>(doc.data());
           log.id = doc.id;
           logs.value.push(log);
         });

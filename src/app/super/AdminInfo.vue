@@ -22,6 +22,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
+import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -62,7 +63,7 @@ export default defineComponent({
       typeof result === "object" && result !== null ? result : {};
 
     const customClaims = ref<DocumentData>({});
-    const restaurants = ref<DocumentData[]>([]);
+    const restaurants = ref<RestaurantInfoData[]>([]);
     const admin = ref<DocumentData>({});
     const adminPrivate = ref<DocumentData>({});
 
@@ -85,7 +86,9 @@ export default defineComponent({
     getDocs(
       query(collection(db, "/restaurants/"), where("uid", "==", adminId)),
     ).then((snapshot) => {
-      restaurants.value = snapshot.docs.map(doc2data("admin"));
+      restaurants.value = snapshot.docs.map(
+        doc2data<RestaurantInfoData>("admin"),
+      );
     });
     getDoc(doc(db, "/admins/" + adminId + "/private/profile")).then(
       (adminPrivateSnapshot) => {
