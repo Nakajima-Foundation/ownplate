@@ -136,7 +136,7 @@ const structuredPage = async (params: {
   const restaurant = toRestaurant(params.restaurant);
   const restaurantUrl = `https://${ownPlateConfig.hostName}/r/${restaurantName}`;
   if (menuData.exists) {
-    if (!menuData.data || !isPublicMenu(menuData.data)) {
+    if (!menuData.data) {
       return undefined;
     }
     const menu = toMenu(menuData.data);
@@ -198,6 +198,11 @@ const ogpPage = async (req: express.Request<OgpParams>, res: express.Response): 
     }
 
     const menuData = await getMenuData(restaurantName, menuId);
+    // 無いメニューと、お客様の画面に出ないメニューは 404。名前や画像も OGP に出さない。
+    if (menuId && (!menuData.exists || !menuData.data || !isPublicMenu(menuData.data))) {
+      res.status(404).send(template_data);
+      return;
+    }
 
     const ownerData = await getShopOwner(restaurant_data.uid);
     if (!ownerData) {
