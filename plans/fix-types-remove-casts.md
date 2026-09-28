@@ -9,6 +9,7 @@
   - `doc2data` に型を渡す（メニュー編集の店舗一覧）。
   - `reduce<T>` と変数の型注釈で、空配列やオブジェクトの `as` をやめる（メニューの PDF、LINE の認可 URL）。
   - 項目名の配列に `satisfies (keyof T)[]` や型注釈を付け、`name as keyof T` をやめる（メニュー編集、店舗情報の検証、EC のお客様情報）。
+- PDF の `getBase64()` を返す関数（`orderPrintData` / `testDownload` / `printOrder`）の戻り値の型を `Promise<string>` にし、`@ts-expect-error` を消す。呼ぶ側はどれも `await` している。
 - 外しても型が通った `route.params.xxx as string` は外した。型は `string | string[]` になり、実物に合う。
 
 ## 実行時の動き
@@ -28,3 +29,4 @@
 - `Object.keys()` の結果を鍵として使う所（Google の API、Stripe の接続 URL）。
 - `utils.ts` の `countObj`、店舗ページの `([] as (MenuData | TitleData)[])`。
 - PDF の `as any`（注文とメニューの PDF。前の PR に書いた）。
+- `menu.ts` の `getNewItemData` の `@ts-expect-error`: 保存する形（空の `images` / `exceptHour`）が `MenuData` に合わない。保存用の型を別に作る必要があり、functions にもコピーされるファイル。
