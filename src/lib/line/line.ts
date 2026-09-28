@@ -8,7 +8,7 @@ export const lineAuthURLBase = (
 ) => {
   const state = "s" + Math.random();
   const nonce = "n" + Math.random();
-  const query = {
+  const query: { [key: string]: string } = {
     response_type: "code",
     client_id,
     redirect_uri: location.origin + path,
@@ -16,7 +16,7 @@ export const lineAuthURLBase = (
     bot_prompt: "aggressive",
     state,
     nonce,
-  } as { [key: string]: string };
+  };
   const params = JSON.stringify({ ...(options || {}), state, nonce });
   const date = new Date();
   date.setTime(date.getTime() + 5 * 60 * 1000); // five minutes

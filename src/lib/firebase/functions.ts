@@ -11,6 +11,7 @@ import type {
   OrderCreatedData,
   LiffAuthenticateData,
   PingData,
+  StripeOAuthVerifyData,
   StripeDeleteRestaurantCardData,
   CheckPushInviteData,
   CheckPushInviteResult,
@@ -120,7 +121,14 @@ export const stripeDeleteRestaurantCard = httpsCallable<
 >(functionsJP, "stripeDeleteRestaurantCard2");
 export const stripeConnect = httpsCallable(functionsJP, "stripeConnect2");
 export const stripeDisconnect = httpsCallable(functionsJP, "stripeDisconnect2");
-export const stripeVerify = httpsCallable(functionsJP, "stripeVerify2");
+// functions の super/stripeVerify.ts が Stripe の口座を読んで返す。画面が使う所だけを書く。
+export const stripeVerify = httpsCallable<
+  StripeOAuthVerifyData,
+  {
+    result?: boolean;
+    account?: { capabilities?: { [key: string]: string } };
+  }
+>(functionsJP, "stripeVerify2");
 export const stripeReceipt = httpsCallable<
   { restaurantId: string; orderId: string | string[] },
   { receipt_url?: string }

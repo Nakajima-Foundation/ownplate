@@ -97,7 +97,7 @@ export default defineComponent({
     const dialogStore = useDialogStore();
     const { user } = useUserData();
 
-    const restaurantId = computed(() => route.params.restaurantId as string);
+    const restaurantId = computed(() => route.params.restaurantId);
     const shopInfo = ref<RestaurantInfoData | null>(null);
     const ownerUid = ref<string>("");
     const storedCard = ref<{

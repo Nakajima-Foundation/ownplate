@@ -100,12 +100,12 @@ export const menuDownload = (
 
   const menus = arrayChunk(
     (shopInfo.menuLists || [])
-      .reduce((tmp, itemKey) => {
+      .reduce<MenuData[]>((tmp, itemKey) => {
         if (menuObj[itemKey]) {
           tmp.push(menuObj[itemKey]);
         }
         return tmp;
-      }, [] as MenuData[])
+      }, [])
       .slice(0, 6),
     2,
   );

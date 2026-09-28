@@ -73,20 +73,22 @@ export const shopInfoValidator = (
   files_cover?: File,
 ) => {
   const err: shopInfoValidatorError = {};
-  [
-    "restaurantName",
-    "ownerName",
-    "streetAddress",
-    "city",
-    "state",
-    "zip",
-    "phoneNumber",
-    "pickUpMinimumCookTime",
-    "pickUpDaysInAdvance",
-  ].forEach((name) => {
+  (
+    [
+      "restaurantName",
+      "ownerName",
+      "streetAddress",
+      "city",
+      "state",
+      "zip",
+      "phoneNumber",
+      "pickUpMinimumCookTime",
+      "pickUpDaysInAdvance",
+    ] satisfies (keyof RestaurantInfoData)[]
+  ).forEach((name) => {
     err[name] = [];
-    if (shopInfo[name as keyof RestaurantInfoData] === "") {
-      (err[name] as string[]).push("validationError." + name + ".empty");
+    if (shopInfo[name] === "") {
+      err[name].push("validationError." + name + ".empty");
     }
   });
   ["introduction", "orderNotice", "orderThanks"].forEach((name) => {
@@ -99,17 +101,17 @@ export const shopInfoValidator = (
   // validate pickUpMinimumCookTime
   if (Number.isInteger(shopInfo["pickUpMinimumCookTime"])) {
     if (shopInfo["pickUpMinimumCookTime"] > 24 * 60 * 7) {
-      (err["pickUpMinimumCookTime"] as string[]).push(
+      err["pickUpMinimumCookTime"].push(
         "validationError.pickUpMinimumCookTime.tooMuch",
       );
     }
     if (shopInfo["pickUpMinimumCookTime"] < 0) {
-      (err["pickUpMinimumCookTime"] as string[]).push(
+      err["pickUpMinimumCookTime"].push(
         "validationError.pickUpMinimumCookTime.negative",
       );
     }
   } else {
-    (err["pickUpMinimumCookTime"] as string[]).push(
+    err["pickUpMinimumCookTime"].push(
       "validationError.pickUpMinimumCookTime.notNumbery",
     );
   }
@@ -120,7 +122,7 @@ export const shopInfoValidator = (
         day.value === shopInfo["pickUpDaysInAdvance"],
     )
   ) {
-    (err["pickUpDaysInAdvance"] as string[]).push(
+    err["pickUpDaysInAdvance"].push(
       "validationError.pickUpDaysInAdvance.invalid",
     );
   }

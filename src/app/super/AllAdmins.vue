@@ -123,10 +123,7 @@ export default defineComponent({
           const { data } = await stripeVerify({
             account_id: payment?.stripe,
           });
-          const verifyData = data as {
-            result?: boolean;
-            account?: { capabilities?: { [key: string]: string } };
-          };
+          const verifyData = data;
           payment.verified = verifyData.result;
           if (verifyData.account) {
             info.account = verifyData.account;

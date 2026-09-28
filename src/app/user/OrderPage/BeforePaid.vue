@@ -577,7 +577,7 @@ export default defineComponent({
             quantity: Array.isArray(or.count)
               ? or.count.reduce((a, b) => a + b, 0)
               : or.count,
-          } as analyticsUtil.AnalyticsMenuData;
+          };
         }),
         props.shopInfo,
         restaurantId,

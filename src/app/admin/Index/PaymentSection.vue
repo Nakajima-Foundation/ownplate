@@ -143,7 +143,7 @@ export default defineComponent({
     const inStorePayment = ref<boolean | undefined>(false);
 
     onMounted(async () => {
-      const code = route.query.code as string;
+      const code = route.query.code;
       if (code) {
         const state = route.query.state;
         const cookies = parseCookie(document.cookie);

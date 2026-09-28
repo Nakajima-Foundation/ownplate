@@ -20,7 +20,7 @@ export const google_geocode = async (keyword: string) => {
   const parameters = {
     address: keyword,
     key: GAPIKey,
-  } as GeoCodeParams;
+  };
   const qs = Object.keys(parameters)
     .map((key: string) => {
       return `${key}=${encodeURIComponent(

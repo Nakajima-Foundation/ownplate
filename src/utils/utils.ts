@@ -1,5 +1,4 @@
 import { ref, computed, onMounted, unref, Ref } from "vue";
-import type { User } from "firebase/auth";
 import type { DocumentData } from "firebase/firestore";
 
 import { ShopOwnerData, PartnerData } from "@/models/ShopOwner";
@@ -140,7 +139,7 @@ export const doc2data = <T = DocumentData>(dataType: string) => {
   // 狭めてあるので、試験から最小の値で呼べる。Firestore の DocumentSnapshot も
   // QueryDocumentSnapshot もこの形を構造的に満たすため、呼び出し側は変わらない。
   return (_doc: { id: string; data: () => DocumentData | undefined }): T => {
-    const data = _doc.data() || ({} as DocumentData);
+    const data = _doc.data() || {};
     data.id = _doc.id;
     data._dataType = dataType;
     return collectionData<T>(data);
@@ -647,7 +646,7 @@ export const useAdminUids = () => {
     return userStore.isSubAccount ? userStore.parentId : userStore.uidAdmin;
   });
   const emailVerified = computed(() => {
-    return (userStore.user as User)?.emailVerified;
+    return userStore.user?.emailVerified;
   });
   return {
     isOwner,

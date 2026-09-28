@@ -437,7 +437,7 @@ export default defineComponent({
       const time = days[0]?.times[0]?.display;
       const date = days[0]?.date;
       console.log(locale.value);
-      moment.locale(locale.value as string);
+      moment.locale(locale.value);
       if (!isNull(time) && !isNull(date)) {
         ctx.emit("noAvailableTime", false);
         return [formatDay(date, "MM/DD (ddd)"), time].join(" ");

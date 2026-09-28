@@ -448,7 +448,6 @@ import { inputValueOf } from "@/utils/domEvent";
 import { isOptionChecked } from "@/utils/commonUtils";
 import type { OptionValue } from "@/models/orderTypes";
 
-
 // menu UI algorithm
 //   init quantities = [0]
 //   if sum(quantities) > 0, show button
@@ -459,7 +458,6 @@ import { useGeneralStore } from "@/store";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 
-import { AnalyticsMenuData } from "@/lib/firebase/analytics";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { MenuData } from "@/models/menu";
 
@@ -589,11 +587,7 @@ export default defineComponent({
 
     watch(openMenuFlag, () => {
       if (openMenuFlag.value) {
-        analyticsUtil.sendViewItem(
-          props.item as AnalyticsMenuData,
-          props.shopInfo,
-          restaurantId,
-        );
+        analyticsUtil.sendViewItem(props.item, props.shopInfo, restaurantId);
       }
     });
     // TODO: improve to set default value.
@@ -613,11 +607,7 @@ export default defineComponent({
       if (route.path !== to) {
         router.replace(to);
       }
-      analyticsUtil.sendViewItem(
-        props.item as AnalyticsMenuData,
-        props.shopInfo,
-        restaurantId,
-      );
+      analyticsUtil.sendViewItem(props.item, props.shopInfo, restaurantId);
     };
     onMounted(() => {
       if (props.isOpen) {
@@ -657,11 +647,7 @@ export default defineComponent({
     const toggleMenuFlag = () => {
       openMenuFlag.value = !openMenuFlag.value;
       if (openMenuFlag.value) {
-        analyticsUtil.sendSelectItem(
-          props.item as AnalyticsMenuData,
-          props.shopInfo,
-          restaurantId,
-        );
+        analyticsUtil.sendSelectItem(props.item, props.shopInfo, restaurantId);
       }
     };
     const pullQuantities = (key: number) => {
@@ -670,7 +656,7 @@ export default defineComponent({
       }
       setQuantities(key, props.quantities[key] - 1);
       analyticsUtil.sendRemoveFromCart(
-        props.item as AnalyticsMenuData,
+        props.item,
         props.shopInfo,
         restaurantId,
         1,
@@ -681,12 +667,7 @@ export default defineComponent({
       if (!openMenuFlag.value) {
         toggleMenuFlag();
       }
-      analyticsUtil.sendAddToCart(
-        props.item as AnalyticsMenuData,
-        props.shopInfo,
-        restaurantId,
-        1,
-      );
+      analyticsUtil.sendAddToCart(props.item, props.shopInfo, restaurantId, 1);
     };
     const pushItem = () => {
       const newSelectedOptions = [...(props.selectedOptions ?? [])];

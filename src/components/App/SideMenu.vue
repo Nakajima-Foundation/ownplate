@@ -203,7 +203,7 @@ export default defineComponent({
     const restaurantId = computed(() => {
       // Check if current route is a restaurant page (/r/:restaurantId/...)
       if (route.path.startsWith("/r/") && route.params.restaurantId) {
-        return route.params.restaurantId as string;
+        return route.params.restaurantId;
       }
       return null;
     });
