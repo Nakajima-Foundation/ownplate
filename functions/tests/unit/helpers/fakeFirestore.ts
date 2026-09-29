@@ -5,7 +5,24 @@ type Fields = Record<string, unknown>;
 const copyOf = <T>(value: T): T => (value === undefined ? value : structuredClone(value));
 const normalized = (path: string) => path.replace(/^\//, "");
 
+// 本物の Firestore は、配列の中に配列がある値を保存できず、書き込みを断る。
+const hasNestedArray = (value: unknown, insideArray = false): boolean => {
+  if (Array.isArray(value)) {
+    return insideArray || value.some((element) => hasNestedArray(element, true));
+  }
+  if (value !== null && typeof value === "object") {
+    return Object.values(value).some((child) => hasNestedArray(child, false));
+  }
+  return false;
+};
+const assertStorable = (path: string, data: unknown) => {
+  if (hasNestedArray(data)) {
+    throw new Error(`INVALID_ARGUMENT: nested arrays are not supported (${path})`);
+  }
+};
+
 export const fakeFirestore = (initial: Record<string, Fields>) => {
+  Object.entries(initial).forEach(([path, data]) => assertStorable(path, data));
   const store = new Map<string, Fields>(Object.entries(copyOf(initial)));
   const log: string[] = [];
 
@@ -22,10 +39,12 @@ export const fakeFirestore = (initial: Record<string, Fields>) => {
           throw new Error(`NOT_FOUND: ${path}`);
         }
         const patch = typeof fieldOrData === "string" ? { [fieldOrData]: value } : fieldOrData;
+        assertStorable(path, patch);
         log.push(`update ${path} ${JSON.stringify(patch)}`);
         store.set(path, { ...current, ...copyOf(patch) });
       },
       set: async (data: Fields, options?: { merge?: boolean }) => {
+        assertStorable(path, data);
         log.push(`set ${path} ${JSON.stringify(data)}`);
         store.set(path, options?.merge ? { ...(store.get(path) ?? {}), ...copyOf(data) } : copyOf(data));
       },

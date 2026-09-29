@@ -20,7 +20,15 @@ const request = { restaurantId: RESTAURANT, orderId: ORDER };
 const shop = { uid: "owner1", publicFlag: true, deletedFlag: false, inclusiveTax: false, foodTax: 8, alcoholTax: 10, orderCount: 41, enableDelivery: true };
 const karaage = { price: 500, itemName: "からあげ", tax: "food", itemOptionCheckbox: ["大盛り (+100)"] };
 const beer = { price: 600, itemName: "ビール", tax: "alcohol" };
-const newOrder = { status: order_status.new_order, uid: CUSTOMER, name: "客", phoneNumber: "+819012345678", order: { karaage: [2], beer: 1 }, rawOptions: { karaage: [[true]] } };
+// お客様の画面は rawOptions を convOptionArray2Obj で添字の object にして書く（Firestore は入れ子の配列を保存できない）。
+const newOrder = {
+  status: order_status.new_order,
+  uid: CUSTOMER,
+  name: "客",
+  phoneNumber: "+819012345678",
+  order: { karaage: [2], beer: 1 },
+  rawOptions: { karaage: { 0: [true] } },
+};
 
 type Docs = Record<string, Record<string, unknown>>;
 const world = (overrides: { shop?: object; order?: object; docs?: Docs } = {}): Docs => ({
@@ -115,7 +123,7 @@ describe("orderCreated — 受け付けない注文は error にする", () => {
     await rejected(world({ shop: { enableLunchDinner: false }, order: { lunchOrDinner: "lunch" } }));
   });
 
-  it("rejects an order for a menu that does not exist or is not public", async () => {
+  it("rejects an order for a menu that does not exist", async () => {
     await rejected(world({ order: { order: { karaage: 1, gone: 1 } } }));
   });
 
@@ -163,7 +171,10 @@ describe("orderCreated — 保存される注文の中身が合っている", ()
       const quantities = [1 + (state % 3), next(state) % 3];
       const docs = world({
         shop: { inclusiveTax: state % 2 === 0 },
-        order: { order: { karaage: quantities, beer: 1 + (next(next(state)) % 2) }, rawOptions: { karaage: quantities.map((_quantity, line) => [line % 2 === 0]) } },
+        order: {
+          order: { karaage: quantities, beer: 1 + (next(next(state)) % 2) },
+          rawOptions: { karaage: Object.fromEntries(quantities.map((_quantity, line) => [line, [line % 2 === 0]])) },
+        },
         docs: { [`${restaurantPath}/menus/beer`]: { ...beer, soldOut: state % 5 === 0 } },
       });
       const { order } = await place(docs);
