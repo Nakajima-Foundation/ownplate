@@ -10,6 +10,7 @@ import ts from "typescript";
 // オプションや金額がレシートに出る。数量0の行を落とす判定より後で、3つとも積むこと。
 const root = fileURLToPath(new URL("../../", import.meta.url));
 const orderCreated = "src/functions/order/orderCreated.ts";
+const orderLines = "src/lib/orderLines.ts";
 
 type Pushes = { arrays: string[]; zeroGuardFirst: boolean };
 
@@ -95,11 +96,11 @@ const destructuresFromOrderData = (source: string, name: string): boolean => {
 };
 
 describe("注文の1行ぶんが、3つとも同じ枝で積まれる", () => {
-  const source = readFileSync(join(root, orderCreated), "utf-8");
+  const source = readFileSync(join(root, orderLines), "utf-8");
 
   it("pushes the quantity, the price and the option names together", () => {
     const pushes = perLinePushes(source);
-    assert.ok(pushes, `${orderCreated} に、1行ぶんを積む枝が1つ見つからない`);
+    assert.ok(pushes, `${orderLines} に、1行ぶんを積む枝が1つ見つからない`);
     assert.deepStrictEqual([...pushes.arrays].sort(), ["newOrder", "optionNames", "prices"]);
   });
 
