@@ -16,7 +16,11 @@
 
 - 切り出す前の `createNewOrderData` と注文の種類の検査をそのまま写し、新しいものと並べて、生成入力で結果（例外・注文の状態の書き込みを含む）を比べる
 - 比べる仕組みそのものが差を拾えることを、新しいコードをわざと壊して確かめる
-- 残す試験: `functions/tests/unit/orderLines_test.ts`。`order_line_alignment_test.ts` の「1 行ぶんを 3 つとも積む」検査は、読む先を `orderLines.ts` に変える
+- 切り出す前の `orderCreated` 全体もそのまま写し、メモリ上の偽の Firestore で新しいものと並べて、戻り値・書き込み・DB の中身を比べる
+- 残す試験（CI の `yarn unit_tests` で回る）
+  - `functions/tests/unit/orderLines_test.ts`: 切り出した 2 つの関数
+  - `functions/tests/unit/orderCreated_test.ts`: `orderCreated` を入口から、メモリ上の偽の Firestore（`tests/unit/helpers/fakeFirestore.ts`）で動かす。受け付ける注文・error にする注文・呼び出しを断る場合と、`createNewOrderData` の「見つからないメニュー」
+  - `order_line_alignment_test.ts` の「1 行ぶんを 3 つとも積む」検査は、読む先を `orderLines.ts` に変える
 
 ## やらないこと
 
