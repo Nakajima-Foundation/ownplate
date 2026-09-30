@@ -39,7 +39,7 @@
     "firebase-functions": "^7.3.2",
     "google-libphonenumber": "^3.2.46",
     "i18next": "^26.4.2",
-    "moment": "^2.29.4",
+    "moment": "^2.31.0",
     "moment-timezone": "^0.6.3",
     "nodemailer": "^10.0.9",
     "receiptline": "^4.0.4",
