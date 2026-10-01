@@ -38,7 +38,7 @@
     "firebase": "12.19.0",
     "google-libphonenumber": "^3.2.47",
     "markdown-it": "^14.3.1",
-    "moment": "^2.29.4",
+    "moment": "^2.31.0",
     "moment-timezone": "0.6.3",
     "pdfmake": "0.3.11",
     "pinia": "^3.0.4",
