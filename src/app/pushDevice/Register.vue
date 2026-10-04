@@ -99,6 +99,7 @@ import {
   PUSH_DEVICE_SCOPE,
   currentDeviceFid,
   isWebPushSupported,
+  listenForegroundPush,
   subscribeThisDevice,
   thisDevicePlatform,
 } from "@/utils/webPush";
@@ -186,6 +187,10 @@ export default defineComponent({
 
     onMounted(async () => {
       supported.value = await isWebPushSupported();
+      // PWA の start_url がこの画面なので、厨房の端末は起動のたびにここに着く。
+      // 前面に出ている間、FCM は onBackgroundMessage ではなく onMessage に回すため、
+      // これを張らないと通知が1件も出ない。
+      await listenForegroundPush();
       await refreshStatus();
     });
 
