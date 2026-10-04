@@ -230,7 +230,7 @@ import {
   type SendRecord,
   describeSendResult,
   hasRecentFailure,
-  hasRegisteredSince,
+  inviteWatchAction,
   lastSend,
   needsReregistration,
   recentFailureCode,
@@ -296,11 +296,19 @@ export default defineComponent({
     const editingName = ref("");
     const stampsAtInvite = ref<RegistrationStamps | null>(null);
 
-    const closeInviteOnceRegistered = () => {
-      if (
-        !stampsAtInvite.value ||
-        !hasRegisteredSince(stampsAtInvite.value, devices.value)
-      ) {
+    // 招待が使われたかは、どの招待で登録されたかまでは分からない。別の招待で登録
+    // されても、ここは閉じて「登録しました」を出す（omochikaeri-docs の積み残し）。
+    const watchInvite = (fromCache: boolean) => {
+      const action = inviteWatchAction(
+        { shown: inviteUrl.value !== "", stamps: stampsAtInvite.value },
+        fromCache,
+        devices.value,
+      );
+      if (action === "arm") {
+        stampsAtInvite.value = registrationStamps(devices.value);
+        return;
+      }
+      if (action !== "close") {
         return;
       }
       inviteUrl.value = "";
@@ -308,13 +316,16 @@ export default defineComponent({
       dialogStore.setTips({ key: "pushDeviceRegistered" });
     };
 
+    // includeMetadataChanges を立てるのは、キャッシュ由来の一覧とサーバの一覧が
+    // 同じ中身だと、既定では二度目が呼ばれず基準をいつまでも取れないため。
     const detacher = onSnapshot(
       collection(db, `restaurants/${restaurantId.value}/pushRegistrations`),
+      { includeMetadataChanges: true },
       (snapshot) => {
         devices.value = snapshot.docs.map((myDoc) => {
           return { ...myDoc.data(), id: myDoc.id };
         });
-        closeInviteOnceRegistered();
+        watchInvite(snapshot.metadata.fromCache);
       },
     );
     onUnmounted(() => {
@@ -407,7 +418,8 @@ export default defineComponent({
         const { data } = await createPushInvite({
           restaurantId: restaurantId.value,
         });
-        stampsAtInvite.value = registrationStamps(devices.value);
+        // 基準は次にサーバから届く一覧で取る
+        stampsAtInvite.value = null;
         inviteUrl.value = data.url;
       } catch (e) {
         console.error("failed to create a push invite", e);

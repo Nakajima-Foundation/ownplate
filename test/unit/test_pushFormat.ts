@@ -6,6 +6,7 @@ import {
   detectPlatform,
   hasRecentFailure,
   hasRegisteredSince,
+  inviteWatchAction,
   lastSend,
   MAX_DEVICE_NAME_LENGTH,
   needsReregistration,
@@ -249,5 +250,64 @@ describe("hasRegisteredSince", () => {
       hasRegisteredSince(registrationStamps([]), [device]),
       true,
     );
+  });
+});
+
+describe("inviteWatchAction", () => {
+  const ipad = { id: "fid-ipad", registeredAt: { seconds: 100 } };
+  const phone = { id: "fid-phone", registeredAt: { seconds: 200 } };
+  const SERVER = false;
+  const CACHE = true;
+
+  it("does nothing when no invite is on screen", () => {
+    assert.strictEqual(
+      inviteWatchAction({ shown: false, stamps: null }, SERVER, [ipad]),
+      "ignore",
+    );
+  });
+
+  it("takes the baseline from the first server list", () => {
+    assert.strictEqual(
+      inviteWatchAction({ shown: true, stamps: null }, SERVER, [ipad]),
+      "arm",
+    );
+  });
+
+  it("never takes the baseline from a cached list", () => {
+    assert.strictEqual(
+      inviteWatchAction({ shown: true, stamps: null }, CACHE, []),
+      "ignore",
+    );
+  });
+
+  // 空のキャッシュを基準にすると、あとから届く既存の端末が全部「いま登録された」に見える
+  it("does not close on the server list that follows an empty cached one", () => {
+    const state = { shown: true, stamps: null };
+    assert.strictEqual(inviteWatchAction(state, CACHE, []), "ignore");
+    assert.strictEqual(inviteWatchAction(state, SERVER, [ipad]), "arm");
+    const armed = { shown: true, stamps: registrationStamps([ipad]) };
+    assert.strictEqual(inviteWatchAction(armed, SERVER, [ipad]), "ignore");
+  });
+
+  it("closes when a device registers after the baseline", () => {
+    const armed = { shown: true, stamps: registrationStamps([ipad]) };
+    assert.strictEqual(
+      inviteWatchAction(armed, SERVER, [ipad, phone]),
+      "close",
+    );
+  });
+
+  it("stays open while only a cached list reports the new device", () => {
+    const armed = { shown: true, stamps: registrationStamps([ipad]) };
+    assert.strictEqual(
+      inviteWatchAction(armed, CACHE, [ipad, phone]),
+      "ignore",
+    );
+  });
+
+  it("stays open for a rename or a toggle", () => {
+    const armed = { shown: true, stamps: registrationStamps([ipad]) };
+    const renamed = { ...ipad, name: "レジの iPad", notify: false };
+    assert.strictEqual(inviteWatchAction(armed, SERVER, [renamed]), "ignore");
   });
 });

@@ -100,3 +100,29 @@ export const hasRegisteredSince = (
       stamps[device.id] !==
       registeredAtSeconds(device.registeredAt, device.updatedAt),
   );
+
+export type InviteWatchState = {
+  // 招待の QR を出しているか。出していなければ閉じるものが無い。
+  shown: boolean;
+  // 招待を出した時点の登録日時。まだ基準を取れていなければ null。
+  stamps: RegistrationStamps | null;
+};
+
+export type InviteWatchAction = "ignore" | "arm" | "close";
+
+// 基準はサーバから届いた一覧でしか取らない。Firestore は最初にキャッシュ由来の
+// 一覧を返すことがあり、それが空だと、あとから届く既存の端末が全部「いま登録された」
+// に見えて、使われていない招待の QR を消してしまう。
+export const inviteWatchAction = (
+  state: InviteWatchState,
+  fromCache: boolean,
+  devices: RegisteredDevice[],
+): InviteWatchAction => {
+  if (!state.shown || fromCache) {
+    return "ignore";
+  }
+  if (!state.stamps) {
+    return "arm";
+  }
+  return hasRegisteredSince(state.stamps, devices) ? "close" : "ignore";
+};
