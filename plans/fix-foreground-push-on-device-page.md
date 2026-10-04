@@ -30,13 +30,14 @@ FCM は**同一オリジンの画面が前面にあると `onBackgroundMessage` 
   （`isWebPushConfigured()` が false）、`listenForegroundPush` は手前で戻る。
   実機と実鍵が要る
 
-## 範囲の外（測ったうえで見送り）
+## どこに置くか
 
-`/admin` 配下の wrapper の外にも、同じ漏れのある画面が11ある:
-`/admin/news` `/admin/news/:newsId` `/admin/faq` `/admin/docs` `/admin/docs/articles/:id`
-`/admin/docs/features` `/admin/user/signin` `/admin/user/signup`
-`/admin/user/signup/:partner` `/admin/user/reset` `/admin/user/action`
+`App.vue`（アプリ全体）には置かない。**FCM の SDK は専用の束（約20KB）に分かれていて、
+入口の束には1バイトも入っていない**。全体に置くと客（大半がスマホ）全員に配ることに
+なり、客側には受け取る登録が無いので見返りがゼロ。
 
-登録済みの端末がこれらを開いている間も通知は出ない。router の遷移で一律に張れば
-一網打尽にできるが、**全遷移に触る変更**になり、報告があったのは端末の画面だけ。
-確定している分だけ先に出し、こちらは #234 に残す。
+代わりに **router で、通知を受けうる画面（`/admin*` と `/pushdevice*`）に入ったときだけ
+張る**。画面の一覧を部品側に持たずに済むので、画面を足した人が忘れても壊れない。
+import は動的にして、客側の束に持ち込まない（入口の増分は router の仕掛けのぶんだけ）。
+
+画面ごとの呼び出しは外す。守りが二箇所にあると、どちらを壊しても試験が気づかない。
