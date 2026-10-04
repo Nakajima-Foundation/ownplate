@@ -1210,7 +1210,7 @@ const data = {
       addDevice: "Add a device",
       inviteHeading: "Open this URL on the device",
       inviteHint:
-        "This URL works only once. Allow notifications on that device to finish. It cannot be shown again, so create a new one if you need it.",
+        'Each URL registers only one device. For a second device, press "Add a device" again. The URL expires in 24 hours. * Do not share it where many people can see it, such as a LINE group.',
       copy: "Copy URL",
       copied: "Copied",
       test: "Send a test",

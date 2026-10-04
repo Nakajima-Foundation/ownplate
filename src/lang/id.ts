@@ -1223,7 +1223,7 @@ const data = {
       addDevice: "Tambah perangkat",
       inviteHeading: "Buka URL ini di perangkat tersebut",
       inviteHint:
-        "URL ini hanya berlaku sekali. Izinkan notifikasi di perangkat itu untuk menyelesaikan. URL tidak dapat ditampilkan lagi, jadi buat yang baru bila perlu.",
+        'Setiap URL hanya dapat mendaftarkan satu perangkat. Untuk perangkat kedua, tekan "Tambah perangkat" lagi. URL berlaku selama 24 jam. * Jangan bagikan di tempat yang dapat dilihat banyak orang, seperti grup LINE.',
       copy: "Salin URL",
       copied: "Tersalin",
       test: "Kirim uji coba",

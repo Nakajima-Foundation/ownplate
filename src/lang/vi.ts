@@ -1214,7 +1214,7 @@ const data = {
       addDevice: "Thêm thiết bị",
       inviteHeading: "Hãy mở URL này trên thiết bị",
       inviteHint:
-        "URL này chỉ dùng được một lần. Cho phép thông báo trên thiết bị đó để hoàn tất. Không thể hiển thị lại, nếu cần hãy tạo URL mới.",
+        'Mỗi URL chỉ đăng ký được 1 thiết bị. Với thiết bị thứ hai, hãy nhấn "Thêm thiết bị" lần nữa. URL hết hạn sau 24 giờ. ※ Không chia sẻ ở nơi nhiều người có thể xem, như nhóm LINE.',
       copy: "Sao chép URL",
       copied: "Đã sao chép",
       test: "Gửi thử",

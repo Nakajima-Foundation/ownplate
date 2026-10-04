@@ -1230,7 +1230,7 @@ const data = {
       addDevice: "Ajouter un appareil",
       inviteHeading: "Ouvrez cette URL sur l'appareil",
       inviteHint:
-        "Cette URL ne fonctionne qu'une fois. Autorisez les notifications sur cet appareil pour terminer. Elle ne peut pas être réaffichée : créez-en une nouvelle si besoin.",
+        "Chaque URL n'enregistre qu'un seul appareil. Pour un deuxième appareil, appuyez à nouveau sur « Ajouter un appareil ». L'URL expire au bout de 24 heures. * Ne la partagez pas là où beaucoup de personnes peuvent la voir, comme un groupe LINE.",
       copy: "Copier l'URL",
       copied: "Copié",
       test: "Envoyer un test",
