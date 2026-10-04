@@ -223,15 +223,6 @@ export const thisDevicePlatform = () => detectPlatform(navigator.userAgent);
 // 迷ったら呼ぶ側に倒してよい。
 const foregroundOnce = attachOnce();
 
-export const listenForegroundPush = async () => {
-  if (!isWebPushConfigured() || !(await isSupported())) {
-    return;
-  }
-  foregroundOnce(() => {
-    attachForegroundHandler();
-  });
-};
-
 const attachForegroundHandler = () => {
   onMessage(getMessaging(pushApp()), (payload) => {
     const data = payload.data ?? {};
@@ -243,5 +234,14 @@ const attachForegroundHandler = () => {
         data,
       });
     });
+  });
+};
+
+export const listenForegroundPush = async () => {
+  if (!isWebPushConfigured() || !(await isSupported())) {
+    return;
+  }
+  foregroundOnce(() => {
+    attachForegroundHandler();
   });
 };
