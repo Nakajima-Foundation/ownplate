@@ -250,6 +250,22 @@ describe("registeredWithInvite", () => {
     );
   });
 
+  // 画面を先に配って Functions が古いままだと inviteId が来ない。そのとき、
+  // この項目を持たない既存の登録と undefined 同士で一致してはいけない。
+  it("does not match when the server sent no id", () => {
+    assert.strictEqual(
+      registeredWithInvite(undefined, [{ id: "fid-ipad" }]),
+      false,
+    );
+  });
+
+  it("does not match a device whose id is an empty string", () => {
+    assert.strictEqual(
+      registeredWithInvite("", [{ id: "fid-ipad", registeredByInvite: "" }]),
+      false,
+    );
+  });
+
   it("ignores a rename or a toggle", () => {
     assert.strictEqual(registeredWithInvite(mine, [{ id: "fid-ipad" }]), false);
   });

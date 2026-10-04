@@ -144,7 +144,8 @@ export interface CreatePushInviteResult {
   expiresAt: number;
   // 登録が済んだかを管理画面が知るための目印。招待文書の id と同じで、
   // トークンそのものではない。引き換え時に pushRegistrations へ書かれる。
-  inviteId: string;
+  // 省略可にしてあるのは、画面を先に配ったときに古い Functions が返さないため。
+  inviteId?: string;
 }
 
 // 押す前に招待が使えるか確かめる。状態は変えない。

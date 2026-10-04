@@ -80,9 +80,20 @@ export type RegisteredDevice = {
 
 // その招待で登録された端末があるか。招待そのものはクライアントから読めない
 // （firestore.rules の pushInvites）ので、登録の側に id を残して突き合わせる。
+//
+// **両側が中身のある文字列のときだけ一致とみなす。** 画面を先に配って Functions が
+// 古いままだと inviteId が来ず、この項目を持たない既存の登録と undefined 同士で
+// 一致してしまい、招待を出した瞬間に QR が消える。
+const usableId = (value: string | undefined): boolean =>
+  typeof value === "string" && value !== "";
+
 export const registeredWithInvite = (
-  inviteId: string,
+  inviteId: string | undefined,
   devices: RegisteredDevice[],
 ): boolean =>
-  inviteId !== "" &&
-  devices.some((device) => device.registeredByInvite === inviteId);
+  usableId(inviteId) &&
+  devices.some(
+    (device) =>
+      usableId(device.registeredByInvite) &&
+      device.registeredByInvite === inviteId,
+  );

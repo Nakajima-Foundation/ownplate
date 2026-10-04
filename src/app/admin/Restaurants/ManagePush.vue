@@ -403,7 +403,8 @@ export default defineComponent({
         const { data } = await createPushInvite({
           restaurantId: restaurantId.value,
         });
-        inviteId.value = data.inviteId;
+        // 古い Functions は返さない。空なら閉じる判定は働かない（QR は出たまま）。
+        inviteId.value = data.inviteId ?? "";
         inviteUrl.value = data.url;
       } catch (e) {
         console.error("failed to create a push invite", e);
