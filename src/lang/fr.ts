@@ -1600,6 +1600,10 @@ const data = {
     },
   },
   dialogTips: {
+    pushDeviceRegistered: {
+      title: "Enregistré",
+      body: "Pour enregistrer un autre appareil, appuyez sur « Ajouter un appareil ».",
+    },
     paymentMethods: {
       title: "Modes de paiement",
       body: "Cette fonctionnalité fournit des informations sur les modes de paiement disponibles au magasin pour les clients ayant choisi « Paiement sur place ».",

@@ -1491,6 +1491,10 @@ const data = {
     },
   },
   dialogTips: {
+    pushDeviceRegistered: {
+      title: "已註冊",
+      body: "如需繼續註冊，請點按「新增裝置」。",
+    },
     paymentMethods: {
       title: "支付方式",
       body: "此功能為選擇「現場支付」的客戶提供店鋪可用的支付方式資訊",

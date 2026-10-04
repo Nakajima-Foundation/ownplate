@@ -1564,6 +1564,10 @@ const data = {
     },
   },
   dialogTips: {
+    pushDeviceRegistered: {
+      title: "登録しました",
+      body: "続けて登録するときは「端末を追加」を押してください。",
+    },
     paymentMethods: {
       title: "現地決済方法",
       body: "「受け取り払い」を選択したお客様向けに、店舗で利用できる決済方法を案内する機能です。",

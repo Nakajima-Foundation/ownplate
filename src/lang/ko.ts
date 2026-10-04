@@ -1548,6 +1548,10 @@ const data = {
     },
   },
   dialogTips: {
+    pushDeviceRegistered: {
+      title: "등록했습니다",
+      body: '계속 등록하려면 "기기 추가"를 눌러 주세요.',
+    },
     paymentMethods: {
       title: "결제 방법",
       body: "이 기능은 「현장 결제」를 선택한 고객에게 매장에서 이용 가능한 결제 방법 정보를 제공합니다",

@@ -1571,6 +1571,10 @@ const data = {
     },
   },
   dialogTips: {
+    pushDeviceRegistered: {
+      title: "Registered",
+      body: 'To register another device, press "Add a device".',
+    },
     paymentMethods: {
       title: "Payment Methods",
       body: "This function provides information on payment methods available at the store for customers who have selected 'On Site Payment'",

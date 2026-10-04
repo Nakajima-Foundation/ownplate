@@ -5,11 +5,13 @@ import {
   describeSendResult,
   detectPlatform,
   hasRecentFailure,
+  hasRegisteredSince,
   lastSend,
   MAX_DEVICE_NAME_LENGTH,
   needsReregistration,
   recentFailureCode,
   registeredAtSeconds,
+  registrationStamps,
 } from "../../src/utils/pushFormat.ts";
 
 describe("detectPlatform", () => {
@@ -193,5 +195,59 @@ describe("MAX_DEVICE_NAME_LENGTH", () => {
     const server =
       await import("../../functions/src/functions/notify/pushInviteFormat.ts");
     assert.strictEqual(MAX_DEVICE_NAME_LENGTH, server.MAX_DEVICE_NAME_LENGTH);
+  });
+});
+
+describe("hasRegisteredSince", () => {
+  const ipad = { id: "fid-ipad", registeredAt: { seconds: 100 } };
+  const stampsWithIpad = registrationStamps([ipad]);
+
+  it("sees a device that was not there when the invite was made", () => {
+    const phone = { id: "fid-phone", registeredAt: { seconds: 200 } };
+    assert.strictEqual(hasRegisteredSince(stampsWithIpad, [ipad, phone]), true);
+  });
+
+  it("sees the same device registering again", () => {
+    const again = { id: "fid-ipad", registeredAt: { seconds: 300 } };
+    assert.strictEqual(hasRegisteredSince(stampsWithIpad, [again]), true);
+  });
+
+  it("ignores a rename, a toggle or a recorded send", () => {
+    const touched = {
+      ...ipad,
+      name: "レジの iPad",
+      notify: false,
+      recentSends: [{ at: 1, ok: true }],
+    };
+    assert.strictEqual(hasRegisteredSince(stampsWithIpad, [touched]), false);
+  });
+
+  it("ignores a device being deleted", () => {
+    assert.strictEqual(hasRegisteredSince(stampsWithIpad, []), false);
+  });
+
+  it("sees the first device when the list was empty", () => {
+    assert.strictEqual(
+      hasRegisteredSince(registrationStamps([]), [ipad]),
+      true,
+    );
+  });
+
+  it("reads devices registered before registeredAt existed", () => {
+    const old = { id: "fid-old", updatedAt: { seconds: 50 } };
+    const stamps = registrationStamps([old]);
+    assert.strictEqual(hasRegisteredSince(stamps, [old]), false);
+    assert.strictEqual(
+      hasRegisteredSince(stamps, [{ ...old, registeredAt: { seconds: 400 } }]),
+      true,
+    );
+  });
+
+  it("does not mistake an inherited property for a known device", () => {
+    const device = { id: "constructor", registeredAt: { seconds: 1 } };
+    assert.strictEqual(
+      hasRegisteredSince(registrationStamps([]), [device]),
+      true,
+    );
   });
 });

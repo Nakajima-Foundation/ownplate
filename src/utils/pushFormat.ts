@@ -71,3 +71,32 @@ export const recentFailureCode = (
 export const lastSend = (
   recentSends: SendRecord[] | undefined,
 ): SendRecord | null => recentSends?.[0] ?? null;
+
+export type RegisteredDevice = {
+  id: string;
+  registeredAt?: TimestampLike;
+  updatedAt?: TimestampLike;
+};
+
+export type RegistrationStamps = Record<string, number | null>;
+
+export const registrationStamps = (
+  devices: RegisteredDevice[],
+): RegistrationStamps =>
+  Object.fromEntries(
+    devices.map((device) => [
+      device.id,
+      registeredAtSeconds(device.registeredAt, device.updatedAt),
+    ]),
+  );
+
+// 招待はクライアントから読めない（firestore.rules の pushInvites）ので、使われたことを端末の登録日時の変化で知る
+export const hasRegisteredSince = (
+  stamps: RegistrationStamps,
+  devices: RegisteredDevice[],
+): boolean =>
+  devices.some(
+    (device) =>
+      stamps[device.id] !==
+      registeredAtSeconds(device.registeredAt, device.updatedAt),
+  );

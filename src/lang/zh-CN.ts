@@ -1491,6 +1491,10 @@ const data = {
     },
   },
   dialogTips: {
+    pushDeviceRegistered: {
+      title: "已注册",
+      body: "如需继续注册，请点击“添加设备”。",
+    },
     paymentMethods: {
       title: "支付方式",
       body: "此功能为选择「现场支付」的客户提供店铺可用的支付方式信息",

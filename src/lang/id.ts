@@ -1584,6 +1584,10 @@ const data = {
     },
   },
   dialogTips: {
+    pushDeviceRegistered: {
+      title: "Terdaftar",
+      body: 'Untuk mendaftarkan perangkat lain, tekan "Tambah perangkat".',
+    },
     paymentMethods: {
       title: "Metode pembayaran di tempat",
       body: 'Fitur untuk memandu metode pembayaran yang dapat digunakan di toko bagi pelanggan yang memilih "Bayar saat penerimaan".',

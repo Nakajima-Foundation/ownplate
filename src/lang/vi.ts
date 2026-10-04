@@ -1575,6 +1575,10 @@ const data = {
     },
   },
   dialogTips: {
+    pushDeviceRegistered: {
+      title: "Đã đăng ký",
+      body: 'Để đăng ký tiếp, hãy nhấn "Thêm thiết bị".',
+    },
     paymentMethods: {
       title: "Phương thức thanh toán tại cửa hàng",
       body: 'Chức năng hướng dẫn phương thức thanh toán có thể sử dụng tại cửa hàng cho khách hàng chọn "Thanh toán khi nhận hàng".',

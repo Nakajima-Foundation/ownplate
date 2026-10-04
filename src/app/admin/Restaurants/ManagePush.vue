@@ -226,13 +226,16 @@ import { checkShopAccount } from "@/utils/userPermission";
 import moment from "moment";
 
 import {
+  type RegistrationStamps,
   type SendRecord,
   describeSendResult,
   hasRecentFailure,
+  hasRegisteredSince,
   lastSend,
   needsReregistration,
   recentFailureCode,
   registeredAtSeconds,
+  registrationStamps,
 } from "@/utils/pushFormat";
 import {
   useAdminUids,
@@ -291,6 +294,19 @@ export default defineComponent({
     const testResult = ref("");
     const editingId = ref("");
     const editingName = ref("");
+    const stampsAtInvite = ref<RegistrationStamps | null>(null);
+
+    const closeInviteOnceRegistered = () => {
+      if (
+        !stampsAtInvite.value ||
+        !hasRegisteredSince(stampsAtInvite.value, devices.value)
+      ) {
+        return;
+      }
+      inviteUrl.value = "";
+      stampsAtInvite.value = null;
+      dialogStore.setTips({ key: "pushDeviceRegistered" });
+    };
 
     const detacher = onSnapshot(
       collection(db, `restaurants/${restaurantId.value}/pushRegistrations`),
@@ -298,6 +314,7 @@ export default defineComponent({
         devices.value = snapshot.docs.map((myDoc) => {
           return { ...myDoc.data(), id: myDoc.id };
         });
+        closeInviteOnceRegistered();
       },
     );
     onUnmounted(() => {
@@ -390,9 +407,11 @@ export default defineComponent({
         const { data } = await createPushInvite({
           restaurantId: restaurantId.value,
         });
+        stampsAtInvite.value = registrationStamps(devices.value);
         inviteUrl.value = data.url;
       } catch (e) {
         console.error("failed to create a push invite", e);
+        stampsAtInvite.value = null;
         inviteUrl.value = "";
       }
       creating.value = false;
