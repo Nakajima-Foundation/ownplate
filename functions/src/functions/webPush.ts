@@ -44,7 +44,8 @@ export const createPushInvite = async (db: Firestore, data: CreatePushInviteData
   const now_ms = Date.now();
   const expiresAt = inviteExpiry(now_ms);
   // doc id はトークンではなくそのハッシュ。DB が漏れても URL は作れない。
-  await db.collection(PUSH_INVITE_COLLECTION).doc(hashInviteToken(token)).set({
+  const inviteId = hashInviteToken(token);
+  await db.collection(PUSH_INVITE_COLLECTION).doc(inviteId).set({
     restaurantId: data.restaurantId,
     createdBy: uid,
     createdAt: now_ms,
@@ -55,6 +56,9 @@ export const createPushInvite = async (db: Firestore, data: CreatePushInviteData
     result: true,
     url: inviteUrl(ownPlateConfig.hostName, token),
     expiresAt,
+    // 管理画面が「この招待で登録されたか」を見るための目印。トークンではないので、
+    // これを知っていても引き換えはできない。
+    inviteId,
   };
 };
 
@@ -101,6 +105,8 @@ export const redeemPushInvite = async (db: Firestore, data: RedeemPushInviteData
         notify: true,
         platform: asPlatform(data.platform),
         invitedBy: invite.createdBy,
+        // どの招待で登録されたか。管理画面はこれを見て、自分が出した QR だけを閉じる。
+        registeredByInvite: ref.id,
         registeredAt: FieldValue.serverTimestamp(),
         updatedAt: FieldValue.serverTimestamp(),
       },

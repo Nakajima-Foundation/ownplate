@@ -226,17 +226,14 @@ import { checkShopAccount } from "@/utils/userPermission";
 import moment from "moment";
 
 import {
-  type RegistrationStamps,
   type SendRecord,
-  baselineAtInvite,
   describeSendResult,
   hasRecentFailure,
-  inviteWatchAction,
   lastSend,
   needsReregistration,
   recentFailureCode,
   registeredAtSeconds,
-  registrationStamps,
+  registeredWithInvite,
 } from "@/utils/pushFormat";
 import {
   useAdminUids,
@@ -261,6 +258,7 @@ type PushDeviceData = {
   registeredAt?: TimestampLike;
   updatedAt?: TimestampLike;
   recentSends?: SendRecord[];
+  registeredByInvite?: string;
 };
 
 export default defineComponent({
@@ -295,42 +293,24 @@ export default defineComponent({
     const testResult = ref("");
     const editingId = ref("");
     const editingName = ref("");
-    const stampsAtInvite = ref<RegistrationStamps | null>(null);
-    const serverListLoaded = ref(false);
+    const inviteId = ref("");
 
-    // 招待が使われたかは、どの招待で登録されたかまでは分からない。別の招待で登録
-    // されても、ここは閉じて「登録しました」を出す（omochikaeri-docs の積み残し）。
-    const watchInvite = (fromCache: boolean) => {
-      const action = inviteWatchAction(
-        { shown: inviteUrl.value !== "", stamps: stampsAtInvite.value },
-        fromCache,
-        devices.value,
-      );
-      if (action === "arm") {
-        stampsAtInvite.value = registrationStamps(devices.value);
-        return;
-      }
-      if (action !== "close") {
+    const closeInviteOnceRegistered = () => {
+      if (!registeredWithInvite(inviteId.value, devices.value)) {
         return;
       }
       inviteUrl.value = "";
-      stampsAtInvite.value = null;
+      inviteId.value = "";
       dialogStore.setTips({ key: "pushDeviceRegistered" });
     };
 
-    // includeMetadataChanges を立てるのは、キャッシュ由来の一覧とサーバの一覧が
-    // 同じ中身だと、既定では二度目が呼ばれず基準をいつまでも取れないため。
     const detacher = onSnapshot(
       collection(db, `restaurants/${restaurantId.value}/pushRegistrations`),
-      { includeMetadataChanges: true },
       (snapshot) => {
         devices.value = snapshot.docs.map((myDoc) => {
           return { ...myDoc.data(), id: myDoc.id };
         });
-        if (!snapshot.metadata.fromCache) {
-          serverListLoaded.value = true;
-        }
-        watchInvite(snapshot.metadata.fromCache);
+        closeInviteOnceRegistered();
       },
     );
     onUnmounted(() => {
@@ -423,14 +403,12 @@ export default defineComponent({
         const { data } = await createPushInvite({
           restaurantId: restaurantId.value,
         });
-        stampsAtInvite.value = baselineAtInvite(
-          serverListLoaded.value,
-          devices.value,
-        );
+        // 古い Functions は返さない。空なら閉じる判定は働かない（QR は出たまま）。
+        inviteId.value = data.inviteId ?? "";
         inviteUrl.value = data.url;
       } catch (e) {
         console.error("failed to create a push invite", e);
-        stampsAtInvite.value = null;
+        inviteId.value = "";
         inviteUrl.value = "";
       }
       creating.value = false;
