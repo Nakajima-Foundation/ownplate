@@ -202,6 +202,9 @@
           </div>
         </div>
       </div>
+
+      <!-- Loading -->
+      <Loading v-if="creating" />
     </div>
   </div>
 </template>
@@ -238,6 +241,7 @@ import {
   defaultTitle,
 } from "@/utils/utils";
 
+import Loading from "@/components/Loading.vue";
 import NotFound from "@/components/NotFound.vue";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 
@@ -258,6 +262,7 @@ type PushDeviceData = {
 export default defineComponent({
   components: {
     AdminHeader,
+    Loading,
     NotFound,
   },
   props: {

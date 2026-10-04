@@ -82,7 +82,7 @@
     </div>
 
     <!-- Loading -->
-    <Loading v-if="working" />
+    <Loading v-if="working || status === null" />
   </div>
 </template>
 
