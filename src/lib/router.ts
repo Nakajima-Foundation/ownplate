@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import type { Component } from "vue";
 
+import { isPushSurface } from "@/utils/pushSurface";
+
 const getUserPages = (prefix: string) => {
   return [
     {
@@ -496,6 +498,26 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   // base: "/",
   routes,
+});
+
+// 通知を受けうる画面に入ったら、前面用の受け口を張る。
+//
+// **画面ごとに張る作りにしない。** そうすると追加した画面が忘れられ、その画面を
+// 開いている間だけ通知が1件も出ない、という形で黙って壊れる（端末登録の画面が
+// まさにそうだった）。FCM は同一オリジンの画面が前面にあると onBackgroundMessage
+// ではなく onMessage に回すので、張っていない画面では何も出ない。
+//
+// import を動的にするのは、**客側の束に FCM の SDK を持ち込まないため**。
+// 客の端末には受け取る登録が無いので、載せても一片の得も無い。
+router.afterEach((to) => {
+  if (!isPushSurface(to.path)) {
+    return;
+  }
+  import("@/utils/webPush")
+    .then(({ listenForegroundPush }) => listenForegroundPush())
+    .catch((e) => {
+      console.error("failed to listen for foreground push", e);
+    });
 });
 
 export default router;

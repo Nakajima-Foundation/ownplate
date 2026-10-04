@@ -14,6 +14,7 @@ import {
 } from "firebase/messaging";
 
 import { firebaseConfig, webPushVapidPublicKey } from "@/config/project";
+import { attachOnce } from "@/utils/attachOnce";
 import { detectPlatform } from "@/utils/pushFormat";
 import { resetRegistrationState } from "@/utils/pushReset";
 
@@ -216,10 +217,13 @@ export const thisDevicePlatform = () => detectPlatform(navigator.userAgent);
 
 // FCM は同一オリジンのタブが1つでもフォーカスされていると onBackgroundMessage ではなく
 // onMessage に回すため、前面時は自分で表示しないと何も出ない。
-export const listenForegroundPush = async () => {
-  if (!isWebPushConfigured() || !(await isSupported())) {
-    return;
-  }
+//
+// **通知を受ける画面はすべてこれを呼ぶこと。** 呼ばない画面を開いている間は、
+// その端末に通知が1件も出ない。二度呼んでも足されないようにしてあるので、
+// 迷ったら呼ぶ側に倒してよい。
+const foregroundOnce = attachOnce();
+
+const attachForegroundHandler = () => {
   onMessage(getMessaging(pushApp()), (payload) => {
     const data = payload.data ?? {};
     navigator.serviceWorker.ready.then((registration) => {
@@ -230,5 +234,14 @@ export const listenForegroundPush = async () => {
         data,
       });
     });
+  });
+};
+
+export const listenForegroundPush = async () => {
+  if (!isWebPushConfigured() || !(await isSupported())) {
+    return;
+  }
+  foregroundOnce(() => {
+    attachForegroundHandler();
   });
 };

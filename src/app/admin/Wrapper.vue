@@ -8,11 +8,7 @@
 import { defineComponent, onMounted } from "vue";
 import { useHead } from "@unhead/vue";
 
-import {
-  ADMIN_SCOPE,
-  listenForegroundPush,
-  registerServiceWorker,
-} from "@/utils/webPush";
+import { ADMIN_SCOPE, registerServiceWorker } from "@/utils/webPush";
 
 export default defineComponent({
   setup() {
@@ -35,7 +31,6 @@ export default defineComponent({
     onMounted(() => {
       // 注文者側のページには Service Worker を一切置かないよう、ここで初めて登録する
       registerServiceWorker(ADMIN_SCOPE);
-      listenForegroundPush();
     });
   },
 });
