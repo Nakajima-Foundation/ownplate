@@ -1013,7 +1013,7 @@ const data = {
     appShortName: "Thông báo đơn hàng",
     title: "Đăng ký thiết bị nhận thông báo",
     installHeading: "Với iPhone hoặc iPad",
-    installStep1: "Chạm nút chia sẻ ở dưới màn hình",
+    installStep1: "Chạm nút chia sẻ của Safari",
     installStep2: 'Chọn "Thêm vào Màn hình chính"',
     installStep3: "Mở lại trang này từ biểu tượng vừa thêm",
     nameHint: "Hãy đặt tên dễ nhận biết cho thiết bị này.",

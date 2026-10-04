@@ -1003,7 +1003,7 @@ const data = {
     appShortName: "주문 알림",
     title: "알림을 받을 기기 등록",
     installHeading: "iPhone·iPad를 사용하는 경우",
-    installStep1: "화면 아래의 공유 버튼을 누릅니다",
+    installStep1: "Safari의 공유 버튼을 누릅니다",
     installStep2: '"홈 화면에 추가"를 선택합니다',
     installStep3: "추가된 아이콘에서 이 페이지를 다시 엽니다",
     nameHint: "어떤 기기인지 알 수 있는 이름을 입력해 주세요.",

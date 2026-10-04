@@ -1022,7 +1022,7 @@ const data = {
     appShortName: "Notifikasi Pesanan",
     title: "Daftarkan perangkat untuk notifikasi",
     installHeading: "Untuk iPhone atau iPad",
-    installStep1: "Ketuk tombol bagikan di bagian bawah layar",
+    installStep1: "Ketuk tombol bagikan Safari",
     installStep2: 'Pilih "Tambahkan ke Layar Utama"',
     installStep3: "Buka kembali halaman ini dari ikon yang ditambahkan",
     nameHint: "Beri nama yang mudah dikenali untuk perangkat ini.",

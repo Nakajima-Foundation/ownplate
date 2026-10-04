@@ -967,7 +967,7 @@ const data = {
     appShortName: "订单通知",
     title: "注册接收通知的设备",
     installHeading: "使用 iPhone 或 iPad 时",
-    installStep1: "点按屏幕下方的分享按钮",
+    installStep1: "点按 Safari 的分享按钮",
     installStep2: "选择“添加到主屏幕”",
     installStep3: "从添加的图标重新打开本页面",
     nameHint: "请为该设备取一个易于辨认的名称。",

@@ -967,7 +967,7 @@ const data = {
     appShortName: "訂單通知",
     title: "註冊接收通知的裝置",
     installHeading: "使用 iPhone 或 iPad 時",
-    installStep1: "點按螢幕下方的分享按鈕",
+    installStep1: "點按 Safari 的分享按鈕",
     installStep2: "選擇「加入主畫面」",
     installStep3: "從新增的圖示重新開啟本頁面",
     nameHint: "請為該裝置取一個容易辨識的名稱。",
