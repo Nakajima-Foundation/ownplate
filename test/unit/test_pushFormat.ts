@@ -191,6 +191,16 @@ describe("recentFailureCode", () => {
 
 // 入力欄の上限と、サーバが実際に詰める長さ。片方だけ動かすと、入力できた名前が
 // 保存時に黙って切られる（または短く制限されたまま気づけない）。
+describe("PUSH_INVITE_TTL_MS", () => {
+  // 有効期限は admin.push.inviteHint の文面に書いてある。定数を動かしたら
+  // src/lang/ の全言語を直すこと。ここが赤くなるのがその合図。
+  it("is the 24 hours the invite hint promises", async () => {
+    const server =
+      await import("../../functions/src/functions/notify/pushInviteFormat.ts");
+    assert.strictEqual(server.PUSH_INVITE_TTL_MS, 24 * 60 * 60 * 1000);
+  });
+});
+
 describe("MAX_DEVICE_NAME_LENGTH", () => {
   it("matches the length the server truncates to", async () => {
     const server =
