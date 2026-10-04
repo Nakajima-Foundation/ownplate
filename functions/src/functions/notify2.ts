@@ -312,10 +312,11 @@ const notifyLineUsers = async (
     });
 };
 
+// 本文の組み立てもこの中。外に出すと、描画が落ちただけで他の4経路まで止まる。
 const notifyByMail = async (
   restaurant: RestaurantInfoData,
   subject: string,
-  body: string,
+  body: () => Promise<string>,
 ) => {
   if (!restaurant.emailNotification) {
     return;
@@ -325,7 +326,7 @@ const notifyByMail = async (
       ? { email: process.env.TESTMAIL }
       : await getAuth().getUser(restaurant.uid);
   if (adminUser.email) {
-    await ses.sendMail(adminUser.email, subject, body);
+    await ses.sendMail(adminUser.email, subject, await body());
   }
 };
 
@@ -402,14 +403,15 @@ export const notifyRestaurant = async (
     lng,
   );
   const message = `${subject} ${restaurantName}`;
-  const mailMessage = await createNotifyRestaurantMailMessage(
-    messageId,
-    restaurantName,
-    order,
-    order.number,
-    lng,
-    url,
-  );
+  const mailMessage = () =>
+    createNotifyRestaurantMailMessage(
+      messageId,
+      restaurantName,
+      order,
+      order.number,
+      lng,
+      url,
+    );
   const where = { restaurantId, datestr, orderId, messageId };
 
   return runIsolated(

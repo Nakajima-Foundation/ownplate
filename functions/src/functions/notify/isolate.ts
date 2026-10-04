@@ -27,7 +27,15 @@ export const runIsolated = async (
         await task.run();
         return { ...result, done: [...result.done, task.name] };
       } catch (error) {
-        onError(task.name, error);
+        // 報告する側が落ちても鎖は切らない。「決して reject しない」が約束なので。
+        try {
+          onError(task.name, error);
+        } catch (reporterError) {
+          console.error(
+            "runIsolated: the error reporter itself threw",
+            reporterError,
+          );
+        }
         return { ...result, failed: [...result.failed, task.name] };
       }
     },

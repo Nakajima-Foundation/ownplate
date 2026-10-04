@@ -110,6 +110,20 @@ describe("runIsolated", () => {
     assert.deepStrictEqual(result.failed, ["line"]);
   });
 
+  // 報告する側が落ちても鎖は切らない。切れると、残りの経路が走らなくなる。
+  it("keeps going when the error reporter itself throws", async () => {
+    const log: string[] = [];
+    const result = await runIsolated(
+      [boom("line", log), ok("mail", log), ok("push", log)],
+      () => {
+        throw new Error("the reporter is broken too");
+      },
+    );
+    assert.deepStrictEqual(log, ["line", "mail", "push"]);
+    assert.deepStrictEqual(result.failed, ["line"]);
+    assert.deepStrictEqual(result.done, ["mail", "push"]);
+  });
+
   it("returns empty for no tasks", async () => {
     const result = await runIsolated([], () => {});
     assert.deepStrictEqual(result, { done: [], failed: [] });
