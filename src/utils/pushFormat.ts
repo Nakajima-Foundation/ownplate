@@ -74,65 +74,15 @@ export const lastSend = (
 
 export type RegisteredDevice = {
   id: string;
-  registeredAt?: TimestampLike;
-  updatedAt?: TimestampLike;
+  // 引き換え時にサーバが書く招待の id。クライアントからは書けない（firestore.rules）。
+  registeredByInvite?: string;
 };
 
-export type RegistrationStamps = Record<string, number | null>;
-
-export const registrationStamps = (
-  devices: RegisteredDevice[],
-): RegistrationStamps =>
-  Object.fromEntries(
-    devices.map((device) => [
-      device.id,
-      registeredAtSeconds(device.registeredAt, device.updatedAt),
-    ]),
-  );
-
-// 招待はクライアントから読めない（firestore.rules の pushInvites）ので、使われたことを端末の登録日時の変化で知る
-export const hasRegisteredSince = (
-  stamps: RegistrationStamps,
+// その招待で登録された端末があるか。招待そのものはクライアントから読めない
+// （firestore.rules の pushInvites）ので、登録の側に id を残して突き合わせる。
+export const registeredWithInvite = (
+  inviteId: string,
   devices: RegisteredDevice[],
 ): boolean =>
-  devices.some(
-    (device) =>
-      stamps[device.id] !==
-      registeredAtSeconds(device.registeredAt, device.updatedAt),
-  );
-
-export type InviteWatchState = {
-  // 招待の QR を出しているか。出していなければ閉じるものが無い。
-  shown: boolean;
-  // 招待を出した時点の登録日時。まだ基準を取れていなければ null。
-  stamps: RegistrationStamps | null;
-};
-
-export type InviteWatchAction = "ignore" | "arm" | "close";
-
-// 招待を出した時点の基準。サーバ由来の一覧をすでに持っているなら、その場で取る。
-// ここで null にして「次のスナップショットで取る」と先送りすると、招待を出してから
-// 引き換えまでの間に一覧が動かない普通の経路で、登録を運んできたスナップショットが
-// そのまま基準になり、閉じる判定が二度と来ない。
-export const baselineAtInvite = (
-  serverListLoaded: boolean,
-  devices: RegisteredDevice[],
-): RegistrationStamps | null =>
-  serverListLoaded ? registrationStamps(devices) : null;
-
-// 基準はサーバから届いた一覧でしか取らない。Firestore は最初にキャッシュ由来の
-// 一覧を返すことがあり、それが空だと、あとから届く既存の端末が全部「いま登録された」
-// に見えて、使われていない招待の QR を消してしまう。
-export const inviteWatchAction = (
-  state: InviteWatchState,
-  fromCache: boolean,
-  devices: RegisteredDevice[],
-): InviteWatchAction => {
-  if (!state.shown || fromCache) {
-    return "ignore";
-  }
-  if (!state.stamps) {
-    return "arm";
-  }
-  return hasRegisteredSince(state.stamps, devices) ? "close" : "ignore";
-};
+  inviteId !== "" &&
+  devices.some((device) => device.registeredByInvite === inviteId);

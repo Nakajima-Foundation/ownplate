@@ -5,15 +5,12 @@ import {
   describeSendResult,
   detectPlatform,
   hasRecentFailure,
-  baselineAtInvite,
-  hasRegisteredSince,
-  inviteWatchAction,
   lastSend,
   MAX_DEVICE_NAME_LENGTH,
   needsReregistration,
   recentFailureCode,
   registeredAtSeconds,
-  registrationStamps,
+  registeredWithInvite,
 } from "../../src/utils/pushFormat.ts";
 
 describe("detectPlatform", () => {
@@ -210,153 +207,50 @@ describe("MAX_DEVICE_NAME_LENGTH", () => {
   });
 });
 
-describe("hasRegisteredSince", () => {
-  const ipad = { id: "fid-ipad", registeredAt: { seconds: 100 } };
-  const stampsWithIpad = registrationStamps([ipad]);
+describe("registeredWithInvite", () => {
+  const mine = "hash-of-my-token";
+  const other = "hash-of-another-token";
 
-  it("sees a device that was not there when the invite was made", () => {
-    const phone = { id: "fid-phone", registeredAt: { seconds: 200 } };
-    assert.strictEqual(hasRegisteredSince(stampsWithIpad, [ipad, phone]), true);
-  });
-
-  it("sees the same device registering again", () => {
-    const again = { id: "fid-ipad", registeredAt: { seconds: 300 } };
-    assert.strictEqual(hasRegisteredSince(stampsWithIpad, [again]), true);
-  });
-
-  it("ignores a rename, a toggle or a recorded send", () => {
-    const touched = {
-      ...ipad,
-      name: "レジの iPad",
-      notify: false,
-      recentSends: [{ at: 1, ok: true }],
-    };
-    assert.strictEqual(hasRegisteredSince(stampsWithIpad, [touched]), false);
-  });
-
-  it("ignores a device being deleted", () => {
-    assert.strictEqual(hasRegisteredSince(stampsWithIpad, []), false);
-  });
-
-  it("sees the first device when the list was empty", () => {
+  it("sees the device that used this invite", () => {
     assert.strictEqual(
-      hasRegisteredSince(registrationStamps([]), [ipad]),
+      registeredWithInvite(mine, [
+        { id: "fid-ipad" },
+        { id: "fid-phone", registeredByInvite: mine },
+      ]),
       true,
     );
   });
 
-  it("reads devices registered before registeredAt existed", () => {
-    const old = { id: "fid-old", updatedAt: { seconds: 50 } };
-    const stamps = registrationStamps([old]);
-    assert.strictEqual(hasRegisteredSince(stamps, [old]), false);
+  it("ignores a device that used a different invite", () => {
     assert.strictEqual(
-      hasRegisteredSince(stamps, [{ ...old, registeredAt: { seconds: 400 } }]),
-      true,
+      registeredWithInvite(mine, [
+        { id: "fid-phone", registeredByInvite: other },
+      ]),
+      false,
     );
   });
 
-  it("does not mistake an inherited property for a known device", () => {
-    const device = { id: "constructor", registeredAt: { seconds: 1 } };
-    assert.strictEqual(
-      hasRegisteredSince(registrationStamps([]), [device]),
-      true,
-    );
+  // registeredByInvite を書く前に登録された端末。全部「別の招待」と同じ扱いでよい。
+  it("ignores devices registered before the field existed", () => {
+    assert.strictEqual(registeredWithInvite(mine, [{ id: "fid-old" }]), false);
   });
-});
 
-describe("inviteWatchAction", () => {
-  const ipad = { id: "fid-ipad", registeredAt: { seconds: 100 } };
-  const phone = { id: "fid-phone", registeredAt: { seconds: 200 } };
-  const SERVER = false;
-  const CACHE = true;
-
-  it("does nothing when no invite is on screen", () => {
+  it("is false while no invite is on screen", () => {
     assert.strictEqual(
-      inviteWatchAction({ shown: false, stamps: null }, SERVER, [ipad]),
-      "ignore",
+      registeredWithInvite("", [{ id: "fid-phone", registeredByInvite: mine }]),
+      false,
     );
   });
 
-  it("takes the baseline from the first server list", () => {
+  // 空文字の id を持つ端末があっても、招待を出していなければ閉じない
+  it("does not match an empty id against an empty field", () => {
     assert.strictEqual(
-      inviteWatchAction({ shown: true, stamps: null }, SERVER, [ipad]),
-      "arm",
+      registeredWithInvite("", [{ id: "fid-phone", registeredByInvite: "" }]),
+      false,
     );
   });
 
-  it("never takes the baseline from a cached list", () => {
-    assert.strictEqual(
-      inviteWatchAction({ shown: true, stamps: null }, CACHE, []),
-      "ignore",
-    );
-  });
-
-  // 空のキャッシュを基準にすると、あとから届く既存の端末が全部「いま登録された」に見える
-  it("does not close on the server list that follows an empty cached one", () => {
-    const state = { shown: true, stamps: null };
-    assert.strictEqual(inviteWatchAction(state, CACHE, []), "ignore");
-    assert.strictEqual(inviteWatchAction(state, SERVER, [ipad]), "arm");
-    const armed = { shown: true, stamps: registrationStamps([ipad]) };
-    assert.strictEqual(inviteWatchAction(armed, SERVER, [ipad]), "ignore");
-  });
-
-  it("closes when a device registers after the baseline", () => {
-    const armed = { shown: true, stamps: registrationStamps([ipad]) };
-    assert.strictEqual(
-      inviteWatchAction(armed, SERVER, [ipad, phone]),
-      "close",
-    );
-  });
-
-  it("stays open while only a cached list reports the new device", () => {
-    const armed = { shown: true, stamps: registrationStamps([ipad]) };
-    assert.strictEqual(
-      inviteWatchAction(armed, CACHE, [ipad, phone]),
-      "ignore",
-    );
-  });
-
-  it("stays open for a rename or a toggle", () => {
-    const armed = { shown: true, stamps: registrationStamps([ipad]) };
-    const renamed = { ...ipad, name: "レジの iPad", notify: false };
-    assert.strictEqual(inviteWatchAction(armed, SERVER, [renamed]), "ignore");
-  });
-});
-
-// 招待を出してから引き換えまでの一連。ここが通らないと機能そのものが死ぬ。
-describe("baselineAtInvite into inviteWatchAction", () => {
-  const ipad = { id: "fid-ipad", registeredAt: { seconds: 100 } };
-  const phone = { id: "fid-phone", registeredAt: { seconds: 200 } };
-  const SERVER = false;
-  const CACHE = true;
-
-  it("closes when the list was already loaded before the invite", () => {
-    const stamps = baselineAtInvite(true, [ipad]);
-    assert.notStrictEqual(stamps, null);
-    assert.strictEqual(
-      inviteWatchAction({ shown: true, stamps }, SERVER, [ipad, phone]),
-      "close",
-    );
-  });
-
-  it("stays open until the registration actually lands", () => {
-    const stamps = baselineAtInvite(true, [ipad]);
-    assert.strictEqual(
-      inviteWatchAction({ shown: true, stamps }, SERVER, [ipad]),
-      "ignore",
-    );
-  });
-
-  it("waits for a server list when none had arrived yet", () => {
-    const stamps = baselineAtInvite(false, []);
-    assert.strictEqual(stamps, null);
-    assert.strictEqual(
-      inviteWatchAction({ shown: true, stamps }, CACHE, [ipad]),
-      "ignore",
-    );
-    assert.strictEqual(
-      inviteWatchAction({ shown: true, stamps }, SERVER, [ipad]),
-      "arm",
-    );
+  it("ignores a rename or a toggle", () => {
+    assert.strictEqual(registeredWithInvite(mine, [{ id: "fid-ipad" }]), false);
   });
 });
