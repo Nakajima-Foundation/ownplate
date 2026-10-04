@@ -1008,7 +1008,7 @@ const data = {
     appShortName: "おもちかえり通知",
     title: "通知を受け取る端末の登録",
     installHeading: "iPhone・iPad をお使いの場合",
-    installStep1: "画面下の共有ボタンを押します",
+    installStep1: "Safari の共有ボタンを押します",
     installStep2: "「ホーム画面に追加」を選びます",
     installStep3: "追加されたアイコンから、このページを開き直します",
     nameHint: "どの端末かわかる名前を入れてください。",

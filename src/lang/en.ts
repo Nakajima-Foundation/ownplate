@@ -1011,7 +1011,7 @@ const data = {
     appShortName: "Order Alerts",
     title: "Register a device for notifications",
     installHeading: "On iPhone or iPad",
-    installStep1: "Tap the share button at the bottom of the screen",
+    installStep1: "Tap the Safari share button",
     installStep2: 'Choose "Add to Home Screen"',
     installStep3: "Open this page again from the icon that was added",
     nameHint: "Give this device a name you will recognize.",

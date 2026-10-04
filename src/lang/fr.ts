@@ -1026,7 +1026,7 @@ const data = {
     appShortName: "Alertes commandes",
     title: "Enregistrer un appareil pour les notifications",
     installHeading: "Sur iPhone ou iPad",
-    installStep1: "Appuyez sur le bouton de partage en bas de l'écran",
+    installStep1: "Appuyez sur le bouton de partage de Safari",
     installStep2: "Choisissez « Sur l'écran d'accueil »",
     installStep3: "Rouvrez cette page depuis l'icône ajoutée",
     nameHint: "Donnez à cet appareil un nom reconnaissable.",
