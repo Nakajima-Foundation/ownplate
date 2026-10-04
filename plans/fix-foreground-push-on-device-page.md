@@ -21,7 +21,9 @@ FCM は**同一オリジンの画面が前面にあると `onBackgroundMessage` 
    としてあるが、そちらは FID の経路で経緯があるので触らない
 2. `listenForegroundPush()` をその掛け金に通す。**二度呼んでも足されない**ので、
    画面側は迷ったら呼ぶ側に倒してよい
-3. `pushDevice/Register.vue` の `onMounted` で呼ぶ
+3. `src/utils/pushSurface.ts` に `isPushSurface` を置き、router の `afterEach` で
+   通知を受けうる画面（`/admin*` と `/pushdevice*`）に入ったときだけ呼ぶ。
+   画面ごとの呼び出しは置かない（下の「どこに置くか」）
 
 ## 確かめ方
 
