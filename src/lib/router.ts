@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import type { Component } from "vue";
 
+import { isPushSurface } from "@/utils/pushSurface";
+
 const getUserPages = (prefix: string) => {
   return [
     {
@@ -507,10 +509,8 @@ const router = createRouter({
 //
 // import を動的にするのは、**客側の束に FCM の SDK を持ち込まないため**。
 // 客の端末には受け取る登録が無いので、載せても一片の得も無い。
-const PUSH_SURFACES = ["/admin", "/pushdevice"];
-
 router.afterEach((to) => {
-  if (!PUSH_SURFACES.some((surface) => to.path.startsWith(surface))) {
+  if (!isPushSurface(to.path)) {
     return;
   }
   import("@/utils/webPush")
