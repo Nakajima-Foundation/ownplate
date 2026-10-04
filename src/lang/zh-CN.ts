@@ -1153,7 +1153,7 @@ const data = {
       addDevice: "添加设备",
       inviteHeading: "请在该设备上打开此网址",
       inviteHint:
-        "此网址仅可使用一次。在该设备上允许通知即可完成注册。关闭后无法再次显示，如有需要请重新生成。",
+        "此网址只能注册 1 台设备。第 2 台设备请再次点击“添加设备”。有效期为 24 小时。※ 请勿分享到 LINE 群组等不特定多数人可以看到的地方。",
       copy: "复制网址",
       copied: "已复制",
       test: "发送测试",
@@ -1491,6 +1491,10 @@ const data = {
     },
   },
   dialogTips: {
+    pushDeviceRegistered: {
+      title: "已注册",
+      body: "如需继续注册，请点击“添加设备”。",
+    },
     paymentMethods: {
       title: "支付方式",
       body: "此功能为选择「现场支付」的客户提供店铺可用的支付方式信息",

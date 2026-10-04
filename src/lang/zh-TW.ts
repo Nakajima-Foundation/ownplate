@@ -1153,7 +1153,7 @@ const data = {
       addDevice: "新增裝置",
       inviteHeading: "請在該裝置上開啟此網址",
       inviteHint:
-        "此網址僅能使用一次。在該裝置上允許通知即可完成註冊。關閉後無法再次顯示，如有需要請重新產生。",
+        "此網址只能註冊 1 台裝置。第 2 台裝置請再次點按「新增裝置」。有效期限為 24 小時。※ 請勿分享到 LINE 群組等不特定多數人可以看到的地方。",
       copy: "複製網址",
       copied: "已複製",
       test: "傳送測試",
@@ -1491,6 +1491,10 @@ const data = {
     },
   },
   dialogTips: {
+    pushDeviceRegistered: {
+      title: "已註冊",
+      body: "如需繼續註冊，請點按「新增裝置」。",
+    },
     paymentMethods: {
       title: "支付方式",
       body: "此功能為選擇「現場支付」的客戶提供店鋪可用的支付方式資訊",
