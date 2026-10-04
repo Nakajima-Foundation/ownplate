@@ -110,6 +110,16 @@ export type InviteWatchState = {
 
 export type InviteWatchAction = "ignore" | "arm" | "close";
 
+// 招待を出した時点の基準。サーバ由来の一覧をすでに持っているなら、その場で取る。
+// ここで null にして「次のスナップショットで取る」と先送りすると、招待を出してから
+// 引き換えまでの間に一覧が動かない普通の経路で、登録を運んできたスナップショットが
+// そのまま基準になり、閉じる判定が二度と来ない。
+export const baselineAtInvite = (
+  serverListLoaded: boolean,
+  devices: RegisteredDevice[],
+): RegistrationStamps | null =>
+  serverListLoaded ? registrationStamps(devices) : null;
+
 // 基準はサーバから届いた一覧でしか取らない。Firestore は最初にキャッシュ由来の
 // 一覧を返すことがあり、それが空だと、あとから届く既存の端末が全部「いま登録された」
 // に見えて、使われていない招待の QR を消してしまう。

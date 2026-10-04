@@ -228,6 +228,7 @@ import moment from "moment";
 import {
   type RegistrationStamps,
   type SendRecord,
+  baselineAtInvite,
   describeSendResult,
   hasRecentFailure,
   inviteWatchAction,
@@ -295,6 +296,7 @@ export default defineComponent({
     const editingId = ref("");
     const editingName = ref("");
     const stampsAtInvite = ref<RegistrationStamps | null>(null);
+    const serverListLoaded = ref(false);
 
     // 招待が使われたかは、どの招待で登録されたかまでは分からない。別の招待で登録
     // されても、ここは閉じて「登録しました」を出す（omochikaeri-docs の積み残し）。
@@ -325,6 +327,9 @@ export default defineComponent({
         devices.value = snapshot.docs.map((myDoc) => {
           return { ...myDoc.data(), id: myDoc.id };
         });
+        if (!snapshot.metadata.fromCache) {
+          serverListLoaded.value = true;
+        }
         watchInvite(snapshot.metadata.fromCache);
       },
     );
@@ -418,8 +423,10 @@ export default defineComponent({
         const { data } = await createPushInvite({
           restaurantId: restaurantId.value,
         });
-        // 基準は次にサーバから届く一覧で取る
-        stampsAtInvite.value = null;
+        stampsAtInvite.value = baselineAtInvite(
+          serverListLoaded.value,
+          devices.value,
+        );
         inviteUrl.value = data.url;
       } catch (e) {
         console.error("failed to create a push invite", e);

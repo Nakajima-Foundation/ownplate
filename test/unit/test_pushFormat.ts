@@ -5,6 +5,7 @@ import {
   describeSendResult,
   detectPlatform,
   hasRecentFailure,
+  baselineAtInvite,
   hasRegisteredSince,
   inviteWatchAction,
   lastSend,
@@ -319,5 +320,43 @@ describe("inviteWatchAction", () => {
     const armed = { shown: true, stamps: registrationStamps([ipad]) };
     const renamed = { ...ipad, name: "レジの iPad", notify: false };
     assert.strictEqual(inviteWatchAction(armed, SERVER, [renamed]), "ignore");
+  });
+});
+
+// 招待を出してから引き換えまでの一連。ここが通らないと機能そのものが死ぬ。
+describe("baselineAtInvite into inviteWatchAction", () => {
+  const ipad = { id: "fid-ipad", registeredAt: { seconds: 100 } };
+  const phone = { id: "fid-phone", registeredAt: { seconds: 200 } };
+  const SERVER = false;
+  const CACHE = true;
+
+  it("closes when the list was already loaded before the invite", () => {
+    const stamps = baselineAtInvite(true, [ipad]);
+    assert.notStrictEqual(stamps, null);
+    assert.strictEqual(
+      inviteWatchAction({ shown: true, stamps }, SERVER, [ipad, phone]),
+      "close",
+    );
+  });
+
+  it("stays open until the registration actually lands", () => {
+    const stamps = baselineAtInvite(true, [ipad]);
+    assert.strictEqual(
+      inviteWatchAction({ shown: true, stamps }, SERVER, [ipad]),
+      "ignore",
+    );
+  });
+
+  it("waits for a server list when none had arrived yet", () => {
+    const stamps = baselineAtInvite(false, []);
+    assert.strictEqual(stamps, null);
+    assert.strictEqual(
+      inviteWatchAction({ shown: true, stamps }, CACHE, [ipad]),
+      "ignore",
+    );
+    assert.strictEqual(
+      inviteWatchAction({ shown: true, stamps }, SERVER, [ipad]),
+      "arm",
+    );
   });
 });
