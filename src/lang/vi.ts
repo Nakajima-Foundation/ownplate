@@ -1015,8 +1015,11 @@ const data = {
     installHeading: "Với iPhone hoặc iPad",
     installStep1: "Chạm nút chia sẻ của Safari",
     installStep2: 'Chọn "Thêm vào Màn hình chính"',
-    installStep3: "Mở lại trang này từ biểu tượng vừa thêm",
-    nameHint: "Hãy đặt tên dễ nhận biết cho thiết bị này.",
+    installStep3:
+      'Chạm vào biểu tượng đã thêm vào Màn hình chính để mở màn hình "Đăng ký thiết bị nhận thông báo"',
+    nameLabel: "Tên thiết bị (bắt buộc)",
+    nameHint:
+      "Hiển thị trong danh sách thiết bị trên màn hình quản trị. Hãy nhập tên giúp nhận biết thiết bị này.",
     namePlaceholder: "ví dụ: iPad ở quầy thu ngân",
     register: "Nhận thông báo",
     done: "Đã đăng ký",

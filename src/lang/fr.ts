@@ -1028,8 +1028,11 @@ const data = {
     installHeading: "Sur iPhone ou iPad",
     installStep1: "Appuyez sur le bouton de partage de Safari",
     installStep2: "Choisissez « Sur l'écran d'accueil »",
-    installStep3: "Rouvrez cette page depuis l'icône ajoutée",
-    nameHint: "Donnez à cet appareil un nom reconnaissable.",
+    installStep3:
+      "Touchez l'icône ajoutée à l'écran d'accueil pour ouvrir l'écran « Enregistrer un appareil pour les notifications »",
+    nameLabel: "Nom de l'appareil (obligatoire)",
+    nameHint:
+      "Affiché dans la liste des appareils de l'écran d'administration. Saisissez un nom qui permet de reconnaître cet appareil.",
     namePlaceholder: "ex. iPad de la caisse",
     register: "Recevoir les notifications",
     done: "Enregistré",

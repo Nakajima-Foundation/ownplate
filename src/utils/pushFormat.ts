@@ -7,6 +7,8 @@ export type PushDevicePlatform = "ios" | "android" | "other";
 // ここは打ちすぎを止めるだけ。
 export const MAX_DEVICE_NAME_LENGTH = 40;
 
+export const hasDeviceName = (name: string): boolean => name.trim() !== "";
+
 export const detectPlatform = (userAgent: string): PushDevicePlatform => {
   if (/iphone|ipad|ipod/iu.test(userAgent)) {
     return "ios";

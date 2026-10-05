@@ -1024,8 +1024,11 @@ const data = {
     installHeading: "Untuk iPhone atau iPad",
     installStep1: "Ketuk tombol bagikan Safari",
     installStep2: 'Pilih "Tambahkan ke Layar Utama"',
-    installStep3: "Buka kembali halaman ini dari ikon yang ditambahkan",
-    nameHint: "Beri nama yang mudah dikenali untuk perangkat ini.",
+    installStep3:
+      'Ketuk ikon yang ditambahkan ke Layar Utama untuk membuka layar "Daftarkan perangkat untuk notifikasi"',
+    nameLabel: "Nama perangkat (wajib)",
+    nameHint:
+      "Ditampilkan di daftar perangkat pada layar admin. Masukkan nama yang menunjukkan perangkat ini.",
     namePlaceholder: "mis. iPad di kasir",
     register: "Terima notifikasi",
     done: "Terdaftar",

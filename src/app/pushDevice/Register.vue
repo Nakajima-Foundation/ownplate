@@ -50,7 +50,10 @@
 
     <!-- 登録 -->
     <div v-else-if="status === 'usable'" class="mt-6">
-      <div class="text-sm text-black/60">
+      <div class="text-sm font-bold text-black/60">
+        {{ $t("pushDevice.nameLabel") }}
+      </div>
+      <div class="mt-1 text-sm text-black/60">
         {{ $t("pushDevice.nameHint") }}
       </div>
       <input
@@ -63,12 +66,12 @@
         <button
           type="button"
           class="cursor-pointer"
-          :disabled="working"
+          :disabled="!canRegister"
           @click="handleRegister"
         >
           <div
             class="bg-op-teal inline-flex h-12 items-center justify-center rounded-full px-6"
-            :class="working ? 'opacity-50' : ''"
+            :class="canRegister ? '' : 'opacity-50'"
           >
             <div class="text-base font-bold text-white">
               {{ $t("pushDevice.register") }}
@@ -102,7 +105,7 @@ import {
   subscribeThisDevice,
   thisDevicePlatform,
 } from "@/utils/webPush";
-import { MAX_DEVICE_NAME_LENGTH } from "@/utils/pushFormat";
+import { MAX_DEVICE_NAME_LENGTH, hasDeviceName } from "@/utils/pushFormat";
 
 export default defineComponent({
   components: {
@@ -119,6 +122,10 @@ export default defineComponent({
     const working = ref(false);
     const name = ref("");
     const error = ref("");
+    // 端末名は Functions の validateRedeemPushInvite が必須にしているので、空のまま送らせない
+    const canRegister = computed(
+      () => !working.value && hasDeviceName(name.value),
+    );
 
     // 判定できるまでは案内を出さない。null のまま「追加してください」と出すと、
     // 対応している端末にも無関係な手順を読ませることになる。
@@ -190,7 +197,7 @@ export default defineComponent({
     });
 
     const handleRegister = async () => {
-      if (working.value) {
+      if (!canRegister.value) {
         return;
       }
       working.value = true;
@@ -232,6 +239,7 @@ export default defineComponent({
 
     return {
       MAX_DEVICE_NAME_LENGTH,
+      canRegister,
       status,
       statusMessage,
       needsHomeScreen,
