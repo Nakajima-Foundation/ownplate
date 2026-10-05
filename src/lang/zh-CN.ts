@@ -969,7 +969,7 @@ const data = {
     installHeading: "使用 iPhone 或 iPad 时",
     installStep1: "点按 Safari 的分享按钮",
     installStep2: "选择“添加到主屏幕”",
-    installStep3: "从添加的图标重新打开本页面",
+    installStep3: "点按添加到主屏幕的图标，打开“注册接收通知的设备”画面",
     nameHint: "请为该设备取一个易于辨认的名称。",
     namePlaceholder: "例如：收银台的 iPad",
     register: "接收通知",

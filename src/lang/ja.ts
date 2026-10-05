@@ -1010,7 +1010,8 @@ const data = {
     installHeading: "iPhone・iPad をお使いの場合",
     installStep1: "Safari の共有ボタンを押します",
     installStep2: "「ホーム画面に追加」を選びます",
-    installStep3: "追加されたアイコンから、このページを開き直します",
+    installStep3:
+      "ホーム画面に追加されたアイコンを押して「通知を受け取る端末の登録」画面を開きます",
     nameHint: "どの端末かわかる名前を入れてください。",
     namePlaceholder: "例：レジの iPad",
     register: "通知を受け取る",

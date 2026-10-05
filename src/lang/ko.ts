@@ -1005,7 +1005,8 @@ const data = {
     installHeading: "iPhone·iPad를 사용하는 경우",
     installStep1: "Safari의 공유 버튼을 누릅니다",
     installStep2: '"홈 화면에 추가"를 선택합니다',
-    installStep3: "추가된 아이콘에서 이 페이지를 다시 엽니다",
+    installStep3:
+      '홈 화면에 추가된 아이콘을 눌러 "알림을 받을 기기 등록" 화면을 엽니다',
     nameHint: "어떤 기기인지 알 수 있는 이름을 입력해 주세요.",
     namePlaceholder: "예: 계산대의 iPad",
     register: "알림 받기",

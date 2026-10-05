@@ -1028,7 +1028,8 @@ const data = {
     installHeading: "Sur iPhone ou iPad",
     installStep1: "Appuyez sur le bouton de partage de Safari",
     installStep2: "Choisissez « Sur l'écran d'accueil »",
-    installStep3: "Rouvrez cette page depuis l'icône ajoutée",
+    installStep3:
+      "Touchez l'icône ajoutée à l'écran d'accueil pour ouvrir l'écran « Enregistrer un appareil pour les notifications »",
     nameHint: "Donnez à cet appareil un nom reconnaissable.",
     namePlaceholder: "ex. iPad de la caisse",
     register: "Recevoir les notifications",

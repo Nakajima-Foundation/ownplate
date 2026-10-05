@@ -1013,7 +1013,8 @@ const data = {
     installHeading: "On iPhone or iPad",
     installStep1: "Tap the Safari share button",
     installStep2: 'Choose "Add to Home Screen"',
-    installStep3: "Open this page again from the icon that was added",
+    installStep3:
+      'Tap the icon added to your Home Screen to open the "Register a device for notifications" screen',
     nameHint: "Give this device a name you will recognize.",
     namePlaceholder: "e.g. iPad at the register",
     register: "Receive notifications",

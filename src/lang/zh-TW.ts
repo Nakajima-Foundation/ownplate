@@ -969,7 +969,7 @@ const data = {
     installHeading: "使用 iPhone 或 iPad 時",
     installStep1: "點按 Safari 的分享按鈕",
     installStep2: "選擇「加入主畫面」",
-    installStep3: "從新增的圖示重新開啟本頁面",
+    installStep3: "點按加入主畫面的圖示，開啟「註冊接收通知的裝置」畫面",
     nameHint: "請為該裝置取一個容易辨識的名稱。",
     namePlaceholder: "例如：收銀台的 iPad",
     register: "接收通知",
