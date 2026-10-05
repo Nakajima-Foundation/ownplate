@@ -22,6 +22,11 @@ import { getLineId, getLiffPrivateConfig } from "./line/line";
 import { sendMessageDirect } from "./notify/line";
 import * as sms from "./notify/sms";
 import { runIsolated } from "./notify/isolate";
+import {
+  SHOP_MESSAGE_COLLECTION,
+  shopMessageId,
+  shopMessageRecord,
+} from "./notify/shopMessageFormat";
 import * as twilio from "./notify/twilio";
 import * as ses from "./notify/ses";
 import { isWebPushConfigured, sendWebPush } from "./notify/webpush";
@@ -277,6 +282,31 @@ const notifyRestaurantToLineUser = async (
   return results;
 };
 
+// LINE の talk の代わりになる、店舗向けの timeline。**配信とは独立に書く** —
+// 端末を登録していない店でも、通知が1つも届かなくても、何を伝えたかは残す。
+const recordShopMessage = async (
+  db: Firestore,
+  p: {
+    restaurantId: string;
+    orderId: string;
+    messageId: string;
+    orderNumber: number;
+    text: string;
+  },
+) => {
+  await db
+    .doc(
+      `/restaurants/${p.restaurantId}/${SHOP_MESSAGE_COLLECTION}/${shopMessageId(p.orderId, p.messageId)}`,
+    )
+    .set({
+      ...shopMessageRecord(p),
+      createdAt:
+        process.env.NODE_ENV !== "test"
+          ? FieldValue.serverTimestamp()
+          : Date.now(),
+    });
+};
+
 const notifyLineUsers = async (
   db: Firestore,
   p: {
@@ -416,6 +446,17 @@ export const notifyRestaurant = async (
 
   return runIsolated(
     [
+      {
+        name: "timeline",
+        run: () =>
+          recordShopMessage(db, {
+            restaurantId,
+            orderId,
+            messageId,
+            orderNumber: order.number,
+            text: message,
+          }),
+      },
       {
         name: "line",
         run: () => notifyLineUsers(db, { ...where, url, message }),
