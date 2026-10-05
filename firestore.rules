@@ -378,6 +378,15 @@ service cloud.firestore {
         // フィールドだけを列挙する。並べ方だと、後から足したフィールドが素通りする。
         // 新規作成はワンタイム URL 経由で Functions が書くので、クライアントには要らない。
         // Functions は Admin SDK なのでこの rules を通らない。
+        // 店舗向けメッセージの timeline。書くのは Functions だけ（Admin SDK なので
+        // この rules を通らない）。オーナーとサブアカウントが読むだけ。
+        // 全店舗を串刺しで引くほうは collection group 側の規則が持っている。
+        match /messages/{messageId} {
+          allow read: if isRestaurantOwner(restaurantId, request);
+          allow read: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request);
+          allow write: if false;
+        }
+
         match /pushRegistrations/{fid} {
           allow read, delete: if isRestaurantOwner(restaurantId, request);
           allow read, delete: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request);

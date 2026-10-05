@@ -1203,6 +1203,10 @@ const data = {
     forgotPassword: "Quên mật khẩu",
     passwordReset: "Đặt lại mật khẩu",
     pleaseCheckInbox: "Đã gửi email. Vui lòng kiểm tra hộp thư đến.",
+    timeline: {
+      title: "Lịch sử thông báo",
+      empty: "Chưa có thông báo nào.",
+    },
     push: {
       sendFailed: "Lần gửi gần nhất đã thất bại",
       lastSentAt: "Gửi lần cuối",

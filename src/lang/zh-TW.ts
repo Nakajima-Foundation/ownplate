@@ -1140,6 +1140,10 @@ const data = {
     forgotPassword: "忘記密碼",
     passwordReset: "重置密碼",
     pleaseCheckInbox: "郵件已傳送。請檢視收件箱。",
+    timeline: {
+      title: "通知紀錄",
+      empty: "目前沒有通知。",
+    },
     push: {
       sendFailed: "最近一次傳送失敗",
       lastSentAt: "最後傳送",

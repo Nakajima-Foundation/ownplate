@@ -270,6 +270,12 @@ export const customRoutes: CustomRoute[] = [
             component: () => import("@/app/admin/Restaurants/ManagePush.vue"),
           },
           {
+            // 導線はまだ出していない。URL を直接開いたときだけ見える（試用のため）。
+            path: "messages",
+            component: () =>
+              import("@/app/admin/Restaurants/MessageTimeline.vue"),
+          },
+          {
             path: "line",
             component: () => import("@/app/admin/Restaurants/Line/Index.vue"),
           },

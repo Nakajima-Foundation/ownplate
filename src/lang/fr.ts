@@ -1219,6 +1219,10 @@ const data = {
     forgotPassword: "Forgot Password？",
     passwordReset: "Reset Password",
     pleaseCheckInbox: "Please check your inbox, an email is on the way.",
+    timeline: {
+      title: "Historique des notifications",
+      empty: "Aucune notification pour le moment.",
+    },
     push: {
       sendFailed: "Le dernier envoi a échoué",
       lastSentAt: "Dernier envoi",

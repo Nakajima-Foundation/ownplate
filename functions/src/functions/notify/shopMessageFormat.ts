@@ -14,7 +14,8 @@ export type ShopMessageRecord = {
   // 店舗オーナーの uid。複数店舗を運営しているオーナーが collection group で
   // 串刺しに引くために要る。firestore.rules の isResuaurantOwner がこれを見る。
   ownerUid: string;
-  // 実際に送った文面。あとから組み直すと「送っていない文面」を見せることになる。
+  // 送った文面の本文。末尾に付けていた URL は path に分けて持つ（画面ではリンクにする）。
+  // あとから組み直すと「送っていない文面」を見せることになるので、組み直さない。
   text: string;
   // 種別（msg_order_placed など）。画面で色分けや絞り込みに使う。
   messageId: string;

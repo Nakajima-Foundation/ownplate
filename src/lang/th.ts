@@ -1187,6 +1187,10 @@ const data = {
     forgotPassword: "ลืมรหัสผ่าน",
     passwordReset: "รีเซ็ตรหัสผ่าน",
     pleaseCheckInbox: "ส่งอีเมลแล้ว กรุณาตรวจสอบกล่องจดหมาย",
+    timeline: {
+      title: "ประวัติการแจ้งเตือน",
+      empty: "ยังไม่มีการแจ้งเตือน",
+    },
     push: {
       sendFailed: "การส่งล่าสุดล้มเหลว",
       lastSentAt: "ส่งล่าสุด",

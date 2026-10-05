@@ -1197,6 +1197,10 @@ const data = {
     forgotPassword: "パスワードを忘れた場合",
     passwordReset: "パスワードのリセット",
     pleaseCheckInbox: "メールを送信しました。受信箱をご確認ください。",
+    timeline: {
+      title: "お知らせ履歴",
+      empty: "まだお知らせはありません。",
+    },
     push: {
       sendFailed: "直近の送信に失敗しています",
       lastSentAt: "最終送信",
