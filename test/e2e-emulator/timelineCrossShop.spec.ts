@@ -6,6 +6,7 @@ import {
   FIRESTORE_EMULATOR_PORT,
 } from "../../src/config/emulatorPorts";
 import {
+  SEED_EDIT_RESTAURANT_ID,
   SEED_EDIT_OWNER_EMAIL,
   SEED_EDIT_OWNER_PASSWORD,
   SEED_EDIT_OWNER_UID,
@@ -13,6 +14,7 @@ import {
   SEED_OWNER_PASSWORD,
   SEED_OWNER_UID,
 } from "../../scripts/seedData";
+import { SEED_RESTAURANT_ID } from "../../scripts/seedData";
 import { placeOrder } from "./helpers";
 
 // 複数店舗のオーナーが timeline を串刺しで引けること、そして **他人の行は引けないこと**。
@@ -52,6 +54,10 @@ const crossShopQuery = async (idToken: string, ownerUid: string) =>
     body: JSON.stringify({
       structuredQuery: {
         from: [{ collectionId: "messages", allDescendants: true }],
+        // 画面が使うのと同じ形。複合 index はこの並びのためにある。
+        orderBy: [
+          { field: { fieldPath: "createdAt" }, direction: "DESCENDING" },
+        ],
         where: {
           fieldFilter: {
             field: { fieldPath: "ownerUid" },
@@ -63,19 +69,66 @@ const crossShopQuery = async (idToken: string, ownerUid: string) =>
     }),
   });
 
+const OTHER_SHOP_ROW =
+  `http://${EMULATOR_HOST}:${FIRESTORE_EMULATOR_PORT}` +
+  `/v1/projects/ownplate-dev/databases/(default)/documents` +
+  `/restaurants/${SEED_EDIT_RESTAURANT_ID}/messages/crossShopProbe`;
+
+// 2店舗目は種まきに無いので、別の店舗の下に同じ ownerUid の行を直に置く。
+// 見たいのは「問い合わせが親をまたぐか」なので、親が違えば足りる。
+// `Bearer owner` は規則を迂回するため、ここは置くためだけに使う。
+const putRowUnderAnotherShop = async () => {
+  const response = await fetch(OTHER_SHOP_ROW, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer owner",
+    },
+    body: JSON.stringify({
+      fields: {
+        ownerUid: { stringValue: SEED_OWNER_UID },
+        text: { stringValue: "別の店舗の行" },
+        createdAt: { timestampValue: new Date().toISOString() },
+      },
+    }),
+  });
+  if (!response.ok) {
+    throw new Error(`2店舗目の行を置けません: ${response.status}`);
+  }
+};
+
+const removeRowUnderAnotherShop = () =>
+  fetch(OTHER_SHOP_ROW, {
+    method: "DELETE",
+    headers: { Authorization: "Bearer owner" },
+  });
+
 test.describe.configure({ mode: "serial" });
 
 test("オーナーは自分の全店舗の timeline を串刺しで引ける", async ({ page }) => {
   await placeOrder(page);
+  await putRowUnderAnotherShop();
 
-  const token = await idTokenFor(SEED_OWNER_EMAIL, SEED_OWNER_PASSWORD);
-  const response = await crossShopQuery(token, SEED_OWNER_UID);
-  expect(response.status).toBe(200);
+  try {
+    const token = await idTokenFor(SEED_OWNER_EMAIL, SEED_OWNER_PASSWORD);
+    const response = await crossShopQuery(token, SEED_OWNER_UID);
+    expect(response.status).toBe(200);
 
-  const rows: { document?: { fields?: Record<string, unknown> } }[] =
-    await response.json();
-  const found = rows.filter((row) => row.document);
-  expect(found.length).toBeGreaterThan(0);
+    const rows: { document?: { name: string } }[] = await response.json();
+    const paths = rows
+      .filter((row) => row.document)
+      .map((row) => row.document?.name ?? "");
+
+    // **親が違う2つの店舗の行が、1回の問い合わせで返ること。** ここが串刺しの中身。
+    expect(
+      paths.some((p) => p.includes(`/restaurants/${SEED_RESTAURANT_ID}/`)),
+    ).toBe(true);
+    expect(
+      paths.some((p) => p.includes(`/restaurants/${SEED_EDIT_RESTAURANT_ID}/`)),
+    ).toBe(true);
+  } finally {
+    await removeRowUnderAnotherShop();
+  }
 });
 
 // ここが本題。規則が無いと、他人の店の timeline が全部読める。
