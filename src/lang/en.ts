@@ -1214,6 +1214,13 @@ const data = {
       copy: "Copy URL",
       copied: "Copied",
       test: "Send a test",
+      testResult: {
+        noTargets: "No devices have notifications turned on.",
+        allSent: "Sent to {targets} device(s).",
+        partlySent:
+          "Sent to {sent} of {targets} devices. Check the list for devices that did not receive it.",
+        failed: "The test failed to send. Please try again later.",
+      },
       deleteConfirm: "Stop notifying this device?",
     },
     webpush: {

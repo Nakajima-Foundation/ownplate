@@ -1234,6 +1234,13 @@ const data = {
       copy: "Copier l'URL",
       copied: "Copié",
       test: "Envoyer un test",
+      testResult: {
+        noTargets: "Aucun appareil n'a les notifications activées.",
+        allSent: "Envoyé à {targets} appareil(s).",
+        partlySent:
+          "Envoyé à {sent} appareil(s) sur {targets}. Vérifiez dans la liste les appareils qui ne l'ont pas reçu.",
+        failed: "L'envoi du test a échoué. Veuillez réessayer plus tard.",
+      },
       deleteConfirm: "Arrêter de notifier cet appareil ?",
     },
     webpush: {

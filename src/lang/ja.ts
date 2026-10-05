@@ -1212,6 +1212,14 @@ const data = {
       copy: "URL をコピー",
       copied: "コピーしました",
       test: "テスト送信",
+      testResult: {
+        noTargets: "通知がオンの端末がありません。",
+        allSent: "{targets} 台に送信しました。",
+        partlySent:
+          "{targets} 台中 {sent} 台に送信しました。届かなかった端末は一覧で確認してください。",
+        failed:
+          "テスト送信に失敗しました。時間をおいてもう一度お試しください。",
+      },
       deleteConfirm: "この端末への通知を消去しますか？",
     },
     webpush: {

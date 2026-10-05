@@ -1157,6 +1157,13 @@ const data = {
       copy: "複製網址",
       copied: "已複製",
       test: "傳送測試",
+      testResult: {
+        noTargets: "沒有開啟通知的裝置。",
+        allSent: "已傳送到 {targets} 台裝置。",
+        partlySent:
+          "已傳送到 {targets} 台中的 {sent} 台裝置。請在列表中查看未收到的裝置。",
+        failed: "測試傳送失敗。請稍後再試。",
+      },
       deleteConfirm: "要刪除對該裝置的通知嗎？",
     },
     webpush: {
