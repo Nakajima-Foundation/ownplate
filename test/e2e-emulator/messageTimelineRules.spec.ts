@@ -28,9 +28,8 @@ import { placeOrder } from "./helpers";
 // 子アカウントは店舗ごとなので、串刺しでは見えないのが正しい。
 
 const AUTH_BASE = `http://${EMULATOR_HOST}:${AUTH_EMULATOR_PORT}`;
-const FIRESTORE_BASE =
-  `http://${EMULATOR_HOST}:${FIRESTORE_EMULATOR_PORT}` +
-  `/v1/projects/ownplate-dev/databases/(default)/documents`;
+const FIRESTORE_V1 = `http://${EMULATOR_HOST}:${FIRESTORE_EMULATOR_PORT}/v1`;
+const FIRESTORE_BASE = `${FIRESTORE_V1}/projects/ownplate-dev/databases/(default)/documents`;
 
 const idTokenFor = async (email: string, password: string) => {
   const response = await fetch(
@@ -90,10 +89,17 @@ const crossShopQuery = async (idToken: string, ownerUid: string) =>
     }),
   });
 
-const rowsIn = async (response: Response) => {
-  const body: { document?: unknown }[] = await response.json();
-  return body.filter((entry) => entry.document !== undefined).length;
+// 返ってきた行の資源名。書き換えの試験は **実在する行** に当てないと、
+// 作成が拒まれただけで「更新も拒まれる」と読み違える。
+const documentNamesIn = async (response: Response): Promise<string[]> => {
+  const body: { document?: { name?: string } }[] = await response.json();
+  return body.flatMap((entry) =>
+    entry.document?.name ? [entry.document.name] : [],
+  );
 };
+
+const rowsIn = async (response: Response) =>
+  (await documentNamesIn(response)).length;
 
 test("timeline を読めるのはこの店舗のオーナーと子アカウントだけ", async ({
   page,
@@ -140,18 +146,34 @@ test("オーナーでも timeline には書けない", async ({ page }) => {
   // 読めることを先に示す。403 が「経路違い」ではなく「書けない」だと分かるように。
   const asOwner = await shopTimelineQuery(ownerToken);
   expect(asOwner.status).toBe(200);
-  expect(await rowsIn(asOwner)).toBeGreaterThan(0);
+  const names = await documentNamesIn(asOwner);
+  expect(names.length).toBeGreaterThan(0);
 
-  const written = await fetch(
+  const forged = JSON.stringify({
+    fields: { text: { stringValue: "偽の行" } },
+  });
+
+  // 既にある行の書き換え。
+  const updated = await fetch(
+    `${FIRESTORE_V1}/${names[0]}?updateMask.fieldPaths=text`,
+    { method: "PATCH", headers: authHeader(ownerToken), body: forged },
+  );
+  expect(updated.status).toBe(403);
+
+  // 新しい行の作成。
+  const created = await fetch(
     `${FIRESTORE_BASE}/restaurants/${SEED_RESTAURANT_ID}/messages/forged` +
       `?updateMask.fieldPaths=text`,
-    {
-      method: "PATCH",
-      headers: authHeader(ownerToken),
-      body: JSON.stringify({ fields: { text: { stringValue: "偽の行" } } }),
-    },
+    { method: "PATCH", headers: authHeader(ownerToken), body: forged },
   );
-  expect(written.status).toBe(403);
+  expect(created.status).toBe(403);
+
+  // 行の削除。
+  const deleted = await fetch(`${FIRESTORE_V1}/${names[0]}`, {
+    method: "DELETE",
+    headers: authHeader(ownerToken),
+  });
+  expect(deleted.status).toBe(403);
 });
 
 test("子アカウントは串刺しでは見えない", async ({ page }) => {
