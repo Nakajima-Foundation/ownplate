@@ -191,6 +191,8 @@
           <button
             type="button"
             class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-black/5 px-4"
+            :class="testing ? 'opacity-50' : ''"
+            :disabled="testing"
             @click="handleTest"
           >
             <span class="text-op-teal text-sm font-bold">
@@ -204,7 +206,7 @@
       </div>
 
       <!-- Loading -->
-      <Loading v-if="creating" />
+      <Loading v-if="creating || testing" />
     </div>
   </div>
 </template>
@@ -221,19 +223,20 @@ import {
   collection,
 } from "firebase/firestore";
 
+import { useI18n } from "vue-i18n";
 import { createPushInvite, sendTestWebPush } from "@/lib/firebase/functions";
 import { checkShopAccount } from "@/utils/userPermission";
 import moment from "moment";
 
 import {
   type SendRecord,
-  describeSendResult,
   hasRecentFailure,
   lastSend,
   needsReregistration,
   recentFailureCode,
   registeredAtSeconds,
   registeredWithInvite,
+  testSendOutcome,
 } from "@/utils/pushFormat";
 import {
   useAdminUids,
@@ -275,6 +278,7 @@ export default defineComponent({
   },
   setup(props) {
     const dialogStore = useDialogStore();
+    const { t } = useI18n({ useScope: "global" });
 
     useHead(() => ({
       title: ["Admin Manage Push", defaultTitle].join(" / "),
@@ -290,6 +294,7 @@ export default defineComponent({
     const inviteUrl = ref("");
     const creating = ref(false);
     const copied = ref(false);
+    const testing = ref(false);
     const testResult = ref("");
     const editingId = ref("");
     const editingName = ref("");
@@ -423,7 +428,17 @@ export default defineComponent({
       }
     };
 
+    const describeTestResult = (sent: number, targets: number) =>
+      t(`admin.push.testResult.${testSendOutcome(sent, targets)}`, {
+        sent,
+        targets,
+      });
+
     const handleTest = async () => {
+      if (testing.value) {
+        return;
+      }
+      testing.value = true;
       testResult.value = "";
       try {
         const { data } = await sendTestWebPush({
@@ -431,10 +446,12 @@ export default defineComponent({
           title: "テスト通知",
           body: props.shopInfo.restaurantName,
         });
-        testResult.value = describeSendResult(data.sent, data.targets);
+        testResult.value = describeTestResult(data.sent, data.targets);
       } catch (e) {
-        testResult.value = `${e}`;
+        console.error("failed to send a test push", e);
+        testResult.value = t("admin.push.testResult.failed");
       }
+      testing.value = false;
     };
 
     return {
@@ -443,6 +460,7 @@ export default defineComponent({
       inviteUrl,
       creating,
       copied,
+      testing,
       testResult,
       editingId,
       editingName,

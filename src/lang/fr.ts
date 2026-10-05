@@ -1039,10 +1039,11 @@ const data = {
     doneHint: "Cet appareil sera notifié à l'arrivée d'une nouvelle commande.",
     status: {
       "registered-here": "Cet appareil est déjà enregistré",
-      used: "Cette URL a déjà été utilisée. Demandez-en une nouvelle au restaurant.",
-      expired: "Cette URL a expiré. Demandez-en une nouvelle au restaurant.",
+      used: "Cette URL a déjà été utilisée. Demandez-en une nouvelle à votre administrateur.",
+      expired:
+        "Cette URL a expiré. Demandez-en une nouvelle à votre administrateur.",
       "not-found":
-        "Cette URL n'est pas valide. Demandez-en une nouvelle au restaurant.",
+        "Cette URL n'est pas valide. Demandez-en une nouvelle à votre administrateur.",
     },
     failure: {
       unconfigured:
@@ -1056,7 +1057,7 @@ const data = {
       "no-fid":
         "L'enregistrement a échoué. Veuillez réessayer dans un instant.",
       invite:
-        "Cette URL a déjà été utilisée ou a expiré. Demandez-en une nouvelle au restaurant.",
+        "Cette URL a déjà été utilisée ou a expiré. Demandez-en une nouvelle à votre administrateur.",
     },
   },
   admin: {
@@ -1231,12 +1232,20 @@ const data = {
       devices: "Appareils à notifier",
       empty: "Aucun appareil n'est encore enregistré.",
       addDevice: "Ajouter un appareil",
-      inviteHeading: "Ouvrez cette URL sur l'appareil",
+      inviteHeading:
+        "Ouvrez cette URL sur l'appareil qui doit recevoir les notifications",
       inviteHint:
-        "Chaque URL n'enregistre qu'un seul appareil. Pour un deuxième appareil, appuyez à nouveau sur « Ajouter un appareil ». L'URL expire au bout de 24 heures. * Ne la partagez pas là où beaucoup de personnes peuvent la voir, comme un groupe LINE.",
+        "Cette URL ne permet d'enregistrer qu'un seul appareil. Pour ajouter un deuxième appareil, appuyez à nouveau sur « Ajouter un appareil ». L'URL expire au bout de 24 heures. * Ne partagez pas l'URL là où beaucoup de personnes peuvent la voir, comme un groupe LINE.",
       copy: "Copier l'URL",
       copied: "Copié",
       test: "Envoyer un test",
+      testResult: {
+        noTargets: "Aucun appareil n'a les notifications activées.",
+        allSent: "Envoyé à {targets} appareil(s).",
+        partlySent:
+          "Envoyé à {sent} appareil(s) sur {targets}. Vérifiez dans la liste les appareils qui ne l'ont pas reçu.",
+        failed: "L'envoi du test a échoué. Veuillez réessayer plus tard.",
+      },
       deleteConfirm: "Arrêter de notifier cet appareil ?",
     },
     webpush: {

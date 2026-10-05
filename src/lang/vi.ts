@@ -1026,9 +1026,10 @@ const data = {
     doneHint: "Thiết bị này sẽ được thông báo khi có đơn hàng mới.",
     status: {
       "registered-here": "Thiết bị này đã được đăng ký",
-      used: "URL này đã được dùng. Vui lòng xin URL mới từ nhà hàng.",
-      expired: "URL này đã hết hạn. Vui lòng xin URL mới từ nhà hàng.",
-      "not-found": "URL này không hợp lệ. Vui lòng xin URL mới từ nhà hàng.",
+      used: "URL này đã được dùng. Vui lòng xin URL mới từ quản trị viên.",
+      expired: "URL này đã hết hạn. Vui lòng xin URL mới từ quản trị viên.",
+      "not-found":
+        "URL này không hợp lệ. Vui lòng xin URL mới từ quản trị viên.",
     },
     failure: {
       unconfigured: "Nhà hàng này không sử dụng được thông báo đẩy.",
@@ -1039,7 +1040,7 @@ const data = {
       dismissed: "Thông báo chưa được cho phép. Vui lòng thử lại.",
       "no-fid": "Đăng ký không thành công. Vui lòng thử lại sau giây lát.",
       invite:
-        "URL này đã được dùng hoặc đã hết hạn. Vui lòng liên hệ nhà hàng.",
+        "URL này đã được dùng hoặc đã hết hạn. Vui lòng liên hệ quản trị viên.",
     },
   },
   admin: {
@@ -1215,12 +1216,19 @@ const data = {
       devices: "Thiết bị nhận thông báo",
       empty: "Chưa có thiết bị nào được đăng ký.",
       addDevice: "Thêm thiết bị",
-      inviteHeading: "Hãy mở URL này trên thiết bị",
+      inviteHeading: "Mở URL này trên thiết bị muốn nhận thông báo",
       inviteHint:
-        'Mỗi URL chỉ đăng ký được 1 thiết bị. Với thiết bị thứ hai, hãy nhấn "Thêm thiết bị" lần nữa. URL hết hạn sau 24 giờ. ※ Không chia sẻ ở nơi nhiều người có thể xem, như nhóm LINE.',
+        'URL này chỉ đăng ký được 1 thiết bị. Để thêm thiết bị thứ hai, hãy nhấn "Thêm thiết bị" lần nữa. URL hết hạn sau 24 giờ. ※ Không chia sẻ URL ở nơi nhiều người có thể xem, như nhóm LINE.',
       copy: "Sao chép URL",
       copied: "Đã sao chép",
       test: "Gửi thử",
+      testResult: {
+        noTargets: "Không có thiết bị nào bật thông báo.",
+        allSent: "Đã gửi đến {targets} thiết bị.",
+        partlySent:
+          "Đã gửi đến {sent}/{targets} thiết bị. Hãy kiểm tra danh sách các thiết bị chưa nhận được.",
+        failed: "Gửi thử thất bại. Vui lòng thử lại sau.",
+      },
       deleteConfirm: "Ngừng thông báo tới thiết bị này?",
     },
     webpush: {

@@ -978,9 +978,9 @@ const data = {
     doneHint: "有新订单时，本设备将收到通知。",
     status: {
       "registered-here": "本设备已注册",
-      used: "此网址已被使用。请向店铺索取新的网址。",
-      expired: "此网址已过期。请向店铺索取新的网址。",
-      "not-found": "此网址无效。请向店铺索取新的网址。",
+      used: "此网址已被使用。请向管理员索取新的网址。",
+      expired: "此网址已过期。请向管理员索取新的网址。",
+      "not-found": "此网址无效。请向管理员索取新的网址。",
     },
     failure: {
       unconfigured: "本店铺无法使用推送通知。",
@@ -988,7 +988,7 @@ const data = {
       denied: "通知已被阻止。请在浏览器设置中允许。",
       dismissed: "未允许通知。请再试一次。",
       "no-fid": "注册失败。请稍后再试。",
-      invite: "此网址已被使用或已过期。请联系店铺。",
+      invite: "此网址已被使用或已过期。请联系管理员。",
     },
   },
   admin: {
@@ -1152,12 +1152,19 @@ const data = {
       devices: "接收通知的设备",
       empty: "尚未注册任何设备。",
       addDevice: "添加设备",
-      inviteHeading: "请在该设备上打开此网址",
+      inviteHeading: "请在需要接收通知的设备上打开此网址",
       inviteHint:
-        "此网址只能注册 1 台设备。第 2 台设备请再次点击“添加设备”。有效期为 24 小时。※ 请勿分享到 LINE 群组等不特定多数人可以看到的地方。",
+        "此网址只能注册 1 台设备。如需添加第 2 台设备，请再次点击“添加设备”。有效期为 24 小时。※ 请勿将网址分享到 LINE 群组等不特定多数人可以看到的地方。",
       copy: "复制网址",
       copied: "已复制",
       test: "发送测试",
+      testResult: {
+        noTargets: "没有开启通知的设备。",
+        allSent: "已发送到 {targets} 台设备。",
+        partlySent:
+          "已发送到 {targets} 台中的 {sent} 台设备。请在列表中查看未收到的设备。",
+        failed: "测试发送失败。请稍后再试。",
+      },
       deleteConfirm: "要删除对该设备的通知吗？",
     },
     webpush: {
