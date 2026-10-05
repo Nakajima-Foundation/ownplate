@@ -1200,6 +1200,7 @@ const data = {
     timeline: {
       title: "お知らせ履歴",
       empty: "まだお知らせはありません。",
+      failed: "お知らせを読み込めませんでした。権限をご確認ください。",
     },
     push: {
       sendFailed: "直近の送信に失敗しています",

@@ -17,21 +17,26 @@
           {{ $t("admin.timeline.title") }}
         </div>
 
-        <div v-if="messages.length === 0" class="text-sm text-black/60">
+        <div v-if="failed" class="text-sm text-red-700">
+          {{ $t("admin.timeline.failed") }}
+        </div>
+
+        <div v-else-if="messages.length === 0" class="text-sm text-black/60">
           {{ $t("admin.timeline.empty") }}
         </div>
 
-        <router-link
+        <component
+          :is="message.path ? 'router-link' : 'div'"
           v-for="message in messages"
           :key="message.id"
-          :to="message.path"
+          :to="message.path || undefined"
           class="block rounded-lg bg-black/5 p-4"
         >
           <div class="text-sm text-black/80">{{ message.text }}</div>
           <div class="mt-1 text-xs text-black/40">
             {{ sentAt(message.createdAt) }}
           </div>
-        </router-link>
+        </component>
       </div>
     </div>
   </div>
@@ -98,6 +103,7 @@ export default defineComponent({
     const restaurantId = useRestaurantId();
 
     const messages = ref<ShopMessage[]>([]);
+    const failed = ref(false);
 
     const detacher = onSnapshot(
       query(
@@ -116,6 +122,11 @@ export default defineComponent({
           };
         });
       },
+      (error) => {
+        // 拾わないと、読めなかった場合も「まだありません」に見えてしまう。
+        console.error("店舗メッセージの timeline を読めません", error);
+        failed.value = true;
+      },
     );
     onUnmounted(() => {
       detacher();
@@ -126,6 +137,7 @@ export default defineComponent({
       at ? moment(at.toDate()).format("YYYY/MM/DD HH:mm") : "";
 
     return {
+      failed,
       messages,
       sentAt,
       notFound: false,

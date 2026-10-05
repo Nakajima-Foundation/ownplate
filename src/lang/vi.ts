@@ -1206,6 +1206,7 @@ const data = {
     timeline: {
       title: "Lịch sử thông báo",
       empty: "Chưa có thông báo nào.",
+      failed: "Không thể tải thông báo. Vui lòng kiểm tra quyền truy cập.",
     },
     push: {
       sendFailed: "Lần gửi gần nhất đã thất bại",

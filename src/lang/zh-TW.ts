@@ -1143,6 +1143,7 @@ const data = {
     timeline: {
       title: "通知紀錄",
       empty: "目前沒有通知。",
+      failed: "無法載入通知。請確認您的權限。",
     },
     push: {
       sendFailed: "最近一次傳送失敗",

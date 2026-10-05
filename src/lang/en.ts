@@ -1202,6 +1202,7 @@ const data = {
     timeline: {
       title: "Notification history",
       empty: "No notifications yet.",
+      failed: "Could not load notifications. Please check your permissions.",
     },
     push: {
       sendFailed: "The most recent send failed",

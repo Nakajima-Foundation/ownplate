@@ -1189,6 +1189,7 @@ const data = {
     timeline: {
       title: "알림 기록",
       empty: "아직 알림이 없습니다.",
+      failed: "알림을 불러오지 못했습니다. 권한을 확인해 주세요.",
     },
     push: {
       sendFailed: "최근 전송에 실패했습니다",

@@ -1215,6 +1215,7 @@ const data = {
     timeline: {
       title: "Riwayat notifikasi",
       empty: "Belum ada notifikasi.",
+      failed: "Tidak dapat memuat notifikasi. Silakan periksa izin Anda.",
     },
     push: {
       sendFailed: "Pengiriman terakhir gagal",
