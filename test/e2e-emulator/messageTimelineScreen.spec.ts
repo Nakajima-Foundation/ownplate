@@ -42,6 +42,10 @@ test("読めないときに「まだありません」と出さない", async ({
     SEED_SUB_UNASSIGNED_PASSWORD,
     SEED_SUB_UNASSIGNED_EMAIL,
   );
+  // サインインの完了を待たずに進むと、認証前の遷移になって署名画面へ戻される。
+  await page.waitForURL(
+    (url) => !url.pathname.startsWith("/admin/user/signin"),
+  );
   await page.goto(TIMELINE);
 
   await expect(page.getByText("Notification history")).toBeVisible();
