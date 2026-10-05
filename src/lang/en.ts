@@ -1021,10 +1021,11 @@ const data = {
     doneHint: "This device will be notified when a new order arrives.",
     status: {
       "registered-here": "This device is already registered",
-      used: "This URL has already been used. Please ask the restaurant for a new one.",
-      expired: "This URL has expired. Please ask the restaurant for a new one.",
+      used: "This URL has already been used. Please ask your administrator for a new one.",
+      expired:
+        "This URL has expired. Please ask your administrator for a new one.",
       "not-found":
-        "This URL is not valid. Please ask the restaurant for a new one.",
+        "This URL is not valid. Please ask your administrator for a new one.",
     },
     failure: {
       unconfigured: "Push notifications are not available for this restaurant.",
@@ -1034,7 +1035,7 @@ const data = {
       dismissed: "Notifications were not allowed. Please try again.",
       "no-fid": "Registration failed. Please try again in a moment.",
       invite:
-        "This URL has already been used or has expired. Please ask the restaurant for a new one.",
+        "This URL has already been used or has expired. Please ask your administrator for a new one.",
     },
   },
   admin: {
@@ -1208,9 +1209,10 @@ const data = {
       devices: "Devices to notify",
       empty: "No device has been registered yet.",
       addDevice: "Add a device",
-      inviteHeading: "Open this URL on the device",
+      inviteHeading:
+        "Open this URL on the device that should receive notifications",
       inviteHint:
-        'Each URL registers only one device. For a second device, press "Add a device" again. The URL expires in 24 hours. * Do not share it where many people can see it, such as a LINE group.',
+        'This URL can register only one device. To add a second device, press "Add a device" again. The URL expires in 24 hours. * Do not share the URL where many people can see it, such as a LINE group.',
       copy: "Copy URL",
       copied: "Copied",
       test: "Send a test",
