@@ -1036,10 +1036,11 @@ const data = {
     doneHint: "Cet appareil sera notifié à l'arrivée d'une nouvelle commande.",
     status: {
       "registered-here": "Cet appareil est déjà enregistré",
-      used: "Cette URL a déjà été utilisée. Demandez-en une nouvelle au restaurant.",
-      expired: "Cette URL a expiré. Demandez-en une nouvelle au restaurant.",
+      used: "Cette URL a déjà été utilisée. Demandez-en une nouvelle à votre administrateur.",
+      expired:
+        "Cette URL a expiré. Demandez-en une nouvelle à votre administrateur.",
       "not-found":
-        "Cette URL n'est pas valide. Demandez-en une nouvelle au restaurant.",
+        "Cette URL n'est pas valide. Demandez-en une nouvelle à votre administrateur.",
     },
     failure: {
       unconfigured:
@@ -1053,7 +1054,7 @@ const data = {
       "no-fid":
         "L'enregistrement a échoué. Veuillez réessayer dans un instant.",
       invite:
-        "Cette URL a déjà été utilisée ou a expiré. Demandez-en une nouvelle au restaurant.",
+        "Cette URL a déjà été utilisée ou a expiré. Demandez-en une nouvelle à votre administrateur.",
     },
   },
   admin: {

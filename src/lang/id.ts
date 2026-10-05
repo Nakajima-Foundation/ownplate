@@ -1032,9 +1032,10 @@ const data = {
     doneHint: "Perangkat ini akan diberi tahu saat ada pesanan baru.",
     status: {
       "registered-here": "Perangkat ini sudah terdaftar",
-      used: "URL ini sudah digunakan. Mintalah yang baru ke restoran.",
-      expired: "URL ini telah kedaluwarsa. Mintalah yang baru ke restoran.",
-      "not-found": "URL ini tidak valid. Mintalah yang baru ke restoran.",
+      used: "URL ini sudah digunakan. Mintalah yang baru ke administrator.",
+      expired:
+        "URL ini telah kedaluwarsa. Mintalah yang baru ke administrator.",
+      "not-found": "URL ini tidak valid. Mintalah yang baru ke administrator.",
     },
     failure: {
       unconfigured: "Notifikasi push tidak tersedia untuk restoran ini.",
@@ -1044,7 +1045,7 @@ const data = {
       dismissed: "Notifikasi tidak diizinkan. Silakan coba lagi.",
       "no-fid": "Pendaftaran gagal. Silakan coba lagi sebentar lagi.",
       invite:
-        "URL ini sudah digunakan atau telah kedaluwarsa. Mintalah yang baru ke restoran.",
+        "URL ini sudah digunakan atau telah kedaluwarsa. Mintalah yang baru ke administrator.",
     },
   },
   admin: {

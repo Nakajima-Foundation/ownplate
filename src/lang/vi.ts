@@ -1023,9 +1023,10 @@ const data = {
     doneHint: "Thiết bị này sẽ được thông báo khi có đơn hàng mới.",
     status: {
       "registered-here": "Thiết bị này đã được đăng ký",
-      used: "URL này đã được dùng. Vui lòng xin URL mới từ nhà hàng.",
-      expired: "URL này đã hết hạn. Vui lòng xin URL mới từ nhà hàng.",
-      "not-found": "URL này không hợp lệ. Vui lòng xin URL mới từ nhà hàng.",
+      used: "URL này đã được dùng. Vui lòng xin URL mới từ quản trị viên.",
+      expired: "URL này đã hết hạn. Vui lòng xin URL mới từ quản trị viên.",
+      "not-found":
+        "URL này không hợp lệ. Vui lòng xin URL mới từ quản trị viên.",
     },
     failure: {
       unconfigured: "Nhà hàng này không sử dụng được thông báo đẩy.",
@@ -1036,7 +1037,7 @@ const data = {
       dismissed: "Thông báo chưa được cho phép. Vui lòng thử lại.",
       "no-fid": "Đăng ký không thành công. Vui lòng thử lại sau giây lát.",
       invite:
-        "URL này đã được dùng hoặc đã hết hạn. Vui lòng liên hệ nhà hàng.",
+        "URL này đã được dùng hoặc đã hết hạn. Vui lòng liên hệ quản trị viên.",
     },
   },
   admin: {
