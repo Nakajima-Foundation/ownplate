@@ -384,7 +384,6 @@ service cloud.firestore {
         match /messages/{messageId} {
           allow read: if isRestaurantOwner(restaurantId, request);
           allow read: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request);
-          allow write: if false;
         }
 
         match /pushRegistrations/{fid} {
