@@ -40,6 +40,7 @@ describe("shopMessageId", () => {
 
 describe("shopMessageRecord", () => {
   const made = shopMessageRecord({
+    ownerUid: "owner1",
     text: "新しい注文 #12 試験食堂",
     messageId: "msg_order_placed",
     orderId: "order1",
@@ -66,6 +67,12 @@ describe("shopMessageRecord", () => {
     assert.strictEqual(made.restaurantId, "rest1");
   });
 
+  // 複数店舗のオーナーが collection group で串刺しに引くために要る。
+  // 無いと、その行は串刺しの結果に出てこない。
+  it("carries the owner uid", () => {
+    assert.strictEqual(made.ownerUid, "owner1");
+  });
+
   // 届いたかはここに持たない。Web Push のログの仕事。
   it("says nothing about delivery", () => {
     const keys = Object.keys(made).sort();
@@ -73,6 +80,7 @@ describe("shopMessageRecord", () => {
       "messageId",
       "orderId",
       "orderNumber",
+      "ownerUid",
       "path",
       "restaurantId",
       "text",

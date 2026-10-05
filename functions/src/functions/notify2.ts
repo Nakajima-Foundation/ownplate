@@ -288,6 +288,7 @@ const recordShopMessage = async (
   db: Firestore,
   p: {
     restaurantId: string;
+    ownerUid: string;
     orderId: string;
     messageId: string;
     orderNumber: number;
@@ -451,6 +452,7 @@ export const notifyRestaurant = async (
         run: () =>
           recordShopMessage(db, {
             restaurantId,
+            ownerUid: restaurant.uid,
             orderId,
             messageId,
             orderNumber: order.number,
