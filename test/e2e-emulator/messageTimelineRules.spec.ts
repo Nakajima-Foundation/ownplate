@@ -139,24 +139,17 @@ test("timeline を読めるのはこの店舗のオーナーと子アカウン�
 
 // 読めるだけで、書けてはいけない。Firestore の規則は allow を OR するだけで
 // deny が無いので、どこかに書き込みの allow を足すと黙って通ってしまう。
-test("オーナーでも timeline には書けない", async ({ page }) => {
-  await placeOrder(page);
-  const ownerToken = await idTokenFor(SEED_OWNER_EMAIL, SEED_OWNER_PASSWORD);
-
-  // 読めることを先に示す。403 が「経路違い」ではなく「書けない」だと分かるように。
-  const asOwner = await shopTimelineQuery(ownerToken);
-  expect(asOwner.status).toBe(200);
-  const names = await documentNamesIn(asOwner);
-  expect(names.length).toBeGreaterThan(0);
-
+// 読める側は **誰も** 書けない。オーナーだけで測ると、子アカウントにだけ
+// 書き込みを許す規則が黙って通ってしまう。
+const expectCannotWrite = async (idToken: string, existingName: string) => {
   const forged = JSON.stringify({
     fields: { text: { stringValue: "偽の行" } },
   });
 
   // 既にある行の書き換え。
   const updated = await fetch(
-    `${FIRESTORE_V1}/${names[0]}?updateMask.fieldPaths=text`,
-    { method: "PATCH", headers: authHeader(ownerToken), body: forged },
+    `${FIRESTORE_V1}/${existingName}?updateMask.fieldPaths=text`,
+    { method: "PATCH", headers: authHeader(idToken), body: forged },
   );
   expect(updated.status).toBe(403);
 
@@ -164,16 +157,31 @@ test("オーナーでも timeline には書けない", async ({ page }) => {
   const created = await fetch(
     `${FIRESTORE_BASE}/restaurants/${SEED_RESTAURANT_ID}/messages/forged` +
       `?updateMask.fieldPaths=text`,
-    { method: "PATCH", headers: authHeader(ownerToken), body: forged },
+    { method: "PATCH", headers: authHeader(idToken), body: forged },
   );
   expect(created.status).toBe(403);
 
   // 行の削除。
-  const deleted = await fetch(`${FIRESTORE_V1}/${names[0]}`, {
+  const deleted = await fetch(`${FIRESTORE_V1}/${existingName}`, {
     method: "DELETE",
-    headers: authHeader(ownerToken),
+    headers: authHeader(idToken),
   });
   expect(deleted.status).toBe(403);
+};
+
+test("読める側は誰も timeline に書けない", async ({ page }) => {
+  await placeOrder(page);
+  const ownerToken = await idTokenFor(SEED_OWNER_EMAIL, SEED_OWNER_PASSWORD);
+  const subToken = await idTokenFor(SEED_SUB_EMAIL, SEED_SUB_PASSWORD);
+
+  // 読めることを先に示す。403 が「経路違い」ではなく「書けない」だと分かるように。
+  const asOwner = await shopTimelineQuery(ownerToken);
+  expect(asOwner.status).toBe(200);
+  const names = await documentNamesIn(asOwner);
+  expect(names.length).toBeGreaterThan(0);
+
+  await expectCannotWrite(ownerToken, names[0]);
+  await expectCannotWrite(subToken, names[0]);
 });
 
 test("子アカウントは串刺しでは見えない", async ({ page }) => {
