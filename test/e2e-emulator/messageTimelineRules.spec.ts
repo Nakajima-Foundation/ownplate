@@ -10,9 +10,11 @@ import {
   SEED_EDIT_OWNER_PASSWORD,
   SEED_OWNER_EMAIL,
   SEED_OWNER_PASSWORD,
+  SEED_OWNER_UID,
   SEED_RESTAURANT_ID,
   SEED_SUB_EMAIL,
   SEED_SUB_PASSWORD,
+  SEED_SUB_UID,
   SEED_SUB_UNASSIGNED_EMAIL,
   SEED_SUB_UNASSIGNED_PASSWORD,
 } from "../../scripts/seedData";
@@ -141,23 +143,43 @@ test("timeline を読めるのはこの店舗のオーナーと子アカウン�
 // deny が無いので、どこかに書き込みの allow を足すと黙って通ってしまう。
 // 読める側は **誰も** 書けない。オーナーだけで測ると、子アカウントにだけ
 // 書き込みを許す規則が黙って通ってしまう。
-const expectCannotWrite = async (idToken: string, existingName: string) => {
-  const forged = JSON.stringify({
-    fields: { text: { stringValue: "偽の行" } },
-  });
-
+const expectCannotWrite = async (
+  idToken: string,
+  uid: string,
+  existingName: string,
+) => {
   // 既にある行の書き換え。
   const updated = await fetch(
     `${FIRESTORE_V1}/${existingName}?updateMask.fieldPaths=text`,
-    { method: "PATCH", headers: authHeader(idToken), body: forged },
+    {
+      method: "PATCH",
+      headers: authHeader(idToken),
+      body: JSON.stringify({ fields: { text: { stringValue: "偽の行" } } }),
+    },
   );
   expect(updated.status).toBe(403);
 
-  // 新しい行の作成。
+  // 新しい行の作成。**本物と同じ形**で作りに行く。項目の欠けた行で試すと、
+  // 「形が整っていれば作れる」規則を足されたときに緑のまま通ってしまう。
   const created = await fetch(
-    `${FIRESTORE_BASE}/restaurants/${SEED_RESTAURANT_ID}/messages/forged` +
-      `?updateMask.fieldPaths=text`,
-    { method: "PATCH", headers: authHeader(idToken), body: forged },
+    `${FIRESTORE_BASE}/restaurants/${SEED_RESTAURANT_ID}/messages/forged`,
+    {
+      method: "PATCH",
+      headers: authHeader(idToken),
+      body: JSON.stringify({
+        fields: {
+          ownerUid: { stringValue: uid },
+          restaurantId: { stringValue: SEED_RESTAURANT_ID },
+          text: { stringValue: "偽の行" },
+          messageId: { stringValue: "forged" },
+          orderId: { stringValue: "forged" },
+          orderNumber: { integerValue: "1" },
+          path: {
+            stringValue: `/admin/restaurants/${SEED_RESTAURANT_ID}/orders/forged`,
+          },
+        },
+      }),
+    },
   );
   expect(created.status).toBe(403);
 
@@ -180,8 +202,8 @@ test("読める側は誰も timeline に書けない", async ({ page }) => {
   const names = await documentNamesIn(asOwner);
   expect(names.length).toBeGreaterThan(0);
 
-  await expectCannotWrite(ownerToken, names[0]);
-  await expectCannotWrite(subToken, names[0]);
+  await expectCannotWrite(ownerToken, SEED_OWNER_UID, names[0]);
+  await expectCannotWrite(subToken, SEED_SUB_UID, names[0]);
 });
 
 test("子アカウントは串刺しでは見えない", async ({ page }) => {
