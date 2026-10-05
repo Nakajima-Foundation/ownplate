@@ -1212,6 +1212,11 @@ const data = {
     forgotPassword: "Lupa kata sandi",
     passwordReset: "Reset kata sandi",
     pleaseCheckInbox: "Email telah dikirim. Silakan periksa kotak masuk.",
+    timeline: {
+      title: "Riwayat notifikasi",
+      empty: "Belum ada notifikasi.",
+      failed: "Tidak dapat memuat notifikasi. Silakan periksa izin Anda.",
+    },
     push: {
       sendFailed: "Pengiriman terakhir gagal",
       lastSentAt: "Terakhir dikirim",

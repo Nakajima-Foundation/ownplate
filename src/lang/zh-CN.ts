@@ -1140,6 +1140,11 @@ const data = {
     forgotPassword: "忘记密码",
     passwordReset: "重置密码",
     pleaseCheckInbox: "邮件已发送。请查看收件箱。",
+    timeline: {
+      title: "通知记录",
+      empty: "暂无通知。",
+      failed: "无法加载通知。请确认您的权限。",
+    },
     push: {
       sendFailed: "最近一次发送失败",
       lastSentAt: "最后发送",

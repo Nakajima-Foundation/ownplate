@@ -1186,6 +1186,11 @@ const data = {
     forgotPassword: "비밀번호를 잊으신 경우",
     passwordReset: "비밀번호 재설정",
     pleaseCheckInbox: "이메일을 전송했습니다. 받은 편지함을 확인해 주세요.",
+    timeline: {
+      title: "알림 기록",
+      empty: "아직 알림이 없습니다.",
+      failed: "알림을 불러오지 못했습니다. 권한을 확인해 주세요.",
+    },
     push: {
       sendFailed: "최근 전송에 실패했습니다",
       lastSentAt: "마지막 전송",
