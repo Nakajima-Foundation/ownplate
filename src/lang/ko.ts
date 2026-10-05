@@ -1201,6 +1201,13 @@ const data = {
       copy: "URL 복사",
       copied: "복사했습니다",
       test: "테스트 전송",
+      testResult: {
+        noTargets: "알림이 켜진 기기가 없습니다.",
+        allSent: "{targets}대에 전송했습니다.",
+        partlySent:
+          "{targets}대 중 {sent}대에 전송했습니다. 받지 못한 기기는 목록에서 확인해 주세요.",
+        failed: "테스트 전송에 실패했습니다. 잠시 후 다시 시도해 주세요.",
+      },
       deleteConfirm: "이 기기로의 알림을 삭제할까요?",
     },
     webpush: {

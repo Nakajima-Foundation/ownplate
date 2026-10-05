@@ -1228,6 +1228,13 @@ const data = {
       copy: "Salin URL",
       copied: "Tersalin",
       test: "Kirim uji coba",
+      testResult: {
+        noTargets: "Tidak ada perangkat dengan notifikasi aktif.",
+        allSent: "Terkirim ke {targets} perangkat.",
+        partlySent:
+          "Terkirim ke {sent} dari {targets} perangkat. Periksa daftar untuk perangkat yang tidak menerimanya.",
+        failed: "Gagal mengirim tes. Silakan coba lagi nanti.",
+      },
       deleteConfirm: "Hentikan notifikasi ke perangkat ini?",
     },
     webpush: {

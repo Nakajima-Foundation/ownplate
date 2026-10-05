@@ -1157,6 +1157,13 @@ const data = {
       copy: "复制网址",
       copied: "已复制",
       test: "发送测试",
+      testResult: {
+        noTargets: "没有开启通知的设备。",
+        allSent: "已发送到 {targets} 台设备。",
+        partlySent:
+          "已发送到 {targets} 台中的 {sent} 台设备。请在列表中查看未收到的设备。",
+        failed: "测试发送失败。请稍后再试。",
+      },
       deleteConfirm: "要删除对该设备的通知吗？",
     },
     webpush: {

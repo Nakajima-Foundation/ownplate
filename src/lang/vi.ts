@@ -1219,6 +1219,13 @@ const data = {
       copy: "Sao chép URL",
       copied: "Đã sao chép",
       test: "Gửi thử",
+      testResult: {
+        noTargets: "Không có thiết bị nào bật thông báo.",
+        allSent: "Đã gửi đến {targets} thiết bị.",
+        partlySent:
+          "Đã gửi đến {sent}/{targets} thiết bị. Hãy kiểm tra danh sách các thiết bị chưa nhận được.",
+        failed: "Gửi thử thất bại. Vui lòng thử lại sau.",
+      },
       deleteConfirm: "Ngừng thông báo tới thiết bị này?",
     },
     webpush: {

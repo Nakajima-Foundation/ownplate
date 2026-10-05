@@ -24,6 +24,18 @@ export const describeSendResult = (sent: number, targets: number): string => {
   return `sent ${sent}/${targets}`;
 };
 
+export type TestSendOutcome = "noTargets" | "allSent" | "partlySent";
+
+export const testSendOutcome = (
+  sent: number,
+  targets: number,
+): TestSendOutcome => {
+  if (targets === 0) {
+    return "noTargets";
+  }
+  return sent >= targets ? "allSent" : "partlySent";
+};
+
 // Firestore の Timestamp だけを当てにする。serverTimestamp() は書き込み直後の
 // ローカルスナップショットでは null になるので、そこも通る形にしておく。
 export type TimestampLike = { seconds: number } | null | undefined;

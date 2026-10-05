@@ -11,6 +11,7 @@ import {
   recentFailureCode,
   registeredAtSeconds,
   registeredWithInvite,
+  testSendOutcome,
 } from "../../src/utils/pushFormat.ts";
 
 describe("detectPlatform", () => {
@@ -37,6 +38,25 @@ describe("describeSendResult", () => {
 
   it("reports the delivered fraction", () => {
     assert.strictEqual(describeSendResult(2, 3), "sent 2/3");
+  });
+});
+
+describe("testSendOutcome", () => {
+  it("says there was nothing to send to", () => {
+    assert.strictEqual(testSendOutcome(0, 0), "noTargets");
+  });
+
+  it("reports every device reached", () => {
+    assert.strictEqual(testSendOutcome(1, 1), "allSent");
+    assert.strictEqual(testSendOutcome(3, 3), "allSent");
+  });
+
+  it("reports a send that missed some devices", () => {
+    assert.strictEqual(testSendOutcome(2, 3), "partlySent");
+  });
+
+  it("reports a send that reached none of them", () => {
+    assert.strictEqual(testSendOutcome(0, 2), "partlySent");
   });
 });
 
