@@ -13,6 +13,8 @@ import {
   SEED_RESTAURANT_ID,
   SEED_SUB_EMAIL,
   SEED_SUB_PASSWORD,
+  SEED_SUB_UNASSIGNED_EMAIL,
+  SEED_SUB_UNASSIGNED_PASSWORD,
 } from "../../scripts/seedData";
 import { placeOrder } from "./helpers";
 
@@ -116,6 +118,14 @@ test("timeline を読めるのはこの店舗のオーナーと子アカウン�
 
   // 別のオーナー。親子関係も無いので、どちらの項にも当たらない。
   expect((await shopTimelineQuery(otherOwnerToken)).status).toBe(403);
+
+  // 同じ親の下にいるが、この店舗を担当していない子。親子関係だけでは足りず、
+  // 担当店舗の一覧に入っていることまで要る。
+  const unassignedToken = await idTokenFor(
+    SEED_SUB_UNASSIGNED_EMAIL,
+    SEED_SUB_UNASSIGNED_PASSWORD,
+  );
+  expect((await shopTimelineQuery(unassignedToken)).status).toBe(403);
 
   // 署名なし。
   expect((await shopTimelineQuery(null)).status).toBe(403);

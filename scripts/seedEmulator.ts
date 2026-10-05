@@ -35,6 +35,9 @@ import {
   SEED_SUPER_EMAIL,
   SEED_SUPER_PASSWORD,
   SEED_SUB_EMAIL,
+  SEED_SUB_UNASSIGNED_EMAIL,
+  SEED_SUB_UNASSIGNED_PASSWORD,
+  SEED_SUB_UNASSIGNED_UID,
   SEED_SUB_PASSWORD,
   SEED_SUB_UID,
   SEED_SUPER_UID,
@@ -195,6 +198,18 @@ const main = async () => {
     email: SEED_SUB_EMAIL,
     restaurantLists: [SEED_RESTAURANT_ID],
   });
+  // 親は同じだが担当店舗なし。親子関係だけでは読めないことの対照。
+  await upsertAdmin(
+    SEED_SUB_UNASSIGNED_UID,
+    SEED_SUB_UNASSIGNED_EMAIL,
+    SEED_SUB_UNASSIGNED_PASSWORD,
+  );
+  await getAuth().setCustomUserClaims(SEED_SUB_UNASSIGNED_UID, {
+    parentUid: SEED_OWNER_UID,
+  });
+  await db
+    .doc(`admins/${SEED_OWNER_UID}/children/${SEED_SUB_UNASSIGNED_UID}`)
+    .set({ email: SEED_SUB_UNASSIGNED_EMAIL, restaurantLists: [] });
   await upsertAdmin(SEED_SUPER_UID, SEED_SUPER_EMAIL, SEED_SUPER_PASSWORD);
   await getAuth().setCustomUserClaims(SEED_SUPER_UID, { admin: true });
   await upsertCustomer();
