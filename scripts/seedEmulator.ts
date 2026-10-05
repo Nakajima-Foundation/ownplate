@@ -34,6 +34,9 @@ import {
   SEED_RESTAURANT_NAME,
   SEED_SUPER_EMAIL,
   SEED_SUPER_PASSWORD,
+  SEED_SUB_EMAIL,
+  SEED_SUB_PASSWORD,
+  SEED_SUB_UID,
   SEED_SUPER_UID,
   seedMenu,
   seedDeliveryArea,
@@ -182,6 +185,16 @@ const main = async () => {
   await db
     .doc(`admins/${SEED_DELIVERY_OWNER_UID}/public/payment`)
     .set({ inStore: true });
+  // 親オーナーの子アカウント。親が割り当てた店舗だけを見られる。
+  // parentUid は独自クレームなので、利用者側からは作れない。
+  await upsertAdmin(SEED_SUB_UID, SEED_SUB_EMAIL, SEED_SUB_PASSWORD);
+  await getAuth().setCustomUserClaims(SEED_SUB_UID, {
+    parentUid: SEED_OWNER_UID,
+  });
+  await db.doc(`admins/${SEED_OWNER_UID}/children/${SEED_SUB_UID}`).set({
+    email: SEED_SUB_EMAIL,
+    restaurantLists: [SEED_RESTAURANT_ID],
+  });
   await upsertAdmin(SEED_SUPER_UID, SEED_SUPER_EMAIL, SEED_SUPER_PASSWORD);
   await getAuth().setCustomUserClaims(SEED_SUPER_UID, { admin: true });
   await upsertCustomer();

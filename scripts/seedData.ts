@@ -51,6 +51,11 @@ export const seedPromotion = () => ({
 export const SEED_SUPER_UID = "e2esuper";
 export const SEED_SUPER_EMAIL = "e2e-super@example.com";
 export const SEED_SUPER_PASSWORD = "e2e-super-password-1234";
+// 親オーナーの子アカウント。店舗ごとに割り当てられるので、串刺しでは見えない。
+export const SEED_SUB_UID = "e2esubaccount";
+export const SEED_SUB_EMAIL = "e2e-sub@example.com";
+export const SEED_SUB_PASSWORD = "e2e-sub-password-1234";
+
 // 保存を伴う試験のための、別のオーナーと店舗。**同じ店舗を書き換えると
 // ほかの試験の前提が変わる。** オーナーごと分けておけば管理画面の一覧も混ざらない。
 export const SEED_EDIT_OWNER_UID = "e2eeditowner";
