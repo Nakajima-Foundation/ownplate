@@ -1007,7 +1007,9 @@ const data = {
     installStep2: '"홈 화면에 추가"를 선택합니다',
     installStep3:
       '홈 화면에 추가된 아이콘을 눌러 "알림을 받을 기기 등록" 화면을 엽니다',
-    nameHint: "어떤 기기인지 알 수 있는 이름을 입력해 주세요.",
+    nameLabel: "기기 이름 (필수)",
+    nameHint:
+      "관리 화면의 기기 목록에 표시됩니다. 이 기기임을 알 수 있는 이름을 입력해 주세요.",
     namePlaceholder: "예: 계산대의 iPad",
     register: "알림 받기",
     done: "등록했습니다",

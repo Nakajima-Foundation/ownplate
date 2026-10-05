@@ -4,6 +4,7 @@ import assert from "node:assert";
 import {
   describeSendResult,
   detectPlatform,
+  hasDeviceName,
   hasRecentFailure,
   lastSend,
   MAX_DEVICE_NAME_LENGTH,
@@ -268,5 +269,25 @@ describe("registeredWithInvite", () => {
 
   it("ignores a rename or a toggle", () => {
     assert.strictEqual(registeredWithInvite(mine, [{ id: "fid-ipad" }]), false);
+  });
+});
+
+describe("hasDeviceName", () => {
+  it("accepts a name", () => {
+    assert.strictEqual(hasDeviceName("レジの iPad"), true);
+  });
+
+  // 空のまま送ると、Functions の検証が name を必須として断る
+  it("rejects an empty name", () => {
+    assert.strictEqual(hasDeviceName(""), false);
+  });
+
+  it("rejects a name made only of spaces", () => {
+    assert.strictEqual(hasDeviceName("   "), false);
+    assert.strictEqual(hasDeviceName("　"), false);
+  });
+
+  it("accepts a name with spaces around it", () => {
+    assert.strictEqual(hasDeviceName("  厨房  "), true);
   });
 });

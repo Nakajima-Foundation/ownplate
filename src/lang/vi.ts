@@ -1017,7 +1017,9 @@ const data = {
     installStep2: 'Chọn "Thêm vào Màn hình chính"',
     installStep3:
       'Chạm vào biểu tượng đã thêm vào Màn hình chính để mở màn hình "Đăng ký thiết bị nhận thông báo"',
-    nameHint: "Hãy đặt tên dễ nhận biết cho thiết bị này.",
+    nameLabel: "Tên thiết bị (bắt buộc)",
+    nameHint:
+      "Hiển thị trong danh sách thiết bị trên màn hình quản trị. Hãy nhập tên giúp nhận biết thiết bị này.",
     namePlaceholder: "ví dụ: iPad ở quầy thu ngân",
     register: "Nhận thông báo",
     done: "Đã đăng ký",

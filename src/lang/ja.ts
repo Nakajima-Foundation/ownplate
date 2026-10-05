@@ -1012,7 +1012,9 @@ const data = {
     installStep2: "「ホーム画面に追加」を選びます",
     installStep3:
       "ホーム画面に追加されたアイコンを押して「通知を受け取る端末の登録」画面を開きます",
-    nameHint: "どの端末かわかる名前を入れてください。",
+    nameLabel: "端末名（必須）",
+    nameHint:
+      "管理画面の端末一覧に表示されます。この端末だと分かる名前を入力してください。",
     namePlaceholder: "例：レジの iPad",
     register: "通知を受け取る",
     done: "登録しました",

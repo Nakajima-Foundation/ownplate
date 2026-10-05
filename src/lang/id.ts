@@ -1026,7 +1026,9 @@ const data = {
     installStep2: 'Pilih "Tambahkan ke Layar Utama"',
     installStep3:
       'Ketuk ikon yang ditambahkan ke Layar Utama untuk membuka layar "Daftarkan perangkat untuk notifikasi"',
-    nameHint: "Beri nama yang mudah dikenali untuk perangkat ini.",
+    nameLabel: "Nama perangkat (wajib)",
+    nameHint:
+      "Ditampilkan di daftar perangkat pada layar admin. Masukkan nama yang menunjukkan perangkat ini.",
     namePlaceholder: "mis. iPad di kasir",
     register: "Terima notifikasi",
     done: "Terdaftar",

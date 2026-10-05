@@ -1015,7 +1015,9 @@ const data = {
     installStep2: 'Choose "Add to Home Screen"',
     installStep3:
       'Tap the icon added to your Home Screen to open the "Register a device for notifications" screen',
-    nameHint: "Give this device a name you will recognize.",
+    nameLabel: "Device name (required)",
+    nameHint:
+      "Shown in the device list on the admin screen. Enter a name that identifies this device.",
     namePlaceholder: "e.g. iPad at the register",
     register: "Receive notifications",
     done: "Registered",
