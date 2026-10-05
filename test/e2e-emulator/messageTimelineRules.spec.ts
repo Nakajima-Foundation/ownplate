@@ -121,6 +121,29 @@ test("timeline を読めるのはこの店舗のオーナーと子アカウン�
   expect((await shopTimelineQuery(null)).status).toBe(403);
 });
 
+// 読めるだけで、書けてはいけない。Firestore の規則は allow を OR するだけで
+// deny が無いので、どこかに書き込みの allow を足すと黙って通ってしまう。
+test("オーナーでも timeline には書けない", async ({ page }) => {
+  await placeOrder(page);
+  const ownerToken = await idTokenFor(SEED_OWNER_EMAIL, SEED_OWNER_PASSWORD);
+
+  // 読めることを先に示す。403 が「経路違い」ではなく「書けない」だと分かるように。
+  const asOwner = await shopTimelineQuery(ownerToken);
+  expect(asOwner.status).toBe(200);
+  expect(await rowsIn(asOwner)).toBeGreaterThan(0);
+
+  const written = await fetch(
+    `${FIRESTORE_BASE}/restaurants/${SEED_RESTAURANT_ID}/messages/forged` +
+      `?updateMask.fieldPaths=text`,
+    {
+      method: "PATCH",
+      headers: authHeader(ownerToken),
+      body: JSON.stringify({ fields: { text: { stringValue: "偽の行" } } }),
+    },
+  );
+  expect(written.status).toBe(403);
+});
+
 test("子アカウントは串刺しでは見えない", async ({ page }) => {
   await placeOrder(page);
 
