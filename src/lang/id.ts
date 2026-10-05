@@ -1221,9 +1221,9 @@ const data = {
       devices: "Perangkat yang diberi notifikasi",
       empty: "Belum ada perangkat yang terdaftar.",
       addDevice: "Tambah perangkat",
-      inviteHeading: "Buka URL ini di perangkat tersebut",
+      inviteHeading: "Buka URL ini di perangkat yang ingin menerima notifikasi",
       inviteHint:
-        'Setiap URL hanya dapat mendaftarkan satu perangkat. Untuk perangkat kedua, tekan "Tambah perangkat" lagi. URL berlaku selama 24 jam. * Jangan bagikan di tempat yang dapat dilihat banyak orang, seperti grup LINE.',
+        'URL ini hanya dapat mendaftarkan satu perangkat. Untuk menambahkan perangkat kedua, tekan "Tambah perangkat" lagi. URL berlaku selama 24 jam. * Jangan bagikan URL di tempat yang dapat dilihat banyak orang, seperti grup LINE.',
       copy: "Salin URL",
       copied: "Tersalin",
       test: "Kirim uji coba",

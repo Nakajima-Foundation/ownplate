@@ -1208,9 +1208,10 @@ const data = {
       devices: "Devices to notify",
       empty: "No device has been registered yet.",
       addDevice: "Add a device",
-      inviteHeading: "Open this URL on the device",
+      inviteHeading:
+        "Open this URL on the device that should receive notifications",
       inviteHint:
-        'Each URL registers only one device. For a second device, press "Add a device" again. The URL expires in 24 hours. * Do not share it where many people can see it, such as a LINE group.',
+        'This URL can register only one device. To add a second device, press "Add a device" again. The URL expires in 24 hours. * Do not share the URL where many people can see it, such as a LINE group.',
       copy: "Copy URL",
       copied: "Copied",
       test: "Send a test",

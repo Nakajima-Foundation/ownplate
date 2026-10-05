@@ -1212,9 +1212,9 @@ const data = {
       devices: "Thiết bị nhận thông báo",
       empty: "Chưa có thiết bị nào được đăng ký.",
       addDevice: "Thêm thiết bị",
-      inviteHeading: "Hãy mở URL này trên thiết bị",
+      inviteHeading: "Mở URL này trên thiết bị muốn nhận thông báo",
       inviteHint:
-        'Mỗi URL chỉ đăng ký được 1 thiết bị. Với thiết bị thứ hai, hãy nhấn "Thêm thiết bị" lần nữa. URL hết hạn sau 24 giờ. ※ Không chia sẻ ở nơi nhiều người có thể xem, như nhóm LINE.',
+        'URL này chỉ đăng ký được 1 thiết bị. Để thêm thiết bị thứ hai, hãy nhấn "Thêm thiết bị" lần nữa. URL hết hạn sau 24 giờ. ※ Không chia sẻ URL ở nơi nhiều người có thể xem, như nhóm LINE.',
       copy: "Sao chép URL",
       copied: "Đã sao chép",
       test: "Gửi thử",
