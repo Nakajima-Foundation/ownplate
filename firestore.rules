@@ -242,8 +242,13 @@ service cloud.firestore {
       allow read: if isOwner(resource, request);
     }
 
+    // collection group。ここは **すべての messages コレクション** に当たる。
+    // 持っている項目だけで判断されるので、**どこかの messages に fromUid や
+    // ownerUid を足すと、その相手から読めるようになる**。項目を増やすときは必ずここを見ること。
     match /{path=**}/messages/{messageId} {
       allow read: if isFromUser(resource, request);
+      // 店舗向けの timeline。複数店舗のオーナーが串刺しで引くために collection group で許す。
+      allow read: if isResuaurantOwner(resource, request);
     }
 
     match /{path=**}/subCategory/{subcategory} {

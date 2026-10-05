@@ -11,6 +11,9 @@ export const shopMessageId = (orderId: string, messageId: string): string =>
   `${orderId}-${messageId}`;
 
 export type ShopMessageRecord = {
+  // 店舗オーナーの uid。複数店舗を運営しているオーナーが collection group で
+  // 串刺しに引くために要る。firestore.rules の isResuaurantOwner がこれを見る。
+  ownerUid: string;
   // 実際に送った文面。あとから組み直すと「送っていない文面」を見せることになる。
   text: string;
   // 種別（msg_order_placed など）。画面で色分けや絞り込みに使う。
@@ -23,12 +26,14 @@ export type ShopMessageRecord = {
 };
 
 export const shopMessageRecord = (params: {
+  ownerUid: string;
   text: string;
   messageId: string;
   orderId: string;
   orderNumber: number;
   restaurantId: string;
 }): ShopMessageRecord => ({
+  ownerUid: params.ownerUid,
   text: params.text,
   messageId: params.messageId,
   orderId: params.orderId,
