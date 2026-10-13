@@ -285,9 +285,9 @@
     levn "^0.4.1"
 
 "@fastify/busboy@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@fastify/busboy/-/busboy-3.0.0.tgz#328a4639cdd9282c1d1f56aa84943f153df8839d"
-  integrity sha512-83rnH2nCvclWaPQQKvkJ2pdOjG4TZyEVuFDnlOF6KP08lDaaceVyw/W63mDuafQT+MKHCvXIPpE5uYWeM0rT4w==
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/@fastify/busboy/-/busboy-3.2.3.tgz#4a21ff2fbdf8b199cfac7230c1721adc9f5cba1f"
+  integrity sha512-fmo/IKgkenPzz3qTKG+sIUXdF/Kv83AkvvOXJHPTHJeKJbat8SsL1ihUaFaDotqoEl4UZ1Lf8Eb/3vK6eaWX2A==
 
 "@firebase/ai@2.16.0":
   version "2.16.0"
