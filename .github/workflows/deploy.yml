@@ -7,6 +7,14 @@ on:
     branches:
       - main
 
+# 同じ Firebase プロジェクトへ `firebase deploy` を同時に走らせると、関数の更新が
+# 衝突して落ちる（続けてマージした 3 本が重なり、1 本が imageProcessing2 の更新に
+# 失敗した）。main の deploy は 1 本ずつにする。
+# 走行中のものは止めない。途中で切ると、どこまで反映されたか分からなくなるため。
+concurrency:
+  group: deploy-staging
+  cancel-in-progress: false
+
 jobs:
   build:
 
