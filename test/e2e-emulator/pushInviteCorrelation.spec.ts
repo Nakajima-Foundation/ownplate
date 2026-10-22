@@ -104,24 +104,20 @@ test("別の招待で登録されても、出している QR は閉じない", a
   await expect(page.getByText("To register another device")).toBeVisible();
 });
 
-// 渡す相手に何をしてもらうかを、URL を出した画面で伝える。iPhone は
-// ホーム画面に追加しないと受け取れないので、ここで見えないと気づけない。
-test("招待と一緒に、端末ごとの手順が出る", async ({ page }) => {
+// 渡す相手に何をしてもらうかは、招待を出す前に読めないといけない。
+// 出したあとに気づいても、相手に渡したあとなので遅い。
+test("端末ごとの手順が、招待を出す前から見えている", async ({ page }) => {
   await signInAsOwner(page);
   await page.goto(PUSH_LIST);
 
-  // 招待を出す前は手順も出ない。
-  await expect(
-    page.getByText("Steps on the device that opens this URL"),
-  ).toHaveCount(0);
-
-  await page.getByRole("button", { name: /Add a device/u }).click();
-  await expect(page.locator("text=/\\/pushdevice\\//").first()).toBeVisible();
-
-  await expect(
-    page.getByText("Steps on the device that opens this URL"),
-  ).toBeVisible();
+  const heading = page.getByText("Steps on the device that opens this URL");
+  await expect(heading).toBeVisible();
   await expect(page.getByText(/Add to Home Screen/u)).toBeVisible();
   await expect(page.getByText(/^Android:/u)).toBeVisible();
   await expect(page.getByText(/^Computer:/u)).toBeVisible();
+
+  // 招待を出しても消えない。
+  await page.getByRole("button", { name: /Add a device/u }).click();
+  await expect(page.locator("text=/\\/pushdevice\\//").first()).toBeVisible();
+  await expect(heading).toBeVisible();
 });
