@@ -91,6 +91,6 @@ describe("shopMessageRecord", () => {
 describe("SHOP_MESSAGE_COLLECTION", () => {
   // 画面と規則が同じ名前を見ていること。ここがずれると読めない。
   it("is the collection the rules and the screen use", () => {
-    assert.strictEqual(SHOP_MESSAGE_COLLECTION, "messages");
+    assert.strictEqual(SHOP_MESSAGE_COLLECTION, "shopMessages");
   });
 });

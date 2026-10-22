@@ -20,7 +20,7 @@ LINE の通知を畳むので、その代わりになる店舗向けの timeline
 
 ## 置き場と中身
 
-`/restaurants/{restaurantId}/messages/{orderId}-{messageId}`
+`/restaurants/{restaurantId}/shopMessages/{orderId}-{messageId}`
 
 id を注文と種別から作るので、同じ通知が二度走っても行が増えない。
 
