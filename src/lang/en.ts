@@ -1221,6 +1221,13 @@ const data = {
         "Open this URL on the device that should receive notifications",
       inviteHint:
         'This URL can register only one device. To add a second device, press "Add a device" again. The URL expires in 24 hours. * Do not share the URL where many people can see it, such as a LINE group.',
+      deviceGuideHeading: "Steps on the device that opens this URL",
+      deviceGuideIos:
+        'iPhone / iPad: Open it in Safari, tap Share, choose "Add to Home Screen", then reopen from the new icon. Notifications cannot be received from a Safari tab (iOS 16.4 or later required).',
+      deviceGuideAndroid:
+        "Android: Open it in Chrome and register as is. Notifications will not arrive if they are turned off in the device settings.",
+      deviceGuideDesktop:
+        "Computer: Even when notifications are allowed, they are not shown while the browser is off in the OS notification settings, or while Focus mode is on.",
       copy: "Copy URL",
       copied: "Copied",
       test: "Send a test",

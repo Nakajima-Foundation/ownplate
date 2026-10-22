@@ -1206,6 +1206,13 @@ const data = {
       inviteHeading: "알림을 받을 기기에서 이 URL을 열어 주세요",
       inviteHint:
         '이 URL로 등록할 수 있는 기기는 1대뿐입니다. 2대째를 추가하려면 "기기 추가"를 다시 눌러 주세요. 유효 기간은 24시간입니다. ※ URL을 LINE 그룹 등 불특정 다수가 볼 수 있는 곳에 공유하지 마세요.',
+      deviceGuideHeading: "이 URL을 여는 기기에서의 순서",
+      deviceGuideIos:
+        'iPhone・iPad: Safari에서 열고 공유 버튼에서 "홈 화면에 추가"를 선택한 뒤, 추가된 아이콘으로 다시 열어 주세요. Safari 탭에서는 알림을 받을 수 없습니다(iOS 16.4 이상 필요).',
+      deviceGuideAndroid:
+        "Android: Chrome에서 그대로 열어 등록할 수 있습니다. 기기 설정에서 알림이 꺼져 있으면 도착하지 않습니다.",
+      deviceGuideDesktop:
+        "컴퓨터: 알림을 허용했더라도 OS 알림 설정에서 브라우저가 꺼져 있거나 집중 모드 중에는 표시되지 않습니다.",
       copy: "URL 복사",
       copied: "복사했습니다",
       test: "테스트 전송",
