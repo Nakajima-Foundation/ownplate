@@ -322,7 +322,7 @@ const data = {
     invoiceNumberNote:
       "적격청구서 발행사업자 등록번호. 미설정 시 영수증과 PDF에 인쇄되지 않습니다.",
     webPushNotification: "푸시 알림",
-    moveToPushConfig: "푸시 알림 기기 설정으로",
+    moveToPushConfig: "웹 푸시 설정",
     openDaysConfig: "영업일시 설정",
     lunchOrDinnerToggle: "런치/디너 자동 전환",
     lunchOrDinnerNotice:

@@ -332,7 +332,7 @@ const data = {
     invoiceNumberNote:
       "Numéro d'enregistrement de l'émetteur de factures qualifiées. Omis du reçu et du PDF s'il n'est pas défini.",
     webPushNotification: "Notifications push",
-    moveToPushConfig: "Gérer les appareils push",
+    moveToPushConfig: "Paramètres Web push",
     openDaysConfig: "Paramètres des jours et heures d'ouverture",
     lunchOrDinnerToggle: "Basculement automatique déjeuner/dîner",
     lunchOrDinnerNotice:

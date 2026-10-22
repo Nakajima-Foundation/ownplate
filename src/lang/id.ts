@@ -330,7 +330,7 @@ const data = {
     invoiceNumberNote:
       "Nomor registrasi penerbit faktur. Tidak dicetak pada struk dan PDF jika kosong.",
     webPushNotification: "Notifikasi push",
-    moveToPushConfig: "Kelola perangkat push",
+    moveToPushConfig: "Pengaturan Web push",
     openDaysConfig: "Pengaturan hari/jam operasi",
     lunchOrDinnerToggle: "Beralih otomatis menu makan siang/makan malam",
     lunchOrDinnerNotice:

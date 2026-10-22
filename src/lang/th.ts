@@ -323,7 +323,7 @@ const data = {
     invoiceNumberNote:
       "เลขทะเบียนผู้ออกใบกำกับภาษี หากไม่ได้ตั้งค่าจะไม่พิมพ์บนใบเสร็จและ PDF",
     webPushNotification: "การแจ้งเตือนแบบพุช",
-    moveToPushConfig: "จัดการอุปกรณ์รับการแจ้งเตือน",
+    moveToPushConfig: "ตั้งค่า Web push",
     openDaysConfig: "ตั้งค่าวัน/เวลาทำการ",
     lunchOrDinnerToggle: "สลับเมนูกลางวัน/เย็นอัตโนมัติ",
     lunchOrDinnerNotice:

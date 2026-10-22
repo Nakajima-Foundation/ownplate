@@ -329,7 +329,7 @@ const data = {
     invoiceNumberNote:
       "Số đăng ký của đơn vị phát hành hóa đơn. Không in trên biên lai và PDF nếu chưa đặt.",
     webPushNotification: "Thông báo đẩy",
-    moveToPushConfig: "Quản lý thiết bị nhận thông báo",
+    moveToPushConfig: "Cài đặt Web push",
     openDaysConfig: "Cài đặt ngày/giờ hoạt động",
     lunchOrDinnerToggle: "Tự động chuyển đổi menu trưa/tối",
     lunchOrDinnerNotice:
