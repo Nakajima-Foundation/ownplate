@@ -59,6 +59,15 @@ test.describe("管理画面トップの飲食店カード", () => {
     await expect(page).toHaveURL(`${CARD_BASE}/menus`);
   });
 
+  // LINE 通知と電話通知は Web Push に統合する予定なので、移行先への導線が
+  // 店舗カードから一段で見えること。
+  test("Web Push の端末設定へ行ける", async ({ page }) => {
+    await signInAsOwner(page);
+    await page.getByText("Manage push devices").first().click();
+
+    await expect(page).toHaveURL(`${CARD_BASE}/pushlist`);
+  });
+
   // ケース4 Step1/Step2「『シンプル』→ 限られた導線だけ。『全て』→ 通知なども出す」
   test("シンプルにすると導線が絞られ、全てにすると戻る", async ({ page }) => {
     await setSimpleMode(false);
