@@ -1217,6 +1217,13 @@ const data = {
       inviteHeading: "通知を受け取りたい端末で、こちらの URL を開いてください",
       inviteHint:
         "この URL で登録できる端末は 1 台のみです。2 台目を追加したい場合は、もう一度「端末を追加」を押してください。有効期限は 24 時間です。※ URL を LINE のグループ等、不特定多数の人が見えるところで共有しないでください。",
+      deviceGuideHeading: "この URL を開いた端末での手順",
+      deviceGuideIos:
+        "iPhone・iPad：Safari で開き、共有ボタンから「ホーム画面に追加」を選び、追加されたアイコンから開き直してください。Safari のタブのままでは通知を受け取れません（iOS 16.4 以降が必要です）。",
+      deviceGuideAndroid:
+        "Android：Chrome でそのまま開いて登録できます。端末の設定で通知がオフになっていると届きません。",
+      deviceGuideDesktop:
+        "パソコン：通知を許可していても、OS の通知設定でブラウザがオフのときや、集中モードのあいだは表示されません。",
       copy: "URL をコピー",
       copied: "コピーしました",
       test: "テスト送信",

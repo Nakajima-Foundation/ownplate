@@ -1242,6 +1242,13 @@ const data = {
         "Ouvrez cette URL sur l'appareil qui doit recevoir les notifications",
       inviteHint:
         "Cette URL ne permet d'enregistrer qu'un seul appareil. Pour ajouter un deuxième appareil, appuyez à nouveau sur « Ajouter un appareil ». L'URL expire au bout de 24 heures. * Ne partagez pas l'URL là où beaucoup de personnes peuvent la voir, comme un groupe LINE.",
+      deviceGuideHeading: "Étapes sur l'appareil qui ouvre cette URL",
+      deviceGuideIos:
+        "iPhone / iPad : ouvrez le lien dans Safari, appuyez sur Partager, choisissez « Sur l'écran d'accueil », puis rouvrez depuis la nouvelle icône. Les notifications ne peuvent pas être reçues depuis un onglet Safari (iOS 16.4 ou version ultérieure requis).",
+      deviceGuideAndroid:
+        "Android : ouvrez le lien dans Chrome et enregistrez directement. Les notifications n'arriveront pas si elles sont désactivées dans les réglages de l'appareil.",
+      deviceGuideDesktop:
+        "Ordinateur : même si les notifications sont autorisées, elles ne s'affichent pas lorsque le navigateur est désactivé dans les réglages de notification du système ou pendant le mode Concentration.",
       copy: "Copier l'URL",
       copied: "Copié",
       test: "Envoyer un test",

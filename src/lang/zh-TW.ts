@@ -1160,6 +1160,13 @@ const data = {
       inviteHeading: "請在需要接收通知的裝置上開啟此網址",
       inviteHint:
         "此網址只能註冊 1 台裝置。如需新增第 2 台裝置，請再次點按「新增裝置」。有效期限為 24 小時。※ 請勿將網址分享到 LINE 群組等不特定多數人可以看到的地方。",
+      deviceGuideHeading: "開啟此 URL 的裝置上的操作步驟",
+      deviceGuideIos:
+        'iPhone / iPad：請用 Safari 開啟，點選分享按鈕選擇"加入主畫面"，然後從新增的圖示重新開啟。在 Safari 分頁中無法接收通知（需要 iOS 16.4 以上）。',
+      deviceGuideAndroid:
+        "Android：用 Chrome 直接開啟即可註冊。若在裝置設定中關閉了通知，將收不到。",
+      deviceGuideDesktop:
+        "電腦：即使已允許通知，若在系統通知設定中關閉了瀏覽器，或處於專注模式期間，也不會顯示。",
       copy: "複製網址",
       copied: "已複製",
       test: "傳送測試",

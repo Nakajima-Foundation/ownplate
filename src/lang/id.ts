@@ -1233,6 +1233,13 @@ const data = {
       inviteHeading: "Buka URL ini di perangkat yang ingin menerima notifikasi",
       inviteHint:
         'URL ini hanya dapat mendaftarkan satu perangkat. Untuk menambahkan perangkat kedua, tekan "Tambah perangkat" lagi. URL berlaku selama 24 jam. * Jangan bagikan URL di tempat yang dapat dilihat banyak orang, seperti grup LINE.',
+      deviceGuideHeading: "Langkah pada perangkat yang membuka URL ini",
+      deviceGuideIos:
+        'iPhone / iPad: Buka di Safari, ketuk Bagikan, pilih "Tambahkan ke Layar Utama", lalu buka kembali dari ikon baru. Notifikasi tidak dapat diterima dari tab Safari (perlu iOS 16.4 atau lebih baru).',
+      deviceGuideAndroid:
+        "Android: Buka di Chrome dan daftarkan langsung. Notifikasi tidak akan sampai jika dimatikan di pengaturan perangkat.",
+      deviceGuideDesktop:
+        "Komputer: Meskipun notifikasi diizinkan, notifikasi tidak muncul saat browser dimatikan di pengaturan notifikasi sistem, atau selama mode Fokus aktif.",
       copy: "Salin URL",
       copied: "Tersalin",
       test: "Kirim uji coba",

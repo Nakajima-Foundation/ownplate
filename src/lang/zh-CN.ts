@@ -1160,6 +1160,13 @@ const data = {
       inviteHeading: "请在需要接收通知的设备上打开此网址",
       inviteHint:
         "此网址只能注册 1 台设备。如需添加第 2 台设备，请再次点击“添加设备”。有效期为 24 小时。※ 请勿将网址分享到 LINE 群组等不特定多数人可以看到的地方。",
+      deviceGuideHeading: "打开此 URL 的设备上的操作步骤",
+      deviceGuideIos:
+        'iPhone / iPad：请用 Safari 打开，点击共享按钮选择"添加到主屏幕"，然后从新增的图标重新打开。在 Safari 标签页中无法接收通知（需要 iOS 16.4 及以上）。',
+      deviceGuideAndroid:
+        "Android：用 Chrome 直接打开即可注册。如果在设备设置中关闭了通知，将收不到。",
+      deviceGuideDesktop:
+        "电脑：即使已允许通知，若在系统通知设置中关闭了浏览器，或处于专注模式期间，也不会显示。",
       copy: "复制网址",
       copied: "已复制",
       test: "发送测试",

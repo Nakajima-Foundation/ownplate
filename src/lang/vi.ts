@@ -1224,6 +1224,13 @@ const data = {
       inviteHeading: "Mở URL này trên thiết bị muốn nhận thông báo",
       inviteHint:
         'URL này chỉ đăng ký được 1 thiết bị. Để thêm thiết bị thứ hai, hãy nhấn "Thêm thiết bị" lần nữa. URL hết hạn sau 24 giờ. ※ Không chia sẻ URL ở nơi nhiều người có thể xem, như nhóm LINE.',
+      deviceGuideHeading: "Các bước trên thiết bị mở URL này",
+      deviceGuideIos:
+        'iPhone / iPad: Mở bằng Safari, nhấn nút Chia sẻ, chọn "Thêm vào Màn hình chính", rồi mở lại từ biểu tượng vừa thêm. Không thể nhận thông báo từ tab Safari (cần iOS 16.4 trở lên).',
+      deviceGuideAndroid:
+        "Android: Mở bằng Chrome và đăng ký trực tiếp. Thông báo sẽ không đến nếu đã tắt trong cài đặt thiết bị.",
+      deviceGuideDesktop:
+        "Máy tính: Dù đã cho phép thông báo, thông báo vẫn không hiển thị khi trình duyệt bị tắt trong cài đặt thông báo của hệ điều hành, hoặc trong lúc bật chế độ Tập trung.",
       copy: "Sao chép URL",
       copied: "Đã sao chép",
       test: "Gửi thử",
